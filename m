@@ -1,97 +1,220 @@
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C8E204F90;
-	Mon, 16 Dec 2024 11:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DF0203D55
+	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 11:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734348616; cv=none; b=BVPKHoAsgqsPvcSzxwoGK4XtBu/Z6Zy77ARIsdu8iWO7exO4uIXx0NFWRCoZ76uXvREMnMcTS3MFBlZye6crd6FnOWIJY4PP7DVh58i9SiYXJNPOU1phvdgJYa3GetFeXiVVCO1j4VHx2ibT2YeB5VN/3Gqc1y3JL61YbXhYllQ=
+	t=1734349808; cv=none; b=LQmYmO545WkIo1KoTIqC55s+IYFkud+q47z1R6yehykQpkMfLUcZ2E3NOKzgjFbbgBWYMZmJFdZcgpuHcFkZEZVLdUh5TqZKX/ALv1s+qn3kRiNIL0eOkbYkH/3czJSyJLofPbQr9W+Sjrwx3ld3LbRSue00/hvffwAe8eR/Ik0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734348616; c=relaxed/simple;
-	bh=sKafKTrf9LAdZ9BgdUJ967oC4MBmXTpZpAe5oxO1A/U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XWoLuI0AqOP+IJi/tGkYG9yOxvcbmDcZLRUaHFqE8v23CeKKe1juJkT993uRgelmKYAPXCjLmAEMihpLeV/WVOmIBX4+P7w3b0POXxjnzrEWexTDMjNavzlckEasJiYzPhlkjx6zSfGpmlc+K8Sy3Dyg7CvuSyp6vauKQCbYZ/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=a/psRVI6; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+	s=arc-20240116; t=1734349808; c=relaxed/simple;
+	bh=LjoNpo99IS9TQ2tcnB3Fb50v0g/in8V7E04lFrHtrcg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bSpZdgJOAGvz02glZ7fhN0wNhklQe+aTsHl50jcf9eP3TOS1AiqtwTuO/ILlZfQP6Jc6wVMLQFJ8mKiMUze8IGMhR2EE+IofSVkOsrjvJtn7aZWEOy3tJG2YFhxHK9ij3h0brPGV9Aip8bT9yQu1L2aA22jVVnTTeBduc2VJ3Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=c9vwyuZ8; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="a/psRVI6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1734348609;
-	bh=sKafKTrf9LAdZ9BgdUJ967oC4MBmXTpZpAe5oxO1A/U=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=a/psRVI6dOk0OUmnIK9Bsc5J9v32iRRIq90T3yw3Ny59IeNxuy7crSZH8GxtBRjl4
-	 N/6kHom7mpZsVVf2cDizjbLqQd/nvKcSDr48FSAt2jQRpJJEEMNjDRzzoTYdRKiZMS
-	 lPGLesG/MQG0wBoDZFUt+l7adT7GW8g3WnSNDd4Q=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Mon, 16 Dec 2024 12:30:10 +0100
-Subject: [PATCH net-next 3/5] wlcore: sysfs: constify 'struct
- bin_attribute'
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="c9vwyuZ8"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aa692211331so768756766b.1
+        for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 03:50:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1734349805; x=1734954605; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=n4Fnqt3+wn3Jqih2/E06bFWlfYBOS+/nVME6Ot/StK8=;
+        b=c9vwyuZ89rAz7fOyhoTxkT4XTjxhvSfi8DfiW/OjpFNMUsA6v8hG/0DMPbvXC/rz/l
+         mEs7ru+VNaN8SR2XoIjkmkvTCMcWxveJ221IG5428MABbHm2OCcgfwF8MsRA47LsDijz
+         jI5zrkCHtawtSvKKMW8ZdPV6ugWaD45Qfr8WmV07MyZ/uCGM0kl7n5KVYLs+Ct4EMw1n
+         Nlye7HkWVhOLvd6ZSY3O74dwKvlgj/U7iOKklH0TOIGBaVMLFZ4b6wjhYJhbuCmkO7tD
+         WmRYq51FMQ03kdB1nFYWNXaBa+f8fCsp4mt1EULh09x+A5fRqfkkrVMJqmVdNqufzKQe
+         JQ/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734349805; x=1734954605;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n4Fnqt3+wn3Jqih2/E06bFWlfYBOS+/nVME6Ot/StK8=;
+        b=sMCp6mkCAmoPiG1swOnRukWjrwRl7ESP5Vdkxj/0miG50BXAj/ebsqhcj7pv++tl36
+         iCo+VDRipGtBln8A8QGonlN4IwIb/XWtHj+GU7miWg/x418HZ11olZFGxE+FxzYQyYMZ
+         X6WYS9bB/Tn0pEDSAQz/eooyZPd/fZjUisZDcwNQD/I6rKSzxljy4t93LrF4U1sLYRJF
+         ebbdQ8dTPJn78JdbQFPgQjQxcE32xoV6DR6C7umMyowgn4k3amZtdcL0ZAGgCBoLBmCl
+         Gsoa38Z9eJnnkbOe0zom5pBBLVFtrx1Ks5t5sg0Bj6JxaZKaqW5PYYXNxEbQfL7zo5fG
+         LPeg==
+X-Gm-Message-State: AOJu0Yy4U2/wmnnIlX362qRkMwVH4iOktvSpe1zMEWqxRJPRomvzKKbS
+	gNvRDSs+SfLqmvwttiF3FGUl3UwPBeT+ZQg0M+51hrqrLFNhxpSe5vFH5al2GRinZ9yj0ohl0yk
+	h
+X-Gm-Gg: ASbGnctih/ro55g7ogk5jvrbqUWGaN3J+9DJKa4TEdr9pTjoHxBLlBPzcQCpNb2wFYc
+	2w//ZAP5ZNtYQAsKyRZnG5ToopYLlx2YoCfWAgeVwFBNPSB8S2eRXExIqYUWuWGRdkqmGF0b1Bc
+	OeeZkf7v8k0Cx3FVhXZQK5OBR3Z5gpESIjmKsSXsteuc1xIOK+pUiknHgs6IL3/kjGTmQIQRAtF
+	gepEV+AiTzfw5jgBxTrsWSBHgPynymCyK+vSr0VpqI7ffWCtqfb7iaoPQsGi94l14xh6agWSsjE
+	anknLX22u1F2L8iYqqI=
+X-Google-Smtp-Source: AGHT+IEnfewEiJGs3lq7FqGj7ad6Ew/gCcV3xnhPzkvANe07z2h/NIw9ORmy8DNUwq06lbUogwLfZA==
+X-Received: by 2002:a17:907:7e92:b0:aa6:a9fe:46de with SMTP id a640c23a62f3a-aab7b777564mr1235220266b.19.1734349804846;
+        Mon, 16 Dec 2024 03:50:04 -0800 (PST)
+Received: from ?IPV6:2001:67c:2fbc:1:f3f5:d43f:11fb:5f45? ([2001:67c:2fbc:1:f3f5:d43f:11fb:5f45])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aab96089f88sm321885466b.91.2024.12.16.03.50.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Dec 2024 03:50:04 -0800 (PST)
+Message-ID: <a1137cc2-6985-44bc-a802-e070da7208dc@openvpn.net>
+Date: Mon, 16 Dec 2024 12:50:53 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241216-sysfs-const-bin_attr-net-v1-3-ec460b91f274@weissschuh.net>
-References: <20241216-sysfs-const-bin_attr-net-v1-0-ec460b91f274@weissschuh.net>
-In-Reply-To: <20241216-sysfs-const-bin_attr-net-v1-0-ec460b91f274@weissschuh.net>
-To: Roopa Prabhu <roopa@nvidia.com>, 
- Nikolay Aleksandrov <razor@blackwall.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, Kalle Valo <kvalo@kernel.org>, 
- Manish Chopra <manishc@marvell.com>, Rahul Verma <rahulv@marvell.com>, 
- GR-Linux-NIC-Dev@marvell.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Shahed Shaikh <shshaikh@marvell.com>
-Cc: bridge@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1734348609; l=1358;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=sKafKTrf9LAdZ9BgdUJ967oC4MBmXTpZpAe5oxO1A/U=;
- b=gGkG+VPJm4mN0LELAZJKMBJ8ArdFEHk8sS8xi184dchQWntIgwDx/kZOUjOe5Mnj6yvFaFFxp
- AByBciprnLdB7xeNM1W2Q0cwD90cI26jJoekl7UUmV7lA169GNyzfsw
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v15 06/22] ovpn: introduce the ovpn_socket object
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>,
+ ryazanov.s.a@gmail.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Xiao Liang <shaw.leon@gmail.com>,
+ willemdebruijn.kernel@gmail.com
+References: <20241211-b4-ovpn-v15-0-314e2cad0618@openvpn.net>
+ <20241211-b4-ovpn-v15-6-314e2cad0618@openvpn.net> <Z1sNEgQLMzZua3mS@hog>
+ <fa19f3a8-c273-4d2c-a10e-e9bda2375365@openvpn.net> <Z2AKg6ntLd94anHv@hog>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <Z2AKg6ntLd94anHv@hog>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The sysfs core now allows instances of 'struct bin_attribute' to be
-moved into read-only memory. Make use of that to protect them against
-accidental or malicious modifications.
+On 16/12/2024 12:09, Sabrina Dubroca wrote:
+[...]
+>> Maybe we should call cancel_sync_work(&ovpn_sock->work) inside
+>> ovpn_socket_get()?
+>> So the latter will return NULL only when it is sure that the socket has been
+>> detached.
+>>
+>> At that point we can skip the following return and continue along the "new
+>> socket" path.
+>>
+>> What do you think?
+> 
+> The work may not have been scheduled yet? (small window between the
+> last kref_put and schedule_work)
+> 
+> Maybe a completion [Documentation/scheduler/completion.rst] would
+> solve it (but it makes things even more complex, unfortunately):
+> 
+>   - at the end of ovpn_socket_detach: complete(&ovpn_sock->detached);
+>   - in ovpn_socket_new when handling EALREADY: wait_for_completion(&ovpn_sock->detached);
+>   - in ovpn_socket_new for the new socket: init_completion(&ovpn_sock->detached);
+> 
+> but ovpn_sock could be gone immediately after complete(). Maybe
+> something with completion_done() before the kfree_rcu in
+> ovpn_socket_detach? I'm not that familiar with the completion API.
+> 
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- drivers/net/wireless/ti/wlcore/sysfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+It seems the solution we are aiming for is more complex than the concept 
+of ovpn_socket per se :-D
 
-diff --git a/drivers/net/wireless/ti/wlcore/sysfs.c b/drivers/net/wireless/ti/wlcore/sysfs.c
-index c07acfcbbd9c8179bd312840efda43e7e9c5e6a0..7c57d4c8744ad5d19f11c5765cc7bf27aadbf740 100644
---- a/drivers/net/wireless/ti/wlcore/sysfs.c
-+++ b/drivers/net/wireless/ti/wlcore/sysfs.c
-@@ -88,7 +88,7 @@ static ssize_t hw_pg_ver_show(struct device *dev,
- static DEVICE_ATTR_RO(hw_pg_ver);
- 
- static ssize_t wl1271_sysfs_read_fwlog(struct file *filp, struct kobject *kobj,
--				       struct bin_attribute *bin_attr,
-+				       const struct bin_attribute *bin_attr,
- 				       char *buffer, loff_t pos, size_t count)
- {
- 	struct device *dev = kobj_to_dev(kobj);
-@@ -121,7 +121,7 @@ static ssize_t wl1271_sysfs_read_fwlog(struct file *filp, struct kobject *kobj,
- 
- static const struct bin_attribute fwlog_attr = {
- 	.attr = { .name = "fwlog", .mode = 0400 },
--	.read = wl1271_sysfs_read_fwlog,
-+	.read_new = wl1271_sysfs_read_fwlog,
- };
- 
- int wlcore_sysfs_init(struct wl1271 *wl)
+I'll think a bit more about this..maybe we can avoid entering this 
+situation at all..
+
+> 
+>> However, this makes we wonder: what happens if we have two racing PEER_NEW
+>> with the same non-yet-attached UDP socket?
+> 
+> mhmm, I remember noticing that, but it seems I never mentioned it in
+> my reviews. Sorry.
+> 
+>> Maybe we should lock the socket in ovpn_udp_socket_attach() when checking
+>> its user-data and setting it (in order to make the test-and-set atomic)?
+> 
+> I'd use the lock to protect all of ovpn_socket_new.
+> ovpn_tcp_socket_attach locks the socket but after doing the initial
+> checks, so 2 callers could both see sock->sk->sk_user_data == NULL and
+> do the full attach. And I don't think unlocking before
+> rcu_assign_sk_user_data is safe for either UDP or TCP.
+
+I tend to agree here. Guarding the whole ovpn_socket_new with 
+lock_sock() seems the right thing to do.
+
+> 
+>> I am specifically talking about this in udp.c:
+>>
+>> 345         /* make sure no pre-existing encapsulation handler exists */
+>> 346         rcu_read_lock();
+>> 347         old_data = rcu_dereference_sk_user_data(sock->sk);
+>> 348         if (!old_data) {
+>> 349                 /* socket is currently unused - we can take it */
+>> 350                 rcu_read_unlock();
+>> 351                 setup_udp_tunnel_sock(sock_net(sock->sk), sock, &cfg);
+>> 352                 return 0;
+>> 353         }
+>>
+>> We will end up returning 0 in both contexts and thus allocate two
+>> ovpn_sockets instead of re-using the first one we allocated.
+>>
+>> Does it make sense?
+> 
+> Yes.
+> 
+> [...]
+>>> [I have some more nits/typos here and there but I worry the
+>>> maintainers will get "slightly" annoyed if I make you repost 22
+>>> patches once again :) -- if that's all I find in the next few days,
+>>> everyone might be happier if I stash them and we get them fixed after
+>>> merging?]
+>>
+>> If we have to rework this socket attaching part, it may be worth throwing in
+>> those typ0 fixes too :)
+> 
+> ACK, I'll send them out.
+
+Thanks.
+
+Regards,
+
 
 -- 
-2.47.1
+Antonio Quartulli
+OpenVPN Inc.
 
