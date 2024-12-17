@@ -1,105 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF581FA8EC
-	for <netdev@vger.kernel.org>; Tue, 17 Dec 2024 21:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA261DC18F
+	for <netdev@vger.kernel.org>; Tue, 17 Dec 2024 21:08:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734469659; cv=none; b=cuy9ovqZTrcFqtgjsrQQaabwEjfOaU7NFxy+uHPVRu2wZZoMxsZOYTjw9vSiYnoEmWy0SutldCqIQmeSUmC4RkQ9duSfjo2uD23qSyNBTSdZCvynm6j8pzVkIulFJpYHTyCOt2E9CmyYNLTQbjB9xGmJs9WhlrfKT7p3ghU7i7I=
+	t=1734469730; cv=none; b=Q4BewLcKHd4ngKsYvU+RxX35Dkc9JExvOoa+pgN3xXvN7KAMVLQ3zhdRJIPRokkDpF7XsFobDBqVV6lY7/ZOGnxe4G9bSX9zNrX2x9qCErTq/SNsMbh75w0idkiepOKTxqyvfjynqp4RJ32pO2ABCUsTJtMG+el6mnGstlF4b70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734469659; c=relaxed/simple;
-	bh=ARm3wZdsJFE1EXnn6XMmXs+6j95IcoRF/BPmTCJB7yE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FrWUa3TJVFN0GUraVD1uCeseAbW2lmumMg+FkGhvr5PI58x5GuBzgmVUp/rNkMXF47zEp8GY91EBLGtkOABCG0S9BJNus7nIH/r6X4J4YDVqDhgykiUq9gUNtmIMZztnY0yLPBOLRuMwXgg5x3NiaxnvxgZK56So9+lyi/1AlMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tQHgsnCt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734469730; c=relaxed/simple;
+	bh=9kk+T88yE99DMbvHX3sqUfSNDW1gf4QT3AAq7EqRQcY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UaKbjRY8iGeNOmtFnJPl1E4eWG2xXw5KjaZuM1p03pR2IrjG9WvkCXA0vnByxN5yFiVOJDfcTYWYXMAWE9Ecl7ChBNu6L7S1VLCsbfMluJokVtZLQnA9mVDdsAZEBVNw6WWg3zjZn60EAQHhsaNG7qm/jZwFVAmCryeireihpF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M3ETCYBh; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQHgsnCt"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 304BAC4CEE6;
-	Tue, 17 Dec 2024 21:07:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734469659;
-	bh=ARm3wZdsJFE1EXnn6XMmXs+6j95IcoRF/BPmTCJB7yE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=tQHgsnCtFytSA/MqL+C4MNL4ICP6j9A9UzaQ3svO7QzxB1KeXb7/ydfK/mo7A109W
-	 B4w0GCkeHVkmHx3S9/hrpyEZBUvsxqVtN0UI6UWTn1PxrNODEgOPf3QF4EVHDIUu1C
-	 UfjC96zQtsQGtQqkKS5HFuZmCB6pmHjGatkeJ/cdDnM9pbW/5Cx79bqczFPhxYcIwF
-	 VcGU/74jmibiNtnxBFnq3ShenlNvoKk/Anz2oIwVoRfHlO6c8mjWxI5TSi2z7FV9Np
-	 KKTp2fKjEl9t+Owpgl28a6xQ3vUXjqHMiQ7kc2l+vyccYzn/p8VRJok6A6vG79wyG3
-	 Khr7PcumqeHgw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 261DCE77184;
-	Tue, 17 Dec 2024 21:07:39 +0000 (UTC)
-From: Hans-Frieder Vogt via B4 Relay <devnull+hfdevel.gmx.net@kernel.org>
-Date: Tue, 17 Dec 2024 22:07:37 +0100
-Subject: [PATCH net-next v3 6/7] net: tn40xx: prepare tn40xx driver to find
- phy of the TN9510 card
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M3ETCYBh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734469729; x=1766005729;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=9kk+T88yE99DMbvHX3sqUfSNDW1gf4QT3AAq7EqRQcY=;
+  b=M3ETCYBh6QCf56McZ6pusDN2bS0+aa+GreEINKziZO7YRNQKvZZPLAOk
+   egwdjKkQOyGuTjKXdM6nLQzLn0uRyevEhTtk8fb38wG3Fd4npTwpPFDVg
+   JeBpWZeoJKVCN24c2K6U1oE10ZFiTN7fKihN3hcPG/5Y7dqd+H22ewKe3
+   6z51ysOCPhmvM0EOiKXEdpfyAUhmWwWJGA+0kEtDWbIdPDBHXLXVNleVy
+   u2elsTPqak1neco97kjs2O97mGzOYFxCjhq89fTyRzjvvg1H9rdfSOqI1
+   w2SnzxJ0m6hi02E4LUdbmz4LVWt6q/ggAqkQ+jCvNH+7VUwGZCabMCA0W
+   w==;
+X-CSE-ConnectionGUID: XOJbLx/fQ8qG7iKR0Um9BQ==
+X-CSE-MsgGUID: 5QjRDzn+RLWlZtWDYRtD7w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="34794817"
+X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; 
+   d="scan'208";a="34794817"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2024 13:08:49 -0800
+X-CSE-ConnectionGUID: NXUfAED3SbSR/nsUbReBWQ==
+X-CSE-MsgGUID: qcu+aO/lSwKEpNv0ZTqLBQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; 
+   d="scan'208";a="97436291"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by fmviesa006.fm.intel.com with ESMTP; 17 Dec 2024 13:08:47 -0800
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	przemyslaw.kitszel@intel.com,
+	mateusz.polchlopek@intel.com,
+	joe@perches.com,
+	horms@kernel.org,
+	jiri@resnulli.us,
+	apw@canonical.com,
+	lukas.bulwahn@gmail.com,
+	dwaipayanray1@gmail.com
+Subject: [PATCH net-next v2 0/6][pull request] ice: add support for devlink health events
+Date: Tue, 17 Dec 2024 13:08:27 -0800
+Message-ID: <20241217210835.3702003-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241217-tn9510-v3a-v3-6-4d5ef6f686e0@gmx.net>
-References: <20241217-tn9510-v3a-v3-0-4d5ef6f686e0@gmx.net>
-In-Reply-To: <20241217-tn9510-v3a-v3-0-4d5ef6f686e0@gmx.net>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: netdev@vger.kernel.org, Hans-Frieder Vogt <hfdevel@gmx.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1734469657; l=1416;
- i=hfdevel@gmx.net; s=20240915; h=from:subject:message-id;
- bh=rESsj+vd7KGKfozt3aHW3N4Wnw4DdcDrscsB4sUdilI=;
- b=xf0hdxtZyuXoEfg78h7+uWKrxqCrXtjcIE1fYmrVWHkjXeNAkCbLsnoun5jW49gku5zbj3SOZ
- zfwcEafc4TrDdBF7T5PN34qqNyG7DfiqjHoV47qzdAQrYELwyLXnZow
-X-Developer-Key: i=hfdevel@gmx.net; a=ed25519;
- pk=s3DJ3DFe6BJDRAcnd7VGvvwPXcLgV8mrfbpt8B9coRc=
-X-Endpoint-Received: by B4 Relay for hfdevel@gmx.net/20240915 with
- auth_id=209
-X-Original-From: Hans-Frieder Vogt <hfdevel@gmx.net>
-Reply-To: hfdevel@gmx.net
+Content-Transfer-Encoding: 8bit
 
-From: Hans-Frieder Vogt <hfdevel@gmx.net>
+Przemek Kitszel says:
 
-Prepare the tn40xx driver to load for Tehuti TN9510 cards, which require
-bit 3 in the register TN40_REG_MDIO_CMD_STAT to be set. The function of bit
-3 is unclear, but may have something to do with the length of the preamble
-in the MDIO communication. If bit 3 is not set, the PHY will not be found
-when performing a scan for PHYs. Use the available tn40_mdio_set_speed
-function which includes setting bit 3. Just move the function to before the
-devm_mdio_register function, which scans the mdio bus for PHYs.
+Reports for two kinds of events are implemented, Malicious Driver
+Detection (MDD) and Tx hang.
 
-Signed-off-by: Hans-Frieder Vogt <hfdevel@gmx.net>
+Patches 1, 2, 3: core improvements (checkpatch.pl, devlink extension)
+Patch 4: rename current ice devlink/ files
+Patches 5, 6, 7: ice devlink health infra + reporters
+
+Mateusz did good job caring for this series, and hardening the code.
 ---
- drivers/net/ethernet/tehuti/tn40_mdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v2:
+- dropped ethtool stats dumping (Kuba), what resulted in Tx hang reporter
+  patches to be squashed into one
+- collected Joe's Ack, and Kalesh's RB
 
-diff --git a/drivers/net/ethernet/tehuti/tn40_mdio.c b/drivers/net/ethernet/tehuti/tn40_mdio.c
-index b8ee553f60d1beadeda828584adfea670f0d4ca8..993458cc49322de3466c604385dca64d4c3b949f 100644
---- a/drivers/net/ethernet/tehuti/tn40_mdio.c
-+++ b/drivers/net/ethernet/tehuti/tn40_mdio.c
-@@ -185,13 +185,13 @@ int tn40_mdiobus_init(struct tn40_priv *priv)
- 			ret);
- 	}
- 
-+	tn40_mdio_set_speed(priv, TN40_MDIO_SPEED_6MHZ);
- 	ret = devm_mdiobus_register(&pdev->dev, bus);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register mdiobus %d %u %u\n",
- 			ret, bus->state, MDIOBUS_UNREGISTERED);
- 		goto err_swnodes_unregister;
- 	}
--	tn40_mdio_set_speed(priv, TN40_MDIO_SPEED_6MHZ);
- 	priv->mdio = bus;
- 	return 0;
- 
+v1: https://lore.kernel.org/netdev/20241211223231.397203-1-anthony.l.nguyen@intel.com
+
+IWL: https://lore.kernel.org/intel-wired-lan/20240930133724.610512-1-przemyslaw.kitszel@intel.com/
+
+with patches squashed in:
+https://lore.kernel.org/intel-wired-lan/20241210115620.3141094-1-mateusz.polchlopek@intel.com/
+https://lore.kernel.org/intel-wired-lan/20241203082753.4831-2-przemyslaw.kitszel@intel.com/
+
+The following are changes since commit d22f955cc2cb9684dd45396f974101f288869485:
+  rust: net::phy scope ThisModule usage in the module_phy_driver macro
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue 100GbE
+
+Ben Shelton (1):
+  ice: Add MDD logging via devlink health
+
+Mateusz Polchlopek (1):
+  devlink: add devlink_fmsg_dump_skb() function
+
+Przemek Kitszel (4):
+  checkpatch: don't complain on _Generic() use
+  devlink: add devlink_fmsg_put() macro
+  ice: rename devlink_port.[ch] to port.[ch]
+  ice: add Tx hang devlink health reporter
+
+ drivers/net/ethernet/intel/ice/Makefile       |   3 +-
+ .../net/ethernet/intel/ice/devlink/devlink.c  |   2 +-
+ .../net/ethernet/intel/ice/devlink/health.c   | 269 ++++++++++++++++++
+ .../net/ethernet/intel/ice/devlink/health.h   |  58 ++++
+ .../ice/devlink/{devlink_port.c => port.c}    |   2 +-
+ .../ice/devlink/{devlink_port.h => port.h}    |   0
+ drivers/net/ethernet/intel/ice/ice.h          |   2 +
+ drivers/net/ethernet/intel/ice/ice_eswitch.h  |   2 +-
+ drivers/net/ethernet/intel/ice/ice_main.c     |  26 +-
+ drivers/net/ethernet/intel/ice/ice_repr.c     |   2 +-
+ drivers/net/ethernet/intel/ice/ice_sf_eth.c   |   2 +-
+ include/net/devlink.h                         |  13 +
+ net/devlink/health.c                          |  67 +++++
+ scripts/checkpatch.pl                         |   2 +
+ 14 files changed, 438 insertions(+), 12 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/ice/devlink/health.c
+ create mode 100644 drivers/net/ethernet/intel/ice/devlink/health.h
+ rename drivers/net/ethernet/intel/ice/devlink/{devlink_port.c => port.c} (99%)
+ rename drivers/net/ethernet/intel/ice/devlink/{devlink_port.h => port.h} (100%)
 
 -- 
-2.45.2
-
+2.47.1
 
