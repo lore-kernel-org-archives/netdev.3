@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6829B1F668D;
-	Tue, 17 Dec 2024 15:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8196D1F4E46;
+	Tue, 17 Dec 2024 15:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734448169; cv=none; b=UZ3q0AJO4fTkSpl5ONYZXJALKpymN+A1YdF+CVsLtBRGJ3k1p0QJHjaE+iw5Gcmo4PP3L8ymcP4SgzlPADh9QNnJJBT7jvD/S5o+KSkUEl/zCqFB1CHkIDc3Rk26DtFPZSS6WMjOmi0091nC3Oo7Z+u3PuUvHOcJykwKGobE2f0=
+	t=1734448276; cv=none; b=oQhezV8NzbCzY/m7EnEKLauzKr45pOnqtK53VUJe8+GokGfbbn55Eoy1DTkKwRWT1nGV+M9Qe5CuYg7v4yuGB1tOeubs1f1W3GVQKQgkygRUkoroBV62w6Rg4465dW18SwoqfANHPkDcD9vYaUiDIG5Fy2eIcni+iOxtLjkXBiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734448169; c=relaxed/simple;
-	bh=w8hwC3U5jEWNrrqusUKhOAOj0b0suERE4RAZJLKNe6I=;
+	s=arc-20240116; t=1734448276; c=relaxed/simple;
+	bh=iIxj60BpwGbbLJ0CF9MIoq3xCALMe+nrXv3lmpkl9/s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OZNUyDGfhn/SIPNAArhtAzZ372TE/ZM81V00FcVH4LV0mh2oUGT1KUnkUsbe5dXxsUzJTPO9y00x1hNy2dH177SMUitHHUQfQRHkWM4l8RDgsJxBgWUoVZkP68n+8w7gfWMikwUn/4+u7UFsTDeFdc/vC4AChdyHVxw+fcxnABk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=YVth3anL; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=adQIvWrk3OD4/uXhG/vvaWdy/Lh6+tzhORYgtpl6GDWXpAAPpDTcHXFalpgrQc1wjAwMOZhoIJ+BlUBOwD3VnZpHHQjzRVah4BOXuo1jzCIv9zXNKqpYULK63IUK8TWC2A27T+4Re0ZKnxD2W7Ol83kzKH4RX0bOw4r9gGgMWGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=TBhCCGaV; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="YVth3anL"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="TBhCCGaV"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=cJ1C8zxr1Pd/IF0oEXnzTSz2bWW66ZYhVUTgfnPs34s=; b=YVth3anLtSOEB/LoxI7i9gA8Ox
-	OhzSCNCf/ZNbRwYwz6+fhbJw/DJttAf1C91sBC5s13Imzaptc82njZmWmHPE2Gg2lBhBAyr21oPkv
-	3nlTPe7uYNBg5gFZ82QvHCTJjI5XjAONzl86jLQApiDzXR3t70f3QGj05hIrVsc6dWXA=;
+	bh=EibVegeAU8u3QVeD4V32NwkFOPCcH2a2IW1x32pLl7Q=; b=TBhCCGaVs6LNtQkkyrPTMtNDfP
+	0ovU5iENa5n7TXyg4QWXgIkwdevkgyjoaFvQ2VAiXXU6kx1iahc0+2tOu6i+yHfR/e1bBCrP3tqB9
+	24cdlr24833fu+fK5FmuIjme8YJx4GIP1rueepoZt0zjBX3tgkMO4VRWbkSrtCf0vcXA=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1tNZCJ-000z3f-GZ; Tue, 17 Dec 2024 16:09:19 +0100
-Date: Tue, 17 Dec 2024 16:09:19 +0100
+	id 1tNZE2-000z5b-Rn; Tue, 17 Dec 2024 16:11:06 +0100
+Date: Tue, 17 Dec 2024 16:11:06 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Divya Koppera <divya.koppera@microchip.com>
 Cc: arun.ramadoss@microchip.com, UNGLinuxDriver@microchip.com,
@@ -35,11 +35,11 @@ Cc: arun.ramadoss@microchip.com, UNGLinuxDriver@microchip.com,
 	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
 	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 	richardcochran@gmail.com, vadim.fedorenko@linux.dev
-Subject: Re: [PATCH net-next v7 4/5] net: phy: Makefile: Add makefile support
- for rds ptp in Microchip phys
-Message-ID: <bac2f8b7-d224-42c8-aaa3-ed6f55fe67df@lunn.ch>
+Subject: Re: [PATCH net-next v7 5/5] net: phy: microchip_t1 : Add
+ initialization of ptp for lan887x
+Message-ID: <44fd803e-f3b2-419a-878a-67ca8b67325f@lunn.ch>
 References: <20241213121403.29687-1-divya.koppera@microchip.com>
- <20241213121403.29687-5-divya.koppera@microchip.com>
+ <20241213121403.29687-6-divya.koppera@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,19 +48,12 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241213121403.29687-5-divya.koppera@microchip.com>
+In-Reply-To: <20241213121403.29687-6-divya.koppera@microchip.com>
 
-> @@ -80,6 +80,7 @@ obj-$(CONFIG_MICREL_KS8995MA)	+= spi_ks8995.o
->  obj-$(CONFIG_MICREL_PHY)	+= micrel.o
->  obj-$(CONFIG_MICROCHIP_PHY)	+= microchip.o
->  obj-$(CONFIG_MICROCHIP_T1_PHY)	+= microchip_t1.o
-> +obj-$(CONFIG_MICROCHIP_PHY_RDS_PTP)	+= microchip_rds_ptp.o
->  obj-$(CONFIG_MICROCHIP_T1S_PHY) += microchip_t1s.o
->  obj-$(CONFIG_MICROSEMI_PHY)	+= mscc/
->  obj-$(CONFIG_MOTORCOMM_PHY)	+= motorcomm.o
-
-If you need to respin, please insert this library in alphabetic
-order. But it is O.k. as is if there is no need to respin.
+On Fri, Dec 13, 2024 at 05:44:03PM +0530, Divya Koppera wrote:
+> Add initialization of ptp for lan887x.
+> 
+> Signed-off-by: Divya Koppera <divya.koppera@microchip.com>
 
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
