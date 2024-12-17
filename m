@@ -1,164 +1,95 @@
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86EB7C6E6;
-	Tue, 17 Dec 2024 22:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D21EEB2;
+	Tue, 17 Dec 2024 22:34:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734473620; cv=none; b=Swz7oRAltIeLK5teyW1YjtPYF8xf3SONNV1dpRSpSxLQOP4lNaidocTZnQxFtdrVkm/XRAMSnkqt7i/9ZYl4e00zCRj5YN4tzh2LubqcyfpyeZQN0KN5jPuBPogkwx8s6KQQlWocX5aBbtZ1FWdC4L807Jq/Y482toAKmANJTvQ=
+	t=1734474861; cv=none; b=Tj7Sz8zIxfxCxSkvkJwgcRj8ZLw/HtMe7qdnyBs2KZh/1FHvJFzP032PlWXK/HEUyOXhMnIaiM51txUFD/lGtqu9JkCTjnA+QobM2E0rMdT94PCbTDPL6O+bfhDWb7DAsRPGJUL3UVDs+kWLf2T/skl46UE4pWtyLbFaI7uFbuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734473620; c=relaxed/simple;
-	bh=DITnIQxNjJGVwuWIq3JaG5pspxw+ruBZ/g44geDsBws=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R16B79zwoPml8hJ5/LOiZPykwwqz1yEPer0A7mTv/+ucVMGgkr8r8i+w172DOwBk9sZBgEkk8H/NBjNl6KFFwPCPQodw2hbSj5DzMjtPKYc1925uLLBcXsfxC3k7L3yCQpWsGn24YugnPD/M6XDalgYfWskFpMUFTQSnlYrPAhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XCHkY8KM; arc=none smtp.client-ip=209.85.167.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734474861; c=relaxed/simple;
+	bh=RAFs9ax2hBuy1Yw29FsVtVrKFDoOZNKch8c06jRQ+v8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a7SnKo/LNOjHY6ylhf8RKhbt5bGobEQKUzKr3o0UL2jcpjyNdibTQq7ZWAhL6NYvEj343KyIRA/vfMT93EAYVsZIHtFJjl1ljNj+698/S3pc69bFO1ndWDS2iolHE1zn7wMdAWKKACp32qfVVk3AuEwBxSJS8dv6fqinPeFfnj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=B36yzb8r; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XCHkY8KM"
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3eb9ba53f90so1630219b6e.1;
-        Tue, 17 Dec 2024 14:13:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734473616; x=1735078416; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u9QuBOniyMYck+y8PUbC//+oM4oKOj8t9nBe0JYSFFE=;
-        b=XCHkY8KMKnc6AGjfS1r9jafSIm3cH30h+bx0P6UgQUgSqUxuscVGemHYAnxGVqN2ct
-         IQ5ia+1z82ycCCZeB/uZPIDvzKqReN4N/PhW7QScahEUIpouHvctDIkEhTwR9nnVJJnL
-         hkvdTcJyV1CCJat1kGISdj+QchpPV++N7BGxNS+2Udd7Kh4IM9r0r6IyeZ+H1noLBDvm
-         icdYoFvbaSW1i23WyinNk53BV2XhwDb++GM83r2or/FhWkHy9HNgaWRsMP1z5TxX1Tnk
-         eg3PxcNFKDM2rr4B/lsCiywyl8kEGim5Gb6bLEpINkXs61e3KaV+ES3azKyU4tJ9Inh6
-         Vqbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734473616; x=1735078416;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u9QuBOniyMYck+y8PUbC//+oM4oKOj8t9nBe0JYSFFE=;
-        b=wm/zzHrpYwbOkIWvBJ8gkEDPLWPqcQ93HILqIRKol9/reTXR6oD6duciMOdts2yf1l
-         WcM6ANFMa9tIbCAlmGRFWMbH05VkAldyCpgAwN0i7awH2R08+vOIW79K2oLFn7tSB8ko
-         +NhmMmv845YEUpHLkmDnGSshd2HAA9xP4JZeh9bDD/simFXEL9OiX84Sq5F0WFafLaVU
-         ojm3xoYwLc2t1WQsrKdRhqi0MPvBmXUA7JlkLWgnvH9j2UFaQhyjBHCaWRJgjFwsC4CK
-         02JXLcyPn5OI2Nief7l56l7hu45iQRfkiN8VyXVLZa32HDpwK6u6R9xadl/zNNaTrj5s
-         PCUw==
-X-Forwarded-Encrypted: i=1; AJvYcCVobFcapeXUH79A7DTKpO/jx923fZ/ge8CAYpliWN7pW6rRXdSQXMBLXKlALAreI5+o/lLC0YGM@vger.kernel.org, AJvYcCVxmbFOlB5oh8tzfEZTrKxViqOZHo328sXZ6Z8Xi1KreYxXW68C47IiJV/W/pxBpIBbneHYpmXbtRIn5OY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YylQf/D/0ZCltI5K/TLIMd0iTGvGTdmQ1MngpmmVSKmOq/5OT+E
-	Fy1pKQWLbXVkmn8crUkWnFtrQqYwMCxwx1JD/JBHgRxWcArDKGxGwYz6YQeDp+iXkLbUDY3xNX/
-	WxDpyrz9dGnogQLL3wa5EDjkXBx4=
-X-Gm-Gg: ASbGncsmpGGJSTXMcFoGxzhDsS0A1qcc6yz2HdHgLZ7dMHBNLs1U43xNb9hTw0paCP5
-	1y8jb2e7HxbMXn2YshVzPATo1hrLSHgvhSzDh9Uc=
-X-Google-Smtp-Source: AGHT+IF/zHxTNCbH+0IG4qfG4nasiicCiiEwLg7lIZarUEHvAnsCaIkPrT1dguYfLdST8cwE0omtiGPoDFTN/CE+GSQ=
-X-Received: by 2002:a05:6808:3c4d:b0:3ea:4595:13fc with SMTP id
- 5614622812f47-3eccc09aebcmr459934b6e.16.1734473616594; Tue, 17 Dec 2024
- 14:13:36 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="B36yzb8r"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ZOzz5gjHLZymxcIe9J7kawYOLjtZqL9yh9BoTBYCkdo=; b=B36yzb8r/Xy7k4jHLlYGzqU8h8
+	DTzLbAuE3xWlwxna6V9MC1K2wV4ACxjfTbKRWkfl1ZrCkeSBo2O5FhwHk1xUix+pG69Xuomf/jH5C
+	zNlVBQMtSDhxNCXhNpUlgPfgm/5neuBeM6blyZp1aMRgtQuV+ydrt1ixHCj7g9B0T9no=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tNg8l-0015S5-2y; Tue, 17 Dec 2024 23:34:07 +0100
+Date: Tue, 17 Dec 2024 23:34:07 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Russell King - ARM Linux <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	David Miller <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
+	linux-omap@vger.kernel.org,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH net-next 1/3] net: phy: add phy_disable_eee
+Message-ID: <35cd4b23-06fe-4ac8-99f2-5eb59ff275a4@lunn.ch>
+References: <5139374e-7151-4d0d-8ba9-9ec3d9b52f67@gmail.com>
+ <fd51738c-dcd6-4d61-b8c5-faa6ac0f1026@gmail.com>
+ <35e1ded5-e33f-4ea4-ab16-c460da402822@lunn.ch>
+ <7f8d2b63-390d-4f7e-9ede-d28c7793538c@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241216234850.494198-1-jmaxwell37@gmail.com> <aa49d578-dee4-4ee8-b17b-b6e941d9126c@intel.com>
-In-Reply-To: <aa49d578-dee4-4ee8-b17b-b6e941d9126c@intel.com>
-From: Jonathan Maxwell <jmaxwell37@gmail.com>
-Date: Wed, 18 Dec 2024 09:13:00 +1100
-Message-ID: <CAGHK07COaxjj4WJvDKFLj=ev9j-jRxuw5bXh_zCZtL75Twu7rQ@mail.gmail.com>
-Subject: Re: [Intel-wired-lan] [net-next] ice: expose non_eop_descs to ethtool
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, intel-wired-lan@lists.osuosl.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7f8d2b63-390d-4f7e-9ede-d28c7793538c@gmail.com>
 
-On Wed, Dec 18, 2024 at 1:49=E2=80=AFAM Alexander Lobakin
-<aleksander.lobakin@intel.com> wrote:
->
-> From: Jon Maxwell <jmaxwell37@gmail.com>
-> Date: Tue, 17 Dec 2024 10:48:50 +1100
->
-> > The ixgbe driver exposes non_eop_descs to ethtool. Do the same for ice.
->
-> Only due to that?
-> Why would we need it in the first place?
->
+On Tue, Dec 17, 2024 at 09:50:12PM +0100, Heiner Kallweit wrote:
+> On 17.12.2024 11:43, Andrew Lunn wrote:
+> >> @@ -2071,6 +2071,7 @@ void phy_advertise_eee_all(struct phy_device *phydev);
+> >>  void phy_support_sym_pause(struct phy_device *phydev);
+> >>  void phy_support_asym_pause(struct phy_device *phydev);
+> >>  void phy_support_eee(struct phy_device *phydev);
+> >> +void phy_disable_eee(struct phy_device *phydev);
+> > 
+> > So we have three states:
+> > 
+> > MAC tells PHYLIB it does support EEE
+> > MAC tells PHYLIB it does not support EEE
+> > MAC says nothing.
+> > 
+> > Do we really want this?
+> > 
+> > For phylink, i think we have a nice new clean design and can say, if
+> > the MAC does not indicate it supports EEE, we turn it off in the
+> > PHY. For phylib, we have more of a mess, and there could be MACs
+> > actually doing EEE by default using default setting but with no user
+> > space control. Do we want to keep this, or should we say any MAC which
+> > does not call phy_support_eee() before phy_start() would have EEE
+> > disabled in the PHY?
+> > 
+> The case "MAC says nothing" isn't desirable. However, if we did what
+> you mention, we'd silently change the behavior of several drivers,
+> resulting in disabled EEE and higher power consumption.
+> I briefly grepped the kernel source for phy_start() and found about
+> 70 drivers. Some of them have the phylib EEE call, and in some cases
+> like cpsw the MAC doesn't support EEE. But what remains is IMO too
+> many drivers where we'd change the behavior.
 
-Not just that. We had a critical ice bug we were diagnosing and saw this
-counter in the Vmcore. When we set up a reproducer we needed to check that
-counter was incrementing. I added this patch to do that and thought that
-it may aid trouble-shooting in the future as well so I sent it upstream.
+So for phylib, we keep with the three states. But phylink? Can we
+disable EEE when the MAC says nothing?
 
-Regards
-
-Jon
-
-> >
-> > With this patch:
-> >
-> > ethtool -S ens2f0np0 | grep non_eop_descs
-> >      non_eop_descs: 956719320
-> >
-> > Signed-off-by: Jon Maxwell <jmaxwell37@gmail.com>
-> > ---
-> >  drivers/net/ethernet/intel/ice/ice.h         | 1 +
-> >  drivers/net/ethernet/intel/ice/ice_ethtool.c | 1 +
-> >  drivers/net/ethernet/intel/ice/ice_main.c    | 2 ++
-> >  3 files changed, 4 insertions(+)
-> >
-> > diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/etherne=
-t/intel/ice/ice.h
-> > index 2f5d6f974185..8ff94400864e 100644
-> > --- a/drivers/net/ethernet/intel/ice/ice.h
-> > +++ b/drivers/net/ethernet/intel/ice/ice.h
-> > @@ -345,6 +345,7 @@ struct ice_vsi {
-> >       u32 rx_buf_failed;
-> >       u32 rx_page_failed;
-> >       u16 num_q_vectors;
-> > +     u64 non_eop_descs;
-> >       /* tell if only dynamic irq allocation is allowed */
-> >       bool irq_dyn_alloc;
-> >
-> > diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net=
-/ethernet/intel/ice/ice_ethtool.c
-> > index 3072634bf049..e85b664fa647 100644
-> > --- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-> > +++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-> > @@ -65,6 +65,7 @@ static const struct ice_stats ice_gstrings_vsi_stats[=
-] =3D {
-> >       ICE_VSI_STAT("tx_linearize", tx_linearize),
-> >       ICE_VSI_STAT("tx_busy", tx_busy),
-> >       ICE_VSI_STAT("tx_restart", tx_restart),
-> > +     ICE_VSI_STAT("non_eop_descs", non_eop_descs),
-> >  };
-> >
-> >  enum ice_ethtool_test_id {
-> > diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/et=
-hernet/intel/ice/ice_main.c
-> > index 0ab35607e5d5..948c38c0770b 100644
-> > --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> > +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-> > @@ -6896,6 +6896,7 @@ static void ice_update_vsi_ring_stats(struct ice_=
-vsi *vsi)
-> >       vsi->tx_linearize =3D 0;
-> >       vsi->rx_buf_failed =3D 0;
-> >       vsi->rx_page_failed =3D 0;
-> > +     vsi->non_eop_descs =3D 0;
-> >
-> >       rcu_read_lock();
-> >
-> > @@ -6916,6 +6917,7 @@ static void ice_update_vsi_ring_stats(struct ice_=
-vsi *vsi)
-> >               vsi_stats->rx_bytes +=3D bytes;
-> >               vsi->rx_buf_failed +=3D ring_stats->rx_stats.alloc_buf_fa=
-iled;
-> >               vsi->rx_page_failed +=3D ring_stats->rx_stats.alloc_page_=
-failed;
-> > +             vsi->non_eop_descs +=3D ring_stats->rx_stats.non_eop_desc=
-s;
-> >       }
-> >
-> >       /* update XDP Tx rings counters */
->
-> Thanks,
-> Olek
+	Andrew
