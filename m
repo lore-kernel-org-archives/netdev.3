@@ -1,119 +1,81 @@
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434EB335C0;
-	Tue, 17 Dec 2024 08:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8FF1DD529;
+	Tue, 17 Dec 2024 09:00:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734425961; cv=none; b=r/Xezq6yhqdXY1g8gx40L8umepJ3W/LDvM6iwvrTO7nLgaJdVB9xn03f4FuaQMtfoYxDAwzxcZJc5FShA//YBBMIApgnNc12/uSDBOmmWuAjlQ2aIToDizf5g6amcKwi2SqmmWD1oGuaWtUglRSrDD1AuU7dKeK8rUz4lI94bvY=
+	t=1734426022; cv=none; b=fBFqMtVmffwGKB0ezRw+/cR/tiImZdfeWWq0L769mqgy4gJ0XirwlVpqcbvanvURw0Ixfhx3qOSSj4bquVCgC/L46Wfo0MOZAsxFnpIe9xefgYirQxPxo0Pab6rwAbdCn8YK6voVxzXHGIhYEbcRHlj5HLJ2dfT8W5ZKiS6nET0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734425961; c=relaxed/simple;
-	bh=4ZCz2uopLeHjRR3e3NwSCGYPKqilUdVZ0De15aAP3AA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mPSUjFBABf4oSxSqxnYk/K1Qq2S/G/5KWUQfYKov32VEJltfukhiQke3FGtAWqWPKj3El3+OsPitPbTtT+xeoPFBDjL36F4FXgN5cK3ifHTpMqis8ZjdUQNWxyX2yNmYLA9SLHctyo8fUwJV3u955sHzFHyPHmw8oM5PLIRmQrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4YC9jK2gGjz9sPd;
-	Tue, 17 Dec 2024 09:59:17 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id pGWnZ5vbj7tF; Tue, 17 Dec 2024 09:59:17 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4YC9jK1d3Qz9rvV;
-	Tue, 17 Dec 2024 09:59:17 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 241498B76D;
-	Tue, 17 Dec 2024 09:59:17 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id V5CjxIwD9zS2; Tue, 17 Dec 2024 09:59:17 +0100 (CET)
-Received: from [192.168.232.97] (unknown [192.168.232.97])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9D2738B763;
-	Tue, 17 Dec 2024 09:59:16 +0100 (CET)
-Message-ID: <49a43774-bf97-4b20-8382-4fb921f34c66@csgroup.eu>
-Date: Tue, 17 Dec 2024 09:59:16 +0100
+	s=arc-20240116; t=1734426022; c=relaxed/simple;
+	bh=UbGKh3Jx/RLRlh/ciN6Q9BqNDd30eBQXcTW+OH5sSCk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=I//YSitt6B6OkUiVp18fDqlKBG9peWgdH3fF+buvsAh89MaGQ0w3sxpZ1uKeimpEGxHN+s3aF8DQ48Yc/mpfwgds2/jnJZI/TclglEGAsA+m1dtwsw21kuPpcJE4cR8LmUgDVTgIOoN8KYTpwEsmXCWeCqjDucrWqW+iQdKVils=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t+sjDyGE; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t+sjDyGE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C499EC4CED3;
+	Tue, 17 Dec 2024 09:00:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734426021;
+	bh=UbGKh3Jx/RLRlh/ciN6Q9BqNDd30eBQXcTW+OH5sSCk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=t+sjDyGEUqUmKPL4KS/AM5652+/9QaGYN98BnJkrYWcL3HIjimOoRc70ftiVBPvot
+	 XLl6J5AtWHvCK0cNPI9MljGr7Dvd/ZD4mDERJBTdq+62kKd98eSVaaCZTdlk3Mfsjq
+	 XsTP2kXbt0dH2D3itpum13vODrxRbyHRlZbgnAkWAa45LqgYTnvui187Ei2HHgQMnU
+	 YOurEVzBixkrs027zcy5vP6Hf93CjNeujuNFBbURi79QZi2px4DBEUObou/DwvRyt/
+	 0NziaxzOlDkTEOq/fgJ/42wW/NKjFRY63XVegu09WURhTzsSdYgvkQDTaBdJHIQjlr
+	 /94s6hcnyaZwg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33B073806656;
+	Tue, 17 Dec 2024 09:00:40 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: sysfs: Fix deadlock situation in sysfs accesses
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, "Eric W. Biederman"
- <ebiederm@xmission.com>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, Maxime Chevallier <maxime.chevallier@bootlin.com>,
- TRINH THAI Florent <florent.trinh-thai@cs-soprasteria.com>,
- CASAUBON Jean Michel <jean-michel.casaubon@cs-soprasteria.com>
-References: <d416a14ec38c7ba463341b83a7a9ec6ccc435246.1734419614.git.christophe.leroy@csgroup.eu>
- <CANn89iK1+oLktXjHXs0U3Wo4zRZEqimoSgfPVzGGycH7R_HxnA@mail.gmail.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <CANn89iK1+oLktXjHXs0U3Wo4zRZEqimoSgfPVzGGycH7R_HxnA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] rust: net::phy fix module autoloading
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173442603874.821155.15095548397583191279.git-patchwork-notify@kernel.org>
+Date: Tue, 17 Dec 2024 09:00:38 +0000
+References: <20241212130015.238863-1-fujita.tomonori@gmail.com>
+In-Reply-To: <20241212130015.238863-1-fujita.tomonori@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, rust-for-linux@vger.kernel.org,
+ andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
+ aliceryhl@google.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org,
+ ojeda@kernel.org, alex.gaynor@gmail.com
 
+Hello:
 
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Le 17/12/2024 à 09:16, Eric Dumazet a écrit :
-> On Tue, Dec 17, 2024 at 8:18 AM Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
->>
->> The following problem is encountered on kernel built with
->> CONFIG_PREEMPT. An snmp daemon running with normal priority is
->> regularly calling ioctl(SIOCGMIIPHY). Another process running with
->> SCHED_FIFO policy is regularly reading /sys/class/net/eth0/carrier.
->>
->> After some random time, the snmp daemon gets preempted while holding
->> the RTNL mutex then the high priority process is busy looping into
->> carrier_show which bails out early due to a non-successfull
->> rtnl_trylock() which implies restart_syscall(). Because the snmp
->> daemon has a lower priority, it never gets the chances to release
->> the RTNL mutex and the high-priority task continues to loop forever.
->>
->> Replace the trylock by lock_interruptible. This will increase the
->> priority of the task holding the lock so that it can release it and
->> allow the reader of /sys/class/net/eth0/carrier to actually perform
->> its read.
->>
-
-...
-
->>
->> Fixes: 336ca57c3b4e ("net-sysfs: Use rtnl_trylock in sysfs methods.")
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
+On Thu, 12 Dec 2024 22:00:15 +0900 you wrote:
+> The alias symbol name was renamed. Adjust module_phy_driver macro to
+> create the proper symbol name to fix module autoloading.
 > 
-> At a first glance, this might resurface the deadlock issue Eric W. Biederman
-> was trying to fix in 336ca57c3b4e ("net-sysfs: Use rtnl_trylock in
-> sysfs methods.")
-
-Are you talking about the deadlock fixed (incompletely) by 5a5990d3090b 
-("net: Avoid race between network down and sysfs"), or the complement 
-provided by 336ca57c3b4e ?
-
-My understanding is that mutex_lock() will return EINTR only if a signal 
-is pending so there is no need to set signal_pending like it was when 
-using mutex_trylock() which does nothing when the mutex is already locked.
-
-And an EINTR return is expected and documented for a read() or a 
-write(), I can't see why we want ERESTARTNOINTR instead of ERSTARTSYS. 
-Isn't it the responsibility of the user app to call again read or write 
-if it has decided to not install the necessary sigaction for an 
-automatic restart ?
-
-Do you think I should instead use rtnl_lock_killable() and return 
-ERESTARTNOINTR in case of failure ? In that case, is it still possible 
-to interrupt a blocked 'cat /sys/class/net/eth0/carrier' which CTRL+C ?
-
+> Fixes: 054a9cd395a7 ("modpost: rename alias symbol for MODULE_DEVICE_TABLE()")
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  rust/kernel/net/phy.rs | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> I was hoping that at some point, some sysfs write methods could be
-> marked as : "We do not need to hold the sysfs lock"
+> [...]
+
+Here is the summary with links:
+  - [net,v2] rust: net::phy fix module autoloading
+    https://git.kernel.org/netdev/net/c/94901b7a74d8
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
