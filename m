@@ -1,145 +1,156 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7213D69
-	for <netdev@vger.kernel.org>; Tue, 17 Dec 2024 09:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520592E628;
+	Tue, 17 Dec 2024 09:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734427847; cv=none; b=PPgmjf7xaSP7mOsXdORRH0APpRolr5yyQpHhHGWPe+3q6Y/0uQDnmy0PfhIYS9bolX6SnLoyEi2ea0IgWyhh1KU9d9Rk8HjgV1XVSuczrfHUS+WKggFcfmkjxyCnBx2PvzDvCW7FBinBk/ZmR0pLGZ0GvdxcKDk+P7gpDZ14AgM=
+	t=1734428017; cv=none; b=Hj2lpGmNdTvfsg1MpfPT+yehEu+fjWK3Nhp2hwNu7SesLYJEJV2IXy1Pao2Pb2BPudVeFh0Z9LNV3PZMo8W9vazNf17DRnWjwXD0aexX3wkW+CrEhbkAvs1+QCFPvoonZk4wE5O5lfVymlJuzw+ilFJ/WpPoLI+0DSgDfq2rzNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734427847; c=relaxed/simple;
-	bh=XSkRo3hiGToEqltUuJ7FBjXUV/B6IZSOPsDrUTy1x+U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bk4sWgjDWRocfeIrzpvc4T+fo+ba/ylGQGOTxNZZlVp5OyLV4qg9chPT6j2NeiKDkHaumH3lH/7YhiGjZFhcQtnHYGdu3Xavo+Dvr1EbJUM7/AIFiuqP9uNcyk8lpybNS7rpdcit+S2/jj6tve8bznfRTc1lVLkYDBZTTmSExrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GK2JkzSy; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734428017; c=relaxed/simple;
+	bh=AMWNPcIppmlMgqthtCqMphIBrnk4GeQh0Fku2n6+edY=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=iXO3rLwnf+NaR5lET5dbHv2xHjFPOVKULqN/BAiykWKvDxXW9LHFCloPoKEXZE27kr760q/8xc4Pp7xk+nh7KHbji15ks5uraYhQC2B4/fNH4UiEHJAMaOKoVOjuU5bOmcH4ahhUm+Qz/8ZLlbwDj3+LYvqBsmRh6UDDRFNC/i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWOL8Oxb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GK2JkzSy"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-385e0d47720so480718f8f.0
-        for <netdev@vger.kernel.org>; Tue, 17 Dec 2024 01:30:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734427844; x=1735032644; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kT2aG6PUTKYok44cCfXioFP8JbHd4uAXkijvnn6q9eA=;
-        b=GK2JkzSyfYCGvlG+qwerm266RIYAPB2QWaqz8ysnLtE7dGDYGRc4tOOCR8spUYJmkK
-         SuZW8z/o4oBBSEqz1vDEkRWa2MZwgdyUPh3zgd+5xAylxJPqnhJ9PB4NR4+fB8Rk6vet
-         1zx/V4QwEf0OpJP07wDMamvWuS/LEqzZZ3waNXoA9DMbjIQSbIJQSvqYvgw9ZdeKkn1g
-         3MerwZyUtj3vB8Ylv13xwBCja3/t/jC07eBahoSoOeOfP9qPDNjaxj1jgjwtz611Zkuw
-         17Ym+/KKaCZ4zhT7eSi6wAmm4yl56AD7xDVS/g6urAAkQQJdfV3+hDLgtcyGZ2sijm+i
-         jKwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734427844; x=1735032644;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kT2aG6PUTKYok44cCfXioFP8JbHd4uAXkijvnn6q9eA=;
-        b=oipsehcJ/aWSzeJnFYy/stQfM7iLpnFY4EdETgO6JyoMyv76F7FdfzDGG7IcLudpFZ
-         gQVibsqKvkaDPpp14tE2I3Q1YMCZdOhOxAJac9lfNC1LhfoTqIg32Fsy1JaqVOctKaVJ
-         AtySW/dhY7QZL40aFjGaom4FlmpmkNsMl2o24Aikp1Blhw4DjrHBII0jQ3QlIGSHatSD
-         HGZtGNwTQoUYzUu0GsXdI2ce29mXdl6wnDOv9oz8uTEA5t160xZ/Y6TxAzv5p3Dm22I4
-         KZfXzjTcHImk0A8DwlvScinPn9nQZwQ5lHH6tzMuf55pLz4f9hCJOalH25nkvlpuAS9C
-         P3Xg==
-X-Forwarded-Encrypted: i=1; AJvYcCVkOdfe7mF/vgWRwFazYYIv0ltMkOhm81OMQfzbht2ICpqhdSdTu+aPxsWn0FX+PDj5ARhdprI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpYDh41HGWddfCMNegGOqDTdEbuY1EDl8beG5cfV/NFpWMyzjj
-	SEBGW8FHbOzd32tCKkl6VK5hjqzO0ydjJuZbvNofJxYTMyKCGt5X
-X-Gm-Gg: ASbGnctkcwNVr7ib5Iy/SnC6GumZhTT9UbAKOKJN8nOuDFFu0oxPCjwHt4hsGghEs8v
-	9DYX04jUMdLS+s+UndCEmFTCSFMAd/PveR73IBDCPuuXtOQgGqVAih84WKYeJLOM5dxXdlgz13W
-	aGTjDfBfl4lDjhyNqTPr0H22bFLyT5ov5gNMRbpqmEHT54S8ocpZjBsrKRaNWJNQNo5Dc0cCY+J
-	n4YdzsOdKqLTF/sQw1SmH/xxVYjCUXiKTGxbfs/nO58
-X-Google-Smtp-Source: AGHT+IH9Yiteklmu9Ax1kOvdbRwjr7gS0sNu4eaLzDsqmSZSKlkEKOTEoMapHnCIzt3uoDGHpnaWxg==
-X-Received: by 2002:a05:6000:2a8:b0:374:ca43:ac00 with SMTP id ffacd0b85a97d-38880ad8faemr4357996f8f.4.1734427843778;
-        Tue, 17 Dec 2024 01:30:43 -0800 (PST)
-Received: from skbuf ([86.127.124.81])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436362b6981sm112707855e9.31.2024.12.17.01.30.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Dec 2024 01:30:43 -0800 (PST)
-Date: Tue, 17 Dec 2024 11:30:40 +0200
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Oleksij Rempel <linux@rempel-privat.de>, netdev@vger.kernel.org,
-	andrew@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, nbd@nbd.name,
-	sean.wang@mediatek.com, Mark-MC.Lee@mediatek.com,
-	lorenzo.bianconi83@gmail.com
-Subject: Re: [RFC net-next 0/5] Add ETS and TBF Qdisc offload for Airoha
- EN7581 SoC
-Message-ID: <20241217093040.x4yangwss2xa5lbz@skbuf>
-References: <20241212150613.zhi3vbxuwsc3blui@skbuf>
- <Z1sXTPeekJ5See_u@lore-desk>
- <20241212184647.t5n7t2yynh6ro2mz@skbuf>
- <Z2AYXRy-LjohbxfL@lore-desk>
- <20241216154947.fms254oqcjj72jmx@skbuf>
- <Z2B5DW70Wq1tOIhM@lore-desk>
- <20241216194641.b7altsgtjjuloslx@skbuf>
- <Z2CpgqpIR5_MXTO7@lore-desk>
- <20241216231311.odozs4eki7bbagwp@skbuf>
- <Z2FAUuOh4jrA0uGu@lore-desk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWOL8Oxb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C49A3C4CED3;
+	Tue, 17 Dec 2024 09:33:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734428016;
+	bh=AMWNPcIppmlMgqthtCqMphIBrnk4GeQh0Fku2n6+edY=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=kWOL8OxbztGzBa9aSTv2r4iX1AJd8gPeYodWZ4PXD+KEv27fga3ffI69hulyPTvTr
+	 E92yIhr/kZCZMtpyx6ceL57WT69HnDxW9djHXCaFWtod/k8v4jXaGVTlhPXKdg+a3M
+	 inyvT/vsVANzWmB89O6E2PuaQIGogQurcibM3Uw9LB1X6/i1ci2Mi8+Vmdh6dpBO88
+	 Pu5v20siRitLbBcEpEEqWxCIZF6EHgKeI1cSGVXq7Cs3L3PYizSBcmMG7GazmsBJCv
+	 Xora8iSCTSGbM993A288UPqdDJRySwAfvorC2P+Dk9F22dB3JeO6YCcSq0NTLx+rkw
+	 sHQqB6LOxIHZQ==
+Date: Tue, 17 Dec 2024 01:33:33 -0800
+From: Kees Cook <kees@kernel.org>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+CC: davem@davemloft.net, edumazet@google.com, horms@kernel.org, idosch@nvidia.com,
+ kuba@kernel.org, kuniyu@amazon.com, linux-hardening@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ petrm@nvidia.com
+Subject: Re: [PATCH] rtnetlink: do_setlink: Use true struct sockaddr
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20241217080335.85554-1-kuniyu@amazon.com>
+References: <36C08CAB-1D3A-46CE-BCE2-820605E222CF@kernel.org> <20241217080335.85554-1-kuniyu@amazon.com>
+Message-ID: <980CE89E-0E8A-4A0D-A1E4-D03DB8F86A21@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z2FAUuOh4jrA0uGu@lore-desk>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 17, 2024 at 10:11:46AM +0100, Lorenzo Bianconi wrote:
-> > When you add an offloaded Qdisc to the egress of lan1, the expectation
-> > is that packets from lan2 obey it too (offloaded tc goes hand in hand
-> > with offloaded bridge). Whereas, by using GDM1/QDMA resources, you are
-> > breaking that expectation, because packets from lan2 bridged by MT7530
-> > don't go to GDM1 (the "x").
-> 
-> ack, I got your point. I was assuming to cover this case (traffic from lan2 to
-> lan1) maintaining the port_setup_tc() callback in dsa_user_setup_qdisc() (this
-> traffic is not managed by ndo_setup_tc_conduit() callback). If this approach is
-> not ok, I guess we will need to revisit the approach.
 
-To offload QoS on the egress of a DSA user port:
 
-port_setup_tc() is:
-(a) necessary
-(b) sufficient
+On December 17, 2024 12:03:35 AM PST, Kuniyuki Iwashima <kuniyu@amazon=2Ec=
+om> wrote:
+>From: Kees Cook <kees@kernel=2Eorg>
+>Date: Mon, 16 Dec 2024 23:53:46 -0800
+>> On December 16, 2024 6:41:56 PM PST, Kuniyuki Iwashima <kuniyu@amazon=
+=2Ecom> wrote:
+>> >From: Kees Cook <kees@kernel=2Eorg>
+>> >Date: Mon, 16 Dec 2024 18:04:45 -0800
+>> >> Instead of a heap allocation use a stack allocated struct sockaddr, =
+as
+>> >> dev_set_mac_address_user() is the consumer (which uses a classic
+>> >> struct sockaddr)=2E
+>> >
+>> >I remember Eric's feedback was to keep using heap instead of stack
+>> >because rtnl_newlink() path already uses too much on stack=2E
+>>=20
+>> See below=2E=2E=2E
+>>=20
+>> >
+>> >
+>> >> Cap the copy to the minimum address size between
+>> >> the incoming address and the traditional sa_data field itself=2E
+>> >>=20
+>> >> Putting "sa" on the stack means it will get a reused stack slot sinc=
+e
+>> >> it is smaller than other existing single-scope stack variables (like
+>> >> the vfinfo array)=2E
+>>=20
+>> That's why I included the rationale above=2E (I=2Ee=2E stack usage does=
+ not grow with this patch=2E)
+>
+>Ah okay, but I think we can't cap the address size to 14
+>bytes=2E  MAX_ADDR_LEN is 32=2E
+>
+>Also, dev_set_mac_address_user() still uses dev->addr_len=2E
 
-ndo_setup_tc_conduit() is:
-(a) unnecessary
-(b) insufficient
+Oh, hrm, yes, that's true=2E I had audited callers of dev_set_mac_address(=
+), but I think I must have missed callers of dev_set_mac_address_user()=2E =
+Ugh=2E :( Let me take another look at this=2E=2E=2E
 
-> > But you call it a MAC chip because between the GDM1 and the MT7530 there's
-> > an in-chip Ethernet MAC (GMII netlist), with a fixed packet rate, right?
-> 
-> With "mac chip" I mean the set of PSE/PPE and QDMA blocks in the diagram
-> (what is managed by airoha_eth driver). There is no other chip in between
-> of GDM1 and MT7530 switch (sorry for the confusion).
+-Kees
 
-The MT7530 is also on the same chip as the GDM1, correct?
+>
+>
+>>=20
+>> -Kees
+>>=20
+>> >>=20
+>> >> Signed-off-by: Kees Cook <kees@kernel=2Eorg>
+>> >> ---
+>> >> Cc: Eric Dumazet <edumazet@google=2Ecom>
+>> >> Cc: "David S=2E Miller" <davem@davemloft=2Enet>
+>> >> Cc: Jakub Kicinski <kuba@kernel=2Eorg>
+>> >> Cc: Paolo Abeni <pabeni@redhat=2Ecom>
+>> >> Cc: Ido Schimmel <idosch@nvidia=2Ecom>
+>> >> Cc: Petr Machata <petrm@nvidia=2Ecom>
+>> >> Cc: netdev@vger=2Ekernel=2Eorg
+>> >> ---
+>> >>  net/core/rtnetlink=2Ec | 22 +++++++---------------
+>> >>  1 file changed, 7 insertions(+), 15 deletions(-)
+>> >>=20
+>> >> diff --git a/net/core/rtnetlink=2Ec b/net/core/rtnetlink=2Ec
+>> >> index ab5f201bf0ab=2E=2E6da0edc0870d 100644
+>> >> --- a/net/core/rtnetlink=2Ec
+>> >> +++ b/net/core/rtnetlink=2Ec
+>> >> @@ -3048,21 +3048,13 @@ static int do_setlink(const struct sk_buff *=
+skb, struct net_device *dev,
+>> >>  	}
+>> >> =20
+>> >>  	if (tb[IFLA_ADDRESS]) {
+>> >> -		struct sockaddr *sa;
+>> >> -		int len;
+>> >> -
+>> >> -		len =3D sizeof(sa_family_t) + max_t(size_t, dev->addr_len,
+>> >> -						  sizeof(*sa));
+>> >> -		sa =3D kmalloc(len, GFP_KERNEL);
+>> >> -		if (!sa) {
+>> >> -			err =3D -ENOMEM;
+>> >> -			goto errout;
+>> >> -		}
+>> >> -		sa->sa_family =3D dev->type;
+>> >> -		memcpy(sa->sa_data, nla_data(tb[IFLA_ADDRESS]),
+>> >> -		       dev->addr_len);
+>> >> -		err =3D dev_set_mac_address_user(dev, sa, extack);
+>> >> -		kfree(sa);
+>> >> +		struct sockaddr sa =3D { };
+>> >> +
+>> >> +		/* dev_set_mac_address_user() uses a true struct sockaddr=2E */
+>> >> +		sa=2Esa_family =3D dev->type;
+>> >> +		memcpy(sa=2Esa_data, nla_data(tb[IFLA_ADDRESS]),
+>> >> +		       min(dev->addr_len, sizeof(sa=2Esa_data_min)));
+>> >> +		err =3D dev_set_mac_address_user(dev, &sa, extack);
+>> >>  		if (err)
+>> >>  			goto errout;
+>> >>  		status |=3D DO_SETLINK_MODIFIED;
+>> >> --=20
+>> >> 2=2E34=2E1
+>> >
+>>=20
+>> --=20
+>> Kees Cook
 
-> > I'm asking again, are the channels completely independent of one another,
-> > or are they consuming shared bandwidth in a way that with your proposal
-> > is just not visible? If there is a GMII between the GDM1 and the MT7530,
-> > how come the bandwidth between the channels is not shared in any way?
-> 
-> Channels are logically independent.
-
-"Logically independent" does not mean "does not share resources", which
-is what I asked.
-
-> GDM1 is connected to the MT7530 switch via a fixed speed link (10Gbps, similar
-> to what we have for other MediaTek chipset, like MT7988 [0]). The fixed link speed
-> is higher than the sum of DSA port link speeds (on my development boards I have
-> 4 DSA ports @ 1Gbps);
-
-And this fixed connection is a pair of internal Ethernet MACs, correct?
-I see on MT7988 we do have the "pause" property, which would suggest so,
-since flow control is a MAC level feature. I assume 10 Gbps in the
-device tree means it is an XGMII really limited at that speed, and that
-speed is not just for phylink compliance, right?
-
-What if we push your example to the extreme, and say that the DSA user
-ports also have 10 Gbps links? How independent are the QDMA channels in
-this case? What arbitration algorithm will be used for QoS among user
-ports, when the combined bandwidth exceeds the CPU port capacity?
+--=20
+Kees Cook
