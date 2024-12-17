@@ -1,44 +1,35 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69CCA1D47BB;
-	Tue, 17 Dec 2024 11:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6FB23DE
+	for <netdev@vger.kernel.org>; Tue, 17 Dec 2024 11:20:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734433818; cv=none; b=Ro3GHvY1C+mECptI7X1ldGY54if2G4JROXy7giQKVgoRM+v28zs8snrApLWiYMOnRmP/VgTUuQxudSeTrMcAYt2sMY8fRiluq/25BUyQVAnBc6mjTpbMu0wnQ16uQvBZsy5h6JA8JCayD/nzW6WwpQXyo+MDw03kvNMvICgfkj4=
+	t=1734434417; cv=none; b=dNmkl474jAL+EbJWvmltyoyqFDCpmYPbFL5lwnkF4iLxe1QW6cWijHKJFyjgnlTlLCLfIfAgckYuL0ZGlnNGEv5Wz8QESBZm12W6Dt64aR6Th+vsQCHSjQszJ+scy6G7DKs1YQdNV0CQw7EiErMuixIN1g8kplRULke973MzKQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734433818; c=relaxed/simple;
-	bh=OIR1M+9fh4+BFhfoky4riBmPazsRyhuJGydkzFwZAqI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GO/OnoZ39Ub9nRH1JVzK+u78c9WOzIYUn3mqrSi0UtM0ty+FmlGZS5/CaiqiaOAFh75Ne9TeOdxf102tlHDS9YXyuCDpEq7SXLapQbovhDSKkC37ihUnWkXe08wCJ4tzn+na00i60luUaEEqazlMQetkC8DDXm718joUYMTfjMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=S/B48Nwy; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1734434417; c=relaxed/simple;
+	bh=gwfgwXdyi2D8XztgP5cZ+yqKOYnay71dX91hLEbq8/Q=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=be1rgSosrcYmN+DeXwV3TqMhFk7hVnWjFheT0/8pEGSUp5hfXTkmOQ9qlSK7k2U2KJjJpZpFzd0BKeH6zMCJCorgx97j8+utnOel8+3LxA/hodmGSIo5g8kuxIDfql5hecvelYxhsB6sdD/QHyAf6ODqyHIajXe/N8dNEnkmUcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k9V2QDvF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="S/B48Nwy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=rh33P
-	/nUC4Gnwr+KJWC55Ji7OcvFXB2SLSjU5x6+XgQ=; b=S/B48Nwy/hDOVlxzDxpSQ
-	H+SqX+GgAXLJy8G3a05QaU76Yx1zovlMKjZLenUwoqB43emU4PowNuBpaLJzluOT
-	gwmffEP5NNXrpBaV08YYGQhPlMfuUppCp+1dzMOCHdYor7u51thc7PVuePaXyelr
-	4WFkP0CFvbaOILz7yOOMso=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wDndyN0W2Fn4urABA--.61757S4;
-	Tue, 17 Dec 2024 19:07:43 +0800 (CST)
-From: Ma Ke <make_ruc2021@163.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	u.kleine-koenig@baylibre.com,
-	make_ruc2021@163.com,
-	horms@kernel.org,
-	mdf@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] net: ethernet: fix NULL dereference in nixge_recv()
-Date: Tue, 17 Dec 2024 19:07:31 +0800
-Message-Id: <20241217110731.2925254-1-make_ruc2021@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k9V2QDvF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7F9C4CED3;
+	Tue, 17 Dec 2024 11:20:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734434417;
+	bh=gwfgwXdyi2D8XztgP5cZ+yqKOYnay71dX91hLEbq8/Q=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=k9V2QDvFj9yGPGbMYsKpoPTVhwaMEwdzTaR8yqmrLvJx/IKGuhpii0Cdekrt0FbaO
+	 w7S9cDuPPcexcsNcXXoXVlYvnzdTIIyQbquzsoQlwF2bnA0LMrwtTOBrxz78/ofoe/
+	 iMg61l7dOR4VzujDbJcDu55oPmJkTTM8UXUpCXDdCFrElsJ61a6p5edoUtdhMn65Ve
+	 Jwbs7VUlmh36DLBjOFG27SblIeHhMYZ1elZfQ+XMUg1yJKOiqWa0mBYYrLsWBg80Cl
+	 ufN6pU5Ybm3IhLgbR+1Iuq73YP55uPzg+yqg+Q0T3Cpupjm8dR3wIM35KLa/bHuxqp
+	 Fs+zvFAFV1r4w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 710D53806656;
+	Tue, 17 Dec 2024 11:20:35 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,48 +37,61 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDndyN0W2Fn4urABA--.61757S4
-X-Coremail-Antispam: 1Uf129KBjvJXoWrZrykZrW8ZrWxury7uFW7Arb_yoW8JrW8p3
-	yUCasY9rn7Jr4UKa1ktw1Sqry5Ga129Fy7WF1fKw4rZasIyF18Kr1UKFy29r1kJrWDtF4f
-	A347ZFy3ZF4DZ37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUj9akUUUUU=
-X-CM-SenderInfo: 5pdnvshuxfjiisr6il2tof0z/xtbBFRi4C2dhLpVeiwAEsS
+Subject: Re: [PATCH v2 net-next 00/12] af_unix: Prepare for skb drop reason.
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173443443409.861865.7749859577562828916.git-patchwork-notify@kernel.org>
+Date: Tue, 17 Dec 2024 11:20:34 +0000
+References: <20241213110850.25453-1-kuniyu@amazon.com>
+In-Reply-To: <20241213110850.25453-1-kuniyu@amazon.com>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, kuni1840@gmail.com, netdev@vger.kernel.org
 
-Due to the failure of allocating the variable 'priv' in
-netdev_priv(ndev), this could result in 'priv->rx_bd_v' not being set
-during the allocation process of netdev_priv(ndev), which could lead
-to a null pointer dereference.
+Hello:
 
-Move while() loop with 'priv->rx_bd_v' dereference after the check 
-for its validity.
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Found by code review.
+On Fri, 13 Dec 2024 20:08:38 +0900 you wrote:
+> This is a prep series and cleans up error paths in the following
+> functions
+> 
+>   * unix_stream_connect()
+>   * unix_stream_sendmsg()
+>   * unix_dgram_sendmsg()
+> 
+> [...]
 
-Cc: stable@vger.kernel.org
-Fixes: 492caffa8a1a ("net: ethernet: nixge: Add support for National Instruments XGE netdev")
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
----
-Changes in v2:
-- modified the bug description as suggestions;
-- modified the patch as the code style suggested.
----
- drivers/net/ethernet/ni/nixge.c | 3 +++
- 1 file changed, 3 insertions(+)
+Here is the summary with links:
+  - [v2,net-next,01/12] af_unix: Set error only when needed in unix_stream_connect().
+    https://git.kernel.org/netdev/net-next/c/34c899af6c1a
+  - [v2,net-next,02/12] af_unix: Clean up error paths in unix_stream_connect().
+    https://git.kernel.org/netdev/net-next/c/e26ee0a736bd
+  - [v2,net-next,03/12] af_unix: Set error only when needed in unix_stream_sendmsg().
+    https://git.kernel.org/netdev/net-next/c/6c444255b193
+  - [v2,net-next,04/12] af_unix: Clean up error paths in unix_stream_sendmsg().
+    https://git.kernel.org/netdev/net-next/c/d460b04bc452
+  - [v2,net-next,05/12] af_unix: Set error only when needed in unix_dgram_sendmsg().
+    https://git.kernel.org/netdev/net-next/c/001a25088c35
+  - [v2,net-next,06/12] af_unix: Move !sunaddr case in unix_dgram_sendmsg().
+    https://git.kernel.org/netdev/net-next/c/f4dd63165b08
+  - [v2,net-next,07/12] af_unix: Use msg->{msg_name,msg_namelen} in unix_dgram_sendmsg().
+    https://git.kernel.org/netdev/net-next/c/3c05329a2abe
+  - [v2,net-next,08/12] af_unix: Split restart label in unix_dgram_sendmsg().
+    https://git.kernel.org/netdev/net-next/c/a700b43358cc
+  - [v2,net-next,09/12] af_unix: Defer sock_put() to clean up path in unix_dgram_sendmsg().
+    https://git.kernel.org/netdev/net-next/c/689c398885cc
+  - [v2,net-next,10/12] af_unix: Clean up SOCK_DEAD error paths in unix_dgram_sendmsg().
+    https://git.kernel.org/netdev/net-next/c/106d979b85e5
+  - [v2,net-next,11/12] af_unix: Clean up error paths in unix_dgram_sendmsg().
+    https://git.kernel.org/netdev/net-next/c/62c6db251e66
+  - [v2,net-next,12/12] af_unix: Remove unix_our_peer().
+    https://git.kernel.org/netdev/net-next/c/bf61ffeb9cc4
 
-diff --git a/drivers/net/ethernet/ni/nixge.c b/drivers/net/ethernet/ni/nixge.c
-index 230d5ff99dd7..41acce878af0 100644
---- a/drivers/net/ethernet/ni/nixge.c
-+++ b/drivers/net/ethernet/ni/nixge.c
-@@ -604,6 +604,9 @@ static int nixge_recv(struct net_device *ndev, int budget)
- 
- 	cur_p = &priv->rx_bd_v[priv->rx_bd_ci];
- 
-+	if (!priv->rx_bd_v)
-+		return 0;
-+
- 	while ((cur_p->status & XAXIDMA_BD_STS_COMPLETE_MASK &&
- 		budget > packets)) {
- 		tail_p = priv->rx_bd_p + sizeof(*priv->rx_bd_v) *
+You are awesome, thank you!
 -- 
-2.25.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
