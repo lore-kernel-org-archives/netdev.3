@@ -1,59 +1,49 @@
-Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A915288A2;
-	Tue, 17 Dec 2024 08:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EA3126BF7;
+	Tue, 17 Dec 2024 08:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734422629; cv=none; b=F/OT71OUFvF8AnjBCD6wx48WZ27IsgIg3RHXwI5X7EpCq2SYI8inYqpp537fJP0yeNZ5afb5kY3o9QAJ3CPQ/pSEmY6P+WiN7hgvCksXOeNG9a32KaVjes7PykqhL8Xy1NHnoKoQ7VORZg4f1M9AXL+FBSo2lGzx1iSER3dmOx0=
+	t=1734423062; cv=none; b=RChIalZcGys+7RyuIPmDP3VXgmLXvH16Gx6FAqqTGShDrPh1x4QPjIwCkX/N/stJpHj3oSydeQvgbU22Xzr4eBWB2LsAyvU2Rhru1zy/tM0SMIx4WZU9u0DwtIecZg5BfEmz9NzEpsg9nUjSHziivrHCyKmQHd5zundlPr7E1OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734422629; c=relaxed/simple;
-	bh=HBOqlzoNZQCn5KZBuEwkdzSgAUZkRu/FOER7HVP4z1c=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cMN2PgvP97crIncuBBoezlFGL6OEfQwycfjSxZu+YEUjBvxHwbvhnmtC4J8a+t4irjK/HvUSHEy+oZ5Lbhlb9UxCrdsMGyWqsC29PuZ+eDviuRAT02K7ThKsczjAVx03jfLH03McuW7ppic6JqRRhpS/S1lb8P4vFugQL21Cmbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=ox78WzTc; arc=none smtp.client-ip=52.119.213.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1734423062; c=relaxed/simple;
+	bh=2z7JFRJcAUvGHRU71NcCuaR1lyuqm1pPGOs2diBBCOA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rsWRKt7S1WFIkvyBllzSGKn8QsRTkFMHAMaM9hzSVhatlO7Yys2sPy/RTBvS8uz5NKg30oGlDzaLG47uWraC2d79OWqmAfQNWyCeVVX9oJ4PRLICKlui+AiC7L8DE0gWl3/QFXsuot2fa2CaY/Comvd8ZzuZxeDPKHt7Phs/AGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DCcn0jKe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="ox78WzTc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1734422627; x=1765958627;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=OAqSOfGousZ0wKCZPnMq9ctK4gGgJ8+Vds0fKM2Wsic=;
-  b=ox78WzTcxSKvtk/+bTLI/GgzC3LAiZlAXKXimon7sVgwR2Rl5wdVU+1A
-   ztOTkrs7HqGHjw4hT5guA7PyVBaNZwkhp5Wiu4bVBkFVoMD/yrrUkSYfg
-   5z3V6k/TBC4kF4jbHEzPG9QhC0L+7O+rKlWIsiurvOWdM1jkJ9xT8dLZF
-   M=;
-X-IronPort-AV: E=Sophos;i="6.12,241,1728950400"; 
-   d="scan'208";a="681978134"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2024 08:03:43 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.7.35:23925]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.32.151:2525] with esmtp (Farcaster)
- id 3b3ba6aa-e300-41b5-a05f-87db24ab3e07; Tue, 17 Dec 2024 08:03:43 +0000 (UTC)
-X-Farcaster-Flow-ID: 3b3ba6aa-e300-41b5-a05f-87db24ab3e07
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Tue, 17 Dec 2024 08:03:42 +0000
-Received: from 6c7e67c6786f.amazon.com (10.118.246.225) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Tue, 17 Dec 2024 08:03:38 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <kees@kernel.org>
-CC: <davem@davemloft.net>, <edumazet@google.com>, <horms@kernel.org>,
-	<idosch@nvidia.com>, <kuba@kernel.org>, <kuniyu@amazon.com>,
-	<linux-hardening@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <petrm@nvidia.com>
-Subject: Re: [PATCH] rtnetlink: do_setlink: Use true struct sockaddr
-Date: Tue, 17 Dec 2024 17:03:35 +0900
-Message-ID: <20241217080335.85554-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <36C08CAB-1D3A-46CE-BCE2-820605E222CF@kernel.org>
-References: <36C08CAB-1D3A-46CE-BCE2-820605E222CF@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DCcn0jKe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC72C4CED3;
+	Tue, 17 Dec 2024 08:10:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734423062;
+	bh=2z7JFRJcAUvGHRU71NcCuaR1lyuqm1pPGOs2diBBCOA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DCcn0jKeLG2nM+e/bAZpIHfhSxtAPAyFHhu9PB3rgk7JyBxywwxnYpxmlsZgBSFLl
+	 vD7upSsrHYfVwu0GKcZ/MZtAPUkWDA/lWsOyat7JRqK5sNvIqeGUdbs5inYV+jAD85
+	 JAOO81JRbpEljrKzneVZdaFRNsKODU1EThVxWTExIb/Gpn7YG9LjtweW1Rv1dUzBrJ
+	 UQWtGAmwRECgdYcMRX7HsD8SYSOuTqtxsg+RlTtznEb3F3obrH0RNyTYiR+fpbbuhX
+	 ll8jbuJfzaNbdmP2RcM3QMCDpPUz4pnA9fyZMjcEV1zQoqdGCaDTJ+WfEv09kPCd8/
+	 s+kCsIjDMjHaA==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Xu Liang <lxu@maxlinear.com>,
+	Daniel Golle <daniel@makrotopia.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Raju Lakkaraju <Raju.Lakkaraju@microchip.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net: phy: avoid undefined behavior in *_led_polarity_set()
+Date: Tue, 17 Dec 2024 09:10:34 +0100
+Message-Id: <20241217081056.238792-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,94 +51,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D041UWA003.ant.amazon.com (10.13.139.105) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-From: Kees Cook <kees@kernel.org>
-Date: Mon, 16 Dec 2024 23:53:46 -0800
-> On December 16, 2024 6:41:56 PM PST, Kuniyuki Iwashima <kuniyu@amazon.com> wrote:
-> >From: Kees Cook <kees@kernel.org>
-> >Date: Mon, 16 Dec 2024 18:04:45 -0800
-> >> Instead of a heap allocation use a stack allocated struct sockaddr, as
-> >> dev_set_mac_address_user() is the consumer (which uses a classic
-> >> struct sockaddr).
-> >
-> >I remember Eric's feedback was to keep using heap instead of stack
-> >because rtnl_newlink() path already uses too much on stack.
-> 
-> See below...
-> 
-> >
-> >
-> >> Cap the copy to the minimum address size between
-> >> the incoming address and the traditional sa_data field itself.
-> >> 
-> >> Putting "sa" on the stack means it will get a reused stack slot since
-> >> it is smaller than other existing single-scope stack variables (like
-> >> the vfinfo array).
-> 
-> That's why I included the rationale above. (I.e. stack usage does not grow with this patch.)
+From: Arnd Bergmann <arnd@arndb.de>
 
-Ah okay, but I think we can't cap the address size to 14
-bytes.  MAX_ADDR_LEN is 32.
+gcc runs into undefined behavior at the end of the three led_polarity_set()
+callback functions if it were called with a zero 'modes' argument and it
+just ends the function there without returning from it.
 
-Also, dev_set_mac_address_user() still uses dev->addr_len.
+This gets flagged by 'objtool' as a function that continues on
+to the next one:
 
+drivers/net/phy/aquantia/aquantia_leds.o: warning: objtool: aqr_phy_led_polarity_set+0xf: can't find jump dest instruction at .text+0x5d9
+drivers/net/phy/intel-xway.o: warning: objtool: xway_gphy_led_polarity_set() falls through to next function xway_gphy_config_init()
+drivers/net/phy/mxl-gpy.o: warning: objtool: gpy_led_polarity_set() falls through to next function gpy_led_hw_control_get()
 
-> 
-> -Kees
-> 
-> >> 
-> >> Signed-off-by: Kees Cook <kees@kernel.org>
-> >> ---
-> >> Cc: Eric Dumazet <edumazet@google.com>
-> >> Cc: "David S. Miller" <davem@davemloft.net>
-> >> Cc: Jakub Kicinski <kuba@kernel.org>
-> >> Cc: Paolo Abeni <pabeni@redhat.com>
-> >> Cc: Ido Schimmel <idosch@nvidia.com>
-> >> Cc: Petr Machata <petrm@nvidia.com>
-> >> Cc: netdev@vger.kernel.org
-> >> ---
-> >>  net/core/rtnetlink.c | 22 +++++++---------------
-> >>  1 file changed, 7 insertions(+), 15 deletions(-)
-> >> 
-> >> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-> >> index ab5f201bf0ab..6da0edc0870d 100644
-> >> --- a/net/core/rtnetlink.c
-> >> +++ b/net/core/rtnetlink.c
-> >> @@ -3048,21 +3048,13 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
-> >>  	}
-> >>  
-> >>  	if (tb[IFLA_ADDRESS]) {
-> >> -		struct sockaddr *sa;
-> >> -		int len;
-> >> -
-> >> -		len = sizeof(sa_family_t) + max_t(size_t, dev->addr_len,
-> >> -						  sizeof(*sa));
-> >> -		sa = kmalloc(len, GFP_KERNEL);
-> >> -		if (!sa) {
-> >> -			err = -ENOMEM;
-> >> -			goto errout;
-> >> -		}
-> >> -		sa->sa_family = dev->type;
-> >> -		memcpy(sa->sa_data, nla_data(tb[IFLA_ADDRESS]),
-> >> -		       dev->addr_len);
-> >> -		err = dev_set_mac_address_user(dev, sa, extack);
-> >> -		kfree(sa);
-> >> +		struct sockaddr sa = { };
-> >> +
-> >> +		/* dev_set_mac_address_user() uses a true struct sockaddr. */
-> >> +		sa.sa_family = dev->type;
-> >> +		memcpy(sa.sa_data, nla_data(tb[IFLA_ADDRESS]),
-> >> +		       min(dev->addr_len, sizeof(sa.sa_data_min)));
-> >> +		err = dev_set_mac_address_user(dev, &sa, extack);
-> >>  		if (err)
-> >>  			goto errout;
-> >>  		status |= DO_SETLINK_MODIFIED;
-> >> -- 
-> >> 2.34.1
-> >
-> 
-> -- 
-> Kees Cook
+There is no point to micro-optimize the behavior here to save a single-digit
+number of bytes in the kernel, so just change this to a "return -EINVAL"
+as we do when any unexpected bits are set.
+
+Fixes: 1758af47b98c ("net: phy: intel-xway: add support for PHY LEDs")
+Fixes: 9d55e68b19f2 ("net: phy: aquantia: correctly describe LED polarity override")
+Fixes: eb89c79c1b8f ("net: phy: mxl-gpy: correctly describe LED polarity")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/net/phy/aquantia/aquantia_leds.c | 2 +-
+ drivers/net/phy/intel-xway.c             | 2 +-
+ drivers/net/phy/mxl-gpy.c                | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/phy/aquantia/aquantia_leds.c b/drivers/net/phy/aquantia/aquantia_leds.c
+index 00ad2313fed3..951f46104eff 100644
+--- a/drivers/net/phy/aquantia/aquantia_leds.c
++++ b/drivers/net/phy/aquantia/aquantia_leds.c
+@@ -156,5 +156,5 @@ int aqr_phy_led_polarity_set(struct phy_device *phydev, int index, unsigned long
+ 	if (force_active_high || force_active_low)
+ 		return aqr_phy_led_active_low_set(phydev, index, force_active_low);
+ 
+-	unreachable();
++	return -EINVAL;
+ }
+diff --git a/drivers/net/phy/intel-xway.c b/drivers/net/phy/intel-xway.c
+index b672c55a7a4e..e6ed2413e514 100644
+--- a/drivers/net/phy/intel-xway.c
++++ b/drivers/net/phy/intel-xway.c
+@@ -529,7 +529,7 @@ static int xway_gphy_led_polarity_set(struct phy_device *phydev, int index,
+ 	if (force_active_high)
+ 		return phy_clear_bits(phydev, XWAY_MDIO_LED, XWAY_GPHY_LED_INV(index));
+ 
+-	unreachable();
++	return -EINVAL;
+ }
+ 
+ static struct phy_driver xway_gphy[] = {
+diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
+index db3c1f72b407..a8ccf257c109 100644
+--- a/drivers/net/phy/mxl-gpy.c
++++ b/drivers/net/phy/mxl-gpy.c
+@@ -1014,7 +1014,7 @@ static int gpy_led_polarity_set(struct phy_device *phydev, int index,
+ 	if (force_active_high)
+ 		return phy_clear_bits(phydev, PHY_LED, PHY_LED_POLARITY(index));
+ 
+-	unreachable();
++	return -EINVAL;
+ }
+ 
+ static struct phy_driver gpy_drivers[] = {
+-- 
+2.39.5
+
