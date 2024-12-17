@@ -1,55 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFE81F8ADD;
-	Tue, 17 Dec 2024 14:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499841F5408;
+	Tue, 17 Dec 2024 14:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734447093; cv=none; b=X5NGZNdH0jDVBlv+j40Zw3c2yHifDR6e/ZBqTd2jRxAxcHcJiSvRQemN7IYqiDm4A4D8K7gOA7OzuFrmXmbore89p4fVtzdif0zhnzM4yEOnW7eZT6ZaPOcEuMvR5Il5XFOgGk5211NIp7aHHvbKnyVpIKGe/bhHV+CljYo2vME=
+	t=1734447282; cv=none; b=QWZ/1MPvGtF/ACyNDgYbzJxOJJZKzNu6hDXtq8zaC7u18MvJHNFPSpmslezrED6isvfPIyZxiJPrIl4R4PI9jBIXUVUVdqFUBEbxlFL/tIA8J06UpPgkA0/4+ojk+NHTXiHP6EAMbQLnVo9kXkIGmIcP+ABahKq74flpSKzNGXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734447093; c=relaxed/simple;
-	bh=eFGnliowovdHOsu+bslUKKaWUkcjdc40HYBeZnV12gA=;
+	s=arc-20240116; t=1734447282; c=relaxed/simple;
+	bh=Xd328Stxc8oRYqI/Dec7c6ksGaLHbk7Wyqz4IDRV7fc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mk7/38oOnJ0TDfB51rSVdwOu6HKjA/Ig30NScp/JIj6r6AkU0U0+Y5vieaNVKBfoKi3l3bujkYlc5aaZQjIkDbBa9gbgu/Barsq4+cmZ4YwYBwiZrMfRrUaQAPfXFDXmQUvSX2qhHuSGAUZBoYIxCDf0+WEtcqLhernvTO2kH+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F16nPW5l; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=oOucwq2hG4h7xjtC6JhR4Gh42BhqrtyakMLIYTW4IbKFaOB+qg5MoZ2wObnbXDRnB273Yd8MvftFrHlz+9VfMDG06rUPPN3zeaG8k6lIRIQwTh9TXEn2k6U/uDhKWgtZ+cOAIRXMIfwHOnQMNeGnDBD15DjXGAvQ5mY13Jt8Nb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gkf79P8o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F16nPW5l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3165EC4CEF3;
-	Tue, 17 Dec 2024 14:51:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gkf79P8o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187C6C4CED3;
+	Tue, 17 Dec 2024 14:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734447092;
-	bh=eFGnliowovdHOsu+bslUKKaWUkcjdc40HYBeZnV12gA=;
+	s=k20201202; t=1734447280;
+	bh=Xd328Stxc8oRYqI/Dec7c6ksGaLHbk7Wyqz4IDRV7fc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=F16nPW5lRJAkNIwKjKEdOkt6XTXleDEtofOg3PhSA9Qx8RcQsLcqy53K1gU/J6eUG
-	 MN6v8DFyuQjRIt7IjNmOzZT9xwFnSLGyLDNY8FHbXAug+HBux+iVt4+Ge2IcvkeIBM
-	 ruC+ggNWjNa399aGQ4VvNZ9GOyF/ARj08wzWdTcEZyo7xk73triQmSagGJyCZzWeO7
-	 vANTALQBdZvkcVa7NQYD9LcCMrxJ6D556QLT9yrXsm/M9kJI2d4nOuSG9Ksao2P5LC
-	 DOpn2IARxxpQAau582RZUXRDxW6tpI7xAMrEW4oR5oLO8EeIeq20hl2o9P0VsHLpCO
-	 A1R/9IHg+rkgw==
-Date: Tue, 17 Dec 2024 06:51:29 -0800
+	b=Gkf79P8oQ/DjuS37DLvM9D9fOc+Wrj49t8skrNHdqhL8U6buzA1GwBubA5o/rsssA
+	 7BFgOGcu2gthaL9ZZ98mA48CUNLjVpwQnCWxvMX7MvLUENkka2aLvjkN5KIeqF5KZ8
+	 f6wwbPUL8DQh1LpeZgKVRQ9VSQz4beVT1Z7QDDMLih8r7ERCS4g090fLFzJfYsSBrG
+	 nMzjPr6DQPSL92+c3LkwGkjVSBinR/SWGOSxsnOSTjQ9/EyvwKNeywXwCsQNDT0jTT
+	 ermo6CLeyk2dxUG3/rd6Nc960RWxs39HpAkDepDbhzMwjGBKANQtkbTBCm3oQklavl
+	 EZXfvdR97L2UQ==
+Date: Tue, 17 Dec 2024 06:54:39 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Li Li <dualli@google.com>
-Cc: Carlos Llamas <cmllamas@google.com>, corbet@lwn.net,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>, pabeni@redhat.com,
- donald.hunter@gmail.com, Greg KH <gregkh@linuxfoundation.org>, Arve
- =?UTF-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, tkjos@android.com,
- maco@android.com, "Joel Fernandes (Google)" <joel@joelfernandes.org>,
- brauner@kernel.org, Suren Baghdasaryan <surenb@google.com>, arnd@arndb.de,
- masahiroy@kernel.org, bagasdotme@gmail.com, horms@kernel.org, LKML
- <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org,
- netdev@vger.kernel.org, Hridya Valsaraju <hridya@google.com>, Steven
- Moreland <smoreland@google.com>, Android Kernel Team
- <kernel-team@android.com>
-Subject: Re: [PATCH net-next v10 2/2] binder: report txn errors via generic
- netlink
-Message-ID: <20241217065129.10677f69@kernel.org>
-In-Reply-To: <CA+xfxX6-cbTyyyTf1UL_A7DzagfrV+y0367MdO21+JdjW870ZA@mail.gmail.com>
-References: <20241212224114.888373-1-dualli@chromium.org>
-	<20241212224114.888373-3-dualli@chromium.org>
-	<Z2BtgqkPUZxE8B83@google.com>
-	<CANBPYPhZ-_5=VMRoBxbfVb+AFb_qu49QH_hKOiSjX93E1GQA8A@mail.gmail.com>
-	<20241216174111.3fdce872@kernel.org>
-	<CA+xfxX6-cbTyyyTf1UL_A7DzagfrV+y0367MdO21+JdjW870ZA@mail.gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, davem@davemloft.net,
+ edumazet@google.com, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ hkallweit1@gmail.com, tmgross@umich.edu, aliceryhl@google.com,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, netdev@vger.kernel.org
+Subject: Re: [PATCH net v2] rust: net::phy fix module autoloading
+Message-ID: <20241217065439.25e383fe@kernel.org>
+In-Reply-To: <778db676-9719-4139-a9e3-8b64ffa87fd2@redhat.com>
+References: <20241212130015.238863-1-fujita.tomonori@gmail.com>
+	<778db676-9719-4139-a9e3-8b64ffa87fd2@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,20 +49,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 16 Dec 2024 19:53:40 -0800 Li Li wrote:
-> > > These are automatically generated from the yaml file. So let's just
-> > > keep them as is.
-> > > But it's a good suggestion to the owner of yaml parser.  
-> >
-> > I think the unusual naming comes from fact that you call your netlink
-> > family binder_netlink. It's sort of like adding the word sysfs to the
-> > name of a sysfs file. I mean the user visible name, not code
-> > references...
-> >
-> > s/binder_netlink/binder/ will clean this up..  
-> 
-> I did consider that but unfortunately that would result in a
-> conflicting binder.h in uapi header.
+On Tue, 17 Dec 2024 09:54:11 +0100 Paolo Abeni wrote:
+> @Jakub: I still can't reproduce the nipa (rust) build failures locally.
 
-What exactly is conflicting? The name of the header itself?
-You can set the uapi header name using the uapi-header property.
+I'll look into it. Just in case you already investigated the same thing
+I would - have you tried the rust build script from NIPA or just to
+build manually? The build VM is using Fedora 41, IIUC it should have
+new enough Rust compiler but I may have messed something up trying
+to install the latest compiler manually...
