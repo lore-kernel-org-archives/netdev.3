@@ -1,107 +1,111 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AEA1F7571
-	for <netdev@vger.kernel.org>; Tue, 17 Dec 2024 15:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1681F4E3D;
+	Tue, 17 Dec 2024 15:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734448299; cv=none; b=CLrwVV3QosoQLl143+XbYHYjF5wkjgnHDXGm0l6O4uYZrt3WBp7JADg6Cb6rq54AVtmhsxWWDHpZe7NlNo1ufNQKJW9YyUpH03azJQwcD1groKJuyXxHzCO/6Ip476REiC6FaKf4H9k7a1OCJpxIUpNSNgZUNTQWp+A45PZa434=
+	t=1734448426; cv=none; b=t010ImU6xdUZfEGORUzyJ3VjsuyiRc2LYPVdqMkwgjO361clHEF0v/Mbc1I2Af6tWgydAYBoInD5PWaU0oRO0MCWNW48eJrSaz0AoUU8PluqjmC3d0C/Q3UQAgppWi+fIkBrFdNWYFJAmvs3b71AsCeCEyZE8MLz0b8GrN4EgC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734448299; c=relaxed/simple;
-	bh=3vdtslznFlau/IIKpnpAX9khJOjvyT2k2Unfnr81K1E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FrieJWFtK8xaLmSKrnC/5Qc65+FS8BFlyInLxhLXRAkAWyuzFEkbOp/sxQO93QThxSIDNVV566ckDylGYFGIwNqpQFLoQAGK8PjZ9HqXinDhk19H9qNK6RH2X0o8nPLXGQ94ROX/l7ae8DGW6Jd0V6Kfy1fPZ1YnU9UUgCKIUoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vb1VdRuc; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1734448426; c=relaxed/simple;
+	bh=0EZ4VCczDE3WfjSCWhXUWIXqdTVVn0SQjmi5vL1q8h0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DvB9QNqmkXRfvIdBclIETjGRUdvzr+TpqjMB6bgpI4bHtSMAg1R9XyiywTWMJySg/k81to+h/VXtV1ZMPxEfuoBrkhFb7xIsT0j4dSXCc04ZLiLwLnQZ1RvCdKRwKVzB6i9opz7aUtmVJHHSHKQlCznaWhj9TK6HqRuq1H0Kzao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BBN6AfSG; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vb1VdRuc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734448296;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c5eA38m2GxvNU/dLIOnc1BQum9+UOA/0HsJWGFSLPmY=;
-	b=Vb1VdRucb0yYVXgRtu6tRkZjBejnvxHZ1wS6WFy006PR9REzD6qbeecDdX002kdGZSJZJy
-	g2pXfYG468vXOlbBj6sqePKOQnHSL7hONHl9wK30+v7wFgWLHLRsLhSAHN/HvMGMgbgeen
-	abfzxIZasilitg0+iUP7E1AhTXqPCM8=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-283-zrv0CARSOAaBKCFAlI372A-1; Tue, 17 Dec 2024 10:11:35 -0500
-X-MC-Unique: zrv0CARSOAaBKCFAlI372A-1
-X-Mimecast-MFC-AGG-ID: zrv0CARSOAaBKCFAlI372A
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6dcccc8b035so72667836d6.1
-        for <netdev@vger.kernel.org>; Tue, 17 Dec 2024 07:11:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BBN6AfSG"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-436246b1f9bso7343805e9.1;
+        Tue, 17 Dec 2024 07:13:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734448423; x=1735053223; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mIbodpRWxqrrqRRUsCSmxdoYxLL2MHEZUJwlmjhZJMc=;
+        b=BBN6AfSG8np+rdUXskjIv93ES7XVGZ4Oc+KoLtWXZ7aIhpRC0xwjCSq0fwqqo5i+6U
+         frTA2hid7OWkXvVDG5jtaPfoMw+u2dwp290p9h+KtKM6iw3v0cAk1uqSKguYqrJnowli
+         hu4+XsI0LLDvfJCzAPoDvlXWSqPE0C7Fh7La8OetT5EA4YxhR9MBFOS7/1Jm3Q+f+Bux
+         pcgu/8X3DwgYRQqYncT0mwowMhnTxmSLfZWkuNVqFAJVBG3zm+xp2+dsrHZ6unY/cA/T
+         jJr/780z6EZClF/SiKPz+gkqPzETJCMCDyd+5S539oOJsO+g17Il7mHzvCX2bZqjMo+y
+         1TFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734448295; x=1735053095;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=c5eA38m2GxvNU/dLIOnc1BQum9+UOA/0HsJWGFSLPmY=;
-        b=fxp3c+cPP2gCUmXeVOzdvqxUPmjVTyetbe9b9Gvct9SDlu+d2YwzITuIXI4Ild2tkt
-         x8EBPgT8XZPNxdWTYt79DLBxkQUSuvP7EDXMU7UcCFXFF9XoynsObNEcxlkVgkUXBPMH
-         Ocrs/6+yt0lSw7U35zEMjOvioW7YdoZIuX1zY1ZQRc6JgLJTdiayfEs2HGlRQC6lRU7P
-         3m5ccLopIQe9ATSl0srFvPnBRbCDN7XItFLkCDkuUjVUTQCno08YLGMJxMLP+0m0Ozbx
-         m6lnaHL7UrgFQ6jeQ2KPmrtpkaA6b4ykeTagKSG1JpommnxE5XSHehnOFssWCI0CdlKo
-         c+Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCU17CM0OUEmiEGbzhOyYy0spJES8zQqYF6Dd+hCU17rRjJQP5CcGKqRuiqQeDK3J5sk6JWLqqA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4AMpQu1Ni434O24cnRJz5tMbayMUpqUpJfwj8gVy42On/ZwEx
-	MRiK/hcw5pEqorNNg3LPnDABN4XnHZGHyTmPf2q1YkHaz/36ejlhG1Ji/XbPo9KPgrJzWX3Gvj/
-	I4QWj4PlZb88te4x5r5mBi/m7KeqEz+v1bybnSCH1CfgnWF9ewDtWCw==
-X-Gm-Gg: ASbGncsovfJKdcTivyXp2pt/kk+ohJ05cXPPc0wATsViFzUTQ8sBVdWyZXR9RsJlgoj
-	q9cXFZdNukOvkIgI7q9gHd8V0DYTsFY6wQobntQP+9XQbC0hliM6kDL21R1wZsMYhtXbvwRqea/
-	dAfnOeT0KH8+/0bDRz5oov6t2wuUmcNO/kESdtLcKRZgHNYAQqo1mhKqf78b7q9ASUtTz+p5504
-	6hjQqs6LGajzS8qCugGrOUXIFZqcHH5PFD8cIASxJDhlfyYLQm4+dc9B6luO7zxUFZlguUvlZOQ
-	xNenxVrldg==
-X-Received: by 2002:a05:6214:2486:b0:6d8:a3f2:4cc with SMTP id 6a1803df08f44-6dcf4c385demr65027726d6.5.1734448294416;
-        Tue, 17 Dec 2024 07:11:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFzP57X/BweuIG/kHJ9/JmT/cEseWmJofpVUL+Fb/1flSIptNOX/KnR0C4pN3YCP3WvTPvOXg==
-X-Received: by 2002:a05:6214:2486:b0:6d8:a3f2:4cc with SMTP id 6a1803df08f44-6dcf4c385demr65026936d6.5.1734448293817;
-        Tue, 17 Dec 2024 07:11:33 -0800 (PST)
-Received: from [192.168.88.24] (146-241-69-227.dyn.eolo.it. [146.241.69.227])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6dccd22f494sm39601816d6.18.2024.12.17.07.11.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Dec 2024 07:11:33 -0800 (PST)
-Message-ID: <b701482d-760a-437b-b3fb-915dc3fc2296@redhat.com>
-Date: Tue, 17 Dec 2024 16:11:29 +0100
+        d=1e100.net; s=20230601; t=1734448423; x=1735053223;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mIbodpRWxqrrqRRUsCSmxdoYxLL2MHEZUJwlmjhZJMc=;
+        b=eW9NRgB6YPNTN90i6YnkEzK78jn/Lb3H0Tf7D66npQ8hQJ/d05PPR8iCOPlRBs50bK
+         1k++HhhNflr3dPgxR4ss6zbAlsf3E1Z2KJ9YG4f+mqCUCx++gdBAhYNiKJ/tps2YAEXw
+         Jud2P2DrYv8anyB/iKEL0JKr0F8fMh6Gj2aIrWegNQi9Z++5524Ima09CUfjMhIXBT4i
+         9GQ7CaJ8sjxcEyjVthySjb9ZQ7ypPGakk43QXFUUJIJkH/td+7qvNx4HdDdodCAXNmb/
+         6E0AmZOeNaOy5Z8ew4f7iihtWC42W/Hlms+OS0DMEyFdzDDeYNGcDa6kciYKWDKZWB3B
+         Xdgg==
+X-Forwarded-Encrypted: i=1; AJvYcCV7Zj/MkAs3gZU5gNobcy0P/9jg7Jl5PLAmfzJ2/DGg/AYQ2KvUP23yD1fTvzjgkry9E39j5S4muAiEkWb0@vger.kernel.org, AJvYcCWKFHl6mQKnRV/PY+0PqdYYpMvBkq5jYA5ixgWsa5RJgkiwFWkNJgLPAMrn37LemmimxyXtnpj9@vger.kernel.org, AJvYcCXw94WwEknV5LEmHsqOxUtFLOh0VXLwCCGjiC1xPl+HPcGujHZ5tcPsf6KkRsXGcROPDRvSd/G6/I3q@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywh0q/AmweQ0MgrE0anOIsWGJ3MorGOMwlT7iGm5jg13elZrutc
+	MTv59MXNnH5nFRtQ88qHCOwm63nnCLguwF5PyYdDfZj5Rv0yVMLO
+X-Gm-Gg: ASbGnctWeOogu21l1Ts6MHOzAZa1DXHYxuDwACpyKTDNdxjEUuHJFLEpL43C7801/Oy
+	5AX2c3eZW1ycMK9ajRK3prC8WPrYRtBtZwIrK+oFsisvbYEYyixZ3StaU34ug2hSmXZmYwTy/8z
+	Imk/AMbM5YxXiI+zBEssJhcpfHjlgDygsiuo1DnwcQwVIhXl+uL0gAI2ifmwc5YMyhnSNpPiK/W
+	XmGCZ5+S6nqWfFCsoisT0+54WkDFEfKK4Pp0+jWBD4L
+X-Google-Smtp-Source: AGHT+IHLcu6qj3H5z8Rh0t1dPSXaYp5zGOT8WvycKhg3dUOqzNjj52VHTli51/q2/uIIlYifEe4k4Q==
+X-Received: by 2002:a05:600c:4fc5:b0:434:ff85:dd77 with SMTP id 5b1f17b1804b1-4362aa3a62dmr56863795e9.3.1734448423285;
+        Tue, 17 Dec 2024 07:13:43 -0800 (PST)
+Received: from skbuf ([86.127.124.81])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436362c7d59sm119484895e9.43.2024.12.17.07.13.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Dec 2024 07:13:42 -0800 (PST)
+Date: Tue, 17 Dec 2024 17:13:39 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	upstream@airoha.com
+Subject: Re: [net-next PATCH v11 5/9] mfd: an8855: Add support for Airoha
+ AN8855 Switch MFD
+Message-ID: <20241217151339.gjpdkfbechdjohza@skbuf>
+References: <20241209134459.27110-1-ansuelsmth@gmail.com>
+ <20241209134459.27110-1-ansuelsmth@gmail.com>
+ <20241209134459.27110-6-ansuelsmth@gmail.com>
+ <20241209134459.27110-6-ansuelsmth@gmail.com>
+ <20241210211529.osgzd54flq646bcr@skbuf>
+ <6758c174.050a0220.52a35.06bc@mx.google.com>
+ <20241210234803.pzm7fxrve4dastth@skbuf>
+ <675da041.050a0220.a8e65.af0e@mx.google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] rust: net::phy fix module autoloading
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, davem@davemloft.net,
- edumazet@google.com, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, tmgross@umich.edu, aliceryhl@google.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@kernel.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, netdev@vger.kernel.org
-References: <20241212130015.238863-1-fujita.tomonori@gmail.com>
- <778db676-9719-4139-a9e3-8b64ffa87fd2@redhat.com>
- <20241217065439.25e383fe@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20241217065439.25e383fe@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <675da041.050a0220.a8e65.af0e@mx.google.com>
 
-
-
-On 12/17/24 15:54, Jakub Kicinski wrote:
-> On Tue, 17 Dec 2024 09:54:11 +0100 Paolo Abeni wrote:
->> @Jakub: I still can't reproduce the nipa (rust) build failures locally.
+On Sat, Dec 14, 2024 at 04:11:54PM +0100, Christian Marangi wrote:
+> We can see that:
+> - as suggested regmap doesn't cause any performance penality. It does
+>   even produce better result.
+> - the read/set/restore implementation gives worse performance.
 > 
-> I'll look into it. Just in case you already investigated the same thing
-> I would - have you tried the rust build script from NIPA or just to
-> build manually? 
+> So I guess I will follow the path of regmap + cache page. What do you
+> think?
 
-I tried both (I changed the build dir in the script to fit my setup). I
-could not see the failure in any case - on top of RHEL 9.
-
-/P
-
+I'm not seeing results with the "times" variable changed, but in
+general, I guess the "switch regmap + page" and "switch regmap + phy
+regmap" will remain neck and neck in terms of performance, surpassing
+the "switch regmap restore" techniques more and more as "times"
+increases. So going with a PHY regmap probably sounds good.
