@@ -1,151 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D641E573F
-	for <netdev@vger.kernel.org>; Tue, 17 Dec 2024 10:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A841D47BB
+	for <netdev@vger.kernel.org>; Tue, 17 Dec 2024 11:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734433128; cv=none; b=JCFhSopzCxj1j1sui3xOKR07Y/gnYLP3Qzss4AL+uI8XLEkBYkEHL8R9E7G0WUQ08vdOOoUsJhJIKk/RKedHozeiyKyeFJHaRIBJPg6KsPDtfDJ7tgQjRMi1wg+52kfmD8tl6bzuXiEbynNQ1QEBOsAyZ1x3zKov14dUOckS2J0=
+	t=1734433754; cv=none; b=TTwaxXEDlCfREVriOmC7qf2JHGj2G0RMHwVFE5cSnkfb33biF1AWjjVUdrI0kd0o0c8sOKFDtk275gAEQAMDO17j+Psx4lawy+Th1nmNYI6BNeoZUS8VhI556OLKG7kQQPKUgTDlqcCPJkdFc0FSgrCQLHpWaZI+xE8jS8G2Sfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734433128; c=relaxed/simple;
-	bh=lCJZwFACueV/abH3Vzl3ufOeTRWW2yeoJAM8Av2WJrA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ARofNWL5opNjTKZ9IPwEKS+Mo4819axDq5OJFfeDRZhn0LS5xXooa6ccXq244VMX/Q3vA5TAimu/DiLZUl+eKCnvRD7vtZ5Zcq8Sb8aRCBQsa0A2o0GJHZH4dWrBGYTMnvQoMWl0cE703pVLlcfuJwW0QykNmhBGb2e2K2dWxkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gMe6jZ4Z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734433754; c=relaxed/simple;
+	bh=G/6pg2pdpByK6UOnWxA4JUDE7zurTAIPCyyjxOHzFAU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GTYXSwKnDHM1v9CY7vlKTNR/PRHrLjm5f7BPReOBD4+NjfOdWNxP49fBP8Nd9+AVt4FnnMK5ClTv5JmfbKA+cjiVxy5yeAlYUBkjtP31ajMYzGGt3ljffplk/HwBHOlcuk3S6jLu8+ubMQOOnQ0SWRDIzKLMWiWwT9rUKL+YvnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U4bAAEO0; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gMe6jZ4Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF85C4CED3;
-	Tue, 17 Dec 2024 10:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734433127;
-	bh=lCJZwFACueV/abH3Vzl3ufOeTRWW2yeoJAM8Av2WJrA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gMe6jZ4ZKH8FJXPSZov2hZPCihwoduf68OmYclDEFp+KEEZgVFFL6zcj8+NPhW1w4
-	 pkIXDZwErDewxfS3R3lUHi8mMO4d8VdTC7ETy+SfIFucIiYtPWDfjrqFz9Cdvie7sI
-	 r+iwYUZfy1QDMQLnykEU04YRaK7gApTMB2Jrv/v8c0RjL314SKhKR0Ef3m/cqWatQx
-	 9FDQS9ShuVKVCXn2F4hLh2UWt2CD4rFLKS35j9ZJbzDGrHZpMXTLj6+kJaXNfRnzRt
-	 qSGZSxiayWSK5WHMwG9xye94ffYyIqZ8qEJJ77993HpGMmzvRRFJ/khFSIh5xiU+2L
-	 jupLJyyvTGhYQ==
-Message-ID: <21d372a2-479a-4ea5-a60a-3693b8f0e8ba@kernel.org>
-Date: Tue, 17 Dec 2024 11:58:40 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U4bAAEO0"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5cec9609303so7129032a12.1
+        for <netdev@vger.kernel.org>; Tue, 17 Dec 2024 03:09:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734433751; x=1735038551; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OzuI9aLJOWEZZmxnx5012VAErpqqnvkTRbmh8IPMF+k=;
+        b=U4bAAEO0t51P1lIB8ucjT/GTf1c+7rwQfmIQcbI9v+DlZCtlz5mpmoUaFs5jMF4f1M
+         IVh/6QzgvLRgAgDjJ+jV2YlHHwfgZ1KXUp6UCt72xTJv9VHc5C6pjES+ddSrZ6Z0WOcm
+         /5Wcp4jAtcdpUfs+YnoK/RHjhYFVIQHEnuxVrZi5ojDcA9Bdjb15nLByCm9R9mJFUQ0C
+         Ac21pyxcx2T7vChBND9guukMdEriyeQR1xJerUr5EvMWDdNVE517yrd/eYTzDjlkHBFc
+         X1LGUkI+KYcohO/y640ZI/gsKqWvybIahqhD9OXFBf4U879kjU6QQjEaP3PtgQDFVIiQ
+         VPDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734433751; x=1735038551;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OzuI9aLJOWEZZmxnx5012VAErpqqnvkTRbmh8IPMF+k=;
+        b=jI+gPohe5wlMM140eAZL07jRhtY/MTUqCUbPZPGNnJikn59Tq3mMGwTMhMBxkB5KMB
+         xYZYBuXni8AVK8xNF+YY/gpjVZ0zf219FObnEyljgbOS9CTszUOjHkuak0iGMLjMhBYG
+         Pa8uK3KSrZpWCdzhFGPRVW2JNjmjdlOWJVwU8LafraCR5YdJh2jCHggIO0J0G4w9n9U/
+         RddFSdcH1OQBoKj/C3uG1XVIqvo36T/8NED0bmCDV47MRLZMiDQZZhtf1Ntc8lqE4oKg
+         mP7jplTl+8ttEFteAH0J1MOz07GVmRPWeefnyBOALvHTmM76bKBrHdKS/v3phZYg0uJN
+         zKhw==
+X-Forwarded-Encrypted: i=1; AJvYcCX9O4dmuQnYjIe9+uFtkbQCzWHOuBxQeTxPCBlue5NRKLTAmHffsb5RvGSYUiYvV84aRIPg4KQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQWBB7pvkTYVDL4RxsJQKeRpoZd8f289gE7NhCI0mp1hqM9OsS
+	taeDkG4/jXVFTWcfFC4PLCuEAU47R1Ze85bsZWYXQ97RuvVA+d/tUMeuarnoYsmyJV7GQwwzjdh
+	gHY7t1bQDRAeaPywIjfySBFi+TbxEXiVVEkVm
+X-Gm-Gg: ASbGncsTrbRlHo9gFlXmlfhglBpEKc0UkvZRfKgD8OZJj1H0VhG0VIVx2worE+WNU8x
+	oL/ZXrYHThikmEpLJ0EwTvZZoZ33dTlvtzkQfi/VrijaSxg5V7l+30kgT/Wz0Fv2C8ubKovo8
+X-Google-Smtp-Source: AGHT+IHugQf3gQVyGwYhev90BATuj8UeOHv3MMabt2v6JeHVBLsfim5ImjXgNCc8i+EJGN/6fITifC6gPEMntVKH8OU=
+X-Received: by 2002:a05:6402:4582:b0:5d3:f6cb:73e4 with SMTP id
+ 4fb4d7f45d1cf-5d63c3bed0amr14053276a12.34.1734433751336; Tue, 17 Dec 2024
+ 03:09:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: stmmac: call stmmac_remove_config_dt() in error
- paths in stmmac_probe_config_dt()
-To: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>, alexandre.torgue@foss.st.com,
- joabreu@synopsys.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com
-Cc: netdev@vger.kernel.org
-References: <20241217033243.3144184-1-joe@pf.is.s.u-tokyo.ac.jp>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20241217033243.3144184-1-joe@pf.is.s.u-tokyo.ac.jp>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20241217105659.2215649-1-yajun.deng@linux.dev>
+In-Reply-To: <20241217105659.2215649-1-yajun.deng@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 17 Dec 2024 12:09:00 +0100
+Message-ID: <CANn89iKYgt-61ku46p3D1yHtc7RUVqeB5WN83Tfd+ZtyeE+Mug@mail.gmail.com>
+Subject: Re: [PATCH net-next] sock: make SKB_FRAG_PAGE_ORDER equal to PAGE_ALLOC_COSTLY_ORDER
+To: Yajun Deng <yajun.deng@linux.dev>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 17/12/2024 04:32, Joe Hattori wrote:
-> Current implementation of stmmac_probe_config_dt() does not release the
-> OF node reference obtained by of_parse_phandle() when stmmac_dt_phy()
-> fails, thus call stmmac_remove_config_dt(). The error_hw_init and
-> error_pclk_get labels can be removed as just calling
-> stmmac_remove_config_dt() suffices. Also, remove the first argument of
-> stmmac_remove_config_dt() as it is not used.
-> 
-> This bug was found by an experimental static analysis tool that I am
-> developing.
-> 
-> Fixes: 4838a5405028 ("net: stmmac: Fix wrapper drivers not detecting PHY")
-> Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+On Tue, Dec 17, 2024 at 11:56=E2=80=AFAM Yajun Deng <yajun.deng@linux.dev> =
+wrote:
+>
+> The SKB_FRAG_PAGE_ORDER will be 3 if PAGE_SIZE is 4096, and less than 3
+> if it is not. So it will increase the number of memory allocations if
+> PAGE_SIZE is greater than 4096.
+>
+> alloc_pages() only relates to the order, if an order is less than or equa=
+l
+> to PAGE_ALLOC_COSTLY_ORDER, it will get the page from rmqueue_pcplist() i=
+n
+> rmqueue(). So there's no need for the order to be less than
+> PAGE_ALLOC_COSTLY_ORDER.
+>
+> To decrease the number of memory allocations, make SKB_FRAG_PAGE_ORDER
+> equal to PAGE_ALLOC_COSTLY_ORDER even if PAGE_SIZE isn't 4096.
+>
+> Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
 > ---
->  .../ethernet/stmicro/stmmac/stmmac_platform.c | 37 +++++++------------
->  1 file changed, 13 insertions(+), 24 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> index 3ac32444e492..4f1a9f7aae6e 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> @@ -407,13 +407,11 @@ static int stmmac_of_get_mac_mode(struct device_node *np)
->  
->  /**
->   * stmmac_remove_config_dt - undo the effects of stmmac_probe_config_dt()
-> - * @pdev: platform_device structure
->   * @plat: driver data platform structure
->   *
->   * Release resources claimed by stmmac_probe_config_dt().
->   */
-> -static void stmmac_remove_config_dt(struct platform_device *pdev,
-> -				    struct plat_stmmacenet_data *plat)
-> +static void stmmac_remove_config_dt(struct plat_stmmacenet_data *plat)
->  {
->  	clk_disable_unprepare(plat->stmmac_clk);
->  	clk_disable_unprepare(plat->pclk);
-> @@ -436,7 +434,6 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
->  	struct plat_stmmacenet_data *plat;
->  	struct stmmac_dma_cfg *dma_cfg;
->  	int phy_mode;
-> -	void *ret;
->  	int rc;
->  
->  	plat = devm_kzalloc(&pdev->dev, sizeof(*plat), GFP_KERNEL);
-> @@ -490,8 +487,10 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
->  		dev_warn(&pdev->dev, "snps,phy-addr property is deprecated\n");
->  
->  	rc = stmmac_mdio_setup(plat, np, &pdev->dev);
-> -	if (rc)
-> +	if (rc) {
-> +		stmmac_remove_config_dt(plat);
->  		return ERR_PTR(rc);
-You now double unprepare the clocks. This is either buggy or just
-confusing (assuming clocks are NULL).
+>  include/net/sock.h | 2 +-
+>  net/core/sock.c    | 3 +--
+>  2 files changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/include/net/sock.h b/include/net/sock.h
+> index 7464e9f9f47c..a33645226577 100644
+> --- a/include/net/sock.h
+> +++ b/include/net/sock.h
+> @@ -2853,7 +2853,7 @@ extern __u32 sysctl_rmem_max;
+>  extern __u32 sysctl_wmem_default;
+>  extern __u32 sysctl_rmem_default;
+>
+> -#define SKB_FRAG_PAGE_ORDER    get_order(32768)
 
-Best regards,
-Krzysztof
+We do not want to allow some programs to work on arches with 64K page
+sizes, and not work on 4K page sizes.
+
+Please post your precise use case.
