@@ -1,95 +1,192 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D21EEB2;
-	Tue, 17 Dec 2024 22:34:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF2C1F9F60
+	for <netdev@vger.kernel.org>; Tue, 17 Dec 2024 22:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734474861; cv=none; b=Tj7Sz8zIxfxCxSkvkJwgcRj8ZLw/HtMe7qdnyBs2KZh/1FHvJFzP032PlWXK/HEUyOXhMnIaiM51txUFD/lGtqu9JkCTjnA+QobM2E0rMdT94PCbTDPL6O+bfhDWb7DAsRPGJUL3UVDs+kWLf2T/skl46UE4pWtyLbFaI7uFbuI=
+	t=1734475508; cv=none; b=MZW3HZW9MBbJtZKT72LLZVnBMr/mmkrlxDfU0WfwYH7SQJnAjYxJK9rNGHsk94UNAB1N8wteep1xZg/6oQiYLYf/+Cq5PnN6gAxhbr30WNIhlXJ5YezFUdnVR1B5bxh5KepTGrQzX8dV6v681jttwy3y8OHf31lDmtSlSMEC090=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734474861; c=relaxed/simple;
-	bh=RAFs9ax2hBuy1Yw29FsVtVrKFDoOZNKch8c06jRQ+v8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a7SnKo/LNOjHY6ylhf8RKhbt5bGobEQKUzKr3o0UL2jcpjyNdibTQq7ZWAhL6NYvEj343KyIRA/vfMT93EAYVsZIHtFJjl1ljNj+698/S3pc69bFO1ndWDS2iolHE1zn7wMdAWKKACp32qfVVk3AuEwBxSJS8dv6fqinPeFfnj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=B36yzb8r; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1734475508; c=relaxed/simple;
+	bh=8lT1ahxONqOGJZ2W/7meo3rIE0R6SKGMTP0GkGMmi70=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D8e+4wNbnBQqv1Ja6aXrYogcKMrUex/0LI86RikgmEe5JewaVNbr7Vwb9RXs+Lc4wX6hvZfnxifUcKLczWFiMctJObexMGSBoRcnginlF4F6vJn8ivlHBJzdVijwpa5PEBkujvlgfCMMYW0b3SA3yX44586glrHpZRr/8iv1ywc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=KtPu9wWe; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="B36yzb8r"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=ZOzz5gjHLZymxcIe9J7kawYOLjtZqL9yh9BoTBYCkdo=; b=B36yzb8r/Xy7k4jHLlYGzqU8h8
-	DTzLbAuE3xWlwxna6V9MC1K2wV4ACxjfTbKRWkfl1ZrCkeSBo2O5FhwHk1xUix+pG69Xuomf/jH5C
-	zNlVBQMtSDhxNCXhNpUlgPfgm/5neuBeM6blyZp1aMRgtQuV+ydrt1ixHCj7g9B0T9no=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tNg8l-0015S5-2y; Tue, 17 Dec 2024 23:34:07 +0100
-Date: Tue, 17 Dec 2024 23:34:07 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Russell King - ARM Linux <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	David Miller <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
-	linux-omap@vger.kernel.org,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH net-next 1/3] net: phy: add phy_disable_eee
-Message-ID: <35cd4b23-06fe-4ac8-99f2-5eb59ff275a4@lunn.ch>
-References: <5139374e-7151-4d0d-8ba9-9ec3d9b52f67@gmail.com>
- <fd51738c-dcd6-4d61-b8c5-faa6ac0f1026@gmail.com>
- <35e1ded5-e33f-4ea4-ab16-c460da402822@lunn.ch>
- <7f8d2b63-390d-4f7e-9ede-d28c7793538c@gmail.com>
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="KtPu9wWe"
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 6B5F42C0BEC;
+	Wed, 18 Dec 2024 11:45:03 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1734475503;
+	bh=re4odSfMbmvsC6H+xv5AIf+hkSUf3b+E22ZdTYieO0s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KtPu9wWeVAS2Bqq5OLql0QLo0ZfjHvUZ4INsiIltv1gbvcI+kHizs+H9sgUYtHjPm
+	 J4FE8JlOnCbk+0ie5t7TSiB6yUxN4c0Yhi7GWDc8j2b0USdIGzmzkJ7flUxpIkBEPH
+	 lgPVHRSvU55YLlTx5SWNzrjK8BrvyFQXTX0ggg2RcYfVCkyqkXHyWX6VaiaJYTMz9E
+	 oPOW7SYFihLY7YXgwtJIKAlEiKYSG0NsB/FKJPpmx/V0ESGFRe/j3IjJ+BwCu22HoX
+	 YFF27lhpn/CLa/ML13SjbZkL3CpNc68+8f78ffkqdPgK5PXfQZ9IseMigOcON6Q55W
+	 Hdsii2OooCpKQ==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B6761feef0001>; Wed, 18 Dec 2024 11:45:03 +1300
+Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
+	by pat.atlnz.lc (Postfix) with ESMTP id 0ADA213EE56;
+	Wed, 18 Dec 2024 11:45:03 +1300 (NZDT)
+Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
+	id 059C72803EA; Wed, 18 Dec 2024 11:45:03 +1300 (NZDT)
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+To: lee@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	tsbogend@alpha.franken.de,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	markus.stockhausen@gmx.de
+Cc: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH v3 1/3] dt-bindings: net: Add Realtek MDIO controller
+Date: Wed, 18 Dec 2024 11:44:59 +1300
+Message-ID: <20241217224501.398039-2-chris.packham@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241217224501.398039-1-chris.packham@alliedtelesis.co.nz>
+References: <20241217224501.398039-1-chris.packham@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7f8d2b63-390d-4f7e-9ede-d28c7793538c@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=BNQQr0QG c=1 sm=1 tr=0 ts=6761feef a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=RZcAm9yDv7YA:10 a=gEfo2CItAAAA:8 a=XYAwZIGsAAAA:8 a=5T6DpigFOSMmFzbSVwsA:9 a=3ZKOabzyN94A:10 a=sptkURWiP4Gy88Gu7hUp:22 a=E8ToXWR_bxluHZ7gmE-Z:22
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
 
-On Tue, Dec 17, 2024 at 09:50:12PM +0100, Heiner Kallweit wrote:
-> On 17.12.2024 11:43, Andrew Lunn wrote:
-> >> @@ -2071,6 +2071,7 @@ void phy_advertise_eee_all(struct phy_device *phydev);
-> >>  void phy_support_sym_pause(struct phy_device *phydev);
-> >>  void phy_support_asym_pause(struct phy_device *phydev);
-> >>  void phy_support_eee(struct phy_device *phydev);
-> >> +void phy_disable_eee(struct phy_device *phydev);
-> > 
-> > So we have three states:
-> > 
-> > MAC tells PHYLIB it does support EEE
-> > MAC tells PHYLIB it does not support EEE
-> > MAC says nothing.
-> > 
-> > Do we really want this?
-> > 
-> > For phylink, i think we have a nice new clean design and can say, if
-> > the MAC does not indicate it supports EEE, we turn it off in the
-> > PHY. For phylib, we have more of a mess, and there could be MACs
-> > actually doing EEE by default using default setting but with no user
-> > space control. Do we want to keep this, or should we say any MAC which
-> > does not call phy_support_eee() before phy_start() would have EEE
-> > disabled in the PHY?
-> > 
-> The case "MAC says nothing" isn't desirable. However, if we did what
-> you mention, we'd silently change the behavior of several drivers,
-> resulting in disabled EEE and higher power consumption.
-> I briefly grepped the kernel source for phy_start() and found about
-> 70 drivers. Some of them have the phylib EEE call, and in some cases
-> like cpsw the MAC doesn't support EEE. But what remains is IMO too
-> many drivers where we'd change the behavior.
+Add dtschema for the MDIO controller found in the RTL9300 SoCs. The
+controller is slightly unusual in that direct MDIO communication is not
+possible. Instead, the SMI bus and PHY address are associated with a
+switch port and the port number is used when talking to the PHY.
 
-So for phylib, we keep with the three states. But phylink? Can we
-disable EEE when the MAC says nothing?
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+---
 
-	Andrew
+Notes:
+    Changes in v3:
+    - Add r-by from Connor
+    Changes in v2:
+    - None
+
+ .../bindings/net/realtek,rtl9301-mdio.yaml    | 82 +++++++++++++++++++
+ 1 file changed, 82 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/realtek,rtl9301=
+-mdio.yaml
+
+diff --git a/Documentation/devicetree/bindings/net/realtek,rtl9301-mdio.y=
+aml b/Documentation/devicetree/bindings/net/realtek,rtl9301-mdio.yaml
+new file mode 100644
+index 000000000000..95ed77ff8dcc
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/realtek,rtl9301-mdio.yaml
+@@ -0,0 +1,82 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/realtek,rtl9301-mdio.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Realtek RTL9300 MDIO Controller
++
++maintainers:
++  - Chris Packham <chris.packham@alliedtelesis.co.nz>
++
++allOf:
++  - $ref: mdio.yaml#
++
++properties:
++  compatible:
++    oneOf:
++      - items:
++          - enum:
++              - realtek,rtl9302b-mdio
++              - realtek,rtl9302c-mdio
++              - realtek,rtl9303-mdio
++          - const: realtek,rtl9301-mdio
++      - const: realtek,rtl9301-mdio
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++  reg:
++    maxItems: 1
++
++patternProperties:
++  '^ethernet-phy(@[a-f0-9]+)?':
++    type: object
++    $ref: ethernet-phy.yaml#
++
++    properties:
++      reg:
++        description:
++          The MDIO communication on the RTL9300 is abstracted by the swi=
+tch. At
++          the software level communication uses the switch port to addre=
+ss the
++          PHY with the actual MDIO bus and address having been setup via=
+ the
++          realtek,smi-address property.
++
++      realtek,smi-address:
++        $ref: /schemas/types.yaml#/definitions/uint32-array
++        description: SMI interface and address for the connected PHY
++        items:
++          - description: SMI interface number associated with the port.
++          - description: SMI address of the PHY for the port.
++
++    unevaluatedProperties: false
++
++required:
++  - compatible
++  - reg
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    mdio@ca00 {
++        compatible =3D "realtek,rtl9301-mdio";
++        reg =3D <0xca00 0x200>;
++        #address-cells =3D <1>;
++        #size-cells =3D <0>;
++
++        ethernet-phy@0 {
++            compatible =3D "ethernet-phy-ieee802.3-c45";
++            reg =3D <0>;
++            realtek,smi-address =3D <0 1>;
++        };
++
++        ethernet-phy@8 {
++            compatible =3D "ethernet-phy-ieee802.3-c45";
++            reg =3D <8>;
++            realtek,smi-address =3D <1 1>;
++        };
++    };
+--=20
+2.47.1
+
