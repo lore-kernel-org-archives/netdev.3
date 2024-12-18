@@ -1,33 +1,34 @@
 Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1215C1F7577;
-	Wed, 18 Dec 2024 16:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6B31F63C0;
+	Wed, 18 Dec 2024 16:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734539643; cv=none; b=QnnFkUMKDx6h7uFKUSYkEW4oSShqz3LrzKjv+Wv6gnGsgeg8iO7XMWjN5iF1pNKZXGkQxT7NhMg4CMMqw/HdnnRuB1xObGf5tqAfiwiHPV0Itg6T7N+PCMvKlk+oTo7ggzKS1WjFHnztX4EMlDUe/uuqhKL61h52YOv3sEysf6g=
+	t=1734539651; cv=none; b=Y3mJlAl+bZf2qe0SaFD1dVEq5gF1fhw69prhOCFqZAGhBA4hl52Lt3n1qx6C4t2Cc5lo7034qjZB4wzBb+l+u/0RQbbdrVbXGrJLOg3qJ7J/eYUWoWVtGQ4PQAsoLPscUkW6f6PThMvKILDD0XouKYwndWht7iLt/JJcwm6SVFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734539643; c=relaxed/simple;
-	bh=8QbnrVVb4oToyUSLFXtgfuho+CaABor57AOP4DzyrOY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XtFq791hcC2QP/otFrj31bDNdathz5+o4Yw0KjaGdFukl3HBzl9EGc6V8SjjhEWSheWRZ6R/89NsNpJq2U7CfcVMZfXfbECu+NXyNlVi6wbJD2LAqrnYB7GGOaAVqLrnBqrPC3BLhO+QSOR5mbTFSswPXvczGcSoVFnEeUisBHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=MRB6uKCw; arc=none smtp.client-ip=46.235.229.95
+	s=arc-20240116; t=1734539651; c=relaxed/simple;
+	bh=J/gv98AFGa2eJeKTC1qfwhXH3mf8xf2xnKZas02Hcrs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=r4bzfEksOox+C0zvfXUCioERF1bVF4IhipPYan6NPlnMYgepQseHthI3yySJ/rH08YO6eKfrcaOqr6dxWDAx+MWQtG+xjJWeT3ImLfI6JsBhUxlK15og6vy+qYCayADF33VtHkNARKyFh0k0wF1In7JM3ni2fTmTRXtVY8uWGe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=I8ZKXlxu; arc=none smtp.client-ip=46.235.229.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="MRB6uKCw"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="I8ZKXlxu"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
 	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=3LP0J3V0iR3hdlBo95qr6BcILn0uI1nmzpekPrak8i8=; b=MRB6uKCwAHVyYCrv
-	eLZVHdOMLZZK0ziV/ve2HEL7uDFjgnJP+nw0/N6qq3PoaEMlAWbSL2vgELQIufMaewsfUg62sq/CR
-	CKZXw1cXvPLrvDXdrmhdRkQkfC0iB8CfmW96s+naO0o5ccR0xgNYfhEtPlKhnO7mK7nVyG4aut8WY
-	EugXk3Njnr/kUiJNgPpp4fCLME/L2pBYUj92iXhbiVm/uJ8LrvzjTrTB7zLCFF8Xg1ItC/p5t0xPi
-	fm+j3xAfgikId715rx9p87fqPd9oeYEeizgMzBnrXKndeB8cikhKEmIwIre4h5I/a408XLRrI99Zf
-	HOuI2Xbk+I7neUWr9A==;
+	:Subject; bh=ZjeajG0PZVXWz7g8v/NltxZHFFLN4CNSsjhUcWVcAGA=; b=I8ZKXlxu30x7UvVd
+	NOE7+t22oAPTmVKmhcGXqghCQaLEOkDHSC7cPLBk6MzsQsHygAqG+RSqjXi3R/kMCaUxykXDoEU6H
+	3C1G1k4ajvLmUPcPyTLDeIwiE7maIbmq8i8vIhZZKxG4fiqv/jgGVIxhenDeuy5YW0GuLye7LA3hR
+	0P7bJE+sndI+dNdamzoCQ/UO2Q6lpMpzHIV2KARDoYFUdE3FTfXEjyQEwkXkdnCeoSqtdKXnwtHly
+	tjWoI7h0rp5HfW4YPR/KMSQtQvd+xT2lb/VVXQHyaD+oCsbrKWmj4BpXTtTktlh4utaBn9HIZcfhO
+	bGpKTZOhNrdui+8kAQ==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
 	by mx.treblig.org with esmtp (Exim 4.96)
 	(envelope-from <linux@treblig.org>)
-	id 1tNwzW-0068f8-2u;
-	Wed, 18 Dec 2024 16:33:43 +0000
+	id 1tNwzZ-0068f8-09;
+	Wed, 18 Dec 2024 16:33:45 +0000
 From: linux@treblig.org
 To: salil.mehta@huawei.com,
 	shenjian15@huawei.com,
@@ -40,10 +41,12 @@ To: salil.mehta@huawei.com,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH net-next v2 0/4] hisilicon hns deadcoding
-Date: Wed, 18 Dec 2024 16:33:37 +0000
-Message-ID: <20241218163341.40297-1-linux@treblig.org>
+Subject: [PATCH net-next v2 2/4] net: hisilicon: hns: Remove unused hns_rcb_start
+Date: Wed, 18 Dec 2024 16:33:39 +0000
+Message-ID: <20241218163341.40297-3-linux@treblig.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241218163341.40297-1-linux@treblig.org>
+References: <20241218163341.40297-1-linux@treblig.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,32 +57,46 @@ Content-Transfer-Encoding: 8bit
 
 From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-Hi,
-  A small set of deadcoding for functions that are not
-called, and a couple of function pointers that they
-called.
+hns_rcb_start() has been unused since 2016's
+commit 454784d85de3 ("net: hns: delete redundancy ring enable operations")
 
-Build tested only; I don't have the hardware.
+Remove it.
 
 Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+Reviewed-by: Jijie Shao<shaojijie@huawei.com>
+---
+ drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c | 5 -----
+ drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.h | 1 -
+ 2 files changed, 6 deletions(-)
 
-v2
-  Add a patch to remove unused enums as recommended
-  by Jijie's review
-
-Dr. David Alan Gilbert (4):
-  net: hisilicon: hns: Remove unused hns_dsaf_roce_reset
-  net: hisilicon: hns: Remove unused hns_rcb_start
-  net: hisilicon: hns: Remove reset helpers
-  net: hisilicon: hns: Remove unused enums
-
- .../ethernet/hisilicon/hns/hns_dsaf_main.c    | 109 ------------------
- .../ethernet/hisilicon/hns/hns_dsaf_main.h    |  28 -----
- .../ethernet/hisilicon/hns/hns_dsaf_misc.c    |  67 -----------
- .../net/ethernet/hisilicon/hns/hns_dsaf_rcb.c |   5 -
- .../net/ethernet/hisilicon/hns/hns_dsaf_rcb.h |   1 -
- 5 files changed, 210 deletions(-)
-
+diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c
+index 46af467aa596..635b3a95dd82 100644
+--- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c
++++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c
+@@ -195,11 +195,6 @@ void hns_rcb_ring_enable_hw(struct hnae_queue *q, u32 val)
+ 	dsaf_write_dev(q, RCB_RING_PREFETCH_EN_REG, !!val);
+ }
+ 
+-void hns_rcb_start(struct hnae_queue *q, u32 val)
+-{
+-	hns_rcb_ring_enable_hw(q, val);
+-}
+-
+ /**
+  *hns_rcb_common_init_commit_hw - make rcb common init completed
+  *@rcb_common: rcb common device
+diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.h b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.h
+index 0f4cc184ef39..68f81547dfb4 100644
+--- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.h
++++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.h
+@@ -116,7 +116,6 @@ int hns_rcb_buf_size2type(u32 buf_size);
+ int hns_rcb_common_get_cfg(struct dsaf_device *dsaf_dev, int comm_index);
+ void hns_rcb_common_free_cfg(struct dsaf_device *dsaf_dev, u32 comm_index);
+ int hns_rcb_common_init_hw(struct rcb_common_cb *rcb_common);
+-void hns_rcb_start(struct hnae_queue *q, u32 val);
+ int hns_rcb_get_cfg(struct rcb_common_cb *rcb_common);
+ void hns_rcb_get_queue_mode(enum dsaf_mode dsaf_mode,
+ 			    u16 *max_vfn, u16 *max_q_per_vf);
 -- 
 2.47.1
 
