@@ -1,34 +1,34 @@
 Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC7F14AD0E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1A81C5CD5;
 	Wed, 18 Dec 2024 16:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734539638; cv=none; b=D/NpieI5RuHmh8NvccBk462P0rSNpVSaYIMbFb4AUFFV8YBYtpLPb8RWSsloX1HzN0zyZWVpnUO3an4GMSsrwCFREn3UoDfhvhxsnroFgFnYW0AVDkWTHXc0yLZkNziBHKyn1Jq9R7sYBlZtnaAAif/X2Rr04HoAaE88Bb4h5V4=
+	t=1734539638; cv=none; b=kU1xX+AoNiN2j+MR7ZS3YHIyV6imbORQ9O8WnLLOQFJhJ2h7q7OjLO8mBgTfCKj5qKgS1J7D9Ys6enjCQQmIZkFHwcA9Xsvt4kqB7DtHZ3bWyx1HHUuPcy7dkiB7GKjJhdb2M11L8eEnDHLhwa45Bg5dIBVR+OqBzvfoRtdTlpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734539638; c=relaxed/simple;
-	bh=LtDr4bTi4I89tipAlSWYo8BDfzHXGRZkj7MtWhbeL+4=;
+	bh=OAoHuQgl3t/ERWiJ5VbkjoMyHRnESBFVdCNTV1w7joY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQXK63efysVbmmz0bet9rp6GnJEXm95QCCyb1asvZ7XOr2ecJY/VwbgrO9IXBw82f2umJSZmYHWG9boyt3bdO9QzJptRFa1GnmOO5s95jLLZcEOlIOB+9IhPt0GsdOIOjhjz9Eqq/TT+tS0eVH7RI9FTduiPY5IXL4iVYcGUmG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=GzDRJ6XA; arc=none smtp.client-ip=46.235.229.95
+	 MIME-Version; b=QWUJCncEsL0iSseb1huZLkiESgsKMFk3HwCMSHguza71tjCbnqp46vACS37+vBZtmJrLbnEQlsEXMsVoGP/XCceovIBaSpG+WkSMSKhUaT6etCwFJQYxXW01Fej4ukIw6qOzccteDZSIOiTaWSdwQ8AxTzJT1mbtTy7Z951EjAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=XYMrAHMG; arc=none smtp.client-ip=46.235.229.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="GzDRJ6XA"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="XYMrAHMG"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
 	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=nBIeq+Yjp78pRWOuY/VWfVziqqfkWlDpUzxPnKAEnnE=; b=GzDRJ6XA5qOmGG//
-	oYNa37p2Zy1TEYX7TRpyD/JR8CTHIdGo33QkD2HqDPW7AlAgTyCxJgDZZPcOgVEo/p7FKUwSsIBeI
-	4cPKcqMP7NG2+IOIBMCzqvBlgulISLF//x/cM3WNH8TXBEjeQHj2GQRpFugTCyJXYZm4gOsgcJFu6
-	9CkOrFy5LzZYkJR9I2uT3BTuvYISNi8z9/2gouy2Ah0oi2BNzUxRyM1wWka1wWzyxZ8ZCoRJKNElx
-	D31ddGZHjLOiyYHK3C3WpIo/ddxAQlSq2oMtyyKwiu1qWA2wv+kiWFy/oL1SupDVQeaqgCFnM1Ald
-	yUXyHrB3zNU0QrXYWQ==;
+	:Subject; bh=XIJ1QZJLc3cPNb+OrjpdBKT4GYte0/Yf+h52CfhDBjs=; b=XYMrAHMGa8w/Iwz/
+	VDSeEasgN8lS/Wq4J/WtPxDfUI01sY8pQ8q9x6ziror+nHbAXm9BAjt87GsOfoMX/p/LEKWij2QIW
+	nHHj/hA/sfZPZh3lYx8eyXs5CSxi/1KwkpccaL0KUkRhL3qX6C21TuH60f2UlCEh4Q9Hnwo5+7vxb
+	v/6098nkFovToZ1ZK8Db4QIjZYJfXC95W9WBlNi+RbY2PiY3DnRQICVkQ8Q6kvCWds5ngN09jJqmn
+	GZj4vDhh64OtMa7MzzxthXqIYBSaokRmCZuY67hk4Gv83FHMQniN08NDTRd+8a6Fqufb0t5H8H8lD
+	7FjSh7vWZKJncz98yw==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
 	by mx.treblig.org with esmtp (Exim 4.96)
 	(envelope-from <linux@treblig.org>)
-	id 1tNwzY-0068f8-0y;
-	Wed, 18 Dec 2024 16:33:44 +0000
+	id 1tNwzZ-0068f8-2I;
+	Wed, 18 Dec 2024 16:33:45 +0000
 From: linux@treblig.org
 To: salil.mehta@huawei.com,
 	shenjian15@huawei.com,
@@ -41,9 +41,9 @@ To: salil.mehta@huawei.com,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH net-next v2 1/4] net: hisilicon: hns: Remove unused hns_dsaf_roce_reset
-Date: Wed, 18 Dec 2024 16:33:38 +0000
-Message-ID: <20241218163341.40297-2-linux@treblig.org>
+Subject: [PATCH net-next v2 3/4] net: hisilicon: hns: Remove reset helpers
+Date: Wed, 18 Dec 2024 16:33:40 +0000
+Message-ID: <20241218163341.40297-4-linux@treblig.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241218163341.40297-1-linux@treblig.org>
 References: <20241218163341.40297-1-linux@treblig.org>
@@ -57,148 +57,127 @@ Content-Transfer-Encoding: 8bit
 
 From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-hns_dsaf_roce_reset() has been unused since 2021's
-commit 38d220882426 ("RDMA/hns: Remove support for HIP06")
+With hns_dsaf_roce_reset() removed in a previous patch, the two
+helper member pointers, 'hns_dsaf_roce_srst',  and 'hns_dsaf_srst_chns'
+are now unread.
 
-Remove it.
+Remove them, and the helper functions that they were initialised
+to, that is hns_dsaf_srst_chns(), hns_dsaf_srst_chns_acpi(),
+hns_dsaf_roce_srst() and hns_dsaf_roce_srst_acpi().
 
 Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+Reviewed-by: Jijie Shao<shaojijie@huawei.com>
 ---
- .../ethernet/hisilicon/hns/hns_dsaf_main.c    | 109 ------------------
- .../ethernet/hisilicon/hns/hns_dsaf_main.h    |   2 -
- 2 files changed, 111 deletions(-)
+ .../ethernet/hisilicon/hns/hns_dsaf_main.h    |  3 -
+ .../ethernet/hisilicon/hns/hns_dsaf_misc.c    | 67 -------------------
+ 2 files changed, 70 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c
-index 851490346261..6b6ced37e490 100644
---- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c
-@@ -3019,115 +3019,6 @@ static struct platform_driver g_dsaf_driver = {
- 
- module_platform_driver(g_dsaf_driver);
- 
--/**
-- * hns_dsaf_roce_reset - reset dsaf and roce
-- * @dsaf_fwnode: Pointer to framework node for the dasf
-- * @dereset: false - request reset , true - drop reset
-- * return 0 - success , negative -fail
-- */
--int hns_dsaf_roce_reset(struct fwnode_handle *dsaf_fwnode, bool dereset)
--{
--	struct dsaf_device *dsaf_dev;
--	struct platform_device *pdev;
--	u32 mp;
--	u32 sl;
--	u32 credit;
--	int i;
--	static const u32 port_map[DSAF_ROCE_CREDIT_CHN][DSAF_ROCE_CHAN_MODE_NUM] = {
--		{DSAF_ROCE_PORT_0, DSAF_ROCE_PORT_0, DSAF_ROCE_PORT_0},
--		{DSAF_ROCE_PORT_1, DSAF_ROCE_PORT_0, DSAF_ROCE_PORT_0},
--		{DSAF_ROCE_PORT_2, DSAF_ROCE_PORT_1, DSAF_ROCE_PORT_0},
--		{DSAF_ROCE_PORT_3, DSAF_ROCE_PORT_1, DSAF_ROCE_PORT_0},
--		{DSAF_ROCE_PORT_4, DSAF_ROCE_PORT_2, DSAF_ROCE_PORT_1},
--		{DSAF_ROCE_PORT_4, DSAF_ROCE_PORT_2, DSAF_ROCE_PORT_1},
--		{DSAF_ROCE_PORT_5, DSAF_ROCE_PORT_3, DSAF_ROCE_PORT_1},
--		{DSAF_ROCE_PORT_5, DSAF_ROCE_PORT_3, DSAF_ROCE_PORT_1},
--	};
--	static const u32 sl_map[DSAF_ROCE_CREDIT_CHN][DSAF_ROCE_CHAN_MODE_NUM] = {
--		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_0, DSAF_ROCE_SL_0},
--		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_1, DSAF_ROCE_SL_1},
--		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_0, DSAF_ROCE_SL_2},
--		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_1, DSAF_ROCE_SL_3},
--		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_0, DSAF_ROCE_SL_0},
--		{DSAF_ROCE_SL_1, DSAF_ROCE_SL_1, DSAF_ROCE_SL_1},
--		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_0, DSAF_ROCE_SL_2},
--		{DSAF_ROCE_SL_1, DSAF_ROCE_SL_1, DSAF_ROCE_SL_3},
--	};
--
--	/* find the platform device corresponding to fwnode */
--	if (is_of_node(dsaf_fwnode)) {
--		pdev = of_find_device_by_node(to_of_node(dsaf_fwnode));
--	} else if (is_acpi_device_node(dsaf_fwnode)) {
--		pdev = hns_dsaf_find_platform_device(dsaf_fwnode);
--	} else {
--		pr_err("fwnode is neither OF or ACPI type\n");
--		return -EINVAL;
--	}
--
--	/* check if we were a success in fetching pdev */
--	if (!pdev) {
--		pr_err("couldn't find platform device for node\n");
--		return -ENODEV;
--	}
--
--	/* retrieve the dsaf_device from the driver data */
--	dsaf_dev = dev_get_drvdata(&pdev->dev);
--	if (!dsaf_dev) {
--		dev_err(&pdev->dev, "dsaf_dev is NULL\n");
--		put_device(&pdev->dev);
--		return -ENODEV;
--	}
--
--	/* now, make sure we are running on compatible SoC */
--	if (AE_IS_VER1(dsaf_dev->dsaf_ver)) {
--		dev_err(dsaf_dev->dev, "%s v1 chip doesn't support RoCE!\n",
--			dsaf_dev->ae_dev.name);
--		put_device(&pdev->dev);
--		return -ENODEV;
--	}
--
--	/* do reset or de-reset according to the flag */
--	if (!dereset) {
--		/* reset rocee-channels in dsaf and rocee */
--		dsaf_dev->misc_op->hns_dsaf_srst_chns(dsaf_dev, DSAF_CHNS_MASK,
--						      false);
--		dsaf_dev->misc_op->hns_dsaf_roce_srst(dsaf_dev, false);
--	} else {
--		/* configure dsaf tx roce correspond to port map and sl map */
--		mp = dsaf_read_dev(dsaf_dev, DSAF_ROCE_PORT_MAP_REG);
--		for (i = 0; i < DSAF_ROCE_CREDIT_CHN; i++)
--			dsaf_set_field(mp, 7 << i * 3, i * 3,
--				       port_map[i][DSAF_ROCE_6PORT_MODE]);
--		dsaf_set_field(mp, 3 << i * 3, i * 3, 0);
--		dsaf_write_dev(dsaf_dev, DSAF_ROCE_PORT_MAP_REG, mp);
--
--		sl = dsaf_read_dev(dsaf_dev, DSAF_ROCE_SL_MAP_REG);
--		for (i = 0; i < DSAF_ROCE_CREDIT_CHN; i++)
--			dsaf_set_field(sl, 3 << i * 2, i * 2,
--				       sl_map[i][DSAF_ROCE_6PORT_MODE]);
--		dsaf_write_dev(dsaf_dev, DSAF_ROCE_SL_MAP_REG, sl);
--
--		/* de-reset rocee-channels in dsaf and rocee */
--		dsaf_dev->misc_op->hns_dsaf_srst_chns(dsaf_dev, DSAF_CHNS_MASK,
--						      true);
--		msleep(SRST_TIME_INTERVAL);
--		dsaf_dev->misc_op->hns_dsaf_roce_srst(dsaf_dev, true);
--
--		/* enable dsaf channel rocee credit */
--		credit = dsaf_read_dev(dsaf_dev, DSAF_SBM_ROCEE_CFG_REG_REG);
--		dsaf_set_bit(credit, DSAF_SBM_ROCEE_CFG_CRD_EN_B, 0);
--		dsaf_write_dev(dsaf_dev, DSAF_SBM_ROCEE_CFG_REG_REG, credit);
--
--		dsaf_set_bit(credit, DSAF_SBM_ROCEE_CFG_CRD_EN_B, 1);
--		dsaf_write_dev(dsaf_dev, DSAF_SBM_ROCEE_CFG_REG_REG, credit);
--	}
--
--	put_device(&pdev->dev);
--
--	return 0;
--}
--EXPORT_SYMBOL(hns_dsaf_roce_reset);
--
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Huawei Tech. Co., Ltd.");
- MODULE_DESCRIPTION("HNS DSAF driver");
 diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.h b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.h
-index 0eb03dff1a8b..c90f41c75500 100644
+index c90f41c75500..bb8267aafc43 100644
 --- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.h
 +++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.h
-@@ -463,6 +463,4 @@ int hns_dsaf_clr_mac_mc_port(struct dsaf_device *dsaf_dev,
- 			     u8 mac_id, u8 port_num);
- int hns_dsaf_wait_pkt_clean(struct dsaf_device *dsaf_dev, int port);
+@@ -307,9 +307,6 @@ struct dsaf_misc_op {
+ 	void (*ge_srst)(struct dsaf_device *dsaf_dev, u32 port, bool dereset);
+ 	void (*ppe_srst)(struct dsaf_device *dsaf_dev, u32 port, bool dereset);
+ 	void (*ppe_comm_srst)(struct dsaf_device *dsaf_dev, bool dereset);
+-	void (*hns_dsaf_srst_chns)(struct dsaf_device *dsaf_dev, u32 msk,
+-				   bool dereset);
+-	void (*hns_dsaf_roce_srst)(struct dsaf_device *dsaf_dev, bool dereset);
  
--int hns_dsaf_roce_reset(struct fwnode_handle *dsaf_fwnode, bool dereset);
+ 	phy_interface_t (*get_phy_if)(struct hns_mac_cb *mac_cb);
+ 	int (*get_sfp_prsnt)(struct hns_mac_cb *mac_cb, int *sfp_prsnt);
+diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_misc.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_misc.c
+index 5df19c604d09..91391a49fcea 100644
+--- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_misc.c
++++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_misc.c
+@@ -326,69 +326,6 @@ static void hns_dsaf_xge_srst_by_port_acpi(struct dsaf_device *dsaf_dev,
+ 				   HNS_XGE_RESET_FUNC, port, dereset);
+ }
+ 
+-/**
+- * hns_dsaf_srst_chns - reset dsaf channels
+- * @dsaf_dev: dsaf device struct pointer
+- * @msk: xbar channels mask value:
+- * @dereset: false - request reset , true - drop reset
+- *
+- * bit0-5 for xge0-5
+- * bit6-11 for ppe0-5
+- * bit12-17 for roce0-5
+- * bit18-19 for com/dfx
+- */
+-static void
+-hns_dsaf_srst_chns(struct dsaf_device *dsaf_dev, u32 msk, bool dereset)
+-{
+-	u32 reg_addr;
 -
- #endif /* __HNS_DSAF_MAIN_H__ */
+-	if (!dereset)
+-		reg_addr = DSAF_SUB_SC_DSAF_RESET_REQ_REG;
+-	else
+-		reg_addr = DSAF_SUB_SC_DSAF_RESET_DREQ_REG;
+-
+-	dsaf_write_sub(dsaf_dev, reg_addr, msk);
+-}
+-
+-/**
+- * hns_dsaf_srst_chns_acpi - reset dsaf channels
+- * @dsaf_dev: dsaf device struct pointer
+- * @msk: xbar channels mask value:
+- * @dereset: false - request reset , true - drop reset
+- *
+- * bit0-5 for xge0-5
+- * bit6-11 for ppe0-5
+- * bit12-17 for roce0-5
+- * bit18-19 for com/dfx
+- */
+-static void
+-hns_dsaf_srst_chns_acpi(struct dsaf_device *dsaf_dev, u32 msk, bool dereset)
+-{
+-	hns_dsaf_acpi_srst_by_port(dsaf_dev, HNS_OP_RESET_FUNC,
+-				   HNS_DSAF_CHN_RESET_FUNC,
+-				   msk, dereset);
+-}
+-
+-static void hns_dsaf_roce_srst(struct dsaf_device *dsaf_dev, bool dereset)
+-{
+-	if (!dereset) {
+-		dsaf_write_sub(dsaf_dev, DSAF_SUB_SC_ROCEE_RESET_REQ_REG, 1);
+-	} else {
+-		dsaf_write_sub(dsaf_dev,
+-			       DSAF_SUB_SC_ROCEE_CLK_DIS_REG, 1);
+-		dsaf_write_sub(dsaf_dev,
+-			       DSAF_SUB_SC_ROCEE_RESET_DREQ_REG, 1);
+-		msleep(20);
+-		dsaf_write_sub(dsaf_dev, DSAF_SUB_SC_ROCEE_CLK_EN_REG, 1);
+-	}
+-}
+-
+-static void hns_dsaf_roce_srst_acpi(struct dsaf_device *dsaf_dev, bool dereset)
+-{
+-	hns_dsaf_acpi_srst_by_port(dsaf_dev, HNS_OP_RESET_FUNC,
+-				   HNS_ROCE_RESET_FUNC, 0, dereset);
+-}
+-
+ static void hns_dsaf_ge_srst_by_port(struct dsaf_device *dsaf_dev, u32 port,
+ 				     bool dereset)
+ {
+@@ -729,8 +666,6 @@ struct dsaf_misc_op *hns_misc_op_get(struct dsaf_device *dsaf_dev)
+ 		misc_op->ge_srst = hns_dsaf_ge_srst_by_port;
+ 		misc_op->ppe_srst = hns_ppe_srst_by_port;
+ 		misc_op->ppe_comm_srst = hns_ppe_com_srst;
+-		misc_op->hns_dsaf_srst_chns = hns_dsaf_srst_chns;
+-		misc_op->hns_dsaf_roce_srst = hns_dsaf_roce_srst;
+ 
+ 		misc_op->get_phy_if = hns_mac_get_phy_if;
+ 		misc_op->get_sfp_prsnt = hns_mac_get_sfp_prsnt;
+@@ -746,8 +681,6 @@ struct dsaf_misc_op *hns_misc_op_get(struct dsaf_device *dsaf_dev)
+ 		misc_op->ge_srst = hns_dsaf_ge_srst_by_port_acpi;
+ 		misc_op->ppe_srst = hns_ppe_srst_by_port_acpi;
+ 		misc_op->ppe_comm_srst = hns_ppe_com_srst;
+-		misc_op->hns_dsaf_srst_chns = hns_dsaf_srst_chns_acpi;
+-		misc_op->hns_dsaf_roce_srst = hns_dsaf_roce_srst_acpi;
+ 
+ 		misc_op->get_phy_if = hns_mac_get_phy_if_acpi;
+ 		misc_op->get_sfp_prsnt = hns_mac_get_sfp_prsnt_acpi;
 -- 
 2.47.1
 
