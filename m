@@ -1,203 +1,302 @@
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5541713D244;
-	Wed, 18 Dec 2024 00:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B900121364
+	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 00:58:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734483482; cv=none; b=RIpHNjtUCzL37i/NhD932F4J9bXMUkkwfInBH+h38Vy0ZN1qbexTd+MurEAFzNcanaioKpLaOoAUIG+hxHHxeljPu1CjxQCDMHHMuXg90u9LYPnsKoKN3CrunkNuOKRSZS2oZnAWLlZNxBIxy6eLfHVge++APwteKlwFr5Cd1zg=
+	t=1734483505; cv=none; b=h3YqIPiVkevoRSQTBdJXgPblZTl/4+z3nSv8fTZg7+HJZY6ofDaOyIdM2f4wSOf1VWP5UAkhDtQCbYkP9iAKnbyf//7t8frw2XpMvWuUyqalM0e/gEGj8ZnoL2f0G2M3NguLOZuo5OfKQB1VUrOw8XUerTztLqryihZDFVrj9a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734483482; c=relaxed/simple;
-	bh=LtDr4bTi4I89tipAlSWYo8BDfzHXGRZkj7MtWhbeL+4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d9mIjKkS0sxgeFaCOaCGHKnlP6K3l7cKJL3aKza3joL6jdJ+ntLydYOTnvOJi2H7aN+oatOu3JpIQyr/lbJmTU9zpCJCObsMJZRIOqWmwx12CSqXm3bRnFecZzN3RtPx/qbBKTNZQDnHJHwPjWpCt5jt5LYBzvtXzXY99l7NySA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=FkCpFpWM; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+	s=arc-20240116; t=1734483505; c=relaxed/simple;
+	bh=ojGfl5SHibUvpLfRcRApihK5waB7qEav9L64FtsMlA4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Sv9ZdiNfgTyfEzhkjA8ZTy/bWxwOwjon+wYv2e138irjEImbISi6PsYz9kAus2z4G3Snbwk9mOgZwLROrqnnipIOucPwISgrW++/js4dLOKRJbTXdRHp8OztjzLfDcftFptAZMajAGtobQkcEUaJWD4w7q0xoGIuohOkXhmHnxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=W35aPu4P; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="FkCpFpWM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=nBIeq+Yjp78pRWOuY/VWfVziqqfkWlDpUzxPnKAEnnE=; b=FkCpFpWMtzxAnPSk
-	Yl7tAR5xGqJnG6VTff7l7PE4kPP5vQmf90rgcEE7bN66NEgiqhZE6YghXwtjq8Bu9goj5UJcQTKdp
-	9IWlMD6U/hfj9hsyUv9jWtIaA40ca/BbO7ihs79/4KIUU2Vkgo9x9VZihwV6C4YGHIL6VOOzWiBdi
-	Naxk4AWDMepzqaFmnJZwDCrb93OcwdeQvgfk0U0S3askXV0Jb66iG1tFY1iEhVaua/F065imqyTB/
-	uN/M6C7RZTh8nj+oBWc0q9+0el2OmKvUUzuJ7J9RI58MZPUKEmIV7goyknfeeHK3VrZHRS5RspZ2I
-	D6dCd3McYsw8gOL/EA==;
-Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
-	by mx.treblig.org with esmtp (Exim 4.96)
-	(envelope-from <linux@treblig.org>)
-	id 1tNiNX-005zvH-1U;
-	Wed, 18 Dec 2024 00:57:31 +0000
-From: linux@treblig.org
-To: salil.mehta@huawei.com,
-	shenjian15@huawei.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH net-next 1/3] net: hisilicon: hns: Remove unused hns_dsaf_roce_reset
-Date: Wed, 18 Dec 2024 00:57:27 +0000
-Message-ID: <20241218005729.244987-2-linux@treblig.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241218005729.244987-1-linux@treblig.org>
-References: <20241218005729.244987-1-linux@treblig.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="W35aPu4P"
+Message-ID: <65399ffd-da8a-436a-81fd-b5bd3e4b8a54@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1734483500;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6mc4ji3tVzdyWxvyeLwYeLMPx8IVQdD8BScnBye2t3o=;
+	b=W35aPu4PAjAPkqF+Y8dQS4DlJ1ZykeUx4dLhI6s7kcawgmBgDji2YW3IjK+VIaH2j8eBdq
+	jDNE3MMQvDzMGKtfZKDU63Wr0TXxIEUSCMyT16KVNowMb6TUPPG6pJSXrjhFH1E93U4TC1
+	LoA1LXFSx6dXgp1PnBj0LqNEde/Z4yM=
+Date: Tue, 17 Dec 2024 16:58:11 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf-next v1 01/13] bpf: Support getting referenced kptr
+ from struct_ops argument
+To: Amery Hung <amery.hung@bytedance.com>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, daniel@iogearbox.net,
+ andrii@kernel.org, alexei.starovoitov@gmail.com, martin.lau@kernel.org,
+ sinquersw@gmail.com, toke@redhat.com, jhs@mojatatu.com, jiri@resnulli.us,
+ stfomichev@gmail.com, ekarani.silvestre@ccc.ufcg.edu.br,
+ yangpeihao@sjtu.edu.cn, xiyou.wangcong@gmail.com, yepeilin.cs@gmail.com,
+ ameryhung@gmail.com
+References: <20241213232958.2388301-1-amery.hung@bytedance.com>
+ <20241213232958.2388301-2-amery.hung@bytedance.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+Content-Language: en-US
+In-Reply-To: <20241213232958.2388301-2-amery.hung@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
+On 12/13/24 3:29 PM, Amery Hung wrote:
+> Allows struct_ops programs to acqurie referenced kptrs from arguments
+> by directly reading the argument.
+> 
+> The verifier will acquire a reference for struct_ops a argument tagged
+> with "__ref" in the stub function in the beginning of the main program.
+> The user will be able to access the referenced kptr directly by reading
+> the context as long as it has not been released by the program.
+> 
+> This new mechanism to acquire referenced kptr (compared to the existing
+> "kfunc with KF_ACQUIRE") is introduced for ergonomic and semantic reasons.
+> In the first use case, Qdisc_ops, an skb is passed to .enqueue in the
+> first argument. This mechanism provides a natural way for users to get a
+> referenced kptr in the .enqueue struct_ops programs and makes sure that a
+> qdisc will always enqueue or drop the skb.
+> 
+> Signed-off-by: Amery Hung <amery.hung@bytedance.com>
+> ---
+>   include/linux/bpf.h         |  3 +++
+>   kernel/bpf/bpf_struct_ops.c | 26 ++++++++++++++++++++------
+>   kernel/bpf/btf.c            |  1 +
+>   kernel/bpf/verifier.c       | 35 ++++++++++++++++++++++++++++++++---
+>   4 files changed, 56 insertions(+), 9 deletions(-)
+> 
+> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+> index 1b84613b10ac..72bf941d1daf 100644
+> --- a/include/linux/bpf.h
+> +++ b/include/linux/bpf.h
+> @@ -968,6 +968,7 @@ struct bpf_insn_access_aux {
+>   		struct {
+>   			struct btf *btf;
+>   			u32 btf_id;
+> +			u32 ref_obj_id;
+>   		};
+>   	};
+>   	struct bpf_verifier_log *log; /* for verbose logs */
+> @@ -1480,6 +1481,8 @@ struct bpf_ctx_arg_aux {
+>   	enum bpf_reg_type reg_type;
+>   	struct btf *btf;
+>   	u32 btf_id;
+> +	u32 ref_obj_id;
+> +	bool refcounted;
+>   };
+>   
+>   struct btf_mod_pair {
+> diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
+> index fda3dd2ee984..6e7795744f6a 100644
+> --- a/kernel/bpf/bpf_struct_ops.c
+> +++ b/kernel/bpf/bpf_struct_ops.c
+> @@ -145,6 +145,7 @@ void bpf_struct_ops_image_free(void *image)
+>   }
+>   
+>   #define MAYBE_NULL_SUFFIX "__nullable"
+> +#define REFCOUNTED_SUFFIX "__ref"
+>   #define MAX_STUB_NAME 128
+>   
+>   /* Return the type info of a stub function, if it exists.
+> @@ -206,9 +207,11 @@ static int prepare_arg_info(struct btf *btf,
+>   			    struct bpf_struct_ops_arg_info *arg_info)
+>   {
+>   	const struct btf_type *stub_func_proto, *pointed_type;
+> +	bool is_nullable = false, is_refcounted = false;
+>   	const struct btf_param *stub_args, *args;
+>   	struct bpf_ctx_arg_aux *info, *info_buf;
+>   	u32 nargs, arg_no, info_cnt = 0;
+> +	const char *suffix;
+>   	u32 arg_btf_id;
+>   	int offset;
+>   
+> @@ -240,12 +243,19 @@ static int prepare_arg_info(struct btf *btf,
+>   	info = info_buf;
+>   	for (arg_no = 0; arg_no < nargs; arg_no++) {
+>   		/* Skip arguments that is not suffixed with
+> -		 * "__nullable".
+> +		 * "__nullable or __ref".
+>   		 */
+> -		if (!btf_param_match_suffix(btf, &stub_args[arg_no],
+> -					    MAYBE_NULL_SUFFIX))
+> +		is_nullable = btf_param_match_suffix(btf, &stub_args[arg_no],
+> +						     MAYBE_NULL_SUFFIX);
+> +		is_refcounted = btf_param_match_suffix(btf, &stub_args[arg_no],
+> +						       REFCOUNTED_SUFFIX);
+> +		if (!is_nullable && !is_refcounted)
+>   			continue;
+>   
+> +		if (is_nullable)
+> +			suffix = MAYBE_NULL_SUFFIX;
+> +		else if (is_refcounted)
+> +			suffix = REFCOUNTED_SUFFIX;
+>   		/* Should be a pointer to struct */
+>   		pointed_type = btf_type_resolve_ptr(btf,
+>   						    args[arg_no].type,
+> @@ -253,7 +263,7 @@ static int prepare_arg_info(struct btf *btf,
+>   		if (!pointed_type ||
+>   		    !btf_type_is_struct(pointed_type)) {
+>   			pr_warn("stub function %s__%s has %s tagging to an unsupported type\n",
+> -				st_ops_name, member_name, MAYBE_NULL_SUFFIX);
+> +				st_ops_name, member_name, suffix);
+>   			goto err_out;
+>   		}
+>   
+> @@ -271,11 +281,15 @@ static int prepare_arg_info(struct btf *btf,
+>   		}
+>   
+>   		/* Fill the information of the new argument */
+> -		info->reg_type =
+> -			PTR_TRUSTED | PTR_TO_BTF_ID | PTR_MAYBE_NULL;
+>   		info->btf_id = arg_btf_id;
+>   		info->btf = btf;
+>   		info->offset = offset;
+> +		if (is_nullable) {
+> +			info->reg_type = PTR_TRUSTED | PTR_TO_BTF_ID | PTR_MAYBE_NULL;
+> +		} else if (is_refcounted) {
+> +			info->reg_type = PTR_TRUSTED | PTR_TO_BTF_ID;
+> +			info->refcounted = true;
+> +		}
+>   
+>   		info++;
+>   		info_cnt++;
+> diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+> index e7a59e6462a9..a05ccf9ee032 100644
+> --- a/kernel/bpf/btf.c
+> +++ b/kernel/bpf/btf.c
+> @@ -6580,6 +6580,7 @@ bool btf_ctx_access(int off, int size, enum bpf_access_type type,
+>   			info->reg_type = ctx_arg_info->reg_type;
+>   			info->btf = ctx_arg_info->btf ? : btf_vmlinux;
+>   			info->btf_id = ctx_arg_info->btf_id;
+> +			info->ref_obj_id = ctx_arg_info->ref_obj_id;
+>   			return true;
+>   		}
+>   	}
+> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+> index 9f5de8d4fbd0..69753096075f 100644
+> --- a/kernel/bpf/verifier.c
+> +++ b/kernel/bpf/verifier.c
+> @@ -1402,6 +1402,17 @@ static int release_reference_state(struct bpf_func_state *state, int ptr_id)
+>   	return -EINVAL;
+>   }
+>   
+> +static bool find_reference_state(struct bpf_func_state *state, int ptr_id)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < state->acquired_refs; i++)
+> +		if (state->refs[i].id == ptr_id)
+> +			return true;
+> +
+> +	return false;
+> +}
+> +
+>   static int release_lock_state(struct bpf_func_state *state, int type, int id, void *ptr)
+>   {
+>   	int i, last_idx;
+> @@ -5798,7 +5809,8 @@ static int check_packet_access(struct bpf_verifier_env *env, u32 regno, int off,
+>   /* check access to 'struct bpf_context' fields.  Supports fixed offsets only */
+>   static int check_ctx_access(struct bpf_verifier_env *env, int insn_idx, int off, int size,
+>   			    enum bpf_access_type t, enum bpf_reg_type *reg_type,
+> -			    struct btf **btf, u32 *btf_id, bool *is_retval, bool is_ldsx)
+> +			    struct btf **btf, u32 *btf_id, bool *is_retval, bool is_ldsx,
+> +			    u32 *ref_obj_id)
+>   {
+>   	struct bpf_insn_access_aux info = {
+>   		.reg_type = *reg_type,
+> @@ -5820,8 +5832,16 @@ static int check_ctx_access(struct bpf_verifier_env *env, int insn_idx, int off,
+>   		*is_retval = info.is_retval;
+>   
+>   		if (base_type(*reg_type) == PTR_TO_BTF_ID) {
+> +			if (info.ref_obj_id &&
+> +			    !find_reference_state(cur_func(env), info.ref_obj_id)) {
+> +				verbose(env, "invalid bpf_context access off=%d. Reference may already be released\n",
+> +					off);
+> +				return -EACCES;
+> +			}
+> +
+>   			*btf = info.btf;
+>   			*btf_id = info.btf_id;
+> +			*ref_obj_id = info.ref_obj_id;
+>   		} else {
+>   			env->insn_aux_data[insn_idx].ctx_field_size = info.ctx_field_size;
+>   		}
+> @@ -7135,7 +7155,7 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
+>   		struct bpf_retval_range range;
+>   		enum bpf_reg_type reg_type = SCALAR_VALUE;
+>   		struct btf *btf = NULL;
+> -		u32 btf_id = 0;
+> +		u32 btf_id = 0, ref_obj_id = 0;
+>   
+>   		if (t == BPF_WRITE && value_regno >= 0 &&
+>   		    is_pointer_value(env, value_regno)) {
+> @@ -7148,7 +7168,7 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
+>   			return err;
+>   
+>   		err = check_ctx_access(env, insn_idx, off, size, t, &reg_type, &btf,
+> -				       &btf_id, &is_retval, is_ldsx);
+> +				       &btf_id, &is_retval, is_ldsx, &ref_obj_id);
+>   		if (err)
+>   			verbose_linfo(env, insn_idx, "; ");
+>   		if (!err && t == BPF_READ && value_regno >= 0) {
+> @@ -7179,6 +7199,7 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
+>   				if (base_type(reg_type) == PTR_TO_BTF_ID) {
+>   					regs[value_regno].btf = btf;
+>   					regs[value_regno].btf_id = btf_id;
+> +					regs[value_regno].ref_obj_id = ref_obj_id;
+>   				}
+>   			}
+>   			regs[value_regno].type = reg_type;
+> @@ -21662,6 +21683,7 @@ static int do_check_common(struct bpf_verifier_env *env, int subprog)
+>   {
+>   	bool pop_log = !(env->log.level & BPF_LOG_LEVEL2);
+>   	struct bpf_subprog_info *sub = subprog_info(env, subprog);
+> +	struct bpf_ctx_arg_aux *ctx_arg_info;
+>   	struct bpf_verifier_state *state;
+>   	struct bpf_reg_state *regs;
+>   	int ret, i;
+> @@ -21769,6 +21791,13 @@ static int do_check_common(struct bpf_verifier_env *env, int subprog)
+>   		mark_reg_known_zero(env, regs, BPF_REG_1);
+>   	}
+>   
+> +	if (!subprog && env->prog->type == BPF_PROG_TYPE_STRUCT_OPS) {
+> +		ctx_arg_info = (struct bpf_ctx_arg_aux *)env->prog->aux->ctx_arg_info;
+> +		for (i = 0; i < env->prog->aux->ctx_arg_info_size; i++)
+> +			if (ctx_arg_info[i].refcounted)
+> +				ctx_arg_info[i].ref_obj_id = acquire_reference_state(env, 0);
 
-hns_dsaf_roce_reset() has been unused since 2021's
-commit 38d220882426 ("RDMA/hns: Remove support for HIP06")
+There is a conflict in the bpf-next/master. acquire_reference_state has been 
+refactored in commit 769b0f1c8214. From looking at the net/sched/sch_*.c 
+changes, they should not have conflict with the net-next/main. I would suggest 
+to rebase this set on bpf-next/master.
 
-Remove it.
+At the first glance, the ref_obj_id assignment looks racy because ctx_arg_info 
+is shared by different bpf progs that may be verified in parallel. After another 
+thought, this should be fine because it should always end up having the same 
+ref_obj_id for the same arg-no, right? Not sure if UBSAN can understand this 
+without using the READ/WRITE_ONCE. but adding READ/WRITE_ONCE when using 
+ref_obj_id will be quite puzzling when reading the verifier code. Any better idea?
 
-Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
----
- .../ethernet/hisilicon/hns/hns_dsaf_main.c    | 109 ------------------
- .../ethernet/hisilicon/hns/hns_dsaf_main.h    |   2 -
- 2 files changed, 111 deletions(-)
+Other than the subprog, afaik, the bpf prog triggered by the bpf_tail_call can 
+also take the 'u64 *ctx' array. May be disallow using tailcall in all ops in the 
+bpf qdisc. env->subprog_info[i].has_tail_call has already tracked whether the 
+tail_call is used.
 
-diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c
-index 851490346261..6b6ced37e490 100644
---- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c
-@@ -3019,115 +3019,6 @@ static struct platform_driver g_dsaf_driver = {
- 
- module_platform_driver(g_dsaf_driver);
- 
--/**
-- * hns_dsaf_roce_reset - reset dsaf and roce
-- * @dsaf_fwnode: Pointer to framework node for the dasf
-- * @dereset: false - request reset , true - drop reset
-- * return 0 - success , negative -fail
-- */
--int hns_dsaf_roce_reset(struct fwnode_handle *dsaf_fwnode, bool dereset)
--{
--	struct dsaf_device *dsaf_dev;
--	struct platform_device *pdev;
--	u32 mp;
--	u32 sl;
--	u32 credit;
--	int i;
--	static const u32 port_map[DSAF_ROCE_CREDIT_CHN][DSAF_ROCE_CHAN_MODE_NUM] = {
--		{DSAF_ROCE_PORT_0, DSAF_ROCE_PORT_0, DSAF_ROCE_PORT_0},
--		{DSAF_ROCE_PORT_1, DSAF_ROCE_PORT_0, DSAF_ROCE_PORT_0},
--		{DSAF_ROCE_PORT_2, DSAF_ROCE_PORT_1, DSAF_ROCE_PORT_0},
--		{DSAF_ROCE_PORT_3, DSAF_ROCE_PORT_1, DSAF_ROCE_PORT_0},
--		{DSAF_ROCE_PORT_4, DSAF_ROCE_PORT_2, DSAF_ROCE_PORT_1},
--		{DSAF_ROCE_PORT_4, DSAF_ROCE_PORT_2, DSAF_ROCE_PORT_1},
--		{DSAF_ROCE_PORT_5, DSAF_ROCE_PORT_3, DSAF_ROCE_PORT_1},
--		{DSAF_ROCE_PORT_5, DSAF_ROCE_PORT_3, DSAF_ROCE_PORT_1},
--	};
--	static const u32 sl_map[DSAF_ROCE_CREDIT_CHN][DSAF_ROCE_CHAN_MODE_NUM] = {
--		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_0, DSAF_ROCE_SL_0},
--		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_1, DSAF_ROCE_SL_1},
--		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_0, DSAF_ROCE_SL_2},
--		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_1, DSAF_ROCE_SL_3},
--		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_0, DSAF_ROCE_SL_0},
--		{DSAF_ROCE_SL_1, DSAF_ROCE_SL_1, DSAF_ROCE_SL_1},
--		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_0, DSAF_ROCE_SL_2},
--		{DSAF_ROCE_SL_1, DSAF_ROCE_SL_1, DSAF_ROCE_SL_3},
--	};
--
--	/* find the platform device corresponding to fwnode */
--	if (is_of_node(dsaf_fwnode)) {
--		pdev = of_find_device_by_node(to_of_node(dsaf_fwnode));
--	} else if (is_acpi_device_node(dsaf_fwnode)) {
--		pdev = hns_dsaf_find_platform_device(dsaf_fwnode);
--	} else {
--		pr_err("fwnode is neither OF or ACPI type\n");
--		return -EINVAL;
--	}
--
--	/* check if we were a success in fetching pdev */
--	if (!pdev) {
--		pr_err("couldn't find platform device for node\n");
--		return -ENODEV;
--	}
--
--	/* retrieve the dsaf_device from the driver data */
--	dsaf_dev = dev_get_drvdata(&pdev->dev);
--	if (!dsaf_dev) {
--		dev_err(&pdev->dev, "dsaf_dev is NULL\n");
--		put_device(&pdev->dev);
--		return -ENODEV;
--	}
--
--	/* now, make sure we are running on compatible SoC */
--	if (AE_IS_VER1(dsaf_dev->dsaf_ver)) {
--		dev_err(dsaf_dev->dev, "%s v1 chip doesn't support RoCE!\n",
--			dsaf_dev->ae_dev.name);
--		put_device(&pdev->dev);
--		return -ENODEV;
--	}
--
--	/* do reset or de-reset according to the flag */
--	if (!dereset) {
--		/* reset rocee-channels in dsaf and rocee */
--		dsaf_dev->misc_op->hns_dsaf_srst_chns(dsaf_dev, DSAF_CHNS_MASK,
--						      false);
--		dsaf_dev->misc_op->hns_dsaf_roce_srst(dsaf_dev, false);
--	} else {
--		/* configure dsaf tx roce correspond to port map and sl map */
--		mp = dsaf_read_dev(dsaf_dev, DSAF_ROCE_PORT_MAP_REG);
--		for (i = 0; i < DSAF_ROCE_CREDIT_CHN; i++)
--			dsaf_set_field(mp, 7 << i * 3, i * 3,
--				       port_map[i][DSAF_ROCE_6PORT_MODE]);
--		dsaf_set_field(mp, 3 << i * 3, i * 3, 0);
--		dsaf_write_dev(dsaf_dev, DSAF_ROCE_PORT_MAP_REG, mp);
--
--		sl = dsaf_read_dev(dsaf_dev, DSAF_ROCE_SL_MAP_REG);
--		for (i = 0; i < DSAF_ROCE_CREDIT_CHN; i++)
--			dsaf_set_field(sl, 3 << i * 2, i * 2,
--				       sl_map[i][DSAF_ROCE_6PORT_MODE]);
--		dsaf_write_dev(dsaf_dev, DSAF_ROCE_SL_MAP_REG, sl);
--
--		/* de-reset rocee-channels in dsaf and rocee */
--		dsaf_dev->misc_op->hns_dsaf_srst_chns(dsaf_dev, DSAF_CHNS_MASK,
--						      true);
--		msleep(SRST_TIME_INTERVAL);
--		dsaf_dev->misc_op->hns_dsaf_roce_srst(dsaf_dev, true);
--
--		/* enable dsaf channel rocee credit */
--		credit = dsaf_read_dev(dsaf_dev, DSAF_SBM_ROCEE_CFG_REG_REG);
--		dsaf_set_bit(credit, DSAF_SBM_ROCEE_CFG_CRD_EN_B, 0);
--		dsaf_write_dev(dsaf_dev, DSAF_SBM_ROCEE_CFG_REG_REG, credit);
--
--		dsaf_set_bit(credit, DSAF_SBM_ROCEE_CFG_CRD_EN_B, 1);
--		dsaf_write_dev(dsaf_dev, DSAF_SBM_ROCEE_CFG_REG_REG, credit);
--	}
--
--	put_device(&pdev->dev);
--
--	return 0;
--}
--EXPORT_SYMBOL(hns_dsaf_roce_reset);
--
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Huawei Tech. Co., Ltd.");
- MODULE_DESCRIPTION("HNS DSAF driver");
-diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.h b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.h
-index 0eb03dff1a8b..c90f41c75500 100644
---- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.h
-+++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.h
-@@ -463,6 +463,4 @@ int hns_dsaf_clr_mac_mc_port(struct dsaf_device *dsaf_dev,
- 			     u8 mac_id, u8 port_num);
- int hns_dsaf_wait_pkt_clean(struct dsaf_device *dsaf_dev, int port);
- 
--int hns_dsaf_roce_reset(struct fwnode_handle *dsaf_fwnode, bool dereset);
--
- #endif /* __HNS_DSAF_MAIN_H__ */
--- 
-2.47.1
+> +	}
+> +
+>   	ret = do_check(env);
+>   out:
+>   	/* check for NULL is necessary, since cur_state can be freed inside
 
