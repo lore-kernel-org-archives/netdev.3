@@ -1,40 +1,59 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6141F5E6
-	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 02:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D8513C81B;
+	Wed, 18 Dec 2024 02:44:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734489842; cv=none; b=BPsphGIAX3TdPXr/MTKsd6UMVqV+GYG36A4G5n9qNQmfIoXXWwtqN+F02xwEB40KorLJTKPUUCKL9zk5qYYcvyzy9x7DsbGy7JGd/U5FOh8q1FN84WgD/5GRftPtc3gZBxaTUWsKp6LrANASPhtpbwV0WvjBfFLK5/oD82UZVbM=
+	t=1734489875; cv=none; b=SttUDIBX50rV5aZwe6CCWv9oVr5Qc6zEw1YBaVwCAymarcfAe2Xf8wMOsZn7vrnOL5ereTqSNKJxMtHiZS4e6LFOTITWCFOZTHN2ai1oBKopUSv1DnWOJRl31f5qa17QkDDiA0+PIHepZLSKEIQbibSs+Jh3mTiLjSi6VNBj9NU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734489842; c=relaxed/simple;
-	bh=NJ3hj45/QI1VNjqAO8DnG6Uk8QvKiKB3c+2b0rXMtuQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u+uPTXspYu2FbIesFS3v4A8Rzurpdrg3fhhKXtjOyLjX8Q4cD3PSv+/D93NmKBpehY/FArMFkBQkq7RQM2XqxjdiDbomSeqLwP1wY4fptgU38UccT0Z3LwcFd+QPWF/Z4Tq9mtqNdhPpTuh+ug++XdXKo0U6ZtUsGWRBHqEIwVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pWFC6afv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734489875; c=relaxed/simple;
+	bh=8Me0+ORdUwnQJJZusQP7gsBibbKOgKoUBm5L+YNIMj0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=q5DcSQMydlEwUdCCo0moSzteLtRCzIVkESBqoB5vqjpbpNsPnx8RYH+puD/q2GebnelaZwv5bRKI/c+e8isfStE1s9r11ChhwBHPzqfUVSVUIu8aeR0uYQ15X9d+l/PlVD0a0En6QE0uyx5tQd+CQfnQDdHuXibnD4xjp9SBsZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=QgkUQ4wR; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pWFC6afv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752A6C4CED3;
-	Wed, 18 Dec 2024 02:44:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734489842;
-	bh=NJ3hj45/QI1VNjqAO8DnG6Uk8QvKiKB3c+2b0rXMtuQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pWFC6afvatDVwMBpjzsygV7GiDY5+BziMthKB0HxKWBlcyKb5s1wOrynDVNo2DB4W
-	 VpMLR6fUi2xS8927ZmZFybXRwdgM3HT2dXTiqJy2/hvJ2ekDUmcPS/hWy9vNFQ/3Ny
-	 hAp13lBszGacDnl+NTgYW5L5q4h9olCmMaNT4KotJDqUmZzyOOSFHk1cKH34DmySJY
-	 /0gllJt2BebhXldJSDwG6V/+XDZV8WepajnyY9VpUPhKVjWJaY8KICHzFV52IQIZ8j
-	 rIlGNyE3ywYJwRAsGQHKcVZ7D+1kQrksDOUgguvaR2Ys0BO5lXyLlxTJJBsAnqvfji
-	 f1G54o8xRW65w==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="QgkUQ4wR"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1734489870; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=GAH1Lz6yySHh0akD6UjVzqvmSG58TUkUU80VrEvWcyY=;
+	b=QgkUQ4wR4yaxnjMldItkIUu/YQf1UST2NbfDV29GgC255tQygnkLpL1rXXuCCVIEpYZvYIRZ5LpGTfngFzW/bS9GyuC3m3CZ95XI2YC90CGO4ZMiKO/Kbs7wnwnZzIJOv5Pz5kipM/BFVcA6AquWnPKPGujMGvms6RaV61yDejY=
+Received: from j66a10360.sqa.eu95.tbsite.net(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0WLko6dn_1734489867 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 18 Dec 2024 10:44:28 +0800
+From: "D. Wythe" <alibuda@linux.alibaba.com>
+To: kgraul@linux.ibm.com,
+	wenjia@linux.ibm.com,
+	jaka@linux.ibm.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
 	pabeni@redhat.com,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next] net: netlink: catch attempts to send empty messages
-Date: Tue, 17 Dec 2024 18:44:00 -0800
-Message-ID: <20241218024400.824355-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.47.1
+	song@kernel.org,
+	sdf@google.com,
+	haoluo@google.com,
+	yhs@fb.com,
+	edumazet@google.com,
+	john.fastabend@gmail.com,
+	kpsingh@kernel.org,
+	jolsa@kernel.org,
+	guwen@linux.alibaba.com
+Cc: kuba@kernel.org,
+	davem@davemloft.net,
+	netdev@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH bpf-next v3 1/5] bpf: export necessary sympols for modules with struct_ops
+Date: Wed, 18 Dec 2024 10:44:17 +0800
+Message-ID: <20241218024422.23423-2-alibuda@linux.alibaba.com>
+X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20241218024422.23423-1-alibuda@linux.alibaba.com>
+References: <20241218024422.23423-1-alibuda@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,30 +62,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-syzbot can figure out a way to redirect a netlink message to a tap.
-Sending empty skbs to devices is not valid and we end up hitting
-a skb_assert_len() in __dev_queue_xmit().
+Exports three necessary symbols for implementing struct_ops with
+tristate subsystem.
 
-Make catching these mistakes easier, assert the skb size directly
-in netlink core.
+To hold or release refcnt of struct_ops refcnt by inline funcs
+bpf_try_module_get and bpf_module_put which use bpf_struct_ops_get(put)
+conditionally.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+And to copy obj name from one to the other with effective checks by
+bpf_obj_name_cpy.
+
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
 ---
- net/netlink/af_netlink.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/bpf_struct_ops.c | 2 ++
+ kernel/bpf/syscall.c        | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index f4e7b5e4bb59..85311226183a 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1287,6 +1287,7 @@ static struct sk_buff *netlink_trim(struct sk_buff *skb, gfp_t allocation)
- {
- 	int delta;
+diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
+index 606efe32485a..00c212e0ad39 100644
+--- a/kernel/bpf/bpf_struct_ops.c
++++ b/kernel/bpf/bpf_struct_ops.c
+@@ -1119,6 +1119,7 @@ bool bpf_struct_ops_get(const void *kdata)
+ 	map = __bpf_map_inc_not_zero(&st_map->map, false);
+ 	return !IS_ERR(map);
+ }
++EXPORT_SYMBOL_GPL(bpf_struct_ops_get);
  
-+	skb_assert_len(skb);
- 	WARN_ON(skb->sk != NULL);
- 	delta = skb->end - skb->tail;
- 	if (is_vmalloc_addr(skb->head) || delta * 2 < skb->truesize)
+ void bpf_struct_ops_put(const void *kdata)
+ {
+@@ -1130,6 +1131,7 @@ void bpf_struct_ops_put(const void *kdata)
+ 
+ 	bpf_map_put(&st_map->map);
+ }
++EXPORT_SYMBOL_GPL(bpf_struct_ops_put);
+ 
+ int bpf_struct_ops_supported(const struct bpf_struct_ops *st_ops, u32 moff)
+ {
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 5684e8ce132d..62238ec989dc 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -1167,6 +1167,7 @@ int bpf_obj_name_cpy(char *dst, const char *src, unsigned int size)
+ 
+ 	return src - orig_src;
+ }
++EXPORT_SYMBOL_GPL(bpf_obj_name_cpy);
+ 
+ int map_check_no_btf(const struct bpf_map *map,
+ 		     const struct btf *btf,
 -- 
-2.47.1
+2.45.0
 
