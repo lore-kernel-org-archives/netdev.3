@@ -1,61 +1,61 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731AF39ACC
-	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 00:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D34A18E2A
+	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 00:37:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734482167; cv=none; b=fFZh4NPYFi4KzP0NTnVe/1pjVTvjeLueMWth09Lgk4Pz3z6h72sc3gGbbujiQI3i9Tr4qEsZeV7X9khLUiC6fYoJ5porCp16sto2+RTpBgGu32QQh9OcP02AKuH7JcasUXmSWjQie8UeRynb+WnCqGTEDz7mvJCOeNc0bkeQUx8=
+	t=1734482277; cv=none; b=VPTiK3UCC4s/VXrGW0g8QvzHaIA5ihcDMeFCqGXLgyWZ91cvqeVsy4WBPF9iFfuJWYrHI4JEgSZOS37kilL5/rpjLvrAXO/ESMGHysntz+CDuL0MEhGTe0IFkoJ026n/trZlVk/r9T3iCYPhx0EAvlPOQiDHvG+UX/J+Mw+7YAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734482167; c=relaxed/simple;
-	bh=135g8sWdi14q9q8Itt2VZQPm7R0gFcz1ULHZpEn4dmo=;
+	s=arc-20240116; t=1734482277; c=relaxed/simple;
+	bh=CztbvP9+RIyhpbrNQZVgPuMnd7qkzCOzRjukEnHDodc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQ+vTUTTbMgl+Pm2oI3AAjcoGOEH4MREqR3+dhXhPuxkDn9DXZt460olTHhiI4rDYMEkMzM+MMATZFO3PwNH1fCzAJNJyYgRWj0CZOnlkEHYESuk1Y+nWaCeFTSEKVJ1x+tntpHhBGVTflCBeXU/GJsYfSOc5jJvcAbaXOZw+ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=wi9teH3Z; arc=none smtp.client-ip=209.85.216.51
+	 MIME-Version; b=b6FiiALZ3hwoMalnWX9JvKY/YZWcFro2VOr4yDrwIXlmzbSuPFE32fw+7AoSl+V1Rjq5H99znjh6lwJodpOkUalQh9k8JdkmhFy7pX0J8g20XhCLQ7ZV9FBwjsSL3k0RGHyFwNk5WEJeAUtZPZUKSFIPlPaLvw0BQ04THYiG4bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=AusVc5nf; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="wi9teH3Z"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2eec9b3a1bbso4086344a91.3
-        for <netdev@vger.kernel.org>; Tue, 17 Dec 2024 16:36:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="AusVc5nf"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-725ef0397aeso5281055b3a.2
+        for <netdev@vger.kernel.org>; Tue, 17 Dec 2024 16:37:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1734482165; x=1735086965; darn=vger.kernel.org;
+        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1734482276; x=1735087076; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KQ73wFKVt12qccWHG7cPPzOfiVyAwI1MB/XTBNYCLeg=;
-        b=wi9teH3Zjc4zmlVYJ+wxsCtSP4yXDkKkfv/oKxU54LFiymJrRurciP7UeTPHMXFwGj
-         PSLC+7BLrwPwELcavZsc12jOGytCAnqwwq2pTKgeo/CNbKAE5YP5J7Pxt9pPzTEPQlsk
-         n4EK5bUwW39A+WNQVMcpXIwON/vVxamvgGEM0OwmGL4BcrVfcIWlhxyediwaqZMVEXmr
-         TzGUbMVbFUubiGxTas2A4ELA0LVPOcK+HBvV+JLy41ygDhjv54vNDg2tzA427i+284Rg
-         q787crFEfEn09hSdpEYp4uRLjcg8ay4Nf+98GPtIExIzkSY402W1TtkfkeZuI1j8FTI+
-         JqLQ==
+        bh=3FmBtD/9kNoCPyeDOsGVnpCJKDKHQdivfmWBaZAFy/E=;
+        b=AusVc5nfBufnLs22EbWfq+U9VvthWkO3tB3yNSQWJrZc/0bhQNh+95bZ4VquKw7KXH
+         jwBU12DR3nFfF6SABvf5VYMDl0usCTDmQ9gxyYKjIHLi0ZYSfsNOa4mwfPEYmjVnkofu
+         JiHbsEjg36DZVqIG7hBvgJfWvRbjUYHVFZ1fnCMr49UGIfgwvWa4ZycVA5J19oPtPkuH
+         DJJEDzcmW1CJKWi8P1cl7g49JKg0aQ8AR9piBrwTG4nwCOn4U3nh8Ppt9E6xlVC/MJf5
+         t33HFxFk22+v13iO2Sgo602mxlYuMMgivLV7nnEudoIqjsh0ff2oaNqeIGSKyw0igiHN
+         HLwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734482165; x=1735086965;
+        d=1e100.net; s=20230601; t=1734482276; x=1735087076;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KQ73wFKVt12qccWHG7cPPzOfiVyAwI1MB/XTBNYCLeg=;
-        b=PU95aIwk2KoDiodY1qfV1/onpootsBONHwxGsDxiJ64Mwoxk0QmVXipw3rJ5Wo5Trn
-         BRxlo/4aBUx3K+FX8L43uS9CB8+VQa4I1tkt/oT8pTbeZlxQXQAwsCbaK/k/WVNSffpZ
-         lEOchNjG2il8nxuj3dGnbeQMWBaGmStdrXPYGFkAsHxAKKH8ZzxnxRjmzXanWkj/Lif3
-         MQOK9FdTPDqogNAx2W3RDbld4EFPUMEH51/3gSNy9HpNwxzVblj5Xu2OIWoemIGiim1M
-         t9khl5PF3heHMiICVsiyuuEfwhAdma/QB4HGDUYupkA/Pf4BK5PBnAT3vhpdEpJFWUH+
-         /OsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVPuMPhUD6odS8iejR0VUmYHTgE89p8zaBd/8CcYggde+XoHq1ZvtzwiURspVft+bG/8WGbk0A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkGqw/UztJqUdkmWNSUeYS7Uah5d8Nv6+YysQb6gKy7diZp0CX
-	6fej6tLqle8COqargMubp+yG5f3FiUMWKWH3u4jcfYaJ1/4B59Z9YSAz1AIfSUY=
-X-Gm-Gg: ASbGnctDx+Fpu6j6avIG56rfIsXVo1CX0BYarm3RL93kQ8Y6AdP4uvJavBamRLPR/vC
-	S/EBSdzJwROEoloLzIMb2b0oEnJIl4mATNv5Vid+cHK7sTWq+/UTRAi841P31AkboMtStjAKYla
-	7lcgjGvdqPJ+XJwQByHjFW1c+FonkMJtwns+IhH1KX8YglIdHuyoNJGkCpqHp5vZu8mPCHDBr51
-	vwdSoPtYk5/zN8tpIJSQ95jA0XfBFtkMGkSvBNBng==
-X-Google-Smtp-Source: AGHT+IEEmLhfsg3d8KRh7lYkeLWJXR5yLAID5ZTIPn5Yij4dunrusE+MZoJ2ZrylKcRPNbr7UU+E7g==
-X-Received: by 2002:a17:90b:4c0e:b0:2ee:49c4:4a7c with SMTP id 98e67ed59e1d1-2f2e91feea3mr1318385a91.18.1734482164829;
-        Tue, 17 Dec 2024 16:36:04 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:20::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f2ed62b2afsm109623a91.12.2024.12.17.16.36.04
+        bh=3FmBtD/9kNoCPyeDOsGVnpCJKDKHQdivfmWBaZAFy/E=;
+        b=c7z4vwsQR05939nA48coFdOz6OfbaPvo6HiEFhVCgjzQuXabf3HoSEU7W2maUcGsFn
+         NzyhyOXI6nn5dX7VYlqwm+0HnQQ2OkS8alatBY7G78tHISCuW0xstsVEN6gn5omwBDkt
+         EkEIjPtvC5NGQtvONCZMqfaCZ6+e2ui1/NxxrQYzCXgWbwrMRhVrVRz1b6zxCjJjOqIb
+         GDScbwGcr3Y+7erjGC5o7zEJmVChA1IXM6nl6HrNbfJi+sxa+G4BuWRIn71s6l8JytNM
+         abS/lM/JpkxrG/0RG/TLGipiFfSH+Mpr6YLBeuwiQOhU75e2uJ0PDN5mQtM95xuen/8v
+         ktiw==
+X-Forwarded-Encrypted: i=1; AJvYcCVdP5OuyhNSiVjSZVTlycep94W5bbm1nOu2IfXoGbpg9ZU47k6ulDCKHf6bTm82/Lj99vWFJWQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YycZQtNvbUD+YlcEJiLuAR7hsRspaBerbCr/wucu+/I7cKiloCo
+	DaZytpgN7GHaEG3/lbBF4UgrgmG6b5s9vrHOcXfpDYApROSUktSbCUz9y84hpVM=
+X-Gm-Gg: ASbGnctY5sNlVPSRvlkHGZt256znwKCMziJalZokBajFZo/wK4ri+PvggYIeXA3+LdC
+	CRMBjhfiatYFElcKOiAiyBp4TgEjfiFTzbetS7dqn8mfRUvTJynLo6hjf2sTf1C0zmS4JyHuRAM
+	rtEKtNrrjq2BzqiHPDlgcFBC/AmakYIz8RS8RlCzzMdDPRQ3c8eLDFv88EOW34RavCzkaLWLEsq
+	DvYTIfCbnpwN+TfjiUvZ9/0ETzHbVhew86mQWdw
+X-Google-Smtp-Source: AGHT+IEQ/e/f05KYvugRA8kF98/vSc9zeC46GuK5+HSz3OGGkvguKsaBFClQoh/UbEHWew5KD3fsmg==
+X-Received: by 2002:a05:6a00:4f87:b0:725:e1de:c0bf with SMTP id d2e1a72fcca58-72a8d2377b1mr1351050b3a.9.1734482275820;
+        Tue, 17 Dec 2024 16:37:55 -0800 (PST)
+Received: from localhost ([2a03:2880:ff:d::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-801d5aa9633sm6338924a12.21.2024.12.17.16.37.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Dec 2024 16:36:04 -0800 (PST)
+        Tue, 17 Dec 2024 16:37:55 -0800 (PST)
 From: David Wei <dw@davidwei.uk>
 To: io-uring@vger.kernel.org,
 	netdev@vger.kernel.org
@@ -71,12 +71,12 @@ Cc: Jens Axboe <axboe@kernel.dk>,
 	Stanislav Fomichev <stfomichev@gmail.com>,
 	Joe Damato <jdamato@fastly.com>,
 	Pedro Tammela <pctammela@mojatatu.com>
-Subject: [--bla-- 05/20] net: page_pool: add mp op for netlink reporting
-Date: Tue, 17 Dec 2024 16:35:33 -0800
-Message-ID: <20241218003549.786301-6-dw@davidwei.uk>
+Subject: [PATCH net-next v9 01/20] net: page_pool: don't cast mp param to devmem
+Date: Tue, 17 Dec 2024 16:37:27 -0800
+Message-ID: <20241218003748.796939-2-dw@davidwei.uk>
 X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20241218003549.786301-1-dw@davidwei.uk>
-References: <20241218003549.786301-1-dw@davidwei.uk>
+In-Reply-To: <20241218003748.796939-1-dw@davidwei.uk>
+References: <20241218003748.796939-1-dw@davidwei.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,73 +87,30 @@ Content-Transfer-Encoding: 8bit
 
 From: Pavel Begunkov <asml.silence@gmail.com>
 
-Add a mandatory memory provider callback that prints information about
-the provider.
+page_pool_check_memory_provider() is a generic path and shouldn't assume
+anything about the actual type of the memory provider argument. It's
+fine while devmem is the only provider, but cast away the devmem
+specific binding types to avoid confusion.
 
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 Signed-off-by: David Wei <dw@davidwei.uk>
 ---
- include/net/page_pool/types.h | 1 +
- net/core/devmem.c             | 9 +++++++++
- net/core/page_pool_user.c     | 3 +--
- 3 files changed, 11 insertions(+), 2 deletions(-)
+ net/core/page_pool_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
-index d6241e8a5106..a473ea0c48c4 100644
---- a/include/net/page_pool/types.h
-+++ b/include/net/page_pool/types.h
-@@ -157,6 +157,7 @@ struct memory_provider_ops {
- 	bool (*release_netmem)(struct page_pool *pool, netmem_ref netmem);
- 	int (*init)(struct page_pool *pool);
- 	void (*destroy)(struct page_pool *pool);
-+	int (*nl_report)(const struct page_pool *pool, struct sk_buff *rsp);
- };
- 
- struct pp_memory_provider_params {
-diff --git a/net/core/devmem.c b/net/core/devmem.c
-index 48903b7ab215..df51a6c312db 100644
---- a/net/core/devmem.c
-+++ b/net/core/devmem.c
-@@ -394,9 +394,18 @@ bool mp_dmabuf_devmem_release_page(struct page_pool *pool, netmem_ref netmem)
- 	return false;
- }
- 
-+static int mp_dmabuf_devmem_nl_report(const struct page_pool *pool,
-+				      struct sk_buff *rsp)
-+{
-+	const struct net_devmem_dmabuf_binding *binding = pool->mp_priv;
-+
-+	return nla_put_u32(rsp, NETDEV_A_PAGE_POOL_DMABUF, binding->id);
-+}
-+
- static const struct memory_provider_ops dmabuf_devmem_ops = {
- 	.init			= mp_dmabuf_devmem_init,
- 	.destroy		= mp_dmabuf_devmem_destroy,
- 	.alloc_netmems		= mp_dmabuf_devmem_alloc_netmems,
- 	.release_netmem		= mp_dmabuf_devmem_release_page,
-+	.nl_report		= mp_dmabuf_devmem_nl_report,
- };
 diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
-index 8d31c71bea1a..61212f388bc8 100644
+index 48335766c1bf..8d31c71bea1a 100644
 --- a/net/core/page_pool_user.c
 +++ b/net/core/page_pool_user.c
-@@ -214,7 +214,6 @@ static int
- page_pool_nl_fill(struct sk_buff *rsp, const struct page_pool *pool,
- 		  const struct genl_info *info)
+@@ -353,7 +353,7 @@ void page_pool_unlist(struct page_pool *pool)
+ int page_pool_check_memory_provider(struct net_device *dev,
+ 				    struct netdev_rx_queue *rxq)
  {
--	struct net_devmem_dmabuf_binding *binding = pool->mp_priv;
- 	size_t inflight, refsz;
- 	void *hdr;
+-	struct net_devmem_dmabuf_binding *binding = rxq->mp_params.mp_priv;
++	void *binding = rxq->mp_params.mp_priv;
+ 	struct page_pool *pool;
+ 	struct hlist_node *n;
  
-@@ -244,7 +243,7 @@ page_pool_nl_fill(struct sk_buff *rsp, const struct page_pool *pool,
- 			 pool->user.detach_time))
- 		goto err_cancel;
- 
--	if (binding && nla_put_u32(rsp, NETDEV_A_PAGE_POOL_DMABUF, binding->id))
-+	if (pool->mp_ops && pool->mp_ops->nl_report(pool, rsp))
- 		goto err_cancel;
- 
- 	genlmsg_end(rsp, hdr);
 -- 
 2.43.5
 
