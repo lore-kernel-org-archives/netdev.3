@@ -1,173 +1,201 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2079.outbound.protection.outlook.com [40.107.94.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B4B178368
-	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 14:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.79
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734530495; cv=fail; b=GRFLHhF2YM4udp6IMEUPt0zX8tuUdfOpE7+v/cPA3AX+8A7XXIKtmKbpYEpyl8NGDynkBmtL0+yIymG5pg4Ju6kZzIljIN/I8aIMoM5ml+UPq4iyQ2YFgOFJl4URj/OIAO9PsXhGiNycpO6XfEYRaOCi2hCVoNXtv+p7DO459Qo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734530495; c=relaxed/simple;
-	bh=GnyO1iac/WrqMbTmOG0vSHgYGX+7CaVE4WmZvEL1a8k=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Yhz4McOUq0ukANij84AOtiOohAjYYeiXqwDNLkweUCTcAuyXzjfu6HbfMufUKKgkI/DQRUS7rxsG7wrtHm8kAPztU3SAF8WaslKG6l3X9V4nYLdXfBf37mYNeWgO6w8EixOTW5WLeUxg08JAvcA9vajTtEVaZ4Q6kTG/Jei17iw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wrxQi78n; arc=fail smtp.client-ip=40.107.94.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211B81C5CA0
+	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 14:04:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734530685; cv=none; b=iMX3VlOnqK0G2sL/qHFcBpt9V+h8eLsYN4OY7/RSocOjrBt5lPjlrjALks8Kkjk/92RZIalHIsY7Ax9e+bXOHzct3gM1fGAwDbXHQfExLzDL/7OTN8J0W7rRGNr1WAewOP4uVkxibkcFrWKFKP50A6lj1ZXChGkWZB8zACLilZU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734530685; c=relaxed/simple;
+	bh=uKZGuxu1O2Svc7LX9xRZZdT8eJfyJMlzuBWnDnQaNmw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ebRO4GsqXUChlX2AMsseBqKu7uwLFtpCJAQ7OUlNdEDm4E10iedz1KPoNIu8q8XeScy8xpV4zAzTJcKwk4x86dTpOXQe+5YSyKxm2U93kDOq0p4z/CpiGJFxRiBJx/Xb3BxGaN0Pr2mgttlzYdy/CDBVNUCkO76UEWe2lFGi0pA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b=anACCiCh; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wrxQi78n"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fZ9GcbG5MXHmKy/f+n37gBDqp8MBWIFrjc1WqTHz59LFxgiO08Kx6FSnsgR2EXeYGBp2RG8R0PlNZeu7GEgzZ/uSW3tI9/+v570NfabybuLBcLRxDtmzh3HWdqGohRGTugVQZ52WEUIL27oU4Pq6XWxfWmhzUg/wHwUEsCf9qL9jmEE4xJhLuiubABJcFxWs2cgNz+3YxkyXvL9Jx8T2YRyAEMpwq4iwVqjBWHxJmg1Zh1TUaTCqBuHyj2iBbdVio0RHvhOslivBTh1tCA4CyJwXDlx4Hk7ukH1X4BX6elMt2TX5r+lq7r6llgKxMfbEROk2gtETnDwwUvUUKSthAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DRBTHpiwTHAZbZZyHew4e2S2UF5vxZUitxZVYQ1OJek=;
- b=i2tAH7lfnhW7teGDzwMMjgYta9u/HuOtVd75hyHJJCy0CKg6KnT26/KVjLKWMi6edzxUczqHKlcJeWMbfSppvGMISi4rCBqNBOEKndGYZULoGFsP+Me1GBMEjoh9iU84wKhjc6zzpDW5tzWpAQU08DNMWLy1YVFN5i4blg9xGeDgiuZVO+lVUSa0wlLbnqDqic0wlrJWI/GqE0fzPgcBiaQvh0ZTO2zZhORWZgUTqyhAszPGKhWWwG1WXx41x6aDnnEqjNbzqK37btjk+3wdBbOnBJ7+1od0uLHvCcEEdmwAiizlmbB3J0/mU0Mmm1h1BxhniV7SMRcYQW7jLEcucA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=davemloft.net smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DRBTHpiwTHAZbZZyHew4e2S2UF5vxZUitxZVYQ1OJek=;
- b=wrxQi78nRBmTVh4pj8bPzowpC2SpACPUs4HLw1k4gNEz1oaUmFmJbAfbCjQsPklqNU53tGmMuOeBLdzKRJHFsACPNeVchm3oLCPJXziGFb5zelNlfRAM6uO0qXEVkeP03KLkRam1NZSaYZyhhhojP9HRVA/rodqpF0e51Rn23Kc=
-Received: from SA1P222CA0031.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:2d0::11)
- by CYXPR12MB9442.namprd12.prod.outlook.com (2603:10b6:930:e3::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.13; Wed, 18 Dec
- 2024 14:01:30 +0000
-Received: from SA2PEPF00003F66.namprd04.prod.outlook.com
- (2603:10b6:806:2d0:cafe::80) by SA1P222CA0031.outlook.office365.com
- (2603:10b6:806:2d0::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.22 via Frontend Transport; Wed,
- 18 Dec 2024 14:01:30 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SA2PEPF00003F66.mail.protection.outlook.com (10.167.248.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8251.15 via Frontend Transport; Wed, 18 Dec 2024 14:01:30 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 18 Dec
- 2024 08:01:28 -0600
-Received: from xcbecree42x.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39 via Frontend
- Transport; Wed, 18 Dec 2024 08:01:27 -0600
-From: <edward.cree@amd.com>
-To: <linux-net-drivers@amd.com>, <davem@davemloft.net>, <kuba@kernel.org>,
-	<edumazet@google.com>, <pabeni@redhat.com>
-CC: Andy Moreton <andy.moreton@amd.com>, <netdev@vger.kernel.org>,
-	<habetsm.xilinx@gmail.com>, Edward Cree <ecree.xilinx@gmail.com>
-Subject: [PATCH net-next] sfc: remove efx_writed_page_locked
-Date: Wed, 18 Dec 2024 13:59:30 +0000
-Message-ID: <20241218135930.2350358-1-edward.cree@amd.com>
-X-Mailer: git-send-email 2.27.0
+	dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b="anACCiCh"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aa543c4db92so30731266b.0
+        for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 06:04:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1734530681; x=1735135481; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HbzEYguX7Enkd9x2A8psK17RascnEPFae0WnK5nGIsg=;
+        b=anACCiCh5YwbQjGJoMVWRlknR4Mgq2czo5ByjbInIgQNAfv94Le0pvfxvDf+3150CI
+         bzHwu6Zi9Y9XFqL1YpegrXFlL9Clgsls4O9lsfbOFAc/F//aly+DRjplD+wRnVQm5yZJ
+         VwMPnKvV1YPZ5gLS5vkbSelPJRDjn5rXdMTXN31efOFFeLdYXsr0VGNZ8Wj/XFvK35Gk
+         7m3nOpuMPh7F5wWxdWOidwiIzh/gVXVllrrPuRCJaNc3RuiOJrUczoLwkyjXt//VxKtC
+         +j6zQmo306UpnUg1hAKyBR0SkxCUK7K0K77gKmCKte7UQA/W69kZ6H8/CN8LCSWNzerQ
+         9d/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734530681; x=1735135481;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HbzEYguX7Enkd9x2A8psK17RascnEPFae0WnK5nGIsg=;
+        b=kk4Fap2Nrd9mISiEL5KyROVPGcLzbj9Vfjy6wJPdqtxt8ikQjxW5v0/5vfS0FArksD
+         HghdTwMVAchCjZqp0ePE54p/56j7kNneWE9sjGO9ePkDqTWAI/HIOQ+pwKUcqXtBQt5F
+         4EF3nxKEHWau+tplG6VpDp0NQikDEPeFhRjUsXx8xpgkHCE0NJGLU3OKmKzND+P6bJWf
+         FfpMtb16dd79+pxdMoAfbuEC4BtKjDIgc7T7HoK4yPd+O74xKMlP4wEg7ucl0+wWI21P
+         RaSYvGTGVRLjWhwuCynBl1KPJKEJLznam/VdS2cHG2ZkE0DYoMH9qAMSd4+y/6yuHOiQ
+         ucYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWsqpMFqC4aiJF0ZBtsU/jeAVPjApEQH3NSQnxYy2iniz8MDm8i8rP80mVuVR/2rRQ+FpmCNxE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfqWPicZWf2bJslRn6NVKmjKs8Z25cj2euPNYJHW1VpjDB3oyx
+	NCUOYnJvHNIKMUKGFFa3dCkPrlD3MeeyXbZkdCnuONDB4XIGIMjT/HYTBi+Pogs=
+X-Gm-Gg: ASbGncsBqcalOCoLmYeJFYQ4C7L+ocRmYDf3d9wZrD1y3+KmkIV/2fYx2XprULUbRGW
+	V74cDJ9o00TB+QuhfDNGdiAtfT+J6xln729WniSzMzIzEBMlQkAFnURNETHWLByROR29aCW9q1J
+	oH5yttjJ+JJQyJH1aPshAC9D5Ivo+qNkwEJpuSg6e7yfibFSF2F2xEPUJPAcKh6ycBw971WBPys
+	kskocvWS1+OrbnEOrFa0lXTI5MRVlPhZhbiZ/7WRpARQ3f4G+UoPTlZ7MZxmQ==
+X-Google-Smtp-Source: AGHT+IHAIbY2BfEE61yTQ649e95uAgnboexuSVsj6pOoSnKeKFjwNH71crXSR0FCfrv3JRB/MSuviA==
+X-Received: by 2002:a17:907:2d08:b0:aa6:79fa:b47a with SMTP id a640c23a62f3a-aabf471fcb0mr238018066b.7.1734530681162;
+        Wed, 18 Dec 2024 06:04:41 -0800 (PST)
+Received: from [192.168.51.243] ([78.128.78.220])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aab9600686csm560506466b.33.2024.12.18.06.04.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Dec 2024 06:04:40 -0800 (PST)
+Message-ID: <fb4027a7-48a7-4488-a008-584d3b69c025@blackwall.org>
+Date: Wed, 18 Dec 2024 16:04:39 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB04.amd.com: edward.cree@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003F66:EE_|CYXPR12MB9442:EE_
-X-MS-Office365-Filtering-Correlation-Id: e86acf7b-2b14-448c-90ad-08dd1f6c7904
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?9xniDU7dTrHL2U5GXBUdG36Ybl/mevL+HbSROaQN8XKqD3S3+ec3FYSQ/b9D?=
- =?us-ascii?Q?H4bf+ItQlgalLbpBeY4eBG3bJ5OkT4yq4UIZ0JU5DoNKNcSGOZrR7iYDYZMb?=
- =?us-ascii?Q?Cy1X0HC0OSwiUMjByNEVjGXxlOexh1SZImcvy11dKMfvBdwLL8cDEWppm4nw?=
- =?us-ascii?Q?3UBg61NJxi4wNs7mW2kU87B9YZGRLV+ogYjb0x4YEWOxzyQyzWeNBMcExG92?=
- =?us-ascii?Q?bDn7BD6NbxJFPeAEGqyXJLgZs70/UV4p94KWfDT0piwabUTDTLJ9rMFX/Nqm?=
- =?us-ascii?Q?bZnumfuYwKO1AIHITZJIl85Q2qKtPYW6m8ZG+bmtLaSMHFdjK2CxY3g89TLB?=
- =?us-ascii?Q?ENHU8El/T5+ylZSE3X2PZJObDVJRBezugk78VPxnf/9EI81mStsE/1DHfg3g?=
- =?us-ascii?Q?jaO/ypraRs3E0pL2gffEHABnPz2MjC2YrRt6GL9R5vagQ7Qd1Y2BjkKvwm0W?=
- =?us-ascii?Q?mE01/AmRGsPKuHvmpUyk6h9HtKtiGbaMe1mY/dzeBz95fwIqq9w1BZpNWZMb?=
- =?us-ascii?Q?rlrD56kGR2eW1tWFp3VuHXe1HZAKJaaVpS8BJ3AQ7qYH8hTR8lGw7sWxV48O?=
- =?us-ascii?Q?/4jatpjLVRZSc/MqBRbFWf67hgz8bvVlc/wP9nQnZCThAYUhgdFHAksotq3e?=
- =?us-ascii?Q?qUG+RTJhEi7Z6+mZ/L3PQUqBDoljjD/pAWd/PUAV22NNPlqPyobDbUu7b6ic?=
- =?us-ascii?Q?g1gWPltM4mnDjekZ6ggy/lVi0nEslpCqcEV80HujIykhp3gtzGgzfvv3JAlE?=
- =?us-ascii?Q?x/gHPt3srv/0O78N1NeLbjhCRBQ+JuE9mRjKySMUpmd+DekbkLeEDK9MHHSN?=
- =?us-ascii?Q?+WNg2Rf/DODlzKCxVnR83KJgmGMZEhOgSq36B6yIwXFbrdQyJFXPR5pLvrFH?=
- =?us-ascii?Q?NK83t/SPznzMezrqVhjHiD3rbByfaYYQX5k9i5PbOKmCBD66QTlXgb/9GFvn?=
- =?us-ascii?Q?I1Q8ACMZrV1DozTG639C3euGqJjvuUh0D2vrhNQCoeZHjmFzwMEJVB2nTtZT?=
- =?us-ascii?Q?ABt88Mc0r4ZzsLVciBlyhQw96TtxmxgLS8NQtIZV/U+LlZmp/RaTaFAg6zoX?=
- =?us-ascii?Q?dFmyk3FZMuzVcSV3S279kzjPGLZB5lUqYBmVgFqRvJIH8yeDaYBXMv9spKaZ?=
- =?us-ascii?Q?cE9a+mBXrI6R5GIMQ7UMhFSjNIPxuJTANukQtN9fUdwutXAAAFBaIl6HhQ4B?=
- =?us-ascii?Q?ppphtr3k6zDWOcVjc1+a26pw/iuZM4tduQJdM6zb2Q/42izBwjKi7o750DHC?=
- =?us-ascii?Q?o1r2y/0U3lANnamrezszMiYV4u847ch/ycXqECY0ZImT+/VMAa4gLpSwiznL?=
- =?us-ascii?Q?jX206ireCFeLs5e9pfBIeg08tMhZx3pYSnKObheQtTm9+odF6Y5ilT7yMwDf?=
- =?us-ascii?Q?CvXq1fC+pJFM86D9yKMqn+p6YwIF89v7BPvoCGb39ZemlrglFbPRXiePpS2C?=
- =?us-ascii?Q?3c8bu48Hsntdr2T2RXxfDUPOuhW/pFH3IV9Hn1vRz5BLwqHfcGJxXw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2024 14:01:30.2812
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e86acf7b-2b14-448c-90ad-08dd1f6c7904
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00003F66.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9442
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v2 net-next 1/2] net: bridge: multicast: re-implement port
+ multicast enable/disable functions
+To: Yong Wang <yongwang@nvidia.com>, roopa@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, netdev@vger.kernel.org
+Cc: aroulin@nvidia.com, idosch@nvidia.com, nmiyar@nvidia.com
+References: <20241213033551.3706095-1-yongwang@nvidia.com>
+ <20241213033551.3706095-2-yongwang@nvidia.com>
+Content-Language: en-US
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20241213033551.3706095-2-yongwang@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Andy Moreton <andy.moreton@amd.com>
+On 13/12/2024 05:35, Yong Wang wrote:
+> Re-implement br_multicast_enable_port() / br_multicast_disable_port() by
+> adding br_multicast_toggle_port() helper function in order to support
+> per vlan multicast context enabling/disabling for bridge ports. As the
+> port state could be changed by STP, that impacts multicast behaviors
+> like igmp query. The corresponding context should be used either for
+> per port context or per vlan context accordingly.
+> 
+> Signed-off-by: Yong Wang <yongwang@nvidia.com>
+> Reviewed-by: Andy Roulin <aroulin@nvidia.com>
+> ---
+>   net/bridge/br_multicast.c | 72 ++++++++++++++++++++++++++++++++++-----
+>   1 file changed, 64 insertions(+), 8 deletions(-)
+> 
+> diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+> index b2ae0d2434d2..67438a75babd 100644
+> --- a/net/bridge/br_multicast.c
+> +++ b/net/bridge/br_multicast.c
+> @@ -2105,12 +2105,17 @@ static void __br_multicast_enable_port_ctx(struct net_bridge_mcast_port *pmctx)
+>   	}
+>   }
+>   
+> -void br_multicast_enable_port(struct net_bridge_port *port)
+> +static void br_multicast_enable_port_ctx(struct net_bridge_mcast_port *pmctx)
+>   {
+> -	struct net_bridge *br = port->br;
+> +	struct net_bridge *br = pmctx->port->br;
+>   
+>   	spin_lock_bh(&br->multicast_lock);
+> -	__br_multicast_enable_port_ctx(&port->multicast_ctx);
+> +	if (br_multicast_port_ctx_is_vlan(pmctx) &&
+> +	    !(pmctx->vlan->priv_flags & BR_VLFLAG_MCAST_ENABLED)) {
+> +		spin_unlock_bh(&br->multicast_lock);
+> +		return;
+> +	}
+> +	__br_multicast_enable_port_ctx(pmctx);
+>   	spin_unlock_bh(&br->multicast_lock);
+>   }
+>   
+> @@ -2137,11 +2142,62 @@ static void __br_multicast_disable_port_ctx(struct net_bridge_mcast_port *pmctx)
+>   	br_multicast_rport_del_notify(pmctx, del);
+>   }
+>   
+> +static void br_multicast_disable_port_ctx(struct net_bridge_mcast_port *pmctx)
+> +{
+> +	struct net_bridge *br = pmctx->port->br;
+> +
+> +	spin_lock_bh(&br->multicast_lock);
+> +	if (br_multicast_port_ctx_is_vlan(pmctx) &&
+> +	    !(pmctx->vlan->priv_flags & BR_VLFLAG_MCAST_ENABLED)) {
+> +		spin_unlock_bh(&br->multicast_lock);
+> +		return;
+> +	}
+> +
+> +	__br_multicast_disable_port_ctx(pmctx);
+> +	spin_unlock_bh(&br->multicast_lock);
+> +}
+> +
+> +static void br_multicast_toggle_port(struct net_bridge_port *port, bool on)
+> +{
+> +	struct net_bridge *br = port->br;
+> +
+> +	if (br_opt_get(br, BROPT_MCAST_VLAN_SNOOPING_ENABLED)) {
+> +		struct net_bridge_vlan_group *vg;
+> +		struct net_bridge_vlan *vlan;
+> +
+> +		rcu_read_lock();
+> +		vg = nbp_vlan_group_rcu(port);
+> +		if (!vg) {
+> +			rcu_read_unlock();
+> +			return;
+> +		}
+> +
+> +		/* iterate each vlan of the port, toggle port_mcast_ctx per vlan */
+> +		list_for_each_entry(vlan, &vg->vlan_list, vlist) {
 
-From: Andy Moreton <andy.moreton@amd.com>
+list_for_each_entry_rcu()
 
-efx_writed_page_locked is a workaround for Siena hardware that is not
-needed on later adapters, and has no callers. Remove it.
+> +			/* enable port_mcast_ctx when vlan is LEARNING or FORWARDING */
+> +			if (on && br_vlan_state_allowed(br_vlan_get_state(vlan), true))
+> +				br_multicast_enable_port_ctx(&vlan->port_mcast_ctx);
+> +			else
+> +				br_multicast_disable_port_ctx(&vlan->port_mcast_ctx);
+> +		}
+> +		rcu_read_unlock();
+> +	} else {
+> +		/* use the port's multicast context when vlan snooping is disabled */
+> +		if (on)
+> +			br_multicast_enable_port_ctx(&port->multicast_ctx);
+> +		else
+> +			br_multicast_disable_port_ctx(&port->multicast_ctx);
+> +	}
+> +}
+> +
+> +void br_multicast_enable_port(struct net_bridge_port *port)
+> +{
+> +	br_multicast_toggle_port(port, true);
+> +}
+> +
+>   void br_multicast_disable_port(struct net_bridge_port *port)
+>   {
+> -	spin_lock_bh(&port->br->multicast_lock);
+> -	__br_multicast_disable_port_ctx(&port->multicast_ctx);
+> -	spin_unlock_bh(&port->br->multicast_lock);
+> +	br_multicast_toggle_port(port, false);
+>   }
+>   
+>   static int __grp_src_delete_marked(struct net_bridge_port_group *pg)
+> @@ -4304,9 +4360,9 @@ int br_multicast_toggle_vlan_snooping(struct net_bridge *br, bool on,
+>   		__br_multicast_open(&br->multicast_ctx);
+>   	list_for_each_entry(p, &br->port_list, list) {
+>   		if (on)
+> -			br_multicast_disable_port(p);
+> +			br_multicast_disable_port_ctx(&p->multicast_ctx);
+>   		else
+> -			br_multicast_enable_port(p);
+> +			br_multicast_enable_port_ctx(&p->multicast_ctx);
+>   	}
+>   
+>   	list_for_each_entry(vlan, &vg->vlan_list, vlist)
 
-Signed-off-by: Andy Moreton <andy.moreton@amd.com>
-Signed-off-by: Edward Cree <ecree.xilinx@gmail.com>
----
- drivers/net/ethernet/sfc/io.h | 24 ------------------------
- 1 file changed, 24 deletions(-)
-
-diff --git a/drivers/net/ethernet/sfc/io.h b/drivers/net/ethernet/sfc/io.h
-index 4cc7b501135f..ef374a8e05c3 100644
---- a/drivers/net/ethernet/sfc/io.h
-+++ b/drivers/net/ethernet/sfc/io.h
-@@ -217,28 +217,4 @@ _efx_writed_page(struct efx_nic *efx, const efx_dword_t *value,
- 					   (reg) != 0xa1c),		\
- 			 page)
- 
--/* Write TIMER_COMMAND.  This is a page-mapped 32-bit CSR, but a bug
-- * in the BIU means that writes to TIMER_COMMAND[0] invalidate the
-- * collector register.
-- */
--static inline void _efx_writed_page_locked(struct efx_nic *efx,
--					   const efx_dword_t *value,
--					   unsigned int reg,
--					   unsigned int page)
--{
--	unsigned long flags __attribute__ ((unused));
--
--	if (page == 0) {
--		spin_lock_irqsave(&efx->biu_lock, flags);
--		efx_writed(efx, value, efx_paged_reg(efx, page, reg));
--		spin_unlock_irqrestore(&efx->biu_lock, flags);
--	} else {
--		efx_writed(efx, value, efx_paged_reg(efx, page, reg));
--	}
--}
--#define efx_writed_page_locked(efx, value, reg, page)			\
--	_efx_writed_page_locked(efx, value,				\
--				reg + BUILD_BUG_ON_ZERO((reg) != 0x420), \
--				page)
--
- #endif /* EFX_IO_H */
