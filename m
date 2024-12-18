@@ -1,87 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx25lb.world4you.com (mx25lb.world4you.com [81.19.149.135])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3849C157E82;
-	Wed, 18 Dec 2024 19:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE14813A87C;
+	Wed, 18 Dec 2024 20:03:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734551932; cv=none; b=KQ85BYm1OxoHJS3WmuikrAGd/EUpxu5FmWZ+i2hftDZiklgK3KIqnCZNcr4cKASdeMLrzIeyYtDIVHtNofVlQFj5sLQKN4CTi00I67dY5OEfI9za/PE6tLvw5v7A1ivJWI0hmFY9CkwGpJ86XS8SsvbbhxPQ34rmYKOwjkD36Dk=
+	t=1734552184; cv=none; b=qnaWWJmuSc45M5YdvKl10hH2Mzv/XZnDB65txB10WGVVKK22C7SZpy9cswXIvErZ44SxgSW4NeR7KlwXO+xiVv6SxH2rXLoOGJ/A4xWfik5dUzGeru64bpeRqjCfpz9xoMFTDDG7LQMGKgxnmqv6uDncLpeViCwMIbFUeIdiRDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734551932; c=relaxed/simple;
-	bh=64TEifuWzCtLWZ9wQ/LM35+YWk8+89ojp68myyOQLB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ECxipq8wjpVSi07L/RISIETjKgeOo3F9rz+ZcjWT3cPIpZtdZSwvKbttRjvYLp5BR0YEXh7j1MSPteQSMw7vvbueENKpQ8f2o2gAo++GSADRJ0SlaRe7cSMz1pHsdRZAmDPHSFjnULPc99GcivEK5eOznumikhW8GvYX6tSR+tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mD8ts/MU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734552184; c=relaxed/simple;
+	bh=2Of0j9lU8b9qxWD+ndx3DbCaR0TpusZ7SAyJc5WKOQc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I5TfP04RjWX0m8IlPeLw/qlNoBDcI+1j1BLys8pWW46obz2TGALUBtgU0ARuRZgY+pl0gpfJC4VmsP1GuMISxW7FNTixMQefmtn0Bz64334BUvdlIIuGRQqsAa1GGUCHmzSNcq3xLkJewMVTJWG5OBOvgJUyWpvstAVJs8FkXx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=eJPK66ZA; arc=none smtp.client-ip=81.19.149.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mD8ts/MU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404BDC4CECD;
-	Wed, 18 Dec 2024 19:58:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734551931;
-	bh=64TEifuWzCtLWZ9wQ/LM35+YWk8+89ojp68myyOQLB8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mD8ts/MUKkYSzgN1rFvqQg+ow8GLBGzyr8Up6+/rBr/WCXhHbdxeh6YY9dpGTFoGh
-	 J8OscPGLSpJDHWNbDlguHoa7BICahuHI3bd24KnfgmBwVn0KIFlhFMZrtJX+EWAFtW
-	 nkbJoTcyoEiCp88CmV/orzz96MQSplFHxo3Qs0/MVFK+q8SuCKDCxTN4vW1hsZTE6N
-	 FZsWH9zNgrJrFVx1WJtdpx5vlbJCqaGZmyA+ke3QDIPsYpZMWcpdJvGmOojWQTlCIQ
-	 SVE98XkYddg1CRfgZqiB/fwQA08SjysVf3E5vt7E2dHVpuezM2edtsmAZ64c10sSGE
-	 ccGV9Gid0/YqA==
-Date: Wed, 18 Dec 2024 11:58:50 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, davem@davemloft.net,
- edumazet@google.com, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, tmgross@umich.edu, aliceryhl@google.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@kernel.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, netdev@vger.kernel.org
-Subject: Re: [PATCH net v2] rust: net::phy fix module autoloading
-Message-ID: <20241218115850.22cba4bc@kernel.org>
-In-Reply-To: <da411dfa-3dac-4205-85f5-b99bc35f3333@redhat.com>
-References: <20241212130015.238863-1-fujita.tomonori@gmail.com>
-	<778db676-9719-4139-a9e3-8b64ffa87fd2@redhat.com>
-	<20241217065439.25e383fe@kernel.org>
-	<b701482d-760a-437b-b3fb-915dc3fc2296@redhat.com>
-	<20241217074400.13c21e22@kernel.org>
-	<20241217085124.761566e6@kernel.org>
-	<da411dfa-3dac-4205-85f5-b99bc35f3333@redhat.com>
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="eJPK66ZA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=fjmkeAFTdbSZjtHMJws8A6MlB+V8KeXQTp/OqbPGH+s=; b=eJPK66ZAJK3ZdxXkkqMYNnOrxS
+	HjjOJcgNF8Pf3MSKvY+LdxvtevtvjVHCeAMFPJahbVeRz5VTEL7VlOnhDcNzYzOKq433lDDxR37Ye
+	DduaYmpqLAeus/2CTgRSOcW3zogsQdHZ1Aa/xr3ppq+/1uAh/jzuSmPrZVMjBFiNUv4M=;
+Received: from [88.117.62.55] (helo=[10.0.0.160])
+	by mx25lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tNzbi-000000006xh-3u82;
+	Wed, 18 Dec 2024 20:21:19 +0100
+Message-ID: <af154371-8513-4ff2-a288-c8301cc8c65c@engleder-embedded.com>
+Date: Wed, 18 Dec 2024 20:21:17 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-next v3] e1000e: Fix real-time violations on link up
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
+Cc: anthony.l.nguyen@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ kuba@kernel.org, linux-pci@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, bhelgaas@google.com, pmenzel@molgen.mpg.de,
+ Gerhard Engleder <eg@keba.com>, netdev@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org
+References: <20241214191623.7256-1-gerhard@engleder-embedded.com>
+ <231abdb7-3b16-4c3c-be17-5d0e6a556f28@intel.com>
+ <047738af-69af-49aa-ae91-7dbca40ae559@engleder-embedded.com>
+ <57948d32-bd6f-473c-a7e6-90185ea41986@intel.com>
+Content-Language: en-US
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <57948d32-bd6f-473c-a7e6-90185ea41986@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AV-Do-Run: Yes
 
-On Wed, 18 Dec 2024 11:04:25 +0100 Paolo Abeni wrote:
-> >> I think I figured it out, you must have old clang. On Fedora 41
-> >> CFI_CLANG defaults to y and prevents RUST from getting enabled.  
-> > 
-> > Still hitting a problem in module signing. 
-> > Rust folks does this ring a bell?
-> > 
-> > make[4]: *** Deleting file 'certs/signing_key.pem'
-> >   GENKEY  certs/signing_key.pem
-> > ....+.........+++++
-> > -----
-> > 80728E46C07F0000:error:03000098:digital envelope routines:do_sigver_init:invalid digest:crypto/evp/m_sigver.c:342:
-> > make[4]: *** [../certs/Makefile:53: certs/signing_key.pem] Error 1
-> > make[4]: *** Waiting for unfinished jobs....
-> > 
-> > allmodconfig without Rust builds fine with both GCC and clang.  
+On 18.12.24 09:36, Przemek Kitszel wrote:
+> On 12/16/24 20:23, Gerhard Engleder wrote:
+>>>> @@ -331,8 +331,15 @@ void e1000e_update_mc_addr_list_generic(struct 
+>>>> e1000_hw *hw,
+>>>>       }
+>>>>       /* replace the entire MTA table */
+>>>> -    for (i = hw->mac.mta_reg_count - 1; i >= 0; i--)
+>>>> +    for (i = hw->mac.mta_reg_count - 1; i >= 0; i--) {
+>>>>           E1000_WRITE_REG_ARRAY(hw, E1000_MTA, i, hw- 
+>>>> >mac.mta_shadow[i]);
+>>>> +
+>>>> +        /* do not queue up too many posted writes to prevent increased
+>>>> +         * latency for other devices on the interconnect
+>>>> +         */
+>>>> +        if ((i % 8) == 0 && i != 0)
+>>>> +            e1e_flush();
+>>>
+>>>
+>>> I would prefer to avoid adding this code to all devices, particularly 
+>>> those that don't operate on real-time systems. Implementing this code 
+>>> will introduce three additional MMIO transactions which will increase 
+>>> the driver start time in various flows (up, probe, etc.).
+>>>
+>>> Is there a specific reason not to use if 
+>>> (IS_ENABLED(CONFIG_PREEMPT_RT)) as Andrew initially suggested?
+>>
+>> Andrew made two suggestions: IS_ENABLED(CONFIG_PREEMPT_RT) which I used
+>> in the first version after the RFC. And he suggested to check for a
+>> compromise between RT and none RT performance, as some distros might
+>> enable PREEMPT_RT in the future.
+>> Przemek suggested to remove the PREEMPT_RT check as "this change sounds
+>> reasonable also for the standard kernel" after the first version with
+>> IS_ENABLED(CONFIG_PREEMPT_RT).
+>>
+>> I used the PREEMPT_RT dependency to limit effects to real-time systems,
+>> to not make none real-time systems slower. But I could also follow the
+>> reasoning of Andrew and Przemek. With that said, I have no problem to
+>> add IS_ENABLED(CONFIG_PREEMPT_RT) again.
+>>
+>> Gerhard
 > 
-> FTR, I got a similar error (even without RUST) when I had
-> 
-> CONFIG_MODULE_SIG_HASH="sha1"
-> 
-> I moved to
-> 
-> CONFIG_MODULE_SIG_HASH="sha256"
-> 
-> since a while, and that fixed the issue for me (also
-> CONFIG_MODULE_SIG_SHA256=y is needed).
+> I'm also fine with limiting the change to RT kernels.
 
-Oh, some form of forced SHA1 deprecation in Fedora 41 possibly?
-I switched to sha256 and that fixes the issue. We'll find out
-if Rust is really fixed next time a Rust patch comes :)
+I will add IS_ENABLED(CONFIG_PREEMPT_RT).
+
+Thanks!
+
+Gerhard
