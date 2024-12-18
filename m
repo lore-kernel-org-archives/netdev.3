@@ -1,149 +1,103 @@
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED42219ED;
-	Wed, 18 Dec 2024 14:32:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECE81A4F12
+	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 14:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734532351; cv=none; b=KK1dhWQ60wyh+wZjdcd1U+G1IEa8YnHaFwmTYu41s1ZL1rzWEriX6pRHgVJBNAnKyn77mG5atj7yJ4OkrBXiN4rv32D/qCNtsKJLoOBhoe3Kd/rq7zQCP4UgWCsz4isr0YPI7ORVgLhFQKRfr7WBaTrWITK5U934y0bVkYjN1io=
+	t=1734532385; cv=none; b=HBdzEfraQMZ+caWskQakI9yDcZReRLgDECUtj6LtRFu19S3kIjA7nphLSzXlMJ4PIIlbkPnmzFX2tg0NPmqke6u40VjkcP0HwyVl/kXetawiVEBsmBUy+29BA9C0m+EFE/A2NZ5wlqITXnMOU4lJ4LO8NUTtGEFBAqm9nK9s4g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734532351; c=relaxed/simple;
-	bh=8FsK/bER8lP7OunJFmegsYl6K/NI0Rc49MtT+8SVWsw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A/fkIyzntbcZQ8EGHHaooHiEmbBcRb0f1hs6RXkjcDxsXqggUycpUrtppe8AnWbRey6PvhiQm2qomqt2k+4LeBGa/RNslC0GXCoWawou0KfNsWlZWlzSF0KRmTEUW/GE+lbjsaKqQrdcuBDXh0o3/5Ofh3+ej1k7inU5dAGCf5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RkEH+h7e; arc=none smtp.client-ip=209.85.160.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734532385; c=relaxed/simple;
+	bh=0sDdAEZabG5E9GjTiowtmVlTAEy23d/F9QV7mjnBl8A=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=QYmNARadQhkpUn5HJ0KSpQY7HGfzLIFBNyOvf8goEsVSdmVc62hto6ArL4u7bqCff9gjt5X8HmWOqMwTQpXw8dLCfzTQ+buqa6dkCJn70pr9x9/hfRcQO7GW80NV+ZZ+JWI61OGAU4y65XBT2JUvyp8wEKWk1TJ3c8MfC1pSRKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=qEhNrxpc; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RkEH+h7e"
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2a3bf796cccso2148829fac.1;
-        Wed, 18 Dec 2024 06:32:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734532349; x=1735137149; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=55iqn6k0ksE8M1ea/JmwD0ngi/GTsL3+dCKm5pf5BGc=;
-        b=RkEH+h7eDTVXXyZ73Z1RPGMazu3BT4l320J6p7Rtu112pEvQu4WNpFZ50yzQFkBFAx
-         UOguHvuLczqPKss39jgRcgiup2/FhJgpLBtqUseobPMnyhjM/XRDQmF9d/HCox1VSfk2
-         qJVh+4m4jZDwptwLGkzy+IlJEs+dP7ge4zr3ThALTO6S0OEY+ZB2fkKdzAfzLBuI056O
-         NIw9zmZ/i6wa05HK/kFKrC7ldDHiYwN1yWfuY4KZlpLmAm9uhHAbver2GDJXwmuepzY/
-         wKukKXDi6Zwc300fn8Hinovo5FGBLtYm73boFVibz/5+QjAqy25fCwghQWtvaXWPEAPx
-         cPBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734532349; x=1735137149;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=55iqn6k0ksE8M1ea/JmwD0ngi/GTsL3+dCKm5pf5BGc=;
-        b=kN/KYJz7tYstm0YvSdI1HHgqu2Ju3mGbtggmI1g5IDm6dIeAG9B9XE7oB3d5qhK4aO
-         baahjUyjWsxRTzqJ626hp9cyMdu4syBx3rYrjwceOCsI7X5KAMiqtBWBJd4PfLuzxWyq
-         Ens8eeH7heP3gFf9MGWcgvxdTm1jt19pzPhMGObmFK/fZFspddvOXGyUjJGc6B5VR8kz
-         rNn5lGWSWTvIAo6k+EXJudnaHSTE7rGjHAKsTFGX//2TPdXiySO6Bi2RbgncHP37l3f0
-         JK2XBPK2Vd5pMITHiEqyS7y+2jCCV9zymOkfTzHliZpk5eBkayZx/hREb7l8NuJAKFA8
-         anUA==
-X-Forwarded-Encrypted: i=1; AJvYcCUd4ReLctt2Su14/56PXWs8DN0+1BvuCRdze1YZd5tPfU3RVKyYfVhvrZk3wS6l0eeNSpqYzdUV6EP1JTCqwA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnDUUr894jybGIToxhF9ov57hv8Or48yWKEH94XwaCYAAAgvD6
-	cDsQZW72pHsIenV9j4DvtEmIo4KASm90NTcUjH4m8KyNLtgzM51IjL37qdcR8WnO3m/2OtoWbTL
-	Ix9/KdQ+PHm/Jr7o9FtKfT6uHavR4/w==
-X-Gm-Gg: ASbGncuulO/NAV71IJtuePSBtt8kvO1X6DmvA8vT44xydlUfoF3FcF/dV3iTYaZNW1O
-	SUq7UKAThexgV1NObjX5eEVSfyY78YHKQ/8z88Oxmv/SCLmfOhIgTjgm8lU6gZL0TDRvu
-X-Google-Smtp-Source: AGHT+IFyMW2N5XWmeC401DjiP8EK9p9DQsfIGeAFHCBgMCE5Lk9tMoq/5U6MaQ9K6nHQ0kSO4/uTNPEO6QKa9QHLF+Y=
-X-Received: by 2002:a05:6870:3d8e:b0:2a3:c59f:4cba with SMTP id
- 586e51a60fabf-2a7b3088006mr1283971fac.17.1734532348669; Wed, 18 Dec 2024
- 06:32:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="qEhNrxpc"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1tNv6Y-004s0c-6p; Wed, 18 Dec 2024 15:32:50 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=Ab/Czx5yAuS9fCWJcYUV2QQ76tFP5JZBVcCL+Ei7LOY=; b=qEhNrxpcHTb7V3PZ7h18PnQBwu
+	l9xTf0/p7bOlEmmtCvNgSDBquJTYsNPiSOdMsx69v9hIhDBt6fiGreRBYUFn+Yt3XNViftXos199R
+	1zR6ylKx2Jq9xmNRtqSBQo2SeI+FhJd7GqfjFWDiACoL1K1fFbBPphrcDCYiE/miBXepomelAsFs6
+	gq8eF0ld/byTOWuYPpdL1+IVCgG1JeCH87gjelwF3Sh1k2HrAMXt937I45AINS7PzgqNf5OgFEJ8t
+	MODlNz6SZdy6neBBZ7rTgU7/ymEf5ezEjGVGJ2ye1GNaeNFJoAZAIu24Ecn8yEKObwQGylhhcZZ2/
+	NRjhHvpw==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1tNv6X-000702-Lj; Wed, 18 Dec 2024 15:32:49 +0100
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1tNv6V-008Env-2p; Wed, 18 Dec 2024 15:32:47 +0100
+From: Michal Luczaj <mhal@rbox.co>
+Date: Wed, 18 Dec 2024 15:32:34 +0100
+Subject: [PATCH net-next v3 1/7] vsock/test: Use NSEC_PER_SEC
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241210161448.76799-1-donald.hunter@gmail.com>
- <20241210161448.76799-8-donald.hunter@gmail.com> <9c0fcee07cb7b93308a5d0185c4e74fb3cbbef1c.camel@sipsolutions.net>
-In-Reply-To: <9c0fcee07cb7b93308a5d0185c4e74fb3cbbef1c.camel@sipsolutions.net>
-From: Donald Hunter <donald.hunter@gmail.com>
-Date: Wed, 18 Dec 2024 14:32:17 +0000
-Message-ID: <CAD4GDZz3xSyA2zJcs-wbZa4yD-ZT90PeOLFReOcr286-nycA6g@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 7/7] netlink: specs: wireless: add a spec for nl80211
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-wireless@vger.kernel.org, 
-	donald.hunter@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241218-test-vsock-leaks-v3-1-f1a4dcef9228@rbox.co>
+References: <20241218-test-vsock-leaks-v3-0-f1a4dcef9228@rbox.co>
+In-Reply-To: <20241218-test-vsock-leaks-v3-0-f1a4dcef9228@rbox.co>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>, 
+ Luigi Leonardi <leonardi@redhat.com>
+X-Mailer: b4 0.14.2
 
-On Thu, 12 Dec 2024 at 08:36, Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> On Tue, 2024-12-10 at 16:14 +0000, Donald Hunter wrote:
-> >
-> > +  -
-> > +    name: wlan-cipher-suites
-> > +    type: enum
->
-> I'm not sure exactly what this does, but I'm not sure 'enum' is the
-> right way to think about it. Pretty much every number (OUI + subvalue)
-> could be valid here, if the driver advertises support for it and you
-> have a supplicant that understands it.
+Replace 1000000000ULL with NSEC_PER_SEC.
 
-It was an attempt to enumerate the valid values, but from what you are
-saying I think it will need to remain as u32, probably with
-'display-hint: hex".
+No functional change intended.
 
-> > +  -
-> > +    name: wiphy-bands
-> > +    attributes:
-> > +      -
-> > +        name: 2ghz
-> > +        doc: 2.4 GHz ISM band
-> > +        value: 0
-> > +        type: nest
-> > +        nested-attributes: band-attrs
-> > +      -
-> > +        name: 5ghz
-> > +        doc: around 5 GHz band (4.9 - 5.7 GHz)
-> > +        type: nest
-> > +        nested-attributes: band-attrs
-> > +      -
-> > +        name: 60ghz
-> > +        doc: around 60 GHz band (58.32 - 69.12 GHz)
-> > +        type: binary
->
-> This (and s1g/lc) should also nest, with the same attributes? There
-> should be no structural difference between the bands, even if most of
-> the values are only used/valid for some of the bands.
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ tools/testing/vsock/vsock_test.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-That makes sense. I'll add the nest type to them all.
+diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+index 48f17641ca504316d1199926149c9bd62eb2921d..38fd8d96eb83ef1bd45728cfaac6adb3c1e07cfe 100644
+--- a/tools/testing/vsock/vsock_test.c
++++ b/tools/testing/vsock/vsock_test.c
+@@ -22,6 +22,7 @@
+ #include <signal.h>
+ #include <sys/ioctl.h>
+ #include <linux/sockios.h>
++#include <linux/time64.h>
+ 
+ #include "vsock_test_zerocopy.h"
+ #include "timeout.h"
+@@ -559,7 +560,7 @@ static time_t current_nsec(void)
+ 		exit(EXIT_FAILURE);
+ 	}
+ 
+-	return (ts.tv_sec * 1000000000ULL) + ts.tv_nsec;
++	return (ts.tv_sec * NSEC_PER_SEC) + ts.tv_nsec;
+ }
+ 
+ #define RCVTIMEO_TIMEOUT_SEC 1
+@@ -599,7 +600,7 @@ static void test_seqpacket_timeout_client(const struct test_opts *opts)
+ 	}
+ 
+ 	read_overhead_ns = current_nsec() - read_enter_ns -
+-			1000000000ULL * RCVTIMEO_TIMEOUT_SEC;
++			   NSEC_PER_SEC * RCVTIMEO_TIMEOUT_SEC;
+ 
+ 	if (read_overhead_ns > READ_OVERHEAD_NSEC) {
+ 		fprintf(stderr,
 
-> > +operations:
-> > +  enum-model: directional
-> > +  list:
-> > +    -
-> > +      name: get-wiphy
-> > +      doc: |
-> > +        Get information about a wiphy or dump a list of all wiphys. Requests to dump get-wiphy
-> > +        should unconditionally include the split-wiphy-dump flag in the request.
-> > +      attribute-set: nl80211-attrs
-> > +      do:
-> > +        request:
-> > +          value: 1
-> > +          attributes:
-> > +            - wiphy
-> > +            - wdev
-> > +            - ifindex
-> > +        reply:
-> > +          value: 3
->
-> could the value not reference "get-wiphy" and "new-wiphy" from the
-> command list? That might be easier to understand?
+-- 
+2.47.1
 
-There is currently no schema or tool support for referencing enum
-constants when defining protocol message ids. Most of the netlink
-families don't have any need for an enumeration of commands in the
-spec; nl80211 is unusual in reporting available commands.
-
-I'm currently working on completeness of nl80211 and a couple of
-feature gaps in ynl-gen-c.py to resolve 'make -C tools/net/ynl'
-failures. I doubt that I will have a v3 patchset ready before net-next
-closes for the holidays.
-
-Thanks,
-Donald.
