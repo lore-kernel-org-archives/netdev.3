@@ -1,71 +1,126 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mx25lb.world4you.com (mx25lb.world4you.com [81.19.149.135])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DB8156968
-	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 18:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E509461;
+	Wed, 18 Dec 2024 19:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734546669; cv=none; b=G6Tu2T+VE/xifTO0dcwOHiklOVe5ii10sIOmKidynOnl2SBvo/glmcnauUAc7mgiIuWPVTpIMhGwc4frqE49RBLBNriQuwODdrOP9w9fmutH3JM8zKpxdGDsq8dSnRJtRHLOWScpNEV8c7ETg8xhxiirnoOx5ZGuutNaMDlzDHU=
+	t=1734549712; cv=none; b=YNpr669OLTbzUFq4phXnck7knehTRDGhDBJTDyryd78eyOw2hnRs6GTXKKOIiK9zbkkofOuDG9Wk5UM8g3KAEmwa/8GF81dS6SN5auROZcxn1UP5KvbBBArjzke/8p3apiXN/oL41CjUxPSq9JKgvgzRIzF0OhVbXkTOsdiITv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734546669; c=relaxed/simple;
-	bh=0IdzN+Rl5BkAJGcCkueS5gxI6fSxnlmKbxkcmOi0Y10=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NpKCcdkJcHLhnRxuTf6t8TBdZSxJR+E6T8rKwua3xUhtIvXWE5jskc9Q/NgXvP8rs429ulBKfa3uMDECQUqaT3lqR8wiXMupFh6SN8peN3LK1xVvTWTLAVHZLV5xbZKHv8MgZl8Az25kXAirdJ+CuXtRcEBAHqN2An3KPe0Flxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=1Q2fZr3r; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1734549712; c=relaxed/simple;
+	bh=XOOAg+9NyusyFnHK/VT5RSEuo12t6r9zreSZg9YDJo8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ha29IORGkqdEGvm3ttImGJ/rFfiyiwy06qhV95dowT/nishk6vwV1POMhGMEXM2ZCL3Jr+XTAb9e24gp9REgnJ5Zscvs/eeVx+jhT7t49YANpKZu01nYo9AigDlazYRjgkvdHd4PV+5F/qqfYzq1l3bpGHFOS5E7bqvPgGlqBmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=n4Iy9Mxc; arc=none smtp.client-ip=81.19.149.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="1Q2fZr3r"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=GpcYmlELp/Y+uOsekpEkHPdBziPffZ5earBfBWVp51M=; b=1Q2fZr3r+Sx0lRVt2woBFQ3mc7
-	ObSon5cZir//QZ2a6kMOS7G6RmjXJ52gkSSkQefxVOE4arv1Gjn3HEA4QdlrDjulkdO2WcD+GYkTf
-	RetwcPDuvp/tYKPcN/vbA/yYCgxnhCiliUFb+20sUKnj/M1asbhtqfYlDwozIQE1Xypg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tNyp6-001MZE-20; Wed, 18 Dec 2024 19:31:04 +0100
-Date: Wed, 18 Dec 2024 19:31:04 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Xin Tian <tianx@yunsilicon.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, kuba@kernel.org,
-	pabeni@redhat.com, edumazet@google.com, davem@davemloft.net,
-	jeff.johnson@oss.qualcomm.com, przemyslaw.kitszel@intel.com,
-	weihg@yunsilicon.com, wanry@yunsilicon.com
-Subject: Re: [PATCH v1 16/16] net-next/yunsilicon: Add change mtu
-Message-ID: <c8ffef39-ce76-4028-b54f-7ec919a4620c@lunn.ch>
-References: <20241218105023.2237645-1-tianx@yunsilicon.com>
- <20241218105057.2237645-17-tianx@yunsilicon.com>
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="n4Iy9Mxc"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=tOtmzgBrXNpnRWLYy9N50Vkhc34EB9OOhkcohKuZ4oE=; b=n4Iy9MxcJ+btrLbm+6tvm07Lbd
+	Hg7F+N4LF1KChrHtH+2+TKHensIyj7k0cokUuFEEKU8+ZTfc0/ZxEKDISxuLQOqJj0RuufM93AC3h
+	Ix1QEgz3HU5Ikatoxe8Qz1PCEFXUjYMTiiMoWLuelfE4ohCkxc0EaiuHpb2dqqaEU4Io=;
+Received: from 88-117-62-55.adsl.highway.telekom.at ([88.117.62.55] helo=[10.0.0.160])
+	by mx25lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tNzcB-000000006xh-2Ssf;
+	Wed, 18 Dec 2024 20:21:47 +0100
+Message-ID: <54d9d905-1cee-4922-8631-c2b69779d18a@engleder-embedded.com>
+Date: Wed, 18 Dec 2024 20:21:46 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241218105057.2237645-17-tianx@yunsilicon.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-next v3] e1000e: Fix real-time
+ violations on link up
+Content-Language: en-US
+To: Avigail Dahan <Avigailx.dahan@intel.com>,
+ intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ linux-pci@vger.kernel.org
+Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, bhelgaas@google.com,
+ pmenzel@molgen.mpg.de, Gerhard Engleder <eg@keba.com>,
+ Vitaly Lifshits <vitaly.lifshits@intel.com>
+References: <20241214191623.7256-1-gerhard@engleder-embedded.com>
+ <cd7d3122-5231-bb7c-cb2c-7b8b94a46968@intel.com>
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <cd7d3122-5231-bb7c-cb2c-7b8b94a46968@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AV-Do-Run: Yes
 
-> +static int xsc_eth_change_mtu(struct net_device *netdev, int new_mtu)
-> +{
-> +	struct xsc_adapter *adapter = netdev_priv(netdev);
-> +	int old_mtu = netdev->mtu;
-> +	int ret = 0;
-> +	int max_buf_len = 0;
-> +
-> +	if (new_mtu > netdev->max_mtu || new_mtu < netdev->min_mtu) {
-> +		netdev_err(netdev, "%s: Bad MTU (%d), valid range is: [%d..%d]\n",
-> +			   __func__, new_mtu, netdev->min_mtu, netdev->max_mtu);
-> +		return -EINVAL;
-> +	}
+On 18.12.24 16:08, Avigail Dahan wrote:
+> 
+> 
+> On 14/12/2024 21:16, Gerhard Engleder wrote:
+>> From: Gerhard Engleder <eg@keba.com>
+>>
+>> Link down and up triggers update of MTA table. This update executes many
+>> PCIe writes and a final flush. Thus, PCIe will be blocked until all
+>> writes are flushed. As a result, DMA transfers of other targets suffer
+>> from delay in the range of 50us. This results in timing violations on
+>> real-time systems during link down and up of e1000e in combination with
+>> an Intel i3-2310E Sandy Bridge CPU.
+>>
+>> The i3-2310E is quite old. Launched 2011 by Intel but still in use as
+>> robot controller. The exact root cause of the problem is unclear and
+>> this situation won't change as Intel support for this CPU has ended
+>> years ago. Our experience is that the number of posted PCIe writes needs
+>> to be limited at least for real-time systems. With posted PCIe writes a
+>> much higher throughput can be generated than with PCIe reads which
+>> cannot be posted. Thus, the load on the interconnect is much higher.
+>> Additionally, a PCIe read waits until all posted PCIe writes are done.
+>> Therefore, the PCIe read can block the CPU for much more than 10us if a
+>> lot of PCIe writes were posted before. Both issues are the reason why we
+>> are limiting the number of posted PCIe writes in row in general for our
+>> real-time systems, not only for this driver.
+>>
+>> A flush after a low enough number of posted PCIe writes eliminates the
+>> delay but also increases the time needed for MTA table update. The
+>> following measurements were done on i3-2310E with e1000e for 128 MTA
+>> table entries:
+>>
+>> Single flush after all writes: 106us
+>> Flush after every write:       429us
+>> Flush after every 2nd write:   266us
+>> Flush after every 4th write:   180us
+>> Flush after every 8th write:   141us
+>> Flush after every 16th write:  121us
+>>
+>> A flush after every 8th write delays the link up by 35us and the
+>> negative impact to DMA transfers of other targets is still tolerable.
+>>
+>> Execute a flush after every 8th write. This prevents overloading the
+>> interconnect with posted writes.
+>>
+>> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+>> CC: Vitaly Lifshits <vitaly.lifshits@intel.com>
+>> Link: 
+>> https://lore.kernel.org/netdev/f8fe665a-5e6c-4f95-b47a-2f3281aa0e6c@lunn.ch/T/
+>> Signed-off-by: Gerhard Engleder <eg@keba.com>
+>> ---
+>> v3:
+>> - mention problematic platform explicitly (Bjorn Helgaas)
+>> - improve comment (Paul Menzel)
+>>
+>> v2:
+>> - remove PREEMPT_RT dependency (Andrew Lunn, Przemek Kitszel)
+>> ---
+>>   drivers/net/ethernet/intel/e1000e/mac.c | 9 ++++++++-
+>>   1 file changed, 8 insertions(+), 1 deletion(-)
+>>
+> Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
 
-What checking does the core do for you, now that you have set max_mtu
-and min_mtu?
+Thank you for the test!
 
-
-    Andrew
-
----
-pw-bot: cr
+Gerhard
