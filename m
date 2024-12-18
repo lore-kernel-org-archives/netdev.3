@@ -1,134 +1,159 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366CB165F18
-	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 08:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E2C4A3C;
+	Wed, 18 Dec 2024 08:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734511683; cv=none; b=hsDct3wwp8Vb8rZRNSDpiGqD+Ka7TosyMEC+9mFQghgzf0fEwCAXBhGZlCsUm24h2FyMN38Q1WuE21ISadTbmxy/fkWllkldSITcI+utEzQPFedBute4nABrV29EbA35LrFSFqZJm4OT0FQaI9N9+7MPOC0dfSrOwplUcaIFdBk=
+	t=1734511975; cv=none; b=LcPqtwTO87Vver/sTbmSe319ct9l6+kufP16OJx8pSf819bFb/M8uW6fu08qI4p2vx6KcjheWcKvXJw6R9p9ccEZ8txJXnM/gnrTe2QqXMqNtTJEuNRVnu2kZetXXZfICSHrIDXe8PVidUly1IX3d4lNIduclZ8n67Ha9zzJhks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734511683; c=relaxed/simple;
-	bh=2fvPiTAZv5rqk+bWLmfDgpuhpEwEB5pNg7b841vmRCc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uAdjVmi5GRC8q7F2DLbYg5uXm+O8TJy20YltvTkd3vJDcQhgrULsGq9sPOkbf5u2vmMujYgoK8wD/3Bqs4ka3rjmed0KsgYYt3SOR4enj4h+e1k+UohzjhwNEeU3wQx2bfQoTy1QMTTfUsfLONUqN5lHizyNrc6ikvlIjGyNonQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gQCz2p4/; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1734511975; c=relaxed/simple;
+	bh=b8BUordGePXyMPmYfMw51aih2gx7ZrPsUApAk+X917M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EmgpNgoHqGrwrR+5Adc7E5Q8AUpvEs8C6zYFLuZxlB36Llxr8e3ZBpEyPDbvxHo7HyCCrZhEcTXWFJgzUQgqqfanmGntI16wrVArmPK5BXJlRdb5084g8yNc+PduQP9hB70Kf6snZFViHDsB1DFn3VIWjQAnnefJMY49iIM1xWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UZ0XAD7o; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gQCz2p4/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734511681; x=1766047681;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2fvPiTAZv5rqk+bWLmfDgpuhpEwEB5pNg7b841vmRCc=;
-  b=gQCz2p4/ysQjjnumNz7XjiuBJOMnuLWeswcw5PS1RemQsBvDTBYS2+rO
-   DSZftoNQn2k91sgqvVIsQvK8dtaOK4w+HjErXd6qUAoG1UkqsB1Jo6jA7
-   LTHGKiYhu4EHc/Fuy5CgSdI0GziXWtv5G/oSUl4auTu62VwP1wxusp8kI
-   1NYxmfk+yjARxVaY9V/7ijNlD5K4PHQcnjKa1dVOrbT9+vxO7Fn+JKTdh
-   jnarAFDQzYBR1l5RoAJgd1qAmtzQfnBhNVdWvRaIrMHC/d50v5QTDl7Jm
-   EPjUvGXhCedw/SQSQZaoSKSDR1N5T8B0v21o2HJ+l1m9A3ByvWLBJuPAk
-   Q==;
-X-CSE-ConnectionGUID: D2rhr7BYQW2M6Ee0ri6MeA==
-X-CSE-MsgGUID: 0ag7ZFRNRUK1LYAFAeMF4A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="34261085"
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; 
-   d="scan'208";a="34261085"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2024 00:48:00 -0800
-X-CSE-ConnectionGUID: elgY9zoyQnGGt0yRCyyPaA==
-X-CSE-MsgGUID: bQ+JWCTUTpiiUswZJOKy2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="128776490"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2024 00:47:58 -0800
-Date: Wed, 18 Dec 2024 09:44:57 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
-	pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Subject: Re: [PATCH net-next v2 4/6] bnxt_en: Skip MAC loopback selftest if
- it is unsupported by FW
-Message-ID: <Z2KLiSYjhQjboHMw@mev-dev.igk.intel.com>
-References: <20241217182620.2454075-1-michael.chan@broadcom.com>
- <20241217182620.2454075-5-michael.chan@broadcom.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UZ0XAD7o"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3003e203acaso58490271fa.1;
+        Wed, 18 Dec 2024 00:52:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734511972; x=1735116772; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NxipcKYrEMK0D8amtkSwoNfW79Kt+zmaZRH04ZVpstg=;
+        b=UZ0XAD7ow44NabNV4jGWIDvEvuiet4YHG6a6x/LhSpnm6WuklTkkvi7nImKrFhz3+R
+         XpIQs/9wvFtTwsS0L6hxfeIyFT3Uko3c4ACTDxy35OMpjaS+CQStbuRlUe/sbuERyZA/
+         85KW0DGbwVLKEY+8kCzuHK80mA/bdNVRLzRA+wiKMeYwhcGBgFeLR5rTTQVNCzUv1rS0
+         O8tGso0o+1DrtsH22xMIOA2t3YrAmTsf9kbJ9h2gUx9m5HiFJ8ZSoR+cAo2m5vrbeiD/
+         pwkDNSBrWLlsycFTJDK2Q79FUqj03o2DnSDrgnvfeVpl/UUESDmLX2IZWmB8EZGYTa7A
+         Fkiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734511972; x=1735116772;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NxipcKYrEMK0D8amtkSwoNfW79Kt+zmaZRH04ZVpstg=;
+        b=wWFuBTLLqj5MKR7jDHLoKylUJOFNRar7dLs8TzuKsocZjlKt8U5c36lC/SFPbu2VRH
+         jA1XA/cV4aiTkpu8cQ/q/ekgmeY45dA/ZmIDdk7jxBVjcOIq4vS1qHV4YLSbLt/3zreX
+         yQ6nRajDuETHYY9X27ZHRXSudTBb8YMzQZ4liR3YpZaOTcEYJCsj1ucejdTaGd+6FGAy
+         j1PndmJOlvPgyfEj3qAB8rLnd6PV/9/ggHyj43lgyZ+FOabGElz5cECuG1U2BecQZU+s
+         tqtIIS9tPn34wGQV94a0/GTEbkrIcf4sZv07S88tZEAJd+XDsKdF4qEC99zzxfn+Hnee
+         61nw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJnu7LtvAmNSiX6ujVF67Z04mUvCONO6Zg/EXkqQZrpNzd04tRRJuEtnFq1FSd2i90WNASVeH6nTGDnz0=@vger.kernel.org, AJvYcCWKLfJs6rRFZ+6IRGRTNIqi2AUXXjPraoaFhF1aMPeCewsKmJf7WY4bIV/gJoAJEFFF8ARwryi5@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCenDv3NRS2evN801yEZgxYkR93uBz9eDUgH7m7DelGSY0xj8c
+	/7Gx54hS+m2iDOJ71+Qjpbt5ZWm7KhR3cejJL/TxGhPN8JXeSet6fLj21g9Dg+Ag7wY6Q8wSr0T
+	zn+nyozXA+A6euiLYJIbjKk14A9Q=
+X-Gm-Gg: ASbGncshGYQ6NlQyd2yBYSnMNeFil3W8i6Ij9aYDQjLHOwoFI4wIU2UfEvup01MY9pm
+	xKW7/QDzFhO1nilna/FHH3+d80xsNBAeP1xSkzw==
+X-Google-Smtp-Source: AGHT+IERDdUWm6dVha5+qz+jdc4CjQIYAUoCgMgcRkA3aokBHWqbunNZvQ9iAXRGEpIhfxg/WyUiy8GmonzFB0QKlT8=
+X-Received: by 2002:a2e:87cb:0:b0:300:4362:40 with SMTP id 38308e7fff4ca-3044db5743bmr5592641fa.36.1734511971425;
+ Wed, 18 Dec 2024 00:52:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241217182620.2454075-5-michael.chan@broadcom.com>
+References: <20241021080856.48746-1-ubizjak@gmail.com> <20241021080856.48746-3-ubizjak@gmail.com>
+ <7590f546-4021-4602-9252-0d525de35b52@nvidia.com> <CAFULd4aL+qVxyFquMTTQLyVFpVSc1DwcahJprj73RtvrW_XsXA@mail.gmail.com>
+ <bf189e58-710f-49c2-a419-e3d3e71576ca@nvidia.com>
+In-Reply-To: <bf189e58-710f-49c2-a419-e3d3e71576ca@nvidia.com>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Wed, 18 Dec 2024 09:52:39 +0100
+Message-ID: <CAFULd4YwiE=q4QEPjFeLQdwqcret3TX7usZUOuP=R3hLPMNwyw@mail.gmail.com>
+Subject: Re: [PATCH 3/3] percpu: Cast percpu pointer in PERCPU_PTR() via
+ unsigned long
+To: Gal Pressman <gal@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@linux.com>, Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 17, 2024 at 10:26:18AM -0800, Michael Chan wrote:
-> Call the new HWRM_PORT_MAC_QCAPS to check if mac loopback is
-> supported.  Skip the MAC loopback ethtool self test if it is
-> not supported.
-> 
-> Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-> Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-> Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-> Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-> ---
-> v2: Change bnxt_hwrm_mac_qcaps() to void
-> Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> ---
->  drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 24 +++++++++++++++++++
->  drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  5 ++++
->  .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 11 +++++----
->  3 files changed, 36 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index c0728d5ff8bc..46edea75e062 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -11551,6 +11551,26 @@ static int bnxt_hwrm_phy_qcaps(struct bnxt *bp)
->  	return rc;
->  }
->  
-> +static void bnxt_hwrm_mac_qcaps(struct bnxt *bp)
-> +{
-> +	struct hwrm_port_mac_qcaps_output *resp;
-> +	struct hwrm_port_mac_qcaps_input *req;
-> +	int rc;
-> +
-> +	if (bp->hwrm_spec_code < 0x10a03)
-> +		return;
-> +
-> +	rc = hwrm_req_init(bp, req, HWRM_PORT_MAC_QCAPS);
-> +	if (rc)
-> +		return;
-> +
-> +	resp = hwrm_req_hold(bp, req);
-> +	rc = hwrm_req_send_silent(bp, req);
-> +	if (!rc)
-> +		bp->mac_flags = resp->flags;
-> +	hwrm_req_drop(bp, req);
-> +}
-> +
->  static bool bnxt_support_dropped(u16 advertising, u16 supported)
->  {
->  	u16 diff = advertising ^ supported;
-> @@ -15679,6 +15699,10 @@ static int bnxt_probe_phy(struct bnxt *bp, bool fw_dflt)
->  		bp->dev->priv_flags |= IFF_SUPP_NOFCS;
->  	else
->  		bp->dev->priv_flags &= ~IFF_SUPP_NOFCS;
-> +
-> +	bp->mac_flags = 0;
-> +	bnxt_hwrm_mac_qcaps(bp);
-> +
->  	if (!fw_dflt)
->  		return 0;
+On Wed, Dec 18, 2024 at 9:46=E2=80=AFAM Gal Pressman <gal@nvidia.com> wrote=
+:
 >
-Thanks for changing the return value
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> On 18/12/2024 10:40, Uros Bizjak wrote:
+> > On Wed, Dec 18, 2024 at 8:54=E2=80=AFAM Gal Pressman <gal@nvidia.com> w=
+rote:
+> >>
+> >> On 21/10/2024 11:07, Uros Bizjak wrote:
+> >>> Cast pointer from percpu address space to generic (kernel) address
+> >>> space in PERCPU_PTR() macro via unsigned long intermediate cast [1].
+> >>> This intermediate cast is also required to avoid build failure
+> >>> when GCC's strict named address space checks for x86 targets [2]
+> >>> are enabled.
+> >>>
+> >>> Found by GCC's named address space checks.
+> >>>
+> >>> [1] https://sparse.docs.kernel.org/en/latest/annotations.html#address=
+-space-name
+> >>> [2] https://gcc.gnu.org/onlinedocs/gcc/Named-Address-Spaces.html#x86-=
+Named-Address-Spaces
+> >>>
+> >>> Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+> >>> Cc: Dennis Zhou <dennis@kernel.org>
+> >>> Cc: Tejun Heo <tj@kernel.org>
+> >>> Cc: Christoph Lameter <cl@linux.com>
+> >>> Cc: Andrew Morton <akpm@linux-foundation.org>
+> >>> ---
+> >>>  include/linux/percpu-defs.h | 5 ++++-
+> >>>  1 file changed, 4 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/include/linux/percpu-defs.h b/include/linux/percpu-defs.=
+h
+> >>> index e1cf7982424f..35842d1e3879 100644
+> >>> --- a/include/linux/percpu-defs.h
+> >>> +++ b/include/linux/percpu-defs.h
+> >>> @@ -221,7 +221,10 @@ do {                                            =
+                         \
+> >>>  } while (0)
+> >>>
+> >>>  #define PERCPU_PTR(__p)                                             =
+         \
+> >>> -     (typeof(*(__p)) __force __kernel *)(__p);
+> >>> +({                                                                  =
+ \
+> >>> +     unsigned long __pcpu_ptr =3D (__force unsigned long)(__p);     =
+   \
+> >>> +     (typeof(*(__p)) __force __kernel *)(__pcpu_ptr);               =
+ \
+> >>> +})
+> >>>
+> >>>  #ifdef CONFIG_SMP
+> >>>
+> >>
+> >> Hello Uros,
+> >>
+> >> We've encountered a kernel panic on boot [1] bisected to this patch.
+> >> I believe the patch is fine and the issue is caused by a compiler bug.
+> >> The panic reproduces when compiling the kernel with gcc 11.3.1, but do=
+es
+> >> not reproduce with latest gcc/clang.
+> >>
+> >> I have a patch that workarounds the issue by ditching the intermediate
+> >> variable and does the casting in a single line. Will that be enough to
+> >> solve the sparse/build issues?
+> >
+> > Yes, single line like:
+> >
+> > (typeof(*(__p)) __force __kernel *)(__force unsigned long)(__pcpu_ptr);
+> >
+> > should be OK.
+> >
+> > Thanks,
+> > Uros.
+>
+> Awesome, I'll submit a patch unless I hear any objections.
 
-[...]
-> -- 
-> 2.30.1
-> 
+Please note that this is/was a preparation patch for further changes,
+applied to akpm's mm branch (typeof() -> TYPEOF_UNQUAL()). I'll take
+care to forward-port your patch to mm branch.
+
+AFAICS, the issue triggers only when KASAN is enabled.
+
+Thanks,
+Uros.
