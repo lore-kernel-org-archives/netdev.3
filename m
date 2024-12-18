@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C201F868D;
-	Wed, 18 Dec 2024 17:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6594A1D;
+	Wed, 18 Dec 2024 17:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734542002; cv=none; b=cx+PIWTOcKpaGMEjTA57fv090OohTgYCeT4xYsUi2RtC9LJsa4OSmW5jB8f5yMDjGpH2AdJkZEesiKlHqN4nAVjckoC2q3am87Z/jEspvsWHuECapqQBwphOFcUdVLlCVDWNiDKnyGI/IpSm9vGQzkh+YBQ4CISDB6DstCa6uCQ=
+	t=1734542191; cv=none; b=ed1qPKfFdYYWJ2Ulxfwt4opAs2n8unSI0P3roeQMAFO/Xkxrf27ps2nqj3M2dwqgEnvYa3pUx5OjeFDe1n7qSjOeKFCkNLrvPMkoxAPRKQsIyx7vmkDF4af6+1iQmzRBM6LsuIC49Sjw6HapzX9ypQcpoJENvJGdC4brLGwgbJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734542002; c=relaxed/simple;
-	bh=cgGYUe2HEyyFOdoDYkKOljPAISybYKwqCt9T3843Rck=;
+	s=arc-20240116; t=1734542191; c=relaxed/simple;
+	bh=s8lk+/oLUdRbIaHKP4ZllaA3rqkUAOWUi7drDNlhs7Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h7TyGq5smp902KttqXZI/l9u0nH6ySZ5hV6ehntYH0RRAjBczalnm7tvXVNmF3gHTY+a8G6+l4FMPj5CSkCw4YlLFGUjYuGCLly2NPLN06cyuhXwLhNVilrGhu39rCK/fuHSG4rrIR0K/+pscy3Xhlx86heS2EtnOtvsVhZJY40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jXOd8w3r; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=RvaGaCM1GLaLR+KavPQFpTH4go5rSXTqy6hIeekYEgQd9T0XyCS4Er1su2CGSyenBOSZAySpsIhvaplQgDoRmmabATcoTi3+MuhQXZHAihFu9Jaxx1gYChY5uQkPfvDg1JsQH2/8MiN1qWd6N7yQKUY9xrcnrMvry/8RiHJ/nKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=a3iCu5vv; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jXOd8w3r"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="a3iCu5vv"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=PaKqry1ARgp3YomJ3RZYJk7i9ILRCrNYrvEfCol2+Cw=; b=jXOd8w3rUjEKZymf5aiN89aAUk
-	cc+4WKK8n6PgCNEPlRBcSCBbQYVxaOI1voMBu8KeFuXTcgvysN/5lgQjtkm40hjQscFqk+iS2svr+
-	tzx9QseTuzybutAEd9lGDzc+zvLe4S/oT5bK9s+IbDLIpcD5jQPmYWl+ucevxngZRTIk=;
+	bh=LUbmOvAQbbk+rjWr6Xku6oeLX+F+YOEx0ESn29I/zSM=; b=a3iCu5vvjKEwMqdPSytPlzwI86
+	Q1EjeuAURoo/ZK/EWH2gPf89IfehgV0NmxKdqgijZkLwTT/dl9F+fhnLUOlt5DHY+pxJOpTniH/oO
+	38rLwxuXcceU9pMVEsXuo8ASuYDFCexMLNyrlutMk737aK3z13/aPjIQX0clhUZNGnQE=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1tNxbg-001LMw-PF; Wed, 18 Dec 2024 18:13:08 +0100
-Date: Wed, 18 Dec 2024 18:13:08 +0100
+	id 1tNxem-001LPR-23; Wed, 18 Dec 2024 18:16:20 +0100
+Date: Wed, 18 Dec 2024 18:16:20 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Dimitri Fedrau <dima.fedrau@gmail.com>
 Cc: Heiner Kallweit <hkallweit1@gmail.com>,
@@ -38,10 +38,10 @@ Cc: Heiner Kallweit <hkallweit1@gmail.com>,
 	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH net-next] net: phy: dp83822: Add support for PHY LEDs on
  DP83822
-Message-ID: <1627e8c1-e9f9-438e-9ca2-6a931c814e70@lunn.ch>
+Message-ID: <c63316ac-696d-4ca9-8169-109ed1739f2a@lunn.ch>
 References: <20241217-dp83822-leds-v1-1-800b24461013@gmail.com>
  <1a7513fd-c78f-47de-94d7-757c83e9b94c@lunn.ch>
- <20241217175906.GB716460@debian>
+ <20241218085400.GA779107@debian>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,29 +50,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241217175906.GB716460@debian>
+In-Reply-To: <20241218085400.GA779107@debian>
 
-> > index is taken direct from DT. Somebody might have:
-> > 
-> >            leds {
-> >                 #address-cells = <1>;
-> >                 #size-cells = <0>;
-> > 
-> >                 led@42 {
-> >                     reg = <42>;
-> >                     color = <LED_COLOR_ID_WHITE>;
-> >                     function = LED_FUNCTION_LAN;
-> >                     default-state = "keep";
-> >                 };
-> >             };
-> > 
-> > so you should not assume if it is not 0, 1 or 2, then it must be
-> > 3. Please always validate index.
-> >
-> dp83822_of_init_leds does a check that index is 0, 1, 2 or 3. Is this
-> sufficient ? Otherwise I would validate the index.
+> By the way. Wouldn't it be helpful adding a u32 max_leds to
+> struct phy_driver ? Every driver supporting PHY LEDs validates index at the
+> moment. With max_leds it should be easy to check it in of_phy_leds and
+> return with an error if index is not valid.
 
-Ah, i missed that. I'm just used to the usual pattern that every PHY
-driver has a check for the MAX LEDs in their callback.
+I have been considering it. However, so far developers have been good
+at adding the checks, because the first driver had the checks, cargo
+cult at its best.
+
+If we are going to add it, we should do it early, before there are too
+many PHY drivers which need updating.
 
 	Andrew
