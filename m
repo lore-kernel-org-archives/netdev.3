@@ -1,205 +1,606 @@
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2044.outbound.protection.outlook.com [40.107.100.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-1-32.ptr.blmpb.com (va-1-32.ptr.blmpb.com [209.127.230.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170AA199EB2;
-	Wed, 18 Dec 2024 10:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734519182; cv=fail; b=j2HEFPxOGTJdjNJCBSMtCWewH1zHa10wD+3WQS6ZXPWUirVjBgR1JLwlL2tJOaCxkpjIQiUF+N8edLjCQCMIj4i1ruBWQoXUlCKowO32VV0qL68n6OQ0erq8XKdyZyP/3vIIsVBvQOMhgZ9F7VzD2ATS0yFWh0X5i9poYa64bc0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734519182; c=relaxed/simple;
-	bh=2tiPJuFxEsEF9tZ7hs5kiA7B2ltNJGMIB2fm3S3RQ5w=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ftroIFzCGr+Ku0KvH7V/Jzyc3T96hMrKHHCurYVMgg716Wnt06qekEdFPbDN53QgwCc08ReNCwKC9yazXfgPEgNWnG86XvuTUmMtekctwBQEIT8lP4vetVUgWCjLz4z8biGVLysW8ZtOMJUHKF80bDoJltQ/7NnDKNWFWuvAqas=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=0Mq2A9jW; arc=fail smtp.client-ip=40.107.100.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7C819CD1D
+	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 10:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.230.32
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734519183; cv=none; b=XYCDQQZ7GJNG/OhWh15Y8FFmCeGHQLd0KgPaH8al7vgoOlVglCn9HPUkVu1BcqBjhalvshZ3n1yKMWWIocIGNQZKQrQlrGSzUsI0d4HTpEZnZ8kXDkmKiH40y/JgTUfeC7sRBXL3mRJifpzZdShZZQMlXEduxhS42wULdQ2Idfk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734519183; c=relaxed/simple;
+	bh=JEbftOvK6IE2tXUtpJjSovVKg3ZBwuU3kLSck14ng6w=;
+	h=Cc:Date:In-Reply-To:From:Subject:Mime-Version:References:
+	 Content-Type:To:Message-Id; b=F3S6E9i1MlhH8IyTD3UK7+s0MgQlXK3hzG0z0DlRCGfyUt8RM79qyFGvbfs0NFrHPyTktXXrCVZrINntcPZbNQyI15SFkbTBSNNPEzFGui2tqeUSn4bSCWHA9LVoVHET/CdkhGNVQcssJUbggcJSy0uD3mb/6h6VA9Nmhe17l1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=WwXPoT2K; arc=none smtp.client-ip=209.127.230.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="0Mq2A9jW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cJDu7WUSP/c7zBy4Vf+0Rzz+S6K7q989ILYEq6xy7zUcM/HWgYSJN6Ko3y4SrajFjfdDWgWw3mBvYpwU+v5WsbAWTR+E774A2m6I8uSAPyJzr5SVBfSwZL4ibmfdOAzG141h7SSKGRi2/czWSZgp3L482e60BNCvcuV4ywuNXOu7UJR+UFbplXqA6XfHt5fcP7dAkRhEUaclRO9iyB/SpAvcYk8oCPgr7Gq3SE2ks7/sYxqVxS9m6aqZY67AMYnGj4inDIQQmlEAfQLybk+F8RiZsPFg20lukO7Qbon3PM+JrY4kGB6yU7g5NlefupmfsKshsS8HwkCN7/y2+cJtiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vWcnyssSQ12CRUkWcmviYagnnAIUUHOCmZzLsFfFvxE=;
- b=Bbc5b7KT6UMMQT6crXt3xiqQXW/QoDiEb5SGg5AZ1UchPq8I76vLcsfvvyTzhGb5uMgNDpbVTnkxP1V/AiRKMyz8qMa0982KZZtI49xpAx35kNwRfC578TlU5A+iWUHPQ5uaFrovrlIFKdAi1X31fIbrYdfrbtNyqnVNntSXgQD/LYlCk73UMZony0bdAf1zis2EeO1euQX9DsV7PRtc6U0Dtcf0lWYSO5J6ifK2BjhOfu46Fb6jMBegywTrh1S+N4yatffLXssbAeF8DlU1YL2TcQiuOEXDFgjyNmjx/Ja4XRfEDiibq3fNlMZVUe1/7PMciJeLk6kZljwrh80D+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vWcnyssSQ12CRUkWcmviYagnnAIUUHOCmZzLsFfFvxE=;
- b=0Mq2A9jWcrg5QM9NElNrfyk0oMVCG8lGTtxcf3if3SW/XcMpsiOTqX+IwlH59yZsCm65B3qznwBsqI1PXejLmi4cxdwZc/F9JoivRMagKID11Xxk1EFw9NlftRv4xGAaBoJSu0qFF3jsigENTqaN78cemaSQzudClTdGdpCrCVI86ufjB1f8nCtJJ3c1xmN4oopMS8N7pITkN83PoVX02ZCGnkEbAx8KHT0xKNFARbFsgUA+Yr6CO7d6Eg6/6HzmZ3VrK7wLOQ3nXjw2QPBHL3AdMmXh5MnHBe+IEQUwKtlEoXVcKYUPFB7VKUWOjJ+Xt02X8yMDHyjNZtG+XIInsA==
-Received: from CO1PR11MB4771.namprd11.prod.outlook.com (2603:10b6:303:9f::9)
- by IA0PR11MB7791.namprd11.prod.outlook.com (2603:10b6:208:401::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.21; Wed, 18 Dec
- 2024 10:52:56 +0000
-Received: from CO1PR11MB4771.namprd11.prod.outlook.com
- ([fe80::bfb9:8346:56a5:e708]) by CO1PR11MB4771.namprd11.prod.outlook.com
- ([fe80::bfb9:8346:56a5:e708%4]) with mapi id 15.20.8251.015; Wed, 18 Dec 2024
- 10:52:56 +0000
-From: <Divya.Koppera@microchip.com>
-To: <kuba@kernel.org>, <richardcochran@gmail.com>
-CC: <andrew@lunn.ch>, <Arun.Ramadoss@microchip.com>,
-	<UNGLinuxDriver@microchip.com>, <hkallweit1@gmail.com>,
-	<linux@armlinux.org.uk>, <davem@davemloft.net>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <vadim.fedorenko@linux.dev>
-Subject: RE: [PATCH net-next v7 2/5] net: phy: microchip_rds_ptp : Add rds ptp
- library for Microchip phys
-Thread-Topic: [PATCH net-next v7 2/5] net: phy: microchip_rds_ptp : Add rds
- ptp library for Microchip phys
-Thread-Index: AQHbTVioH6zIUkCJu0CrnJebL2w0LLLrXYUAgAAG1gCAAAL8gIAAb76Q
-Date: Wed, 18 Dec 2024 10:52:56 +0000
-Message-ID:
- <CO1PR11MB4771ED94C34E6A15F87AD812E2052@CO1PR11MB4771.namprd11.prod.outlook.com>
-References: <20241213121403.29687-1-divya.koppera@microchip.com>
-	<20241213121403.29687-3-divya.koppera@microchip.com>
-	<20241217192246.47868890@kernel.org>	<Z2JFwh94o-X7HhP4@hoboy.vegasvil.org>
- <20241217195755.2030f431@kernel.org>
-In-Reply-To: <20241217195755.2030f431@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microchip.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CO1PR11MB4771:EE_|IA0PR11MB7791:EE_
-x-ms-office365-filtering-correlation-id: 11aec3e0-c3c0-49cc-7469-08dd1f52215c
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|7416014|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?tZPQv1gxum6ZooD1wlQiP4mLWIFY0WP9mmqdn2hhVB9XN5tua3vRf/dmWXds?=
- =?us-ascii?Q?l/5M3B7b7ESGJFxgAdlRZJz22AVUEp7WIvvIFSk0NAe/l6s1ttZLZO7I2s7+?=
- =?us-ascii?Q?z856pJwO+afBAzC/+14WtBDxzPV/5xqEZ3bryBx34lDdFBhyHAYgYvcZsTWf?=
- =?us-ascii?Q?5vsSFu5rTkHmqJXfZSa3epAxlZvJVc8CZYMzUrC27+4XY4IfQ6nHaekV9RkR?=
- =?us-ascii?Q?hVpqytA4G0aqZ42inmPjyHfHmaDzjTHAL/lDg4eLNxvP+Adj1yU4dAzThaZt?=
- =?us-ascii?Q?jRwKe8/fx/PJiYzr2ixnhk1qYlbufArNp/tZTc/EQqdiX2KH+Q0gP2U2Er7l?=
- =?us-ascii?Q?svvQo5TO9hb6sxNFO/Y/Aia6zwsOxA9mgHtP1NLjT55dTbxbgcVfUbK6zD4P?=
- =?us-ascii?Q?bk6JN010d0tliaKN/sUxsH2BkR9ld6lfJ0JKx7gX/+7C25ieFlBg4g3YK/8i?=
- =?us-ascii?Q?H3vgGkSE7JwtpSl2HBRpBEFBsdtGiWrgVZ0ON89etzNH6pjzqyHJotewZN0f?=
- =?us-ascii?Q?51cLvBHazWKxH8TmpFXHR0d3LsmQ66Nl5znO22UJO2N5juUa++4lvT+a/HIP?=
- =?us-ascii?Q?goeTeZ3c1Rn5OOH2jRko9fOVDeSQ8cREfaDf/dHNmjZUUlfD2sLnaaPITGD8?=
- =?us-ascii?Q?ixq31Oeq0Sobsu7kUD84yEPLAdvVmMH3zFAKgJat/PCZPQX9Ml7z4ckXL/pq?=
- =?us-ascii?Q?HZ3zSwijsvP34FFV2qd2/r41Tiuuk++vsGp/J6wfWTi+tKUDwaB1o2BOoDK3?=
- =?us-ascii?Q?2GJhTfH+NZAk1gdQ8T0ivkbxvDads70fVY3XHMRiE6wG6YbQqUR0qgPCo8wJ?=
- =?us-ascii?Q?LExaw3XU9d1wPKwOxpTJNC0lz1LElPtEBm1iRwxeINmZkuZu9A8dNzinBoZ3?=
- =?us-ascii?Q?tVeT3OxlcdWvyr2SLyD4UwpX+2MBsFBaLHReYv5htFmxjKe3nuLGq1Az0q5x?=
- =?us-ascii?Q?DNzSNqfwepB1jqSHNtNK5pwDjJ27iD4tbytIUqOnYQia1vzcU7m0+ufxHe0L?=
- =?us-ascii?Q?vDWmSsUy0nngDyiNnTczhs3fiRTI/mof327ZXuatEkXGmSMijR0fis5XVxn5?=
- =?us-ascii?Q?x4T4Wk3aiezwvZuLbTW1ZBooAr/s7a/8zcXuSivknsYt3kC46CyHzFCTYELD?=
- =?us-ascii?Q?OUTw3ck6cAHdStNWz+lE9NbeAkYKh+LDtFLUAEDd4wPNlZ2u41hbXhf16aoZ?=
- =?us-ascii?Q?NUqJRxeld4Xex02IlayUANa5w7l1KU2FlNeVW1wTfgIf40ImiuBWJyKplGdy?=
- =?us-ascii?Q?d6iH0wBI2B7/OA1ER1uvS0NaViZvV40smMu0yw6bBUqHah9AR69GyrrY/oSX?=
- =?us-ascii?Q?lxcGiLe3xLGaRKN14uo97C4x8wkjeI+R4Hc3wKyhVg+0Ee65eDQ6l9zthgNi?=
- =?us-ascii?Q?7dPBkbyOyTutjD90zFQYsLuDOL+gKaUQy8JzS+gNEu/qzT9EWYcEN524EnFs?=
- =?us-ascii?Q?gvA8oUcHB6A=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?puMfD+yJfYOe2bn38Zh/T/SGUM3HvcXBcjWyvUtf0FpERMW5LGGOsRovD//W?=
- =?us-ascii?Q?+/3N8yoKbbJGtELxpQkiZyCFL2sHZRuOTTdwiTbYsqhcwxRUUGPkG5pBXNnk?=
- =?us-ascii?Q?2JHyliUq4ZuGRDlIRqS9mXaNGiS5ozx5h8FJrfYRA/xo2cIGFwCKV+JA9gYq?=
- =?us-ascii?Q?BzKdyS9a/qIOk4rbglra6RQNR+aNhvP+E+mf3GIxlLKJTMNT7DjuoES7Vmuv?=
- =?us-ascii?Q?BNVvTshMHuSpm6EvLZpI5UsDtxcVyeNw4y+52piUNv8NtiG2rw8DS2Kb49lm?=
- =?us-ascii?Q?6wn35A13FrtnWi+lM7da7JY9FMNBknkWZQf+Sq3Pxo2VrdkcxTHnrN6OiFaw?=
- =?us-ascii?Q?hPUvFMBHtJFk2PH8iWHTgv3qMmCKhxXixLEef7pg7VmyZt5nsrL9JtZu/RI9?=
- =?us-ascii?Q?XsYSdegDeysxdMu0lk9JEvF+Anzq1rEKuCOj96rrsTrtZithCXLv9u3/ViyF?=
- =?us-ascii?Q?Xk7cG8b311XkHQ8+wzyGxQcKMdxQleiOcQj5CegJNi3xX6j731gBOTDwisqo?=
- =?us-ascii?Q?OI9y5K0nRaZev1yKKc3Ox8bgLInwRf3RM+Eva/89p0rK2U8UoMVVP0fD6MTQ?=
- =?us-ascii?Q?/zZqqJUSK7NgVL/dx9/4RlTsuZTXdQz30btZ6UcwdtAZxgNQ5FKq/JGF8GDZ?=
- =?us-ascii?Q?XT4rLB39j/pLXYG0ZyfhpbPWE9M8nBuj2unsxa7gfobW60wjYX2ntroD/DLv?=
- =?us-ascii?Q?l56E9SghrEdzO356qMq1emr9mQcTyRxSMz7HAkEDDi81Ss1E2UlcnAhr2RJv?=
- =?us-ascii?Q?fMFz5P79+kdjcaurCep0e3P1BrvpUKmT2x4jvx9wOPzgixfxDeW69yTdBbf3?=
- =?us-ascii?Q?e8kGFKxp1JoUZwAH5KVT0dVNRTqZbruAzmUVUnng6jSBtkRQyTt7OtPsyVxo?=
- =?us-ascii?Q?LtTqnNDN9UgnN/7vmN3SlLND6uO+MQcyqE+VI0UgrJRwXyZW1JZuVzV+2zHM?=
- =?us-ascii?Q?bFKmYzxyQAneh5iwo6X+MrsGq/W+OL4Lxn6w0JQ68bz5R4ev7bnRvANtrmQc?=
- =?us-ascii?Q?SqADZpuEmsFdEwC8BTAO4zezEPDe13vNcYNBChLXogFMCwzFs/xcTiAsYnr0?=
- =?us-ascii?Q?WyYV/Hv1e5NjVXePrVZ8zfm/MblHuaYyu5Zjqf6JWe0kxn3y8imb3J0XZM1R?=
- =?us-ascii?Q?6dseOGUMtkgZ4V6L72+uSdheb4mA4aawh9pSLXkNA19vTZBg2JpF9mOGXMCA?=
- =?us-ascii?Q?54xNpbuqei9CN6loE/2CeE8g95WBV4tyVLmVy4XkjZInFItsYmi4m5IVeuW6?=
- =?us-ascii?Q?Kd+xRCOo9C65LpE6eqNMHbiiOHnBouiP6xSE8YTPd32ciSigc0acxieakWVm?=
- =?us-ascii?Q?YYzhjXNU3TAkCuBd0yfmqAd2lUtGtofkbwkJpJN+RuyUTKvSNqHNtuS6It/O?=
- =?us-ascii?Q?MN51EIVYOQWDwjhklhJbwqbfVzIGcm+QjqYuJu+X7b8dggDoa8glBeU9JYbE?=
- =?us-ascii?Q?Q/0BO1iiNPpoToAq9l3Yg7CX66WS2aB1GU9ohyn4F7ut2nCh44JmgadSDuKo?=
- =?us-ascii?Q?+J73hn360jBj4X4ko9IC9HeSUPimx6i2KRjilPGhD+XbU2RY3H5S8Pbwik6l?=
- =?us-ascii?Q?nKhJRn6z0rkTbzEjpJ3eFFLmm9RpzyKzkfEnkKDlz/oP2NNEGQSpniTb/TQ4?=
- =?us-ascii?Q?MQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="WwXPoT2K"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2403070942; d=yunsilicon.com; t=1734519039; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=xvqtaJ8iMZ8jsSLbEfIsyLjNNVsvFk0IixaKjsxxIjY=;
+ b=WwXPoT2KiN7q1srSkmjhrZy1wjxZZ1ydBY2PzVNiGlM0vv6zu1pLs0ZZCDWAe+3Ch8aqlf
+ 1x5aaQn1aQ0RD83UQPCWGapAtUdBaUeYehLZDNIJ5AzjyG4vEENdChDX7Lu2sJdHpF2d4D
+ 9lk4eoJNLLLZKxOHaemcY3jg3U0I5p7Ps30yQXbQuBAX31DhDhsK2WtLmakgoxxq5iJNL1
+ UG4A689wuf92D5rw6MYe0FK6wyncu+KyUjLEJfFKdE9t36IOeG8HV8z0M7d5V/PTh1gDB/
+ hui24VR6+2TR0nmtWFc5GPBRjeeEl731nEbbif07OuwgwXOqj42doPaJdhI9Ig==
+Cc: <andrew+netdev@lunn.ch>, <kuba@kernel.org>, <pabeni@redhat.com>, 
+	<edumazet@google.com>, <davem@davemloft.net>, 
+	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
+	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>
+Date: Wed, 18 Dec 2024 18:50:36 +0800
+In-Reply-To: <20241218105023.2237645-1-tianx@yunsilicon.com>
+X-Mailer: git-send-email 2.25.1
+Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Wed, 18 Dec 2024 18:50:36 +0800
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+Content-Transfer-Encoding: 7bit
+From: "Xin Tian" <tianx@yunsilicon.com>
+Subject: [PATCH v1 06/16] net-next/yunsilicon: Add pci irq
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-OriginatorOrg: microchip.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4771.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11aec3e0-c3c0-49cc-7469-08dd1f52215c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Dec 2024 10:52:56.3563
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: KgdFNJzscmRFubGlnt6VT6mnTi9gCo0t+mMddOPKODtktQ3Es/Pi4qumkZqNQM/fEPKxCI5nu51ekB8KBBj1PCuGxb+yAiUuVwYTXxIEUgU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7791
+Mime-Version: 1.0
+References: <20241218105023.2237645-1-tianx@yunsilicon.com>
+X-Lms-Return-Path: <lba+26762a8fd+6fa2bf+vger.kernel.org+tianx@yunsilicon.com>
+Content-Type: text/plain; charset=UTF-8
+To: <netdev@vger.kernel.org>
+Message-Id: <20241218105035.2237645-7-tianx@yunsilicon.com>
 
-Hi Jakub,
+Implement interrupt management and event handling
 
-Thanks for the review.
+ 
+Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
+Co-developed-by: Lei Yan <Jacky@yunsilicon.com>
+Signed-off-by: Xin Tian <tianx@yunsilicon.com>
+---
+ .../ethernet/yunsilicon/xsc/common/xsc_core.h |   6 +
+ .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   2 +-
+ .../net/ethernet/yunsilicon/xsc/pci/main.c    |  11 +-
+ .../net/ethernet/yunsilicon/xsc/pci/pci_irq.c | 427 ++++++++++++++++++
+ .../net/ethernet/yunsilicon/xsc/pci/pci_irq.h |  14 +
+ 5 files changed, 458 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.h
 
-> -----Original Message-----
-> From: Jakub Kicinski <kuba@kernel.org>
-> Sent: Wednesday, December 18, 2024 9:28 AM
-> To: Richard Cochran <richardcochran@gmail.com>
-> Cc: Divya Koppera - I30481 <Divya.Koppera@microchip.com>;
-> andrew@lunn.ch; Arun Ramadoss - I17769
-> <Arun.Ramadoss@microchip.com>; UNGLinuxDriver
-> <UNGLinuxDriver@microchip.com>; hkallweit1@gmail.com;
-> linux@armlinux.org.uk; davem@davemloft.net; edumazet@google.com;
-> pabeni@redhat.com; netdev@vger.kernel.org; linux-kernel@vger.kernel.org;
-> vadim.fedorenko@linux.dev
-> Subject: Re: [PATCH net-next v7 2/5] net: phy: microchip_rds_ptp : Add rd=
-s
-> ptp library for Microchip phys
->=20
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
-e
-> content is safe
->=20
-> On Tue, 17 Dec 2024 19:47:14 -0800 Richard Cochran wrote:
-> > > > +static int mchp_rds_ptp_ts_info(struct mii_timestamper *mii_ts,
-> > > > +                         struct kernel_ethtool_ts_info *info) {
-> > > > +struct mchp_rds_ptp_clock *clock =3D container_of(mii_ts,
-> > > > +                                               struct mchp_rds_ptp=
-_clock,
-> > > > +                                               mii_ts);
-> > > > +
-> > > > + info->phc_index =3D
-> > > > +         clock->ptp_clock ? ptp_clock_index(clock->ptp_clock) :
-> > > > + -1;
-> > >
-> > > under what condition can the clock be NULL?
-> >
-> > ptp_clock_register() can return PTR_ERR or null.
->=20
-> Fair point. Since this is a PTP library module, and an optional one (patc=
-h 1 has
-> empty wrappers for its API) - can we make it depend on PTP being configur=
-ed
-> in?
-
-Null check is not handled for ptp_clock_register. If that is done there, th=
-is is redundant.
-
-Will fix this in next revision.
-
-Thanks,
-Divya
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
+index 09199d5a1..3541be638 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
++++ b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
+@@ -453,8 +453,11 @@ struct xsc_core_device {
+ 	struct pci_dev		*pdev;
+ 	struct device		*device;
+ 	struct xsc_priv		priv;
++	void			*eth_priv;
+ 	struct xsc_dev_resource	*dev_res;
+ 
++	void (*event_handler)(void *adapter);
++
+ 	void __iomem		*bar;
+ 	int			bar_num;
+ 
+@@ -486,6 +489,7 @@ struct xsc_core_device {
+ 	u16			fw_version_patch;
+ 	u32			fw_version_tweak;
+ 	u8			fw_version_extra_flag;
++	cpumask_var_t		xps_cpumask;
+ };
+ 
+ int xsc_core_create_resource_common(struct xsc_core_device *xdev,
+@@ -493,6 +497,8 @@ int xsc_core_create_resource_common(struct xsc_core_device *xdev,
+ void xsc_core_destroy_resource_common(struct xsc_core_device *xdev,
+ 				      struct xsc_core_qp *qp);
+ struct xsc_eq *xsc_core_eq_get(struct xsc_core_device *xdev, int i);
++int xsc_core_vector2eqn(struct xsc_core_device *xdev, int vector, int *eqn,
++			unsigned int *irqn);
+ 
+ static inline void *xsc_buf_offset(struct xsc_buf *buf, int offset)
+ {
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+index 667319958..3525d1c74 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+@@ -6,4 +6,4 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
+ 
+ obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc_pci.o
+ 
+-xsc_pci-y := main.o cmdq.o hw.o qp.o cq.o alloc.o eq.o
++xsc_pci-y := main.o cmdq.o hw.o qp.o cq.o alloc.o eq.o pci_irq.o
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
+index b89c13002..ea9bda0e6 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
+@@ -9,6 +9,7 @@
+ #include "qp.h"
+ #include "cq.h"
+ #include "eq.h"
++#include "pci_irq.h"
+ 
+ unsigned int xsc_debug_mask;
+ module_param_named(debug_mask, xsc_debug_mask, uint, 0644);
+@@ -282,10 +283,18 @@ static int xsc_load(struct xsc_core_device *xdev)
+ 		goto out;
+ 	}
+ 
++	err = xsc_irq_eq_create(xdev);
++	if (err) {
++		xsc_core_err(xdev, "xsc_irq_eq_create failed %d\n", err);
++		goto err_irq_eq_create;
++	}
++
+ 	set_bit(XSC_INTERFACE_STATE_UP, &xdev->intf_state);
+ 	mutex_unlock(&xdev->intf_state_mutex);
+ 
+ 	return 0;
++err_irq_eq_create:
++	xsc_hw_cleanup(xdev);
+ out:
+ 	mutex_unlock(&xdev->intf_state_mutex);
+ 	return err;
+@@ -302,7 +311,7 @@ static int xsc_unload(struct xsc_core_device *xdev)
+ 	}
+ 
+ 	clear_bit(XSC_INTERFACE_STATE_UP, &xdev->intf_state);
+-
++	xsc_irq_eq_destroy(xdev);
+ 	xsc_hw_cleanup(xdev);
+ 
+ out:
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.c b/drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.c
+new file mode 100644
+index 000000000..110a33c2b
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.c
+@@ -0,0 +1,427 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#include <linux/irqdomain.h>
++#include <linux/msi.h>
++#include <linux/interrupt.h>
++#include <linux/notifier.h>
++#include <linux/module.h>
++#ifdef CONFIG_RFS_ACCEL
++#include <linux/cpu_rmap.h>
++#endif
++#include "common/xsc_driver.h"
++#include "common/xsc_core.h"
++#include "eq.h"
++#include "pci_irq.h"
++
++enum {
++	XSC_COMP_EQ_SIZE = 1024,
++};
++
++enum xsc_eq_type {
++	XSC_EQ_TYPE_COMP,
++	XSC_EQ_TYPE_ASYNC,
++#ifdef CONFIG_INFINIBAND_ON_DEMAND_PAGING
++	XSC_EQ_TYPE_PF,
++#endif
++};
++
++struct xsc_irq {
++	struct atomic_notifier_head nh;
++	cpumask_var_t mask;
++	char name[XSC_MAX_IRQ_NAME];
++};
++
++struct xsc_irq_table {
++	struct xsc_irq *irq;
++	int nvec;
++#ifdef CONFIG_RFS_ACCEL
++	struct cpu_rmap *rmap;
++#endif
++};
++
++struct xsc_msix_resource *g_msix_xres;
++
++static void xsc_free_irq(struct xsc_core_device *xdev, unsigned int vector)
++{
++	unsigned int irqn = 0;
++
++	irqn = pci_irq_vector(xdev->pdev, vector);
++	disable_irq(irqn);
++
++	if (xsc_fw_is_available(xdev))
++		free_irq(irqn, xdev);
++}
++
++static int set_comp_irq_affinity_hint(struct xsc_core_device *xdev, int i)
++{
++	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
++	int vecidx = table->eq_vec_comp_base + i;
++	struct xsc_eq *eq = xsc_core_eq_get(xdev, i);
++	unsigned int irqn;
++	int ret;
++
++	irqn = pci_irq_vector(xdev->pdev, vecidx);
++	if (!zalloc_cpumask_var(&eq->mask, GFP_KERNEL)) {
++		xsc_core_err(xdev, "zalloc_cpumask_var rx cpumask failed");
++		return -ENOMEM;
++	}
++
++	if (!zalloc_cpumask_var(&xdev->xps_cpumask, GFP_KERNEL)) {
++		xsc_core_err(xdev, "zalloc_cpumask_var tx cpumask failed");
++		return -ENOMEM;
++	}
++
++	cpumask_set_cpu(cpumask_local_spread(i, xdev->priv.numa_node),
++			xdev->xps_cpumask);
++	ret = irq_set_affinity_hint(irqn, eq->mask);
++
++	return ret;
++}
++
++static void clear_comp_irq_affinity_hint(struct xsc_core_device *xdev, int i)
++{
++	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
++	int vecidx = table->eq_vec_comp_base + i;
++	struct xsc_eq *eq = xsc_core_eq_get(xdev, i);
++	int irqn;
++
++	irqn = pci_irq_vector(xdev->pdev, vecidx);
++	irq_set_affinity_hint(irqn, NULL);
++	free_cpumask_var(eq->mask);
++}
++
++static int set_comp_irq_affinity_hints(struct xsc_core_device *xdev)
++{
++	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
++	int nvec = table->num_comp_vectors;
++	int err;
++	int i;
++
++	for (i = 0; i < nvec; i++) {
++		err = set_comp_irq_affinity_hint(xdev, i);
++		if (err)
++			goto err_out;
++	}
++
++	return 0;
++
++err_out:
++	for (i--; i >= 0; i--)
++		clear_comp_irq_affinity_hint(xdev, i);
++	free_cpumask_var(xdev->xps_cpumask);
++
++	return err;
++}
++
++static void clear_comp_irq_affinity_hints(struct xsc_core_device *xdev)
++{
++	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
++	int nvec = table->num_comp_vectors;
++	int i;
++
++	for (i = 0; i < nvec; i++)
++		clear_comp_irq_affinity_hint(xdev, i);
++	free_cpumask_var(xdev->xps_cpumask);
++}
++
++static int xsc_alloc_irq_vectors(struct xsc_core_device *xdev)
++{
++	struct xsc_dev_resource *dev_res = xdev->dev_res;
++	struct xsc_eq_table *table = &dev_res->eq_table;
++	int nvec = xdev->caps.msix_num;
++	int nvec_base;
++	int err;
++
++	nvec_base = XSC_EQ_VEC_COMP_BASE;
++	if (nvec <= nvec_base) {
++		xsc_core_warn(xdev, "failed to alloc irq vector(%d)\n", nvec);
++		return -ENOMEM;
++	}
++
++	dev_res->irq_info = kcalloc(nvec, sizeof(*dev_res->irq_info), GFP_KERNEL);
++	if (!dev_res->irq_info)
++		return -ENOMEM;
++
++	nvec = pci_alloc_irq_vectors(xdev->pdev, nvec_base + 1, nvec, PCI_IRQ_MSIX);
++	if (nvec < 0) {
++		err = nvec;
++		goto err_free_irq_info;
++	}
++
++	table->eq_vec_comp_base = nvec_base;
++	table->num_comp_vectors = nvec - nvec_base;
++	xdev->msix_vec_base = xdev->caps.msix_base;
++	xsc_core_info(xdev,
++		      "alloc msix_vec_num=%d, comp_num=%d, max_msix_num=%d, msix_vec_base=%d\n",
++		      nvec, table->num_comp_vectors, xdev->caps.msix_num, xdev->msix_vec_base);
++
++	return 0;
++
++err_free_irq_info:
++	pci_free_irq_vectors(xdev->pdev);
++	kfree(dev_res->irq_info);
++	return err;
++}
++
++static void xsc_free_irq_vectors(struct xsc_core_device *xdev)
++{
++	struct xsc_dev_resource *dev_res = xdev->dev_res;
++
++	if (!xsc_fw_is_available(xdev))
++		return;
++
++	pci_free_irq_vectors(xdev->pdev);
++	kfree(dev_res->irq_info);
++}
++
++int xsc_core_vector2eqn(struct xsc_core_device *xdev, int vector, int *eqn,
++			unsigned int *irqn)
++{
++	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
++	struct xsc_eq *eq, *n;
++	int err = -ENOENT;
++
++	if (!xdev->caps.msix_enable)
++		return 0;
++
++	spin_lock(&table->lock);
++	list_for_each_entry_safe(eq, n, &table->comp_eqs_list, list) {
++		if (eq->index == vector) {
++			*eqn = eq->eqn;
++			*irqn = eq->irqn;
++			err = 0;
++			break;
++		}
++	}
++	spin_unlock(&table->lock);
++
++	return err;
++}
++EXPORT_SYMBOL(xsc_core_vector2eqn);
++
++static void free_comp_eqs(struct xsc_core_device *xdev)
++{
++	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
++	struct xsc_eq *eq, *n;
++
++	spin_lock(&table->lock);
++	list_for_each_entry_safe(eq, n, &table->comp_eqs_list, list) {
++		list_del(&eq->list);
++		spin_unlock(&table->lock);
++		if (xsc_destroy_unmap_eq(xdev, eq))
++			xsc_core_warn(xdev, "failed to destroy EQ 0x%x\n", eq->eqn);
++		kfree(eq);
++		spin_lock(&table->lock);
++	}
++	spin_unlock(&table->lock);
++}
++
++static int alloc_comp_eqs(struct xsc_core_device *xdev)
++{
++	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
++	char name[XSC_MAX_IRQ_NAME];
++	struct xsc_eq *eq;
++	int ncomp_vec;
++	int nent;
++	int err;
++	int i;
++
++	INIT_LIST_HEAD(&table->comp_eqs_list);
++	ncomp_vec = table->num_comp_vectors;
++	nent = XSC_COMP_EQ_SIZE;
++
++	for (i = 0; i < ncomp_vec; i++) {
++		eq = kzalloc(sizeof(*eq), GFP_KERNEL);
++		if (!eq) {
++			err = -ENOMEM;
++			goto clean;
++		}
++
++		snprintf(name, XSC_MAX_IRQ_NAME, "xsc_comp%d", i);
++		err = xsc_create_map_eq(xdev, eq,
++					i + table->eq_vec_comp_base, nent, name);
++		if (err) {
++			kfree(eq);
++			goto clean;
++		}
++
++		eq->index = i;
++		spin_lock(&table->lock);
++		list_add_tail(&eq->list, &table->comp_eqs_list);
++		spin_unlock(&table->lock);
++	}
++
++	return 0;
++
++clean:
++	free_comp_eqs(xdev);
++	return err;
++}
++
++static irqreturn_t xsc_cmd_handler(int irq, void *arg)
++{
++	struct xsc_core_device *xdev = (struct xsc_core_device *)arg;
++	int err;
++
++	disable_irq_nosync(xdev->cmd.irqn);
++	err = xsc_cmd_err_handler(xdev);
++	if (!err)
++		xsc_cmd_resp_handler(xdev);
++	enable_irq(xdev->cmd.irqn);
++
++	return IRQ_HANDLED;
++}
++
++static int xsc_request_irq_for_cmdq(struct xsc_core_device *xdev, u8 vecidx)
++{
++	struct xsc_dev_resource *dev_res = xdev->dev_res;
++
++	writel(xdev->msix_vec_base + vecidx, REG_ADDR(xdev, xdev->cmd.reg.msix_vec_addr));
++
++	snprintf(dev_res->irq_info[vecidx].name, XSC_MAX_IRQ_NAME, "%s@pci:%s",
++		 "xsc_cmd", pci_name(xdev->pdev));
++	xdev->cmd.irqn = pci_irq_vector(xdev->pdev, vecidx);
++	return request_irq(xdev->cmd.irqn, xsc_cmd_handler, 0,
++		dev_res->irq_info[vecidx].name, xdev);
++}
++
++static void xsc_free_irq_for_cmdq(struct xsc_core_device *xdev)
++{
++	xsc_free_irq(xdev, XSC_VEC_CMD);
++}
++
++static irqreturn_t xsc_event_handler(int irq, void *arg)
++{
++	struct xsc_core_device *xdev = (struct xsc_core_device *)arg;
++
++	xsc_core_dbg(xdev, "cmd event hint irq: %d\n", irq);
++
++	if (!xdev->eth_priv)
++		return IRQ_NONE;
++
++	if (!xdev->event_handler)
++		return IRQ_NONE;
++
++	xdev->event_handler(xdev->eth_priv);
++
++	return IRQ_HANDLED;
++}
++
++static int xsc_request_irq_for_event(struct xsc_core_device *xdev)
++{
++	struct xsc_dev_resource *dev_res = xdev->dev_res;
++
++	snprintf(dev_res->irq_info[XSC_VEC_CMD_EVENT].name, XSC_MAX_IRQ_NAME, "%s@pci:%s",
++		 "xsc_eth_event", pci_name(xdev->pdev));
++	return request_irq(pci_irq_vector(xdev->pdev, XSC_VEC_CMD_EVENT), xsc_event_handler, 0,
++			   dev_res->irq_info[XSC_VEC_CMD_EVENT].name, xdev);
++}
++
++static void xsc_free_irq_for_event(struct xsc_core_device *xdev)
++{
++	xsc_free_irq(xdev, XSC_VEC_CMD_EVENT);
++}
++
++static int xsc_cmd_enable_msix(struct xsc_core_device *xdev)
++{
++	struct xsc_msix_table_info_mbox_in in;
++	struct xsc_msix_table_info_mbox_out out;
++	int err;
++
++	memset(&in, 0, sizeof(in));
++	memset(&out, 0, sizeof(out));
++	in.hdr.opcode = cpu_to_be16(XSC_CMD_OP_ENABLE_MSIX);
++
++	err = xsc_cmd_exec(xdev, &in, sizeof(in), &out, sizeof(out));
++	if (err) {
++		xsc_core_err(xdev, "xsc_cmd_exec enable msix failed %d\n", err);
++		return err;
++	}
++
++	return 0;
++}
++
++int xsc_irq_eq_create(struct xsc_core_device *xdev)
++{
++	int err;
++
++	if (xdev->caps.msix_enable == 0)
++		return 0;
++
++	err = xsc_alloc_irq_vectors(xdev);
++	if (err) {
++		xsc_core_err(xdev, "enable msix failed, err=%d\n", err);
++		goto out;
++	}
++
++	err = xsc_start_eqs(xdev);
++	if (err) {
++		xsc_core_err(xdev, "failed to start EQs, err=%d\n", err);
++		goto err_free_irq_vectors;
++	}
++
++	err = alloc_comp_eqs(xdev);
++	if (err) {
++		xsc_core_err(xdev, "failed to alloc comp EQs, err=%d\n", err);
++		goto err_stop_eqs;
++	}
++
++	err = xsc_request_irq_for_cmdq(xdev, XSC_VEC_CMD);
++	if (err) {
++		xsc_core_err(xdev, "failed to request irq for cmdq, err=%d\n", err);
++		goto err_free_comp_eqs;
++	}
++
++	err = xsc_request_irq_for_event(xdev);
++	if (err) {
++		xsc_core_err(xdev, "failed to request irq for event, err=%d\n", err);
++		goto err_free_irq_cmdq;
++	}
++
++	err = set_comp_irq_affinity_hints(xdev);
++	if (err) {
++		xsc_core_err(xdev, "failed to alloc affinity hint cpumask, err=%d\n", err);
++		goto err_free_irq_evnt;
++	}
++
++	xsc_cmd_use_events(xdev);
++	err = xsc_cmd_enable_msix(xdev);
++	if (err) {
++		xsc_core_err(xdev, "xsc_cmd_enable_msix failed %d.\n", err);
++		xsc_cmd_use_polling(xdev);
++		goto err_free_irq_evnt;
++	}
++	return 0;
++
++err_free_irq_evnt:
++	xsc_free_irq_for_event(xdev);
++err_free_irq_cmdq:
++	xsc_free_irq_for_cmdq(xdev);
++err_free_comp_eqs:
++	free_comp_eqs(xdev);
++err_stop_eqs:
++	xsc_stop_eqs(xdev);
++err_free_irq_vectors:
++	xsc_free_irq_vectors(xdev);
++out:
++	return err;
++}
++
++int xsc_irq_eq_destroy(struct xsc_core_device *xdev)
++{
++	if (xdev->caps.msix_enable == 0)
++		return 0;
++
++	xsc_stop_eqs(xdev);
++	clear_comp_irq_affinity_hints(xdev);
++	free_comp_eqs(xdev);
++
++	xsc_free_irq_for_event(xdev);
++	xsc_free_irq_for_cmdq(xdev);
++	xsc_free_irq_vectors(xdev);
++
++	return 0;
++}
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.h b/drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.h
+new file mode 100644
+index 000000000..c3665573c
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#ifndef XSC_PCI_IRQ_H
++#define XSC_PCI_IRQ_H
++
++#include "common/xsc_core.h"
++
++int xsc_irq_eq_create(struct xsc_core_device *xdev);
++int xsc_irq_eq_destroy(struct xsc_core_device *xdev);
++
++#endif
+-- 
+2.43.0
