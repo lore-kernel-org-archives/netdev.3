@@ -1,109 +1,130 @@
-Received: from mx25lb.world4you.com (mx25lb.world4you.com [81.19.149.135])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE14813A87C;
-	Wed, 18 Dec 2024 20:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4E8158531
+	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 20:17:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734552184; cv=none; b=qnaWWJmuSc45M5YdvKl10hH2Mzv/XZnDB65txB10WGVVKK22C7SZpy9cswXIvErZ44SxgSW4NeR7KlwXO+xiVv6SxH2rXLoOGJ/A4xWfik5dUzGeru64bpeRqjCfpz9xoMFTDDG7LQMGKgxnmqv6uDncLpeViCwMIbFUeIdiRDc=
+	t=1734553049; cv=none; b=L2h6O0W9BBucEbdUw9K5XScAQstcLDFy8sj5BV7c+RVXIKI0LBbLk8u3WUJ5WyrvbZ8det+HcrIcjBxEIAVqx0+a1AzOriisaNBZURQr3qnmTeQooacf/z5gr2t6pbLCZ7Olk886xqOBDvLLTs6C7bOP7TtpLoKg6FHLcDgXaAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734552184; c=relaxed/simple;
-	bh=2Of0j9lU8b9qxWD+ndx3DbCaR0TpusZ7SAyJc5WKOQc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I5TfP04RjWX0m8IlPeLw/qlNoBDcI+1j1BLys8pWW46obz2TGALUBtgU0ARuRZgY+pl0gpfJC4VmsP1GuMISxW7FNTixMQefmtn0Bz64334BUvdlIIuGRQqsAa1GGUCHmzSNcq3xLkJewMVTJWG5OBOvgJUyWpvstAVJs8FkXx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=eJPK66ZA; arc=none smtp.client-ip=81.19.149.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1734553049; c=relaxed/simple;
+	bh=os0R3YlpxIFAksdVVec1bCoWOcHEzdEMzQbQ26/Eoq0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YkyYCMqWjLIYgdp3Lyt/IS6gXooJpRzulfEAw3TzP+4OMdIJZSjwFJVCAfhzpq/9v8RHqtDMEgCkzGu8zYLNGDlRUyMoi6k3MNIbescBoMh0ZfoXy/ZGbbtWw94wYLIDn96suND4fVeori8tElPXB8WsxzJiaA7r0IoxhB/3F5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NMAtgjRI; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="eJPK66ZA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=fjmkeAFTdbSZjtHMJws8A6MlB+V8KeXQTp/OqbPGH+s=; b=eJPK66ZAJK3ZdxXkkqMYNnOrxS
-	HjjOJcgNF8Pf3MSKvY+LdxvtevtvjVHCeAMFPJahbVeRz5VTEL7VlOnhDcNzYzOKq433lDDxR37Ye
-	DduaYmpqLAeus/2CTgRSOcW3zogsQdHZ1Aa/xr3ppq+/1uAh/jzuSmPrZVMjBFiNUv4M=;
-Received: from [88.117.62.55] (helo=[10.0.0.160])
-	by mx25lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1tNzbi-000000006xh-3u82;
-	Wed, 18 Dec 2024 20:21:19 +0100
-Message-ID: <af154371-8513-4ff2-a288-c8301cc8c65c@engleder-embedded.com>
-Date: Wed, 18 Dec 2024 20:21:17 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NMAtgjRI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734553048; x=1766089048;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=os0R3YlpxIFAksdVVec1bCoWOcHEzdEMzQbQ26/Eoq0=;
+  b=NMAtgjRIk3VowIGonxV54r/hQkb+RNJZs9Txd7xTKb3QP42W5V/nnusq
+   5/yuazA43QXPgiIF0tEmrYm2SGNqYhkOiTKvCek+/G9LO5++/jNU3HBaO
+   a1OkjREjaKLcXA/kthnJXMTvmwMPMoem0uD1oT3Ly2ADQB+ek8MnwsMlw
+   A8O2yCmxefC1R8EoX8vJEjJinAO1WzzWYnMWj/3oZ0MJHyuppx4CWc2SR
+   kHvMTtASxkw/XslSomfx7gV/uELJjGjWlZqkOSvPES99mcxRQTUzyQXAv
+   GL7bbt7q7NQw8kl82zuy+fErn1J5Ag/p6G+Vs37TgEAGGcnbfaf/l6+pL
+   Q==;
+X-CSE-ConnectionGUID: SVLY1A5eROGNs7THuJoiQg==
+X-CSE-MsgGUID: 8Z0uAnZkQiKIIoAi2VYoGA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="34328591"
+X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; 
+   d="scan'208";a="34328591"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2024 12:17:27 -0800
+X-CSE-ConnectionGUID: +N1nUnjfSUaj9gak7/gslw==
+X-CSE-MsgGUID: AYwPWfvYQXGIUcs7FwgBdw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="98783251"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 18 Dec 2024 12:17:24 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tO0Tx-000Gbu-0e;
+	Wed, 18 Dec 2024 20:17:21 +0000
+Date: Thu, 19 Dec 2024 04:16:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ahmed Zaki <ahmed.zaki@intel.com>, netdev@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	intel-wired-lan@lists.osuosl.org, andrew+netdev@lunn.ch,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	davem@davemloft.net, michael.chan@broadcom.com, tariqt@nvidia.com,
+	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+	jdamato@fastly.com, shayd@nvidia.com, akpm@linux-foundation.org,
+	Ahmed Zaki <ahmed.zaki@intel.com>
+Subject: Re: [Intel-wired-lan] [PATCH net-next v2 4/8] net: napi: add CPU
+ affinity to napi->config
+Message-ID: <202412190421.N2xtn20H-lkp@intel.com>
+References: <20241218165843.744647-5-ahmed.zaki@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-next v3] e1000e: Fix real-time violations on link up
-To: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
-Cc: anthony.l.nguyen@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- kuba@kernel.org, linux-pci@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, bhelgaas@google.com, pmenzel@molgen.mpg.de,
- Gerhard Engleder <eg@keba.com>, netdev@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org
-References: <20241214191623.7256-1-gerhard@engleder-embedded.com>
- <231abdb7-3b16-4c3c-be17-5d0e6a556f28@intel.com>
- <047738af-69af-49aa-ae91-7dbca40ae559@engleder-embedded.com>
- <57948d32-bd6f-473c-a7e6-90185ea41986@intel.com>
-Content-Language: en-US
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-In-Reply-To: <57948d32-bd6f-473c-a7e6-90185ea41986@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AV-Do-Run: Yes
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241218165843.744647-5-ahmed.zaki@intel.com>
 
-On 18.12.24 09:36, Przemek Kitszel wrote:
-> On 12/16/24 20:23, Gerhard Engleder wrote:
->>>> @@ -331,8 +331,15 @@ void e1000e_update_mc_addr_list_generic(struct 
->>>> e1000_hw *hw,
->>>>       }
->>>>       /* replace the entire MTA table */
->>>> -    for (i = hw->mac.mta_reg_count - 1; i >= 0; i--)
->>>> +    for (i = hw->mac.mta_reg_count - 1; i >= 0; i--) {
->>>>           E1000_WRITE_REG_ARRAY(hw, E1000_MTA, i, hw- 
->>>> >mac.mta_shadow[i]);
->>>> +
->>>> +        /* do not queue up too many posted writes to prevent increased
->>>> +         * latency for other devices on the interconnect
->>>> +         */
->>>> +        if ((i % 8) == 0 && i != 0)
->>>> +            e1e_flush();
->>>
->>>
->>> I would prefer to avoid adding this code to all devices, particularly 
->>> those that don't operate on real-time systems. Implementing this code 
->>> will introduce three additional MMIO transactions which will increase 
->>> the driver start time in various flows (up, probe, etc.).
->>>
->>> Is there a specific reason not to use if 
->>> (IS_ENABLED(CONFIG_PREEMPT_RT)) as Andrew initially suggested?
->>
->> Andrew made two suggestions: IS_ENABLED(CONFIG_PREEMPT_RT) which I used
->> in the first version after the RFC. And he suggested to check for a
->> compromise between RT and none RT performance, as some distros might
->> enable PREEMPT_RT in the future.
->> Przemek suggested to remove the PREEMPT_RT check as "this change sounds
->> reasonable also for the standard kernel" after the first version with
->> IS_ENABLED(CONFIG_PREEMPT_RT).
->>
->> I used the PREEMPT_RT dependency to limit effects to real-time systems,
->> to not make none real-time systems slower. But I could also follow the
->> reasoning of Andrew and Przemek. With that said, I have no problem to
->> add IS_ENABLED(CONFIG_PREEMPT_RT) again.
->>
->> Gerhard
-> 
-> I'm also fine with limiting the change to RT kernels.
+Hi Ahmed,
 
-I will add IS_ENABLED(CONFIG_PREEMPT_RT).
+kernel test robot noticed the following build warnings:
 
-Thanks!
+[auto build test WARNING on net-next/main]
 
-Gerhard
+url:    https://github.com/intel-lab-lkp/linux/commits/Ahmed-Zaki/net-napi-add-irq_flags-to-napi-struct/20241219-010125
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20241218165843.744647-5-ahmed.zaki%40intel.com
+patch subject: [Intel-wired-lan] [PATCH net-next v2 4/8] net: napi: add CPU affinity to napi->config
+config: arm-randconfig-001-20241219 (https://download.01.org/0day-ci/archive/20241219/202412190421.N2xtn20H-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241219/202412190421.N2xtn20H-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412190421.N2xtn20H-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   net/core/dev.c:6716:6: warning: unused variable 'rc' [-Wunused-variable]
+    6716 |         int rc;
+         |             ^~
+   net/core/dev.c:6746:7: warning: unused variable 'rc' [-Wunused-variable]
+    6746 |         int  rc;
+         |              ^~
+>> net/core/dev.c:6766:7: warning: variable 'glue_created' is uninitialized when used here [-Wuninitialized]
+    6766 |         if (!glue_created && flags & NAPIF_IRQ_AFFINITY) {
+         |              ^~~~~~~~~~~~
+   net/core/dev.c:6745:19: note: initialize the variable 'glue_created' to silence this warning
+    6745 |         bool glue_created;
+         |                          ^
+         |                           = 0
+   3 warnings generated.
+
+
+vim +/glue_created +6766 net/core/dev.c
+
+  6765	
+> 6766		if (!glue_created && flags & NAPIF_IRQ_AFFINITY) {
+  6767			glue = kzalloc(sizeof(*glue), GFP_KERNEL);
+  6768			if (!glue)
+  6769				return;
+  6770			glue->notify.notify = netif_irq_cpu_rmap_notify;
+  6771			glue->notify.release = netif_napi_affinity_release;
+  6772			glue->data = napi;
+  6773			glue->rmap = NULL;
+  6774			napi->irq_flags |= NAPIF_IRQ_NORMAP;
+  6775		}
+  6776	}
+  6777	EXPORT_SYMBOL(netif_napi_set_irq);
+  6778	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
