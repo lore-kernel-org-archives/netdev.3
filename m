@@ -1,47 +1,47 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8C11A23B6
-	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 14:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40751B0405
+	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 14:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734532386; cv=none; b=OCe+dOvGOzIV6KDojHKQTVpb9rhXxU0w4UF6llFMlwZrctSNKqtw+wRqhnm2Ov6ZeLvvQ4NAAbDSxGkgjPSKHCTTgSW9TXAmziufQTfcu6VUf1YyAEPl+AVo+/MK6N4KJX6+Q3jB+rma2x9CUy0QRuGNuTHafgXIxE5SR0yKqb0=
+	t=1734532386; cv=none; b=T5SeRte+Ys9llVBImtWfeXDKplqU8bk4amZmE5LKcF96jMYLmhZnnZLdRfdOykWwZ18N85TyisyCNDBCC/zQVxihFPRgSPiuwh4FEBlxy6JOXkHC7X+WSwGlxUK1b7PjUagBsH2aiOiQntOlcIy56oomIOeV7JHSAO3kdLTPkyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734532386; c=relaxed/simple;
-	bh=1mzUitWC2u22LGTzJfJEgOT1ELhNF1GhLj2Wg8sBAYo=;
+	bh=iXtIiYUZygpcubXTXvB/dYhjPC0zDCMP0/SwPb2QHJ0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QsWf4ZRyq5M6Vx6YBux2JvMOpVoJvM64ctbMRorMkO7Hu54bxS1Uv4Y3FnaZSf5X6Y/Y9v/tn6R7rmeYKLdvqfIKgVAfJYIROYIYNdgH4fXGUwCa0z3mu0LC8M5wdrV8A7oT0uKQIfWRsNq2zChC8WhjsHoJGEKe/b/thqWMKlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=YZQdvuha; arc=none smtp.client-ip=185.226.149.37
+	 In-Reply-To:To:Cc; b=HiDqD6u2cfKRd2Q7Z0xsICxkx7ZTT1Xz0AzB5DODhomixRPFOCx/mVJ0/X3saHADXPsjv3cnax4N+5sBczk/TjHRYHvGl6DaKMlWFcwIWIEfbkaqS2RGy9QwNszgH5VFKYYEyrJdTBS7Z9xsvnvtSCu4tyb/H56j1ra7bh1zjBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=Vhf1P8zo; arc=none smtp.client-ip=185.226.149.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="YZQdvuha"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="Vhf1P8zo"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1tNv6Z-004cd5-IP
-	for netdev@vger.kernel.org; Wed, 18 Dec 2024 15:32:51 +0100
+	id 1tNv6a-004s0r-Hz
+	for netdev@vger.kernel.org; Wed, 18 Dec 2024 15:32:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
 	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=56zWuZ4KQVnUvsOW5HAUYk0ZwvzqoN8rl/muUFejqsQ=; b=YZQdvuhaP+2bIcXL6g/bNhzccs
-	rtecR4K8SOWlYq2DRciwWtlhr/YQghUlCi3YZaeUe2To1knYcnQHC3+dweBcl5EkIDEoNU9D9pPnj
-	NMPbIIkFBgsiM18ijDUfRSjkJipKGnmcb8ZWQZar12jyqPLaEyggLQMP4hMnpkaAyTn+jghpQ4Wzl
-	yqULG08i4heGlsO7nOe6eDABrHCa3+NkK7naisga96Bnb6DjlIICkfV/1i+y2j27T9LYbBAaABv1U
-	jZdk7Lql4AVApzLKeyuoWyU+sMH++kfHu224qqwsKaleDuzQ2Hk4p43/e6xyEToWFpEn46NiyTR1u
-	XypvEoEw==;
+	bh=vOB798QAKIhsiRPN5MHIl3fI84uyUMpEJ8aFVEv5168=; b=Vhf1P8zo882Qrq1DxCGh36YYgG
+	HQSPlb80AwkAl3GOlx+0mgDfyH7ZGzKGRhmE+nH1IOqDv9DPViDSiXtwmnRc8MdJpntFmxM9MViCF
+	n/LV8CicwLlmM8R093DmyJSKvZc8Zjev1vO6PWpmVhrF+GcX0EQ63ZQyDVcOtZ6FnhUMSqDeEsFwB
+	+SjTZPiOuFYc5n7YZSmpFC3ZTJKC/cJe2PtLY1RksJfnlih+gtwtGgP5dqAZN0z1JYaYTTh/MdSmk
+	hT4baQLSEpFLeaBMKLwoek95+tQSx4Yg+K2gl0L7sBByia/35oNyQ+VyVPir6grB21iuGe8BqpOKD
+	Pk8oCTmw==;
 Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1tNv6Z-00070J-7z; Wed, 18 Dec 2024 15:32:51 +0100
+	id 1tNv6a-0000QM-7p; Wed, 18 Dec 2024 15:32:52 +0100
 Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1tNv6V-008Env-B0; Wed, 18 Dec 2024 15:32:47 +0100
+	id 1tNv6V-008Env-Qx; Wed, 18 Dec 2024 15:32:47 +0100
 From: Michal Luczaj <mhal@rbox.co>
-Date: Wed, 18 Dec 2024 15:32:35 +0100
-Subject: [PATCH net-next v3 2/7] vsock/test: Introduce option to select
- tests
+Date: Wed, 18 Dec 2024 15:32:37 +0100
+Subject: [PATCH net-next v3 4/7] vsock/test: Adapt send_byte()/recv_byte()
+ to handle MSG_ZEROCOPY
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,121 +50,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241218-test-vsock-leaks-v3-2-f1a4dcef9228@rbox.co>
+Message-Id: <20241218-test-vsock-leaks-v3-4-f1a4dcef9228@rbox.co>
 References: <20241218-test-vsock-leaks-v3-0-f1a4dcef9228@rbox.co>
 In-Reply-To: <20241218-test-vsock-leaks-v3-0-f1a4dcef9228@rbox.co>
 To: Stefano Garzarella <sgarzare@redhat.com>
 Cc: netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
 X-Mailer: b4 0.14.2
 
-Allow for selecting specific test IDs to be executed.
+For a zercopy send(), buffer (always byte 'A') needs to be preserved (thus
+it can not be on the stack) or the data recv()ed check in recv_byte() might
+fail.
+
+While there, change the printf format to 0x%02x so the '\0' bytes can be
+seen.
 
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- tools/testing/vsock/util.c       | 29 +++++++++++++++++++++++++++--
- tools/testing/vsock/util.h       |  2 ++
- tools/testing/vsock/vsock_test.c | 11 +++++++++++
- 3 files changed, 40 insertions(+), 2 deletions(-)
+ tools/testing/vsock/util.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
-index 34e9dac0a105f8aeb8c9af379b080d5ce8cb2782..81b9a31059d8173a47ea87324da50e7aedd7308a 100644
+index 81b9a31059d8173a47ea87324da50e7aedd7308a..7058dc614c25f546fc3219d6b9ade2dcef21a9bd 100644
 --- a/tools/testing/vsock/util.c
 +++ b/tools/testing/vsock/util.c
-@@ -486,8 +486,7 @@ void list_tests(const struct test_case *test_cases)
- 	exit(EXIT_FAILURE);
- }
- 
--void skip_test(struct test_case *test_cases, size_t test_cases_len,
--	       const char *test_id_str)
-+static unsigned long parse_test_id(const char *test_id_str, size_t test_cases_len)
+@@ -401,7 +401,7 @@ void recv_buf(int fd, void *buf, size_t len, int flags, ssize_t expected_ret)
+  */
+ void send_byte(int fd, int expected_ret, int flags)
  {
- 	unsigned long test_id;
- 	char *endptr = NULL;
-@@ -505,9 +504,35 @@ void skip_test(struct test_case *test_cases, size_t test_cases_len,
+-	const uint8_t byte = 'A';
++	static const uint8_t byte = 'A';
+ 
+ 	send_buf(fd, &byte, sizeof(byte), flags, expected_ret);
+ }
+@@ -420,7 +420,7 @@ void recv_byte(int fd, int expected_ret, int flags)
+ 	recv_buf(fd, &byte, sizeof(byte), flags, expected_ret);
+ 
+ 	if (byte != 'A') {
+-		fprintf(stderr, "unexpected byte read %c\n", byte);
++		fprintf(stderr, "unexpected byte read 0x%02x\n", byte);
  		exit(EXIT_FAILURE);
  	}
- 
-+	return test_id;
-+}
-+
-+void skip_test(struct test_case *test_cases, size_t test_cases_len,
-+	       const char *test_id_str)
-+{
-+	unsigned long test_id = parse_test_id(test_id_str, test_cases_len);
- 	test_cases[test_id].skip = true;
  }
- 
-+void pick_test(struct test_case *test_cases, size_t test_cases_len,
-+	       const char *test_id_str)
-+{
-+	static bool skip_all = true;
-+	unsigned long test_id;
-+
-+	if (skip_all) {
-+		unsigned long i;
-+
-+		for (i = 0; i < test_cases_len; ++i)
-+			test_cases[i].skip = true;
-+
-+		skip_all = false;
-+	}
-+
-+	test_id = parse_test_id(test_id_str, test_cases_len);
-+	test_cases[test_id].skip = false;
-+}
-+
- unsigned long hash_djb2(const void *data, size_t len)
- {
- 	unsigned long hash = 5381;
-diff --git a/tools/testing/vsock/util.h b/tools/testing/vsock/util.h
-index ba84d296d8b71e1bcba2abdad337e07aac45e75e..e62f46b2b92a7916e83e1e623b43c811b077db3e 100644
---- a/tools/testing/vsock/util.h
-+++ b/tools/testing/vsock/util.h
-@@ -62,6 +62,8 @@ void run_tests(const struct test_case *test_cases,
- void list_tests(const struct test_case *test_cases);
- void skip_test(struct test_case *test_cases, size_t test_cases_len,
- 	       const char *test_id_str);
-+void pick_test(struct test_case *test_cases, size_t test_cases_len,
-+	       const char *test_id_str);
- unsigned long hash_djb2(const void *data, size_t len);
- size_t iovec_bytes(const struct iovec *iov, size_t iovnum);
- unsigned long iovec_hash_djb2(const struct iovec *iov, size_t iovnum);
-diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-index 38fd8d96eb83ef1bd45728cfaac6adb3c1e07cfe..8bb2ab41c55f5c4d76e89903f80411915296c44e 100644
---- a/tools/testing/vsock/vsock_test.c
-+++ b/tools/testing/vsock/vsock_test.c
-@@ -1644,6 +1644,11 @@ static const struct option longopts[] = {
- 		.has_arg = required_argument,
- 		.val = 's',
- 	},
-+	{
-+		.name = "pick",
-+		.has_arg = required_argument,
-+		.val = 't',
-+	},
- 	{
- 		.name = "help",
- 		.has_arg = no_argument,
-@@ -1681,6 +1686,8 @@ static void usage(void)
- 		"  --peer-cid <cid>       CID of the other side\n"
- 		"  --peer-port <port>     AF_VSOCK port used for the test [default: %d]\n"
- 		"  --list                 List of tests that will be executed\n"
-+		"  --pick <test_id>       Test ID to execute selectively;\n"
-+		"                         use multiple --pick options to select more tests\n"
- 		"  --skip <test_id>       Test ID to skip;\n"
- 		"                         use multiple --skip options to skip more tests\n",
- 		DEFAULT_PEER_PORT
-@@ -1737,6 +1744,10 @@ int main(int argc, char **argv)
- 			skip_test(test_cases, ARRAY_SIZE(test_cases) - 1,
- 				  optarg);
- 			break;
-+		case 't':
-+			pick_test(test_cases, ARRAY_SIZE(test_cases) - 1,
-+				  optarg);
-+			break;
- 		case '?':
- 		default:
- 			usage();
 
 -- 
 2.47.1
