@@ -1,331 +1,270 @@
-Received: from passt.top (passt.top [88.198.0.164])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615611F63E7
-	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 16:26:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=88.198.0.164
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734539194; cv=none; b=Andk0ksyOxDWxW8CE50ASuQtnxd9V2Qu5KLfDJXDHh2eptwsXSZDV8dfqEhjp0I0d8ybCbflJjuLXTwsFGwothsyPIHEVI6lwimDvJM8/CPq2pmXGO269LxiJXqvuNVqThduMurTnZuFla2sW7BS8J//znzeMCg+cB8xablgCbI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734539194; c=relaxed/simple;
-	bh=Tth1Gqg9rF77adZXka0FrE+DB/H31yyCsGEqseZJ4e0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mvaI8csCw4lJOZ9y8l6zlYdDhKZ1RsFnf2zyPwPkpEbIEYpihLavGCbGdqZv37fExoWqDMrZKiY8z0hqi5puYR/duHgzI17hMtAhro2AQYLx4G0AwpTF15bpoSJfp7iteiRjExfC5Gr4w1EV6ZQJUgtmIIX+P7qLu60NuCgfyNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=passt.top; arc=none smtp.client-ip=88.198.0.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=passt.top
-Received: by passt.top (Postfix, from userid 1000)
-	id ABAC45A0272; Wed, 18 Dec 2024 17:21:16 +0100 (CET)
-From: Stefano Brivio <sbrivio@redhat.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	netdev@vger.kernel.org,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Mike Manning <mvrmanning@gmail.com>,
-	David Gibson <david@gibson.dropbear.id.au>,
-	Paul Holzinger <pholzing@redhat.com>,
-	Philo Lu <lulie@linux.alibaba.com>,
-	Cambda Zhu <cambda@linux.alibaba.com>,
-	Fred Chen <fred.cc@alibaba-inc.com>,
-	Yubing Qiu <yubing.qiuyubing@alibaba-inc.com>,
-	Peter Oskolkov <posk@google.com>
-Subject: [PATCH net-next v2] udp: Deal with race between UDP socket address change and rehash
-Date: Wed, 18 Dec 2024 17:21:16 +0100
-Message-ID: <20241218162116.681734-1-sbrivio@redhat.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8350B1F0E40
+	for <netdev@vger.kernel.org>; Wed, 18 Dec 2024 16:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734539510; cv=fail; b=EAKiWcY+PiArStz0yQbKZijdtBzm6yZiBopR/EK/CEYXr7sshxE9MiViYC+Pcko3+1bdsUjWxplsEQZYp0RIC/i/3XONaYIafmLM/CtC6j4SLZ8HxLzKfbmdLkeVBvzLEzxeQnNJPoWxj497l3ND8V6KxJc0rvFlwnwSzZAoqcg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734539510; c=relaxed/simple;
+	bh=McHF/7ZqqKJRUIbUFD8AONQqmd2b/pVhXyXzTCIjzNE=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=UIUq8rTgIcveSSmyW2T18D3I23XpdQfKBtbn2iPSNtl3ZjeykJ4ZpRdpZuUOSlInebexCkHovvhlmsRkZ+902hKTdGYpesSBsRzqYeRf2nnWqNPCQhEbhSUnPl8Hxzs52lO2uMAgpFRvtykithNo9bT2RX647JRoBUF+uh5dpWQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DCaHmR8v; arc=fail smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DCaHmR8v"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734539509; x=1766075509;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=McHF/7ZqqKJRUIbUFD8AONQqmd2b/pVhXyXzTCIjzNE=;
+  b=DCaHmR8vqIXntvnSD/8d8b8yHuNDQjwm5GEfJvu4nbBBqh9gPA3/4641
+   6NY9vZxcx6KgQnDClJmBDtInPwGAEtRDyMf3sh6nG7PUv35AK7XQzvT8E
+   NYefJMAchbFMvpBlKamIQk+dwVHXx1/uqxboEuWK7KPfTXNi3s+AsQbnw
+   Fgg/zIgWRQKUzSvxconyIkRC3rr3iafZpHW/+LVgi6uSEhVNxoXAlhYik
+   IfGxY/40trnKAgPceOiEGhFec4i48lzQ4fExff1kdaruBvlsfg3D1CBY2
+   Ab4L//Q3C0q/97LW/KRzXYeRRzlEdN1yusqaztypDCdYrHlVGjEAEKq9N
+   g==;
+X-CSE-ConnectionGUID: 8qer3oD8TgCdjDWmFGnCdQ==
+X-CSE-MsgGUID: ikV570jqQg26Me849Tgu5g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="45514651"
+X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; 
+   d="scan'208";a="45514651"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2024 08:31:48 -0800
+X-CSE-ConnectionGUID: AFVZAO0CTeyNL6xT5wRyYA==
+X-CSE-MsgGUID: Ge/98vAjRTW2ytfTK3iOow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; 
+   d="scan'208";a="128704409"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 18 Dec 2024 08:31:48 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Wed, 18 Dec 2024 08:31:47 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Wed, 18 Dec 2024 08:31:47 -0800
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.41) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 18 Dec 2024 08:31:46 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=E/2E+8D9SRsIg3Y9oK8hlx7P6X7n0zJjNLKuQ3c7H2QUOKkaGwFKqUPvWQFupyE9dUB+HNbL0f9kOaysoCTNO2uCC9gFIHL4riAAZoqIscvvWuI36F0ZhMubo5UpleSOOA6KekYu7Ua3kXmti9iRNgVK8AgV6ttGzChRtppZw0QW2kFhAqRHon0mE2e+06nOM0r8RkVM8+5hNLfuaH2cyZuHsdp03oyJ8I0PDzhkHktQfQY8s68jH2wZD39feWQXVCvM53Z3XoLXLiUoPeX7MzlXx13dmtTps9uJAfFXN/x5Kj+8iStEL0oWMOPA1lzTim0De1kVK+PTWB7ELBHefQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1y4kYZWKhnZVAnyp8A3gUgCRJTwMlQqE3WYIDZ5n0ds=;
+ b=DzpENza3iKy2GJsFSWcjD6k5H8j0gCn9itl5c11343JbaTs1N3526Kxoim4taBKyQBCC+sP+mXrAnQ7eyJ5k6OGsVXSDno6QtJa6Y+MPq0fInwU3O/qEEpr9kpyvW7XYNg8Zj9jQqRRgoDyZAdsFrBhlwbW6WiZd89gBe7nT+EE1F0mismeY6TtgIqSJq+P9j+RmsA6KMPJ91DCWoOCmJYDj0bCNSHCTZnao4t+LoYFPM5O6vQ/YxFx7ytj/+IfajXmPv1tuXoQWCp0ACk3CUUrTnTQC7cT2kXF1FYG0i9dzFvixSK98nx6HaLA+bjcq/oVADdQrDy9i3ai9oLljqw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MW3PR11MB4538.namprd11.prod.outlook.com (2603:10b6:303:57::12)
+ by LV1PR11MB8852.namprd11.prod.outlook.com (2603:10b6:408:2b5::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.13; Wed, 18 Dec
+ 2024 16:31:30 +0000
+Received: from MW3PR11MB4538.namprd11.prod.outlook.com
+ ([fe80::e117:2595:337:e067]) by MW3PR11MB4538.namprd11.prod.outlook.com
+ ([fe80::e117:2595:337:e067%5]) with mapi id 15.20.8272.005; Wed, 18 Dec 2024
+ 16:31:30 +0000
+Message-ID: <3eef0493-7443-43bd-938a-7a1dea83ac11@intel.com>
+Date: Wed, 18 Dec 2024 08:31:27 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-net] idpf: fix transaction timeouts
+ on reset
+To: Alexander Lobakin <aleksander.lobakin@intel.com>
+CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
+	<larysa.zaremba@intel.com>, <decot@google.com>, <willemb@google.com>,
+	<anthony.l.nguyen@intel.com>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>
+References: <20241218014417.3786-1-emil.s.tantilov@intel.com>
+ <1102746b-58a8-44fb-98a9-a96db1096fe4@intel.com>
+Content-Language: en-US
+From: "Tantilov, Emil S" <emil.s.tantilov@intel.com>
+In-Reply-To: <1102746b-58a8-44fb-98a9-a96db1096fe4@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0292.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e::27) To MW3PR11MB4538.namprd11.prod.outlook.com
+ (2603:10b6:303:57::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW3PR11MB4538:EE_|LV1PR11MB8852:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf779200-1a78-4b8b-4a38-08dd1f816d1b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?K0pIcnpHRktabTFUZnNHeTF2NkdDb2ZkSXE3MFNkR0NKalNDWmVGQmMwSmRO?=
+ =?utf-8?B?cjkwb2ViS3J2akZNeTEvd1l5b2dpb3dZS3FQTThoaTJXQ2lpUEZjWVpzMGt3?=
+ =?utf-8?B?N0t0ZjFWeDZibncyOWJORlZ6VHR4UmhJcDBwVXlqRG9HYkd4QkNadzVhSnVN?=
+ =?utf-8?B?RGtyWDVDcXlvaEFUdmtzd0pJc25lUTJzSzBTc3dhalcyalN1QmxZa0J3VzdE?=
+ =?utf-8?B?QlZQbnNrWFlFRnUwQXhmbFkwNkdvenZQN1YxWjFrT242bi8xQmR1MUNaQ1dp?=
+ =?utf-8?B?dk5BUUwzV0piNTYveFF2S21vNzVHQmxvVW5uenB4UlR1WHNNVGxUM05NbWRm?=
+ =?utf-8?B?dUxvdHVKaTdoSVhGSVN0NFU1emhDeW5BcVJRTFc5cXBiTEFod2R2Nlh4WnR5?=
+ =?utf-8?B?RC9HZ0E1bGM3T1l1ZjZuTUc4QWozenNreUt0NDM2OGFrdTZ3TG4rL2RlWW5O?=
+ =?utf-8?B?WjJYNE1aTnRVZklSOGlZWlpkVVd0am45SmJRdFNLSjNIZUtFTmRLeXdwWCt6?=
+ =?utf-8?B?L214TlNIRHU5YXlUcXZ3Ym5IN3RWMjNMS1pkLzkwR0RvV3FBVDVqZ3ZNR2dl?=
+ =?utf-8?B?YnBQWFVaUHBYblhuK2daNVN0SXRTYnpRY2JvaEVKUHd2ZU11aGtMT0Y1ajBx?=
+ =?utf-8?B?dVVyamwxMHUzcEk5MkpDdER1bjcrckE5SmZlTDREYUEzRVl0cWJTUWJBMjhS?=
+ =?utf-8?B?bWliNVpkU2lJeDFibXhRZnJLOHJQQVg1d0tYODZBY1EzRm5ZQUZmWlVRK002?=
+ =?utf-8?B?RGRVc1hYclRXdGR1dVowVGZNK1pncjlsalVrSnBNakNaNnNod01kbmlTd2hV?=
+ =?utf-8?B?MUIyOXhZV29TUUtwZWQ5MmNEMXY5MFJoaUp5NWZPVUY0bk9YREloNCs0dGhz?=
+ =?utf-8?B?Q3F5cjVpazNXR3ZqVDdBSGtkTGZpN2hCa00xMXMxbTdmWkJNYUJOQ001Q0JY?=
+ =?utf-8?B?Nk5BOVZSNnRCekZ4c1psdklhNWJ6T1lQS0JLQ3JZVUFGR0M4aUQ1dzgxZnZz?=
+ =?utf-8?B?OE5NWVQ5S21sVTRzUDE0OUMzU0NWWFJ0YitaaDNzWlozNzZxNnpWOFRORWZ6?=
+ =?utf-8?B?ZzNyYjFlZFVmQjdDUU9xWVJKYS9uTHJSU1Q1SFptQWh1S3JKTHBJZUxmcEM1?=
+ =?utf-8?B?N1VXbEptVmx2cmxXRlFJcXhDcEdMbHdXZERmclhvQzRBZFhvN3ZoM2Q3SnBu?=
+ =?utf-8?B?QUFINE9UcjJRUkJYNHVhOTQ2dXhqZy9wSW9PaTN4VE1PdElkbStNZ2EySitJ?=
+ =?utf-8?B?YXBRT0MvK0h6amhwdGhEZmx4WFB1ZlRWaUJ5S0tDQ2MzYS95NC9GWk0xeU80?=
+ =?utf-8?B?TGdQZUI4cjhIdmViQ1hTbHVMa0xqemphOVgrUnlJOTlGR3l1M2ZrVWZnZ1E2?=
+ =?utf-8?B?NGJXSzkyWnBwak9jaXY0S0xlalhNd3FhLzR0QTF6Um81RjZlL0grOTBTczhk?=
+ =?utf-8?B?RWUrRHlLSzFwQVBEOVB0YWJYWDQxR1BoeUdTcXBZd2NnVkVFTFhEaTVFUVps?=
+ =?utf-8?B?eTZXdGcyUmZTNzBXbHJzZlRYNkpjYVRyckRDWUdvY2s0OGZEMDB4aXh1T0F3?=
+ =?utf-8?B?eWh1TnNzc25yOHk3Q2dHOGZ3S1l6OEc4RnVsWUJTbEJhZjdhZUdXSzFFNklu?=
+ =?utf-8?B?RDVuWnR1Wk9pVkNoSm5OMWcyTU5RWW5za0NKNHkrK0hFUTYxZXZWNnlja1dy?=
+ =?utf-8?B?RE9icjd1RUNmdllsbVZIKzRIQmRaN05MRUNjUWFpRnptRGN2d3JQVWVzOW1o?=
+ =?utf-8?B?SEJKeHJkU2VnL3RqU1g5QnYxd3VwWnRseU5FQ1hMQU5JcUhSNFo4ck4zeTRp?=
+ =?utf-8?B?a05RaFNKYS8rZDNSN0RlYUY2MzFrM3BVdkZkZEF3K1BKTm5lSm51SXBvV0tt?=
+ =?utf-8?Q?e/2DRef6ykgsw?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW3PR11MB4538.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MUlwT290MW42V2FURkJTYUNWajVkRlA2RGZVS211SkdSeitNWUprblZPT0Vi?=
+ =?utf-8?B?YnZiNUgxT0dENWtmVWR0dlhlb3QvVFl3ZmFpckdpaW1XSUJJVjVjNWJ6Y3ht?=
+ =?utf-8?B?SlVXM3ZlS1ZqQTFTa1NhQzVHQTJaOXF2OGdHN3EyUk5YdTIyK0FHUlBSeHRX?=
+ =?utf-8?B?cTFRaytycXBROG9mUjhyaHhtdDJZWm95OFRDVk84YmJLd0hJZC9ISG5yYmZY?=
+ =?utf-8?B?QVNpQ20xeElQTUZMQ3NGWjUzTHAwN2FyRURmc2ZJbFFIcmd1SFFPZThMcjVN?=
+ =?utf-8?B?TWVqTjV5L1VmQXhWZEZQMkJJdmxoaWkzK2dxQlljcDBlaFFRRDR4dHRmVyty?=
+ =?utf-8?B?M1MrRUZGT1lwN2luQlc3QTVpWU05ZDdiOUEwUk9saGpXTjN2NUJUVGNMMEZC?=
+ =?utf-8?B?RW9kNE9sSjI1a1hnN3VqR2I2Nm5GbFRiVHRoTWdqbDhnYnFpcnFtR2ttbTBq?=
+ =?utf-8?B?Snkva0EycWdxR2ZyWDcvR3VyRVEzT09rbS96czJlcnJRNGY3UWVFOXZxVE4w?=
+ =?utf-8?B?MTZZbG11SHF4RUN2YmJNeko3c0hucC8raVkrQWlJOVp3TitLSE42THdvVk50?=
+ =?utf-8?B?NDNlM0tWdWU2OCtEamxMMEdVVVFPTHQzTlFyQW1zSVNZbEtiZG84RzZBUm0v?=
+ =?utf-8?B?dmdjWUViT2h5L3ppdmUyaVFydVBxdWpkajRZeWdXL0l1eWxjdXcyWjdCakZ4?=
+ =?utf-8?B?WEFFaHllTk1OQWpvOHcrL0tGWWVxMnJ6dDdrV1o4Z0JpYkpFQm91WmpRV0FK?=
+ =?utf-8?B?YUdRdXcyL2FlaXkzZHRGbTRYYjJseENueXRkZlFmT0gyaURVdnlycGRFWHNQ?=
+ =?utf-8?B?U3ZabW1YZ2JvUWdQaW0zUGt1dkpQTzhRZExJNlBZa3ZmREpldkhPZnJOeFFz?=
+ =?utf-8?B?WUhydjJRcUhMRWx0eXY4TWFZQUx3QUt2dEZBd3VVc1RxZDd1WWQyVTYxOEds?=
+ =?utf-8?B?WUYyeWgwaEZGcGgrdnhQeTBjNUg4SHdHUGZqU25oSGFtNHQ1RFdKMk9idUpZ?=
+ =?utf-8?B?cWwzbXdPdVdvbFo4NGVMU0NKOEVTbmdlaHhSQmJDcWVKNWo2aHhPRFJFdy9P?=
+ =?utf-8?B?MVd0cDQzcGlsdjVUZzl1V3RKdzdjL1pMYTNYeU9OekZYdDIrbmZjaHZzK3Nv?=
+ =?utf-8?B?Q2djU3hNVSt2U0tUMzhPUy8zSys2OEZGdlFBWStoalhTSnI3TWVEZlppa1F2?=
+ =?utf-8?B?WHJtU1dPRFlTRWhINTY1MVNyRlQ5a1lVUDBhS3ZQb20vRkh2Zkh3c2IvR2U2?=
+ =?utf-8?B?eVNLbmhvczVMNzRndmVkMzFiNjVTR2pFU01vUnV4eG1GaWRtcGE1VDV3SzR1?=
+ =?utf-8?B?bzhLaS9HYmtPb0dmUE9kaU9RUGR2VnRQZFpCWTRFZFBXdkRoTmlzRURVYUtN?=
+ =?utf-8?B?SDhkZlU1RSszdnJDYnErZmNUR0VHVWZjNFR3TmVqeFRNNjdFWFRiclNOR0tp?=
+ =?utf-8?B?T2NuM3kvL2sxWmRiVUdiRHdWNkJWc0gzektuc09SdEE0RHc3RDA5dzFJeUNV?=
+ =?utf-8?B?ajl5Y0JSM1FFSXlJSW5VODRjZk9KMHZ3WlN2ZUcxb1hESkNjUUVnQUhQdFBO?=
+ =?utf-8?B?K0lOOE5KdVBnc2FDY1JYalQ5d1R6QXJncTBXVkdEdmlWelZnY3VPR2VYelNX?=
+ =?utf-8?B?NkJRcTNjYW9HS05ZeCtWY29WOTk4YlhocW5SS0JqOUNwM2JSSFM3KzNwNHNN?=
+ =?utf-8?B?MVRkS01yZG15RHFTT20vUUpCdlpvTUV6UnZrQno4ZXlrbEwzU28zL1BxV0JC?=
+ =?utf-8?B?ZnRXalZIMjR2WHE0di9TU2l6YmQyazZhOVI1WHpsRmxZazRSSlk0VFpLTTFq?=
+ =?utf-8?B?alQrVHJLakRmN2diSEpjVm1ja3g5bVQ5aWVFZWFmTEtjVkhjWnlJa2J0Mm1C?=
+ =?utf-8?B?MEI3TytDR1JwZFptZVNna1JWSnk4cG5pTHdRUDFjeStKOVFxazBDNXpLZVVV?=
+ =?utf-8?B?dk1uZzB5UkNZdW9iVFNwYnh1bWNVZCtyTDdtOFQ3U2NVTWZ0dnZhVkJMS0VN?=
+ =?utf-8?B?UkR6Tkxicjh3Zmo5MTZnc2JONGhvTnp1ZnRnSzY1ZVRNbERQZ2xBMjJST0I3?=
+ =?utf-8?B?K0ViVGp0cXNwQVZpQzJEakZaUlhMTkFHQUFXWE1xNEhUeGxSSWxibDZtckMv?=
+ =?utf-8?B?cFNTTnJ0OHh5aFpyZGd4QjhTS2ZaYkdGK0FmUGp0MGYxWjVxMGFjaytKcEhs?=
+ =?utf-8?B?QWc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf779200-1a78-4b8b-4a38-08dd1f816d1b
+X-MS-Exchange-CrossTenant-AuthSource: MW3PR11MB4538.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2024 16:31:29.9739
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: x4seigLBL2p0xYciHNviXcjgYYS3Y4SuMTpyuLfS+7AHM7QXQay/guU5b+KXNh0L91Xf3ASCAQUAXGPMk0CFp4SQ9V2WYG+rUSpKJLNUALw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR11MB8852
+X-OriginatorOrg: intel.com
 
-If a UDP socket changes its local address while it's receiving
-datagrams, as a result of connect(), there is a period during which
-a lookup operation might fail to find it, after the address is changed
-but before the secondary hash (port and address) and the four-tuple
-hash (local and remote ports and addresses) are updated.
 
-Secondary hash chains were introduced by commit 30fff9231fad ("udp:
-bind() optimisation") and, as a result, a rehash operation became
-needed to make a bound socket reachable again after a connect().
 
-This operation was introduced by commit 719f835853a9 ("udp: add
-rehash on connect()") which isn't however a complete fix: the
-socket will be found once the rehashing completes, but not while
-it's pending.
+On 12/18/2024 7:13 AM, Alexander Lobakin wrote:
+> From: Emil Tantilov <emil.s.tantilov@intel.com>
+> Date: Tue, 17 Dec 2024 17:44:17 -0800
+> 
+>> Restore the call to idpf_vc_xn_shutdown() at the beginning of
+>> idpf_vc_core_deinit() provided the function is not called on
+>> remove. In the reset path this call is needed to prevent mailbox
+>> transactions from timing out.
+>>
+>> Fixes: 09d0fb5cb30e ("idpf: deinit virtchnl transaction manager after vport and vectors")
+>> Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+>> Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+>> ---
+>> Testing hints:
+>> echo 1 > /sys/class/net/<netif>/device/reset
+>> ---
+>>   drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 8 +++++++-
+>>   1 file changed, 7 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+>> index d46c95f91b0d..0387794daf17 100644
+>> --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+>> +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+>> @@ -3080,9 +3080,15 @@ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+>>   	if (!test_bit(IDPF_VC_CORE_INIT, adapter->flags))
+>>   		return;
+>>   
+>> +	/* Avoid transaction timeouts when called during reset */
+>> +	if (!test_bit(IDPF_REMOVE_IN_PROG, adapter->flags))
+>> +		idpf_vc_xn_shutdown(adapter->vcxn_mngr);
+>> +
+>>   	idpf_deinit_task(adapter);
+>>   	idpf_intr_rel(adapter);
+>> -	idpf_vc_xn_shutdown(adapter->vcxn_mngr);
+>> +
+>> +	if (test_bit(IDPF_REMOVE_IN_PROG, adapter->flags))
+>> +		idpf_vc_xn_shutdown(adapter->vcxn_mngr);
+> 
+> Why test it two times...
+> 
+> 	bool reset;
+> 
+> 	...
+> 
+> 	reset = test_bit(REMOVE_IN_PROG);
+> 	if (!reset)
+> 		vc_xn_shutdown();
+> 
+> 	deinit_task();
+> 	intr_rel();
+> 
+> 	if (reset)
+> 		vc_xn_shutdown();
+Good point, I will update in v2.
 
-This is noticeable with a socat(1) server in UDP4-LISTEN mode, and a
-client sending datagrams to it. After the server receives the first
-datagram (cf. _xioopen_ipdgram_listen()), it issues a connect() to
-the address of the sender, in order to set up a directed flow.
+> 
+> BTW can't we just move that call unconditionally?
+This will be a revert of 09d0fb5cb30e:
+https://lore.kernel.org/intel-wired-lan/20240904095418.6426-1-larysa.zaremba@intel.com/
 
-Now, if the client, running on a different CPU thread, happens to
-send a (subsequent) datagram while the server's socket changes its
-address, but is not rehashed yet, this will result in a failed
-lookup and a port unreachable error delivered to the client, as
-apparent from the following reproducer:
+Which based on internal discussions should be OK, since the control 
+plane (CP) is expected to cleanup regardless. The consensus was that 
+driver communicates with CP when it can, hence the checks.
 
-  LEN=$(($(cat /proc/sys/net/core/wmem_default) / 4))
-  dd if=/dev/urandom bs=1 count=${LEN} of=tmp.in
+Thanks,
+Emil
 
-  while :; do
-  	taskset -c 1 socat UDP4-LISTEN:1337,null-eof OPEN:tmp.out,create,trunc &
-  	sleep 0.1 || sleep 1
-  	taskset -c 2 socat OPEN:tmp.in UDP4:localhost:1337,shut-null
-  	wait
-  done
-
-where the client will eventually get ECONNREFUSED on a write()
-(typically the second or third one of a given iteration):
-
-  2024/11/13 21:28:23 socat[46901] E write(6, 0x556db2e3c000, 8192): Connection refused
-
-This issue was first observed as a seldom failure in Podman's tests
-checking UDP functionality while using pasta(1) to connect the
-container's network namespace, which leads us to a reproducer with
-the lookup error resulting in an ICMP packet on a tap device:
-
-  LOCAL_ADDR="$(ip -j -4 addr show|jq -rM '.[] | .addr_info[0] | select(.scope == "global").local')"
-
-  while :; do
-  	./pasta --config-net -p pasta.pcap -u 1337 socat UDP4-LISTEN:1337,null-eof OPEN:tmp.out,create,trunc &
-  	sleep 0.2 || sleep 1
-  	socat OPEN:tmp.in UDP4:${LOCAL_ADDR}:1337,shut-null
-  	wait
-  	cmp tmp.in tmp.out
-  done
-
-Once this fails:
-
-  tmp.in tmp.out differ: char 8193, line 29
-
-we can finally have a look at what's going on:
-
-  $ tshark -r pasta.pcap
-      1   0.000000           :: ? ff02::16     ICMPv6 110 Multicast Listener Report Message v2
-      2   0.168690 88.198.0.161 ? 88.198.0.164 UDP 8234 60260 ? 1337 Len=8192
-      3   0.168767 88.198.0.161 ? 88.198.0.164 UDP 8234 60260 ? 1337 Len=8192
-      4   0.168806 88.198.0.161 ? 88.198.0.164 UDP 8234 60260 ? 1337 Len=8192
-      5   0.168827 c6:47:05:8d:dc:04 ? Broadcast    ARP 42 Who has 88.198.0.161? Tell 88.198.0.164
-      6   0.168851 9a:55:9a:55:9a:55 ? c6:47:05:8d:dc:04 ARP 42 88.198.0.161 is at 9a:55:9a:55:9a:55
-      7   0.168875 88.198.0.161 ? 88.198.0.164 UDP 8234 60260 ? 1337 Len=8192
-      8   0.168896 88.198.0.164 ? 88.198.0.161 ICMP 590 Destination unreachable (Port unreachable)
-      9   0.168926 88.198.0.161 ? 88.198.0.164 UDP 8234 60260 ? 1337 Len=8192
-     10   0.168959 88.198.0.161 ? 88.198.0.164 UDP 8234 60260 ? 1337 Len=8192
-     11   0.168989 88.198.0.161 ? 88.198.0.164 UDP 4138 60260 ? 1337 Len=4096
-     12   0.169010 88.198.0.161 ? 88.198.0.164 UDP 42 60260 ? 1337 Len=0
-
-On the third datagram received, the network namespace of the container
-initiates an ARP lookup to deliver the ICMP message.
-
-In another variant of this reproducer, starting the client with:
-
-  strace -f pasta --config-net -u 1337 socat UDP4-LISTEN:1337,null-eof OPEN:tmp.out,create,trunc 2>strace.log &
-
-and connecting to the socat server using a loopback address:
-
-  socat OPEN:tmp.in UDP4:localhost:1337,shut-null
-
-we can more clearly observe a sendmmsg() call failing after the
-first datagram is delivered:
-
-  [pid 278012] connect(173, 0x7fff96c95fc0, 16) = 0
-  [...]
-  [pid 278012] recvmmsg(173, 0x7fff96c96020, 1024, MSG_DONTWAIT, NULL) = -1 EAGAIN (Resource temporarily unavailable)
-  [pid 278012] sendmmsg(173, 0x561c5ad0a720, 1, MSG_NOSIGNAL) = 1
-  [...]
-  [pid 278012] sendmmsg(173, 0x561c5ad0a720, 1, MSG_NOSIGNAL) = -1 ECONNREFUSED (Connection refused)
-
-and, somewhat confusingly, after a connect() on the same socket
-succeeded.
-
-Until commit 4cdeeee9252a ("net: udp: prefer listeners bound to an
-address"), the race between receive address change and lookup didn't
-actually cause visible issues, because, once the lookup based on the
-secondary hash chain failed, we would still attempt a lookup based on
-the primary hash (destination port only), and find the socket with the
-outdated secondary hash.
-
-That change, however, dropped port-only lookups altogether, as side
-effect, making the race visible.
-
-To fix this, while avoiding the need to make address changes and
-rehash atomic against lookups, reintroduce primary hash lookups as
-fallback, if lookups based on four-tuple and secondary hashes fail.
-
-To this end, introduce a simplified lookup implementation, which
-doesn't take care of SO_REUSEPORT groups: if we have one, there are
-multiple sockets that would match the four-tuple or secondary hash,
-meaning that we can't run into this race at all.
-
-v2:
-  - instead of synchronising lookup operations against address change
-    plus rehash, reintroduce a simplified version of the original
-    primary hash lookup as fallback
-
-v1:
-  - fix build with CONFIG_IPV6=n: add ifdef around sk_v6_rcv_saddr
-    usage (Kuniyuki Iwashima)
-  - directly use sk_rcv_saddr for IPv4 receive addresses instead of
-    fetching inet_rcv_saddr (Kuniyuki Iwashima)
-  - move inet_update_saddr() to inet_hashtables.h and use that
-    to set IPv4/IPv6 addresses as suitable (Kuniyuki Iwashima)
-  - rebase onto net-next, update commit message accordingly
-
-Reported-by: Ed Santiago <santiago@redhat.com>
-Link: https://github.com/containers/podman/issues/24147
-Analysed-by: David Gibson <david@gibson.dropbear.id.au>
-Fixes: 30fff9231fad ("udp: bind() optimisation")
-Signed-off-by: Stefano Brivio <sbrivio@redhat.com>
----
- net/ipv4/udp.c | 56 ++++++++++++++++++++++++++++++++++++++++++++++++++
- net/ipv6/udp.c | 50 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 106 insertions(+)
-
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index e8953e88efef..4bc0a0686fcd 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -420,6 +420,49 @@ u32 udp_ehashfn(const struct net *net, const __be32 laddr, const __u16 lport,
- }
- EXPORT_SYMBOL(udp_ehashfn);
- 
-+/**
-+ * udp4_lib_lookup1() - Simplified lookup using primary hash (destination port)
-+ * @net:	Network namespace
-+ * @saddr:	Source address, network order
-+ * @sport:	Source port, network order
-+ * @daddr:	Destination address, network order
-+ * @hnum:	Destination port, host order
-+ * @dif:	Destination interface index
-+ * @sdif:	Destination bridge port index, if relevant
-+ * @udptable:	Set of UDP hash tables
-+ *
-+ * Simplified lookup to be used as fallback if no sockets are found due to a
-+ * potential race between (receive) address change, and lookup happening before
-+ * the rehash operation. This function ignores SO_REUSEPORT groups while scoring
-+ * result sockets, because if we have one, we don't need the fallback at all.
-+ *
-+ * Called under rcu_read_lock().
-+ *
-+ * Return: socket with highest matching score if any, NULL if none
-+ */
-+static struct sock *udp4_lib_lookup1(const struct net *net,
-+				     __be32 saddr, __be16 sport,
-+				     __be32 daddr, unsigned int hnum,
-+				     int dif, int sdif,
-+				     const struct udp_table *udptable)
-+{
-+	unsigned int slot = udp_hashfn(net, hnum, udptable->mask);
-+	struct udp_hslot *hslot = &udptable->hash[slot];
-+	struct sock *sk, *result = NULL;
-+	int score, badness = 0;
-+
-+	sk_for_each_rcu(sk, &hslot->head) {
-+		score = compute_score(sk, net,
-+				      saddr, sport, daddr, hnum, dif, sdif);
-+		if (score > badness) {
-+			result = sk;
-+			badness = score;
-+		}
-+	}
-+
-+	return result;
-+}
-+
- /* called with rcu_read_lock() */
- static struct sock *udp4_lib_lookup2(const struct net *net,
- 				     __be32 saddr, __be16 sport,
-@@ -683,6 +726,19 @@ struct sock *__udp4_lib_lookup(const struct net *net, __be32 saddr,
- 	result = udp4_lib_lookup2(net, saddr, sport,
- 				  htonl(INADDR_ANY), hnum, dif, sdif,
- 				  hslot2, skb);
-+	if (!IS_ERR_OR_NULL(result))
-+		goto done;
-+
-+	/* Primary hash (destination port) lookup as fallback for this race:
-+	 *   1. __ip4_datagram_connect() sets sk_rcv_saddr
-+	 *   2. lookup (this function): new sk_rcv_saddr, hashes not updated yet
-+	 *   3. rehash operation updating _secondary and four-tuple_ hashes
-+	 * The primary hash doesn't need an update after 1., so, thanks to this
-+	 * further step, 1. and 3. don't need to be atomic against the lookup.
-+	 */
-+	result = udp4_lib_lookup1(net, saddr, sport, daddr, hnum, dif, sdif,
-+				  udptable);
-+
- done:
- 	if (IS_ERR(result))
- 		return NULL;
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 7c14c449804c..6671daa67f4f 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -170,6 +170,49 @@ static int compute_score(struct sock *sk, const struct net *net,
- 	return score;
- }
- 
-+/**
-+ * udp6_lib_lookup1() - Simplified lookup using primary hash (destination port)
-+ * @net:	Network namespace
-+ * @saddr:	Source address, network order
-+ * @sport:	Source port, network order
-+ * @daddr:	Destination address, network order
-+ * @hnum:	Destination port, host order
-+ * @dif:	Destination interface index
-+ * @sdif:	Destination bridge port index, if relevant
-+ * @udptable:	Set of UDP hash tables
-+ *
-+ * Simplified lookup to be used as fallback if no sockets are found due to a
-+ * potential race between (receive) address change, and lookup happening before
-+ * the rehash operation. This function ignores SO_REUSEPORT groups while scoring
-+ * result sockets, because if we have one, we don't need the fallback at all.
-+ *
-+ * Called under rcu_read_lock().
-+ *
-+ * Return: socket with highest matching score if any, NULL if none
-+ */
-+static struct sock *udp6_lib_lookup1(const struct net *net,
-+				     const struct in6_addr *saddr, __be16 sport,
-+				     const struct in6_addr *daddr,
-+				     unsigned int hnum, int dif, int sdif,
-+				     const struct udp_table *udptable)
-+{
-+	unsigned int slot = udp_hashfn(net, hnum, udptable->mask);
-+	struct udp_hslot *hslot = &udptable->hash[slot];
-+	struct sock *sk, *result = NULL;
-+	int score, badness = 0;
-+
-+	sk_for_each_rcu(sk, &hslot->head) {
-+		score = compute_score(sk, net,
-+				      saddr, sport, daddr, hnum, dif, sdif);
-+		if (score > badness) {
-+			result = sk;
-+			badness = score;
-+		}
-+	}
-+
-+	return result;
-+}
-+
- /* called with rcu_read_lock() */
- static struct sock *udp6_lib_lookup2(const struct net *net,
- 		const struct in6_addr *saddr, __be16 sport,
-@@ -347,6 +390,13 @@ struct sock *__udp6_lib_lookup(const struct net *net,
- 	result = udp6_lib_lookup2(net, saddr, sport,
- 				  &in6addr_any, hnum, dif, sdif,
- 				  hslot2, skb);
-+	if (!IS_ERR_OR_NULL(result))
-+		goto done;
-+
-+	/* Cover address change/lookup/rehash race: see __udp4_lib_lookup() */
-+	result = udp6_lib_lookup1(net, saddr, sport, daddr, hnum, dif, sdif,
-+				  udptable);
-+
- done:
- 	if (IS_ERR(result))
- 		return NULL;
--- 
-2.40.1
+> 
+>>   
+>>   	cancel_delayed_work_sync(&adapter->serv_task);
+>>   	cancel_delayed_work_sync(&adapter->mbx_task);
+> 
+> Thanks,
+> Olek
 
