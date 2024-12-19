@@ -1,168 +1,110 @@
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A2033EA;
-	Thu, 19 Dec 2024 05:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B6D1FAC26;
+	Thu, 19 Dec 2024 05:54:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734584874; cv=none; b=hasxwTbe3MVqkcBLaU7rPuJ3CKpvaXLlgi8T91Xcq2gFjZj+6pjyvTXEJ9EiWvkSpnPw6efDWtW1KAQvgWSzENAhnNALa+g+rwj7FFyQqpxTY2dhAtykr0FvJJ72F+ZXAjT3sVkygoUWrsMhedzevfVbagTHcv1rgl2TYPEjhzs=
+	t=1734587685; cv=none; b=ruu0/ap8rVbmHHO1qx5nIYZjryt9iwShIpFhSdpTUMDzl36/TGaJgO09i7EUIG+P6GCy07Fk+ijvUT3L5ARxqeO1jCvi8AHXMUtQ5QMzAflEF0eY8ArQugAM7Xb/CVwNKkzA+3blUo4gBru/Y/ifB1HnKBSuDTnLEpaZF8fKgu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734584874; c=relaxed/simple;
-	bh=7NoOdyU3kSObR0gaoJaMfGX8M4QvnyCFhQ+t7AKeLjg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=STWrkD6NiUe2TqqKoKIlNjshitva7uwMIa9KBrwvywDGB9UGVeaR0MBZ2NNDtJCfa/3R4ieSCefyF34VnzUQCM53fF2noOiVL5Q/oTRCyQf8x83ja3Ih136Zc+T1jo8vfIiwMuGHDnRstkiEWbE1mqVsDwhzRjfATHTTGvb075w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=EHkuGD2c; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1734587685; c=relaxed/simple;
+	bh=VsNY71lG5lYULBvFXVp0KhrDlqgduRP+ORPVKzySpuo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a4TG8q2+fM+C1GGV8wDPlnogH8WkLThbfP4//vTctqqkUP/XcGXbDjb0KMptYl3zCV1EeKuncOboS1JwqfNFcVKrngKDNHO3voZ6AP0e0ji4qUR2bfuSIQR4CL4n8oeJyMNTmaR/7gvyKamgkA+jDvPgWsKVY23t1gGot2D32Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DlvsVA+w; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="EHkuGD2c"
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4BJ574Jl057189;
-	Wed, 18 Dec 2024 23:07:04 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1734584824;
-	bh=mmc6jucBgZmDsYveNGNTIb7SUSQtNS9OQ5CWM+MIYl8=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=EHkuGD2cK1KIrMQOiTPVc+NKhuHjgOfjIIxCOiFERQWQrvIwekAcHMRlMwc9ncb+d
-	 hNpTM12lzTbJXlEU/lo6KB7D1x1N4vpMG0C5Th24DbXuF7hi0NxpP/9jkTE/lUpGA0
-	 FoFz44kA8xFovRRofuddNappjNudKPg+cBsLsCa0=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4BJ574IP100295;
-	Wed, 18 Dec 2024 23:07:04 -0600
-Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 18
- Dec 2024 23:07:03 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 18 Dec 2024 23:07:04 -0600
-Received: from [10.24.69.25] (danish-tpc.dhcp.ti.com [10.24.69.25])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4BJ56wUm055129;
-	Wed, 18 Dec 2024 23:06:59 -0600
-Message-ID: <c6254178-6e2a-47e1-ac16-22af5affc8ca@ti.com>
-Date: Thu, 19 Dec 2024 10:36:57 +0530
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DlvsVA+w"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4361f664af5so4374875e9.1;
+        Wed, 18 Dec 2024 21:54:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734587681; x=1735192481; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZfCpfOoSh8ogvEFAzzK5Sh/fDzaPC/IoHjTWRLgy2Xc=;
+        b=DlvsVA+wXI6i1KZT9lm7VOFI7czigiGhZADLOrnKSV9b0EIZkwsKPjMCneGSwuWDNt
+         tqSzzXqZLPu/ECOYzRmlJMx5TxWB50zZtgcQYQwd00cCAAqit7VeMa0yS9/3VjGpDH7I
+         aXHKaysIBOGFkpqv0A/T9dOWYLdk1i1eyf5oypzdcnQK5xxmnibQdENbKYeDBYrtv6zg
+         bFXv9iGDXju6rmkqMIIhNGHPPfYld1g1CnkPcw2RNERa6hqxFIMHoo3nlwPQBOAKXOlm
+         JwwRtlm7CHhEXquivsuy+qSh/XNDxr4FJU/feblYVePstfyNOuwfH+sZaj9J2SWprcVX
+         8QYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734587681; x=1735192481;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZfCpfOoSh8ogvEFAzzK5Sh/fDzaPC/IoHjTWRLgy2Xc=;
+        b=QEtqVhzAQ/htuy3UdwVCI9wz3xFSH/YZXUrq2ssfztulmKLlACSaMMcYwM1EksIK9W
+         rYTwqSsxc5STOXr/GMXKoD2xlw5fjFC2w//CSxPt2UsLML//475E6H2C187VXx80Thbo
+         DY1oYvPhcixJaMigAabuLYtFCWhtbMMcaG4MCJvv8F8q8gdT4nOY0dhoKTvk9Fiypg3c
+         YQlrHRD1CPUyfS23ywQDl++xhhjIR+fdrpr05UNwHipUh/NsdDa0FCaxNJudmECJ+IT/
+         XTygTtRpvjGyEo7rDLwiIIaIoWo1AfjJtzKH21C1sG9XKu7BrRgYRo4nqwrdQKrubQ0z
+         77cw==
+X-Forwarded-Encrypted: i=1; AJvYcCVE5bHAOCx/Ir+omCK/lQzi9/AKeI0MfusOWgeR8jU+pdzKacdpBqgrlyFxpUJHrkK+9VCPvpSeWvAzbA==@vger.kernel.org, AJvYcCVfBhM8rQsUyVYa1/0G4Q6wp5MY/j2NipK6zBW3dmMuj9Fcmju2sH6onzKzvNS72pAkR1z9qwDRzfJDbsn+jEc=@vger.kernel.org, AJvYcCW1U7pZvhGGMm/7WhY7P0Uja0Gqr3SGChRplnFcA5Mnc0co6IRs2eaDfxQziT0P+NgsCglEV7sWGljH@vger.kernel.org, AJvYcCWIy/bZ8E3sgs4RrDQ8cBVzi2jTtq0DxvDbnX7FO0St5MnqI5hOD45D0T5FMgSsAcPaPt9CTKUoqL1rZCOWyPTi@vger.kernel.org, AJvYcCWxKszMr7PTK+BCVN9NRxXreNBPFmpMU/QlfJ8eCyCxBtRTcS8hjeC+3tUB6CLOCd6AhQ7szXXmsIV/uOBw@vger.kernel.org, AJvYcCWxP9c4je4LN3uGv9+iTmdoCKXhZeduAAE1sqFi/3AB7nJoIgQ0bWahIo7hEOohoqw8JKc=@vger.kernel.org, AJvYcCX1P+Q3cTk3NwKYPdVvgMl++Wq3l10sZDSv/rGv7Cd/HTqSulNgLTAuN19s3+vxOqsdnmI3BBCsrZpo@vger.kernel.org, AJvYcCXwrBTBjEvqf6JEMth4HSrxTjXzxMoE49szMpq2a5xxZ7BgpIw+xe4CgB/7BjOvpEICioeyAzbGKH7UMQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcLyNPLdbpZd06rIRvErliYm7TJ5cL/U+sTDGKIVSqQMEtWluS
+	mniKrys5qq8zNEK5vI6G2dzGh15CwMP1wQ1ychhjB3Q1xPIEjdQ8HBtahJ1nmQON4xs/q7yxMFY
+	kxeS0V+KHWYS+n7HUtE/jMhTqUIU=
+X-Gm-Gg: ASbGncuEH4Xw7pYcaU7E0g48nMEwu7wJLKkQNK6vE4KRklbTj3MkfvV2crG3Qz+XCJX
+	SiJ6VFiibV4z6q0c0KXLQrKNndFVw3dcRLZoj
+X-Google-Smtp-Source: AGHT+IFXswhNY3wf74HiVRQ6mWtI+LQ0dYPzH2WDbrTkg0k3vCjw9PHsmFSj9uux2yKPzKWzDIYRJF3gX8R2i5iXHRM=
+X-Received: by 2002:a05:600c:4ed2:b0:434:f7ea:fb44 with SMTP id
+ 5b1f17b1804b1-4365535c6a3mr52447275e9.14.1734587681279; Wed, 18 Dec 2024
+ 21:54:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/4] net: ti: Kconfig: Select HSR for ICSSG
- Driver
-To: Larysa Zaremba <larysa.zaremba@intel.com>
-CC: <aleksander.lobakin@intel.com>, <lukma@denx.de>, <m-malladi@ti.com>,
-        <diogo.ivo@siemens.com>, <rdunlap@infradead.org>,
-        <schnelle@linux.ibm.com>, <vladimir.oltean@nxp.com>,
-        <horms@kernel.org>, <rogerq@kernel.org>, <pabeni@redhat.com>,
-        <kuba@kernel.org>, <edumazet@google.com>, <davem@davemloft.net>,
-        <andrew+netdev@lunn.ch>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>, <srk@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-References: <20241216100044.577489-1-danishanwar@ti.com>
- <20241216100044.577489-2-danishanwar@ti.com>
- <Z2L/hwH5pgBV9pSB@lzaremba-mobl.ger.corp.intel.com>
-Content-Language: en-US
-From: MD Danish Anwar <danishanwar@ti.com>
-In-Reply-To: <Z2L/hwH5pgBV9pSB@lzaremba-mobl.ger.corp.intel.com>
+References: <20241218130909.2173-1-shaw.leon@gmail.com> <20241218130909.2173-12-shaw.leon@gmail.com>
+ <20241218153759.672b7014@kernel.org>
+In-Reply-To: <20241218153759.672b7014@kernel.org>
+From: Xiao Liang <shaw.leon@gmail.com>
+Date: Thu, 19 Dec 2024 13:54:03 +0800
+Message-ID: <CABAhCORszq9ao3OCVW-1EBsxsnLxbQ096eV+cbs12Es2HvCgUA@mail.gmail.com>
+Subject: Re: [PATCH net-next v6 11/11] selftests: net: Add test cases for link
+ and peer netns
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Kuniyuki Iwashima <kuniyu@amazon.com>, Donald Hunter <donald.hunter@gmail.com>, 
+	Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, 
+	Ido Schimmel <idosch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Jiri Pirko <jiri@resnulli.us>, 
+	Hangbin Liu <liuhangbin@gmail.com>, linux-rdma@vger.kernel.org, 
+	linux-can@vger.kernel.org, osmocom-net-gprs@lists.osmocom.org, 
+	bpf@vger.kernel.org, linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com, 
+	linux-wireless@vger.kernel.org, b.a.t.m.a.n@lists.open-mesh.org, 
+	bridge@lists.linux.dev, linux-wpan@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Dec 19, 2024 at 7:38=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Wed, 18 Dec 2024 21:09:09 +0800 Xiao Liang wrote:
+> >  - Add test for creating link in another netns when a link of the same
+> >    name and ifindex exists in current netns.
+> >  - Add test to verify that link is created in target netns directly -
+> >    no link new/del events should be generated in link netns or current
+> >    netns.
+> >  - Add test cases to verify that link-netns is set as expected for
+> >    various drivers and combination of namespace-related parameters.
+>
+> Nice work!
+>
+> You need to make sure all the drivers the test is using are enabled by
+> the selftest kernel config: tools/testing/selftests/net/config
+>
+> This may be helpful:
+> https://github.com/linux-netdev/nipa/wiki/How-to-run-netdev-selftests-CI-=
+style#how-to-build
 
+Thanks for pointing it out. And vng is really cool. I will add
+the missing config in the next version.
 
-On 18/12/24 10:29 pm, Larysa Zaremba wrote:
-> On Mon, Dec 16, 2024 at 03:30:41PM +0530, MD Danish Anwar wrote:
->> HSR offloading is supported by ICSSG driver. Select the symbol HSR for
->> TI_ICSSG_PRUETH. Also select NET_SWITCHDEV instead of depending on it to
->> remove recursive dependency.
->>
-> 
-> 2 things:
-> 1) The explanation from the cover should have been included in the commit 
->    message.
-
-I wanted to keep the commit message brief so I provided the actual
-errors in cover letter. I will add the logs here as well.
-
-> 2) Why not `depends on HSR`?
-
-Adding `depends on HSR` in `config TI_ICSSG_PRUETH` is not setting HSR.
-I have tried below scenarios and only one of them work.
-
-1) depends on NET_SWITCHDEV
-   depends on HSR
-
-	HSR doesn't get set in .config - `# CONFIG_HSR is not set`. Even the
-CONFIG_TI_ICSSG_PRUETH also gets unset although this is set to =m in
-defconfig. But keeping both as `depends on` makes CONFIG_TI_ICSSG_PRUETH
-disabled.
-
-2) select NET_SWITCHDEV
-   depends on HSR
-
-	HSR doesn't get set in .config - `# CONFIG_HSR is not set`. Even the
-CONFIG_TI_ICSSG_PRUETH also gets unset although this is set to =m in
-defconfig. But keeping both as `depends on` makes CONFIG_TI_ICSSG_PRUETH
-disabled.
-
-3) depends on NET_SWITCHDEV
-   select HSR
-	
-	Results in recursive dependency
-
-error: recursive dependency detected!
-	symbol NET_DSA depends on HSR
-	symbol HSR is selected by TI_ICSSG_PRUETH
-	symbol TI_ICSSG_PRUETH depends on NET_SWITCHDEV
-	symbol NET_SWITCHDEV is selected by NET_DSA
-For a resolution refer to Documentation/kbuild/kconfig-language.rst
-subsection "Kconfig recursive dependency limitations"
-
-make[2]: *** [scripts/kconfig/Makefile:95: defconfig] Error 1
-make[1]: *** [/home/danish/workspace/net-next/Makefile:733: defconfig]
-Error 2
-make: *** [Makefile:251: __sub-make] Error 2
-
-4) select NET_SWITCHDEV
-   select HSR
-
-	HSR is set as `m` along with `CONFIG_TI_ICSSG_PRUETH`
-
-CONFIG_HSR=m
-CONFIG_NET_SWITCHDEV=y
-CONFIG_TI_ICSSG_PRUETH=m
-
-#4 is the only secnario where HSR gets built. That's why I sent the
-patch with `select NET_SWITCHDEV` and `select HSR`
-
->  
->> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
->> ---
->>  drivers/net/ethernet/ti/Kconfig | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ethernet/ti/Kconfig b/drivers/net/ethernet/ti/Kconfig
->> index 0d5a862cd78a..ad366abfa746 100644
->> --- a/drivers/net/ethernet/ti/Kconfig
->> +++ b/drivers/net/ethernet/ti/Kconfig
->> @@ -187,8 +187,9 @@ config TI_ICSSG_PRUETH
->>  	select PHYLIB
->>  	select TI_ICSS_IEP
->>  	select TI_K3_CPPI_DESC_POOL
->> +	select NET_SWITCHDEV
->> +	select HSR
->>  	depends on PRU_REMOTEPROC
->> -	depends on NET_SWITCHDEV
->>  	depends on ARCH_K3 && OF && TI_K3_UDMA_GLUE_LAYER
->>  	depends on PTP_1588_CLOCK_OPTIONAL
->>  	help
->> -- 
->> 2.34.1
->>
->>
-
--- 
-Thanks and Regards,
-Danish
+> --
+> pw-bot: cr
