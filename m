@@ -1,49 +1,49 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0724978F55;
-	Thu, 19 Dec 2024 10:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9021FBCBE;
+	Thu, 19 Dec 2024 10:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734603262; cv=none; b=VxsD41ioxseXU97462lVV7DRebD9eJREGD8AucWo0DVcGA27CweAIK3QTzEkxH4nRObltVBHr78sJHhSBi8EFUxmCmqZCN+BtNR95g2EyMAFQRlkPMssxwBJywB5PCbwyqYxR7iKl376LTjUdD5D9sOumMXAgR8mV+czu5ReFDw=
+	t=1734603385; cv=none; b=l5jm7WZwf9jc6ZNkJNKLEX98TCbPhingRelq6R7s5dCWgqcrOiOAFtFxeVYQHr6DbroJwVrHRWc/t8ptNxw6UYS3f3u/F7i8D0O5zvT42wXy1WpdxpXN1/xlSdJY+siy4WmdMUvqsvEmB6ET5nB7cfrCl9w2s7ahuaXweh0y2AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734603262; c=relaxed/simple;
-	bh=8dZGcx1HfFCEgOMRg4RVUZQF2Z7W0oeDzjERXe30cJM=;
+	s=arc-20240116; t=1734603385; c=relaxed/simple;
+	bh=7eVeIysxu5g3BiktdvQyC2I620MZghcybkp12S4LnLs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eHigV/AnrG/r7RtEKPkfzJcjrHQN5DOp1Kn9qTWnEZpwZhxo+/De2Ggr6TV61TrO+HjAcpSwnHp9tnmaeMRz4BJtxrM3WavXqjkOZ8qHTCP0DJR01e/29Ox6UURUJBQilbrKXQlXtaG6LCtk0dUaBJoisWOKnnV0gjficrfUZTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WwvhEYeM; arc=none smtp.client-ip=198.175.65.21
+	 Content-Type:Content-Disposition:In-Reply-To; b=c/e639Tgsqw5480Fgi9MFMuVA1QSYwLR3g2UKMDhYy4SyuuplCjbJabNDVi37vbj3l/bLIZCxYhZxXK3HCAHezgxxvuD5PxJNDSCU/+/OUwdFQ32dtx3Le/7jY8BPrlwO7ZA9zINuvhCtgIK8w6CTxcjd2uT58YtWDgkg9bNems=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GoZ5dvXA; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WwvhEYeM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GoZ5dvXA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734603259; x=1766139259;
+  t=1734603381; x=1766139381;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=8dZGcx1HfFCEgOMRg4RVUZQF2Z7W0oeDzjERXe30cJM=;
-  b=WwvhEYeMF3vFbWqucddDvS2DtAL5KzIpCIz597Xp5EpCY5h+h+GMhsqr
-   3xMJtard8zk36sSpu/5/tNghIspCTqaikUZTPx4CKgtu4COB+qhXm47ZG
-   4Pqln7/I3Rk5hRaCapEfUoUFYQDL5sK6zlmJ9Cj9XxeSE6spN14QHN8OC
-   dK8zigS7n6yCjYaJnZgK/mDCD1mMYClrbhtmeqvxTfP+FqO4mRJxwE0gj
-   MVSLFQ2m/pHv/Pu6H33oULPXz80MEOlDBCa2iCKh7CZcZjf9UlDbdThEm
-   er/T2Lm6/GKEWkT3IUYXead+MiYiO/ux+jzoohSzijW8MJMCz/OQgzeUg
-   A==;
-X-CSE-ConnectionGUID: Eoxxhyp1RVeSIl79ozUYmQ==
-X-CSE-MsgGUID: 1e0ytGaYSIqc+4I/hFigRQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="35006545"
+  bh=7eVeIysxu5g3BiktdvQyC2I620MZghcybkp12S4LnLs=;
+  b=GoZ5dvXAwSg2NjaZa8+yAUXMcG1UC8t0jJgBfGZEdZ0EdkkOgoZCvVzH
+   a3JkOWZFWCSfdpDXVq2jrJU9VX91877gx0LufSg1y2Ud288pELVdEAdI9
+   nMNPUKlPxXcf7MW+HalCljjc4hyIcfQlFWbpr3mncoa4+ug6YJY71OfRw
+   UUG3Y8BiwbBqdj36iD1fEMNXJOIF0BT4QjJLzAb+LyOGS/pSSr1m6cS88
+   FV5+kHvrEMpCA7IQnb8qiuHi+nqMuittYTEOZOG7jiDpiKzkN6i0GDJFs
+   rbwNNe0i76mqvVltMeOAJXyrF1fC+GOxolOCXkXK5wAwdRtVe33zpwpBk
+   Q==;
+X-CSE-ConnectionGUID: opl8FHEbQpSFoZP36q6Fgw==
+X-CSE-MsgGUID: HJFpdMpDR7u5wYJRxsxuPw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="35006768"
 X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; 
-   d="scan'208";a="35006545"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2024 02:14:18 -0800
-X-CSE-ConnectionGUID: OZCQLSGBQV6hpQuHiVwXtQ==
-X-CSE-MsgGUID: L2lm6D5ORAKocKGZXbqBsA==
+   d="scan'208";a="35006768"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2024 02:16:20 -0800
+X-CSE-ConnectionGUID: jls0FyZtR7SpS3glc4kAjA==
+X-CSE-MsgGUID: pRLPkKjdTz6FfGWE02S5Ww==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="103230046"
+X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; 
+   d="scan'208";a="98052502"
 Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2024 02:14:17 -0800
-Date: Thu, 19 Dec 2024 11:11:15 +0100
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2024 02:16:19 -0800
+Date: Thu, 19 Dec 2024 11:13:17 +0100
 From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 To: Paolo Abeni <pabeni@redhat.com>
 Cc: Jijie Shao <shaojijie@huawei.com>, davem@davemloft.net,
@@ -55,7 +55,7 @@ Cc: Jijie Shao <shaojijie@huawei.com>, davem@davemloft.net,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH RESEND V2 net 1/7] net: hns3: fixed reset failure issues
  caused by the incorrect reset type
-Message-ID: <Z2PxQ8A5DObivci8@mev-dev.igk.intel.com>
+Message-ID: <Z2PxvUcxUsGWTQ1a@mev-dev.igk.intel.com>
 References: <20241217010839.1742227-1-shaojijie@huawei.com>
  <20241217010839.1742227-2-shaojijie@huawei.com>
  <Z2KPw9WYCI/SZIjg@mev-dev.igk.intel.com>
@@ -129,21 +129,6 @@ On Thu, Dec 19, 2024 at 10:41:53AM +0100, Paolo Abeni wrote:
 > handles attempted reset failures. I don't see it triggered when
 > reset_type == HNAE3_NONE_RESET.
 > 
-
-Maybe I missed sth. The hclge_set_reset_pending() is added to check if
-reset type isn't HNAE3_NONE_RESET. If it is the set_bit isn't called. It
-is the only place where hclge_set_reset_pending() is called with a
-variable, so I assumed the fix is for this place.
-
-This means that code can be reach here with HNAE3_NONE_RESET which is
-unclear for me why to increment resets if rest_type in NONE. If it is
-true that hclge_reset_err_handle() is never called with reset_type
-HNAE3_NONE_RESET it shouldn't be needed to have the
-hclge_set_reset_pending() function.
-
-Following that I suggested to check if reset_type isn't NONE before
-checking other things.
-
 > >> @@ -4470,8 +4483,20 @@ static void hclge_reset_event(struct pci_dev *pdev, struct hnae3_handle *handle)
 > >>  static void hclge_set_def_reset_request(struct hnae3_ae_dev *ae_dev,
 > >>  					enum hnae3_reset_type rst_type)
@@ -173,6 +158,11 @@ checking other things.
 > @Michal: I personally find the patch code quite readable, do you have
 > strong opinions here?
 > 
+
+Sorry, I anwered and missed other replies :(
+
+No strong opionion, only nit, I should mark that.
+
 > >>  	set_bit(rst_type, &hdev->default_reset_request);
 > >>  }
 > >>  
@@ -202,6 +192,9 @@ checking other things.
 > with different layout (hclgevf_dev vs hclge_dev). Currently all the
 > shared code operates on shared structs.
 > 
+
+Ok, didn't check that. Fine for me so.
+
 > Cheers,
 > 
 > Paolo
