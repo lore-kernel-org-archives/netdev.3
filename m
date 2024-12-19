@@ -1,40 +1,49 @@
-Received: from mta-64-226.siemens.flowmailer.net (mta-64-226.siemens.flowmailer.net [185.136.64.226])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C79D1AA783
-	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 17:38:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B980C1A4E77;
+	Thu, 19 Dec 2024 17:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734629899; cv=none; b=UN1w9bE8JNlruAzi2Onh5zSybq3sBRPieMj4uxpIkhRvNkkQLDOgaj2Xr0rx1xN1jKm6MWfIICLuxgtiFfo9S2ETvth4DGjbnRbQv2OqqfAVoW94EcZq5tpEGMRk4PBMxlzbtaUN/hCFVyWz9hcQjI/CiZGJ/zBRh1o735taIvw=
+	t=1734629975; cv=none; b=MntpaFRfRstfCG+leHcBLz45s/uJCcqVY5XdnkOnHa44oVW8D3pX7z0FaQUUxzcYHj1zfBqXpvTZA3nlJZ7i4RWzo1hVxL6FIVOHpq7d/v1ZYqE49I3wkdUyfyvftyU206towPlPEnZpanxzQM56/GCg5u73Nw15rUmudCcjEEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734629899; c=relaxed/simple;
-	bh=VEZbEuADBPGRv4V2QXFXoWDC/Ge4X8hRzfyCBp91+lE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E3gybAbjP/G1f9ibulc9NgtvjE8UtLopxEIU7tv3CnLj93dpLjBoRFH+L7UaY+4VsD45CGyhLZlH9l0q0oZZQb2tR4YK6PuG7G02uQ8775fO8A2xTzO5xDGvX63P1HUvT3ZybA/EG7juEgoOXtyt7bCJBHbTZxvt+gFUmeuS1j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=UQp0Ztjq; arc=none smtp.client-ip=185.136.64.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+	s=arc-20240116; t=1734629975; c=relaxed/simple;
+	bh=Ne4AeeqZNqy6Z9M50Jp3t7u/bBE6pTUzohf9Mzl5oEk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VDioWp2vCLC99wMv+oNjaVggNq/fL0V8sQxxk1CxcyJZPDuKLAyzgVehDooRNLPaMG6RAVkOb8auxWLteIe11f8+/u9J6HTa6CvPaSUrkszS8d3S1FnM1ZlzP9VkpCLnYjbISOWpPhsgHPZzxzqBSERtIMUCET9lIg5j+vDGFbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=UUFJLiaE; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="UQp0Ztjq"
-Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id 2024121917380906a05cf13f7c5ece3d
-        for <netdev@vger.kernel.org>;
-        Thu, 19 Dec 2024 18:38:09 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=alexander.sverdlin@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=it40NgbFFEujfXinS48YKcikqgNCRiHyd1xRTeZkF9o=;
- b=UQp0ZtjqoTCE76r4S0agqQE9ZwsDlZ/EjCfXbnMJweiv9NjUndRLQE/3rIkcJE1plSEaLo
- oB1z1Axnz3N7BKueOiJTGATjxoFnvafmJbci+wIEmHPMTXcUDiucWVVEqSRMPh5f94oJb9Ru
- B7f5PsEUhGKCde0imXMK/gmtVbNSmcCCpYu8ahDVIbNuFyiG6km6nWjOf0x16BXkic1t+y9u
- bYnOrc8i7XD+e5hg1fa5fl8mNLv1sF2yTvp76RCXjfnctiCq1oWFix0a9PdtdIkLCOql9VbM
- q/2W3I9XmBZliKtLzcE7GIFqaRcZXH9EPiq4I7ZemGHg4zTnaSSJYS2A==;
-From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-To: netdev@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH net-next] net: dsa: honor "max-speed" for implicit PHYs on user ports
-Date: Thu, 19 Dec 2024 18:38:01 +0100
-Message-ID: <20241219173805.503900-1-alexander.sverdlin@siemens.com>
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="UUFJLiaE"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=bl2hUXNORFJOodMqxSAVtdUGgLb/T+639DMJenOGEK4=; b=UUFJLiaEpXyhja6TBmY0oMxfR1
+	yNIoDsjLvBsYgDCGHjdvzSiAkxzgALerRkLZjVQJ5AWYDx0OBe39EGfhV46rdp3nv1aZM2qD3HzCD
+	IaRA7UcRBj5FckquJq0TVPxj8VUff/bqNl5El0DraQpMUgIt3VMl3hrkD3LyGhY5GZihwmLOl9Wiy
+	e7mv6cpBiTe/PtxxhtKiXnaUj4YneMDTaIfPxLIhPlH0XBxE55jDmaBW8u7n78ntJHcCECol1VGI+
+	b1pqRK5P9a2xA8xIjBGroNPvcGTG9eWP84juxuVOYjRC9noEj2KvFmJGuvbmHnidmzOJDrOlf+GZ/
+	8vIV/55Q==;
+Received: from 226.206.1.85.dynamic.cust.swisscom.net ([85.1.206.226] helo=localhost)
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1tOKUj-000Mmb-Hp; Thu, 19 Dec 2024 18:39:29 +0100
+From: Daniel Borkmann <daniel@iogearbox.net>
+To: martin.lau@linux.dev
+Cc: razor@blackwall.org,
+	pabeni@redhat.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH bpf-next 2/3] netkit: Add add netkit {head,tail}room to rt_link.yaml
+Date: Thu, 19 Dec 2024 18:39:27 +0100
+Message-ID: <20241219173928.464437-2-daniel@iogearbox.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241219173928.464437-1-daniel@iogearbox.net>
+References: <20241219173928.464437-1-daniel@iogearbox.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,46 +51,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-456497:519-21489:flowmailer
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27492/Thu Dec 19 10:44:32 2024)
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Add netkit {head,tail}room attribute support to the rt_link.yaml spec file.
 
-If the PHYs on user ports are not specified explicitly, but a common
-user_mii_bus is being registered and scanned there is no way to limit
-Auto Negotiation options currently. If a gigabit switch is deployed in a
-way that the ports cannot support gigabit rates (4-wire PCB/magnetics,
-for instance), there is no way to limit ports' AN not to advertise gigabit
-options. Some PHYs take considerably longer time to AutoNegotiate in such
-cases.
+Example:
 
-Provide a way to limit AN advertisement options by examining "max-speed"
-property in the DT node of the corresponding user port and call
-phy_set_max_speed() right before attaching the PHY to he port netdevice.
+  # ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/rt_link.yaml \
+   --do getlink --json '{"ifname": "nk0"}' --output-json | jq
+  [...]
+  "linkinfo": {
+    "kind": "netkit",
+    "data": {
+    }
+  },
+  [...]
 
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
 ---
- net/dsa/user.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ Documentation/netlink/specs/rt_link.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/dsa/user.c b/net/dsa/user.c
-index 4a8de48a6f24..9e3f5b0f9af3 100644
---- a/net/dsa/user.c
-+++ b/net/dsa/user.c
-@@ -2625,6 +2625,13 @@ static int dsa_user_phy_connect(struct net_device *user_dev, int addr,
+diff --git a/Documentation/netlink/specs/rt_link.yaml b/Documentation/netlink/specs/rt_link.yaml
+index 9ffa13b77dcf..dbeae6b1c548 100644
+--- a/Documentation/netlink/specs/rt_link.yaml
++++ b/Documentation/netlink/specs/rt_link.yaml
+@@ -2166,6 +2166,12 @@ attribute-sets:
+         name: peer-scrub
+         type: u32
+         enum: netkit-scrub
++      -
++        name: headroom
++        type: u16
++      -
++        name: tailroom
++        type: u16
  
- 	user_dev->phydev->dev_flags |= flags;
- 
-+	if (dp->dn) {
-+		u32 max_speed;
-+
-+		if (!of_property_read_u32(dp->dn, "max-speed", &max_speed))
-+			phy_set_max_speed(user_dev->phydev, max_speed);
-+	}
-+
- 	return phylink_connect_phy(dp->pl, user_dev->phydev);
- }
- 
+ sub-messages:
+   -
 -- 
-2.47.1
+2.43.0
 
