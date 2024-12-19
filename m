@@ -1,137 +1,112 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B793221D89
-	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 09:49:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235E6221473
+	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 09:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734601797; cv=none; b=uhdbNqf+1HIOvJN/S5O8AXnkV5KFXOGS03d+yIGo3fKYskzwBuikPf2cdWMEMZhIj3pvtvSRIyr16I9vH/z9mi0dGuAkMRI7zTajx2aLE2gBi2CfvUJbWRCWoofdYc3MqiLgPUUvU2AdKWJI+wVBA9dTXW35JjysWOhW2/byc10=
+	t=1734601876; cv=none; b=fsZyGDcKImbPRW2Av7/7H5aiElV98LyDJXjYSwNQQVhbZoKnVaMpF/1N7ovoKFIlyuRqeoQ3C9cwqFZv9byJxHE/4JjR4x6kwu76aTrI3V7nqXTaY24ERivQadVuvFSyePNX44n4vqNd/47gNd1/l9CYLBA5Qqzm0A5G3ZpYFGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734601797; c=relaxed/simple;
-	bh=OD040imbW2yV/0U8dRlyv9pGGxmj6Y+WphcRdZmXcus=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oAS25pX6faDyDsWOn+B54pZVYe32NTyh2rcJ3eTe5dZCaNpkuIV/HNwNn3kg0CtPtn4mWkUcDf1SrSntY9Yx8qX/FAR1y3vcQ4GGIhhWdnh5MOxTJvJOyI3KZdQaLqhMjZmz9NI1xGkZmiIqfxsTrw9ALuWvZfNJOcYHtYz4Vyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=J0WfvCd4; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1734601876; c=relaxed/simple;
+	bh=MOgjv8NLvbCJVNusxjVzb0ZjyoqeQDJ7L4XoYYYJcQU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C3xei5zARwSoV7R4Pzk9dkJH0SvvgwOLQqnFfJ7fBTLGDXGdExsjk5eOcKZFDMfMfaRKI+H+Xa60/ZPXpyGGd0Zm3oisTwonqvQxdELYK7knOuTrpfwzLjPajqCPmloIhPS1igTgX+Z0yhYnG9/D6i4q9H1nHfxBNVyuLMe83TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LHGZhG7M; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="J0WfvCd4"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1tODAH-007Nps-Iv
-	for netdev@vger.kernel.org; Thu, 19 Dec 2024 10:49:53 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=DJg1AzGG5wTXwMVaemQbEGXpC8TQCp81zUdC7bdHEvQ=; b=J0WfvCd4DhVgWDuh/84/A88UgP
-	YfgB5PCSmhFQnQAtrzNbEmW9lHqJm4AOcfNS8MPfbi+Ntdi3CdYKPGegovLp127CDTDudlYA2iUqv
-	lFVkVM6r7kH5pKp0E41OahPjw0GdOfeWare/yGLNUhgNgBQ1bODBD5JwWXJRANzGa6qU2Dgj4MXbn
-	WLPOs3sgdt1ssu/eB/m+pJkvNpjyWVHaUuKSwQYWSgKPjKDarr3sNHb8WrIejN/89GkPW9QyHcFP3
-	CWecYTKlhhS6+p514b1GLB+0fR1ilmWdECzBdiI+zRDBdjgMXd1VUiTj7oKjqc24rCsg4cmo7SRNw
-	epFEHY6g==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1tODAH-0002jI-9c; Thu, 19 Dec 2024 10:49:53 +0100
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1tODA4-00BSZD-O9; Thu, 19 Dec 2024 10:49:40 +0100
-From: Michal Luczaj <mhal@rbox.co>
-Date: Thu, 19 Dec 2024 10:49:33 +0100
-Subject: [PATCH net-next v4 6/7] vsock/test: Add test for sk_error_queue
- memory leak
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LHGZhG7M"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734601873;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2wU49+e7tvLItM+Xg1PJft++Z0Ygv+fKtA0Gny+3OZY=;
+	b=LHGZhG7MgYE3PEjKi1Onxnkrz7xZ1NgPwbvrZUc3GBNrbrLA34FpYZGl+G6RLC0nMd5RNV
+	64JrJQhiuuGenctoh0sZXs1NfrwrSGoXYGK1KIMgk1YXGQY/Vl/hhHZgwDeh2j8CTg/qKQ
+	X0GjgST5nalSRr9l3PPeG8JwJNjh9dM=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-534-1H3ziBa2O4C0iuImueO__Q-1; Thu, 19 Dec 2024 04:51:12 -0500
+X-MC-Unique: 1H3ziBa2O4C0iuImueO__Q-1
+X-Mimecast-MFC-AGG-ID: 1H3ziBa2O4C0iuImueO__Q
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4362b9c1641so3187325e9.3
+        for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 01:51:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734601871; x=1735206671;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2wU49+e7tvLItM+Xg1PJft++Z0Ygv+fKtA0Gny+3OZY=;
+        b=DCZLthdvy0z47KyLVW7VvPQlZpcOoheZUXsHaXJQ3Qzs4UoPkL65OARlOYdCS4SPTm
+         3eLefzYD357NFAQUfoFNCiuVlxb8I+a5FFpYIW8WN4YLJQpfNhU+P5wUuxoPq7ozqJpn
+         lg/qK5DBP53xYc2dATJ547E9uLrVWhPiaOzSNZiPP3luynbqVFHTTTbcgw6qckJT1S3f
+         0EW/rkzk/wV6xEPiwYQJZQ77xRrAClIngVvBGZt8UmNvzuF2FLfBcTwsDHC8ozOjpoqm
+         IldEiv7hLbY5IpMtLWedqCQ/d1xmIDYXyDkVa88kXksEG86wcmUNZw9ug3DNskEHsT4J
+         03yw==
+X-Forwarded-Encrypted: i=1; AJvYcCUkxCh26V+mDZUg6IRgcRQIpo767xkuYPLRlbRH4QPmRCuERlYBRU0U5eMyHG76FhfmJ7CHjW8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOQ7PF6fwC0US7M43/vc+zeMY9kBIQ1NO45LOJcAkFl9A4zJ8G
+	keRJ26CqMPIHARz9OWGDiNTjLY13pJ/9uob/6cg+LS1j4KsZ87L7XDvpkLb75Hd9bSE6kyQVZZU
+	7MbTmNa+OCSmNeubLAp8IBq5hdy1c3ggG45q7ulx/T/PT7mdlm7YMbq+a7Hj+1A==
+X-Gm-Gg: ASbGncv1l2xMpgdLrrCCK2n1B/BvstR9Loqyf2E9PqOysxHIM3LjWpzbUTVf/7aL4a3
+	o0vN3UEGSYl98tO7oRTEuPaaVrmhs/AUP7loX6yTv9l525rchQAIKGQgyAxOdiBw2SwikdYlHKw
+	La7dd4PHNjRbnDrxWu7Rt3PVTbL9GdWsLfzEYeZd/XkDoKPoTxol9Op49xUX6XaZ//CpkP5+DMQ
+	BE5hfiwUaZLZOd/5MRC7JGbIeGiTfzHwlp1MtwUp3Rz5fhduDFf5ugK0ezNa04DqBLoLO+t3WXk
+	xdCsGkWICA==
+X-Received: by 2002:a05:600c:4508:b0:434:e2ea:fc94 with SMTP id 5b1f17b1804b1-4365535fe12mr47541165e9.11.1734601871252;
+        Thu, 19 Dec 2024 01:51:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEiVx3RGR9O17A1hpKQriifFDUtCiFAmeV0v2obPBdwiQMiNihtkWiVxavI2S/flue9uwOtgw==
+X-Received: by 2002:a05:600c:4508:b0:434:e2ea:fc94 with SMTP id 5b1f17b1804b1-4365535fe12mr47540895e9.11.1734601870840;
+        Thu, 19 Dec 2024 01:51:10 -0800 (PST)
+Received: from [192.168.88.24] (146-241-54-197.dyn.eolo.it. [146.241.54.197])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656af6c66sm48559835e9.5.2024.12.19.01.51.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Dec 2024 01:51:10 -0800 (PST)
+Message-ID: <f661b60c-c271-4778-b6c2-c4c9a6e68fc5@redhat.com>
+Date: Thu, 19 Dec 2024 10:51:08 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND V2 net 6/7] net: hns3: fixed hclge_fetch_pf_reg
+ accesses bar space out of bounds issue
+To: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+ Jijie Shao <shaojijie@huawei.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ andrew+netdev@lunn.ch, horms@kernel.org, shenjian15@huawei.com,
+ wangpeiyang1@huawei.com, liuyonglong@huawei.com, chenhao418@huawei.com,
+ jonathan.cameron@huawei.com, shameerali.kolothum.thodi@huawei.com,
+ salil.mehta@huawei.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241217010839.1742227-1-shaojijie@huawei.com>
+ <20241217010839.1742227-7-shaojijie@huawei.com>
+ <Z2KV37WZL7cpPYKk@mev-dev.igk.intel.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <Z2KV37WZL7cpPYKk@mev-dev.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241219-test-vsock-leaks-v4-6-a416e554d9d7@rbox.co>
-References: <20241219-test-vsock-leaks-v4-0-a416e554d9d7@rbox.co>
-In-Reply-To: <20241219-test-vsock-leaks-v4-0-a416e554d9d7@rbox.co>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.14.2
 
-Ask for MSG_ZEROCOPY completion notification, but do not recv() it.
-Test attempts to create a memory leak, kmemleak should be employed.
+On 12/18/24 10:29, Michal Swiatkowski wrote:
+>> @@ -533,10 +533,11 @@ static int hclge_fetch_pf_reg(struct hclge_dev *hdev, void *data,
+>>  	reg_num = ARRAY_SIZE(ring_reg_addr_list);
+>>  	for (j = 0; j < kinfo->num_tqps; j++) {
+> You can define struct hnae3_queue *tqp here to limit the scope
+> (same in VF case).
 
-Fixed by commit fbf7085b3ad1 ("vsock: Fix sk_error_queue memory leak").
+@Michal, please let me refer to prior feedback from Jakub:
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- tools/testing/vsock/vsock_test.c | 45 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+https://lore.kernel.org/netdev/20241028163554.7dddff8b@kernel.org/
 
-diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-index 2a8fcb062d9d207be988da5dd350e503ca20a143..2dec6290b075fb5f7be3a24a4d1372a980389c6a 100644
---- a/tools/testing/vsock/vsock_test.c
-+++ b/tools/testing/vsock/vsock_test.c
-@@ -1521,6 +1521,46 @@ static void test_stream_leak_acceptq_server(const struct test_opts *opts)
- 	}
- }
- 
-+/* Test for a memory leak. User is expected to run kmemleak scan, see README. */
-+static void test_stream_msgzcopy_leak_errq_client(const struct test_opts *opts)
-+{
-+	struct pollfd fds = { 0 };
-+	int fd;
-+
-+	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-+	if (fd < 0) {
-+		perror("connect");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	enable_so_zerocopy_check(fd);
-+	send_byte(fd, 1, MSG_ZEROCOPY);
-+
-+	fds.fd = fd;
-+	fds.events = 0;
-+	if (poll(&fds, 1, -1) < 0) {
-+		perror("poll");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	close(fd);
-+}
-+
-+static void test_stream_msgzcopy_leak_errq_server(const struct test_opts *opts)
-+{
-+	int fd;
-+
-+	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
-+	if (fd < 0) {
-+		perror("accept");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	recv_byte(fd, 1, 0);
-+	vsock_wait_remote_close(fd);
-+	close(fd);
-+}
-+
- static struct test_case test_cases[] = {
- 	{
- 		.name = "SOCK_STREAM connection reset",
-@@ -1656,6 +1696,11 @@ static struct test_case test_cases[] = {
- 		.run_client = test_stream_leak_acceptq_client,
- 		.run_server = test_stream_leak_acceptq_server,
- 	},
-+	{
-+		.name = "SOCK_STREAM MSG_ZEROCOPY leak MSG_ERRQUEUE",
-+		.run_client = test_stream_msgzcopy_leak_errq_client,
-+		.run_server = test_stream_msgzcopy_leak_errq_server,
-+	},
- 	{},
- };
- 
+I also agree subjective stylistic feedback should be avoided unless the
+style issue is really gross - in such a case the feedback should not be
+subjective, so the original guidance still applies ;)
 
--- 
-2.47.1
+Thanks,
+
+Paolo
 
