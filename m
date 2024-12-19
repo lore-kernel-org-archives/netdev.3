@@ -1,109 +1,105 @@
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489D9224AFC
-	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 14:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD472253EC
+	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 14:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734619096; cv=none; b=iOSRrRVrnCmGIiESKG+3S7k8QC/37kdigpXfUNbLO5uOItC3MLeP+hCRCKkcyMCUH+wqYM//FIpKb6vhACL3aZghcaSFNI7LIQaivbwp+Kw/TL1ztWk82Pq6e1lH+MnHv+M9ZKqXHWoc9pRdq1hD3s73KvbGLyLFNOTs158IF6g=
+	t=1734619335; cv=none; b=WYbuBD0syt+WZm4qfZiGOc0N5cnyGZp0Bdg8c6NoV2Bt69XT9N/XvpWmLDpvQk5kL6imLB3JrL8MIa8mVKg0Xkb8Dg1we2NJR9L6juLOJHQlx+MqP2/YqqVa8N4ZgJiLHWKaafjptiXBknCB6KXfdUS2PzpDe0RRZp81cCYDBkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734619096; c=relaxed/simple;
-	bh=Ca2/4BHIL+hhFfG0cON5c5tXtxbkGPkC1wh4oOX1vVo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AAxeBsy6r6AcQnZU40ekv5tDd42MNW+X+X8nvNY36MvlX4xtOgNutL4ZRdUqi+chK6pZ4/32shcA2DsHFUhSMlFSAdulr1zbwFinhF2zzc3viix3gsJRRU5p9zhjyybl0JIKv2/5AqUU8mjZmpRNWD31yzuwzoXvS5/txHtH2w0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1UiBsM7D; arc=none smtp.client-ip=209.85.166.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1734619335; c=relaxed/simple;
+	bh=/tOijhdV0VmrGrhon/6ga5/4+xoOYjX4ZKgNBz9b9e0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c/VySaws2XYfMxgxhoeJKoq6DJh94LWgFISD/bks3rJcXck+YB45aLT/C/OHtzGD6Afmb+2LN0FwT4epFC8OlZTlpzE0T42AJVzFe9pMeQrUdQE5sJ2DRqT+qLoqwq1VERuc42bXW/55DWxRPuYcveiSeP7Qeqc/VF98kh8UEOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ammv515O; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1UiBsM7D"
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3a818cd5dcbso105ab.0
-        for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 06:38:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ammv515O"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-434f398a171so1253425e9.2
+        for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 06:42:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734619094; x=1735223894; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ca2/4BHIL+hhFfG0cON5c5tXtxbkGPkC1wh4oOX1vVo=;
-        b=1UiBsM7D1jcNyEteAxHFKxtnFCZuN94mfszfBecukwF5dwp7wW88nXAMiPqdAFv2Vd
-         ZoOIKTMLwwcUTevZnYKJMwlRfrnFRGtzUrdD/18IL5nzrc2AWKzH16op7IDtNHVTK6ta
-         u1uAoCCZscuoB5igkHcRWIUME0xTkEkGdRVedl+bhIo0RjbTa4wQR9ep65bR440BKdIw
-         PAvoRezrG3Ysz0He312LnkPAxt1Wo7GKBWFsM+xMGSdtlxo4QvS9DlxD9OOPOT+f9uOj
-         +TsyrZZFn8cbKBf0SjQG6059BkDXEOtMxIW3jdMdvxAaB1k034noIEHcjZmFjP/REs9D
-         KGJQ==
+        d=gmail.com; s=20230601; t=1734619332; x=1735224132; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KZ2nOg2dfpWqUt6elpjol266IyrPwg8XgenoY3QoROM=;
+        b=Ammv515OF7jk0JAiTetwUBUyMofZ7hGiWwEGexcS2430VuIqJ5Za9gDAx6eUtDB6y2
+         K1qM/Q1snC5YiW+HBjfVsvrozJCc4Whs0LACBh7Zt0HuZgmq7mG7TYoW9HyI5IvgkvK+
+         l7xoeXkRgpSwBPEhasVfir0aeYadtVqgSK19L5Mp3qcJs3FAeI3ewZzt4gxPDRi896qk
+         EsSdE5RFSLTbUI2po4aHFNorTgD4M6BCMgDsBt09qQ1t6ZQLRO0z1loUXddhR/GMdGlq
+         LPs3SuSBkmX6C/HrXn2Pz3NxmQjb2jO+5Qqq288Vco8zs+B2R69DWp4hZqEg4bzCE9sk
+         3ICQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734619094; x=1735223894;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ca2/4BHIL+hhFfG0cON5c5tXtxbkGPkC1wh4oOX1vVo=;
-        b=T28aLyYzjyiL2IPZfuyTVIfaRjTfKK++arJtJtnn/y5ZaTS3dG+WqMjLpanR83ngnL
-         T4qpR2SAZvVkZBz8ihwrBMbjfPUD/ngQYH2ozsSd5yTMDbe2dSsKWkZ+Vt56EntNlkrq
-         Yv+ZDAufDhjAcXkGQuW2/4Z8fQSz0d2ZDmtEdHMonYQab36kfOmPVUZvSkSFZTzk7dKp
-         FkNyhddItvMA6VtKwIiwpbDlk7lpiYd0KV1fR9j+4r8ZUOVx57lGI0s08LxELFswsGRn
-         1+RpC/Qie9FeIi3X1L5FILTrx3+mcuVoipYDPxnd6w8Azv65oLXfD5TaGHnnoE1OaoV4
-         CrHA==
-X-Forwarded-Encrypted: i=1; AJvYcCVDicOOw4P+Z/ABbuZvIo4ebiSk6m6hBdtx1VibzWRwFTyQ2XTcrTsAaBzxA3FqUCNVExISVDI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKXr6IzRPUbM0DOJzAOayhtu58HOzwOLzjELs5YyUJkY/No38e
-	KAkFMTeNiGNCRd45b49zRnvze8ZfjZD+BKVGuqwEdMzHblLDSzUjrrR3NVHP5NeuzyBzPWuhiz+
-	Muz10pICztuH0h/DQHvl/MMMPgfgDATuVbRaQ
-X-Gm-Gg: ASbGnctbZJgfAERGgTsTMP5Tdgtemz3kjaTecPhlrcTKwVT1zok8YqENFJWG3vLOGvG
-	IQ4CaLj9w1coghJ4IOEuWVIX5Ni/BvTvHiVMgHDiaMqXpMN30H4NzycmtcB/aNc/CcUQUVA==
-X-Google-Smtp-Source: AGHT+IGHpXmhKXRU5RcWd1eJ5xmmDHOj2lWKNqyyxfzzQmVsOBj8zGH9hww+wBq3wtqfYnB+S9iYd3TQqMdLEi7CZ2o=
-X-Received: by 2002:a05:6e02:8ea:b0:3b4:1cef:4f97 with SMTP id
- e9e14a558f8ab-3c2530c5b49mr31755ab.2.1734619093680; Thu, 19 Dec 2024 06:38:13
- -0800 (PST)
+        d=1e100.net; s=20230601; t=1734619332; x=1735224132;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KZ2nOg2dfpWqUt6elpjol266IyrPwg8XgenoY3QoROM=;
+        b=p4NzptQD+U75THA/sUZgWPAninHl6XHhOG5hh5BjAG43NMAfPL5lnyxCN3ZlR+KfOa
+         PS+z+C+dUh4wtj/Bf7T9qHclWBAD9th6BsKUoWQtQIfNgZk3I6cT+HHDwdyJdd+Wvks1
+         DJBddBCMWZXcpKJVEUle0NuiIZZALT7uZSQuMJr6+pvJEb95fIMFIUedPYolSy1+hgcS
+         zjH+af01GIn1kNfczbG43UBXbCdo7zi3xrasZHjxhPzbBXWBeQd6UuEZKMFjEgUoqMz2
+         SkXqJoc3bozA952kXCpHJ8yo5bXblJPMJCFNAKNj4FjoEX5G8x1qFdIXlyZPUwUMCUdA
+         aL+w==
+X-Forwarded-Encrypted: i=1; AJvYcCXHmEaKVhMYOhiPCpcHOMDnhlGsR52IQV7mi1vvGZaecyKzvnLld0gX7aLawj9anN79y3p9T7A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfFr+PC7JzXK2TS281U58sqGPfGy4jpT+CDff3RhUJzyVFRSt/
+	yIjGu2TgRJ2hWSSGSSuCIyAspnbBJGd6DVCfGxuzknMCPVGnrivJ
+X-Gm-Gg: ASbGncvQGlq9H2RIdjn352QaEMpQrOJb55FJ5BBaDciDSEdyvAnS4A+fjR111AJNYgX
+	agkmILH78i6i3pmXvEoACXj/vezxwjKehgZ62FSnyWjZ71DQtMCnaubEMvplX/oFJ8GvewnzqAa
+	vTUI0YZsf/HCvGgFxMrY4KDU6CFTDS3dLTUiPQLNwC0nk9onuOK67BZHYCrgOtpqiZ4AyVPwiOe
+	i9NN8DdRKZWVosV2Nk7W/2IQ14y7z6tldRnhCzBR7NS
+X-Google-Smtp-Source: AGHT+IFIY/8QNNjWECKHZNq7YOm+J84/tzg9QCxmTNDW/RTmk7rWduXMtSQINE0ZnqZcKJv+4fFAyw==
+X-Received: by 2002:a05:600c:310f:b0:434:f335:aa0d with SMTP id 5b1f17b1804b1-43655349166mr27901685e9.2.1734619331927;
+        Thu, 19 Dec 2024 06:42:11 -0800 (PST)
+Received: from skbuf ([86.127.124.81])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b119b6sm55107335e9.22.2024.12.19.06.42.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Dec 2024 06:42:11 -0800 (PST)
+Date: Thu, 19 Dec 2024 16:42:08 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Tobias Waldekranz <tobias@waldekranz.com>
+Cc: davem@davemloft.net, kuba@kernel.org, andrew@lunn.ch,
+	f.fainelli@gmail.com, netdev@vger.kernel.org, linux@armlinux.org.uk,
+	chris.packham@alliedtelesis.co.nz, pabeni@redhat.com
+Subject: Re: [PATCH v2 net 4/4] net: dsa: mv88e6xxx: Limit rsvd2cpu policy to
+ user ports on 6393X
+Message-ID: <20241219144208.dp7pfbh566htfc4v@skbuf>
+References: <20241219123106.730032-1-tobias@waldekranz.com>
+ <20241219123106.730032-1-tobias@waldekranz.com>
+ <20241219123106.730032-5-tobias@waldekranz.com>
+ <20241219123106.730032-5-tobias@waldekranz.com>
+ <20241219140541.qmzzheu5ruhjjc63@skbuf>
+ <875xnf91x8.fsf@waldekranz.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241218090057.76899-1-yuyanghuang@google.com> <CANn89i+1-it-nLix4JHdbt0TRTOoC1GX-0RstfqBmW2b1D_1mg@mail.gmail.com>
-In-Reply-To: <CANn89i+1-it-nLix4JHdbt0TRTOoC1GX-0RstfqBmW2b1D_1mg@mail.gmail.com>
-From: Yuyang Huang <yuyanghuang@google.com>
-Date: Thu, 19 Dec 2024 23:37:36 +0900
-X-Gm-Features: AbW1kvZfleDPhWBCVOYDpGIfRdOiciBWstbNF2SKqnL0dWq6tvgQTVOSWp7YP20
-Message-ID: <CADXeF1HCZ70fEsPWYR+puAa_cbVwmjnF8fn9WDpg1FyNhukYsQ@mail.gmail.com>
-Subject: Re: [PATCH net-next, v2] netlink: support dumping IPv4 multicast addresses
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
-	roopa@cumulusnetworks.com, jiri@resnulli.us, stephen@networkplumber.org, 
-	jimictw@google.com, prohr@google.com, liuhangbin@gmail.com, 
-	nicolas.dichtel@6wind.com, andrew@lunn.ch, pruddy@vyatta.att-mail.com, 
-	netdev@vger.kernel.org, =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>, 
-	Lorenzo Colitti <lorenzo@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <875xnf91x8.fsf@waldekranz.com>
 
-Per review feedback in a separate patch:
+On Thu, Dec 19, 2024 at 03:34:43PM +0100, Tobias Waldekranz wrote:
+> On tor, dec 19, 2024 at 16:05, Vladimir Oltean <olteanv@gmail.com> wrote:
+> > It looks like an oversight in the switchdev tx_fwd_offload scheme. Can't
+> > we teach nbp_switchdev_frame_mark_tx_fwd_offload() to make an exception
+> > for is_link_local_ether_addr() packets, and not set skb->offload_fwd_mark?
+> 
+> That sounds like a better option if it is acceptible to the broader
+> community. I thought that this might be a quirk of mv88e6xxx's rsvd2cpu
+> bits. But if more devices behave in the same way, then it would be
+> better to just exempt this whole class from offloading.
+> 
+> Do you know how any other ASICs behave from this perspective?
 
-Link: https://lore.kernel.org/netdev/CADXeF1Gg7H+e+47KihOTMdSg=3DKXXe=3Deir=
-HD01=3DVbAM5Dvqz1uw@mail.gmail.com/T/#t
+The other driver with tx_fwd_offload, sja1105, is going to drop any
+packet coming from the host_port which isn't sent through a management
+route (set up by sja1105_defer_xmit()). So it's more than likely bugged.
 
->+EXPORT_SYMBOL(inet_fill_ifmcaddr);
+We can't fix this from sja1105_xmit() by reordering sja1105_imprecise_xmit()
+and sja1105_defer_xmit(). It's not just the order of operations in the
+tagger. It's the fact that the bridge thinks it doesn't need to clone
+the skb, and it does.
 
-This EXPORT_SYMBOL should be removed.
-
-Thanks,
-Yuyang
-
-
-On Wed, Dec 18, 2024 at 10:33=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
- wrote:
->
-> On Wed, Dec 18, 2024 at 10:01=E2=80=AFAM Yuyang Huang <yuyanghuang@google=
-.com> wrote:
-> >
-> > Extended RTM_GETMULTICAST to support dumping joined IPv4 multicast
-> > addresses, in addition to the existing IPv6 functionality. This allows
-> > userspace applications to retrieve both IPv4 and IPv6 multicast
-> > addresses through similar netlink command and then monitor future
-> > changes by registering to RTNLGRP_IPV4_MCADDR and RTNLGRP_IPV6_MCADDR.
-> >
-> > Cc: Maciej =C5=BBenczykowski <maze@google.com>
-> > Cc: Lorenzo Colitti <lorenzo@google.com>
-> > Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
-> > ---
->
-> Reviewed-by: Eric Dumazet <edumazet@google.com>
+So yes, it's probably best to exclude link-local from skb->offload_fwd_mark.
