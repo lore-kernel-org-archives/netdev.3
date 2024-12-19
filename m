@@ -1,180 +1,126 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1062C227585
-	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 12:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B01221447;
+	Thu, 19 Dec 2024 12:37:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734611505; cv=none; b=cQWJ1p/M17ziGAsPyovExunaKPY0okjK0ab7ruSDFDkFQgz0DsUXT6LeHG6IGqorWOyLVkkjLPJ8J6irITyJg//ktbI7ON2RH3IiBfVGMLqJbQVXo+TKekG/DeQ4EDSiWRzLPYaV46ETbQQVMGKr0g9HFw9ikFGRnVbgEA7sTFs=
+	t=1734611857; cv=none; b=YUQEtzd1jywiZ5zwyxLm7H3LhCy0EvkOZ1WsIrGH01JiC21dYr2REuQaGSn3d5EhvGkPe36+Cp+chgopGzXx0bZ+ZDEeNVUTZf+M8WFj6xVOywWasisOGb5qL4JD4G3c+nV47NybhB+sFUPyDJF+6aDDYlEqMuusapLn/UCqhcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734611505; c=relaxed/simple;
-	bh=CbzA0ebUpgodKBCOzJODVN++NbuW1U0YDdgtoYEfYpg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GCspui6jEuS1poYLfr8Xx/G5U5Dx1QaIHAnrTTY3JFCYrbY/ibsoo4+ZkuesF6Cd1C5EnOzu/O3XvNNFjDkNnm755SLtfztPGqcrBS/OyRCa9iv8DHGpdF0SsJwkyAkz0q/TejKmQYQ7sY8alWXGjMbvZ4AJ3lrXaHZz5BIjX3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=waldekranz.com; spf=pass smtp.mailfrom=waldekranz.com; dkim=pass (2048-bit key) header.d=waldekranz-com.20230601.gappssmtp.com header.i=@waldekranz-com.20230601.gappssmtp.com header.b=SLBZ2Ayg; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=waldekranz.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=waldekranz.com
+	s=arc-20240116; t=1734611857; c=relaxed/simple;
+	bh=iTa+ur7lm+4z/RqHiWarKbLC9Qqkyo0J2aItQd06+kA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pF1AgxLtpreUBsA5hMgPGfmQqGpjNTMTKGsdYF0+VghDvG+n1vUZqbQdSCYK3O6yIrkGw9HYQx6Hrj5S2jsK7PLURVrbF3369erXAnLffHxY39MrIYOsrg9XUXPmRefu/nzkhJCy5jcQvHlam8vxp2jvJubon8DuNARzfRZfygA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LFyHH90v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=waldekranz-com.20230601.gappssmtp.com header.i=@waldekranz-com.20230601.gappssmtp.com header.b="SLBZ2Ayg"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53e399e3310so737209e87.1
-        for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 04:31:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=waldekranz-com.20230601.gappssmtp.com; s=20230601; t=1734611501; x=1735216301; darn=vger.kernel.org;
-        h=content-transfer-encoding:organization:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MVYDwDZ41knrDBuiD+vu8AjdcCDrx177r0ASKL3mDEQ=;
-        b=SLBZ2AygluqdZNDpjjvwZHJcI33gLOM+VIxu3m0NqwFiNlKSlsIfKME24GBljkAjPa
-         b8AiWjeY3l1Cs91zPb+HRVESHWXVq33A2jSSQctzC2hbNCtGy25NgKZ4gUtaQUYtQsWp
-         z1ujxKPaxTukHuj+WWb/WM6cfLpaqokA+CCN43n6wJR3zlki7/Y8VzBVv6krSOGCQLkD
-         IuIfXiR7crUOnDUPxdIQLW95d3R/Is3IzONoOvcCqxCPzJimuLfDfqpbgbB94eXiQXS9
-         piXgy8NlLpEYQQAg4bct2D1CQvOV62Qzn6SBIUlAYILKfRjl+UY0l7i3Qbyf3DNzqOaX
-         nS7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734611501; x=1735216301;
-        h=content-transfer-encoding:organization:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MVYDwDZ41knrDBuiD+vu8AjdcCDrx177r0ASKL3mDEQ=;
-        b=Qyg8tNeVuvWYWqcbfX3BX0hKi+1GqwRQUqdGphZQAxrFtv0iBqUMOj9bV0ahjMa/8B
-         A8i3mUY0ng1EzS1P073Qggc/7MiMa5kKWq4WWwaRK2tD488bdOZoYPFpha8G0r1FFjtj
-         21Egh6BEl8LvNZHJRmKgRxv58Jy19YFv1KQsB4Hg5QooxB+Ta9UXqAN3J4lsIF/GQODi
-         2X5RYyyKISirQsBla9r8n8C0tEajFsAE6AYEF15KuiZoX2q82XGgF5eK3c9Zd81nPX0I
-         gx4bxfkjUFs3NKrMgTqn9Z65j01+wn3hUkGFH+fO3TasU0B/wDo+yrxrgUt/wCoWMDaT
-         BeXA==
-X-Forwarded-Encrypted: i=1; AJvYcCU0IFY+3hNMEzTcnfTso7TY+3hkecALeF4Za97qSCWvPynTz+s5YkpfBgvivOxBZ9vVE/OauNw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBw7vW80FSHpkHFwo/qwtQXDpmwnwig9fZH0vpVL7jWjvSj2rn
-	i5xQRqCAKQfbyARVcnitYEC4D3tPBNyONwhDtWjC+9WWwowcCb1+Vz86PU0ckKw=
-X-Gm-Gg: ASbGncunNBZjA43CD8Vo0CjgoUUYUdgQ21be+EbzEZa9gXKSDQWIc0SlsFcYIXW/NOj
-	FBfP/WbQAMEVh7b6YUPwIthW3aFVUHdpR2QzsObvVCTtdkklnT8Xvz8mR6oSO4jySxQqNw3Ajd8
-	/wPDY8GyVzqVS4Pu4Mi9QPOnztgEe+EBD0fZZx/18F2MuHG1xILtK81x9u5ZVMZ0g6XOgiHmrZW
-	k8gMzToqH6XF2I9TU6dPkgpR5OuTygNkTEYoypXqTXT12kSaxy/on9T1PkG49rwLIY/iUlImPil
-	VJdQHOI/wompJ9Alr6gnuHZs
-X-Google-Smtp-Source: AGHT+IEkfcxejU283LMvHEVPQU6FEW7iLvaVaJsci4NVYYNhJicTs5e6hc3knIRCuy1qStPve37jwg==
-X-Received: by 2002:a05:6512:ea3:b0:541:1c49:270 with SMTP id 2adb3069b0e04-541ed907322mr2219218e87.49.1734611501101;
-        Thu, 19 Dec 2024 04:31:41 -0800 (PST)
-Received: from wkz-x13.addiva.ad (h-79-136-22-50.NA.cust.bahnhof.se. [79.136.22.50])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54223b28722sm145975e87.243.2024.12.19.04.31.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2024 04:31:39 -0800 (PST)
-From: Tobias Waldekranz <tobias@waldekranz.com>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: andrew@lunn.ch,
-	f.fainelli@gmail.com,
-	olteanv@gmail.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LFyHH90v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD090C4CECE;
+	Thu, 19 Dec 2024 12:37:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734611857;
+	bh=iTa+ur7lm+4z/RqHiWarKbLC9Qqkyo0J2aItQd06+kA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LFyHH90v7aIIaiYgtuCkgNduif2EcRXx+t1NKd7L1JnKgp9JhZhnEOSlm4mq5hs8Y
+	 6KOUOnY+Ox80NZ6TDiY23JfeIOdNvobIpOdA6QS9ywdFu0dbA3FOY6XfpOIqDbUy8W
+	 1ZINLSJE220I6N3v3/y0cFy5e7hAdIp8CQYlAm8x3XG2o46sRdpYygpXV7ipsBrDNa
+	 mT5pP8APZt4w3AFD60pC2UIolum9bf1RKsZi0ABswVkGRLf8/MO7aXZWHnr+ft87oS
+	 krYLDiy3AcMy44LN7D0yJ6eFAOmGg4MvU8cPpznL+wZzWC13I2wBNGcNOCYHbYVKDM
+	 Mwe/5FBFWzAww==
+From: Leon Romanovsky <leon@kernel.org>
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Jianbo Liu <jianbol@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux@armlinux.org.uk,
-	chris.packham@alliedtelesis.co.nz,
-	pabeni@redhat.com
-Subject: [PATCH v2 net 4/4] net: dsa: mv88e6xxx: Limit rsvd2cpu policy to user ports on 6393X
-Date: Thu, 19 Dec 2024 13:30:43 +0100
-Message-ID: <20241219123106.730032-5-tobias@waldekranz.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241219123106.730032-1-tobias@waldekranz.com>
-References: <20241219123106.730032-1-tobias@waldekranz.com>
+	Paolo Abeni <pabeni@redhat.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>
+Subject: [PATCH ipsec-next 1/2] xfrm: Support ESN context update to hardware for TX
+Date: Thu, 19 Dec 2024 14:37:29 +0200
+Message-ID: <874f965d786606b0b4351c976f50271349f68b03.1734611621.git.leon@kernel.org>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Addiva Elektronik
 Content-Transfer-Encoding: 8bit
 
-For packets with a DA in the IEEE reserved L2 group range, originating
-from a CPU, forward it as normal, rather than classifying it as
-management.
+From: Jianbo Liu <jianbol@nvidia.com>
 
-Example use-case:
+Previously xfrm_dev_state_advance_esn() was added for RX only. But
+it's possible that ESN context also need to be synced to hardware for
+TX, so call it for outbound in this patch.
 
-     bridge (group_fwd_mask 0x4000)
-     / |  \
- swp1 swp2 tap0
-   \   /
-(mv88e6xxx)
-
-We've created a bridge with a non-zero group_fwd_mask (allowing LLDP
-in this example) containing a set of ports managed by mv88e6xxx and
-some foreign interface (e.g. an L2 VPN tunnel).
-
-Since an LLDP packet coming in to the bridge from the other side of
-tap0 is eligable for tx forward offloading, a FORWARD frame destined
-for swp1 and swp2 would be send to the conduit interface.
-
-Before this change, due to rsvd2cpu being enabled on the CPU port, the
-switch would try to trap it back to the CPU. Given that the CPU is
-trusted, instead assume that it indeed meant for the packet to be
-forwarded like any other.
-
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/net/dsa/mv88e6xxx/port.c | 31 +++++++++++++++++++++++++------
- 1 file changed, 25 insertions(+), 6 deletions(-)
+ Documentation/networking/xfrm_device.rst                 | 3 ++-
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c          | 3 +++
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c | 3 +++
+ net/xfrm/xfrm_replay.c                                   | 1 +
+ 4 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/port.c b/drivers/net/dsa/mv88e6xxx/port.c
-index 56ed2f57fef8..bf6d558c112c 100644
---- a/drivers/net/dsa/mv88e6xxx/port.c
-+++ b/drivers/net/dsa/mv88e6xxx/port.c
-@@ -1416,6 +1416,23 @@ static int mv88e6393x_port_policy_write_all(struct mv88e6xxx_chip *chip,
- 	return 0;
- }
+diff --git a/Documentation/networking/xfrm_device.rst b/Documentation/networking/xfrm_device.rst
+index bfea9d8579ed..66f6e9a9b59a 100644
+--- a/Documentation/networking/xfrm_device.rst
++++ b/Documentation/networking/xfrm_device.rst
+@@ -169,7 +169,8 @@ the stack in xfrm_input().
  
-+static int mv88e6393x_port_policy_write_user(struct mv88e6xxx_chip *chip,
-+					     u16 pointer, u8 data)
-+{
-+	int err, port;
+ 	hand the packet to napi_gro_receive() as usual
+ 
+-In ESN mode, xdo_dev_state_advance_esn() is called from xfrm_replay_advance_esn().
++In ESN mode, xdo_dev_state_advance_esn() is called from
++xfrm_replay_advance_esn() for RX, and xfrm_replay_overflow_offload_esn for TX.
+ Driver will check packet seq number and update HW ESN state machine if needed.
+ 
+ Packet offload mode:
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+index bc3af0054406..e56e4f238795 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+@@ -6559,6 +6559,9 @@ static void cxgb4_advance_esn_state(struct xfrm_state *x)
+ {
+ 	struct adapter *adap = netdev2adap(x->xso.dev);
+ 
++	if (x->xso.dir != XFRM_DEV_OFFLOAD_IN)
++		return;
 +
-+	for (port = 0; port < mv88e6xxx_num_ports(chip); port++) {
-+		if (!dsa_is_user_port(chip->ds, port))
-+			continue;
+ 	if (!mutex_trylock(&uld_mutex)) {
+ 		dev_dbg(adap->pdev_dev,
+ 			"crypto uld critical resource is under use\n");
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+index ca92e518be76..3dd4f2492090 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+@@ -980,6 +980,9 @@ static void mlx5e_xfrm_advance_esn_state(struct xfrm_state *x)
+ 	struct mlx5e_ipsec_sa_entry *sa_entry_shadow;
+ 	bool need_update;
+ 
++	if (x->xso.dir != XFRM_DEV_OFFLOAD_IN)
++		return;
 +
-+		err = mv88e6393x_port_policy_write(chip, port, pointer, data);
-+		if (err)
-+			return err;
-+	}
-+
-+	return 0;
-+}
-+
- int mv88e6393x_set_egress_port(struct mv88e6xxx_chip *chip,
- 			       enum mv88e6xxx_egress_direction direction,
- 			       int port)
-@@ -1457,26 +1474,28 @@ int mv88e6393x_port_mgmt_rsvd2cpu(struct mv88e6xxx_chip *chip)
- 	int err;
+ 	need_update = mlx5e_ipsec_update_esn_state(sa_entry);
+ 	if (!need_update)
+ 		return;
+diff --git a/net/xfrm/xfrm_replay.c b/net/xfrm/xfrm_replay.c
+index bc56c6305725..e500aebbad22 100644
+--- a/net/xfrm/xfrm_replay.c
++++ b/net/xfrm/xfrm_replay.c
+@@ -729,6 +729,7 @@ static int xfrm_replay_overflow_offload_esn(struct xfrm_state *x, struct sk_buff
+ 		}
  
- 	/* Consider the frames with reserved multicast destination
--	 * addresses matching 01:80:c2:00:00:00 and
--	 * 01:80:c2:00:00:02 as MGMT.
-+	 * addresses matching 01:80:c2:00:00:00 and 01:80:c2:00:00:02
-+	 * as MGMT when received on user ports. Forward as normal on
-+	 * CPU/DSA ports, to support bridges with non-zero
-+	 * group_fwd_masks.
- 	 */
- 	ptr = MV88E6393X_PORT_POLICY_MGMT_CTL_PTR_01C280000000XLO;
--	err = mv88e6393x_port_policy_write_all(chip, ptr, 0xff);
-+	err = mv88e6393x_port_policy_write_user(chip, ptr, 0xff);
- 	if (err)
- 		return err;
+ 		replay_esn->oseq = oseq;
++		xfrm_dev_state_advance_esn(x);
  
- 	ptr = MV88E6393X_PORT_POLICY_MGMT_CTL_PTR_01C280000000XHI;
--	err = mv88e6393x_port_policy_write_all(chip, ptr, 0xff);
-+	err = mv88e6393x_port_policy_write_user(chip, ptr, 0xff);
- 	if (err)
- 		return err;
- 
- 	ptr = MV88E6393X_PORT_POLICY_MGMT_CTL_PTR_01C280000002XLO;
--	err = mv88e6393x_port_policy_write_all(chip, ptr, 0xff);
-+	err = mv88e6393x_port_policy_write_user(chip, ptr, 0xff);
- 	if (err)
- 		return err;
- 
- 	ptr = MV88E6393X_PORT_POLICY_MGMT_CTL_PTR_01C280000002XHI;
--	err = mv88e6393x_port_policy_write_all(chip, ptr, 0xff);
-+	err = mv88e6393x_port_policy_write_user(chip, ptr, 0xff);
- 	if (err)
- 		return err;
- 
+ 		if (xfrm_aevent_is_on(net))
+ 			xfrm_replay_notify(x, XFRM_REPLAY_UPDATE);
 -- 
-2.43.0
+2.47.0
 
