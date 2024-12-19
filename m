@@ -1,180 +1,105 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F961A0728
-	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 17:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3C619E99E
+	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 17:34:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734629409; cv=none; b=ShQz7s9rNMKK4zhXKvf90Hcf6wqF/dodPE0St/A1e6lJDDr6EOw/auPjvyMMswjO7KA0mBIEdCIWbaGWG07UsAY4Wo3mOFDUWwGrZaw5Idh+95HQhODoITYX8SLS6EQH4pDV0H1DXljuoRQX4fTswxrj4bMJ65biPjwubyUILCU=
+	t=1734629702; cv=none; b=m6ghvL89nDl0uElZK5fPS/xwSaSITkLcUBuGSvA/c3g3TWMWXURUmlgr5LgF+mP0ZhbkRyc3GzTtCyMPaCNDSt7jPwlrpYH0yZlfozhLKD+yU9gwGFoyGS/Czt6o/sHAv7nDi0IYNjMlgjZKu7OOVDIr8r0ci3uNWZNaFC9UG0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734629409; c=relaxed/simple;
-	bh=70F86zaSn4GimagvJn0Rk8QAAlztOlL6C+Unj5Ovk38=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=leiqBO0Gnzl5NwqwPxmdhRxxCG0WxGyxhNsYg+4/LdMHHq7Vo8lCP81BWQXeUzKAd66Qjiwyb0rPEupHKTcw9F3ClK6qdO23fExU7HtImWb4Pwg1gLFY8W7xosa76K4Ou0AXqEpRM6AeJQbXVUI+EAv8rBOzRUiBzd8WhOCLXVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--zhuyifei.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W/iWP7Vx; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--zhuyifei.bounces.google.com
+	s=arc-20240116; t=1734629702; c=relaxed/simple;
+	bh=Uqia1xHZQpDEZtXO58H5h35imRo/hQVBD5DGTtxEZIw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oPWUll1cAZ0Z3BX0lP+PeXuEBXX3gKSEgR8n4cH2Tqi13AvfLDGpz8Y3h7uKy1rahWG3P6mRz8xQ0c/If5TJvTyXM0pBFAsHY8rRHnh+S8UlrNPUj3EXUK7/UWpgnWvPYqGC/e8WS6NgMXmUx4SnB4XvWhqcDygfizJL3TlnHSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LTuN6/Zc; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W/iWP7Vx"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-7fd388b49cbso957380a12.0
-        for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 09:30:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LTuN6/Zc"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7273967f2f0so1320028b3a.1
+        for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 09:34:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734629407; x=1735234207; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qdcJ3ROUSFah6MzRAeluxvD6XlcCu4QRuejsJYYrHBs=;
-        b=W/iWP7VxfHvfXj8aM++aWL4LmeD7Xo+zuubIqGQi7FNgdmPOXuYhuKKYaV4mZWFI5F
-         R/QRDTBumuIje5lYPDXh0w2txOXtngLStsq3S62GPHv5qgI1ckSBcGdhO+DKPWZ0M0jV
-         a+5H7nRv4Qi3AsAudPA0wJGiZt9q3MiQsqKXtmF7VBCmWpI0+W4gGZGrSMfXSl1qNwj9
-         dXXlDy+QZNo5dULCjjfMevpJ01tLoEN8fx6DP0gjEFtq65Tm0rukdhKmMI0MdHw/UYs5
-         ZUoRoUGh/c9A/rK9fQki23m6VMcY/jouNsgmdqEYGMdc3ktXFA+snxBeROfm2CvHYuol
-         ZL+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734629407; x=1735234207;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+        d=gmail.com; s=20230601; t=1734629698; x=1735234498; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=qdcJ3ROUSFah6MzRAeluxvD6XlcCu4QRuejsJYYrHBs=;
-        b=h2JPa5Xm0fmAjiWySZo/ZMIWvvsLYKRrAi+wVgmf66GB3QXn13xYsTNwm1I5ktzKbF
-         i6ZdkUApmW2N8LDgiXrW/ogXnYfpoXBnt0eNGTxG2kFC9WXx6QE7ukTeHvU5JEurKO9g
-         bCBXb9KvYMKv9WbsljthXAaELuDRQ+DGsZRAXgk5y8qX31uIRLsSMDBxaXOyLFYdHNQD
-         qkDYf1HVFpKiVKglq5HzMKmNt3KgQ/asBksnbFj/IlDCvMDd4p+Rj6qJqfFmoM4KEIfa
-         JCXNAwQ+FKxwtG3+o5ULTFe9ikg58DGNH9WM1tA84tguIBSrvqWMglYApdSYWv0zH1BP
-         Y44A==
-X-Forwarded-Encrypted: i=1; AJvYcCXQ1+t44Ay2kFs0Z42i8mcE8iGaKOkTbE16/yWuhaEGjWK27UBQpdVRl2zBE3EixM1xTccr9CU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweNazgR+g4aIV45lGY2RhRw0neATuIQ3uyrEmZBdgpV4bOIpsq
-	4Zh52CbWIV6cvqBnbNfgtZlDb/tVBxdSUSRUWY8NzQ3tHaHEJNy/O+1H9jLMl1wv5FsUNoJwmHg
-	J0rpYJWeTUA==
-X-Google-Smtp-Source: AGHT+IFmtfFEjAke/8lxYfo4OsSOp8uM3h9+s0P8J0frSizxw+YEqVW5nQmvp37Ipe6frpdo53WUg68VwmuiyQ==
-X-Received: from pfbeg9.prod.google.com ([2002:a05:6a00:8009:b0:729:427:8d73])
- (user=zhuyifei job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:6d88:b0:1e1:a75e:690b with SMTP id adf61e73a8af0-1e5b48baff2mr12792936637.44.1734629407246;
- Thu, 19 Dec 2024 09:30:07 -0800 (PST)
-Date: Thu, 19 Dec 2024 17:30:04 +0000
+        bh=Uqia1xHZQpDEZtXO58H5h35imRo/hQVBD5DGTtxEZIw=;
+        b=LTuN6/ZcKddy3VNiD5T7pD7/fAX+o9Ab82oz805CtwY4vemBJvHvdKrNSyRuZ888Sb
+         8cLGvrqanj4eY6Juo49iLVzkN7rtArVlVPPaa3pI1BsToF9/PB5klt9oe5cWfinDUxiE
+         lkG15mm7yjle4bAoozLZ5pMRMNBEw0cXmYwnRdguwlJur7HlLYtcIdcd4cv7RBtBWT+f
+         jZ5/tLzko5JOO/CU0rt4vXKAgTPwZZ5QDQ0UxCzMYt0sB7kFpqFaTVaeCwvGPItIe5Cr
+         2Y5Ss+9zqEgShXgDoOUCem31SkmCh6hyHQam+0KKR5R8nLN3Nyf9XWAiwstwhM0PTljx
+         Wdgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734629698; x=1735234498;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Uqia1xHZQpDEZtXO58H5h35imRo/hQVBD5DGTtxEZIw=;
+        b=uYrpv4jUWVriEBAt/JZElHoD4eAqaC9jiIFgvfZoEWPCG3z/UKoBvAzxpn/q6BLoml
+         PdPWjdgbvZeKM+QAuwos1gPOhimuXcAWGg++SCsw+s2kCl04iI9JRQBnQ2cqiXLQkzls
+         oX+i/8A7xCbLb1b3KrQ7ecU7N7wcjY1sCKhbo1jVFCwp2a3AGuEm+JA2LakLxM3Gcl6U
+         Ig3kZygrJKZmaWCNtYDOuTBU6K0swiYN0JXjV9kbPb5ihUhvUesd3Lw8XepCacjxR+IY
+         XnTr/MNTc354fcjoEfCBNNmq+4vbArXtQubGuaaQVLy6677WyiBM0t/q9bppE07NAgL0
+         t7fA==
+X-Gm-Message-State: AOJu0YyUaCzSlG6gDfUpKn4rELIn3y92/+FOZhNy4QgH2JygXXYUxMmV
+	aJK1g+O8DAS4cFPra71rCK1j4AylH/AHwieZ6hzL5jeiE9ZQAIA8dK6lMQ==
+X-Gm-Gg: ASbGncsd1W4xJwNoCsZhXm8UwPSDmuVpxM3+JLMHJhz87wU7hbC/z0dANf9soqVi+o5
+	Z7YG2FnGpPU9KZNfReqJkSpAMqokLQB0QGY3iwZX4h2pcnUQTK4RtsDwWAvibqrtdvsn+lrqSZR
+	hXC4+OBuDFCVy7q6WWWczckexQtyHT+nA7TcHYpAL9SmRk7cPUoBqoQtlKaDKDu8a1aTJyASwli
+	QyW8pCVCyVd+2yrC1EpLxPtYUVNjbPT9qZrz0PE648oWZUvp9dFYJemnaXz4dMrRVOKSlv5sW15
+	ikwfODFp07y5
+X-Google-Smtp-Source: AGHT+IEYfLLM97qvkjJYO0oyJuwynsTMskt1Ilj4xnX62U9aIIWhQCJ9KBiT9rSAbfnXFUjC0QzXbw==
+X-Received: by 2002:a05:6a21:32a2:b0:1db:eb82:b22f with SMTP id adf61e73a8af0-1e5c74f32efmr5595356637.5.1734629697976;
+        Thu, 19 Dec 2024 09:34:57 -0800 (PST)
+Received: from ?IPV6:2a03:83e0:1145:4:9688:47db:95de:dad6? ([2620:10d:c091:500::7:358f])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad8faf9esm1619271b3a.144.2024.12.19.09.34.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Dec 2024 09:34:57 -0800 (PST)
+Message-ID: <9e022720-f413-411c-be64-77c8b324549a@gmail.com>
+Date: Thu, 19 Dec 2024 12:34:55 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20241219173004.2615655-1-zhuyifei@google.com>
-Subject: [PATCH v3 net-next] sfc: Use netdev refcount tracking in struct efx_async_filter_insertion
-From: YiFei Zhu <zhuyifei@google.com>
-To: Edward Cree <ecree.xilinx@gmail.com>, Martin Habets <habetsm.xilinx@gmail.com>, 
-	netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	linux-net-drivers@amd.com, Willem de Bruijn <willemb@google.com>, 
-	Mina Almasry <almasrymina@google.com>, YiFei Zhu <zhuyifei@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC ethtool] ethtool: mock JSON output for --module-info
+To: Danielle Ratson <danieller@nvidia.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ "mkubecek@suse.cz" <mkubecek@suse.cz>
+References: <7d3b3d56-b3cf-49aa-9690-60d230903474@gmail.com>
+ <DM6PR12MB451628E919440310BC5726E5D8422@DM6PR12MB4516.namprd12.prod.outlook.com>
+ <f0d2811d-e69f-4ef4-bf0f-21ab9c5a8b36@gmail.com>
+ <DM6PR12MB4516A5E32EB6C663F907C24BD8492@DM6PR12MB4516.namprd12.prod.outlook.com>
+ <cd258b2f-d43f-4ae6-bd7c-ca22777d35e3@gmail.com>
+ <MN2PR12MB45179CC5F6CC57611E5024E2D8282@MN2PR12MB4517.namprd12.prod.outlook.com>
+ <f3272bbe-3b3d-496e-95c6-9a35d469b6e7@gmail.com>
+ <DM6PR12MB45169CD5A409D9B133EF3658D8292@DM6PR12MB4516.namprd12.prod.outlook.com>
+ <02060f90-1520-4c17-9efe-8b701269f301@gmail.com>
+ <DM6PR12MB4516F7998D67014D9835C5F5D83F2@DM6PR12MB4516.namprd12.prod.outlook.com>
+ <DM6PR12MB4516E1A2E2C99E36ECA9D87AD8062@DM6PR12MB4516.namprd12.prod.outlook.com>
+Content-Language: en-US
+From: Daniel Zahka <daniel.zahka@gmail.com>
+In-Reply-To: <DM6PR12MB4516E1A2E2C99E36ECA9D87AD8062@DM6PR12MB4516.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-I was debugging some netdev refcount issues in OpenOnload, and one
-of the places I was looking at was in the sfc driver. Only
-struct efx_async_filter_insertion was not using netdev refcount tracker,
-so add it here. GFP_ATOMIC because this code path is called by
-ndo_rx_flow_steer which holds RCU.
 
-This patch should be a no-op if !CONFIG_NET_DEV_REFCNT_TRACKER
+On 12/19/24 9:18 AM, Danielle Ratson wrote:
+> Hi Daniel,
+>
+> I didn’t get a reply from you.
+> Anyway, here's a like to my git repository: https://github.com/daniellerts/ethtool/tree/eeprom_json_rfc.
+> The last 4 commits are the relevant ones.
+>
+> All the CMIS modules dump fields are implemented were sent to internal review.
+>
+> Thanks,
+> Danielle
 
-Signed-off-by: YiFei Zhu <zhuyifei@google.com>
----
-v1 -> v2:
-- Documented the added field of @net_dev_tracker in the struct
-v2 -> v3:
-- Separate req->net_dev assignment into its own line in
-  efx_filter_rfs & efx_siena_filter_rfs
----
- drivers/net/ethernet/sfc/net_driver.h       | 2 ++
- drivers/net/ethernet/sfc/rx_common.c        | 5 +++--
- drivers/net/ethernet/sfc/siena/net_driver.h | 2 ++
- drivers/net/ethernet/sfc/siena/rx_common.c  | 5 +++--
- 4 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/sfc/net_driver.h b/drivers/net/ethernet/sfc/net_driver.h
-index 620ba6ef3514b..f70a7b7d6345c 100644
---- a/drivers/net/ethernet/sfc/net_driver.h
-+++ b/drivers/net/ethernet/sfc/net_driver.h
-@@ -831,6 +831,7 @@ struct efx_arfs_rule {
- /**
-  * struct efx_async_filter_insertion - Request to asynchronously insert a filter
-  * @net_dev: Reference to the netdevice
-+ * @net_dev_tracker: reference tracker entry for @net_dev
-  * @spec: The filter to insert
-  * @work: Workitem for this request
-  * @rxq_index: Identifies the channel for which this request was made
-@@ -838,6 +839,7 @@ struct efx_arfs_rule {
-  */
- struct efx_async_filter_insertion {
- 	struct net_device *net_dev;
-+	netdevice_tracker net_dev_tracker;
- 	struct efx_filter_spec spec;
- 	struct work_struct work;
- 	u16 rxq_index;
-diff --git a/drivers/net/ethernet/sfc/rx_common.c b/drivers/net/ethernet/sfc/rx_common.c
-index ab358fe13e1df..4cc83203e1880 100644
---- a/drivers/net/ethernet/sfc/rx_common.c
-+++ b/drivers/net/ethernet/sfc/rx_common.c
-@@ -897,7 +897,7 @@ static void efx_filter_rfs_work(struct work_struct *data)
- 
- 	/* Release references */
- 	clear_bit(slot_idx, &efx->rps_slot_map);
--	dev_put(req->net_dev);
-+	netdev_put(req->net_dev, &req->net_dev_tracker);
- }
- 
- int efx_filter_rfs(struct net_device *net_dev, const struct sk_buff *skb,
-@@ -989,7 +989,8 @@ int efx_filter_rfs(struct net_device *net_dev, const struct sk_buff *skb,
- 	}
- 
- 	/* Queue the request */
--	dev_hold(req->net_dev = net_dev);
-+	req->net_dev = net_dev;
-+	netdev_hold(req->net_dev, &req->net_dev_tracker, GFP_ATOMIC);
- 	INIT_WORK(&req->work, efx_filter_rfs_work);
- 	req->rxq_index = rxq_index;
- 	req->flow_id = flow_id;
-diff --git a/drivers/net/ethernet/sfc/siena/net_driver.h b/drivers/net/ethernet/sfc/siena/net_driver.h
-index 9785eff10607b..2be3bad3c9933 100644
---- a/drivers/net/ethernet/sfc/siena/net_driver.h
-+++ b/drivers/net/ethernet/sfc/siena/net_driver.h
-@@ -753,6 +753,7 @@ struct efx_arfs_rule {
- /**
-  * struct efx_async_filter_insertion - Request to asynchronously insert a filter
-  * @net_dev: Reference to the netdevice
-+ * @net_dev_tracker: reference tracker entry for @net_dev
-  * @spec: The filter to insert
-  * @work: Workitem for this request
-  * @rxq_index: Identifies the channel for which this request was made
-@@ -760,6 +761,7 @@ struct efx_arfs_rule {
-  */
- struct efx_async_filter_insertion {
- 	struct net_device *net_dev;
-+	netdevice_tracker net_dev_tracker;
- 	struct efx_filter_spec spec;
- 	struct work_struct work;
- 	u16 rxq_index;
-diff --git a/drivers/net/ethernet/sfc/siena/rx_common.c b/drivers/net/ethernet/sfc/siena/rx_common.c
-index 082e35c6caaae..2839d0e0a9c16 100644
---- a/drivers/net/ethernet/sfc/siena/rx_common.c
-+++ b/drivers/net/ethernet/sfc/siena/rx_common.c
-@@ -888,7 +888,7 @@ static void efx_filter_rfs_work(struct work_struct *data)
- 
- 	/* Release references */
- 	clear_bit(slot_idx, &efx->rps_slot_map);
--	dev_put(req->net_dev);
-+	netdev_put(req->net_dev, &req->net_dev_tracker);
- }
- 
- int efx_siena_filter_rfs(struct net_device *net_dev, const struct sk_buff *skb,
-@@ -980,7 +980,8 @@ int efx_siena_filter_rfs(struct net_device *net_dev, const struct sk_buff *skb,
- 	}
- 
- 	/* Queue the request */
--	dev_hold(req->net_dev = net_dev);
-+	req->net_dev = net_dev;
-+	netdev_hold(req->net_dev, &req->net_dev_tracker, GFP_ATOMIC);
- 	INIT_WORK(&req->work, efx_filter_rfs_work);
- 	req->rxq_index = rxq_index;
- 	req->flow_id = flow_id;
--- 
-2.47.1.613.gc27f4b7a9f-goog
+Thank you! I'll try it out on my machines.
 
