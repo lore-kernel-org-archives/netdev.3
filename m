@@ -1,102 +1,102 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7778C149DF4
-	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 09:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4141FC7E6;
+	Thu, 19 Dec 2024 09:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734600566; cv=none; b=hxDeVMjohoItLMhNyZuKpB6A+Z5MV8o+CqxLiwO8FJZdjiLj5GYrAB+Ehs3Ck2Sx9fjFRgecmD7oA7osEhedPFNoN5x9i7AkcG5L7MqbJkkWjIbfxKmk93rJcdxa/EFt3g6bH2Qb/95wp/Xq29AnZpTOKqj5ScIrvJH24ue1MHI=
+	t=1734601020; cv=none; b=EfoFitkTccVA32MKjRjeeqZMN/ZZO2BEOrU+dXc0+aRIr6aTcPGeje7zggwugSbW94s80vIhxs/BCfRCl5kvHZnz9vIaggEbw5oUD6p1SynYluoRujlVtUw/9kc910c3m/DMon8OffZXWzfdriTx2YL5Q+lgdHzG+7Ri7ompnSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734600566; c=relaxed/simple;
-	bh=eopNegyaC/qufpevVVd1YPVYD0n33SWau56z0iy2CAE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CDhG205HdZkuBXXdgLPzcoJDk87KTwPpe+FTOQXTqCyMVdWsItl+eh8zwgW/7jHZ5FKPeQyKUGr1UUA4/PURb8SeSPdITSvNzaCNKwUaxtgpBgIPfGvZ46fYhFkCGBVffCyp3NbWu6VdzPZNsbVYEKy841p+ZqpnFj64j1Tn7Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UMDqkKzg; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1734601020; c=relaxed/simple;
+	bh=JYcd44WiL4+1Px5D3UzxkaD4JgeUeE1fXErAzwJFl4I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eqlMOch0zdS8cpK6Z+zeQ6eftvFGBtJrYCLvW/Zo5BRHhIL8lg/u54/A9+AkiN2vZqB4evaBMgkQnADp5WSitjV0HuybRvsxg8eb+Vitr7Q3vhOSn0O4F7XpxK8zL5Zvfg6rYj/epSAw19z5PGbyGzq6fJYc3yJoHKwSH/kwFs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=A78+rZkq; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UMDqkKzg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734600563;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZSx9e7rMMrvzpaM1ZT2/eBJ4H/q4UwR2i9GEPzEKZF0=;
-	b=UMDqkKzgHt9fTQsnAzOdTRgn3TmVsv5ldcchQ2zfVMM8wUimSAH8blu4jol5pD4Rle97Sh
-	UEHOF7jUSPBw5zWj6kZI5dgDUF+0ahrG6aV+J1yGUtea2A6TThvJyFzQDUJzofpQl8n1TL
-	73jFV0sVJ/7KgkHz/lnX7DHU/DxjfmE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-271-MlL_AmEIOVGBpXzjJWRYqA-1; Thu, 19 Dec 2024 04:29:22 -0500
-X-MC-Unique: MlL_AmEIOVGBpXzjJWRYqA-1
-X-Mimecast-MFC-AGG-ID: MlL_AmEIOVGBpXzjJWRYqA
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4361a8fc3bdso3242295e9.2
-        for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 01:29:21 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734600560; x=1735205360;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZSx9e7rMMrvzpaM1ZT2/eBJ4H/q4UwR2i9GEPzEKZF0=;
-        b=UWIY1bEXj8YT88+3yu/J+oPy5rfp8tcUagBcaCr6ttwgFvdCahPFmguPpMyRZARayK
-         BOsLvfmy9xqpVp2eLimR2SMwRoXyFsWcKJHDoiAMxtnUcRyehy56ZEQqlikyhlH1DyKR
-         6FMqQV06DoLsVLL8WQYeD+1GPmXHicoc6R85+k1OJiCEcL81xSCI9802D8jmgf8SK1Pj
-         kHvkcCMql/c1ZVXyGizwpckzXMuT6TCmk6GpAbpo6T7ccE3+tYIG9k8pzwXtxTxcQqBP
-         Krl4gjDoHiAPupnI+7TifZoUBF5Q3hVot4LqnocTnsG07Ag1A32WyPprF3zW5ECK1oLl
-         EpYA==
-X-Gm-Message-State: AOJu0YzcHSVCbghHUE0P2Slyag0Kiseun4Ao+3gaLITXIluB1gsYStxX
-	fKU2D8kQKpG/suaR4a3kp5uvnYQBHcyleidtKKjIBl2+pldXGDzE90ML7GSEAK8qeW2LxOqjwa1
-	99IfTe+ek7bPL95UiPx9C+GBoWQj6LXotXzb4gRoin+Iey0Z9110JKJa8evV72UJ1
-X-Gm-Gg: ASbGncsp1Q3e6YgwaBwSYZMe/lO41Ilq8BC1OHy0CYRzGWmD9gmdd9IuB2Qr8Zuw1xv
-	jJK/wZehrBODC3bl/1TGUdg+lLkzYWUSTFTdSkE30l7zPquoa+IA2Xs+uwUywXOi2j+4wiHLnNO
-	C1bcNptt0Zz6hQLd5Y02Gi8UNH4qCuanzeFyt2mWLwU/ogFtPLPyhkPqO2JCIQnPcLxiT2tCyon
-	/Hxv1ndxZGc2lgjcuoLPrphEMvABsS03zRYOsW9vTzSNGkRpd5lB6aS2ao8NWeTXqOOWzwciSAM
-	TpY3v9rlMhsB44KnjIRnZ/B0TDfMe3zX
-X-Received: by 2002:a05:600c:470b:b0:434:f609:1af7 with SMTP id 5b1f17b1804b1-43655345304mr52697795e9.4.1734600560541;
-        Thu, 19 Dec 2024 01:29:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH5dIb0vTUNKu59GS4aN90C7izRGPkV/7YVa0eB8On3UUaJ6rsHrpOufiMNUiJBEeEVAT1GMA==
-X-Received: by 2002:a05:600c:470b:b0:434:f609:1af7 with SMTP id 5b1f17b1804b1-43655345304mr52697385e9.4.1734600559883;
-        Thu, 19 Dec 2024 01:29:19 -0800 (PST)
-Received: from sgarzare-redhat (host-87-12-185-21.business.telecomitalia.it. [87.12.185.21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b4471bsm46511405e9.44.2024.12.19.01.29.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2024 01:29:19 -0800 (PST)
-Date: Thu, 19 Dec 2024 10:29:15 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v3 4/7] vsock/test: Adapt
- send_byte()/recv_byte() to handle MSG_ZEROCOPY
-Message-ID: <hpe54soa2ltn7givmtvrkv2exommhn377bruyrfilts27qot2a@a6ksxyhm7zoj>
-References: <20241218-test-vsock-leaks-v3-0-f1a4dcef9228@rbox.co>
- <20241218-test-vsock-leaks-v3-4-f1a4dcef9228@rbox.co>
- <8f1536c6-480d-4973-8fa8-ad94e6cb15dd@rbox.co>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="A78+rZkq"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BJ3tEX6029919;
+	Thu, 19 Dec 2024 09:36:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=WSyPqG
+	lQ8d/79CpLn42u4TR+SUkuqCpia6XjUoRE0kQ=; b=A78+rZkq7Gx7ehrlrEZmg1
+	srfU2XpXAARFqNdVO/E3LgEDCDcS/m9aYXFQ+zbo8mAiMF0CU1Hvarkm0mnN9PWR
+	ze/xdT/EpGXYjuvGt1zeAMfH8orDi85AyElMqdqSXtoHpb3cxsBUQNH53jKnWFJz
+	phcwLuWO9qL2tHWEP7xkr8AKqNFglIKXUVf5J1sviNcoDtExts7W0J1HeOELnK42
+	sh0T+81Bxy7hPzpByjHJvKO2svQvk1nvyULpw8XcBPU6uSEGIFosUlxRg7/QOCEb
+	yrsyo6qigX8O9pHzFGeoUnoLZeD+D4j+RSOTnOMWtmwjlFegtek8PpV/GBrQs1NQ
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43mbyhsabt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Dec 2024 09:36:56 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BJ8waHh024022;
+	Thu, 19 Dec 2024 09:36:55 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43hnukmdpc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Dec 2024 09:36:55 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BJ9arta58851818
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Dec 2024 09:36:53 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3030A2004B;
+	Thu, 19 Dec 2024 09:36:53 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 14A4A20043;
+	Thu, 19 Dec 2024 09:36:53 +0000 (GMT)
+Received: from [9.152.224.44] (unknown [9.152.224.44])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 19 Dec 2024 09:36:53 +0000 (GMT)
+Message-ID: <7bcae2cb-fd90-45eb-af04-d7f228c9df63@linux.ibm.com>
+Date: Thu, 19 Dec 2024 10:36:52 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <8f1536c6-480d-4973-8fa8-ad94e6cb15dd@rbox.co>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: Convert proto_ops::getname to sockaddr_storage
+To: Kees Cook <kees@kernel.org>, Jakub Kicinski <kuba@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>
+References: <20241217023417.work.145-kees@kernel.org>
+ <aa6c671d-f4f4-446d-b024-923555c3f041@linux.ibm.com>
+ <C822C723-2141-4380-87FF-CA1D87FF8DBF@kernel.org>
+Content-Language: en-US
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <C822C723-2141-4380-87FF-CA1D87FF8DBF@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 6FUym1l60VOhFQzC3dzZmFzumDvq8sIQ
+X-Proofpoint-GUID: 6FUym1l60VOhFQzC3dzZmFzumDvq8sIQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 adultscore=0 bulkscore=0 clxscore=1015 phishscore=0
+ mlxscore=0 lowpriorityscore=0 mlxlogscore=736 malwarescore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412190076
 
-On Thu, Dec 19, 2024 at 10:19:56AM +0100, Michal Luczaj wrote:
->On 12/18/24 15:32, Michal Luczaj wrote:
->> For a zercopy send(), buffer (always byte 'A') needs to be preserved (thus
->        ^^^^^^^
->
->And this is how I've learnt how checkpatch's spellcheck works.
->Should I resend with this typo fixed?
 
-I think it depends more on you than on me :-)
 
-If you want to send a v4, I don't think there's any problem, just bring 
-all my R-b's with them, so the net maintainers will merge it directly.
+On 18.12.24 22:44, Kees Cook wrote:
+>> This does not compile, it needs to be:
+>> siucv->siucv_family = AF_IUCV;
+> Thanks! I saw 0-day reported the same. I've fixed this for the next revision. Do you happen to know why this doesn't get built during an x86 allmodconfig build?
+> 
+> -Kees
 
-FYI I will be off from tomorrow afternoon until and including Jan. 6.
 
-Thanks,
-Stefano
-
+Probably because of this in net/iucv/Kconfig  (?)
+config AFIUCV
+	depends on S390
