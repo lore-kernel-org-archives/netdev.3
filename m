@@ -1,152 +1,102 @@
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867BE221DB2;
-	Thu, 19 Dec 2024 09:20:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7778C149DF4
+	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 09:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734600037; cv=none; b=AJLvcL5BZoXjAH/M8B2IEf4jCrfZIZ9LzFaEeoo/pfemjVAJwYRX7GhjvcPH+aVNdFYzB18fHeQ5OcT7IPHLcicVI+vwI9nxxfXDVKIytMBEgOOX583ocj+tmoP+8MqW3/2oaNahrYoKzmd/P1ST4MDmpvjbo5v291V48wRTyVo=
+	t=1734600566; cv=none; b=hxDeVMjohoItLMhNyZuKpB6A+Z5MV8o+CqxLiwO8FJZdjiLj5GYrAB+Ehs3Ck2Sx9fjFRgecmD7oA7osEhedPFNoN5x9i7AkcG5L7MqbJkkWjIbfxKmk93rJcdxa/EFt3g6bH2Qb/95wp/Xq29AnZpTOKqj5ScIrvJH24ue1MHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734600037; c=relaxed/simple;
-	bh=HyJr5XSGfYNWutYETgmFhaqaRhsBMTcVmrrtrJCA6lc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ZPSJdI+biTtI8FBKSRTBEbXCKJ9ERNg6G8uH/z4jTVkadNm8zvl0/EkyFJbEwP6CDy0/RSv1jFZ6iRhbkThrUyCltabB5/VtBX56hrDoHXFhn+73p00NymQ4RAQmQHN4hg4DhPF8a8hiQ4wv6LBeofnS8UH774MF0+BdW1m20t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Lhlr1qX/; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1734600566; c=relaxed/simple;
+	bh=eopNegyaC/qufpevVVd1YPVYD0n33SWau56z0iy2CAE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CDhG205HdZkuBXXdgLPzcoJDk87KTwPpe+FTOQXTqCyMVdWsItl+eh8zwgW/7jHZ5FKPeQyKUGr1UUA4/PURb8SeSPdITSvNzaCNKwUaxtgpBgIPfGvZ46fYhFkCGBVffCyp3NbWu6VdzPZNsbVYEKy841p+ZqpnFj64j1Tn7Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UMDqkKzg; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Lhlr1qX/"
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4BJ9K3ce048749;
-	Thu, 19 Dec 2024 03:20:03 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1734600003;
-	bh=gsnH79CaQlp66NWw62f+jHDtlXUygpjnPNoSMN2nv0A=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=Lhlr1qX/N2FQtNADzobSMU+l/B3Y3Py9OZRf7FtwVDYsmtTA+WuPxrFZrf51irXOI
-	 vZGIRKTJ76aggF38GfC+n9FaeY8ZKuAkr+XTLnAHX6i4trwoymgSl940ntHRaJsez7
-	 xzpJB2GAz96fN0JICjCat3c82zEYE4PKO5e8MIuc=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4BJ9K2jD002828
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 19 Dec 2024 03:20:02 -0600
-Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 19
- Dec 2024 03:20:01 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 19 Dec 2024 03:20:01 -0600
-Received: from [10.24.69.25] (danish-tpc.dhcp.ti.com [10.24.69.25])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4BJ9JtfB023256;
-	Thu, 19 Dec 2024 03:19:56 -0600
-Message-ID: <06886be4-5f35-4785-bc63-a5c84887adfb@ti.com>
-Date: Thu, 19 Dec 2024 14:49:55 +0530
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UMDqkKzg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734600563;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZSx9e7rMMrvzpaM1ZT2/eBJ4H/q4UwR2i9GEPzEKZF0=;
+	b=UMDqkKzgHt9fTQsnAzOdTRgn3TmVsv5ldcchQ2zfVMM8wUimSAH8blu4jol5pD4Rle97Sh
+	UEHOF7jUSPBw5zWj6kZI5dgDUF+0ahrG6aV+J1yGUtea2A6TThvJyFzQDUJzofpQl8n1TL
+	73jFV0sVJ/7KgkHz/lnX7DHU/DxjfmE=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-271-MlL_AmEIOVGBpXzjJWRYqA-1; Thu, 19 Dec 2024 04:29:22 -0500
+X-MC-Unique: MlL_AmEIOVGBpXzjJWRYqA-1
+X-Mimecast-MFC-AGG-ID: MlL_AmEIOVGBpXzjJWRYqA
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4361a8fc3bdso3242295e9.2
+        for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 01:29:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734600560; x=1735205360;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZSx9e7rMMrvzpaM1ZT2/eBJ4H/q4UwR2i9GEPzEKZF0=;
+        b=UWIY1bEXj8YT88+3yu/J+oPy5rfp8tcUagBcaCr6ttwgFvdCahPFmguPpMyRZARayK
+         BOsLvfmy9xqpVp2eLimR2SMwRoXyFsWcKJHDoiAMxtnUcRyehy56ZEQqlikyhlH1DyKR
+         6FMqQV06DoLsVLL8WQYeD+1GPmXHicoc6R85+k1OJiCEcL81xSCI9802D8jmgf8SK1Pj
+         kHvkcCMql/c1ZVXyGizwpckzXMuT6TCmk6GpAbpo6T7ccE3+tYIG9k8pzwXtxTxcQqBP
+         Krl4gjDoHiAPupnI+7TifZoUBF5Q3hVot4LqnocTnsG07Ag1A32WyPprF3zW5ECK1oLl
+         EpYA==
+X-Gm-Message-State: AOJu0YzcHSVCbghHUE0P2Slyag0Kiseun4Ao+3gaLITXIluB1gsYStxX
+	fKU2D8kQKpG/suaR4a3kp5uvnYQBHcyleidtKKjIBl2+pldXGDzE90ML7GSEAK8qeW2LxOqjwa1
+	99IfTe+ek7bPL95UiPx9C+GBoWQj6LXotXzb4gRoin+Iey0Z9110JKJa8evV72UJ1
+X-Gm-Gg: ASbGncsp1Q3e6YgwaBwSYZMe/lO41Ilq8BC1OHy0CYRzGWmD9gmdd9IuB2Qr8Zuw1xv
+	jJK/wZehrBODC3bl/1TGUdg+lLkzYWUSTFTdSkE30l7zPquoa+IA2Xs+uwUywXOi2j+4wiHLnNO
+	C1bcNptt0Zz6hQLd5Y02Gi8UNH4qCuanzeFyt2mWLwU/ogFtPLPyhkPqO2JCIQnPcLxiT2tCyon
+	/Hxv1ndxZGc2lgjcuoLPrphEMvABsS03zRYOsW9vTzSNGkRpd5lB6aS2ao8NWeTXqOOWzwciSAM
+	TpY3v9rlMhsB44KnjIRnZ/B0TDfMe3zX
+X-Received: by 2002:a05:600c:470b:b0:434:f609:1af7 with SMTP id 5b1f17b1804b1-43655345304mr52697795e9.4.1734600560541;
+        Thu, 19 Dec 2024 01:29:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH5dIb0vTUNKu59GS4aN90C7izRGPkV/7YVa0eB8On3UUaJ6rsHrpOufiMNUiJBEeEVAT1GMA==
+X-Received: by 2002:a05:600c:470b:b0:434:f609:1af7 with SMTP id 5b1f17b1804b1-43655345304mr52697385e9.4.1734600559883;
+        Thu, 19 Dec 2024 01:29:19 -0800 (PST)
+Received: from sgarzare-redhat (host-87-12-185-21.business.telecomitalia.it. [87.12.185.21])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b4471bsm46511405e9.44.2024.12.19.01.29.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Dec 2024 01:29:19 -0800 (PST)
+Date: Thu, 19 Dec 2024 10:29:15 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v3 4/7] vsock/test: Adapt
+ send_byte()/recv_byte() to handle MSG_ZEROCOPY
+Message-ID: <hpe54soa2ltn7givmtvrkv2exommhn377bruyrfilts27qot2a@a6ksxyhm7zoj>
+References: <20241218-test-vsock-leaks-v3-0-f1a4dcef9228@rbox.co>
+ <20241218-test-vsock-leaks-v3-4-f1a4dcef9228@rbox.co>
+ <8f1536c6-480d-4973-8fa8-ad94e6cb15dd@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/4] net: ti: icssg-prueth: Add VLAN support in
- EMAC mode
-To: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-CC: <aleksander.lobakin@intel.com>, <lukma@denx.de>, <m-malladi@ti.com>,
-        <diogo.ivo@siemens.com>, <rdunlap@infradead.org>,
-        <schnelle@linux.ibm.com>, <vladimir.oltean@nxp.com>,
-        <horms@kernel.org>, <rogerq@kernel.org>, <pabeni@redhat.com>,
-        <kuba@kernel.org>, <edumazet@google.com>, <davem@davemloft.net>,
-        <andrew+netdev@lunn.ch>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>, <srk@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-References: <20241216100044.577489-1-danishanwar@ti.com>
- <20241216100044.577489-3-danishanwar@ti.com>
- <Z2PE5m8R5lM4/YRT@mev-dev.igk.intel.com>
-Content-Language: en-US
-From: MD Danish Anwar <danishanwar@ti.com>
-In-Reply-To: <Z2PE5m8R5lM4/YRT@mev-dev.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <8f1536c6-480d-4973-8fa8-ad94e6cb15dd@rbox.co>
 
+On Thu, Dec 19, 2024 at 10:19:56AM +0100, Michal Luczaj wrote:
+>On 12/18/24 15:32, Michal Luczaj wrote:
+>> For a zercopy send(), buffer (always byte 'A') needs to be preserved (thus
+>        ^^^^^^^
+>
+>And this is how I've learnt how checkpatch's spellcheck works.
+>Should I resend with this typo fixed?
 
+I think it depends more on you than on me :-)
 
-On 19/12/24 12:32 pm, Michal Swiatkowski wrote:
-> On Mon, Dec 16, 2024 at 03:30:42PM +0530, MD Danish Anwar wrote:
->> Add support for vlan filtering in dual EMAC mode.
->>
->> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
->> ---
->>  drivers/net/ethernet/ti/icssg/icssg_prueth.c | 29 +++++++++-----------
->>  1 file changed, 13 insertions(+), 16 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
->> index c568c84a032b..e031bccf31dc 100644
->> --- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
->> +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
->> @@ -822,19 +822,18 @@ static int emac_ndo_vlan_rx_add_vid(struct net_device *ndev,
->>  {
->>  	struct prueth_emac *emac = netdev_priv(ndev);
->>  	struct prueth *prueth = emac->prueth;
->> +	int port_mask = BIT(emac->port_id);
->>  	int untag_mask = 0;
->> -	int port_mask;
->>  
->> -	if (prueth->is_hsr_offload_mode) {
->> -		port_mask = BIT(PRUETH_PORT_HOST) | BIT(emac->port_id);
->> -		untag_mask = 0;
->> +	if (prueth->is_hsr_offload_mode)
->> +		port_mask |= BIT(PRUETH_PORT_HOST);
->>  
->> -		netdev_dbg(emac->ndev, "VID add vid:%u port_mask:%X untag_mask %X\n",
->> -			   vid, port_mask, untag_mask);
->> +	netdev_err(emac->ndev, "VID add vid:%u port_mask:%X untag_mask %X\n",
->> +		   vid, port_mask, untag_mask);
->> +
->> +	icssg_vtbl_modify(emac, vid, port_mask, untag_mask, true);
->> +	icssg_set_pvid(emac->prueth, vid, emac->port_id);
->>  
->> -		icssg_vtbl_modify(emac, vid, port_mask, untag_mask, true);
->> -		icssg_set_pvid(emac->prueth, vid, emac->port_id);
->> -	}
->>  	return 0;
->>  }
->>  
->> @@ -843,18 +842,16 @@ static int emac_ndo_vlan_rx_del_vid(struct net_device *ndev,
->>  {
->>  	struct prueth_emac *emac = netdev_priv(ndev);
->>  	struct prueth *prueth = emac->prueth;
->> +	int port_mask = BIT(emac->port_id);
->>  	int untag_mask = 0;
->> -	int port_mask;
->>  
->> -	if (prueth->is_hsr_offload_mode) {
->> +	if (prueth->is_hsr_offload_mode)
->>  		port_mask = BIT(PRUETH_PORT_HOST);
->> -		untag_mask = 0;
->>  
->> -		netdev_dbg(emac->ndev, "VID del vid:%u port_mask:%X untag_mask  %X\n",
->> -			   vid, port_mask, untag_mask);
->> +	netdev_err(emac->ndev, "VID del vid:%u port_mask:%X untag_mask  %X\n",
->> +		   vid, port_mask, untag_mask);
-> Why error? It doesn't look like error path, previously there was
-> netdev_dbg (made more sense in my opinion)
-> 
+If you want to send a v4, I don't think there's any problem, just bring 
+all my R-b's with them, so the net maintainers will merge it directly.
 
-My bad. It should be netdev_dbg(). I'll change it in v2. Thanks
+FYI I will be off from tomorrow afternoon until and including Jan. 6.
 
->> +	icssg_vtbl_modify(emac, vid, port_mask, untag_mask, false);
->>  
->> -		icssg_vtbl_modify(emac, vid, port_mask, untag_mask, false);
->> -	}
->>  	return 0;
->>  }
->>  
->> -- 
->> 2.34.1
+Thanks,
+Stefano
 
--- 
-Thanks and Regards,
-Danish
