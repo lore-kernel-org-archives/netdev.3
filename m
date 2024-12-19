@@ -1,123 +1,123 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0315B224B0C;
-	Thu, 19 Dec 2024 13:26:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2657F2248B5
+	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 13:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734614777; cv=none; b=H1eQnaYwUOAqiBUTOdNW2NgdALkeVp2AztTFjhjVK1CToi9Q/db6+vsCvmBggFceFLsAoxigqiiOti2maeql32CfutlNNmGiw49B3UwQD5/XNPgpLdiqlgpqCvBdNiThrKjrl9ORce/OivgcqzRvSJ8D2qmEqO9gu4HuvmMwRkM=
+	t=1734614826; cv=none; b=D/0fjwUPfKY03FyOmlqUDlD1NVhP7qNzr3DIXYHhftN/brkpFqqe4GFzYM1VUpAvZNIEBgbqzkYiYi62axfjciy93UQZkf2qTN2vFQ0UhZS/o3myEXK4qGdjxKTGV4jT18p4SjXeGq/NbKJ6qdLsX5VKeNYFxcN/OVclekUsdT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734614777; c=relaxed/simple;
-	bh=vI9Shmm0nwdv8XdhOxp6m7r/LSGT4zlOwCvERf5GSEk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hQxFuDaYZMOdtGbGznNrgvQRV1Qk5yf9RmDVjwUEQVOF87r/cyaKOCSmMMNIdP6RFhZ9ater8olU8duXl5cgFFMJ3hH75gKpHg0RerCrzWBrjnsbT5CQSMBf3L87imn7lBVm6DHsNnyLWNa8lthSKL9tkIHJdAyDXQnbDuymosk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MjtZzZp/; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1734614826; c=relaxed/simple;
+	bh=7JfwExJPXf4+KZWdRVEHYl9X78Kvj0EnGruR0/vAKco=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=CtcLk5JfwUKAxv8cqBo/iS8I0KMGismNemP4MQxLALDCnXETcGtumVcJOXeXo83DfDpSVICdaG6C6qxh1V97lPf5UUy6zko5EdVjqWvDXEwCjNjHvlHZ8cGD+ecgKxv/ew5fQ6Pvv6MzdMPgURDTTTANSvRrC+6TrJrd07+DyiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GGQhDQXW; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MjtZzZp/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734614775; x=1766150775;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vI9Shmm0nwdv8XdhOxp6m7r/LSGT4zlOwCvERf5GSEk=;
-  b=MjtZzZp/bzT5l4TToK04+oOD3W4hkY9CyChb8LobwlAbfaD1/6VKo7QL
-   KuqhXb9JW1E4R8NJhN9riHWqdOnU8g4UPtVTODjK7n/Ed5Vx5n0U552uy
-   2b+5R+mCpY8pWGPJQRwCQUlA1Feu28YuX90pJLaRaEQnWgx7WTbq6cbA8
-   U75qUV4iMLO1mzhFiFCjKYGBYPZo/G1eHq3C4JMXqsdfQ8EHej2v7lFn8
-   u2pXfw85nCTbcng/LMYxYee156rg8Y/yhRQnTMlqEgVH+sk3RDcBoQ/wY
-   v3wYcc2TF12/hND9b1pOavIADO6H85NlcwKBrRDSp/0XlFVlQUKvG9lGe
-   A==;
-X-CSE-ConnectionGUID: cXPqi60zQRW3L3ttdJ5tfg==
-X-CSE-MsgGUID: t9SnK+faSTmdSKnrQwXHBw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="37964367"
-X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; 
-   d="scan'208";a="37964367"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2024 05:26:14 -0800
-X-CSE-ConnectionGUID: yPGKzD65TdmrZid8e14Ehg==
-X-CSE-MsgGUID: 88JXXY3FRDmWum8F7+sdbA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="129158240"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2024 05:26:12 -0800
-Date: Thu, 19 Dec 2024 14:23:04 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Mark Zhang <markzhang@nvidia.com>,
-	Francesco Poli <invernomuto@paranoici.org>,
-	linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>
-Subject: Re: [PATCH mlx5-next] RDMA/mlx5: Enable multiplane mode only when it
- is supported
-Message-ID: <Z2QeOOzRpimm3pyc@mev-dev.igk.intel.com>
-References: <1ef901acdf564716fcf550453cf5e94f343777ec.1734610916.git.leon@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GGQhDQXW"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-216387ddda8so7830435ad.3
+        for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 05:27:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734614824; x=1735219624; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MRWfvID/RC4EXwKHHgpdoiAEifz/0Wnw+i3ttSJGD6Q=;
+        b=GGQhDQXWdHE4kZhik5HvwDeiuLPbOHeT9/F+Ctp9LrOQo51+8GnyZr1WbwLANHhgEy
+         FP8ms7wb2uUd/NtdXtNP6j0JKvEm7GY7snNMUhxaJYeIE6+MxW1Rs6KquFNAJsW5jRH2
+         lU+RKUyQK2wdL2aoxKWt0dAReA2Rw3RHlOH/ED7N2JKlmnJn0LucJIyK8US8RaZ7aqis
+         ifg1PRzGC6ZYBBHloR7F0EYDOXWMdCpV+eXjeYxnkECHSCgEPOg2Ke6II95XrRadI8Ht
+         bla1Ko96nB85rx2HqfOdeVMTp4NBCXjgRUNVz/iM0UTLkrIKpLi3zNDJl4VesN/q2Bri
+         tu3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734614824; x=1735219624;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MRWfvID/RC4EXwKHHgpdoiAEifz/0Wnw+i3ttSJGD6Q=;
+        b=rrG/od2nkSeFZc8kTXNHPvWJsipaUf+O6pv1fnXTsWHn1CvfiGvB0ryGebf8V08jVu
+         NwApuN0CklOavOAUcXYDhTWrevBvr5TFtIsnFiM7jQ5HDE0XqfV70f8iH7iEmTtK69Hb
+         DipVWa/84k8ILuxjHRjf0M2/mQU+FrLotHsMqekTIzjSLIjxIc6lg/8KZCxg4xibDmts
+         YyLK/vZxXnxCKw/CvmNWMyIaZRDChYTx06QFS8C+s0/aH7Lz97XSVG08bspEeUfyf6q+
+         zubfcdm4Qm0ERcmqJRXDaKH4UtCaBGlcn9OAJyG5XGPGBum26z4nxuhWsRiVRjJIQx2H
+         nkeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWo3uuqvA0HJ667AEy0hbvqUKSYek4kIfhYDSp2f0ue+Dno19YryWG2+zqR9fj90Sv1SVhdUQE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZUsAFoxGjK4WVfMxWQpJJNYuQ514GLNSNJaBGLRH/ojCRPBvq
+	vF38qufQeALKfCFt/vv4zzTFekR9MyeKSqes8tMs1P2cfEMN4JhFZMgxfovKClhOlUvsZU49mz5
+	vhh9JjZGzTJesVAPM0VupfQ==
+X-Google-Smtp-Source: AGHT+IEifO1Xh7iPIWFHQo0fw8WocMHb/FDxCv4p9W4etVR7dgBHNiasDrr0nmfB6JfEEhQI92rXw1KW5DAVUC2dQg==
+X-Received: from pjbsk5.prod.google.com ([2002:a17:90b:2dc5:b0:2ef:8f54:4254])
+ (user=yuyanghuang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:ec8a:b0:216:59d4:40eb with SMTP id d9443c01a7336-218d728de8amr91619585ad.57.1734614824382;
+ Thu, 19 Dec 2024 05:27:04 -0800 (PST)
+Date: Thu, 19 Dec 2024 22:26:44 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1ef901acdf564716fcf550453cf5e94f343777ec.1734610916.git.leon@kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20241219132644.725161-1-yuyanghuang@google.com>
+Subject: [PATCH net-next] netlink: correct nlmsg size for multicast notifications
+From: Yuyang Huang <yuyanghuang@google.com>
+To: Yuyang Huang <yuyanghuang@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	David Ahern <dsahern@kernel.org>, roopa@cumulusnetworks.com, jiri@resnulli.us, 
+	stephen@networkplumber.org, jimictw@google.com, prohr@google.com, 
+	liuhangbin@gmail.com, nicolas.dichtel@6wind.com, andrew@lunn.ch, 
+	pruddy@vyatta.att-mail.com, netdev@vger.kernel.org, 
+	"=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>, Lorenzo Colitti <lorenzo@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 19, 2024 at 02:23:36PM +0200, Leon Romanovsky wrote:
-> From: Mark Zhang <markzhang@nvidia.com>
-> 
-> Driver queries vport_cxt.num_plane and enables multiplane when it is
-> greater then 0, but some old FWs (versions from x.40.1000 till x.42.1000),
-> report vport_cxt.num_plane = 1 unexpectedly.
-> 
-> Fix it by querying num_plane only when HCA_CAP2.multiplane bit is set.
-> 
-> Fixes: 2a5db20fa532 ("RDMA/mlx5: Add support to multi-plane device and port")
-> Cc: stable@vger.kernel.org
-> Reported-by: Francesco Poli <invernomuto@paranoici.org>
-> Closes: https://lore.kernel.org/all/nvs4i2v7o6vn6zhmtq4sgazy2hu5kiulukxcntdelggmznnl7h@so3oul6uwgbl/
-> Signed-off-by: Mark Zhang <markzhang@nvidia.com>
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> ---
->  drivers/infiniband/hw/mlx5/main.c | 2 +-
->  include/linux/mlx5/mlx5_ifc.h     | 4 +++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-> index c2314797afc9..f5b59d02f4d3 100644
-> --- a/drivers/infiniband/hw/mlx5/main.c
-> +++ b/drivers/infiniband/hw/mlx5/main.c
-> @@ -2839,7 +2839,7 @@ static int mlx5_ib_get_plane_num(struct mlx5_core_dev *mdev, u8 *num_plane)
->  	int err;
->  
->  	*num_plane = 0;
-> -	if (!MLX5_CAP_GEN(mdev, ib_virt))
-> +	if (!MLX5_CAP_GEN(mdev, ib_virt) || !MLX5_CAP_GEN_2(mdev, multiplane))
->  		return 0;
->  
->  	err = mlx5_query_hca_vport_context(mdev, 0, 1, 0, &vport_ctx);
-> diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-> index 4fbbcf35498b..48d47181c7cd 100644
-> --- a/include/linux/mlx5/mlx5_ifc.h
-> +++ b/include/linux/mlx5/mlx5_ifc.h
-> @@ -2119,7 +2119,9 @@ struct mlx5_ifc_cmd_hca_cap_2_bits {
->  	u8	   migration_in_chunks[0x1];
->  	u8	   reserved_at_d1[0x1];
->  	u8	   sf_eq_usage[0x1];
-> -	u8	   reserved_at_d3[0xd];
-> +	u8	   reserved_at_d3[0x5];
-> +	u8	   multiplane[0x1];
-> +	u8	   reserved_at_d9[0x7];
->  
->  	u8	   cross_vhca_object_to_object_supported[0x20];
+Corrected the netlink message size calculation for multicast group
+join/leave notifications. The previous calculation did not account for
+the inclusion of both IPv4/IPv6 addresses and ifa_cacheinfo in the
+payload. This fix ensures that the allocated message size is
+sufficient to hold all necessary information.
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Fixes: 2c2b61d2138f ("netlink: add IGMP/MLD join/leave notifications")
+Cc: Maciej =C5=BBenczykowski <maze@google.com>
+Cc: Lorenzo Colitti <lorenzo@google.com>
+Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
+---
+ net/ipv4/igmp.c  | 4 +++-
+ net/ipv6/mcast.c | 4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-Just out of curiosity, don't you have mlx5-net or sth like that for
-fixes?
+diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
+index 8a370ef37d3f..4e2f1497f320 100644
+--- a/net/ipv4/igmp.c
++++ b/net/ipv4/igmp.c
+@@ -1473,7 +1473,9 @@ static void inet_ifmcaddr_notify(struct net_device *d=
+ev,
+ 	int err =3D -ENOMEM;
+=20
+ 	skb =3D nlmsg_new(NLMSG_ALIGN(sizeof(struct ifaddrmsg)) +
+-			nla_total_size(sizeof(__be32)), GFP_ATOMIC);
++			nla_total_size(sizeof(__be32)) +
++			nla_total_size(sizeof(struct ifa_cacheinfo)),
++			GFP_ATOMIC);
+ 	if (!skb)
+ 		goto error;
+=20
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index 587831c148de..b7430f15d1fc 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -920,7 +920,9 @@ static void inet6_ifmcaddr_notify(struct net_device *de=
+v,
+ 	int err =3D -ENOMEM;
+=20
+ 	skb =3D nlmsg_new(NLMSG_ALIGN(sizeof(struct ifaddrmsg)) +
+-			nla_total_size(16), GFP_ATOMIC);
++			nla_total_size(16) +
++			nla_total_size(sizeof(struct ifa_cacheinfo)),
++			GFP_ATOMIC);
+ 	if (!skb)
+ 		goto error;
+=20
+--=20
+2.47.1.613.gc27f4b7a9f-goog
 
->  
-> -- 
-> 2.47.0
