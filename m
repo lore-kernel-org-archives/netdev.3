@@ -1,111 +1,228 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42259224AFB;
-	Thu, 19 Dec 2024 13:24:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359F6111AD
+	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 13:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734614679; cv=none; b=aH2o1Rc4dlTOMZAulwH1HGjm799GXkaJIC2Q5mxKuggCJ0Qmhxmu+NFf9nZq8FJF1QRR+xnS/0RboY80lOUd2D8vKry9xa2yZXlKgDLFKsI39NMxNd09Gnb/xyqnYTdhUxqHFHt6oewubsX1yBXAFO6LcAkbpXIucLmF2ziPQ3s=
+	t=1734614754; cv=none; b=XdV201gc10e55WBV2dm580UptaF9u3vWcx7pJVzJHljsZFfQYoZXcL8WIofmUeuoQuumphgPKBTUYGYWfTZl1u3U8+W3/PTb5KPsd95Vv2Mu25zTrqvdLihAdVi7TExItJpoSUJMmAdlMXG1cna9XGTLktWyRR4CFDpR3gZirEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734614679; c=relaxed/simple;
-	bh=008Cuml4VV0XwHTtpe/8/yoaehcR1dfBgfpnFS4iO+g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pp/dNSzwcUDyRn3wTev8tiOGUdEfguzeo4TMGT3aEfjtX/jyJP45Y9DC12S45qb0aNBVR4rEzm+df3b81eUVBJq1b+8JYCniHPVuYp6w9Zkt5VQHHbI6JAC8m0xD9l4nUnD37jQ9k0JkJEqc7SP75HBbxI9BPpBGvKJoaQQJ1qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nql0yMou; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nql0yMou"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5d4e2aa7ea9so1344595a12.2;
-        Thu, 19 Dec 2024 05:24:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734614676; x=1735219476; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yeDNOULIpeV+rcdYvftKVOa2BlVHQXHEyE5QaiwBOAY=;
-        b=Nql0yMouGbYYKhyt2HUwNpzmYuF7Xz+ntynZRRjRS67XSLral/6rqXeuTsOJSMAjQV
-         gurQckoTJvwl1C782q9OewHQde/v6a8iagc3AHsBAXUtAPLTSy83NLJyEsUjedLq/0V3
-         CXkAK7V4wBvDDQUMtfK54COsQ+ofy/84D2mc4ZpIM5yDuJ3Xyi7wI6tymZXbiuvUAOII
-         1TzLxAdOb4R5Fic3bWMhg/4WfALLd3vnevI7954Ffi7B6OgP6W7+ugZcNap0Bjiq5Sna
-         /s9iYLMgWHzgEoG+A3Nygm6IhQUbtqCoIrwkVIGnusApl5Te2csjYDF3ftoyKaLaDRvX
-         s1pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734614676; x=1735219476;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yeDNOULIpeV+rcdYvftKVOa2BlVHQXHEyE5QaiwBOAY=;
-        b=FiSXNEGZMQyuCfE1loEaImuJtp6FCFqmyOY0M64Wp7weS8iI9PWlJ7s+mZCezQjmr4
-         PzzHSLgqXXDsagLTHU5ZbLOmPg6eIVujtEE5WuPLGGg7zUT8pyx6llGfBH0yyHElcPMe
-         /l9QxwXyCd1aqRXWSapFAG163Y6+g6SbXXBYcxQVsh/SUEYm8V0CrNxTcjBD3uD3dT7H
-         Nv79862Ce/hFB9awboYvOrtDk5A0QNBJosTSXi6mP7boEr64yP4K80HIxNs2wS+0Jd2y
-         t9BbRF3KqHlzAroH5naLNz6iM6d/m+vivOblh/5723H3IIsIHy3xaVHB2IFzp26Ls0/A
-         Ot+A==
-X-Forwarded-Encrypted: i=1; AJvYcCW+l6h/x4FjdHbtPbzyqbXwjj9fj81wfpDL96UHfJ9tuAGIfFBHyA8rbf/1ZGdAIEZHJLe612s7GVw=@vger.kernel.org, AJvYcCWSa3SFl97Y1RbhsH9meZ0tbO4LqCVuYK/o3kXKd3EF2NRoy58PrkmT0RYYcHTh75B1c8xZjhgj@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz189ZCJFewB3M/0KO3C7wFHIy8fxCJs+ANrSR8kkCuCU1Xo4j5
-	YA1cJG66xnyrpfR4APh7E7+1MTpvgsb33DkvDhxa0qF9SiIuhYCyN7VUpwLh78BFuoSkuAMKn6F
-	DwFJbJLyI7nOL/1Dzg0Fj8VLIt8E=
-X-Gm-Gg: ASbGnctQhUtcCaFw3BSh21XPViw1m+YG6ZMPHiR5qfesEgNdiXa4abkhJVNZak5AzBe
-	kdwA3wLAQQU5lXy+grwwM9NEX2659plNGNuPsA+s=
-X-Google-Smtp-Source: AGHT+IEfarcEFPeyiK+8xrhOtld6iHFTaJceEIQ7GIAwZAzOISdIVEOnPv0cEmt8NMfi93SWIQvGXg3ZOKSbLsYNJ+8=
-X-Received: by 2002:a05:6402:2709:b0:5d4:35c7:cd48 with SMTP id
- 4fb4d7f45d1cf-5d7ee390bb7mr5500754a12.9.1734614676252; Thu, 19 Dec 2024
- 05:24:36 -0800 (PST)
+	s=arc-20240116; t=1734614754; c=relaxed/simple;
+	bh=9rPX7enLQubJau7pA8Xr9gZgChYKgAcHlbg/6SijClA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=UtvRFHzDRT0nO90qfYbQJ6iIUXQk28t5W+LWmVZMBW9VZabrP9mvJwLux4vevcQw6IqHRu5gJb0wbUxmgZaEcxnMo5i15kRB8Ww29e265RRynfiTmi5l4vwDDZelCYmeWSwmpfkAgyFxYP9Kyu+5bvZI8dRsD1ZDRvN8JG+1e2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tOGX5-0001bC-Of; Thu, 19 Dec 2024 14:25:39 +0100
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tOGX0-004DDJ-29;
+	Thu, 19 Dec 2024 14:25:35 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tOGX1-0032j3-15;
+	Thu, 19 Dec 2024 14:25:35 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	linux-doc@vger.kernel.org
+Subject: [PATCH net-next v2 7/8] net: phy: dp83td510: add statistics support
+Date: Thu, 19 Dec 2024 14:25:33 +0100
+Message-Id: <20241219132534.725051-8-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241219132534.725051-1-o.rempel@pengutronix.de>
+References: <20241219132534.725051-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241218144530.2963326-1-ap420073@gmail.com> <20241218144530.2963326-2-ap420073@gmail.com>
- <20241218180747.1ff69015@kernel.org>
-In-Reply-To: <20241218180747.1ff69015@kernel.org>
-From: Taehee Yoo <ap420073@gmail.com>
-Date: Thu, 19 Dec 2024 22:24:24 +0900
-Message-ID: <CAMArcTXfNwYRxA56OCBgGe8thXMMFS-8rD3RYRUERccrvBuMZQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 1/9] bnxt_en: add support for rx-copybreak
- ethtool command
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com, 
-	almasrymina@google.com, donald.hunter@gmail.com, corbet@lwn.net, 
-	michael.chan@broadcom.com, andrew+netdev@lunn.ch, hawk@kernel.org, 
-	ilias.apalodimas@linaro.org, ast@kernel.org, daniel@iogearbox.net, 
-	john.fastabend@gmail.com, dw@davidwei.uk, sdf@fomichev.me, 
-	asml.silence@gmail.com, brett.creeley@amd.com, linux-doc@vger.kernel.org, 
-	netdev@vger.kernel.org, kory.maincent@bootlin.com, 
-	maxime.chevallier@bootlin.com, danieller@nvidia.com, hengqi@linux.alibaba.com, 
-	ecree.xilinx@gmail.com, przemyslaw.kitszel@intel.com, hkallweit1@gmail.com, 
-	ahmed.zaki@intel.com, rrameshbabu@nvidia.com, idosch@nvidia.com, 
-	jiri@resnulli.us, bigeasy@linutronix.de, lorenzo@kernel.org, 
-	jdamato@fastly.com, aleksander.lobakin@intel.com, kaiyuanz@google.com, 
-	willemb@google.com, daniel.zahka@gmail.com, 
-	Andy Gospodarek <gospo@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Thu, Dec 19, 2024 at 11:07=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
-rote:
->
+Add support for reporting PHY statistics in the DP83TD510 driver. This
+includes cumulative tracking of transmit/receive packet counts, and
+error counts. Implemented functions to update and provide statistics via
+ethtool, with optional polling support enabled through `PHY_POLL_STATS`.
 
-Hi Jakub,
-Thanks a lot for the review!
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+changes v2:
+- drop use of FIELD_GET
+- add comments
+---
+ drivers/net/phy/dp83td510.c | 112 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 112 insertions(+)
 
-> On Wed, 18 Dec 2024 14:45:22 +0000 Taehee Yoo wrote:
-> > +                     if (netif_running(dev)) {
-> > +                             bnxt_close_nic(bp, false, false);
-> > +                             bp->rx_copybreak =3D rx_copybreak;
-> > +                             bnxt_set_ring_params(bp);
-> > +                             bnxt_open_nic(bp, false, false);
->
-> We really shouldn't allow this any more, we've been rejecting
-> patches which try to accept reconfiguration requests by taking
-> the entire NIC down, without any solid recovery if memory allocation
-> fails.
->
-> Let's return -EBUSY if interface is running.
+diff --git a/drivers/net/phy/dp83td510.c b/drivers/net/phy/dp83td510.c
+index 92aa3a2b9744..2edda7c231fc 100644
+--- a/drivers/net/phy/dp83td510.c
++++ b/drivers/net/phy/dp83td510.c
+@@ -34,6 +34,29 @@
+ #define DP83TD510E_CTRL_HW_RESET		BIT(15)
+ #define DP83TD510E_CTRL_SW_RESET		BIT(14)
+ 
++/*
++ * DP83TD510E_PKT_STAT_x registers correspond to similarly named registers
++ * in the datasheet (PKT_STAT_1 through PKT_STAT_6). These registers store
++ * 32-bit or 16-bit counters for TX and RX statistics and must be read in
++ * sequence to ensure the counters are cleared correctly.
++ *
++ * - DP83TD510E_PKT_STAT_1: Contains TX packet count bits [15:0].
++ * - DP83TD510E_PKT_STAT_2: Contains TX packet count bits [31:16].
++ * - DP83TD510E_PKT_STAT_3: Contains TX error packet count.
++ * - DP83TD510E_PKT_STAT_4: Contains RX packet count bits [15:0].
++ * - DP83TD510E_PKT_STAT_5: Contains RX packet count bits [31:16].
++ * - DP83TD510E_PKT_STAT_6: Contains RX error packet count.
++ *
++ * Keeping the register names as defined in the datasheet helps maintain
++ * clarity and alignment with the documentation.
++ */
++#define DP83TD510E_PKT_STAT_1			0x12b
++#define DP83TD510E_PKT_STAT_2			0x12c
++#define DP83TD510E_PKT_STAT_3			0x12d
++#define DP83TD510E_PKT_STAT_4			0x12e
++#define DP83TD510E_PKT_STAT_5			0x12f
++#define DP83TD510E_PKT_STAT_6			0x130
++
+ #define DP83TD510E_AN_STAT_1			0x60c
+ #define DP83TD510E_MASTER_SLAVE_RESOL_FAIL	BIT(15)
+ 
+@@ -58,8 +81,16 @@ static const u16 dp83td510_mse_sqi_map[] = {
+ 	0x0000  /* 24dB =< SNR */
+ };
+ 
++struct dp83td510_stats {
++	u64 tx_pkt_cnt;
++	u64 tx_err_pkt_cnt;
++	u64 rx_pkt_cnt;
++	u64 rx_err_pkt_cnt;
++};
++
+ struct dp83td510_priv {
+ 	bool alcd_test_active;
++	struct dp83td510_stats stats;
+ };
+ 
+ /* Time Domain Reflectometry (TDR) Functionality of DP83TD510 PHY
+@@ -177,6 +208,85 @@ struct dp83td510_priv {
+ #define DP83TD510E_ALCD_COMPLETE			BIT(15)
+ #define DP83TD510E_ALCD_CABLE_LENGTH			GENMASK(10, 0)
+ 
++/**
++ * dp83td510_update_stats - Update the PHY statistics for the DP83TD510 PHY.
++ * @phydev: Pointer to the phy_device structure.
++ *
++ * The function reads the PHY statistics registers and updates the statistics
++ * structure.
++ *
++ * Returns: 0 on success or a negative error code on failure.
++ */
++static int dp83td510_update_stats(struct phy_device *phydev)
++{
++	struct dp83td510_priv *priv = phydev->priv;
++	u32 count;
++	int ret;
++
++	/* The DP83TD510E_PKT_STAT registers are divided into two groups:
++	 * - Group 1 (TX stats): DP83TD510E_PKT_STAT_1 to DP83TD510E_PKT_STAT_3
++	 * - Group 2 (RX stats): DP83TD510E_PKT_STAT_4 to DP83TD510E_PKT_STAT_6
++	 *
++	 * Registers in each group are cleared only after reading them in a
++	 * plain sequence (e.g., 1, 2, 3 for Group 1 or 4, 5, 6 for Group 2).
++	 * Any deviation from the sequence, such as reading 1, 2, 1, 2, 3, will
++	 * prevent the group from being cleared. Additionally, the counters
++	 * for a group are frozen as soon as the first register in that group
++	 * is accessed.
++	 */
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_1);
++	if (ret < 0)
++		return ret;
++	/* tx_pkt_cnt_15_0 */
++	count = ret;
++
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_2);
++	if (ret < 0)
++		return ret;
++	/* tx_pkt_cnt_31_16 */
++	count |= ret << 16;
++	ethtool_stat_add(&priv->stats.tx_pkt_cnt, count);
++
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_3);
++	if (ret < 0)
++		return ret;
++	/* tx_err_pkt_cnt */
++	ethtool_stat_add(&priv->stats.tx_err_pkt_cnt, ret);
++
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_4);
++	if (ret < 0)
++		return ret;
++	/* rx_pkt_cnt_15_0 */
++	count = ret;
++
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_5);
++	if (ret < 0)
++		return ret;
++	/* rx_pkt_cnt_31_16 */
++	count |= ret << 16;
++	ethtool_stat_add(&priv->stats.rx_pkt_cnt, count);
++
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_6);
++	if (ret < 0)
++		return ret;
++	/* rx_err_pkt_cnt */
++	ethtool_stat_add(&priv->stats.rx_err_pkt_cnt, ret);
++
++	return 0;
++}
++
++static void dp83td510_get_phy_stats(struct phy_device *phydev,
++				    struct ethtool_eth_phy_stats *eth_stats,
++				    struct ethtool_phy_stats *stats)
++{
++	struct dp83td510_priv *priv = phydev->priv;
++
++	stats->tx_packets = priv->stats.tx_pkt_cnt;
++	stats->tx_errors = priv->stats.tx_err_pkt_cnt;
++	stats->rx_packets = priv->stats.rx_pkt_cnt;
++	stats->rx_errors = priv->stats.rx_err_pkt_cnt;
++}
++
+ static int dp83td510_config_intr(struct phy_device *phydev)
+ {
+ 	int ret;
+@@ -599,6 +709,8 @@ static struct phy_driver dp83td510_driver[] = {
+ 	.get_sqi_max	= dp83td510_get_sqi_max,
+ 	.cable_test_start = dp83td510_cable_test_start,
+ 	.cable_test_get_status = dp83td510_cable_test_get_status,
++	.get_phy_stats	= dp83td510_get_phy_stats,
++	.update_stats	= dp83td510_update_stats,
+ 
+ 	.suspend	= genphy_suspend,
+ 	.resume		= genphy_resume,
+-- 
+2.39.5
 
-Okay, I will change it.
-
-Thanks a lot,
-Taehee Yoo
