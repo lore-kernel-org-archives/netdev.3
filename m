@@ -1,254 +1,149 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8B3225A47
-	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 15:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734623368; cv=fail; b=StDYjcUWNp/ex8LYPWMsrW9qocLDt2iKOjpS/OLI1NX3rfnND14z0vbiMzYq9uKfvsHDetwaxboPnpCRqhhl6d1HHmd5elaA2Jk0qu2mXq8CtyEQ304GWHCeP2Y0scoqIFWyfXh6Krxz0wDFqXXSPusQDZe8q9nW6HmhnTJ74wk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734623368; c=relaxed/simple;
-	bh=y7nMTunuDNxDH+liTtPibXaKtmBfZFVNauMPccQm4Qs=;
-	h=Message-ID:Date:Subject:From:To:CC:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=cfnm1GuptWIOo5k5L+Gze4jiTG+vjmvLtZG5TahQ6Yw1gl+GIi/tQDfrZ7VFbI8wJFUCbAhgWg7FDUwrsEUDwtaoy/jhwGtA6agwcqWDgfNecTgzC93+uCyd2+KHt9fsI9OOSwVbJoUhnY9jSXqhXt7dRku8PKEOawWRwbNYGQQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T59nczg/; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2EF5FDA7;
+	Thu, 19 Dec 2024 15:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734623412; cv=none; b=WErmVtjAM3JHN6nndbuLOFk36qoSs5znLk2XrmLJGStLZgP82bntUhc0+fL3cdD46MYaLhsyADD4zwGtE0UBwEV3PLC0PLCcHSRBVfBnAWIUWx02ZVil8zuSABpeBbfbZCbJv9XY2XkzVjftq5/lIB0OE/GhNDUZHuuacaIza1g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734623412; c=relaxed/simple;
+	bh=ByHZDWm/9oQxpS7J0BmM2h6vlsvLdXRtU9K5mcxznWQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KSm2Cy8oL6E1xnbMtLWoi15OtpzroMGdwuN4jGO3LWh5F3WB6Urq62w8I2MRRwypePgiQOr63ItQpNHA/YqHtIYFFEIo3egMc7A/ZAbwLES4Dka2+80Qu7s5WylhtIqr6I4Ni5BtT9G/ObcOir4EKtjzWDCUhyMvFZBL3V5PUX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=km/DHh7f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T59nczg/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734623367; x=1766159367;
-  h=message-id:date:subject:from:to:cc:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=y7nMTunuDNxDH+liTtPibXaKtmBfZFVNauMPccQm4Qs=;
-  b=T59nczg/dGq3xp4QaJbsGhjmNJP7qVLNC1BSIaSs8WHDUrTDejylGiwt
-   AFQ6ijR6U2GTQThLuLZr6E7wTdu3fXomrz2D1gHIaBpW+TfE/dV4h+Mfa
-   RbVzRVgHS76xuNczS6gMSCiE0lhPZXYNZ4o4sYqM1LfDw+5P6nPPnq35A
-   et1GtKPO5d1TfaZJGFwkiC4NcU0I4Ptn0nNIxqlzNIhi6gLvVG+7lyQhV
-   Wet8WRxi+oMA22hiIxZM2QZ5OXs7hyFZSD9+PikIH/zZ3pfLMLH4vEeuY
-   dgp3k6nPckfqmNqk2SJJ1VxG7TLVPNQ6qSNlGGVoLch5HMcMUdka9Deyf
-   g==;
-X-CSE-ConnectionGUID: dbdumvzwRbCHdW2p1izyiA==
-X-CSE-MsgGUID: LW1swW/YR5GKmu2mul2YOA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="39078790"
-X-IronPort-AV: E=Sophos;i="6.12,248,1728975600"; 
-   d="scan'208";a="39078790"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2024 07:49:22 -0800
-X-CSE-ConnectionGUID: ZKx502ydRSK9vk0FrPX/jw==
-X-CSE-MsgGUID: qCaAXba0R2e7LyG8g6q5ig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,248,1728975600"; 
-   d="scan'208";a="98763301"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 19 Dec 2024 07:49:21 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Thu, 19 Dec 2024 07:49:20 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Thu, 19 Dec 2024 07:49:20 -0800
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 19 Dec 2024 07:49:20 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Fx0blqLYn+xEdenKC6P8cNXGOHVgvPUEjZgDygfTM9dIUmNptvSPGjIr0tK9QWlppcrfl5pLd/83zhVmVUfu6PVPAb+LP5CXQhDdBGBUTa8k179oEHWkFtIf7qaIxxELMBMHkSlXR300GiRYhu0Hn/ej/hZ6TOakDYPalw9FMU2hcqetyUCtIyanX/s0Kt1YI5rCyRnCuM2ty49x5FOIrArmqUx2Tf1S9DIuSXNDUqLx8oMI+apoLDJB5h6o3TFGqyFHxmV+fB6jM66s2QK7d2KKS1AaVdIjDN7iXJsj41NzZ+Vuo2bOPwRswv4WIqdlNJehal8pD9fwn5p/krHsBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tCQvqrvWntGNyA6gQVmjNoFytQ9uj/Dh7uCWPODMieI=;
- b=Fkzci/me2bQaCB95jvmF0/zZkQCYAs2mEh+ZO6f13zS5Xv23mdgC8YJqNgN1MQ7S5Iu2hmnJ4pZgoDiv/tnD76G+MzeOe31qV2nQ6AO9NkiOv8Dz2mv35kgAGFuYMPCPVHucjdIc9RzLADqCmq3fAZrY2TTOnMBPCcyL20MNfO04CnV28FJMfqyzgmKRRXedVWXoU5T5PRdtV9hfhKYXrrWAqkZs5zkqOtuY1U2ArznV97yMh4NTR5hf+kyn2Rw55bNTnAcvU94NFXigNGb2uJLyBFoH3uYx/sFV9EKZUA6eTZvpMDXUEFJwdsF733jD9Fv6t/mwG7sR29BX4Ds9sA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MN6PR11MB8102.namprd11.prod.outlook.com (2603:10b6:208:46d::9)
- by CH3PR11MB7818.namprd11.prod.outlook.com (2603:10b6:610:129::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.13; Thu, 19 Dec
- 2024 15:49:18 +0000
-Received: from MN6PR11MB8102.namprd11.prod.outlook.com
- ([fe80::15b2:ee05:2ae7:cfd6]) by MN6PR11MB8102.namprd11.prod.outlook.com
- ([fe80::15b2:ee05:2ae7:cfd6%4]) with mapi id 15.20.8272.005; Thu, 19 Dec 2024
- 15:49:18 +0000
-Message-ID: <633062bb-5c70-409d-a55b-5785294d59da@intel.com>
-Date: Thu, 19 Dec 2024 16:49:12 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 4/4] ice: Add correct PHY lane assignment
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-To: Paolo Abeni <pabeni@redhat.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>
-CC: Karol Kolacinski <karol.kolacinski@intel.com>, <richardcochran@gmail.com>,
-	<horms@kernel.org>, Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>, Pucha Himasekhar Reddy
-	<himasekharx.reddy.pucha@intel.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <edumazet@google.com>, <andrew+netdev@lunn.ch>,
-	<netdev@vger.kernel.org>
-References: <20241206193542.4121545-1-anthony.l.nguyen@intel.com>
- <20241206193542.4121545-5-anthony.l.nguyen@intel.com>
- <04a216d1-6952-40f0-b7d0-f9d8b4f5a866@redhat.com>
- <a7b0cf34-4445-40cf-9a8a-b3c24be08fc9@intel.com>
-Content-Language: en-US
-In-Reply-To: <a7b0cf34-4445-40cf-9a8a-b3c24be08fc9@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MI1P293CA0025.ITAP293.PROD.OUTLOOK.COM
- (2603:10a6:290:3::11) To MN6PR11MB8102.namprd11.prod.outlook.com
- (2603:10b6:208:46d::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="km/DHh7f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C856C4CECE;
+	Thu, 19 Dec 2024 15:50:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734623412;
+	bh=ByHZDWm/9oQxpS7J0BmM2h6vlsvLdXRtU9K5mcxznWQ=;
+	h=From:Subject:Date:To:Cc:From;
+	b=km/DHh7fATGgr4fBgJLFrps3oW1jJ/IoXaBK1aOP43pW9kXANhozTpx5g51rAwbJ/
+	 NgY1hXztqkAmLo6TTpFViQZLVjKdi/KJmc1PIP6LAT9N2QjjMK3Zgw8yeE6QIbs2s2
+	 nwwW3f4h/e/LTGfchrGdGDCQbaMT5j8oEOgTHOetXtqJ6kQ1Rb1W6uiuz89ncHlZuJ
+	 /ROs6J7n+NyTXMryjKvcJZCKkY6u5y60dWxZEWDLn+dNskn0CkrEnLlYGWkHXbP+wQ
+	 +FFxi3XbWr/Bg6ueoRSJInhwAHUEv4ODUaV346Y25A6Xq5VslgUkWoCIk7JZDIiruv
+	 kYURjbnzhhL0g==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH bpf-next/net v2 0/7] bpf: Add mptcp_subflow bpf_iter
+ support
+Date: Thu, 19 Dec 2024 16:46:39 +0100
+Message-Id: <20241219-bpf-next-net-mptcp-bpf_iter-subflows-v2-0-ae244d3cdbbc@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN6PR11MB8102:EE_|CH3PR11MB7818:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4ac965b8-c713-42ba-6cf3-08dd2044b282
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?VWR4empCTGFKcHFDMDVPM3cvcmJGR1BDTnpRT3d0cTBsU3BiRm1qSDdKbFYv?=
- =?utf-8?B?M1hNendKUllzTFF4cGFtWmlGZVQ3RTFEWFBMRWJtRTZmSTJseU1wK3djRXpM?=
- =?utf-8?B?RzJZamNxNE0xeVUwTUpPRnVCKzdpN1pMc21vcDluR0c4aHhZV29xMjUxZld2?=
- =?utf-8?B?QWZIWEVJZ1ZMYm1UT21za3N6WjRlOHJwMFVnSEV5TnQra2lQTmZKd1dWUjJ2?=
- =?utf-8?B?cXBGanVaenhDcHZwV1BDL1R0NGlWK0lFOXBpaHQxL0s3cGJoZCtHMis2bGpK?=
- =?utf-8?B?NWkxT01vWnVuTDRrZExXYko1TUlHQ3kwb0I4SXdoa0tmcVBqb01UNkliem9G?=
- =?utf-8?B?aUtIcWFSRTBvUDNjNGdidDVydUd2dC94V0FjMmxSWVVFV2s4Uk4rczIwRTha?=
- =?utf-8?B?UHo2a2JlZEErMFdHMEJnendaQjcrLy9lN0tyZ0Z0bTdTQjBJOHJMVG5PQ2ZS?=
- =?utf-8?B?QWppYnVpM01VdHJ5ODhybmFZQTZWcHJ5VXJ0cWFlNENmcHdsd0xEVmt3dC9v?=
- =?utf-8?B?UkR2bmxnZDBXQjlHcTdDT0lIVlVjM1RGYmpnVis2RzZFOFZnQkZkNVdGY3VR?=
- =?utf-8?B?S1FjVi9VK1lqVVBqL20venFqYXVqRVlpY1Q5VGZET085ME14L2ZTR3lacWZx?=
- =?utf-8?B?OEJ5NGc0a2l5L0V1WXNOWS9yTEp5WVp5VDB3aHgveS9RZWlxNW1JMG9ETWgx?=
- =?utf-8?B?Y240dW5MclZ6QlQxOFpuclpPWWJCOWRpZjZ4OGZOMmlqa3JPNXFSMjdVN3ND?=
- =?utf-8?B?Nm1WWFNZN1FnUUorVFlCcXJTbU5NeDRLTVhxS1doWm40eXdxY0NZZnh3V29p?=
- =?utf-8?B?enUvclFHYUxNV0o1Y2o2SWlLUEppMlpjZ3pkR25neDQwbWpZNzNtSnl5T1g0?=
- =?utf-8?B?d1JZTGtpNHB3bnZyZU0zbWlrZFh4eG8wNkVPOTYzSy9TNGRDaVZlNUtVWVJE?=
- =?utf-8?B?TWprRldPcTh6UXpMUVpyeDMwVjI3dm93aG00QWh6UG5OcmVBOStZbWJEYmhm?=
- =?utf-8?B?MER5TDVLZ3RZeExDNjB3NGl3bHo4elM3dGJ4RzFhQXRuTkVOcytmcTZpeTJl?=
- =?utf-8?B?UVRlOFp6WSttdmFwRDZsaFJoUm9tK0xRbWwzN0hFNlZFZmJoN2pLUyt6Q1hK?=
- =?utf-8?B?SzRXdmIzMld1dldLT3h6MXRpT244WTNJT0JwQzNTdXNuem5LR2FmTVZES29X?=
- =?utf-8?B?UWVOU29iRG53RndQa0xzNnNJaEcveXFZVmY2QXQ3NzBOZ3oyTXZMQXN2YWpq?=
- =?utf-8?B?MkRZNEFjM0dtWWE1NEoxbUhPWWNMZ1FqelQ4TndIUkJiNkgxU2JoNFlJR1dG?=
- =?utf-8?B?V3Y3SkRqWmFNTFhOc3JkRUxCK2E4QlU0VUNvOXk4Z0sxQkViRzNYeDRGaUwz?=
- =?utf-8?B?dC80bjcrQXptejgzTDJ3WnBXcVJVOWdIaFdwQ1ZuYUR2ekNKNXpTMGFHWVJL?=
- =?utf-8?B?ck5ZTW5nQWpSTEdvWHFaUVlEbWlIbTRoNGxFRkptcWhDY3dWSjdNaFFUUFpY?=
- =?utf-8?B?d3lFbHpBYVAzYlFmaEdza3ZCY21RZnRyRHJRREliZEJlK0MvbEV5K29MdS9l?=
- =?utf-8?B?VkVoNmM1aDF4SkF2WTdGNW12Ymp4UkZOOTR0REZkT09IL0pUUnBvSWRBK1B5?=
- =?utf-8?B?d2RyWnFBZTBKYXE4VzdFMEt0eDlrYVY1NjlCU3VDT2psMERhWjIyNURVVkVl?=
- =?utf-8?B?VzFnaXFsUkg4ZXZ4amZub1dCTFlINm9RVldWVXh4N0g1RDQxNy8rbzdaQnc3?=
- =?utf-8?B?Q3hIM3RyOGhtdXQ2OHJ4WWZQTVNjcDBNNXRKbGlzVDdEL2NONkU5TnlOaDYw?=
- =?utf-8?B?MzJ6b1dDdFFOelI3c2EzQT09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN6PR11MB8102.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eTAwQVRkQ25DMGdwYTdCQUxvTy8xN1dma1Z5ckM5Q041dzhiZ0pjVDlhbS9l?=
- =?utf-8?B?L3ltS2dOU3dxY1lZVkR3TjFvdEh5RVc1VEg5RDN3TWlvZFlFTXNGUGlOeDNy?=
- =?utf-8?B?WURGbjRURm5ObHhzNlJXak0vZUtmUVUrU2hKZzNZVklDZWExc3BueFNaZHA0?=
- =?utf-8?B?bWpCTVgwV3AzNWd5T0VEai94dURGWWZhSHVQU0RxWG4zWTZ1TTZrNzhlc2Rx?=
- =?utf-8?B?WkQyNnJacCtOZzdoVTNqYVBvS210K3BlMkFKOHhEenNXdEYxT1JqSUFnMmZl?=
- =?utf-8?B?QkZyRldzaVlTdXF2bytXNVhQQitVVUxMdU1SVks1aVNZcFlwVjhrN1BQdDA2?=
- =?utf-8?B?NEhVSW1BMFFYNnExQjhUQ0NVY05jYnZJR3hYLzRIOTdERlNKdWdRcUNhR2JD?=
- =?utf-8?B?aHdlTFVhNWpkemJNN1dQYzFLckRmMFFmZmwzbjVaMDJpQS8zUVR0OEMxWFBD?=
- =?utf-8?B?WHZtUkVFQ3ZCQWpCY0RXSFRTL1UvWGZ6Yk5pQzM1NVBHRi9WQ29NQ2Q3MUx0?=
- =?utf-8?B?dWJPU2dCcmZzUHVGSFZQNXl6ZzMrODdTR2l6VE54aGQ0OUNiWjBZSlJtK1ky?=
- =?utf-8?B?NU1rMlVrdVZaZ3BWL0gwenlxbFFYTVc2WjQ0ZWJyNHJJTGd6UXZTN1FYY0Mv?=
- =?utf-8?B?SXg2RDZSNXh3ME9kK2djY0NsVmFFUGRKcUNqdVoxRWM1ZzlESGhFaWl4bG9O?=
- =?utf-8?B?T3dPem1zNHRNNWZVYk5EcW95Q01xT0hpRnNKalNrMWYzSUQ4aXVZek0vRjlW?=
- =?utf-8?B?M2lRUFRjRWd5MmZhN3Z6aDdudDZ1TmdhMXlSb2NSZFc5eVZJbWM5VHlOWXlK?=
- =?utf-8?B?bzdHcGtmSUNLNFhGMkhnWSs2QjUxdHhDWmVCZFFUNmkrdGdsSFNCTlNLOVVU?=
- =?utf-8?B?MHpPMjdmZVRKTFNLdTVGWVNDakYwY2c0aVJCWWpGUUJHUGJOL3laZ3h6VjNM?=
- =?utf-8?B?SlMybFdkWXp4VFBqTXRncWNCM2x6MTV3THBqM2pFVVkwQ081NWVEOU1CWHh4?=
- =?utf-8?B?N1kwMTJrR3FYYkE0UmkwdVpQUGtzM2RQTHMremdhazB0RkQyZ3VMYWV0bU9k?=
- =?utf-8?B?UVRPREl6ckpPYUMvMFpVM01XQll1cWY1d0Z3S1llaG9mb2RvV0lVK1NTaG1R?=
- =?utf-8?B?S1ZyYXVkSm9oR0wxbGw4RHlLSmlKNmN5SGVFYThVNENDYTlrTjhrRytxa043?=
- =?utf-8?B?ZCt0SVJLa0FoSTRMMk5Oem52N0prQi9maEdRbllLSG1OVVRyUHdReFV0cVBE?=
- =?utf-8?B?UHg4SEJMZTdjQVRaT3h6eSt6cUxVREJVdVVnV095a0VZK21XSy9CRnltQkth?=
- =?utf-8?B?cm1KaGp4MlExM0ZrQTFRcEMrQzlmMWRDOVEzWE5NZXBza2M5cGdiRmc4THcr?=
- =?utf-8?B?dmRzdGhoWnFlRVBEOEsyVmZvYjdVVzh5YitlZ0tNSVNPdzljTVlrSzd1R0lZ?=
- =?utf-8?B?SndlbGxmVnU1Z0NGUkN4YWduZi9rM3FHSllrU3dZWWQvTUtqVlVMaDZxOUp1?=
- =?utf-8?B?Zm82N0U3V0RDVWJGaE5wbzdKb005ZitoRlRBTGk3dmZXWmc2RHA5Qi9CbzhK?=
- =?utf-8?B?ZzBJK2hsU29rT016Z3hsdlV4ZENONVdPdWd0U0FoN0xFV2FQbmI4d1RSUUJF?=
- =?utf-8?B?aTQwZ2NCU29FdE9kNzJBV1FocjZLOWw2R2pJcHJUOUpkaUxWWFgrS2JZTjFr?=
- =?utf-8?B?OUdZTENWZHNjaHVoSUlWTjAwYmJrZ1lTMXp1L3hTdXdtamhHT1lETTQ0U0dE?=
- =?utf-8?B?N2pFN1pER0R4ditMODRkSGQrb2JoVHU4S0lxek5BbFVwUlpIOXJZM2l6ZFRE?=
- =?utf-8?B?RWNZaHFCWEprOGtyNU5RRGNPTUNHMUlLNXdBZG83OEtYYTdTb095NUJreU9o?=
- =?utf-8?B?dWlTdGZ3YWxsQ1dTNGltOU81QURKRmxCelpDRUdTWXNEWmkxRThybVZVZitw?=
- =?utf-8?B?VzFXUkN4R0l6UXdkSVh0cHdqa0o1T2NRQ29JN2xaZlNVVFZJVUwwTWpFT2pr?=
- =?utf-8?B?ekJjZ2tBL2RyK290NFJXME1EeUE4YysyT3lTRnBUWWsySEtyZmZwanhEZTlH?=
- =?utf-8?B?eDhsMHBkbEI5aG5jNzk5UXBCZ1ZjUHRFZVhkWDJGNlRlYkhqVzZRVkt1NXlS?=
- =?utf-8?B?UWMwN2FmbFJYblVaYjUyQkVrZmYvSzRqWUpNbktvRU1qQTNVUGxEbFc5eDhx?=
- =?utf-8?B?Tmc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ac965b8-c713-42ba-6cf3-08dd2044b282
-X-MS-Exchange-CrossTenant-AuthSource: MN6PR11MB8102.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2024 15:49:18.2933
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +doK7PYvIAqugQb0Kpkrtyl1xiWFyBPEbz7PCVYAVoaQvl5zLLaf2upTNt1wJ0ZB0qHO3X/RkLbDSfArA+fk/QNaJF2j2TYykA/dOU0FOvM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7818
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAN8/ZGcC/5WOXQ6CMBCEr2L22dW2yI8+eQ9DjJQtNGLbtBUxh
+ LtbSTyAL5PMzuabmSGQ1xTgtJnB06iDtiYZsd2A7G+mI9Rt8iCYOHDOKmycQkNTTBLx4aJ039N
+ VR/IYno0a7CsgE6Uq2qosS0aQUM6T0tNac4EfYZ8IUKe01yFa/143jHz9+a9u5MhQKl4c84xlu
+ eTnO3lDw876DuplWT6QVG5D5wAAAA==
+X-Change-ID: 20241108-bpf-next-net-mptcp-bpf_iter-subflows-027f6d87770e
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Andrii Nakryiko <andrii@kernel.org>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, 
+ Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, 
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Mykola Lysenko <mykolal@fb.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+ Martin KaFai Lau <martin.lau@kernel.org>, Geliang Tang <geliang@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3024; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=ByHZDWm/9oQxpS7J0BmM2h6vlsvLdXRtU9K5mcxznWQ=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnZECtpeo+j21fMlV+xLe4gynFHDQ5Np17OQ/Eg
+ 4CUTEyc1zWJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ2RArQAKCRD2t4JPQmmg
+ c4NKEACSSRan4ojginG5BBXr1WordyYwpR0I1iG4+qZmflYWqpa7/kSAXGWC8Jq8eGD5PSgv8Cx
+ udUhLaywCyTvdSuA9VAVa1VMqNDJn8HOCeMCygAuxg+kJqR/DrLWH8FpttdbjQVW5vzspdcxVBq
+ JqplaF6dq7yKPoMtLCmziTHf/OvD1UGxXdangCq9eKtZ4M/M3F75xgnHEOAYCviX6SGuCcfkj16
+ jhkWqFp+qdhBHe5B9uomaGxmLyaLogu9pIsB+qqhIszYyLixGdviPboEdlZvEwwvaIVLm/d+Lhn
+ IGuzmyuJ9a6BSwcI/aAhjOHvwo0h7CK1HTx0gwWlml4Yu+ss+qmQEXT2FXKprsROyIiBv+JRyi2
+ ZcODUquG7/T9FpZvIJrBNuL1WI8qG6CCTHyQPCAp3F//NEscMe2QxfDbg+jzX2i2H96pSfRZyhT
+ EZ7Fg1KnQpfNLDKWcaLEd0ovJDbsg35fQbLDXYZvm/Nv3vsOEQ8DGmEcWpKI870IG7+xFAfNIUD
+ LJkZF029MLwoij9H2LVQcb0oqO855cMRV7MMEK8ZshVkQa2BR8AHXUwoY6NTGcOVt7F3Cy4KGEc
+ uK1UFEApNtsbVBt90p2FHdKOST3bySpEdhiSI+n4SW39kL6gk5iE4NEKBW0w7YUktjM3aFOXJKT
+ /gSyR19+w9Lm15A==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-On 12/11/24 11:36, Przemek Kitszel wrote:
-> On 12/10/24 15:54, Paolo Abeni wrote:
->> On 12/6/24 20:35, Tony Nguyen wrote:
->>> diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/ 
->>> net/ethernet/intel/ice/ice_common.c
->>> index 496d86cbd13f..ab25ccd7e8ec 100644
->>> --- a/drivers/net/ethernet/intel/ice/ice_common.c
->>> +++ b/drivers/net/ethernet/intel/ice/ice_common.c
->>> @@ -4095,6 +4095,51 @@ ice_aq_set_port_option(struct ice_hw *hw, u8 
->>> lport, u8 lport_valid,
->>>       return ice_aq_send_cmd(hw, &desc, NULL, 0, NULL);
->>>   }
->>> +/**
->>> + * ice_get_phy_lane_number - Get PHY lane number for current adapter
->>> + * @hw: pointer to the hw struct
->>> + *
->>> + * Return: PHY lane number on success, negative error code otherwise.
->>> + */
->>> +int ice_get_phy_lane_number(struct ice_hw *hw)
->>> +{
->>> +    struct ice_aqc_get_port_options_elem *options __free(kfree);
->>
->> Please avoid the __free() construct:
->>
->> https://elixir.bootlin.com/linux/v6.13-rc2/source/Documentation/ 
->> process/maintainer-netdev.rst#L393
-> 
-> My understanding was that conversions to __free() (w/o any other reason)
-> are bad. But for new code, it's fine. I get the "discourage" part from
-> the doc, as "don't use __free() by default, for all pointers, or all
-> allocations, but apply your judgement and sanity to tell if that makes
-> given function better".
-> I still believe that this function is better with __free(). We develop
-> (new code) with such assumptions for the better part of the year.
-> 
-> I think that static analysis tools/Reviewers already got used to that
-> (after the first false-positive memleak reported). Developers (and
-> Reviewers for sure) know that those pointers could not be left
-> uninitialized at function return. The only concern that is unresolved
-> for me yet, is: "there is a lot of characters to type", but that is also
-> good in some way, as one needs bigger function to justify the added
-> "complexity".
-> 
->>
->> Thanks,
->>
->> Paolo
->>
-> 
+Here is a series from Geliang, adding mptcp_subflow bpf_iter support.
 
-Paolo, could you please revisit this? In short I propose: let the 
-developer and reviewers to decide if __free() makes given code
-better, instead of an umbrella "just no" statement.
+We are working on extending MPTCP with BPF, e.g. to control the path
+manager -- in charge of the creation, deletion, and announcements of
+subflows (paths) -- and the packet scheduler -- in charge of selecting
+which available path the next data will be sent to. These extensions
+need to iterate over the list of subflows attached to an MPTCP
+connection, and do some specific actions via some new kfunc that will be
+added later on.
 
-I believe that Jiri would be happy too, to back it up as another
-HW Vendor.
-https://lore.kernel.org/lkml/ZfW9lVhnClqr9Han@nanopsycho/T/
+This preparation work is split in different patches:
+
+- Patch 1: extend bpf_skc_to_mptcp_sock() to be called with msk.
+
+- Patch 2: allow using skc_to_mptcp_sock() in CGroup sockopt hooks.
+
+- Patch 3: register some "basic" MPTCP kfunc.
+
+- Patch 4: add mptcp_subflow bpf_iter support. Note that previous
+           versions of this single patch have already been shared to the
+           BPF mailing list. The changelog has been kept with a comment,
+           but the version number has been reset to avoid confusions.
+
+- Patch 5: add kfunc to make sure the msk is valid
+
+- Patch 6: add more MPTCP endpoints in the selftests, in order to create
+           more than 2 subflows.
+
+- Patch 7: add a very simple test validating mptcp_subflow bpf_iter
+           support. This test could be written without the new bpf_iter,
+           but it is there only to make sure this specific feature works
+           as expected.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Changes in v2:
+- Patches 1-2: new ones.
+- Patch 3: remove two kfunc, more restrictions. (Martin)
+- Patch 4: add BUILD_BUG_ON(), more restrictions. (Martin)
+- Patch 7: adaptations due to modifications in patches 1-4.
+- Link to v1: https://lore.kernel.org/r/20241108-bpf-next-net-mptcp-bpf_iter-subflows-v1-0-cf16953035c1@kernel.org
+
+---
+Geliang Tang (7):
+      bpf: Extend bpf_skc_to_mptcp_sock to MPTCP sock
+      bpf: Allow use of skc_to_mptcp_sock in cg_sockopt
+      bpf: Register mptcp common kfunc set
+      bpf: Add mptcp_subflow bpf_iter
+      bpf: Acquire and release mptcp socket
+      selftests/bpf: More endpoints for endpoint_init
+      selftests/bpf: Add mptcp_subflow bpf_iter subtest
+
+ include/net/mptcp.h                                |   4 +-
+ kernel/bpf/cgroup.c                                |   2 +
+ net/core/filter.c                                  |   2 +-
+ net/mptcp/bpf.c                                    | 113 +++++++++++++++++-
+ tools/testing/selftests/bpf/bpf_experimental.h     |   8 ++
+ tools/testing/selftests/bpf/prog_tests/mptcp.c     | 129 ++++++++++++++++++++-
+ tools/testing/selftests/bpf/progs/mptcp_bpf.h      |   9 ++
+ .../testing/selftests/bpf/progs/mptcp_bpf_iters.c  |  63 ++++++++++
+ 8 files changed, 318 insertions(+), 12 deletions(-)
+---
+base-commit: dad704ebe38642cd405e15b9c51263356391355c
+change-id: 20241108-bpf-next-net-mptcp-bpf_iter-subflows-027f6d87770e
+
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
