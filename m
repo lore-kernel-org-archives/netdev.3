@@ -1,131 +1,132 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34005222D45;
-	Thu, 19 Dec 2024 10:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BF254727
+	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 10:21:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734603637; cv=none; b=THyxVhuqTLrC0i1tv4TMx7ARxPXkvsJx95Od/ezu+4Mx4KG/7i8Xi8QjLWOX/txfV+I8bohkOAO0xq6svM57D4AJ7SqQVGExVuJhZ/Elyn/2jHG1JPrvUwNrIRRGxcDpCaFQcwyYeyle00z9J/rEBliZRxo93tyxqM2ycRG1lk4=
+	t=1734603683; cv=none; b=lvBdAny4hl1wVtoR9cCNApad3iUXPkKsuN1KtX2AOIhYwxLxCLQeUtaM+DrnqEaqKY7OAzJAArkpUDgZlH0kVUqvBRyOdwmxG2lWoSayJdOP1BL6xm0npn+YRryNUJhVuVK8tMqS/emZVNkmsDcu/FGeGHxvp+HKT+aIAWXcFmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734603637; c=relaxed/simple;
-	bh=bVAK5qqrzNv/+QX0XmTlgynG+PuvzBKkGTqdKXAMwC0=;
-	h=Subject:To:References:CC:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=fAetzd8Cx55JX5vPAjzUQZ2ntZxBZFmnDHTyX1zsiN1XfoQ7kfgXUdGAY8Bu+Wl+GQcSmBqh0wGHk4UaBugKawpIuJKbhjWmCqIpUOuFsU/VJEMZE4yT6VqFJScf2Z3c+7s+vjKXNdwX7RwUmM+PCGlu07TTGqSlraSQDswsyYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4YDRMr3q9XzRjrm;
-	Thu, 19 Dec 2024 18:18:32 +0800 (CST)
-Received: from kwepemh100016.china.huawei.com (unknown [7.202.181.102])
-	by mail.maildlp.com (Postfix) with ESMTPS id 39D8F1402E1;
-	Thu, 19 Dec 2024 18:20:26 +0800 (CST)
-Received: from [10.174.179.93] (10.174.179.93) by
- kwepemh100016.china.huawei.com (7.202.181.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 19 Dec 2024 18:20:22 +0800
-Subject: Re: [PATCH v3 -next 11/15] sunrpc: use vfs_pressure_ratio() helper
-To: Jeff Layton <jlayton@kernel.org>, NeilBrown <neilb@suse.de>
-References: <> <12ec5b63b17b360f2e249a4de0ac7b86e09851a3.camel@kernel.org>
- <172859659591.444407.1507982523726708908@noble.neil.brown.name>
- <b0cf00eec77014ad473d4510904eb2d4fd084e5a.camel@kernel.org>
-CC: <akpm@linux-foundation.org>, <mcgrof@kernel.org>,
-	<ysato@users.sourceforge.jp>, <dalias@libc.org>,
-	<glaubitz@physik.fu-berlin.de>, <luto@kernel.org>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <viro@zeniv.linux.org.uk>, <brauner@kernel.org>,
-	<jack@suse.cz>, <kees@kernel.org>, <j.granados@samsung.com>,
-	<willy@infradead.org>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<lorenzo.stoakes@oracle.com>, <trondmy@kernel.org>, <anna@kernel.org>,
-	<chuck.lever@oracle.com>, <okorniev@redhat.com>, <Dai.Ngo@oracle.com>,
-	<tom@talpey.com>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <paul@paul-moore.com>,
-	<jmorris@namei.org>, <linux-sh@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-security-module@vger.kernel.org>, <dhowells@redhat.com>,
-	<haifeng.xu@shopee.com>, <baolin.wang@linux.alibaba.com>,
-	<shikemeng@huaweicloud.com>, <dchinner@redhat.com>, <bfoster@redhat.com>,
-	<souravpanda@google.com>, <hannes@cmpxchg.org>, <rientjes@google.com>,
-	<pasha.tatashin@soleen.com>, <david@redhat.com>, <ryan.roberts@arm.com>,
-	<ying.huang@intel.com>, <yang@os.amperecomputing.com>,
-	<zev@bewilderbeest.net>, <serge@hallyn.com>, <vegard.nossum@oracle.com>,
-	<wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
-From: yukaixiong <yukaixiong@huawei.com>
-Message-ID: <3efccfae-3f76-c99c-29f9-fdf5dd65894d@huawei.com>
-Date: Thu, 19 Dec 2024 18:20:21 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+	s=arc-20240116; t=1734603683; c=relaxed/simple;
+	bh=+bH3K7pBMWHA9CAhc0JMMa4S0aWKCBgpoi9I3vJHOyY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hw7aJBndD9yve8zZBQlTzlMLxkEuC57xOKQc1VwuhejyX9jwOQz15XjgP2+KfsbD7PiK/ybpKQ7zxSUHli/zYRvPeRJzj++WF24zjIWk1EvH1PyZ1FuIotoBBARYWx5aC55KeuU2MGRrBW1CFHne3gnReeUagtXjR63CQZoucWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xa+z7KFE; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xa+z7KFE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734603680;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l1rn7Q4xREFyKwST1TUIfeiNM6wzi4y08dTglc/WzBE=;
+	b=Xa+z7KFE0YnTriRaskpDoLIsKpCIL16o7lMMMGsz5b6iLkWBh6Rr5ruxubZrsaDyxPtSGE
+	3a7VyArifwl/+sYSamty27Hi03Ct0Fb1G2CFSomhQjPMbX1c3MdyXocETMB0x5c+fsTScC
+	k43E7pTjFDhcrhpYHf+kt8cjy61wGEs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-169-hsEY49a3M1qIfqCOMqMrlQ-1; Thu, 19 Dec 2024 05:21:15 -0500
+X-MC-Unique: hsEY49a3M1qIfqCOMqMrlQ-1
+X-Mimecast-MFC-AGG-ID: hsEY49a3M1qIfqCOMqMrlQ
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4361eb83f46so5091935e9.3
+        for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 02:21:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734603673; x=1735208473;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=l1rn7Q4xREFyKwST1TUIfeiNM6wzi4y08dTglc/WzBE=;
+        b=mE+NZFK7KjFmqAV4gKj/BojjWLXtkYlVuV7+1pA57H4Xc8B1ttpgspGrgJA5btDH02
+         RcWf0nd/Z0iWeUeGycHZeMOKSXgoDDAgns6bXEtM77a66zJLCweAOs3ClGWgrM+/qf8n
+         AtTgud2PrbEgKcjLlPZNVVwYlC3s4KccC5gFvBPnkPvoM4/nicdJac8TDjxy7r04bOG1
+         419/r2XeLkib1dfMRknhvysgUMUou+YUOaaHiiWi78Rq40OvHJz4Ar6ydixDBCfVv6Wa
+         SdhGvGAPHdDFOHY4quw6AIztQ1QIvkwfEjdf3yM2n/nxTxOVQuvxuBtPqvXrUEau1s3c
+         dK2w==
+X-Gm-Message-State: AOJu0YwI+n0kP9gaxHifVqgS6r8ytJcSUS3Va9n+uMdaVkVMdv+hdPcJ
+	p9/V9+abrrpW/zeSRHDiOdExhMEcwGUUDBSD+T6KUoc4f0CQ4FwK3L8sBlhvVW7w2Pib7xHuZxN
+	jxic+QX8C1K+bsU8+wewUFMKBbzIZRcHqDtp/pjMHtyvmitKNJvfNxQ==
+X-Gm-Gg: ASbGnctTaqLKuddmI61HpJwu71f/RGYrmQRNjIPZKZgysFL+itpNraJ9k2lerudGy+N
+	eUM3urxEVzTRJ1L3OOUy9XkwTR3PZaJkJp6THUqcmw/PoYtLqoHlS9vqYYrliE1doJT134sh08X
+	EXKvwis0PXdcyN2FWFQHiTi9KocThux7s/hVDmhRmgGv+mDM1tItpzlv2IZiaAlZUUsCD5tooah
+	wwi+nm3MTHm+o4QzP2RCZ4TtGtQhnXUjrT+KJKHoGwN2Ti5qAr9KgKZtkZqRfpORfLf7K2axPao
+	dcfQwF5+nA==
+X-Received: by 2002:a5d:47ab:0:b0:385:f2a5:ef6a with SMTP id ffacd0b85a97d-388e4d4b590mr5763933f8f.15.1734603672930;
+        Thu, 19 Dec 2024 02:21:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG3jsazlxDK2iO3mglVl9yY9u0NZR2F+lON2AMyuKym+rULOi/I7sbYklOcmDzhy07STjrGMA==
+X-Received: by 2002:a5d:47ab:0:b0:385:f2a5:ef6a with SMTP id ffacd0b85a97d-388e4d4b590mr5763916f8f.15.1734603672614;
+        Thu, 19 Dec 2024 02:21:12 -0800 (PST)
+Received: from [192.168.88.24] (146-241-54-197.dyn.eolo.it. [146.241.54.197])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b015absm47867405e9.13.2024.12.19.02.21.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Dec 2024 02:21:12 -0800 (PST)
+Message-ID: <13a68f91-b691-4024-8ae8-5f108b4e4587@redhat.com>
+Date: Thu, 19 Dec 2024 11:21:11 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <b0cf00eec77014ad473d4510904eb2d4fd084e5a.camel@kernel.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] net: mv643xx_eth: fix an OF node reference leak
+To: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>, sebastian.hesselbarth@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org
+Cc: netdev@vger.kernel.org, dan.carpenter@linaro.org
+References: <20241218012849.3214468-1-joe@pf.is.s.u-tokyo.ac.jp>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20241218012849.3214468-1-joe@pf.is.s.u-tokyo.ac.jp>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggpeml100004.china.huawei.com (7.185.36.247) To
- kwepemh100016.china.huawei.com (7.202.181.102)
 
+On 12/18/24 02:28, Joe Hattori wrote:
+> Current implementation of mv643xx_eth_shared_of_add_port() calls
+> of_parse_phandle(), but does not release the refcount on error. Call
+> of_node_put() in the error path and in mv643xx_eth_shared_of_remove().
+> 
+> This bug was found by an experimental verification tool that I am
+> developing.
+> 
+> Fixes: 76723bca2802 ("net: mv643xx_eth: add DT parsing support")
+> Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+> ---
+> Changes in v3:
+> - Insert a NULL check for port_platdev[n].
+> Changes in v2:
+> - Insert a NULL check before accessing the platform data.
 
+I'm sorry for nit-picking, but many little things are adding-up and
+should be noticed.
 
-On 2024/10/11 20:38, Jeff Layton wrote:
-> On Fri, 2024-10-11 at 08:43 +1100, NeilBrown wrote:
->> On Fri, 11 Oct 2024, Jeff Layton wrote:
->>> On Thu, 2024-10-10 at 23:22 +0800, Kaixiong Yu wrote:
->>>> Use vfs_pressure_ratio() to simplify code.
->>>>
->>>> Signed-off-by: Kaixiong Yu <yukaixiong@huawei.com>
->>>> Reviewed-by: Kees Cook <kees@kernel.org>
->>>> Acked-by: Anna Schumaker <anna.schumaker@oracle.com>
->>>> ---
->>>>   net/sunrpc/auth.c | 2 +-
->>>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/net/sunrpc/auth.c b/net/sunrpc/auth.c
->>>> index 04534ea537c8..3d2b51d7e934 100644
->>>> --- a/net/sunrpc/auth.c
->>>> +++ b/net/sunrpc/auth.c
->>>> @@ -489,7 +489,7 @@ static unsigned long
->>>>   rpcauth_cache_shrink_count(struct shrinker *shrink, struct shrink_control *sc)
->>>>   
->>>>   {
->>>> -	return number_cred_unused * sysctl_vfs_cache_pressure / 100;
->>>> +	return vfs_pressure_ratio(number_cred_unused);
->>>>   }
->>>>   
->>>>   static void
->>> Acked-by: Jeff Layton <jlayton@kernel.org>
->>>
->> I realise this is a bit of a tangent, and I'm not objecting to this
->> patch, but I wonder what the justification is for using
->> vfs_cache_pressure here.  The sysctl is documented as
->>
->>     This percentage value controls the tendency of the kernel to reclaim
->>     the memory which is used for caching of directory and inode objects.
->>
->> So it can sensibly be used for dentries and inode, and for anything
->> directly related like the nfs access cache (which is attached to inodes)
->> and the nfs xattr cache.
->>
->> But the sunrpc cred cache scales with the number of active users, not
->> the number of inodes/dentries.
->>
->> So I think this should simply "return number_cred_unused;".
->>
->> What do others think?
->>
->> NeilBrown
->>
-> -----------------8<------------------
->   * @count_objects should return the number of freeable items in the cache. If
->   * there are no objects to free, it should return SHRINK_EMPTY, while 0 is
->   * returned in cases of the number of freeable items cannot be determined
->   * or shrinker should skip this cache for this time (e.g., their number
->   * is below shrinkable limit)...
-> -----------------8<------------------
->
-> number_cred_unused does sound like a better way to report this.
-Thanks, I'll take NeilBrown's advice.
+The subj prefix must include the correct revision number (v3 in this case).
+You must avoid submitting new revisions within the 24h grace period, see:
+
+https://elixir.bootlin.com/linux/v6.12.5/source/Documentation/process/maintainer-netdev.rst#L414
+
+> ---
+>  drivers/net/ethernet/marvell/mv643xx_eth.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
+> index a06048719e84..0e2ebfcaad1c 100644
+> --- a/drivers/net/ethernet/marvell/mv643xx_eth.c
+> +++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
+> @@ -2705,8 +2705,14 @@ static struct platform_device *port_platdev[3];
+>  static void mv643xx_eth_shared_of_remove(void)
+>  {
+>  	int n;
+> +	struct mv643xx_eth_platform_data *pd;
+
+Please respect the reverse xmas tree above, see:
+
+https://elixir.bootlin.com/linux/v6.12.5/source/Documentation/process/maintainer-netdev.rst#L360
+
+Otherwise LGTM, thanks!
+
+Paolo
 
