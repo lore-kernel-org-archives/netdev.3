@@ -1,341 +1,228 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFFA226878;
-	Thu, 19 Dec 2024 15:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5ECE5FDA7
+	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 15:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734623451; cv=none; b=ZmpD13G7Q99EQiMNOdnKgjixchVqUeUJ9vqvzQkkQOoxTS88yr8PpYgjUj9WQ2n1+I6b2Wwkr4jhoza/6CHptdT9awYo4aDbwgIp0dicKzCCxmLGTlXWGoM1B0t3Q0Hsu/Zr0g75cL/ts+pvljKyFc3PYFRsdD4LzXNF3H5vxZ0=
+	t=1734623470; cv=none; b=d9F70Kmmz7jp8It8xn/mfwLmBzQutiElFSQ1m3sNTc1sGEZwsME3H9nAjOVgZGjDovmCWN5Xa5cp0hpJ3gmO2ku8SRNY6nEDBV6OudJm8BOqHCQkGeHTbeMrgO6OUacwK0wWmOU8sSRxXsTJ4TBDmKp61rkQcybTrB5QriMyB3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734623451; c=relaxed/simple;
-	bh=yOr4YVcrLbV+j2DBB+pvmmyHN5Y3wzr/J7XUepFTf/0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=V54BbqZHHEUmwrU2kyO2/Tc44rb7rwfAXtD19tmMRBUqTbPbTOkd3ZpdllDpJ/HcASi36Axvg1hnnzMGkqN7WFGc4QsHe5tMmNkE3M03IQb0R4fMVLtE7R3eb3u+pqZ/AIStDCF53MCpaSJrcpY904vF0pLcN4vG9Sl/Pz8pVig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W1Z3fvyE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734623470; c=relaxed/simple;
+	bh=va/Sx5PwTeqYNTqkWi2fD9Q0rwmFYqub1SRehn1cSrU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l1xabZl9NXAEhdShgN4eT/SGYTqTWaIDmbTDuFua1iz+L362oAWWsvTJOMZFn+T1aRFnJTQ+YKBLkcO+0HNQ8KR2naOx7zab5mYmDdjAdqLgoawRDsJpkjsFGSWgPwSy8QnELXEI8t27S+9E+3dploIbwRBCDaxyfYClFBcSc8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fGBqMqaG; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W1Z3fvyE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4025FC4CED7;
-	Thu, 19 Dec 2024 15:50:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734623451;
-	bh=yOr4YVcrLbV+j2DBB+pvmmyHN5Y3wzr/J7XUepFTf/0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=W1Z3fvyEOnOk96rrWoGzGnO4TNKEJ0JBdXkThEPz2AsVK4XDhoh6PXxtryifjRK31
-	 VIQbhnLoErkNMZz3qqg+6Akl2oKdteEc+fm71+/1z7LT0f4hr9C7l1ovemGNvR3Eah
-	 f7BuhKGxLg9yLXlIy0qJjw/P/doDoCCFCbeQkjSjfT1stkZSTohMysmiPXZbuuC/R6
-	 1/yb4aZXfBQ2OHVsPBaRA4wGR4SBBExQhbm0Ndo806Y6axwSfSA0t8Gf4gt/gIgoWF
-	 CE4mIGwjwtEP1Tg6h+vP9UiT0IWESsIP2ocKwVh4S0xRayuOB97RiqZcactwgVxpv5
-	 axjwmLXVIBPew==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Thu, 19 Dec 2024 16:46:46 +0100
-Subject: [PATCH bpf-next/net v2 7/7] selftests/bpf: Add mptcp_subflow
- bpf_iter subtest
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fGBqMqaG"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5d122cf8e52so1488138a12.1
+        for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 07:51:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734623467; x=1735228267; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=98zU2eYAsVB4PUSata4FdBtNwdB1gdUCpBcYbsVKRpg=;
+        b=fGBqMqaGYZ3lCRMh6tsAJomPHv8Yvsvffhd2f7BAkqJxz1gwMRh/YKMXhY1yCeJIvT
+         ohFyskATnE3F3h4L4Z7LDxFLVyuFV2y34MxEoS9jXoLc2WOOSB2C5ovbXy7mkkk2S/ep
+         RNwUUlqMZZsvjCW6YObJF2IYoDgcDfCTfyGktjo9AseGXVvoY6GqaTvl6dfHVL/0VGtv
+         qewsca7ChunsEhBm05bIt5f+JZueIgy7ioLYaZ1yfnEEIlIunkLetreoXr6QamphJm9i
+         18Dz2HgMAx4WKV0Ob9LGe1gwF3pm6OR1yscqMVfjGJj1uRn6eIP8PU4DTcoic5wkR7XE
+         cNUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734623467; x=1735228267;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=98zU2eYAsVB4PUSata4FdBtNwdB1gdUCpBcYbsVKRpg=;
+        b=HmAFPrx8MVOvOBIh/NtbXQqglZTLT1N4KMupTbCjoktjL14DYE04hK2ijay+fgB8ZQ
+         aubUOniX+2v8iyoSWn5rO6atzIK6eUGRxM6gSLd1tFGV0GZXLIDXvC1wFhc1WiDxfOll
+         fnliYU5Sa2vALD6EXq6Gi/QTuZ8RXgObZwAnljns+FNh/VapNnwAGWMHgkv1Ur6tL1ND
+         aSs4AAUNPkWOcKxhZzP5xO0pQ3d7OgjvbW8feX3JxFI4UkVt4MtEqV7KwIjOrdPPChPa
+         +mpHFh0huy8u6/D7qvy8I7ZuTv5h+B+d/xBhc3VoO3gOmACmhx1GEXXzV1gzHkEjxVbA
+         28Cw==
+X-Forwarded-Encrypted: i=1; AJvYcCWskPxEG+dpbLioi4Vh1blvUpF37iGW9qvhpkYUhEV1iV2UKWj31zS5ZtqMS2JFO/JH3E5FDZU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFcbwxHu7gkmgjJugNuVW1Fj2ZSzWEUEJvQIsbHCe90WXWGVir
+	0hgS6wBBY7hV9PCgZbaDfPd2MGKzGmhhlwlCuDBuS6PIz7OeBYru0pO5Ekrl9ZzhRRPQTbMwsK4
+	CxpLht0K+K3iPmjmFuppisGqbiAJ0ifV6dmF7h1TeetxksBwW00sVLsU=
+X-Gm-Gg: ASbGnctwgJxSeJmO7N7JV1ACzUfoLXoOKgYFPAFWBUfIKZsKjUXfKA1YaJnLpBBzwVE
+	+aNOdvo9055VPbbD3EF7NqXafoeTKVOjXdire9ZMDti8bjfA4/P9EkifYOSGsm4zuaAPG7Q6B
+X-Google-Smtp-Source: AGHT+IE+7RbiG6hGwLYVALPDIITNFLkuTpfqnWQvAZ4JugQUV2ivRQ/YBpFpi2NZ7fSjvSnZwI90Y0B2XGvDtxlMBCA=
+X-Received: by 2002:a05:6402:26d1:b0:5d3:ba42:e9fe with SMTP id
+ 4fb4d7f45d1cf-5d7ee3d6d4fmr6526339a12.12.1734623467000; Thu, 19 Dec 2024
+ 07:51:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241219-bpf-next-net-mptcp-bpf_iter-subflows-v2-7-ae244d3cdbbc@kernel.org>
-References: <20241219-bpf-next-net-mptcp-bpf_iter-subflows-v2-0-ae244d3cdbbc@kernel.org>
-In-Reply-To: <20241219-bpf-next-net-mptcp-bpf_iter-subflows-v2-0-ae244d3cdbbc@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Andrii Nakryiko <andrii@kernel.org>, 
- Martin KaFai Lau <martin.lau@linux.dev>, 
- Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, 
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
- Jiri Olsa <jolsa@kernel.org>, Mykola Lysenko <mykolal@fb.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- Geliang Tang <geliang@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9284; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=bq/oYTxQQ+2A/IA41fcrwu1uM6Uk6qmTeqE376zM200=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnZECu1e8GkpdmZGYvyXzQArL8DlgcE6mHZlmKN
- MxIeil0/kqJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ2RArgAKCRD2t4JPQmmg
- c+pxD/9ny3wXWFBPZiEJWambXs+hb29ypQ+IXpG/grTa8P9tb0zcqmoLG+J7MiQsyKr1keCbF6J
- DW1420z/XcviOZhtdJ0S2qN/pGU5D+4XS0j53v51suQMqt0b2o+uil8EAew6VmapyfPh2lOZCKv
- wmczAakHIzg9N5Wh12UINOCCcmrBdvaVxW0E9kJSQ+f0+7yE86BYSs8nDluDafKUZ0OtXQTUSyn
- O6zYvvEpV9frKPvL0uncm2rzV63C3Ix+YsGCMhGBxF+V3uo5QE7fTCATtIko0ECIql/+yXehE4c
- u0/Jz/iUw3YxRCRm1irHhilZMBAKj9zc4lhd0kmKREuaFhCDISGJvBfVZpqPW20KY63WcbV25vu
- REchtTCbZo1Te57y3JgSYQTWRal/2Jhxmg+y2lqXbzM539nuOxrFlBxOvf61ggqNi35GZ5A77AH
- ysWC7oOiDVyhAVrI9BqCa29l+DbvYhrDUKGlk9Jcs7Pf1TG0ScduX9RWXIXBtCwHEA750ibH2kO
- X7/jycj7u/KertC7E5Vyz5rD69QApSIMAMF41q4XGpfiaVabDKZuJzRMzcLyam4SkhLPtf9SZn9
- FABm+JPXUKDyj1O35rnqG1OI7v2F1g2E8t71fGmF+hwsW/rsAY1gSQbd9iE8qA5jtofZ3OwbiYy
- 8FKJS1CTZbpe/2g==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+References: <20241219132644.725161-1-yuyanghuang@google.com>
+ <CANn89iKcVDM-na-kF+o3octj16K-8ZRLFZvShTR_rLAKb-CSoA@mail.gmail.com>
+ <CANn89i+SMrCH1XqL8Q9-rr7k2bez1DNqeQNhO0rBrrHiyOrFXw@mail.gmail.com>
+ <CADXeF1Gg7H+e+47KihOTMdSg=KXXe=eirHD01=VbAM5Dvqz1uw@mail.gmail.com> <CADXeF1GvpMOyTHOYaE5v6w+4jpBKjnT=he3qNpehghRWY+hNHQ@mail.gmail.com>
+In-Reply-To: <CADXeF1GvpMOyTHOYaE5v6w+4jpBKjnT=he3qNpehghRWY+hNHQ@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 19 Dec 2024 16:50:55 +0100
+Message-ID: <CANn89iL683FgvkacTgi2DtSJe40-AE=7XExygp3ZntpQS_CSnw@mail.gmail.com>
+Subject: Re: [PATCH net-next] netlink: correct nlmsg size for multicast notifications
+To: Yuyang Huang <yuyanghuang@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+	roopa@cumulusnetworks.com, jiri@resnulli.us, stephen@networkplumber.org, 
+	jimictw@google.com, prohr@google.com, liuhangbin@gmail.com, 
+	nicolas.dichtel@6wind.com, andrew@lunn.ch, pruddy@vyatta.att-mail.com, 
+	netdev@vger.kernel.org, =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>, 
+	Lorenzo Colitti <lorenzo@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+On Thu, Dec 19, 2024 at 4:28=E2=80=AFPM Yuyang Huang <yuyanghuang@google.co=
+m> wrote:
+>
+> >Also GFP_ATOMIC should probably be replaced by GFP_KERNEL.
+>
+> >All inet6_ifmcaddr_notify() callers are in process context, hold RTNL,
+> >thus can sleep under memory pressure.
+>
+> I might not have enough background knowledge here, but why does
+> holding RTNL imply that the callers are in process context?
 
-This patch adds a "cgroup/getsockopt" program "iters_subflow" to test the
-newly added mptcp_subflow bpf_iter.
+RTNL is a mutex. Acquiring a mutex might sleep.
 
-Export mptcp_subflow helpers bpf_iter_mptcp_subflow_new/_next/_destroy,
-bpf_mptcp_sock_acquire/_release and other helpers into bpf_experimental.h.
+By looking at the code flow, you can see we do not hold a spinlock, or
+block interrupts at this point,
+or are in rcu_read_lock() section.
 
-Use bpf_mptcp_sock_acquire() to acquire the msk, then use bpf_for_each()
-to walk the subflow list of this msk. From there, future MPTCP-specific
-kfunc can be called in the loop. Because they are not there yet, this
-test doesn't do anything very useful for the moment, but it focuses on
-validating the 'bpf_iter' part and the basic MPTCP kfunc. That's why it
-simply adds all subflow ids to local variable local_ids to make sure all
-subflows have been seen, then invoke mptcp_subflow_tcp_sock() in the
-loop to pick the subflow context.
+>
+> Link: https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git=
+/tree/net/ipv6/addrconf.c#n2241
+>
+> In addrconf.c, the logic joins the solicited-node multicast group and
+> calls into mcast.c logic, which eventually triggers the notification.
+> I guess this code path is not in process context when the kernel does
+> SLAAC?
 
-Out of the loop, use bpf_mptcp_subflow_ctx() to get the subflow context
-of the picked subflow context and do some verifications. Finally, assign
-local_ids to global variable ids so that the application can obtain this
-value, and release the msk.
+All these paths must be from process context.
 
-A related subtest called test_iters_subflow is added to load and verify
-the newly added mptcp_subflow type bpf_iter example in test_mptcp. The
-endpoint_init() helper is used to add 3 new subflow endpoints. Then one
-byte of message is sent to trigger the creation of new subflows.
-getsockopt() is invoked once the subflows have been created to trigger
-the "cgroup/getsockopt" test program "iters_subflow". skel->bss->ids is
-then checked to make sure it equals 10, the sum of each subflow ID: we
-should have 4 subflows: 1 + 2 + 3 + 4 = 10. If that's the case, the
-bpf_iter loop did the job as expected.
+Note that debug kernels have CONFIG_DEBUG_ATOMIC_SLEEP=3Dy and would compla=
+in.
 
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
-Notes:
- - v2:
-   - explicit sk protocol checks are no longer needed, implicitly done
-     in bpf_skc_to_mptcp_sock().
-   - use bpf_skc_to_mptcp_sock() instead of bpf_mptcp_sk(), and
-     mptcp_subflow_tcp_sock() instead of bpf_mptcp_subflow_tcp_sock().
-   - bpf_mptcp_subflow_ctx() can now return NULL.
----
- tools/testing/selftests/bpf/bpf_experimental.h     |  8 +++
- tools/testing/selftests/bpf/prog_tests/mptcp.c     | 73 ++++++++++++++++++++++
- tools/testing/selftests/bpf/progs/mptcp_bpf.h      |  9 +++
- .../testing/selftests/bpf/progs/mptcp_bpf_iters.c  | 63 +++++++++++++++++++
- 4 files changed, 153 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/bpf_experimental.h b/tools/testing/selftests/bpf/bpf_experimental.h
-index cd8ecd39c3f3c68d40c6e3e1465b42ed66537027..2ab3f0063c0fd6091ee19da4787671b89b5661f0 100644
---- a/tools/testing/selftests/bpf/bpf_experimental.h
-+++ b/tools/testing/selftests/bpf/bpf_experimental.h
-@@ -575,6 +575,14 @@ extern int bpf_iter_css_new(struct bpf_iter_css *it,
- extern struct cgroup_subsys_state *bpf_iter_css_next(struct bpf_iter_css *it) __weak __ksym;
- extern void bpf_iter_css_destroy(struct bpf_iter_css *it) __weak __ksym;
- 
-+struct bpf_iter_mptcp_subflow;
-+extern int bpf_iter_mptcp_subflow_new(struct bpf_iter_mptcp_subflow *it,
-+				      struct mptcp_sock *msk) __weak __ksym;
-+extern struct mptcp_subflow_context *
-+bpf_iter_mptcp_subflow_next(struct bpf_iter_mptcp_subflow *it) __weak __ksym;
-+extern void
-+bpf_iter_mptcp_subflow_destroy(struct bpf_iter_mptcp_subflow *it) __weak __ksym;
-+
- extern int bpf_wq_init(struct bpf_wq *wq, void *p__map, unsigned int flags) __weak __ksym;
- extern int bpf_wq_start(struct bpf_wq *wq, unsigned int flags) __weak __ksym;
- extern int bpf_wq_set_callback_impl(struct bpf_wq *wq,
-diff --git a/tools/testing/selftests/bpf/prog_tests/mptcp.c b/tools/testing/selftests/bpf/prog_tests/mptcp.c
-index 85f3d4119802a85c86cde7b74a0b857252bad8b8..f37574b5ef68d8f32f8002df317869dfdf1d4b2d 100644
---- a/tools/testing/selftests/bpf/prog_tests/mptcp.c
-+++ b/tools/testing/selftests/bpf/prog_tests/mptcp.c
-@@ -11,6 +11,7 @@
- #include "mptcp_sock.skel.h"
- #include "mptcpify.skel.h"
- #include "mptcp_subflow.skel.h"
-+#include "mptcp_bpf_iters.skel.h"
- 
- #define NS_TEST "mptcp_ns"
- #define ADDR_1	"10.0.1.1"
-@@ -33,6 +34,9 @@
- #ifndef MPTCP_INFO
- #define MPTCP_INFO		1
- #endif
-+#ifndef TCP_IS_MPTCP
-+#define TCP_IS_MPTCP		43	/* Is MPTCP being used? */
-+#endif
- #ifndef MPTCP_INFO_FLAG_FALLBACK
- #define MPTCP_INFO_FLAG_FALLBACK		_BITUL(0)
- #endif
-@@ -480,6 +484,73 @@ static void test_subflow(void)
- 	close(cgroup_fd);
- }
- 
-+static void run_iters_subflow(void)
-+{
-+	int server_fd, client_fd;
-+	int is_mptcp, err;
-+	socklen_t len;
-+
-+	server_fd = start_mptcp_server(AF_INET, ADDR_1, PORT_1, 0);
-+	if (!ASSERT_OK_FD(server_fd, "start_mptcp_server"))
-+		return;
-+
-+	client_fd = connect_to_fd(server_fd, 0);
-+	if (!ASSERT_OK_FD(client_fd, "connect_to_fd"))
-+		goto close_server;
-+
-+	send_byte(client_fd);
-+	wait_for_new_subflows(client_fd);
-+
-+	len = sizeof(is_mptcp);
-+	/* mainly to trigger the BPF program */
-+	err = getsockopt(client_fd, SOL_TCP, TCP_IS_MPTCP, &is_mptcp, &len);
-+	if (ASSERT_OK(err, "getsockopt(client_fd, TCP_IS_MPTCP)"))
-+		ASSERT_EQ(is_mptcp, 1, "is_mptcp");
-+
-+	close(client_fd);
-+close_server:
-+	close(server_fd);
-+}
-+
-+static void test_iters_subflow(void)
-+{
-+	struct mptcp_bpf_iters *skel;
-+	struct netns_obj *netns;
-+	int cgroup_fd;
-+
-+	cgroup_fd = test__join_cgroup("/iters_subflow");
-+	if (!ASSERT_OK_FD(cgroup_fd, "join_cgroup: iters_subflow"))
-+		return;
-+
-+	skel = mptcp_bpf_iters__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "skel_open_load: iters_subflow"))
-+		goto close_cgroup;
-+
-+	skel->links.iters_subflow = bpf_program__attach_cgroup(skel->progs.iters_subflow,
-+							       cgroup_fd);
-+	if (!ASSERT_OK_PTR(skel->links.iters_subflow, "attach getsockopt"))
-+		goto skel_destroy;
-+
-+	netns = netns_new(NS_TEST, true);
-+	if (!ASSERT_OK_PTR(netns, "netns_new: iters_subflow"))
-+		goto skel_destroy;
-+
-+	if (endpoint_init("subflow", 4) < 0)
-+		goto close_netns;
-+
-+	run_iters_subflow();
-+
-+	/* 1 + 2 + 3 + 4 = 10 */
-+	ASSERT_EQ(skel->bss->ids, 10, "subflow ids");
-+
-+close_netns:
-+	netns_free(netns);
-+skel_destroy:
-+	mptcp_bpf_iters__destroy(skel);
-+close_cgroup:
-+	close(cgroup_fd);
-+}
-+
- void test_mptcp(void)
- {
- 	if (test__start_subtest("base"))
-@@ -488,4 +559,6 @@ void test_mptcp(void)
- 		test_mptcpify();
- 	if (test__start_subtest("subflow"))
- 		test_subflow();
-+	if (test__start_subtest("iters_subflow"))
-+		test_iters_subflow();
- }
-diff --git a/tools/testing/selftests/bpf/progs/mptcp_bpf.h b/tools/testing/selftests/bpf/progs/mptcp_bpf.h
-index 3b188ccdcc4041acb4f7ed38ae8ddf5a7305466a..31d7ecdc4c0489c63d28a25778f91093a6a093a5 100644
---- a/tools/testing/selftests/bpf/progs/mptcp_bpf.h
-+++ b/tools/testing/selftests/bpf/progs/mptcp_bpf.h
-@@ -39,4 +39,13 @@ mptcp_subflow_tcp_sock(const struct mptcp_subflow_context *subflow)
- 	return subflow->tcp_sock;
- }
- 
-+/* ksym */
-+extern struct mptcp_sock *bpf_mptcp_sock_acquire(struct mptcp_sock *msk) __ksym;
-+extern void bpf_mptcp_sock_release(struct mptcp_sock *msk) __ksym;
-+
-+extern struct mptcp_subflow_context *
-+bpf_mptcp_subflow_ctx(const struct sock *sk) __ksym;
-+extern struct sock *
-+bpf_mptcp_subflow_tcp_sock(const struct mptcp_subflow_context *subflow) __ksym;
-+
- #endif
-diff --git a/tools/testing/selftests/bpf/progs/mptcp_bpf_iters.c b/tools/testing/selftests/bpf/progs/mptcp_bpf_iters.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..fd5691a4073b22c24d3fa6f7ed6edb32d366492c
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/mptcp_bpf_iters.c
-@@ -0,0 +1,63 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (c) 2024, Kylin Software */
-+
-+/* vmlinux.h, bpf_helpers.h and other 'define' */
-+#include "bpf_tracing_net.h"
-+#include "mptcp_bpf.h"
-+
-+char _license[] SEC("license") = "GPL";
-+int ids;
-+
-+#ifndef TCP_IS_MPTCP
-+#define TCP_IS_MPTCP		43	/* Is MPTCP being used? */
-+#endif
-+
-+SEC("cgroup/getsockopt")
-+int iters_subflow(struct bpf_sockopt *ctx)
-+{
-+	struct mptcp_subflow_context *subflow;
-+	struct bpf_sock *sk = ctx->sk;
-+	struct sock *ssk = NULL;
-+	struct mptcp_sock *msk;
-+	int local_ids = 0;
-+
-+	if (ctx->level != SOL_TCP || ctx->optname != TCP_IS_MPTCP)
-+		return 1;
-+
-+	msk = bpf_skc_to_mptcp_sock(sk);
-+	if (!msk || msk->pm.server_side || !msk->pm.subflows)
-+		return 1;
-+
-+	msk = bpf_mptcp_sock_acquire(msk);
-+	if (!msk)
-+		return 1;
-+	bpf_for_each(mptcp_subflow, subflow, msk) {
-+		/* Here MPTCP-specific packet scheduler kfunc can be called:
-+		 * this test is not doing anything really useful, only to
-+		 * verify the iteration works.
-+		 */
-+
-+		local_ids += subflow->subflow_id;
-+
-+		/* only to check the following kfunc works */
-+		ssk = mptcp_subflow_tcp_sock(subflow);
-+	}
-+
-+	if (!ssk)
-+		goto out;
-+
-+	/* assert: if not OK, something wrong on the kernel side */
-+	if (ssk->sk_dport != ((struct sock *)msk)->sk_dport)
-+		goto out;
-+
-+	/* only to check the following kfunc works */
-+	subflow = bpf_mptcp_subflow_ctx(ssk);
-+	if (!subflow || subflow->token != msk->token)
-+		goto out;
-+
-+	ids = local_ids;
-+
-+out:
-+	bpf_mptcp_sock_release(msk);
-+	return 1;
-+}
 
--- 
-2.47.1
-
+>
+> Thanks,
+> Yuyang
+>
+> On Thu, Dec 19, 2024 at 11:31=E2=80=AFPM Yuyang Huang <yuyanghuang@google=
+.com> wrote:
+> >
+> > Hi Eric
+> >
+> > Thanks for the prompt review feedback. I will adjust all the comments
+> > in the v2 patch.
+> >
+> > >inet6_fill_ifmcaddr() got  an EXPORT_SYMBOL() for no good reason,
+> > please remove it.
+> >
+> > I  made the same mistake in Link:
+> > https://lore.kernel.org/netdev/20241218090057.76899-1-yuyanghuang@googl=
+e.com/T/
+> >
+> > I will fix that patch as well.
+> >
+> > Thanks,
+> > Yuyang
+> >
+> > Thanks,
+> > Yuyang
+> >
+> >
+> > On Thu, Dec 19, 2024 at 10:47=E2=80=AFPM Eric Dumazet <edumazet@google.=
+com> wrote:
+> > >
+> > > On Thu, Dec 19, 2024 at 2:42=E2=80=AFPM Eric Dumazet <edumazet@google=
+.com> wrote:
+> > > >
+> > > > On Thu, Dec 19, 2024 at 2:27=E2=80=AFPM Yuyang Huang <yuyanghuang@g=
+oogle.com> wrote:
+> > > > >
+> > > > > Corrected the netlink message size calculation for multicast grou=
+p
+> > > > > join/leave notifications. The previous calculation did not accoun=
+t for
+> > > > > the inclusion of both IPv4/IPv6 addresses and ifa_cacheinfo in th=
+e
+> > > > > payload. This fix ensures that the allocated message size is
+> > > > > sufficient to hold all necessary information.
+> > > > >
+> > > > > Fixes: 2c2b61d2138f ("netlink: add IGMP/MLD join/leave notificati=
+ons")
+> > > > > Cc: Maciej =C5=BBenczykowski <maze@google.com>
+> > > > > Cc: Lorenzo Colitti <lorenzo@google.com>
+> > > > > Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
+> > > > > ---
+> > > > >  net/ipv4/igmp.c  | 4 +++-
+> > > > >  net/ipv6/mcast.c | 4 +++-
+> > > > >  2 files changed, 6 insertions(+), 2 deletions(-)
+> > > > >
+> > > > > diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
+> > > > > index 8a370ef37d3f..4e2f1497f320 100644
+> > > > > --- a/net/ipv4/igmp.c
+> > > > > +++ b/net/ipv4/igmp.c
+> > > > > @@ -1473,7 +1473,9 @@ static void inet_ifmcaddr_notify(struct net=
+_device *dev,
+> > > > >         int err =3D -ENOMEM;
+> > > > >
+> > > > >         skb =3D nlmsg_new(NLMSG_ALIGN(sizeof(struct ifaddrmsg)) +
+> > > > > -                       nla_total_size(sizeof(__be32)), GFP_ATOMI=
+C);
+> > > > > +                       nla_total_size(sizeof(__be32)) +
+> > > > > +                       nla_total_size(sizeof(struct ifa_cacheinf=
+o)),
+> > > > > +                       GFP_ATOMIC);
+> > > > >         if (!skb)
+> > > > >                 goto error;
+> > > > >
+> > > > > diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+> > > > > index 587831c148de..b7430f15d1fc 100644
+> > > > > --- a/net/ipv6/mcast.c
+> > > > > +++ b/net/ipv6/mcast.c
+> > > > > @@ -920,7 +920,9 @@ static void inet6_ifmcaddr_notify(struct net_=
+device *dev,
+> > > > >         int err =3D -ENOMEM;
+> > > > >
+> > > > >         skb =3D nlmsg_new(NLMSG_ALIGN(sizeof(struct ifaddrmsg)) +
+> > > > > -                       nla_total_size(16), GFP_ATOMIC);
+> > > > > +                       nla_total_size(16) +
+> > > >
+> > > > While we are at it , can you use nla_total_size(sizeof(struct in6_a=
+ddr))
+> > > >
+> > > > inet6_fill_ifmcaddr() got  an EXPORT_SYMBOL() for no good reason,
+> > > > please remove it.
+> > > > Squash the following in v2, thanks !
+> > > >
+> > > > diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+> > > > index 2e2684886953d55140cd3d4a1e024b5218331a49..4da409bc45777f60fd3=
+7bdee541c61165a51d22c
+> > > > 100644
+> > > > --- a/net/ipv6/addrconf.c
+> > > > +++ b/net/ipv6/addrconf.c
+> > > > @@ -5239,7 +5239,6 @@ int inet6_fill_ifmcaddr(struct sk_buff *skb,
+> > > >         nlmsg_end(skb, nlh);
+> > > >         return 0;
+> > > >  }
+> > > > -EXPORT_SYMBOL(inet6_fill_ifmcaddr);
+> > > >
+> > > >  static int inet6_fill_ifacaddr(struct sk_buff *skb,
+> > > >                                const struct ifacaddr6 *ifaca,
+> > >
+> > > Also GFP_ATOMIC should probably be replaced by GFP_KERNEL.
+> > >
+> > > All inet6_ifmcaddr_notify() callers are in process context, hold RTNL=
+,
+> > > thus can sleep under memory pressure.
+> > >
+> > > Same remark for inet_ifmcaddr_notify()
