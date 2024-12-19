@@ -1,107 +1,98 @@
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CF92288E3
-	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 16:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C6813A41F;
+	Thu, 19 Dec 2024 16:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734624842; cv=none; b=B0CUy53sRKw16mxS+Uyb7HWjGcnfv+AXhFKA18GgPJaJue22MoCs9gxLog28e+0w8rxPK185Y4cHdBqTI0oKOBK9+2rV6UHS9qeaHuUxCt86Uw0Pgi5FCYX1XtzAcPiJ/22RPqUb4olQzDugPtdRp3uKRyT2Clysazo0yNY/lzM=
+	t=1734625304; cv=none; b=a02FfJFymKRw5oJfpV1k7T+GnIuthUfNrDyjyUOD29NwLsraRAeaXM4rwA4JBP0+v4Ss7byfKUQCf+/4KIn8pd56XlWvxTsjLG5tXZrYi35zkbYE/fIB0x1ujeyGg8mg29Og6TbyYAjSVenaGh64rPaj6ref9tiPwC9zX/dU/9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734624842; c=relaxed/simple;
-	bh=Ao1M9tsAYMe/J2ewOjf8yqlnleUiHC7z6nKS8hyU3vM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EL0JuwKzBlb3soPShzJLgLHqMycQNbwnqP8hzZQ5eUWDpqxaSwXyN9VeC0tdQ6xv3id+dwcBnAT56TWdwLJJnm/T5TGsbr5H07I8O5WzHpGjRAytMJFEYMzPfs6d+WbufJP/uGSqIJVOZVdtNMaANMcci06D6wId2njPHN8KinI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uf8qxjFM; arc=none smtp.client-ip=209.85.166.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1734625304; c=relaxed/simple;
+	bh=21pw50cABSPIjkxYzrStjZ2zAXUQuSgGNU8WTWspeMo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mRGT/jUFp4WxOmwCC/8cEnqjn3p5QfKkOAtEyrvnmD2YK0+/pSMjM5WCSRCb9iqMJlcglyai2hR3GpHdBHJmGWBJOYaRjG3z5pnhQlPyTQ6Nm2QwbqvzHGESFNcf0l9P4/X2RyZsZJowcBnN9jVcmieYfS9XFcZ4bS5c33wlo50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=uFUwm9Rh; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uf8qxjFM"
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3a818cd5dcbso305ab.0
-        for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 08:14:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734624840; x=1735229640; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ao1M9tsAYMe/J2ewOjf8yqlnleUiHC7z6nKS8hyU3vM=;
-        b=uf8qxjFMztS1QpTY0ZpD4O+sITLcetjkJj/9GnUOb1wemJMTQ54CqhoKXZXUCNbdxl
-         c6SyVDxb372MTXhB4jdY15HzvJhgAI+vKftVPhdn9coOqTciSbwTbGyrmO20Q2gExDIo
-         EGHf+mUcbtWxo1SNx5BVbjti1rc/HMPwZON6VdDuK8Zt7FAEgLt1dAtnCTNKtUP0LYcS
-         X5OTZ8m8QW6g37vwcyiRLeyWm4h+BEzrWU+3oOenIAetoaNMYbax4PA4GPWRqW00gVY1
-         C/He29kv0NbPrpRePxOB2gTXwu+Ly3InQ4y3ok6gKz3ZTInDhZ9+wn8kuIBxNVdcp2w9
-         Z4Kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734624840; x=1735229640;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ao1M9tsAYMe/J2ewOjf8yqlnleUiHC7z6nKS8hyU3vM=;
-        b=r8lsglX8RQjJHtCSpk0BCJxKh7P7+WTKkRaL7DwXgXDfPbu+XCZ+lUTIlhH2vxy/H9
-         mhcCmPV8KbmVBSDjkV1ftwgssrrQX5bCi9WKAcA2oKb1TONPXjMi60a0bucxxv/045Hn
-         rfvX/d1uBDXTrvPfUIPuxp2VSMedMqIK2KjCQWAUMGgDJez4He7ZlBCfW2OgFNP9Xq76
-         rur8mnaDJyz/mNuezVCQ/9234LOjLVRrNPtBkueg/iQxfAHl2hnmLPceZ7cJmT+SRVMl
-         hOlBEw7UeeoAD0mBvs+K5FvvcBBwXDswPcd1XyaV6rhaEkDKmMHtbXVwjNjujAxemIGD
-         tWqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUNQzE9pdZXZpslKDIiJCYsw2NkLxHwRXYtM0FAOdSrAwpYByacWiztwTmxZWgdjrKV+lGbSU4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6EQgkiLX9KAm7yKIR7d1cLyfMqXKGgtFAfdYn6OU98ydaxKKs
-	EJgxXSdnJfNUH5nC9WTNKQknVw4dBiLQydErvQxl2sRh2LMdp5c5i8KtSzws16V/VJUy2Ha125j
-	Q2PatYj5RqAdsGEUG2CBx6vqebFNuvti5YbsC
-X-Gm-Gg: ASbGncvRA1FSdkUKGHqkOHixbdt9jLrTFmDNbPhjNHs43k/c5a9rhTZ1bbThoLnf+OC
-	5+gJJqVjGYFavGAgAZiWYTpLvuWxAoY5mwhk+CnIOocAmO5ilfVtGRKy5XW4/rc+L9LhRlHE=
-X-Google-Smtp-Source: AGHT+IH/DVNRKjvM8vgJxbGcE+1BQG6yAxpuOxGzyRKMPwP1oPkyCthNQVlsBED8laj9mGC+2zZKYAazjvoVkIbUbtI=
-X-Received: by 2002:a92:c26d:0:b0:3a7:d682:36f6 with SMTP id
- e9e14a558f8ab-3c24cbd5995mr129695ab.0.1734624839207; Thu, 19 Dec 2024
- 08:13:59 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="uFUwm9Rh"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=prJWGWFgigpl0wvU6VIUlHan1ImAof94g3RTtBeB23o=; b=uFUwm9RhlFvZNe4fzUPnQ2wrPt
+	pD4Edk5BradP/HvdBhpMgZmukaMxQ3Toc4V+J+8KDWZ5h5+KRGEBbuqiKUsvtQUVi2wnurQCjlXBM
+	4RXzuapOkqFWd/O+4NkR/D05FCsQk/HafM5XlAMKj7rmcOJBqK4KaXMvORYaX3hMeWjs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tOJH5-001g3W-6G; Thu, 19 Dec 2024 17:21:19 +0100
+Date: Thu, 19 Dec 2024 17:21:19 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	florian.fainelli@broadcom.com, heiko.stuebner@cherry.de,
+	frank.li@nxp.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v5 net] net: phy: micrel: Dynamically control external
+ clock of KSZ PHY
+Message-ID: <b201355c-0c0f-4146-8574-669e77aabec5@lunn.ch>
+References: <20241217063500.1424011-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241219132644.725161-1-yuyanghuang@google.com>
- <CANn89iKcVDM-na-kF+o3octj16K-8ZRLFZvShTR_rLAKb-CSoA@mail.gmail.com>
- <CANn89i+SMrCH1XqL8Q9-rr7k2bez1DNqeQNhO0rBrrHiyOrFXw@mail.gmail.com>
- <CADXeF1Gg7H+e+47KihOTMdSg=KXXe=eirHD01=VbAM5Dvqz1uw@mail.gmail.com>
- <CADXeF1GvpMOyTHOYaE5v6w+4jpBKjnT=he3qNpehghRWY+hNHQ@mail.gmail.com>
- <CADXeF1E16ffcJ2tsYDHWr5OX=9B9u0_t3QoKus=RnuQw_e_0EQ@mail.gmail.com> <CANn89iJEz=HWXN9fV4iLX6uGumBuOvcup6pEJvPWs3efy4=4OA@mail.gmail.com>
-In-Reply-To: <CANn89iJEz=HWXN9fV4iLX6uGumBuOvcup6pEJvPWs3efy4=4OA@mail.gmail.com>
-From: Yuyang Huang <yuyanghuang@google.com>
-Date: Fri, 20 Dec 2024 01:13:21 +0900
-X-Gm-Features: AbW1kvbuIRYKCj1K9XHi90nKy9fd7ykqu9gmDzYrBLB8E2BAQzO9lVfVgJgS7iM
-Message-ID: <CADXeF1FVRY4t7L-J16FDu_6SvuvU3_jKJQo3+kFyDR7s_92kAg@mail.gmail.com>
-Subject: Re: [PATCH net-next] netlink: correct nlmsg size for multicast notifications
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
-	roopa@cumulusnetworks.com, jiri@resnulli.us, stephen@networkplumber.org, 
-	jimictw@google.com, prohr@google.com, liuhangbin@gmail.com, 
-	nicolas.dichtel@6wind.com, andrew@lunn.ch, pruddy@vyatta.att-mail.com, 
-	netdev@vger.kernel.org, =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>, 
-	Lorenzo Colitti <lorenzo@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241217063500.1424011-1-wei.fang@nxp.com>
 
-Thank you very much for the detailed explanation.
+On Tue, Dec 17, 2024 at 02:35:00PM +0800, Wei Fang wrote:
+> On the i.MX6ULL-14x14-EVK board, enet1_ref and enet2_ref are used as the
+> clock sources for two external KSZ PHYs. However, after closing the two
+> FEC ports, the clk_enable_count of the enet1_ref and enet2_ref clocks is
+> not 0. The root cause is that since the commit 985329462723 ("net: phy:
+> micrel: use devm_clk_get_optional_enabled for the rmii-ref clock"), the
+> external clock of KSZ PHY has been enabled when the PHY driver probes,
+> and it can only be disabled when the PHY driver is removed. This causes
+> the clock to continue working when the system is suspended or the network
+> port is down.
+> 
+> Although Heiko explained in the commit message that the patch was because
+> some clock suppliers need to enable the clock to get the valid clock rate
+> , it seems that the simple fix is to disable the clock after getting the
+> clock rate to solve the current problem. This is indeed true, but we need
+> to admit that Heiko's patch has been applied for more than a year, and we
+> cannot guarantee whether there are platforms that only enable rmii-ref in
+> the KSZ PHY driver during this period. If this is the case, disabling
+> rmii-ref will cause RMII on these platforms to not work.
+> 
+> Secondly, commit 99ac4cbcc2a5 ("net: phy: micrel: allow usage of generic
+> ethernet-phy clock") just simply enables the generic clock permanently,
+> which seems like the generic clock may only be enabled in the PHY driver.
+> If we simply disable the generic clock, RMII may not work. If we keep it
+> as it is, the platform using the generic clock will have the same problem
+> as the i.MX6ULL platform.
+> 
+> To solve this problem, the clock is enabled when phy_driver::resume() is
+> called, and the clock is disabled when phy_driver::suspend() is called.
+> Since phy_driver::resume() and phy_driver::suspend() are not called in
+> pairs, an additional clk_enable flag is added. When phy_driver::suspend()
+> is called, the clock is disabled only if clk_enable is true. Conversely,
+> when phy_driver::resume() is called, the clock is enabled if clk_enable
+> is false.
+> 
+> The changes that introduced the problem were only a few lines, while the
+> current fix is about a hundred lines, which seems out of proportion, but
+> it is necessary because kszphy_probe() is used by multiple KSZ PHYs and
+> we need to fix all of them.
+> 
+> Fixes: 985329462723 ("net: phy: micrel: use devm_clk_get_optional_enabled for the rmii-ref clock")
+> Fixes: 99ac4cbcc2a5 ("net: phy: micrel: allow usage of generic ethernet-phy clock")
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 
-I will change GFP_ATOMIC to GFP_KERNEL in the v2 patch.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Thanks,
-Yuyang
-
-On Fri, Dec 20, 2024 at 12:53=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
- wrote:
->
-> On Thu, Dec 19, 2024 at 4:35=E2=80=AFPM Yuyang Huang <yuyanghuang@google.=
-com> wrote:
-> >
-> > >Same remark for inet_ifmcaddr_notify()
-> >
-> > Moreover, for both IPv4 and IPv6, when a device is up, the kernel
-> > joins the all-hosts multicast addresses (224.0.0.1/ff02::1). I guess
-> > this logic also does not run in process context?
-> >
->
-> Hopefully all these paths are stressed in kselftest.
->
-> A wrong gfp would trigger issues when you run the selftests before
-> submission, or in netdev CI.
+    Andrew
