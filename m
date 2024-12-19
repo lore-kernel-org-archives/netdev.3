@@ -1,136 +1,111 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BA317BD9
-	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 13:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42259224AFB;
+	Thu, 19 Dec 2024 13:24:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734613437; cv=none; b=bCrKiMcE0TwrL2B48UIEXBRJheE46YHNWKokl0/FbPDHoCxsV0SdCzUirOQIC29Xm9LG1vdvpsAcGOmjp+LIBsPYxMCT5YKfsE5HMtw7nOrz82t0NXHZ53hBiwCJaUmcmtsQOZH8TOCrYyOdXl9NYXUmeWc7IdbSFn+wPS85524=
+	t=1734614679; cv=none; b=aH2o1Rc4dlTOMZAulwH1HGjm799GXkaJIC2Q5mxKuggCJ0Qmhxmu+NFf9nZq8FJF1QRR+xnS/0RboY80lOUd2D8vKry9xa2yZXlKgDLFKsI39NMxNd09Gnb/xyqnYTdhUxqHFHt6oewubsX1yBXAFO6LcAkbpXIucLmF2ziPQ3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734613437; c=relaxed/simple;
-	bh=l993BuhaOemrNpdrbLFkOyhPOUTMU0O43qDzmxDK5C8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rDQu/9Z57bOEu3Wc5xB8sMqBJ7Cmdf/GQSisCgrFaIDPrEAKk7tuTzBO2K9GojMSMjvS6QbnB2qvahi2zuR2MfqIrhJW/OqP8r1obx1XAJNqUsQT7E8mZ8IBKq1GfW5Ti/cTQpjWmy0s6iCkNr8uzQBwy8nYw+avo5247GIdz0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JIX1fzfy; arc=none smtp.client-ip=209.85.214.172
+	s=arc-20240116; t=1734614679; c=relaxed/simple;
+	bh=008Cuml4VV0XwHTtpe/8/yoaehcR1dfBgfpnFS4iO+g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Pp/dNSzwcUDyRn3wTev8tiOGUdEfguzeo4TMGT3aEfjtX/jyJP45Y9DC12S45qb0aNBVR4rEzm+df3b81eUVBJq1b+8JYCniHPVuYp6w9Zkt5VQHHbI6JAC8m0xD9l4nUnD37jQ9k0JkJEqc7SP75HBbxI9BPpBGvKJoaQQJ1qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nql0yMou; arc=none smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JIX1fzfy"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-216728b1836so6349475ad.0
-        for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 05:03:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nql0yMou"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5d4e2aa7ea9so1344595a12.2;
+        Thu, 19 Dec 2024 05:24:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734613434; x=1735218234; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ckpWyywRorf26orlDJPPCy+wE/kAUMKsiVsa+2ev0TQ=;
-        b=JIX1fzfyyabxiwLG8MrRYeu0jBUowlnbKngRdO0cVizE2joBs0BewAp+EoBt18i615
-         gLKax4ZuNuPJHCvy8m1cnLCD+MKOiwKYcc5h78Dd4lVRoYYyaPriWRQEDXUdVngLRAfu
-         oCc5uZgarqON3xG3+WeUtEXiZPfU6l/4bo12B1pzDjujTlFGav4duq7AQDi4gNtoAsTy
-         Es/3GY3vilwga5xQnGk22HAMAu8DFDZVltGm0vt1E6Dg7w+V3egKAXwLmsgmE4l/27GN
-         rycogzeEJDMSl7rEES2m5nzj65id5FwpQxZ2XmBOanpK8g1fVBzzf4C7O3iBzyX8kZh8
-         Gz7Q==
+        d=gmail.com; s=20230601; t=1734614676; x=1735219476; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yeDNOULIpeV+rcdYvftKVOa2BlVHQXHEyE5QaiwBOAY=;
+        b=Nql0yMouGbYYKhyt2HUwNpzmYuF7Xz+ntynZRRjRS67XSLral/6rqXeuTsOJSMAjQV
+         gurQckoTJvwl1C782q9OewHQde/v6a8iagc3AHsBAXUtAPLTSy83NLJyEsUjedLq/0V3
+         CXkAK7V4wBvDDQUMtfK54COsQ+ofy/84D2mc4ZpIM5yDuJ3Xyi7wI6tymZXbiuvUAOII
+         1TzLxAdOb4R5Fic3bWMhg/4WfALLd3vnevI7954Ffi7B6OgP6W7+ugZcNap0Bjiq5Sna
+         /s9iYLMgWHzgEoG+A3Nygm6IhQUbtqCoIrwkVIGnusApl5Te2csjYDF3ftoyKaLaDRvX
+         s1pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734613434; x=1735218234;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ckpWyywRorf26orlDJPPCy+wE/kAUMKsiVsa+2ev0TQ=;
-        b=MnfCFAFpuWKxfiMf7Z30yFXwjJ23hbJ8lpx9UU9rqhQmQPMyXYrn3z2GJ4b4h4ujaO
-         yw0vo3IFLK9OKcz+XQ+iU6vm3U/CXtA6e5isLutU/rBwppVa4CNqd0YTHQRX7GEuV4Ze
-         e+8bts0dUFpxBvQ7F3D2OUOJ54vBJs8Wxjqa98Rg6vBdYRnYpfgHFimPr61vKnoezU0b
-         OuNqy6nzj6NUXAtZxW7Dm+3bAmD29ZO2v3fAekZPO1yOc/R7Ujf8P883XJSzQ9eWxv/r
-         B+wk+cBLAdWFhIEZOM1EI9+OOKuatvcQKkmBkfS1h64E24AG1ETCEtplcsUQ5EWTXwVh
-         Faag==
-X-Gm-Message-State: AOJu0Yx8RihK03iCnJaqHWON8WkmU6j6dxMoexnHIKnxBEQSHvSlLU/5
-	LH1AcC5BO5k3xhFUxzBiSLk5nWWVjlCT2JkZSdG59BngH3UhZgHJaZ5a0Ri5u/A=
-X-Gm-Gg: ASbGncsGY0U7up/7imrrwGISrGWz4WLFXqdYjPCZyUq/3Lx7rlXb4Jx3xDAq453wGZU
-	03l0x0WhN5WP0MB/ZRRp8Bxh5rE3T86Qo0vxSsGxjz/lWyB2Wl+naVMg5uY/9jIS4ttqJRwwQht
-	aveSdidUmxQL0BQIVN+5kQ7WiM0wNbWKFtAxpTG8YR7TSsIc7M8Z9xd119XrsVCAdx2GX70QZvt
-	t5viiy1KtV4r6V2VNQaltddKJwilMwbi/b/iVkslSTUXZU=
-X-Google-Smtp-Source: AGHT+IGh1xUxtMEAdR2zpOrZIxxHJb+EY7+Lt2/5uJjwKSgmVR8gTcuG15Tpc2lX2DPRUtHwGcfv+Q==
-X-Received: by 2002:a17:902:e809:b0:215:aae1:40f0 with SMTP id d9443c01a7336-218d6c4aebfmr114306485ad.0.1734613434017;
-        Thu, 19 Dec 2024 05:03:54 -0800 (PST)
-Received: from ws.. ([103.167.140.11])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc9f51c2sm11656535ad.190.2024.12.19.05.03.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2024 05:03:52 -0800 (PST)
-From: Xiao Liang <shaw.leon@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH net] net: Fix netns for ip_tunnel_init_flow()
-Date: Thu, 19 Dec 2024 21:03:36 +0800
-Message-ID: <20241219130336.103839-1-shaw.leon@gmail.com>
-X-Mailer: git-send-email 2.47.1
+        d=1e100.net; s=20230601; t=1734614676; x=1735219476;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yeDNOULIpeV+rcdYvftKVOa2BlVHQXHEyE5QaiwBOAY=;
+        b=FiSXNEGZMQyuCfE1loEaImuJtp6FCFqmyOY0M64Wp7weS8iI9PWlJ7s+mZCezQjmr4
+         PzzHSLgqXXDsagLTHU5ZbLOmPg6eIVujtEE5WuPLGGg7zUT8pyx6llGfBH0yyHElcPMe
+         /l9QxwXyCd1aqRXWSapFAG163Y6+g6SbXXBYcxQVsh/SUEYm8V0CrNxTcjBD3uD3dT7H
+         Nv79862Ce/hFB9awboYvOrtDk5A0QNBJosTSXi6mP7boEr64yP4K80HIxNs2wS+0Jd2y
+         t9BbRF3KqHlzAroH5naLNz6iM6d/m+vivOblh/5723H3IIsIHy3xaVHB2IFzp26Ls0/A
+         Ot+A==
+X-Forwarded-Encrypted: i=1; AJvYcCW+l6h/x4FjdHbtPbzyqbXwjj9fj81wfpDL96UHfJ9tuAGIfFBHyA8rbf/1ZGdAIEZHJLe612s7GVw=@vger.kernel.org, AJvYcCWSa3SFl97Y1RbhsH9meZ0tbO4LqCVuYK/o3kXKd3EF2NRoy58PrkmT0RYYcHTh75B1c8xZjhgj@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz189ZCJFewB3M/0KO3C7wFHIy8fxCJs+ANrSR8kkCuCU1Xo4j5
+	YA1cJG66xnyrpfR4APh7E7+1MTpvgsb33DkvDhxa0qF9SiIuhYCyN7VUpwLh78BFuoSkuAMKn6F
+	DwFJbJLyI7nOL/1Dzg0Fj8VLIt8E=
+X-Gm-Gg: ASbGnctQhUtcCaFw3BSh21XPViw1m+YG6ZMPHiR5qfesEgNdiXa4abkhJVNZak5AzBe
+	kdwA3wLAQQU5lXy+grwwM9NEX2659plNGNuPsA+s=
+X-Google-Smtp-Source: AGHT+IEfarcEFPeyiK+8xrhOtld6iHFTaJceEIQ7GIAwZAzOISdIVEOnPv0cEmt8NMfi93SWIQvGXg3ZOKSbLsYNJ+8=
+X-Received: by 2002:a05:6402:2709:b0:5d4:35c7:cd48 with SMTP id
+ 4fb4d7f45d1cf-5d7ee390bb7mr5500754a12.9.1734614676252; Thu, 19 Dec 2024
+ 05:24:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241218144530.2963326-1-ap420073@gmail.com> <20241218144530.2963326-2-ap420073@gmail.com>
+ <20241218180747.1ff69015@kernel.org>
+In-Reply-To: <20241218180747.1ff69015@kernel.org>
+From: Taehee Yoo <ap420073@gmail.com>
+Date: Thu, 19 Dec 2024 22:24:24 +0900
+Message-ID: <CAMArcTXfNwYRxA56OCBgGe8thXMMFS-8rD3RYRUERccrvBuMZQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v6 1/9] bnxt_en: add support for rx-copybreak
+ ethtool command
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com, 
+	almasrymina@google.com, donald.hunter@gmail.com, corbet@lwn.net, 
+	michael.chan@broadcom.com, andrew+netdev@lunn.ch, hawk@kernel.org, 
+	ilias.apalodimas@linaro.org, ast@kernel.org, daniel@iogearbox.net, 
+	john.fastabend@gmail.com, dw@davidwei.uk, sdf@fomichev.me, 
+	asml.silence@gmail.com, brett.creeley@amd.com, linux-doc@vger.kernel.org, 
+	netdev@vger.kernel.org, kory.maincent@bootlin.com, 
+	maxime.chevallier@bootlin.com, danieller@nvidia.com, hengqi@linux.alibaba.com, 
+	ecree.xilinx@gmail.com, przemyslaw.kitszel@intel.com, hkallweit1@gmail.com, 
+	ahmed.zaki@intel.com, rrameshbabu@nvidia.com, idosch@nvidia.com, 
+	jiri@resnulli.us, bigeasy@linutronix.de, lorenzo@kernel.org, 
+	jdamato@fastly.com, aleksander.lobakin@intel.com, kaiyuanz@google.com, 
+	willemb@google.com, daniel.zahka@gmail.com, 
+	Andy Gospodarek <gospo@broadcom.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The device denoted by tunnel->parms.link resides in the underlay net
-namespace. Therefore pass tunnel->net to ip_tunnel_init_flow().
+On Thu, Dec 19, 2024 at 11:07=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
+rote:
+>
 
-Fixes: db53cd3d88dc ("net: Handle l3mdev in ip_tunnel_init_flow")
-Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
----
- drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c | 3 +--
- net/ipv4/ip_tunnel.c                                | 6 +++---
- 2 files changed, 4 insertions(+), 5 deletions(-)
+Hi Jakub,
+Thanks a lot for the review!
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
-index 4b5fd71c897d..32d2e61f2b82 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
-@@ -423,8 +423,7 @@ mlxsw_sp_span_gretap4_route(const struct net_device *to_dev,
- 
- 	parms = mlxsw_sp_ipip_netdev_parms4(to_dev);
- 	ip_tunnel_init_flow(&fl4, parms.iph.protocol, *daddrp, *saddrp,
--			    0, 0, dev_net(to_dev), parms.link, tun->fwmark, 0,
--			    0);
-+			    0, 0, tun->net, parms.link, tun->fwmark, 0, 0);
- 
- 	rt = ip_route_output_key(tun->net, &fl4);
- 	if (IS_ERR(rt))
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 25505f9b724c..09b73acf037a 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -294,7 +294,7 @@ static int ip_tunnel_bind_dev(struct net_device *dev)
- 
- 		ip_tunnel_init_flow(&fl4, iph->protocol, iph->daddr,
- 				    iph->saddr, tunnel->parms.o_key,
--				    iph->tos & INET_DSCP_MASK, dev_net(dev),
-+				    iph->tos & INET_DSCP_MASK, tunnel->net,
- 				    tunnel->parms.link, tunnel->fwmark, 0, 0);
- 		rt = ip_route_output_key(tunnel->net, &fl4);
- 
-@@ -611,7 +611,7 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 	}
- 	ip_tunnel_init_flow(&fl4, proto, key->u.ipv4.dst, key->u.ipv4.src,
- 			    tunnel_id_to_key32(key->tun_id),
--			    tos & INET_DSCP_MASK, dev_net(dev), 0, skb->mark,
-+			    tos & INET_DSCP_MASK, tunnel->net, 0, skb->mark,
- 			    skb_get_hash(skb), key->flow_flags);
- 
- 	if (!tunnel_hlen)
-@@ -774,7 +774,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 
- 	ip_tunnel_init_flow(&fl4, protocol, dst, tnl_params->saddr,
- 			    tunnel->parms.o_key, tos & INET_DSCP_MASK,
--			    dev_net(dev), READ_ONCE(tunnel->parms.link),
-+			    tunnel->net, READ_ONCE(tunnel->parms.link),
- 			    tunnel->fwmark, skb_get_hash(skb), 0);
- 
- 	if (ip_tunnel_encap(skb, &tunnel->encap, &protocol, &fl4) < 0)
--- 
-2.47.1
+> On Wed, 18 Dec 2024 14:45:22 +0000 Taehee Yoo wrote:
+> > +                     if (netif_running(dev)) {
+> > +                             bnxt_close_nic(bp, false, false);
+> > +                             bp->rx_copybreak =3D rx_copybreak;
+> > +                             bnxt_set_ring_params(bp);
+> > +                             bnxt_open_nic(bp, false, false);
+>
+> We really shouldn't allow this any more, we've been rejecting
+> patches which try to accept reconfiguration requests by taking
+> the entire NIC down, without any solid recovery if memory allocation
+> fails.
+>
+> Let's return -EBUSY if interface is running.
 
+Okay, I will change it.
+
+Thanks a lot,
+Taehee Yoo
