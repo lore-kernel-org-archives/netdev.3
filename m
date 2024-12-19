@@ -1,83 +1,65 @@
-Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF49D2288E5;
-	Thu, 19 Dec 2024 16:22:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA614226881
+	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 16:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734625327; cv=none; b=O33U6f9YWBqRtDMacwSkWm8EMhSi0y9Q2X7t2pplCA/1HewTmbyd6kviUbZjvpVjyLq2b7SQh26LhkYoGESoVnRqTaiJdIlJhH79hgekfFiDsIIUxY25QOqzprhH53ODxz5IAeNukoykHNVWZOveUtmbsk3Kf0kIHvJRsB9/9gw=
+	t=1734625427; cv=none; b=gI5JySue4XxUjegATHMPAg2ZmeUWRf9JXz8C5x+uqOCzdlCAvzyDDQzvThSxA6pqcuVMW8L/hN+0vj5SLsp/w+0EnXApTrtqrLAwx7vlDM1TF8c7pkb9J5k/zdvadD5aF0VIJiFveXrm+SYJ8MPTjq4FYnrMLoYeA1R0pR91yW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734625327; c=relaxed/simple;
-	bh=eoT3hYSWOt04Fah9DMV+xiBDwTAmeZ3TdRd1eAC5COQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JcWGMcQaeHCi54afKE3LpChvX1iRyhZfKInpUhL29viPuiqlxKYq4A77mXmgtszoC702WkqJseX7qN0nG+oIe/xhm/vaguqlE/c04YiHwW1W1doP/sh/iXL8QQRDviFYFheuGiXyHplTazP3+RpM9fljkP+L7DVNvowanhLsS4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=CpNR1OJT; arc=none smtp.client-ip=178.154.239.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+	s=arc-20240116; t=1734625427; c=relaxed/simple;
+	bh=D0OhYDa+g+CpDM3T6yXvaAWM7nmPCSb9TQ1ot8Pu+Gk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DBMkoyrHZJ5oI/JdA+IT/nsX0kXXikJyq3iJce/c1z9BXyuzagfLG52p7pMFo3an1nnvmA4h2fGSsU9EhET2LKFCADxls5BnqFC5wF+a5NtJVla/CNvSyWUcH3xG7CIiWWKsT/+h+jVm3mWIvgLGIHHIszHcZgHzjJelyFNWGfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=H6EDNFOt; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="CpNR1OJT"
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:a1f:0:640:ba2e:0])
-	by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 1817E60E94;
-	Thu, 19 Dec 2024 19:21:58 +0300 (MSK)
-Received: from kniv-nix.yandex-team.ru (unknown [2a02:6b8:b081:8104::1:2c])
-	by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id jLV8H32IkKo0-spD1uvcw;
-	Thu, 19 Dec 2024 19:21:57 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1734625317;
-	bh=86uF8z9q8RfEa7z7ymSGoeaNjFcJEcHXRQPm5ok7o+w=;
-	h=Message-Id:Date:Cc:Subject:To:From;
-	b=CpNR1OJT7377vXm4IW+ayYb70xlilV+FrV+o8ehvWulRTYfkupFhuEPWG4TbVJTQI
-	 otXtMEK0unW3f37i0cGVXO9aypwDTqdHJhPaVbCB29ZS9emWWGFc/0ZtzzUZiHna2B
-	 oNCmvfz635IeOWkarwUKX9l6jsRx/sWwmeVVsbho=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
-From: Nikolay Kuratov <kniv@yandex-team.ru>
-To: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-sctp@vger.kernel.org,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Xi Wang <xi.wang@gmail.com>,
-	Neil Horman <nhorman@tuxdriver.com>,
-	Vlad Yasevich <vyasevich@gmail.com>,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	stable@vger.kernel.org
-Subject: [PATCH] net/sctp: Prevent autoclose integer overflow in sctp_association_init()
-Date: Thu, 19 Dec 2024 19:21:14 +0300
-Message-Id: <20241219162114.2863827-1-kniv@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="H6EDNFOt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=QQHQc72sdYpic/oDNDQnnb6lAb0WIH3mjao30boPIkc=; b=H6EDNFOtLj+F1sVnu/WdqNx5Ry
+	kIjJi9mQMlLaLu471WLlnITe5KCC7NGEg/b2kU6ahu7TuYLViN8P1KY8Q2li+0Lpry10eiLyD8JEi
+	yayRoJY697PT0C6c74hVYE5puIsl3zePjeyobYQPpUbzW6Ya2f/rofEvnpUjhdG7Ho+o=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tOJJJ-001g64-Ge; Thu, 19 Dec 2024 17:23:37 +0100
+Date: Thu, 19 Dec 2024 17:23:37 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: hfdevel@gmx.net
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v3 2/7] net: phy: aquantia: add probe function
+ to aqr105 for firmware loading
+Message-ID: <d7a5a0ad-17d9-43c3-a2e6-d882ee70deaf@lunn.ch>
+References: <20241217-tn9510-v3a-v3-0-4d5ef6f686e0@gmx.net>
+ <20241217-tn9510-v3a-v3-2-4d5ef6f686e0@gmx.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241217-tn9510-v3a-v3-2-4d5ef6f686e0@gmx.net>
 
-While by default max_autoclose equals to INT_MAX / HZ, one may set
-net.sctp.max_autoclose to UINT_MAX. There is code in
-sctp_association_init() that can consequently trigger overflow.
+On Tue, Dec 17, 2024 at 10:07:33PM +0100, Hans-Frieder Vogt via B4 Relay wrote:
+> From: Hans-Frieder Vogt <hfdevel@gmx.net>
+> 
+> Re-use the AQR107 probe function to load the firmware on the AQR105 (and
+> to probe the HWMON).
+> 
+> Signed-off-by: Hans-Frieder Vogt <hfdevel@gmx.net>
 
-Cc: stable@vger.kernel.org
-Fixes: 9f70f46bd4c7 ("sctp: properly latch and use autoclose value from sock to association")
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
----
- net/sctp/associola.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-diff --git a/net/sctp/associola.c b/net/sctp/associola.c
-index c45c192b7878..0b0794f164cf 100644
---- a/net/sctp/associola.c
-+++ b/net/sctp/associola.c
-@@ -137,7 +137,8 @@ static struct sctp_association *sctp_association_init(
- 		= 5 * asoc->rto_max;
- 
- 	asoc->timeouts[SCTP_EVENT_TIMEOUT_SACK] = asoc->sackdelay;
--	asoc->timeouts[SCTP_EVENT_TIMEOUT_AUTOCLOSE] = sp->autoclose * HZ;
-+	asoc->timeouts[SCTP_EVENT_TIMEOUT_AUTOCLOSE] =
-+		(unsigned long)sp->autoclose * HZ;
- 
- 	/* Initializes the timers */
- 	for (i = SCTP_EVENT_TIMEOUT_NONE; i < SCTP_NUM_TIMEOUT_TYPES; ++i)
--- 
-2.34.1
-
+    Andrew
