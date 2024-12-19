@@ -1,97 +1,98 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC269221D9A
-	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 09:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5704222D44
+	for <netdev@vger.kernel.org>; Thu, 19 Dec 2024 09:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734601726; cv=none; b=N7b8+EfSTMNiD9LQuq6bjZwK1SEQiwxjBFlZSwz/3P0eL5rl3VJMNvtwsZOJsFz9zKtOjY9P7wn3wPyqG+fwcJ8IQJistqYh14Quzw9IByd0IRAcT34TC2qPoDNINobAvuttc8n/rLIIkhSqE58WoJ47uwkbYSuimRyAcac2V+Q=
+	t=1734601790; cv=none; b=kKgAKAzP6XzZ5nKNbURyePf/hAubamjeIrU3gE3tGlqskQ58sssHDqlxSwNxKIRQ74SOaCkIkuiWqU76ssgqoSh/MGYaEP9OMt3dhDytf5naTmMT9L9ZyHGxVd8QM4PmU70Mrgn4AIdxuEw68evd4X5xJiEuUDZFp6NxPyZaWHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734601726; c=relaxed/simple;
-	bh=zof4/IAQexPAqzjLnsif5OGnaWtERuR/MyIlBNTSjK8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=P6ODWhP3sLMVShbomjl6vrdfRNuXvSqP3gjDcePlToY/sZFDEHJM7d1/bQSrqt6hVe0PWL/Q+mTtxVtZF1bJiXNsZkh7e4RjQtpgxe8Yci37o6Zq3hwuIiptQDjozbAi3RBQwiOMIUxIrtpVeIrCt5B0g04jm/iopZAbEoSPKfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UCkbdwPk; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1734601790; c=relaxed/simple;
+	bh=+qUP/d1rIFueOqsZVf7wyszQCM9uJnmvtp20fTRpkww=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Xnv+ZrQ9GzY0uHmIkBIb8wEnKW3hv43XCvFRLpmBolp32F1SHVZii0ji8PU1Mivmo8Cjw8fvtMd0I0j2Bcb8fjFKMBLHR4XvOi5TGdSyOtyI27KLxUL4zqo/sy0iYMenuCaO8oi9yxR5OVUFYMZR3+vi88p1LGESulel8C/bxWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=VTe7B8FH; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UCkbdwPk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734601725; x=1766137725;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=zof4/IAQexPAqzjLnsif5OGnaWtERuR/MyIlBNTSjK8=;
-  b=UCkbdwPk8VUGOFjUb3jvWA/CuFzSL+/TBGQHbWnB13FrviDKFQecqt90
-   L63+Jf9KocKhZbAngsjcaamPUrrsd0zGXW9GrLZ1xhSpABrbArdWsYSL+
-   UXftI3NpS2D0fM9+TgtGaaB+LfVLOOvlHTFLza4OH0tWQ1WDjEvz1siMt
-   bFyd3MQGeHoJFsekfERZpUb0EkS+Yzc9Tz/iDmitfl41FYweIeoaRh9Bc
-   Lz24eU+L9izi773n538cgOG6QMVxCc4kP7w/krFB/pnjz+Q5PdD9TBWKz
-   GbZA4BhiORQfL8/pdyus8PCg4yRbkgpYnWeQIvDfx5YZPEWzONUWs/aUe
-   A==;
-X-CSE-ConnectionGUID: DmjEz0QcSi+Nd97AMy1gQQ==
-X-CSE-MsgGUID: IAnbqtjJTVegbK27HAeOUg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="45702751"
-X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; 
-   d="scan'208";a="45702751"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2024 01:48:36 -0800
-X-CSE-ConnectionGUID: 1Vz41/1YQMicjP3Jg0B2qA==
-X-CSE-MsgGUID: VZq6iG+NReWgVHGEsKnSZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; 
-   d="scan'208";a="98207316"
-Received: from unknown (HELO localhost.igk.intel.com) ([10.102.22.54])
-  by orviesa006.jf.intel.com with ESMTP; 19 Dec 2024 01:48:34 -0800
-From: Milena Olech <milena.olech@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Milena Olech <milena.olech@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>
-Subject: [PATCH v3 iwl-next 10/10] idpf: change the method for mailbox workqueue allocation
-Date: Thu, 19 Dec 2024 10:44:22 +0100
-Message-Id: <20241219094411.110082-11-milena.olech@intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20241219094411.110082-1-milena.olech@intel.com>
-References: <20241219094411.110082-1-milena.olech@intel.com>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="VTe7B8FH"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1tODA6-007NpE-CT
+	for netdev@vger.kernel.org; Thu, 19 Dec 2024 10:49:42 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=7BDUCOz2m6LxH15VpSFdXS6zzRdJrTV+Zd1AlfTLENM=; b=VTe7B8FHAAZwWFF1Jsse5Bjveq
+	pIw1aX/XZojysBDiTBMf4BeNiU4vaK5P4PV5fHL1H0OoTSmG7Ckxv417mWIc9K1zFYDkyRx7VgYNi
+	q/yyj79iIN6sSUdhRUgm/MpmJ7tGRAqZQA0qUyjKkA/V5cTvfbh2kq/FCi2D/HyzVmd1tairkTdJW
+	9NKdngK18mE485fcVeDRPXl0V3aUw8cngb+RXFypEeXndQ+ATT5AahK7EZ0CCe8TBn8xYZUPbtLHf
+	OlTMTV2qbhRS6lSu8HUGhu0DF15/uJzipq1khAxY1bEH5oTyRWzh1qAgP/Yq7VNYEUQTOnEUBD3yI
+	dh2s+LwA==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1tODA5-0002iH-W3; Thu, 19 Dec 2024 10:49:42 +0100
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1tODA3-00BSZD-VZ; Thu, 19 Dec 2024 10:49:40 +0100
+From: Michal Luczaj <mhal@rbox.co>
+Date: Thu, 19 Dec 2024 10:49:30 +0100
+Subject: [PATCH net-next v4 3/7] vsock/test: Add README blurb about
+ kmemleak usage
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241219-test-vsock-leaks-v4-3-a416e554d9d7@rbox.co>
+References: <20241219-test-vsock-leaks-v4-0-a416e554d9d7@rbox.co>
+In-Reply-To: <20241219-test-vsock-leaks-v4-0-a416e554d9d7@rbox.co>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-Since workqueues are created per CPU, the works scheduled to this
-workqueues are run on the CPU they were assigned. It may result in
-overloaded CPU that is not able to handle virtchnl messages in
-relatively short time. Allocating workqueue with WQ_UNBOUND and
-WQ_HIGHPRI flags allows scheduler to queue virtchl messages on less loaded
-CPUs, what eliminates delays.
+Document the suggested use of kmemleak for memory leak detection.
 
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Milena Olech <milena.olech@intel.com>
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- drivers/net/ethernet/intel/idpf/idpf_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/vsock/README | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-index cbfc8e7fb547..bb3bddf074f0 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-@@ -220,8 +220,8 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_serv_wq_alloc;
- 	}
+diff --git a/tools/testing/vsock/README b/tools/testing/vsock/README
+index 84ee217ba8eed8d18eebecc4dc81088934f76d8f..680ce666ceb56db986c8ad078573d774e6fecf18 100644
+--- a/tools/testing/vsock/README
++++ b/tools/testing/vsock/README
+@@ -36,6 +36,21 @@ Invoke test binaries in both directions as follows:
+                        --control-port=1234 \
+                        --peer-cid=3
  
--	adapter->mbx_wq = alloc_workqueue("%s-%s-mbx", 0, 0,
--					  dev_driver_string(dev),
-+	adapter->mbx_wq = alloc_workqueue("%s-%s-mbx", WQ_UNBOUND | WQ_HIGHPRI,
-+					  0, dev_driver_string(dev),
- 					  dev_name(dev));
- 	if (!adapter->mbx_wq) {
- 		dev_err(dev, "Failed to allocate mailbox workqueue\n");
++Some tests are designed to produce kernel memory leaks. Leaks detection,
++however, is deferred to Kernel Memory Leak Detector. It is recommended to enable
++kmemleak (CONFIG_DEBUG_KMEMLEAK=y) and explicitly trigger a scan after each test
++suite run, e.g.
++
++  # echo clear > /sys/kernel/debug/kmemleak
++  # $TEST_BINARY ...
++  # echo "wait for any grace periods" && sleep 2
++  # echo scan > /sys/kernel/debug/kmemleak
++  # echo "wait for kmemleak" && sleep 5
++  # echo scan > /sys/kernel/debug/kmemleak
++  # cat /sys/kernel/debug/kmemleak
++
++For more information see Documentation/dev-tools/kmemleak.rst.
++
+ vsock_perf utility
+ -------------------
+ 'vsock_perf' is a simple tool to measure vsock performance. It works in
+
 -- 
-2.31.1
+2.47.1
 
