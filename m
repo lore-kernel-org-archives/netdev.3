@@ -1,143 +1,60 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD6141C79;
-	Thu, 19 Dec 2024 08:41:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571D5217728;
+	Thu, 19 Dec 2024 08:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734597710; cv=none; b=fQAdJsPHoVQENWW5Dr3/2h2Fw7TFG3sCUjj1En2Y5OyJzZItdx27zSSiRq0eodhd3xKls5FOihSugFC2lpQXMbhmKyl5Ihi0ZUvZPrjFvQdI3EaZ1KCtoi1E7wxzcCKqLFVVpp6GMWp1Iba2al/ydQioX9HcBYfzVmlymMG4Z84=
+	t=1734597780; cv=none; b=JEqViJ3VVKTWzz9m+uHG8ZYX302I7DtPz4Ks4KZUNxZzpF7XlGdyWcStcyUGGrZSZqsDgXEKlQh2PWxZbet/NKJh9tms3KzSeTvdFP4rh3nCyqi9cYlXQJhJLyTeCsd95j1QZ9ifUpFARwtqG+FHju3C/75UovjOF57r5M74XVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734597710; c=relaxed/simple;
-	bh=snkC2yhtkrzPCscAJDw/TA1auWphpv+5kqavOBntcO0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XVWoG7ZSkHjkz6OR0p5742yHn3rogQmcB3pQtB6FfJXdAlswzjbC20v/7SrKpVIdCOiCQCmDYW37ZsEldyMJpHn2V6l7H1syyflGRbDk2jV6A7XIYxY/2DT7iJAof0o7Uco9aZpLljkEY9FVgtGpKEdX2QGAr26c8HZ8cYr5Zu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YDPD04Fsdz6K6RT;
-	Thu, 19 Dec 2024 16:41:36 +0800 (CST)
-Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
-	by mail.maildlp.com (Postfix) with ESMTPS id A034C140393;
-	Thu, 19 Dec 2024 16:41:39 +0800 (CST)
-Received: from china (10.200.201.82) by frapeml500005.china.huawei.com
- (7.182.85.13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 19 Dec
- 2024 09:41:29 +0100
-From: Gur Stavi <gur.stavi@huawei.com>
-To: <andrew@lunn.ch>
-CC: <andrew+netdev@lunn.ch>, <cai.huoqing@linux.dev>, <corbet@lwn.net>,
-	<davem@davemloft.net>, <edumazet@google.com>, <gongfan1@huawei.com>,
-	<guoxin09@huawei.com>, <gur.stavi@huawei.com>, <horms@kernel.org>,
-	<kuba@kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <meny.yossefi@huawei.com>,
-	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <shenchenyang1@hisilicon.com>,
-	<shijing34@huawei.com>, <wulike1@huawei.com>, <zhoushuai28@huawei.com>
-Subject: Re: [RFC net-next v02 1/3] net: hinic3: module initialization and tx/rx logic
-Date: Thu, 19 Dec 2024 10:55:02 +0200
-Message-ID: <20241219085502.2485372-1-gur.stavi@huawei.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <b794027a-ef3b-4262-a952-db249a840e89@lunn.ch>
-References: <b794027a-ef3b-4262-a952-db249a840e89@lunn.ch>
+	s=arc-20240116; t=1734597780; c=relaxed/simple;
+	bh=NRq2i384taxxZARdZXdORNH9JNRzC7xXvwMyuH8PwqY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fpOAEZICEvVgLajmte4olZL8xRsQtc3xaWn8ETP49JHwAzemPpQ6G4BHFszzb13EUWnsIJ/0gM8M5YO8nWikGthPAOut781tfDnSeqc0Myf2d2qUVJSu0I4ily7sU/ACH5rYKB7ODnJcWEhJiBGJ7xNEuHPR2di+N7OLJaH50R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=olhwfwvZ; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="olhwfwvZ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=do53qTy1FJkzBEMjHcZ3Pn3ZOf9hDME5r2pFUppjpa8=; b=olhwfwvZwTZzPhvP6CyFcM2Mro
+	F2beK/wVfzIOisB1gS30N49/qjum6oSn5LuD4NWpmR6fY/NcIrkFzE6XXnOgHk0NxV4n1jKIoPIK4
+	t4DugUYe2yLYgZ30kJYzOAtT51B+7WK57at8HVlJXpFi4Ru53Lme54rJanA+SC/4Dgl0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tOC7S-001YBp-Mz; Thu, 19 Dec 2024 09:42:54 +0100
+Date: Thu, 19 Dec 2024 09:42:54 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Yajun Deng <yajun.deng@linux.dev>
+Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: mdio_bus: change the bus name to mdio
+Message-ID: <8f69b67f-9b70-4890-86cf-90726612c444@lunn.ch>
+References: <20241219065855.1377069-1-yajun.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- frapeml500005.china.huawei.com (7.182.85.13)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241219065855.1377069-1-yajun.deng@linux.dev>
 
-> > +static void hinic3_del_one_adev(struct hinic3_hwdev *hwdev,
-> > +				enum hinic3_service_type svc_type)
-> > +{
-> > +	struct hinic3_pcidev *pci_adapter = hwdev->adapter;
-> > +	struct hinic3_adev *hadev;
-> > +	bool timeout = true;
-> > +	unsigned long end;
-> > +
-> > +	end = jiffies + msecs_to_jiffies(HINIC3_EVENT_PROCESS_TIMEOUT);
-> > +	do {
-> > +		if (!test_and_set_bit(svc_type, &pci_adapter->state)) {
-> > +			timeout = false;
-> > +			break;
-> > +		}
-> > +		usleep_range(900, 1000);
-> > +	} while (time_before(jiffies, end));
-> > +
-> > +	if (timeout && !test_and_set_bit(svc_type, &pci_adapter->state))
-> > +		timeout = false;
->
-> Please look at using iopoll.h
->
+On Thu, Dec 19, 2024 at 02:58:55PM +0800, Yajun Deng wrote:
+> Since all directories under the /sys/bus are bus, we don't need to add a
+> bus suffix to mdio.
+> 
+> Change the bus name to mdio.
 
-Ack
+Please add an explanation to the commit message of how this is safe in
+terms of ABI.
 
-> > +static int hinic3_sw_init(struct net_device *netdev)
-> > +{
-> > +	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-> > +	struct hinic3_hwdev *hwdev = nic_dev->hwdev;
-> > +	int err;
-> > +
-> > +	nic_dev->q_params.sq_depth = HINIC3_SQ_DEPTH;
-> > +	nic_dev->q_params.rq_depth = HINIC3_RQ_DEPTH;
-> > +
-> > +	hinic3_try_to_enable_rss(netdev);
-> > +
-> > +	eth_hw_addr_random(netdev);
->
-> Is using a random MAC just a temporary thing until more code is added
-> to access an OTP?
->
+    Andrew
 
-No, using a random MAC is not a temporary solution.
-This device is designed for cloud environments. VFs are expected to be
-used by VMs that may migrate from device to device. Therefore the HW does
-not provide a MAC address to VFs, but rather the VF driver selects a
-random MAC address and configures it into the (current) device.
-
-Once the driver is extended to support PFs, the PF MAC will be obtained
-from the device.
-
-> > +	err = register_netdev(netdev);
-> > +	if (err) {
-> > +		err = -ENOMEM;
-> > +		goto err_netdev;
-> > +	}
-> > +
-> > +	netif_carrier_off(netdev);
-> > +
-> > +	dev_set_drvdata(&adev->dev, nic_dev);
->
-> Is this used anywhere in the driver? Calling register_netdev() makes
-> the interface live, even before it returns. If you have NFS root for
-> example, it could be sending packets, etc, before drvdata is set.
->
-
-Ack
-
-> > +int hinic3_set_port_mtu(struct net_device *netdev, u16 new_mtu)
-> > +{
-> > +	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-> > +	struct hinic3_func_tbl_cfg func_tbl_cfg = {};
-> > +	struct hinic3_hwdev *hwdev = nic_dev->hwdev;
-> > +
-> > +	if (new_mtu < HINIC3_MIN_MTU_SIZE) {
-> > +		dev_err(hwdev->dev,
-> > +			"Invalid mtu size: %ubytes, mtu size < %ubytes\n",
-> > +			new_mtu, HINIC3_MIN_MTU_SIZE);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	if (new_mtu > HINIC3_MAX_JUMBO_FRAME_SIZE) {
-> > +		dev_err(hwdev->dev, "Invalid mtu size: %ubytes, mtu size > %ubytes\n",
-> > +			new_mtu, HINIC3_MAX_JUMBO_FRAME_SIZE);
-> > +		return -EINVAL;
-> > +	}
->
-> The core can do this validation for you, if you set ndev->max_mtu,
-> ndev->min_mtu.
-
-Ack
+---
+pw-bot: cr
