@@ -1,74 +1,74 @@
 Received: from alln-iport-1.cisco.com (alln-iport-1.cisco.com [173.37.142.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4349C225A57
-	for <netdev@vger.kernel.org>; Fri, 20 Dec 2024 21:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14141227567
+	for <netdev@vger.kernel.org>; Fri, 20 Dec 2024 21:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.142.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734731553; cv=none; b=VH+I3YjZ73F5Sm28NtZN/ySudobGeG8b0fBMNkrOJ6fL1hpeQldzNMeb8UHrhK6ZCqemI23Zo+teUxenTpJXYj9DzIAgd4pkMh05b5zGX6ujwNha8OxTtUGAuAypeKAk6EycTJ5EVRap5u4AgJ2G+GQC8oO6x8RypW6GazvHSkE=
+	t=1734731555; cv=none; b=Oc4YAq3DQt0vti4qY3/GaEfJOFqBuzbb2g4AhbCNndiiskQbMDB8xMyowMKS8Ztsklvsh4V3nuNUYMPJ1xC8TW/KhDn6bqGDwpLAI/g6fBOsEYc3yy8+UC3ij1YCKEcAeBw8eM8QcCcb3ymPia9+ECUe1JNQesay6ZFSu1YvLVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734731553; c=relaxed/simple;
-	bh=T4hWg15WZP+lApfrr9Y/thSG09sNb0ZXX0qr/vwtnN8=;
+	s=arc-20240116; t=1734731555; c=relaxed/simple;
+	bh=QzqODc2yYFu5IqkEV2LuefBllbBxuQeUrTCk6sDnI/Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=F5M0K6qrxQ63JU2uZsxeptr4VqSxlVG29skVlfDB+vgVa9HQsrcCvDGEJY7MZZRU9gqycUGDpAtVfb6+FzRph5sO6XuaPhQoLoMbzrUZyult7aTD5bsQiGU/UULLbgdD7zDiSsn3AbypDshf//wOWGy5jycOhrAYFBxKQVsKmGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b=dJ3+mlsk; arc=none smtp.client-ip=173.37.142.88
+	 MIME-Version; b=Y3t09rYnsOuaAe8hPTclFhUHSEZRAUdw8/1zByMbeS1d3VScG9pNHPFc3Gw3EvNXzhfRmDloZb7U0K4CN9GgRm2lv5X00+MVSnejVM0GCEZKpKJy3hrUZyP/7EawLJb+4xCn7/YQV/z3IsTp4vnrPArBGEEJhTJPE4YK+awiZ/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b=RbBP63bH; arc=none smtp.client-ip=173.37.142.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="dJ3+mlsk"
+	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="RbBP63bH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=2510; q=dns/txt; s=iport;
-  t=1734731552; x=1735941152;
+  d=cisco.com; i=@cisco.com; l=2543; q=dns/txt; s=iport;
+  t=1734731554; x=1735941154;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=mJaW4D8IoGJsrpAQ4RXWrveI+HMg7JYPf5VPwYrwcqs=;
-  b=dJ3+mlskY4ZoIl9KfTpR+wY/Waxp+b+Xdi29pmklqtLUqyEnKogqNaaP
-   8BrSKj/3ol77Yge5jx89LppWGievjoo1qbOfI6woyf42sG1bVdd0k+7Dz
-   vSe2xuQkkyJHiJDUQzozSA9SiznihHZOe0Sy7vDs0J7SBOAojSwbc18bT
-   g=;
-X-CSE-ConnectionGUID: ONP+TL/yQbCyLFIE7XKL5Q==
-X-CSE-MsgGUID: vjxts3EYQYuRco5yk52soA==
-X-IPAS-Result: =?us-ascii?q?A0ATAADu5WVnj5D/Ja1aHQEBAQEJARIBBQUBgX8IAQsBh?=
- =?us-ascii?q?BlDSIxyX6EwhV2BJQNWDwEBAQ9EBAEBhQcCimwCJjQJDgECBAEBAQEDAgMBA?=
- =?us-ascii?q?QEBAQEBAQEBAQsBAQUBAQECAQcFFAEBAQEBATkFSYYIhlsCAQMnCwFGEFErK?=
- =?us-ascii?q?wcSgwGCZQOwKYF5M4EB3jOBbYFIAYVqh19whHcnG4FJRIJQgT5vhRCFdwSJF?=
- =?us-ascii?q?55OSIEhA1ksAVUTDQoLBwWBOToDIgwLDAsUHBUCgR6BAQEUBhUEgQtFPYJKa?=
- =?us-ascii?q?Uk3Ag0CNoIgJFiCTYUYhGGEV4JJVYJ8ghd8gR2BcUADCxgNSBEsNwYOGwY+b?=
- =?us-ascii?q?gecUEaDcIEPgiimBaEDhCSBY59jGjOqUi6HZJBpIqQjhGaBZzqBWzMaCBsVg?=
- =?us-ascii?q?yJSGQ+OLQ0JFrpkJTI8AgcLAQEDCZErAQE?=
-IronPort-Data: A9a23:1K+VVKJAUHDNDHRYFE+RNZUlxSXFcZb7ZxGr2PjKsXjdYENS1zxSx
- zYfD22EaPuOZjOhfIp/PN+x/E0D75OByoRlTQsd+CA2RRqmiyZq6fd1j6vUF3nPRiEWZBs/t
- 63yUvGZcoZsCCea/kr1WlTYhSEU/bmSQbbhA/LzNCl0RAt1IA8skhsLd9QR2uaEuvDnRVrX0
- T/Oi5eHYgP8gWQsajh8B5+r8XuDgtyj4Fv0gXRmDRx7lAe2v2UYCpsZOZawIxPQKqFIHvS3T
- vr017qw+GXU5X8FUrtJRZ6iLyXm6paLVeS/oiI+t5qK23CulQRuukoPD8fwXG8M49m/c3+d/
- /0W3XC4YV9B0qQhA43xWTEAe811FfUuFLMqvRFTvOTLp3AqfUcAzN1JKnl1Aalf6999KnBq2
- 901dwAuSk260rfeLLKTEoGAh+w5J8XteYdasXZ6wHSBUrAtQIvIROPB4towMDUY358VW62BI
- ZBENHw2MEiojx5nYj/7DLo8m+euinD7fhVTqUmeouw85G27IAlZjOC9YYKOJIXWLSlTtliat
- n7dpEnIOyAHDteYlCuGryi3gcaayEsXX6pJSeXnraQ16LGJ/UQfAQMbUHO3qOe0j0q5Vc4ZL
- UEIkgIjobU3/V6mUvHyWBq3pHPCtRkZM/JTDuczwAKA0KzZ50CeHGdsZjdHZMYrq4wwSCAm2
- 0Ghm87vA3pksNW9UXuX+7GVhSm/NSgcMSkJYipsZQ0I/9XuvqktgR/VCNVuCqi4ipvyAz6Y/
- tyRhDI1i7NWiYsA0L+2uAiYxTmtvZPOCAUy4207Q15J8CteQrbmW6jv+GHRxudkAqe0EWmim
- CU9zp32AP81MbmBkymEQeMoFb6v5uqYPDC0vbKJN8d7n9hK0yD6Fb288A1DyFFV3tHokAIFg
- XM/WysMvve/31PzMcebhr5d7exxkMAM8vy+CpjpgiJmOMQZSeN+1HgGibSs927silMwtqo0J
- I2Wd82hZV5DVv87kmHtHbpDi+Nzrszb+Y81bc2kp/hA+efODEN5tZ9fajNik8hgtvvf+l2Nm
- zqhH5bUlkkPOAEBXsUn2dVOdQ9RdydT6WHeoM1MfenLORt9BGwkELfQx7hnE7GJbIwL/tokC
- kqVAxcCoHKm3CWvAVzTOhhLNui1Nb4h9i1TAMDZFQrzs5TVSdr0tP9HH3b2FJF7nNFeIQlcF
- aBYK5zcU60VFlwqOV01NPHAkWCrTzzz7SrmAsZvSGFXk0JIL+ARxuLZQw==
-IronPort-HdrOrdr: A9a23:mFMF3aq4OECulybCYz1Mox8aV5oseYIsimQD101hICG9vPb2qy
- nIpoV96faaslcssR0b9OxofZPwI080lqQFhbX5Q43DYOCOggLBR+tfBMnZsljd8kbFmNK1u5
- 0NT0EHMqySMbC/5vyKmTVR1L0bsb+6zJw=
-X-Talos-CUID: 9a23:jqHNRGPfjjwUrO5Dfw9ft3IwXdEceFbM6FnxDhCIKkI0cejA
-X-Talos-MUID: 9a23:wVfC4wYyOU/JuOBTqT38mCo5GfZR0rmUA0dQgJZb4dKDHHkl
+  bh=lnjinSy/aS7zRu5fiK4HVq2lup4kqm6HcWbCh/R+te4=;
+  b=RbBP63bHILpHylBIDVDLilFShGPa5Alp8Kfd4YcUSwuV3JD/tiovd7Rw
+   F3fdj23HCFWFVhiU7Xm+vBV6gcLzrGkDu90GQydor1TDZwN48v3bp3Jy7
+   /Jry0L0kTagvk2oR5DaG4sRY58W7vMmdfTHbN2UGpIX2BSE3gexA97Gl4
+   Y=;
+X-CSE-ConnectionGUID: zcwFNjLzSkKwyHd3AhHGsQ==
+X-CSE-MsgGUID: 9mDQr/r5RC6Tsw4ku2HNrw==
+X-IPAS-Result: =?us-ascii?q?A0ATAADu5WVnj47/Ja1aHQEBAQEJARIBBQUBgX8IAQsBh?=
+ =?us-ascii?q?BlDSIxyX6cNFIERA1YPAQEBD0QEAQGFBwKKbAImNAkOAQIEAQEBAQMCAwEBA?=
+ =?us-ascii?q?QEBAQEBAQEBCwEBBQEBAQIBBwUUAQEBAQEBOQVJhgiGWwIBAycLATQSEFErK?=
+ =?us-ascii?q?wcSgwGCZQOwKYF5M4EB3jOBbYFIAYVqh19whHcnG4FJRIJQgT5vhCpmhXcEi?=
+ =?us-ascii?q?ReeTkiBIQNZLAFVEw0KCwcFgTk6AyIMCwwLFBwVAoEegQEBFAYVBIELRT2CS?=
+ =?us-ascii?q?mlJNwINAjaCICRYgk2FGIRhhFeCSVWCfIIXfIEdgXFAAwsYDUgRLDcGDhsGP?=
+ =?us-ascii?q?m4HnFBGg28BgQ58pzKhA4QkgWOfYxozqlKYeyKjOmmEZoFnOoFbMxoIGxWDI?=
+ =?us-ascii?q?lIZD44qAw0JunolMjwCBwsBAQMJkSsBAQ?=
+IronPort-Data: A9a23:fxo1IKjBfBUsqBVEKed+4hPuX161hBAKZh0ujC45NGQN5FlHY01je
+ htvWzuOOP+KamunetgjO4/jo0xTsJCEyIVqTAps/n83ECxjpJueD7x1DKtf0wB+jyHnZBg6h
+ ynLQoCYdKjYdleF+FH1dOCn9SQkvU2xbuKUIPbePSxsThNTRi4kiBZy88Y0mYcAbeKRW2thg
+ vus5ZSFULOZ82QsaD5Nsfjb8EkHUMna4Vv0gHRvPZing3eG/5UlJMp3Db28KXL+Xr5VEoaSL
+ 87fzKu093/u5BwkDNWoiN7TKiXmlZaLYGBiIlIPM0STqkAqSh4ai87XB9JAAatjsAhlqvgqo
+ Dl7WTNcfi9yVkHEsLx1vxC1iEiSN4UekFPMCSDXXcB+UyQqflO0q8iCAn3aMqUK8flZJ2Nq5
+ 8cbCy8cThzYruKW76mCH7wEasQLdKEHPasFsX1miDWcBvE8TNWbHuPB5MRT23E7gcUm8fT2P
+ pVCL2EwKk6dPlsWZg1/5JEWxI9EglH9dD1epFuRqII84nPYy0p6172F3N/9JoTaFJ0OwBrEz
+ o7A1zX8LigAc8bC8xHbzmmz2uzSxwPdQp1HQdVU8dYx3QXMnTZMYPEMbnO3qOe0j2ayUsxSL
+ kgT9DZoq6UunGSmQsT4Vg+1vFaLuRkTX9cWGOo/gCmO16DdywWUHG4JSnhGctNOnMYwSSYny
+ RyPks/lCCJHtKCTTzSW9t+8tTq4NC4UBXUPaS8NUU0O5NyLiIc+kh7CUP59H6OvyN74Azf9x
+ 3aNtidWulkIpdQA26P++RXMhCih48CUCAU0/Q7QGGmi62uVebJJeaS64kf1y/RkPr2abUaQn
+ HRfssi+w/s3WMTleDO2fM0BG7Sg5vCgOTLagEJyE5RJy9hL0yD5FWy3yG8nTHqFIvo5lSnVj
+ Fg/UD69BaO/3lP3NMebgKroV6zGKJQM8/y+C5g4ifIVOfBMmPevpn0GWKJp9zmFfLIQua8+I
+ 4yHVs2nEGwXD69qpBLvGLxBj+RwnH1gnz+LLXwe8/hB+efBDJJyYepVWGZikshjtstoXS2Mq
+ Y4EbZPSo/mheLCgP3WHmWLsEbz6BSNmXc+t8ZM/mh+rKQt9E2ZpEO7K3b4kYMRkma8T/tokD
+ VnjMnK0PGHX3CWdQS3TMygLQOq2Df5X8ylhVQRyZgnA5pTWSdr0hEvpX8dsJeF/nAGipNYoJ
+ 8Q4lzKoWK0SGm2bqm1HMfEQbuVKLXyWuO5HBAL9CBBXQnKqb1WhFgPMFuc3yBQzMw==
+IronPort-HdrOrdr: A9a23:/Y5yyKNBT+w6AMBcTsajsMiBIKoaSvp037Dk7S9MoHtuA6ulfq
+ +V/cjzuSWYtN9VYgBDpTniAtjlfZqjz/5ICOAqVN/INjUO+lHYSb2KhrGN/9SPIUHDH5ZmpM
+ Rdm2wUMqyIMbC85vyKhjWFLw==
+X-Talos-CUID: 9a23:jVw2126gSEzyeHwLOtss5kULNOYnVm/mz1TPMm+0Uk9paJKOcArF
+X-Talos-MUID: 9a23:0ocZ/wU7HYCgcKrq/G7pqAh4c9012Y/wNFsSzZYb4emiLzMlbg==
 X-IronPort-Anti-Spam-Filtered: true
 X-IronPort-AV: E=Sophos;i="6.12,251,1728950400"; 
-   d="scan'208";a="408903614"
-Received: from rcdn-l-core-07.cisco.com ([173.37.255.144])
-  by alln-iport-1.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 20 Dec 2024 21:51:22 +0000
+   d="scan'208";a="408903644"
+Received: from rcdn-l-core-05.cisco.com ([173.37.255.142])
+  by alln-iport-1.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 20 Dec 2024 21:51:25 +0000
 Received: from cisco.com (savbu-usnic-a.cisco.com [10.193.184.48])
-	by rcdn-l-core-07.cisco.com (Postfix) with ESMTP id 42CB81800022D;
-	Fri, 20 Dec 2024 21:51:22 +0000 (GMT)
+	by rcdn-l-core-05.cisco.com (Postfix) with ESMTP id 99E971800022C;
+	Fri, 20 Dec 2024 21:51:25 +0000 (GMT)
 Received: by cisco.com (Postfix, from userid 392789)
-	id 1F4A120F2003; Fri, 20 Dec 2024 13:51:22 -0800 (PST)
+	id 75B2420F2003; Fri, 20 Dec 2024 13:51:25 -0800 (PST)
 From: John Daley <johndale@cisco.com>
 To: benve@cisco.com,
 	satishkh@cisco.com,
@@ -80,9 +80,9 @@ To: benve@cisco.com,
 	netdev@vger.kernel.org
 Cc: John Daley <johndale@cisco.com>,
 	Nelson Escobar <neescoba@cisco.com>
-Subject: [PATCH net-next 2/5] enic: Remove an unnecessary parameter from function enic_queue_rq_desc
-Date: Fri, 20 Dec 2024 13:50:55 -0800
-Message-Id: <20241220215058.11118-3-johndale@cisco.com>
+Subject: [PATCH net-next 5/5] enic: Obtain the Link speed only after the link comes up
+Date: Fri, 20 Dec 2024 13:50:58 -0800
+Message-Id: <20241220215058.11118-6-johndale@cisco.com>
 X-Mailer: git-send-email 2.35.2
 In-Reply-To: <20241220215058.11118-1-johndale@cisco.com>
 References: <20241220215058.11118-1-johndale@cisco.com>
@@ -94,10 +94,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Outbound-SMTP-Client: 10.193.184.48, savbu-usnic-a.cisco.com
-X-Outbound-Node: rcdn-l-core-07.cisco.com
+X-Outbound-Node: rcdn-l-core-05.cisco.com
 
-The function enic_queue_rq_desc has a parameter os_buf_index which was
-only called with a hard coded 0. Remove it.
+The link speed that is used to index the table of minimum RX adaptive
+coalescing values is incorrect because the link speed was being checked
+before the link was up. Change the adaptive RX coalescing setup function
+to run after the Link comes up.
+
+There could be a minor bandwidth impact when adaptive interrupts were
+enabled. The low end of the adaptive interrupt range was being set to 0
+for all packets instead of 3us for packets less the 1000 bytes and 6us
+for larger packet for link speeds greater
 
 Co-developed-by: Nelson Escobar <neescoba@cisco.com>
 Signed-off-by: Nelson Escobar <neescoba@cisco.com>
@@ -105,67 +112,47 @@ Co-developed-by: Satish Kharat <satishkh@cisco.com>
 Signed-off-by: Satish Kharat <satishkh@cisco.com>
 Signed-off-by: John Daley <johndale@cisco.com>
 ---
- drivers/net/ethernet/cisco/enic/enic_main.c |  8 ++------
- drivers/net/ethernet/cisco/enic/enic_res.h  | 10 +++-------
- 2 files changed, 5 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/cisco/enic/enic_main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index 33890e26b8e5..f8d0011486d7 100644
+index 5bfd89749237..7c2bfe4b7997 100644
 --- a/drivers/net/ethernet/cisco/enic/enic_main.c
 +++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -1301,14 +1301,11 @@ static int enic_rq_alloc_buf(struct vnic_rq *rq)
- 	struct net_device *netdev = enic->netdev;
- 	struct sk_buff *skb;
- 	unsigned int len = netdev->mtu + VLAN_ETH_HLEN;
--	unsigned int os_buf_index = 0;
- 	dma_addr_t dma_addr;
- 	struct vnic_rq_buf *buf = rq->to_use;
+@@ -84,6 +84,8 @@ MODULE_AUTHOR("Scott Feldman <scofeldm@cisco.com>");
+ MODULE_LICENSE("GPL");
+ MODULE_DEVICE_TABLE(pci, enic_id_table);
  
- 	if (buf->os_buf) {
--		enic_queue_rq_desc(rq, buf->os_buf, os_buf_index, buf->dma_addr,
--				   buf->len);
--
-+		enic_queue_rq_desc(rq, buf->os_buf, buf->dma_addr, buf->len);
- 		return 0;
- 	}
- 	skb = netdev_alloc_skb_ip_align(netdev, len);
-@@ -1324,8 +1321,7 @@ static int enic_rq_alloc_buf(struct vnic_rq *rq)
- 		return -ENOMEM;
- 	}
++static void enic_set_rx_coal_setting(struct enic *enic);
++
+ #define ENIC_MAX_COALESCE_TIMERS		10
+ /*  Interrupt moderation table, which will be used to decide the
+  *  coalescing timer values
+@@ -109,7 +111,7 @@ static struct enic_intr_mod_table mod_table[ENIC_MAX_COALESCE_TIMERS + 1] = {
+ static struct enic_intr_mod_range mod_range[ENIC_MAX_LINK_SPEEDS] = {
+ 	{0,  0}, /* 0  - 4  Gbps */
+ 	{0,  3}, /* 4  - 10 Gbps */
+-	{3,  6}, /* 10 - 40 Gbps */
++	{3,  6}, /* 10+ Gbps */
+ };
  
--	enic_queue_rq_desc(rq, skb, os_buf_index,
--		dma_addr, len);
-+	enic_queue_rq_desc(rq, skb, dma_addr, len);
+ static void enic_init_affinity_hint(struct enic *enic)
+@@ -436,6 +438,7 @@ static void enic_link_check(struct enic *enic)
+ 	if (link_status && !carrier_ok) {
+ 		netdev_info(enic->netdev, "Link UP\n");
+ 		netif_carrier_on(enic->netdev);
++		enic_set_rx_coal_setting(enic);
+ 	} else if (!link_status && carrier_ok) {
+ 		netdev_info(enic->netdev, "Link DOWN\n");
+ 		netif_carrier_off(enic->netdev);
+@@ -3016,7 +3019,6 @@ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	timer_setup(&enic->notify_timer, enic_notify_timer, 0);
  
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/cisco/enic/enic_res.h b/drivers/net/ethernet/cisco/enic/enic_res.h
-index b8ee42d297aa..dad5c45b684a 100644
---- a/drivers/net/ethernet/cisco/enic/enic_res.h
-+++ b/drivers/net/ethernet/cisco/enic/enic_res.h
-@@ -107,19 +107,15 @@ static inline void enic_queue_wq_desc_tso(struct vnic_wq *wq,
- }
- 
- static inline void enic_queue_rq_desc(struct vnic_rq *rq,
--	void *os_buf, unsigned int os_buf_index,
--	dma_addr_t dma_addr, unsigned int len)
-+	void *os_buf, dma_addr_t dma_addr, unsigned int len)
- {
- 	struct rq_enet_desc *desc = vnic_rq_next_desc(rq);
--	u64 wrid = 0;
--	u8 type = os_buf_index ?
--		RQ_ENET_TYPE_NOT_SOP : RQ_ENET_TYPE_ONLY_SOP;
- 
- 	rq_enet_desc_enc(desc,
- 		(u64)dma_addr | VNIC_PADDR_TARGET,
--		type, (u16)len);
-+		RQ_ENET_TYPE_ONLY_SOP, (u16)len);
- 
--	vnic_rq_post(rq, os_buf, os_buf_index, dma_addr, len, wrid);
-+	vnic_rq_post(rq, os_buf, 0, dma_addr, len, 0);
- }
- 
- struct enic;
+ 	enic_rfs_flw_tbl_init(enic);
+-	enic_set_rx_coal_setting(enic);
+ 	INIT_WORK(&enic->reset, enic_reset);
+ 	INIT_WORK(&enic->tx_hang_reset, enic_tx_hang_reset);
+ 	INIT_WORK(&enic->change_mtu_work, enic_change_mtu_work);
 -- 
 2.35.2
 
