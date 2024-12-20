@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3B3215781
-	for <netdev@vger.kernel.org>; Fri, 20 Dec 2024 13:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC8421661C
+	for <netdev@vger.kernel.org>; Fri, 20 Dec 2024 13:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734700149; cv=none; b=ua9JZ9DTo0/nU1YhbIvrSS9jQgI48+zwa2KFulmfNe9f7gKZvXxNBB1Pos64kmbHrVCd9rc7n9f4ueIV5YZii/m4GGD+5sPdR2OSaXbCjT1TOhednRzZXRmR5CJ/fWlNsgcypvVcBnUcVw2vvU4LU1YY9PaUVOv38xnzQLQHU4s=
+	t=1734700151; cv=none; b=EVYoC2dXx7WnyGXGU0xMyAOEbZv42WXcTEq2uMm5AIQrPQrxHkYzcvr8+zXpVVjJB3QIAJC5K5xNn5q8sNeVV1lwnhxTpsFYVPC7uI6iiQY5Mwz1VU0gd7shhIXQJoXSNdjIa2mPV6J36wQ8i51gJq0c1bs9Lih2AsPm5LllOOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734700149; c=relaxed/simple;
-	bh=jmj4qi6ih9T+yMxku6zI9Zf/iJMy0PtD5qbs0Ea7aOc=;
+	s=arc-20240116; t=1734700151; c=relaxed/simple;
+	bh=IezSPtzCA+GIk5IpkRFZvleekPS1quzOod7dsNbrjWo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fvUoT29CtL4wR/Y0+juHxVGc/q0CO1yuHubnOOzLe6bbiLLmajB6E3ACHUow3i7YammPNfskK1UUw1ifEZEZegpjNpHBpEPOoqiT4y+GV85yRWFKFkER64ddqTeCzeZng791I7GzG7EH+768G57UmL3Rw4bP1/eRescNiyuTdPk=
+	 MIME-Version; b=nTPw4DDDB6ObsmqlzM/26bdsxT9gY/brbJOvZtN0okwmN8AGDPJx8ijuLJ1SmTAlE1GzNyGpbDW1mfKYGdSOsYUJsq5oGcXmS/vHeCD8r6dDRip/OLfyNutAti96KjhbJF+ZD17yxmqyMmYagtQjnXpey3V6gwKv8QFwjJSZklg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tOckA-0004Dx-4I; Fri, 20 Dec 2024 14:08:38 +0100
+	id 1tOckA-0004Dv-4I; Fri, 20 Dec 2024 14:08:38 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tOck8-004NZj-0C;
+	id 1tOck8-004NZh-02;
 	Fri, 20 Dec 2024 14:08:36 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tOck8-008Mjs-2T;
+	id 1tOck8-008MjY-2I;
 	Fri, 20 Dec 2024 14:08:36 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Russell King <linux@armlinux.org.uk>,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	linux-doc@vger.kernel.org
-Subject: [PATCH net-next v3 3/8] net: ethtool: add support for structured PHY statistics
-Date: Fri, 20 Dec 2024 14:08:30 +0100
-Message-Id: <20241220130836.1993966-4-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v3 1/8] ethtool: linkstate: migrate linkstate functions to support multi-PHY setups
+Date: Fri, 20 Dec 2024 14:08:28 +0100
+Message-Id: <20241220130836.1993966-2-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241220130836.1993966-1-o.rempel@pengutronix.de>
 References: <20241220130836.1993966-1-o.rempel@pengutronix.de>
@@ -63,207 +63,93 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+Adapt linkstate_get_sqi() and linkstate_get_sqi_max() to take a
+phy_device argument directly, enabling support for setups with
+multiple PHYs. The previous assumption of a single PHY attached to
+a net_device no longer holds.
 
-Introduce a new way to report PHY statistics in a structured and
-standardized format using the netlink API. This new method does not
-replace the old driver-specific stats, which can still be accessed with
-`ethtool -S <eth name>`. The structured stats are available with
-`ethtool -S <eth name> --all-groups`.
+Use ethnl_req_get_phydev() to identify the appropriate PHY device
+for the operation. Update linkstate_prepare_data() and related
+logic to accommodate this change, ensuring compatibility with
+multi-PHY configurations.
 
-This new method makes it easier to diagnose problems by organizing stats
-in a consistent and documented way.
-
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
-changes v2:
-- move 'struct ethtool_phy_stats' to this patch
+changes v3:
+- s/ETHTOOL_A_PLCA_HEADER/ETHTOOL_A_LINKSTATE_HEADER
 ---
- Documentation/networking/ethtool-netlink.rst |  1 +
- include/uapi/linux/ethtool.h                 |  2 +
- include/uapi/linux/ethtool_netlink.h         | 14 +++++++
- net/ethtool/netlink.h                        |  1 +
- net/ethtool/stats.c                          | 39 +++++++++++++++++++-
- net/ethtool/strset.c                         |  5 +++
- 6 files changed, 61 insertions(+), 1 deletion(-)
+ net/ethtool/linkstate.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
-index a7ba6368a4d5..da846f1d998e 100644
---- a/Documentation/networking/ethtool-netlink.rst
-+++ b/Documentation/networking/ethtool-netlink.rst
-@@ -1616,6 +1616,7 @@ the ``ETHTOOL_A_STATS_GROUPS`` bitset. Currently defined values are:
-  ETHTOOL_STATS_ETH_PHY  eth-phy  Basic IEEE 802.3 PHY statistics (30.3.2.1.*)
-  ETHTOOL_STATS_ETH_CTRL eth-ctrl Basic IEEE 802.3 MAC Ctrl statistics (30.3.3.*)
-  ETHTOOL_STATS_RMON     rmon     RMON (RFC 2819) statistics
-+ ETHTOOL_STATS_PHY      phy      Additional PHY statistics, not defined by IEEE
-  ====================== ======== ===============================================
- 
- Each group should have a corresponding ``ETHTOOL_A_STATS_GRP`` in the reply.
-diff --git a/include/uapi/linux/ethtool.h b/include/uapi/linux/ethtool.h
-index 7e1b3820f91f..d1089b88efc7 100644
---- a/include/uapi/linux/ethtool.h
-+++ b/include/uapi/linux/ethtool.h
-@@ -681,6 +681,7 @@ enum ethtool_link_ext_substate_module {
-  * @ETH_SS_STATS_ETH_MAC: names of IEEE 802.3 MAC statistics
-  * @ETH_SS_STATS_ETH_CTRL: names of IEEE 802.3 MAC Control statistics
-  * @ETH_SS_STATS_RMON: names of RMON statistics
-+ * @ETH_SS_STATS_PHY: names of PHY(dev) statistics
-  *
-  * @ETH_SS_COUNT: number of defined string sets
-  */
-@@ -706,6 +707,7 @@ enum ethtool_stringset {
- 	ETH_SS_STATS_ETH_MAC,
- 	ETH_SS_STATS_ETH_CTRL,
- 	ETH_SS_STATS_RMON,
-+	ETH_SS_STATS_PHY,
- 
- 	/* add new constants above here */
- 	ETH_SS_COUNT
-diff --git a/include/uapi/linux/ethtool_netlink.h b/include/uapi/linux/ethtool_netlink.h
-index 9c909ce733a5..9ff72cfb2e98 100644
---- a/include/uapi/linux/ethtool_netlink.h
-+++ b/include/uapi/linux/ethtool_netlink.h
-@@ -99,6 +99,7 @@ enum {
- 	ETHTOOL_STATS_ETH_MAC,
- 	ETHTOOL_STATS_ETH_CTRL,
- 	ETHTOOL_STATS_RMON,
-+	ETHTOOL_STATS_PHY,
- 
- 	/* add new constants above here */
- 	__ETHTOOL_STATS_CNT
-@@ -193,6 +194,19 @@ enum {
- 	ETHTOOL_A_STATS_RMON_MAX = (__ETHTOOL_A_STATS_RMON_CNT - 1)
+diff --git a/net/ethtool/linkstate.c b/net/ethtool/linkstate.c
+index 34d76e87847d..459cfea7652d 100644
+--- a/net/ethtool/linkstate.c
++++ b/net/ethtool/linkstate.c
+@@ -26,9 +26,8 @@ const struct nla_policy ethnl_linkstate_get_policy[] = {
+ 		NLA_POLICY_NESTED(ethnl_header_policy_stats),
  };
  
-+enum {
-+	/* Basic packet counters if PHY has separate counters from the MAC */
-+	ETHTOOL_A_STATS_PHY_RX_PKTS,
-+	ETHTOOL_A_STATS_PHY_RX_BYTES,
-+	ETHTOOL_A_STATS_PHY_RX_ERRORS,
-+	ETHTOOL_A_STATS_PHY_TX_PKTS,
-+	ETHTOOL_A_STATS_PHY_TX_BYTES,
-+	ETHTOOL_A_STATS_PHY_TX_ERRORS,
-+
-+	/* add new constants above here */
-+	__ETHTOOL_A_STATS_PHY_CNT,
-+	ETHTOOL_A_STATS_PHY_MAX = (__ETHTOOL_A_STATS_PHY_CNT - 1)
-+};
- 
- /* generic netlink info */
- #define ETHTOOL_GENL_NAME "ethtool"
-diff --git a/net/ethtool/netlink.h b/net/ethtool/netlink.h
-index 0a09298fff92..1ce0a3de1430 100644
---- a/net/ethtool/netlink.h
-+++ b/net/ethtool/netlink.h
-@@ -511,5 +511,6 @@ extern const char stats_eth_phy_names[__ETHTOOL_A_STATS_ETH_PHY_CNT][ETH_GSTRING
- extern const char stats_eth_mac_names[__ETHTOOL_A_STATS_ETH_MAC_CNT][ETH_GSTRING_LEN];
- extern const char stats_eth_ctrl_names[__ETHTOOL_A_STATS_ETH_CTRL_CNT][ETH_GSTRING_LEN];
- extern const char stats_rmon_names[__ETHTOOL_A_STATS_RMON_CNT][ETH_GSTRING_LEN];
-+extern const char stats_phy_names[__ETHTOOL_A_STATS_PHY_CNT][ETH_GSTRING_LEN];
- 
- #endif /* _NET_ETHTOOL_NETLINK_H */
-diff --git a/net/ethtool/stats.c b/net/ethtool/stats.c
-index 1bdaf071ec6b..aab883559807 100644
---- a/net/ethtool/stats.c
-+++ b/net/ethtool/stats.c
-@@ -35,6 +35,7 @@ const char stats_std_names[__ETHTOOL_STATS_CNT][ETH_GSTRING_LEN] = {
- 	[ETHTOOL_STATS_ETH_MAC]			= "eth-mac",
- 	[ETHTOOL_STATS_ETH_CTRL]		= "eth-ctrl",
- 	[ETHTOOL_STATS_RMON]			= "rmon",
-+	[ETHTOOL_STATS_PHY]			= "phydev",
- };
- 
- const char stats_eth_phy_names[__ETHTOOL_A_STATS_ETH_PHY_CNT][ETH_GSTRING_LEN] = {
-@@ -79,6 +80,15 @@ const char stats_rmon_names[__ETHTOOL_A_STATS_RMON_CNT][ETH_GSTRING_LEN] = {
- 	[ETHTOOL_A_STATS_RMON_JABBER]		= "etherStatsJabbers",
- };
- 
-+const char stats_phy_names[__ETHTOOL_A_STATS_PHY_CNT][ETH_GSTRING_LEN] = {
-+	[ETHTOOL_A_STATS_PHY_RX_PKTS]		= "RxFrames",
-+	[ETHTOOL_A_STATS_PHY_RX_BYTES]		= "RxOctets",
-+	[ETHTOOL_A_STATS_PHY_RX_ERRORS]		= "RxErrors",
-+	[ETHTOOL_A_STATS_PHY_TX_PKTS]		= "TxFrames",
-+	[ETHTOOL_A_STATS_PHY_TX_BYTES]		= "TxOctets",
-+	[ETHTOOL_A_STATS_PHY_TX_ERRORS]		= "TxErrors",
-+};
-+
- const struct nla_policy ethnl_stats_get_policy[ETHTOOL_A_STATS_SRC + 1] = {
- 	[ETHTOOL_A_STATS_HEADER]	=
- 		NLA_POLICY_NESTED(ethnl_header_policy),
-@@ -155,7 +165,8 @@ static int stats_prepare_data(const struct ethnl_req_info *req_base,
- 	data->ctrl_stats.src = src;
- 	data->rmon_stats.src = src;
- 
--	if (test_bit(ETHTOOL_STATS_ETH_PHY, req_info->stat_mask) &&
-+	if ((test_bit(ETHTOOL_STATS_PHY, req_info->stat_mask) ||
-+	     test_bit(ETHTOOL_STATS_ETH_PHY, req_info->stat_mask)) &&
- 	    src == ETHTOOL_MAC_STATS_SRC_AGGREGATE) {
- 		if (phydev)
- 			phy_ethtool_get_phy_stats(phydev, &data->phy_stats,
-@@ -211,6 +222,10 @@ static int stats_reply_size(const struct ethnl_req_info *req_base,
- 			nla_total_size(4)) *	/* _A_STATS_GRP_HIST_BKT_HI */
- 			ETHTOOL_RMON_HIST_MAX * 2;
- 	}
-+	if (test_bit(ETHTOOL_STATS_PHY, req_info->stat_mask)) {
-+		n_stats += sizeof(struct ethtool_phy_stats) / sizeof(u64);
-+		n_grps++;
-+	}
- 
- 	len += n_grps * (nla_total_size(0) + /* _A_STATS_GRP */
- 			 nla_total_size(4) + /* _A_STATS_GRP_ID */
-@@ -264,6 +279,25 @@ static int stats_put_phy_stats(struct sk_buff *skb,
- 	return 0;
- }
- 
-+static int stats_put_phydev_stats(struct sk_buff *skb,
-+				  const struct stats_reply_data *data)
-+{
-+	if (stat_put(skb, ETHTOOL_A_STATS_PHY_RX_PKTS,
-+		     data->phydev_stats.rx_packets) ||
-+	    stat_put(skb, ETHTOOL_A_STATS_PHY_RX_BYTES,
-+		     data->phydev_stats.rx_bytes) ||
-+	    stat_put(skb, ETHTOOL_A_STATS_PHY_RX_ERRORS,
-+		     data->phydev_stats.rx_errors) ||
-+	    stat_put(skb, ETHTOOL_A_STATS_PHY_TX_PKTS,
-+		     data->phydev_stats.tx_packets) ||
-+	    stat_put(skb, ETHTOOL_A_STATS_PHY_TX_BYTES,
-+		     data->phydev_stats.tx_bytes) ||
-+	    stat_put(skb, ETHTOOL_A_STATS_PHY_TX_ERRORS,
-+		     data->phydev_stats.tx_errors))
-+		return -EMSGSIZE;
-+	return 0;
-+}
-+
- static int stats_put_mac_stats(struct sk_buff *skb,
- 			       const struct stats_reply_data *data)
+-static int linkstate_get_sqi(struct net_device *dev)
++static int linkstate_get_sqi(struct phy_device *phydev)
  {
-@@ -440,6 +474,9 @@ static int stats_fill_reply(struct sk_buff *skb,
- 	if (!ret && test_bit(ETHTOOL_STATS_RMON, req_info->stat_mask))
- 		ret = stats_put_stats(skb, data, ETHTOOL_STATS_RMON,
- 				      ETH_SS_STATS_RMON, stats_put_rmon_stats);
-+	if (!ret && test_bit(ETHTOOL_STATS_PHY, req_info->stat_mask))
-+		ret = stats_put_stats(skb, data, ETHTOOL_STATS_PHY,
-+				      ETH_SS_STATS_PHY, stats_put_phydev_stats);
+-	struct phy_device *phydev = dev->phydev;
+ 	int ret;
  
+ 	if (!phydev)
+@@ -46,9 +45,8 @@ static int linkstate_get_sqi(struct net_device *dev)
  	return ret;
  }
-diff --git a/net/ethtool/strset.c b/net/ethtool/strset.c
-index b3382b3cf325..818cf01f0911 100644
---- a/net/ethtool/strset.c
-+++ b/net/ethtool/strset.c
-@@ -105,6 +105,11 @@ static const struct strset_info info_template[] = {
- 		.count		= __ETHTOOL_A_STATS_RMON_CNT,
- 		.strings	= stats_rmon_names,
- 	},
-+	[ETH_SS_STATS_PHY] = {
-+		.per_dev	= false,
-+		.count		= __ETHTOOL_A_STATS_PHY_CNT,
-+		.strings	= stats_phy_names,
-+	},
- };
  
- struct strset_req_info {
+-static int linkstate_get_sqi_max(struct net_device *dev)
++static int linkstate_get_sqi_max(struct phy_device *phydev)
+ {
+-	struct phy_device *phydev = dev->phydev;
+ 	int ret;
+ 
+ 	if (!phydev)
+@@ -100,19 +98,28 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
+ {
+ 	struct linkstate_reply_data *data = LINKSTATE_REPDATA(reply_base);
+ 	struct net_device *dev = reply_base->dev;
++	struct nlattr **tb = info->attrs;
++	struct phy_device *phydev;
+ 	int ret;
+ 
++	phydev = ethnl_req_get_phydev(req_base, tb[ETHTOOL_A_LINKSTATE_HEADER],
++				      info->extack);
++	if (IS_ERR(phydev)) {
++		ret = PTR_ERR(phydev);
++		goto out;
++	}
++
+ 	ret = ethnl_ops_begin(dev);
+ 	if (ret < 0)
+ 		return ret;
+ 	data->link = __ethtool_get_link(dev);
+ 
+-	ret = linkstate_get_sqi(dev);
++	ret = linkstate_get_sqi(phydev);
+ 	if (linkstate_sqi_critical_error(ret))
+ 		goto out;
+ 	data->sqi = ret;
+ 
+-	ret = linkstate_get_sqi_max(dev);
++	ret = linkstate_get_sqi_max(phydev);
+ 	if (linkstate_sqi_critical_error(ret))
+ 		goto out;
+ 	data->sqi_max = ret;
+@@ -127,9 +134,9 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
+ 			   sizeof(data->link_stats) / 8);
+ 
+ 	if (req_base->flags & ETHTOOL_FLAG_STATS) {
+-		if (dev->phydev)
++		if (phydev)
+ 			data->link_stats.link_down_events =
+-				READ_ONCE(dev->phydev->link_down_events);
++				READ_ONCE(phydev->link_down_events);
+ 
+ 		if (dev->ethtool_ops->get_link_ext_stats)
+ 			dev->ethtool_ops->get_link_ext_stats(dev,
 -- 
 2.39.5
 
