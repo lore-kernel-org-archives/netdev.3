@@ -1,75 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE3D2594B5;
-	Fri, 20 Dec 2024 03:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4C16F073;
+	Fri, 20 Dec 2024 04:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734666865; cv=none; b=Gts894D9RWUPtHqRxkUKZKocTRL4VeuTK1EcIFkgpN5sNtIgSjEE00lGAWvdgMMHVP1E2EPfgwqSK2Lgfr5GxOlszVL4HOel4ctGspxMVu1jFn7NQT+XsWEnBr6nR8yUEIgcOp7YCPOQrNeiiiyqwvRdTlJVCsWjP9A65/npJNs=
+	t=1734667219; cv=none; b=G4RyuzM4vreW0RYe/UTJYytIvvHlus5mGxvNWjyTBmGOyV4SDx8ZiIgaYKNs2PE4Mj6EK04vxDG3Jmn6/T6XBtkMnUhnwMMuXbRUFN9hItYn1SWtyxcWxZS3KMsD8CaPNHHkuyJqAD/51yQ+/HRrr/Io239XQk4NWZg/RWdmzEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734666865; c=relaxed/simple;
-	bh=DcUUVRtgrPJFsbdG0iucOYQrDt+7D6X6mTi7N+SqfwQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BIzfqDgtcfdJpocDcN/67hwj5dp1yLORYtxyxWaIbXkBdowBxlWGFOvrmVGPJPMl2cdnFufUCN/u1rVn1EyMtPlgyjVw/6Ro4UIUEeMGmHeohQRyaXHjJfGxXHdEQWErVMn53tsI2fFCXIsWiIoUAeZ4j4RJmthch5RkK4tp/hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U8fdGa06; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734667219; c=relaxed/simple;
+	bh=rTnpdSUeWtBzWEOGceVMofkudgLJ9uiqKEpqOWdOYjI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=J5oX/ahOxojtTfNy5d17zfwG+9jn3U9uD8DvFb7XSe6Nkm4zIN8xycL/9yG6glNt0ZQIbgslmSaO0esN6Cq/5+Y8dG+tNt9h901RjaKZ8cpaa3S+6kDfZtI2BcMl5HcF1GW6Z2DCWVfGwX4E3Zy6cG1UO4wecNxMDjPK9nCVd/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=StmbYoDV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U8fdGa06"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A579C4CEDD;
-	Fri, 20 Dec 2024 03:54:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="StmbYoDV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A754C4CECD;
+	Fri, 20 Dec 2024 04:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734666865;
-	bh=DcUUVRtgrPJFsbdG0iucOYQrDt+7D6X6mTi7N+SqfwQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=U8fdGa06Druqg8pNEQSz9yKd7GwjXDuPcb5o6Opv3oS6VgqwlxuDNYxP5IrwVLgfj
-	 xK4USAAGTGY/YRO2RGMy6JSx4mq8st2dn2lcIou98kgdnUFnUbCpEXbfy9oGQ/t7mf
-	 ZiwTYIp3P+3CWhHqDAJ6dDCb4WKJ9wjbRakWMiaO98WDAm4PjmiVcmT+7ff4uRDi4U
-	 J0LM2PB99rbuxE6JCYzDjMMSxddwT63Mx4zESMUAV44e9ZrKCCe5cKKw4miSB5kPsD
-	 FDomRHryrMFnfb2bTKgveDwTYk//EJy3ii8nHgmXL2PcOfpYtd23MC3vq6eaBjJWcR
-	 PYSdjnp1oPYtg==
-Date: Thu, 19 Dec 2024 19:54:23 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, Jonathan
- Corbet <corbet@lwn.net>, kernel@pengutronix.de,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Simon Horman
- <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, Maxime Chevallier
- <maxime.chevallier@bootlin.com>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH net-next v2 0/8] Introduce unified and structured PHY
-Message-ID: <20241219195423.0bba4ac8@kernel.org>
-In-Reply-To: <20241219132534.725051-1-o.rempel@pengutronix.de>
-References: <20241219132534.725051-1-o.rempel@pengutronix.de>
+	s=k20201202; t=1734667218;
+	bh=rTnpdSUeWtBzWEOGceVMofkudgLJ9uiqKEpqOWdOYjI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=StmbYoDVSTN/gdtu5TfXyVEFBL2GQXFu/QVEr7FDxhBE2d15rtmljyHSOYoMuaCI7
+	 bwXTeCIxdc+/V+9kA4jL4nF93L/Xs5EAXZSbwJ9hN2/6W3/Emgn+d0gJ6z+GUD6XTf
+	 P1sjc+1nKc5tDPwaZ3DneIKvreTEBgkhT4QcXO8VshDVKMCDAG/zLu3BK74WoktmuR
+	 p9Kt2dZw0Vbs8Y3jMNOU2Cpd7GCYWp/fFJesqNAorrwK479vPJwXfzOSH9xTk+9Qnr
+	 hs6i2kbWp3UQcSi80p8BenqGEz/8JcD4LWU5bFsleylnAnGcW3bbJ3xSmsZ9PvMt2n
+	 twBnZBJslUoqA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7117D3806656;
+	Fri, 20 Dec 2024 04:00:37 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/7] xdp: a fistful of generic changes pt. III
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173466723626.2467402.11977533281368650113.git-patchwork-notify@kernel.org>
+Date: Fri, 20 Dec 2024 04:00:36 +0000
+References: <20241218174435.1445282-1-aleksander.lobakin@intel.com>
+In-Reply-To: <20241218174435.1445282-1-aleksander.lobakin@intel.com>
+To: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
+ john.fastabend@gmail.com, andrii@kernel.org, jose.marchesi@oracle.com,
+ toke@redhat.com, magnus.karlsson@intel.com, maciej.fijalkowski@intel.com,
+ przemyslaw.kitszel@intel.com, jbaron@akamai.com, casey@schaufler-ca.com,
+ nathan@kernel.org, bpf@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Thu, 19 Dec 2024 14:25:26 +0100 Oleksij Rempel wrote:
-> This patch set introduces a unified and well-structured interface for
-> reporting PHY statistics. Instead of relying on arbitrary strings in PHY
-> drivers, this interface provides a consistent and structured way to
-> expose PHY statistics to userspace via ethtool.
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 18 Dec 2024 18:44:28 +0100 you wrote:
+> XDP for idpf is currently 5.(6) chapters:
+> * convert Rx to libeth;
+> * convert Tx and stats to libeth;
+> * generic XDP and XSk code changes;
+> * generic XDP and XSk code additions pt. 1;
+> * generic XDP and XSk code additions pt. 2 (you are here);
+> * actual XDP for idpf via new libeth_xdp;
+> * XSk for idpf (via ^).
 > 
-> The initial groundwork for this effort was laid by Jakub Kicinski, who
-> contributed patches to plumb PHY statistics to drivers and added support
-> for structured statistics in ethtool. Building on Jakub's work, I tested
-> the implementation with several PHYs, addressed a few issues, and added
-> support for statistics in two specific PHY drivers.
-> 
-> changes are tracked in separate patches.
+> [...]
 
-At a glance looks like it doesn't pass allmodconfig build:
+Here is the summary with links:
+  - [net-next,1/7] page_pool: add page_pool_dev_alloc_netmem()
+    https://git.kernel.org/netdev/net-next/c/a19d0236f466
+  - [net-next,2/7] xdp: add generic xdp_buff_add_frag()
+    https://git.kernel.org/netdev/net-next/c/68ddc8ae1768
+  - [net-next,3/7] xdp: add generic xdp_build_skb_from_buff()
+    https://git.kernel.org/netdev/net-next/c/539c1fba1ac7
+  - [net-next,4/7] xsk: make xsk_buff_add_frag() really add the frag via __xdp_buff_add_frag()
+    (no matching commit)
+  - [net-next,5/7] xsk: add generic XSk &xdp_buff -> skb conversion
+    https://git.kernel.org/netdev/net-next/c/560d958c6c68
+  - [net-next,6/7] xsk: add helper to get &xdp_desc's DMA and meta pointer in one go
+    (no matching commit)
+  - [net-next,7/7] unroll: add generic loop unroll helpers
+    (no matching commit)
 
-ld: vmlinux.o: in function `linkstate_prepare_data':
-linkstate.c:(.text+0x21192f1): undefined reference to `phy_ethtool_get_link_ext_stats'
-ld: vmlinux.o: in function `stats_prepare_data':
-stats.c:(.text+0x212a66f): undefined reference to `phy_ethtool_get_phy_stats'
-
-There are also kdoc warnings in patch 2.
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
