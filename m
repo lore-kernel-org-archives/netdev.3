@@ -1,107 +1,85 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A34E4A08;
-	Fri, 20 Dec 2024 08:37:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839DE198845;
+	Fri, 20 Dec 2024 08:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734683869; cv=none; b=MYI9W//1N9fh1n8HN5yxwujB/t7RiKkloqYazbFsuUcz6ljjw8whDNaikmXfSKobYWOi/Ag40ABTnbuJojx7AY148H/jG1pr6IFbUhHmAhZbgzrVLA7xgTWPPYwC7HzrHOJzO6oYG+w2a99VqJQy7crqWgsQg5KdxRfc+Gvxq4Y=
+	t=1734684054; cv=none; b=KxXUHpope0CUpUsPKilN6A91gTFJq+xKuAOrK+0Tmri58pZLAxuYMUGWazHTbmPyWpCHgToEI4SsTx8NPzgeBGXSTAjzLvaFeNxDoOa5HMxD/K/QzDWIygm+w5mWwMEirCypn8dcBwKxqE0FW3Hbsq0X4nWx5qWFwZDYbsfHgAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734683869; c=relaxed/simple;
-	bh=GfW1eOLXnvcnEypM6xHp1oyMoi/lUm9NRGnOj2W3PqI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Mxgss5HGdf1nvVJ/0aaXobOVm7jXscn7MC64isGbQbvV1FV7uN1lvTP325PfrsAlHTzZaCUT1ARsTx605fKwc4Tn/WpMKZWzc0rOsbNLhi2SCGt3mK9IaZ+51xoexahJARQpxAc64GyAOB1W0rjQAAZIDJzz4voM6rcrzWdD000=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=iTTDDYYm; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1734684054; c=relaxed/simple;
+	bh=GXjHFSfHXGkbazxF4UtzYwq7XneAfM1/GwSJhO2/4jw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mx2NKrBOU1Yg1G1L8EJujGphKlmiuVmtjrgieADJL7pkrJQyuwZh3ab8m6E3+k2YYd9uLUx6IXRMtLcldDaJqVaEO2YWN3d5lWFR762cPQTmgszod7Vnl1VL5bljq+wlPJCgx9J6zh7XMXPL9fePuUEgfv+EUV8dFvBl2SeUYDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=htMgKyC5; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="iTTDDYYm"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C04FD20003;
-	Fri, 20 Dec 2024 08:37:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1734683864;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=rbExN5sNOVOtlrv1pS4xS47539TPF/VviR6QnbVjniw=;
-	b=iTTDDYYmjQTv/YQ/QT/B1Pgyz0KawLVQgjTSMbJedz92hrNNUJvcMoWpFm96l+UVoZxnT9
-	uK+jyRoTKTuFK64TSAmyXWpDDiF6CCcFbXEWn3jce50KlSV1fHb9vk0FoJcZbjKbi8TkPz
-	4/z8JTn/XWiyfYiInS7npsOYcDcYVA9tTR32AqoyElfck3rcR/BOFkfGn4jskPDEhrn9hS
-	hHqru3qCBLrokBQV6PYC4jh0tjfGObJR9QBgjJ9vS/GFGa8WJAxNLAZ9iDc5DUFRIppmMs
-	OEJPAdIlWpJ77b7MQG+V0YF1uPsQ7L4CZMmKA9kOkIIyvh+aVO4snHj++x+0nA==
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: syzbot+a344326c05c98ba19682@syzkaller.appspotmail.com,
-	thomas.petazzoni@bootlin.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next v2] net: ethtool: Fix suspicious rcu_dereference usage
-Date: Fri, 20 Dec 2024 09:37:40 +0100
-Message-Id: <20241220083741.175329-1-kory.maincent@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="htMgKyC5"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=j9U1VGdr2s8YAl9q2+JeX1Vkwfvzj9l8PtZs4y7rNZM=; b=htMgKyC59nsU4y0SItUayWEIez
+	kuajlKd2QCLkxvaS1/lORP1G419ulxo9AN+JkUsCG0u295BqIIiDTHIyWB9Yky3waPC5/ciU/4wMK
+	K6NihyTGVSu3HpTou+GWSPqtn0GckfA5Ej68IGuAZKcSygvpkrqB5fSLcE2SmqpHDG6g=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tOYYo-001vPI-2d; Fri, 20 Dec 2024 09:40:38 +0100
+Date: Fri, 20 Dec 2024 09:40:38 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: kuba@kernel.org, tony@atomide.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, linux@armlinux.org.uk, andrew+netdev@lunn.ch,
+	pabeni@redhat.com, davem@davemloft.net, edumazet@google.com,
+	horms@kernel.org, linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next 0/3] net: add and use phy_disable_eee
+Message-ID: <072064ab-50d2-4517-97df-73acd9262103@lunn.ch>
+References: <5139374e-7151-4d0d-8ba9-9ec3d9b52f67@gmail.com>
+ <173466543676.2462446.11795736705448322037.git-patchwork-notify@kernel.org>
+ <7128fc70-895d-4622-b12c-eab2475e3049@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7128fc70-895d-4622-b12c-eab2475e3049@gmail.com>
 
-The __ethtool_get_ts_info function can be called with or without the
-rtnl lock held. When the rtnl lock is not held, using rtnl_dereference()
-triggers a warning due to the lack of lock context.
+On Fri, Dec 20, 2024 at 09:26:54AM +0100, Heiner Kallweit wrote:
+> On 20.12.2024 04:30, patchwork-bot+netdevbpf@kernel.org wrote:
+> > Hello:
+> > 
+> > This series was applied to netdev/net-next.git (main)
+> > by Jakub Kicinski <kuba@kernel.org>:
+> > 
+> > On Mon, 16 Dec 2024 22:29:58 +0100 you wrote:
+> >> If a MAC driver doesn't support EEE, then the PHY shouldn't advertise it.
+> >> Add phy_disable_eee() for this purpose, and use it in cpsw driver.
+> >>
+> >> Heiner Kallweit (3):
+> >>   net: phy: add phy_disable_eee
+> >>   net: ethernet: ti: cpsw: disable PHY EEE advertisement
+> >>   ARM: dts: ti/omap: remove eee-broken properties
+> >>
+> >> [...]
+> > 
+> > Here is the summary with links:
+> >   - [net-next,1/3] net: phy: add phy_disable_eee
+> >     https://git.kernel.org/netdev/net-next/c/b55498ff14bd
+> >   - [net-next,2/3] net: ethernet: ti: cpsw: disable PHY EEE advertisement
+> >     https://git.kernel.org/netdev/net-next/c/c9f5a5dabbf5
+> >   - [net-next,3/3] ARM: dts: ti/omap: remove eee-broken properties
+> >     (no matching commit)
+> > 
+> Patch 3 is marked "not applicable" in patchwork and didn't make it to net-next.
+> Any issue with this patch?
 
-Add an rcu_read_lock() to ensure the lock is acquired and to maintain
-synchronization.
+Maybe Jakub wants you to submit it to the TI DT Maintainer? Or get an
+Acked-by: from said Maintainer.
 
-Reported-by: syzbot+a344326c05c98ba19682@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/676147f8.050a0220.37aaf.0154.GAE@google.com/
-Fixes: b9e3f7dc9ed9 ("net: ethtool: tsinfo: Enhance tsinfo to support several hwtstamp by net topology")
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
----
-
-I did not manage to reproduce the issue even with the c repro file from
-syzbot. The c repro run well on my board. Maybe I missed CONFIG being
-enabled other than PROVE_LOCKING and PROVE_RCU.
-I assume this will fix it only by looking at the code.
-
-Changes in v2:
-- Add rcu_read_lock()
----
- net/ethtool/common.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-index 02f941f667dd..2607aea1fbfb 100644
---- a/net/ethtool/common.c
-+++ b/net/ethtool/common.c
-@@ -870,7 +870,8 @@ int __ethtool_get_ts_info(struct net_device *dev,
- {
- 	struct hwtstamp_provider *hwprov;
- 
--	hwprov = rtnl_dereference(dev->hwprov);
-+	rcu_read_lock();
-+	hwprov = rcu_dereference(dev->hwprov);
- 	/* No provider specified, use default behavior */
- 	if (!hwprov) {
- 		const struct ethtool_ops *ops = dev->ethtool_ops;
-@@ -887,9 +888,11 @@ int __ethtool_get_ts_info(struct net_device *dev,
- 		info->so_timestamping |= SOF_TIMESTAMPING_RX_SOFTWARE |
- 					 SOF_TIMESTAMPING_SOFTWARE;
- 
-+		rcu_read_unlock();
- 		return err;
- 	}
- 
-+	rcu_read_unlock();
- 	return ethtool_get_ts_info_by_phc(dev, info, &hwprov->desc);
- }
- 
--- 
-2.34.1
-
+	Andrew
