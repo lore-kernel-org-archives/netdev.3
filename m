@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6103022618F
-	for <netdev@vger.kernel.org>; Fri, 20 Dec 2024 20:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53705228C9E;
+	Fri, 20 Dec 2024 20:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734725769; cv=none; b=dWflHNWTd7Rge5x8cqTJm48uswyiOfAzOAKtsbflRk9NCFXmNcDfXB12rr/XbcmdfOY4Md2to06Ya/u8AL2sFHTkMJfmRx+nu8dRACHNLp0ny0ZZvC/HVlov/NkcCwxox2sKvuL92zyBDA4AkIuxEOLuySVPa7MR5i1Pzq4GQ58=
+	t=1734725769; cv=none; b=GXGTriXd3vXBmqtPlUgHsTHOs7cg8hzqR/kq1nRZopjoCLxC9/tEHTOzkw/aEOJlEkmVYFQxd2w6nd6k++SbCOCfDB+UG//1zwVYVHaggDeuEwvzX25xS9E4Q+VHrk1QQgXn5gHHUWflPXQjugU7MGm4HsB9sgXI2h75K38rcq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734725769; c=relaxed/simple;
-	bh=ClH4mbYIilJIJr/kp6pw3IImjZTZi858Sm/M+Uvt7CY=;
+	bh=uDAamA6Evk2wLXY1JrK3Smjks4G7bCMXoRNbm+Rtqk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MD7LoKm3bkjiHZb0+cnWL1mN3Mr5fFd9zhd2ZyIAvkP1mu/wGzfTMyXGgKfaksCutEoc9Klet5gxQTJvEVivzk8ZfRZd+i28ExsTv/EErxUepNbFZCrR83ocAUmPtI8vVdZeJflw1zAQ2CyUhsmVbHL067WxjEnGpeGUY6YXN4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E6rB0x96; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=YYK9XB0wi3tGwPQ6PntBGMMlCc/Mg1lRIMdDrA5TYTMnMZ8gTFBJlp3aMBgatr68tsXCn+3P7JyNseAagTrxALpsz+OoSFAiS2FcKbJ59nJwSxs1GbtaiwgEaU+fwcxalh8yOoN3yuC4ufjel4UDaPJIREvp9D7Hk4H9nZsqhcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RZsY3/XS; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E6rB0x96"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RZsY3/XS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734725767; x=1766261767;
+  t=1734725768; x=1766261768;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ClH4mbYIilJIJr/kp6pw3IImjZTZi858Sm/M+Uvt7CY=;
-  b=E6rB0x96mUzgrwMjX5RQXSS02rLNlqBRZ9EmjuJgdbryDx0f43QfeLk6
-   U82HAAiLk4kRH5J/inyWoMD/df1xeHzGtKsmiMFtEeP+YvOJkZKA2GvZb
-   DQ5qBGtUJJBIMjh1FQQMnoAohwrPjUYIaK8+TGuNQ//cTpKz6C1eUVFE5
-   buOCfAPMx6UgtPmFPQ0UclSbaF8qwDMsSCa5X05M178PhsXFzPlO24mjo
-   HhleToPoIaPtjOOLAg0Y/1PEmAiEi3RnT2x2bWvNmC75AXnGhVo1mfl1i
-   bJinBJsgrn9EKp9GQ7IX3jsf250hhz6eP8UmEriULOEY2nrb48NvpJcuq
-   Q==;
-X-CSE-ConnectionGUID: bzlWJzZBRc25TsaXrfTbFQ==
-X-CSE-MsgGUID: AZWsOE/QScKguUS9iOaoSA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="46292414"
+  bh=uDAamA6Evk2wLXY1JrK3Smjks4G7bCMXoRNbm+Rtqk4=;
+  b=RZsY3/XS7yeFm1lssoFsgMeSQ40arK9013urSdxVNhvkbFYeiWvhxyDU
+   PgK4CaZHsJoaYTqlnybwDrS97ro1MjQgjSLnkkBA+R+v+TxCCH4EUaeFy
+   08Q3MlZxKTTeWbQAV5AbYy4Tyl8GRMvMibqhHrtpnXZR7Lu8DpLRP8Gx0
+   Bf2TgGOMPCCrsqGJPLumKer2AVwZCRZdMHYhY1XI/iVaRmWjMSoIMfr7l
+   UbGXW1aCY2PjPpo0t+X/NW5C4IN73qqxh574nL92QjEoGCGQKJ8myuvqT
+   HSH9RXNrcfZpN2oI31DZOubumKoXD7V9BFBYQo2TeZfESwymril/Zyucz
+   A==;
+X-CSE-ConnectionGUID: agBVZfusSSug8c8e+7GnfA==
+X-CSE-MsgGUID: mGfcLPn1RYSn5r0giySHZA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="46292426"
 X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; 
-   d="scan'208";a="46292414"
+   d="scan'208";a="46292426"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 12:16:03 -0800
-X-CSE-ConnectionGUID: hrJyBn6KR/iGcGh0MBak8A==
-X-CSE-MsgGUID: n3Dzb55YTjKcYzVwRDxQ1g==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 12:16:04 -0800
+X-CSE-ConnectionGUID: bomnfGhKStSMeA/aKEM5pw==
+X-CSE-MsgGUID: el7Z0ROiR5a6OoNreNeldg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="102717110"
+   d="scan'208";a="102717116"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa003.fm.intel.com with ESMTP; 20 Dec 2024 12:16:03 -0800
+  by fmviesa003.fm.intel.com with ESMTP; 20 Dec 2024 12:16:04 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -54,10 +54,12 @@ Cc: Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
 	anthony.l.nguyen@intel.com,
 	przemyslaw.kitszel@intel.com,
 	horms@kernel.org,
-	Bharath R <bharath.r@intel.com>
-Subject: [PATCH net-next 07/10] ixgbe: Clean up the E610 link management related code
-Date: Fri, 20 Dec 2024 12:15:12 -0800
-Message-ID: <20241220201521.3363985-8-anthony.l.nguyen@intel.com>
+	bhelgaas@google.com,
+	linux-pci@vger.kernel.org,
+	Rafal Romanowski <rafal.romanowski@intel.com>
+Subject: [PATCH net-next 09/10] PCI: Add PCI_VDEVICE_SUB helper macro
+Date: Fri, 20 Dec 2024 12:15:14 -0800
+Message-ID: <20241220201521.3363985-10-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220201521.3363985-1-anthony.l.nguyen@intel.com>
 References: <20241220201521.3363985-1-anthony.l.nguyen@intel.com>
@@ -71,106 +73,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
 
-Required for enabling the link management in E610 device.
+PCI_VDEVICE_SUB generates the pci_device_id struct layout for
+the specific PCI device/subdevice. Private data may follow the
+output.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Bharath R <bharath.r@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 17 +++++++++++------
- drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c | 12 ++++++------
- 2 files changed, 17 insertions(+), 12 deletions(-)
+ include/linux/pci.h | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 13b777d702a2..2656f2617a8f 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -237,6 +237,9 @@ static int ixgbe_get_parent_bus_info(struct ixgbe_adapter *adapter)
-  * bandwidth details should be gathered from the parent bus instead of from the
-  * device. Used to ensure that various locations all have the correct device ID
-  * checks.
-+ *
-+ * Return: true if information should be collected from the parent bus, false
-+ *         otherwise
-  */
- static inline bool ixgbe_pcie_from_parent(struct ixgbe_hw *hw)
- {
-@@ -5533,7 +5536,9 @@ static void ixgbe_sfp_link_config(struct ixgbe_adapter *adapter)
-  * ixgbe_non_sfp_link_config - set up non-SFP+ link
-  * @hw: pointer to private hardware struct
-  *
-- * Returns 0 on success, negative on failure
-+ * Configure non-SFP link.
-+ *
-+ * Return: 0 on success, negative on failure
-  **/
- static int ixgbe_non_sfp_link_config(struct ixgbe_hw *hw)
- {
-@@ -7222,11 +7227,11 @@ void ixgbe_update_stats(struct ixgbe_adapter *adapter)
- 	for (i = 0; i < 16; i++) {
- 		hwstats->qptc[i] += IXGBE_READ_REG(hw, IXGBE_QPTC(i));
- 		hwstats->qprc[i] += IXGBE_READ_REG(hw, IXGBE_QPRC(i));
--		if ((hw->mac.type == ixgbe_mac_82599EB) ||
--		    (hw->mac.type == ixgbe_mac_X540) ||
--		    (hw->mac.type == ixgbe_mac_X550) ||
--		    (hw->mac.type == ixgbe_mac_X550EM_x) ||
--		    (hw->mac.type == ixgbe_mac_x550em_a)) {
-+		if (hw->mac.type == ixgbe_mac_82599EB ||
-+		    hw->mac.type == ixgbe_mac_X540 ||
-+		    hw->mac.type == ixgbe_mac_X550 ||
-+		    hw->mac.type == ixgbe_mac_X550EM_x ||
-+		    hw->mac.type == ixgbe_mac_x550em_a) {
- 			hwstats->qbtc[i] += IXGBE_READ_REG(hw, IXGBE_QBTC_L(i));
- 			IXGBE_READ_REG(hw, IXGBE_QBTC_H(i)); /* to clear */
- 			hwstats->qbrc[i] += IXGBE_READ_REG(hw, IXGBE_QBRC_L(i));
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-index d9a8cf018d3b..1de05443d3a2 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-@@ -3505,13 +3505,13 @@ static int ixgbe_reset_hw_X550em(struct ixgbe_hw *hw)
- 	return status;
- }
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index db9b47ce3eef..414ee5fff66b 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1046,6 +1046,20 @@ struct pci_driver {
+ 	.vendor = PCI_VENDOR_ID_##vend, .device = (dev), \
+ 	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, 0, 0
  
--/** ixgbe_set_ethertype_anti_spoofing_X550 - Enable/Disable Ethertype
-+/** ixgbe_set_ethertype_anti_spoofing_x550 - Enable/Disable Ethertype
-  *	anti-spoofing
-  *  @hw:  pointer to hardware structure
-  *  @enable: enable or disable switch for Ethertype anti-spoofing
-  *  @vf: Virtual Function pool - VF Pool to set for Ethertype anti-spoofing
-  **/
--static void ixgbe_set_ethertype_anti_spoofing_X550(struct ixgbe_hw *hw,
-+static void ixgbe_set_ethertype_anti_spoofing_x550(struct ixgbe_hw *hw,
- 						   bool enable, int vf)
- {
- 	int vf_target_reg = vf >> 3;
-@@ -3527,12 +3527,12 @@ static void ixgbe_set_ethertype_anti_spoofing_X550(struct ixgbe_hw *hw,
- 	IXGBE_WRITE_REG(hw, IXGBE_PFVFSPOOF(vf_target_reg), pfvfspoof);
- }
- 
--/** ixgbe_set_source_address_pruning_X550 - Enable/Disbale src address pruning
-+/** ixgbe_set_source_address_pruning_x550 - Enable/Disable src address pruning
-  *  @hw: pointer to hardware structure
-  *  @enable: enable or disable source address pruning
-  *  @pool: Rx pool to set source address pruning for
-  **/
--static void ixgbe_set_source_address_pruning_X550(struct ixgbe_hw *hw,
-+static void ixgbe_set_source_address_pruning_x550(struct ixgbe_hw *hw,
- 						  bool enable,
- 						  unsigned int pool)
- {
-@@ -3831,9 +3831,9 @@ static int ixgbe_write_phy_reg_x550a(struct ixgbe_hw *hw, u32 reg_addr,
- 	.set_mac_anti_spoofing		= &ixgbe_set_mac_anti_spoofing, \
- 	.set_vlan_anti_spoofing		= &ixgbe_set_vlan_anti_spoofing, \
- 	.set_source_address_pruning	= \
--				&ixgbe_set_source_address_pruning_X550, \
-+				&ixgbe_set_source_address_pruning_x550, \
- 	.set_ethertype_anti_spoofing	= \
--				&ixgbe_set_ethertype_anti_spoofing_X550, \
-+				&ixgbe_set_ethertype_anti_spoofing_x550, \
- 	.disable_rx_buff		= &ixgbe_disable_rx_buff_generic, \
- 	.enable_rx_buff			= &ixgbe_enable_rx_buff_generic, \
- 	.get_thermal_sensor_data	= NULL, \
++/**
++ * PCI_VDEVICE_SUB - describe a specific PCI device/subdevice in a short form
++ * @vend: the vendor name
++ * @dev: the 16 bit PCI Device ID
++ * @subvend: the 16 bit PCI Subvendor ID
++ * @subdev: the 16 bit PCI Subdevice ID
++ *
++ * Generate the pci_device_id struct layout for the specific PCI
++ * device/subdevice. Private data may follow the output.
++ */
++#define PCI_VDEVICE_SUB(vend, dev, subvend, subdev) \
++	.vendor = PCI_VENDOR_ID_##vend, .device = (dev), \
++	.subvendor = (subvend), .subdevice = (subdev), 0, 0
++
+ /**
+  * PCI_DEVICE_DATA - macro used to describe a specific PCI device in very short form
+  * @vend: the vendor name (without PCI_VENDOR_ID_ prefix)
 -- 
 2.47.1
 
