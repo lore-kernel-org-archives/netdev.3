@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2435818A6DE;
-	Fri, 20 Dec 2024 03:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735204501A
+	for <netdev@vger.kernel.org>; Fri, 20 Dec 2024 03:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734665421; cv=none; b=fnUBIJ4LYDocXYFKmnA3mVTT72YJNGOgl9zu3opZaAs7uXgWWzxCRC1UsRlpuSywArP1PZ4M5S71SaHGpd46Iv0OKaaq5c4M0QXOh+3MEVOZLLm+JHWLkVSOZKYLllXP3FZqcSRPE7H8EflHmGr82fyDKMsWjx9yFYGnwmgc3Wo=
+	t=1734665422; cv=none; b=bpgC6GVWKEXPjizeQVj1UcHq1HpgSPKeemCCFdfJQ2N4lC4rh1qI4KeE2AewD/jMlgUQVozmIrZthAs7iV2qNd4bmdpEAtNQBj/AK4RBnwGxIVM/S15WQ7WSG4u7RVyr4WJWCFfULhVETpzVPWBR6x79tg65fPhvmQsMbgw1GCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734665421; c=relaxed/simple;
-	bh=YM6IcQzvMh0nBVLALsAQctJoSxEV75NUYhaBmFHz60s=;
+	s=arc-20240116; t=1734665422; c=relaxed/simple;
+	bh=+rxoxI/51iCRUT4+GDTvzJHOnNeGePnj/c6zmS8zVHg=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ewNMawxGbN3+fhvG+kLHLpovY08qsEIH3ob6q7keK+1jEiMeVaTMw6H97UrFUffLhiHjTnr4r10h9pAA16QjXPo99zlLEmcaR0zASAlCu6jCQTzBXAYNsMAMHQyzwz1RQ3th45gJnygIaIp26/ijJMjpDNBSGwPUBQZIOBt6B88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q4dNOESB; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=s8kFaXOLwg7jdlyAX0hpJsneusRg+zRmbKtGy1AHFVMYGDoSB5qi/9kGo82Qj0zFQDz7hqL8rGFdCiY0pJRLfZqm97iUTJOd2GWUDmOve66fJwon92qqsO4OQciHGUhg5PW8x2MdkRO2oYCczCByzz9KPOp9S+u2tBZ3sx+L5G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RkkDxW2g; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q4dNOESB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF1DC4CECE;
-	Fri, 20 Dec 2024 03:30:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RkkDxW2g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F81C4CED0;
+	Fri, 20 Dec 2024 03:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734665417;
-	bh=YM6IcQzvMh0nBVLALsAQctJoSxEV75NUYhaBmFHz60s=;
+	s=k20201202; t=1734665422;
+	bh=+rxoxI/51iCRUT4+GDTvzJHOnNeGePnj/c6zmS8zVHg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Q4dNOESBlhZ+2RJ/IQZ38XF9PvrHb4IidwHQR6RZyr1gnbyWj6mGf0AvB/FYv8Uq8
-	 IfnSileWj1bYPN5X4mWBiocbLggz4X0IJ3c+pGexAl12E7XsbxvmM58dRpWv4VE0Wp
-	 KOZtXG3qWIu46FRK+2rTj2YqLg2kor+7EdU3jebgWxjqdjVg04BJLK1A1h2JOODBLR
-	 w+3NiloaUsLwly8dRbENkPp5gc+sv7JJQbK7ZZfyd8HUB2H5yceMm+taXiSmbj/VdW
-	 exmcQj6xlGedPElRr1VuVlKA3h/xxVGEoV2Iwms0SC34kp0Ax3hSdM74iuhfPJsHPW
-	 r5u8ED7b7fzlg==
+	b=RkkDxW2gEpF5enaLndQm/9mcmH4M/EO66+oUc/tl0nEK50s+R9w2LN8ecbzoLF8aT
+	 XSMv5LY8puzyrNOjxJamy2YfPGxF9LhScEzLFGLe4msI3XciBIX+0/nCF9pUeLdOj3
+	 W1fhJsbaE8eLpCraLBy9W1z0AIiZoyZCe6azEh43mP/iZx+KUVkfq6KGxNI5k7KzY1
+	 CjcijsR0sYQyB8NwIt/K81slNuNy3GjBRN2cqQ+c//DI/nw55Bo9dNWYqYix05fCkU
+	 PY9m8vqZBGi95gJkXGAN0OZXXftuZUyRbd1lgg4okXebEFG5SBspxGCYyPBISvDmYl
+	 FKd9M5U/j0YTg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE053806656;
-	Fri, 20 Dec 2024 03:30:36 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAD3C3806656;
+	Fri, 20 Dec 2024 03:30:40 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v1] net: stmmac: Drop useless code related to ethtool
- rx-copybreak
+Subject: Re: [PATCH net-next v2] net: airoha: Fix error path in airoha_probe()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <173466543521.2462446.17820764757552771854.git-patchwork-notify@kernel.org>
-Date: Fri, 20 Dec 2024 03:30:35 +0000
-References: <20241218083407.390509-1-0x1207@gmail.com>
-In-Reply-To: <20241218083407.390509-1-0x1207@gmail.com>
-To: Furong Xu <0x1207@gmail.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- horms@kernel.org, alexandre.torgue@foss.st.com, joabreu@synopsys.com,
+ <173466543949.2462446.3986917315473515090.git-patchwork-notify@kernel.org>
+Date: Fri, 20 Dec 2024 03:30:39 +0000
+References: <20241216-airoha_probe-error-path-fix-v2-1-6b10e04e9a5c@kernel.org>
+In-Reply-To: <20241216-airoha_probe-error-path-fix-v2-1-6b10e04e9a5c@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: nbd@nbd.name, sean.wang@mediatek.com, Mark-MC.Lee@mediatek.com,
  andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
- xfr@outlook.com
+ kuba@kernel.org, pabeni@redhat.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ netdev@vger.kernel.org, michal.swiatkowski@linux.intel.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 18 Dec 2024 16:34:07 +0800 you wrote:
-> After commit 2af6106ae949 ("net: stmmac: Introducing support for Page
-> Pool"), the driver always copies frames to get a better performance,
-> zero-copy for RX frames is no more, then these code turned to be
-> useless and users of ethtool may get confused about the unhandled
-> rx-copybreak parameter.
+On Mon, 16 Dec 2024 18:47:33 +0100 you wrote:
+> Do not run napi_disable() if airoha_hw_init() fails since Tx/Rx napi
+> has not been started yet. In order to fix the issue, introduce
+> airoha_qdma_stop_napi routine and remove napi_disable in
+> airoha_hw_cleanup().
 > 
-> This patch mostly reverts
-> commit 22ad38381547 ("stmmac: do not perform zero-copy for rx frames")
+> Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
+> Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v1] net: stmmac: Drop useless code related to ethtool rx-copybreak
-    https://git.kernel.org/netdev/net-next/c/5c98e89d96ec
+  - [net-next,v2] net: airoha: Fix error path in airoha_probe()
+    https://git.kernel.org/netdev/net-next/c/0c7469ee718e
 
 You are awesome, thank you!
 -- 
