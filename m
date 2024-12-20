@@ -1,1054 +1,158 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693BF1A83F9;
-	Fri, 20 Dec 2024 08:26:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45ED3111A8;
+	Fri, 20 Dec 2024 08:26:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734683177; cv=none; b=YXrXoeMfqP5wpCPtAox+RMNNe8xw3NuErDkSqJTO0TeT0MMGMyLEw2OcPFWtjq6YZ+9baV1BRooAx/mLCnqKXnDuC/wG03g166bII4f6pOXXGekTjM9R8r/O1W6r98UQdp1EK6vL60uoicj+16gZabxKxxYOY9bU3m1wVgNRHPQ=
+	t=1734683219; cv=none; b=a+6Sddhf7ZJAZ5dcwZtYJqwfbtgyORY5x5FP/sPfLNWXVKPhe9P5o1vmTJ3CjKe19mz5EwHoOfJOn/pQIm/gEYZHdrUXYh99To+x2Cx+x/PC9xbkM5e3PLSYzlga/lwwzfHtivxhgkv7gKx9IIQM3lETCUIYcp3lqL3ccdmbm8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734683177; c=relaxed/simple;
-	bh=UN0tDie0FDiR9t9v0KhwstVcnTKfcEuODf0x5fU77EY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PoUCSUJ4ROh96B1oKN5dqa8//OK7qI2LO7LSqqgLEvQ3ar1lWNVNZYXzCWZilStu89Ov5PMUPNqdbIrnSHOgaEb6OqXeV+kBCvgC3eRma/U0J6X9NP95Ex2pE1l9DgjWJOox/Zb9hS87LkkadIYQL1MrCDHmXUxGnxiaDL9zwD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Q6yed1xL; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1734683219; c=relaxed/simple;
+	bh=IKIwZku7f3pRfjJvAJfGTmanaHuxA5Tq8kqO3a3fhJk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R2m7irtFxa8hTnP6LupkXwC0jaiOJO+jSQZbks8mt/acaKqufGVteTbPqccrwFM7a4rpCj9KGnQU6Zd2XXJavhGe51/DYz5uBw9Tq3YbpjGlkhHJWtyRprq/8Os7+lsPt+dkMo0ZAHGeyDtovC77FO3YyjT8EIQkWqtgzY4U3s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nrzztL+z; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Q6yed1xL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=+GXbS
-	QZB3HaOmNoWG/wDFKnJW4pDM88FLPcUvP99uwg=; b=Q6yed1xLG7sABofafwhZd
-	xMNkPRLTKvUriCHTseeuTTqnq1kzgtMZTzBVNr/mB5IWV8XsmPsGb5rQb0Shichv
-	W4kRIVY+HiNJS8VIZyJRjsnm7Wib743qXXMpeabw8a/0OhA9tAYkMlTFCzGsaCzS
-	10OPjzGNypt1Ol1ZAZtYzU=
-Received: from hello.company.local (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wA36s_HKWVngPi1AQ--.24831S2;
-	Fri, 20 Dec 2024 16:24:40 +0800 (CST)
-From: Liang Jie <buaajxlj@163.com>
-To: edumazet@google.com
-Cc: kuba@kernel.org,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	anthony.l.nguyen@intel.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Liang Jie <liangjie@lixiang.com>
-Subject: [PATCH net v3] net: Refine key_len calculations in rhashtable_params
-Date: Fri, 20 Dec 2024 16:24:36 +0800
-Message-Id: <20241220082436.1195276-1-buaajxlj@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nrzztL+z"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aa684b6d9c7so297270366b.2;
+        Fri, 20 Dec 2024 00:26:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734683216; x=1735288016; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=PigV1/aOahiChMj/C1LZ422rLUqIiVtTZD/HFwq39gs=;
+        b=nrzztL+z/BgjK//o3TxyHKjHD9Z+yPvgJEcFG6EFWAXS5wMQFNOJoe3iuq28WkoyJC
+         B8ZMNh0pqc8d8sZ+KCPoxBslpKyHZ+aQ9fjNTWJLytivSdkEaUPFZOKDITOFxasU+TM1
+         BDDPM3o24UUrGARLWMiWt0p9MavXrE46N3U/A/nU1K9mKP6HIIdHpI/06JWyrw7MMIHJ
+         HiNUb2K/aCZmDORVvcy4TqzrOAMKbJ9kyygp53yhlS+i+8Iv6xARmTXP4p+e4tONux5q
+         /B7nrs1vuAn//2GHwbYu6aoR1spYl6koDR87OCbEotCi5y8ZPyaoIDYDno2fngCA/mru
+         JprQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734683216; x=1735288016;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PigV1/aOahiChMj/C1LZ422rLUqIiVtTZD/HFwq39gs=;
+        b=lFb4zJ8xUwAHFQt1UK9xLNmE5YK5EBFy2iqKFZ39ddl9LI+MxAx238qbsuAXVIFC0R
+         SliGDdJz0xXMXvwAP+UwoCIz/WgYICAL5nR8ALLnN8vCWPOXeAyHajRZx2pvNnWR0Ety
+         Tv4gDBgNyDOmva0I/4JAvOj6n+8PUXDxURr+Gc2rGIBNMcIDSwrI3ybPOtfTBVYTMSsg
+         JGSMrRqAIXmcH37yX7FMrfoqtLJ11eOJkjCXJjluYZ0bZwFsAO9FU953VFZ5aKlaUl73
+         fq1aG0mim9ZJ0DnHRAT+/YH4MxIB8orTunCaxIxD+/A0rLhGqXSgwb+4gpsmGuTXrby8
+         METw==
+X-Forwarded-Encrypted: i=1; AJvYcCVOHqWsOTEYyzZXh+d2+At33MjgQ0p2evz52+x60QECuHV32+KYOUuGpohL52M3ZdaHDYp8wtlj@vger.kernel.org, AJvYcCWMNZHTiXRuE2K1TuO249MeSCU+c82a/h3Vw4ajpTxM4s6HuAcNVaQO9zW+LQ/zE9SONq6BzSIEo2sN@vger.kernel.org, AJvYcCXvBHIMqsL8m9FjuP8PTauiagTkX3nUVpj2eZeFv9B04Xz+FyJ6VoGFBKLmNjeQ//re12vgpHXa/5vmCA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyxrWAjf1Uds/C4xVohGuDnrmpNlUvP5dU3MIsD5YESNEsepcb
+	ZwFxIIP+5ZBi3WM2tkI6oNUmWd/Brf1eAbDhCC1aNmgwWfd5pC0L
+X-Gm-Gg: ASbGncuW0YoYZjz/+ePwFKAXuXCd6EmyLxH/w9fNp6Kx/VOWRDmSONAk3/kLKr/CuUD
+	Hn0xdGsbD60E2AnT+QvzO+644ZtYnOjftV1oGKFc6d1P3XhInqw34WOBXRQ1giQAFRxvsCzuQRh
+	W7NiouiaLivaf5d0V7VfAmlU+2xHJ+zG7WdqC/n4xpggF8gQ3uLtR/qgtSnFLe4Q3b5GwA2p57B
+	M1GU6o/pVQriznT6P4wnsk7uWv5zijMCk189RowrT92jNULy2/lHfDdmM4czBRN+ipBChfNNeDi
+	3lGu2KGs1ZKWXSC3n9xqPHmNJkIdyNBFv5YSHSxvruLRz49DYkxUjMo3wIQk7jTA/GhQViWBQGB
+	VXgej9pvmqx6+7W2zHUDpur9vGhEWmnbSdaNhQeSE/06J37B8
+X-Google-Smtp-Source: AGHT+IF34CvLvhWRVo7LSPobpPH5qg3at/fJZwvXVZcYhyWYXvqq08y8ovXQkVtwEFRGdYzpTqQwIA==
+X-Received: by 2002:a17:907:6e90:b0:aa6:5d30:d974 with SMTP id a640c23a62f3a-aac2d3286bfmr159677866b.28.1734683216329;
+        Fri, 20 Dec 2024 00:26:56 -0800 (PST)
+Received: from ?IPV6:2a02:3100:a560:5100:cd65:47f8:25ce:a8f2? (dynamic-2a02-3100-a560-5100-cd65-47f8-25ce-a8f2.310.pool.telefonica.de. [2a02:3100:a560:5100:cd65:47f8:25ce:a8f2])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-aac0e82f2fasm149713666b.9.2024.12.20.00.26.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Dec 2024 00:26:55 -0800 (PST)
+Message-ID: <7128fc70-895d-4622-b12c-eab2475e3049@gmail.com>
+Date: Fri, 20 Dec 2024 09:26:54 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wA36s_HKWVngPi1AQ--.24831S2
-X-Coremail-Antispam: 1Uf129KBjvAXoWDCw4UJw17ZF1rWr1kKry8Xwb_yoW7JFWUAo
-	Z3JFs0yw18Cr18X3ykGr92gF95Xa1DK393Aw4agws5uwnI9w1UGr13tw45Aayqqr1xJF1U
-	uw1UXas8ZFW2qr1Un29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUeiihUUUUU
-X-CM-SenderInfo: pexdtyx0omqiywtou0bp/1tbioAq7IGdlKKYbLgAAsI
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 0/3] net: add and use phy_disable_eee
+To: kuba@kernel.org
+Cc: tony@atomide.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, linux@armlinux.org.uk, andrew@lunn.ch,
+ andrew+netdev@lunn.ch, pabeni@redhat.com, davem@davemloft.net,
+ edumazet@google.com, horms@kernel.org, linux-omap@vger.kernel.org,
+ devicetree@vger.kernel.org, netdev@vger.kernel.org
+References: <5139374e-7151-4d0d-8ba9-9ec3d9b52f67@gmail.com>
+ <173466543676.2462446.11795736705448322037.git-patchwork-notify@kernel.org>
+Content-Language: en-US
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Autocrypt: addr=hkallweit1@gmail.com; keydata=
+ xsFNBF/0ZFUBEAC0eZyktSE7ZNO1SFXL6cQ4i4g6Ah3mOUIXSB4pCY5kQ6OLKHh0FlOD5/5/
+ sY7IoIouzOjyFdFPnz4Bl3927ClT567hUJJ+SNaFEiJ9vadI6vZm2gcY4ExdIevYHWe1msJF
+ MVE4yNwdS+UsPeCF/6CQQTzHc+n7DomE7fjJD5J1hOJjqz2XWe71fTvYXzxCFLwXXbBiqDC9
+ dNqOe5odPsa4TsWZ09T33g5n2nzTJs4Zw8fCy8rLqix/raVsqr8fw5qM66MVtdmEljFaJ9N8
+ /W56qGCp+H8Igk/F7CjlbWXiOlKHA25mPTmbVp7VlFsvsmMokr/imQr+0nXtmvYVaKEUwY2g
+ 86IU6RAOuA8E0J5bD/BeyZdMyVEtX1kT404UJZekFytJZrDZetwxM/cAH+1fMx4z751WJmxQ
+ J7mIXSPuDfeJhRDt9sGM6aRVfXbZt+wBogxyXepmnlv9K4A13z9DVLdKLrYUiu9/5QEl6fgI
+ kPaXlAZmJsQfoKbmPqCHVRYj1lpQtDM/2/BO6gHASflWUHzwmBVZbS/XRs64uJO8CB3+V3fa
+ cIivllReueGCMsHh6/8wgPAyopXOWOxbLsZ291fmZqIR0L5Y6b2HvdFN1Xhc+YrQ8TKK+Z4R
+ mJRDh0wNQ8Gm89g92/YkHji4jIWlp2fwzCcx5+lZCQ1XdqAiHQARAQABzSZIZWluZXIgS2Fs
+ bHdlaXQgPGhrYWxsd2VpdDFAZ21haWwuY29tPsLBjgQTAQgAOBYhBGxfqY/yOyXjyjJehXLe
+ ig9U8DoMBQJf9GRVAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHLeig9U8DoMSycQ
+ AJbfg8HZEK0ljV4M8nvdaiNixWAufrcZ+SD8zhbxl8GispK4F3Yo+20Y3UoZ7FcIidJWUUJL
+ axAOkpI/70YNhlqAPMsuudlAieeYZKjIv1WV5ucNZ3VJ7dC+dlVqQdAr1iD869FZXvy91KhJ
+ wYulyCf+s4T9YgmLC6jLMBZghKIf1uhSd0NzjyCqYWbk2ZxByZHgunEShOhHPHswu3Am0ftt
+ ePaYIHgZs+Vzwfjs8I7EuW/5/f5G9w1vibXxtGY/GXwgGGHRDjFM7RSprGOv4F5eMGh+NFUJ
+ TU9N96PQYMwXVxnQfRXl8O6ffSVmFx4H9rovxWPKobLmqQL0WKLLVvA/aOHCcMKgfyKRcLah
+ 57vGC50Ga8oT2K1g0AhKGkyJo7lGXkMu5yEs0m9O+btqAB261/E3DRxfI1P/tvDZpLJKtq35
+ dXsj6sjvhgX7VxXhY1wE54uqLLHY3UZQlmH3QF5t80MS7/KhxB1pO1Cpcmkt9hgyzH8+5org
+ +9wWxGUtJWNP7CppY+qvv3SZtKJMKsxqk5coBGwNkMms56z4qfJm2PUtJQGjA65XWdzQACib
+ 2iaDQoBqGZfXRdPT0tC1H5kUJuOX4ll1hI/HBMEFCcO8++Bl2wcrUsAxLzGvhINVJX2DAQaF
+ aNetToazkCnzubKfBOyiTqFJ0b63c5dqziAgzsFNBF/0ZFUBEADF8UEZmKDl1w/UxvjeyAeX
+ kghYkY3bkK6gcIYXdLRfJw12GbvMioSguvVzASVHG8h7NbNjk1yur6AONfbUpXKSNZ0skV8V
+ fG+ppbaY+zQofsSMoj5gP0amwbwvPzVqZCYJai81VobefTX2MZM2Mg/ThBVtGyzV3NeCpnBa
+ 8AX3s9rrX2XUoCibYotbbxx9afZYUFyflOc7kEpc9uJXIdaxS2Z6MnYLHsyVjiU6tzKCiVOU
+ KJevqvzPXJmy0xaOVf7mhFSNQyJTrZpLa+tvB1DQRS08CqYtIMxRrVtC0t0LFeQGly6bOngr
+ ircurWJiJKbSXVstLHgWYiq3/GmCSx/82ObeLO3PftklpRj8d+kFbrvrqBgjWtMH4WtK5uN5
+ 1WJ71hWJfNchKRlaJ3GWy8KolCAoGsQMovn/ZEXxrGs1ndafu47yXOpuDAozoHTBGvuSXSZo
+ ythk/0EAuz5IkwkhYBT1MGIAvNSn9ivE5aRnBazugy0rTRkVggHvt3/7flFHlGVGpBHxFUwb
+ /a4UjJBPtIwa4tWR8B1Ma36S8Jk456k2n1id7M0LQ+eqstmp6Y+UB+pt9NX6t0Slw1NCdYTW
+ gJezWTVKF7pmTdXszXGxlc9kTrVUz04PqPjnYbv5UWuDd2eyzGjrrFOsJEi8OK2d2j4FfF++
+ AzOMdW09JVqejQARAQABwsF2BBgBCAAgFiEEbF+pj/I7JePKMl6Fct6KD1TwOgwFAl/0ZFUC
+ GwwACgkQct6KD1TwOgxUfg//eAoYc0Vm4NrxymfcY30UjHVD0LgSvU8kUmXxil3qhFPS7KA+
+ y7tgcKLHOkZkXMX5MLFcS9+SmrAjSBBV8omKoHNo+kfFx/dUAtz0lot8wNGmWb+NcHeKM1eb
+ nwUMOEa1uDdfZeKef/U/2uHBceY7Gc6zPZPWgXghEyQMTH2UhLgeam8yglyO+A6RXCh+s6ak
+ Wje7Vo1wGK4eYxp6pwMPJXLMsI0ii/2k3YPEJPv+yJf90MbYyQSbkTwZhrsokjQEaIfjrIk3
+ rQRjTve/J62WIO28IbY/mENuGgWehRlTAbhC4BLTZ5uYS0YMQCR7v9UGMWdNWXFyrOB6PjSu
+ Trn9MsPoUc8qI72mVpxEXQDLlrd2ijEWm7Nrf52YMD7hL6rXXuis7R6zY8WnnBhW0uCfhajx
+ q+KuARXC0sDLztcjaS3ayXonpoCPZep2Bd5xqE4Ln8/COCslP7E92W1uf1EcdXXIrx1acg21
+ H/0Z53okMykVs3a8tECPHIxnre2UxKdTbCEkjkR4V6JyplTS47oWMw3zyI7zkaadfzVFBxk2
+ lo/Tny+FX1Azea3Ce7oOnRUEZtWSsUidtIjmL8YUQFZYm+JUIgfRmSpMFq8JP4VH43GXpB/S
+ OCrl+/xujzvoUBFV/cHKjEQYBxo+MaiQa1U54ykM2W4DnHb1UiEf5xDkFd4=
+In-Reply-To: <173466543676.2462446.11795736705448322037.git-patchwork-notify@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Liang Jie <liangjie@lixiang.com>
+On 20.12.2024 04:30, patchwork-bot+netdevbpf@kernel.org wrote:
+> Hello:
+> 
+> This series was applied to netdev/net-next.git (main)
+> by Jakub Kicinski <kuba@kernel.org>:
+> 
+> On Mon, 16 Dec 2024 22:29:58 +0100 you wrote:
+>> If a MAC driver doesn't support EEE, then the PHY shouldn't advertise it.
+>> Add phy_disable_eee() for this purpose, and use it in cpsw driver.
+>>
+>> Heiner Kallweit (3):
+>>   net: phy: add phy_disable_eee
+>>   net: ethernet: ti: cpsw: disable PHY EEE advertisement
+>>   ARM: dts: ti/omap: remove eee-broken properties
+>>
+>> [...]
+> 
+> Here is the summary with links:
+>   - [net-next,1/3] net: phy: add phy_disable_eee
+>     https://git.kernel.org/netdev/net-next/c/b55498ff14bd
+>   - [net-next,2/3] net: ethernet: ti: cpsw: disable PHY EEE advertisement
+>     https://git.kernel.org/netdev/net-next/c/c9f5a5dabbf5
+>   - [net-next,3/3] ARM: dts: ti/omap: remove eee-broken properties
+>     (no matching commit)
+> 
+Patch 3 is marked "not applicable" in patchwork and didn't make it to net-next.
+Any issue with this patch?
 
-This patch improves the calculation of key_len in the rhashtable_params
-structures across the net driver modules by replacing hardcoded sizes
-and previous calculations with appropriate macros like sizeof_field()
-and offsetofend().
-
-Previously, key_len was set using hardcoded sizes like sizeof(u32) or
-sizeof(unsigned long), or using offsetof() calculations. This patch
-replaces these with sizeof_field() and correct use of offsetofend(),
-making the code more robust, maintainable, and improving readability.
-
-Using sizeof_field() and offsetofend() provides several advantages:
-- They explicitly specify the size of the field or the end offset of a
-  member being used as a key.
-- They ensure that the key_len is accurate even if the structs change in
-  the future.
-- They improve code readability by clearly indicating which fields are used
-  and how their sizes are determined, making the code easier to understand
-  and maintain.
-
-For example, instead of:
-    .key_len    = sizeof(u32),
-we now use:
-    .key_len    = sizeof_field(struct mae_mport_desc, mport_id),
-
-And instead of:
-    .key_len    = offsetof(struct efx_tc_encap_match, linkage),
-we now use:
-    .key_len    = offsetofend(struct efx_tc_encap_match, ip_tos_mask),
-
-These changes eliminate the risk in certain scenarios of including
-unintended padding or extra data in the key, ensuring the rhashtable
-functions correctly.
-
-Signed-off-by: Liang Jie <liangjie@lixiang.com>
-
----
-
-Changes in v3:
-- Slove checkpatch warrnings.
-- Link to v2: https://lore.kernel.org/all/20241217094608.4149466-1-buaajxlj@163.com/
-
-Changes in v2:
-- Apply similar modifications to the 'net' directory.
-- Fix compilation errors.
-- Link to v1: https://lore.kernel.org/all/20241217071411.3863379-1-buaajxlj@163.com/
-
- drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c        |  8 ++++----
- drivers/net/ethernet/broadcom/bnxt/bnxt_tc.h        |  1 -
- .../net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c    |  2 +-
- drivers/net/ethernet/intel/ice/ice_eswitch_br.c     |  2 +-
- .../net/ethernet/marvell/prestera/prestera_acl.c    |  6 +++---
- .../net/ethernet/marvell/prestera/prestera_router.c |  4 ++--
- .../ethernet/marvell/prestera/prestera_router_hw.c  |  6 +++---
- drivers/net/ethernet/mediatek/mtk_ppe_offload.c     |  2 +-
- .../net/ethernet/mellanox/mlx5/core/en/rep/neigh.c  |  2 +-
- drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c  |  8 ++++----
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c     |  2 +-
- .../net/ethernet/mellanox/mlx5/core/esw/bridge.c    |  2 +-
- .../ethernet/mellanox/mlx5/core/esw/bridge_mcast.c  |  2 +-
- .../ethernet/mellanox/mlxsw/core_acl_flex_actions.c |  6 +++---
- drivers/net/ethernet/mellanox/mlxsw/spectrum.c      |  4 ++--
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c  |  4 ++--
- .../ethernet/mellanox/mlxsw/spectrum_acl_atcam.c    |  4 ++--
- .../net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c |  2 +-
- drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c   |  2 +-
- drivers/net/ethernet/mellanox/mlxsw/spectrum_nve.c  |  4 ++--
- .../net/ethernet/mellanox/mlxsw/spectrum_router.c   |  8 ++++----
- .../ethernet/mellanox/mlxsw/spectrum_switchdev.c    |  2 +-
- drivers/net/ethernet/netronome/nfp/bpf/main.c       |  3 ++-
- .../net/ethernet/netronome/nfp/flower/conntrack.c   |  6 ++++--
- .../net/ethernet/netronome/nfp/flower/metadata.c    | 13 ++++++++-----
- .../net/ethernet/netronome/nfp/flower/qos_conf.c    |  2 +-
- .../net/ethernet/netronome/nfp/flower/tunnel_conf.c |  2 +-
- drivers/net/ethernet/sfc/mae.c                      |  2 +-
- drivers/net/ethernet/sfc/tc.c                       | 12 ++++++------
- drivers/net/ethernet/sfc/tc_conntrack.c             |  8 ++++----
- drivers/net/ethernet/sfc/tc_counters.c              |  8 ++++----
- drivers/net/ethernet/sfc/tc_encap_actions.c         |  2 +-
- drivers/net/netdevsim/fib.c                         |  4 ++--
- drivers/net/vxlan/vxlan_mdb.c                       |  2 +-
- drivers/net/vxlan/vxlan_vnifilter.c                 |  2 +-
- drivers/net/wireless/virtual/mac80211_hwsim.c       |  2 +-
- net/bridge/br_multicast.c                           |  4 ++--
- net/bridge/br_vlan.c                                |  2 +-
- net/ipv4/ip_fragment.c                              |  4 ++--
- net/ipv4/ipmr.c                                     |  2 +-
- net/ipv6/ila/ila_xlat.c                             |  2 +-
- net/ipv6/ioam6.c                                    |  4 ++--
- net/ipv6/ip6mr.c                                    |  2 +-
- net/mac80211/mesh_pathtbl.c                         |  2 +-
- net/rds/bind.c                                      |  2 +-
- net/sched/cls_flower.c                              |  2 +-
- net/tipc/socket.c                                   |  2 +-
- 47 files changed, 92 insertions(+), 87 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-index d2ca90407cce..7aff67fad4a9 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-@@ -1982,28 +1982,28 @@ static int bnxt_tc_setup_indr_cb(struct net_device *netdev, struct Qdisc *sch, v
- static const struct rhashtable_params bnxt_tc_flow_ht_params = {
- 	.head_offset = offsetof(struct bnxt_tc_flow_node, node),
- 	.key_offset = offsetof(struct bnxt_tc_flow_node, cookie),
--	.key_len = sizeof(((struct bnxt_tc_flow_node *)0)->cookie),
-+	.key_len = sizeof_field(struct bnxt_tc_flow_node, cookie),
- 	.automatic_shrinking = true
- };
- 
- static const struct rhashtable_params bnxt_tc_l2_ht_params = {
- 	.head_offset = offsetof(struct bnxt_tc_l2_node, node),
- 	.key_offset = offsetof(struct bnxt_tc_l2_node, key),
--	.key_len = BNXT_TC_L2_KEY_LEN,
-+	.key_len = offsetofend(struct bnxt_tc_l2_key, inner_vlan_tci),
- 	.automatic_shrinking = true
- };
- 
- static const struct rhashtable_params bnxt_tc_decap_l2_ht_params = {
- 	.head_offset = offsetof(struct bnxt_tc_l2_node, node),
- 	.key_offset = offsetof(struct bnxt_tc_l2_node, key),
--	.key_len = BNXT_TC_L2_KEY_LEN,
-+	.key_len = offsetofend(struct bnxt_tc_l2_key, inner_vlan_tci),
- 	.automatic_shrinking = true
- };
- 
- static const struct rhashtable_params bnxt_tc_tunnel_ht_params = {
- 	.head_offset = offsetof(struct bnxt_tc_tunnel_node, node),
- 	.key_offset = offsetof(struct bnxt_tc_tunnel_node, key),
--	.key_len = sizeof(struct ip_tunnel_key),
-+	.key_len = sizeof_field(struct bnxt_tc_tunnel_node, key),
- 	.automatic_shrinking = true
- };
- 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.h
-index 10c62b094914..9a48f6bc25ed 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.h
-@@ -173,7 +173,6 @@ struct bnxt_tc_tunnel_node {
-  */
- struct bnxt_tc_l2_node {
- 	/* hash key: first 16b of key */
--#define BNXT_TC_L2_KEY_LEN			16
- 	struct bnxt_tc_l2_key	key;
- 	struct rhash_head	node;
- 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
-index 69d045d769c4..ac5b209e46e7 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
-@@ -1103,7 +1103,7 @@ static const struct rhashtable_params cxgb4_tc_flower_ht_params = {
- 	.nelem_hint = 384,
- 	.head_offset = offsetof(struct ch_tc_flower_entry, node),
- 	.key_offset = offsetof(struct ch_tc_flower_entry, tc_flower_cookie),
--	.key_len = sizeof(((struct ch_tc_flower_entry *)0)->tc_flower_cookie),
-+	.key_len = sizeof_field(struct ch_tc_flower_entry, tc_flower_cookie),
- 	.max_size = 524288,
- 	.min_size = 512,
- 	.automatic_shrinking = true
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch_br.c b/drivers/net/ethernet/intel/ice/ice_eswitch_br.c
-index cccb7ddf61c9..b06e188985ee 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch_br.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch_br.c
-@@ -13,7 +13,7 @@
- 
- static const struct rhashtable_params ice_fdb_ht_params = {
- 	.key_offset = offsetof(struct ice_esw_br_fdb_entry, data),
--	.key_len = sizeof(struct ice_esw_br_fdb_data),
-+	.key_len = sizeof_field(struct ice_esw_br_fdb_entry, data),
- 	.head_offset = offsetof(struct ice_esw_br_fdb_entry, ht_node),
- 	.automatic_shrinking = true,
- };
-diff --git a/drivers/net/ethernet/marvell/prestera/prestera_acl.c b/drivers/net/ethernet/marvell/prestera/prestera_acl.c
-index cba89fda504b..312a725c10f7 100644
---- a/drivers/net/ethernet/marvell/prestera/prestera_acl.c
-+++ b/drivers/net/ethernet/marvell/prestera/prestera_acl.c
-@@ -79,14 +79,14 @@ struct prestera_acl_vtcam {
- };
- 
- static const struct rhashtable_params prestera_acl_ruleset_ht_params = {
--	.key_len = sizeof(struct prestera_acl_ruleset_ht_key),
-+	.key_len = sizeof_field(struct prestera_acl_ruleset, ht_key),
- 	.key_offset = offsetof(struct prestera_acl_ruleset, ht_key),
- 	.head_offset = offsetof(struct prestera_acl_ruleset, ht_node),
- 	.automatic_shrinking = true,
- };
- 
- static const struct rhashtable_params prestera_acl_rule_ht_params = {
--	.key_len = sizeof(unsigned long),
-+	.key_len = sizeof_field(struct prestera_acl_rule, cookie),
- 	.key_offset = offsetof(struct prestera_acl_rule, cookie),
- 	.head_offset = offsetof(struct prestera_acl_rule, ht_node),
- 	.automatic_shrinking = true,
-@@ -95,7 +95,7 @@ static const struct rhashtable_params prestera_acl_rule_ht_params = {
- static const struct rhashtable_params __prestera_acl_rule_entry_ht_params = {
- 	.key_offset  = offsetof(struct prestera_acl_rule_entry, key),
- 	.head_offset = offsetof(struct prestera_acl_rule_entry, ht_node),
--	.key_len     = sizeof(struct prestera_acl_rule_entry_key),
-+	.key_len     = sizeof_field(struct prestera_acl_rule_entry, key),
- 	.automatic_shrinking = true,
- };
- 
-diff --git a/drivers/net/ethernet/marvell/prestera/prestera_router.c b/drivers/net/ethernet/marvell/prestera/prestera_router.c
-index de317179a7dc..dcde1fbd6da1 100644
---- a/drivers/net/ethernet/marvell/prestera/prestera_router.c
-+++ b/drivers/net/ethernet/marvell/prestera/prestera_router.c
-@@ -67,14 +67,14 @@ struct prestera_kern_fib_cache {
- static const struct rhashtable_params __prestera_kern_neigh_cache_ht_params = {
- 	.key_offset  = offsetof(struct prestera_kern_neigh_cache, key),
- 	.head_offset = offsetof(struct prestera_kern_neigh_cache, ht_node),
--	.key_len     = sizeof(struct prestera_kern_neigh_cache_key),
-+	.key_len     = sizeof_field(struct prestera_kern_neigh_cache, key),
- 	.automatic_shrinking = true,
- };
- 
- static const struct rhashtable_params __prestera_kern_fib_cache_ht_params = {
- 	.key_offset  = offsetof(struct prestera_kern_fib_cache, key),
- 	.head_offset = offsetof(struct prestera_kern_fib_cache, ht_node),
--	.key_len     = sizeof(struct prestera_kern_fib_cache_key),
-+	.key_len     = sizeof_field(struct prestera_kern_fib_cache, key),
- 	.automatic_shrinking = true,
- };
- 
-diff --git a/drivers/net/ethernet/marvell/prestera/prestera_router_hw.c b/drivers/net/ethernet/marvell/prestera/prestera_router_hw.c
-index 02faaea2aefa..9830b5512056 100644
---- a/drivers/net/ethernet/marvell/prestera/prestera_router_hw.c
-+++ b/drivers/net/ethernet/marvell/prestera/prestera_router_hw.c
-@@ -35,19 +35,19 @@
- static const struct rhashtable_params __prestera_fib_ht_params = {
- 	.key_offset  = offsetof(struct prestera_fib_node, key),
- 	.head_offset = offsetof(struct prestera_fib_node, ht_node),
--	.key_len     = sizeof(struct prestera_fib_key),
-+	.key_len     = sizeof_field(struct prestera_fib_node, key),
- 	.automatic_shrinking = true,
- };
- 
- static const struct rhashtable_params __prestera_nh_neigh_ht_params = {
- 	.key_offset  = offsetof(struct prestera_nh_neigh, key),
--	.key_len     = sizeof(struct prestera_nh_neigh_key),
-+	.key_len     = sizeof_field(struct prestera_nh_neigh, key),
- 	.head_offset = offsetof(struct prestera_nh_neigh, ht_node),
- };
- 
- static const struct rhashtable_params __prestera_nexthop_group_ht_params = {
- 	.key_offset  = offsetof(struct prestera_nexthop_group, key),
--	.key_len     = sizeof(struct prestera_nexthop_group_key),
-+	.key_len     = sizeof_field(struct prestera_nexthop_group, key),
- 	.head_offset = offsetof(struct prestera_nexthop_group, ht_node),
- };
- 
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-index f20bb390df3a..0145c06ebec9 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-@@ -47,7 +47,7 @@ struct mtk_flow_data {
- static const struct rhashtable_params mtk_flow_ht_params = {
- 	.head_offset = offsetof(struct mtk_flow_entry, node),
- 	.key_offset = offsetof(struct mtk_flow_entry, cookie),
--	.key_len = sizeof(unsigned long),
-+	.key_len = sizeof_field(struct mtk_flow_entry, cookie),
- 	.automatic_shrinking = true,
- };
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/neigh.c b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/neigh.c
-index 2e9bee4e5209..dfd798c59051 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/neigh.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/neigh.c
-@@ -269,7 +269,7 @@ static int mlx5e_rep_netevent_event(struct notifier_block *nb,
- static const struct rhashtable_params mlx5e_neigh_ht_params = {
- 	.head_offset = offsetof(struct mlx5e_neigh_hash_entry, rhash_node),
- 	.key_offset = offsetof(struct mlx5e_neigh_hash_entry, m_neigh),
--	.key_len = sizeof(struct mlx5e_neigh),
-+	.key_len = sizeof_field(struct mlx5e_neigh_hash_entry, m_neigh),
- 	.automatic_shrinking = true,
- };
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
-index a84ebac2f011..5a3f370ab136 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
-@@ -173,7 +173,7 @@ mlx5_tc_ct_entry_destroy_mod_hdr(struct mlx5_tc_ct_priv *ct_priv,
- static const struct rhashtable_params cts_ht_params = {
- 	.head_offset = offsetof(struct mlx5_ct_entry, node),
- 	.key_offset = offsetof(struct mlx5_ct_entry, cookie),
--	.key_len = sizeof(((struct mlx5_ct_entry *)0)->cookie),
-+	.key_len = sizeof_field(struct mlx5_ct_entry, cookie),
- 	.automatic_shrinking = true,
- 	.min_size = 16 * 1024,
- };
-@@ -181,14 +181,14 @@ static const struct rhashtable_params cts_ht_params = {
- static const struct rhashtable_params zone_params = {
- 	.head_offset = offsetof(struct mlx5_ct_ft, node),
- 	.key_offset = offsetof(struct mlx5_ct_ft, zone),
--	.key_len = sizeof(((struct mlx5_ct_ft *)0)->zone),
-+	.key_len = sizeof_field(struct mlx5_ct_ft, zone),
- 	.automatic_shrinking = true,
- };
- 
- static const struct rhashtable_params tuples_ht_params = {
- 	.head_offset = offsetof(struct mlx5_ct_entry, tuple_node),
- 	.key_offset = offsetof(struct mlx5_ct_entry, tuple),
--	.key_len = sizeof(((struct mlx5_ct_entry *)0)->tuple),
-+	.key_len = sizeof_field(struct mlx5_ct_entry, tuple),
- 	.automatic_shrinking = true,
- 	.min_size = 16 * 1024,
- };
-@@ -196,7 +196,7 @@ static const struct rhashtable_params tuples_ht_params = {
- static const struct rhashtable_params tuples_nat_ht_params = {
- 	.head_offset = offsetof(struct mlx5_ct_entry, tuple_nat_node),
- 	.key_offset = offsetof(struct mlx5_ct_entry, tuple_nat),
--	.key_len = sizeof(((struct mlx5_ct_entry *)0)->tuple_nat),
-+	.key_len = sizeof_field(struct mlx5_ct_entry, tuple_nat),
- 	.automatic_shrinking = true,
- 	.min_size = 16 * 1024,
- };
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 6b3b1afe8312..ee40c89b0f3f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -4339,7 +4339,7 @@ static void get_flags(int flags, unsigned long *flow_flags)
- static const struct rhashtable_params tc_ht_params = {
- 	.head_offset = offsetof(struct mlx5e_tc_flow, node),
- 	.key_offset = offsetof(struct mlx5e_tc_flow, cookie),
--	.key_len = sizeof(((struct mlx5e_tc_flow *)0)->cookie),
-+	.key_len = sizeof_field(struct mlx5e_tc_flow, cookie),
- 	.automatic_shrinking = true,
- };
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
-index c5ea1d1d2b03..9b9877bc7eb0 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
-@@ -15,7 +15,7 @@
- 
- static const struct rhashtable_params fdb_ht_params = {
- 	.key_offset = offsetof(struct mlx5_esw_bridge_fdb_entry, key),
--	.key_len = sizeof(struct mlx5_esw_bridge_fdb_key),
-+	.key_len = sizeof_field(struct mlx5_esw_bridge_fdb_entry, key),
- 	.head_offset = offsetof(struct mlx5_esw_bridge_fdb_entry, ht_node),
- 	.automatic_shrinking = true,
- };
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c
-index 22dd30cf8033..7a39446c23f7 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c
-@@ -9,7 +9,7 @@
- 
- static const struct rhashtable_params mdb_ht_params = {
- 	.key_offset = offsetof(struct mlx5_esw_bridge_mdb_entry, key),
--	.key_len = sizeof(struct mlx5_esw_bridge_mdb_key),
-+	.key_len = sizeof_field(struct mlx5_esw_bridge_mdb_entry, key),
- 	.head_offset = offsetof(struct mlx5_esw_bridge_mdb_entry, ht_node),
- 	.automatic_shrinking = true,
- };
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_actions.c b/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_actions.c
-index 1915fa41c622..1dc77bf66c17 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_actions.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_actions.c
-@@ -106,7 +106,7 @@ struct mlxsw_afa_set {
- };
- 
- static const struct rhashtable_params mlxsw_afa_set_ht_params = {
--	.key_len = sizeof(struct mlxsw_afa_set_ht_key),
-+	.key_len = sizeof_field(struct mlxsw_afa_set, ht_key),
- 	.key_offset = offsetof(struct mlxsw_afa_set, ht_key),
- 	.head_offset = offsetof(struct mlxsw_afa_set, ht_node),
- 	.automatic_shrinking = true,
-@@ -124,7 +124,7 @@ struct mlxsw_afa_fwd_entry {
- };
- 
- static const struct rhashtable_params mlxsw_afa_fwd_entry_ht_params = {
--	.key_len = sizeof(struct mlxsw_afa_fwd_entry_ht_key),
-+	.key_len = sizeof_field(struct mlxsw_afa_fwd_entry, ht_key),
- 	.key_offset = offsetof(struct mlxsw_afa_fwd_entry, ht_key),
- 	.head_offset = offsetof(struct mlxsw_afa_fwd_entry, ht_node),
- 	.automatic_shrinking = true,
-@@ -188,7 +188,7 @@ struct mlxsw_afa_policer {
- };
- 
- static const struct rhashtable_params mlxsw_afa_policer_ht_params = {
--	.key_len = sizeof(u32),
-+	.key_len = sizeof_field(struct mlxsw_afa_policer, fa_index),
- 	.key_offset = offsetof(struct mlxsw_afa_policer, fa_index),
- 	.head_offset = offsetof(struct mlxsw_afa_policer, ht_node),
- 	.automatic_shrinking = true,
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-index 3f5e5d99251b..744084836fe7 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-@@ -2844,7 +2844,7 @@ struct mlxsw_sp_sample_trigger_node {
- static const struct rhashtable_params mlxsw_sp_sample_trigger_ht_params = {
- 	.key_offset = offsetof(struct mlxsw_sp_sample_trigger_node, trigger),
- 	.head_offset = offsetof(struct mlxsw_sp_sample_trigger_node, ht_node),
--	.key_len = sizeof(struct mlxsw_sp_sample_trigger),
-+	.key_len = sizeof_field(struct mlxsw_sp_sample_trigger_node, trigger),
- 	.automatic_shrinking = true,
- };
- 
-@@ -3005,7 +3005,7 @@ struct mlxsw_sp_ipv6_addr_node {
- static const struct rhashtable_params mlxsw_sp_ipv6_addr_ht_params = {
- 	.key_offset = offsetof(struct mlxsw_sp_ipv6_addr_node, key),
- 	.head_offset = offsetof(struct mlxsw_sp_ipv6_addr_node, ht_node),
--	.key_len = sizeof(struct in6_addr),
-+	.key_len = sizeof_field(struct mlxsw_sp_ipv6_addr_node, key),
- 	.automatic_shrinking = true,
- };
- 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
-index 3e70cee4d2f3..3701911fa5d5 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
-@@ -78,14 +78,14 @@ struct mlxsw_sp_acl_rule {
- };
- 
- static const struct rhashtable_params mlxsw_sp_acl_ruleset_ht_params = {
--	.key_len = sizeof(struct mlxsw_sp_acl_ruleset_ht_key),
-+	.key_len = sizeof_field(struct mlxsw_sp_acl_ruleset, ht_key),
- 	.key_offset = offsetof(struct mlxsw_sp_acl_ruleset, ht_key),
- 	.head_offset = offsetof(struct mlxsw_sp_acl_ruleset, ht_node),
- 	.automatic_shrinking = true,
- };
- 
- static const struct rhashtable_params mlxsw_sp_acl_rule_ht_params = {
--	.key_len = sizeof(unsigned long),
-+	.key_len = sizeof_field(struct mlxsw_sp_acl_rule, cookie),
- 	.key_offset = offsetof(struct mlxsw_sp_acl_rule, cookie),
- 	.head_offset = offsetof(struct mlxsw_sp_acl_rule, ht_node),
- 	.automatic_shrinking = true,
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_atcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_atcam.c
-index 07cb1e26ca3e..49201c4324ac 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_atcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_atcam.c
-@@ -52,13 +52,13 @@ struct mlxsw_sp_acl_atcam_region_12kb {
- };
- 
- static const struct rhashtable_params mlxsw_sp_acl_atcam_lkey_id_ht_params = {
--	.key_len = sizeof(struct mlxsw_sp_acl_atcam_lkey_id_ht_key),
-+	.key_len = sizeof_field(struct mlxsw_sp_acl_atcam_lkey_id, ht_key),
- 	.key_offset = offsetof(struct mlxsw_sp_acl_atcam_lkey_id, ht_key),
- 	.head_offset = offsetof(struct mlxsw_sp_acl_atcam_lkey_id, ht_node),
- };
- 
- static const struct rhashtable_params mlxsw_sp_acl_atcam_entries_ht_params = {
--	.key_len = sizeof(struct mlxsw_sp_acl_atcam_entry_ht_key),
-+	.key_len = sizeof_field(struct mlxsw_sp_acl_atcam_entry, ht_key),
- 	.key_offset = offsetof(struct mlxsw_sp_acl_atcam_entry, ht_key),
- 	.head_offset = offsetof(struct mlxsw_sp_acl_atcam_entry, ht_node),
- };
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index b1d08e958bf9..adf293dccda3 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -198,7 +198,7 @@ struct mlxsw_sp_acl_tcam_ventry {
- };
- 
- static const struct rhashtable_params mlxsw_sp_acl_tcam_vchunk_ht_params = {
--	.key_len = sizeof(unsigned int),
-+	.key_len = sizeof_field(struct mlxsw_sp_acl_tcam_vchunk, priority),
- 	.key_offset = offsetof(struct mlxsw_sp_acl_tcam_vchunk, priority),
- 	.head_offset = offsetof(struct mlxsw_sp_acl_tcam_vchunk, ht_node),
- 	.automatic_shrinking = true,
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
-index 69cd689dbc83..5805520c5bbc 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
-@@ -91,7 +91,7 @@ struct mlxsw_sp_mr_route {
- };
- 
- static const struct rhashtable_params mlxsw_sp_mr_route_ht_params = {
--	.key_len = sizeof(struct mlxsw_sp_mr_route_key),
-+	.key_len = sizeof_field(struct mlxsw_sp_mr_route, key),
- 	.key_offset = offsetof(struct mlxsw_sp_mr_route, key),
- 	.head_offset = offsetof(struct mlxsw_sp_mr_route, ht_node),
- 	.automatic_shrinking = true,
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_nve.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_nve.c
-index 5479a1c19d2e..11e1ae8decce 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_nve.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_nve.c
-@@ -77,7 +77,7 @@ struct mlxsw_sp_nve_mc_list {
- };
- 
- static const struct rhashtable_params mlxsw_sp_nve_mc_list_ht_params = {
--	.key_len = sizeof(struct mlxsw_sp_nve_mc_list_key),
-+	.key_len = sizeof_field(struct mlxsw_sp_nve_mc_list, key),
- 	.key_offset = offsetof(struct mlxsw_sp_nve_mc_list, key),
- 	.head_offset = offsetof(struct mlxsw_sp_nve_mc_list, ht_node),
- };
-@@ -810,7 +810,7 @@ struct mlxsw_sp_nve_ipv6_ht_node {
- };
- 
- static const struct rhashtable_params mlxsw_sp_nve_ipv6_ht_params = {
--	.key_len = sizeof(struct mlxsw_sp_nve_ipv6_ht_key),
-+	.key_len = sizeof_field(struct mlxsw_sp_nve_ipv6_ht_node, key),
- 	.key_offset = offsetof(struct mlxsw_sp_nve_ipv6_ht_node, key),
- 	.head_offset = offsetof(struct mlxsw_sp_nve_ipv6_ht_node, ht_node),
- };
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-index 7d6d859cef3f..f114b52a0ab0 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-@@ -2196,7 +2196,7 @@ struct mlxsw_sp_neigh_entry {
- static const struct rhashtable_params mlxsw_sp_neigh_ht_params = {
- 	.key_offset = offsetof(struct mlxsw_sp_neigh_entry, key),
- 	.head_offset = offsetof(struct mlxsw_sp_neigh_entry, ht_node),
--	.key_len = sizeof(struct mlxsw_sp_neigh_key),
-+	.key_len = sizeof_field(struct mlxsw_sp_neigh_entry, key),
- };
- 
- struct mlxsw_sp_neigh_entry *
-@@ -3375,7 +3375,7 @@ bool mlxsw_sp_nexthop_group_has_ipip(struct mlxsw_sp_nexthop *nh)
- static const struct rhashtable_params mlxsw_sp_nexthop_group_vr_ht_params = {
- 	.key_offset = offsetof(struct mlxsw_sp_nexthop_group_vr_entry, key),
- 	.head_offset = offsetof(struct mlxsw_sp_nexthop_group_vr_entry, ht_node),
--	.key_len = sizeof(struct mlxsw_sp_nexthop_group_vr_key),
-+	.key_len = sizeof_field(struct mlxsw_sp_nexthop_group_vr_entry, key),
- 	.automatic_shrinking = true,
- };
- 
-@@ -3662,7 +3662,7 @@ mlxsw_sp_nexthop6_group_lookup(struct mlxsw_sp *mlxsw_sp,
- static const struct rhashtable_params mlxsw_sp_nexthop_ht_params = {
- 	.key_offset = offsetof(struct mlxsw_sp_nexthop, key),
- 	.head_offset = offsetof(struct mlxsw_sp_nexthop, ht_node),
--	.key_len = sizeof(struct mlxsw_sp_nexthop_key),
-+	.key_len = sizeof_field(struct mlxsw_sp_nexthop, key),
- };
- 
- static int mlxsw_sp_nexthop_insert(struct mlxsw_sp *mlxsw_sp,
-@@ -6561,7 +6561,7 @@ mlxsw_sp_fib4_entry_lookup(struct mlxsw_sp *mlxsw_sp,
- static const struct rhashtable_params mlxsw_sp_fib_ht_params = {
- 	.key_offset = offsetof(struct mlxsw_sp_fib_node, key),
- 	.head_offset = offsetof(struct mlxsw_sp_fib_node, ht_node),
--	.key_len = sizeof(struct mlxsw_sp_fib_key),
-+	.key_len = sizeof_field(struct mlxsw_sp_fib_node, key),
- 	.automatic_shrinking = true,
- };
- 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-index 6397ff0dc951..cee484cbe31f 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-@@ -127,7 +127,7 @@ struct mlxsw_sp_mdb_entry_port {
- static const struct rhashtable_params mlxsw_sp_mdb_ht_params = {
- 	.key_offset = offsetof(struct mlxsw_sp_mdb_entry, key),
- 	.head_offset = offsetof(struct mlxsw_sp_mdb_entry, ht_node),
--	.key_len = sizeof(struct mlxsw_sp_mdb_entry_key),
-+	.key_len = sizeof_field(struct mlxsw_sp_mdb_entry, key),
- };
- 
- static int
-diff --git a/drivers/net/ethernet/netronome/nfp/bpf/main.c b/drivers/net/ethernet/netronome/nfp/bpf/main.c
-index f469950c7265..e63f36d3a34f 100644
---- a/drivers/net/ethernet/netronome/nfp/bpf/main.c
-+++ b/drivers/net/ethernet/netronome/nfp/bpf/main.c
-@@ -15,7 +15,8 @@
- 
- const struct rhashtable_params nfp_bpf_maps_neutral_params = {
- 	.nelem_hint		= 4,
--	.key_len		= sizeof_field(struct bpf_map, id),
-+	.key_len		= sizeof_field(struct nfp_bpf_neutral_map,
-+						map_id),
- 	.key_offset		= offsetof(struct nfp_bpf_neutral_map, map_id),
- 	.head_offset		= offsetof(struct nfp_bpf_neutral_map, l),
- 	.automatic_shrinking	= true,
-diff --git a/drivers/net/ethernet/netronome/nfp/flower/conntrack.c b/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
-index 15180538b80a..ea0ce4e9a798 100644
---- a/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
-@@ -10,7 +10,8 @@
- const struct rhashtable_params nfp_tc_ct_merge_params = {
- 	.head_offset		= offsetof(struct nfp_fl_ct_tc_merge,
- 					   hash_node),
--	.key_len		= sizeof(unsigned long) * 2,
-+	.key_len		= sizeof_field(struct nfp_fl_ct_tc_merge,
-+						cookie),
- 	.key_offset		= offsetof(struct nfp_fl_ct_tc_merge, cookie),
- 	.automatic_shrinking	= true,
- };
-@@ -18,7 +19,8 @@ const struct rhashtable_params nfp_tc_ct_merge_params = {
- const struct rhashtable_params nfp_nft_ct_merge_params = {
- 	.head_offset		= offsetof(struct nfp_fl_nft_tc_merge,
- 					   hash_node),
--	.key_len		= sizeof(unsigned long) * 3,
-+	.key_len		= sizeof_field(struct nfp_fl_nft_tc_merge,
-+						cookie),
- 	.key_offset		= offsetof(struct nfp_fl_nft_tc_merge, cookie),
- 	.automatic_shrinking	= true,
- };
-diff --git a/drivers/net/ethernet/netronome/nfp/flower/metadata.c b/drivers/net/ethernet/netronome/nfp/flower/metadata.c
-index 80e4675582bf..aece799a5ed7 100644
---- a/drivers/net/ethernet/netronome/nfp/flower/metadata.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/metadata.c
-@@ -34,7 +34,8 @@ struct nfp_fl_stats_ctx_to_flow {
- static const struct rhashtable_params stats_ctx_table_params = {
- 	.key_offset	= offsetof(struct nfp_fl_stats_ctx_to_flow, stats_cxt),
- 	.head_offset	= offsetof(struct nfp_fl_stats_ctx_to_flow, ht_node),
--	.key_len	= sizeof(u32),
-+	.key_len	= sizeof_field(struct nfp_fl_stats_ctx_to_flow,
-+					stats_cxt),
- };
- 
- static int nfp_release_stats_entry(struct nfp_app *app, u32 stats_context_id)
-@@ -485,19 +486,21 @@ const struct rhashtable_params nfp_flower_table_params = {
- const struct rhashtable_params merge_table_params = {
- 	.key_offset	= offsetof(struct nfp_merge_info, parent_ctx),
- 	.head_offset	= offsetof(struct nfp_merge_info, ht_node),
--	.key_len	= sizeof(u64),
-+	.key_len	= sizeof_field(struct nfp_merge_info, parent_ctx),
- };
- 
- const struct rhashtable_params nfp_zone_table_params = {
- 	.head_offset		= offsetof(struct nfp_fl_ct_zone_entry, hash_node),
--	.key_len		= sizeof(u16),
-+	.key_len		= sizeof_field(struct nfp_fl_ct_zone_entry,
-+						zone),
- 	.key_offset		= offsetof(struct nfp_fl_ct_zone_entry, zone),
- 	.automatic_shrinking	= false,
- };
- 
- const struct rhashtable_params nfp_ct_map_params = {
- 	.head_offset		= offsetof(struct nfp_fl_ct_map_entry, hash_node),
--	.key_len		= sizeof(unsigned long),
-+	.key_len		= sizeof_field(struct nfp_fl_ct_map_entry,
-+						cookie),
- 	.key_offset		= offsetof(struct nfp_fl_ct_map_entry, cookie),
- 	.automatic_shrinking	= true,
- };
-@@ -505,7 +508,7 @@ const struct rhashtable_params nfp_ct_map_params = {
- const struct rhashtable_params neigh_table_params = {
- 	.key_offset	= offsetof(struct nfp_neigh_entry, neigh_cookie),
- 	.head_offset	= offsetof(struct nfp_neigh_entry, ht_node),
--	.key_len	= sizeof(unsigned long),
-+	.key_len	= sizeof_field(struct nfp_neigh_entry, neigh_cookie),
- };
- 
- int nfp_flower_metadata_init(struct nfp_app *app, u64 host_ctx_count,
-diff --git a/drivers/net/ethernet/netronome/nfp/flower/qos_conf.c b/drivers/net/ethernet/netronome/nfp/flower/qos_conf.c
-index e7180b4793c7..1785ad13e1a8 100644
---- a/drivers/net/ethernet/netronome/nfp/flower/qos_conf.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/qos_conf.c
-@@ -555,7 +555,7 @@ int nfp_flower_setup_qos_offload(struct nfp_app *app, struct net_device *netdev,
- static const struct rhashtable_params stats_meter_table_params = {
- 	.key_offset	= offsetof(struct nfp_meter_entry, meter_id),
- 	.head_offset	= offsetof(struct nfp_meter_entry, ht_node),
--	.key_len	= sizeof(u32),
-+	.key_len	= sizeof_field(struct nfp_meter_entry, meter_id),
- };
- 
- struct nfp_meter_entry *
-diff --git a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
-index 0d7d138d6e0d..51ae5e2244aa 100644
---- a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
-@@ -201,7 +201,7 @@ struct nfp_tun_offloaded_mac {
- static const struct rhashtable_params offloaded_macs_params = {
- 	.key_offset	= offsetof(struct nfp_tun_offloaded_mac, addr),
- 	.head_offset	= offsetof(struct nfp_tun_offloaded_mac, ht_node),
--	.key_len	= ETH_ALEN,
-+	.key_len	= sizeof_field(struct nfp_tun_offloaded_mac, addr),
- 	.automatic_shrinking	= true,
- };
- 
-diff --git a/drivers/net/ethernet/sfc/mae.c b/drivers/net/ethernet/sfc/mae.c
-index 50f097487b14..72907685cbec 100644
---- a/drivers/net/ethernet/sfc/mae.c
-+++ b/drivers/net/ethernet/sfc/mae.c
-@@ -1053,7 +1053,7 @@ static bool efx_mae_asl_id(u32 id)
- 
- /* mport handling */
- static const struct rhashtable_params efx_mae_mports_ht_params = {
--	.key_len	= sizeof(u32),
-+	.key_len	= sizeof_field(struct mae_mport_desc, mport_id),
- 	.key_offset	= offsetof(struct mae_mport_desc, mport_id),
- 	.head_offset	= offsetof(struct mae_mport_desc, linkage),
- };
-diff --git a/drivers/net/ethernet/sfc/tc.c b/drivers/net/ethernet/sfc/tc.c
-index 0d93164988fc..d62e3e815acf 100644
---- a/drivers/net/ethernet/sfc/tc.c
-+++ b/drivers/net/ethernet/sfc/tc.c
-@@ -90,31 +90,31 @@ s64 efx_tc_flower_external_mport(struct efx_nic *efx, struct efx_rep *efv)
- }
- 
- static const struct rhashtable_params efx_tc_mac_ht_params = {
--	.key_len	= offsetofend(struct efx_tc_mac_pedit_action, h_addr),
--	.key_offset	= 0,
-+	.key_len	= sizeof_field(struct efx_tc_mac_pedit_action, h_addr),
-+	.key_offset	= offsetof(struct efx_tc_mac_pedit_action, h_addr),
- 	.head_offset	= offsetof(struct efx_tc_mac_pedit_action, linkage),
- };
- 
- static const struct rhashtable_params efx_tc_encap_match_ht_params = {
--	.key_len	= offsetof(struct efx_tc_encap_match, linkage),
-+	.key_len	= offsetofend(struct efx_tc_encap_match, ip_tos_mask),
- 	.key_offset	= 0,
- 	.head_offset	= offsetof(struct efx_tc_encap_match, linkage),
- };
- 
- static const struct rhashtable_params efx_tc_match_action_ht_params = {
--	.key_len	= sizeof(unsigned long),
-+	.key_len	= sizeof_field(struct efx_tc_flow_rule, cookie),
- 	.key_offset	= offsetof(struct efx_tc_flow_rule, cookie),
- 	.head_offset	= offsetof(struct efx_tc_flow_rule, linkage),
- };
- 
- static const struct rhashtable_params efx_tc_lhs_rule_ht_params = {
--	.key_len	= sizeof(unsigned long),
-+	.key_len	= sizeof_field(struct efx_tc_lhs_rule, cookie),
- 	.key_offset	= offsetof(struct efx_tc_lhs_rule, cookie),
- 	.head_offset	= offsetof(struct efx_tc_lhs_rule, linkage),
- };
- 
- static const struct rhashtable_params efx_tc_recirc_ht_params = {
--	.key_len	= offsetof(struct efx_tc_recirc_id, linkage),
-+	.key_len	= offsetofend(struct efx_tc_recirc_id, net_dev),
- 	.key_offset	= 0,
- 	.head_offset	= offsetof(struct efx_tc_recirc_id, linkage),
- };
-diff --git a/drivers/net/ethernet/sfc/tc_conntrack.c b/drivers/net/ethernet/sfc/tc_conntrack.c
-index d90206f27161..36bb7c78f2b9 100644
---- a/drivers/net/ethernet/sfc/tc_conntrack.c
-+++ b/drivers/net/ethernet/sfc/tc_conntrack.c
-@@ -16,14 +16,14 @@ static int efx_tc_flow_block(enum tc_setup_type type, void *type_data,
- 			     void *cb_priv);
- 
- static const struct rhashtable_params efx_tc_ct_zone_ht_params = {
--	.key_len	= offsetof(struct efx_tc_ct_zone, linkage),
--	.key_offset	= 0,
-+	.key_len	= sizeof_field(struct efx_tc_ct_zone, zone),
-+	.key_offset	= offsetof(struct efx_tc_ct_zone, zone),
- 	.head_offset	= offsetof(struct efx_tc_ct_zone, linkage),
- };
- 
- static const struct rhashtable_params efx_tc_ct_ht_params = {
--	.key_len	= offsetof(struct efx_tc_ct_entry, linkage),
--	.key_offset	= 0,
-+	.key_len	= sizeof_field(struct efx_tc_ct_entry, cookie),
-+	.key_offset	= offsetof(struct efx_tc_ct_entry, cookie),
- 	.head_offset	= offsetof(struct efx_tc_ct_entry, linkage),
- };
- 
-diff --git a/drivers/net/ethernet/sfc/tc_counters.c b/drivers/net/ethernet/sfc/tc_counters.c
-index a421b0123506..067d75973f0a 100644
---- a/drivers/net/ethernet/sfc/tc_counters.c
-+++ b/drivers/net/ethernet/sfc/tc_counters.c
-@@ -17,14 +17,14 @@
- /* Counter-management hashtables */
- 
- static const struct rhashtable_params efx_tc_counter_id_ht_params = {
--	.key_len	= offsetof(struct efx_tc_counter_index, linkage),
--	.key_offset	= 0,
-+	.key_len	= sizeof_field(struct efx_tc_counter_index, cookie),
-+	.key_offset	= offsetof(struct efx_tc_counter_index, cookie),
- 	.head_offset	= offsetof(struct efx_tc_counter_index, linkage),
- };
- 
- static const struct rhashtable_params efx_tc_counter_ht_params = {
--	.key_len	= offsetof(struct efx_tc_counter, linkage),
--	.key_offset	= 0,
-+	.key_len	= sizeof_field(struct efx_tc_counter, fw_id),
-+	.key_offset	= offsetof(struct efx_tc_counter, fw_id),
- 	.head_offset	= offsetof(struct efx_tc_counter, linkage),
- };
- 
-diff --git a/drivers/net/ethernet/sfc/tc_encap_actions.c b/drivers/net/ethernet/sfc/tc_encap_actions.c
-index 87443f9dfd22..fa081bbcdef6 100644
---- a/drivers/net/ethernet/sfc/tc_encap_actions.c
-+++ b/drivers/net/ethernet/sfc/tc_encap_actions.c
-@@ -17,7 +17,7 @@
- #include <net/arp.h>
- 
- static const struct rhashtable_params efx_neigh_ht_params = {
--	.key_len	= offsetof(struct efx_neigh_binder, ha),
-+	.key_len	= offsetofend(struct efx_neigh_binder, dst_ip6),
- 	.key_offset	= 0,
- 	.head_offset	= offsetof(struct efx_neigh_binder, linkage),
- };
-diff --git a/drivers/net/netdevsim/fib.c b/drivers/net/netdevsim/fib.c
-index 16c382c42227..4184b0f0a196 100644
---- a/drivers/net/netdevsim/fib.c
-+++ b/drivers/net/netdevsim/fib.c
-@@ -115,7 +115,7 @@ struct nsim_fib_event {
- static const struct rhashtable_params nsim_fib_rt_ht_params = {
- 	.key_offset = offsetof(struct nsim_fib_rt, key),
- 	.head_offset = offsetof(struct nsim_fib_rt, ht_node),
--	.key_len = sizeof(struct nsim_fib_rt_key),
-+	.key_len = sizeof_field(struct nsim_fib_rt, key),
- 	.automatic_shrinking = true,
- };
- 
-@@ -129,7 +129,7 @@ struct nsim_nexthop {
- static const struct rhashtable_params nsim_nexthop_ht_params = {
- 	.key_offset = offsetof(struct nsim_nexthop, id),
- 	.head_offset = offsetof(struct nsim_nexthop, ht_node),
--	.key_len = sizeof(u32),
-+	.key_len = sizeof_field(struct nsim_nexthop, id),
- 	.automatic_shrinking = true,
- };
- 
-diff --git a/drivers/net/vxlan/vxlan_mdb.c b/drivers/net/vxlan/vxlan_mdb.c
-index 8735891ee128..29e7c91ffd2b 100644
---- a/drivers/net/vxlan/vxlan_mdb.c
-+++ b/drivers/net/vxlan/vxlan_mdb.c
-@@ -85,7 +85,7 @@ struct vxlan_mdb_flush_desc {
- static const struct rhashtable_params vxlan_mdb_rht_params = {
- 	.head_offset = offsetof(struct vxlan_mdb_entry, rhnode),
- 	.key_offset = offsetof(struct vxlan_mdb_entry, key),
--	.key_len = sizeof(struct vxlan_mdb_entry_key),
-+	.key_len = sizeof_field(struct vxlan_mdb_entry, key),
- 	.automatic_shrinking = true,
- };
- 
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index d2023e7131bd..c70954c54e92 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -29,7 +29,7 @@ static inline int vxlan_vni_cmp(struct rhashtable_compare_arg *arg,
- const struct rhashtable_params vxlan_vni_rht_params = {
- 	.head_offset = offsetof(struct vxlan_vni_node, vnode),
- 	.key_offset = offsetof(struct vxlan_vni_node, vni),
--	.key_len = sizeof(__be32),
-+	.key_len = sizeof_field(struct vxlan_vni_node, vni),
- 	.nelem_hint = 3,
- 	.max_size = VXLAN_N_VID,
- 	.obj_cmpfn = vxlan_vni_cmp,
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 347a15544afe..8d405d15a09b 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -757,7 +757,7 @@ struct mac80211_hwsim_data {
- static const struct rhashtable_params hwsim_rht_params = {
- 	.nelem_hint = 2,
- 	.automatic_shrinking = true,
--	.key_len = ETH_ALEN,
-+	.key_len = sizeof_field(struct mac80211_hwsim_data, addresses[1]),
- 	.key_offset = offsetof(struct mac80211_hwsim_data, addresses[1]),
- 	.head_offset = offsetof(struct mac80211_hwsim_data, rht),
- };
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index b2ae0d2434d2..cb21142f4686 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -39,14 +39,14 @@
- static const struct rhashtable_params br_mdb_rht_params = {
- 	.head_offset = offsetof(struct net_bridge_mdb_entry, rhnode),
- 	.key_offset = offsetof(struct net_bridge_mdb_entry, addr),
--	.key_len = sizeof(struct br_ip),
-+	.key_len = sizeof_field(struct net_bridge_mdb_entry, addr),
- 	.automatic_shrinking = true,
- };
- 
- static const struct rhashtable_params br_sg_port_rht_params = {
- 	.head_offset = offsetof(struct net_bridge_port_group, rhnode),
- 	.key_offset = offsetof(struct net_bridge_port_group, key),
--	.key_len = sizeof(struct net_bridge_port_group_sg_key),
-+	.key_len = sizeof_field(struct net_bridge_port_group, key),
- 	.automatic_shrinking = true,
- };
- 
-diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
-index 89f51ea4cabe..95674019106d 100644
---- a/net/bridge/br_vlan.c
-+++ b/net/bridge/br_vlan.c
-@@ -22,7 +22,7 @@ static inline int br_vlan_cmp(struct rhashtable_compare_arg *arg,
- static const struct rhashtable_params br_vlan_rht_params = {
- 	.head_offset = offsetof(struct net_bridge_vlan, vnode),
- 	.key_offset = offsetof(struct net_bridge_vlan, vid),
--	.key_len = sizeof(u16),
-+	.key_len = sizeof_field(struct net_bridge_vlan, vid),
- 	.nelem_hint = 3,
- 	.max_size = VLAN_N_VID,
- 	.obj_cmpfn = br_vlan_cmp,
-diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
-index 07036a2943c1..0d8234460a13 100644
---- a/net/ipv4/ip_fragment.c
-+++ b/net/ipv4/ip_fragment.c
-@@ -737,8 +737,8 @@ static int ip4_obj_cmpfn(struct rhashtable_compare_arg *arg, const void *ptr)
- 
- static const struct rhashtable_params ip4_rhash_params = {
- 	.head_offset		= offsetof(struct inet_frag_queue, node),
--	.key_offset		= offsetof(struct inet_frag_queue, key),
--	.key_len		= sizeof(struct frag_v4_compare_key),
-+	.key_offset		= offsetof(struct inet_frag_queue, key.v4),
-+	.key_len		= sizeof_field(struct inet_frag_queue, key.v4),
- 	.hashfn			= ip4_key_hashfn,
- 	.obj_hashfn		= ip4_obj_hashfn,
- 	.obj_cmpfn		= ip4_obj_cmpfn,
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index 99d8faa508e5..217b2dd200f1 100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -393,7 +393,7 @@ static inline int ipmr_hash_cmp(struct rhashtable_compare_arg *arg,
- static const struct rhashtable_params ipmr_rht_params = {
- 	.head_offset = offsetof(struct mr_mfc, mnode),
- 	.key_offset = offsetof(struct mfc_cache, cmparg),
--	.key_len = sizeof(struct mfc_cache_cmp_arg),
-+	.key_len = sizeof_field(struct mfc_cache, cmparg),
- 	.nelem_hint = 3,
- 	.obj_cmpfn = ipmr_hash_cmp,
- 	.automatic_shrinking = true,
-diff --git a/net/ipv6/ila/ila_xlat.c b/net/ipv6/ila/ila_xlat.c
-index 7646e401c630..8f0550fc3673 100644
---- a/net/ipv6/ila/ila_xlat.c
-+++ b/net/ipv6/ila/ila_xlat.c
-@@ -85,7 +85,7 @@ static const struct rhashtable_params rht_params = {
- 	.nelem_hint = 1024,
- 	.head_offset = offsetof(struct ila_map, node),
- 	.key_offset = offsetof(struct ila_map, xp.ip.locator_match),
--	.key_len = sizeof(u64), /* identifier */
-+	.key_len = sizeof_field(struct ila_map, xp.ip.locator_match),
- 	.max_size = 1048576,
- 	.min_size = 256,
- 	.automatic_shrinking = true,
-diff --git a/net/ipv6/ioam6.c b/net/ipv6/ioam6.c
-index a84d332f952f..a4cd627b4531 100644
---- a/net/ipv6/ioam6.c
-+++ b/net/ipv6/ioam6.c
-@@ -61,7 +61,7 @@ static int ioam6_sc_cmpfn(struct rhashtable_compare_arg *arg, const void *obj)
- }
- 
- static const struct rhashtable_params rht_ns_params = {
--	.key_len		= sizeof(__be16),
-+	.key_len		= sizeof_field(struct ioam6_namespace, id),
- 	.key_offset		= offsetof(struct ioam6_namespace, id),
- 	.head_offset		= offsetof(struct ioam6_namespace, head),
- 	.automatic_shrinking	= true,
-@@ -69,7 +69,7 @@ static const struct rhashtable_params rht_ns_params = {
- };
- 
- static const struct rhashtable_params rht_sc_params = {
--	.key_len		= sizeof(u32),
-+	.key_len		= sizeof_field(struct ioam6_schema, id),
- 	.key_offset		= offsetof(struct ioam6_schema, id),
- 	.head_offset		= offsetof(struct ioam6_schema, head),
- 	.automatic_shrinking	= true,
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index 578ff1336afe..d63fbe7f51f6 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -376,7 +376,7 @@ static int ip6mr_hash_cmp(struct rhashtable_compare_arg *arg,
- static const struct rhashtable_params ip6mr_rht_params = {
- 	.head_offset = offsetof(struct mr_mfc, mnode),
- 	.key_offset = offsetof(struct mfc6_cache, cmparg),
--	.key_len = sizeof(struct mfc6_cache_cmp_arg),
-+	.key_len = sizeof_field(struct mfc6_cache, cmparg),
- 	.nelem_hint = 3,
- 	.obj_cmpfn = ip6mr_hash_cmp,
- 	.automatic_shrinking = true,
-diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
-index 9f9cb5af0a97..672036d1cf34 100644
---- a/net/mac80211/mesh_pathtbl.c
-+++ b/net/mac80211/mesh_pathtbl.c
-@@ -28,7 +28,7 @@ static u32 mesh_table_hash(const void *addr, u32 len, u32 seed)
- static const struct rhashtable_params mesh_rht_params = {
- 	.nelem_hint = 2,
- 	.automatic_shrinking = true,
--	.key_len = ETH_ALEN,
-+	.key_len = sizeof_field(struct mesh_path, dst),
- 	.key_offset = offsetof(struct mesh_path, dst),
- 	.head_offset = offsetof(struct mesh_path, rhash),
- 	.hashfn = mesh_table_hash,
-diff --git a/net/rds/bind.c b/net/rds/bind.c
-index 97a29172a8ee..67ff5444d4a1 100644
---- a/net/rds/bind.c
-+++ b/net/rds/bind.c
-@@ -43,7 +43,7 @@ static struct rhashtable bind_hash_table;
- 
- static const struct rhashtable_params ht_parms = {
- 	.nelem_hint = 768,
--	.key_len = RDS_BOUND_KEY_LEN,
-+	.key_len = sizeof_field(struct rds_sock, rs_bound_key),
- 	.key_offset = offsetof(struct rds_sock, rs_bound_key),
- 	.head_offset = offsetof(struct rds_sock, rs_bound_node),
- 	.max_size = 16384,
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index 1008ec8a464c..ec127f9ff56e 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -147,7 +147,7 @@ struct cls_fl_filter {
- 
- static const struct rhashtable_params mask_ht_params = {
- 	.key_offset = offsetof(struct fl_flow_mask, key),
--	.key_len = sizeof(struct fl_flow_key),
-+	.key_len = sizeof_field(struct fl_flow_mask, key),
- 	.head_offset = offsetof(struct fl_flow_mask, ht_node),
- 	.automatic_shrinking = true,
- };
-diff --git a/net/tipc/socket.c b/net/tipc/socket.c
-index 65dcbb54f55d..ab76c8c1580a 100644
---- a/net/tipc/socket.c
-+++ b/net/tipc/socket.c
-@@ -3041,7 +3041,7 @@ static const struct rhashtable_params tsk_rht_params = {
- 	.nelem_hint = 192,
- 	.head_offset = offsetof(struct tipc_sock, node),
- 	.key_offset = offsetof(struct tipc_sock, portid),
--	.key_len = sizeof(u32), /* portid */
-+	.key_len = sizeof_field(struct tipc_sock, portid),
- 	.max_size = 1048576,
- 	.min_size = 256,
- 	.automatic_shrinking = true,
--- 
-2.25.1
+> You are awesome, thank you!
 
