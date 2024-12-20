@@ -1,35 +1,35 @@
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984BE259494;
-	Fri, 20 Dec 2024 20:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2A1223E9D;
+	Fri, 20 Dec 2024 20:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734725721; cv=none; b=XuTvJa7l9SiaukEvRtAPNc4txXsCLamqKAr0coB+SD8v/Hw7neRa/iURk0NV8cBvzj21OXpD2vVKLuc18nSGpTYeWp9tQRbWqtAyHe2I3/KOaWLuoDHgk8c6mADN9+2mfrLqCPxVUFbAkVfGQi9LSTOxfEgDwDMWqaDf9BfMiP8=
+	t=1734725721; cv=none; b=o1hkeKJ3eHH0SdVbzEVE1fKNDb7kRrkDiqE+sQs6Uc7mh9Etv8633RLC49wmXO4i2KPIiQfaQlRqxY2769kZG8WFtvf6+QG3s09pA9uGPA7IVeTuhMvHtXzlyuv5CAWL9gq0Myp81NDaG5YKlHUnKdMNRIIu44WBy7TRAWVfQSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734725721; c=relaxed/simple;
-	bh=/fjvabV5V+EH0xyoFzYx9T3h1I3YNcOS2AATOFweRDA=;
+	bh=dOAuVNzY9+MXdf84V+ZZ17GUb0ZfkFgbvkoG/RrbuD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GyF+sN49FLyNqZf8EXLNBy+IJwtlk7asHscmTT45y70GlcgKREAr4y+p3u4TZlKhDPqFwdxb+v/N47mXK30l78+Zo8lArOjnFNrHs52B2jsLQ5PqtjgwS97j18nL9elkqUm23qpcIyqXxnVVCylD5KmZh4XQjHskELyf9K45yUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VKpNX6Oy; arc=none smtp.client-ip=217.70.183.196
+	 MIME-Version; b=q5p3BBFxG+Fpuvb7AEnkC0Z2WrWcPiHVxW/hUHLE9abRo+8yj2EewSq8qKhOiM2V8V8KcSVvDLIbJIGvnRJrcmqcDoGfcmlXT+NOoboJFW+e6YOJACgXk3r2c8SmgxgplUJ2CTWE5BG4ARidGo/wotTP+yn/gopv12CBFrczvtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fhBGHpbF; arc=none smtp.client-ip=217.70.183.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VKpNX6Oy"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3005BE0002;
-	Fri, 20 Dec 2024 20:15:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fhBGHpbF"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 78F96E0008;
+	Fri, 20 Dec 2024 20:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1734725711;
+	t=1734725716;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0VEJe+1swjZgkADNkawN3wsqrsvKx3yd9+z0b1zAaso=;
-	b=VKpNX6OyJU7dGG5vvrytkpBk2GMh0p1cQblILZsQ9pyj2Otzg029rX/FPyAdiaa88MtCqS
-	DLE3ejbHCgCO7ujEqKqlURuk3JXlckE+ipfcK5w5AEFDvSicwGYpj+gfuu08ucLTrS0BSs
-	WuVUYbuOfmjPyAruxokqErDE68HHGYfKaMXSDzlP2OInFDRweD5JXUbklw9aIyXp9IVcaI
-	nIn5oPNnHnmXP+J4wIz6DcaqmIdETVAaGgQNO23SrYIFX76gY7Ji6PT5xrJOsUUXAuly5r
-	PDPj9+DV8LWpwJdoWl3N49IIWhSV+FV+vOdILDutzWF3LJn9FipCpZsqWaGHEw==
+	bh=MCQOXUQrkl6IGWgunRyyLbwk1HB+GOwt1j3mvyiwwok=;
+	b=fhBGHpbFj1A390nEBl+AWAE4HTbVfQGFbaHtzxSjRU+GX9W1cmi6zxbxs49wjZfgA4aron
+	sjFyjTffiSudTbhFrGyABg9HPDLAN2vmFde6Gi/zWuy0FJsfFWYB/eh95zS0mJv8oovBJd
+	5mG/CahkTysr1K6ErX4ECE3fr0qinI4RgizkUGh2JT84o/9W6MbUjCkLO99ZfYW4ODXYDt
+	0ILOTy3NhLLhlTgutTHIOjLGiiDeAJSrhnyV99IaxV39OGiFj1x9OzM/DnEjN9tVn0o1pb
+	qv7V/kjYYCzY5n+qrz0AGl4VivRrTk7BlfzkLX10m0ochaP6lx+vyepo4ppuAw==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net
 Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
@@ -54,9 +54,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Simon Horman <horms@kernel.org>,
 	mwojtas@chromium.org,
 	Antoine Tenart <atenart@kernel.org>
-Subject: [PATCH net-next RFC 1/5] net: ethtool: common: Make BaseT a 4-lanes mode
-Date: Fri, 20 Dec 2024 21:15:00 +0100
-Message-ID: <20241220201506.2791940-2-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next RFC 5/5] net: phy: dp83822: Add support for phy_port representation
+Date: Fri, 20 Dec 2024 21:15:04 +0100
+Message-ID: <20241220201506.2791940-6-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220201506.2791940-1-maxime.chevallier@bootlin.com>
 References: <20241220201506.2791940-1-maxime.chevallier@bootlin.com>
@@ -69,32 +69,116 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: maxime.chevallier@bootlin.com
 
-When referring to BaseT ethernet, we are most of the time thinking of
-BaseT4 ethernet on Cat5/6/7 cables. This is therefore BaseT4, although
-BaseT4 is also possible for 100BaseTX. This is even more true now that
-we have a special __LINK_MODE_LANES_T1 mode especially for Single Pair
-ethernet.
-
-Mark BaseT as being a 4-lanes mode.
+With the phy_port representation intrduced, we can use .attach_port to
+populate the port information based on either the straps or the
+ti,fiber-mode property. This allows simplifying the probe function and
+allow users to override the strapping configuration.
 
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- net/ethtool/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/dp83822.c | 60 +++++++++++++++++++++++++--------------
+ 1 file changed, 39 insertions(+), 21 deletions(-)
 
-diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-index 02f941f667dd..5a9c09ce57d5 100644
---- a/net/ethtool/common.c
-+++ b/net/ethtool/common.c
-@@ -244,7 +244,7 @@ static_assert(ARRAY_SIZE(link_mode_names) == __ETHTOOL_LINK_MODE_MASK_NBITS);
- #define __LINK_MODE_LANES_LR8_ER8_FR8	8
- #define __LINK_MODE_LANES_LRM		1
- #define __LINK_MODE_LANES_MLD2		2
--#define __LINK_MODE_LANES_T		1
-+#define __LINK_MODE_LANES_T		4
- #define __LINK_MODE_LANES_T1		1
- #define __LINK_MODE_LANES_X		1
- #define __LINK_MODE_LANES_FX		1
+diff --git a/drivers/net/phy/dp83822.c b/drivers/net/phy/dp83822.c
+index 334c17a68edd..96a0ad1a0e83 100644
+--- a/drivers/net/phy/dp83822.c
++++ b/drivers/net/phy/dp83822.c
+@@ -637,17 +637,6 @@ static int dp83822_of_init(struct phy_device *phydev)
+ 	struct device *dev = &phydev->mdio.dev;
+ 	const char *of_val;
+ 
+-	/* Signal detection for the PHY is only enabled if the FX_EN and the
+-	 * SD_EN pins are strapped. Signal detection can only enabled if FX_EN
+-	 * is strapped otherwise signal detection is disabled for the PHY.
+-	 */
+-	if (dp83822->fx_enabled && dp83822->fx_sd_enable)
+-		dp83822->fx_signal_det_low = device_property_present(dev,
+-								     "ti,link-loss-low");
+-	if (!dp83822->fx_enabled)
+-		dp83822->fx_enabled = device_property_present(dev,
+-							      "ti,fiber-mode");
+-
+ 	if (!device_property_read_string(dev, "ti,gpio2-clk-out", &of_val)) {
+ 		if (strcmp(of_val, "mac-if") == 0) {
+ 			dp83822->gpio2_clk_out = DP83822_CLK_SRC_MAC_IF;
+@@ -740,6 +729,44 @@ static int dp83822_read_straps(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++static int dp83822_attach_port(struct phy_device *phydev, struct phy_port *port)
++{
++	struct dp83822_private *dp83822 = phydev->priv;
++	struct device *dev = &phydev->mdio.dev;
++	int ret;
++
++	if (port->mediums) {
++		if (phy_port_is_fiber(port) ||
++		    port->mediums & BIT(ETHTOOL_LINK_MEDIUM_BASEX))
++			dp83822->fx_enabled = true;
++	} else {
++		ret = dp83822_read_straps(phydev);
++		if (ret)
++			return ret;
++
++#ifdef CONFIG_OF_MDIO
++		if (dp83822->fx_enabled && dp83822->fx_sd_enable)
++			dp83822->fx_signal_det_low =
++				device_property_present(dev, "ti,link-loss-low");
++		if (!dp83822->fx_enabled)
++			dp83822->fx_enabled =
++				device_property_present(dev, "ti,fiber-mode");
++#endif
++
++		if (dp83822->fx_enabled) {
++			port->lanes = 1;
++			port->mediums = BIT(ETHTOOL_LINK_MEDIUM_BASEF) |
++					BIT(ETHTOOL_LINK_MEDIUM_BASEX);
++		} else {
++			/* This PHY can only to 100BaseTX max, so on 2 lanes */
++			port->lanes = 2;
++			port->mediums = BIT(ETHTOOL_LINK_MEDIUM_BASET);
++		}
++	}
++
++	return 0;
++}
++
+ static int dp8382x_probe(struct phy_device *phydev)
+ {
+ 	struct dp83822_private *dp83822;
+@@ -756,24 +783,14 @@ static int dp8382x_probe(struct phy_device *phydev)
+ 
+ static int dp83822_probe(struct phy_device *phydev)
+ {
+-	struct dp83822_private *dp83822;
+ 	int ret;
+ 
+ 	ret = dp8382x_probe(phydev);
+ 	if (ret)
+ 		return ret;
+ 
+-	dp83822 = phydev->priv;
+-
+-	ret = dp83822_read_straps(phydev);
+-	if (ret)
+-		return ret;
+-
+ 	dp83822_of_init(phydev);
+ 
+-	if (dp83822->fx_enabled)
+-		phydev->port = PORT_FIBRE;
+-
+ 	return 0;
+ }
+ 
+@@ -831,6 +848,7 @@ static int dp83822_resume(struct phy_device *phydev)
+ 		.handle_interrupt = dp83822_handle_interrupt,	\
+ 		.suspend = dp83822_suspend,			\
+ 		.resume = dp83822_resume,			\
++		.attach_port = dp83822_attach_port		\
+ 	}
+ 
+ #define DP83825_PHY_DRIVER(_id, _name)				\
 -- 
 2.47.1
 
