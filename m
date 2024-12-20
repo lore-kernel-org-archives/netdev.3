@@ -1,200 +1,278 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B19197A8F;
-	Fri, 20 Dec 2024 08:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734684104; cv=none; b=F63RFyYl2vIuE7Z7g+8pfNX8XeLkm76Woe8iiWvhd8/sD7+PUpl3qNwo5zCo146za4qa1QDTDlZYhKSDaSjcrAYJxxdeAnO7+alYHgHaRGjdgQuNHr/bSGdC0En0s2xPEajP/S9vlGWsn/hiwA85/Q4AVYns7Ui624GA02iBL/s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734684104; c=relaxed/simple;
-	bh=Qtbfppz/HaVXE/BeA07M+1Tp9cfNt0aMIRIJLlJbctA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GDDti8VQApJYK+V+Su6pskEXjM4VbxlMFP2+/4ygNiR2nqSwtXdpttuVLPGwM0VBUjQBzNHPeWygJlUW7LWmzLDHfzo8roNGjwxUvyS9AhIl07XY2goZ8UaI87i2Nu/OvvK2MptlGYFHFYKoeEkwAJSNISKaXdDhFEu+VSzKL7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XupupPfG; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7519D19ADA2
+	for <netdev@vger.kernel.org>; Fri, 20 Dec 2024 08:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734684524; cv=fail; b=VEs4B/a+RiRmbb/q/kVuMEbG1q6YpNaXeOfEDuVKdq28M9BTKptIB7hOfUQU1h+aLQRzImocFqJanQX21uSyaLgeEUTEaVHwIeXbh8FzfwQDQQfqzCV5lwrHeJhl2My0QgzwKxGQiDlOjPbBs3AsfrS6AB0NNynbWN3az7XFOCk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734684524; c=relaxed/simple;
+	bh=z1GHb5SQh8EqlHDdtlCNaLwyy4xmRgn8ehL4xMHbBrw=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=s+8xb8qyU1pyJVSZ9ZAm4v+ZPg1pfPKOMmuUpCLzK3Fh95jaU3L8d6+G4/VXKe82WxBfovcPkCdyqyzefrkBFBfyjGj+WhqHTEjvfayOJpg++meQBMZQ4eVnEgRTwhs87MMz7+N7EQfYx8EGr8e8DY9guL/cA8yX1WTj4IYPncs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eVeN8TOZ; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XupupPfG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eVeN8TOZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734684103; x=1766220103;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Qtbfppz/HaVXE/BeA07M+1Tp9cfNt0aMIRIJLlJbctA=;
-  b=XupupPfG6yUGaCTQNCTwpN6PpDxK2izUPselt749nt4ANJPtPND+CfB9
-   0SlYR/dNrcEEMev5dQYTxgcZCxFoInh+muhfYBZO3jhyA/PGuXU0b6gAD
-   qtxQ15PEaes49lwUmayQSw8PmnKMnUvFQ9HlDCn4HMkH8E7dOqPUu14VA
-   s3618Mb/PLXKghZd+49GSHcCeodAco4xdTow3JV8HJvw4vxab3ct/ZiCj
-   90LpCLrOxJMMLjy+mYi8o664I9vu5lvGuzabRftxMInXtSQpXL+17es7I
-   OkAW4LWawIyu2jOzPFvczxJub6IGioJWHwAEq/MXxUEROePI9F35ooG4a
-   Q==;
-X-CSE-ConnectionGUID: 9B3+Nlg+TkyY6Se9KwEn8Q==
-X-CSE-MsgGUID: dpXZ63kASEOzOBaCK+0XxQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11291"; a="35111945"
+  t=1734684522; x=1766220522;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=z1GHb5SQh8EqlHDdtlCNaLwyy4xmRgn8ehL4xMHbBrw=;
+  b=eVeN8TOZCjfhcSgg1H8FOGbogad3tnL77i/29MyQi/TYL5VXdiIyobBv
+   fHJxa0ZeY139GkhqfgS7/lUHX0aFiB7PsFSZshe2tPOyoc65r5C9a5ui8
+   gHVI4IQFmljr01xgJh4GPz1JyWHmPbRqC2e48iQJiyT4aWVpFwDHn4F5+
+   KmNWso6R2Tcuo8ydAOkgyJjCQngVH3y5xQzLLJEW53UxVNPbLsk0tWKSX
+   zVrXu/Wdw30HvKwPITQQV8+UlAGcIX3aB+K0ED9I/YVFTn1l6hKlJvtkv
+   FKKUM+BlxdyNc/3omoRatMByWGwORHUlo+XrAExoEJJFIEDgf6nDfikG5
+   A==;
+X-CSE-ConnectionGUID: 0b/KZ7oITnSOAlihVeXOCg==
+X-CSE-MsgGUID: Ih1iJeBbTsqek06RcuUENA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11291"; a="35258604"
 X-IronPort-AV: E=Sophos;i="6.12,250,1728975600"; 
-   d="scan'208";a="35111945"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 00:41:43 -0800
-X-CSE-ConnectionGUID: mjhaqTYlTY2OuJnSpLreWA==
-X-CSE-MsgGUID: X+a3B7RBRV+GyXIRJpvbCA==
+   d="scan'208";a="35258604"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 00:48:21 -0800
+X-CSE-ConnectionGUID: si77pzjnTNWQVbpEc5Xbsg==
+X-CSE-MsgGUID: hjwXIlUiTZ+ZyjbgoM0pSg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="135778228"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 00:41:39 -0800
-Date: Fri, 20 Dec 2024 09:38:32 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michael Dege <michael.dege@renesas.com>,
-	Christian Mardmoeller <christian.mardmoeller@renesas.com>,
-	Dennis Ostermann <dennis.ostermann@renesas.com>
-Subject: Re: [PATCH net-next 2/2] net: renesas: rswitch: request ts interrupt
- at port open
-Message-ID: <Z2UtCBwofyoHlZi0@mev-dev.igk.intel.com>
-References: <20241220041659.2985492-1-nikita.yoush@cogentembedded.com>
- <20241220041659.2985492-3-nikita.yoush@cogentembedded.com>
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="103533193"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 20 Dec 2024 00:48:22 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Fri, 20 Dec 2024 00:48:21 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Fri, 20 Dec 2024 00:48:21 -0800
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.48) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Fri, 20 Dec 2024 00:48:20 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=j4+XtLpmoUQ7PJpFIKE+kNPfm63RYepokb2nQqS3H2GHtI+aF6n7yAW1U6pI7f9qyjv6zaAEwfGIz32fSLDVb9IzlRTIDTX5vI3ChaVIfT6EhC8tLZwyZH1CxuKuk11nb97RnyJfBlWomomrfyKD5nuuLIrXP6zVGFL20LO8TTb6F20g4y3QynYcUBVI+YOQmV+l4MQvUdLh485iIni5M2lPeysvsDMQMABOztn7tZTLVp8MiHUkMjdJEjqs/M2WEAR7xTYj55BSraaNIjFYJ5fvC/W2/nRiifPRI/WfGF1xwTNTLIxvS0jqpFy1ReXkNaayN6zqvbOFh7pDwzH2XA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dd6p2MJz3Nt3bgTGkyBxaHKp6wdkMAA4gqyS4sVgUn0=;
+ b=hpePCYN48SY6tauN2wF9RLBlkpfED12NPMU7wkOoItJIAZTi23+C4l8WwNgIN7Vzy4slOIDf5whDVZhYTr32HYgpKem1KgP+vIAbJfL/x6COvuN5dKgEb9rgM1DQzRMd6C1ebOPbce1PTDUxZt5An9A1rha62eHBLRF/GBgWjpLYlsBMi1ELD/kIHpi1zAbYwvWtfaYqoYNsd40x03qDA1SZy/4g0Vaj/kkyFEUK00Hn825ZzA8pkkXSmtToCGhOa9KwJmqNDbK3Um7W8X6amiB1n2tCfKRwcp6wtxngsTTlWGX1AjT4adksJyrx99V6EC7KQYptPqaFlDgHCpG/Iw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MN6PR11MB8102.namprd11.prod.outlook.com (2603:10b6:208:46d::9)
+ by IA1PR11MB6516.namprd11.prod.outlook.com (2603:10b6:208:3a0::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.14; Fri, 20 Dec
+ 2024 08:48:18 +0000
+Received: from MN6PR11MB8102.namprd11.prod.outlook.com
+ ([fe80::15b2:ee05:2ae7:cfd6]) by MN6PR11MB8102.namprd11.prod.outlook.com
+ ([fe80::15b2:ee05:2ae7:cfd6%4]) with mapi id 15.20.8272.013; Fri, 20 Dec 2024
+ 08:48:17 +0000
+Message-ID: <ec95c546-114d-402f-b7b9-b3e54b33dbf0@intel.com>
+Date: Fri, 20 Dec 2024 09:48:11 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 4/4] net/mlx5e: Keep netdev when leave switchdev for
+ devlink set legacy only
+To: Tariq Toukan <tariqt@nvidia.com>, Jianbo Liu <jianbol@nvidia.com>
+CC: <netdev@vger.kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, Gal Pressman
+	<gal@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>, Mark Bloch
+	<mbloch@nvidia.com>, "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
+	<edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>
+References: <20241220081505.1286093-1-tariqt@nvidia.com>
+ <20241220081505.1286093-5-tariqt@nvidia.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Content-Language: en-US
+In-Reply-To: <20241220081505.1286093-5-tariqt@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: ZR0P278CA0038.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:1d::7) To CH0PR11MB8086.namprd11.prod.outlook.com
+ (2603:10b6:610:190::8)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241220041659.2985492-3-nikita.yoush@cogentembedded.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN6PR11MB8102:EE_|IA1PR11MB6516:EE_
+X-MS-Office365-Filtering-Correlation-Id: 56024ad6-bf6c-4610-6985-08dd20d30c0f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?bDhhY3dqM21KaldSZHBzeU1kMmFKYmNaMnlFcjRGQXZPcW52c2NwSGpHS2pP?=
+ =?utf-8?B?V1RVc2ZZTzNYM016bFZmSUxYaDIyZlkxdHltN1A3aU9LTlRkZ3Ivd0FZdEJV?=
+ =?utf-8?B?bnBrd3Y1OUozNCt2TGNCRFdTMXF2ZFk4SE5OWXJ4VityL2o1QXlRb25SRlY1?=
+ =?utf-8?B?bUV4ajdMTE1vbXgxY3dPYlhmOGpEcnBzcVFQTXRUbTlXV09YcmhsTktDTG4w?=
+ =?utf-8?B?cmZQSWM1b0JyWGxNdWFmZ2w3NDMyNnEweTczbHMzRWhkeGJtWU1seldPNHNR?=
+ =?utf-8?B?NHZHYUY5WSswN1VxM3ZrM3VOYllVaDJBTHhTVFZHSXJlbnQweUg5aTRmY2ZT?=
+ =?utf-8?B?bW1LcXVUWmRKcWExckNRRmNWS1UzYjRCaUZzRWFjTXRtUk00cjdnbzkwR0h4?=
+ =?utf-8?B?QWg0bXJYMzRpN01LaUQ3VXhFMnRhR1VSMklHTVB1K1FUVzR1WnArRElXWFhr?=
+ =?utf-8?B?UDBiVGtIdUZ5aDh3R1lVbXc0VEJ6VVk2TDU4dkhCWERrdWlFL1JDdkE2N0VV?=
+ =?utf-8?B?L3VhaEcyR2xMNlJRN1pmQ0l3bnNvbE1ub2ovTkhlaStOWERuejlYS0dsQ0lX?=
+ =?utf-8?B?VDRHYitPdk45S2JIRDVrR056cyt1SkovTFJlU2N0ZXhseWRJY0d6T0Z3Z0ov?=
+ =?utf-8?B?amc3WTBubHBiaWllU2x4dzkyWkxqNVNLQXEwQ2QvWmVENWE4SXFzVzBlakND?=
+ =?utf-8?B?NWVaMHM2UkJ6TGdUUnIySndJZVNLVitzWStwV0RIMFVQSVkxYllUbTdnbUJn?=
+ =?utf-8?B?QnBLMEo0SjRYc2xkMVdPWmZlQ3N4TStNRENGeXgwRUZBSEY4TUZBdFJ5WGll?=
+ =?utf-8?B?NDVDcWdlSC9KcFFFdkpYclZQdnJwV3FxNjBycTh5bUNxdFY2SGg2MUJPUTd5?=
+ =?utf-8?B?Q0JxVkM3MUFybjUxMllPR041NU9lT0lkQnVYZDM2WTNzTjR0ZzRIcG5hakxu?=
+ =?utf-8?B?K1AvcGpXQWFLK0FTSHo2cXZJRUdMVlNhaVgyL09Oc3Nqb3Q2a3NvRGNXOVE1?=
+ =?utf-8?B?bkVKL29GTXVaWXlLaGFVOWQ4aTBESHozY0dZYUZCNTlNRlZqUlFaSy91NlBu?=
+ =?utf-8?B?RTlBMTQyTjQ1M05RcFh0RnFvMW0zYzVzeDZPdmhodFhHVlE5T3czR1ZSNEtS?=
+ =?utf-8?B?SnpiWExZT2dDczdKdFphVWRDUi9SY290dU14dXZVRjA3QkFTa09PZFlaek4z?=
+ =?utf-8?B?VHlVYTU3MkNpSTltRVc0NENmOERtZXRadzViVlM0akNrQ2NOQ2MvSlNkMGhC?=
+ =?utf-8?B?ZCt0RVBNMHlBY3pta01BaHRzdGgrWC9HUUVqR3JlTUMxanVDRHVMOG1Ocjhr?=
+ =?utf-8?B?R1NXeVdXV2ppS1hFbWJVT2pZc25CTDBJSnFHNHFkYWlqdDBFems5eDl0cmx6?=
+ =?utf-8?B?L0pDNXdDaWFXY0xHSTl4TXdROFZLVjJlY29jZFJYV0svQzBLK0huUng2Um03?=
+ =?utf-8?B?UU1XRWVNd1YyUG5tdlBHbXowZm5vUjZ0YUJmcG43RHNwOXpCMmRtVmh1NmFj?=
+ =?utf-8?B?V2IzWEM5Z2NBUnVXT1BqMzFrMUhDQ1pTNm9WWlErcUE2WXJhcUpsOHBYVm9K?=
+ =?utf-8?B?ZE8rQlFhNG5tRE9YeVZhZ2UxTDU4M3V3ZUFjSFdxVHBBOGZ5eVNrYnVQMDlV?=
+ =?utf-8?B?eXltaGNCZGFOQk5DMW5UM2hhQjAzR1laMSszUVdaYW5SelUxa0N2Njh1bndT?=
+ =?utf-8?B?TmRxS1FER01FMC9zcXJjamZXR0F6dUJ5THlyR3FqUU9ZN2VIQ0JOUDFJWi9Y?=
+ =?utf-8?B?Q3NVZGowZjJvSFByQU91VTJSRXRjT0tjTGVwVm1uRGM2UVRuNDgzRHFpQUc1?=
+ =?utf-8?B?TW0rWHVaUUo1ektPUWNPc3lQbnY2Q2ZGOVM1b0hpZ2V6T0RKS1B0Yk9uclRY?=
+ =?utf-8?Q?3fixiwfSEX/gJ?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN6PR11MB8102.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TWVWUDk3NUZEeEFrK2pQVW95cTBadDFDWGFRb20zM01CNHJLaVh2M3Vxck5N?=
+ =?utf-8?B?cWxTNmVVeWFCMmhsSFZPKzg2ellMZDlvS0NoMHpZMS8zaGFqSTV3TnpRcmtM?=
+ =?utf-8?B?WU9Mbm1zakFZNENqZFM4bjhSRlRVYU9mN0JXNlRhVklCUXA5aTh6d3cvNml4?=
+ =?utf-8?B?RmlUSWZKVWpSRVQ3ZkZoSUJMQjNqZzBmUHFucnpoYUdPc2diMmZFNFZiK2ZW?=
+ =?utf-8?B?ZVNuN2ROVGpkV2dsOGo5QXhRSGg5RWtoM2RyT2lsQTBRQXVzQzJoV1BZdjcw?=
+ =?utf-8?B?MDl4aXBkSWtpcC9ic21JS2RnRVJCMldEL1JJU3BQZWJJbVQvalI5TG5lUnFX?=
+ =?utf-8?B?U0JPekRmZktIK0xiUTNlN2tSK0JsNGZUZEpIcm4wZHA0bGlYVmRkSm5HT1Jt?=
+ =?utf-8?B?ZTA2RFhHcXRtTHNnUDBxNHJ1UDQ1QlZIU3o0dzJFbW9CaHMwbXU1QUx0QW9M?=
+ =?utf-8?B?MWlBNytnUTIrOWE1aGNLTDF5ZHhoZHc3MTl0V3F6MXhZWHJiVFo5Uk1XdTE4?=
+ =?utf-8?B?d05CNXdTVDNvTlBKc3R1L0Zha045YmZudENxTzh6U1paSzJDeWllUm8wY1Zn?=
+ =?utf-8?B?MGRrckVpNEhJV1A3a1paL3Q2cXRNcjIwSGpUVDNIQU05RGg2N09qZ0hxTnM2?=
+ =?utf-8?B?akFFMERTdjdjdG1sQy82aWs0Z1crOEJ6SVp6LzV1RHFQR1piV1RXRVFCUXVC?=
+ =?utf-8?B?UUlka29rWU9pUzFiOWRBK0xyS0h0Q21JbmU4YTlidFhLM1NIVmEzOGgwM0Q5?=
+ =?utf-8?B?VTJqRm9Ea3NxNmlWck5oWXRIRFhRQUh6dlBHYTRlZDR0TFZ3SGRmM0lFVWZ5?=
+ =?utf-8?B?N05sT2NNSjNvVG5vNmpObmhGSlRrV1A4NVhVRGYzZVM2MGdFSDlsYkZDWVhn?=
+ =?utf-8?B?VjZtcW9sRytXMkJaMEpFeG5XZXBkMzhhZkpSZ3pFdGxwTWpxS0tLcmx3UEJZ?=
+ =?utf-8?B?T1BFYmhwTG5hYVNEY3lqTWVKc01xZUptVzZHMWRRSnF5eFk2b2hkYjkzUG1u?=
+ =?utf-8?B?Y2NlRmtQSE1wSHFod1RYVWlqK29ObFZweDhYL0JueWNOSWtMYUZ3amYvaUVT?=
+ =?utf-8?B?L045YzFFSHFjY2pHT1RyaEpGN0gvOURpZWlhMVU1NzlTNHkwbzVKMXZ3YmJk?=
+ =?utf-8?B?MU9TelJMWmZIZHZtNlE1UGluck5UQkpIbFhhTkJpR3NWekd3VDJVZS9CaVZy?=
+ =?utf-8?B?a05iVktJTWZ6M1JUTlhydVlDSjFyK1NqLzZsMWUrZEo1dXdoczd0QmFESEtt?=
+ =?utf-8?B?R04xVmhBNnhNYlYzc0prRXNIYW9lRjVockI2SzlVMldnUXo2c2Z1STQ5cmI1?=
+ =?utf-8?B?NDRvVGplcFo1YkZ2N3Bza0QwYUFyQ0RuN1BDYU9BTE50cEloV05QcHVTZEov?=
+ =?utf-8?B?N1k0Y0ZwOUlBYWw5cENZSnNQZWVRT2pHcFdjY3pxR05uU2FaaldyVlMrc01t?=
+ =?utf-8?B?OE55dFhEMk9kL3ZuTnNVaVFOWXRoRmZSQnloa1RDaitWOTZKdDFlWDhrOStr?=
+ =?utf-8?B?VWtRbGlqbmpNcVZFd2kzZmJtNGNGSmR1UWlwcDZoUThkRlZyTUFjdm9GYUha?=
+ =?utf-8?B?NGZ1cWlldkZ1cnpjYU5wbWROQ3JXd2JOYmoyYUR2QzdSWW5iSllneU9rMFgz?=
+ =?utf-8?B?M1NTS2VxNEN5cEh5ZGNHRXd1Y2JCRFlTZkpuZkVZaHBjRWlHd2p5M1NCZmdq?=
+ =?utf-8?B?RWh0eXhCczU3dXlxWHU3RDRZdWxPTWtWMkxVNHVnS3VyaG9oblpMbG1scTU1?=
+ =?utf-8?B?NGh1NlRtWkRSdXpKMmtHMVpuSHhUWUIrUUNYV2RLS0J3eFJxa2lGL2QvNUNE?=
+ =?utf-8?B?by9QMURVOERLWW0rT3FJSU5RSTdxMDE5QlVKbElhb2ExbmlNMHg0QnpNWGl5?=
+ =?utf-8?B?dWdGRzM3b0FWU052bHpORS9Uc0RHTVM3Zk9JOHFta2QrTFBoWFBZZGIvVTR3?=
+ =?utf-8?B?MVg0bHpDazUwcUd6dE0vWFpIaCtXTWJhYVVNQzJjV0hjQjQ1MGhadEd6bjRJ?=
+ =?utf-8?B?MVZaRVhSRk1pZ095WXNKS1N0VUhTbWhrN21NYkRJWnlPYkF5Z2hNcjNhRWpl?=
+ =?utf-8?B?djFjRVZtSDlmNDBrUFByOGVOS0IvTkxCNWo3NVJMTjJTTVg4R2tWdGpDOC9I?=
+ =?utf-8?B?NGlDbFFxVnc1SFp2NjRoaFl2Vk0xV1N2OXY2NjVCekxaS1VBYWJ1cUZnc3lo?=
+ =?utf-8?Q?ah2Ke3Qse87iuurEgb45SSo=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56024ad6-bf6c-4610-6985-08dd20d30c0f
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB8086.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2024 08:48:17.5095
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZQhOGcKki8IXqDc/Iol8Dba0wVIGEWALTtR1yxgcQmKS224owTsE7qYAIMPQ8C+XzyWgerd596nLHj6yJ5amyFVWeZdM24whEyjpdPl88oU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6516
+X-OriginatorOrg: intel.com
 
-On Fri, Dec 20, 2024 at 09:16:59AM +0500, Nikita Yushchenko wrote:
-> Data interrupts are now requested at port open and freed at port close.
+On 12/20/24 09:15, Tariq Toukan wrote:
+> From: Jianbo Liu <jianbol@nvidia.com>
 > 
-> For symmetry, do the same for ts interrupt.
+> In the cited commit, when changing from switchdev to legacy mode,
+> uplink representor's netdev is kept, and its profile is replaced with
+> nic profile, so netdev is detached from old profile, then attach to
+> new profile.
 > 
-> Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+> During profile change, the hardware resources allocated by the old
+> profile will be cleaned up. However, the cleanup is relying on the
+> related kernel modules. And they may need to flush themselves first,
+> which is triggered by netdev events, for example, NETDEV_UNREGISTER.
+> However, netdev is kept, or netdev_register is called after the
+> cleanup, which may cause troubles because the resources are still
+> referred by kernel modules.
+> 
+> The same process applies to all the caes when uplink is leaving
+
+case
+
+> switchdev mode, including devlink eswitch mode set legacy, driver
+> unload and devlink reload. For the first one, it can be blocked and
+> returns failure to users, whenever possible. But it's hard for the
+> others. Besides, the attachment to nic profile is unnecessary as the
+> netdev will be unregistered anyway for such cases.
+> 
+> So in this patch, the original behavior is kept only for devlink
+> eswitch set mode legacy. For the others, moves netdev unregistration
+> before the profile change.
+> 
+> Fixes: 7a9fb35e8c3a ("net/mlx5e: Do not reload ethernet ports when changing eswitch mode")
+> Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 > ---
->  drivers/net/ethernet/renesas/rswitch.c | 35 +++++++++++++-------------
->  drivers/net/ethernet/renesas/rswitch.h |  2 +-
->  2 files changed, 18 insertions(+), 19 deletions(-)
+>   .../net/ethernet/mellanox/mlx5/core/en_main.c | 19 +++++++++++++++++--
+>   .../net/ethernet/mellanox/mlx5/core/en_rep.c  | 15 +++++++++++++++
+>   .../mellanox/mlx5/core/eswitch_offloads.c     |  2 ++
+>   include/linux/mlx5/driver.h                   |  1 +
+>   4 files changed, 35 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
-> index eb9dea8b16f3..cc8f2a4e3d70 100644
-> --- a/drivers/net/ethernet/renesas/rswitch.c
-> +++ b/drivers/net/ethernet/renesas/rswitch.c
-> @@ -989,18 +989,6 @@ static irqreturn_t rswitch_gwca_ts_irq(int irq, void *dev_id)
->  	return IRQ_NONE;
->  }
->  
-> -static int rswitch_gwca_ts_request_irqs(struct rswitch_private *priv)
-> -{
-> -	int irq;
-> -
-> -	irq = platform_get_irq_byname(priv->pdev, GWCA_TS_IRQ_RESOURCE_NAME);
-> -	if (irq < 0)
-> -		return irq;
-> -
-> -	return devm_request_irq(&priv->pdev->dev, irq, rswitch_gwca_ts_irq,
-> -				0, GWCA_TS_IRQ_NAME, priv);
-> -}
-> -
->  /* Ethernet TSN Agent block (ETHA) and Ethernet MAC IP block (RMAC) */
->  static int rswitch_etha_change_mode(struct rswitch_etha *etha,
->  				    enum rswitch_etha_mode mode)
-> @@ -1510,8 +1498,14 @@ static int rswitch_open(struct net_device *ndev)
->  	unsigned long flags;
->  	int ret;
->  
-> -	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
-> +	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS)) {
-> +		ret = request_irq(rdev->priv->gwca.ts_irq, rswitch_gwca_ts_irq,
-> +				  0, "rswitch_ts", rdev->priv);
-> +		if (ret < 0)
-> +			return ret;
+
+sorry for nitpick-only review
+I didn't spotted anything bad in the logic through the series OTOH
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> index dd16d73000c3..0ec17c276bdd 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> @@ -6542,8 +6542,23 @@ static void _mlx5e_remove(struct auxiliary_device *adev)
+>   
+>   	mlx5_core_uplink_netdev_set(mdev, NULL);
+>   	mlx5e_dcbnl_delete_app(priv);
+> -	unregister_netdev(priv->netdev);
+> -	_mlx5e_suspend(adev, false);
+> +	/* When unload driver, the netdev is in registered state
+
+/*
+  * Netdev dropped the special comment allowance rule,
+  * now you have to put one line almost blank at the front.
+  */
+
+> +	 * if it's from legacy mode. If from switchdev mode, it
+> +	 * is already unregistered before changing to NIC profile.
+> +	 */
+> +	if (priv->netdev->reg_state == NETREG_REGISTERED) {
+> +		unregister_netdev(priv->netdev);
+> +		_mlx5e_suspend(adev, false);
+> +	} else {
+> +		struct mlx5_core_dev *pos;
+> +		int i;
 > +
->  		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDIE);
-> +	}
->  
->  	napi_enable(&rdev->napi);
->  
-> @@ -1535,8 +1529,10 @@ static int rswitch_open(struct net_device *ndev)
->  err_request_irq:
->  	napi_disable(&rdev->napi);
->  
-> -	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
-> +	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS)) {
->  		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDID);
-> +		free_irq(rdev->priv->gwca.ts_irq, rdev->priv);
-> +	}
->  
->  	return ret;
->  };
-> @@ -1562,8 +1558,10 @@ static int rswitch_stop(struct net_device *ndev)
->  
->  	napi_disable(&rdev->napi);
->  
-> -	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
-> +	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS)) {
->  		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDID);
-> +		free_irq(rdev->priv->gwca.ts_irq, rdev->priv);
-> +	}
->  
->  	for (tag = find_first_bit(rdev->ts_skb_used, TS_TAGS_PER_PORT);
->  	     tag < TS_TAGS_PER_PORT;
-> @@ -2001,9 +1999,10 @@ static int rswitch_init(struct rswitch_private *priv)
->  	if (err < 0)
->  		goto err_ptp_register;
->  
-> -	err = rswitch_gwca_ts_request_irqs(priv);
-> +	err = platform_get_irq_byname(priv->pdev, GWCA_TS_IRQ_RESOURCE_NAME);
->  	if (err < 0)
-> -		goto err_gwca_ts_request_irq;
-> +		goto err_gwca_ts_irq;
-> +	priv->gwca.ts_irq = err;
->  
->  	err = rswitch_gwca_hw_init(priv);
->  	if (err < 0)
-> @@ -2035,7 +2034,7 @@ static int rswitch_init(struct rswitch_private *priv)
->  	rswitch_gwca_hw_deinit(priv);
->  
->  err_gwca_hw_init:
-> -err_gwca_ts_request_irq:
-> +err_gwca_ts_irq:
->  	rcar_gen4_ptp_unregister(priv->ptp_priv);
->  
->  err_ptp_register:
-> diff --git a/drivers/net/ethernet/renesas/rswitch.h b/drivers/net/ethernet/renesas/rswitch.h
-> index a1e62a6b3844..54b9f059707a 100644
-> --- a/drivers/net/ethernet/renesas/rswitch.h
-> +++ b/drivers/net/ethernet/renesas/rswitch.h
-> @@ -58,7 +58,6 @@
->  #define GWRO			RSWITCH_GWCA0_OFFSET
->  
->  #define GWCA_TS_IRQ_RESOURCE_NAME	"gwca0_rxts0"
-> -#define GWCA_TS_IRQ_NAME		"rswitch: gwca0_rxts0"
->  #define GWCA_TS_IRQ_BIT			BIT(0)
->  
->  #define FWRO	0
-> @@ -978,6 +977,7 @@ struct rswitch_gwca {
->  	struct rswitch_gwca_queue *queues;
->  	int num_queues;
->  	struct rswitch_gwca_queue ts_queue;
-> +	int ts_irq;
->  	DECLARE_BITMAP(used, RSWITCH_MAX_NUM_QUEUES);
->  };
+> +		if (test_bit(MLX5E_STATE_DESTROYING, &priv->state))
 
-Wasn't previous implementation more obvious? This ts irq you have one
-per device, no per port, so it better fit to one time initialization
-instead of checking if it is first and last port.
+you have more than one statement/expression inside the if,
+so you must wrap with braces
 
-Anyway, it is your descision, patch looks correct:
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-
->  
-> -- 
-> 2.39.5
+> +			mlx5_sd_for_each_dev(i, mdev, pos)
+> +				mlx5e_destroy_mdev_resources(pos);
+> +		else
+> +			_mlx5e_suspend(adev, true);
+> +	}
+>   	/* Avoid cleanup if profile rollback failed. */
+>   	if (priv->profile)
+>   		priv->profile->cleanup(priv);
