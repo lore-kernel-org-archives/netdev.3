@@ -1,148 +1,253 @@
-Received: from va-2-44.ptr.blmpb.com (va-2-44.ptr.blmpb.com [209.127.231.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m127157.xmail.ntesmail.com (mail-m127157.xmail.ntesmail.com [115.236.127.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632F719C56D
-	for <netdev@vger.kernel.org>; Fri, 20 Dec 2024 10:43:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB0919C56D;
+	Fri, 20 Dec 2024 10:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.236.127.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734691421; cv=none; b=rvABUB2cmwvie6SixJNwccUJFS5evRHKFfSKFEftO+juPpBMC40dYOpgOiLY9mXsnos/oZtg2dpeqDAqx5quoIrYLJqF685Ecn1jNneB7PsBERy/70kpYc/2c/DygKkK5787DQQ3hp0Yri+IUZdhixh68Zm1zBt9F26tooNgIa8=
+	t=1734691437; cv=none; b=PZRUu5qXmLzX5l79DboK37HahVqH1k8xAABbgeA81aJqpeAXMRmh22JFuWdGhfYX+2lg7nGYRt3uoLuCBFFxFX/q2q0DL8n3xYsMXr9BKq5koCQQDEROKZPsiK6cLcaH3gl/Qg3vYSRBd6rx0eQrytIqlQ+OTn4TBj9/qzSRX0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734691421; c=relaxed/simple;
-	bh=xXWeLDGAumpUH2jxa7j63JztULL2647s/oX4hoMmHl4=;
-	h=Cc:From:Date:Mime-Version:References:Subject:To:Message-Id:
-	 In-Reply-To:Content-Type; b=hsAwa9U13giKbCRcr8cpHD2X9kb/8v6cKUQT5GMZegTUn0F295qtbblkOkYNciPOQAD8+M5nMct/87oPbrYeMwKKa656eJCgos4tQJiQ58W1opLsb+536ySY0+/FUlMndA5ecUT3uttKPYi6yqB3Ke878dgTazwoZr4FxM1b7t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=kDvZh7AG; arc=none smtp.client-ip=209.127.231.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
+	s=arc-20240116; t=1734691437; c=relaxed/simple;
+	bh=FLotb8PO7pUbOoGoa3ZcA+IJLn2SEtUGvEV7uvVVTkk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kbln7y/CCeYJY3S9PlwwCdobmOpsBOraPpxJpouwpuGplkxgSESnNkpTn090B/kdHBqxXc2u8p+GLR8k9jPCPAcgbcXdmVGHGw60XNJkwku5wI6zdCunKuGeLKIwIWibwqrXS2c6O1FkrGFO6PM8eUS9WzTk5N0PGR9e7uX1zj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=LXQtSCOj; arc=none smtp.client-ip=115.236.127.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="kDvZh7AG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1734691401; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=YqKnZ1e7eWkgWhS3+nSBpZ5hk2XWH/ugUrG5iO3Efj0=;
- b=kDvZh7AGU7eh50ix/WF9gMZXSKNVLLb/i6l4rUcipgSNTX+0bdlrN/EWIIikus2j2vGCma
- CIUNd8Aa5jtylVfedolcgfr8Q87GYf4/liZj2jS2kIfRY/4eDOJCs+KXq2fNBqc8+Z6uy+
- cBluRML8mXIpY1dIsUOklUvnF0cPjTCCbUS3Nu2vcsaPKVdN/ZENXLhwxh6OiV1d2l1yoy
- RHfQodjvdUE6fbM7CMuBKChtPtTE/6cyIqD8IqIOY/uJFpWxbXJyPpRAI+ESpicXwt0c+f
- K1RL9qAN4VO6RgMXv7OnreeoyD1nAUlaLL8rInBU5RikGtLk1ZokezkFH9Dfmg==
-Cc: <netdev@vger.kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
-	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
-	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
-	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>
-From: "tianx" <tianx@yunsilicon.com>
-Date: Fri, 20 Dec 2024 18:43:17 +0800
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="LXQtSCOj"
+Received: from localhost.localdomain (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 656820ed;
+	Fri, 20 Dec 2024 18:38:26 +0800 (GMT+08:00)
+From: Kever Yang <kever.yang@rock-chips.com>
+To: heiko@sntech.de
+Cc: linux-rockchip@lists.infradead.org,
+	Kever Yang <kever.yang@rock-chips.com>,
+	Simon Xue <xxm@rock-chips.com>,
+	Lee Jones <lee@kernel.org>,
+	dri-devel@lists.freedesktop.org,
+	Zhang Rui <rui.zhang@intel.com>,
+	Elaine Zhang <zhangqing@rock-chips.com>,
+	linux-clk@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Andy Yan <andyshrk@163.com>,
+	Michael Riesch <michael.riesch@wolfvision.net>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	linux-pm@vger.kernel.org,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Jamie Iles <jamie@jamieiles.com>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Frank Wang <frank.wang@rock-chips.com>,
+	linux-mmc@vger.kernel.org,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-i2c@vger.kernel.org,
+	Simona Vetter <simona@ffwll.ch>,
+	Finley Xiao <finley.xiao@rock-chips.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-watchdog@vger.kernel.org,
+	David Wu <david.wu@rock-chips.com>,
+	Shresth Prasad <shresthprasad7@gmail.com>,
+	linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	linux-iio@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	David Airlie <airlied@gmail.com>,
+	linux-phy@lists.infradead.org,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Maxime Ripard <mripard@kernel.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	linux-pwm@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Mark Brown <broonie@kernel.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-serial@vger.kernel.org,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	devicetree@vger.kernel.org,
+	Diederik de Haas <didi.debian@cknow.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Tim Lunn <tim@feathertop.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 00/38] rockchip: Add rk3562 support
+Date: Fri, 20 Dec 2024 18:37:46 +0800
+Message-Id: <20241220103825.3509421-1-kever.yang@rock-chips.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Lms-Return-Path: <lba+267654a48+b05423+vger.kernel.org+tianx@yunsilicon.com>
-References: <20241218105023.2237645-1-tianx@yunsilicon.com> <20241218105041.2237645-10-tianx@yunsilicon.com> <51fa5341-4e7b-4c76-8fd5-9ca1f4b57de7@lunn.ch>
-Subject: Re: [PATCH v1 09/16] net-next/yunsilicon: Init net device
-To: "Andrew Lunn" <andrew@lunn.ch>
-Received: from [127.0.0.1] ([116.231.104.97]) by smtp.feishu.cn with ESMTPS; Fri, 20 Dec 2024 18:43:19 +0800
-Content-Transfer-Encoding: 7bit
-Message-Id: <d4ae26f7-e7c8-4332-ae2f-0e51ecdbf05f@yunsilicon.com>
-In-Reply-To: <51fa5341-4e7b-4c76-8fd5-9ca1f4b57de7@lunn.ch>
-X-Original-From: tianx <tianx@yunsilicon.com>
-User-Agent: Mozilla Thunderbird
-Content-Type: text/plain; charset=UTF-8
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQh9LT1ZJGktPSElKGk8fQxhWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEtNQk
+	tVSktLVUpCWQY+
+X-HM-Tid: 0a93e3a5af4003afkunm656820ed
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Nwg6Kxw6GTIRKggeThEUMR4h
+	P0gaCyxVSlVKTEhPTUJKSkpKTElJVTMWGhIXVRAeDR4JVQIaFRw7CRQYEFYYExILCFUYFBZFWVdZ
+	EgtZQVlOQ1VJSVVMVUpKT1lXWQgBWUFOTUpJNwY+
+DKIM-Signature:a=rsa-sha256;
+	b=LXQtSCOj5PQ5rmMQS8JUHg+aVmzux+tnR5NnlpILS50US/QWv5VBCTHDsqEiVs5WhSa9UqWxWgKBEnSg0vucKhE8FyZdsUwbc5ZsdiUz76LZqHiim02ORqBuKb413jRYfReSUFy7jfbzAaPEA5wGkuukfoQqA957T+ZIIQC0lqE=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=RUJ3VBWN4hJZF+kjNTXL1lSb1odrwauQvfHGVuJDe90=;
+	h=date:mime-version:subject:message-id:from;
 
-On 2024/12/19 2:28, Andrew Lunn wrote:
->> +static int xsc_attach_netdev(struct xsc_adapter *adapter)
->> +{
->> +	int err = -1;
->> +
->> +	err = xsc_eth_nic_enable(adapter);
->> +	if (err)
->> +		return err;
->> +
->> +	xsc_core_info(adapter->xdev, "%s ok\n", __func__);
-> ...
->
->> +static int xsc_eth_attach(struct xsc_core_device *xdev, struct xsc_adapter *adapter)
->> +{
->> +	int err = -1;
->> +
->> +	if (netif_device_present(adapter->netdev))
->> +		return 0;
->> +
->> +	err = xsc_attach_netdev(adapter);
->> +	if (err)
->> +		return err;
->> +
->> +	xsc_core_info(adapter->xdev, "%s ok\n", __func__);
-> Don't spam the log like this. _dbg() or nothing.
-OK, will fix in v2.
->> +	err = xsc_eth_nic_init(adapter, rep_priv, num_chl, num_tc);
->> +	if (err) {
->> +		xsc_core_warn(xdev, "xsc_nic_init failed, num_ch=%d, num_tc=%d, err=%d\n",
->> +			      num_chl, num_tc, err);
->> +		goto err_free_netdev;
->> +	}
->> +
->> +	err = xsc_eth_attach(xdev, adapter);
->> +	if (err) {
->> +		xsc_core_warn(xdev, "xsc_eth_attach failed, err=%d\n", err);
->> +		goto err_cleanup_netdev;
->> +	}
->> +
->>   	err = register_netdev(netdev);
->>   	if (err) {
->>   		xsc_core_warn(xdev, "register_netdev failed, err=%d\n", err);
->> -		goto err_free_netdev;
->> +		goto err_detach;
->>   	}
->>   
->>   	xdev->netdev = (void *)netdev;
-> Before register_netdev() returns, the device is live and sending
-> packets, especially if you are using NFS root. What will happen if
-> xdev->netdev is NULL with those first few packets?
 
-It's OK because xdev->netdev is never used before register_netdev() returns.
+This patch set adds rk3562 SoC and its evb support.
 
->
-> And why the void * cast?
+The patch number is a little bit too big, some of them may need to split
+out for different maintainers, please let me know which patch need to
+split out.
 
-unnecessary cast, will fix that
+Test with GMAC, USB, PCIe, EMMC, SD Card.
 
->> +/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB */
->> +/*
->> + * Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
->> + * Copyright (c) 2015-2016, Mellanox Technologies. All rights reserved.
->> + *
->> + * This software is available to you under a choice of one of two
->> + * licenses.  You may choose to be licensed under the terms of the GNU
->> + * General Public License (GPL) Version 2, available from the file
->> + * COPYING in the main directory of this source tree, or the
->> + * OpenIB.org BSD license below:
->> + *
->> + *     Redistribution and use in source and binary forms, with or
->> + *     without modification, are permitted provided that the following
->> + *     conditions are met:
->> + *
->> + *      - Redistributions of source code must retain the above
->> + *        copyright notice, this list of conditions and the following
->> + *        disclaimer.
->> + *
->> + *      - Redistributions in binary form must reproduce the above
->> + *        copyright notice, this list of conditions and the following
->> + *        disclaimer in the documentation and/or other materials
->> + *        provided with the distribution.
->> + *
->> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
->> + * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
->> + * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
->> + * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
->> + * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
->> + * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
->> + * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
->> + * SOFTWARE.
->> + */
-> The /* SPDX-License-Identifier: line replaces all such license
-> boilerplate. Please delete this.
->
-> 	Andrew
-will delete that in v2
+This patch set is base on the patche set for rk3576 evb1 support.
+
+
+David Wu (2):
+  ethernet: stmmac: dwmac-rk: Add gmac support for rk3562
+  ethernet: stmmac: dwmac-rk: Make the phy clock could be used for
+    external phy
+
+Finley Xiao (7):
+  clk: rockchip: add dt-binding header for rk3562
+  clk: rockchip: Add clock controller for the RK3562
+  dt-bindings: add power-domain header for RK3562 SoC
+  nvmem: rockchip-otp: Add support for rk3568-otp
+  nvmem: rockchip-otp: Add support for rk3562
+  arm64: dts: rockchip: add core dtsi for RK3562 Soc
+  arm64: dts: rockchip: Add RK3562 evb2 devicetree
+
+Frank Wang (1):
+  phy: rockchip: inno-usb2: add usb2 phy support for rk3562
+
+Jon Lin (1):
+  phy: rockchip-naneng-combo: Support rk3562
+
+Kever Yang (24):
+  dt-bindings: clock: add rk3562 cru bindings
+  dt-bindings: pinctrl: Add rk3562 pinctrl support
+  soc: rockchip: power-domain: add power domain support for rk3562
+  dt-bindings: rockchip-thermal: Support the RK3562 SoC compatible
+  dt-bindings: iio: adc: Add rockchip,rk3562-saradc string
+  dt-bindings: net: Add support for rk3562 dwmac
+  dt-bindings: nvmem: rockchip,otp: Add support for rk3562 and rk3568
+  dt-bindings: phy: rockchip: Add rk3562 naneng-combophy compatible
+  dt-bindings: phy: rockchip,inno-usb2phy: add rk3562
+  dt-bindings: PCI: dwc: rockchip: Add rk3562 support
+  dt-bindings: mmc: Add support for rk3562 eMMC
+  dt-bindings: mmc: rockchip-dw-mshc: Add rk3562 compatible string
+  dt-bindings: power: rockchip: Add bindings for rk3562
+  dt-bindings: i2c: i2c-rk3x: Add rk3562 compatible
+  dt-bindings: gpu: Add rockchip,rk3562-mali compatible
+  dt-bindings: watchdog: Add rk3562 compatible
+  dt-bindings: spi: Add rockchip,rk3562-spi compatible
+  dt-bindings: serial: snps-dw-apb-uart: Add support for rk3562
+  dt-bindings: usb: dwc3: add compatible for rk3562
+  dt-bindings: pwm: rockchip: Add rockchip,rk3562-pwm
+  dt-bindings: rockchip: pmu: Add rk3562 compatible
+  dt-bindings: soc: rockchip: Add rk3562 syscon compatibles
+  dt-bindings: arm: rockchip: Add rk3562 evb2 board
+  dt-bindings: mfd: syscon: Add rk3562 QoS register compatible
+
+Shaohan Yao (1):
+  thermal: rockchip: Support the rk3562 SoC in thermal driver
+
+Simon Xue (1):
+  iio: adc: rockchip_saradc: add rk3562
+
+Steven Liu (1):
+  pinctrl: rockchip: add rk3562 support
+
+ .../devicetree/bindings/arm/rockchip.yaml     |    5 +
+ .../devicetree/bindings/arm/rockchip/pmu.yaml |    2 +
+ .../bindings/clock/rockchip,rk3562-cru.yaml   |   62 +
+ .../bindings/gpu/arm,mali-bifrost.yaml        |    3 +-
+ .../devicetree/bindings/i2c/i2c-rk3x.yaml     |    1 +
+ .../bindings/iio/adc/rockchip-saradc.yaml     |    2 +
+ .../devicetree/bindings/mfd/syscon.yaml       |    2 +
+ .../bindings/mmc/rockchip-dw-mshc.yaml        |    1 +
+ .../bindings/mmc/snps,dwcmshc-sdhci.yaml      |    9 +-
+ .../bindings/net/rockchip-dwmac.yaml          |    5 +-
+ .../bindings/nvmem/rockchip,otp.yaml          |   49 +-
+ .../bindings/pci/rockchip-dw-pcie.yaml        |    1 +
+ .../phy/phy-rockchip-naneng-combphy.yaml      |    1 +
+ .../bindings/phy/rockchip,inno-usb2phy.yaml   |    3 +-
+ .../bindings/pinctrl/rockchip,pinctrl.yaml    |    1 +
+ .../power/rockchip,power-controller.yaml      |    1 +
+ .../devicetree/bindings/pwm/pwm-rockchip.yaml |    1 +
+ .../bindings/serial/snps-dw-apb-uart.yaml     |    1 +
+ .../devicetree/bindings/soc/rockchip/grf.yaml |    7 +
+ .../devicetree/bindings/spi/spi-rockchip.yaml |    1 +
+ .../bindings/thermal/rockchip-thermal.yaml    |    1 +
+ .../bindings/usb/rockchip,dwc3.yaml           |    3 +
+ .../bindings/watchdog/snps,dw-wdt.yaml        |    1 +
+ arch/arm64/boot/dts/rockchip/Makefile         |    1 +
+ .../boot/dts/rockchip/rk3562-evb2-v10.dts     |  520 ++++
+ .../boot/dts/rockchip/rk3562-pinctrl.dtsi     | 2352 +++++++++++++++++
+ arch/arm64/boot/dts/rockchip/rk3562.dtsi      | 1432 ++++++++++
+ drivers/clk/rockchip/Kconfig                  |    7 +
+ drivers/clk/rockchip/Makefile                 |    1 +
+ drivers/clk/rockchip/clk-rk3562.c             | 1111 ++++++++
+ drivers/clk/rockchip/clk.h                    |   39 +
+ drivers/iio/adc/rockchip_saradc.c             |   24 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-rk.c    |  213 +-
+ drivers/nvmem/rockchip-otp.c                  |   97 +
+ drivers/phy/rockchip/phy-rockchip-inno-usb2.c |   49 +
+ .../rockchip/phy-rockchip-naneng-combphy.c    |  152 ++
+ drivers/pinctrl/pinctrl-rockchip.c            |  199 +-
+ drivers/pinctrl/pinctrl-rockchip.h            |    3 +-
+ drivers/pmdomain/rockchip/pm-domains.c        |   48 +-
+ drivers/thermal/rockchip_thermal.c            |  112 +-
+ include/dt-bindings/clock/rk3562-cru.h        |  733 +++++
+ include/dt-bindings/power/rk3562-power.h      |   35 +
+ 42 files changed, 7269 insertions(+), 22 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/rockchip,rk3562-cru.yaml
+ create mode 100644 arch/arm64/boot/dts/rockchip/rk3562-evb2-v10.dts
+ create mode 100644 arch/arm64/boot/dts/rockchip/rk3562-pinctrl.dtsi
+ create mode 100644 arch/arm64/boot/dts/rockchip/rk3562.dtsi
+ create mode 100644 drivers/clk/rockchip/clk-rk3562.c
+ create mode 100644 include/dt-bindings/clock/rk3562-cru.h
+ create mode 100644 include/dt-bindings/power/rk3562-power.h
+
+-- 
+2.25.1
+
