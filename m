@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F1F86321
-	for <netdev@vger.kernel.org>; Fri, 20 Dec 2024 03:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707A17083F;
+	Fri, 20 Dec 2024 03:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734665418; cv=none; b=WWtxVmYY6Flrw5CyNhXDYacBnoU/MOT7PDYhCsj6tfyRw3eII/DlLsFe96jeo3zEZv+toRqrw8LSrw5C6lNPgTPCX9cJgu2y2NlVzQ42kVz3BoyKBPNCtowCUWit+oLY/G0MCYY6Oul9NNJnVUIUv60d8BfZZOUixWKXwBX7SU8=
+	t=1734665419; cv=none; b=sVN2JI65TVJDIVuEXbRSY7o/RcuT5FdNUDaiBmOc4vjRl2bpOnTCu4749/9NwK+VgHlWJJAnotGljAFdkyI+jteI07KaqNN5nGvH5RyS+WVlZTWlnvEiey4ekfRAbjoTsCo5Rr2yDqkFLUihnT03/u9v47JhHdSUiZ5Za1qtoNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734665418; c=relaxed/simple;
-	bh=ZWU24SHSNXazHGlRU8mJjvCQv48+T5+nH337VsuItSc=;
+	s=arc-20240116; t=1734665419; c=relaxed/simple;
+	bh=+QK6tAfsTZuJDAcWE/msZILKZKalo9ejnS+DlgtT+/U=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=UZJOMWalJ+5gRmH8Cw5MT4CXi4XPgo8q9ab8V5Mk5v9F7DhnWEvYImadfTdacumPTSK0DbdGG2N+VHSQ0oAHToTUaUuFDLleshHsLqIfrdCPuCMtKvYQowidoIxCuM/X3F6ZacOTer9BqVrRQOw+2wnoQyfFbiFHyBdDxwk5cQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mWbMTgPA; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=anwWTLg/bRHrn3rJ2WU+XZrjGaMzZRBZa6WuOs53VyQvSFrfq31WrhJjECKmOf/CCfSmFlCr7qhu/eyqN5yE6pozpZGj1ufU8hDQkZWqdT55RLE2ajtkvM08R5RkiIFjaBMhDqY+Kdl5pntueXDcsj8xjzikUfwW7JFCjC3wAI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fQwj7UC1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mWbMTgPA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34FB4C4CED0;
-	Fri, 20 Dec 2024 03:30:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fQwj7UC1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45ED0C4CED0;
+	Fri, 20 Dec 2024 03:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734665416;
-	bh=ZWU24SHSNXazHGlRU8mJjvCQv48+T5+nH337VsuItSc=;
+	s=k20201202; t=1734665419;
+	bh=+QK6tAfsTZuJDAcWE/msZILKZKalo9ejnS+DlgtT+/U=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=mWbMTgPAg2+Wvh97RAn0SnSa5e3a+LrwFzTX1EEwDhrIAfggzAT55wdfVSMjWJ8I2
-	 qSINLnhMy9iTHfp5RpqLQ3Fp137DrXLgC7VE/6jZvubp4/hzFW9emPRkBSr/yk2dbK
-	 xW17cOTdeFPyreiJKRpwXkydogIRX0y5e5e+NvA2+T2u0jTJ+XOP2AtHUhDOsLRYX0
-	 ejGJ7EpLEwaeBzzva+g1G9NgUN6gLjF5Ts2WxaxSFtd4ef511Ike2iYUjmjrM4lJRD
-	 cLg8ejXrtMx5U2gcEx7Pjs9czEVHXMB/MQ3qqep3KwLkjXKIUK6D9awB93IHlalBDg
-	 mUZWSBxCJnDNg==
+	b=fQwj7UC1YgPKhZfkGZL0bxQwz2KZqVvM/pKkTOXVly9EGPFPqLYMjYXZwd9U8JFcd
+	 kdvQGpSAJNyCcCLOGrO6sWekBfpcyGvXabZbLWsqLsZruFB4Qkpnnl432trAIJ7vNp
+	 hEHEDta6QefEW5MsLTJvxaOG/Q6HIKqh639tR1zUI2KM4/qphw87jeR0BZurh/FVFN
+	 LMPtWKEsXgOkV8ml6Ef/dTX5SGDfjWaZJwKfyQSCCItoTCgooNdoaqSFmyACcsD+Og
+	 teNWKmxaPMwS7pRRV+LJ61jeFVPpgEke3jjxoJCev8VQ14+uX4oTtuUTM6dokkBNRA
+	 AMsEMaVNwpXog==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2B2F53806656;
-	Fri, 20 Dec 2024 03:30:35 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D3E3806656;
+	Fri, 20 Dec 2024 03:30:38 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,36 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 1/1] selftests: net: remove redundant ncdevmem print
+Subject: Re: [PATCH net-next 0/3] net: add and use phy_disable_eee
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <173466543399.2462446.11929387199358280183.git-patchwork-notify@kernel.org>
-Date: Fri, 20 Dec 2024 03:30:33 +0000
-References: <20241218140018.15607-1-jhs@mojatatu.com>
-In-Reply-To: <20241218140018.15607-1-jhs@mojatatu.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, almasrymina@google.com,
- sdf@fomichev.me
+ <173466543676.2462446.11795736705448322037.git-patchwork-notify@kernel.org>
+Date: Fri, 20 Dec 2024 03:30:36 +0000
+References: <5139374e-7151-4d0d-8ba9-9ec3d9b52f67@gmail.com>
+In-Reply-To: <5139374e-7151-4d0d-8ba9-9ec3d9b52f67@gmail.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: tony@atomide.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, linux@armlinux.org.uk, andrew@lunn.ch,
+ andrew+netdev@lunn.ch, pabeni@redhat.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+ linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+ netdev@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 18 Dec 2024 09:00:18 -0500 you wrote:
-> Remove extrenous fprintf
+On Mon, 16 Dec 2024 22:29:58 +0100 you wrote:
+> If a MAC driver doesn't support EEE, then the PHY shouldn't advertise it.
+> Add phy_disable_eee() for this purpose, and use it in cpsw driver.
 > 
-> Fixes: 85585b4bc8d8 ("selftests: add ncdevmem, netcat for devmem TCP")
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> Reviewed-by: Mina Almasry <almasrymina@google.com>
-> ---
->  tools/testing/selftests/drivers/net/hw/ncdevmem.c | 3 ---
->  1 file changed, 3 deletions(-)
+> Heiner Kallweit (3):
+>   net: phy: add phy_disable_eee
+>   net: ethernet: ti: cpsw: disable PHY EEE advertisement
+>   ARM: dts: ti/omap: remove eee-broken properties
+> 
+> [...]
 
 Here is the summary with links:
-  - [net-next,1/1] selftests: net: remove redundant ncdevmem print
-    https://git.kernel.org/netdev/net-next/c/6724bc65e59b
+  - [net-next,1/3] net: phy: add phy_disable_eee
+    https://git.kernel.org/netdev/net-next/c/b55498ff14bd
+  - [net-next,2/3] net: ethernet: ti: cpsw: disable PHY EEE advertisement
+    https://git.kernel.org/netdev/net-next/c/c9f5a5dabbf5
+  - [net-next,3/3] ARM: dts: ti/omap: remove eee-broken properties
+    (no matching commit)
 
 You are awesome, thank you!
 -- 
