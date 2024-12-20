@@ -1,253 +1,219 @@
-Received: from mail-m127157.xmail.ntesmail.com (mail-m127157.xmail.ntesmail.com [115.236.127.157])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB0919C56D;
-	Fri, 20 Dec 2024 10:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.236.127.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD9718C31
+	for <netdev@vger.kernel.org>; Fri, 20 Dec 2024 10:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734691437; cv=none; b=PZRUu5qXmLzX5l79DboK37HahVqH1k8xAABbgeA81aJqpeAXMRmh22JFuWdGhfYX+2lg7nGYRt3uoLuCBFFxFX/q2q0DL8n3xYsMXr9BKq5koCQQDEROKZPsiK6cLcaH3gl/Qg3vYSRBd6rx0eQrytIqlQ+OTn4TBj9/qzSRX0Q=
+	t=1734691783; cv=none; b=rB+DTSMlAiPLnsZZz4QG4e3u3P01nxKhKJVQbNsP0YtD+KoZrn7xummJIyZHVUtDKPKwo/5NDimmtIGRTOPrS8e5mxHmONt9APuTSTaTiKtMtYjeaoksadnQfbY9mULTmgefBHJVpEKaOjEhAqynN1UfsZ/6iPmVzUib/LD09sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734691437; c=relaxed/simple;
-	bh=FLotb8PO7pUbOoGoa3ZcA+IJLn2SEtUGvEV7uvVVTkk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kbln7y/CCeYJY3S9PlwwCdobmOpsBOraPpxJpouwpuGplkxgSESnNkpTn090B/kdHBqxXc2u8p+GLR8k9jPCPAcgbcXdmVGHGw60XNJkwku5wI6zdCunKuGeLKIwIWibwqrXS2c6O1FkrGFO6PM8eUS9WzTk5N0PGR9e7uX1zj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=LXQtSCOj; arc=none smtp.client-ip=115.236.127.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1734691783; c=relaxed/simple;
+	bh=fpcL8/eXhdzv8XX4qG8CIg06qhF8l6Jl3e2nleA6Qtw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VPSAvSfLUVdwsbLEQbhQduzuExp47dZSn4yOAxp4ZmmPRK7avOJPsl7yS1jWqQ+qdCelBuLx341AquHJyP8cxGHyXmjrP+JecTAfWy/WYoRTcJgc8NshxecWZcpriKnD7GWHpteeIhGBxezJVDgHBTEPJlsI4JphGRBM1IWPb90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WJqmLiDz; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="LXQtSCOj"
-Received: from localhost.localdomain (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 656820ed;
-	Fri, 20 Dec 2024 18:38:26 +0800 (GMT+08:00)
-From: Kever Yang <kever.yang@rock-chips.com>
-To: heiko@sntech.de
-Cc: linux-rockchip@lists.infradead.org,
-	Kever Yang <kever.yang@rock-chips.com>,
-	Simon Xue <xxm@rock-chips.com>,
-	Lee Jones <lee@kernel.org>,
-	dri-devel@lists.freedesktop.org,
-	Zhang Rui <rui.zhang@intel.com>,
-	Elaine Zhang <zhangqing@rock-chips.com>,
-	linux-clk@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Andy Yan <andyshrk@163.com>,
-	Michael Riesch <michael.riesch@wolfvision.net>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	linux-pm@vger.kernel.org,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Jamie Iles <jamie@jamieiles.com>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Frank Wang <frank.wang@rock-chips.com>,
-	linux-mmc@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-i2c@vger.kernel.org,
-	Simona Vetter <simona@ffwll.ch>,
-	Finley Xiao <finley.xiao@rock-chips.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-watchdog@vger.kernel.org,
-	David Wu <david.wu@rock-chips.com>,
-	Shresth Prasad <shresthprasad7@gmail.com>,
-	linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	linux-iio@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	David Airlie <airlied@gmail.com>,
-	linux-phy@lists.infradead.org,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Maxime Ripard <mripard@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	linux-pwm@vger.kernel.org,
-	Rob Herring <robh@kernel.org>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Mark Brown <broonie@kernel.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Johan Jonker <jbx6244@gmail.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-serial@vger.kernel.org,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	devicetree@vger.kernel.org,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Tim Lunn <tim@feathertop.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 00/38] rockchip: Add rk3562 support
-Date: Fri, 20 Dec 2024 18:37:46 +0800
-Message-Id: <20241220103825.3509421-1-kever.yang@rock-chips.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WJqmLiDz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734691780;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=79PeQb+yDjXpAI7pY4e/4qGE53ll5/LkYg4JvYVptU4=;
+	b=WJqmLiDzbXXBZCdjcStnysia9BBB24wLRdLBV6S+cz1z5BWhXRmaG8qQZFP0Q9NFkvj7zM
+	YEo5vj5/GTm6OJBZ6I0EqaY7lWu3dpLRztmUg3YFhM0rra43KJOaSIA88ykaWLQiIvgxL9
+	peBydwD8xK62Sb8Qk1Gm8LryRu8zTzg=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-558-c861_76QMPa9VBSTtCoyIw-1; Fri, 20 Dec 2024 05:49:39 -0500
+X-MC-Unique: c861_76QMPa9VBSTtCoyIw-1
+X-Mimecast-MFC-AGG-ID: c861_76QMPa9VBSTtCoyIw
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-385e49efd59so892513f8f.0
+        for <netdev@vger.kernel.org>; Fri, 20 Dec 2024 02:49:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734691778; x=1735296578;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=79PeQb+yDjXpAI7pY4e/4qGE53ll5/LkYg4JvYVptU4=;
+        b=Ev/5EPI0vQWEUV/7XuFhoQSAY/VzIRfth6pW3teKmYQP7mdqr+fLIO7mSVKbODXJ9F
+         JNOAzT1GCnK6YPJWnwZLkkEONNF0QTe+cH9E1yyZ99RxG6iDLXnPr3/vvN7yGBLJTZ/b
+         3w6zWmBc5J574ejeojZOkSEJt6+CXThHRNGAr5iOyx/OCj4k/re0My4GWYsVgGmqq0Il
+         LS4FjTfbGnRIKYWTIrAa539cxJHntHH7/D5ghtmLm2k4hyrnSR46tXjlDdEIRiBecAXF
+         44Imfm3bafOwMHxzIdO73CACVZmMuD720actI/x9uXHHlr93DgAf92h5O/G19EmpugYT
+         o2hA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1K4fC1VjgpJbRL1TLrRhWf4rvdcFdqxOkSToRo0k3kwdF/9deXM//Zu5FC39K666Ft8lhDL0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoARelvg9I9FVaT4OmjQ7cY4VFvFWy+e7CF4f1q0RB6vuQyyZk
+	S4dFRmnyju9rsOtDzhQ1qPjMOp2HwTypegVN1zJat7Ep7SghljHG9v98D0ZUskXb5KhZA+RkpwO
+	v/SLKn9ISXjKRvxY/+1c/V59Ecjz6QoCX9Bg9ZNyudFE8YnzC7do56w==
+X-Gm-Gg: ASbGncvfdUJSMKvjm0Q0t+Dmt9zGuhthVHNe9lq7TospKXtpRDt/7bcekdEurAAmEFn
+	HyXZGBL4ktEl3X0phpHpnDCLDa2Tg2GjzpNBnvNXQ5ociZzDouNIlX5lgmEuw35vqz4u3OsPc98
+	PFEf+P2ymYaOcNwboMd6XjaGxB1+ZYKIO6hLh8n0UiG0VLsO4GLwloOCNjpRUKt23oV+SmLzYyJ
+	pWHJCwcnUJt+aXV/yAHDRLzvGgWjRBG7uX8lUIu3A8OV7vplbBkIfmg37mvxHAccYa6UTKcOeX8
+	In/yWeqZAfLbFFezl6WCROkZmEdV3Zj7
+X-Received: by 2002:a05:6000:4010:b0:382:51ae:7569 with SMTP id ffacd0b85a97d-38a221fae45mr2303073f8f.18.1734691778046;
+        Fri, 20 Dec 2024 02:49:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE+bB/Kw1tq4MLQwoUR3v3iXpALFjAVHwtoeLFOoROYE+dTEpj2Tnl57eNVBy7xhviP34E31g==
+X-Received: by 2002:a05:6000:4010:b0:382:51ae:7569 with SMTP id ffacd0b85a97d-38a221fae45mr2303035f8f.18.1734691777331;
+        Fri, 20 Dec 2024 02:49:37 -0800 (PST)
+Received: from sgarzare-redhat (host-82-53-134-100.retail.telecomitalia.it. [82.53.134.100])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656af6c25sm76195635e9.8.2024.12.20.02.49.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Dec 2024 02:49:36 -0800 (PST)
+Date: Fri, 20 Dec 2024 11:49:32 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Hyunwoo Kim <v4bel@theori.io>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, qwerty@theori.io
+Subject: Re: [PATCH] vsock/virtio: Fix null-ptr-deref in vsock_stream_has_data
+Message-ID: <jkhr2v5zjebxnckmhn3f3dvv5zdzbldkyxbe5kx5m7vzvw6kzi@nrqipygyhlix>
+References: <f7a3rlgpc36wk75grqeg6ndqmlprvilznlsesyruqfb7m5vrp7@myil7ex4f62n>
+ <Z2LvdTTQR7dBmPb5@v4bel-B760M-AORUS-ELITE-AX>
+ <5ca20d4c-1017-49c2-9516-f6f75fd331e9@rbox.co>
+ <Z2N44ka8+l83XqcG@v4bel-B760M-AORUS-ELITE-AX>
+ <fezrztdzj5bz54ys6qialz4w3bjqqxmhx74t2tnklbif6ns5dn@mtcjqnqbx6n4>
+ <722e8d32-fe5c-4522-be2b-5967fdbb6b30@rbox.co>
+ <CAGxU2F5VMGg--iv8Nxvmo_tGhHf_4d_hO5WuibXLUcwVVNgQEg@mail.gmail.com>
+ <cc04fe7a-aa49-47a7-8d54-7a0e7c5bfbdc@rbox.co>
+ <CAGxU2F5K+0s9hnk=uuC_fE=otrH+iSe7OVi1gQbDjr7xt5wY9g@mail.gmail.com>
+ <2906e706-bb0d-47c6-a4bb-9f3dc9ff7834@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQh9LT1ZJGktPSElKGk8fQxhWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEtNQk
-	tVSktLVUpCWQY+
-X-HM-Tid: 0a93e3a5af4003afkunm656820ed
-X-HM-MType: 1
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Nwg6Kxw6GTIRKggeThEUMR4h
-	P0gaCyxVSlVKTEhPTUJKSkpKTElJVTMWGhIXVRAeDR4JVQIaFRw7CRQYEFYYExILCFUYFBZFWVdZ
-	EgtZQVlOQ1VJSVVMVUpKT1lXWQgBWUFOTUpJNwY+
-DKIM-Signature:a=rsa-sha256;
-	b=LXQtSCOj5PQ5rmMQS8JUHg+aVmzux+tnR5NnlpILS50US/QWv5VBCTHDsqEiVs5WhSa9UqWxWgKBEnSg0vucKhE8FyZdsUwbc5ZsdiUz76LZqHiim02ORqBuKb413jRYfReSUFy7jfbzAaPEA5wGkuukfoQqA957T+ZIIQC0lqE=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=RUJ3VBWN4hJZF+kjNTXL1lSb1odrwauQvfHGVuJDe90=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <2906e706-bb0d-47c6-a4bb-9f3dc9ff7834@rbox.co>
 
+On Thu, Dec 19, 2024 at 05:09:42PM +0100, Michal Luczaj wrote:
+>On 12/19/24 16:12, Stefano Garzarella wrote:
+>> On Thu, 19 Dec 2024 at 16:05, Michal Luczaj <mhal@rbox.co> wrote:
+>>>
+>>> On 12/19/24 15:48, Stefano Garzarella wrote:
+>>>> On Thu, 19 Dec 2024 at 15:36, Michal Luczaj <mhal@rbox.co> wrote:
+>>>>>
+>>>>> On 12/19/24 09:19, Stefano Garzarella wrote:
+>>>>>> ...
+>>>>>> I think the best thing though is to better understand how to handle
+>>>>>> deassign, rather than checking everywhere that it's not null, also
+>>>>>> because in some cases (like the one in virtio-vsock), it's also
+>>>>>> important that the transport is the same.
+>>>>>
+>>>>> My vote would be to apply your virtio_transport_recv_pkt() patch *and* make
+>>>>> it impossible-by-design to switch ->transport from non-NULL to NULL in
+>>>>> vsock_assign_transport().
+>>>>
+>>>> I don't know if that's enough, in this case the problem is that some
+>>>> response packets are intended for a socket, where the transport has
+>>>> changed. So whether it's null or assigned but different, it's still a
+>>>> problem we have to handle.
+>>>>
+>>>> So making it impossible for the transport to be null, but allowing it
+>>>> to be different (we can't prevent it from changing), doesn't solve the
+>>>> problem for us, it only shifts it.
+>>>
+>>> Got it. I assumed this issue would be solved by `vsk->transport !=
+>>> &t->transport` in the critical place(s).
+>>>
+>>> (Note that BPF doesn't care if transport has changed; BPF just expects to
+>>> have _a_ transport.)
+>>>
+>>>>> If I'm not mistaken, that would require rewriting vsock_assign_transport()
+>>>>> so that a new transport is assigned only once fully initialized, otherwise
+>>>>> keep the old one (still unhurt and functional) and return error. Because
+>>>>> failing connect() should not change anything under the hood, right?
+>>>>>
+>>>>
+>>>> Nope, connect should be able to change the transport.
+>>>>
+>>>> Because a user can do an initial connect() that requires a specific
+>>>> transport, this one fails maybe because there's no peer with that cid.
+>>>> Then the user can redo the connect() to a different cid that requires
+>>>> a different transport.
+>>>
+>>> But the initial connect() failing does not change anything under the hood
+>>> (transport should/could stay NULL).
+>>
+>> Nope, isn't null, it's assigned to a transport, because for example it
+>> has to send a packet to connect to the remote CID and wait back for a
+>> response that for example says the CID doesn't exist.
+>
+>Ahh, I think I get it. So the initial connect() passed
+>vsock_assign_transport() successfully and then failed deeper in
+>vsock_connect(), right? That's fine. Let the socket have a useless
+>transport (a valid pointer nevertheless). 
 
-This patch set adds rk3562 SoC and its evb support.
+Just to be clear, it's not useless, since it's used to make the 
+connection. We know that it's useless just when we report that the 
+connection failed, so maybe we should de-assign it when we set 
+`sock->state = SS_UNCONNECTED`.
 
-The patch number is a little bit too big, some of them may need to split
-out for different maintainers, please let me know which patch need to
-split out.
+>Sure, upcoming connect() can
+>assign a new (possibly useless just as well) transport, but there's no
+>reason to allow ->transport becoming NULL.
 
-Test with GMAC, USB, PCIe, EMMC, SD Card.
+I'm not sure about this, in the end in the connection failure case, when 
+we set `sock->state = SS_UNCONNECTED`, we're returning the socket to a 
+pre-connect state, so it might make sense to also reset the transport to 
+NULL, so that we have exactly the same conditions.
 
-This patch set is base on the patche set for rk3576 evb1 support.
+>
+>And a pre-connect socket (where ->transport==NULL) is not an issue, because
+>BPF won't let it in any sockmap, so vsock_bpf_recvmsg() won't be reachable.
+>
+>Anywa, thanks for explaining,
+>Michal
+>
+>PS. Or ignore the above and remove the socket from the sockmap at every
+>reconnect? Possible unhash abuse:
 
+I should take a closer look at unhash, but it might make sense!
 
-David Wu (2):
-  ethernet: stmmac: dwmac-rk: Add gmac support for rk3562
-  ethernet: stmmac: dwmac-rk: Make the phy clock could be used for
-    external phy
+>
+>diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>index 5cf8109f672a..8a65153ee186 100644
+>--- a/net/vmw_vsock/af_vsock.c
+>+++ b/net/vmw_vsock/af_vsock.c
+>@@ -483,6 +483,10 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+> 		if (vsk->transport == new_transport)
+> 			return 0;
+>
+>+		const struct proto *prot = READ_ONCE(sk->sk_prot);
+>+		if (prot->unhash)
+>+			prot->unhash(sk);
+>+
+> 		/* transport->release() must be called with sock lock acquired.
+> 		 * This path can only be taken during vsock_connect(), where we
+> 		 * have already held the sock lock. In the other cases, this
+>diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
+>index 4aa6e74ec295..80deb4d70aea 100644
+>--- a/net/vmw_vsock/vsock_bpf.c
+>+++ b/net/vmw_vsock/vsock_bpf.c
+>@@ -119,6 +119,7 @@ static void vsock_bpf_rebuild_protos(struct proto *prot, const struct proto *bas
+> 	*prot        = *base;
+> 	prot->close  = sock_map_close;
+> 	prot->recvmsg = vsock_bpf_recvmsg;
+>+	prot->unhash = sock_map_unhash;
+> 	prot->sock_is_readable = sk_msg_is_readable;
+> }
+>
+>>> Then a successful re-connect assigns
+>>> the transport (NULL -> non-NULL). And it's all good because all I wanted to
+>>> avoid (because of BPF) was non-NULL -> NULL. Anyway, that's my possibly
+>>> shallow understanding :)
+>
 
-Finley Xiao (7):
-  clk: rockchip: add dt-binding header for rk3562
-  clk: rockchip: Add clock controller for the RK3562
-  dt-bindings: add power-domain header for RK3562 SoC
-  nvmem: rockchip-otp: Add support for rk3568-otp
-  nvmem: rockchip-otp: Add support for rk3562
-  arm64: dts: rockchip: add core dtsi for RK3562 Soc
-  arm64: dts: rockchip: Add RK3562 evb2 devicetree
+Note that non-NULL -> NULL should only occur before a connection is 
+established, so before any data is passed. Is this a problem for BPF?
 
-Frank Wang (1):
-  phy: rockchip: inno-usb2: add usb2 phy support for rk3562
-
-Jon Lin (1):
-  phy: rockchip-naneng-combo: Support rk3562
-
-Kever Yang (24):
-  dt-bindings: clock: add rk3562 cru bindings
-  dt-bindings: pinctrl: Add rk3562 pinctrl support
-  soc: rockchip: power-domain: add power domain support for rk3562
-  dt-bindings: rockchip-thermal: Support the RK3562 SoC compatible
-  dt-bindings: iio: adc: Add rockchip,rk3562-saradc string
-  dt-bindings: net: Add support for rk3562 dwmac
-  dt-bindings: nvmem: rockchip,otp: Add support for rk3562 and rk3568
-  dt-bindings: phy: rockchip: Add rk3562 naneng-combophy compatible
-  dt-bindings: phy: rockchip,inno-usb2phy: add rk3562
-  dt-bindings: PCI: dwc: rockchip: Add rk3562 support
-  dt-bindings: mmc: Add support for rk3562 eMMC
-  dt-bindings: mmc: rockchip-dw-mshc: Add rk3562 compatible string
-  dt-bindings: power: rockchip: Add bindings for rk3562
-  dt-bindings: i2c: i2c-rk3x: Add rk3562 compatible
-  dt-bindings: gpu: Add rockchip,rk3562-mali compatible
-  dt-bindings: watchdog: Add rk3562 compatible
-  dt-bindings: spi: Add rockchip,rk3562-spi compatible
-  dt-bindings: serial: snps-dw-apb-uart: Add support for rk3562
-  dt-bindings: usb: dwc3: add compatible for rk3562
-  dt-bindings: pwm: rockchip: Add rockchip,rk3562-pwm
-  dt-bindings: rockchip: pmu: Add rk3562 compatible
-  dt-bindings: soc: rockchip: Add rk3562 syscon compatibles
-  dt-bindings: arm: rockchip: Add rk3562 evb2 board
-  dt-bindings: mfd: syscon: Add rk3562 QoS register compatible
-
-Shaohan Yao (1):
-  thermal: rockchip: Support the rk3562 SoC in thermal driver
-
-Simon Xue (1):
-  iio: adc: rockchip_saradc: add rk3562
-
-Steven Liu (1):
-  pinctrl: rockchip: add rk3562 support
-
- .../devicetree/bindings/arm/rockchip.yaml     |    5 +
- .../devicetree/bindings/arm/rockchip/pmu.yaml |    2 +
- .../bindings/clock/rockchip,rk3562-cru.yaml   |   62 +
- .../bindings/gpu/arm,mali-bifrost.yaml        |    3 +-
- .../devicetree/bindings/i2c/i2c-rk3x.yaml     |    1 +
- .../bindings/iio/adc/rockchip-saradc.yaml     |    2 +
- .../devicetree/bindings/mfd/syscon.yaml       |    2 +
- .../bindings/mmc/rockchip-dw-mshc.yaml        |    1 +
- .../bindings/mmc/snps,dwcmshc-sdhci.yaml      |    9 +-
- .../bindings/net/rockchip-dwmac.yaml          |    5 +-
- .../bindings/nvmem/rockchip,otp.yaml          |   49 +-
- .../bindings/pci/rockchip-dw-pcie.yaml        |    1 +
- .../phy/phy-rockchip-naneng-combphy.yaml      |    1 +
- .../bindings/phy/rockchip,inno-usb2phy.yaml   |    3 +-
- .../bindings/pinctrl/rockchip,pinctrl.yaml    |    1 +
- .../power/rockchip,power-controller.yaml      |    1 +
- .../devicetree/bindings/pwm/pwm-rockchip.yaml |    1 +
- .../bindings/serial/snps-dw-apb-uart.yaml     |    1 +
- .../devicetree/bindings/soc/rockchip/grf.yaml |    7 +
- .../devicetree/bindings/spi/spi-rockchip.yaml |    1 +
- .../bindings/thermal/rockchip-thermal.yaml    |    1 +
- .../bindings/usb/rockchip,dwc3.yaml           |    3 +
- .../bindings/watchdog/snps,dw-wdt.yaml        |    1 +
- arch/arm64/boot/dts/rockchip/Makefile         |    1 +
- .../boot/dts/rockchip/rk3562-evb2-v10.dts     |  520 ++++
- .../boot/dts/rockchip/rk3562-pinctrl.dtsi     | 2352 +++++++++++++++++
- arch/arm64/boot/dts/rockchip/rk3562.dtsi      | 1432 ++++++++++
- drivers/clk/rockchip/Kconfig                  |    7 +
- drivers/clk/rockchip/Makefile                 |    1 +
- drivers/clk/rockchip/clk-rk3562.c             | 1111 ++++++++
- drivers/clk/rockchip/clk.h                    |   39 +
- drivers/iio/adc/rockchip_saradc.c             |   24 +-
- .../net/ethernet/stmicro/stmmac/dwmac-rk.c    |  213 +-
- drivers/nvmem/rockchip-otp.c                  |   97 +
- drivers/phy/rockchip/phy-rockchip-inno-usb2.c |   49 +
- .../rockchip/phy-rockchip-naneng-combphy.c    |  152 ++
- drivers/pinctrl/pinctrl-rockchip.c            |  199 +-
- drivers/pinctrl/pinctrl-rockchip.h            |    3 +-
- drivers/pmdomain/rockchip/pm-domains.c        |   48 +-
- drivers/thermal/rockchip_thermal.c            |  112 +-
- include/dt-bindings/clock/rk3562-cru.h        |  733 +++++
- include/dt-bindings/power/rk3562-power.h      |   35 +
- 42 files changed, 7269 insertions(+), 22 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/clock/rockchip,rk3562-cru.yaml
- create mode 100644 arch/arm64/boot/dts/rockchip/rk3562-evb2-v10.dts
- create mode 100644 arch/arm64/boot/dts/rockchip/rk3562-pinctrl.dtsi
- create mode 100644 arch/arm64/boot/dts/rockchip/rk3562.dtsi
- create mode 100644 drivers/clk/rockchip/clk-rk3562.c
- create mode 100644 include/dt-bindings/clock/rk3562-cru.h
- create mode 100644 include/dt-bindings/power/rk3562-power.h
-
--- 
-2.25.1
+Thanks,
+Stefano
 
