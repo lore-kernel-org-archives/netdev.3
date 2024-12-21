@@ -1,102 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538EB1F868A
-	for <netdev@vger.kernel.org>; Sat, 21 Dec 2024 14:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FCC1F427B;
+	Sat, 21 Dec 2024 15:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734792253; cv=none; b=m1nrmuv/eylsFwopcXZhs+HhqJ/ntnRqSOBS91OPVu0Ak84OIMCf4KpsnrjljABERWaW4quLbpxfw46MiiguEgMiZBqK/xm18wWkblJxZNXL44HdvaaPaTof96ALN3SRwbrZtqc9ZbFYBbD8eLFFIsuB2fto8OOapG6nMDyOOC8=
+	t=1734793579; cv=none; b=j/Qq8ipI/s0jqSz+dqNTc3cR6pjLIq/Gp0jDHNsYLCQyWTTjShTXrkVAnJS0qp5NaC+TtZInG6OctySFWVRwmVs+6gPBcv8lPbmUq4mstOjNoJshFKkYMwcl8kC2kCHS52ewRc6cj4GWjr3ejdzOWJ08FjhzgWLfl/RcmCzJ+Ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734792253; c=relaxed/simple;
-	bh=Q80IuyLp1AWhiinI8ZNGtWUI414ucBhpAiHOdgk9cG4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EQqeBufNPbXkkYJnMAVKVOM3dd+p/+nvuXdUtH8jxrZPdYzyn39U85HyDW2oe2GK3nnJLOyeXpyGHhfCqJjJLcnNVgEJ5D/7pir9jeAxsN/8nT1NgP82nMk8HgWSw20Uh9NhOxUevZSyLmAkwX2S93nt/NNaqg3h9qMST+3ryPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qpm2lYJW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734793579; c=relaxed/simple;
+	bh=fg9AM9uCOoy34gPSOGcTPBKBCJnw5BhZsPbWtU5StSI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OqaCGLGBB1WDtl4qRny/DFLS2GjvuCmFqK13gXRaer9GTRMIMtEJAPBVml/wFJE5pgUT/8eiPlqjsdhecbfahNXflqESNBI1dS9n85X1P9LOZ0nwfi5428QXZstxrCy90zSKvX8u/XU0vL0M5SWSrw1zNAlyliyzQTnSXBuv8Io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=DnW3p0Wq; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qpm2lYJW"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0D3C2C4CEE7;
-	Sat, 21 Dec 2024 14:44:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734792253;
-	bh=Q80IuyLp1AWhiinI8ZNGtWUI414ucBhpAiHOdgk9cG4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Qpm2lYJWKWw2TBkPrv4rbTAUNFVnk/J9yQiRAFrJ1jer4RhmxyGdDSUBPzfpsk2wT
-	 UrcqWH6RIwjFUVnCj0GQMXy5JlOtE7xFMh6pC/PbUxAy9rbQKEG46aK6X9nHYx7mBf
-	 nAFqVwLe2h4s8lt+l7LCysyfpKcmSvvAfb6gYlXEQGKw4Wi8IRG3E0pdI8xkS3ha3k
-	 vAnxYvsc+WmcZoYyiX208v/hQZvdoarJtze8ve/J2sP/FjcBOT0aKQzvLmN/1VCvL/
-	 TYrmTdyIZZJlOsFtgtCsN/GXjccWLAGPDNt88SaD+Tcg+Lz4jRAYsxFd6AIH7LoNNx
-	 zEcrJxWRF9jGg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04EE5E7718E;
-	Sat, 21 Dec 2024 14:44:13 +0000 (UTC)
-From: Hans-Frieder Vogt via B4 Relay <devnull+hfdevel.gmx.net@kernel.org>
-Date: Sat, 21 Dec 2024 15:43:42 +0100
-Subject: [PATCH net-next v4 7/7] net: tn40xx: add pci-id of the
- aqr105-based Tehuti TN4010 cards
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="DnW3p0Wq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=nnUaS3ZdfldbVv26q/JCdoZX4cOue7uHQN0UsIPsLgw=; b=DnW3p0WqYpcwpI5GhqekySA0OP
+	ThuDzjKUrdCaUb9/cjsTSqxexPQhx0ueNtDLJIEV33ZDlUdpVtiiEm1SmgkXv++B04iM4nUASSqEt
+	2Vmvq6h/4FrGWtBMRvBiGtjtO6d+g561CUxBmAANScbAlgt98N6xVQ3W28c1SXIIgHtk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tP13T-002KH5-R5; Sat, 21 Dec 2024 16:06:11 +0100
+Date: Sat, 21 Dec 2024 16:06:11 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Ariel Otilibili <ariel.otilibili-anieli@eurecom.fr>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	Andrei Botila <andrei.botila@oss.nxp.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH 2/2] net/phy,neterion: Remove dead values
+Message-ID: <9f15203a-349f-48f3-a812-ca3f7ec995ab@lunn.ch>
+References: <20241221124445.1094460-1-ariel.otilibili-anieli@eurecom.fr>
+ <20241221124445.1094460-3-ariel.otilibili-anieli@eurecom.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241221-tn9510-v3a-v4-7-dafff89ba7a7@gmx.net>
-References: <20241221-tn9510-v3a-v4-0-dafff89ba7a7@gmx.net>
-In-Reply-To: <20241221-tn9510-v3a-v4-0-dafff89ba7a7@gmx.net>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: netdev@vger.kernel.org, Hans-Frieder Vogt <hfdevel@gmx.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1734792250; l=1329;
- i=hfdevel@gmx.net; s=20240915; h=from:subject:message-id;
- bh=yjBuIErbiO77pHQVHm/YuXX+rV3PVtu1mgIKIbg75dI=;
- b=WMGd2nQUCbQCX66X6C0YNMCyyK66BoZgKF5S6VGS2k6K/dk3Tjh5nl88k6hKL33Uko6q24ofo
- EqpJMSiuxnaB+82wxEPvXKF/9rj3frKynBfMHjBeS/APYdFPWkm5PDV
-X-Developer-Key: i=hfdevel@gmx.net; a=ed25519;
- pk=s3DJ3DFe6BJDRAcnd7VGvvwPXcLgV8mrfbpt8B9coRc=
-X-Endpoint-Received: by B4 Relay for hfdevel@gmx.net/20240915 with
- auth_id=209
-X-Original-From: Hans-Frieder Vogt <hfdevel@gmx.net>
-Reply-To: hfdevel@gmx.net
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241221124445.1094460-3-ariel.otilibili-anieli@eurecom.fr>
 
-From: Hans-Frieder Vogt <hfdevel@gmx.net>
+On Sat, Dec 21, 2024 at 01:39:33PM +0100, Ariel Otilibili wrote:
+> Coverity-ID: 1269173, 1575053
+> Signed-off-by: Ariel Otilibili <ariel.otilibili-anieli@eurecom.fr>
+> ---
+>  drivers/net/ethernet/neterion/s2io.c     | 2 --
+>  drivers/net/phy/nxp-c45-tja11xx-macsec.c | 1 -
 
-Add the PCI-ID of the AQR105-based Tehuti TN4010 cards to allow loading
-of the tn40xx driver on these cards. Here, I chose the detailed definition
-with the subvendor ID similar to the QT2025 cards with the PCI-ID
-TEHUTI:0x4022, because there is a card with an AQ2104 hiding amongst the
-AQR105 cards, and they all come with the same PCI-ID (TEHUTI:0x4025). But
-the AQ2104 is currently not supported.
+Please split this into a patch per driver.
 
-Signed-off-by: Hans-Frieder Vogt <hfdevel@gmx.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- drivers/net/ethernet/tehuti/tn40.c | 4 ++++
- 1 file changed, 4 insertions(+)
+>  2 files changed, 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/neterion/s2io.c b/drivers/net/ethernet/neterion/s2io.c
+> index f8016dc25e0a..4f89f9fd8043 100644
+> --- a/drivers/net/ethernet/neterion/s2io.c
+> +++ b/drivers/net/ethernet/neterion/s2io.c
+> @@ -1969,8 +1969,6 @@ static void en_dis_err_alarms(struct s2io_nic *nic, u16 mask, int flag)
+>  				   MC_ERR_REG_ECC_ALL_DBL | PLL_LOCK_N, flag,
+>  				   &bar0->mc_err_mask);
+>  	}
+> -	nic->general_int_mask = gen_int_mask;
+> -
+>  	/* Remove this line when alarm interrupts are enabled */
+>  	nic->general_int_mask = 0;
 
-diff --git a/drivers/net/ethernet/tehuti/tn40.c b/drivers/net/ethernet/tehuti/tn40.c
-index a4dd04fc6d89e7f7efd77145a5dd883884b30c4b..aaad40c916ef83f457e1b5983c01dff2de148fea 100644
---- a/drivers/net/ethernet/tehuti/tn40.c
-+++ b/drivers/net/ethernet/tehuti/tn40.c
-@@ -1835,6 +1835,10 @@ static const struct pci_device_id tn40_id_table[] = {
- 			 PCI_VENDOR_ID_ASUSTEK, 0x8709) },
- 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_TEHUTI, 0x4022,
- 			 PCI_VENDOR_ID_EDIMAX, 0x8103) },
-+	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_TEHUTI, 0x4025,
-+			 PCI_VENDOR_ID_TEHUTI, 0x3015) },
-+	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_TEHUTI, 0x4025,
-+			 PCI_VENDOR_ID_EDIMAX, 0x8102) },
- 	{ }
- };
- 
+So this change looks reasonable, but you need to update the comment,
+because it is now wrong.
 
--- 
-2.45.2
+>  }
+> diff --git a/drivers/net/phy/nxp-c45-tja11xx-macsec.c b/drivers/net/phy/nxp-c45-tja11xx-macsec.c
+> index 550ef08970f4..e15ab9ba2f50 100644
+> --- a/drivers/net/phy/nxp-c45-tja11xx-macsec.c
+> +++ b/drivers/net/phy/nxp-c45-tja11xx-macsec.c
+> @@ -818,7 +818,6 @@ static void nxp_c45_rx_sc_update(struct phy_device *phydev,
+>  	u32 cfg = 0;
+>  
+>  	nxp_c45_macsec_read(phydev, MACSEC_RXSC_CFG, &cfg);
+> -	cfg &= ~MACSEC_RXSC_CFG_VF_MASK;
+>  	cfg = phy_secy->secy->validate_frames << MACSEC_RXSC_CFG_VF_OFF;
 
+I can see why a static analysis tool would point this out, but you
+need to include some justification why your change is correct, and it
+is not a bug, maybe cfg should be written back after being masked? Or
+the assignment to cfg should actually be an |= not = ?
 
+	Andrew
