@@ -1,107 +1,179 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7C1163;
-	Sat, 21 Dec 2024 00:49:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C660163
+	for <netdev@vger.kernel.org>; Sat, 21 Dec 2024 00:51:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734742194; cv=none; b=CWVXgPKHQPdeMOVlUKtqhQ5B0ke8w7fEo66v4FNDuktgotC7vOw5km9MAE9tli4G1LM7hXXrpUjkwBysFWcEzPPAQpthxL/8/oC0ntMbGQGSzGPe8F+6nU0J/4p7OdkfzQtj1BGsIxqm+jZrIW61AQvVcee0hVCIt16ilsZk+RM=
+	t=1734742296; cv=none; b=dHgJ8kqTjUx4Qq9lNRNTOsVw85ODNDXKpt7peA5O+cxCasGAc12wcqTCQ6AUNKwMrDaS7ORtoooKfXrsv02In8qBTKAgWM6Ki2/Zqa21Ryz38SjQSwA3T0hp3BpNuUDaLaB5s1YJi2GRlMh6qmOxhRPrOHzBxwXDLpFVqbJ0hYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734742194; c=relaxed/simple;
-	bh=SVUEiPqRIvm4db1/9DqcwGe7iYoIvQHWawpvUKd8GeQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zx2fcbGgWXDa8wCuuu8ECf1vvsMpSeb44fSlgfE6+2JUZr5lZF6LRv0bL4WrEmFLJh9/ygu0SWb4SdRgZojAlh+cqT6t986bfZ+sr+DpEhTHbjYOgHjq5Y8dnN6GWtmtZO/5mTrd35CDVkFE4T0DrXWm+EBBjkGKmzE/tlID2rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ABGWrgfH; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734742296; c=relaxed/simple;
+	bh=FRENkPdw5MsSuos6hv3KfxF0ISP2Qe0RZAlvdgY5Q+0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=SFWSBcTJUGD5sTElRydcooh1MLXDdf2BmnvKIXTLkdo0bj4dVQcB58oe633VzMCcdQPgvmd8vVaLqNNovcbW2ODamQIu0yyjMHqj9yP064TgBH5Ko2HsV8HKYA4LIkm+Lnf6jEG+qDwiCPa5O8CesBF6876PxhYdRipYn3Ji+QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I7uJk11h; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ABGWrgfH"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-436341f575fso26518805e9.1;
-        Fri, 20 Dec 2024 16:49:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I7uJk11h"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7289afa200aso2982279b3a.0
+        for <netdev@vger.kernel.org>; Fri, 20 Dec 2024 16:51:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734742191; x=1735346991; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dSzPtgNSx0y5b3UPhZtL4mj4qL312OPvg1+udWx+/5o=;
-        b=ABGWrgfHcEFWx3mLUBbJmf5esPZ3vjqKrt9EcVRG/Jx0p8P+nAg2Byw+hNHnej3giW
-         NPcVV/LkW1JV0uP+2Ir6nADaA7Znuz9eKCNUYUABpExm+6OVMD+qRxz2CHbdTjpJfyz4
-         zToKB6X/6JTM8rcuWGzS/jAPxPBFx+PopocaNggDtVjZ6zEjK0CKaf03LW+dQYL6gXs+
-         cB4ivB2o+ATYH7Lje4rVfqXjGzUMTsxpNq0mofVcx/cxDJnZDeSrcofrNHt5ycKxFpxS
-         ACJrbftl+rLMglomdBDU0t1cg6e4/dXlZitvnxvdSGZG84DmJGtXKdqD9yXXPekWEa3J
-         VWkw==
+        d=google.com; s=20230601; t=1734742294; x=1735347094; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yJnN7ZrxN0wnWRniinuaZCCRmMgcnMSCXct+QU5IKEI=;
+        b=I7uJk11hWHysVG2cJjFu7N6jWbQ5FeiKh+AbvSgWnPEX1814KzGy4eFTyB6Y8X8lJD
+         gLMjT1G6Qi33skl92zvmuVC3jaguwy1c/jYV6nPfbAYqIjaEYJHNjr8p5j64jv022xV8
+         QoSitZAr4dQ86RJMyqjJe1nrn0010KuCF36JrWWsXNvQJFkGydPwZgSS126nyo7MzV5e
+         9kv0qO5KMijtB0cbccMjrXU808cjgs+FIgk+mDyJGVcgb+qsljSRQUi2by0edDU+tQKx
+         DCVeDVi8wfJbWydcgC6KhTHov2QELx3U24ZADAoj9m1rKeExKkNGdbaTEXSKGygapa7V
+         xnWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734742191; x=1735346991;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dSzPtgNSx0y5b3UPhZtL4mj4qL312OPvg1+udWx+/5o=;
-        b=KZdkBhP7Ro50xk5/gjey8f5w+J5EiADH8xLeh2kr/gvZoPXnQjNAdg2IG9lnL56FuU
-         W3jNUH0XMVxSGBhQpHB37FyRsziomuGiXs8x70NFwePJhbIr/8bk/veZRQkBG5b7xWlD
-         h83yNh0AxJKGYV7LbJIPnbaMy9roe9hpdJeeZ1rspAVs/cv7dCX6HolkMhes6cAUBglM
-         UlaOOFagZNYOI/9MsBgyBDhq3Np2nkV8OYIElRw9tIgAS+wNW2g3Rzi+WQI96Ur4wT15
-         QDpxoWIvrHrPNQ3+xhPJhW/CxE1B8NulZhEjhRJg5yT/IpywrYmPJrq/jqGycC9e53je
-         Kv2A==
-X-Forwarded-Encrypted: i=1; AJvYcCUQHPoQx0efgpCS4TOJ+stRitrldLLycBNxf61mHuOmxZw4pGeGvyKeS/37l4zlKeY4qxUsJ0k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVoJTIbAGVj5VWBqkYhvgllHoCGbgaR+w37/WgLVlV1nu17hlD
-	sc9ylkz4oWlRPOxjO/KlDmH8Y/i4tIur2/vJ5ZGBY6Jh9xxblnkpF2TimQ==
-X-Gm-Gg: ASbGncsplsmaPJ83d+xaa/5z84A2KPwG99Bf1hpuOCZ/TrDPWfDLkGRikAFsDWK7gve
-	liE8k3hZDzO9IdbQjOlfgH/91/p8Y00eCtYkbNl6tKrcvPLGJqfjLyhyiIjhrOAnTbvx9L35BRz
-	Y9BpwuNmi7tdPs59Gf9stT90RpycUwqvQnRPM1q9x1sdCZYe4EnJzZZwIxXfVqQ2dOtBqu0FCBe
-	srUWP4Tifo9EFZb5yUGt+gEtk9GgOnuHyHui/h7m8E2BWBHksJy6b1zAxPZiGFF6Rk=
-X-Google-Smtp-Source: AGHT+IG7IKcCMm+m23l843c+BPbqEHBOl3c6DtL6EgisGXdvTe/M2m4vQitSaDwgUPp5YjAFcOzjcg==
-X-Received: by 2002:a05:600c:35c9:b0:434:f753:6012 with SMTP id 5b1f17b1804b1-436686440bemr47198355e9.17.1734742191256;
-        Fri, 20 Dec 2024 16:49:51 -0800 (PST)
-Received: from [192.168.42.184] ([185.69.144.186])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b442dasm93329235e9.42.2024.12.20.16.49.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Dec 2024 16:49:50 -0800 (PST)
-Message-ID: <5d308d1b-4c9d-430e-b116-e669bd778b30@gmail.com>
-Date: Sat, 21 Dec 2024 00:50:37 +0000
+        d=1e100.net; s=20230601; t=1734742294; x=1735347094;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yJnN7ZrxN0wnWRniinuaZCCRmMgcnMSCXct+QU5IKEI=;
+        b=hLXqxKyj5upCJHSN91zEabeictUs3xsXs7ZisHsRuLMdtZ5IdRjDx6Mc/caQZCiw6R
+         coOqcy/RryibifW3tnEghFWsVfkKCxysN2Dk/+RV336SsoTw/Bnw3CRdPv8x7qidWpXc
+         jSd3hMLidUMsfTPsKkPPIpfZxvVlIRLNKY1pjrcT0mc4n7t/nUY0HCKCIRdQMtWxbuub
+         xVcdeCYXYFKbaH5Ee5kBv3hxh0hVQLpYwhOL4c+R9QOeBWt75T9dfadhT1rSewidUDIB
+         CfhscSbQvd98fBEBxQh9fEjPBM4k0x/3pfhrhJbSVN1tsVqmQ0i4MABUVNLHhuQpHz6X
+         zkOg==
+X-Gm-Message-State: AOJu0Yy8Mk+4N/pt8AhWU1l1biRAShcgPoKA1DyT1eeKwbEiSbqlMiMi
+	I0GvusqJUCwTQHMb7R+sZU7SkrJS9eq0t0iZkH/GmwtSM9sjtGotaFn5NpLjE/CS0y//fqNvJZg
+	3DNUrQyC4+lt+FCf0y8ZEhKpHyPTNhjkq2cEg7GD1tq0eQ8m7LgdTAe2ugJna448vFxNYNDrlRw
+	FTWlqkruY9B9EggL+hns4DybtO2baqXIIQbaoJR6b5KIdqE+k/Sa3Lznmy0Ds=
+X-Google-Smtp-Source: AGHT+IFPPx0YiYiLnd8xNfIIbmIMwDB+OM3W+mCwV2V7dSBNzPOeeDA2h35zKUR6WA/aeA9SZXl5yVBt8+4OkZfrCg==
+X-Received: from pfms15.prod.google.com ([2002:aa7:828f:0:b0:72a:bcc3:4c9a])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:1311:b0:728:e81c:2bf4 with SMTP id d2e1a72fcca58-72abddb1958mr6921748b3a.11.1734742294312;
+ Fri, 20 Dec 2024 16:51:34 -0800 (PST)
+Date: Sat, 21 Dec 2024 00:42:31 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v9 03/20] net: generalise net_iov chunk owners
-To: Jakub Kicinski <kuba@kernel.org>, David Wei <dw@davidwei.uk>
-Cc: io-uring@vger.kernel.org, netdev@vger.kernel.org,
- Jens Axboe <axboe@kernel.dk>, Paolo Abeni <pabeni@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jesper Dangaard Brouer <hawk@kernel.org>, David Ahern <dsahern@kernel.org>,
- Mina Almasry <almasrymina@google.com>,
- Stanislav Fomichev <stfomichev@gmail.com>, Joe Damato <jdamato@fastly.com>,
- Pedro Tammela <pctammela@mojatatu.com>
-References: <20241218003748.796939-1-dw@davidwei.uk>
- <20241218003748.796939-4-dw@davidwei.uk> <20241220141436.65513ff7@kernel.org>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <20241220141436.65513ff7@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20241221004236.2629280-1-almasrymina@google.com>
+Subject: [PATCH RFC net-next v1 0/5] Device memory TCP TX
+From: Mina Almasry <almasrymina@google.com>
+To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, virtualization@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: Mina Almasry <almasrymina@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>, David Ahern <dsahern@kernel.org>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	"=?UTF-8?q?Eugenio=20P=C3=A9rez?=" <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Kaiyuan Zhang <kaiyuanz@google.com>, Pavel Begunkov <asml.silence@gmail.com>, 
+	Willem de Bruijn <willemb@google.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Joe Damato <jdamato@fastly.com>, dw@davidwei.uk
+Content-Type: text/plain; charset="UTF-8"
 
-On 12/20/24 22:14, Jakub Kicinski wrote:
-> On Tue, 17 Dec 2024 16:37:29 -0800 David Wei wrote:
->>   struct dmabuf_genpool_chunk_owner {
->> -	/* Offset into the dma-buf where this chunk starts.  */
->> -	unsigned long base_virtual;
->> +	struct net_iov_area area;
->> +	struct net_devmem_dmabuf_binding *binding;
->>   
->>   	/* dma_addr of the start of the chunk.  */
->>   	dma_addr_t base_dma_addr;
-> 
-> Is there a good reason why dma addr is not part of net_iov_area?
-> net_iov_area is one chunk of continuous address space.
-> Instead of looping over pages in io_zcrx_map_area we could map
-> the whole thing in one go.
+The TX path had been dropped from the Device Memory TCP patch series
+post RFCv1 [1], to make that series slightly easier to review. This
+series rebases the implementation of the TX path on top of the
+net_iov/netmem framework agreed upon and merged. The motivation for
+the feature is thoroughly described in the docs & cover letter of the
+original proposal, so I don't repeat the lengthy descriptions here, but
+they are available in [1].
 
-It's not physically contiguous. The registration API takes
-contig user addresses, but that's not a hard requirement
-either.
+Sending this series as RFC as the winder closure is immenient. I plan on
+reposting as non-RFC once the tree re-opens, addressing any feedback
+I receive in the meantime.
+
+Full outline on usage of the TX path is detailed in the documentation
+added in the first patch.
+
+Test example is available via the kselftest included in the series as well.
+
+The series is relatively small, as the TX path for this feature largely
+piggybacks on the existing MSG_ZEROCOPY implementation.
+
+Patch Overview:
+---------------
+
+1. Documentation & tests to give high level overview of the feature
+   being added.
+
+2. Add netmem refcounting needed for the TX path.
+
+3. Devmem TX netlink API.
+
+4. Devmem TX net stack implementation.
+
+Testing:
+--------
+
+Testing is very similar to devmem TCP RX path. The ncdevmem test used
+for the RX path is now augemented with client functionality to test TX
+path.
+
+* Test Setup:
+
+Kernel: net-next with this RFC and memory provider API cherry-picked
+locally.
+
+Hardware: Google Cloud A3 VMs.
+
+NIC: GVE with header split & RSS & flow steering support.
+
+Performance results are not included with this version, unfortunately.
+I'm having issues running the dma-buf exporter driver against the
+upstream kernel on my test setup. The issues are specific to that
+dma-buf exporter and do not affect this patch series. I plan to follow
+up this series with perf fixes if the tests point to issues once they're
+up and running.
+
+Special thanks to Stan who took a stab at rebasing the TX implementation
+on top of the netmem/net_iov framework merged. Parts of his proposal [2]
+that are reused as-is are forked off into their own patches to give full
+credit.
+
+[1] https://lore.kernel.org/netdev/20240909054318.1809580-1-almasrymina@google.com/
+[2] https://lore.kernel.org/netdev/20240913150913.1280238-2-sdf@fomichev.me/T/#m066dd407fbed108828e2c40ae50e3f4376ef57fd
+
+Cc: sdf@fomichev.me
+Cc: asml.silence@gmail.com
+Cc: dw@davidwei.uk
+
+
+Mina Almasry (4):
+  net: add devmem TCP TX documentation
+  selftests: ncdevmem: Implement devmem TCP TX
+  net: add get_netmem/put_netmem support
+  net: devmem: Implement TX path
+
+Stanislav Fomichev (1):
+  net: devmem TCP tx netlink api
+
+ Documentation/netlink/specs/netdev.yaml       |  12 +
+ Documentation/networking/devmem.rst           | 140 +++++++++-
+ include/linux/skbuff.h                        |  13 +-
+ include/linux/skbuff_ref.h                    |   4 +-
+ include/net/netmem.h                          |   3 +
+ include/net/sock.h                            |   2 +
+ include/uapi/linux/netdev.h                   |   1 +
+ include/uapi/linux/uio.h                      |   5 +
+ net/core/datagram.c                           |  40 ++-
+ net/core/devmem.c                             | 101 ++++++-
+ net/core/devmem.h                             |  51 +++-
+ net/core/netdev-genl-gen.c                    |  13 +
+ net/core/netdev-genl-gen.h                    |   1 +
+ net/core/netdev-genl.c                        |  67 ++++-
+ net/core/skbuff.c                             |  38 ++-
+ net/core/sock.c                               |   9 +
+ net/ipv4/tcp.c                                |  36 ++-
+ net/vmw_vsock/virtio_transport_common.c       |   4 +-
+ tools/include/uapi/linux/netdev.h             |   1 +
+ .../selftests/drivers/net/hw/ncdevmem.c       | 261 +++++++++++++++++-
+ 20 files changed, 764 insertions(+), 38 deletions(-)
 
 -- 
-Pavel Begunkov
+2.47.1.613.gc27f4b7a9f-goog
 
