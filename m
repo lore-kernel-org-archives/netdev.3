@@ -1,133 +1,107 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9033410E4;
-	Sat, 21 Dec 2024 00:21:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7C1163;
+	Sat, 21 Dec 2024 00:49:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734740488; cv=none; b=Hoshe3Gp3KKh7ut3aIR4yua7xuGWtD6uzi+YSPBoMgcvKjdGUoo2eqDooGgYDBhbAmpC6E+NspVQfxlEIcYmOi5gNhGTlSa1pRx3zz+zQPgageaf/EN1s99dmOstZec7dbWYo7VeWmcDua1kIEODvJqiXOWt/+vBuNRmWbGe29k=
+	t=1734742194; cv=none; b=CWVXgPKHQPdeMOVlUKtqhQ5B0ke8w7fEo66v4FNDuktgotC7vOw5km9MAE9tli4G1LM7hXXrpUjkwBysFWcEzPPAQpthxL/8/oC0ntMbGQGSzGPe8F+6nU0J/4p7OdkfzQtj1BGsIxqm+jZrIW61AQvVcee0hVCIt16ilsZk+RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734740488; c=relaxed/simple;
-	bh=GGwqDms+SNf8TURcyOUaVLJc0I7ECAh1Y8shF1/ZEg0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dMI37UZqSIR8T6r2vKZfL507rdt3brU0AISQtxCsaiUNGk/8c1gGuLBwiBxcpvHlI2EiW1K2u+x5I9CEniU8LH5JqBeQvJFjKwB+YrgfhQubvYCAfNaYYLItmQ16ZB8P2vSNyXirjZVHRfD0Xx45bB+5ghAANxWTR8dElz0uJ+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=pnPXMmg6; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1734742194; c=relaxed/simple;
+	bh=SVUEiPqRIvm4db1/9DqcwGe7iYoIvQHWawpvUKd8GeQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Zx2fcbGgWXDa8wCuuu8ECf1vvsMpSeb44fSlgfE6+2JUZr5lZF6LRv0bL4WrEmFLJh9/ygu0SWb4SdRgZojAlh+cqT6t986bfZ+sr+DpEhTHbjYOgHjq5Y8dnN6GWtmtZO/5mTrd35CDVkFE4T0DrXWm+EBBjkGKmzE/tlID2rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ABGWrgfH; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="pnPXMmg6"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=K+nZfIkh+d773jKzbf4rPBeKd/KzrkARB65rKU6DBvc=; b=pnPXMmg678Cm+S1Kq8JCKdxTqm
-	MFqVw8+JfZ0vq8SYMgmLUDeeYlzgA7VsN4pazU9tXhg4rK3y203OeDTOYl4cE+XgDYBxvl7g645RZ
-	2aZzk8c7CO8ErZZM0BU5bTomr7NncsVFz6x2rT94FYLi3/h5jNF8Tcm476mYMn8UQl+bjmC9iYx80
-	8pVy9C8U2n1ql4Yu+4tDY8B5WgkPIeXEWs+C7fIjrKlblFgKHnFN2f+nntz7nhFeqyvfiv3nn5liI
-	+Zi/dKYLE5c7QZ17kcMKYd0Kpy8I174HbFAJFcBBp0IxkQCLf1/i9jT1frP/G6fsdttsigbU0wELK
-	EY4OYtZw==;
-Received: from 226.206.1.85.dynamic.cust.swisscom.net ([85.1.206.226] helo=localhost)
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1tOnFE-000MCq-7P; Sat, 21 Dec 2024 01:21:24 +0100
-From: Daniel Borkmann <daniel@iogearbox.net>
-To: torvalds@linux-foundation.org
-Cc: bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	alexei.starovoitov@gmail.com,
-	andrii@kernel.org,
-	daniel@iogearbox.net,
-	martin.lau@kernel.org
-Subject: [GIT PULL] bpf for v6.13-rc4
-Date: Sat, 21 Dec 2024 01:21:23 +0100
-Message-ID: <20241221002123.491623-1-daniel@iogearbox.net>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ABGWrgfH"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-436341f575fso26518805e9.1;
+        Fri, 20 Dec 2024 16:49:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734742191; x=1735346991; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dSzPtgNSx0y5b3UPhZtL4mj4qL312OPvg1+udWx+/5o=;
+        b=ABGWrgfHcEFWx3mLUBbJmf5esPZ3vjqKrt9EcVRG/Jx0p8P+nAg2Byw+hNHnej3giW
+         NPcVV/LkW1JV0uP+2Ir6nADaA7Znuz9eKCNUYUABpExm+6OVMD+qRxz2CHbdTjpJfyz4
+         zToKB6X/6JTM8rcuWGzS/jAPxPBFx+PopocaNggDtVjZ6zEjK0CKaf03LW+dQYL6gXs+
+         cB4ivB2o+ATYH7Lje4rVfqXjGzUMTsxpNq0mofVcx/cxDJnZDeSrcofrNHt5ycKxFpxS
+         ACJrbftl+rLMglomdBDU0t1cg6e4/dXlZitvnxvdSGZG84DmJGtXKdqD9yXXPekWEa3J
+         VWkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734742191; x=1735346991;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dSzPtgNSx0y5b3UPhZtL4mj4qL312OPvg1+udWx+/5o=;
+        b=KZdkBhP7Ro50xk5/gjey8f5w+J5EiADH8xLeh2kr/gvZoPXnQjNAdg2IG9lnL56FuU
+         W3jNUH0XMVxSGBhQpHB37FyRsziomuGiXs8x70NFwePJhbIr/8bk/veZRQkBG5b7xWlD
+         h83yNh0AxJKGYV7LbJIPnbaMy9roe9hpdJeeZ1rspAVs/cv7dCX6HolkMhes6cAUBglM
+         UlaOOFagZNYOI/9MsBgyBDhq3Np2nkV8OYIElRw9tIgAS+wNW2g3Rzi+WQI96Ur4wT15
+         QDpxoWIvrHrPNQ3+xhPJhW/CxE1B8NulZhEjhRJg5yT/IpywrYmPJrq/jqGycC9e53je
+         Kv2A==
+X-Forwarded-Encrypted: i=1; AJvYcCUQHPoQx0efgpCS4TOJ+stRitrldLLycBNxf61mHuOmxZw4pGeGvyKeS/37l4zlKeY4qxUsJ0k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVoJTIbAGVj5VWBqkYhvgllHoCGbgaR+w37/WgLVlV1nu17hlD
+	sc9ylkz4oWlRPOxjO/KlDmH8Y/i4tIur2/vJ5ZGBY6Jh9xxblnkpF2TimQ==
+X-Gm-Gg: ASbGncsplsmaPJ83d+xaa/5z84A2KPwG99Bf1hpuOCZ/TrDPWfDLkGRikAFsDWK7gve
+	liE8k3hZDzO9IdbQjOlfgH/91/p8Y00eCtYkbNl6tKrcvPLGJqfjLyhyiIjhrOAnTbvx9L35BRz
+	Y9BpwuNmi7tdPs59Gf9stT90RpycUwqvQnRPM1q9x1sdCZYe4EnJzZZwIxXfVqQ2dOtBqu0FCBe
+	srUWP4Tifo9EFZb5yUGt+gEtk9GgOnuHyHui/h7m8E2BWBHksJy6b1zAxPZiGFF6Rk=
+X-Google-Smtp-Source: AGHT+IG7IKcCMm+m23l843c+BPbqEHBOl3c6DtL6EgisGXdvTe/M2m4vQitSaDwgUPp5YjAFcOzjcg==
+X-Received: by 2002:a05:600c:35c9:b0:434:f753:6012 with SMTP id 5b1f17b1804b1-436686440bemr47198355e9.17.1734742191256;
+        Fri, 20 Dec 2024 16:49:51 -0800 (PST)
+Received: from [192.168.42.184] ([185.69.144.186])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b442dasm93329235e9.42.2024.12.20.16.49.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Dec 2024 16:49:50 -0800 (PST)
+Message-ID: <5d308d1b-4c9d-430e-b116-e669bd778b30@gmail.com>
+Date: Sat, 21 Dec 2024 00:50:37 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27493/Fri Dec 20 10:46:49 2024)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v9 03/20] net: generalise net_iov chunk owners
+To: Jakub Kicinski <kuba@kernel.org>, David Wei <dw@davidwei.uk>
+Cc: io-uring@vger.kernel.org, netdev@vger.kernel.org,
+ Jens Axboe <axboe@kernel.dk>, Paolo Abeni <pabeni@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, David Ahern <dsahern@kernel.org>,
+ Mina Almasry <almasrymina@google.com>,
+ Stanislav Fomichev <stfomichev@gmail.com>, Joe Damato <jdamato@fastly.com>,
+ Pedro Tammela <pctammela@mojatatu.com>
+References: <20241218003748.796939-1-dw@davidwei.uk>
+ <20241218003748.796939-4-dw@davidwei.uk> <20241220141436.65513ff7@kernel.org>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20241220141436.65513ff7@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Linus,
+On 12/20/24 22:14, Jakub Kicinski wrote:
+> On Tue, 17 Dec 2024 16:37:29 -0800 David Wei wrote:
+>>   struct dmabuf_genpool_chunk_owner {
+>> -	/* Offset into the dma-buf where this chunk starts.  */
+>> -	unsigned long base_virtual;
+>> +	struct net_iov_area area;
+>> +	struct net_devmem_dmabuf_binding *binding;
+>>   
+>>   	/* dma_addr of the start of the chunk.  */
+>>   	dma_addr_t base_dma_addr;
+> 
+> Is there a good reason why dma addr is not part of net_iov_area?
+> net_iov_area is one chunk of continuous address space.
+> Instead of looping over pages in io_zcrx_map_area we could map
+> the whole thing in one go.
 
-The following changes since commit 78d4f34e2115b517bcbfe7ec0d018bbbb6f9b0b8:
+It's not physically contiguous. The registration API takes
+contig user addresses, but that's not a hard requirement
+either.
 
-  Linux 6.13-rc3 (2024-12-15 15:58:23 -0800)
+-- 
+Pavel Begunkov
 
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf.git tags/bpf-fixes
-
-for you to fetch changes up to 4a58963d10fa3cb654b859e3f9a8aecbcf9f4982:
-
-  selftests/bpf: Test bpf_skb_change_tail() in TC ingress (2024-12-20 23:13:31 +0100)
-
-----------------------------------------------------------------
-BPF fixes:
-
-- Fix inlining of bpf_get_smp_processor_id helper for !CONFIG_SMP
-  systems (Andrea Righi)
-
-- Fix BPF USDT selftests helper code to use asm constraint "m"
-  for LoongArch (Tiezhu Yang)
-
-- Fix BPF selftest compilation error in get_uprobe_offset when
-  PROCMAP_QUERY is not defined (Jerome Marchand)
-
-- Fix BPF bpf_skb_change_tail helper when used in context of
-  BPF sockmap to handle negative skb header offsets (Cong Wang)
-
-- Several fixes to BPF sockmap code, among others, in the area
-  of socket buffer accounting (Levi Zim, Zijian Zhang, Cong Wang)
-
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-
-----------------------------------------------------------------
-Andrea Righi (1):
-      bpf: Fix bpf_get_smp_processor_id() on !CONFIG_SMP
-
-Cong Wang (5):
-      tcp_bpf: Charge receive socket buffer in bpf_tcp_ingress()
-      bpf: Check negative offsets in __bpf_skb_min_len()
-      selftests/bpf: Add a BPF selftest for bpf_skb_change_tail()
-      selftests/bpf: Introduce socket_helpers.h for TC tests
-      selftests/bpf: Test bpf_skb_change_tail() in TC ingress
-
-Jerome Marchand (1):
-      selftests/bpf: Fix compilation error in get_uprobe_offset()
-
-Levi Zim (2):
-      skmsg: Return copied bytes in sk_msg_memcopy_from_iter
-      tcp_bpf: Fix copied value in tcp_bpf_sendmsg
-
-Tiezhu Yang (1):
-      selftests/bpf: Use asm constraint "m" for LoongArch
-
-Zijian Zhang (1):
-      tcp_bpf: Add sk_rmem_alloc related logic for tcp_bpf ingress redirection
-
- include/linux/skmsg.h                              |  11 +-
- include/net/sock.h                                 |  10 +-
- kernel/bpf/verifier.c                              |   6 +-
- net/core/filter.c                                  |  21 +-
- net/core/skmsg.c                                   |  11 +-
- net/ipv4/tcp_bpf.c                                 |  14 +-
- .../selftests/bpf/prog_tests/socket_helpers.h      | 394 +++++++++++++++++++++
- .../selftests/bpf/prog_tests/sockmap_basic.c       |  51 +++
- .../selftests/bpf/prog_tests/sockmap_helpers.h     | 385 +-------------------
- .../selftests/bpf/prog_tests/tc_change_tail.c      |  62 ++++
- .../selftests/bpf/progs/test_sockmap_change_tail.c |  40 +++
- .../selftests/bpf/progs/test_tc_change_tail.c      | 106 ++++++
- tools/testing/selftests/bpf/sdt.h                  |   2 +
- tools/testing/selftests/bpf/trace_helpers.c        |   4 +
- 14 files changed, 712 insertions(+), 405 deletions(-)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/socket_helpers.h
- create mode 100644 tools/testing/selftests/bpf/prog_tests/tc_change_tail.c
- create mode 100644 tools/testing/selftests/bpf/progs/test_sockmap_change_tail.c
- create mode 100644 tools/testing/selftests/bpf/progs/test_tc_change_tail.c
