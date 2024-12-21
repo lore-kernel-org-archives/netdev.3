@@ -1,140 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.eurecom.fr (smtp.eurecom.fr [193.55.113.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E211F6692;
-	Sat, 21 Dec 2024 11:09:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DF41F37A5;
+	Sat, 21 Dec 2024 11:15:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.55.113.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734779370; cv=none; b=eX+xKWWPL96+BFkUz88Zr6lKpfl1sOIkOQ+ESjgdOhh9BDK9HGTxlt7Mi88JUbaQ3mnqXWclsdU67XwsiuZvyV1Zlo0dCb49Iq4ixGm+v4nfwkM55JAmVg6Fch6ugXDHVAAPWXBezOxotImdA8ZyXzH+q7p1vB1FyO44GYZ330I=
+	t=1734779719; cv=none; b=k4nQlytifw9SPtkoUcrOlsz0FfUNsnNlttIeww5wVGvXaKKXS+cDx1CWUFQHHHpw9w1LbwCkYRh9rZ4aAmDmGhpSxu+xw53qb1SQH2qKIELaX+K5/xdBJOe+kG0MV9oR7Y3j8CGktoohwrmIESenXKslYnJN2KXFQBU51Wo0Ch8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734779370; c=relaxed/simple;
-	bh=QRpkcpc59deBZi3zJVNk1kxfy0JxjlG1o513S2C1O8E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hgEzlGmnosyB5+Z46AzoMUOHVh6VIc6AEU9ig4FAvXYn/VZ03LQk9nabqevEgpxV31q0maXqwGZB0j9GbZX6n29P/xfgIhwtXYByX5J22htNDw5L7z3xugGvzZMZYp4Ltvo+MYsPadX/aZgu2KFwb41k7VyWL5wpAX2lqM4vpSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jBF0Mt6R; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734779719; c=relaxed/simple;
+	bh=uEmo1klH0U7SH5rDjz3FuRRP2JFUHt/yzHHWnAmkJws=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DNkDZ9Kt+uLdyNV8YLQmbLPQPpqKbrEh+K2jp+FuvlYPyuF1RtcMkBLIvkRUOvH7sPfMCFSGgF6YFlnJss40GMH5l4UFxJwBJu/6sFu8LIVm1vShtQMPgO+KtkhP16Fh/F1GEoxQhGIT15BDs0qGOXDIj0NxKmtbUrabFY20X6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eurecom.fr; spf=pass smtp.mailfrom=eurecom.fr; dkim=pass (1024-bit key) header.d=eurecom.fr header.i=@eurecom.fr header.b=D0Dcjtqp; arc=none smtp.client-ip=193.55.113.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eurecom.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eurecom.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jBF0Mt6R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46CF4C4CED7;
-	Sat, 21 Dec 2024 11:09:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734779369;
-	bh=QRpkcpc59deBZi3zJVNk1kxfy0JxjlG1o513S2C1O8E=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=jBF0Mt6RHpOtbsuNIslqB7Re4DAOkEePF4SAbczB3O8J+Se9Q3X5y4lFR2XoBi/qR
-	 HgPNRxlZZ8hlvSODJj0wXU81RfiQbwN+1bb1EDbsffTnnzV7+FFg76EhBldIivdNOy
-	 bptLn0jN6qfu5ndqh5t3P1U9N4tq14a/4GfWtJ45MJtE6ghXBkHTaHFYXZkl7HHwZP
-	 5mTGqUOrAPsS+/h/IS+gVAeZgG32V5SsDXYf3dznGd4pg6iKYoTpyUBSJkJb/xtGQF
-	 hhVOUxwPwhKGp13DY+W9saQppqIuI6uoYUOrN/sQRVDmIEEGGUUPASOXBpdajJPLa/
-	 /78KpLySrxqbA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Sat, 21 Dec 2024 12:09:16 +0100
-Subject: [PATCH net v2 3/3] netlink: specs: mptcp: fix missing doc
+	dkim=pass (1024-bit key) header.d=eurecom.fr header.i=@eurecom.fr header.b="D0Dcjtqp"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=eurecom.fr; i=@eurecom.fr; q=dns/txt; s=default;
+  t=1734779716; x=1766315716;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=uEmo1klH0U7SH5rDjz3FuRRP2JFUHt/yzHHWnAmkJws=;
+  b=D0DcjtqpcpDlW6Wn6VM2XID4PiRCRuag3oWs6kdNg7On7I81jUtEf7Xf
+   v+EyKeKmlTAisQGGCLX8pQiOnKuADmbrRgNzdGxshquRAaf8YcsitH4nB
+   arWMFIndvoj6Ki3RF+njRJckqN5m9EwG1ZXlIAyiRJO6HcyQmP9/MUL9w
+   U=;
+X-CSE-ConnectionGUID: R61O3hRBSjuysspIkS5DpA==
+X-CSE-MsgGUID: p9IExXMRSMCJ6o8EooLJsg==
+X-IronPort-AV: E=Sophos;i="6.12,253,1728943200"; 
+   d="scan'208";a="28285769"
+Received: from waha.eurecom.fr (HELO smtps.eurecom.fr) ([10.3.2.236])
+  by drago1i.eurecom.fr with ESMTP; 21 Dec 2024 12:15:07 +0100
+Received: from localhost.localdomain (88-183-119-157.subs.proxad.net [88.183.119.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtps.eurecom.fr (Postfix) with ESMTPSA id 9155D24E0;
+	Sat, 21 Dec 2024 12:15:06 +0100 (CET)
+From: Ariel Otilibili <ariel.otilibili-anieli@eurecom.fr>
+To: linux-media@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-can@vger.kernel.org
+Cc: Ariel Otilibili <ariel.otilibili-anieli@eurecom.fr>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Sunil Goutham <sgoutham@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	hariprasad <hkelam@marvell.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Subject: [PATCH v2 0/3] broadcom, ethernet/marvell,cx231xx,can/dev: Remove unused values and dead code
+Date: Sat, 21 Dec 2024 12:06:46 +0100
+Message-ID: <20241221111454.1074285-1-ariel.otilibili-anieli@eurecom.fr>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241221035352.1020228-1-ariel.otilibili-anieli@eurecom.fr>
+References: <20241221035352.1020228-1-ariel.otilibili-anieli@eurecom.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241221-net-mptcp-netlink-specs-pm-doc-fixes-v2-3-e54f2db3f844@kernel.org>
-References: <20241221-net-mptcp-netlink-specs-pm-doc-fixes-v2-0-e54f2db3f844@kernel.org>
-In-Reply-To: <20241221-net-mptcp-netlink-specs-pm-doc-fixes-v2-0-e54f2db3f844@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
- Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Davide Caratti <dcaratti@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2249; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=QRpkcpc59deBZi3zJVNk1kxfy0JxjlG1o513S2C1O8E=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnZqHde4aO63EFlbqwVijkoere635EuchTCPAXd
- O74THRvly+JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ2ah3QAKCRD2t4JPQmmg
- c7KKEACFnQCfH3qc6jrWpaeOZarnpXR+MIfJiMsm9h/7A1T6asAioINoC9XYwm1O+jVO7x2F1ps
- 7HWJyzJ7W0H4kDAqJ89SyTml9U5n9QrzVluiccNWwJgZcJqIwH8Ws2cnbhK20PZvTBwSFOmeRF/
- J1M1HgxGbx1MVTSPYwO7SeGIOAjaDt0iJqd6vAQ+vkvDeFDtw1LPfsbub4nPDn4iJbC/TzkcV/J
- 7vF3UWMfW639yPBMZQ7vZgMFS56q5E6J+LMNs/oAdlxfZpwa7jkXLlhhYpwcRrTvi6vTk0+DwXx
- sEsP831orvzPTW7zcoJ35MZipznKh2p1WvlKc3K4bk7xeLjsbKBvuCt4Wz7BzoBz6S2iqolPVZi
- t3NWbZJxEi1QP9tCv15kHMtQz0mpJ8yoG+yFXszXzbCMvPsoxzohmWfX5HJ31/yyIuu7nFKahiq
- YrpIbtYFx8ezu1DqjXMPDhzHkxtuMbGCtj2wiuY6kkaWwrSUn6gUEXxbaCFi3F6fFLgS1eIpcbR
- WNGZ/AgzHoSk2DokY2EKhLBVE0gksyfYthC6FsBjTcOtZ+Ae8wcDo5tYfcSOSL9Eh86caT7irOh
- /cOrszLfVo4zaKR5yWlAU4s7DVo53vEtuq0KYawoAXVN5y+agLOu1CrihGyGp76wq8BBCYlve1/
- PI6gbKvMfGZXGyA==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-Two operations didn't have a small description. It looks like something
-that has been missed in the original commit introducing this file.
+Hello,
 
-Replace the two "todo" by a small and simple description: Create/Destroy
-subflow.
+This series clears out the Coverity IDs 1487817, 1561102, 1497123,
+& 1269153.
 
-While at it, also uniform the capital letters, avoid double spaces, and
-fix the "announce" event description: a new "address" has been
-announced, not a new "subflow".
+Thank you,
+--
+v2:
+* fixed CI warnings
+* see, https://linux-media.pages.freedesktop.org/-/users/patchwork/-/jobs/68562001/artifacts/report.htm
 
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
-Notes:
-  - v2: Removed Fixes tag (Jakub).
----
- Documentation/netlink/specs/mptcp_pm.yaml | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Ariel Otilibili (3):
+  drivers/firmware/broadcom, ethernet/marvell: Remove unused values
+  usb/cx231xx: Remove unused value
+  net/can/dev: Remove dead code
 
-diff --git a/Documentation/netlink/specs/mptcp_pm.yaml b/Documentation/netlink/specs/mptcp_pm.yaml
-index 59087a23056510dfb939b702e231b6e97ae042c7..dfd017780d2f942eefd6e5ab0f1edd3fba653172 100644
---- a/Documentation/netlink/specs/mptcp_pm.yaml
-+++ b/Documentation/netlink/specs/mptcp_pm.yaml
-@@ -308,8 +308,8 @@ operations:
-          attributes:
-            - addr
-     -
--      name:  flush-addrs
--      doc: flush addresses
-+      name: flush-addrs
-+      doc: Flush addresses
-       attribute-set: endpoint
-       dont-validate: [ strict ]
-       flags: [ uns-admin-perm ]
-@@ -353,7 +353,7 @@ operations:
-             - addr-remote
-     -
-       name: announce
--      doc: announce new sf
-+      doc: Announce new address
-       attribute-set: attr
-       dont-validate: [ strict ]
-       flags: [ uns-admin-perm ]
-@@ -364,7 +364,7 @@ operations:
-             - token
-     -
-       name: remove
--      doc: announce removal
-+      doc: Announce removal
-       attribute-set: attr
-       dont-validate: [ strict ]
-       flags: [ uns-admin-perm ]
-@@ -375,7 +375,7 @@ operations:
-            - loc-id
-     -
-       name: subflow-create
--      doc: todo
-+      doc: Create subflow
-       attribute-set: attr
-       dont-validate: [ strict ]
-       flags: [ uns-admin-perm ]
-@@ -387,7 +387,7 @@ operations:
-             - addr-remote
-     -
-       name: subflow-destroy
--      doc: todo
-+      doc: Destroy subflow
-       attribute-set: attr
-       dont-validate: [ strict ]
-       flags: [ uns-admin-perm ]
+ drivers/firmware/broadcom/tee_bnxt_fw.c                   | 2 --
+ drivers/media/usb/cx231xx/cx231xx-avcore.c                | 1 -
+ drivers/net/can/dev/dev.c                                 | 2 --
+ drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c | 2 --
+ 4 files changed, 7 deletions(-)
 
 -- 
 2.47.1
