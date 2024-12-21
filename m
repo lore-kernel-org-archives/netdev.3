@@ -1,34 +1,34 @@
 Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D4816DEA9;
-	Sat, 21 Dec 2024 18:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47AC91714A0;
+	Sat, 21 Dec 2024 18:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734806586; cv=none; b=q68vZ2rEpeZSiIo12lfYGGaJOXKlXw+4LbD6TEuFWDSkOGHZVtQMVMFun8XoAVAWRVrR7f3cwWqmdbpcFmSNNM1w7/gZSAEfJeOV09TzFUF7o3WHWQX4DEtggeEL6dIbHwuIuLl+pd61W6gX6HOwL8MVWXKTo7O2tGBYoI7nz4E=
+	t=1734806586; cv=none; b=GJGrLdxk3JdXV20oOSSgTWzdtKahWT5NQwoFUi/06BXggL6JStgpxZBrfHb0jGJOXlXiK23uIxYwCIl5WBCobkMe3TuDNDjgxeiW/G30rItLTOdzQW2CWvKfSnxdYE7abR1HNuuU1o9J6Pv+RG/7ewxhu7bxgSA62o37ZvsURPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734806586; c=relaxed/simple;
-	bh=y5nsRiUgPYgh8AAUFzUWMtxYlBmmeazEtoG6wRvTtg0=;
+	bh=64HivjMwiTCsKCwDvJXTfFGcMXunD03+i+5sLHwZCd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OpDU3ovctAUpYIEcUeOIh1PZqYJ9RX3fpR4AnspOMx/ZC0WANTuWH/VZEFYdYwOkB03pbITXoXkV6UUQTBe75D3LDSkTWe+hSjnj4qTHHba0/SQ6OwzCxqNM94zWjfK0RlY8yGgRji2Vq7lguKf5MQ7YnxbwcSJjNuVhOOG8amg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=BjVUyv30; arc=none smtp.client-ip=46.235.229.95
+	 MIME-Version; b=CycIsf6+8GQ/yhYr473/42fR6t2CBnqChJeyrO7mjxk4BWw3eXcqbVh6aq+uh5cOyKVhXwehEiJ7bGMGffhHP+YZZiueDZvpAEzye1NVnhpyWHl8NDr4JUsVV5gATHd8QTT+hkvfvFS9+6bd2ohGMhWabjX6FQ+FatDYOKVj63s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=YZIEluBG; arc=none smtp.client-ip=46.235.229.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="BjVUyv30"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="YZIEluBG"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
 	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=garTpmgVCRsiT24Y9HEp7HK8vg0zYHqQEomkjWoz8/w=; b=BjVUyv30k10NKb4V
-	BD/soBvi+aNB0pLq2CxbwiFFVrt/qrxTsUAa8VQGWOMzNlR35rI4HL401F6bmmKHsHSXKWuj7ecar
-	e6ve3xi17zgbPK0aTzDcOjlXfl1aGAWhGMEgqf45x8fhPt684jXbxgcUXsS8jUrbk2qEU9k3KpoR4
-	6raYUIWtyXRg0Q3lFkXO8RFoHi+OgXAd5vZSPZYLfW7QlxKri0TDHRLWtZU1FHnxrsFl95XLX3LTW
-	8ppX04UEx7WjddB+mLzkMCj+yPzPJMs5/NHgWKRbd4Mc92nwwrt0Uj+MparB5IsoslFPs/79VyWhp
-	OIr/8FBpUiSVBBRH4g==;
+	:Subject; bh=9815t0aBUmhZMZg7qPMHeKGmKhqpBIRlTkKfE9H7HIQ=; b=YZIEluBGo4FbX6Qt
+	3aEAi82m9DrLZc/NDPxBEX9w2zcBL/wWHvXPx2biveJ+DZV/VOn/8V8ZajFWEANg/5SRIN6wMezTj
+	4CH8KrFXnjqyUi5CthpCGqufuVNtdsytB/jLXeYxG7TGxjLwrjl2hyjEZ4Vn0bqi02kArheoYpGv2
+	8gf/FR7n2QqLtRmdoamvnK/Q+SfS0W0D4UBubrSHqTaDUoCS1XN769f7eEY7sz3qURmfjOvYnd5xp
+	jqtKGSCpIBFj+DgCpxXhD+zTB+Z7V9XyAo4ijcu/aBBw9SlszVQAv6uBd9tDTeSS/XPAJXagMFSwe
+	f1fJnjk04MB5A14gCw==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
 	by mx.treblig.org with esmtp (Exim 4.96)
 	(envelope-from <linux@treblig.org>)
-	id 1tP4RA-006hEJ-05;
-	Sat, 21 Dec 2024 18:42:52 +0000
+	id 1tP4R9-006hEJ-14;
+	Sat, 21 Dec 2024 18:42:51 +0000
 From: linux@treblig.org
 To: anthony.l.nguyen@intel.com,
 	przemyslaw.kitszel@intel.com,
@@ -41,9 +41,9 @@ To: anthony.l.nguyen@intel.com,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [RFC net-next 6/9] i40e: Remove unused i40e_del_filter
-Date: Sat, 21 Dec 2024 18:42:44 +0000
-Message-ID: <20241221184247.118752-7-linux@treblig.org>
+Subject: [RFC net-next 5/9] i40e: Remove unused i40e_get_cur_guaranteed_fd_count
+Date: Sat, 21 Dec 2024 18:42:43 +0000
+Message-ID: <20241221184247.118752-6-linux@treblig.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241221184247.118752-1-linux@treblig.org>
 References: <20241221184247.118752-1-linux@treblig.org>
@@ -57,80 +57,53 @@ Content-Transfer-Encoding: 8bit
 
 From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-The last use of i40e_del_filter() was removed in 2016 by
-commit 9569a9a4547d ("i40e: when adding or removing MAC filters, correctly
-handle VLANs")
+The last use of i40e_get_cur_guaranteed_fd_count() was removed in 2015 by
+commit 04294e38a451 ("i40e: FD filters flush policy changes")
 
 Remove it.
-
-Fix up a comment that referenced it.
-
-Note: The __ version of this function is still used.
 
 Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 ---
  drivers/net/ethernet/intel/i40e/i40e.h      |  1 -
- drivers/net/ethernet/intel/i40e/i40e_main.c | 28 ++-------------------
- 2 files changed, 2 insertions(+), 27 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 13 -------------
+ 2 files changed, 14 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 5d9738b746f4..399a5dbf3506 100644
+index d4255c2706fa..5d9738b746f4 100644
 --- a/drivers/net/ethernet/intel/i40e/i40e.h
 +++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -1196,7 +1196,6 @@ void i40e_set_ethtool_ops(struct net_device *netdev);
- struct i40e_mac_filter *i40e_add_filter(struct i40e_vsi *vsi,
- 					const u8 *macaddr, s16 vlan);
- void __i40e_del_filter(struct i40e_vsi *vsi, struct i40e_mac_filter *f);
--void i40e_del_filter(struct i40e_vsi *vsi, const u8 *macaddr, s16 vlan);
- int i40e_sync_vsi_filters(struct i40e_vsi *vsi);
- struct i40e_vsi *i40e_vsi_setup(struct i40e_pf *pf, u8 type,
- 				u16 uplink, u32 param1);
+@@ -1189,7 +1189,6 @@ int i40e_add_del_fdir(struct i40e_vsi *vsi,
+ 		      struct i40e_fdir_filter *input, bool add);
+ void i40e_fdir_check_and_reenable(struct i40e_pf *pf);
+ u32 i40e_get_current_fd_count(struct i40e_pf *pf);
+-u32 i40e_get_cur_guaranteed_fd_count(struct i40e_pf *pf);
+ u32 i40e_get_current_atr_cnt(struct i40e_pf *pf);
+ u32 i40e_get_global_fd_count(struct i40e_pf *pf);
+ bool i40e_set_ntuple(struct i40e_pf *pf, netdev_features_t features);
 diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 83ba1effe8ba..276dde0bc1d4 100644
+index 0e1d9e2fbf38..83ba1effe8ba 100644
 --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
 +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -1666,9 +1666,8 @@ struct i40e_mac_filter *i40e_add_filter(struct i40e_vsi *vsi,
-  * @vsi: VSI to remove from
-  * @f: the filter to remove from the list
-  *
-- * This function should be called instead of i40e_del_filter only if you know
-- * the exact filter you will remove already, such as via i40e_find_filter or
-- * i40e_find_mac.
-+ * This function requires you've found * the exact filter you will remove
-+ * already, such as via i40e_find_filter or i40e_find_mac.
-  *
-  * NOTE: This function is expected to be called with mac_filter_hash_lock
-  * being held.
-@@ -1697,29 +1696,6 @@ void __i40e_del_filter(struct i40e_vsi *vsi, struct i40e_mac_filter *f)
- 	set_bit(__I40E_MACVLAN_SYNC_PENDING, vsi->back->state);
+@@ -9628,19 +9628,6 @@ static void i40e_handle_lan_overflow_event(struct i40e_pf *pf,
+ 	i40e_reset_vf(vf, false);
  }
  
 -/**
-- * i40e_del_filter - Remove a MAC/VLAN filter from the VSI
-- * @vsi: the VSI to be searched
-- * @macaddr: the MAC address
-- * @vlan: the VLAN
-- *
-- * NOTE: This function is expected to be called with mac_filter_hash_lock
-- * being held.
-- * ANOTHER NOTE: This function MUST be called from within the context of
-- * the "safe" variants of any list iterators, e.g. list_for_each_entry_safe()
-- * instead of list_for_each_entry().
+- * i40e_get_cur_guaranteed_fd_count - Get the consumed guaranteed FD filters
+- * @pf: board private structure
 - **/
--void i40e_del_filter(struct i40e_vsi *vsi, const u8 *macaddr, s16 vlan)
+-u32 i40e_get_cur_guaranteed_fd_count(struct i40e_pf *pf)
 -{
--	struct i40e_mac_filter *f;
+-	u32 val, fcnt_prog;
 -
--	if (!vsi || !macaddr)
--		return;
--
--	f = i40e_find_filter(vsi, macaddr, vlan);
--	__i40e_del_filter(vsi, f);
+-	val = rd32(&pf->hw, I40E_PFQF_FDSTAT);
+-	fcnt_prog = (val & I40E_PFQF_FDSTAT_GUARANT_CNT_MASK);
+-	return fcnt_prog;
 -}
 -
  /**
-  * i40e_add_mac_filter - Add a MAC filter for all active VLANs
-  * @vsi: the VSI to be searched
+  * i40e_get_current_fd_count - Get total FD filters programmed for this PF
+  * @pf: board private structure
 -- 
 2.47.1
 
