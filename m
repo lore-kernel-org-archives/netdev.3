@@ -1,113 +1,189 @@
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FECB848C;
-	Mon, 23 Dec 2024 10:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E5418DF6D
+	for <netdev@vger.kernel.org>; Mon, 23 Dec 2024 10:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734949835; cv=none; b=mlN9zFNJfF2WP4SVwVpQ3jRz+2QcDSixbOYYiNZ7+HHIrp+sLGqNYxuE8Kia3/RhJWQnNG4MuusesTjw61/hui+LGlUo2ez0UZ1xVwbzmHaFMjnXforep8pFplruJxsPuzSCTVZtM0k/+StU6q3558EcXZDphcZneGvWj93WOng=
+	t=1734950424; cv=none; b=m1P0GBTuUMamPv06VDb3hEjpsO8pC8oNMf6cns9K+5ykNq735aCtmqP8pRuIZ4xN5onqq5lzqjJry2+27Tv1qZsIGifbHw+9rCYdzCzX2iCC6b+rvQ/JZZOgHOSmpJU+IDXt+YoYOohQYWPIt4qNIwzDPe5WzC8vPhPok765mgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734949835; c=relaxed/simple;
-	bh=kDm1sAt+O4kHBSJCuBBHzHsCJBF8U8ikxo6OzXtBvg8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Miv4S8GWVfcUmXVFHMIFJ2LHmr/3ViOvOYQen4SeV1LtRbGhOEOXGMjpxLy3c/M+ceJjzZpl2z90reLsXK0R76qfYOrtKLq4VxpQHlSm/Nd8rLN+b0YPaE2/YG2gwyOF/zuOZ0jNFhN09yZl3VHu+QgpcswRHDyYSQPKS3hkkZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=OyXSi7ZL; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1734950424; c=relaxed/simple;
+	bh=ydItanMfRrLKIb6x2HACTspnsqMdZK6gqicgj08D9yM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CcRUWEfcvJzRuB9Rha5IbnqLT96KGVjm/7MmjDLTrT0wWg9j2lPEi3INKG2BklGe0pmEXOftCkc8/IQAKMMloT9b15VpgRiriDNPnfyjZnIR1cYzSlAKaLRfbpapkE9ZEBmlbcck7P7I+r5vfiBfZjwzZOor4Fym7PXXFIq2L7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DU9AY154; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="OyXSi7ZL"
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4BN9Q1ue102780;
-	Mon, 23 Dec 2024 03:26:01 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1734945961;
-	bh=9bpx0lCCmv5pmkfeEr0posXIsEvx66W2A+erLgVfVs8=;
-	h=From:To:CC:Subject:Date;
-	b=OyXSi7ZLnNnJ/ooqUOaDgBg7tqDnHc3fX7pJptEXxCaRSlDb3AH6Ii36cgIMCXbDE
-	 xrVPGMaQ+b+vkVPC3LPljCJunH3YwmMw/tq49YOOOZiNSchIz2cLgFNn0gfh1vd25q
-	 5Z9anWQ3XjQZnh0tM9dKpZfIV3iAtpVJXXngMvGE=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4BN9Q1Db013408
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 23 Dec 2024 03:26:01 -0600
-Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 23
- Dec 2024 03:26:00 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 23 Dec 2024 03:26:00 -0600
-Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4BN9Q0o1127786;
-	Mon, 23 Dec 2024 03:26:00 -0600
-Received: from localhost (danish-tpc.dhcp.ti.com [10.24.69.25])
-	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 4BN9PxKk006688;
-	Mon, 23 Dec 2024 03:25:59 -0600
-From: MD Danish Anwar <danishanwar@ti.com>
-To: <wojciech.drewek@intel.com>, <n.zhandarovich@fintech.ru>,
-        <aleksander.lobakin@intel.com>, <lukma@denx.de>, <m-malladi@ti.com>,
-        <diogo.ivo@siemens.com>, <horms@kernel.org>, <pabeni@redhat.com>,
-        <kuba@kernel.org>, <edumazet@google.com>, <davem@davemloft.net>,
-        <andrew+netdev@lunn.ch>
-CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
-        Vignesh Raghavendra
-	<vigneshr@ti.com>,
-        Roger Quadros <rogerq@kernel.org>, <danishanwar@ti.com>,
-        Larysa Zaremba <larysa.zaremba@intel.com>,
-        Michal Swiatkowski
-	<michal.swiatkowski@linux.intel.com>
-Subject: [PATCH net-next v2 0/3] Add Multicast Filtering support for VLAN interface
-Date: Mon, 23 Dec 2024 14:55:54 +0530
-Message-ID: <20241223092557.2077526-1-danishanwar@ti.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DU9AY154"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-aa6a92f863cso452116566b.1
+        for <netdev@vger.kernel.org>; Mon, 23 Dec 2024 02:40:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734950421; x=1735555221; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pf4JaKxuWpYPFUNNneD9DBJ1LyHqPno0jXSxJEHiUZA=;
+        b=DU9AY154OPGyGekoOTiB2qVnd1qnRjiVtGbHsu6wRf4eSu2g7d8NJlyS72z7thFo0c
+         pAqHyxOEcpSKdjTEuTM2/iy6dKYH7W12WySpdK0mu64rux8AajJUaHLSvkwFaBjYbiSb
+         i4Z0pmk/Mi65qo2LoZa8vkUiT4kjay9nhJa2mnRoZCeOBWu7vrdK4PH3sU1r7NOcsZBB
+         HTk98UrfgyPKjFGPk/rHGAeZzuOpgom6m6y8n9IUzDCWGm4Mz23ifPBfH7qDGefIu1Fj
+         DQ5f7B1h22ZSs6O9XJ+NP6hAvskyEFHjq6JG25FjoHdkfX1rOIQOFK9+vUiDvyn2LawY
+         X8Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734950421; x=1735555221;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pf4JaKxuWpYPFUNNneD9DBJ1LyHqPno0jXSxJEHiUZA=;
+        b=rtQ691HNsxW0fkQP3qGgav/2pRTNPS2Gap14DaOpcrMEaiaadbQlJ4IeGz68cjVU5j
+         b6x4aL1NbQa6muNDTQgK5wBlSec8GHOAX2JdW6nNeh/NZqRpN3J6gkyfB7NtyxU54zfh
+         gngFWVvSwD3NxRPJZR+SrxlQWysCHNIjQtQpUhTGVxyOf+xg9J9nPz9l/HcbFPanlQez
+         1hDdtTiNy40c0Lgn5ap147w1WuY6QUAb4uiQL8wIHhza4IIOrs7R56LY6CChWTCUuz6+
+         9cFPbxlxKu5/cS2ItojOs3+7U0HiVLYIR0tDkm3vnFDlZDRZl4ehLqNSG+cEgzF5FIXt
+         ixYw==
+X-Forwarded-Encrypted: i=1; AJvYcCVyIkfVI+ZVnDb++OJ1p//oAmRwT9y9+jcD1hLN3LNE9fX6pV+KCJvgJW9E0oweVjCh/0AMXqE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxdvkq1iPo2ln0JJtPoQp/1MKMoF3tIz8nZvw9743+4HrEN5usf
+	RUr03w0gmky549ynHTI/ZkFxfbxVX7gD7fX8tltPg8T4kCFG0hHBz8V6yaIGTCcvJ2HrM7ji+wy
+	FudsC7nbYm4pDLWzUDnKXu1XU8CY2s+6FZWHr
+X-Gm-Gg: ASbGnctqPgIei+X1IeElwAvQcxqBsuHlz+A1J55whxcQhMrpNZtcIiHnnJzZJp0VOEo
+	ME2xCenOgk+FhHS4RH+lBeNU6DMr8nWUxhnQfqk4=
+X-Google-Smtp-Source: AGHT+IEeISI7MG6p02f1xgY1PkEwSLuzrZfvUIWmxavvUpsUDPxi5Y6edyls/InQwaxFN+6+LftorsnNrrsy+X+TelE=
+X-Received: by 2002:a17:907:2d9f:b0:aa6:8186:5cab with SMTP id
+ a640c23a62f3a-aac3378becbmr1035267266b.54.1734950420917; Mon, 23 Dec 2024
+ 02:40:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+References: <5fbeecfc311ea182aa1d1c771725ab8b4cac515e.1729778144.git.benoit.monin@gmx.fr>
+In-Reply-To: <5fbeecfc311ea182aa1d1c771725ab8b4cac515e.1729778144.git.benoit.monin@gmx.fr>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 23 Dec 2024 11:40:10 +0100
+Message-ID: <CANn89iK1hdC3Nt8KPhOtTF8vCPc1AHDCtse_BTNki1pWxAByTQ@mail.gmail.com>
+Subject: Re: [PATCH v2 net] net: skip offload for NETIF_F_IPV6_CSUM if ipv6
+ header contains extension
+To: =?UTF-8?Q?Beno=C3=AEt_Monin?= <benoit.monin@gmx.fr>
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Jiri Pirko <jiri@resnulli.us>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Lorenzo Bianconi <lorenzo@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This series adds Multicast filtering support for VLAN interfaces in dual
-EMAC and HSR offload mode for ICSSG driver.
+On Thu, Oct 24, 2024 at 4:01=E2=80=AFPM Beno=C3=AEt Monin <benoit.monin@gmx=
+.fr> wrote:
+>
+> As documented in skbuff.h, devices with NETIF_F_IPV6_CSUM capability
+> can only checksum TCP and UDP over IPv6 if the IP header does not
+> contains extension.
+>
+> This is enforced for UDP packets emitted from user-space to an IPv6
+> address as they go through ip6_make_skb(), which calls
+> __ip6_append_data() where a check is done on the header size before
+> setting CHECKSUM_PARTIAL.
+>
+> But the introduction of UDP encapsulation with fou6 added a code-path
+> where it is possible to get an skb with a partial UDP checksum and an
+> IPv6 header with extension:
+> * fou6 adds a UDP header with a partial checksum if the inner packet
+> does not contains a valid checksum.
+> * ip6_tunnel adds an IPv6 header with a destination option extension
+> header if encap_limit is non-zero (the default value is 4).
+>
+> The thread linked below describes in more details how to reproduce the
+> problem with GRE-in-UDP tunnel.
+>
+> Add a check on the network header size in skb_csum_hwoffload_help() to
+> make sure no IPv6 packet with extension header is handed to a network
+> device with NETIF_F_IPV6_CSUM capability.
+>
+> Link: https://lore.kernel.org/netdev/26548921.1r3eYUQgxm@benoit.monin/T/#=
+u
+> Fixes: aa3463d65e7b ("fou: Add encap ops for IPv6 tunnels")
+> Signed-off-by: Beno=C3=AEt Monin <benoit.monin@gmx.fr>
+> ---
+> changelog
+> * v2:
+>     - patch against net instead of net-next
+>     - clarify documentation of NETIF_F_IPV6_CSUM
+>     - add link to thread describing the problem
+>     - add fixes tag
+>     - use vlan_get_protocol to check for IPv6
+> * v1:
+>     - https://lore.kernel.org/netdev/0dc0c2af98e96b1df20bd36aeaed4eb4e27d=
+507e.1728056028.git.benoit.monin@gmx.fr/T/#u
+> ---
+>  net/core/dev.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index ea5fbcd133ae..8453e14d301b 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -3639,6 +3639,9 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
+>                 return 0;
+>
+>         if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
+> +               if (vlan_get_protocol(skb) =3D=3D htons(ETH_P_IPV6) &&
+> +                   skb_network_header_len(skb) !=3D sizeof(struct ipv6hd=
+r))
+> +                       goto sw_checksum;
+>                 switch (skb->csum_offset) {
+>                 case offsetof(struct tcphdr, check):
+>                 case offsetof(struct udphdr, check):
+> @@ -3646,6 +3649,7 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
+>                 }
+>         }
+>
+> +sw_checksum:
+>         return skb_checksum_help(skb);
+>  }
+>  EXPORT_SYMBOL(skb_csum_hwoffload_help);
 
-Patch 1/3 - Adds support for VLAN in dual EMAC mode
-Patch 2/3 - Adds MC filtering support for VLAN in dual EMAC mode
-Patch 3/3 - Adds MC filtering support for VLAN in HSR mode
 
-Changes from v1 to v2:
-*) Changed netdev_err to netdev_dbg in emac_ndo_vlan_rx_del_vid() in patch 1/3
-as suggested by Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-*) Dropped patch [1] from previous version as the patch created issue [2].
-Will send out a separate patch to set HSR=m in arch/arm64/configs/defconfig.
-Once the defconfig patch gets merged, I will add `depends on HSR` in Kconfig
-for TI_ICSSG_PRUETH as suggested by Larysa Zaremba <larysa.zaremba@intel.com>
+FYI, this patch broke BIG TCP over IPv6.
 
-[1] https://lore.kernel.org/all/20241216100044.577489-2-danishanwar@ti.com/
-[2] https://lore.kernel.org/all/202412210336.BmgcX3Td-lkp@intel.com/#t
-v1 https://lore.kernel.org/all/20241216100044.577489-1-danishanwar@ti.com/
-
-MD Danish Anwar (3):
-  net: ti: icssg-prueth: Add VLAN support in EMAC mode
-  net: ti: icssg-prueth: Add Multicast Filtering support for VLAN in MAC
-    mode
-  net: ti: icssg-prueth: Add Support for Multicast filtering with VLAN
-    in HSR mode
-
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 175 ++++++++++++++-----
- drivers/net/ethernet/ti/icssg/icssg_prueth.h |   8 +
- include/linux/if_hsr.h                       |  18 ++
- include/linux/netdevice.h                    |   3 +
- net/core/dev_addr_lists.c                    |   7 +-
- net/hsr/hsr_device.c                         |  13 ++
- net/hsr/hsr_main.h                           |   9 -
- 7 files changed, 174 insertions(+), 59 deletions(-)
-
-
-base-commit: ae418e95dd930df6543107521c5ce55e379a9530
--- 
-2.34.1
-
+[  239.698598] Oops skb_network_header_len()=3D48 skb->len=3D67210
+[  239.704122] skb len=3D67210 headroom=3D162 headlen=3D94 tailroom=3D0
+               mac=3D(162,14) mac_len=3D0 net=3D(176,48) trans=3D224
+               shinfo(txflags=3D0 nr_frags=3D3 gso(size=3D1428 type=3D16 se=
+gs=3D47))
+               csum(0x1000e0 start=3D224 offset=3D16 ip_summed=3D3
+complete_sw=3D0 valid=3D0 level=3D0)
+               hash(0xadf29e31 sw=3D0 l4=3D1) proto=3D0x86dd pkttype=3D0 ii=
+f=3D0
+               priority=3D0x18020 mark=3D0x0 alloc_cpu=3D46 vlan_all=3D0x0
+               encapsulation=3D0 inner(proto=3D0x0000, mac=3D0, net=3D0,
+trans=3D0)\x00, net=3D0, trans=3D0)
+[  239.704153] dev name=3Deth2 feat=3D0x0000030000114ab3
+[  239.704155] sk family=3D10 type=3D1 proto=3D6
+[  239.704156] skb linear:   00000000: 02 32 00 00 00 00 94 eb 2c 18
+9c d8 86 dd 60 2d
+[  239.704157] skb linear:   00000010: 31 9e 00 00 00 7f 20 02 0a 0d
+87 01 00 00 00 00
+[  239.704158] skb linear:   00000020: 00 00 00 00 00 00 20 02 0a 05
+68 30 1f 86 00 00
+[  239.704159] skb linear:   00000030: 00 00 00 00 00 00 06 00 c2 04
+00 01 06 54 ac 4c
+[  239.704160] skb linear:   00000040: 81 9b 82 a6 d6 74 ca 75 8d 24
+80 18 00 42 69 21
+[  239.704161] skb linear:   00000050: 00 00 01 01 08 0a 1b fe e2 2a ca 8f =
+78 6e
+[  239.704162] skb frag:     00000000: 6e 65 74 70 65 72 66 00 6e 65
+74 70 65 72 66 00
+[  239.704163] skb frag:     00000010: 6e 65 74 70 65 72 66 00 6e 65
+74 70 65 72 66 00
+[  239.704163] skb frag:     00000020: 6e 65 74 70 65 72 66 00 6e 65
+74 70 65 72 66 00
+[  239.704164] skb frag:     00000030: 6e 65 74 70 65 72 66 00 6e 65
+74 70 65 72 66 00
+[  239.704165] skb frag:     00000040: 6e 65 74 70 65 72 66 00 6e 65
+74 70 65 72 66 00
+[  239.704166] skb frag:     00000050: 6e 65 74 70 65 72 66 00 6e 65
+74 70 65 72 66 00
+[  239.704166] skb frag:     00000060: 6e 65 74 70 65 72 66 00 6e 65
+74 70 65 72 66 00
+[  239.704167] skb frag:     00000070: 6e 65
