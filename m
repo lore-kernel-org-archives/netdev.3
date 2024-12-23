@@ -1,281 +1,202 @@
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6368259489;
-	Mon, 23 Dec 2024 09:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC0518A6D7;
+	Mon, 23 Dec 2024 09:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734945999; cv=none; b=gLQFuBpyKppmL87xpOwjI7TH+EMOtXwfFNmZ6bymh6+7BKFZBnY5slZ/wIoUmubKHufs8MQGeBacLZQ4NyfRTQFfyJYJjVNkesqINxwZCTEkCqfgz/+Sscw8uXmyDH3iHRH4saaDXnjxihMl2NaN0BbG70/lVY//Zgz8fGfTD4Q=
+	t=1734946332; cv=none; b=RpcjIXw4GmUF66neIxk3lGqV6YmqfTuXMtV8pSqWv7QxNpFek2CUD1ScmPWO46nJHwGgVQj1gFAcTxkGkUJIZzs3abu5lFM9iHEqkxoJJrwxzu5NsDtzMsHU+d9qFCdvQN6a7TWsegU/GpRnThpqrc0ukDKt7amknNrPAcNggBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734945999; c=relaxed/simple;
-	bh=h0GC6lMzi4CHgF/ESTSY4PVz/UWvXZ/f5kIg9DxX8t4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ML2A6P5jf7GoL+YrYSt/S7dBy8Rpy2qCDK5Y6bPq8VbmhCSekhaQRmPN5k6g/+W/VAUi2Qer+WNxfoIP2eduePYYJfFKfWtLuGLdo49jDJp3+B7IzLXc9Ap6IZJNMugLV0KOxCgLu9BHlK4s1l04ysaYKJovLMHGd8jAb1rBZvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=jruOE6ET; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1734946332; c=relaxed/simple;
+	bh=P64O16FrSBKrElzcFpJ4fpAue0KeclHRxfazBIZUWio=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cA3xwh+RkDRirVy3lyRPpyNZj/tH/qtS5oBZ57cCW65Xw3lEHzi9D3jIkXLkRE2QNjQHDFjYui0w6ID41CdJJRvt+XbsdNOaiBmWMnInHOOyEE1Hw3iB3vGZcUl19e6L6QCmXrG31OFoWIDbp4xCWlqOZQwBCbV83MInfbx5o7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IT93qoqo; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="jruOE6ET"
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 4BN9Q5QY856700
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Dec 2024 03:26:05 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1734945965;
-	bh=6cZrHKkJFMqtSt9H2JnEWM9Ru6S2s3la+DRB+YAd7WM=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=jruOE6ETw61vjGzZi37i4d2di4SACsbLisaHsG727tdhy6jSejPHJnSvoc36SFTtn
-	 dX8btz2Kt/M0ZpP7+R0fmRgFos+a+rAX/DKi4M2s/pK5lL9fYRuUkJw0Rl/BhGSnV7
-	 gMJMn0WDhb07RXk3DCGiYmkXrSPO/C5iISBSbt7g=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4BN9Q541093123
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 23 Dec 2024 03:26:05 -0600
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 23
- Dec 2024 03:26:04 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 23 Dec 2024 03:26:04 -0600
-Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4BN9Q4m9012184;
-	Mon, 23 Dec 2024 03:26:04 -0600
-Received: from localhost (danish-tpc.dhcp.ti.com [10.24.69.25])
-	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 4BN9Q3Pi006706;
-	Mon, 23 Dec 2024 03:26:04 -0600
-From: MD Danish Anwar <danishanwar@ti.com>
-To: <wojciech.drewek@intel.com>, <n.zhandarovich@fintech.ru>,
-        <aleksander.lobakin@intel.com>, <lukma@denx.de>, <m-malladi@ti.com>,
-        <diogo.ivo@siemens.com>, <horms@kernel.org>, <pabeni@redhat.com>,
-        <kuba@kernel.org>, <edumazet@google.com>, <davem@davemloft.net>,
-        <andrew+netdev@lunn.ch>
-CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
-        Vignesh Raghavendra
-	<vigneshr@ti.com>,
-        Roger Quadros <rogerq@kernel.org>, <danishanwar@ti.com>,
-        Larysa Zaremba <larysa.zaremba@intel.com>,
-        Michal Swiatkowski
-	<michal.swiatkowski@linux.intel.com>
-Subject: [PATCH net-next v2 2/3] net: ti: icssg-prueth: Add Multicast Filtering support for VLAN in MAC mode
-Date: Mon, 23 Dec 2024 14:55:56 +0530
-Message-ID: <20241223092557.2077526-3-danishanwar@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241223092557.2077526-1-danishanwar@ti.com>
-References: <20241223092557.2077526-1-danishanwar@ti.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IT93qoqo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734946331; x=1766482331;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=P64O16FrSBKrElzcFpJ4fpAue0KeclHRxfazBIZUWio=;
+  b=IT93qoqorRIwELpslUYKQGRd+R7u2Q6BIZei+vKvgewPhZ3UIIV2rAcZ
+   RFJUDnHZd79uAkw3u2ZYkCPKC0NAzTQ/ocM4BdG6z/sRISxWnAlak1xU/
+   BkmAgO/oWZfODC6/ADfk0GEvCIkw8jZY9KQ+BCel6+JKdV0XD/RQQOpm2
+   psfYLgEHqozx+DO1f6sPU1cb0cFdaL9YgUHiogvSG67fFSlrqJEl7i8hR
+   hGjuDzKXkzJBH5hyq7zqgGMNvnFUxq6fcI41Lqh2YWi6wKUIjoLOq7FRy
+   h0dIqMIJOH8yTkHIg7hBEr3Eb1fhOiy3RpeIEOBWiv/C2fHTCtCNkd4lq
+   A==;
+X-CSE-ConnectionGUID: kbjwW21XRjmWHSt8fVlw0Q==
+X-CSE-MsgGUID: 5SB5WdbET5C9pxAhtMZDxA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11294"; a="35562552"
+X-IronPort-AV: E=Sophos;i="6.12,256,1728975600"; 
+   d="scan'208";a="35562552"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2024 01:32:10 -0800
+X-CSE-ConnectionGUID: Qid9TWEwR0q6XzNKxI3M2A==
+X-CSE-MsgGUID: iFzH1ctPQ7ydzjESI9DnHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="103263965"
+Received: from mohdfai2-mobl.gar.corp.intel.com (HELO [10.247.22.166]) ([10.247.22.166])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2024 01:32:06 -0800
+Message-ID: <fe42e84d-3b78-4bba-b1a3-27fe89625809@linux.intel.com>
+Date: Mon, 23 Dec 2024 17:32:03 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-next 6/9] igc: Add support for frame preemption
+ verification
+To: Vladimir Oltean <olteanv@gmail.com>, Furong Xu <0x1207@gmail.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+ intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+References: <20241216064720.931522-1-faizal.abdul.rahim@linux.intel.com>
+ <20241216064720.931522-1-faizal.abdul.rahim@linux.intel.com>
+ <20241216064720.931522-7-faizal.abdul.rahim@linux.intel.com>
+ <20241216064720.931522-7-faizal.abdul.rahim@linux.intel.com>
+ <20241217002254.lyakuia32jbnva46@skbuf>
+Content-Language: en-US
+From: "Abdul Rahim, Faizal" <faizal.abdul.rahim@linux.intel.com>
+In-Reply-To: <20241217002254.lyakuia32jbnva46@skbuf>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Add multicast filtering support for VLAN interfaces in dual EMAC mode
-for ICSSG driver.
 
-The driver uses vlan_for_each() API to get the list of available
-vlans. The driver then sync mc addr of vlan interface with a locally
-mainatined list emac->vlan_mcast_list[vid] using __hw_addr_sync_multiple()
-API.
 
-The driver then calls the sync / unsync callbacks and based on whether
-the ndev is vlan or not, driver passes appropriate vid to FDB helper
-functions.
+On 17/12/2024 8:22 am, Vladimir Oltean wrote:
 
-This commit also exports __hw_addr_sync_multiple() in order to use it
-from the ICSSG driver.
+>> diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
+>> index 3088cdd08f35..ba96776d5854 100644
+>> --- a/drivers/net/ethernet/intel/igc/igc_defines.h
+>> +++ b/drivers/net/ethernet/intel/igc/igc_defines.h
+>> @@ -308,6 +308,8 @@
+>>   #define IGC_TXD_DTYP_C		0x00000000 /* Context Descriptor */
+>>   #define IGC_TXD_POPTS_IXSM	0x01       /* Insert IP checksum */
+>>   #define IGC_TXD_POPTS_TXSM	0x02       /* Insert TCP/UDP checksum */
+>> +#define IGC_TXD_POPTS_SMD_V	0x10       /* Transmitted packet is a SMD-Verify */
+>> +#define IGC_TXD_POPTS_SMD_R	0x20       /* Transmitted packet is a SMD-Response */
+>>   #define IGC_TXD_CMD_EOP		0x01000000 /* End of Packet */
+>>   #define IGC_TXD_CMD_IC		0x04000000 /* Insert Checksum */
+>>   #define IGC_TXD_CMD_DEXT	0x20000000 /* Desc extension (0 = legacy) */
+>> @@ -370,9 +372,13 @@
+>>   #define IGC_RXD_STAT_VP		0x08	/* IEEE VLAN Packet */
+>>   
+>>   #define IGC_RXDEXT_STATERR_LB	0x00040000
+>> +#define IGC_RXD_STAT_SMD_V	0x2000  /* SMD-Verify packet */
+>> +#define IGC_RXD_STAT_SMD_R	0x4000  /* SMD-Response packet */
+>>   
+>>   /* Advanced Receive Descriptor bit definitions */
+>>   #define IGC_RXDADV_STAT_TSIP	0x08000 /* timestamp in packet */
+>> +#define IGC_RXDADV_STAT_SMD_TYPE_MASK	0x06000
+>> +#define IGC_RXDADV_STAT_SMD_TYPE_SHIFT	13
+>>   
+>>   #define IGC_RXDEXT_STATERR_L4E		0x20000000
+>>   #define IGC_RXDEXT_STATERR_IPE		0x40000000
+>> diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+>> index 1954561ec4aa..7cde0e5a7320 100644
+>> --- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
+>> +++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+>> @@ -1788,6 +1788,7 @@ static int igc_ethtool_set_mm(struct net_device *netdev,
+>>   {
+>>   	struct igc_adapter *adapter = netdev_priv(netdev);
+>>   	struct fpe_t *fpe = &adapter->fpe;
+>> +	bool verify_enabled_changed;
+>>   
+>>   	if (cmd->tx_min_frag_size < IGC_TX_MIN_FRAG_SIZE ||
+>>   	    cmd->tx_min_frag_size > IGC_TX_MAX_FRAG_SIZE)
+>> @@ -1805,7 +1806,12 @@ static int igc_ethtool_set_mm(struct net_device *netdev,
+>>   
+>>   	fpe->tx_enabled = cmd->tx_enabled;
+>>   	fpe->pmac_enabled = cmd->pmac_enabled;
+>> -	fpe->verify_enabled = cmd->verify_enabled;
+>> +	verify_enabled_changed = (cmd->verify_enabled != fpe->verify_enabled);
+> 
+> I wonder if it's worth using an intermediary variable when the result is
+> only evaluated once. The intention is clear enough already, you call a
+> function named igc_fpe_verify_enabled_changed().
+> 
+yea when I read this part again, I don't this it's needed.
+Will remove the new local var and change the code to:
 
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
----
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 67 ++++++++++++++++----
- drivers/net/ethernet/ti/icssg/icssg_prueth.h |  6 ++
- include/linux/netdevice.h                    |  3 +
- net/core/dev_addr_lists.c                    |  7 +-
- 4 files changed, 66 insertions(+), 17 deletions(-)
+    	if (cmd->verify_enabled != fpe->verify_enabled) {
+                 fpe->verify_enabled = cmd->verify_enabled;
+                 igc_fpe_verify_enabled_changed(fpe);
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index 1663941e59e3..ed8b5a3184d6 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -472,30 +472,44 @@ const struct icss_iep_clockops prueth_iep_clockops = {
- 
- static int icssg_prueth_add_mcast(struct net_device *ndev, const u8 *addr)
- {
--	struct prueth_emac *emac = netdev_priv(ndev);
--	int port_mask = BIT(emac->port_id);
-+	struct net_device *real_dev;
-+	struct prueth_emac *emac;
-+	int port_mask;
-+	u8 vlan_id;
- 
--	port_mask |= icssg_fdb_lookup(emac, addr, 0);
--	icssg_fdb_add_del(emac, addr, 0, port_mask, true);
--	icssg_vtbl_modify(emac, 0, port_mask, port_mask, true);
-+	vlan_id = is_vlan_dev(ndev) ? vlan_dev_vlan_id(ndev) : PRUETH_DFLT_VLAN_MAC;
-+	real_dev = is_vlan_dev(ndev) ? vlan_dev_real_dev(ndev) : ndev;
-+	emac = netdev_priv(real_dev);
-+
-+	port_mask = BIT(emac->port_id) | icssg_fdb_lookup(emac, addr, vlan_id);
-+	icssg_fdb_add_del(emac, addr, vlan_id, port_mask, true);
-+	icssg_vtbl_modify(emac, vlan_id, port_mask, port_mask, true);
- 
- 	return 0;
- }
- 
- static int icssg_prueth_del_mcast(struct net_device *ndev, const u8 *addr)
- {
--	struct prueth_emac *emac = netdev_priv(ndev);
--	int port_mask = BIT(emac->port_id);
-+	struct net_device *real_dev;
-+	struct prueth_emac *emac;
- 	int other_port_mask;
-+	int port_mask;
-+	u8 vlan_id;
-+
-+	vlan_id = is_vlan_dev(ndev) ? vlan_dev_vlan_id(ndev) : PRUETH_DFLT_VLAN_MAC;
-+	real_dev = is_vlan_dev(ndev) ? vlan_dev_real_dev(ndev) : ndev;
-+	emac = netdev_priv(real_dev);
- 
--	other_port_mask = port_mask ^ icssg_fdb_lookup(emac, addr, 0);
-+	port_mask = BIT(emac->port_id);
-+	other_port_mask = port_mask ^ icssg_fdb_lookup(emac, addr, vlan_id);
- 
--	icssg_fdb_add_del(emac, addr, 0, port_mask, false);
--	icssg_vtbl_modify(emac, 0, port_mask, port_mask, false);
-+	icssg_fdb_add_del(emac, addr, vlan_id, port_mask, false);
-+	icssg_vtbl_modify(emac, vlan_id, port_mask, port_mask, false);
- 
- 	if (other_port_mask) {
--		icssg_fdb_add_del(emac, addr, 0, other_port_mask, true);
--		icssg_vtbl_modify(emac, 0, other_port_mask, other_port_mask, true);
-+		icssg_fdb_add_del(emac, addr, vlan_id, other_port_mask, true);
-+		icssg_vtbl_modify(emac, vlan_id, other_port_mask,
-+				  other_port_mask, true);
- 	}
- 
- 	return 0;
-@@ -531,6 +545,25 @@ static int icssg_prueth_hsr_del_mcast(struct net_device *ndev, const u8 *addr)
- 	return 0;
- }
- 
-+static int icssg_update_vlan_mcast(struct net_device *vdev, int vid,
-+				   void *args)
-+{
-+	struct prueth_emac *emac = args;
-+
-+	if (!vdev || !vid)
-+		return 0;
-+
-+	netif_addr_lock_bh(vdev);
-+	__hw_addr_sync_multiple(&emac->vlan_mcast_list[vid], &vdev->mc,
-+				vdev->addr_len);
-+	netif_addr_unlock_bh(vdev);
-+
-+	__hw_addr_sync_dev(&emac->vlan_mcast_list[vid], vdev,
-+			   icssg_prueth_add_mcast, icssg_prueth_del_mcast);
-+
-+	return 0;
-+}
-+
- /**
-  * emac_ndo_open - EMAC device open
-  * @ndev: network adapter device
-@@ -772,12 +805,17 @@ static void emac_ndo_set_rx_mode_work(struct work_struct *work)
- 		return;
- 	}
- 
--	if (emac->prueth->is_hsr_offload_mode)
-+	if (emac->prueth->is_hsr_offload_mode) {
- 		__dev_mc_sync(ndev, icssg_prueth_hsr_add_mcast,
- 			      icssg_prueth_hsr_del_mcast);
--	else
-+	} else {
- 		__dev_mc_sync(ndev, icssg_prueth_add_mcast,
- 			      icssg_prueth_del_mcast);
-+		if (rtnl_trylock()) {
-+			vlan_for_each(ndev, icssg_update_vlan_mcast, emac);
-+			rtnl_unlock();
-+		}
-+	}
- }
- 
- /**
-@@ -828,6 +866,7 @@ static int emac_ndo_vlan_rx_add_vid(struct net_device *ndev,
- 	if (prueth->is_hsr_offload_mode)
- 		port_mask |= BIT(PRUETH_PORT_HOST);
- 
-+	__hw_addr_init(&emac->vlan_mcast_list[vid]);
- 	netdev_dbg(emac->ndev, "VID add vid:%u port_mask:%X untag_mask %X\n",
- 		   vid, port_mask, untag_mask);
- 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-index f5c1d473e9f9..4da8b87408b5 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-@@ -83,6 +83,10 @@
- #define ICSS_CMD_ADD_FILTER 0x7
- #define ICSS_CMD_ADD_MAC 0x8
- 
-+/* VLAN Filtering Related MACROs */
-+#define PRUETH_DFLT_VLAN_MAC	0
-+#define MAX_VLAN_ID		256
-+
- /* In switch mode there are 3 real ports i.e. 3 mac addrs.
-  * however Linux sees only the host side port. The other 2 ports
-  * are the switch ports.
-@@ -201,6 +205,8 @@ struct prueth_emac {
- 	/* RX IRQ Coalescing Related */
- 	struct hrtimer rx_hrtimer;
- 	unsigned long rx_pace_timeout_ns;
-+
-+	struct netdev_hw_addr_list vlan_mcast_list[MAX_VLAN_ID];
- };
- 
- /**
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 2593019ad5b1..3ee833e9b6f7 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -4689,6 +4689,9 @@ int devm_register_netdev(struct device *dev, struct net_device *ndev);
- /* General hardware address lists handling functions */
- int __hw_addr_sync(struct netdev_hw_addr_list *to_list,
- 		   struct netdev_hw_addr_list *from_list, int addr_len);
-+int __hw_addr_sync_multiple(struct netdev_hw_addr_list *to_list,
-+			    struct netdev_hw_addr_list *from_list,
-+			    int addr_len);
- void __hw_addr_unsync(struct netdev_hw_addr_list *to_list,
- 		      struct netdev_hw_addr_list *from_list, int addr_len);
- int __hw_addr_sync_dev(struct netdev_hw_addr_list *list,
-diff --git a/net/core/dev_addr_lists.c b/net/core/dev_addr_lists.c
-index 166e404f7c03..90716bd736f3 100644
---- a/net/core/dev_addr_lists.c
-+++ b/net/core/dev_addr_lists.c
-@@ -242,9 +242,9 @@ static void __hw_addr_unsync_one(struct netdev_hw_addr_list *to_list,
- 	__hw_addr_del_entry(from_list, ha, false, false);
- }
- 
--static int __hw_addr_sync_multiple(struct netdev_hw_addr_list *to_list,
--				   struct netdev_hw_addr_list *from_list,
--				   int addr_len)
-+int __hw_addr_sync_multiple(struct netdev_hw_addr_list *to_list,
-+			    struct netdev_hw_addr_list *from_list,
-+			    int addr_len)
- {
- 	int err = 0;
- 	struct netdev_hw_addr *ha, *tmp;
-@@ -260,6 +260,7 @@ static int __hw_addr_sync_multiple(struct netdev_hw_addr_list *to_list,
- 	}
- 	return err;
- }
-+EXPORT_SYMBOL(__hw_addr_sync_multiple);
- 
- /* This function only works where there is a strict 1-1 relationship
-  * between source and destination of they synch. If you ever need to
--- 
-2.34.1
+>> +
+>> +	if (verify_enabled_changed) {
+>> +		fpe->verify_enabled = cmd->verify_enabled;
+>> +		igc_fpe_verify_enabled_changed(fpe);
+>> +	}
+>>   
+>>   	return igc_tsn_offload_apply(adapter);
+>>   }
+>> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+>> index b85eaf34d07b..e184959ef218 100644
+>> --- a/drivers/net/ethernet/intel/igc/igc_main.c
+>> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
+>> @@ -2534,7 +2534,7 @@ static struct sk_buff *igc_xdp_run_prog(struct igc_adapter *adapter,
+>>   }
+>>   
+>>   /* This function assumes __netif_tx_lock is held by the caller. */
+>> -static void igc_flush_tx_descriptors(struct igc_ring *ring)
+>> +void igc_flush_tx_descriptors(struct igc_ring *ring)
+>>   {
+>>   	/* Once tail pointer is updated, hardware can fetch the descriptors
+>>   	 * any time so we issue a write membar here to ensure all memory
+>> @@ -2585,6 +2585,7 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_vector, const int budget)
+>>   	struct sk_buff *skb = rx_ring->skb;
+>>   	u16 cleaned_count = igc_desc_unused(rx_ring);
+>>   	int xdp_status = 0, rx_buffer_pgcnt;
+>> +	int smd_type;
+>>   
+>>   	while (likely(total_packets < budget)) {
+>>   		struct igc_xdp_buff ctx = { .rx_ts = NULL };
+>> @@ -2622,6 +2623,18 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_vector, const int budget)
+>>   			size -= IGC_TS_HDR_LEN;
+>>   		}
+>>   
+>> +		smd_type = igc_fpe_get_smd_type(rx_desc->wb.upper.status_error);
+>> +
+>> +		if (igc_fpe_is_verify_or_response(smd_type, size)) {
+>> +			igc_fpe_preprocess_verify_response(&adapter->fpe,
+>> +							   smd_type);
+>> +
+>> +			/* Advance the ring next-to-clean */
+>> +			igc_is_non_eop(rx_ring, rx_desc);
+>> +			cleaned_count++;
+>> +			continue;
+>> +		}
+>> +
+> 
+> Premature optimization is the root of all evil, I know, but in the
+> future it might be interesting to add a static key here that gets
+> incremented (enabled) based on pmac_enabled, such that the fast path
+> does not get to suffer a performance penalty when frame preemption is
+> supported in the kernel, regardless of whether it is enabled or not.
+> 
+
+You mean something like this ?
+
+igc_clean_rx_irq(struct igc_q_vector *q_vector, const int budget)
+{
+	static bool pmac_enabled = adapter->fpe.pmac_enabled;
+	..
+         ..
+	if (pmac_enabled && (igc_fpe_is_verify_or_response(smd_type, size))
 
