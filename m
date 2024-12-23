@@ -1,47 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D4B38F82
-	for <netdev@vger.kernel.org>; Mon, 23 Dec 2024 18:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404D01B87CB
+	for <netdev@vger.kernel.org>; Mon, 23 Dec 2024 18:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734978223; cv=none; b=CZfIx2vELEK7pSK6r4euygL2X6lHESdtqop157y4XGaMuH/GtahKY/FNcSTt3oBpuxGeoLgwTsRq6fiFrKvZzrNBh62K0oktHtzYg5019h7W5vgky98kGf3olpg2fy6K/sBwM3O6mD/2xtnlwW38RCX7gjF4ixQe74vevtCVdAo=
+	t=1734978245; cv=none; b=UtDeo4F22pA5BkLGydpvo0CS+41784Fa8Ug1y8Z0WrvAsusOgC3tXjHqsUcUsMF8OvJFvztrSuLp68I6cFK8r3YP7qkluEzUTOpRAj40a4lOl1Cu5uo25l/BDU3zvh5lorzsX+JYpA1IBFlXC1NbDcP698o1p/KsMXKLtbCuZug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734978223; c=relaxed/simple;
-	bh=xvZVNI6j74MP6vaBdTx8H56PKkPepTsYf4Hp7QAP4EI=;
+	s=arc-20240116; t=1734978245; c=relaxed/simple;
+	bh=VADdV0tgt4dlF/jPS6qkACMW6RCd3387UrMHCbPpoxo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Apn+jJ8E4fE47Y8iEyhWKIalDxVnVpDibAirhysXhyr0mGff5jR8rk6jmg2Flr7dWUhjphAAa8FgL7evMG4gUGD8kYKMBNgxkdzrfkmoJYPnzftiAAD13X2LoBdaHG2q6eBtagD37uCkQg2sjGgL7rlaAGiiN8IKxa+TgSexbp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eD7z9au1; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Ar7l5FpltBciHr2ERLi4HBlM2SC2GVYmRBVTqvSAnX52+RRJ3dPURFEkZr2IZOtVg8hxWA0BNzSYqKucCfnUl5fYaFdtX0j1KS5t+BOGTNqUhwK44qHMwzB0mKHHmBjJy1vSACErwIHVj7C58qJ3dT42cH5EuM5A9+gTkfRADrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a2t5vs6m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eD7z9au1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECB5C4CED3;
-	Mon, 23 Dec 2024 18:23:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a2t5vs6m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62099C4CED3;
+	Mon, 23 Dec 2024 18:24:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734978223;
-	bh=xvZVNI6j74MP6vaBdTx8H56PKkPepTsYf4Hp7QAP4EI=;
+	s=k20201202; t=1734978244;
+	bh=VADdV0tgt4dlF/jPS6qkACMW6RCd3387UrMHCbPpoxo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eD7z9au1mGqHhZ+qJiRFD1Fc9bBTJNm17ZQ4uqynwTWHL3ofemOlOR4yvYQE/okcV
-	 VXB4ll/xRC+AzjNKjugA0uckMi5D2syfIQj2rh9kH4Pklyk/8wJoaq1HansWUMkmjU
-	 22EQNqpF7S1CIXC/jugTNhNX8HhlavJKiEnHXdhPVYaPiallyCx5A8K7OMc0HZ4Gz6
-	 F9odFjDLz0fN+c42xLai7ySGRAY2EO9zmjOX1PiokzrDLU/e1+xDFwV1CFkSxnEieW
-	 rnCaqSL6ljSsIlNVPeSL48sLEU2pvhabxyNhYckIMs1PrfsPqCDX0WGPsF7Z59+Ax1
-	 DEVMlE3BV9MLg==
-Date: Mon, 23 Dec 2024 10:23:41 -0800
+	b=a2t5vs6m98WzZq4oNUW/X/j+SZNoxNcDuERzvuE200RxGj8IKFbXXz2yoIqjcE59m
+	 dFTS6i1+6nUmv7G5ZXs+EKfo4p9WSolP+OIbDFsXoby4AXwZq4oDx/7Qn9vmcFRdFp
+	 MonYZ+RNbAVWfvi9TfMrsLUT0EnRJLiC7gR06eQwckOw5PMCQ7IZLEsv3yjr+fS2QW
+	 MwbetKuMuP3bO3mYSF5eR8Xx/qgvHePeYhC+X5W3/LsS4ca0V0T7qY55u+tXxM+Y/D
+	 dJzya953d2ljiOKCi0X/TAxN/ljtDU7LtP+q0547g5zpbv+4c3qJecDYzNB3Tf2Lrc
+	 foy41QGnQtqAA==
+Date: Mon, 23 Dec 2024 10:24:03 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Yuyang Huang <yuyanghuang@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
- roopa@cumulusnetworks.com, jiri@resnulli.us, stephen@networkplumber.org,
- jimictw@google.com, prohr@google.com, liuhangbin@gmail.com,
- nicolas.dichtel@6wind.com, andrew@lunn.ch, netdev@vger.kernel.org, "Maciej
- =?UTF-8?B?xbtlbmN6eWtvd3NraQ==?=" <maze@google.com>, Lorenzo Colitti
- <lorenzo@google.com>
-Subject: Re: [PATCH net-next] netlink: add IPv6 anycast join/leave
- notifications
-Message-ID: <20241223102341.4d1fa5f2@kernel.org>
-In-Reply-To: <20241222010043.2200334-1-yuyanghuang@google.com>
-References: <20241222010043.2200334-1-yuyanghuang@google.com>
+To: Hans-Frieder Vogt via B4 Relay <devnull+hfdevel.gmx.net@kernel.org>
+Cc: hfdevel@gmx.net, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
+ <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v4 0/7] net: tn40xx: add support for AQR105
+ based cards
+Message-ID: <20241223102403.69808901@kernel.org>
+In-Reply-To: <20241221-tn9510-v3a-v4-0-dafff89ba7a7@gmx.net>
+References: <20241221-tn9510-v3a-v4-0-dafff89ba7a7@gmx.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,21 +48,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 22 Dec 2024 10:00:43 +0900 Yuyang Huang wrote:
-> This change introduces a mechanism for notifying userspace
-> applications about changes to IPv6 anycast addresses via netlink. It
-> includes:
+On Sat, 21 Dec 2024 15:43:35 +0100 Hans-Frieder Vogt via B4 Relay wrote:
+> This patch series adds support to the Tehuti tn40xx driver for TN9510 cards
+> which combine a TN4010 MAC with an Aquantia AQR105.
+> It is an update of the patch series "net: tn40xx: add support for AQR105
+> based cards", addressing review comments and generally cleaning up the series.
 > 
-> * Addition and deletion of IPv6 anycast addresses are reported using
->   RTM_NEWANYCAST and RTM_DELANYCAST.
-> * A new netlink group (RTNLGRP_IPV6_ACADDR) for subscribing to these
->   notifications.
-> 
-> This enables user space applications(e.g. ip monitor) to efficiently
-> track anycast addresses through netlink messages, improving metrics
-> collection and system monitoring. It also unlocks the potential for
-> advanced anycast management in user space, such as hardware offload
-> control and fine grained network control.
+> The patch was tested on a Tehuti TN9510 card (1fc9:4025:1fc9:3015).
 
 ## Form letter - winter-break
 
