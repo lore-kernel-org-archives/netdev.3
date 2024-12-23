@@ -1,169 +1,91 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3104F6FB0;
-	Mon, 23 Dec 2024 14:37:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBAB1B0F11
+	for <netdev@vger.kernel.org>; Mon, 23 Dec 2024 14:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734964668; cv=none; b=Yc4ONexuAXLzkEDi/ZJoahvS22hJZoUdzKMOa/Nd/Qq5tktrgSkMhXIbAEPzIfvQw0z5V6sXoDVmsN0re//c4l9Z988k3rohHw/9A7zMQinZqCU2bCoolbfQdsJEnVvfoCRNy4suGcw0VG0jBCgWH87XccXsPRYMDz8RunuAGq8=
+	t=1734965954; cv=none; b=suOZmtis8xH9qBDakY7zJhXbFsL94geQP7xFecWZp2kGOlz16N3ZtslpiOY7W/Kj6CHJnu5SvqWUCvqX69tsOYqS3FeO7pWPqYoN756CgRXQAm1IixN7vWxRvLRSXs8VtfbhL5LyQKH3lmGuH34ysShTDCwtUwzxG9D7LijD8pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734964668; c=relaxed/simple;
-	bh=MJBnExEPzVRwKLL/pZ1B3TcVW6PoQ9S0B/WaOPT2E/w=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lMTk8KN3cUxbxuxG1oIuY0DGHUa3ivIYCNLlVkqhshujxZ0hqnfv+IL0b7AzNspTAIAc7w/DCrj4yNUGeEp0GuOdxWGVE8LR/mgnhHUEWPnOmOg9Vzq4U/oFa+L8xBrP17oA6EhuE/NJS38MeFeZJxsnu3GNLCRwwamWrmzhXZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4YH0Vy3mVgzRk4Y;
-	Mon, 23 Dec 2024 22:18:34 +0800 (CST)
-Received: from kwepemh100016.china.huawei.com (unknown [7.202.181.102])
-	by mail.maildlp.com (Postfix) with ESMTPS id A9E331403D1;
-	Mon, 23 Dec 2024 22:20:32 +0800 (CST)
-Received: from huawei.com (10.175.113.32) by kwepemh100016.china.huawei.com
- (7.202.181.102) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 23 Dec
- 2024 22:20:29 +0800
-From: Kaixiong Yu <yukaixiong@huawei.com>
-To: <akpm@linux-foundation.org>, <mcgrof@kernel.org>
-CC: <ysato@users.sourceforge.jp>, <dalias@libc.org>,
-	<glaubitz@physik.fu-berlin.de>, <luto@kernel.org>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <viro@zeniv.linux.org.uk>, <brauner@kernel.org>,
-	<jack@suse.cz>, <kees@kernel.org>, <j.granados@samsung.com>,
-	<willy@infradead.org>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<lorenzo.stoakes@oracle.com>, <trondmy@kernel.org>, <anna@kernel.org>,
-	<chuck.lever@oracle.com>, <jlayton@kernel.org>, <neilb@suse.de>,
-	<okorniev@redhat.com>, <Dai.Ngo@oracle.com>, <tom@talpey.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
-	<linux-sh@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-security-module@vger.kernel.org>, <dhowells@redhat.com>,
-	<haifeng.xu@shopee.com>, <baolin.wang@linux.alibaba.com>,
-	<shikemeng@huaweicloud.com>, <dchinner@redhat.com>, <bfoster@redhat.com>,
-	<souravpanda@google.com>, <hannes@cmpxchg.org>, <rientjes@google.com>,
-	<pasha.tatashin@soleen.com>, <david@redhat.com>, <ryan.roberts@arm.com>,
-	<ying.huang@intel.com>, <yang@os.amperecomputing.com>,
-	<zev@bewilderbeest.net>, <serge@hallyn.com>, <vegard.nossum@oracle.com>,
-	<wangkefeng.wang@huawei.com>
-Subject: [PATCH v4 -next 02/15] mm: filemap: move sysctl to mm/filemap.c
-Date: Mon, 23 Dec 2024 22:15:37 +0800
-Message-ID: <20241223141550.638616-19-yukaixiong@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241223141550.638616-1-yukaixiong@huawei.com>
-References: <20241223141550.638616-1-yukaixiong@huawei.com>
+	s=arc-20240116; t=1734965954; c=relaxed/simple;
+	bh=5ezYGpq8Iuxdfnhce8wPyID8+bFnBmY10Jtl1auOU0M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p0Be6/Or26wftb/SwayaISxSRuMPNPXf8+OwtU9t8aXlQG8o8mHeTm9xk4YWgZq7pbU3hK72pOgnbwzQvfKN/YjpzeA0hzzXLKQB2ZVwfQz1SyR1VgIvfwFKosGr1AMRZdFcLTc6svgb9BEp7ZlQQ4OXvOgZTPP/AT+rb0B9SuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g56nFqAQ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g56nFqAQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734965951;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5ezYGpq8Iuxdfnhce8wPyID8+bFnBmY10Jtl1auOU0M=;
+	b=g56nFqAQ7FtkNCvD1QV492YFarL8tXm9bNL652Gff9m19kJK0ClHtc58bsSax+pp1KBMgx
+	9HFM07P35jM973Q3NV3a/Dae9nPZJSO2MX2CNSb1kQvnEspr63L2zCX8p6qKy3snCdNGIC
+	UQlW4EUvg6vgcSInRaDT9avodX+iK8E=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-513-ahDPOpolO0GuoFnF6DiuoA-1; Mon, 23 Dec 2024 09:59:10 -0500
+X-MC-Unique: ahDPOpolO0GuoFnF6DiuoA-1
+X-Mimecast-MFC-AGG-ID: ahDPOpolO0GuoFnF6DiuoA
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4361eb83f46so32315865e9.3
+        for <netdev@vger.kernel.org>; Mon, 23 Dec 2024 06:59:10 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734965949; x=1735570749;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5ezYGpq8Iuxdfnhce8wPyID8+bFnBmY10Jtl1auOU0M=;
+        b=tGBSMYeEOKaMqP/C3tpKvK/KOE3eRDAZDF+HTmH6iXIfP6snA/7H65ZKEPfCCYnz8r
+         ayWalg/Dg0hyjT9kvMHFmWevYi7rKdgTfBUo6LCFu6gBXtthbZwYJp8WhFBszvxHv2f7
+         XKv0I6zYlPQblCArcvm29p/7bGi7JygA7wBZJWZ1IcIeSWtmjL6ICtxG/wH7E89fEwLy
+         nTzn17z5LENXb5fxoK4cIn8mX6i8OgfD+l625ExgsAsNbIjrp4FZHUC0s0onJuV2L+Uj
+         Js3/aIdKVDCybZWEpTaEJNRP4eZAB0TYGF2/GQ9Pqbg2Nw4IqQybbSfOu4C8VFCQZ+yM
+         F22A==
+X-Gm-Message-State: AOJu0YwsCWj+EH9Y7QgLdz/NgVRYI0vxjG7xwKa4zHxlLvmZNsCGY0bz
+	/cmgCpcuxw4c95NupOyxvme7dFQCvPSqvKzzqVmb9Toc4xgsjDG8xFFOHQbWUYFo90zzMjWH4sT
+	ncp1txSZLA+G+zUC0qLiSulsC1MjX4AHK1S7nWq3D3An0kKjfcBtN+KSL1quFSA==
+X-Gm-Gg: ASbGnctMliLOC/mDphPTqpq5wzjs3nYP6P0ARr7CX0iz2LWQXs/OVr/rI9/oyshqf5P
+	lEzOrgJpO+7dy+/UTxbncJZnPV9x2kwWPHf+uiv/ilFaQXWPU5Byc96kbwSYJxs5IQZFjIvhd7w
+	mszV3roVU6fBYnsO45J+W45La2z29bZ9lok22klLM6FMgrzuPCbxtPZEpSMxRQBzFgoofZ9Km61
+	H9G9Eem1saMy+5iQi62g0bsWew+qL547WjcCokwXY2qLqlAjvou2tI573szBR6UHpEpCCMGEaCo
+	P/KhKN4hyRwZ3O1i8/YpP1vBTDmBlwlzKxwb
+X-Received: by 2002:a5d:64eb:0:b0:386:3711:ff8c with SMTP id ffacd0b85a97d-38a221f1fddmr10451197f8f.23.1734965949260;
+        Mon, 23 Dec 2024 06:59:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFj57qYkTVvwWeziq3MFGp8ys608EevXiecAiHxQvrM/+3YDzSOmdDsJewlqk5vL+Av0lXrOQ==
+X-Received: by 2002:a5d:64eb:0:b0:386:3711:ff8c with SMTP id ffacd0b85a97d-38a221f1fddmr10451176f8f.23.1734965948925;
+        Mon, 23 Dec 2024 06:59:08 -0800 (PST)
+Received: from debian (2a01cb058918ce005e4e8e1560349352.ipv6.abo.wanadoo.fr. [2a01:cb05:8918:ce00:5e4e:8e15:6034:9352])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8475cesm11577269f8f.57.2024.12.23.06.59.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Dec 2024 06:59:08 -0800 (PST)
+Date: Mon, 23 Dec 2024 15:59:06 +0100
+From: Guillaume Nault <gnault@redhat.com>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, dsahern@gmail.com, stephen@networkplumber.org,
+	petrm@nvidia.com
+Subject: Re: [PATCH iproute2-next 0/3] Add flow label support to ip-rule and
+ route get
+Message-ID: <Z2l6us3/D5FcubTX@debian>
+References: <20241223082642.48634-1-idosch@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemh100016.china.huawei.com (7.202.181.102)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241223082642.48634-1-idosch@nvidia.com>
 
-This moves the filemap related sysctl to mm/filemap.c, and
-removes the redundant external variable declaration.
+On Mon, Dec 23, 2024 at 10:26:39AM +0200, Ido Schimmel wrote:
+> Add IPv6 flow label support to ip-rule and route get requests following
+> kernel support that was added in kernel commit 6b3099ebca13 ("Merge
+> branch 'net-fib_rules-add-flow-label-selector-support'").
 
-Signed-off-by: Kaixiong Yu <yukaixiong@huawei.com>
-Reviewed-by: Kees Cook <kees@kernel.org>
----
-v4:
- - const qualify struct ctl_table filemap_sysctl_table
-v3:
- - change the title
----
----
- include/linux/mm.h |  2 --
- kernel/sysctl.c    |  8 --------
- mm/filemap.c       | 18 +++++++++++++++---
- 3 files changed, 15 insertions(+), 13 deletions(-)
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index d61b9c7a3a7b..dbdf8950d681 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -40,8 +40,6 @@ struct user_struct;
- struct pt_regs;
- struct folio_batch;
- 
--extern int sysctl_page_lock_unfairness;
--
- void mm_core_init(void);
- void init_mm_internals(void);
- 
-diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index f1ab251fc2d0..23c8db80da5d 100644
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
-@@ -2079,14 +2079,6 @@ static struct ctl_table vm_table[] = {
- 		.extra1		= SYSCTL_ONE,
- 		.extra2		= SYSCTL_FOUR,
- 	},
--	{
--		.procname	= "page_lock_unfairness",
--		.data		= &sysctl_page_lock_unfairness,
--		.maxlen		= sizeof(sysctl_page_lock_unfairness),
--		.mode		= 0644,
--		.proc_handler	= proc_dointvec_minmax,
--		.extra1		= SYSCTL_ZERO,
--	},
- #ifdef CONFIG_MMU
- 	{
- 		.procname	= "max_map_count",
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 899dab55d235..bb7aff8960a4 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -47,6 +47,7 @@
- #include <linux/splice.h>
- #include <linux/rcupdate_wait.h>
- #include <linux/sched/mm.h>
-+#include <linux/sysctl.h>
- #include <linux/fsnotify.h>
- #include <asm/pgalloc.h>
- #include <asm/tlbflush.h>
-@@ -1069,6 +1070,19 @@ static wait_queue_head_t *folio_waitqueue(struct folio *folio)
- 	return &folio_wait_table[hash_ptr(folio, PAGE_WAIT_TABLE_BITS)];
- }
- 
-+/* How many times do we accept lock stealing from under a waiter? */
-+static int sysctl_page_lock_unfairness = 5;
-+static const struct ctl_table filemap_sysctl_table[] = {
-+	{
-+		.procname	= "page_lock_unfairness",
-+		.data		= &sysctl_page_lock_unfairness,
-+		.maxlen		= sizeof(sysctl_page_lock_unfairness),
-+		.mode		= 0644,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+	}
-+};
-+
- void __init pagecache_init(void)
- {
- 	int i;
-@@ -1077,6 +1091,7 @@ void __init pagecache_init(void)
- 		init_waitqueue_head(&folio_wait_table[i]);
- 
- 	page_writeback_init();
-+	register_sysctl_init("vm", filemap_sysctl_table);
- }
- 
- /*
-@@ -1224,9 +1239,6 @@ static inline bool folio_trylock_flag(struct folio *folio, int bit_nr,
- 	return true;
- }
- 
--/* How many times do we accept lock stealing from under a waiter? */
--int sysctl_page_lock_unfairness = 5;
--
- static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
- 		int state, enum behavior behavior)
- {
--- 
-2.34.1
+For the serie,
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
 
