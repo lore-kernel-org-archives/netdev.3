@@ -1,176 +1,847 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from lf-2-37.ptr.blmpb.com (lf-2-37.ptr.blmpb.com [101.36.218.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE73727735
-	for <netdev@vger.kernel.org>; Mon, 23 Dec 2024 03:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB0F148FF9
+	for <netdev@vger.kernel.org>; Mon, 23 Dec 2024 03:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.36.218.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734923664; cv=none; b=ltkiKZbtiQ66xW3fZ5TznUB7/awogw/IpyrpZrB8AUJZiHQh9/TD3KVZ0a6b7gWONclMHf++10rI3fO28dMJCva+At4ngMzUY2eTjwbfCA4xW9n+w9cjRsbE9pAUrxYQBPQ3JhcOZuo3wAXnFtQIU+BDcbVpIRlqMXoFzNYj+n8=
+	t=1734925518; cv=none; b=SOqAW3r2bfk90TgcWRY3tT1huvlpOoCjYs9DBIkw3b6KKTSdHwcyZibxPVukdNYnzYBSBYqXWLFlgGFnQZEvcbpGCvxwM5+6SLoGOIBK9iiB0Yf0obAWakoDFdHjhYOaLVBIUFjLOO3nygAatU4deYaZKCcVnBvqrrdDt2OLoBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734923664; c=relaxed/simple;
-	bh=o7zZ1FtzsuKBMK/70RCahXIw5Gkc8JDMsuaSHqIrZyA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EGsgVyAB+VNntr9LGHIQfZ3zgQxfFUx+XVCaMCWmmpCqOmdyuGizOmAAZwimRiC2HlelW6WMPOR/FM+miXDnXv95TK4q5af4qqEgIy8Tt5Xc+XA3lL6WhY7LWfKAAfT0uejvqrOoyEvC9un77irfEwkln3xymoQOSy4dbVFyqX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Iwc/lFy4; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1734925518; c=relaxed/simple;
+	bh=gWmthGUbNPv6t6nHYGfJObod/JgDoIs5xQCXGEnruLY=;
+	h=Message-Id:Mime-Version:In-Reply-To:Content-Type:To:From:Subject:
+	 Date:Cc:References; b=bl30Sq2wyzjumsrulnOWwVmT/DN8KeGs9+8NmoKg1Hqs+wtzAJd0Quz0e2dz5Z0CFEwBEA62pBGinIgHloKlpmxqBanB1L3NmRmMFHfk8EBJYw5f/ShPBndblyUDeTv432Pvfey9uYKdLQ3TPykCgYSwXC//Iormkd+bLfIs1rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=eEejxG9I; arc=none smtp.client-ip=101.36.218.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Iwc/lFy4"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5d3e9f60bf4so6094330a12.3
-        for <netdev@vger.kernel.org>; Sun, 22 Dec 2024 19:14:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1734923661; x=1735528461; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=o7zZ1FtzsuKBMK/70RCahXIw5Gkc8JDMsuaSHqIrZyA=;
-        b=Iwc/lFy4uk/S89ogdHf3VSLqY8EVEQ8wSLXkCzkL9mF0caacMczFU7oXUaPgv7F8A3
-         sYCvwARYAONVTof5DAXfNdQmb0mkpe/0tdn1XFb0vaSMQNsZJnxlhKXGKXsNwqk+tX8U
-         4sY11WMlTnWy1U92+U7OU/WI1PrHSCF32hczU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734923661; x=1735528461;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=o7zZ1FtzsuKBMK/70RCahXIw5Gkc8JDMsuaSHqIrZyA=;
-        b=PUe9Bu5Es1stq3Cd0cxMmq325LYcAnFPX7rT0bq8sG6ZYf04FdzIM3N5sgQALI4wov
-         SWhPaJkBR9W05dgT33leUgg96zfvqwxDgagGNqB91/G0Slp1TM4eQRReu7I4yhVsk5vk
-         vKXDWS4BL0PTfwyRpVg/TCEBixL/0vrd4Mjyqr5ybZj+B3rsVl/+Nd54oLzxIhBvHTaE
-         xH7If7knws1jwIuwQXHJ0C2vjYr2rnWe4g3VVODuFKFAEj0q1A3V47eQF+l2EgzErLoF
-         XQKP1ptF9AIOP5KA6/XEGBd4fqzb4LWtiveEpWyptiolZPx0494qdA1QcU4Bp+jMQSdR
-         qieA==
-X-Forwarded-Encrypted: i=1; AJvYcCW4n5hg1j+WaMIf+ga0TLP7Ok0L9r4V1Om/6bddCdcxb/OBsQb1tz9FsRzVeKs09DJEYF1Lqz4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yywol5pfYvGnsRU4PJprGHzZRpQCL6h10JRQBnOUjMJ7QDNzGeg
-	pWncfLlXnBhxF+6cULaPvGDwvD8JjLDv9Y674CALcn+dQGIcYgNW8xTiznf0u6LE/CmvRs7lxmd
-	6D778ONY/4qYzCpE9HJtNtYiPFub+H0LiQorU
-X-Gm-Gg: ASbGncuqeKGggQv1aMyyrqaPojBbONon7vUMlgQZL6h0/SCEpZqmrQUC1AIOa8vILh0
-	EVVuEZ8vRALurQ4kS1v+zBG1Cqn/EvQ4eABIQxA==
-X-Google-Smtp-Source: AGHT+IHxO77EM89XXu3+PrxJkyGU4aTzLyfi+ny6uVCmpZgAfclR4GYJRfKranc9rAdVc6ceU9IcbNSJIcHApHSvZL0=
-X-Received: by 2002:a05:6402:270d:b0:5d0:bcdd:ffa8 with SMTP id
- 4fb4d7f45d1cf-5d81dd83b92mr8932953a12.1.1734923661095; Sun, 22 Dec 2024
- 19:14:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="eEejxG9I"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2403070942; d=yunsilicon.com; t=1734925422; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=gWmthGUbNPv6t6nHYGfJObod/JgDoIs5xQCXGEnruLY=;
+ b=eEejxG9IAnb1JrAi+pv0CUtdDU3uFLXy0MZHRpYULXSqS/CNEDqXZrPc5UifKWk+/yb9MT
+ zoz9By3OaBTRExMv4XviFCgG3ZP83nIka3BfOiqBFI/x2UvSGcRgCyaSmTc8U7PA5mJW+V
+ 0UatJuc74GcuU2DhYOyEG/f6NX449vEwNcn81Yi6l8tQ5zq2UAxMCwFN8ZMYzTlGp45WT+
+ tqGocy+XKa7NeiI3MvnAcskxv01f8Tcwn5ejbrVghxo6+E33U7d9yeZ1KxJ8guJPSn4Ohw
+ jSYzKlLiYq+HoWbkWNdRTybpoJGXxT3n67cyCNNVe6mxIY+xD5sOYWAg8BvOHQ==
+Message-Id: <b02be8ae-c904-4d67-9d21-87abf315cb7f@yunsilicon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241221184247.118752-1-linux@treblig.org> <20241221184247.118752-8-linux@treblig.org>
-In-Reply-To: <20241221184247.118752-8-linux@treblig.org>
-From: Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>
-Date: Mon, 23 Dec 2024 08:44:08 +0530
-Message-ID: <CAH-L+nNkzX7419b3K24v_AzbiH5uc_tQ_hNSvVCZmps_LerUdA@mail.gmail.com>
-Subject: Re: [RFC net-next 7/9] i40e: Remove unused i40e_commit_partition_bw_setting
-To: linux@treblig.org
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, intel-wired-lan@lists.osuosl.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000008dcb140629e7646c"
-
---0000000000008dcb140629e7646c
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+In-Reply-To: <efa084c6-8a06-4345-8bbc-5e6741dc5d0b@intel.com>
+Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+To: "Przemek Kitszel" <przemyslaw.kitszel@intel.com>
+From: "tianx" <tianx@yunsilicon.com>
+Subject: Re: [PATCH v1 01/16] net-next/yunsilicon: Add xsc driver basic framework
+Date: Mon, 23 Dec 2024 11:43:37 +0800
 Content-Transfer-Encoding: quoted-printable
+Received: from [127.0.0.1] ([116.231.104.97]) by smtp.feishu.cn with ESMTPS; Mon, 23 Dec 2024 11:43:39 +0800
+Cc: <andrew+netdev@lunn.ch>, <kuba@kernel.org>, <netdev@vger.kernel.org>, 
+	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
+	<jeff.johnson@oss.qualcomm.com>, <weihg@yunsilicon.com>, 
+	<wanry@yunsilicon.com>
+X-Lms-Return-Path: <lba+26768dc6c+b57312+vger.kernel.org+tianx@yunsilicon.com>
+X-Original-From: tianx <tianx@yunsilicon.com>
+References: <20241218105023.2237645-1-tianx@yunsilicon.com> <20241218105023.2237645-2-tianx@yunsilicon.com> <efa084c6-8a06-4345-8bbc-5e6741dc5d0b@intel.com>
 
-On Sun, Dec 22, 2024 at 12:15=E2=80=AFAM <linux@treblig.org> wrote:
+On 2024/12/18 21:58, Przemek Kitszel wrote:
+> On 12/18/24 11:50, Xin Tian wrote:
+>> Add yunsilicon xsc driver basic framework, including xsc_pci driver
+>> and xsc_eth driver
+>>
+>> =C2=A0 Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
+>> Co-developed-by: Lei Yan <Jacky@yunsilicon.com>
 >
-> From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> Co-devs need to sign-off too, scripts/checkpatch.pl would catch that
+> (and more)
 >
-> i40e_commit_partition_bw_setting() was added in 2017 by
-> commit 4fc8c6763957 ("i40e: genericize the partition bandwidth control")
-> but hasn't been used.
+got it
+>> Signed-off-by: Xin Tian <tianx@yunsilicon.com>
+>> ---
+>> =C2=A0 drivers/net/ethernet/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=
+=C2=A0 1 +
+>> =C2=A0 drivers/net/ethernet/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 =
+1 +
+>> =C2=A0 drivers/net/ethernet/yunsilicon/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 |=C2=A0 26 ++
+>> =C2=A0 drivers/net/ethernet/yunsilicon/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0=C2=A0 8 +
+>> =C2=A0 .../ethernet/yunsilicon/xsc/common/xsc_core.h | 132 +++++++++
+>> =C2=A0 .../net/ethernet/yunsilicon/xsc/net/Kconfig=C2=A0=C2=A0 |=C2=A0 1=
+6 ++
+>> =C2=A0 .../net/ethernet/yunsilicon/xsc/net/Makefile=C2=A0 |=C2=A0=C2=A0 =
+9 +
+>> =C2=A0 .../net/ethernet/yunsilicon/xsc/pci/Kconfig=C2=A0=C2=A0 |=C2=A0 1=
+6 ++
+>> =C2=A0 .../net/ethernet/yunsilicon/xsc/pci/Makefile=C2=A0 |=C2=A0=C2=A0 =
+9 +
+>> =C2=A0 .../net/ethernet/yunsilicon/xsc/pci/main.c=C2=A0=C2=A0=C2=A0 | 27=
+2 ++++++++++++++++++
+>> =C2=A0 10 files changed, 490 insertions(+)
+>> =C2=A0 create mode 100644 drivers/net/ethernet/yunsilicon/Kconfig
+>> =C2=A0 create mode 100644 drivers/net/ethernet/yunsilicon/Makefile
+>> =C2=A0 create mode 100644=20
+>> drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
+>> =C2=A0 create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/Kconfi=
+g
+>> =C2=A0 create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/Makefi=
+le
+>> =C2=A0 create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/Kconfi=
+g
+>> =C2=A0 create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/Makefi=
+le
+>> =C2=A0 create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/main.c
+>>
+>> diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
+>> index 0baac25db..aa6016597 100644
+>> --- a/drivers/net/ethernet/Kconfig
+>> +++ b/drivers/net/ethernet/Kconfig
+>> @@ -82,6 +82,7 @@ source "drivers/net/ethernet/i825xx/Kconfig"
+>> =C2=A0 source "drivers/net/ethernet/ibm/Kconfig"
+>> =C2=A0 source "drivers/net/ethernet/intel/Kconfig"
+>> =C2=A0 source "drivers/net/ethernet/xscale/Kconfig"
+>> +source "drivers/net/ethernet/yunsilicon/Kconfig"
+>> =C2=A0 =C2=A0 config JME
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tristate "JMicron(R) PCI-Express Gigabit =
+Ethernet support"
+>> diff --git a/drivers/net/ethernet/Makefile=20
+>> b/drivers/net/ethernet/Makefile
+>> index c03203439..c16c34d4b 100644
+>> --- a/drivers/net/ethernet/Makefile
+>> +++ b/drivers/net/ethernet/Makefile
+>> @@ -51,6 +51,7 @@ obj-$(CONFIG_NET_VENDOR_INTEL) +=3D intel/
+>> =C2=A0 obj-$(CONFIG_NET_VENDOR_I825XX) +=3D i825xx/
+>> =C2=A0 obj-$(CONFIG_NET_VENDOR_MICROSOFT) +=3D microsoft/
+>> =C2=A0 obj-$(CONFIG_NET_VENDOR_XSCALE) +=3D xscale/
+>> +obj-$(CONFIG_NET_VENDOR_YUNSILICON) +=3D yunsilicon/
+>> =C2=A0 obj-$(CONFIG_JME) +=3D jme.o
+>> =C2=A0 obj-$(CONFIG_KORINA) +=3D korina.o
+>> =C2=A0 obj-$(CONFIG_LANTIQ_ETOP) +=3D lantiq_etop.o
+>> diff --git a/drivers/net/ethernet/yunsilicon/Kconfig=20
+>> b/drivers/net/ethernet/yunsilicon/Kconfig
+>> new file mode 100644
+>> index 000000000..c766390b4
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/yunsilicon/Kconfig
+>> @@ -0,0 +1,26 @@
+>> +# SPDX-License-Identifier: GPL-2.0
+>> +# Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
+>> +# All rights reserved.
+>> +# Yunsilicon driver configuration
+>> +#
+>> +
+>> +config NET_VENDOR_YUNSILICON
+>> +=C2=A0=C2=A0=C2=A0 bool "Yunsilicon devices"
+>> +=C2=A0=C2=A0=C2=A0 default y
+>> +=C2=A0=C2=A0=C2=A0 depends on PCI || NET
 >
-> Remove it.
+> Would it work for you to have only one of the above enabled?
 >
-> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+> I didn't noticed your response to the same question on your v0
+> (BTW, versioning starts at v0, remember to add also links to previous
+> versions (not needed for your v0, to don't bother you with 16 URLs :))
+>
+Will modify to PCI only, and move NET to xsc_eth Kconfig
+>> +=C2=A0=C2=A0=C2=A0 depends on ARM64 || X86_64
+>> +=C2=A0=C2=A0=C2=A0 help
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 If you have a network (Ethernet) device =
+belonging to this class,
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 say Y.
+>> +
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Note that the answer to this question do=
+esn't directly affect the
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kernel: saying N will just cause the con=
+figurator to skip all
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 the questions about Yunsilicon cards. If=
+ you say Y, you will=20
+>> be asked
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for your specific card in the following =
+questions.
+>> +
+>> +if NET_VENDOR_YUNSILICON
+>> +
+>> +source "drivers/net/ethernet/yunsilicon/xsc/net/Kconfig"
+>> +source "drivers/net/ethernet/yunsilicon/xsc/pci/Kconfig"
+>> +
+>> +endif # NET_VENDOR_YUNSILICON
+>> diff --git a/drivers/net/ethernet/yunsilicon/Makefile=20
+>> b/drivers/net/ethernet/yunsilicon/Makefile
+>> new file mode 100644
+>> index 000000000..6fc8259a7
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/yunsilicon/Makefile
+>> @@ -0,0 +1,8 @@
+>> +# SPDX-License-Identifier: GPL-2.0
+>> +# Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
+>> +# All rights reserved.
+>> +# Makefile for the Yunsilicon device drivers.
+>> +#
+>> +
+>> +# obj-$(CONFIG_YUNSILICON_XSC_ETH) +=3D xsc/net/
+>> +obj-$(CONFIG_YUNSILICON_XSC_PCI) +=3D xsc/pci/
+>> \ No newline at end of file
+>> diff --git a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h=20
+>> b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
+>> new file mode 100644
+>> index 000000000..5ed12760e
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
+>> @@ -0,0 +1,132 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
+>> + * All rights reserved.
+>> + */
+>> +
+>> +#ifndef XSC_CORE_H
+>> +#define XSC_CORE_H
+>
+> typically there are two underscores in the header names
+>
+Got it.
+>> +
+>> +#include <linux/kernel.h>
+>> +#include <linux/pci.h>
+>> +
+>> +extern unsigned int xsc_log_level;
+>> +
+>> +#define XSC_PCI_VENDOR_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x1=
+f67
+>> +
+>> +#define XSC_MC_PF_DEV_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x10=
+11
+>> +#define XSC_MC_VF_DEV_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x10=
+12
+>> +#define XSC_MC_PF_DEV_ID_DIAMOND=C2=A0=C2=A0=C2=A0 0x1021
+>> +
+>> +#define XSC_MF_HOST_PF_DEV_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ 0x1051
+>> +#define XSC_MF_HOST_VF_DEV_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ 0x1052
+>> +#define XSC_MF_SOC_PF_DEV_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+0x1053
+>> +
+>> +#define XSC_MS_PF_DEV_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x11=
+11
+>> +#define XSC_MS_VF_DEV_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x11=
+12
+>> +
+>> +#define XSC_MV_HOST_PF_DEV_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ 0x1151
+>> +#define XSC_MV_HOST_VF_DEV_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ 0x1152
+>> +#define XSC_MV_SOC_PF_DEV_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+0x1153
+>> +
+>> +enum {
+>> +=C2=A0=C2=A0=C2=A0 XSC_LOG_LEVEL_DBG=C2=A0=C2=A0=C2=A0 =3D 0,
+>> +=C2=A0=C2=A0=C2=A0 XSC_LOG_LEVEL_INFO=C2=A0=C2=A0=C2=A0 =3D 1,
+>> +=C2=A0=C2=A0=C2=A0 XSC_LOG_LEVEL_WARN=C2=A0=C2=A0=C2=A0 =3D 2,
+>> +=C2=A0=C2=A0=C2=A0 XSC_LOG_LEVEL_ERR=C2=A0=C2=A0=C2=A0 =3D 3,
+>> +};
+>> +
+>> +#define xsc_dev_log(condition, level, dev, fmt, ...) \
+>> +do {=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0 if (condition)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev_printk(level, dev, dev_f=
+mt(fmt), ##__VA_ARGS__); \
+>> +} while (0)
+>> +
+>> +#define xsc_core_dbg(__dev, format, ...)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0 xsc_dev_log(xsc_log_level <=3D XSC_LOG_LEVEL_DBG, KE=
+RN_DEBUG,=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &(__dev)->pdev->dev, "%s:%d:=
+(pid %d): " format,=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __func__, __LINE__, current-=
+>pid, ##__VA_ARGS__)
+>> +
+>> +#define xsc_core_dbg_once(__dev, format, ...)=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0 dev_dbg_once(&(__dev)->pdev->dev, "%s:%d:(pid %d): "=
+ format,=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 __func__, __LINE__, current->pid,=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 ##__VA_ARGS__)
+>> +
+>> +#define xsc_core_dbg_mask(__dev, mask, format, ...) \
+>> +do {=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0 if ((mask) & xsc_debug_mask)=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xsc_core_dbg(__dev, format, =
+##__VA_ARGS__);=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +} while (0)
+>> +
+>> +#define xsc_core_err(__dev, format, ...)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0 xsc_dev_log(xsc_log_level <=3D XSC_LOG_LEVEL_ERR, KE=
+RN_ERR,=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &(__dev)->pdev->dev, "%s:%d:=
+(pid %d): " format,=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __func__, __LINE__, current-=
+>pid, ##__VA_ARGS__)
+>> +
+>> +#define xsc_core_err_rl(__dev, format, ...)=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> + dev_err_ratelimited(&(__dev)->pdev->dev,=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 "%s:%d:(pid %d): " format,=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 __func__, __LINE__, current->pid,=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 ##__VA_ARGS__)
+>> +
+>> +#define xsc_core_warn(__dev, format, ...)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0 xsc_dev_log(xsc_log_level <=3D XSC_LOG_LEVEL_WARN, K=
+ERN_WARNING,=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &(__dev)->pdev->dev, "%s:%d:=
+(pid %d): " format,=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __func__, __LINE__, current-=
+>pid, ##__VA_ARGS__)
+>> +
+>> +#define xsc_core_info(__dev, format, ...)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0 xsc_dev_log(xsc_log_level <=3D XSC_LOG_LEVEL_INFO, K=
+ERN_INFO,=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &(__dev)->pdev->dev, "%s:%d:=
+(pid %d): " format,=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __func__, __LINE__, current-=
+>pid, ##__VA_ARGS__)
+>> +
+>> +#define xsc_pr_debug(format, ...)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 \
+>> +do {=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0 if (xsc_log_level <=3D XSC_LOG_LEVEL_DBG)=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_debug(format, ##__VA_ARGS=
+__);=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +} while (0)
+>> +
+>> +#define assert(__dev, expr)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 \
+>> +do {=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0 if (!(expr)) {=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev_err(&(__dev)->pdev->dev,=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "Assertion failed! %s, %s, %=
+s, line %d\n",=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #expr, __FILE__, __func__, _=
+_LINE__);=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ \
+>> +=C2=A0=C2=A0=C2=A0 }=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+>> +} while (0)
+>
+> as a rule of thumb, don't add functions/macros that you don't use in
+> given patch
+>
+> have you seen WARN_ON() family?
+>
+Thank you, will use WARN_ON instead of assert.
+>> +
+>> +enum {
+>> +=C2=A0=C2=A0=C2=A0 XSC_MAX_NAME_LEN =3D 32,
+>> +};
+>> +
+>> +struct xsc_dev_resource {
+>> +=C2=A0=C2=A0=C2=A0 struct mutex alloc_mutex;=C2=A0=C2=A0=C2=A0 /* prote=
+ct buffer alocation=20
+>> according to numa node */
+>> +};
+>> +
+>> +enum xsc_pci_state {
+>> +=C2=A0=C2=A0=C2=A0 XSC_PCI_STATE_DISABLED,
+>> +=C2=A0=C2=A0=C2=A0 XSC_PCI_STATE_ENABLED,
+>> +};
+>> +
+>> +struct xsc_priv {
+>> +=C2=A0=C2=A0=C2=A0 char=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 name[XSC_MAX_NAME_LEN];
+>> +=C2=A0=C2=A0=C2=A0 struct list_head=C2=A0=C2=A0=C2=A0 dev_list;
+>> +=C2=A0=C2=A0=C2=A0 struct list_head=C2=A0=C2=A0=C2=A0 ctx_list;
+>> +=C2=A0=C2=A0=C2=A0 spinlock_t=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ ctx_lock;=C2=A0=C2=A0=C2=A0 /* protect ctx_list */
+>> +=C2=A0=C2=A0=C2=A0 int=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 numa_node;
+>> +};
+>> +
+>> +struct xsc_core_device {
+>> +=C2=A0=C2=A0=C2=A0 struct pci_dev=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 *pdev;
+>> +=C2=A0=C2=A0=C2=A0 struct device=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 *device;
+>> +=C2=A0=C2=A0=C2=A0 struct xsc_priv=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 priv;
+>> +=C2=A0=C2=A0=C2=A0 struct xsc_dev_resource=C2=A0=C2=A0=C2=A0 *dev_res;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 void __iomem=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 *bar;
+>> +=C2=A0=C2=A0=C2=A0 int=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 bar_num;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 struct mutex=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 pci_state_mutex;=C2=A0=C2=A0=C2=A0 /* protect pci_state */
+>> +=C2=A0=C2=A0=C2=A0 enum xsc_pci_state=C2=A0=C2=A0=C2=A0 pci_state;
+>> +=C2=A0=C2=A0=C2=A0 struct mutex=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 intf_state_mutex;=C2=A0=C2=A0=C2=A0 /* protect intf_state */
+>> +=C2=A0=C2=A0=C2=A0 unsigned long=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 intf_state;
+>> +};
+>> +
+>> +#endif
+>> diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/Kconfig=20
+>> b/drivers/net/ethernet/yunsilicon/xsc/net/Kconfig
+>> new file mode 100644
+>> index 000000000..0d9a4ff8a
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/yunsilicon/xsc/net/Kconfig
+>> @@ -0,0 +1,16 @@
+>> +# SPDX-License-Identifier: GPL-2.0
+>> +# Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
+>> +# All rights reserved.
+>> +# Yunsilicon driver configuration
+>> +#
+>> +
+>> +config YUNSILICON_XSC_ETH
+>> +=C2=A0=C2=A0=C2=A0 tristate "Yunsilicon XSC ethernet driver"
+>> +=C2=A0=C2=A0=C2=A0 default n
+>> +=C2=A0=C2=A0=C2=A0 depends on YUNSILICON_XSC_PCI
+>> +=C2=A0=C2=A0=C2=A0 help
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 This driver provides ethernet support fo=
+r
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Yunsilicon XSC devices.
+>> +
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 To compile this driver as a module, choo=
+se M here. The module
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 will be called xsc_eth.
+>> diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/Makefile=20
+>> b/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
+>> new file mode 100644
+>> index 000000000..2811433af
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
+>> @@ -0,0 +1,9 @@
+>> +# SPDX-License-Identifier: GPL-2.0
+>> +# Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
+>> +# All rights reserved.
+>> +
+>> +ccflags-y +=3D -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
+>> +
+>> +obj-$(CONFIG_YUNSILICON_XSC_ETH) +=3D xsc_eth.o
+>> +
+>> +xsc_eth-y :=3D main.o
+>> \ No newline at end of file
+>> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Kconfig=20
+>> b/drivers/net/ethernet/yunsilicon/xsc/pci/Kconfig
+>> new file mode 100644
+>> index 000000000..2b6d79905
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Kconfig
+>> @@ -0,0 +1,16 @@
+>> +# SPDX-License-Identifier: GPL-2.0
+>> +# Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
+>> +# All rights reserved.
+>> +# Yunsilicon PCI configuration
+>> +#
+>> +
+>> +config YUNSILICON_XSC_PCI
+>> +=C2=A0=C2=A0=C2=A0 tristate "Yunsilicon XSC PCI driver"
+>> +=C2=A0=C2=A0=C2=A0 default n
+>> +=C2=A0=C2=A0=C2=A0 select PAGE_POOL
+>> +=C2=A0=C2=A0=C2=A0 help
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 This driver is common for Yunsilicon XSC
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ethernet and RDMA drivers.
+>> +
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 To compile this driver as a module, choo=
+se M here. The module
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 will be called xsc_pci.
+>> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile=20
+>> b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+>> new file mode 100644
+>> index 000000000..709270df8
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+>> @@ -0,0 +1,9 @@
+>> +# SPDX-License-Identifier: GPL-2.0
+>> +# Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
+>> +# All rights reserved.
+>> +
+>> +ccflags-y +=3D -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
+>> +
+>> +obj-$(CONFIG_YUNSILICON_XSC_PCI) +=3D xsc_pci.o
+>> +
+>> +xsc_pci-y :=3D main.o
+>> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c=20
+>> b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
+>> new file mode 100644
+>> index 000000000..cbe0bfbd1
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
+>> @@ -0,0 +1,272 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
+>> + * All rights reserved.
+>> + */
+>> +
+>> +#include "common/xsc_core.h"
+>> +
+>> +unsigned int xsc_log_level =3D XSC_LOG_LEVEL_WARN;
+>> +module_param_named(log_level, xsc_log_level, uint, 0644);
+>> +MODULE_PARM_DESC(log_level,
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "lowest log level to p=
+rint: 0=3Ddebug, 1=3Dinfo, 2=3Dwarning,=20
+>> 3=3Derror. Default=3D1");
+>> +EXPORT_SYMBOL(xsc_log_level);
+>> +
+>> +#define XSC_PCI_DRV_DESC=C2=A0=C2=A0=C2=A0 "Yunsilicon Xsc PCI driver"
+>
+> remove the define and just use the string inplace as desription
+OK=EF=BC=8C will modify.
+>
+>> +
+>> +static const struct pci_device_id xsc_pci_id_table[] =3D {
+>> +=C2=A0=C2=A0=C2=A0 { PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MC_PF_DEV_ID) },
+>> +=C2=A0=C2=A0=C2=A0 { PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MC_PF_DEV_ID_DIA=
+MOND) },
+>> +=C2=A0=C2=A0=C2=A0 { PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MF_HOST_PF_DEV_I=
+D) },
+>> +=C2=A0=C2=A0=C2=A0 { PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MF_SOC_PF_DEV_ID=
+) },
+>> +=C2=A0=C2=A0=C2=A0 { PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MS_PF_DEV_ID) },
+>> +=C2=A0=C2=A0=C2=A0 { PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MV_HOST_PF_DEV_I=
+D) },
+>> +=C2=A0=C2=A0=C2=A0 { PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MV_SOC_PF_DEV_ID=
+) },
+>> +=C2=A0=C2=A0=C2=A0 { 0 }
+>> +};
+>> +
+>> +static int set_dma_caps(struct pci_dev *pdev)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 int err;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 err =3D dma_set_mask(&pdev->dev, DMA_BIT_MASK(64));
+>> +=C2=A0=C2=A0=C2=A0 if (err)
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D dma_set_mask_and_coh=
+erent(&pdev->dev, DMA_BIT_MASK(32));
+>> +=C2=A0=C2=A0=C2=A0 else
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D dma_set_coherent_mas=
+k(&pdev->dev, DMA_BIT_MASK(64));
+>> +
+>> +=C2=A0=C2=A0=C2=A0 if (!err)
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dma_set_max_seg_size(&pdev->=
+dev, SZ_2G);
+>> +
+>> +=C2=A0=C2=A0=C2=A0 return err;
+>> +}
+>> +
+>> +static int xsc_pci_enable_device(struct xsc_core_device *xdev)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 struct pci_dev *pdev =3D xdev->pdev;
+>> +=C2=A0=C2=A0=C2=A0 int err =3D 0;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 mutex_lock(&xdev->pci_state_mutex);
+>> +=C2=A0=C2=A0=C2=A0 if (xdev->pci_state =3D=3D XSC_PCI_STATE_DISABLED) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D pci_enable_device(pd=
+ev);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!err)
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xdev=
+->pci_state =3D XSC_PCI_STATE_ENABLED;
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +=C2=A0=C2=A0=C2=A0 mutex_unlock(&xdev->pci_state_mutex);
+>> +
+>> +=C2=A0=C2=A0=C2=A0 return err;
+>> +}
+>> +
+>> +static void xsc_pci_disable_device(struct xsc_core_device *xdev)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 struct pci_dev *pdev =3D xdev->pdev;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 mutex_lock(&xdev->pci_state_mutex);
+>> +=C2=A0=C2=A0=C2=A0 if (xdev->pci_state =3D=3D XSC_PCI_STATE_ENABLED) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_disable_device(pdev);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xdev->pci_state =3D XSC_PCI_=
+STATE_DISABLED;
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +=C2=A0=C2=A0=C2=A0 mutex_unlock(&xdev->pci_state_mutex);
+>> +}
+>> +
+>> +static int xsc_pci_init(struct xsc_core_device *xdev, const struct=20
+>> pci_device_id *id)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 struct pci_dev *pdev =3D xdev->pdev;
+>> +=C2=A0=C2=A0=C2=A0 void __iomem *bar_base;
+>> +=C2=A0=C2=A0=C2=A0 int bar_num =3D 0;
+>> +=C2=A0=C2=A0=C2=A0 int err;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 mutex_init(&xdev->pci_state_mutex);
+>> +=C2=A0=C2=A0=C2=A0 xdev->priv.numa_node =3D dev_to_node(&pdev->dev);
+>> +
+>> +=C2=A0=C2=A0=C2=A0 err =3D xsc_pci_enable_device(xdev);
+>> +=C2=A0=C2=A0=C2=A0 if (err) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xsc_core_err(xdev, "failed t=
+o enable PCI device: err=3D%d\n",=20
+>> err);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto err_ret;
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +
+>> +=C2=A0=C2=A0=C2=A0 err =3D pci_request_region(pdev, bar_num, KBUILD_MOD=
+NAME);
+>> +=C2=A0=C2=A0=C2=A0 if (err) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xsc_core_err(xdev, "failed t=
+o request %s pci_region=3D%d:=20
+>> err=3D%d\n",
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 KBUILD_MODNAME, bar_num, err);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto err_disable;
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +
+>> +=C2=A0=C2=A0=C2=A0 pci_set_master(pdev);
+>> +
+>> +=C2=A0=C2=A0=C2=A0 err =3D set_dma_caps(pdev);
+>> +=C2=A0=C2=A0=C2=A0 if (err) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xsc_core_err(xdev, "failed t=
+o set DMA capabilities mask:=20
+>> err=3D%d\n", err);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto err_clr_master;
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +
+>> +=C2=A0=C2=A0=C2=A0 bar_base =3D pci_ioremap_bar(pdev, bar_num);
+>> +=C2=A0=C2=A0=C2=A0 if (!bar_base) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xsc_core_err(xdev, "failed t=
+o ioremap %s bar%d\n",=20
+>> KBUILD_MODNAME, bar_num);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto err_clr_master;
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +
+>> +=C2=A0=C2=A0=C2=A0 err =3D pci_save_state(pdev);
+>> +=C2=A0=C2=A0=C2=A0 if (err) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xsc_core_err(xdev, "pci_save=
+_state failed: err=3D%d\n", err);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto err_io_unmap;
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +
+>> +=C2=A0=C2=A0=C2=A0 xdev->bar_num =3D bar_num;
+>> +=C2=A0=C2=A0=C2=A0 xdev->bar =3D bar_base;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 return 0;
+>> +
+>> +err_io_unmap:
+>> +=C2=A0=C2=A0=C2=A0 pci_iounmap(pdev, bar_base);
+>> +err_clr_master:
+>> +=C2=A0=C2=A0=C2=A0 pci_clear_master(pdev);
+>> +=C2=A0=C2=A0=C2=A0 pci_release_region(pdev, bar_num);
+>> +err_disable:
+>> +=C2=A0=C2=A0=C2=A0 xsc_pci_disable_device(xdev);
+>> +err_ret:
+>> +=C2=A0=C2=A0=C2=A0 return err;
+>> +}
+>> +
+>> +static void xsc_pci_fini(struct xsc_core_device *xdev)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 struct pci_dev *pdev =3D xdev->pdev;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 if (xdev->bar)
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_iounmap(pdev, xdev->bar)=
+;
+>> +=C2=A0=C2=A0=C2=A0 pci_clear_master(pdev);
+>> +=C2=A0=C2=A0=C2=A0 pci_release_region(pdev, xdev->bar_num);
+>> +=C2=A0=C2=A0=C2=A0 xsc_pci_disable_device(xdev);
+>> +}
+>> +
+>> +static int xsc_priv_init(struct xsc_core_device *xdev)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 struct xsc_priv *priv =3D &xdev->priv;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 strscpy(priv->name, dev_name(&xdev->pdev->dev), XSC_=
+MAX_NAME_LEN);
+>> +
+>> +=C2=A0=C2=A0=C2=A0 INIT_LIST_HEAD(&priv->ctx_list);
+>> +=C2=A0=C2=A0=C2=A0 spin_lock_init(&priv->ctx_lock);
+>> +=C2=A0=C2=A0=C2=A0 mutex_init(&xdev->intf_state_mutex);
+>> +
+>> +=C2=A0=C2=A0=C2=A0 return 0;
+>> +}
+>> +
+>> +static int xsc_dev_res_init(struct xsc_core_device *xdev)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 struct xsc_dev_resource *dev_res;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 dev_res =3D kvzalloc(sizeof(*dev_res), GFP_KERNEL);
+>> +=C2=A0=C2=A0=C2=A0 if (!dev_res)
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -ENOMEM;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 xdev->dev_res =3D dev_res;
+>> +=C2=A0=C2=A0=C2=A0 mutex_init(&dev_res->alloc_mutex);
+>> +
+>> +=C2=A0=C2=A0=C2=A0 return 0;
+>> +}
+>> +
+>> +static void xsc_dev_res_cleanup(struct xsc_core_device *xdev)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 kfree(xdev->dev_res);
+>> +}
+>> +
+>> +static int xsc_core_dev_init(struct xsc_core_device *xdev)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 int err;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 xsc_priv_init(xdev);
+>> +
+>> +=C2=A0=C2=A0=C2=A0 err =3D xsc_dev_res_init(xdev);
+>> +=C2=A0=C2=A0=C2=A0 if (err) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xsc_core_err(xdev, "xsc dev =
+res init failed %d\n", err);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto out;
+>
+> return err...
 
-LGTM,
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Thanks for the feedback. The |return err;| is retained to accommodate=20
+additional error handling logic in subsequent patches. After those=20
+patches are added, this structure will look OK.
 
+>
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +
+>> +=C2=A0=C2=A0=C2=A0 return 0;
+>> +out:
+>> +=C2=A0=C2=A0=C2=A0 return err;
+>
+> ...so you could remove last two lines
+>
+>> +}
+>> +
+>> +static void xsc_core_dev_cleanup(struct xsc_core_device *xdev)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 xsc_dev_res_cleanup(xdev);
+>> +}
+>> +
+>> +static int xsc_pci_probe(struct pci_dev *pci_dev,
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 const struct pci_device_id *id)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 struct xsc_core_device *xdev;
+>> +=C2=A0=C2=A0=C2=A0 int err;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 xdev =3D kzalloc(sizeof(*xdev), GFP_KERNEL);
+>> +=C2=A0=C2=A0=C2=A0 if (!xdev)
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -ENOMEM;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 xdev->pdev =3D pci_dev;
+>> +=C2=A0=C2=A0=C2=A0 xdev->device =3D &pci_dev->dev;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 pci_set_drvdata(pci_dev, xdev);
+>> +=C2=A0=C2=A0=C2=A0 err =3D xsc_pci_init(xdev, id);
+>> +=C2=A0=C2=A0=C2=A0 if (err) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xsc_core_err(xdev, "xsc_pci_=
+init failed %d\n", err);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto err_unset_pci_drvdata;
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +
+>> +=C2=A0=C2=A0=C2=A0 err =3D xsc_core_dev_init(xdev);
+>> +=C2=A0=C2=A0=C2=A0 if (err) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xsc_core_err(xdev, "xsc_core=
+_dev_init failed %d\n", err);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto err_pci_fini;
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +
+>> +=C2=A0=C2=A0=C2=A0 return 0;
+>> +err_pci_fini:
+>> +=C2=A0=C2=A0=C2=A0 xsc_pci_fini(xdev);
+>> +err_unset_pci_drvdata:
+>> +=C2=A0=C2=A0=C2=A0 pci_set_drvdata(pci_dev, NULL);
+>> +=C2=A0=C2=A0=C2=A0 kfree(xdev);
+>> +
+>> +=C2=A0=C2=A0=C2=A0 return err;
+>> +}
+>> +
+>> +static void xsc_pci_remove(struct pci_dev *pci_dev)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 struct xsc_core_device *xdev =3D pci_get_drvdata(pci=
+_dev);
+>> +
+>> +=C2=A0=C2=A0=C2=A0 xsc_core_dev_cleanup(xdev);
+>> +=C2=A0=C2=A0=C2=A0 xsc_pci_fini(xdev);
+>> +=C2=A0=C2=A0=C2=A0 pci_set_drvdata(pci_dev, NULL);
+>> +=C2=A0=C2=A0=C2=A0 kfree(xdev);
+>> +}
+>> +
+>> +static struct pci_driver xsc_pci_driver =3D {
+>> +=C2=A0=C2=A0=C2=A0 .name=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =3D =
+"xsc-pci",
+>> +=C2=A0=C2=A0=C2=A0 .id_table=C2=A0=C2=A0=C2=A0 =3D xsc_pci_id_table,
+>> +=C2=A0=C2=A0=C2=A0 .probe=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =3D=
+ xsc_pci_probe,
+>> +=C2=A0=C2=A0=C2=A0 .remove=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+=3D xsc_pci_remove,
+>> +};
+>> +
+>> +static int __init xsc_init(void)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 int err;
+>> +
+>> +=C2=A0=C2=A0=C2=A0 err =3D pci_register_driver(&xsc_pci_driver);
+>> +=C2=A0=C2=A0=C2=A0 if (err) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_err("failed to register p=
+ci driver\n");
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto out;
+>
+> ditto plain return
+>
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +=C2=A0=C2=A0=C2=A0 return 0;
+>> +
+>> +out:
+>> +=C2=A0=C2=A0=C2=A0 return err;
+>> +}
+>> +
+>> +static void __exit xsc_fini(void)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 pci_unregister_driver(&xsc_pci_driver);
+>> +}
+>> +
+>> +module_init(xsc_init);
+>> +module_exit(xsc_fini);
+>> +
+>> +MODULE_LICENSE("GPL");
+>> +MODULE_DESCRIPTION(XSC_PCI_DRV_DESC);
+>
+Thank you=EF=BC=8CPrzemek=EF=BC=8Cfor your thoughtful review and patient ex=
+planations.=20
+Your clarification of some important rules is really valuable for=20
+someone like me who is new to this. I will make sure to follow these=20
+guidelines in my future changes. I also appreciate all the feedback=20
+you=E2=80=99ve provided earlier.
 
---=20
-Regards,
-Kalesh AP
-
---0000000000008dcb140629e7646c
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-riBJ/K1AFUjRAjFhGV64l++td7dkmnq/X8ET75ti+w1s4FRpFqkD2m7pg5NxdsZphYIXAgMBAAGj
-QjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSP8Et/qC5FJK5N
-UPpjmove4t0bvDANBgkqhkiG9w0BAQsFAAOCAQEAS0DbwFCq/sgM7/eWVEVJu5YACUGssxOGhigH
-M8pr5nS5ugAtrqQK0/Xx8Q+Kv3NnSoPHRHt44K9ubG8DKY4zOUXDjuS5V2yq/BKW7FPGLeQkbLmU
-Y/vcU2hnVj6DuM81IcPJaP7O2sJTqsyQiunwXUaMld16WCgaLx3ezQA3QY/tRG3XUyiXfvNnBB4V
-14qWtNPeTCekTBtzc3b0F5nCH3oO4y0IrQocLP88q1UOD5F+NuvDV0m+4S4tfGCLw0FREyOdzvcy
-a5QBqJnnLDMfOjsl0oZAzjsshnjJYS8Uuu7bVW/fhO4FCU29KNhyztNiUGUe65KXgzHZs7XKR1g/
-XzCCBWowggRSoAMCAQICDDfBRQmwNSI92mit0zANBgkqhkiG9w0BAQsFADBbMQswCQYDVQQGEwJC
-RTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMg
-UGVyc29uYWxTaWduIDIgQ0EgMjAyMDAeFw0yMjA5MTAwODI5NTZaFw0yNTA5MTAwODI5NTZaMIGi
-MQswCQYDVQQGEwJJTjESMBAGA1UECBMJS2FybmF0YWthMRIwEAYDVQQHEwlCYW5nYWxvcmUxFjAU
-BgNVBAoTDUJyb2FkY29tIEluYy4xHzAdBgNVBAMTFkthbGVzaCBBbmFra3VyIFB1cmF5aWwxMjAw
-BgkqhkiG9w0BCQEWI2thbGVzaC1hbmFra3VyLnB1cmF5aWxAYnJvYWRjb20uY29tMIIBIjANBgkq
-hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxnv1Reaeezfr6NEmg3xZlh4cz9m7QCN13+j4z1scrX+b
-JfnV8xITT5yvwdQv3R3p7nzD/t29lTRWK3wjodUd2nImo6vBaH3JbDwleIjIWhDXLNZ4u7WIXYwx
-aQ8lYCdKXRsHXgGPY0+zSx9ddpqHZJlHwcvas3oKnQN9WgzZtsM7A8SJefWkNvkcOtef6bL8Ew+3
-FBfXmtsPL9I2vita8gkYzunj9Nu2IM+MnsP7V/+Coy/yZDtFJHp30hDnYGzuOhJchDF9/eASvE8T
-T1xqJODKM9xn5xXB1qezadfdgUs8k8QAYyP/oVBafF9uqDudL6otcBnziyDBQdFCuAQN7wIDAQAB
-o4IB5DCCAeAwDgYDVR0PAQH/BAQDAgWgMIGjBggrBgEFBQcBAQSBljCBkzBOBggrBgEFBQcwAoZC
-aHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyM3BlcnNvbmFsc2lnbjJj
-YTIwMjAuY3J0MEEGCCsGAQUFBzABhjVodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3Iz
-cGVyc29uYWxzaWduMmNhMjAyMDBNBgNVHSAERjBEMEIGCisGAQQBoDIBKAowNDAyBggrBgEFBQcC
-ARYmaHR0cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBJBgNV
-HR8EQjBAMD6gPKA6hjhodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNp
-Z24yY2EyMDIwLmNybDAuBgNVHREEJzAlgSNrYWxlc2gtYW5ha2t1ci5wdXJheWlsQGJyb2FkY29t
-LmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNVHSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGP
-zzAdBgNVHQ4EFgQUI3+tdStI+ABRGSqksMsiCmO9uDAwDQYJKoZIhvcNAQELBQADggEBAGfe1o9b
-4wUud0FMjb/FNdc433meL15npjdYWUeioHdlCGB5UvEaMGu71QysfoDOfUNeyO9YKp0h0fm7clvo
-cBqeWe4CPv9TQbmLEtXKdEpj5kFZBGmav69mGTlu1A9KDQW3y0CDzCPG2Fdm4s73PnkwvemRk9E2
-u9/kcZ8KWVeS+xq+XZ78kGTKQ6Wii3dMK/EHQhnDfidadoN/n+x2ySC8yyDNvy81BocnblQzvbuB
-a30CvRuhokNO6Jzh7ZFtjKVMzYas3oo6HXgA+slRszMu4pc+fRPO41FHjeDM76e6P5OnthhnD+NY
-x6xokUN65DN1bn2MkeNs0nQpizDqd0QxggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYD
-VQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25h
-bFNpZ24gMiBDQSAyMDIwAgw3wUUJsDUiPdpordMwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcN
-AQkEMSIEIJ4YtiwOcOUJJT8CdJOz//s2IL0MeYk5CeiKEGfgqATAMBgGCSqGSIb3DQEJAzELBgkq
-hkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI0MTIyMzAzMTQyMVowaQYJKoZIhvcNAQkPMVwwWjAL
-BglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG
-9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQC76v+K8PHP
-mTNjDxWTRCcXcruRVDu+rQp7+Pm2g0IDGGFqMUMxAHEy03yy2OtKkGSKhdNv3Dmbzn1FDhcNRFoW
-aNoaKu4okTQ4a0+RA9OpyuJgWykEByMdIAsbzYrX9ky0B4T9YKqUKjYq/3GWBR6ByUri1JJhAIlE
-FAx9k9jygpAxCl6zLeInxaet3lYOuO1U/IqKNjsC+nYN1ZK6/0Wkz/F2gbXgZGhPwe4OKzPoPWIZ
-khl7edcgsjjDcCHnI0AMQig3c4LVCceKVumtAxEn0GG63K2tBIJMs8khJ0yR+hZjAylkaZD4w+HB
-hULTjjUjRciTT8GUHoolD0m0b39N
---0000000000008dcb140629e7646c--
+Best regards,
+Xin Tian
