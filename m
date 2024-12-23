@@ -1,90 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4847C2AF1D;
-	Mon, 23 Dec 2024 10:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FECB848C;
+	Mon, 23 Dec 2024 10:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734948510; cv=none; b=bzlFzbjLKkZ1x0FTxZ8eTfRSvA8r8AzMEO92FwELUMhVXgEhrMS4j0hn/EY4odb3jUSd5R1zPEl4pklXxHDdsJZKq/UHpy1lyv3rhuBRTO8X98eGAHkNKecEcS2Rehd9A0Baj2uySLH+YEtBwibefyoaIgufD3Y8ezvHmQs/QjI=
+	t=1734949835; cv=none; b=mlN9zFNJfF2WP4SVwVpQ3jRz+2QcDSixbOYYiNZ7+HHIrp+sLGqNYxuE8Kia3/RhJWQnNG4MuusesTjw61/hui+LGlUo2ez0UZ1xVwbzmHaFMjnXforep8pFplruJxsPuzSCTVZtM0k/+StU6q3558EcXZDphcZneGvWj93WOng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734948510; c=relaxed/simple;
-	bh=w9k/XAILwSjvY+mzO+vcyPTCSKT8DFqBEj4aMr/XdmQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ru/21jkIIwq3haoqu/nifqgn8QPKl9R3Y9QX0E++QjlVkgRF+ZADUqnPzMVynDrXvQVzfasZMutuqjSDelj5h3dbG2SPCLBB23Q+uFjCnuBvjuw5rRMhrC24ZJzmYeyG+drxrcZEEbLkNemAFHV5VG0/U7nL9iEI7WimLyC4TSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=meqrg3L9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734949835; c=relaxed/simple;
+	bh=kDm1sAt+O4kHBSJCuBBHzHsCJBF8U8ikxo6OzXtBvg8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Miv4S8GWVfcUmXVFHMIFJ2LHmr/3ViOvOYQen4SeV1LtRbGhOEOXGMjpxLy3c/M+ceJjzZpl2z90reLsXK0R76qfYOrtKLq4VxpQHlSm/Nd8rLN+b0YPaE2/YG2gwyOF/zuOZ0jNFhN09yZl3VHu+QgpcswRHDyYSQPKS3hkkZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=OyXSi7ZL; arc=none smtp.client-ip=198.47.19.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="meqrg3L9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8E0C4CED4;
-	Mon, 23 Dec 2024 10:08:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734948510;
-	bh=w9k/XAILwSjvY+mzO+vcyPTCSKT8DFqBEj4aMr/XdmQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=meqrg3L9/7owPhFiT2QP3uLxZzOpzo9x67rAzqV30Gapwi6SaWp5KQcG+hiN68G4B
-	 ReyB0ESJRTFwrJ5QFt6AXT7RUhy4KVwDan/9sSUukp8ga+pdkqeUaZ8WWiKzEnJDUN
-	 rhRGVhqAnVEUEv5VWaj7G3shDJPOhXF7Htp7wJFMufogY+16dibPb+A3ZfUfwZ60I5
-	 BcEyy6C3jTUfc31enYym01LoiHRIAtqQikgmRVhdm1he3qt961Ng2vfqVUNujI/jMH
-	 sSOKLcgnTwO9YCc0r2rB88+n1cftosGPozz2IeIj2qbCLIDk3lBfnXsCXt2kOGOdxg
-	 jPcB8/SJ6bQKA==
-Date: Mon, 23 Dec 2024 10:08:23 +0000
-From: Lee Jones <lee@kernel.org>
-To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-Cc: "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
-	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"markus.stockhausen@gmx.de" <markus.stockhausen@gmx.de>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: (subset) [PATCH v2 2/4] dt-bindings: mfd: Add MDIO interface to
- rtl9301-switch
-Message-ID: <20241223100823.GA7933@google.com>
-References: <20241216031346.2626805-1-chris.packham@alliedtelesis.co.nz>
- <20241216031346.2626805-3-chris.packham@alliedtelesis.co.nz>
- <173444803631.1901572.15614847167551978147.b4-ty@kernel.org>
- <5f863db8-1c9b-4bed-ab14-f5aafbcc9378@alliedtelesis.co.nz>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="OyXSi7ZL"
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4BN9Q1ue102780;
+	Mon, 23 Dec 2024 03:26:01 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1734945961;
+	bh=9bpx0lCCmv5pmkfeEr0posXIsEvx66W2A+erLgVfVs8=;
+	h=From:To:CC:Subject:Date;
+	b=OyXSi7ZLnNnJ/ooqUOaDgBg7tqDnHc3fX7pJptEXxCaRSlDb3AH6Ii36cgIMCXbDE
+	 xrVPGMaQ+b+vkVPC3LPljCJunH3YwmMw/tq49YOOOZiNSchIz2cLgFNn0gfh1vd25q
+	 5Z9anWQ3XjQZnh0tM9dKpZfIV3iAtpVJXXngMvGE=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4BN9Q1Db013408
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 23 Dec 2024 03:26:01 -0600
+Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 23
+ Dec 2024 03:26:00 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 23 Dec 2024 03:26:00 -0600
+Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4BN9Q0o1127786;
+	Mon, 23 Dec 2024 03:26:00 -0600
+Received: from localhost (danish-tpc.dhcp.ti.com [10.24.69.25])
+	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 4BN9PxKk006688;
+	Mon, 23 Dec 2024 03:25:59 -0600
+From: MD Danish Anwar <danishanwar@ti.com>
+To: <wojciech.drewek@intel.com>, <n.zhandarovich@fintech.ru>,
+        <aleksander.lobakin@intel.com>, <lukma@denx.de>, <m-malladi@ti.com>,
+        <diogo.ivo@siemens.com>, <horms@kernel.org>, <pabeni@redhat.com>,
+        <kuba@kernel.org>, <edumazet@google.com>, <davem@davemloft.net>,
+        <andrew+netdev@lunn.ch>
+CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
+        Vignesh Raghavendra
+	<vigneshr@ti.com>,
+        Roger Quadros <rogerq@kernel.org>, <danishanwar@ti.com>,
+        Larysa Zaremba <larysa.zaremba@intel.com>,
+        Michal Swiatkowski
+	<michal.swiatkowski@linux.intel.com>
+Subject: [PATCH net-next v2 0/3] Add Multicast Filtering support for VLAN interface
+Date: Mon, 23 Dec 2024 14:55:54 +0530
+Message-ID: <20241223092557.2077526-1-danishanwar@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5f863db8-1c9b-4bed-ab14-f5aafbcc9378@alliedtelesis.co.nz>
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Thu, 19 Dec 2024, Chris Packham wrote:
+This series adds Multicast filtering support for VLAN interfaces in dual
+EMAC and HSR offload mode for ICSSG driver.
 
-> Hi Lee,
-> 
-> On 18/12/2024 04:07, Lee Jones wrote:
-> > On Mon, 16 Dec 2024 16:13:44 +1300, Chris Packham wrote:
-> >> The MDIO controller is part of the switch on the RTL9300 family of
-> >> devices. Add a $ref to the mfd binding for these devices.
-> >>
-> >>
-> > Applied, thanks!
-> >
-> > [2/4] dt-bindings: mfd: Add MDIO interface to rtl9301-switch
-> >        commit: 1061081cbe930f97ad54e820ad1996f55d93c57f
-> >
-> > --
-> > Lee Jones [李琼斯]
-> Is it too late to drop this out? I think I'm probably going to change 
-> the MDIO binding a little which may change how it fits into the overall 
-> switch mfd.
+Patch 1/3 - Adds support for VLAN in dual EMAC mode
+Patch 2/3 - Adds MC filtering support for VLAN in dual EMAC mode
+Patch 3/3 - Adds MC filtering support for VLAN in HSR mode
 
-Unapplied, thanks.
+Changes from v1 to v2:
+*) Changed netdev_err to netdev_dbg in emac_ndo_vlan_rx_del_vid() in patch 1/3
+as suggested by Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+*) Dropped patch [1] from previous version as the patch created issue [2].
+Will send out a separate patch to set HSR=m in arch/arm64/configs/defconfig.
+Once the defconfig patch gets merged, I will add `depends on HSR` in Kconfig
+for TI_ICSSG_PRUETH as suggested by Larysa Zaremba <larysa.zaremba@intel.com>
 
+[1] https://lore.kernel.org/all/20241216100044.577489-2-danishanwar@ti.com/
+[2] https://lore.kernel.org/all/202412210336.BmgcX3Td-lkp@intel.com/#t
+v1 https://lore.kernel.org/all/20241216100044.577489-1-danishanwar@ti.com/
+
+MD Danish Anwar (3):
+  net: ti: icssg-prueth: Add VLAN support in EMAC mode
+  net: ti: icssg-prueth: Add Multicast Filtering support for VLAN in MAC
+    mode
+  net: ti: icssg-prueth: Add Support for Multicast filtering with VLAN
+    in HSR mode
+
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 175 ++++++++++++++-----
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h |   8 +
+ include/linux/if_hsr.h                       |  18 ++
+ include/linux/netdevice.h                    |   3 +
+ net/core/dev_addr_lists.c                    |   7 +-
+ net/hsr/hsr_device.c                         |  13 ++
+ net/hsr/hsr_main.h                           |   9 -
+ 7 files changed, 174 insertions(+), 59 deletions(-)
+
+
+base-commit: ae418e95dd930df6543107521c5ce55e379a9530
 -- 
-Lee Jones [李琼斯]
+2.34.1
+
