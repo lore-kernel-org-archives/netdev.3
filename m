@@ -1,44 +1,47 @@
-Received: from mail-m49247.qiye.163.com (mail-m49247.qiye.163.com [45.254.49.247])
+Received: from mail-m1973196.qiye.163.com (mail-m1973196.qiye.163.com [220.197.31.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18221917F0;
-	Tue, 24 Dec 2024 09:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.247
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2214D1B0F1E;
+	Tue, 24 Dec 2024 09:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735033299; cv=none; b=WJ8IjXUN5st/Fo3B+XaLXzYz67AGMb/JidEmFNDmPHC2ynkiHl7t8o9/L6FTCL+Z5y/ctuUQwvJD9QdScaRP0RwyySG4/nbZ0xrNudbx4nkew88XzOdiAreoZP6pPAYOFSf49AfXudvxAnhSepDqBb6dSH/AXWvWz+FjKkMyJWU=
+	t=1735033302; cv=none; b=DtKYsdfMP9uh4tgcAtCJwUmFlMs+H9o/+lNCaouTKgNI9oCBT/k1owO3D278/YF4CGRU90/oL3TkW7uWCxP7SE4TKXA/EJ20f0M6HANFwd9IM1bE7rnwO9XjeW16qByf02sZPjrDSnWxcr/2VKI//eJ7INZHeYZemDHVCQzzQlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735033299; c=relaxed/simple;
-	bh=+Yq5IWFfcXYSmZOel3A4sTWDzb6poyihGZ2Ua4UH/ZU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=I6XasbJMz0uaiZ7xE1uSbluytkKhdyDQqkR8+0m0rOzTKFxEsHyKxf2jS9be23c2SgM2UaxwBy1J6/AGbj49ujGmCjjUYVvz4VLQWaqScKJ9KP6DWeNKQtOPLlT6cHF7/ifoKo87YRW0hPIFEmqZikaJKsiD8o30tAY61NOFGp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=XY/0N3M5; arc=none smtp.client-ip=45.254.49.247
+	s=arc-20240116; t=1735033302; c=relaxed/simple;
+	bh=jCfcWPXp1ES7rGtk3Xj1haInOpKdDARGk201JY8Nv9E=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=q2COFzddqhHkW8lYZhHN0yggIlI3ycmwQOLLCovwuKW6tmzNexoX1edfkW6NQXiT+CUpvJyjjfP3XmoFdrxQFVSps4F2c2U2wO7iuqTO1jBHz0HEpMryMAZC5tJvV81GapTTSa/dIWOX18YPX4FHivQ/9VYY9RWfjQKU6t8ArX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=keaZ/7pO; arc=none smtp.client-ip=220.197.31.96
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="XY/0N3M5"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="keaZ/7pO"
 Received: from localhost.localdomain (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 6aaa2b8d;
-	Tue, 24 Dec 2024 17:41:26 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 6aaa2b9d;
+	Tue, 24 Dec 2024 17:41:30 +0800 (GMT+08:00)
 From: Kever Yang <kever.yang@rock-chips.com>
 To: heiko@sntech.de
 Cc: linux-rockchip@lists.infradead.org,
+	David Wu <david.wu@rock-chips.com>,
 	Kever Yang <kever.yang@rock-chips.com>,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Rob Herring <robh@kernel.org>,
+	Jose Abreu <joabreu@synopsys.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"David S. Miller" <davem@davemloft.net>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	David Wu <david.wu@rock-chips.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Eric Dumazet <edumazet@google.com>
-Subject: [PATCH 1/3] dt-bindings: net: Add support for rk3562 dwmac
-Date: Tue, 24 Dec 2024 17:41:22 +0800
-Message-Id: <20241224094124.3816698-1-kever.yang@rock-chips.com>
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Eric Dumazet <edumazet@google.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 3/3] ethernet: stmmac: dwmac-rk: Make the phy clock could be used for external phy
+Date: Tue, 24 Dec 2024 17:41:24 +0800
+Message-Id: <20241224094124.3816698-3-kever.yang@rock-chips.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20241224094124.3816698-1-kever.yang@rock-chips.com>
+References: <20241224094124.3816698-1-kever.yang@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,61 +50,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGhhNGVZOS0JMQhgZShlOS0pWFRQJFh
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGRlIQ1ZITU8YTRhCS0lCQxhWFRQJFh
 	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSUhCSE
 	NVSktLVUpCS0tZBg++
-X-HM-Tid: 0a93f80af00403afkunm6aaa2b8d
+X-HM-Tid: 0a93f80afe1f03afkunm6aaa2b9d
 X-HM-MType: 1
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6OjY6Vio5CjIUHEpCSzEwNyoT
-	PDMaCgtVSlVKTEhOS0hISUNDSElCVTMWGhIXVRAeDR4JVQIaFRw7CRQYEFYYExILCFUYFBZFWVdZ
-	EgtZQVlOQ1VJSVVMVUpKT1lXWQgBWUFKT09JNwY+
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NE06DAw*TjIXTUopLDAzNyEt
+	CBIKCxhVSlVKTEhOS0hISUJKQk5OVTMWGhIXVRAeDR4JVQIaFRw7CRQYEFYYExILCFUYFBZFWVdZ
+	EgtZQVlOQ1VJSVVMVUpKT1lXWQgBWUFKSUlDNwY+
 DKIM-Signature:a=rsa-sha256;
-	b=XY/0N3M5A6L7642T0X1zwP6OTOLoD6VvWemimNXCabm7r4P44RY7mOp0LvHRdplIG9giWyaP95yNkvkJcgKLd04CD0e5/ueCTZsVS5J5MUspKt9LE+gAlEGfXdtfyc4tlYrXy/ZT1/YDS22uzpuB6kxcDTxOl69V4QnTECVmjFE=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=q6BdkQMdj09o03ihlV4EVZ1rDVGa/oO7ynJUc37C9ZI=;
+	b=keaZ/7pOSGwKLmGDnHnM7/DGM2W5JdYsOoHegm9IGwDgiKS372WQ+8A6KGjXBxnLiTshkEojX6CbhlzJvuLYR7QtHQRxesCyf70+WZLWLKZQHHiwBtq8YDqsYxB3314f+wmw/5FvPnxpEEMIaUssQs8l7H/tEEgBjnlwj67sUBo=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=Pg5dVbwxypJNMGI16c4GjNAYB+dPf/j5RN5duzxkZX8=;
 	h=date:mime-version:subject:message-id:from;
 
-Add a rockchip,rk3562-gmac compatible for supporting the 2 gmac
-devices on the rk3562.
+From: David Wu <david.wu@rock-chips.com>
 
+Use the phy_clk to prepare_enable and unprepare_disable related phy clock.
+
+Signed-off-by: David Wu <david.wu@rock-chips.com>
 Signed-off-by: Kever Yang <kever.yang@rock-chips.com>
 ---
 
- Documentation/devicetree/bindings/net/rockchip-dwmac.yaml | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-index f8a576611d6c..02b7d9e78c40 100644
---- a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-@@ -24,6 +24,7 @@ select:
-           - rockchip,rk3366-gmac
-           - rockchip,rk3368-gmac
-           - rockchip,rk3399-gmac
-+          - rockchip,rk3562-gmac
-           - rockchip,rk3568-gmac
-           - rockchip,rk3576-gmac
-           - rockchip,rk3588-gmac
-@@ -49,9 +50,11 @@ properties:
-               - rockchip,rk3366-gmac
-               - rockchip,rk3368-gmac
-               - rockchip,rk3399-gmac
-+              - rockchip,rk3562-gmac
-               - rockchip,rv1108-gmac
-       - items:
-           - enum:
-+              - rockchip,rk3562-gmac
-               - rockchip,rk3568-gmac
-               - rockchip,rk3576-gmac
-               - rockchip,rk3588-gmac
-@@ -59,7 +62,7 @@ properties:
-           - const: snps,dwmac-4.20a
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+index 2ce38bf205d4..506c7daefa63 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+@@ -1885,12 +1885,14 @@ static int rk_gmac_clk_init(struct plat_stmmacenet_data *plat)
+ 		clk_set_rate(bsp_priv->clk_mac, 50000000);
+ 	}
  
-   clocks:
--    minItems: 5
-+    minItems: 4
-     maxItems: 8
+-	if (plat->phy_node && bsp_priv->integrated_phy) {
++	if (plat->phy_node) {
+ 		bsp_priv->clk_phy = of_clk_get(plat->phy_node, 0);
+ 		ret = PTR_ERR_OR_ZERO(bsp_priv->clk_phy);
+ 		if (ret)
+ 			return dev_err_probe(dev, ret, "Cannot get PHY clock\n");
+-		clk_set_rate(bsp_priv->clk_phy, 50000000);
++		/* If it is not integrated_phy, clk_phy is optional */
++		if (bsp_priv->integrated_phy)
++			clk_set_rate(bsp_priv->clk_phy, 50000000);
+ 	}
  
-   clock-names:
+ 	return 0;
 -- 
 2.25.1
 
