@@ -1,113 +1,126 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6D17462;
-	Mon, 23 Dec 2024 23:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E9B946C
+	for <netdev@vger.kernel.org>; Tue, 24 Dec 2024 02:27:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734996165; cv=none; b=M0JWjCCTDeAEJqC9J05ZbXtzxIoyTuDI9nLAwLf/y8VI1CYFGPYrRfVzVu5ubuVPK8Byucfq5zsV7Jk2hxKx0b/t4gWq+joEVsb/ViEwFW31bLrcEuGMh+Zb04lv+aVSUjLa97kA/Ca+Nj2SOlyc3XP1aK+raAOUegXFvUW4sss=
+	t=1735007276; cv=none; b=YvI3RewKLURnM2EZQVlbCrPJFzp+5Xss+sR/Rm5gvnKSZV0DWjz3DhoMVNaesJXq+Dm5BMh7NiqaQWHZyj+zkUi0tISVfWngWQmOIK8f+2PJlPgRCfOwhTEsLvNFmoXkv0zdSjgYLKB97T6pjqZLfIOyM22OXQkY/98S5vq7am0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734996165; c=relaxed/simple;
-	bh=MUf3O2CuGvHUkRiStqT9EpSnNnkeEfGYf3wmtOYBB0c=;
+	s=arc-20240116; t=1735007276; c=relaxed/simple;
+	bh=dZbXOmYT3MrKOgMZlvyCMHvflAlq/IHhDSJ0kCfGMnQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YeW1rIObbu89LLYxwyUwulAg3wV33K6PIDMjXfV1rWaYeWjSH7BCyzVRJroFzrFw08sIHznecS7yF6o8gYx+nPOOJXcfqu0cai+XjYBsqPlLieIFZQxCSFJWcgrdGFiJ4bXS3EnYkO79dI3SASNMKRKEZ4MEvCqXO/1rsRZfK6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QtWosel2; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=oLgT4pjj9x0aoBHYTs83bCYm4aOBAV/lTyif9FcBp3GPYZ8ysU9QoQelYb9R69FsSvdVHtt8hHAO0Za0nCFIM3w6Odfryrob10VNW8bIKjyMxa/1chEpFt6eVHn9ttXgv3y3Y67SJhtU6/x+adFqomzjbgeEG3oIbrssMZj721s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dzQY+mB7; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QtWosel2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734996163; x=1766532163;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MUf3O2CuGvHUkRiStqT9EpSnNnkeEfGYf3wmtOYBB0c=;
-  b=QtWosel2ksVafXlIzWR7LHphpfguGtkRwt/uXWGYvIsTrDbHS0nPSadW
-   mf2xGWc+0siIiXAD0eHd0LiZJ/sg3Gki71L07tqgZPv96L9XmN8pKX752
-   gMtKymfBviKhtgYHSYRP7sc8tJZ3tKYDQ2SCdeDY/fMx61mVBc1lJmFX/
-   qmJGmIkfeVu8q+XDiVSfENiMx0xDCksDu9vF+4LvQjV398Dg/UO2xSbod
-   xwFsl5DI1mFLj8dfljoYXZnkQJRtLTp+7DM2KmQbKVEJfSEy3RGyRgTGu
-   12WvknnBfJ6IuzvdFEAFK9q5npBoOSzGC87Fe7DX0udHLypBN6dX9utJP
-   A==;
-X-CSE-ConnectionGUID: 4aIVPVRsT+CtLuCswRqZLQ==
-X-CSE-MsgGUID: YyPbkSExQqS8BXxbeVknRQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11295"; a="57928569"
-X-IronPort-AV: E=Sophos;i="6.12,258,1728975600"; 
-   d="scan'208";a="57928569"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2024 15:22:42 -0800
-X-CSE-ConnectionGUID: m69gGBCQRbyPUwO0x4NKdQ==
-X-CSE-MsgGUID: Iw/N6R7ZRja/Rrs1OsjxjQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="122594367"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 23 Dec 2024 15:22:36 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tPrkw-0000gd-0H;
-	Mon, 23 Dec 2024 23:22:34 +0000
-Date: Tue, 24 Dec 2024 07:22:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lei Wei <quic_leiwei@quicinc.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, quic_kkumarcs@quicinc.com,
-	quic_suruchia@quicinc.com, quic_pavir@quicinc.com,
-	quic_linchen@quicinc.com, quic_luoj@quicinc.com,
-	quic_leiwei@quicinc.com, srinivas.kandagatla@linaro.org,
-	bartosz.golaszewski@linaro.org, vsmuthu@qti.qualcomm.com,
-	john@phrozen.org
-Subject: Re: [PATCH net-next v3 2/5] net: pcs: Add PCS driver for Qualcomm
- IPQ9574 SoC
-Message-ID: <202412240600.yT4YVoQ8-lkp@intel.com>
-References: <20241216-ipq_pcs_6-13_rc1-v3-2-3abefda0fc48@quicinc.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dzQY+mB7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=R9OdG0sEwiEi5pjz3ELAcAQlCGf8TDVUP78Y2EuCrn4=; b=dz
+	QY+mB7+aCJRe5mBTflSSpASY2jqev+dmsxOAZ0/3xwStTtqRPwUgv/U36bOg7LbZ4tA96dCBd42r/
+	STjkYgH5bH499xTA2/C9IE4/DeAguN+CCHdawTN/iJTT4PW8rd/iUyx41VT5YB8TLGSLMVYStWmFK
+	D68UMtqvmfD8ALQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tPue3-00FdAI-UU; Tue, 24 Dec 2024 03:27:39 +0100
+Date: Tue, 24 Dec 2024 03:27:39 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: tianx <tianx@yunsilicon.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, kuba@kernel.org,
+	pabeni@redhat.com, edumazet@google.com, davem@davemloft.net,
+	jeff.johnson@oss.qualcomm.com, przemyslaw.kitszel@intel.com,
+	weihg@yunsilicon.com, wanry@yunsilicon.com
+Subject: Re: [PATCH v1 01/16] net-next/yunsilicon: Add xsc driver basic
+ framework
+Message-ID: <94a63b04-a3ca-48c5-bae9-bf01032fb260@lunn.ch>
+References: <20241218105023.2237645-1-tianx@yunsilicon.com>
+ <20241218105023.2237645-2-tianx@yunsilicon.com>
+ <2792da0b-a1f8-4998-a7ea-f1978f97fc4a@lunn.ch>
+ <e219e106-72ef-4045-9fc0-db2639720aa6@yunsilicon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241216-ipq_pcs_6-13_rc1-v3-2-3abefda0fc48@quicinc.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e219e106-72ef-4045-9fc0-db2639720aa6@yunsilicon.com>
 
-Hi Lei,
+On Mon, Dec 23, 2024 at 11:20:20AM +0800, tianx wrote:
+> On 2024/12/19 2:20, Andrew Lunn wrote:
+> >> +enum {
+> >> +	XSC_LOG_LEVEL_DBG	= 0,
+> >> +	XSC_LOG_LEVEL_INFO	= 1,
+> >> +	XSC_LOG_LEVEL_WARN	= 2,
+> >> +	XSC_LOG_LEVEL_ERR	= 3,
+> >> +};
+> >> +
+> >> +#define xsc_dev_log(condition, level, dev, fmt, ...)			\
+> >> +do {									\
+> >> +	if (condition)							\
+> >> +		dev_printk(level, dev, dev_fmt(fmt), ##__VA_ARGS__);	\
+> >> +} while (0)
+> >> +
+> >> +#define xsc_core_dbg(__dev, format, ...)				\
+> >> +	xsc_dev_log(xsc_log_level <= XSC_LOG_LEVEL_DBG, KERN_DEBUG,	\
+> >> +		&(__dev)->pdev->dev, "%s:%d:(pid %d): " format,		\
+> >> +		__func__, __LINE__, current->pid, ##__VA_ARGS__)
+> >> +
+> >> +#define xsc_core_dbg_once(__dev, format, ...)				\
+> >> +	dev_dbg_once(&(__dev)->pdev->dev, "%s:%d:(pid %d): " format,	\
+> >> +		     __func__, __LINE__, current->pid,			\
+> >> +		     ##__VA_ARGS__)
+> >> +
+> >> +#define xsc_core_dbg_mask(__dev, mask, format, ...)			\
+> >> +do {									\
+> >> +	if ((mask) & xsc_debug_mask)					\
+> >> +		xsc_core_dbg(__dev, format, ##__VA_ARGS__);		\
+> >> +} while (0)
+> > You where asked to throw all these away and just use the existing
+> > methods.
+> >
+> > If you disagree with a comment, please reply and ask for more details,
+> > understand the reason behind the comment, or maybe try to justify your
+> > solution over what already exists.
+> >
+> > Maybe look at the ethtool .get_msglevel & .set_msglevel if you are not
+> > already using them.
+> 
+> Apologies for the delayed reply. Thank you for the feedback.
+> 
+> Our driver suite consists of three modules: xsc_pci (which manages 
+> hardware resources and provides common services for the other two 
+> modules), xsc_eth (providing Ethernet functionality), and xsc_ib 
+> (offering RDMA functionality). The patch set we are submitting currently 
+> includes xsc_pci and xsc_eth.
+> 
+> To ensure consistent and fine-grained log control for all modules, we 
+> have wrapped these logging functions for ease of use. The use of these 
+> interfaces is strictly limited to our driver and does not impact other 
+> parts of the kernel. I believe this can be considered a small feature 
+> within our code. I’ve also observed similar implementations in other 
+> drivers, such as in |drivers/net/ethernet/chelsio/common.h| and 
+> |drivers/net/ethernet/adaptec/starfire.c|.
+ 
+Did you look at the age of these drivers? starfire has been around
+from before git was adopted, 2005. Chelsio is of a similar age. You
+cannot expect anything so old to be a good reference of today's best
+practices.
 
-kernel test robot noticed the following build errors:
+Please just use netdev_dbg(), netdev_info(), netdev_warn(),
+netdev_err() etc for the ethernet driver, combined with msglevel. It
+is an ethernet driver, so the usual ethernet driver APIs should be
+used.
 
-[auto build test ERROR on 40384c840ea1944d7c5a392e8975ed088ecf0b37]
+For the PCI driver, pci_dbg(), pci_info(), pci_notices() etc.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lei-Wei/dt-bindings-net-pcs-Add-Ethernet-PCS-for-Qualcomm-IPQ9574-SoC/20241216-214452
-base:   40384c840ea1944d7c5a392e8975ed088ecf0b37
-patch link:    https://lore.kernel.org/r/20241216-ipq_pcs_6-13_rc1-v3-2-3abefda0fc48%40quicinc.com
-patch subject: [PATCH net-next v3 2/5] net: pcs: Add PCS driver for Qualcomm IPQ9574 SoC
-config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20241224/202412240600.yT4YVoQ8-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241224/202412240600.yT4YVoQ8-lkp@intel.com/reproduce)
+I don't know rdma, is there rdma_dbg(), rdma_info() etc.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202412240600.yT4YVoQ8-lkp@intel.com/
-
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
-ERROR: modpost: "__delay" [drivers/net/mdio/mdio-cavium.ko] undefined!
->> ERROR: modpost: "devm_of_clk_add_hw_provider" [drivers/net/pcs/pcs-qcom-ipq9574.ko] undefined!
->> ERROR: modpost: "devm_clk_hw_register" [drivers/net/pcs/pcs-qcom-ipq9574.ko] undefined!
-ERROR: modpost: "devm_of_clk_add_hw_provider" [drivers/media/i2c/tc358746.ko] undefined!
-ERROR: modpost: "devm_clk_hw_register" [drivers/media/i2c/tc358746.ko] undefined!
-ERROR: modpost: "of_clk_hw_simple_get" [drivers/media/i2c/tc358746.ko] undefined!
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+	Andrew
