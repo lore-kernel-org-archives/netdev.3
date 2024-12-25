@@ -1,58 +1,62 @@
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1D38836;
-	Wed, 25 Dec 2024 05:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9AD101EE;
+	Wed, 25 Dec 2024 05:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735103822; cv=none; b=bcGe42bV/KL9S7snLgqzTynGrl12uQE5DNHkE0m1NBf2yNPwIlflwDcGoFc7zBj3jHI91+VPchnwl/86fqA8Onkc7iiYRgZC6dZHHhZKjoS+lH85OxdfG+ll7vz2NIeqtRPxuHLIMo4V4TYcNU44Zf1ti3tU3CcJX1YvaFXpS6Q=
+	t=1735103827; cv=none; b=XPwRveuS9fAw36BGIrPIEQAV0gjylEB5gSKDspBUcfPm1udMJ9vPHjhHad0+t6ORI5Tj4+3cytmWXYx39IUrb2nTPRSUa3rH3lPwYzqNX4HRkcDiMjnoT4UqRftDD6pHttiEJnbaQK9KhdMZpOSBixp4Kx695boUyVAPlKg78Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735103822; c=relaxed/simple;
-	bh=neM9CqkIOQmi4+Q195wR3+MOhoV5TVUMasCHhkQHfzo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bDivuUPLOK7O3q7U3PfOYNBZsqOn/wDGfOR3gtuwcfFkZwk4dP7Z4uFg44rG44vPkhX0y/6Qmoq/7KmyFkXT88f9zWBCTxmR4MxxI10bZV/bRVBDPUqmTWKqZzt2uEuIZKAGBefdF4MFbDVXQ7bIMlzEb9rF7JaQ37ZmFAHd2mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=LNulTn4u; arc=none smtp.client-ip=205.220.177.32
+	s=arc-20240116; t=1735103827; c=relaxed/simple;
+	bh=0txuHcWcnDSvB9rywhMrxH2nNsI+24cfzeVrBFdFCkQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UWNvLopQdar/vjkD13Ia8/O5bidWIYgnazZLC92eKMbCnnSuGno8JKbPANpJra37NDkYxSMVWdGhLanqSj6GfJpP/YHoVWic8d+MKpfTxd3MaunGjoOJ3h2E11GYEby8hwOMBnGRH5/+5XShyWECBPtQ8iCIsGE2BC34pwee7nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=ATuF7Bpi; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="LNulTn4u"
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BP3tcAl002325;
-	Wed, 25 Dec 2024 05:16:26 GMT
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ATuF7Bpi"
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BP2kx5d025770;
+	Wed, 25 Dec 2024 05:16:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2023-11-20; bh=RKXLC8uSozWn24DyCkWgtXJT3hb7i
-	8aTsBJI9RKlMCg=; b=LNulTn4udc3pmuTzhvC5Qal3GdFNH+fBP35+lvYEOpy1t
-	YzigWIkgNG+VR3WxC0uY3Fm4pyBzZSG+ZWe4DzvGnzqTFu0MJOFIyRWDzlLWRUDp
-	Yid9vevfBZnCd2IHGpArgGUbv5S5n9Exihi46uht7co6aV6rHmOm5a4jojFEzp0O
-	A9klGk5wSEp/13Ht0qpdzJ+8LemMXbvYT7SkimYAtUA+Y//wE+zqiEAs37jeBNJz
-	xu1e4gmAa/SU8XY48+6Y4YOL27H+dV0xbyCr2bwzahGzlY+yowTALMG1cYLg3+GK
-	EkANh3LR5brsGxRgTSJho4WpdI8afOSsPhqnKQyPg==
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2023-11-20; bh=KSKiy
+	YBWLwMKYYsiDnYynubWpye0Ep3IMDEoCgd2jiU=; b=ATuF7BpiXuNrkGO/r7mnd
+	asO/HI0TLSNViFe5mxKr5huSl8GWyXKFPH/CadlakJylmco0jVOQ6vku5ow+mLv5
+	a94t6DhXaSnCVFT0S8Yd+xkuCLoe0OlDzKw8aDd4/vrWev8dicgH7pukILTetZT5
+	CTbKgIWasDOJ1JHdJrm2Fd2PJoQqdMEr/bdy51ukvHQnEQrQH2JKWPHE+GzXj2qL
+	Xs7UptcqVV7kRcCPbGo9HhocULjRR1UiyJ02oG08X6hVLnnnX0nPtAUFjWxRLsdL
+	dNc3TpiAWvEirR0FO0nFQq/sLgJfOcqt6npMUaRdWlgMG4TO4DEyt/0NrhJBGDtD
+	Q==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43nq6sd2qv-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43nq56w2g4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Dec 2024 05:16:26 +0000 (GMT)
+	Wed, 25 Dec 2024 05:16:27 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4BP1UZUH000937;
-	Wed, 25 Dec 2024 05:16:25 GMT
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4BP0FCCY001803;
+	Wed, 25 Dec 2024 05:16:26 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 43pk8ucjr7-1
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 43pk8ucjrh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Dec 2024 05:16:25 +0000
+	Wed, 25 Dec 2024 05:16:26 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4BP5GPg4035712;
-	Wed, 25 Dec 2024 05:16:25 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4BP5GPg8035712;
+	Wed, 25 Dec 2024 05:16:26 GMT
 Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 43pk8ucjr2-1;
-	Wed, 25 Dec 2024 05:16:25 +0000
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 43pk8ucjr2-3;
+	Wed, 25 Dec 2024 05:16:26 +0000
 From: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
 To: davem@davemloft.net, kuznet@ms2.inr.ac.ru, yoshfuji@linux-ipv6.org,
         kuba@kernel.org
 Cc: harshvardhan.j.jha@oracle.com, netdev@vger.kernel.org,
         stable@vger.kernel.org
-Subject: [PATCH 5.4.y 5.10.y 0/4] Backport of CVE-2024-44986 fix to stable 5.4 and 5.10
-Date: Tue, 24 Dec 2024 21:16:20 -0800
-Message-ID: <20241225051624.127745-1-harshvardhan.j.jha@oracle.com>
+Subject: [PATCH 5.4.y 5.10.y 2/4] ipv6: use skb_expand_head in ip6_finish_output2
+Date: Tue, 24 Dec 2024 21:16:22 -0800
+Message-ID: <20241225051624.127745-3-harshvardhan.j.jha@oracle.com>
 X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20241225051624.127745-1-harshvardhan.j.jha@oracle.com>
+References: <20241225051624.127745-1-harshvardhan.j.jha@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,30 +68,133 @@ X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2024-12-25_01,2024-12-24_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0
- malwarescore=0 mlxscore=0 spamscore=0 mlxlogscore=733 phishscore=0
+ malwarescore=0 mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2411120000 definitions=main-2412250044
-X-Proofpoint-ORIG-GUID: FeITE8uRUdYDJiv3DOkjpvOfiIB_MfuJ
-X-Proofpoint-GUID: FeITE8uRUdYDJiv3DOkjpvOfiIB_MfuJ
+X-Proofpoint-GUID: OugqSS6DIFglZVax7x-dujeRWQOjxrNU
+X-Proofpoint-ORIG-GUID: OugqSS6DIFglZVax7x-dujeRWQOjxrNU
 
-Following is an attempt to backport fix of CVE-2024-44986 back to stable
-5.4 and 5.10. 3 extra pre-requisite patches were required to introduce
-the skb_expand_head() function and use it in ip6_finish_output2() for
-the fix patch to be applicable.
+From: Vasily Averin <vvs@virtuozzo.com>
 
-Eric Dumazet (1):
-  ipv6: fix possible UAF in ip6_finish_output2()
+[ Upstream commit e415ed3a4b8b246ee5e9d109ff5153efcf96b9f2 ]
 
-Vasily Averin (3):
-  skbuff: introduce skb_expand_head()
-  ipv6: use skb_expand_head in ip6_finish_output2
-  ipv6: use skb_expand_head in ip6_xmit
+Unlike skb_realloc_headroom, new helper skb_expand_head does not allocate
+a new skb if possible.
 
- include/linux/skbuff.h |  1 +
- net/core/skbuff.c      | 42 ++++++++++++++++++++++
- net/ipv6/ip6_output.c  | 82 ++++++++++++++++--------------------------
- 3 files changed, 74 insertions(+), 51 deletions(-)
+Additionally this patch replaces commonly used dereferencing with variables.
 
+Signed-off-by: Vasily Averin <vvs@virtuozzo.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit e415ed3a4b8b246ee5e9d109ff5153efcf96b9f2)
+Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+---
+ net/ipv6/ip6_output.c | 51 ++++++++++++++-----------------------------
+ 1 file changed, 16 insertions(+), 35 deletions(-)
+
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 26d8105981e96..7806963b4539e 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -60,46 +60,29 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ {
+ 	struct dst_entry *dst = skb_dst(skb);
+ 	struct net_device *dev = dst->dev;
++	struct inet6_dev *idev = ip6_dst_idev(dst);
+ 	unsigned int hh_len = LL_RESERVED_SPACE(dev);
+-	int delta = hh_len - skb_headroom(skb);
+-	const struct in6_addr *nexthop;
++	const struct in6_addr *daddr, *nexthop;
++	struct ipv6hdr *hdr;
+ 	struct neighbour *neigh;
+ 	int ret;
+ 
+ 	/* Be paranoid, rather than too clever. */
+-	if (unlikely(delta > 0) && dev->header_ops) {
+-		/* pskb_expand_head() might crash, if skb is shared */
+-		if (skb_shared(skb)) {
+-			struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
+-
+-			if (likely(nskb)) {
+-				if (skb->sk)
+-					skb_set_owner_w(nskb, skb->sk);
+-				consume_skb(skb);
+-			} else {
+-				kfree_skb(skb);
+-			}
+-			skb = nskb;
+-		}
+-		if (skb &&
+-		    pskb_expand_head(skb, SKB_DATA_ALIGN(delta), 0, GFP_ATOMIC)) {
+-			kfree_skb(skb);
+-			skb = NULL;
+-		}
++	if (unlikely(hh_len > skb_headroom(skb)) && dev->header_ops) {
++		skb = skb_expand_head(skb, hh_len);
+ 		if (!skb) {
+-			IP6_INC_STATS(net, ip6_dst_idev(dst), IPSTATS_MIB_OUTDISCARDS);
++			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
+ 			return -ENOMEM;
+ 		}
+ 	}
+ 
+-	if (ipv6_addr_is_multicast(&ipv6_hdr(skb)->daddr)) {
+-		struct inet6_dev *idev = ip6_dst_idev(skb_dst(skb));
+-
++	hdr = ipv6_hdr(skb);
++	daddr = &hdr->daddr;
++	if (ipv6_addr_is_multicast(daddr)) {
+ 		if (!(dev->flags & IFF_LOOPBACK) && sk_mc_loop(sk) &&
+ 		    ((mroute6_is_socket(net, skb) &&
+ 		     !(IP6CB(skb)->flags & IP6SKB_FORWARDED)) ||
+-		     ipv6_chk_mcast_addr(dev, &ipv6_hdr(skb)->daddr,
+-					 &ipv6_hdr(skb)->saddr))) {
++		     ipv6_chk_mcast_addr(dev, daddr, &hdr->saddr))) {
+ 			struct sk_buff *newskb = skb_clone(skb, GFP_ATOMIC);
+ 
+ 			/* Do not check for IFF_ALLMULTI; multicast routing
+@@ -110,7 +93,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ 					net, sk, newskb, NULL, newskb->dev,
+ 					dev_loopback_xmit);
+ 
+-			if (ipv6_hdr(skb)->hop_limit == 0) {
++			if (hdr->hop_limit == 0) {
+ 				IP6_INC_STATS(net, idev,
+ 					      IPSTATS_MIB_OUTDISCARDS);
+ 				kfree_skb(skb);
+@@ -119,9 +102,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ 		}
+ 
+ 		IP6_UPD_PO_STATS(net, idev, IPSTATS_MIB_OUTMCAST, skb->len);
+-
+-		if (IPV6_ADDR_MC_SCOPE(&ipv6_hdr(skb)->daddr) <=
+-		    IPV6_ADDR_SCOPE_NODELOCAL &&
++		if (IPV6_ADDR_MC_SCOPE(daddr) <= IPV6_ADDR_SCOPE_NODELOCAL &&
+ 		    !(dev->flags & IFF_LOOPBACK)) {
+ 			kfree_skb(skb);
+ 			return 0;
+@@ -136,10 +117,10 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ 	}
+ 
+ 	rcu_read_lock_bh();
+-	nexthop = rt6_nexthop((struct rt6_info *)dst, &ipv6_hdr(skb)->daddr);
+-	neigh = __ipv6_neigh_lookup_noref(dst->dev, nexthop);
++	nexthop = rt6_nexthop((struct rt6_info *)dst, daddr);
++	neigh = __ipv6_neigh_lookup_noref(dev, nexthop);
+ 	if (unlikely(!neigh))
+-		neigh = __neigh_create(&nd_tbl, nexthop, dst->dev, false);
++		neigh = __neigh_create(&nd_tbl, nexthop, dev, false);
+ 	if (!IS_ERR(neigh)) {
+ 		sock_confirm_neigh(skb, neigh);
+ 		ret = neigh_output(neigh, skb, false);
+@@ -148,7 +129,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ 	}
+ 	rcu_read_unlock_bh();
+ 
+-	IP6_INC_STATS(net, ip6_dst_idev(dst), IPSTATS_MIB_OUTNOROUTES);
++	IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTNOROUTES);
+ 	kfree_skb(skb);
+ 	return -EINVAL;
+ }
 -- 
 2.46.0
 
