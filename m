@@ -1,34 +1,34 @@
 Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3D283CC1;
-	Thu, 26 Dec 2024 16:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E4113B7A1;
+	Thu, 26 Dec 2024 16:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735231964; cv=none; b=SiQsdx1oeh2TuEV7sseosOHvC8FD9z9q/tCr/60El5qqPd9lfAs80zPMSMtJFXbgQ6hwu63eKhlYnh+BmKf/SG0uco0iliQ62JrYebmAo2jkvuCST3+P7Y9DTibPy0jLW5Fp20PY2R34/OkG08/tY5SNEINthH4qZ8gI1wtESho=
+	t=1735231971; cv=none; b=Zy8m8xQRWsdmstfmP2uxE+DXToVLJlPz/eAHwumg3zGZRgbHXuM2/bBIrjglXBNMtTIsmxWsZi5OI3j9JlGw28hjs5F7db+qXOf/9FA8gVF7DQYR6vvPd5HQaDOQUkSseswsBQaIWz6pIqb1xg4/rVtctQ2WxPrWzIUP6rzKJsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735231964; c=relaxed/simple;
-	bh=cMpSLK+TqXGI5ylHvyziqrIhBXLV15jFcdexa8T6me8=;
+	s=arc-20240116; t=1735231971; c=relaxed/simple;
+	bh=Fi0bn4ckJEgIGDpgKWy3yhL85HYvSuIMnanl4g6FpyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QsTWcnLIAQqdOhfk2j1ZJbmES3FNwnwldmWX0xdOfjIJdaNBaIjrlQuxOM8AVU4ARtl3ZasUYF3tLCszH9pexRGBPAEZbeJj0/rXyjiNXct+iNKs8NqGiSL/Qe5A2myjGrC3jUbFcyCtl4k9grTcxEkQCHnJruQRrxklvET13t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=SzKyHP6r; arc=none smtp.client-ip=46.235.229.95
+	 MIME-Version; b=jieOnMl0lcfdTAC4zTMBEJU6MGW3RutTUa4A1j3at5BB3HFgeB+3xhAu8VpqfUXLM0k2bzv6IFY50rlzBaprJrfmyKNev3d17s0Dr7WDREKd0Q3dnnSvTfGnenR3E/cKjCNfM39F9cWxgWbBlXBDbCRE8e+FOz/Pml11p4kdo10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=WXEOyl0f; arc=none smtp.client-ip=46.235.229.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="SzKyHP6r"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="WXEOyl0f"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
 	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=pdsFoyjvN7jwIB/z6Mz4XwBi+s2/8ncP7Z2rx9wjM1I=; b=SzKyHP6r9yFoZfQj
-	GObburqqgBg5LtQqlBjJefLXBMgrh3rtBd0IWjZUFyljWso6JxyCPa897IOZoIexayjLo7arfhKyF
-	zozh/jPxxNnES6GvMrJfR5WbHz8W8e8KfSaUNnYBtaJGcUtOzYdtgWvTPUyxcQlQP+ky1xkDX2UIe
-	R6Qy9LTwvjf96k8k1ldkBs8ZlPd8DEZo4a7pynVUA0iNmVPGRfDN74yEo0dtyPuqG0s2V5g2OsV54
-	b5dst4qS/St0WdU9GjJq/PrcBrrJkla+lgVZnRCAV817Q7W77/ZJl8kEKdo4czM5VpmieQXMxT4vQ
-	nY4MdThk8Bhc1urWtA==;
+	:Subject; bh=7AmYte8oTBIV4rhftXrsFRb4h3cQ6cpdyY2nNfyPAUo=; b=WXEOyl0fxXdhgbXP
+	SlSEZIGhcqhU98vojNJqoUO2SX68Jgx6zyaCNiCGarFacJysuHxtXRooWGDfvzGmrCn4h7P1QefC4
+	z1USatp7VaiZkVchLulP0KoGlLzO0u62j2kbHmiJGUt2PEbiaDwWnHg0P2b5fA0QqpajbP2wIFnes
+	xEq6AOCtC8BnF4pivVd+j6ch/0Jx2Ih5TLUTKPt54eNrqJIeeP+m27fMqURqwypwB6IZrHUxYA7Fb
+	n3DOibfxxFo92xKNuxW+mUrQRFg4NQXL9alBvsFIHiE/oxaLkjUC7buQB0XbOmc0nW5XBlbZch+o3
+	plsTbZlXiQPoR8rTWQ==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
 	by mx.treblig.org with esmtp (Exim 4.96)
 	(envelope-from <linux@treblig.org>)
-	id 1tQr5s-007IaP-37;
-	Thu, 26 Dec 2024 16:52:17 +0000
+	id 1tQr5u-007IaP-1M;
+	Thu, 26 Dec 2024 16:52:18 +0000
 From: linux@treblig.org
 To: anthony.l.nguyen@intel.com,
 	przemyslaw.kitszel@intel.com,
@@ -41,9 +41,9 @@ To: anthony.l.nguyen@intel.com,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [RFC net-next 1/3] igc: Remove unused igc_acquire/release_nvm
-Date: Thu, 26 Dec 2024 16:52:13 +0000
-Message-ID: <20241226165215.105092-2-linux@treblig.org>
+Subject: [RFC net-next 3/3] igc: Remove unused igc_read/write_pcie_cap_reg
+Date: Thu, 26 Dec 2024 16:52:15 +0000
+Message-ID: <20241226165215.105092-4-linux@treblig.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241226165215.105092-1-linux@treblig.org>
 References: <20241226165215.105092-1-linux@treblig.org>
@@ -57,95 +57,66 @@ Content-Transfer-Encoding: 8bit
 
 From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-igc_acquire_nvm() and igc_release_nvm() were added in 2018 as part of
-commit ab4056126813 ("igc: Add NVM support")
-
-but never used.
+The last uses of igc_read_pcie_cap_reg() and igc_write_pcie_cap_reg()
+were removed in 2019 by
+commit 16ecd8d9af26 ("igc: Remove the obsolete workaround")
 
 Remove them.
 
-The igc_1225.c has it's own specific implementations.
-
 Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 ---
- drivers/net/ethernet/intel/igc/igc_nvm.c | 50 ------------------------
- drivers/net/ethernet/intel/igc/igc_nvm.h |  2 -
- 2 files changed, 52 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_hw.h   |  3 ---
+ drivers/net/ethernet/intel/igc/igc_main.c | 25 -----------------------
+ 2 files changed, 28 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_nvm.c b/drivers/net/ethernet/intel/igc/igc_nvm.c
-index 58f81aba0144..efd121c03967 100644
---- a/drivers/net/ethernet/intel/igc/igc_nvm.c
-+++ b/drivers/net/ethernet/intel/igc/igc_nvm.c
-@@ -35,56 +35,6 @@ static s32 igc_poll_eerd_eewr_done(struct igc_hw *hw, int ee_reg)
- 	return ret_val;
- }
+diff --git a/drivers/net/ethernet/intel/igc/igc_hw.h b/drivers/net/ethernet/intel/igc/igc_hw.h
+index 7ec7e395020b..be8a49a86d09 100644
+--- a/drivers/net/ethernet/intel/igc/igc_hw.h
++++ b/drivers/net/ethernet/intel/igc/igc_hw.h
+@@ -279,7 +279,4 @@ struct net_device *igc_get_hw_dev(struct igc_hw *hw);
+ #define hw_dbg(format, arg...) \
+ 	netdev_dbg(igc_get_hw_dev(hw), format, ##arg)
  
--/**
-- * igc_acquire_nvm - Generic request for access to EEPROM
-- * @hw: pointer to the HW structure
-- *
-- * Set the EEPROM access request bit and wait for EEPROM access grant bit.
-- * Return successful if access grant bit set, else clear the request for
-- * EEPROM access and return -IGC_ERR_NVM (-1).
-- */
--s32 igc_acquire_nvm(struct igc_hw *hw)
+-s32  igc_read_pcie_cap_reg(struct igc_hw *hw, u32 reg, u16 *value);
+-s32  igc_write_pcie_cap_reg(struct igc_hw *hw, u32 reg, u16 *value);
+-
+ #endif /* _IGC_HW_H_ */
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 9c92673a7240..f58cd6940434 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -6779,31 +6779,6 @@ static const struct net_device_ops igc_netdev_ops = {
+ 	.ndo_get_tstamp		= igc_get_tstamp,
+ };
+ 
+-/* PCIe configuration access */
+-s32 igc_read_pcie_cap_reg(struct igc_hw *hw, u32 reg, u16 *value)
 -{
--	s32 timeout = IGC_NVM_GRANT_ATTEMPTS;
--	u32 eecd = rd32(IGC_EECD);
--	s32 ret_val = 0;
+-	struct igc_adapter *adapter = hw->back;
 -
--	wr32(IGC_EECD, eecd | IGC_EECD_REQ);
--	eecd = rd32(IGC_EECD);
+-	if (!pci_is_pcie(adapter->pdev))
+-		return -IGC_ERR_CONFIG;
 -
--	while (timeout) {
--		if (eecd & IGC_EECD_GNT)
--			break;
--		udelay(5);
--		eecd = rd32(IGC_EECD);
--		timeout--;
--	}
+-	pcie_capability_read_word(adapter->pdev, reg, value);
 -
--	if (!timeout) {
--		eecd &= ~IGC_EECD_REQ;
--		wr32(IGC_EECD, eecd);
--		hw_dbg("Could not acquire NVM grant\n");
--		ret_val = -IGC_ERR_NVM;
--	}
--
--	return ret_val;
+-	return IGC_SUCCESS;
 -}
 -
--/**
-- * igc_release_nvm - Release exclusive access to EEPROM
-- * @hw: pointer to the HW structure
-- *
-- * Stop any current commands to the EEPROM and clear the EEPROM request bit.
-- */
--void igc_release_nvm(struct igc_hw *hw)
+-s32 igc_write_pcie_cap_reg(struct igc_hw *hw, u32 reg, u16 *value)
 -{
--	u32 eecd;
+-	struct igc_adapter *adapter = hw->back;
 -
--	eecd = rd32(IGC_EECD);
--	eecd &= ~IGC_EECD_REQ;
--	wr32(IGC_EECD, eecd);
+-	if (!pci_is_pcie(adapter->pdev))
+-		return -IGC_ERR_CONFIG;
+-
+-	pcie_capability_write_word(adapter->pdev, reg, *value);
+-
+-	return IGC_SUCCESS;
 -}
 -
- /**
-  * igc_read_nvm_eerd - Reads EEPROM using EERD register
-  * @hw: pointer to the HW structure
-diff --git a/drivers/net/ethernet/intel/igc/igc_nvm.h b/drivers/net/ethernet/intel/igc/igc_nvm.h
-index f9fc2e9cfb03..ab78d0c64547 100644
---- a/drivers/net/ethernet/intel/igc/igc_nvm.h
-+++ b/drivers/net/ethernet/intel/igc/igc_nvm.h
-@@ -4,8 +4,6 @@
- #ifndef _IGC_NVM_H_
- #define _IGC_NVM_H_
- 
--s32 igc_acquire_nvm(struct igc_hw *hw);
--void igc_release_nvm(struct igc_hw *hw);
- s32 igc_read_mac_addr(struct igc_hw *hw);
- s32 igc_read_nvm_eerd(struct igc_hw *hw, u16 offset, u16 words, u16 *data);
- s32 igc_validate_nvm_checksum(struct igc_hw *hw);
+ u32 igc_rd32(struct igc_hw *hw, u32 reg)
+ {
+ 	struct igc_adapter *igc = container_of(hw, struct igc_adapter, hw);
 -- 
 2.47.1
 
