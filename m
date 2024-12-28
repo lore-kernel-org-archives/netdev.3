@@ -1,142 +1,102 @@
-Received: from rcdn-iport-4.cisco.com (rcdn-iport-4.cisco.com [173.37.86.75])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29A1635
-	for <netdev@vger.kernel.org>; Sat, 28 Dec 2024 00:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67413FD1
+	for <netdev@vger.kernel.org>; Sat, 28 Dec 2024 00:36:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735344727; cv=none; b=E3VRdjCN9D04N1fSZ/m6uEyaKBJeqBE6/7nDVYx90rTXFMe2dsMSx9ZFklA3h7yfPNunnS1pg5yPHL8qQ/+oy3/ZVpXcb7IfAXtcMEhCXa9bh2SDMCYrazrdHkNJ8SKY/YH1WfhGZbjRZEcrcpIfZd1pvPWKy1QxlSZ0pembKWY=
+	t=1735346193; cv=none; b=Yy7Hj83Po7Peb7Z/W1GH4ytrYiYcJddNXt4Trzm8Zyzk6X+kAhx9iLDANa1EVz9byxeXXovQKrb6T1lxkmVthxb+Vv7SzFhOXPc5HmBhkNQl9II7IXVlprOSOHBNvEiNd55sPAbbNu2TDtayHJsW6hi55Mxb5mkrAfIa/JMDkKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735344727; c=relaxed/simple;
-	bh=JafIP02PO98uLZKXO0izV+3usrl3hFYSBRFV6/i6/pU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PSOaBe3iQ6S12bY7LvvjSHtoZS07lyqAXCIOcyJLGFiX7xU/kYBQUDpmm0H796MDmNU3VCPPhtKB7QvCt6PqziXPYDWiivWvdtABMTp6X3daNOV6DLI5voRK+MbwNuNwiSf8t9aGzDGJf1ldktm7LTSgxSMoHDOYlCz1taa+AQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b=DRv2sg0o; arc=none smtp.client-ip=173.37.86.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
+	s=arc-20240116; t=1735346193; c=relaxed/simple;
+	bh=fQHC/9sj9iiYtTu5S+djSBsdTTDlnEiiui8Kk6E8y1A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=knmDr+2MgIAKWmqF2aS+Tv0QPIAAB5SAeocNqqRmT4tb/ofDKtnMPLY+SGjMjJVUoaEuRic5CdysbX9NZMOEioWK8ZJ9R0Uu/KpcRFxSG9/Zitgb7GXhX+Tc/B2Ri6eGvHDWnm4OcRo9i7caAR/QPS+eTE0BnLBUC7ErhdBMfqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=DlM/aJNu; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="DRv2sg0o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=2266; q=dns/txt; s=iport;
-  t=1735344725; x=1736554325;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=kKCGtv0yJ7J7+k1hTKbyErreujSmpcX/Lt98Wk7ACsg=;
-  b=DRv2sg0ou+fsBMSEt7dXSb1+boDzLWksXjnbmXTqrq8amnilQkAb/ek2
-   FTbEZnghdWRF1VVb3y1lEMAms7t/qlalBC5bbqWG4y6iNlcVXDe7p7WmR
-   h+J8VOQIVNLmvPSRjqMtzlR6cyUes87HcRNNlsc349q3uZEs1E2qT23sR
-   8=;
-X-CSE-ConnectionGUID: 4ejswKsdRhiraQy94VOKlw==
-X-CSE-MsgGUID: 8Zvg1p1qQuepciEL6+D+8A==
-X-IPAS-Result: =?us-ascii?q?A0BcAwDJQG9n/4r/Ja1aglyCS4FPQ0iNUYhynhsUgREDV?=
- =?us-ascii?q?g8BAQEPRAQBAYUHinACJjQJDgECBAEBAQEDAgMBAQEBAQEBAQEBAQsBAQUBA?=
- =?us-ascii?q?QECAQcFgQ4ThgiGXTYBRoEMMhKDAYJlA7E5giyBAd4zgW2BSIVrh19whHcnG?=
- =?us-ascii?q?4FJRIQOb4QpZ4V3BIIfF4EngUCDeJ5ySIEhA1ksAVUTDQoLBwWBOToDIgwLD?=
- =?us-ascii?q?AsUHBUCgR6BAhQGFQSBC0U9gkppSTcCDQI2giAkWIJNhReEXoRWgklVgnuCF?=
- =?us-ascii?q?3yBGoIlQAMLGA1IESw3Bg4bBj5uB5xfRoNzgQ4BE2grHVEUPgIRkyGSFaEDh?=
- =?us-ascii?q?CSBY59jGjOqUph8IqNtN4RmgWc8gVkzGggbFYMiUhkPji0WtSAlMjwCBwsBA?=
- =?us-ascii?q?QMJjzYGgXcBAQ?=
-IronPort-Data: A9a23:PQlD/anmjPjYJEQoUosw4A3o5gyjJ0RdPkR7XQ2eYbSJt1+Wr1Gzt
- xIbUD3VOvuKa2uhfookaI619hsAuZHVztU1TQRvqy02F1tH+JHPbTi7wugcHM8zwunrFh8PA
- xA2M4GYRCwMZiaC4E/rav658CEUOZigHtLUEPTDNj16WThqQSIgjQMLs+Mii+aEu/Dha++2k
- Y20+pe31GONgWYubjtOsf3b9HuDgdyr0N8mlg1mDRx0lAe2e0k9VPo3Oay3Jn3kdYhYdsbSb
- /rD1ryw4lTC9B4rDN6/+p6jGqHdauePVeQmoiM+t5mK2nCulARrukoIHKZ0hXNsttm8t4sZJ
- OOhGnCHYVxB0qXkwIzxWvTDes10FfUuFLTveRBTvSEPpqHLWyOE/hlgMK05FdEV+P1oInpCz
- /wZMjk0f0HfucWVxK3uH4GAhux7RCXqFJkUtnclyXTSCuwrBMiaBa7L/tRfmjw3g6iiH96HO
- JFfMmUpNkmdJUQUaj/7C7pm9Ausrnv4cztUoVaYjaE2+GPUigd21dABNfKOIoTVFZ0FxxvwS
- mTur1bnDUgCbcWm1Ded+XOBorGMsWCrcddHfFG/3rsw6LGJ/UQfAQMbUHO3qOe0j0q5Vc4ZL
- UEIkgIjobU3/V6mUvHyWBq3pHPCtRkZM/JTDuczwAKA0KzZ50CeHGdsZjdHZMYrq4wwSCAm2
- 0Ghm87vA3pksNW9UXuX+7GVhSm/NSgcMSkJYipsZQ0I/9XuvqktgR/VCNVuCqi4ipvyAz6Y/
- tyRhDI1i7NWiYsA0L+2uAiexTmtvZPOCAUy4207Q16Y0++wX6b9D6TA1LQRxa8owFqxJrVZg
- EU5pg==
-IronPort-HdrOrdr: A9a23:5drDAa79A2vDwgkwogPXwMPXdLJyesId70hD6qm+c3Nom6uj5q
- WTdZsgtCMc5Ax9ZJhCo6HjBED/exPhHPdOiOF7V4tKNzOJhILHFu1fBPPZsl7d8+mUzJ876U
- +mGJIObOHNMQ==
-X-Talos-CUID: 9a23:nl0fa2BqGK09Dt/6E3Vq9lULOdspSH3c1n7pMh7kN0FKTKLAHA==
-X-Talos-MUID: =?us-ascii?q?9a23=3AWiJNRw1FH60A5yKu0auTB8CH+jUjs5awBxkVyIw?=
- =?us-ascii?q?/psScPi1dH2neoHfna9py?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.12,269,1728950400"; 
-   d="scan'208";a="300780815"
-Received: from rcdn-l-core-01.cisco.com ([173.37.255.138])
-  by rcdn-iport-4.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 28 Dec 2024 00:10:57 +0000
-Received: from cisco.com (savbu-usnic-a.cisco.com [10.193.184.48])
-	by rcdn-l-core-01.cisco.com (Postfix) with ESMTP id 9A3421800029F;
-	Sat, 28 Dec 2024 00:10:57 +0000 (GMT)
-Received: by cisco.com (Postfix, from userid 392789)
-	id 70F1620F2003; Fri, 27 Dec 2024 16:10:57 -0800 (PST)
-From: John Daley <johndale@cisco.com>
-To: benve@cisco.com,
-	satishkh@cisco.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Cc: John Daley <johndale@cisco.com>
-Subject: [PATCH net-next v3 0/6] enic: Use Page Pool API for receiving packets
-Date: Fri, 27 Dec 2024 16:10:49 -0800
-Message-Id: <20241228001055.12707-1-johndale@cisco.com>
-X-Mailer: git-send-email 2.35.2
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="DlM/aJNu"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ef7zz95gPjYNa92zEC+7MbyGEujjy28MrXXLtLjlUCk=; b=DlM/aJNu4yU0KaC6sTDIiFlqfU
+	0EHljQNrZDAOjnMo6aZUvox53kckxERRM+og14fkbFKRqlqpz1iqvRwcbwjNAk5X3AndCIn4049HQ
+	6nhT3Id/Ru/8QWXWkpmhfJoqfrZVfJDtKy+Lj0Xdvwkh5du/sNqW5W8N5ovtj27hCPKI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tRKoM-00GqxU-Jw; Sat, 28 Dec 2024 01:36:10 +0100
+Date: Sat, 28 Dec 2024 01:36:10 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: John Daley <johndale@cisco.com>
+Cc: benve@cisco.com, satishkh@cisco.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	Nelson Escobar <neescoba@cisco.com>
+Subject: Re: [PATCH net-next v3 6/6] enic: Obtain the Link speed only after
+ the link comes up
+Message-ID: <88dd7ff9-b8cc-448f-84c1-16abe58123b6@lunn.ch>
+References: <20241228001055.12707-1-johndale@cisco.com>
+ <20241228001055.12707-7-johndale@cisco.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Outbound-SMTP-Client: 10.193.184.48, savbu-usnic-a.cisco.com
-X-Outbound-Node: rcdn-l-core-01.cisco.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241228001055.12707-7-johndale@cisco.com>
 
-When the MTU is less than PAGE_SIZE, use the Page Pool API for RX.
+On Fri, Dec 27, 2024 at 04:10:55PM -0800, John Daley wrote:
+> The link speed was being checked before the link was actually up and so
+> it was always set to 0. Change the adaptive RX coalescing setup function
+> to run after the Link comes up so that it gets the correct link speed.
+> 
+> The link speed is used to index a table to get the minimum time for the
+> range used for adaptive RX. Prior to this fix, the incorrect link speed
+> would select 0us for the low end of the range regardless of actual link
+> speed which could cause slightly more interrupts.
 
-The Page Pool API improves bandwidth and CPU overhead by recycling
-pages instead of allocating new buffers in the driver. Also, page
-pool fragment allocation for smaller MTUs allow multiple packets
-to share a page.
+It still seems like there are two distinct changes here.
 
-Since older hardware does not support receiving packets into
-multiple discontiguous pages, the original RX path where
-netdev_alloc_skb_ip_align() is used for buffer allocation is now
-used only when MTU > PAGE_SIZE. Function pointers are used to select
-functions based on the MTU. Some refactoring was done so that common
-code can be shared. The refactored functions and the new functions
-using page pool are in a new file called enic_rq.c.
+> diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+> index 21cbd7ed7bda..12678bcf96a6 100644
+> --- a/drivers/net/ethernet/cisco/enic/enic_main.c
+> +++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+> @@ -109,7 +109,7 @@ static struct enic_intr_mod_table mod_table[ENIC_MAX_COALESCE_TIMERS + 1] = {
+>  static struct enic_intr_mod_range mod_range[ENIC_MAX_LINK_SPEEDS] = {
+>  	{0,  0}, /* 0  - 4  Gbps */
+>  	{0,  3}, /* 4  - 10 Gbps */
+> -	{3,  6}, /* 10 - 40 Gbps */
+> +	{3,  6}, /* 10+ Gbps */
+>  };
 
-Fixed bug in the RX adaptive coalescing and did a minor cleanup.
+1) This fixes a broken comment, but otherwise make no functional
+change.
 
-Signed-off-by: John Daley <johndale@cisco.com>
+>  static void enic_init_affinity_hint(struct enic *enic)
+> @@ -466,6 +466,7 @@ static void enic_link_check(struct enic *enic)
+>  	if (link_status && !carrier_ok) {
+>  		netdev_info(enic->netdev, "Link UP\n");
+>  		netif_carrier_on(enic->netdev);
+> +		enic_set_rx_coal_setting(enic);
+>  	} else if (!link_status && carrier_ok) {
+>  		netdev_info(enic->netdev, "Link DOWN\n");
+>  		netif_carrier_off(enic->netdev);
+> @@ -3016,7 +3017,6 @@ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  	timer_setup(&enic->notify_timer, enic_notify_timer, 0);
+>  
+>  	enic_rfs_flw_tbl_init(enic);
+> -	enic_set_rx_coal_setting(enic);
+
+2) This sets coalescing after the link is up.
+
+Two patches please.
+
+
+    Andrew
 
 ---
-Changes in v2:
-- Fixed a valid warning found by build_clang where a variable was used
-  before it was initialized. The warnings in include/linux/mm.h were not
-  addressed since they do not appear to be realated to this patchset.
-
-Changes in v3:
-- Moved a function to before where is was and removed the forward
-  declaration. Reworded a commit message. No functional changes.
-
-John Daley (6):
-  enic: Refactor RX path common code into helper functions
-  enic: Remove an unnecessary parameter from function enic_queue_rq_desc
-  enic: Use function pointers for buf alloc, free and RQ service
-  enic: Use the Page Pool API for RX when MTU is less than page size
-  enic: Move RX coalescing set function
-  enic: Obtain the Link speed only after the link comes up
-
- drivers/net/ethernet/cisco/enic/Makefile      |   2 +-
- drivers/net/ethernet/cisco/enic/enic.h        |  15 +
- .../net/ethernet/cisco/enic/enic_ethtool.c    |   1 +
- drivers/net/ethernet/cisco/enic/enic_main.c   | 229 ++++++---------
- drivers/net/ethernet/cisco/enic/enic_res.h    |  10 +-
- drivers/net/ethernet/cisco/enic/enic_rq.c     | 261 ++++++++++++++++++
- drivers/net/ethernet/cisco/enic/enic_rq.h     |  27 ++
- drivers/net/ethernet/cisco/enic/vnic_rq.h     |   2 +
- 8 files changed, 401 insertions(+), 146 deletions(-)
- create mode 100644 drivers/net/ethernet/cisco/enic/enic_rq.c
- create mode 100644 drivers/net/ethernet/cisco/enic/enic_rq.h
-
--- 
-2.35.2
-
+pw-bot: cr
