@@ -1,56 +1,56 @@
-Received: from va-2-45.ptr.blmpb.com (va-2-45.ptr.blmpb.com [209.127.231.45])
+Received: from va-2-44.ptr.blmpb.com (va-2-44.ptr.blmpb.com [209.127.231.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E0B1A7045
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF4C1A7046
 	for <netdev@vger.kernel.org>; Mon, 30 Dec 2024 10:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735553753; cv=none; b=ipwuJZobv+StDeML7PkpTAcCtOg0a8ObVrm05ppqIn0uLXakqJR/cVCHNbJ+h8I/oVmXdkHXQRXYWUdRDiXw0P9/v7Kjyb9kwDSqkayHqrStzDlUmKhzp0D1DipmCm1jBoUK1vREJIHpzgJr2SICBFXli/AKuWIPqmYU0hoPbuQ=
+	t=1735553753; cv=none; b=ccQbCsxmetwvenKnnf1WO2DqoAsOXGO4pG00R8gZqtYziNdOgDlMWMYSuyCV+2mDMENI9OT7kqgCdTBEfaZWhTbN9IXlNMw12lObCXfdU4aZnfryrN9awJ5GvdCLH1aRfX+2Mlkzke82u4qtUvwrh/86T0kGleux+UTcCZGU+4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1735553753; c=relaxed/simple;
-	bh=YvRjL4GlfkVaepetfL4WcrT/E/YkjpmpJalmIBxiRos=;
-	h=References:Cc:Subject:In-Reply-To:Date:Mime-Version:Content-Type:
-	 To:Message-Id:From; b=mayxVq35snodiU4EpeYcrxVX3OoDHul0d6eLmRfa4dOxMFyRke+c+svWPYH0QYez2vjL5QTs3fHmxrAjZ/FVu5qQSewkyQDFjtAAGLdnFPMdphDfT0Nr/6xcsyARx4HGG+TC/QoCaIHj8/Rune8C2rRRAr9+KEVaZ6Xuaq/PhpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=UFibJUDd; arc=none smtp.client-ip=209.127.231.45
+	bh=Vu3EUi604mUFSGLDONdrWlpvxgo/iaXI9h1znxbzT44=;
+	h=Subject:In-Reply-To:Cc:From:Mime-Version:Message-Id:References:
+	 Content-Type:To:Date; b=ONA4myrf0I3UiExWVqRc2Yq43oD7sMkWi2EOK5SUUEXSYbPb7novHa5wOH/2VNCm1cSnOIEQvNg4fBV4LInKLfyQp+GijfxzClh36aWbODTSiYcwnE3OzLI9CBNs6eGXaQdCUFVAtqAlSUstu4DtRjag4LnEtn+BVfmLWsla3yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=jOo2nfIm; arc=none smtp.client-ip=209.127.231.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="UFibJUDd"
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="jOo2nfIm"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1735553741; h=from:subject:
+ s=feishu2403070942; d=yunsilicon.com; t=1735553746; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=+Fc66lVgM8OB50Pq+2GC+cdH+WCmTCc4VW0PwYLEDb8=;
- b=UFibJUDdBFes9U14GGeSnoUTGu4Mo+QRO4CuCAVfBmMgsXqdjA5pwgDYVaOB1AMRhKeOAL
- KzAHCbLg3/JNDIsYhgFQNNNi2UQBNqRc+qtSCi38uFFM68kxgGW0GkJlxSoRTKgNtTolEI
- orNmmUaObSk0T+co8ZCXOdywBzLtlbmbHBjlgralw5Yvnl5qDc5ETxgTtN7ta1cUdoWYhV
- 17Dx6bCFZp5AztAewfn4YzZFUoNlKX3sAdM7El5FXIBDpJUT3mxuq6nRRwp7LBmyWnmAR0
- pTXq4XuBJmPMLCWDSM6PpDGcLvuiQxD1CuHOQmyJ1XzDi9E/5/XxmVLVnATsNg==
-References: <20241230101513.3836531-1-tianx@yunsilicon.com>
-X-Lms-Return-Path: <lba+2677272cb+d6e47c+vger.kernel.org+tianx@yunsilicon.com>
+ bh=i9h44KzkaRycHLTAdZlrGpUoUCLa4K3ziZ/krWFl658=;
+ b=jOo2nfImG0VTabCf7U9kZdpLw3gjJV9g9FDiqX3VOFY/vSNTIPfnPHR9EAQObjWn+JrCrU
+ vJlndBi/6LQO4icEfQFWiDZ/eLABNPPTeEncM0d2/F6qrMQyNBfZyGh+RCcdhFcOvAy6+o
+ Zu41bzjF5KjRvdOjEcfknAtXKHrzOIdcJ84COOm9cDdeJRqJrG5o3sNtN9Q/iD4wQhE9V5
+ yAYIGeMUoOSVd8yxpHJazfij3L6Wtj/N0FMQQO0+mAkHt8iKDUJCd1/cF4HvuVwUV1iD6b
+ xPABewklgxvW+DmiH+E4E6VaVljhqCvAmKeaFlP1jFlpNAB8U8zLqi8aHmjE9w==
+Subject: [PATCH v2 14/14] net-next/yunsilicon: add ndo_get_stats64
+Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Mon, 30 Dec 2024 18:15:43 +0800
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+In-Reply-To: <20241230101513.3836531-1-tianx@yunsilicon.com>
+X-Mailer: git-send-email 2.25.1
+X-Lms-Return-Path: <lba+2677272d0+90fb10+vger.kernel.org+tianx@yunsilicon.com>
 Content-Transfer-Encoding: 7bit
 Cc: <andrew+netdev@lunn.ch>, <kuba@kernel.org>, <pabeni@redhat.com>, 
 	<edumazet@google.com>, <davem@davemloft.net>, 
 	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
 	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>
-Subject: [PATCH v2 12/14] net-next/yunsilicon: Add ndo_start_xmit
-In-Reply-To: <20241230101513.3836531-1-tianx@yunsilicon.com>
-Date: Mon, 30 Dec 2024 18:15:39 +0800
+From: "Xin Tian" <tianx@yunsilicon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+Message-Id: <20241230101542.3836531-15-tianx@yunsilicon.com>
+References: <20241230101513.3836531-1-tianx@yunsilicon.com>
 Content-Type: text/plain; charset=UTF-8
-X-Mailer: git-send-email 2.25.1
 To: <netdev@vger.kernel.org>
-Message-Id: <20241230101537.3836531-13-tianx@yunsilicon.com>
-X-Original-From: Xin Tian <tianx@yunsilicon.com>
-From: "Xin Tian" <tianx@yunsilicon.com>
-Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Mon, 30 Dec 2024 18:15:39 +0800
+Date: Mon, 30 Dec 2024 18:15:44 +0800
 
-Add ndo_start_xmit
+Support nic stats
 
 Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
 Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
@@ -58,456 +58,298 @@ Co-developed-by: Lei Yan <jacky@yunsilicon.com>
 Signed-off-by: Lei Yan <jacky@yunsilicon.com>
 Signed-off-by: Xin Tian <tianx@yunsilicon.com>
 ---
- .../net/ethernet/yunsilicon/xsc/net/Makefile  |   2 +-
- .../net/ethernet/yunsilicon/xsc/net/main.c    |   1 +
- .../net/ethernet/yunsilicon/xsc/net/xsc_eth.h |   1 +
- .../yunsilicon/xsc/net/xsc_eth_common.h       |   8 +
- .../ethernet/yunsilicon/xsc/net/xsc_eth_tx.c  | 305 ++++++++++++++++++
- .../yunsilicon/xsc/net/xsc_eth_txrx.h         |  36 +++
- .../ethernet/yunsilicon/xsc/net/xsc_queue.h   |   7 +
- 7 files changed, 359 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
+ .../net/ethernet/yunsilicon/xsc/net/Makefile  |  2 +-
+ .../net/ethernet/yunsilicon/xsc/net/main.c    | 24 ++++++++++-
+ .../net/ethernet/yunsilicon/xsc/net/xsc_eth.h |  3 ++
+ .../ethernet/yunsilicon/xsc/net/xsc_eth_rx.c  |  4 ++
+ .../yunsilicon/xsc/net/xsc_eth_stats.c        | 42 +++++++++++++++++++
+ .../yunsilicon/xsc/net/xsc_eth_stats.h        | 33 +++++++++++++++
+ .../ethernet/yunsilicon/xsc/net/xsc_eth_tx.c  |  5 +++
+ .../ethernet/yunsilicon/xsc/net/xsc_queue.h   |  2 +
+ 8 files changed, 112 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
 
 diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/Makefile b/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
-index 104ef5330..7cfc2aaa2 100644
+index 7cfc2aaa2..e1cfa3cdf 100644
 --- a/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
 +++ b/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
 @@ -6,4 +6,4 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
  
  obj-$(CONFIG_YUNSILICON_XSC_ETH) += xsc_eth.o
  
--xsc_eth-y := main.o xsc_eth_wq.o xsc_eth_txrx.o xsc_eth_rx.o
-+xsc_eth-y := main.o xsc_eth_wq.o xsc_eth_txrx.o xsc_eth_tx.o xsc_eth_rx.o
+-xsc_eth-y := main.o xsc_eth_wq.o xsc_eth_txrx.o xsc_eth_tx.o xsc_eth_rx.o
++xsc_eth-y := main.o xsc_eth_wq.o xsc_eth_txrx.o xsc_eth_tx.o xsc_eth_rx.o xsc_eth_stats.o
 diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/main.c b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
-index ec6a098a1..af1c9566a 100644
+index af1c9566a..4d24372fd 100644
 --- a/drivers/net/ethernet/yunsilicon/xsc/net/main.c
 +++ b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
-@@ -1638,6 +1638,7 @@ static int xsc_eth_set_hw_mtu(struct xsc_core_device *xdev, u16 mtu, u16 rx_buf_
- static const struct net_device_ops xsc_netdev_ops = {
+@@ -537,12 +537,15 @@ static int xsc_eth_open_qp_sq(struct xsc_channel *c,
+ 	struct xsc_core_device *xdev  = adapter->xdev;
+ 	u8 q_log_size = psq_param->sq_attr.q_log_size;
+ 	u8 ele_log_size = psq_param->sq_attr.ele_log_size;
++	struct xsc_stats *stats = adapter->stats;
++	struct xsc_channel_stats *channel_stats = &stats->channel_stats[c->chl_idx];
+ 	struct xsc_create_qp_mbox_in *in;
+ 	struct xsc_modify_raw_qp_mbox_in *modify_in;
+ 	int hw_npages;
+ 	int inlen;
+ 	int ret;
+ 
++	psq->stats = &channel_stats->sq[sq_idx];
+ 	psq_param->wq.db_numa_node = cpu_to_node(c->cpu);
+ 
+ 	ret = xsc_eth_wq_cyc_create(xdev, &psq_param->wq,
+@@ -836,10 +839,13 @@ static int xsc_eth_alloc_rq(struct xsc_channel *c,
+ 	struct page_pool_params pagepool_params = { 0 };
+ 	u32 pool_size = 1 << q_log_size;
+ 	u8 ele_log_size = prq_param->rq_attr.ele_log_size;
++	struct xsc_stats *stats = c->adapter->stats;
++	struct xsc_channel_stats *channel_stats = &stats->channel_stats[c->chl_idx];
+ 	int wq_sz;
+ 	int i, f;
+ 	int ret = 0;
+ 
++	prq->stats = &channel_stats->rq;
+ 	prq_param->wq.db_numa_node = cpu_to_node(c->cpu);
+ 
+ 	ret = xsc_eth_wq_cyc_create(c->adapter->xdev, &prq_param->wq,
+@@ -1609,6 +1615,13 @@ static int xsc_eth_close(struct net_device *netdev)
+ 	return ret;
+ }
+ 
++static void xsc_eth_get_stats(struct net_device *netdev, struct rtnl_link_stats64 *stats)
++{
++	struct xsc_adapter *adapter = netdev_priv(netdev);
++
++	xsc_eth_fold_sw_stats64(adapter, stats);
++}
++
+ static int xsc_eth_set_hw_mtu(struct xsc_core_device *xdev, u16 mtu, u16 rx_buf_sz)
+ {
+ 	struct xsc_set_mtu_mbox_in in;
+@@ -1639,6 +1652,7 @@ static const struct net_device_ops xsc_netdev_ops = {
  	.ndo_open		= xsc_eth_open,
  	.ndo_stop		= xsc_eth_close,
-+	.ndo_start_xmit		= xsc_eth_xmit_start,
+ 	.ndo_start_xmit		= xsc_eth_xmit_start,
++	.ndo_get_stats64	= xsc_eth_get_stats,
  };
  
  static void xsc_eth_build_nic_netdev(struct xsc_adapter *adapter)
+@@ -1844,16 +1858,22 @@ static void *xsc_eth_add(struct xsc_core_device *xdev)
+ 		goto err_cleanup_netdev;
+ 	}
+ 
++	adapter->stats = kvzalloc(sizeof(*adapter->stats), GFP_KERNEL);
++	if (!adapter->stats)
++		goto err_detach;
++
+ 	err = register_netdev(netdev);
+ 	if (err) {
+ 		netdev_err(netdev, "register_netdev failed, err=%d\n", err);
+-		goto err_detach;
++		goto err_free_stats;
+ 	}
+ 
+ 	xdev->netdev = netdev;
+ 
+ 	return adapter;
+ 
++err_free_stats:
++	kfree(adapter->stats);
+ err_detach:
+ 	xsc_eth_detach(xdev, adapter);
+ err_cleanup_netdev:
+@@ -1878,7 +1898,7 @@ static void xsc_eth_remove(struct xsc_core_device *xdev, void *context)
+ 	}
+ 
+ 	unregister_netdev(adapter->netdev);
+-
++	kfree(adapter->stats);
+ 	free_netdev(adapter->netdev);
+ 
+ 	xdev->netdev = NULL;
 diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
-index 09af22d92..87e2a72d3 100644
+index 87e2a72d3..650f92c48 100644
 --- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
 +++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
-@@ -6,6 +6,7 @@
- #ifndef __XSC_ETH_H
- #define __XSC_ETH_H
- 
-+#include <linux/udp.h>
+@@ -9,6 +9,7 @@
+ #include <linux/udp.h>
  #include "common/xsc_device.h"
  #include "xsc_eth_common.h"
++#include "xsc_eth_stats.h"
  
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
-index a402f8ff7..5fc81a3f6 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
-@@ -200,4 +200,12 @@ struct xsc_eth_channels {
- 	u32 rqn_base;
+ #define XSC_INVALID_LKEY	0x100
+ 
+@@ -48,6 +49,8 @@ struct xsc_adapter {
+ 
+ 	u32	status;
+ 	struct mutex	status_lock; // protect status
++
++	struct xsc_stats *stats;
  };
  
-+union xsc_send_doorbell {
-+	struct{
-+		s32  next_pid : 16;
-+		u32 qp_num : 15;
-+	};
-+	u32 send_data;
-+};
+ #endif /* __XSC_ETH_H */
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
+index a4428e629..83cf31239 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
+@@ -139,6 +139,10 @@ static void xsc_complete_rx_cqe(struct xsc_rq *rq,
+ 				struct sk_buff *skb,
+ 				struct xsc_wqe_frag_info *wi)
+ {
++	struct xsc_rq_stats *stats = rq->stats;
 +
- #endif
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
++	stats->packets++;
++	stats->bytes += cqe_bcnt;
+ 	xsc_build_rx_skb(cqe, cqe_bcnt, rq, skb, wi);
+ }
+ 
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
 new file mode 100644
-index 000000000..af5236966
+index 000000000..9fe0e831b
 --- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
-@@ -0,0 +1,305 @@
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
+@@ -0,0 +1,42 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
 + * All rights reserved.
 + */
 +
-+#include <linux/tcp.h>
++#include "xsc_eth_stats.h"
 +#include "xsc_eth.h"
-+#include "xsc_eth_txrx.h"
 +
-+#define XSC_OPCODE_RAW 7
-+
-+static void xsc_dma_push(struct xsc_sq *sq, dma_addr_t addr, u32 size,
-+			 enum xsc_dma_map_type map_type)
++static int xsc_get_netdev_max_channels(struct xsc_adapter *adapter)
 +{
-+	struct xsc_sq_dma *dma = xsc_dma_get(sq, sq->dma_fifo_pc++);
++	struct net_device *netdev = adapter->netdev;
 +
-+	dma->addr = addr;
-+	dma->size = size;
-+	dma->type = map_type;
++	return min_t(unsigned int, netdev->num_rx_queues,
++		     netdev->num_tx_queues);
 +}
 +
-+static void xsc_dma_unmap_wqe_err(struct xsc_sq *sq, u8 num_dma)
++static int xsc_get_netdev_max_tc(struct xsc_adapter *adapter)
 +{
-+	struct xsc_adapter *adapter = sq->channel->adapter;
-+	struct device *dev  = adapter->dev;
++	return adapter->nic_param.num_tc;
++}
 +
-+	int i;
++void xsc_eth_fold_sw_stats64(struct xsc_adapter *adapter, struct rtnl_link_stats64 *s)
++{
++	int i, j;
 +
-+	for (i = 0; i < num_dma; i++) {
-+		struct xsc_sq_dma *last_pushed_dma = xsc_dma_get(sq, --sq->dma_fifo_pc);
++	for (i = 0; i < xsc_get_netdev_max_channels(adapter); i++) {
++		struct xsc_channel_stats *channel_stats = &adapter->stats->channel_stats[i];
++		struct xsc_rq_stats *rq_stats = &channel_stats->rq;
 +
-+		xsc_tx_dma_unmap(dev, last_pushed_dma);
++		s->rx_packets   += rq_stats->packets;
++		s->rx_bytes     += rq_stats->bytes;
++
++		for (j = 0; j < xsc_get_netdev_max_tc(adapter); j++) {
++			struct xsc_sq_stats *sq_stats = &channel_stats->sq[j];
++
++			s->tx_packets    += sq_stats->packets;
++			s->tx_bytes      += sq_stats->bytes;
++			s->tx_dropped    += sq_stats->dropped;
++		}
 +	}
 +}
 +
-+static void *xsc_sq_fetch_wqe(struct xsc_sq *sq, size_t size, u16 *pi)
-+{
-+	struct xsc_wq_cyc *wq = &sq->wq;
-+	void *wqe;
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
+new file mode 100644
+index 000000000..10b2aa69b
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
+@@ -0,0 +1,33 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
 +
-+	/*caution, sp->pc is default to be zero*/
-+	*pi  = xsc_wq_cyc_ctr2ix(wq, sq->pc);
-+	wqe = xsc_wq_cyc_get_wqe(wq, *pi);
-+	memset(wqe, 0, size);
++#ifndef __XSC_EN_STATS_H
++#define __XSC_EN_STATS_H
 +
-+	return wqe;
-+}
++#include "xsc_eth_common.h"
 +
-+static u16 xsc_tx_get_gso_ihs(struct xsc_sq *sq, struct sk_buff *skb)
-+{
-+	u16 ihs;
-+
-+	if (skb->encapsulation) {
-+		ihs = skb_inner_transport_offset(skb) + inner_tcp_hdrlen(skb);
-+	} else {
-+		if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4)
-+			ihs = skb_transport_offset(skb) + sizeof(struct udphdr);
-+		else
-+			ihs = skb_transport_offset(skb) + tcp_hdrlen(skb);
-+	}
-+
-+	return ihs;
-+}
-+
-+static void xsc_txwqe_build_cseg_csum(struct xsc_sq *sq,
-+				      struct sk_buff *skb,
-+				      struct xsc_send_wqe_ctrl_seg *cseg)
-+{
-+	if (likely(skb->ip_summed == CHECKSUM_PARTIAL)) {
-+		if (skb->encapsulation)
-+			cseg->csum_en = XSC_ETH_WQE_INNER_AND_OUTER_CSUM;
-+		else
-+			cseg->csum_en = XSC_ETH_WQE_OUTER_CSUM;
-+	} else {
-+		cseg->csum_en = XSC_ETH_WQE_NONE_CSUM;
-+	}
-+}
-+
-+static void xsc_txwqe_build_csegs(struct xsc_sq *sq, struct sk_buff *skb,
-+				  u16 mss, u16 ihs, u16 headlen,
-+				  u8 opcode, u16 ds_cnt, u32 num_bytes,
-+				  struct xsc_send_wqe_ctrl_seg *cseg)
-+{
-+	struct xsc_core_device *xdev = sq->cq.xdev;
-+	int send_wqe_ds_num_log = ilog2(xdev->caps.send_ds_num);
-+
-+	xsc_txwqe_build_cseg_csum(sq, skb, cseg);
-+
-+	if (mss != 0) {
-+		cseg->has_pph = 0;
-+		cseg->so_type = 1;
-+		cseg->so_hdr_len = ihs;
-+		cseg->so_data_size = cpu_to_le16(mss);
-+	}
-+
-+	cseg->msg_opcode =  opcode;
-+	cseg->wqe_id = cpu_to_le16(sq->pc << send_wqe_ds_num_log);
-+	cseg->ds_data_num = ds_cnt - XSC_SEND_WQEBB_CTRL_NUM_DS;
-+	cseg->msg_len = cpu_to_le32(num_bytes);
-+
-+	cseg->ce = 1;
-+}
-+
-+static int xsc_txwqe_build_dsegs(struct xsc_sq *sq, struct sk_buff *skb,
-+				 u16 ihs, u16 headlen,
-+				 struct xsc_wqe_data_seg *dseg)
-+{
-+	dma_addr_t dma_addr = 0;
-+	u8 num_dma = 0;
-+	int i;
-+	struct xsc_adapter *adapter = sq->channel->adapter;
-+	struct device *dev  = adapter->dev;
-+
-+	if (headlen) {
-+		dma_addr = dma_map_single(dev, skb->data, headlen, DMA_TO_DEVICE);
-+		if (unlikely(dma_mapping_error(dev, dma_addr)))
-+			goto dma_unmap_wqe_err;
-+
-+		dseg->va = cpu_to_le64(dma_addr);
-+		dseg->mkey  = cpu_to_le32(sq->mkey_be);
-+		dseg->seg_len = cpu_to_le32(headlen);
-+
-+		xsc_dma_push(sq, dma_addr, headlen, XSC_DMA_MAP_SINGLE);
-+		num_dma++;
-+		dseg++;
-+	}
-+
-+	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
-+		skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
-+		int fsz = skb_frag_size(frag);
-+
-+		dma_addr = skb_frag_dma_map(dev, frag, 0, fsz, DMA_TO_DEVICE);
-+		if (unlikely(dma_mapping_error(dev, dma_addr)))
-+			goto dma_unmap_wqe_err;
-+
-+		dseg->va = cpu_to_le64(dma_addr);
-+		dseg->mkey = cpu_to_le32(sq->mkey_be);
-+		dseg->seg_len = cpu_to_le32(fsz);
-+
-+		xsc_dma_push(sq, dma_addr, fsz, XSC_DMA_MAP_PAGE);
-+		num_dma++;
-+		dseg++;
-+	}
-+
-+	return num_dma;
-+
-+dma_unmap_wqe_err:
-+	xsc_dma_unmap_wqe_err(sq, num_dma);
-+	return -ENOMEM;
-+}
-+
-+static void xsc_sq_notify_hw(struct xsc_wq_cyc *wq, u16 pc,
-+			     struct xsc_sq *sq)
-+{
-+	struct xsc_adapter *adapter = sq->channel->adapter;
-+	struct xsc_core_device *xdev  = adapter->xdev;
-+	union xsc_send_doorbell doorbell_value;
-+	int send_ds_num_log = ilog2(xdev->caps.send_ds_num);
-+
-+	/*reverse wqe index to ds index*/
-+	doorbell_value.next_pid = pc << send_ds_num_log;
-+	doorbell_value.qp_num = sq->sqn;
-+
-+	/* Make sure that descriptors are written before
-+	 * updating doorbell record and ringing the doorbell
-+	 */
-+	wmb();
-+	writel(doorbell_value.send_data, REG_ADDR(xdev, xdev->regs.tx_db));
-+}
-+
-+static void xsc_txwqe_complete(struct xsc_sq *sq, struct sk_buff *skb,
-+			       u8 opcode, u16 ds_cnt, u8 num_wqebbs, u32 num_bytes, u8 num_dma,
-+			       struct xsc_tx_wqe_info *wi)
-+{
-+	struct xsc_wq_cyc *wq = &sq->wq;
-+
-+	wi->num_bytes = num_bytes;
-+	wi->num_dma = num_dma;
-+	wi->num_wqebbs = num_wqebbs;
-+	wi->skb = skb;
-+
-+	netdev_tx_sent_queue(sq->txq, num_bytes);
-+
-+	if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP))
-+		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
-+
-+	sq->pc += wi->num_wqebbs;
-+
-+	if (unlikely(!xsc_wqc_has_room_for(wq, sq->cc, sq->pc, sq->stop_room)))
-+		netif_tx_stop_queue(sq->txq);
-+
-+	if (!netdev_xmit_more() || netif_xmit_stopped(sq->txq))
-+		xsc_sq_notify_hw(wq, sq->pc, sq);
-+}
-+
-+static uint32_t xsc_eth_xmit_frame(struct sk_buff *skb,
-+				   struct xsc_sq *sq,
-+				   struct xsc_tx_wqe *wqe,
-+				   u16 pi)
-+{
-+	struct xsc_send_wqe_ctrl_seg *cseg;
-+	struct xsc_wqe_data_seg *dseg;
-+	struct xsc_tx_wqe_info *wi;
-+	struct xsc_core_device *xdev = sq->cq.xdev;
-+	u16 ds_cnt;
-+	u16 mss, ihs, headlen;
-+	u8 opcode;
-+	u32 num_bytes, num_dma;
-+	u8 num_wqebbs;
-+
-+retry_send:
-+	/* Calc ihs and ds cnt, no writes to wqe yet */
-+	/*ctrl-ds, it would be reduce in ds_data_num*/
-+	ds_cnt = XSC_SEND_WQEBB_CTRL_NUM_DS;
-+
-+	/*in andes inline is bonding with gso*/
-+	if (skb_is_gso(skb)) {
-+		opcode    = XSC_OPCODE_RAW;
-+		mss       = skb_shinfo(skb)->gso_size;
-+		ihs       = xsc_tx_get_gso_ihs(sq, skb);
-+		num_bytes = skb->len;
-+	} else {
-+		opcode    = XSC_OPCODE_RAW;
-+		mss       = 0;
-+		ihs       = 0;
-+		num_bytes = skb->len;
-+	}
-+
-+	/*linear data in skb*/
-+	headlen = skb->len - skb->data_len;
-+	ds_cnt += !!headlen;
-+	ds_cnt += skb_shinfo(skb)->nr_frags;
-+
-+	/* Check packet size. */
-+	if (unlikely(mss == 0 && num_bytes > sq->hw_mtu))
-+		goto err_drop;
-+
-+	num_wqebbs = DIV_ROUND_UP(ds_cnt, xdev->caps.send_ds_num);
-+	/*if ds_cnt exceed one wqe, drop it*/
-+	if (num_wqebbs != 1) {
-+		if (skb_linearize(skb))
-+			goto err_drop;
-+		goto retry_send;
-+	}
-+
-+	/* fill wqe */
-+	wi   = (struct xsc_tx_wqe_info *)&sq->db.wqe_info[pi];
-+	cseg = &wqe->ctrl;
-+	dseg = &wqe->data[0];
-+
-+	if (unlikely(num_bytes == 0))
-+		goto err_drop;
-+
-+	xsc_txwqe_build_csegs(sq, skb, mss, ihs, headlen,
-+			      opcode, ds_cnt, num_bytes, cseg);
-+
-+	/*inline header is also use dma to transport*/
-+	num_dma = xsc_txwqe_build_dsegs(sq, skb, ihs, headlen, dseg);
-+	if (unlikely(num_dma < 0))
-+		goto err_drop;
-+
-+	xsc_txwqe_complete(sq, skb, opcode, ds_cnt, num_wqebbs, num_bytes,
-+			   num_dma, wi);
-+
-+	return NETDEV_TX_OK;
-+
-+err_drop:
-+	dev_kfree_skb_any(skb);
-+
-+	return NETDEV_TX_OK;
-+}
-+
-+netdev_tx_t xsc_eth_xmit_start(struct sk_buff *skb, struct net_device *netdev)
-+{
-+	u32 ret;
-+	u32 queue_id;
-+	struct xsc_sq *sq;
-+	struct xsc_tx_wqe *wqe;
-+	u16 pi;
-+	struct xsc_adapter *adapter = netdev_priv(netdev);
-+	struct xsc_core_device *xdev = adapter->xdev;
-+
-+	if (!skb)
-+		return NETDEV_TX_OK;
-+
-+	if (!adapter)
-+		return NETDEV_TX_BUSY;
-+
-+	if (adapter->status != XSCALE_ETH_DRIVER_OK)
-+		return NETDEV_TX_BUSY;
-+
-+	queue_id = skb_get_queue_mapping(skb);
-+	WARN_ON(queue_id < XSC_ETH_MAX_TC_TOTAL);
-+
-+	sq = adapter->txq2sq[queue_id];
-+	if (!sq)
-+		return NETDEV_TX_BUSY;
-+
-+	wqe = xsc_sq_fetch_wqe(sq, xdev->caps.send_ds_num * XSC_SEND_WQE_DS, &pi);
-+	WARN_ON(wqe);
-+
-+	ret = xsc_eth_xmit_frame(skb, sq, wqe, pi);
-+
-+	return ret;
-+}
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h
-index 116019a9a..f14ff7abf 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h
-@@ -6,8 +6,17 @@
- #ifndef __XSC_RXTX_H
- #define __XSC_RXTX_H
- 
-+#include <linux/netdevice.h>
-+#include <linux/skbuff.h>
- #include "xsc_eth.h"
- 
-+enum {
-+	XSC_ETH_WQE_NONE_CSUM,
-+	XSC_ETH_WQE_INNER_CSUM,
-+	XSC_ETH_WQE_OUTER_CSUM,
-+	XSC_ETH_WQE_INNER_AND_OUTER_CSUM,
++struct xsc_rq_stats {
++	u64 packets;
++	u64 bytes;
 +};
 +
- void xsc_cq_notify_hw_rearm(struct xsc_cq *cq);
- void xsc_cq_notify_hw(struct xsc_cq *cq);
- int xsc_eth_napi_poll(struct napi_struct *napi, int budget);
-@@ -23,4 +32,31 @@ struct sk_buff *xsc_skb_from_cqe_nonlinear(struct xsc_rq *rq,
- 					   u32 cqe_bcnt, u8 has_pph);
- int xsc_poll_rx_cq(struct xsc_cq *cq, int budget);
++struct xsc_sq_stats {
++	u64 packets;
++	u64 bytes;
++	u64 dropped;
++};
++
++struct xsc_channel_stats {
++	struct xsc_sq_stats sq[XSC_MAX_NUM_TC];
++	struct xsc_rq_stats rq;
++} ____cacheline_aligned_in_smp;
++
++struct xsc_stats {
++	struct xsc_channel_stats channel_stats[XSC_ETH_MAX_NUM_CHANNELS];
++};
++
++void xsc_eth_fold_sw_stats64(struct xsc_adapter *adapter, struct rtnl_link_stats64 *s);
++
++#endif /* XSC_EN_STATS_H */
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
+index af5236966..51cdac6cf 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
+@@ -201,6 +201,7 @@ static uint32_t xsc_eth_xmit_frame(struct sk_buff *skb,
+ 	struct xsc_send_wqe_ctrl_seg *cseg;
+ 	struct xsc_wqe_data_seg *dseg;
+ 	struct xsc_tx_wqe_info *wi;
++	struct xsc_sq_stats *stats = sq->stats;
+ 	struct xsc_core_device *xdev = sq->cq.xdev;
+ 	u16 ds_cnt;
+ 	u16 mss, ihs, headlen;
+@@ -219,11 +220,13 @@ static uint32_t xsc_eth_xmit_frame(struct sk_buff *skb,
+ 		mss       = skb_shinfo(skb)->gso_size;
+ 		ihs       = xsc_tx_get_gso_ihs(sq, skb);
+ 		num_bytes = skb->len;
++		stats->packets += skb_shinfo(skb)->gso_segs;
+ 	} else {
+ 		opcode    = XSC_OPCODE_RAW;
+ 		mss       = 0;
+ 		ihs       = 0;
+ 		num_bytes = skb->len;
++		stats->packets++;
+ 	}
  
-+netdev_tx_t xsc_eth_xmit_start(struct sk_buff *skb, struct net_device *netdev);
-+
-+static inline void xsc_tx_dma_unmap(struct device *dev, struct xsc_sq_dma *dma)
-+{
-+	switch (dma->type) {
-+	case XSC_DMA_MAP_SINGLE:
-+		dma_unmap_single(dev, dma->addr, dma->size, DMA_TO_DEVICE);
-+		break;
-+	case XSC_DMA_MAP_PAGE:
-+		dma_unmap_page(dev, dma->addr, dma->size, DMA_TO_DEVICE);
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
-+static inline struct xsc_sq_dma *xsc_dma_get(struct xsc_sq *sq, u32 i)
-+{
-+	return &sq->db.dma_fifo[i & sq->dma_fifo_mask];
-+}
-+
-+static inline bool xsc_wqc_has_room_for(struct xsc_wq_cyc *wq,
-+					u16 cc, u16 pc, u16 n)
-+{
-+	return (xsc_wq_cyc_ctr2ix(wq, cc - pc) >= n) || (cc == pc);
-+}
-+
- #endif /* XSC_RXTX_H */
+ 	/*linear data in skb*/
+@@ -261,10 +264,12 @@ static uint32_t xsc_eth_xmit_frame(struct sk_buff *skb,
+ 
+ 	xsc_txwqe_complete(sq, skb, opcode, ds_cnt, num_wqebbs, num_bytes,
+ 			   num_dma, wi);
++	stats->bytes     += num_bytes;
+ 
+ 	return NETDEV_TX_OK;
+ 
+ err_drop:
++	stats->dropped++;
+ 	dev_kfree_skb_any(skb);
+ 
+ 	return NETDEV_TX_OK;
 diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
-index 8f63b9e0b..967d46e7e 100644
+index 967d46e7e..0d342e846 100644
 --- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
 +++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
-@@ -35,6 +35,8 @@ enum {
- #define XSC_RECV_WQEBB_NUM_DS	        (XSC_RECV_WQE_BB / XSC_RECV_WQE_DS)
- #define XSC_LOG_RECV_WQEBB_NUM_DS	ilog2(XSC_RECV_WQEBB_NUM_DS)
+@@ -129,6 +129,7 @@ struct xsc_rq {
  
-+#define XSC_SEND_WQEBB_CTRL_NUM_DS	1
-+
- /* each ds holds one fragment in skb */
- #define XSC_MAX_RX_FRAGS        4
- #define XSC_RX_FRAG_SZ_ORDER    0
-@@ -155,6 +157,11 @@ struct xsc_tx_wqe_info {
- 	u8  num_dma;
- };
+ 	unsigned long	state;
+ 	struct work_struct  recover_work;
++	struct xsc_rq_stats *stats;
  
-+struct xsc_tx_wqe {
-+	struct xsc_send_wqe_ctrl_seg ctrl;
-+	struct xsc_wqe_data_seg data[];
-+};
-+
- struct xsc_sq {
- 	struct xsc_core_qp		cqp;
- 	/* dirtied @completion */
+ 	u32 hw_mtu;
+ 	u32 frags_sz;
+@@ -177,6 +178,7 @@ struct xsc_sq {
+ 	/* read only */
+ 	struct xsc_wq_cyc         wq;
+ 	u32                        dma_fifo_mask;
++	struct xsc_sq_stats     *stats;
+ 	struct {
+ 		struct xsc_sq_dma         *dma_fifo;
+ 		struct xsc_tx_wqe_info    *wqe_info;
 -- 
 2.43.0
