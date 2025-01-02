@@ -1,131 +1,126 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B04364D6
-	for <netdev@vger.kernel.org>; Thu,  2 Jan 2025 17:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDB51F16B;
+	Thu,  2 Jan 2025 17:24:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735838333; cv=none; b=r2Gcjwwle7ydOxwhZCVqwr+gm6h2Abe4xo8vl2M3AyUodDx1kMOxeqm+nGraD+KKnX8AZJO9H/eQwpC5IUez/4G0vPAHJ6IedJhlkiOAN4HKPx/KApLuQZNGh9fJ4ClbBAngNkwbjQ+ba/r1BOcc3o/HS23VoQ6i1Eaoi3lp1w4=
+	t=1735838687; cv=none; b=VsPcSxK9sD1nkwhuqO2fXkaVnWPku/6TnLHbNHaL4TL/YiBl8EQtVyTSvbS/0dVyJNh5IagFUc1mxH/zqDjVCVKfrr1SkJe5tof59qCtYiIMPHZ5n/6JstlpJJM6Y6syH8ooxLEriU+RGjQSldjpdNZ/zEcrI8lEU3ehA+cmOGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735838333; c=relaxed/simple;
-	bh=4yig6Hz92lIrmUBICy5bz3zv3WeOXOR540DIbow38K8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rsgEPqWKM7e1qVZ0ynrfkffsvqrxn6bEg9tihxfCtQI3gChBqp2jTutFeaWpW578+Uw625sk590an4G7I93HQo+urfv8HEIJ6kCOm/hQc4vT+M230B8+DNrLswitnZi9uuT99TJQ/JPfLXZ4p8gs60k7e8j6glbKDXB4pN7lnrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fpzct4IZ; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1735838687; c=relaxed/simple;
+	bh=dhAKobW2Sn3UJxdMEMFF+/VJXFN/vgYVY2Kdus9Irc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y4taq6j8PSdGgb1DOuQfw41JzsiKEdtD2f0Ga35ep6ALDQ/BR5lzbOSnm1ZGPkknHQFnqtFfvU6R4z9jzEgPb5KSYgsGira/2qElLsueTt9zTcLnSDoCsRZH7GHmn3iciAtlG2odMekAcEgZGr7/zb1vU2X8lkCzeIgMcdyRRp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AjRfdJPc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fpzct4IZ"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-436281c8a38so83029075e9.3
-        for <netdev@vger.kernel.org>; Thu, 02 Jan 2025 09:18:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735838330; x=1736443130; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=k3WLVQ91CBABPxVLyOq+IVjMIbFdY+oh5GdE7DZRprc=;
-        b=Fpzct4IZGhIK+ACMPsVhJ0gR/NUE2jylijvESkC1k6TWtqBg5HMXvzX9B4JskXmA3E
-         fSnPKsX3KM7pIrIczZTiec1eB/qL3Syq09GrW3MZhFYP2GAO+MF5UuGOPd3lVKJin0hF
-         MWMW4h4YWGAYcrih8h7SQ/S1yismtztGOIEPDLdHoyIEY+Db1YuuZgqdcK/O1gJejvdg
-         O5xtedV9s63X5wd56WmUH2mZYBWut9bKH/RoaN2ngzj3+2FexvBV/NZueUGaoIMidcji
-         SAD7G43JyzkCkv6J5pTLB3i3qt4Ib51L9w776bucNzY3k9yXV9IpejlxWJ+8BVfoG5qA
-         25bQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735838330; x=1736443130;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k3WLVQ91CBABPxVLyOq+IVjMIbFdY+oh5GdE7DZRprc=;
-        b=DLPDRmO87SR6iRPsmlJ9CTV/rAfAWhCpmViKpApVeYxYNyaN31nvIZ3hnDtuSS2Unr
-         NO8jgySV5lOhqiUsP1MY5zCmQO0a5iWqiVeAEUhq/1TWfpQiVecOaVJsUnfi7nQeke8Z
-         fhnDW/JXgHySH3vkPsBA4euKJc7sYolZRaH0luVkp4LgSx7CC9Yu7MgFfysLppX/EYyE
-         81gphv9QXAwhdmKd/nhHdqPdUlB3fhtP1y2uCQ0RuYF4uRMrJHAn1THUCRzu1ZGS3Up9
-         wN8+1qqyD/gF66ap6gNnxT1hNItnfJ75Bu/odFaI4vxn9mdRGoauhUFie6GXtAx5yPSU
-         1eew==
-X-Gm-Message-State: AOJu0YyVDRjTtz/0i0qYWsqgKfj8q1qg1FZB/rbZtTebKsHNDqpJ3Pbe
-	Ih18YerzotD1LtQjDYgG1hnquFSy+IOvFyRnQd7lMpJKPhul/Xhw
-X-Gm-Gg: ASbGncsZbjQ2P24km1hUA7q23f5X5qKF9aHqnx9eC5kGQknajApY3Y5iz0wNOTj8F5d
-	r5cfHyHVS6ihCFThYJfZivMfnMKFFB+ZANYwTywATJ1796gw7D6VK3bkopuhlX8Q7D7DPwOqPDo
-	mU9yY4sG65Y1S74TbO6p7vk/fXEWjvlgiV+Etib70B4XxlhIR94BTBS9ynwDDPrl4yQ0ajWKGb3
-	PsgSCrSf4E9w35+rmeVmTFpmPNPGhBCbLaIMZ+Msm695P6STMfPyhQISA==
-X-Google-Smtp-Source: AGHT+IFG/h6MEtCmAPyXVOCv3n8y8ZDSVRjmBuRa4bdWFVWmNKaaePO5r0tCDtcHo66lIEPYbzDjEg==
-X-Received: by 2002:a05:600c:1994:b0:435:306:e5dd with SMTP id 5b1f17b1804b1-43668b5dfaamr373770705e9.22.1735838330133;
-        Thu, 02 Jan 2025 09:18:50 -0800 (PST)
-Received: from [192.168.0.2] ([69.6.8.124])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4364b14f241sm438509645e9.1.2025.01.02.09.18.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Jan 2025 09:18:49 -0800 (PST)
-Message-ID: <aea78599-0d3f-42d9-8f3e-0e90c37a31b8@gmail.com>
-Date: Thu, 2 Jan 2025 19:18:46 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AjRfdJPc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F20C4CED0;
+	Thu,  2 Jan 2025 17:24:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735838686;
+	bh=dhAKobW2Sn3UJxdMEMFF+/VJXFN/vgYVY2Kdus9Irc8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AjRfdJPcjYi4nv0p4ONg/pmLvQ/6q9hbqdWm92KbRtJ9C0henHMq2lTFg21M9Gnj6
+	 ZfWQYaJb+Ay0/MZaZj92C1BZjLCJJJBLqIBPrljMgam2Kl/6ViYf1/FSbzyW/3gkMV
+	 H1wZBaskVXi2fJk+Cg8LoKdnuWwHsPN2Kl1oyhI14dKva46zqIFRLFHK6L2Vj7gTJE
+	 QIIbI4uMo7HX6jCu/Ml/LePfxEpEic9/8kIfjwHNgMPBvnKlpB6hdo8JQppL3VA0Hl
+	 A04pidWhCcnL3sMGhq0ThkAC5Y2Ksi62eqIo0dwKPxHqTNl1mHNPU82llGLsmFqg+x
+	 B+kCaSt9e2EnA==
+Date: Thu, 2 Jan 2025 17:24:44 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Danny Tsen <dtsen@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 10/29] crypto: powerpc/p10-aes-gcm - simplify handling
+ of linear associated data
+Message-ID: <20250102172444.GB49952@google.com>
+References: <20241230001418.74739-1-ebiggers@kernel.org>
+ <20241230001418.74739-11-ebiggers@kernel.org>
+ <ec3515f1-f93a-4520-a9da-6ad14f9a6fe0@csgroup.eu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Add NMEA GPS character device for PCIe MHI Quectel Module
- to read NMEA statements.
-To: Muhammad Nuzaihan <zaihan@unrealasia.net>
-Cc: netdev@vger.kernel.org, Loic Poulain <loic.poulain@linaro.org>,
- Johannes Berg <johannes@sipsolutions.net>, Andrew Lunn <andrew@lunn.ch>,
- Slark Xiao <slark_xiao@163.com>
-References: <R8AFPS.THYVK2DKSEE83@unrealasia.net>
- <5LHFPS.G3DNPFBCDKCL2@unrealasia.net>
-Content-Language: en-US
-From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-In-Reply-To: <5LHFPS.G3DNPFBCDKCL2@unrealasia.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ec3515f1-f93a-4520-a9da-6ad14f9a6fe0@csgroup.eu>
 
-Hi Muhammad and welcome to netdev,
-
-On 01.01.2025 23:12, Muhammad Nuzaihan wrote:
-> Hi netdev,
+On Thu, Jan 02, 2025 at 12:50:50PM +0100, Christophe Leroy wrote:
 > 
-> I made a mistake in choosing AT mode IPC, which is incorrect. For NMEA 
-> streams it should use LOOPBACK for IPC. If it uses AT, i noticed that 
-> using gpsd will cause intermittent IOCTL errors which is caused when 
-> gpsd wants to write to the device.
 > 
-> Attached is the patch.
-
-Do you had a chance to check this discussion: 
-https://lore.kernel.org/all/CAMZdPi_MF=-AjTaBZ_HxtwpbQK5+WwR9eXsSvnvK_-O30ff+Tw@mail.gmail.com/
-
-To summarize, an NMEA port suppose to be exported through the GNSS 
-subsystem to properly indicate the device class. Still, the port needs 
-to be exported through the WWAN subsystem to facilitate a corresponding 
-control port discovery. Looks like that the WWAN changes going to be a 
-bit more tricky.
-
-> Thank you.
+> Le 30/12/2024 à 01:13, Eric Biggers a écrit :
+> > From: Eric Biggers <ebiggers@google.com>
+> > 
+> > p10_aes_gcm_crypt() is abusing the scatter_walk API to get the virtual
+> > address for the first source scatterlist element.  But this code is only
+> > built for PPC64 which is a !HIGHMEM platform, and it can read past a
+> > page boundary from the address returned by scatterwalk_map() which means
+> > it already assumes the address is from the kernel's direct map.  Thus,
+> > just use sg_virt() instead to get the same result in a simpler way.
+> > 
+> > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > Cc: Danny Tsen <dtsen@linux.ibm.com>
+> > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > Cc: Naveen N Rao <naveen@kernel.org>
+> > Cc: Nicholas Piggin <npiggin@gmail.com>
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > Signed-off-by: Eric Biggers <ebiggers@google.com>
+> > ---
+> > 
+> > This patch is part of a long series touching many files, so I have
+> > limited the Cc list on the full series.  If you want the full series and
+> > did not receive it, please retrieve it from lore.kernel.org.
+> > 
+> >   arch/powerpc/crypto/aes-gcm-p10-glue.c | 8 ++------
+> >   1 file changed, 2 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> > index f37b3d13fc53..2862c3cf8e41 100644
+> > --- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> > +++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> > @@ -212,11 +212,10 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
+> >   	struct p10_aes_gcm_ctx *ctx = crypto_tfm_ctx(tfm);
+> >   	u8 databuf[sizeof(struct gcm_ctx) + PPC_ALIGN];
+> >   	struct gcm_ctx *gctx = PTR_ALIGN((void *)databuf, PPC_ALIGN);
+> >   	u8 hashbuf[sizeof(struct Hash_ctx) + PPC_ALIGN];
+> >   	struct Hash_ctx *hash = PTR_ALIGN((void *)hashbuf, PPC_ALIGN);
+> > -	struct scatter_walk assoc_sg_walk;
+> >   	struct skcipher_walk walk;
+> >   	u8 *assocmem = NULL;
+> >   	u8 *assoc;
+> >   	unsigned int cryptlen = req->cryptlen;
+> >   	unsigned char ivbuf[AES_BLOCK_SIZE+PPC_ALIGN];
+> > @@ -232,12 +231,11 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
+> >   	memset(ivbuf, 0, sizeof(ivbuf));
+> >   	memcpy(iv, riv, GCM_IV_SIZE);
+> >   	/* Linearize assoc, if not already linear */
+> >   	if (req->src->length >= assoclen && req->src->length) {
+> > -		scatterwalk_start(&assoc_sg_walk, req->src);
+> > -		assoc = scatterwalk_map(&assoc_sg_walk);
+> > +		assoc = sg_virt(req->src); /* ppc64 is !HIGHMEM */
+> >   	} else {
+> >   		gfp_t flags = (req->base.flags & CRYPTO_TFM_REQ_MAY_SLEEP) ?
+> >   			      GFP_KERNEL : GFP_ATOMIC;
+> >   		/* assoc can be any length, so must be on heap */
+> > @@ -251,13 +249,11 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
+> >   	vsx_begin();
+> >   	gcmp10_init(gctx, iv, (unsigned char *) &ctx->enc_key, hash, assoc, assoclen);
+> >   	vsx_end();
+> > -	if (!assocmem)
+> > -		scatterwalk_unmap(assoc);
+> > -	else
+> > +	if (assocmem)
+> >   		kfree(assocmem);
 > 
-> Signed-off-by: Muhammad Nuzaihan Bin Kamal Luddin <zaihan@unrealasia.net>
-> 
-> On Thu, Jan 2 2025 at 02:34:03 AM +0800, Muhammad Nuzaihan 
-> <zaihan@unrealasia.net> wrote:
->> Hi netdev,
->>
->> I am using a Quectel RM520N-GL *PCIe* (not USB) module which uses the 
->> MHI interface.
->>
->> In /devices/pci0000:00/0000:00:1c.6/0000:08:00.0/mhi0 i can see 
->> "mhi0_NMEA" but the actual NMEA device is missing in /dev and needs a 
->> character device to be useful with tty programs.
->>
->> NMEA statements are a stream of GPS information which is used to tell 
->> the current device location in the console (like minicom).
->>
->> Attached is the patch to ensure a device is registered (as /dev/ 
->> wwan0nmea0) so this device will stream GPS NMEA statements and can be 
->> used to be read by popular GPS tools like gpsd and then tracking with 
->> cgps, xgps, QGIS, etc.
->>
->> Regards,
->> Muhammad Nuzaihan
->>
->> Signed-off-by: Muhammad Nuzaihan Bin Kamal Luddin <zaihan@unrealasia.net>
->>
-> 
+> kfree() accepts a NULL pointer, you can call kfree(assocmem) without 'if
+> (assocmem)'
 
+The existing code did that too, but sure I'll change that in v3.
+
+- Eric
