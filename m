@@ -1,34 +1,34 @@
 Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B561B4128;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AFE1B4121;
 	Thu,  2 Jan 2025 17:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735839465; cv=none; b=jUqo+h3vRTQ2eYrNB0kYtQYWQZOoXvu+h82vM18GCRebUOyOBUEJStvN9vxBTY0l93oNpYDUBfMpoUqnOGdFvEh27ZWxGH5EGGdoutIicvJTZ0iuhgQjMmWvmAzpMf1QJCh8Ug8kKZPmM3O5jCPohE0JJJVhVduynNf+8ZKXsXg=
+	t=1735839466; cv=none; b=mJ5uT0T0s8qvAW6qEoCRgGXIOBAEU1qnNHCnDzj4NJSk3MU8pHN7ha+31l8VvC/+sFH3CX6KdsO6WIu1Vpzmeu+p54RBypYtchKuHn59qMY0zmbiZc8yY6n0Hueg1Ubb79USWtmtdGttel7muGXW3w7knAIXGt/s/+MeX35dnSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735839465; c=relaxed/simple;
-	bh=1ADxiY1AZsfrcGdcGl/twOq7jxD1T8ltHckkKMaLH54=;
+	s=arc-20240116; t=1735839466; c=relaxed/simple;
+	bh=ZpLbs8G4b/CfoPAXsSFSWGB6YncnYJDKCOKcfpnpyfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lcc3YbSJoSjoHRKnaJfKiBsJokKEqCo6xDbzcbHU+2OfRi/CCXTgjv07A1R79vCxmMmuuR2d0TTEYoR0iTPfvzGS0I4ZmMSoowO+mR4zJhxeqlfMRQMLDkHN0oTMV2ezxQXBxoL8Ll4P5fErKI8n96Elz3xysLQCDyT0+YVzGTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=kvfFMMIb; arc=none smtp.client-ip=46.235.229.95
+	 MIME-Version; b=A/g+DjPaUEzn/6gx5YnGpgbiJwmLFUl4YZCp6DSJbsc3ce5lqimFcYfYQtE6nqScBX+UObQNDpgE6gs0PlgR+x4mNTUT6soYSMK4BKNV1+58ziayp/nZTHXajW2MfHQxLRN9RUip1dYiedvs22RgNzFK1sh7g/hUw1X3IGkpK0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=FhJT2JN/; arc=none smtp.client-ip=46.235.229.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="kvfFMMIb"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="FhJT2JN/"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
 	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=+ZGR+4M88sa0kRz7J9BRSdTXkaGsSrG9ro47bpM2uuI=; b=kvfFMMIbDsLkjSyU
-	iSQg4f6mLwlQ2MVHXEH6vhYJV4JN52B0alw/hAGltvTca2MxAlsM8kAycxOQH7JpEaOPhvgbYy2oa
-	hTPIq2iHYe5FvzFCrwykMQhpWYDqNtoDh0oZLFHf1tr5DpD43iYXoq6FQ0twbNDlQ/SX9J+f+WmjE
-	KH1AxkK9fRXcBUPSCySL8n0ytNYt4qKZR7jbEZzxR659o3AL23mGUx+6MRnTZ3M0q5Xj/z6+96+Oz
-	J9O/kCUSp6Uoyge0715ocU/WMrFk+zFs/L6u+QSXZWaTQdy9tprAvbDSOdFWLIgmknm+SYpfPjedb
-	WElM2T+3D5laECCZnA==;
+	:Subject; bh=AHVpFzSjHV15hL40UVEK2lfc9SE8GqU1vNkl27mvewE=; b=FhJT2JN/FtzReiV6
+	cBJEkAuerFCXxuN0L/SpkbPn+AMeTKlaZbawGVPtDPqPb/18SkogYgoSSKwu6zUh1t7RwYDsiNuGx
+	981kp/Zyts96MQ+FzWDDCvPbYwzRDSuoRan/qrilyXMG0+1HFDUzHVqIx1HmwLBBbu1Oc6gfWJx7Y
+	Sk6CLk3dmzl5XchbOzVEkgTkvw8e2eL95G63SPItqMaX5yqSU6id/Bxm2QLnOe1FCwLTQ4uTIOx/D
+	CqnCORodMcLalYMqAn08JjGqtTnALVo44OIq8sRc+ilEwb6revwCvMl6A0wKpQjogGiVtM3dyU42X
+	5SGb/9lfyn6Co1XKGg==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
 	by mx.treblig.org with esmtp (Exim 4.96)
 	(envelope-from <linux@treblig.org>)
-	id 1tTP8L-007tod-1o;
-	Thu, 02 Jan 2025 17:37:21 +0000
+	id 1tTP8M-007tod-2I;
+	Thu, 02 Jan 2025 17:37:22 +0000
 From: linux@treblig.org
 To: anthony.l.nguyen@intel.com,
 	przemyslaw.kitszel@intel.com,
@@ -40,11 +40,10 @@ To: anthony.l.nguyen@intel.com,
 	intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Subject: [PATCH net-next 2/9] i40e: Remove unused i40e_blink_phy_link_led
-Date: Thu,  2 Jan 2025 17:37:10 +0000
-Message-ID: <20250102173717.200359-3-linux@treblig.org>
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: [PATCH net-next 4/9] i40e: Deadcode profile code
+Date: Thu,  2 Jan 2025 17:37:12 +0000
+Message-ID: <20250102173717.200359-5-linux@treblig.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250102173717.200359-1-linux@treblig.org>
 References: <20250102173717.200359-1-linux@treblig.org>
@@ -58,127 +57,137 @@ Content-Transfer-Encoding: 8bit
 
 From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-i40e_blink_phy_link_led() was added in 2016 by
-commit fd077cd3399b ("i40e: Add functions to blink led on 10GBaseT PHY")
+i40e_add_pinfo_to_list() was added in 2017 by
+commit 1d5c960c5ef5 ("i40e: new AQ commands")
 
-but hasn't been used.
+i40e_find_section_in_profile() was added in 2019 by
+commit cdc594e00370 ("i40e: Implement DDP support in i40e driver")
 
-Remove it.
+Neither have been used.
+
+Remove them.
 
 Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 ---
- drivers/net/ethernet/intel/i40e/i40e_common.c | 74 -------------------
- .../net/ethernet/intel/i40e/i40e_prototype.h  |  4 -
- 2 files changed, 78 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_common.c | 72 -------------------
+ .../net/ethernet/intel/i40e/i40e_prototype.h  |  8 ---
+ 2 files changed, 80 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
-index 47e71f72d87b..ba780a949a47 100644
+index 6779e281a648..370b4bddee44 100644
 --- a/drivers/net/ethernet/intel/i40e/i40e_common.c
 +++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
-@@ -4428,80 +4428,6 @@ u8 i40e_get_phy_address(struct i40e_hw *hw, u8 dev_num)
- 	return (u8)(reg_val >> ((dev_num + 1) * 5)) & 0x1f;
+@@ -4882,39 +4882,6 @@ i40e_find_segment_in_package(u32 segment_type,
+ #define I40E_SECTION_HEADER(profile, offset)				\
+ 	(struct i40e_profile_section_header *)((u8 *)(profile) + (offset))
+ 
+-/**
+- * i40e_find_section_in_profile
+- * @section_type: the section type to search for (i.e., SECTION_TYPE_NOTE)
+- * @profile: pointer to the i40e segment header to be searched
+- *
+- * This function searches i40e segment for a particular section type. On
+- * success it returns a pointer to the section header, otherwise it will
+- * return NULL.
+- **/
+-struct i40e_profile_section_header *
+-i40e_find_section_in_profile(u32 section_type,
+-			     struct i40e_profile_segment *profile)
+-{
+-	struct i40e_profile_section_header *sec;
+-	struct i40e_section_table *sec_tbl;
+-	u32 sec_off;
+-	u32 i;
+-
+-	if (profile->header.type != SEGMENT_TYPE_I40E)
+-		return NULL;
+-
+-	I40E_SECTION_TABLE(profile, sec_tbl);
+-
+-	for (i = 0; i < sec_tbl->section_count; i++) {
+-		sec_off = sec_tbl->section_offset[i];
+-		sec = I40E_SECTION_HEADER(profile, sec_off);
+-		if (sec->section.type == section_type)
+-			return sec;
+-	}
+-
+-	return NULL;
+-}
+-
+ /**
+  * i40e_ddp_exec_aq_section - Execute generic AQ for DDP
+  * @hw: pointer to the hw struct
+@@ -5137,45 +5104,6 @@ i40e_rollback_profile(struct i40e_hw *hw, struct i40e_profile_segment *profile,
+ 	return status;
  }
  
 -/**
-- * i40e_blink_phy_link_led
-- * @hw: pointer to the HW structure
-- * @time: time how long led will blinks in secs
-- * @interval: gap between LED on and off in msecs
+- * i40e_add_pinfo_to_list
+- * @hw: pointer to the hardware structure
+- * @profile: pointer to the profile segment of the package
+- * @profile_info_sec: buffer for information section
+- * @track_id: package tracking id
 - *
-- * Blinks PHY link LED
-- **/
--int i40e_blink_phy_link_led(struct i40e_hw *hw,
--			    u32 time, u32 interval)
+- * Register a profile to the list of loaded profiles.
+- */
+-int
+-i40e_add_pinfo_to_list(struct i40e_hw *hw,
+-		       struct i40e_profile_segment *profile,
+-		       u8 *profile_info_sec, u32 track_id)
 -{
--	u16 led_addr = I40E_PHY_LED_PROV_REG_1;
--	u16 gpio_led_port;
--	u8 phy_addr = 0;
+-	struct i40e_profile_section_header *sec = NULL;
+-	struct i40e_profile_info *pinfo;
+-	u32 offset = 0, info = 0;
 -	int status = 0;
--	u16 led_ctl;
--	u8 port_num;
--	u16 led_reg;
--	u32 i;
 -
--	i = rd32(hw, I40E_PFGEN_PORTNUM);
--	port_num = (u8)(i & I40E_PFGEN_PORTNUM_PORT_NUM_MASK);
--	phy_addr = i40e_get_phy_address(hw, port_num);
+-	sec = (struct i40e_profile_section_header *)profile_info_sec;
+-	sec->tbl_size = 1;
+-	sec->data_end = sizeof(struct i40e_profile_section_header) +
+-			sizeof(struct i40e_profile_info);
+-	sec->section.type = SECTION_TYPE_INFO;
+-	sec->section.offset = sizeof(struct i40e_profile_section_header);
+-	sec->section.size = sizeof(struct i40e_profile_info);
+-	pinfo = (struct i40e_profile_info *)(profile_info_sec +
+-					     sec->section.offset);
+-	pinfo->track_id = track_id;
+-	pinfo->version = profile->version;
+-	pinfo->op = I40E_DDP_ADD_TRACKID;
+-	memcpy(pinfo->name, profile->name, I40E_DDP_NAME_SIZE);
 -
--	for (gpio_led_port = 0; gpio_led_port < 3; gpio_led_port++,
--	     led_addr++) {
--		status = i40e_read_phy_register_clause45(hw,
--							 I40E_PHY_COM_REG_PAGE,
--							 led_addr, phy_addr,
--							 &led_reg);
--		if (status)
--			goto phy_blinking_end;
--		led_ctl = led_reg;
--		if (led_reg & I40E_PHY_LED_LINK_MODE_MASK) {
--			led_reg = 0;
--			status = i40e_write_phy_register_clause45(hw,
--							 I40E_PHY_COM_REG_PAGE,
--							 led_addr, phy_addr,
--							 led_reg);
--			if (status)
--				goto phy_blinking_end;
--			break;
--		}
--	}
+-	status = i40e_aq_write_ddp(hw, (void *)sec, sec->data_end,
+-				   track_id, &offset, &info, NULL);
 -
--	if (time > 0 && interval > 0) {
--		for (i = 0; i < time * 1000; i += interval) {
--			status = i40e_read_phy_register_clause45(hw,
--						I40E_PHY_COM_REG_PAGE,
--						led_addr, phy_addr, &led_reg);
--			if (status)
--				goto restore_config;
--			if (led_reg & I40E_PHY_LED_MANUAL_ON)
--				led_reg = 0;
--			else
--				led_reg = I40E_PHY_LED_MANUAL_ON;
--			status = i40e_write_phy_register_clause45(hw,
--						I40E_PHY_COM_REG_PAGE,
--						led_addr, phy_addr, led_reg);
--			if (status)
--				goto restore_config;
--			msleep(interval);
--		}
--	}
--
--restore_config:
--	status = i40e_write_phy_register_clause45(hw,
--						  I40E_PHY_COM_REG_PAGE,
--						  led_addr, phy_addr, led_ctl);
--
--phy_blinking_end:
 -	return status;
 -}
 -
  /**
-  * i40e_led_get_reg - read LED register
-  * @hw: pointer to the HW structure
+  * i40e_aq_add_cloud_filters
+  * @hw: pointer to the hardware structure
 diff --git a/drivers/net/ethernet/intel/i40e/i40e_prototype.h b/drivers/net/ethernet/intel/i40e/i40e_prototype.h
-index 29f6a903a30c..c0a4bd53501c 100644
+index bfebe18c0041..ccb8af472cd7 100644
 --- a/drivers/net/ethernet/intel/i40e/i40e_prototype.h
 +++ b/drivers/net/ethernet/intel/i40e/i40e_prototype.h
-@@ -72,8 +72,6 @@ int i40e_led_set_phy(struct i40e_hw *hw, bool on,
- 		     u16 led_addr, u32 mode);
- int i40e_led_get_phy(struct i40e_hw *hw, u16 *led_addr,
- 		     u16 *val);
--int i40e_blink_phy_link_led(struct i40e_hw *hw,
--			    u32 time, u32 interval);
+@@ -452,20 +452,12 @@ int i40e_aq_get_ddp_list(struct i40e_hw *hw, void *buff,
+ struct i40e_generic_seg_header *
+ i40e_find_segment_in_package(u32 segment_type,
+ 			     struct i40e_package_header *pkg_header);
+-struct i40e_profile_section_header *
+-i40e_find_section_in_profile(u32 section_type,
+-			     struct i40e_profile_segment *profile);
+ int
+ i40e_write_profile(struct i40e_hw *hw, struct i40e_profile_segment *i40e_seg,
+ 		   u32 track_id);
+ int
+ i40e_rollback_profile(struct i40e_hw *hw, struct i40e_profile_segment *i40e_seg,
+ 		      u32 track_id);
+-int
+-i40e_add_pinfo_to_list(struct i40e_hw *hw,
+-		       struct i40e_profile_segment *profile,
+-		       u8 *profile_info_sec, u32 track_id);
+-
+ /* i40e_ddp */
+ int i40e_ddp_flash(struct net_device *netdev, struct ethtool_flash *flash);
  
- /* admin send queue commands */
- 
-@@ -446,8 +444,6 @@ int i40e_read_phy_register(struct i40e_hw *hw, u8 page, u16 reg,
- int i40e_write_phy_register(struct i40e_hw *hw, u8 page, u16 reg,
- 			    u8 phy_addr, u16 value);
- u8 i40e_get_phy_address(struct i40e_hw *hw, u8 dev_num);
--int i40e_blink_phy_link_led(struct i40e_hw *hw,
--			    u32 time, u32 interval);
- int i40e_aq_write_ddp(struct i40e_hw *hw, void *buff,
- 		      u16 buff_size, u32 track_id,
- 		      u32 *error_offset, u32 *error_info,
 -- 
 2.47.1
 
