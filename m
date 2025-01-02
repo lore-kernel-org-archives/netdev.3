@@ -1,86 +1,138 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7157462;
-	Thu,  2 Jan 2025 14:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326F01B3724
+	for <netdev@vger.kernel.org>; Thu,  2 Jan 2025 15:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735829748; cv=none; b=ebN0cS8YH0GypblDj0VKEeS6nxnbfNfUOk0W0FyqGCwMQbWLjbEVqf0dP+M0zYylFHGbudU+sind7vs6FGEQJWn3BinLa9OqkxVPHk/Z1yemZWnjXMHMpb8Fmr1yrBu1rERG2Y8R+nX/RshAnLXmseLjap+zusXgoVxCBwqZ6Sg=
+	t=1735830011; cv=none; b=ul3RErg/7rNcqRpB6P1sduKM5GWluFLMesMMc0Fnv9Ppd5CS87p/ByWDvkxK7RNWWFuyYD8sto5AYLSwnnXOJg87gA/u+nrLVcbMQIBEdPJJWYwyjoBz9si234tqmrA3wU8pRxnzPJG6opDfPh5WAsaePUW//BU6z4IoV/D/7Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735829748; c=relaxed/simple;
-	bh=h+RaiMu43ATTKYxq8XeD0KS5ptSVYuOyuj7fJ5PNjcw=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=clR+kA75PgJNUqBv6UCZUng5vvjqYmXm+omaFPxsToWoO4DzU0eW6EQokrMRhH1w2GwZ9Xz1ML3GG7FG8VU/gyXF2y0JSq2HfsKR3IYzn95y4WzXyjLyw9J1EWikxX4K5SPg87BC+uPZbaMvQUNF/j8UqG8UWThl6k3tdSe5e/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YP8qZ71zKz6M4yM;
-	Thu,  2 Jan 2025 22:54:18 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id E16C7140A9C;
-	Thu,  2 Jan 2025 22:55:44 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 2 Jan
- 2025 15:55:44 +0100
-Date: Thu, 2 Jan 2025 14:55:42 +0000
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: <alejandro.lucero-palau@amd.com>
-CC: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<dan.j.williams@intel.com>, <edward.cree@amd.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>,
-	<dave.jiang@intel.com>, Alejandro Lucero <alucerop@amd.com>
-Subject: Re: [PATCH v9 12/27] sfc: set cxl media ready
-Message-ID: <20250102145542.00005ccf@huawei.com>
-In-Reply-To: <20241230214445.27602-13-alejandro.lucero-palau@amd.com>
-References: <20241230214445.27602-1-alejandro.lucero-palau@amd.com>
-	<20241230214445.27602-13-alejandro.lucero-palau@amd.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1735830011; c=relaxed/simple;
+	bh=csej4I2UFTqPFljkqdH+u06HIdOpUkuSRuDuYgIjIA0=;
+	h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=C7y+Fpc4q0gHFK19XTXRoKP5ZuAhHJFXx+aUBsBfzrLMrvPODBv2pAh96Hztj5JOfc1Rgw7o/ynUS37xLD88j2M3GGY1i06VmptDKIzX15WzAvni9cNY01zeM1aoI5toNYQJ9qlf0CeIcJQsTTK/I3jw8/MP3+lcvzAf+TnQD+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unrealasia.net; spf=pass smtp.mailfrom=unrealasia.net; dkim=pass (2048-bit key) header.d=unrealasia-net.20230601.gappssmtp.com header.i=@unrealasia-net.20230601.gappssmtp.com header.b=pjCLrNkS; arc=none smtp.client-ip=209.85.214.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unrealasia.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unrealasia.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=unrealasia-net.20230601.gappssmtp.com header.i=@unrealasia-net.20230601.gappssmtp.com header.b="pjCLrNkS"
+Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-21636268e43so68664725ad.2
+        for <netdev@vger.kernel.org>; Thu, 02 Jan 2025 07:00:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=unrealasia-net.20230601.gappssmtp.com; s=20230601; t=1735830008; x=1736434808; darn=vger.kernel.org;
+        h=mime-version:references:in-reply-to:message-id:cc:to:subject:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dVWv1yG28Az/TllwbejOqQ1NzoDY8ivL6MBIugj2JQA=;
+        b=pjCLrNkSR0pWXhPZ6v5MEWRw+ILlJHL8rQb0YCP4fQsuYecI/i4fIa0evVE9WT5mlZ
+         pYsg757cC94QODJuJBHvi9mldSJPZS9aRJybqBHRgiJbA575r8qIAEgL4JjyxZ2gFdhH
+         fGG/OZ8YGsUIzAmgX7lwm4R6hO732CeRJJZYOWLXtRYl1jRHbWOR7qY4JssGnoJ9ev3H
+         b3lXNXXgIzWcOkQl0A7XeufzFp2TETybekziql9nwGeUPhWPRNzrphEmg0o2ccufHmhy
+         aDVtCUYuL1oLzPM6L9RPEozIDu75OEnkBYRSFw5NnY+DfPb8WyVrIG+l+D/YXklQGPto
+         XBVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735830008; x=1736434808;
+        h=mime-version:references:in-reply-to:message-id:cc:to:subject:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dVWv1yG28Az/TllwbejOqQ1NzoDY8ivL6MBIugj2JQA=;
+        b=oRTiBcP4PRAs4jLueBPvUKv7i6fatezhXcI2a/XC6yXWi769MN2mIxnGU7EqkADD2q
+         diO+qkzH5hbbbRBM+t7bD7ZfFXmRKtnbcUHc0GC6HC9vKE8i+aESdeth9BRnhW3icFPq
+         39yEcsYUI0IOIJLqmWdd+dXJmZudCis0QFA2rXQ7M/jnqXhCsnJ6C57Vo/v1yndlGfa0
+         mt3T6WOJagzS+RT6gt1XRMxiEzpOzwAeP2ZwYEcFikLyGnyV/HZYq+zaxhoQ2yGI7V31
+         ifxVdM+AriSRGquoGFLzCm+PEkfEDSOeHTpS3R48ADwNhoL8v0YcyKmM7Q/5myzW3CQj
+         RJhw==
+X-Gm-Message-State: AOJu0Yz+wCbsSktQI2uuf5bYqQBhNdj709vj7sr6SbG/46frxjD93prN
+	FJjL+sNMzlYwBAmic40/HwNY9Dq93G1RH6FvnZWgR/WXFVnkZkTlPr3Q41xYJiM=
+X-Gm-Gg: ASbGncstYxESAgr7arrVjSLRr9PMeVPUYMmu7J9UGN9QH5nbpzN8Zwmuh70hiwFOdgv
+	TS/VPXVQECqYXso3xbOQnOFf7YoyAd8HYwmBnwsDOdMzvBgHrRSXORekJpw5lzVTdwvyWFBn1hK
+	aFjnaoB6IXT2XrKSFYsTMopiphXTEM1pu9N8lXuiBZNWjl7VlLrN3GQwSf1TsEqAtrbLpwcjtwp
+	nycCK/4zVYIrgg9WQHBvzXmLZwiuU8/9eog27s+V9oXsE4VvG7mDq56lsQ3QokGl2DB
+X-Google-Smtp-Source: AGHT+IHdfKh9fsUR5Ni2yjx+vcQUvdBgpinqCPRVr5B9m2FPIjuYlnuF2MUvr1NG5+bGBP++X/BngQ==
+X-Received: by 2002:a05:6a20:12d2:b0:1e1:3970:d75a with SMTP id adf61e73a8af0-1e5e0458eadmr80010227637.9.1735830007949;
+        Thu, 02 Jan 2025 07:00:07 -0800 (PST)
+Received: from muhammads-ThinkPad ([2001:e68:5473:b14:5c5:4698:43ff:2f5b])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-842aba72f71sm22551306a12.9.2025.01.02.07.00.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jan 2025 07:00:07 -0800 (PST)
+Date: Thu, 02 Jan 2025 22:20:23 +0800
+From: Muhammad Nuzaihan <zaihan@unrealasia.net>
+Subject: Re: [PATCH] Add NMEA GPS character device for PCIe MHI Quectel Module
+ to read NMEA statements.
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, Loic Poulain <loic.poulain@linaro.org>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>, Johannes Berg
+	<johannes@sipsolutions.net>
+Message-Id: <Z5TGPS.PN2YJKFH2CDV@unrealasia.net>
+In-Reply-To: <4b576e34-ec43-4789-b18b-86d592f9d031@lunn.ch>
+References: <R8AFPS.THYVK2DKSEE83@unrealasia.net>
+	<5LHFPS.G3DNPFBCDKCL2@unrealasia.net>
+	<4b576e34-ec43-4789-b18b-86d592f9d031@lunn.ch>
+X-Mailer: geary/40.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=us-ascii; format=flowed
 
-On Mon, 30 Dec 2024 21:44:30 +0000
-<alejandro.lucero-palau@amd.com> wrote:
+Hi Andrew,
 
-> From: Alejandro Lucero <alucerop@amd.com>
+I'm actually new to netdev and the main kernel.org documentation on 
+submitting patches 
+(https://www.kernel.org/doc/html/v4.17/process/submitting-patches.html) 
+was not clear on the commit message (or i've missed it).
+
+Thank you for pointing me to the netdev maintainer process page.
+
+Anyway, i will make a new v3 patch tomorrow on a new thread to address 
+the issues you mentioned. I'll follow the guidelines as you required.
+
+Sorry for the mess.
+
+Thank you,
+Muhammad Nuzaihan
+
+On Thu, Jan 2 2025 at 02:22:15 PM +0100, Andrew Lunn <andrew@lunn.ch> 
+wrote:
+> On Thu, Jan 02, 2025 at 05:12:41AM +0800, Muhammad Nuzaihan wrote:
+>>  Hi netdev,
+>> 
+>>  I made a mistake in choosing AT mode IPC, which is incorrect. For 
+>> NMEA
+>>  streams it should use LOOPBACK for IPC. If it uses AT, i noticed 
+>> that using
+>>  gpsd will cause intermittent IOCTL errors which is caused when gpsd 
+>> wants to
+>>  write to the device.
+>> 
+>>  Attached is the patch.
 > 
-> Use cxl api accessor for explicitly set media ready as hardware design
-> implies it is ready and there is no device register for stating so.
+> This is not my area, so i cannot do a full review, but a few things to
+> note.
 > 
-> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
-> Reviewed-by: Martin Habets <habetsm.xilinx@gmail.com>
-> Acked-by: Edward Cree <ecree.xilinx@gmail.com>
-FWIW 
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
+> Please start a new thread for each version of a patch, and wait at
+> lest 24 hours between each version.
+> 
+> The commit message should be formal, since it will be part of the
+> kernel history.
+> 
+> https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+> 
+>>  @@ -876,7 +880,8 @@ static long wwan_port_fops_ioctl(struct file 
+>> *filp, unsigned int cmd,
+>>   	struct wwan_port *port = filp->private_data;
+>>   	int res;
+>> 
+>>  -	if (port->type == WWAN_PORT_AT) {	/* AT port specific IOCTLs */
+>>  +	if (port->type == WWAN_PORT_AT ||
+>>  +			WWAN_PORT_NMEA) {	/* AT or NMEA port specific IOCTLs */
+> 
+> This looks wrong. || WWAN_PORT_NMEA will always be true, assuming
+> WWAN_PORT_NMEA is not 0.
+> 
+>     Andrew
+> 
 > ---
->  drivers/net/ethernet/sfc/efx_cxl.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
-> index 2031f08ee689..911f29b91bd3 100644
-> --- a/drivers/net/ethernet/sfc/efx_cxl.c
-> +++ b/drivers/net/ethernet/sfc/efx_cxl.c
-> @@ -91,6 +91,11 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
->  		goto err_resource_set;
->  	}
->  
-> +	/* We do not have the register about media status. Hardware design
-> +	 * implies it is ready.
-> +	 */
-> +	cxl_set_media_ready(cxl->cxlds);
-> +
->  	probe_data->cxl = cxl;
->  
->  	return 0;
+> pw-bot: cr
+
 
