@@ -1,48 +1,48 @@
 Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2417D1ACEC2;
-	Thu,  2 Jan 2025 11:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06D8198E60;
+	Thu,  2 Jan 2025 11:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735817011; cv=none; b=fY6WgEq5CNSZZTiVw67PlMpLvRJyDBPXa7AuLeNsH5wHyBgcM2HkJDF2LzYzEfu63na/3lEdFwOeAvebWH1+YhXrYhOoSN9EaHu3ld+sUs/R8oJosHsqg+MG+jSS2DBwVTsSPnGj4gSlB5MHKy6OuXe+F5v39Q9hNDRYzePMWJg=
+	t=1735817011; cv=none; b=mXhIwDbJTYA03RzQZUxpeRjxuveuQ53Dy8wIWhoCQdJuucUU6HqMRJkU7XNHlZI/K+li5RIVaVzti7o61gE/EZgFbyjP/MZXSHIMSW5KyN+PwyM/bwtq+jMfi5r5Y1TUug0uhBv7GAuU8RKVoMa2/hs0jk9aYqq3sB8oNc62o6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1735817011; c=relaxed/simple;
-	bh=D/meY/WytVFRPYjcqhyPlcj0U6o6REdTC8y4oj7SRXE=;
+	bh=jnjuB5+wjuNGPsoQqMDm/5by9oc8ShpkRpEjC4rtiNA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y1NeMFjRYy5yQE/ohTAdXzyj+fGzqCQXQlw/ypJUzqFxG8+oWl5NUyxctnjE5eY+oLvD3+6uwz75uZ2Js2N19UWA01NU3Z/QnZbAXTALaFyX1/zB+xqn86JwaD4tL7jHJhW40czZv98k4UNwUeBk+ag97vfof3xN75pRxYfF47g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=EyYnkCcP; arc=none smtp.client-ip=67.231.156.173
+	 MIME-Version:Content-Type; b=XyMF9ueLvjXDQCFMMJzBODJDKMUn6ibmcBKqh1qpMkehBFzs77M+L1VIvp2zMcZO/dSiCsc0TzOVRJjfughkwBX63dtNaCZv1iLgzqEUY5Th0vj2cWuzDH3EJvI/ibi8Rr8VWAq8Qk69PM9ZClMGwSarJy/lsBfbhXzockxSiA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=NfM8jxT3; arc=none smtp.client-ip=67.231.156.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="EyYnkCcP"
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="NfM8jxT3"
 Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50296s9W001789;
-	Thu, 2 Jan 2025 03:23:04 -0800
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50296ssJ001779;
+	Thu, 2 Jan 2025 03:23:10 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=a
-	3L9o4etz+uGV0CMi/b7T8lp3z/9F6TF25clPViGFB8=; b=EyYnkCcPq+T9gAi1P
-	En+QJ4+lo6HS1MKUBE6EN4ylJKBrF1YVTGbcfwbP0KKH7oWU/oh6XwEt2GLwbYuA
-	i8t6s62xEYNxtId7UVMe+2CO8COZwD0beXW4lrRG+UeEXW4iRX6+Uh0FnfZIjlNx
-	JvoqquahKBFz4bgYwepGccN3yMWl8kF7wE+pW/6pIRuaVx+BZgKkSsTmseiHvzPY
-	bt7xQDMQ6P97HUq9R1X1RyzBwUOmBSsBBCp1SuMF7z7p5fkNJduuv7GLlhNRXuBP
-	6e3FqKRxDJjN10NKvjG3skbMUdXu3vv10qs3Lgc1roBMQp0vRGZkJchv3qnzNMGe
-	amZ9w==
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=C
+	KCYEEe6hY3eOzsP+Yb+eqtI1kGl7G1WlHUsnCXahA4=; b=NfM8jxT3e3PXOioM/
+	PCrg3BcMK3B8ZOhAITl1//PSnT7OIyDJo5q91UHcXG3nxuBlhb2sDee/1cxj8w/9
+	2VGvIxu/lqpwP943xh66NaTc4uAPpSyfMBhsEZ1YZaknapU1g8Ca8K38iDyBHsEB
+	iMDoqjEol/mGkx5nTyzceXJqGA8FZVOpsHfDSL3aAZxSBtk/edQgPXMw7umPvGbW
+	ompoJHHeSUaQIW6NFIpcHon7WuvcVR16Qd7IdkAZY0lLl3dpyLqPkijDi0WSn4Lu
+	/6kmU4+XvDR5z59IYMyGnyZ+GVN8mBj9vL6xMCQ89dAA+WmcHojQdRuMKvSKUPFv
+	G8K/w==
 Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 43wqvmr5u9-1
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 43wqvmr5ud-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Jan 2025 03:23:03 -0800 (PST)
+	Thu, 02 Jan 2025 03:23:10 -0800 (PST)
 Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
  DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Thu, 2 Jan 2025 03:23:02 -0800
+ 15.2.1544.4; Thu, 2 Jan 2025 03:23:08 -0800
 Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
  (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Thu, 2 Jan 2025 03:23:02 -0800
+ Transport; Thu, 2 Jan 2025 03:23:08 -0800
 Received: from ubuntu-PowerEdge-T110-II.sclab.marvell.com (unknown [10.106.27.86])
-	by maili.marvell.com (Postfix) with ESMTP id DACA23F708D;
-	Thu,  2 Jan 2025 03:23:01 -0800 (PST)
+	by maili.marvell.com (Postfix) with ESMTP id 55D6B3F708E;
+	Thu,  2 Jan 2025 03:23:08 -0800 (PST)
 From: Shinas Rasheed <srasheed@marvell.com>
 To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <hgani@marvell.com>, <sedara@marvell.com>, <vimleshk@marvell.com>,
@@ -51,17 +51,14 @@ CC: <hgani@marvell.com>, <sedara@marvell.com>, <vimleshk@marvell.com>,
         "Shinas
  Rasheed" <srasheed@marvell.com>,
         Veerasenareddy Burru <vburru@marvell.com>,
+        Satananda Burla <sburla@marvell.com>,
         Andrew Lunn <andrew+netdev@lunn.ch>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        "Paolo
- Abeni" <pabeni@redhat.com>,
-        Satananda Burla <sburla@marvell.com>,
-        "Abhijit
- Ayarekar" <aayarekar@marvell.com>
-Subject: [PATCH net v4 2/4] octeon_ep: remove firmware stats fetch in ndo_get_stats64
-Date: Thu, 2 Jan 2025 03:22:44 -0800
-Message-ID: <20250102112246.2494230-3-srasheed@marvell.com>
+        Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net v4 4/4] octeon_ep_vf: remove firmware stats fetch in ndo_get_stats64
+Date: Thu, 2 Jan 2025 03:22:46 -0800
+Message-ID: <20250102112246.2494230-5-srasheed@marvell.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250102112246.2494230-1-srasheed@marvell.com>
 References: <20250102112246.2494230-1-srasheed@marvell.com>
@@ -73,8 +70,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-GUID: 1FqzMzreuVzuEGzPLXOLf8Snzn_XP_zt
-X-Proofpoint-ORIG-GUID: 1FqzMzreuVzuEGzPLXOLf8Snzn_XP_zt
+X-Proofpoint-GUID: wn3kuTbWGO43nH7-XJVKp0D-PA2gsWMM
+X-Proofpoint-ORIG-GUID: wn3kuTbWGO43nH7-XJVKp0D-PA2gsWMM
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.687,Hydra:6.0.235,FMLib:17.0.607.475
  definitions=2020-10-13_15,2020-10-13_02,2020-04-07_01
@@ -114,35 +111,39 @@ The warn log is given below:
 [  123.317006]  el0t_64_sync+0x17c/0x180
 [  123.317008] ---[ end trace 63399811432ab69b ]---
 
-Fixes: 6a610a46bad1 ("octeon_ep: add support for ndo ops")
+Fixes: c3fad23cdc06 ("octeon_ep_vf: add support for ndo ops")
 Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
 ---
 V4:
   - No changes
 
-V3: https://lore.kernel.org/all/20241218115111.2407958-3-srasheed@marvell.com/
+V3: https://lore.kernel.org/all/20241218115111.2407958-5-srasheed@marvell.com/
   - Added warn log that happened due to rcu_read_lock in commit message
 
-V2: https://lore.kernel.org/all/20241216075842.2394606-3-srasheed@marvell.com/
+V2: https://lore.kernel.org/all/20241216075842.2394606-5-srasheed@marvell.com/
   - No changes
 
-V1: https://lore.kernel.org/all/20241203072130.2316913-3-srasheed@marvell.com/
+V1: https://lore.kernel.org/all/20241203072130.2316913-5-srasheed@marvell.com/
 
- drivers/net/ethernet/marvell/octeon_ep/octep_main.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-index a452ee3b9a98..59e2f8d01954 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-@@ -1016,10 +1016,6 @@ static void octep_get_stats64(struct net_device *netdev,
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
+index 9b29cd698361..33548f04497c 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
+@@ -803,14 +803,6 @@ static void octep_vf_get_stats64(struct net_device *netdev,
  	stats->tx_bytes = tx_bytes;
  	stats->rx_packets = rx_packets;
  	stats->rx_bytes = rx_bytes;
--	stats->multicast = oct->iface_rx_stats.mcast_pkts;
--	stats->rx_errors = oct->iface_rx_stats.err_pkts;
--	stats->collisions = oct->iface_tx_stats.xscol;
--	stats->tx_fifo_errors = oct->iface_tx_stats.undflw;
+-	if (!octep_vf_get_if_stats(oct)) {
+-		stats->multicast = oct->iface_rx_stats.mcast_pkts;
+-		stats->rx_errors = oct->iface_rx_stats.err_pkts;
+-		stats->rx_dropped = oct->iface_rx_stats.dropped_pkts_fifo_full +
+-				    oct->iface_rx_stats.err_pkts;
+-		stats->rx_missed_errors = oct->iface_rx_stats.dropped_pkts_fifo_full;
+-		stats->tx_dropped = oct->iface_tx_stats.dropped;
+-	}
  }
  
  /**
