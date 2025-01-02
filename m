@@ -1,103 +1,116 @@
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1637F1420A8
-	for <netdev@vger.kernel.org>; Thu,  2 Jan 2025 17:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D53817CA1D;
+	Thu,  2 Jan 2025 17:37:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735839248; cv=none; b=CiIMwAY49M9XNkc2xxqT9m3jM8oLAh1fN1au+UxD7OsF2Tw44QNhYgqfGzQGy4pwcq1d1ejRxU18+nJpeTKVSekSjTYWwMLM4+wZ7xWMOmCScfD3/1eHB7Ow/iouE92bx0E3mFeDKAyezfpXuxRq0yvSrl7BMaRLQPw2IJr5ZQI=
+	t=1735839462; cv=none; b=MnRhXf4nRrDcqhC5vQQlgVpFKF+Aw7VwL/3s+t6P6zWLxu8+C1GslYE0NxL6rACC8BkuXYyXPGLVm4dj2ydZK3VTHBYFkpFZOxGGiN434ftTSMxtaAJBZ5XLmNoWRGMAcbr13O1rvw1RpKmeUrX1UonCz+YCpZJNtb2jxHKDN6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735839248; c=relaxed/simple;
-	bh=QHWKK0xoCGwcpTig2P1cz+z5mYy8CtK+sa/rTjhUQWI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X+2gyCC2m7A/ah8VsAPRnpslulmDEo2eg31rEtNQ37RMEBH8HxN50xZ8dd6+VrBwmzLTDLNfVqWxt8QhDoSKIBEUf0elrmER22CjSpNbDHp2KRgSs9/4ra83N6aCbcQaFULG7+TxCawsnr2oveG8W+Yjz4mk/NjuyrSEjSRFBzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aO6BgGsN; arc=none smtp.client-ip=95.215.58.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1735839462; c=relaxed/simple;
+	bh=6D+qVXt+if69Ak1Tp7vDfLqm1tFNmkM4gIg9Y3dvZJo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jLjJ5JJ4DEvVXg02CcdaNA9CdTFY0RtDsBdBFqE2v9+dR/YafARXwOFhhPLSWTZBwkxPzb9U3GPNBljIRGU9h4sFFVbkX2u4xFr8aLWkaIMGdsoFShz21eHdeB2dUxofnDsfc0YmO4X8n8LFnn0O4Ad92PbvlxqBnqQVSGYOfY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=cjgLBWE+; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aO6BgGsN"
-Message-ID: <ce5f90f8-4471-43c7-b580-0fa42343d448@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1735839242;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J7H0GuG5N2VNxhso5RXR0A2cNHYPxlxZ1ZJYMCSGlvs=;
-	b=aO6BgGsNfqxvbkigFKh0X3UqZi/FUWWmmP2YZVfWkunU/mupUd/2rJAW/ggA68SNkJs2Ei
-	gDotDUnAsMe+eeCFCyW1a2XszSf7zzrXnWyvSw7MBPyFr5JB+o3ExPD/8w3kK7efwqev3v
-	g9LqMOydjSCih2Vv3++Gqhyqklxza/0=
-Date: Thu, 2 Jan 2025 17:33:58 +0000
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="cjgLBWE+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+	:Subject; bh=VIOsW7CThUdxqZazplbAYuS4wCenu5gwxB082K8tTE8=; b=cjgLBWE+AQGwouVE
+	S5vDwc9ZaGxooRFqKMUjY4+++UEKig701HZLmcI8O0QBQP2TlKUi8bYtelzl7KlmcXWFHhVX2JBP0
+	6oHlvI7kl0W2fti64GLzmrIxv8POg0xcbNaibJ967G8tuySRt45SaMGbzYoc7UbrD9XHrnMCyPD/n
+	hgdg/bxJ3qnE++npjxllU0FEG4YB5QjMLHR/nJJslEUx1GDViPuH+AbFA9s2B4OPuAf8YdybLk+L3
+	L3lvR39p44H/rH81uF2TenLyc8VRhif9ppBTzEB7glsxbo1Kqf2ClLCnmAFIU9XK0obcywgDbkNUc
+	UdIzLCC0hkgnVhjSsw==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+	by mx.treblig.org with esmtp (Exim 4.96)
+	(envelope-from <linux@treblig.org>)
+	id 1tTP8P-007tod-0F;
+	Thu, 02 Jan 2025 17:37:25 +0000
+From: linux@treblig.org
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: [PATCH net-next 8/9] i40e: Remove unused i40e_asq_send_command_v2
+Date: Thu,  2 Jan 2025 17:37:16 +0000
+Message-ID: <20250102173717.200359-9-linux@treblig.org>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250102173717.200359-1-linux@treblig.org>
+References: <20250102173717.200359-1-linux@treblig.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next 1/4] net: wangxun: Add support for PTP clock
-To: Jiawen Wu <jiawenwu@trustnetic.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, richardcochran@gmail.com, linux@armlinux.org.uk,
- horms@kernel.org, jacob.e.keller@intel.com, netdev@vger.kernel.org
-Cc: mengyuanlou@net-swift.com
-References: <20250102103026.1982137-1-jiawenwu@trustnetic.com>
- <20250102103026.1982137-2-jiawenwu@trustnetic.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20250102103026.1982137-2-jiawenwu@trustnetic.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On 02/01/2025 10:30, Jiawen Wu wrote:
-> Implement support for PTP clock on Wangxun NICs.
-> 
-> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-[...]
+i40e_asq_send_command_v2() was added in 2022 by
+commit 74073848b0d7 ("i40e: Add new versions of send ASQ command
+functions")
+but hasn't been used.
 
->   
-> +int wx_ioctl(struct net_device *netdev, struct ifreq *ifr, int cmd)
-> +{
-> +	struct wx *wx = netdev_priv(netdev);
-> +
-> +	switch (cmd) {
-> +	case SIOCGHWTSTAMP:
-> +		return wx_ptp_get_ts_config(wx, ifr);
-> +	case SIOCSHWTSTAMP:
-> +		return wx_ptp_set_ts_config(wx, ifr);
-> +	default:
-> +		return -EOPNOTSUPP;
-> +	}
-> +}
-> +EXPORT_SYMBOL(wx_ioctl);
-> +
->   MODULE_DESCRIPTION("Common library for Wangxun(R) Ethernet drivers.");
->   MODULE_LICENSE("GPL");
+Remove it.
 
-[...]
+(The _atomic_v2 version of the function is used, so leave it).
 
-> @@ -507,6 +513,7 @@ static const struct net_device_ops ngbe_netdev_ops = {
->   	.ndo_get_stats64        = wx_get_stats64,
->   	.ndo_vlan_rx_add_vid    = wx_vlan_rx_add_vid,
->   	.ndo_vlan_rx_kill_vid   = wx_vlan_rx_kill_vid,
-> +	.ndo_eth_ioctl          = wx_ioctl,
->   };
->   
->   /**
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+---
+ drivers/net/ethernet/intel/i40e/i40e_adminq.c    | 10 ----------
+ drivers/net/ethernet/intel/i40e/i40e_prototype.h |  7 -------
+ 2 files changed, 17 deletions(-)
 
-[...]
-
-> @@ -479,6 +488,7 @@ static const struct net_device_ops txgbe_netdev_ops = {
->   	.ndo_get_stats64        = wx_get_stats64,
->   	.ndo_vlan_rx_add_vid    = wx_vlan_rx_add_vid,
->   	.ndo_vlan_rx_kill_vid   = wx_vlan_rx_kill_vid,
-> +	.ndo_eth_ioctl          = wx_ioctl,
->   };
-> 
-
-ioctl interface is deprecated for this case. Could you please use
-.ndo_hwtstamp_get and .ndo_hwtstamp_set for the new code?
-
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_adminq.c b/drivers/net/ethernet/intel/i40e/i40e_adminq.c
+index f73f5930fc58..175c1320c143 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_adminq.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_adminq.c
+@@ -1016,16 +1016,6 @@ i40e_asq_send_command_atomic_v2(struct i40e_hw *hw,
+ 	return status;
+ }
+ 
+-int
+-i40e_asq_send_command_v2(struct i40e_hw *hw, struct i40e_aq_desc *desc,
+-			 void *buff, /* can be NULL */ u16  buff_size,
+-			 struct i40e_asq_cmd_details *cmd_details,
+-			 enum i40e_admin_queue_err *aq_status)
+-{
+-	return i40e_asq_send_command_atomic_v2(hw, desc, buff, buff_size,
+-					       cmd_details, true, aq_status);
+-}
+-
+ /**
+  *  i40e_fill_default_direct_cmd_desc - AQ descriptor helper function
+  *  @desc:     pointer to the temp descriptor (non DMA mem)
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_prototype.h b/drivers/net/ethernet/intel/i40e/i40e_prototype.h
+index ccb8af472cd7..099bb8ab7d70 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_prototype.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_prototype.h
+@@ -27,13 +27,6 @@ i40e_asq_send_command(struct i40e_hw *hw, struct i40e_aq_desc *desc,
+ 		      void *buff, /* can be NULL */ u16  buff_size,
+ 		      struct i40e_asq_cmd_details *cmd_details);
+ int
+-i40e_asq_send_command_v2(struct i40e_hw *hw,
+-			 struct i40e_aq_desc *desc,
+-			 void *buff, /* can be NULL */
+-			 u16  buff_size,
+-			 struct i40e_asq_cmd_details *cmd_details,
+-			 enum i40e_admin_queue_err *aq_status);
+-int
+ i40e_asq_send_command_atomic(struct i40e_hw *hw, struct i40e_aq_desc *desc,
+ 			     void *buff, /* can be NULL */ u16  buff_size,
+ 			     struct i40e_asq_cmd_details *cmd_details,
+-- 
+2.47.1
 
