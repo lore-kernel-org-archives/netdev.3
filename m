@@ -1,184 +1,90 @@
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13022188587;
-	Thu,  2 Jan 2025 17:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF8317DE2D;
+	Thu,  2 Jan 2025 17:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735839474; cv=none; b=oFl/eFUP0bjwd5hhzJ9iabCZohRr2xRm0aT/A/BgS0Et8D2O9tmKKsiGzBUvoSwHEcxMf1rUH8p+OesWhey8hmOFMpmKoQ/yLoR5vs/5g2w/TAOvtwrZJmsiALSVqMooQryv7f77/I4ehp6AeH0NH0uY+OJZGN/e21UKSnEPPlo=
+	t=1735839609; cv=none; b=PmtGiDeI5HrRkearOCgGTt94comU28H3+vzicKmZTWu/Ek8fRqcfZRq+tIrTKBjU0IOoXdxHhTBzZQ6PmjhgHtTdPUzuP15kDXmENaH/kgZ5JLnIX7zMkW3Ds5Wsq8iYKJuA4gR/yEp7aK18nVylh0b+8BfNndqaB89kwVK7wKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735839474; c=relaxed/simple;
-	bh=xUjMR8E/oB7ectCizWxE8cp7aytblS1UCtWrZAqZ+U8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mU0OFP58OzL1JBBpm0rbtzBVt3pfbaifNaJwc+Oown64t6lA5mvo8hJUsXHjLk5IyMusTqmXxVRCplK6XyXuTv5f7kVD55yzjCyC/U17FRwILRjspkLkoFDCHW0MtfU/toDBJmEmL575DDcXs1zDtRmBdTOA5KNSVLUbF7fSPVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=G/wxJMXO; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+	s=arc-20240116; t=1735839609; c=relaxed/simple;
+	bh=LIvqTH+wl6w6hCR6IT1PddWop634LZbTE2mgDqO/5wg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ciR2XgXhZRYoLMNiXbHN+LPSZgoXIOFeG2h8Xhvj6Sa1mAevD6hafZ7yrYxDjZUfvIpMUI7I3PiORxrCNR8P3NAb0LC86MVMUYMHPg+A8hjOU6uG32EngeKh+yZc3yeKJVow2HlKsbfpHAe2gA79ar6YogPDa9n4NuuJIurEIsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=b/8fUCCj; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="G/wxJMXO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=7DIlELWgzNGvwf4ldWAU2dlgWl8Sx9HJfUGOtuYL0nc=; b=G/wxJMXOnwSiyXLm
-	/jhG9ErKR7SQM/1v/z4Sb9UOGec54mTBIhfqwXhb72NJw6WP4ZYli1i2O1yHtduJ884uXnF/lZYNK
-	TnOGmPrqrQzRyn2WJquxVVjDNpWi0mMjCFy1QSpPxu/ICyHuGqRLHY6Uoe42XjmvymVmFW1odUmy6
-	vIBaXVq6MhDP6LdDu8kVVC0aHAUpg+x3tGVNk2Qx9Bl6/veu8ADyCgZUXwrVCgSYkjfyzJ5tjCOcP
-	XjchSFfYT4jSXvyJx4vk+7Cm1fYjpUFSvIyD/KstGUNDL4SGn+mo+p+FPeRLTHfPa8tWQMYMZomPl
-	c4upQ6hKrIrbPv6UYw==;
-Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
-	by mx.treblig.org with esmtp (Exim 4.96)
-	(envelope-from <linux@treblig.org>)
-	id 1tTP8M-007tod-0P;
-	Thu, 02 Jan 2025 17:37:22 +0000
-From: linux@treblig.org
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH net-next 3/9] i40e: Remove unused i40e_(read|write)_phy_register
-Date: Thu,  2 Jan 2025 17:37:11 +0000
-Message-ID: <20250102173717.200359-4-linux@treblig.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250102173717.200359-1-linux@treblig.org>
-References: <20250102173717.200359-1-linux@treblig.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="b/8fUCCj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=vG8zV0iSeZ9UhdPoxEVXLWK29ZKO026Z7LJWnTAlLpM=; b=b/
+	8fUCCjlMcGxckrVRXP7R4mPJN45Hzlj76ZiryGW5LAZaghB1oWdRRTUfGyPrDoRs9w1tzh+us3Ixh
+	tXFzSQL5zdQizpxMRJpfNOJhflbWq6T9ZUjRwV/4w4SObuUY/sjJA3NuwnvbQ8I58LQ8rueBFvt5m
+	G5XEc03kuHrXhzQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tTPAd-000o0n-Ax; Thu, 02 Jan 2025 18:39:43 +0100
+Date: Thu, 2 Jan 2025 18:39:43 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: egyszeregy@freemail.hu
+Cc: fw@strlen.de, pablo@netfilter.org, lorenzo@kernel.org,
+	daniel@iogearbox.net, leitao@debian.org, amiculas@cisco.com,
+	kadlec@netfilter.org, davem@davemloft.net, dsahern@kernel.org,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v2] netfilter: uapi: Merge xt_*.h/c and ipt_*.h which has
+ same name.
+Message-ID: <6eab8f06-3f65-42cb-b42e-6ba13f209660@lunn.ch>
+References: <20250102172115.41626-1-egyszeregy@freemail.hu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250102172115.41626-1-egyszeregy@freemail.hu>
 
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
+On Thu, Jan 02, 2025 at 06:21:15PM +0100, egyszeregy@freemail.hu wrote:
+> From: Benjamin Szőke <egyszeregy@freemail.hu>
+> 
+> Merge and refactoring xt_*.h, xt_*.c and ipt_*.h files which has the same
+> name in upper and lower case format. Combining these modules should provide
+> some decent memory savings.
 
-i40e_read_phy_register() and i40e_write_phy_register() were added in
-2016 by
-commit f62ba91458b5 ("i40e: Add functions which apply correct PHY access
-method for read and write operation")
-
-but haven't been used.
-
-Remove them.
-
-(There are more specific _clause* variants of these functions
-that are still used.)
-
-Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
----
- drivers/net/ethernet/intel/i40e/i40e_common.c | 78 -------------------
- .../net/ethernet/intel/i40e/i40e_prototype.h  |  4 -
- 2 files changed, 82 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
-index ba780a949a47..6779e281a648 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_common.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
-@@ -4335,84 +4335,6 @@ int i40e_write_phy_register_clause45(struct i40e_hw *hw,
- 	return status;
- }
+Numbers please. We don't normally accept optimisations without some
+form of benchmark showing there is an improvement.
  
--/**
-- * i40e_write_phy_register
-- * @hw: pointer to the HW structure
-- * @page: registers page number
-- * @reg: register address in the page
-- * @phy_addr: PHY address on MDIO interface
-- * @value: PHY register value
-- *
-- * Writes value to specified PHY register
-- **/
--int i40e_write_phy_register(struct i40e_hw *hw,
--			    u8 page, u16 reg, u8 phy_addr, u16 value)
--{
--	int status;
--
--	switch (hw->device_id) {
--	case I40E_DEV_ID_1G_BASE_T_X722:
--		status = i40e_write_phy_register_clause22(hw, reg, phy_addr,
--							  value);
--		break;
--	case I40E_DEV_ID_1G_BASE_T_BC:
--	case I40E_DEV_ID_5G_BASE_T_BC:
--	case I40E_DEV_ID_10G_BASE_T:
--	case I40E_DEV_ID_10G_BASE_T4:
--	case I40E_DEV_ID_10G_BASE_T_BC:
--	case I40E_DEV_ID_10G_BASE_T_X722:
--	case I40E_DEV_ID_25G_B:
--	case I40E_DEV_ID_25G_SFP28:
--		status = i40e_write_phy_register_clause45(hw, page, reg,
--							  phy_addr, value);
--		break;
--	default:
--		status = -EIO;
--		break;
--	}
--
--	return status;
--}
--
--/**
-- * i40e_read_phy_register
-- * @hw: pointer to the HW structure
-- * @page: registers page number
-- * @reg: register address in the page
-- * @phy_addr: PHY address on MDIO interface
-- * @value: PHY register value
-- *
-- * Reads specified PHY register value
-- **/
--int i40e_read_phy_register(struct i40e_hw *hw,
--			   u8 page, u16 reg, u8 phy_addr, u16 *value)
--{
--	int status;
--
--	switch (hw->device_id) {
--	case I40E_DEV_ID_1G_BASE_T_X722:
--		status = i40e_read_phy_register_clause22(hw, reg, phy_addr,
--							 value);
--		break;
--	case I40E_DEV_ID_1G_BASE_T_BC:
--	case I40E_DEV_ID_5G_BASE_T_BC:
--	case I40E_DEV_ID_10G_BASE_T:
--	case I40E_DEV_ID_10G_BASE_T4:
--	case I40E_DEV_ID_10G_BASE_T_BC:
--	case I40E_DEV_ID_10G_BASE_T_X722:
--	case I40E_DEV_ID_25G_B:
--	case I40E_DEV_ID_25G_SFP28:
--		status = i40e_read_phy_register_clause45(hw, page, reg,
--							 phy_addr, value);
--		break;
--	default:
--		status = -EIO;
--		break;
--	}
--
--	return status;
--}
--
- /**
-  * i40e_get_phy_address
-  * @hw: pointer to the HW structure
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_prototype.h b/drivers/net/ethernet/intel/i40e/i40e_prototype.h
-index c0a4bd53501c..bfebe18c0041 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_prototype.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_prototype.h
-@@ -439,10 +439,6 @@ int i40e_read_phy_register_clause45(struct i40e_hw *hw,
- 				    u8 page, u16 reg, u8 phy_addr, u16 *value);
- int i40e_write_phy_register_clause45(struct i40e_hw *hw,
- 				     u8 page, u16 reg, u8 phy_addr, u16 value);
--int i40e_read_phy_register(struct i40e_hw *hw, u8 page, u16 reg,
--			   u8 phy_addr, u16 *value);
--int i40e_write_phy_register(struct i40e_hw *hw, u8 page, u16 reg,
--			    u8 phy_addr, u16 value);
- u8 i40e_get_phy_address(struct i40e_hw *hw, u8 dev_num);
- int i40e_aq_write_ddp(struct i40e_hw *hw, void *buff,
- 		      u16 buff_size, u32 track_id,
--- 
-2.47.1
+> The goal is to fix Linux repository for case-insensitive filesystem,
+> to able to clone it and editable on any operating systems.
 
+This needs a much stronger argument, since as i already pointed out,
+how many case-insenstive file systems are still in use? Please give
+real world examples of why this matters.
+
+>  delete mode 100644 include/uapi/linux/netfilter/xt_CONNMARK.h
+>  delete mode 100644 include/uapi/linux/netfilter/xt_DSCP.h
+>  delete mode 100644 include/uapi/linux/netfilter/xt_MARK.h
+>  delete mode 100644 include/uapi/linux/netfilter/xt_RATEEST.h
+>  delete mode 100644 include/uapi/linux/netfilter/xt_TCPMSS.h
+>  delete mode 100644 include/uapi/linux/netfilter_ipv4/ipt_ECN.h
+>  delete mode 100644 include/uapi/linux/netfilter_ipv4/ipt_TTL.h
+>  delete mode 100644 include/uapi/linux/netfilter_ipv6/ip6t_HL.h
+
+How did you verify that there is no user space code using these
+includes?
+
+We take ABI very seriously. You cannot break user space code.
+
+    Andrew
+
+---
+pw-bot: cr
