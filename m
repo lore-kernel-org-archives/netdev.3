@@ -1,38 +1,45 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188613FE4;
-	Thu,  2 Jan 2025 12:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8472944E
+	for <netdev@vger.kernel.org>; Thu,  2 Jan 2025 12:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735820620; cv=none; b=SLAMCZ+isEm5BJHqNy56Ea2tj89PvqY9ODInSSYbvUzjpHykKDZRBsjv/dGnr3Uu/j2HjBngGVLbhpj9RG39+E0kKs0bIKfdNpRaNrxhnP046m65MhdLK6M9DUn/WQ+VCCF22Vp6VJCGTCacMQqHFFpYBxxo1ews0IdyyQR488c=
+	t=1735821156; cv=none; b=kxOC2tEz73/w3N4i3prrPYy0jBlBm6WZHOgfVwgy3Xn3fVR+G9/odnK3yF3ZBFEE3D/68w5TpH3wi4NNHqwAipynvIaAlGiCsVuqD+OeaXOWmWimV3Oy99Af/du8dMPEPpXomcoZBGUpigGKbHfAO6hJvjVd4E1kOPIUv7UF5b4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735820620; c=relaxed/simple;
-	bh=jObhsrXukEY0InkVG5HE4HXWGj75fWaFAEOY1PptTgE=;
+	s=arc-20240116; t=1735821156; c=relaxed/simple;
+	bh=MzV4F5nhygRTD4nOv9UuNlnNuLi+wVJpdUo2sM6rDLE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oY53K5d5g/Gsj+Os9dqb2j5swuHkaepHmc+bss2DHYOelhLKnD6RG9pboslyCaphe7y1zXjupzmxocdzZr9AX3us0OXu/GCgQsZwoKzLTXsyzwwc49ILjtBq/ovac5sNc/t1DR44pjOMFBan9OId73s7p6XuNbNmxoui6ClB1/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
-	(envelope-from <fw@strlen.de>)
-	id 1tTKEN-0000sJ-2i; Thu, 02 Jan 2025 13:23:15 +0100
-Date: Thu, 2 Jan 2025 13:23:15 +0100
-From: Florian Westphal <fw@strlen.de>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Florian Westphal <fw@strlen.de>, egyszeregy@freemail.hu,
-	pablo@netfilter.org, lorenzo@kernel.org, daniel@iogearbox.net,
-	leitao@debian.org, amiculas@cisco.com, kadlec@netfilter.org,
-	davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] netfilter: uapi: Merge xt_*.h/c and ipt_*.h which has
- same name.
-Message-ID: <20250102122315.GA3344@breakpoint.cc>
-References: <20250101192015.1577-1-egyszeregy@freemail.hu>
- <20250101224644.GA18527@breakpoint.cc>
- <20250102075502.3b8fbc95@dsl-u17-10>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tv+mIQeJCYFVjcyLqi6nnEYeoGVf1hkd5RRGuSKtW6zTIIaR70l3hFWkYlfBY/Wv6p5V9JntxoVftYENR4r4KzvocPXw1AztmQ5NP4cNrXePXSSE+JGOf57XHO5fwcv37O0RxX7meEbaW/jTiYXL+BrzdvmvlS5ufzmn3kuBgBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.98)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1tTKNI-000000007GL-0FWk;
+	Thu, 02 Jan 2025 12:32:28 +0000
+Date: Thu, 2 Jan 2025 12:32:17 +0000
+From: Daniel Golle <daniel@makrotopia.org>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Eric Woudstra <ericwouds@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexander Couzens <lynxis@fe80.eu>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net-next 2/3] net: pcs: pcs-mtk-lynxi: implement
+ pcs_inband_caps() method
+Message-ID: <Z3aHUYOxCEGf9S_H@pidgin.makrotopia.org>
+References: <Z1F1b8eh8s8T627j@shell.armlinux.org.uk>
+ <E1tJ8NR-006L5P-E3@rmk-PC.armlinux.org.uk>
+ <e1e271e3-b684-46d2-879d-e3481d25a712@gmail.com>
+ <Z3ZVYeT0vD85Srsd@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,22 +48,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250102075502.3b8fbc95@dsl-u17-10>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <Z3ZVYeT0vD85Srsd@shell.armlinux.org.uk>
 
-David Laight <david.laight.linux@gmail.com> wrote:
-> On Wed, 1 Jan 2025 23:46:44 +0100
-> Florian Westphal <fw@strlen.de> wrote:
-> 
-> > egyszeregy@freemail.hu <egyszeregy@freemail.hu> wrote:
-> > >  /* match info */
-> > > -struct xt_dscp_info {
-> > > +struct xt_dscp_match_info {  
+On Thu, Jan 02, 2025 at 08:59:13AM +0000, Russell King (Oracle) wrote:
+> On Tue, Dec 17, 2024 at 08:49:58AM +0100, Eric Woudstra wrote:
+> > On 12/5/24 10:42 AM, Russell King (Oracle) wrote:
+> > > Report the PCS in-band capabilities to phylink for the LynxI PCS.
+> > > 
+> > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > > Reviewed-by: Daniel Golle <daniel@makrotopia.org>
+> > > ---
+> > >  drivers/net/pcs/pcs-mtk-lynxi.c | 16 ++++++++++++++++
+> > >  1 file changed, 16 insertions(+)
+> > > 
+> > > diff --git a/drivers/net/pcs/pcs-mtk-lynxi.c b/drivers/net/pcs/pcs-mtk-lynxi.c
+> > > index 4f63abe638c4..7de804535229 100644
+> > > --- a/drivers/net/pcs/pcs-mtk-lynxi.c
+> > > +++ b/drivers/net/pcs/pcs-mtk-lynxi.c
+> > > @@ -88,6 +88,21 @@ static struct mtk_pcs_lynxi *pcs_to_mtk_pcs_lynxi(struct phylink_pcs *pcs)
+> > >  	return container_of(pcs, struct mtk_pcs_lynxi, pcs);
+> > >  }
+> > >  
+> > > +static unsigned int mtk_pcs_lynxi_inband_caps(struct phylink_pcs *pcs,
+> > > +					      phy_interface_t interface)
+> > > +{
+> > > +	switch (interface) {
+> > > +	case PHY_INTERFACE_MODE_1000BASEX:
+> > > +	case PHY_INTERFACE_MODE_2500BASEX:
 > > 
-> > To add to what Jan already pointed out, such renames
-> > break UAPI, please don't do this.
+> > Isn't this the place now where to report to phylink, that this PCS does
+> > not support in-band at 2500base-x?
 > 
-> Doesn't the header file rename also break UAPI?
+> No - look at the arguments to this function. What arguments would this
+> function make a decision whether in-band is supported in any interface
+> mode?
+> 
+> The correct place is the .pcs_inband_caps(), which from reading the
+> code, I understood that in-band can be used at 2500base-X with this
+> PCS. See
+> https://patch.msgid.link/E1tJ8NR-006L5P-E3@rmk-PC.armlinux.org.uk
+> which was merged at the beginning of December, and if you are correct,
+> the patch was wrong.
 
-Sure, thats what Jan already pointed out, plus a suggestion
-on how to do this correctly.
+Yes, that patch was wrong. Neither is QSGMII supported at all by the
+LynxI hardware, nor can in-band-status be used in 2500Base-X mode.
+I will send a patch to fix that.
+
