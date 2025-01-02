@@ -1,152 +1,119 @@
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.13])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C4D125D6
-	for <netdev@vger.kernel.org>; Thu,  2 Jan 2025 10:21:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735813314; cv=pass; b=Rr3VGNsQTCOM2SCW+ekkGVQRg5TElcmW7f+I1DSfr+/V+ibB1VY7SO8r295J6Rjrgbuyouc2xLzMAAiFUJir3Ftqq/C6+twfkt3DrnimsTdBRUMTTcaIoR/+LO8n2FqK0XoXAh8sv/wGlbykxOC66oBJCqrI8fqq8P4TJdcdT4I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735813314; c=relaxed/simple;
-	bh=ddQggaBUrIoq2iXDgGAYv5PKccyzP4WT2pX+n0sFHdY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UUeCCCwRLwbnROdG4qKFRmx0C1wMn2btW9uhwc+DYMChjSuBuZvLXqxKTm09a+iWfE1yY+k3kk0L7taVfzDVDiBP/rBgYE8g+mm4SjPQjbxrBVy2/Su+LA99oMkEwuwn9wDaiTYCxMkj8RUOLvLUY0zQiXDj05pd3Qpcij2YQeg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=BDHw4tXv; arc=pass smtp.client-ip=185.56.87.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C845B2CA9
+	for <netdev@vger.kernel.org>; Thu,  2 Jan 2025 10:32:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1735813936; cv=none; b=fliRYxPRJeeXpcLfULW6+3Z7I48eNDVB21rJ54nAWyQMSHYINFEMPm43blDCJzIxbQ+Ge5NXOU4MC9gwVwM7JJSh3Wrl4/Qsi+LG/yckJnzbBf9+N4bOrJQsAIiezZ9FQpqO7DMlhXZ5ogrMQkAdY5e0kdeE8hw2NmRm/7lsuL4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1735813936; c=relaxed/simple;
+	bh=Sz66eLaZigTRLwrcnmmv0vAKUE3HaoCb02eF1gC7bco=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bcsexx5eP2Dj4N7SnEHVZ4Tf1zRbZx/Qps4sOvzcJDGKQcRBbL6u4u44bAfrXGw5inQG6pWYUBr9Wj8VuFydIuryNfVotPR+g0YIMcNwDq+wbwmXkQWKIlfNvvOdtMCF2bzYIoHUOy8+oqlJthfke/yFOpt5cBtsjcyK/7aNJRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=UT96O4/H; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="BDHw4tXv"
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=instance-europe-west4-jwcv.prod.antispam.mailspamprotection.com; s=arckey; t=1735813311;
-	 b=EZadLLB1gUbAqb+WiuPeVebtfWDKx7jIaLbS30PFJq1uggwYuDvAoHj1Xs85lDFaPt51otzxf8
-	  Jnr5SiLmUv9JiChXyQq+hX4pokm/ZSJv0FCCtdiqAoAd8pBVZePX6A4EkZr1mlMn3fFkFDhQkE
-	  LejfESD+F7rKeC9dcrT5Nd8uOAaJPdQqv1P+yN9HLJVeTuMAdnAOmPUrUsX+NVZmT8VSZv1WTZ
-	  7pBq5Nn/sry1FUtPxf+UC4BxIVZsxG6rYFvDUi+AaN98Idjrvi03EbYOw+ZcAwyOEXGmp5YFfg
-	  LPwD5SpadRo4MTmzQchrOfjOnKLfCcUa/JYzO8rzWv55XQ==;
-ARC-Authentication-Results: i=1; instance-europe-west4-jwcv.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=instance-europe-west4-jwcv.prod.antispam.mailspamprotection.com; s=arckey; t=1735813311;
-	bh=ddQggaBUrIoq2iXDgGAYv5PKccyzP4WT2pX+n0sFHdY=;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	  Message-ID:Date:Subject:Cc:To:From:DKIM-Signature;
-	b=SCR8Yr6H0l0ZTbQfrhnQCM5g7R66EF5YmTte/DcbS5vx1oZ39yMdD7fe8nqNwjzNRSI65NpP2w
-	  j+OG7X7B+GGKN1xNuZpsVcq96Bui02WHnI1O9aEhrMPmMMr1YKAsYNft3wymXOL5kFYdiLfdOP
-	  PKNXBnoSdBZ3t7iLMZH6+ypArTazpAEEPooaSZtLZvkUqxYC6OLNO7qE+Sk1v4cyT5PV7z2Ufn
-	  CbZ7R55gC1jwMHMdNtajVirUKStKzdvRbgVZFvNLWdlI02RpVUHIx1YjS9CCqhN5CCk/NeB7pC
-	  emWvNiEN09GKQRXTbSChIqDphkL+TLXFr/Wgl8n51AGmSQ==;
-Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-jwcv.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98)
-	(envelope-from <francesco@valla.it>)
-	id 1tTIKj-00000003xaU-33nQ
-	for netdev@vger.kernel.org;
-	Thu, 02 Jan 2025 10:21:43 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
-	s=default; h=Date:Subject:Cc:To:From:list-help:list-unsubscribe:
-	list-subscribe:list-post:list-owner:list-archive;
-	bh=RWehvsqxatKsF85L2FEj68SM7Yahzg+1xC89M9swkoY=; b=BDHw4tXvdVUu50q/bxEy7LDGcP
-	koqDuJuXrmQPrm7On5WUfpHGiodUmnkO9GuQ6SBTvA1zCxbn86ddJsfwD8nz7bDQtRKcLAyf1fbSA
-	7jRQyAAHxsBuGmbHRJZev62lLoQ2VUIn3bqpjfg6fDj/EoJblA2xc119gVMY0RWr5Dgk=;
-Received: from [87.11.41.26] (port=59993 helo=fedora.fritz.box)
-	by esm19.siteground.biz with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98)
-	(envelope-from <francesco@valla.it>)
-	id 1tTIKe-00000000MPZ-2jRQ;
-	Thu, 02 Jan 2025 10:21:36 +0000
-From: Francesco Valla <francesco@valla.it>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, Suman Ghosh <sumang@marvell.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Russell King <linux@armlinux.org.uk>
-Subject:
- Re: [EXTERNAL] [PATCH] net: phy: don't issue a module request if a driver is
- available
-Date: Thu, 02 Jan 2025 11:21:36 +0100
-Message-ID: <4771715.vXUDI8C0e8@fedora.fritz.box>
-In-Reply-To:
- <SJ0PR18MB5216590A9FD664CF63993E95DB142@SJ0PR18MB5216.namprd18.prod.outlook.com>
-References:
- <20250101235122.704012-1-francesco@valla.it>
- <SJ0PR18MB5216590A9FD664CF63993E95DB142@SJ0PR18MB5216.namprd18.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="UT96O4/H"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=/z4Gm45a8EMmHxnDCh9miyxEAtSOON+rPQZopY3zPAA=; b=UT96O4/HJv2Hg3Au3iV9DHGZ37
+	PCdeafEsnaT4T43L6/h2klNzY+BLNm3yWukJqt9MmRRb1KWcvJR9Ju7t/vNp0uylQezZcOknKmeIs
+	6cXzdz4EYhCiaRLwkKfF6+E5Nw7cNG5IUgumtTHiBPryZLttLbBKvubqHuqVJKavgQnA1fPIzw6QO
+	59/IGQriPCkQx7bNSewWUGy9IrloO5E+csjeJ4q3x26qy/ndy4CwYq0sI+T7adnyP6Fj5Hv7B4FYw
+	MzUM5ZTgXF5tt5jg5qaE71F6eTQ8CDqPnJ1/5EjST4S4R/IJwQel3bfOO2QuN9Qj/N8McQncz0svD
+	iLaA2mZQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:59420)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tTIUm-0001sQ-34;
+	Thu, 02 Jan 2025 10:32:05 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tTIUh-0000C3-0s;
+	Thu, 02 Jan 2025 10:31:59 +0000
+Date: Thu, 2 Jan 2025 10:31:59 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Tobias Waldekranz <tobias@waldekranz.com>
+Cc: davem@davemloft.net, kuba@kernel.org, andrew@lunn.ch,
+	f.fainelli@gmail.com, olteanv@gmail.com, netdev@vger.kernel.org,
+	chris.packham@alliedtelesis.co.nz, pabeni@redhat.com
+Subject: Re: [PATCH v2 net 3/4] net: dsa: mv88e6xxx: Never force link on
+ in-band managed MACs
+Message-ID: <Z3ZrH9yqtvu2-W7f@shell.armlinux.org.uk>
+References: <20241219123106.730032-1-tobias@waldekranz.com>
+ <20241219123106.730032-4-tobias@waldekranz.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - esm19.siteground.biz
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - valla.it
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-SGantispam-id: 0f1ae3a7698d30643e14a2239f46a688
-AntiSpam-DLS: false
-AntiSpam-DLSP: 
-AntiSpam-DLSRS: 
-AntiSpam-TS: 1.0
-Authentication-Results: instance-europe-west4-jwcv.prod.antispam.mailspamprotection.com;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241219123106.730032-4-tobias@waldekranz.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi Suman,
-
-On Thursday, 2 January 2025 at 10:35:40 Suman Ghosh <sumang@marvell.com> wrote:
-> > 	mutex_init(&dev->lock);
-> > 	INIT_DELAYED_WORK(&dev->state_queue, phy_state_machine);
-> >
-> >-	/* Request the appropriate module unconditionally; don't
-> >-	 * bother trying to do so only if it isn't already loaded,
-> >-	 * because that gets complicated. A hotplug event would have
-> >-	 * done an unconditional modprobe anyway.
-> >-	 * We don't do normal hotplug because it won't work for MDIO
-> >+	/* We don't do normal hotplug because it won't work for MDIO
-> > 	 * -- because it relies on the device staying around for long
-> > 	 * enough for the driver to get loaded. With MDIO, the NIC
-> > 	 * driver will get bored and give up as soon as it finds that @@ -
-> >724,7 +745,8 @@ struct phy_device *phy_device_create(struct mii_bus
-> >*bus, int addr, u32 phy_id,
-> > 		int i;
-> >
-> > 		for (i = 1; i < num_ids; i++) {
-> >-			if (c45_ids->device_ids[i] == 0xffffffff)
-> >+			if (c45_ids->device_ids[i] == 0xffffffff ||
-> >+			    phy_driver_exists(c45_ids->device_ids[i]))
-> > 				continue;
-> >
-> > 			ret = phy_request_driver_module(dev, @@ -732,7 +754,7 @@
-> >struct phy_device *phy_device_create(struct mii_bus *bus, int addr, u32
-> >phy_id,
-> > 			if (ret)
-> > 				break;
-> > 		}
-> >-	} else {
-> >+	} else if (!phy_driver_exists(phy_id)) {
-> [Suman] Can we add this phy_driver_exists() API call before the if/else check?
+On Thu, Dec 19, 2024 at 01:30:42PM +0100, Tobias Waldekranz wrote:
+> NOTE: This issue was addressed in the referenced commit, but a
+> conservative approach was chosen, where only 6095, 6097 and 6185 got
+> the fix.
 > 
-
-Not really, as in case of C45 PHYs we have to check for drivers using (multiple)
-IDs, which are different from phy_id.
-
-> > 		ret = phy_request_driver_module(dev, phy_id);
-> > 	}
-> >
+> Before the referenced commit, in the following setup, when the PHY
+> detected loss of link on the MDI, mv88e6xxx would force the MAC
+> down. If the MDI-side link was then re-established later on, there was
+> no longer any MII link over which the PHY could communicate that
+> information back to the MAC.
 > 
+>         .-SGMII/USXGMII
+>         |
+> .-----. v .-----.   .--------------.
+> | MAC +---+ PHY +---+ MDI (Cu/SFP) |
+> '-----'   '-----'   '--------------'
+> 
+> Since this a generic problem on all MACs connected to a SERDES - which
+> is the only time when in-band-status is used - move all chips to a
+> common mv88e6xxx_port_sync_link() implementation which avoids forcing
+> links on _all_ in-band managed ports.
+> 
+> Fixes: 4efe76629036 ("net: dsa: mv88e6xxx: Don't force link when using in-band-status")
+> Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
 
+I'm feeling uneasy about this change.
 
-Thank you!
+The history of the patch you refer to is - original v1:
 
-Regards,
-Francesco
+https://lore.kernel.org/r/20201013021858.20530-2-chris.packham@alliedtelesis.co.nz
 
+When v3 was submitted, it was unchanged:
 
+https://lore.kernel.org/r/20201020034558.19438-2-chris.packham@alliedtelesis.co.nz
 
+Both of these applied the in-band-status thing to all Marvell DSA
+switches, but as Marek states here:
 
+https://lore.kernel.org/r/20201020165115.3ecfd601@nic.cz
+
+doing so breaks last least one Marvell DSA switch (88E6390). Hence why
+this approach is taken, rather than not forcing the link status on all
+DSA switches.
+
+Your patch appears to be reverting us back to what was effectively in
+Chris' v1 patch from back then, so I don't think we can accept this
+change. Sorry.
+
+If you have a switch that needs your change, then I think you also need
+to adopt the "conservative" approach and only fix the switch you're
+working with - short of someone going through all the Marvell DSA
+switch datasheets or testing on real hardware, I don't think it's a
+good idea to change the behaviour of all Marvell switches like this.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
