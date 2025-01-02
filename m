@@ -1,102 +1,84 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B171D189B8D;
-	Thu,  2 Jan 2025 15:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2061B3944;
+	Thu,  2 Jan 2025 15:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735832561; cv=none; b=FWX9v5hhwiKvE695NtYPUe9lSI2cMhPbmCCWJLZIWoWdcqIPxeE64DHLg1jUi5ocG6cdS8spwN+P/GcmjsDGm8ebTtpApLAKctDx6NZhdeUwC1o3YZVnltkWFstqoIyZj4X6sjfhicmIcULbIywCnKpfhI33TGBgabgPI7cdKZg=
+	t=1735832760; cv=none; b=d+BRTpQEe5gkR6MxdosVXdFnRwC/S5/jtaphxIeY1qiyVjEFdwOyoICvbdcI0oVv0tAKMahQkzhmlJj5Wncj/6HDSFvTIbDcIGDmlpbbLdnfHakSqzCHyhQ56cMtvi+eY3A8wrI9DC8p0+W3vWqtLd2hWj/oZ1cpqa9TC7YbCj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735832561; c=relaxed/simple;
-	bh=nEZ3dqLnKDtRAh/9N7EcCdJaU8kaWy34Nl+Kw/1gmZ0=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IH75XCWB9+JL2bxL8ILlY059mir2AJCilSrNI6Nc5nvSePqzvEoSB3waRyZjsOXdljiHAuKSc0zFZj5+05NFFnJ3oaKJewctvBeCpm3Mk+AkNC977eXDhuI6/5DOkBTTC7E6A4had2Amvq5AQMxs+bnPUMvahi1ohkvZEIHDMIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YP9Ql5g1Jz6M4yn;
-	Thu,  2 Jan 2025 23:21:19 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id AFC4B1401F3;
-	Thu,  2 Jan 2025 23:22:45 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 2 Jan
- 2025 16:22:45 +0100
-Date: Thu, 2 Jan 2025 15:22:43 +0000
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: <alejandro.lucero-palau@amd.com>
-CC: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<dan.j.williams@intel.com>, <edward.cree@amd.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>,
-	<dave.jiang@intel.com>, Alejandro Lucero <alucerop@amd.com>
-Subject: Re: [PATCH v9 22/27] cxl: allow region creation by type2 drivers
-Message-ID: <20250102152243.00006b59@huawei.com>
-In-Reply-To: <20241230214445.27602-23-alejandro.lucero-palau@amd.com>
-References: <20241230214445.27602-1-alejandro.lucero-palau@amd.com>
-	<20241230214445.27602-23-alejandro.lucero-palau@amd.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1735832760; c=relaxed/simple;
+	bh=Gt9IgQcdS6zTtWyLM76yOke5d3ktR6jtS0PEnFYEGhk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IKYZZZiVDqtko/MdoHbouoM9Nh0U6Yn5Idzz1dyz8gf3tFFe14JGr2QzZv2hmzqVSnVKsXxBDaGwJcyxEx7mWTc8iOJqaGTAKxt6gca3gu8bwQgAJHVt5eJjC/hGe1UQ/0/toBYxjHHIjl38OEtJwzbQRsr227QeCIQONy5FT0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aa6a92f863cso1936283366b.1;
+        Thu, 02 Jan 2025 07:45:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735832756; x=1736437556;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h2g0ivZyP4Gq3elbBwKgtWXwEWLwxdsNB8Grs3eMANo=;
+        b=E/UmTHqmunWD5mgrCEqRL4Qo7UMv3IaAXGGMZHlXftcUfWo+J9XBZllAR0w0fI3EBI
+         2zmLsenR+PrFwdx8PoWNfNyWCkI+cdkvsEnWrRVu9XgZ5s2B8N23CWUpgKlz54QGlcGq
+         V7qg1qs4T/0t0BpKAQ3CCSPd6bbJghv6GfkvFNNOwI+RR9a/FV6DJ+7XX8rSoMtfoVoB
+         iOD6hWHrwTiDo16JZB9XhxjQOK3NSti7TToVO9Yj66pNErbBkdlFLGS0hI4CQX3R3XRl
+         fEBSpGaqovFdXyLGIthQND689rzPbk4ln854M8lUdWnOn8pilsv5hfPjMHfrfH6+ZsGe
+         FT/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVcO7dSqGJfmS3VKiOf76lRC71IW63qt4PAEijjkAc57p+/nMLrR1WhTr5a13+xc3IvThXovOrcx22/OVM=@vger.kernel.org, AJvYcCXwCGIPj9bPfKl/b3Ih5QtscWkm/26LLqM4a20IWH+XUtyeIG8IO0KASC4LsPcIaRVVMb2OHoBQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqX/+IdZOwRjWfBvMQzSs8amqDGeRSD5zBLV+Z4uSqeqJ05q1V
+	I3SNEt2HdfIEHAQ7+E5Ga41EGgsfGSP8nXu1RXquFB3n1Xsbx4yoiJz7AQ==
+X-Gm-Gg: ASbGncvs2Eff/HEnYK0v1eyEzCzr7CAKlbvB7591Hwe1tTsVjbeWFY3J8C1ItQC1Ifn
+	Jh7NUAE4gxD007nMNHIF/yvId+Hir6752qqcN8abfKX4NpUBk4BruU6rSE4+s26pFEUnL8cdIO7
+	wQVNlpv62RCXm5NTvWradCaIosZu2JFLnrEThxJshxrE54SxAZy6ywJJp2L+klCDpkz7kZXtUq2
+	O9N5MSkoIHgbHv7fOFG1+7rkZtm4BesgERPDINKxSEYT0EI
+X-Google-Smtp-Source: AGHT+IF9Opy0LyTeLf+WcovwqPhZVqY0yducz1jeXl63C6Qhux/jKU7KQXgPiT1DvlqzIjf2tKzdQQ==
+X-Received: by 2002:a17:907:961f:b0:aa6:abe2:5cba with SMTP id a640c23a62f3a-aac27026cfemr4744580766b.2.1735832755949;
+        Thu, 02 Jan 2025 07:45:55 -0800 (PST)
+Received: from gmail.com ([2a03:2880:30ff:70::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0f06629esm1800682366b.189.2025.01.02.07.45.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jan 2025 07:45:55 -0800 (PST)
+Date: Thu, 2 Jan 2025 07:45:53 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Tejun Heo <tj@kernel.org>, kernel test robot <oliver.sang@intel.com>,
+	oe-lkp@lists.linux.dev, lkp@intel.com, linux-crypto@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [herbert-cryptodev-2.6:master] [rhashtable]  e1d3422c95:
+ stress-ng.syscall.ops_per_sec 98.9% regression
+Message-ID: <20250102-bizarre-griffin-of-attraction-c1f728@leitao>
+References: <202412271017.cad7675-lkp@intel.com>
+ <Z3HTN1gvVE9tfa4Y@slm.duckdns.org>
+ <Z3XndzXUa9KYYz9f@gondor.apana.org.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z3XndzXUa9KYYz9f@gondor.apana.org.au>
 
-On Mon, 30 Dec 2024 21:44:40 +0000
-alejandro.lucero-palau@amd.com wrote:
-
-> From: Alejandro Lucero <alucerop@amd.com>
+On Thu, Jan 02, 2025 at 09:10:15AM +0800, Herbert Xu wrote:
+> On Sun, Dec 29, 2024 at 12:54:47PM -1000, Tejun Heo wrote:
+> >
+> > Hmm... the only meaningful behavior difference would be that after the
+> > patch, rht_grow_above_75() test is done regardless of the return value while
+> > before it was done only when the return value is zero. Breno, can you please
+> > look into whether this report is valid and whether restoring the NULL check
+> > makes it go away?
 > 
-> Creating a CXL region requires userspace intervention through the cxl
-> sysfs files. Type2 support should allow accelerator drivers to create
-> such cxl region from kernel code.
-> 
-> Adding that functionality and integrating it with current support for
-> memory expanders.
-> 
-> Based on https://lore.kernel.org/linux-cxl/168592159835.1948938.1647215579839222774.stgit@dwillia2-xfh.jf.intel.com/
-> 
-> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
-> Co-developed-by: Dan Williams <dan.j.williams@intel.com>
-> Reviewed-by: Zhi Wang <zhiw@nvidia.com>
+> Actually I fixed that when committing the patch.  It should be
+> conditional on whether the insertion succeeds or not.
 
-Trivial comment inline. Either way
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Thanks.
 
-> ---
->  drivers/cxl/core/region.c | 145 ++++++++++++++++++++++++++++++++++----
->  drivers/cxl/cxlmem.h      |   2 +
->  drivers/cxl/port.c        |   5 +-
->  include/cxl/cxl.h         |   4 ++
->  4 files changed, 141 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> index 1b1d45c44b52..a2b92162edbd 100644
-> --- a/drivers/cxl/core/region.c
-> +++ b/drivers/cxl/core/region.c
-> @@ -2270,6 +2270,18 @@ static int cxl_region_detach(struct cxl_endpoint_decoder *cxled)
->  	return rc;
->  }
->  
-> +int cxl_accel_region_detach(struct cxl_endpoint_decoder *cxled)
-> +{
-> +	int rc;
-> +
-> +	down_write(&cxl_region_rwsem);
+I am finally back from vacation. I will try to reproduce the issue
+reported in this report, and double-check the regression.
 
-Could use a guard here so you can return directly.
-
-> +	cxled->mode = CXL_DECODER_DEAD;
-> +	rc = cxl_region_detach(cxled);
-> +	up_write(&cxl_region_rwsem);
-> +	return rc;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_accel_region_detach, "CXL");
-
-
+--breno
