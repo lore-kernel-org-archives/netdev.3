@@ -1,181 +1,205 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from alln-iport-8.cisco.com (alln-iport-8.cisco.com [173.37.142.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11DD13CF82
-	for <netdev@vger.kernel.org>; Thu,  2 Jan 2025 22:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868278F7D
+	for <netdev@vger.kernel.org>; Thu,  2 Jan 2025 22:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.142.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735855374; cv=none; b=HMuyHQOtGlGc6WVlby5e/THSJXCPzMGJRjakORRnLCdeb8qHDEieXmB3DcppP84DGxG58B1iL1wK39okkS+4MOCaFEmI1EZbDjAqKwy/pLBgfzIzesiKdlNm/kQQiqbn3xsS6m6BLKB47FGZk33o3T1tXx2+jt2AK+whQIM01ak=
+	t=1735856721; cv=none; b=aHBbmbrTiANsB46XubtSksOowlPEfUtzGangyZC5Dlaidg+jC93IaNr1/jWQt93WnanaVO18D01gQ3wuAKLmwI0opVZD6E1I2ZN7S7zqoqEhBAhWBodvBoqqeE2fRayJCTmP2rD29wBjOjlnUNG6rNE4+Yi1x8hbRRnX4DNMhnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735855374; c=relaxed/simple;
-	bh=SmDWOWTF4hdBe8hr4Ra9W/oom3mIAnmvG02pf9hOiJg=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mEfFKO9XVx00JbcnGvq0E5o5OEKc8BAdb0QNv5ByIJrDO5jECF1PbwfqWihcRAr8N6GFHLIdAy3AuIhGngMXsj22OQWFEq8ogQ+ixyINyyw7aAt3WbcZEwwCg8CZDmsXT5wQgXvlkyMF59PJq38aneybAF3MJIH6OSXYwN2M4SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Qyy2Ezke; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1735856721; c=relaxed/simple;
+	bh=NuqZEEZYpyP7CXsdCdrvAvNGYHjuVQ4ARqCZDeRC1V0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=lxfKMgMWuDNWXzS5enI+4QTtRFJ845K0USqzCs1wxzix5LZ0leL8qsb+88Lp0ihytSpEhJgqr7akL2E9RWehXKcCokKJlEo1HERfCLurY70xcPXkPQF9Tv3CKkMtIz9ET3KkiiijO36F3lYs2lDWnGJ1+K1jhiptwfdByPNxFAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b=jpFgAq9m; arc=none smtp.client-ip=173.37.142.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Qyy2Ezke"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=flhDoTWszixGfZPN6AOG1Kbft1s/lql3hbGGxPrleY8=; b=Qyy2EzkeztfaArvMkfHife79Ug
-	9mQxwcT2GZuEs9PnDjVTD4WeTUQJCrRpPLvtvgYR19N+827e2vvXLvaLiV4etpXf/AYhSeE6bb/oz
-	YSQP7e3uiC9+62RHteTzoLkBq3S6NeeTMku8Fgxbg0C+6XwfGUMQWC6PMmiw1P74J4G+Y9/PhTLrT
-	oA73aILo0VoMwypPccrltiS0J4qmszRBCr2wYbir7YCiU6FU8gqkmlRB2lgGzMEt3Rj7htCV/Iz43
-	hei0v+MieMRXrRU/BJ7k7yqTpbCyHqos1rQ6+yAK3luur6S1DaFLurb0G/SdPh0CsB+r0Knuglo8X
-	nAJ3p0bw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:49174)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tTTH5-0002Qh-0q;
-	Thu, 02 Jan 2025 22:02:39 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tTTH1-0000e4-0k;
-	Thu, 02 Jan 2025 22:02:35 +0000
-Date: Thu, 2 Jan 2025 22:02:35 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Jose Abreu <joabreu@synopsys.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next 2/7] net: stmmac: move tx_lpi_timer tracking to
- phylib
-Message-ID: <Z3cM-5tShVza0M58@shell.armlinux.org.uk>
-References: <Z1r3MWZOt36SgGxf@shell.armlinux.org.uk>
- <E1tLkSX-006qfS-Rx@rmk-PC.armlinux.org.uk>
- <Z1wTqh-BnvPYLqU8@shell.armlinux.org.uk>
- <Z1yTviYUZ8sbNOsK@shell.armlinux.org.uk>
+	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="jpFgAq9m"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=4422; q=dns/txt; s=iport;
+  t=1735856719; x=1737066319;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=CwJxi8Cye5/I6LCh20clnomwhtRsYxMDQYpTcQE5Aq4=;
+  b=jpFgAq9m8MvQ8876bgIevDVdB98w4kMLd4IE5c6wHuXnPcGOLMSjtztr
+   2LK4N2Fx7Zjkf5fCSu5F56H5PvzM4hsYKgH0rMlJAdNkqN4eT920qrOSL
+   mN6W11Xz2aKgsxMX61OUNEVZ6kkos+ORJ3HgZpIUzyjNPJsr+I6AwRjFx
+   o=;
+X-CSE-ConnectionGUID: vmO5cYuZRpO+XsC0y/+FIA==
+X-CSE-MsgGUID: uE32TtxDT3O0nxvLyH5j0Q==
+X-IPAS-Result: =?us-ascii?q?A0ABAADxEHdnj5AQJK1aGgEBAQEBAQEBAQEDAQEBARIBA?=
+ =?us-ascii?q?QEBAgIBAQEBgX8FAQEBAQsBhBlDSIxyX4hynhsUgREDVg8BAQEPRAQBAYUHA?=
+ =?us-ascii?q?opvAiY0CQ4BAgQBAQEBAwIDAQEBAQEBAQEBAQELAQEFAQEBAgEHBRQBAQEBA?=
+ =?us-ascii?q?QE5BUmGCIZbAgEDJwsBRhBRKysHEoMBgmUDsxaBeTOBAd4zgW2BSAGFaodfc?=
+ =?us-ascii?q?IR3JxuBSUSCUIE+b4Qqhl0EiQidV0iBIQNZLAFVEw0KCwcFgTk6AyILCwwLF?=
+ =?us-ascii?q?BwVAoEagQIUBhUEgQtFPYJIaUk3Ag0CNoIgJFiCK4RdhEeEVoJJVYJIghd8g?=
+ =?us-ascii?q?RqCKkADCxgNSBEsNwYOGwY+bgebeTyDboEPE4IAMSQCkxUbkhWBNJ9PhCSBY?=
+ =?us-ascii?q?59jGjOqUpgDeSKjVFCEZoFnOoFbMxoIGxWDIlIZD4hchVENCRawXCUyPAIHC?=
+ =?us-ascii?q?wEBAwmQdmABAQ?=
+IronPort-Data: A9a23:3hX0zasQfjQzNoR6dEcQzZExW+fnVLNeMUV32f8akzHdYApBsoF/q
+ tZmKT3UOP+NZTekftAkbN639BsG68XQm9ZgHAI9rH89FXsSgMeUXt7xwmUckM+xwmwvaGo9s
+ q3yv/GZdJhcokf0/0nrav656yEhjclkf5KkYMbcICd9WAR4fykojBNnioYRj5Vh6TSDK1vlV
+ eja/YuGYjdJ5xYuajhJs/vb8ks01BjPkGpwUmIWNKgjUGD2zxH5PLpHTYmtIn3xRJVjH+LSb
+ 47r0LGj82rFyAwmA9Wjn6yTWhVirmn6ZFXmZtJ+AsBOszAazsAA+v9T2Mk0NS+7vw60c+VZk
+ 72hg3AfpTABZcUgkMxFO/VR/roX0aduoNcrKlDn2SCfItGvn3bEm51T4E8K0YIw5ONQXGp/6
+ M4iMBdOXguo3/Pxg5yaY7w57igjBJGD0II3s3Vky3TdSP0hW52GG/qM7t5D1zB2jcdLdRrcT
+ 5NGMnw0MlKZPVsWZgt/5JEWxI9EglH9dD1epFuRqII84nPYy0p6172F3N/9JoTVFJoJxB/Cz
+ o7A13nUWUsmKMyz9WGiqnS8mMvevX75ALtHQdVU8dYx3QXMnTZMYPEMbnO3qOe0j2ayUsxSL
+ kgT9DZoq6UunGSmQsT4Vg+1vFaLuRkTX9cWGOo/gCmO16DdywWUHG4JSnhGctNOnMYwSSYny
+ RyPks/lCCJHtKCTTzSW9t+8tTq4NC4UBXUPaS8NUU0O5NyLiIc+kh7CUP59H6OvyN74Azf9x
+ 3aNtidWulkIpccP06P++RXMhCih48CWCAU0/Q7QGGmi62uVebJJeaS27H+G5sddHryBaRqxp
+ 1Ncio/dwsEnWMTleDO2fM0BG7Sg5vCgOTLagEJyE5RJy9hL0yD4FWy3yG8iTHqFIvo5lSnVj
+ Fg/UD69BaO/3lP3NMebgKroV6zGKJQM8/y+CZg4ifIVOfBMmPevpn0GWKJp9zmFfLIQua8+I
+ 4yHVs2nEGwXD69qpBLvGLxAjuJ1nXxllDyJLXwe8/hB+efPDJJyYepUWGZikshjt8toXS2Mq
+ Y8GbJrQo/mheLChPnePmWLsEbz6BSNmXc+t8ZM/mh+rKQt9E2ZpEO7K3b4kYMRkma8T/tokD
+ VnjMnK0PGHX3CWdQS3TMygLQOq2Df5X8ylhVQRyZgnA5pTWSdr0hEvpX8dsJeF/nAGipNYoJ
+ 8Q4lzKoW60eGmmeqm1HPfEQbuVKLXyWuO5HBAL9CBBXQnKqb1WhFgPMFuc3yBQzMw==
+IronPort-HdrOrdr: A9a23:LqhSD6893Sxdc8b/OeBuk+DfI+orL9Y04lQ7vn2ZhyY7TiX+rb
+ HIoB11737JYVoqNU3I3OrwWpVoIkmskaKdn7NwAV7KZmCP0wGVxcNZnO7fKlbbdREWmNQw6U
+ 4ZSdkcNDU1ZmIK9PoTJ2KDYrAd/OU=
+X-Talos-CUID: 9a23:ZSUTeGzH+DYH8OxUYOHqBgUKH+d4eUzA/k3IBAyIEk0xWfrWZ365rfY=
+X-Talos-MUID: 9a23:asN1HwqAtHd9lvxEcowezyxPb51U/7SCNBsqyZMWpe2VFXFyYw7I2Q==
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.12,286,1728950400"; 
+   d="scan'208";a="407974212"
+Received: from alln-l-core-07.cisco.com ([173.36.16.144])
+  by alln-iport-8.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 02 Jan 2025 22:25:12 +0000
+Received: from cisco.com (savbu-usnic-a.cisco.com [10.193.184.48])
+	by alln-l-core-07.cisco.com (Postfix) with ESMTP id 51BF3180001D2;
+	Thu,  2 Jan 2025 22:25:12 +0000 (GMT)
+Received: by cisco.com (Postfix, from userid 392789)
+	id 28CD020F2006; Thu,  2 Jan 2025 14:25:12 -0800 (PST)
+From: John Daley <johndale@cisco.com>
+To: benve@cisco.com,
+	satishkh@cisco.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Cc: John Daley <johndale@cisco.com>,
+	Nelson Escobar <neescoba@cisco.com>
+Subject: [PATCH net-next v4 3/6] enic: Use function pointers for buf alloc, free and RQ service
+Date: Thu,  2 Jan 2025 14:24:24 -0800
+Message-Id: <20250102222427.28370-4-johndale@cisco.com>
+X-Mailer: git-send-email 2.35.2
+In-Reply-To: <20250102222427.28370-1-johndale@cisco.com>
+References: <20250102222427.28370-1-johndale@cisco.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z1yTviYUZ8sbNOsK@shell.armlinux.org.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+X-Outbound-SMTP-Client: 10.193.184.48, savbu-usnic-a.cisco.com
+X-Outbound-Node: alln-l-core-07.cisco.com
 
-On Fri, Dec 13, 2024 at 08:06:22PM +0000, Russell King (Oracle) wrote:
-> On Fri, Dec 13, 2024 at 10:59:54AM +0000, Russell King (Oracle) wrote:
-> > On Thu, Dec 12, 2024 at 02:46:33PM +0000, Russell King (Oracle) wrote:
-> > > @@ -1092,6 +1092,7 @@ static void stmmac_mac_link_up(struct phylink_config *config,
-> > >  			phy_init_eee(phy, !(priv->plat->flags &
-> > >  				STMMAC_FLAG_RX_CLK_RUNS_IN_LPI)) >= 0;
-> > >  		priv->eee_enabled = stmmac_eee_init(priv);
-> > > +		priv->tx_lpi_timer = phy->eee_cfg.tx_lpi_timer;
-> > >  		priv->tx_lpi_enabled = priv->eee_enabled;
-> > >  		stmmac_set_eee_pls(priv, priv->hw, true);
-> > >  	}
-> > 
-> > While looking deeper at stmmac, there's a bug in the above hunk -
-> > stmmac_eee_init() makes use of priv->tx_lpi_timer, so this member
-> > needs to be set before calling this function. I'll post a v2 shortly.
-> 
-> I'm going to hold off v2, there's a lot more that can be cleaned up
-> here - the EEE code is rather horrid in stmmac, and there's definitely
-> one race, and one logical error in it (e.g. why mark software EEE mode
-> *enabled* when EEE mode is being disabled - which can lead to the EEE
-> timer being added back onto the timer list.)
-> 
-> There's also weirdness with dwmac4's EEE register fiddling.
-> 
-> The stmmac driver uses hardware timed LPI entry if the timer is small
-> enough to be programmed into hardware, otherwise it uses software mode.
-> 
-> When software mode wants to enter LPI mode, it sets both:
-> 
-> 	GMAC4_LPI_CTRL_STATUS_LPIEN (LPI enable)
-> 	GMAC4_LPI_CTRL_STATUS_LPITXA (LPI TX Automate)
-> 
-> When software mode wants to exit LPI mode, it clears both of these
-> two bits.
-> 
-> In hardware mode, when enabling LPI generation, we set the hardware LPI
-> entry timer (separate register) to a non-zero value, and then set:
-> 
-> 	GMAC4_LPI_CTRL_STATUS_LPIEN (LPI enable)
-> 	GMAC4_LPI_CTRL_STATUS_LPITXA (LPI TX Automate)
-> 	GMAC4_LPI_CTRL_STATUS_LPIATE (LPI Timer enable)
-> 
-> That seems logical. However, in hardware mode, when we want to then
-> disable hardware LPI generation, we set the hardware LPI entry timer to
-> zero, the following bits:
-> 
-> 	GMAC4_LPI_CTRL_STATUS_LPIEN (LPI enable)
-> 	GMAC4_LPI_CTRL_STATUS_LPITXA (LPI TX Automate)
-> 
-> and clear:
-> 
-> 	GMAC4_LPI_CTRL_STATUS_LPIATE (LPI Timer enable)
-> 
-> So, hardware mode, disabled, ends up setting the same bits as
-> software mode wanting to generate LPI state on the transmit side.
-> This makes no sense to me, and looks like another bug in this driver.
+In order to support more than one packet receive processing scheme, use
+pointers for allocate, free and RQ descrptor processing functions.
 
-I've found a document that describes the GMAC:
+Co-developed-by: Nelson Escobar <neescoba@cisco.com>
+Signed-off-by: Nelson Escobar <neescoba@cisco.com>
+Co-developed-by: Satish Kharat <satishkh@cisco.com>
+Signed-off-by: Satish Kharat <satishkh@cisco.com>
+Signed-off-by: John Daley <johndale@cisco.com>
+---
+ drivers/net/ethernet/cisco/enic/enic.h      |  5 +++++
+ drivers/net/ethernet/cisco/enic/enic_main.c | 14 +++++++++-----
+ drivers/net/ethernet/cisco/enic/enic_rq.c   |  2 +-
+ 3 files changed, 15 insertions(+), 6 deletions(-)
 
-https://www.st.com/resource/en/reference_manual/rm0441-stm32mp151-advanced-armbased-32bit-mpus-stmicroelectronics.pdf
-
-Page 3302 gives the definitions for the ETH_MACLCSR, which is this
-register.
-
-LPITE (bit 20) - allows the ETH_MACLETR register to define how long to
-wait before the TX path enters LPI. Requires LPITXA and LPIEN to both
-be set. LPIEN is *not* automatically cleared when the TX path exits
-LPI.
-
-LPITXA (bit 19) - if this and LPIEN are set, then LPI is entered once
-all outstanding packets have been transmitted, and exits when there's
-a packet to be transmitted or the Tx FIFO is flushed. When it exits,
-it clears the LPIEN bit (making this a one-shot LPI enter-exit.)
-
-PLS (bit 17) needs to be programmed to reflect the PHY link status,
-and is used to hold off LPI state for the LS timer.
-
-LPIEN (bit 16) instructs the MAC to enter (when set) or exit (when
-cleared) LPI state. It doesn't say what the behaviour of this bit is
-if LPITXA is clear.
-
-So:
-
-LPIEN	LPITXA	LPITE	Effect
-0	x	x	No LPI, or LPI exited if active
-1	0	0	Undocumented
-1	1	0	Tx LPI entered if PLS has been set for the LS
-			timer, and once all packets have been sent.
-			LPIEN clears when Tx LPI exits.
-1	1	1	Tx LPI entered if PLS has been set for the LS
-			timer, and transmitter has been idle for
-			ETH_MACLETR. Exits do not clear LPIEN, allowing
-			for subsequent idle periods to enter LPI.
-
-Therefore, given this description, I believe the code to be wrong.
-In the case where we've set LPIEN=1 LPITXA=1 LPITE=1, and we want
-to exit/disable LPI, we should not be clearing LPIATE and leaving
-LPIEN and LPITXA as they were. According to my reading, this would
-cause LPI to remain active until there is a packet to be sent or the
-TX FIFO is flushed. At that point, Tx LPI will be exited, causing
-LPIEN to be cleared - but the code is wanting to disable Tx LPI
-(e.g. because the user configured through ethtool for LPI to be
-disabled.)
-
-The question is... does this get fixed? Is there anyone who can test
-this (beyond the "patch doesn't seem to cause regressions" but can
-actually confirm entry/exit from LPI state?)
-
+diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
+index 10b7e02ba4d0..51f80378d928 100644
+--- a/drivers/net/ethernet/cisco/enic/enic.h
++++ b/drivers/net/ethernet/cisco/enic/enic.h
+@@ -226,6 +226,11 @@ struct enic {
+ 	u32 rx_copybreak;
+ 	u8 rss_key[ENIC_RSS_LEN];
+ 	struct vnic_gen_stats gen_stats;
++	void (*rq_buf_service)(struct vnic_rq *rq, struct cq_desc *cq_desc,
++			       struct vnic_rq_buf *buf, int skipped,
++			       void *opaque);
++	int (*rq_alloc_buf)(struct vnic_rq *rq);
++	void (*rq_free_buf)(struct vnic_rq *rq, struct vnic_rq_buf *buf);
+ };
+ 
+ static inline struct net_device *vnic_get_netdev(struct vnic_dev *vdev)
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index f8d0011486d7..45ab6b670563 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -1519,7 +1519,7 @@ static int enic_poll(struct napi_struct *napi, int budget)
+ 			0 /* don't unmask intr */,
+ 			0 /* don't reset intr timer */);
+ 
+-	err = vnic_rq_fill(&enic->rq[0].vrq, enic_rq_alloc_buf);
++	err = vnic_rq_fill(&enic->rq[0].vrq, enic->rq_alloc_buf);
+ 
+ 	/* Buffer allocation failed. Stay in polling
+ 	 * mode so we can try to fill the ring again.
+@@ -1647,7 +1647,7 @@ static int enic_poll_msix_rq(struct napi_struct *napi, int budget)
+ 			0 /* don't unmask intr */,
+ 			0 /* don't reset intr timer */);
+ 
+-	err = vnic_rq_fill(&enic->rq[rq].vrq, enic_rq_alloc_buf);
++	err = vnic_rq_fill(&enic->rq[rq].vrq, enic->rq_alloc_buf);
+ 
+ 	/* Buffer allocation failed. Stay in polling mode
+ 	 * so we can try to fill the ring again.
+@@ -1882,6 +1882,10 @@ static int enic_open(struct net_device *netdev)
+ 	unsigned int i;
+ 	int err, ret;
+ 
++	enic->rq_buf_service = enic_rq_indicate_buf;
++	enic->rq_alloc_buf = enic_rq_alloc_buf;
++	enic->rq_free_buf = enic_free_rq_buf;
++
+ 	err = enic_request_intr(enic);
+ 	if (err) {
+ 		netdev_err(netdev, "Unable to request irq.\n");
+@@ -1900,7 +1904,7 @@ static int enic_open(struct net_device *netdev)
+ 	for (i = 0; i < enic->rq_count; i++) {
+ 		/* enable rq before updating rq desc */
+ 		vnic_rq_enable(&enic->rq[i].vrq);
+-		vnic_rq_fill(&enic->rq[i].vrq, enic_rq_alloc_buf);
++		vnic_rq_fill(&enic->rq[i].vrq, enic->rq_alloc_buf);
+ 		/* Need at least one buffer on ring to get going */
+ 		if (vnic_rq_desc_used(&enic->rq[i].vrq) == 0) {
+ 			netdev_err(netdev, "Unable to alloc receive buffers\n");
+@@ -1939,7 +1943,7 @@ static int enic_open(struct net_device *netdev)
+ 	for (i = 0; i < enic->rq_count; i++) {
+ 		ret = vnic_rq_disable(&enic->rq[i].vrq);
+ 		if (!ret)
+-			vnic_rq_clean(&enic->rq[i].vrq, enic_free_rq_buf);
++			vnic_rq_clean(&enic->rq[i].vrq, enic->rq_free_buf);
+ 	}
+ 	enic_dev_notify_unset(enic);
+ err_out_free_intr:
+@@ -1998,7 +2002,7 @@ static int enic_stop(struct net_device *netdev)
+ 	for (i = 0; i < enic->wq_count; i++)
+ 		vnic_wq_clean(&enic->wq[i].vwq, enic_free_wq_buf);
+ 	for (i = 0; i < enic->rq_count; i++)
+-		vnic_rq_clean(&enic->rq[i].vrq, enic_free_rq_buf);
++		vnic_rq_clean(&enic->rq[i].vrq, enic->rq_free_buf);
+ 	for (i = 0; i < enic->cq_count; i++)
+ 		vnic_cq_clean(&enic->cq[i]);
+ 	for (i = 0; i < enic->intr_count; i++)
+diff --git a/drivers/net/ethernet/cisco/enic/enic_rq.c b/drivers/net/ethernet/cisco/enic/enic_rq.c
+index 571af8f31470..ae2ab5af87e9 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_rq.c
++++ b/drivers/net/ethernet/cisco/enic/enic_rq.c
+@@ -114,7 +114,7 @@ int enic_rq_service(struct vnic_dev *vdev, struct cq_desc *cq_desc,
+ 	struct enic *enic = vnic_dev_priv(vdev);
+ 
+ 	vnic_rq_service(&enic->rq[q_number].vrq, cq_desc, completed_index,
+-			VNIC_RQ_RETURN_DESC, enic_rq_indicate_buf, opaque);
++			VNIC_RQ_RETURN_DESC, enic->rq_buf_service, opaque);
+ 
+ 	return 0;
+ }
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.35.2
+
