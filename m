@@ -1,115 +1,140 @@
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C548D54F8C;
-	Thu,  2 Jan 2025 05:41:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F109D3209
+	for <netdev@vger.kernel.org>; Thu,  2 Jan 2025 06:44:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735796467; cv=none; b=b1BcidgEz+zSmzli++nh7ScNinjOodkTzYFC9oW2GE0ldqhiSqZv+FHwMR/B61D1JT7wTBQmDYrAk2ai1VBpx3WKI7UURlsn6SOFVAb2mntP3DNlaEe3S7+SHxxWNAklVCF9hGNX4C/+5LDEy/nkHAyClf7zHgwBb8R7Fqu4x2E=
+	t=1735800260; cv=none; b=tEvmG+0VQDQyRitNqmQGEaJlub0Pu38wFoI2+sgQxeEwk6C7qI+AmnwvD+oG9kYM+3blZzY2uumnE0iAMMjgTlH/xx7RRO822U/0tnz7YEpG6zg4Q1+sCmWRCow0lalQ22/uIVIO/m34IYWgUW5r8ICC9pCetm3NtQvRQiQ1UbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735796467; c=relaxed/simple;
-	bh=x0GqOPflz3JU1F/JYbbkfOfzkYbLKZumeQJnrDyofl4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BE3f6hQWZP7CiB4A8639kWR0j/9hwG0FAhXhyQEXMJUmZzLV3mQsUq7DsLfrem2Wp8fr3HTQvZnMMcbO3MAYBH0dsY2H1n38/ykPK93leGehLIcyn0F1X+hXmi/R7hpQqbn8N4Tqy8QiyvdXfVLlx07J7EuwLWhn5nw8ogmRzd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e60WxBbY; arc=none smtp.client-ip=209.85.219.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e60WxBbY"
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e3f78f5fc07so11327449276.2;
-        Wed, 01 Jan 2025 21:41:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735796465; x=1736401265; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ASYw2YvvCKSoHOSnhWWZWXnYT66q6f5Arwrbz5nE6n0=;
-        b=e60WxBbY2J/XD/sTMG+GUy13XQ5pFmkdpOY+OpllbgZ81S48CdnttZzjED37XjlxNn
-         pxBEa7psZ/mMwIq49UMmV4n8sq86cMbSv6dDe2Gl2iVFhkeAxzfRxsPMaqkvVT3OOUXI
-         eQ3szalg4n5qZETB0eFhm5yKaJe6EdDWg71CZytvy2rJ4vFEx5V0mwmswVkQb7ySfugp
-         89L+qPCmadAqYnWO9z3VTYH8qVmO0EvwMWxu88CyPA/PK6HLENMWH931dGovWWABrsxP
-         8BgV7g5D/FuuK2lPaVA9zBCHriE80XTVy0qAeEce+L54iV2bUbOEhak0uLZHHiV6GxK2
-         O+dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735796465; x=1736401265;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ASYw2YvvCKSoHOSnhWWZWXnYT66q6f5Arwrbz5nE6n0=;
-        b=VTlpjWSmCWoHjbqqd8zB3ajM8Cj9wxXUK+Dp4tDkEOTJdYvn42cDoCWSth2/3NDw1t
-         IbGDe/glviKd/JjALafYj6WTSL7MwXIL2rsb6gkGbCQK3UtOsEEkOwNS1WVkzv3jnIC3
-         1z1Uul20hYlec/5Nf9KRv6gWcPO1tpedKgLuv80eyJQbzJp91/NsSBBWpXgD3tM+oeZH
-         Dim2QAoSbPwFpc7xCiOiW09ecFwGnv80siQsfQ+czq/LtO95nVsjNOkmBQgLQSbkheYk
-         kkyFFPDjcWEGwbSJHPf8j6m5EZ74u78ktvSVKxEW5zw53TPTcwV4fS9XwZT8v6xwbGYY
-         OKQg==
-X-Forwarded-Encrypted: i=1; AJvYcCUJQyEU4snbIVEk1KEK9Nw+h4rEQrXtcSxYQkjr3KF1xavKSRrEju8rBgRzn9Zy2/+kSoTx3HwnW2Q8Tw==@vger.kernel.org, AJvYcCUPplk9C6on+5MtOlvdjLn6Ynlo9bsfPqIbndfcmgG/m0Y5mzVDjhtbcyfIX6c1sUvSbcv3WLCm/hKoW7s=@vger.kernel.org, AJvYcCUd5i+IB6aI10OefpRc+K0MRdc8VQ43qY6xzYfzpztwQOgZnHvBNUcrH1KopQluY91Tun8sH/oJSsuVZKzcU+Q=@vger.kernel.org, AJvYcCVmy1+Qob+GA+QFS/WzeZ5b+GtpUP1gM3rF74GJOaJ4twc7GtiYy/6DO226xVI2feHBlcluNMlfjMg=@vger.kernel.org, AJvYcCW6Z+N6gZ8CeiTxlFi/YaWRwm6EPaIksyDi0mL5UsxNW8t8/JwEizwd9dJsrMh8r6xEt8vJhv9WGWGP@vger.kernel.org, AJvYcCWuqS5G6rgypeJoCtxMmeVVkndBQmDe+FUStQKDZ0EKx1gObT6yO/fOB+H0qXR081J6GV3Suwwn@vger.kernel.org, AJvYcCXPl24bJwendWlV+6pBKor5cUDA8tm9hXgN7axmK/nL/71yAJfjrHGebsWk6dzmV4xlO2R3qzbur6ES@vger.kernel.org
-X-Gm-Message-State: AOJu0YzW76Qpdioc070fz2MUL47nTW/qsfpWb6bU0IuOxCpmQa2WbH+H
-	fHTWZ3NwmQus9Kry8C4NmeduJZkZNOOgwmD4oxqHY7uABQvFgaEi75H249bdl3cJdnlG6rTElzk
-	Q0DY6cEx4beRnjjZnuf9ZcbPatdA=
-X-Gm-Gg: ASbGnctnZqDXeMIA8sDbBoWnMqMkLDKsVcjOzjjMCUVxLnksLOetTHOcRqFIbr2PG2K
-	t3iAAQp9FlISyDaBn6pyAk0ff+AuoZK4CShPz7PXxMuzauy4pygqKyYMxq2KfpRRGJyWGnmpM
-X-Google-Smtp-Source: AGHT+IH4op97zYxM0yElb80n1mWB5vje2idEq4j1aO+EgRYFQsMF+lHBsn3B3CF0kwlTajDY4BtnNpv7SKTe7hWMtDQ=
-X-Received: by 2002:a05:690c:3502:b0:6ef:799c:955b with SMTP id
- 00721157ae682-6f3f8242796mr265511177b3.41.1735796464603; Wed, 01 Jan 2025
- 21:41:04 -0800 (PST)
+	s=arc-20240116; t=1735800260; c=relaxed/simple;
+	bh=n4vZmGIvAWx72QsyrztvVFz3AEj0lTP3CjsQ5U33m/o=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=NyOPfxMTIyDE1N6jWxTzZxIMquZ92lwW53O8PML9O2qxzHPMhvIA03XPctlNyJbRgbmKDut2jY6k/UVprrl98o4ank1uNsH4bB5EBKjgQ87i81lLgDO002zoZK0G2uxALpop+34s//vIU40N7jS47QRHgxTcHX0JZ/j/xgsCVp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:Yeas6t1735800152t085t33579
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [115.220.136.229])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 1768535203905050333
+To: "'Jakub Kicinski'" <kuba@kernel.org>
+Cc: <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>,
+	<edumazet@google.com>,
+	<pabeni@redhat.com>,
+	<horms@kernel.org>,
+	<rmk+kernel@armlinux.org.uk>,
+	<netdev@vger.kernel.org>,
+	<mengyuanlou@net-swift.com>
+References: <20241226031810.1872443-1-jiawenwu@trustnetic.com> <20241230181150.3541a364@kernel.org>
+In-Reply-To: <20241230181150.3541a364@kernel.org>
+Subject: RE: [PATCH net] net: libwx: fix firmware mailbox abnormal return
+Date: Thu, 2 Jan 2025 14:42:30 +0800
+Message-ID: <028a01db5ce1$7f555f60$7e001e20$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241227095727.2401257-1-a0282524688@gmail.com>
- <20241227095727.2401257-5-a0282524688@gmail.com> <41f77d39-bce3-4e3b-98c8-f248b723a24c@wanadoo.fr>
-In-Reply-To: <41f77d39-bce3-4e3b-98c8-f248b723a24c@wanadoo.fr>
-From: Ming Yu <a0282524688@gmail.com>
-Date: Thu, 2 Jan 2025 13:40:53 +0800
-Message-ID: <CAOoeyxU0ex9_-a-uWda9hFbQa3MkFtNdAFan8C-899Z2pGYy7g@mail.gmail.com>
-Subject: Re: [PATCH v4 4/7] can: Add Nuvoton NCT6694 CAN support
-To: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Cc: linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-	linux-rtc@vger.kernel.org, tmyu0@nuvoton.com, lee@kernel.org, 
-	linus.walleij@linaro.org, brgl@bgdev.pl, andi.shyti@kernel.org, 
-	mkl@pengutronix.de, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	alexandre.belloni@bootlin.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQEHYnVMQ+w9IFHEdc47KYMDLb0kSgKXSBkztJLT//A=
+X-QQ-SENDSIZE: 520
+Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: Mq+dXfLz1bhazJp1QbpPlnXkYqEVs6pszUdWwKqxmf0e9XIrTUi2RUqa
+	QKhHyk+d3LeMAfh7Hh7oZ4dVbVw4XTOndeqYESPv9DuKiPzc740gSY3GI//R8w4f/AeQfKp
+	egNvfpqKr/LQkl4m6ISA/z1eQDC/yC6m8wCqJUxG1iNMXG0x9E0PsCxme+DINUXiFm6QcI/
+	gzcBhFZ9SXiMyWOWdjePLz6tsNjPuZuEWARi7Jl5ZND9hKa/FdRlk3Xz5DG6YjAaL74NohL
+	zPOODNW4GFYasm9WT+2kEBhpSN5S9/CeF6lycty4fBDNGJdw3ibiXcs3oI1XL8pgLZfOS9p
+	6GONshDI5xBpWmbK1uXBll3RlaJogqBzTvg2sXUOHaVZtX8ZUNm+NoaHd58cjZob3yzjW9B
+	qWgQBUkEba0ZmNfgQEP2HmtZ4nlnZo05coYW78mfp37F7p7mq5VwKFXg1wd87mGn3dWM6Yq
+	MKeWhRqsR/iRRoKA2yRVWZL3fyMgCbExAf7fnSozbmkJOCNdEfPrCFUSHGws5ColfpKpJA5
+	pIEPQV2b+mLiT3bH7QE9jJCSABmCArxNPvejqpGpt3CRhO27xXmoHS0AHv78kXAg3itD564
+	MSOWBX1RI0CtPQSSU5hieMg5GsHKvUy32iHtvoNL+Y57BJTPQ0qrm9GI41WcfpDOC+0abNv
+	0fLU0zgQp66Ldi+fAi3j9pBM6LNH40HPk4xvoaUUMb47yRlrYssZfE/lMGk1ltX7CpSfst+
+	WB4S5HlMUpwgKdQIPBRi//dZuIOd+xNu8YUTnvnL5jLx4o3MkaCgudO4lBesw/YFdDID9/X
+	Ju9bxzTLV6sDzRACPaserSy2Ve3MDsQS/wWXP70hrXn3hy3cUnEPtq67zszaKWJd3ze9Qbu
+	vtWHdGq3+ka8WpN57M2BSNUnXRgrBWQQZqnkEW4cJ7qQ0+8cHuStX5P6vMHzPnJ3+voYaH/
+	bZ+LZn/yBLEyykGrbCWGCCjcoWa7avn4gMTuKxXT8e1zj2ePS/TeZ0QAiHSQ2lESMh4k=
+X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
+X-QQ-RECHKSPAM: 0
 
-Dear Vincent,
+On Tue, Dec 31, 2024 10:12 AM, Jakub Kicinski wrote:
+> On Thu, 26 Dec 2024 11:18:10 +0800 Jiawen Wu wrote:
+> > Firmware writes back 'firmware ready' and 'unknown command' in the mailbox
+> > message if there is an unknown command sent by driver. It tends to happen
+> > with the use of custom firmware. So move the check for 'unknown command'
+> > out of the poll timeout for 'firmware ready'. And adjust the debug log so
+> > that mailbox messages are always printed when commands timeout.
+> 
+> The commit message doesn't really explain what the problem is,
+> just what the code does. What is the problem you're solving
+> and how does it impact the user?
 
-Thank you for your comments,
+The problem has not happened yet, but the code behavior is wrong. 
+Follow this wrong flow, driver would never return error if there is a unknown
+command. Since reading 'firmware ready' does not timeout. Thus driver would
+mistakenly believe that the interaction has completed successfully.
 
-Vincent Mailhol <mailhol.vincent@wanadoo.fr> =E6=96=BC 2024=E5=B9=B412=E6=
-=9C=8830=E6=97=A5 =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=881:56=E5=AF=AB=E9=81=
-=93=EF=BC=9A
->
-> > +config CAN_NCT6694
-> > +     tristate "Nuvoton NCT6694 Socket CANfd support"
-> > +     depends on MFD_NCT6694
->
-> I think it would be better to do a
->
->         select MFD_NCT6694
->
-> here.
->
-> Then, make MFD_NCT6694 an hidden configuration in a similar fashion as
-> MFD_CORE. Alone, CONFIG_MFD_NCT6694 does nothing, so better to hide it
-> from the end user.
->
-> The comment also applies to the other patches.
->
+> 
+> > Fixes: 1efa9bfe58c5 ("net: libwx: Implement interaction with firmware")
+> > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> > ---
+> >  drivers/net/ethernet/wangxun/libwx/wx_hw.c | 22 ++++++++++------------
+> >  1 file changed, 10 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+> > index 1bf9c38e4125..7059e0100c7c 100644
+> > --- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+> > +++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+> > @@ -334,27 +334,25 @@ int wx_host_interface_command(struct wx *wx, u32 *buffer,
+> >  	status = read_poll_timeout(rd32, hicr, hicr & WX_MNG_MBOX_CTL_FWRDY, 1000,
+> >  				   timeout * 1000, false, wx, WX_MNG_MBOX_CTL);
+> >
+> > +	buf[0] = rd32(wx, WX_MNG_MBOX);
+> > +	if ((buf[0] & 0xff0000) >> 16 == 0x80) {
+> > +		wx_dbg(wx, "It's unknown cmd.\n");
+> > +		status = -EINVAL;
+> > +		goto rel_out;
+> > +	}
+> 
+> Why check this before the status check? If the poll timed out doesn't
+> it mean the FW did not respond?
 
-I understand, but I noticed that in the Kconfig files of other
-modules, the dependency is written in the form:
-config CAN_NCT6694
-        tristate "Nuvoton NCT6694 Socket CANfd support"
-        depends on MFD_NCT6694
-(e.g. CAN_JANZ_ICAN3, GPIO_DLN2, ...)
-Do you think changing it to select MFD_NCT6694 would be better?
+Firmware writes back 'firmware ready' and 'unknown command', so the poll
+will not time out.
 
-Best regards,
-Ming
+> 
+> >  	/* Check command completion */
+> >  	if (status) {
+> >  		wx_dbg(wx, "Command has failed with no status valid.\n");
+> > -
+> > -		buf[0] = rd32(wx, WX_MNG_MBOX);
+> > -		if ((buffer[0] & 0xff) != (~buf[0] >> 24)) {
+> > -			status = -EINVAL;
+> > -			goto rel_out;
+> > -		}
+> > -		if ((buf[0] & 0xff0000) >> 16 == 0x80) {
+> > -			wx_dbg(wx, "It's unknown cmd.\n");
+> > -			status = -EINVAL;
+> > -			goto rel_out;
+> > -		}
+> >
+> > +		wx_dbg(wx, "check: %x %x\n", buffer[0] & 0xff, ~buf[0] >> 24);
+> > +		if ((buffer[0] & 0xff) != (~buf[0] >> 24))
+> > +			goto rel_out;
+> 
+> Inverse question here, I guess. Why is it only an error for FW not
+> to be ready if cmd doesn't match?
+
+It is to check if the cmd has been processed by FW. If it matches, it means
+that FW has already processed the cmd, but FWRDY timeout for some
+unknown reason.
+ 
+
