@@ -1,114 +1,137 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7942A191F60;
-	Thu,  2 Jan 2025 12:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF56199FBA;
+	Thu,  2 Jan 2025 12:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735822191; cv=none; b=CYWV3GFb7s7ijv615TN9UAGv+R4RyOiZZPYIwSfDiCxOkZQiQN0U2PvR0yuhVH27avmEONA625aUMmH3Hg4VBRzSlTkRSY35xswbZXYYFh3u+eRXzOdv95vpEed2QXcj4syq+M1m+uYNdYNAGIilGPbgCg+LPaqleme6Nka0JoM=
+	t=1735822205; cv=none; b=fpZo0CcDVRLahgxgPSXSjyxh4mvFqcvVVtKrHvYqznuMoNNPBJwdY4QAm1dmlqTHl6F89kTqOELh8eiTCac1z7fXSqOAIk7UGgDpcL44HDWi2SZkanvuGvppCBFte1G8Q0bPw1eXmA2dVLpsGcrjWSSRQmuMMzcAKiQM8G/KWUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735822191; c=relaxed/simple;
-	bh=stvNx4Z9HnQEe7rq9Fe5iB1tRD0lGnZuUmQbZmTWdzA=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WKEDJuBuk6CqHT0xIcQr16u8OAk6PA5C6a8JNc1KzCPDnpZ1POWJgFSSUnX9NouDFCpVColaTfYisgtO5ElDVdZh82zNWKmwU8+DbTgEGeLqJK6H5SwQlZmiC2utmZ7l8ZK13RtQNdfdceNraId9rR7PPO+MQqZIVSSJDt+zIRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YP62x2LGqz6K6Wl;
-	Thu,  2 Jan 2025 20:48:57 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 09C72140A9C;
-	Thu,  2 Jan 2025 20:49:46 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 2 Jan
- 2025 13:49:45 +0100
-Date: Thu, 2 Jan 2025 12:49:44 +0000
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Alejandro Lucero Palau <alucerop@amd.com>
-CC: <alejandro.lucero-palau@amd.com>, <linux-cxl@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <dan.j.williams@intel.com>,
-	<martin.habets@xilinx.com>, <edward.cree@amd.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>,
-	<dave.jiang@intel.com>
-Subject: Re: [PATCH v8 03/27] cxl: add capabilities field to cxl_dev_state
- and cxl_port
-Message-ID: <20250102124944.0000260e@huawei.com>
-In-Reply-To: <81786f5a-42b0-2e5a-c2d6-bfd93b366d97@amd.com>
-References: <20241216161042.42108-1-alejandro.lucero-palau@amd.com>
-	<20241216161042.42108-4-alejandro.lucero-palau@amd.com>
-	<20241224170855.0000295c@huawei.com>
-	<81786f5a-42b0-2e5a-c2d6-bfd93b366d97@amd.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1735822205; c=relaxed/simple;
+	bh=6ZPOzpvYsAqlz7hdFo+/nt9VXVrrtsVFa6L3sxM17J0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ip8+vdNnBxBqUsnIWmP0r7wDM3HFcqX4Jr/3RgyW2ZAyOw7r4vPgAFNycdxbVMk/jqWNfZ0ZZ5ioVQf/fGNRR4LnDMVR1e+kuQ+B4AbBWwUgpJhoi/MVyno2oAxQ9ejk7KYTMV9esV1u7GzDG9zaEenymO6z5bP2qWv+/ZWUSKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4YP4lv3gC6z9shx;
+	Thu,  2 Jan 2025 12:50:51 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id qCix7nZ6SYKj; Thu,  2 Jan 2025 12:50:51 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4YP4lv2m0zz9shw;
+	Thu,  2 Jan 2025 12:50:51 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4E98E8B767;
+	Thu,  2 Jan 2025 12:50:51 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id Oius1QCwqKti; Thu,  2 Jan 2025 12:50:51 +0100 (CET)
+Received: from [192.168.232.97] (unknown [192.168.232.97])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BDC3E8B763;
+	Thu,  2 Jan 2025 12:50:50 +0100 (CET)
+Message-ID: <ec3515f1-f93a-4520-a9da-6ad14f9a6fe0@csgroup.eu>
+Date: Thu, 2 Jan 2025 12:50:50 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
- frapeml500008.china.huawei.com (7.182.85.71)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 10/29] crypto: powerpc/p10-aes-gcm - simplify handling
+ of linear associated data
+To: Eric Biggers <ebiggers@kernel.org>, linux-crypto@vger.kernel.org
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Danny Tsen <dtsen@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Naveen N Rao <naveen@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20241230001418.74739-1-ebiggers@kernel.org>
+ <20241230001418.74739-11-ebiggers@kernel.org>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20241230001418.74739-11-ebiggers@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-> >> diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
-> >> index 19e5d883557a..f656fcd4945f 100644
-> >> --- a/include/cxl/cxl.h
-> >> +++ b/include/cxl/cxl.h
-> >> @@ -12,6 +12,25 @@ enum cxl_resource {
-> >>   	CXL_RES_PMEM,
-> >>   };
-> >>   
-> >> +/* Capabilities as defined for:
-> >> + *
-> >> + *	Component Registers (Table 8-22 CXL 3.1 specification)
-> >> + *	Device Registers (8.2.8.2.1 CXL 3.1 specification)
-> >> + *
-> >> + * and currently being used for kernel CXL support.
-> >> + */
-> >> +
-> >> +enum cxl_dev_cap {
-> >> +	/* capabilities from Component Registers */
-> >> +	CXL_DEV_CAP_RAS,
-> >> +	CXL_DEV_CAP_HDM,
-> >> +	/* capabilities from Device Registers */
-> >> +	CXL_DEV_CAP_DEV_STATUS,
-> >> +	CXL_DEV_CAP_MAILBOX_PRIMARY,
-> >> +	CXL_DEV_CAP_MEMDEV,
-> >> +	CXL_MAX_CAPS = 64  
-> > Why set it to 64?  All the bitmaps etc will autosize so
-> > you just need to ensure you use correct set_bit() and test_bit()
-> > that are happy dealing with bitmaps of multiple longs.
-> >  
+
+Le 30/12/2024 à 01:13, Eric Biggers a écrit :
+> From: Eric Biggers <ebiggers@google.com>
 > 
-> Initially it was set to 32, but DECLARE_BITMAP uses unsigned long, so 
-> for initializing/zeroing the locally allocated bitmap in some functions, 
-> bitmap_clear had to use sizeof for the size, and I was suggested to 
-> define CXL_MAX_CAPS to 64 and use it instead, what seems cleaner.
-
-It should never have been using sizeof() once it was a bitmap.
-Just clear what is actually used and make sure no code assumes
-any particular length of bitmap.  Then you will never have
-to deal with changing it.
-
-Then CXL_MAX_CAP just becomes last entry in this enum.
-
-The only time this is becomes tricky with bitmaps is if you need
-to set a bits in a constant bitmap as then you can't use the
-set/get functions and have to assume something about the length.
-
-Don't think that applies here.
-
-Jonathan
-
- 
+> p10_aes_gcm_crypt() is abusing the scatter_walk API to get the virtual
+> address for the first source scatterlist element.  But this code is only
+> built for PPC64 which is a !HIGHMEM platform, and it can read past a
+> page boundary from the address returned by scatterwalk_map() which means
+> it already assumes the address is from the kernel's direct map.  Thus,
+> just use sg_virt() instead to get the same result in a simpler way.
 > 
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Danny Tsen <dtsen@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Naveen N Rao <naveen@kernel.org>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> ---
 > 
-> >> +};
-> >> +
-> >>   struct cxl_dev_state *cxl_accel_state_create(struct device *dev);
-> >>   
-> >>   void cxl_set_dvsec(struct cxl_dev_state *cxlds, u16 dvsec);  
+> This patch is part of a long series touching many files, so I have
+> limited the Cc list on the full series.  If you want the full series and
+> did not receive it, please retrieve it from lore.kernel.org.
+> 
+>   arch/powerpc/crypto/aes-gcm-p10-glue.c | 8 ++------
+>   1 file changed, 2 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> index f37b3d13fc53..2862c3cf8e41 100644
+> --- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> +++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> @@ -212,11 +212,10 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
+>   	struct p10_aes_gcm_ctx *ctx = crypto_tfm_ctx(tfm);
+>   	u8 databuf[sizeof(struct gcm_ctx) + PPC_ALIGN];
+>   	struct gcm_ctx *gctx = PTR_ALIGN((void *)databuf, PPC_ALIGN);
+>   	u8 hashbuf[sizeof(struct Hash_ctx) + PPC_ALIGN];
+>   	struct Hash_ctx *hash = PTR_ALIGN((void *)hashbuf, PPC_ALIGN);
+> -	struct scatter_walk assoc_sg_walk;
+>   	struct skcipher_walk walk;
+>   	u8 *assocmem = NULL;
+>   	u8 *assoc;
+>   	unsigned int cryptlen = req->cryptlen;
+>   	unsigned char ivbuf[AES_BLOCK_SIZE+PPC_ALIGN];
+> @@ -232,12 +231,11 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
+>   	memset(ivbuf, 0, sizeof(ivbuf));
+>   	memcpy(iv, riv, GCM_IV_SIZE);
+>   
+>   	/* Linearize assoc, if not already linear */
+>   	if (req->src->length >= assoclen && req->src->length) {
+> -		scatterwalk_start(&assoc_sg_walk, req->src);
+> -		assoc = scatterwalk_map(&assoc_sg_walk);
+> +		assoc = sg_virt(req->src); /* ppc64 is !HIGHMEM */
+>   	} else {
+>   		gfp_t flags = (req->base.flags & CRYPTO_TFM_REQ_MAY_SLEEP) ?
+>   			      GFP_KERNEL : GFP_ATOMIC;
+>   
+>   		/* assoc can be any length, so must be on heap */
+> @@ -251,13 +249,11 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
+>   
+>   	vsx_begin();
+>   	gcmp10_init(gctx, iv, (unsigned char *) &ctx->enc_key, hash, assoc, assoclen);
+>   	vsx_end();
+>   
+> -	if (!assocmem)
+> -		scatterwalk_unmap(assoc);
+> -	else
+> +	if (assocmem)
+>   		kfree(assocmem);
+
+kfree() accepts a NULL pointer, you can call kfree(assocmem) without 'if 
+(assocmem)'
+
+
+>   
+>   	if (enc)
+>   		ret = skcipher_walk_aead_encrypt(&walk, req, false);
+>   	else
 
