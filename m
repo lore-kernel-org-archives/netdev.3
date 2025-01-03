@@ -1,30 +1,79 @@
-Received: from stargate.chelsio.com (stargate.chelsio.com [12.32.117.8])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D249D1119A
-	for <netdev@vger.kernel.org>; Fri,  3 Jan 2025 09:20:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=12.32.117.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9F91CEAD6;
+	Fri,  3 Jan 2025 09:21:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735896032; cv=none; b=m8OOpbOTffnJD1lBAqpZPB33TUinwDFAe3+dKd5dWJO7KwktENT7lE7DPTRiOMJ+TE6yL4KwGY/1oTxdmEqmboNYNzwhB0lJ39iyjSO20RUwQ0WKtcr7diQRhQf38iEC3L99OL8Bu1K7c4bGR4Vpa9CO+TY2um2oK65BfFGLckg=
+	t=1735896069; cv=none; b=gPP2tztULTuKbSlShtEs7lDW0UUx1u3hQoGWprhtLDtHxgY6pDzkqKiqtJfOl/5z0xJFYUGDhQmWXezOfbatMtdxjd6R2RVAZvH4b/xPayQwP/R3prXoPN0bgLpBgMBfyIVw0+GBEh05LRFda8I7C+HXrSgeDSSuKR5IRnix9oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735896032; c=relaxed/simple;
-	bh=oczawJ9oUV0r2RKuz1E8Klf02hnwvHA3rjWOveeGI0s=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=thBLUudVqYt5dcOORseeTWOVIoPzHopfa6opC0m3pSmB2T4dpXBfFwQfg3yBQU7+x7fLDtZeHLYIwGErzMI2TD4WNCE1Pnk3xGZOAvF1FVuKPOi5w5007A3tqO/mZnwHtMsK5Hydmd9ly5mDQXrAas9XM/F9IzrHPbu/tX01qEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com; spf=pass smtp.mailfrom=chelsio.com; arc=none smtp.client-ip=12.32.117.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chelsio.com
-Received: from beagle5.blr.asicdesigners.com (beagle5.blr.asicdesigners.com [10.193.80.119])
-	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 5039KFnQ006690;
-	Fri, 3 Jan 2025 01:20:16 -0800
-From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, andrew+netdev@lunn.ch,
-        pabeni@redhat.com, bharat@chelsio.com,
-        Anumula Murali Mohan Reddy <anumula@chelsio.com>
-Subject: [PATCH net v2] cxgb4: Avoid removal of uninserted tid
-Date: Fri,  3 Jan 2025 14:53:27 +0530
-Message-Id: <20250103092327.1011925-1-anumula@chelsio.com>
-X-Mailer: git-send-email 2.39.3
+	s=arc-20240116; t=1735896069; c=relaxed/simple;
+	bh=3UzWjtIaAwa2DD6rZO7+eEEVfPTpZkalqepZqNVboEE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RpEHmBKE14Ow80w7lxvQremaVQ1Yl7vqxdbGO/YXdCsXVtEgekCMzYmX9ppMfhNgZtf+PLR2QkIBaocYKaPhbAmY4y/yu9/tLWJMr8aPeT+6gyKPB0G+1rlgq7QL0yO0y+T3aviILRYzvjf8CaiprmDspaDqchRwsE1HudHXHDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=KRPe9Up6; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="KRPe9Up6"
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 5039KeUG2377018
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Fri, 3 Jan 2025 03:20:40 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1735896040;
+	bh=dBhfzVNPoQY702/fU5BRMtzSyvCNkOs9LmubC0XHVK4=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=KRPe9Up6qUjoXYQ8DN1QDFRBmuO7JOoGuybChUghGLZ9827FEe9zc/0y5rL38984Z
+	 l+C128AbwFmGKJNaVlca3Y9wxt/2NKcJjifLlCewECXHDV4vJxbYea5GxBWCj6S2Mk
+	 c91Hgo+lqXUuDuMlMvm+kf/tg9GaJBIjCMGGret4=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 5039Kep9003472;
+	Fri, 3 Jan 2025 03:20:40 -0600
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 3
+ Jan 2025 03:20:40 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 3 Jan 2025 03:20:40 -0600
+Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 5039Keb6055118;
+	Fri, 3 Jan 2025 03:20:40 -0600
+Received: from localhost (danish-tpc.dhcp.ti.com [10.24.69.25])
+	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 5039KdY1016895;
+	Fri, 3 Jan 2025 03:20:39 -0600
+From: MD Danish Anwar <danishanwar@ti.com>
+To: Jeongjun Park <aha310510@gmail.com>,
+        Alexander Lobakin
+	<aleksander.lobakin@intel.com>,
+        Lukasz Majewski <lukma@denx.de>, Meghana
+ Malladi <m-malladi@ti.com>,
+        Diogo Ivo <diogo.ivo@siemens.com>, Simon Horman
+	<horms@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski
+	<kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        Roger Quadros
+	<rogerq@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
+        Vignesh Raghavendra
+	<vigneshr@ti.com>, <danishanwar@ti.com>,
+        Michal Swiatkowski
+	<michal.swiatkowski@linux.intel.com>,
+        Larysa Zaremba
+	<larysa.zaremba@intel.com>
+Subject: [PATCH net-next v3 1/3] net: ti: icssg-prueth: Add VLAN support in EMAC mode
+Date: Fri, 3 Jan 2025 14:50:31 +0530
+Message-ID: <20250103092033.1533374-2-danishanwar@ti.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250103092033.1533374-1-danishanwar@ti.com>
+References: <20250103092033.1533374-1-danishanwar@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -32,37 +81,72 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-During ARP failure, tid is not inserted but _c4iw_free_ep()
-attempts to remove tid which results in error.
-This patch fixes the issue by avoiding removal of uninserted tid.
+Add support for vlan filtering in dual EMAC mode.
 
-Fixes: 59437d78f088 ("cxgb4/chtls: fix ULD connection failures due to wrong TID base")
-Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
 ---
-Changes since v1:
-Addressed previous review comments
----
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 29 +++++++++-----------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-index bc3af0054406..604dcfd49aa4 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-@@ -1799,7 +1799,10 @@ void cxgb4_remove_tid(struct tid_info *t, unsigned int chan, unsigned int tid,
- 	struct adapter *adap = container_of(t, struct adapter, tids);
- 	struct sk_buff *skb;
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index c568c84a032b..1663941e59e3 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -822,19 +822,18 @@ static int emac_ndo_vlan_rx_add_vid(struct net_device *ndev,
+ {
+ 	struct prueth_emac *emac = netdev_priv(ndev);
+ 	struct prueth *prueth = emac->prueth;
++	int port_mask = BIT(emac->port_id);
+ 	int untag_mask = 0;
+-	int port_mask;
  
--	WARN_ON(tid_out_of_range(&adap->tids, tid));
-+	if (tid_out_of_range(&adap->tids, tid)) {
-+		dev_err(adap->pdev_dev, "tid %d out of range\n", tid);
-+		return;
-+	}
+-	if (prueth->is_hsr_offload_mode) {
+-		port_mask = BIT(PRUETH_PORT_HOST) | BIT(emac->port_id);
+-		untag_mask = 0;
++	if (prueth->is_hsr_offload_mode)
++		port_mask |= BIT(PRUETH_PORT_HOST);
  
- 	if (t->tid_tab[tid - adap->tids.tid_base]) {
- 		t->tid_tab[tid - adap->tids.tid_base] = NULL;
+-		netdev_dbg(emac->ndev, "VID add vid:%u port_mask:%X untag_mask %X\n",
+-			   vid, port_mask, untag_mask);
++	netdev_dbg(emac->ndev, "VID add vid:%u port_mask:%X untag_mask %X\n",
++		   vid, port_mask, untag_mask);
++
++	icssg_vtbl_modify(emac, vid, port_mask, untag_mask, true);
++	icssg_set_pvid(emac->prueth, vid, emac->port_id);
+ 
+-		icssg_vtbl_modify(emac, vid, port_mask, untag_mask, true);
+-		icssg_set_pvid(emac->prueth, vid, emac->port_id);
+-	}
+ 	return 0;
+ }
+ 
+@@ -843,18 +842,16 @@ static int emac_ndo_vlan_rx_del_vid(struct net_device *ndev,
+ {
+ 	struct prueth_emac *emac = netdev_priv(ndev);
+ 	struct prueth *prueth = emac->prueth;
++	int port_mask = BIT(emac->port_id);
+ 	int untag_mask = 0;
+-	int port_mask;
+ 
+-	if (prueth->is_hsr_offload_mode) {
++	if (prueth->is_hsr_offload_mode)
+ 		port_mask = BIT(PRUETH_PORT_HOST);
+-		untag_mask = 0;
+ 
+-		netdev_dbg(emac->ndev, "VID del vid:%u port_mask:%X untag_mask  %X\n",
+-			   vid, port_mask, untag_mask);
++	netdev_dbg(emac->ndev, "VID del vid:%u port_mask:%X untag_mask  %X\n",
++		   vid, port_mask, untag_mask);
++	icssg_vtbl_modify(emac, vid, port_mask, untag_mask, false);
+ 
+-		icssg_vtbl_modify(emac, vid, port_mask, untag_mask, false);
+-	}
+ 	return 0;
+ }
+ 
 -- 
-2.39.3
+2.34.1
 
