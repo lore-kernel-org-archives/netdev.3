@@ -1,94 +1,113 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C11E1BD014
-	for <netdev@vger.kernel.org>; Fri,  3 Jan 2025 09:08:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBFF1CD205;
+	Fri,  3 Jan 2025 09:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735895322; cv=none; b=gK9IyNk5n1u+PQWaz/d5NEzhGd7TdHkRicM7jPSWROVGLGFxEzEsEWdbyCxcZWQWGyO5+0Yp7qoGFN3+RxKKpTeBrmEpw8yuoPnagr2tiHjfDrZ++XjtO2NcvPfhh14zDf2ZwK3F81ZWaOaBtjbRvEk11fn4YTrAfYYZFcO85JA=
+	t=1735895322; cv=none; b=MqqdnZgtfEaG87uFUV/1iYfCqT+kA3fxKWiD/RubVzOHN8dbs0RPE2kdivXBJ1V7zxaimjquc7t3C6pm+sLYlMyuZpcWN7Gpq9rvajlvwcZN3Ul4tBlXGhVyBK0V8SRyM5DN+RLJY1kxdz/feKeESgIHDXOCD6FJV/Xov+qMOeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1735895322; c=relaxed/simple;
-	bh=EubadRbocUH9VnJTgCdSDYbqda0BVP2Vlcvy3+nRuK4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pjUSoEcfCiwdshoudrUnjbj9ramobIFRRHRl3l8LL46CokTwb9KKkIb8rXoLaL6fXBqcY6M8/7YII7jet/Jf1GM9EwQbRAhEYnxFK2hmp5omYmuKE+cZF1PBOos2/OdC+8qATo4Ov4rGpQJaDP+UABgJaYnUW9p+dge31Y0doM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=KcY/IIf6; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	bh=HfMmLMEz/Z04AX70J7x98PS1/99QuJwU/vue65a+wr8=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hi0TuU4Q2D9pATwjHsW+Efqb3m3DXA/qSDIPXoG4nSFx4tJzyFB+mg9mnF8cmVuk2U6m2aqRhU/eEa4Mxs5u5nx9bSZoqK/buwGGvl6FBpWxi9URtdFu0G/7hZVBAX/FT56wAhq2wcQH1HwuWtkMNp3/di569w35srOiZFeZRdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=M9wnYRN6; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="KcY/IIf6"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Wsyh+5boNyaBATGIrUPzvAmr0/G9SuJcgFITeVyp4dg=; b=KcY/IIf6eSj2Du/8485QS1wYql
-	InvwZPboDvWbPctqlvTcNt3I59XuOhfs3oR1vycblsPUtLGHSRVF1hcV9YmOYl1Z5bZpOwX9ylvPv
-	0rfC4BBc7iqt1/EijPIUDpgpAWxqpMYWvAdMuQ8jO9Qq4s0PDMc1Pzfc9bFcCBef2s6CxDoZr3r1x
-	8fosqteYtRsC3CffwK3SnzOH0WhxY9JsfYGljIqeoZBeoQ5yb68U5Qp0/wVEpEKVb/wvXVM3xqf1F
-	dnh5qUiJ3fNBdTQoQpyOBv8U4Ot1ClB9GPh1rlLF9fecWpyzqvpAo5VSGtcc/e2nn8C1OZk1yyO11
-	5c6EWqpg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:32782)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tTdfN-0002sj-1F;
-	Fri, 03 Jan 2025 09:08:25 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tTdfK-0001At-1M;
-	Fri, 03 Jan 2025 09:08:22 +0000
-Date: Fri, 3 Jan 2025 09:08:22 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Richard Cochran <richardcochran@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v3] net: mvpp2: tai: warn once if we fail to
- update our timestamp
-Message-ID: <Z3epBvz_hgythDYH@shell.armlinux.org.uk>
-References: <E1tM8cA-006t1i-KF@rmk-PC.armlinux.org.uk>
- <Z10UGg_osMZ6TZrc@hoboy.vegasvil.org>
- <Z3a-HOwAVyJGEg67@shell.armlinux.org.uk>
- <Z3ejTGIpl8nF1Ku8@hoboy.vegasvil.org>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="M9wnYRN6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1735895321; x=1767431321;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version;
+  bh=HfMmLMEz/Z04AX70J7x98PS1/99QuJwU/vue65a+wr8=;
+  b=M9wnYRN6FJTWGGRRkO3/AseJk5Qk32gaUZpcVYti6uZkG+xhWXJnHnqW
+   YhJ52g23pm2kdRWJ7MkSy1/KevOcubmwmSHji87KhCfJteOQlefTFC+uK
+   jbOHtN8hHDWRfKZteNvyqFKVmdQppPMih7w+1pLeG6IIsI4htc0iUUG2G
+   8xliT86lmYIerTNb6spTzAOSxq6bMLiaTuv24teIJgjB2qTwK3ul0cXNq
+   Ad3Kam00In18n/HRe0r6dcv+Ue1KsZ2Ff3DE//EbeGrav5ui+rsY2qZL9
+   zXEZiv+jYjSk5LblugwihzY1h1v35EfRQkSkQoa0qT+44u7K1YOfzUlne
+   g==;
+X-CSE-ConnectionGUID: EXABeJ56QrCvAsgIXU519A==
+X-CSE-MsgGUID: VmmvSA5TQPKJRDCmYiIelQ==
+X-IronPort-AV: E=Sophos;i="6.12,286,1728975600"; 
+   d="scan'208";a="36577056"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 03 Jan 2025 02:08:40 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Fri, 3 Jan 2025 02:07:40 -0700
+Received: from training-HP-280-G1-MT-PC.microchip.com (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.35 via Frontend Transport; Fri, 3 Jan 2025 02:07:36 -0700
+From: Divya Koppera <divya.koppera@microchip.com>
+To: <andrew@lunn.ch>, <arun.ramadoss@microchip.com>,
+	<UNGLinuxDriver@microchip.com>, <hkallweit1@gmail.com>,
+	<linux@armlinux.org.uk>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <richardcochran@gmail.com>,
+	<vadim.fedorenko@linux.dev>
+Subject: [PATCH net-next 2/3] net: phy: microchip_t1: Enable GPIO pins specific to lan887x phy for PEROUT signals
+Date: Fri, 3 Jan 2025 14:37:30 +0530
+Message-ID: <20250103090731.1355-3-divya.koppera@microchip.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20250103090731.1355-1-divya.koppera@microchip.com>
+References: <20250103090731.1355-1-divya.koppera@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z3ejTGIpl8nF1Ku8@hoboy.vegasvil.org>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain
 
-On Fri, Jan 03, 2025 at 12:43:56AM -0800, Richard Cochran wrote:
-> On Thu, Jan 02, 2025 at 04:26:04PM +0000, Russell King (Oracle) wrote:
-> 
-> > If we fail to read the clock, that will be because the hardware didn't
-> > respond to our request to read it, which means the hardware broke in
-> > some way. We could make mvpp22_tai_tstamp() fail and not provide
-> > timestamps until we have successfully read the HW clock, but we would
-> > still want to print a warning to explain why HW timestamps vanish.
-> 
-> Sure, keep the warning, but also block time stamp delivery.
-> 
-> > This is to catch a spurious failure that may only affects an occasoinal
-> > attempt to read the HW PTP time. Currently, we would never know,
-> > because the kernel is currently completely silent if that were to ever
-> > happen.
-> 
-> Is the failure spurious, or is the hardware broken and won't recover?
+Adds support for enabling GPIO pins that are required
+to generate periodic output signals on lan887x phy.
 
-I have absolutely no idea. I've never seen it happen.
+Signed-off-by: Divya Koppera <divya.koppera@microchip.com>
+---
+ drivers/net/phy/microchip_t1.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-That's why I think going further than I have (and as you are suggesting)
-is totally overkill.
-
+diff --git a/drivers/net/phy/microchip_t1.c b/drivers/net/phy/microchip_t1.c
+index 73f28463bc35..b0a34f794f4c 100644
+--- a/drivers/net/phy/microchip_t1.c
++++ b/drivers/net/phy/microchip_t1.c
+@@ -273,6 +273,11 @@
+ /* End offset of samples */
+ #define SQI_INLIERS_END (SQI_INLIERS_START + SQI_INLIERS_NUM)
+ 
++#define LAN887X_MX_CHIP_TOP_REG_CONTROL1		(0xF002)
++#define LAN887X_MX_CHIP_TOP_REG_CONTROL1_EVT_EN		BIT(8)
++#define LAN887X_MX_CHIP_TOP_REG_CONTROL1_REF_CLK	BIT(9)
++#define LAN887X_MX_CHIP_TOP_REG_CONTROL1_GPIO2_EN	BIT(5)
++
+ #define DRIVER_AUTHOR	"Nisar Sayed <nisar.sayed@microchip.com>"
+ #define DRIVER_DESC	"Microchip LAN87XX/LAN937x/LAN887x T1 PHY driver"
+ 
+@@ -1286,6 +1291,19 @@ static int lan887x_phy_init(struct phy_device *phydev)
+ 		if (IS_ERR(priv->clock))
+ 			return PTR_ERR(priv->clock);
+ 
++		/* Enable pin mux for GPIO 2(EVT B) as ref clk */
++		/* Enable pin mux for EVT A */
++		phy_modify_mmd(phydev, MDIO_MMD_VEND1,
++			       LAN887X_MX_CHIP_TOP_REG_CONTROL1,
++			       LAN887X_MX_CHIP_TOP_REG_CONTROL1_REF_CLK |
++			       LAN887X_MX_CHIP_TOP_REG_CONTROL1_EVT_EN,
++			       LAN887X_MX_CHIP_TOP_REG_CONTROL1_REF_CLK |
++			       LAN887X_MX_CHIP_TOP_REG_CONTROL1_EVT_EN);
++
++		 /* Initialize pin numbers specific to PEROUT */
++		priv->clock->gpio_event_a = 3;
++		priv->clock->gpio_event_b = 1;
++
+ 		priv->init_done = true;
+ 	}
+ 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.17.1
+
