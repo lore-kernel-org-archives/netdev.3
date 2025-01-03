@@ -1,139 +1,111 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5961CEEA4
-	for <netdev@vger.kernel.org>; Fri,  3 Jan 2025 11:16:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323A61F9ECF;
+	Fri,  3 Jan 2025 11:16:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735903010; cv=none; b=BV3OuAPAYcjGZ45IUx6ZaiT3yHh4tsT2/cTfk+1JUzpHB3DsWN3peMsdJ0kIHpA9Si19QFhZstHHW05FdYlW0zD52fceNbGNbRHORn50yvGVSM4RXBoG2c6Wq6T7yQbFj3WPc4KQfXpve1v7cYDaflRewdchjWeh3fKAju+F/Io=
+	t=1735903017; cv=none; b=LIuFiO1XkBEZkvkKwsZ+pXUD3FZxpLt157s4DIp/UlqpcA8YpBC8KZ2lwU+mEQEBgoCWw4DZm8tDtFNF9BRv2Y5GvV+8QmMB8b+E7EY75GdHPYldu4lAimQlMt4lr95YAGMA3aLoPD7+oA/MAoqctzUJCRHOWs4Cr/Jo14Adi00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735903010; c=relaxed/simple;
-	bh=nTyK2slFmL7SAhFN+BBZhtngrREsnNeCXRrpCrrez5Q=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=sWhV0HG4RJnZoQQQtXCAMJcqAOkWLhXR6XEBo8EbHHyfuHD4pt946K3BqWR1sR3SUZssFgqDiJGs2KZAeJ6yibcwjr+GvDh8kik9cf92TW9wlgcJCeQ8qJKomBeF/Zx4ExSu/NJrdO7eP1a5ZLJURszM1tSuvgR8w9lxmggkqZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=k+Yvh/tL; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="k+Yvh/tL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=mHO73eZ4Zyam8xJy0OuivfQ5bgy3B7zgOoSDsnku8tY=; b=k+Yvh/tL2iCshIm06FH3fLQiHp
-	23biTiZNQUVZ6llbZgdfWBYIVvYNZTGT7mlsLiU/wKJmO62waJeX/NpVSUkVlBHHeZK6dKWl9omyf
-	Du6vlY/iaURiMJu/aFwv2OcdTcJB/ibt5w/SstS9kB5DUH9jbaeCkc58+Ne8xfSHo30nVnoErlsBd
-	VHgsL8GrnFcboYNuyao/a4ZqWr8XMogZIsLxDZOrGJWiueWrXGNE+GaYBRt5PhPRNPrkKM8sCldYL
-	lXJEraFGCM6EScJABIkeAgbXHr4f0b1uqzAfHa1rKHhXZWk2IBwj5+16Yyr6pqDYJ9LuLwBXbFk1R
-	q2a59OFQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:55396 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1tTffN-00030A-2o;
-	Fri, 03 Jan 2025 11:16:34 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1tTffL-007RoD-1Y; Fri, 03 Jan 2025 11:16:31 +0000
-In-Reply-To: <Z3fG9oTY9F9fCYHv@shell.armlinux.org.uk>
-References: <Z3fG9oTY9F9fCYHv@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexander Couzens <lynxis@fe80.eu>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Jose Abreu <Jose.Abreu@synopsys.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 1/6] net: phylink: add support for PCS
- supported_interfaces bitmap
+	s=arc-20240116; t=1735903017; c=relaxed/simple;
+	bh=L46r5y3XyXMN/GlccWSjfXZAWkNDi6AOwGcboh8Kgt0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mMdJwagfzoM6s7FitgCEEv63N7eddUMGhLraHmsLn8FKCZMEb5dqzlZTnO4GuTcELkRr7CRY6XtNFCzwBRe46RsPdUgCsccUufiaZ0Dh5dS0zsJulQl1/UfqC1JX4dTTnPkbfQiZR0a0TJBwrp3kxbk3Lwwnqd5Fni8A8fMW7jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-4b24d969db1so2961406137.0;
+        Fri, 03 Jan 2025 03:16:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735903012; x=1736507812;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZmSRcWChTP1b8zCChxx/86+scbNEDzughwHQ+tv0ThM=;
+        b=f4USLOY3F0/YgDv7AIIdrkEwIZj5c55Un1fdjv7mWn9OL4BXDl9BntzXuiwFuUfc8P
+         Ao4JOmV35aiBevKIzeA27PNT7kMBy8CKr1AOIWotO/yLH4kAVGABa6NqEa4CYrhqO32o
+         52yi2OaFyymx+g5CWJbsjGqnSfJaZSM7Axr9YBC1SQxb/7gKZIpuOkLo+5BR26UILHJc
+         oRWkbddbCOt82Kw+iWV9FyYDFNzksjPo+moVkGq1q0iNJnyX+baYTT91tqspS+psdxrU
+         Lmf3yan/6uGLz0xDzWt06/S2xuAxDXnUVMaQHTiarRU4nvZ67TmO5WYHvFzVgIHctIOy
+         aaJw==
+X-Forwarded-Encrypted: i=1; AJvYcCWGRYfWBKvL3vBpCKxkupFbvNeL4Vv1dOvfO/852WXrwHV7zfMHESX66tnR3Cr8mlkywCxNhLxb@vger.kernel.org, AJvYcCXPlEH1spK/TzkGwiTaOj2WdvzCKar6vZgVFv45PSZYdP/KlSqFLAMFkD7ZdIWmk7dyT2f2WR3tdB314/fjveA=@vger.kernel.org, AJvYcCXWAwVqdHVSorjyWCC5thBEA+Uk2aaa6/o8Aea3w5L/MSXgoxQSz9F0XCLzdhi9YSdKbxUDij1aPh9WbEA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxChNzzNqKGzRoa2NQUxt8ve8S++1YmwGtthWv6n9gxfZxSXgI3
+	Rg/rGD5Vqy7ZuskyTrcToFhmtfXMbzWBBYClUostO7a/di8IwKZzj6DgdU4PxFM=
+X-Gm-Gg: ASbGncvx5eUdP18biE8h+qqGsSOrtEg4RHw3wa0mtaADMCbsMmTCpfNyByIMe2ttGTY
+	fbPtRaBsqsinJkpz0wmsT7FZS+kPfkOqEc/yMylYqKBFDCfGQ6xQwxJC8zGzpHRffSg1biQqx+L
+	8yzuIwyP2XibAyOJgJvfZ3Dz8ofFvrSgIlZKx7vnd7ykOZMfI4YRLqmNtC8gJeEUYZO3OLBkGIl
+	X+FblAQaH4zP50Ou/bLD0q0vGwK4FSbXgGICkKeC1h8FboDwTdPI5Sq2MIwOzIdNRg6PA2y5nb8
+	kqiPLtGgwIDFwbhViUA=
+X-Google-Smtp-Source: AGHT+IEUXmPvSmzfOd8j8syZoYxzob9xBITG7RwvlUeeBCTV7lvwrV1KarUXxtMdaDTi9ymni78OMQ==
+X-Received: by 2002:a05:6102:442a:b0:4b1:340a:ce63 with SMTP id ada2fe7eead31-4b2cc3740f1mr39286981137.11.1735903011910;
+        Fri, 03 Jan 2025 03:16:51 -0800 (PST)
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com. [209.85.217.46])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4b2bf9a7155sm5522154137.11.2025.01.03.03.16.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Jan 2025 03:16:51 -0800 (PST)
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-4afed7b7d1bso3718605137.2;
+        Fri, 03 Jan 2025 03:16:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUR34r/Ab000bJ9adTWI6MCSZmDiLHWgeur6bAT9WFlqpi9L/A0trO/xCCENN2ZD6qwMsSq9fKW5J6/xbxHoxA=@vger.kernel.org, AJvYcCV4s2ztdg+d7PUVkHKIOGt5gUdLrfzG/taIyR780F/0ysFgUmp5qls4ayey53TiEBw2dpgneLdLuvjS3bY=@vger.kernel.org, AJvYcCVrdUSGHNmN2GDIebIEQTiJ01U2MemsaCohOSi6f/cTLvIj2zdmhgGB19MvX9RatIERweX/Kpqm@vger.kernel.org
+X-Received: by 2002:a05:6102:3e83:b0:4b2:af6e:5fef with SMTP id
+ ada2fe7eead31-4b2cc35c2d5mr38018549137.9.1735903010498; Fri, 03 Jan 2025
+ 03:16:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1tTffL-007RoD-1Y@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Fri, 03 Jan 2025 11:16:31 +0000
+References: <20241224080755.194508-1-philipp.g.hortmann@gmail.com>
+ <b811d4af6a634d61389dfefacd49853c0e77f1d7.camel@sipsolutions.net>
+ <39256db9-3d73-4e86-a49b-300dfd670212@gmail.com> <CAMuHMdVGdpVqkdvoFxu84YgBh_0fsAKeBhWFEg+nDyGLwbruig@mail.gmail.com>
+ <8dfe122d-ce0e-4a1d-9a2f-f7585036b989@gmail.com>
+In-Reply-To: <8dfe122d-ce0e-4a1d-9a2f-f7585036b989@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 3 Jan 2025 12:16:38 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdX_P9WGBiShm6Dp64Y9GRvESH-Nn=b=rRrsGbwza81VeA@mail.gmail.com>
+Message-ID: <CAMuHMdX_P9WGBiShm6Dp64Y9GRvESH-Nn=b=rRrsGbwza81VeA@mail.gmail.com>
+Subject: Re: [PATCH] net: ethernet: toshiba: ps3_gelic_wireless: Remove driver
+ using deprecated API wext
+To: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Geoff Levand <geoff@infradead.org>, 
+	Simon Horman <horms@kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
+	Larry Finger <Larry.Finger@lwfinger.net>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Pavel Machek <pavel@ucw.cz>, Stanislaw Gruszka <stf_xl@wp.pl>, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-staging@lists.linux.dev, 
+	linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
+	Stefan Lippers-Hollmann <s.l-h@gmx.de>, Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add support for the PCS to specify which interfaces it supports, which
-can be used by MAC drivers to build the main supported_interfaces
-bitmap. Phylink also validates that the PCS returned by the MAC driver
-supports the interface that the MAC was asked for.
+Hi Philipp,
 
-An empty supported_interfaces bitmap from the PCS indicates that it
-does not provide this information, and we handle that appropriately.
+On Fri, Jan 3, 2025 at 12:02=E2=80=AFPM Philipp Hortmann
+<philipp.g.hortmann@gmail.com> wrote:
+> On 03.01.25 09:53, Geert Uytterhoeven wrote:
+> > Care to tell us where the fix is?
+>
+> please find all patches for T2 on this page:
+> https://wiki.t2linux.org/guides/kernel/
+> More exact here:
+> git clone --depth=3D1 https://github.com/t2linux/linux-t2-patches patches
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/phy/phylink.c | 11 +++++++++++
- include/linux/phylink.h   |  3 +++
- 2 files changed, 14 insertions(+)
+Thanks, but I cannot find a ps3disk fix there?
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 6d50c2fdb190..31754d5fd659 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -691,6 +691,17 @@ static int phylink_validate_mac_and_pcs(struct phylink *pl,
- 			return -EINVAL;
- 		}
- 
-+		/* Ensure that this PCS supports the interface which the MAC
-+		 * returned it for. It is an error for the MAC to return a PCS
-+		 * that does not support the interface mode.
-+		 */
-+		if (!phy_interface_empty(pcs->supported_interfaces) &&
-+		    !test_bit(state->interface, pcs->supported_interfaces)) {
-+			phylink_err(pl, "MAC returned PCS which does not support %s\n",
-+				    phy_modes(state->interface));
-+			return -EINVAL;
-+		}
-+
- 		/* Validate the link parameters with the PCS */
- 		if (pcs->ops->pcs_validate) {
- 			ret = pcs->ops->pcs_validate(pcs, supported, state);
-diff --git a/include/linux/phylink.h b/include/linux/phylink.h
-index 5462cc6a37dc..4b7a20620b49 100644
---- a/include/linux/phylink.h
-+++ b/include/linux/phylink.h
-@@ -393,6 +393,8 @@ struct phylink_pcs_ops;
- 
- /**
-  * struct phylink_pcs - PHYLINK PCS instance
-+ * @supported_interfaces: describing which PHY_INTERFACE_MODE_xxx
-+ *                        are supported by this PCS.
-  * @ops: a pointer to the &struct phylink_pcs_ops structure
-  * @phylink: pointer to &struct phylink_config
-  * @neg_mode: provide PCS neg mode via "mode" argument
-@@ -409,6 +411,7 @@ struct phylink_pcs_ops;
-  * the PCS driver.
-  */
- struct phylink_pcs {
-+	DECLARE_PHY_INTERFACE_MASK(supported_interfaces);
- 	const struct phylink_pcs_ops *ops;
- 	struct phylink *phylink;
- 	bool neg_mode;
--- 
-2.30.2
+Gr{oetje,eeting}s,
 
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
