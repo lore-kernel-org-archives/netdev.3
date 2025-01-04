@@ -1,153 +1,79 @@
-Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A0A12B73
-	for <netdev@vger.kernel.org>; Sat,  4 Jan 2025 16:38:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E01745016;
+	Sat,  4 Jan 2025 16:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736008705; cv=none; b=qrW2Jr2DIhSHF+rKVzvcC6spJbqqcbZNY3NBfDEZTOQN1AaS2p0SHiaOpOuZTCu6Neps0GSTe7z4DwGGO37gYsiMGcbAtPUcuEqs2dlRmtYFSesSb9BJzCyBUM/H2ZM0iDXG6HGlsKh/dxXPPQlOOhnvA5cfiT+GO6NbpaKopxU=
+	t=1736008813; cv=none; b=vFYhavqlKNKBv+4HZ3dtpDdWudacpmlCTXtI5yj5cimLRmlDrmwizQ0BQkwQYHK8YH6PouIejfTNg9+nJyq/AfOx3k46TUj9UC1+f6ZqKmLPK56y5EF00uDres0CjPlPqQexhMemGDdqBhTF/4d1Mv+7j6H4FP2UCnm1sxEsxYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736008705; c=relaxed/simple;
-	bh=IeCtvr5yZJ137A7eMYZIqpToJA/SeJK2K71/I5TTedc=;
-	h=Date:From:Subject:To:Cc:Message-Id:MIME-Version:Content-Type; b=c2v/xnPG3gjyEanwyEThllUBARU7ENrlpJ+O8b2n8ZUVhPT8kQEEz/8SntJxPQd32g/eiVuY1uNDjhuYlPywid91bu4fqIy7pEfQ/FUHKUJeFooxDm9iOZ9suRHDQkj5hUMqSZX8EudMJnyJ12Zn1hmsAvgWa8J/Mx/OJq3sV3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unrealasia.net; spf=pass smtp.mailfrom=unrealasia.net; dkim=pass (2048-bit key) header.d=unrealasia-net.20230601.gappssmtp.com header.i=@unrealasia-net.20230601.gappssmtp.com header.b=kH6H+/zJ; arc=none smtp.client-ip=209.85.214.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unrealasia.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unrealasia.net
+	s=arc-20240116; t=1736008813; c=relaxed/simple;
+	bh=tCT+7Os+RfJEqwMhOzVKsW5XxM91BFqHnsUi9tzq2kA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=PjcwsvCrK93qybfGAfTRARlXA2gGCfB9Iu6N+QCOn+A95fZ/K9I+w6zUuH6Gkyx1jOG9E8/kW9Ma52PySAXQ4bASXD4ndYHbKjGVmTt8bHlpqXp8Yo7rufmtnkbnVBNRQJgjcstZu8klbhpkpfUQGaOmmH3Aszg5rj9yC+lTyXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oy5Ey4K/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=unrealasia-net.20230601.gappssmtp.com header.i=@unrealasia-net.20230601.gappssmtp.com header.b="kH6H+/zJ"
-Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-216728b1836so165914565ad.0
-        for <netdev@vger.kernel.org>; Sat, 04 Jan 2025 08:38:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=unrealasia-net.20230601.gappssmtp.com; s=20230601; t=1736008703; x=1736613503; darn=vger.kernel.org;
-        h=mime-version:message-id:cc:to:subject:reply-to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JA1vKVJVPUOPHadZbzfpY1WvRQlqltwXDQCOJpeNLJA=;
-        b=kH6H+/zJf9KYBYZGmYFDNGV2BQyxhW7bdtyyb5RrOcKuMUh5WkQ3FzfNaBhtP2hid5
-         yRMQyzhKG+ssIpsUlEFw8vjcljbtNuZ8GHz4A4P42jV/fQOE9PMLGM9d50+l5WQLM4Di
-         5VEyxxcCyhD/QpvWb4XL2PaXNfjHjSfblli1CB1vTJF8MkUwsqBtaWC6nPK1WiSEcqTc
-         P1DoOqknm4G1ESV0VZeAVBh5BTzO8ZCusOMEoKJExVBH6VoP38TtJaWZea77dD/aj6vr
-         2ob8I9eor8b45VafNH4cUeBsB0BQSk2LKLUY4gxj5xBTruRqPgOJ21BVF+3w6Vqkht2B
-         Spcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736008703; x=1736613503;
-        h=mime-version:message-id:cc:to:subject:reply-to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JA1vKVJVPUOPHadZbzfpY1WvRQlqltwXDQCOJpeNLJA=;
-        b=iBKbvSSq4+E5ml5S7q+/LnXJwd2xvvmk9jBOIoNdXYA2B7vHKc71QE8ELdhHSvMU+C
-         bpyvf6m+Ntee7oDSaU5C4OyEO4zuYTSVTtsuUqB64sMuS7GRblPP7SOq1ee96wDZOgka
-         3jUjAGd4jwXeKeLXeZxY+lqZ105TjFLAaKI0mNOjLPbOPfzj032QiaZAWB719Vuj3Jq7
-         OpMNMZPVUY7DU86PsYqfhoZv+f9hpGoxS/Uv6gvMGlD4cOhgMzAkFuBNRHfTz7+bJnk9
-         CX9xk4f973Xg5VuRpE+MHMUbHuGGekEkuyFY13vfwvrwtql0d/PRjPzNarjfRzaUDqPA
-         7wxw==
-X-Forwarded-Encrypted: i=1; AJvYcCVlru9M+Rk5DKaYpEaXGawFlYcAw/aqbg0hSHfu8TsPAo07OSICYEwHhQdpF0oYoPwzod1cHqY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjwgDnGFklVXLy5SWZa8hmV0kDkgDrBA3lARdAWkcRpIj45JAh
-	TrYqMRkW4143FJkys+NQbAbbgN4Ob7v9NgAVJe8drPde7sRLe8AozBZnCIe9HO8=
-X-Gm-Gg: ASbGnctnxnKHQAwq+jIkyyyTBDjxU84BRRYbhz4b/ZwKn61UglnJZBJQWWEK2ikHypd
-	aR5AZxlZkYjMLAyoFcZdL1oKwuWbC2HAz0gVYb9ONsr/cCuBwm+L7a+0F9hxr2t8duYM01Oh300
-	F/aaYN6bPFzDwzFBLG+ehAfA5g+42r1eH7wl68lg9ihn1lKaUve8bMSyao92x+enrn1/XjIJzC7
-	xPsb9Hawrp47vQK3Ygr8MBspmzjyq+RHjpu2Jlv0Xy221mBA82v2ziSfj5D2L3HQzjb
-X-Google-Smtp-Source: AGHT+IE684TxFAThsNpuFvTQimfgc+LQg0MpsEyXn+GLpMBE1zaH7uNxU1NOqgosccKpysur/6huow==
-X-Received: by 2002:a05:6a00:1889:b0:725:e721:1a41 with SMTP id d2e1a72fcca58-72abded65b5mr71748881b3a.26.1736008703324;
-        Sat, 04 Jan 2025 08:38:23 -0800 (PST)
-Received: from muhammads-ThinkPad ([2001:e68:5473:b14:56f:2b9e:4cce:63ff])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad90c1b1sm29189502b3a.185.2025.01.04.08.38.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Jan 2025 08:38:22 -0800 (PST)
-Date: Sun, 05 Jan 2025 00:38:13 +0800
-From: Muhammad Nuzaihan <zaihan@unrealasia.net>
-Reply-To: zaihan@unrealasia.net
-Subject: [PATCH net-next v3] dev: Add NMEA port for MHI WWAN device.
- (mhi0_NMEA)
-To: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>, Loic Poulain
-	<loic.poulain@linaro.org>, netdev@vger.kernel.org
-Message-Id: <PVOKPS.9BTDD92U5KK72@unrealasia.net>
-X-Mailer: geary/40.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oy5Ey4K/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8F1C4CED2;
+	Sat,  4 Jan 2025 16:40:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736008812;
+	bh=tCT+7Os+RfJEqwMhOzVKsW5XxM91BFqHnsUi9tzq2kA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=oy5Ey4K/rJxBiok5Y26aq2c/JBdNJxBbpvZS1uXWMh20I9iys5W5hqsFYHW/eUHHd
+	 v6ZOaZjH0QXOtztLErB4hHvKWZ4EJC0JYqxewwkswSUuw1JL7Y1H/F8EKXFR+Al8fM
+	 vfJkxYHjMO15shYbx6mNK52yMbekrMDrzerPB389rbERkWaV1Ejvz16UGeEVLhu++s
+	 nqxfzuwZJCQ5j/PJPRmDGLL8E4FhT0u6U9zFCKvO13Zr88ZXEQSj4WcYgfsg5rH/R1
+	 Ztmrntfq2NUoD9c6xJ8+q8lbxwVYSxNHQm3cFTxiFSSGUTSN671BANUyeixxGXbY34
+	 MFTMC3T5e+i4w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 716E8380A96F;
+	Sat,  4 Jan 2025 16:40:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2] net: stmmac: TSO: Simplify the code flow of DMA
+ descriptor allocations
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173600883331.2467289.14997468976709274364.git-patchwork-notify@kernel.org>
+Date: Sat, 04 Jan 2025 16:40:33 +0000
+References: <20241220080726.1733837-1-0x1207@gmail.com>
+In-Reply-To: <20241220080726.1733837-1-0x1207@gmail.com>
+To: Furong Xu <0x1207@gmail.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ alexandre.torgue@foss.st.com, joabreu@synopsys.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, xfr@outlook.com
 
-Based on the earlier v2 and v1 patches. This patch is a cleanup from v2.
+Hello:
 
-Removed unnecessary code added to "iosm" and "AT IOCTL" which is not 
-relevant.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Tested this change on a new kernel and module built and now device NMEA 
-(mhi0_NMEA) statements are available through /dev/wwan0nmea0 port on 
-bootup.
+On Fri, 20 Dec 2024 16:07:26 +0800 you wrote:
+> The TCP Segmentation Offload (TSO) engine is an optional function in
+> DWMAC cores, it is implemented for dwmac4 and dwxgmac2 only, ancient
+> dwmac100 and dwmac1000 are not supported by hardware. Current driver
+> code checks priv->dma_cap.tsoen which is read from MAC_HW_Feature1
+> register to determine if TSO is enabled in hardware configurations,
+> if (!priv->dma_cap.tsoen) driver never sets NETIF_F_TSO for net_device.
+> 
+> [...]
 
-Signed-off-by: Muhammad Nuzaihan Bin Kamal Luddin 
-<zaihan@unrealasia.net>
----
-v3:
-- Rebased to net-next main branch
-- Removed earlier patches that added unnecessary iosm (unrelated) and 
-AT IOCTL code.
-v2: https://lore.kernel.org/netdev/5LHFPS.G3DNPFBCDKCL2@unrealasia.net/
-v1: https://lore.kernel.org/netdev/R8AFPS.THYVK2DKSEE83@unrealasia.net/
----
+Here is the summary with links:
+  - [net-next,v2] net: stmmac: TSO: Simplify the code flow of DMA descriptor allocations
+    https://git.kernel.org/netdev/net-next/c/356939999438
 
- drivers/net/wwan/mhi_wwan_ctrl.c | 1 +
- drivers/net/wwan/wwan_core.c | 4 ++++
- include/linux/wwan.h | 2 ++
- 3 files changed, 7 insertions(+)
-
-diff --git a/drivers/net/wwan/mhi_wwan_ctrl.c 
-b/drivers/net/wwan/mhi_wwan_ctrl.c
-index e9f979d2d851..e13c0b078175 100644
---- a/drivers/net/wwan/mhi_wwan_ctrl.c
-+++ b/drivers/net/wwan/mhi_wwan_ctrl.c
-@@ -263,6 +263,7 @@ static const struct mhi_device_id 
-mhi_wwan_ctrl_match_table[] = {
-        { .chan = "QMI", .driver_data = WWAN_PORT_QMI },
-        { .chan = "DIAG", .driver_data = WWAN_PORT_QCDM },
-        { .chan = "FIREHOSE", .driver_data = WWAN_PORT_FIREHOSE },
-+	{ .chan = "NMEA", .driver_data = WWAN_PORT_NMEA },
-        {},
- };
- MODULE_DEVICE_TABLE(mhi, mhi_wwan_ctrl_match_table);
-diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-index a51e2755991a..ebf574f2b126 100644
---- a/drivers/net/wwan/wwan_core.c
-+++ b/drivers/net/wwan/wwan_core.c
-@@ -342,6 +342,10 @@ static const struct {
-                .name = "MIPC",
-                .devsuf = "mipc",
-        },
-+	[WWAN_PORT_NMEA] = {
-+		.name = "NMEA",
-+		.devsuf = "nmea",
-+	},
- };
-
- static ssize_t type_show(struct device *dev, struct device_attribute 
-*attr,
-diff --git a/include/linux/wwan.h b/include/linux/wwan.h
-index a4d6cc0c9f68..ca38a2fe0987 100644
---- a/include/linux/wwan.h
-+++ b/include/linux/wwan.h
-@@ -19,6 +19,7 @@
-  * @WWAN_PORT_FASTBOOT: Fastboot protocol control
-  * @WWAN_PORT_ADB: ADB protocol control
-  * @WWAN_PORT_MIPC: MTK MIPC diagnostic interface
-+ * @WWAN_PORT_NMEA: NMEA GPS statements interface
-  *
-  * @WWAN_PORT_MAX: Highest supported port types
-  * @WWAN_PORT_UNKNOWN: Special value to indicate an unknown port type
-@@ -34,6 +35,7 @@ enum wwan_port_type {
-        WWAN_PORT_FASTBOOT,
-        WWAN_PORT_ADB,
-        WWAN_PORT_MIPC,
-+	WWAN_PORT_NMEA,
-
-        /* Add new port types above this line */
---
-
-2.34.1
-
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
