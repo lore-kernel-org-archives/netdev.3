@@ -1,183 +1,651 @@
-Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2112.outbound.protection.outlook.com [40.107.122.112])
+Received: from smtp-out.freemail.hu (fmfe28.freemail.hu [46.107.16.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E09F156238;
-	Sun,  5 Jan 2025 21:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736112646; cv=fail; b=nIanqtt9aOMwfl5J/eAFZq/MrCt+NN8vt9hMkicnDEeje8CsJGyJR/AO3bNjUeW2PZ3Fvyl5HyjaRjmqxsQwiOay3sE6r+oToBw/0BK6CH11cAHUSaMA07dXAtJeGos8ktgbpAGcI8HJaNwyCDnhnmr5HGqwc3Mi3RxZHWGXZM4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736112646; c=relaxed/simple;
-	bh=qPsBN62Da0J2dSFpXzGMy7ubQq+8L0lOBIH3YOS/g3U=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCAC647;
+	Sun,  5 Jan 2025 23:19:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.107.16.233
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736119173; cv=none; b=dW+xT8db3YhmaVV4mq3zjpa2TpjX0kU1K/PR5gr834O2sqi8rN6mXqMXWE4SjVSuWnPCZB0Z3WwCVMuenE+UMArrD9NQUUlPrwOfuv6MONwg4ZM1dYESaGkk5uG6xgc6MofdiApWmWzmf60CQNvBS7wEDymR2zbJtuCdM1n6FH0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736119173; c=relaxed/simple;
+	bh=vUdIdvpbOJnFt9pPvvuAoqdFbnkH6BqKWVrLIN4k2UE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FJZWGTvMaRilMrC37kokf0k6mi0B940QsMmoX6QgCT3TTu4J7erIJwIhLXq8kGfLnO+FikO6GXsMQoo8h1laW2Kig91o8UGXcpMcyytodzbairunS9HjBkE4104bC0SXRAC++ol+kNr8OWj2YH9aG8+GDIsAY0AzSLRNQQn+KmY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomlin.com; spf=pass smtp.mailfrom=atomlin.com; arc=fail smtp.client-ip=40.107.122.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atomlin.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Nae3Zj60V9cXUmNS1i++YYWzgjoIJ3mVxjaKtaLxNVvE9SYYuiSWATRMa/zandcOsSQgQAc58/64jp0dQ9qPem3qGpvjrlsYkUM/oRVCtlnlDbo7pKQefMP+eziQS3ljWKXOyxAybdgxQJgGczYOL/a5MICVZEydkHzVjil83t36zv9APRKYKHMCYYjFqxSeM3L+9YwNEvVII2FtX9uQ/wfHjaiX7kDqYOPbG7PvdHsIuO33WhLpslHYRtwvImXF0rd+lSFOVmCpLGjRVeTww11cKlKnG0gN0NnPoZjCEaOFNe0MfdGHleAEpJK7bxJlmLLxwEZrAmcEVGXJukpK4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7nf/L4Gg3kVMPsldGll9347UPy20rzbGiVkUztrSztw=;
- b=UEwfNFeWZKtipWZ6xJYAvfh7cNSFRaWk05N8JRtq5h7lQ6mY5lWU0X3wAsnllf0P/roZOLslNV2qNAA1NQ1uzHnYrvq9nmP8Su+ScrHqXeju+Le7K7WR6cMk073Seokf0Fxi6VSg3Z/nwBKDV1AD5544rVVRujJidZzJrMS8j7IOBZplhB6VPPVwOqjJ0Ifu4SnY9Rg6I03kDJavp42NVPWByUy1UAMXh+bLdR2AsrWdXeG7AHYgVU6bpsqyV6WUN0FY+S/lPnVDd3fIWg181mxU5EihU7VXyGmV7vMTGhH8T+5uYy3SwQlORIE0nCIkzPMRuQW12vpaX4WP5ohAbQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=atomlin.com; dmarc=pass action=none header.from=atomlin.com;
- dkim=pass header.d=atomlin.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=atomlin.com;
-Received: from CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:70::10)
- by CWXP123MB3461.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:7a::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.17; Sun, 5 Jan
- 2025 21:30:39 +0000
-Received: from CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM
- ([fe80::5352:7866:8b0f:21f6]) by CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM
- ([fe80::5352:7866:8b0f:21f6%7]) with mapi id 15.20.8314.015; Sun, 5 Jan 2025
- 21:30:39 +0000
-From: Aaron Tomlin <atomlin@atomlin.com>
-To: ronak.doshi@broadcom.com,
-	andrew+netdev@lunn.ch,
+	 MIME-Version:Content-Type; b=p/pG+UgPj4v8LHaaNftKQdysjkganIvdyYuORj9xtnr4V6jmu0hETODdHFfMlwWiAOxSDAW/7UI+OatAFvnxAQUKiYhbeLib6jwve/Dqzdx57OMsbaaxEhfr9Y+bdGTcTElx84g8AG0VvLBZaMlBS+vQgh9u62qOU4qGwdrtcKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu; spf=pass smtp.mailfrom=freemail.hu; dkim=fail (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b=aq9XNPxa reason="signature verification failed"; arc=none smtp.client-ip=46.107.16.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freemail.hu
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b="aq9XNPxa"
+Received: from fizweb.elte.hu (fizweb.elte.hu [157.181.183.248])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.freemail.hu (Postfix) with ESMTPSA id 4YRCv12PCzz15p0;
+	Mon, 06 Jan 2025 00:19:25 +0100 (CET)
+From: egyszeregy@freemail.hu
+To: fw@strlen.de,
+	pablo@netfilter.org,
+	lorenzo@kernel.org,
+	daniel@iogearbox.net,
+	leitao@debian.org,
+	amiculas@cisco.com,
+	kadlec@netfilter.org,
 	davem@davemloft.net,
+	dsahern@kernel.org,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: bcm-kernel-feedback-list@broadcom.com,
-	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
 	linux-kernel@vger.kernel.org,
-	atomlin@atomlin.com
-Subject: [RFC PATCH 1/1] vmxnet3: Adjust maximum Rx ring buffer size
-Date: Sun,  5 Jan 2025 21:30:36 +0000
-Message-ID: <20250105213036.288356-2-atomlin@atomlin.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250105213036.288356-1-atomlin@atomlin.com>
-References: <20250105213036.288356-1-atomlin@atomlin.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0169.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18a::12) To CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:400:70::10)
+	netdev@vger.kernel.org
+Cc: =?UTF-8?q?Benjamin=20Sz=C5=91ke?= <egyszeregy@freemail.hu>
+Subject: [PATCH v6 1/3] netfilter: x_tables: Merge xt_*.h and ipt_*.h files which has same name.
+Date: Mon,  6 Jan 2025 00:18:58 +0100
+Message-ID: <20250105231900.6222-2-egyszeregy@freemail.hu>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250105231900.6222-1-egyszeregy@freemail.hu>
+References: <20250105231900.6222-1-egyszeregy@freemail.hu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP123MB3523:EE_|CWXP123MB3461:EE_
-X-MS-Office365-Filtering-Correlation-Id: eea7282c-5781-4fe1-e056-08dd2dd03309
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?TMUp1Wc6s8cspf3nHtOqRQr3b+pvbXXdOdct9wh5oJhDEBqG9v5ClZdWYXpd?=
- =?us-ascii?Q?CV8C1B0chaEmjlbbqURV4w9lZV7VMK0KfJvWlwTQ5Zy6pnRoOoTYWEaALDxD?=
- =?us-ascii?Q?GKlfkzKGvz7y3/kjqxXdQazghWwQjnBsNDyBh73kgh162714awfN8M6opBYj?=
- =?us-ascii?Q?8P8pvYGMg9K7nPsY8doBYXfFNsLmVGzH5Jyeo0RMkMD9m412vMm4bAFNf1M2?=
- =?us-ascii?Q?OFEj6u8NEr+oWJYEX71m3kaLZAE9aRSpr7uWeY7U3lacM9VT3A+aOL9GK5MC?=
- =?us-ascii?Q?70fC2qlYejIuW2TqSEJk7a4rzqUbjFcYoG4UTj5TDNGFZHHnQIbKTqpTRPA4?=
- =?us-ascii?Q?1Pz8aZmyx+KPHzKIY9gLqGCuXgNAJuFun8VglHarra0+qCDpGV6SHM/mDlFd?=
- =?us-ascii?Q?wGkHUhrJk20Vo56k0wlKCeMTat3c1kikcrwkoudN2xUdx99/n4yNmZD52NTJ?=
- =?us-ascii?Q?FGGHzYfhsFF1/wAzr47morxX4SjKhUiyQJMuSAEPH/AZnmfpFmffvCOylppR?=
- =?us-ascii?Q?qOwcl/i8wpByXzw6myaD6tdpAFnnd7N4Fnke7xEw/issee7JscolLIsYmmMX?=
- =?us-ascii?Q?t7ZElkzJTHfB7V74wDVIfnT8d7Gv20fFVxwGXQBuyuakKxQ8D0i1A1/jcp9B?=
- =?us-ascii?Q?kWrNN9s0ECfrg6rBEYZa0IqDa0UxY23jS1JEL4WA2xXRLOHn65eS+imobsPF?=
- =?us-ascii?Q?UT3fHLdlJl5EAW0sy4jdZgzSy+wHcZ8zlSlje+ZK4S5MxTuFCreraKB98apz?=
- =?us-ascii?Q?thlQ2n5QLCRg+7zeDKovuB4ey8aOv+HmqUKeOXtuvvamzIoDBkBcfsNW0kMn?=
- =?us-ascii?Q?W7iruh4xihXwXbqfQaoj23JdxlrjJE5UXibWmMSbv0xsSSZruZYffuFCQHjJ?=
- =?us-ascii?Q?fdWO90eiAXLtbrw+Ms0UEtvGINLw5m52GSMN0AxDa9Dmjmb8zDDp15XujvNa?=
- =?us-ascii?Q?cvXYLmoA2+IB5VzgMrC0b/0NfBRUS/QIqH+sZOSOAlW7HwYHTW0VicYalGti?=
- =?us-ascii?Q?+l1OpKnqTXZ5VlBNo7nUWC/Q7O8umM7C5kc1FM5LHK3R+j7R2Y3K9Gg7sHFJ?=
- =?us-ascii?Q?hVKk7YxLjQnwmzkOtDnYSNQ2HLTRPqBq2sdJ2E8Vgz2gXUEeUcfsqY5SLZhn?=
- =?us-ascii?Q?qqxwtLNnYSs/lDSVstmgjZJWA+NErcHTkLn6+9NFliX7mTM/Yo9LEm39DMLV?=
- =?us-ascii?Q?KXC1pWXD0WiaGRndZjtAMx38KWk2f6hVTktXQVjJBSZf0oDUdfhIa6t4cK+1?=
- =?us-ascii?Q?mnsW/eQFjAcB3NQ5X2Xf/mYgoR+6ZQGyz7iIMheNYpiat3fp+1/p6OjEQ6FL?=
- =?us-ascii?Q?6zB5SfZFQz0T4MlX9eY883xWk+wcY7M4nK33eEyDKLk4NlNIBNfxLwgiSZ9A?=
- =?us-ascii?Q?sWUzTwiOfnaMrMIdeuK8TShfRagP?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?SUBSyrmngqtli6WsxAerF5ot2oZwuNEFvyw5A+8ETl05cNC7JquqE9AFdmzX?=
- =?us-ascii?Q?wFs+nqg47g1UDs8iUTIJU4UkDu9ZO2j+7CoNV+dAjDAox3Nxeilnv3NNuNF/?=
- =?us-ascii?Q?+q0oHTT3xcZ8WW6gTaI2me2TqMjcrmD78lWG191dZRE+6ZPqa8ujxCrArJR2?=
- =?us-ascii?Q?stUOTSs+Uf6Lj8sYm4fg8+exfW5G7EkfOk5g5YmAcR1TQHqBQzQeV0aNcUmA?=
- =?us-ascii?Q?oU/nW3Rm9S6ki2sd7h5r08Wk+WzaYvrJaLydN4q557R+u9HBjlo8lhzNwTK1?=
- =?us-ascii?Q?Nn9QJB6ZV4ssytE/5CIN8UD0QvZx8LFTNw8CDmiNITrBLrkN+jqlvxVLe1wZ?=
- =?us-ascii?Q?rdG9/Ha0TJzhR9CvBSz8p+TTnWSiGu4HOb5oaszmh44xji4Geht33GCqhdrr?=
- =?us-ascii?Q?HhiMglE6UqE/IOsgcq3Qft8S0jfYoT9GbnFbARK0CFRa+onTzoMXHn4TEcNP?=
- =?us-ascii?Q?aRLstr+TFFCdV8ZY5+C+V3pdPOqBgXFAWH0cPplLLZBmTcfrsE0mNoDKRHVc?=
- =?us-ascii?Q?9ppe3ueRSGzB/XuMhx6NwVDK3u30McWoYXs8fDZhN8akgGZ581nVjop9/dKz?=
- =?us-ascii?Q?kAou6h+N57RWY3ezCtSlpFiJD0d4FVz7aum5TshY/M20Xy1veJRr7DLApL4X?=
- =?us-ascii?Q?PptGf1zsizoNzh2O+BfypbGd8Z27tx0SQFqKudovn5+7BMcGOQjqPkJzFWP9?=
- =?us-ascii?Q?WcvGvlUxvVc/omV3ygn50mLDEr3etg4t02rW4bMS9hpKVJzB4XHhSCf9hOwf?=
- =?us-ascii?Q?FQkzAHOUlBGN+cqZqkz6sHRUOqd4s/oZ3ZtZ/pRrtiTVb4Dm+q5b/xQt59Me?=
- =?us-ascii?Q?wlFoPEgBH1HJRNExYHv/lNGnqaNwO05152t1ouKQmCvu4/jx4o/14GTjW61P?=
- =?us-ascii?Q?7clu1YKccKqFmx75wn7KTDB7jhke7uFji+HKue8Oap06N//ryNWU08N5nohx?=
- =?us-ascii?Q?wa1sx2bArGO5dMYPGcFXoNtRbTqM87HYwkHWN27Ck+KqSs6LHxt2DdqBrtF+?=
- =?us-ascii?Q?HLpWghdbs4p30IjWqmL4Qd+NBuJmdMr2MrGwILbD54xSyYpYyVxQ3B/xdQkZ?=
- =?us-ascii?Q?lm7LpynNg7yTLIyV+sZtKCdwSVfQpElqjstG0rnWNP5LApRjq5MnwA34WxyI?=
- =?us-ascii?Q?egTvkPjGeeeN3nWhjnj18LShyvqb4EprvR3CWauZ11biKqk2FjAcuqxJ7hvB?=
- =?us-ascii?Q?KDLXyiKv42fwFbSXPmQViZMupV93x/FGy3SanjY6cSK4nWRRdxl8BKqSLaeb?=
- =?us-ascii?Q?8y9Ld7U0othNdLpcQufVcYiIK3LrloX5BwyRQ2K1d55M3teCWyyH0mvnsNPB?=
- =?us-ascii?Q?EAzoPQ/n5RSIwR0vCFOuNCYBi+GLlJZUcEanKRWrG/9ziI0evx3VbI7kyx1G?=
- =?us-ascii?Q?Q8TdZ41wknci6iiQ77sZZZ15HU4vnrEVmElwL9HJAVUbgxVWBMb6DIOMTcsO?=
- =?us-ascii?Q?oHFmAt0xZ8PuBMslEIuZ08AuOMg1b3RDtFHYJQ3X1oo1JMXG+cGlxceI+zQs?=
- =?us-ascii?Q?Baushd1BRB8/0YQ5rQ6F5J05ljUwDdomWppexHSy09IZbQD18ZPzI0SMzZ52?=
- =?us-ascii?Q?AuZ5Db+4fw+SJTVWCvgdocU6ifAZOL79puL7MjCg?=
-X-OriginatorOrg: atomlin.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eea7282c-5781-4fe1-e056-08dd2dd03309
-X-MS-Exchange-CrossTenant-AuthSource: CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2025 21:30:38.9936
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e6a32402-7d7b-4830-9a2b-76945bbbcb57
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9PZCvWJLlPZTql7SRi/TVLObhVNZE5mNFNsXBCc4YdqbXx54LTm6U/LNW6KWSsdcNzx93AUhN8HsFIzXzBW68g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP123MB3461
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/relaxed; t=1736119166;
+	s=20181004; d=freemail.hu;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	l=18227; bh=i+jRX1gebytrbt6a1DCjiUcGfnUUdyJCuHR1B0k2q6Q=;
+	b=aq9XNPxaqS1jjQNF6rQ3TnYuJiXamSgACrmfWYzyZf7WlKcwKm79N1k9cQh7G7Jp
+	3vBBEBuPHlJseMUigZjwBw33vm5gXyowVW2l0z//HkQHbKu4q5EKyaiq4egeHmdfExK
+	/lHo2nvDbxrfe3mCt12h/vOGEkp3rkoMQ8UJmhTjrmvI659QzbNUtptBYMXD6J4ftKR
+	KEMN1NejwDLXfXbZkheGkIxcXqALCyYzlEOP/k38Nnc0fwD+hmRyUH/IvlLOAlF26jm
+	EPyyzMlS4J5ej8mVVNm3tks6ufK8pM1kaoMXt3n4Agnrox1QA7/CFIDa/X3OrYbmM0F
+	aOrlRRR1fg==
 
-In the context of vmxnet3_rq_create(), the Rx Data ring's size is
-calculated by multiplying the size of Ring 0 by the size of the Rx ring
-buffer. See __dma_direct_alloc_pages(). Now if CMA (Contiguous Memory
-Allocator) is not available or the allocation attempt failed, the zone
-buddy allocator is used to try to allocate physically contiguous memory.
+From: Benjamin Szőke <egyszeregy@freemail.hu>
 
-The problem is, when the maximum supported Ring 0 and Rx ring buffer size
-is selected, the page-order required to accommodate the new size of the
-Rx Data ring is greater than the default MAX_PAGE_ORDER (10)
-i.e. __get_order(4096 * 2048) == 11. Consequently, this request can
-trigger the following warning condition in __alloc_pages_noprof():
+Merge xt_*.h, ipt_*.h and ip6t_*.h header files, which has
+same upper and lower case name format.
 
-	if (WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp))
-		return NULL;
+Add #pragma message about recommended to use
+header files with lower case format in the future.
 
-This patch ensures that the maximum Rx ring buffer size is reduced under
-a Linux kernel without CMA (Contiguous Memory Allocator) support.
-There is no point attempting a large memory allocation request that
-could exceed the maximum page-order supported by the system.
-
-Signed-off-by: Aaron Tomlin <atomlin@atomlin.com>
+Signed-off-by: Benjamin Szőke <egyszeregy@freemail.hu>
 ---
- drivers/net/vmxnet3/vmxnet3_defs.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/uapi/linux/netfilter/xt_CONNMARK.h  |  8 +++---
+ include/uapi/linux/netfilter/xt_DSCP.h      | 22 ++--------------
+ include/uapi/linux/netfilter/xt_MARK.h      |  8 +++---
+ include/uapi/linux/netfilter/xt_RATEEST.h   | 12 ++-------
+ include/uapi/linux/netfilter/xt_TCPMSS.h    | 14 ++++------
+ include/uapi/linux/netfilter/xt_connmark.h  |  7 +++--
+ include/uapi/linux/netfilter/xt_dscp.h      | 20 +++++++++++---
+ include/uapi/linux/netfilter/xt_mark.h      |  6 ++---
+ include/uapi/linux/netfilter/xt_rateest.h   | 15 ++++++++---
+ include/uapi/linux/netfilter/xt_tcpmss.h    | 12 ++++++---
+ include/uapi/linux/netfilter_ipv4/ipt_ECN.h | 29 ++-------------------
+ include/uapi/linux/netfilter_ipv4/ipt_TTL.h | 25 ++++--------------
+ include/uapi/linux/netfilter_ipv4/ipt_ecn.h | 26 ++++++++++++++++++
+ include/uapi/linux/netfilter_ipv4/ipt_ttl.h | 23 +++++++++++++---
+ include/uapi/linux/netfilter_ipv6/ip6t_HL.h | 26 ++++--------------
+ include/uapi/linux/netfilter_ipv6/ip6t_hl.h | 22 +++++++++++++---
+ net/ipv4/netfilter/ipt_ECN.c                |  2 +-
+ net/netfilter/xt_DSCP.c                     |  2 +-
+ net/netfilter/xt_HL.c                       |  4 +--
+ net/netfilter/xt_RATEEST.c                  |  2 +-
+ net/netfilter/xt_TCPMSS.c                   |  2 +-
+ 21 files changed, 143 insertions(+), 144 deletions(-)
 
-diff --git a/drivers/net/vmxnet3/vmxnet3_defs.h b/drivers/net/vmxnet3/vmxnet3_defs.h
-index 5c5148768039..cc71e697a5f3 100644
---- a/drivers/net/vmxnet3/vmxnet3_defs.h
-+++ b/drivers/net/vmxnet3/vmxnet3_defs.h
-@@ -466,7 +466,11 @@ union Vmxnet3_GenericDesc {
- #define VMXNET3_TXDATA_DESC_MIN_SIZE 128
- #define VMXNET3_TXDATA_DESC_MAX_SIZE 2048
+diff --git a/include/uapi/linux/netfilter/xt_CONNMARK.h b/include/uapi/linux/netfilter/xt_CONNMARK.h
+index 36cc956ead1a..1bc991fd546a 100644
+--- a/include/uapi/linux/netfilter/xt_CONNMARK.h
++++ b/include/uapi/linux/netfilter/xt_CONNMARK.h
+@@ -1,7 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef _XT_CONNMARK_H_target
+-#define _XT_CONNMARK_H_target
++#ifndef _XT_CONNMARK_TARGET_H
++#define _XT_CONNMARK_TARGET_H
  
-+#if defined(CONFIG_DMA_CMA)
- #define VMXNET3_RXDATA_DESC_MAX_SIZE 2048
-+#else
-+#define VMXNET3_RXDATA_DESC_MAX_SIZE 1024
-+#endif
+ #include <linux/netfilter/xt_connmark.h>
  
- #define VMXNET3_TXTS_DESC_MAX_SIZE   256
- #define VMXNET3_RXTS_DESC_MAX_SIZE   256
+-#endif /*_XT_CONNMARK_H_target*/
++#pragma message("xt_CONNMARK.h header is deprecated. Use xt_connmark.h instead.")
++
++#endif /* _XT_CONNMARK_TARGET_H */
+diff --git a/include/uapi/linux/netfilter/xt_DSCP.h b/include/uapi/linux/netfilter/xt_DSCP.h
+index 223d635e8b6f..bd550292803d 100644
+--- a/include/uapi/linux/netfilter/xt_DSCP.h
++++ b/include/uapi/linux/netfilter/xt_DSCP.h
+@@ -1,27 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-/* x_tables module for setting the IPv4/IPv6 DSCP field
+- *
+- * (C) 2002 Harald Welte <laforge@gnumonks.org>
+- * based on ipt_FTOS.c (C) 2000 by Matthew G. Marsh <mgm@paktronix.com>
+- * This software is distributed under GNU GPL v2, 1991
+- *
+- * See RFC2474 for a description of the DSCP field within the IP Header.
+- *
+- * xt_DSCP.h,v 1.7 2002/03/14 12:03:13 laforge Exp
+-*/
+ #ifndef _XT_DSCP_TARGET_H
+ #define _XT_DSCP_TARGET_H
+-#include <linux/netfilter/xt_dscp.h>
+-#include <linux/types.h>
+ 
+-/* target info */
+-struct xt_DSCP_info {
+-	__u8 dscp;
+-};
++#include <linux/netfilter/xt_dscp.h>
+ 
+-struct xt_tos_target_info {
+-	__u8 tos_value;
+-	__u8 tos_mask;
+-};
++#pragma message("xt_DSCP.h header is deprecated. Use xt_dscp.h instead.")
+ 
+ #endif /* _XT_DSCP_TARGET_H */
+diff --git a/include/uapi/linux/netfilter/xt_MARK.h b/include/uapi/linux/netfilter/xt_MARK.h
+index f1fe2b4be933..9f6c03e26c96 100644
+--- a/include/uapi/linux/netfilter/xt_MARK.h
++++ b/include/uapi/linux/netfilter/xt_MARK.h
+@@ -1,7 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef _XT_MARK_H_target
+-#define _XT_MARK_H_target
++#ifndef _XT_MARK_H_TARGET_H
++#define _XT_MARK_H_TARGET_H
+ 
+ #include <linux/netfilter/xt_mark.h>
+ 
+-#endif /*_XT_MARK_H_target */
++#pragma message("xt_MARK.h header is deprecated. Use xt_mark.h instead.")
++
++#endif /* _XT_MARK_H_TARGET_H */
+diff --git a/include/uapi/linux/netfilter/xt_RATEEST.h b/include/uapi/linux/netfilter/xt_RATEEST.h
+index 2b87a71e6266..ec3d68f67b2f 100644
+--- a/include/uapi/linux/netfilter/xt_RATEEST.h
++++ b/include/uapi/linux/netfilter/xt_RATEEST.h
+@@ -2,16 +2,8 @@
+ #ifndef _XT_RATEEST_TARGET_H
+ #define _XT_RATEEST_TARGET_H
+ 
+-#include <linux/types.h>
+-#include <linux/if.h>
++#include <linux/netfilter/xt_rateest.h>
+ 
+-struct xt_rateest_target_info {
+-	char			name[IFNAMSIZ];
+-	__s8			interval;
+-	__u8		ewma_log;
+-
+-	/* Used internally by the kernel */
+-	struct xt_rateest	*est __attribute__((aligned(8)));
+-};
++#pragma message("xt_RATEEST.h header is deprecated. Use xt_rateest.h instead.")
+ 
+ #endif /* _XT_RATEEST_TARGET_H */
+diff --git a/include/uapi/linux/netfilter/xt_TCPMSS.h b/include/uapi/linux/netfilter/xt_TCPMSS.h
+index 65ea6c9dab4b..826060264766 100644
+--- a/include/uapi/linux/netfilter/xt_TCPMSS.h
++++ b/include/uapi/linux/netfilter/xt_TCPMSS.h
+@@ -1,13 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef _XT_TCPMSS_H
+-#define _XT_TCPMSS_H
++#ifndef _XT_TCPMSS_TARGET_H
++#define _XT_TCPMSS_TARGET_H
+ 
+-#include <linux/types.h>
++#include <linux/netfilter/xt_tcpmss.h>
+ 
+-struct xt_tcpmss_info {
+-	__u16 mss;
+-};
++#pragma message("xt_TCPMSS.h header is deprecated. Use xt_tcpmss.h instead.")
+ 
+-#define XT_TCPMSS_CLAMP_PMTU 0xffff
+-
+-#endif /* _XT_TCPMSS_H */
++#endif /* _XT_TCPMSS_TARGET_H */
+diff --git a/include/uapi/linux/netfilter/xt_connmark.h b/include/uapi/linux/netfilter/xt_connmark.h
+index 41b578ccd03b..a3f03729805b 100644
+--- a/include/uapi/linux/netfilter/xt_connmark.h
++++ b/include/uapi/linux/netfilter/xt_connmark.h
+@@ -2,9 +2,8 @@
+ /* Copyright (C) 2002,2004 MARA Systems AB <https://www.marasystems.com>
+  * by Henrik Nordstrom <hno@marasystems.com>
+  */
+-
+-#ifndef _XT_CONNMARK_H
+-#define _XT_CONNMARK_H
++#ifndef _UAPI_XT_CONNMARK_H
++#define _UAPI_XT_CONNMARK_H
+ 
+ #include <linux/types.h>
+ 
+@@ -34,4 +33,4 @@ struct xt_connmark_mtinfo1 {
+ 	__u8 invert;
+ };
+ 
+-#endif /*_XT_CONNMARK_H*/
++#endif /* _UAPI_XT_CONNMARK_H */
+diff --git a/include/uapi/linux/netfilter/xt_dscp.h b/include/uapi/linux/netfilter/xt_dscp.h
+index 7594e4df8587..01e8611cd26e 100644
+--- a/include/uapi/linux/netfilter/xt_dscp.h
++++ b/include/uapi/linux/netfilter/xt_dscp.h
+@@ -1,15 +1,17 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-/* x_tables module for matching the IPv4/IPv6 DSCP field
++/* x_tables module for setting the IPv4/IPv6 DSCP field
+  *
+  * (C) 2002 Harald Welte <laforge@gnumonks.org>
++ * based on ipt_FTOS.c (C) 2000 by Matthew G. Marsh <mgm@paktronix.com>
+  * This software is distributed under GNU GPL v2, 1991
+  *
+  * See RFC2474 for a description of the DSCP field within the IP Header.
+  *
++ * xt_DSCP.h,v 1.7 2002/03/14 12:03:13 laforge Exp
+  * xt_dscp.h,v 1.3 2002/08/05 19:00:21 laforge Exp
+ */
+-#ifndef _XT_DSCP_H
+-#define _XT_DSCP_H
++#ifndef _UAPI_XT_DSCP_H
++#define _UAPI_XT_DSCP_H
+ 
+ #include <linux/types.h>
+ 
+@@ -29,4 +31,14 @@ struct xt_tos_match_info {
+ 	__u8 invert;
+ };
+ 
+-#endif /* _XT_DSCP_H */
++/* target info */
++struct xt_DSCP_info {
++	__u8 dscp;
++};
++
++struct xt_tos_target_info {
++	__u8 tos_value;
++	__u8 tos_mask;
++};
++
++#endif /* _UAPI_XT_DSCP_H */
+diff --git a/include/uapi/linux/netfilter/xt_mark.h b/include/uapi/linux/netfilter/xt_mark.h
+index 9d0526ced8f0..adcd90b00786 100644
+--- a/include/uapi/linux/netfilter/xt_mark.h
++++ b/include/uapi/linux/netfilter/xt_mark.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef _XT_MARK_H
+-#define _XT_MARK_H
++#ifndef _UAPI_XT_MARK_H
++#define _UAPI_XT_MARK_H
+ 
+ #include <linux/types.h>
+ 
+@@ -13,4 +13,4 @@ struct xt_mark_mtinfo1 {
+ 	__u8 invert;
+ };
+ 
+-#endif /*_XT_MARK_H*/
++#endif /* _UAPI_XT_MARK_H */
+diff --git a/include/uapi/linux/netfilter/xt_rateest.h b/include/uapi/linux/netfilter/xt_rateest.h
+index 52a37bdc1837..da9727fa527b 100644
+--- a/include/uapi/linux/netfilter/xt_rateest.h
++++ b/include/uapi/linux/netfilter/xt_rateest.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef _XT_RATEEST_MATCH_H
+-#define _XT_RATEEST_MATCH_H
++#ifndef _UAPI_XT_RATEEST_H
++#define _UAPI_XT_RATEEST_H
+ 
+ #include <linux/types.h>
+ #include <linux/if.h>
+@@ -36,4 +36,13 @@ struct xt_rateest_match_info {
+ 	struct xt_rateest	*est2 __attribute__((aligned(8)));
+ };
+ 
+-#endif /* _XT_RATEEST_MATCH_H */
++struct xt_rateest_target_info {
++	char		name[IFNAMSIZ];
++	__s8		interval;
++	__u8		ewma_log;
++
++	/* Used internally by the kernel */
++	struct xt_rateest	*est __attribute__((aligned(8)));
++};
++
++#endif /* _UAPI_XT_RATEEST_H */
+diff --git a/include/uapi/linux/netfilter/xt_tcpmss.h b/include/uapi/linux/netfilter/xt_tcpmss.h
+index 2268f58b4dec..3ee4acaa6e03 100644
+--- a/include/uapi/linux/netfilter/xt_tcpmss.h
++++ b/include/uapi/linux/netfilter/xt_tcpmss.h
+@@ -1,12 +1,18 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef _XT_TCPMSS_MATCH_H
+-#define _XT_TCPMSS_MATCH_H
++#ifndef _UAPI_XT_TCPMSS_H
++#define _UAPI_XT_TCPMSS_H
+ 
+ #include <linux/types.h>
+ 
++#define XT_TCPMSS_CLAMP_PMTU	0xffff
++
+ struct xt_tcpmss_match_info {
+     __u16 mss_min, mss_max;
+     __u8 invert;
+ };
+ 
+-#endif /*_XT_TCPMSS_MATCH_H*/
++struct xt_tcpmss_info {
++	__u16 mss;
++};
++
++#endif /* _UAPI_XT_TCPMSS_H */
+diff --git a/include/uapi/linux/netfilter_ipv4/ipt_ECN.h b/include/uapi/linux/netfilter_ipv4/ipt_ECN.h
+index e3630fd045b8..42317fb3a4e9 100644
+--- a/include/uapi/linux/netfilter_ipv4/ipt_ECN.h
++++ b/include/uapi/linux/netfilter_ipv4/ipt_ECN.h
+@@ -1,34 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-/* Header file for iptables ipt_ECN target
+- *
+- * (C) 2002 by Harald Welte <laforge@gnumonks.org>
+- *
+- * This software is distributed under GNU GPL v2, 1991
+- * 
+- * ipt_ECN.h,v 1.3 2002/05/29 12:17:40 laforge Exp
+-*/
+ #ifndef _IPT_ECN_TARGET_H
+ #define _IPT_ECN_TARGET_H
+ 
+-#include <linux/types.h>
+-#include <linux/netfilter/xt_DSCP.h>
++#include <linux/netfilter_ipv4/ipt_ecn.h>
+ 
+-#define IPT_ECN_IP_MASK	(~XT_DSCP_MASK)
+-
+-#define IPT_ECN_OP_SET_IP	0x01	/* set ECN bits of IPv4 header */
+-#define IPT_ECN_OP_SET_ECE	0x10	/* set ECE bit of TCP header */
+-#define IPT_ECN_OP_SET_CWR	0x20	/* set CWR bit of TCP header */
+-
+-#define IPT_ECN_OP_MASK		0xce
+-
+-struct ipt_ECN_info {
+-	__u8 operation;	/* bitset of operations */
+-	__u8 ip_ect;	/* ECT codepoint of IPv4 header, pre-shifted */
+-	union {
+-		struct {
+-			__u8 ece:1, cwr:1; /* TCP ECT bits */
+-		} tcp;
+-	} proto;
+-};
++#pragma message("ipt_ECN.h header is deprecated. Use ipt_ecn.h instead.")
+ 
+ #endif /* _IPT_ECN_TARGET_H */
+diff --git a/include/uapi/linux/netfilter_ipv4/ipt_TTL.h b/include/uapi/linux/netfilter_ipv4/ipt_TTL.h
+index 57d2fc67a943..1663493e4951 100644
+--- a/include/uapi/linux/netfilter_ipv4/ipt_TTL.h
++++ b/include/uapi/linux/netfilter_ipv4/ipt_TTL.h
+@@ -1,24 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-/* TTL modification module for IP tables
+- * (C) 2000 by Harald Welte <laforge@netfilter.org> */
++#ifndef _IPT_TTL_TARGET_H
++#define _IPT_TTL_TARGET_H
+ 
+-#ifndef _IPT_TTL_H
+-#define _IPT_TTL_H
++#include <linux/netfilter_ipv4/ipt_ttl.h>
+ 
+-#include <linux/types.h>
++#pragma message("ipt_TTL.h header is deprecated. Use ipt_ttl.h instead.")
+ 
+-enum {
+-	IPT_TTL_SET = 0,
+-	IPT_TTL_INC,
+-	IPT_TTL_DEC
+-};
+-
+-#define IPT_TTL_MAXMODE	IPT_TTL_DEC
+-
+-struct ipt_TTL_info {
+-	__u8	mode;
+-	__u8	ttl;
+-};
+-
+-
+-#endif
++#endif /* _IPT_TTL_TARGET_H */
+diff --git a/include/uapi/linux/netfilter_ipv4/ipt_ecn.h b/include/uapi/linux/netfilter_ipv4/ipt_ecn.h
+index 8121bec47026..a6d479aece21 100644
+--- a/include/uapi/linux/netfilter_ipv4/ipt_ecn.h
++++ b/include/uapi/linux/netfilter_ipv4/ipt_ecn.h
+@@ -1,10 +1,26 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++/* Header file for iptables ipt_ECN target and match
++ *
++ * (C) 2002 by Harald Welte <laforge@gnumonks.org>
++ *
++ * This software is distributed under GNU GPL v2, 1991
++ *
++ * ipt_ECN.h,v 1.3 2002/05/29 12:17:40 laforge Exp
++ */
+ #ifndef _IPT_ECN_H
+ #define _IPT_ECN_H
+ 
++#include <linux/types.h>
++#include <linux/netfilter/xt_dscp.h>
+ #include <linux/netfilter/xt_ecn.h>
++
+ #define ipt_ecn_info xt_ecn_info
+ 
++#define IPT_ECN_OP_SET_IP	0x01	/* set ECN bits of IPv4 header */
++#define IPT_ECN_OP_SET_ECE	0x10	/* set ECE bit of TCP header */
++#define IPT_ECN_OP_SET_CWR	0x20	/* set CWR bit of TCP header */
++#define IPT_ECN_OP_MASK		0xce
++
+ enum {
+ 	IPT_ECN_IP_MASK       = XT_ECN_IP_MASK,
+ 	IPT_ECN_OP_MATCH_IP   = XT_ECN_OP_MATCH_IP,
+@@ -13,4 +29,14 @@ enum {
+ 	IPT_ECN_OP_MATCH_MASK = XT_ECN_OP_MATCH_MASK,
+ };
+ 
++struct ipt_ECN_info {
++	__u8 operation;	/* bitset of operations */
++	__u8 ip_ect;	/* ECT codepoint of IPv4 header, pre-shifted */
++	union {
++		struct {
++			__u8 ece:1, cwr:1; /* TCP ECT bits */
++		} tcp;
++	} proto;
++};
++
+ #endif /* IPT_ECN_H */
+diff --git a/include/uapi/linux/netfilter_ipv4/ipt_ttl.h b/include/uapi/linux/netfilter_ipv4/ipt_ttl.h
+index ad0226a8629b..e7b8d6c58264 100644
+--- a/include/uapi/linux/netfilter_ipv4/ipt_ttl.h
++++ b/include/uapi/linux/netfilter_ipv4/ipt_ttl.h
+@@ -1,7 +1,10 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-/* IP tables module for matching the value of the TTL
+- * (C) 2000 by Harald Welte <laforge@gnumonks.org> */
+-
++/* TTL modification module for IP tables
++ * IP tables module for matching the value of the TTL
++ *
++ * (C) 2000 by Harald Welte <laforge@gnumonks.org>
++ * (C) 2000 by Harald Welte <laforge@netfilter.org>
++ */
+ #ifndef _IPT_TTL_H
+ #define _IPT_TTL_H
+ 
+@@ -20,5 +23,17 @@ struct ipt_ttl_info {
+ 	__u8	ttl;
+ };
+ 
++enum {
++	IPT_TTL_SET = 0,
++	IPT_TTL_INC,
++	IPT_TTL_DEC
++};
++
++#define IPT_TTL_MAXMODE	IPT_TTL_DEC
++
++struct ipt_TTL_info {
++	__u8	mode;
++	__u8	ttl;
++};
+ 
+-#endif
++#endif /* _IPT_TTL_H */
+diff --git a/include/uapi/linux/netfilter_ipv6/ip6t_HL.h b/include/uapi/linux/netfilter_ipv6/ip6t_HL.h
+index eaed56a287b4..55f08e20acd2 100644
+--- a/include/uapi/linux/netfilter_ipv6/ip6t_HL.h
++++ b/include/uapi/linux/netfilter_ipv6/ip6t_HL.h
+@@ -1,25 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-/* Hop Limit modification module for ip6tables
+- * Maciej Soltysiak <solt@dns.toxicfilms.tv>
+- * Based on HW's TTL module */
++#ifndef _IP6T_HL_TARGET_H
++#define _IP6T_HL_TARGET_H
+ 
+-#ifndef _IP6T_HL_H
+-#define _IP6T_HL_H
++#include <linux/netfilter_ipv6/ip6t_hl.h>
+ 
+-#include <linux/types.h>
++#pragma message("ip6t_HL.h header is deprecated. Use ip6t_hl.h instead.")
+ 
+-enum {
+-	IP6T_HL_SET = 0,
+-	IP6T_HL_INC,
+-	IP6T_HL_DEC
+-};
+-
+-#define IP6T_HL_MAXMODE	IP6T_HL_DEC
+-
+-struct ip6t_HL_info {
+-	__u8	mode;
+-	__u8	hop_limit;
+-};
+-
+-
+-#endif
++#endif /* _IP6T_HL_TARGET_H */
+diff --git a/include/uapi/linux/netfilter_ipv6/ip6t_hl.h b/include/uapi/linux/netfilter_ipv6/ip6t_hl.h
+index 6b62f9418eb2..cace0c7b649f 100644
+--- a/include/uapi/linux/netfilter_ipv6/ip6t_hl.h
++++ b/include/uapi/linux/netfilter_ipv6/ip6t_hl.h
+@@ -1,8 +1,10 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-/* ip6tables module for matching the Hop Limit value
++/* Hop Limit modification module for ip6tables
++ * ip6tables module for matching the Hop Limit value
++ *
+  * Maciej Soltysiak <solt@dns.toxicfilms.tv>
+- * Based on HW's ttl module */
+-
++ * Based on HW's ttl module
++ */
+ #ifndef _IP6T_HL_H
+ #define _IP6T_HL_H
+ 
+@@ -21,5 +23,17 @@ struct ip6t_hl_info {
+ 	__u8	hop_limit;
+ };
+ 
++enum {
++	IP6T_HL_SET = 0,
++	IP6T_HL_INC,
++	IP6T_HL_DEC
++};
++
++#define IP6T_HL_MAXMODE	IP6T_HL_DEC
++
++struct ip6t_HL_info {
++	__u8	mode;
++	__u8	hop_limit;
++};
+ 
+-#endif
++#endif /* _IP6T_HL_H */
+diff --git a/net/ipv4/netfilter/ipt_ECN.c b/net/ipv4/netfilter/ipt_ECN.c
+index 5930d3b02555..1370069a5cac 100644
+--- a/net/ipv4/netfilter/ipt_ECN.c
++++ b/net/ipv4/netfilter/ipt_ECN.c
+@@ -14,7 +14,7 @@
+ 
+ #include <linux/netfilter/x_tables.h>
+ #include <linux/netfilter_ipv4/ip_tables.h>
+-#include <linux/netfilter_ipv4/ipt_ECN.h>
++#include <linux/netfilter_ipv4/ipt_ecn.h>
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Harald Welte <laforge@netfilter.org>");
+diff --git a/net/netfilter/xt_DSCP.c b/net/netfilter/xt_DSCP.c
+index cfa44515ab72..90f24a6a26c5 100644
+--- a/net/netfilter/xt_DSCP.c
++++ b/net/netfilter/xt_DSCP.c
+@@ -14,7 +14,7 @@
+ #include <net/dsfield.h>
+ 
+ #include <linux/netfilter/x_tables.h>
+-#include <linux/netfilter/xt_DSCP.h>
++#include <linux/netfilter/xt_dscp.h>
+ 
+ MODULE_AUTHOR("Harald Welte <laforge@netfilter.org>");
+ MODULE_DESCRIPTION("Xtables: DSCP/TOS field modification");
+diff --git a/net/netfilter/xt_HL.c b/net/netfilter/xt_HL.c
+index 7873b834c300..a847d7a7eacd 100644
+--- a/net/netfilter/xt_HL.c
++++ b/net/netfilter/xt_HL.c
+@@ -14,8 +14,8 @@
+ #include <net/checksum.h>
+ 
+ #include <linux/netfilter/x_tables.h>
+-#include <linux/netfilter_ipv4/ipt_TTL.h>
+-#include <linux/netfilter_ipv6/ip6t_HL.h>
++#include <linux/netfilter_ipv4/ipt_ttl.h>
++#include <linux/netfilter_ipv6/ip6t_hl.h>
+ 
+ MODULE_AUTHOR("Harald Welte <laforge@netfilter.org>");
+ MODULE_AUTHOR("Maciej Soltysiak <solt@dns.toxicfilms.tv>");
+diff --git a/net/netfilter/xt_RATEEST.c b/net/netfilter/xt_RATEEST.c
+index 4f49cfc27831..a86bb0e4bb42 100644
+--- a/net/netfilter/xt_RATEEST.c
++++ b/net/netfilter/xt_RATEEST.c
+@@ -14,7 +14,7 @@
+ #include <net/netns/generic.h>
+ 
+ #include <linux/netfilter/x_tables.h>
+-#include <linux/netfilter/xt_RATEEST.h>
++#include <linux/netfilter/xt_rateest.h>
+ #include <net/netfilter/xt_rateest.h>
+ 
+ #define RATEEST_HSIZE	16
+diff --git a/net/netfilter/xt_TCPMSS.c b/net/netfilter/xt_TCPMSS.c
+index 116a885adb3c..3dc1320237c2 100644
+--- a/net/netfilter/xt_TCPMSS.c
++++ b/net/netfilter/xt_TCPMSS.c
+@@ -22,7 +22,7 @@
+ #include <linux/netfilter_ipv6/ip6_tables.h>
+ #include <linux/netfilter/x_tables.h>
+ #include <linux/netfilter/xt_tcpudp.h>
+-#include <linux/netfilter/xt_TCPMSS.h>
++#include <linux/netfilter/xt_tcpmss.h>
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Marc Boucher <marc@mbsi.ca>");
 -- 
-2.47.1
+2.43.5
 
