@@ -1,55 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from qs51p00im-qukt01080502.me.com (qs51p00im-qukt01080502.me.com [17.57.155.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DDA1E884
-	for <netdev@vger.kernel.org>; Sun,  5 Jan 2025 01:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CFEE27447
+	for <netdev@vger.kernel.org>; Sun,  5 Jan 2025 01:01:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.57.155.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736038800; cv=none; b=bytBCPK6kIIsJbQfdW3zEeT9LUKo6Cq0/LpgCk8aXAtK99/ploxVCjB/ZNXl+r5xXIZBH3H06QBcrukLOMaGxj1IcZeikhHssAiwsNIoqj1gYACPgeJSA02dpSl4qVz9C8Lp4d0aTYkaRJ0x9tVjOoCRmyKqr4tfcaCFL4u0ur0=
+	t=1736038918; cv=none; b=oIUeLcALuIXxANs3L/qsrh3tX3lOcem+j9PZdCpSnDDKPiZTGwU3IRg0Xy66+/veTg9975LmvFypu5mSLfR+oEisbdfxPUgU+B5E3T1TrvYYXNW+ZTdA+LY5TbkFQDmpOnc8m1TUPEhc+Y2jTTv/Kj5BRnAEUur4pqI+iVx4mvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736038800; c=relaxed/simple;
-	bh=uJHF+cGaH4I66HHivyyAeAVOU0855KNjg9rYdI1uo5A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OCPvTurJElgByRiOie0wgTHXJV6vYzGPvlJnQujAs9UF5zNqkORPOoy2JTzNdKsjDE3p5/0d2Fv1Mu247148VkyCBy62mNOZjnVYd/PdTBH8hNYJ0zucAkM2SuZI22Q3O6IbOlDOqlg1WVMVaJ1emp/GSMLiGPTZ+fJp8HVXnxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X6eGI7ba; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736038918; c=relaxed/simple;
+	bh=gMiQQvJgPekVSlaz1BFa4ZJVhpaM/h/kvwunukkPDl0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EuPgKEbRTKCtto02Atro1+DTsDVizzVq16ABHGN70ixLxlHv/kxUtiov/idzHOqnsPVlv9mpZ26DgrkW4DZSEm3Z50N9dpAMfBhLpxcXUICh/hW2lepVVfTfj5/RN+Vg9AmgCqBTaWfDwG2svpYWRGzr2Fmc0wy2ROgMQodebMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pen.gy; spf=pass smtp.mailfrom=pen.gy; dkim=pass (2048-bit key) header.d=pen.gy header.i=@pen.gy header.b=KcaVkFNr; arc=none smtp.client-ip=17.57.155.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pen.gy
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pen.gy
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X6eGI7ba"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9329DC4CED1;
-	Sun,  5 Jan 2025 00:59:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736038800;
-	bh=uJHF+cGaH4I66HHivyyAeAVOU0855KNjg9rYdI1uo5A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=X6eGI7bajrH1/tXIkt9pIwzvTMqwIohd5DFXHaztKo33/1JHyR80rzoPw2Pzka++V
-	 xCCUB0j2VArt242olQGmpBcjsnqzh/uhZsturc7Sv1gMSWpm1xcG+0ivbJ7hkR9l3X
-	 vxZNsPukKsbsH20uM45RMmimyRsJHykCXuAwkOLA/hJ6C+pQm2l20iSX3B8InyYq8H
-	 3FrU33M8NgcVvAM3Dnh8DfVF5weHvRZBDZrQ8WwZDq/R5SSsUARDf7MKpaWCQbYckm
-	 /K+sD07/Pu2ThO2cWQo321LqfXyKgt9BliZJSHxftdAjuy/Cooe5n/cWcevIz3cYpH
-	 yQdysvdfRn2KA==
-Date: Sat, 4 Jan 2025 16:59:58 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Mohsin Bashir <mohsin.bashr@gmail.com>
-Cc: netdev@vger.kernel.org, alexanderduyck@fb.com, andrew@lunn.ch,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, vadim.fedorenko@linux.dev, damato@fastly.com,
- brett.creeley@amd.com, kernel-team@meta.com
-Subject: Re: [PATCH net-next] eth: fbnic: update fbnic_poll return value
-Message-ID: <20250104165958.51d89a13@kernel.org>
-In-Reply-To: <20250104015316.3192946-1-mohsin.bashr@gmail.com>
-References: <20250104015316.3192946-1-mohsin.bashr@gmail.com>
+	dkim=pass (2048-bit key) header.d=pen.gy header.i=@pen.gy header.b="KcaVkFNr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pen.gy; s=sig1;
+	t=1736038913; bh=gbbbB52Ie41Z3FFW7G5fRmqC4w2BJtjx7AMDtdd3IJE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
+	b=KcaVkFNrWX1AMs8E9RmEKIiVCSJ1agMgB7FgPonyr+HN1Zg4tHcs8TzuOH+i+7seh
+	 j3hfHN/8Rk1a+5DJlIgyHQ6BYSxgtVPN3oH5vhFTu/DlML5zur3XaIS1qgJ7fax5Be
+	 R1dUMu134hRuJgR8NAtZ4rkTlDj07Kr/yyv8qy7fGGF6LWGKj5W5zXk5I0Rt6/z9jy
+	 rC4tlPC581mMrxgu13S1LUSBnEV8qiH7OGJDFHx7qqNlSfOIcbCFO4ZvoFWU1U4DEP
+	 FtC/ZJNBSlqIXgUM+gt7QquKjRWJxVt2bEPRyKruINLAJy3YaeHiqSWBN5NCNR4Obp
+	 2K8Sc5I82nG/w==
+Received: from fossa.se1.pen.gy (qs51p00im-dlb-asmtp-mailmevip.me.com [17.57.155.28])
+	by qs51p00im-qukt01080502.me.com (Postfix) with ESMTPSA id 3DDC34E40307;
+	Sun,  5 Jan 2025 01:01:49 +0000 (UTC)
+From: Foster Snowhill <forst@pen.gy>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Georgi Valkov <gvalkov@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org
+Subject: [PATCH net v4 0/7] usbnet: ipheth: prevent OoB reads of NDP16
+Date: Sun,  5 Jan 2025 02:01:14 +0100
+Message-ID: <20250105010121.12546-1-forst@pen.gy>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: 6l-EHaCIP8Ce8bxE1X6rzChyun-hA15B
+X-Proofpoint-ORIG-GUID: 6l-EHaCIP8Ce8bxE1X6rzChyun-hA15B
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-02_03,2025-01-02_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0
+ mlxlogscore=624 malwarescore=0 phishscore=0 bulkscore=0 suspectscore=0
+ mlxscore=0 clxscore=1030 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2501050007
 
-On Fri,  3 Jan 2025 17:53:16 -0800 Mohsin Bashir wrote:
-> In cases where the work done is less than the budget, `fbnic_poll` is
-> returning 0. This affects the tracing of `napi_poll`. Following is a
-> snippet of before and after result from `napi_poll` tracepoint. Instead,
-> returning the work done improves the manual tracing.
+iOS devices support two types of tethering over USB: regular, where the
+internet connetion is shared from the phone to the attached computer,
+and reverse, where the internet connection is shared from the attached
+computer to the phone.
 
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+The `ipheth` driver is responsible for regular tethering only. With this
+tethering type, iOS devices support two encapsulation modes on RX:
+legacy and NCM.
+
+In "NCM mode", the iOS device encapsulates RX (phone->computer) traffic
+in NCM Transfer Blocks (similarly to CDC NCM). However, unlike reverse
+tethering, regular tethering is not compliant with the CDC NCM spec:
+
+* Does not have the required CDC NCM descriptors
+* TX (computer->phone) is not NCM-encapsulated at all
+
+Thus `ipheth` implements a very limited subset of the spec with the sole
+purpose of parsing RX URBs. This driver does not aim to be
+a CDC NCM-compliant implementation and, in fact, can't be one because of
+the points above.
+
+For a complete spec-compliant CDC NCM implementation, there is already
+the `cdc_ncm` driver. This driver is used for reverse tethering on iOS
+devices. This patch series does not in any way change `cdc_ncm`.
+
+In the first iteration of the NCM mode implementation in `ipheth`,
+there were a few potential out of bounds reads when processing malformed
+URBs received from a connected device:
+
+* Only the start of NDP16 (wNdpIndex) was checked to fit in the URB
+  buffer.
+* Datagram length check as part of DPEs could overflow.
+* DPEs could be read past the end of NDP16 and even end of URB buffer
+  if a trailer DPE wasn't encountered.
+
+The above is not expected to happen in normal device operation.
+
+To address the above issues for iOS devices in NCM mode, rely on
+and check for a specific fixed format of incoming URBs expected from
+an iOS device:
+
+* 12-byte NTH16
+* 96-byte NDP16, allowing up to 22 DPEs (up to 21 datagrams + trailer)
+
+On iOS, NDP16 directly follows NTH16, and its length is constant
+regardless of the DPE count.
+
+As the regular tethering implementation of iOS devices isn't compliant
+with CDC NCM, it's not possible to use the `cdc_ncm` driver to handle
+this functionality. Furthermore, while the logic required to properly
+parse URBs with NCM-encapsulated frames is already part of said driver,
+I haven't found a nice way to reuse the existing code without messing
+with the `cdc_ncm` driver itself.
+
+I didn't want to reimplement more of the spec than I absolutely had to,
+because that work had already been done in `cdc_ncm`. Instead, to limit
+the scope, I chose to rely on the specific URB format of iOS devices
+that hasn't changed since the NCM mode was introduced there.
+
+I tested each individual patch in the series with iPhone 15 Pro Max,
+iOS 18.2: compiled cleanly, ran iperf3 between phone and computer,
+observed no errors in either kernel log or interface statistics.
+
+
+Foster Snowhill (7):
+  usbnet: ipheth: break up NCM header size computation
+  usbnet: ipheth: fix possible overflow in DPE length check
+  usbnet: ipheth: check that DPE points past NCM header
+  usbnet: ipheth: use static NDP16 location in URB
+  usbnet: ipheth: refactor NCM datagram loop
+  usbnet: ipheth: fix DPE OoB read
+  usbnet: ipheth: document scope of NCM implementation
+
+ drivers/net/usb/ipheth.c | 69 ++++++++++++++++++++++++++--------------
+ 1 file changed, 45 insertions(+), 24 deletions(-)
+
+-- 
+2.45.1
+
