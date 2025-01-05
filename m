@@ -1,176 +1,221 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9596C148FF6;
-	Sun,  5 Jan 2025 11:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0B517FE;
+	Sun,  5 Jan 2025 11:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736076618; cv=none; b=YV6aF8jq/ZVJ+QMjajh0bOYzdThT0i5NygdQhWUDHexC6wJjo9rmm10iEoAq69sVNvxO7E8hWf4zoqEZkO12AnuIUZevDmYnl356xqv9S3JGi5TS5Fzc5Ij1XG6OMbX+cJ0flh5OWJyMbnjjdLJldg3ybil6m2YtiHtBVis3tFc=
+	t=1736077131; cv=none; b=nDuayAdkA3U73rVgkM5Db3f7Jrr+tzrKdj63tkAtNptedFclT9AL83dN9QnLXlfh3ivuyzhyw5gqkNR+pZq/mPAGIefUaV18zc/pIsxPvr7Hn2S5m2KEk/vnmt8IPG4WJiBhhywrXVLTnoExRTb2yDEecrkhxF7f9RLBNP+LIDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736076618; c=relaxed/simple;
-	bh=yLbbSxJ8rOCZV34Ppdmdr/BcVBls3TYQ0BnZjPUlHaQ=;
-	h=MIME-Version:Message-ID:From:To:Cc:Subject:Content-Type:
-	 In-Reply-To:References:Date; b=ozbw4tcOJHGIHnga3TB2byYMPlY4uLp+oy6tsGRzCSNYNGO8F5pPsbrUtl47p/bc9oS8hI2ndOeCKFdtQTlVerRs6D2CiFbFrCZ5pXrhpjyP/VaYtMbMc/KeB0R6+/kjb6hdx5lHe5R/CEwOczhz4qAXnAdspz5PjEEep39yxcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=public-files.de; spf=pass smtp.mailfrom=public-files.de; dkim=pass (2048-bit key) header.d=public-files.de header.i=frank-w@public-files.de header.b=giHzQki8; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=public-files.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=public-files.de
+	s=arc-20240116; t=1736077131; c=relaxed/simple;
+	bh=VozTSC3xzIch1AbkqdudGfWudw2JMr+c5/1FneOn7gQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sNV6Bi61esB8ZCZvkVKbE9IefKcwhjoKtIqBLlarwiLnQH1F83z6Qkb83Wembk7lurmOqhXog8uo/ulb4NWu7yhmp7/8uYITI6oWQq/mzcL+bqjKkybMyaiR/JWO3vgQX/cy6NSu5uw3W7FT2euyFjlBB8Z46MOx0C1SO2XOXZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YPY69I9x; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=public-files.de header.i=frank-w@public-files.de header.b="giHzQki8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=public-files.de;
-	s=s31663417; t=1736076580; x=1736681380; i=frank-w@public-files.de;
-	bh=yLbbSxJ8rOCZV34Ppdmdr/BcVBls3TYQ0BnZjPUlHaQ=;
-	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Cc:Subject:
-	 Content-Type:In-Reply-To:References:Date:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=giHzQki8mwpHL1X1Upv9XAD2p7y7qccymTqilRNIKRYCF2r7HH/RgxDfKQH0GtvP
-	 Z5Cl1CIPWQoRf5+ahJGDl+GgsBg4BlcTQvnaeiQPkbnF10CTF5clv13vCJpsW46WF
-	 +gRxRKAn+eNRuJTDt6R7axU1NQVqBXJL8j3J6ql7BcBDJJ96cAALj4RCoef2HdCGj
-	 BwL3kcwfhItF2Fa8y5NU8bdI6NDLH+guPDGuqvomGCC0s1CjKamtWQY7KhYKbVgNr
-	 IRWwtzhHKUEHTk80WLjsMCpOJw7wZEjeuLib9zOqQZi5/cOG1C9Cvt776I4r0+Ke/
-	 mrE1r81U/K9b+GJKNg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [80.245.79.38] ([80.245.79.38]) by
- trinity-msg-rest-gmx-gmx-live-548599f845-nqxpf (via HTTP); Sun, 5 Jan 2025
- 11:29:40 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YPY69I9x"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-54252789365so6903731e87.0;
+        Sun, 05 Jan 2025 03:38:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736077128; x=1736681928; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UnXkorlhj21AU0DeCCqRG7b8kES+RU7vQ09X3NJJsME=;
+        b=YPY69I9xhwi2yDfopb6RAzh8SoJ4BUsOCDCETz3jwcua+VJ7xnzd54lz8jEgKkiP4/
+         Ya71VMdORZlU99Jx1qX3So+0bn9pFHGeqll79w/Vx3qiMNzyTbh+4Ln27GtAiIpKGXNG
+         JygD10Cm27REC6G9sx+OZjbwIy/QpGsFHKwLY70RYiy51RToz7yY0F07b8BYlmTk6LpU
+         SJH5HBFjetm+qEedJ9fz4GbcIJfMZrQ51B44veYGdlcH6cnu7EpQ5ZtYRbikRGJ5NkFB
+         06WIyb/yeMUg9TB/T0lHe/XjhVPxx/CUConsdK9F/CGNQzpIBRXQOpk6gbxUmsSn2cq+
+         iXqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736077128; x=1736681928;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UnXkorlhj21AU0DeCCqRG7b8kES+RU7vQ09X3NJJsME=;
+        b=DbzvPkMsyIQVdilUckTQYu1MurOVcBAfHwoQHCKUuzKxwEj7gwLJW0GsIl5D0jQyQ3
+         NioHNbQsCm+BT58JQ+5GGn1VpBtUwo5r06Q8qUA2Z+eAy2deUk37+P0sOvt6CLOiwSHv
+         lvXYeQm9s4MMwcIUa4WtyJpO2V+EChzbHWs8sknaLCUz/51IH5yfatD9DlKDoFta6rlj
+         lRlqnhiWvdlaaBGkw0rSXSIfEI+MECJZKzJjW8DQ6GMzw0LyksEHiJMqHlYRpY+o0zoM
+         naBS2MAl6yicm6QQtjTEoCOhW1DRLV7PrmoiVwExrkRB7Uv6TSKHDaxebCJhE0loyLjJ
+         Or5A==
+X-Forwarded-Encrypted: i=1; AJvYcCUDQqFyYFnnC2kmZiWZITucmkMQs2r8rYAYEpaL2C0tQarkxNHfN8q+Zx5Ec0tcdzYJ9A03W8y6NDWamAg=@vger.kernel.org, AJvYcCWETafic0AueWOY0eNO95taXpN2BxSfpF7EyVYMOGuDf7EPyKAzosZC2qcrw//FGZkj+g4jWZYQ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4GSakYHKRn54yRq80JWHRleW44MalfZtRIkhoT3BC6vbSilbq
+	YElvCzyrAlFq/zaGgqKR1Kcd4HpG1XH0hEc/rbv7xX1Y6RZ237eK
+X-Gm-Gg: ASbGncvzy8wqExrBK3QOAOc+wznsFohhOIgdJ6eV/E+hXDdaKJcvDc21TP0nAcUIaNN
+	8xKyBhdUMMW9pmwQlU7CgzjSjzUd82f4kdfWF0X+iyp4basYk2psRcXCVLRT1PE7PEw9FqYF7R+
+	CX9YN5Fi4nAkl6EcvGxujNhSi2b2TOwECRHVdp+Ys/ziaG4I6MS4oj/SHSpArvz8JC+0eSUP1xV
+	RpgPaHdIOykl+uaiNV6wOQGjmJa9+TZoKR37QrTQrg7kQ==
+X-Google-Smtp-Source: AGHT+IFDPTY+CmpX2fATRp62xT27/eXNzMe0FOeFJskEzO7JLWgMwhtr1w/gVc5zW30o7649VTTCcQ==
+X-Received: by 2002:a05:6512:3d86:b0:542:218a:2af7 with SMTP id 2adb3069b0e04-54229538b19mr17917597e87.15.1736077127945;
+        Sun, 05 Jan 2025 03:38:47 -0800 (PST)
+Received: from laptop.dev.lan ([2001:2040:c00f:15c::4159])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54269fd89e8sm689357e87.91.2025.01.05.03.38.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Jan 2025 03:38:46 -0800 (PST)
+From: Dmitrii Ermakov <demonihin@gmail.com>
+To: davem@davemloft.net
+Cc: edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	przemyslaw.kitszel@intel.com,
+	anthony.l.nguyen@intel.com,
+	netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org,
+	Dmitrii Ermakov <demonihin@gmail.com>
+Subject: [PATCH v2 RESEND net-next] e1000e: makes e1000_watchdog_task use queue_delayed_work
+Date: Sun,  5 Jan 2025 12:38:19 +0100
+Message-ID: <20250105113822.108706-1-demonihin@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <trinity-80459cab-e571-4699-b3f0-d73a00fe0858-1736076576826@trinity-msg-rest-gmx-gmx-live-548599f845-nqxpf>
-From: Frank Wunderlich <frank-w@public-files.de>
-To: linux@armlinux.org.uk
-Cc: angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
- conor+dt@kernel.org, chunfeng.yun@mediatek.com, vkoul@kernel.org,
- kishon@kernel.org, nbd@nbd.name, john@phrozen.org, sean.wang@mediatek.com,
- Mark-MC.Lee@mediatek.com, lorenzo@kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, lynxis@fe80.eu, dqfext@gmail.com,
- SkyLake.Huang@mediatek.com, p.zabel@pengutronix.de, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-phy@lists.infradead.org, daniel@makrotopia.org
-Subject: Aw: Re: Aw: Re: [RFC PATCH net-next v3 3/8] net: pcs:
- pcs-mtk-lynxi: add platform driver for MT7988
-Content-Type: text/plain; charset=UTF-8
-In-Reply-To: <Zv_9HuaHqtgIA4Et@shell.armlinux.org.uk>
-Importance: normal
-References: <cover.1702352117.git.daniel@makrotopia.org>
- <8aa905080bdb6760875d62cb3b2b41258837f80e.1702352117.git.daniel@makrotopia.org>
- <ZXnV/Pk1PYxAm/jS@shell.armlinux.org.uk> <ZcLc7vJ4fPmRyuxn@makrotopia.org>
- <ZiaPHWXU-82QMrMt@makrotopia.org>
- <89bd21ac-78f3-4ee4-9899-83f03169e647@public-files.de>
- <trinity-af6fdd0b-b72c-42a9-bbae-af45c02f539f-1728051457848@3c-app-gmx-bs32>
- <Zv_9HuaHqtgIA4Et@shell.armlinux.org.uk>
-Date: Sun, 5 Jan 2025 11:29:40 +0000
-Sensitivity: Normal
-X-Priority: 3
-X-UI-CLIENT-META-MAIL-DROP: W10=
-X-Provags-ID: V03:K1:cPQBleyjsF3yVX6DIROFzgJoSZ9+njddCvA1Zg7Q0R7NQ3dqksbmDt8KviNuosx6RZ3R7
- ZmKOd3Nxj7ouB2aML4I7GDumerwX9UpoEH2jmlzOqRGe6hH7yHOlD6OHk8Q/+wvf7PqpwaBjkm0/
- OTvI4KebYTP3IfIxkFVmiFzwAJ724X8J5wmwp7wVttDfaSCIw+Vuhe0R2CxsJQlmmBI+LfzU4VUF
- GTp2GZLQnn3BRGh+pJbUurUUP92izBY7teDFQ5DvC/Ux8hYb2dqx18+y2FAhkWy90nIJb/pjRfgN
- ntMvlyZUag83U3fB2L+QStyIoMPNMzrNgKN3Kd3FB4zuHwHAx2gBK1Zn0WwVtXb7mE=
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:i8+cRb5wjRU=;tWzo9G7VqNUGJNBYvFdykWxunF4
- qcUYRTAgNtkuNzjEZbxWZYdTk2FXK+/bm8WeM+rQ4PvNgb2xROin0VDwLRqA3IcdsdQ6WHqk5
- quD0Bzg1/xxsmCzgQ4V5usPTXEudYQhbZbjofMbHikFi2u5Dn2eunjeeP7OPGX5drWKFHRhQ/
- V0I5egqb/CFj1a3N2iPBcycKJ2S2y8+CRY32m+IAQODjhyJAaEO8eu+3OWoXBllehnQUmYN2A
- WBb+LHQ4OJrAwOxbbXvBy1o8KKo1V9auiPHii+38kOQnZRaNIdOoVaG9ts3aZmR9CRhVQ2FTr
- sHCGuXBtlgter6DQIMYC3mJTCSGuYQQLbbwaobvivJPnV6bk27Sxm7Kwt1IwJjIFIxXTI/CkI
- Z1SGjkIzfN3uYXT9mOgyw6sqJZCECObxtBmnYSxzw6eCqqildFPm0i/PVVjRZQH6nw/ckKBOr
- 7w/f4GujwrLbAmLmTP8TFjk+bjLbeH1bCeIdqfwxDfRLsiZBQsyqeC/NlqtdEa7RqRhYBqU9y
- DwEPyFI0y62+Ljqc1nJJtgG8sjBGbKWaRRmu9Gfku0ZRKKGFGbb9SDbM6SqqbvGjjsrbI6xaD
- DoJePLR5fiLfEvncocIrtEnCqi2U08eikELOBwpAbHrtRn+mmPlL5vK9e63hhX/TVhfjU/kXa
- ZgQrAQta2XzbdY62Uj5EowS8zRVwTLnj2cetG5VbHrCjfhSC8J5Jj1Slq/BFqa/vhjPhhgpZP
- ll/EPQm6/XNinwPcLaer24ocz5rC/A8X82hQGmqniM0q63BF0+m2Thws2vLOIb8SvR3R2ID3K
- RMUQevL0/fJOjuKBno0bmq8d4vqygfL7EzRErAZZDI3dDLydUO5ihSX0urwfxH3zYQcrsybTG
- AJheBTIfNPDoMCBhPkB+GWMa4/G05mQgCws8=
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Russel,
+Replaces watchdog timer with delayed_work as advised
+in the driver's TODO comment.
 
-> Gesendet: Freitag, 4. Oktober 2024 um 16:35
-> Von: "Russell King (Oracle)" <linux@armlinux.org.uk>
-> Betreff: Re: Aw: Re: [RFC PATCH net-next v3 3/8] net: pcs: pcs-mtk-lynxi=
-: add platform driver for MT7988
->
-> Hi Frank,
->
-> Sorry, but I've not been able to look at this, and I've completely lost
-> all context now. I was diverted onto a high priority work issue for a
-> while (was it from April to end of June) so didn't have much time
-> available for mainline work. I then had a much needed holiday (three
-> weeks) in July. I then had a clear week where I did look at mainline.
-> Since then, I've had two cataract operations that have made being on the
-> computer somewhat difficult, and it is only recently that I'm
-> effectively "back" after what is approximately six months of not having
-> a lot of bandwidth. I've seen the cataract consultant this morning, and
-> just found out that my optometrist appointment for Tuesday is too soon
-> after the cataract operation, and needs to be moved two weeks. The
-> optometrist doesn't have availability then, so it's going to be another
-> four weeks. FFS... I wish I'd known, then I could've made an
-> arrangement with the optometrist months ago for the correct date.
+Signed-off-by: Dmitrii Ermakov <demonihin@gmail.com>
+---
+V1 -> V2: Removed redundant line wraps, renamed e1000_watchdog to e1000_watchdog_work
 
-How are you? I hope you're feeling better now....
-I see you were more active on the Mailinglist in last time :)
+ drivers/net/ethernet/intel/e1000e/e1000.h  |  4 +--
+ drivers/net/ethernet/intel/e1000e/netdev.c | 42 ++++++++--------------
+ 2 files changed, 16 insertions(+), 30 deletions(-)
 
-> Now, XPCS has introduced a hack in a similar way to what you're trying
-> to do, but I wasn't able to review it, so it went in. We're heading
-> towards the situation where every PCS driver is going to have its own
-> way to look up a PCS registered as a device. This is not going to scale.
->
-> We need something better than this - and at the moment that's all I can
-> say because I haven't given it any more thought beyond that so far.
+diff --git a/drivers/net/ethernet/intel/e1000e/e1000.h b/drivers/net/ethernet/intel/e1000e/e1000.h
+index ba9c19e6994c..5a60372d2158 100644
+--- a/drivers/net/ethernet/intel/e1000e/e1000.h
++++ b/drivers/net/ethernet/intel/e1000e/e1000.h
+@@ -189,12 +189,12 @@ struct e1000_phy_regs {
+ 
+ /* board specific private data structure */
+ struct e1000_adapter {
+-	struct timer_list watchdog_timer;
+ 	struct timer_list phy_info_timer;
+ 	struct timer_list blink_timer;
+ 
++	struct delayed_work watchdog_work;
++
+ 	struct work_struct reset_task;
+-	struct work_struct watchdog_task;
+ 
+ 	const struct e1000_info *ei;
+ 
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index 286155efcedf..cb68662cdc3a 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -1778,7 +1778,7 @@ static irqreturn_t e1000_intr_msi(int __always_unused irq, void *data)
+ 		}
+ 		/* guard against interrupt when we're going down */
+ 		if (!test_bit(__E1000_DOWN, &adapter->state))
+-			mod_timer(&adapter->watchdog_timer, jiffies + 1);
++			queue_delayed_work(system_wq, &adapter->watchdog_work, 1);
+ 	}
+ 
+ 	/* Reset on uncorrectable ECC error */
+@@ -1857,7 +1857,7 @@ static irqreturn_t e1000_intr(int __always_unused irq, void *data)
+ 		}
+ 		/* guard against interrupt when we're going down */
+ 		if (!test_bit(__E1000_DOWN, &adapter->state))
+-			mod_timer(&adapter->watchdog_timer, jiffies + 1);
++			queue_delayed_work(system_wq, &adapter->watchdog_work, 1);
+ 	}
+ 
+ 	/* Reset on uncorrectable ECC error */
+@@ -1901,7 +1901,7 @@ static irqreturn_t e1000_msix_other(int __always_unused irq, void *data)
+ 		hw->mac.get_link_status = true;
+ 		/* guard against interrupt when we're going down */
+ 		if (!test_bit(__E1000_DOWN, &adapter->state))
+-			mod_timer(&adapter->watchdog_timer, jiffies + 1);
++			queue_delayed_work(system_wq, &adapter->watchdog_work, 1);
+ 	}
+ 
+ 	if (!test_bit(__E1000_DOWN, &adapter->state))
+@@ -4287,7 +4287,8 @@ void e1000e_down(struct e1000_adapter *adapter, bool reset)
+ 
+ 	napi_synchronize(&adapter->napi);
+ 
+-	del_timer_sync(&adapter->watchdog_timer);
++	cancel_delayed_work_sync(&adapter->watchdog_work);
++
+ 	del_timer_sync(&adapter->phy_info_timer);
+ 
+ 	spin_lock(&adapter->stats64_lock);
+@@ -5169,25 +5170,12 @@ static void e1000e_check_82574_phy_workaround(struct e1000_adapter *adapter)
+ 	}
+ }
+ 
+-/**
+- * e1000_watchdog - Timer Call-back
+- * @t: pointer to timer_list containing private info adapter
+- **/
+-static void e1000_watchdog(struct timer_list *t)
++static void e1000_watchdog_work(struct work_struct *work)
+ {
+-	struct e1000_adapter *adapter = from_timer(adapter, t, watchdog_timer);
+-
+-	/* Do the rest outside of interrupt context */
+-	schedule_work(&adapter->watchdog_task);
+-
+-	/* TODO: make this use queue_delayed_work() */
+-}
+-
+-static void e1000_watchdog_task(struct work_struct *work)
+-{
+-	struct e1000_adapter *adapter = container_of(work,
+-						     struct e1000_adapter,
+-						     watchdog_task);
++	struct delayed_work *dwork =
++		container_of(work, struct delayed_work, work);
++	struct e1000_adapter *adapter =
++		container_of(dwork, struct e1000_adapter, watchdog_work);
+ 	struct net_device *netdev = adapter->netdev;
+ 	struct e1000_mac_info *mac = &adapter->hw.mac;
+ 	struct e1000_phy_info *phy = &adapter->hw.phy;
+@@ -5416,8 +5404,8 @@ static void e1000_watchdog_task(struct work_struct *work)
+ 
+ 	/* Reset the timer */
+ 	if (!test_bit(__E1000_DOWN, &adapter->state))
+-		mod_timer(&adapter->watchdog_timer,
+-			  round_jiffies(jiffies + 2 * HZ));
++		queue_delayed_work(system_wq, &adapter->watchdog_work,
++				   round_jiffies(2 * HZ));
+ }
+ 
+ #define E1000_TX_FLAGS_CSUM		0x00000001
+@@ -7596,11 +7584,10 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		goto err_eeprom;
+ 	}
+ 
+-	timer_setup(&adapter->watchdog_timer, e1000_watchdog, 0);
+ 	timer_setup(&adapter->phy_info_timer, e1000_update_phy_info, 0);
++	INIT_DELAYED_WORK(&adapter->watchdog_work, e1000_watchdog_work);
+ 
+ 	INIT_WORK(&adapter->reset_task, e1000_reset_task);
+-	INIT_WORK(&adapter->watchdog_task, e1000_watchdog_task);
+ 	INIT_WORK(&adapter->downshift_task, e1000e_downshift_workaround);
+ 	INIT_WORK(&adapter->update_phy_task, e1000e_update_phy_task);
+ 	INIT_WORK(&adapter->print_hang_task, e1000_print_hw_hang);
+@@ -7741,11 +7728,10 @@ static void e1000_remove(struct pci_dev *pdev)
+ 	 * from being rescheduled.
+ 	 */
+ 	set_bit(__E1000_DOWN, &adapter->state);
+-	del_timer_sync(&adapter->watchdog_timer);
++	cancel_delayed_work_sync(&adapter->watchdog_work);
+ 	del_timer_sync(&adapter->phy_info_timer);
+ 
+ 	cancel_work_sync(&adapter->reset_task);
+-	cancel_work_sync(&adapter->watchdog_task);
+ 	cancel_work_sync(&adapter->downshift_task);
+ 	cancel_work_sync(&adapter->update_phy_task);
+ 	cancel_work_sync(&adapter->print_hang_task);
+-- 
+2.45.2
 
-Have you found some time (and were you able) to look a bit into this ([1])=
-?
-
-How would be the right way here? Daniel posted generic infrastructure for =
-standalone
-pcs drivers [2] similar to phy to have a generic base which all drivers ca=
-n use and
-which can be extended if needed.
-
-There was some discussion about how pcs should handle if the underlaying d=
-evice is removed...
-unlikely on SoC, but possible on external bus devices like mdio or pcie. I=
-mho this could be
-a callback in common code handled by vendor driver (query information from=
- mac driver or for
-SoC simply return fixed value).
-
-How should the subsystems talk with each other (callbacks, shared memory, =
-...)?
-
-DT maintainers want to avoid syscon compatibles which are widely used for =
-nodes representing only
-a register range that is used from different subsystems. As we are current=
-ly upstreaming mt7988
-(e.g. ethernet), there are some of these "devices" which currently have no=
- own driver and only
-handled by syscon driver to get the regmap. Should we really write differe=
-nt drivers with additional
-compatibles (duplicate code!) only to handle exchange of the regmap betwee=
-n subsystems? For mt7988
-which can have up to 7 syscon devices it is maybe better to have substruct=
-ures like phy, pcs and so on
-packed into an own driver to have a better overview in devicetree. But for=
- some functional blocks
-imho it makes not much sense (when really only a regmap has to be exchange=
-d between different devices).
-
-Daniel needs an answer to his questions in [1] (and [2]) on how to proceed=
-. So please help to get the
-pcs-part into the right shape.
-
-regards Frank
-
-[1] https://patchwork.kernel.org/project/netdevbpf/patch/8aa905080bdb67608=
-75d62cb3b2b41258837f80e.1702352117.git.daniel@makrotopia.org/
-[2] https://patchwork.kernel.org/project/netdevbpf/patch/ba4e359584a6b3bc4=
-b3470822c42186d5b0856f9.1721910728.git.daniel@makrotopia.org/
