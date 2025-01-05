@@ -1,148 +1,651 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-out.freemail.hu (fmfe38.freemail.hu [46.107.16.243])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB261D6188
-	for <netdev@vger.kernel.org>; Sun,  5 Jan 2025 23:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484E411CA9;
+	Sun,  5 Jan 2025 23:32:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.107.16.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736119834; cv=none; b=S2VL6Yc/yoo4MMhlHBU7Rxsnots+Isdn/rmCyl2+j1axDPZb6f1wHFWYYz3AvDsMSo9nzLue+dPVGZfC2RzHjjVzm12eF1J++UNmoZrR6+PetOBc+YBBWzwAWqPLk1evhyGvh5RFSr1BqxbG6Bcv841v5l06MO9bYt2kYoe8I8Q=
+	t=1736119954; cv=none; b=o1e8W1eKBT1ynVCIwQo9t9TGW1Jr9qcmk+4Bk0oJE5g1PRIMCFnbQXq/1V+QtAgBqtluTxic/P3jeV3wzGKhAOGfo77LkFuf5XxfMHjhDA/9Fq3ZBPGnEDoV7n++7o07AcEESCtdGFnNaDCC0zntZnEiqEclZ5/Se0mGzHCqX1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736119834; c=relaxed/simple;
-	bh=EpynQ9nW8kIVP8kcKLlLLnja814bTO/NCR8uMbFGz3I=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=tTjpNu+SJks+JbHuIoe18mYjN43MEPbFzqfqGBBu1OOw3mS6P2HW6AcbdmVRIW2O8KUn7xjld2ZjVFcIl48W+DkGSVYYFGrpQZbEAFoVQpOHGkwVldH5UZw4Ny6LExJ+aUT4taJ6KQMFmb25TVvFZE1qmk+79rmEviLK38mVdB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=waldekranz.com; spf=pass smtp.mailfrom=waldekranz.com; dkim=pass (2048-bit key) header.d=waldekranz-com.20230601.gappssmtp.com header.i=@waldekranz-com.20230601.gappssmtp.com header.b=EIEHD50V; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=waldekranz.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=waldekranz.com
+	s=arc-20240116; t=1736119954; c=relaxed/simple;
+	bh=vUdIdvpbOJnFt9pPvvuAoqdFbnkH6BqKWVrLIN4k2UE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Cj+t4SJkZUvvlg0yrezr6YSk6rnc9gL5tRzzbpEFUuC1+IYFF6H3WCLaCpZ5NzlDF8FD8fU6mCP2IhrFFeJuDTWYz4SI54xzs2x/zmVuJ+X7rHNWOn9OVpS4oqifJ1Y82meOy3JHTAi+2/5gdLWRqgTSuILRROuCFMfjLIKY2vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu; spf=pass smtp.mailfrom=freemail.hu; dkim=fail (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b=kQD4ZzTS reason="signature verification failed"; arc=none smtp.client-ip=46.107.16.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freemail.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=waldekranz-com.20230601.gappssmtp.com header.i=@waldekranz-com.20230601.gappssmtp.com header.b="EIEHD50V"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30039432861so155315291fa.2
-        for <netdev@vger.kernel.org>; Sun, 05 Jan 2025 15:30:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=waldekranz-com.20230601.gappssmtp.com; s=20230601; t=1736119829; x=1736724629; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pOLxu6427oM6Y4pgiMghY3GB+5/278OLfTvreWGtxe0=;
-        b=EIEHD50Vq6deiUSm6aB/guNwUlt+NLtbyK5Ul9AcSHxytJyzxOcktjVzv/HTgzhIXC
-         JuBgCUhOt3ABKL7NqNuYtaFOCL1hNBMiorJ3w01LjgyKr5UuWZ7eG3Vlq8jO9MXykUSl
-         bwW09TZc/Nd9IDcYYXSM9M63R9PRssyyJxbi2RibQfQBPNyMkxikCT5KU/mCGV5w5Qu5
-         9C3TnXVKkkJ+FTVbKacTXjBsWeRT0F1p5hZ2RghzsdAINj5Ni0V2BcjJpa8uViUjrN0z
-         t+ylZ3k3Zaw6zu/9j+RpDBlD+R+RqXY2motH9b+lXTmVetZxTRRJ2e1OMeGBszPBIkbU
-         WlvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736119829; x=1736724629;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pOLxu6427oM6Y4pgiMghY3GB+5/278OLfTvreWGtxe0=;
-        b=BMnEi0ppJChiOg6YdYT6h3Yb1lA9B44ESMBtNDXkxAR+HvLQNwcM6kng7JXiSdsrsl
-         +5RJ5ypib8/1UN9eSiTqhCHW73qWX2WWS7WKA9ZoJXHxD947eBqpyE7O2pB9x/BPHm97
-         y+qvp3Es4tUlTV3B7XGdHslHQhfXVX/euAGbO5HmbTCvzmjeie/V27yw3Aer9LAVW5x1
-         7XbS1ZGL6i/cxECnZrkcWH9Ozoh5OfccYXxqov0xl8XbMlnhhbxIe82CS514D3M+p11T
-         fFzVCJ6VPYEGcy8fJENFEyQgmDxz5INAcvIMr3OQOlx3x/DrrXKDQz6durrEyD/PEh+u
-         97oA==
-X-Forwarded-Encrypted: i=1; AJvYcCUI9SEKVo91chZY8xXdryj/sXfDeBbj0b+jpVbo7aLhhljOulMI307cgJI3cpLyP6b+d0cdvCI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6b8l6UCpgIB4Dal1qNKXwafHvD1u2vDVl5PsVOyw8ovjHcWL4
-	p6FZflFWTbwkYHYUzA5TFJdAwbB11bAI1Kwayqxm6mi9KCiOxdd0BxJ7EMSWKUI=
-X-Gm-Gg: ASbGncuA/ybnzbMbCfasA0cO3NFcTvlilfXtkueD4ZMYC9L4D1lzQ+eYUQT1PZt+LH6
-	JIMmkOBEGaWiQ9fOpGgZcqKH/cywX2pFCS0A2W3fDMVYsUPt4wfXS9bo6wMF/+aHKs0qly3PztN
-	3CKO4CyAGJ5NFQim7mTjcyKPJi4741n5NBO4iqwa7y3xfWKLDdK++OQ7GscbAHLvtlWeNrsdfr8
-	PYRLsMOwmispqGq3VOpqk07uVz/MF5RFg69G8bdkULdA09Ws8K1XUugI1fS9kGQ6ri36xyWpp2H
-	GVPzOcr+a74q8g==
-X-Google-Smtp-Source: AGHT+IFmJaMx8LiG+zjnxSFmfeWEIEKM8ooBjDAs88EAb6iUNAJAKTPUW/j5u6CLMyBgnfe2H1X7DA==
-X-Received: by 2002:a05:651c:1a0a:b0:300:3a15:8f1f with SMTP id 38308e7fff4ca-304685c2ef9mr221928781fa.32.1736119828293;
-        Sun, 05 Jan 2025 15:30:28 -0800 (PST)
-Received: from wkz-x13 (h-176-10-159-15.NA.cust.bahnhof.se. [176.10.159.15])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3045ad9bb7asm58734141fa.46.2025.01.05.15.30.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Jan 2025 15:30:26 -0800 (PST)
-From: Tobias Waldekranz <tobias@waldekranz.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: davem@davemloft.net, kuba@kernel.org, andrew@lunn.ch,
- f.fainelli@gmail.com, olteanv@gmail.com, netdev@vger.kernel.org,
- chris.packham@alliedtelesis.co.nz, pabeni@redhat.com, marek.behun@nic.cz
-Subject: Re: [PATCH v2 net 3/4] net: dsa: mv88e6xxx: Never force link on
- in-band managed MACs
-In-Reply-To: <Z3ph3P9AFankiZxW@shell.armlinux.org.uk>
-References: <20241219123106.730032-1-tobias@waldekranz.com>
- <20241219123106.730032-4-tobias@waldekranz.com>
- <Z3ZrH9yqtvu2-W7f@shell.armlinux.org.uk> <87zfk974br.fsf@waldekranz.com>
- <Z3bIF7xaXrje79D8@shell.armlinux.org.uk> <87pll26z2b.fsf@waldekranz.com>
- <Z3mxsEziH_ylpCD_@shell.armlinux.org.uk> <87msg66uh4.fsf@waldekranz.com>
- <Z3ph3P9AFankiZxW@shell.armlinux.org.uk>
-Date: Mon, 06 Jan 2025 00:30:25 +0100
-Message-ID: <87h66c7sa6.fsf@waldekranz.com>
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b="kQD4ZzTS"
+Received: from fizweb.elte.hu (fizweb.elte.hu [157.181.183.248])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.freemail.hu (Postfix) with ESMTPSA id 4YRDB40m8rzYhj;
+	Mon, 06 Jan 2025 00:32:28 +0100 (CET)
+From: egyszeregy@freemail.hu
+To: fw@strlen.de,
+	pablo@netfilter.org,
+	lorenzo@kernel.org,
+	daniel@iogearbox.net,
+	leitao@debian.org,
+	amiculas@cisco.com,
+	kadlec@netfilter.org,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: =?UTF-8?q?Benjamin=20Sz=C5=91ke?= <egyszeregy@freemail.hu>
+Subject: [PATCH v7 1/3] netfilter: x_tables: Merge xt_*.h and ipt_*.h files which has same name.
+Date: Mon,  6 Jan 2025 00:31:55 +0100
+Message-ID: <20250105233157.6814-2-egyszeregy@freemail.hu>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250105233157.6814-1-egyszeregy@freemail.hu>
+References: <20250105233157.6814-1-egyszeregy@freemail.hu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/relaxed; t=1736119949;
+	s=20181004; d=freemail.hu;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	l=18227; bh=i+jRX1gebytrbt6a1DCjiUcGfnUUdyJCuHR1B0k2q6Q=;
+	b=kQD4ZzTSXTLz/CHULHDcONPjWrXfi9M5ZDsYfIcdN+q4rogpCYsKSvDEE5fTzYEu
+	nwdD+JoqR9xrl4FdTDB8KL9UGcmEeSmmA5G6bzGoOcwysocgTPIG0yeZXICkRmruhst
+	1jBIClSgQsq48ytGWiZaGH7jX4Re42+rBDPxZUgKDHa+YjE0qp7XGOfLJp+ohLZl5w4
+	wOsUyabCYIoV0dCWDMATdFWvDHtBM424v/oq3cfShr3RjnNQilXj0kniS5ot0Wh+a8a
+	zG7QVknHRHv32GfBXo+paK1VENm8eUu90lMVZMEX1eK9cPAyboskSe6frTR1tteWMYc
+	HtiB+fmdiQ==
 
-On s=C3=B6n, jan 05, 2025 at 10:41, "Russell King (Oracle)" <linux@armlinux=
-.org.uk> wrote:
-> On Sun, Jan 05, 2025 at 12:16:07AM +0100, Tobias Waldekranz wrote:
->> On l=C3=B6r, jan 04, 2025 at 22:09, "Russell King (Oracle)" <linux@armli=
-nux.org.uk> wrote:
->> > Host system:
->> >
->> >   ---------------------------+
->> >     NIC (or DSA switch port) |
->> >      +-------+    +-------+  |
->> >      |       |    |       |  |
->> >      |  MAC  <---->  PCS  <-----------------------> PHY, SFP or media
->> >      |       |    |       |  |     ^
->> >      +-------+    +-------+  |     |
->> >                              |   phy interface type
->> >   ---------------------------+   also in-band signalling
->> >                                  which managed =3D "in-band-status"
->> > 				 applies to
->>=20
->> This part is 100% clear
->
-> Apparently it isn't, because...
->
->> In other words, my question is:
->>=20
->> For a NIC driver to properly support the `managed` property, how should
->> the setup and/or runtime behavior of the hardware and/or the driver
->> differ with the two following configs?
->>=20
->>     &eth0 {
->>         phy-connection-type =3D "sgmii";
->>         managed =3D "auto";
->>     };
->>=20
->> vs.
->>=20
->>     &eth0 {
->>         phy-connection-type =3D "sgmii";
->>         managed =3D "in-band-status";
->>     };
->
-> if it were, you wouldn't be asking this question.
->
-> Once again. The "managed" property defines whether in-band signalling
-> is used over the "phy-connection-type" link, which for SGMII will be
-> between the PCS and PHY, as shown in my diagram above that you claim
-> to understand 100%, but by the fact you are again asking this question,
-> you do not understand it AT ALL.
->
-> I don't know how to better explain it to you, because I think I've been
-> absolutely clear at every stage what the "managed" property describes.
-> I now have nothing further to add if you still can't understand it, so,
-> sorry, I'm giving up answering your emails on this topic, because it's
-> just too frustrating to me to continue if you still don't "get it".
+From: Benjamin Szőke <egyszeregy@freemail.hu>
 
-I agree that you have clearly explained what it describes, many times.
+Merge xt_*.h, ipt_*.h and ip6t_*.h header files, which has
+same upper and lower case name format.
 
-My remaining question - which you acknowledge that I asked twice, yet
-chose not to answer - was how software is supposed to _act_ on that
-description; presuming that the property is not in the DT merely for
-documentation purposes.
+Add #pragma message about recommended to use
+header files with lower case format in the future.
 
-I will study the kernel sources more closely and try to find
-enlightenment that way instead.  Thank you for your time.
+Signed-off-by: Benjamin Szőke <egyszeregy@freemail.hu>
+---
+ include/uapi/linux/netfilter/xt_CONNMARK.h  |  8 +++---
+ include/uapi/linux/netfilter/xt_DSCP.h      | 22 ++--------------
+ include/uapi/linux/netfilter/xt_MARK.h      |  8 +++---
+ include/uapi/linux/netfilter/xt_RATEEST.h   | 12 ++-------
+ include/uapi/linux/netfilter/xt_TCPMSS.h    | 14 ++++------
+ include/uapi/linux/netfilter/xt_connmark.h  |  7 +++--
+ include/uapi/linux/netfilter/xt_dscp.h      | 20 +++++++++++---
+ include/uapi/linux/netfilter/xt_mark.h      |  6 ++---
+ include/uapi/linux/netfilter/xt_rateest.h   | 15 ++++++++---
+ include/uapi/linux/netfilter/xt_tcpmss.h    | 12 ++++++---
+ include/uapi/linux/netfilter_ipv4/ipt_ECN.h | 29 ++-------------------
+ include/uapi/linux/netfilter_ipv4/ipt_TTL.h | 25 ++++--------------
+ include/uapi/linux/netfilter_ipv4/ipt_ecn.h | 26 ++++++++++++++++++
+ include/uapi/linux/netfilter_ipv4/ipt_ttl.h | 23 +++++++++++++---
+ include/uapi/linux/netfilter_ipv6/ip6t_HL.h | 26 ++++--------------
+ include/uapi/linux/netfilter_ipv6/ip6t_hl.h | 22 +++++++++++++---
+ net/ipv4/netfilter/ipt_ECN.c                |  2 +-
+ net/netfilter/xt_DSCP.c                     |  2 +-
+ net/netfilter/xt_HL.c                       |  4 +--
+ net/netfilter/xt_RATEEST.c                  |  2 +-
+ net/netfilter/xt_TCPMSS.c                   |  2 +-
+ 21 files changed, 143 insertions(+), 144 deletions(-)
+
+diff --git a/include/uapi/linux/netfilter/xt_CONNMARK.h b/include/uapi/linux/netfilter/xt_CONNMARK.h
+index 36cc956ead1a..1bc991fd546a 100644
+--- a/include/uapi/linux/netfilter/xt_CONNMARK.h
++++ b/include/uapi/linux/netfilter/xt_CONNMARK.h
+@@ -1,7 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef _XT_CONNMARK_H_target
+-#define _XT_CONNMARK_H_target
++#ifndef _XT_CONNMARK_TARGET_H
++#define _XT_CONNMARK_TARGET_H
+ 
+ #include <linux/netfilter/xt_connmark.h>
+ 
+-#endif /*_XT_CONNMARK_H_target*/
++#pragma message("xt_CONNMARK.h header is deprecated. Use xt_connmark.h instead.")
++
++#endif /* _XT_CONNMARK_TARGET_H */
+diff --git a/include/uapi/linux/netfilter/xt_DSCP.h b/include/uapi/linux/netfilter/xt_DSCP.h
+index 223d635e8b6f..bd550292803d 100644
+--- a/include/uapi/linux/netfilter/xt_DSCP.h
++++ b/include/uapi/linux/netfilter/xt_DSCP.h
+@@ -1,27 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-/* x_tables module for setting the IPv4/IPv6 DSCP field
+- *
+- * (C) 2002 Harald Welte <laforge@gnumonks.org>
+- * based on ipt_FTOS.c (C) 2000 by Matthew G. Marsh <mgm@paktronix.com>
+- * This software is distributed under GNU GPL v2, 1991
+- *
+- * See RFC2474 for a description of the DSCP field within the IP Header.
+- *
+- * xt_DSCP.h,v 1.7 2002/03/14 12:03:13 laforge Exp
+-*/
+ #ifndef _XT_DSCP_TARGET_H
+ #define _XT_DSCP_TARGET_H
+-#include <linux/netfilter/xt_dscp.h>
+-#include <linux/types.h>
+ 
+-/* target info */
+-struct xt_DSCP_info {
+-	__u8 dscp;
+-};
++#include <linux/netfilter/xt_dscp.h>
+ 
+-struct xt_tos_target_info {
+-	__u8 tos_value;
+-	__u8 tos_mask;
+-};
++#pragma message("xt_DSCP.h header is deprecated. Use xt_dscp.h instead.")
+ 
+ #endif /* _XT_DSCP_TARGET_H */
+diff --git a/include/uapi/linux/netfilter/xt_MARK.h b/include/uapi/linux/netfilter/xt_MARK.h
+index f1fe2b4be933..9f6c03e26c96 100644
+--- a/include/uapi/linux/netfilter/xt_MARK.h
++++ b/include/uapi/linux/netfilter/xt_MARK.h
+@@ -1,7 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef _XT_MARK_H_target
+-#define _XT_MARK_H_target
++#ifndef _XT_MARK_H_TARGET_H
++#define _XT_MARK_H_TARGET_H
+ 
+ #include <linux/netfilter/xt_mark.h>
+ 
+-#endif /*_XT_MARK_H_target */
++#pragma message("xt_MARK.h header is deprecated. Use xt_mark.h instead.")
++
++#endif /* _XT_MARK_H_TARGET_H */
+diff --git a/include/uapi/linux/netfilter/xt_RATEEST.h b/include/uapi/linux/netfilter/xt_RATEEST.h
+index 2b87a71e6266..ec3d68f67b2f 100644
+--- a/include/uapi/linux/netfilter/xt_RATEEST.h
++++ b/include/uapi/linux/netfilter/xt_RATEEST.h
+@@ -2,16 +2,8 @@
+ #ifndef _XT_RATEEST_TARGET_H
+ #define _XT_RATEEST_TARGET_H
+ 
+-#include <linux/types.h>
+-#include <linux/if.h>
++#include <linux/netfilter/xt_rateest.h>
+ 
+-struct xt_rateest_target_info {
+-	char			name[IFNAMSIZ];
+-	__s8			interval;
+-	__u8		ewma_log;
+-
+-	/* Used internally by the kernel */
+-	struct xt_rateest	*est __attribute__((aligned(8)));
+-};
++#pragma message("xt_RATEEST.h header is deprecated. Use xt_rateest.h instead.")
+ 
+ #endif /* _XT_RATEEST_TARGET_H */
+diff --git a/include/uapi/linux/netfilter/xt_TCPMSS.h b/include/uapi/linux/netfilter/xt_TCPMSS.h
+index 65ea6c9dab4b..826060264766 100644
+--- a/include/uapi/linux/netfilter/xt_TCPMSS.h
++++ b/include/uapi/linux/netfilter/xt_TCPMSS.h
+@@ -1,13 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef _XT_TCPMSS_H
+-#define _XT_TCPMSS_H
++#ifndef _XT_TCPMSS_TARGET_H
++#define _XT_TCPMSS_TARGET_H
+ 
+-#include <linux/types.h>
++#include <linux/netfilter/xt_tcpmss.h>
+ 
+-struct xt_tcpmss_info {
+-	__u16 mss;
+-};
++#pragma message("xt_TCPMSS.h header is deprecated. Use xt_tcpmss.h instead.")
+ 
+-#define XT_TCPMSS_CLAMP_PMTU 0xffff
+-
+-#endif /* _XT_TCPMSS_H */
++#endif /* _XT_TCPMSS_TARGET_H */
+diff --git a/include/uapi/linux/netfilter/xt_connmark.h b/include/uapi/linux/netfilter/xt_connmark.h
+index 41b578ccd03b..a3f03729805b 100644
+--- a/include/uapi/linux/netfilter/xt_connmark.h
++++ b/include/uapi/linux/netfilter/xt_connmark.h
+@@ -2,9 +2,8 @@
+ /* Copyright (C) 2002,2004 MARA Systems AB <https://www.marasystems.com>
+  * by Henrik Nordstrom <hno@marasystems.com>
+  */
+-
+-#ifndef _XT_CONNMARK_H
+-#define _XT_CONNMARK_H
++#ifndef _UAPI_XT_CONNMARK_H
++#define _UAPI_XT_CONNMARK_H
+ 
+ #include <linux/types.h>
+ 
+@@ -34,4 +33,4 @@ struct xt_connmark_mtinfo1 {
+ 	__u8 invert;
+ };
+ 
+-#endif /*_XT_CONNMARK_H*/
++#endif /* _UAPI_XT_CONNMARK_H */
+diff --git a/include/uapi/linux/netfilter/xt_dscp.h b/include/uapi/linux/netfilter/xt_dscp.h
+index 7594e4df8587..01e8611cd26e 100644
+--- a/include/uapi/linux/netfilter/xt_dscp.h
++++ b/include/uapi/linux/netfilter/xt_dscp.h
+@@ -1,15 +1,17 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-/* x_tables module for matching the IPv4/IPv6 DSCP field
++/* x_tables module for setting the IPv4/IPv6 DSCP field
+  *
+  * (C) 2002 Harald Welte <laforge@gnumonks.org>
++ * based on ipt_FTOS.c (C) 2000 by Matthew G. Marsh <mgm@paktronix.com>
+  * This software is distributed under GNU GPL v2, 1991
+  *
+  * See RFC2474 for a description of the DSCP field within the IP Header.
+  *
++ * xt_DSCP.h,v 1.7 2002/03/14 12:03:13 laforge Exp
+  * xt_dscp.h,v 1.3 2002/08/05 19:00:21 laforge Exp
+ */
+-#ifndef _XT_DSCP_H
+-#define _XT_DSCP_H
++#ifndef _UAPI_XT_DSCP_H
++#define _UAPI_XT_DSCP_H
+ 
+ #include <linux/types.h>
+ 
+@@ -29,4 +31,14 @@ struct xt_tos_match_info {
+ 	__u8 invert;
+ };
+ 
+-#endif /* _XT_DSCP_H */
++/* target info */
++struct xt_DSCP_info {
++	__u8 dscp;
++};
++
++struct xt_tos_target_info {
++	__u8 tos_value;
++	__u8 tos_mask;
++};
++
++#endif /* _UAPI_XT_DSCP_H */
+diff --git a/include/uapi/linux/netfilter/xt_mark.h b/include/uapi/linux/netfilter/xt_mark.h
+index 9d0526ced8f0..adcd90b00786 100644
+--- a/include/uapi/linux/netfilter/xt_mark.h
++++ b/include/uapi/linux/netfilter/xt_mark.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef _XT_MARK_H
+-#define _XT_MARK_H
++#ifndef _UAPI_XT_MARK_H
++#define _UAPI_XT_MARK_H
+ 
+ #include <linux/types.h>
+ 
+@@ -13,4 +13,4 @@ struct xt_mark_mtinfo1 {
+ 	__u8 invert;
+ };
+ 
+-#endif /*_XT_MARK_H*/
++#endif /* _UAPI_XT_MARK_H */
+diff --git a/include/uapi/linux/netfilter/xt_rateest.h b/include/uapi/linux/netfilter/xt_rateest.h
+index 52a37bdc1837..da9727fa527b 100644
+--- a/include/uapi/linux/netfilter/xt_rateest.h
++++ b/include/uapi/linux/netfilter/xt_rateest.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef _XT_RATEEST_MATCH_H
+-#define _XT_RATEEST_MATCH_H
++#ifndef _UAPI_XT_RATEEST_H
++#define _UAPI_XT_RATEEST_H
+ 
+ #include <linux/types.h>
+ #include <linux/if.h>
+@@ -36,4 +36,13 @@ struct xt_rateest_match_info {
+ 	struct xt_rateest	*est2 __attribute__((aligned(8)));
+ };
+ 
+-#endif /* _XT_RATEEST_MATCH_H */
++struct xt_rateest_target_info {
++	char		name[IFNAMSIZ];
++	__s8		interval;
++	__u8		ewma_log;
++
++	/* Used internally by the kernel */
++	struct xt_rateest	*est __attribute__((aligned(8)));
++};
++
++#endif /* _UAPI_XT_RATEEST_H */
+diff --git a/include/uapi/linux/netfilter/xt_tcpmss.h b/include/uapi/linux/netfilter/xt_tcpmss.h
+index 2268f58b4dec..3ee4acaa6e03 100644
+--- a/include/uapi/linux/netfilter/xt_tcpmss.h
++++ b/include/uapi/linux/netfilter/xt_tcpmss.h
+@@ -1,12 +1,18 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef _XT_TCPMSS_MATCH_H
+-#define _XT_TCPMSS_MATCH_H
++#ifndef _UAPI_XT_TCPMSS_H
++#define _UAPI_XT_TCPMSS_H
+ 
+ #include <linux/types.h>
+ 
++#define XT_TCPMSS_CLAMP_PMTU	0xffff
++
+ struct xt_tcpmss_match_info {
+     __u16 mss_min, mss_max;
+     __u8 invert;
+ };
+ 
+-#endif /*_XT_TCPMSS_MATCH_H*/
++struct xt_tcpmss_info {
++	__u16 mss;
++};
++
++#endif /* _UAPI_XT_TCPMSS_H */
+diff --git a/include/uapi/linux/netfilter_ipv4/ipt_ECN.h b/include/uapi/linux/netfilter_ipv4/ipt_ECN.h
+index e3630fd045b8..42317fb3a4e9 100644
+--- a/include/uapi/linux/netfilter_ipv4/ipt_ECN.h
++++ b/include/uapi/linux/netfilter_ipv4/ipt_ECN.h
+@@ -1,34 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-/* Header file for iptables ipt_ECN target
+- *
+- * (C) 2002 by Harald Welte <laforge@gnumonks.org>
+- *
+- * This software is distributed under GNU GPL v2, 1991
+- * 
+- * ipt_ECN.h,v 1.3 2002/05/29 12:17:40 laforge Exp
+-*/
+ #ifndef _IPT_ECN_TARGET_H
+ #define _IPT_ECN_TARGET_H
+ 
+-#include <linux/types.h>
+-#include <linux/netfilter/xt_DSCP.h>
++#include <linux/netfilter_ipv4/ipt_ecn.h>
+ 
+-#define IPT_ECN_IP_MASK	(~XT_DSCP_MASK)
+-
+-#define IPT_ECN_OP_SET_IP	0x01	/* set ECN bits of IPv4 header */
+-#define IPT_ECN_OP_SET_ECE	0x10	/* set ECE bit of TCP header */
+-#define IPT_ECN_OP_SET_CWR	0x20	/* set CWR bit of TCP header */
+-
+-#define IPT_ECN_OP_MASK		0xce
+-
+-struct ipt_ECN_info {
+-	__u8 operation;	/* bitset of operations */
+-	__u8 ip_ect;	/* ECT codepoint of IPv4 header, pre-shifted */
+-	union {
+-		struct {
+-			__u8 ece:1, cwr:1; /* TCP ECT bits */
+-		} tcp;
+-	} proto;
+-};
++#pragma message("ipt_ECN.h header is deprecated. Use ipt_ecn.h instead.")
+ 
+ #endif /* _IPT_ECN_TARGET_H */
+diff --git a/include/uapi/linux/netfilter_ipv4/ipt_TTL.h b/include/uapi/linux/netfilter_ipv4/ipt_TTL.h
+index 57d2fc67a943..1663493e4951 100644
+--- a/include/uapi/linux/netfilter_ipv4/ipt_TTL.h
++++ b/include/uapi/linux/netfilter_ipv4/ipt_TTL.h
+@@ -1,24 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-/* TTL modification module for IP tables
+- * (C) 2000 by Harald Welte <laforge@netfilter.org> */
++#ifndef _IPT_TTL_TARGET_H
++#define _IPT_TTL_TARGET_H
+ 
+-#ifndef _IPT_TTL_H
+-#define _IPT_TTL_H
++#include <linux/netfilter_ipv4/ipt_ttl.h>
+ 
+-#include <linux/types.h>
++#pragma message("ipt_TTL.h header is deprecated. Use ipt_ttl.h instead.")
+ 
+-enum {
+-	IPT_TTL_SET = 0,
+-	IPT_TTL_INC,
+-	IPT_TTL_DEC
+-};
+-
+-#define IPT_TTL_MAXMODE	IPT_TTL_DEC
+-
+-struct ipt_TTL_info {
+-	__u8	mode;
+-	__u8	ttl;
+-};
+-
+-
+-#endif
++#endif /* _IPT_TTL_TARGET_H */
+diff --git a/include/uapi/linux/netfilter_ipv4/ipt_ecn.h b/include/uapi/linux/netfilter_ipv4/ipt_ecn.h
+index 8121bec47026..a6d479aece21 100644
+--- a/include/uapi/linux/netfilter_ipv4/ipt_ecn.h
++++ b/include/uapi/linux/netfilter_ipv4/ipt_ecn.h
+@@ -1,10 +1,26 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++/* Header file for iptables ipt_ECN target and match
++ *
++ * (C) 2002 by Harald Welte <laforge@gnumonks.org>
++ *
++ * This software is distributed under GNU GPL v2, 1991
++ *
++ * ipt_ECN.h,v 1.3 2002/05/29 12:17:40 laforge Exp
++ */
+ #ifndef _IPT_ECN_H
+ #define _IPT_ECN_H
+ 
++#include <linux/types.h>
++#include <linux/netfilter/xt_dscp.h>
+ #include <linux/netfilter/xt_ecn.h>
++
+ #define ipt_ecn_info xt_ecn_info
+ 
++#define IPT_ECN_OP_SET_IP	0x01	/* set ECN bits of IPv4 header */
++#define IPT_ECN_OP_SET_ECE	0x10	/* set ECE bit of TCP header */
++#define IPT_ECN_OP_SET_CWR	0x20	/* set CWR bit of TCP header */
++#define IPT_ECN_OP_MASK		0xce
++
+ enum {
+ 	IPT_ECN_IP_MASK       = XT_ECN_IP_MASK,
+ 	IPT_ECN_OP_MATCH_IP   = XT_ECN_OP_MATCH_IP,
+@@ -13,4 +29,14 @@ enum {
+ 	IPT_ECN_OP_MATCH_MASK = XT_ECN_OP_MATCH_MASK,
+ };
+ 
++struct ipt_ECN_info {
++	__u8 operation;	/* bitset of operations */
++	__u8 ip_ect;	/* ECT codepoint of IPv4 header, pre-shifted */
++	union {
++		struct {
++			__u8 ece:1, cwr:1; /* TCP ECT bits */
++		} tcp;
++	} proto;
++};
++
+ #endif /* IPT_ECN_H */
+diff --git a/include/uapi/linux/netfilter_ipv4/ipt_ttl.h b/include/uapi/linux/netfilter_ipv4/ipt_ttl.h
+index ad0226a8629b..e7b8d6c58264 100644
+--- a/include/uapi/linux/netfilter_ipv4/ipt_ttl.h
++++ b/include/uapi/linux/netfilter_ipv4/ipt_ttl.h
+@@ -1,7 +1,10 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-/* IP tables module for matching the value of the TTL
+- * (C) 2000 by Harald Welte <laforge@gnumonks.org> */
+-
++/* TTL modification module for IP tables
++ * IP tables module for matching the value of the TTL
++ *
++ * (C) 2000 by Harald Welte <laforge@gnumonks.org>
++ * (C) 2000 by Harald Welte <laforge@netfilter.org>
++ */
+ #ifndef _IPT_TTL_H
+ #define _IPT_TTL_H
+ 
+@@ -20,5 +23,17 @@ struct ipt_ttl_info {
+ 	__u8	ttl;
+ };
+ 
++enum {
++	IPT_TTL_SET = 0,
++	IPT_TTL_INC,
++	IPT_TTL_DEC
++};
++
++#define IPT_TTL_MAXMODE	IPT_TTL_DEC
++
++struct ipt_TTL_info {
++	__u8	mode;
++	__u8	ttl;
++};
+ 
+-#endif
++#endif /* _IPT_TTL_H */
+diff --git a/include/uapi/linux/netfilter_ipv6/ip6t_HL.h b/include/uapi/linux/netfilter_ipv6/ip6t_HL.h
+index eaed56a287b4..55f08e20acd2 100644
+--- a/include/uapi/linux/netfilter_ipv6/ip6t_HL.h
++++ b/include/uapi/linux/netfilter_ipv6/ip6t_HL.h
+@@ -1,25 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-/* Hop Limit modification module for ip6tables
+- * Maciej Soltysiak <solt@dns.toxicfilms.tv>
+- * Based on HW's TTL module */
++#ifndef _IP6T_HL_TARGET_H
++#define _IP6T_HL_TARGET_H
+ 
+-#ifndef _IP6T_HL_H
+-#define _IP6T_HL_H
++#include <linux/netfilter_ipv6/ip6t_hl.h>
+ 
+-#include <linux/types.h>
++#pragma message("ip6t_HL.h header is deprecated. Use ip6t_hl.h instead.")
+ 
+-enum {
+-	IP6T_HL_SET = 0,
+-	IP6T_HL_INC,
+-	IP6T_HL_DEC
+-};
+-
+-#define IP6T_HL_MAXMODE	IP6T_HL_DEC
+-
+-struct ip6t_HL_info {
+-	__u8	mode;
+-	__u8	hop_limit;
+-};
+-
+-
+-#endif
++#endif /* _IP6T_HL_TARGET_H */
+diff --git a/include/uapi/linux/netfilter_ipv6/ip6t_hl.h b/include/uapi/linux/netfilter_ipv6/ip6t_hl.h
+index 6b62f9418eb2..cace0c7b649f 100644
+--- a/include/uapi/linux/netfilter_ipv6/ip6t_hl.h
++++ b/include/uapi/linux/netfilter_ipv6/ip6t_hl.h
+@@ -1,8 +1,10 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-/* ip6tables module for matching the Hop Limit value
++/* Hop Limit modification module for ip6tables
++ * ip6tables module for matching the Hop Limit value
++ *
+  * Maciej Soltysiak <solt@dns.toxicfilms.tv>
+- * Based on HW's ttl module */
+-
++ * Based on HW's ttl module
++ */
+ #ifndef _IP6T_HL_H
+ #define _IP6T_HL_H
+ 
+@@ -21,5 +23,17 @@ struct ip6t_hl_info {
+ 	__u8	hop_limit;
+ };
+ 
++enum {
++	IP6T_HL_SET = 0,
++	IP6T_HL_INC,
++	IP6T_HL_DEC
++};
++
++#define IP6T_HL_MAXMODE	IP6T_HL_DEC
++
++struct ip6t_HL_info {
++	__u8	mode;
++	__u8	hop_limit;
++};
+ 
+-#endif
++#endif /* _IP6T_HL_H */
+diff --git a/net/ipv4/netfilter/ipt_ECN.c b/net/ipv4/netfilter/ipt_ECN.c
+index 5930d3b02555..1370069a5cac 100644
+--- a/net/ipv4/netfilter/ipt_ECN.c
++++ b/net/ipv4/netfilter/ipt_ECN.c
+@@ -14,7 +14,7 @@
+ 
+ #include <linux/netfilter/x_tables.h>
+ #include <linux/netfilter_ipv4/ip_tables.h>
+-#include <linux/netfilter_ipv4/ipt_ECN.h>
++#include <linux/netfilter_ipv4/ipt_ecn.h>
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Harald Welte <laforge@netfilter.org>");
+diff --git a/net/netfilter/xt_DSCP.c b/net/netfilter/xt_DSCP.c
+index cfa44515ab72..90f24a6a26c5 100644
+--- a/net/netfilter/xt_DSCP.c
++++ b/net/netfilter/xt_DSCP.c
+@@ -14,7 +14,7 @@
+ #include <net/dsfield.h>
+ 
+ #include <linux/netfilter/x_tables.h>
+-#include <linux/netfilter/xt_DSCP.h>
++#include <linux/netfilter/xt_dscp.h>
+ 
+ MODULE_AUTHOR("Harald Welte <laforge@netfilter.org>");
+ MODULE_DESCRIPTION("Xtables: DSCP/TOS field modification");
+diff --git a/net/netfilter/xt_HL.c b/net/netfilter/xt_HL.c
+index 7873b834c300..a847d7a7eacd 100644
+--- a/net/netfilter/xt_HL.c
++++ b/net/netfilter/xt_HL.c
+@@ -14,8 +14,8 @@
+ #include <net/checksum.h>
+ 
+ #include <linux/netfilter/x_tables.h>
+-#include <linux/netfilter_ipv4/ipt_TTL.h>
+-#include <linux/netfilter_ipv6/ip6t_HL.h>
++#include <linux/netfilter_ipv4/ipt_ttl.h>
++#include <linux/netfilter_ipv6/ip6t_hl.h>
+ 
+ MODULE_AUTHOR("Harald Welte <laforge@netfilter.org>");
+ MODULE_AUTHOR("Maciej Soltysiak <solt@dns.toxicfilms.tv>");
+diff --git a/net/netfilter/xt_RATEEST.c b/net/netfilter/xt_RATEEST.c
+index 4f49cfc27831..a86bb0e4bb42 100644
+--- a/net/netfilter/xt_RATEEST.c
++++ b/net/netfilter/xt_RATEEST.c
+@@ -14,7 +14,7 @@
+ #include <net/netns/generic.h>
+ 
+ #include <linux/netfilter/x_tables.h>
+-#include <linux/netfilter/xt_RATEEST.h>
++#include <linux/netfilter/xt_rateest.h>
+ #include <net/netfilter/xt_rateest.h>
+ 
+ #define RATEEST_HSIZE	16
+diff --git a/net/netfilter/xt_TCPMSS.c b/net/netfilter/xt_TCPMSS.c
+index 116a885adb3c..3dc1320237c2 100644
+--- a/net/netfilter/xt_TCPMSS.c
++++ b/net/netfilter/xt_TCPMSS.c
+@@ -22,7 +22,7 @@
+ #include <linux/netfilter_ipv6/ip6_tables.h>
+ #include <linux/netfilter/x_tables.h>
+ #include <linux/netfilter/xt_tcpudp.h>
+-#include <linux/netfilter/xt_TCPMSS.h>
++#include <linux/netfilter/xt_tcpmss.h>
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Marc Boucher <marc@mbsi.ca>");
+-- 
+2.43.5
+
