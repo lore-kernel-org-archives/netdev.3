@@ -1,100 +1,123 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp-out.freemail.hu (fmfe36.freemail.hu [46.107.16.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388B91DC9B4
-	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 11:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3471D8DFB;
+	Mon,  6 Jan 2025 12:03:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.107.16.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736164779; cv=none; b=CFSt28Ti6A9uxKYoypCbQV7to5G1rkeKVsLSGVCjrs83reXTw9UYPg9QaIrr8VVS57KuCdyNXZC/Db9GvkFYzgS0++YV/l+PL0P9ZDE/EU28FyRtEOTsKWB+W4SkA479Wf3QXlgpUcSwEgh7E0v5Qk1z3iZ9Vga6BbJuA64HR14=
+	t=1736165033; cv=none; b=NzoWYEcrjcycvFoF3tXAjddpW5eX19partp+yesFFQ85eE9c9HSBxhBQ8EkjhGBS/DCUB8QVcc1pUFkdW+WyE0ALVmz3FWyzO/KUty3BDH2DaIBj9AMGC6frkA3L9AMmE/nfgHa1VTc7Ehzu/oy8/isOyRzGM1eM9fR9UhgwHU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736164779; c=relaxed/simple;
-	bh=kSiA94ParQtd16g2J/Kqqgn323ohU2UmPfI21Z+U53g=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=mEq2WQnHm/xPkS3JNcqBFcrwt4AEANfA2Nx+zrq+WImvvAr5GiJLCcnuQJmblLGxTjguvn8/vOA6F/WXcOouw7c0zXTHitGwEXEi4v+vGpF8mQWptplRAPdeRyqAw6M0cN77rA7p98T5Jk7YyEGpfXR7Rvy8xNDDrncd611OLwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=zYOeLJlr; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1736165033; c=relaxed/simple;
+	bh=cKyFKZR8HQPXJkeEyTijZcFLJGpOeI0uMNffok1MTsg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nRUkwdYv+Lw7c+EeL0LUYaXX8vVi5jaUWYIXASwsfV6fm/aadUEwEl3Ettwvh5GqlNlAB3ufg4MBWkTe5hTZhCdzPzilArlcBMeka2mATL3WiTcq9V4wkXthU9HPlJTq0BuShXCJV4+aYqE7POK9l6ocrjF/95NRrO7TEvFUuCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu; spf=pass smtp.mailfrom=freemail.hu; dkim=fail (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b=QWehaBey reason="signature verification failed"; arc=none smtp.client-ip=46.107.16.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freemail.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="zYOeLJlr"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=G8t1xaI1/GugJIK8OBprVbaU/A8jM/gJsPmAeiSAzxc=; b=zYOeLJlrCypxVI0s25kv4zllPI
-	UeEo/xeRtIxj1me7kVajNX1CHd4wqQYhNS41F/ykYLWSyxQp9ltLhspZJ/GZxV1XM6Wd2IhA5JTaX
-	RzmGRJ48OxrNDT8lSSoYkEfY7tMxyR9QUoSopjmhfOkYRhr4XkYeGaZl1IxDCmkvDCyQVy1RIOP7g
-	w5nitlnwt6OGOhMRsxPgS4++bSCCh5k5AvPFMLWm23FYwt8jsfwMU4WqImyqL9aUxSkP8Aa/ILocH
-	l7uOqAUNbXECAI0KVrj3ESjS2tc/TZjV0NaaH4v28bWPVTFuTw5CAcNlavOYIECus25A4ovrJHQZI
-	bZ9U7Ysg==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:38348 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1tUllY-0005mS-0L;
-	Mon, 06 Jan 2025 11:59:28 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1tUllU-007UzL-KV; Mon, 06 Jan 2025 11:59:24 +0000
-In-Reply-To: <Z3vDwwsHSxH5D6Pm@shell.armlinux.org.uk>
-References: <Z3vDwwsHSxH5D6Pm@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"Ar__n__ __NAL" <arinc.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	DENG Qingfang <dqfext@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Simon Horman <horms@kernel.org>,
-	UNGLinuxDriver@microchip.com,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Woojung Huh <woojung.huh@microchip.com>
-Subject: [PATCH net-next 9/9] net: dsa: remove get_mac_eee() method
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b="QWehaBey"
+Received: from [192.168.0.16] (catv-178-48-208-49.catv.fixed.vodafone.hu [178.48.208.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.freemail.hu (Postfix) with ESMTPSA id 4YRXfr71Lrzgkg;
+	Mon, 06 Jan 2025 12:55:00 +0100 (CET)
+Message-ID: <cb4b77e3-65c3-4fd4-94bb-a2b35a6dcfb5@freemail.hu>
+Date: Mon, 6 Jan 2025 12:54:31 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/3] netfilter: x_tables: Merge xt_*.h and ipt_*.h
+ files which has same name.
+To: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
+Cc: Andrew Lunn <andrew@lunn.ch>, Florian Westphal <fw@strlen.de>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, lorenzo@kernel.org,
+ daniel@iogearbox.net, leitao@debian.org, amiculas@cisco.com,
+ kadlec@netfilter.org, David Miller <davem@davemloft.net>,
+ dsahern@kernel.org, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20250105203452.101067-1-egyszeregy@freemail.hu>
+ <43f658e7-b33e-4ac9-8152-42b230a416b7@lunn.ch>
+ <defa70d2-0f0c-471e-88c0-d63f3f1cd146@freemail.hu>
+ <ee78ed44-7eed-0a80-6525-61b5925df431@blackhole.kfki.hu>
+Content-Language: hu
+From: =?UTF-8?Q?Sz=C5=91ke_Benjamin?= <egyszeregy@freemail.hu>
+In-Reply-To: <ee78ed44-7eed-0a80-6525-61b5925df431@blackhole.kfki.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1tUllU-007UzL-KV@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 06 Jan 2025 11:59:24 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/relaxed; t=1736164501;
+	s=20181004; d=freemail.hu;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	l=2518; bh=lfy5n6CsbSpr3jgDmUldoHdcbJ2OBU+Aw/IlhAEFXic=;
+	b=QWehaBey/DzTZIUvU3+1P1PzJNJyp51bP1Kc4tirkqFQZXUTsFw8E6Ce6LOHioL4
+	O7J+W2vTFmT3fdGCnbv5tuIlI32IKZeJKFk2+btgqb00Whcaw/cZkHVAC/jNfHr9qmR
+	O+AYjVy+nJ45k4Lk3ArSIXq7K3I1dmfKBQK/KUn1BJEyDCKw1HOPzPsnd+R5ZC2xPv3
+	Ej80t0bWtZvKvGnXrwiqgi4ncglg1a2fejAZCjFfLEepnmGPScWfWG1J+muRU+w+RRB
+	GIuMWUm3QKAE34rirBTLqktS6JTqktAh7YGCaN2drjNyE8OAno0SS9FiCC7i6ojbKna
+	mGhgfT0DmA==
 
-The get_mac_eee() is no longer called by the core DSA code, nor are
-there any implementations of this method. Remove it.
+2025. 01. 06. 8:48 keltezéssel, Jozsef Kadlecsik írta:
+> On Mon, 6 Jan 2025, Szőke Benjamin wrote:
+> 
+>> 2025. 01. 05. 22:27 keltezéssel, Andrew Lunn írta:
+>>> On Sun, Jan 05, 2025 at 09:34:52PM +0100, egyszeregy@freemail.hu wrote:
+>>>> From: Benjamin Szőke <egyszeregy@freemail.hu>
+>>>>
+>>>> Merge xt_*.h, ipt_*.h and ip6t_*.h header files, which has
+>>>> same upper and lower case name format.
+>>>>
+>>>> Add #pragma message about recommended to use
+>>>> header files with lower case format in the future.
+>>>
+>>> It looks like only patch 1/3 make it to the list.
+>>>
+>>> Also, with a patchset, please include a patch 0/X which gives the big
+>>> picture of what the patchset does. The text will be used for the merge
+>>> commit, so keep it formal. 'git format-patch --cover-letter' will
+>>> create the empty 0/X patch you can edit, or if you are using b4 prep,
+>>> you can use 'b4 prep --edit-cover' and then 'b4 send' will
+>>> automatically generate and send it.
+>>>
+>>> https://docs.kernel.org/process/maintainer-netdev.html
+>>> https://docs.kernel.org/process/submitting-patches.html
+>>>
+>>>      Andrew
+>>
+>> https://lore.kernel.org/lkml/20250105233157.6814-1-egyszeregy@freemail.hu/T/
+>>
+>> It is terribly chaotic how slowly start to appear the full patch list in the 
+>> mailing list website. It's really time to replace 1990s dev technology with 
+>> something like GitLab or GitHub developing style can provide in 2024.
+> 
+> No, it was your fault in the v5 series of your patches: you managed to send all 
+> the patches in a single email instead of separated ones.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- include/net/dsa.h | 2 --
- 1 file changed, 2 deletions(-)
+Something is not OK with your e-mail processing:
 
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index 4aeedb296d67..9640d5c67f56 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -991,8 +991,6 @@ struct dsa_switch_ops {
- 	bool	(*support_eee)(struct dsa_switch *ds, int port);
- 	int	(*set_mac_eee)(struct dsa_switch *ds, int port,
- 			       struct ethtool_keee *e);
--	int	(*get_mac_eee)(struct dsa_switch *ds, int port,
--			       struct ethtool_keee *e);
- 
- 	/* EEPROM access */
- 	int	(*get_eeprom_len)(struct dsa_switch *ds);
--- 
-2.30.2
+- 1. [PATCH v7 0/3] which is the cover letter, is appering really slowly in the 
+list after [PATCH v7 1/3], [PATCH v7 2/3], [PATCH v7 3/3] were arrived. This is 
+why I made v7 after v6, because after 10 minutes i still could not see that it 
+is successfully arrived in the mailing list, I fustrated about it again went wrong.
+
+
+- 2. Patch name visible is buggy:
+[PATCH v7 0/3] netfilter: x_tables: Merge xt_*.c files
+2025-01-05 23:31 UTC  (4+ messages)
+[PATCH v7 1/3] netfilter: x_tables: Merge xt_*.h and ipt_*.h files which has 
+same name
+[PATCH v7 2/3] netfilter: x_tables: Merge xt_*.c "
+[PATCH v7 3/3] netfilter: x_tables: Adjust code style for xt_*.h/c and ipt_*.h files
+
+[PATCH v7 2/3] netfilter: x_tables: Merge xt_*.c " -> half of real name missing? 
+Real name was: "Merge xt_*.c files which has same name."
+
+
+> 
+> Best regards,
+> Jozsef
 
