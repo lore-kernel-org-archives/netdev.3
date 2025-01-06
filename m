@@ -1,101 +1,118 @@
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703C812E4A
-	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 17:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673481DF73B
+	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 17:46:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736184814; cv=none; b=TUq8JeZ5skPASemwrRc2EWGssgpilswlCO1f4u8q1sx7S62MXUn0LyVpwnYKOF7krMOTxFHGfkGBWvYX10WUqry3sah7nEpha8/5c+hfmaCT3QKHDeAk0vBM+vNZCthV84xDH8GEWBY1WzLJRG+E8jFZAz5Kzkyd754hUI7sMJc=
+	t=1736185583; cv=none; b=lVtqv8utkSxzXb9B09X2yYxXWgiw2vBJABAkhmKDCnRNoZzXrD4/wVTlg4sVofcFq1L1ar737AJwzWOGgRCDXoOHMnuKn8XjI32tmqOP0UTpYGJftkCnVQfW/EUjNYICAk7GoTA8gnd1cprHmWZBDEd3+QjCH6BTPuxpdGNQkuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736184814; c=relaxed/simple;
-	bh=J0Fp03FhC0uR1cZtSoquQeiDti2qtRoQSRaV4DZNnLM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MipNAbwpe2bj2ymafSEuyjRrplF0pXbEeMstw2HweEsUch97C+0tuBEzG3+dJ6sFpIrk8hQxcFcb++pLGT41xNedaFIbf+stEuJ6xmJh1ZaYeFceFy1KPxjTSCMgrh1rcPv7RpCQK+q0+GKqz2zeQDYTl1T5FAmVIxPTkqlFbgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F6WTQA29; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736185583; c=relaxed/simple;
+	bh=uW9GkYu5gQtwFMIjKJhUpF82owJOz8+dxzEqPIHMP7k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XzZcarZuUhWB2kdsRsDoKDbwSSAAr9ghYwuW6+08WIMAvH9K1ww1HB6duts8vKT+YOypluAWR1eAX0u5qnXYpN0myVFiEgl0cdpNEW5m8GvAZdINdAFW6cJVtvAJ16EOiDGPLjNnGMkSo7KczH2JQnEUdu5/XuHdldsvlXGohuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EpCTsWax; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F6WTQA29"
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-29e842cb9b4so4568759fac.2
-        for <netdev@vger.kernel.org>; Mon, 06 Jan 2025 09:33:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736184811; x=1736789611; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=J0Fp03FhC0uR1cZtSoquQeiDti2qtRoQSRaV4DZNnLM=;
-        b=F6WTQA29XUYWSMW6PSccvGxMdCy/i2ST44TlZsZBTaV36L6YPPuMFIt7j9bs/ME+Jm
-         KzPM/t7uAhfyIVOz5avGHUhcziQSaE519CUhlRiY+7CFUR9KKmDGbvc8A/+hcGfm6IJZ
-         aOqbAZaHqVq7mR1QvMQVKgIG5U3QLdLLfGqe2FIsf01YcvXfJt4klJUaBC9MFRHKCO6L
-         sMJQpo6OTNSBWp6h4BsKdQuWGcQ3K6SrNVCTgRieiZIZjZD5RlXpFSzukeNbnH8HMiUp
-         jBP4YPF4mGYWvXOEzovqBFjo+5QPCreTXU7zeu4cibtEr7r13aIXB/P92RMtzLaPKYia
-         sU7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736184811; x=1736789611;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=J0Fp03FhC0uR1cZtSoquQeiDti2qtRoQSRaV4DZNnLM=;
-        b=WGxnD2OsdsFTYAmR5EWie+3CAeCcYF23QJ9sC2BRyizxW9lKGGLoxElX/o/gI/Re7s
-         3YIO3zpY4bcOJ58rX0HOeP4BzdR57BCWU5fi/uKuYlz5Tg2RCiVGt9NUeVCmH1D01xZb
-         g7pxLc4SaBCCbKAWaq8LIiJz3+nP1PL7J/kI0rauA+EnnzlMoKauZYpgKinNDM29tV7k
-         TY4QPbSqUf6YK4iw1eUuFqNzUOdZdNCB/pbQVUJnf0gLNbTINudGK0wDB8q6+0gNpNiH
-         Y+ZrkNjHu4egI03h7od0MMNVyp566AwXtwvc0lhx+eSkaC2aXaonlhMvoFPy69xpMRep
-         BRig==
-X-Forwarded-Encrypted: i=1; AJvYcCWdcpT2ddld2GqJlD4YatktiDQ98A28z1Pm3SvMhu5aLKc0VkOme/iFGFPxHFgY8tZfqX65G0o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykTBbv58WjxHc1tFuVtVuMb/qn+gl+Qr0yzxrnWm4nlqa92sMF
-	SOkTrftgkWa2RagjhhsKTsFNp5eTJwpiB8AOXNiTx2J7c4l87+8w1zfA018K1lXdE4RzviZK+94
-	XtT5S0FXODLs7Q7UaXZqj2ib67TrwZLAa
-X-Gm-Gg: ASbGncvtd4MYo666IsgRSb09Q/QLzEapYYeXV7xHbZAgU0OwECJTcTbgGPihPRM57wc
-	j2tN78on/oGVobBObL1vp05edaQEvCUHUaWQfKgoV3O3ta0b7XksDlSm5C7urX8Ub1orI
-X-Google-Smtp-Source: AGHT+IErwozEMHkar2ldlh9JO/93aCBCkSLQq1RSnLT9wZQbHSrCa+T/mm1iulifB0WkswCIa9UFLtOfDPtWkLvfs4I=
-X-Received: by 2002:a05:6870:4f15:b0:29e:76d1:db4b with SMTP id
- 586e51a60fabf-2a7fb00b5c1mr32816168fac.6.1736184811359; Mon, 06 Jan 2025
- 09:33:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EpCTsWax"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F717C4CED6;
+	Mon,  6 Jan 2025 17:46:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736185582;
+	bh=uW9GkYu5gQtwFMIjKJhUpF82owJOz8+dxzEqPIHMP7k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EpCTsWax3MMH+M1GHV/LGwpBjuNvSbMvL3SV3rbpiR71QjBMoALI7mTK09bK+FwFY
+	 QCf8LUW4D8SI41e1GVc4wm8NXRfwPP0ilZMHQG1CxOIsSoe/56KCoyIGCrMzQQPs/a
+	 drB1jCJyN6z5c3yKB/bKJLpSxv92fmOZInvfLL17vtn8ukNtIGYTZC76xGQ9Wci0tD
+	 0sjxc3sE/tnnyCz54TnFmZpQKHrTrCWJ2bwcB/EfREYteiIyyPDzuFd4G/IyLoqaV5
+	 qoDWShxdGNEQBBFneAVgtLVP0CDiS9hZxjL8tzw+rma6q09QMG70i9mR/Ilh9g3Cmd
+	 RMpFJfdSR1Khg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net-next] if_vlan: fix kdoc warnings
+Date: Mon,  6 Jan 2025 09:46:20 -0800
+Message-ID: <20250106174620.1855269-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250105012523.1722231-1-kuba@kernel.org> <20250105012523.1722231-2-kuba@kernel.org>
- <m2a5c4nkbu.fsf@gmail.com> <20250106073641.1003e36b@kernel.org>
-In-Reply-To: <20250106073641.1003e36b@kernel.org>
-From: Donald Hunter <donald.hunter@gmail.com>
-Date: Mon, 6 Jan 2025 17:33:20 +0000
-Message-ID: <CAD4GDZwF-ubL+enDVHOBm43CDPgovNHPBycjcNU6t-uADvkxAA@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/3] tools: ynl: correctly handle overrides of
- fields in subset
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-	pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, 6 Jan 2025 at 15:36, Jakub Kicinski <kuba@kernel.org> wrote:
->
-> On Mon, 06 Jan 2025 13:27:49 +0000 Donald Hunter wrote:
-> > > We stated in documentation [1] and previous discussions [2]
-> > > that the need for overriding fields in members of subsets
-> > > is anticipated. Implement it.
-> > >
-> > > [1] https://docs.kernel.org/next/userspace-api/netlink/specs.html#subset-of
-> > > [2] https://lore.kernel.org/netdev/20231004171350.1f59cd1d@kernel.org/
-> > >
-> > > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> >
-> > I guess we're okay with requiring Python >= 3.9 for combining
-> > dicts with |
->
-> Ah, I didn't realize. Does YNL work on older versions today?
-> I thought we already narrowed down to 3.9+. That may have
-> been tests not YNL itself.
+While merging net to net-next I noticed that the kdoc above
+__vlan_get_protocol_offset() has the wrong function name.
+Fix that and all the other kdoc warnings in this file.
 
-You're right, we may already be committed to 3.9+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ include/linux/if_vlan.h | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-> The "oldest" OS I have is CentOS 9(-derived) and has 3.9,
-> so from my selfish perspective 3.9+ is perfectly fine :)
+diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
+index d495cbdb52cb..38456b42cdb5 100644
+--- a/include/linux/if_vlan.h
++++ b/include/linux/if_vlan.h
+@@ -176,6 +176,7 @@ struct netpoll;
+  *	@real_dev_addr: address of underlying netdevice
+  *	@dent: proc dir entry
+  *	@vlan_pcpu_stats: ptr to percpu rx stats
++ *	@netpoll: netpoll instance "propagated" down to @real_dev
+  */
+ struct vlan_dev_priv {
+ 	unsigned int				nr_ingress_mappings;
+@@ -414,6 +415,8 @@ static inline int __vlan_insert_tag(struct sk_buff *skb,
+  * doesn't have to worry about freeing the original skb.
+  *
+  * Does not change skb->protocol so this function can be used during receive.
++ *
++ * Return: modified @skb on success, NULL on error (@skb is freed).
+  */
+ static inline struct sk_buff *vlan_insert_inner_tag(struct sk_buff *skb,
+ 						    __be16 vlan_proto,
+@@ -443,6 +446,8 @@ static inline struct sk_buff *vlan_insert_inner_tag(struct sk_buff *skb,
+  * doesn't have to worry about freeing the original skb.
+  *
+  * Does not change skb->protocol so this function can be used during receive.
++ *
++ * Return: modified @skb on success, NULL on error (@skb is freed).
+  */
+ static inline struct sk_buff *vlan_insert_tag(struct sk_buff *skb,
+ 					      __be16 vlan_proto, u16 vlan_tci)
+@@ -461,6 +466,8 @@ static inline struct sk_buff *vlan_insert_tag(struct sk_buff *skb,
+  *
+  * Following the skb_unshare() example, in case of error, the calling function
+  * doesn't have to worry about freeing the original skb.
++ *
++ * Return: modified @skb on success, NULL on error (@skb is freed).
+  */
+ static inline struct sk_buff *vlan_insert_tag_set_proto(struct sk_buff *skb,
+ 							__be16 vlan_proto,
+@@ -582,7 +589,7 @@ static inline int vlan_get_tag(const struct sk_buff *skb, u16 *vlan_tci)
+ }
+ 
+ /**
+- * vlan_get_protocol - get protocol EtherType.
++ * __vlan_get_protocol_offset() - get protocol EtherType.
+  * @skb: skbuff to query
+  * @type: first vlan protocol
+  * @mac_offset: MAC offset
+@@ -808,9 +815,11 @@ static inline netdev_features_t vlan_features_check(struct sk_buff *skb,
+  * @h1: Pointer to vlan header
+  * @h2: Pointer to vlan header
+  *
+- * Compare two vlan headers, returns 0 if equal.
++ * Compare two vlan headers.
+  *
+  * Please note that alignment of h1 & h2 are only guaranteed to be 16 bits.
++ *
++ * Return: 0 if equal, arbitrary non-zero value if not equal.
+  */
+ static inline unsigned long compare_vlan_header(const struct vlan_hdr *h1,
+ 						const struct vlan_hdr *h2)
+-- 
+2.47.1
 
-To be fair, on a previous commit you mentioned that it affected CentOS
-8 which EOLed back in May 2024 so we shouldn't feel compelled to
-support it any more.
-
-https://lore.kernel.org/all/20230524170712.2036128-1-kuba@kernel.org/
