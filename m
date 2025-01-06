@@ -1,163 +1,65 @@
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228B41DF738;
-	Mon,  6 Jan 2025 13:08:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B434B1DB362;
+	Mon,  6 Jan 2025 13:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736168932; cv=none; b=aHe+n+BF0oaUFNzG5zbaeZOpHe4pooYB4BuDmTsYD9LryFV/OMdvPKJ25/BAqD3kclmeDAIab32gmTOUAgMfBNuoYlCPYvRkD8hlmQ9ivECuX7OeGKcwvgFBtOCn6155UJaxEG0TwprDXLU9aqgyZ5BBqDlK3fwt3VifUwV1KcU=
+	t=1736169104; cv=none; b=g4n0qZULKX4JDS4CousWCAhjfvd10k5S+BLsRFx3D/IwiPDNbQTggYnJLhh0OgaXbK9G/gwa7LVQPQIZBQ9evH2bH1k7eWcHnQePpBa9sB6wlID4exs6Lo1FQmlk3WwP3/2W1G//TrQ2yTm5K73s1Ph+uaUnFcQ7k7fQf3s7k8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736168932; c=relaxed/simple;
-	bh=xCTpS6ipjGJeQEohtMZNmbeIzH6qk2MfcthnLIMYa9c=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GP7rT5OR1flq9IptDQ0Rzq/i1IHNtZNfZDSjYydADrLP5TgHRTJneEAz9kvEwiYe6B6IxCaxrdpxvMG1oIrMD16Il24CWkg5ieaItu1f1iuqj+IAycE9Y7DSWBw2mm9QwbrmhJgT8T+gAxs8VSzUy1R+k18vjLIrRsLLi/uml8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4YRZDP19kTz1V4Nx;
-	Mon,  6 Jan 2025 21:05:41 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id B7FCB14037B;
-	Mon,  6 Jan 2025 21:08:40 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 6 Jan 2025 21:08:40 +0800
-From: Yunsheng Lin <linyunsheng@huawei.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC: <liuyonglong@huawei.com>, <fanghaiqing@huawei.com>,
-	<zhangkun09@huawei.com>, Yunsheng Lin <linyunsheng@huawei.com>, Robin Murphy
-	<robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, IOMMU
-	<iommu@lists.linux.dev>, Jesper Dangaard Brouer <hawk@kernel.org>, Ilias
- Apalodimas <ilias.apalodimas@linaro.org>, Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next v6 7/8] page_pool: batch refilling pages to reduce atomic operation
-Date: Mon, 6 Jan 2025 21:01:15 +0800
-Message-ID: <20250106130116.457938-8-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20250106130116.457938-1-linyunsheng@huawei.com>
-References: <20250106130116.457938-1-linyunsheng@huawei.com>
+	s=arc-20240116; t=1736169104; c=relaxed/simple;
+	bh=znXx1vBzSeFX/v04A2pBxldDMCIVvWraxlI9GGnBFS8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rPEkkaciqnLGe8ga5CMHAJHBwOKegtW8ksw0W8AiIXAWrrl5bshrIbYcUqA7EmWauwk1kwazw93XzuwOhoHn5OvP39nP45iHZXOVgp2q8drNxzig9A0jGvJJBecL2qFspcaq3W3xGNtOdbsM4KqN1v7heu3k0lY9SdbWwSFSd0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KmYXhxuy; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KmYXhxuy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB47C4CED2;
+	Mon,  6 Jan 2025 13:11:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736169104;
+	bh=znXx1vBzSeFX/v04A2pBxldDMCIVvWraxlI9GGnBFS8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KmYXhxuyiSPJe4a6bbV3UUgMGunnWtXC4tIWCe/N5e5UmZPXytEz69M7HDZdhoVkh
+	 O7JHjjLr7IKis7UTq1cG3v0faxQfuOO+5AI09mbLzjW6YBaR2OZ2FDbBBeFjn1Bk+D
+	 gQgZrQ3hIaadbsNwgiXLfbQ0tk8QrfByYVkbZ1ZvyhgmqqH5XU6sX/EM+cXhcoqLLX
+	 bEViFiXcszAyYusxnuNn4TMD+F09twpv75jRdljIL80M9teILh25cODGUKWjN+AgqY
+	 djxZR51HaXoiox2SAEk0DV6KY5aPPX7PGOOjbYtIiPgcV0jvN2ca5Sh48SSRYJQyH3
+	 niJ2TZTjWRH1A==
+Date: Mon, 6 Jan 2025 13:11:40 +0000
+From: Simon Horman <horms@kernel.org>
+To: linux@treblig.org
+Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com,
+	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC net-next] ixgbevf: Remove unused ixgbevf_hv_mbx_ops
+Message-ID: <20250106131140.GJ4068@kernel.org>
+References: <20241226140923.85717-1-linux@treblig.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241226140923.85717-1-linux@treblig.org>
 
-Add refill variable in alloc cache to keep batched refilled
-pages to avoid doing the atomic operation for each page.
+On Thu, Dec 26, 2024 at 02:09:23PM +0000, linux@treblig.org wrote:
+> From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> 
+> The const struct ixgbevf_hv_mbx_ops was added in 2016 as part of
+> commit c6d45171d706 ("ixgbevf: Support Windows hosts (Hyper-V)")
+> 
+> but has remained unused.
+> 
+> The functions it references are still referenced elsewhere.
+> 
+> Remove it.
+> 
+> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 
-Testing shows there is about 10ns improvement for the
-performance of 'time_bench_page_pool02_ptr_ring' test case.
-
-CC: Robin Murphy <robin.murphy@arm.com>
-CC: Alexander Duyck <alexander.duyck@gmail.com>
-CC: IOMMU <iommu@lists.linux.dev>
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
----
- include/net/page_pool/types.h |  5 +++++
- net/core/page_pool.c          | 25 +++++++++++++++++++++----
- 2 files changed, 26 insertions(+), 4 deletions(-)
-
-diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
-index 923bcb01a830..ac83abea24b0 100644
---- a/include/net/page_pool/types.h
-+++ b/include/net/page_pool/types.h
-@@ -51,6 +51,11 @@
- struct pp_alloc_cache {
- 	u32 count;
- 	netmem_ref cache[PP_ALLOC_CACHE_SIZE];
-+
-+	/* Keep batched refilled pages here to avoid doing the atomic operation
-+	 * for each page.
-+	 */
-+	struct page_pool_item *refill;
- };
- 
- /**
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index b8f46c26b5ef..429d44ede074 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -677,11 +677,13 @@ static void __page_pool_return_page(struct page_pool *pool, netmem_ref netmem,
- 
- static noinline netmem_ref page_pool_refill_alloc_cache(struct page_pool *pool)
- {
-+	struct page_pool_item *refill;
- 	netmem_ref netmem;
- 	int pref_nid; /* preferred NUMA node */
- 
- 	/* Quicker fallback, avoid locks when ring is empty */
--	if (unlikely(!READ_ONCE(pool->ring.list))) {
-+	refill = pool->alloc.refill;
-+	if (unlikely(!refill && !READ_ONCE(pool->ring.list))) {
- 		alloc_stat_inc(pool, empty);
- 		return 0;
- 	}
-@@ -698,10 +700,14 @@ static noinline netmem_ref page_pool_refill_alloc_cache(struct page_pool *pool)
- 
- 	/* Refill alloc array, but only if NUMA match */
- 	do {
--		netmem = page_pool_consume_ring(pool);
--		if (unlikely(!netmem))
--			break;
-+		if (unlikely(!refill)) {
-+			refill = xchg(&pool->ring.list, NULL);
-+			if (!refill)
-+				break;
-+		}
- 
-+		netmem = refill->pp_netmem;
-+		refill = page_pool_item_get_next(refill);
- 		if (likely(netmem_is_pref_nid(netmem, pref_nid))) {
- 			pool->alloc.cache[pool->alloc.count++] = netmem;
- 		} else {
-@@ -711,14 +717,18 @@ static noinline netmem_ref page_pool_refill_alloc_cache(struct page_pool *pool)
- 			 * This limit stress on page buddy alloactor.
- 			 */
- 			__page_pool_return_page(pool, netmem, false);
-+			atomic_dec(&pool->ring.count);
- 			alloc_stat_inc(pool, waive);
- 			netmem = 0;
- 			break;
- 		}
- 	} while (pool->alloc.count < PP_ALLOC_CACHE_REFILL);
- 
-+	pool->alloc.refill = refill;
-+
- 	/* Return last page */
- 	if (likely(pool->alloc.count > 0)) {
-+		atomic_sub(pool->alloc.count, &pool->ring.count);
- 		netmem = pool->alloc.cache[--pool->alloc.count];
- 		alloc_stat_inc(pool, refill);
- 	}
-@@ -1406,6 +1416,7 @@ static void __page_pool_destroy(struct page_pool *pool)
- 
- static void page_pool_empty_alloc_cache_once(struct page_pool *pool)
- {
-+	struct page_pool_item *refill;
- 	netmem_ref netmem;
- 
- 	if (pool->destroy_cnt)
-@@ -1419,6 +1430,12 @@ static void page_pool_empty_alloc_cache_once(struct page_pool *pool)
- 		netmem = pool->alloc.cache[--pool->alloc.count];
- 		page_pool_return_page(pool, netmem);
- 	}
-+
-+	while ((refill = pool->alloc.refill)) {
-+		pool->alloc.refill = page_pool_item_get_next(refill);
-+		page_pool_return_page(pool, refill->pp_netmem);
-+		atomic_dec(&pool->ring.count);
-+	}
- }
- 
- static void page_pool_scrub(struct page_pool *pool)
--- 
-2.33.0
+Reviewed-by: Simon Horman <horms@kernel.org>
 
