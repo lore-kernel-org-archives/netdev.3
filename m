@@ -1,93 +1,115 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DE91E04A1
-	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 21:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7515215886C
+	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 21:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736198137; cv=none; b=inlI2J2rSTvWiRwt2/9mktiqaozgOmuk3C1hDDBtE0CQ2FIjn2f2+68LZy1ZJjVZoNIxW+pf/siy5OV1qNtj56r0ac5Y3qNsk0l5ygfzH0ju8EyDIBRB48BXrtqxJAcZGiCPH4+EDKoT5lhICNh83hYydVgdTzKBQn8D+FfOtPs=
+	t=1736198453; cv=none; b=KZ7bbXfJoVCbObA936Ll5x4nsbtPLM661hmeqqiHnlslpIyWaHw5z2yCcqh0ta/NJNmpsq3Xyh5d5hkZhi3zvscuhP1cRemBvTPNUINavW5Ws2xkiZqriamEx7NkhdCIrLsd3KbuGXjFVqed6DKjoWUl9isNGVK1neLeMWIQpbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736198137; c=relaxed/simple;
-	bh=MGHRfNW3QYgm4KGcwcfv6bz6L1OC5FBtO1avcKkwI2o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ECSZxpU8Vxcp+2AMZe2IBIL/YU0VGqyVmToWhD8rQDcqitnW+2b6Vex432Os0rK8Is/cAOBlYVIdJNDLo6wXCRlnAOmuElOhpVU7QWJQDb+Er0zAX7UIo2WvRUjLgoF9KYp2FslVkZSBkUhsGDINODciQVwQv2Oud8uLOxQN7IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O/ijbblj; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1736198453; c=relaxed/simple;
+	bh=wOY8xTzFdt+MpgmZUirwXui4NFYi50OD74NKjZlDp0w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ttA40z/keB7u0XMsBPTP3NVBh4hq3HCJMZWuBs/svem339y8m+VFgZdtmuqqJuJjRuR5lzcxkRjpXAW1ks7GZ4xgSxhYUe29sQXyhjAa22K3ZpzRftNfcPKiuT95p2EZYMiVlMbYFw4h3h1nUJWxDbaO6YuKPHSLwKnB8oR+gP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPr2aZUI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O/ijbblj"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-467abce2ef9so58731cf.0
-        for <netdev@vger.kernel.org>; Mon, 06 Jan 2025 13:15:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736198132; x=1736802932; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MGHRfNW3QYgm4KGcwcfv6bz6L1OC5FBtO1avcKkwI2o=;
-        b=O/ijbblj+NnNHqFWik4iaT85GRLLYqE5jvo5SFTW7AhZYoTXTXvZ73qdh6tHnqVzwt
-         NgjB2QKj4+ZV0qHtfyMZnXG1PzOsYd8FfiyCudB2yIzCUZ8SqHovXNmNItbuNAa2G8Te
-         XAFbdl1BxxH+vxHao8ijNdMca+nfM3I6PAA26HUFYiial+T+hws53P+WV3C8uUWLm5KN
-         sWwDXV3sFSogpWJQf9Wwswt/8BbwUS7NTSZAbMpZ7P7esb9MYhGgTXjFN3z/YPzzVYyQ
-         cHOJX1kW2q0Uj9R9KfkNYaQeJsz+2BytO7MhyUnk4L94j7BD7URaujRxXiRD43+Kd4A/
-         HZgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736198132; x=1736802932;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MGHRfNW3QYgm4KGcwcfv6bz6L1OC5FBtO1avcKkwI2o=;
-        b=TbY9EJjus5I+0+UI6S9WzLc2znxUQib26C24qUnERjDSMgO0yY0FGBPaZmxkVaTaAg
-         fj1EeshZdPi1joV4u2AKT+LKB2sqlCznUUj5kRiaPwwzGIPv2fbHwysJXry6P7APV7GQ
-         eDlSu2W98+yd8gDD9+RoNOroQGkA1aEHp/GNPt1p1QpUQ3wpb09zKq0yo5NG9UdKapc/
-         lbDOGL3Qwdsc5XyDHcoampOEwdQN5MNV2sA3zEKKr9L+5LxOD9Nqv7N4W3OegZ2FPbyO
-         iNF6AFHCc5r6uanMTPSlKp3bIweozaGuU/tVvb3KWOfPpCMrRLhEgN4lVIq5n+kvtyPb
-         h4+w==
-X-Gm-Message-State: AOJu0YyIIUlWqyCrgkJDI/4YJQLfmR8UAx52q1/qQZVmET3XNzOu3T9k
-	lxmHC34GoeNQkJtqHfWuzGMmLKp3/7s+PWqRaSFM7yAHblHYkaR3/Qw0xKj8DEEnWGReuR3xMAJ
-	ekLChJ5UEPy9scnA3z44qllz8RfbUXx4VHt0t
-X-Gm-Gg: ASbGncv3Su8UI0yqzZ46oMEI45Id88K7CdsmGk7BNo8A15FoEErb88jwnKvHm1Y9Fvz
-	hEErFy5V/zUgyRZvZZcXMjbNpl8ozpAVgcStLZTH28brnjonPo/8XFSpuDkU9Twz2BjNUt3Y=
-X-Google-Smtp-Source: AGHT+IHFbo75Puxjkm64WI3YyLK5CsXwXyzyW8ExVEU09NWAASfSNPbXnzf663rHHNZNtnbRkm6Dnvtug0/wJS995yY=
-X-Received: by 2002:ac8:5e12:0:b0:466:975f:b219 with SMTP id
- d75a77b69052e-46b3b759277mr650411cf.8.1736198132062; Mon, 06 Jan 2025
- 13:15:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPr2aZUI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C65C4CED2;
+	Mon,  6 Jan 2025 21:20:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736198453;
+	bh=wOY8xTzFdt+MpgmZUirwXui4NFYi50OD74NKjZlDp0w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=FPr2aZUIddkpm7GUY8H8wfBfzA3FWS5W1sE4B5xPReuQ3ItKlBP5usjqSLCwuFDOI
+	 C8cHH0kUcbF+iv8RZonSs4v1wb1442SXTwZLlFORYwLCoBSPGLj5cmMGtXh3IDeuO3
+	 sdqiz3KK0awTzAwa8RfJeAjTQjzv0yroksCINYEYiCqf0cwDwWOXpCIix9+SzXi5sn
+	 xTccSZEPt+ulznrCo51XlsCO14qhfb3GUCCNpBiZDAnOh6jHiSzwUboWQj79ADLkuR
+	 /LSWZdh2cPEswnjJTK4IvCNqY3neFhFUun8IVuP85gitovP8AAROlne4QF8WDDxhvl
+	 HpIdKliB7B1MA==
+Date: Mon, 6 Jan 2025 13:20:51 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Teodor Milkov <zimage@icdsoft.com>
+Cc: netdev@vger.kernel.org, <mst@redhat.com>, <jasowang@redhat.com>
+Subject: Re: Download throttling with kernel 6.6 (in KVM guests)
+Message-ID: <20250106132051.262177da@kernel.org>
+In-Reply-To: <d1f083ee-9ad2-422c-9278-c50a9fbd8be4@icdsoft.com>
+References: <e831515a-3756-40f6-a254-0f075e19996f@icdsoft.com>
+	<d1f083ee-9ad2-422c-9278-c50a9fbd8be4@icdsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <e831515a-3756-40f6-a254-0f075e19996f@icdsoft.com> <d1f083ee-9ad2-422c-9278-c50a9fbd8be4@icdsoft.com>
-In-Reply-To: <d1f083ee-9ad2-422c-9278-c50a9fbd8be4@icdsoft.com>
-From: Neal Cardwell <ncardwell@google.com>
-Date: Mon, 6 Jan 2025 16:15:15 -0500
-Message-ID: <CADVnQyntg=3ugLxr+tdyb0A+=KDkVGkGPJVvFTOg0XpoyMSQEw@mail.gmail.com>
-Subject: Re: Download throttling with kernel 6.6 (in KVM guests)
-To: Teodor Milkov <zimage@icdsoft.com>
-Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 6, 2025 at 3:15=E2=80=AFPM Teodor Milkov <zimage@icdsoft.com> w=
-rote:
->
+On Mon, 6 Jan 2025 22:15:37 +0200 Teodor Milkov wrote:
 > Hello,
->
-> Following up on my previous email, I=E2=80=99ve found the issue occurs
-> specifically with the |virtio-net| driver in KVM guests. Switching to
-> the |e1000| driver resolves the slowdown entirely, with no throttling in
+>=20
+> Following up on my previous email, I=E2=80=99ve found the issue occurs=20
+> specifically with the |virtio-net| driver in KVM guests. Switching to=20
+> the |e1000| driver resolves the slowdown entirely, with no throttling in=
+=20
 > subsequent downloads.
->
-> The reproducer and observations remain the same, but this detail might
+>=20
+> The reproducer and observations remain the same, but this detail might=20
 > help narrow down the issue.
 
-Thanks for narrowing it down! Interesting. So this sounds like
-something specific about the way the virtio-net driver is handling
-receive buffer memory, and the way that is interacting with Eric's
-excellent recent commit to make receive window management more
-precise:
+Let's CC the virtio maintainers, then.
 
-dfa2f0483360 tcp: get rid of sysctl_tcp_adv_win_scale
+The fact that a 300ms sleep between connections makes the problem=20
+go away is a bit odd from the networking perspective.
 
-best regards,
-neal
+You may need to find a way to automate the test and try to bisect=20
+it down :( This may help: https://github.com/arighi/virtme-ng
+
+> > We've encountered a regression affecting downloads in KVM guests after=
+=20
+> > upgrading to Linux kernel 6.6. The issue is not present in kernel 5.15=
+=20
+> > or the stock Debian 6.6 kernel on hosts (not guests) but manifests=20
+> > consistently in kernels 6.6 and later, including 6.6.58 and even 6.13-r=
+c.
+> >
+> > Steps to Reproduce:
+> > 1. Perform multiple sequential downloads, perhaps on a link with=20
+> > higher BDP (USA -> EU 120ms in our case).
+> > 2. Look at download speeds in scenarios with varying sleep intervals=20
+> > between the downloads.
+> >
+> > Observations:
+> > - Kernel 5.15: Reaches maximum throughput (~23 MB/s) consistently.
+> > - Kernel 6.6:
+> > =C2=A0 - The first download achieves maximum throughput (~23 MB/s).
+> > =C2=A0 - Subsequent downloads are throttled to ~16 MB/s unless a sleep=
+=20
+> > interval =E2=89=A5 0.3 seconds is introduced between them.
+> >
+> > Reproducer Script:
+> > for _ in 1 2; do=C2=A0 curl http://example.com/1000MB.bin --max-time 8 =
+-o=20
+> > /dev/null -w '(%{speed_download} B/s)\n'; sleep 0.1=C2=A0=C2=A0 ;done
+> >
+> >
+> > Tried various sysctl settings, changing qdiscs, tcp congestion algo=20
+> > (e.g. from bbr to cubic), but the problem persists.
+> >
+> > git bisect traced the regression to commit dfa2f0483360 ("tcp: get rid=
+=20
+> > of sysctl_tcp_adv_win_scale"). While a similar issue described by=20
+> > Netflix in=20
+> > https://netflixtechblog.com/investigation-of-a-cross-regional-network-p=
+erformance-issue-422d6218fdf1=20
+> > and was supposedly fixed in kernels 6.6.33 and 6.10, the problem=20
+> > remains in 6.6.58 and even 6.13-rc for our case.
+> >
+> > Could this behavior be a side effect of `tcp_adv_win_scale` removal,=20
+> > or is it indicative of something else?
+> >
+> > We would appreciate any insights or guidance how to further=20
+> > investigate this regression.
+> >
+> > Best regards!
+> > =20
+
