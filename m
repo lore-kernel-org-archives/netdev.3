@@ -1,72 +1,72 @@
 Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43D91DC9AA
-	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 13:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F8C1DE3AD
+	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 13:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736170733; cv=none; b=VplVKYD/Ab3Pf0kf6WPhBd9JqtL8TIqVmO6aA952tvezA39EwPseFSq38VPZzpquBiifwDl/cxK2l8f+4FnY6qdwmvtp8D4xDeNMdFgGksAjKYgNCBp9uAxPEEIuJE8P4HIhmv5q8vJAYZ/aOwEfm4WRZt7R/tOdJyz0FsqJOqI=
+	t=1736170735; cv=none; b=DgF4606+RDZLAS/lRiYaUs8VTPhFDjllRzm3sOB93jg1LUVTxq2wNEBMOHHAuiep5ckqC88DhIm6dEI/XZJkjoujKzH4RP/CCBCXij3GdAdOdfHbH3ZdQBzb4bK+gTSI0cdDUcUkqw7V4h4XrwXjEIuo8k3/Sry6ioP7Xqkdi6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736170733; c=relaxed/simple;
-	bh=BUnepBwMRnEewiioeDZ7t1A22AkqWV1jcVMPkfbwqB4=;
+	s=arc-20240116; t=1736170735; c=relaxed/simple;
+	bh=hjCxZydMzSLqC7uozkWiy6PV/LyYEbMQsEPXgWmlDuE=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=M5+J4lTdc1wUICH/WV+LGaFTWmkqxQI/8jatMjqeRwcbMYDVCUm7oywtmKhqsUaCRszHfC4xLMQHvyQ8SVHT9nESj0TVp025OjgAgbEzaswbawGc6llsWpOVk9dHgLhCkHSsBkX/Ad2HAfuooEfszkCU50gDmHpMUmgjAz+xZk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P6Pz1uwv; arc=none smtp.client-ip=209.85.128.52
+	 MIME-Version:Content-Type; b=uWTRpRaOIeHV4er/oNrX4qnsn9qSrkMk8kwNs9LHhPkZUG07V31b1083QhbR/cyUqpiMvxKIGDtl1lhqo7X7Jo1cEWg+xnvP2aweQxJ4Dhzbgu/m9aSAv5r+VBifW5FLIDtNtKHoSHgHH9f2cor1Vwt/AieYj+tZuHCfmT+RL7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dkjLoYGF; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P6Pz1uwv"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4361c705434so103901865e9.3
-        for <netdev@vger.kernel.org>; Mon, 06 Jan 2025 05:38:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dkjLoYGF"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-436341f575fso148814055e9.1
+        for <netdev@vger.kernel.org>; Mon, 06 Jan 2025 05:38:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736170730; x=1736775530; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736170732; x=1736775532; darn=vger.kernel.org;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cJzeDskGS1zxkXNOaWYyNUG66NBPdze7gKnt2qioicg=;
-        b=P6Pz1uwvKqu8cDys6WfD0GZDbzdhouB/NiMGqClrOlMVlqz/mTTsqxyXb9Agpb+Bqv
-         VOrhyXtQQhKnWQyyR6YbG2BL5PfWMCVlFoPOZnJKnbuVRaQDsMW+NNgOb7170oPvnA4J
-         6s73YLtqPVeRSU1dYTLgFsDXrVxji0U+GD5rJrbsDl6pgrIlb2jy8jTyNxIss0iHLAq0
-         F3AoOIrSGsR9iZnghYgw0X724USEhnV4LKyp24hOOmkpShbHpefyDVN0G5SyUfCTfSYW
-         D3mY4zDGm2dkPo3SmCjV8IMyKAGwl4bq/mTLklG5X1KctCZ5sNRleGrvcInuQUCvZDqU
-         jVRw==
+        bh=hjCxZydMzSLqC7uozkWiy6PV/LyYEbMQsEPXgWmlDuE=;
+        b=dkjLoYGF3U6VkrqA34zGZLGbySSdoEKOLkk88E3eIe3ThYpQF5JEq07aH94gM5Qy5Y
+         Ehi/1gzcoA2OliHWO4F/GyDryTqRBlBfFSL+XiPuMv593utNUutvPNDlGeDTBoHj5IN2
+         TYEMXdOGjFd7xR2B+wQFgSZ84I86l7rIt/OfjrdIJaoNxm42T/E53UwdzJaMJf/YBIHD
+         taI5yxAXsaA+TDVUEVmCHTQYbX940AHPROL4cIQj5+pCOpAhypvEPS4ebFUas+oBHXu3
+         C8bROYScYbeyNiF1yJY7E3ZYWZivBFvMYReh+zjKC+IkbDxKHacnhibimMUKiFq/WXjQ
+         CMmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736170730; x=1736775530;
+        d=1e100.net; s=20230601; t=1736170732; x=1736775532;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cJzeDskGS1zxkXNOaWYyNUG66NBPdze7gKnt2qioicg=;
-        b=UtKshoIJu4lMJhZYUW2Ty/puDyuISk/XDTBJqb1Zc3l3Lxsf8//EeF9XcH8kC9ZYpA
-         31Z6EFAtJj4/ZwDO1HDO/NmkB2pEAXyxcZ09vgE0tPUkHj1dwl2fec4rMLj8PUAErpjP
-         eAG1weddQpr/2aVjKEKXnCMyAxOMjd+WrTyKiy+wWsYwXxbier+IDmaQmx3LBWhYxwLU
-         gdyKsKwdesiCwKQU1XRioGgbzlg6zdsHWV4Tg2jXDYW5V0R18qdC2XUSYmcXYr+ntkNO
-         VHi0vjsWFRQzAT0ZbhVVx6qnXYxKoe3yT4uzUKECKsjfNsl1TjM3+PRJXPUtjMgqrjbG
-         XaxA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvJdlFoNbZRSggOgl74wV2dniCnmqp4cUw5WfUet1tK17/h0OGLOPjSs8Wkyv95ugD67Gn8bs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeuL0UCbiWZDMzdqOamij2c5rAMhStWuopRhul922QxvAzk0+4
-	qidLC5aPE5azLcAuvFe6iR3hRkAvIKrwIHkqQncZ/+3EtK6ZO+Fs
-X-Gm-Gg: ASbGncsmyXXKv5eiy0P3/48qUh8+JbcdFiaL2SsQzUcBRUCwZ4gwOZ9yaEo7s2sJav1
-	oAW3GYgxoYshSx/CW6Twv4yIskV1UPoAxkxBTcxI5AJxyBRPXeO2rZgCGSCMY+xZZzC7Fa9bT5z
-	6Q4SySoFcOSY/J6xY1eFOY4ol4qOeyx1kfY6Pcgb9vh0ew/gSEFeWZsASDandXoLGCOiUhwgDkq
-	mbxuSOfpOpTQczvMFMSyvlq+D4DpaxUTaTkCeHcqcyY97W5zV4hbYRydeCXv1RrOuh/Yw==
-X-Google-Smtp-Source: AGHT+IEgXWR+Gbfux0wSViYOwKloYkDRr0pKcRJi/M9OGXSaxlw5PInp8oeDF/MHWvDih8aVLnDCaA==
-X-Received: by 2002:a05:600c:470a:b0:434:f767:68ea with SMTP id 5b1f17b1804b1-43668548337mr483029845e9.5.1736170729858;
-        Mon, 06 Jan 2025 05:38:49 -0800 (PST)
+        bh=hjCxZydMzSLqC7uozkWiy6PV/LyYEbMQsEPXgWmlDuE=;
+        b=fzz/EHTk7QPTW5CTqPWeWyb4d0WrIuV3YuftVA1cDaibPL09RnBxxjPhw187yoAjzM
+         7D6creypvaXAxr+T+cIH7slYdkfjdeTYDj393lKpg8YqA9nmHdcFAXamcNXJe9n7zV0p
+         MyyzbRpcQhT+Oz2kq58DO2UrkjdMSkjO8AaLEmPTQyJTDZNgX7O4ZgK/qaYgrciIVXVz
+         UAPGiE3BzRIixJ3F9AhDOfhobRabtzbicln5Tv2yUC3MC74r6UBuoVtREZpTWDi5GIbO
+         WEZSYfpir9HrWUWi8P9qgwcskU4lXbr0A6EcDrkruMoSyayWb+6rR+t0yuAs66E/2BMp
+         rVgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXTeauHQXe/bEH5ZoriKdw5Tjfuh0qn+rTYLGkTirE7z0WxF7OnroJCL7SNKNxygo/Dm8jLyw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxdY5hthCtjD2HB3+O15AKEoH59EA86aV4kCAzNqok79sMr3as
+	tJjODSJ8vpwNkK7SEalxYM+ryLmnEp/TFdje3pNoX372xTrlVCbS
+X-Gm-Gg: ASbGnctcEKzClSPzmwOJb41+fhlHbr+BRzmeeiase7H9B+NB2T4zVIkBEpU749z3eFc
+	Yf6BrM4qAq0PDxjilToTF3GcdxhP4UORPOUf6p3gH6eimwRpJcnf41H3HPKkz9ArajYAZj6csqR
+	iBMcl17pJijT7lvOiB31uPMoCGApzfnRnk3udAqbV6N2pb33Ij0Q+QnjiZCOnwTzT3AFkwIMZNn
+	V8ncYxrIjyWsa1DoO7GdNx8XYS5c9rEmTQniXoq/9STc1KhFNdAI8Ck8MtoFGSyJ/UdOQ==
+X-Google-Smtp-Source: AGHT+IHpfZQExGjYlcEb/b3Fyn4akRcbffXRjiDg3YJLNb1aCt4ztPRCcyMIeTujDEjMFMzzrM6clQ==
+X-Received: by 2002:a05:600c:1d07:b0:434:f739:7cd9 with SMTP id 5b1f17b1804b1-4366854c049mr521680255e9.9.1736170731424;
+        Mon, 06 Jan 2025 05:38:51 -0800 (PST)
 Received: from imac ([2a02:8010:60a0:0:d10f:360f:84a5:c524])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a2432e587sm44102556f8f.95.2025.01.06.05.38.49
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4364b053e91sm631124615e9.1.2025.01.06.05.38.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2025 05:38:49 -0800 (PST)
+        Mon, 06 Jan 2025 05:38:51 -0800 (PST)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
   pabeni@redhat.com
-Subject: Re: [PATCH net-next 2/3] tools: ynl: print some information about
- attribute we can't parse
-In-Reply-To: <20250105012523.1722231-3-kuba@kernel.org> (Jakub Kicinski's
-	message of "Sat, 4 Jan 2025 17:25:22 -0800")
-Date: Mon, 06 Jan 2025 13:30:42 +0000
-Message-ID: <m25xmsnk71.fsf@gmail.com>
+Subject: Re: [PATCH net-next 3/3] netlink: specs: rt_link: decode ip6tnl,
+ vti and vti6 link attrs
+In-Reply-To: <20250105012523.1722231-4-kuba@kernel.org> (Jakub Kicinski's
+	message of "Sat, 4 Jan 2025 17:25:23 -0800")
+Date: Mon, 06 Jan 2025 13:38:40 +0000
+Message-ID: <m21pxgnjtr.fsf@gmail.com>
 References: <20250105012523.1722231-1-kuba@kernel.org>
-	<20250105012523.1722231-3-kuba@kernel.org>
+	<20250105012523.1722231-4-kuba@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -78,44 +78,13 @@ Content-Type: text/plain
 
 Jakub Kicinski <kuba@kernel.org> writes:
 
-> When parsing throws an exception one often has to figure out which
-> attribute couldn't be parsed from first principles. For families
-> with large message parsing trees like rtnetlink guessing the
-> attribute can be hard.
+> Some of our tests load vti and ip6tnl so not being able to decode
+> the link attrs gets in the way of using Python YNL for testing.
 >
-> Print a bit of information as the exception travels out, e.g.:
+> Decode link attributes for ip6tnl, vti and vti6.
 >
->   # when dumping rt links
->   Error decoding 'flags' from 'linkinfo-ip6tnl-attrs'
->   Error decoding 'data' from 'linkinfo-attrs'
->   Error decoding 'linkinfo' from 'link-attrs'
->   Traceback (most recent call last):
->     File "/home/kicinski/linux/./tools/net/ynl/cli.py", line 119, in <module>
->       main()
->     File "/home/kicinski/linux/./tools/net/ynl/cli.py", line 100, in main
->       reply = ynl.dump(args.dump, attrs)
->     File "/home/kicinski/linux/tools/net/ynl/lib/ynl.py", line 1064, in dump
->       return self._op(method, vals, dump=True)
->     File "/home/kicinski/linux/tools/net/ynl/lib/ynl.py", line 1058, in _op
->       return self._ops(ops)[0]
->     File "/home/kicinski/linux/tools/net/ynl/lib/ynl.py", line 1045, in _ops
->       rsp_msg = self._decode(decoded.raw_attrs, op.attr_set.name)
->     File "/home/kicinski/linux/tools/net/ynl/lib/ynl.py", line 738, in _decode
->       subdict = self._decode(NlAttrs(attr.raw), attr_spec['nested-attributes'], search_attrs)
->     File "/home/kicinski/linux/tools/net/ynl/lib/ynl.py", line 763, in _decode
->       decoded = self._decode_sub_msg(attr, attr_spec, search_attrs)
->     File "/home/kicinski/linux/tools/net/ynl/lib/ynl.py", line 714, in _decode_sub_msg
->       subdict = self._decode(NlAttrs(attr.raw, offset), msg_format.attr_set)
->     File "/home/kicinski/linux/tools/net/ynl/lib/ynl.py", line 749, in _decode
->       decoded = attr.as_scalar(attr_spec['type'], attr_spec.byte_order)
->     File "/home/kicinski/linux/tools/net/ynl/lib/ynl.py", line 147, in as_scalar
->       return format.unpack(self.raw)[0]
->   struct.error: unpack requires a buffer of 2 bytes
->
-> The Traceback is what we would previously see, the "Error..."
-> messages are new. We print a message per level (in the stack
-> order). Printing single combined message gets tricky quickly
-> given sub-messages etc.
+> ip6tnl uses IFLA_IPTUN_FLAGS as u32, while ipv4 and sit expect
+> a u16 attribute, so we have a (first?) subset type override...
 >
 > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
