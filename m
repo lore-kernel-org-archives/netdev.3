@@ -1,123 +1,187 @@
-Received: from smtp-out.freemail.hu (fmfe36.freemail.hu [46.107.16.241])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3471D8DFB;
-	Mon,  6 Jan 2025 12:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.107.16.241
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BEA12E4A
+	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 12:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736165033; cv=none; b=NzoWYEcrjcycvFoF3tXAjddpW5eX19partp+yesFFQ85eE9c9HSBxhBQ8EkjhGBS/DCUB8QVcc1pUFkdW+WyE0ALVmz3FWyzO/KUty3BDH2DaIBj9AMGC6frkA3L9AMmE/nfgHa1VTc7Ehzu/oy8/isOyRzGM1eM9fR9UhgwHU8=
+	t=1736165154; cv=none; b=ZShaoT8xzLEQDT0tU3nLXvt8+3hwnCgUUwrM7m4XL/Gbie0O+dxEbf/JfBznbn3tZGQCcnuX/npelP4bzIsaVeyIKdMAx0rTVadSUh3wHEUgZJCzNhe842ucG1ML5r1uNP6OJ+rQ/tnB84WskBe97U7Z1FxvD4ZljpdRDjUq1nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736165033; c=relaxed/simple;
-	bh=cKyFKZR8HQPXJkeEyTijZcFLJGpOeI0uMNffok1MTsg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nRUkwdYv+Lw7c+EeL0LUYaXX8vVi5jaUWYIXASwsfV6fm/aadUEwEl3Ettwvh5GqlNlAB3ufg4MBWkTe5hTZhCdzPzilArlcBMeka2mATL3WiTcq9V4wkXthU9HPlJTq0BuShXCJV4+aYqE7POK9l6ocrjF/95NRrO7TEvFUuCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu; spf=pass smtp.mailfrom=freemail.hu; dkim=fail (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b=QWehaBey reason="signature verification failed"; arc=none smtp.client-ip=46.107.16.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freemail.hu
+	s=arc-20240116; t=1736165154; c=relaxed/simple;
+	bh=z0ViqakQGHtfw/s2WTbHzxjzMFlrd6VJOw/xSStAH5I=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KY2acIotR5azPAPLp9qzctwS25iVU4DTnIUfl2hrivFu8bnVwNkFIQDNQt/hEauIPpCDQ2RhtfWE/iFBdNNUddce61lsG8uk/nBPq5ndk8wcCKqxPCshdMf+UZHKVa+avcdeUZKhjiNX0X1iVF6emmn1ftQ1sejrStmfnSkO6Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=FnVCA4Ll; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b="QWehaBey"
-Received: from [192.168.0.16] (catv-178-48-208-49.catv.fixed.vodafone.hu [178.48.208.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.freemail.hu (Postfix) with ESMTPSA id 4YRXfr71Lrzgkg;
-	Mon, 06 Jan 2025 12:55:00 +0100 (CET)
-Message-ID: <cb4b77e3-65c3-4fd4-94bb-a2b35a6dcfb5@freemail.hu>
-Date: Mon, 6 Jan 2025 12:54:31 +0100
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="FnVCA4Ll"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=VBEB/kPkyShxtQOE4BUx0N3kQ+bMX24x7MYUpCfVD4U=; b=FnVCA4Ll25t01UQcl1Yvy7W1Vu
+	ghtQLVRHU9PL3+UgCeZ+oON6zHk2AqFeyh8egxV7mx3gZX7zyM5s0Lzg3XcZJ8VIWJyn+3BiGvTod
+	MbqT1dld7Y3lQZJPU4rRK9i8pBfutZo8hSeHFPZ1j3SO1aUg3SSkFC6Edbhrhk2QE46QFijtYfm4j
+	YySctcQV3551o7cAi5LO8yNRp0Yf80yD0fn99J0p9wRtppoJmA42EFc2DGNJggDwwfKAolpUF3MY4
+	1dImpueDCbtDd5ECYko8G/cM0qzRuKaJw6WlGjiop4pGmQL/NUO1tWWWy6IWa8nlDhkLX7a/6jlLO
+	Ifb9dUNg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:49610)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tUlrY-0005nj-0r;
+	Mon, 06 Jan 2025 12:05:40 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tUlrV-0004Fl-0h;
+	Mon, 06 Jan 2025 12:05:37 +0000
+Date: Mon, 6 Jan 2025 12:05:37 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Jose Abreu <joabreu@synopsys.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next 2/7] net: stmmac: move tx_lpi_timer tracking to
+ phylib
+Message-ID: <Z3vHEdgG2RXXKY8N@shell.armlinux.org.uk>
+References: <Z1r3MWZOt36SgGxf@shell.armlinux.org.uk>
+ <E1tLkSX-006qfS-Rx@rmk-PC.armlinux.org.uk>
+ <Z1wTqh-BnvPYLqU8@shell.armlinux.org.uk>
+ <Z1yTviYUZ8sbNOsK@shell.armlinux.org.uk>
+ <Z3cM-5tShVza0M58@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/3] netfilter: x_tables: Merge xt_*.h and ipt_*.h
- files which has same name.
-To: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
-Cc: Andrew Lunn <andrew@lunn.ch>, Florian Westphal <fw@strlen.de>,
- Pablo Neira Ayuso <pablo@netfilter.org>, lorenzo@kernel.org,
- daniel@iogearbox.net, leitao@debian.org, amiculas@cisco.com,
- kadlec@netfilter.org, David Miller <davem@davemloft.net>,
- dsahern@kernel.org, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20250105203452.101067-1-egyszeregy@freemail.hu>
- <43f658e7-b33e-4ac9-8152-42b230a416b7@lunn.ch>
- <defa70d2-0f0c-471e-88c0-d63f3f1cd146@freemail.hu>
- <ee78ed44-7eed-0a80-6525-61b5925df431@blackhole.kfki.hu>
-Content-Language: hu
-From: =?UTF-8?Q?Sz=C5=91ke_Benjamin?= <egyszeregy@freemail.hu>
-In-Reply-To: <ee78ed44-7eed-0a80-6525-61b5925df431@blackhole.kfki.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/relaxed; t=1736164501;
-	s=20181004; d=freemail.hu;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	l=2518; bh=lfy5n6CsbSpr3jgDmUldoHdcbJ2OBU+Aw/IlhAEFXic=;
-	b=QWehaBey/DzTZIUvU3+1P1PzJNJyp51bP1Kc4tirkqFQZXUTsFw8E6Ce6LOHioL4
-	O7J+W2vTFmT3fdGCnbv5tuIlI32IKZeJKFk2+btgqb00Whcaw/cZkHVAC/jNfHr9qmR
-	O+AYjVy+nJ45k4Lk3ArSIXq7K3I1dmfKBQK/KUn1BJEyDCKw1HOPzPsnd+R5ZC2xPv3
-	Ej80t0bWtZvKvGnXrwiqgi4ncglg1a2fejAZCjFfLEepnmGPScWfWG1J+muRU+w+RRB
-	GIuMWUm3QKAE34rirBTLqktS6JTqktAh7YGCaN2drjNyE8OAno0SS9FiCC7i6ojbKna
-	mGhgfT0DmA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z3cM-5tShVza0M58@shell.armlinux.org.uk>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-2025. 01. 06. 8:48 keltezéssel, Jozsef Kadlecsik írta:
-> On Mon, 6 Jan 2025, Szőke Benjamin wrote:
+On Thu, Jan 02, 2025 at 10:02:35PM +0000, Russell King (Oracle) wrote:
+> On Fri, Dec 13, 2024 at 08:06:22PM +0000, Russell King (Oracle) wrote:
+> > On Fri, Dec 13, 2024 at 10:59:54AM +0000, Russell King (Oracle) wrote:
+> > > On Thu, Dec 12, 2024 at 02:46:33PM +0000, Russell King (Oracle) wrote:
+> > > > @@ -1092,6 +1092,7 @@ static void stmmac_mac_link_up(struct phylink_config *config,
+> > > >  			phy_init_eee(phy, !(priv->plat->flags &
+> > > >  				STMMAC_FLAG_RX_CLK_RUNS_IN_LPI)) >= 0;
+> > > >  		priv->eee_enabled = stmmac_eee_init(priv);
+> > > > +		priv->tx_lpi_timer = phy->eee_cfg.tx_lpi_timer;
+> > > >  		priv->tx_lpi_enabled = priv->eee_enabled;
+> > > >  		stmmac_set_eee_pls(priv, priv->hw, true);
+> > > >  	}
+> > > 
+> > > While looking deeper at stmmac, there's a bug in the above hunk -
+> > > stmmac_eee_init() makes use of priv->tx_lpi_timer, so this member
+> > > needs to be set before calling this function. I'll post a v2 shortly.
+> > 
+> > I'm going to hold off v2, there's a lot more that can be cleaned up
+> > here - the EEE code is rather horrid in stmmac, and there's definitely
+> > one race, and one logical error in it (e.g. why mark software EEE mode
+> > *enabled* when EEE mode is being disabled - which can lead to the EEE
+> > timer being added back onto the timer list.)
+> > 
+> > There's also weirdness with dwmac4's EEE register fiddling.
+> > 
+> > The stmmac driver uses hardware timed LPI entry if the timer is small
+> > enough to be programmed into hardware, otherwise it uses software mode.
+> > 
+> > When software mode wants to enter LPI mode, it sets both:
+> > 
+> > 	GMAC4_LPI_CTRL_STATUS_LPIEN (LPI enable)
+> > 	GMAC4_LPI_CTRL_STATUS_LPITXA (LPI TX Automate)
+> > 
+> > When software mode wants to exit LPI mode, it clears both of these
+> > two bits.
+> > 
+> > In hardware mode, when enabling LPI generation, we set the hardware LPI
+> > entry timer (separate register) to a non-zero value, and then set:
+> > 
+> > 	GMAC4_LPI_CTRL_STATUS_LPIEN (LPI enable)
+> > 	GMAC4_LPI_CTRL_STATUS_LPITXA (LPI TX Automate)
+> > 	GMAC4_LPI_CTRL_STATUS_LPIATE (LPI Timer enable)
+> > 
+> > That seems logical. However, in hardware mode, when we want to then
+> > disable hardware LPI generation, we set the hardware LPI entry timer to
+> > zero, the following bits:
+> > 
+> > 	GMAC4_LPI_CTRL_STATUS_LPIEN (LPI enable)
+> > 	GMAC4_LPI_CTRL_STATUS_LPITXA (LPI TX Automate)
+> > 
+> > and clear:
+> > 
+> > 	GMAC4_LPI_CTRL_STATUS_LPIATE (LPI Timer enable)
+> > 
+> > So, hardware mode, disabled, ends up setting the same bits as
+> > software mode wanting to generate LPI state on the transmit side.
+> > This makes no sense to me, and looks like another bug in this driver.
 > 
->> 2025. 01. 05. 22:27 keltezéssel, Andrew Lunn írta:
->>> On Sun, Jan 05, 2025 at 09:34:52PM +0100, egyszeregy@freemail.hu wrote:
->>>> From: Benjamin Szőke <egyszeregy@freemail.hu>
->>>>
->>>> Merge xt_*.h, ipt_*.h and ip6t_*.h header files, which has
->>>> same upper and lower case name format.
->>>>
->>>> Add #pragma message about recommended to use
->>>> header files with lower case format in the future.
->>>
->>> It looks like only patch 1/3 make it to the list.
->>>
->>> Also, with a patchset, please include a patch 0/X which gives the big
->>> picture of what the patchset does. The text will be used for the merge
->>> commit, so keep it formal. 'git format-patch --cover-letter' will
->>> create the empty 0/X patch you can edit, or if you are using b4 prep,
->>> you can use 'b4 prep --edit-cover' and then 'b4 send' will
->>> automatically generate and send it.
->>>
->>> https://docs.kernel.org/process/maintainer-netdev.html
->>> https://docs.kernel.org/process/submitting-patches.html
->>>
->>>      Andrew
->>
->> https://lore.kernel.org/lkml/20250105233157.6814-1-egyszeregy@freemail.hu/T/
->>
->> It is terribly chaotic how slowly start to appear the full patch list in the 
->> mailing list website. It's really time to replace 1990s dev technology with 
->> something like GitLab or GitHub developing style can provide in 2024.
+> I've found a document that describes the GMAC:
 > 
-> No, it was your fault in the v5 series of your patches: you managed to send all 
-> the patches in a single email instead of separated ones.
-
-Something is not OK with your e-mail processing:
-
-- 1. [PATCH v7 0/3] which is the cover letter, is appering really slowly in the 
-list after [PATCH v7 1/3], [PATCH v7 2/3], [PATCH v7 3/3] were arrived. This is 
-why I made v7 after v6, because after 10 minutes i still could not see that it 
-is successfully arrived in the mailing list, I fustrated about it again went wrong.
-
-
-- 2. Patch name visible is buggy:
-[PATCH v7 0/3] netfilter: x_tables: Merge xt_*.c files
-2025-01-05 23:31 UTC  (4+ messages)
-[PATCH v7 1/3] netfilter: x_tables: Merge xt_*.h and ipt_*.h files which has 
-same name
-[PATCH v7 2/3] netfilter: x_tables: Merge xt_*.c "
-[PATCH v7 3/3] netfilter: x_tables: Adjust code style for xt_*.h/c and ipt_*.h files
-
-[PATCH v7 2/3] netfilter: x_tables: Merge xt_*.c " -> half of real name missing? 
-Real name was: "Merge xt_*.c files which has same name."
-
-
+> https://www.st.com/resource/en/reference_manual/rm0441-stm32mp151-advanced-armbased-32bit-mpus-stmicroelectronics.pdf
 > 
-> Best regards,
-> Jozsef
+> Page 3302 gives the definitions for the ETH_MACLCSR, which is this
+> register.
+> 
+> LPITE (bit 20) - allows the ETH_MACLETR register to define how long to
+> wait before the TX path enters LPI. Requires LPITXA and LPIEN to both
+> be set. LPIEN is *not* automatically cleared when the TX path exits
+> LPI.
+> 
+> LPITXA (bit 19) - if this and LPIEN are set, then LPI is entered once
+> all outstanding packets have been transmitted, and exits when there's
+> a packet to be transmitted or the Tx FIFO is flushed. When it exits,
+> it clears the LPIEN bit (making this a one-shot LPI enter-exit.)
+> 
+> PLS (bit 17) needs to be programmed to reflect the PHY link status,
+> and is used to hold off LPI state for the LS timer.
+> 
+> LPIEN (bit 16) instructs the MAC to enter (when set) or exit (when
+> cleared) LPI state. It doesn't say what the behaviour of this bit is
+> if LPITXA is clear.
+> 
+> So:
+> 
+> LPIEN	LPITXA	LPITE	Effect
+> 0	x	x	No LPI, or LPI exited if active
+> 1	0	0	Undocumented
+> 1	1	0	Tx LPI entered if PLS has been set for the LS
+> 			timer, and once all packets have been sent.
+> 			LPIEN clears when Tx LPI exits.
+> 1	1	1	Tx LPI entered if PLS has been set for the LS
+> 			timer, and transmitter has been idle for
+> 			ETH_MACLETR. Exits do not clear LPIEN, allowing
+> 			for subsequent idle periods to enter LPI.
+> 
+> Therefore, given this description, I believe the code to be wrong.
+> In the case where we've set LPIEN=1 LPITXA=1 LPITE=1, and we want
+> to exit/disable LPI, we should not be clearing LPIATE and leaving
+> LPIEN and LPITXA as they were. According to my reading, this would
+> cause LPI to remain active until there is a packet to be sent or the
+> TX FIFO is flushed. At that point, Tx LPI will be exited, causing
+> LPIEN to be cleared - but the code is wanting to disable Tx LPI
+> (e.g. because the user configured through ethtool for LPI to be
+> disabled.)
+> 
+> The question is... does this get fixed? Is there anyone who can test
+> this (beyond the "patch doesn't seem to cause regressions" but can
+> actually confirm entry/exit from LPI state?)
 
+Okay, given the lack of engagement on this patch set, I'm going to
+submit it in its latest form anyway (with a few more patches of the
+same ilk) so we can at least move forward cleaning up the code.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
