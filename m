@@ -1,352 +1,148 @@
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+Received: from smtp-out.kfki.hu (smtp-out.kfki.hu [148.6.0.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4C41D63CF
-	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 08:25:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949A71D79B4;
+	Mon,  6 Jan 2025 08:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.6.0.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736151906; cv=none; b=f2+qyS1a2PwImVcPM7VmSLDGEWrNZmDFFX6uTN/vALcjFV+9/0hscVzPecpFC2pebWDW3Xl+7qtBGZaNmQUZiOlrRVMFTJvKWGU872kOoiadBqIvZRnzKLk/LuV+iNDBQt2H+JErEf2lNYxU12TFUjdENw/DRudqykb3I/eKiuc=
+	t=1736151955; cv=none; b=YsAcxbQ+dAPUAnwm/Beew/V0VhFeiZwuUagnXQRkcVxgwJl6aQWhsbet2GSR/CnAbdW8m1a7gBNen/HCu29z5QEGYSxjgCZxc8pkxyH4H8iaDimusbNuShCjzc5+zZDq48wnZb9tuTtCNRXb6pRHVWqXpXiVvIz9LQqfKnC98xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736151906; c=relaxed/simple;
-	bh=3G0KQgA3vAi3n+XXVtenik8jimtwI+qxMlkuYh2lnDs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mfjox4XFPusXR/X8eWgT50s/nEVWs2TgK+cIYW4i3NqrcAG4fyVnC2UXEVZTdKfCTvfZEAWiuBwWuBVNODyP4KxksW4BdyPFXIThKdD5FtP43tNLYnPDPs25krZD035IsQq+jV7Zz5pWz5vctvm2uIgCjPpMspg41MZWvBGZXjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: bizesmtpsz14t1736151871t0senq
-X-QQ-Originating-IP: i9frT461jKUaGF5UPhNAW8sAfkZl7IsXALWXlbwDZA8=
-Received: from wxdbg.localdomain ( [125.118.30.165])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 06 Jan 2025 16:24:30 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 7605833486242641068
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	linux@armlinux.org.uk,
-	horms@kernel.org,
-	jacob.e.keller@intel.com,
-	netdev@vger.kernel.org,
-	vadim.fedorenko@linux.dev
-Cc: mengyuanlou@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v2 3/4] net: wangxun: Implement do_aux_work of ptp_clock_info
-Date: Mon,  6 Jan 2025 16:45:05 +0800
-Message-Id: <20250106084506.2042912-4-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20250106084506.2042912-1-jiawenwu@trustnetic.com>
-References: <20250106084506.2042912-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1736151955; c=relaxed/simple;
+	bh=XWox8SXbsO1tvSKnBhApTKkBPW8qRlOTiyjyr6b1e/A=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ohXwt267Dse7WzD1BqJB0udU2BKJMP7L6MNG3r/AEUFw8gQaDzUwCOoyJzF1wml3CQPB7MkpgK827/619W94nB0dWwn5Bmt/aBBhj9k2bZ652uO2e+80LIisqw59R6oT1vGH09W+2+qWjkBWsMVSESJTr7UUb0aubOrhIbUJnfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=blackhole.kfki.hu; spf=pass smtp.mailfrom=blackhole.kfki.hu; dkim=pass (1024-bit key) header.d=blackhole.kfki.hu header.i=@blackhole.kfki.hu header.b=K+5y7dbO; arc=none smtp.client-ip=148.6.0.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=blackhole.kfki.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blackhole.kfki.hu
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=blackhole.kfki.hu header.i=@blackhole.kfki.hu header.b="K+5y7dbO"
+Received: from localhost (localhost [127.0.0.1])
+	by smtp2.kfki.hu (Postfix) with ESMTP id 8E2FC32E01D9;
+	Mon,  6 Jan 2025 09:20:16 +0100 (CET)
+Authentication-Results: smtp012.wigner.hu (amavis); dkim=pass (1024-bit key)
+ reason="pass (just generated, assumed good)" header.d=blackhole.kfki.hu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	blackhole.kfki.hu; h=content-id:mime-version:references
+	:message-id:in-reply-to:from:from:date:date:received:received
+	:received:received; s=20151130; t=1736151614; x=1737966015; bh=h
+	MTy6aySoRL2nI3z83EOIV4p9YPNeXMkdWm1sStVUaE=; b=K+5y7dbO4zyvF6EKB
+	PXccPcYmWhBPWM3pt0Cmm5zTK1ckIyfU5PKoR0n9qcEdYAL/Ff+B0DNyqr+xqoSP
+	bFChutzfxjsBcdWNmmN8FoeWk4s/cnDmzQVCSiTLH/UvebJiQljngOjF6cRJ54tE
+	5tHUlSZbC4RXJL/nQCHb2hmyvI=
+X-Virus-Scanned: Debian amavis at smtp2.kfki.hu
+Received: from smtp2.kfki.hu ([127.0.0.1])
+ by localhost (smtp2.kfki.hu [127.0.0.1]) (amavis, port 10026) with ESMTP
+ id b5dKM6WQJ3Vw; Mon,  6 Jan 2025 09:20:14 +0100 (CET)
+Received: from blackhole.kfki.hu (blackhole.szhk.kfki.hu [IPv6:2001:738:5001:1::240:2])
+	by smtp2.kfki.hu (Postfix) with ESMTP id EF45832E01CE;
+	Mon,  6 Jan 2025 09:19:57 +0100 (CET)
+Received: by blackhole.kfki.hu (Postfix, from userid 1000)
+	id C606D34316A; Mon,  6 Jan 2025 09:19:57 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by blackhole.kfki.hu (Postfix) with ESMTP id C3DB1343169;
+	Mon,  6 Jan 2025 09:19:57 +0100 (CET)
+Date: Mon, 6 Jan 2025 09:19:57 +0100 (CET)
+From: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
+To: =?ISO-8859-2?Q?Benjamin_Sz=F5ke?= <egyszeregy@freemail.hu>
+cc: Florian Westphal <fw@strlen.de>, Pablo Neira Ayuso <pablo@netfilter.org>, 
+    lorenzo@kernel.org, daniel@iogearbox.net, leitao@debian.org, 
+    amiculas@cisco.com, kadlec@netfilter.org, 
+    David Miller <davem@davemloft.net>, dsahern@kernel.org, 
+    edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+    netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+    linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v6 1/3] netfilter: x_tables: Merge xt_*.h and ipt_*.h
+ files which has same name.
+In-Reply-To: <20250105231900.6222-2-egyszeregy@freemail.hu>
+Message-ID: <8f20c793-7985-72b2-6420-fd2fd27fe69c@blackhole.kfki.hu>
+References: <20250105231900.6222-1-egyszeregy@freemail.hu> <20250105231900.6222-2-egyszeregy@freemail.hu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MFrsSwQn8ixcBCt+OYyXIDS+Z9gvUAq0GlLm6lTtBMSUCoQWFvjdmLJb
-	XE/t82wUNlW78nmFPrytJ7nl8cW2ibWgUWTKErL14zVuX86elnaTA7kXaM20gY2kzaaceNL
-	L3EHGn0Jih6GY9a6ZHVilGiIauwZBJbxG5nmHwaIzZwuO+WZZ+33brYAYXFF1rPjjD4pu9Y
-	7zbET+lB+BrcCjq6Hq5dumd1G4HBVQjRtmtyc9ouHhoLk710ACx7GKkTQ9gKcRicP2nSrhw
-	i9aNxRljp1w7fgLExG3rUaNPtnrmpLSXNw9ZUSqkadiw68g5kmlP9v5AkMnoB2zzktAJIr1
-	/uvxIQe6FO00y7KLYL8kbaqH9ZAhNy0ZOVQWgbp/uLDn8F2RKgr0Kve8xqfpI2VpCaWp5n+
-	uUqifAEPsIms1rb3DtEc+F7Iff8LgWijrbekvpNcGnhxXRN696CEqe4iyo6Y6YTcVnm+/Gs
-	oumlAm1uGwOPQ0Yn6bUrwtUxEoQgl+I1yavLBSSV7QtjRfeTR4q+rn1PQIQo2GYBc7ZHa4l
-	4NGT1NQ30q+fEc632XKwgsynEg2GX6MyCMSjhJgTgw72umYePNxO/M23Mgm5r0tXiZp1hYv
-	Pj3MiAF1ydI1pCubD3CeYMK/ClA56xwJ2jwovKKR/2AAvLOtlg6KJJbO9ZDa70R+lyLxLQz
-	kBsXERi0a0C/fYY3AeyMomLyNnU4qEUufmNmq/cUmv5GQuJy247HybXuR5NAl0MitMCq3+J
-	xp0Jeqy1pQtxgKvpEfaUJg1VwawlZ76Hi2Kz6Yfz93Laa5GhzpG+eOl6uZX5AIW27QcKYJ8
-	vpIfhUffxlKDO6xLKaBxct/US/DtZe2satNFQCvv/G96xBajattbi/Bthx/AfdQt2op+4Yr
-	yeqvNUR3mHw2eRr2NitpxX/6Pg9IonV45BCsasc/q5f2nDxZhSzWfMO7kt+Vbj1c4fW9cUt
-	Ht19EprgRI2ltIwiyX/9n26hRo78sX+WVJo4jnP/Fe/vpDfx/ds9V9iYz81lUDK/owMTRaU
-	9nxufo6TuBU4lFlpmZaAVebgy3rmLmGlzCKcD6voimtHb16lyi
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-X-QQ-RECHKSPAM: 0
+Content-Type: multipart/mixed; boundary="110363376-114709859-1736151517=:36632"
+Content-ID: <e194de0a-f804-58bd-df39-dfae4bcbb182@blackhole.kfki.hu>
 
-Implement watchdog task to detect SYSTIME overflow and error cases of
-Rx/Tx timestamp.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_ptp.c   | 211 ++++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |   2 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c |   1 +
- .../net/ethernet/wangxun/txgbe/txgbe_phy.c    |   1 +
- 4 files changed, 215 insertions(+)
+--110363376-114709859-1736151517=:36632
+Content-Type: text/plain; charset=ISO-8859-2; format=flowed
+Content-ID: <b6ca3a8f-e1e7-8b3f-4a73-8a94353ab116@blackhole.kfki.hu>
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-index 0f683e576b29..0071ba929738 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-@@ -255,6 +255,215 @@ static void wx_ptp_tx_hwtstamp_work(struct work_struct *work)
- 	}
- }
- 
-+/**
-+ * wx_ptp_overflow_check - watchdog task to detect SYSTIME overflow
-+ * @wx: pointer to wx struct
-+ *
-+ * this watchdog task periodically reads the timecounter
-+ * in order to prevent missing when the system time registers wrap
-+ * around. This needs to be run approximately twice a minute for the fastest
-+ * overflowing hardware. We run it for all hardware since it shouldn't have a
-+ * large impact.
-+ */
-+static void wx_ptp_overflow_check(struct wx *wx)
-+{
-+	bool timeout = time_is_before_jiffies(wx->last_overflow_check +
-+					      WX_OVERFLOW_PERIOD);
-+	unsigned long flags;
-+
-+	if (timeout) {
-+		/* Update the timecounter */
-+		spin_lock_irqsave(&wx->tmreg_lock, flags);
-+		timecounter_read(&wx->hw_tc);
-+		spin_unlock_irqrestore(&wx->tmreg_lock, flags);
-+
-+		wx->last_overflow_check = jiffies;
-+	}
-+}
-+
-+/**
-+ * wx_ptp_rx_hang - detect error case when Rx timestamp registers latched
-+ * @wx: pointer to wx struct
-+ *
-+ * this watchdog task is scheduled to detect error case where hardware has
-+ * dropped an Rx packet that was timestamped when the ring is full. The
-+ * particular error is rare but leaves the device in a state unable to
-+ * timestamp any future packets.
-+ */
-+static void wx_ptp_rx_hang(struct wx *wx)
-+{
-+	struct wx_ring *rx_ring;
-+	unsigned long rx_event;
-+	u32 tsyncrxctl;
-+	int n;
-+
-+	tsyncrxctl = rd32(wx, WX_PSR_1588_CTL);
-+
-+	/* if we don't have a valid timestamp in the registers, just update the
-+	 * timeout counter and exit
-+	 */
-+	if (!(tsyncrxctl & WX_PSR_1588_CTL_VALID)) {
-+		wx->last_rx_ptp_check = jiffies;
-+		return;
-+	}
-+
-+	/* determine the most recent watchdog or rx_timestamp event */
-+	rx_event = wx->last_rx_ptp_check;
-+	for (n = 0; n < wx->num_rx_queues; n++) {
-+		rx_ring = wx->rx_ring[n];
-+		if (time_after(rx_ring->last_rx_timestamp, rx_event))
-+			rx_event = rx_ring->last_rx_timestamp;
-+	}
-+
-+	/* only need to read the high RXSTMP register to clear the lock */
-+	if (time_is_before_jiffies(rx_event + 5 * HZ)) {
-+		rd32(wx, WX_PSR_1588_STMPH);
-+		wx->last_rx_ptp_check = jiffies;
-+
-+		wx->rx_hwtstamp_cleared++;
-+		dev_warn(&wx->pdev->dev, "clearing RX Timestamp hang");
-+	}
-+}
-+
-+/**
-+ * wx_ptp_tx_hang - detect error case where Tx timestamp never finishes
-+ * @wx: private network wx structure
-+ */
-+static void wx_ptp_tx_hang(struct wx *wx)
-+{
-+	bool timeout = time_is_before_jiffies(wx->ptp_tx_start +
-+					      WX_PTP_TX_TIMEOUT);
-+
-+	if (!wx->ptp_tx_skb)
-+		return;
-+
-+	if (!test_bit(WX_STATE_PTP_TX_IN_PROGRESS, wx->state))
-+		return;
-+
-+	/* If we haven't received a timestamp within the timeout, it is
-+	 * reasonable to assume that it will never occur, so we can unlock the
-+	 * timestamp bit when this occurs.
-+	 */
-+	if (timeout) {
-+		cancel_work_sync(&wx->ptp_tx_work);
-+		wx_ptp_clear_tx_timestamp(wx);
-+		wx->tx_hwtstamp_timeouts++;
-+		dev_warn(&wx->pdev->dev, "clearing Tx timestamp hang\n");
-+	}
-+}
-+
-+static long wx_ptp_do_aux_work(struct ptp_clock_info *ptp)
-+{
-+	struct wx *wx = container_of(ptp, struct wx, ptp_caps);
-+
-+	wx_ptp_overflow_check(wx);
-+	if (unlikely(test_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER,
-+			      wx->flags)))
-+		wx_ptp_rx_hang(wx);
-+	wx_ptp_tx_hang(wx);
-+
-+	return 0;
-+}
-+
-+/**
-+ * wx_ptp_feature_enable
-+ * @ptp: the ptp clock structure
-+ * @rq: the requested feature to change
-+ * @on: whether to enable or disable the feature
-+ *
-+ * enable (or disable) ancillary features of the phc subsystem.
-+ */
-+static int wx_ptp_feature_enable(struct ptp_clock_info *ptp,
-+				 struct ptp_clock_request *rq, int on)
-+{
-+	struct wx *wx = container_of(ptp, struct wx, ptp_caps);
-+
-+	/**
-+	 * When PPS is enabled, unmask the interrupt for the ClockOut
-+	 * feature, so that the interrupt handler can send the PPS
-+	 * event when the clock SDP triggers. Clear mask when PPS is
-+	 * disabled
-+	 */
-+	if (rq->type != PTP_CLK_REQ_PPS || !wx->ptp_setup_sdp)
-+		return -EOPNOTSUPP;
-+
-+	if (on)
-+		set_bit(WX_FLAG_PTP_PPS_ENABLED, wx->flags);
-+	else
-+		clear_bit(WX_FLAG_PTP_PPS_ENABLED, wx->flags);
-+
-+	wx->ptp_setup_sdp(wx);
-+
-+	return 0;
-+}
-+
-+/**
-+ * wx_ptp_check_pps_event
-+ * @wx: the private wx structure
-+ *
-+ * This function is called by the interrupt routine when checking for
-+ * interrupts. It will check and handle a pps event.
-+ */
-+void wx_ptp_check_pps_event(struct wx *wx)
-+{
-+	struct cyclecounter *cc = &wx->hw_cc;
-+	u32 tsauxc, rem, int_status;
-+	u32 trgttiml0, trgttimh0;
-+	u32 trgttiml1, trgttimh1;
-+	unsigned long flags;
-+	u64 ns = 0;
-+
-+	/* this check is necessary in case the interrupt was enabled via some
-+	 * alternative means (ex. debug_fs). Better to check here than
-+	 * everywhere that calls this function.
-+	 */
-+	if (!wx->ptp_clock)
-+		return;
-+
-+	int_status = rd32ptp(wx, WX_TSC_1588_INT_ST);
-+	if (int_status & WX_TSC_1588_INT_ST_TT1) {
-+		/* disable the pin first */
-+		wr32ptp(wx, WX_TSC_1588_AUX_CTL, 0);
-+		WX_WRITE_FLUSH(wx);
-+
-+		tsauxc = WX_TSC_1588_AUX_CTL_PLSG | WX_TSC_1588_AUX_CTL_EN_TT0 |
-+			 WX_TSC_1588_AUX_CTL_EN_TT1 | WX_TSC_1588_AUX_CTL_EN_TS0;
-+
-+		/* Read the current clock time, and save the cycle counter value */
-+		spin_lock_irqsave(&wx->tmreg_lock, flags);
-+		ns = timecounter_read(&wx->hw_tc);
-+		wx->pps_edge_start = wx->hw_tc.cycle_last;
-+		spin_unlock_irqrestore(&wx->tmreg_lock, flags);
-+		wx->pps_edge_end = wx->pps_edge_start;
-+
-+		/* Figure out how far past the next second we are */
-+		div_u64_rem(ns, WX_NS_PER_SEC, &rem);
-+
-+		/* Figure out how many nanoseconds to add to round the clock edge up
-+		 * to the next full second
-+		 */
-+		rem = (WX_NS_PER_SEC - rem);
-+
-+		/* Adjust the clock edge to align with the next full second. */
-+		wx->pps_edge_start += div_u64(((u64)rem << cc->shift), cc->mult);
-+		trgttiml0 = (u32)wx->pps_edge_start;
-+		trgttimh0 = (u32)(wx->pps_edge_start >> 32);
-+
-+		rem += WX_1588_PPS_WIDTH_EM * WX_NS_PER_MSEC;
-+		wx->pps_edge_end += div_u64(((u64)rem << cc->shift), cc->mult);
-+		trgttiml1 = (u32)wx->pps_edge_end;
-+		trgttimh1 = (u32)(wx->pps_edge_end >> 32);
-+
-+		wr32ptp(wx, WX_TSC_1588_TRGT_L(0), trgttiml0);
-+		wr32ptp(wx, WX_TSC_1588_TRGT_H(0), trgttimh0);
-+		wr32ptp(wx, WX_TSC_1588_TRGT_L(1), trgttiml1);
-+		wr32ptp(wx, WX_TSC_1588_TRGT_H(1), trgttimh1);
-+		wr32ptp(wx, WX_TSC_1588_AUX_CTL, tsauxc);
-+		WX_WRITE_FLUSH(wx);
-+	}
-+}
-+EXPORT_SYMBOL(wx_ptp_check_pps_event);
-+
- /**
-  * wx_ptp_create_clock
-  * @wx: the private board structure
-@@ -573,6 +782,8 @@ void wx_ptp_reset(struct wx *wx)
- 	timecounter_init(&wx->hw_tc, &wx->hw_cc,
- 			 ktime_to_ns(ktime_get_real()));
- 	spin_unlock_irqrestore(&wx->tmreg_lock, flags);
-+
-+	wx->last_overflow_check = jiffies;
- }
- EXPORT_SYMBOL(wx_ptp_reset);
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 31b11dba6bf5..1f9ddddea191 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1173,6 +1173,8 @@ struct wx {
- 	u32 tx_hwtstamp_timeouts;
- 	u32 tx_hwtstamp_skipped;
- 	u32 rx_hwtstamp_cleared;
-+	unsigned long last_overflow_check;
-+	unsigned long last_rx_ptp_check;
- 	unsigned long ptp_tx_start;
- 	spinlock_t tmreg_lock; /* spinlock for ptp */
- 	struct cyclecounter hw_cc;
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-index c7944e62838a..ea1d7e9a91f3 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-@@ -111,6 +111,7 @@ static void ngbe_mac_link_up(struct phylink_config *config,
- 	wr32(wx, WX_MAC_WDG_TIMEOUT, reg);
- 
- 	wx->speed = speed;
-+	wx->last_rx_ptp_check = jiffies;
- 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
- 		wx_ptp_reset_cyclecounter(wx);
- }
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-index 60e5f3288ad8..7e17d727c2ba 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-@@ -222,6 +222,7 @@ static void txgbe_mac_link_up(struct phylink_config *config,
- 	wr32(wx, WX_MAC_WDG_TIMEOUT, wdg);
- 
- 	wx->speed = speed;
-+	wx->last_rx_ptp_check = jiffies;
- 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
- 		wx_ptp_reset_cyclecounter(wx);
- }
--- 
-2.27.0
+On Mon, 6 Jan 2025, egyszeregy@freemail.hu wrote:
 
+> From: Benjamin Sz=F5ke <egyszeregy@freemail.hu>
+>
+> Merge xt_*.h, ipt_*.h and ip6t_*.h header files, which has
+> same upper and lower case name format.
+>
+> Add #pragma message about recommended to use
+> header files with lower case format in the future.
+>
+> Signed-off-by: Benjamin Sz=F5ke <egyszeregy@freemail.hu>
+> ---
+> include/uapi/linux/netfilter/xt_CONNMARK.h  |  8 +++---
+> include/uapi/linux/netfilter/xt_DSCP.h      | 22 ++--------------
+> include/uapi/linux/netfilter/xt_MARK.h      |  8 +++---
+> include/uapi/linux/netfilter/xt_RATEEST.h   | 12 ++-------
+> include/uapi/linux/netfilter/xt_TCPMSS.h    | 14 ++++------
+> include/uapi/linux/netfilter/xt_connmark.h  |  7 +++--
+> include/uapi/linux/netfilter/xt_dscp.h      | 20 +++++++++++---
+> include/uapi/linux/netfilter/xt_mark.h      |  6 ++---
+> include/uapi/linux/netfilter/xt_rateest.h   | 15 ++++++++---
+> include/uapi/linux/netfilter/xt_tcpmss.h    | 12 ++++++---
+> include/uapi/linux/netfilter_ipv4/ipt_ECN.h | 29 ++-------------------
+> include/uapi/linux/netfilter_ipv4/ipt_TTL.h | 25 ++++--------------
+> include/uapi/linux/netfilter_ipv4/ipt_ecn.h | 26 ++++++++++++++++++
+> include/uapi/linux/netfilter_ipv4/ipt_ttl.h | 23 +++++++++++++---
+> include/uapi/linux/netfilter_ipv6/ip6t_HL.h | 26 ++++--------------
+> include/uapi/linux/netfilter_ipv6/ip6t_hl.h | 22 +++++++++++++---
+> net/ipv4/netfilter/ipt_ECN.c                |  2 +-
+> net/netfilter/xt_DSCP.c                     |  2 +-
+> net/netfilter/xt_HL.c                       |  4 +--
+> net/netfilter/xt_RATEEST.c                  |  2 +-
+> net/netfilter/xt_TCPMSS.c                   |  2 +-
+> 21 files changed, 143 insertions(+), 144 deletions(-)
+
+Technically you split up your single patch into multiple parts but not=20
+separated it into functionally disjunct parts. So please prepare
+
+- one patch for
+ 	include/uapi/linux/netfilter_ipv6/ip6t_HL.h
+ 	include/uapi/linux/netfilter_ipv6/ip6t_hl.h
+ 	net/netfilter/xt_HL.c
+ 	net/netfilter/xt_hl.c
+ 	[ I'd prefer corresponding Kconfig and Makefile changes as well]
+- one patch for
+ 	include/uapi/linux/netfilter/xt_RATEEST.h
+ 	include/uapi/linux/netfilter/xt_rateest.h
+ 	net/netfilter/xt_RATEEST.c
+ 	net/netfilter/xt_rateest.c
+ 	[I'd prefer corresponding Kconfig and Makefile changes as well]
+- and so on...
+
+That way the reviewers can follow what was moved from where to where in a=
+=20
+functionally compact way.
+
+Also, mechanically moving the comments results in text like this:
+
+> /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+> -/* ip6tables module for matching the Hop Limit value
+> +/* Hop Limit modification module for ip6tables
+> + * ip6tables module for matching the Hop Limit value
+
+which is ... not too nice. The comments need manual fixing.
+
+I also still don't like adding pragmas to emit warnings about deprecated=20
+header files. It doesn't make breaking API easier and it doesn't make=20
+possible to remove the warnings and enforce the changes just after a few=20
+kernel releases.
+
+Best regards,
+Jozsef
+--110363376-114709859-1736151517=:36632--
