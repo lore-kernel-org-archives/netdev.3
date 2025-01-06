@@ -1,166 +1,149 @@
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFAC35952;
-	Mon,  6 Jan 2025 08:18:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5114A04
+	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 08:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736151526; cv=none; b=kZdFD/Qw/iefWm4WS+Xos+8+s6dLvuSI7j3fHtMLbdct5LE2PtiR0lCXjwJtbJnca7FAvKryio0PpGZ/lHU/5NyfcqwVHgXrH7PZHTcqYKEyFqACzIJcwseAW+OMnXylqtUNGOFpk5T9ehldttv4SsVPR1G2sE28KKA88qFsBYY=
+	t=1736151669; cv=none; b=Q6pW7anqbbDvlVyFbeAfgabwFqvBDrFJtthCPVml4VkuxgybaJaxaLysnL2sAYMFxWNtrThFnp6mu5RTwXVSyxV0V8diWbpr5Kvf9NNDB+08QVO5eS80HTItWKsW10D7IOHJmbarCbnN4H46S+nPl4zcGqW2uxrJRp6SsdT1IVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736151526; c=relaxed/simple;
-	bh=Qv1uZ9xv8DoSDXorsLKhgEI652bYODAL01ifmwQ9RF0=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=XzpvmANrz3P+Nk2TV3JL1hmQkhgrVZATh83gxDy3vqaYOloikr2aADum/G68VFiVF6xu9V+keCXDuu7p+sH4AtQrfiRySieb8ayWg1fzRJzIUXkNPtcoWaUT8rmHYScpM1Z2TfmlLiDjXY1YKaUCXnngqiUrL/mKc1RBbGvoF8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4YRRrq08lPz4f3lDF;
-	Mon,  6 Jan 2025 16:18:19 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id 4C7B71A0D4F;
-	Mon,  6 Jan 2025 16:18:40 +0800 (CST)
-Received: from [10.174.176.117] (unknown [10.174.176.117])
-	by APP3 (Coremail) with SMTP id _Ch0CgB3F8LakXtndt26AA--.6626S2;
-	Mon, 06 Jan 2025 16:18:38 +0800 (CST)
-Subject: Re: faom 13cc1d4ee0a231f81951ee87f1e55229907966ee Mon Sep 17 00:00:00
- 2001
-To: bpf@vger.kernel.org, netdev@vger.kernel.org
-Cc: Martin KaFai Lau <martin.lau@linux.dev>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Song Liu <song@kernel.org>, Hao Luo <haoluo@google.com>,
- Yonghong Song <yonghong.song@linux.dev>,
- Daniel Borkmann <daniel@iogearbox.net>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Jiri Olsa <jolsa@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, xukuohai@huawei.com,
- "houtao1@huawei.com" <houtao1@huawei.com>
-References: <20250106081900.1665573-1-houtao@huaweicloud.com>
-From: Hou Tao <houtao@huaweicloud.com>
-Message-ID: <f516ac54-058b-1b7d-ab21-8405e1fe77fa@huaweicloud.com>
-Date: Mon, 6 Jan 2025 16:18:34 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	s=arc-20240116; t=1736151669; c=relaxed/simple;
+	bh=OSwSxa9R6S3DjyCyilBUO6+b7dq8tgvdND1xIZWBG0o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rHICBk7CV472JDcWvBsdb7IgaGgrLJpDA+ItF0uc4poYLAGRf42pzK6AA7jPkQu9xKci9vkU+GEBIqzdJCj+wEv2n2XKGbwjSPBD/dKK5dd7stzDxU//YiI89gPH06cizXVCudirp0a+KlYIcunokZ5tAlCNjTXwpduwrEzffs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=gvf7vOiQ; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="gvf7vOiQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=qOmXDzyTaMxazL0LDKrl4EGxFFFgph+mRVLzgb1OGYw=; b=gvf7vOiQ9lnv2sNz63xRpjQwRj
+	PhdACP9CoFiCbHmKVx68uFLnR25ClhyYqHLT38t2ejIGsszwBelrWuduNyKiaBZrhk8xo+umr9pCS
+	q1RERMQUXlcQUaPAJoYfX1ZwK0g1a3JNMAyhCatLJwZgE2kwZ3QkLofmj1D8e0C780wI3eVjHwc4m
+	3dnmwNMvM343byztON7Xok5ztcbm9RBH71SGQULa8c0hRdUnGZG92uSi1dLnrNGTUgm9YxKxo4tAj
+	oDS6gTKapf6DKjr9Hu8+TvJ94Rb7RecyQPDwVwi9SdsHNPEmw8fQg8Aw6Y4p49DyrTk9A8an/8ner
+	5U3recSQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43560)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tUiLz-0005VT-19;
+	Mon, 06 Jan 2025 08:20:51 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tUiLs-00047w-2g;
+	Mon, 06 Jan 2025 08:20:44 +0000
+Date: Mon, 6 Jan 2025 08:20:44 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Tobias Waldekranz <tobias@waldekranz.com>
+Cc: davem@davemloft.net, kuba@kernel.org, andrew@lunn.ch,
+	f.fainelli@gmail.com, olteanv@gmail.com, netdev@vger.kernel.org,
+	chris.packham@alliedtelesis.co.nz, pabeni@redhat.com,
+	marek.behun@nic.cz
+Subject: Re: [PATCH v2 net 3/4] net: dsa: mv88e6xxx: Never force link on
+ in-band managed MACs
+Message-ID: <Z3uSXFH9bryiuVqX@shell.armlinux.org.uk>
+References: <20241219123106.730032-1-tobias@waldekranz.com>
+ <20241219123106.730032-4-tobias@waldekranz.com>
+ <Z3ZrH9yqtvu2-W7f@shell.armlinux.org.uk>
+ <87zfk974br.fsf@waldekranz.com>
+ <Z3bIF7xaXrje79D8@shell.armlinux.org.uk>
+ <87pll26z2b.fsf@waldekranz.com>
+ <Z3mxsEziH_ylpCD_@shell.armlinux.org.uk>
+ <87msg66uh4.fsf@waldekranz.com>
+ <Z3ph3P9AFankiZxW@shell.armlinux.org.uk>
+ <87h66c7sa6.fsf@waldekranz.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20250106081900.1665573-1-houtao@huaweicloud.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-CM-TRANSID:_Ch0CgB3F8LakXtndt26AA--.6626S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxWrWDWF48KryxAr1DuFyxAFb_yoWrZF1xpr
-	4fK34fKr4UXa4S9anxAw4IkFyrAw4fG347AwnrKryrtws8Zr98Xw1xJF48ZFZxCryktryf
-	Xr1qqw1qkw1kAFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Sb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7I2V7IY0VAS
-	07AlzVAYIcxG8wCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4
-	IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1r
-	MI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW5JV
-	W7JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_
-	Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr
-	1UYxBIdaVFxhVjvjDU0xZFpf9x07UAwIDUUUUU=
-X-CM-SenderInfo: xkrx3t3r6k3tpzhluzxrxghudrp/
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87h66c7sa6.fsf@waldekranz.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi,
+On Mon, Jan 06, 2025 at 12:30:25AM +0100, Tobias Waldekranz wrote:
+> On sön, jan 05, 2025 at 10:41, "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+> > On Sun, Jan 05, 2025 at 12:16:07AM +0100, Tobias Waldekranz wrote:
+> >> On lör, jan 04, 2025 at 22:09, "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+> >> > Host system:
+> >> >
+> >> >   ---------------------------+
+> >> >     NIC (or DSA switch port) |
+> >> >      +-------+    +-------+  |
+> >> >      |       |    |       |  |
+> >> >      |  MAC  <---->  PCS  <-----------------------> PHY, SFP or media
+> >> >      |       |    |       |  |     ^
+> >> >      +-------+    +-------+  |     |
+> >> >                              |   phy interface type
+> >> >   ---------------------------+   also in-band signalling
+> >> >                                  which managed = "in-band-status"
+> >> > 				 applies to
+> >> 
+> >> This part is 100% clear
+> >
+> > Apparently it isn't, because...
+> >
+> >> In other words, my question is:
+> >> 
+> >> For a NIC driver to properly support the `managed` property, how should
+> >> the setup and/or runtime behavior of the hardware and/or the driver
+> >> differ with the two following configs?
+> >> 
+> >>     &eth0 {
+> >>         phy-connection-type = "sgmii";
+> >>         managed = "auto";
+> >>     };
+> >> 
+> >> vs.
+> >> 
+> >>     &eth0 {
+> >>         phy-connection-type = "sgmii";
+> >>         managed = "in-band-status";
+> >>     };
+> >
+> > if it were, you wouldn't be asking this question.
+> >
+> > Once again. The "managed" property defines whether in-band signalling
+> > is used over the "phy-connection-type" link, which for SGMII will be
+> > between the PCS and PHY, as shown in my diagram above that you claim
+> > to understand 100%, but by the fact you are again asking this question,
+> > you do not understand it AT ALL.
+> >
+> > I don't know how to better explain it to you, because I think I've been
+> > absolutely clear at every stage what the "managed" property describes.
+> > I now have nothing further to add if you still can't understand it, so,
+> > sorry, I'm giving up answering your emails on this topic, because it's
+> > just too frustrating to me to continue if you still don't "get it".
+> 
+> I agree that you have clearly explained what it describes, many times.
+> 
+> My remaining question - which you acknowledge that I asked twice, yet
+> chose not to answer - was how software is supposed to _act_ on that
 
-The header of patch #0 is broken for the patch set. However, it seems
-BPF CI still can handle it and the content of patch #0 is still intact,
-so I will not resend the patch set and instead I will respin it after
-receiving some comments. Sorry for the inconvenience.
+I *have* answered it. Every time.
 
-On 1/6/2025 4:18 PM, Hou Tao wrote:
-> Hi,
->
-> The use of migrate_{disable|enable} pair in BPF is mainly due to the
-> introduction of bpf memory allocator and the use of per-CPU data struct
-> in its internal implementation. The caller needs to disable migration
-> before invoking the alloc or free APIs of bpf memory allocator, and
-> enable migration after the invocation.
->
-> The main users of bpf memory allocator are various kind of bpf maps in
-> which the map values or the special fields in the map values are
-> allocated by using bpf memory allocator.
->
-> At present, the running context for bpf program has already disabled
-> migration explictly or implictly, therefore, when these maps are
-> manipulated in bpf program, it is OK to not invoke migrate_disable()
-> and migrate_enable() pair. Howevers, it is not always the case when
-> these maps are manipulated through bpf syscall, therefore many
-> migrate_{disable|enable} pairs are added when the map can either be
-> manipulated by BPF program or BPF syscall.
->
-> The initial idea of reducing the use of migrate_{disable|enable} comes
-> from Alexei [1]. I turned it into a patch set that archives the goals
-> through the following three methods:
->
-> 1. remove unnecessary migrate_{disable|enable} pair
-> when the BPF syscall path also disables migration, it is OK to remove
-> the pair. Patch #1~#3 fall into this category, while patch #4~#5 are
-> partially included.
->
-> 2. move the migrate_{disable|enable} pair from inner callee to outer
->    caller
-> Instead of invoking migrate_disable() in the inner callee, invoking
-> migrate_disable() in the outer caller to simplify reasoning about when
-> migrate_disable() is needed. Patch #4~#5 and patch #6~#19 belongs to
-> this category.
->
-> 3. add cant_migrate() check in the inner callee
-> Add cant_migrate() check in the inner callee to ensure the guarantee
-> that migration is disabled is not broken. Patch #1~#5, #13, #16~#19 also
-> belong to this category.
->
-> Considering the bpf-next CI is broken, the patch set is verified by
-> using bpf tree. Please check the individual patches for more details.
-> Comments are always welcome.
->
-> [1]: https://lore.kernel.org/bpf/CAADnVQKZ3=F0L7_R_pYqu7ePzpXRwQEN8tCzmFoxjdJHamMOUQ@mail.gmail.com
->
-> Hou Tao (19):
->   bpf: Remove migrate_{disable|enable} from LPM trie
->   bpf: Remove migrate_{disable|enable} in ->map_for_each_callback
->   bpf: Remove migrate_{disable|enable} in htab_elem_free
->   bpf: Remove migrate_{disable|enable} from bpf_cgrp_storage_lock
->     helpers
->   bpf: Remove migrate_{disable|enable} from bpf_task_storage_lock
->     helpers
->   bpf: Disable migration when destroying inode storage
->   bpf: Disable migration when destroying sock storage
->   bpf: Disable migration when cloning sock storage
->   bpf: Disable migration in bpf_selem_free_rcu
->   bpf: Disable migration in array_map_free()
->   bpf: Disable migration in htab_map_free()
->   bpf: Disable migration for bpf_selem_unlink in
->     bpf_local_storage_map_free()
->   bpf: Remove migrate_{disable|enable} in bpf_obj_free_fields()
->   bpf: Remove migrate_{disable,enable} in bpf_cpumask_release()
->   bpf: Disable migration before calling ops->map_free()
->   bpf: Remove migrate_{disable|enable} from bpf_selem_alloc()
->   bpf: Remove migrate_{disable|enable} from bpf_local_storage_alloc()
->   bpf: Remove migrate_{disable|enable} from bpf_local_storage_free()
->   bpf: Remove migrate_{disable|enable} from bpf_selem_free()
->
->  kernel/bpf/arraymap.c          |  6 ++----
->  kernel/bpf/bpf_cgrp_storage.c  | 15 +++++++-------
->  kernel/bpf/bpf_inode_storage.c |  9 ++++----
->  kernel/bpf/bpf_local_storage.c | 38 +++++++++++++++-------------------
->  kernel/bpf/bpf_task_storage.c  | 15 +++++++-------
->  kernel/bpf/cpumask.c           |  2 --
->  kernel/bpf/hashtab.c           | 21 ++++++++-----------
->  kernel/bpf/helpers.c           |  4 ----
->  kernel/bpf/lpm_trie.c          | 24 +++++++--------------
->  kernel/bpf/range_tree.c        |  2 --
->  kernel/bpf/syscall.c           | 12 ++++++++---
->  net/core/bpf_sk_storage.c      | 11 ++++++----
->  12 files changed, 71 insertions(+), 88 deletions(-)
->
+> description; presuming that the property is not in the DT merely for
+> documentation purposes.
 
+Utter claptap. Total rubbish. Completely wrong. It is acted on. It
+causes phylink to enter in-band mode, and use the PCS to obtain the
+in-band data instead of the PHY.
+
+YOU are the one refusing to listen to what I'm saying, yet you claim
+my explanations are clear and you understand them. You parently do
+not.
+
+End. Of. Discussion.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
