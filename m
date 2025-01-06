@@ -1,336 +1,134 @@
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240EB2AE94
-	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 10:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269CE1D517B
+	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 10:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736159821; cv=none; b=uzQM65SqC1VAs6gwCZaqxKXTXi3x+5AehGx4BDDmfdPNAOiJb2JhZDTJSObKESssPakkFEFpaWmILuTKi+d0BliUTBtylAp+QkvPE+0H09P8CV7TMg/eCCSJ4r1E9HFbCJZyza1oQaWMOQwKWTzEakWn/amoeM1aazNH0749UKk=
+	t=1736160124; cv=none; b=LibMswN9uVIt05mOK1AyCrm9NS4gumyi0oaGHcwELQA59J1Nq40hvyB5Wbaq23yCPf+sLlngb57mfSauYHJDBUU6WbcwKjvFSTD1v09G+i6EPORj+GIoFr7fdLScL02Z1OdWFUNmgP7gdMS5kBiNjrfQLbYGgyh2Jy85Uzbiw8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736159821; c=relaxed/simple;
-	bh=bMf0FSCp+LUSYZe0ITCIqnh+bawQb0bz06i7TYvnBn8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nU9etl7B+eDuHjKHH7JDSOm4gshSyYEW2UwDBQt7TZDMv+y4V2Vd+w80gKpPKh3DP8/0fQPUesWVPwG5BZ0TCHpUkJ3gHM7QzatvS+UJ/bZt5qFbGFFj8rxl1fXNXVGvDx15likSpOd4rD9ox1tB1PJ1qVm2LWx1Py4pP/lL3ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KiorzJHY; arc=none smtp.client-ip=95.215.58.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1736160124; c=relaxed/simple;
+	bh=O4jMmvxObEHgIUe6Et9nnMEU82aa+Erw7nSLDuYzBec=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=QiO1BCXQez4rHY/tBPeZuYWp+l2OtEYgP9u3RQ9QIRdVYJFw7mFYag1SLnbt6DE4LsZzCutOnT3a0/a6cifFPLbe6IM+9SDkInmHa/yxzr3ofk7MMB4+Xsseesph1oetQ/7v7Tp9gmzx6cSpjzkV9sM6G8jG/0S6oy1QLZ4v13A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r5ZArGrc; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KiorzJHY"
-Message-ID: <61bc6921-0e87-4cf2-852e-b29a29c4f949@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1736159817;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Fh8lefaDzUeuoib0Y+jRBf9QSRv8dhMtLwqmPblK9Og=;
-	b=KiorzJHYGxCIr31mB50D2nzNeH42AJ+CDcxZqEwTS6sOAep23bJuHx0q7FEiNCsaDdFrna
-	T7mW4VHejtnBe21MUh788kHD9PekhLplf6gcmGqRhq8wiD145MBALUKqWqrSZxBgiyVybu
-	s0hThkAOtqHtOGC4F5GKBMhlFHw+eoA=
-Date: Mon, 6 Jan 2025 10:36:54 +0000
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r5ZArGrc"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43622267b2eso149257165e9.0
+        for <netdev@vger.kernel.org>; Mon, 06 Jan 2025 02:42:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736160121; x=1736764921; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yiXs66jKfa7Mc5GaX6CeH3zxabRcvrngKVx2PovGglk=;
+        b=r5ZArGrcpoIgmT1FPOFalH9MwRoiwUPRyXOmnDtbr+xNUn9OGIe18T3P/ZJ/6t3hfU
+         unDRO5npToPFQ52qZojmIvhPJpLtLB21OkGOUGu66pFK6JmQUUD3QbE1HUDwsDFvL0oH
+         x8a2d2qaMavXh7n7BhOcInvyo4ZkDDI9ETPXqqR7LEUydIc59w9PAS0MQ7JbflBkyRMw
+         TVIys0dedFLsp2rCBU8fX8xN4vxWPaQxx4wuIZrr6P0NoaAUEzREA67ddhV7ZRTrbp9E
+         4oHjXRu5WioRp7z/WSjTllxGEOiw5pbLwnK5eVqm5YlpbQUf2XjVvX0PYqCUzT1NkplD
+         rBfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736160121; x=1736764921;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yiXs66jKfa7Mc5GaX6CeH3zxabRcvrngKVx2PovGglk=;
+        b=MUm5JwzzByHnFvb4H5j1cD34uwDmiN+GZ5yHM1mII3TDrEHO1ZeYM3IyMrMMYmp9in
+         yA/NiINpcHXaaeV5spz/4rnJD5htQIqOWQvzXxk7K/CWojPoosC+ADezEOLwFSNUZzve
+         PY3lqct9SoIN6xzHwRf8LjJwGIAG4q/VJD+Y/YE2YuxCE3m+xgodl3R8f3v656le8vpM
+         IbrcVPSolxZ72AonRsDNpQ3O/rQHz/0ny94Ztfa5GlAt4Ub9XI71mGwORHZI26Kh85IA
+         EP/mXByL2S7mYBXT+odFcP7abdrU8Uu8aoD0E5BNuRJe5V051o/WI12tNgK/7VQ1JorC
+         Cvxw==
+X-Forwarded-Encrypted: i=1; AJvYcCW/89Pk2/QTOkfbgPAduYI8LYi7nzbL4g37AwxlDrG0VTM2oBjrd44oTuoyHcxBJSi5Zbpuhd4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztpFROGCUMYi8R3W1PUoGd5XU7bZJ/1NezcAWdM49//ulVgFYc
+	NsPcQm3KrGN1r160Qop4AmramLpwOe5svWPVLtTvJU+nIFlA0TdFvkUu/x9VfvI=
+X-Gm-Gg: ASbGncshDG67Mb50b1aDeLEPS2BgjWTnwxC8769uybpDmyAeN8KYd51eJjBLDVkJ9Fz
+	fdx6YhOxTYzl1tti6y8ErGUKw9zl8+FtD1qNuAei6kh0O3uqZ6TeaX8nOrcdU7CSf1xK6BapCqN
+	e/8ziiP64rTop15OyXKevlIPYWUteRypByNcIW6k+pRGohqmMcS7KADoFrk4kYxoyPFx141h7Cg
+	ygAY9HAwmKNsETlI8slEIzKbvyaCDWXaHLk73E1400bUfltTzluKtEWqkV4zw==
+X-Google-Smtp-Source: AGHT+IFFbL3/UJS7YOsKC61qAsl6V0MH3eRyKaLo6PWURFKFeqg7gEQ4TfTlsT4jHqAfvgfc7t1paQ==
+X-Received: by 2002:a05:600c:1c12:b0:431:58cd:b259 with SMTP id 5b1f17b1804b1-4366d356dfcmr520636765e9.31.1736160121445;
+        Mon, 06 Jan 2025 02:42:01 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656af6cbbsm597654505e9.3.2025.01.06.02.42.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jan 2025 02:42:00 -0800 (PST)
+Date: Mon, 6 Jan 2025 13:41:58 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev, alejandro.lucero-palau@amd.com,
+	linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
+	dan.j.williams@intel.com, martin.habets@xilinx.com,
+	edward.cree@amd.com, davem@davemloft.net, kuba@kernel.org,
+	pabeni@redhat.com, edumazet@google.com, dave.jiang@intel.com
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+	Alejandro Lucero <alucerop@amd.com>
+Subject: Re: [PATCH v8 06/27] cxl: add function for type2 cxl regs setup
+Message-ID: <0fe103b3-76d5-47a0-900b-3769b9c59cee@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v2 3/4] net: wangxun: Implement do_aux_work of
- ptp_clock_info
-To: Jiawen Wu <jiawenwu@trustnetic.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, richardcochran@gmail.com, linux@armlinux.org.uk,
- horms@kernel.org, jacob.e.keller@intel.com, netdev@vger.kernel.org
-Cc: mengyuanlou@net-swift.com
-References: <20250106084506.2042912-1-jiawenwu@trustnetic.com>
- <20250106084506.2042912-4-jiawenwu@trustnetic.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20250106084506.2042912-4-jiawenwu@trustnetic.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241216161042.42108-7-alejandro.lucero-palau@amd.com>
 
-On 06/01/2025 08:45, Jiawen Wu wrote:
-> Implement watchdog task to detect SYSTIME overflow and error cases of
-> Rx/Tx timestamp.
-> 
-> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> ---
->   drivers/net/ethernet/wangxun/libwx/wx_ptp.c   | 211 ++++++++++++++++++
->   drivers/net/ethernet/wangxun/libwx/wx_type.h  |   2 +
->   drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c |   1 +
->   .../net/ethernet/wangxun/txgbe/txgbe_phy.c    |   1 +
->   4 files changed, 215 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-> index 0f683e576b29..0071ba929738 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-> @@ -255,6 +255,215 @@ static void wx_ptp_tx_hwtstamp_work(struct work_struct *work)
->   	}
->   }
->   
-> +/**
-> + * wx_ptp_overflow_check - watchdog task to detect SYSTIME overflow
-> + * @wx: pointer to wx struct
-> + *
-> + * this watchdog task periodically reads the timecounter
-> + * in order to prevent missing when the system time registers wrap
-> + * around. This needs to be run approximately twice a minute for the fastest
-> + * overflowing hardware. We run it for all hardware since it shouldn't have a
-> + * large impact.
-> + */
-> +static void wx_ptp_overflow_check(struct wx *wx)
-> +{
-> +	bool timeout = time_is_before_jiffies(wx->last_overflow_check +
-> +					      WX_OVERFLOW_PERIOD);
-> +	unsigned long flags;
-> +
-> +	if (timeout) {
-> +		/* Update the timecounter */
-> +		spin_lock_irqsave(&wx->tmreg_lock, flags);
-> +		timecounter_read(&wx->hw_tc);
-> +		spin_unlock_irqrestore(&wx->tmreg_lock, flags);
-> +
-> +		wx->last_overflow_check = jiffies;
-> +	}
-> +}
-> +
-> +/**
-> + * wx_ptp_rx_hang - detect error case when Rx timestamp registers latched
-> + * @wx: pointer to wx struct
-> + *
-> + * this watchdog task is scheduled to detect error case where hardware has
-> + * dropped an Rx packet that was timestamped when the ring is full. The
-> + * particular error is rare but leaves the device in a state unable to
-> + * timestamp any future packets.
-> + */
-> +static void wx_ptp_rx_hang(struct wx *wx)
-> +{
-> +	struct wx_ring *rx_ring;
-> +	unsigned long rx_event;
-> +	u32 tsyncrxctl;
-> +	int n;
-> +
-> +	tsyncrxctl = rd32(wx, WX_PSR_1588_CTL);
-> +
-> +	/* if we don't have a valid timestamp in the registers, just update the
-> +	 * timeout counter and exit
-> +	 */
-> +	if (!(tsyncrxctl & WX_PSR_1588_CTL_VALID)) {
-> +		wx->last_rx_ptp_check = jiffies;
-> +		return;
-> +	}
-> +
-> +	/* determine the most recent watchdog or rx_timestamp event */
-> +	rx_event = wx->last_rx_ptp_check;
-> +	for (n = 0; n < wx->num_rx_queues; n++) {
-> +		rx_ring = wx->rx_ring[n];
-> +		if (time_after(rx_ring->last_rx_timestamp, rx_event))
-> +			rx_event = rx_ring->last_rx_timestamp;
-> +	}
-> +
-> +	/* only need to read the high RXSTMP register to clear the lock */
-> +	if (time_is_before_jiffies(rx_event + 5 * HZ)) {
-> +		rd32(wx, WX_PSR_1588_STMPH);
-> +		wx->last_rx_ptp_check = jiffies;
-> +
-> +		wx->rx_hwtstamp_cleared++;
-> +		dev_warn(&wx->pdev->dev, "clearing RX Timestamp hang");
-> +	}
-> +}
-> +
-> +/**
-> + * wx_ptp_tx_hang - detect error case where Tx timestamp never finishes
-> + * @wx: private network wx structure
-> + */
-> +static void wx_ptp_tx_hang(struct wx *wx)
-> +{
-> +	bool timeout = time_is_before_jiffies(wx->ptp_tx_start +
-> +					      WX_PTP_TX_TIMEOUT);
-> +
-> +	if (!wx->ptp_tx_skb)
-> +		return;
-> +
-> +	if (!test_bit(WX_STATE_PTP_TX_IN_PROGRESS, wx->state))
-> +		return;
-> +
-> +	/* If we haven't received a timestamp within the timeout, it is
-> +	 * reasonable to assume that it will never occur, so we can unlock the
-> +	 * timestamp bit when this occurs.
-> +	 */
-> +	if (timeout) {
-> +		cancel_work_sync(&wx->ptp_tx_work);
-> +		wx_ptp_clear_tx_timestamp(wx);
-> +		wx->tx_hwtstamp_timeouts++;
-> +		dev_warn(&wx->pdev->dev, "clearing Tx timestamp hang\n");
-> +	}
-> +}
-> +
-> +static long wx_ptp_do_aux_work(struct ptp_clock_info *ptp)
-> +{
-> +	struct wx *wx = container_of(ptp, struct wx, ptp_caps);
-> +
-> +	wx_ptp_overflow_check(wx);
-> +	if (unlikely(test_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER,
-> +			      wx->flags)))
-> +		wx_ptp_rx_hang(wx);
-> +	wx_ptp_tx_hang(wx);
-> +
-> +	return 0;
+Hi,
 
-This means do_aux_work will run only once. If it's not expected
-behavior, you have to return delay value to requeue work.
+kernel test robot noticed the following build warnings:
 
-> +}
-> +
-> +/**
-> + * wx_ptp_feature_enable
-> + * @ptp: the ptp clock structure
-> + * @rq: the requested feature to change
-> + * @on: whether to enable or disable the feature
-> + *
-> + * enable (or disable) ancillary features of the phc subsystem.
-> + */
-> +static int wx_ptp_feature_enable(struct ptp_clock_info *ptp,
-> +				 struct ptp_clock_request *rq, int on)
-> +{
-> +	struct wx *wx = container_of(ptp, struct wx, ptp_caps);
-> +
-> +	/**
-> +	 * When PPS is enabled, unmask the interrupt for the ClockOut
-> +	 * feature, so that the interrupt handler can send the PPS
-> +	 * event when the clock SDP triggers. Clear mask when PPS is
-> +	 * disabled
-> +	 */
-> +	if (rq->type != PTP_CLK_REQ_PPS || !wx->ptp_setup_sdp)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (on)
-> +		set_bit(WX_FLAG_PTP_PPS_ENABLED, wx->flags);
-> +	else
-> +		clear_bit(WX_FLAG_PTP_PPS_ENABLED, wx->flags);
-> +
-> +	wx->ptp_setup_sdp(wx);
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * wx_ptp_check_pps_event
-> + * @wx: the private wx structure
-> + *
-> + * This function is called by the interrupt routine when checking for
-> + * interrupts. It will check and handle a pps event.
-> + */
-> +void wx_ptp_check_pps_event(struct wx *wx)
-> +{
-> +	struct cyclecounter *cc = &wx->hw_cc;
-> +	u32 tsauxc, rem, int_status;
-> +	u32 trgttiml0, trgttimh0;
-> +	u32 trgttiml1, trgttimh1;
-> +	unsigned long flags;
-> +	u64 ns = 0;
-> +
-> +	/* this check is necessary in case the interrupt was enabled via some
-> +	 * alternative means (ex. debug_fs). Better to check here than
-> +	 * everywhere that calls this function.
-> +	 */
-> +	if (!wx->ptp_clock)
-> +		return;
-> +
-> +	int_status = rd32ptp(wx, WX_TSC_1588_INT_ST);
-> +	if (int_status & WX_TSC_1588_INT_ST_TT1) {
-> +		/* disable the pin first */
-> +		wr32ptp(wx, WX_TSC_1588_AUX_CTL, 0);
-> +		WX_WRITE_FLUSH(wx);
-> +
-> +		tsauxc = WX_TSC_1588_AUX_CTL_PLSG | WX_TSC_1588_AUX_CTL_EN_TT0 |
-> +			 WX_TSC_1588_AUX_CTL_EN_TT1 | WX_TSC_1588_AUX_CTL_EN_TS0;
-> +
-> +		/* Read the current clock time, and save the cycle counter value */
-> +		spin_lock_irqsave(&wx->tmreg_lock, flags);
-> +		ns = timecounter_read(&wx->hw_tc);
-> +		wx->pps_edge_start = wx->hw_tc.cycle_last;
-> +		spin_unlock_irqrestore(&wx->tmreg_lock, flags);
-> +		wx->pps_edge_end = wx->pps_edge_start;
-> +
-> +		/* Figure out how far past the next second we are */
-> +		div_u64_rem(ns, WX_NS_PER_SEC, &rem);
-> +
-> +		/* Figure out how many nanoseconds to add to round the clock edge up
-> +		 * to the next full second
-> +		 */
-> +		rem = (WX_NS_PER_SEC - rem);
-> +
-> +		/* Adjust the clock edge to align with the next full second. */
-> +		wx->pps_edge_start += div_u64(((u64)rem << cc->shift), cc->mult);
-> +		trgttiml0 = (u32)wx->pps_edge_start;
-> +		trgttimh0 = (u32)(wx->pps_edge_start >> 32);
-> +
-> +		rem += WX_1588_PPS_WIDTH_EM * WX_NS_PER_MSEC;
-> +		wx->pps_edge_end += div_u64(((u64)rem << cc->shift), cc->mult);
-> +		trgttiml1 = (u32)wx->pps_edge_end;
-> +		trgttimh1 = (u32)(wx->pps_edge_end >> 32);
-> +
-> +		wr32ptp(wx, WX_TSC_1588_TRGT_L(0), trgttiml0);
-> +		wr32ptp(wx, WX_TSC_1588_TRGT_H(0), trgttimh0);
-> +		wr32ptp(wx, WX_TSC_1588_TRGT_L(1), trgttiml1);
-> +		wr32ptp(wx, WX_TSC_1588_TRGT_H(1), trgttimh1);
-> +		wr32ptp(wx, WX_TSC_1588_AUX_CTL, tsauxc);
-> +		WX_WRITE_FLUSH(wx);
-> +	}
-> +}
-> +EXPORT_SYMBOL(wx_ptp_check_pps_event);
-> +
->   /**
->    * wx_ptp_create_clock
->    * @wx: the private board structure
-> @@ -573,6 +782,8 @@ void wx_ptp_reset(struct wx *wx)
->   	timecounter_init(&wx->hw_tc, &wx->hw_cc,
->   			 ktime_to_ns(ktime_get_real()));
->   	spin_unlock_irqrestore(&wx->tmreg_lock, flags);
-> +
-> +	wx->last_overflow_check = jiffies;
->   }
->   EXPORT_SYMBOL(wx_ptp_reset);
->   
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> index 31b11dba6bf5..1f9ddddea191 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> @@ -1173,6 +1173,8 @@ struct wx {
->   	u32 tx_hwtstamp_timeouts;
->   	u32 tx_hwtstamp_skipped;
->   	u32 rx_hwtstamp_cleared;
-> +	unsigned long last_overflow_check;
-> +	unsigned long last_rx_ptp_check;
->   	unsigned long ptp_tx_start;
->   	spinlock_t tmreg_lock; /* spinlock for ptp */
->   	struct cyclecounter hw_cc;
-> diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-> index c7944e62838a..ea1d7e9a91f3 100644
-> --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-> +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-> @@ -111,6 +111,7 @@ static void ngbe_mac_link_up(struct phylink_config *config,
->   	wr32(wx, WX_MAC_WDG_TIMEOUT, reg);
->   
->   	wx->speed = speed;
-> +	wx->last_rx_ptp_check = jiffies;
->   	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
->   		wx_ptp_reset_cyclecounter(wx);
->   }
-> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-> index 60e5f3288ad8..7e17d727c2ba 100644
-> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-> @@ -222,6 +222,7 @@ static void txgbe_mac_link_up(struct phylink_config *config,
->   	wr32(wx, WX_MAC_WDG_TIMEOUT, wdg);
->   
->   	wx->speed = speed;
-> +	wx->last_rx_ptp_check = jiffies;
->   	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
->   		wx_ptp_reset_cyclecounter(wx);
->   }
+url:    https://github.com/intel-lab-lkp/linux/commits/alejandro-lucero-palau-amd-com/cxl-add-type2-device-basic-support/20241217-001923
+base:   fac04efc5c793dccbd07e2d59af9f90b7fc0dca4
+patch link:    https://lore.kernel.org/r/20241216161042.42108-7-alejandro.lucero-palau%40amd.com
+patch subject: [PATCH v8 06/27] cxl: add function for type2 cxl regs setup
+config: arm64-randconfig-r072-20241225 (https://download.01.org/0day-ci/archive/20241227/202412270320.Aydp9B4U-lkp@intel.com/config)
+compiler: clang version 15.0.7 (https://github.com/llvm/llvm-project 8dfdcc7b7bf66834a761bd8de445840ef68e4d1a)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202412270320.Aydp9B4U-lkp@intel.com/
+
+smatch warnings:
+drivers/cxl/core/pci.c:1134 cxl_pci_accel_setup_regs() warn: missing error code? 'rc'
+
+vim +/rc +1134 drivers/cxl/core/pci.c
+
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1118  int cxl_pci_accel_setup_regs(struct pci_dev *pdev, struct cxl_dev_state *cxlds)
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1119  {
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1120  	int rc;
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1121  
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1122  	rc = cxl_pci_setup_memdev_regs(pdev, cxlds);
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1123  	if (rc)
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1124  		return rc;
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1125  
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1126  	rc = cxl_pci_setup_regs(pdev, CXL_REGLOC_RBI_COMPONENT,
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1127  				&cxlds->reg_map, cxlds->capabilities);
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1128  	if (rc) {
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1129  		dev_warn(&pdev->dev, "No component registers (%d)\n", rc);
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1130  		return rc;
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1131  	}
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1132  
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1133  	if (!test_bit(CXL_CM_CAP_CAP_ID_RAS, cxlds->capabilities))
+cfbd1d00295bff Alejandro Lucero 2024-12-16 @1134  		return rc;
+
+This looks like it's supposed to be return -EPERM.
+
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1135  
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1136  	rc = cxl_map_component_regs(&cxlds->reg_map,
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1137  				    &cxlds->regs.component,
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1138  				    BIT(CXL_CM_CAP_CAP_ID_RAS));
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1139  	if (rc)
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1140  		dev_dbg(&pdev->dev, "Failed to map RAS capability.\n");
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1141  
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1142  	return rc;
+cfbd1d00295bff Alejandro Lucero 2024-12-16  1143  }
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
