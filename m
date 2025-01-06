@@ -1,167 +1,291 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28761E511
-	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 07:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736149377; cv=none; b=Ylp//rLSsXBcECGPQNIt/o5Zo8qDAmi9QQ2YMFLWaCYHwUdLhihTEk6qHgBJcrx0xBSPGXQbLzbRojGGZZErnl9FKS6OPf8whSLMriSgI++C0lWYXQQO2FW37sYPI04siwJpGwN+1+DbJGcZH24NXuDGvnSiUe8fTK4J8QOGoAM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736149377; c=relaxed/simple;
-	bh=xolavlOIeBm4x+UHjoyzETDFEg3zj0MVb7HVVVkNiSI=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GJiv+hqjtIfZd8lLoam8VmdRsHfOR6Bh0pHbPsJVMuzJRCWWPToPgFDBHKCZ7gBLMOu7IaXBH58zQsgF0H+MsgRBrX/S9ZyByp/IrXMRmiT/ctt1Z0t0C+noH24AjVWaz3kS6T0QG8rYMgYa3R16vG4ERFBxLeVW4NuyoDuFfP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:Yeas10t1736149356t666t30354
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [125.118.30.165])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 2943653864027222232
-To: "'Andrew Lunn'" <andrew@lunn.ch>
-Cc: <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>,
-	<edumazet@google.com>,
-	<kuba@kernel.org>,
-	<pabeni@redhat.com>,
-	<richardcochran@gmail.com>,
-	<linux@armlinux.org.uk>,
-	<horms@kernel.org>,
-	<jacob.e.keller@intel.com>,
-	<netdev@vger.kernel.org>,
-	<mengyuanlou@net-swift.com>
-References: <20250102103026.1982137-1-jiawenwu@trustnetic.com> <20250102103026.1982137-2-jiawenwu@trustnetic.com> <ab140807-2e49-4782-a58c-2b8d60da5556@lunn.ch>
-In-Reply-To: <ab140807-2e49-4782-a58c-2b8d60da5556@lunn.ch>
-Subject: RE: [PATCH net-next 1/4] net: wangxun: Add support for PTP clock
-Date: Mon, 6 Jan 2025 15:42:35 +0800
-Message-ID: <032b01db600e$8d845430$a88cfc90$@trustnetic.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5A31D63F5;
+	Mon,  6 Jan 2025 07:52:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736149924; cv=fail; b=LhYMnwsBBP2vZr0NUNMKYHVIDl1+7e9+qcOPOW5nuJpsDA7w4NUCoYKCZtgP8ghPnL4ouhmp2x9171CgnwVPM1qgvEH3LhhE+55v4O4MKHc1XMxqYj8/3KM/oZrrlEXMWbbm1zmYI1VdB2VdxjASsvCt3Ln94J7aFHHhW6GelPY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736149924; c=relaxed/simple;
+	bh=RM8lIgRsfrqXt8yrtKVe1Ks7wFQQAiaz7l00gAIkbXk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=BUUwmhNcAB7OuT9YalIlZXBzcEIk2qNUZ8vVP82IK6+EoV7UcYmkgppV/zcrUih2/4AHu1SwdXfLJrXEkaIADIBvFikf41urQE0Seb3wTAlF415Bh5NK47EB2sLZcjgZzxM5XSiVF7MA+uHP482ix6LRtFE0mPOVHg8zfjJ2lzQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y+OW7TNf; arc=fail smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y+OW7TNf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736149922; x=1767685922;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=RM8lIgRsfrqXt8yrtKVe1Ks7wFQQAiaz7l00gAIkbXk=;
+  b=Y+OW7TNf3QslLeid581iucd3Hc4rnOg4R7f/KL4uIXtiJ/raZfz9LH3i
+   kYUstSBzQDxMEAQd/vW5i1FecxnNOoOslSKMiIjIUh3IU8VlItfKHbxqb
+   PdxMVOY46yftFzAcYecc2RLDAL61TtqaRAns66ImrNS+AIBm6pv3pcJws
+   whSry+WSMYif+xT30hmk/giYQcBA0trPpXelgQRmeVURZR9mTml/r2IUE
+   8zDK/MYF9HiSD5gkbeJjdphuvQUwue/JVtEdVSnsVUqz7yRW95io8tCzX
+   qKSr9ZyBYEDFrhUAwLWPNLE7xARlLkaH/dlAOuNV7JnUxozjSF0u0jrdK
+   A==;
+X-CSE-ConnectionGUID: T69juGBmQmmsxb477RlCug==
+X-CSE-MsgGUID: 1siMeS37T3qyw7s2Mo/yWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11306"; a="47277253"
+X-IronPort-AV: E=Sophos;i="6.12,292,1728975600"; 
+   d="scan'208";a="47277253"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2025 23:52:01 -0800
+X-CSE-ConnectionGUID: ywYe8WmgSsqhwq8ttoW2mA==
+X-CSE-MsgGUID: d22MjAMHSEqwiz71Cutxaw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,292,1728975600"; 
+   d="scan'208";a="102446446"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 05 Jan 2025 23:52:00 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Sun, 5 Jan 2025 23:51:59 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Sun, 5 Jan 2025 23:51:59 -0800
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.173)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Sun, 5 Jan 2025 23:51:59 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ktx5fGlKzNWMCfuRPRHUug1ULUXBv6O6/Ve44dJBnACy9SPn6LauWt4znqLJq4nplYhc+BngvaGGBYnFb6dE5FYSp3/NkKMrnvOPijNskKvufRDfaTncUm1D7lxeIL5uIVd8P1gx3ABaC1a16Nro6YtSIUmPomXRV3xUY8xwvy02NLJbTR7KUyfjB0qzwtkt623aWtKkqs43Qi0JvuPiXFD1oaweWwcv835Mj2OJd/Apuk8dP+xqmVid0w2vl7tWcKtXM8JdYlUTUtEdi2UP4rray0yJ3qmKKm4Hgh9xLxu1tLgxxEYMIRmqQSx0/bBYXdIxUWGsnekZRqIxjVKN9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9U8kGni4m7WplI5anR6V/tl0LTC8s/lklK/+WnMShUI=;
+ b=ko0iLyr7M0zaYZqF44IPUauQtx1TaELfAkAKvMWwSNWZQYGOmuhdsJ7iYQ9c5QDkJS2CDlMbFYsszBOmf8YAcT0xPDQir4jJNmaWnKWVTo2HDaAcyxAzIyeI8y9wb/shfdgCmoZXlHAAVOW2Keyts4Awq9pt3buEnULBXbrAB7NPviLbXGVHVYzGdklcYtMqCjuHlkSIRzd9tPM3GeN3V1YaBhWZqKT4raWOKnHYcu8uBeDVmGjPuILf9hixKXDm7+lnz1JiMjSTlAqUcAL97U0CdjSSvX6hq04vfbtEeWBvys4LCWwIeDZOK2HtulKNdYP7zBmEjlgCtVKibJY2Sg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH0PR11MB5013.namprd11.prod.outlook.com (2603:10b6:510:30::21)
+ by CY8PR11MB7924.namprd11.prod.outlook.com (2603:10b6:930:7a::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.17; Mon, 6 Jan
+ 2025 07:51:40 +0000
+Received: from PH0PR11MB5013.namprd11.prod.outlook.com
+ ([fe80::1c54:1589:8882:d22b]) by PH0PR11MB5013.namprd11.prod.outlook.com
+ ([fe80::1c54:1589:8882:d22b%4]) with mapi id 15.20.8314.018; Mon, 6 Jan 2025
+ 07:51:40 +0000
+From: "Buvaneswaran, Sujai" <sujai.buvaneswaran@intel.com>
+To: "Zaremba, Larysa" <larysa.zaremba@intel.com>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+CC: "Zaremba, Larysa" <larysa.zaremba@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "Eric
+ Dumazet" <edumazet@google.com>, Michal Swiatkowski
+	<michal.swiatkowski@linux.intel.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-net] ice: do not configure
+ destination override for switchdev
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-net] ice: do not configure
+ destination override for switchdev
+Thread-Index: AQHbSkWYiVJxSFK2TEuslY1nnnuGU7MJiqcQ
+Date: Mon, 6 Jan 2025 07:51:40 +0000
+Message-ID: <PH0PR11MB5013488226F0A48B91CA7E1A96102@PH0PR11MB5013.namprd11.prod.outlook.com>
+References: <20241209140856.277801-1-larysa.zaremba@intel.com>
+In-Reply-To: <20241209140856.277801-1-larysa.zaremba@intel.com>
+Accept-Language: en-IN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR11MB5013:EE_|CY8PR11MB7924:EE_
+x-ms-office365-filtering-correlation-id: 696be277-8446-4a96-cbc7-08dd2e26f493
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7055299003|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?dY6Zb23YLYaDB+xw2uB500n20zOBdFil6pJ4b2k+R7XVE2t+YxN8s9KfJDYn?=
+ =?us-ascii?Q?hrRztOzfjWeb0A9VzeRxyl5l4fV2U1BDs34PDvwidY0ClwJZYFygeZC+1Ye4?=
+ =?us-ascii?Q?lbKqPmiwN24AY+ppxKcOVkWniP/H8/ThhOi0APdxfdNBoSS3/LRxUIVhGwR7?=
+ =?us-ascii?Q?69+Zpyjr5+eyPxWMfCcJRWPCURmustegm4bO1/YHcZ/5uLA24vTxCW5IcGYz?=
+ =?us-ascii?Q?G5FxlL1Nac/o/B2OTv6mjWyjxrgtsFHS6thwilB5ZHGYwaC8jPovhDeUTmBi?=
+ =?us-ascii?Q?UHyRF8oikYniYDuo1y8tcnbVfebdvhhKrfGzuSz4m2VVjplBclqU8BfNB9Ii?=
+ =?us-ascii?Q?zDEnbV+mguQazT28vh5odk4nRcSMbdnmd6e1OZG7W5eCC2Swo7uRN1ydgQhs?=
+ =?us-ascii?Q?I1JwRWRN1/rw0D+vXofFePJPjDEzyF+9i2P4tUDax1EtJ3rFJNEokzMeziqe?=
+ =?us-ascii?Q?VHT77buMIOrtOy1ivZZ18KTNb+12mCy2c02txTJHsczGS45IXPtYI92w7UDz?=
+ =?us-ascii?Q?PZyN1uxo8YzAUlb7jcq1VS5TrHFMKU1I7ORJ/DWSSr8D69i9wYKm5RMv0DZq?=
+ =?us-ascii?Q?WuVItgL12a/R5X8ZVctoFIcjzmP/OMom4ZLitxiKIPEKAFt3frvK6QPQOIH9?=
+ =?us-ascii?Q?RRASv9EXC00POdbqcv5YcFVTkp6iXkB2Y1ZAVrx8aiHsUj84rVwuFbKygw5O?=
+ =?us-ascii?Q?89DwmPkthb28g/fxLwTGnC+TM8KG+QsQSwJHF2ncYbY5Q8V/xRFS9fWuF3V0?=
+ =?us-ascii?Q?VJLJ9QDxqgXuc8zW0Wy9uLWvVfbOI0dMtN2T5pjqqTXgA38PyHaQ4PfTvh8i?=
+ =?us-ascii?Q?n3wfHmnnZmE+2/uWDzzeZChndzWky+3UM2XoPxHQt8X/x5F5yx7CN6oElCGU?=
+ =?us-ascii?Q?et+GLJ8lS+oA2tIoD6BlzotPGXKobxFqiDbikcqqTYb9H8d5gnAWkJTkucqr?=
+ =?us-ascii?Q?OPXx1kt77rR1Fvt9A98jENt4R2FvzpKrFRwBVqp2+7iz1gwNOjMZhUxsY5EQ?=
+ =?us-ascii?Q?uRSQhNbzfsMGIdjn1pjd5WtylKUmP37+HyIHOEmFEIrW5mcV4krNGxLeGiUp?=
+ =?us-ascii?Q?mZHRU8hJ75kHhrLQP3KFh79mM+Zkph4+NEXPYmc0T54i0HjyfX1hzOM6eFyx?=
+ =?us-ascii?Q?jYQF4eXZ6jtYeAoIOAijLGrVWxMEgEPMTW8fS5z6/i9eQyMNA+TIcF7+0wbq?=
+ =?us-ascii?Q?00fvarP7FEmSwZJho8Pakyp+z+/kygTudi+kNiUW3EYV6sZFqIlKtpiUXR0v?=
+ =?us-ascii?Q?vBxe2FwNolUxw4lZolsWbgseolX5sduTk7BflqZqe3QQlz+Ssqrvk42MOQ3l?=
+ =?us-ascii?Q?mgLELEmULJ9fVuaeAOBVp30xULfApeWm/+yAO3bzMuW7ssee1VVt0Z5nx6NW?=
+ =?us-ascii?Q?pisA7msVfQW3gHoLn8ayBsN6AkNDyhoL9fJX18xplcv/zTj/Pn//V7o1Yhip?=
+ =?us-ascii?Q?q5v3fCzScrupdY/Zjm7mQwA0bKEGx8pP4Tr8hFPlNDMrIYCR8nBGYQ=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5013.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7055299003)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?slXr0fX+KbUSH78pDUcp0KB3UgTaE2n8b6WgXu44w6uUrMFG/dE3XVxwhVcT?=
+ =?us-ascii?Q?Hq+khYycK192ZiD3bLFJ8nT3huipROWRQK9BJZI28ffDiTZ9VN8STZ3+Xbtw?=
+ =?us-ascii?Q?DdtXxEEyGj43XLga8O6Wbj5JA8l+KINAGUe9wJGE9iK7Azk+QepoSS0JYH8J?=
+ =?us-ascii?Q?bItwPmuNRAYdy+HXXzgE22kbCdLRxU2Rfj+xP0RvfjdUYfWDOo+3W2tY7IXq?=
+ =?us-ascii?Q?LhsVjlg+J5cLcqJ4Rrf1W6HB8FACXGv/TvVpoysFtsJbrKRaIM+MAieZZGMs?=
+ =?us-ascii?Q?rGDn5XFswMm9XEFvOylg+/9Khm/Ky6J+PHIC3kf+4HyaOgX29QCvGgliEgIn?=
+ =?us-ascii?Q?axcUYpYlQN8Mp8F6hlKD8prCznsj7gz5fFfb9bPS4atOjM1WyMUeSRtyF4n9?=
+ =?us-ascii?Q?zOQ/Vm994vcFNiO33lb9O/uYWFy76ehvU3Zj1SwfmPW5CIPKLffi3yjUNG7v?=
+ =?us-ascii?Q?3vfPKvWBO/kH4g0Uiejdq4KfEfH0kL0mN9rDlxoRCz5SF0oVrvi03jUnGKzV?=
+ =?us-ascii?Q?PQVsJ1/77pPl5Ps7SNm3Cs8Yl9pZP0dGIN53xgqiDZEjmUduSH6LX9t43AQt?=
+ =?us-ascii?Q?ejLGCUrGHqj/Y5C3dlJSskLK+G43D7mnkRCg3QygnBIre8W4CGT92AuNDLUY?=
+ =?us-ascii?Q?4Ye0Ov61aQXDZaNTazuLh3qZ35mPKvgUyM3HZU37qOt++bCnRMGFw+Z/nssJ?=
+ =?us-ascii?Q?rPmtKbEqrR7F5c9O81MMBPzwTC29z5VwQPtt3Shq+CruqfpaOOXjimWY3cyq?=
+ =?us-ascii?Q?L16B+Pj8q48G9aXh6iQJ9FthS2R4V/+CrXRJtcc6tsc2vlxXFbPva5FiWp4d?=
+ =?us-ascii?Q?TjV7eboqe601GPYctUxkbJiCC3tjsYOHWW6x2ivnueRDtCx2oaODTp+cTObf?=
+ =?us-ascii?Q?aI/VL198IDTN5DFjLyTjvSq47BKkTdgiTj+Ux8AZwLGh4knpYRpNe/bKzTvQ?=
+ =?us-ascii?Q?M6brbd90HoIiL3iAMvIgOLIYbIGQh+i4ZPKLM1NoV4zxAgkcAfnO8fn3CE9t?=
+ =?us-ascii?Q?R8IGHQRr37KC5R6Z4mKbfFkETkRv8vD3Vqe7ab4VAs+6LBb1ooYd0Smwwh9W?=
+ =?us-ascii?Q?EoJZXxjFswXxtWZQhZ6lYkZLum0asc5s+hlesRyzjV53rVDygRu/vr7MiRGM?=
+ =?us-ascii?Q?GJCw+Q//ZzyXbnKEvVZ2v3ByaHi6xGW94B10aDLMVxM1rvYH7OhNkiNbugzc?=
+ =?us-ascii?Q?8IPlSNvOYQF4OqzknPcwm54+yu6De2P3AunpYg5R5e1Dn9WbiDOGqspXCczr?=
+ =?us-ascii?Q?bR5DVTdQaCVpa4fhvwgpj8dcWm3qJq+VLsqO+5PkfFGMTL7qmsjp9B9h2Xbv?=
+ =?us-ascii?Q?+eukgQpbEy3clh/x0sLBQ0N0bWF3oNQhUP1r2HCR/yz+/253v7hddqqgg9nL?=
+ =?us-ascii?Q?GMSUTZ+BB1T04SmQGkdDISBpoONO/xN0pXPEAHg9Bakd4hxAS725HUdem4Gb?=
+ =?us-ascii?Q?l1/7WC+jMFHK0S1d0mkRRhGgPv3IY76BtcIXnpCgEvAWbqPB2hrQKIndhUOK?=
+ =?us-ascii?Q?nSEC6XIbgxBrn40B4KIq+aNekUfF8RrliH2jT+sPnjiqSCnp+qSt+kK9eJiY?=
+ =?us-ascii?Q?GTTyDhEO3CTwgJFEIej3c2gr52L+gpoGIAeXp+KhLFvpe28LrAnPhoC1/IQv?=
+ =?us-ascii?Q?Yw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQEgJ35Ybs4gTOBDiJnQm6cX+eEXEQKNhMgNAhs0hhm0WoJCoA==
-X-QQ-SENDSIZE: 520
-Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: N+B8S2AmgbnC4w/F2TBXR8FVF6/I3R1REr9rWFA5u9ve+QOMxDIcaVac
-	jn2DCaVC94WS1A/U+IMai+isy8OxNxrAA97nX7mszQiajND1IBA8ITdpEvfEUjwihubdXJ9
-	SspXpCPoOOzb3csV3K0WPjjSvkmjs6EkfJWDnVbXt4tc86qIQUbPVOiN6y195yh8gJXfmyi
-	CIC2R/IpYaK7kYxYIcGuhWicXPKD0KwcqmOwH0D8mSBYoGxFPdpB+YjJ2LZOSav5asj6ob7
-	fn4OJizXZkGXRHKpCWfLIKDYESxowIfPVy//hy9bZj7OzCKKb81OhXB4GI3Q6UOScKJvRdS
-	rwg59qgstgXBSHqdbfNFQeReZfswAKPWBWgBAgUjBTOjFhoiP+1GjF/5Nf0L50I1eHhG2ex
-	IUi09EFSG/DwJpyV+xj+WvBXG0ppW1IOvF37WblKp9A7OEkCwtuoWaKla5QQU9w6AJAC/DQ
-	xuOB2Fdgc3+f9PLsRj53n6hfKL6DvohUMeTDj3sgzgHuPclce3ojevXKjwKNOv/zkam931Z
-	z6uqTmagOc3XbZBhkTiTW97rZQKoHl2UJt6FVrLBbk0zpGfzmMrfTSelSmM9uZ6tp3kVbSb
-	ppy8/cYj6yDQdngxREQxhuw+smk9UFV2RciPtpMLNmo2llfqbKD8NDOUkqU48Vjn80eSEcl
-	2sgjtio1niwpRQvg5iOwdSMUumSfhza0UmSaNthWToH0iCXfTK8K/SyYulpZY5ZnI1QVpjW
-	MBdgpM6M8PpAUzhUzXylR0CglKg8jVwsDQ09xAdvV77SVBk20Fm75K09K6Gul61I3wKK+jo
-	VImhP3Z9U+eF0dRkUs00cSakrDUI+6UhP7euoPlDJU9tGsR+uRnhpEs5byD1yHBhzcGhIwF
-	6/GTOdKw0MozvT+ejLDwyY44zsUf/lA0dQrRu5E5lyBvXLLffUIclXpCTFn+Ge3cRIlQIJl
-	u1UzT7MXVzivlV9tN45l9hRasG9veno58ULFC549Y4SjGuWdOLfbo4l/cGEudiuImT+V9BJ
-	rIii9P1g==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-X-QQ-RECHKSPAM: 0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5013.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 696be277-8446-4a96-cbc7-08dd2e26f493
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jan 2025 07:51:40.3150
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: v6UKvleqXW/RA+1izzqo2QcDB1AfDFw2xhgoUtvlV10k5nsoQ5JaAUMpKCzgYO5yHDWsfw1UevoT1XmOQu+wa584qcp0KCXNANBVNVaVRyo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7924
+X-OriginatorOrg: intel.com
 
-On Thu, Jan 2, 2025 10:13 PM, Andrew Lunn wrote:
-> > +static int wx_tx_map(struct wx_ring *tx_ring,
-> > +		     struct wx_tx_buffer *first,
-> > +		     const u8 hdr_len)
-> >  {
-> >  	struct sk_buff *skb = first->skb;
-> >  	struct wx_tx_buffer *tx_buffer;
-> > @@ -1013,6 +1023,8 @@ static void wx_tx_map(struct wx_ring *tx_ring,
-> >
-> >  	netdev_tx_sent_queue(wx_txring_txq(tx_ring), first->bytecount);
-> >
-> > +	/* set the timestamp */
-> > +	first->time_stamp = jiffies;
-> >  	skb_tx_timestamp(skb);
-> >
-> >  	/* Force memory writes to complete before letting h/w know there
-> > @@ -1038,7 +1050,7 @@ static void wx_tx_map(struct wx_ring *tx_ring,
-> >  	if (netif_xmit_stopped(wx_txring_txq(tx_ring)) || !netdev_xmit_more())
-> >  		writel(i, tx_ring->tail);
-> >
-> > -	return;
-> > +	return 0;
-> >  dma_error:
-> >  	dev_err(tx_ring->dev, "TX DMA map failed\n");
-> >
-> > @@ -1062,6 +1074,8 @@ static void wx_tx_map(struct wx_ring *tx_ring,
-> >  	first->skb = NULL;
-> >
-> >  	tx_ring->next_to_use = i;
-> > +
-> > +	return -EPERM;
-> 
->        EPERM           Operation not permitted (POSIX.1-2001).
-> 
-> This is normally about restricted access because of security
-> settings. So i don't think this is the correct error code here. What
-> is the reason the function is exiting with an error? Once we
-> understand that, maybe we can suggest a better error code.
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
+> Larysa Zaremba
+> Sent: Monday, December 9, 2024 7:39 PM
+> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; intel-wired-
+> lan@lists.osuosl.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.or=
+g
+> Cc: Zaremba, Larysa <larysa.zaremba@intel.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>;
+> Eric Dumazet <edumazet@google.com>; Michal Swiatkowski
+> <michal.swiatkowski@linux.intel.com>; Jakub Kicinski <kuba@kernel.org>;
+> Paolo Abeni <pabeni@redhat.com>; David S. Miller <davem@davemloft.net>
+> Subject: [Intel-wired-lan] [PATCH iwl-net] ice: do not configure destinat=
+ion
+> override for switchdev
+>=20
+> After switchdev is enabled and disabled later, LLDP packets sending stops=
+,
+> despite working perfectly fine before and during switchdev state.
+> To reproduce (creating/destroying VF is what triggers the reconfiguration=
+):
+>=20
+> devlink dev eswitch set pci/<address> mode switchdev echo '2' >
+> /sys/class/net/<ifname>/device/sriov_numvfs
+> echo '0' > /sys/class/net/<ifname>/device/sriov_numvfs
+>=20
+> This happens because LLDP relies on the destination override functionalit=
+y.
+> It needs to 1) set a flag in the descriptor, 2) set the VSI permission to=
+ make it
+> valid. The permissions are set when the PF VSI is first configured, but
+> switchdev then enables it for the uplink VSI (which is always the PF) onc=
+e
+> more when configured and disables when deconfigured, which leads to
+> software-generated LLDP packets being blocked.
+>=20
+> Do not modify the destination override permissions when configuring
+> switchdev, as the enabled state is the default configuration that is neve=
+r
+> modified.
+>=20
+> Fixes: 1a1c40df2e80 ("ice: set and release switchdev environment")
+> Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+> ---
+>  drivers/net/ethernet/intel/ice/ice_eswitch.c |  6 ------
+>  drivers/net/ethernet/intel/ice/ice_lib.c     | 18 ------------------
+>  drivers/net/ethernet/intel/ice/ice_lib.h     |  4 ----
+>  3 files changed, 28 deletions(-)
+>=20
+Hi,
 
-I'll change it to -ENOMEM.
+Observing below call trace while creating VFs in Switchdev mode with this p=
+atch in net-queue.
 
-> 
-> > +static int wx_ptp_adjfine(struct ptp_clock_info *ptp, long ppb)
-> > +{
-> > +	struct wx *wx = container_of(ptp, struct wx, ptp_caps);
-> > +	u64 incval, mask;
-> > +
-> > +	smp_mb(); /* Force any pending update before accessing. */
-> > +	incval = READ_ONCE(wx->base_incval);
-> > +	incval = adjust_by_scaled_ppm(incval, ppb);
-> > +
-> > +	mask = (wx->mac.type == wx_mac_em) ? 0x7FFFFFF : 0xFFFFFF;
-> > +	if (incval > mask)
-> > +		dev_warn(&wx->pdev->dev,
-> > +			 "PTP ppb adjusted SYSTIME rate overflowed!\n");
-> 
-> There is no return here, you just keep going. What happens if there is
-> an overflow?
+[  +0.000188] ice 0000:b1:00.0: Enabling 1 VFs with 17 vectors and 16 queue=
+s per VF
+[  +0.000062] list_add corruption. next->prev should be prev (ff1d7c830300c=
+6f0), but was ff282828ff282828. (next=3Dff1d7c5367d61330).
+[  +0.000015] ------------[ cut here ]------------
+[  +0.000001] kernel BUG at lib/list_debug.c:29!
+[  +0.000007] Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+[  +0.000004] CPU: 81 UID: 0 PID: 2758 Comm: bash Kdump: loaded Not tainted=
+ 6.13.0-rc3+ #1
+[  +0.000003] Hardware name: Dell Inc. PowerEdge R750/06V45N, BIOS 1.3.8 08=
+/31/2021
+[  +0.000002] RIP: 0010:__list_add_valid_or_report+0x61/0xa0
+[  +0.000008] Code: c7 c7 a8 97 b2 8f e8 7e e4 af ff 0f 0b 48 c7 c7 d0 97 b=
+2 8f e8 70 e4 af ff 0f 0b 4c 89 c1 48 c7 c7 f8 97 b2 8f e8 5f e4 af ff <0f>=
+ 0b 48 89 d1 4c 89 c6 4c 89 ca 48 c7 c7 50 98 b2 8f e8 48 e4 af
+[  +0.000002] RSP: 0018:ff5ebf3d22093d20 EFLAGS: 00010246
+[  +0.000003] RAX: 0000000000000075 RBX: ff1d7c54143a1330 RCX: 000000000000=
+0000
+[  +0.000002] RDX: 0000000000000000 RSI: ff1d7c81f06a0bc0 RDI: ff1d7c81f06a=
+0bc0
+[  +0.000001] RBP: ff1d7c83030097d8 R08: 0000000000000000 R09: ff5ebf3d2209=
+3bd8
+[  +0.000002] R10: ff5ebf3d22093bd0 R11: ffffffff901debc8 R12: ff1d7c5367d6=
+1330
+[  +0.000001] R13: ff1d7c830300c6f0 R14: 0000000000000000 R15: 000000000000=
+0000
+[  +0.000002] FS:  00007fea5e4e4740(0000) GS:ff1d7c81f0680000(0000) knlGS:0=
+000000000000000
+[  +0.000002] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  +0.000001] CR2: 0000562ef57c7608 CR3: 000000019037c002 CR4: 000000000077=
+3ef0
+[  +0.000002] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 000000000000=
+0000
+[  +0.000001] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 000000000000=
+0400
+[  +0.000001] PKRU: 55555554
+[  +0.000002] Call Trace:
+[  +0.000003]  <TASK>
+[  +0.000002]  ? die+0x37/0x90
+[  +0.000007]  ? do_trap+0xdd/0x100
+[  +0.000004]  ? __list_add_valid_or_report+0x61/0xa0
+[  +0.000003]  ? do_error_trap+0x65/0x80
+[  +0.000002]  ? __list_add_valid_or_report+0x61/0xa0
+[  +0.000003]  ? exc_invalid_op+0x52/0x70
+[  +0.000005]  ? __list_add_valid_or_report+0x61/0xa0
+[  +0.000002]  ? asm_exc_invalid_op+0x1a/0x20
+[  +0.000007]  ? __list_add_valid_or_report+0x61/0xa0
+[  +0.000005]  ice_mbx_init_vf_info+0x3c/0x60 [ice]
+[  +0.000076]  ice_initialize_vf_entry+0x99/0xa0 [ice]
 
-If there is an overflow, the calibration value of this second will be
-inaccurate. But it does not affect the calibration value of the next
-second. And this rarely happens.
-
-> 
-> > +/**
-> > + * wx_ptp_tx_hwtstamp_work
-> > + * @work: pointer to the work struct
-> > + *
-> > + * This work item polls TSYNCTXCTL valid bit to determine when a Tx hardware
-> > + * timestamp has been taken for the current skb. It is necessary, because the
-> > + * descriptor's "done" bit does not correlate with the timestamp event.
-> > + */
-> 
-> Are you saying the "done" bit can be set, but the timestamp is not yet
-> in place? I've not read the whole patch, but do you start polling once
-> "done" is set, or as soon at the skbuff is queues for transmission?
-
-The descriptor's "done" bit cannot be used as a basis for Tx hardware
-timestamp. So we should poll the valid bit in the register.
-
-> 
-> >  static void ngbe_mac_link_down(struct phylink_config *config,
-> >  			       unsigned int mode, phy_interface_t interface)
-> >  {
-> > +	struct wx *wx = phylink_to_wx(config);
-> > +
-> > +	wx->speed = SPEED_UNKNOWN;
-> > +	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
-> > +		wx_ptp_start_cyclecounter(wx);
-> 
-> This is probably a naming issue, but it seems odd to call a _start_
-> function on link down.
-
-I think this function could be named wx_ptp_reset_cyclecounter().
-
+Regards,
+Sujai B
 
