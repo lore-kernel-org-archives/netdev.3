@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0CA1DED6C
-	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 21:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0741DF961
+	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 21:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736197728; cv=none; b=CD4UOLk32NGrrgN9hbZB0MvQN5YLwq+UuLxwKaKGrWg0WfVizaa2vgR8nPpuhwIQj8P4fq9Evxuz7+jNaXIlnVwgUsHMfi6iOsUcFZuEUAviScfK7pi5yNRLocPWyKcC5yvS02hZ1lB/N038pR8u9kcLRN/bcp6RBDuT1Nk6Xmw=
+	t=1736198134; cv=none; b=skPY4SM2MTtiJULaAemrJ5OECpmrJqCdDY0ZVbdIV9KQbXmBr7rp4O7By9Injb/jNCl3PnAJ/0w2D0v+VQY8Fu/u9g/WDgNwj41rEadQSCQBtBplUVfVwmBHADan3WG0XgcHHxE/X67uxZIe7aVDn0CbxS7rZzTni7ujtzIUI3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736197728; c=relaxed/simple;
-	bh=rm8oSb2uiKAUAy5n1L1LoIeT68R6jkSJ29wBjYJu5rQ=;
+	s=arc-20240116; t=1736198134; c=relaxed/simple;
+	bh=tqHaJSUUbqrqutPRvq+MteDcMsc8jZMlUJ87xDFoqrE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RZim0hmkdLN7Xa9dR7Ps25dZcxd6hdVjmX+C4tkXYNR9TBvXQV2bZ8q1aVRfm1v4LH9opew25CjfuXdq/aJiBt4uA4bMAtDzkfh5x1sqCo6KyPMf5tNc/rDBXSi0N101VyxD71QVwDtlnErEq+OAlY326zGFka8RjiwKCG4R7z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GK9jcoZO; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=KNvY87kWkh/i5cWdbJp+LsIaUL4t6A0ILwbr+teTuJZBgtDsxvrjcvpZnbbzJvdCimw3TbYOUoH9O2ptVyAct+6Xz9nOeCO354P2axlO+2ZA63ucCE0wUAOTMbMaqwyci1+9Kf6A4CwCfOmc2j7zm9/G3X79sMqkTqi5zl5Jhtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=VlcUySei; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GK9jcoZO"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="VlcUySei"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=hGYss2LKdPyFwOFct3nky1yWQOlrbqDgzePUoejKddY=; b=GK9jcoZOqt3A302ILnNv4Ci1O0
-	f5nuKr1pkJoZG/zkeqY8KwsQR+FfdvT2cyK/wSoJ0GzAMgxyXs+1v8khyGvFT81A2vwXxlgnyZXY4
-	2QkmUx+UGJBwSpS2BQvghWi/mk0OZTUG4rdzXFlsVgwFSRAUUQYLdYRV9Ru+e9vLjMq0=;
+	bh=SjQIDBOOBVJqUUXoqv6QWpRYqizgy8BiPfB2QNTXwxM=; b=VlcUySeitAVLmwhmmQ2ikg35Pu
+	ZhaoQUCWfOxZpH9mXi3SST9LUc4xXO2knT8JgaIBU2weBAnLIPm8Ml2LClkxjPwnxEv0CymMNbwsJ
+	wYuHBBkazci+XiudKv3inHd1xhx69jFSDZSHz6MD+NWeUTDSx1nRQFMkDDu5jVtNZ+wU=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1tUuKz-001zbP-H6; Mon, 06 Jan 2025 22:08:37 +0100
-Date: Mon, 6 Jan 2025 22:08:37 +0100
+	id 1tUuRX-001zhd-Ow; Mon, 06 Jan 2025 22:15:23 +0100
+Date: Mon, 6 Jan 2025 22:15:23 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Heiner Kallweit <hkallweit1@gmail.com>
 Cc: Realtek linux nic maintainers <nic_swsd@realtek.com>,
@@ -37,10 +37,11 @@ Cc: Realtek linux nic maintainers <nic_swsd@realtek.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	Simon Horman <horms@kernel.org>,
 	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH net-next 1/2] r8169: prepare for extending hwmon support
-Message-ID: <aa27e059-793d-4a43-98ec-97f360e3b772@lunn.ch>
+Subject: Re: [PATCH net-next 2/2] r8169: add support for reading over-temp
+ threshold
+Message-ID: <4535017c-10a8-47e8-8a8e-67c5db62bb16@lunn.ch>
 References: <97bc1a93-d5d5-4444-86f2-a0b9cc89b0c8@gmail.com>
- <cf9d1c92-de68-44ea-9dec-ceba17c2aec9@gmail.com>
+ <f3e07026-8219-4b36-b230-7f7ddd71c7ab@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,14 +50,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cf9d1c92-de68-44ea-9dec-ceba17c2aec9@gmail.com>
+In-Reply-To: <f3e07026-8219-4b36-b230-7f7ddd71c7ab@gmail.com>
 
-On Mon, Jan 06, 2025 at 07:01:16PM +0100, Heiner Kallweit wrote:
-> This factors out the temperature value calculation and
-> prepares for adding further temperature attributes.
-> 
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+On Mon, Jan 06, 2025 at 07:05:13PM +0100, Heiner Kallweit wrote:
+> Add support for reading the over-temp threshold. If the chip temperature
+> exceeds this value, the chip will reduce the speed to 1Gbps (by disabling
+> 2.5G/5G advertisement and triggering a renegotiation).
+
+I'm assuming here that the over-temp threshold always exists when the
+temp_in sensors exists? If so:
 
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+Does it reduce the speed in the same way as downshift? Can the user
+tell it has happened, other than networking is slower?
 
     Andrew
