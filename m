@@ -1,107 +1,228 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D841D9353
+	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 10:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736160476; cv=none; b=fTnLZy6dDUnLqBbu/CZMZHLGTIgiWMfaCQhvyOqd/AONiU8uLbKtezDLmb4lacBTwOhjls/550gBPO9kRcM0jT3y81XWeGTHCVDw0vXi+Z2YXPeQlGP0G/XO8UIRWIzRuduFKpmlXnKefjAetiJ4CwBpWhE7YptBhhIeEDA8N9M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736160476; c=relaxed/simple;
+	bh=BKk9qe1PxjFeSw8mK2dqClvBnAP1949uCTMXbeOxnpY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R47TEgNeGClNUFLmnkvOXzbb325x79ITQ9O2WsqmgL3x+UQ0j9O8JQ9ksE+xSMRaL8NLwa5NzMnk5TMvbZx5ztSBRf0Huzav65uab9l1QP117iW3TLJrP5RoofLePFV9LSUx8oAhcN9a3um11nNIDt8JviEftsWl74irfmOtASc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=ZB6yQ7B7; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="ZB6yQ7B7"
+Received: from localhost (localhost [127.0.0.1])
+	by a.mx.secunet.com (Postfix) with ESMTP id B3DD0206DF;
+	Mon,  6 Jan 2025 11:41:33 +0100 (CET)
+X-Virus-Scanned: by secunet
+Received: from a.mx.secunet.com ([127.0.0.1])
+	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id EGsiM3-LLHoW; Mon,  6 Jan 2025 11:41:33 +0100 (CET)
+Received: from cas-essen-02.secunet.de (rl2.secunet.de [10.53.40.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDA21D619E;
-	Mon,  6 Jan 2025 10:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736160440; cv=none; b=PZkYaF2Nvf8n6x90tvgJx0bD4cmoH/B7y7KKvV7qo0qlIjlZLSsmSIuLOJ15wYthi7V474paNSjOLdcchQLlvuT1QKlChIJdzbztp9qTdTFInmqVzML9Di/iOPhD0c0tEqdEM/AGeYG5SWK/xLgLrR0tTjKOhl1Q6uhHhRENSJs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736160440; c=relaxed/simple;
-	bh=JaFJjbaQwnzq/hVa9JgcxnIRcEwz1iAcP3V7/AU2w1I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gWd0BxGvUerh4xXc0poJMtRvZjh+Y4wLyw2c6e4jr7QAOT28BmRNCAFPnBCBIJoPLAhGLAwUAULNuAqZZnROi2s0Iy042FSIN+wjd5ml309bvqHOQkT6dRrQkEGpFuaXlWyDNou1Bf+YKVlCiwwvGZhIsaaSiNSIbUP1Tkk/70M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IYnNzr76; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IYnNzr76"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2ee76befe58so20523041a91.2;
-        Mon, 06 Jan 2025 02:47:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736160436; x=1736765236; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZmdWuMp+W8klnnc2Fqr8EjfprgS301JhSXk2qIwpbX0=;
-        b=IYnNzr76rOuCV7pLAAlj0z0xs9KsCgae/vhJYVnuKiB8FsX0co4Weakxa7eT3Sr2St
-         UJw9AEXOh/P/bVP7+BG8hCV0im4OxSsO79df0bizF0yLQ3OtYsfLNsxoxZ+bWf8dYt/f
-         t+ooIxm8PmvKeQs+kDRqAx5aSNS/32FsUVT4purEdx6VefJe/+SSkqBHHY0Pe7wRkEFB
-         1bGVWMZRdvJBvJbUX89oYF9BIWsFwvecd0qfI2ry/LI7pRwxtCXxQ2zdxqybHDBPDgkw
-         1Duu/IxQV8/9IeEzFpiSGTeJw3dp2OF2I2VkbvxT1PG8W7/ExAqIDFikLKf41wviT4f8
-         CdQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736160436; x=1736765236;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZmdWuMp+W8klnnc2Fqr8EjfprgS301JhSXk2qIwpbX0=;
-        b=CSQr2hymgR9PwHx9H9+NKEPF4AUe/l+AU1Zjqqs+FHhF9NHNPr720SEOXhtJtPHwTg
-         x3bnaxT9JHempv/oQzoCj39ErxvwFkwKYaLfO/QCOzKGi7NHmygeZ/r6+ul/DFC76Rh9
-         p6CYRkxS/Y1ShLT1GpufoULy6eJhfVdL+aV6mYBGM21qu2QrSedI2z6ntxfgngw3YbZU
-         fgGQyups/jhOuPppHwihFKeHUulkBLmznEHggVSeSaU2L76QEmXpIl17SFsONytkDIiH
-         UisjxDrUINnOeY9tU6f7Zc87FLWB3oNnplz2f93+874RSjIyhbAe+7v6BAzpQhvWLQIj
-         pZWg==
-X-Forwarded-Encrypted: i=1; AJvYcCUOuJhKk6wuu/6+0KI5m4MjOYKiSuW3Q46yb7jzun3VuZbkL93Zviw9nFxiss23E6ks3H5aAOtx@vger.kernel.org, AJvYcCUTrB581fyMMyaG0Hjxp44mkj8rO3bzy1qs+DGRP4EFgZgEqLpv1Gc4tr31yFad+HpG6FLE5GbuI1R7hXc=@vger.kernel.org, AJvYcCXIJAU0pcYP3idQ4UfR0Duq+Rew/QshC6s8qHOUkzQOwkJUBMiShQDgWgSFH8r1cp9Hoj7In/JmIpiC7ieBWmmN@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPAkUwUy7zYU6lOZAbyVp+UB92lrKJfydjR5c0GM/CedRlh2zQ
-	UXcWBFgC9YAe5zwO2HElQ+5I8WzqIhLB7LXwGkRsz8+9ubm9tZyN
-X-Gm-Gg: ASbGncvthYmqwjiy8u91gVRqwKjK7nzojInpD0/eaRGr2cZpz4H8D3wlrG4KzUUtr5Z
-	DKpQwCfYJLFPQVQnqZTPC4h+H2pqELfAJoGxQTg/o2bY2l9RvfkO/Em00YrLuSP/ry0nOh1qaL7
-	xvjFiz4YexHb9xgTh4Pe43W7+y1Wq6/MVbghEwgEAIU8elB2qqzMWQ4OGELi/04BNnd0hxAD1S7
-	/Q9RyWECBHmRzj/TUo1oK/AzIxo6nE4teLHcm7Y989EbHEWP5yp89wgK52Kqg==
-X-Google-Smtp-Source: AGHT+IFZyYQExz0NjdtjD9p5XPUzsyPQhWZpx15jq97xYcydba8Q19CoQ2uuYY6Bvca1WKGgxkF68g==
-X-Received: by 2002:a17:90b:2cc5:b0:2ee:aed6:9ec2 with SMTP id 98e67ed59e1d1-2f452e16379mr86841636a91.14.1736160435849;
-        Mon, 06 Jan 2025 02:47:15 -0800 (PST)
-Received: from fedora ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f2ee06de88sm38972178a91.39.2025.01.06.02.47.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2025 02:47:15 -0800 (PST)
-Date: Mon, 6 Jan 2025 10:47:07 +0000
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: Jianbo Liu <jianbol@nvidia.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Andy Gospodarek <andy@greyhouse.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Simon Horman <horms@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 0/2] bond: fix xfrm offload feature during init
-Message-ID: <Z3u0q5HSOshLn2V0@fedora>
-References: <20241211071127.38452-1-liuhangbin@gmail.com>
- <20241212062734.182a0164@kernel.org>
- <Z1vfsAyuxcohT7th@fedora>
- <20241213193127.4c31ef80@kernel.org>
- <Z3X9pfu12GUOBUY6@fedora>
- <1d8c901f-e292-43e4-970f-8440b26e92b0@nvidia.com>
+	by a.mx.secunet.com (Postfix) with ESMTPS id 053FD206D0;
+	Mon,  6 Jan 2025 11:41:33 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 053FD206D0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1736160093;
+	bh=ZlmFhM9DP3p7/Fli3dGNGy7oAZ4JpUqVDZdG0//DPGc=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=ZB6yQ7B7uYrUZfyAXq/smJUr7/1hlfaM9i0esXXU9A8PR4aagUt5dBHf4QV/K9sRA
+	 e7/Qgs01BnowOsmE/nUPWdchKbGS/dheX7A4QpMhc0ze46IK72Fbpezl1INUO7PFeA
+	 eDtkhRh7+R1enhvW0hqTqlHpSS68e9YkoPzmNOYLS+ceguYVkgQ66wamCsWb7qDes2
+	 V3/kgwDbgPbXvhg1IyX5SoU7iVLmFtrvqr45IGcoM5c+TPzuFyFjzXJzKdl6C9YXrw
+	 Fjbt3R66LenikHSey4WXBH8QOXfB3MG6WcjuwjuhDWtUhdFEENUEFQQMQfY1juzou7
+	 QRju/L+Dq5kBA==
+Received: from mbx-essen-02.secunet.de (10.53.40.198) by
+ cas-essen-02.secunet.de (10.53.40.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Mon, 6 Jan 2025 11:41:32 +0100
+Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
+ (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 6 Jan
+ 2025 11:41:32 +0100
+Received: by gauss2.secunet.de (Postfix, from userid 1000)
+	id 55DC23180647; Mon,  6 Jan 2025 11:41:32 +0100 (CET)
+Date: Mon, 6 Jan 2025 11:41:32 +0100
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Eric Dumazet <edumazet@google.com>
+CC: Shahar Shitrit <shshitrit@nvidia.com>, "brianvv@google.com"
+	<brianvv@google.com>, "davem@davemloft.net" <davem@davemloft.net>,
+	"eric.dumazet@gmail.com" <eric.dumazet@gmail.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "kuniyu@amazon.com" <kuniyu@amazon.com>,
+	"martin.lau@kernel.org" <martin.lau@kernel.org>, "ncardwell@google.com"
+	<ncardwell@google.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, Tariq Toukan <tariqt@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>, Ziyad Atiyyeh <ziyadat@nvidia.com>, "Dror
+ Tennenbaum" <drort@nvidia.com>
+Subject: Re: [PATCH v3 net-next 4/5] ipv6: tcp: give socket pointer to
+ control skbs
+Message-ID: <Z3uzXOzV1T3Uv4f+@gauss3.secunet.de>
+References: <CY5PR12MB63224DE8AEEC1A2410E65466DA3B2@CY5PR12MB6322.namprd12.prod.outlook.com>
+ <CANn89iL8ihnVyi+g1aKNu3=BJCQoRv4_s29OvVSXBBQdOM4foQ@mail.gmail.com>
+ <CANn89iKAZsG=RepuJmStFTH2QK+N5s9Cu=OnD2GmQAb1JKCfeQ@mail.gmail.com>
+ <Z2KHMLJ4oTUwgBSo@gauss3.secunet.de>
+ <CANn89iJGYFzHi7eUQo49hmo0eTZzHvDTTqKXTxrSZvKKJXHa7g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <1d8c901f-e292-43e4-970f-8440b26e92b0@nvidia.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANn89iJGYFzHi7eUQo49hmo0eTZzHvDTTqKXTxrSZvKKJXHa7g@mail.gmail.com>
+X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
+ mbx-essen-02.secunet.de (10.53.40.198)
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-On Thu, Jan 02, 2025 at 11:33:34AM +0800, Jianbo Liu wrote:
-> > > Re-locking doesn't look great, glancing at the code I don't see any
-> > > obvious better workarounds. Easiest fix would be to don't let the
-> > > drivers sleep in the callbacks and then we can go back to a spin lock.
-> > > Maybe nvidia people have better ideas, I'm not familiar with this
-> > > offload.
-> > 
-> > I don't know how to disable bonding sleeping since we use mutex_lock now.
-> > Hi Jianbo, do you have any idea?
-> > 
+On Wed, Dec 18, 2024 at 10:04:19AM +0100, Eric Dumazet wrote:
+> On Wed, Dec 18, 2024 at 9:26 AM Steffen Klassert
+> <steffen.klassert@secunet.com> wrote:
+> >
+> > Can you provide a bit more context? I don't see the problem.
 > 
-> I think we should allow drivers to sleep in the callbacks. So, maybe it's
-> better to move driver's xdo_dev_state_delete out of state's spin lock.
+> 
+> skb->sk is used in xfrm, and the assumption is that it is a full socket.
+> 
+> List of things that are supported, even for timewait and
+> request_sockets, and used in xfrm:
+> 
+> sk->sk_bound_dev_if
+> sock_net(skb->sk)
+> inet_sk(sk)->inet_dport;
+> 
+> But xfrmi_xmit2() for instance is doing :
+> 
+> err = dst_output(xi->net, skb->sk, skb);
+> 
+> Other dst_output() users use : dst_output(net, sk, skb), because sk
+> can be different than skb->sk
+> 
+> Also xfrm6_local_dontfrag() is assuming sk is an inet6 socket:
+> 
+> if (proto == IPPROTO_UDP || proto == IPPROTO_RAW)
+>      return inet6_test_bit(DONTFRAG, sk);
+> 
+> xfrm_lookup_with_ifid() seems ok (it uses sk_const_to_full_sk()), but
+> we probably miss some fixes.
 
-I just check the code, xfrm_dev_state_delete() and later
-dev->xfrmdev_ops->xdo_dev_state_delete(x) have too many xfrm_state x
-checks. Can we really move it out of spin lock from xfrm_state_delete()
+Thanks for the explanation!
 
-Thanks
-Hangbin
+I did a first audit of the xfrm stack to find the problematic
+skb->sk usages. The result is the (still untested) patch below.
+I need to go over it again to make sure I found everyting.
+
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index f3281312eb5e..8cf5f6634775 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -279,7 +279,7 @@ static void esp_output_done(void *data, int err)
+ 		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 			esp_output_tail_tcp(x, skb);
+ 		else
+-			xfrm_output_resume(skb->sk, skb, err);
++			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
+ 	}
+ }
+ 
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index b2400c226a32..fad4d7c9fa50 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -315,7 +315,7 @@ static void esp_output_done(void *data, int err)
+ 		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 			esp_output_tail_tcp(x, skb);
+ 		else
+-			xfrm_output_resume(skb->sk, skb, err);
++			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
+ 	}
+ }
+ 
+diff --git a/net/ipv6/xfrm6_output.c b/net/ipv6/xfrm6_output.c
+index 5f7b1fdbffe6..b3d5d1f266ee 100644
+--- a/net/ipv6/xfrm6_output.c
++++ b/net/ipv6/xfrm6_output.c
+@@ -82,14 +82,14 @@ static int __xfrm6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 
+ 	toobig = skb->len > mtu && !skb_is_gso(skb);
+ 
+-	if (toobig && xfrm6_local_dontfrag(skb->sk)) {
++	if (toobig && xfrm6_local_dontfrag(sk)) {
+ 		xfrm6_local_rxpmtu(skb, mtu);
+ 		kfree_skb(skb);
+ 		return -EMSGSIZE;
+ 	} else if (toobig && xfrm6_noneed_fragment(skb)) {
+ 		skb->ignore_df = 1;
+ 		goto skip_frag;
+-	} else if (!skb->ignore_df && toobig && skb->sk) {
++	} else if (!skb->ignore_df && toobig && sk) {
+ 		xfrm_local_error(skb, mtu);
+ 		kfree_skb(skb);
+ 		return -EMSGSIZE;
+diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
+index 98f1e2b67c76..c397eb99d867 100644
+--- a/net/xfrm/xfrm_interface_core.c
++++ b/net/xfrm/xfrm_interface_core.c
+@@ -506,7 +506,7 @@ xfrmi_xmit2(struct sk_buff *skb, struct net_device *dev, struct flowi *fl)
+ 	skb_dst_set(skb, dst);
+ 	skb->dev = tdev;
+ 
+-	err = dst_output(xi->net, skb->sk, skb);
++	err = dst_output(xi->net, skb_to_full_sk(skb), skb);
+ 	if (net_xmit_eval(err) == 0) {
+ 		dev_sw_netstats_tx_add(dev, 1, length);
+ 	} else {
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index e5722c95b8bb..1fb4dc0a76e1 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -796,7 +796,7 @@ static int xfrm4_tunnel_check_size(struct sk_buff *skb)
+ 	     !skb_gso_validate_network_len(skb, ip_skb_dst_mtu(skb->sk, skb)))) {
+ 		skb->protocol = htons(ETH_P_IP);
+ 
+-		if (skb->sk)
++		if (skb->sk && sk_fullsock(skb->sk))
+ 			xfrm_local_error(skb, mtu);
+ 		else
+ 			icmp_send(skb, ICMP_DEST_UNREACH,
+@@ -832,6 +832,7 @@ static int xfrm6_tunnel_check_size(struct sk_buff *skb)
+ {
+ 	int mtu, ret = 0;
+ 	struct dst_entry *dst = skb_dst(skb);
++	struct sock *sk = skb_to_full_sk(skb);
+ 
+ 	if (skb->ignore_df)
+ 		goto out;
+@@ -846,9 +847,9 @@ static int xfrm6_tunnel_check_size(struct sk_buff *skb)
+ 		skb->dev = dst->dev;
+ 		skb->protocol = htons(ETH_P_IPV6);
+ 
+-		if (xfrm6_local_dontfrag(skb->sk))
++		if (xfrm6_local_dontfrag(sk))
+ 			ipv6_stub->xfrm6_local_rxpmtu(skb, mtu);
+-		else if (skb->sk)
++		else if (sk)
+ 			xfrm_local_error(skb, mtu);
+ 		else
+ 			icmpv6_send(skb, ICMPV6_PKT_TOOBIG, 0, mtu);
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 4408c11c0835..c27da1fd070e 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -2959,7 +2959,7 @@ static void xfrm_policy_queue_process(struct timer_list *t)
+ 		skb_dst_drop(skb);
+ 		skb_dst_set(skb, dst);
+ 
+-		dst_output(net, skb->sk, skb);
++		dst_output(net, skb_to_full_sk(skb), skb);
+ 	}
+ 
+ out:
