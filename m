@@ -1,140 +1,221 @@
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D542C1DF257;
-	Mon,  6 Jan 2025 14:44:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977CF1DF736
+	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 14:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736174660; cv=none; b=nGOYWtfutYLkPZaEiShwBkDnxeOCoVBu5mAEA3EU63KptnjwavaS64KGJ2dYwmhJTTj1XBOCqlyQfWwwO4sv1mAyxFTMXyzKvTVOun6ABCbbJ+bzoBXzfH+uNj+IHBG9Uv7QX32Tv/yJxg9RGqbn47vW4OizhxgWEN8uYUqwig4=
+	t=1736174731; cv=none; b=ALTB2TxhuhxqRY6r46oO7OJ+PmmJU4ER+yh2YrBvOM35iIoy4KAmKOlkf8sFPGbTea9l6Tr8sApVWIqNFjFIx7TordKGt8r4IGlKTrpaIQwqeTXl8jgRwm4ALBc5ZwhvUyD1Va8rP4XJT8s+RF/SCgYtRflecoNgIH9LVEynas4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736174660; c=relaxed/simple;
-	bh=ii6iu8b4M8NaqItrwl8aGSmAIJdfXy4WECXv802yutY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DiyhPsPnIewbAsgahMd+GmE1iUoww1Gav4TA9xb0lAaSQMdbPFSB4eGIFeiWdByE7rAyMj6NHo71Rg4yQzfJElFcGe4Y4anmNeKp6t3cX4d+0jmaE3u2S2WQgH6FbSC3vmBnQK+dzaY+4D8mb/Yvzfl5yCYEya+roRl5XlrQRcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4YRcKt65YHz1W3cc;
-	Mon,  6 Jan 2025 22:40:34 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 45C14180AEC;
-	Mon,  6 Jan 2025 22:44:14 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 6 Jan 2025 22:44:13 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
-CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
-	<liuyonglong@huawei.com>, <chenhao418@huawei.com>,
-	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
-	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <michal.swiatkowski@linux.intel.com>,
-	<shaojijie@huawei.com>
-Subject: [PATCH V3 net 7/7] net: hns3: fix kernel crash when 1588 is sent on HIP08 devices
-Date: Mon, 6 Jan 2025 22:36:42 +0800
-Message-ID: <20250106143642.539698-8-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20250106143642.539698-1-shaojijie@huawei.com>
-References: <20250106143642.539698-1-shaojijie@huawei.com>
+	s=arc-20240116; t=1736174731; c=relaxed/simple;
+	bh=zVDWJzSnctihyM0o8lol5bnO1vGY5u2mEoevwhbrBUg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oY0jBPQGW6RooK8bif8v3R9/3n91TxRCPp965WOEnGhPy8x72jTOd/t2z26K08NGgTBr6bWl5oB4s/QHZcy92FZ1lEKnkU+Y+34bH25nPocNUS3NFa3uGD4Iv30XEcugWhZCCC7aEYn2SS2GwUD/V4Ciwwohr1kWRDmsZGJLwFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FDUQKZNz; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FDUQKZNz"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3863703258fso9017649f8f.1
+        for <netdev@vger.kernel.org>; Mon, 06 Jan 2025 06:45:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736174726; x=1736779526; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HOH3jiFhSJqOAZX1YAJhl0eFuAamNnU7YXi10iDB3vk=;
+        b=FDUQKZNzsmERw6su7jgjfpBnPv1FZlw4Qv1jcGaFhWUi/0qslQrgst3nvHxitZ26p/
+         rrkpmi0PaiRhhhSOCaT0q5gEOyU0odpsnYoRkXneY8GMfuAl6YnNp/wr8KfiuJ16uN4E
+         00PR0U57dN0961DGgIGeNLPtrfDAj1Am0dG1SV0q/boaHtR4mtysz/IyO2ieWb/G+CEs
+         zM5VWItqSSqZRtGvyAJN9+fVm/cOCrEa/gbjtGmV8MVsUn5ab4KyHARE3S49+JSSBok/
+         /2hocyhNGuNJQot/+2pu/TraCgBCYFD5181Drx1HUiyAsemUjGyGhhUb1KTxM9OK7CFS
+         HUZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736174726; x=1736779526;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HOH3jiFhSJqOAZX1YAJhl0eFuAamNnU7YXi10iDB3vk=;
+        b=nkhDAvitiIkSEAfwhpQEb5Ma81auAkbOwgI3js5iKDMl6jI5+VDHtTRWzzJaumYowz
+         CL2SCSwocxZcZ5aWqTHL8os2prlwoZ0c4oXaDT+xWDNVaZLpSC9piogSdRgbbO5rPLax
+         F9kW/3iTdOkkIcsQv3Skr1PeoAKve8uB2GBntE54+AKz9q5+wFs02ybVv3+xd/Yr7i3u
+         mfFHWDgKfjf7Et4NJiOXI21SdWbUAkDBw2t2hSUpQLxrRaxiJ3ppXQyB/ZKoAzvF3tFq
+         p/QsZJmb1zfPsV6RMOn8xVqH/CND0ERi2kgO+iQKsdX2LNhRXph/RgaH6KRsZynz++w7
+         UEZg==
+X-Forwarded-Encrypted: i=1; AJvYcCU9ImBzVMciSUk04UqydzeXk1IICgVfo2bQY8GaygcoaKlOJKtCrLajAZkJZ1g9ETCEHtBL75Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGgLgp31moL6AOl2BNoxkRRa0vCcOTbhFMClj94pYd0FowMzFJ
+	c6ZCZBxyl4VQIF2pzlmQE4ro+mVMBkzWy/FUTC0RRyVO48vqxGLN
+X-Gm-Gg: ASbGncszvsAps0RYKORV58h9W50ssPKc5Ar8cyKEXiked2P9F4baiEk5BgZ+UC+3ICW
+	h4pzQbm7/AKWIsi2hZkSP7zvtVY5G+nc7Eq8UJNvWUuk03yyCoPwNeYOZITegiszIRTo6mIgJwp
+	H5ZuNKLX15eQ8DPfy3gzNqGfmHe1f2Z7EYpD2g8wNNsz0QhTMMd4dQqe2PxpuXh9suaNvIsselZ
+	BIZ/f+Hp2NAa7I1+AekuddRAMZ82g67EDQjIugikVPkMbCMiAW74FNqSU9vmPB1EKO7xGua8Xb7
+X-Google-Smtp-Source: AGHT+IFLbg4LaKsPyLyNd9RdEfvWjBcYrcC9SEh9XM9mku7DuUK704CRJULOsLoT7PGKZCjmskzUEA==
+X-Received: by 2002:a5d:5f91:0:b0:386:37f8:450b with SMTP id ffacd0b85a97d-38a1a1f6f4emr52117122f8f.5.1736174725586;
+        Mon, 06 Jan 2025 06:45:25 -0800 (PST)
+Received: from [172.27.48.82] ([193.47.165.251])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436611ea47asm569856565e9.4.2025.01.06.06.45.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Jan 2025 06:45:25 -0800 (PST)
+Message-ID: <837e39b7-0e95-4f6d-b2cb-8dbefa9eb696@gmail.com>
+Date: Mon, 6 Jan 2025 16:45:22 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net/mlx5: use do_aux_work for PHC overflow
+ checks
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>
+Cc: Carolina Jubran <cjubran@nvidia.com>, Bar Shapira <bshapira@nvidia.com>,
+ netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Dragos Tatulea
+ <dtatulea@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
+ Gal Pressman <gal@nvidia.com>
+References: <20241217195738.743391-1-vadfed@meta.com>
+ <D6IAG0OM4BCI.1SCL62SCI2UAY@nvidia.com>
+ <6c9730b3-b35d-47d9-9cd6-ec2e05e4e8e5@linux.dev>
+Content-Language: en-US
+From: Tariq Toukan <ttoukan.linux@gmail.com>
+In-Reply-To: <6c9730b3-b35d-47d9-9cd6-ec2e05e4e8e5@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemk100013.china.huawei.com (7.202.194.61)
 
-From: Jie Wang <wangjie125@huawei.com>
 
-Currently, HIP08 devices does not register the ptp devices, so the
-hdev->ptp is NULL. But the tx process would still try to set hardware time
-stamp info with SKBTX_HW_TSTAMP flag and cause a kernel crash.
 
-[  128.087798] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000018
-...
-[  128.280251] pc : hclge_ptp_set_tx_info+0x2c/0x140 [hclge]
-[  128.286600] lr : hclge_ptp_set_tx_info+0x20/0x140 [hclge]
-[  128.292938] sp : ffff800059b93140
-[  128.297200] x29: ffff800059b93140 x28: 0000000000003280
-[  128.303455] x27: ffff800020d48280 x26: ffff0cb9dc814080
-[  128.309715] x25: ffff0cb9cde93fa0 x24: 0000000000000001
-[  128.315969] x23: 0000000000000000 x22: 0000000000000194
-[  128.322219] x21: ffff0cd94f986000 x20: 0000000000000000
-[  128.328462] x19: ffff0cb9d2a166c0 x18: 0000000000000000
-[  128.334698] x17: 0000000000000000 x16: ffffcf1fc523ed24
-[  128.340934] x15: 0000ffffd530a518 x14: 0000000000000000
-[  128.347162] x13: ffff0cd6bdb31310 x12: 0000000000000368
-[  128.353388] x11: ffff0cb9cfbc7070 x10: ffff2cf55dd11e02
-[  128.359606] x9 : ffffcf1f85a212b4 x8 : ffff0cd7cf27dab0
-[  128.365831] x7 : 0000000000000a20 x6 : ffff0cd7cf27d000
-[  128.372040] x5 : 0000000000000000 x4 : 000000000000ffff
-[  128.378243] x3 : 0000000000000400 x2 : ffffcf1f85a21294
-[  128.384437] x1 : ffff0cb9db520080 x0 : ffff0cb9db500080
-[  128.390626] Call trace:
-[  128.393964]  hclge_ptp_set_tx_info+0x2c/0x140 [hclge]
-[  128.399893]  hns3_nic_net_xmit+0x39c/0x4c4 [hns3]
-[  128.405468]  xmit_one.constprop.0+0xc4/0x200
-[  128.410600]  dev_hard_start_xmit+0x54/0xf0
-[  128.415556]  sch_direct_xmit+0xe8/0x634
-[  128.420246]  __dev_queue_xmit+0x224/0xc70
-[  128.425101]  dev_queue_xmit+0x1c/0x40
-[  128.429608]  ovs_vport_send+0xac/0x1a0 [openvswitch]
-[  128.435409]  do_output+0x60/0x17c [openvswitch]
-[  128.440770]  do_execute_actions+0x898/0x8c4 [openvswitch]
-[  128.446993]  ovs_execute_actions+0x64/0xf0 [openvswitch]
-[  128.453129]  ovs_dp_process_packet+0xa0/0x224 [openvswitch]
-[  128.459530]  ovs_vport_receive+0x7c/0xfc [openvswitch]
-[  128.465497]  internal_dev_xmit+0x34/0xb0 [openvswitch]
-[  128.471460]  xmit_one.constprop.0+0xc4/0x200
-[  128.476561]  dev_hard_start_xmit+0x54/0xf0
-[  128.481489]  __dev_queue_xmit+0x968/0xc70
-[  128.486330]  dev_queue_xmit+0x1c/0x40
-[  128.490856]  ip_finish_output2+0x250/0x570
-[  128.495810]  __ip_finish_output+0x170/0x1e0
-[  128.500832]  ip_finish_output+0x3c/0xf0
-[  128.505504]  ip_output+0xbc/0x160
-[  128.509654]  ip_send_skb+0x58/0xd4
-[  128.513892]  udp_send_skb+0x12c/0x354
-[  128.518387]  udp_sendmsg+0x7a8/0x9c0
-[  128.522793]  inet_sendmsg+0x4c/0x8c
-[  128.527116]  __sock_sendmsg+0x48/0x80
-[  128.531609]  __sys_sendto+0x124/0x164
-[  128.536099]  __arm64_sys_sendto+0x30/0x5c
-[  128.540935]  invoke_syscall+0x50/0x130
-[  128.545508]  el0_svc_common.constprop.0+0x10c/0x124
-[  128.551205]  do_el0_svc+0x34/0xdc
-[  128.555347]  el0_svc+0x20/0x30
-[  128.559227]  el0_sync_handler+0xb8/0xc0
-[  128.563883]  el0_sync+0x160/0x180
+On 04/01/2025 0:25, Vadim Fedorenko wrote:
+> On 22/12/2024 14:10, Dragos Tatulea wrote:
+>> On Tue Dec 17, 2024 at 8:57 PM CET, Vadim Fedorenko wrote:
+>>> The overflow_work is using system wq to do overflow checks and updates
+>>> for PHC device timecounter, which might be overhelmed by other tasks.
+>>> But there is dedicated kthread in PTP subsystem designed for such
+>>> things. This patch changes the work queue to proper align with PTP
+>>> subsystem and to avoid overloading system work queue.
+>>> The adjfine() function acts the same way as overflow check worker,
+>>> we can postpone ptp aux worker till the next overflow period after
+>>> adjfine() was called.
+>>>
+>>> Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
+>>> ---
+>>>   .../ethernet/mellanox/mlx5/core/lib/clock.c   | 25 +++++++++++--------
+>>>   include/linux/mlx5/driver.h                   |  1 -
+>>>   2 files changed, 14 insertions(+), 12 deletions(-)
+>>>
+>>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c b/ 
+>>> drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
+>>> index 4822d01123b4..ff3780331273 100644
+>>> --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
+>>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
+>>> @@ -322,17 +322,16 @@ static void mlx5_pps_out(struct work_struct *work)
+>>>       }
+>>>   }
+>>> -static void mlx5_timestamp_overflow(struct work_struct *work)
+>>> +static long mlx5_timestamp_overflow(struct ptp_clock_info *ptp_info)
+>>>   {
+>>> -    struct delayed_work *dwork = to_delayed_work(work);
+>>>       struct mlx5_core_dev *mdev;
+>>>       struct mlx5_timer *timer;
+>>>       struct mlx5_clock *clock;
+>>>       unsigned long flags;
+>>> -    timer = container_of(dwork, struct mlx5_timer, overflow_work);
+>>> -    clock = container_of(timer, struct mlx5_clock, timer);
+>>> +    clock = container_of(ptp_info, struct mlx5_clock, ptp_info);
+>>>       mdev = container_of(clock, struct mlx5_core_dev, clock);
+>>> +    timer = &clock->timer;
+>>>       if (mdev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
+>>>           goto out;
+>>> @@ -343,7 +342,7 @@ static void mlx5_timestamp_overflow(struct 
+>>> work_struct *work)
+>>>       write_sequnlock_irqrestore(&clock->lock, flags);
+>>>   out:
+>>> -    schedule_delayed_work(&timer->overflow_work, timer- 
+>>> >overflow_period);
+>>> +    return timer->overflow_period;
+>>>   }
+>>>   static int mlx5_ptp_settime_real_time(struct mlx5_core_dev *mdev,
+>>> @@ -517,6 +516,7 @@ static int mlx5_ptp_adjfine(struct ptp_clock_info 
+>>> *ptp, long scaled_ppm)
+>>>       timer->cycles.mult = mult;
+>>>       mlx5_update_clock_info_page(mdev);
+>>>       write_sequnlock_irqrestore(&clock->lock, flags);
+>>> +    ptp_schedule_worker(clock->ptp, timer->overflow_period);
+>>>       return 0;
+>>>   }
+>>> @@ -852,6 +852,7 @@ static const struct ptp_clock_info 
+>>> mlx5_ptp_clock_info = {
+>>>       .settime64    = mlx5_ptp_settime,
+>>>       .enable        = NULL,
+>>>       .verify        = NULL,
+>>> +    .do_aux_work    = mlx5_timestamp_overflow,
+>>>   };
+>>>   static int mlx5_query_mtpps_pin_mode(struct mlx5_core_dev *mdev, u8 
+>>> pin,
+>>> @@ -1052,12 +1053,12 @@ static void mlx5_init_overflow_period(struct 
+>>> mlx5_clock *clock)
+>>>       do_div(ns, NSEC_PER_SEC / HZ);
+>>>       timer->overflow_period = ns;
+>>> -    INIT_DELAYED_WORK(&timer->overflow_work, mlx5_timestamp_overflow);
+>>> -    if (timer->overflow_period)
+>>> -        schedule_delayed_work(&timer->overflow_work, 0);
+>>> -    else
+>>> +    if (!timer->overflow_period) {
+>>> +        timer->overflow_period = HZ;
+>>>           mlx5_core_warn(mdev,
+>>> -                   "invalid overflow period, overflow_work is not 
+>>> scheduled\n");
+>>> +                   "invalid overflow period,"
+>>> +                   "overflow_work is scheduled once per second\n");
+>>> +    }
+>>>       if (clock_info)
+>>>           clock_info->overflow_period = timer->overflow_period;
+>>> @@ -1172,6 +1173,9 @@ void mlx5_init_clock(struct mlx5_core_dev *mdev)
+>>>       MLX5_NB_INIT(&clock->pps_nb, mlx5_pps_event, PPS_EVENT);
+>>>       mlx5_eq_notifier_register(mdev, &clock->pps_nb);
+>>> +
+>>> +    if (clock->ptp)
+>>> +        ptp_schedule_worker(clock->ptp, 0);
+>>>   }
+>>>   void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
+>>> @@ -1188,7 +1192,6 @@ void mlx5_cleanup_clock(struct mlx5_core_dev 
+>>> *mdev)
+>>>       }
+>>>       cancel_work_sync(&clock->pps_info.out_work);
+>>> -    cancel_delayed_work_sync(&clock->timer.overflow_work);
+>>>       if (mdev->clock_info) {
+>>>           free_page((unsigned long)mdev->clock_info);
+>>> diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+>>> index fc7e6153b73d..3ac2fc1b52cf 100644
+>>> --- a/include/linux/mlx5/driver.h
+>>> +++ b/include/linux/mlx5/driver.h
+>>> @@ -690,7 +690,6 @@ struct mlx5_timer {
+>>>       struct timecounter         tc;
+>>>       u32                        nominal_c_mult;
+>>>       unsigned long              overflow_period;
+>>> -    struct delayed_work        overflow_work;
+>>>   };
+>>>   struct mlx5_clock {
+>>
+>> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+>>
+> 
+> Hi Saeed, Tariq, Leon!
+> 
+> We need explicit Ack-by from official mlx5 maintainer here to let this
+> patch go directly to net-next. Could you please check it?
+> 
+> Thanks,
+> Vadim
+> 
+> 
 
-Fixes: 0bf5eb788512 ("net: hns3: add support for PTP")
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
----
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c | 3 +++
- 1 file changed, 3 insertions(+)
+Hi,
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-index 5505caea88e9..bab16c2191b2 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-@@ -58,6 +58,9 @@ bool hclge_ptp_set_tx_info(struct hnae3_handle *handle, struct sk_buff *skb)
- 	struct hclge_dev *hdev = vport->back;
- 	struct hclge_ptp *ptp = hdev->ptp;
- 
-+	if (!ptp)
-+		return false;
-+
- 	if (!test_bit(HCLGE_PTP_FLAG_TX_EN, &ptp->flags) ||
- 	    test_and_set_bit(HCLGE_STATE_PTP_TX_HANDLING, &hdev->state)) {
- 		ptp->tx_skipped++;
--- 
-2.33.0
+Back after a long vacation.
+I'll reply shortly.
 
+Regards,
+Tariq
