@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C55F1D61B9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4231DAC80
 	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 08:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736152406; cv=none; b=Hh8YcedFBdnS5kABk6l6CuTJVttW4e2zcbr08NzeumcCtBln/WMeJ0Ot+8WdIz3QLU+aOYiHjbYAFkxEvP7uyZdr2VUJduQOsdFTtnhovHpw1hX2ptbk4zEIoVrSkNhyxfGbwzKUMlcUZWB+VH2dri+6I6XeQ5v/X6nWm1+fhgc=
+	t=1736152406; cv=none; b=qHDaed/mMJ1kgrXhGRtD3mcyYMJWYJFTLA4sPu9f+Jf82HoKjIx0G5mLkYwRuWhbiOfyoyXoWS5p86P4BQrMvMmIccfvZdDQn45FSciUZjnENl4xZi5ice56E9bWiJvcEqvIwoPhkQUjrT93B9Nd2v7zbcXjBpTgoeuGNt98xe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1736152406; c=relaxed/simple;
-	bh=9rPX7enLQubJau7pA8Xr9gZgChYKgAcHlbg/6SijClA=;
+	bh=2wXbYqaWGW9mOPTkLt5y4RaTyBb9rPot160rt9mK8bo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hBqvC59xJtW8jjDLC2qD1CZ5meGD9Di3Bh4zsJSR6IkEY4hSRSmasS6kSH2HxtxXchZvr6MExJ0rZdkGBs+z7PXVaGlcuMHaeF00h6vfSkyNENOGsQtcEf8NHMq7OGRgoKdojKkR+yTr8reb2ssXMco6Rmai+23Zzc92I/RDIsw=
+	 MIME-Version; b=uEwrQQGM+sE4X6cgJNl/Wkq6lWNj+w8X64stLOxK/mHHocawDDPSbGvTJMcdvtb9jVtvja8nywasTMrBmGjO6ao4EAHeIuigPcBDnaAaROL+YgUyNC6CAQqEfrz4nObUeF4I4aMF2OBBdGnVFs3EWNhJSxRnSVPcdnu2110Oa8s=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tUiXq-0003U4-WF; Mon, 06 Jan 2025 09:33:07 +0100
+	id 1tUiXq-0003U0-WF; Mon, 06 Jan 2025 09:33:07 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tUiXm-0078Kr-0t;
-	Mon, 06 Jan 2025 09:33:03 +0100
+	id 1tUiXm-0078Kl-0c;
+	Mon, 06 Jan 2025 09:33:02 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tUiXm-004MXU-33;
+	id 1tUiXm-004MWz-2s;
 	Mon, 06 Jan 2025 09:33:02 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Russell King <linux@armlinux.org.uk>,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	linux-doc@vger.kernel.org
-Subject: [PATCH net-next v5 7/8] net: phy: dp83td510: add statistics support
-Date: Mon,  6 Jan 2025 09:33:00 +0100
-Message-Id: <20250106083301.1039850-8-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v5 4/8] Documentation: networking: update PHY error counter diagnostics in twisted pair guide
+Date: Mon,  6 Jan 2025 09:32:57 +0100
+Message-Id: <20250106083301.1039850-5-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250106083301.1039850-1-o.rempel@pengutronix.de>
 References: <20250106083301.1039850-1-o.rempel@pengutronix.de>
@@ -63,166 +63,71 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Add support for reporting PHY statistics in the DP83TD510 driver. This
-includes cumulative tracking of transmit/receive packet counts, and
-error counts. Implemented functions to update and provide statistics via
-ethtool, with optional polling support enabled through `PHY_POLL_STATS`.
+Replace generic instructions for monitoring error counters with a
+procedure using the unified PHY statistics interface (`--all-groups`).
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
-changes v2:
-- drop use of FIELD_GET
-- add comments
----
- drivers/net/phy/dp83td510.c | 112 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 112 insertions(+)
+ .../twisted_pair_layer1_diagnostics.rst       | 39 +++++++++++++------
+ 1 file changed, 28 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/phy/dp83td510.c b/drivers/net/phy/dp83td510.c
-index 92aa3a2b9744..2edda7c231fc 100644
---- a/drivers/net/phy/dp83td510.c
-+++ b/drivers/net/phy/dp83td510.c
-@@ -34,6 +34,29 @@
- #define DP83TD510E_CTRL_HW_RESET		BIT(15)
- #define DP83TD510E_CTRL_SW_RESET		BIT(14)
+diff --git a/Documentation/networking/diagnostic/twisted_pair_layer1_diagnostics.rst b/Documentation/networking/diagnostic/twisted_pair_layer1_diagnostics.rst
+index c9be5cc7e113..079e17effadf 100644
+--- a/Documentation/networking/diagnostic/twisted_pair_layer1_diagnostics.rst
++++ b/Documentation/networking/diagnostic/twisted_pair_layer1_diagnostics.rst
+@@ -713,17 +713,23 @@ driver supports reporting such events.
  
-+/*
-+ * DP83TD510E_PKT_STAT_x registers correspond to similarly named registers
-+ * in the datasheet (PKT_STAT_1 through PKT_STAT_6). These registers store
-+ * 32-bit or 16-bit counters for TX and RX statistics and must be read in
-+ * sequence to ensure the counters are cleared correctly.
-+ *
-+ * - DP83TD510E_PKT_STAT_1: Contains TX packet count bits [15:0].
-+ * - DP83TD510E_PKT_STAT_2: Contains TX packet count bits [31:16].
-+ * - DP83TD510E_PKT_STAT_3: Contains TX error packet count.
-+ * - DP83TD510E_PKT_STAT_4: Contains RX packet count bits [15:0].
-+ * - DP83TD510E_PKT_STAT_5: Contains RX packet count bits [31:16].
-+ * - DP83TD510E_PKT_STAT_6: Contains RX error packet count.
-+ *
-+ * Keeping the register names as defined in the datasheet helps maintain
-+ * clarity and alignment with the documentation.
-+ */
-+#define DP83TD510E_PKT_STAT_1			0x12b
-+#define DP83TD510E_PKT_STAT_2			0x12c
-+#define DP83TD510E_PKT_STAT_3			0x12d
-+#define DP83TD510E_PKT_STAT_4			0x12e
-+#define DP83TD510E_PKT_STAT_5			0x12f
-+#define DP83TD510E_PKT_STAT_6			0x130
-+
- #define DP83TD510E_AN_STAT_1			0x60c
- #define DP83TD510E_MASTER_SLAVE_RESOL_FAIL	BIT(15)
+ - **Monitor Error Counters**:
  
-@@ -58,8 +81,16 @@ static const u16 dp83td510_mse_sqi_map[] = {
- 	0x0000  /* 24dB =< SNR */
- };
+-  - While some NIC drivers and PHYs provide error counters, there is no unified
+-    set of PHY-specific counters across all hardware. Additionally, not all
+-    PHYs provide useful information related to errors like CRC errors, frame
+-    drops, or link flaps. Therefore, this step is dependent on the specific
+-    hardware and driver support.
+-
+-  - **Next Steps**: Use `ethtool -S <interface>` to check if your driver
+-    provides useful error counters. In some cases, counters may provide
+-    information about errors like link flaps or physical layer problems (e.g.,
+-    excessive CRC errors), but results can vary significantly depending on the
+-    PHY.
++  - Use `ethtool -S <interface> --all-groups` to retrieve standardized interface
++    statistics if the driver supports the unified interface:
++
++  - **Command:** `ethtool -S <interface> --all-groups`
++
++  - **Example Output (if supported)**:
++
++    .. code-block:: bash
++
++      phydev-RxFrames: 100391
++      phydev-RxErrors: 0
++      phydev-TxFrames: 9
++      phydev-TxErrors: 0
++
++  - If the unified interface is not supported, use `ethtool -S <interface>` to
++    retrieve MAC and PHY counters. Note that non-standardized PHY counter names
++    vary by driver and must be interpreted accordingly:
  
-+struct dp83td510_stats {
-+	u64 tx_pkt_cnt;
-+	u64 tx_err_pkt_cnt;
-+	u64 rx_pkt_cnt;
-+	u64 rx_err_pkt_cnt;
-+};
-+
- struct dp83td510_priv {
- 	bool alcd_test_active;
-+	struct dp83td510_stats stats;
- };
+   - **Command:** `ethtool -S <interface>`
  
- /* Time Domain Reflectometry (TDR) Functionality of DP83TD510 PHY
-@@ -177,6 +208,85 @@ struct dp83td510_priv {
- #define DP83TD510E_ALCD_COMPLETE			BIT(15)
- #define DP83TD510E_ALCD_CABLE_LENGTH			GENMASK(10, 0)
+@@ -740,6 +746,17 @@ driver supports reporting such events.
+     condition) or kernel log messages (e.g., link up/down events) to further
+     diagnose the issue.
  
-+/**
-+ * dp83td510_update_stats - Update the PHY statistics for the DP83TD510 PHY.
-+ * @phydev: Pointer to the phy_device structure.
-+ *
-+ * The function reads the PHY statistics registers and updates the statistics
-+ * structure.
-+ *
-+ * Returns: 0 on success or a negative error code on failure.
-+ */
-+static int dp83td510_update_stats(struct phy_device *phydev)
-+{
-+	struct dp83td510_priv *priv = phydev->priv;
-+	u32 count;
-+	int ret;
++  - **Compare Counters**:
 +
-+	/* The DP83TD510E_PKT_STAT registers are divided into two groups:
-+	 * - Group 1 (TX stats): DP83TD510E_PKT_STAT_1 to DP83TD510E_PKT_STAT_3
-+	 * - Group 2 (RX stats): DP83TD510E_PKT_STAT_4 to DP83TD510E_PKT_STAT_6
-+	 *
-+	 * Registers in each group are cleared only after reading them in a
-+	 * plain sequence (e.g., 1, 2, 3 for Group 1 or 4, 5, 6 for Group 2).
-+	 * Any deviation from the sequence, such as reading 1, 2, 1, 2, 3, will
-+	 * prevent the group from being cleared. Additionally, the counters
-+	 * for a group are frozen as soon as the first register in that group
-+	 * is accessed.
-+	 */
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_1);
-+	if (ret < 0)
-+		return ret;
-+	/* tx_pkt_cnt_15_0 */
-+	count = ret;
++    - Compare the egress and ingress frame counts reported by the PHY and MAC.
 +
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_2);
-+	if (ret < 0)
-+		return ret;
-+	/* tx_pkt_cnt_31_16 */
-+	count |= ret << 16;
-+	ethtool_stat_add(&priv->stats.tx_pkt_cnt, count);
++    - A small difference may occur due to sampling rate differences between the
++      MAC and PHY drivers, or if the PHY and MAC are not always fully
++      synchronized in their UP or DOWN states.
 +
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_3);
-+	if (ret < 0)
-+		return ret;
-+	/* tx_err_pkt_cnt */
-+	ethtool_stat_add(&priv->stats.tx_err_pkt_cnt, ret);
++    - Significant discrepancies indicate potential issues in the data path
++      between the MAC and PHY.
 +
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_4);
-+	if (ret < 0)
-+		return ret;
-+	/* rx_pkt_cnt_15_0 */
-+	count = ret;
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_5);
-+	if (ret < 0)
-+		return ret;
-+	/* rx_pkt_cnt_31_16 */
-+	count |= ret << 16;
-+	ethtool_stat_add(&priv->stats.rx_pkt_cnt, count);
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_6);
-+	if (ret < 0)
-+		return ret;
-+	/* rx_err_pkt_cnt */
-+	ethtool_stat_add(&priv->stats.rx_err_pkt_cnt, ret);
-+
-+	return 0;
-+}
-+
-+static void dp83td510_get_phy_stats(struct phy_device *phydev,
-+				    struct ethtool_eth_phy_stats *eth_stats,
-+				    struct ethtool_phy_stats *stats)
-+{
-+	struct dp83td510_priv *priv = phydev->priv;
-+
-+	stats->tx_packets = priv->stats.tx_pkt_cnt;
-+	stats->tx_errors = priv->stats.tx_err_pkt_cnt;
-+	stats->rx_packets = priv->stats.rx_pkt_cnt;
-+	stats->rx_errors = priv->stats.rx_err_pkt_cnt;
-+}
-+
- static int dp83td510_config_intr(struct phy_device *phydev)
- {
- 	int ret;
-@@ -599,6 +709,8 @@ static struct phy_driver dp83td510_driver[] = {
- 	.get_sqi_max	= dp83td510_get_sqi_max,
- 	.cable_test_start = dp83td510_cable_test_start,
- 	.cable_test_get_status = dp83td510_cable_test_get_status,
-+	.get_phy_stats	= dp83td510_get_phy_stats,
-+	.update_stats	= dp83td510_update_stats,
+ When All Else Fails...
+ ~~~~~~~~~~~~~~~~~~~~~~
  
- 	.suspend	= genphy_suspend,
- 	.resume		= genphy_resume,
 -- 
 2.39.5
 
