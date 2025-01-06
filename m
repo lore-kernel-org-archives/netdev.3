@@ -1,115 +1,418 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9995C78F52
-	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 03:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B24E17E0
+	for <netdev@vger.kernel.org>; Mon,  6 Jan 2025 05:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736135186; cv=none; b=sxx59deQxI0jsLRRYzWEextaTkeTN2PovtGG8/ZeDz3Ol3X4+ErDy/jNSHQCr4HhMsy51ReIJEu9FwWT6oq14HW+YNjISvZa/7KJY5QkCb02Jqaz79OapGWxoAWbGaBfmrjC6jnCRljHYL8ScEeKUNbJqwn6DkcYjdLCH8qe4Rc=
+	t=1736140329; cv=none; b=me6+s74UBNC4FI2nQ8jBvXeeSm7jsI+PcLnroDz4tAeVp9NgnIT5sO4DgCJzlVGxD3VMU3ARJdnNyWuPeQsP4ukut+XCmzgJJhTYF2JV2cMS9YIiAOmNwi7+xvsGaR6Vta7HZu4dwmNfAuDEFGnaTjB/8adXAVg/v9UDpL3EiRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736135186; c=relaxed/simple;
-	bh=ZGROLLPAtLEa1xGWUpWdXLOfg2bnDIz0Grkkn1pV+d0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SuKG1msitcmV/sr4NhtR7nQRgiaelL67NY8QIIMcz+zI4tUkimZwz9zKHGwxDDb9+y1vdbzuW20vPpBhI9YsrjYkxfp0DoP4iSaDqN3qHmakv6LTzCKhV4FZIWQavamIIy0GRKxES/J3RSKrf3kWyh8gMV8ie21L/cZ0cRiXWMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J/AJ3eFm; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J/AJ3eFm"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2163b0c09afso195282575ad.0
-        for <netdev@vger.kernel.org>; Sun, 05 Jan 2025 19:46:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736135184; x=1736739984; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FpiiYSzmjVDZUL52FduhMHU9Nr2Bsb8xkty6pYx347o=;
-        b=J/AJ3eFmpxYZhWucAZrXBRlV1aBilz5QkVJSSSPEx7poIm1lh25NsfwctwS0XVwz8p
-         ssOC6fjFWpSOoneZsySoWg8aTtKIu3d3paQ/oXhMAJFzbmWdiPnXbwLe3myAWesTGOS1
-         q9AXIBgleKIQcnxvvjxoZ5oL12x4ZKIXpizMY4qF8j3zChh9tkWcQJl9aPKbntrE+ZS9
-         emhd80sXyR5CppxtALiTvZhOw2sHdgZhsWlWnGYVlEkemN/fcBJpZjf9lpAbmDigXX7J
-         uuXm5Tajt/htljgLA1dm67nQ791pOZJQDWgkH9jBaSQUILISEgmfkP2KqboUdUo4SuL6
-         /bEg==
+	s=arc-20240116; t=1736140329; c=relaxed/simple;
+	bh=11s9em1REJIodW0RXX6JhBcMbPL6UbzDhlUoQ6kWEE0=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=XkEI9W7n2wUZ/WBAdgTI4DvWEYCKbYN1+niWWvTIww0WUQKYOxLpL8D5iXDJH8M+gPIkN47bszOaZ1ccIN1h0D7PKFDg8nbSTFLM0c8V5ALkKkxGq56QkyBR0s3ICkc3W7+9gyR4gLSFAKoZWbP0SxqP9jpL3biAYj6NBOcKDYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3a9d195e6e5so126927615ab.2
+        for <netdev@vger.kernel.org>; Sun, 05 Jan 2025 21:12:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736135184; x=1736739984;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1736140326; x=1736745126;
+        h=content-transfer-encoding:to:from:subject:message-id:in-reply-to
+         :date:mime-version:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FpiiYSzmjVDZUL52FduhMHU9Nr2Bsb8xkty6pYx347o=;
-        b=ZLvvNW1DXvMGxVZB18dvD4lPtpbvBsrzSjIUp8Cp+Vl7O8IulZf6x9yAVgy+n+gQyi
-         SwUZCPLTkPR3WioBhaX1tCXAACZl4otw83/b3gTT8fGTsnsqZmciXdQ7+pgEuy7/TCaN
-         c8OkduaaxW8nIs4AhlVlgKjUInxrhsvW1WGv2i3etKmPsnaPTwiki9vKpIdQWdYSJTsY
-         0c/6+pLH/4QxPidqrbpAFP3XirHZvwS6C1ykSxAZ4lwR0kIBf1K/Y0hPeU1QV8ch1HsB
-         9TASQSMsHiZ0AMiTQTZ8zjDrIY2/2wtrsSUHgUaYyMQdE0WtoNVjb1mNoqv+iq1r/o65
-         3qBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWziYLNBcBsDVFuZAfTGur9j4rh/9JVQcLKtvnigGm1Kh9LVUPa+t+J8dFn1hOjWptz3oLd/+o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFf/HnTQv2NcHVw1D+EOdcxaMIQvH88+qZjhhpX0AvKk/7fhKE
-	oZYBAitgT22ehKBXx1BGlChDx/6cp6aMfuRQDl1tmQdhxZChLKC3
-X-Gm-Gg: ASbGncupfb4TIKK8sMIxBLwwtuNt1YAQ4VnZXIaf2kkfDwP7SMU7k+VeqcGudfuqeDv
-	GcGj6swA0PhXVfpaIn3uh4KDTJ7IJp/ivTInnujz78sdhFm1EM/ebTd0UGruFEq87620FaxYw3t
-	m0UOa7KeI4jIdPZHh20AruqMYxeSIQu/O76QYdqGpySqEkXlfvdVPVrsROsqMUcBj1LUewbP5DS
-	2NCiEvtG+XiFYxcsLdUslvQTctG+OMX75VMr9kCaz7Bll1wniCvqlKvOPMdNw==
-X-Google-Smtp-Source: AGHT+IGelsDWaB4ZMpitxztfCsAPvJG/YINFavrv3RDrnTQF5NgClwHSfHW7p43jm3SvMiv/j80aNA==
-X-Received: by 2002:a05:6a20:7288:b0:1e1:aa24:2e5c with SMTP id adf61e73a8af0-1e5e083f156mr81786185637.38.1736135183562;
-        Sun, 05 Jan 2025 19:46:23 -0800 (PST)
-Received: from fedora ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad83033esm30343144b3a.48.2025.01.05.19.46.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Jan 2025 19:46:22 -0800 (PST)
-Date: Mon, 6 Jan 2025 03:46:16 +0000
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: Octavian Purdila <tavip@google.com>
-Cc: jiri@resnulli.us, andrew+netdev@lunn.ch, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	syzbot+3c47b5843403a45aef57@syzkaller.appspotmail.com
-Subject: Re: [PATCH net-next] team: prevent adding a device which is already
- a team device lower
-Message-ID: <Z3tSCOJH4fQ99cBe@fedora>
-References: <20241230205647.1338900-1-tavip@google.com>
- <Z3ZTWxLe5Js1B-zp@fedora>
- <Z3ZUFq7dyiRHrdmi@fedora>
- <CAGWr4cQNhd2UQn33F_JJUE5tFrQgRHe0BZs-kGO4cno4uZ6HnA@mail.gmail.com>
+        bh=AFfpHfOJ6z5P2UmW/UDSxsJgYlztZmqvRxfQdaO4tz0=;
+        b=u5LoKw96Ic7Wa6m4xYj1qtYkJQy5zIyqqhHNh5dL4sP/sXwABH25Y+tRgPReHB5avc
+         PsPeHuFVPqg/MOSI7t+b4IU04EpDdBcWsPml9AFPqtnpFRDZ34BGJLd0sKDULiSRNjhq
+         0iLonEobnqU8ysF7NK143SwmVsyy4LWlzhMHL8MCMe6wnMxf0hQoOYBLYw/o7TI4ntXj
+         BEHMfAsmsHZPIgDevpNGBLbD7e/gMXa++BTZSeE8iCJ7y+8orGU3rD3yTrJ+G1zvqIlO
+         ZpjXovD1gQiqA1LxmmBO6K8GpQ3BcqpdrNnMkVTxslyKhqp852KfDF33UEnnbZv/PsF+
+         tr3w==
+X-Forwarded-Encrypted: i=1; AJvYcCXjpY/X1OlkLDK/Zq48LcJA4o7FR06NcbEP6yID9rbIGfPqthS3+yMhx/m9AdVg39RetX7mLBo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyPEl4WQciRnOtx3OPb6ZlyVudKBgDHGHmfYcD1tL6RFGol9Qx
+	ElqjiA9dBGpHJoXikN31zAKkgiSfp6j3oGwTmMOa4a6nKMk4EtZUt5MCzlwWAzdsaMTQH7gzJEE
+	dyF6usjO+pzVI+KQ3EoZaDqN8aAsB4LXkbw7qsyAEZfoKFhodOuZiz1I=
+X-Google-Smtp-Source: AGHT+IGwBqpjyguvY+NEuhrEiiloCuuWDyLOfwmYM4PRXHtML5yWpqMk/QGlLUyYW0i0CPWCbQlKKJtBsu5N0BRzhuUNONTFcCzr
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGWr4cQNhd2UQn33F_JJUE5tFrQgRHe0BZs-kGO4cno4uZ6HnA@mail.gmail.com>
+X-Received: by 2002:a05:6e02:1caf:b0:3a7:c5ff:e60b with SMTP id
+ e9e14a558f8ab-3c2d1f74a78mr475125105ab.6.1736140326330; Sun, 05 Jan 2025
+ 21:12:06 -0800 (PST)
+Date: Sun, 05 Jan 2025 21:12:06 -0800
+In-Reply-To: <87cyh16mab.fsf@toke.dk>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <677b6626.050a0220.3b3668.0002.GAE@google.com>
+Subject: Re: [syzbot] [wireless?] INFO: task hung in ath9k_hif_usb_firmware_cb (3)
+From: syzbot <syzbot+e9b1ff41aa6a7ebf9640@syzkaller.appspotmail.com>
+To: kvalo@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, nbd@nbd.name, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, toke@toke.dk
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 02, 2025 at 11:50:25AM -0800, Octavian Purdila wrote:
-> > I didn't test, what if enslave veth0 first and then add enslave veth0.1 later.
-> >
-> 
-> Hi Hangbin,
-> 
-> Thanks for the review!
-> 
-> I was not able to reproduce the crash with this scenario. I think this
-> is because adding veth0.1 does not affect the link state for veth0,
-> while in the original scenario bringing up veth0 would also bring up
-> veth0.1.
-> 
-> Regardless, allowing this setup seems risky and syzkaller may find
-> other ways to trigger it, so maybe a more generic check like below
-> would be better?
-> 
->         list_for_each_entry(tmp, &team->port_list, list) {
->                 if (netdev_has_upper_dev(tmp->dev, port_dev) ||
->                         netdev_has_upper_dev(port_dev, tmp->dev)) {
->                         NL_SET_ERR_MSG(extack, "Device is a lower or
-> upper of an enslaved device");
->                         netdev_err(dev, "Device %s is a lower or upper
-> device of enslaved device %s\n",
->                                    portname, tmp->dev->name);
->                         return -EBUSY;
->                 }
->         }
-> 
-> Although I am not sure if there are legitimate use-cases that this may restrict?
+Hello,
 
-The logic makes sense to me. Let's see if Jiri has any comments.
+syzbot tried to test the proposed patch but the build/boot failed:
 
-Thanks
-Hangbin
+s enabled.
+[    1.190003][    T0] rcu: 	RCU debug extended QS entry/exit.
+[    1.190988][    T0] 	All grace periods are expedited (rcu_expedited).
+[    1.191939][    T0] 	Trampoline variant of Tasks RCU enabled.
+[    1.192694][    T0] 	Tracing variant of Tasks RCU enabled.
+[    1.193396][    T0] rcu: RCU calculated value of scheduler-enlistment de=
+lay is 10 jiffies.
+[    1.194479][    T0] rcu: Adjusting geometry for rcu_fanout_leaf=3D16, nr=
+_cpu_ids=3D2
+[    1.195538][    T0] Running RCU synchronous self tests
+[    1.196263][    T0] RCU Tasks: Setting shift to 1 and lim to 1 rcu_task_=
+cb_adjust=3D1 rcu_task_cpu_ids=3D2.
+[    1.197551][    T0] RCU Tasks Trace: Setting shift to 1 and lim to 1 rcu=
+_task_cb_adjust=3D1 rcu_task_cpu_ids=3D2.
+[    1.275546][    T0] NR_IRQS: 4352, nr_irqs: 440, preallocated irqs: 16
+[    1.277185][    T0] rcu: srcu_init: Setting srcu_struct sizes based on c=
+ontention.
+[    1.278480][    T0] kfence: initialized - using 2097152 bytes for 255 ob=
+jects at 0xffff88823be00000-0xffff88823c000000
+[    1.280693][    T0] Console: colour VGA+ 80x25
+[    1.281394][    T0] printk: legacy console [ttyS0] enabled
+[    1.281394][    T0] printk: legacy console [ttyS0] enabled
+[    1.282994][    T0] printk: legacy bootconsole [earlyser0] disabled
+[    1.282994][    T0] printk: legacy bootconsole [earlyser0] disabled
+[    1.284703][    T0] Lock dependency validator: Copyright (c) 2006 Red Ha=
+t, Inc., Ingo Molnar
+[    1.285830][    T0] ... MAX_LOCKDEP_SUBCLASSES:  8
+[    1.286485][    T0] ... MAX_LOCK_DEPTH:          48
+[    1.287197][    T0] ... MAX_LOCKDEP_KEYS:        8192
+[    1.287919][    T0] ... CLASSHASH_SIZE:          4096
+[    1.288630][    T0] ... MAX_LOCKDEP_ENTRIES:     1048576
+[    1.289352][    T0] ... MAX_LOCKDEP_CHAINS:      1048576
+[    1.290119][    T0] ... CHAINHASH_SIZE:          524288
+[    1.290963][    T0]  memory used by lock dependency info: 106625 kB
+[    1.291807][    T0]  memory used for stack traces: 8320 kB
+[    1.292562][    T0]  per task-struct memory footprint: 1920 bytes
+[    1.293542][    T0] mempolicy: Enabling automatic NUMA balancing. Config=
+ure with numa_balancing=3D or the kernel.numa_balancing sysctl
+[    1.295195][    T0] ACPI: Core revision 20240827
+[    1.296401][    T0] APIC: Switch to symmetric I/O mode setup
+[    1.297557][    T0] x2apic enabled
+[    1.300642][    T0] APIC: Switched APIC routing to: physical x2apic
+[    1.305247][    T0] ..TIMER: vector=3D0x30 apic1=3D0 pin1=3D0 apic2=3D-1=
+ pin2=3D-1
+[    1.306357][    T0] clocksource: tsc-early: mask: 0xffffffffffffffff max=
+_cycles: 0x2350b6af5f8, max_idle_ns: 440795252949 ns
+[    1.308110][    T0] Calibrating delay loop (skipped) preset value.. 4899=
+.99 BogoMIPS (lpj=3D24499980)
+[    1.309487][    T0] x86/cpu: User Mode Instruction Prevention (UMIP) act=
+ivated
+[    1.310835][    T0] Last level iTLB entries: 4KB 512, 2MB 512, 4MB 256
+[    1.311724][    T0] Last level dTLB entries: 4KB 2048, 2MB 2048, 4MB 102=
+4, 1GB 0
+[    1.312765][    T0] Spectre V1 : Mitigation: usercopy/swapgs barriers an=
+d __user pointer sanitization
+[    1.314119][    T0] Spectre V2 : Mitigation: Retpolines
+[    1.314831][    T0] Spectre V2 : Spectre v2 / SpectreRSB mitigation: Fil=
+ling RSB on context switch
+[    1.316024][    T0] Spectre V2 : Spectre v2 / SpectreRSB : Filling RSB o=
+n VMEXIT
+[    1.318151][    T0] Spectre V2 : Enabling Restricted Speculation for fir=
+mware calls
+[    1.319414][    T0] Spectre V2 : mitigation: Enabling conditional Indire=
+ct Branch Prediction Barrier
+[    1.320674][    T0] Spectre V2 : User space: Mitigation: STIBP via prctl
+[    1.321638][    T0] Speculative Store Bypass: Mitigation: Speculative St=
+ore Bypass disabled via prctl
+[    1.323179][    T0] Speculative Return Stack Overflow: Mitigation: Safe =
+RET
+[    1.324189][    T0] x86/fpu: Supporting XSAVE feature 0x001: 'x87 floati=
+ng point registers'
+[    1.325303][    T0] x86/fpu: Supporting XSAVE feature 0x002: 'SSE regist=
+ers'
+[    1.326298][    T0] x86/fpu: Supporting XSAVE feature 0x004: 'AVX regist=
+ers'
+[    1.327284][    T0] x86/fpu: xstate_offset[2]:  576, xstate_sizes[2]:  2=
+56
+[    1.328107][    T0] x86/fpu: Enabled xstate features 0x7, context size i=
+s 832 bytes, using 'compacted' format.
+[    1.604248][    T0] Freeing SMP alternatives memory: 128K
+[    1.605166][    T0] pid_max: default: 32768 minimum: 301
+[    1.606440][    T0] LSM: initializing lsm=3Dlockdown,capability,landlock=
+,yama,safesetid,tomoyo,apparmor,bpf,ima,evm
+[    1.608771][    T0] landlock: Up and running.
+[    1.609554][    T0] Yama: becoming mindful.
+[    1.610776][    T0] TOMOYO Linux initialized
+[    1.612635][    T0] AppArmor: AppArmor initialized
+[    1.616080][    T0] LSM support for eBPF active
+[    1.621951][    T0] Dentry cache hash table entries: 1048576 (order: 11,=
+ 8388608 bytes, vmalloc hugepage)
+[    1.625424][    T0] Inode-cache hash table entries: 524288 (order: 10, 4=
+194304 bytes, vmalloc hugepage)
+[    1.627339][    T0] Mount-cache hash table entries: 16384 (order: 5, 131=
+072 bytes, vmalloc)
+[    1.628497][    T0] Mountpoint-cache hash table entries: 16384 (order: 5=
+, 131072 bytes, vmalloc)
+[    1.634212][    T0] Running RCU synchronous self tests
+[    1.635020][    T0] Running RCU synchronous self tests
+[    1.757500][    T1] smpboot: CPU0: AMD EPYC 7B13 (family: 0x19, model: 0=
+x1, stepping: 0x0)
+[    1.758098][    T1] Running RCU Tasks wait API self tests
+[    1.858617][    T1] Running RCU Tasks Trace wait API self tests
+[    1.859754][    T1] Performance Events: PMU not available due to virtual=
+ization, using software events only.
+[    1.869763][    T1] signal: max sigframe size: 1776
+[    1.871320][    T1] rcu: Hierarchical SRCU implementation.
+[    1.872132][    T1] rcu: 	Max phase no-delay instances is 1000.
+[    1.874159][    T1] Timer migration: 1 hierarchy levels; 8 children per =
+group; 0 crossnode level
+[    1.878328][   T15] Callback from call_rcu_tasks_trace() invoked.
+[    1.935530][    T1] NMI watchdog: Perf NMI watchdog permanently disabled
+[    1.937523][    T1] smp: Bringing up secondary CPUs ...
+[    1.950450][    T1] smpboot: x86: Booting SMP configuration:
+[    1.951284][    T1] .... node  #0, CPUs:      #1
+[    1.951629][   T22] ------------[ cut here ]------------
+[    1.951629][   T22] workqueue: work disable count underflowed
+[    1.951629][   T22] WARNING: CPU: 1 PID: 22 at kernel/workqueue.c:4317 e=
+nable_work+0x34d/0x360
+[    1.951629][   T22] Modules linked in:
+[    1.951832][   T22] CPU: 1 UID: 0 PID: 22 Comm: cpuhp/1 Not tainted 6.13=
+.0-rc6-syzkaller-g9d89551994a4-dirty #0
+[    1.953189][   T22] Hardware name: Google Google Compute Engine/Google C=
+ompute Engine, BIOS Google 09/13/2024
+[    1.954559][   T22] RIP: 0010:enable_work+0x34d/0x360
+[    1.955294][   T22] Code: d8 5b 41 5c 41 5d 41 5e 41 5f 5d e9 08 3f 88 0=
+a e8 18 82 37 00 c6 05 f9 ac 9b 0e 01 90 48 c7 c7 a0 d7 09 8c e8 d4 25 f8 f=
+f 90 <0f> 0b 90 90 e9 56 ff ff ff e8 b5 c7 60 0a 0f 1f 44 00 00 90 90 90
+[    1.957894][   T22] RSP: 0018:ffffc900001c7bc0 EFLAGS: 00010046
+[    1.958098][   T22] RAX: caa1100063be3a00 RBX: 0000000000000000 RCX: fff=
+f88801d2e3c00
+[    1.958098][   T22] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 000=
+0000000000000
+[    1.958098][   T22] RBP: ffffc900001c7c88 R08: ffffffff81602a82 R09: 1ff=
+ffffff1cfa210
+[    1.958098][   T22] R10: dffffc0000000000 R11: fffffbfff1cfa211 R12: 1ff=
+ff92000038f7c
+[    1.958098][   T22] R13: 1ffff92000038f84 R14: 001fffffffc00001 R15: fff=
+f8880b8738770
+[    1.958098][   T22] FS:  0000000000000000(0000) GS:ffff8880b8700000(0000=
+) knlGS:0000000000000000
+[    1.958098][   T22] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.958098][   T22] CR2: 0000000000000000 CR3: 000000000e736000 CR4: 000=
+0000000350ef0
+[    1.958098][   T22] Call Trace:
+[    1.958098][   T22]  <TASK>
+[    1.958098][   T22]  ? __warn+0x165/0x4d0
+[    1.958098][   T22]  ? enable_work+0x34d/0x360
+[    1.958098][   T22]  ? report_bug+0x2b3/0x500
+[    1.958098][   T22]  ? enable_work+0x34d/0x360
+[    1.958098][   T22]  ? handle_bug+0x60/0x90
+[    1.958098][   T22]  ? exc_invalid_op+0x1a/0x50
+[    1.958098][   T22]  ? asm_exc_invalid_op+0x1a/0x20
+[    1.958098][   T22]  ? __warn_printk+0x292/0x360
+[    1.958098][   T22]  ? enable_work+0x34d/0x360
+[    1.958098][   T22]  ? __pfx_enable_work+0x10/0x10
+[    1.958098][   T22]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    1.958098][   T22]  ? __pfx_vmstat_cpu_online+0x10/0x10
+[    1.958098][   T22]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    1.958098][   T22]  ? rcu_is_watching+0x15/0xb0
+[    1.958098][   T22]  vmstat_cpu_online+0xbb/0xe0
+[    1.958098][   T22]  ? __pfx_vmstat_cpu_online+0x10/0x10
+[    1.958098][   T22]  cpuhp_invoke_callback+0x48f/0x830
+[    1.958098][   T22]  ? __pfx_vmstat_cpu_online+0x10/0x10
+[    1.958098][   T22]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    1.958098][   T22]  cpuhp_thread_fun+0x41c/0x810
+[    1.958098][   T22]  ? cpuhp_thread_fun+0x130/0x810
+[    1.958098][   T22]  ? __pfx_cpuhp_thread_fun+0x10/0x10
+[    1.958098][   T22]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    1.958098][   T22]  ? _raw_spin_unlock_irqrestore+0xdd/0x140
+[    1.958098][   T22]  ? __pfx_cpuhp_thread_fun+0x10/0x10
+[    1.958098][   T22]  smpboot_thread_fn+0x546/0xa30
+[    1.958098][   T22]  ? smpboot_thread_fn+0x4e/0xa30
+[    1.958098][   T22]  ? __pfx_smpboot_thread_fn+0x10/0x10
+[    1.958098][   T22]  kthread+0x2f2/0x390
+[    1.958098][   T22]  ? __pfx_smpboot_thread_fn+0x10/0x10
+[    1.958098][   T22]  ? __pfx_kthread+0x10/0x10
+[    1.958098][   T22]  ret_from_fork+0x4d/0x80
+[    1.958098][   T22]  ? __pfx_kthread+0x10/0x10
+[    1.958098][   T22]  ret_from_fork_asm+0x1a/0x30
+[    1.958098][   T22]  </TASK>
+[    1.958098][   T22] Kernel panic - not syncing: kernel: panic_on_warn se=
+t ...
+[    1.958098][   T22] CPU: 1 UID: 0 PID: 22 Comm: cpuhp/1 Not tainted 6.13=
+.0-rc6-syzkaller-g9d89551994a4-dirty #0
+[    1.958098][   T22] Hardware name: Google Google Compute Engine/Google C=
+ompute Engine, BIOS Google 09/13/2024
+[    1.958098][   T22] Call Trace:
+[    1.958098][   T22]  <TASK>
+[    1.958098][   T22]  dump_stack_lvl+0x241/0x360
+[    1.958098][   T22]  ? __pfx_dump_stack_lvl+0x10/0x10
+[    1.958098][   T22]  ? __pfx__printk+0x10/0x10
+[    1.958098][   T22]  ? _printk+0xd5/0x120
+[    1.958098][   T22]  ? __init_begin+0x41000/0x41000
+[    1.958098][   T22]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    1.958098][   T22]  ? vscnprintf+0x5d/0x90
+[    1.958098][   T22]  panic+0x349/0x880
+[    1.958098][   T22]  ? __warn+0x174/0x4d0
+[    1.958098][   T22]  ? __pfx_panic+0x10/0x10
+[    1.958098][   T22]  ? ret_from_fork_asm+0x1a/0x30
+[    1.958098][   T22]  __warn+0x344/0x4d0
+[    1.958098][   T22]  ? enable_work+0x34d/0x360
+[    1.958098][   T22]  report_bug+0x2b3/0x500
+[    1.958098][   T22]  ? enable_work+0x34d/0x360
+[    1.958098][   T22]  handle_bug+0x60/0x90
+[    1.958098][   T22]  exc_invalid_op+0x1a/0x50
+[    1.958098][   T22]  asm_exc_invalid_op+0x1a/0x20
+[    1.958098][   T22] RIP: 0010:enable_work+0x34d/0x360
+[    1.958098][   T22] Code: d8 5b 41 5c 41 5d 41 5e 41 5f 5d e9 08 3f 88 0=
+a e8 18 82 37 00 c6 05 f9 ac 9b 0e 01 90 48 c7 c7 a0 d7 09 8c e8 d4 25 f8 f=
+f 90 <0f> 0b 90 90 e9 56 ff ff ff e8 b5 c7 60 0a 0f 1f 44 00 00 90 90 90
+[    1.958098][   T22] RSP: 0018:ffffc900001c7bc0 EFLAGS: 00010046
+[    1.958098][   T22] RAX: caa1100063be3a00 RBX: 0000000000000000 RCX: fff=
+f88801d2e3c00
+[    1.958098][   T22] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 000=
+0000000000000
+[    1.958098][   T22] RBP: ffffc900001c7c88 R08: ffffffff81602a82 R09: 1ff=
+ffffff1cfa210
+[    1.958098][   T22] R10: dffffc0000000000 R11: fffffbfff1cfa211 R12: 1ff=
+ff92000038f7c
+[    1.958098][   T22] R13: 1ffff92000038f84 R14: 001fffffffc00001 R15: fff=
+f8880b8738770
+[    1.958098][   T22]  ? __warn_printk+0x292/0x360
+[    1.958098][   T22]  ? __pfx_enable_work+0x10/0x10
+[    1.958098][   T22]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    1.958098][   T22]  ? __pfx_vmstat_cpu_online+0x10/0x10
+[    1.958098][   T22]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    1.958098][   T22]  ? rcu_is_watching+0x15/0xb0
+[    1.958098][   T22]  vmstat_cpu_online+0xbb/0xe0
+[    1.958098][   T22]  ? __pfx_vmstat_cpu_online+0x10/0x10
+[    1.958098][   T22]  cpuhp_invoke_callback+0x48f/0x830
+[    1.958098][   T22]  ? __pfx_vmstat_cpu_online+0x10/0x10
+[    1.958098][   T22]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    1.958098][   T22]  cpuhp_thread_fun+0x41c/0x810
+[    1.958098][   T22]  ? cpuhp_thread_fun+0x130/0x810
+[    1.958098][   T22]  ? __pfx_cpuhp_thread_fun+0x10/0x10
+[    1.958098][   T22]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    1.958098][   T22]  ? _raw_spin_unlock_irqrestore+0xdd/0x140
+[    1.958098][   T22]  ? __pfx_cpuhp_thread_fun+0x10/0x10
+[    1.958098][   T22]  smpboot_thread_fn+0x546/0xa30
+[    1.958098][   T22]  ? smpboot_thread_fn+0x4e/0xa30
+[    1.958098][   T22]  ? __pfx_smpboot_thread_fn+0x10/0x10
+[    1.958098][   T22]  kthread+0x2f2/0x390
+[    1.958098][   T22]  ? __pfx_smpboot_thread_fn+0x10/0x10
+[    1.958098][   T22]  ? __pfx_kthread+0x10/0x10
+[    1.958098][   T22]  ret_from_fork+0x4d/0x80
+[    1.958098][   T22]  ? __pfx_kthread+0x10/0x10
+[    1.958098][   T22]  ret_from_fork_asm+0x1a/0x30
+[    1.958098][   T22]  </TASK>
+[    1.958098][   T22] Rebooting in 86400 seconds..
+
+
+syzkaller build log:
+go env (err=3D<nil>)
+GO111MODULE=3D'auto'
+GOARCH=3D'amd64'
+GOBIN=3D''
+GOCACHE=3D'/syzkaller/.cache/go-build'
+GOENV=3D'/syzkaller/.config/go/env'
+GOEXE=3D''
+GOEXPERIMENT=3D''
+GOFLAGS=3D''
+GOHOSTARCH=3D'amd64'
+GOHOSTOS=3D'linux'
+GOINSECURE=3D''
+GOMODCACHE=3D'/syzkaller/jobs-2/linux/gopath/pkg/mod'
+GONOPROXY=3D''
+GONOSUMDB=3D''
+GOOS=3D'linux'
+GOPATH=3D'/syzkaller/jobs-2/linux/gopath'
+GOPRIVATE=3D''
+GOPROXY=3D'https://proxy.golang.org,direct'
+GOROOT=3D'/usr/local/go'
+GOSUMDB=3D'sum.golang.org'
+GOTMPDIR=3D''
+GOTOOLCHAIN=3D'auto'
+GOTOOLDIR=3D'/usr/local/go/pkg/tool/linux_amd64'
+GOVCS=3D''
+GOVERSION=3D'go1.22.7'
+GCCGO=3D'gccgo'
+GOAMD64=3D'v1'
+AR=3D'ar'
+CC=3D'gcc'
+CXX=3D'g++'
+CGO_ENABLED=3D'1'
+GOMOD=3D'/syzkaller/jobs-2/linux/gopath/src/github.com/google/syzkaller/go.=
+mod'
+GOWORK=3D''
+CGO_CFLAGS=3D'-O2 -g'
+CGO_CPPFLAGS=3D''
+CGO_CXXFLAGS=3D'-O2 -g'
+CGO_FFLAGS=3D'-O2 -g'
+CGO_LDFLAGS=3D'-O2 -g'
+PKG_CONFIG=3D'pkg-config'
+GOGCCFLAGS=3D'-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=3D0=
+ -ffile-prefix-map=3D/tmp/go-build1119513314=3D/tmp/go-build -gno-record-gc=
+c-switches'
+
+git status (err=3D<nil>)
+HEAD detached at 1432fc845
+nothing to commit, working tree clean
+
+
+tput: No value for $TERM and no -T specified
+tput: No value for $TERM and no -T specified
+Makefile:31: run command via tools/syz-env for best compatibility, see:
+Makefile:32: https://github.com/google/syzkaller/blob/master/docs/contribut=
+ing.md#using-syz-env
+go list -f '{{.Stale}}' ./sys/syz-sysgen | grep -q false || go install ./sy=
+s/syz-sysgen
+make .descriptions
+tput: No value for $TERM and no -T specified
+tput: No value for $TERM and no -T specified
+Makefile:31: run command via tools/syz-env for best compatibility, see:
+Makefile:32: https://github.com/google/syzkaller/blob/master/docs/contribut=
+ing.md#using-syz-env
+bin/syz-sysgen
+go fmt ./sys/... >/dev/null
+touch .descriptions
+GOOS=3Dlinux GOARCH=3Damd64 go build "-ldflags=3D-s -w -X github.com/google=
+/syzkaller/prog.GitRevision=3D1432fc84530255f6208c5719be796918244fa9d3 -X '=
+github.com/google/syzkaller/prog.gitRevisionDate=3D20241218-130448'" "-tags=
+=3Dsyz_target syz_os_linux syz_arch_amd64 " -o ./bin/linux_amd64/syz-execpr=
+og github.com/google/syzkaller/tools/syz-execprog
+mkdir -p ./bin/linux_amd64
+g++ -o ./bin/linux_amd64/syz-executor executor/executor.cc \
+	-m64 -O2 -pthread -Wall -Werror -Wparentheses -Wunused-const-variable -Wfr=
+ame-larger-than=3D16384 -Wno-stringop-overflow -Wno-array-bounds -Wno-forma=
+t-overflow -Wno-unused-but-set-variable -Wno-unused-command-line-argument -=
+static-pie -std=3Dc++17 -I. -Iexecutor/_include -fpermissive -w -DGOOS_linu=
+x=3D1 -DGOARCH_amd64=3D1 \
+	-DHOSTGOOS_linux=3D1 -DGIT_REVISION=3D\"1432fc84530255f6208c5719be79691824=
+4fa9d3\"
+/usr/bin/ld: /tmp/ccsfxsCp.o: in function `Connection::Connect(char const*,=
+ char const*)':
+executor.cc:(.text._ZN10Connection7ConnectEPKcS1_[_ZN10Connection7ConnectEP=
+KcS1_]+0x104): warning: Using 'gethostbyname' in statically linked applicat=
+ions requires at runtime the shared libraries from the glibc version used f=
+or linking
+
+
+Error text is too large and was truncated, full error text is at:
+https://syzkaller.appspot.com/x/error.txt?x=3D139fd6f8580000
+
+
+Tested on:
+
+commit:         9d895519 Linux 6.13-rc6
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3D4ef22c4fce5135b=
+4
+dashboard link: https://syzkaller.appspot.com/bug?extid=3De9b1ff41aa6a7ebf9=
+640
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debia=
+n) 2.40
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=3D12c039c45800=
+00
+
