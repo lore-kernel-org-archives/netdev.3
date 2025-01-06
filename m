@@ -1,28 +1,28 @@
 Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1861D90C5;
-	Mon,  6 Jan 2025 08:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8F01D95A2;
+	Mon,  6 Jan 2025 08:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736150827; cv=none; b=fKmGaWINJeZJMnA7lvYg6gKjK7wgnOdix4cMBu3KnU7n+qsEENw84Pe7VAX/zc2O+0eAuPrSypUdQw+Q7RJUJOl06QSt0fk89OlWBQtin+qYnzXpdsbJqyCPcnUH+mLkylNqNjsoizs+Y1kztLkun+y5EpIZA5fBg3lEvi0XGpk=
+	t=1736150829; cv=none; b=pLRfBF1AhebSHazb/YhPi2O+jU4tgSbAe/90MUN2WuIX2gNqGNO5tvubUDOgYglKBLbxl34fS9E7u4KkEXLEriOmCpLhmqZ/OB1NWWgAIYd6bvQagAK5q5zK7EFJUdFI6PjZxLMh4BQYem+Poar6oc7vjepGGHj1FenPX/9wEKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736150827; c=relaxed/simple;
-	bh=QzGyMUsCmMaGHNoW5OTSqgcCkHWN6HTrqiFfJA2nuxI=;
+	s=arc-20240116; t=1736150829; c=relaxed/simple;
+	bh=rPDHlz3JyHPhnzVdaXtgal5iHuxomLYbmh/JMu9VobY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nABHaQAdDmHp1hZ7IoMfdsCWldg9QIicWtKbPf+pK3ZcyHadsQFj1UWl5ngVKNv6uiJ53rXfdYxFCHew7IG4sS6J2Btw/c/GIMgYkFJYCrcffKmjc4Y7IAw+uS5IGXYRNgH2N43FX3SxGq27PdcCOrS9bzCytGr+SX0hnnSyO/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+	 MIME-Version; b=qF+sNf0rwjGKoIZ2rxI/cnAZnztBPsm4UAPF3FU6d8DA2GykxD9gywuvPZkbFh0CzjvQyqgTvIGx28XkvZUCxAKhQdN9XcMW5yGl5jO1qzD3+Qn7ZexiAjukonAUBX7gCbSrz70AuXpsli0Q1nkhLXpAhX/k7waxWdDjx0+Mxe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4YRRbT4372z4f3jqx;
-	Mon,  6 Jan 2025 16:06:45 +0800 (CST)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4YRRbP11xDz4f3kw2;
+	Mon,  6 Jan 2025 16:06:41 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 7C9651A147C;
-	Mon,  6 Jan 2025 16:07:00 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id 6A42B1A14D6;
+	Mon,  6 Jan 2025 16:07:02 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.124.27])
-	by APP4 (Coremail) with SMTP id gCh0CgD3W2AZj3tnVG29AA--.29272S14;
-	Mon, 06 Jan 2025 16:07:00 +0800 (CST)
+	by APP4 (Coremail) with SMTP id gCh0CgD3W2AZj3tnVG29AA--.29272S17;
+	Mon, 06 Jan 2025 16:07:02 +0800 (CST)
 From: Hou Tao <houtao@huaweicloud.com>
 To: bpf@vger.kernel.org,
 	netdev@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: Martin KaFai Lau <martin.lau@linux.dev>,
 	John Fastabend <john.fastabend@gmail.com>,
 	houtao1@huawei.com,
 	xukuohai@huawei.com
-Subject: [PATCH bpf-next 10/19] bpf: Disable migration in array_map_free()
-Date: Mon,  6 Jan 2025 16:18:51 +0800
-Message-Id: <20250106081900.1665573-11-houtao@huaweicloud.com>
+Subject: [PATCH bpf-next 13/19] bpf: Remove migrate_{disable|enable} in bpf_obj_free_fields()
+Date: Mon,  6 Jan 2025 16:18:54 +0800
+Message-Id: <20250106081900.1665573-14-houtao@huaweicloud.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20250106081900.1665573-1-houtao@huaweicloud.com>
 References: <20250106081900.1665573-1-houtao@huaweicloud.com>
@@ -53,10 +53,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgD3W2AZj3tnVG29AA--.29272S14
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZFWDAw4UKF4xWr45Wr1fXrb_yoW8WF43pF
-	Wkt34jkr48Xr4Ikrs8Jayjk34YyrW5G342kFZ5K34Fva13Zr9rZw1fG3W8ZF1YkF1kKr1S
-	qw1qy39ayay8ArDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:gCh0CgD3W2AZj3tnVG29AA--.29272S17
+X-Coremail-Antispam: 1UD129KBjvJXoWxJryfWr1DCFykCFW8Gw1fXrb_yoW8tw4xpr
+	s3tr1akr48XFs29ry5Jr4jkrWrJw43Ga47G34DGryFvws0yryDZw1DCF1fuF15try8Kwsa
+	v3Z0grZ0vw1UXFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUPvb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
 	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
 	Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
@@ -75,46 +75,71 @@ X-CM-SenderInfo: xkrx3t3r6k3tpzhluzxrxghudrp/
 
 From: Hou Tao <houtao1@huawei.com>
 
-When freeing the array map, the destroy procedure may invoke
-bpf_obj_free_fields() to free the special fields in map value
-(e.g., kptr). Since kptrs may be allocated from bpf memory allocator,
-migrate_{disable|enable} pairs are necessary for the freeing of these
-kptrs.
+The callers of bpf_obj_free_fields() have already guaranteed that the
+migration is disabled, therefore, there is no need to invoke
+migrate_{disable,enable} pair in bpf_obj_free_fields()'s underly
+implementation.
 
-To simplify reasoning about when migrate_disable() is needed for the
-freeing of these dynamically-allocated kptrs, let the caller to
-guarantee migration is disabled before invoking bpf_obj_free_fields().
-
-Therefore, the patch adds migrate_{disable|enable} pair in
-array_map_free(). The migrate_{disable|enable} pairs in the underlying
-implementation of bpf_obj_free_fields() will be removed by the following
-patch.
+This patch adds a cant_migrate() check in bpf_obj_free_fields() to
+ensure the guarantee isn't broken, and removes unnecessary
+migrate_{disable|enable} pairs from bpf_obj_free_fields() and its
+callees: bpf_list_head_free() and bpf_rb_root_free().
 
 Signed-off-by: Hou Tao <houtao1@huawei.com>
 ---
- kernel/bpf/arraymap.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/bpf/helpers.c | 4 ----
+ kernel/bpf/syscall.c | 4 ++--
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
-index eb28c0f219ee..451737493b17 100644
---- a/kernel/bpf/arraymap.c
-+++ b/kernel/bpf/arraymap.c
-@@ -455,6 +455,7 @@ static void array_map_free(struct bpf_map *map)
- 	struct bpf_array *array = container_of(map, struct bpf_array, map);
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index cd5f9884d85b..bcda671feafd 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -2066,9 +2066,7 @@ void bpf_list_head_free(const struct btf_field *field, void *list_head,
+ 		/* The contained type can also have resources, including a
+ 		 * bpf_list_head which needs to be freed.
+ 		 */
+-		migrate_disable();
+ 		__bpf_obj_drop_impl(obj, field->graph_root.value_rec, false);
+-		migrate_enable();
+ 	}
+ }
+ 
+@@ -2105,9 +2103,7 @@ void bpf_rb_root_free(const struct btf_field *field, void *rb_root,
+ 		obj -= field->graph_root.node_offset;
+ 
+ 
+-		migrate_disable();
+ 		__bpf_obj_drop_impl(obj, field->graph_root.value_rec, false);
+-		migrate_enable();
+ 	}
+ }
+ 
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 4e88797fdbeb..0503ce1916b6 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -766,6 +766,8 @@ void bpf_obj_free_fields(const struct btf_record *rec, void *obj)
+ 	const struct btf_field *fields;
  	int i;
  
-+	migrate_disable();
- 	if (!IS_ERR_OR_NULL(map->record)) {
- 		if (array->map.map_type == BPF_MAP_TYPE_PERCPU_ARRAY) {
- 			for (i = 0; i < array->map.max_entries; i++) {
-@@ -471,6 +472,7 @@ static void array_map_free(struct bpf_map *map)
- 				bpf_obj_free_fields(map->record, array_map_elem_ptr(array, i));
- 		}
- 	}
-+	migrate_enable();
- 
- 	if (array->map.map_type == BPF_MAP_TYPE_PERCPU_ARRAY)
- 		bpf_array_free_percpu(array);
++	cant_migrate();
++
+ 	if (IS_ERR_OR_NULL(rec))
+ 		return;
+ 	fields = rec->fields;
+@@ -796,11 +798,9 @@ void bpf_obj_free_fields(const struct btf_record *rec, void *obj)
+ 			if (!btf_is_kernel(field->kptr.btf)) {
+ 				pointee_struct_meta = btf_find_struct_meta(field->kptr.btf,
+ 									   field->kptr.btf_id);
+-				migrate_disable();
+ 				__bpf_obj_drop_impl(xchgd_field, pointee_struct_meta ?
+ 								 pointee_struct_meta->record : NULL,
+ 								 fields[i].type == BPF_KPTR_PERCPU);
+-				migrate_enable();
+ 			} else {
+ 				field->kptr.dtor(xchgd_field);
+ 			}
 -- 
 2.29.2
 
