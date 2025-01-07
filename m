@@ -1,76 +1,99 @@
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83267192598
-	for <netdev@vger.kernel.org>; Tue,  7 Jan 2025 23:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EC71E32DB
+	for <netdev@vger.kernel.org>; Tue,  7 Jan 2025 23:25:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736291885; cv=none; b=P3neUXS4qcpALC+1eZUBXjNafV0/+jzYCmC3G+GH4zHIuRlXMPBqlhOgQyXuqWgnnODuxQARUMu1hG8f+rW3bjHbCe7KoPyN6yrNbJLajzpch5cZV0hJ6vIRFfDvkno8q2Xz9Gvu2cLT7MOi732YVrJcVuTiIGFiSClwYiWOvZM=
+	t=1736292318; cv=none; b=ffBRdcy/KsZlp8gozz9Cqp7ZsHbxsyThgADeKjsSyDMc6S+RDBqYWKkJ1oq77lR8HvmZ+u2f65r58NvPk5S55Sy8ovP/T70pSPxEwpAR/rovYeCRxb8PxWKSvqQYhnX0WL2ol+Nn5B14PF2Y/guFHM8Javw0jf2RrWMc6RchdqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736291885; c=relaxed/simple;
-	bh=7edG1e9h/zaRrHdIoCHk/QyHwH5jMmAJD6Ry1+9DpYQ=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=L6BZ4GV0yNsKOzQDL5/0vPjswT0YMlZ6SMXsdOOTkhMNWr6ZHZDrhynH0XYu0Qsw9+3LrHFY7Q4IsWBeKXXVyeRTg1Do8BFpkxvVCQbjqVn1pIIQhTyLj+ZEJ4agQarJvau2hRZWB3vgFYjdBO5AR4QnRNBD/Gsk0opQnu6qwkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3a9d3e48637so168778775ab.1
-        for <netdev@vger.kernel.org>; Tue, 07 Jan 2025 15:18:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736291882; x=1736896682;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mVozRCOrP9j7sCIgLYFIaV3W/G9uw4bVVy5oL1ovDjk=;
-        b=dMqeN3rSFf4GT0G4k1wsL2KyRUu/CakngdMJNnRbi62nEHgF2zHRfhjZiKC7p8kGdT
-         HzbCwhl0ILhMnIdNbP5NDBZzdxisiOjzCK7WRxMiaFxv/WADi1taOgOqqa49L5yA5Z1M
-         cQUV8jepPASt3MxZi+J+MoMUi3cUq1Mv7rjtbY/HF8KgubOQAkb97B3szEabx7R/uUeu
-         Oh6iE9IqVrjqT0pnrqWfVgM6Oa50kXcFfhrWR9sXhJjiKQ2JN4SU05cukozfCkEww40m
-         Z8oryjE1oAribnfgQB6vg9tZ4EcaKX5uPaXziBwbAoXuOOB9rEUc9kD4t9JFjkUtOeQd
-         652g==
-X-Forwarded-Encrypted: i=1; AJvYcCUD6ZzoDKqBxTVI8Pf9yPiy1m62NDbuJu3Ii6dumyWZnTFO5PuG8W8d1j9UdAUaDVvBOFA9/w4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFDpmKO8GhmRkMSZMYayTTrkMPG5lT/i3ekfk+5+fFxuaWbcty
-	3uSxqG4QtkcMG4xxabNaILVpAy+ao48jZARHlQpsio9quB+vdDv5TLu3EC9DOEpUl9nKRdzAsus
-	PE/uqgRUG7JmBsvRzbKmyItNuVlwZ0ClhpMoW7lt7Vx1nPmrNuIznmrU=
-X-Google-Smtp-Source: AGHT+IFgrotYn+sT5XPnap5oHb8Kvw1H5ws/ZQCEbslqVW08fmBFMuSLvr1BLmudUKkmq45Kf7n9+Cwa4C5vMNacVqV2Ww6dp5Ir
+	s=arc-20240116; t=1736292318; c=relaxed/simple;
+	bh=fThI4GuoYILxwokpbOArAjaeI0f2fL5ggjUt0swvmLY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RFEB+/KVasBotL0UdVoHyQr6opzXFl0OuJ8V+PEJcD56QyHpVgKwL/3ztbgzrR/aRtKdDGB6tZ4wvA7yf7Ol1C0Ons1YJHB/EnXR69naBnTeCIhXnFybgXfIQXQaWWTH4W0CiobRcm4G+5YG/9YXPNKGlz5pSowfZBhNsz72fUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rsGTROJu; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rsGTROJu"
+Message-ID: <f897692c-cbf2-4906-aa15-1661162621eb@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1736292299;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rqcFnTSKm2DGg/IXOAcHA62iWf5YmtAk6en8LZ1mVpY=;
+	b=rsGTROJun3qvnTQMQ7eZmM3vtPqnlVG+5htHQi6Rh72x8RifhjdzR1ZthsKwb8VpJVsdJf
+	wYnoLY/q4RMmYPPpsuBSE19LgjKfukxSBe7Z8ceKwYmIbn0HTUMdg5onWGCK9upccI1QX9
+	LFiPScE9/G4FPaII6G9XlV2Vd/7semo=
+Date: Tue, 7 Jan 2025 15:24:51 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1d8f:b0:3a7:91a4:c752 with SMTP id
- e9e14a558f8ab-3ce3aa76a9bmr7369395ab.23.1736291882724; Tue, 07 Jan 2025
- 15:18:02 -0800 (PST)
-Date: Tue, 07 Jan 2025 15:18:02 -0800
-In-Reply-To: <6730d6bd.050a0220.1fb99c.0139.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <677db62a.050a0220.a40f5.0026.GAE@google.com>
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in sys_pipe2 (2)
-From: syzbot <syzbot+693a483dd6ac06c62b09@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, bigeasy@linutronix.de, edumazet@google.com, 
-	kerneljasonxing@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com, tglx@linutronix.de
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH bpf-next v3 4/5] libbpf: fix error when st-prefix_ops and
+ ops from differ btf
+To: "D. Wythe" <alibuda@linux.alibaba.com>
+Cc: kgraul@linux.ibm.com, wenjia@linux.ibm.com, jaka@linux.ibm.com,
+ ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, pabeni@redhat.com,
+ song@kernel.org, sdf@google.com, haoluo@google.com, yhs@fb.com,
+ edumazet@google.com, john.fastabend@gmail.com, kpsingh@kernel.org,
+ jolsa@kernel.org, guwen@linux.alibaba.com, kuba@kernel.org,
+ davem@davemloft.net, netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-rdma@vger.kernel.org, bpf@vger.kernel.org, Daniel Xu <dlxu@meta.com>
+References: <20241218024422.23423-1-alibuda@linux.alibaba.com>
+ <20241218024422.23423-5-alibuda@linux.alibaba.com>
+ <2f56aca3-a27a-49b6-90de-7f1b2ff39df1@linux.dev>
+ <20241223021036.GC36000@j66a10360.sqa.eu95>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+In-Reply-To: <20241223021036.GC36000@j66a10360.sqa.eu95>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-syzbot has bisected this issue to:
+On 12/22/24 6:10 PM, D. Wythe wrote:
+> On Thu, Dec 19, 2024 at 02:43:30PM -0800, Martin KaFai Lau wrote:
+>> On 12/17/24 6:44 PM, D. Wythe wrote:
+>>> Here are four possible case:
+>>>
+>>> +--------+-------------+-------------+---------------------------------+
+>>> |        | st_opx_xxx  | xxx         |                                 |
+>>> +--------+-------------+-------------+---------------------------------+
+>>> | case 0 | btf_vmlinux | bft_vmlinux | be used and reg only in vmlinux |
+>>> +--------+-------------+-------------+---------------------------------+
+>>> | case 1 | btf_vmlinux | bpf_mod     | INVALID                         |
+>>> +--------+-------------+-------------+---------------------------------+
+>>> | case 2 | btf_mod     | btf_vmlinux | reg in mod but be used both in  |
+>>> |        |             |             | vmlinux and mod.                |
+>>> +--------+-------------+-------------+---------------------------------+
+>>> | case 3 | btf_mod     | btf_mod     | be used and reg only in mod     |
+>>> +--------+-------------+-------------+---------------------------------+
+>>>
+>>> At present, cases 0, 1, and 3 can be correctly identified, because
+>>> st_ops_xxx is searched from the same btf with xxx. In order to
+>>> handle case 2 correctly without affecting other cases, we cannot simply
+>>> change the search method for st_ops_xxx from find_btf_by_prefix_kind()
+>>> to find_ksym_btf_id(), because in this way, case 1 will not be
+>>> recognized anymore.
+>>>   	snprintf(tname, sizeof(tname), "%.*s",
+>>> @@ -1020,17 +1021,25 @@ find_struct_ops_kern_types(struct bpf_object *obj, const char *tname_raw,
+>>>   	}
+>>>   	kern_type = btf__type_by_id(btf, kern_type_id);
+>>> +	ret = snprintf(stname, sizeof(stname), "%s%s", STRUCT_OPS_VALUE_PREFIX, tname);
+>>
+>> How about always look for "struct bpf_struct_ops_smc_ops" first,
+>> figure out the btf, and then look for "struct smc_ops", would it
+>> work?
+> 
+> I think this might not work, as the core issue lies in the fact that
+> bpf_struct_ops_smc_ops and smc_ops are located on different btf.
+> Searching for one fisrt cannot lead to the inference of the other.
 
-commit d15121be7485655129101f3960ae6add40204463
-Author: Paolo Abeni <pabeni@redhat.com>
-Date:   Mon May 8 06:17:44 2023 +0000
-
-    Revert "softirq: Let ksoftirqd do its job"
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1668e4b0580000
-start commit:   9268abe611b0 Merge branch 'net-lan969x-add-rgmii-support'
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=1168e4b0580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b087c24b921cdc16
-dashboard link: https://syzkaller.appspot.com/bug?extid=693a483dd6ac06c62b09
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16e7c2f8580000
-
-Reported-by: syzbot+693a483dd6ac06c62b09@syzkaller.appspotmail.com
-Fixes: d15121be7485 ("Revert "softirq: Let ksoftirqd do its job"")
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Take a look at btf_find_by_name_kind(btf, 1 /* from base_btf */, ...) and also 
+btf_type_by_id(). It starts searching from the btf->base_btf which should be the 
+btf_vmlinux here and should have the "struct smc_ops". Please try.
