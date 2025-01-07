@@ -1,44 +1,35 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8BE1E0B75;
-	Tue,  7 Jan 2025 10:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF9C1E47BA;
+	Tue,  7 Jan 2025 10:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736245508; cv=none; b=JTEBy4wu34BY+7YU5r0QRmuwStpd2YPYBd9KzdI9QEb2lLpU3rHv/L8dXh+yoyDqVn4LhRbj/1iol4+ve56J7deWJpRv5OYvkBmW6FYPn5ntXpK7pdUGCpQuCGxJyKDAfTEjoaHDfzuKZ1gxDwBU/FQqBtFEvlddc8hwHLJ9slw=
+	t=1736245811; cv=none; b=BNaQMyT/9Ppo8cpfISsyPj3RSM3IvPt2dnrBeNktzQvHhRQffC0HlRtRq92RtcqMHtHbieExqrghHNsw9JTLkxkdsAS/19CfFDVveXzcyeQ900VmjTzBU07nXRDIYP+n+l1RDHjVsA0LmEQyStxVB1LFTvpAOjNqIlHCiccS1uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736245508; c=relaxed/simple;
-	bh=ZqXullAWF2S1RNd1MTH4kt8y/5h8iwhHoXVIKzff+m0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LMDVzV8DUHCiA7zs19hxN+aMH/uQYoZ+aNrpVLjLSZ9+I2Jv1u7IVuPRThje5tP8RyO/QnEZO8BDl3vBrZOL4k8LKx6/2T+qdgIEvrnz0SUYcC53zaRxeCGHs4B7vBBcoa90pKaPTDkQLJi+Vp87BcGG2W/P3F1CnywIJ0yflhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YS6Zn6DMXz6M4WK;
-	Tue,  7 Jan 2025 18:23:29 +0800 (CST)
-Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
-	by mail.maildlp.com (Postfix) with ESMTPS id F35BE1409EA;
-	Tue,  7 Jan 2025 18:25:02 +0800 (CST)
-Received: from china (10.200.201.82) by frapeml500005.china.huawei.com
- (7.182.85.13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 7 Jan
- 2025 11:24:51 +0100
-From: Gur Stavi <gur.stavi@huawei.com>
-To: <sumang@marvell.com>
-CC: <andrew+netdev@lunn.ch>, <cai.huoqing@linux.dev>, <corbet@lwn.net>,
-	<davem@davemloft.net>, <edumazet@google.com>, <gongfan1@huawei.com>,
-	<guoxin09@huawei.com>, <gur.stavi@huawei.com>, <helgaas@kernel.org>,
-	<horms@kernel.org>, <kuba@kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <meny.yossefi@huawei.com>,
-	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <shenchenyang1@hisilicon.com>,
-	<shijing34@huawei.com>, <wulike1@huawei.com>, <zhoushuai28@huawei.com>
-Subject: RE: [EXTERNAL] [PATCH net-next v03 1/1] hinic3: module initialization and tx/rx logic
-Date: Tue, 7 Jan 2025 12:37:49 +0200
-Message-ID: <20250107103749.3552291-1-gur.stavi@huawei.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <SJ0PR18MB5216BED17023369322EE4A6ADB152@SJ0PR18MB5216.namprd18.prod.outlook.com>
-References: <SJ0PR18MB5216BED17023369322EE4A6ADB152@SJ0PR18MB5216.namprd18.prod.outlook.com>
+	s=arc-20240116; t=1736245811; c=relaxed/simple;
+	bh=fL0phPG037MSb692iBA3aaSqJDdk15YlxKrFEH1LtfQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=uaDI8xExEunEeWwC6kHTZyz/g2C3RDGD9PhhWyZ+iknmmxhjtD61S1bUVV9MvaOA4pmovUfUIVhpX077Yr0hQdvv05VTFYgQrz4t6lHA6wy2iJPAWEM2Ny+3isJYwOZRbPHKlFrRgIgZe7GRYTafMCM3/XBF56o9qGZKLme5dkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TrYsx8+2; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TrYsx8+2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34ABC4CED6;
+	Tue,  7 Jan 2025 10:30:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736245811;
+	bh=fL0phPG037MSb692iBA3aaSqJDdk15YlxKrFEH1LtfQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=TrYsx8+2Zmn8Awnbsfyxdet6K4WibPdDZhi4ebxV4wXYwlFHey3Wy0xyXjELMbHil
+	 +DmINuazjdXEuuxsfa6DLqOMA5VZad7MEDb/9jE1KOLYAVAoUInA+mFBeZURJ2lGnJ
+	 +xEqyIKrCwgC/jGL96r8qE3B8bgj1lkMIni8f91MC5lL5n4kFdB0f2OT7Cdt/lfmnh
+	 zY06NhBIP3T3B7AXGRu6v91jHrKk61TddjkHBggtAoa0A6okpY+FC/DOZBdX9vPKsG
+	 jy4P4j+Xv9gNW1tYbwkQ3JIxyWiO9r95cEPD9do0c5bDM27TdJBHaXSF87rC1Bcraq
+	 80PwzMi50NxOg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 710C3380A97E;
+	Tue,  7 Jan 2025 10:30:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,48 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- frapeml500005.china.huawei.com (7.182.85.13)
+Subject: Re: [PATCH net-next] selftests/net: packetdrill: report benign debug
+ flakes as xfail
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173624583226.4099602.7245527834877718325.git-patchwork-notify@kernel.org>
+Date: Tue, 07 Jan 2025 10:30:32 +0000
+References: <20250103113142.129251-1-willemdebruijn.kernel@gmail.com>
+In-Reply-To: <20250103113142.129251-1-willemdebruijn.kernel@gmail.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, sohamch@google.com, willemb@google.com
 
-> >+enum hinic3_service_type {
-> >+	SERVICE_T_NIC =3D 0,
-> >+	SERVICE_T_MAX =3D 1,
-> >+	/* Only used for interruption resource management, mark the request
-> >module */
-> >+	SERVICE_T_INTF =3D (1 << 15),
+Hello:
 
-> [Suman] any reason to define a type after _MAX? Does _MAX has some other co=
-> nnotation? Also, one generic comment would be to use symmetrical naming con=
-> vention like HINIC3_SERVICE_T_NIC or something like that.
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-The HW supports multiple services. E.g. RoCE. We plan to add support
-for some of them them later. The specific service values are used by
-HW (e.g. when reporting events) and therefore need to be defined
-explicitly. MAX is a SW only value that is used to define array that is
-accessed by service index.
+On Fri,  3 Jan 2025 06:31:14 -0500 you wrote:
+> From: Willem de Bruijn <willemb@google.com>
+> 
+> A few recently added packetdrill tests that are known time sensitive
+> (e.g., because testing timestamping) occasionally fail in debug mode:
+> https://netdev.bots.linux.dev/contest.html?executor=vmksft-packetdrill-dbg
+> 
+> These failures are well understood. Correctness of the tests is
+> verified in non-debug mode. Continue running in debug mode also, to
+> keep coverage with debug instrumentation.
+> 
+> [...]
 
-We will add a comment for that.
+Here is the summary with links:
+  - [net-next] selftests/net: packetdrill: report benign debug flakes as xfail
+    https://git.kernel.org/netdev/net-next/c/912d6f669725
 
-> >+};
->
-> ...
->
-> >+static bool hinic3_adev_svc_supported(struct hinic3_hwdev *hwdev,
-> >+				      enum hinic3_service_type svc_type)
-> >+{
-> >+	switch (svc_type) {
-> >+	case SERVICE_T_NIC:
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> [Suman] Are there other SERVICE type which will be introduced later?
-
-Yes. As explained above.
-
-> >+		return hinic3_support_nic(hwdev);
-> >+	default:
-> >+		break;
-> >+	}
-> >+
-> >+	return false;
-> >+}
 
