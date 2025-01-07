@@ -1,164 +1,105 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9097017C9E8
-	for <netdev@vger.kernel.org>; Tue,  7 Jan 2025 05:54:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F11B193435
+	for <netdev@vger.kernel.org>; Tue,  7 Jan 2025 05:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736229291; cv=none; b=VM4p0ujAP1vvLsbDy3chhmH8CtFpPCWqrBDGYW0TvfiPqO2r/phd42ans1dv8k8kxQ72FI383bWZfXTthKVTSbLSLqyl+Dly2ZfMRMdSqJfDZpsZu5TfezYKWnNzzpiyvFw2l8P253qMpnR3+ga9yARivCAA5zCiVudnUES1a+0=
+	t=1736229572; cv=none; b=iJl/x3ZQK0/0+P+ybtPeqi/5KSSHCBVug2KPso9hQugrHGE1yWvT04uO9saTOP1tXYLz1wupOzPByR0+2liwK2mVMh4BYTiuBYrw11ODU6qQt5+Xjcex+SnsFBOk76xI8Q37HSe4WmPI/tKHoeqYGl4OhjfcWPlPzVDrbk3HmH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736229291; c=relaxed/simple;
-	bh=t6G+vm1T13dstwv+YuzVT8NVvlx0nJXLEVAuQb6y9so=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AD7zvI2RHDEahJ9EX5vG2YsDzhOLLwJx2ykd7/4xe6REM+w4vuMoTXDZ58DomlTBVx/ti89pA33xoMWhbnfEsLsUOooIvPKiNl9O6ztW7IeETm6hnW7ji05TGwYUTBHPVBMQ4L4Rv7ZXeRxNDaGkxakKiCRF0x7Y33YgX6fs3HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bELOLaFX; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bELOLaFX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736229289; x=1767765289;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=t6G+vm1T13dstwv+YuzVT8NVvlx0nJXLEVAuQb6y9so=;
-  b=bELOLaFXC4T9zHmqTOCmw22ODJSPCe3C6WM4l+R7H2e+9o8OWsvwUbA3
-   J29GpeLm1GX0AX0V0k+/aMqMMs5QBD861PHQxRNyLJJ8SrKmhuxuOYhyC
-   pHOTR0840g8IqXkYnTUyb3QgyU4PJhwX9T0S08AQCODQMn6sinapxRvKi
-   rEUKOibXlMQ5Z/+/TboEaHLfpDoGbdCdDG80nC+sKw5Ti+SN6CHMNZYwi
-   30SYdBZxfbagBtc2Msm5mWJhcl+GlTAkJ0yZISyexegWRyGcUEvhKPOIf
-   3coaOS3BKSSrD/fPZDoQUpYYuIQRh1W7NNrdoTLTnmpf6Y0sLsDBH4Fkd
-   A==;
-X-CSE-ConnectionGUID: vvWqd4hhRTiUJAacgCA/qw==
-X-CSE-MsgGUID: UJ8JUKRNR6m91tOhi6H8rQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11307"; a="46974147"
-X-IronPort-AV: E=Sophos;i="6.12,294,1728975600"; 
-   d="scan'208";a="46974147"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2025 21:54:48 -0800
-X-CSE-ConnectionGUID: xNWAO7JXSrKTSItVeMzhnw==
-X-CSE-MsgGUID: uNds+hH7SgStMHtseGbzqg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="103163994"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2025 21:54:45 -0800
-Date: Tue, 7 Jan 2025 06:51:28 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: John Daley <johndale@cisco.com>
-Cc: benve@cisco.com, satishkh@cisco.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	Nelson Escobar <neescoba@cisco.com>
-Subject: Re: [PATCH net-next 1/2] enic: Move RX coalescing set function
-Message-ID: <Z3zA4LJD0Eak0kZt@mev-dev.igk.intel.com>
-References: <20250107025135.15167-1-johndale@cisco.com>
- <20250107025135.15167-2-johndale@cisco.com>
+	s=arc-20240116; t=1736229572; c=relaxed/simple;
+	bh=p/s6JEDMJC/YR1OukXOT/04PsSR86UtDZExPIAX5+qU=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=JdWWFrXp44/mSY23CgD/5e9Mx90HkeEUvkerJ3lqCnIabm3KAYwIEMWZyVMC0xT5dH7s9qNbYRzU6fm8aXnMI/ubv7OsATVR5Uz3gPeOwuzoVcvquTGs81EMXeyKn4U3woygNWvo50oTROtiWe/Q1D8n+eS1kIxVMfAd7M8akNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:Yeas2t1736229559t585t33273
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [218.72.126.41])
+X-QQ-SSF:0001000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 3338068587643237043
+To: "'Keller, Jacob E'" <jacob.e.keller@intel.com>,
+	"'Richard Cochran'" <richardcochran@gmail.com>
+Cc: <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>,
+	<edumazet@google.com>,
+	<kuba@kernel.org>,
+	<pabeni@redhat.com>,
+	<linux@armlinux.org.uk>,
+	<horms@kernel.org>,
+	<netdev@vger.kernel.org>,
+	<vadim.fedorenko@linux.dev>,
+	<mengyuanlou@net-swift.com>
+References: <20250106084506.2042912-1-jiawenwu@trustnetic.com> <20250106084506.2042912-4-jiawenwu@trustnetic.com> <Z3vzwiMzYDvmKisj@hoboy.vegasvil.org> <CO1PR11MB5089788E11ECC1F9F704CEA7D6102@CO1PR11MB5089.namprd11.prod.outlook.com>
+In-Reply-To: <CO1PR11MB5089788E11ECC1F9F704CEA7D6102@CO1PR11MB5089.namprd11.prod.outlook.com>
+Subject: RE: [PATCH net-next v2 3/4] net: wangxun: Implement do_aux_work of ptp_clock_info
+Date: Tue, 7 Jan 2025 13:59:18 +0800
+Message-ID: <035701db60c9$4a2c1ea0$de845be0$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250107025135.15167-2-johndale@cisco.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQFgxPKZN8TRQHApGKDHehP8aTZMFAHs3nX/AX2EEwUDF5p6YbPLzKyg
+X-QQ-SENDSIZE: 520
+Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: M5znx2hx04lbfo+HBZCNlj6Tru1uBNBiwKvxevOlbts/o0i8Z6rtRU4A
+	n0CcUHV1G/+BteW0ckpOmuQdNW29i4oj6hbvjBO14EVtpuFJ8s/6kQPeI8C17Jun09AcgV0
+	i3T+pn+48APR+VR+V0T3C36XIAK8oZpb4z5p1jD2Omy8G6pb1q/n1NNEZZtH3DobU8H0eYM
+	JpuyGpzKJaOU7QbnVxk8UYzNtcl0Gys2P4QvKMO0mxWU4eSJuiI3+EMpd0A6NQYOUX0vdQc
+	dU9ptKudovPdyuY1MSEaOSIvzHApdQqxJSWvhlyDvZe6T8zNAH9dEEzWzwZXFLr8QG+R5qw
+	nZGeg1W888L5/CqAbVpqQFw6ijkwm8KtqGvDWDZEvNyqsDNXr3R2eVqx/NL7hJjhdWup9MO
+	rhwKvYEnawMvcrQy2SJIsVJ4Py7a7buuGGOhwD0dyR935vBqj2g+czyLtX3Qq9jJu7sIoNP
+	Sdx2Kf97OP4dZNauZO1MIHTORk8zjHjVuJ+QVm7eY/h0m8gvjFLFGVio2P80bRjGVezOJk9
+	CJGxveVSt3KesxkXE4bRFu6KhkRsRWXmj7Gd1MqBnTVuPkNYnEp/8PbgJgz0P7QTmy0FaM6
+	AI5ZRT9HqINJfWXVEK4/K2sYbZVUiiikPR/3jNZzotnrKSyiOJM2XCv3vLO2Cjrn1w13dwB
+	Niant+PswiuufCTv5IOkep40Nd9ra4U6llZKlBZPvMIKcEzaG7n+U1/n4zreghi+RwjGbmU
+	hon7G8D+dIZ7JWThbc8eN8ME4G5nGQRrazRlbeyD4Ci+IJojDgykwpEbzHqw/M+JkEUBe4i
+	oloKBGu52gwCHaCsgbOm7SQlGRKHnMAgC4IUBo5nMpkYhXGKSDTKr27Yr4tCTIFMmDVX75i
+	h16azCHkCqifLttHzeKRs23sVgLc1lfCYe5IwSx44J04PSaw9LBhAM7j53nb3diSao117NH
+	ccLKg3CsNl9gKp+42AoFojfzusONddzTCbZTVj178AMsvxrybeu1KQB2fjJeCUvewGt8HwN
+	hZkG/koA==
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-RECHKSPAM: 0
 
-On Mon, Jan 06, 2025 at 06:51:34PM -0800, John Daley wrote:
-> Move the function used for setting the RX coalescing range to before
-> the function that checks the link status. It needs to be called from
-> there instead of from the probe function.
+> > > +static int wx_ptp_feature_enable(struct ptp_clock_info *ptp,
+> > > +				 struct ptp_clock_request *rq, int on)
+> > > +{
+> > > +	struct wx *wx = container_of(ptp, struct wx, ptp_caps);
+> > > +
+> > > +	/**
+> > > +	 * When PPS is enabled, unmask the interrupt for the ClockOut
+> > > +	 * feature, so that the interrupt handler can send the PPS
+> > > +	 * event when the clock SDP triggers. Clear mask when PPS is
+> > > +	 * disabled
+> > > +	 */
+> > > +	if (rq->type != PTP_CLK_REQ_PPS || !wx->ptp_setup_sdp)
+> > > +		return -EOPNOTSUPP;
+> >
+> > NAK.
+> >
+> > The logic that you added in patch #4 is a periodic output signal, so
+> > your driver will support PTP_CLK_REQ_PEROUT and not PTP_CLK_REQ_PPS.
+> >
+> > Please change the driver to use that instead.
+> >
+> > Thanks,
+> > Richard
 > 
-> There is no functional change.
-> 
-> Co-developed-by: Nelson Escobar <neescoba@cisco.com>
-> Signed-off-by: Nelson Escobar <neescoba@cisco.com>
-> Co-developed-by: Satish Kharat <satishkh@cisco.com>
-> Signed-off-by: Satish Kharat <satishkh@cisco.com>
-> Signed-off-by: John Daley <johndale@cisco.com>
-> ---
->  drivers/net/ethernet/cisco/enic/enic_main.c | 60 ++++++++++-----------
->  1 file changed, 30 insertions(+), 30 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-> index 9913952ccb42..957efe73e41a 100644
-> --- a/drivers/net/ethernet/cisco/enic/enic_main.c
-> +++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-> @@ -428,6 +428,36 @@ static void enic_mtu_check(struct enic *enic)
->  	}
->  }
->  
-> +static void enic_set_rx_coal_setting(struct enic *enic)
-> +{
-> +	unsigned int speed;
-> +	int index = -1;
-> +	struct enic_rx_coal *rx_coal = &enic->rx_coalesce_setting;
-> +
-> +	/* 1. Read the link speed from fw
-> +	 * 2. Pick the default range for the speed
-> +	 * 3. Update it in enic->rx_coalesce_setting
-> +	 */
-> +	speed = vnic_dev_port_speed(enic->vdev);
-> +	if (speed > ENIC_LINK_SPEED_10G)
-> +		index = ENIC_LINK_40G_INDEX;
-> +	else if (speed > ENIC_LINK_SPEED_4G)
-> +		index = ENIC_LINK_10G_INDEX;
-> +	else
-> +		index = ENIC_LINK_4G_INDEX;
-> +
-> +	rx_coal->small_pkt_range_start = mod_range[index].small_pkt_range_start;
-> +	rx_coal->large_pkt_range_start = mod_range[index].large_pkt_range_start;
-> +	rx_coal->range_end = ENIC_RX_COALESCE_RANGE_END;
-> +
-> +	/* Start with the value provided by UCSM */
-> +	for (index = 0; index < enic->rq_count; index++)
-> +		enic->cq[index].cur_rx_coal_timeval =
-> +				enic->config.intr_timer_usec;
-> +
-> +	rx_coal->use_adaptive_rx_coalesce = 1;
-> +}
-> +
->  static void enic_link_check(struct enic *enic)
->  {
->  	int link_status = vnic_dev_link_status(enic->vdev);
-> @@ -1901,36 +1931,6 @@ static void enic_synchronize_irqs(struct enic *enic)
->  	}
->  }
->  
-> -static void enic_set_rx_coal_setting(struct enic *enic)
-> -{
-> -	unsigned int speed;
-> -	int index = -1;
-> -	struct enic_rx_coal *rx_coal = &enic->rx_coalesce_setting;
-> -
-> -	/* 1. Read the link speed from fw
-> -	 * 2. Pick the default range for the speed
-> -	 * 3. Update it in enic->rx_coalesce_setting
-> -	 */
-> -	speed = vnic_dev_port_speed(enic->vdev);
-> -	if (ENIC_LINK_SPEED_10G < speed)
-> -		index = ENIC_LINK_40G_INDEX;
-> -	else if (ENIC_LINK_SPEED_4G < speed)
-> -		index = ENIC_LINK_10G_INDEX;
-> -	else
-> -		index = ENIC_LINK_4G_INDEX;
-> -
-> -	rx_coal->small_pkt_range_start = mod_range[index].small_pkt_range_start;
-> -	rx_coal->large_pkt_range_start = mod_range[index].large_pkt_range_start;
-> -	rx_coal->range_end = ENIC_RX_COALESCE_RANGE_END;
-> -
-> -	/* Start with the value provided by UCSM */
-> -	for (index = 0; index < enic->rq_count; index++)
-> -		enic->cq[index].cur_rx_coal_timeval =
-> -				enic->config.intr_timer_usec;
-> -
-> -	rx_coal->use_adaptive_rx_coalesce = 1;
-> -}
-> -
->  static int enic_dev_notify_set(struct enic *enic)
->  {
->  	int err;
-> -- 
-> 2.35.2
+> This is a common misconception because the industry lingo uses PPS to mean
+> periodic output. I wonder if there's a place we can put an obvious warning
+> about checking if you meant PEROUT... I've had this issue pop up with
+> colleagues many times.
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Does a periodic output signal mean that a signal is output every second,
+whenever the start time is? But I want to implement that a signal is
+output when an integer number of seconds for the clock time.
+
+
