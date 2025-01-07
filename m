@@ -1,277 +1,80 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D108193435
-	for <netdev@vger.kernel.org>; Tue,  7 Jan 2025 02:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9853126ADD;
+	Tue,  7 Jan 2025 02:54:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736218421; cv=none; b=dNgkOTNasR6tgKVWkbjjzi+CxUo7IAELuP1rIwxXKwLc3ctHmQy4VabUQkxxxev9p8DR9N9/l0CT3iLbIfeIdBhWzLhT3auoUc9DQ/C9exJ6BiUvPgqM9+a0XAs0SNaPlCbpVgPQ5rqP99gbLDQhrKGDGl30dUFCt2KQbqelRVQ=
+	t=1736218496; cv=none; b=FyoilQwBZA6Nl5ncM4VtrWabjeI7tVIiVuurnzNn9ybhAk8L/VFVrr4ZHvlMvFsoPaZZ/D//4doppTnTT3vK+3TBGwWx4PqjVgVmbPNuPxKPvBAu+uzZHZyPob8XXNtk//hRZnJ51ZalLi5ugwrwOcb2Tz8Dq02weLTR+DdylHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736218421; c=relaxed/simple;
-	bh=/jdpKowQbeecU4ZKTJnc/PaYAmGYi6GU7xs6pmyxbSI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2N20g6je+5tjYNwqvTnErA53mmb/2lpqUtSqZ8QVEBjRMrVYEHusRJBrPz/4ytW0UcLkE0aBIi+qVj4cHYj2euDNqNK+3OpvTHhhN+8yZb2oSQDaMuUE//Td2lDrVuF2jkvUmY85yPxx6X/n1V+ujjnbuUdCEfTJMP5yV2q6ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Q6NAP8Ma; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1736218496; c=relaxed/simple;
+	bh=9KNumHpxv/QVbO/R83t4SdtQ0IaqfHQouJQh6DkzEEA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=As2PySTa1LOVN4AoFjWiVEOIXTkqH1BGsBV6QOtXsbP1EoexRyEbl5Gk5hOt4hy0NlbuszGf7nte160dMaRTw64XrLIQtd4Cf1W2UMtWlepo1BNMTcP1DQ1dvbu7ExrSHfAJi7WV+0kkzEQ4rVo8QeTBaQ5aqz6ULhTiRjpxLV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8574t/r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Q6NAP8Ma"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2163b0c09afso216378335ad.0
-        for <netdev@vger.kernel.org>; Mon, 06 Jan 2025 18:53:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1736218419; x=1736823219; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DOUZfiRlh/PtntowGINQ9eAZtcLAQkVkBrFUI6FjAOo=;
-        b=Q6NAP8MacSRlUQ/POLOoTvXBVlRpVbfo37C4z6KQF1Vtzl2S4bHxtrmez7ieHOVzIm
-         AjQYrR+sVad32+8+AavvT3yzryGOa2OPNgs6SI4Dw1uSYhj7bi2kE4Y2/DoL9KFFnwWQ
-         4beSbWDCNuspZoxeBmfs5DtO7+a0jYMqXT5oY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736218419; x=1736823219;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DOUZfiRlh/PtntowGINQ9eAZtcLAQkVkBrFUI6FjAOo=;
-        b=N7kc2K6csT43aj0VZXm/FYSaBCOaKZNxc0xb01E2WfpvWzOPX/DZ348cqzsgBk1Ow4
-         1CBGOmNQ24R0475Ovh51pLkLpqTubm9de4DFpkeKJwUOz8OJBZ+3g96344Q9dkr/0+qq
-         KSRe8wV7/UxamuYb/9B/1IklKeQGxS9x8U3iU9HTP3Mt8PMnQlRfONIbsoC2qDl0TZ5/
-         dJmMvsILhdb2gQFqlzSmX6vYlrm0pos7shtlM5QMws/601FyCoiof4vtwTF2LrGwvV7D
-         JJjfZCk9BfJxqjR75PrnJkh6/oM/5re0b+hUMLclQvv3OboH7ydDFY9J1rVs82QKMnts
-         4JWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCULLOvwwUxtb3wSd7ZH0b8wER709xJ2ucWSB6FR2HvY5ZkpTPoYP1HS8YdGNA6MlBFB+/Im0cg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1yLEUGedGXCz3t4X+MY46v/3CiREkW6dZwBvNjfyzUzOQAFqK
-	1A8wRNAnlnm+EYNzGSHv50JJtgxRGsvB89dR+fyfu62cNOxAtEAOORUg3+cOug==
-X-Gm-Gg: ASbGnctsagCjXjlzXN1zuKGFnrsifHTQthFcN+OuBRXbmuRO1u5NA6Lbew9xlOZHuHs
-	JCSgqJIBZSaPWvZbERGkzZyPnxhctkI41P0QhJYzHZX3k+lTzLAIV6xisVIFooKubakPYDxezYr
-	OzVCh6nRuOz5BUu3pdl1DrQDUH0HKdRkV4WwiCZQEUBrespJd73niO3PRQvOTJcRpZyyraHgAGb
-	ceIo80ayD7jNQbXrJH8hkjwDbOkMIYGYHwCFtjUvA1ziXKdRF7hgV42ETQspBIrkheDHGlWtwVJ
-	SEWjZn+5pBdOlF1JKj7b5jTE9wnZGjwv9/FPNcjqLC+8qrWU5p5p5rKwW5M=
-X-Google-Smtp-Source: AGHT+IG2e3U+yq00pJ07uOrJQJq4qZec/jeqMdETuaYq7aa6SFhtt8sOzU7w/9iXWDO+Vjh4mpYaoA==
-X-Received: by 2002:a17:902:f68b:b0:215:b18d:ef with SMTP id d9443c01a7336-219e6eb362amr741205275ad.25.1736218418765;
-        Mon, 06 Jan 2025 18:53:38 -0800 (PST)
-Received: from dhcp-10-123-157-228.dhcp.broadcom.net ([192.19.234.250])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc9f692fsm300093285ad.216.2025.01.06.18.53.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2025 18:53:38 -0800 (PST)
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-To: leon@kernel.org,
-	jgg@ziepe.ca
-Cc: linux-rdma@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	andrew.gospodarek@broadcom.com,
-	selvin.xavier@broadcom.com,
-	michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Subject: [PATCH rdma-next v2 RESEND 4/4] RDMA/bnxt_re: Add support to handle DCB_CONFIG_CHANGE event
-Date: Tue,  7 Jan 2025 08:15:52 +0530
-Message-ID: <20250107024553.2926983-5-kalesh-anakkur.purayil@broadcom.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250107024553.2926983-1-kalesh-anakkur.purayil@broadcom.com>
-References: <20250107024553.2926983-1-kalesh-anakkur.purayil@broadcom.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8574t/r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6DFC4CED2;
+	Tue,  7 Jan 2025 02:54:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736218496;
+	bh=9KNumHpxv/QVbO/R83t4SdtQ0IaqfHQouJQh6DkzEEA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=A8574t/r9dBNEn0i1ml2t+0khfC6uQbLu0R2yQilGNQwInbGNwrAzrdLeCwzJNaiF
+	 KO/iEOYp/2GaYLrVU0q6cEA923iujnaj7IWXSz2DJTTv/0DwEQO1DBCtEcTxYwIS0H
+	 f4F/MTz4Oex/4XXwYOEjFvUnLGNbbWdaJWlT67REBAIN9cKOy1S0ARITB0AlNpe+bG
+	 /Xd++vF4jhL+6YTX266BsJwMzGdCwyhOVysFP6obk0EECPHx3bVXB7lRqRWjusNv4d
+	 6H/Lp4EwG7XwUEI65cDOkZULpioHjVC9o9QxsjhQJg/q6UYaQVYkg9/RRo4H8zJ92z
+	 z5INXWEWhh4Kw==
+Date: Mon, 6 Jan 2025 18:54:54 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Taehee Yoo <ap420073@gmail.com>
+Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
+ almasrymina@google.com, donald.hunter@gmail.com, corbet@lwn.net,
+ michael.chan@broadcom.com, andrew+netdev@lunn.ch, hawk@kernel.org,
+ ilias.apalodimas@linaro.org, ast@kernel.org, daniel@iogearbox.net,
+ john.fastabend@gmail.com, dw@davidwei.uk, sdf@fomichev.me,
+ asml.silence@gmail.com, brett.creeley@amd.com, linux-doc@vger.kernel.org,
+ netdev@vger.kernel.org, kory.maincent@bootlin.com,
+ maxime.chevallier@bootlin.com, danieller@nvidia.com,
+ hengqi@linux.alibaba.com, ecree.xilinx@gmail.com,
+ przemyslaw.kitszel@intel.com, hkallweit1@gmail.com, ahmed.zaki@intel.com,
+ rrameshbabu@nvidia.com, idosch@nvidia.com, jiri@resnulli.us,
+ bigeasy@linutronix.de, lorenzo@kernel.org, jdamato@fastly.com,
+ aleksander.lobakin@intel.com, kaiyuanz@google.com, willemb@google.com,
+ daniel.zahka@gmail.com, Andy Gospodarek <gospo@broadcom.com>
+Subject: Re: [PATCH net-next v7 07/10] bnxt_en: add support for
+ tcp-data-split ethtool command
+Message-ID: <20250106185454.537cd59a@kernel.org>
+In-Reply-To: <20250103150325.926031-8-ap420073@gmail.com>
+References: <20250103150325.926031-1-ap420073@gmail.com>
+	<20250103150325.926031-8-ap420073@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-QP1 context in HW needs to be updated when there is a
-change in the default DSCP values used for RoCE traffic.
-Handle the event from FW and modify the dscp value used
-by QP1.
+On Fri,  3 Jan 2025 15:03:22 +0000 Taehee Yoo wrote:
+> NICs that uses bnxt_en driver supports tcp-data-split feature by the
+> name of HDS(header-data-split).
+> But there is no implementation for the HDS to enable by ethtool.
+> Only getting the current HDS status is implemented and The HDS is just
+> automatically enabled only when either LRO, HW-GRO, or JUMBO is enabled.
+> The hds_threshold follows rx-copybreak value. and it was unchangeable.
+> 
+> This implements `ethtool -G <interface name> tcp-data-split <value>`
+> command option.
+> The value can be <on> and <auto>.
+> The value is <auto> and one of LRO/GRO/JUMBO is enabled, HDS is
+> automatically enabled and all LRO/GRO/JUMBO are disabled, HDS is
+> automatically disabled.
+> 
+> HDS feature relies on the aggregation ring.
+> So, if HDS is enabled, the bnxt_en driver initializes the aggregation ring.
+> This is the reason why BNXT_FLAG_AGG_RINGS contains HDS condition.
 
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
----
- drivers/infiniband/hw/bnxt_re/bnxt_re.h  |   1 +
- drivers/infiniband/hw/bnxt_re/main.c     | 104 +++++++++++++++++++++++
- drivers/infiniband/hw/bnxt_re/qplib_fp.h |   1 +
- drivers/infiniband/hw/bnxt_re/qplib_sp.h |   1 +
- 4 files changed, 107 insertions(+)
-
-diff --git a/drivers/infiniband/hw/bnxt_re/bnxt_re.h b/drivers/infiniband/hw/bnxt_re/bnxt_re.h
-index f40aca550328..dc2b193af7e8 100644
---- a/drivers/infiniband/hw/bnxt_re/bnxt_re.h
-+++ b/drivers/infiniband/hw/bnxt_re/bnxt_re.h
-@@ -231,6 +231,7 @@ struct bnxt_re_dev {
- 	struct dentry			*qp_debugfs;
- 	unsigned long			event_bitmap;
- 	struct bnxt_qplib_cc_param	cc_param;
-+	struct workqueue_struct		*dcb_wq;
- };
- 
- #define to_bnxt_re_dev(ptr, member)	\
-diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
-index aa08eb5bbb68..1988bf884445 100644
---- a/drivers/infiniband/hw/bnxt_re/main.c
-+++ b/drivers/infiniband/hw/bnxt_re/main.c
-@@ -295,9 +295,96 @@ static void bnxt_re_vf_res_config(struct bnxt_re_dev *rdev)
- 				      &rdev->qplib_ctx);
- }
- 
-+struct bnxt_re_dcb_work {
-+	struct work_struct work;
-+	struct bnxt_re_dev *rdev;
-+	struct hwrm_async_event_cmpl cmpl;
-+};
-+
-+static bool bnxt_re_is_qp1_qp(struct bnxt_re_qp *qp)
-+{
-+	return qp->ib_qp.qp_type == IB_QPT_GSI;
-+}
-+
-+static struct bnxt_re_qp *bnxt_re_get_qp1_qp(struct bnxt_re_dev *rdev)
-+{
-+	struct bnxt_re_qp *qp;
-+
-+	mutex_lock(&rdev->qp_lock);
-+	list_for_each_entry(qp, &rdev->qp_list, list) {
-+		if (bnxt_re_is_qp1_qp(qp)) {
-+			mutex_unlock(&rdev->qp_lock);
-+			return qp;
-+		}
-+	}
-+	mutex_unlock(&rdev->qp_lock);
-+	return NULL;
-+}
-+
-+static int bnxt_re_update_qp1_tos_dscp(struct bnxt_re_dev *rdev)
-+{
-+	struct bnxt_re_qp *qp;
-+
-+	if (!bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx))
-+		return 0;
-+
-+	qp = bnxt_re_get_qp1_qp(rdev);
-+	if (!qp)
-+		return 0;
-+
-+	qp->qplib_qp.modify_flags = CMDQ_MODIFY_QP_MODIFY_MASK_TOS_DSCP;
-+	qp->qplib_qp.tos_dscp = rdev->cc_param.qp1_tos_dscp;
-+
-+	return bnxt_qplib_modify_qp(&rdev->qplib_res, &qp->qplib_qp);
-+}
-+
-+static void bnxt_re_init_dcb_wq(struct bnxt_re_dev *rdev)
-+{
-+	rdev->dcb_wq = create_singlethread_workqueue("bnxt_re_dcb_wq");
-+}
-+
-+static void bnxt_re_uninit_dcb_wq(struct bnxt_re_dev *rdev)
-+{
-+	if (!rdev->dcb_wq)
-+		return;
-+	destroy_workqueue(rdev->dcb_wq);
-+}
-+
-+static void bnxt_re_dcb_wq_task(struct work_struct *work)
-+{
-+	struct bnxt_re_dcb_work *dcb_work =
-+		container_of(work, struct bnxt_re_dcb_work, work);
-+	struct bnxt_re_dev *rdev = dcb_work->rdev;
-+	struct bnxt_qplib_cc_param *cc_param;
-+	int rc;
-+
-+	if (!rdev)
-+		goto free_dcb;
-+
-+	cc_param = &rdev->cc_param;
-+	rc = bnxt_qplib_query_cc_param(&rdev->qplib_res, cc_param);
-+	if (rc) {
-+		ibdev_dbg(&rdev->ibdev, "Failed to query ccparam rc:%d", rc);
-+		goto free_dcb;
-+	}
-+	if (cc_param->qp1_tos_dscp != cc_param->tos_dscp) {
-+		cc_param->qp1_tos_dscp = cc_param->tos_dscp;
-+		rc = bnxt_re_update_qp1_tos_dscp(rdev);
-+		if (rc) {
-+			ibdev_dbg(&rdev->ibdev, "%s: Failed to modify QP1 rc:%d",
-+				  __func__, rc);
-+			goto free_dcb;
-+		}
-+	}
-+
-+free_dcb:
-+	kfree(dcb_work);
-+}
-+
- static void bnxt_re_async_notifier(void *handle, struct hwrm_async_event_cmpl *cmpl)
- {
- 	struct bnxt_re_dev *rdev = (struct bnxt_re_dev *)handle;
-+	struct bnxt_re_dcb_work *dcb_work;
- 	u32 data1, data2;
- 	u16 event_id;
- 
-@@ -307,6 +394,21 @@ static void bnxt_re_async_notifier(void *handle, struct hwrm_async_event_cmpl *c
- 
- 	ibdev_dbg(&rdev->ibdev, "Async event_id = %d data1 = %d data2 = %d",
- 		  event_id, data1, data2);
-+
-+	switch (event_id) {
-+	case ASYNC_EVENT_CMPL_EVENT_ID_DCB_CONFIG_CHANGE:
-+		dcb_work = kzalloc(sizeof(*dcb_work), GFP_ATOMIC);
-+		if (!dcb_work)
-+			break;
-+
-+		dcb_work->rdev = rdev;
-+		memcpy(&dcb_work->cmpl, cmpl, sizeof(*cmpl));
-+		INIT_WORK(&dcb_work->work, bnxt_re_dcb_wq_task);
-+		queue_work(rdev->dcb_wq, &dcb_work->work);
-+		break;
-+	default:
-+		break;
-+	}
- }
- 
- static void bnxt_re_stop_irq(void *handle)
-@@ -1908,6 +2010,7 @@ static void bnxt_re_dev_uninit(struct bnxt_re_dev *rdev, u8 op_type)
- 	bnxt_re_debugfs_rem_pdev(rdev);
- 
- 	bnxt_re_net_unregister_async_event(rdev);
-+	bnxt_re_uninit_dcb_wq(rdev);
- 
- 	if (test_and_clear_bit(BNXT_RE_FLAG_QOS_WORK_REG, &rdev->flags))
- 		cancel_delayed_work_sync(&rdev->worker);
-@@ -2127,6 +2230,7 @@ static int bnxt_re_dev_init(struct bnxt_re_dev *rdev, u8 op_type)
- 
- 	bnxt_re_debugfs_add_pdev(rdev);
- 
-+	bnxt_re_init_dcb_wq(rdev);
- 	bnxt_re_net_register_async_event(rdev);
- 
- 	return 0;
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index ef3424c81345..264cf0c2c1ac 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -343,6 +343,7 @@ struct bnxt_qplib_qp {
- 	u32				msn;
- 	u32				msn_tbl_sz;
- 	bool				is_host_msn_tbl;
-+	u8				tos_dscp;
- };
- 
- #define BNXT_QPLIB_MAX_CQE_ENTRY_SIZE	sizeof(struct cq_base)
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.h b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
-index debb26080143..eafa0c1bc732 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_sp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
-@@ -296,6 +296,7 @@ struct bnxt_qplib_cc_param_ext {
- 
- struct bnxt_qplib_cc_param {
- 	u8 alt_vlan_pcp;
-+	u8 qp1_tos_dscp;
- 	u16 alt_tos_dscp;
- 	u8 cc_mode;
- 	u8 enable;
--- 
-2.43.5
-
+Acked-by: Jakub Kicinski <kuba@kernel.org>
