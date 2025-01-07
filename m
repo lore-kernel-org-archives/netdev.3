@@ -1,95 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-out.freemail.hu (fmfe39.freemail.hu [46.107.16.244])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C49670813;
-	Tue,  7 Jan 2025 23:28:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD02D13B58A;
+	Tue,  7 Jan 2025 23:34:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.107.16.244
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736292537; cv=none; b=lPpQ2SRVlaq9n6azSlq9PPnpwilJBPI17dC9y80epnZaKLJFq2zoe/WbnNNPUZnuBV0XpOBmiRwyeLdXgDdGzg6cXTsIQ4nVmW1/GWAi8ORni2kXH277Sv0Qj8Abxrjc3elhpFzSTGt6fbMGpPFAYpGu7MS76YvXkkSl7wFdUK0=
+	t=1736292853; cv=none; b=g6pbS+A4jmAgWHb5krfNdPpJvk+6f87aj9C12rpcWWtvEIHCYgmS/rsjAnRESSwK4F2XnvGgWgh92rAvhSBn6iaAdOctJqikmA1imScXhzOxenntNC8MljqT+26hCBoEV96SdAedT6wB9b5FNz3R4snsVUFjqE/EsK/v1oI6JBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736292537; c=relaxed/simple;
-	bh=/XKTIuIIzi6eYy1OOQwUAP45OfK2UK6TuDBibJwD58M=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=MPN9yyNj+7+8zAv4FbQNH2lj87WJu59KCj4Tzh3EijFNZ8jOIERXC0jUUA+cu7gkcS9k06o3eARMkSu+Abm7389YmVp5UxwQdXP58DIs1dQ7AvKuCO4NJTyhOTPF79+2rxGMWDSP+mLdA3YiOuRNluslQbs++uhMsCiOzXcIdrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bXCmlcG+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736292853; c=relaxed/simple;
+	bh=bonpXxrJ0xaABuIWeP1IuxzJgFfghUGO4YXwb9D2hDs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E6VG6iNJPwFbUwngIrG87bzmOBuJRHRhKpZ1g67cXxKtGeeo2imOL+0QbgTcTWxfbb84E/tWlkY25jVz3dyeUc8b88qdDiLaTcLlO21+axe1myYF9xLbBbG/nzFEi0pqXrNWMN+mn33l2MNaP0rrc8loxmkIszFWroku87Y0I2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu; spf=pass smtp.mailfrom=freemail.hu; dkim=fail (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b=0q/uzL8d reason="signature verification failed"; arc=none smtp.client-ip=46.107.16.244
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freemail.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bXCmlcG+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A46CC4CED6;
-	Tue,  7 Jan 2025 23:28:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736292536;
-	bh=/XKTIuIIzi6eYy1OOQwUAP45OfK2UK6TuDBibJwD58M=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=bXCmlcG+FdCq0wy01Z+iWRxrX+6eBH26tABZWHfsudqyrXdte7SjbRB54jHNoKuf2
-	 c3SGRKvhIXPdJlJC518StW9hql+vUYU4Cs02inDEQ6OKf+fd6KlkOu6UrrCXoiVwUD
-	 1g2r1sQ6GotJvLCbIY3ObD53Hw7MqM7KFmsiQXomHfV0W8FxnSr9YQx1U268vtTkvT
-	 MeJbjbhyyS+PcclqW2CTcQaSteZK0SCs9+26WOXTijdrVioFe/dGTXUTLeIcLAqoi1
-	 +Q9MP+2g3TMMhaEJSYsVlXZrFtjnfJIMAomwScoDAVkwo2lzPlBXfvs/Qo1aEBSSjQ
-	 UYzzXz0IPNfew==
-Date: Tue, 07 Jan 2025 15:28:54 -0800
-From: Kees Cook <kees@kernel.org>
-To: Gal Pressman <gal@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>
-CC: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>,
- Simon Horman <horms@kernel.org>, linux-hardening@vger.kernel.org,
- Cosmin Ratiu <cratiu@nvidia.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next=5D_net=3A_Silence_false_field-spanni?=
- =?US-ASCII?Q?ng_write_warning_in_ip=5Ftun?=
- =?US-ASCII?Q?nel=5Finfo=5Fopts=5Fset=28=29_memcpy?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20250107165509.3008505-1-gal@nvidia.com>
-References: <20250107165509.3008505-1-gal@nvidia.com>
-Message-ID: <53D1D353-B8F6-4ADC-8F29-8C48A7C9C6F1@kernel.org>
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b="0q/uzL8d"
+Received: from [192.168.0.16] (catv-178-48-208-49.catv.fixed.vodafone.hu [178.48.208.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.freemail.hu (Postfix) with ESMTPSA id 4YSRwD2DwYzc9m;
+	Wed, 08 Jan 2025 00:24:44 +0100 (CET)
+Message-ID: <283ffe91-5181-4544-8913-e4d1d6895d5c@freemail.hu>
+Date: Wed, 8 Jan 2025 00:24:16 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/10] netfilter: Add message pragma for deprecated
+ xt_*.h, ipt_*.h.
+To: Jan Engelhardt <ej@inai.de>
+Cc: Jozsef Kadlecsik <kadlec@netfilter.org>, fw@strlen.de,
+ pablo@netfilter.org, lorenzo@kernel.org, daniel@iogearbox.net,
+ leitao@debian.org, amiculas@cisco.com, davem@davemloft.net,
+ dsahern@kernel.org, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20250107024120.98288-1-egyszeregy@freemail.hu>
+ <20250107024120.98288-10-egyszeregy@freemail.hu>
+ <1cd443f7-df1e-20cf-cfe8-f38ac72491e4@netfilter.org>
+ <0e51464d-301d-4b48-ad38-ca04ff7d9151@freemail.hu>
+ <n72qp2s8-00q1-3n32-n600-p59o2oqo7s43@vanv.qr>
+Content-Language: hu
+From: =?UTF-8?Q?Sz=C5=91ke_Benjamin?= <egyszeregy@freemail.hu>
+In-Reply-To: <n72qp2s8-00q1-3n32-n600-p59o2oqo7s43@vanv.qr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/relaxed; t=1736292285;
+	s=20181004; d=freemail.hu;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	l=1227; bh=N+FkWU7Mz3NOYleJmg4vXcLfo+S1arFspJ+RdUxvHPw=;
+	b=0q/uzL8d788uNqOmgIIBGhGCLCuH+YJwfA8n4PyovTHhEVhdgYIdKg8mbMV+bOtv
+	1eJLF5FfWNZWFZwQdLLI0rjd94tGao2/NOSIqZgx/rr+iyY8QuSXpIqIhD6LUnGBPmc
+	N7+fl4Hfob0wPvjxmhTFTBGGH4mzmYnzg5ccWptYgB4yVQ6mygPyy4XaIpdm1v+r8GJ
+	jJ8lM8OKWG01q+Rz4lvRi+3IW0ypMtfMWPizX9IHZHxB+PAGvqnztbCOi+lvRIyzbJB
+	7mDlmAakZH4ZCsZ92NrnMa+T+L3PEILyzy0cfSQAD0uz9JXSGC1uSUBZgPWcbXc022e
+	OXn4wLPJ+w==
 
+2025. 01. 07. 23:38 keltezéssel, Jan Engelhardt írta:
+> 
+> On Tuesday 2025-01-07 23:06, Szőke Benjamin wrote:
+>>>
+>>> I still don't know whether adding the pragmas to notify about header file
+>>> deprecation is a good idea.
+>>
+>> Do you have any other ideas how can you display this information to the
+>> users/customers, that it is time to stop using the uppercase header files then
+>> they shall to use its merged lowercase named files instead in their userspace
+>> SW?
+> 
+> ``__attribute__`` is just as implementation-specific as ``#pragma``, so it's
+> not really an improvement, but here goes:
+> 
+> ----
+> struct __attribute__((deprecated("This header file is deprecated"))) dontusethisstruct {
+> };
+> extern struct dontusethisstruct undefinedstruct;
+> ----
 
+As i know it is a feature only in GCC, can it work with Clang compiler?
+https://renenyffenegger.ch/notes/development/languages/C-C-plus-plus/GCC/__attribute__/deprecated/index
 
-On January 7, 2025 8:55:09 AM PST, Gal Pressman <gal@nvidia=2Ecom> wrote:
->When metadata_dst struct is allocated (using metadata_dst_alloc()), it
->reserves room for options at the end of the struct=2E
->
->Similar to [1], change the memcpy() to unsafe_memcpy() as it is
->guaranteed that enough room (md_size bytes) was allocated and the
->field-spanning write is intentional=2E
+By the way it is perfect for through a warning for a deprecated struct, function 
+etc ... only in GCC, but it is not ideal to use a simple header file include and 
+the syntax of it is horryble. Usage of a generic #pragma message is more 
+feasible in all compilers.
 
-Why not just add an "options" flex array to struct ip_tunnel_info?
-
-E=2Eg=2E:
-
-struct ip_tunnel_info {
-	struct ip_tunnel_key	key;
-	struct ip_tunnel_encap	encap;
-#ifdef CONFIG_DST_CACHE
-	struct dst_cache	dst_cache;
-#endif
-	u8			options_len;
-	u8			mode;
-  u8   options[] __counted_by(options_len);
-};
-
->
->This resolves the following warning:
->  memcpy: detected field-spanning write (size 8) of single field "_Generi=
-c(info, const struct ip_tunnel_info * : ((const void *)((info) + 1)), struc=
-t ip_tunnel_info * : ((void *)((info) + 1)) )" at include/net/ip_tunnels=2E=
-h:662 (size 0)
-
-Then you can drop this macro and just use: info->options
-
-Looks like you'd need to do it for all the types in struct metadata_dst, b=
-ut at least you could stop hiding it from the compiler=2E :)
-
--Kees
-
-
---=20
-Kees Cook
