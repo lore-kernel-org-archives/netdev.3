@@ -1,67 +1,104 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D0439FF3;
-	Tue,  7 Jan 2025 13:51:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604F51EB9EF;
+	Tue,  7 Jan 2025 13:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736257864; cv=none; b=C2+BNgS05Fk/eigVZClW5XpAewkrwLGwURs/ZcKef2KDiCMh7A0wopryf9t/b3kwO8Ax3LGUEB70GDqkq4z/BjU3D9uD11FYck2TRxzPzEcpIAbPY6wB5fC4hqN1h44zPqcasghDq39WIT3B1QAKqLPTZnt0BonH9f+YRDp6JIM=
+	t=1736257872; cv=none; b=PxHyQeqVugLQGaYhwFMI4A2jgKCyJJIpgTjj/99++YT1yhd/W9m1RYdqpi/xoJ4royUHmTTk1XLyCEVsGzxPP+i2OSfQtk/p7WE/fVy52T6n097VkHZgkt3ZdTDHye6l4uWGLjQOeVQsN1nRs8YVWPOfdZcDrgqwpFqOWiTrqs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736257864; c=relaxed/simple;
-	bh=v6R+8psuWm2S8FVjNAFp1FwJQEmIC5d0m8nBQCiuZfQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IIzO6HH7fH8ZabkN965Gpz2geegAAqktJ+0Rh1/fumwmkFRaKtL/95lgzink2sYATiHtfIytNyURkJm5VrFTCxzpwUbv3zfDY4ssUao+kR7XSlfvKa8HWdWfDuFrPemMl1e+fyV53EPhuXbOBdC9VyiDTTrIeudOCqOUnajIr1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YSC8t1PCcz6J6bt;
-	Tue,  7 Jan 2025 21:49:50 +0800 (CST)
-Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
-	by mail.maildlp.com (Postfix) with ESMTPS id 00FF31409EA;
-	Tue,  7 Jan 2025 21:50:55 +0800 (CST)
-Received: from china (10.200.201.82) by frapeml500005.china.huawei.com
- (7.182.85.13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 7 Jan
- 2025 14:50:43 +0100
-From: Gur Stavi <gur.stavi@huawei.com>
-To: <sumang@marvell.com>
-CC: <andrew+netdev@lunn.ch>, <cai.huoqing@linux.dev>, <corbet@lwn.net>,
-	<davem@davemloft.net>, <edumazet@google.com>, <gongfan1@huawei.com>,
-	<guoxin09@huawei.com>, <gur.stavi@huawei.com>, <helgaas@kernel.org>,
-	<horms@kernel.org>, <kuba@kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <meny.yossefi@huawei.com>,
-	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <shenchenyang1@hisilicon.com>,
-	<shijing34@huawei.com>, <wulike1@huawei.com>, <zhoushuai28@huawei.com>
-Subject: RE: [EXTERNAL] [PATCH net-next v03 1/1] hinic3: module initialization and tx/rx logic
-Date: Tue, 7 Jan 2025 16:03:42 +0200
-Message-ID: <20250107140342.3553459-1-gur.stavi@huawei.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <SJ0PR18MB5216BED17023369322EE4A6ADB152@SJ0PR18MB5216.namprd18.prod.outlook.com>
-References: <SJ0PR18MB5216BED17023369322EE4A6ADB152@SJ0PR18MB5216.namprd18.prod.outlook.com>
+	s=arc-20240116; t=1736257872; c=relaxed/simple;
+	bh=6xhSH58IgPuaGdcyPOHs9NHJISG3uPmS1Ge9S3ppjAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iWl0h+Wz4uJGtsjoLMjiHVq48KS3luuqRwrmj4QJ+a0HT/mglyDIuFr1E8EuxYtLeBu4wWDZyOAgqw78wuoSgY73NJ7xNJWxRtjKPdktLFdLTuAOog0Farnh/dKPquFBVAUWcu8HLqqsRTuyXBwuehU/0sH8vHLm8QpZ008XJww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IOhx86Es; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4knpNCMX; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IOhx86Es";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4knpNCMX"
+Date: Tue, 7 Jan 2025 14:51:06 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1736257868;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cct8mjPuTS2g1hERdmr1jNSJDlrhhPaqQc2wki1mp24=;
+	b=IOhx86Esibh8T7Uq3RkbLHC3DioF3Wrh98RsmTDbQA8S6DEUvMNyR/rkleXX1Xa0xSoIg0
+	Im2GF8dgr0/ARtD0+n7GCXUlzUnLgHzIQCOOa3hlf8ac8o516KXrFXZgM5C1FkQYUIMTQo
+	P55DAIuAcWvJWRM0E2l/P6BRp+G2ojoxa7EJvpVB36U+F/wBmf19Bv5PZOnlUfmk7sfoSz
+	cDd6XqNhYXvLZ8IA93UgD71FLqojCGw7UHxDDqunXbdIV2so0ORCOuz4HI85NrJcgvkrlE
+	mTsMtG6d5pUg2OpqOIEI7LYtT+dICn+rRUKML3cZNUqGNR4fYaW3yQJw9Q/PIA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1736257868;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cct8mjPuTS2g1hERdmr1jNSJDlrhhPaqQc2wki1mp24=;
+	b=4knpNCMXSS+IFvgXhM12tf4YO5sC0sRyfIuWp2PqSEy+zyUrQ/71+LYqqZSEEv8ZQ886yE
+	q5lFR933wlWa/ODw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Wander Lairson Costa <wander@redhat.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jeff Garzik <jgarzik@redhat.com>,
+	Auke Kok <auke-jan.h.kok@intel.com>,
+	"moderated list:INTEL ETHERNET DRIVERS" <intel-wired-lan@lists.osuosl.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:Real-time Linux (PREEMPT_RT):Keyword:PREEMPT_RT" <linux-rt-devel@lists.linux.dev>
+Subject: Re: [PATCH iwl-net 0/4] igb: fix igb_msix_other() handling for
+ PREEMPT_RT
+Message-ID: <20250107135106.WWrtBMXY@linutronix.de>
+References: <20241204114229.21452-1-wander@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- frapeml500005.china.huawei.com (7.182.85.13)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241204114229.21452-1-wander@redhat.com>
 
-> >+static int comm_msg_to_mgmt_sync(struct hinic3_hwdev *hwdev, u16 cmd,
-> >const void *buf_in,
-> >+				 u32 in_size, void *buf_out, u32 *out_size)
-> >+{
-> >+	return hinic3_send_mbox_to_mgmt(hwdev, HINIC3_MOD_COMM, cmd,
-> >buf_in,
-> >+					in_size, buf_out, out_size, 0);
-> >+}
-> [Suman] Any reason we need this wrapper? We can directly call hinic3_send_m=
-> box_to_mgmt() from hinic3_func_reset()
+On 2024-12-04 08:42:23 [-0300], Wander Lairson Costa wrote:
+> This is the second attempt at fixing the behavior of igb_msix_other()
+> for PREEMPT_RT. The previous attempt [1] was reverted [2] following
+> concerns raised by Sebastian [3].
+> 
+> The initial approach proposed converting vfs_lock to a raw_spinlock,
+> a minor change intended to make it safe. However, it became evident
+> that igb_rcv_msg_from_vf() invokes kcalloc with GFP_ATOMIC,
+> which is unsafe in interrupt context on PREEMPT_RT systems.
+> 
+> To address this, the solution involves splitting igb_msg_task()
+> into two parts:
+> 
+>     * One part invoked from the IRQ context.
+>     * Another part called from the threaded interrupt handler.
+> 
+> To accommodate this, vfs_lock has been restructured into a double
+> lock: a spinlock_t and a raw_spinlock_t. In the revised design:
+> 
+>     * igb_disable_sriov() locks both spinlocks.
+>     * Each part of igb_msg_task() locks the appropriate spinlock for
+>     its execution context.
 
-This wrapper is used frequently (10 times or more) and it reduces number
-of parameters from 8 to 6.
+- Is this limited to PREEMPT_RT or does it also occur on PREEMPT systems
+  with threadirqs? And if this is PREEMPT_RT only, why?
 
-> >+
+- What causes the failure? I see you reworked into two parts to behave
+  similar to what happens without threaded interrupts. There is still no
+  explanation for it. Is there a timing limit or was there another
+  register operation which removed the mailbox message?
+
+> Cheers,
+> Wander
+
+Sebastian
