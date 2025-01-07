@@ -1,29 +1,63 @@
-Received: from smtp-out.freemail.hu (fmfe39.freemail.hu [46.107.16.244])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD02D13B58A;
-	Tue,  7 Jan 2025 23:34:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.107.16.244
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6712D273F9;
+	Tue,  7 Jan 2025 23:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736292853; cv=none; b=g6pbS+A4jmAgWHb5krfNdPpJvk+6f87aj9C12rpcWWtvEIHCYgmS/rsjAnRESSwK4F2XnvGgWgh92rAvhSBn6iaAdOctJqikmA1imScXhzOxenntNC8MljqT+26hCBoEV96SdAedT6wB9b5FNz3R4snsVUFjqE/EsK/v1oI6JBk=
+	t=1736293326; cv=none; b=R4YgZVE6akJbtba+sMRqsk5n84hPR7BvZ5LxD+PgyS1PGeGfv421cIWg8GAsBAyroxBC/yMBVyUqhatVOFrRgBxtT+RUc4AYF4SDsV/uCT8NFYgoO2EAuru+WqKqCUX7CvJ7hYksCHXc+0d9MWYO+LpEARHYDkC417cF3u72qb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736292853; c=relaxed/simple;
-	bh=bonpXxrJ0xaABuIWeP1IuxzJgFfghUGO4YXwb9D2hDs=;
+	s=arc-20240116; t=1736293326; c=relaxed/simple;
+	bh=zdBfITp1mLtD7fWkMVRFtsnMMiRPVIpGYRfcYlkU/VA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E6VG6iNJPwFbUwngIrG87bzmOBuJRHRhKpZ1g67cXxKtGeeo2imOL+0QbgTcTWxfbb84E/tWlkY25jVz3dyeUc8b88qdDiLaTcLlO21+axe1myYF9xLbBbG/nzFEi0pqXrNWMN+mn33l2MNaP0rrc8loxmkIszFWroku87Y0I2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu; spf=pass smtp.mailfrom=freemail.hu; dkim=fail (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b=0q/uzL8d reason="signature verification failed"; arc=none smtp.client-ip=46.107.16.244
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freemail.hu
+	 In-Reply-To:Content-Type; b=Ob+6Du/AlZ2H3bcNjwkM/wq4nssxiISVPPxsgWfhEs6w3t6kgdIchAbf2naF3EpiX7Awq4Y+C5KYgnfckQcR3Boz3pfwuz+IuKXlNlbb1GaiKQ7DSeAgNFLECChYkVlN7PImmdGlBzYtt4KXFW/2115/YkV81GyttH0HOtfwXE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RtaPbEAo; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b="0q/uzL8d"
-Received: from [192.168.0.16] (catv-178-48-208-49.catv.fixed.vodafone.hu [178.48.208.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.freemail.hu (Postfix) with ESMTPSA id 4YSRwD2DwYzc9m;
-	Wed, 08 Jan 2025 00:24:44 +0100 (CET)
-Message-ID: <283ffe91-5181-4544-8913-e4d1d6895d5c@freemail.hu>
-Date: Wed, 8 Jan 2025 00:24:16 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RtaPbEAo"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-385f07cd1a4so10577787f8f.1;
+        Tue, 07 Jan 2025 15:42:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736293323; x=1736898123; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7WO3GbjQtgCqBmxJW4kohdE88Rqyh6CP7A/1rjHCzlA=;
+        b=RtaPbEAoCDwYYqvMb5FRqYhi5x5PyvC1r+zjuS4aImcmNIFUxTnubPuN/R3K8hBxAb
+         4y2duWW/OZt5nEvi8AbmB2q4ivFCw8th5UscKele6h+V5zN2GY9u4ggAqe9HXXOGQbSz
+         Q0nyuyTtkZ6jlDW0cYQSo02kW19eVjYDXoq5ac+VcSuRbk60VxJkOm8aoRorL+UJQkqP
+         3Swo5tBfcuDZordfZ/7KElMfRK1r1ngXJDksC8oB3cqqziHQAJB9B+2zAeeCvfMMtuX1
+         qU15ivtEvD/f5gkia4YB6egQYrb7kluafRdBgxirZuDboeM1mrofd2HdZ7x12YBoI/7r
+         5MOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736293323; x=1736898123;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7WO3GbjQtgCqBmxJW4kohdE88Rqyh6CP7A/1rjHCzlA=;
+        b=PNkbSOKIR3Cj2Yqwb2GzMp5Cgg8h1SDgDiDmeyjfNefNAAFpiLiTBeSWtNKrUGvRIZ
+         yqcc84zuagwhTYj28lCjnNjgUwrxDlN/HnklMNEd8Z8txqH3IlpoZIurJAcboKuoniuW
+         EEm+kzIo77F2p9LmfW0Y91UlzrrTf25emeeJUBldRBSdA1QW1CzECG5SMp+GHMJXv2WW
+         W9UKFJ8AZGwQ2vCJruPisAG6MOZEpwCer0XsNGH6dUbwAz2RNV4pYB4CiN1TGn2jJ6Tb
+         oKUNRzOuoc18yw2MzAMQjk6BMf9kTDuAi+/FWae1goKTnYSgLIP7C81XOypNIrfkbFSm
+         8ExA==
+X-Forwarded-Encrypted: i=1; AJvYcCVBjuo5PVmcn/MSqvVB0mDUThTSRdvvIEidutxKM7cgD6Cn8AqbLUG+Cjlm85YWBrqZfpTASUYuE/K5wAs=@vger.kernel.org, AJvYcCXU5AZV2CcH1pSNHSG5rfCfZhYHecu25nv3Gtg1asTKsWbqSQy9N8vk6LpqJMm074PO8oXfu5gY@vger.kernel.org
+X-Gm-Message-State: AOJu0YycLCZu+5CnXA3Kc+4Qzlo11MMPAvF82AOr5xjyZvjtjnZ9RdiW
+	tWTYik014PRPgahJ/RPJJcoxtTh9pWoo8hNFTVtoBhFEcnSZEzPW
+X-Gm-Gg: ASbGncuqkrEDXU8FQC3vBXRHvu6fFNY5mccrqX7dKhjO/j0jfTNx0EEkP/T1ZsLDkVw
+	R2sHLv1N2TGlo/EqslinUxffRPIECjFwiTAcgfyGlNUzDvY8GUqBhgE2zc8b/1KPUglNuBbR5bv
+	tQzSY+25K4FHN/p3gJPyIap1aabPXG/o79MTHAI2W+6CwejYABO8HbCX+eAVAY58Ol9T+KXkioZ
+	qX7dLmQsJ7AcYqL7zonc3PemtqNgU5ViURsEdjuGCjjnNZaC7/tdvqwSw==
+X-Google-Smtp-Source: AGHT+IEnoP1s2LmixgpKPFYoGpf/jA3AGV1LW9/iHOTiuT2OIw1/BqZg0lW8e4vsEeGVfrxjjLvclA==
+X-Received: by 2002:a05:6000:470d:b0:385:df2c:91b5 with SMTP id ffacd0b85a97d-38a87085becmr381916f8f.0.1736293322462;
+        Tue, 07 Jan 2025 15:42:02 -0800 (PST)
+Received: from [192.168.0.2] ([69.6.8.124])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2dc0069sm2091445e9.11.2025.01.07.15.42.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Jan 2025 15:42:02 -0800 (PST)
+Message-ID: <c833b868-9593-43e9-b0e9-780fea1e8f55@gmail.com>
+Date: Wed, 8 Jan 2025 01:42:00 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -31,62 +65,141 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/10] netfilter: Add message pragma for deprecated
- xt_*.h, ipt_*.h.
-To: Jan Engelhardt <ej@inai.de>
-Cc: Jozsef Kadlecsik <kadlec@netfilter.org>, fw@strlen.de,
- pablo@netfilter.org, lorenzo@kernel.org, daniel@iogearbox.net,
- leitao@debian.org, amiculas@cisco.com, davem@davemloft.net,
- dsahern@kernel.org, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20250107024120.98288-1-egyszeregy@freemail.hu>
- <20250107024120.98288-10-egyszeregy@freemail.hu>
- <1cd443f7-df1e-20cf-cfe8-f38ac72491e4@netfilter.org>
- <0e51464d-301d-4b48-ad38-ca04ff7d9151@freemail.hu>
- <n72qp2s8-00q1-3n32-n600-p59o2oqo7s43@vanv.qr>
-Content-Language: hu
-From: =?UTF-8?Q?Sz=C5=91ke_Benjamin?= <egyszeregy@freemail.hu>
-In-Reply-To: <n72qp2s8-00q1-3n32-n600-p59o2oqo7s43@vanv.qr>
+Subject: Re: [PATCH net-next v4] wwan dev: Add port for NMEA channel for WWAN
+ devices
+To: Muhammad Nuzaihan <zaihan@unrealasia.net>, Slark Xiao <slark_xiao@163.com>
+Cc: Loic Poulain <loic.poulain@linaro.org>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250105124819.6950-1-zaihan@unrealasia.net>
+ <CAMZdPi91hR10xe=UzccqtwvtvS9_Wf9NEw6i5-x=e4UdfKMcug@mail.gmail.com>
+ <3c7d38cb.5336.1943f5e66de.Coremail.slark_xiao@163.com>
+ <T3JQPS.DLBZIVAM0L9Q2@unrealasia.net>
+Content-Language: en-US
+From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+In-Reply-To: <T3JQPS.DLBZIVAM0L9Q2@unrealasia.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/relaxed; t=1736292285;
-	s=20181004; d=freemail.hu;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	l=1227; bh=N+FkWU7Mz3NOYleJmg4vXcLfo+S1arFspJ+RdUxvHPw=;
-	b=0q/uzL8d788uNqOmgIIBGhGCLCuH+YJwfA8n4PyovTHhEVhdgYIdKg8mbMV+bOtv
-	1eJLF5FfWNZWFZwQdLLI0rjd94tGao2/NOSIqZgx/rr+iyY8QuSXpIqIhD6LUnGBPmc
-	N7+fl4Hfob0wPvjxmhTFTBGGH4mzmYnzg5ccWptYgB4yVQ6mygPyy4XaIpdm1v+r8GJ
-	jJ8lM8OKWG01q+Rz4lvRi+3IW0ypMtfMWPizX9IHZHxB+PAGvqnztbCOi+lvRIyzbJB
-	7mDlmAakZH4ZCsZ92NrnMa+T+L3PEILyzy0cfSQAD0uz9JXSGC1uSUBZgPWcbXc022e
-	OXn4wLPJ+w==
 
-2025. 01. 07. 23:38 keltezéssel, Jan Engelhardt írta:
+Hi Muhammad, Slark,
+
+On 07.01.2025 22:19, Muhammad Nuzaihan wrote:
+> Hi Everyone, Sorry for the last (HTML) email.
 > 
-> On Tuesday 2025-01-07 23:06, Szőke Benjamin wrote:
->>>
->>> I still don't know whether adding the pragmas to notify about header file
->>> deprecation is a good idea.
+> Seemed i forgot Gmail sends HTML email by default and Geary client was 
+> broken.
+> 
+> Slark - I've got some vague idea on how it can be implemented with GNSS
+> according to your helpful last email which helps clear some things.
+
+I should clarify here a bit. Export through GNSS does not mean creating 
+a dedicated PCI driver. It means call the gnss_register_device() 
+function to export the device to the user space as instance of the GNSS 
+class. This should help for ModemManager as well to avoid the NMEA port 
+access. Since the device class will clearly indicate that the NMEA port 
+has nothing common with a cell modem control.
+
+Still, as it was pointed by Loic, it is a good idea to call 
+gnss_register_device() from WWAN core in order to make the WWAN device a 
+common parent of the NMEA port. This should help user space applications 
+as well. A user space application (e.g. GPSd) can easily find a control 
+AT/MBIM/etc port to activate the GNSS functionality of the physical 
+device by checking the NMEA port siblings.
+
+> But the patch i'm giving does not work. (NULL deference err,
+> possibly due to gdev being NULL).
+> 
+> Just sharing on some progress i've made.
+
+A small hint. If a patch is not going to be merged here and now, it's 
+good idea put "RFC" keyword in the subject. E.g.:
+
+[RFC v4] wwan dev: Add port for NMEA channel for WWAN devices
+
+And another small hint. Use the bottom/inline posting style please. It's 
+really hard to read the email conversation backward.
+
+> I'm still looking at it and trying to figure out though.
+
+It will be great if you will manage to create the discussed 
+infrastructure inside the WWAN core code. I've already promised Slark to 
+make a prototype, but have a hard time to find a time to do it properly. 
+Sorry :(
+
+> On Tue, Jan 7 2025 at 02:05:38 PM +0800, Slark Xiao <slark_xiao@163.com> 
+> wrote:
 >>
->> Do you have any other ideas how can you display this information to the
->> users/customers, that it is time to stop using the uppercase header files then
->> they shall to use its merged lowercase named files instead in their userspace
->> SW?
-> 
-> ``__attribute__`` is just as implementation-specific as ``#pragma``, so it's
-> not really an improvement, but here goes:
-> 
-> ----
-> struct __attribute__((deprecated("This header file is deprecated"))) dontusethisstruct {
-> };
-> extern struct dontusethisstruct undefinedstruct;
-> ----
-
-As i know it is a feature only in GCC, can it work with Clang compiler?
-https://renenyffenegger.ch/notes/development/languages/C-C-plus-plus/GCC/__attribute__/deprecated/index
-
-By the way it is perfect for through a warning for a deprecated struct, function 
-etc ... only in GCC, but it is not ideal to use a simple header file include and 
-the syntax of it is horryble. Usage of a generic #pragma message is more 
-feasible in all compilers.
+>> At 2025-01-07 03:44:35, "Loic Poulain" <loic.poulain@linaro.org> wrote:
+>>> Hi Muhammad,
+>>>
+>>> + Slark
+>>>
+>>> On Sun, 5 Jan 2025 at 13:53, Muhammad Nuzaihan 
+>>> <zaihan@unrealasia.net> wrote:
+>>>>
+>>>>  Based on the code: drivers/bus/mhi/host/pci_generic.c
+>>>>  which already has NMEA channel (mhi_quectel_em1xx_channels)
+>>>>  support in recent kernels but it is never exposed
+>>>>  as a port.
+>>>>
+>>>>  This commit exposes that NMEA channel to a port
+>>>>  to allow tty/gpsd programs to read through
+>>>>  the /dev/wwan0nmea0 port.
+>>>>
+>>>>  Tested this change on a new kernel and module
+>>>>  built and now NMEA (mhi0_NMEA) statements are
+>>>>  available (attached) through /dev/wwan0nmea0 port on bootup.
+>>>>
+>>>>  Signed-off-by: Muhammad Nuzaihan Bin Kamal Luddin 
+>>>> <zaihan@unrealasia.net>
+>>>
+>>> This works for sure but I'm not entirely convinced NMEA should be
+>>> exposed as a modem control port. In your previous patch version Sergey
+>>> pointed to a discussion we had regarding exposing that port as WWAN
+>>> child device through the regular GNSS subsystem, which would require
+>>> some generic bridge in the WWAN subsystem.
+>>>
+>>> Slark, did you have an opportunity to look at the GNSS solution?
+>>>
+>>> Regards,
+>>> Loic
+>>
+>> Hi Loic,
+>> This solution same as what I did in last time. We got a wwan0nmea0 
+>> device but this
+>> device can't support flow control.
+>> Also, this is not the solution what Sergey expected, I think.
+>> Please refer to the target we talked last time:
+>> /////////////////////
+>>>>>  Basically, components should interact like this:
+>>>>>
+>>>>>  Modem PCIe driver <-> WWAN core <-> GNSS core <-> /dev/gnss0
+>>>>>
+>>>>>  We need the GNSS core to export the modem NMEA port as instance of
+>>>>>  'gnss' class.
+>>>>>
+>>>>>  We need WWAN core between the modem driver and the GSNN core 
+>>>>> because we
+>>>>>  need a common parent for GNSS port and modem control port (e.g. AT,
+>>>>>  MBIM). Since we are already exporting control ports via the WWAN
+>>>>>  subsystem, the GNSS port should also be exported through the WWAN
+>>>>>  subsystem. To keep devices hierarchy like this:
+>>>>>
+>>>>>                         .--> AT port
+>>>>>  PCIe dev -> WWAN dev -|
+>>>>>                         '--> GNSS port
+>>>>>
+>>>>>  Back to the implementation. Probably we should introduce a new port
+>>>>>  type, e.g. WWAN_PORT_NMEA. And this port type should have a special
+>>>>>  handling in the WWAN core.
+>>>>>
+>>>>  Similar like what I did in my local. I named it as WWAN_PORT_GNSS and
+>>>>  put it as same level with AT port.
+>>>>
+>>>>>  wwan_create_port() function should not directly create a char device.
+>>>>>  Instead, it should call gnss_allocate_device() and
+>>>>>  gnss_register_device() to register the port with GNSS subsystem.
 
