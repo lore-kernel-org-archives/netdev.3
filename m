@@ -1,142 +1,165 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E351E9B17;
-	Tue,  7 Jan 2025 10:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7485F1EBA0D;
+	Tue,  7 Jan 2025 10:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736246825; cv=none; b=ceq+0HHC6LW8ZLjnH8BFEP0Rmd+Ve8QJtHhVoUbdgROXvcTtIx4/RFQLlg8a34xSDeqOTYxQ6kV16v8XSqN8d/lJA2cxnz1MSZrvDIbnYJDA2AYEuzPInyClwuCwExweD/qUUOsRFDPOsHUNjfBfwqz/Xboaew/sbc3E3ydfSB8=
+	t=1736246839; cv=none; b=dpJvGG5OGRtSXO2cSQZi97Fw5PVcO2gsSEEwwzbftzFLHJX8SQgVjQdGa2Ql1o+Uh1RKBNgMEn+FFQTTbGg9G3ITeHT2xaeU45TyZMQv3+/7CPjFF6Yhj2K6darGVjAhXdjsFvj0HfZ9PdAhyd5bFVZMW9aaDwyy8XbR8qOJvUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736246825; c=relaxed/simple;
-	bh=E1o8lGvMqjkL/zsGsMcMBM1c24HlPZtU+cpIlihS8k4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N8NssswuAnihGZV/UGurgLmJ4BMEuOUnJRZVD4jsM+WkwSnXC2vJHeZlFgs0eY2yOL+sQ57XbtmAncm9N0j5PEEY/LdoT8RaDrhdgOfiUVrboorvGx4GqRnBMVvpm30bhK/2cqWw9cZDVIpD08t0D3caVEEPN37eTxCSQR1ZlGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Hexl94dD; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1736246839; c=relaxed/simple;
+	bh=rmV+IrFXiYRmJO8m/Th28rKjbiFt6MRkkO4Sbqpe3Gw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TNb14KTZ/Gk9LUtJWYCr1QUzqn5NyplQvLv55/qnCE8Zu6ZAo2BAdxeqNqO6QHLuogJ5r69RWkq8BwohWTpreKTnNE+1ULcyCA9R7VYJX2omtq7CvUnuY6rc2vFS5UpK0nv9UmFu6fKGOuKyrvsDt2rJ3BGBfcv3gOPsWYxvq04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CpjNhOIS; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Hexl94dD"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 507AM1Kl023890;
-	Tue, 7 Jan 2025 02:46:54 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=f
-	But5oRSdfqQhLTi54snARM2DwUkE97WOz3BTZh60bQ=; b=Hexl94dDItFlyI1Nq
-	0AEbQmCrEGjKc5iWitrAepa2E3eNp9GPJN5RNywwlo0lVTA6xZ5dl+ZJIlAh4ZJc
-	MJ37vtvd2r2dhPOTycVSZdck/imR4SaAiydxWN+6LK5WTzEe9Xe9mcCZ+P0OUsFo
-	RmZUEjBvQ1Y9f2FV0oapLnXLmZZia3ENveeGMazXqgF76NxX07h3mtlbkhOCOJHz
-	uh+uFe9plMRPiRkffTKQAb/3mHzvUmyVg/Qe/SSaGeZg+bMOR6B+AcG/oZpxp4rS
-	etRh8xs2tdPWo7HUWtL0NjnssRqU5vCYAukWh+8m7zihol25EdYh1K4TiqSEyoZo
-	zDmnw==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4412etg1ac-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Jan 2025 02:46:54 -0800 (PST)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Tue, 7 Jan 2025 02:46:53 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Tue, 7 Jan 2025 02:46:53 -0800
-Received: from localhost.localdomain (unknown [10.28.36.166])
-	by maili.marvell.com (Postfix) with ESMTP id A88723F70B1;
-	Tue,  7 Jan 2025 02:46:49 -0800 (PST)
-From: Suman Ghosh <sumang@marvell.com>
-To: <sgoutham@marvell.com>, <gakula@marvell.com>, <sbhatta@marvell.com>,
-        <hkelam@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <lcherian@marvell.com>,
-        <jerinj@marvell.com>
-CC: Suman Ghosh <sumang@marvell.com>
-Subject: [net-next PATCH 3/6] octeontx2-pf: Reconfigure RSS table after enabling AF_XDP zerocopy on rx queue
-Date: Tue, 7 Jan 2025 16:16:25 +0530
-Message-ID: <20250107104628.2035267-4-sumang@marvell.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250107104628.2035267-1-sumang@marvell.com>
-References: <20250107104628.2035267-1-sumang@marvell.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CpjNhOIS"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3862df95f92so6746814f8f.2;
+        Tue, 07 Jan 2025 02:47:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736246836; x=1736851636; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fh0AFKuAKxAUWXpt7kGI1qVooHVbo7SNiy/9flSEnaA=;
+        b=CpjNhOISeqslgdQr8wnZOAp9ApHs2YwkPksnqk1MKQ3QUOLtcQZk7hA0hrb07/9/7w
+         DeCq7eKw8HMlHv/jTgrClZY/UpKs0dm6fFCNyiHME+4jwmttynV65KVfS5bhPgIuZSyB
+         NUJc6AHKEfCN1BBVj30d3b9oN7m0Lm5DNKA8F3l+Pg2XPvx8UXMNJFLLMuafrBPbM8sT
+         BWzb4jejI0sE0nYIv9saiZIA0NS2yVLt8jp3rV/VWq+7fHcsZqm3w25fmO/t7IbvdDSZ
+         QmD6Oc7ZQuc1QSx7yVyG8Py/QtnR73wSV9l0ttm/E2hQEfOn3zA4Cars7nJHrcXWM09e
+         o4VA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736246836; x=1736851636;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fh0AFKuAKxAUWXpt7kGI1qVooHVbo7SNiy/9flSEnaA=;
+        b=mFtrPvJjBAGjxAmAZWbxXqEIyL3aC9hidFvitNPDzHXsPypEbgQzSWR5x4LmpKblzE
+         6nRbfhLPdrGEUiYO3/Kzw1yNVqvr9Y6P035rGl9ZcdfNZ/MZAupgjm5o58zWOOx3Dvlh
+         4+Bmw1MvV2f/xAmMUECW2xG7XCgZocbkXvCLP2nKWEkgoxrEAkKqYma6NAgpwyk+2OnJ
+         47Cfb6Tw4Yz/lvDa3jzYgFZ0C7378AZkuABGCYmYCM5ckf+8gz+4SgXp/zFtQRxRRujl
+         m20u1bMQWjrVCLE1h82pSnf75G6KdXPDznnHie9YpeMfZZxvDHkX0Pqd3wqJsqrCxJke
+         bEJA==
+X-Forwarded-Encrypted: i=1; AJvYcCUBK8ZOT4hMZho0bTffApVOjCLJuhuMqDWczKlvOjbrrZVAsKp+qrEhuZoCc5MfI9b5FYY=@vger.kernel.org, AJvYcCUfHeUaTrTME02pjvkkXLPDOgj7wqJdQlhkzI/V4tzlB1p0B+L+IeYV00CwK4gMso3e2Q39pF3+yOFVgQ==@vger.kernel.org, AJvYcCV6VJPvg9gAUyI7S2BjNXlFtJ1na2/IckmZj0hgV9rWo4kpjFPPnNnzEGrDMIVYdYDGs/W/FfYj1mPe2SpUo0QH@vger.kernel.org, AJvYcCVB/oQ5RAPRCmg3OHubbU4edbCPbpeTIHQHWDs266UAIAJoaIL9/8QnORdjLv/LI6LeVDxczpLbWfMWA8JASGY=@vger.kernel.org, AJvYcCWtpdhJfVVcbI++sm9qYQXuDvFFa/z8W27l4CgSiGStsQOumx5cFLIPPGfqXtrGPxv3UwyQB9W4@vger.kernel.org, AJvYcCX4aI1OkbVCkO3dZ6bdwISAOJtS2vCZ1CF3fAxLy17kqeDR8q2pU0S7QbFKdxdtR1xyyee7e3puIbu7@vger.kernel.org, AJvYcCXUQKrQ0wF2qtY5oOa9v8p6wlWfobcXO5/U5rTmHbot+cStJfWy9e8YNroJ/OujX0M56A8RadBWFo56C5Au@vger.kernel.org, AJvYcCXY8EACV/lA1hY4o105sAatpGB/KNJov3S+W3coJ80N7vX7AIPEuzTtyntcHkwCiXa2gU52CJ33xaTWuA==@vger.kernel.org, AJvYcCXxX0J4F8Jj8JiKybWKhtXJg0TOQObvD7HIyKoS1Z27pLyIO51GPCyfC+8SG5g4c99TNOp2nxcMW2dO@vger.kernel.org
+X-Gm-Message-State: AOJu0YwR7xZHmlYBFjisBzLTlIh6j1zZY0Cd8IVSNcA7I2X0h04MqW17
+	s6eRsNRpJOsrbCMXi9rC9QmOvf5t68olKOc+D9AKSQH4U4fcBckxUY09lkHaqTZEgI2ORXAUMdR
+	3EbLSjbuinzW+g692W18EmOZEMbiJEKd9
+X-Gm-Gg: ASbGncsTONgZgyE2X7IM4+HIcEKSBdwCbzhE8lgyqlRee7wuV/6sHzIVCQ8BbLLN4X2
+	srNBsmR44ZzqwPIXkj2mCY1gDkL92LMaOmpZv
+X-Google-Smtp-Source: AGHT+IHp1K2L48YKiIQv0pwnQlZPYX8cMCBbRBU/fwg+IEmnnlA8QF5/odQWLMrNcSpCZK0F/LO3cHqTWVNEZ39orXM=
+X-Received: by 2002:a05:6000:480a:b0:386:1cd3:89fa with SMTP id
+ ffacd0b85a97d-38a221fa8c6mr57843141f8f.33.1736246835555; Tue, 07 Jan 2025
+ 02:47:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: 8sUOtjRdM35xtnQxSr_wZM_W6uUNvF4V
-X-Proofpoint-GUID: 8sUOtjRdM35xtnQxSr_wZM_W6uUNvF4V
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+References: <20250104125732.17335-1-shaw.leon@gmail.com> <20250107085646.42302-1-kuniyu@amazon.com>
+In-Reply-To: <20250107085646.42302-1-kuniyu@amazon.com>
+From: Xiao Liang <shaw.leon@gmail.com>
+Date: Tue, 7 Jan 2025 18:46:38 +0800
+Message-ID: <CABAhCOQAqspiaFO-486UtZpEWsua51f+1f6-LocNhHVfAqW=NQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v7 00/11] net: Improve netns handling in rtnetlink
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: andrew+netdev@lunn.ch, b.a.t.m.a.n@lists.open-mesh.org, 
+	bpf@vger.kernel.org, bridge@lists.linux.dev, davem@davemloft.net, 
+	donald.hunter@gmail.com, dsahern@kernel.org, edumazet@google.com, 
+	horms@kernel.org, idosch@nvidia.com, jiri@resnulli.us, kuba@kernel.org, 
+	linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-ppp@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-wpan@vger.kernel.org, liuhangbin@gmail.com, netdev@vger.kernel.org, 
+	osmocom-net-gprs@lists.osmocom.org, pabeni@redhat.com, shuah@kernel.org, 
+	wireguard@lists.zx2c4.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-RSS table needs to be reconfigured once a rx queue is enabled or
-disabled for AF_XDP zerocopy support. After enabling UMEM on a rx queue,
-that queue should not be part of RSS queue selection algorithm.
-Similarly the queue should be considered again after UMEM is disabled.
+On Tue, Jan 7, 2025 at 4:57=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon.com=
+> wrote:
+>
+> From: Xiao Liang <shaw.leon@gmail.com>
+> Date: Sat,  4 Jan 2025 20:57:21 +0800
+[...]
+> > - In amt_newlink() drivers/net/amt.c:
+> >
+> >     amt->net =3D net;
+> >     ...
+> >     amt->stream_dev =3D dev_get_by_index(net, ...
+> >
+> >   Uses net, but amt_lookup_upper_dev() only searches in dev_net.
+> >   So the AMT device may not be properly deleted if it's in a different
+> >   netns from lower dev.
+>
+> I think you are right, and the upper device will be leaked
+> and UAF will happen.
+>
+> amt must manage a list linked to a lower dev.
+>
+> Given no one has reported the issue, another option would be
+> drop cross netns support in a short period.
 
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
----
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c  | 4 ++++
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c | 6 +++++-
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_xsk.c     | 4 ++++
- 3 files changed, 13 insertions(+), 1 deletion(-)
+Yes. I also noticed AMT sets dev->netns_local to prevent netns
+change. Probably it also assumes the same netns during creation.
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index d653e0136cf4..9d7c0f0b0b56 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -331,6 +331,10 @@ int otx2_set_rss_table(struct otx2_nic *pfvf, int ctx_id)
- 	rss_ctx = rss->rss_ctx[ctx_id];
- 	/* Get memory to put this msg */
- 	for (idx = 0; idx < rss->rss_size; idx++) {
-+		/* Ignore the queue if AF_XDP zero copy is enabled */
-+		if (test_bit(rss_ctx->ind_tbl[idx], pfvf->af_xdp_zc_qidx))
-+			continue;
-+
- 		aq = otx2_mbox_alloc_msg_nix_aq_enq(mbox);
- 		if (!aq) {
- 			/* The shared memory buffer can be full.
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-index 2d53dc77ef1e..010385b29988 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-@@ -910,8 +910,12 @@ static int otx2_get_rxfh(struct net_device *dev,
- 		return -ENOENT;
- 
- 	if (indir) {
--		for (idx = 0; idx < rss->rss_size; idx++)
-+		for (idx = 0; idx < rss->rss_size; idx++) {
-+			/* Ignore if the rx queue is AF_XDP zero copy enabled */
-+			if (test_bit(rss_ctx->ind_tbl[idx], pfvf->af_xdp_zc_qidx))
-+				continue;
- 			indir[idx] = rss_ctx->ind_tbl[idx];
-+		}
- 	}
- 	if (rxfh->key)
- 		memcpy(rxfh->key, rss->key, sizeof(rss->key));
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_xsk.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_xsk.c
-index 69098c6a6fed..f6bbe18016ba 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_xsk.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_xsk.c
-@@ -130,6 +130,8 @@ int otx2_xsk_pool_enable(struct otx2_nic *pf, struct xsk_buff_pool *pool, u16 qi
- 
- 	set_bit(qidx, pf->af_xdp_zc_qidx);
- 	otx2_clean_up_rq(pf, qidx);
-+	/* Reconfigure RSS table as 'qidx' cannot be part of RSS now */
-+	otx2_set_rss_table(pf, DEFAULT_RSS_CONTEXT_GROUP);
- 	/* Kick start the NAPI context so that receiving will start */
- 	return otx2_xsk_wakeup(pf->netdev, qidx, XDP_WAKEUP_RX);
- }
-@@ -146,6 +148,8 @@ int otx2_xsk_pool_disable(struct otx2_nic *pf, u16 qidx)
- 	otx2_clean_up_rq(pf, qidx);
- 	clear_bit(qidx, pf->af_xdp_zc_qidx);
- 	xsk_pool_dma_unmap(pool, DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING);
-+	/* Reconfigure RSS table as 'qidx' now need to be part of RSS now */
-+	otx2_set_rss_table(pf, DEFAULT_RSS_CONTEXT_GROUP);
- 
- 	return 0;
- }
--- 
-2.25.1
+[...]
+> >
+> > - In gtp_newlink() in drivers/net/gtp.c:
+> >
+> >     gtp->net =3D src_net;
+> >     ...
+> >     gn =3D net_generic(dev_net(dev), gtp_net_id);
+> >     list_add_rcu(&gtp->list, &gn->gtp_dev_list);
+> >
+> >   Uses src_net, but priv is linked to list in dev_net. So it may not be
+> >   properly deleted on removal of link netns.
+>
+> The device is linked to a list in the same netns, so the
+> device will not be leaked.  See gtp_net_exit_batch_rtnl().
+>
+> Rather, the problem is the udp tunnel socket netns could be
+> freed earlier than the dev netns.
 
+Yes, you're right. Actually I mean the netns of the socket by "link netns"
+(there's some clarification about this in patch 02).
+
+[...]
+> >
+> > - In pfcp_newlink() in drivers/net/pfcp.c:
+> >
+> >     pfcp->net =3D net;
+> >     ...
+> >     pn =3D net_generic(dev_net(dev), pfcp_net_id);
+> >     list_add_rcu(&pfcp->list, &pn->pfcp_dev_list);
+> >
+> >   Same as above.
+>
+> I haven't tested pfcp but it seems to have the same problem.
+>
+> I'll post patches for gtp and pfcp.
+>
+
+It would be nice.
+
+>
+> >
+> > - In lowpan_newlink() in net/ieee802154/6lowpan/core.c:
+> >
+> >     wdev =3D dev_get_by_index(dev_net(ldev), nla_get_u32(tb[IFLA_LINK])=
+);
+> >
+> >   Looks for IFLA_LINK in dev_net, but in theory the ifindex is defined
+> >   in link netns.
+>
+> I guess you mean the ifindex is defined in src_net instead.
+> Not sure if it's too late to change the behaviour.
+
+Yes, it's source net for lowpan. I think it depends on whether
+the interpretation of IFLA_LINK should be considered as part API
+provided by rtnetlink core, or something customizable by driver.
+In the former case, this can be considered as a bug.
+
+Thanks.
