@@ -1,127 +1,194 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from alln-iport-6.cisco.com (alln-iport-6.cisco.com [173.37.142.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725111946B1
-	for <netdev@vger.kernel.org>; Tue,  7 Jan 2025 21:41:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC5F1E0084
+	for <netdev@vger.kernel.org>; Tue,  7 Jan 2025 21:42:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.142.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736286090; cv=none; b=Zp0+CgV/Y7sxK4mIkKAtgiPfb6HBNGXjul+iQEPCHiESkdGd8QmRlzmqOTJx/134NfAkNmB6hOBXfYxV4XgLYapb5MZy+cn7FVJ3po0cQI/k99b4FC2LAzuztHKGV7MRZfKX1pEgOWuKvZSlfLUJPbnj2HDhM4yLJxfUVj540jE=
+	t=1736286128; cv=none; b=jIyjI5h78pkoSVLLihBnvFFAnOlod67qhqZEHVNt+Sq5lravimJ21TaruOqYhhf3U74Y+6aYHCPEBYCTFiofp1uzwHs+5bhda2hXF2tD7gsnqVs4PVQqkkQPgxJGwrHoRPk6HCw8FuHGJFWxEqe9m7LrqwL1F4J66JuFQeSYH0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736286090; c=relaxed/simple;
-	bh=lpWKviEZo4bxM8FXJ8znVcvZY1r1EUP8KwYPFjPwLkY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qfv5cuTbfkbWlBTTQ1aEQUPpywI4jwAezc0jXMHYkmI3eUeyY5Ou0UwP5S4e/c6t8mn5hp89RNdsjZhr5BgrZBie8BDKVBGehLyRnPxLolgcgRg/6NlC7UKaGxqGpLKmnBq1gRUSIKYpMgQ90EAAqXYPy12VomdHa6IZCOkLxwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rJKqu2bQ; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1736286128; c=relaxed/simple;
+	bh=kj3XAeBVudwD3vo/0EEH75kWe1rcErK6eALotHsNWn4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=t5BGdvzHhtgKlrXVV47X1Dc/6X0GYwxjePntml4N0Fmuydkxspf14x6FYt/RWhflPjoBRtjktjs9ZT9OzcLKQAKlt7bn2EuUjV++Jy5CNa+LuRA2tAu74d70kQvAp8KcHzAvZr1JpnHU+BLdzakA3RtcWoRwuZ6QM3pOffCpjSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b=Ei6Y3Qc7; arc=none smtp.client-ip=173.37.142.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rJKqu2bQ"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-215740b7fb8so39865ad.0
-        for <netdev@vger.kernel.org>; Tue, 07 Jan 2025 13:41:29 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="Ei6Y3Qc7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736286089; x=1736890889; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=unXEBPo8awHZ2Z1rF9jBBJWiHGlrbX40mqZQQ+A6Pko=;
-        b=rJKqu2bQcea7guTbC2FPbTVj9vl7Z3T9HB6kDwRdZKmW+kRcuM6s+EPqNkETQfNZTC
-         OICOgzg9L7NWOiMGE0AY5AqWgw02vSjz3YNRZJSagIxo/yKFQ0TGDjyEmUTSlc0Gza9A
-         vrcMD4pzlGRLS9tZfp7JxJrx4FZUZwkGFIA4kUJgykw82p0/Y51UrqWLrO9cweULhQOv
-         D7xay0ikT0Y8lbTIcubMdjad84oGj8wEo0Ie56+DWxwXP+j9ZeOw0ZCrCpyUEJSK2Wgv
-         u17tyOkwZ5XrKw8ouzRHbqGurmd4+ecneGnoEeckw2qbTBTO0q3/3cwi4DaiFma57+eY
-         /j2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736286089; x=1736890889;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=unXEBPo8awHZ2Z1rF9jBBJWiHGlrbX40mqZQQ+A6Pko=;
-        b=s5ceDk+aMrN0oiOl+AVdXsz6zRZF9dsyowdF8X1FQhDspBwpOcv1THMTxU+XLsVlYn
-         zA0RCY1qvkSCuPaoijbo+SF8vHZSSj0w9O0vqj61RPvkkPc2ImBC9PhbzuvPFLrSS3KZ
-         ET8irRtBu5Fq1BQFjLG7CV3ganPMh2A+tsTEsvherkVMVp/qMYGi7jnMR7z/c+sDdZ3L
-         05EK3hlwiFn5BkPpUC5itBqcyIhUSLTilEFmQ/+GcInIWcEp17ZLlMpvvVPyGNwNQJeo
-         nEjDuQK5PEZXPbZ1lmtI5OCrIa1PDNa8NUX0HVGYErH+Qch3HBLdaI902176cPvn9cDc
-         nivw==
-X-Forwarded-Encrypted: i=1; AJvYcCUZ7/f8eFBEs/QGMf7oiUlDcWd2ivNnBIzpTAIASeowiKwGbSPXqqv7AIpB0I8z6+vhyd7RJUI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLhrRhveAwCWnbKqFaA66exRxXPYB20n7F/8Rcizw6Depx7b4L
-	kionTvDd4Fyh2vLIIoz/+uyg2XnaWSFjyW0/Q47C3nQQE/F7asxHAZ2p9Rt/lw==
-X-Gm-Gg: ASbGncuFk+i86D3LV0Dp0V455b76LSWmy0d5H6lqbyzeCt6phNZ3Mz0UZH1KXlshYMY
-	VmNnfU0wcPAh69QvjSWb7aM9Yu1iSkzpAGs/FkE13gNdYyRRPxRVZ3pXq+N3no8bi8eksomxYOu
-	sSTC25pTK7AyblICpHgSXiHQ5zOD4IPLx2K9u72q4BDenYTWXK5e4ka3SkkdYUTXVuNG4UM7JuK
-	ozwHkKP3t0Qm5XL66jrSld9EExDi7rW5/PaVaICFoCzfzmq5IwuKcU73lN0PV9T2lKfQtBsH/dP
-	4bQ7efqJhcO7Oc045tw=
-X-Google-Smtp-Source: AGHT+IG3hEhfXeKWewYxbqr5NVyNbPqv0I027EJ/i4H/5/AUmYmTqt4fR8mqPv9GpwTbRhwaYzCZDw==
-X-Received: by 2002:a17:902:fa4f:b0:20c:f40e:6ec3 with SMTP id d9443c01a7336-21a84189e0emr559145ad.22.1736286088554;
-        Tue, 07 Jan 2025 13:41:28 -0800 (PST)
-Received: from google.com (57.145.233.35.bc.googleusercontent.com. [35.233.145.57])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc963103sm316291215ad.52.2025.01.07.13.41.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 13:41:28 -0800 (PST)
-Date: Tue, 7 Jan 2025 21:41:24 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Li Li <dualli@chromium.org>
-Cc: dualli@google.com, corbet@lwn.net, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	donald.hunter@gmail.com, gregkh@linuxfoundation.org,
-	arve@android.com, tkjos@android.com, maco@android.com,
-	joel@joelfernandes.org, brauner@kernel.org, surenb@google.com,
-	arnd@arndb.de, masahiroy@kernel.org, bagasdotme@gmail.com,
-	horms@kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, netdev@vger.kernel.org,
-	hridya@google.com, smoreland@google.com, kernel-team@android.com
-Subject: Re: [PATCH v11 2/2] binder: report txn errors via generic netlink
-Message-ID: <Z32fhN6yq673YwmO@google.com>
-References: <20241218203740.4081865-1-dualli@chromium.org>
- <20241218203740.4081865-3-dualli@chromium.org>
- <Z32cpF4tkP5hUbgv@google.com>
+  d=cisco.com; i=@cisco.com; l=3131; q=dns/txt; s=iport;
+  t=1736286126; x=1737495726;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=VPokXnowB9WV2FbOa7AooedmIXf8/hgdXZkkQ7irUCc=;
+  b=Ei6Y3Qc7g2K6XwpnVfe5hp8jjklNG/ZhHRlLj30xH4/lm7L0fHH+79UO
+   OayN7oxWi149lgcVYf1/y8MYH4CuotP8kUyWVyNDVYP1VJZL/YwvyxmQB
+   OL0qVKvWuKkcEX25RiNSdBYJaI+gRsvV1HXk+y4yNvSNhur9zJ+G85x/r
+   8=;
+X-CSE-ConnectionGUID: mYhYkXiqSdWbpfhhTh4pfg==
+X-CSE-MsgGUID: ZG8JkHBPRLaFskoY2TEa9Q==
+X-IPAS-Result: =?us-ascii?q?A0AeAACVnn1nj5AQJK1aHQEBAQEJARIBBQUBggAHAQsBh?=
+ =?us-ascii?q?BlDSI1Rpw2BJQNWDwEBAQ9EBAEBhQcCinQCJjUIDgECBAEBAQEDAgMBAQEBA?=
+ =?us-ascii?q?QEBAQEBAQsBAQUBAQECAQcFFAEBAQEBATkFSYYIhlsCAQMnCwFGEFErKwcSg?=
+ =?us-ascii?q?wGCZQOxQoF5M4EB3jOBbYFIAYVqh19whHcnG4FJRIEVgTuCLYsHBIIzhTaGZ?=
+ =?us-ascii?q?ocfkARIgSEDWSwBVRMNCgsHBYE5OgMiCwsMCxQcFQIVHxIGEQRuRDeCRmlLN?=
+ =?us-ascii?q?wINAjWCHiRYgiuEXIRHhFiCS1WCSIIXfIEdgkFVQAMLGA1IESw3Bg4bBj5uB?=
+ =?us-ascii?q?5p1PINuAYEOfJUVkh+LcpURhCWBY59jGjOEBJQGkkmYfCKCNqFvhGaBaAE4g?=
+ =?us-ascii?q?VszGggbFYMiUhkPji0NCbknJTI8AgcLAQEDCZFVAQE?=
+IronPort-Data: A9a23:xUKm4agoAEWwiO9LiuDXT/M2X161uhAKZh0ujC45NGQN5FlHY01je
+ htvCmyFa/6INjf2c4sgaYvipxxXupLRyINlT1Zr/nwxFXljpJueD7x1DKtf0wB+jyHnZBg6h
+ ynLQoCYdKjYdleF+FH1dOCn9SQkvU2xbuKUIPbePSxsThNTRi4kiBZy88Y0mYcAbeKRW2thg
+ vus5ZSFULOZ82QsaD9Msvrc8EkHUMna4Vv0gHRvPZing3eG/5UlJMp3Db28KXL+Xr5VEoaSL
+ 87fzKu093/u5BwkDNWoiN7TKiXmlZaLYGBiIlIPM0STqkAqSh4ai87XB9JAAatjsAhlqvgqo
+ Dl7WTNcfi9yVkHEsLx1vxC1iEiSN4UekFPMCSDXXcB+UyQqflO0q8iCAn3aMqUdy+ZGAlFP7
+ McUFzoVYBCDu+Lq2Ly0H7wEasQLdKEHPasWvnVmiDWcBvE8TNWbHOPB5MRT23E7gcUm8fT2P
+ pVCL2ExKk2eJUQTZj/7C7pm9Ausrnv4cztUoVaYjaE2+GPUigd21dABNfKJIozbFJ4IwBnwS
+ mTuzUupIBI6HuSl7TOr6XGrt7XzsCqqYddHfFG/3qU32ALInDN75ActfVeyv/S8okK3Rd9aL
+ 0sa5mwooLRa3EGnU9z0TRCkiHGDuREYVpxbFOhSwAKQwKP84AuDAGUACDlbZ7QOvck6XzE1l
+ VmEg9/kGxRrrbuTD3mdnp+MpDm/Pyk9N2IOZSYYCwAC5rHLpowvgh/RZshsHbTzjdDvHzz0h
+ TeQo0ADa647hMoP0eC/uFvAmT/p/sePRQ8u7QKRVWWghu9kWGK7T4mZ6WnY3fdZF4qmREGPv
+ Hg4m5SG4u9bWPlhixexaOkKGbio4dOMPzvdnUNjEvEdG9KFpSfLkWd4vm0WGat5DvvobwMFd
+ 6M6hO+w2HOxFCbyBUOUS9vtYyjP8UQGPY+8PhwzRoEVCqWdjCfdoElTibe4hggBanQEn6AlI
+ ou8es2xF3scAqkP5GPpHLlEge9wnnhhlT+7qXXHI/KPjOT2iJm9FOZtDbdyRrpihE95iFyPq
+ o8Ba5viJ+t3D72mPnO/HXEvwaAidiVjWsus9KS7h8aIIxFtHyk6GuTNzLY6M41jlOI9qws71
+ i/VZ6Os83Km3SevAVzTMhhLMeq/Nb4h9ihTFXJ3Yj6VN40LPd3HAFE3K8BvJeFPGS0K5aIcc
+ sTpjO3ZW6sREmqbqmp1gFuUhNUKSSlHTDmmZ0KNCAXTtbY5L+AV0rcIpjfSyRQ=
+IronPort-HdrOrdr: A9a23:+g8sQ6vmM+NS+kU0JeSp33cb7skDcdV00zEX/kB9WHVpmwKj+P
+ xG+85rsiMc5wxxZJhNo7290ey7MBHhHP1OkO0s1MmZPDUO0VHAROoJ0WKh+UyEJ8SUzIBgPM
+ lbH5SWcOeAbmSTSa3BkXCF+xFK+qjgzJyV
+X-Talos-CUID: 9a23:vt8ClG8JAyz19XkMZAOVv0slGvEmQnzE93vvKVe2CWZVSOGNR1DFrQ==
+X-Talos-MUID: 9a23:2Iwx6wUdrWAHl9Dq/A3D1BNhFO1Q2YCnJlsOlqRch+SNZBUlbg==
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.12,296,1728950400"; 
+   d="scan'208";a="408993567"
+Received: from alln-l-core-07.cisco.com ([173.36.16.144])
+  by alln-iport-6.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 07 Jan 2025 21:42:05 +0000
+Received: from cisco.com (savbu-usnic-a.cisco.com [10.193.184.48])
+	by alln-l-core-07.cisco.com (Postfix) with ESMTP id 5AC2D180001D1;
+	Tue,  7 Jan 2025 21:42:05 +0000 (GMT)
+Received: by cisco.com (Postfix, from userid 392789)
+	id 31A3220F2004; Tue,  7 Jan 2025 13:42:05 -0800 (PST)
+From: John Daley <johndale@cisco.com>
+To: benve@cisco.com,
+	satishkh@cisco.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Cc: John Daley <johndale@cisco.com>,
+	Nelson Escobar <neescoba@cisco.com>
+Subject: [PATCH net-next v2 1/3] enic: Move RX coalescing set function
+Date: Tue,  7 Jan 2025 13:41:57 -0800
+Message-Id: <20250107214159.18807-2-johndale@cisco.com>
+X-Mailer: git-send-email 2.35.2
+In-Reply-To: <20250107214159.18807-1-johndale@cisco.com>
+References: <20250107214159.18807-1-johndale@cisco.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z32cpF4tkP5hUbgv@google.com>
+Content-Transfer-Encoding: 8bit
+X-Outbound-SMTP-Client: 10.193.184.48, savbu-usnic-a.cisco.com
+X-Outbound-Node: alln-l-core-07.cisco.com
 
-On Tue, Jan 07, 2025 at 09:29:08PM +0000, Carlos Llamas wrote:
-> On Wed, Dec 18, 2024 at 12:37:40PM -0800, Li Li wrote:
-> > From: Li Li <dualli@google.com>
-> 
-> > @@ -6137,6 +6264,11 @@ static int binder_release(struct inode *nodp, struct file *filp)
-> >  
-> >  	binder_defer_work(proc, BINDER_DEFERRED_RELEASE);
-> >  
-> > +	if (proc->pid == proc->context->report_portid) {
-> > +		proc->context->report_portid = 0;
-> > +		proc->context->report_flags = 0;
-> 
-> Isn't ->portid the pid from the netlink report manager? How is this ever
-> going to match a certain proc->pid here? Is this manager supposed to
-> _also_ open a regular binder fd?
-> 
-> It seems we are tying the cleanup of the netlink interface to the exit
-> of the regular binder device, correct? This seems unfortunate as using
-> the netlink interface should be independent.
-> 
-> I was playing around with this patch with my own PoC and now I'm stuck:
->   root@debian:~# ./binder-netlink
->   ./binder-netlink: nlmsgerr No permission to set flags from 1301: Unknown error -1
-> 
-> Is there a different way to reset the protid?
-> 
+Move the function used for setting the RX coalescing range to before
+the function that checks the link status. It needs to be called from
+there instead of from the probe function.
 
-Furthermore, this seems to be a problem when the report manager exits
-without a binder instance, we still think the report is enabled:
+There is no functional change.
 
-[  202.821346] binder: Failed to send binder netlink message to 597: -111
-[  202.821421] binder: Failed to send binder netlink message to 597: -111
-[  202.821304] binder: Failed to send binder netlink message to 597: -111
-[  202.821306] binder: Failed to send binder netlink message to 597: -111
-[  202.821387] binder: Failed to send binder netlink message to 597: -111
-[  202.821464] binder: Failed to send binder netlink message to 597: -111
-[  202.821467] binder: Failed to send binder netlink message to 597: -111
-[  202.821344] binder: Failed to send binder netlink message to 597: -111
-[  202.822513] binder: Failed to send binder netlink message to 597: -111
-[  202.822152] binder: Failed to send binder netlink message to 597: -111
-[  202.822683] binder: Failed to send binder netlink message to 597: -111
-[  202.822629] binder: Failed to send binder netlink message to 597: -111
+Co-developed-by: Nelson Escobar <neescoba@cisco.com>
+Signed-off-by: Nelson Escobar <neescoba@cisco.com>
+Co-developed-by: Satish Kharat <satishkh@cisco.com>
+Signed-off-by: Satish Kharat <satishkh@cisco.com>
+Signed-off-by: John Daley <johndale@cisco.com>
+---
+ drivers/net/ethernet/cisco/enic/enic_main.c | 60 ++++++++++-----------
+ 1 file changed, 30 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index 9913952ccb42..957efe73e41a 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -428,6 +428,36 @@ static void enic_mtu_check(struct enic *enic)
+ 	}
+ }
+ 
++static void enic_set_rx_coal_setting(struct enic *enic)
++{
++	unsigned int speed;
++	int index = -1;
++	struct enic_rx_coal *rx_coal = &enic->rx_coalesce_setting;
++
++	/* 1. Read the link speed from fw
++	 * 2. Pick the default range for the speed
++	 * 3. Update it in enic->rx_coalesce_setting
++	 */
++	speed = vnic_dev_port_speed(enic->vdev);
++	if (speed > ENIC_LINK_SPEED_10G)
++		index = ENIC_LINK_40G_INDEX;
++	else if (speed > ENIC_LINK_SPEED_4G)
++		index = ENIC_LINK_10G_INDEX;
++	else
++		index = ENIC_LINK_4G_INDEX;
++
++	rx_coal->small_pkt_range_start = mod_range[index].small_pkt_range_start;
++	rx_coal->large_pkt_range_start = mod_range[index].large_pkt_range_start;
++	rx_coal->range_end = ENIC_RX_COALESCE_RANGE_END;
++
++	/* Start with the value provided by UCSM */
++	for (index = 0; index < enic->rq_count; index++)
++		enic->cq[index].cur_rx_coal_timeval =
++				enic->config.intr_timer_usec;
++
++	rx_coal->use_adaptive_rx_coalesce = 1;
++}
++
+ static void enic_link_check(struct enic *enic)
+ {
+ 	int link_status = vnic_dev_link_status(enic->vdev);
+@@ -1901,36 +1931,6 @@ static void enic_synchronize_irqs(struct enic *enic)
+ 	}
+ }
+ 
+-static void enic_set_rx_coal_setting(struct enic *enic)
+-{
+-	unsigned int speed;
+-	int index = -1;
+-	struct enic_rx_coal *rx_coal = &enic->rx_coalesce_setting;
+-
+-	/* 1. Read the link speed from fw
+-	 * 2. Pick the default range for the speed
+-	 * 3. Update it in enic->rx_coalesce_setting
+-	 */
+-	speed = vnic_dev_port_speed(enic->vdev);
+-	if (ENIC_LINK_SPEED_10G < speed)
+-		index = ENIC_LINK_40G_INDEX;
+-	else if (ENIC_LINK_SPEED_4G < speed)
+-		index = ENIC_LINK_10G_INDEX;
+-	else
+-		index = ENIC_LINK_4G_INDEX;
+-
+-	rx_coal->small_pkt_range_start = mod_range[index].small_pkt_range_start;
+-	rx_coal->large_pkt_range_start = mod_range[index].large_pkt_range_start;
+-	rx_coal->range_end = ENIC_RX_COALESCE_RANGE_END;
+-
+-	/* Start with the value provided by UCSM */
+-	for (index = 0; index < enic->rq_count; index++)
+-		enic->cq[index].cur_rx_coal_timeval =
+-				enic->config.intr_timer_usec;
+-
+-	rx_coal->use_adaptive_rx_coalesce = 1;
+-}
+-
+ static int enic_dev_notify_set(struct enic *enic)
+ {
+ 	int err;
+-- 
+2.35.2
+
