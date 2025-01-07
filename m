@@ -1,145 +1,135 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp-out.freemail.hu (fmfe34.freemail.hu [46.107.16.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345DD1DFD87
-	for <netdev@vger.kernel.org>; Tue,  7 Jan 2025 18:53:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D191F4720;
+	Tue,  7 Jan 2025 18:53:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.107.16.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736275984; cv=none; b=d8pA75yMj4OFOtK6GmgnQFULowSQfZlqteeFXL5dA5qBsM7t3pntjKcx4ooX6IW6rB6HwZi5CDBspoX5qFtZFOdu4dPumUGIKSvUD1qAePs5XvhbgmqT8huGd0qMXdjCbJcyDylXr3Kgb6y6aT6Hdkw9WCB80IJLH9HeWKJyKKg=
+	t=1736275990; cv=none; b=jNM1gTpUFzKOtP9inhexJ568j3WdxCRgQN8+/1y0w1TeF6vBChbKCY1OJajGPI399NYkZ4QhF7sgLL4Zct1H80e2KnUZ7nu4ZS1GnlwhPq29EjEr6gQilIcmoh32x5IaFII06mAvGPrueXPBkDWYfoTpyIgjFM1aDYoRHDUfyLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736275984; c=relaxed/simple;
-	bh=9vk+IEkJXpCiBn7KvXO2yU7lodW9ptwAp0TajUHl5ug=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eMk/LPfAA7YfSvfoabsNzewpJb5n/fHk8JOkGD3H/wIT9t8xa90qQXh0W/cgtigCfUdhydTmaBpHVtTF9ZhVTCcYBlJY/yiXkpPstn+IzkSf+TxRXwoWKujecsVJ///UuvRBJgmVPTpQ2gwifJubIqPSLsIGZjWZXBArqKd8MnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XgSksf8f; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1736275990; c=relaxed/simple;
+	bh=GOng8ZIGtTSQgvNaD7xzP/6JyDKAysORsRiFtxSnCkU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gWXJlgAVdMgk7MvAvrILGFdKq20oqVLi62uvNTBZ5RxSLSSTvSDoPyIFJJHpUz1DUVgWuuEsll5Qm1Hm0tpT55Al0sOs/GPcibXDX+vdsSQ5Ny4UYXyTqksxP8sMH+mz9wSK5JRiCLBGXw/XMdNvhRcl9IubK0t5Ktku/cPdhU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu; spf=pass smtp.mailfrom=freemail.hu; dkim=fail (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b=HzFqlysy reason="signature verification failed"; arc=none smtp.client-ip=46.107.16.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freemail.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XgSksf8f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736275982;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nweBwiQ4x8uvN5jQ4KfKWDvicEgXxH48zPPJEyuktZU=;
-	b=XgSksf8fJagTPKpXUMdh2YmIFVwk5aqCprrinSUtpiwfnvc5B+JwbjLehwCxiUw+BHYdb0
-	TfzwKtbNfSOaVw+IW7WLhzLvdORBVi66aXOM3JPcmAXgmGXrEEi9c22AxeypioP9ZXDc4O
-	gukCfiRb43jfypa71ozl++kowN8FYhk=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-511-hDlqxUtJO9CBeOq_TN9zdw-1; Tue,
- 07 Jan 2025 13:52:58 -0500
-X-MC-Unique: hDlqxUtJO9CBeOq_TN9zdw-1
-X-Mimecast-MFC-AGG-ID: hDlqxUtJO9CBeOq_TN9zdw
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b="HzFqlysy"
+Received: from fizweb.elte.hu (fizweb.elte.hu [157.181.183.248])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E650619560A3;
-	Tue,  7 Jan 2025 18:52:55 +0000 (UTC)
-Received: from wcosta-thinkpadt14gen4.rmtbr.csb (unknown [10.22.88.156])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 3E1C51956053;
-	Tue,  7 Jan 2025 18:52:48 +0000 (UTC)
-Date: Tue, 7 Jan 2025 15:52:47 -0300
-From: Wander Lairson Costa <wander@redhat.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Jeff Garzik <jgarzik@redhat.com>, Auke Kok <auke-jan.h.kok@intel.com>, 
-	"moderated list:INTEL ETHERNET DRIVERS" <intel-wired-lan@lists.osuosl.org>, "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:Real-time Linux (PREEMPT_RT):Keyword:PREEMPT_RT" <linux-rt-devel@lists.linux.dev>
-Subject: Re: [PATCH iwl-net 0/4] igb: fix igb_msix_other() handling for
- PREEMPT_RT
-Message-ID: <taea3z7nof4szjir2azxsjtbouymqxyy4draa3hz35zbacqeeq@t3uidpha64k7>
-References: <20241204114229.21452-1-wander@redhat.com>
- <20250107135106.WWrtBMXY@linutronix.de>
+	by smtp.freemail.hu (Postfix) with ESMTPSA id 4YSKmN6zsLzycR;
+	Tue, 07 Jan 2025 19:47:32 +0100 (CET)
+From: egyszeregy@freemail.hu
+To: fw@strlen.de,
+	pablo@netfilter.org,
+	lorenzo@kernel.org,
+	daniel@iogearbox.net,
+	leitao@debian.org,
+	amiculas@cisco.com,
+	kadlec@netfilter.org,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: =?UTF-8?q?Benjamin=20Sz=C5=91ke?= <egyszeregy@freemail.hu>
+Subject: [PATCH 0/6] netfilter: x_tables: Merge xt_*.c files which has same name.
+Date: Tue,  7 Jan 2025 19:47:18 +0100
+Message-ID: <20250107184724.56223-1-egyszeregy@freemail.hu>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250107135106.WWrtBMXY@linutronix.de>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/relaxed; t=1736275653;
+	s=20181004; d=freemail.hu;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	l=2170; bh=rmTvNQXtFqt/OwQrK0u7GcxP5ZmAjOkhc4/8HI0TN0Y=;
+	b=HzFqlysyJfPets51os+nLxoZlMcTrzMX5QcM0W/1uPWOC7NQPTi+VdkoBHqpKEN9
+	YL/YagdcWUn5OaS+d5lz6DAwrEA3pR3Gas6odwwtfAI8ZdUBAUCNTYRwCTkCF5z3ZWX
+	Bdzl+QV7kZg91jtvQcNXk4wKnXF7hOuuql0Kv/oHMHdE+BoNw0OVo8BxhwVy4/fgrE2
+	yJi2ylkDjfnMTRd9JBxmgpR/0OQSHa8APhcs7pOEosghsdIVnXQRxc9xV6fMpaWwGGx
+	XS/86z1oFm2GNDD3yroiusswZbAsGAC051HE2PW7XOWI6PwaI7goOJ10skdWbrp1d6F
+	ud+3GQFu2w==
 
-On Tue, Jan 07, 2025 at 02:51:06PM +0100, Sebastian Andrzej Siewior wrote:
-> On 2024-12-04 08:42:23 [-0300], Wander Lairson Costa wrote:
-> > This is the second attempt at fixing the behavior of igb_msix_other()
-> > for PREEMPT_RT. The previous attempt [1] was reverted [2] following
-> > concerns raised by Sebastian [3].
-> > 
-> > The initial approach proposed converting vfs_lock to a raw_spinlock,
-> > a minor change intended to make it safe. However, it became evident
-> > that igb_rcv_msg_from_vf() invokes kcalloc with GFP_ATOMIC,
-> > which is unsafe in interrupt context on PREEMPT_RT systems.
-> > 
-> > To address this, the solution involves splitting igb_msg_task()
-> > into two parts:
-> > 
-> >     * One part invoked from the IRQ context.
-> >     * Another part called from the threaded interrupt handler.
-> > 
-> > To accommodate this, vfs_lock has been restructured into a double
-> > lock: a spinlock_t and a raw_spinlock_t. In the revised design:
-> > 
-> >     * igb_disable_sriov() locks both spinlocks.
-> >     * Each part of igb_msg_task() locks the appropriate spinlock for
-> >     its execution context.
-> 
-> - Is this limited to PREEMPT_RT or does it also occur on PREEMPT systems
->   with threadirqs? And if this is PREEMPT_RT only, why?
+From: Benjamin Szőke <egyszeregy@freemail.hu>
 
-PREEMPT systems configured to use threadirqs should be affected as well,
-although I never tested with this configuration. Honestly, until now I wasn't
-aware of the possibility of a non PREEMPT_RT kernel with threaded IRQs by default.
+Merge xt_*.c source files, which has same upper and
+lowercase name format. Combining these modules should
+provide some decent code size and memory savings.
 
-> 
-> - What causes the failure? I see you reworked into two parts to behave
->   similar to what happens without threaded interrupts. There is still no
->   explanation for it. Is there a timing limit or was there another
->   register operation which removed the mailbox message?
-> 
+test-build:
+$ mkdir build
+$ wget -O ./build/.config https://pastebin.com/raw/teShg1sp
+$ make O=./build/ ARCH=x86 -j 16
 
-I explained the root cause of the issue in the last commit. Maybe I should
-have added the explanation to the cover letter as well.  Anyway, here is a
-partial verbatim copy of it:
+x86_64-before:
+text    data     bss     dec     hex filename
+ 716     432       0    1148     47c xt_dscp.o
+1142     432       0    1574     626 xt_DSCP.o
+ 593     224       0     817     331 xt_hl.o
+ 934     224       0    1158     486 xt_HL.o
+1099     120       0    1219     4c3 xt_rateest.o
+2126     365       4    2495     9bf xt_RATEEST.o
+ 747     224       0     971     3cb xt_tcpmss.o
+2824     352       0    3176     c68 xt_TCPMSS.o
+total data: 2373
 
-"During testing of SR-IOV, Red Hat QE encountered an issue where the
-ip link up command intermittently fails for the igbvf interfaces when
-using the PREEMPT_RT variant. Investigation revealed that
-e1000_write_posted_mbx returns an error due to the lack of an ACK
-from e1000_poll_for_ack.
+x86_64-after:
+text    data     bss     dec     hex filename
+1709     848       0    2557     9fd xt_dscp.o
+1352     448       0    1800     708 xt_hl.o
+3075     481       4    3560     de8 xt_rateest.o
+3423     576       0    3999     f9f xt_tcpmss.o
+total data: 2353
 
-The underlying issue arises from the fact that IRQs are threaded by
-default under PREEMPT_RT. While the exact hardware details are not
-available, it appears that the IRQ handled by igb_msix_other must
-be processed before e1000_poll_for_ack times out. However,
-e1000_write_posted_mbx is called with preemption disabled, leading
-to a scenario where the IRQ is serviced only after the failure of
-e1000_write_posted_mbx."
+Build as a module it can provide 50% reduction in
+run-time memory use.
 
-The call chain from igb_msg_task():
+x86_64-before:
+$ lsmod
+xt_TCPMSS              12288  0
+xt_tcpmss              12288  0
 
-igb_msg_task
-	igb_rcv_msg_from_vf
-		igb_set_vf_multicasts
-			igb_set_rx_mode
-				igb_write_mc_addr_list
-					kmalloc
+x86_64-after:
+$ lsmod
+xt_tcpmss              12288  0
 
-Cannot happen from interrupt context under PREEMPT_RT. So this part of
-the interrupt handler is deferred to a threaded IRQ handler.
+Benjamin Szőke (6):
+  netfilter: x_tables: Format code of xt_*.c files.
+  netfilter: x_tables: Merge xt_DSCP.c to xt_dscp.c
+  netfilter: x_tables: Merge xt_HL.c to xt_hl.c
+  netfilter: x_tables: Merge xt_RATEEST.c to xt_rateest.c
+  netfilter: x_tables: Merge xt_TCPMSS.c to xt_tcpmss.c
+  netfilter: x_tables: Adjust code style of xt_*.c files.
 
-> > Cheers,
-> > Wander
-> 
-> Sebastian
-> 
+ net/netfilter/Kconfig      |  84 +++++++++
+ net/netfilter/Makefile     |  12 +-
+ net/netfilter/xt_DSCP.c    | 161 -----------------
+ net/netfilter/xt_HL.c      | 159 -----------------
+ net/netfilter/xt_RATEEST.c | 248 --------------------------
+ net/netfilter/xt_TCPMSS.c  | 345 ------------------------------------
+ net/netfilter/xt_dscp.c    | 159 ++++++++++++++++-
+ net/netfilter/xt_hl.c      | 163 +++++++++++++++--
+ net/netfilter/xt_rateest.c | 255 +++++++++++++++++++++++++--
+ net/netfilter/xt_tcpmss.c  | 352 +++++++++++++++++++++++++++++++++++--
+ 10 files changed, 972 insertions(+), 966 deletions(-)
+ delete mode 100644 net/netfilter/xt_DSCP.c
+ delete mode 100644 net/netfilter/xt_HL.c
+ delete mode 100644 net/netfilter/xt_RATEEST.c
+ delete mode 100644 net/netfilter/xt_TCPMSS.c
+
+-- 
+2.43.5
 
