@@ -1,349 +1,123 @@
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533481E0E0A;
-	Tue,  7 Jan 2025 08:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32F11E32C6
+	for <netdev@vger.kernel.org>; Tue,  7 Jan 2025 08:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736239444; cv=none; b=JX039rhTsgfsFA+TX+DBQWowbtDnS43iHyLAxLihXHyiCfULizdt6lhGcZuxOH4RQ5pg/YAoJIbOc06Lr0ZdDb8R/xWGW+6aerh7sPlM2iTJOq51icQASoj8sUvcJZgck2/H066fJMSZ6WpSBkC6jN6KE+XRk5IQCNszLiLVbsk=
+	t=1736239484; cv=none; b=tA9825Th6Ievz8dEJYkengbp/Qhfns4Vx1lHPvpYNk9jCqFmWBYZEAP4g/2jqNVw7K7Q2XyB5+DtIO0/TxcMuC8c7guhNoH7Cri9dgCjCOJOHYH9WltcUiVpNY5SgAq/fSwNE7zWTaYHtNCDDgeGcHQaDpZNAzdNBKbW+0VqtpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736239444; c=relaxed/simple;
-	bh=FWV0BoBbS84j+XA3gTkPGwbiax5EzuoBU40jfx+C4dE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XJUoCrULvIunNhB2rvvZ1K+p4cJz6UA5ROXIO5G8BkXQNY6HMBPGtIZ2DbrdjOljQyM8v1A5hcR10tFaP4T8+XHCUtXdplt2kGz0IB9FSYdIoq8u6roOd8YSshpEgqX/43+DzBEbxNKIDywSTnsEPexUPcXbC4dY6fbuDug7xiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4YS4MY35VXz4f3jHy;
-	Tue,  7 Jan 2025 16:43:37 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 8C0721A130E;
-	Tue,  7 Jan 2025 16:43:57 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.124.27])
-	by APP4 (Coremail) with SMTP id gCh0CgC3Gl9E6XxnpFgeAQ--.43336S11;
-	Tue, 07 Jan 2025 16:43:57 +0800 (CST)
-From: Hou Tao <houtao@huaweicloud.com>
-To: bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Martin KaFai Lau <martin.lau@linux.dev>,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Hao Luo <haoluo@google.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	houtao1@huawei.com,
-	xukuohai@huawei.com
-Subject: [PATCH bpf-next 7/7] selftests/bpf: Add test case for the freeing of bpf_timer
-Date: Tue,  7 Jan 2025 16:55:59 +0800
-Message-Id: <20250107085559.3081563-8-houtao@huaweicloud.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20250107085559.3081563-1-houtao@huaweicloud.com>
-References: <20250107085559.3081563-1-houtao@huaweicloud.com>
+	s=arc-20240116; t=1736239484; c=relaxed/simple;
+	bh=9z4E307FEw5yEmX/R4lxvUrMV7D0T547+CC68yqF1tw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lEXwbUviveff3fThwUaIdSvI+1Vc7OS6bxN3NC62k8pkyl9vysoB7MH5Yq5CkZtviO/51L0J4phVcJRmnzpkx2mwc0/NbVHX9jFyT35DLHnOZ2m1u9sUX3/nR7IdgpJu18DDCp5iwxgxO+XmsycsbOhSwW8QlJYV3AwweId0pGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L3Pg1PiV; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L3Pg1PiV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736239477;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vHBnQGum4M7ipVuexTEpYGlSJHQu9KV4nhMGzektAi0=;
+	b=L3Pg1PiVcqiH5MTJ89RF68T7cWr92llLGBzQs+PGgU505+nwjrUhEXCWOGq2Pv5WGEOArp
+	1IEcmeAyVXVsEtSi1/DCUUunmXvTe1eZ3QphWi0j1MiV4Ed3UjsfXmGzFZ6mov1NOrjrRk
+	16kDfRHv6JYGxg7GsnTsiOi9TQJ8/Bw=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-295-_Unu2T00OUOuG3hiGjBYaQ-1; Tue, 07 Jan 2025 03:44:35 -0500
+X-MC-Unique: _Unu2T00OUOuG3hiGjBYaQ-1
+X-Mimecast-MFC-AGG-ID: _Unu2T00OUOuG3hiGjBYaQ
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7b6f3b93f5cso2944488785a.0
+        for <netdev@vger.kernel.org>; Tue, 07 Jan 2025 00:44:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736239475; x=1736844275;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vHBnQGum4M7ipVuexTEpYGlSJHQu9KV4nhMGzektAi0=;
+        b=S3myIhqekexFuc8tCjEUHfgwUkvhHZtg/BeVG9EFjcxxhKRFCEDvIfLukeCEOxJ5aN
+         mw2EQDJpbSnVOhY20pF03Ozwm/J5/cdy5eeXg70GrQO56IB7jYrNNFIRsXi6+fPVMaKr
+         uuf8a5U2l94vHsK4BtN+5P7ksRWQ2R3CKlTezMNV1T3XR1j8IJH6P8ZZLT/oVNJaYbmX
+         mqoosdZEshujsVTQDRuu/FCcr4gXZ5y0TxruSQIjzbW6VaAn+6TqYm8Gtb1+v20DXna1
+         LBPVHobwnlFcAoXUujlZ9jWfwGhiEFZPPqs0zN5Or09f5yRrBADXWgdjN+rdGTF0Sg/i
+         hIsA==
+X-Forwarded-Encrypted: i=1; AJvYcCWtY0zHYjwQ8MqR8mHZkos1wPZKkmL71X1fKmn95FQ5wfGifjJD42BR6idmXpZX7bSj0g2JrDI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRfhKxEpGmHV/91FsXAIIoWyY1vBlHUnSFRTllgJVD/7au73WP
+	h14PXY907rsdB3Me4rVqSn+eLvEMtKt4l3Z+U/WjyT10jz0aD/guu6rRUWiwzOf4S3UvfqDqMq7
+	g2+uJIPY453DVzNedU4ma5XqvVA1quzvO6lhLYlBcV9l/P0tAAUFVXK0mE42G0ljI
+X-Gm-Gg: ASbGncuA8Khwir0Y/vBPN8labFxiKoptpk8PgII0ln3s9vv7NKLmv0HXT/3QxqV2ICI
+	dDOhQyyttxJRXpxrWqsAJZtQhZpzk5r/WBeX6ObuNakbsNgVsrxEKHW8SJHhc/y9tIMVsxnSvuw
+	D5Uxb/6QiZmpMtpjLV4s8ijtfJCAu8x3u1ZpospnRCYJZwh64MKE97Ddnfn9ru2jhx7RKoWvxSd
+	48/j9M1vAp46+5r3o9dbmGHXOKTaIpZbuxjPjTquyKNSju92gpMMksnw1b/jGyeZv9PhYrVZ/Zd
+	HoG3iQ==
+X-Received: by 2002:a05:620a:2a03:b0:7b6:eba3:2dfb with SMTP id af79cd13be357-7bb9027dc9cmr357934585a.16.1736239475068;
+        Tue, 07 Jan 2025 00:44:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEQCMcAkJhmI/CqAK5HFPejGMDCVtbEjbyNYs7SJgbt11nVHwRNfhnAYo5Ac+BtyoR7P+tihQ==
+X-Received: by 2002:a05:620a:2a03:b0:7b6:eba3:2dfb with SMTP id af79cd13be357-7bb9027dc9cmr357932985a.16.1736239474732;
+        Tue, 07 Jan 2025 00:44:34 -0800 (PST)
+Received: from [192.168.88.253] (146-241-73-5.dyn.eolo.it. [146.241.73.5])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b9ac2e6587sm1573880685a.48.2025.01.07.00.44.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Jan 2025 00:44:34 -0800 (PST)
+Message-ID: <1f4a721f-fa23-4f1d-97a9-1b27bdcd1e21@redhat.com>
+Date: Tue, 7 Jan 2025 09:44:30 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgC3Gl9E6XxnpFgeAQ--.43336S11
-X-Coremail-Antispam: 1UD129KBjvJXoWxKr1kZF4xuF1ruF15XFW7CFg_yoWxuFW3pa
-	yrK345Kr4rXw47Ww48tFn7GrWfKrs5XFyxGry0gw1UZr1Iqws5tF92gFy5tFW3CFWDWryS
-	vF4FkFZ8GrZrJrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPvb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
-	Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
-	rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267
-	AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E
-	14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7
-	xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Y
-	z7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2
-	AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAq
-	x4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6r
-	W5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF
-	7I0E14v26r4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14
-	v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuY
-	vjxUI-eODUUUU
-X-CM-SenderInfo: xkrx3t3r6k3tpzhluzxrxghudrp/
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net/smc: use the correct ndev to find pnetid by
+ pnetid table
+To: Guangguan Wang <guangguan.wang@linux.alibaba.com>, wenjia@linux.ibm.com,
+ jaka@linux.ibm.com, PASIC@de.ibm.com, alibuda@linux.alibaba.com,
+ tonylu@linux.alibaba.com, guwen@linux.alibaba.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, horms@kernel.org
+Cc: linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241227040455.91854-1-guangguan.wang@linux.alibaba.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20241227040455.91854-1-guangguan.wang@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Hou Tao <houtao1@huawei.com>
+On 12/27/24 5:04 AM, Guangguan Wang wrote:
+> The command 'smc_pnet -a -I <ethx> <pnetid>' will add <pnetid>
+> to the pnetid table and will attach the <pnetid> to net device
+> whose name is <ethx>. But When do SMCR by <ethx>, in function
+> smc_pnet_find_roce_by_pnetid, it will use <ethx>'s base ndev's
+> pnetid to match rdma device, not <ethx>'s pnetid. The asymmetric
+> use of the pnetid seems weird. Sometimes it is difficult to know
+> the hierarchy of net device what may make it difficult to configure
+> the pnetid and to use the pnetid. Looking into the history of
+> commit, it was the commit 890a2cb4a966 ("net/smc: rework pnet table")
+> that changes the ndev from the <ethx> to the <ethx>'s base ndev
+> when finding pnetid by pnetid table. It seems a mistake.
+> 
+> This patch changes the ndev back to the <ethx> when finding pnetid
+> by pnetid table.
+> 
+> Fixes: 890a2cb4a966 ("net/smc: rework pnet table")
+> Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-The main purpose of the test is to demonstrate the lock problem for the
-free of bpf_timer under PREEMPT_RT. When freeing a bpf_timer which is
-running on other CPU in bpf_timer_cancel_and_free(), hrtimer_cancel()
-will try to acquire a spin-lock (namely softirq_expiry_lock), however
-the freeing procedure has already held a raw-spin-lock.
+If I read correctly, this will break existing applications using the
+lookup schema introduced by the blamed commit - which is not very recent.
 
-The test first creates two threads: one to start timers and the other to
-free timers. The start-timers thread will start the timer and then wake
-up the free-timers thread to free these timers when the starts complete.
-After freeing, the free-timer thread will wake up the start-timer thread
-to complete the current iteration. A loop of 10 iterations is used.
+Perhaps for a net patch would be better to support both lookup schemas i.e.
 
-Signed-off-by: Hou Tao <houtao1@huawei.com>
----
- .../selftests/bpf/prog_tests/free_timer.c     | 165 ++++++++++++++++++
- .../testing/selftests/bpf/progs/free_timer.c  |  71 ++++++++
- 2 files changed, 236 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/free_timer.c
- create mode 100644 tools/testing/selftests/bpf/progs/free_timer.c
+	(smc_pnet_find_ndev_pnetid_by_table(ndev, ndev_pnetid) ||
+	 smc_pnet_find_ndev_pnetid_by_table(base_ndev, ndev_pnetid))
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/free_timer.c b/tools/testing/selftests/bpf/prog_tests/free_timer.c
-new file mode 100644
-index 000000000000..b7b77a6b2979
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/free_timer.c
-@@ -0,0 +1,165 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (C) 2025. Huawei Technologies Co., Ltd */
-+#define _GNU_SOURCE
-+#include <unistd.h>
-+#include <sys/syscall.h>
-+#include <test_progs.h>
-+
-+#include "free_timer.skel.h"
-+
-+struct run_ctx {
-+	struct bpf_program *start_prog;
-+	struct bpf_program *overwrite_prog;
-+	pthread_barrier_t notify;
-+	int loop;
-+	bool start;
-+	bool stop;
-+};
-+
-+static void start_threads(struct run_ctx *ctx)
-+{
-+	ctx->start = true;
-+}
-+
-+static void stop_threads(struct run_ctx *ctx)
-+{
-+	ctx->stop = true;
-+	/* Guarantee the order between ->stop and ->start */
-+	__atomic_store_n(&ctx->start, true, __ATOMIC_RELEASE);
-+}
-+
-+static int wait_for_start(struct run_ctx *ctx)
-+{
-+	while (!__atomic_load_n(&ctx->start, __ATOMIC_ACQUIRE))
-+		usleep(10);
-+
-+	return ctx->stop;
-+}
-+
-+static void *overwrite_timer_fn(void *arg)
-+{
-+	struct run_ctx *ctx = arg;
-+	int loop, fd, err;
-+	cpu_set_t cpuset;
-+	long ret = 0;
-+
-+	/* Pin on CPU 0 */
-+	CPU_ZERO(&cpuset);
-+	CPU_SET(0, &cpuset);
-+	pthread_setaffinity_np(pthread_self(), sizeof(cpuset), &cpuset);
-+
-+	/* Is the thread being stopped ? */
-+	err = wait_for_start(ctx);
-+	if (err)
-+		return NULL;
-+
-+	fd = bpf_program__fd(ctx->overwrite_prog);
-+	loop = ctx->loop;
-+	while (loop-- > 0) {
-+		LIBBPF_OPTS(bpf_test_run_opts, opts);
-+
-+		/* Wait for start thread to complete */
-+		pthread_barrier_wait(&ctx->notify);
-+
-+		/* Overwrite timers */
-+		err = bpf_prog_test_run_opts(fd, &opts);
-+		if (err)
-+			ret |= 1;
-+		else if (opts.retval)
-+			ret |= 2;
-+
-+		/* Notify start thread to start timers */
-+		pthread_barrier_wait(&ctx->notify);
-+	}
-+
-+	return (void *)ret;
-+}
-+
-+static void *start_timer_fn(void *arg)
-+{
-+	struct run_ctx *ctx = arg;
-+	int loop, fd, err;
-+	cpu_set_t cpuset;
-+	long ret = 0;
-+
-+	/* Pin on CPU 1 */
-+	CPU_ZERO(&cpuset);
-+	CPU_SET(1, &cpuset);
-+	pthread_setaffinity_np(pthread_self(), sizeof(cpuset), &cpuset);
-+
-+	/* Is the thread being stopped ? */
-+	err = wait_for_start(ctx);
-+	if (err)
-+		return NULL;
-+
-+	fd = bpf_program__fd(ctx->start_prog);
-+	loop = ctx->loop;
-+	while (loop-- > 0) {
-+		LIBBPF_OPTS(bpf_test_run_opts, opts);
-+
-+		/* Run the prog to start timer */
-+		err = bpf_prog_test_run_opts(fd, &opts);
-+		if (err)
-+			ret |= 4;
-+		else if (opts.retval)
-+			ret |= 8;
-+
-+		/* Notify overwrite thread to do overwrite */
-+		pthread_barrier_wait(&ctx->notify);
-+
-+		/* Wait for overwrite thread to complete */
-+		pthread_barrier_wait(&ctx->notify);
-+	}
-+
-+	return (void *)ret;
-+}
-+
-+void test_free_timer(void)
-+{
-+	struct free_timer *skel;
-+	struct bpf_program *prog;
-+	struct run_ctx ctx;
-+	pthread_t tid[2];
-+	void *ret;
-+	int err;
-+
-+	skel = free_timer__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_load"))
-+		return;
-+
-+	memset(&ctx, 0, sizeof(ctx));
-+
-+	prog = bpf_object__find_program_by_name(skel->obj, "start_timer");
-+	if (!ASSERT_OK_PTR(prog, "find start prog"))
-+		goto out;
-+	ctx.start_prog = prog;
-+
-+	prog = bpf_object__find_program_by_name(skel->obj, "overwrite_timer");
-+	if (!ASSERT_OK_PTR(prog, "find overwrite prog"))
-+		goto out;
-+	ctx.overwrite_prog = prog;
-+
-+	pthread_barrier_init(&ctx.notify, NULL, 2);
-+	ctx.loop = 10;
-+
-+	err = pthread_create(&tid[0], NULL, start_timer_fn, &ctx);
-+	if (!ASSERT_OK(err, "create start_timer"))
-+		goto out;
-+
-+	err = pthread_create(&tid[1], NULL, overwrite_timer_fn, &ctx);
-+	if (!ASSERT_OK(err, "create overwrite_timer")) {
-+		stop_threads(&ctx);
-+		goto out;
-+	}
-+
-+	start_threads(&ctx);
-+
-+	ret = NULL;
-+	err = pthread_join(tid[0], &ret);
-+	ASSERT_EQ(err | (long)ret, 0, "start_timer");
-+	ret = NULL;
-+	err = pthread_join(tid[1], &ret);
-+	ASSERT_EQ(err | (long)ret, 0, "overwrite_timer");
-+out:
-+	free_timer__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/free_timer.c b/tools/testing/selftests/bpf/progs/free_timer.c
-new file mode 100644
-index 000000000000..4501ae8fc414
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/free_timer.c
-@@ -0,0 +1,71 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (C) 2025. Huawei Technologies Co., Ltd */
-+#include <linux/bpf.h>
-+#include <time.h>
-+#include <bpf/bpf_tracing.h>
-+#include <bpf/bpf_helpers.h>
-+
-+#define MAX_ENTRIES 8
-+
-+struct map_value {
-+	struct bpf_timer timer;
-+};
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_HASH);
-+	__type(key, int);
-+	__type(value, struct map_value);
-+	__uint(max_entries, MAX_ENTRIES);
-+} map SEC(".maps");
-+
-+static int timer_cb(void *map, void *key, struct map_value *value)
-+{
-+	volatile int sum = 0;
-+	int i;
-+
-+	bpf_for(i, 0, 1024 * 1024) sum += i;
-+
-+	return 0;
-+}
-+
-+static int start_cb(int key)
-+{
-+	struct map_value *value;
-+
-+	value = bpf_map_lookup_elem(&map, (void *)&key);
-+	if (!value)
-+		return 0;
-+
-+	bpf_timer_init(&value->timer, &map, CLOCK_MONOTONIC);
-+	bpf_timer_set_callback(&value->timer, timer_cb);
-+	/* Hope 100us will be enough to wake-up and run the overwrite thread */
-+	bpf_timer_start(&value->timer, 100000, BPF_F_TIMER_CPU_PIN);
-+
-+	return 0;
-+}
-+
-+static int overwrite_cb(int key)
-+{
-+	struct map_value zero = {};
-+
-+	/* Free the timer which may run on other CPU */
-+	bpf_map_update_elem(&map, (void *)&key, &zero, BPF_ANY);
-+
-+	return 0;
-+}
-+
-+SEC("syscall")
-+int BPF_PROG(start_timer)
-+{
-+	bpf_loop(MAX_ENTRIES, start_cb, NULL, 0);
-+	return 0;
-+}
-+
-+SEC("syscall")
-+int BPF_PROG(overwrite_timer)
-+{
-+	bpf_loop(MAX_ENTRIES, overwrite_cb, NULL, 0);
-+	return 0;
-+}
-+
-+char _license[] SEC("license") = "GPL";
--- 
-2.29.2
+?
+
+Thanks,
+
+Paolo
 
