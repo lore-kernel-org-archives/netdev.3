@@ -1,196 +1,135 @@
-Received: from smtp-out.freemail.hu (fmfe06.freemail.hu [46.107.16.199])
+Received: from alln-iport-8.cisco.com (alln-iport-8.cisco.com [173.37.142.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FBD56446;
-	Tue,  7 Jan 2025 21:48:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.107.16.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACD019C558
+	for <netdev@vger.kernel.org>; Tue,  7 Jan 2025 21:48:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.142.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736286491; cv=none; b=oCoBvM65Ss5AVMM/99K25mkvH2dDRUMGHzkBIAXgctGxxqwo20LRReXeAsM4Xibcls8h7qUj1X8DwM/SZ36wqiF9AJYcFq1V09RCFL0QvSkYxf5U5itHBwLR7n/YXvThwcdPF4LlZShJ3TuZzU6opjTSY+xUIbhJs/YcWB3o+NE=
+	t=1736286523; cv=none; b=lIYBawrIgQOlG7wGJ4bd+feStjKujjyeem4lVPeuo+1k9s5hy1nDTD0vULALC+TishDahrGSRQSXj3Y4HVMJfggYKxIAYw/CzFhtU2ItQNpjnWwa/eJpo75xURzT5x05v/vOZR1aFjGsKsVv2Ss5CW6Piux83WNbv7zAuhZc94I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736286491; c=relaxed/simple;
-	bh=t+n+dSqcXSh20PF7rGAK11Zx3hEG02JNHuFZ7muGAoU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B1GtGSoeUtXONaNBTjloUHGHNz9uSA2ODBXiD7MlGLvxZ3CYVeupUqxG+Kd/vuGW4L0gFCkyhbE/0pNMGU2ifAw5bTvSRKnE0Uq3FXSN8mPSJKYJS9iqQvXejsJzTg7gpyGn87exYZTNsK2FLHMqiTnNu4pp1/SmflOdUlFj6eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu; spf=pass smtp.mailfrom=freemail.hu; dkim=fail (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b=yhz79RQV reason="signature verification failed"; arc=none smtp.client-ip=46.107.16.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freemail.hu
+	s=arc-20240116; t=1736286523; c=relaxed/simple;
+	bh=LBdGqL5qjc7FwmNxMKcB9cw6Z7n6Bk5vpIgFd3OvrW8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=j7WAsIkGwWPbMmj0lO1h02bflHd8e/ZaChijtlxYBC3YzVhwE1oIhHUmWfLithcxkuiqwzgY6OVGymXxpvmcK1LtD45uDukDpdfTv/xBZuKYVLN3kJqcxAAhXVkhP5O4C/nY0nxNOSmZns6DkR5hiQvXY8sTN2fep/OjY3mVVN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b=g5GrPZE2; arc=none smtp.client-ip=173.37.142.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b="yhz79RQV"
-Received: from [192.168.0.16] (catv-178-48-208-49.catv.fixed.vodafone.hu [178.48.208.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.freemail.hu (Postfix) with ESMTPSA id 4YSPZK1nLNzL1m;
-	Tue, 07 Jan 2025 22:39:05 +0100 (CET)
-Message-ID: <98387132-330e-4068-9b71-e98dbcc9cd40@freemail.hu>
-Date: Tue, 7 Jan 2025 22:38:36 +0100
+	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="g5GrPZE2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=1604; q=dns/txt; s=iport;
+  t=1736286522; x=1737496122;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ymrCw1QVofjCy9hb3/GYIIvTuwzebNc+kY6ysbXSovk=;
+  b=g5GrPZE2q1RRUa3KKJ6nKjrvq9IcGVqBiooGsPz8D6SBz8o+Wo+qSwYP
+   hYqnP6WDKuA/+g9r969sNObw30bL1AWCkRRMKT3et3oZJVfHoFihUkc3l
+   MT5y0+e6/+fKWGe/MLhTzOc6cEk+eATibVj7FY+DMFZ6T3+2LkA1aF/OD
+   c=;
+X-CSE-ConnectionGUID: 8jnK2OJHSUK+gJ+DocVFBw==
+X-CSE-MsgGUID: dqitX1fKRDKmM5IMahdcfw==
+X-IPAS-Result: =?us-ascii?q?A0AlAQCIoH1nj5AQJK1aHgEBCxIMgggLhBpDSI1RiHWeG?=
+ =?us-ascii?q?IElA1YPAQEBD0QEAQGFBwKKdAImNAkOAQIEAQEBAQMCAwEBAQEBAQEBAQEBC?=
+ =?us-ascii?q?wEBBQEBAQIBBwUUAQEBAQEBOQVJhgiGWwEBAQIBMgFGEAtGKysZgwGCQiMDs?=
+ =?us-ascii?q?UeCLIEB3jOBbYFIhWuHX3CEdycbgUlEglCBPjE+hRCFdwSCfoRrnglICoEXA?=
+ =?us-ascii?q?1ksAVUTDQoLBwWBKR8rAzgMCzAVJg+BHAU1Cjc6ggxpSzcCDQI1gh58giuCI?=
+ =?us-ascii?q?YI7hEeEWIVogheBawMDFhIBgxVAAwsYDUgRLDcUGwY+bgeadTyDbgGBDjVHN?=
+ =?us-ascii?q?aZ/oQOEJYFjn2MaM6pTmHykR4RmgWc6gVszGggbFYMiUhkPji0NCRa5FiUyP?=
+ =?us-ascii?q?AIHCwEBAwmRVQEB?=
+IronPort-Data: A9a23:ZnyYwKur2e3TKkLQTB/4E2Y8EOfnVLxeMUV32f8akzHdYApBsoF/q
+ tZmKWHVa/fcYzT2eY0kPtm380MDu8LWy4RnHVBt/C8zFSNHgMeUXt7xwmUckM+xwmwvaGo9s
+ q3yv/GZdJhcokf0/0nrav656yEhjclkf5KkYMbcICd9WAR4fykojBNnioYRj5Vh6TSDK1vlV
+ eja/YuGYjdJ5xYuajhJs/vb90s11BjPkGpwUmIWNKgjUGD2zxH5PLpHTYmtIn3xRJVjH+LSb
+ 47r0LGj82rFyAwmA9Wjn6yTWhVirmn6ZFXmZtJ+AsBOszAazsAA+v9T2Mk0NS+7vw60c+VZk
+ 72hg3AfpTABZcUgkMxFO/VR/roX0aduoNcrKlDn2SCfItGvn3bEm51T4E8K0YIwquRxIjtp1
+ 9wjFRNOYTLAq+W9/pyRVbw57igjBJGD0II3s3Vky3TdSP0hW52GG/qM7t5D1zB2jcdLdRrcT
+ 5NGMnw0MlKZPVsWZgt/5JEWxI9EglH9dD1epFuRqII84nPYy0p6172F3N/9JoXSHJQMxRbCz
+ o7A12jgAw0qbdK88xam91fxp8rGnS/wVp1HQdVU8dYx3QXMnTZMYPEMbnO3qOe0j2ayUsxSL
+ kgT9DZoq6UunGSmQsT4Vg+1vFaLuRkTX9cWGOo/gCmO16DdywWUHG4JSnhGctNOnMYwSSYny
+ RyPks/lCCJHtKCTTzSW9t+8pDW+IyUKBWsfYylCRgtty8Hqqow1jzrVQ9pjGbLzhdrwcRn2z
+ iyGoTYWmboel4gI2r+98FSBhCijzqUlVSY84gHRG2bg5QRjacv9OMqj6EPQ6rBLK4PxokS9U
+ GYsy8qYz7opL7G2qQ/OT8dOMLai2divL2iJ6bJwJKUJ+zOo8n+lWIlf5jBiOUtkWvronxe3O
+ Sc/XisPuPdu0GuWUENhX26m5y0XIUnc+TbNC6i8gjlmO8QZmOq7EMdGPhf4M4fFyxNErE3HE
+ c3HGftA9F5DYUid8BK4Rv0GzZggzT0kyGXYSPjTlkv8j+PONCXNEehVbDNii9zVCovZ/m05F
+ P4CZqO3J+l3CraWjtT/qNRKdA5WfRDX+7ip+5QLLIZv3TaK6El6VqeOmul+E2CUt69UjezPt
+ mqsQVNVzUG3hHvMb223hoNLNtvSsWJEhStjZ0QEZA/ws1B6ONbHxPlELfMfI+J4nNGPONYoF
+ JHpje3cWawXElwqOl01MfHAkWCVXE3y2lzWYXb0PlDSvfdIHmT0xzMtRSO3nAFmM8Z9nZJWT
+ 2GIvu8Dfac+eg==
+IronPort-HdrOrdr: A9a23:1KImFKjvLJufbC3AFEVTTYpvCnBQXt0ji2hC6mlwRA09TyVXra
+ +TdZMgpHjJYVkqOU3I9ersBEDEewK/yXcX2/h0AV7dZmnbUQKTRekIh7cKgQeQfhEWndQy6U
+ 4PScRD4aXLfDtHZQKQ2njALz7mq+P3lpyVuQ==
+X-Talos-CUID: 9a23:UQ9EwmF1v/EWvVyHqmI39kg3QOcHUkbg7zTfAQyUDm1XZpeKHAo=
+X-Talos-MUID: =?us-ascii?q?9a23=3AC3eKKA8Hj3QXu1fQha4rO6qQf8tx4rieUU4uq7k?=
+ =?us-ascii?q?lvuzZFAl5OzuWgiviFw=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.12,296,1728950400"; 
+   d="scan'208";a="410191382"
+Received: from alln-l-core-07.cisco.com ([173.36.16.144])
+  by alln-iport-8.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 07 Jan 2025 21:48:35 +0000
+Received: from cisco.com (savbu-usnic-a.cisco.com [10.193.184.48])
+	by alln-l-core-07.cisco.com (Postfix) with ESMTP id 6075D180001D1;
+	Tue,  7 Jan 2025 21:48:35 +0000 (GMT)
+Received: by cisco.com (Postfix, from userid 392789)
+	id 34C0820F2003; Tue,  7 Jan 2025 13:48:35 -0800 (PST)
+From: John Daley <johndale@cisco.com>
+To: andrew@lunn.ch
+Cc: andrew+netdev@lunn.ch,
+	benve@cisco.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	johndale@cisco.com,
+	kuba@kernel.org,
+	neescoba@cisco.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	satishkh@cisco.com
+Subject: Re: [PATCH net-next 2/2] enic: Obtain the Link speed only after the link comes up
+Date: Tue,  7 Jan 2025 13:48:35 -0800
+Message-Id: <20250107214835.25987-1-johndale@cisco.com>
+X-Mailer: git-send-email 2.35.2
+In-Reply-To: <5f143188-57e1-44ce-a70d-d8339af4f159@lunn.ch>
+References: <5f143188-57e1-44ce-a70d-d8339af4f159@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/10] netfilter: x_tables: Merge xt_DSCP.h to xt_dscp.h
-To: Jozsef Kadlecsik <kadlec@netfilter.org>
-Cc: fw@strlen.de, pablo@netfilter.org, lorenzo@kernel.org,
- daniel@iogearbox.net, leitao@debian.org, amiculas@cisco.com,
- davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20250107024120.98288-1-egyszeregy@freemail.hu>
- <20250107024120.98288-2-egyszeregy@freemail.hu>
- <4fab5e14-2782-62d2-a32d-54b673201f26@netfilter.org>
-Content-Language: hu
-From: =?UTF-8?Q?Sz=C5=91ke_Benjamin?= <egyszeregy@freemail.hu>
-In-Reply-To: <4fab5e14-2782-62d2-a32d-54b673201f26@netfilter.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/relaxed; t=1736285946;
-	s=20181004; d=freemail.hu;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	l=4733; bh=eApSBXF5H1/8Qcn5xrAeJwwSbwRStJkvYiXHl0m33kk=;
-	b=yhz79RQVfUCuaC8qcl9EZh4qu4erLPL9TX5jMZejfnA8yJnvKT0kPxA/ffsSvFmJ
-	iI0Zl+R2W05w6Ln/BQ7Rwm2quS4zrv0bNJyY0Lcm+58zboFKXqos1aoFaT54dtXBMsD
-	Bt+uuYIlivZi0Tcxhp7L+L/ZxCDQE1NRoPx3XYDXqCV2bNBM4VXiHCmhYhN/3TqX0nF
-	ab7Ap+jGQEL2PiBMXY/zDRAl66PUVfyDoil0fut9AuOhaS5nVkzxJxKJrRT6aQjF7z/
-	HJ6VsA5wREINN8gY/ZXUwzEb3Ey/p4Tq2IBePivYlpfnrJrh1uB6cdkvAtuvjPHcPSt
-	JMn80knYlg==
+X-Outbound-SMTP-Client: 10.193.184.48, savbu-usnic-a.cisco.com
+X-Outbound-Node: alln-l-core-07.cisco.com
 
-2025. 01. 07. 20:23 keltezéssel, Jozsef Kadlecsik írta:
-> On Tue, 7 Jan 2025, egyszeregy@freemail.hu wrote:
-> 
->> From: Benjamin Szőke <egyszeregy@freemail.hu>
->>
->> Merge xt_DSCP.h to xt_dscp.h header file.
-> 
-> I think it'd be better worded as "Merge xt_DSCP.h into the xt_dscp.h
-> header file." (and in the other patches as well).
->   
-
-There will be no any new patchset refactoring anymore just of some cosmetics 
-change. If you like to change it, feel free to modify it in my pacthfiles before 
-the final merging. You can do it as a maintainer.
-
->> Signed-off-by: Benjamin Szőke <egyszeregy@freemail.hu>
+>> The link speed is obtained in the RX adaptive coalescing function. It
+>> was being called at probe time when the link may not be up. Change the
+>> call to run after the Link comes up.
+>> 
+>> The impact of not getting the correct link speed was that the low end of
+>> the adaptive interrupt range was always being set to 0 which could have
+>> caused a slight increase in the number of RX interrupts.
+>> 
+>> Co-developed-by: Nelson Escobar <neescoba@cisco.com>
+>> Signed-off-by: Nelson Escobar <neescoba@cisco.com>
+>> Co-developed-by: Satish Kharat <satishkh@cisco.com>
+>> Signed-off-by: Satish Kharat <satishkh@cisco.com>
+>> Signed-off-by: John Daley <johndale@cisco.com>
 >> ---
->>   include/uapi/linux/netfilter/xt_DSCP.h | 22 +---------------------
->>   include/uapi/linux/netfilter/xt_dscp.h | 20 ++++++++++++++++----
->>   2 files changed, 17 insertions(+), 25 deletions(-)
->>
->> diff --git a/include/uapi/linux/netfilter/xt_DSCP.h b/include/uapi/linux/netfilter/xt_DSCP.h
->> index 223d635e8b6f..fcff72347256 100644
->> --- a/include/uapi/linux/netfilter/xt_DSCP.h
->> +++ b/include/uapi/linux/netfilter/xt_DSCP.h
->> @@ -1,27 +1,7 @@
->>   /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
->> -/* x_tables module for setting the IPv4/IPv6 DSCP field
->> - *
->> - * (C) 2002 Harald Welte <laforge@gnumonks.org>
->> - * based on ipt_FTOS.c (C) 2000 by Matthew G. Marsh <mgm@paktronix.com>
->> - * This software is distributed under GNU GPL v2, 1991
->> - *
->> - * See RFC2474 for a description of the DSCP field within the IP Header.
->> - *
->> - * xt_DSCP.h,v 1.7 2002/03/14 12:03:13 laforge Exp
->> -*/
->>   #ifndef _XT_DSCP_TARGET_H
->>   #define _XT_DSCP_TARGET_H
->> -#include <linux/netfilter/xt_dscp.h>
->> -#include <linux/types.h>
->> -
->> -/* target info */
->> -struct xt_DSCP_info {
->> -	__u8 dscp;
->> -};
->>   
->> -struct xt_tos_target_info {
->> -	__u8 tos_value;
->> -	__u8 tos_mask;
->> -};
->> +#include <linux/netfilter/xt_dscp.h>
->>   
->>   #endif /* _XT_DSCP_TARGET_H */
->> diff --git a/include/uapi/linux/netfilter/xt_dscp.h b/include/uapi/linux/netfilter/xt_dscp.h
->> index 7594e4df8587..bcfe4afa6351 100644
->> --- a/include/uapi/linux/netfilter/xt_dscp.h
->> +++ b/include/uapi/linux/netfilter/xt_dscp.h
->> @@ -1,15 +1,17 @@
->>   /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
->> -/* x_tables module for matching the IPv4/IPv6 DSCP field
->> +/* x_tables module for matching/modifying the IPv4/IPv6 DSCP field
->>    *
->>    * (C) 2002 Harald Welte <laforge@gnumonks.org>
->> + * based on ipt_FTOS.c (C) 2000 by Matthew G. Marsh <mgm@paktronix.com>
->>    * This software is distributed under GNU GPL v2, 1991
->>    *
->>    * See RFC2474 for a description of the DSCP field within the IP Header.
->>    *
->> + * xt_DSCP.h,v 1.7 2002/03/14 12:03:13 laforge Exp
->>    * xt_dscp.h,v 1.3 2002/08/05 19:00:21 laforge Exp
->>   */
-> 
-> For the sake of history it'd worth to prepend the last two lines with
-> something like: "Original version informations before merging the contents
-> of the files:"
-> 
-This was a question a day ago, what do you like to see in each top of header 
-files's comments. You did not care about it, you was not willing to say 
-something which to be implemented, but now you have new ideas, please it is too 
-late.
+>>  drivers/net/ethernet/cisco/enic/enic_main.c | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>> 
+>> diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+>> index 957efe73e41a..49f6cab01ed5 100644
+>> --- a/drivers/net/ethernet/cisco/enic/enic_main.c
+>> +++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+>> @@ -109,7 +109,7 @@ static struct enic_intr_mod_table mod_table[ENIC_MAX_COALESCE_TIMERS + 1] = {
+>>  static struct enic_intr_mod_range mod_range[ENIC_MAX_LINK_SPEEDS] = {
+>>  	{0,  0}, /* 0  - 4  Gbps */
+>>  	{0,  3}, /* 4  - 10 Gbps */
+>> -	{3,  6}, /* 10 - 40 Gbps */
+>> +	{3,  6}, /* 10+ Gbps */
+>>  };
+>
+>So we still have this second change, which is not explained in the
+>commit message, and probably should be in a patch of its own.
 
-I will not plan to make any new patchset version just for this new thing which 
-is just a cosmetic change not a critical bugfix. If you like to change it, lets 
-do it, feel free to modify it in my pacthfiles before the final merging or apply 
-your a new patch later.
-
-
->> -#ifndef _XT_DSCP_H
->> -#define _XT_DSCP_H
->> +#ifndef _UAPI_XT_DSCP_H
->> +#define _UAPI_XT_DSCP_H
-> 
-> In the first four patches you added the _UAPI_ prefix to the header
-> guards while in the next three ones you kept the original ones. Please
-> use one style consistently.
-> 
-
-Style consistently is done in the following files:
-
-- All of xt_*.h files in uppercase name format (old headers for "target")
-- All of xt_*.h files in lowercase name format (merged header files)
-
-Originally, in these files there was a chaotic state before, it was a painful 
-for my eyes, this is why they got these changes. In ipt_*.h files the original 
-codes got a far enough consistently style before, they was not changed.
-
-In my patchsets, It's not my scope/job to make up for the 
-improvements/refactoring of the last 10 years.
-
->>   #include <linux/types.h>
->>   
->> @@ -29,4 +31,14 @@ struct xt_tos_match_info {
->>   	__u8 invert;
->>   };
->>   
->> -#endif /* _XT_DSCP_H */
->> +/* target info */
->> +struct xt_DSCP_info {
->> +	__u8 dscp;
->> +};
->> +
->> +struct xt_tos_target_info {
->> +	__u8 tos_value;
->> +	__u8 tos_mask;
->> +};
->> +
->> +#endif /* _UAPI_XT_DSCP_H */
->> -- 
->> 2.43.5
->>
->>
-> 
-> Best regards,
-> Jozsef
-
+OK, I did a v2 with the typo fix as its own patch in this set of link related
+patches. Thanks.
