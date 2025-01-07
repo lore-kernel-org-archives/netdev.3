@@ -1,189 +1,94 @@
-Received: from smtp-out.freemail.hu (fmfe13.freemail.hu [46.107.16.206])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648B832C8E;
-	Tue,  7 Jan 2025 22:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.107.16.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82271A3035
+	for <netdev@vger.kernel.org>; Tue,  7 Jan 2025 22:27:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736288205; cv=none; b=Wei+obKFQOQd5dwNTyxwGWMG1dmmySblvSlqCqwRr5ei6z67+LsY8nmRiTBDObaiQydm+aZNpcVit8IgPmi4c10XpeFXrIr8CIvlG8pZ5eR1mHzEQsVz2oFSvwFJfzgma1GmFXtOSidtIFPhoxpEK4aRDSOxQNEUEMm20uU0iJc=
+	t=1736288822; cv=none; b=XZhiaYPBxLiUvOxWeE7zfuFI3fOmu5SLoHdLPFXNXBtvmZWWIohKA8AeGI37v/l+0Du9JwGRKMkb19v/IxDJtMXkyTJXHHKYhXWaNFpj/pFRk9C4WsIa29OCqanfA+yXUQLJyGVopMLsxfcbzznozIANWbaO0NVBHyZZSH9eaYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736288205; c=relaxed/simple;
-	bh=P286wzQsym/KR/rIxnDSJlA8oK0/nOTXz4vDbnAr+iQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TX//GNKnofbyMG9Ff3KirbzPWa0Kq/I24iqOH1gQ7WEcYQR2+YXz9ENuFxsSBDqGD9x3/GnOMuH6Rx+a93DPsrfzkpn9jaks8fyXlwDfryhk3a5D1vTPeHvarXFOUEoSvvh7uruMkI7UwCvQrTCpSoCaKyws/u40MTQmLRs41HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu; spf=pass smtp.mailfrom=freemail.hu; dkim=fail (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b=vBjqyHow reason="signature verification failed"; arc=none smtp.client-ip=46.107.16.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freemail.hu
+	s=arc-20240116; t=1736288822; c=relaxed/simple;
+	bh=/BuvRwLGk+7by7QeOu7n+QgJ5Sk03TO9WCsGbgTs3sE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jHXwJfD+6o5WvM5xaeL35BI6hshOViNtg+mSqf5q8jH9l3k6FctngCkEYdxJzcYaw9aEEigC8/FZiHoPrIXGyJA29kTWkYSjj7rtagL1aSIWPGAuSJaaAUv2Bj8jxUmIlJxb23wTleEv/Pwnz+1oSf3yZ7g46h9gv4RZaU8yySg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gx3FMrdJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b="vBjqyHow"
-Received: from [192.168.0.16] (catv-178-48-208-49.catv.fixed.vodafone.hu [178.48.208.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.freemail.hu (Postfix) with ESMTPSA id 4YSQBg0NTXztPj;
-	Tue, 07 Jan 2025 23:07:07 +0100 (CET)
-Message-ID: <0e51464d-301d-4b48-ad38-ca04ff7d9151@freemail.hu>
-Date: Tue, 7 Jan 2025 23:06:43 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gx3FMrdJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A57C4CED6;
+	Tue,  7 Jan 2025 22:27:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736288822;
+	bh=/BuvRwLGk+7by7QeOu7n+QgJ5Sk03TO9WCsGbgTs3sE=;
+	h=From:Date:Subject:To:Cc:From;
+	b=Gx3FMrdJH+xaen2jSRnu523A40ZOBBFaj896IwBv1PeosUm+eiUCx+K3Qz9CAisX0
+	 Bj4ohheTiHZDQHZelhKF3ZFTfVQUyYiLiard4x5QdylW2YZA0cpwJe64TMf7CsHbrT
+	 NHCF7nrJPJUwOhDoS/YVdeTw/bb9DlM95aKGSfyH0cy7Kdmjz55No3Im9bCSKcgyaX
+	 Y/lcRZglFjbLyiC3LS06AtM0KOyhUxQKrH+ZWpx5E/sdOEj3SRTJ/I+K8o3m75Kzsn
+	 wKRft5pBwfhGEIrJXrFR4f73QwnxJ6eSUrfjYV8k4mFQpH3nB0hKLi2DpvYPim5dj/
+	 ADsdcP6QPwokg==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Tue, 07 Jan 2025 23:26:28 +0100
+Subject: [PATCH net-next] net: airoha: Fix channel configuration for ETS
+ Qdisc
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/10] netfilter: Add message pragma for deprecated
- xt_*.h, ipt_*.h.
-To: Jozsef Kadlecsik <kadlec@netfilter.org>
-Cc: fw@strlen.de, pablo@netfilter.org, lorenzo@kernel.org,
- daniel@iogearbox.net, leitao@debian.org, amiculas@cisco.com,
- davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20250107024120.98288-1-egyszeregy@freemail.hu>
- <20250107024120.98288-10-egyszeregy@freemail.hu>
- <1cd443f7-df1e-20cf-cfe8-f38ac72491e4@netfilter.org>
-Content-Language: hu
-From: =?UTF-8?Q?Sz=C5=91ke_Benjamin?= <egyszeregy@freemail.hu>
-In-Reply-To: <1cd443f7-df1e-20cf-cfe8-f38ac72491e4@netfilter.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/relaxed; t=1736287627;
-	s=20181004; d=freemail.hu;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	l=4897; bh=lt51BCtqmSIYRL0a7phBUsHAMDpo2sbnDyuW/1z9sVk=;
-	b=vBjqyHowI/y2Df+LrR2+CUa2cTd1gz2qJB+o/qpn71o5COCZyeju5zSXpuBfGDfd
-	4ZpC41XDlKSrnD1AA+1lK9J7SOkFX86E8YDo2QT0csQSkwDg6RVD6MFp62bkdIg4BH3
-	o8rD2m4wK272Y7h/hvahh26lumHTn3uz8bzVntWkBucCRaupMFzlLcyt4ga/jwmFZD7
-	xO01LzXxzJc+OIH9jDyyp+Sa6Bx+EuQAO2qpmL8Xpf0eMElzZlH4yJ1imqUfddJEaj7
-	cZBrLFAqf+Afb0yierQbvbRLjw69+kM4eK/N3HoSvW+buZl3ya8WZDdTmnvsKAk6oKB
-	GMkeGpLKnQ==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250107-airoha-ets-fix-chan-v1-1-97f66ed3a068@kernel.org>
+X-B4-Tracking: v=1; b=H4sIABOqfWcC/x2MSwqAMAwFryJZG6ifVvAq4qLUaLNRaUSE0rsbX
+ Q5v3mQQSkwCY5Uh0c3Cx67Q1BWE6PeNkBdlaE1rTWMG9JyO6JEuwZUf/CSkzobgw+AW14M+z0S
+ 6/dVpLuUFNrlCSGUAAAA=
+X-Change-ID: 20250107-airoha-ets-fix-chan-e35ccac76d64
+To: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>, 
+ Mark Lee <Mark-MC.Lee@mediatek.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+X-Mailer: b4 0.14.2
 
-2025. 01. 07. 20:39 keltezéssel, Jozsef Kadlecsik írta:
-> On Tue, 7 Jan 2025, egyszeregy@freemail.hu wrote:
-> 
->> From: Benjamin Szőke <egyszeregy@freemail.hu>
->>
->> Display information about deprecated xt_*.h, ipt_*.h files
->> at compile time. Recommended to use header files with
->> lowercase name format in the future.
-> 
-> I still don't know whether adding the pragmas to notify about header file
-> deprecation is a good idea.
-> 
+Limit ETS QoS channel to AIROHA_NUM_QOS_CHANNELS in
+airoha_tc_setup_qdisc_ets() in order to align the configured channel to
+the value set in airoha_dev_select_queue().
 
-Do you have any other ideas how can you display this information to the 
-users/customers, that it is time to stop using the uppercase header files then 
-they shall to use its merged lowercase named files instead in their userspace SW?
+Fixes: 20bf7d07c956 ("net: airoha: Add sched ETS offload support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/ethernet/mediatek/airoha_eth.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-> On my part that's all. Thank you the work!
-> 
-> Best regards,
-> Jozsef
->   
->> Signed-off-by: Benjamin Szőke <egyszeregy@freemail.hu>
->> ---
->>   include/uapi/linux/netfilter/xt_CONNMARK.h  | 2 ++
->>   include/uapi/linux/netfilter/xt_DSCP.h      | 2 ++
->>   include/uapi/linux/netfilter/xt_MARK.h      | 2 ++
->>   include/uapi/linux/netfilter/xt_RATEEST.h   | 2 ++
->>   include/uapi/linux/netfilter/xt_TCPMSS.h    | 2 ++
->>   include/uapi/linux/netfilter_ipv4/ipt_ECN.h | 2 ++
->>   include/uapi/linux/netfilter_ipv4/ipt_TTL.h | 2 ++
->>   include/uapi/linux/netfilter_ipv6/ip6t_HL.h | 2 ++
->>   8 files changed, 16 insertions(+)
->>
->> diff --git a/include/uapi/linux/netfilter/xt_CONNMARK.h b/include/uapi/linux/netfilter/xt_CONNMARK.h
->> index 171af24ef679..1bc991fd546a 100644
->> --- a/include/uapi/linux/netfilter/xt_CONNMARK.h
->> +++ b/include/uapi/linux/netfilter/xt_CONNMARK.h
->> @@ -4,4 +4,6 @@
->>   
->>   #include <linux/netfilter/xt_connmark.h>
->>   
->> +#pragma message("xt_CONNMARK.h header is deprecated. Use xt_connmark.h instead.")
->> +
->>   #endif /* _XT_CONNMARK_TARGET_H */
->> diff --git a/include/uapi/linux/netfilter/xt_DSCP.h b/include/uapi/linux/netfilter/xt_DSCP.h
->> index fcff72347256..bd550292803d 100644
->> --- a/include/uapi/linux/netfilter/xt_DSCP.h
->> +++ b/include/uapi/linux/netfilter/xt_DSCP.h
->> @@ -4,4 +4,6 @@
->>   
->>   #include <linux/netfilter/xt_dscp.h>
->>   
->> +#pragma message("xt_DSCP.h header is deprecated. Use xt_dscp.h instead.")
->> +
->>   #endif /* _XT_DSCP_TARGET_H */
->> diff --git a/include/uapi/linux/netfilter/xt_MARK.h b/include/uapi/linux/netfilter/xt_MARK.h
->> index cdc12c0954b3..9f6c03e26c96 100644
->> --- a/include/uapi/linux/netfilter/xt_MARK.h
->> +++ b/include/uapi/linux/netfilter/xt_MARK.h
->> @@ -4,4 +4,6 @@
->>   
->>   #include <linux/netfilter/xt_mark.h>
->>   
->> +#pragma message("xt_MARK.h header is deprecated. Use xt_mark.h instead.")
->> +
->>   #endif /* _XT_MARK_H_TARGET_H */
->> diff --git a/include/uapi/linux/netfilter/xt_RATEEST.h b/include/uapi/linux/netfilter/xt_RATEEST.h
->> index f817b5387164..ec3d68f67b2f 100644
->> --- a/include/uapi/linux/netfilter/xt_RATEEST.h
->> +++ b/include/uapi/linux/netfilter/xt_RATEEST.h
->> @@ -4,4 +4,6 @@
->>   
->>   #include <linux/netfilter/xt_rateest.h>
->>   
->> +#pragma message("xt_RATEEST.h header is deprecated. Use xt_rateest.h instead.")
->> +
->>   #endif /* _XT_RATEEST_TARGET_H */
->> diff --git a/include/uapi/linux/netfilter/xt_TCPMSS.h b/include/uapi/linux/netfilter/xt_TCPMSS.h
->> index 154e88c1de02..826060264766 100644
->> --- a/include/uapi/linux/netfilter/xt_TCPMSS.h
->> +++ b/include/uapi/linux/netfilter/xt_TCPMSS.h
->> @@ -4,4 +4,6 @@
->>   
->>   #include <linux/netfilter/xt_tcpmss.h>
->>   
->> +#pragma message("xt_TCPMSS.h header is deprecated. Use xt_tcpmss.h instead.")
->> +
->>   #endif /* _XT_TCPMSS_TARGET_H */
->> diff --git a/include/uapi/linux/netfilter_ipv4/ipt_ECN.h b/include/uapi/linux/netfilter_ipv4/ipt_ECN.h
->> index 6727f5a44512..42317fb3a4e9 100644
->> --- a/include/uapi/linux/netfilter_ipv4/ipt_ECN.h
->> +++ b/include/uapi/linux/netfilter_ipv4/ipt_ECN.h
->> @@ -4,4 +4,6 @@
->>   
->>   #include <linux/netfilter_ipv4/ipt_ecn.h>
->>   
->> +#pragma message("ipt_ECN.h header is deprecated. Use ipt_ecn.h instead.")
->> +
->>   #endif /* _IPT_ECN_TARGET_H */
->> diff --git a/include/uapi/linux/netfilter_ipv4/ipt_TTL.h b/include/uapi/linux/netfilter_ipv4/ipt_TTL.h
->> index 5d989199ed28..1663493e4951 100644
->> --- a/include/uapi/linux/netfilter_ipv4/ipt_TTL.h
->> +++ b/include/uapi/linux/netfilter_ipv4/ipt_TTL.h
->> @@ -4,4 +4,6 @@
->>   
->>   #include <linux/netfilter_ipv4/ipt_ttl.h>
->>   
->> +#pragma message("ipt_TTL.h header is deprecated. Use ipt_ttl.h instead.")
->> +
->>   #endif /* _IPT_TTL_TARGET_H */
->> diff --git a/include/uapi/linux/netfilter_ipv6/ip6t_HL.h b/include/uapi/linux/netfilter_ipv6/ip6t_HL.h
->> index bcf22824b393..55f08e20acd2 100644
->> --- a/include/uapi/linux/netfilter_ipv6/ip6t_HL.h
->> +++ b/include/uapi/linux/netfilter_ipv6/ip6t_HL.h
->> @@ -4,4 +4,6 @@
->>   
->>   #include <linux/netfilter_ipv6/ip6t_hl.h>
->>   
->> +#pragma message("ip6t_HL.h header is deprecated. Use ip6t_hl.h instead.")
->> +
->>   #endif /* _IP6T_HL_TARGET_H */
->> -- 
->> 2.43.5
->>
->>
-> 
+diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
+index b9f1c42f0a40ca268506b4595dfa1902a15be26c..a30c417d66f2f9b0958fe1dd3829fb9ac530a34c 100644
+--- a/drivers/net/ethernet/mediatek/airoha_eth.c
++++ b/drivers/net/ethernet/mediatek/airoha_eth.c
+@@ -2840,11 +2840,14 @@ static int airoha_qdma_get_tx_ets_stats(struct airoha_gdm_port *port,
+ static int airoha_tc_setup_qdisc_ets(struct airoha_gdm_port *port,
+ 				     struct tc_ets_qopt_offload *opt)
+ {
+-	int channel = TC_H_MAJ(opt->handle) >> 16;
++	int channel;
+ 
+ 	if (opt->parent == TC_H_ROOT)
+ 		return -EINVAL;
+ 
++	channel = TC_H_MAJ(opt->handle) >> 16;
++	channel = channel % AIROHA_NUM_QOS_CHANNELS;
++
+ 	switch (opt->command) {
+ 	case TC_ETS_REPLACE:
+ 		return airoha_qdma_set_tx_ets_sched(port, channel, opt);
+
+---
+base-commit: a1942da8a38717ddd9b4c132f59e1657c85c1432
+change-id: 20250107-airoha-ets-fix-chan-e35ccac76d64
+
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
 
