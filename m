@@ -1,154 +1,130 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A611F869A;
-	Tue,  7 Jan 2025 16:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8E01F4734
+	for <netdev@vger.kernel.org>; Tue,  7 Jan 2025 16:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736267094; cv=none; b=mRBQ5H/v/xaCxLXb1tf2r/G6pq81pTW15qJzB5Ts/d7yxeOc9jMk2mjLuqg3r3V25JU9YWT7MSr23RkFGN1sb2r6PyE083g+SmJSFxFU6m1Zgoxov1/WiSpvchyHSA4jkJMiNGB0yWXNECHl07beplfcq2zibbVPJJ5l3gDKa2M=
+	t=1736267132; cv=none; b=oVvFB+/hFegj0A7/K2LQJQoIAdMvTVIZpOree5a1sm+RRz2aPCn/zNTaevrMAPUaHRlHPDFcdtxy9fJxOZ2oRmzQKZ0PL5x32V7YuD4VWjtlxftLASxrWLlg2DoVTDACWQD7ytbg26tGshq1qFhSa4Tn1zcK78zG/ZrwR7cWPkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736267094; c=relaxed/simple;
-	bh=2LDtFpl/tMzxaq30tDSCu4XstfcaQRr2nleSzKxwJ9s=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TESkxkCf5aXttYCn20Iwu7/aKQuT/cQCN49tQ+kwlwFYDutfRaE+Lci8sYZSe+8dIg2COE2NqKLRi/FeZdoG7tzDU1Zj6kP+zwGDhDxsZbDj6E3k2DcUN9w+0Eh/mlCzrbA4klAAlCA/DhP9gCR5QqgpfbsPSNm/+cWF0EEPQ4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TLiP103r; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TLiP103r"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 507FtSAT028294;
-	Tue, 7 Jan 2025 16:23:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=m79slvYmcFGMNba4e
-	5Lu8C/jeyYR7QGcVkmj9V6zJSw=; b=TLiP103rBx6fqm2GOqK6av4q+ll+1FdTo
-	nU6G7cAH0PCltLFCVCSS9g+R8ecm0FFD70MmVV8Q0Ntth/3UkWGMX6Ro8OMlJ1AB
-	2P61JlKI9p7Y3+PMpCqDUEyTbn08anDoY3ahWG54Kchja5IVkT5kk5SecWuIh9d3
-	5rO50BHr5Xyxztq8efPecd0rOsVlc3wKgPBhvqDrkg5gtYBudcP+EV8peRM3QRqf
-	1MbyuowKGHAgxGhnJjrmXnK62+czIJebtLPjR5EAYDNXk1G1n4YpnhqR4Vjfbfuz
-	D561uPqitSDR6Adl6/oGg+QNLbdGRc5qkwI9GMffREeZtmOVnkUgQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 440vrjb8f5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Jan 2025 16:23:56 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 507G5vOt028941;
-	Tue, 7 Jan 2025 16:23:55 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 440vrjb8ey-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Jan 2025 16:23:55 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 507DDRip013648;
-	Tue, 7 Jan 2025 16:23:54 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43yganua95-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Jan 2025 16:23:54 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 507GNqPF27984434
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Jan 2025 16:23:53 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C20BE58062;
-	Tue,  7 Jan 2025 16:23:52 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8364C58058;
-	Tue,  7 Jan 2025 16:23:52 +0000 (GMT)
-Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  7 Jan 2025 16:23:52 +0000 (GMT)
-From: Ninad Palsule <ninad@linux.ibm.com>
-To: minyard@acm.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, ninad@linux.ibm.com,
-        ratbert@faraday-tech.com, openipmi-developer@lists.sourceforge.net,
-        netdev@vger.kernel.org, joel@jms.id.au, andrew@codeconstruct.com.au,
-        devicetree@vger.kernel.org, eajames@linux.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 02/10] bindings: ipmi: Add binding for IPMB device intf
-Date: Tue,  7 Jan 2025 10:23:39 -0600
-Message-ID: <20250107162350.1281165-3-ninad@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250107162350.1281165-1-ninad@linux.ibm.com>
-References: <20250107162350.1281165-1-ninad@linux.ibm.com>
+	s=arc-20240116; t=1736267132; c=relaxed/simple;
+	bh=C1uu7KJPad0P/K6vV+2ViYpu26xuTkpumqT649zmcGU=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Grj7XAa8MuYwYvtGz53SImttGGMA9WJzltXI4uF7U5pxRZu/vc2Cve8xyqUiU7DxooQBTL6AqylqGNezc2ZuXSEhrWYxYa+pWt0qV5B8EkC8xoRFza64hSU3V/htEJqsehAPb6HESwWu3Pe4KWprftwuK49w9D4OQt5TfqF77T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3a9d4ea9e0cso154178065ab.0
+        for <netdev@vger.kernel.org>; Tue, 07 Jan 2025 08:25:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736267128; x=1736871928;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MIbj1985qmxWb39sTDDBhOMH3hk1O4jew4vLD0IUd6U=;
+        b=HcNNxqYD9V2bU7ve7C9yVY0cRQQOaqhS+OgZ0QQhZSCXkka3ZhcpTw3hqua/fqWtzc
+         TdHwM1vvU1Jj3jQqsa3/ToDmFVVPWtjdgm5NQekrRG7n30XyYJI9zytgFaPZr2mpKFEN
+         O0kgGi5euKDcb9vHi/fAYewBiqqhXHOw5T2v6MyGXifMzhfQqHfr/3pOmPBraIaVWiM8
+         jxX6ZnpCwgR4l1zcnjVNpWotik1gcjzfO/kcmb6HS4bJOs5W5Wl733geQ4QR7uQ8WhVx
+         5F23a3OJgJHbq1XLw5VtZRj++dBgswPJboVBk7hXqcJoHp2p73U7ryrx+r0BsrUH+fse
+         tvbA==
+X-Forwarded-Encrypted: i=1; AJvYcCX/HoLNCikX9+8SF3Rlb8h44PmepGERA/KL1m8+ecYWOhTDQhimwHlgLYXMGM/A3MYFsg31WwM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx/m0NsVezCP3aV/j/TYxpM2jaR2cBf+i0vIgOmhJyR6pmes5r
+	/AWD3MZMueBOY3RhE0tjSH7dGX52X3bZZv/HdQZ26iQlLn1qatRevgOXGCQt/WBd8s0BXr5RQvi
+	+b8PXQ2qY77G0JpC7PiyZmShZo4ESU079RnbZrEqkDiyliypv4de0a+I=
+X-Google-Smtp-Source: AGHT+IGGRAgAv3dD0kWIJOsbXk0QUd+5GSP8V+OS6LHv9BPmtIzAh/JEC8J7NdHF6zksa2nwBD+5jjtEHG536jErPcqPwqItBTnY
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fweTAHP2dvCxkI-kLKV5x6hvfV4uuR8A
-X-Proofpoint-ORIG-GUID: scbJMDTQ_TeCK3-3x3fAOMCeSXlV96xJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
- adultscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 mlxscore=0
- impostorscore=0 mlxlogscore=999 priorityscore=1501 bulkscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501070133
+X-Received: by 2002:a05:6e02:20ca:b0:3a7:86ab:bebe with SMTP id
+ e9e14a558f8ab-3c2d514f966mr513344955ab.16.1736267127799; Tue, 07 Jan 2025
+ 08:25:27 -0800 (PST)
+Date: Tue, 07 Jan 2025 08:25:27 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <677d5577.050a0220.a40f5.0022.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in ieee80211_request_ibss_scan
+From: syzbot <syzbot+1634c5399e29d8b66789@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Add device tree binding document for the IPMB device interface driver.
+Hello,
 
-Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+syzbot found the following issue on:
+
+HEAD commit:    63676eefb7a0 Merge tag 'sched_ext-for-6.13-rc5-fixes' of g..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17e98edf980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=86dd15278dbfe19f
+dashboard link: https://syzkaller.appspot.com/bug?extid=1634c5399e29d8b66789
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: i386
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-63676eef.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/efc20deb6462/vmlinux-63676eef.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/b916a2c594d7/bzImage-63676eef.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+1634c5399e29d8b66789@syzkaller.appspotmail.com
+
+wlan1: No active IBSS STAs - trying to scan for other IBSS networks with same SSID (merge)
+------------[ cut here ]------------
+WARNING: CPU: 2 PID: 94 at net/mac80211/scan.c:1213 ieee80211_request_ibss_scan+0x7b8/0x9a0 net/mac80211/scan.c:1213
+Modules linked in:
+CPU: 2 UID: 0 PID: 94 Comm: kworker/u32:5 Not tainted 6.13.0-rc5-syzkaller-00161-g63676eefb7a0 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Workqueue: events_unbound cfg80211_wiphy_work
+RIP: 0010:ieee80211_request_ibss_scan+0x7b8/0x9a0 net/mac80211/scan.c:1213
+Code: e9 3b fb ff ff e8 08 ce 08 f7 be 04 00 00 00 bf 06 00 00 00 41 bd 04 00 00 00 e8 33 d0 08 f7 e9 3b fd ff ff e8 e9 cd 08 f7 90 <0f> 0b 90 bb ea ff ff ff e9 6e fc ff ff 48 c7 c7 d4 1a 1d 90 e8 ef
+RSP: 0018:ffffc900010af988 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff8a908130
+RDX: ffff88801f83a440 RSI: ffffffff8a9081c7 RDI: 0000000000000005
+RBP: ffff888064659720 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000003 R12: 0000000000000005
+R13: 0000000000000006 R14: dffffc0000000000 R15: ffff88804ff70e40
+FS:  0000000000000000(0000) GS:ffff88802b600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000002f61bffc CR3: 000000001e3c2000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ieee80211_sta_merge_ibss net/mac80211/ibss.c:1290 [inline]
+ ieee80211_ibss_work+0x83b/0x14c0 net/mac80211/ibss.c:1672
+ ieee80211_iface_work+0xd01/0xf00 net/mac80211/iface.c:1689
+ cfg80211_wiphy_work+0x3de/0x560 net/wireless/core.c:440
+ process_one_work+0x958/0x1b30 kernel/workqueue.c:3229
+ process_scheduled_works kernel/workqueue.c:3310 [inline]
+ worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
+ kthread+0x2c1/0x3a0 kernel/kthread.c:389
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+
 ---
- .../devicetree/bindings/ipmi/ipmb-dev.yaml    | 42 +++++++++++++++++++
- 1 file changed, 42 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/ipmi/ipmb-dev.yaml
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/Documentation/devicetree/bindings/ipmi/ipmb-dev.yaml b/Documentation/devicetree/bindings/ipmi/ipmb-dev.yaml
-new file mode 100644
-index 000000000000..9136ac8004dc
---- /dev/null
-+++ b/Documentation/devicetree/bindings/ipmi/ipmb-dev.yaml
-@@ -0,0 +1,42 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/ipmi/ipmb-dev.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: IPMB Device Driver
-+
-+description: IPMB Device Driver bindings
-+
-+maintainers:
-+  - Ninad Palsule <ninad@linux.ibm.com>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ipmb-dev
-+
-+  reg:
-+    maxItems: 1
-+
-+  i2c-protocol:
-+    description:
-+      This property specifies that the I2C block transfer should be performed
-+      instead of SMBUS block transfer.
-+    type: boolean
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+        i2c@10 {
-+            compatible = "ipmb-dev";
-+            reg = <0x10>;
-+            i2c-protocol;
-+        };
-+    };
--- 
-2.43.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
