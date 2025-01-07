@@ -1,165 +1,153 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7485F1EBA0D;
-	Tue,  7 Jan 2025 10:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF5F1EF08D;
+	Tue,  7 Jan 2025 10:47:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736246839; cv=none; b=dpJvGG5OGRtSXO2cSQZi97Fw5PVcO2gsSEEwwzbftzFLHJX8SQgVjQdGa2Ql1o+Uh1RKBNgMEn+FFQTTbGg9G3ITeHT2xaeU45TyZMQv3+/7CPjFF6Yhj2K6darGVjAhXdjsFvj0HfZ9PdAhyd5bFVZMW9aaDwyy8XbR8qOJvUc=
+	t=1736246844; cv=none; b=d82ohJH9GUwD2KSJ6sBYuVn4VF7xcqPLxgUgp43Dk9NetoyIiz/YjEve1DCwZoL7h1V23qNhKzMGhqhNX9Rm+Fu+bUOWPfADdaPBrQJpQ1Uryswoq9rtQQPOxRdUcZXNTf3ZIhCSQnuhZ8V2ujIbpdEkEqYo7aMn/CQw7uuAmF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736246839; c=relaxed/simple;
-	bh=rmV+IrFXiYRmJO8m/Th28rKjbiFt6MRkkO4Sbqpe3Gw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TNb14KTZ/Gk9LUtJWYCr1QUzqn5NyplQvLv55/qnCE8Zu6ZAo2BAdxeqNqO6QHLuogJ5r69RWkq8BwohWTpreKTnNE+1ULcyCA9R7VYJX2omtq7CvUnuY6rc2vFS5UpK0nv9UmFu6fKGOuKyrvsDt2rJ3BGBfcv3gOPsWYxvq04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CpjNhOIS; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736246844; c=relaxed/simple;
+	bh=oo/x4SPdWnBfTz9Yr+u0S7K/IIZkwMTrIfkNBV4iTbs=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=itAAVst1aafpKGm4aclZqFSJYLOQEHe9/wfLIujfga71oPqI+jRe0L6vSVN/q3CIcOLeE+QIPIBGojC8a7E5O6k4F92fNLzFyIT41PkYa5TwHgKLNUvxpnWlJbN1C8pVrIH//kRE5CWtEiXIEIO26astu5vOq1LXWj5nBEXEJtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Y3p+lyq2; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CpjNhOIS"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3862df95f92so6746814f8f.2;
-        Tue, 07 Jan 2025 02:47:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736246836; x=1736851636; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fh0AFKuAKxAUWXpt7kGI1qVooHVbo7SNiy/9flSEnaA=;
-        b=CpjNhOISeqslgdQr8wnZOAp9ApHs2YwkPksnqk1MKQ3QUOLtcQZk7hA0hrb07/9/7w
-         DeCq7eKw8HMlHv/jTgrClZY/UpKs0dm6fFCNyiHME+4jwmttynV65KVfS5bhPgIuZSyB
-         NUJc6AHKEfCN1BBVj30d3b9oN7m0Lm5DNKA8F3l+Pg2XPvx8UXMNJFLLMuafrBPbM8sT
-         BWzb4jejI0sE0nYIv9saiZIA0NS2yVLt8jp3rV/VWq+7fHcsZqm3w25fmO/t7IbvdDSZ
-         QmD6Oc7ZQuc1QSx7yVyG8Py/QtnR73wSV9l0ttm/E2hQEfOn3zA4Cars7nJHrcXWM09e
-         o4VA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736246836; x=1736851636;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fh0AFKuAKxAUWXpt7kGI1qVooHVbo7SNiy/9flSEnaA=;
-        b=mFtrPvJjBAGjxAmAZWbxXqEIyL3aC9hidFvitNPDzHXsPypEbgQzSWR5x4LmpKblzE
-         6nRbfhLPdrGEUiYO3/Kzw1yNVqvr9Y6P035rGl9ZcdfNZ/MZAupgjm5o58zWOOx3Dvlh
-         4+Bmw1MvV2f/xAmMUECW2xG7XCgZocbkXvCLP2nKWEkgoxrEAkKqYma6NAgpwyk+2OnJ
-         47Cfb6Tw4Yz/lvDa3jzYgFZ0C7378AZkuABGCYmYCM5ckf+8gz+4SgXp/zFtQRxRRujl
-         m20u1bMQWjrVCLE1h82pSnf75G6KdXPDznnHie9YpeMfZZxvDHkX0Pqd3wqJsqrCxJke
-         bEJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUBK8ZOT4hMZho0bTffApVOjCLJuhuMqDWczKlvOjbrrZVAsKp+qrEhuZoCc5MfI9b5FYY=@vger.kernel.org, AJvYcCUfHeUaTrTME02pjvkkXLPDOgj7wqJdQlhkzI/V4tzlB1p0B+L+IeYV00CwK4gMso3e2Q39pF3+yOFVgQ==@vger.kernel.org, AJvYcCV6VJPvg9gAUyI7S2BjNXlFtJ1na2/IckmZj0hgV9rWo4kpjFPPnNnzEGrDMIVYdYDGs/W/FfYj1mPe2SpUo0QH@vger.kernel.org, AJvYcCVB/oQ5RAPRCmg3OHubbU4edbCPbpeTIHQHWDs266UAIAJoaIL9/8QnORdjLv/LI6LeVDxczpLbWfMWA8JASGY=@vger.kernel.org, AJvYcCWtpdhJfVVcbI++sm9qYQXuDvFFa/z8W27l4CgSiGStsQOumx5cFLIPPGfqXtrGPxv3UwyQB9W4@vger.kernel.org, AJvYcCX4aI1OkbVCkO3dZ6bdwISAOJtS2vCZ1CF3fAxLy17kqeDR8q2pU0S7QbFKdxdtR1xyyee7e3puIbu7@vger.kernel.org, AJvYcCXUQKrQ0wF2qtY5oOa9v8p6wlWfobcXO5/U5rTmHbot+cStJfWy9e8YNroJ/OujX0M56A8RadBWFo56C5Au@vger.kernel.org, AJvYcCXY8EACV/lA1hY4o105sAatpGB/KNJov3S+W3coJ80N7vX7AIPEuzTtyntcHkwCiXa2gU52CJ33xaTWuA==@vger.kernel.org, AJvYcCXxX0J4F8Jj8JiKybWKhtXJg0TOQObvD7HIyKoS1Z27pLyIO51GPCyfC+8SG5g4c99TNOp2nxcMW2dO@vger.kernel.org
-X-Gm-Message-State: AOJu0YwR7xZHmlYBFjisBzLTlIh6j1zZY0Cd8IVSNcA7I2X0h04MqW17
-	s6eRsNRpJOsrbCMXi9rC9QmOvf5t68olKOc+D9AKSQH4U4fcBckxUY09lkHaqTZEgI2ORXAUMdR
-	3EbLSjbuinzW+g692W18EmOZEMbiJEKd9
-X-Gm-Gg: ASbGncsTONgZgyE2X7IM4+HIcEKSBdwCbzhE8lgyqlRee7wuV/6sHzIVCQ8BbLLN4X2
-	srNBsmR44ZzqwPIXkj2mCY1gDkL92LMaOmpZv
-X-Google-Smtp-Source: AGHT+IHp1K2L48YKiIQv0pwnQlZPYX8cMCBbRBU/fwg+IEmnnlA8QF5/odQWLMrNcSpCZK0F/LO3cHqTWVNEZ39orXM=
-X-Received: by 2002:a05:6000:480a:b0:386:1cd3:89fa with SMTP id
- ffacd0b85a97d-38a221fa8c6mr57843141f8f.33.1736246835555; Tue, 07 Jan 2025
- 02:47:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Y3p+lyq2"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 507ALkxQ022348;
+	Tue, 7 Jan 2025 02:47:14 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=d
+	hfEQ3fA9mlchsD2FH/JgXKTdsyBTAFInUeWJXY2M6I=; b=Y3p+lyq2Kym9e9uwZ
+	cQ61y4Naxf37gZr95q8+dsRFumsA0pEEc9rYZP8hNosj5tF7U0AmJ6rmqlJnp7R5
+	FJLo73DLdjiiHePI8D10HAYHuw89VZmGYRANlD9wJK1OCVNaKOCEVBVgybBFLx/3
+	0E1S4SXjA8lVA8qUvi5fvcBjnXqb60dPA2awm27KNSFmb0lINkvSAqQyMoNoL4lR
+	/BEUg9TORsTuNDrj2+iI+DE3Hs3junlhMa7gwEDWd3EhI8ME+79H6O8lLVlhCzKd
+	DC8f9hnzXcCU0+jNIYGMI+UyYljerRG6P1hrznrWIlHqAWTE+SX5ubNEHR/4sWLi
+	1/N2g==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4412etg1an-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Jan 2025 02:47:13 -0800 (PST)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Tue, 7 Jan 2025 02:47:04 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Tue, 7 Jan 2025 02:47:04 -0800
+Received: from localhost.localdomain (unknown [10.28.36.166])
+	by maili.marvell.com (Postfix) with ESMTP id 82F8E3F704E;
+	Tue,  7 Jan 2025 02:47:00 -0800 (PST)
+From: Suman Ghosh <sumang@marvell.com>
+To: <sgoutham@marvell.com>, <gakula@marvell.com>, <sbhatta@marvell.com>,
+        <hkelam@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <lcherian@marvell.com>,
+        <jerinj@marvell.com>
+CC: Suman Ghosh <sumang@marvell.com>
+Subject: [net-next PATCH 5/6] octeontx2-pf: Prepare for AF_XDP transmit
+Date: Tue, 7 Jan 2025 16:16:27 +0530
+Message-ID: <20250107104628.2035267-6-sumang@marvell.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250107104628.2035267-1-sumang@marvell.com>
+References: <20250107104628.2035267-1-sumang@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250104125732.17335-1-shaw.leon@gmail.com> <20250107085646.42302-1-kuniyu@amazon.com>
-In-Reply-To: <20250107085646.42302-1-kuniyu@amazon.com>
-From: Xiao Liang <shaw.leon@gmail.com>
-Date: Tue, 7 Jan 2025 18:46:38 +0800
-Message-ID: <CABAhCOQAqspiaFO-486UtZpEWsua51f+1f6-LocNhHVfAqW=NQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v7 00/11] net: Improve netns handling in rtnetlink
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: andrew+netdev@lunn.ch, b.a.t.m.a.n@lists.open-mesh.org, 
-	bpf@vger.kernel.org, bridge@lists.linux.dev, davem@davemloft.net, 
-	donald.hunter@gmail.com, dsahern@kernel.org, edumazet@google.com, 
-	horms@kernel.org, idosch@nvidia.com, jiri@resnulli.us, kuba@kernel.org, 
-	linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-ppp@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-wpan@vger.kernel.org, liuhangbin@gmail.com, netdev@vger.kernel.org, 
-	osmocom-net-gprs@lists.osmocom.org, pabeni@redhat.com, shuah@kernel.org, 
-	wireguard@lists.zx2c4.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: aFywg9LBOn6N3fyvUFWI05Y6-3yydXHG
+X-Proofpoint-GUID: aFywg9LBOn6N3fyvUFWI05Y6-3yydXHG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
 
-On Tue, Jan 7, 2025 at 4:57=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon.com=
-> wrote:
->
-> From: Xiao Liang <shaw.leon@gmail.com>
-> Date: Sat,  4 Jan 2025 20:57:21 +0800
-[...]
-> > - In amt_newlink() drivers/net/amt.c:
-> >
-> >     amt->net =3D net;
-> >     ...
-> >     amt->stream_dev =3D dev_get_by_index(net, ...
-> >
-> >   Uses net, but amt_lookup_upper_dev() only searches in dev_net.
-> >   So the AMT device may not be properly deleted if it's in a different
-> >   netns from lower dev.
->
-> I think you are right, and the upper device will be leaked
-> and UAF will happen.
->
-> amt must manage a list linked to a lower dev.
->
-> Given no one has reported the issue, another option would be
-> drop cross netns support in a short period.
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-Yes. I also noticed AMT sets dev->netns_local to prevent netns
-change. Probably it also assumes the same netns during creation.
+Implement necessary APIs required for AF_XDP transmit.
 
-[...]
-> >
-> > - In gtp_newlink() in drivers/net/gtp.c:
-> >
-> >     gtp->net =3D src_net;
-> >     ...
-> >     gn =3D net_generic(dev_net(dev), gtp_net_id);
-> >     list_add_rcu(&gtp->list, &gn->gtp_dev_list);
-> >
-> >   Uses src_net, but priv is linked to list in dev_net. So it may not be
-> >   properly deleted on removal of link netns.
->
-> The device is linked to a list in the same netns, so the
-> device will not be leaked.  See gtp_net_exit_batch_rtnl().
->
-> Rather, the problem is the udp tunnel socket netns could be
-> freed earlier than the dev netns.
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: Suman Ghosh <sumang@marvell.com>
+---
+ .../marvell/octeontx2/nic/otx2_common.h       |  1 +
+ .../marvell/octeontx2/nic/otx2_txrx.c         | 25 +++++++++++++++++--
+ 2 files changed, 24 insertions(+), 2 deletions(-)
 
-Yes, you're right. Actually I mean the netns of the socket by "link netns"
-(there's some clarification about this in patch 02).
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+index dc68d2aa0a0e..24faf9dc41e6 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -1186,4 +1186,5 @@ static inline int mcam_entry_cmp(const void *a, const void *b)
+ dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
+ 				 struct sk_buff *skb, int seg, int *len);
+ void otx2_dma_unmap_skb_frags(struct otx2_nic *pfvf, struct sg_list *sg);
++int otx2_read_free_sqe(struct otx2_nic *pfvf, u16 qidx);
+ #endif /* OTX2_COMMON_H */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+index c8b11d45debf..80769c8ffb9a 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+@@ -22,6 +22,12 @@
+ #include "cn10k.h"
+ 
+ #define CQE_ADDR(CQ, idx) ((CQ)->cqe_base + ((CQ)->cqe_size * (idx)))
++#define READ_FREE_SQE(SQ, free_sqe)						   \
++	do {							                   \
++		typeof(SQ) _SQ = (SQ);						   \
++		free_sqe = (((_SQ)->cons_head - (_SQ)->head - 1 + (_SQ)->sqe_cnt)  \
++			   & ((_SQ)->sqe_cnt - 1));                                \
++	} while (0)
+ #define PTP_PORT	        0x13F
+ /* PTPv2 header Original Timestamp starts at byte offset 34 and
+  * contains 6 byte seconds field and 4 byte nano seconds field.
+@@ -1163,7 +1169,7 @@ bool otx2_sq_append_skb(void *dev, struct netdev_queue *txq,
+ 	/* Check if there is enough room between producer
+ 	 * and consumer index.
+ 	 */
+-	free_desc = (sq->cons_head - sq->head - 1 + sq->sqe_cnt) & (sq->sqe_cnt - 1);
++	READ_FREE_SQE(sq, free_desc);
+ 	if (free_desc < sq->sqe_thresh)
+ 		return false;
+ 
+@@ -1400,6 +1406,21 @@ static void otx2_xdp_sqe_add_sg(struct otx2_snd_queue *sq, u64 dma_addr,
+ 	sq->sg[sq->head].flags = flags;
+ }
+ 
++int otx2_read_free_sqe(struct otx2_nic *pfvf, u16 qidx)
++{
++	struct otx2_snd_queue *sq;
++	int free_sqe;
++
++	sq = &pfvf->qset.sq[qidx];
++	READ_FREE_SQE(sq, free_sqe);
++	if (free_sqe < sq->sqe_thresh) {
++		netdev_warn(pfvf->netdev, "No free sqe for Send queue%d\n", qidx);
++		return 0;
++	}
++
++	return free_sqe - sq->sqe_thresh;
++}
++
+ bool otx2_xdp_sq_append_pkt(struct otx2_nic *pfvf, u64 iova, int len,
+ 			    u16 qidx, u16 flags)
+ {
+@@ -1408,7 +1429,7 @@ bool otx2_xdp_sq_append_pkt(struct otx2_nic *pfvf, u64 iova, int len,
+ 	int offset, free_sqe;
+ 
+ 	sq = &pfvf->qset.sq[qidx];
+-	free_sqe = (sq->num_sqbs - *sq->aura_fc_addr) * sq->sqe_per_sqb;
++	READ_FREE_SQE(sq, free_sqe);
+ 	if (free_sqe < sq->sqe_thresh)
+ 		return false;
+ 
+-- 
+2.25.1
 
-[...]
-> >
-> > - In pfcp_newlink() in drivers/net/pfcp.c:
-> >
-> >     pfcp->net =3D net;
-> >     ...
-> >     pn =3D net_generic(dev_net(dev), pfcp_net_id);
-> >     list_add_rcu(&pfcp->list, &pn->pfcp_dev_list);
-> >
-> >   Same as above.
->
-> I haven't tested pfcp but it seems to have the same problem.
->
-> I'll post patches for gtp and pfcp.
->
-
-It would be nice.
-
->
-> >
-> > - In lowpan_newlink() in net/ieee802154/6lowpan/core.c:
-> >
-> >     wdev =3D dev_get_by_index(dev_net(ldev), nla_get_u32(tb[IFLA_LINK])=
-);
-> >
-> >   Looks for IFLA_LINK in dev_net, but in theory the ifindex is defined
-> >   in link netns.
->
-> I guess you mean the ifindex is defined in src_net instead.
-> Not sure if it's too late to change the behaviour.
-
-Yes, it's source net for lowpan. I think it depends on whether
-the interpretation of IFLA_LINK should be considered as part API
-provided by rtnetlink core, or something customizable by driver.
-In the former case, this can be considered as a bug.
-
-Thanks.
