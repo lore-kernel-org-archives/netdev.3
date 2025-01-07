@@ -1,206 +1,185 @@
-Received: from smtp-out.freemail.hu (fmfe15.freemail.hu [46.107.16.208])
+Received: from s1.jo-so.de (s1.jo-so.de [37.221.195.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F059D56446;
-	Tue,  7 Jan 2025 21:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.107.16.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B35519F101;
+	Tue,  7 Jan 2025 22:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.221.195.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736287197; cv=none; b=ArbRGYdMZZmDPLSRI805ZRR6qw50ZODY9QmKe6IXHo/W6wp5XsltYfuGA4B6TbOrDV/3yodIstjDKb0KAfLsds1ckQ5+A8CZCH858rqRxTUztBiG/7WHZAuCt1Os8oC1VIkdyi8+wU9rQ4NfVMFEgJ8ZBHb5svLJMcCPyL/mZQg=
+	t=1736288089; cv=none; b=DXPPAI9vEcHg2Nh5KR7WBMUwRiXd5L+ig1b1OvQ6tMhp9X2DdXFiVRVthrjZdw/7YJkAlqnPAPy6rfOticPglHTmVZTFAJntyd8+3g4l/+wJz7famj8/jLB5623WPN/4oeA0bF1j4UiMQcXNXQo5H/itFnQBgX8MTvZLrurx5JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736287197; c=relaxed/simple;
-	bh=dc40KGz2+BKXHaPIXS+D4NSqJ/SIbOZaJoFnr08iHFc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AS/wQvE92kMbWh9HI4QQ/3NyEdkN+UI1isQRrZot2+XhELsjgUHEuSjn/qFezQtZu0FkPqrSbj3URcqTJh5wiPinTj8m7WfDTVeU95/v5/MSzGS6YnUNK/V1bq6a4D6UfhLZDYRmIKfO8EaAILSyiMD4wXwyLScgpznScr3c0Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu; spf=pass smtp.mailfrom=freemail.hu; dkim=fail (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b=dgzt+tIn reason="signature verification failed"; arc=none smtp.client-ip=46.107.16.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freemail.hu
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b="dgzt+tIn"
-Received: from [192.168.0.16] (catv-178-48-208-49.catv.fixed.vodafone.hu [178.48.208.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.freemail.hu (Postfix) with ESMTPSA id 4YSQ2B0c22ztyZ;
-	Tue, 07 Jan 2025 22:59:46 +0100 (CET)
-Message-ID: <4cf2e26b-2727-4b50-9ada-56a6be814dca@freemail.hu>
-Date: Tue, 7 Jan 2025 22:59:21 +0100
+	s=arc-20240116; t=1736288089; c=relaxed/simple;
+	bh=kY/GwtXCvIGdX7JcRch8/sUfqVuHTA4hV8dR3yYxHc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jK2TjYn3IvW6fJ6bOwPBZ66J6KpNt0stzhhH14DrcXKqDWmVUdx7LkjyZ60dx+IEDHGi49xFsDp9TUiEnpfYL3CZ8fqJm5AfPOG7c1xYr3DI5v5zPtBuQC/rS7qbU/8ESjI/WOSngYNqVuen4NqvU+1KKThkUKulJrY6cpqKLzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jo-so.de; spf=pass smtp.mailfrom=jo-so.de; arc=none smtp.client-ip=37.221.195.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jo-so.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jo-so.de
+Received: from mail-relay (helo=jo-so.de)
+	by s1.jo-so.de with local-bsmtp (Exim 4.96)
+	(envelope-from <joerg@jo-so.de>)
+	id 1tVHqG-00BG8Y-1P;
+	Tue, 07 Jan 2025 23:14:28 +0100
+Received: from joerg by zenbook.jo-so.de with local (Exim 4.98)
+	(envelope-from <joerg@jo-so.de>)
+	id 1tVHqF-00000000a7H-37Vx;
+	Tue, 07 Jan 2025 23:14:27 +0100
+Date: Tue, 7 Jan 2025 23:14:27 +0100
+From: =?utf-8?B?SsO2cmc=?= Sommer <joerg@jo-so.de>
+To: Pieter Van Trappen <pieter.van.trappen@cern.ch>
+Cc: Christian Eggers <ceggers@arri.de>, Jakub Kicinski <kuba@kernel.org>, 
+	Tristram Ha <tristram.ha@microchip.com>, Woojung Huh <Woojung.Huh@microchip.com>, netdev@vger.kernel.org, 
+	linux-spi@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>
+Subject: Re: KSZ8795 not detected at start to boot from NFS
+Message-ID: <3z5dtqwwxhx6ogtztlsdwvlbxmt5ujbj7pme2delou7mqsnsll@esfwyr2glzyn>
+OpenPGP: id=7D2C9A23D1AEA375; url=https://jo-so.de/pgp-key.txt;
+ preference=signencrypt
+References: <ojegz5rmcjavsi7rnpkhunyu2mgikibugaffvj24vomvan3jqx@5v6fyz32wqoz>
+ <5708326.ZASKD2KPVS@n9w6sw14>
+ <cxe42bethnzs7f46xxyvj6ok6ve7itssdxyh2vuftnfws4aa3z@2o4njdkw3r5i>
+ <2675613.fDdHjke4Dd@n9w6sw14>
+ <sqsslcr7fsgqi7fvjpy5xnarhlm76atvatczkzwpn37e7gnsu6@tuy7an7t4gdg>
+ <cnmv4ahgyblej7aoknhhb3xyvb67j7t24tug7uoxxtl5s4pjy3@wd3copbtdiec>
+ <f26f526c-cb43-4170-8dd4-b7cf6c0d1d5d@lunn.ch>
+ <3e7264a5-aea7-44f1-8a37-2b8cf48b710c@cern.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/10] netfilter: Adjust code style of xt_*.h, ipt_*.h
- files.
-To: Jozsef Kadlecsik <kadlec@netfilter.org>
-Cc: fw@strlen.de, pablo@netfilter.org, lorenzo@kernel.org,
- daniel@iogearbox.net, leitao@debian.org, amiculas@cisco.com,
- davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20250107024120.98288-1-egyszeregy@freemail.hu>
- <20250107024120.98288-9-egyszeregy@freemail.hu>
- <2962ec51-4d32-76d9-4229-99001a437963@netfilter.org>
-Content-Language: hu
-From: =?UTF-8?Q?Sz=C5=91ke_Benjamin?= <egyszeregy@freemail.hu>
-In-Reply-To: <2962ec51-4d32-76d9-4229-99001a437963@netfilter.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/relaxed; t=1736287187;
-	s=20181004; d=freemail.hu;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	l=4921; bh=qnv/wkuXnqbCCoZz65HUSrHvJsowhLcrOJUzEb67MSg=;
-	b=dgzt+tInkTT0uzLT58xd+Uif/7nXiOtKuAP7OUkT26wLglhm26ze4DbGI2L9wXK2
-	kd3/iLxJYpatH3Zf89LFGLVZzGCJct5jy85QOzin5WeWgMiwfUvhM6PuAs6C7ULO/6b
-	z8NNyt1WkvJzlD9jlMfclLAgOIs3D/0dVTG9o5HzsQzF5zGv5ogZ7FiUaXVmtYRvXq5
-	T5j/RBpz9o5U9/GTHaRExcAEje+8ZhIC/g3dnPI/JdtJv51dK7sBFyqCemOKDoHcdsp
-	MAtO7K4716LCYT1gKHct0BQpumFvrpO+uEhDM4RgFECoSmDG0HHcXNUsasZzfh+XTj3
-	GIZcZ8ec1A==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="sn7fv2gcor7y3z6p"
+Content-Disposition: inline
+In-Reply-To: <3e7264a5-aea7-44f1-8a37-2b8cf48b710c@cern.ch>
 
-2025. 01. 07. 20:39 keltezéssel, Jozsef Kadlecsik írta:
-> On Tue, 7 Jan 2025, egyszeregy@freemail.hu wrote:
-> 
->> From: Benjamin Szőke <egyszeregy@freemail.hu>
->>
->> - Adjust tab indents
->> - Fix format of #define macros
-> 
-> I don't really understand why it'd be important to use parentheses around
-> plain constant values in macros. The kernel coding style does not list it
-> as a requirement, see 12) 4. in Documentation/process/coding-style.rst.
-> 
 
-If it would be more than just a const value, parentheses is a must have thing 
-for it (now for it, it is not critical to have it but better to get used to 
-this). This is how my hand automatically do it, to avoid the syntax problem in 
-this coding.
+--sn7fv2gcor7y3z6p
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: KSZ8795 not detected at start to boot from NFS
+MIME-Version: 1.0
 
-> Best regards,
-> Jozsef
->   
->> Signed-off-by: Benjamin Szőke <egyszeregy@freemail.hu>
->> ---
->>   include/uapi/linux/netfilter/xt_dscp.h      | 6 +++---
->>   include/uapi/linux/netfilter/xt_rateest.h   | 4 ++--
->>   include/uapi/linux/netfilter/xt_tcpmss.h    | 6 +++---
->>   include/uapi/linux/netfilter_ipv4/ipt_ecn.h | 8 ++++----
->>   include/uapi/linux/netfilter_ipv4/ipt_ttl.h | 3 +--
->>   include/uapi/linux/netfilter_ipv6/ip6t_hl.h | 3 +--
->>   6 files changed, 14 insertions(+), 16 deletions(-)
->>
->> diff --git a/include/uapi/linux/netfilter/xt_dscp.h b/include/uapi/linux/netfilter/xt_dscp.h
->> index bcfe4afa6351..22b6488ef2e7 100644
->> --- a/include/uapi/linux/netfilter/xt_dscp.h
->> +++ b/include/uapi/linux/netfilter/xt_dscp.h
->> @@ -15,9 +15,9 @@
->>   
->>   #include <linux/types.h>
->>   
->> -#define XT_DSCP_MASK	0xfc	/* 11111100 */
->> -#define XT_DSCP_SHIFT	2
->> -#define XT_DSCP_MAX	0x3f	/* 00111111 */
->> +#define XT_DSCP_MASK	(0xfc)	/* 11111100 */
->> +#define XT_DSCP_SHIFT	(2)
->> +#define XT_DSCP_MAX		(0x3f)	/* 00111111 */
->>   
->>   /* match info */
->>   struct xt_dscp_info {
->> diff --git a/include/uapi/linux/netfilter/xt_rateest.h b/include/uapi/linux/netfilter/xt_rateest.h
->> index da9727fa527b..f719bd501d1a 100644
->> --- a/include/uapi/linux/netfilter/xt_rateest.h
->> +++ b/include/uapi/linux/netfilter/xt_rateest.h
->> @@ -22,8 +22,8 @@ enum xt_rateest_match_mode {
->>   };
->>   
->>   struct xt_rateest_match_info {
->> -	char			name1[IFNAMSIZ];
->> -	char			name2[IFNAMSIZ];
->> +	char		name1[IFNAMSIZ];
->> +	char		name2[IFNAMSIZ];
->>   	__u16		flags;
->>   	__u16		mode;
->>   	__u32		bps1;
->> diff --git a/include/uapi/linux/netfilter/xt_tcpmss.h b/include/uapi/linux/netfilter/xt_tcpmss.h
->> index 3ee4acaa6e03..ad858ae93e6a 100644
->> --- a/include/uapi/linux/netfilter/xt_tcpmss.h
->> +++ b/include/uapi/linux/netfilter/xt_tcpmss.h
->> @@ -4,11 +4,11 @@
->>   
->>   #include <linux/types.h>
->>   
->> -#define XT_TCPMSS_CLAMP_PMTU	0xffff
->> +#define XT_TCPMSS_CLAMP_PMTU	(0xffff)
->>   
->>   struct xt_tcpmss_match_info {
->> -    __u16 mss_min, mss_max;
->> -    __u8 invert;
->> +	__u16 mss_min, mss_max;
->> +	__u8 invert;
->>   };
->>   
->>   struct xt_tcpmss_info {
->> diff --git a/include/uapi/linux/netfilter_ipv4/ipt_ecn.h b/include/uapi/linux/netfilter_ipv4/ipt_ecn.h
->> index a6d479aece21..0594dd49d13f 100644
->> --- a/include/uapi/linux/netfilter_ipv4/ipt_ecn.h
->> +++ b/include/uapi/linux/netfilter_ipv4/ipt_ecn.h
->> @@ -16,10 +16,10 @@
->>   
->>   #define ipt_ecn_info xt_ecn_info
->>   
->> -#define IPT_ECN_OP_SET_IP	0x01	/* set ECN bits of IPv4 header */
->> -#define IPT_ECN_OP_SET_ECE	0x10	/* set ECE bit of TCP header */
->> -#define IPT_ECN_OP_SET_CWR	0x20	/* set CWR bit of TCP header */
->> -#define IPT_ECN_OP_MASK		0xce
->> +#define IPT_ECN_OP_SET_IP	(0x01)	/* set ECN bits of IPv4 header */
->> +#define IPT_ECN_OP_SET_ECE	(0x10)	/* set ECE bit of TCP header */
->> +#define IPT_ECN_OP_SET_CWR	(0x20)	/* set CWR bit of TCP header */
->> +#define IPT_ECN_OP_MASK		(0xce)
->>   
->>   enum {
->>   	IPT_ECN_IP_MASK       = XT_ECN_IP_MASK,
->> diff --git a/include/uapi/linux/netfilter_ipv4/ipt_ttl.h b/include/uapi/linux/netfilter_ipv4/ipt_ttl.h
->> index c21eb6651353..15c75a4ba355 100644
->> --- a/include/uapi/linux/netfilter_ipv4/ipt_ttl.h
->> +++ b/include/uapi/linux/netfilter_ipv4/ipt_ttl.h
->> @@ -9,13 +9,12 @@
->>   #include <linux/types.h>
->>   
->>   enum {
->> -	IPT_TTL_EQ = 0,		/* equals */
->> +	IPT_TTL_EQ = 0,	/* equals */
->>   	IPT_TTL_NE,		/* not equals */
->>   	IPT_TTL_LT,		/* less than */
->>   	IPT_TTL_GT,		/* greater than */
->>   };
->>   
->> -
->>   struct ipt_ttl_info {
->>   	__u8	mode;
->>   	__u8	ttl;
->> diff --git a/include/uapi/linux/netfilter_ipv6/ip6t_hl.h b/include/uapi/linux/netfilter_ipv6/ip6t_hl.h
->> index caef38a63b8f..4af05c86dcd5 100644
->> --- a/include/uapi/linux/netfilter_ipv6/ip6t_hl.h
->> +++ b/include/uapi/linux/netfilter_ipv6/ip6t_hl.h
->> @@ -9,13 +9,12 @@
->>   #include <linux/types.h>
->>   
->>   enum {
->> -	IP6T_HL_EQ = 0,		/* equals */
->> +	IP6T_HL_EQ = 0,	/* equals */
->>   	IP6T_HL_NE,		/* not equals */
->>   	IP6T_HL_LT,		/* less than */
->>   	IP6T_HL_GT,		/* greater than */
->>   };
->>   
->> -
->>   struct ip6t_hl_info {
->>   	__u8	mode;
->>   	__u8	hop_limit;
->> -- 
->> 2.43.5
->>
->>
-> 
+Pieter Van Trappen schrieb am Mo 06. Jan, 14:38 (+0100):
+> On 05/01/2025 18:08, Andrew Lunn wrote:
+> > On Sun, Jan 05, 2025 at 05:33:38PM +0100, J=C3=B6rg Sommer wrote:
+> > > Hi everyone,
+> > >=20
+> > > I've added you to the list of recipients, because you where somehow i=
+nvolved
+> > > in changes of the KSZ-SPI switch code.
+> > >=20
+> > > We are debating the SPI mode setting for the microchip ksz8795 and ks=
+z9477
+> > > and possibly others. Since the commit
+> > > 8c4599f49841dd663402ec52325dc2233add1d32 the SPI mode gets fixed to m=
+ode=C2=A03
+> > > in the code. But at least my ksz8795 works also with mode=C2=A00 and =
+shows better
+> > > initialization behaviour with mode=C2=A00.
+> > >=20
+> > > The big question is: can both (or all ksz) chips work with both modes?
+> > > Should this setting stay in code or moved to the device tree?
+> > >=20
+> > > The specs are here, but I found no evidence about the supported/recom=
+mended
+> > > SPI modes:
+> > >=20
+> > > https://ww1.microchip.com/downloads/en/DeviceDoc/KSZ9563R-Data-Sheet-=
+DS00002419D.pdf
+>=20
+> From this KSZ9563 datasheet it is quite clear from Figure 6-9 that it
+> requires mode 0, for KSZ8794 (which I have and can test) Figure 7-8 [1] a=
+lso
+> indicates mode 0. Note however that older KSZ8794 datasheets (revision
+> DS00002134A from 2016, can upload if needed) rather indicate a mode 3, wh=
+ich
+> is a hint to me that indeed both modes were once supported. Appendix A fr=
+om
+> [1] states that in 2021 the SPI Timing images and parameters have been
+> updated. No further information there but your experience and the datashe=
+et
+> update seem to indicate mode 0 has better support.
 
+The ksz8795 spec [2] says on page=C2=A053, table=C2=A04-3, register=C2=A011=
+, bit=C2=A00 =E2=80=9CTrigger
+on the rising edge of SPI clock (for higher speed SPI)=E2=80=9D. The rising=
+ edge
+should mean SPI mode 0. So mode 0 should be recommended for higher speed.
+
+[2] https://ww1.microchip.com/downloads/aemDocuments/documents/UNG/ProductD=
+ocuments/DataSheets/KSZ8795CLX-Data-Sheet-DS00002112.pdf
+
+> My SPI peripheral (and KSZ8 driver) is configured for mode 3 I see but the
+> frequency is set to 10 MHz while the max is 50 MHz. From experience with
+> other SPI devices I know that with higher frequencies the timing paramete=
+rs
+> (setup and hold times, mode) become more important, what frequency do you
+> have configured J=C3=B6rg? I'm asking because I don't experience the issu=
+e you
+> have.
+>=20
+> [1]
+> https://ww1.microchip.com/downloads/aemDocuments/documents/UNG/ProductDoc=
+uments/DataSheets/KSZ8794CNX-Data-Sheet-DS00002134.pdf
+
+I am using 25MHz which is the maximum for the ksz8795; see [2] page 11,
+table 2-1, pin 67; page 27, sec "3.5.1.1 SPI Client Serial Bus
+Configuration"
+
+I've tried 10MHz with the code in place that switches to SPI mode=C2=A03, b=
+ut I
+still get:
+
+[    2.078732] ksz8795-switch spi0.1: invalid family id: 0
+[    2.078808] ksz8795-switch: probe of spi0.1 failed with error -22
+
+I think the main problem is that the chip needs a read access to
+detect/adjust itself to the new mode. If this is the read for the chip id,
+this fails.
+
+
+I'm in favour of removing the code, and leave it up to the devicetree to
+make the decision. Maybe add a note to micrel-ks8995.txt that spi-cpha and
+spi-cpol are possible.
+
+diff --git drivers/net/dsa/microchip/ksz_spi.c drivers/net/dsa/microchip/ks=
+z_spi.c
+index 108a958dc356..046f2a7d1e08 100644
+--- drivers/net/dsa/microchip/ksz_spi.c
++++ drivers/net/dsa/microchip/ksz_spi.c
+@@ -85,12 +85,6 @@ static int ksz_spi_probe(struct spi_device *spi)
+        if (spi->dev.platform_data)
+                dev->pdata =3D spi->dev.platform_data;
+=20
+-       /* setup spi */
+-       spi->mode =3D SPI_MODE_3;
+-       ret =3D spi_setup(spi);
+-       if (ret)
+-               return ret;
+-
+        dev->irq =3D spi->irq;
+=20
+        ret =3D ksz_switch_register(dev);
+
+
+Regards, J=C3=B6rg
+
+--=20
+=C2=BBDas ist wie mit allen L=C3=B6schfunktionen im Internet: Du kannst Dir=
+ nur
+sichern seien, dass es auf Deinem Rechner verschwunden ist. An alle
+anderen ist es eine Bitte.=C2=AB
+
+--sn7fv2gcor7y3z6p
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABEIAB0WIQS1pYxd0T/67YejVyF9LJoj0a6jdQUCZ32nQgAKCRB9LJoj0a6j
+dSdxAQChanvpJFQQHFlGkNRAieh+PRfPyxtRijCHOA4kD9d4+AD+LYImVUAPohd+
+YRK+rtwwc0VqYG0rIs88O42NyZz65PE=
+=VdUe
+-----END PGP SIGNATURE-----
+
+--sn7fv2gcor7y3z6p--
