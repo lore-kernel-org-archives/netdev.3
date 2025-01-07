@@ -1,122 +1,106 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A283195FEF
-	for <netdev@vger.kernel.org>; Tue,  7 Jan 2025 06:01:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4442594B2;
+	Tue,  7 Jan 2025 06:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736229706; cv=none; b=MI9RaQPG0vTvTec5vVN+J0XDR96mqup85vFEaCRa1lXkBIGcyDAq6862Tot7G7YKhe5JV7lB1hXVyFe7e7Q5Y4TvVEgn3+6C+vPRkPE0s1pGqObMNtZuz3gpUXjWhTHyvZp6WgC2edoGP+vTFSeX5hcBPcYzJA4lr+1oZRkRkv4=
+	t=1736229999; cv=none; b=di8d//z4nV+9olBaCmwJWj/5gLnqfVtf5+1z8rDZi11jNl/t/RSUzGRINSip4x0EivTjbxmBhE4zCa+q3bfvLhZuHdzyEYr4d19cC1FNio9vdOLDYzvHRNtezcrWzaXl96iS7rXQf4deGv0Tdzskqj5aSRmWRIAcgGQoAyge4jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736229706; c=relaxed/simple;
-	bh=VnwibYjT8jBw8IwFP6CfgTnL083IcGiCaYr09GVI1nE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NiXPWIQHOtxDarVB9l2VYviEtjl/AyBkZ+29rvOPRG24hYIGTqKJ0LRQHLbYon2r7yzbZeyud5x8fQhM/g58VMubKqJGWTNjKgu819aX07gQLWOxAH01FMoR87zr1+NxqJFRnudNgdG99Uent8b9cQ/h+3jjw5ZKRZBmHPzQaA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TlG1v0NM; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1736229999; c=relaxed/simple;
+	bh=WON7gQqRw13780pq+Ow0QpLGjZ14hnc5lGbXr/TyLZQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=hEtWLfUMddOwmsCMGDKagktNiuPH1IqMPHIjQBFI5bd+nUh0AjVehe2VH4+eB6SCJYqdsuKZsvAbEqcKVSapO7zMef02NgJuH7z9gcTb5CH3pP/QHaFSKxOQUO9aAYjf4pVjrWKy49ZTXBW31ZFnT9miFMUPqn3k16nQ9ScFYyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=gMk9+3R9 reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TlG1v0NM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736229703; x=1767765703;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VnwibYjT8jBw8IwFP6CfgTnL083IcGiCaYr09GVI1nE=;
-  b=TlG1v0NMrgox2zPvKlCEe9WYNx0+2F9Jv157SyttgifDr+yRl82V2DQW
-   aZt+3WbcudewqCfNqNQXsRGidUhkfATv6Jl9u7kcxvAEsvfAKLPZ01Mh3
-   jzsKQddm68PFA6StAo0pXfsMnA+XeXSA42vrzb81GgHJgBoNJhO9290VS
-   469taWYyan007KZTzsUOPaE+GGwywWZLXmxSdDnX8ZNYgW8LIoENzTVdL
-   tXEmMty5RxuPPS+yEVnxLei6toy/ADebdx2knNXpwPm80ZPQ6Mg0OfBsE
-   HDARdkL2DKcaxZ9GDbpnfcl2Au2F4VWbdPqiuEGzM8d3UK4owqk09Dlrv
-   g==;
-X-CSE-ConnectionGUID: F/MMRhKSTaSD7MzhXNRNiA==
-X-CSE-MsgGUID: zp3RRGPnSu21pRPxvlB3IA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11307"; a="47812720"
-X-IronPort-AV: E=Sophos;i="6.12,294,1728975600"; 
-   d="scan'208";a="47812720"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2025 22:01:41 -0800
-X-CSE-ConnectionGUID: QcEoKJL3QtSsIlWnqxL5mw==
-X-CSE-MsgGUID: hWsoUdjLTd6OO9u/yaTVpQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,294,1728975600"; 
-   d="scan'208";a="103163445"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2025 22:01:39 -0800
-Date: Tue, 7 Jan 2025 06:58:22 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: John Daley <johndale@cisco.com>
-Cc: benve@cisco.com, satishkh@cisco.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	Nelson Escobar <neescoba@cisco.com>
-Subject: Re: [PATCH net-next 2/2] enic: Obtain the Link speed only after the
- link comes up
-Message-ID: <Z3zCfiwPl2Xu/Zvi@mev-dev.igk.intel.com>
-References: <20250107025135.15167-1-johndale@cisco.com>
- <20250107025135.15167-3-johndale@cisco.com>
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="gMk9+3R9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=3sdmLfVOmOo2p/giyGOh8rmYfFNftuYziZBvUi+1cVA=; b=g
+	Mk9+3R9CvIsqVt0ZWuyputB2yNbygaJUPhuNl6Gs5mXslftsICjYyU8mPvCcaiDV
+	GZLow7jIDOmDuVcbUEVTagWB6BO2XxXoQwGlCyoQFWd9a1IczEaBgWQj4HFzCWR4
+	ecaDH+TjHX3xdLhCpTQKkkGnf3AhR0UKx0Kq/7BSTQ=
+Received: from slark_xiao$163.com (
+ [2408:8459:3820:7371:147b:c649:857d:3d8d] ) by ajax-webmail-wmsvr-40-112
+ (Coremail) ; Tue, 7 Jan 2025 14:05:38 +0800 (CST)
+Date: Tue, 7 Jan 2025 14:05:38 +0800 (CST)
+From: "Slark Xiao" <slark_xiao@163.com>
+To: "Loic Poulain" <loic.poulain@linaro.org>
+Cc: "Muhammad Nuzaihan" <zaihan@unrealasia.net>, 
+	"Sergey Ryazanov" <ryazanov.s.a@gmail.com>, 
+	"Johannes Berg" <johannes@sipsolutions.net>, 
+	"Andrew Lunn" <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, 
+	"Eric Dumazet" <edumazet@google.com>, 
+	"Jakub Kicinski" <kuba@kernel.org>, 
+	"Paolo Abeni" <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re:Re: [PATCH net-next v4] wwan dev: Add port for NMEA channel for
+ WWAN devices
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
+ Copyright (c) 2002-2025 www.mailtech.cn 163com
+In-Reply-To: <CAMZdPi91hR10xe=UzccqtwvtvS9_Wf9NEw6i5-x=e4UdfKMcug@mail.gmail.com>
+References: <20250105124819.6950-1-zaihan@unrealasia.net>
+ <CAMZdPi91hR10xe=UzccqtwvtvS9_Wf9NEw6i5-x=e4UdfKMcug@mail.gmail.com>
+X-NTES-SC: AL_Qu2YBP6ZtkEo7imYYukfmkgRh+8+X8u1u/0j245WOZ1wjDnp6C0EcllTEXTGzfmDJC2LnQiHVBdn7MFrf7t0e7AuFwljLf+D6WvNjgE7ce7TOw==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250107025135.15167-3-johndale@cisco.com>
+Message-ID: <3c7d38cb.5336.1943f5e66de.Coremail.slark_xiao@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:cCgvCgCnj4syxHxnWTNRAA--.563W
+X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/1tbiRx-NZGd8sfxzywAEsb
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-On Mon, Jan 06, 2025 at 06:51:35PM -0800, John Daley wrote:
-> The link speed is obtained in the RX adaptive coalescing function. It
-> was being called at probe time when the link may not be up. Change the
-> call to run after the Link comes up.
-> 
-> The impact of not getting the correct link speed was that the low end of
-> the adaptive interrupt range was always being set to 0 which could have
-> caused a slight increase in the number of RX interrupts.
-> 
-> Co-developed-by: Nelson Escobar <neescoba@cisco.com>
-> Signed-off-by: Nelson Escobar <neescoba@cisco.com>
-> Co-developed-by: Satish Kharat <satishkh@cisco.com>
-> Signed-off-by: Satish Kharat <satishkh@cisco.com>
-> Signed-off-by: John Daley <johndale@cisco.com>
-> ---
->  drivers/net/ethernet/cisco/enic/enic_main.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-> index 957efe73e41a..49f6cab01ed5 100644
-> --- a/drivers/net/ethernet/cisco/enic/enic_main.c
-> +++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-> @@ -109,7 +109,7 @@ static struct enic_intr_mod_table mod_table[ENIC_MAX_COALESCE_TIMERS + 1] = {
->  static struct enic_intr_mod_range mod_range[ENIC_MAX_LINK_SPEEDS] = {
->  	{0,  0}, /* 0  - 4  Gbps */
->  	{0,  3}, /* 4  - 10 Gbps */
-> -	{3,  6}, /* 10 - 40 Gbps */
-> +	{3,  6}, /* 10+ Gbps */
-
-Is this on purpose? You didn't mention anything about speed range in
-commit message. Just wondering, patch looks fine, thanks.
-
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-
->  };
->  
->  static void enic_init_affinity_hint(struct enic *enic)
-> @@ -466,6 +466,7 @@ static void enic_link_check(struct enic *enic)
->  	if (link_status && !carrier_ok) {
->  		netdev_info(enic->netdev, "Link UP\n");
->  		netif_carrier_on(enic->netdev);
-> +		enic_set_rx_coal_setting(enic);
->  	} else if (!link_status && carrier_ok) {
->  		netdev_info(enic->netdev, "Link DOWN\n");
->  		netif_carrier_off(enic->netdev);
-> @@ -3063,7 +3064,6 @@ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
->  	timer_setup(&enic->notify_timer, enic_notify_timer, 0);
->  
->  	enic_rfs_flw_tbl_init(enic);
-> -	enic_set_rx_coal_setting(enic);
->  	INIT_WORK(&enic->reset, enic_reset);
->  	INIT_WORK(&enic->tx_hang_reset, enic_tx_hang_reset);
->  	INIT_WORK(&enic->change_mtu_work, enic_change_mtu_work);
-> -- 
-> 2.35.2
+CkF0IDIwMjUtMDEtMDcgMDM6NDQ6MzUsICJMb2ljIFBvdWxhaW4iIDxsb2ljLnBvdWxhaW5AbGlu
+YXJvLm9yZz4gd3JvdGU6Cj5IaSBNdWhhbW1hZCwKPgo+KyBTbGFyawo+Cj5PbiBTdW4sIDUgSmFu
+IDIwMjUgYXQgMTM6NTMsIE11aGFtbWFkIE51emFpaGFuIDx6YWloYW5AdW5yZWFsYXNpYS5uZXQ+
+IHdyb3RlOgo+Pgo+PiBCYXNlZCBvbiB0aGUgY29kZTogZHJpdmVycy9idXMvbWhpL2hvc3QvcGNp
+X2dlbmVyaWMuYwo+PiB3aGljaCBhbHJlYWR5IGhhcyBOTUVBIGNoYW5uZWwgKG1oaV9xdWVjdGVs
+X2VtMXh4X2NoYW5uZWxzKQo+PiBzdXBwb3J0IGluIHJlY2VudCBrZXJuZWxzIGJ1dCBpdCBpcyBu
+ZXZlciBleHBvc2VkCj4+IGFzIGEgcG9ydC4KPj4KPj4gVGhpcyBjb21taXQgZXhwb3NlcyB0aGF0
+IE5NRUEgY2hhbm5lbCB0byBhIHBvcnQKPj4gdG8gYWxsb3cgdHR5L2dwc2QgcHJvZ3JhbXMgdG8g
+cmVhZCB0aHJvdWdoCj4+IHRoZSAvZGV2L3d3YW4wbm1lYTAgcG9ydC4KPj4KPj4gVGVzdGVkIHRo
+aXMgY2hhbmdlIG9uIGEgbmV3IGtlcm5lbCBhbmQgbW9kdWxlCj4+IGJ1aWx0IGFuZCBub3cgTk1F
+QSAobWhpMF9OTUVBKSBzdGF0ZW1lbnRzIGFyZQo+PiBhdmFpbGFibGUgKGF0dGFjaGVkKSB0aHJv
+dWdoIC9kZXYvd3dhbjBubWVhMCBwb3J0IG9uIGJvb3R1cC4KPj4KPj4gU2lnbmVkLW9mZi1ieTog
+TXVoYW1tYWQgTnV6YWloYW4gQmluIEthbWFsIEx1ZGRpbiA8emFpaGFuQHVucmVhbGFzaWEubmV0
+Pgo+Cj5UaGlzIHdvcmtzIGZvciBzdXJlIGJ1dCBJJ20gbm90IGVudGlyZWx5IGNvbnZpbmNlZCBO
+TUVBIHNob3VsZCBiZQo+ZXhwb3NlZCBhcyBhIG1vZGVtIGNvbnRyb2wgcG9ydC4gSW4geW91ciBw
+cmV2aW91cyBwYXRjaCB2ZXJzaW9uIFNlcmdleQo+cG9pbnRlZCB0byBhIGRpc2N1c3Npb24gd2Ug
+aGFkIHJlZ2FyZGluZyBleHBvc2luZyB0aGF0IHBvcnQgYXMgV1dBTgo+Y2hpbGQgZGV2aWNlIHRo
+cm91Z2ggdGhlIHJlZ3VsYXIgR05TUyBzdWJzeXN0ZW0sIHdoaWNoIHdvdWxkIHJlcXVpcmUKPnNv
+bWUgZ2VuZXJpYyBicmlkZ2UgaW4gdGhlIFdXQU4gc3Vic3lzdGVtLgo+Cj5TbGFyaywgZGlkIHlv
+dSBoYXZlIGFuIG9wcG9ydHVuaXR5IHRvIGxvb2sgYXQgdGhlIEdOU1Mgc29sdXRpb24/Cj4KPlJl
+Z2FyZHMsCj5Mb2ljCgpIaSBMb2ljLApUaGlzIHNvbHV0aW9uIHNhbWUgYXMgd2hhdCBJIGRpZCBp
+biBsYXN0IHRpbWUuIFdlIGdvdCBhIHd3YW4wbm1lYTAgZGV2aWNlIGJ1dCB0aGlzCmRldmljZSBj
+YW4ndCBzdXBwb3J0IGZsb3cgY29udHJvbC4KQWxzbywgdGhpcyBpcyBub3QgdGhlIHNvbHV0aW9u
+IHdoYXQgU2VyZ2V5IGV4cGVjdGVkLCBJIHRoaW5rLiAKUGxlYXNlIHJlZmVyIHRvIHRoZSB0YXJn
+ZXQgd2UgdGFsa2VkIGxhc3QgdGltZToKLy8vLy8vLy8vLy8vLy8vLy8vLy8vCj4+PiBCYXNpY2Fs
+bHksIGNvbXBvbmVudHMgc2hvdWxkIGludGVyYWN0IGxpa2UgdGhpczoKPj4+Cj4+PiBNb2RlbSBQ
+Q0llIGRyaXZlciA8LT4gV1dBTiBjb3JlIDwtPiBHTlNTIGNvcmUgPC0+IC9kZXYvZ25zczAKPj4+
+Cj4+PiBXZSBuZWVkIHRoZSBHTlNTIGNvcmUgdG8gZXhwb3J0IHRoZSBtb2RlbSBOTUVBIHBvcnQg
+YXMgaW5zdGFuY2Ugb2YKPj4+ICdnbnNzJyBjbGFzcy4KPj4+Cj4+PiBXZSBuZWVkIFdXQU4gY29y
+ZSBiZXR3ZWVuIHRoZSBtb2RlbSBkcml2ZXIgYW5kIHRoZSBHU05OIGNvcmUgYmVjYXVzZSB3ZQo+
+Pj4gbmVlZCBhIGNvbW1vbiBwYXJlbnQgZm9yIEdOU1MgcG9ydCBhbmQgbW9kZW0gY29udHJvbCBw
+b3J0IChlLmcuIEFULAo+Pj4gTUJJTSkuIFNpbmNlIHdlIGFyZSBhbHJlYWR5IGV4cG9ydGluZyBj
+b250cm9sIHBvcnRzIHZpYSB0aGUgV1dBTgo+Pj4gc3Vic3lzdGVtLCB0aGUgR05TUyBwb3J0IHNo
+b3VsZCBhbHNvIGJlIGV4cG9ydGVkIHRocm91Z2ggdGhlIFdXQU4KPj4+IHN1YnN5c3RlbS4gVG8g
+a2VlcCBkZXZpY2VzIGhpZXJhcmNoeSBsaWtlIHRoaXM6Cj4+Pgo+Pj4gICAgICAgICAgICAgICAg
+ICAgICAgICAuLS0+IEFUIHBvcnQKPj4+IFBDSWUgZGV2IC0+IFdXQU4gZGV2IC18Cj4+PiAgICAg
+ICAgICAgICAgICAgICAgICAgICctLT4gR05TUyBwb3J0Cj4+Pgo+Pj4gQmFjayB0byB0aGUgaW1w
+bGVtZW50YXRpb24uIFByb2JhYmx5IHdlIHNob3VsZCBpbnRyb2R1Y2UgYSBuZXcgcG9ydAo+Pj4g
+dHlwZSwgZS5nLiBXV0FOX1BPUlRfTk1FQS4gQW5kIHRoaXMgcG9ydCB0eXBlIHNob3VsZCBoYXZl
+IGEgc3BlY2lhbAo+Pj4gaGFuZGxpbmcgaW4gdGhlIFdXQU4gY29yZS4KPj4+Cj4+IFNpbWlsYXIg
+bGlrZSB3aGF0IEkgZGlkIGluIG15IGxvY2FsLiBJIG5hbWVkIGl0IGFzIFdXQU5fUE9SVF9HTlNT
+IGFuZAo+PiBwdXQgaXQgYXMgc2FtZSBsZXZlbCB3aXRoIEFUIHBvcnQuCj4+IAo+Pj4gd3dhbl9j
+cmVhdGVfcG9ydCgpIGZ1bmN0aW9uIHNob3VsZCBub3QgZGlyZWN0bHkgY3JlYXRlIGEgY2hhciBk
+ZXZpY2UuCj4+PiBJbnN0ZWFkLCBpdCBzaG91bGQgY2FsbCBnbnNzX2FsbG9jYXRlX2RldmljZSgp
+IGFuZAo+Pj4gZ25zc19yZWdpc3Rlcl9kZXZpY2UoKSB0byByZWdpc3RlciB0aGUgcG9ydCB3aXRo
+IEdOU1Mgc3Vic3lzdGVtLgovLy8vLy8vLy8vLy8vLy8vLy8vLwoKVGhhbmtzCgo=
