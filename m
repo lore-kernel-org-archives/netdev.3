@@ -1,61 +1,61 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA77205AC0
-	for <netdev@vger.kernel.org>; Wed,  8 Jan 2025 22:07:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1976F205AC5
+	for <netdev@vger.kernel.org>; Wed,  8 Jan 2025 22:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736374050; cv=none; b=Dq29so9YBnq8W70rSgDqfaHPYcQHtPDPP/mPRt3mMGyJUbkLJHCdlbikjGnEWFs13iA9fhonIx0MDgt21cAq2gGLYHBZQlWd3iedNU33YdTgAHOw6bqzJ0hKwc7OQ1fgqSmh7o1uaXXDuXn30rhG2aXVk95D9Gv+oNtdstCW/Io=
+	t=1736374050; cv=none; b=X+d4O/iq2g7X5YDeZ2AckW6kP2EkCxdk7BpwCkTBVfioTl8bTQABGalEiNdPeoZdwnRH73EVjix7h7ai1Mu3JzqKjB8sH/tUoNW9mKjPJthYnRELsE0OrtQW1OgJaKqtNl2tIQCmCrCdq1IFtK4Rs2SqScLOsX54HjRDr7PHLvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1736374050; c=relaxed/simple;
-	bh=6Bqn2WlGC/QyLXjHkwEt96grEpG1mYxHhlF1Chcw+Es=;
+	bh=8WDGKnJjhLIfGvG3a81UX+B9IT5lnrkN7/jYE+f6kLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=irUC884emjcFpz/wIgopMM9U1IoYoF/NX7gNmZ52rOSJiWp0Vf4JGui5M0N7wHYTKMsAUE9dKICnqNH794UyIWaHuTVSo/RMApFEX+CpBwpyV6n02FOPGFFzeno0tfLLWCXTgYeL3pnsF4D4BM8DgBdUrpAZPN2BGMr0yNrfLgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=FGbuWMhZ; arc=none smtp.client-ip=209.85.216.47
+	 MIME-Version; b=NeETpqfPog9myS7prdNQpWTcsXgnS2aEbvkLBXQMh4uM0een6SP8cs7TVpIslXof0P2N2Ea+aXNtuD1adjcx1Yn9hVbpJ0/7K8bUXKq+I13r+YW8p6ckmy9BGiKSYck4sAOceG799jD6OjM+jZKctWyuGp4EJUmrxHa/KpQ9F/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=LchMLp/P; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="FGbuWMhZ"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ef70c7efa5so404256a91.2
-        for <netdev@vger.kernel.org>; Wed, 08 Jan 2025 14:07:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="LchMLp/P"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2eeb4d643a5so488721a91.3
+        for <netdev@vger.kernel.org>; Wed, 08 Jan 2025 14:07:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1736374046; x=1736978846; darn=vger.kernel.org;
+        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1736374048; x=1736978848; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PgGQEoJLO7hhZFXH7kddctHl5vKUc6YtY/qUSu41pew=;
-        b=FGbuWMhZ8EFCbz0wfB0zosrHX5b0E7KeOA7UfbnL7Fuwk41Frk97q+KPsoPyLuMNkk
-         unloXQFz8Er/qWjlsYgo2KDuSMQdEh7ikiEY+maTVz5zIV0vaYyTnlYTIg+0Y0oodFHM
-         9ua987mZlIBH8B3IfPJ40sj/H+3x7sd+N1DCsj4BwFVRGt1nvD8jiKBPczjpwoVYnYLO
-         s4zPlDwANBbGFIKaFKLQ4oNfeCELurVvaVoarogq8nzNS+gb7I2+I4L/ccfeR0glF8lO
-         6gzl+Qusvp0tAmUFrTCiyhh/jTUP/KZ5/6KLBJOcOwVcx01ff2majRVeT4reUJeR7QWi
-         l9qg==
+        bh=NZU9x/wqygrpt9DsfwnKD2FuRQQk1M2IBmyzCsWeZ5s=;
+        b=LchMLp/PD9CKN6aNGjvdZBaUk9HvdN1iwpObc2P+1hEDK7QNsIYrfOOUI2ukJyt4zr
+         ZkFUR6KPq29CIUqk+XRQx+k2QaI+G2PBkZq090i11VOBii0854CGrngrqA9/DU715EFF
+         VLTD515ngWQ3y/EO1CAyrBAVqiTvSMOIU1vA7tBp5m3Ek/UTDQPU8BmHaH7HnCWFFr4I
+         DAe1H6mTT9ObQvJIpsTBvIZELMeiOrNd5yS5chz8ogkxa4okCSXXeYRymKNE/Xfwp0C0
+         KWpoKCm/J+r+E3whNJ452A11cnKr1CBMTtcY3OQ2KeSeGAycWnKvZzmmL+2SdRMBffvu
+         Gu1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736374046; x=1736978846;
+        d=1e100.net; s=20230601; t=1736374048; x=1736978848;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PgGQEoJLO7hhZFXH7kddctHl5vKUc6YtY/qUSu41pew=;
-        b=t5WRkXOfSWhS493OSAlnGvqxLqo3RuZGztQ+tb6zorX/kmNVSpzGhIIDRaqV6nG3uX
-         RNVcEWqy3D3tDY9ExDr2W51wNQ+l6Hi+tUyJMeNtxB9B4YxlJGHWrWcF5mWyTMydB/ps
-         UvA2rP2vUIjQoHWgoXkNaLUsSkMijxF0FtuKdhwGOmWRaKOvXeyVmZvrYx4Ou5Epql1W
-         pVGrUwt4w4NDd6ZClzcfjTZaqggKLgLWIcfzxEs0Qx25b9kTXa3EbmXkdrMetLBF98Mb
-         cnAimzwVcS3K3U3ebGyv/AJaxeLFYOL16jLmoj8Wj415///6vSyPRletDASl6EVcwXw6
-         5ImA==
-X-Forwarded-Encrypted: i=1; AJvYcCVPXsWLD4Hi/315kjBoLEvYBsRNfHvkHRyk3Hn9CHPn6RF7XjQshVhpAGHZ+p8KKZKcj42MB6U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT4LfoIpe5l3ACS0WlkyuHib6C79AuJL6hn9gnZzrxRULDKltP
-	W8msMQNcRIre5gvjwrYyILhWs1iBk49jyS9yYvRa9GU9400SaLsT7CnkZNjbSyI=
-X-Gm-Gg: ASbGncuN2oMt5ORR1bayHAWqxzBQs0TclpVOoMV84UamL6WGcFKKTHBHp7kHzyHY/sV
-	g3kB3i6FU4EkWXibag5mvmz+l5ad59XaJW6owaG14oKJDjDRzHDXVlbvPA01rCDVhVrilDhLkJ7
-	Y0Nim29E+0/zGclu92aB9RBnUk8jAsVhWzRSbPVMwZZyenbvbAtVO15H+vxvc8Nn2KiyWuwJwhZ
-	R4Xd2ogSheAqJiME3Xm24LDQqWvzVfvCPGqfsZFVQ==
-X-Google-Smtp-Source: AGHT+IF3DPLBKCj1BgtTvQaQMgpAUunD+hMtH5A7pos3phLAMFWyYcaHc7D2A8IIuO3on97HbSrMew==
-X-Received: by 2002:a17:90a:e18c:b0:2ee:d797:408b with SMTP id 98e67ed59e1d1-2f548e98537mr6484711a91.2.1736374046028;
-        Wed, 08 Jan 2025 14:07:26 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:1d::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc962d9esm335194945ad.17.2025.01.08.14.07.25
+        bh=NZU9x/wqygrpt9DsfwnKD2FuRQQk1M2IBmyzCsWeZ5s=;
+        b=SHagYUOr1H1/oA18CpBAoTmrcruxkJe9gMAOm17Vh7OTV/vk0l9sZiTUT8y1NI4K3i
+         mPteXc0Bovc2CtWV4hXWetQi7VyRYxK263W1STKzb8RI7Uo0KWVKkR/FuThhMvIYVKXq
+         DRT+ODDzsjZSmCFvTcZCdsYlCUwUXEHqr8C3K+MSkS4W3q6R40PNWP3uSp/lp6sroGl4
+         vsUsEQ3I/AS8HbHE2TbodKtVFJVshfMJFjG/f5HD81+codmJtb936Os7a2Em8PKLvLy0
+         uL/PV0Wx133hB0fw/uZ6tZePkhpx2GHsRrEiLKUho0LtOfK6G5NLioDMDOf/yLieBryY
+         YIAg==
+X-Forwarded-Encrypted: i=1; AJvYcCWcaUZq/gORKdzhPapW/KXlptTWoFy52BKAEaEPKmWGFNnx6P6yW5pTz6qGJCke/QI14kQ2gNg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyWOG0APOOmXoZgVv3VDeYAk48fpnHebvogaU6HFUFuMrGFuKP
+	zI/Do7bKYhkzHaLg5PeVfm/XIbilHZmhn2sDV1yTMlowbaAyaC+J2PNXh6IpNAg=
+X-Gm-Gg: ASbGncsCx3f4uIo5MfV9WhBKddw2SXVXPW/Hp+zypksjCpzpGyUfBMb5UQkw2P560Wb
+	E/WYgUuh3hjaaGJEllGACBW+RtjZ9KizLKpVp0hxQaO/IySWo+OM/SRPZMZFEEb8qRWeX3/3wjK
+	ERE1ZCdTnhtC3f0xRyxJxfzvli5ETRtA3a7VMg9oNaM8BLmzvKICCUJ29XlEjBYxaPYPyjIWZp8
+	ruJO/DKhPCcu+y5N7ItxnhLBOxpwlUekEwO4z5b
+X-Google-Smtp-Source: AGHT+IEFqwpe6FeB+6UwmdaptfVGLFGNuJHWyasVbPZIIprT0ltZExx3+7vFesafv0j8PfnoNnpLcQ==
+X-Received: by 2002:a17:90b:1f91:b0:2ee:f46f:4d5f with SMTP id 98e67ed59e1d1-2f548f17310mr6093970a91.6.1736374048356;
+        Wed, 08 Jan 2025 14:07:28 -0800 (PST)
+Received: from localhost ([2a03:2880:ff:7::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc96e85csm332166945ad.61.2025.01.08.14.07.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jan 2025 14:07:25 -0800 (PST)
+        Wed, 08 Jan 2025 14:07:27 -0800 (PST)
 From: David Wei <dw@davidwei.uk>
 To: io-uring@vger.kernel.org,
 	netdev@vger.kernel.org
@@ -71,9 +71,9 @@ Cc: Jens Axboe <axboe@kernel.dk>,
 	Stanislav Fomichev <stfomichev@gmail.com>,
 	Joe Damato <jdamato@fastly.com>,
 	Pedro Tammela <pctammela@mojatatu.com>
-Subject: [PATCH net-next v10 18/22] io_uring/zcrx: set pp memory provider for an rx queue
-Date: Wed,  8 Jan 2025 14:06:39 -0800
-Message-ID: <20250108220644.3528845-19-dw@davidwei.uk>
+Subject: [PATCH net-next v10 20/22] io_uring/zcrx: add copy fallback
+Date: Wed,  8 Jan 2025 14:06:41 -0800
+Message-ID: <20250108220644.3528845-21-dw@davidwei.uk>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250108220644.3528845-1-dw@davidwei.uk>
 References: <20250108220644.3528845-1-dw@davidwei.uk>
@@ -85,157 +85,204 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Set the page pool memory provider for the rx queue configured for zero
-copy to io_uring. Then the rx queue is reset using
-netdev_rx_queue_restart() and netdev core + page pool will take care of
-filling the rx queue from the io_uring zero copy memory provider.
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-For now, there is only one ifq so its destruction happens implicitly
-during io_uring cleanup.
+There are scenarios in which the zerocopy path can get a kernel buffer
+instead of a net_iov and needs to copy it to the user, whether it is
+because of mis-steering or simply getting an skb with the linear part.
+In this case, grab a net_iov, copy into it and return it to the user as
+normally.
+
+At the moment the user doesn't get any indication whether there was a
+copy or not, which is left for follow up work.
 
 Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 Signed-off-by: David Wei <dw@davidwei.uk>
 ---
- io_uring/zcrx.c | 83 ++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 75 insertions(+), 8 deletions(-)
+ io_uring/zcrx.c | 121 +++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 115 insertions(+), 6 deletions(-)
 
 diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 036de2981e64..caaec528cc3c 100644
+index 0c737ab9058d..b5ce336fc78d 100644
 --- a/io_uring/zcrx.c
 +++ b/io_uring/zcrx.c
-@@ -11,11 +11,12 @@
+@@ -7,6 +7,7 @@
+ #include <linux/io_uring.h>
+ #include <linux/netdevice.h>
+ #include <linux/rtnetlink.h>
++#include <linux/skbuff_ref.h>
+ 
  #include <net/page_pool/helpers.h>
  #include <net/page_pool/memory_provider.h>
- #include <net/netlink.h>
--
--#include <trace/events/page_pool.h>
-+#include <net/netdev_rx_queue.h>
- #include <net/tcp.h>
- #include <net/rps.h>
- 
-+#include <trace/events/page_pool.h>
-+
- #include <uapi/linux/io_uring.h>
- 
- #include "io_uring.h"
-@@ -139,6 +140,65 @@ static void io_zcrx_get_niov_uref(struct net_iov *niov)
+@@ -143,6 +144,13 @@ static void io_zcrx_get_niov_uref(struct net_iov *niov)
  	atomic_inc(io_get_user_counter(niov));
  }
  
-+static int io_open_zc_rxq(struct io_zcrx_ifq *ifq, unsigned ifq_idx)
++static inline struct page *io_zcrx_iov_page(const struct net_iov *niov)
 +{
-+	struct netdev_rx_queue *rxq;
-+	struct net_device *dev = ifq->dev;
-+	int ret;
++	struct io_zcrx_area *area = io_zcrx_iov_to_area(niov);
 +
-+	ASSERT_RTNL();
-+
-+	if (ifq_idx >= dev->num_rx_queues)
-+		return -EINVAL;
-+	ifq_idx = array_index_nospec(ifq_idx, dev->num_rx_queues);
-+
-+	rxq = __netif_get_rx_queue(ifq->dev, ifq_idx);
-+	if (rxq->mp_params.mp_priv)
-+		return -EEXIST;
-+
-+	ifq->if_rxq = ifq_idx;
-+	rxq->mp_params.mp_ops = &io_uring_pp_zc_ops;
-+	rxq->mp_params.mp_priv = ifq;
-+	ret = netdev_rx_queue_restart(ifq->dev, ifq->if_rxq);
-+	if (ret)
-+		goto fail;
-+	return 0;
-+fail:
-+	rxq->mp_params.mp_ops = NULL;
-+	rxq->mp_params.mp_priv = NULL;
-+	ifq->if_rxq = -1;
-+	return ret;
++	return area->pages[net_iov_idx(niov)];
 +}
 +
-+static void io_close_zc_rxq(struct io_zcrx_ifq *ifq)
-+{
-+	struct netdev_rx_queue *rxq;
-+	int err;
+ static int io_open_zc_rxq(struct io_zcrx_ifq *ifq, unsigned ifq_idx)
+ {
+ 	struct netdev_rx_queue *rxq;
+@@ -165,6 +173,7 @@ static int io_open_zc_rxq(struct io_zcrx_ifq *ifq, unsigned ifq_idx)
+ 	ret = netdev_rx_queue_restart(ifq->dev, ifq->if_rxq);
+ 	if (ret)
+ 		goto fail;
 +
-+	if (ifq->if_rxq == -1)
-+		return;
-+
-+	rtnl_lock();
-+	if (WARN_ON_ONCE(ifq->if_rxq >= ifq->dev->num_rx_queues)) {
-+		rtnl_unlock();
+ 	return 0;
+ fail:
+ 	rxq->mp_params.mp_ops = NULL;
+@@ -473,6 +482,11 @@ static void io_zcrx_return_niov(struct net_iov *niov)
+ {
+ 	netmem_ref netmem = net_iov_to_netmem(niov);
+ 
++	if (!niov->pp) {
++		/* copy fallback allocated niovs */
++		io_zcrx_return_niov_freelist(niov);
 +		return;
 +	}
-+
-+	rxq = __netif_get_rx_queue(ifq->dev, ifq->if_rxq);
-+
-+	WARN_ON_ONCE(rxq->mp_params.mp_priv != ifq);
-+
-+	rxq->mp_params.mp_ops = NULL;
-+	rxq->mp_params.mp_priv = NULL;
-+
-+	err = netdev_rx_queue_restart(ifq->dev, ifq->if_rxq);
-+	if (err)
-+		pr_devel("io_uring: can't restart a queue on zcrx close\n");
-+
-+	rtnl_unlock();
-+	ifq->if_rxq = -1;
-+}
-+
- static int io_allocate_rbuf_ring(struct io_zcrx_ifq *ifq,
- 				 struct io_uring_zcrx_ifq_reg *reg,
- 				 struct io_uring_region_desc *rd)
-@@ -275,6 +335,8 @@ static struct io_zcrx_ifq *io_zcrx_ifq_alloc(struct io_ring_ctx *ctx)
- 
- static void io_zcrx_ifq_free(struct io_zcrx_ifq *ifq)
- {
-+	io_close_zc_rxq(ifq);
-+
- 	if (ifq->area)
- 		io_zcrx_free_area(ifq->area);
- 
-@@ -337,7 +399,6 @@ int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
- 		goto err;
- 
- 	ifq->rq_entries = reg.rq_entries;
--	ifq->if_rxq = reg.if_rxq;
- 
- 	ret = -ENODEV;
- 	ifq->dev = netdev_get_by_index(current->nsproxy->net_ns, reg.if_idx,
-@@ -349,16 +410,20 @@ int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
- 	if (ret)
- 		goto err;
- 
-+	rtnl_lock();
-+	ret = io_open_zc_rxq(ifq, reg.if_rxq);
-+	rtnl_unlock();
-+	if (ret)
-+		goto err;
-+
- 	reg.offsets.rqes = sizeof(struct io_uring);
- 	reg.offsets.head = offsetof(struct io_uring, head);
- 	reg.offsets.tail = offsetof(struct io_uring, tail);
- 
- 	if (copy_to_user(arg, &reg, sizeof(reg)) ||
--	    copy_to_user(u64_to_user_ptr(reg.region_ptr), &rd, sizeof(rd))) {
--		ret = -EFAULT;
--		goto err;
--	}
--	if (copy_to_user(u64_to_user_ptr(reg.area_ptr), &area, sizeof(area))) {
-+	    copy_to_user(u64_to_user_ptr(reg.region_ptr), &rd, sizeof(rd)) ||
-+	    copy_to_user(u64_to_user_ptr(reg.area_ptr), &area, sizeof(area))) {
-+		io_close_zc_rxq(ifq);
- 		ret = -EFAULT;
- 		goto err;
- 	}
-@@ -435,6 +500,8 @@ void io_shutdown_zcrx_ifqs(struct io_ring_ctx *ctx)
- 
- 	if (ctx->ifq)
- 		io_zcrx_scrub(ctx->ifq);
-+
-+	io_close_zc_rxq(ctx->ifq);
+ 	page_pool_put_unrefed_netmem(niov->pp, netmem, -1, false);
  }
  
- static inline u32 io_zcrx_rqring_entries(struct io_zcrx_ifq *ifq)
+@@ -700,13 +714,93 @@ static bool io_zcrx_queue_cqe(struct io_kiocb *req, struct net_iov *niov,
+ 	return true;
+ }
+ 
++static struct net_iov *io_zcrx_alloc_fallback(struct io_zcrx_area *area)
++{
++	struct net_iov *niov = NULL;
++
++	spin_lock_bh(&area->freelist_lock);
++	if (area->free_count)
++		niov = __io_zcrx_get_free_niov(area);
++	spin_unlock_bh(&area->freelist_lock);
++
++	if (niov)
++		page_pool_fragment_netmem(net_iov_to_netmem(niov), 1);
++	return niov;
++}
++
++static ssize_t io_zcrx_copy_chunk(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
++				  void *src_base, struct page *src_page,
++				  unsigned int src_offset, size_t len)
++{
++	struct io_zcrx_area *area = ifq->area;
++	size_t copied = 0;
++	int ret = 0;
++
++	while (len) {
++		size_t copy_size = min_t(size_t, PAGE_SIZE, len);
++		const int dst_off = 0;
++		struct net_iov *niov;
++		struct page *dst_page;
++		void *dst_addr;
++
++		niov = io_zcrx_alloc_fallback(area);
++		if (!niov) {
++			ret = -ENOMEM;
++			break;
++		}
++
++		dst_page = io_zcrx_iov_page(niov);
++		dst_addr = kmap_local_page(dst_page);
++		if (src_page)
++			src_base = kmap_local_page(src_page);
++
++		memcpy(dst_addr, src_base + src_offset, copy_size);
++
++		if (src_page)
++			kunmap_local(src_base);
++		kunmap_local(dst_addr);
++
++		if (!io_zcrx_queue_cqe(req, niov, ifq, dst_off, copy_size)) {
++			io_zcrx_return_niov(niov);
++			ret = -ENOSPC;
++			break;
++		}
++
++		io_zcrx_get_niov_uref(niov);
++		src_offset += copy_size;
++		len -= copy_size;
++		copied += copy_size;
++	}
++
++	return copied ? copied : ret;
++}
++
++static int io_zcrx_copy_frag(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
++			     const skb_frag_t *frag, int off, int len)
++{
++	struct page *page = skb_frag_page(frag);
++	u32 p_off, p_len, t, copied = 0;
++	int ret = 0;
++
++	off += skb_frag_off(frag);
++
++	skb_frag_foreach_page(frag, off, len,
++			      page, p_off, p_len, t) {
++		ret = io_zcrx_copy_chunk(req, ifq, NULL, page, p_off, p_len);
++		if (ret < 0)
++			return copied ? copied : ret;
++		copied += ret;
++	}
++	return copied;
++}
++
+ static int io_zcrx_recv_frag(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
+ 			     const skb_frag_t *frag, int off, int len)
+ {
+ 	struct net_iov *niov;
+ 
+ 	if (unlikely(!skb_frag_is_net_iov(frag)))
+-		return -EOPNOTSUPP;
++		return io_zcrx_copy_frag(req, ifq, frag, off, len);
+ 
+ 	niov = netmem_to_net_iov(frag->netmem);
+ 	if (niov->pp->mp_ops != &io_uring_pp_zc_ops ||
+@@ -733,18 +827,33 @@ io_zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
+ 	struct io_zcrx_ifq *ifq = args->ifq;
+ 	struct io_kiocb *req = args->req;
+ 	struct sk_buff *frag_iter;
+-	unsigned start, start_off;
++	unsigned start, start_off = offset;
+ 	int i, copy, end, off;
+ 	int ret = 0;
+ 
+ 	if (unlikely(args->nr_skbs++ > IO_SKBS_PER_CALL_LIMIT))
+ 		return -EAGAIN;
+ 
+-	start = skb_headlen(skb);
+-	start_off = offset;
++	if (unlikely(offset < skb_headlen(skb))) {
++		ssize_t copied;
++		size_t to_copy;
+ 
+-	if (offset < start)
+-		return -EOPNOTSUPP;
++		to_copy = min_t(size_t, skb_headlen(skb) - offset, len);
++		copied = io_zcrx_copy_chunk(req, ifq, skb->data, NULL,
++					    offset, to_copy);
++		if (copied < 0) {
++			ret = copied;
++			goto out;
++		}
++		offset += copied;
++		len -= copied;
++		if (!len)
++			goto out;
++		if (offset != skb_headlen(skb))
++			goto out;
++	}
++
++	start = skb_headlen(skb);
+ 
+ 	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
+ 		const skb_frag_t *frag;
 -- 
 2.43.5
 
