@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305B986333;
-	Wed,  8 Jan 2025 19:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD49386333
+	for <netdev@vger.kernel.org>; Wed,  8 Jan 2025 19:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736364018; cv=none; b=qe9KgCKkMYtNKQnCenTlbP+T14FU55rQiGgRdtuWANSoqbJ+S8c951iY5AUpN6id+eYOs3JfBtazUtrSNfNYyzjhzTwXnpj8C9CU7IQNN+XIr0kLJsrLmOdaJ+9iIo0/L2oAetzoDj4um/BvvUfhhJ5H6CdGovlXt939GB+OjFo=
+	t=1736364019; cv=none; b=PL0TS4Tlnay7ujKaQZxHWAB5NKZ67uHDDrj8/ooV4+KZBaZw9pG7micA9ZLoCGYXbLyJWzxVIKqLW3f7ln+ijNS+q4ZVzMmIUkwz/b4DpdeDWkMrmsX/LDcK0HLGaXsCpglrh/P3UDhDy9gk/rCpJBrbGL8POLxvANDiaoH16Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736364018; c=relaxed/simple;
-	bh=jdwOVI7CVc/SzN+r3JsnfvKoQpR6mVfdIuoM9oNJGMM=;
+	s=arc-20240116; t=1736364019; c=relaxed/simple;
+	bh=tjvfz6Lv3m6VoiDQ0KrFLlDaSmrapCbXP23R2oTU8JM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Stlb6rQxrOuCKpLAOfxN261Oy/BSaY80Gq3vcGB2GSqLdnMa6sM5NnvG2o1dirRiTdSRMsrvr+mBc8aXrGoB3pk+UZTMsjO+ADclfXG6Q4z/QzAkios7aoTOYonWIL6gPBwUvQzT02E1vpv/blUUCyDyidqTkRBjc7FtyZIRvyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PusWFz89; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Fonbt2t2v0YBKdZMBVrXXMdpjyVilQ8/X+Cm48+mrRaW5U3w2RgyRadREWR7CWcrSQRf2+oTviVRUn0CTHG96dnSjfFf4YuVc4P/MkPOOdZzw+fsvIUymd2mY4u3z2gHyREybvzMvVebZ/UgSB4vaoN1rK/5lOaidtXBQ+aV8/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hA3VYU/2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PusWFz89"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EA1C4CED3;
-	Wed,  8 Jan 2025 19:20:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hA3VYU/2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3B7C4CED3;
+	Wed,  8 Jan 2025 19:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736364016;
-	bh=jdwOVI7CVc/SzN+r3JsnfvKoQpR6mVfdIuoM9oNJGMM=;
+	s=k20201202; t=1736364019;
+	bh=tjvfz6Lv3m6VoiDQ0KrFLlDaSmrapCbXP23R2oTU8JM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=PusWFz89YF8yx1kttoag9M2DfqocMu0t6LjS2KzxXad1yBgMohI/DmzbBsg2eNb2S
-	 HCuColKKzLERYRnAXCUFOo06F46VW3nNiBAxHa4kXQ4/i40jnHHmy+tiIjU1YYzhaA
-	 U84wDSTFYPCYzH3bmqNWTQ7nckbkWR+cXmyRhWEuyWz/xuigVIQo55hGKqXC1Hrxwq
-	 FAy29HApoqP1hJaVAsa0Qmy7fDnH5sTgQMol/H1ZexqHiaoTr1ByvvENfH9Kd5AqCb
-	 +tqDSLtJKtecfUJhDOjXYoh0iLhjS8dW6gOjDJltDbm9ykChm1BBKqMjxjb8y3C3sV
-	 L3O1xeQFaJo9w==
+	b=hA3VYU/2BJibEbUrZ1xqsSx05obxp15KvaY4THVYxFz84k0LvbOdObURH9BFeU7B3
+	 jaOPELynCNuVEHgyrJZBG6LvsbM644LVMkCXa4GXbsy1kkuDvyO+xcYbbrKD2Dkg/B
+	 IFyMQQHJovDlz8kRpaFnLKcnKwY0cQAyvdaFlPLi5shu+7kZJenVQQKMLJyyFuq210
+	 VrrtdySraHKOOYR/sAdy3hHXwSxxnH/hPHcO3Lg+hsSGxibsyGeE8vYFik8MQEd+jl
+	 TWDF+mC1xqY2nFJgrVMIYg2tdoxqqnVUdjsi3dUi7IaqvKAdoz+eBWXVIZZuvIm44d
+	 RZgZbLk25EDTg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E54380A965;
-	Wed,  8 Jan 2025 19:20:39 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70C84380A965;
+	Wed,  8 Jan 2025 19:20:42 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] netdev: prevent accessing NAPI instances from another
- namespace
+Subject: Re: [PATCH net] tcp: Annotate data-race around sk->sk_mark in
+ tcp_v4_send_reset
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <173636403830.752119.6938912950899150718.git-patchwork-notify@kernel.org>
-Date: Wed, 08 Jan 2025 19:20:38 +0000
-References: <20250106180137.1861472-1-kuba@kernel.org>
-In-Reply-To: <20250106180137.1861472-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, stable@vger.kernel.org, jdamato@fastly.com,
- almasrymina@google.com, amritha.nambiar@intel.com,
- sridhar.samudrala@intel.com
+ <173636404100.752119.13634651681023317571.git-patchwork-notify@kernel.org>
+Date: Wed, 08 Jan 2025 19:20:41 +0000
+References: <f459d1fc44f205e13f6d8bdca2c8bfb9902ffac9.1736244569.git.daniel@iogearbox.net>
+In-Reply-To: <f459d1fc44f205e13f6d8bdca2c8bfb9902ffac9.1736244569.git.daniel@iogearbox.net>
+To: Daniel Borkmann <daniel@iogearbox.net>
+Cc: edumazet@google.com, netdev@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  6 Jan 2025 10:01:36 -0800 you wrote:
-> The NAPI IDs were not fully exposed to user space prior to the netlink
-> API, so they were never namespaced. The netlink API must ensure that
-> at the very least NAPI instance belongs to the same netns as the owner
-> of the genl sock.
+On Tue,  7 Jan 2025 11:14:39 +0100 you wrote:
+> This is a follow-up to 3c5b4d69c358 ("net: annotate data-races around
+> sk->sk_mark"). sk->sk_mark can be read and written without holding
+> the socket lock. IPv6 equivalent is already covered with READ_ONCE()
+> annotation in tcp_v6_send_response().
 > 
-> napi_by_id() can become static now, but it needs to move because of
-> dev_get_by_napi_id().
+> Fixes: 3c5b4d69c358 ("net: annotate data-races around sk->sk_mark")
+> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] netdev: prevent accessing NAPI instances from another namespace
-    https://git.kernel.org/netdev/net/c/d1cacd747768
+  - [net] tcp: Annotate data-race around sk->sk_mark in tcp_v4_send_reset
+    https://git.kernel.org/netdev/net/c/80fb40baba19
 
 You are awesome, thank you!
 -- 
