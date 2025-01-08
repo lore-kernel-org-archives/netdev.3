@@ -1,114 +1,89 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BFB153836
-	for <netdev@vger.kernel.org>; Wed,  8 Jan 2025 05:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FADD1A239F
+	for <netdev@vger.kernel.org>; Wed,  8 Jan 2025 06:04:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736315255; cv=none; b=uaWPjG9MtcZ2utnBR9AdtNxphIt4VYSaGRQP0bi/vLI+C7y/gj8rZAMweeab27gITX2Sl16RJU7qk2qvCrr2c7mZOSv4oePApcLjZpLOHfr47wl74WQXu+nk5GpMV0IRrmUEWTYVQry8wCgVgLLVxChZJsc4uKIuNaX9gmJ9YEU=
+	t=1736316254; cv=none; b=NzgQWiex0KmcqJbpYUpuqnaFXO7XCPDcm/vyB5w6Bmq6GL8zPzyw/1MnuhnHvaW4CQ5roIkG0yHELoaZb1TDGt8M44Qx2VFO6p3pldFhZ9eKVpWW1wR4Yf/7jrtwq1dK7zrBAzJa5m/2UWIrv8O4Rs5ID8hHRUNh8ai4tpJq9TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736315255; c=relaxed/simple;
-	bh=mPKhWPu8pYX8pUmDbAmVTi61K7p19wbdAQVS1KLCFB0=;
+	s=arc-20240116; t=1736316254; c=relaxed/simple;
+	bh=Syb4zXNRjnjUa2FEViaWcch/uizJBOrTAYasrXQXuyw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=plzBPHhQAkWhAldcryfMNWC4dTTuPERbiRO2Ggew5NLmeb+OqBHJIJ4ZuWUVsLPHL8qy8tSEAHKyvx9gCw89nmUF7GnBMWJmSURyZ/Bq6YUE//QY7BBbX/KopPkOMbzI8jNy/umllc8NSn9CCdjQAlQKCttD5/HEmVPZy9h8Aao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tVOuR-0007Ui-V4; Wed, 08 Jan 2025 06:47:15 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tVOuM-007Spp-10;
-	Wed, 08 Jan 2025 06:47:11 +0100
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tVOuM-00BNpv-36;
-	Wed, 08 Jan 2025 06:47:10 +0100
-Date: Wed, 8 Jan 2025 06:47:10 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>,
-	Dent Project <dentproject@linuxfoundation.org>,
-	kernel@pengutronix.de,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH net-next 11/14] net: pse-pd: Add support for PSE device
- index
-Message-ID: <Z34RXjqUKBdDqAGF@pengutronix.de>
-References: <20250104-b4-feature_poe_arrange-v1-0-92f804bd74ed@bootlin.com>
- <20250104-b4-feature_poe_arrange-v1-11-92f804bd74ed@bootlin.com>
- <20250107171834.6e688a6b@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=hEVZExcY2E+M+OeEtZUqipssPlae7kHM9UDCmuVLn0qp8p7GsjWLiuAe8ucp/lC4KrrQT+7Zd1dsgfwiQZ91j0iokr/vMVFSrMYl8MDS3siv8S+6Hf4gDcJ7D6/OMBc1aES8vuA2exbpIKqWEF2SEefkdXlAUo7Nl0f+Aohkm6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J4tABHUM; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J4tABHUM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736316252; x=1767852252;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Syb4zXNRjnjUa2FEViaWcch/uizJBOrTAYasrXQXuyw=;
+  b=J4tABHUM6W3keEDexXxxt9m8hpyP2FqkpWo4x1JBIERXyY7w13+Cb2i/
+   ImCEZXwWjFFwlKpo2q6626PDJ2C0B2B4sFjX1MylXpZtm7nkPvwse5t7D
+   /5gnfVl1xV2aFUuGfCNwiDVqLttFCslEX/QjhxhjQCvqd9Sohuu4AHdKk
+   JUyBqC6Z14OInT350jcHCv2hNbsaNvkyqt2K53EArnuyoHDht2CgRSBdC
+   gk3A5tsyv7A6QiCFeRxCgKB19FqgKOWjP6sxzAt5+sVKTPdYO4nECYpQU
+   ciaeM0eLFyOn2mUgPJw8zX3V/uGns5vFISmFKF6XaD/ut5nHidXAE0Sdd
+   g==;
+X-CSE-ConnectionGUID: 7ZUekCQqT66dh/yIg3nwGg==
+X-CSE-MsgGUID: iVwpMsajQNu+H0Bv4+pEiA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="61904691"
+X-IronPort-AV: E=Sophos;i="6.12,297,1728975600"; 
+   d="scan'208";a="61904691"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 22:04:10 -0800
+X-CSE-ConnectionGUID: GxVoEqoFQK23ZkvbJwfQpA==
+X-CSE-MsgGUID: RsKsQ9vpSIa50J6fsCN61A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="107027506"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 22:04:07 -0800
+Date: Wed, 8 Jan 2025 07:00:51 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: John Daley <johndale@cisco.com>
+Cc: andrew+netdev@lunn.ch, benve@cisco.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, neescoba@cisco.com,
+	netdev@vger.kernel.org, pabeni@redhat.com, satishkh@cisco.com
+Subject: Re: [PATCH net-next 2/2] enic: Obtain the Link speed only after the
+ link comes up
+Message-ID: <Z34UgXz6ota8D27W@mev-dev.igk.intel.com>
+References: <Z3zCfiwPl2Xu/Zvi@mev-dev.igk.intel.com>
+ <20250107195304.2671-1-johndale@cisco.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250107171834.6e688a6b@kernel.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+In-Reply-To: <20250107195304.2671-1-johndale@cisco.com>
 
-On Tue, Jan 07, 2025 at 05:18:34PM -0800, Jakub Kicinski wrote:
-> On Sat, 04 Jan 2025 23:27:36 +0100 Kory Maincent wrote:
-> > From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
-> > 
-> > Add support for a PSE device index to report the PSE controller index to
-> > the user through ethtool. This will be useful for future support of power
-> > domains and port priority management.
+On Tue, Jan 07, 2025 at 11:53:04AM -0800, John Daley wrote:
+> >> diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+> >> index 957efe73e41a..49f6cab01ed5 100644
+> >> --- a/drivers/net/ethernet/cisco/enic/enic_main.c
+> >> +++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+> >> @@ -109,7 +109,7 @@ static struct enic_intr_mod_table mod_table[ENIC_MAX_COALESCE_TIMERS + 1] = {
+> >>  static struct enic_intr_mod_range mod_range[ENIC_MAX_LINK_SPEEDS] = {
+> >>  	{0,  0}, /* 0  - 4  Gbps */
+> >>  	{0,  3}, /* 4  - 10 Gbps */
+> >> -	{3,  6}, /* 10 - 40 Gbps */
+> >> +	{3,  6}, /* 10+ Gbps */
+> >
+> >Is this on purpose? You didn't mention anything about speed range in
+> >commit message. Just wondering, patch looks fine, thanks.
 > 
-> Can you say more? How do the PSE controllers relate to netdevs?
-> ethtool is primarily driven by netdev / ifindex.
-> If you're starting to build your own object hierarchy you may be
-> better off with a separate genl family.
-            
-I hope this schema may help to explain the topology:
+> I changed the comment on purpose since it applies to adapters way past
+> 40 Gbps nowdays. I should have mentioned the change. Thanks for the
+> reveiw.
 
-	                              +--- netdev / ifindex 0
-	    +--- PSE power domain 0 --+--- netdev / ifindex 1
-            |                         +--- netdev / ifindex 2
-PSE ctrl 0 -+
-            |                         +--- netdev / ifindex 3
-            +--- PSE power domain 1 --+--- netdev / ifindex 4
-	                              +--- netdev / ifindex 5
+Reasonable, thanks
 
-	                              +--- netdev / ifindex 6
-	    +--- PSE power domain 2 --+--- netdev / ifindex 7
-            |                         +--- netdev / ifindex 8
-PSE ctrl 1 -+
-            |                         +--- netdev / ifindex 9
-            +--- PSE power domain 3 --+--- netdev / ifindex 10
-	                              +--- netdev / ifindex 11
-
-PSE device index is needed to find actually PSE controller related to
-specific netdev / ifindex.
-
-Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> >
+> >Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
