@@ -1,160 +1,97 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDDA1F0E33;
-	Wed,  8 Jan 2025 10:34:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C13F38F82
+	for <netdev@vger.kernel.org>; Wed,  8 Jan 2025 10:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736332452; cv=none; b=eEexqWMFYrhB7B8qJ+UtAG4QoXRTsBPHjDru5ioJ/j23K2Et24a/DXfO30hU8tXgDUiBr1guvhsZPtfECbbU/JDvfDg9fYw/zAj/by8mVwvSE7Hq6X7dz87+Hf1N0IcMVg2W+dLg48xYVR65syKcG1Ia0/HrCffyXC5lYVL8xww=
+	t=1736332845; cv=none; b=bteQoolg/e5uSeGAxYzc2xleMiv3BwaSBUB2wDDOcFkQL5l/WIjzAEK6rRVnpSFcExVBEyXpV8VFApbwTi3HH/SdXms3o7Vn+CGv7vnMM7vEUyWJpZYcznInLDIePxPQUMeie5K+ucrqDVmqf/H794UG+gTrY1QiV+4SEcaXhlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736332452; c=relaxed/simple;
-	bh=QqRkCrwAsLtdCDlwu2XazVGiReDLd7w5pFcT+11cgLs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=TufK0DL/rtw03CKoIq4SOHXzT7JB2TWZiaZBQWktyTxVagUaDEQqlbc1kU7YWczjhY6pfIWMNkFrrgi7VhjU5oyLamWWriSSNMzk8Gs5N5cy+2fQSCct8lu30kAg0cyrFZNtKw4DE8+o/CK1GNe7oSsoDEPPB5dgycmosSPMoJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=HYxfjrgJ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1736332845; c=relaxed/simple;
+	bh=PxHvhlvnNXfvcLPluPBbrQoY9pjdQh1p4HHAJa7oUBA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ncbSzmNUoUUTz55zdySBfJd1Y/F5ppg02pm1LafshERoZQyaTBW1k7W9HtTB7kG1TSApNRdko9iEFjFd3GAwextslowQ02VJkGKF7aWP9dT8D939IUJjbrrG3XaYPq7kZYUycc8E2zqxd8loCHhARzaNPhW6x9P6ZOIIz60WTaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9XrwRw8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="HYxfjrgJ"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50891kAI017545;
-	Wed, 8 Jan 2025 10:33:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	kG9qrZwpk0ax9wVZjX4lH5f2FuZkvP3RDUkvgXroGJE=; b=HYxfjrgJ53l3ReJf
-	83QupBRRBi9lFGStxCv48jdTqmaLVDO7plLyE7a0l1g3klx+YKh/wtKBlgPZbVIE
-	u1AYjZHz3PWyTIBTMPaEpjcN5stwNnx2G6PzqhkY/kmrcYK0eKWo+TM7emLSpHoB
-	TOl/vjA3W8ee2Rlojv8TO8qc9+03ldBS7cQD5Ogr+nY1x+JBfZJUt3xIHgfk4ewb
-	t4UvZvn1RD9Lwl5GgMjdAway7LHEqqqwoFcKG3SlIv3jctt/m+ZvlOAnfpb5b/YG
-	+LiBQTuIUqtnG25apStMHbkNGOZRvwSJGIqngP6a1Io7N53HpOvtKydUI3yDk7/X
-	iva6/Q==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 441hx8gx0r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Jan 2025 10:33:46 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 508AXkWw001823
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 8 Jan 2025 10:33:46 GMT
-Received: from [10.253.35.161] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 8 Jan 2025
- 02:33:39 -0800
-Message-ID: <e2625cfd-128c-4b56-a1c5-c0256db5c486@quicinc.com>
-Date: Wed, 8 Jan 2025 18:33:36 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9XrwRw8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94231C4CEE0;
+	Wed,  8 Jan 2025 10:40:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736332844;
+	bh=PxHvhlvnNXfvcLPluPBbrQoY9pjdQh1p4HHAJa7oUBA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=l9XrwRw8TQ5BZP8mc7953R/atIT9/OjQbyuuAhwhRHXhuEwASXzeLTQgNdsv1Wzy2
+	 81vGrQC0a+p0QP3zoVw45o602/kiedmpnT+JfxxsroOETy55SIWbQwRLYXCxAE0GvW
+	 NdcyxyY2uC2iEIRK1TtKdwF5Cehzu9ZxT4/BEO4yX5c3q9Fje+VRLGRQxau0MIUl+4
+	 XghE4apjUQOqKgU5AWWg5s8d1PK9eSRKEUa+/jXr0KqtXOvoSeTI6r/0AQ3842fhks
+	 0wH/nhHcoSVRBtKYDgkcjzRZZ1InRj3woxbVd/tETl0YRvJ0VFnn5gTO5tkWqMXiCh
+	 q5zuqiucVONKQ==
+Date: Wed, 8 Jan 2025 10:40:40 +0000
+From: Simon Horman <horms@kernel.org>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Xiao Liang <shaw.leon@gmail.com>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Harald Welte <laforge@gnumonks.org>
+Subject: Re: [PATCH v1 net 1/3] gtp: Use for_each_netdev_rcu() in
+ gtp_genl_dump_pdp().
+Message-ID: <20250108104040.GA7706@kernel.org>
+References: <20250108062834.11117-1-kuniyu@amazon.com>
+ <20250108062834.11117-2-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] net: stmmac: qcom-ethqos: Enable RX programmable swap
- on qcs615
-To: Krzysztof Kozlowski <krzk@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo
- Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson
-	<andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Alexandre
- Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>
-CC: <netdev@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20241225-support_10m100m-v1-0-4b52ef48b488@quicinc.com>
- <20241225-support_10m100m-v1-2-4b52ef48b488@quicinc.com>
- <4b4ef1c1-a20b-4b65-ad37-b9aabe074ae1@kernel.org>
- <278de6e8-de8f-458a-a4b9-92b3eb81fa77@quicinc.com>
- <df1e2fbd-7fae-4910-9908-10fdb78e4299@kernel.org>
-Content-Language: en-US
-From: Yijie Yang <quic_yijiyang@quicinc.com>
-In-Reply-To: <df1e2fbd-7fae-4910-9908-10fdb78e4299@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: V64a_pnh8TcazOpIFs5G79f_apEyOLVY
-X-Proofpoint-ORIG-GUID: V64a_pnh8TcazOpIFs5G79f_apEyOLVY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 priorityscore=1501 mlxlogscore=999 phishscore=0
- spamscore=0 malwarescore=0 bulkscore=0 mlxscore=0 adultscore=0
- suspectscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2501080085
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250108062834.11117-2-kuniyu@amazon.com>
 
-
-
-On 2024-12-27 15:03, Krzysztof Kozlowski wrote:
-> On 26/12/2024 03:29, Yijie Yang wrote:
->>
->>
->> On 2024-12-25 19:37, Krzysztof Kozlowski wrote:
->>> On 25/12/2024 11:04, Yijie Yang wrote:
->>>
->>>>    static int qcom_ethqos_probe(struct platform_device *pdev)
->>>>    {
->>>> -	struct device_node *np = pdev->dev.of_node;
->>>> +	struct device_node *np = pdev->dev.of_node, *root;
->>>>    	const struct ethqos_emac_driver_data *data;
->>>>    	struct plat_stmmacenet_data *plat_dat;
->>>>    	struct stmmac_resources stmmac_res;
->>>> @@ -810,6 +805,15 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
->>>>    	ret = of_get_phy_mode(np, &ethqos->phy_mode);
->>>>    	if (ret)
->>>>    		return dev_err_probe(dev, ret, "Failed to get phy mode\n");
->>>> +
->>>> +	root = of_find_node_by_path("/");
->>>> +	if (root && of_device_is_compatible(root, "qcom,sa8540p-ride"))
->>>
->>>
->>> Nope, your drivers are not supposed to poke root compatibles. Drop and
->>> fix your driver to behave correctly for all existing devices.
->>>
->>
->> Since this change introduces a new flag in the DTS, we must maintain ABI
->> compatibility with the kernel. The new flag is specific to the board, so
+On Wed, Jan 08, 2025 at 03:28:32PM +0900, Kuniyuki Iwashima wrote:
+> gtp_newlink() links the gtp device to a list in dev_net(dev).
 > 
-> It's not, I don't see it specific to the board in the bindings.
-
-I'm sorry for the confusion. This feature is not board-specific but 
-rather a tunable option. All RGMII boards can choose whether to enable 
-this bit in the DTS, so there are no restrictions in the binding.
-
+> However, even after the gtp device is moved to another netns,
+> it stays on the list but should be invisible.
 > 
->> I need to ensure root nodes are matched to allow older boards to
->> continue functioning as before. I'm happy to adopt that approach if
->> there are any more elegant solutions.
+> Let's use for_each_netdev_rcu() for netdev traversal in
+> gtp_genl_dump_pdp().
 > 
-> I don't think you understood the problem. Why you are not handling this
-> for my board, sa8775p-rideX and sa8225-pre-ride-yellow-shrimp?
+> Note that gtp_dev_list is no longer used under RCU, so list
+> helpers are converted to the non-RCU variant.
 > 
+> Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
+> Reported-by: Xiao Liang <shaw.leon@gmail.com>
+> Closes: https://lore.kernel.org/netdev/CABAhCOQdBL6h9M2C+kd+bGivRJ9Q72JUxW+-gur0nub_=PmFPA@mail.gmail.com/
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+> ---
+> Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+> Cc: Harald Welte <laforge@gnumonks.org>
 
-This feature is specifically for RGMII boards. The driver won't enable 
-this bit if the DTS doesn't specify it. To handle compatibility, we need 
-to identify legacy RGMII boards with MAC versions greater or equal to 3 
-which require this bit to be enabled.
-According to my knowledge, the SA8775P is of the SGMII type.
+...
 
-> 
-> Best regards,
-> Krzysztof
+> @@ -2280,7 +2281,10 @@ static int gtp_genl_dump_pdp(struct sk_buff *skb,
+>  		return 0;
+>  
+>  	rcu_read_lock();
+> -	list_for_each_entry_rcu(gtp, &gn->gtp_dev_list, list) {
+> +	for_each_netdev_rcu(net, dev) {
+> +		if (dev->rtnl_link_ops != &gtp_link_ops)
+> +			continue;
+> +
+>  		if (last_gtp && last_gtp != gtp)
+>  			continue;
+>  		else
 
--- 
-Best Regards,
-Yijie
+Hi Iwashima-san,
 
+With this change gtp seems to be uninitialised here.
+And, also, it looks like gn is now set but otherwise unused in this function.
+
+Flagged by W=1 builds with clang-19.
+
+...
