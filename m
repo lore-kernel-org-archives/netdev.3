@@ -1,140 +1,154 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E4A1F76CD
-	for <netdev@vger.kernel.org>; Wed,  8 Jan 2025 12:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B355B1F9A9C
+	for <netdev@vger.kernel.org>; Wed,  8 Jan 2025 12:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736339000; cv=none; b=onV9nrLawL+fEBO8kBvtXCuVGfI57q8NJgdBQ9PUn1g6R8FOBcslvXn4wt1W8qUrt2Vi4hsdS3mZ5iSFwBoAO82KnT4IX5EQdZ0J/k4TWPMtsFoIU2Ao7cxFZ//vTe9TdaulT8KhxO3EEa/YqSwYdRUXX00bKfMj6MIOlajnjFQ=
+	t=1736339122; cv=none; b=JgoGg6TT/iQ/mO7WpNCwzG6TNStBeAuDGZkfXvSjkRqHm3/jAC6KIDQ8hQiZvlipoo+ay2b1hLRD8uQEZ95N0xUgZMR6lF4+Ba2rU3Ze8nwAsdVEv+6UWATgfy2/mR3pdDK0PUtdM38U6xOf3/Ka6/YAQlACgJIFwlROUnlaZYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736339000; c=relaxed/simple;
-	bh=CYEL1xsMWMcBwANmoFnaeB+RsMLozxlw7Y9ZKV5IL4M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aaN5UxeyG2HuEM32KtFMODWnfPhkA5CWZOrNbMOhzZFmGlQOmbW2ezEb6JEDIyUY6N3BgYL9+i6c1+ajkaivvJ5R53CRy4XBTxEMn6vkapTK1rFWHAggPcAO55WSUyc3dBfHuiJp9RuvuMmbPDg6jHwZxnwVv4pJg4sH4UqOTAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bi00FDtu; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1736339122; c=relaxed/simple;
+	bh=65g/g/4WJkhxlIqd9Nrt1PttwoKaNrjDxhYBVXt0f7k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ukeP8yDnccKrUk5p09z26Ks5N5Pzn3h5uzMlKkjZ0eLk3iotD6YyblbuyGcego/FKickhCnlImmf7V9CXgBimKMp3q86fJXjUYKyw3a2/S3aMOwmEneUuNYDyG8JlmlvBhE3MI6yV4VlYLliTH9GC0/XKmHv/eO5Meoi2sS9o5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=lOd224tr; arc=none smtp.client-ip=115.124.30.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bi00FDtu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736338996;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jtNPZrhPuEXDAUmk7MMSLxT+pmGkUlhGX8IMqmFXcVs=;
-	b=Bi00FDtusYef6RUS3D+WcfmJHOOrsx44+PGhTEbWLSqRfU0Y3kmFX91SCZK6r1tjsYQ9HB
-	sfGCvbdDzgZmN65EhL9Z6GCP1nzEok1q8wBQRLUBvHs81BT8vaYlOR58z6WRSMzaPuueG/
-	5A9beLU2ktZCAgEuSjplvLNv90Pl4Bw=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-yPBJZiu6MGue8TqN5g0htw-1; Wed, 08 Jan 2025 07:23:15 -0500
-X-MC-Unique: yPBJZiu6MGue8TqN5g0htw-1
-X-Mimecast-MFC-AGG-ID: yPBJZiu6MGue8TqN5g0htw
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-ab2b300e5daso64303066b.1
-        for <netdev@vger.kernel.org>; Wed, 08 Jan 2025 04:23:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736338994; x=1736943794;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jtNPZrhPuEXDAUmk7MMSLxT+pmGkUlhGX8IMqmFXcVs=;
-        b=kgODUovvu9Z7cN0KcjirQq9UXnTVn7lA6ki5LKHspfJgJeVTTBN3UPmisdgazYeDyk
-         WygzaA72FxXk2FA1ry3O7iCUSEsqrQR4vCFhAKYuoEW+eOwFSiXCpmyEeG65yR199m0+
-         1vzcT6mNAnmr7XWaNS8xgfaXRq3+BgsuzxX3Z26FzQA1xK868agn0nQfI6wDWrZRKiUt
-         yqQHhrl8vgb5ChojiRIVj7kLMCt0KFiivuhSBSLLgpvTR2dIV5SOZnvB6fpSgpyVdSk9
-         Xu5uTlr1NEBSa+rTfGH2UbUpW4J83T/l1GKRpvZc4VFY6ofT8k3VuRFDzapZ4ZR7ghST
-         zZSA==
-X-Forwarded-Encrypted: i=1; AJvYcCWQIe7wyF0L1e76OIlJNEHSxv0yc2XTZQGKcaPeA6tGPfR/GXbEJeT5kAd9sPLVGU/wA/XLA1Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjIWo1n0peKXdShdgpslnxzuSBbfwvP1XH3v3iqCK7O1T7s5tE
-	W3YQZzPn0ydruHBuABBfpFff9jKFq4pd5cO0Gwzpg83656wAHg/Q42CJ94Ejf0qli+UzGuURHrb
-	1wE1+rKr/9G5meqm6tSo2ebje/0xj1jhN/vsBCo1JZZciq5PR/UtttA==
-X-Gm-Gg: ASbGnctc3nDbGGwzsq/DEsdEnulM0xrHg6tGkx4gcyp9HPNMtBWQM3vTCWB6z9mzoBv
-	INYTHqpAtxfZZJ6zhMoVyKeD6ZriZ8hE0/Ju7i0SAtnM/0A3+rblvi74d/oqMGa5joc7+n9UceJ
-	FruqDCynO4uH+M1PbzhEmVr8K9FUPlIBYBtMBLsnIuc+XIehYFBEXOB1FelUm5sgpvuM1WTD7X/
-	TJQPdF68mIhUT/w5kDXSjJmiX+TWkeAwk8nWjW0LCWavB2JiwI=
-X-Received: by 2002:a17:907:1c96:b0:aa6:6a52:970 with SMTP id a640c23a62f3a-ab2ab6a7603mr214442766b.1.1736338993619;
-        Wed, 08 Jan 2025 04:23:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFgJ2ItxqbcNpBvhzA7PF267wqdTMYaBrex8PA7k15rP1ubt/sLuYmBO/GJPJLWwYew7P6vYw==
-X-Received: by 2002:a17:907:1c96:b0:aa6:6a52:970 with SMTP id a640c23a62f3a-ab2ab6a7603mr214439666b.1.1736338993060;
-        Wed, 08 Jan 2025 04:23:13 -0800 (PST)
-Received: from redhat.com ([2a02:14f:175:d62d:93ef:d7e2:e7da:ed72])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0e82f616sm2481777466b.41.2025.01.08.04.23.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jan 2025 04:23:12 -0800 (PST)
-Date: Wed, 8 Jan 2025 07:23:08 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Cindy Lu <lulu@redhat.com>
-Cc: jasowang@redhat.com, michael.christie@oracle.com, sgarzare@redhat.com,
-	linux-kernel@vger.kernel.org,
-	virtualization@lists.linux-foundation.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v5 0/6] vhost: Add support of kthread API
-Message-ID: <20250108072229-mutt-send-email-mst@kernel.org>
-References: <20241230124445.1850997-1-lulu@redhat.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="lOd224tr"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1736339112; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=LzHtEUeCMYU3UuQbLzZGZ+pgHGJ++zXUzU8c6VW/R+0=;
+	b=lOd224truPwVnA1T04lRFPqDpmvp7lTMo/c+8MMY6QLW4UVHKNcV3oDfbqjmxMsk63BPw2C1bUIHZfL2vYyOWuKRrIUCWYF6wRH09sGn90jCGxAXPq8jb4tTENywJWIG9Z/GPD25Bl3oZpBV9sgPyHzhjuCwxltxYxD2vaaySpQ=
+Received: from 30.221.178.144(mailfrom:lulie@linux.alibaba.com fp:SMTPD_---0WNDwvMP_1736339110 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 08 Jan 2025 20:25:11 +0800
+Message-ID: <a1f091fc-727d-470a-835a-863501f28364@linux.alibaba.com>
+Date: Wed, 8 Jan 2025 20:25:10 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241230124445.1850997-1-lulu@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] udp: fix l4 hash after reconnect
+To: Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Fred Chen <fred.cc@alibaba-inc.com>,
+ Cambda Zhu <cambda@linux.alibaba.com>, Willem de Bruijn
+ <willemb@google.com>, Stefano Brivio <sbrivio@redhat.com>
+References: <4761e466ab9f7542c68cdc95f248987d127044d2.1733499715.git.pabeni@redhat.com>
+ <CANn89i+aKNhzYKo3H3gx5Uhy4iPQ4p=6WDDF-0brGyR=PzJqjQ@mail.gmail.com>
+ <CANn89i+k11E9XeJZwvgZ7VO0yr1nWge8+U-ESw2GLYDq7-sdBw@mail.gmail.com>
+ <b46a7757-f311-4656-a114-68381d9856e3@redhat.com>
+ <a4085013-daaf-4141-af56-cd438bf8b4c9@linux.alibaba.com>
+ <63b0f262-066a-4f7b-b55a-a7f0ed4aa7f4@redhat.com>
+ <febf62f6-7439-4628-ad47-041ebbb86ede@linux.alibaba.com>
+ <939fa561-841e-442a-be0b-0e71c6843e5c@redhat.com>
+From: Philo Lu <lulie@linux.alibaba.com>
+In-Reply-To: <939fa561-841e-442a-be0b-0e71c6843e5c@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Dec 30, 2024 at 08:43:47PM +0800, Cindy Lu wrote:
-> In commit 6e890c5d5021 ("vhost: use vhost_tasks for worker threads"),   
-> the vhost now uses vhost_task and operates as a child of the   
-> owner thread. This aligns with containerization principles.   
-> However, this change has caused confusion for some legacy   
-> userspace applications. Therefore, we are reintroducing   
-> support for the kthread API.  
+Hi,
 
+On 2025/1/7 15:56, Paolo Abeni wrote:
+> Hi,
+> 
+> I'm sorry for the latency, I was off in the past days.
+> 
+> On 12/31/24 8:55 AM, Philo Lu wrote:
+>> On 2024/12/10 16:32, Paolo Abeni wrote:
+>>> On 12/7/24 03:34, Philo Lu wrote:
+>>>> On 2024/12/7 00:23, Paolo Abeni wrote:
+>>>>> On 12/6/24 17:01, Eric Dumazet wrote:
+>>>>>> BTW, it seems that udp_lib_rehash() does the udp_rehash4()
+>>>>>> only if the hash2 has changed.
+>>>>>
+>>>>> Oh, you are right, that requires a separate fix.
+>>>>>
+>>>>> @Philo: could you please have a look at that? basically you need to
+>>>>> check separately for hash2 and hash4 changes.
+>>>>
+>>>> This is a good question. IIUC, the only affected case is when trying to
+>>>> re-connect another remote address with the same local address
+>>>
+>>> AFAICS, there is also another case: when re-connection using a different
+>>> local addresses with the same l2 hash...
+>>>
+>>>> (i.e.,
+>>>> hash2 unchanged). And this will be handled by udp_lib_hash4(). So in
+>>>> udp_lib_rehash() I put rehash4() inside hash2 checking, which means a
+>>>> passive rehash4 following rehash2.
+>>>
+>>> ... but even the latter case should be covered from the above.
+>>>
+>>>> So I think it's more about the convention for rehash. We can choose the
+>>>> better one.
+>>>
+>>> IIRC a related question raised during code review for the udp L4 hash
+>>> patches. Perhaps refactoring the code slightly to let udp_rehash()
+>>> really doing the re-hashing and udp_hash really doing only the hashing
+>>> could be worth.
+>>>
+>>
+>> I'm trying to unify rehash() for both hash2 and hash4 in
+>> __ip4_datagram_connect, when I noticed the inet_rcv_saddr checking
+>> before calling rehash():
+>>
+>> ```
+>> if (!inet->inet_rcv_saddr) {
+>> 	inet->inet_rcv_saddr = fl4->saddr;
+>> 	if (sk->sk_prot->rehash)
+>> 		sk->sk_prot->rehash(sk);
+>> }
+>> ```
+>> This means inet_rcv_saddr is reset at most once no matter how many times
+>> connect() is called.
+> 
+> ... if you make consecutive connect(<dst address>) calls.
+> 
+>   __udp_disconnect() clears saddr, so:
+> 
+> connect(<AF_UNSPEC>); connect(<dst address>);
+> 
+> will yield the expected result
+> 
+>> I'm not sure if this is by-design for some reason?
+>> Or can I remove this checking? like:
+>>
+>> --- a/net/ipv4/datagram.c
+>> +++ b/net/ipv4/datagram.c
+>> @@ -67,11 +67,9 @@ int __ip4_datagram_connect(struct sock *sk, struct
+>> sockaddr *uaddr, int addr_len
+>>           inet->inet_dport = usin->sin_port;
+>>           if (!inet->inet_saddr)
+>>                   inet->inet_saddr = fl4->saddr;
+>> -       if (!inet->inet_rcv_saddr) {
+>> -               inet->inet_rcv_saddr = fl4->saddr;
+>> -               if (sk->sk_prot->rehash)
+>> -                       sk->sk_prot->rehash(sk);
+>> -       }
+>> +       inet->inet_rcv_saddr = fl4->saddr;
+>> +       if (sk->sk_prot->rehash)
+>> +               sk->sk_prot->rehash(sk);
+>>           reuseport_has_conns_set(sk);
+>>           sk->sk_state = TCP_ESTABLISHED;
+>>           sk_set_txhash(sk);
+> 
+> This sounds like an unexpected behaviour change which may broke existing
+> applications.
+> 
+> I suggest retaining the current beheviour.
+> 
 
-I briefly applied this, but there seem to be a bit too
-many nits. So I will wait for v6 with everything addressed.
+Thank you for your suggestion. I've sent a fix patch for rehash4 (with 
+few build errors I'll solve soon), leaving __ip4_datagram_connect() 
+unchanged.
 
-Thanks!
-
-> In this series, a new UAPI is implemented to allow   
-> userspace applications to configure their thread mode. 
-> 
-> Changelog v2:
->  1. Change the module_param's name to enforce_inherit_owner, and the default value is true.
->  2. Change the UAPI's name to VHOST_SET_INHERIT_FROM_OWNER.
->  
-> Changelog v3:
->  1. Change the module_param's name to inherit_owner_default, and the default value is true.
->  2. Add a structure for task function; the worker will select a different mode based on the value inherit_owner.
->  3. device will have their own inherit_owner in struct vhost_dev
->  4. Address other comments
-> 
-> Changelog v4: 
->  1. remove the module_param, only keep the UAPI
->  2. remove the structure for task function; change to use the function pointer in vhost_worker
->  3. fix the issue in vhost_worker_create and vhost_dev_ioctl
->  4. Address other comments
-> 
-> Changelog v5: 
->  1. Change wakeup and stop function pointers in struct vhost_worker to void.
->  2. merging patches 4, 5, 6 in a single patch
->  3. Fix spelling issues and address other comments.
->  
-> Tested with QEMU with kthread mode/task mode/kthread+task mode
-> 
-> Cindy Lu (6):
->   vhost: Add a new parameter in vhost_dev to allow user select kthread
->   vhost: Add the vhost_worker to support kthread
->   vhost: Add the cgroup related function
->   vhost: Add worker related functions to support kthread
->   vhost: Add new UAPI to support change to task mode
->   vhost_scsi: Add check for inherit_owner status
-> 
->  drivers/vhost/scsi.c       |   8 ++
->  drivers/vhost/vhost.c      | 178 +++++++++++++++++++++++++++++++++----
->  drivers/vhost/vhost.h      |   4 +
->  include/uapi/linux/vhost.h |  19 ++++
->  4 files changed, 192 insertions(+), 17 deletions(-)
-> 
-> -- 
-> 2.45.0
+-- 
+Philo
 
