@@ -1,125 +1,159 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355C019F11B;
-	Wed,  8 Jan 2025 03:00:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE8C259490
+	for <netdev@vger.kernel.org>; Wed,  8 Jan 2025 03:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736305236; cv=none; b=cb1t88wPEbO2HWlYPi5Uex0jfFPB/GyvpG7CF074wGJuLSOSOhyPdUDnyen0ZJpUXwZTxQI7y+1KlH6DUdTYr4ZCrY1zOtTjVeXf2rb7ihbKOxMMXlV8jV+MGaPn1JoMY5Qeka35XdNqlng+OcGqHH2yNKaMkZXu+gDGhQr6Sd4=
+	t=1736305793; cv=none; b=Xsuo2muwersah34SAWnLh9Tm3Cy0VeV5gVabPA5QljrRaeVJ9X9u2yGAXlfSLqYTU6uoNlP0bVJtyEDJcBSIf76Ze0PkjsfWe1pqI2yD7WA7ubq5ubxDtskY1gyiqBWbf7/+Bn9l8uh7qLee9rFz60ZnSeCZmF+0ryqtVNYaw9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736305236; c=relaxed/simple;
-	bh=EVE3yjohhxsMf86uWp666wm6CdU4XFReQFttsrsQ9Eg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Z2FAfQ9tKn5dK+Fcx8m14d5PQSeyJ0zxzGIY1q8mg0iVRXNp36fbyGLR89p3Jy6WN+ogjplTNrYjIWjVe8Xd9MipytbYVuGya+xXzYhYuEZVmiEHmKvwjBKa0gWANNFhjkIc0Hp22WNWA9Ka8hrlor/kWp8wZFs1Z6qJzp/VR70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: b1137158cd6c11efa216b1d71e6e1362-20250108
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
-	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
-	AMN_T1, AMN_GOOD, AMN_C_TI, AMN_C_BU, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:6cc723ba-e1c9-4b45-8762-5eb7358c947d,IP:10,
-	URL:0,TC:0,Content:-5,EDM:-30,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,AC
-	TION:release,TS:-34
-X-CID-INFO: VERSION:1.1.45,REQID:6cc723ba-e1c9-4b45-8762-5eb7358c947d,IP:10,UR
-	L:0,TC:0,Content:-5,EDM:-30,RT:0,SF:-9,FILE:0,BULK:0,RULE:EDM_GN8D19FE,ACT
-	ION:release,TS:-34
-X-CID-META: VersionHash:6493067,CLOUDID:db650d75175663f550dfbd1d85fac619,BulkI
-	D:250108110019I9576RY7,BulkQuantity:0,Recheck:0,SF:17|19|24|38|45|66|78|10
-	2,TC:nil,Content:0|50,EDM:2,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BE
-	C:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
-X-UUID: b1137158cd6c11efa216b1d71e6e1362-20250108
-X-User: zhaochenguang@kylinos.cn
-Received: from localhost.localdomain [(223.70.160.239)] by mailgw.kylinos.cn
-	(envelope-from <zhaochenguang@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1712865521; Wed, 08 Jan 2025 11:00:18 +0800
-From: Chenguang Zhao <zhaochenguang@kylinos.cn>
-To: Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Moshe Shemesh <moshe@nvidia.com>
-Cc: Chenguang Zhao <zhaochenguang@kylinos.cn>,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH v2] net/mlx5: Fix variable not being completed when function returns
-Date: Wed,  8 Jan 2025 11:00:09 +0800
-Message-Id: <20250108030009.68520-1-zhaochenguang@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1736305793; c=relaxed/simple;
+	bh=xBguY6dIirybXJyxzwhVoIG7KkLJayc4shpNfzkHe4c=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=uqxdmJxxaHaLQazoawHs1nSGpf982lLYPuWCUp4YXX8xqb2w5JPDnAGXMfeGbdIrFECZxWLTAxt0FTzRJVF9nbTaqmt03wH/pX6PhgnHd/sYvwqRdKvzw+y9Yxct8nNuw5v2FTEGr9gKYf1WiTJuvukhpySy6JBiKidb4akgglI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [111.207.111.194])
+	by gateway (Coremail) with SMTP id _____8DxQK9y7H1nd8NfAA--.32800S3;
+	Wed, 08 Jan 2025 11:09:38 +0800 (CST)
+Received: from [10.180.13.176] (unknown [111.207.111.194])
+	by front1 (Coremail) with SMTP id qMiowMDx7sVv7H1nJRgZAA--.31862S3;
+	Wed, 08 Jan 2025 11:09:36 +0800 (CST)
+Subject: Re: [PATCH net] ice: fix unaligned access in ice_create_lag_recipe
+To: Michal Schmidt <mschmidt@redhat.com>, intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org, Jesse Brandeburg <jesse.brandeburg@intel.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Dave Ertman <david.m.ertman@intel.com>,
+ Daniel Machon <daniel.machon@microchip.com>
+References: <20240131115823.541317-1-mschmidt@redhat.com>
+From: Hongchen Zhang <zhanghongchen@loongson.cn>
+Message-ID: <e6f59bda-9de8-3d30-3f37-3ab1ec047715@loongson.cn>
+Date: Wed, 8 Jan 2025 11:09:35 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240131115823.541317-1-mschmidt@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:qMiowMDx7sVv7H1nJRgZAA--.31862S3
+X-CM-SenderInfo: x2kd0w5krqwupkhqwqxorr0wxvrqhubq/1tbiAgEQB2d9tVgEdgABsQ
+X-Coremail-Antispam: 1Uk129KBj93XoW3GrWUXw48GrW8Cry5Gr1UXFc_yoW7AF4UpF
+	WUKF1qgr48Aw4UZayxWw1jgry3Gw1qvFWDJ3W2y3s5AF4UXr1jyr1xCayUAryDG395uF47
+	ta12vw1kt3WDAabCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6F4UJVW0owAaw2AFwI0_Jrv_JF1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
+	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_
+	JF1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrw
+	CYjI0SjxkI62AI1cAE67vIY487MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48J
+	MxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r1Y6r17MI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUc9a9UUUUU
 
-    The cmd_work_handler function returns from the child function
-    cmd_alloc_index because the allocate command entry fails,
-    Before returning, there is no complete ent->slotted.
+Hi Michal,
+On 2024/1/31 pm 7:58, Michal Schmidt wrote:
+> new_rcp->recipe_bitmap was written to as if it were an aligned bitmap.
+> It is an 8-byte array, but aligned only to 4.
+> Use put_unaligned to set its value.
+> 
+> Additionally, values in ice commands are typically in little-endian.
+> I assume the recipe bitmap should be too, so use the *_le64 conversion.
+> I don't have a big-endian system with ice to test this.
+> 
+> I tested that the driver does not crash when probing on aarch64 anymore,
+> which is good enough for me. I don't know if the LAG feature actually
+> works.
+> 
+> This is what the crash looked like without the fix:
+> [   17.599009] Unable to handle kernel paging request at virtual address ffff07ff9c6dc004
+> [   17.599011] Mem abort info:
+> [   17.599011]   ESR = 0x0000000096000021
+> [   17.599012]   EC = 0x25: DABT (current EL), IL = 32 bits
+> [   17.599013]   SET = 0, FnV = 0
+> [   17.599014]   EA = 0, S1PTW = 0
+> [   17.599014]   FSC = 0x21: alignment fault
+> [   17.599015] Data abort info:
+> [   17.599016]   ISV = 0, ISS = 0x00000021, ISS2 = 0x00000000
+> [   17.599016]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+> [   17.599017]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> [   17.599019] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000080dd6bd0000
+> [   17.599020] [ffff07ff9c6dc004] pgd=1800083fffacf003, p4d=1800083fffacf003, pud=1800083ffface003, pmd=1800083fff9ea003, pte=006808001c6dcf07
+> [   17.599025] Internal error: Oops: 0000000096000021 [#1] SMP
+> [   17.599027] Modules linked in: crct10dif_ce ghash_ce sha2_ce sha256_arm64 mlx5_core sha1_ce sbsa_gwdt ice(+) nvme nvme_core mlxfw igb tls nvme_common psample i2c_algo_bit gnss pci_hyperv_intf i2c_designware_platform i2c_designware_core xgene_hwmon dm_mirror dm_region_hash dm_log dm_mod
+> [   17.599043] CPU: 0 PID: 18 Comm: kworker/0:1 Not tainted 5.14.0-407.el9.aarch64 #1
+> [   17.599044] Hardware name: GIGABYTE R272-P31-00/MP32-AR1-00, BIOS F31L (SCP: 2.10.20220531) 09/29/2022
+> [   17.599046] Workqueue: events work_for_cpu_fn
+> [   17.599051] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [   17.599053] pc : ice_create_lag_recipe.constprop.0+0xbc/0x11c [ice]
+> [   17.599091] lr : ice_create_lag_recipe.constprop.0+0x54/0x11c [ice]
+> [   17.599121] sp : ffff8000084a3c50
+> [   17.599122] x29: ffff8000084a3c50 x28: ffffabc4a6790f00 x27: ffffabc4a6200fa0
+> [   17.599124] x26: ffff07ff809e5c34 x25: ffff083e5f41980d x24: ffff07ff8610a0c0
+> [   17.599126] x23: 0000000000000000 x22: ffff07ff9fe894c0 x21: ffff07ffb771a460
+> [   17.599128] x20: ffff07ff9c6dc000 x19: 0000000000000000 x18: 0000000000000014
+> [   17.599130] x17: 00000000c3142fa2 x16: 000000007e77e163 x15: 0000000018c66856
+> [   17.599132] x14: 00000000b8afd426 x13: 000000007e8b3b19 x12: 000000004a34fdf7
+> [   17.599134] x11: 00000000a7cb2fcc x10: 00000000ffffff8a x9 : 0000000000000000
+> [   17.599136] x8 : 0000002000000005 x7 : 0000000000000001 x6 : ffffabc487a054d8
+> [   17.599138] x5 : ffff07ff9c6dc004 x4 : 000000000000000a x3 : 0000000000000000
+> [   17.599140] x2 : 0000000000000000 x1 : 0000000000000400 x0 : ffff07ff9c6dc004
+> [   17.599142] Call trace:
+> [   17.599143]  ice_create_lag_recipe.constprop.0+0xbc/0x11c [ice]
+> [   17.599172]  ice_init_lag+0xcc/0x22c [ice]
+> [   17.599201]  ice_init_features+0x160/0x2b4 [ice]
+> [   17.599230]  ice_probe+0x2d0/0x30c [ice]
+> [   17.599258]  local_pci_probe+0x58/0xb0
+> [   17.599262]  work_for_cpu_fn+0x20/0x30
+> [   17.599264]  process_one_work+0x1e4/0x4c0
+> [   17.599266]  worker_thread+0x220/0x450
+> [   17.599268]  kthread+0xe8/0xf4
+> [   17.599270]  ret_from_fork+0x10/0x20
+> [   17.599273] Code: 380044a4 f800429f 8b000ca0 d503201f (f821301f)
+> [   17.599274] ---[ end trace 168d79e2ecf9f7e3 ]---
+> [   17.599275] Kernel panic - not syncing: Oops: Fatal exception
+> [   17.893321] SMP: stopping secondary CPUs
+> [   17.897374] Kernel Offset: 0x2bc49c400000 from 0xffff800008000000
+> [   17.903453] PHYS_OFFSET: 0x80000000
+> [   17.906928] CPU features: 0x0,00000001,70028143,1041720b
+> [   17.912226] Memory Limit: none
+> [   17.915268] ---[ end Kernel panic - not syncing: Oops: Fatal exception ]---
+> 
+> Fixes: 1e0f9881ef79 ("ice: Flesh out implementation of support for SRIOV on bonded interface")
+> Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+> ---
+>   drivers/net/ethernet/intel/ice/ice_lag.c | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
+> index 2a25323105e5..d4848f6fe919 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_lag.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_lag.c
+> @@ -1829,9 +1829,7 @@ static int ice_create_lag_recipe(struct ice_hw *hw, u16 *rid,
+>   	new_rcp->content.act_ctrl_fwd_priority = prio;
+>   	new_rcp->content.rid = *rid | ICE_AQ_RECIPE_ID_IS_ROOT;
+>   	new_rcp->recipe_indx = *rid;
+> -	bitmap_zero((unsigned long *)new_rcp->recipe_bitmap,
+> -		    ICE_MAX_NUM_RECIPES);
+> -	set_bit(*rid, (unsigned long *)new_rcp->recipe_bitmap);
+> +	put_unaligned_le64(BIT_ULL(*rid), new_rcp->recipe_bitmap);
+>   
+>   	err = ice_aq_add_recipe(hw, new_rcp, 1, NULL);
+>   	if (err)
+> 
+I encountered the same problem on a LoongArch LS3C6000 machine. Can this 
+patch be merged now?
 
-    The patch fixes it.
-
-     mlx5_core 0000:01:00.0: cmd_work_handler:877:(pid 3880418): failed to allocate command entry
-     INFO: task kworker/13:2:4055883 blocked for more than 120 seconds.
-           Not tainted 4.19.90-25.44.v2101.ky10.aarch64 #1
-     "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-     kworker/13:2    D    0 4055883      2 0x00000228
-     Workqueue: events mlx5e_tx_dim_work [mlx5_core]
-     Call trace:
-      __switch_to+0xe8/0x150
-      __schedule+0x2a8/0x9b8
-      schedule+0x2c/0x88
-      schedule_timeout+0x204/0x478
-      wait_for_common+0x154/0x250
-      wait_for_completion+0x28/0x38
-      cmd_exec+0x7a0/0xa00 [mlx5_core]
-      mlx5_cmd_exec+0x54/0x80 [mlx5_core]
-      mlx5_core_modify_cq+0x6c/0x80 [mlx5_core]
-      mlx5_core_modify_cq_moderation+0xa0/0xb8 [mlx5_core]
-      mlx5e_tx_dim_work+0x54/0x68 [mlx5_core]
-      process_one_work+0x1b0/0x448
-      worker_thread+0x54/0x468
-      kthread+0x134/0x138
-      ret_from_fork+0x10/0x18
-
-    Fixes: 485d65e13571 ("net/mlx5: Add a timeout to acquire the command queue semaphore")
-
-Signed-off-by: Chenguang Zhao zhaochenguang@kylinos.cn
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
----
-v2:
-	add Fixes tag and Reviewed-by
----
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-index 6bd8a18e3af3..e733b81e18a2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -1013,6 +1013,7 @@ static void cmd_work_handler(struct work_struct *work)
- 				complete(&ent->done);
- 			}
- 			up(&cmd->vars.sem);
-+			complete(&ent->slotted);
- 			return;
- 		}
- 	} else {
 -- 
-2.25.1
+Best Regards
+Hongchen Zhang
 
