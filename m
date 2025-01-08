@@ -1,229 +1,307 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2051.outbound.protection.outlook.com [40.107.92.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24E3202C4A
-	for <netdev@vger.kernel.org>; Wed,  8 Jan 2025 16:39:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736354396; cv=fail; b=YskB9EqrWHbVYUdeBqFJkVjINdNWDFaJ79UgHMT3tQdTvs6c6TOq7Ih3NVfDdix+gfcc+vCV2SWYBmHj4AzlMCg/yIF9mqtweC6doVJZKL4ioBC2WdMPWPWx35+PsC5Lxv9tHNiOaicjLL+JRSFFAb54iwj1pwcZABcvHwF23lI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736354396; c=relaxed/simple;
-	bh=TyaX1k+8WcMBgWOJi/PyOyCHkLenU+2GGqvDhcrk2IM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jyBk5QS+oTUaIwL7wSgFWnkKI4S6did0a9fW6PzCqmSl5bC+lhLqfzH3IbQmvC5nlDhkhCVDzS+EmSPSTHEHD9ZUuaF2GszFvyNxdjvo0wW93HfCe5BMueEhbLiYJs+tkX4l7wtwxJKOGKa3HMKijHv9RUIjF67LA9tkL22Tqk4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Ui5w5Xzs; arc=fail smtp.client-ip=40.107.92.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A381FF1BF;
+	Wed,  8 Jan 2025 16:40:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736354457; cv=none; b=S/JSJfm/Pf4JwVankuuVHqFRod2bYan0tqrOhyi0jmZ89vEwvInCNyFEHzevjlw0k/Im3TFZCxPe95Nr8DuLpSMwpEdapiqP/+gfqqRge12vlHbelsEDfqTVtz658HAX/ISV3Z3H/xcd9fLlwpBm/pCgKZgsgf4zoigbskESTFA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736354457; c=relaxed/simple;
+	bh=z9TgFh043/DXdBn5gBXcwWArZNoigSNcpIJBh4NgW50=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VQlez1e8GSSJz/1F/RJiq6H9J54yBjGTVkw+L2LquGj7+dN1LYIt4P8xkqncAluK+HRp72JyCXyWg7BSCXmmAwbXp9GElGIG6/lCOK0Mteha31srWghtDyKA2NC6hIyEYSrTlYp7id1lNGcFlBjMl8MBdsLSg250SylQ3dd3dOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dAIrnvMy; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Ui5w5Xzs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=STj/mdQQQCaC3xRtnnVNcsz4Q7ASQS7Ro0F8MZVxVFfQ7SUNk1EhRWsiq2MSGExIxpoiPuOqtxlFP5gc2W/TL679iM32cmzbOxZpsneGUwKEA0G6THmHi1ZcUIPM/3Pij6pIWRAOiK5rSk3uyoaXnnvmeLxlk+KAdLsx1+5xkjqiO4iPdKGIs8V+J4fO29SZo3HrPqT3QzRoX9RjATUX10Wt0oP8TBauaVgWlzEcQEM8Ecmliio5v11Pbk2FkYAwLkXyt0uPcBScY0mSE6ZuypTKFFxcjEAYRLCtxg4Vg6mWdSu1URklrOOJbK1pbE5nXvutpIpxktlrHKFz+aHP5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DRF1fGUhea4kqWlDvT01oZBzot5/EtSuyeW1HxX0r1E=;
- b=LDg+6iSS7E6g3C0+e66B8elAINZdpSzD1p7ixPSLZAlJQRmzKyr6sL1GBmEAtpX6w8CK0alkcoLXcJlzBTJHIZAnalJTIl6TdlQLnSMiSWme81k77eLEgE+MPwlWkaJd8I6KevNXyGlZsfDC5PQL9EWjNuVe9m9iT8Jmg068rFCtT3dyEcDanJqxcx/zamvKR58ADjQsp++EBCHYOfsndxfFb1Ei+3OMODAUx6PtDe+bY2HqcZFWJP9e8vyiNHUK1cQGgGlxtjJO6nmvBfHQxPzsEQbeFqpQyxwCzVKrynmI7SEwKWX1Syx1QwTTaVu1ZruP64n/a2ojIceC+tE77w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DRF1fGUhea4kqWlDvT01oZBzot5/EtSuyeW1HxX0r1E=;
- b=Ui5w5Xzs1j3K/r3OnfQL03ou1pKKWNYR+PaxwX29HzwzoEqjYupmUev3YfF/09ThzPQvCnbK2lSXlpRDFkdTkoyc0BV9eE42XUXkf8uUZnfOSsVC+KmXNVnyocBUtZzzVGJOe68alYomowB3uxGnYHozbEWevKUIz3SRom1x5fqH3BGJi7xiV41jHZCO17wR+PoRsaZs6gnoPrwUDynBOO7vkzWwp2dCJGxO1KkHQufVBWrxzJqAANhzevUPb4l0+8lNOEJSpbtAJgPspeQIfPyPLqDqCIHeCzOAe9pXw7vcPH5+1qhfAo0PYFeXGxFXx/mjhGUVWBPeUwC7PSCk7g==
-Received: from SN6PR11MB2926.namprd11.prod.outlook.com (2603:10b6:805:ce::19)
- by IA0PR11MB7185.namprd11.prod.outlook.com (2603:10b6:208:432::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.18; Wed, 8 Jan
- 2025 16:39:51 +0000
-Received: from SN6PR11MB2926.namprd11.prod.outlook.com
- ([fe80::8fe6:84f3:2dcc:80b7]) by SN6PR11MB2926.namprd11.prod.outlook.com
- ([fe80::8fe6:84f3:2dcc:80b7%6]) with mapi id 15.20.8335.010; Wed, 8 Jan 2025
- 16:39:51 +0000
-From: <Woojung.Huh@microchip.com>
-To: <kuba@kernel.org>, <davem@davemloft.net>
-CC: <netdev@vger.kernel.org>, <edumazet@google.com>, <pabeni@redhat.com>,
-	<Thangaraj.S@microchip.com>, <Rengarajan.S@microchip.com>
-Subject: RE: [PATCH net v2 2/8] MAINTAINERS: update maintainers for Microchip
- LAN78xx
-Thread-Topic: [PATCH net v2 2/8] MAINTAINERS: update maintainers for Microchip
- LAN78xx
-Thread-Index: AQHbYeVf4z5Jz4UnJkmjQfKc7CYrqLMNE8qw
-Date: Wed, 8 Jan 2025 16:39:51 +0000
-Message-ID:
- <SN6PR11MB29263D454E5CFFD6B941EDF2E7122@SN6PR11MB2926.namprd11.prod.outlook.com>
-References: <20250108155242.2575530-1-kuba@kernel.org>
- <20250108155242.2575530-3-kuba@kernel.org>
-In-Reply-To: <20250108155242.2575530-3-kuba@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microchip.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR11MB2926:EE_|IA0PR11MB7185:EE_
-x-ms-office365-filtering-correlation-id: 2edd5d7a-405a-4944-4c5f-08dd300312bd
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB2926.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?pKR6HaoqmWWoaZOMfri7nUHUPjxgpXZ4H5sHRpg2zKIvNUazgGXZ3YIQuIc8?=
- =?us-ascii?Q?b/Tv8oC2HUnIxWvgp+/P3u/LFnr0A9ic0ySxqK+rWuxwCg3Zp4HnkszeRfKV?=
- =?us-ascii?Q?rDLeMRzulJ/jZMTbZDeYu+fj1A4kESN1mKPRHHWoKghc8ghzWUSz/au11lon?=
- =?us-ascii?Q?W7GEmmQwcyrKvZJKAihPdpfVAF9l8eCSbpc0aEv32AetCTJz+l1h+AN35PTm?=
- =?us-ascii?Q?ZZlnLXmjkGC9nUzJgbMJjcAPWYUVWyyAfSc7XYlDvL6hh4wWjVCZkD1Gl3hD?=
- =?us-ascii?Q?CRX/MheAlCudBCnjnNaqv0raslVgoFdO2UVCyf6qf9Y6fytzvTG0WfyiuOkw?=
- =?us-ascii?Q?BJqph6nIgA8LRzIdWumaJihp7iCK08V8t+E5WhjU6ShcfFnShAUtb+9NZ2cg?=
- =?us-ascii?Q?bH/G1dgdyNg0KvkPOIzSeZoROXpkhY0W71s8qhUXeO3YlII4jb3renBDLx5c?=
- =?us-ascii?Q?ZXIr7qRJDHhpAPY4rl86tTlYGMXs3ETcI3lcw1iERAwJhtucIbc9ZmeErCgU?=
- =?us-ascii?Q?mu0QwV9M2/PuyodffcwnnMx1MLKHIRzIrbwzq4GRuZijXvnWW9+QlzjtWqaX?=
- =?us-ascii?Q?WX9BHxlFOc1k26OrfNnGlQb9feV9ZKD4c8u4PhBs+V0ka4YDT9Ca6bTDgwLd?=
- =?us-ascii?Q?sYExr1144Gwdf2EbdxVpj+3wHHnbNdENqPxfFRADx199lHFkIGjs2MVp1cCK?=
- =?us-ascii?Q?zt/0c7LvArtpA8DJ4Nl2TcNNg2N3Q8NBlAYM+jHOEmh5NDkzTMqOD+2T6zr6?=
- =?us-ascii?Q?mCNc8U6FK5qTNUbNMlzdXejo2INdicqnOQcLOuqbc476wzwqlb4rf3D3KNK/?=
- =?us-ascii?Q?6YFksXhd9RdJmg4jAzoPZo1nkkguE78oh/RFJKRO3IkPLLjts6pxUQf5QTxi?=
- =?us-ascii?Q?bhLIOmHeTaK7c4wlVmfUy2dVD0JEFMSsFzpuV0qh1RWyeicR3Ob8Gk4WbQW1?=
- =?us-ascii?Q?HZUGfjddxZJ/V5NMMx0OVz/cm9anp/vkqqti0APa/W7t1YsTVhdRfQP33ZPN?=
- =?us-ascii?Q?fojAxx6kgDUAau8CuY/rNW6n+PFVL3JEQwgMxixiZxtcb0zUe08MscEqTkv5?=
- =?us-ascii?Q?cdP+j2xnSsfnKStbyMqbIQjiIkDU3xZ50ly43UmKL5sCEF/04b8Jctc9sEle?=
- =?us-ascii?Q?i6rK//TiHLbSbZgDvFMhcPPZsk/wDOfHZC9FXYPuqNyv4Svn22FwOGCbolEH?=
- =?us-ascii?Q?Fa+HDHX84jbGD4RmL1IlWLE+5UJzPOBs9gxH4jUCJZbqxUyD7O1dYtJxvPk9?=
- =?us-ascii?Q?r/PythzfAxuHJs6ZZ/XMIcdQVflsH9c/XGUAAZvkrAZaLLVfK0hN+Sw+IT63?=
- =?us-ascii?Q?4jMjF7wsM5Xio1kGGfKGHk/iNulxrDCnqmqFIsjx3Bmf3HmSNkdhxO4Q9MYP?=
- =?us-ascii?Q?+EPRpL4FpwMEEhkmtBhZ/mOqqj+PTDE3yvr5iQSV5q+//wyCkphVHM3Fbny2?=
- =?us-ascii?Q?/GBMLXjx3lA=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?L2Bs+yX+jK0ifx6WyQDG5il5guDK8ZpFjdiJUPVJVL7zdZJwMedKebwxzhO5?=
- =?us-ascii?Q?zIiP216ZFEK0bqWoOv3Fwck9u8n1kooq5k6a9RLbOwrFbQdiFs7viXfM0IpK?=
- =?us-ascii?Q?1CePRyPH2TcXrEpbLLUO+dDpSNrj/8ayUNZidWZLeGeZGXRfDKZQ0J7gT0cu?=
- =?us-ascii?Q?MGKEuJyxSXSixX+Jod5hvafqmTNOsbSrbp+HaGYB7HFOf2qSqU9w1XC/wH0o?=
- =?us-ascii?Q?+o0mRrlB1feqjul7b/47GLpOIaCs7Nnx/Hmx+EYYimAyOz/SkI9QX1Vi+KDE?=
- =?us-ascii?Q?DCTdje55ow5Z1ET1UgVc3m/87fmk8s6E6Xv3wZ539zhFgogWj35UQE2pOilw?=
- =?us-ascii?Q?iJx+6tqpE5Y24JwanyoWEf873BjA+GP310kqbgHxQH8I3Oc/L3sWciDC03R6?=
- =?us-ascii?Q?zP2B5HzCVGYj/ABEnvm/7NGAN/8LgoFaVX5826XU2CQwLk90pXaQoAJMYa6D?=
- =?us-ascii?Q?cpNxwLFEXZUTUluO3L2KsJoyln+3zcpv9/n6MdBauoYkvZ3Ny+Nou2p7lK6O?=
- =?us-ascii?Q?+woAi8MZQoxw5N8d8f4HUSOwzWZCsaqFiDlwoLA56sBupg1J4L8LFh68KZna?=
- =?us-ascii?Q?1pVjT45gPxh1JXdQZ4GhrDB0GsqWzEMMGub8YJ0MpO7m+0nRyhL5GDG6x0S3?=
- =?us-ascii?Q?X/3nqfzxmMNHfRkUBTGGxp1hm1FaTMVy029NQCvWYRIw7700oq6y1p9kAbmt?=
- =?us-ascii?Q?lX6hW9t1mleNgmIDr8O3UCAX5RWY3hNetPe8k+lMAVH735OzftMOMFcFotyr?=
- =?us-ascii?Q?zLTzKtJy8wGSgQ1aQ80Mzjv/w2lP7xE+dSgO68mNIjE0f/QWTIlCeOxPx2ij?=
- =?us-ascii?Q?Fu/quYmAKuNwJi+7b5mBM0m4AFq4uAzCjdtgg9mBUFRZzE9Ir8mqR25ktbG7?=
- =?us-ascii?Q?xZjqz8jR8fM6u1rIMziDaV6ex5gljuHVgLupFQzDoJjADR1CeZKAvxapTDNn?=
- =?us-ascii?Q?r5JRh8908vcS5stECu2I9Quple+jpaDPaK7vwW6xDpeOb7g7YcTN3nOKiev2?=
- =?us-ascii?Q?FOXbuu7/C2xXkphryUBkCSmKqxb72upswF/xPo7z7Q/iNwtTvvtRVQnW5ULR?=
- =?us-ascii?Q?rXRRMEwA9OatoKkLe3H/AG/BSyflrXsPAtv/vDNIkjZKK5o5/EZPwpE+E+em?=
- =?us-ascii?Q?jGCSmHEjv6kBQn9Kv5pWe+03X6o9altxo6g+NAhqVSYSm3ayw6W3vdtU+anx?=
- =?us-ascii?Q?By45mTeu7GPNM0Q1oEcLKNSuYDcjOmHyTmmgNk7NjvQKXByjUmXvM2RC37GU?=
- =?us-ascii?Q?4yklq7aRP9C1roGRK/TE4F9sIyaE5Sumsf4Jfqg7GwgMnfk0q5MzxodRYwaJ?=
- =?us-ascii?Q?ftxkIcAMJrhSfsuF4EGhmTzqniz5kAPUsT+vIo1T1T5Alf4IwHHEjFJjDKop?=
- =?us-ascii?Q?QDVtaYgOW/kFQk10SyFwEFFYBO1te4qPBPaO0JH0JTm4WFkiLr2AsA9VaSoL?=
- =?us-ascii?Q?QnS1ov/a/SipXpOyyPEj/qCZEqaatnkCJKszD5R4ihndXxsSskUNlmPi8Jsd?=
- =?us-ascii?Q?D8nO62K2d6hI5IMQ94PNNG2CuoR8xGT4VUR7vZ4guZZb4ZBVv00g7AaEv8DV?=
- =?us-ascii?Q?Edq/jKUYVVmmG+DQCQUG+OwXLDbrypxNmb3BmFpS?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dAIrnvMy"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4361f796586so235595e9.3;
+        Wed, 08 Jan 2025 08:40:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736354454; x=1736959254; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/guJsq6cwbtb+0dBqQXpmlgg1lrvBQhk8AS5wE9Cuks=;
+        b=dAIrnvMyW0QCDBAM1eEArPJthvFY+JSAfRoOW7tEa3CgWJrDCF4oKwSPeEXpI70EQE
+         o0AXK/QImmbQZvZbZZPoQhNSuUoqegr7hPyFo44tc/Y1t+5JoBjQ14T65QINRioyvxlH
+         4g3rTu9VfqI+KB7MnwLm5TsiGyg+sBDYKLeUBKtc5CGw6IwsQnHZzFSen0prvcqx/eOq
+         Hzhw80oPhWf3+GQBYvqhUVFMPNbH0lPnaWoKgfprE5JH684eSb3oWqJaWV+eIPKWMGb6
+         i+oAP/jsXvxBmBEsDn1UrAhN+1yqtn0QAY4g4smRUg03QhrbhZ3eUor2XYttsKbQIs0J
+         tv8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736354454; x=1736959254;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/guJsq6cwbtb+0dBqQXpmlgg1lrvBQhk8AS5wE9Cuks=;
+        b=egiUq/ERKrxElurzgZRWqQvlu0qh3gGTmL1UflpS9qTMdcsy1sikBEXTLVCKfXSYG4
+         VcNYHHHq507upsuUKPCxLPLGaCVTv5ufrCD/fST6ozFr8tQFcyyHau00HQkljNwHHvDV
+         cDz/v4JIagRkdMMFyKcBY69EbJDSqhOizpBoAPImjXpWRF8kxhxEso5Nla2ta6OzzVRT
+         6AZZoIXas0tfnfNvsMpDC+7d5pSHbBsd++FshUeHoB/p22Jfom9CV0xFw375bHECZYLy
+         umUDCOt8Gz6pSgBhLMQ+JMRm3/IBEUtKPq/xuSG14BBSL5eqSdFp1Z5l5+fd6Lk8aNX0
+         i58Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUBrbOetcq+6ChLj5ysg7ch9WXkkgkGK6/03s+USKpk063J/m5DRdxz/aTH3EjLweYL3jtljgVEuNk1ejQ=@vger.kernel.org, AJvYcCUpENc4zONaGimbl/mPdIgBKi+RF3uyMx+fFnYNS9KEgDsT3oWrO/Im9yWy0rcuTMBCcZ/ESiWr@vger.kernel.org, AJvYcCXNAlEC57vwLSmV/9OmSKI7DIQfAaWM2DEbla3r0ezzeagsBEPo9uX3G5HhTSRBdFWg8wENu8hTf/vbiRU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywh4PuQ/ywQ7l65W2HB64XJ4oz2cZs3y0Qwc5fJkaxtZL62IfJR
+	Sw+ZU6T0ZQ4lA6aTXvNqUh5QSwxIClhuHd+5WupGd19GfdlKyrKx
+X-Gm-Gg: ASbGncu6FnaT32HQtq/9LAMdVzOrDFSv2hErRReCU7K14yVNMuUlxPoWKrzBhy2Nsi1
+	4ZNsuNZ3DPYdo0Eq+NhXho96T8chKutS5znj7ooOMwbTkjLq752g8GOcyGm2JebW7NE0rxcx7v3
+	5raIqxR2RBjmSivi0FgWA6zlW4ooIoijN/I5Ybh0DwPBlchA1ha4cRR7ydDjY/077H/DatKw+iX
+	lIKxUUVVefEQEHiehUGz1c7RUvdKmmRKQMzETEEfYEuFSzuCybsiiWw4k7JCX24QsQlgd2hStni
+	IbvFLzMemVbCfNf7QciOMbTgetkDiooV7wp/zHQLFCk=
+X-Google-Smtp-Source: AGHT+IHwgwBkdW+ZmyxGIwkpvXTrRhp+gIkfwI9CQ0ow6tLc8HtKrjisdX6JVQfYI8d0IFvq2vZlGQ==
+X-Received: by 2002:a05:600c:1c9a:b0:428:d31:ef25 with SMTP id 5b1f17b1804b1-436e26975f1mr33250855e9.12.1736354453763;
+        Wed, 08 Jan 2025 08:40:53 -0800 (PST)
+Received: from orome (p200300e41f281900f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f28:1900:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2e92794sm25856885e9.37.2025.01.08.08.40.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jan 2025 08:40:52 -0800 (PST)
+Date: Wed, 8 Jan 2025 17:40:50 +0100
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Parker Newman <parker@finest.io>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	netdev@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Parker Newman <pnewman@connecttech.com>
+Subject: Re: [PATCH net v2 1/1] net: stmmac: dwmac-tegra: Read iommu stream
+ id from device tree
+Message-ID: <oz6f5mcxi7jxyubrd6dpdltusogv5ortbmll6rom5c2bja2x7o@brsqolpmp5x7>
+References: <6fb97f32cf4accb4f7cf92846f6b60064ba0a3bd.1736284360.git.pnewman@connecttech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microchip.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2926.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2edd5d7a-405a-4944-4c5f-08dd300312bd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jan 2025 16:39:51.3534
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ds/j66iARHYO+bFaQJqiiXpcHwUI2l2CzOy4wDxxYmMRzAfTL9+CoEhCThk3dJUxRtRsxDPBKSFJC8zhpPCWN8a4CLZSEReR21e8TBhJlgM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7185
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="2uonbsu5shywby2b"
+Content-Disposition: inline
+In-Reply-To: <6fb97f32cf4accb4f7cf92846f6b60064ba0a3bd.1736284360.git.pnewman@connecttech.com>
 
-> -----Original Message-----
-> From: Jakub Kicinski <kuba@kernel.org>
-> Sent: Wednesday, January 8, 2025 10:53 AM
-> To: davem@davemloft.net
-> Cc: netdev@vger.kernel.org; edumazet@google.com; pabeni@redhat.com; Jakub
-> Kicinski <kuba@kernel.org>; Woojung Huh - C21699 <Woojung.Huh@microchip.c=
-om>;
-> Thangaraj Samynathan - I53494 <Thangaraj.S@microchip.com>; Rengarajan S -
-> I69107 <Rengarajan.S@microchip.com>
-> Subject: [PATCH net v2 2/8] MAINTAINERS: update maintainers for Microchip
-> LAN78xx
->=20
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
-e
-> content is safe
->=20
-> Woojung Huh seems to have only replied to the list 35 times
-> in the last 5 years, and didn't provide any reviews in 3 years.
-> The LAN78XX driver has seen quite a bit of activity lately.
->=20
-> gitdm missingmaints says:
->=20
-> Subsystem USB LAN78XX ETHERNET DRIVER
->   Changes 35 / 91 (38%)
->   (No activity)
->   Top reviewers:
->     [23]: andrew@lunn.ch
->     [3]: horms@kernel.org
->     [2]: mateusz.polchlopek@intel.com
->   INACTIVE MAINTAINER Woojung Huh <woojung.huh@microchip.com>
->=20
-> Move Woojung to CREDITS and add new maintainers who are more
-> likely to review LAN78xx patches.
->=20
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> v2:
->  - add new maintainers instead of Orphaning
->=20
-> cc: woojung.huh@microchip.com
-> cc: thangaraj.s@microchip.com
-> cc: rengarajan.s@microchip.com
-> ---
->  CREDITS     | 4 ++++
->  MAINTAINERS | 3 ++-
->  2 files changed, 6 insertions(+), 1 deletion(-)
->=20
-> diff --git a/CREDITS b/CREDITS
-> index 2a5f5f49269f..7a5332907ef0 100644
-> --- a/CREDITS
-> +++ b/CREDITS
-> @@ -1816,6 +1816,10 @@ D: Author/maintainer of most DRM drivers (especial=
-ly
-> ATI, MGA)
->  D: Core DRM templates, general DRM and 3D-related hacking
->  S: No fixed address
->=20
-> +N: Woojung Huh
-> +E: woojung.huh@microchip.com
-> +D: Microchip LAN78XX USB Ethernet driver
-> +
->  N: Kenn Humborg
->  E: kenn@wombat.ie
->  D: Mods to loop device to support sparse backing files
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 188c08cd16de..f2cace73194e 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -24261,7 +24261,8 @@ F:
-> Documentation/devicetree/bindings/usb/nxp,isp1760.yaml
->  F:     drivers/usb/isp1760/*
->=20
->  USB LAN78XX ETHERNET DRIVER
-> -M:     Woojung Huh <woojung.huh@microchip.com>
-> +M:     Thangaraj Samynathan <Thangaraj.S@microchip.com>
-> +M:     Rengarajan Sundararajan <Rengarajan.S@microchip.com>
->  M:     UNGLinuxDriver@microchip.com
->  L:     netdev@vger.kernel.org
->  S:     Maintained
-> --
-> 2.47.1
 
-Acked-by: Woojung Huh <woojung.huh@microchip.com>
+--2uonbsu5shywby2b
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net v2 1/1] net: stmmac: dwmac-tegra: Read iommu stream
+ id from device tree
+MIME-Version: 1.0
+
+On Tue, Jan 07, 2025 at 04:24:59PM -0500, Parker Newman wrote:
+> From: Parker Newman <pnewman@connecttech.com>
+>=20
+> Nvidia's Tegra MGBE controllers require the IOMMU "Stream ID" (SID) to be
+> written to the MGBE_WRAP_AXI_ASID0_CTRL register.
+>=20
+> The current driver is hard coded to use MGBE0's SID for all controllers.
+> This causes softirq time outs and kernel panics when using controllers
+> other than MGBE0.
+>=20
+> Example dmesg errors when an ethernet cable is connected to MGBE1:
+>=20
+> [  116.133290] tegra-mgbe 6910000.ethernet eth1: Link is Up - 1Gbps/Full =
+- flow control rx/tx
+> [  121.851283] tegra-mgbe 6910000.ethernet eth1: NETDEV WATCHDOG: CPU: 5:=
+ transmit queue 0 timed out 5690 ms
+> [  121.851782] tegra-mgbe 6910000.ethernet eth1: Reset adapter.
+> [  121.892464] tegra-mgbe 6910000.ethernet eth1: Register MEM_TYPE_PAGE_P=
+OOL RxQ-0
+> [  121.905920] tegra-mgbe 6910000.ethernet eth1: PHY [stmmac-1:00] driver=
+ [Aquantia AQR113] (irq=3D171)
+> [  121.907356] tegra-mgbe 6910000.ethernet eth1: Enabling Safety Features
+> [  121.907578] tegra-mgbe 6910000.ethernet eth1: IEEE 1588-2008 Advanced =
+Timestamp supported
+> [  121.908399] tegra-mgbe 6910000.ethernet eth1: registered PTP clock
+> [  121.908582] tegra-mgbe 6910000.ethernet eth1: configuring for phy/10gb=
+ase-r link mode
+> [  125.961292] tegra-mgbe 6910000.ethernet eth1: Link is Up - 1Gbps/Full =
+- flow control rx/tx
+> [  181.921198] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+> [  181.921404] rcu: 	7-....: (1 GPs behind) idle=3D540c/1/0x4000000000000=
+002 softirq=3D1748/1749 fqs=3D2337
+> [  181.921684] rcu: 	(detected by 4, t=3D6002 jiffies, g=3D1357, q=3D1254=
+ ncpus=3D8)
+> [  181.921878] Sending NMI from CPU 4 to CPUs 7:
+> [  181.921886] NMI backtrace for cpu 7
+> [  181.922131] CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Kdump: loaded Not tai=
+nted 6.13.0-rc3+ #6
+> [  181.922390] Hardware name: NVIDIA CTI Forge + Orin AGX/Jetson, BIOS 20=
+2402.1-Unknown 10/28/2024
+> [  181.922658] pstate: 40400009 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYP=
+E=3D--)
+> [  181.922847] pc : handle_softirqs+0x98/0x368
+> [  181.922978] lr : __do_softirq+0x18/0x20
+> [  181.923095] sp : ffff80008003bf50
+> [  181.923189] x29: ffff80008003bf50 x28: 0000000000000008 x27: 000000000=
+0000000
+> [  181.923379] x26: ffffce78ea277000 x25: 0000000000000000 x24: 0000001c6=
+1befda0
+> [  181.924486] x23: 0000000060400009 x22: ffffce78e99918bc x21: ffff80008=
+018bd70
+> [  181.925568] x20: ffffce78e8bb00d8 x19: ffff80008018bc20 x18: 000000000=
+0000000
+> [  181.926655] x17: ffff318ebe7d3000 x16: ffff800080038000 x15: 000000000=
+0000000
+> [  181.931455] x14: ffff000080816680 x13: ffff318ebe7d3000 x12: 000000003=
+464d91d
+> [  181.938628] x11: 0000000000000040 x10: ffff000080165a70 x9 : ffffce78e=
+8bb0160
+> [  181.945804] x8 : ffff8000827b3160 x7 : f9157b241586f343 x6 : eeb6502a0=
+1c81c74
+> [  181.953068] x5 : a4acfcdd2e8096bb x4 : ffffce78ea277340 x3 : 00000000f=
+fffd1e1
+> [  181.960329] x2 : 0000000000000101 x1 : ffffce78ea277340 x0 : ffff318eb=
+e7d3000
+> [  181.967591] Call trace:
+> [  181.970043]  handle_softirqs+0x98/0x368 (P)
+> [  181.974240]  __do_softirq+0x18/0x20
+> [  181.977743]  ____do_softirq+0x14/0x28
+> [  181.981415]  call_on_irq_stack+0x24/0x30
+> [  181.985180]  do_softirq_own_stack+0x20/0x30
+> [  181.989379]  __irq_exit_rcu+0x114/0x140
+> [  181.993142]  irq_exit_rcu+0x14/0x28
+> [  181.996816]  el1_interrupt+0x44/0xb8
+> [  182.000316]  el1h_64_irq_handler+0x14/0x20
+> [  182.004343]  el1h_64_irq+0x80/0x88
+> [  182.007755]  cpuidle_enter_state+0xc4/0x4a8 (P)
+> [  182.012305]  cpuidle_enter+0x3c/0x58
+> [  182.015980]  cpuidle_idle_call+0x128/0x1c0
+> [  182.020005]  do_idle+0xe0/0xf0
+> [  182.023155]  cpu_startup_entry+0x3c/0x48
+> [  182.026917]  secondary_start_kernel+0xdc/0x120
+> [  182.031379]  __secondary_switched+0x74/0x78
+> [  212.971162] rcu: INFO: rcu_preempt detected expedited stalls on CPUs/t=
+asks: { 7-.... } 6103 jiffies s: 417 root: 0x80/.
+> [  212.985935] rcu: blocking rcu_node structures (internal RCU debug):
+> [  212.992758] Sending NMI from CPU 0 to CPUs 7:
+> [  212.998539] NMI backtrace for cpu 7
+> [  213.004304] CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Kdump: loaded Not tai=
+nted 6.13.0-rc3+ #6
+> [  213.016116] Hardware name: NVIDIA CTI Forge + Orin AGX/Jetson, BIOS 20=
+2402.1-Unknown 10/28/2024
+> [  213.030817] pstate: 40400009 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYP=
+E=3D--)
+> [  213.040528] pc : handle_softirqs+0x98/0x368
+> [  213.046563] lr : __do_softirq+0x18/0x20
+> [  213.051293] sp : ffff80008003bf50
+> [  213.055839] x29: ffff80008003bf50 x28: 0000000000000008 x27: 000000000=
+0000000
+> [  213.067304] x26: ffffce78ea277000 x25: 0000000000000000 x24: 0000001c6=
+1befda0
+> [  213.077014] x23: 0000000060400009 x22: ffffce78e99918bc x21: ffff80008=
+018bd70
+> [  213.087339] x20: ffffce78e8bb00d8 x19: ffff80008018bc20 x18: 000000000=
+0000000
+> [  213.097313] x17: ffff318ebe7d3000 x16: ffff800080038000 x15: 000000000=
+0000000
+> [  213.107201] x14: ffff000080816680 x13: ffff318ebe7d3000 x12: 000000003=
+464d91d
+> [  213.116651] x11: 0000000000000040 x10: ffff000080165a70 x9 : ffffce78e=
+8bb0160
+> [  213.127500] x8 : ffff8000827b3160 x7 : 0a37b344852820af x6 : 3f049caed=
+d1ff608
+> [  213.138002] x5 : cff7cfdbfaf31291 x4 : ffffce78ea277340 x3 : 00000000f=
+fffde04
+> [  213.150428] x2 : 0000000000000101 x1 : ffffce78ea277340 x0 : ffff318eb=
+e7d3000
+> [  213.162063] Call trace:
+> [  213.165494]  handle_softirqs+0x98/0x368 (P)
+> [  213.171256]  __do_softirq+0x18/0x20
+> [  213.177291]  ____do_softirq+0x14/0x28
+> [  213.182017]  call_on_irq_stack+0x24/0x30
+> [  213.186565]  do_softirq_own_stack+0x20/0x30
+> [  213.191815]  __irq_exit_rcu+0x114/0x140
+> [  213.196891]  irq_exit_rcu+0x14/0x28
+> [  213.202401]  el1_interrupt+0x44/0xb8
+> [  213.207741]  el1h_64_irq_handler+0x14/0x20
+> [  213.213519]  el1h_64_irq+0x80/0x88
+> [  213.217541]  cpuidle_enter_state+0xc4/0x4a8 (P)
+> [  213.224364]  cpuidle_enter+0x3c/0x58
+> [  213.228653]  cpuidle_idle_call+0x128/0x1c0
+> [  213.233993]  do_idle+0xe0/0xf0
+> [  213.237928]  cpu_startup_entry+0x3c/0x48
+> [  213.243791]  secondary_start_kernel+0xdc/0x120
+> [  213.249830]  __secondary_switched+0x74/0x78
+>=20
+> This bug has existed since the dwmac-tegra driver was added in Dec 2022
+> (See Fixes tag below for commit hash).
+>=20
+> The Tegra234 SOC has 4 MGBE controllers, however Nvidia's Developer Kit
+> only uses MGBE0 which is why the bug was not found previously. Connect Te=
+ch
+> has many products that use 2 (or more) MGBE controllers.
+>=20
+> The solution is to read the controller's SID from the existing "iommus"
+> device tree property. The 2nd field of the "iommus" device tree property
+> is the controller's SID.
+>=20
+> Device tree snippet from tegra234.dtsi showing MGBE1's "iommus" property:
+>=20
+> smmu_niso0: iommu@12000000 {
+>         compatible =3D "nvidia,tegra234-smmu", "nvidia,smmu-500";
+> ...
+> }
+>=20
+> /* MGBE1 */
+> ethernet@6900000 {
+> 	compatible =3D "nvidia,tegra234-mgbe";
+> ...
+> 	iommus =3D <&smmu_niso0 TEGRA234_SID_MGBE_VF1>;
+> ...
+> }
+>=20
+> Nvidia's arm-smmu driver reads the "iommus" property and stores the SID in
+> the MGBE device's "fwspec" struct. The dwmac-tegra driver can access the
+> SID using the tegra_dev_iommu_get_stream_id() helper function found in
+> linux/iommu.h.
+>=20
+> Calling tegra_dev_iommu_get_stream_id() should not fail unless the "iommu=
+s"
+> property is removed from the device tree or the IOMMU is disabled.
+>=20
+> While the Tegra234 SOC technically supports bypassing the IOMMU, it is not
+> supported by the current firmware, has not been tested and not recommende=
+d.
+> More detailed discussion with Thierry Reding from Nvidia linked below.
+>=20
+> Fixes: d8ca113724e7 ("net: stmmac: tegra: Add MGBE support")
+> Link: https://lore.kernel.org/netdev/cover.1731685185.git.pnewman@connect=
+tech.com
+> Signed-off-by: Parker Newman <pnewman@connecttech.com>
+> ---
+>=20
+> Changes v2:
+> - dropped cover letter
+> - added more detail to commit message
+> - rebased to latest netdev tree
+>=20
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
+
+Acked-by: Thierry Reding <treding@nvidia.com>
+
+--2uonbsu5shywby2b
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmd+qpIACgkQ3SOs138+
+s6FilhAArehaljH1La9BTRwP2lKEUwFU5AjTkeTdvAeg+h0For7hW+0icZCCsu/N
+7RPZ5oKSzU0lqQKb9MBMSO29ecbkvR0OnZnKtN8LWibwOaMo0Tw+l1y+/h9vbiF8
+MPQpKgIDqm/Qtk0VsEHtys6PnU4jTdFo5CF3abq+KyU0wmh94VLu8zWZIOqNns8p
+GonxHxaFivU5jIVrTYZwwTo3fZf2k2xJJf02L05K8+SNew/0NNDOubTCE8U/akWk
+hjPKr18wehk1DDh5Uheen2dPsPVIKwkikmAwaa6lwU7SnTDH0PEALw3TtlN16cDi
+AMthb5rg0O+7rw7maUAb3nmZVAVxv9/jIHvd9eMPV+JcsNiZABJ5cMh28Op8mD+P
+lf7Fm20l9ZijGKgIxG9vsQ46yLL0+8sGtW6utG17l1/OoU5rConONY0M0Fb800pY
+Ph97Ufxq5xDmK8zTA58pLLJkgu9uVpxes0kpk5RByOAbBA/KyiBNlTEW/FOY2uWg
+8sHxX8l8rZo9OKnGWFihJQJl+DTW8VXN7oY92Pt23jlXrMwfiwPnf+a07TLQ0nRf
+ZePp7G6OmyfmInQaMsxFeyn7voW64gIdoY+7X+t2y7M68BiwP7fQil9w+VGFjaRH
+V3nN10wsEpuU7UgcW4wYxDm+edGupkzySs413scbgzD3ue7WSic=
+=YtPl
+-----END PGP SIGNATURE-----
+
+--2uonbsu5shywby2b--
