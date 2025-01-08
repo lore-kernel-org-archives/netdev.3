@@ -1,41 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0803A1FC3
-	for <netdev@vger.kernel.org>; Wed,  8 Jan 2025 01:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329C31C6BE;
+	Wed,  8 Jan 2025 01:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736298277; cv=none; b=rmSp+kfhN/1pxfp87ZDKtcs05ixhJM3EC7w8ea7ri/syVNkI+L546P0dkvDit4OtaWxH+cI6AkKGWrHNsLKVldYx6AbHQpaZ5812gwbAzdARtF9k5fWxw3WO/06A9uXKH4Y62DqR1Gp7EyJMoSorjAVom3VZvweSr5aIGvq/M8c=
+	t=1736298957; cv=none; b=genPxpA4qbcUNWsKdjrTpTd6VSmGEsCzseL60ymv2UjrdRO5exEPSIt7tYfIeZ2BlyT4ArPk1kxx5kCpZy1Jipg2kfARDsoAQSpN6iO6QYh8AgOXN92mP0YVXsUvdpNrxZdpWDrC0SbNCrnivGb4au1JwJU+J5vgpuCEXr8rL+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736298277; c=relaxed/simple;
-	bh=AtCOh6V4J2hXXnvrrXpqy1hoH95QuV2a3m4ipplKz2U=;
+	s=arc-20240116; t=1736298957; c=relaxed/simple;
+	bh=wD43T99hnDZZ1TfHbAJqtofmnbYDVr8UZRA0UkUtU5w=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f/nyCTeMLf440Akl9cBiiTYLB1Qv4FI9AnvCu8P1UoVUpZ4/YBn3cby8mIR27kvqGHC5zSvtujtaSGmaPw2pgYnVoIyJrdMjd5PuuL8xO4fIVovImfimrvtHJBV4Tb9oWSsIHnxQVsVZIKIsRlATQU9bFuxI7pNnMrS/DIYZcr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Djzgf8Lf; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=eT4sGUDjBtoLS5rcQvNN96xz+tYJ23D/nTkFa9W5bq83HtWQzizSO39fo1VVI63sjUHHr2MR6hk0DtfJ5Dmw+BoVoNMNWehSLrKn8PMzGKrBGBvcv2j72E2A5F3RtM6HVdq5RBVUsBGUeSWRUkJycRkPU7p25S+wfyd8aS1zEBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rcg4NnXw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Djzgf8Lf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E870C4CED6;
-	Wed,  8 Jan 2025 01:04:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rcg4NnXw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8EF3C4CED6;
+	Wed,  8 Jan 2025 01:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736298276;
-	bh=AtCOh6V4J2hXXnvrrXpqy1hoH95QuV2a3m4ipplKz2U=;
+	s=k20201202; t=1736298956;
+	bh=wD43T99hnDZZ1TfHbAJqtofmnbYDVr8UZRA0UkUtU5w=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Djzgf8LfIuYJOMQZ1BBXv4VfdYQQ7Mj6OBXRZ5BKO72xiQ6g3jzxswiOrvdBpQT0y
-	 T+G89+TK8/G5W2GfHI7TO6unIi8y4I3J3zZNeMRTIK3BVUJkoxdmu6kUnKYSCa+yTH
-	 rGndr4vE37xC1EnCzVuEYT7HAhzZbO+KtHreGTutCxawOugGVwufkZJU99hcr2r/dz
-	 wPvN0PHJ3ldkttRcREGnk+iosmPXBg2r3aScvdb8iVkougcVFbQ4tyebNU2bMbFNPd
-	 DUC+/kxYdhnwUsfcSQvvzKENAln8BtUzolCUGawuyBlCSoN342TEgjtTcGrCilhll8
-	 uU03EaM4v5HEg==
-Date: Tue, 7 Jan 2025 17:04:35 -0800
+	b=rcg4NnXwiEXuFcjkYB8pZuCu8zfuJS4pk0Ujy8cn2d9JoYJHzvJ4ohPmdfDLpuN9+
+	 07gtpiRwtD+/Sk+HHKUf1ngjvbwrYYjWEslQREbtfBghq65TnJb8HgN6+h1tFH2qC4
+	 I4ShebvyqYgEV/tPK2kocK7ZaibLMUdmBMenWT0narbeFCtkqhTX4Ky/MthkO2RfVi
+	 q/lf267bBDqm0vWg550khk91NDHNBlUsV16l573TpNuhJlZKSOiKRYdJXna4K1MNEv
+	 Ua1j6pmfAilgeaOAo9YXYRQ8Uq7Jx1CKmRJmO7ho4YFbymjYu3gkBiUox/7527iv90
+	 2sqcrywk2RJQQ==
+Date: Tue, 7 Jan 2025 17:15:54 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Etienne Champetier <champetier.etienne@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH] ipvlan: Support bonding events
-Message-ID: <20250107170435.57edc458@kernel.org>
-In-Reply-To: <20250105003813.1222118-1-champetier.etienne@gmail.com>
-References: <20250105003813.1222118-1-champetier.etienne@gmail.com>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Donald Hunter <donald.hunter@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Liam Girdwood <lgirdwood@gmail.com>, Mark
+ Brown <broonie@kernel.org>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-doc@vger.kernel.org, Kyle Swenson
+ <kyle.swenson@est.tech>, Dent Project <dentproject@linuxfoundation.org>,
+ kernel@pengutronix.de, Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net-next 08/14] net: pse-pd: Split ethtool_get_status
+ into multiple callbacks
+Message-ID: <20250107171554.742dcf59@kernel.org>
+In-Reply-To: <20250104-b4-feature_poe_arrange-v1-8-92f804bd74ed@bootlin.com>
+References: <20250104-b4-feature_poe_arrange-v1-0-92f804bd74ed@bootlin.com>
+	<20250104-b4-feature_poe_arrange-v1-8-92f804bd74ed@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,22 +52,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On Sat,  4 Jan 2025 19:36:19 -0500 Etienne Champetier wrote:
-> This allows ipvlan to function properly on top of
-> bonds using active-backup mode.
-> This was implemented for macvlan in 2014 in commit
-> 4c9912556867 ("macvlan: Support bonding events").
+On Sat, 04 Jan 2025 23:27:33 +0100 Kory Maincent wrote:
+> diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
+> index f711bfd75c4d..2bdf7e72ee50 100644
+> --- a/include/linux/ethtool.h
+> +++ b/include/linux/ethtool.h
+> @@ -1323,4 +1323,40 @@ struct ethtool_c33_pse_pw_limit_range {
+>  	u32 min;
+>  	u32 max;
+>  };
+> +
+> +/**
+> + * struct ethtool_pse_control_status - PSE control/channel status.
+> + *
+> + * @podl_admin_state: operational state of the PoDL PSE
+> + *	functions. IEEE 802.3-2018 30.15.1.1.2 aPoDLPSEAdminState
+> + * @podl_pw_status: power detection status of the PoDL PSE.
+> + *	IEEE 802.3-2018 30.15.1.1.3 aPoDLPSEPowerDetectionStatus:
+> + * @c33_admin_state: operational state of the PSE
+> + *	functions. IEEE 802.3-2022 30.9.1.1.2 aPSEAdminState
+> + * @c33_pw_status: power detection status of the PSE.
+> + *	IEEE 802.3-2022 30.9.1.1.5 aPSEPowerDetectionStatus:
+> + * @c33_pw_class: detected class of a powered PD
+> + *	IEEE 802.3-2022 30.9.1.1.8 aPSEPowerClassification
+> + * @c33_actual_pw: power currently delivered by the PSE in mW
+> + *	IEEE 802.3-2022 30.9.1.1.23 aPSEActualPower
+> + * @c33_ext_state_info: extended state information of the PSE
+> + * @c33_avail_pw_limit: available power limit of the PSE in mW
+> + *	IEEE 802.3-2022 145.2.5.4 pse_avail_pwr
+> + * @c33_pw_limit_ranges: supported power limit configuration range. The =
+driver
+> + *	is in charge of the memory allocation
+> + * @c33_pw_limit_nb_ranges: number of supported power limit configuration
+> + *	ranges
+> + */
 
-Would you be able to parametrize:
+Is there a reason this is defined in ethtool.h?
 
-tools/testing/selftests/drivers/net/bonding/bond_macvlan.sh
-
-to run over macvlan and ipvlan? It would be great to have some
-test coverage for this setup. Currently:
-
-$ git grep ipvlan -- tools/testing/selftests/drivers/net/bonding/
-$
--- 
-pw-bot: cr
+I have a weak preference towards keeping it in pse-pd/pse.h
+since touching ethtool.h rebuilds bulk of networking code.
+=46rom that perspective it's also suboptimal that pse-pd/pse.h
+pulls in ethtool.h.
