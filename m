@@ -1,182 +1,202 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4459C19ABB6
-	for <netdev@vger.kernel.org>; Wed,  8 Jan 2025 19:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D42198A06;
+	Wed,  8 Jan 2025 20:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736366210; cv=none; b=l3upEhtF9nq3gzd7xItPVIUxEh1nn+kl9M2wHm0vwo1zVT/xmgLyyIkJivqG93KBU06bbw273o+9XJhZX3gn+4y/9eZMMXDwXVOdfTyq6iP1RparAfNZR1XLnduimpEext+RtSfMn3fXifTJAHBSvcG9Oo2RAOv3a8rv7EcTpbk=
+	t=1736366662; cv=none; b=eZrksyAKZiUDFvvuzCQQjYREKuVMY7acAXNn9K6HwC0xQeppJ+tHjJnOfFJukUpuWJFweG0GXWBX0H1hmXUNo//TTzltG9WVMjLuIr+lRSYzLlPvyZhrL5vh9jdYueSpq07I1F03U+w0MxEx2U9bqxKw48tYj+UP3JbjoiMJPqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736366210; c=relaxed/simple;
-	bh=fWkq2Ry7gq/nExb7Ac4tXYG5/DUfjevhsswBM8svATE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=phiKO+yyHtsk5ObHiib3dIxZe+bDhQYGeOYXcliQafVbok4t2J/Z4uCnwhjzPv8y2PZcjiMZAe6Df1XRzTr5KXNsUkJEQSEqM0uFpojqMqxV6WRUDRnwqn9wD+3aG9Dlzyk3uy0rV50AZKnNiNTF3N+rU2CEbHeL7pDkG141JKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=TmnHBpFl; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="TmnHBpFl"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-3022484d4e4so888041fa.1
-        for <netdev@vger.kernel.org>; Wed, 08 Jan 2025 11:56:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1736366206; x=1736971006; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J2EYNaFMuEi7gJG6lM4v49TAeFTWkkV0YaEiWcbQBDw=;
-        b=TmnHBpFl7xx0DnlpNguOh1bRB6puGX34oZa0SfaDr8M1V0NQD26RgUKPjEvl4MEUMj
-         IAFa+e8KzNN9JwTuvdrF2C0UvEfQA7Rx8aUGf/7r4mc54MAwM38nKm2q1qjby+wLTUa0
-         Lgj/38QJw62+SWB85sH+3zdKTMFZp+pCyV1ag=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736366206; x=1736971006;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J2EYNaFMuEi7gJG6lM4v49TAeFTWkkV0YaEiWcbQBDw=;
-        b=wbXHtPy+4nKE5gLqwokWtqn/O8L+c7JI0FEYU50I/3J1t+ugrnzrXOFGCEnKIIlpAh
-         xVsu3DAragiQxj6yWk1/VJN2OxFY/eGb/g7w+7G7so/Av6RW1qTLruzN/jQJKE/KPhZl
-         LqpjRN90Ol5A09BjF++YoOm2L0wnBIQGjwJVfzjcQQtZ4Xlbst5b5Yh8EO+2HiFfbm9V
-         D27nzYKhY0IZ95hD1jl6+K142bfP3yYSvnYZKwx0IsGAZE+2SIq1h8o7JlPFRNawzyeM
-         DZn4JXPQfbotF5Zy6l4KtOntpHDZ0pCSYWljy87d0fuYX3TAMDnjT58OVoiih4exo/eN
-         a+tQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVYigG57HUIuyEX5xKEi/LRqmGh8eIgivjFgluTdxPK3JbidtNC4SrAOEhkX7Kkmr9eWVy5scM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3Y5GQ6CjGI2mXjAQ0m3/Z7+wO4+IZ1OvEzUYsQqFRtKpthBCn
-	AszbglsEoVr64/Q7doS+S/BqKJ8QNCqOa+f0iM5z+4kSIXeMm85XXQQL8H0qoZJWX6uJvuHYsnM
-	bzMS0hmfIF01CuJ5sryQMKHlsmsLUS4tHULjw
-X-Gm-Gg: ASbGncsxNCef8JT9V1AZTSdRocgh5O9mVJ8uTB0CyCzBO+XV83yUxWONt+Rinhwz30W
-	+cuc7Rjwl5SIwAB4nV2czf8/HpEiKUazMfqBH7Q==
-X-Google-Smtp-Source: AGHT+IFNJGm9HfHOfxxUk2mG33MjpwnqogwU+ysbnjaVFZYxCfbIpp9yJNnmCoOlQAXGf7JUvw70Ig5f0D4owNk+WNM=
-X-Received: by 2002:a05:651c:e02:b0:302:3ff6:c8db with SMTP id
- 38308e7fff4ca-305f45b8cffmr8397761fa.24.1736366206348; Wed, 08 Jan 2025
- 11:56:46 -0800 (PST)
+	s=arc-20240116; t=1736366662; c=relaxed/simple;
+	bh=CWq+X1z41yP2GFXiQKj0rH8sUQyQ5jSBGYxm3LNC6Zo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RX3xoO2/XkcQWcghfq1EHO7NAOEyZdRarcLJykCuF7uubzAq5BO2UJWuAJ78uesu7lgFH6QVNGiU7CrrjUBKxXqirVj3hWwUUwZllaylZfM+hOeZAof520SGQtQqAzMnmAWOgbousgPKJLrqZBq922/bEk5Wni5SlhLHG1mHq50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
+Received: from MUA
+	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98)
+	(envelope-from <mhej@vps-ovh.mhejs.net>)
+	id 1tVcHY-00000005Q0p-0eRv;
+	Wed, 08 Jan 2025 21:04:00 +0100
+Message-ID: <5df4a525-dc5d-405a-be07-5b33e94f5a4f@maciej.szmigiero.name>
+Date: Wed, 8 Jan 2025 21:03:54 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241218203740.4081865-1-dualli@chromium.org> <20241218203740.4081865-3-dualli@chromium.org>
- <Z32cpF4tkP5hUbgv@google.com> <Z32fhN6yq673YwmO@google.com>
- <CANBPYPi6O827JiJjEhL_QUztNXHSZA9iVSyzuXPNNgZdOzGk=Q@mail.gmail.com> <Z37NALuyABWOYJUj@google.com>
-In-Reply-To: <Z37NALuyABWOYJUj@google.com>
-From: Li Li <dualli@chromium.org>
-Date: Wed, 8 Jan 2025 11:56:35 -0800
-X-Gm-Features: AbW1kvakBnClUlcgk4uS_9GFWwaQ6OEmfl-h6IqXJUGhnMaRbsWLcXbmu_4LXgQ
-Message-ID: <CANBPYPhEKuxZobTVTGj-BOpKEK+XXv-_C-BuekJDB2CerUn3LA@mail.gmail.com>
-Subject: Re: [PATCH v11 2/2] binder: report txn errors via generic netlink
-To: Carlos Llamas <cmllamas@google.com>
-Cc: dualli@google.com, corbet@lwn.net, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	donald.hunter@gmail.com, gregkh@linuxfoundation.org, arve@android.com, 
-	tkjos@android.com, maco@android.com, joel@joelfernandes.org, 
-	brauner@kernel.org, surenb@google.com, arnd@arndb.de, masahiroy@kernel.org, 
-	bagasdotme@gmail.com, horms@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, netdev@vger.kernel.org, hridya@google.com, 
-	smoreland@google.com, kernel-team@android.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] net: wwan: iosm: Fix hibernation by re-binding the
+ driver around it
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: M Chetan Kumar <m.chetan.kumar@intel.com>,
+ Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+ Loic Poulain <loic.poulain@linaro.org>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Bjorn Helgaas <bhelgaas@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ linux-pm@vger.kernel.org
+References: <20250108195109.GA224965@bhelgaas>
+Content-Language: en-US, pl-PL
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <20250108195109.GA224965@bhelgaas>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Sender: mhej@vps-ovh.mhejs.net
 
-On Wed, Jan 8, 2025 at 11:07=E2=80=AFAM Carlos Llamas <cmllamas@google.com>=
- wrote:
->
-> On Tue, Jan 07, 2025 at 04:00:39PM -0800, Li Li wrote:
-> > On Tue, Jan 7, 2025 at 1:41=E2=80=AFPM Carlos Llamas <cmllamas@google.c=
-om> wrote:
-> > >
-> > > On Tue, Jan 07, 2025 at 09:29:08PM +0000, Carlos Llamas wrote:
-> > > > On Wed, Dec 18, 2024 at 12:37:40PM -0800, Li Li wrote:
-> > > > > From: Li Li <dualli@google.com>
-> > > >
-> > > > > @@ -6137,6 +6264,11 @@ static int binder_release(struct inode *no=
-dp, struct file *filp)
-> > > > >
-> > > > >     binder_defer_work(proc, BINDER_DEFERRED_RELEASE);
-> > > > >
-> > > > > +   if (proc->pid =3D=3D proc->context->report_portid) {
-> > > > > +           proc->context->report_portid =3D 0;
-> > > > > +           proc->context->report_flags =3D 0;
-> > > >
-> > > > Isn't ->portid the pid from the netlink report manager? How is this=
- ever
-> > > > going to match a certain proc->pid here? Is this manager supposed t=
-o
-> > > > _also_ open a regular binder fd?
-> > > >
-> > > > It seems we are tying the cleanup of the netlink interface to the e=
-xit
-> > > > of the regular binder device, correct? This seems unfortunate as us=
-ing
-> > > > the netlink interface should be independent.
-> > > >
-> > > > I was playing around with this patch with my own PoC and now I'm st=
-uck:
-> > > >   root@debian:~# ./binder-netlink
-> > > >   ./binder-netlink: nlmsgerr No permission to set flags from 1301: =
-Unknown error -1
-> > > >
-> > > > Is there a different way to reset the protid?
-> > > >
-> > >
-> > > Furthermore, this seems to be a problem when the report manager exits
-> > > without a binder instance, we still think the report is enabled:
-> > >
-> > > [  202.821346] binder: Failed to send binder netlink message to 597: =
--111
-> > > [  202.821421] binder: Failed to send binder netlink message to 597: =
--111
-> > > [  202.821304] binder: Failed to send binder netlink message to 597: =
--111
-> > > [  202.821306] binder: Failed to send binder netlink message to 597: =
--111
-> > > [  202.821387] binder: Failed to send binder netlink message to 597: =
--111
-> > > [  202.821464] binder: Failed to send binder netlink message to 597: =
--111
-> > > [  202.821467] binder: Failed to send binder netlink message to 597: =
--111
-> > > [  202.821344] binder: Failed to send binder netlink message to 597: =
--111
-> > > [  202.822513] binder: Failed to send binder netlink message to 597: =
--111
-> > > [  202.822152] binder: Failed to send binder netlink message to 597: =
--111
-> > > [  202.822683] binder: Failed to send binder netlink message to 597: =
--111
-> > > [  202.822629] binder: Failed to send binder netlink message to 597: =
--111
-> >
-> > As the file path (linux/drivers/android/binder.c) suggested,
-> > binder driver is designed to work as the essential IPC in the
-> > Android OS, where binder is used by all system and user apps.
-> >
-> > So the binder netlink is designed to be used with binder IPC.
->
-> Ok, I assume this decision was made because no better alternative was
-> found. Otherwise it would be best to avoid the dependency. This could
-> become an issue e.g. if the admin process was to be split in the future
-> or some other restructuring happens.
->
-> That's why I ask of there is a way to cleanup the netlink info without
-> relying on the binder fd closing. Something cleaner, there might be some
-> callback we can install on the netlink infra? I could look later into
-> this.
->
-> > The manager service also uses the binder interface to communicate
-> > to all other processes. When it exits, the binder file is closed,
-> > where the netlink interface is reset.
->
-> Again, communicating with other processes via binder and setting up a
-> transaction report should be separate functionalities that don't rely on
-> eachother.
->
-> Also, it seems the admin process would have to initially bind() to all
-> binder contexts preventing other from doing so? Sound like this should
-> be restricted to certain capability or maybe via selinux (if possible)
-> instead of relying on the portid. Thoughts?
+On 8.01.2025 20:51, Bjorn Helgaas wrote:
+> [+cc Rafael, linux-pm because they *are* PM experts :)]
+> 
+> On Wed, Jan 08, 2025 at 02:15:28AM +0200, Sergey Ryazanov wrote:
+>> On 08.01.2025 01:45, Bjorn Helgaas wrote:
+>>> On Wed, Jan 08, 2025 at 01:13:41AM +0200, Sergey Ryazanov wrote:
+>>>> On 05.01.2025 19:39, Maciej S. Szmigiero wrote:
+>>>>> Currently, the driver is seriously broken with respect to the
+>>>>> hibernation (S4): after image restore the device is back into
+>>>>> IPC_MEM_EXEC_STAGE_BOOT (which AFAIK means bootloader stage) and needs
+>>>>> full re-launch of the rest of its firmware, but the driver restore
+>>>>> handler treats the device as merely sleeping and just sends it a
+>>>>> wake-up command.
+>>>>>
+>>>>> This wake-up command times out but device nodes (/dev/wwan*) remain
+>>>>> accessible.
+>>>>> However attempting to use them causes the bootloader to crash and
+>>>>> enter IPC_MEM_EXEC_STAGE_CD_READY stage (which apparently means "a crash
+>>>>> dump is ready").
+>>>>>
+>>>>> It seems that the device cannot be re-initialized from this crashed
+>>>>> stage without toggling some reset pin (on my test platform that's
+>>>>> apparently what the device _RST ACPI method does).
+>>>>>
+>>>>> While it would theoretically be possible to rewrite the driver to tear
+>>>>> down the whole MUX / IPC layers on hibernation (so the bootloader does
+>>>>> not crash from improper access) and then re-launch the device on
+>>>>> restore this would require significant refactoring of the driver
+>>>>> (believe me, I've tried), since there are quite a few assumptions
+>>>>> hard-coded in the driver about the device never being partially
+>>>>> de-initialized (like channels other than devlink cannot be closed,
+>>>>> for example).
+>>>>> Probably this would also need some programming guide for this hardware.
+>>>>>
+>>>>> Considering that the driver seems orphaned [1] and other people are
+>>>>> hitting this issue too [2] fix it by simply unbinding the PCI driver
+>>>>> before hibernation and re-binding it after restore, much like
+>>>>> USB_QUIRK_RESET_RESUME does for USB devices that exhibit a similar
+>>>>> problem.
+>>>>>
+>>>>> Tested on XMM7360 in HP EliteBook 855 G7 both with s2idle (which uses
+>>>>> the existing suspend / resume handlers) and S4 (which uses the new code).
+>>>>>
+>>>>> [1]: https://lore.kernel.org/all/c248f0b4-2114-4c61-905f-466a786bdebb@leemhuis.info/
+>>>>> [2]:
+>>>>> https://github.com/xmm7360/xmm7360-pci/issues/211#issuecomment-1804139413
+>>>>>
+>>>>> Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+>>>>
+>>>> Generally looks good to me. Lets wait for approval from PCI
+>>>> maintainers to be sure that there no unexpected side effects.
+>>>
+>>> I have nothing useful to contribute here.  Seems like kind of a
+>>> mess.  But Intel claims to maintain this, so it would be nice if
+>>> they would step up and make this work nicely.
+>>
+>> Suddenly, Intel lost their interest in the modems market and, as
+>> Maciej mentioned, the driver was abandon for a quite time now. The
+>> author no more works for Intel. You will see the bounce.
+> 
+> Well, that's unfortunate :)  Maybe step 0 is to remove the Intel
+> entry from MAINTAINERS for this driver.
+> 
+>> Bjorn, could you suggest how to deal easily with the device that is
+>> incapable to seamlessly recover from hibernation? I am totally
+>> hopeless regarding the PM topic. Or is the deep driver rework the
+>> only option?
+> 
+> I'm pretty PM-illiterate myself.  Based on
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/admin-guide/pm/sleep-states.rst?id=v6.12#n109,
+> I assume that when we resume after hibernate, devices are in the same
+> state as after a fresh boot, i.e., the state driver .probe() methods
+> see.
+> 
+> So I assume that some combination of dev_pm_ops methods must be able
+> to do basically the same as .probe() to get the device usable again
+> after it was completely powered off and back on.
 
-This is a valid concern. Adding GENL_ADMIN_PERM should be enough to solve i=
-t.
+You are right that it should be theoretically possible to fix this issue
+by re-initializing the driver in the hibernation restore/thaw callbacks
+and I even have tried to do so in the beginning.
 
+But as I wrote in this patch description, doing so would need significant
+refactoring of the driver as it is not currently capable of being
+de-initialized and re-initialized partially.
+
+Hence this patch approach of simply re-binding the driver which also
+seemed safer in the absence of any real programming docs for this hardware.
+
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/driver-api/pm/devices.rst?id=v6.12#n506
+> mentions .freeze(), .thaw(), .restore(), etc, but the fact that few
+> drivers set those pointers and all the nice macros for setting pm ops
+> (SYSTEM_SLEEP_PM_OPS, NOIRQ_SYSTEM_SLEEP_PM_OPS, etc) only take
+> suspend and resume functions makes me think most drivers must handle
+> hibernation in the same .suspend() and .resume() functions they use
+> for non-hibernate transitions.
+> 
+> Since all drivers have to cope with devices needing to be
+> reinitialized after hibernate, I would look around to see how other
+> drivers do it and see if you can do it similarly.
 >
-> --
-> Carlos Llamas
+>
+> Sorry this is still really a non-answer.
+> 
+> Bjorn
+
+Thanks,
+Maciej
+
