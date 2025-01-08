@@ -1,92 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-30.smtpout.orange.fr [80.12.242.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82AF20127F;
-	Wed,  8 Jan 2025 19:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F8D200BB2;
+	Wed,  8 Jan 2025 19:20:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736364020; cv=none; b=MkaH5b0AKAFdD97u/39GsMA9TWBNIuGf97vRnjInlIFhqUKkigmZWxrajw8BIcXzxj+/0+M/3027+JbLMAjbzbriHtxdH66KMbApDqEXybJbDj82+s+yMmUjDhEjLn6cfOVSdsf8VH+ZHymIfvRN/S2pSvVOeWzyG9+tzLAkI3I=
+	t=1736364044; cv=none; b=fbJSywQOyn9KAVD8YRyZ0ZiYKeAdJnYGAE8EYBrAS6+yIeoyCtm4gGmk3HNXkfYpA0ktYqc3l8H5bOD6n0JuBRhJ0W4Sbb+zeWWXfwkvr1351oahRCouer8t371dS6+c1YwzcLCixMHUNvJTbk+EDBrTVyS+OUBxUFmA+BSiZbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736364020; c=relaxed/simple;
-	bh=E7NezZZ6kG0xSzYv8ZQJERZZZAAC+iuu3aqZ6cthL38=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=n8rGOPbcZ4NSTB46TERxjk1nXvibFKJhjqZjhJ5MsOXenkRBLb+az9Z4Ny2X5DlWxSQQVqQ8ML/8qqJYs5Vuj/UsCq4BBnEcrAuDGwyrSVlnIpSRn08SENjit849aKKKSZDQ9FrNmrn1Cx2VSzYtlHMsClkh9mFr1Jz21F5d8cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sBdkJBhv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736364044; c=relaxed/simple;
+	bh=L+RpQGow8xkrq65mketEkjUnqMJb37QojTR/a7ncITM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SlH/BrzEjXQbHkNxQkoDRrmoJkxtUCl6Ede7FIYnb0mkeh2eav97/hwq4SW2fZFNEPTNvkqy0yMwLIHoQMy8xpo3brUEA1aERq/kKwzQP8TDDnMX+Kd0LGiswINj2DQg8k5dX8A+EhAhSJN/Fe1vQnX4E3+Ro0PA7q3IQI8t75o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=P1Nhm7JJ; arc=none smtp.client-ip=80.12.242.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sBdkJBhv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314B3C4CEDF;
-	Wed,  8 Jan 2025 19:20:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736364018;
-	bh=E7NezZZ6kG0xSzYv8ZQJERZZZAAC+iuu3aqZ6cthL38=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=sBdkJBhvgwrUtAXLixiSNJg8WkqVPh2x818aQn7So11G2IBsxZFR/dGU7QmxQTucF
-	 mfWMF7/WUnXjISuQ6FiA8CcHmQW9f6WPuJ1Ez3W7lVdx1vSEHOFwZi5J8ahSdygbS0
-	 1lsrpSEig+I4Kc/X1nVJ6lTg5OqTkztFjGyf+bk6/kGB8uttEpPeGOHBP2TsgYccDi
-	 bm0lc5eX781JnlVCZhzRUADPhY6h3PvoflQ8OPUgiP4ih0fTb1BgswTwEqRfTM3Dsz
-	 D0xH7sC0q27fKzI65uEthYYoMLMwNxSc3J5i0EdRaTn92cnXLjRWTerw8HVgmh5Ye/
-	 2fyJgkydAo36A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EADCC380A965;
-	Wed,  8 Jan 2025 19:20:40 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="P1Nhm7JJ"
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id VbaMtLzUGLSCnVbaPtFP0K; Wed, 08 Jan 2025 20:19:29 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1736363969;
+	bh=BXCOtKlMZhgvv0WlfFdcDBMt3DYEIWplOpebQIGJy6E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=P1Nhm7JJ6o4ex9Y/yOOLRkcQF7jcKeL2ucvGSpbqvzQjMOZNxvGt480Tl71nYwpnd
+	 ATAXa2VpWTMxf/KrvWNUVtA10mGILwI8GAit8w3D9/yBVGlsQyC4xspUEMTln5oujL
+	 cszRNcWnG+2RB4cKRjJhIdOGQIDR3xYPZ/rFG8s4yUb+ibnktuDG+/FLCd4bwojMy8
+	 ernhAytbnefHKV+LLSAVNxXSqJTCFB+CLf1xtU3yPf6Pk+lrBmlg88Ug2noNgIWz57
+	 ZRlZn+L8T2Ddv0MSdi5hN21d13ZQNzn5AVIk0jggt2qJf8iOcRe82O6oAgzncW34Z4
+	 JUyWNSlqfeY+Q==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Wed, 08 Jan 2025 20:19:29 +0100
+X-ME-IP: 90.11.132.44
+Message-ID: <29e742c9-82f5-41d5-a06f-70f010a3f39e@wanadoo.fr>
+Date: Wed, 8 Jan 2025 20:19:17 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 03/14] net: ethernet: qualcomm: Add PPE driver
+ for IPQ9574 SoC
+To: Luo Jie <quic_luoj@quicinc.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Lei Wei <quic_leiwei@quicinc.com>,
+ Suruchi Agarwal <quic_suruchia@quicinc.com>,
+ Pavithra R <quic_pavir@quicinc.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Kees Cook <kees@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>
+Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-hardening@vger.kernel.org,
+ quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com,
+ srinivas.kandagatla@linaro.org, bartosz.golaszewski@linaro.org,
+ john@phrozen.org
+References: <20250108-qcom_ipq_ppe-v2-0-7394dbda7199@quicinc.com>
+ <20250108-qcom_ipq_ppe-v2-3-7394dbda7199@quicinc.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20250108-qcom_ipq_ppe-v2-3-7394dbda7199@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH V3 net 0/7] There are some bugfix for the HNS3 ethernet driver
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173636403949.752119.2386728515065295072.git-patchwork-notify@kernel.org>
-Date: Wed, 08 Jan 2025 19:20:39 +0000
-References: <20250106143642.539698-1-shaojijie@huawei.com>
-In-Reply-To: <20250106143642.539698-1-shaojijie@huawei.com>
-To: Jijie Shao <shaojijie@huawei.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- shenjian15@huawei.com, wangpeiyang1@huawei.com, liuyonglong@huawei.com,
- chenhao418@huawei.com, jonathan.cameron@huawei.com,
- shameerali.kolothum.thodi@huawei.com, salil.mehta@huawei.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- michal.swiatkowski@linux.intel.com
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 6 Jan 2025 22:36:35 +0800 you wrote:
-> There's a series of bugfix that's been accepted:
-> https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=d80a3091308491455b6501b1c4b68698c4a7cd24
+Le 08/01/2025 à 14:47, Luo Jie a écrit :
+> The PPE (Packet Process Engine) hardware block is available
+> on Qualcomm IPQ SoC that support PPE architecture, such as
+> IPQ9574.
 > 
-> However, The series is making the driver poke into IOMMU internals instead of
-> implementing appropriate IOMMU workarounds. After discussion, the series was reverted:
-> https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=249cfa318fb1b77eb726c2ff4f74c9685f04e568
+> The PPE in IPQ9574 includes six integrated ethernet MAC
+> (for 6 PPE ports), buffer management, queue management and
+> scheduler functions. The MACs can connect with the external
+> PHY or switch devices using the UNIPHY PCS block available
+> in the SoC.
 > 
-> [...]
+> The PPE also includes various packet processing offload
+> capabilities such as L3 routing and L2 bridging, VLAN and
+> tunnel processing offload. It also includes Ethernet DMA
+> function for transferring packets between ARM cores and
+> PPE ethernet ports.
+> 
+> This patch adds the base source files and Makefiles for
+> the PPE driver such as platform driver registration,
+> clock initialization, and PPE reset routines.
+> 
+> Signed-off-by: Luo Jie <quic_luoj@quicinc.com>
+> ---
 
-Here is the summary with links:
-  - [V3,net,1/7] net: hns3: fixed reset failure issues caused by the incorrect reset type
-    https://git.kernel.org/netdev/net/c/5a4b584c6769
-  - [V3,net,2/7] net: hns3: fix missing features due to dev->features configuration too early
-    https://git.kernel.org/netdev/net/c/ac1e2836fe29
-  - [V3,net,3/7] net: hns3: Resolved the issue that the debugfs query result is inconsistent.
-    https://git.kernel.org/netdev/net/c/5191a8d3c2ab
-  - [V3,net,4/7] net: hns3: don't auto enable misc vector
-    https://git.kernel.org/netdev/net/c/98b1e3b27734
-  - [V3,net,5/7] net: hns3: initialize reset_timer before hclgevf_misc_irq_init()
-    https://git.kernel.org/netdev/net/c/247fd1e33e1c
-  - [V3,net,6/7] net: hns3: fixed hclge_fetch_pf_reg accesses bar space out of bounds issue
-    https://git.kernel.org/netdev/net/c/7997ddd46c54
-  - [V3,net,7/7] net: hns3: fix kernel crash when 1588 is sent on HIP08 devices
-    https://git.kernel.org/netdev/net/c/9741e72b2286
+...
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> +static int qcom_ppe_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct ppe_device *ppe_dev;
+> +	void __iomem *base;
+> +	int ret, num_icc;
+> +
+> +	num_icc = ARRAY_SIZE(ppe_icc_data);
+> +	ppe_dev = devm_kzalloc(dev, struct_size(ppe_dev, icc_paths, num_icc),
+> +			       GFP_KERNEL);
+> +	if (!ppe_dev)
+> +		return dev_err_probe(dev, -ENOMEM, "PPE alloc memory failed\n");
 
+Usually, no error message in logged in case of devm_kzalloc().
+It is already loud enough.
+
+> +
+> +	base = devm_platform_ioremap_resource(pdev, 0);
+> +	if (IS_ERR(base))
+> +		return dev_err_probe(dev, PTR_ERR(base), "PPE ioremap failed\n");
+> +
+> +	ppe_dev->regmap = devm_regmap_init_mmio(dev, base, &regmap_config_ipq9574);
+> +	if (IS_ERR(ppe_dev->regmap))
+> +		return dev_err_probe(dev, PTR_ERR(ppe_dev->regmap),
+> +				     "PPE initialize regmap failed\n");
+> +	ppe_dev->dev = dev;
+> +	ppe_dev->clk_rate = PPE_CLK_RATE;
+> +	ppe_dev->num_ports = PPE_PORT_MAX;
+> +	ppe_dev->num_icc_paths = num_icc;
+> +
+> +	ret = ppe_clock_init_and_reset(ppe_dev);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "PPE clock config failed\n");
+> +
+> +	platform_set_drvdata(pdev, ppe_dev);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct of_device_id qcom_ppe_of_match[] = {
+> +	{ .compatible = "qcom,ipq9574-ppe" },
+> +	{},
+
+The ending comma after a terminator like that is not needed.
+
+> +};
+
+...
+
+CJ
 
