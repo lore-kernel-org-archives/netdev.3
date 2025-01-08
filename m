@@ -1,69 +1,139 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E919E18D;
-	Wed,  8 Jan 2025 17:04:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AD71FCFE7;
+	Wed,  8 Jan 2025 17:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736355844; cv=none; b=WV8AJe3po6lbhj8DzXZ180Z4cjTk4upgL0tshWA+CEo4Y/T/U/Dinm5MWxwMZD+DF4n0OEihh2q969MijHOAlD3lWtPj8wL3LJtoMuUenqStNSuGQW0F1jCi8HxmiAu7RXdYjKsmbLHXpZCW0nDIrMfJGNPaY1brLkWCOYAMDfQ=
+	t=1736356100; cv=none; b=NuWKKHBNsddfLwe+bD6G6m3t1MjZtjpGUdGuAoPUSfJp/NE/hYwQf74z9q1qvlP6jchsJ9Clh9y0LUylSKajsrrPIVICiYm0IiNIiTiq1qiSuIdvAmyDeKzYs3DIuZxoQH1vkcAzW5HDzEmbkHbtVSMHJU+4QHJ8+0RdIl42Tl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736355844; c=relaxed/simple;
-	bh=3w9Wh8I5J/bKwu/vEDyku79vbSZeurgnglzCG9hcH58=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pV30zLdkO69MWiS9wBUObk3bunNsQPFUUNlhLGs47PzlOYFeJHGOI2+5ltBur7Ol7k/bSJ3MQyyK5s5qKZ3hVmA/8IBAXdaWeY6J6HXLEglWIeGtt8mh84knXF8Sa+u1uuJ/DxpNZYOqpJVttCYRmt38p9ymhhbFqyQOg7xwY7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=LiqIKbvF; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1736356100; c=relaxed/simple;
+	bh=5z3Tiw4v8P4zzxedTNT3Lb+3Ro41te0JOX3VXptfFhA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MShxOQr1qZ/pvTZ9f0zInw2KBQvxeILO3kGCrYgr5mS6QY93NOq1DOpcB92Jsm/06FBFxbE9A6dmGEG5TGwVbw8bJzPfE4MgdX5VoZ0kyPLTtqMy76eOfQbNPRHmjGAbbEtT20M7QVT5IlDbyz1OQr9VRjOMo27ahEeuqLDNYL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=k0utPqPF; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="LiqIKbvF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=wElwbqEqYtg6N83+A08t0RJt17oPW/Yout1Z5OV7l2E=; b=LiqIKbvF79gNnpe3mR8Pb6mhfW
-	UUg2iHN3dn42PtoqQBxZLoknQuanz+p4cGI5ayiWZyNkAc2QBgNVh4tOsa0myHvQBxlYLd8yceTB9
-	jpwfOz3xVK4dFJmDKSYzOwFtbFpKbQ9kkM+luWpmwlg41K2n0H7QiL1FgN7tkAf9DF7A=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tVZSj-002dOZ-NO; Wed, 08 Jan 2025 18:03:21 +0100
-Date: Wed, 8 Jan 2025 18:03:21 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Ninad Palsule <ninad@linux.ibm.com>
-Cc: minyard@acm.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	ratbert@faraday-tech.com, openipmi-developer@lists.sourceforge.net,
-	netdev@vger.kernel.org, joel@jms.id.au, andrew@codeconstruct.com.au,
-	devicetree@vger.kernel.org, eajames@linux.ibm.com,
-	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 05/10] ARM: dts: aspeed: system1: Add RGMII support
-Message-ID: <1dd0165b-22ff-4354-bfcb-85027e787830@lunn.ch>
-References: <20250108163640.1374680-1-ninad@linux.ibm.com>
- <20250108163640.1374680-6-ninad@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="k0utPqPF"
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 508H87Ov031212;
+	Wed, 8 Jan 2025 11:08:07 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1736356087;
+	bh=Ntpcvj41f+Yw383BOIT1gjhwHUv71FWbAyEyF+gWZkY=;
+	h=From:To:CC:Subject:Date;
+	b=k0utPqPF6gpxeKL31B+ttlsrq1XWIEKgqZrtLla+TvEpqUCbNHAX/g63JvnC7sjDY
+	 mV6Cpl+SE2CJSYkus7lgeOHQkvqUzdsaFnF7g1fXv59sWm0Xdxpq9YETlVGRAwGC1b
+	 DNueQfGuRpp9GLY3U9oM3Zk6lBxcK0e+GBIAllMQ=
+Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 508H87L2063527
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 8 Jan 2025 11:08:07 -0600
+Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 8
+ Jan 2025 11:08:06 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 8 Jan 2025 11:08:07 -0600
+Received: from sudheertest-HP-Z2-Tower-G5-Workstation.dhcp.ti.com (sudheertest-hp-z2-tower-g5-workstation.dhcp.ti.com [172.24.227.182])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 508H829c043915;
+	Wed, 8 Jan 2025 11:08:03 -0600
+From: Sudheer Kumar Doredla <s-doredla@ti.com>
+To: <s-vadapalli@ti.com>, <rogerq@kernel.org>, <andrew+netdev@lunn.ch>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <horms@kernel.org>, <gnault@redhat.com>,
+        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: <s-doredla@ti.com>, <t-patil@ti.com>, <j-keerthy@ti.com>
+Subject: [PATCH v2 net] net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()
+Date: Wed, 8 Jan 2025 22:54:33 +0530
+Message-ID: <20250108172433.311694-1-s-doredla@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250108163640.1374680-6-ninad@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Wed, Jan 08, 2025 at 10:36:33AM -0600, Ninad Palsule wrote:
-> system1 has 2 transceiver connected through the RGMII interfaces. Added
-> device tree entry to enable RGMII support.
-> 
-> ASPEED AST2600 documentation recommends using 'rgmii-rxid' as a
-> 'phy-mode' for mac0 and mac1 to enable the RX interface delay from the
-> PHY chip.
+CPSW ALE has 75-bit ALE entries stored across three 32-bit words.
+The cpsw_ale_get_field() and cpsw_ale_set_field() functions support
+ALE field entries spanning up to two words at the most.
 
-You appear to if ignored my comment. Please don't do that. If you have
-no idea about RGMII delays, please say so, so i can help you debug
-what is wrong.
+The cpsw_ale_get_field() and cpsw_ale_set_field() functions work as
+expected when ALE field spanned across word1 and word2, but fails when
+ALE field spanned across word2 and word3.
 
-NACK
+For example, while reading the ALE field spanned across word2 and word3
+(i.e. bits 62 to 64), the word3 data shifted to an incorrect position
+due to the index becoming zero while flipping.
+The same issue occurred when setting an ALE entry.
 
-	Andrew
+This issue has not been seen in practice but will be an issue in the future
+if the driver supports accessing ALE fields spanning word2 and word3
+
+Fix the methods to handle getting/setting fields spanning up to two words.
+
+Fixes: b685f1a58956 ("net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()")
+Signed-off-by: Sudheer Kumar Doredla <s-doredla@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org> 
+---
+v2: 
+1. Updated the subject and commit message
+2. Added Fixes tag and reviewed suggested by Simon Horman
+---
+ drivers/net/ethernet/ti/cpsw_ale.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index 64bf22cd860c..9eccc7064c2b 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -106,15 +106,15 @@ struct cpsw_ale_dev_id {
+ 
+ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
+ {
+-	int idx, idx2;
++	int idx, idx2, index;
+ 	u32 hi_val = 0;
+ 
+ 	idx    = start / 32;
+ 	idx2 = (start + bits - 1) / 32;
+ 	/* Check if bits to be fetched exceed a word */
+ 	if (idx != idx2) {
+-		idx2 = 2 - idx2; /* flip */
+-		hi_val = ale_entry[idx2] << ((idx2 * 32) - start);
++		index = 2 - idx2; /* flip */
++		hi_val = ale_entry[index] << ((idx2 * 32) - start);
+ 	}
+ 	start -= idx * 32;
+ 	idx    = 2 - idx; /* flip */
+@@ -124,16 +124,16 @@ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
+ static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
+ 				      u32 value)
+ {
+-	int idx, idx2;
++	int idx, idx2, index;
+ 
+ 	value &= BITMASK(bits);
+ 	idx = start / 32;
+ 	idx2 = (start + bits - 1) / 32;
+ 	/* Check if bits to be set exceed a word */
+ 	if (idx != idx2) {
+-		idx2 = 2 - idx2; /* flip */
+-		ale_entry[idx2] &= ~(BITMASK(bits + start - (idx2 * 32)));
+-		ale_entry[idx2] |= (value >> ((idx2 * 32) - start));
++		index = 2 - idx2; /* flip */
++		ale_entry[index] &= ~(BITMASK(bits + start - (idx2 * 32)));
++		ale_entry[index] |= (value >> ((idx2 * 32) - start));
+ 	}
+ 	start -= idx * 32;
+ 	idx = 2 - idx; /* flip */
+-- 
+2.34.1
+
