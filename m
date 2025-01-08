@@ -1,127 +1,64 @@
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE9E1974FE;
-	Wed,  8 Jan 2025 00:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0803A1FC3
+	for <netdev@vger.kernel.org>; Wed,  8 Jan 2025 01:04:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736297735; cv=none; b=aTwWthaqeaqsPrXyKNrlSAFrmsYDPxa9KgGk8n0PA1PMR6PHDz1Mc9PAxnmUe606q/gbMjqOzFZLm99hqK0j4cdAn7zAJ3Bcwjhn4zRp0b7HG/3Z/2fyMGFcCNIqJom76CiWIzV0BUXRb05YTDoPguQzwg13DZitmxSte+DWVqM=
+	t=1736298277; cv=none; b=rmSp+kfhN/1pxfp87ZDKtcs05ixhJM3EC7w8ea7ri/syVNkI+L546P0dkvDit4OtaWxH+cI6AkKGWrHNsLKVldYx6AbHQpaZ5812gwbAzdARtF9k5fWxw3WO/06A9uXKH4Y62DqR1Gp7EyJMoSorjAVom3VZvweSr5aIGvq/M8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736297735; c=relaxed/simple;
-	bh=/FcnpfGrOmkvo7j6YxvRov66UbLKzRdKF+P1KDVuxSE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eIXIKDuyHA/KwVBbjpg7Q6nadvcxgix8gIz9jQiOgFSF3ac06f5exhfxToirBhdTyW+C6P5lPYJuFvp3OPhITP1GDWkjRThiZIE3jD3uK/HNKESeE54lizOfgeHUy4bb2KkLeFg72T4pEjymXH6ebXdbMIcEJL+zhXRiKUCLpM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4YSTwZ3T6Fz4f3kFh;
-	Wed,  8 Jan 2025 08:55:10 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id A1E691A1494;
-	Wed,  8 Jan 2025 08:55:30 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.124.27])
-	by APP4 (Coremail) with SMTP id gCh0CgBHq1_1zH1nBtZdAQ--.51859S20;
-	Wed, 08 Jan 2025 08:55:30 +0800 (CST)
-From: Hou Tao <houtao@huaweicloud.com>
-To: bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Martin KaFai Lau <martin.lau@linux.dev>,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Hao Luo <haoluo@google.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	houtao1@huawei.com,
-	xukuohai@huawei.com
-Subject: [PATCH bpf-next v2 16/16] bpf: Remove migrate_{disable|enable} from bpf_selem_free()
-Date: Wed,  8 Jan 2025 09:07:28 +0800
-Message-Id: <20250108010728.207536-17-houtao@huaweicloud.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20250108010728.207536-1-houtao@huaweicloud.com>
-References: <20250108010728.207536-1-houtao@huaweicloud.com>
+	s=arc-20240116; t=1736298277; c=relaxed/simple;
+	bh=AtCOh6V4J2hXXnvrrXpqy1hoH95QuV2a3m4ipplKz2U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f/nyCTeMLf440Akl9cBiiTYLB1Qv4FI9AnvCu8P1UoVUpZ4/YBn3cby8mIR27kvqGHC5zSvtujtaSGmaPw2pgYnVoIyJrdMjd5PuuL8xO4fIVovImfimrvtHJBV4Tb9oWSsIHnxQVsVZIKIsRlATQU9bFuxI7pNnMrS/DIYZcr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Djzgf8Lf; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Djzgf8Lf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E870C4CED6;
+	Wed,  8 Jan 2025 01:04:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736298276;
+	bh=AtCOh6V4J2hXXnvrrXpqy1hoH95QuV2a3m4ipplKz2U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Djzgf8LfIuYJOMQZ1BBXv4VfdYQQ7Mj6OBXRZ5BKO72xiQ6g3jzxswiOrvdBpQT0y
+	 T+G89+TK8/G5W2GfHI7TO6unIi8y4I3J3zZNeMRTIK3BVUJkoxdmu6kUnKYSCa+yTH
+	 rGndr4vE37xC1EnCzVuEYT7HAhzZbO+KtHreGTutCxawOugGVwufkZJU99hcr2r/dz
+	 wPvN0PHJ3ldkttRcREGnk+iosmPXBg2r3aScvdb8iVkougcVFbQ4tyebNU2bMbFNPd
+	 DUC+/kxYdhnwUsfcSQvvzKENAln8BtUzolCUGawuyBlCSoN342TEgjtTcGrCilhll8
+	 uU03EaM4v5HEg==
+Date: Tue, 7 Jan 2025 17:04:35 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Etienne Champetier <champetier.etienne@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH] ipvlan: Support bonding events
+Message-ID: <20250107170435.57edc458@kernel.org>
+In-Reply-To: <20250105003813.1222118-1-champetier.etienne@gmail.com>
+References: <20250105003813.1222118-1-champetier.etienne@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgBHq1_1zH1nBtZdAQ--.51859S20
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kr1fCr48CF1ftr1rtr48tFb_yoW8CFW7pF
-	Z3XryrAr42qa1F9rsrJF4fC34rXw4kWr17Kr4qyryrtwsxZF93Gr4IkF18ZasxJw1UXr1f
-	ZF1Yga4j9w4UCFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPvb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
-	Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
-	rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267
-	AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E
-	14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7
-	xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Y
-	z7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2
-	AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAq
-	x4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6r
-	W5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF
-	7I0E14v26r4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14
-	v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuY
-	vjxUF9NVUUUUU
-X-CM-SenderInfo: xkrx3t3r6k3tpzhluzxrxghudrp/
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Hou Tao <houtao1@huawei.com>
+On Sat,  4 Jan 2025 19:36:19 -0500 Etienne Champetier wrote:
+> This allows ipvlan to function properly on top of
+> bonds using active-backup mode.
+> This was implemented for macvlan in 2014 in commit
+> 4c9912556867 ("macvlan: Support bonding events").
 
-bpf_selem_free() has the following three callers:
+Would you be able to parametrize:
 
-(1) bpf_local_storage_update
-It will be invoked through ->map_update_elem syscall or helpers for
-storage map. Migration has already been disabled in these running
-contexts.
+tools/testing/selftests/drivers/net/bonding/bond_macvlan.sh
 
-(2) bpf_sk_storage_clone
-It has already disabled migration before invoking bpf_selem_free().
+to run over macvlan and ipvlan? It would be great to have some
+test coverage for this setup. Currently:
 
-(3) bpf_selem_free_list
-bpf_selem_free_list() has three callers: bpf_selem_unlink_storage(),
-bpf_local_storage_update() and bpf_local_storage_destroy().
-
-The callers of bpf_selem_unlink_storage() includes: storage map
-->map_delete_elem syscall, storage map delete helpers and
-bpf_local_storage_map_free(). These contexts have already disabled
-migration when invoking bpf_selem_unlink() which invokes
-bpf_selem_unlink_storage() and bpf_selem_free_list() correspondingly.
-
-bpf_local_storage_update() has been analyzed as the first caller above.
-bpf_local_storage_destroy() is invoked when freeing the local storage
-for the kernel object. Now cgroup, task, inode and sock storage have
-already disabled migration before invoking bpf_local_storage_destroy().
-
-After the analyses above, it is safe to remove migrate_{disable|enable}
-from bpf_selem_free().
-
-Signed-off-by: Hou Tao <houtao1@huawei.com>
----
- kernel/bpf/bpf_local_storage.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
-index 7c18298b139c3..fa56c30833ff1 100644
---- a/kernel/bpf/bpf_local_storage.c
-+++ b/kernel/bpf/bpf_local_storage.c
-@@ -254,9 +254,7 @@ void bpf_selem_free(struct bpf_local_storage_elem *selem,
- 		 * bpf_mem_cache_free will be able to reuse selem
- 		 * immediately.
- 		 */
--		migrate_disable();
- 		bpf_mem_cache_free(&smap->selem_ma, selem);
--		migrate_enable();
- 		return;
- 	}
- 
+$ git grep ipvlan -- tools/testing/selftests/drivers/net/bonding/
+$
 -- 
-2.29.2
-
+pw-bot: cr
