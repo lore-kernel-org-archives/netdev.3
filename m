@@ -1,129 +1,171 @@
-Received: from smtp-out.kfki.hu (smtp-out.kfki.hu [148.6.0.49])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D381B0F17;
-	Wed,  8 Jan 2025 20:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.6.0.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0F51ABED9;
+	Wed,  8 Jan 2025 20:17:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736367362; cv=none; b=UVhny6Ov4LR+QArXmZuDSfPQWS6htrC+G886nL0YIa3zAflEYwFjFU4KohinQZSKxbyMoUSgR+5B0yTI9vzLOcYsngfVvvZDqwnGtrMf15alCLTOb4BDPt7VcHRgiMerw8/G/5+KNE9qog2Fs7ZI7WQNoYmqgOtFVqRt/eUxp44=
+	t=1736367455; cv=none; b=DGywlHJmGZgB0OQURLR5REKRDR7nTvTriwwIjMQ0ZRi8UW2DI3nDPP7B53vV51oP+QEsKigX2+CC21AGwwO1MheB2jyjgbtCGBo72MRPZ/EMXN6qBWGGWVQh1t0eg5xGjZSVaqMFZwpCKFt/Ufn8+f5/Yg2V7mCWHNi7u/4vUlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736367362; c=relaxed/simple;
-	bh=zpoQFkENkNf/uWOtAz1GGrZD2Jaih4a/2+uBohaYQLM=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=qYLbGTtdWAelpiGgD3J7oRlnjrKDE8XkUW8joBsLyVzJ1RcXBw5dOIU+V+t0DqAdgoDNYBcAc2mtHbnt81EvN+7GK7BlE/9s5OHY2tsO8/z1q+QMLqIaSRtFNb8t+ha3PgZp8A1mA+9/lBAy1oMtbMEYOY7Bwrsvvma2JNFqEEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=148.6.0.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Received: from localhost (localhost [127.0.0.1])
-	by smtp0.kfki.hu (Postfix) with ESMTP id 03A6D19201C6;
-	Wed,  8 Jan 2025 21:15:52 +0100 (CET)
-X-Virus-Scanned: Debian amavis at smtp0.kfki.hu
-Received: from smtp0.kfki.hu ([127.0.0.1])
- by localhost (smtp0.kfki.hu [127.0.0.1]) (amavis, port 10026) with ESMTP
- id 4uZHuCNCRCF6; Wed,  8 Jan 2025 21:15:50 +0100 (CET)
-Received: from mentat.rmki.kfki.hu (85-238-77-85.pool.digikabel.hu [85.238.77.85])
-	(Authenticated sender: kadlecsik.jozsef@wigner.hu)
-	by smtp0.kfki.hu (Postfix) with ESMTPSA id 10EC219201A2;
-	Wed,  8 Jan 2025 21:15:50 +0100 (CET)
-Received: by mentat.rmki.kfki.hu (Postfix, from userid 1000)
-	id E55FD142729; Wed,  8 Jan 2025 21:15:49 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by mentat.rmki.kfki.hu (Postfix) with ESMTP id E27871424A2;
-	Wed,  8 Jan 2025 21:15:49 +0100 (CET)
-Date: Wed, 8 Jan 2025 21:15:49 +0100 (CET)
-From: Jozsef Kadlecsik <kadlec@netfilter.org>
-To: =?UTF-8?Q?Sz=C5=91ke_Benjamin?= <egyszeregy@freemail.hu>
-cc: fw@strlen.de, pablo@netfilter.org, lorenzo@kernel.org, 
-    daniel@iogearbox.net, leitao@debian.org, amiculas@cisco.com, 
-    davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
-    kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-    netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
-    linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 05/10] netfilter: iptables: Merge ipt_ECN.h to
- ipt_ecn.h
-In-Reply-To: <f53d51a9-e6d6-4376-8601-420ac756b7af@freemail.hu>
-Message-ID: <db8da369-8750-3760-2615-9783bd0ab37a@netfilter.org>
-References: <20250107024120.98288-1-egyszeregy@freemail.hu> <20250107024120.98288-6-egyszeregy@freemail.hu> <eb46258b-0fb2-c0be-f1aa-79497f3dc536@netfilter.org> <f53d51a9-e6d6-4376-8601-420ac756b7af@freemail.hu>
+	s=arc-20240116; t=1736367455; c=relaxed/simple;
+	bh=UlgTK6XXpvluotnBKDkjwi0TZYFkb2Dlj6TuK9B304w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oDSuHjNOguXd2QRCsL0ksoT++bkyVkTvDUMX5kORm7jMXnkhwq6shHH9amyxhJUGCKpK/VK/rmOe7Ip8cX1+lXTsigGlXFcOd6HFK+JI+gXbjgtL4IIJ/cJ/OkC91SbAdhTT1Lh4ZHDuw3Qbg68b7aTbQulmDRyAXj4ZSlpUKYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LRU7AluD; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LRU7AluD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08AAC4CEE3;
+	Wed,  8 Jan 2025 20:17:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736367454;
+	bh=UlgTK6XXpvluotnBKDkjwi0TZYFkb2Dlj6TuK9B304w=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=LRU7AluDokzSuJcYlUJ04Z/1hmAtfR1t4PWN4RRNIYzKNxqsy7ilE1gmCwIW94uU0
+	 UQTYzqHtffbpPUKaLxQCSkpMxDeYDv2v+jNEtDQScUPKM9WbOUSbu8xRR9eapZUQDx
+	 ySIikwWWmsoNArljEdyJU6+ViM+RMzuJW0+NRQoy6hWACY8I0Q9XHVfTIDCHRZtwzm
+	 /oLSVKWCWykXq78lk3NoDiWrYq+H7I+KhpwJZ/oI/NYM+lQq5P0Wo2uo3/3OxPEsLg
+	 +d3M99SBSpLHW8i/dq8tEOkVjpqbgPMNvGTqcgRKe1y0lMwU03CFExRPkgNa/YWUOT
+	 yUnr/um7UwkEw==
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3eb98ad8caaso94532b6e.0;
+        Wed, 08 Jan 2025 12:17:34 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUBs2bkiEOY2VGMnxK1yAAOHws3b4vGoDAmA0d3AP2xqZlK8wzlFT3oFUaHLGWUSAdEc0rsEHmrjrZe@vger.kernel.org, AJvYcCW9pyRoefqJVQarBjSArCu6uPbxLUzzx1ii7lXv3mVleRkfPAZ2rlYI1RjImC2wkbq93mNsGGsZqCY=@vger.kernel.org, AJvYcCX0d4Ny/j/eA9+vDqSd9XQ7mU9anVkgGFb73T9HaDxs52Cjak/fe/Tngc4FPDPEbjkodeLEF+bim7Bjouo=@vger.kernel.org, AJvYcCX66eY5Knfmpk2TyivDb1h2l4wS7xn6tcItI3ta8l0Pom2Mk5F+frB5HAAD8pZLc9NsxG8mbcl4@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYFq9C7ARfS5bhqCL68GYNvWsX8yX4vgoBXpw6FeXaDiw3qA5P
+	SDeRR0yZXgXHbBXiHUY7Tn2xQ8aR34sIUOUjBaqLS3IuCEOcrPfk7uKy9UdOU9VRHYk8l3/HcKS
+	nnUSUiwLlbQiBfOlOXKW6R+6Kl0g=
+X-Google-Smtp-Source: AGHT+IEw/PzHhdF6IgsucKtmOsoDyttO+mPdlNlL3UfSQrxrUcj5eDyOlltm4BmxG5Ru2EM6tN7I+xCkIIgATDlO+Xg=
+X-Received: by 2002:a05:6808:2390:b0:3ea:4140:e7cb with SMTP id
+ 5614622812f47-3ef2ec247camr2596731b6e.19.1736367453986; Wed, 08 Jan 2025
+ 12:17:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-657160873-1736367349=:4693"
-X-deepspam: ham 0%
-
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---8323329-657160873-1736367349=:4693
-Content-Type: text/plain; charset=UTF-8
+References: <20250108195109.GA224965@bhelgaas> <5df4a525-dc5d-405a-be07-5b33e94f5a4f@maciej.szmigiero.name>
+In-Reply-To: <5df4a525-dc5d-405a-be07-5b33e94f5a4f@maciej.szmigiero.name>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 8 Jan 2025 21:17:22 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hU8=h2QLQ+JDoTb28uWFH=r=PsCSGjgs+Mv4_ax-rrAg@mail.gmail.com>
+X-Gm-Features: AbW1kvbRuludeoCmOjsiURSDpPSzmUa9N5nbCBtd5ayGk3nayhkynaraDOaJ8ks
+Message-ID: <CAJZ5v0hU8=h2QLQ+JDoTb28uWFH=r=PsCSGjgs+Mv4_ax-rrAg@mail.gmail.com>
+Subject: Re: [PATCH v2] net: wwan: iosm: Fix hibernation by re-binding the
+ driver around it
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, M Chetan Kumar <m.chetan.kumar@intel.com>, 
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>, Loic Poulain <loic.poulain@linaro.org>, 
+	Johannes Berg <johannes@sipsolutions.net>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 7 Jan 2025, Sz=C5=91ke Benjamin wrote:
+On Wed, Jan 8, 2025 at 9:04=E2=80=AFPM Maciej S. Szmigiero
+<mail@maciej.szmigiero.name> wrote:
+>
+> On 8.01.2025 20:51, Bjorn Helgaas wrote:
+> > [+cc Rafael, linux-pm because they *are* PM experts :)]
+> >
+> > On Wed, Jan 08, 2025 at 02:15:28AM +0200, Sergey Ryazanov wrote:
+> >> On 08.01.2025 01:45, Bjorn Helgaas wrote:
+> >>> On Wed, Jan 08, 2025 at 01:13:41AM +0200, Sergey Ryazanov wrote:
+> >>>> On 05.01.2025 19:39, Maciej S. Szmigiero wrote:
+> >>>>> Currently, the driver is seriously broken with respect to the
+> >>>>> hibernation (S4): after image restore the device is back into
+> >>>>> IPC_MEM_EXEC_STAGE_BOOT (which AFAIK means bootloader stage) and ne=
+eds
+> >>>>> full re-launch of the rest of its firmware, but the driver restore
+> >>>>> handler treats the device as merely sleeping and just sends it a
+> >>>>> wake-up command.
+> >>>>>
+> >>>>> This wake-up command times out but device nodes (/dev/wwan*) remain
+> >>>>> accessible.
+> >>>>> However attempting to use them causes the bootloader to crash and
+> >>>>> enter IPC_MEM_EXEC_STAGE_CD_READY stage (which apparently means "a =
+crash
+> >>>>> dump is ready").
+> >>>>>
+> >>>>> It seems that the device cannot be re-initialized from this crashed
+> >>>>> stage without toggling some reset pin (on my test platform that's
+> >>>>> apparently what the device _RST ACPI method does).
+> >>>>>
+> >>>>> While it would theoretically be possible to rewrite the driver to t=
+ear
+> >>>>> down the whole MUX / IPC layers on hibernation (so the bootloader d=
+oes
+> >>>>> not crash from improper access) and then re-launch the device on
+> >>>>> restore this would require significant refactoring of the driver
+> >>>>> (believe me, I've tried), since there are quite a few assumptions
+> >>>>> hard-coded in the driver about the device never being partially
+> >>>>> de-initialized (like channels other than devlink cannot be closed,
+> >>>>> for example).
+> >>>>> Probably this would also need some programming guide for this hardw=
+are.
+> >>>>>
+> >>>>> Considering that the driver seems orphaned [1] and other people are
+> >>>>> hitting this issue too [2] fix it by simply unbinding the PCI drive=
+r
+> >>>>> before hibernation and re-binding it after restore, much like
+> >>>>> USB_QUIRK_RESET_RESUME does for USB devices that exhibit a similar
+> >>>>> problem.
+> >>>>>
+> >>>>> Tested on XMM7360 in HP EliteBook 855 G7 both with s2idle (which us=
+es
+> >>>>> the existing suspend / resume handlers) and S4 (which uses the new =
+code).
+> >>>>>
+> >>>>> [1]: https://lore.kernel.org/all/c248f0b4-2114-4c61-905f-466a786bde=
+bb@leemhuis.info/
+> >>>>> [2]:
+> >>>>> https://github.com/xmm7360/xmm7360-pci/issues/211#issuecomment-1804=
+139413
+> >>>>>
+> >>>>> Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+> >>>>
+> >>>> Generally looks good to me. Lets wait for approval from PCI
+> >>>> maintainers to be sure that there no unexpected side effects.
+> >>>
+> >>> I have nothing useful to contribute here.  Seems like kind of a
+> >>> mess.  But Intel claims to maintain this, so it would be nice if
+> >>> they would step up and make this work nicely.
+> >>
+> >> Suddenly, Intel lost their interest in the modems market and, as
+> >> Maciej mentioned, the driver was abandon for a quite time now. The
+> >> author no more works for Intel. You will see the bounce.
+> >
+> > Well, that's unfortunate :)  Maybe step 0 is to remove the Intel
+> > entry from MAINTAINERS for this driver.
+> >
+> >> Bjorn, could you suggest how to deal easily with the device that is
+> >> incapable to seamlessly recover from hibernation? I am totally
+> >> hopeless regarding the PM topic. Or is the deep driver rework the
+> >> only option?
+> >
+> > I'm pretty PM-illiterate myself.  Based on
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/Documentation/admin-guide/pm/sleep-states.rst?id=3Dv6.12#n109,
+> > I assume that when we resume after hibernate, devices are in the same
+> > state as after a fresh boot, i.e., the state driver .probe() methods
+> > see.
+> >
+> > So I assume that some combination of dev_pm_ops methods must be able
+> > to do basically the same as .probe() to get the device usable again
+> > after it was completely powered off and back on.
+>
+> You are right that it should be theoretically possible to fix this issue
+> by re-initializing the driver in the hibernation restore/thaw callbacks
+> and I even have tried to do so in the beginning.
+>
+> But as I wrote in this patch description, doing so would need significant
+> refactoring of the driver as it is not currently capable of being
+> de-initialized and re-initialized partially.
+>
+> Hence this patch approach of simply re-binding the driver which also
+> seemed safer in the absence of any real programming docs for this hardwar=
+e.
 
-> 2025. 01. 07. 20:26 keltez=C3=A9ssel, Jozsef Kadlecsik =C3=ADrta:
-> > On Tue, 7 Jan 2025, egyszeregy@freemail.hu wrote:
-> >=20
-> > > From: Benjamin Sz=C5=91ke <egyszeregy@freemail.hu>
-> > >=20
-> > > Merge ipt_ECN.h to ipt_ecn.h header file.
-> > >=20
-> > > Signed-off-by: Benjamin Sz=C5=91ke <egyszeregy@freemail.hu>
-> > > ---
-> > >   include/uapi/linux/netfilter_ipv4/ipt_ECN.h | 29 +---------------=
------
-> > >   include/uapi/linux/netfilter_ipv4/ipt_ecn.h | 26 ++++++++++++++++=
-++
-> > >   2 files changed, 27 insertions(+), 28 deletions(-)
-> > >=20
-> > > diff --git a/include/uapi/linux/netfilter_ipv4/ipt_ECN.h
-> > > b/include/uapi/linux/netfilter_ipv4/ipt_ECN.h
-> > > index e3630fd045b8..6727f5a44512 100644
-> > > --- a/include/uapi/linux/netfilter_ipv4/ipt_ECN.h
-> > > +++ b/include/uapi/linux/netfilter_ipv4/ipt_ECN.h
-> > > @@ -1,34 +1,7 @@
-> > >   /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> > > -/* Header file for iptables ipt_ECN target
-> > > - *
-> > > - * (C) 2002 by Harald Welte <laforge@gnumonks.org>
-> > > - *
-> > > - * This software is distributed under GNU GPL v2, 1991
-> > > - *
-> > > - * ipt_ECN.h,v 1.3 2002/05/29 12:17:40 laforge Exp
-> > > -*/
-> > >   #ifndef _IPT_ECN_TARGET_H
-> > >   #define _IPT_ECN_TARGET_H
-> > >   -#include <linux/types.h>
-> > > -#include <linux/netfilter/xt_DSCP.h>
-> > > -
-> > > -#define IPT_ECN_IP_MASK	(~XT_DSCP_MASK)
->=20
-> If it is not dropped out in the merged header file, it will cause a bui=
-ld
-> error because of the previous bad and duplicated header architects in t=
-he
-> UAPI:
->=20
-> In file included from ../net/ipv4/netfilter/ipt_ECN.c:17:
-> ../include/uapi/linux/netfilter_ipv4/ipt_ecn.h:17:25: error: expected
-> identifier before =E2=80=98(=E2=80=99 token
->  #define IPT_ECN_IP_MASK (~XT_DSCP_MASK)
->                          ^
-> ../include/uapi/linux/netfilter_ipv4/ipt_ecn.h:27:2: note: in expansion=
- of
-> macro =E2=80=98IPT_ECN_IP_MASK=E2=80=99
->   IPT_ECN_IP_MASK       =3D XT_ECN_IP_MASK,
->   ^~~~~~~~~~~~~~~
+While this may not be elegant, it may actually get the job done.
 
-Yes, you are right: from the patches themselves the duplicate macro/enum=20
-definition of IPT_ECN_IP_MASK were not evident.
-
-Best regards,
-Jozsef
---=20
-E-mail : kadlec@netfilter.org, kadlec@blackhole.kfki.hu, kadlecsik.jozsef=
-@wigner.hu
-Address: Wigner Research Centre for Physics
-         H-1525 Budapest 114, POB. 49, Hungary
---8323329-657160873-1736367349=:4693--
+Can you please resend the patch with a CC to linux-pm@vger.kernel.org?
