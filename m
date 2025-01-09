@@ -1,89 +1,192 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2059.outbound.protection.outlook.com [40.107.102.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDCB20551B;
-	Thu,  9 Jan 2025 12:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736425211; cv=none; b=YycPtU3d2QoUCBx+EGW5366YAD+Erv2zIN76XieugzLe8iaGdfACqp2MnfZ3Gpply2/Q7nmzjZ1FWQ6N5JH86uR5x+QySjGSTWQlKkvVF6NfJj4Vqzd0lnML/iLKwvz7XVou0Q+WBfM7jS7MYBhqALhgCoog1euJJdSQVhcRTPA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736425211; c=relaxed/simple;
-	bh=1y+/0y5Mn+3mmY+Rqdubf97qrdL5lDWfwQl+N0okVJU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=PTyB+AcmlnwT9fUBunqe7qDx7xb17YJDNwuxxIEcMULg3L5s+1+UgHt8LYFm+xXeGDVNWxloN2+Dd8ztESv4r0wvLvuUCcqZjgQcgaB0++9+BB2EjYHEgrlBK6sCY+gr73WhRfYxgsQAaJ5eFXiE/G13HQzIoGHLZ1jJhnrp4UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bBTDpivS; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E68721518C;
+	Thu,  9 Jan 2025 12:22:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736425344; cv=fail; b=E+xBK0jiZakmxYTp/FyXnSsfC9DcutCpQrkI7iYNajeZevc9nqc+f8ziCYYhZjTupufzOSUChsxLwNjlcFt+v17gnrNjpG7mkyLA54OoBUbJ/fsxCx/EVC1qqIIAbZNV+R1CQkwjrRyOjxxCeTpqE44k0X91/Y1/N1BttCipU6A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736425344; c=relaxed/simple;
+	bh=3JIjvlvvhfm+873yladaYZTl2VsR4hfg1o8wTyY94/E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=RLVOOkcAlBLZw+EXkA7+YOQgy1VVXgJOUFqw/ku4WOp2ut9oHRjIguUb/oxophobtQENCbUzGXtDX5WHCLlfLmdBwpfGL12yWH60kxyZoYlmO+Znr6Pt3ejRPWqmmerzl8gr1k8Ia/pR+hrC4gx+Fimp1f4/9Eu0OkU0IR4vD04=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=OziUo3qz; arc=fail smtp.client-ip=40.107.102.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bBTDpivS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED65C4CED2;
-	Thu,  9 Jan 2025 12:20:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736425210;
-	bh=1y+/0y5Mn+3mmY+Rqdubf97qrdL5lDWfwQl+N0okVJU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=bBTDpivSMWuijJnQh3u2XfH9P2b2E4ReENVkg276ScYNV8Ss+42DNVlNmjVmLQUr3
-	 apQ2/amP9GMMjCFtqCT61NPIdITDXPY3uOrt3IiBSUrkpuAmcy0AvW1rEVOc+6oMLA
-	 ML6onBd5rB0YzWtEyB5mMrqlq8WiKRlUfKdxN3y4+Ll6leBYD0RWQQi4rH3o/LhEJI
-	 RjkHYtHLgkgOIxn7mk1Zv5WdZ9OkR/GN+tYej1kiYzelwtXhPIVn3q7RGwH5N3NfTl
-	 5UJfKT0FaCYrZQ6CwtVlUj2LKCfvg1L7TLY0H/xKpSbZ3vOqp+CKpUsu6+e7STHpdg
-	 6GZHN7Aa/zmTg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33DFA3805DB2;
-	Thu,  9 Jan 2025 12:20:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="OziUo3qz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ma8vcSidbSvWbCaKP1IMv6xP3CSj99o4K+bOmtEY5nLKBMASb/dpF0gOFUkM4hpr1689t0RUUF7WZxOFZhfdfVxzlXqdE4BBsiTexIxSqgPcI3z3uQy4FfFyJ+61jOSb0QpTNsL0uhZwBqc9BVv1U/jVU8ZHUvXjPL3qW4ywmeiEn0GX4jeE5u/1Hvq3zrvcFf3Se82NuPba3AizbLMg9/l0INzXIum9tZYmrZAL+y1NnHD/d1tB3k5A01mJYomYA+Lahk0skylv6XpzNvnU8DbZdE24a5rZLm0R5N4vKr6R/QreEzRYV8h1DifHfQkdqvAubh08Blowp6FC/LijtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U6xRdghBMN5Fqvus05aVptthwo+mLUeHKrZrjYVc3NU=;
+ b=hPO6bPX9biwBn5MkZqJ27m7LuOAGxK1I8/eIa/2+FoI/nG2RMdCYeA/mXcW/FoahRbRh2vvy6TBbGT6SQdp4ZFtHSS3mvxVpqtuEGhFbp+tXejURfdYBQjYdnI64rMf+e5aKKp4Js31BIHHkJ+d1IRQvF/Cc04Qw0wXcgilWH3EdOba/SibXQoipQx8XphR9DQEA1S+g40ARel0iex/+E+QziQ+DMa/UndKEycdj6eCBR2T7NmdprUSB3Hm3xYYte4WeKnn4AqCqRWRpXRty4iTNaGk+1nMmMpRxkJ2hdxDzoLc6OXkUPuz8Q4C/zpkis+g28Au0P4ZS2sHn7ZClCg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U6xRdghBMN5Fqvus05aVptthwo+mLUeHKrZrjYVc3NU=;
+ b=OziUo3qz6LSjh28FcgrpvdNWzTlkHSWKdOuhd9+GDO7CXPd0LUkSHezzDJeIQng4zfj2y1ONDSh/D5LpI+TbI5H/QUDZbyir/8t5XrD4Pd14RFt32GcrZ/+kqs/DQQKflgeiSMNURyE7reamwSokB++Tbmy5ADLMHspk8oOXnY7y9pZksGcg4XhSBQIcRAQU61fcIZk1u3MEquuL0IMxByE4fge1Xh+4X2+DGimina77b+hTatWudruf+4g836oSfgb0LbdKIWBLrR7OEgKybCRdWJdh3XzndvKO1ewe24jc/LMNuI1Xw1KTP8f998BPCnHvUSNc4N/VWbA2yr5ZmA==
+Received: from SJ0PR13CA0162.namprd13.prod.outlook.com (2603:10b6:a03:2c7::17)
+ by CY5PR12MB6371.namprd12.prod.outlook.com (2603:10b6:930:f::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.12; Thu, 9 Jan
+ 2025 12:22:19 +0000
+Received: from CO1PEPF000066E7.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c7:cafe::43) by SJ0PR13CA0162.outlook.office365.com
+ (2603:10b6:a03:2c7::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8335.11 via Frontend Transport; Thu,
+ 9 Jan 2025 12:22:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CO1PEPF000066E7.mail.protection.outlook.com (10.167.249.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8335.7 via Frontend Transport; Thu, 9 Jan 2025 12:22:18 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 9 Jan 2025
+ 04:22:04 -0800
+Received: from [10.19.162.113] (10.126.231.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 9 Jan 2025
+ 04:21:59 -0800
+Message-ID: <459337c0-c625-4c5f-b668-19f24285ff19@nvidia.com>
+Date: Thu, 9 Jan 2025 20:21:57 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] dt-bindings: net: Correct indentation and style in
- DTS example
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173642523202.1303894.12707902460357622367.git-patchwork-notify@kernel.org>
-Date: Thu, 09 Jan 2025 12:20:32 +0000
-References: <20250107125613.211478-1-krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20250107125613.211478-1-krzysztof.kozlowski@linaro.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, neil.armstrong@linaro.org, khilman@baylibre.com,
- jbrunet@baylibre.com, martin.blumenstingl@googlemail.com, opendmb@gmail.com,
- florian.fainelli@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
- rjui@broadcom.com, sbranden@broadcom.com, mkl@pengutronix.de,
- mailhol.vincent@wanadoo.fr, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, kvalo@kernel.org, o.rempel@pengutronix.de,
- dariobin@libero.it, christophe.roullier@foss.st.com,
- grygorii.strashko@ti.com, s-vadapalli@ti.com, rogerq@kernel.org,
- briannorris@chromium.org, Frank.Li@nxp.com, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-can@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-wireless@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 0/2] bond: fix xfrm offload feature during init
+To: Hangbin Liu <liuhangbin@gmail.com>
+CC: Jakub Kicinski <kuba@kernel.org>, <netdev@vger.kernel.org>, Jay Vosburgh
+	<jv@jvosburgh.net>, Andy Gospodarek <andy@greyhouse.net>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+	<pabeni@redhat.com>, Nikolay Aleksandrov <razor@blackwall.org>, Simon Horman
+	<horms@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>, Steffen Klassert
+	<steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+	Sabrina Dubroca <sd@queasysnail.net>, <linux-kselftest@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20241213193127.4c31ef80@kernel.org> <Z3X9pfu12GUOBUY6@fedora>
+ <1d8c901f-e292-43e4-970f-8440b26e92b0@nvidia.com> <Z3u0q5HSOshLn2V0@fedora>
+ <Z33nEKg4PxwReUu_@fedora> <ad289f9a-41c3-4544-8aeb-535615f45aef@nvidia.com>
+ <Z34l6hpbzPP9n65Y@fedora> <e01bae5f-30b5-4ec4-8c4b-5c133dd4552a@nvidia.com>
+ <Z3-KxbofkhOrWin7@fedora> <b39dfbee-dd80-48b2-b79c-29682269522a@nvidia.com>
+ <Z3-iHO1gqQt3T0Tl@fedora>
+Content-Language: en-US
+From: Jianbo Liu <jianbol@nvidia.com>
+In-Reply-To: <Z3-iHO1gqQt3T0Tl@fedora>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000066E7:EE_|CY5PR12MB6371:EE_
+X-MS-Office365-Filtering-Correlation-Id: 64fd783f-fb60-434f-566f-08dd30a842df
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|7416014|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VFc3c2NxZENMTE1XN0hEejkwKzBMTjdObmlWNGlxeGFxWlg4VitLMHoxLzdS?=
+ =?utf-8?B?MG1IRWtKaTlCbWUyQjNhbUZZN3NlbDFMVmE5d3A5THE4WlVMWWRVS0doU3Fu?=
+ =?utf-8?B?blNtd1RpanhsaE50WmRSUGJ0MHhQdHAzbkFKVm1pbGkwQUhVS1VDdWs4TUVI?=
+ =?utf-8?B?R21SakJLK3BaN1o1dDJZYnliVGZNNlNON2xUVWhEQVltd0dFMjczVm5wM1Ex?=
+ =?utf-8?B?ZUJKMUQ5c2wvaDExbFBJdmR0cnhxL2JhUlZZeUxyc1B5bWh3V1BEdmhBSzEx?=
+ =?utf-8?B?b0RuQmlUeWdTc010MHJJWmRONWhia1dtNDF5NlVTa3BITFJkZC9ZYUpLa0xO?=
+ =?utf-8?B?akV1dXFWMm55Vk8xUzhQNTcvdGpIMXhiL2dscnBMNG44TWxYeklYUGhETndE?=
+ =?utf-8?B?TUlCaVVZUTAzczR1ZGptZ3d4b25tS0tMZWFobXJxMTMya3VqWkZXbUZ2MXVU?=
+ =?utf-8?B?cVFCTTNhclV1ajdoK3EvVExSQmlIU1VQNGN6eWdjUWRrUzQ4OVlKZUQxbFVz?=
+ =?utf-8?B?WnBSTnhXandjaGQxdElFbGVaR0VXemdSMFU5U2lxWjVYTTllMFM2K1cxNjdl?=
+ =?utf-8?B?Z3ZpVTdSWFdnbG5pZW5SaFZnK2VwdFU4bER1WTBjNEhkM0prOGF1WGFwbUxV?=
+ =?utf-8?B?MDViWG1ERFdsUG0zQit1TlY1WksvN0pnaU44NGJSY0d1by9FVk1SbmQyZG5a?=
+ =?utf-8?B?SmZFakZmUFp2SHdUcG1sSGpGOW9DL1pyUnJaYjZkUkZPSDR3OGNkSXc0TFJj?=
+ =?utf-8?B?bVNaYjZZUlVUS1Z4emNVMUR0ejJBTnhOTll2aTlXd05udjBsSlRlbHo3dCtz?=
+ =?utf-8?B?M1BENnk0bmp3a3p1WXF1VUhGWDBJWmp1b05yVVlsZDM4ZEdKVGVaNmFvZjZ3?=
+ =?utf-8?B?TXBrUWM1b1A1ZVhhRDFCVUFyL2FuQ3g3LzhLZG1oY1EzMkZpSS9YRFJ4ZWFC?=
+ =?utf-8?B?Z01Ibk9vejgzRkVnaWlQaHltR0ltSXluVy9rT3NpTHNpT3Q4WUJEL3Uzc3ZP?=
+ =?utf-8?B?Qyt3UDlQNEd0SFRtKzNmUHpCQmRucjZNWUFqclBGbkdScEM1ZEp4Y0RPRVh0?=
+ =?utf-8?B?bHNyalV2S3lIN1lsSGMzaUVRdmpic1JvTGhEUksxMFREUWVQaVdIdm9Fb2V5?=
+ =?utf-8?B?bmNMOG1vYVZDTDA0RFRGM2luaWtiNDlOVDY4d2RISXRjYURzdk5NKy9OeFlY?=
+ =?utf-8?B?NHdYaTNjQS9TVUdoOWtILy9mQTZwb0x2eEI1dGtNWkdKSjNiUFJRYk8wOUpN?=
+ =?utf-8?B?UVJmYXBpczhSc25PbGNWUFFNZkUrVERXbm94RlNjUHlkeUJLdXhPL2g2cUtO?=
+ =?utf-8?B?UmltclQ1djY0TDhOYmtuVExmVm5FUVArT0wvVzZhT2VjNFNGUmhPRHZIUXZG?=
+ =?utf-8?B?NENEV3pNWEZYV2VJMHg4aVQxSFdGN25OOXpaL1VDUHNHak05dWR3ZVpYdDNU?=
+ =?utf-8?B?YmJLSk1DT3kvTG11MHY0N0lQYXhid25vSWhXelFOQXl6Sk9jZzdrdk9OVjQ0?=
+ =?utf-8?B?WDB2WWR5bUd5QlBWVEs2QVMwUFFLakR1QUlML05qclNEZHYxZjJpUzVUdkJO?=
+ =?utf-8?B?aVVjem9MNDJRU3lRb2xGYXo0RU51cVo1YzEzNVNEME1EcjNkYkpUWUVIMDBk?=
+ =?utf-8?B?WThMcGs3WllhcVhsRFFuaXUzVVpTMU1YNzUxVEpwWXErZnp3T2dyNzB0RmZq?=
+ =?utf-8?B?VmNZR05MVnR1Y1NOaytDN2RXYUprZlUyNTRqQlRDdkNiVWRTT3pSOURUN3Nl?=
+ =?utf-8?B?cittNmVGQlBYdE5zbVZVM2RYQ2E1VmVpM2hGSmdYV3pqaDJGdkZoWHNMRURj?=
+ =?utf-8?B?eTFJOE5lZW1Nc0k0cVkybHI5cTU0dXU4WU80ZGxqTXdnMVRMbkIxbnEyMGJI?=
+ =?utf-8?B?Nm50dkNwSE9QOGU4Z3kwZUMvQTBJa2U0N0VFNDJYZzFYZkVEajhOTzBmSHpS?=
+ =?utf-8?B?dS9xL3BuTllvRytLRVpxRnE0YldTK1hkUUJ6VkYydVQ4eVF1MVNtaWtqVFRR?=
+ =?utf-8?Q?ND6o1T1Fk2m0PEVMosomOvQexM0joI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(7416014)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2025 12:22:18.9487
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 64fd783f-fb60-434f-566f-08dd30a842df
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000066E7.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6371
 
-Hello:
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
 
-On Tue,  7 Jan 2025 13:56:13 +0100 you wrote:
-> DTS example in the bindings should be indented with 2- or 4-spaces and
-> aligned with opening '- |', so correct any differences like 3-spaces or
-> mixtures 2- and 4-spaces in one binding.
+On 1/9/2025 6:17 PM, Hangbin Liu wrote:
+> On Thu, Jan 09, 2025 at 05:51:07PM +0800, Jianbo Liu wrote:
+>>>> No, we don't need. But I am trying to understand what you said in your last
+>>>> email about adding a new lock, or unlocking spin lock in
+>>>
+>>> I *thought* we need the spin lock in xfrm_state_delete(). So to protect xfrm_state,
+>>
+>> But not need in bond_ipsec_del_sa() because the state still hold by
+>> xfrm_state_hold(), right?
 > 
-> No functional changes here, but saves some comments during reviews of
-> new patches built on existing code.
+> Hmm, I'm not sure. If xfrm_state_hold() is safe. Why not just remove the spin
+> lock in xfrm_state_delete(). This is more straightforward. e.g.
 > 
-> [...]
 
-Here is the summary with links:
-  - [net-next] dt-bindings: net: Correct indentation and style in DTS example
-    https://git.kernel.org/netdev/net-next/c/9d8c354a56e9
+We can't remove the spin lock in xfrm_state_delete(), but I think we can 
+access the state while holding it, for example, checking (ipsec->xs == 
+xs) as you mentioned before, because memory is not freed yet.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+> diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+> index 67ca7ac955a3..150562abf513 100644
+> --- a/net/xfrm/xfrm_state.c
+> +++ b/net/xfrm/xfrm_state.c
+> @@ -784,9 +784,7 @@ int xfrm_state_delete(struct xfrm_state *x)
+>   {
+>          int err;
+> 
+> -       spin_lock_bh(&x->lock);
+>          err = __xfrm_state_delete(x);
+> -       spin_unlock_bh(&x->lock);
+> 
+>          return err;
+>   }
+> 
+> We can even rename xfrm_state_delete() to xfrm_state_delete() directly.
+> 
+> Thanks
+> Hangbin
 
