@@ -1,132 +1,121 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F0122257E;
-	Thu,  9 Jan 2025 16:08:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E561221D8B
+	for <netdev@vger.kernel.org>; Thu,  9 Jan 2025 16:08:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736438891; cv=none; b=acIcM0WvSd5xJuAe1Ju0wLUIpevIwB+a8rcdypt1k3deL+1n7WbmcKpFmQIfyIxQvPZPSpSkS4wNkYijrztsoQN+h70DUYO+PA4gP7gOAleCqhMAmIKQdiFJOupU+dpEFpMf2JAmy2CEmAaPMnSU/sSmFFT7JdYNTLSUDqmKCGg=
+	t=1736438899; cv=none; b=bp5rtifD83XbmtWA+DRcV+IXH0fy1ES1Dl5uxZBX8KQ6JD1M+VFIoj5i/fuNeRDg4DO9QL+UroCUA/G6O3ckLkenO3pHTS0Zr+0lAdG/qB26NFuMyXY6+dtsnmB7g8/sjvVdWezgHux6lT76cgFZwlVDeJgzv6AydnyfBHB098c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736438891; c=relaxed/simple;
-	bh=Ny6ilxI9jW1+p8xMGkxmpM+ELcaEw3RdKjeVLDhoLaY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l/4ZkzG9MePkgldG/LhTXiKZmrfLRVJdrQc4QQ/LZCr2bcRmdZtOh0fiIZMBWND3nkkscNR/Tp+4uAI5j6y6ljvcTfxxHknIdvDlKbtA8tUz8HNVLlicTNIQ/LAUwhzuJT00gOYkXBx0pWEwaSrjn9kPxryOuwrrdJ6suXxOpoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZRA2Vn/S; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736438899; c=relaxed/simple;
+	bh=GV3fhrLaqo26vcZSfffabpj3GEwR3i4jx02OWTzFB0o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=QaCRHMcSV9AR8Y/ZvJHGGVmR+9ayryl8yULo7jwZZg9dzA8qg1VvqPjvGzrBvxt0o+CfXpFE2C9kJ12tr4dgUoezDvGp9jtPA99l+v0IPPaeFlZfHRHOBAXCmTx38D+6KUuwJ4Gjvool9l1PGXF4EUBWWZuMACTomwLSOuh6kmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=gI8y8vlP; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZRA2Vn/S"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4362f61757fso11575315e9.2;
-        Thu, 09 Jan 2025 08:08:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736438888; x=1737043688; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dDoiMsFnbn5JUQtcG1rs+LkrtkLOU3JtO7LMBBVfgVo=;
-        b=ZRA2Vn/SjSOvuf5DhFbZcBUTwcOYukWBaRRczx0VFaOGpBGz9bRtl0XwgSfyc4oeji
-         Go3hfI3FAQRksRhsptLn3XIfdWtoOAoAjZyH9YDQJmfMcD0WntlVub/HqOWX1OT12ong
-         ookWBYFCDptr+UyAvUHxs38FzpeLxlvpWC3etVdzzo7Wv3EEIou7t71KMgaHjht+J1n3
-         u12Wu6rMXgb+DU4GpuoLH0OC0YPS38Gi/VRez0zh6BssUYXsudGfcwhL3S7Sr8kxvt5Q
-         La6S9NWGYAIL90YLv3opZALBPs6S+sOnR7wORQP6TBi0lT/9SU7E3OMvHkPoUqcSUG12
-         ftuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736438888; x=1737043688;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dDoiMsFnbn5JUQtcG1rs+LkrtkLOU3JtO7LMBBVfgVo=;
-        b=DoE1CELRAKbOBntETW9080VXUEusShgIT2s/4lyi7ZWqxmz0vN4uKa2f3RHGnNGNoP
-         P6ySOPi1CLBJlMVcTHULx6LDPQKip3QeH9cXOq0nKP3AUgHDHyj12/H4K1fDwTRQhmsq
-         jiyM+lwa40SVF3WmsK6ezuLASX6WPgGMzKsy2hUE9WrVo/eYGBozqiwHJtoazac9qg0J
-         UgKOzg6l8uPIdCtm5YMX60PbwAjafFnndlIhQftfnbT6gghOFAFkcFKv0mqZuypCsI4o
-         cSI52c2msgbcDgY5mlC43rd9NTMlbi/Z+8ILYCzOvApUR7NqATApc2tzucJaXOj72acH
-         0mQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWoAUaoawk6p7xKmqEfH9PflC/NpR+xqV0ufpHiTIjZ9pW6+SuMhBCNObKLV+2TNRoL9WqQTSg7UUE3akM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWDBoM4d0iMX4q0fLntY/ztpDybH3U+27Kzkr0neaAIsSu1GKQ
-	l+yCYxHx8v7PfxQXPdX/kkqCxnDs1Ow3yJzQ+YWVbIZ+o52mporH
-X-Gm-Gg: ASbGncvGPMLqV+MzdBSco1Ro/LkNoXO9XtFUx3fV7qcNUJSm28ytNo+3AnTiA7PSn44
-	FDTxB/m27VaaC7m7afCfdMk45w7Sgd29w6jJUeVztPPP/64iwcdRF0K5gTLSOF5Qjpz2JQI894r
-	ALFtYzIM+qEYItRPayFR81Y10/amlafmXJTEAmUvBMgsmcn6rLlmEJbyeTxzSTHqRh0v5dHBvsz
-	hAO3ImbUqE6UoN54BpLwb+3RgROWUmcvGRUjmgndqHN8IB1dp0c5lmT
-X-Google-Smtp-Source: AGHT+IEsGCIC45RR7BVCyQeCR8u7TPJ5P1zGMYvvoU4MqQxYu495kCeS24QxHR3OQGZbTFPwVjqHIg==
-X-Received: by 2002:a05:600c:3103:b0:434:a746:9c82 with SMTP id 5b1f17b1804b1-436e26ae9b1mr68525405e9.5.1736438887686;
-        Thu, 09 Jan 2025 08:08:07 -0800 (PST)
-Received: from localhost ([2001:861:3385:e20:6384:4cf:52c5:3194])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9e62333sm24728155e9.36.2025.01.09.08.08.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jan 2025 08:08:07 -0800 (PST)
-From: Raphael Gallais-Pou <rgallaispou@gmail.com>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"'David S . Miller'" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] net: stmmac: sti: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
-Date: Thu,  9 Jan 2025 16:58:42 +0100
-Message-ID: <20250109155842.60798-1-rgallaispou@gmail.com>
-X-Mailer: git-send-email 2.47.1
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="gI8y8vlP"
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+	t=1736438894; bh=GV3fhrLaqo26vcZSfffabpj3GEwR3i4jx02OWTzFB0o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=gI8y8vlPPUrZNDhkK8lb10VoRAugl4JA+M8L3jzo88YUWHjhrZRNksGBsbyjg/BLY
+	 7WFm6g5rYD/5Goy0OmW3pRZEcqY6VqBgPRBQmxB2zyI9j5BT597KKPArGkvHX9Xsiy
+	 PEtgZZSKk1Mdn3D/W1kOuj7mCsHqj5lPs4dQoU0rQZp92gM5gxkEdQh0sIk79uqV+h
+	 tYjs9pA2saiI1nWPTfI3BLupK2oHA5XcAoiYgXgJVHDEDpJpmByJMyUYQjB0fi93K8
+	 QW9ZGZmlCZYu0c+6t10+r8PZnzN883aIFDCU3BXEU6k8UWnbkaNeunnYpQFEvpq7WQ
+	 afS7LALtUWN1g==
+To: Paolo Abeni <pabeni@redhat.com>, Jamal Hadi Salim <jhs@mojatatu.com>,
+ Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>
+Cc: syzbot+f63600d288bfb7057424@syzkaller.appspotmail.com, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ cake@lists.bufferbloat.net, netdev@vger.kernel.org
+Subject: Re: [PATCH net v2] sched: sch_cake: add bounds checks to host bulk
+ flow fairness counts
+In-Reply-To: <11915c70-ec5e-4d94-b890-f07f41094e2c@redhat.com>
+References: <20250107120105.70685-1-toke@redhat.com>
+ <fb7a1324-41c6-4e10-a6a3-f16d96f44f65@redhat.com> <87plkwi27e.fsf@toke.dk>
+ <11915c70-ec5e-4d94-b890-f07f41094e2c@redhat.com>
+Date: Thu, 09 Jan 2025 17:08:14 +0100
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87ikqohswh.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Letting the compiler remove these functions when the kernel is built
-without CONFIG_PM_SLEEP support is simpler and less error prone than the
-use of #ifdef based kernel configuration guards.
+Paolo Abeni <pabeni@redhat.com> writes:
 
-Signed-off-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
----
-Changes in v2:
-  - Split serie in single patches
-  - Remove irrelevant 'Link:' from commit log
-  - Link to v1: https://lore.kernel.org/r/20241229-update_pm_macro-v1-5-c7d4c4856336@gmail.com
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+> On 1/9/25 1:47 PM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> Paolo Abeni <pabeni@redhat.com> writes:
+>>> On 1/7/25 1:01 PM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>>>> Even though we fixed a logic error in the commit cited below, syzbot
+>>>> still managed to trigger an underflow of the per-host bulk flow
+>>>> counters, leading to an out of bounds memory access.
+>>>>
+>>>> To avoid any such logic errors causing out of bounds memory accesses,
+>>>> this commit factors out all accesses to the per-host bulk flow counters
+>>>> to a series of helpers that perform bounds-checking before any
+>>>> increments and decrements. This also has the benefit of improving
+>>>> readability by moving the conditional checks for the flow mode into
+>>>> these helpers, instead of having them spread out throughout the
+>>>> code (which was the cause of the original logic error).
+>>>>
+>>>> v2:
+>>>> - Remove now-unused srchost and dsthost local variables in cake_dequeu=
+e()
+>>>
+>>> Small nit: the changelog should come after the '---' separator. No need
+>>> to repost just for this.
+>>=20
+>> Oh, I was under the impression that we wanted them preserved in the git
+>> log (and hence above the ---). Is that not the case (anymore?)?
+>
+> It was some time ago. Is this way since a while:
+>
+> https://elixir.bootlin.com/linux/v6.13-rc3/source/Documentation/process/m=
+aintainer-netdev.rst#L229
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
-index eabc4da9e1a9..de9b6dfef15b 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
-@@ -313,7 +313,6 @@ static void sti_dwmac_remove(struct platform_device *pdev)
- 	clk_disable_unprepare(dwmac->clk);
- }
- 
--#ifdef CONFIG_PM_SLEEP
- static int sti_dwmac_suspend(struct device *dev)
- {
- 	struct sti_dwmac *dwmac = get_stmmac_bsp_priv(dev);
-@@ -333,10 +332,9 @@ static int sti_dwmac_resume(struct device *dev)
- 
- 	return stmmac_resume(dev);
- }
--#endif /* CONFIG_PM_SLEEP */
- 
--static SIMPLE_DEV_PM_OPS(sti_dwmac_pm_ops, sti_dwmac_suspend,
--					   sti_dwmac_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(sti_dwmac_pm_ops, sti_dwmac_suspend,
-+						  sti_dwmac_resume);
- 
- static const struct sti_dwmac_of_data stih4xx_dwmac_data = {
- 	.fix_retime_src = stih4xx_fix_retime_src,
-@@ -353,7 +351,7 @@ static struct platform_driver sti_dwmac_driver = {
- 	.remove = sti_dwmac_remove,
- 	.driver = {
- 		.name           = "sti-dwmac",
--		.pm		= &sti_dwmac_pm_ops,
-+		.pm		= pm_sleep_ptr(&sti_dwmac_pm_ops),
- 		.of_match_table = sti_dwmac_match,
- 	},
- };
--- 
-2.47.1
+Huh, whaddyaknow. Thanks for the pointer.
 
+> [...]
+>>> dithering is now applied on both enqueue and dequeue, while prior to
+>>> this patch it only happened on dequeue. Is that intentional? can't lead
+>>> to (small) flow_deficit increase?
+>>=20
+>> Yeah, that was deliberate. The flow quantum is only set on enqueue when
+>> the flow is first initialised as a sparse flow, not for every packet.
+>> The only user-visible effect I can see this having is that the maximum
+>> packet size that can be sent while a flow stays sparse will now vary
+>> with +/- one byte in some cases. I am pretty sure this won't have any
+>> consequence in practice, and I don't think it's worth complicating the
+>> code (with a 'dither' argument to cake_flow_get_quantum(), say) to
+>> preserve the old behaviour.
+>
+> Understood, and fine by me.
+>
+>> I guess I should have mentioned in the commit message that this was
+>> deliberate. Since it seems you'll be editing that anyway (cf the above),
+>> how about adding a paragraph like:
+>>=20
+>>  As part of this change, the flow quantum calculation is consolidated
+>>  into a helper function, which means that the dithering applied to the
+>>  host load scaling is now applied both in the DRR rotation and when a
+>>  sparse flow's quantum is first initiated. The only user-visible effect
+>>  of this is that the maximum packet size that can be sent while a flow
+>>  stays sparse will now vary with +/- one byte in some cases. This should
+>>  not make a noticeable difference in practice, and thus it's not worth
+>>  complicating the code to preserve the old behaviour.
+>
+> It's in Jakub's hands now, possibly he could prefer a repost to reduce
+> the maintainer's overhead.
+
+Alright, sure, I'll respin :)
+
+-Toke
