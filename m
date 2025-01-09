@@ -1,126 +1,98 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017FD21C18E
-	for <netdev@vger.kernel.org>; Thu,  9 Jan 2025 15:10:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802AE21CA14;
+	Thu,  9 Jan 2025 15:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736435430; cv=none; b=DsKz0qPaMCBfxGuPLfYYlsiqVT8iqiDpaI4nOPYtM0/kk3zk+h+/ehE0hCIEiBg40hUuXtSmbgtxeWMQcerLGK8l+MYQDa2aeHDC60qh9xDZ8tnYZ+RYqVtQNzJklji5O18WumHZze9mN44e6/WpCu60ktg4pVUqMti6slH9ojU=
+	t=1736435464; cv=none; b=bZ13MlQfnFenhGTqNeG9I6SsFM/zK/gTFf+mCjmNbFh2mfk4sJMqnsNj0alUqYXhHnEF2pjzEjF4/geqSBwxpvLZmzPR2ymckD3xKgpQ5pwGmZoW+XNuJ20MynYaS0zLEMyA7iJ8ujXmnwCEQixY1vZBd7QI1lMhg3I4il6hh4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736435430; c=relaxed/simple;
-	bh=vsP0c7ZaqWOi3+/Hz/zeA+1FkoPMpZBvfDko8pxv4wE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RvOcv4qg/VnyCjqi2puWfpljKPF8MTHGWeTAOT71SOs6nzqU5C6YjNMCzIKcv35jowNoYx4NyHD/mzCfRmQKerbpI3fitDYDwmpteJg09QRNOqg15o7yVfysoHRtwRPDU+9LJgvRNAoU/L5hUUQwHWMCn6lZmv/x9adNcmmHPCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gH++lgQP; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1736435464; c=relaxed/simple;
+	bh=RZhfDkE6p46GlDtLzAG8SL7OVdV6Nd9Z6bBWdU17A2I=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=D2HHzUqYoHpVTPeWov7sW9/ZNrWJ7hKzGTkZKi0GmwtkTMqBX3JCio9ajHx94lxyCU3v8S3g93uHXu7Ki4Fm5HAemADF6zbkUkxvNhRnPoH6rx2pnVI8Nrpa8OCTvMjABnCGBBUFVwU2fTw5GPD8QQui2kYiK/O9/R9gp3YttKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BjPEZE6W; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gH++lgQP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736435426;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tEX+RYiQOpyVgVwIOsW4QRUi5ZMAzd/B2xICiNLEvMU=;
-	b=gH++lgQPss3MOnWW8SobsgCP7BIITRHeMalOqz98MCArbevCj1UVlD25d3XNY9BSOi0TFK
-	A2s4rv7Ju8rrDus+tASDuU7dF3BaZRwVL587DM+C2a+W1+JwbN8VUGguxisC61LI1rxFjn
-	QnrIzIYIzeDZ+4BSvJMusx7NpYNtBnI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-483-DLlfJ-R3PyCtSOLOg99uiw-1; Thu, 09 Jan 2025 10:10:25 -0500
-X-MC-Unique: DLlfJ-R3PyCtSOLOg99uiw-1
-X-Mimecast-MFC-AGG-ID: DLlfJ-R3PyCtSOLOg99uiw
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-38629a685fdso373949f8f.2
-        for <netdev@vger.kernel.org>; Thu, 09 Jan 2025 07:10:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736435424; x=1737040224;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tEX+RYiQOpyVgVwIOsW4QRUi5ZMAzd/B2xICiNLEvMU=;
-        b=be4PQ0jNjXQexZdce+93746/fbBLV9q+3pPFz9pSKjtmZcuvZRC1kJgOM7a5HBOjGd
-         S/Jf2KElrr1pKQ0KvHV24oAWxKV890nl9SMv5V4trCoivIIo4A6qbIUw6Tqa/kPlIhga
-         TIwssC0QAGsvtEC+URqlc2tHRknrTd1Ai17Yua2ieAFS7QDsKLeRHvmIefE9lKq9Twu0
-         Q+HKE1Na8Ls2BLbt3nRY714USUTApOwjIqeu+Q/ol82paXFUpoA8a8448rSN939r7pUW
-         WMKLrLpzWGVe4hLQyXLpRChqr3E+cx6tLUTDNkiTiNxcPIATbkQaWnz3q3cxvifje6Bk
-         Eo1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWGi/JSvM/pxHsI4fjHMGPPLwBGNjTpRMHmknqUngMSSXUkhmmU3w6zIaEWzlTBcbGM5w4L628=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztkjCo25d1OwPDg4LK1VGU2fFRIlfpw5Bjb9lVyREIF0xqzidm
-	k7qMXC6xzoEfben2Zj5gBRKd5TxHXY7f8LGYEmpw1y3dhrHBxQgu+XpiVliDqlgctnjuYOUQ1pp
-	atu8sEdD4sSL2o6iFSf4KIbVOBphWUiyPJYgPwXtkv0AdRYvwq6P0Iw==
-X-Gm-Gg: ASbGncsCD6s8bAj3cnPS3E0mVP5WQk3WsJmvDoC/XO1o9Sv2v+RTbUXwUl1qHR6RO+9
-	BnX/MJ8xlefg+K7ngiH2tgL1jEpE7HI9ghvcZJmO7WQi1W7fKSKeraPDxcNVhN+CBlJbXma1Xkx
-	4s7b1ODFn1sEdO5aohQ1svLxFWVuSqi6Wp/55CFFjCQGh1e1XUC2Qxthlb7FV6wT1kkOtlI2x5K
-	zVuTK7PbULNdQ8exoPq6KVA88uzL4bx4NeOLpMEHqtrumRuO/cEIiV0R4fNSCBErUN3gmzvNMwl
-	ktaDsR35
-X-Received: by 2002:a05:6000:144d:b0:38a:615b:9ec0 with SMTP id ffacd0b85a97d-38a873122edmr6638207f8f.54.1736435424220;
-        Thu, 09 Jan 2025 07:10:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHI3W/aycYGvq2vgzFdy5N1qkg17Mwcpw6cxanoONqMOVAI1uE8X+UusgFdIR5HQLm1ccfB1Q==
-X-Received: by 2002:a05:6000:144d:b0:38a:615b:9ec0 with SMTP id ffacd0b85a97d-38a873122edmr6638174f8f.54.1736435423836;
-        Thu, 09 Jan 2025 07:10:23 -0800 (PST)
-Received: from [192.168.88.253] (146-241-2-244.dyn.eolo.it. [146.241.2.244])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9d8fc5csm23888985e9.2.2025.01.09.07.10.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jan 2025 07:10:23 -0800 (PST)
-Message-ID: <75bdc3f1-3de8-4b18-a1db-512fdb34a8af@redhat.com>
-Date: Thu, 9 Jan 2025 16:10:22 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BjPEZE6W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B594C4CED2;
+	Thu,  9 Jan 2025 15:11:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736435464;
+	bh=RZhfDkE6p46GlDtLzAG8SL7OVdV6Nd9Z6bBWdU17A2I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=BjPEZE6WcTgx0B90cbZDD4QCTZETHaAl+AC4yNzA1tcaDVwBnBHagf5P4+6Z7G3pk
+	 zySY3kNdNnF1jxtT9AJ8RT68j0A+7mdMuq1zqIO5R/7Ag/ubHu2/G7aPJ3Td7qqJqM
+	 1aY3AxxO05pvf6oko/+8Z3OnTMZt4kF7Pzgwc/LN7cHyN2zR+OImkENRoWzYs0fxwp
+	 JlcozEJMMvwCKPjDbQMdda0u/EOCA9UYyxAW1ckNBcVM5tYNsD4Yi1RUD3a/7P11Y0
+	 xUaxynEdCE9Q09LcpOAmKYR9vuop/j2DAwn07F6i3mD/aeqgCjYTohVBZl5Lti9sEQ
+	 MdxthGFJhTHXQ==
+Date: Thu, 9 Jan 2025 07:11:02 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Johan Hedberg
+ <johan.hedberg@gmail.com>, Marcel Holtmann <marcel@holtmann.org>, Ignat
+ Korchagin <ignat@cloudflare.com>, Kuniyuki Iwashima <kuniyu@amazon.com>,
+ Eric Dumazet <edumazet@google.com>, linux-bluetooth@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+ netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] Bluetooth: L2CAP: handle NULL sock pointer in
+ l2cap_sock_alloc
+Message-ID: <20250109071102.23a5205d@kernel.org>
+In-Reply-To: <20250109-fbd0cb9fa9036bc76ea9b003-pchelkin@ispras.ru>
+References: <20241217211959.279881-1-pchelkin@ispras.ru>
+	<20250109-fbd0cb9fa9036bc76ea9b003-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next, v4] netlink: support dumping IPv4 multicast
- addresses
-To: Yuyang Huang <yuyanghuang@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
- roopa@cumulusnetworks.com, jiri@resnulli.us, stephen@networkplumber.org,
- jimictw@google.com, prohr@google.com, liuhangbin@gmail.com,
- nicolas.dichtel@6wind.com, andrew@lunn.ch, netdev@vger.kernel.org,
- =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>,
- Lorenzo Colitti <lorenzo@google.com>
-References: <20250109072245.2928832-1-yuyanghuang@google.com>
- <361414dc-3d7b-4616-a15b-3e0cb3219846@redhat.com>
- <CADXeF1G1G8F4BK2YienEkVHVpGSmF2wQnOFnE+BwzaCBexv3SQ@mail.gmail.com>
- <CADXeF1FxVt=xt+yk_SvLSYBYw07Vy6pssSfXqv8pOQuP7obPgg@mail.gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <CADXeF1FxVt=xt+yk_SvLSYBYw07Vy6pssSfXqv8pOQuP7obPgg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 1/9/25 4:01 PM, Yuyang Huang wrote:
->> Also, this will need a paired self-test - even something very simple
->> just exercising the new code.
+On Thu, 9 Jan 2025 10:47:12 +0300 Fedor Pchelkin wrote:
+> On Wed, 18. Dec 00:19, Fedor Pchelkin wrote:
+> > A NULL sock pointer is passed into l2cap_sock_alloc() when it is called
+> > from l2cap_sock_new_connection_cb() and the error handling paths should
+> > also be aware of it.
+> > 
+> > Seemingly a more elegant solution would be to swap bt_sock_alloc() and
+> > l2cap_chan_create() calls since they are not interdependent to that moment
+> > but then l2cap_chan_create() adds the soon to be deallocated and still
+> > dummy-initialized channel to the global list accessible by many L2CAP
+> > paths. The channel would be removed from the list in short period of time
+> > but be a bit more straight-forward here and just check for NULL instead of
+> > changing the order of function calls.
+> > 
+> > Found by Linux Verification Center (linuxtesting.org) with SVACE static
+> > analysis tool.
+> > 
+> > Fixes: 7c4f78cdb8e7 ("Bluetooth: L2CAP: do not leave dangling sk pointer on error in l2cap_sock_create()")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> > ---  
 > 
-> After looking into the existing selftest, I feel writing C program
-> selftests might be a little bit anti-pattern. The existing test cases
-> primarily use iproute2. This approach appears to be more common and
-> easier to implement. I do plan to migrate `ip maddress` to use netlink
-> instead of parsing procfs, which enables me to write selftests using
-> iproute2.
+> Urgh.. a bit confused about which tree the patch should go to - net or
+> bluetooth.
 > 
-> I intend to add similar selftests for my other patches
-> (anycast/multicast notifications), which already have corresponding
-> iproute2 patches under review or merged.
-> 
-> For this patch, my proposed steps for adding test are:
-> 
-> 1. Fix this patch and get it merged.
-> 2. Update iproute2(`ip maddress`) to use netlink.
-> 3. Write selftests using iproute2.
-> 
-> Please let me know if you have any concerns.
+> I've now noticed the Fixes commit went directly via net-next as part of a
+> series (despite "Bluetooth: L2CAP:" patches usually go through bluetooth
+> tree first). So what about this patch?
 
-Fine by me. FTR we used the C program way for mptcp - before ynl advent
-- and it was quite a pain.
+7c4f78cdb8e7 went directly to net-next because it was a larger series touching
+multiple sub-subsystems:
 
-Cheers,
-
-Paolo
-
+$ git log -12 --graph --oneline 2d859aff775df54
+*   2d859aff775d Merge branch 'do-not-leave-dangling-sk-pointers-in-pf-create-functions'
+|\  
+| * 18429e6e0c2a Revert "net: do not leave a dangling sk pointer, when socket creation fails"
+| * 48156296a08c net: warn, if pf->create does not clear sock->sk on error
+| * 9df99c395d0f net: inet6: do not leave a dangling sk pointer in inet6_create()
+| * 9365fa510c6f net: inet: do not leave a dangling sk pointer in inet_create()
+| * b4fcd63f6ef7 net: ieee802154: do not leave a dangling sk pointer in ieee802154_create()
+| * 811a7ca7320c net: af_can: do not leave a dangling sk pointer in can_create()
+| * 3945c799f12b Bluetooth: RFCOMM: avoid leaving dangling sk pointer in rfcomm_sock_alloc()
+| * 7c4f78cdb8e7 Bluetooth: L2CAP: do not leave dangling sk pointer on error in l2cap_sock_create()
+| * 46f2a11cb82b af_packet: avoid erroring out after sock_init_data() in packet_create()
+|/  
+* 397006ba5d91 net/sched: cbs: Fix integer overflow in cbs_set_port_rate()
