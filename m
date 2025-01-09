@@ -1,680 +1,204 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A20A142905;
-	Thu,  9 Jan 2025 03:42:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736394176; cv=none; b=KmPQ8EpuL9NRaL8JXdCBwFuhv+mDljgrN59GFx0yjQ5HoZVS2bA39X8BY/Hmrpko7I1Hp/LLS3i6GeK1FynmKu7L2380pncFNr0ZdZWY1i/BRO37V8Sgm3x4rAYayEzlVEiq0fG3U2JQd4zh4n1asejT3g4Cz3y7hUzSF4zZ7fw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736394176; c=relaxed/simple;
-	bh=0jczcywZzm7zDtpDbF+SAh9vXqdFoANo4qjVnrdMKr8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fw7A4fJ9l80xkTln8ZppwBBl/0ASLE2aLXxq1/jZm5+ERBkyFKixzV54MT1XjXb3Mp1ok1sgodirgVSLRL2dHulRLlXST3+CoaJPu/fiAkgFc83we8XmVLlsYIW+h1EvxWvu5RdEGNTpoG78yk4ndDaLTaXFoycYHWC2ClO/iSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=CRxK7BGd; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2064.outbound.protection.outlook.com [40.107.94.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF7713A26D
+	for <netdev@vger.kernel.org>; Thu,  9 Jan 2025 03:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736394839; cv=fail; b=K0wsLI10rIOv/lzEGjoEspTHVh7zuEQbugmbldRF+pKtJo0Jqvc+wNKnXC2H9/c00x3fyLXMgxEX0UrXUCSiszNwltmQytLckgwiPeMGwGqBu66BzWyQUm3T/JyK0lJI4L6jhM34mdcvFQcy2bE1H2IMf/Dt1tad2OZi4t7HcX4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736394839; c=relaxed/simple;
+	bh=iwblWNhy6rkdZekYjwy+EpSXq5C8MF86BVojcxTGfTo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=IMQgZKp71SH0HTtI/O32W8sexxmz1y/WFKvFUtdqOqgfj0q2b67htLBxVT1Pn1rXTBUC4FMjrFnw+jc5a+0nWfVwn1YXpcQks0kNFgQPXxVHBItnhV1w/zAthQ0mGOnUiPf226mGqcTT9+yXPGlOhZSjyqUZSKhP8Xg17ES7VEo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=i8Dkzi1s; arc=fail smtp.client-ip=40.107.94.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="CRxK7BGd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=vYEuI
-	3zas+jH7nkAGpg2gUIcZ/dI/FzpckCMeupQ9Lk=; b=CRxK7BGdv2Uv2uPZPEUnk
-	B3ouJGyfi3VcoSD39YIZjknE3xZ+p/vEmdflBpnAFT7sNnO2XqSYuy+pjnoeVJ05
-	MV9SHoySI6cfp7KNMP0gdpTdtM0tpI7T01hCepGuKkIuBguXl37t3xiflxQSIUOO
-	ZGO3pf/pB922K+uO1pcjZA=
-Received: from localhost.localdomain (unknown [47.252.33.72])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgAXYaYcRX9na6O1Jw--.42275S4;
-	Thu, 09 Jan 2025 11:40:45 +0800 (CST)
-From: Jiayuan Chen <mrpre@163.com>
-To: bpf@vger.kernel.org,
-	jakub@cloudflare.com,
-	john.fastabend@gmail.com
-Cc: netdev@vger.kernel.org,
-	martin.lau@linux.dev,
-	ast@kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	song@kernel.org,
-	andrii@kernel.org,
-	mhal@rbox.co,
-	yonghong.song@linux.dev,
-	daniel@iogearbox.net,
-	xiyou.wangcong@gmail.com,
-	horms@kernel.org,
-	corbet@lwn.net,
-	eddyz87@gmail.com,
-	cong.wang@bytedance.com,
-	shuah@kernel.org,
-	mykolal@fb.com,
-	jolsa@kernel.org,
-	haoluo@google.com,
-	sdf@fomichev.me,
-	kpsingh@kernel.org,
-	linux-doc@vger.kernel.org,
-	Jiayuan Chen <mrpre@163.com>
-Subject: [PATCH bpf v4 2/3] selftests/bpf: add strparser test for bpf
-Date: Thu,  9 Jan 2025 11:40:04 +0800
-Message-ID: <20250109034005.861063-3-mrpre@163.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250109034005.861063-1-mrpre@163.com>
-References: <20250109034005.861063-1-mrpre@163.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="i8Dkzi1s"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DZ8hGB3p7McbFVNbf2N+A7PoWx7vPGRsByx/0k5+7IzkAChl8/gfDn8Cw55cONEnW5MYAODM/mtGBN5Xy+pOMb+ZcSKWnobET4L2VzpX5Lcik2GCiuDq5+KV13kt2LyKzdayxIMBoFUpej2iXuRurzABT3lel+lIymGgfwMysSNmOhx6Zqe+RKZOyvScQueR0wR+0ftnn3ncflQ1dFcmN06sZ6iNi1H9ABjoFIKs8ZD6p/9sVmd4ZNlgRjfPJ+d/lPjm9rua1EyYgSzCV9wQ01jPrc3EdjuL9BozDw/Ct1pQsnfQuXb20NmfK3exDXZMSY0wlY93uWwxPr4RXmOMnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iwblWNhy6rkdZekYjwy+EpSXq5C8MF86BVojcxTGfTo=;
+ b=xdJdaHv0s0eo8oR93lRsJ7txexrFi9k16fkVvAf2P8oJxmvfkkrYOvOuROId5yf7uMdf/lO/AQGpvFk1QX98mtI9992sW2Jz1PSOdbX9+q5Q0fNIPyXg9rED88bxWYurgJi9zSEPiS6TU60gxoTrPm6nDjUKche7g0bqXVD/GrOINR+C61WmA3swktbIMFyPHBDClR3CmDX/zVBFp0jt8CofzYVvJiVedYKKrfN0kOFDC6ug+Ng8lDAkiwKJ5NTCht6RjB7MJ/splLJcZL1v+A5v1SSp5qV2HN2pVw9ImEPk4T0zaAmvdcFJHYTgGyOW1ZZK8CAOn7UqkNP413wHVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iwblWNhy6rkdZekYjwy+EpSXq5C8MF86BVojcxTGfTo=;
+ b=i8Dkzi1sfejzV0mOjVk+6KeW0BBBVQKoNoJAvaBKb2nUspNcxP2JYh8tMWXzvvlNCGyYEodlqkhHlbovK/WfJIirxKdfW4p9NKxVMXnKPnRm909zEfwBizMEg/2RgtY5WPvsbEP4Yi9YkuzBGpfJQjuEUkHxWchplev2iJt3yNTcHD0zxve8Vl3Vxm5hrVSexTicDVPQWIlmyCbqPNRhKTiP3QXqlOxkhCd9cn+YDMvYDK/d0t55WcpoY32LbxyqMrzfcCVPdWyKPIw8qsacUbhlQdkdxkgXVFOgpZ3RfWDwlQHyDk370A84wIF+4HFfNdXvRbsxhg7blc5PQWP91Q==
+Received: from DS0PR11MB7481.namprd11.prod.outlook.com (2603:10b6:8:14b::16)
+ by CH3PR11MB8563.namprd11.prod.outlook.com (2603:10b6:610:1af::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.12; Thu, 9 Jan
+ 2025 03:53:55 +0000
+Received: from DS0PR11MB7481.namprd11.prod.outlook.com
+ ([fe80::3a8a:2d38:64c0:cc4f]) by DS0PR11MB7481.namprd11.prod.outlook.com
+ ([fe80::3a8a:2d38:64c0:cc4f%6]) with mapi id 15.20.8335.010; Thu, 9 Jan 2025
+ 03:53:55 +0000
+From: <Rengarajan.S@microchip.com>
+To: <kuba@kernel.org>, <davem@davemloft.net>
+CC: <Woojung.Huh@microchip.com>, <Thangaraj.S@microchip.com>,
+	<edumazet@google.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>
+Subject: Re: [PATCH net v2 2/8] MAINTAINERS: update maintainers for Microchip
+ LAN78xx
+Thread-Topic: [PATCH net v2 2/8] MAINTAINERS: update maintainers for Microchip
+ LAN78xx
+Thread-Index: AQHbYeVfX/I+HGjbc0Kp62CZGmc1a7MNz6oA
+Date: Thu, 9 Jan 2025 03:53:55 +0000
+Message-ID: <43dd36b3397eab1d5a3b1dbc380bb303612914a2.camel@microchip.com>
+References: <20250108155242.2575530-1-kuba@kernel.org>
+	 <20250108155242.2575530-3-kuba@kernel.org>
+In-Reply-To: <20250108155242.2575530-3-kuba@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DS0PR11MB7481:EE_|CH3PR11MB8563:EE_
+x-ms-office365-filtering-correlation-id: 4d376f1b-8d15-4970-6655-08dd30613d14
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7481.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?anB2RVdDMllyNUtxUnllcUhZTW5uT2JmTUY1QjVmc2pBQ0hPdm5ObmpRR2tU?=
+ =?utf-8?B?d2FnZ3A2c1VLVmx0U3NhUDIwbkVFbWJ1MFF2YnM5ZUZTNzlvSzA4SW5uRVZT?=
+ =?utf-8?B?eEhVUUIybzB5UUVRbGM2OWJCM1NRNFpBTVhUcFZsTktKRlRSRnJlMDNYRDUr?=
+ =?utf-8?B?ZUJNTFlzUWdVYTZTdHJ5UDl4N0NBQyszQmdKRFc0S21hd0R2bERRZzZScWY2?=
+ =?utf-8?B?b2h4TlVHMmd2dlIwOGlyRUtrUlUvVkxjNng3UEZvdUd0V2luUFM3NHBqVzlI?=
+ =?utf-8?B?SHNVUUs5M0ZQWXY2cFpPVFhOczkrVSt5V25OeEljZ3FOS1VIaDN1L0c0M1JF?=
+ =?utf-8?B?ZGJxd3NjclVYRHEzMndhN1JKZzAxeHZpRjhDTEdGRE52YjU4ZmFtNHZGMUlM?=
+ =?utf-8?B?Uk5kTUhPaEVUUGFFZXlIbDB0L0xFRDlTZ3F3UEJ3Z1NxcC9DL0lTZ2JlTk8r?=
+ =?utf-8?B?clQ2TUU5cmhaenlPVVh2VEpmbGtCaUw1TjF6QmhSN1p3Vm5qSVRiR1RlWnht?=
+ =?utf-8?B?TEFqYTFzQVRmZTNoT1VocGt4M3ZlZWw2b1NWRW1ob2kxYW5JdnlOSEVycnM0?=
+ =?utf-8?B?bWNObVdHOFZ5RzVNZFBFVDh5ZXN4QUxEZThsUk5yOThwUFN4QkRxeGVyZmZT?=
+ =?utf-8?B?WmREcmVJdEtTTXBUWVRKM0NDd0dIekR5SWZ4RDFaWlpHQ2MzbVJYalhLVHFh?=
+ =?utf-8?B?SHNJbkR5a1JoekdsNi9NOWpnWGlpVXh4bzZ5Wm94ZU5uLzcxTURaU1FXNldl?=
+ =?utf-8?B?R2FpSmM4ZTdsSmpvSHNGSHpkR1AwQ3k3ME9vVmtNeDJWUWVyQXJzVExnTXk0?=
+ =?utf-8?B?d05heXNNNzYvbFV6WlF1RlVTQWZneVFldkVhRGZVakpFSkM5OHR5cDFXYm9H?=
+ =?utf-8?B?UDJ6WkJROVRUTmJIaWdWdFQ5dWJBQ1dWR01HSFQ2U2l3WkorSDh0UjV3K0N3?=
+ =?utf-8?B?R1hxbjluMG44RWdYR1l1dElNT09YbS9kOVVFeUxWSEZDK1JKYTZ3RTRvM0hr?=
+ =?utf-8?B?aExQVU1ORHY5eitxcXE2Z0JJU0tyWDJ3Ymo0UkE4THgyM2Q3TkpKeWNwN2V4?=
+ =?utf-8?B?WHNvVWQ3Zk4zQlEwcXB2ZXFmclZHYWtTUms3M0tvcEdGaVEwckdXbVRUOHVn?=
+ =?utf-8?B?UVc4Q09FN09ESTNKdy92ZWd4b0lGVU9aVmI5cGZOUXFMclVGZmpoVVhubjQ0?=
+ =?utf-8?B?N1BsNkhZNXF6TmIzNHNQdFErZS9scFJLYU1QZ1pWdDZJbU1yb2ZTeE53WVFv?=
+ =?utf-8?B?aTFPUjVZdEtzQisraU1jZGk4STFNeGVPWVUxc2pVSHRjbnFDL2RCUzN1Y1Nx?=
+ =?utf-8?B?eC9TOE80d01OUlZiMnFLVTF2NE5ibTlKamJCQmpiWExSQW43VjNxdkowNVo0?=
+ =?utf-8?B?cjRld0t2YlFCQVRadFdvUkNBaE1nTzdhUDJBcXZRZld2Q0N6YWdOa3poM09Y?=
+ =?utf-8?B?N1lhNjJsa3o1QnljRDRaRGVSckx5MGFYdDVlbGV0MXgrdlBHb1h2dW9GaFJL?=
+ =?utf-8?B?NjF0UFdPeWNkQ2lKTlpVcVVlUCtBK1hnUjE2VW5KS0lpZmJkK0V2dWdxV1d2?=
+ =?utf-8?B?UUZ2Q3dkcWtQbUVVOGE1aFc2VGVDMVF4RmlreU5JeFM2T0tVYkV3aVd0M1Ji?=
+ =?utf-8?B?VGVIb29GeE1qb1lFUTdPbEpIL09JMVpjNmpxa0psS3JVeFYwWjdacVRIMWV6?=
+ =?utf-8?B?SXhIaUpBalA3QmJXSGg2WDg0WkRuaHlkS05BOGhKSWVhcXRjUmpHU1RoYWhy?=
+ =?utf-8?B?My96T0lnWC9wbzdzRG1rREdXb3pFaXo3THZUUkczK0hpd1psSER0cHl3TXFB?=
+ =?utf-8?B?UEhvYllYZkpsakF4aFd3SzFMTGZONVRSNjd0L1U4ZllMMVFIZzZHMWRtWkJj?=
+ =?utf-8?B?RnR3UDErd01qYi93MHBzWkdVbG9Wdm5zUTNCRnBQTlBnMHRIdkJKaDZ3eFNz?=
+ =?utf-8?Q?kUZCzrSoKAbkX7L2gFheM5btDjObb55+?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?czhqTHkzWVNRZTF1SXFiYWhSaHRaVkFsekhIb21Yd3FtNGJpZTEwajdOanJv?=
+ =?utf-8?B?MUtkWWdjWEdXMTk5T0dScjU4OHJjM1ZyTzREOVppUDNWRmN5clJ1MEt3K1dR?=
+ =?utf-8?B?VFNDaFV2OVhpMEs2cUo0bXYva1NsRDBNM01MdnJZMDZ2ZUU4R01NN0d4bzE4?=
+ =?utf-8?B?SzlHRVpTbnlXKzU5S3VBb1pXSXFHdGdzQVRGQitVejJHS1FEU0tlR3d6bnNP?=
+ =?utf-8?B?S28zNW5sQWhYUGpNSENaT2IwTVpxWFlCR0xRTzJHNnNKQ2ZUMkpGOFRJS2Fz?=
+ =?utf-8?B?WGJnR0gxcmRBNThVVGdYVmtxU3ptNVBjL3EraGV3aThZZjFGMHZRcXRmN3FN?=
+ =?utf-8?B?WFptZmVJVXJuaktwS1pKQStoUWZRNkkwbmNXanJNajB4Tis4WW1aUFRIT1V0?=
+ =?utf-8?B?R2xBenlFZEV2LzNZT296eTV3ZlRoZWlIQ3RpSXMyZzg0TGpkNmZ3SkJqUk1D?=
+ =?utf-8?B?UlNhUjJSUGNkT2htRUFtb094MDBkNG5ha0RvQWh6MDRTYlI5RnpHNkFXMTFk?=
+ =?utf-8?B?NkJuNUpURkRxM0VRczlrc2ljUWxRMlhBanZobFVYamw0Y1UwaFVQV0lpUm0y?=
+ =?utf-8?B?a2J5WUs0SVI2VTlpdDdBM0tqN3dpOTdPbXBDU21mM1FQNnB6aGxSQUxRSGtw?=
+ =?utf-8?B?QTBsTnJuU0hiVVY5b1k3TlVHSHRteXFKOXExbyswbnlBUTVzYXpVaEovUGxH?=
+ =?utf-8?B?SitaMXBKcGwwZllTa1pnWVhvWEc0WkJTUUNEUFlJcnkxNUh6TGVxY3RtWFIx?=
+ =?utf-8?B?a1oray84cnl2c0c4V2cyTjVPa3V5OU83WDIyTzh2aWJSQjNTeExtRUdzR0ZN?=
+ =?utf-8?B?bmlKa0JQODI5dFZYL2pnN0xVNlJsM3hmTnI4MGpQRzFvL1RPbDJtc0xhRW9u?=
+ =?utf-8?B?aUI0U3ZYeE1ocEs5UkdHeFFYRnJ2VFNyMVpkeTdSeWJrT0lWWDhmZm1WYTc4?=
+ =?utf-8?B?K2JaTzkvRjN1UW5OYkFqSzVMVkhGdUsyL0RLTER4WVlwWnJSaTdNMFU2bDFY?=
+ =?utf-8?B?VXZYRGZSVXVIbWZlalNpTFYxQTB4cysya24vWTdVZTE0RzRZUjFUcHc4K2NI?=
+ =?utf-8?B?VmU5TXpVV2xLV0d0WFBtQ2ZzUzg1Z1RhUUF5ZUJPNEVIRVczQ0xDY3NSQThV?=
+ =?utf-8?B?TENjM3l1R0hNdWEyZGJZNXVLRnhMWndwRkNRVTNKQUZ6MjF5d3NDdzN6WldP?=
+ =?utf-8?B?UDdnbXl6N2RkdTh6ZWxvbmdtRkdYVTNKa1UwWVl3aTI3WDdhekxGVVp2V3Ez?=
+ =?utf-8?B?YjZzRE12aktzRWRGclJyR2FpeUpOSUlvMlpOeVBEZVE4a0VreGJ5cnJyTXND?=
+ =?utf-8?B?TWVDWHg1NGY4MGV5S1IrYkR4eDY0RUpuZzFzYVRveFF1R2dTd0NSanNuOTRX?=
+ =?utf-8?B?T2p3RElFWHFEdXNrN1NUeElMTmlrMmRoRTg1SlcxV2Z3K2tWVFE0UWgwdkND?=
+ =?utf-8?B?QkdNWXRITk1tNUczVGdrZWdMMWwrcTBwY0JlRXFXVEo4V3pHR3l6NmJwenBD?=
+ =?utf-8?B?RVZpeGpwM2JTdmk2cWc0VlV2RExqbkdWb2F3RFpvdld2UEJ3Y2hKbjJrUTRB?=
+ =?utf-8?B?OXFnTWRkSnJHZlFoWlo0OHBaQVJNN3NvMWJnOFQ0NlRTVG1ML0NnVkNuWmNE?=
+ =?utf-8?B?OGlMNm9aZ3hLY0l1QUFCRlhCd0hFck5abkFNbGNhRlV4bUs0cUgzY1c0aHNJ?=
+ =?utf-8?B?bWE3WmIyVWZtcDVacXJOczh4RkpJK1AwNkZENWxpUG5JN0NDUFIzN3lNaGNp?=
+ =?utf-8?B?TmN2ZzZEL3YwazBqOGpwQnh2SncyTzkvSGNBaFBDaFhJQ2J5VUEzN1ZTWnlP?=
+ =?utf-8?B?ZFl6eEQrZzdmV3h3UkI1ck5Xa2RPWDBTZ0ZkYjVuc25FNFlHbTZEOWxxSVZH?=
+ =?utf-8?B?NUpnNm5wU1RpYzRDeS9kYWZJTk92bmxDY3FicGc1Q0N3c3VPQ1ljclpDN2Fp?=
+ =?utf-8?B?Qlg2aFdlZ0dHS0puelA0TDAxem1aUkhtOHVHM1o1NzV5amxxRERkek5wVGoy?=
+ =?utf-8?B?WlVFRldsSU9Xck9TWTh6Z3Fna0JzcWcySTNLYnBWdVUxdFo2THNCOU5NbVYy?=
+ =?utf-8?B?Sk93ZlU2MStWSUhzL0xLZ1VXRFc4ckYzNzBCS3VpdFBOalFtVmFobVhLbjhZ?=
+ =?utf-8?B?eU9vQmxkbXcrVzkvSUlqRlZ4SXVYcUFJMUlFUjZFcDhyTTJ5d2lvWG1NS3Jn?=
+ =?utf-8?B?b0E9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <BE42B284AD1BB644A6A8527A82D7CCE5@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgAXYaYcRX9na6O1Jw--.42275S4
-X-Coremail-Antispam: 1Uf129KBjvAXoW3Zw1xCw15Zry3Xw18Cw1fXrb_yoW8CF48Ao
-	Z3uan5X3yxGwnxJrykW34DCw4fWF4xXr4DXr47J3yUuF1jyF42vayUGws3Ww1akr4Sgryf
-	JFWjva4rWr45Ar4fn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvj4RPWrWUUUUU
-X-CM-SenderInfo: xpus2vi6rwjhhfrp/1tbiDwnPp2d-QGaV3gAAsb
+X-OriginatorOrg: microchip.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7481.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d376f1b-8d15-4970-6655-08dd30613d14
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jan 2025 03:53:55.0917
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 5DVSzfsSoDGwzRVW9Ljr3i9HotdY4viVWO0Q/xLzvjMMrPwe4DMzQG1f7jYAzRj2Bz2iaU+wBDxPNDNnfYgQkgidRoYJ7imDYjKAryst/eM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8563
 
-Add test cases for bpf + strparser and separated them from
-sockmap_basic, as strparser has more encapsulation and parsing
-capabilities compared to sockmap.
-
-Signed-off-by: Jiayuan Chen <mrpre@163.com>
----
- .../selftests/bpf/prog_tests/sockmap_basic.c  |  53 --
- .../selftests/bpf/prog_tests/sockmap_strp.c   | 452 ++++++++++++++++++
- .../selftests/bpf/progs/test_sockmap_strp.c   |  53 ++
- 3 files changed, 505 insertions(+), 53 deletions(-)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/sockmap_strp.c
- create mode 100644 tools/testing/selftests/bpf/progs/test_sockmap_strp.c
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-index 884ad87783d5..244057f49970 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-@@ -531,57 +531,6 @@ static void test_sockmap_skb_verdict_shutdown(void)
- 	test_sockmap_pass_prog__destroy(skel);
- }
- 
--static void test_sockmap_stream_pass(void)
--{
--	int zero = 0, sent, recvd;
--	int verdict, parser;
--	int err, map;
--	int c = -1, p = -1;
--	struct test_sockmap_pass_prog *pass = NULL;
--	char snd[256] = "0123456789";
--	char rcv[256] = "0";
--
--	pass = test_sockmap_pass_prog__open_and_load();
--	verdict = bpf_program__fd(pass->progs.prog_skb_verdict);
--	parser = bpf_program__fd(pass->progs.prog_skb_parser);
--	map = bpf_map__fd(pass->maps.sock_map_rx);
--
--	err = bpf_prog_attach(parser, map, BPF_SK_SKB_STREAM_PARSER, 0);
--	if (!ASSERT_OK(err, "bpf_prog_attach stream parser"))
--		goto out;
--
--	err = bpf_prog_attach(verdict, map, BPF_SK_SKB_STREAM_VERDICT, 0);
--	if (!ASSERT_OK(err, "bpf_prog_attach stream verdict"))
--		goto out;
--
--	err = create_pair(AF_INET, SOCK_STREAM, &c, &p);
--	if (err)
--		goto out;
--
--	/* sk_data_ready of 'p' will be replaced by strparser handler */
--	err = bpf_map_update_elem(map, &zero, &p, BPF_NOEXIST);
--	if (!ASSERT_OK(err, "bpf_map_update_elem(p)"))
--		goto out_close;
--
--	/*
--	 * as 'prog_skb_parser' return the original skb len and
--	 * 'prog_skb_verdict' return SK_PASS, the kernel will just
--	 * pass it through to original socket 'p'
--	 */
--	sent = xsend(c, snd, sizeof(snd), 0);
--	ASSERT_EQ(sent, sizeof(snd), "xsend(c)");
--
--	recvd = recv_timeout(p, rcv, sizeof(rcv), SOCK_NONBLOCK,
--			     IO_TIMEOUT_SEC);
--	ASSERT_EQ(recvd, sizeof(rcv), "recv_timeout(p)");
--
--out_close:
--	close(c);
--	close(p);
--
--out:
--	test_sockmap_pass_prog__destroy(pass);
--}
- 
- static void test_sockmap_skb_verdict_fionread(bool pass_prog)
- {
-@@ -1101,8 +1050,6 @@ void test_sockmap_basic(void)
- 		test_sockmap_progs_query(BPF_SK_SKB_VERDICT);
- 	if (test__start_subtest("sockmap skb_verdict shutdown"))
- 		test_sockmap_skb_verdict_shutdown();
--	if (test__start_subtest("sockmap stream parser and verdict pass"))
--		test_sockmap_stream_pass();
- 	if (test__start_subtest("sockmap skb_verdict fionread"))
- 		test_sockmap_skb_verdict_fionread(true);
- 	if (test__start_subtest("sockmap skb_verdict fionread on drop"))
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_strp.c b/tools/testing/selftests/bpf/prog_tests/sockmap_strp.c
-new file mode 100644
-index 000000000000..d3178a7a0e29
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_strp.c
-@@ -0,0 +1,452 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <error.h>
-+#include <netinet/tcp.h>
-+#include <test_progs.h>
-+#include "sockmap_helpers.h"
-+#include "test_skmsg_load_helpers.skel.h"
-+#include "test_sockmap_strp.skel.h"
-+#define STRP_PKT_HEAD_LEN 4
-+#define STRP_PKT_BODY_LEN 6
-+#define STRP_PKT_FULL_LEN (STRP_PKT_HEAD_LEN + STRP_PKT_BODY_LEN)
-+static const char packet[STRP_PKT_FULL_LEN] = "head+body\0";
-+static const int test_packet_num = 100;
-+
-+/* current implementation of tcp_bpf_recvmsg_parser() invoke
-+ * data_ready with sk held if skb exist in sk_receive_queue.
-+ * Then for data_ready implementation of strparser, it will
-+ * delay the read operation if sk was held and EAGAIN is returned.
-+ */
-+static int sockmap_strp_consume_pre_data(int p)
-+{
-+	int recvd;
-+	bool retried = false;
-+	char rcv[10];
-+
-+retry:
-+	errno = 0;
-+	recvd = recv_timeout(p, rcv, sizeof(rcv), 0, 1);
-+	if (recvd < 0 && errno == EAGAIN && retried == false) {
-+		/* On the first call, EAGAIN will certainly be returned.
-+		 * Waiting 1 second is pretty enough wait workqueue finish.
-+		 */
-+		sleep(1);
-+		retried = true;
-+		goto retry;
-+	}
-+
-+	if (!ASSERT_EQ(recvd, STRP_PKT_FULL_LEN, "recv_timeout(pre-data)") ||
-+	    !ASSERT_OK(memcmp(packet, rcv, STRP_PKT_FULL_LEN),
-+				"memcmp pre-data"))
-+		return -1;
-+	return 0;
-+}
-+
-+static struct test_sockmap_strp *sockmap_strp_init(int *out_map, bool pass,
-+						   bool need_parser)
-+{
-+	struct test_sockmap_strp *strp = NULL;
-+	int verdict, parser;
-+	int err;
-+
-+	strp = test_sockmap_strp__open_and_load();
-+	*out_map = bpf_map__fd(strp->maps.sock_map);
-+
-+	if (need_parser)
-+		parser = bpf_program__fd(strp->progs.prog_skb_parser_partial);
-+	else
-+		parser = bpf_program__fd(strp->progs.prog_skb_parser);
-+
-+	if (pass)
-+		verdict = bpf_program__fd(strp->progs.prog_skb_verdict_pass);
-+	else
-+		verdict = bpf_program__fd(strp->progs.prog_skb_verdict);
-+
-+	err = bpf_prog_attach(parser, *out_map, BPF_SK_SKB_STREAM_PARSER, 0);
-+	if (!ASSERT_OK(err, "bpf_prog_attach stream parser"))
-+		goto err;
-+
-+	err = bpf_prog_attach(verdict, *out_map, BPF_SK_SKB_STREAM_VERDICT, 0);
-+	if (!ASSERT_OK(err, "bpf_prog_attach stream verdict"))
-+		goto err;
-+
-+	return strp;
-+err:
-+	test_sockmap_strp__destroy(strp);
-+	return NULL;
-+}
-+
-+/* Dispatch packets to different socket by packet size:
-+ *
-+ *                      ------  ------
-+ *                     | pkt4 || pkt1 |... > remote socket
-+ *  ------ ------     / ------  ------
-+ * | pkt8 | pkt7 |...
-+ *  ------ ------     \ ------  ------
-+ *                     | pkt2 || pkt3 |... > local socket
-+ *                      ------  ------
-+ */
-+static void test_sockmap_strp_dispatch_pkt(int family, int sotype)
-+{
-+	int i, j, zero = 0, one = 1, recvd;
-+	int err, map;
-+	int c0 = -1, p0 = -1, c1 = -1, p1 = -1;
-+	struct test_sockmap_strp *strp = NULL;
-+	int test_cnt = 6;
-+	char rcv[10];
-+	struct {
-+		char	data[7];
-+		int	data_len;
-+		int	send_cnt;
-+		int	*receiver;
-+	} send_dir[2] = {
-+		/* data expected to deliver to local */
-+		{"llllll", 6, 0, &p0},
-+		/* data expected to deliver to remote */
-+		{"rrrrr",  5, 0, &c1}
-+	};
-+
-+	strp = sockmap_strp_init(&map, false, false);
-+	if (!ASSERT_TRUE(strp, "sockmap_strp_init"))
-+		return;
-+
-+	err = create_socket_pairs(family, sotype, &c0, &c1, &p0, &p1);
-+	if (!ASSERT_OK(err, "create_socket_pairs()"))
-+		goto out;
-+
-+	err = bpf_map_update_elem(map, &zero, &p0, BPF_NOEXIST);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem(p0)"))
-+		goto out_close;
-+
-+	err = bpf_map_update_elem(map, &one, &p1, BPF_NOEXIST);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem(p1)"))
-+		goto out_close;
-+
-+	err = setsockopt(c1, IPPROTO_TCP, TCP_NODELAY, &zero, sizeof(zero));
-+	if (!ASSERT_OK(err, "setsockopt(TCP_NODELAY)"))
-+		goto out_close;
-+
-+	/* deliver data with data size greater than 5 to local */
-+	strp->data->verdict_max_size = 5;
-+
-+	for (i = 0; i < test_cnt; i++) {
-+		int d = i % 2;
-+
-+		xsend(c0, send_dir[d].data, send_dir[d].data_len, 0);
-+		send_dir[d].send_cnt++;
-+	}
-+
-+	for (i = 0; i < 2; i++) {
-+		for (j = 0; j < send_dir[i].send_cnt; j++) {
-+			int expected = send_dir[i].data_len;
-+
-+			recvd = recv_timeout(*send_dir[i].receiver, rcv,
-+					     expected, MSG_DONTWAIT,
-+					     IO_TIMEOUT_SEC);
-+			if (!ASSERT_EQ(recvd, expected, "recv_timeout()"))
-+				goto out_close;
-+			if (!ASSERT_OK(memcmp(send_dir[i].data, rcv, recvd),
-+				       "memcmp(rcv)"))
-+				goto out_close;
-+		}
-+	}
-+out_close:
-+	close(c0);
-+	close(c1);
-+	close(p0);
-+	close(p1);
-+out:
-+	test_sockmap_strp__destroy(strp);
-+}
-+
-+/* We have multiple packets in one skb
-+ * ------------ ------------ ------------
-+ * |  packet1  |   packet2  |  ...
-+ * ------------ ------------ ------------
-+ */
-+static void test_sockmap_strp_multiple_pkt(int family, int sotype)
-+{
-+	int i, zero = 0;
-+	int sent, recvd, total;
-+	int err, map;
-+	int c = -1, p = -1;
-+	struct test_sockmap_strp *strp = NULL;
-+	char *snd = NULL, *rcv = NULL;
-+
-+	strp = sockmap_strp_init(&map, true, true);
-+	if (!ASSERT_TRUE(strp, "sockmap_strp_init"))
-+		return;
-+
-+	err = create_pair(family, sotype, &c, &p);
-+	if (err)
-+		goto out;
-+
-+	err = bpf_map_update_elem(map, &zero, &p, BPF_NOEXIST);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem(zero, p)"))
-+		goto out_close;
-+
-+	/* construct multiple packets in one buffer */
-+	total = test_packet_num * STRP_PKT_FULL_LEN;
-+	snd = malloc(total);
-+	rcv = malloc(total + 1);
-+	if (!ASSERT_TRUE(snd, "malloc(snd)") ||
-+	    !ASSERT_TRUE(rcv, "malloc(rcv)"))
-+		goto out_close;
-+
-+	for (i = 0; i < test_packet_num; i++) {
-+		memcpy(snd + i * STRP_PKT_FULL_LEN,
-+		       packet, STRP_PKT_FULL_LEN);
-+	}
-+
-+	sent = xsend(c, snd, total, 0);
-+	if (!ASSERT_EQ(sent, total, "xsend(c)"))
-+		goto out_close;
-+
-+	/* try to recv one more byte to avoid truncation check */
-+	recvd = recv_timeout(p, rcv, total + 1, MSG_DONTWAIT, IO_TIMEOUT_SEC);
-+	if (!ASSERT_EQ(recvd, total, "recv(rcv)"))
-+		goto out_close;
-+
-+	/* we sent TCP segment with multiple encapsulation
-+	 * then check whether packets are handled correctly
-+	 */
-+	if (!ASSERT_OK(memcmp(snd, rcv, total), "memcmp(snd, rcv)"))
-+		goto out_close;
-+
-+out_close:
-+	close(c);
-+	close(p);
-+	if (snd)
-+		free(snd);
-+	if (rcv)
-+		free(rcv);
-+out:
-+	test_sockmap_strp__destroy(strp);
-+}
-+
-+/* Test strparser with partial read */
-+static void test_sockmap_strp_partial_read(int family, int sotype)
-+{
-+	int zero = 0, recvd, off;
-+	int err, map;
-+	int c = -1, p = -1;
-+	struct test_sockmap_strp *strp = NULL;
-+	char rcv[STRP_PKT_FULL_LEN + 1] = "0";
-+
-+	strp = sockmap_strp_init(&map, true, true);
-+	if (!ASSERT_TRUE(strp, "sockmap_strp_init"))
-+		return;
-+
-+	err = create_pair(family, sotype, &c, &p);
-+	if (err)
-+		goto out;
-+
-+	/* sk_data_ready of 'p' will be replaced by strparser handler */
-+	err = bpf_map_update_elem(map, &zero, &p, BPF_NOEXIST);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem(zero, p)"))
-+		goto out_close;
-+
-+	/* 1.1 send partial head, 1 byte header left*/
-+	off = STRP_PKT_HEAD_LEN - 1;
-+	xsend(c, packet, off, 0);
-+	recvd = recv_timeout(p, rcv, sizeof(rcv), MSG_DONTWAIT, 1);
-+	if (!ASSERT_EQ(-1, recvd, "insufficient head, should no data recvd"))
-+		goto out_close;
-+
-+	/* 1.2 send remaining head and body */
-+	xsend(c, packet + off, STRP_PKT_FULL_LEN - off, 0);
-+	recvd = recv_timeout(p, rcv, sizeof(rcv), MSG_DONTWAIT, IO_TIMEOUT_SEC);
-+	if (!ASSERT_EQ(recvd, STRP_PKT_FULL_LEN, "should full data recvd"))
-+		goto out_close;
-+
-+	/* 2.1 send partial head, 1 byte header left */
-+	off = STRP_PKT_HEAD_LEN - 1;
-+	xsend(c, packet, off, 0);
-+
-+	/* 2.2 send remaining head and partial body, 1 byte body left */
-+	xsend(c, packet + off, STRP_PKT_FULL_LEN - off - 1, 0);
-+	off = STRP_PKT_FULL_LEN - 1;
-+	recvd = recv_timeout(p, rcv, sizeof(rcv), MSG_DONTWAIT, 1);
-+	if (!ASSERT_EQ(-1, recvd, "insufficient body, should no data read"))
-+		goto out_close;
-+
-+	/* 2.3 send remaining body */
-+	xsend(c, packet + off, STRP_PKT_FULL_LEN - off, 0);
-+	recvd = recv_timeout(p, rcv, sizeof(rcv), MSG_DONTWAIT, IO_TIMEOUT_SEC);
-+	if (!ASSERT_EQ(recvd, STRP_PKT_FULL_LEN, "should full data recvd"))
-+		goto out_close;
-+
-+out_close:
-+	close(c);
-+	close(p);
-+
-+out:
-+	test_sockmap_strp__destroy(strp);
-+}
-+
-+/* Test simple soket read/write with strparser + FIONREAD */
-+static void test_sockmap_strp_pass(int family, int sotype, bool fionread)
-+{
-+	int zero = 0, pkt_size = STRP_PKT_FULL_LEN, sent, recvd, avail;
-+	int err, map;
-+	int c = -1, p = -1;
-+	int test_cnt = 10, i;
-+	struct test_sockmap_strp *strp = NULL;
-+	char rcv[STRP_PKT_FULL_LEN + 1] = "0";
-+
-+	strp = sockmap_strp_init(&map, true, true);
-+	if (!ASSERT_TRUE(strp, "sockmap_strp_init"))
-+		return;
-+
-+	err = create_pair(family, sotype, &c, &p);
-+	if (err)
-+		goto out;
-+
-+	/* inject some data before bpf process, it should be read
-+	 * correctly because we check sk_receive_queue in
-+	 * tcp_bpf_recvmsg_parser()
-+	 */
-+	sent = xsend(c, packet, pkt_size, 0);
-+	if (!ASSERT_EQ(sent, pkt_size, "xsend(pre-data)"))
-+		goto out_close;
-+
-+	/* sk_data_ready of 'p' will be replaced by strparser handler */
-+	err = bpf_map_update_elem(map, &zero, &p, BPF_NOEXIST);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem(p)"))
-+		goto out_close;
-+
-+	/* consume previous data we injected */
-+	if (sockmap_strp_consume_pre_data(p))
-+		goto out_close;
-+
-+	/* Previously, we encountered issues such as deadlocks and
-+	 * sequence errors that resulted in the inability to read
-+	 * continuously. Therefore, we perform multiple iterations
-+	 * of testing here.
-+	 */
-+	for (i = 0; i < test_cnt; i++) {
-+		sent = xsend(c, packet, pkt_size, 0);
-+		if (!ASSERT_EQ(sent, pkt_size, "xsend(c)"))
-+			goto out_close;
-+
-+		recvd = recv_timeout(p, rcv, sizeof(rcv), MSG_DONTWAIT,
-+				     IO_TIMEOUT_SEC);
-+		if (!ASSERT_EQ(recvd, pkt_size, "recv_timeout(p)") ||
-+		    !ASSERT_OK(memcmp(packet, rcv, pkt_size),
-+				  "memcmp"))
-+			goto out_close;
-+	}
-+
-+	if (fionread) {
-+		sent = xsend(c, packet, pkt_size, 0);
-+		if (!ASSERT_EQ(sent, pkt_size, "second xsend(c)"))
-+			goto out_close;
-+
-+		err = ioctl(p, FIONREAD, &avail);
-+		if (!ASSERT_OK(err, "ioctl(FIONREAD) error") ||
-+		    !ASSERT_EQ(avail, pkt_size, "ioctl(FIONREAD)"))
-+			goto out_close;
-+
-+		recvd = recv_timeout(p, rcv, sizeof(rcv), MSG_DONTWAIT,
-+				     IO_TIMEOUT_SEC);
-+		if (!ASSERT_EQ(recvd, pkt_size, "second recv_timeout(p)") ||
-+		    !ASSERT_OK(memcmp(packet, rcv, pkt_size),
-+			      "second memcmp"))
-+			goto out_close;
-+	}
-+
-+out_close:
-+	close(c);
-+	close(p);
-+
-+out:
-+	test_sockmap_strp__destroy(strp);
-+}
-+
-+/* Test strparser with verdict mode */
-+static void test_sockmap_strp_verdict(int family, int sotype)
-+{
-+	int zero = 0, one = 1, sent, recvd, off;
-+	int err, map;
-+	int c0 = -1, p0 = -1, c1 = -1, p1 = -1;
-+	struct test_sockmap_strp *strp = NULL;
-+	char rcv[STRP_PKT_FULL_LEN + 1] = "0";
-+
-+	strp = sockmap_strp_init(&map, false, true);
-+	if (!ASSERT_TRUE(strp, "sockmap_strp_init"))
-+		return;
-+
-+	/* We simulate a reverse proxy server.
-+	 * When p0 receives data from c0, we forward it to c1.
-+	 * From c1's perspective, it will consider this data
-+	 * as being sent by p1.
-+	 */
-+	err = create_socket_pairs(family, sotype, &c0, &c1, &p0, &p1);
-+	if (!ASSERT_OK(err, "create_socket_pairs()"))
-+		goto out;
-+
-+	err = bpf_map_update_elem(map, &zero, &p0, BPF_NOEXIST);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem(p0)"))
-+		goto out_close;
-+
-+	err = bpf_map_update_elem(map, &one, &p1, BPF_NOEXIST);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem(c1)"))
-+		goto out_close;
-+
-+	sent = xsend(c0, packet, STRP_PKT_FULL_LEN, 0);
-+	if (!ASSERT_EQ(sent, STRP_PKT_FULL_LEN, "xsend(c0)"))
-+		goto out_close;
-+
-+	recvd = recv_timeout(c1, rcv, sizeof(rcv), MSG_DONTWAIT,
-+			     IO_TIMEOUT_SEC);
-+	if (!ASSERT_EQ(recvd, STRP_PKT_FULL_LEN, "recv_timeout(p1)") ||
-+	    !ASSERT_OK(memcmp(packet, rcv, STRP_PKT_FULL_LEN),
-+			  "received data does not match the sent data"))
-+		goto out_close;
-+
-+	/* send again to ensure the stream is functioning correctly. */
-+	sent = xsend(c0, packet, STRP_PKT_FULL_LEN, 0);
-+	if (!ASSERT_EQ(sent, STRP_PKT_FULL_LEN, "second xsend(c0)"))
-+		goto out_close;
-+
-+	/* partial read */
-+	off = STRP_PKT_FULL_LEN / 2;
-+	recvd = recv_timeout(c1, rcv, off, MSG_DONTWAIT,
-+			     IO_TIMEOUT_SEC);
-+	recvd += recv_timeout(c1, rcv + off, sizeof(rcv) - off, MSG_DONTWAIT,
-+			      IO_TIMEOUT_SEC);
-+
-+	if (!ASSERT_EQ(recvd, STRP_PKT_FULL_LEN, "partial recv_timeout(c1)") ||
-+	    !ASSERT_OK(memcmp(packet, rcv, STRP_PKT_FULL_LEN),
-+			  "partial received data does not match the sent data"))
-+		goto out_close;
-+
-+out_close:
-+	close(c0);
-+	close(c1);
-+	close(p0);
-+	close(p1);
-+out:
-+	test_sockmap_strp__destroy(strp);
-+}
-+
-+void test_sockmap_strp(void)
-+{
-+	if (test__start_subtest("sockmap strp tcp pass"))
-+		test_sockmap_strp_pass(AF_INET, SOCK_STREAM, false);
-+	if (test__start_subtest("sockmap strp tcp v6 pass"))
-+		test_sockmap_strp_pass(AF_INET6, SOCK_STREAM, false);
-+	if (test__start_subtest("sockmap strp tcp pass fionread"))
-+		test_sockmap_strp_pass(AF_INET, SOCK_STREAM, true);
-+	if (test__start_subtest("sockmap strp tcp v6 pass fionread"))
-+		test_sockmap_strp_pass(AF_INET6, SOCK_STREAM, true);
-+	if (test__start_subtest("sockmap strp tcp verdict"))
-+		test_sockmap_strp_verdict(AF_INET, SOCK_STREAM);
-+	if (test__start_subtest("sockmap strp tcp v6 verdict"))
-+		test_sockmap_strp_verdict(AF_INET6, SOCK_STREAM);
-+	if (test__start_subtest("sockmap strp tcp partial read"))
-+		test_sockmap_strp_partial_read(AF_INET, SOCK_STREAM);
-+	if (test__start_subtest("sockmap strp tcp multiple packets"))
-+		test_sockmap_strp_multiple_pkt(AF_INET, SOCK_STREAM);
-+	if (test__start_subtest("sockmap strp tcp dispatch"))
-+		test_sockmap_strp_dispatch_pkt(AF_INET, SOCK_STREAM);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/test_sockmap_strp.c b/tools/testing/selftests/bpf/progs/test_sockmap_strp.c
-new file mode 100644
-index 000000000000..dde3d5bec515
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/test_sockmap_strp.c
-@@ -0,0 +1,53 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/bpf.h>
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_endian.h>
-+int verdict_max_size = 10000;
-+struct {
-+	__uint(type, BPF_MAP_TYPE_SOCKMAP);
-+	__uint(max_entries, 20);
-+	__type(key, int);
-+	__type(value, int);
-+} sock_map SEC(".maps");
-+
-+SEC("sk_skb/stream_verdict")
-+int prog_skb_verdict(struct __sk_buff *skb)
-+{
-+	__u32 one = 1;
-+
-+	if (skb->len > verdict_max_size)
-+		return SK_PASS;
-+
-+	return bpf_sk_redirect_map(skb, &sock_map, one, 0);
-+}
-+
-+SEC("sk_skb/stream_verdict")
-+int prog_skb_verdict_pass(struct __sk_buff *skb)
-+{
-+	return SK_PASS;
-+}
-+
-+SEC("sk_skb/stream_parser")
-+int prog_skb_parser(struct __sk_buff *skb)
-+{
-+	return skb->len;
-+}
-+
-+SEC("sk_skb/stream_parser")
-+int prog_skb_parser_partial(struct __sk_buff *skb)
-+{
-+	/* agreement with the test program on a 4-byte size header
-+	 * and 6-byte body.
-+	 */
-+	if (skb->len < 4) {
-+		/* need more header to determine full length */
-+		return 0;
-+	}
-+	/* return full length decoded from header.
-+	 * the return value may be larger than skb->len which
-+	 * means framework must wait body coming.
-+	 */
-+	return 10;
-+}
-+
-+char _license[] SEC("license") = "GPL";
--- 
-2.43.5
-
+T24gV2VkLCAyMDI1LTAxLTA4IGF0IDA3OjUyIC0wODAwLCBKYWt1YiBLaWNpbnNraSB3cm90ZToN
+Cj4gRVhURVJOQUwgRU1BSUw6IERvIG5vdCBjbGljayBsaW5rcyBvciBvcGVuIGF0dGFjaG1lbnRz
+IHVubGVzcyB5b3UNCj4ga25vdyB0aGUgY29udGVudCBpcyBzYWZlDQo+IA0KPiBXb29qdW5nIEh1
+aCBzZWVtcyB0byBoYXZlIG9ubHkgcmVwbGllZCB0byB0aGUgbGlzdCAzNSB0aW1lcw0KPiBpbiB0
+aGUgbGFzdCA1IHllYXJzLCBhbmQgZGlkbid0IHByb3ZpZGUgYW55IHJldmlld3MgaW4gMyB5ZWFy
+cy4NCj4gVGhlIExBTjc4WFggZHJpdmVyIGhhcyBzZWVuIHF1aXRlIGEgYml0IG9mIGFjdGl2aXR5
+IGxhdGVseS4NCj4gDQo+IGdpdGRtIG1pc3NpbmdtYWludHMgc2F5czoNCj4gDQo+IFN1YnN5c3Rl
+bSBVU0IgTEFONzhYWCBFVEhFUk5FVCBEUklWRVINCj4gICBDaGFuZ2VzIDM1IC8gOTEgKDM4JSkN
+Cj4gICAoTm8gYWN0aXZpdHkpDQo+ICAgVG9wIHJldmlld2VyczoNCj4gICAgIFsyM106IGFuZHJl
+d0BsdW5uLmNoDQo+ICAgICBbM106IGhvcm1zQGtlcm5lbC5vcmcNCj4gICAgIFsyXTogbWF0ZXVz
+ei5wb2xjaGxvcGVrQGludGVsLmNvbQ0KPiAgIElOQUNUSVZFIE1BSU5UQUlORVIgV29vanVuZyBI
+dWggPHdvb2p1bmcuaHVoQG1pY3JvY2hpcC5jb20+DQo+IA0KPiBNb3ZlIFdvb2p1bmcgdG8gQ1JF
+RElUUyBhbmQgYWRkIG5ldyBtYWludGFpbmVycyB3aG8gYXJlIG1vcmUNCj4gbGlrZWx5IHRvIHJl
+dmlldyBMQU43OHh4IHBhdGNoZXMuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBKYWt1YiBLaWNpbnNr
+aSA8a3ViYUBrZXJuZWwub3JnPg0KPiAtLS0NCj4gdjI6DQo+ICAtIGFkZCBuZXcgbWFpbnRhaW5l
+cnMgaW5zdGVhZCBvZiBPcnBoYW5pbmcNCj4gDQo+IGNjOiB3b29qdW5nLmh1aEBtaWNyb2NoaXAu
+Y29tDQo+IGNjOiB0aGFuZ2FyYWouc0BtaWNyb2NoaXAuY29tDQo+IGNjOiByZW5nYXJhamFuLnNA
+bWljcm9jaGlwLmNvbQ0KPiAtLS0NCj4gIENSRURJVFMgICAgIHwgNCArKysrDQo+ICBNQUlOVEFJ
+TkVSUyB8IDMgKystDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgMSBkZWxl
+dGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL0NSRURJVFMgYi9DUkVESVRTDQo+IGluZGV4IDJh
+NWY1ZjQ5MjY5Zi4uN2E1MzMyOTA3ZWYwIDEwMDY0NA0KPiAtLS0gYS9DUkVESVRTDQo+ICsrKyBi
+L0NSRURJVFMNCj4gQEAgLTE4MTYsNiArMTgxNiwxMCBAQCBEOiBBdXRob3IvbWFpbnRhaW5lciBv
+ZiBtb3N0IERSTSBkcml2ZXJzDQo+IChlc3BlY2lhbGx5IEFUSSwgTUdBKQ0KPiAgRDogQ29yZSBE
+Uk0gdGVtcGxhdGVzLCBnZW5lcmFsIERSTSBhbmQgM0QtcmVsYXRlZCBoYWNraW5nDQo+ICBTOiBO
+byBmaXhlZCBhZGRyZXNzDQo+IA0KPiArTjogV29vanVuZyBIdWgNCj4gK0U6IHdvb2p1bmcuaHVo
+QG1pY3JvY2hpcC5jb20NCj4gK0Q6IE1pY3JvY2hpcCBMQU43OFhYIFVTQiBFdGhlcm5ldCBkcml2
+ZXINCj4gKw0KPiAgTjogS2VubiBIdW1ib3JnDQo+ICBFOiBrZW5uQHdvbWJhdC5pZQ0KPiAgRDog
+TW9kcyB0byBsb29wIGRldmljZSB0byBzdXBwb3J0IHNwYXJzZSBiYWNraW5nIGZpbGVzDQo+IGRp
+ZmYgLS1naXQgYS9NQUlOVEFJTkVSUyBiL01BSU5UQUlORVJTDQo+IGluZGV4IDE4OGMwOGNkMTZk
+ZS4uZjJjYWNlNzMxOTRlIDEwMDY0NA0KPiAtLS0gYS9NQUlOVEFJTkVSUw0KPiArKysgYi9NQUlO
+VEFJTkVSUw0KPiBAQCAtMjQyNjEsNyArMjQyNjEsOCBAQA0KPiBGOiAgICAgIERvY3VtZW50YXRp
+b24vZGV2aWNldHJlZS9iaW5kaW5ncy91c2IvbnhwLGlzcDE3NjAueWFtbA0KPiAgRjogICAgIGRy
+aXZlcnMvdXNiL2lzcDE3NjAvKg0KPiANCj4gIFVTQiBMQU43OFhYIEVUSEVSTkVUIERSSVZFUg0K
+PiAtTTogICAgIFdvb2p1bmcgSHVoIDx3b29qdW5nLmh1aEBtaWNyb2NoaXAuY29tPg0KPiArTTog
+ICAgIFRoYW5nYXJhaiBTYW15bmF0aGFuIDxUaGFuZ2FyYWouU0BtaWNyb2NoaXAuY29tPg0KPiAr
+TTogICAgIFJlbmdhcmFqYW4gU3VuZGFyYXJhamFuIDxSZW5nYXJhamFuLlNAbWljcm9jaGlwLmNv
+bT4NCj4gIE06ICAgICBVTkdMaW51eERyaXZlckBtaWNyb2NoaXAuY29tDQo+ICBMOiAgICAgbmV0
+ZGV2QHZnZXIua2VybmVsLm9yZw0KPiAgUzogICAgIE1haW50YWluZWQNCj4gLS0NCj4gMi40Ny4x
+DQo+IA0KQWNrZWQtYnk6IFJlbmdhcmFqYW4gU3VuZGFyYXJhamFuIDxyZW5nYXJhamFuLnNAbWlj
+cm9jaGlwLmNvbT4NCg==
