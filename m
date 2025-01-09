@@ -1,82 +1,73 @@
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A8B21B192
-	for <netdev@vger.kernel.org>; Thu,  9 Jan 2025 16:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F99222569;
+	Thu,  9 Jan 2025 16:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736440519; cv=none; b=mV/cxvtCn6IoGHqNDxb1B7TiWSqZeV9DOUKyhIo0vSoYVdoGhTmLifERg/SOWtpeZHlHOfVpNOMcLZgqRylilRK6st3jn28xbYx0K/YPNIdPjMhMoHlxsV1OgBlDMEQyrml73eEBISMqPg1XC3cUyP0bWERmLIf+Sr+IK+4c62Q=
+	t=1736440566; cv=none; b=RrqXe597uKCUQ4WKzCPf8CL2zUT4JtTv5n+8rhzv+oh0YGeLaF/8SKYIusAlIHEluXUst+bRPdDOTfAqfePOJWmFzVbml09uy1QgGRX63ID+rLRbSbgQ5OcAcdKNaDolhi3qTyspsupRfKeH+UIFa8TKbfE2ej+JenmqyT1dQQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736440519; c=relaxed/simple;
-	bh=ANbjk8gqhN0il2QO5ixDt4BuDf3BmOKAImjLOA2m5+0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Zi1FbP4Od9b2CVQwvx+EhMKkx4UGYZDiRM1SV//8q0D3ZhwMikqPjDvvgHlYU3yEPbvh/jklb6JvXXb5HMdr/GHSYM0xLABpda3zGWxsGT8KR0fDxBYPm/4rF0WJWbDXng73uhJiZk+bvZCvllAuQIzh+hhCpPwnv1jx3roLhNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=w1CovmHm; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+	s=arc-20240116; t=1736440566; c=relaxed/simple;
+	bh=jU3RypXovbkii7FU1sbotxWRcH9k7T1/3ojFfFsJa0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hImkMrBoL6yBIutKmiGGz6+7rLRsm77IXOPURZHbHeo3IdC7Xlgo+H/RcY1uccsJfxjl96xLQtDwy6rv/ZqEruklUF7+kOrG8DdeG920b1XnNenjNj/a+5aw/AlHpLtNM8+DQglEIbZv+d6W9CSPZJKMvy0ZdmC7Ax+rTEM3tCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K0vZAMXC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="w1CovmHm"
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1736440514; bh=ANbjk8gqhN0il2QO5ixDt4BuDf3BmOKAImjLOA2m5+0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=w1CovmHm+9bvL/zZ07yGdFcwZ1dyVGwl3B+98WXgP83QWcN3SEE49S8bOurAIKqRR
-	 9B7U69aDFWjVFFnvQPWrgKsT3SDVpJupIFrIqipzixAdTvg0dDpPgBeI340aKJaMKc
-	 cOu0VSt0A8TID14Gp+iUwr8rOVgKIt9pPNlXF/mYVPGXNyeZGStJz8YNxhSmuE7wZd
-	 md2R3qJDq9cXB+UmaihGe+ApZpiM5CYk9GIrwoNfJKGAfB+sBk2khEjhUSMIn23bnK
-	 VeptjQMywy4XRTGPp/J4GNPWsdUWYeYSsJBP/nzPPTGCZiM/gn1QSVPvj1UfboChdN
-	 jfOIxInzjanbg==
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, Jamal Hadi Salim <jhs@mojatatu.com>,
- Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
- syzbot+f63600d288bfb7057424@syzkaller.appspotmail.com, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Simon Horman
- <horms@kernel.org>, cake@lists.bufferbloat.net, netdev@vger.kernel.org
-Subject: Re: [PATCH net v2] sched: sch_cake: add bounds checks to host bulk
- flow fairness counts
-In-Reply-To: <20250109081811.01b7bad1@kernel.org>
-References: <20250107120105.70685-1-toke@redhat.com>
- <fb7a1324-41c6-4e10-a6a3-f16d96f44f65@redhat.com> <87plkwi27e.fsf@toke.dk>
- <11915c70-ec5e-4d94-b890-f07f41094e2c@redhat.com> <87ikqohswh.fsf@toke.dk>
- <20250109081811.01b7bad1@kernel.org>
-Date: Thu, 09 Jan 2025 17:35:14 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87frlshrnh.fsf@toke.dk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K0vZAMXC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D73C4CED3;
+	Thu,  9 Jan 2025 16:36:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736440566;
+	bh=jU3RypXovbkii7FU1sbotxWRcH9k7T1/3ojFfFsJa0I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=K0vZAMXCMDfwNFpDIttwYNvzv/Evr02hJiaBlveeXLMmK5ubZovHlbn+isIVjzJxb
+	 low1xU4JRif4413Tvq00TG3uVBdbfHGkYPiL0QaYpP/4UotrqisCGG4o++k/tvkagq
+	 Sl0JXgXh4VtsPa3nHXkLDzDi7BzLero2AEWZ1Tx8p/TBTI9Mq5/UjmnFhgTmt9GmmQ
+	 RcDQeaKjsbrFVye2QUxqfoAR/uvjNa5wt3HxNaXW0Vv2KhwRPWrkllvSGnbv4uVi9B
+	 P+t3csxGUgDXpKtRh2xhy6Cw3lzQzFjL9ASxo4nDQzf8Z68oCsS7iRDbdTCFHSOHnu
+	 2DwWILLpSvpUw==
+Date: Thu, 9 Jan 2025 08:36:04 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Donald Hunter <donald.hunter@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Chuck Lever
+ <chuck.lever@oracle.com>, Neil Brown <neilb@suse.de>, Olga Kornievskaia
+ <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey
+ <tom@talpey.com>, Trond Myklebust <trondmy@kernel.org>, Anna Schumaker
+ <anna@kernel.org>, Scott Mayhew <smayhew@redhat.com>, Yongcheng Yang
+ <yoyang@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-nfs@vger.kernel.org
+Subject: Re: [PATCH] lockd: add netlink control interface
+Message-ID: <20250109083604.77ffe61d@kernel.org>
+In-Reply-To: <20250108-lockd-nl-v1-1-b39f89ae0f20@kernel.org>
+References: <20250108-lockd-nl-v1-1-b39f89ae0f20@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Jakub Kicinski <kuba@kernel.org> writes:
+On Wed, 08 Jan 2025 16:00:15 -0500 Jeff Layton wrote:
+> The legacy rpc.nfsd tool will set the nlm_grace_period if the NFSv4
+> grace period is set. nfsdctl is missing this functionality, so add a new
+> netlink control interface for lockd that it can use. For now, it only
+> allows setting the grace period, and the tcp and udp listener ports.
+> 
+> lockd currently uses module parameters and sysctls for configuration, so
+> all of its settings are global. With this change, lockd now tracks these
+> values on a per-net-ns basis. It will only fall back to using the global
+> values if any of them are 0.
+> 
+> Finally, as a backward compatability measure, if updating the nlm
+> settings in the init_net namespace, also update the legacy global
+> values to match.
 
-> On Thu, 09 Jan 2025 17:08:14 +0100 Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> >> I guess I should have mentioned in the commit message that this was
->> >> deliberate. Since it seems you'll be editing that anyway (cf the abov=
-e),
->> >> how about adding a paragraph like:
->> >>=20
->> >>  As part of this change, the flow quantum calculation is consolidated
->> >>  into a helper function, which means that the dithering applied to the
->> >>  host load scaling is now applied both in the DRR rotation and when a
->> >>  sparse flow's quantum is first initiated. The only user-visible effe=
-ct
->> >>  of this is that the maximum packet size that can be sent while a flow
->> >>  stays sparse will now vary with +/- one byte in some cases. This sho=
-uld
->> >>  not make a noticeable difference in practice, and thus it's not worth
->> >>  complicating the code to preserve the old behaviour.=20=20
->> >
->> > It's in Jakub's hands now, possibly he could prefer a repost to reduce
->> > the maintainer's overhead.=20=20
->>=20
->> Alright, sure, I'll respin :)
->
-> Hold on, I'll do it :)
+Netlinky stuff LGTM, FWIW!
 
-Crossed streams, but thanks! :)
-
--Toke
+To encourage more doc: properties I should point out that we
+render the specs on docs.kernel.org, now ;)
+https://docs.kernel.org/next/networking/netlink_spec/nfsd.html
