@@ -1,228 +1,129 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892332153E0
+	for <netdev@vger.kernel.org>; Thu,  9 Jan 2025 09:43:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736415815; cv=none; b=KGAFNngP8bnFxY41B460zoPvHSdyoMXEOwfUMsK0tR5A2hlh519DdMBYj1PchiRBsl2FwFcOg+FO9iJHdYvuRR2AkXesfV3UVv5yKqve1a5oFKMHVVNxY2dkA+N/wOdc9WHyIENOQZBrBLmmLDfXL99ewiSSVAR13koqGCUf+gk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736415815; c=relaxed/simple;
+	bh=V4jNcDJNzdezBGZFnjkmOcQqbdaq64T0RKcEAY6oRnY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n+jk5y3sHKPsRDbMGaoeNnb5fOPcgoJWbPs7MFLx3/iyR5L6UEsxWrBnynkwI+yz4LwmfNim5U5YnRnHUjmtKIlMkHRWR9DVGfu8/uxaPF7y97Vsp5YDZBhfmzU124CLQFpE1W+7HHspQ5qfJ10hgG6bGJishJVHbUgYiYHjLnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=yUvnGofU; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="yUvnGofU"
+Received: from localhost (localhost [127.0.0.1])
+	by a.mx.secunet.com (Postfix) with ESMTP id B71B820882;
+	Thu,  9 Jan 2025 10:43:30 +0100 (CET)
+X-Virus-Scanned: by secunet
+Received: from a.mx.secunet.com ([127.0.0.1])
+	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id aP076sZrCNnk; Thu,  9 Jan 2025 10:43:30 +0100 (CET)
+Received: from cas-essen-02.secunet.de (rl2.secunet.de [10.53.40.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24E62594BA
-	for <netdev@vger.kernel.org>; Thu,  9 Jan 2025 09:38:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736415499; cv=none; b=MG7z3VWtd9hO2LJCgZfPoMeaTlECeJyFsMsI+7grVXkoDTAx0VnCpZ3kpwL2LBbbhGjt+yZQ+Q8+/RhutP4oPfS9nC/V3SwWqkwwquviwpNZ2KZDb6cbu0TXC31PkKaaMYNQmcC9ccQgwC3rHLeXT/vQDK9buWekM+9H5fj4wtU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736415499; c=relaxed/simple;
-	bh=Mf8o7lroOT1imCTt2bwlE12K0z806yPl+dcKb86wiOg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OnKo3ssgWoaQhzpoJZQlj/jbbDqL8bPiycIdFI9GtIgu6zTT0SzKzmOC5HyrBOtqx/uhxQvlmBZ0vkfgKrPex8cC98G9VUYrVgWPhnMib4IYMJef4cADfuiQFVSLf7icULwbBEJ+y/7sXTrhjEw78bDM6RVltyCunldEfHVF2s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com; spf=pass smtp.mailfrom=daynix.com; dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b=FQgZAh0A; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=daynix.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b="FQgZAh0A"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2164b1f05caso10131305ad.3
-        for <netdev@vger.kernel.org>; Thu, 09 Jan 2025 01:38:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736415496; x=1737020296; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iX5Xv7vZXmp6Diw4dhkXM/NBpxHnqibMmwyNh801U+c=;
-        b=FQgZAh0AaMVrQgZ8bguWTv62TPN4AXuQrBKi0vXwfZSilwTTsV3PU3zYVpJ5ZhNHqO
-         ApT7x04fomqwmru9eysocHk5eBlWPiW1MjUqIeTpQQeBg1Q/sA9U2qP8ZmWUzQziiSek
-         SHORWixaV3Rat0D98HXSI17BIGMBmLahXr3XQHbmuvirQCAq2kVP7jScJaiM+vQgM9UV
-         D1Ark3iiW6P/Z7rCywAMzyr3MBs6c5YJV2Po/Vd9wayMTuXbI82hssme4h+Ap1EB6UYd
-         UOd6KZkS63tDhP9DjJqeW7QZvr6qsLMl9Vm21nNwc///EgjEBfrSq60x3nN/xnsSq6FX
-         1hDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736415496; x=1737020296;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iX5Xv7vZXmp6Diw4dhkXM/NBpxHnqibMmwyNh801U+c=;
-        b=kqpwo7n+Gczr7qp1e1IjBvKcox+Jx/WJsNDtnx5rh028fofVYP2HaIy+ROecUGEJ13
-         snhWPCzfaiG7ZfSLUUDMmIQe3NdupWugDFomtUxEiMoQkLzXmjFTQblzsiNDroMnd2BH
-         j/E3N3DgmrhSXfspbxKhe3aAycDtWTRAX+sEgBinlxEI2mrZlJd0I3y6DYMa2qYI8b6f
-         eQVh+QwUZStSFs6ut0Xt3BdZFR4w7Xjf6V8pqgHtoU+kIQJ6hli/VvXCx4U/OQfbFiA1
-         /vTxms9zZ43gMiytgjf0FIDZwZdAGm68fFoKwLhdKkV877YM3Zg8sytn87tDcBQNzHD4
-         kRtw==
-X-Forwarded-Encrypted: i=1; AJvYcCVb6XuY3YnPWhsPCf/N3flqJmGOIVufGDfqlz3R8QILqJlupxDceBD6l6McIxUYIaZjo+X3ZUs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWq5MwnrJlx1OFi+E/8sEQ4+/2wKKUGIxIsnuvX+NzQhOFPHQq
-	WLNA4kd5dJZEmVlKVZUcx2X6bLjBgYAzr4fxmui7Sin42TBm3l0bIOGfKGvTabZRH2bsAgG0woE
-	6KFU=
-X-Gm-Gg: ASbGnctwqp04RjRbAIK1A4sQ3DBMZP2SMwBzeC/ykHQ/mnYR/KyjW542TJdZGbNSmJg
-	B0gv6dcUjQ+Hf1JVFf3yrz/XQ1g8FKGxPLZg6jTD2AX2hS8HzvRZTQ2/J9aDybXG5D3bqHBtqCE
-	tn+Zl5pytrdOH4/USc7JSTjsBhGxR5t7d10JCe82MOMVuEHdnenLCaqECVgLSDwYPbpfzOV2/BL
-	vtmSH/sYLvSEYxj6mY9jFJN3aH4SNlFli4Zg0br6JtIdihPPYgwxplV3OAxdiuovL0=
-X-Google-Smtp-Source: AGHT+IE6uJuEESeHnIQxeeue01pEKjS62LqgqXa6Hf+8Q13I/VJgPMpbucR025bUQAgc88TrZ6Nz2A==
-X-Received: by 2002:a17:903:1251:b0:215:9894:5670 with SMTP id d9443c01a7336-21a83f591cemr79565855ad.16.1736415496269;
-        Thu, 09 Jan 2025 01:38:16 -0800 (PST)
-Received: from [157.82.203.37] ([157.82.203.37])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a917687c0sm8556475ad.17.2025.01.09.01.38.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jan 2025 01:38:15 -0800 (PST)
-Message-ID: <ad580d7b-2bd1-401e-bb7b-b67ec943918f@daynix.com>
-Date: Thu, 9 Jan 2025 18:38:10 +0900
+	by a.mx.secunet.com (Postfix) with ESMTPS id 2045420704;
+	Thu,  9 Jan 2025 10:43:30 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 2045420704
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1736415810;
+	bh=HpkemuLHsdms3DsjaSH8Q0PFOjDwH2HIy7eUdLTkpqA=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=yUvnGofUh8SSRyg+9Jz9kSuorlAlRbMzNjtzl9JfBI/FMWqZCCf+zv35V/tRiPP41
+	 zAAio2b7sxe1PqPEQ338yallnPbKdSgBkYR540ASL/IKrIePz5wF21F87IvPJxVkMo
+	 o9sSFoDPgTwtqFP9RANkUSEEP6gwBHt7oyQ4rKvVegT+y3PFWj6FlRIVrQCexQmVl2
+	 XJkhsJIRE6pytp7RO5hvhU2pQ4+itP3S9vKIUuW3tRbIpPibKG/YuyUCaRHfBdYSio
+	 X2IO3URjGhjQNKAmnMiR2IY2haBJ/DrUI2MVBDDiAZyIIWL0ivjClmqx0HJl3TwFmq
+	 NtCe7WWoU3odQ==
+Received: from mbx-essen-02.secunet.de (10.53.40.198) by
+ cas-essen-02.secunet.de (10.53.40.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 9 Jan 2025 10:43:29 +0100
+Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
+ (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 9 Jan
+ 2025 10:43:29 +0100
+Received: by gauss2.secunet.de (Postfix, from userid 1000)
+	id 83D493183E41; Thu,  9 Jan 2025 10:43:29 +0100 (CET)
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
+	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
+Subject: [PATCH 02/17] include: uapi: protocol number and packet structs for AGGFRAG in ESP
+Date: Thu, 9 Jan 2025 10:43:06 +0100
+Message-ID: <20250109094321.2268124-3-steffen.klassert@secunet.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250109094321.2268124-1-steffen.klassert@secunet.com>
+References: <20250109094321.2268124-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] tun: Set num_buffers for virtio 1.0
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Jason Wang <jasowang@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- Shuah Khan <shuah@kernel.org>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux-foundation.org, linux-kselftest@vger.kernel.org,
- Yuri Benditovich <yuri.benditovich@daynix.com>,
- Andrew Melnychenko <andrew@daynix.com>,
- Stephen Hemminger <stephen@networkplumber.org>, gur.stavi@huawei.com,
- devel@daynix.com
-References: <20250109-tun-v2-0-388d7d5a287a@daynix.com>
- <20250109-tun-v2-3-388d7d5a287a@daynix.com>
- <20250109023144-mutt-send-email-mst@kernel.org>
- <20250109023829-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20250109023829-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
+ mbx-essen-02.secunet.de (10.53.40.198)
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-On 2025/01/09 16:40, Michael S. Tsirkin wrote:
-> On Thu, Jan 09, 2025 at 02:32:25AM -0500, Michael S. Tsirkin wrote:
->> On Thu, Jan 09, 2025 at 03:58:45PM +0900, Akihiko Odaki wrote:
->>> The specification says the device MUST set num_buffers to 1 if
->>> VIRTIO_NET_F_MRG_RXBUF has not been negotiated.
->>>
->>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>
->>
->> How do we know this is v1 and not v0? Confused.
-> 
-> Ah I got it, you assume userspace will over-write it
-> if VIRTIO_NET_F_MRG_RXBUF is set.
-> If we are leaving this up to userspace, why not let it do
-> it always?
+From: Christian Hopps <chopps@labn.net>
 
-tun may be used with vhost_net, which does not set the field.
+Add the RFC assigned IP protocol number for AGGFRAG.
+Add the on-wire basic and congestion-control IP-TFS packet headers.
 
-> 
->>> ---
->>>   drivers/net/tap.c      |  2 +-
->>>   drivers/net/tun.c      |  6 ++++--
->>>   drivers/net/tun_vnet.c | 14 +++++++++-----
->>>   drivers/net/tun_vnet.h |  4 ++--
->>>   4 files changed, 16 insertions(+), 10 deletions(-)
->>>
->>> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
->>> index 60804855510b..fe9554ee5b8b 100644
->>> --- a/drivers/net/tap.c
->>> +++ b/drivers/net/tap.c
->>> @@ -713,7 +713,7 @@ static ssize_t tap_put_user(struct tap_queue *q,
->>>   	int total;
->>>   
->>>   	if (q->flags & IFF_VNET_HDR) {
->>> -		struct virtio_net_hdr vnet_hdr;
->>> +		struct virtio_net_hdr_v1 vnet_hdr;
->>>   
->>>   		vnet_hdr_len = READ_ONCE(q->vnet_hdr_sz);
->>>   
->>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
->>> index dbf0dee92e93..f211d0580887 100644
->>> --- a/drivers/net/tun.c
->>> +++ b/drivers/net/tun.c
->>> @@ -1991,7 +1991,9 @@ static ssize_t tun_put_user_xdp(struct tun_struct *tun,
->>>   	size_t total;
->>>   
->>>   	if (tun->flags & IFF_VNET_HDR) {
->>> -		struct virtio_net_hdr gso = { 0 };
->>> +		struct virtio_net_hdr_v1 gso = {
->>> +			.num_buffers = __virtio16_to_cpu(true, 1)
->>> +		};
->>>   
->>>   		vnet_hdr_sz = READ_ONCE(tun->vnet_hdr_sz);
->>>   		ret = tun_vnet_hdr_put(vnet_hdr_sz, iter, &gso);
->>> @@ -2044,7 +2046,7 @@ static ssize_t tun_put_user(struct tun_struct *tun,
->>>   	}
->>>   
->>>   	if (vnet_hdr_sz) {
->>> -		struct virtio_net_hdr gso;
->>> +		struct virtio_net_hdr_v1 gso;
->>>   
->>>   		ret = tun_vnet_hdr_from_skb(tun->flags, tun->dev, skb, &gso);
->>>   		if (ret < 0)
->>> diff --git a/drivers/net/tun_vnet.c b/drivers/net/tun_vnet.c
->>> index ffb2186facd3..a7a7989fae56 100644
->>> --- a/drivers/net/tun_vnet.c
->>> +++ b/drivers/net/tun_vnet.c
->>> @@ -130,15 +130,17 @@ int tun_vnet_hdr_get(int sz, unsigned int flags, struct iov_iter *from,
->>>   EXPORT_SYMBOL_GPL(tun_vnet_hdr_get);
->>>   
->>>   int tun_vnet_hdr_put(int sz, struct iov_iter *iter,
->>> -		     const struct virtio_net_hdr *hdr)
->>> +		     const struct virtio_net_hdr_v1 *hdr)
->>>   {
->>> +	int content_sz = MIN(sizeof(*hdr), sz);
->>> +
->>>   	if (iov_iter_count(iter) < sz)
->>>   		return -EINVAL;
->>>   
->>> -	if (copy_to_iter(hdr, sizeof(*hdr), iter) != sizeof(*hdr))
->>> +	if (copy_to_iter(hdr, content_sz, iter) != content_sz)
->>>   		return -EFAULT;
->>>   
->>> -	if (iov_iter_zero(sz - sizeof(*hdr), iter) != sz - sizeof(*hdr))
->>> +	if (iov_iter_zero(sz - content_sz, iter) != sz - content_sz)
->>>   		return -EFAULT;
->>>   
->>>   	return 0;
->>> @@ -154,11 +156,11 @@ EXPORT_SYMBOL_GPL(tun_vnet_hdr_to_skb);
->>>   
->>>   int tun_vnet_hdr_from_skb(unsigned int flags, const struct net_device *dev,
->>>   			  const struct sk_buff *skb,
->>> -			  struct virtio_net_hdr *hdr)
->>> +			  struct virtio_net_hdr_v1 *hdr)
->>>   {
->>>   	int vlan_hlen = skb_vlan_tag_present(skb) ? VLAN_HLEN : 0;
->>>   
->>> -	if (virtio_net_hdr_from_skb(skb, hdr,
->>> +	if (virtio_net_hdr_from_skb(skb, (struct virtio_net_hdr *)hdr,
->>>   				    tun_vnet_is_little_endian(flags), true,
->>>   				    vlan_hlen)) {
->>>   		struct skb_shared_info *sinfo = skb_shinfo(skb);
->>> @@ -176,6 +178,8 @@ int tun_vnet_hdr_from_skb(unsigned int flags, const struct net_device *dev,
->>>   		return -EINVAL;
->>>   	}
->>>   
->>> +	hdr->num_buffers = 1;
->>> +
->>>   	return 0;
->>>   }
->>>   EXPORT_SYMBOL_GPL(tun_vnet_hdr_from_skb);
->>> diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
->>> index 2dfdbe92bb24..d8fd94094227 100644
->>> --- a/drivers/net/tun_vnet.h
->>> +++ b/drivers/net/tun_vnet.h
->>> @@ -12,13 +12,13 @@ int tun_vnet_hdr_get(int sz, unsigned int flags, struct iov_iter *from,
->>>   		     struct virtio_net_hdr *hdr);
->>>   
->>>   int tun_vnet_hdr_put(int sz, struct iov_iter *iter,
->>> -		     const struct virtio_net_hdr *hdr);
->>> +		     const struct virtio_net_hdr_v1 *hdr);
->>>   
->>>   int tun_vnet_hdr_to_skb(unsigned int flags, struct sk_buff *skb,
->>>   			const struct virtio_net_hdr *hdr);
->>>   
->>>   int tun_vnet_hdr_from_skb(unsigned int flags, const struct net_device *dev,
->>>   			  const struct sk_buff *skb,
->>> -			  struct virtio_net_hdr *hdr);
->>> +			  struct virtio_net_hdr_v1 *hdr);
->>>   
->>>   #endif /* TUN_VNET_H */
->>>
->>> -- 
->>> 2.47.1
-> 
+Signed-off-by: Christian Hopps <chopps@labn.net>
+Tested-by: Antony Antony <antony.antony@secunet.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+---
+ include/uapi/linux/in.h |  2 ++
+ include/uapi/linux/ip.h | 16 ++++++++++++++++
+ 2 files changed, 18 insertions(+)
+
+diff --git a/include/uapi/linux/in.h b/include/uapi/linux/in.h
+index 5d32d53508d9..ced0fc3c3aa5 100644
+--- a/include/uapi/linux/in.h
++++ b/include/uapi/linux/in.h
+@@ -79,6 +79,8 @@ enum {
+ #define IPPROTO_MPLS		IPPROTO_MPLS
+   IPPROTO_ETHERNET = 143,	/* Ethernet-within-IPv6 Encapsulation	*/
+ #define IPPROTO_ETHERNET	IPPROTO_ETHERNET
++  IPPROTO_AGGFRAG = 144,	/* AGGFRAG in ESP (RFC 9347)		*/
++#define IPPROTO_AGGFRAG		IPPROTO_AGGFRAG
+   IPPROTO_RAW = 255,		/* Raw IP packets			*/
+ #define IPPROTO_RAW		IPPROTO_RAW
+   IPPROTO_SMC = 256,		/* Shared Memory Communications		*/
+diff --git a/include/uapi/linux/ip.h b/include/uapi/linux/ip.h
+index 283dec7e3645..5bd7ce934d74 100644
+--- a/include/uapi/linux/ip.h
++++ b/include/uapi/linux/ip.h
+@@ -137,6 +137,22 @@ struct ip_beet_phdr {
+ 	__u8 reserved;
+ };
+ 
++struct ip_iptfs_hdr {
++	__u8 subtype;		/* 0*: basic, 1: CC */
++	__u8 flags;
++	__be16 block_offset;
++};
++
++struct ip_iptfs_cc_hdr {
++	__u8 subtype;		/* 0: basic, 1*: CC */
++	__u8 flags;
++	__be16 block_offset;
++	__be32 loss_rate;
++	__be64 rtt_adelay_xdelay;
++	__be32 tval;
++	__be32 techo;
++};
++
+ /* index values for the variables in ipv4_devconf */
+ enum
+ {
+-- 
+2.34.1
 
