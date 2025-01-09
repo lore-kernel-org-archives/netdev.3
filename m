@@ -1,100 +1,69 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2A5223302;
-	Thu,  9 Jan 2025 16:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0922153800;
+	Thu,  9 Jan 2025 16:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736440212; cv=none; b=W8HBzn77WB34xho6JenPIBtWLyyHsNBPoWF4/tRAbOBeMIld0aGEcdZdm+l9Dr5+fOggRemiZY/3GEadNiwS+h+56Fctjf7WH0jK6xtmPq5RVPUlsqR82tMSRWL2hcYqvJdyaYj39EsyGOmYH9l4dqWC9+BLHrUzyvyAmEE8IwM=
+	t=1736440323; cv=none; b=f5VIWeYdI9COS0CyOSU2XflpfcAdm4TBqrYOPAONzdEbrjRayFylx61vZlR/6jbgryYM3YxhLZ4NZg4gMV0MwN+guFZxBftV5DdEyXhFWJJY2pOUieQx8cTm+NQWxzqSl9LBujOUq2OHs/W1agUGx7Rks2w41YodOcrOIo57uuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736440212; c=relaxed/simple;
-	bh=+ABfs5MDsTiHH5RwjEhf7ASlD/roZQ+NOq40W0NncDI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=somhufHingNH7A8TonGAb1s/ceABnvdrDssFnDz/HLmw3YyOlwl7FjS6RD53DMQ5RXZ7SFbvJTi2zKYPPloKiSEawWKhQz+ZjpwgNkebtnwT1UMzv6T8txlhgRti3ZjNuB/bh2qZrMtLnpOckog6L2cXipjUvdd16XpJOxANaxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yc21FMUB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736440323; c=relaxed/simple;
+	bh=7z+H3IV0LSHJJ8Jr+i+bPcQuVTp6atA4vvxRn03iitQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Szudca8fATjLVbDZZPl8tqLi4TgawOiNyZv78cWHpQQolxy7gh8PZZktrBXRRb7GQmpv7662HVvcHjjcY2Nrjwxa/ybwuLBrO7Xb9nfnd4m3UX8RATQPzfQUv3EqePkkKFZvDBbVU9ezsPMu5PGhbUDMnfEhDRtfeY5cudEcTw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ninimN//; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yc21FMUB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47EAAC4CED6;
-	Thu,  9 Jan 2025 16:30:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ninimN//"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54824C4CED2;
+	Thu,  9 Jan 2025 16:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736440212;
-	bh=+ABfs5MDsTiHH5RwjEhf7ASlD/roZQ+NOq40W0NncDI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Yc21FMUBahEmS6Z1A2/59o3LfqpyM2rc/vzmrilvZshJx+bMSHRiaCU6duk+3dft0
-	 KO2MlbeDUFamtXfEO+14sfaOI/x9QzGBBBssS/80jp9hxLAHX8YePejLEum8t4F+8I
-	 8HgePugyUhDCW+l4E9oGPVfMAG9JI3ZebATrM1jzJnpFqtVMRRa+lvGOP5W3Y2okQa
-	 ixWr+LOQV6ecGjPCyiObk2VBXa5z3SvQreIMNXNM8vSqAia/A8A8LH+AuV63WhodZS
-	 tnoLHzKqxL6DrJZQVSKIcv/HCQI+UxlC5J+erjGK1Ap4d+fQC1e50ahsqcqKTW9Dnp
-	 WZWkeFm38DEnw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33E0E3805DB2;
-	Thu,  9 Jan 2025 16:30:35 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1736440323;
+	bh=7z+H3IV0LSHJJ8Jr+i+bPcQuVTp6atA4vvxRn03iitQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ninimN//TwgdSRnPe9/vftonmHamKlYUtJR3KFr1FMZeMuh9dlW7zx3PYZkp/3Ium
+	 8vnaf5FP8b7Dg11liAbLoT+PtkG+pC9n4yzwjGtD3ulw14SJnNvKxaRVGo8afeBK+P
+	 x1sR05GKiJaCjHxZu3xkHigf992Nf6ryDQyyEvUWXY4k6blYapWNpdFDTa/Oyla4Qp
+	 KwFcgMnKfAqJiuZzl5qjXk3LQjN1GxFCcG+RTFGUj5lmyHwvndmN0As/nOFo3B+7Zw
+	 xtyQRCUoCDc5Nt2aEmFZmNZtrk/4s1YmNhhTjh0lTM6GOXDVfAKzVTit/1iDDAL/Qt
+	 FqHcM6k8f6Ckg==
+Date: Thu, 9 Jan 2025 16:31:59 +0000
+From: Simon Horman <horms@kernel.org>
+To: Paul Barker <paul.barker.ct@bp.renesas.com>
+Cc: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>, netdev@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [net PATCH] net: ravb: Fix max TX frame size for RZ/V2M
+Message-ID: <20250109163159.GL7706@kernel.org>
+References: <20250109113706.1409149-1-paul.barker.ct@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] net/mlx5: Fix variable not being completed when function
- returns
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173644023374.1439025.12349410132405031646.git-patchwork-notify@kernel.org>
-Date: Thu, 09 Jan 2025 16:30:33 +0000
-References: <20250108030009.68520-1-zhaochenguang@kylinos.cn>
-In-Reply-To: <20250108030009.68520-1-zhaochenguang@kylinos.cn>
-To: Chenguang Zhao <zhaochenguang@kylinos.cn>
-Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, moshe@nvidia.com, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250109113706.1409149-1-paul.barker.ct@bp.renesas.com>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed,  8 Jan 2025 11:00:09 +0800 you wrote:
-> The cmd_work_handler function returns from the child function
->     cmd_alloc_index because the allocate command entry fails,
->     Before returning, there is no complete ent->slotted.
+On Thu, Jan 09, 2025 at 11:37:06AM +0000, Paul Barker wrote:
+> When tx_max_frame_size was added to struct ravb_hw_info, no value was
+> set in ravb_rzv2m_hw_info so the default value of zero was used.
 > 
->     The patch fixes it.
+> The maximum MTU is set by subtracting from tx_max_frame_size to allow
+> space for headers and frame checksums. As ndev->max_mtu is unsigned,
+> this subtraction wraps around leading to a ridiculously large positive
+> value that is obviously incorrect.
 > 
->      mlx5_core 0000:01:00.0: cmd_work_handler:877:(pid 3880418): failed to allocate command entry
->      INFO: task kworker/13:2:4055883 blocked for more than 120 seconds.
->            Not tainted 4.19.90-25.44.v2101.ky10.aarch64 #1
->      "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
->      kworker/13:2    D    0 4055883      2 0x00000228
->      Workqueue: events mlx5e_tx_dim_work [mlx5_core]
->      Call trace:
->       __switch_to+0xe8/0x150
->       __schedule+0x2a8/0x9b8
->       schedule+0x2c/0x88
->       schedule_timeout+0x204/0x478
->       wait_for_common+0x154/0x250
->       wait_for_completion+0x28/0x38
->       cmd_exec+0x7a0/0xa00 [mlx5_core]
->       mlx5_cmd_exec+0x54/0x80 [mlx5_core]
->       mlx5_core_modify_cq+0x6c/0x80 [mlx5_core]
->       mlx5_core_modify_cq_moderation+0xa0/0xb8 [mlx5_core]
->       mlx5e_tx_dim_work+0x54/0x68 [mlx5_core]
->       process_one_work+0x1b0/0x448
->       worker_thread+0x54/0x468
->       kthread+0x134/0x138
->       ret_from_fork+0x10/0x18
+> Before tx_max_frame_size was introduced, the maximum MTU was based on
+> rx_max_frame_size. So, we can restore the correct maximum MTU by copying
+> the rx_max_frame_size value into tx_max_frame_size for RZ/V2M.
 > 
-> [...]
+> Fixes: 1d63864299ca ("net: ravb: Fix maximum TX frame size for GbEth devices")
+> Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
 
-Here is the summary with links:
-  - [v2] net/mlx5: Fix variable not being completed when function returns
-    https://git.kernel.org/netdev/net/c/0e2909c6bec9
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+...
