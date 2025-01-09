@@ -1,161 +1,171 @@
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE28D126C18;
-	Thu,  9 Jan 2025 15:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4903D126C18
+	for <netdev@vger.kernel.org>; Thu,  9 Jan 2025 15:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736434910; cv=none; b=KVMqQT3AxgjE4FDGbseCRRZ4XiwaXlauKfM3e9yz5AM78rvNYxPy72U/kmJX6y0BijjPitTYLlrE+7UAKh1Dj05IUVUXR+VbTFksrmiY9+A1NYmUdeNzm5snVBONchKM6bmitV9TLujTBtzd3lbMsgsYc7t0SZJ+1qpnS6CiWic=
+	t=1736434932; cv=none; b=H+cG8+HoJXgzyDw4qvWdWkSqNADyanoYsuFZh4shrR5Gqr59FHB9Nssrg0hvzgxVFTImZny9gk7c1WJhebBe5YMBRtEYZaCQINzOYH0F1kPzaopJBHrxn4b3+tMYxnYr7t85mYJHu7SYdI7JwDLZy4/vaPWKVCBiXhC4n5UA8SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736434910; c=relaxed/simple;
-	bh=ff+4ID3IFefdrduc7sNMCBmj6ptNHLYZHEId6E8XSLY=;
+	s=arc-20240116; t=1736434932; c=relaxed/simple;
+	bh=mhoHNFdfIrer9BqHZ5GkGkfhTEDpjOeJSasdYf8CX+8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WCWxPHZZICHs5PJw3oJOwHlxmpQBF+ETRbrI/oi3PFlz0bfwEiP37xJb4cMEdsDqXXnMM0h4sQLn4ZHeuwQpyAeJXdI/ZRwnkTp2O9NsE9nfh2+Ieo6CqzJfu5LfZgbFwXjvPm6wY3QJ7toYiukabG0nijdfNQLMRKhdUc+uiqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qc+iGs2U; arc=none smtp.client-ip=209.85.219.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=r0YjKN7+atlcCE45tKedfTGYfP/TBZyMJEVTfXDXnlZMQoXKS+5q+NGKo6PJCnjWZ3QAzveikuGnRn/rMZAkmXmTaOISA5MteHHLCY2lJDzbbdtZ3IyrFHa5hMNIDKHhKUCwws0pf820gZJyy7cBxJPLFXG9VcOssPTGnb9wkyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wHMYTmi+; arc=none smtp.client-ip=209.85.166.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qc+iGs2U"
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e54bd61e793so1594633276.2;
-        Thu, 09 Jan 2025 07:01:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wHMYTmi+"
+Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-3a818cd5dcbso35ab.0
+        for <netdev@vger.kernel.org>; Thu, 09 Jan 2025 07:02:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736434908; x=1737039708; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1736434930; x=1737039730; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eWfuwOBUl6cOitwiEIHV5z9m+DKUUcfRYCOSfvut16o=;
-        b=Qc+iGs2U2JR6r34jSimCJkJ3xw4Y22fVFxqVL+bmQ2cagPN2KkNrDdjDuaNaZDKEPt
-         KHYRT1WfUiidlsmDoFA9RU+WKwM+9GAIBqyolRf0kOaHcJQELfxi5hhr83QfmP0DXgcj
-         2fqy0bbIuF3ifPCUM0LSV2mHaoaukIMcNX176yuGKk/m3EhJkIlDps36hrBt+ZoylSiI
-         7lCS4VIN0LftPbdL9B1gckyrmjtZP4o/Q9bMFWJp1iU3K87kuOLFkV2yVSmiwkDRQqhz
-         s9BJTxMbVU+uU/uUhxj3Kr1TPknn7ub5j0GFFIFBIU4S16Cl47aqCZdrfLzLxnlGuiom
-         GusA==
+        bh=c6X6s5jja2+h2WCquVhSMdKLYDPXcwmQb3KhbzvcQWE=;
+        b=wHMYTmi+jJT5CqufBuCKTorAJXHvajapdYItlIp/kSk6IzE1hUFnPE7AyiI+at9dWt
+         lVy2MseRq2bNXx9n1WgYbAUeBGAY/n77kBi4WGNviuEpK6EmDoxvcnr7lWgdDHjrb/Xq
+         4x6AOMadLEJQgkEumMzJ+WpnaZAysS5Q9CJaOG3b2ZTIhF87GlLFIOpemcxdDNsu/26F
+         mNziMpWBFN8NJkjhiHxtE7LwmyN/+Fq515J+w3lsawrOUxkDQ4W60YF3wwT7fQ26QGtI
+         0egowQdUks4L672+tvNpGkBI2AIVoehrbIhF2Fls96dGJEBy23LB2uuynIqpNOR98c4M
+         ZQWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736434908; x=1737039708;
+        d=1e100.net; s=20230601; t=1736434930; x=1737039730;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eWfuwOBUl6cOitwiEIHV5z9m+DKUUcfRYCOSfvut16o=;
-        b=upTuv7pEaNltu0RoWk1kD5DlGimJok2C4zHM8Tf4wHocwPAmct1kr1NrkXCD851YOl
-         Q7DRPd/pen0HJl1sq4OKhwVWE5tN2Gdu2jVSXcQgpZb+ld8nW+Re18HLq/uETsxnxnDv
-         YpOTvl/R7q3eiFi7u4FxRP3gD49nytsFQ4glK+4h0V1IxwTfdtoX/xEdAMBj4PVk5R02
-         p2Rt0WbHO1DAuW5r7fhNxTmWYA2veeo/szmFCTsqOfmXr2l3AVoA3htzPEYTBADetW2v
-         gF6PIIvCkR1U5J6C46DjgdkWiJv2UlvzPpUpx0Fim42DiAKOdu2NlnjfZWaOOKxxSNi0
-         q7qg==
-X-Forwarded-Encrypted: i=1; AJvYcCUkibjfszEwKazou6hsuAs77NEcnJkkb0++RhCT1m9Np02zHXuiQ6MAheN6ybblkMm1oLuBUzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywg+Jp5ofmOUKP6mv5r9e1ON6T0Ju1idBRvPU5Gn2gOmcvBLsLv
-	GJMSkEir9UPKelY/PSlGQxRyCsCIixYZsNQ3Hq+WOqUamJ9bz7Kf/hYYJH2ZEW02K5g4qfNgsOk
-	8Mjm4Ze93XPMYah8wkMpCf+/JRVI=
-X-Gm-Gg: ASbGncvaIwP+FL+Mn+DENaRFZutnwnZ8yt/496dQu6Cthv0Adm7jc1vb7r6lHGCrOpY
-	bWYtMpPg3mzNfV277FjYIfqjJi7F6mkgXAbxdRk6b9iLMwtCS3Je7AA==
-X-Google-Smtp-Source: AGHT+IGzgAgSGrbI0Qqg8yvoVvqUWZvvrBrWK41N8uBkoAlROJp/T5EWUfV7SoQSgDv7sz86gdceZA8A3KmiM03WLoE=
-X-Received: by 2002:a05:690c:f10:b0:6ef:6c57:ddae with SMTP id
- 00721157ae682-6f5312a3301mr56923377b3.34.1736434907714; Thu, 09 Jan 2025
- 07:01:47 -0800 (PST)
+        bh=c6X6s5jja2+h2WCquVhSMdKLYDPXcwmQb3KhbzvcQWE=;
+        b=im9kz3CZ1eKWlqykv0CfeHMkOk5VPCL9YccuRh/uTcie87qdlsyQKaIjXYlkkSO2u5
+         R/1YOoY+2oipeND+gegtKtXIPy7YR9Vwr4MoY8lZAXK4ARuu+nbQOJXZ8iobkq9wjJpl
+         gUOvUqfRl25LtG10BFB3TbZUwLFH/w6qubWN7h3dUUR1+oUV7w/fDWyOw4jU+xXcHRdY
+         Z+riaweR/KYam+fVNjcxch6+AR48nAjU8nEtTkJ7H9MTqtk1fs+H2pSwuDtA9PhNUv8A
+         4nVC3H/d9dqZO5la7HtKWQe3Nfl9HqO99lkaPX5TAmnUORf4imPGJGnQaGdUhGDhl91P
+         cl5g==
+X-Forwarded-Encrypted: i=1; AJvYcCXy67JohZxlQRaW6kLghS2XEnkAudMORQfbej9BeoUXiY5mkO/LzAXSeL2ZsoOpI1tjSU5Sdos=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTl+orYnI0bKtzAIxPDqA8Ckjdzkclp2Ibp3nyLlTR75C1Wbs8
+	ZqENt+iXn1tppSg3sbFLYZ4ndNFXfyx1oKfA69yEmODmP0yo9Na7QaBdCH2VU2cFOVK8oFmRPJM
+	vUBB5jtHdBn4RFfYHZ+Zu5SxT8tBp9GCtAnkU
+X-Gm-Gg: ASbGncumDrZrJZ344gBTfLCcDSlErR9uyt2mygYCZw9tp8ryY2ijbUyDcpbhGZggqAe
+	13LKzHIErSKXtJPVVghG3S48upLzXsrhKMAdsvQ==
+X-Google-Smtp-Source: AGHT+IEfiR358Al8m3MfZn9iCkwiuLHNdA22+22rPbK5C0cDBY9IJqRSC7LioeBC1Sv6g5KzzZmX8z6MvvxE3dtgaJc=
+X-Received: by 2002:a92:d0c4:0:b0:3ce:51bd:3b05 with SMTP id
+ e9e14a558f8ab-3ce53f09bb3mr45285ab.2.1736434929630; Thu, 09 Jan 2025 07:02:09
+ -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241220195619.2022866-1-amery.hung@gmail.com>
- <20241220195619.2022866-9-amery.hung@gmail.com> <3961c9ce-21d3-4a35-956c-5e1a6eb6031b@linux.dev>
-In-Reply-To: <3961c9ce-21d3-4a35-956c-5e1a6eb6031b@linux.dev>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Thu, 9 Jan 2025 07:00:00 -0800
-X-Gm-Features: AbW1kvazz7DxogB4aWKus50XwQWS6BOfbyqO1fk83gOIYsQR7b817fFBnIX5FRs
-Message-ID: <CAMB2axNoh1uDLC4KubHjKSfRBfNWnG_tbuPK6BWzx4VA6Hx0tQ@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v2 08/14] bpf: net_sched: Add a qdisc watchdog timer
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, daniel@iogearbox.net, 
-	andrii@kernel.org, alexei.starovoitov@gmail.com, martin.lau@kernel.org, 
-	sinquersw@gmail.com, toke@redhat.com, jhs@mojatatu.com, jiri@resnulli.us, 
-	stfomichev@gmail.com, ekarani.silvestre@ccc.ufcg.edu.br, 
-	yangpeihao@sjtu.edu.cn, xiyou.wangcong@gmail.com, yepeilin.cs@gmail.com, 
-	amery.hung@bytedance.com
+References: <20250109072245.2928832-1-yuyanghuang@google.com>
+ <361414dc-3d7b-4616-a15b-3e0cb3219846@redhat.com> <CADXeF1G1G8F4BK2YienEkVHVpGSmF2wQnOFnE+BwzaCBexv3SQ@mail.gmail.com>
+In-Reply-To: <CADXeF1G1G8F4BK2YienEkVHVpGSmF2wQnOFnE+BwzaCBexv3SQ@mail.gmail.com>
+From: Yuyang Huang <yuyanghuang@google.com>
+Date: Fri, 10 Jan 2025 00:01:31 +0900
+X-Gm-Features: AbW1kvbbAPxZDLW6dhcx2EVNvV2wjBtXsnBcYnl1nrGN3uwWV0bZ3p47wjqSdMs
+Message-ID: <CADXeF1FxVt=xt+yk_SvLSYBYw07Vy6pssSfXqv8pOQuP7obPgg@mail.gmail.com>
+Subject: Re: [PATCH net-next, v4] netlink: support dumping IPv4 multicast addresses
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+	roopa@cumulusnetworks.com, jiri@resnulli.us, stephen@networkplumber.org, 
+	jimictw@google.com, prohr@google.com, liuhangbin@gmail.com, 
+	nicolas.dichtel@6wind.com, andrew@lunn.ch, netdev@vger.kernel.org, 
+	=?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>, 
+	Lorenzo Colitti <lorenzo@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 8, 2025 at 4:20=E2=80=AFPM Martin KaFai Lau <martin.lau@linux.d=
-ev> wrote:
->
-> On 12/20/24 11:55 AM, Amery Hung wrote:
-> > diff --git a/net/sched/bpf_qdisc.c b/net/sched/bpf_qdisc.c
-> > index 1c92bfcc3847..bbe7aded6f24 100644
-> > --- a/net/sched/bpf_qdisc.c
-> > +++ b/net/sched/bpf_qdisc.c
-> > @@ -8,6 +8,10 @@
-> >
-> >   static struct bpf_struct_ops bpf_Qdisc_ops;
-> >
-> > +struct bpf_sched_data {
-> > +     struct qdisc_watchdog watchdog;
-> > +};
-> > +
-> >   struct bpf_sk_buff_ptr {
-> >       struct sk_buff *skb;
-> >   };
-> > @@ -108,6 +112,46 @@ static int bpf_qdisc_btf_struct_access(struct bpf_=
-verifier_log *log,
-> >       return 0;
-> >   }
-> >
-> > +BTF_ID_LIST(bpf_qdisc_init_prologue_ids)
-> > +BTF_ID(func, bpf_qdisc_init_prologue)
-> > +
-> > +static int bpf_qdisc_gen_prologue(struct bpf_insn *insn_buf, bool dire=
-ct_write,
-> > +                               const struct bpf_prog *prog)
-> > +{
-> > +     struct bpf_insn *insn =3D insn_buf;
-> > +
-> > +     if (strcmp(prog->aux->attach_func_name, "init"))
-> > +             return 0;
-> > +
-> > +     *insn++ =3D BPF_MOV64_REG(BPF_REG_6, BPF_REG_1);
-> > +     *insn++ =3D BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_1, 0);
-> > +     *insn++ =3D BPF_CALL_KFUNC(0, bpf_qdisc_init_prologue_ids[0]);
->
-> I was wondering if patch 7 is needed if BPF_EMIT_CALL() and BPF_CALL_1() =
-were
-> used, so it looks more like a bpf helper instead of kfunc. I tried but fa=
-iled at
-> the "fn =3D env->ops->get_func_proto(insn->imm, env->prog);" in do_misc_f=
-ixups().
-> I think the change in patch 7 is simple enough instead of getting
-> get_func_proto() works for this case.
->
+>Also, this will need a paired self-test - even something very simple
+>just exercising the new code.
 
-Yeah. Making BPF_EMIT_CALL + BPF_CALL_xxx work in
-gen_prologue/epilogue doesn't seem trivial to me at least when
-compared with BPF_CALL_KFUNC.
+After looking into the existing selftest, I feel writing C program
+selftests might be a little bit anti-pattern. The existing test cases
+primarily use iproute2. This approach appears to be more common and
+easier to implement. I do plan to migrate `ip maddress` to use netlink
+instead of parsing procfs, which enables me to write selftests using
+iproute2.
 
-> > +     *insn++ =3D BPF_MOV64_REG(BPF_REG_1, BPF_REG_6);
-> > +     *insn++ =3D prog->insnsi[0];
-> > +
-> > +     return insn - insn_buf;
-> > +}
-> > +
-> > +BTF_ID_LIST(bpf_qdisc_reset_destroy_epilogue_ids)
-> > +BTF_ID(func, bpf_qdisc_reset_destroy_epilogue)
-> > +
-> > +static int bpf_qdisc_gen_epilogue(struct bpf_insn *insn_buf, const str=
-uct bpf_prog *prog,
-> > +                               s16 ctx_stack_off)
-> > +{
-> > +     struct bpf_insn *insn =3D insn_buf;
-> > +
-> > +     if (strcmp(prog->aux->attach_func_name, "reset") &&
-> > +         strcmp(prog->aux->attach_func_name, "destroy"))
-> > +             return 0;
-> > +
-> > +     *insn++ =3D BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_FP, ctx_stack_=
-off);
-> > +     *insn++ =3D BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_1, 0);
-> > +     *insn++ =3D BPF_CALL_KFUNC(0, bpf_qdisc_reset_destroy_epilogue_id=
-s[0]);
-> > +     *insn++ =3D BPF_EXIT_INSN();
-> > +
-> > +     return insn - insn_buf;
-> > +}
-> > +
+I intend to add similar selftests for my other patches
+(anycast/multicast notifications), which already have corresponding
+iproute2 patches under review or merged.
+
+For this patch, my proposed steps for adding test are:
+
+1. Fix this patch and get it merged.
+2. Update iproute2(`ip maddress`) to use netlink.
+3. Write selftests using iproute2.
+
+Please let me know if you have any concerns.
+
+Thanks,
+Yuyang
+
+On Thu, Jan 9, 2025 at 9:04=E2=80=AFPM Yuyang Huang <yuyanghuang@google.com=
+> wrote:
+>
+> Hi Paolo
+>
+> Thanks for the review feedback.
+>
+> >I suspect the above chunk confuses the user-space as inet_fill_ifaddr()
+> >still get the 'event' value from fillargs->event
+>
+> You're right, I missed initializing the event field in the fillargs
+> structure. It's a bug introduced in the v4 patch during refactoring. I
+> will fix it in the v5 patch.
+>
+> >Also, this will need a paired self-test - even something very simple
+> >just exercising the new code.
+>
+> Sure, I can send separate patch for adding self-test, but please let
+> me know if I should include the self-test in the same patch
+>
+> Thanks
+> Yuyang
+>
+>
+> On Thu, Jan 9, 2025 at 8:30=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wr=
+ote:
+> >
+> > On 1/9/25 8:22 AM, Yuyang Huang wrote:
+> > > @@ -1889,15 +1935,16 @@ static u32 inet_base_seq(const struct net *ne=
+t)
+> > >       return res;
+> > >  }
+> > >
+> > > -static int inet_dump_ifaddr(struct sk_buff *skb, struct netlink_call=
+back *cb)
+> > > +static int inet_dump_addr(struct sk_buff *skb, struct netlink_callba=
+ck *cb,
+> > > +                       enum addr_type_t type)
+> > >  {
+> > >       const struct nlmsghdr *nlh =3D cb->nlh;
+> > >       struct inet_fill_args fillargs =3D {
+> > >               .portid =3D NETLINK_CB(cb->skb).portid,
+> > >               .seq =3D nlh->nlmsg_seq,
+> > > -             .event =3D RTM_NEWADDR,
+> > >               .flags =3D NLM_F_MULTI,
+> > >               .netnsid =3D -1,
+> > > +             .type =3D type,
+> >
+> > This patch is apparently breaking a few tests:
+> >
+> > https://netdev.bots.linux.dev/contest.html?branch=3Dnet-next-2025-01-09=
+--09-00&executor=3Dvmksft-net-dbg&pw-n=3D0&pass=3D0
+> > https://netdev.bots.linux.dev/contest.html?branch=3Dnet-next-2025-01-09=
+--09-00&executor=3Dvmksft-nf-dbg&pw-n=3D0&pass=3D0
+> > https://netdev.bots.linux.dev/contest.html?branch=3Dnet-next-2025-01-09=
+--09-00&executor=3Dvmksft-nf&pw-n=3D0&pass=3D0
+> >
+> > I suspect the above chunk confuses the user-space as inet_fill_ifaddr()
+> > still get the 'event' value from fillargs->event
+> >
+> > Also, this will need a paired self-test - even something very simple
+> > just exercising the new code.
+> >
+> > Thanks,
+> >
+> > Paolo
+> >
