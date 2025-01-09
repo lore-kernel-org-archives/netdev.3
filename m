@@ -1,39 +1,39 @@
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E34215F49;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C695215F5C;
 	Thu,  9 Jan 2025 10:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736417934; cv=none; b=ZSOnWCVxfHqAkSrKxwkhESge7QX83XtCAh8JQ/Q3AdFQIhT/tRrFI87ymbywcp6nGMYXNSArq2USCZ7mCZNAet3hfk1+sPYWRGM06B7hhzbP634GvTAqkXWWuitknDTIOw4Yb9N5ir5isGqFoUD3pk2XbTk1uvKRGQ0mXQesaLQ=
+	t=1736417934; cv=none; b=qtsETGgCpLbEpwZtPVahFhjZst2t29/hJ2ef3P6jdM/IDpYpcLOJ9j/b0J1PtAAW/sLnSPlGuJnPMvZtvfwjzRbc1vFM76uFsx0lJUAx3RZV+1aA+C9HaG8Vy/DZ5r5+fg3BbJyePpaQrmHf9rNqPbFnBoLLeMRB39src3o7ZZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1736417934; c=relaxed/simple;
-	bh=/tAXWE9ZL4WtZspUDdAze2QFcr2Yf2fb5nGAhV9PnmQ=;
+	bh=7J/eh52uJk71WbVQkH2eMFY49Q8W9fou8NIi2HeyyTc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Py8rXVko7Mtn5E2R/McL36UCTC+BBOjMZ5LkKarB+HtT5lYLPR3ue8N6nF8GaMNLRwlRlMuqIAzYYJk2U33AywCxGbaHVbPZfbUF2/bk6E/zbwBSo+SW4DyHMFKCsN/c8pCBQufS82uxP7K/hCaUndtKO9FRXYBO1weCKm2pr50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lS3H5Oe2; arc=none smtp.client-ip=217.70.183.196
+	 In-Reply-To:To:Cc; b=DfuhsnBwyQOkyclME+KV9bEmMbUOGA4o9l9JqfZUdtdXeZf7qqdo95t6mxKUoCnKUltvREHzZWGjx3Dtt0Y/G4qRrO+u0Oggl2Mhn/RsYNcVF3qmtJhSzcFSB0jr5Y4fMgy1ruRQ1+257uVsrwwJDTg6mHwjMrLPWI492avUSxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=nQxYQDhN; arc=none smtp.client-ip=217.70.183.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lS3H5Oe2"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9DC34E0007;
-	Thu,  9 Jan 2025 10:18:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="nQxYQDhN"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4753BE000F;
+	Thu,  9 Jan 2025 10:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1736417930;
+	t=1736417925;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3sbdIG7o+MIgUW4/5Lh2oWiUH88289E01R5dOjp9fk0=;
-	b=lS3H5Oe2+8aeIQRfnFbV2oahSnGKGUaABYcJVR+cCx6TP0f3x/0plThHs44/b9HHzvudTy
-	t1YslX+fgERlz3Nv8+pABg6XpsUNG6mgfNQ3k+gh+NgzdlcfaNqFlpByUVyHkN5E1g64eE
-	FH3tyVWKn9ap4u/hf6E37w2SX9O9ZPNfzaOTSrIBg4N/xxHptOVUJR+W/79RY0TYY8Y3Ru
-	dTXM+cdPCtjYFlaY6/I8PHzkAoURsTG11UNewRJkZ04ZsZ1BVqJr+kCTwRVdezRGtQkwVz
-	FbbH3yh9gql3/ru25Iv4wTZz6+KJOw/3aJ430AXq1V+jz/SCYMMMSgtZuvgwGg==
+	bh=Z4FptY7neSNIpm8/KU8J5QUzyVqJhV+phM8Nu0jRFeM=;
+	b=nQxYQDhNPb77ggDko/bLrTHO6VMpOmgNdu+zcFZOdtV/m5n5vw81zlmmajJloaPbxBJDpc
+	Yf+YWxiyUC19+7BWt7TT/lkKPoKfMh8bai9p/CL4WYLmVUfg+IzfMAcsRIw7pps9mZ+ann
+	PiBjuzWjxoiSzhqMhj159Xip2kAYUL8fiMrsL0o/g1JcII5WB4urfGEsNFxiSqrQ4bA4rw
+	MJWkTgiJLrbRR5EgfBVCuX/ye1gd3hEUZkvQnCXm4vMkbVUJD24YXIwHo0DyuiaGvob+k5
+	Fnana6uCJMwDiXsQC/JK8hF6XqsqRpQ0WNOBMnPXAvSn8+oi3hS7LtkCQx8I0w==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Thu, 09 Jan 2025 11:18:00 +0100
-Subject: [PATCH net-next v2 06/15] net: pse-pd: tps23881: Add missing
- configuration register after disable
+Date: Thu, 09 Jan 2025 11:17:55 +0100
+Subject: [PATCH net-next v2 01/15] net: pse-pd: Remove unused
+ pse_ethtool_get_pw_limit function declaration
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,7 +42,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250109-b4-feature_poe_arrange-v2-6-55ded947b510@bootlin.com>
+Message-Id: <20250109-b4-feature_poe_arrange-v2-1-55ded947b510@bootlin.com>
 References: <20250109-b4-feature_poe_arrange-v2-0-55ded947b510@bootlin.com>
 In-Reply-To: <20250109-b4-feature_poe_arrange-v2-0-55ded947b510@bootlin.com>
 To: Oleksij Rempel <o.rempel@pengutronix.de>, 
@@ -57,70 +57,53 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, 
  Dent Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, 
  Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Kory Maincent <kory.maincent@bootlin.com>
+ Kory Maincent <kory.maincent@bootlin.com>, 
+ Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, 
+ Andrew Lunn <andrew@lunn.ch>
 X-Mailer: b4 0.15-dev-8cb71
 X-GND-Sasl: kory.maincent@bootlin.com
 
 From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
 
-When setting the PWOFF register, the controller resets multiple
-configuration registers. This patch ensures these registers are
-reconfigured as needed following a disable operation.
+Removed the unused pse_ethtool_get_pw_limit() function declaration from
+pse.h. This function was declared but never implemented or used,
+making the declaration unnecessary.
 
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Kyle Swenson <kyle.swenson@est.tech>
 Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
- drivers/net/pse-pd/tps23881.c | 30 +++++++++++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ include/linux/pse-pd/pse.h | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/net/pse-pd/tps23881.c b/drivers/net/pse-pd/tps23881.c
-index 4a75206b2de6..b87c391ae0f5 100644
---- a/drivers/net/pse-pd/tps23881.c
-+++ b/drivers/net/pse-pd/tps23881.c
-@@ -130,6 +130,7 @@ static int tps23881_pi_disable(struct pse_controller_dev *pcdev, int id)
- 	struct i2c_client *client = priv->client;
- 	u8 chan;
- 	u16 val;
-+	int ret;
+diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
+index 591a53e082e6..85a08c349256 100644
+--- a/include/linux/pse-pd/pse.h
++++ b/include/linux/pse-pd/pse.h
+@@ -184,8 +184,6 @@ int pse_ethtool_set_config(struct pse_control *psec,
+ int pse_ethtool_set_pw_limit(struct pse_control *psec,
+ 			     struct netlink_ext_ack *extack,
+ 			     const unsigned int pw_limit);
+-int pse_ethtool_get_pw_limit(struct pse_control *psec,
+-			     struct netlink_ext_ack *extack);
  
- 	if (id >= TPS23881_MAX_CHANS)
- 		return -ERANGE;
-@@ -143,7 +144,34 @@ static int tps23881_pi_disable(struct pse_controller_dev *pcdev, int id)
- 				       BIT(chan % 4));
- 	}
- 
--	return i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
-+	ret = i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
-+	if (ret)
-+		return ret;
-+
-+	/* PWOFF command resets lots of register which need to be
-+	 * configured again. According to the datasheet "It may take upwards
-+	 * of 5ms after PWOFFn command for all register values to be updated"
-+	 */
-+	mdelay(5);
-+
-+	/* Enable detection and classification */
-+	ret = i2c_smbus_read_word_data(client, TPS23881_REG_DET_CLA_EN);
-+	if (ret < 0)
-+		return ret;
-+
-+	chan = priv->port[id].chan[0];
-+	val = tps23881_set_val(ret, chan, 0, BIT(chan % 4), BIT(chan % 4));
-+	val = tps23881_set_val(val, chan, 4, BIT(chan % 4), BIT(chan % 4));
-+
-+	if (priv->port[id].is_4p) {
-+		chan = priv->port[id].chan[1];
-+		val = tps23881_set_val(ret, chan, 0, BIT(chan % 4),
-+				       BIT(chan % 4));
-+		val = tps23881_set_val(val, chan, 4, BIT(chan % 4),
-+				       BIT(chan % 4));
-+	}
-+
-+	return i2c_smbus_write_word_data(client, TPS23881_REG_DET_CLA_EN, val);
+ bool pse_has_podl(struct pse_control *psec);
+ bool pse_has_c33(struct pse_control *psec);
+@@ -222,12 +220,6 @@ static inline int pse_ethtool_set_pw_limit(struct pse_control *psec,
+ 	return -EOPNOTSUPP;
  }
  
- static int tps23881_pi_is_enabled(struct pse_controller_dev *pcdev, int id)
+-static inline int pse_ethtool_get_pw_limit(struct pse_control *psec,
+-					   struct netlink_ext_ack *extack)
+-{
+-	return -EOPNOTSUPP;
+-}
+-
+ static inline bool pse_has_podl(struct pse_control *psec)
+ {
+ 	return false;
 
 -- 
 2.34.1
