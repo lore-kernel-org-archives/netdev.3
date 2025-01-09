@@ -1,139 +1,117 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDF8191499;
-	Thu,  9 Jan 2025 17:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1491F192D7E;
+	Thu,  9 Jan 2025 17:42:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736444413; cv=none; b=FqsQeOyIP35AndS351rNHZlkRjYkQCjSfdpAv2ZGaeC4fafoKjI9e5XpVGR+hG8gEMdXF2VK5eFxB0iWTmy9ah1aYFzaMpO0UKmp75WNmwXT9bFgBSJvQ2+Y6QRry3V1QL/6zUiRogG/6f9+fLjpN6IESzYnkC5YjH0S9xMHqEc=
+	t=1736444563; cv=none; b=ru29GR42VRQTzOE5v3mLbOoSKrJVM76zexm/AglEvs9GPELxa8vP7fnR4EQ3jn0ikZdwAgXvJ1Er/GdPirqgPT+IVLDmp3znwrudSlk8pOtuAykEAg/lNhx2kLmZq3bO0cEVKostu43o34JuLJs4G6ERUCJwcvFB1JZ+q5Xw6XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736444413; c=relaxed/simple;
-	bh=sgY/WTgpLVob/H26v16vqR9o2OrCi4sBG/wp4T0MeF4=;
+	s=arc-20240116; t=1736444563; c=relaxed/simple;
+	bh=EijKJl28wp+gcuB4mOs6c/TVvHLtx/iw+sxnVMthWYE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i8FjNXQNn8RbNtP8kguG9TNFuPiUAtLk1dNP+l7oPPrZ6tCgD0Jsfxr5eIP5w4n4XtgArJr3JMCEKUqXCR2G1lBCuua2/OoiGer6qGhsqqxLLVoK7Dh8o/CSfxd7R0ovJrpo7od9TlUALW7MirAQxab2r395brKQc4k+Tdm5uEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kxYDKtFm; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=uUSUOFJeoo1vCSgon1yjWfBZ8qlMsubpJKKHcP/0fDN23awdwgc1GE9tqam5y0Ya+kTq1azQMCE7DP+miRW6IAghnMwIe6SMe6aA36U/Mze0IWDQ9MeikS8es1tDjZYh2Uj5iRvbCG0EjY7qxE5zFiAczzwZhSB5VsHdgYALRho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p7qV75z4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kxYDKtFm"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ef760a1001so1964313a91.0;
-        Thu, 09 Jan 2025 09:40:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736444411; x=1737049211; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tWpZAtZ5fwsLcgO5aqlcO3OYh1NgLbgjWHyNFFao33Y=;
-        b=kxYDKtFmK/XZikqpNb+WWnSfItRCtjNabdE5eMqKZHR0qwpi4hrZu2d7roxLzTuxTl
-         T6M4hxEXM7WaIJpdDW2w2pJnbkHcFZ4BvDVrZpNU2fLHoNx+0qUaz0I+RgZbYPLujNEj
-         quJIzXvcC0lr2QdO6vfVNSowux256wEWDejv0lZcyfUcTEcQJKlEdQPXShyazaL/1UA7
-         cFmLgnHzzrMxuPx5TaOI9TGM64s4lzTkunbQ6RMQ05k6S7oxZNwTCUm/uA0GB5Yjaa8m
-         89dBS0m6oiZDht7ml3k0c23Fif7RWg/X6d3vvpY+SjRrOAJvGdWiw6/fL7Fwt3CEXPTT
-         Xwdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736444411; x=1737049211;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tWpZAtZ5fwsLcgO5aqlcO3OYh1NgLbgjWHyNFFao33Y=;
-        b=Jf40ld+WFRiwiBC0FRv0vlYEvsPWw8pJPZLUfc56I8ng6xbwjc4vk+Yu0Elh4ZWE0c
-         P4MCqNJmn4PuVcfr1XIsu4vuoy190Y/LKSO21Aa5f8LjZzIm8EjGebmtlXVfUOKCsFLY
-         p+vhCEwIgkrWXXSMh2pp2CGPHZBPiXwNThyh/Jg6IrdcfoUd91g/t/rg7Ye19zaMDY5l
-         RsXUFfqmPAnZxB50oNTWQrJK3LUN1LsImNewQ2C+qalZBofOZVUOYfb3aKv1eQU8Cku+
-         fRE3OHFNMXWqvM1+OdjjBL38yXA/biFwM1qwscKVKaUx3cxhOdxHC1jWEttrlaJPsvPC
-         ixOA==
-X-Forwarded-Encrypted: i=1; AJvYcCUGJ5op8VYK09mtia2uE7i9jF4UVGbMP5cGtJ0wk1dyGTMZkDjXudqW5uglRULRGMs2qx3FhAjZd3mTOEBwDG1Y@vger.kernel.org, AJvYcCVAEkseggCGr0TfYIV7d8XK10RMYQDalDqWLgiB22v47FB2MD3zkjIvzYNAuZcAhXUVF/uF9zfSKXQW5vzv@vger.kernel.org, AJvYcCWDCS18WAh/6P1R0FzgyXK3HcQjKxt9zng8DUbQZOgzy/6nlBw3a4nUJrEeXcxKplt0xgBtX1eKDA4N@vger.kernel.org, AJvYcCXDeB/wR1M77ih1ePzIZ1CIlqbzKN2OXjhS4z+F5b6haxSGYgP04KPKIlULq3eccaesv5kDdTA/@vger.kernel.org, AJvYcCXzh/DZ5xCGecAiv+fFmE5x2fdk6eu/scEtiAa5zjPYVf3+yKddoBEUym5e6Za6Egy+gbg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+xgZTp3EhVcmhdc8ZeuRZG036JDQBNubpLL/lq+7omGK2qptQ
-	WU0zzO1HnSNmRrFAyxZNFNclmJd58o3QZH19tKbB7pqiD9diM4c=
-X-Gm-Gg: ASbGncu2N1IRhXg5M+2Ad0GWGg4OZ9pJ3xM5u2c6qYNXIVV5dd5kgztcLzEDYCpKawt
-	NUdoZNWTZ+GmJX3GKBnmXu/9YURVR5rZkD+lL6mkUbC9ql4u+lLT4oCpywKmu0Zd7jkrhvL1tmD
-	rls4iT3Z8maiGY0ArioKOGvQWAsYIZzsYp6jph4laRy/rC6eBHRI4vQ1lOuj0Jd78oGGylBngvS
-	72wQBiQxg+FtRp1KM6YPNwWpkDDPhUy2PPt/F2NleUqOLPdY3D5COsS
-X-Google-Smtp-Source: AGHT+IEZHpA+1As7rYRP/wbYTv7BBI8EycFV1R1kQaORb6ULu5g6y7WttO6FZ+OmR/qIEMsz9TCzbg==
-X-Received: by 2002:a17:90a:d887:b0:2ea:7cd5:4ad6 with SMTP id 98e67ed59e1d1-2f5490dbefemr9659697a91.32.1736444411540;
-        Thu, 09 Jan 2025 09:40:11 -0800 (PST)
-Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f5593d0911sm1848116a91.8.2025.01.09.09.40.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jan 2025 09:40:11 -0800 (PST)
-Date: Thu, 9 Jan 2025 09:40:10 -0800
-From: Stanislav Fomichev <stfomichev@gmail.com>
-To: "Song, Yoong Siang" <yoong.siang.song@intel.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p7qV75z4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7544C4CED2;
+	Thu,  9 Jan 2025 17:42:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736444561;
+	bh=EijKJl28wp+gcuB4mOs6c/TVvHLtx/iw+sxnVMthWYE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p7qV75z4FmBSLJbt39+WewUqPOjCeSu1TiqeR1vuQkGR/v/WEhXbohOlZi0J+cNg6
+	 EYZtY1F9KLKvJfwJtHMO0ly3KoBUnd6Yx0UxjqPCCkuuU0GcqPM2pOxcrpOqts8nVl
+	 3oBUhaXCkkdMsevFFbau9KMsobHOlKvyKbG2dO89xQ4HEZ+69koBU+V1BUF3BC9YyB
+	 Q6G2KRzajkCcw7rzt9BZLP9jPvwOuonRLKt5grRbl+8fBYT19skPaRWWdkSzzxxngt
+	 pPUT9KinyWtt1hMxSE+5M9d/2iC3OTsea25obE9autsUMHykBLcZkLdMz3ZduwJaG9
+	 0BSS/fh5yCDbQ==
+Date: Thu, 9 Jan 2025 17:42:34 +0000
+From: Simon Horman <horms@kernel.org>
+To: Luo Jie <quic_luoj@quicinc.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	"Bezdeka, Florian" <florian.bezdeka@siemens.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, Bjorn Topel <bjorn@kernel.org>,
-	"Karlsson, Magnus" <magnus.karlsson@intel.com>,
-	"Fijalkowski, Maciej" <maciej.fijalkowski@intel.com>,
-	Jonathan Lemon <jonathan.lemon@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	"Damato, Joe" <jdamato@fastly.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Daniel Jurgens <danielj@nvidia.com>,
-	Amritha Nambiar <amritha.nambiar@intel.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Mykola Lysenko <mykolal@fb.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"xdp-hints@xdp-project.net" <xdp-hints@xdp-project.net>
-Subject: Re: [PATCH bpf-next v4 1/4] xsk: Add launch time hardware offload
- support to XDP Tx metadata
-Message-ID: <Z4AJ-pIyAUbXJJpx@mini-arch>
-References: <20250106135606.9704-1-yoong.siang.song@intel.com>
- <Z31bQ6xEkyQvbutN@mini-arch>
- <PH0PR11MB5830D33B679A0ACD3FD6E23CD8132@PH0PR11MB5830.namprd11.prod.outlook.com>
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lei Wei <quic_leiwei@quicinc.com>,
+	Suruchi Agarwal <quic_suruchia@quicinc.com>,
+	Pavithra R <quic_pavir@quicinc.com>,
+	Jonathan Corbet <corbet@lwn.net>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-hardening@vger.kernel.org,
+	quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com,
+	srinivas.kandagatla@linaro.org, bartosz.golaszewski@linaro.org,
+	john@phrozen.org
+Subject: Re: [PATCH net-next v2 06/14] net: ethernet: qualcomm: Initialize
+ the PPE scheduler settings
+Message-ID: <20250109174234.GO7706@kernel.org>
+References: <20250108-qcom_ipq_ppe-v2-0-7394dbda7199@quicinc.com>
+ <20250108-qcom_ipq_ppe-v2-6-7394dbda7199@quicinc.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <PH0PR11MB5830D33B679A0ACD3FD6E23CD8132@PH0PR11MB5830.namprd11.prod.outlook.com>
+In-Reply-To: <20250108-qcom_ipq_ppe-v2-6-7394dbda7199@quicinc.com>
 
-On 01/09, Song, Yoong Siang wrote:
-> On Wednesday, January 8, 2025 12:50 AM, Stanislav Fomichev <stfomichev@gmail.com> wrote:
-> >On 01/06, Song Yoong Siang wrote:
-> >> Extend the XDP Tx metadata framework so that user can requests launch time
-> >> hardware offload, where the Ethernet device will schedule the packet for
-> >> transmission at a pre-determined time called launch time. The value of
-> >> launch time is communicated from user space to Ethernet driver via
-> >> launch_time field of struct xsk_tx_metadata.
-> >>
-> >> Suggested-by: Stanislav Fomichev <sdf@google.com>
+On Wed, Jan 08, 2025 at 09:47:13PM +0800, Luo Jie wrote:
+> The PPE scheduler settings determine the priority of scheduling the
+> packet across the different hardware queues per PPE port.
 > 
-> Hi Stanislav Fomichev,
+> Signed-off-by: Luo Jie <quic_luoj@quicinc.com>
+> ---
+>  drivers/net/ethernet/qualcomm/ppe/ppe_config.c | 789 ++++++++++++++++++++++++-
+>  drivers/net/ethernet/qualcomm/ppe/ppe_config.h |  37 ++
+>  drivers/net/ethernet/qualcomm/ppe/ppe_regs.h   |  97 +++
+>  3 files changed, 922 insertions(+), 1 deletion(-)
 > 
-> Thanks for your review comments.
-> I notice that you have two emails:
-> sdf@google.com & stfomichev@gmail.com
-> 
-> Which one I should use in the suggested-by tag?
+> diff --git a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
 
-google.com should be bouncing now. sdf@fomichev.me is preferred.
+...
+
+> +/**
+> + * ppe_queue_scheduler_set - Configure scheduler for PPE hardware queue
+> + * @ppe_dev: PPE device
+> + * @node_id: PPE queue ID or flow ID
+> + * @flow_level: Flow level scheduler or queue level scheduler
+> + * @port: PPE port ID set scheduler configuration
+> + * @scheduler_cfg: PPE scheduler configuration
+> + *
+> + * PPE scheduler configuration supports queue level and flow level on
+> + * the PPE egress port.
+> + *
+> + * Return 0 on success, negative error code on failure.
+
+Nit: The tooling would prefer this last line formatted as;
+
+    * Return: ...
+
+or
+
+    * Returns: ...
+
+Flagged by ./scripts/kernel-doc -none -Wall
+
+> + */
+> +int ppe_queue_scheduler_set(struct ppe_device *ppe_dev,
+> +			    int node_id, bool flow_level, int port,
+> +			    struct ppe_scheduler_cfg scheduler_cfg)
+> +{
+> +	if (flow_level)
+> +		return ppe_scheduler_l1_queue_map_set(ppe_dev, node_id,
+> +						      port, scheduler_cfg);
+> +
+> +	return ppe_scheduler_l0_queue_map_set(ppe_dev, node_id,
+> +					      port, scheduler_cfg);
+> +}
+
+...
