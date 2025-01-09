@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724BC2163A5
-	for <netdev@vger.kernel.org>; Thu,  9 Jan 2025 09:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8930217F33
+	for <netdev@vger.kernel.org>; Thu,  9 Jan 2025 09:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736415928; cv=none; b=myihSnOp7mJGm30Hv7m+rl9qg8LEobCnfiW4DNPcr75DsChhjUTMDf58982xmpPZ6QeBiz4SHyRbfzNIUBpjBEEzRG1i//LGCyhrZXrAjM8Lpgd6NWXjn9Lkum8ZaLyjigybGuxXOSRPS5CB9pM6bzW/jwXm/hbIMnY4UYXz/4c=
+	t=1736415932; cv=none; b=UaG4ONuERdisg2qv9yz4/qnjQzWrKPCJLD2IaoohPiNsU9/J0kr2MBIqUR74OblP5nhBq/+bFAv+6RFHUnRUvxCbHtN5oOAzgG13LpjlieSRvte6Xm+yp5WbO5PhOd3MCIC9B6t0bOW2zV2OApzrSLJLdb5LhslKxiGOs7kpUjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736415928; c=relaxed/simple;
-	bh=0Lf1hvxJlw8NY5me4Cd+9DkMBtiJ1x0BsZtQ8w+6NRU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EC+YRKgPlZPf7Q9xNMxfY8w1MeHhGT8mJBuz+qvdISjOVru6+1oyRBMDPht7UEtmx1PDcrSmErz2SZ+MAylrWix0a7lTAHsx9+ONq30XDVng6iuef0ga1qsjWysF0si1+sEHg84zPV7Wikb3W852z6oW0mNM4rZitSFCbYx2sSc=
+	s=arc-20240116; t=1736415932; c=relaxed/simple;
+	bh=2wXbYqaWGW9mOPTkLt5y4RaTyBb9rPot160rt9mK8bo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=NJVVRO3c/F7xxKb+Or3JjlrkOIfrNq3cvazmiytfkONiaNRS0TgxYSk+5/Y8Kwe1pxjdzrirCzwy+d7353vAS8d0TCHy0asOqdZoG5Ghvfsl/j7AiwlQn3T4qy1rkDfdxYaliiopgN2GKcTTv6TrfXOP7SjaDFJOixbS3kPb6cQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tVp64-00088C-Ch; Thu, 09 Jan 2025 10:45:00 +0100
+	id 1tVp64-00088G-Cf; Thu, 09 Jan 2025 10:45:00 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tVp62-007fa2-0F;
+	id 1tVp62-007fa7-0a;
 	Thu, 09 Jan 2025 10:44:58 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tVp62-000PMj-2V;
+	id 1tVp62-000PNN-2n;
 	Thu, 09 Jan 2025 10:44:58 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -44,10 +45,12 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Russell King <linux@armlinux.org.uk>,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	linux-doc@vger.kernel.org
-Subject: [PATCH net-next v6 0/7] Introduce unified and structured PHY
-Date: Thu,  9 Jan 2025 10:44:50 +0100
-Message-Id: <20250109094457.97466-1-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v6 4/7] Documentation: networking: update PHY error counter diagnostics in twisted pair guide
+Date: Thu,  9 Jan 2025 10:44:54 +0100
+Message-Id: <20250109094457.97466-5-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250109094457.97466-1-o.rempel@pengutronix.de>
+References: <20250109094457.97466-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,53 +63,71 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-This patch set introduces a unified and well-structured interface for
-reporting PHY statistics. Instead of relying on arbitrary strings in PHY
-drivers, this interface provides a consistent and structured way to
-expose PHY statistics to userspace via ethtool.
+Replace generic instructions for monitoring error counters with a
+procedure using the unified PHY statistics interface (`--all-groups`).
 
-The initial groundwork for this effort was laid by Jakub Kicinski, who
-contributed patches to plumb PHY statistics to drivers and added support
-for structured statistics in ethtool. Building on Jakub's work, I tested
-the implementation with several PHYs, addressed a few issues, and added
-support for statistics in two specific PHY drivers.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ .../twisted_pair_layer1_diagnostics.rst       | 39 +++++++++++++------
+ 1 file changed, 28 insertions(+), 11 deletions(-)
 
-Most of changes are tracked in separate patches.
-changes v6:
-- drop ethtool_stat_add patch
-changes v5:
-- rebase against latest net-next
-
-Jakub Kicinski (2):
-  net: ethtool: plumb PHY stats to PHY drivers
-  net: ethtool: add support for structured PHY statistics
-
-Oleksij Rempel (5):
-  ethtool: linkstate: migrate linkstate functions to support multi-PHY
-    setups
-  Documentation: networking: update PHY error counter diagnostics in
-    twisted pair guide
-  net: phy: introduce optional polling interface for PHY statistics
-  net: phy: dp83td510: add statistics support
-  net: phy: dp83tg720: add statistics support
-
- .../twisted_pair_layer1_diagnostics.rst       |  39 +++--
- Documentation/networking/ethtool-netlink.rst  |   1 +
- drivers/net/phy/dp83td510.c                   | 112 ++++++++++++
- drivers/net/phy/dp83tg720.c                   | 161 ++++++++++++++++++
- drivers/net/phy/phy.c                         |  63 +++++++
- drivers/net/phy/phy_device.c                  |   2 +
- include/linux/ethtool.h                       |  23 +++
- include/linux/phy.h                           |  57 +++++++
- include/linux/phylib_stubs.h                  |  42 +++++
- include/uapi/linux/ethtool.h                  |   2 +
- include/uapi/linux/ethtool_netlink.h          |  14 ++
- net/ethtool/linkstate.c                       |  26 ++-
- net/ethtool/netlink.h                         |   1 +
- net/ethtool/stats.c                           |  55 ++++++
- net/ethtool/strset.c                          |   5 +
- 15 files changed, 583 insertions(+), 20 deletions(-)
-
---
+diff --git a/Documentation/networking/diagnostic/twisted_pair_layer1_diagnostics.rst b/Documentation/networking/diagnostic/twisted_pair_layer1_diagnostics.rst
+index c9be5cc7e113..079e17effadf 100644
+--- a/Documentation/networking/diagnostic/twisted_pair_layer1_diagnostics.rst
++++ b/Documentation/networking/diagnostic/twisted_pair_layer1_diagnostics.rst
+@@ -713,17 +713,23 @@ driver supports reporting such events.
+ 
+ - **Monitor Error Counters**:
+ 
+-  - While some NIC drivers and PHYs provide error counters, there is no unified
+-    set of PHY-specific counters across all hardware. Additionally, not all
+-    PHYs provide useful information related to errors like CRC errors, frame
+-    drops, or link flaps. Therefore, this step is dependent on the specific
+-    hardware and driver support.
+-
+-  - **Next Steps**: Use `ethtool -S <interface>` to check if your driver
+-    provides useful error counters. In some cases, counters may provide
+-    information about errors like link flaps or physical layer problems (e.g.,
+-    excessive CRC errors), but results can vary significantly depending on the
+-    PHY.
++  - Use `ethtool -S <interface> --all-groups` to retrieve standardized interface
++    statistics if the driver supports the unified interface:
++
++  - **Command:** `ethtool -S <interface> --all-groups`
++
++  - **Example Output (if supported)**:
++
++    .. code-block:: bash
++
++      phydev-RxFrames: 100391
++      phydev-RxErrors: 0
++      phydev-TxFrames: 9
++      phydev-TxErrors: 0
++
++  - If the unified interface is not supported, use `ethtool -S <interface>` to
++    retrieve MAC and PHY counters. Note that non-standardized PHY counter names
++    vary by driver and must be interpreted accordingly:
+ 
+   - **Command:** `ethtool -S <interface>`
+ 
+@@ -740,6 +746,17 @@ driver supports reporting such events.
+     condition) or kernel log messages (e.g., link up/down events) to further
+     diagnose the issue.
+ 
++  - **Compare Counters**:
++
++    - Compare the egress and ingress frame counts reported by the PHY and MAC.
++
++    - A small difference may occur due to sampling rate differences between the
++      MAC and PHY drivers, or if the PHY and MAC are not always fully
++      synchronized in their UP or DOWN states.
++
++    - Significant discrepancies indicate potential issues in the data path
++      between the MAC and PHY.
++
+ When All Else Fails...
+ ~~~~~~~~~~~~~~~~~~~~~~
+ 
+-- 
 2.39.5
 
