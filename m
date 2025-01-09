@@ -1,341 +1,473 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5EF218EA7
-	for <netdev@vger.kernel.org>; Thu,  9 Jan 2025 15:00:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647D6126C18;
+	Thu,  9 Jan 2025 15:01:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736434824; cv=none; b=MJyxpq264PsUtWu0FS6fBR50CBkhf91ICr0556hPRF8MtQl3tiOmqlJa3q2etV5XqNruHiqvgJMlWtzis2UXvBsvh443S3ks1yiPv1gmPvz7SIzod3uN1tZuvRPoHu8sLLZpercla7hUwDdjySBWgoD2lkRMN+i4Tm7h43V8cjI=
+	t=1736434873; cv=none; b=seO8F+koAG8l2YixFZdCD92emg93DtJcDPJO3HwFMgkJAkNmabTPUB/0eqh6crS8sojRCZNN+jHVxkFMDqV7G6E1qTys/5kdFovgX1mRRHF+gdB612y0bwBhYbI5bY8XaTpsSzIhp6HXjwQBV5xlFPe+eNzFL695iOPj6+rxRIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736434824; c=relaxed/simple;
-	bh=hnLZdAJIzKCNu8IoInf8E4RIhsekeiJk1lpPLOMSWEg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lsuFpEkYKXjLbWOLeNuGrpAPsCs3nKb46jzYH3q/Nup3+44Kl+SUxIAs17MuMR/XNUwAfGJ333HU6Y5SDBUaWaCQo6to5C1LyrXwQmK5PQpCKT05ksP+/+zh1L/ALTGb++hDSIvgLt55SG3DQnrFasLo7eO3utAjpWXLmyYJSvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ii7G/fsj; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1736434873; c=relaxed/simple;
+	bh=RDQBaZpkshoknjRjIP1pEVv4XKxogTrrJQkng7t3klY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hs5B7uWFe2ukA7mnG53Ur+psO7BKGkqNogCNfaWNfD/199fRZYdhLIySXrRKGLMcUEo9GzM5BGecXDcoeJFpotO6jxBINF5Qs0SHEeZCPK25hkPIku7k+voZDanMuS8ueyZjVDspAHgMgI2go9womOUmMR8mh1L2PIlAURPgsbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f4mAIFxE; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ii7G/fsj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736434821;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o05o/7Mxj4KVai2AnUEf3T0uGeZuV/vmCjsNpFWRxW8=;
-	b=ii7G/fsjkp/F0U/VicoyiDZuH1QIxfqNpKC2It6VS/lMLdw9TQc/B2/mmjPF35wLWOOCpf
-	t1QWCYb7Ol9tQQ70FuyCRKRKaPvt2h17oxKbdJZr23/jQcTh5Z46fLIkG/kdHdFcbCutyr
-	mZKEs7y4HsmN0nqj8CENe2dUTJ3IPJc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-c3qDjWWOP9W_xG5tCpK6-w-1; Thu, 09 Jan 2025 10:00:19 -0500
-X-MC-Unique: c3qDjWWOP9W_xG5tCpK6-w-1
-X-Mimecast-MFC-AGG-ID: c3qDjWWOP9W_xG5tCpK6-w
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43628594d34so5659765e9.2
-        for <netdev@vger.kernel.org>; Thu, 09 Jan 2025 07:00:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f4mAIFxE"
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e3978c00a5aso1455398276.1;
+        Thu, 09 Jan 2025 07:01:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736434870; x=1737039670; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EIrF+1/QY1vWPuwG5/XJyja+ijdMmZyabFe8RAvjN9A=;
+        b=f4mAIFxENogfYMWO2xNYzrfknt+A26Rkb/Q7VuD+sLQmVtWiqXg8hIhmxPY325lAHo
+         CpeW3a2krD7g1k+T3rgFLWrvPfBpN79IFZZFvBFkfswSK/sFUxRMnZzkUGeZ439vsBry
+         hT++wjQdmcEeckbxc/4UAeG/8VzUjXN+Ac+Hoj9bDvhyVw8J/ONwUggY+h7io6WGmP+7
+         OXjLsCReMr+FGBLFd25PHE0y5jq5+KvjmdzHDvwIU3dcWTgmHSYSOtxi3j45RUXfUKI6
+         wPMtOzHBjXDdyxhtCfSETqhcHZ0hz3Pxox3WHVIWjQU6lE7440VH6Ky/gPjZsvhtzSK9
+         Gx2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736434819; x=1737039619;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o05o/7Mxj4KVai2AnUEf3T0uGeZuV/vmCjsNpFWRxW8=;
-        b=MX7VslwdBXl60f9trpUWIx3a79IeA1v3kxFutgLlP0b3UiCbwq85qH7Z+QGMs5RaBC
-         /2pM58J6MXXuqLb/MdggsfbS6cSO41ureEKdx/vXhx84nforfGKnG0myDS+LPEeRPGI5
-         6M67mXNuO++SaykJ7T5i+FpfnbFtPqRro1bI+flanRW3XEuaaybyiH/MGMMgoGqxo5MX
-         2fFArDw+KV73tuMDKiYGTixJJocFKrQHjBtAca61Z7Bpsna2xu58XRayZ+xroYSmYRg+
-         lXM2YgOEhNfzhNyVMckz5Tm54e/CqEAkOrS8XHC4usKHY5eoyZxVhOtB6iHe0XbRFDkS
-         me2g==
-X-Forwarded-Encrypted: i=1; AJvYcCV2GtoibMn15cqbgCud/wnm06N/vhzqoTGTiWo4LZf/SZ3s4URqmFHHvapyUwUwPNbjWYnRMSY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhJ7JeTW5MxFUQYOb0EK3Csgh4yct8DygTHzWDGctygnyxKM2K
-	TOvhN/82FK+5WGXWVt5QHfxn6VASyDYia5aom4SUx27OTakmdQJxR+JKATmW12EznjYTO3E6skB
-	bNAhV7N4n3ejB2+Ea0sipSCW5y055H3niNXwuhbnekb0pCX4l2mIaeQ==
-X-Gm-Gg: ASbGnctut3v5AkmqqvqzYMQ+ckwT0O0u2yb3pjpX8ikRhe8D3jqX0Re3uz8oWUcgBXK
-	HbKBK/D+w9oSOXzHPt4mNFh2GpjN+tJC2PZRPlqPf7UWTTJwNZjGH/hF57388u2+1ymCtdCL/06
-	6Yf5Xlm6RKEUVjCqIW55RibpnJ3xSS4ptKrOaVG++iQv6g3lkSjax4/0IiINqWP2Q8L+ngzoqs7
-	+dcET81N6TvtDobf45YoJ5AC/bABi3cTh8vhsRY0LH4hQ6Hc6QRwMDWPTBSL1zKktD1oHzbbjTW
-	8ZeNReq2
-X-Received: by 2002:a5d:47a3:0:b0:38a:4184:2510 with SMTP id ffacd0b85a97d-38a872db629mr7036762f8f.23.1736434818618;
-        Thu, 09 Jan 2025 07:00:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH0qpefjzwggolZbq54RnTPm+ZuDN/XJ1XaE+4DqwqaPVubWYTbEoLSIZAP8E8huVRHQ5WKJg==
-X-Received: by 2002:a5d:47a3:0:b0:38a:4184:2510 with SMTP id ffacd0b85a97d-38a872db629mr7036723f8f.23.1736434818145;
-        Thu, 09 Jan 2025 07:00:18 -0800 (PST)
-Received: from [192.168.88.253] (146-241-2-244.dyn.eolo.it. [146.241.2.244])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e38c6dbsm2083082f8f.55.2025.01.09.07.00.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jan 2025 07:00:17 -0800 (PST)
-Message-ID: <5ed1d572-b2e4-46f9-b9a5-6c4c0190fe7d@redhat.com>
-Date: Thu, 9 Jan 2025 16:00:16 +0100
+        d=1e100.net; s=20230601; t=1736434870; x=1737039670;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EIrF+1/QY1vWPuwG5/XJyja+ijdMmZyabFe8RAvjN9A=;
+        b=So1MAbl/UJ9iERrzavLLVwzbVSi09+cFOgaE02F0aLMoRaPre06IvN2cHtpBtZrgt4
+         r6Ti/SqOLNbbm8KfNtFFkzTTuyoocSE8WQ1IVKQLgpjpXorvu9pcH/rRYBbHnXa1pB8e
+         kUUGxY/ZTvBOn70iK31u0PIA9drHmNhdl7kT2lOVYVeDuwOoHi12gspQH6jHGl5fahve
+         Wi4PxcEvIyM1wRlGd7IZwHbRjb3rmDTKU2+lRtVVps+e/rdxgQ3d8Sdr2p0uilGcNHXf
+         mUFdv/8QMN/syCItCkuA2HjYnDqWOBzvGv+zMGv/ruuch45+79yvq8lUt3FrypbtXZHo
+         cchw==
+X-Gm-Message-State: AOJu0YzuMSM60GZxgfZc6QK0A31oCYpBNz0LGrVh2VKoR8y0t7aTj/Jc
+	/yDnuWSmFVr8J6c+ube655FXQuh+WlH1Kc5SB9hcE/Djd//17JscbF7uDVHcb4Uo4czNZBV2UO8
+	trF+D1CT8m3QNmlkFstYoInhvBHrK8NAf
+X-Gm-Gg: ASbGncsdBaEicYsa7n9A0tywCu2qAC916Kisvs3uFNLnWn3TGYtoZj8i6hnwzMPP4H7
+	zz4n0G07q2kSnj8c2lcFtpFFs5t14qeovmjnU3z0B7+/HT/UOfDt3NQ==
+X-Google-Smtp-Source: AGHT+IH3lcd6ihmqOjJ5WzJ1p8BQMsnPrciB6RMsA4EVXtY92Ob6LcBw8ThQnUVI8ZOc+YOcaZukdG1JStR+hsRboe8=
+X-Received: by 2002:a05:690c:6b87:b0:6ea:7b00:4aa5 with SMTP id
+ 00721157ae682-6f5312bf3b9mr53128137b3.33.1736434869843; Thu, 09 Jan 2025
+ 07:01:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 2/3] net: ti: icssg-prueth: Add Multicast
- Filtering support for VLAN in MAC mode
-To: MD Danish Anwar <danishanwar@ti.com>, Jeongjun Park
- <aha310510@gmail.com>, Alexander Lobakin <aleksander.lobakin@intel.com>,
- Lukasz Majewski <lukma@denx.de>, Meghana Malladi <m-malladi@ti.com>,
- Diogo Ivo <diogo.ivo@siemens.com>, Simon Horman <horms@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
- "David S. Miller" <davem@davemloft.net>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Roger Quadros <rogerq@kernel.org>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, srk@ti.com,
- Vignesh Raghavendra <vigneshr@ti.com>,
- Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
- Larysa Zaremba <larysa.zaremba@intel.com>
-References: <20250103092033.1533374-1-danishanwar@ti.com>
- <20250103092033.1533374-3-danishanwar@ti.com>
- <133b8da8-a2da-4bac-b0bb-7dcaebc219b9@redhat.com>
- <31a45fb4-acb6-4eb6-9ffb-ff1be798a064@ti.com>
- <45fac9f0-b31a-495d-bd1b-ccf0fbe19653@redhat.com>
- <b8d46941-aeb2-466a-acd5-8ad5be832649@ti.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <b8d46941-aeb2-466a-acd5-8ad5be832649@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20241220195619.2022866-1-amery.hung@gmail.com> <20241220195619.2022866-6-amery.hung@gmail.com>
+In-Reply-To: <20241220195619.2022866-6-amery.hung@gmail.com>
+From: Amery Hung <ameryhung@gmail.com>
+Date: Thu, 9 Jan 2025 07:00:00 -0800
+X-Gm-Features: AbW1kvYd0g4Gi6235v7RobX5O0z0GoRJfnycpmfM5qJPFdc3UvEqHPL9ce-3pTY
+Message-ID: <CAMB2axNXs4ydFiRw_cxh=eW=_ZiLhRJakJ-82J_s0QcHQgEiEQ@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v2 05/14] bpf: net_sched: Support implementation
+ of Qdisc_ops in bpf
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	alexei.starovoitov@gmail.com, martin.lau@kernel.org, sinquersw@gmail.com, 
+	toke@redhat.com, jhs@mojatatu.com, jiri@resnulli.us, stfomichev@gmail.com, 
+	ekarani.silvestre@ccc.ufcg.edu.br, yangpeihao@sjtu.edu.cn, 
+	xiyou.wangcong@gmail.com, yepeilin.cs@gmail.com, amery.hung@bytedance.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 1/8/25 10:40 AM, MD Danish Anwar wrote:
-> On 07/01/25 11:57 pm, Paolo Abeni wrote:
->> On 1/7/25 11:47 AM, MD Danish Anwar wrote:
->>> On 07/01/25 3:12 pm, Paolo Abeni wrote:
->>>> On 1/3/25 10:20 AM, MD Danish Anwar wrote:
->>>>> Add multicast filtering support for VLAN interfaces in dual EMAC mode
->>>>> for ICSSG driver.
->>>>>
->>>>> The driver uses vlan_for_each() API to get the list of available
->>>>> vlans. The driver then sync mc addr of vlan interface with a locally
->>>>> mainatined list emac->vlan_mcast_list[vid] using __hw_addr_sync_multiple()
->>>>> API.
->>>>>
->>>>> The driver then calls the sync / unsync callbacks and based on whether
->>>>> the ndev is vlan or not, driver passes appropriate vid to FDB helper
->>>>> functions.
->>>>>
->>>>> This commit also exports __hw_addr_sync_multiple() in order to use it
->>>>> from the ICSSG driver.
->>>>>
->>>>> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
->>>>> ---
->>>>>  drivers/net/ethernet/ti/icssg/icssg_prueth.c | 67 ++++++++++++++++----
->>>>>  drivers/net/ethernet/ti/icssg/icssg_prueth.h |  6 ++
->>>>>  include/linux/netdevice.h                    |  3 +
->>>>>  net/core/dev_addr_lists.c                    |  7 +-
->>>>>  4 files changed, 66 insertions(+), 17 deletions(-)
->>>>>
->>>>> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
->>>>> index 1663941e59e3..ed8b5a3184d6 100644
->>>>> --- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
->>>>> +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
->>>>> @@ -472,30 +472,44 @@ const struct icss_iep_clockops prueth_iep_clockops = {
->>>>>  
->>>>>  static int icssg_prueth_add_mcast(struct net_device *ndev, const u8 *addr)
->>>>>  {
->>>>> -	struct prueth_emac *emac = netdev_priv(ndev);
->>>>> -	int port_mask = BIT(emac->port_id);
->>>>> +	struct net_device *real_dev;
->>>>> +	struct prueth_emac *emac;
->>>>> +	int port_mask;
->>>>> +	u8 vlan_id;
->>>>>  
->>>>> -	port_mask |= icssg_fdb_lookup(emac, addr, 0);
->>>>> -	icssg_fdb_add_del(emac, addr, 0, port_mask, true);
->>>>> -	icssg_vtbl_modify(emac, 0, port_mask, port_mask, true);
->>>>> +	vlan_id = is_vlan_dev(ndev) ? vlan_dev_vlan_id(ndev) : PRUETH_DFLT_VLAN_MAC;
->>>>> +	real_dev = is_vlan_dev(ndev) ? vlan_dev_real_dev(ndev) : ndev;
->>>>> +	emac = netdev_priv(real_dev);
->>>>> +
->>>>> +	port_mask = BIT(emac->port_id) | icssg_fdb_lookup(emac, addr, vlan_id);
->>>>> +	icssg_fdb_add_del(emac, addr, vlan_id, port_mask, true);
->>>>> +	icssg_vtbl_modify(emac, vlan_id, port_mask, port_mask, true);
->>>>>  
->>>>>  	return 0;
->>>>>  }
->>>>>  
->>>>>  static int icssg_prueth_del_mcast(struct net_device *ndev, const u8 *addr)
->>>>>  {
->>>>> -	struct prueth_emac *emac = netdev_priv(ndev);
->>>>> -	int port_mask = BIT(emac->port_id);
->>>>> +	struct net_device *real_dev;
->>>>> +	struct prueth_emac *emac;
->>>>>  	int other_port_mask;
->>>>> +	int port_mask;
->>>>> +	u8 vlan_id;
->>>>> +
->>>>> +	vlan_id = is_vlan_dev(ndev) ? vlan_dev_vlan_id(ndev) : PRUETH_DFLT_VLAN_MAC;
->>>>> +	real_dev = is_vlan_dev(ndev) ? vlan_dev_real_dev(ndev) : ndev;
->>>>> +	emac = netdev_priv(real_dev);
->>>>>  
->>>>> -	other_port_mask = port_mask ^ icssg_fdb_lookup(emac, addr, 0);
->>>>> +	port_mask = BIT(emac->port_id);
->>>>> +	other_port_mask = port_mask ^ icssg_fdb_lookup(emac, addr, vlan_id);
->>>>>  
->>>>> -	icssg_fdb_add_del(emac, addr, 0, port_mask, false);
->>>>> -	icssg_vtbl_modify(emac, 0, port_mask, port_mask, false);
->>>>> +	icssg_fdb_add_del(emac, addr, vlan_id, port_mask, false);
->>>>> +	icssg_vtbl_modify(emac, vlan_id, port_mask, port_mask, false);
->>>>>  
->>>>>  	if (other_port_mask) {
->>>>> -		icssg_fdb_add_del(emac, addr, 0, other_port_mask, true);
->>>>> -		icssg_vtbl_modify(emac, 0, other_port_mask, other_port_mask, true);
->>>>> +		icssg_fdb_add_del(emac, addr, vlan_id, other_port_mask, true);
->>>>> +		icssg_vtbl_modify(emac, vlan_id, other_port_mask,
->>>>> +				  other_port_mask, true);
->>>>>  	}
->>>>>  
->>>>>  	return 0;
->>>>> @@ -531,6 +545,25 @@ static int icssg_prueth_hsr_del_mcast(struct net_device *ndev, const u8 *addr)
->>>>>  	return 0;
->>>>>  }
->>>>>  
->>>>> +static int icssg_update_vlan_mcast(struct net_device *vdev, int vid,
->>>>> +				   void *args)
->>>>> +{
->>>>> +	struct prueth_emac *emac = args;
->>>>> +
->>>>> +	if (!vdev || !vid)
->>>>> +		return 0;
->>>>> +
->>>>> +	netif_addr_lock_bh(vdev);
->>>>> +	__hw_addr_sync_multiple(&emac->vlan_mcast_list[vid], &vdev->mc,
->>>>> +				vdev->addr_len);
->>>>> +	netif_addr_unlock_bh(vdev);
->>>>
->>>> At this point, isn't emac->vlan_mcast_list[vid] == vdev->mc?
->>>>
->>>>> +
->>>>> +	__hw_addr_sync_dev(&emac->vlan_mcast_list[vid], vdev,
->>>>> +			   icssg_prueth_add_mcast, icssg_prueth_del_mcast);
->>>>
->>>> If so, can this function be reduced to just:
->>>>
->>>> 	__dev_mc_sync(vdev, icssg_prueth_add_mcast, icssg_prueth_del_mcast);
->>>>
->>>> ?
->>>>
->>>
->>> I don't know but for some reason __dev_mc_sync() doesn't work here. My
->>> initial approach was to use __dev_mc_sync(vdev, sync, unsync) however it
->>> didn't work.
->>>
->>> When I use __dev_mc_sync() and print the vlan_id in function
->>> icssg_prueth_add_mcast(). It always prints vlan_id as 0 implying
->>> __dev_mc_sync from here never gets called. Whereas when using
->>> __hw_addr_sync_dev() I see the appropriate vlan_id in
->>> icssg_prueth_add_mcast()
->>
->> It look like the above needs more investigation, right? is
->> vlan_mcast_list[vid] different from vdev->mc? why? At very least you
->> need to provide a clear explaination of the above.
->>
-> 
-> I did further debug on this. At this point vlan_mcast_list[vid] is
-> actually same as vdev->mc in terms of the multicast addresses.
-> 
-> However the sync_cnt and refcount of the addresses in both the lists are
-> not same. Due to which vdev->mc doesn't work here. I will explain it.
-> 
-> __dev_mc_sync(vdev, sync, unsync) will call __hw_addr_sync_dev(&dev->mc,
-> dev, sync, unsync)
-> 
-> Now in __hw_addr_sync_dev() sync is only called when ha->sync_cnt == 0
-> for the given mac address. If ha->sync_cnt is non zero, sync will not
-> get called.
-> 
-> When we add a multicast address to the vlan interface using below command,
-> 	
-> 	ip maddr add <mac_addr> dev eth1.6
-> 
-> ndo_set_rx_mode() gets called for the vlan interface i.e.
-> vlan_dev_set_rx_mode() [net/8021q/vlan_dev.c] which syncs mc list from
-> the vdev to the real_dev of vdev by calling dev_mc_sync(real_dev, vdev)
-> 
-> Now dev_mc_sync() sync addresses from vdev to real_dev using
-> __hw_addr_sync().
-> 
-> __hw_addr_sync() calls __hw_addr_sync_one() which after successfully
-> syncing an address from vdev to real_dev increment the ha->sync_cnt. As
-> a result at this point the ha->sync_cnt == 1 for the above address
-> passed by command. After this vlan_dev_set_rx_mode() calls the
-> set_rx_mode() of the real_dev.
-> 
-> Now when icssg_update_vlan_mcast() calls __dev_mc_sync(vdev, sync,
-> unsync), it calls _hw_addr_sync_dev(&dev->mc, dev, sync, unsync) and
-> checks the ha->sync_cnt for the given address, since sync_cnt is already
-> 1, it doesn't consider it as an newly added address and sync / unsync
-> callbacks are not called. [1]
-> 
-> list_for_each_entry_safe(ha, tmp, &list->list, list) {
-> 	if (ha->sync_cnt)
-> 		continue;
-> 
-> Since for addresses in vlan interfaces, sync_cnt will always be set as
-> vlan_dev_set_rx_mode() will sync the mc list of vlan interface with the
-> real dev. This will mean that the driver implemented sync / unsync APIs
-> will only be called for the real_dev and the real_dev won't have any
-> information about the vlan_id which I need in my sync / unsync APIs to
-> populate the same in the hardware maintained FDB table.
-> 
-> To overcome this, I am maintaining a local copy of vdev->mc named
-> emac->vlan_mcast_list[vid]. I will sync address from vdev->mc to this.
-> and then call __hw_addr_sync_dev() on this list as the sync_cnt for
-> address in this list will still be zero. Which will then trigger my
-> sync() callback on the vdev which will help me obtain the vlan_id in the
-> sync callback. I can now populate the same in the hardware maintained
-> FDB table.
-> 
-> I hope this explains why I am using
-> 
-> 	__hw_addr_sync_dev(&emac->vlan_mcast_list[vid], vdev,
-> icssg_prueth_add_mcast, icssg_prueth_del_mcast)
-> 
-> instead of
-> 
-> 	__dev_mc_sync(vdev, icssg_prueth_add_mcast, icssg_prueth_del_mcast);
-> 
->>> Anyways, Even if I use __dev_mc_sync(), we will still need the export. I
->>> am exporting __hw_addr_sync_multiple() not __hw_addr_sync_dev(). The API
->>> being used by me `__hw_addr_sync_dev()` is already exported.
->>
->> I fear there is a misunderstanding. I'm suggesting dropping
->> __hw_addr_sync_multiple() usage entirely. If that is not possible, a
->> clear and complete explaination of the reason/root cause must be provided.
->>
-> 
-> As explained above, I need to be able to sync addresses from vdev->mc to
-> my local list. Now this can be done using two APIs.
-> 
-> 1. __hw_addr_sync() - This is already exported and is actually the first
-> choice. However this will fail syncing address from vdev->mc to my local
-> copy.
-> 
-> __hw_addr_sync() only syncs the address if ha->sync_cnt == 0. If the
-> sync_cnt is non zero, this will skip the address. As explained above,
-> for mc addresses of vlan interfaces, sync_cnt will always be set as
-> vlan_dev_set_rx_mode() will sync the mc list of vlan interface with the
-> real dev. As a result the addresses will be skipped and __hw_addr_sync()
-> will not serve the purpose here.
-> 
-> 2. __hw_addr_sync_multiple() - This actually works perfectly fine here
-> as it sync address even if sync_cnt is non zero. As a result I am using
-> this function in my implementation.
-> 
-> Since this is not public, I have to export it so that the driver can
-> call this.
-> 
-> So I am afraid dropping __hw_addr_sync_multiple() is not possible here.
-> I hope the explanation above makes sense to you.
-> 
-> Please let me know if this is OK with you. If you have some other way> through which I can make this work please let me know.
+@Cong, I am addressing your comments in v1 here. First, bpf qdisc will
+be disabled by default (CONFIG_SCH_BPF=3Dn). Second, I think it makes
+more sense to keep changes to sch_generic.c and sch_api.c part of this
+commit as it is built on top of struct_ops (similar to what bpf
+congestion control did).
 
-I think it makes sense and I can't think of simpler ways on top of my
-head. Please repost capturing a synopsis of the above in the commit message.
+Please let me know if you have any other feedback. I'd also appreciate
+it if you approve this set.
 
-Thanks,
+Thanks!
+Amery
 
-Paolo
 
+On Fri, Dec 20, 2024 at 11:56=E2=80=AFAM Amery Hung <ameryhung@gmail.com> w=
+rote:
+>
+> From: Amery Hung <amery.hung@bytedance.com>
+>
+> Enable users to implement a classless qdisc using bpf. The last few
+> patches in this series has prepared struct_ops to support core operators
+> in Qdisc_ops. The recent advancement in bpf such as allocated
+> objects, bpf list and bpf rbtree has also provided powerful and flexible
+> building blocks to realize sophisticated scheduling algorithms. Therefore=
+,
+> in this patch, we start allowing qdisc to be implemented using bpf
+> struct_ops. Users can implement Qdisc_ops.{enqueue, dequeue, init, reset,
+> and .destroy in Qdisc_ops in bpf and register the qdisc dynamically into
+> the kernel.
+>
+> Co-developed-by: Cong Wang <cong.wang@bytedance.com>
+> Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+> Signed-off-by: Amery Hung <amery.hung@bytedance.com>
+> ---
+>  include/linux/btf.h     |   1 +
+>  kernel/bpf/btf.c        |   4 +-
+>  net/sched/Kconfig       |  12 +++
+>  net/sched/Makefile      |   1 +
+>  net/sched/bpf_qdisc.c   | 207 ++++++++++++++++++++++++++++++++++++++++
+>  net/sched/sch_api.c     |   7 +-
+>  net/sched/sch_generic.c |   3 +-
+>  7 files changed, 229 insertions(+), 6 deletions(-)
+>  create mode 100644 net/sched/bpf_qdisc.c
+>
+> diff --git a/include/linux/btf.h b/include/linux/btf.h
+> index 4214e76c9168..eb16218fdf52 100644
+> --- a/include/linux/btf.h
+> +++ b/include/linux/btf.h
+> @@ -563,6 +563,7 @@ const char *btf_name_by_offset(const struct btf *btf,=
+ u32 offset);
+>  const char *btf_str_by_offset(const struct btf *btf, u32 offset);
+>  struct btf *btf_parse_vmlinux(void);
+>  struct btf *bpf_prog_get_target_btf(const struct bpf_prog *prog);
+> +u32 get_ctx_arg_idx(struct btf *btf, const struct btf_type *func_proto, =
+int off);
+>  u32 *btf_kfunc_id_set_contains(const struct btf *btf, u32 kfunc_btf_id,
+>                                const struct bpf_prog *prog);
+>  u32 *btf_kfunc_is_modify_return(const struct btf *btf, u32 kfunc_btf_id,
+> diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+> index c2f4f84e539d..78476cebefe3 100644
+> --- a/kernel/bpf/btf.c
+> +++ b/kernel/bpf/btf.c
+> @@ -6375,8 +6375,8 @@ static bool is_int_ptr(struct btf *btf, const struc=
+t btf_type *t)
+>         return btf_type_is_int(t);
+>  }
+>
+> -static u32 get_ctx_arg_idx(struct btf *btf, const struct btf_type *func_=
+proto,
+> -                          int off)
+> +u32 get_ctx_arg_idx(struct btf *btf, const struct btf_type *func_proto,
+> +                   int off)
+>  {
+>         const struct btf_param *args;
+>         const struct btf_type *t;
+> diff --git a/net/sched/Kconfig b/net/sched/Kconfig
+> index 8180d0c12fce..ccd0255da5a5 100644
+> --- a/net/sched/Kconfig
+> +++ b/net/sched/Kconfig
+> @@ -403,6 +403,18 @@ config NET_SCH_ETS
+>
+>           If unsure, say N.
+>
+> +config NET_SCH_BPF
+> +       bool "BPF-based Qdisc"
+> +       depends on BPF_SYSCALL && BPF_JIT && DEBUG_INFO_BTF
+> +       help
+> +         This option allows BPF-based queueing disiplines. With BPF stru=
+ct_ops,
+> +         users can implement supported operators in Qdisc_ops using BPF =
+programs.
+> +         The queue holding skb can be built with BPF maps or graphs.
+> +
+> +         Say Y here if you want to use BPF-based Qdisc.
+> +
+> +         If unsure, say N.
+> +
+>  menuconfig NET_SCH_DEFAULT
+>         bool "Allow override default queue discipline"
+>         help
+> diff --git a/net/sched/Makefile b/net/sched/Makefile
+> index 82c3f78ca486..904d784902d1 100644
+> --- a/net/sched/Makefile
+> +++ b/net/sched/Makefile
+> @@ -62,6 +62,7 @@ obj-$(CONFIG_NET_SCH_FQ_PIE)  +=3D sch_fq_pie.o
+>  obj-$(CONFIG_NET_SCH_CBS)      +=3D sch_cbs.o
+>  obj-$(CONFIG_NET_SCH_ETF)      +=3D sch_etf.o
+>  obj-$(CONFIG_NET_SCH_TAPRIO)   +=3D sch_taprio.o
+> +obj-$(CONFIG_NET_SCH_BPF)      +=3D bpf_qdisc.o
+>
+>  obj-$(CONFIG_NET_CLS_U32)      +=3D cls_u32.o
+>  obj-$(CONFIG_NET_CLS_ROUTE4)   +=3D cls_route.o
+> diff --git a/net/sched/bpf_qdisc.c b/net/sched/bpf_qdisc.c
+> new file mode 100644
+> index 000000000000..4b7d013f4f5c
+> --- /dev/null
+> +++ b/net/sched/bpf_qdisc.c
+> @@ -0,0 +1,207 @@
+> +#include <linux/types.h>
+> +#include <linux/bpf_verifier.h>
+> +#include <linux/bpf.h>
+> +#include <linux/btf.h>
+> +#include <linux/filter.h>
+> +#include <net/pkt_sched.h>
+> +#include <net/pkt_cls.h>
+> +
+> +static struct bpf_struct_ops bpf_Qdisc_ops;
+> +
+> +struct bpf_sk_buff_ptr {
+> +       struct sk_buff *skb;
+> +};
+> +
+> +static int bpf_qdisc_init(struct btf *btf)
+> +{
+> +       return 0;
+> +}
+> +
+> +static const struct bpf_func_proto *
+> +bpf_qdisc_get_func_proto(enum bpf_func_id func_id,
+> +                        const struct bpf_prog *prog)
+> +{
+> +       switch (func_id) {
+> +       case BPF_FUNC_tail_call:
+> +               return NULL;
+> +       default:
+> +               return bpf_base_func_proto(func_id, prog);
+> +       }
+> +}
+> +
+> +BTF_ID_LIST_SINGLE(bpf_sk_buff_ids, struct, sk_buff)
+> +BTF_ID_LIST_SINGLE(bpf_sk_buff_ptr_ids, struct, bpf_sk_buff_ptr)
+> +
+> +static bool bpf_qdisc_is_valid_access(int off, int size,
+> +                                     enum bpf_access_type type,
+> +                                     const struct bpf_prog *prog,
+> +                                     struct bpf_insn_access_aux *info)
+> +{
+> +       struct btf *btf =3D prog->aux->attach_btf;
+> +       u32 arg;
+> +
+> +       arg =3D get_ctx_arg_idx(btf, prog->aux->attach_func_proto, off);
+> +       if (!strcmp(prog->aux->attach_func_name, "enqueue")) {
+> +               if (arg =3D=3D 2 && type =3D=3D BPF_READ) {
+> +                       info->reg_type =3D PTR_TO_BTF_ID | PTR_TRUSTED;
+> +                       info->btf =3D btf;
+> +                       info->btf_id =3D bpf_sk_buff_ptr_ids[0];
+> +                       return true;
+> +               }
+> +       }
+> +
+> +       return bpf_tracing_btf_ctx_access(off, size, type, prog, info);
+> +}
+> +
+> +static int bpf_qdisc_btf_struct_access(struct bpf_verifier_log *log,
+> +                                       const struct bpf_reg_state *reg,
+> +                                       int off, int size)
+> +{
+> +       const struct btf_type *t, *skbt;
+> +       size_t end;
+> +
+> +       skbt =3D btf_type_by_id(reg->btf, bpf_sk_buff_ids[0]);
+> +       t =3D btf_type_by_id(reg->btf, reg->btf_id);
+> +       if (t !=3D skbt) {
+> +               bpf_log(log, "only read is supported\n");
+> +               return -EACCES;
+> +       }
+> +
+> +       switch (off) {
+> +       case offsetof(struct sk_buff, tstamp):
+> +               end =3D offsetofend(struct sk_buff, tstamp);
+> +               break;
+> +       case offsetof(struct sk_buff, priority):
+> +               end =3D offsetofend(struct sk_buff, priority);
+> +               break;
+> +       case offsetof(struct sk_buff, mark):
+> +               end =3D offsetofend(struct sk_buff, mark);
+> +               break;
+> +       case offsetof(struct sk_buff, queue_mapping):
+> +               end =3D offsetofend(struct sk_buff, queue_mapping);
+> +               break;
+> +       case offsetof(struct sk_buff, cb) + offsetof(struct qdisc_skb_cb,=
+ tc_classid):
+> +               end =3D offsetof(struct sk_buff, cb) +
+> +                     offsetofend(struct qdisc_skb_cb, tc_classid);
+> +               break;
+> +       case offsetof(struct sk_buff, cb) + offsetof(struct qdisc_skb_cb,=
+ data[0]) ...
+> +            offsetof(struct sk_buff, cb) + offsetof(struct qdisc_skb_cb,
+> +                                                    data[QDISC_CB_PRIV_L=
+EN - 1]):
+> +               end =3D offsetof(struct sk_buff, cb) +
+> +                     offsetofend(struct qdisc_skb_cb, data[QDISC_CB_PRIV=
+_LEN - 1]);
+> +               break;
+> +       case offsetof(struct sk_buff, tc_index):
+> +               end =3D offsetofend(struct sk_buff, tc_index);
+> +               break;
+> +       default:
+> +               bpf_log(log, "no write support to sk_buff at off %d\n", o=
+ff);
+> +               return -EACCES;
+> +       }
+> +
+> +       if (off + size > end) {
+> +               bpf_log(log,
+> +                       "write access at off %d with size %d beyond the m=
+ember of sk_buff ended at %zu\n",
+> +                       off, size, end);
+> +               return -EACCES;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static const struct bpf_verifier_ops bpf_qdisc_verifier_ops =3D {
+> +       .get_func_proto         =3D bpf_qdisc_get_func_proto,
+> +       .is_valid_access        =3D bpf_qdisc_is_valid_access,
+> +       .btf_struct_access      =3D bpf_qdisc_btf_struct_access,
+> +};
+> +
+> +static int bpf_qdisc_init_member(const struct btf_type *t,
+> +                                const struct btf_member *member,
+> +                                void *kdata, const void *udata)
+> +{
+> +       const struct Qdisc_ops *uqdisc_ops;
+> +       struct Qdisc_ops *qdisc_ops;
+> +       u32 moff;
+> +
+> +       uqdisc_ops =3D (const struct Qdisc_ops *)udata;
+> +       qdisc_ops =3D (struct Qdisc_ops *)kdata;
+> +
+> +       moff =3D __btf_member_bit_offset(t, member) / 8;
+> +       switch (moff) {
+> +       case offsetof(struct Qdisc_ops, peek):
+> +               qdisc_ops->peek =3D qdisc_peek_dequeued;
+> +               return 0;
+> +       case offsetof(struct Qdisc_ops, id):
+> +               if (bpf_obj_name_cpy(qdisc_ops->id, uqdisc_ops->id,
+> +                                    sizeof(qdisc_ops->id)) <=3D 0)
+> +                       return -EINVAL;
+> +               return 1;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static int bpf_qdisc_reg(void *kdata, struct bpf_link *link)
+> +{
+> +       return register_qdisc(kdata);
+> +}
+> +
+> +static void bpf_qdisc_unreg(void *kdata, struct bpf_link *link)
+> +{
+> +       return unregister_qdisc(kdata);
+> +}
+> +
+> +static int Qdisc_ops__enqueue(struct sk_buff *skb__ref, struct Qdisc *sc=
+h,
+> +                             struct sk_buff **to_free)
+> +{
+> +       return 0;
+> +}
+> +
+> +static struct sk_buff *Qdisc_ops__dequeue(struct Qdisc *sch)
+> +{
+> +       return NULL;
+> +}
+> +
+> +static struct sk_buff *Qdisc_ops__peek(struct Qdisc *sch)
+> +{
+> +       return NULL;
+> +}
+> +
+> +static int Qdisc_ops__init(struct Qdisc *sch, struct nlattr *arg,
+> +                          struct netlink_ext_ack *extack)
+> +{
+> +       return 0;
+> +}
+> +
+> +static void Qdisc_ops__reset(struct Qdisc *sch)
+> +{
+> +}
+> +
+> +static void Qdisc_ops__destroy(struct Qdisc *sch)
+> +{
+> +}
+> +
+> +static struct Qdisc_ops __bpf_ops_qdisc_ops =3D {
+> +       .enqueue =3D Qdisc_ops__enqueue,
+> +       .dequeue =3D Qdisc_ops__dequeue,
+> +       .peek =3D Qdisc_ops__peek,
+> +       .init =3D Qdisc_ops__init,
+> +       .reset =3D Qdisc_ops__reset,
+> +       .destroy =3D Qdisc_ops__destroy,
+> +};
+> +
+> +static struct bpf_struct_ops bpf_Qdisc_ops =3D {
+> +       .verifier_ops =3D &bpf_qdisc_verifier_ops,
+> +       .reg =3D bpf_qdisc_reg,
+> +       .unreg =3D bpf_qdisc_unreg,
+> +       .init_member =3D bpf_qdisc_init_member,
+> +       .init =3D bpf_qdisc_init,
+> +       .name =3D "Qdisc_ops",
+> +       .cfi_stubs =3D &__bpf_ops_qdisc_ops,
+> +       .owner =3D THIS_MODULE,
+> +};
+> +
+> +static int __init bpf_qdisc_kfunc_init(void)
+> +{
+> +       return register_bpf_struct_ops(&bpf_Qdisc_ops, Qdisc_ops);
+> +}
+> +late_initcall(bpf_qdisc_kfunc_init);
+> diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+> index 300430b8c4d2..b35c73c82342 100644
+> --- a/net/sched/sch_api.c
+> +++ b/net/sched/sch_api.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/hrtimer.h>
+>  #include <linux/slab.h>
+>  #include <linux/hashtable.h>
+> +#include <linux/bpf.h>
+>
+>  #include <net/net_namespace.h>
+>  #include <net/sock.h>
+> @@ -358,7 +359,7 @@ static struct Qdisc_ops *qdisc_lookup_ops(struct nlat=
+tr *kind)
+>                 read_lock(&qdisc_mod_lock);
+>                 for (q =3D qdisc_base; q; q =3D q->next) {
+>                         if (nla_strcmp(kind, q->id) =3D=3D 0) {
+> -                               if (!try_module_get(q->owner))
+> +                               if (!bpf_try_module_get(q, q->owner))
+>                                         q =3D NULL;
+>                                 break;
+>                         }
+> @@ -1287,7 +1288,7 @@ static struct Qdisc *qdisc_create(struct net_device=
+ *dev,
+>                                 /* We will try again qdisc_lookup_ops,
+>                                  * so don't keep a reference.
+>                                  */
+> -                               module_put(ops->owner);
+> +                               bpf_module_put(ops, ops->owner);
+>                                 err =3D -EAGAIN;
+>                                 goto err_out;
+>                         }
+> @@ -1398,7 +1399,7 @@ static struct Qdisc *qdisc_create(struct net_device=
+ *dev,
+>         netdev_put(dev, &sch->dev_tracker);
+>         qdisc_free(sch);
+>  err_out2:
+> -       module_put(ops->owner);
+> +       bpf_module_put(ops, ops->owner);
+>  err_out:
+>         *errp =3D err;
+>         return NULL;
+> diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+> index 38ec18f73de4..1e770ec251a0 100644
+> --- a/net/sched/sch_generic.c
+> +++ b/net/sched/sch_generic.c
+> @@ -24,6 +24,7 @@
+>  #include <linux/if_vlan.h>
+>  #include <linux/skb_array.h>
+>  #include <linux/if_macvlan.h>
+> +#include <linux/bpf.h>
+>  #include <net/sch_generic.h>
+>  #include <net/pkt_sched.h>
+>  #include <net/dst.h>
+> @@ -1083,7 +1084,7 @@ static void __qdisc_destroy(struct Qdisc *qdisc)
+>                 ops->destroy(qdisc);
+>
+>         lockdep_unregister_key(&qdisc->root_lock_key);
+> -       module_put(ops->owner);
+> +       bpf_module_put(ops, ops->owner);
+>         netdev_put(dev, &qdisc->dev_tracker);
+>
+>         trace_qdisc_destroy(qdisc);
+> --
+> 2.47.0
+>
