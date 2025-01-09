@@ -1,97 +1,112 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435C1B677
-	for <netdev@vger.kernel.org>; Thu,  9 Jan 2025 02:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365726F30F;
+	Thu,  9 Jan 2025 02:20:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736388586; cv=none; b=uaJk63AS/yWdAjxJ/HxAhcT/Qq2lGwT7/kNBOKPcIHFXqHqvFHdXh7UaocSKw5optC36QKmMCeAS0xpij7FtZEiaj9sq+C8Azk9e8uLPKsz3KHgMZn3aSRpjJzSh3RlKgq3EQpqTvEb0YAYmb6ZjJf/saIhj8QPwfU+CpFvPVc4=
+	t=1736389212; cv=none; b=NdM0mw4m6zpU+Q/B4hOvbcUBZHYe73YP2F6XXalkT1gYt7J0jyOrFjC+0GIml9yISzkjxAWDRsAR1DROLlORRLwLAQf8eRBvXdwlFtxqHoezm7T4ULd1jKTe1OXFP+eEWmPosxwy/XX/LeDui/GRv/ZF8y5Jh0YzDV/tlonG/k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736388586; c=relaxed/simple;
-	bh=RQCroYWa2RIpndvniBhc+nEzW+xgirSrvaBgEUnjeIs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bB7JH8xuT2YN10o3VvUgWPXnQY7RcrN7MM6lkzGBNYyO5Y1UEJT2piIqzbdzJkfgMcjROo1Txz/iHnii0HQsmXPDt/q+W5JWpUlQ2Tb3xKBheOWvsBrJ/1kQLVoRXmsjajc/TIoAnvpxa56g9kftAPmspUsDygn9Wep5no7acKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xsbioz+c; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736389212; c=relaxed/simple;
+	bh=5o2Si8C+2FKN1RT3tKic0+fY2AVR7kGb/gwSx9YjJxM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ODHwIMnTJgY/lRh3sIMa/b0xqMxNjBewV1iA1VQkqqPx2ZQcbf4yvpM9iDf+AVLSWkwp3LcB2ihz20Mo0uNQNNmwsYMkr1VfQuBPPNRhB/DFqm7QbyP4J+yM5E2fx/FfgJ8ihpYfnX6RAtMfL4ZAWoMMISkhYcCvBtAgnN+i540=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tdKz8+J7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xsbioz+c"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-216634dd574so3986455ad.2
-        for <netdev@vger.kernel.org>; Wed, 08 Jan 2025 18:09:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736388584; x=1736993384; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yBu9zwaldD0I2kKZNy8ryR+6MM6s4k4SCSM5cCy+M6E=;
-        b=Xsbioz+crIRwtY0jcBncVhgmKBupQUs5S/FcCuDW5Cq84Cf5MiH0o6Z2080a+4sMp0
-         Jj9mIH/GOf+Tm+dS471zaXO+3+x8z970vFIB8Uk9pAMMvuB4jeO50UCk4twcy6jnAw6T
-         a/eUzkZUhzVuepfaP0wOyVDt8+5ZYdBs88kuPkdsgmZBQ6Vlg0woE7owUVZSCIkBjCE+
-         bCUiK0+1WDoNidqlDX60IFd79ihEwdf/+djVa6H/1bo9RnDdLIHXLDnB+5Voyke3xAjB
-         vGP6nlwHwaQsnAey5uTzNSmUusjifDdmOBjRAgsyTHUgjDIaL22c9Jhnpw9laM0uAROK
-         2xaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736388584; x=1736993384;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yBu9zwaldD0I2kKZNy8ryR+6MM6s4k4SCSM5cCy+M6E=;
-        b=e5z3EFBIzIOxmRBFNug/n6wB+9VVBxU7hSIyWCGKaqJxmE6ONwEmKXcjomQdeuROwp
-         Mn3Agg+5BQpEdoALWhPgRsAIQ+UKmjRVNRQviJKUpqm20mVTTYD8FW+NXWuxxj21Z8BJ
-         xOFU1x38LYSonAjSQLY8m+8lDrnXRd/0RHGbwHjoq4Y5ScsfFDv9S4nM4CvApCTHB04E
-         OsdmugruNaUKyi4uJ6LTlDGSW2x0p0xpUwpxyzHLA/ZJaGI6EvS7WBoE/l/S38HSWKJl
-         oAYRXX/NJ1wRPCIvmtMgGD+VnIoNDMp1JNJ2vSdXSAIQadOnMDNEP2m5mMnKuI9wGdrL
-         bCuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWKUpY4nGEUN5TVUAFTTGwGjgsL1/tBg3NA47QGPerskh4RHACFOpF1UiI9MZmcr+EHuan6AIs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNCla7b1d6vIsIi6R3VvI+9/5/HIWgtoowgrZlhfD38N94Up6o
-	SubhEDg8BdsYEfT14o+jOWlNKrO3aFT5sd9Fhnjob8Gkdd344eY=
-X-Gm-Gg: ASbGncsSVHb2ALME592a7+iBZCKArJwFs2aBpf4vXguNY684WPQFjfS8e0kmoPie39i
-	cdScTGW92Apmaj4GwCYCLtHCRBgi12cOVJyp6TnrKHuOHZ8O6DMuChYL0aBO2k+d0iLXRchyXTy
-	09nuMYYo0UzGAP2e7JGBpxnT3ZpIsRsOHMKvagLV1xkZjHK6b4h87cBr+XLcRmyR0MX17W/uE4x
-	ia2NaXG/qAHk1B4deIlzOq3nv/G1JazuI4uLjCFPbwOm3uXeUYfxT+J
-X-Google-Smtp-Source: AGHT+IEUyoUqgQWSGqsv0aI6hwpUUSgqsIuDj4bEJx3+tyIW1cUBboz1Q2rzstn2FFmJkGioqG4aJg==
-X-Received: by 2002:a17:902:e74a:b0:216:2e6d:baac with SMTP id d9443c01a7336-21a83f649e0mr79552065ad.29.1736388584398;
-        Wed, 08 Jan 2025 18:09:44 -0800 (PST)
-Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dca014b0sm334917685ad.233.2025.01.08.18.09.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jan 2025 18:09:43 -0800 (PST)
-Date: Wed, 8 Jan 2025 18:09:43 -0800
-From: Stanislav Fomichev <stfomichev@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
-	dw@davidwei.uk, donald.hunter@gmail.com, nicolas.dichtel@6wind.com,
-	sdf@fomichev.me
-Subject: Re: [PATCH net-next] tools: ynl-gen-c: improve support for empty
- nests
-Message-ID: <Z38v56eT7P57n3V4@mini-arch>
-References: <20250108200758.2693155-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tdKz8+J7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5D3C4CEDD;
+	Thu,  9 Jan 2025 02:20:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736389211;
+	bh=5o2Si8C+2FKN1RT3tKic0+fY2AVR7kGb/gwSx9YjJxM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=tdKz8+J7E6I7Y6iNqZF1ZtqQpRGEknpXQEwpvk+cLzJj4022xc74fnepRGfs3ZJG2
+	 xgWotQ0tUEyn6oyhE8LcJGbzxTO3c8/EigUYly6XbOkcASYs8yYtQtazDn7nBdNCHr
+	 SxUPWg3qO8ycRNEqe3o5uJ4dYoBPMW8H91DkyhtOpty9hKCqdHEWoK2YSuZtf0UHDp
+	 CHwc4E+w+77sGcrlMKessGt+Rm7btGpwBVaGOiK01Fj5a7tAtj0C1ad4NI6qtHqlg9
+	 E0FirT8NUnBfO3k00t/XjFHMLHi/iCkL0AYoYpW79jfKlTozE/dVes9FyHr7SQ+0V2
+	 E8F+AUTXmbqyw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 71085380A965;
+	Thu,  9 Jan 2025 02:20:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250108200758.2693155-1-kuba@kernel.org>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf-next v2 00/16] bpf: Reduce the use of
+ migrate_{disable|enable}()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173638923326.842935.15837805191875975956.git-patchwork-notify@kernel.org>
+Date: Thu, 09 Jan 2025 02:20:33 +0000
+References: <20250108010728.207536-1-houtao@huaweicloud.com>
+In-Reply-To: <20250108010728.207536-1-houtao@huaweicloud.com>
+To: Hou Tao <houtao@huaweicloud.com>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, martin.lau@linux.dev,
+ alexei.starovoitov@gmail.com, andrii@kernel.org, eddyz87@gmail.com,
+ song@kernel.org, haoluo@google.com, yonghong.song@linux.dev,
+ daniel@iogearbox.net, kpsingh@kernel.org, sdf@fomichev.me, jolsa@kernel.org,
+ john.fastabend@gmail.com, houtao1@huawei.com, xukuohai@huawei.com
 
-On 01/08, Jakub Kicinski wrote:
-> Empty nests are the same size as a flag at the netlink level
-> (just a 4 byte nlattr without a payload). They are sometimes
-> useful in case we want to only communicate a presence of
-> something but may want to add more details later.
-> This may be the case in the upcoming io_uring ZC patches,
-> for example.
+Hello:
+
+This series was applied to bpf/bpf-next.git (master)
+by Alexei Starovoitov <ast@kernel.org>:
+
+On Wed,  8 Jan 2025 09:07:12 +0800 you wrote:
+> From: Hou Tao <houtao1@huawei.com>
 > 
-> Improve handling of nested empty structs. We already support
-> empty structs since a lot of netlink replies are empty, but
-> for nested ones we need minor tweaks to avoid pointless empty
-> lines and unused variables.
+> Hi,
 > 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> The use of migrate_{disable|enable} pair in BPF is mainly due to the
+> introduction of bpf memory allocator and the use of per-CPU data struct
+> in its internal implementation. The caller needs to disable migration
+> before invoking the alloc or free APIs of bpf memory allocator, and
+> enable migration after the invocation.
+> 
+> [...]
 
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Here is the summary with links:
+  - [bpf-next,v2,01/16] bpf: Remove migrate_{disable|enable} from LPM trie
+    https://git.kernel.org/bpf/bpf-next/c/1b1a01db17af
+  - [bpf-next,v2,02/16] bpf: Remove migrate_{disable|enable} in ->map_for_each_callback
+    https://git.kernel.org/bpf/bpf-next/c/ea5b229630a6
+  - [bpf-next,v2,03/16] bpf: Remove migrate_{disable|enable} in htab_elem_free
+    https://git.kernel.org/bpf/bpf-next/c/53f2ba0b1cc0
+  - [bpf-next,v2,04/16] bpf: Remove migrate_{disable|enable} from bpf_cgrp_storage_lock helpers
+    https://git.kernel.org/bpf/bpf-next/c/25dc65f75b08
+  - [bpf-next,v2,05/16] bpf: Remove migrate_{disable|enable} from bpf_task_storage_lock helpers
+    https://git.kernel.org/bpf/bpf-next/c/9e6c958b5466
+  - [bpf-next,v2,06/16] bpf: Disable migration when destroying inode storage
+    https://git.kernel.org/bpf/bpf-next/c/e319cdc89566
+  - [bpf-next,v2,07/16] bpf: Disable migration when destroying sock storage
+    https://git.kernel.org/bpf/bpf-next/c/7d1032d1e303
+  - [bpf-next,v2,08/16] bpf: Disable migration when cloning sock storage
+    https://git.kernel.org/bpf/bpf-next/c/dfccfc47bde5
+  - [bpf-next,v2,09/16] bpf: Disable migration in bpf_selem_free_rcu
+    https://git.kernel.org/bpf/bpf-next/c/090d7f2e640b
+  - [bpf-next,v2,10/16] bpf: Disable migration before calling ops->map_free()
+    https://git.kernel.org/bpf/bpf-next/c/4b7e7cd1c105
+  - [bpf-next,v2,11/16] bpf: Remove migrate_{disable|enable} in bpf_obj_free_fields()
+    https://git.kernel.org/bpf/bpf-next/c/1d2dbe7120e8
+  - [bpf-next,v2,12/16] bpf: Remove migrate_{disable,enable} in bpf_cpumask_release()
+    https://git.kernel.org/bpf/bpf-next/c/6a52b965ab6f
+  - [bpf-next,v2,13/16] bpf: Remove migrate_{disable|enable} from bpf_selem_alloc()
+    https://git.kernel.org/bpf/bpf-next/c/2269b32ab00e
+  - [bpf-next,v2,14/16] bpf: Remove migrate_{disable|enable} from bpf_local_storage_alloc()
+    https://git.kernel.org/bpf/bpf-next/c/4855a75ebf48
+  - [bpf-next,v2,15/16] bpf: Remove migrate_{disable|enable} from bpf_local_storage_free()
+    https://git.kernel.org/bpf/bpf-next/c/7b984359e097
+  - [bpf-next,v2,16/16] bpf: Remove migrate_{disable|enable} from bpf_selem_free()
+    https://git.kernel.org/bpf/bpf-next/c/d86088e2c35d
 
-Looks sensible. Assuming the context is:
-https://lore.kernel.org/netdev/20250108220644.3528845-1-dw@davidwei.uk/T/#Z2e.:..:20250108220644.3528845-8-dw::40davidwei.uk:1Documentation:netlink:specs:netdev.yaml
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
