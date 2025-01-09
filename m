@@ -1,56 +1,62 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCABA218837
-	for <netdev@vger.kernel.org>; Thu,  9 Jan 2025 09:45:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C431215196;
+	Thu,  9 Jan 2025 09:46:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736415936; cv=none; b=C5bsh1DNQ2hAV/ic+sjf3+mrInSojsYydc+xj7hUdHaLG2YG5rk8WzsVUbU9l32PigJciPaWxf/G2lsrPYhWOrL++kO1V/W0s0YvwoKH3yEQyAe8ndvUwLItgCVDY8aUGYTGuj6oMIZrEi7oeVRlHbla2imjTzALFX7pAjEnUEM=
+	t=1736415964; cv=none; b=mDHXpUTSXx8Ln+BGf/nlYHHSkn0bzNHv7LlNVxqGalmtPOECkIfcQu0vEer8WwVXchhIkHMGbHRWJEp6bnHRXpoEM+FJoSZ59ZGLdKPA+0j61CbK6Gl1yt92S8A+0L+IAouB+tZFp3YDZkRz4aVSQo1Z0nyotOo5UtrwH3Ccugw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736415936; c=relaxed/simple;
-	bh=cohqDqMUR68f8csfSViUV1nm0nhT9AY1jkdrcNTFF6M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BHgmT//wYo4MsWp4IEbweZCNA2RJoAJ4VosmCgVpyRyD5TJb3y0cGRxNnTsDzwTB9TfYDuoxRi9iN6gSinso7PDsusEshBy9EZ+JUuWZ+Gs9D+AT2w2RI8cDd750hbJ/tFIRxP/wp/wWZQoHQgep5GFrzcNb/1Q0kN1yCRIJFq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tVp64-00088F-Cg; Thu, 09 Jan 2025 10:45:00 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tVp62-007fa5-0U;
-	Thu, 09 Jan 2025 10:44:58 +0100
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tVp62-000PND-2j;
-	Thu, 09 Jan 2025 10:44:58 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
+	s=arc-20240116; t=1736415964; c=relaxed/simple;
+	bh=/Qa2UjJ0b5rnf65YAmkRT5HsCFtqyO4xwOCtnsfcApo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vyon5o3CwVd+eEDy4s+e+uKfyIv/vCwK8jef01N8xq+CV8Ed//VEDiotFk5DXrb8XHy+qq31gSNRMvNsxkbRJGVC828ZWha/x00Pzha5NXTjfsb9OT+ESDl/KU2nPDYZk3OJHxQ5tCV4/ukGD4GDNKf34NjrtPl7XYasZTdqMsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Z1gxGGOW; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Z1gxGGOW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=8xhBr
+	X7bFrX+P2iFnaqQorXCjWJV0bubNbzGOosUR34=; b=Z1gxGGOWeKHi/9pD9FUKC
+	c0QA35WxF+8XMBH74lLwCMDOfWohqxuuScW5pUKM2xwfH8d3+qD2ZT9TMtBstL+J
+	HxYWGcx/NBmyNR380IXxlEPtb/U9CcYyDYaaTO0jJDSU5gR7sQ/s8MDWllWHt4mI
+	Z93Msfp7w+LJuX9sSogvPI=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgBnDnRlmn9no5XNEA--.12216S2;
+	Thu, 09 Jan 2025 17:44:16 +0800 (CST)
+From: Jiayuan Chen <mrpre@163.com>
+To: bpf@vger.kernel.org,
+	jakub@cloudflare.com,
+	john.fastabend@gmail.com
+Cc: netdev@vger.kernel.org,
+	martin.lau@linux.dev,
+	ast@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	linux-doc@vger.kernel.org
-Subject: [PATCH net-next v6 3/7] net: ethtool: add support for structured PHY statistics
-Date: Thu,  9 Jan 2025 10:44:53 +0100
-Message-Id: <20250109094457.97466-4-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250109094457.97466-1-o.rempel@pengutronix.de>
-References: <20250109094457.97466-1-o.rempel@pengutronix.de>
+	song@kernel.org,
+	andrii@kernel.org,
+	mhal@rbox.co,
+	yonghong.song@linux.dev,
+	daniel@iogearbox.net,
+	xiyou.wangcong@gmail.com,
+	horms@kernel.org,
+	corbet@lwn.net,
+	eddyz87@gmail.com,
+	cong.wang@bytedance.com,
+	shuah@kernel.org,
+	mykolal@fb.com,
+	jolsa@kernel.org,
+	haoluo@google.com,
+	sdf@fomichev.me,
+	kpsingh@kernel.org,
+	linux-doc@vger.kernel.org,
+	Jiayuan Chen <mrpre@163.com>
+Subject: [PATCH bpf v5 0/3] bpf: fix wrong copied_seq calculation and add tests
+Date: Thu,  9 Jan 2025 17:43:58 +0800
+Message-ID: <20250109094402.50838-1-mrpre@163.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,212 +64,75 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+X-CM-TRANSID:PygvCgBnDnRlmn9no5XNEA--.12216S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWFyrGFyfXw4kuryDAFyxKrg_yoW5Xr13pa
+	4kC34rGrsrtFyIvws7A392gF4Fgw4rGayUGF1Fg3yfZr4jkry5trs7Kayavr98GrWfZFyU
+	ur15Wrs0934DZFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0z_pnQ7UUUUU=
+X-CM-SenderInfo: xpus2vi6rwjhhfrp/xtbBDxHPp2d-mjQFwwAAsG
 
-From: Jakub Kicinski <kuba@kernel.org>
+A previous commit described in this topic
+http://lore.kernel.org/bpf/20230523025618.113937-9-john.fastabend@gmail.com
+directly updated 'sk->copied_seq' in the tcp_eat_skb() function when the
+action of a BPF program was SK_REDIRECT. For other actions, like SK_PASS,
+the update logic for 'sk->copied_seq' was moved to
+tcp_bpf_recvmsg_parser() to ensure the accuracy of the 'fionread' feature.
 
-Introduce a new way to report PHY statistics in a structured and
-standardized format using the netlink API. This new method does not
-replace the old driver-specific stats, which can still be accessed with
-`ethtool -S <eth name>`. The structured stats are available with
-`ethtool -S <eth name> --all-groups`.
+That commit works for a single stream_verdict scenario, as it also
+modified 'sk_data_ready->sk_psock_verdict_data_ready->tcp_read_skb'
+to remove updating 'sk->copied_seq'.
 
-This new method makes it easier to diagnose problems by organizing stats
-in a consistent and documented way.
+However, for programs where both stream_parser and stream_verdict are
+active(strparser purpose), tcp_read_sock() was used instead of
+tcp_read_skb() (sk_data_ready->strp_data_ready->tcp_read_sock)
+tcp_read_sock() now still update 'sk->copied_seq', leading to duplicated
+updates.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+In summary, for strparser + SK_PASS, copied_seq is redundantly calculated
+in both tcp_read_sock() and tcp_bpf_recvmsg_parser().
+
+The issue causes incorrect copied_seq calculations, which prevent
+correct data reads from the recv() interface in user-land.
+
+Also we added test cases for bpf + strparser and separated them from
+sockmap_basic, as strparser has more encapsulation and parsing
+capabilities compared to sockmap.
+
+Fixes: e5c6de5fa025 ("bpf, sockmap: Incorrectly handling copied_seq")
+
 ---
-changes v2:
-- move 'struct ethtool_phy_stats' to this patch
----
- Documentation/networking/ethtool-netlink.rst |  1 +
- include/uapi/linux/ethtool.h                 |  2 +
- include/uapi/linux/ethtool_netlink.h         | 14 +++++++
- net/ethtool/netlink.h                        |  1 +
- net/ethtool/stats.c                          | 39 +++++++++++++++++++-
- net/ethtool/strset.c                         |  5 +++
- 6 files changed, 61 insertions(+), 1 deletion(-)
+V3 -> v5:
+https://lore.kernel.org/bpf/20241218053408.437295-1-mrpre@163.com/
+Avoid introducing new proto_ops. (Daniel Borkmann).
+Add more edge test cases for strparser + bpf.
+Fix patchwork fail of test cases code.
+Fix psock fetch without rcu lock.
 
-diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
-index a7ba6368a4d5..da846f1d998e 100644
---- a/Documentation/networking/ethtool-netlink.rst
-+++ b/Documentation/networking/ethtool-netlink.rst
-@@ -1616,6 +1616,7 @@ the ``ETHTOOL_A_STATS_GROUPS`` bitset. Currently defined values are:
-  ETHTOOL_STATS_ETH_PHY  eth-phy  Basic IEEE 802.3 PHY statistics (30.3.2.1.*)
-  ETHTOOL_STATS_ETH_CTRL eth-ctrl Basic IEEE 802.3 MAC Ctrl statistics (30.3.3.*)
-  ETHTOOL_STATS_RMON     rmon     RMON (RFC 2819) statistics
-+ ETHTOOL_STATS_PHY      phy      Additional PHY statistics, not defined by IEEE
-  ====================== ======== ===============================================
- 
- Each group should have a corresponding ``ETHTOOL_A_STATS_GRP`` in the reply.
-diff --git a/include/uapi/linux/ethtool.h b/include/uapi/linux/ethtool.h
-index 7e1b3820f91f..d1089b88efc7 100644
---- a/include/uapi/linux/ethtool.h
-+++ b/include/uapi/linux/ethtool.h
-@@ -681,6 +681,7 @@ enum ethtool_link_ext_substate_module {
-  * @ETH_SS_STATS_ETH_MAC: names of IEEE 802.3 MAC statistics
-  * @ETH_SS_STATS_ETH_CTRL: names of IEEE 802.3 MAC Control statistics
-  * @ETH_SS_STATS_RMON: names of RMON statistics
-+ * @ETH_SS_STATS_PHY: names of PHY(dev) statistics
-  *
-  * @ETH_SS_COUNT: number of defined string sets
-  */
-@@ -706,6 +707,7 @@ enum ethtool_stringset {
- 	ETH_SS_STATS_ETH_MAC,
- 	ETH_SS_STATS_ETH_CTRL,
- 	ETH_SS_STATS_RMON,
-+	ETH_SS_STATS_PHY,
- 
- 	/* add new constants above here */
- 	ETH_SS_COUNT
-diff --git a/include/uapi/linux/ethtool_netlink.h b/include/uapi/linux/ethtool_netlink.h
-index 9c909ce733a5..9ff72cfb2e98 100644
---- a/include/uapi/linux/ethtool_netlink.h
-+++ b/include/uapi/linux/ethtool_netlink.h
-@@ -99,6 +99,7 @@ enum {
- 	ETHTOOL_STATS_ETH_MAC,
- 	ETHTOOL_STATS_ETH_CTRL,
- 	ETHTOOL_STATS_RMON,
-+	ETHTOOL_STATS_PHY,
- 
- 	/* add new constants above here */
- 	__ETHTOOL_STATS_CNT
-@@ -193,6 +194,19 @@ enum {
- 	ETHTOOL_A_STATS_RMON_MAX = (__ETHTOOL_A_STATS_RMON_CNT - 1)
- };
- 
-+enum {
-+	/* Basic packet counters if PHY has separate counters from the MAC */
-+	ETHTOOL_A_STATS_PHY_RX_PKTS,
-+	ETHTOOL_A_STATS_PHY_RX_BYTES,
-+	ETHTOOL_A_STATS_PHY_RX_ERRORS,
-+	ETHTOOL_A_STATS_PHY_TX_PKTS,
-+	ETHTOOL_A_STATS_PHY_TX_BYTES,
-+	ETHTOOL_A_STATS_PHY_TX_ERRORS,
-+
-+	/* add new constants above here */
-+	__ETHTOOL_A_STATS_PHY_CNT,
-+	ETHTOOL_A_STATS_PHY_MAX = (__ETHTOOL_A_STATS_PHY_CNT - 1)
-+};
- 
- /* generic netlink info */
- #define ETHTOOL_GENL_NAME "ethtool"
-diff --git a/net/ethtool/netlink.h b/net/ethtool/netlink.h
-index 0a09298fff92..1ce0a3de1430 100644
---- a/net/ethtool/netlink.h
-+++ b/net/ethtool/netlink.h
-@@ -511,5 +511,6 @@ extern const char stats_eth_phy_names[__ETHTOOL_A_STATS_ETH_PHY_CNT][ETH_GSTRING
- extern const char stats_eth_mac_names[__ETHTOOL_A_STATS_ETH_MAC_CNT][ETH_GSTRING_LEN];
- extern const char stats_eth_ctrl_names[__ETHTOOL_A_STATS_ETH_CTRL_CNT][ETH_GSTRING_LEN];
- extern const char stats_rmon_names[__ETHTOOL_A_STATS_RMON_CNT][ETH_GSTRING_LEN];
-+extern const char stats_phy_names[__ETHTOOL_A_STATS_PHY_CNT][ETH_GSTRING_LEN];
- 
- #endif /* _NET_ETHTOOL_NETLINK_H */
-diff --git a/net/ethtool/stats.c b/net/ethtool/stats.c
-index f4d822c225db..038a2558f052 100644
---- a/net/ethtool/stats.c
-+++ b/net/ethtool/stats.c
-@@ -36,6 +36,7 @@ const char stats_std_names[__ETHTOOL_STATS_CNT][ETH_GSTRING_LEN] = {
- 	[ETHTOOL_STATS_ETH_MAC]			= "eth-mac",
- 	[ETHTOOL_STATS_ETH_CTRL]		= "eth-ctrl",
- 	[ETHTOOL_STATS_RMON]			= "rmon",
-+	[ETHTOOL_STATS_PHY]			= "phydev",
- };
- 
- const char stats_eth_phy_names[__ETHTOOL_A_STATS_ETH_PHY_CNT][ETH_GSTRING_LEN] = {
-@@ -80,6 +81,15 @@ const char stats_rmon_names[__ETHTOOL_A_STATS_RMON_CNT][ETH_GSTRING_LEN] = {
- 	[ETHTOOL_A_STATS_RMON_JABBER]		= "etherStatsJabbers",
- };
- 
-+const char stats_phy_names[__ETHTOOL_A_STATS_PHY_CNT][ETH_GSTRING_LEN] = {
-+	[ETHTOOL_A_STATS_PHY_RX_PKTS]		= "RxFrames",
-+	[ETHTOOL_A_STATS_PHY_RX_BYTES]		= "RxOctets",
-+	[ETHTOOL_A_STATS_PHY_RX_ERRORS]		= "RxErrors",
-+	[ETHTOOL_A_STATS_PHY_TX_PKTS]		= "TxFrames",
-+	[ETHTOOL_A_STATS_PHY_TX_BYTES]		= "TxOctets",
-+	[ETHTOOL_A_STATS_PHY_TX_ERRORS]		= "TxErrors",
-+};
-+
- const struct nla_policy ethnl_stats_get_policy[ETHTOOL_A_STATS_SRC + 1] = {
- 	[ETHTOOL_A_STATS_HEADER]	=
- 		NLA_POLICY_NESTED(ethnl_header_policy),
-@@ -156,7 +166,8 @@ static int stats_prepare_data(const struct ethnl_req_info *req_base,
- 	data->ctrl_stats.src = src;
- 	data->rmon_stats.src = src;
- 
--	if (test_bit(ETHTOOL_STATS_ETH_PHY, req_info->stat_mask) &&
-+	if ((test_bit(ETHTOOL_STATS_PHY, req_info->stat_mask) ||
-+	     test_bit(ETHTOOL_STATS_ETH_PHY, req_info->stat_mask)) &&
- 	    src == ETHTOOL_MAC_STATS_SRC_AGGREGATE) {
- 		if (phydev)
- 			phy_ethtool_get_phy_stats(phydev, &data->phy_stats,
-@@ -212,6 +223,10 @@ static int stats_reply_size(const struct ethnl_req_info *req_base,
- 			nla_total_size(4)) *	/* _A_STATS_GRP_HIST_BKT_HI */
- 			ETHTOOL_RMON_HIST_MAX * 2;
- 	}
-+	if (test_bit(ETHTOOL_STATS_PHY, req_info->stat_mask)) {
-+		n_stats += sizeof(struct ethtool_phy_stats) / sizeof(u64);
-+		n_grps++;
-+	}
- 
- 	len += n_grps * (nla_total_size(0) + /* _A_STATS_GRP */
- 			 nla_total_size(4) + /* _A_STATS_GRP_ID */
-@@ -265,6 +280,25 @@ static int stats_put_phy_stats(struct sk_buff *skb,
- 	return 0;
- }
- 
-+static int stats_put_phydev_stats(struct sk_buff *skb,
-+				  const struct stats_reply_data *data)
-+{
-+	if (stat_put(skb, ETHTOOL_A_STATS_PHY_RX_PKTS,
-+		     data->phydev_stats.rx_packets) ||
-+	    stat_put(skb, ETHTOOL_A_STATS_PHY_RX_BYTES,
-+		     data->phydev_stats.rx_bytes) ||
-+	    stat_put(skb, ETHTOOL_A_STATS_PHY_RX_ERRORS,
-+		     data->phydev_stats.rx_errors) ||
-+	    stat_put(skb, ETHTOOL_A_STATS_PHY_TX_PKTS,
-+		     data->phydev_stats.tx_packets) ||
-+	    stat_put(skb, ETHTOOL_A_STATS_PHY_TX_BYTES,
-+		     data->phydev_stats.tx_bytes) ||
-+	    stat_put(skb, ETHTOOL_A_STATS_PHY_TX_ERRORS,
-+		     data->phydev_stats.tx_errors))
-+		return -EMSGSIZE;
-+	return 0;
-+}
-+
- static int stats_put_mac_stats(struct sk_buff *skb,
- 			       const struct stats_reply_data *data)
- {
-@@ -441,6 +475,9 @@ static int stats_fill_reply(struct sk_buff *skb,
- 	if (!ret && test_bit(ETHTOOL_STATS_RMON, req_info->stat_mask))
- 		ret = stats_put_stats(skb, data, ETHTOOL_STATS_RMON,
- 				      ETH_SS_STATS_RMON, stats_put_rmon_stats);
-+	if (!ret && test_bit(ETHTOOL_STATS_PHY, req_info->stat_mask))
-+		ret = stats_put_stats(skb, data, ETHTOOL_STATS_PHY,
-+				      ETH_SS_STATS_PHY, stats_put_phydev_stats);
- 
- 	return ret;
- }
-diff --git a/net/ethtool/strset.c b/net/ethtool/strset.c
-index b3382b3cf325..818cf01f0911 100644
---- a/net/ethtool/strset.c
-+++ b/net/ethtool/strset.c
-@@ -105,6 +105,11 @@ static const struct strset_info info_template[] = {
- 		.count		= __ETHTOOL_A_STATS_RMON_CNT,
- 		.strings	= stats_rmon_names,
- 	},
-+	[ETH_SS_STATS_PHY] = {
-+		.per_dev	= false,
-+		.count		= __ETHTOOL_A_STATS_PHY_CNT,
-+		.strings	= stats_phy_names,
-+	},
- };
- 
- struct strset_req_info {
+V1 -> V3:
+https://lore.kernel.org/bpf/20241209152740.281125-1-mrpre@163.com/
+Fix patchwork fail by adding Fixes tag.
+Save skb data offset for ENOMEM. (John Fastabend)
+---
+
+Jiayuan Chen (3):
+  bpf: fix wrong copied_seq calculation
+  selftests/bpf: add strparser test for bpf
+  bpf, strparser, docs: Add new callback for bpf
+
+ Documentation/networking/strparser.rst        |  11 +-
+ include/linux/skmsg.h                         |   2 +
+ include/net/strparser.h                       |   2 +
+ include/net/tcp.h                             |   3 +
+ net/core/skmsg.c                              |  51 ++
+ net/ipv4/tcp.c                                |  31 +-
+ net/strparser/strparser.c                     |  11 +-
+ .../selftests/bpf/prog_tests/sockmap_basic.c  |  53 --
+ .../selftests/bpf/prog_tests/sockmap_strp.c   | 452 ++++++++++++++++++
+ .../selftests/bpf/progs/test_sockmap_strp.c   |  53 ++
+ 10 files changed, 608 insertions(+), 61 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/sockmap_strp.c
+ create mode 100644 tools/testing/selftests/bpf/progs/test_sockmap_strp.c
+
 -- 
-2.39.5
+2.43.5
 
