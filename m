@@ -1,65 +1,64 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC30E2153F9;
-	Thu,  9 Jan 2025 09:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23479214810
+	for <netdev@vger.kernel.org>; Thu,  9 Jan 2025 09:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736416037; cv=none; b=Ddz7Dp2jatsbjKwSPGApixEwLXZHs/P3lvIDUPg3r1A+kTBUoq/ojaKbFyi6XmQnHNlEf6fYaqS1LJfwogr8oPIUckOQ+Ah6DocUgvKEyuO14P/bJrbztMg+eht+Uhuv4jXgLpfGDi0cm/C8peZDo/z9DsMGD7NPiF7Gk9ybFg4=
+	t=1736416141; cv=none; b=F9y1+xHDDSt4+lGK4uz3rN1tb/1Pg+kMZTM8/chYGgMCBrRxVum1cfIZPHrIhAOedgM4+1WnWZYqaTGtALwzrUr1HmiYYNo9UUh2uDw56f0WfyWlW7gVFzt4nx0NiU8FneMhwCqHF1qYVzKnkAsYVnK0fEtSAHCrFaLa8eCL5Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736416037; c=relaxed/simple;
-	bh=RJmrHncmAiYfQZgHBbGZ9N6pX/NJqX1TU++10eqVLQ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aiOIjt+OVXizR9k5D4S7wDUNWFSa0d5pdx/P/0DJGu3JEU6Q2qnDuzREs/ROxlM2q3dcrjQq9YipdBsyPZ/rqAlFMCQXJS0XMVAyYwbK93zQQ3VLMfJ85KNdMCNv1hZ5bTmZqS1poM+cUYDuVj28xDQijijzFnlEEWrsv8+6FrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=iPbKZEA4; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1736416141; c=relaxed/simple;
+	bh=9hAMYhpsbwlpljUP1BM1Wn34YFUStyhHZdEKIPRvjhE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jOakg9EJnykpJgZnRIkeywycPErv93w2tFnfQbJWAKF7YKkiFv3HQYfIYziq2v24PNftWMehT0bEND9Kg868Eb5wPV2yB+E1CrooE9EtQzpbLdWU3LSYj3tAY/aw1uZ/LcDVU8M6FCoGzcMCtPYZMztxmDmVe9xfuvZHLwmPCLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=S3qT9R+E; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="iPbKZEA4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=W1HRi
-	UHKkNK4KFvLch5WDTwcRDvo+NOPbJJW0YrzMOo=; b=iPbKZEA4hgy3lQ6oQTBGv
-	cPjpLZ9Jh6cSxmHzlTWBZqmZ+i6uV46rguUsC3YSUOvz4q7vuesrjYAZPOcSg/yC
-	7RQ7BUtLnKp9IGCSIYQEmdMaYB9TFm+C+xH/l+j0IMp2oYgu83LRccwnqi2abY6m
-	BCXEw1JQ+RGHpnkerArunk=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgBnDnRlmn9no5XNEA--.12216S5;
-	Thu, 09 Jan 2025 17:44:48 +0800 (CST)
-From: Jiayuan Chen <mrpre@163.com>
-To: bpf@vger.kernel.org,
-	jakub@cloudflare.com,
-	john.fastabend@gmail.com
-Cc: netdev@vger.kernel.org,
-	martin.lau@linux.dev,
-	ast@kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	song@kernel.org,
-	andrii@kernel.org,
-	mhal@rbox.co,
-	yonghong.song@linux.dev,
-	daniel@iogearbox.net,
-	xiyou.wangcong@gmail.com,
-	horms@kernel.org,
-	corbet@lwn.net,
-	eddyz87@gmail.com,
-	cong.wang@bytedance.com,
-	shuah@kernel.org,
-	mykolal@fb.com,
-	jolsa@kernel.org,
-	haoluo@google.com,
-	sdf@fomichev.me,
-	kpsingh@kernel.org,
-	linux-doc@vger.kernel.org,
-	Jiayuan Chen <mrpre@163.com>
-Subject: [PATCH bpf v5 3/3] bpf, strparser, docs: Add new callback for bpf
-Date: Thu,  9 Jan 2025 17:44:01 +0800
-Message-ID: <20250109094402.50838-4-mrpre@163.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250109094402.50838-1-mrpre@163.com>
-References: <20250109094402.50838-1-mrpre@163.com>
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="S3qT9R+E"
+Received: from localhost (localhost [127.0.0.1])
+	by a.mx.secunet.com (Postfix) with ESMTP id 4E7DA2087D;
+	Thu,  9 Jan 2025 10:48:57 +0100 (CET)
+X-Virus-Scanned: by secunet
+Received: from a.mx.secunet.com ([127.0.0.1])
+	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id CUFT6x0QO8Jq; Thu,  9 Jan 2025 10:48:56 +0100 (CET)
+Received: from cas-essen-01.secunet.de (rl1.secunet.de [10.53.40.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by a.mx.secunet.com (Postfix) with ESMTPS id A7AF92006C;
+	Thu,  9 Jan 2025 10:48:56 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com A7AF92006C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1736416136;
+	bh=zEcPk9eoAimWg9Uecj12jPTg0ST66t7UqMQd6LqSfX4=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=S3qT9R+EbuE57RtFrkdMwfbnwsUP/cTPYYMjxroGk7aFuBpT0NrfBZK/qwIXnkAKO
+	 4fvUhU2ATwzs/2wMowMEWzXd3y2TOywct2Eh2spW9sXXmAIb3y/NWJihLu8BmhPvVg
+	 O8BD3AqhouRKcbwiKP4yBKLUqRnGz+ISJZDux/UX5M7w/v7FqDY/skmx1XX88GaGIM
+	 DtvDDtlsQyiu2mpSluCDXpMW/zTZkJe2EJTBsx6H+kFAgDqeWVrvEXOaYYMDKizDR8
+	 qzGVgcfCCHfkhYs/hlBHFfXwt8gU23rECDg/ZnWMVMZutAWr1GdBmE0ADukf/X8lax
+	 oSFwxEWVuFKWg==
+Received: from mbx-essen-02.secunet.de (10.53.40.198) by
+ cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 9 Jan 2025 10:48:56 +0100
+Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
+ (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 9 Jan
+ 2025 10:48:56 +0100
+Received: by gauss2.secunet.de (Postfix, from userid 1000)
+	id BDAE7318437F; Thu,  9 Jan 2025 10:43:29 +0100 (CET)
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
+	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
+Subject: [PATCH 17/17] net/mlx5e: Update TX ESN context for IPSec hardware offload
+Date: Thu, 9 Jan 2025 10:43:21 +0100
+Message-ID: <20250109094321.2268124-18-steffen.klassert@secunet.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250109094321.2268124-1-steffen.klassert@secunet.com>
+References: <20250109094321.2268124-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,50 +66,93 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgBnDnRlmn9no5XNEA--.12216S5
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKryDXFyruFy5GF4rAw17trb_yoWkCrcEka
-	yS9Fs5GFykZF43KayUua1kWr93GrWI9r18ZF4rtFZxC348XrykXF95Jrn5Zr18WrW3ury3
-	K3s5JFyfJr129jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRRdWrJUUUUU==
-X-CM-SenderInfo: xpus2vi6rwjhhfrp/1tbiDwbPp2d-kzTJjQAAsa
+Content-Type: text/plain
+X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
+ mbx-essen-02.secunet.de (10.53.40.198)
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-sockmap with strparser need customized read operations to fix copied_seq
-error.
+From: Jianbo Liu <jianbol@nvidia.com>
 
-Signed-off-by: Jiayuan Chen <mrpre@163.com>
+ESN context must be synced between software and hardware for both RX
+and TX. As the call to xfrm_dev_state_advance_esn() is added for TX,
+this patch add the missing logic for TX. So the update is also checked
+on every packet sent, to see if need to trigger ESN update worker.
+
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- Documentation/networking/strparser.rst | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ .../mellanox/mlx5/core/en_accel/ipsec.c       | 40 +++++++------------
+ 1 file changed, 15 insertions(+), 25 deletions(-)
 
-diff --git a/Documentation/networking/strparser.rst b/Documentation/networking/strparser.rst
-index 6cab1f74ae05..e41c18eee2f4 100644
---- a/Documentation/networking/strparser.rst
-+++ b/Documentation/networking/strparser.rst
-@@ -112,7 +112,7 @@ Functions
- Callbacks
- =========
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+index 3dd4f2492090..8489b0a0e8bd 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+@@ -94,25 +94,14 @@ static bool mlx5e_ipsec_update_esn_state(struct mlx5e_ipsec_sa_entry *sa_entry)
+ 	u32 esn, esn_msb;
+ 	u8 overlap;
  
--There are six callbacks:
-+There are seven callbacks:
+-	switch (x->xso.type) {
+-	case XFRM_DEV_OFFLOAD_PACKET:
+-		switch (x->xso.dir) {
+-		case XFRM_DEV_OFFLOAD_IN:
+-			esn = x->replay_esn->seq;
+-			esn_msb = x->replay_esn->seq_hi;
+-			break;
+-		case XFRM_DEV_OFFLOAD_OUT:
+-			esn = x->replay_esn->oseq;
+-			esn_msb = x->replay_esn->oseq_hi;
+-			break;
+-		default:
+-			WARN_ON(true);
+-			return false;
+-		}
+-		break;
+-	case XFRM_DEV_OFFLOAD_CRYPTO:
+-		/* Already parsed by XFRM core */
++	switch (x->xso.dir) {
++	case XFRM_DEV_OFFLOAD_IN:
+ 		esn = x->replay_esn->seq;
++		esn_msb = x->replay_esn->seq_hi;
++		break;
++	case XFRM_DEV_OFFLOAD_OUT:
++		esn = x->replay_esn->oseq;
++		esn_msb = x->replay_esn->oseq_hi;
+ 		break;
+ 	default:
+ 		WARN_ON(true);
+@@ -121,11 +110,15 @@ static bool mlx5e_ipsec_update_esn_state(struct mlx5e_ipsec_sa_entry *sa_entry)
  
-     ::
+ 	overlap = sa_entry->esn_state.overlap;
  
-@@ -182,6 +182,15 @@ There are six callbacks:
-     the length of the message. skb->len - offset may be greater
-     then full_len since strparser does not trim the skb.
+-	if (esn >= x->replay_esn->replay_window)
+-		seq_bottom = esn - x->replay_esn->replay_window + 1;
++	if (!x->replay_esn->replay_window) {
++		seq_bottom = esn;
++	} else {
++		if (esn >= x->replay_esn->replay_window)
++			seq_bottom = esn - x->replay_esn->replay_window + 1;
  
-+    ::
-+
-+	int (*read_sock)(struct strparser *strp, read_descriptor_t *desc,
-+                     sk_read_actor_t recv_actor);
-+
-+    read_sock is called when the user specify it, allowing for customized
-+    read operations. If the callback is not set (NULL in strp_init) native
-+    read_sock operation of the socket is used.
-+
-     ::
+-	if (x->xso.type == XFRM_DEV_OFFLOAD_CRYPTO)
+-		esn_msb = xfrm_replay_seqhi(x, htonl(seq_bottom));
++		if (x->xso.type == XFRM_DEV_OFFLOAD_CRYPTO)
++			esn_msb = xfrm_replay_seqhi(x, htonl(seq_bottom));
++	}
  
- 	int (*read_sock_done)(struct strparser *strp, int err);
+ 	if (sa_entry->esn_state.esn_msb)
+ 		sa_entry->esn_state.esn = esn;
+@@ -980,9 +973,6 @@ static void mlx5e_xfrm_advance_esn_state(struct xfrm_state *x)
+ 	struct mlx5e_ipsec_sa_entry *sa_entry_shadow;
+ 	bool need_update;
+ 
+-	if (x->xso.dir != XFRM_DEV_OFFLOAD_IN)
+-		return;
+-
+ 	need_update = mlx5e_ipsec_update_esn_state(sa_entry);
+ 	if (!need_update)
+ 		return;
 -- 
-2.43.5
+2.34.1
 
