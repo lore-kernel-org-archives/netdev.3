@@ -1,105 +1,132 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AA01B0412
-	for <netdev@vger.kernel.org>; Thu,  9 Jan 2025 17:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9304319ABDE;
+	Thu,  9 Jan 2025 17:45:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736444567; cv=none; b=BHTZJQwjNvmiZy5R5V7eHtsUekar2JW6c+OblWWavqoQPYJF8pi47B2Qw64PlPx1HiuFLDxTCmCb20AUcCG7TIF6dopxWhyKVkyUTGg+Uqv6oIk1bK8M2EQJ/KYgGoJbcmJtLKPwEoHr6au9I6ifiDY2RX0OYiXjYdJMG6lOj/k=
+	t=1736444718; cv=none; b=geEf5R/Lo6No3u7ChRMfpNHqfTz3uokI7MQboLVMG+X9cELi9YoE7/MZ79V1pwAzEb+AKz6ssgI1uJvi0zJr+kLF596mFpmppoKtlZSW9qaUVQxv7FA4CuVSToo5SUYMPsEYAhks/xcLHPOI7URTYtbTeJXy8MZ6/GZpwhV5y7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736444567; c=relaxed/simple;
-	bh=TPi1jWgepqP30sAUxR/sHKQYrWqP6iP8Nn9Nr2Bpx28=;
+	s=arc-20240116; t=1736444718; c=relaxed/simple;
+	bh=jXkfKArSexveblQ+dUbSkquyaGiDzK+NLpXwUxILcFw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ozXqZs9O2thKSspUAKGdY8GQI12K0Bf0Fc6fekWFh52CUPQQMAeRG5hWdiGzRsduHsbo3YJCaoATgt8LaQCXzdEjHbhwWeHxRHQE+gMYur9U+e+sgX9S5jem6P47Ihfjnfb9fgCp68wgatawUnGZ4Q84m6TQGJjyzaQ+iXlvC5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gJX8iyrc; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=MhoRk4jKiCWGgyvQBiPkupeq6AxK3Q9kdPA0aU0Rq+maU0SKRupnqvOjUrVn0Nrfim0hJdCK91afqdnN1uvm03KeJnT9BEhCmf4M3rnC1+JZuAPeR/y2D7UfPShh1hLQnuga/olKTZv9c1kQUK5aF08VPuRNX2JecT4OkNBbTmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wTdOlWbQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yT3+jiuC; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gJX8iyrc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736444566; x=1767980566;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TPi1jWgepqP30sAUxR/sHKQYrWqP6iP8Nn9Nr2Bpx28=;
-  b=gJX8iyrc9Bm4vCi7HPQTviMMNLEnHi4NZeQP3nzkYOqLZwXp8+S7QL74
-   PltALxFpgJ6ArIBVzo7xRZqAPkTgw4ScNV0BiR3BTnSy3oBmoagNLC+0d
-   1s25QkhScC2jWWJRO5mvAAhA6hn/FbHRZ7qJnVSAFCtdVAhAol75c2m9s
-   WdIUwk5Bw/Cxhh7MTkbD0rngskwNOttH0qzhGVSNqTn1YhkdmPgV4SQFq
-   8CXXREoO9BZ4movPtjHkWIqKrw49VSjQvj9xaB69BFV6JFNCgntrS7lgv
-   +MBGb2RIMidhbncTAhr04uWXxWOwh03KgayMzKOgiCsnjiL6jAKvrZ1Zb
-   g==;
-X-CSE-ConnectionGUID: L5St/X5xSoaQqWLdJ0keVg==
-X-CSE-MsgGUID: 4wNWUMPlTzamXucxb0LBmw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11310"; a="36602364"
-X-IronPort-AV: E=Sophos;i="6.12,302,1728975600"; 
-   d="scan'208";a="36602364"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2025 09:42:45 -0800
-X-CSE-ConnectionGUID: weaQC6DFSMajJlFHvc8ucg==
-X-CSE-MsgGUID: 9lzX1tdbTlKV9fM1+9bZIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="126759246"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 09 Jan 2025 09:42:43 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tVwYL-000HwV-10;
-	Thu, 09 Jan 2025 17:42:41 +0000
-Date: Fri, 10 Jan 2025 01:42:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: Eric Dumazet <edumazet@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	Simon Horman <horms@kernel.org>, eric.dumazet@gmail.com,
-	Eric Dumazet <edumazet@google.com>
-Subject: Re: [PATCH net-next 3/4] net: expedite synchronize_net() for
- cleanup_net()
-Message-ID: <202501100127.LhRwhYMs-lkp@intel.com>
-References: <20250107173838.1130187-4-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wTdOlWbQ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yT3+jiuC"
+Date: Thu, 9 Jan 2025 18:45:12 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1736444714;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ITDbkQWE/hIVhZw2Nq8W6mx+3e492XIMVSSt0BOfbNU=;
+	b=wTdOlWbQ91hilUGbM16VU/8j5nkkTWdg5HJnuFCuQd/GAZAaWr+puLg3RtzuPF9cZXz+YX
+	WkcVIjtFD+P4FdlEYxMNVG6JQ3Tc/wA3nrh/vIUDJ6OklF2IMhByt4DRQibSdUk6ByTpDq
+	z2hchp5Z3Vmsqf1hWtdcHsdwjL2VuYCViTG9bnReSk4/27uV0sWHrbIPMalIESqSmtyaQl
+	apXWsvjNjQpe28NHY1NLXpbmzSESTdHVy1Bqwrj24zApmWSu54gICF47aXNErnKTlBoH2u
+	jgrtrBWmuKwchINQNd0UOt2ozMkbJySorYKiV0dsniatCnvepE7coKSI3kjhaA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1736444714;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ITDbkQWE/hIVhZw2Nq8W6mx+3e492XIMVSSt0BOfbNU=;
+	b=yT3+jiuCw+WM1LYsNIad/JIuKA14d7jM3TedjhRkLbOSCxz3HARUlqSyEd5ZS4roS/3Eca
+	N2TekSHFJbNwaeCg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Wander Lairson Costa <wander@redhat.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jeff Garzik <jgarzik@redhat.com>,
+	Auke Kok <auke-jan.h.kok@intel.com>,
+	"moderated list:INTEL ETHERNET DRIVERS" <intel-wired-lan@lists.osuosl.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:Real-time Linux (PREEMPT_RT):Keyword:PREEMPT_RT" <linux-rt-devel@lists.linux.dev>
+Subject: Re: [PATCH iwl-net 0/4] igb: fix igb_msix_other() handling for
+ PREEMPT_RT
+Message-ID: <20250109174512.At7ZERjU@linutronix.de>
+References: <20241204114229.21452-1-wander@redhat.com>
+ <20250107135106.WWrtBMXY@linutronix.de>
+ <taea3z7nof4szjir2azxsjtbouymqxyy4draa3hz35zbacqeeq@t3uidpha64k7>
+ <20250108102532.VWnKWvoo@linutronix.de>
+ <CAAq0SUnoS45Fctkzj4t4OxT=9qm9Bg8zu79=S3DUL_jcoLbC-A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250107173838.1130187-4-edumazet@google.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAAq0SUnoS45Fctkzj4t4OxT=9qm9Bg8zu79=S3DUL_jcoLbC-A@mail.gmail.com>
 
-Hi Eric,
+On 2025-01-09 13:46:47 [-0300], Wander Lairson Costa wrote:
+> > If the issue is indeed the use of threaded interrupts then the fix
+> > should not be limited to be PREEMPT_RT only.
+> >
+> Although I was not aware of this scenario, the patch should work for it a=
+s well,
+> as I am forcing it to run in interrupt context. I will test it to confirm.
 
-kernel test robot noticed the following build errors:
+If I remember correctly there were "ifdef preempt_rt" things in it.
 
-[auto build test ERROR on net-next/main]
+> > > > - What causes the failure? I see you reworked into two parts to beh=
+ave
+> > > >   similar to what happens without threaded interrupts. There is sti=
+ll no
+> > > >   explanation for it. Is there a timing limit or was there another
+> > > >   register operation which removed the mailbox message?
+> > > >
+> > >
+> > > I explained the root cause of the issue in the last commit. Maybe I s=
+hould
+> > > have added the explanation to the cover letter as well.  Anyway, here=
+ is a
+> > > partial verbatim copy of it:
+> > >
+> > > "During testing of SR-IOV, Red Hat QE encountered an issue where the
+> > > ip link up command intermittently fails for the igbvf interfaces when
+> > > using the PREEMPT_RT variant. Investigation revealed that
+> > > e1000_write_posted_mbx returns an error due to the lack of an ACK
+> > > from e1000_poll_for_ack.
+> >
+> > That ACK would have come if it would poll longer?
+> >
+> No, the service wouldn't be serviced while polling.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Eric-Dumazet/net-no-longer-assume-RTNL-is-held-in-flush_all_backlogs/20250108-014049
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20250107173838.1130187-4-edumazet%40google.com
-patch subject: [PATCH net-next 3/4] net: expedite synchronize_net() for cleanup_net()
-config: mips-bmips_be_defconfig (https://download.01.org/0day-ci/archive/20250110/202501100127.LhRwhYMs-lkp@intel.com/config)
-compiler: mips-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250110/202501100127.LhRwhYMs-lkp@intel.com/reproduce)
+Hmm.=20
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501100127.LhRwhYMs-lkp@intel.com/
+> > > The underlying issue arises from the fact that IRQs are threaded by
+> > > default under PREEMPT_RT. While the exact hardware details are not
+> > > available, it appears that the IRQ handled by igb_msix_other must
+> > > be processed before e1000_poll_for_ack times out. However,
+> > > e1000_write_posted_mbx is called with preemption disabled, leading
+> > > to a scenario where the IRQ is serviced only after the failure of
+> > > e1000_write_posted_mbx."
+> >
+> > Where is this disabled preemption coming from? This should be one of the
+> > ops.write_posted() calls, right? I've been looking around and don't see
+> > anything obvious.
+>=20
+> I don't remember if I found the answer by looking at the code or by
+> looking at the ftrace flags.
+> I am currently on sick leave with covid. I can check it when I come back.
 
-All errors (new ones prefixed by >>):
+Don't worry, get better first. I'm kind of off myself. I'm not sure if I
+have the hardware needed to setup so I can look at it=E2=80=A6
 
-   mips-linux-ld: net/core/dev.o: in function `synchronize_net':
-   dev.c:(.text+0x2250): undefined reference to `cleanup_net_task'
->> mips-linux-ld: dev.c:(.text+0x225c): undefined reference to `cleanup_net_task'
-   mips-linux-ld: net/core/dev.o: in function `free_netdev':
-   dev.c:(.text+0x5824): undefined reference to `cleanup_net_task'
-   mips-linux-ld: net/core/dev.o: in function `netdev_rx_handler_unregister':
-   dev.c:(.text+0x6204): undefined reference to `cleanup_net_task'
-   mips-linux-ld: dev.c:(.text+0x620c): undefined reference to `cleanup_net_task'
-   mips-linux-ld: net/core/dev.o:dev.c:(.text+0x6764): more undefined references to `cleanup_net_task' follow
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Sebastian
