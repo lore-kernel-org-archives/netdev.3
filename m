@@ -1,39 +1,39 @@
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CBE217642;
-	Thu,  9 Jan 2025 10:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6DA216E24;
+	Thu,  9 Jan 2025 10:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736417941; cv=none; b=Lu/W8zDzVJtvmBu5F/GvTHYbzxZJBK8S9/KTuoxwFJu+BJ1BFgQe37YAL+O4lE8zYUsE5zFQoih66ypRtjPx35yqL5+eA0b9UOS2EvXyVerHRCWxOxZiYSc1yOjtZqNvC/YlZSQnkgPITTJU8ex0fpO0WOBT1I79SH3HiMI5Yso=
+	t=1736417944; cv=none; b=VT7j6ZidDdNHlgGuGowPvB5HqDAIDhuEeFweCkLaXWl59gqZqGpa8HmanXQIxKVLahmm4KX/uHTzQzPEg8R2jYXDJgkk4SZUyDFCmAArjMNEokzzmDLlkNqARXL2ZC9pnaA6OZ7Yr1GWbdnyWFcsWE2UNRFrUiUkd1hBtEU2Q2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736417941; c=relaxed/simple;
-	bh=3dWlq1ZAVAiFwlpy8bLnXVcPXqypL0R7+UQQHGXEeyI=;
+	s=arc-20240116; t=1736417944; c=relaxed/simple;
+	bh=cfShJdS7kc+IXchIdXhpzD6r7K6d3DXo0yyTL6zMrsA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LngH7sbOHyWbAXHF7V2dgHr0h4yQvT+8BsCIWqGwfMReGH53tbLt/AC7IwfC/cE/qh1KNRbE5tmp/WMXVddjtM0rsbTJ8I62cd62itZRDPLORlBfhubam7Oc3VIiVQr/V3BGtSXrJF6jWUaGud44OrxwDpBgw9drz6QtZtb4VTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ggpPHyFF; arc=none smtp.client-ip=217.70.183.196
+	 In-Reply-To:To:Cc; b=izH0DFkh88aX3BfPbhlqvSj6NFH/JpRutueSbVXLt0rvV6qCP4C4URUSIKBfeRuq4//Fhml9QONF1XKKBNqvUv6dG7K0sM4Brkj0RZvcoBtpG0yjN+E81A0zozBMSdHt89LSWMOA4R4/hEM4XnRIjTB3vOZywZ/BklZbhR/Jz/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MzIE0NHB; arc=none smtp.client-ip=217.70.183.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ggpPHyFF"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 03B9CE0017;
-	Thu,  9 Jan 2025 10:18:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MzIE0NHB"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4FB98E0003;
+	Thu,  9 Jan 2025 10:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1736417936;
+	t=1736417938;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4b5eVqR0SUJiXGJ61wXTk+/0+l0upccx9aKNkjupd1s=;
-	b=ggpPHyFFSkNfG6rh+iQfC1fTn++a2Cu4nbjYPRSWKorgPA7+/9IbRwV/NwTFMIGC+ZFBtY
-	3K9w9sWzAWDoyKDZw+mPanujvAw4Ybs3M7EEbIAstW5xSo+C/Cw9kLcmVTloo4JIwB+n/T
-	IwNiuTR2sRZX6hIZ5iFiQ4XI6X92sCxRsndKWb8lkrHpxwIvwPfTAHhXD9ELZ3DjseVCLW
-	U+y8N+aX9GnU1rxCusNFZldHAb8nPflmK+VKsumK0W6zlqJeOvutA5ru+R6B7rcMR6OnbF
-	xLx/f7CbvVUoDtbqtJu+asi9XYw56KOkbSZbZ7CbWhLmq7JKiqc7txkLr9dFxQ==
+	bh=j6QzFXwsO2JspPNUbO474J0IIaz7Yg+4NngHA7f48CA=;
+	b=MzIE0NHBiwG4iiov6XgVL2rvnAVn9srdi4idMY/A+j/mkBAHwZl9E84yklJO4NzM82FyPI
+	FqXAKWesoJDShsi0WcB0hfEu314mxLNn2dwh0fbfQS6poazgNStR95QL0Rcbvesl0GSZTo
+	lxir/s9jfofadqS9HkEt3KLbRyRStwBqlAEbzBsIng+JSZ1t+iGsj458kxX7xyEzDmWjYz
+	IVNl9g6H41mj02bO9+lDDnQwStZSQ0BFd33FYW3zaw+D488D3oO6+NAf94TcTLW94FJUa9
+	NNHdhN8lk3yYGWcfhfMOR0XW/gLkd8tZQhHF58j02B0Fsa/GXrd3TFC8fDDzoQ==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Thu, 09 Jan 2025 11:18:05 +0100
-Subject: [PATCH net-next v2 11/15] net: pse-pd: Add support for PSE device
- index
+Date: Thu, 09 Jan 2025 11:18:07 +0100
+Subject: [PATCH net-next v2 13/15] regulator: core: Resolve supply using
+ of_node from regulator_config
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,7 +42,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250109-b4-feature_poe_arrange-v2-11-55ded947b510@bootlin.com>
+Message-Id: <20250109-b4-feature_poe_arrange-v2-13-55ded947b510@bootlin.com>
 References: <20250109-b4-feature_poe_arrange-v2-0-55ded947b510@bootlin.com>
 In-Reply-To: <20250109-b4-feature_poe_arrange-v2-0-55ded947b510@bootlin.com>
 To: Oleksij Rempel <o.rempel@pengutronix.de>, 
@@ -63,140 +63,95 @@ X-GND-Sasl: kory.maincent@bootlin.com
 
 From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
 
-Add support for a PSE device index to report the PSE controller index to
-the user through ethtool. This will be useful for future support of power
-domains and port priority management.
+Previously, the regulator core resolved its supply only from the parent
+device or its children, ignoring the of_node specified in the
+regulator_config structure.
+This behavior causes issues in scenarios where multiple regulator devices
+are registered for components described as children of a controller, each
+with their own specific regulator supply.
 
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+For instance, in a PSE controller with multiple PIs (Power Interfaces),
+each PI may have a distinct regulator supply. However, the regulator core
+would incorrectly use the PSE controller node or its first child to look up
+the regulator supply, rather than the node specified by the
+regulator_config->of_node for the PI.
+
+This update modifies the behavior to prioritize the of_node in
+regulator_config for resolving the supply. This ensures correct resolution
+of the power supply for each device. If no supply is found in the provided
+of_node, the core falls back to searching within the parent device as
+before.
+
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
- drivers/net/pse-pd/pse_core.c | 24 +++++++++++++++++++-----
- include/linux/pse-pd/pse.h    |  4 ++++
- 2 files changed, 23 insertions(+), 5 deletions(-)
+ drivers/regulator/core.c | 39 ++++++++++++++++++++++++++++-----------
+ 1 file changed, 28 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 887a477197a6..830e8d567d4d 100644
---- a/drivers/net/pse-pd/pse_core.c
-+++ b/drivers/net/pse-pd/pse_core.c
-@@ -13,6 +13,7 @@
- 
- static DEFINE_MUTEX(pse_list_mutex);
- static LIST_HEAD(pse_controller_list);
-+static DEFINE_IDA(pse_ida);
- 
- /**
-  * struct pse_control - a PSE control
-@@ -448,6 +449,10 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
- 
- 	mutex_init(&pcdev->lock);
- 	INIT_LIST_HEAD(&pcdev->pse_control_head);
-+	ret = ida_alloc_max(&pse_ida, INT_MAX, GFP_KERNEL);
-+	if (ret < 0)
-+		return ret;
-+	pcdev->id = ret;
- 
- 	if (!pcdev->nr_lines)
- 		pcdev->nr_lines = 1;
-@@ -461,12 +466,12 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
- 
- 	ret = of_load_pse_pis(pcdev);
- 	if (ret)
--		return ret;
-+		goto free_pse_ida;
- 
- 	if (pcdev->ops->setup_pi_matrix) {
- 		ret = pcdev->ops->setup_pi_matrix(pcdev);
- 		if (ret)
--			return ret;
-+			goto free_pse_ida;
- 	}
- 
- 	/* Each regulator name len is pcdev dev name + 7 char +
-@@ -483,15 +488,17 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
- 			continue;
- 
- 		reg_name = devm_kzalloc(pcdev->dev, reg_name_len, GFP_KERNEL);
--		if (!reg_name)
--			return -ENOMEM;
-+		if (!reg_name) {
-+			ret = -ENOMEM;
-+			goto free_pse_ida;
-+		}
- 
- 		snprintf(reg_name, reg_name_len, "pse-%s_pi%d",
- 			 dev_name(pcdev->dev), i);
- 
- 		ret = devm_pse_pi_regulator_register(pcdev, reg_name, i);
- 		if (ret)
--			return ret;
-+			goto free_pse_ida;
- 	}
- 
- 	mutex_lock(&pse_list_mutex);
-@@ -499,6 +506,10 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
- 	mutex_unlock(&pse_list_mutex);
- 
- 	return 0;
-+
-+free_pse_ida:
-+	ida_free(&pse_ida, pcdev->id);
-+	return ret;
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 8cb948a91e60..c092b78c5f12 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1936,6 +1936,20 @@ static struct regulator_dev *regulator_lookup_by_name(const char *name)
+ 	return dev ? dev_to_rdev(dev) : NULL;
  }
- EXPORT_SYMBOL_GPL(pse_controller_register);
  
-@@ -509,6 +520,7 @@ EXPORT_SYMBOL_GPL(pse_controller_register);
- void pse_controller_unregister(struct pse_controller_dev *pcdev)
- {
- 	pse_release_pis(pcdev);
-+	ida_free(&pse_ida, pcdev->id);
- 	mutex_lock(&pse_list_mutex);
- 	list_del(&pcdev->list);
- 	mutex_unlock(&pse_list_mutex);
-@@ -771,6 +783,8 @@ int pse_ethtool_get_status(struct pse_control *psec,
- 
- 	pcdev = psec->pcdev;
- 	ops = pcdev->ops;
-+	status->pse_id = pcdev->id;
++static struct regulator_dev *regulator_dt_lookup(struct device *dev,
++						 const char *supply)
++{
++	struct regulator_dev *r = NULL;
 +
- 	mutex_lock(&pcdev->lock);
- 	ret = ops->pi_get_admin_state(pcdev, psec->id, &admin_state);
- 	if (ret)
-diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
-index b5ae3dcee550..be877dea6a11 100644
---- a/include/linux/pse-pd/pse.h
-+++ b/include/linux/pse-pd/pse.h
-@@ -78,6 +78,7 @@ struct pse_pw_limit_ranges {
++	if (dev_of_node(dev)) {
++		r = of_regulator_dev_lookup(dev, dev_of_node(dev), supply);
++		if (PTR_ERR(r) == -ENODEV)
++			r = NULL;
++	}
++
++	return r;
++}
++
  /**
-  * struct ethtool_pse_control_status - PSE control/channel status.
-  *
-+ * @pse_id: index number of the PSE.
-  * @podl_admin_state: operational state of the PoDL PSE
-  *	functions. IEEE 802.3-2018 30.15.1.1.2 aPoDLPSEAdminState
-  * @podl_pw_status: power detection status of the PoDL PSE.
-@@ -99,6 +100,7 @@ struct pse_pw_limit_ranges {
-  *	ranges
-  */
- struct ethtool_pse_control_status {
-+	u32 pse_id;
- 	enum ethtool_podl_pse_admin_state podl_admin_state;
- 	enum ethtool_podl_pse_pw_d_status podl_pw_status;
- 	enum ethtool_c33_pse_admin_state c33_admin_state;
-@@ -208,6 +210,7 @@ struct pse_pi {
-  * @types: types of the PSE controller
-  * @pi: table of PSE PIs described in this controller device
-  * @no_of_pse_pi: flag set if the pse_pis devicetree node is not used
-+ * @id: Index of the PSE
-  */
- struct pse_controller_dev {
- 	const struct pse_controller_ops *ops;
-@@ -221,6 +224,7 @@ struct pse_controller_dev {
- 	enum ethtool_pse_types types;
- 	struct pse_pi *pi;
- 	bool no_of_pse_pi;
-+	u32 id;
- };
+  * regulator_dev_lookup - lookup a regulator device.
+  * @dev: device for regulator "consumer".
+@@ -1960,16 +1974,9 @@ static struct regulator_dev *regulator_dev_lookup(struct device *dev,
+ 	regulator_supply_alias(&dev, &supply);
  
- #if IS_ENABLED(CONFIG_PSE_CONTROLLER)
+ 	/* first do a dt based lookup */
+-	if (dev_of_node(dev)) {
+-		r = of_regulator_dev_lookup(dev, dev_of_node(dev), supply);
+-		if (!IS_ERR(r))
+-			return r;
+-		if (PTR_ERR(r) == -EPROBE_DEFER)
+-			return r;
+-
+-		if (PTR_ERR(r) == -ENODEV)
+-			r = NULL;
+-	}
++	r = regulator_dt_lookup(dev, supply);
++	if (r)
++		return r;
+ 
+ 	/* if not found, try doing it non-dt way */
+ 	if (dev)
+@@ -2015,7 +2022,17 @@ static int regulator_resolve_supply(struct regulator_dev *rdev)
+ 	if (rdev->supply)
+ 		return 0;
+ 
+-	r = regulator_dev_lookup(dev, rdev->supply_name);
++	/* first do a dt based lookup on the node described in the virtual
++	 * device.
++	 */
++	r = regulator_dt_lookup(&rdev->dev, rdev->supply_name);
++
++	/* If regulator not found use usual search path in the parent
++	 * device.
++	 */
++	if (!r)
++		r = regulator_dev_lookup(dev, rdev->supply_name);
++
+ 	if (IS_ERR(r)) {
+ 		ret = PTR_ERR(r);
+ 
 
 -- 
 2.34.1
