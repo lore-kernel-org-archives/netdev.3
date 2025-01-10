@@ -1,50 +1,48 @@
 Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB98207A37;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46CA207DED;
 	Fri, 10 Jan 2025 08:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736497766; cv=none; b=jENgbbnnRfgf7Xe0ya5qIpAvZvzIX/lU6mq6ZjziGYd6ChN8maT5PPUtBQSvNuM2ZkVoUfBDuq25glGMjsCLYjTTUGkwI0RBwjKxq41EVJ4IFnVkd9MJyhFfeIVT4pcoMoKipdHWVjMzTJRB3Ik1ASIIXjgRR6VjRkRPqumYs7w=
+	t=1736497766; cv=none; b=DA4XBEBR40uEhRqWWTJXcWgGxTQJjrmRFRExHGJtntXuBKdID04j3og0L3G7Yyup8+XNERtsD8wBrRLxT8XT1GIxhOZZ3bhnBQ0Rtz3GM8e7ZQjbTNSBUnW34Z+uy+9A3ViIWbrYeiRdW7P75pvqE7Iex7lVIkQPUyi/+DEaUi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1736497766; c=relaxed/simple;
-	bh=TbKtxYr5BAarok+IE2FsFMQDCMd1NHot+cImwDTUiuM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q0XtGZe9+tmiUAHdChK0adTr8c8Lfgry4avpw3BbMPcMZavhTRVS7Wk9pPrqPFNOOG/vssHSZYvea1PQKzPPUQUiz9RA/0OKopn9sY2PnrwBZefuG8tzjvZJczaJ2xJaAnrZwFwUBrClbYGewvx3lp9ZAZxbEGWEb1s7KAeY5v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=nJG3CEm5; arc=none smtp.client-ip=198.47.23.235
+	bh=rx4Uq2BfjafEnCrTfg6HnTRGc55+ethKsRrBHrnlnBE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JKxOQilrwgoZzuLJfjB5bkpUSOgv4WRP58gglyF9gzXv00+vS8YCVYv+oE42uDQpk94jbPUZUYeKFwe0EAy0ZBG3OAnWUjej2qjLrpEPYPA+IHKr/fM5xWOOwy+YvLFq6AstdwkSRcTv31A5/sWNNnGONjf+p1xq1lZA2w7WpT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=MjWBKejD; arc=none smtp.client-ip=198.47.23.235
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="nJG3CEm5"
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 50A8T6up3390430
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jan 2025 02:29:06 -0600
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="MjWBKejD"
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 50A8T0853390410
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Fri, 10 Jan 2025 02:29:00 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1736497746;
-	bh=pAlsVkvjNe/9JvatPE66gMffUnB33UIIOCebIlDB1hA=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=nJG3CEm5vOMKkuad0YIiNYu2g5y6tR/6df94dy4K08x9WPdDW0bwHQuSFmoVCMJGH
-	 jMXkcGVww7qkKb5j5wd3HhNGbEjHycF/420+AjQajOriubAsxnX8RLH6JNL/TIMX/2
-	 RJJaF1334+ZG55ORzIRvbFSTNrdTyWNARIWP7DgA=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 50A8T6xT007587
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 10 Jan 2025 02:29:06 -0600
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+	s=ti-com-17Q1; t=1736497740;
+	bh=ksMxIna2SYfvVoK6NlK93Su5ZIo00BAOeJb0FMLTUt0=;
+	h=From:To:CC:Subject:Date;
+	b=MjWBKejDOVQI7xUmJ3Ww28SS1uSe96O+/URvW/VseL39W4IeUgCnE+bYI3rN6B2Z/
+	 5LaRAgoW7YNjHiB03FBSYH4scRoxsVio1j2JgsQYRaeUHlE7rWoqdNdmd2TkuL9wk8
+	 9j9Tf3a/CMXyI292+PgRi4JRR90hV3bGYVw8dFmU=
+Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 50A8T0li023404;
+	Fri, 10 Jan 2025 02:29:00 -0600
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 10
- Jan 2025 02:29:05 -0600
-Received: from fllvsmtp8.itg.ti.com (10.64.41.158) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ Jan 2025 02:28:59 -0600
+Received: from fllvsmtp8.itg.ti.com (10.64.41.158) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 10 Jan 2025 02:29:05 -0600
+ Frontend Transport; Fri, 10 Jan 2025 02:28:59 -0600
 Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
-	by fllvsmtp8.itg.ti.com (8.15.2/8.15.2) with ESMTP id 50A8T5de012777;
-	Fri, 10 Jan 2025 02:29:05 -0600
+	by fllvsmtp8.itg.ti.com (8.15.2/8.15.2) with ESMTP id 50A8Sx4Y012643;
+	Fri, 10 Jan 2025 02:28:59 -0600
 Received: from localhost (danish-tpc.dhcp.ti.com [10.24.69.25])
-	by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 50A8T4NO021289;
-	Fri, 10 Jan 2025 02:29:04 -0600
+	by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 50A8SvEo021265;
+	Fri, 10 Jan 2025 02:28:57 -0600
 From: MD Danish Anwar <danishanwar@ti.com>
 To: Jeongjun Park <aha310510@gmail.com>,
         Alexander Lobakin
@@ -69,12 +67,10 @@ CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
 	<michal.swiatkowski@linux.intel.com>,
         Larysa Zaremba
 	<larysa.zaremba@intel.com>
-Subject: [PATCH net-next v4 3/4] net: hsr: Create and export hsr_get_port_ndev()
-Date: Fri, 10 Jan 2025 13:58:51 +0530
-Message-ID: <20250110082852.3899027-4-danishanwar@ti.com>
+Subject: [PATCH net-next v4 0/4] Add Multicast Filtering support for VLAN interface
+Date: Fri, 10 Jan 2025 13:58:48 +0530
+Message-ID: <20250110082852.3899027-1-danishanwar@ti.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250110082852.3899027-1-danishanwar@ti.com>
-References: <20250110082852.3899027-1-danishanwar@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,111 +81,65 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Create an API to get the net_device to the slave port of HSR device. The
-API will take hsr net_device and enum hsr_port_type for which we want the
-net_device as arguments.
+This series adds Multicast filtering support for VLAN interfaces in dual
+EMAC and HSR offload mode for ICSSG driver.
 
-This API can be used by client drivers who support HSR and want to get
-the net_devcie of slave ports from the hsr device. Export this API for
-the same.
+Patch 1/4 - Adds support for VLAN in dual EMAC mode
+Patch 2/4 - Adds MC filtering support for VLAN in dual EMAC mode
+Patch 3/4 - Create and export hsr_get_port_ndev() in hsr_device.c
+Patch 4/4 - Adds MC filtering support for VLAN in HSR mode
 
-This API needs the enum hsr_port_type to be accessible by the drivers using
-hsr. Move the enum hsr_port_type from net/hsr/hsr_main.h to
-include/linux/if_hsr.h for the same.
+Changes from v3 to v4:
+*) Added RB tag of Roger Quadros <rogerq@kernel.org> to patch 1/4 and addressed
+his comment on the same patch.
+*) Created a separate patch (Patch 4) for hsr core changes in Patch [3] as
+suggested by Roger Quadros <rogerq@kernel.org>.
+*) Added details on why __hw_addr_sync_multiple() is used and exported instead
+of using __hw_addr_sync() in the commit message of Patch 2/4 as suggested by
+Paolo Abeni <pabeni@redhat.com>
+*) Added details on why __hw_addr_sync_dev() is used on the local list instead
+of using __dev_mc_sync() on the vdev, in the commit message of Patch 2/4 as
+suggested by Paolo Abeni <pabeni@redhat.com>
 
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
----
- include/linux/if_hsr.h | 17 +++++++++++++++++
- net/hsr/hsr_device.c   | 13 +++++++++++++
- net/hsr/hsr_main.h     |  9 ---------
- 3 files changed, 30 insertions(+), 9 deletions(-)
+Changes from v2 to v3:
+*) Rebased on latest net-next and re-spun the series as net-next is now open.
+*) No functional change.
 
-diff --git a/include/linux/if_hsr.h b/include/linux/if_hsr.h
-index 0404f5bf4f30..d7941fd88032 100644
---- a/include/linux/if_hsr.h
-+++ b/include/linux/if_hsr.h
-@@ -13,6 +13,15 @@ enum hsr_version {
- 	PRP_V1,
- };
- 
-+enum hsr_port_type {
-+	HSR_PT_NONE = 0,	/* Must be 0, used by framereg */
-+	HSR_PT_SLAVE_A,
-+	HSR_PT_SLAVE_B,
-+	HSR_PT_INTERLINK,
-+	HSR_PT_MASTER,
-+	HSR_PT_PORTS,	/* This must be the last item in the enum */
-+};
-+
- /* HSR Tag.
-  * As defined in IEC-62439-3:2010, the HSR tag is really { ethertype = 0x88FB,
-  * path, LSDU_size, sequence Nr }. But we let eth_header() create { h_dest,
-@@ -32,6 +41,8 @@ struct hsr_tag {
- #if IS_ENABLED(CONFIG_HSR)
- extern bool is_hsr_master(struct net_device *dev);
- extern int hsr_get_version(struct net_device *dev, enum hsr_version *ver);
-+struct net_device *hsr_get_port_ndev(struct net_device *ndev,
-+				     enum hsr_port_type pt);
- #else
- static inline bool is_hsr_master(struct net_device *dev)
- {
-@@ -42,6 +53,12 @@ static inline int hsr_get_version(struct net_device *dev,
- {
- 	return -EINVAL;
- }
-+
-+static inline struct net_device *hsr_get_port_ndev(struct net_device *ndev,
-+						   enum hsr_port_type pt)
-+{
-+	return ERR_PTR(-EINVAL);
-+}
- #endif /* CONFIG_HSR */
- 
- #endif /*_LINUX_IF_HSR_H_*/
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index 03eadd6c51fd..b6fb18469439 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -663,6 +663,19 @@ bool is_hsr_master(struct net_device *dev)
- }
- EXPORT_SYMBOL(is_hsr_master);
- 
-+struct net_device *hsr_get_port_ndev(struct net_device *ndev,
-+				     enum hsr_port_type pt)
-+{
-+	struct hsr_priv *hsr = netdev_priv(ndev);
-+	struct hsr_port *port;
-+
-+	hsr_for_each_port(hsr, port)
-+		if (port->type == pt)
-+			return port->dev;
-+	return NULL;
-+}
-+EXPORT_SYMBOL(hsr_get_port_ndev);
-+
- /* Default multicast address for HSR Supervision frames */
- static const unsigned char def_multicast_addr[ETH_ALEN] __aligned(2) = {
- 	0x01, 0x15, 0x4e, 0x00, 0x01, 0x00
-diff --git a/net/hsr/hsr_main.h b/net/hsr/hsr_main.h
-index 7d7551e6f0b0..7561845b8bf6 100644
---- a/net/hsr/hsr_main.h
-+++ b/net/hsr/hsr_main.h
-@@ -121,15 +121,6 @@ struct hsrv1_ethhdr_sp {
- 	struct hsr_sup_tag	hsr_sup;
- } __packed;
- 
--enum hsr_port_type {
--	HSR_PT_NONE = 0,	/* Must be 0, used by framereg */
--	HSR_PT_SLAVE_A,
--	HSR_PT_SLAVE_B,
--	HSR_PT_INTERLINK,
--	HSR_PT_MASTER,
--	HSR_PT_PORTS,	/* This must be the last item in the enum */
--};
--
- /* PRP Redunancy Control Trailor (RCT).
-  * As defined in IEC-62439-4:2012, the PRP RCT is really { sequence Nr,
-  * Lan indentifier (LanId), LSDU_size and PRP_suffix = 0x88FB }.
+Changes from v1 to v2:
+*) Changed netdev_err to netdev_dbg in emac_ndo_vlan_rx_del_vid() in patch 1/3
+as suggested by Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+*) Dropped patch [1] from previous version as the patch created issue [2].
+Will send out a separate patch to set HSR=m in arch/arm64/configs/defconfig.
+Once the defconfig patch gets merged, I will add `depends on HSR` in Kconfig
+for TI_ICSSG_PRUETH as suggested by Larysa Zaremba <larysa.zaremba@intel.com>
+
+[1] https://lore.kernel.org/all/20241216100044.577489-2-danishanwar@ti.com/
+[2] https://lore.kernel.org/all/202412210336.BmgcX3Td-lkp@intel.com/#t
+[3] https://lore.kernel.org/all/31bb8a3e-5a1c-4c94-8c33-c0dfd6d643fb@kernel.org/
+v1 https://lore.kernel.org/all/20241216100044.577489-1-danishanwar@ti.com/
+v2 https://lore.kernel.org/all/20241223092557.2077526-1-danishanwar@ti.com/
+v3 https://lore.kernel.org/all/20250103092033.1533374-1-danishanwar@ti.com/
+
+
+MD Danish Anwar (4):
+  net: ti: icssg-prueth: Add VLAN support in EMAC mode
+  net: ti: icssg-prueth: Add Multicast Filtering support for VLAN in MAC
+    mode
+  net: hsr: Create and export hsr_get_port_ndev()
+  net: ti: icssg-prueth: Add Support for Multicast filtering with VLAN
+    in HSR mode
+
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 175 ++++++++++++++-----
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h |   8 +
+ include/linux/if_hsr.h                       |  17 ++
+ include/linux/netdevice.h                    |   3 +
+ net/core/dev_addr_lists.c                    |   7 +-
+ net/hsr/hsr_device.c                         |  13 ++
+ net/hsr/hsr_main.h                           |   9 -
+ 7 files changed, 173 insertions(+), 59 deletions(-)
+
+
+base-commit: 25cc469d6d344f5772e9fb6a5cf9d82a690afe68
 -- 
 2.34.1
 
