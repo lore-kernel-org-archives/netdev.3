@@ -1,135 +1,99 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A326746E
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 05:33:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F6D205E36;
+	Fri, 10 Jan 2025 05:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736487213; cv=none; b=SzSjPaiX/TipR53LISdAAUouQkMbjyaftbF2bHp+qE/XuOmN9Yeff8Du0HytoEVz0WVCjym2fi72dpgo/RJapQIa8Rr3kb/LBbCKAYSaJ7hI2wbXqqZzsEHzkRoP1NHguO1dX/SoZi3fV1vn/mQQ6Hyoj5pPxo3l96Dzsc8fEZE=
+	t=1736487690; cv=none; b=E8ukaaQuc3wp9SE3PQEA3FsIo5TA1xcqyf6jFzkqfDiiTRw4Mignjy7ZdkAAi0R0mT1PYFjBIeNWMPXwqyvsN94Ruvnawb+Sf1rq2Fei1yTpc2bF0DUlW3N7K6pNudFZhaxRiaWEOp5BZ+XIVGa+eoTr7UH+jF/ReFKwFHL17yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736487213; c=relaxed/simple;
-	bh=hxRTMp4mpwSU8jnHghh6r5i8faflXs6Biek6mneBQ78=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SMKaTgTdlM+o1mGLhjfSjxo+IBl3GIueUV8v0Ci13fhMS/T9qznT/2SEQyW+oFBDrLKmzwM0OyeGS6WeA5ZL9Xq6JQY7XWuG+vur8aJc9d8BuKFLVpynFBVitkx/O0P9j76RnAI/3wTpXhuO8zibwP1K7PGuTUiQ1i3V9Chahhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XZeLpnWN; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736487690; c=relaxed/simple;
+	bh=1Y7sefoQ0YoJuF1C26LElU/gmvm1zRtYCQDDma8W3tY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=B1oW0lRIq/EFGpKFXp5uGQrnmCpte/r+2pvW3+vtjNZzXSYTn2z7ykPSNJCIPgmM3SDOpQtOiGcBo2K2okKPpeo1aHF9cJoQq2SVvhG18XSATS8WRj71nPXMWy8EHYLkClrzlT0STOur68l6rCwxp8kkBSNCQeAP6fSfSKR8dEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=UdkosnMX; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XZeLpnWN"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2164b662090so25407045ad.1
-        for <netdev@vger.kernel.org>; Thu, 09 Jan 2025 21:33:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736487211; x=1737092011; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UdP1H6r78BZYoDOcYSzOfB3PzRaCWyLA9wYEqm3AXu4=;
-        b=XZeLpnWNJ9bNrIhnr2UDdzZOe0oq8IQD33+7Kw5CLrhtFKwSakE9E2rhDGNckzAgqm
-         9jsPoRSxc0VL2us4CujHRPQbaPyPOtKDUIWGR0Ey/Z+A99iFD+3HfbZqR4crbbp2U0Ia
-         gRTiXZ1+XcmqFnfN2Y7NMXmqkKCstVAjVWiSLwq2gq+d+TuLl7ha/eW781q4mh8Oa32c
-         XsZgOucD31DIqY+NiA464eIv0eaGIsnoWs/njU/gJ5/47jHjk6BWGhDBRunXsbkONq9d
-         aCiD/cVvAa9uyyn0EgUf/iF9/DQvyTqCtSkKyWjkZmo7lBei2o/WigveoQFq0h63NnJs
-         2zwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736487211; x=1737092011;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UdP1H6r78BZYoDOcYSzOfB3PzRaCWyLA9wYEqm3AXu4=;
-        b=xTERdmoyEHBF4c7YiBdNA71S0qQ0gKwdgGSPqifecCk/pzSelNqAYYo9fALoWt+74M
-         UIxCqyXtzZ4pHd2SqBg0CnzxgsJhaQXilMQtG+7zw0R/GI0LeCRj5Daco8vMI9x8wuaX
-         WOt2WP4GONHuwmPf04dQOjoTmVG9I3CCYt8Vj60Tl1+fX4qqdKlrhXfUwVvdm8eZx0AI
-         thK3HIoQG+DSBXj4FPuxIQqLMZENJeR1oPA+eyoGPAzFmOsf4y1kdBuw36RI5ildB5cx
-         sDMgpmlAaqSc5WTbD0lCAmM4t+V8aEDMvE4EAvJnzMNY1BB8B4pwSXGBpBkxrKYJNEc3
-         igDA==
-X-Forwarded-Encrypted: i=1; AJvYcCUE77ap3XF0Oe6lJa7hPQ6PiXb6HwI99rOArTOguurDuiVj9CU5GoY7E8K5p/IrciWle92miig=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1UekVjgWR3vZeEl0RTVOeM1vLvz+IsMZhHkhPMCu/Gwuf8wpA
-	LBGlHiDwG2GPO78oqA8f6v5rNupTv+py5UgpFFp1sHJpscuY5A34
-X-Gm-Gg: ASbGncsFNabIBJTaKPaukvQhWYCXr1sQxNsWXi7ngcwyFHGT1uw+i6bXvsrUalIhU+k
-	MCOhi1JqDDMVpbF104qSoSLu3kdJ11Brm2LJZ3cjWixW4dwz+soaiOIrBHFt2dYURo+lfGzjRCT
-	U70P8v61Of2KscJDruH8sG/rKxGub/tFGhWyO20Xo1gZ/3dfcY059SXU6gbCfbMETwXq++ZRb6z
-	yKxIqASE7l7delU3pcEJyTWWsAmW5mazeKIQNoCCwVOdUMymuNqZX2LXKnSbDs=
-X-Google-Smtp-Source: AGHT+IGpXFgYx9QBLE5BKejw1lewtZBlVvulP0O6fcBeqATluc3tQ9vdFbitVdliacGQaxfngJHDXg==
-X-Received: by 2002:a17:902:ccc3:b0:216:2bd7:1c27 with SMTP id d9443c01a7336-21a83f72b8cmr144395715ad.33.1736487210762;
-        Thu, 09 Jan 2025 21:33:30 -0800 (PST)
-Received: from localhost ([2601:647:6881:9060:c586:91c7:b7f1:d942])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f54a26ac5esm4668711a91.5.2025.01.09.21.33.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jan 2025 21:33:30 -0800 (PST)
-Date: Thu, 9 Jan 2025 21:33:29 -0800
-From: Cong Wang <xiyou.wangcong@gmail.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
-	netdev@vger.kernel.org, eric.dumazet@gmail.com
-Subject: Re: [PATCH net-next] net: sched: calls synchronize_net() only when
- needed
-Message-ID: <Z4CxKV5AnfDPRfaF@pop-os.localdomain>
-References: <20250109171850.2871194-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="UdkosnMX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1736487689; x=1768023689;
+  h=from:to:subject:date:message-id:mime-version;
+  bh=1Y7sefoQ0YoJuF1C26LElU/gmvm1zRtYCQDDma8W3tY=;
+  b=UdkosnMXw1WE9+lbkwFmi6cgT0licDP0cDuBKaLhHCfOkPhnofySal3m
+   mXlwfMbNu5I4R9x/Jy4i6yAnzdGOGhJTFjPrch1z07OfE1sT05LKJFCtS
+   TN5XULWHmJjgzJJOQNAwA+bZmEeaxMfQvJB4Tpi3GSKjwWMWNciPlgsqf
+   t3BNy6+dtNB05s27XM8AcS0HgikwkeFuxJoHsNSt8HDasrmUrD+9MRiaR
+   xTSAQ+sGiVHubrtL+b+4oSF8uQjWZLQmvG2el+RfwbZPBpKeakzQVMr8W
+   kSnjKx9gL9JdNB/UKq0bN+muK8tX/6TEq9gXkrNake1rSE7P2i7Yw/HH3
+   g==;
+X-CSE-ConnectionGUID: YaO9AIrEQPOehTjwwOqDvA==
+X-CSE-MsgGUID: NyK4883oTW+tK/aaE4Na+g==
+X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; 
+   d="scan'208";a="36379889"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Jan 2025 22:41:28 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 9 Jan 2025 22:40:57 -0700
+Received: from training-HP-280-G1-MT-PC.microchip.com (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.35 via Frontend Transport; Thu, 9 Jan 2025 22:40:53 -0700
+From: Divya Koppera <divya.koppera@microchip.com>
+To: <andrew@lunn.ch>, <arun.ramadoss@microchip.com>,
+	<UNGLinuxDriver@microchip.com>, <hkallweit1@gmail.com>,
+	<linux@armlinux.org.uk>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <richardcochran@gmail.com>,
+	<vadim.fedorenko@linux.dev>
+Subject: [PATCH net-next v2] net: phy: microchip_t1: depend on PTP_1588_CLOCK_OPTIONAL
+Date: Fri, 10 Jan 2025 11:14:24 +0530
+Message-ID: <20250110054424.16807-1-divya.koppera@microchip.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250109171850.2871194-1-edumazet@google.com>
+Content-Type: text/plain
 
-On Thu, Jan 09, 2025 at 05:18:50PM +0000, Eric Dumazet wrote:
-> dev_deactivate_many() role is to remove the qdiscs
-> of a network device.
-> 
-> When/if a qdisc is dismantled, an rcu grace period
-> is needed to make sure all outstanding qdisc enqueue
-> are done before we proceed with a qdisc reset.
-> 
-> Most virtual devices do not have a qdisc (if we exclude
-> noqueue ones).
+When microchip_t1_phy is built in and phyptp is module
+facing undefined reference issue. This get fixed when
+microchip_t1_phy made dependent on PTP_1588_CLOCK_OPTIONAL.
 
-Such as? To me, most virtual devices use noqueue:
+Reported-by: kernel test robot <lkp@intel.com>
+Closes:
+https://lore.kernel.org/oe-kbuild-all/202501090604.YEoJXCXi-lkp@intel.com
+Fixes: fa51199c5f34 ("net: phy: microchip_rds_ptp : Add rds ptp library for Microchip phys")
+Signed-off-by: Divya Koppera <divya.koppera@microchip.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+---
+v1 -> v2
+- Modifed prefix for the patch and subject.
+- Changed target to net-next from net.
+---
+ drivers/net/phy/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-$ git grep IFF_NO_QUEUE -- drivers/net/
-drivers/net/amt.c:      dev->priv_flags         |= IFF_NO_QUEUE;
-drivers/net/bareudp.c:  dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/bonding/bond_main.c:        bond_dev->priv_flags |= IFF_BONDING | IFF_UNICAST_FLT | IFF_NO_QUEUE;
-drivers/net/caif/caif_serial.c: dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/dummy.c:    dev->priv_flags |= IFF_LIVE_ADDR_CHANGE | IFF_NO_QUEUE;
-drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c:        dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/ethernet/netronome/nfp/nfp_net_repr.c:      netdev->priv_flags |= IFF_NO_QUEUE | IFF_DISABLE_NETPOLL;
-drivers/net/geneve.c:   dev->priv_flags |= IFF_LIVE_ADDR_CHANGE | IFF_NO_QUEUE;
-drivers/net/gtp.c:      dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/ipvlan/ipvlan_main.c:       dev->priv_flags |= IFF_UNICAST_FLT | IFF_NO_QUEUE;
-drivers/net/ipvlan/ipvtap.c:    dev->priv_flags &= ~IFF_NO_QUEUE;
-drivers/net/loopback.c: dev->priv_flags         |= IFF_LIVE_ADDR_CHANGE | IFF_NO_QUEUE;
-drivers/net/macsec.c:   dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/macvlan.c:  dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/net_failover.c:     failover_dev->priv_flags |= IFF_UNICAST_FLT | IFF_NO_QUEUE;
-drivers/net/netdevsim/netdev.c:                    IFF_NO_QUEUE;
-drivers/net/netkit.c:   dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/nlmon.c:    dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/pfcp.c:     dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/team/team_core.c:   dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/veth.c:     dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/vrf.c:      dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/vsockmon.c: dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/vxlan/vxlan_core.c: dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/wan/hdlc_fr.c:      dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/wireguard/device.c: dev->priv_flags |= IFF_NO_QUEUE;
-drivers/net/wireless/virtual/mac80211_hwsim.c:  dev->priv_flags |= IFF_NO_QUEUE;
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index dc625f2b3ae4..9ad3dbfd2f99 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -287,8 +287,8 @@ config MICROCHIP_PHY
+ 
+ config MICROCHIP_T1_PHY
+ 	tristate "Microchip T1 PHYs"
+-	select MICROCHIP_PHY_RDS_PTP if NETWORK_PHY_TIMESTAMPING && \
+-				  PTP_1588_CLOCK_OPTIONAL
++	select MICROCHIP_PHY_RDS_PTP if NETWORK_PHY_TIMESTAMPING
++	depends on PTP_1588_CLOCK_OPTIONAL
+ 	help
+ 	  Supports the LAN8XXX PHYs.
+ 
+-- 
+2.17.1
 
-
-And noqueue_qdisc_ops sets ->enqueue to noop_enqueue():
-
-struct Qdisc_ops noqueue_qdisc_ops __read_mostly = {
-        .id             =       "noqueue",
-        .priv_size      =       0,
-        .init           =       noqueue_init,
-        .enqueue        =       noop_enqueue,
-        .dequeue        =       noop_dequeue,
-        .peek           =       noop_dequeue,
-        .owner          =       THIS_MODULE,
-};
-
-Thanks.
