@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F39220CCD8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711A620CCDA
 	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736508447; cv=none; b=QEfrn/sN8NZWnjrBq+sXNkGBSY3bt+s9xWCFEZ60TM3rt8Atx1TCnOwrLGd0iC30qZvfcRLN1qw/aP3Ai5eoJW1fSkOawlzmdxqBwm770dNWXPEUaQokISgqGvjWtyvH0mWrJG+O8lIlFq3SHdiLNVWRaJMdCyskw2CMzYk2JMo=
+	t=1736508448; cv=none; b=tivODoOA/Qtu7ihN3JIf7SFV7FKjgP7NSd2k0JzpUzSoTrP1Xlc7aZzFB1QFSMCQ/EPOzr/nfoDrvg0Ump9NAW90+BQmwQctlCyTYaA2hTNZCKlhMphCJhVqnpLt/AhbgImwr1qds22rc40zY2nAe/wVmowPGZLnj3ANoIaKQS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736508447; c=relaxed/simple;
-	bh=LKMY+58YuDKopatvbzVpOgVlxOBoe4b7lkKRqONbJdY=;
+	s=arc-20240116; t=1736508448; c=relaxed/simple;
+	bh=1+cqpmdYF3RWxdDfLOIh10HJEiaOXWwi47Kj+fr2RDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpG4N6aoE98CBLBZTo0Rx1GMc3X1T7WefgrbTu/81zxFhlA3btoe4rQk/US634PR/FDFqcNg1ujH3wfBwCaNnN0GSGd1OaMGV8KM5rN+VpCL5KUY2mYYpb9Ngvk+XNs4RPdVXqaNYi2W4Y7t54rknodkgB/aKwNu8zSI0BsDf0Q=
+	 MIME-Version; b=Tn7ter5cbaiSmdDX9yN8qOblT1xhsjUmmrFiOOfB6TLK1Z7KfWLbg7rT/rA069tpnOCQqEfj8HRhgtJBnNznNH7+kRDs+tVlWmf1Pu4WY3F5WZ6Ep0nefbs3P1FRcKwwWKxT/UlUvn1rUqM9ppflkrysc4KD+bd6wsbRPfPo3kI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,27 +18,27 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tWDAg-000561-Fs
+	id 1tWDAg-000556-Cg
 	for netdev@vger.kernel.org; Fri, 10 Jan 2025 12:27:22 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tWDAe-0009io-02
+	id 1tWDAd-0009iO-1W
 	for netdev@vger.kernel.org;
-	Fri, 10 Jan 2025 12:27:20 +0100
+	Fri, 10 Jan 2025 12:27:19 +0100
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id A9E883A4623
+	by bjornoya.blackshift.org (Postfix) with SMTP id 2BEBE3A461C
 	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:19 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 9FC8A3A45B2;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 691743A45AB;
 	Fri, 10 Jan 2025 11:27:15 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 207bb45c;
-	Fri, 10 Jan 2025 11:27:15 +0000 (UTC)
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 6c33d6c1;
+	Fri, 10 Jan 2025 11:27:14 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -46,11 +46,10 @@ Cc: davem@davemloft.net,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
 	Jimmy Assarsson <extja@kvaser.com>,
-	Alison Below <alisonbelow@gmail.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 18/18] can: kvaser_pciefd: Add support for CAN_CTRLMODE_BERR_REPORTING
-Date: Fri, 10 Jan 2025 12:04:26 +0100
-Message-ID: <20250110112712.3214173-19-mkl@pengutronix.de>
+Subject: [PATCH net-next 15/18] can: kvaser_usb: Update stats and state even if alloc_can_err_skb() fails
+Date: Fri, 10 Jan 2025 12:04:23 +0100
+Message-ID: <20250110112712.3214173-16-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20250110112712.3214173-1-mkl@pengutronix.de>
 References: <20250110112712.3214173-1-mkl@pengutronix.de>
@@ -68,82 +67,249 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Jimmy Assarsson <extja@kvaser.com>
 
-Add support for CAN_CTRLMODE_BERR_REPORTING,
-allowing Bus Error Reporting to be enabled or disabled.
-Previously, Bus Error Reporting was always active.
+Ensure statistics, error counters, and CAN state are updated consistently,
+even when alloc_can_err_skb() fails during state changes or error message
+frame reception.
 
-Co-developed-by: Alison Below <alisonbelow@gmail.com>
-Signed-off-by: Alison Below <alisonbelow@gmail.com>
 Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://patch.msgid.link/20241230142645.128244-4-extja@kvaser.com
+Link: https://patch.msgid.link/20241230142645.128244-1-extja@kvaser.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/kvaser_pciefd.c | 29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ .../net/can/usb/kvaser_usb/kvaser_usb_hydra.c | 124 +++++++-----------
+ .../net/can/usb/kvaser_usb/kvaser_usb_leaf.c  |  31 ++---
+ 2 files changed, 60 insertions(+), 95 deletions(-)
 
-diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
-index e12ff12c4ba3..fa04a7ced02b 100644
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -999,7 +999,8 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
- 		can->can.ctrlmode_supported = CAN_CTRLMODE_LISTENONLY |
- 					      CAN_CTRLMODE_FD |
- 					      CAN_CTRLMODE_FD_NON_ISO |
--					      CAN_CTRLMODE_CC_LEN8_DLC;
-+					      CAN_CTRLMODE_CC_LEN8_DLC |
-+					      CAN_CTRLMODE_BERR_REPORTING;
- 
- 		status = ioread32(can->reg_base + KVASER_PCIEFD_KCAN_STAT_REG);
- 		if (!(status & KVASER_PCIEFD_KCAN_STAT_FD)) {
-@@ -1304,7 +1305,7 @@ static int kvaser_pciefd_rx_error_frame(struct kvaser_pciefd_can *can,
- 	struct can_berr_counter bec;
- 	enum can_state old_state, new_state, tx_state, rx_state;
- 	struct net_device *ndev = can->can.dev;
--	struct sk_buff *skb;
-+	struct sk_buff *skb = NULL;
- 	struct can_frame *cf = NULL;
- 
- 	old_state = can->can.state;
-@@ -1313,7 +1314,8 @@ static int kvaser_pciefd_rx_error_frame(struct kvaser_pciefd_can *can,
- 	bec.rxerr = FIELD_GET(KVASER_PCIEFD_SPACK_RXERR_MASK, p->header[0]);
- 
- 	kvaser_pciefd_packet_to_state(p, &bec, &new_state, &tx_state, &rx_state);
--	skb = alloc_can_err_skb(ndev, &cf);
-+	if (can->can.ctrlmode & CAN_CTRLMODE_BERR_REPORTING)
-+		skb = alloc_can_err_skb(ndev, &cf);
- 	if (new_state != old_state) {
- 		kvaser_pciefd_change_state(can, &bec, cf, new_state, tx_state, rx_state);
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
+index 3764b263add3..5ec8b300bebf 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
+@@ -926,6 +926,42 @@ kvaser_usb_hydra_bus_status_to_can_state(const struct kvaser_usb_net_priv *priv,
  	}
-@@ -1328,18 +1330,19 @@ static int kvaser_pciefd_rx_error_frame(struct kvaser_pciefd_can *can,
- 	can->bec.txerr = bec.txerr;
- 	can->bec.rxerr = bec.rxerr;
- 
--	if (!skb) {
--		ndev->stats.rx_dropped++;
--		return -ENOMEM;
-+	if (can->can.ctrlmode & CAN_CTRLMODE_BERR_REPORTING) {
-+		if (!skb) {
-+			netdev_warn(ndev, "No memory left for err_skb\n");
-+			ndev->stats.rx_dropped++;
-+			return -ENOMEM;
-+		}
-+		kvaser_pciefd_set_skb_timestamp(can->kv_pcie, skb, p->timestamp);
-+		cf->can_id |= CAN_ERR_BUSERROR | CAN_ERR_CNT;
-+		cf->data[6] = bec.txerr;
-+		cf->data[7] = bec.rxerr;
-+		netif_rx(skb);
- 	}
- 
--	kvaser_pciefd_set_skb_timestamp(can->kv_pcie, skb, p->timestamp);
--	cf->can_id |= CAN_ERR_BUSERROR | CAN_ERR_CNT;
--	cf->data[6] = bec.txerr;
--	cf->data[7] = bec.rxerr;
--
--	netif_rx(skb);
--
- 	return 0;
  }
  
++static void kvaser_usb_hydra_change_state(struct kvaser_usb_net_priv *priv,
++					  const struct can_berr_counter *bec,
++					  struct can_frame *cf,
++					  enum can_state new_state)
++{
++	struct net_device *netdev = priv->netdev;
++	enum can_state old_state = priv->can.state;
++	enum can_state tx_state, rx_state;
++
++	tx_state = (bec->txerr >= bec->rxerr) ?
++				new_state : CAN_STATE_ERROR_ACTIVE;
++	rx_state = (bec->txerr <= bec->rxerr) ?
++				new_state : CAN_STATE_ERROR_ACTIVE;
++	can_change_state(netdev, cf, tx_state, rx_state);
++
++	if (new_state == CAN_STATE_BUS_OFF && old_state < CAN_STATE_BUS_OFF) {
++		if (priv->can.restart_ms == 0)
++			kvaser_usb_hydra_send_simple_cmd_async(priv, CMD_STOP_CHIP_REQ);
++
++		can_bus_off(netdev);
++	}
++
++	if (priv->can.restart_ms &&
++	    old_state >= CAN_STATE_BUS_OFF &&
++	    new_state < CAN_STATE_BUS_OFF) {
++		priv->can.can_stats.restarts++;
++		if (cf)
++			cf->can_id |= CAN_ERR_RESTARTED;
++	}
++	if (cf && new_state != CAN_STATE_BUS_OFF) {
++		cf->can_id |= CAN_ERR_CNT;
++		cf->data[6] = bec->txerr;
++		cf->data[7] = bec->rxerr;
++	}
++}
++
+ static void kvaser_usb_hydra_update_state(struct kvaser_usb_net_priv *priv,
+ 					  u8 bus_status,
+ 					  const struct can_berr_counter *bec)
+@@ -951,41 +987,11 @@ static void kvaser_usb_hydra_update_state(struct kvaser_usb_net_priv *priv,
+ 		return;
+ 
+ 	skb = alloc_can_err_skb(netdev, &cf);
+-	if (skb) {
+-		enum can_state tx_state, rx_state;
+-
+-		tx_state = (bec->txerr >= bec->rxerr) ?
+-					new_state : CAN_STATE_ERROR_ACTIVE;
+-		rx_state = (bec->txerr <= bec->rxerr) ?
+-					new_state : CAN_STATE_ERROR_ACTIVE;
+-		can_change_state(netdev, cf, tx_state, rx_state);
+-	}
+-
+-	if (new_state == CAN_STATE_BUS_OFF && old_state < CAN_STATE_BUS_OFF) {
+-		if (!priv->can.restart_ms)
+-			kvaser_usb_hydra_send_simple_cmd_async
+-						(priv, CMD_STOP_CHIP_REQ);
+-
+-		can_bus_off(netdev);
+-	}
+-
+-	if (!skb) {
++	kvaser_usb_hydra_change_state(priv, bec, cf, new_state);
++	if (skb)
++		netif_rx(skb);
++	else
+ 		netdev_warn(netdev, "No memory left for err_skb\n");
+-		return;
+-	}
+-
+-	if (priv->can.restart_ms &&
+-	    old_state >= CAN_STATE_BUS_OFF &&
+-	    new_state < CAN_STATE_BUS_OFF)
+-		priv->can.can_stats.restarts++;
+-
+-	if (new_state != CAN_STATE_BUS_OFF) {
+-		cf->can_id |= CAN_ERR_CNT;
+-		cf->data[6] = bec->txerr;
+-		cf->data[7] = bec->rxerr;
+-	}
+-
+-	netif_rx(skb);
+ }
+ 
+ static void kvaser_usb_hydra_state_event(const struct kvaser_usb *dev,
+@@ -1080,7 +1086,6 @@ kvaser_usb_hydra_error_frame(struct kvaser_usb_net_priv *priv,
+ 	struct net_device_stats *stats = &netdev->stats;
+ 	struct can_frame *cf;
+ 	struct sk_buff *skb;
+-	struct skb_shared_hwtstamps *shhwtstamps;
+ 	struct can_berr_counter bec;
+ 	enum can_state new_state, old_state;
+ 	u8 bus_status;
+@@ -1097,51 +1102,22 @@ kvaser_usb_hydra_error_frame(struct kvaser_usb_net_priv *priv,
+ 						 &new_state);
+ 
+ 	skb = alloc_can_err_skb(netdev, &cf);
++	if (new_state != old_state)
++		kvaser_usb_hydra_change_state(priv, &bec, cf, new_state);
+ 
+-	if (new_state != old_state) {
+-		if (skb) {
+-			enum can_state tx_state, rx_state;
++	if (skb) {
++		struct skb_shared_hwtstamps *shhwtstamps = skb_hwtstamps(skb);
+ 
+-			tx_state = (bec.txerr >= bec.rxerr) ?
+-					new_state : CAN_STATE_ERROR_ACTIVE;
+-			rx_state = (bec.txerr <= bec.rxerr) ?
+-					new_state : CAN_STATE_ERROR_ACTIVE;
+-
+-			can_change_state(netdev, cf, tx_state, rx_state);
+-
+-			if (priv->can.restart_ms &&
+-			    old_state >= CAN_STATE_BUS_OFF &&
+-			    new_state < CAN_STATE_BUS_OFF)
+-				cf->can_id |= CAN_ERR_RESTARTED;
+-		}
+-
+-		if (new_state == CAN_STATE_BUS_OFF) {
+-			if (!priv->can.restart_ms)
+-				kvaser_usb_hydra_send_simple_cmd_async
+-						(priv, CMD_STOP_CHIP_REQ);
+-
+-			can_bus_off(netdev);
+-		}
+-	}
+-
+-	if (!skb) {
+-		stats->rx_dropped++;
+-		netdev_warn(netdev, "No memory left for err_skb\n");
+-		return;
+-	}
+-
+-	shhwtstamps = skb_hwtstamps(skb);
+-	shhwtstamps->hwtstamp = hwtstamp;
+-
+-	cf->can_id |= CAN_ERR_BUSERROR;
+-	if (new_state != CAN_STATE_BUS_OFF) {
+-		cf->can_id |= CAN_ERR_CNT;
++		shhwtstamps->hwtstamp = hwtstamp;
++		cf->can_id |= CAN_ERR_BUSERROR | CAN_ERR_CNT;
+ 		cf->data[6] = bec.txerr;
+ 		cf->data[7] = bec.rxerr;
++		netif_rx(skb);
++	} else {
++		stats->rx_dropped++;
++		netdev_warn(netdev, "No memory left for err_skb\n");
+ 	}
+ 
+-	netif_rx(skb);
+-
+ 	priv->bec.txerr = bec.txerr;
+ 	priv->bec.rxerr = bec.rxerr;
+ }
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+index 6b9122ab1464..0491b4a6d8e8 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+@@ -1121,8 +1121,6 @@ static void kvaser_usb_leaf_rx_error(const struct kvaser_usb *dev,
+ 				     const struct kvaser_usb_err_summary *es)
+ {
+ 	struct can_frame *cf;
+-	struct can_frame tmp_cf = { .can_id = CAN_ERR_FLAG,
+-				    .len = CAN_ERR_DLC };
+ 	struct sk_buff *skb;
+ 	struct net_device_stats *stats;
+ 	struct kvaser_usb_net_priv *priv;
+@@ -1143,18 +1141,9 @@ static void kvaser_usb_leaf_rx_error(const struct kvaser_usb *dev,
+ 	if (!netif_running(priv->netdev))
+ 		return;
+ 
+-	/* Update all of the CAN interface's state and error counters before
+-	 * trying any memory allocation that can actually fail with -ENOMEM.
+-	 *
+-	 * We send a temporary stack-allocated error CAN frame to
+-	 * can_change_state() for the very same reason.
+-	 *
+-	 * TODO: Split can_change_state() responsibility between updating the
+-	 * CAN interface's state and counters, and the setting up of CAN error
+-	 * frame ID and data to userspace. Remove stack allocation afterwards.
+-	 */
+ 	old_state = priv->can.state;
+-	kvaser_usb_leaf_rx_error_update_can_state(priv, es, &tmp_cf);
++	skb = alloc_can_err_skb(priv->netdev, &cf);
++	kvaser_usb_leaf_rx_error_update_can_state(priv, es, cf);
+ 	new_state = priv->can.state;
+ 
+ 	/* If there are errors, request status updates periodically as we do
+@@ -1168,13 +1157,6 @@ static void kvaser_usb_leaf_rx_error(const struct kvaser_usb *dev,
+ 		schedule_delayed_work(&leaf->chip_state_req_work,
+ 				      msecs_to_jiffies(500));
+ 
+-	skb = alloc_can_err_skb(priv->netdev, &cf);
+-	if (!skb) {
+-		stats->rx_dropped++;
+-		return;
+-	}
+-	memcpy(cf, &tmp_cf, sizeof(*cf));
+-
+ 	if (new_state != old_state) {
+ 		if (es->status &
+ 		    (M16C_STATE_BUS_OFF | M16C_STATE_BUS_RESET)) {
+@@ -1187,11 +1169,18 @@ static void kvaser_usb_leaf_rx_error(const struct kvaser_usb *dev,
+ 		if (priv->can.restart_ms &&
+ 		    old_state == CAN_STATE_BUS_OFF &&
+ 		    new_state < CAN_STATE_BUS_OFF) {
+-			cf->can_id |= CAN_ERR_RESTARTED;
++			if (cf)
++				cf->can_id |= CAN_ERR_RESTARTED;
+ 			netif_carrier_on(priv->netdev);
+ 		}
+ 	}
+ 
++	if (!skb) {
++		stats->rx_dropped++;
++		netdev_warn(priv->netdev, "No memory left for err_skb\n");
++		return;
++	}
++
+ 	switch (dev->driver_info->family) {
+ 	case KVASER_LEAF:
+ 		if (es->leaf.error_factor) {
 -- 
 2.45.2
 
