@@ -1,415 +1,190 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9371A20A5C4
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 06:05:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3216A1A4F1F
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 06:18:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736489146; cv=none; b=a3QK6uL1QOdV7F4AMn/0VthUKySzSyny7hDahh6KaUuwq3/D9mpSI+WPDTA2P2w0wOlDJUQ6pK5dDjNc3Y4hybC8sYucnbVCX7AP+2oZljyUlaVUPlQTUpCaYFnb6HyfbWorXt5AB50hp217BMwsbSNb5uNeCD/+PSbe0uw6q7A=
+	t=1736489920; cv=none; b=JSRSsdxxlj80IyqaaxN1AHOQA5kYafy0cVUAHKv0S3DFvJZhU9e6XXoNeok9Tjls0Pfn9rl/V96hTJRHvIrlb6VaHpBvSAS+APhCoWivqCG1AnZ5LtxBVzLgHpmoB80fvEcOpkKU7LhyXQYFNoqcmExd6ocAVcF72UiunX0gkIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736489146; c=relaxed/simple;
-	bh=npuzCAhp5X6hYXZkI2YSu83SeiLKxMZlfh1zguG6wGU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jEf3XD5NkPCnuXzWGBNd6CGa12hqog6cb3o4/b9ZAtbgm2Z1dvr+jZmbxsSVx2Kmn2g/AKM0NVqovdXHOShMyMwKZrTBpZ3qqI5DSTGlw3ddvz68Pbxqo0kBw6Wc0QtPDbKWCTKwSc9e4NynvqClpdqEy8Zveh/Ai4+RFFlSmAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tW895-0007oE-Ol; Fri, 10 Jan 2025 07:05:23 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tW891-0006lF-3C;
-	Fri, 10 Jan 2025 07:05:20 +0100
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tW891-002z9m-2y;
-	Fri, 10 Jan 2025 07:05:19 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	linux-doc@vger.kernel.org
-Subject: [PATCH net-next v7 2/7] net: ethtool: plumb PHY stats to PHY drivers
-Date: Fri, 10 Jan 2025 07:05:12 +0100
-Message-Id: <20250110060517.711683-3-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250110060517.711683-1-o.rempel@pengutronix.de>
-References: <20250110060517.711683-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1736489920; c=relaxed/simple;
+	bh=k8iw9+kciIECw/ctmne1alKhyO7yDWLOtGLrwdrz43s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ojnYAxDYIxto7vxo+SReSM4m7nI7lppwh2xEihyww0o/uFS4YXcFgeuHMEQirS68CaIsOhRh7dz4h6on05dOjl8wu1mZREjud13d90d+57MNf26SqoHZ2JqZA9JfKv0Tg2WhM+eDB84ZG2Vol9dxB4XHD1ita3b+MkRujHaSqiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GQOk15k2; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GQOk15k2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736489917;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ISxfKzVoXDOr34Y5KsabwaYvJOoTxc4gV0y3MMcBA0A=;
+	b=GQOk15k2V8gcHO2AnLz230RkKVKYjd8dNG1kBN3uqnuUkSVBnLW0CepRICY81BMJbL+wpA
+	48hRnqgmqJugaW1/k1stliI6EHceyWoLwFNVHCDY8rzATD6grCMRQ+mCZZ6YVVvrWs3xw2
+	zs3MsmXMa0Fc8smBxtihosTlDNgc9w8=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-441-F3BqOYMjNxKGColL2R19_w-1; Fri, 10 Jan 2025 01:18:35 -0500
+X-MC-Unique: F3BqOYMjNxKGColL2R19_w-1
+X-Mimecast-MFC-AGG-ID: F3BqOYMjNxKGColL2R19_w
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-5d3f4cbbbbcso1722585a12.1
+        for <netdev@vger.kernel.org>; Thu, 09 Jan 2025 22:18:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736489914; x=1737094714;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ISxfKzVoXDOr34Y5KsabwaYvJOoTxc4gV0y3MMcBA0A=;
+        b=LUJMELHBJPuISYlQ32tm74taGFcouNvYa57N0XQLo95djvWbgjJzxpit3D1e0kDAcT
+         9R+3owFjXDjSoxOyrIu/73Ys2yJH8MCw3cGcsruqB1FG4Ng+xRDBKsMHONN+L7TmhGj8
+         htNV5t6cXfeLS/WPDZe7i9QyrRSsuo7GmgzWV2mLY8QLHD2IuRqxDjsmG3F+xUtjAJwg
+         mSQfp3ow2bVAJfHQCeYGYg+5y+AfKGYXzdRZVDPHxIw3ZGqvjrSTZmfircIjlQfH9fZP
+         sycoQ6Bn3oPqtnwePF65e5FNYP0zmgsxUHIiM2nzBPYctLy53aejQOV6AYDJFrj25tNS
+         lkGg==
+X-Forwarded-Encrypted: i=1; AJvYcCWv0W6+mYKPm04aoEC/qAxXfKZSRKpoxxCJ7OnRmBkUQrY4NzeDOaluet0uACef69bcwJvVS4c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwV28yMBuX0xng+bERfsvZR1mrPJtyHJtIfhIvW1IuJcjhyAcV
+	YS3LKWM+vLPs6Vp4K/z5FqOJ1nOCjPYBf57Kl18sasRug6GXaGdVPHlIp3kuWXXvyRilViCqWQI
+	oLf0VtDKJr56tVHioJQugLWih+/pXatd71NOwmnqy7KRKEcUflH+rzOZkNAo/hg7aU6Tk1VHdd9
+	8Lx0VCH4fcEe/1dk2texbylBT880gU
+X-Gm-Gg: ASbGncsynqAJi3XtDsETY6eICnSxmLq4zByMgXlcXPqp5GCfh6F1vXFYHCMVRLJdo0x
+	HkQj6LnSr9MTYLIEphP0+fo7ROJT4fePZhgOpEGM=
+X-Received: by 2002:a05:6402:3888:b0:5d1:2377:5ae2 with SMTP id 4fb4d7f45d1cf-5d972dfb857mr8721749a12.7.1736489914355;
+        Thu, 09 Jan 2025 22:18:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEiAdihQyFMz0O5tj3Ue3EozuwVp0j8wLiDgLZq4DzNClh5miAT01uxp0Lj3n+X60xlkcwlDVJx2hp/x1jcaIw=
+X-Received: by 2002:a05:6402:3888:b0:5d1:2377:5ae2 with SMTP id
+ 4fb4d7f45d1cf-5d972dfb857mr8721718a12.7.1736489914008; Thu, 09 Jan 2025
+ 22:18:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+References: <20241227191211.12485-1-chia-yu.chang@nokia-bell-labs.com>
+ <20241227191211.12485-12-chia-yu.chang@nokia-bell-labs.com>
+ <CACGkMEu990O+2Sedj+ASv0P5TnZR9THiOdHmx=L0hOxQRXPcsg@mail.gmail.com>
+ <PAXPR07MB79849952690901A50688EFEDA3092@PAXPR07MB7984.eurprd07.prod.outlook.com>
+ <20250108072548-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20250108072548-mutt-send-email-mst@kernel.org>
+From: Lei Yang <leiyang@redhat.com>
+Date: Fri, 10 Jan 2025 14:17:57 +0800
+X-Gm-Features: AbW1kvb8ubWeXgB-U6M0XsqnjiyDPikXOh18Gs0pZOWli8Sl1qeTWevc3-CPVnA
+Message-ID: <CAPpAL=xcWrbDMnqd5X6QfSMi1Mz-VOm0k-07kR5wsB8d0LU_pA@mail.gmail.com>
+Subject: Re: [PATCH v6 net-next 11/14] virtio_net: Accurate ECN flag in virtio_net_hdr
+To: "Chia-Yu Chang (Nokia)" <chia-yu.chang@nokia-bell-labs.com>
+Cc: Jason Wang <jasowang@redhat.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"dsahern@gmail.com" <dsahern@gmail.com>, "davem@davemloft.net" <davem@davemloft.net>, 
+	"edumazet@google.com" <edumazet@google.com>, "dsahern@kernel.org" <dsahern@kernel.org>, 
+	"pabeni@redhat.com" <pabeni@redhat.com>, "joel.granados@kernel.org" <joel.granados@kernel.org>, 
+	"kuba@kernel.org" <kuba@kernel.org>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, 
+	"horms@kernel.org" <horms@kernel.org>, "pablo@netfilter.org" <pablo@netfilter.org>, 
+	"kadlec@netfilter.org" <kadlec@netfilter.org>, 
+	"netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	"coreteam@netfilter.org" <coreteam@netfilter.org>, "shenjian15@huawei.com" <shenjian15@huawei.com>, 
+	"salil.mehta@huawei.com" <salil.mehta@huawei.com>, "shaojijie@huawei.com" <shaojijie@huawei.com>, 
+	"saeedm@nvidia.com" <saeedm@nvidia.com>, "tariqt@nvidia.com" <tariqt@nvidia.com>, 
+	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>, "eperezma@redhat.com" <eperezma@redhat.com>, 
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>, "ij@kernel.org" <ij@kernel.org>, 
+	"ncardwell@google.com" <ncardwell@google.com>, 
+	"Koen De Schepper (Nokia)" <koen.de_schepper@nokia-bell-labs.com>, 
+	"g.white@cablelabs.com" <g.white@cablelabs.com>, 
+	"ingemar.s.johansson@ericsson.com" <ingemar.s.johansson@ericsson.com>, 
+	"mirja.kuehlewind@ericsson.com" <mirja.kuehlewind@ericsson.com>, "cheshire@apple.com" <cheshire@apple.com>, 
+	"rs.ietf@gmx.at" <rs.ietf@gmx.at>, 
+	"Jason_Livingood@comcast.com" <Jason_Livingood@comcast.com>, "vidhi_goel@apple.com" <vidhi_goel@apple.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jakub Kicinski <kuba@kernel.org>
+I tested this series of patches v6 with virtio-net regression tests,
+everything works fine.
 
-Introduce support for standardized PHY statistics reporting in ethtool
-by extending the PHYLIB framework. Add the functions
-phy_ethtool_get_phy_stats() and phy_ethtool_get_link_ext_stats() to
-provide a consistent interface for retrieving PHY-level and
-link-specific statistics. These functions are used within the ethtool
-implementation to avoid direct access to the phy_device structure
-outside of the PHYLIB framework.
+Tested-by: Lei Yang <leiyang@redhat.com>
 
-A new structure, ethtool_phy_stats, is introduced to standardize PHY
-statistics such as packet counts, byte counts, and error counters.
-Drivers are updated to include callbacks for retrieving PHY and
-link-specific statistics, ensuring values are explicitly set only for
-supported fields, initialized with ETHTOOL_STAT_NOT_SET to avoid
-ambiguity.
-
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
-changes v7:
-- add missing "__" prefixes in the documentation
-changes v6:
-- correct documentation, return for void functions.
-- move phy_ethtool_get_phy_stats() and phy_ethtool_get_link_ext_stats()
-  to phylib_stubs
-changes v4:
-- fix "make htmldocs" warnings
-changes v3:
-- fix ./scripts/kernel-doc warning
-- move phy_ethtool_get_phy_stats() and phy_ethtool_get_link_ext_stats()
-  to the headers.
-- - s/ETHTOOL_A_PLCA_HEADER/ETHTOOL_A_STATS_HEADER
-changes v2:
-- move 'struct ethtool_phy_stats' to this patch
-- add comments
----
- drivers/net/phy/phy.c        | 43 ++++++++++++++++++++++++++++++++++++
- drivers/net/phy/phy_device.c |  2 ++
- include/linux/ethtool.h      | 23 +++++++++++++++++++
- include/linux/phy.h          | 36 ++++++++++++++++++++++++++++++
- include/linux/phylib_stubs.h | 42 +++++++++++++++++++++++++++++++++++
- net/ethtool/linkstate.c      |  5 +++--
- net/ethtool/stats.c          | 18 +++++++++++++++
- 7 files changed, 167 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index e4b04cdaa995..38bbe01a6073 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -615,6 +615,49 @@ int phy_ethtool_get_stats(struct phy_device *phydev,
- }
- EXPORT_SYMBOL(phy_ethtool_get_stats);
- 
-+/**
-+ * __phy_ethtool_get_phy_stats - Retrieve standardized PHY statistics
-+ * @phydev: Pointer to the PHY device
-+ * @phy_stats: Pointer to ethtool_eth_phy_stats structure
-+ * @phydev_stats: Pointer to ethtool_phy_stats structure
-+ *
-+ * Fetches PHY statistics using a kernel-defined interface for consistent
-+ * diagnostics. Unlike phy_ethtool_get_stats(), which allows custom stats,
-+ * this function enforces a standardized format for better interoperability.
-+ */
-+void __phy_ethtool_get_phy_stats(struct phy_device *phydev,
-+				 struct ethtool_eth_phy_stats *phy_stats,
-+				 struct ethtool_phy_stats *phydev_stats)
-+{
-+	if (!phydev->drv || !phydev->drv->get_phy_stats)
-+		return;
-+
-+	mutex_lock(&phydev->lock);
-+	phydev->drv->get_phy_stats(phydev, phy_stats, phydev_stats);
-+	mutex_unlock(&phydev->lock);
-+}
-+
-+/**
-+ * __phy_ethtool_get_link_ext_stats - Retrieve extended link statistics for a PHY
-+ * @phydev: Pointer to the PHY device
-+ * @link_stats: Pointer to the structure to store extended link statistics
-+ *
-+ * Populates the ethtool_link_ext_stats structure with link down event counts
-+ * and additional driver-specific link statistics, if available.
-+ */
-+void __phy_ethtool_get_link_ext_stats(struct phy_device *phydev,
-+				      struct ethtool_link_ext_stats *link_stats)
-+{
-+	link_stats->link_down_events = READ_ONCE(phydev->link_down_events);
-+
-+	if (!phydev->drv || !phydev->drv->get_link_stats)
-+		return;
-+
-+	mutex_lock(&phydev->lock);
-+	phydev->drv->get_link_stats(phydev, link_stats);
-+	mutex_unlock(&phydev->lock);
-+}
-+
- /**
-  * phy_ethtool_get_plca_cfg - Get PLCA RS configuration
-  * @phydev: the phy_device struct
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index bdc997f59779..5b34d39d1d52 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3800,6 +3800,8 @@ static const struct ethtool_phy_ops phy_ethtool_phy_ops = {
- static const struct phylib_stubs __phylib_stubs = {
- 	.hwtstamp_get = __phy_hwtstamp_get,
- 	.hwtstamp_set = __phy_hwtstamp_set,
-+	.get_phy_stats = __phy_ethtool_get_phy_stats,
-+	.get_link_ext_stats = __phy_ethtool_get_link_ext_stats,
- };
- 
- static void phylib_register_stubs(void)
-diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
-index f711bfd75c4d..4bf70cfec826 100644
---- a/include/linux/ethtool.h
-+++ b/include/linux/ethtool.h
-@@ -412,6 +412,29 @@ struct ethtool_eth_phy_stats {
- 	);
- };
- 
-+/**
-+ * struct ethtool_phy_stats - PHY-level statistics counters
-+ * @rx_packets: Total successfully received frames
-+ * @rx_bytes: Total successfully received bytes
-+ * @rx_errors: Total received frames with errors (e.g., CRC errors)
-+ * @tx_packets: Total successfully transmitted frames
-+ * @tx_bytes: Total successfully transmitted bytes
-+ * @tx_errors: Total transmitted frames with errors
-+ *
-+ * This structure provides a standardized interface for reporting
-+ * PHY-level statistics counters. It is designed to expose statistics
-+ * commonly provided by PHYs but not explicitly defined in the IEEE
-+ * 802.3 standard.
-+ */
-+struct ethtool_phy_stats {
-+	u64 rx_packets;
-+	u64 rx_bytes;
-+	u64 rx_errors;
-+	u64 tx_packets;
-+	u64 tx_bytes;
-+	u64 tx_errors;
-+};
-+
- /* Basic IEEE 802.3 MAC Ctrl statistics (30.3.3.*), not otherwise exposed
-  * via a more targeted API.
-  */
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 5bc71d59910c..2fcaf96d3aed 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -1144,6 +1144,35 @@ struct phy_driver {
- 	int (*cable_test_get_status)(struct phy_device *dev, bool *finished);
- 
- 	/* Get statistics from the PHY using ethtool */
-+	/**
-+	 * @get_phy_stats: Retrieve PHY statistics.
-+	 * @dev: The PHY device for which the statistics are retrieved.
-+	 * @eth_stats: structure where Ethernet PHY stats will be stored.
-+	 * @stats: structure where additional PHY-specific stats will be stored.
-+	 *
-+	 * Retrieves the supported PHY statistics and populates the provided
-+	 * structures. The input structures are pre-initialized with
-+	 * `ETHTOOL_STAT_NOT_SET`, and the driver must only modify members
-+	 * corresponding to supported statistics. Unmodified members will remain
-+	 * set to `ETHTOOL_STAT_NOT_SET` and will not be returned to userspace.
-+	 */
-+	void (*get_phy_stats)(struct phy_device *dev,
-+			      struct ethtool_eth_phy_stats *eth_stats,
-+			      struct ethtool_phy_stats *stats);
-+
-+	/**
-+	 * @get_link_stats: Retrieve link statistics.
-+	 * @dev: The PHY device for which the statistics are retrieved.
-+	 * @link_stats: structure where link-specific stats will be stored.
-+	 *
-+	 * Retrieves link-related statistics for the given PHY device. The input
-+	 * structure is pre-initialized with `ETHTOOL_STAT_NOT_SET`, and the
-+	 * driver must only modify members corresponding to supported
-+	 * statistics. Unmodified members will remain set to
-+	 * `ETHTOOL_STAT_NOT_SET` and will not be returned to userspace.
-+	 */
-+	void (*get_link_stats)(struct phy_device *dev,
-+			       struct ethtool_link_ext_stats *link_stats);
- 	/** @get_sset_count: Number of statistic counters */
- 	int (*get_sset_count)(struct phy_device *dev);
- 	/** @get_strings: Names of the statistic counters */
-@@ -2123,6 +2152,13 @@ int phy_ethtool_get_strings(struct phy_device *phydev, u8 *data);
- int phy_ethtool_get_sset_count(struct phy_device *phydev);
- int phy_ethtool_get_stats(struct phy_device *phydev,
- 			  struct ethtool_stats *stats, u64 *data);
-+
-+void __phy_ethtool_get_phy_stats(struct phy_device *phydev,
-+			 struct ethtool_eth_phy_stats *phy_stats,
-+			 struct ethtool_phy_stats *phydev_stats);
-+void __phy_ethtool_get_link_ext_stats(struct phy_device *phydev,
-+				      struct ethtool_link_ext_stats *link_stats);
-+
- int phy_ethtool_get_plca_cfg(struct phy_device *phydev,
- 			     struct phy_plca_cfg *plca_cfg);
- int phy_ethtool_set_plca_cfg(struct phy_device *phydev,
-diff --git a/include/linux/phylib_stubs.h b/include/linux/phylib_stubs.h
-index 1279f48c8a70..9d2d6090c86d 100644
---- a/include/linux/phylib_stubs.h
-+++ b/include/linux/phylib_stubs.h
-@@ -5,6 +5,9 @@
- 
- #include <linux/rtnetlink.h>
- 
-+struct ethtool_eth_phy_stats;
-+struct ethtool_link_ext_stats;
-+struct ethtool_phy_stats;
- struct kernel_hwtstamp_config;
- struct netlink_ext_ack;
- struct phy_device;
-@@ -19,6 +22,11 @@ struct phylib_stubs {
- 	int (*hwtstamp_set)(struct phy_device *phydev,
- 			    struct kernel_hwtstamp_config *config,
- 			    struct netlink_ext_ack *extack);
-+	void (*get_phy_stats)(struct phy_device *phydev,
-+			      struct ethtool_eth_phy_stats *phy_stats,
-+			      struct ethtool_phy_stats *phydev_stats);
-+	void (*get_link_ext_stats)(struct phy_device *phydev,
-+				   struct ethtool_link_ext_stats *link_stats);
- };
- 
- static inline int phy_hwtstamp_get(struct phy_device *phydev,
-@@ -50,6 +58,29 @@ static inline int phy_hwtstamp_set(struct phy_device *phydev,
- 	return phylib_stubs->hwtstamp_set(phydev, config, extack);
- }
- 
-+static inline void phy_ethtool_get_phy_stats(struct phy_device *phydev,
-+					struct ethtool_eth_phy_stats *phy_stats,
-+					struct ethtool_phy_stats *phydev_stats)
-+{
-+	ASSERT_RTNL();
-+
-+	if (!phylib_stubs)
-+		return;
-+
-+	phylib_stubs->get_phy_stats(phydev, phy_stats, phydev_stats);
-+}
-+
-+static inline void phy_ethtool_get_link_ext_stats(struct phy_device *phydev,
-+				    struct ethtool_link_ext_stats *link_stats)
-+{
-+	ASSERT_RTNL();
-+
-+	if (!phylib_stubs)
-+		return;
-+
-+	phylib_stubs->get_link_ext_stats(phydev, link_stats);
-+}
-+
- #else
- 
- static inline int phy_hwtstamp_get(struct phy_device *phydev,
-@@ -65,4 +96,15 @@ static inline int phy_hwtstamp_set(struct phy_device *phydev,
- 	return -EOPNOTSUPP;
- }
- 
-+static inline void phy_ethtool_get_phy_stats(struct phy_device *phydev,
-+					struct ethtool_eth_phy_stats *phy_stats,
-+					struct ethtool_phy_stats *phydev_stats)
-+{
-+}
-+
-+static inline void phy_ethtool_get_link_ext_stats(struct phy_device *phydev,
-+				    struct ethtool_link_ext_stats *link_stats)
-+{
-+}
-+
- #endif
-diff --git a/net/ethtool/linkstate.c b/net/ethtool/linkstate.c
-index 459cfea7652d..af19e1bed303 100644
---- a/net/ethtool/linkstate.c
-+++ b/net/ethtool/linkstate.c
-@@ -3,6 +3,7 @@
- #include "netlink.h"
- #include "common.h"
- #include <linux/phy.h>
-+#include <linux/phylib_stubs.h>
- 
- struct linkstate_req_info {
- 	struct ethnl_req_info		base;
-@@ -135,8 +136,8 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
- 
- 	if (req_base->flags & ETHTOOL_FLAG_STATS) {
- 		if (phydev)
--			data->link_stats.link_down_events =
--				READ_ONCE(phydev->link_down_events);
-+			phy_ethtool_get_link_ext_stats(phydev,
-+						       &data->link_stats);
- 
- 		if (dev->ethtool_ops->get_link_ext_stats)
- 			dev->ethtool_ops->get_link_ext_stats(dev,
-diff --git a/net/ethtool/stats.c b/net/ethtool/stats.c
-index 912f0c4fff2f..f4d822c225db 100644
---- a/net/ethtool/stats.c
-+++ b/net/ethtool/stats.c
-@@ -1,5 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
-+#include <linux/phy.h>
-+#include <linux/phylib_stubs.h>
-+
- #include "netlink.h"
- #include "common.h"
- #include "bitset.h"
-@@ -20,6 +23,7 @@ struct stats_reply_data {
- 		struct ethtool_eth_mac_stats	mac_stats;
- 		struct ethtool_eth_ctrl_stats	ctrl_stats;
- 		struct ethtool_rmon_stats	rmon_stats;
-+		struct ethtool_phy_stats	phydev_stats;
- 	);
- 	const struct ethtool_rmon_hist_range	*rmon_ranges;
- };
-@@ -120,8 +124,15 @@ static int stats_prepare_data(const struct ethnl_req_info *req_base,
- 	struct stats_reply_data *data = STATS_REPDATA(reply_base);
- 	enum ethtool_mac_stats_src src = req_info->src;
- 	struct net_device *dev = reply_base->dev;
-+	struct nlattr **tb = info->attrs;
-+	struct phy_device *phydev;
- 	int ret;
- 
-+	phydev = ethnl_req_get_phydev(req_base, tb[ETHTOOL_A_STATS_HEADER],
-+				      info->extack);
-+	if (IS_ERR(phydev))
-+		return PTR_ERR(phydev);
-+
- 	ret = ethnl_ops_begin(dev);
- 	if (ret < 0)
- 		return ret;
-@@ -145,6 +156,13 @@ static int stats_prepare_data(const struct ethnl_req_info *req_base,
- 	data->ctrl_stats.src = src;
- 	data->rmon_stats.src = src;
- 
-+	if (test_bit(ETHTOOL_STATS_ETH_PHY, req_info->stat_mask) &&
-+	    src == ETHTOOL_MAC_STATS_SRC_AGGREGATE) {
-+		if (phydev)
-+			phy_ethtool_get_phy_stats(phydev, &data->phy_stats,
-+						  &data->phydev_stats);
-+	}
-+
- 	if (test_bit(ETHTOOL_STATS_ETH_PHY, req_info->stat_mask) &&
- 	    dev->ethtool_ops->get_eth_phy_stats)
- 		dev->ethtool_ops->get_eth_phy_stats(dev, &data->phy_stats);
--- 
-2.39.5
+On Wed, Jan 8, 2025 at 8:33=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com> =
+wrote:
+>
+> On Mon, Dec 30, 2024 at 09:50:59AM +0000, Chia-Yu Chang (Nokia) wrote:
+> > >From: Jason Wang <jasowang@redhat.com>
+> > >Sent: Monday, December 30, 2024 8:52 AM
+> > >To: Chia-Yu Chang (Nokia) <chia-yu.chang@nokia-bell-labs.com>
+> > >Cc: netdev@vger.kernel.org; dsahern@gmail.com; davem@davemloft.net; ed=
+umazet@google.com; dsahern@kernel.org; pabeni@redhat.com; joel.granados@ker=
+nel.org; kuba@kernel.org; andrew+netdev@lunn.ch; horms@kernel.org; pablo@ne=
+tfilter.org; kadlec@netfilter.org; netfilter-devel@vger.kernel.org; coretea=
+m@netfilter.org; shenjian15@huawei.com; salil.mehta@huawei.com; shaojijie@h=
+uawei.com; saeedm@nvidia.com; tariqt@nvidia.com; mst@redhat.com; xuanzhuo@l=
+inux.alibaba.com; eperezma@redhat.com; virtualization@lists.linux.dev; ij@k=
+ernel.org; ncardwell@google.com; Koen De Schepper (Nokia) <koen.de_schepper=
+@nokia-bell-labs.com>; g.white@cablelabs.com; ingemar.s.johansson@ericsson.=
+com; mirja.kuehlewind@ericsson.com; cheshire@apple.com; rs.ietf@gmx.at; Jas=
+on_Livingood@comcast.com; vidhi_goel@apple.com
+> > >Subject: Re: [PATCH v6 net-next 11/14] virtio_net: Accurate ECN flag i=
+n virtio_net_hdr
+> > >
+> > >[You don't often get email from jasowang@redhat.com. Learn why this is=
+ important at https://aka.ms/LearnAboutSenderIdentification ]
+> > >
+> > >CAUTION: This is an external email. Please be very careful when clicki=
+ng links or opening attachments. See the URL nok.it/ext for additional info=
+rmation.
+> > >
+> > >
+> > >
+> > >On Sat, Dec 28, 2024 at 3:13=E2=80=AFAM <chia-yu.chang@nokia-bell-labs=
+.com> wrote:
+> > >>
+> > >> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> > >>
+> > >> Unlike RFC 3168 ECN, accurate ECN uses the CWR flag as part of the A=
+CE
+> > >> field to count new packets with CE mark; however, it will be corrupt=
+ed
+> > >> by the RFC 3168 ECN-aware TSO. Therefore, fallback shall be applied =
+by
+> > >> seting NETIF_F_GSO_ACCECN to ensure that the CWR flag should not be
+> > >> changed within a super-skb.
+> > >>
+> > >> To apply the aforementieond new AccECN GSO for virtio, new featue bi=
+ts
+> > >> for host and guest are added for feature negotiation between driver
+> > >> and device. And the translation of Accurate ECN GSO flag between
+> > >> virtio_net_hdr and skb header for NETIF_F_GSO_ACCECN is also added t=
+o
+> > >> avoid CWR flag corruption due to RFC3168 ECN TSO.
+> > >>
+> > >> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> > >> ---
+> > >>  drivers/net/virtio_net.c        | 14 +++++++++++---
+> > >>  drivers/vdpa/pds/debugfs.c      |  6 ++++++
+> > >>  include/linux/virtio_net.h      | 16 ++++++++++------
+> > >>  include/uapi/linux/virtio_net.h |  5 +++++
+> > >>  4 files changed, 32 insertions(+), 9 deletions(-)
+> > >
+> > >Is there a link to the spec patch? It needs to be accepted first.
+> > >
+> > >Thanks
+> >
+> > Hi Jason,
+> >
+> > Thanks for the feedback, I found the virtio-spec in github: https://git=
+hub.com/oasis-tcs/virtio-spec but not able to find the procedure to propose=
+.
+> > Could you help to share the procedure to propose spec patch? Thanks.
+>
+>
+> You post it on virtio-comment for discussion. Github issues are then used
+> for voting and to track acceptance.
+> https://github.com/oasis-tcs/virtio-spec/blob/master/README.md#use-of-git=
+hub-issues
+>
+>
+> > --
+> > Chia-Yu
+>
+>
 
