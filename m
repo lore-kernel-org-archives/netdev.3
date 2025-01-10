@@ -1,189 +1,168 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A622B20CCE9
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C077204C11;
+	Fri, 10 Jan 2025 11:32:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736508448; cv=none; b=narwFP75JkFHiXmE5zMrYwfsXRvKZTmHAAg4lOG5zN6wmxvf5PfBhMtf+UOtTcK8hCjAz1LnC2uiVlCWbOn4jm6MjD8sX7XpFdakAMPvueFSBhOL6hAh1c9qbuRSqCyd9ZVly8Y0rxIFGubwC3iUgWkjCt4ZtXERHEE/DShupKw=
+	t=1736508761; cv=none; b=Tg2bpyy1YZAViULVVxVQct5lND31JpnaYsnXxKSRsepqj+Hn8VyTPTZhjit0t7DBSlQpoiWaVOp6n6DKpF4l1goOcu653k6DVc94IERUiv1obfkb4Qf6mGC9ZnDvCVIII+E+f5h19FX3sND1rL5csa3FHFQ5RT0MPSh5LhtIpOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736508448; c=relaxed/simple;
-	bh=h210aFJ8XtOBWwum2XpoLB0dXkBYCGJOjOpeqWcShe8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jIaJynHT6yHGdagp8/vVL3LZSMAFercF+WMAI+Xh1wFbrXs04y64DDr0hIXLj3RlWKqzDWywFZy6LHxV2KCT2Rlofe5PxzvZKG/5Se+cyQ+NrJA7/c9LLuc+Iee2UHW9L/oNn3dQr9HnrM0uTdzfAo+5TjnrKhGSns+fGRGwwsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tWDAh-00058M-8Y
-	for netdev@vger.kernel.org; Fri, 10 Jan 2025 12:27:23 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tWDAf-0009jX-0Z
-	for netdev@vger.kernel.org;
-	Fri, 10 Jan 2025 12:27:21 +0100
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id D6EAF3A4628
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:20 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 774993A45AE;
-	Fri, 10 Jan 2025 11:27:15 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 618ddf05;
-	Fri, 10 Jan 2025 11:27:14 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Jimmy Assarsson <extja@kvaser.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 16/18] can: kvaser_usb: Add support for CAN_CTRLMODE_BERR_REPORTING
-Date: Fri, 10 Jan 2025 12:04:24 +0100
-Message-ID: <20250110112712.3214173-17-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250110112712.3214173-1-mkl@pengutronix.de>
-References: <20250110112712.3214173-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1736508761; c=relaxed/simple;
+	bh=yLRKiodCpUEkNU747JZ4PBw6mzhLuN0TGC+xkk8hayA=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=CuUDNak/uz2zmvJss1bcOiVUe6XN9+NguzugrXpRns4nOvyhoGkUFkBiEFEeltSZ121VutoXR8NR0l0XJ/mObt3pFUaj324Oi57bLfaGu5kiHPI4rZyl5I/o3a9ulTwNSZ9cNWQ8d1DQP3kcEfl/fv2PsVkASWOtZfBs9Fv9PuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G/BoXch+; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G/BoXch+"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-467a3f1e667so11882451cf.0;
+        Fri, 10 Jan 2025 03:32:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736508758; x=1737113558; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bj5hzhLDurnV0Uikx72ybZP+UMepormLzXbaIUCT51w=;
+        b=G/BoXch+vVFX8MZnyP7GJkHDIalM6oxvyavc530/8ycG9cp/9w0g69yOFkhR0T1loe
+         u5H/4XYUxhISbrn6syhXx/jRCqut162mN3JLjBCQ0tr/nV12M5uoJhFzZ7QfnOFo8c3a
+         E4w5jINEYKrYzGKVgIQQYp0fO24aocSoi/WIv2YXcTuE/N4Toblq8XsRL+gVIWEfeqkl
+         B0UJaUpuXOBE43vcol6Drd1NvXGC4iNpVZnYSja/r+dsWpPI7pUSy8kkxOYmQ6q/TDfM
+         LXmejD434RCbvQFXSYgE7egD72ngSfZ0YXV7He1mDboZ+/KRbK5+krEMvpluw98yjaBu
+         pZEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736508758; x=1737113558;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=bj5hzhLDurnV0Uikx72ybZP+UMepormLzXbaIUCT51w=;
+        b=rxs7INnfWOXebl7A8cJ2lVR93nPmRPK6wlZKEEYs9J0QsXh6mHyv/lWZS36ZwD1Gr3
+         NKbMkV+RCCTQcOClrCA4vR2hhsqhdJD/eqNfMd1LKegSZ9pm5HrriXzr7+lVxni/FqQr
+         HbgsGx8GIMuH42aOF2q4U148M5J6JCh/a1MFUpXK/yah5hhUvMT2ARXwjBasS0v9Qm/H
+         qbwodPEGC+JXfiVtD/i6WKCNe0jJ3/ymV+EarSdDuix4nWkeJzGwVnbiPQGV7VxlAIyc
+         kt91QfuRPmoJJpDa4IdgumCbDEuIhmRze7HXS4bMFC/Jb4dtrP41m60dQcQT9beI92eJ
+         2JjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU1Sin9hcZIK9GoBwPmfOCP7uDDc5BIW7/ObfIrEG2fXADxjH2BKrDkuh/2QFj/hozbjaSeQZJz3p4BicJI@vger.kernel.org, AJvYcCUFwprI74G/voE34S12ym6M+LWjKgNYRQqtJfBCuyyHDfbvwcZy68wlRiJbUj67p9pWm9U=@vger.kernel.org, AJvYcCV4XiWoGCBnEt/Xa3DcrUJp2GE7CDSrFyL6WEe1dwiQHTcy6TKMuQu8qEoIb8jLgAs31nv62YhezBtaICnHM+xN@vger.kernel.org, AJvYcCWn9X1/7Le1qvgFxwdaM4ov3GgdwQbNvgx6K1aAf3Tk12fb5FwUzeaHxSLtLMVJLAlFIMssyXyA@vger.kernel.org, AJvYcCX4jcLigC2qgJaNhcYMAoisKLAkuoRMfv2fPoMMojkajR4bQIEyIXzJkmq37Y62noC01MiKBmY4/Hps@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywp5Xey5A11wS/kABJIe//HDJvaGkEaHmHZim9wG1ywUixZpWQ/
+	KJRZmbMkbIy1pZW+utZ4eRVXIwwvbyNxpcSfcd05mvb2PkLNkwWs
+X-Gm-Gg: ASbGncstO/rogbWV20Lq+wogBlF5TrQvmly3YoP6ewTxBOXDMJsh9IQie/e/5QepWK/
+	zRoeYDVEpdOLdK94qdqsAYvU4PTdBTh7AHu4x+wBLDbSvLJXAXUUYZpUIqpTLmRGxoe+i1tbyJ6
+	qryD6KpxApVFU4lixVqSJNqDR+ZCvKxe4j15hQk++3XzRpi77BKwkqDGewJVS3R/V6Xd1/0DrIE
+	De4AvN4IxevzPeLqZm8ygrv538miaFrwtMQrsvqZjte59wCpPbdpQR0HGZFx5epjNPPOcFyhDpy
+	2+mEeIeevjK0Pb5LR1rwmJFpDwri
+X-Google-Smtp-Source: AGHT+IEAeRPcXEPZaY0ZiqE+FHD3WXuaK99GAFn6AMFjwlATA6fP06zaeLna0c3A/VPZLWprZOxVFQ==
+X-Received: by 2002:a05:622a:1196:b0:468:fb3c:5e75 with SMTP id d75a77b69052e-46c710e13c5mr151993961cf.38.1736508758327;
+        Fri, 10 Jan 2025 03:32:38 -0800 (PST)
+Received: from localhost (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46c873cd1b0sm8463741cf.49.2025.01.10.03.32.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2025 03:32:37 -0800 (PST)
+Date: Fri, 10 Jan 2025 06:32:37 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Jason Wang <jasowang@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ Shuah Khan <shuah@kernel.org>, 
+ linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, 
+ kvm@vger.kernel.org, 
+ virtualization@lists.linux-foundation.org, 
+ linux-kselftest@vger.kernel.org, 
+ Yuri Benditovich <yuri.benditovich@daynix.com>, 
+ Andrew Melnychenko <andrew@daynix.com>, 
+ Stephen Hemminger <stephen@networkplumber.org>, 
+ gur.stavi@huawei.com, 
+ devel@daynix.com
+Message-ID: <678105555a23f_3fe20a29440@willemb.c.googlers.com.notmuch>
+In-Reply-To: <3a5001b5-9a07-4dfd-8cec-1e5f7180b88a@daynix.com>
+References: <20250109-tun-v2-0-388d7d5a287a@daynix.com>
+ <20250109-tun-v2-2-388d7d5a287a@daynix.com>
+ <20250109023056-mutt-send-email-mst@kernel.org>
+ <571a2d61-5fbe-4e49-b4d1-6bf0c7604a57@daynix.com>
+ <677fc517b7b6e_362bc12945@willemb.c.googlers.com.notmuch>
+ <5e193a94-8f5a-4a2a-b4c4-3206c21c0b63@daynix.com>
+ <20250110033306-mutt-send-email-mst@kernel.org>
+ <3a5001b5-9a07-4dfd-8cec-1e5f7180b88a@daynix.com>
+Subject: Re: [PATCH v2 2/3] tun: Pad virtio header with zero
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-From: Jimmy Assarsson <extja@kvaser.com>
+Akihiko Odaki wrote:
+> On 2025/01/10 17:33, Michael S. Tsirkin wrote:
+> > On Fri, Jan 10, 2025 at 01:38:06PM +0900, Akihiko Odaki wrote:
+> >> On 2025/01/09 21:46, Willem de Bruijn wrote:
+> >>> Akihiko Odaki wrote:
+> >>>> On 2025/01/09 16:31, Michael S. Tsirkin wrote:
+> >>>>> On Thu, Jan 09, 2025 at 03:58:44PM +0900, Akihiko Odaki wrote:
+> >>>>>> tun used to simply advance iov_iter when it needs to pad virtio header,
+> >>>>>> which leaves the garbage in the buffer as is. This is especially
+> >>>>>> problematic when tun starts to allow enabling the hash reporting
+> >>>>>> feature; even if the feature is enabled, the packet may lack a hash
+> >>>>>> value and may contain a hole in the virtio header because the packet
+> >>>>>> arrived before the feature gets enabled or does not contain the
+> >>>>>> header fields to be hashed. If the hole is not filled with zero, it is
+> >>>>>> impossible to tell if the packet lacks a hash value.
+> >>>
+> >>> Zero is a valid hash value, so cannot be used as an indication that
+> >>> hashing is inactive.
+> >>
+> >> Zeroing will initialize the hash_report field to
+> >> VIRTIO_NET_HASH_REPORT_NONE, which tells it does not have a hash value.
+> >>
+> >>>
+> >>>>>> In theory, a user of tun can fill the buffer with zero before calling
+> >>>>>> read() to avoid such a problem, but leaving the garbage in the buffer is
+> >>>>>> awkward anyway so fill the buffer in tun.
+> >>>>>>
+> >>>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> >>>>>
+> >>>>> But if the user did it, you have just overwritten his value,
+> >>>>> did you not?
+> >>>>
+> >>>> Yes. but that means the user expects some part of buffer is not filled
+> >>>> after read() or recvmsg(). I'm a bit worried that not filling the buffer
+> >>>> may break assumptions others (especially the filesystem and socket
+> >>>> infrastructures in the kernel) may have.
+> >>>
+> >>> If this is user memory that is ignored by the kernel, just reflected
+> >>> back, then there is no need in general to zero it. There are many such
+> >>> instances, also in msg_control.
+> >>
+> >> More specifically, is there any instance of recvmsg() implementation which
+> >> returns N and does not fill the complete N bytes of msg_iter?
+> > 
+> > The one in tun. It was a silly idea but it has been here for years now.
+> 
+> Except tun. If there is such an example of recvmsg() implementation and 
+> it is not accidental and people have agreed to keep it functioning, we 
+> can confidently say this construct is safe without fearing pushback from 
+> people maintaining filesystem/networking infrastructure. Ultimately I 
+> want those people decide if this can be supported for the future or not.
 
-Add support for CAN_CTRLMODE_BERR_REPORTING,
-allowing Bus Error Reporting to be enabled or disabled.
-Previously, Bus Error Reporting was always active.
+It seems preferable to write a value.
 
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://patch.msgid.link/20241230142645.128244-2-extja@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- .../net/can/usb/kvaser_usb/kvaser_usb_core.c  |  3 +-
- .../net/can/usb/kvaser_usb/kvaser_usb_hydra.c | 29 ++++++++++---------
- .../net/can/usb/kvaser_usb/kvaser_usb_leaf.c  | 13 +++++----
- 3 files changed, 26 insertions(+), 19 deletions(-)
+Userspace should have not assumption that whatever it writes there
+will be reflected unmodified. That said, that is the tiny risk of
+changing this in established code.
 
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-index 7d12776ab63e..dcb0bcbe0565 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -818,7 +818,8 @@ static int kvaser_usb_init_one(struct kvaser_usb *dev, int channel)
- 	init_completion(&priv->stop_comp);
- 	init_completion(&priv->flush_comp);
- 	init_completion(&priv->get_busparams_comp);
--	priv->can.ctrlmode_supported = CAN_CTRLMODE_CC_LEN8_DLC;
-+	priv->can.ctrlmode_supported = CAN_CTRLMODE_CC_LEN8_DLC |
-+				       CAN_CTRLMODE_BERR_REPORTING;
- 
- 	priv->dev = dev;
- 	priv->netdev = netdev;
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
-index 5ec8b300bebf..8e88b5917796 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
-@@ -1084,8 +1084,8 @@ kvaser_usb_hydra_error_frame(struct kvaser_usb_net_priv *priv,
- {
- 	struct net_device *netdev = priv->netdev;
- 	struct net_device_stats *stats = &netdev->stats;
--	struct can_frame *cf;
--	struct sk_buff *skb;
-+	struct can_frame *cf = NULL;
-+	struct sk_buff *skb = NULL;
- 	struct can_berr_counter bec;
- 	enum can_state new_state, old_state;
- 	u8 bus_status;
-@@ -1101,21 +1101,24 @@ kvaser_usb_hydra_error_frame(struct kvaser_usb_net_priv *priv,
- 	kvaser_usb_hydra_bus_status_to_can_state(priv, bus_status, &bec,
- 						 &new_state);
- 
--	skb = alloc_can_err_skb(netdev, &cf);
-+	if (priv->can.ctrlmode & CAN_CTRLMODE_BERR_REPORTING)
-+		skb = alloc_can_err_skb(netdev, &cf);
- 	if (new_state != old_state)
- 		kvaser_usb_hydra_change_state(priv, &bec, cf, new_state);
- 
--	if (skb) {
--		struct skb_shared_hwtstamps *shhwtstamps = skb_hwtstamps(skb);
-+	if (priv->can.ctrlmode & CAN_CTRLMODE_BERR_REPORTING) {
-+		if (skb) {
-+			struct skb_shared_hwtstamps *shhwtstamps = skb_hwtstamps(skb);
- 
--		shhwtstamps->hwtstamp = hwtstamp;
--		cf->can_id |= CAN_ERR_BUSERROR | CAN_ERR_CNT;
--		cf->data[6] = bec.txerr;
--		cf->data[7] = bec.rxerr;
--		netif_rx(skb);
--	} else {
--		stats->rx_dropped++;
--		netdev_warn(netdev, "No memory left for err_skb\n");
-+			shhwtstamps->hwtstamp = hwtstamp;
-+			cf->can_id |= CAN_ERR_BUSERROR | CAN_ERR_CNT;
-+			cf->data[6] = bec.txerr;
-+			cf->data[7] = bec.rxerr;
-+			netif_rx(skb);
-+		} else {
-+			stats->rx_dropped++;
-+			netdev_warn(netdev, "No memory left for err_skb\n");
-+		}
- 	}
- 
- 	priv->bec.txerr = bec.txerr;
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
-index 0491b4a6d8e8..6a45adcc45bd 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
-@@ -1120,8 +1120,8 @@ kvaser_usb_leaf_rx_error_update_can_state(struct kvaser_usb_net_priv *priv,
- static void kvaser_usb_leaf_rx_error(const struct kvaser_usb *dev,
- 				     const struct kvaser_usb_err_summary *es)
- {
--	struct can_frame *cf;
--	struct sk_buff *skb;
-+	struct can_frame *cf = NULL;
-+	struct sk_buff *skb = NULL;
- 	struct net_device_stats *stats;
- 	struct kvaser_usb_net_priv *priv;
- 	struct kvaser_usb_net_leaf_priv *leaf;
-@@ -1142,7 +1142,8 @@ static void kvaser_usb_leaf_rx_error(const struct kvaser_usb *dev,
- 		return;
- 
- 	old_state = priv->can.state;
--	skb = alloc_can_err_skb(priv->netdev, &cf);
-+	if (priv->can.ctrlmode & CAN_CTRLMODE_BERR_REPORTING)
-+		skb = alloc_can_err_skb(priv->netdev, &cf);
- 	kvaser_usb_leaf_rx_error_update_can_state(priv, es, cf);
- 	new_state = priv->can.state;
- 
-@@ -1176,8 +1177,10 @@ static void kvaser_usb_leaf_rx_error(const struct kvaser_usb *dev,
- 	}
- 
- 	if (!skb) {
--		stats->rx_dropped++;
--		netdev_warn(priv->netdev, "No memory left for err_skb\n");
-+		if (priv->can.ctrlmode & CAN_CTRLMODE_BERR_REPORTING) {
-+			stats->rx_dropped++;
-+			netdev_warn(priv->netdev, "No memory left for err_skb\n");
-+		}
- 		return;
- 	}
- 
--- 
-2.45.2
+If it worked without issue so far, without hashing, then probably the
+change should only go to net-next.
 
-
+As said, there are examples in msg_control. I don't immediately have
+an example where this is the case in msg_data today. A search for
+iov_iter_advance might show something.
