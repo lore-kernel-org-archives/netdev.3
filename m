@@ -1,225 +1,318 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A37720FA9B;
-	Fri, 10 Jan 2025 14:55:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7A3211295;
+	Fri, 10 Jan 2025 15:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736520954; cv=none; b=R81guXnRjD1Ui/6xBCCKD5JTOoDnBkXZsV7lCxXExqWgL+5fTc5IYTCyXC4A/KMkJDfc/AwO2+9C9r6iRDtW4xMS9mUitMj4XW39VUm9HaK2iXBL/v+SwHPXhg0QvEvO3FnOYipvTqbTL97m1fL03iLuj+eD4rkbuhBkaYE9q6c=
+	t=1736521830; cv=none; b=I8Fb+O9QxdHThBKt65o+DcX74buZZR9mz/34NQHYN2Eik2tKzbD8kNzfLEl4voXcHf1SU4dMrWFBdbB//H/oSvx2mzzTeCEQCJ63qgs2+uRxOEb995Ng8SvBeugbQWNibnQaglE5mRsx3U7tX4VmdLKA2W6nzRZGEJ33wQaZ02g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736520954; c=relaxed/simple;
-	bh=/rN0uxDl8ntpf6peWuVzwl3ZQmxwGFpSx38ykTVK/8Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RB+9dWLCytUjOVKYxZG7C14ig+XxXewOBP9pozowATUN9ufcKKCwOYTFKUijBtrNTsaBKz8FfXPlHMq39yp8Llu7Ons5NDqJ/6wVRDiStcW7Ct2HD5DQCIXTxZ9agwBKC88xz6/f/AqvUbEXVwdmiHV2Of9XqxTgiU9fmieun4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sHJqOdmc; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1736521830; c=relaxed/simple;
+	bh=kBtl7uT8CS0A/3FQfgqRqLKLLIgEoRypHpe0pFUO/Ig=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=j29xY5Xq1bnRuso0GOEpCL56B0Iqlh6W1Rh8zAxife/H3ifoZPAfx2vSp0Pfc0rIsTvJgAAti5fUdNTALpkJma1ux3jc3RDFvLvbrJVY+mTq/d0oih9ZeF9/gPZ3GWERY+UOBY4LcdeRGmmJ8oMdc1vAKIyc5dWPxTHfAFZzP78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=frorn55t; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sHJqOdmc"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50AE6K88025765;
-	Fri, 10 Jan 2025 14:54:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=i+LOJ+
-	gombIgGwG5VFHwn8O9GEmrVpqWrhBqWRMHkUM=; b=sHJqOdmcdSdrpGd8AuIzGY
-	MFrQCvllj4hEkrUVomjNdrMT+xBN2JKilvHI3xqNhmNaTSXZrv2Jf/67zrtxlO17
-	/9IfOB7Q2TyzoS/4o7fSV1L4xAoMF+O43A4xcKVf6El/c6OW5qEuc98VJ+JAZozR
-	20BggKe62S5vv29Wl8tneuLygy/S6ZqbDegEI8afL1Z39BLErRcxlLTVHKJ2+djk
-	k5c/9Cf1n0XRid31LU5DbyZkSsnpJt+FgVo/6dJ0FkR/v6zbM/OU96ZfyBf8jmqt
-	QdDkDaoeAKjdCQsrG83rR169iVZ8mhAIjlEHZJ+BlCRMgCvsNGPd3MddN8V6xgfQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 443515078v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 14:54:52 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50AEspJG031187;
-	Fri, 10 Jan 2025 14:54:51 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 443515078q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 14:54:51 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50ACiCwC003614;
-	Fri, 10 Jan 2025 14:54:50 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yfatjww2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 14:54:50 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50AEsnjp64291144
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jan 2025 14:54:50 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD0CD58059;
-	Fri, 10 Jan 2025 14:54:49 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 04AB158043;
-	Fri, 10 Jan 2025 14:54:47 +0000 (GMT)
-Received: from [9.61.139.65] (unknown [9.61.139.65])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 10 Jan 2025 14:54:46 +0000 (GMT)
-Message-ID: <81567190-a683-4542-a530-0fb419f5f9be@linux.ibm.com>
-Date: Fri, 10 Jan 2025 08:54:46 -0600
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="frorn55t"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43618283dedso21542605e9.3;
+        Fri, 10 Jan 2025 07:10:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736521827; x=1737126627; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rrr2KuNOMWQbGCuFChJzePeH9IgtGR4XUrcIYviFjaQ=;
+        b=frorn55t821mxulim4HVNMnzej2mfs20YYDgZg97RWOEQccsP4HiaMBxfhhiwABs0l
+         9sHtH0A5JIQXu3Ks6MZbJvAHnh+IbHATELsPqkrPFBVf2frebglSdVdI7mjuS0IFneaD
+         BW3eD/3+nlNnSY6npg3PwT92t4cjlkkGo20l2tMTDjtRIHcnd+TwNH5/s2RLghfPc48S
+         p81h+KmxvdR29PzRaOyLysn+7W7izmofA0DbQHeZNeDbJNv5guixidlKAawYRANN3aI3
+         jti/eqX5QcByr02ouHeZpxn2TsCXyPrFt9KdEuumiKPxqWIgTNxrUvcLcetQCsJrYcz8
+         eoSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736521827; x=1737126627;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rrr2KuNOMWQbGCuFChJzePeH9IgtGR4XUrcIYviFjaQ=;
+        b=EmgyTHavBjBsMJY2VYL13EDeK13hX2hvnzARBojPl8AznCDh8tMUIGHfmOmlRJC8xg
+         crpgCjnpCQWMnr6/pXoum2oQQ40vWeBVser6WWgXZlfowunrxmFnKEJ/m/tIT8XCq5Ta
+         AXELOHm4q+OcvSrhSjeZzrAjTsO5mX4XhD48TeBFOYAG6Z6OfDkaGteB3EVOWXnFz3NO
+         nxZRKEwHeBq0q+50AWHFCOy6Daz8Zfd7w/DQSRcz6G6va94dJmQzpo9bYPkKkt7o+hdf
+         QakormGy4kFSNNgUZosV7DMGMvMHlNnEf2ZsgmMFwUKYZAfPcTCY07OB0UtrYCIjXlt9
+         eFrg==
+X-Forwarded-Encrypted: i=1; AJvYcCWgPInbn4WBjrTLXH7WawKVpvWgFVcOt1dPwtpcpvJ04Su2h55Uv3y+pfp4/+91n+KYEgSRgQ4pzznFY0Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwazwMyma4BLVkIDlEs0JGsc1CuLEcL9jB20SXKERYmGCvYDxev
+	+IR85Xw7MdKWGR9Cqt9O9TxotaNzyKbYKOiMnp72Yuuf0DhqAQn0
+X-Gm-Gg: ASbGncu7ZzgT5QLtflh1iunrJI/OyPQD0z2kMx3OfMcKkNXIl7UDe/xwJOcjX1c15/A
+	vW4jRsW/u0lJ3lIG8ZzYMJZ1gwDy8QW840A461wIQQNDDEUZQzGW0oSRiw4vgLTzLXdZnXdahDS
+	EYjY2D6phopy/a68JhuJwZ5kPY5gnAz+DaO1CPns+8Qvt+5tA1Be//LzI8xoDa/fqK/YSpm9DZJ
+	Cso/70dwB4FMe/jx4Cdng08yidW1GkApuV/CqFyETeSyfSmV+DJLU9ZqIQ=
+X-Google-Smtp-Source: AGHT+IFaXp/cN47vzxc7btkObg72jSd/KMKmUoEBpTJQApo14I1jarTeFXpRHAn10na2lhyS9nQ7xw==
+X-Received: by 2002:a05:600c:5117:b0:434:fe62:28c1 with SMTP id 5b1f17b1804b1-436e26cfe5bmr103411715e9.18.1736521826434;
+        Fri, 10 Jan 2025 07:10:26 -0800 (PST)
+Received: from [127.0.1.1] ([2a00:79c0:6a1:e700:303:6c5b:4b07:6715])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2ddcb5bsm90931235e9.23.2025.01.10.07.10.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2025 07:10:25 -0800 (PST)
+From: Dimitri Fedrau <dima.fedrau@gmail.com>
+Date: Fri, 10 Jan 2025 16:10:04 +0100
+Subject: [PATCH] net: phy: marvell-88q2xxx: Add support for PHY LEDs on
+ 88q2xxx
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?B?UmU6IOWbnuimhjog5Zue6KaGOiBbUEFUQ0ggdjIgMDUvMTBdIEFSTTog?=
- =?UTF-8?Q?dts=3A_aspeed=3A_system1=3A_Add_RGMII_support?=
-To: Andrew Lunn <andrew@lunn.ch>, Jacky Chou <jacky_chou@aspeedtech.com>
-Cc: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-        "andrew@codeconstruct.com.au" <andrew@codeconstruct.com.au>,
-        "conor+dt@kernel.org" <conor+dt@kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "eajames@linux.ibm.com" <eajames@linux.ibm.com>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "joel@jms.id.au"
- <joel@jms.id.au>,
-        "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
-        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "minyard@acm.org" <minyard@acm.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "openipmi-developer@lists.sourceforge.net"
- <openipmi-developer@lists.sourceforge.net>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "ratbert@faraday-tech.com" <ratbert@faraday-tech.com>,
-        "robh@kernel.org" <robh@kernel.org>
-References: <SEYPR06MB5134CC0EBA73420A4B394A009D122@SEYPR06MB5134.apcprd06.prod.outlook.com>
- <0c42bbd8-c09d-407b-8400-d69a82f7b248@lunn.ch>
- <b2aec97b-63bc-44ed-9f6b-5052896bf350@linux.ibm.com>
- <59116067-0caa-4666-b8dc-9b3125a37e6f@lunn.ch>
- <SEYPR06MB51344BA59830265A083469489D132@SEYPR06MB5134.apcprd06.prod.outlook.com>
- <8042c67c-04d3-41c0-9e88-8ce99839f70b@lunn.ch>
- <c0b653ea-3fe0-4bdb-9681-bf4e3ef1364a@linux.ibm.com>
- <c05c0476-c8bd-42f4-81da-7fe96e8e503b@lunn.ch>
- <SEYPR06MB5134A63DBE28AA1305967A0C9D1C2@SEYPR06MB5134.apcprd06.prod.outlook.com>
- <9fbc6f4c-7263-4783-8d41-ac2abe27ba95@lunn.ch>
-Content-Language: en-US
-From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <9fbc6f4c-7263-4783-8d41-ac2abe27ba95@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: yBxRhoVKtROkPwpLrEH_vSrRXZ8-RPmL
-X-Proofpoint-ORIG-GUID: sRq5wnscmLN25EJIJ55u5_9qYeOUvOt6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- malwarescore=0 suspectscore=0 priorityscore=1501 bulkscore=0 phishscore=0
- spamscore=0 clxscore=1015 mlxlogscore=999 lowpriorityscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501100114
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250110-marvell-88q2xxx-leds-v1-1-22e7734941c2@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAEs4gWcC/x3MSQqAMAxA0atI1gZsnL2KuKgaNVCnFkpBvLvF5
+ Vv8/4BjK+ygSx6w7MXJeUSoNIFp08fKKHM0UEaFIlK4a+vZGGyam0IIaHh2WLW6yPJ6LFVZQ0w
+ vy4uEf9sP7/sBxw9z42YAAAA=
+X-Change-ID: 20241221-marvell-88q2xxx-leds-69a4037b5157
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ =?utf-8?q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>, 
+ Gregor Herburger <gregor.herburger@ew.tq-group.com>, 
+ Stefan Eichenberger <eichest@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dimitri Fedrau <dima.fedrau@gmail.com>
+X-Mailer: b4 0.14.2
 
-Hello Andrew & Jacky,
+Marvell 88Q2XXX devices support up to two configurable Light Emitting
+Diode (LED). Add minimal LED controller driver supporting the most common
+uses with the 'netdev' trigger.
 
-On 1/10/25 08:04, Andrew Lunn wrote:
->> Agree. You are right. This part is used to create a gated clock.
->> We will configure these RGMII delay in bootloader like U-boot.
->> Therefore, here does not configure delay again.
->> Because AST2600 MAC1/2 RGMII delay setting in scu region is combined to one 32-bit register,
->> MAC3/4 is also. I will also use 'aliase' to get MAC index to set delay in scu.
->>
->> // aspeed-g6.dtsi
->> aliases {
->> 		..........
->> 		mac0 = &mac0;
->> 		mac1 = &mac1;
->> 		mac2 = &mac2;
->> 		mac4 = &mac3;
->> 	};
-> I would avoid that, because they are under control of the DT
-> developer. You sometimes seen the order changed in the hope of
-> changing the interface names, rather than use a udev script, or
-> systemd naming scheme.
->
-> The physical address of each interface is well known and fixed? Are
-> they the same for all ASTxxxx devices? I would hard code them into the
-> driver to identify the instance.
->
-> But first we need to fix what is broken with the existing DT phy-modes
-> etc.
->
-> What is the reset default of these SCU registers? 0? So we can tell if
-> the bootloader has modified it and inserted a delay?
+Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+---
+ drivers/net/phy/marvell-88q2xxx.c | 161 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 161 insertions(+)
 
-Jacky,
+diff --git a/drivers/net/phy/marvell-88q2xxx.c b/drivers/net/phy/marvell-88q2xxx.c
+index 5107f58338aff4ed6cfea4d91e37282d9bb60ba5..bef3357b9d279fca5d1f86ff0eaa0d45a699e3f9 100644
+--- a/drivers/net/phy/marvell-88q2xxx.c
++++ b/drivers/net/phy/marvell-88q2xxx.c
+@@ -8,6 +8,7 @@
+  */
+ #include <linux/ethtool_netlink.h>
+ #include <linux/marvell_phy.h>
++#include <linux/of.h>
+ #include <linux/phy.h>
+ #include <linux/hwmon.h>
+ 
+@@ -27,6 +28,9 @@
+ #define MDIO_MMD_AN_MV_STAT2_100BT1		0x2000
+ #define MDIO_MMD_AN_MV_STAT2_1000BT1		0x4000
+ 
++#define MDIO_MMD_PCS_MV_RESET_CTRL		32768
++#define MDIO_MMD_PCS_MV_RESET_CTRL_TX_DISABLE	0x8
++
+ #define MDIO_MMD_PCS_MV_INT_EN			32784
+ #define MDIO_MMD_PCS_MV_INT_EN_LINK_UP		0x0040
+ #define MDIO_MMD_PCS_MV_INT_EN_LINK_DOWN	0x0080
+@@ -40,6 +44,15 @@
+ #define MDIO_MMD_PCS_MV_GPIO_INT_CTRL			32787
+ #define MDIO_MMD_PCS_MV_GPIO_INT_CTRL_TRI_DIS		0x0800
+ 
++#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL			32790
++#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL_GPIO_MASK		GENMASK(7, 4)
++#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL_TX_EN_MASK	GENMASK(3, 0)
++#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL_LINK		0x0 /* Link established */
++#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL_LINK_RX_TX	0x1 /* Link established, blink for rx or tx activity */
++#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL_RX_TX		0x4 /* Receive or Transmit activity */
++#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL_TX		0x5 /* Transmit activity */
++#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL_LINK_1000BT1	0x7 /* 1000BT1 link established */
++
+ #define MDIO_MMD_PCS_MV_TEMP_SENSOR1			32833
+ #define MDIO_MMD_PCS_MV_TEMP_SENSOR1_RAW_INT		0x0001
+ #define MDIO_MMD_PCS_MV_TEMP_SENSOR1_INT		0x0040
+@@ -95,6 +108,9 @@
+ 
+ #define MDIO_MMD_PCS_MV_TDR_OFF_CUTOFF			65246
+ 
++#define MV88Q2XXX_LED_INDEX_TX_ENABLE	0
++#define MV88Q2XXX_LED_INDEX_GPIO	1
++
+ struct mmd_val {
+ 	int devad;
+ 	u32 regnum;
+@@ -741,8 +757,58 @@ static int mv88q2xxx_hwmon_probe(struct phy_device *phydev)
+ }
+ #endif
+ 
++#if IS_ENABLED(CONFIG_OF_MDIO)
++static int mv88q2xxx_leds_probe(struct phy_device *phydev)
++{
++	struct device_node *node = phydev->mdio.dev.of_node;
++	struct device_node *leds;
++	int ret = 0;
++	u32 index;
++
++	if (!node)
++		return 0;
++
++	leds = of_get_child_by_name(node, "leds");
++	if (!leds)
++		return 0;
++
++	for_each_available_child_of_node_scoped(leds, led) {
++		ret = of_property_read_u32(led, "reg", &index);
++		if (ret)
++			goto exit;
++
++		if (index > MV88Q2XXX_LED_INDEX_GPIO) {
++			ret = -EINVAL;
++			goto exit;
++		}
++
++		if (index == MV88Q2XXX_LED_INDEX_TX_ENABLE)
++			ret = phy_clear_bits_mmd(phydev, MDIO_MMD_PCS,
++						 MDIO_MMD_PCS_MV_RESET_CTRL,
++						 MDIO_MMD_PCS_MV_RESET_CTRL_TX_DISABLE);
++	}
++
++exit:
++	of_node_put(leds);
++
++	return ret;
++}
++
++#else
++static int mv88q2xxx_leds_probe(struct phy_device *phydev)
++{
++	return 0;
++}
++#endif
++
+ static int mv88q2xxx_probe(struct phy_device *phydev)
+ {
++	int ret;
++
++	ret = mv88q2xxx_leds_probe(phydev);
++	if (ret)
++		return ret;
++
+ 	return mv88q2xxx_hwmon_probe(phydev);
+ }
+ 
+@@ -899,6 +965,98 @@ static int mv88q222x_cable_test_get_status(struct phy_device *phydev,
+ 	return 0;
+ }
+ 
++static int mv88q2xxx_led_mode(u8 index, unsigned long rules)
++{
++	switch (rules) {
++	case BIT(TRIGGER_NETDEV_LINK):
++		return MDIO_MMD_PCS_MV_LED_FUNC_CTRL_LINK;
++	case BIT(TRIGGER_NETDEV_LINK_1000):
++		return MDIO_MMD_PCS_MV_LED_FUNC_CTRL_LINK_1000BT1;
++	case BIT(TRIGGER_NETDEV_TX):
++		return MDIO_MMD_PCS_MV_LED_FUNC_CTRL_TX;
++	case BIT(TRIGGER_NETDEV_TX) | BIT(TRIGGER_NETDEV_RX):
++		return MDIO_MMD_PCS_MV_LED_FUNC_CTRL_RX_TX;
++	case BIT(TRIGGER_NETDEV_LINK) | BIT(TRIGGER_NETDEV_TX) | BIT(TRIGGER_NETDEV_RX):
++		return MDIO_MMD_PCS_MV_LED_FUNC_CTRL_LINK_RX_TX;
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++static int mv88q2xxx_led_hw_is_supported(struct phy_device *phydev, u8 index,
++					 unsigned long rules)
++{
++	int mode;
++
++	mode = mv88q2xxx_led_mode(index, rules);
++	if (mode < 0)
++		return mode;
++
++	return 0;
++}
++
++static int mv88q2xxx_led_hw_control_set(struct phy_device *phydev, u8 index,
++					unsigned long rules)
++{
++	int mode;
++
++	mode = mv88q2xxx_led_mode(index, rules);
++	if (mode < 0)
++		return mode;
++
++	if (index == MV88Q2XXX_LED_INDEX_TX_ENABLE)
++		return phy_modify_mmd(phydev, MDIO_MMD_PCS,
++				      MDIO_MMD_PCS_MV_LED_FUNC_CTRL,
++				      MDIO_MMD_PCS_MV_LED_FUNC_CTRL_TX_EN_MASK,
++				      FIELD_PREP(MDIO_MMD_PCS_MV_LED_FUNC_CTRL_TX_EN_MASK,
++						 mode));
++	else
++		return phy_modify_mmd(phydev, MDIO_MMD_PCS,
++				      MDIO_MMD_PCS_MV_LED_FUNC_CTRL,
++				      MDIO_MMD_PCS_MV_LED_FUNC_CTRL_GPIO_MASK,
++				      FIELD_PREP(MDIO_MMD_PCS_MV_LED_FUNC_CTRL_GPIO_MASK,
++						 mode));
++}
++
++static int mv88q2xxx_led_hw_control_get(struct phy_device *phydev, u8 index,
++					unsigned long *rules)
++{
++	int val;
++
++	val = phy_read_mmd(phydev, MDIO_MMD_PCS, MDIO_MMD_PCS_MV_LED_FUNC_CTRL);
++	if (val < 0)
++		return val;
++
++	if (index == MV88Q2XXX_LED_INDEX_TX_ENABLE)
++		val = FIELD_GET(MDIO_MMD_PCS_MV_LED_FUNC_CTRL_TX_EN_MASK, val);
++	else
++		val = FIELD_GET(MDIO_MMD_PCS_MV_LED_FUNC_CTRL_GPIO_MASK, val);
++
++	switch (val) {
++	case MDIO_MMD_PCS_MV_LED_FUNC_CTRL_LINK:
++		*rules = BIT(TRIGGER_NETDEV_LINK);
++		break;
++	case MDIO_MMD_PCS_MV_LED_FUNC_CTRL_LINK_1000BT1:
++		*rules = BIT(TRIGGER_NETDEV_LINK_1000);
++		break;
++	case MDIO_MMD_PCS_MV_LED_FUNC_CTRL_TX:
++		*rules = BIT(TRIGGER_NETDEV_TX);
++		break;
++	case MDIO_MMD_PCS_MV_LED_FUNC_CTRL_RX_TX:
++		*rules = BIT(TRIGGER_NETDEV_TX) | BIT(TRIGGER_NETDEV_RX);
++		break;
++	case MDIO_MMD_PCS_MV_LED_FUNC_CTRL_LINK_RX_TX:
++		*rules = BIT(TRIGGER_NETDEV_LINK) | BIT(TRIGGER_NETDEV_TX) |
++			 BIT(TRIGGER_NETDEV_RX);
++		break;
++	default:
++		*rules = 0;
++		break;
++	}
++
++	return 0;
++}
++
+ static struct phy_driver mv88q2xxx_driver[] = {
+ 	{
+ 		.phy_id			= MARVELL_PHY_ID_88Q2110,
+@@ -934,6 +1092,9 @@ static struct phy_driver mv88q2xxx_driver[] = {
+ 		.get_sqi_max		= mv88q2xxx_get_sqi_max,
+ 		.suspend		= mv88q2xxx_suspend,
+ 		.resume			= mv88q2xxx_resume,
++		.led_hw_is_supported	= mv88q2xxx_led_hw_is_supported,
++		.led_hw_control_set	= mv88q2xxx_led_hw_control_set,
++		.led_hw_control_get	= mv88q2xxx_led_hw_control_get,
+ 	},
+ };
+ 
 
-Here are the values on my system and those are expected that means 
-u-boot is setting correct value?
+---
+base-commit: 3409aa9a349cc1d911c08eff3b265a4db48865c7
+change-id: 20241221-marvell-88q2xxx-leds-69a4037b5157
 
-# devmem 0x1E6E2340 32
-0x9028A410
-# devmem 0x1E6E2348 32
-0x00410410
-# devmem 0x1E6E234c 32
-0x00410410
+Best regards,
+-- 
+Dimitri Fedrau <dima.fedrau@gmail.com>
 
-# devmem 0x1E6E2350 32
-0x40104145
-# devmem 0x1E6E2358 32
-0x00104145
-# devmem 0x1E6E235c 32
-0x00104145
-
->
-> What i think you need to do is during probe of the MAC driver, compare
-> phy-mode and how the delays are configured in hardware. If the delays
-> in hardware are 0, assume phy-mode is correct and use it. If the
-> delays are not 0, compare them with phy-mode. If the delays and
-> phy-mode agree, use them. If they disagree, assume phy-mode is wrong,
-> issue a dev_warn() that the DT blob is out of date, and modify
-> phy-mode to match the delays in the hardware, including a good
-> explanation of what is going on in the commit message to help those
-> with out of tree DT files. And then patch all the in tree DT files to
-> use the correct phy-mode.
-
-Andrew,
-
-Do we need updates on this description. It doesn't talk about external 
-PCB level delays?
-
-https://github.com/torvalds/linux/blob/master/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L77-L90
-
-This is what you explained:
-
-MAC driver reads following phy-mode from device tree. 95% of mac driver 
-directly
-  pass it to PHY through phy_connect.
-
-rgmii - PCB has long clock lines so delay is added by PCB
-         On this mode PHY does nothing.
-rgmii-id - PCB doesn't add delay. Either MAC or PHY needs to add the delay
-            Add delays in both directions. Some PHY may not add delay in 
-that
-            case MAC needs to add the delay mask rgmii-id to rgmii.
-rgmii-rxid - If there is an extra long TX clock line, but not RX clock,
-              you would use rgmii-rxid
-rgmii-txid - When there is an extra long RX clock line on the PCB, but not
-              the TX clock line, you would use rgmii-txid
-
-Regards,
-
-Ninad
-
->
-> Please double check my logic, just to make sure it is correct. If i
-> have it correct, it should be backwards compatible. The one feature
-> you loose out on is when the bootloader sets the wrong delays and you
-> want phy-mode to actually override it.
->
-> When AST2700 comes along, you can skip all this, get it right from the
-> start and not need this workaround.
->
-> 	Andrew
->
