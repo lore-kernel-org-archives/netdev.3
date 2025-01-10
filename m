@@ -1,47 +1,44 @@
 Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC1220E005;
-	Fri, 10 Jan 2025 13:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1427A20DD56;
+	Fri, 10 Jan 2025 13:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736514851; cv=none; b=brIGrSLNlUioifeXbs6On+OVCF2w13wTX4YNKVVbxw4RlpwOEX96V2muIVGtOF119wJKczgYFRSYmHlksGEKI0dTXQZjwjAqm5vUdSn/Hi98tDvYfU7dY1mJf8RcQFnZPG3MkZQj7NZTd6d1Mz4grkzG/JDK9ywu3P0yEvjYVRI=
+	t=1736514853; cv=none; b=YX9wrD+Ny8YPNj15DXqOCKTpIz2E0pNaKZxCTshtni+r2ZNtnx/2llen/J5wfyt0dNtW8PvIU6CEHlu7raz8FZQO2oav7Rxqio7qDi3C73jAn0Qsy7+sNA6vpP72hjt+e8AcozNudatlgic0+us3K1tcHpYVDLB04YE6afXysOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736514851; c=relaxed/simple;
-	bh=G2AouaBb+qbSO/h+etHLaGmAPXnN0IC/6AFbDgJ8b94=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XRI1Qiupvb554giJnjLb6M3/IzAkqH5+QbBQlX0RhP49TryM60XYXMaWRo/Z7V/xvyqprmZQwN2jhgm72gjbsbzmNYHQqNM7CcfIHOcqbQQzIZrmwm0ASBVP1sZE1I5ZlXV4QxioXBOLBF454b4ykArIP7z2Vodz+80EIl6QWDo=
+	s=arc-20240116; t=1736514853; c=relaxed/simple;
+	bh=SE6agWJD0vY2chxfdQBW+/+kxBRBLrA9FT5tlI79wUw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KFLS60vg7zZdf+GYAi/XUehyGx5BdBbcA6M3N3gnKLB9DKcadGbxVnn3VgKpPVsUUn9ftOo+42LidKdQDc1G4K69h67pOr8rMVDBB9+KTG/RK5bqsFNPixuDEtUndeFVpNrQtrfWqN/TOC065NE0PPQvKoWg1gLpvhhSMjUBJKM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4YV28h5lGjz2DkMS;
-	Fri, 10 Jan 2025 21:11:00 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4YV29g2PPcz22ks5;
+	Fri, 10 Jan 2025 21:11:51 +0800 (CST)
 Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id DF7EE1402DE;
-	Fri, 10 Jan 2025 21:14:04 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id A840B1A0188;
+	Fri, 10 Jan 2025 21:14:08 +0800 (CST)
 Received: from localhost.localdomain (10.90.30.45) by
  dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 10 Jan 2025 21:14:04 +0800
+ 15.2.1544.11; Fri, 10 Jan 2025 21:14:08 +0800
 From: Yunsheng Lin <linyunsheng@huawei.com>
 To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
 CC: <zhangkun09@huawei.com>, <liuyonglong@huawei.com>,
 	<fanghaiqing@huawei.com>, Yunsheng Lin <linyunsheng@huawei.com>, Alexander
- Lobakin <aleksander.lobakin@intel.com>, Robin Murphy <robin.murphy@arm.com>,
-	Alexander Duyck <alexander.duyck@gmail.com>, Andrew Morton
-	<akpm@linux-foundation.org>, IOMMU <iommu@lists.linux.dev>, MM
-	<linux-mm@kvack.org>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
-	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, Matthias Brugger
-	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, <netdev@vger.kernel.org>,
-	<intel-wired-lan@lists.osuosl.org>, <bpf@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>
-Subject: [PATCH net-next v7 0/8] fix two bugs related to page_pool
-Date: Fri, 10 Jan 2025 21:06:54 +0800
-Message-ID: <20250110130703.3814407-1-linyunsheng@huawei.com>
+ Lobakin <aleksander.lobakin@intel.com>, Xuan Zhuo
+	<xuanzhuo@linux.alibaba.com>, Jesper Dangaard Brouer <hawk@kernel.org>, Ilias
+ Apalodimas <ilias.apalodimas@linaro.org>, Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH net-next v7 2/8] page_pool: fix timing for checking and disabling napi_local
+Date: Fri, 10 Jan 2025 21:06:56 +0800
+Message-ID: <20250110130703.3814407-3-linyunsheng@huawei.com>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20250110130703.3814407-1-linyunsheng@huawei.com>
+References: <20250110130703.3814407-1-linyunsheng@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,123 +50,85 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
  dggpemf200006.china.huawei.com (7.185.36.61)
 
-This patchset fix a possible time window problem for page_pool and
-the dma API misuse problem as mentioned in [1], and try to avoid the
-overhead of the fixing using some optimization.
+page_pool page may be freed from skb_defer_free_flush() in
+softirq context without binding to any specific napi, it
+may cause use-after-free problem due to the below time window,
+as below, CPU1 may still access napi->list_owner after CPU0
+free the napi memory:
 
-From the below performance data, the overhead is not so obvious
-due to performance variations for time_bench_page_pool01_fast_path()
-and time_bench_page_pool02_ptr_ring, and there is about 20ns overhead
-for time_bench_page_pool03_slow() for fixing the bug.
+            CPU 0                           CPU1
+      page_pool_destroy()          skb_defer_free_flush()
+             .                               .
+             .                napi = READ_ONCE(pool->p.napi);
+             .                               .
+page_pool_disable_direct_recycling()         .
+   driver free napi memory                   .
+             .                               .
+             .       napi && READ_ONCE(napi->list_owner) == cpuid
+             .                               .
 
-Before this patchset:
-root@(none)$ insmod bench_page_pool_simple.ko
-[  323.367627] bench_page_pool_simple: Loaded
-[  323.448747] time_bench: Type:for_loop Per elem: 0 cycles(tsc) 0.769 ns (step:0) - (measurement period time:0.076997150 sec time_interval:76997150) - (invoke count:100000000 tsc_interval:7699707)
-[  324.812884] time_bench: Type:atomic_inc Per elem: 1 cycles(tsc) 13.468 ns (step:0) - (measurement period time:1.346855130 sec time_interval:1346855130) - (invoke count:100000000 tsc_interval:134685507)
-[  324.980875] time_bench: Type:lock Per elem: 1 cycles(tsc) 15.010 ns (step:0) - (measurement period time:0.150101270 sec time_interval:150101270) - (invoke count:10000000 tsc_interval:15010120)
-[  325.652195] time_bench: Type:rcu Per elem: 0 cycles(tsc) 6.542 ns (step:0) - (measurement period time:0.654213000 sec time_interval:654213000) - (invoke count:100000000 tsc_interval:65421294)
-[  325.669215] bench_page_pool_simple: time_bench_page_pool01_fast_path(): Cannot use page_pool fast-path
-[  325.974848] time_bench: Type:no-softirq-page_pool01 Per elem: 2 cycles(tsc) 29.633 ns (step:0) - (measurement period time:0.296338200 sec time_interval:296338200) - (invoke count:10000000 tsc_interval:29633814)
-[  325.993517] bench_page_pool_simple: time_bench_page_pool02_ptr_ring(): Cannot use page_pool fast-path
-[  326.576636] time_bench: Type:no-softirq-page_pool02 Per elem: 5 cycles(tsc) 57.391 ns (step:0) - (measurement period time:0.573911820 sec time_interval:573911820) - (invoke count:10000000 tsc_interval:57391174)
-[  326.595307] bench_page_pool_simple: time_bench_page_pool03_slow(): Cannot use page_pool fast-path
-[  328.422661] time_bench: Type:no-softirq-page_pool03 Per elem: 18 cycles(tsc) 181.849 ns (step:0) - (measurement period time:1.818495880 sec time_interval:1818495880) - (invoke count:10000000 tsc_interval:181849581)
-[  328.441681] bench_page_pool_simple: pp_tasklet_handler(): in_serving_softirq fast-path
-[  328.449584] bench_page_pool_simple: time_bench_page_pool01_fast_path(): in_serving_softirq fast-path
-[  328.755031] time_bench: Type:tasklet_page_pool01_fast_path Per elem: 2 cycles(tsc) 29.632 ns (step:0) - (measurement period time:0.296327910 sec time_interval:296327910) - (invoke count:10000000 tsc_interval:29632785)
-[  328.774308] bench_page_pool_simple: time_bench_page_pool02_ptr_ring(): in_serving_softirq fast-path
-[  329.578579] time_bench: Type:tasklet_page_pool02_ptr_ring Per elem: 7 cycles(tsc) 79.523 ns (step:0) - (measurement period time:0.795236560 sec time_interval:795236560) - (invoke count:10000000 tsc_interval:79523650)
-[  329.597769] bench_page_pool_simple: time_bench_page_pool03_slow(): in_serving_softirq fast-path
-[  331.507501] time_bench: Type:tasklet_page_pool03_slow Per elem: 19 cycles(tsc) 190.104 ns (step:0) - (measurement period time:1.901047510 sec time_interval:1901047510) - (invoke count:10000000 tsc_interval:190104743)
+Use rcu mechanism to avoid the above problem.
 
-After this patchset:
-root@(none)$ insmod bench_page_pool_simple.ko
-[  138.634758] bench_page_pool_simple: Loaded
-[  138.715879] time_bench: Type:for_loop Per elem: 0 cycles(tsc) 0.769 ns (step:0) - (measurement period time:0.076972720 sec time_interval:76972720) - (invoke count:100000000 tsc_interval:7697265)
-[  140.079897] time_bench: Type:atomic_inc Per elem: 1 cycles(tsc) 13.467 ns (step:0) - (measurement period time:1.346735370 sec time_interval:1346735370) - (invoke count:100000000 tsc_interval:134673531)
-[  140.247841] time_bench: Type:lock Per elem: 1 cycles(tsc) 15.005 ns (step:0) - (measurement period time:0.150055080 sec time_interval:150055080) - (invoke count:10000000 tsc_interval:15005497)
-[  140.919072] time_bench: Type:rcu Per elem: 0 cycles(tsc) 6.541 ns (step:0) - (measurement period time:0.654125000 sec time_interval:654125000) - (invoke count:100000000 tsc_interval:65412493)
-[  140.936091] bench_page_pool_simple: time_bench_page_pool01_fast_path(): Cannot use page_pool fast-path
-[  141.246985] time_bench: Type:no-softirq-page_pool01 Per elem: 3 cycles(tsc) 30.159 ns (step:0) - (measurement period time:0.301598160 sec time_interval:301598160) - (invoke count:10000000 tsc_interval:30159812)
-[  141.265654] bench_page_pool_simple: time_bench_page_pool02_ptr_ring(): Cannot use page_pool fast-path
-[  141.976265] time_bench: Type:no-softirq-page_pool02 Per elem: 7 cycles(tsc) 70.140 ns (step:0) - (measurement period time:0.701405780 sec time_interval:701405780) - (invoke count:10000000 tsc_interval:70140573)
-[  141.994933] bench_page_pool_simple: time_bench_page_pool03_slow(): Cannot use page_pool fast-path
-[  144.018945] time_bench: Type:no-softirq-page_pool03 Per elem: 20 cycles(tsc) 201.514 ns (step:0) - (measurement period time:2.015141210 sec time_interval:2015141210) - (invoke count:10000000 tsc_interval:201514113)
-[  144.037966] bench_page_pool_simple: pp_tasklet_handler(): in_serving_softirq fast-path
-[  144.045870] bench_page_pool_simple: time_bench_page_pool01_fast_path(): in_serving_softirq fast-path
-[  144.205045] time_bench: Type:tasklet_page_pool01_fast_path Per elem: 1 cycles(tsc) 15.005 ns (step:0) - (measurement period time:0.150056510 sec time_interval:150056510) - (invoke count:10000000 tsc_interval:15005645)
-[  144.224320] bench_page_pool_simple: time_bench_page_pool02_ptr_ring(): in_serving_softirq fast-path
-[  144.916044] time_bench: Type:tasklet_page_pool02_ptr_ring Per elem: 6 cycles(tsc) 68.269 ns (step:0) - (measurement period time:0.682693070 sec time_interval:682693070) - (invoke count:10000000 tsc_interval:68269300)
-[  144.935234] bench_page_pool_simple: time_bench_page_pool03_slow(): in_serving_softirq fast-path
-[  146.997684] time_bench: Type:tasklet_page_pool03_slow Per elem: 20 cycles(tsc) 205.376 ns (step:0) - (measurement period time:2.053766310 sec time_interval:2053766310) - (invoke count:10000000 tsc_interval:205376624)
+Note, the above was found during code reviewing on how to fix
+the problem in [1].
+
+As the following IOMMU fix patch depends on synchronize_rcu()
+added in this patch and the time window is so small that it
+doesn't seem to be an urgent fix, so target the net-next as
+the IOMMU fix patch does.
 
 1. https://lore.kernel.org/lkml/8067f204-1380-4d37-8ffd-007fc6f26738@kernel.org/T/
 
+Fixes: dd64b232deb8 ("page_pool: unlink from napi during destroy")
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
 CC: Alexander Lobakin <aleksander.lobakin@intel.com>
-CC: Robin Murphy <robin.murphy@arm.com>
-CC: Alexander Duyck <alexander.duyck@gmail.com>
-CC: Andrew Morton <akpm@linux-foundation.org>
-CC: IOMMU <iommu@lists.linux.dev>
-CC: MM <linux-mm@kvack.org>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+---
+ net/core/page_pool.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-Change log:
-V7:
-  1. Fix a used-after-free bug reported by KASAN as mentioned by Jakub.
-  2. Fix the 'netmem' variable not setting up correctly bug as mentioned
-     by Simon.
-
-V6:
-  1. Repost based on latest net-next.
-  2. Rename page_pool_to_pp() to page_pool_get_pp().
-
-V5:
-  1. Support unlimit inflight pages.
-  2. Add some optimization to avoid the overhead of fixing bug.
-
-V4:
-  1. use scanning to do the unmapping
-  2. spilt dma sync skipping into separate patch
-
-V3:
-  1. Target net-next tree instead of net tree.
-  2. Narrow the rcu lock as the discussion in v2.
-  3. Check the ummapping cnt against the inflight cnt.
-
-V2:
-  1. Add a item_full stat.
-  2. Use container_of() for page_pool_to_pp().
-
-Yunsheng Lin (8):
-  page_pool: introduce page_pool_get_pp() API
-  page_pool: fix timing for checking and disabling napi_local
-  page_pool: fix IOMMU crash when driver has already unbound
-  page_pool: support unlimited number of inflight pages
-  page_pool: skip dma sync operation for inflight pages
-  page_pool: use list instead of ptr_ring for ring cache
-  page_pool: batch refilling pages to reduce atomic operation
-  page_pool: use list instead of array for alloc cache
-
- drivers/net/ethernet/freescale/fec_main.c     |   8 +-
- .../ethernet/google/gve/gve_buffer_mgmt_dqo.c |   2 +-
- drivers/net/ethernet/intel/iavf/iavf_txrx.c   |   6 +-
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  14 +-
- drivers/net/ethernet/intel/libeth/rx.c        |   2 +-
- .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |   3 +-
- drivers/net/netdevsim/netdev.c                |   6 +-
- drivers/net/wireless/mediatek/mt76/mt76.h     |   2 +-
- include/linux/mm_types.h                      |   2 +-
- include/linux/skbuff.h                        |   1 +
- include/net/libeth/rx.h                       |   3 +-
- include/net/netmem.h                          |  24 +-
- include/net/page_pool/helpers.h               |  11 +
- include/net/page_pool/types.h                 |  64 +-
- net/core/devmem.c                             |   4 +-
- net/core/netmem_priv.h                        |   5 +-
- net/core/page_pool.c                          | 664 ++++++++++++++----
- net/core/page_pool_priv.h                     |  12 +-
- 18 files changed, 675 insertions(+), 158 deletions(-)
-
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 9733206d6406..1aa7b93bdcc8 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -799,6 +799,7 @@ __page_pool_put_page(struct page_pool *pool, netmem_ref netmem,
+ static bool page_pool_napi_local(const struct page_pool *pool)
+ {
+ 	const struct napi_struct *napi;
++	bool napi_local;
+ 	u32 cpuid;
+ 
+ 	if (unlikely(!in_softirq()))
+@@ -814,9 +815,15 @@ static bool page_pool_napi_local(const struct page_pool *pool)
+ 	if (READ_ONCE(pool->cpuid) == cpuid)
+ 		return true;
+ 
++	/* Synchronizated with page_pool_destory() to avoid use-after-free
++	 * for 'napi'.
++	 */
++	rcu_read_lock();
+ 	napi = READ_ONCE(pool->p.napi);
++	napi_local = napi && READ_ONCE(napi->list_owner) == cpuid;
++	rcu_read_unlock();
+ 
+-	return napi && READ_ONCE(napi->list_owner) == cpuid;
++	return napi_local;
+ }
+ 
+ void page_pool_put_unrefed_netmem(struct page_pool *pool, netmem_ref netmem,
+@@ -1165,6 +1172,12 @@ void page_pool_destroy(struct page_pool *pool)
+ 	if (!page_pool_release(pool))
+ 		return;
+ 
++	/* Paired with rcu lock in page_pool_napi_local() to enable clearing
++	 * of pool->p.napi in page_pool_disable_direct_recycling() is seen
++	 * before returning to driver to free the napi instance.
++	 */
++	synchronize_rcu();
++
+ 	page_pool_detached(pool);
+ 	pool->defer_start = jiffies;
+ 	pool->defer_warn  = jiffies + DEFER_WARN_INTERVAL;
 -- 
 2.33.0
 
