@@ -1,123 +1,201 @@
-Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF2620A5F5
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 09:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47E120B1F2
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 09:28:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736501331; cv=none; b=DREM+Oo1/ca01eE/lF7osT0zPl3g6Czcwdgh5NIroih9pdbkJqvMi1B6Eje4LLcUF+UJUUSWQ3Di6EzRoFQOAhp/vCVTqV1B+ACUlXE2Z3h3V+mWaE4QiPr9j7HL8M+9G3ZrsivFgPybsQpw1d1CIf6jHS/o5Ns6zcBlla6M8xM=
+	t=1736501334; cv=none; b=f7HqbrQkW/23fI2IO8A5DmW4mmPNXwuNRSpmf7idi0HwZNicrvPdtE9osVpZHZtLIwYZF9Ijb7IaJU8yZ77twtQu9O40ucurWBCcsQ+qaNCugUZT5FV6zArBT3B1De2vRHsPxnBftK0n1WcsrcaFCt0e2Mz8gDxBpfvAQjtpGOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736501331; c=relaxed/simple;
-	bh=0Ap47lpyfQBoMXsC4C5t0FTb9u7+ECgci6hK7CBTaMI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VC5lscJTnGjZH5ITb3QaG0+kzUbEdzgdJPcxP7nqjT9edIdL2x3Q9d0S0EVWBf/6SgHRbPlVK5f87vqNiQl6JXGQEmFbr9i2eNCNf+qixySvPbrZQWX+lTIpYnwWr8jGJAgqzsUKGYo+DIpwOzNfWVKrnX5OvtHkkHQYuD7nDAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=BSzJgeyH; arc=none smtp.client-ip=207.171.188.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1736501334; c=relaxed/simple;
+	bh=GWGuc3VMdr5N9fv2KHCFN5USR+3NK9F0l8JRZS0PRfE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=SYxz//sVqbFVTDJVro4WlXAk4XiSYTJ6eq457cSDuVGiBxr89yw/ls6K4LDuncwMJdXXYs0zrzfH1qYzAY6cPnVdhYyZYvmI5M+DCMBFYukFKs5+C/fvKPF8r0meYvXISHJm71yuAZtnFdRrXdYkmRUiOGj7HeQZxzCVYSgudS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com; spf=pass smtp.mailfrom=daynix.com; dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b=W10UwH6h; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=daynix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="BSzJgeyH"
+	dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b="W10UwH6h"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-21636268e43so37586565ad.2
+        for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 01:28:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1736501329; x=1768037329;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=WRvz/jt2K+XR/8BEV3sbpF+J4ezyxNZwPZiP0vIZEyk=;
-  b=BSzJgeyH0BfvTZWv+1DnkBobFEVm40HqD80Oj18eaGiM1kR/LjlrXNtK
-   BG1dyvMnhVGNt90lI2NerPtaAW5iW2mHWTFXchQxaIQamOJN4hnkL/G1Z
-   X2MNarThGCIGIUhTlbvamdzBZYJOC+JllnjweOx1UkcoNh7+QIwJQ8A9W
-   4=;
-X-IronPort-AV: E=Sophos;i="6.12,303,1728950400"; 
-   d="scan'208";a="790117096"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 09:28:44 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.38.20:42245]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.63.9:2525] with esmtp (Farcaster)
- id 35e9a0d8-ccbd-4c07-8857-3bd9908dd81b; Fri, 10 Jan 2025 09:28:44 +0000 (UTC)
-X-Farcaster-Flow-ID: 35e9a0d8-ccbd-4c07-8857-3bd9908dd81b
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Fri, 10 Jan 2025 09:28:43 +0000
-Received: from 6c7e67c6786f.amazon.com (10.118.252.101) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Fri, 10 Jan 2025 09:28:40 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-CC: Donald Hunter <donald.hunter@redhat.com>, Kuniyuki Iwashima
-	<kuniyu@amazon.com>, Kuniyuki Iwashima <kuni1840@gmail.com>,
-	<netdev@vger.kernel.org>
-Subject: [PATCH v1 net-next 04/12] af_unix: Set drop reason in __unix_gc().
-Date: Fri, 10 Jan 2025 18:26:33 +0900
-Message-ID: <20250110092641.85905-5-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250110092641.85905-1-kuniyu@amazon.com>
-References: <20250110092641.85905-1-kuniyu@amazon.com>
+        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736501332; x=1737106132; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=igRjP8Z8IeTK8JEZO8XtaE1DaoQy9k12HA0KbHTX3XM=;
+        b=W10UwH6hhB491Ig8wawPXAGEtrvHrsYtOB5aK6Vm9VEk0ketzi+m9fs0oIwvcPscjJ
+         kVnug2qJfIgPZTXRTpV+5m5dbBY8oo1ARQrzx80+n9eDjCW9078AljHrD74+VAUS5yOj
+         9FQpqK1SLS1gkb3HDYGZ+VT01MbItAgcgvX7o4hMqqsoLH7d4S7DssCXp0va/fWvAqbA
+         5KdLi4EEzQwUYbz6Pu8U7Q6K5nyjLMlwoOACKjznM84I36emEl34uzJ+fZ0oot0db0R6
+         O15SAeWRieCUWMTGg7DJnYzS9y2857GF2Zyt3xfhMwmmrGABb4e9/g3F1BNVib2ZQYmd
+         OvRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736501332; x=1737106132;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=igRjP8Z8IeTK8JEZO8XtaE1DaoQy9k12HA0KbHTX3XM=;
+        b=bJuOX6CvyADHiB68eoyDQfaYUD+ysRGa5Yi1EcLN5/tOFuC8t5r44B4tcKZP1GeEhy
+         QgrswCicXyc6yz+vrulOb7wBT3MzrGK5XP56zy2tqejsBC1wdMwgNt8kyz6Sb1nG4vMv
+         LMGNc3ShPnlANBGQ+jldUpxF82dVHuYlyCPh2rwxDSNIwe4LTS2s64uwB0JxFasggcD8
+         FICMrUaJozQIbIEgmppMPivjO3x/jKbvQ1pGp10cbf+LFSucxHec71QjYdHsGEkXmjrd
+         PRxi8s9vcTWpTX6c/6MnUGwv4v+VWVml67/MPeyp2K5yFRNCzpprpumMyffHTZ0sLdt/
+         wLGA==
+X-Forwarded-Encrypted: i=1; AJvYcCU2/DnS/dIvAMwGOC4dpS+9zAgE7kOcx78y4ucQm/L2GrPZHCSxnESYDuwG0WdRCOYuzAmdZvk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDgSayAODiEbf0lbm4laALdr8wFpSVLGc0+hC6zheBvdxkiJXv
+	Qld6kdUsttoRf0ck4uBVkfpgbKWCLqdjXtYpJJyMfsKsdp6hyPOOv+0GgLyFmCY=
+X-Gm-Gg: ASbGncvlV5hZs1IM2XjDrr6SkYvmCmagk7xTNOEEinTtXX0GXVCNLlbr2WcMfXxTpcR
+	J8I9VXI1iXXhzQUyPzG1SQ2Ab9c0QMhRKFLRFpKm7Hlhui5a0kO0WVg1P4q2Er35Fh6ZQHpRZsT
+	syXs+A3U7zsM4aL3KxwVZaG8Y5BG0t+USr1rEhypnhMM2yq35/A0OJYuhHk4c4CJhWfYprM0FFC
+	tLrgvZORNCKLYxlkyNJ5HqRK65bT5UjmfL1Ds+0HgVpSStlXIw2RQL+6A0QQsBNXOE=
+X-Google-Smtp-Source: AGHT+IEbncdNgeHV3NRD5L3UNOBwnx4pcPRNgcfCcKKAqBupE3LuCLH6YhUM6tqENcH7rFNBH/3/jQ==
+X-Received: by 2002:a17:902:dac6:b0:216:4a8a:2665 with SMTP id d9443c01a7336-21a84012a17mr153359295ad.50.1736501332180;
+        Fri, 10 Jan 2025 01:28:52 -0800 (PST)
+Received: from [157.82.203.37] ([157.82.203.37])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f22d5fcsm10340475ad.176.2025.01.10.01.28.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Jan 2025 01:28:51 -0800 (PST)
+Message-ID: <0bcbbc09-e4dd-4e16-ac1a-c9d3f368c145@daynix.com>
+Date: Fri, 10 Jan 2025 18:28:46 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D039UWB001.ant.amazon.com (10.13.138.119) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/6] virtio_net: Add functions for hashing
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Jason Wang <jasowang@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, kvm@vger.kernel.org,
+ virtualization@lists.linux-foundation.org, linux-kselftest@vger.kernel.org,
+ Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Andrew Melnychenko <andrew@daynix.com>,
+ Stephen Hemminger <stephen@networkplumber.org>, gur.stavi@huawei.com
+References: <20250109-rss-v6-0-b1c90ad708f6@daynix.com>
+ <20250109-rss-v6-1-b1c90ad708f6@daynix.com>
+ <677fd98d89df1_362bc12942f@willemb.c.googlers.com.notmuch>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <677fd98d89df1_362bc12942f@willemb.c.googlers.com.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Inflight file descriptors by SCM_RIGHTS hold references to the
-struct file.
+On 2025/01/09 23:13, Willem de Bruijn wrote:
+> Akihiko Odaki wrote:
+>> They are useful to implement VIRTIO_NET_F_RSS and
+>> VIRTIO_NET_F_HASH_REPORT.
+> 
+> Toeplitz potentially has users beyond virtio. I wonder if we should
+> from the start implement this as net/core/rss.c.
 
-AF_UNIX sockets could hold references to each other, forming
-reference cycles.
+Or in lib/toeplitz.c just as like lib/siphash.c. I just chose the 
+easiest option to implement everything in include/linux/virtio_net.h.
 
-Once such sockets are close()d without the fd recv()ed, they
-will be unaccessible from userspace but remain in kernel.
+> 
+>   
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+>>   include/linux/virtio_net.h | 188 +++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 188 insertions(+)
+>>
+>> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+>> index 02a9f4dc594d..3b25ca75710b 100644
+>> --- a/include/linux/virtio_net.h
+>> +++ b/include/linux/virtio_net.h
+>> @@ -9,6 +9,194 @@
+>>   #include <uapi/linux/tcp.h>
+>>   #include <uapi/linux/virtio_net.h>
+>>   
+>> +struct virtio_net_hash {
+>> +	u32 value;
+>> +	u16 report;
+>> +};
+>> +
+>> +struct virtio_net_toeplitz_state {
+>> +	u32 hash;
+>> +	const u32 *key;
+>> +};
+>> +
+>> +#define VIRTIO_NET_SUPPORTED_HASH_TYPES (VIRTIO_NET_RSS_HASH_TYPE_IPv4 | \
+>> +					 VIRTIO_NET_RSS_HASH_TYPE_TCPv4 | \
+>> +					 VIRTIO_NET_RSS_HASH_TYPE_UDPv4 | \
+>> +					 VIRTIO_NET_RSS_HASH_TYPE_IPv6 | \
+>> +					 VIRTIO_NET_RSS_HASH_TYPE_TCPv6 | \
+>> +					 VIRTIO_NET_RSS_HASH_TYPE_UDPv6)
+>> +
+>> +#define VIRTIO_NET_RSS_MAX_KEY_SIZE 40
+>> +
+>> +static inline void virtio_net_toeplitz_convert_key(u32 *input, size_t len)
+>> +{
+>> +	while (len >= sizeof(*input)) {
+>> +		*input = be32_to_cpu((__force __be32)*input);
+>> +		input++;
+>> +		len -= sizeof(*input);
+>> +	}
+>> +}
+>> +
+>> +static inline void virtio_net_toeplitz_calc(struct virtio_net_toeplitz_state *state,
+>> +					    const __be32 *input, size_t len)
+>> +{
+>> +	while (len >= sizeof(*input)) {
+>> +		for (u32 map = be32_to_cpu(*input); map; map &= (map - 1)) {
+>> +			u32 i = ffs(map);
+>> +
+>> +			state->hash ^= state->key[0] << (32 - i) |
+>> +				       (u32)((u64)state->key[1] >> i);
+>> +		}
+>> +
+>> +		state->key++;
+>> +		input++;
+>> +		len -= sizeof(*input);
+>> +	}
+>> +}
+> 
+> Have you verified that this algorithm matches a known toeplitz
+> implementation. And computes the expected values for the test
+> inputs in
+> 
+> https://learn.microsoft.com/en-us/windows-hardware/drivers/network/verifying-the-rss-hash-calculation
 
-__unix_gc() garbage-collects skb with the dead file descriptors
-and frees them by __skb_queue_purge().
+Yes.
 
-Let's set SKB_DROP_REASON_SOCKET_CLOSE there.
-
-  # echo 1 > /sys/kernel/tracing/events/skb/kfree_skb/enable
-
-  # python3
-  >>> from socket import *
-  >>> from array import array
-  >>>
-  >>> # Create a reference cycle
-  >>> s1 = socket(AF_UNIX, SOCK_DGRAM)
-  >>> s1.bind('')
-  >>> s1.sendmsg([b"nop"], [(SOL_SOCKET, SCM_RIGHTS, array("i", [s1.fileno()]))], 0, s1.getsockname())
-  >>> s1.close()
-  >>>
-  >>> # Trigger GC
-  >>> s2 = socket(AF_UNIX)
-  >>> s2.close()
-
-  # cat /sys/kernel/tracing/trace_pipe
-  ...
-     kworker/u16:2-42 ... kfree_skb: ... location=__unix_gc+0x4ad/0x580 reason: SOCKET_CLOSE
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
----
- net/unix/garbage.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index 0068e758be4d..9848b7b78701 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -573,7 +573,7 @@ static void __unix_gc(struct work_struct *work)
- 			UNIXCB(skb).fp->dead = true;
- 	}
- 
--	__skb_queue_purge(&hitlist);
-+	__skb_queue_purge_reason(&hitlist, SKB_DROP_REASON_SOCKET_CLOSE);
- skip_gc:
- 	WRITE_ONCE(gc_in_progress, false);
- }
--- 
-2.39.5 (Apple Git-154)
-
+> 
+> We have a toeplitz implementation in
+> tools/testing/selftests/net/toeplitz.c that can also be used as
+> reference.
+ > >> +
+>> +static inline u8 virtio_net_hash_key_length(u32 types)
+>> +{
+>> +	size_t len = 0;
+>> +
+>> +	if (types & VIRTIO_NET_HASH_REPORT_IPv4)
+>> +		len = max(len,
+>> +			  sizeof(struct flow_dissector_key_ipv4_addrs));
+>> +
+>> +	if (types &
+>> +	    (VIRTIO_NET_HASH_REPORT_TCPv4 | VIRTIO_NET_HASH_REPORT_UDPv4))
+>> +		len = max(len,
+>> +			  sizeof(struct flow_dissector_key_ipv4_addrs) +
+>> +			  sizeof(struct flow_dissector_key_ports));
+>> +
+>> +	if (types & VIRTIO_NET_HASH_REPORT_IPv6)
+>> +		len = max(len,
+>> +			  sizeof(struct flow_dissector_key_ipv6_addrs));
+>> +
+>> +	if (types &
+>> +	    (VIRTIO_NET_HASH_REPORT_TCPv6 | VIRTIO_NET_HASH_REPORT_UDPv6))
+>> +		len = max(len,
+>> +			  sizeof(struct flow_dissector_key_ipv6_addrs) +
+>> +			  sizeof(struct flow_dissector_key_ports));
+>> +
+>> +	return len + 4;
+> 
+> Avoid magic constants. Please use sizeof or something else to signal
+> what this 4 derives from.
