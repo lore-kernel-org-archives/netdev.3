@@ -1,362 +1,125 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C4220ADE7;
-	Fri, 10 Jan 2025 09:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11631FAC4E
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 09:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736501962; cv=none; b=KQ5zjvvfLwXQEAHg3A5Dc3ltlR2IXpY8QOiUAM02UP6hTzeQMBCC6psW/EBE/IpAd3qcQpoR5+rYwSqQbixW4UHXt/DC0bUBejTpnifCn0iRWWuKKxvQvREwqNR2ekH6ohBNGt04mciGC2S95OLqlyxb3kPYei4i1u9sfwXiDUk=
+	t=1736502029; cv=none; b=sDPyt2dskZmzlX8vJJYL/wLis/emEp3NxBK2NG5XHd0WPxfWMVEZ2oTr3w2mb7Dv71vzIfjq0/yJPBZSwJAPU2IFX5sv/K/dx1eupSr0wp23UFgX2EYp20MaEiORKJ4/n7PeWn08RqGqssozxgg1Z1hhL6QDk2Q1xKXWZE7AEEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736501962; c=relaxed/simple;
-	bh=EZFx0kHW6xBepxuaBbR6jrVZhKCTTafgX3CKhmRIe18=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OXNzVcHb8mfOECLrPBaj9/3mr9ni2Kx+N52UjyETR6KmfZaA4LCpxGYgMxBAU/AR495q0YWHeFwNMAOkiWnq1NyT4gmjiNEuGqvd5mnVGQIa0rLJUJdBoBsx4VkUAceCcl/R1cM1iS4+Z9GGNJ1weg92UBZZkX+izL//0afK064=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=OpJT7/qM; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="OpJT7/qM"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50A9b0DP004128;
-	Fri, 10 Jan 2025 01:39:02 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=w
-	nuZRJ/FTQeOP5tyhTccdXS7W/mL8PnNVpkTmuY7zQE=; b=OpJT7/qMhUa0HUC75
-	CK1WAM5ij/YWViOlf8ceOSlDoWL/iblOsh8cLKRe4BCRcIUKYs7NV2Dh7dA4D8em
-	UnAFaag8AsCo907IrvAgdvL8uiqa8WTThryoFDGveyG5yNGtOYuv5Hzo4CyAt5lb
-	xVq9Je62MqlQapVjZo5EBydhXx2a7TofDeUAhezeP6l0oQljPs+wC8djroBmRbF2
-	OncGogzSV9YofkNNp7lIwP881LGAprZLi9DOr0wN5OUyUGQ+Nz+ScThw16Q+Rd3R
-	z1W0jBProOr2jveeaAczPr4IDaFtuVJid7G7aeQ4dSZ+GjgCQcTdu26I5Z5lQIic
-	YTgqA==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 44312qg04k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 01:39:02 -0800 (PST)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Fri, 10 Jan 2025 01:39:00 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Fri, 10 Jan 2025 01:39:00 -0800
-Received: from localhost.localdomain (unknown [10.28.36.166])
-	by maili.marvell.com (Postfix) with ESMTP id A8D143F7084;
-	Fri, 10 Jan 2025 01:38:54 -0800 (PST)
-From: Suman Ghosh <sumang@marvell.com>
-To: <horms@kernel.org>, <sgoutham@marvell.com>, <gakula@marvell.com>,
-        <sbhatta@marvell.com>, <hkelam@marvell.com>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <lcherian@marvell.com>, <jerinj@marvell.com>,
-        <john.fastabend@gmail.com>, <bbhushan2@marvell.com>, <hawk@kernel.org>,
-        <andrew+netdev@lunn.ch>, <ast@kernel.org>, <daniel@iogearbox.net>,
-        <bpf@vger.kernel.org>
-CC: Suman Ghosh <sumang@marvell.com>
-Subject: [net-next PATCH v3 6/6] octeontx2-pf: AF_XDP zero copy transmit support
-Date: Fri, 10 Jan 2025 15:08:07 +0530
-Message-ID: <20250110093807.2451954-7-sumang@marvell.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250110093807.2451954-1-sumang@marvell.com>
-References: <20250110093807.2451954-1-sumang@marvell.com>
+	s=arc-20240116; t=1736502029; c=relaxed/simple;
+	bh=jRZZVvPzcTLAALrJb5P5wjAXGaSTcKAGYUMOjx+n+TQ=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=nfBG9QlIwUu5iOvQwJxtFTjBuVIV5b9jxrx4SxpLqNDLrB8idb/ZNjeOJq22g3LA2K+p9YpbY9oT2DsEZYgt5aZIfFbP+HXCIOaM4JIhEZOL8qXB4DOgxruEoumUkhZxTUt5HOi0d9/Dfd4xxSnCDudSWN0QraxM7v5+vAw8Raw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-3a7e0d5899bso37207165ab.0
+        for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 01:40:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736502027; x=1737106827;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GbyatlHED5CvzhsWVXiLXPadPbtXKoYN7J3w3f52bmY=;
+        b=KuFs/ioHp3ALnUcm0aVP5uhDfx1U1JRPWYFsXEUtbIRRm39rLYBA/bL0mYEPQQgMWt
+         m2o/EQb1L/CBlAM7C+KQfQ8ygab/hSA1vpOIcpsvYm+umdLu73yfswf0vtyLK234n8q6
+         VrQBcQtxcr4gClepTXVT2gcE1Um8uflUIJpxZrJGpGxpCDNdlQi49u//zFZI9cxQHMIc
+         piSdEhYCghiMRkUZKmiMUuXUqI5BYqR+lBlQdWMEqa7bRk8FrUGCZk87ovzhfWXLzXDD
+         mjSc1mzxRHqVQWEobzR9sUnVqr/TjZ2oDlVjWxZ6pxwil+5LJsxcGo+8qHdx/MElocOT
+         kcMA==
+X-Forwarded-Encrypted: i=1; AJvYcCWP827u36EsD6iR1qs0IHMulFhWw6ut+Jfz+utGEJNsrd+oD4BgFs0JmdoaHtRRd2GLrKMKARc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy58Tpba9TiRHEFveF034lsRjgTtRYOCAtJqXriAGTilyxDNhdf
+	jhJQCyvOmxTlQZqkrCBqyXBOwKosALvQuvsBFn/zsi0Xor2fBHt5SJt5SCAk3O1uDUyf2J6yQcj
+	UL8wOBEKZjjmMgx2uImM/cytOtDc2BveeoHs8gjJ7lUO1SDTpiXTg2xc=
+X-Google-Smtp-Source: AGHT+IEUeApzUsKgicvoyxiVZVuWtpFCV/Ti3oZK9pDTn3lvl1UjIIp9k9CuA5NvxpHNaeIvMr3JNyv5i6LeLaIU0cGc3Z1R1uvE
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: bBRukUDtTpt3e4qEBx0gN13RlasKe5T8
-X-Proofpoint-GUID: bBRukUDtTpt3e4qEBx0gN13RlasKe5T8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Received: by 2002:a05:6e02:1d8b:b0:3a7:e01b:6410 with SMTP id
+ e9e14a558f8ab-3ce3a938943mr83463555ab.18.1736502026921; Fri, 10 Jan 2025
+ 01:40:26 -0800 (PST)
+Date: Fri, 10 Jan 2025 01:40:26 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6780eb0a.050a0220.d0267.0027.GAE@google.com>
+Subject: [syzbot] [mm?] bpf test error: WARNING in enable_work
+From: syzbot <syzbot+88988cfce8f3aa42cc80@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, ast@kernel.org, daniel@iogearbox.net, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+Hello,
 
-This patch implements below changes,
+syzbot found the following issue on:
 
-1. To avoid concurrency with normal traffic uses
-   XDP queues.
+HEAD commit:    9d89551994a4 Linux 6.13-rc6
+git tree:       bpf
+console output: https://syzkaller.appspot.com/x/log.txt?x=122ac1df980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=4ef22c4fce5135b4
+dashboard link: https://syzkaller.appspot.com/bug?extid=88988cfce8f3aa42cc80
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
 
-2. Since there are chances that XDP and AF_XDP can
-   fall under same queue uses separate flags to handle
-   dma buffers.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/9bc45dda6651/disk-9d895519.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/34e0e0deceda/vmlinux-9d895519.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/503e9fd75086/bzImage-9d895519.xz
 
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+88988cfce8f3aa42cc80@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+workqueue: work disable count underflowed
+WARNING: CPU: 1 PID: 22 at kernel/workqueue.c:4317 work_offqd_enable kernel/workqueue.c:4317 [inline]
+WARNING: CPU: 1 PID: 22 at kernel/workqueue.c:4317 enable_work+0x34d/0x360 kernel/workqueue.c:4488
+Modules linked in:
+CPU: 1 UID: 0 PID: 22 Comm: cpuhp/1 Not tainted 6.13.0-rc6-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+RIP: 0010:work_offqd_enable kernel/workqueue.c:4317 [inline]
+RIP: 0010:enable_work+0x34d/0x360 kernel/workqueue.c:4488
+Code: d8 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc e8 18 82 37 00 c6 05 f9 ac 9b 0e 01 90 48 c7 c7 00 d7 09 8c e8 d4 25 f8 ff 90 <0f> 0b 90 90 e9 56 ff ff ff e8 b5 c7 60 0a 0f 1f 44 00 00 90 90 90
+RSP: 0000:ffffc900001c7bc0 EFLAGS: 00010046
+RAX: 7f171ad72ec7e200 RBX: 0000000000000000 RCX: ffff88801d2f3c00
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc900001c7c88 R08: ffffffff81602a82 R09: 1ffffffff1cfa210
+R10: dffffc0000000000 R11: fffffbfff1cfa211 R12: 1ffff92000038f7c
+R13: 1ffff92000038f84 R14: 001fffffffc00001 R15: ffff8880b8738770
+FS:  0000000000000000(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 000000000e736000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ vmstat_cpu_online+0xbb/0xe0 mm/vmstat.c:2151
+ cpuhp_invoke_callback+0x48d/0x830 kernel/cpu.c:194
+ cpuhp_thread_fun+0x41c/0x810 kernel/cpu.c:1102
+ smpboot_thread_fn+0x544/0xa30 kernel/smpboot.c:164
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+
 ---
- .../marvell/octeontx2/nic/otx2_common.c       |  4 ++
- .../marvell/octeontx2/nic/otx2_common.h       |  6 +++
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |  2 +-
- .../marvell/octeontx2/nic/otx2_txrx.c         | 45 +++++++++++++++----
- .../marvell/octeontx2/nic/otx2_txrx.h         |  2 +
- .../ethernet/marvell/octeontx2/nic/otx2_xsk.c | 43 +++++++++++++++++-
- .../ethernet/marvell/octeontx2/nic/otx2_xsk.h |  3 ++
- 7 files changed, 93 insertions(+), 12 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 7773a3ab7ff8..c55ddd53fa41 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -1037,6 +1037,10 @@ int otx2_sq_init(struct otx2_nic *pfvf, u16 qidx, u16 sqb_aura)
- 
- 	sq->stats.bytes = 0;
- 	sq->stats.pkts = 0;
-+	/* Attach XSK_BUFF_POOL to XDP queue */
-+	if (qidx > pfvf->hw.xdp_queues)
-+		otx2_attach_xsk_buff(pfvf, sq, (qidx - pfvf->hw.xdp_queues));
-+
- 
- 	chan_offset = qidx % pfvf->hw.tx_chan_cnt;
- 	err = pfvf->hw_ops->sq_aq_init(pfvf, qidx, chan_offset, sqb_aura);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-index ef6f71b92984..50bd645dd3dc 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -129,6 +129,12 @@ enum otx2_errcodes_re {
- 	ERRCODE_IL4_CSUM = 0x22,
- };
- 
-+enum otx2_xdp_action {
-+	OTX2_XDP_TX	  = BIT(0),
-+	OTX2_XDP_REDIRECT = BIT(1),
-+	OTX2_AF_XDP_FRAME = BIT(2),
-+};
-+
- struct otx2_dev_stats {
- 	u64 rx_bytes;
- 	u64 rx_frames;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 78472ecfd97e..b2d7cae3c8a9 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -2694,7 +2694,7 @@ static int otx2_xdp_xmit_tx(struct otx2_nic *pf, struct xdp_frame *xdpf,
- 		return -ENOMEM;
- 
- 	err = otx2_xdp_sq_append_pkt(pf, dma_addr, xdpf->len,
--				     qidx, XDP_REDIRECT);
-+				     qidx, OTX2_XDP_REDIRECT);
- 	if (!err) {
- 		otx2_dma_unmap_page(pf, dma_addr, xdpf->len, DMA_TO_DEVICE);
- 		page = virt_to_page(xdpf->data);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-index 506bf26f64b1..fe22b44f8d69 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-@@ -20,6 +20,7 @@
- #include "otx2_txrx.h"
- #include "otx2_ptp.h"
- #include "cn10k.h"
-+#include "otx2_xsk.h"
- 
- #define CQE_ADDR(CQ, idx) ((CQ)->cqe_base + ((CQ)->cqe_size * (idx)))
- #define READ_FREE_SQE(SQ, free_sqe)						   \
-@@ -103,7 +104,8 @@ static unsigned int frag_num(unsigned int i)
- 
- static void otx2_xdp_snd_pkt_handler(struct otx2_nic *pfvf,
- 				     struct otx2_snd_queue *sq,
--				     struct nix_cqe_tx_s *cqe)
-+				     struct nix_cqe_tx_s *cqe,
-+				     int *xsk_frames)
- {
- 	struct nix_send_comp_s *snd_comp = &cqe->comp;
- 	struct sg_list *sg;
-@@ -112,10 +114,15 @@ static void otx2_xdp_snd_pkt_handler(struct otx2_nic *pfvf,
- 
- 	sg = &sq->sg[snd_comp->sqe_id];
- 
-+	if (sg->flags & OTX2_AF_XDP_FRAME) {
-+		(*xsk_frames)++;
-+		return;
-+	}
-+
- 	iova = sg->dma_addr[0] - OTX2_HEAD_ROOM;
- 	pa = otx2_iova_to_phys(pfvf->iommu_domain, iova);
- 	page = virt_to_page(phys_to_virt(pa));
--	if (sg->flags & XDP_REDIRECT)
-+	if (sg->flags & OTX2_XDP_REDIRECT)
- 		otx2_dma_unmap_page(pfvf, sg->dma_addr[0], sg->size[0], DMA_TO_DEVICE);
- 
- 	if (page->pp) {
-@@ -444,6 +451,18 @@ int otx2_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq)
- 	return cnt - cq->pool_ptrs;
- }
- 
-+static void otx2_zc_submit_pkts(struct otx2_nic *pfvf, struct xsk_buff_pool *xsk_pool,
-+				int *xsk_frames, int qidx, int budget)
-+{
-+	if (*xsk_frames)
-+		xsk_tx_completed(xsk_pool, *xsk_frames);
-+
-+	if (xsk_uses_need_wakeup(xsk_pool))
-+		xsk_set_tx_need_wakeup(xsk_pool);
-+
-+	otx2_zc_napi_handler(pfvf, xsk_pool, qidx, budget);
-+}
-+
- static int otx2_tx_napi_handler(struct otx2_nic *pfvf,
- 				struct otx2_cq_queue *cq, int budget)
- {
-@@ -452,16 +471,22 @@ static int otx2_tx_napi_handler(struct otx2_nic *pfvf,
- 	struct nix_cqe_tx_s *cqe;
- 	struct net_device *ndev;
- 	int processed_cqe = 0;
-+	int xsk_frames = 0;
-+
-+	qidx = cq->cq_idx - pfvf->hw.rx_queues;
-+	sq = &pfvf->qset.sq[qidx];
- 
- 	if (cq->pend_cqe >= budget)
- 		goto process_cqe;
- 
--	if (otx2_nix_cq_op_status(pfvf, cq) || !cq->pend_cqe)
-+	if (otx2_nix_cq_op_status(pfvf, cq) || !cq->pend_cqe) {
-+		if (sq->xsk_pool)
-+			otx2_zc_submit_pkts(pfvf, sq->xsk_pool, &xsk_frames,
-+					    qidx, budget);
- 		return 0;
-+	}
- 
- process_cqe:
--	qidx = cq->cq_idx - pfvf->hw.rx_queues;
--	sq = &pfvf->qset.sq[qidx];
- 
- 	while (likely(processed_cqe < budget) && cq->pend_cqe) {
- 		cqe = (struct nix_cqe_tx_s *)otx2_get_next_cqe(cq);
-@@ -471,10 +496,8 @@ static int otx2_tx_napi_handler(struct otx2_nic *pfvf,
- 			break;
- 		}
- 
--		qidx = cq->cq_idx - pfvf->hw.rx_queues;
--
- 		if (cq->cq_type == CQ_XDP)
--			otx2_xdp_snd_pkt_handler(pfvf, sq, cqe);
-+			otx2_xdp_snd_pkt_handler(pfvf, sq, cqe, &xsk_frames);
- 		else
- 			otx2_snd_pkt_handler(pfvf, cq, &pfvf->qset.sq[qidx],
- 					     cqe, budget, &tx_pkts, &tx_bytes);
-@@ -515,6 +538,10 @@ static int otx2_tx_napi_handler(struct otx2_nic *pfvf,
- 		    netif_carrier_ok(ndev))
- 			netif_tx_wake_queue(txq);
- 	}
-+
-+	if (sq->xsk_pool)
-+		otx2_zc_submit_pkts(pfvf, sq->xsk_pool, &xsk_frames, qidx, budget);
-+
- 	return 0;
- }
- 
-@@ -1506,7 +1533,7 @@ static bool otx2_xdp_rcv_pkt_handler(struct otx2_nic *pfvf,
- 		qidx += pfvf->hw.tx_queues;
- 		cq->pool_ptrs++;
- 		return otx2_xdp_sq_append_pkt(pfvf, cqe->sg.seg_addr,
--					      cqe->sg.seg_size, qidx, XDP_TX);
-+					      cqe->sg.seg_size, qidx, OTX2_XDP_TX);
- 	case XDP_REDIRECT:
- 		cq->pool_ptrs++;
- 		if (xsk_buff) {
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
-index 8f346fbc8221..acf259d72008 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
-@@ -106,6 +106,8 @@ struct otx2_snd_queue {
- 	/* SQE ring and CPT response queue for Inline IPSEC */
- 	struct qmem		*sqe_ring;
- 	struct qmem		*cpt_resp;
-+	/* Buffer pool for af_xdp zero-copy */
-+	struct xsk_buff_pool    *xsk_pool;
- } ____cacheline_aligned_in_smp;
- 
- enum cq_type {
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_xsk.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_xsk.c
-index 13dcbbe6112d..3c9445055a54 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_xsk.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_xsk.c
-@@ -140,11 +140,14 @@ int otx2_xsk_pool_disable(struct otx2_nic *pf, u16 qidx)
- {
- 	struct net_device *netdev = pf->netdev;
- 	struct xsk_buff_pool *pool;
-+	struct otx2_snd_queue *sq;
- 
- 	pool = xsk_get_pool_from_qid(netdev, qidx);
- 	if (!pool)
- 		return -EINVAL;
- 
-+	sq = &pf->qset.sq[qidx + pf->hw.tx_queues];
-+	sq->xsk_pool = NULL;
- 	otx2_clean_up_rq(pf, qidx);
- 	clear_bit(qidx, pf->af_xdp_zc_qidx);
- 	xsk_pool_dma_unmap(pool, DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING);
-@@ -171,7 +174,7 @@ int otx2_xsk_wakeup(struct net_device *dev, u32 queue_id, u32 flags)
- 	if (pf->flags & OTX2_FLAG_INTF_DOWN)
- 		return -ENETDOWN;
- 
--	if (queue_id >= pf->hw.rx_queues)
-+	if (queue_id >= pf->hw.rx_queues || queue_id >= pf->hw.tx_queues)
- 		return -EINVAL;
- 
- 	cq_poll = &qset->napi[queue_id];
-@@ -179,8 +182,44 @@ int otx2_xsk_wakeup(struct net_device *dev, u32 queue_id, u32 flags)
- 		return -EINVAL;
- 
- 	/* Trigger interrupt */
--	if (!napi_if_scheduled_mark_missed(&cq_poll->napi))
-+	if (!napi_if_scheduled_mark_missed(&cq_poll->napi)) {
- 		otx2_write64(pf, NIX_LF_CINTX_ENA_W1S(cq_poll->cint_idx), BIT_ULL(0));
-+		otx2_write64(pf, NIX_LF_CINTX_INT_W1S(cq_poll->cint_idx), BIT_ULL(0));
-+	}
- 
- 	return 0;
- }
-+
-+void otx2_attach_xsk_buff(struct otx2_nic *pfvf, struct otx2_snd_queue *sq, int qidx)
-+{
-+	if (test_bit(qidx, pfvf->af_xdp_zc_qidx))
-+		sq->xsk_pool = xsk_get_pool_from_qid(pfvf->netdev, qidx);
-+}
-+
-+void otx2_zc_napi_handler(struct otx2_nic *pfvf, struct xsk_buff_pool *pool,
-+			  int queue, int budget)
-+{
-+	struct xdp_desc *xdp_desc = pool->tx_descs;
-+	int err, i, work_done = 0, batch;
-+
-+	budget = min(budget, otx2_read_free_sqe(pfvf, queue));
-+	batch = xsk_tx_peek_release_desc_batch(pool, budget);
-+	if (!batch)
-+		return;
-+
-+	for (i = 0; i < batch; i++) {
-+		dma_addr_t dma_addr;
-+
-+		dma_addr = xsk_buff_raw_get_dma(pool, xdp_desc[i].addr);
-+		err = otx2_xdp_sq_append_pkt(pfvf, dma_addr, xdp_desc[i].len,
-+					     queue, OTX2_AF_XDP_FRAME);
-+		if (!err) {
-+			netdev_err(pfvf->netdev, "AF_XDP: Unable to transfer packet err%d\n", err);
-+			break;
-+		}
-+		work_done++;
-+	}
-+
-+	if (work_done)
-+		xsk_tx_release(pool);
-+}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_xsk.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_xsk.h
-index 022b3433edbb..8047fafee8fe 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_xsk.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_xsk.h
-@@ -17,5 +17,8 @@ int otx2_xsk_pool_disable(struct otx2_nic *pf, u16 qid);
- int otx2_xsk_pool_alloc_buf(struct otx2_nic *pfvf, struct otx2_pool *pool,
- 			    dma_addr_t *dma, int idx);
- int otx2_xsk_wakeup(struct net_device *dev, u32 queue_id, u32 flags);
-+void otx2_zc_napi_handler(struct otx2_nic *pfvf, struct xsk_buff_pool *pool,
-+			  int queue, int budget);
-+void otx2_attach_xsk_buff(struct otx2_nic *pfvf, struct otx2_snd_queue *sq, int qidx);
- 
- #endif /* OTX2_XSK_H */
--- 
-2.25.1
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
