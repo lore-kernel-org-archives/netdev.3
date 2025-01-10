@@ -1,95 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED7120A5DD;
-	Fri, 10 Jan 2025 09:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF96209F31
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 09:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736502488; cv=none; b=jctq9F4wVtn2WV3qr3sPUnhKx7+oa3wLV4T4XrPnXJJbup4HnMIlnihGvvHpxewX3s2W7OkJxKefJzIw1jJYLY4O5dK2cVKaidYOejPW0sEQ2HITlGPBhgO7d8JqeTAm/IzDx+CUdQfeR5YM+G5XOuhMIco2TlDHrmsx7vYNSZE=
+	t=1736502553; cv=none; b=ahRyeLXpkBjwuMBgMXbteoDel5+IM79q2dMfeG3EZYE8mx4QFg5DvPjcJ/fDXYh1tlDGIpjeugwQwlZAXer9bTXVe2Rd1SRWw5OdnMm0XlMqqKLOIvLPt+6HPAx5eEbwYXAXB9byovT5EKA5YV6/uBbhtmRyt4JLSAMOZtjerPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736502488; c=relaxed/simple;
-	bh=mtBp3AyjCM/ZWQ3Dt+JtvHpf0ZzFbURIvx/WMvyfUuI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n+RmW4IXMZ+itA7gZo4W3kWKR8QsxNMVLOkbTUgUPnxYL5Ep/Mdb1EMPFxThyOsF77cyNBXnbq3lyPjxUgU6plqWJeaZi0L/cMOAhiQJSjzDjt5KFFyF0ZJYQqsIXJsoZESxKop8JvnDQg3LiUCvrmyXTN+o+1zVY081o/68f+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KReXlo1E; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736502553; c=relaxed/simple;
+	bh=qhsRGNUqK6OAKrKR2V1iKiCXi3FqvXqzYw8GoxWzqw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TG165zsoDkVTVi6Lza+O3poTmgzukfnoRRO1+hZE0HYWfPGwzSQ5znGLVxWl6zUDLWx+2btFu6GVCrP/tvAYDQkT+c7o+kCYsypqN1zakFScfbzhV685EEkb5hlDeGyeIIzUPtppKSH7/cqajEO1fDAtn75iylwymGwxNPsCg9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B5TG5MzY; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KReXlo1E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B09FC4CEE1;
-	Fri, 10 Jan 2025 09:48:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736502487;
-	bh=mtBp3AyjCM/ZWQ3Dt+JtvHpf0ZzFbURIvx/WMvyfUuI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KReXlo1El0w8Eap63jMfFIWC4zPSM2kfOrgoj3Jkx31AZjSNdG0fH3RYQ8OfbtH9o
-	 LlsKxxkkVgJ6xAWIWWnqvumXm0B1JceDx7P97H8XmNBwXQnQT5/bSt4N6rTltt/biM
-	 TiuvOPlYJEc0NxoetkPFTIhpKSAL4bCnD5BJc7jZWTXfM3GWJOmRUdFcsek3XU3RXH
-	 EZvpslsTygAb+pwz7iihaBmhmnvuC3dQbyV97ITCqBLLDYYoLsBgB4FH+UChAxiEZQ
-	 Sr7FC2Ky7vKsfHXieyhcF6+1u1fKDCnUFyGCg5Z4P8UNRaApimY4N37hm7UKa3N5Zy
-	 QqjhoEGN2AW1g==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5401ab97206so1888363e87.3;
-        Fri, 10 Jan 2025 01:48:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUrSYfhjj4VD9dt4YQh7UK+E+7RL+/RYIEoN91zYO+OjTgov4MXX6tkefUzXo7uQEARkyaligjjrN22Yso=@vger.kernel.org, AJvYcCVEBDbvKsrw0A1THKNP8vCSMJyNvOrMkb2HfmtyVtWIvnzW4brnHwzcxYofeQwih4VY8fvVTxiH@vger.kernel.org, AJvYcCVr6ual1KIDaJYTVo4PM47iKIrosqlPqOiKIO0gDe3TnvnJFSvYmUALVJinopqSEcfxqhHVnHK2ppfs+1bvDw==@vger.kernel.org, AJvYcCVtwTUW1ldjezhq2gmdVHB2dlvdV3j8MVCj7vFLxQYx6hW/YoCQ0kQEeWK1mRdjrHNlAmMdCKvS5wzrkgbP@vger.kernel.org, AJvYcCXlc/0KlnIfPUndd8IZ1cfFNS31pN7zUFCmCdVkVpZDiczVpVS/L3t/w513sAGotK+ThbY0mJH8l6Rz@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhBWpKGxbGR87sxMuIJ174bxayl77gnExTaOUmixJgdyvHTti6
-	fUkUnxSQh/l5w7ElJcSdVG7F2o2lLEQOehtKiXbrKWPyY24g+vpYjT1h6gSLb811jFbjqsv+2Vl
-	0xljRbI2rO6x15JynhGN/zTXKz6Q=
-X-Google-Smtp-Source: AGHT+IGw8EE7iwyfzN0h+0xxLtGtpQdXnmrLV+5rsgOpOep915zSvu0wEuCxYBjpYwWkvDsdG3N62lBbWn0iggorhOo=
-X-Received: by 2002:a05:6512:1196:b0:53f:231e:6f92 with SMTP id
- 2adb3069b0e04-542845491ffmr3512417e87.34.1736502485591; Fri, 10 Jan 2025
- 01:48:05 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B5TG5MzY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736502550;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aZr4uP1kpXqvKBmngNwvVhMpySxrRZICu1BEXbGGI18=;
+	b=B5TG5MzYjawtiRug+VISUYgaiodKP5t+JySCekzCKzgiSrAt+ch4fbV2omaw4kYZwV64A1
+	HiHhnZyW9yx6uYNu9AE/TDNVuLF/6jbiVJV80h7mcsinPGpXHrJ21aV92yIAx/TEep81VD
+	0xBF4aAIOo2yBjKbX//FLF+bS8HUuoI=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-493-wKXp7BsQNcmq4s0WIn0JVg-1; Fri, 10 Jan 2025 04:49:09 -0500
+X-MC-Unique: wKXp7BsQNcmq4s0WIn0JVg-1
+X-Mimecast-MFC-AGG-ID: wKXp7BsQNcmq4s0WIn0JVg
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5d124077928so1563947a12.0
+        for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 01:49:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736502548; x=1737107348;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aZr4uP1kpXqvKBmngNwvVhMpySxrRZICu1BEXbGGI18=;
+        b=hsso4iwWqRG9cvVvumuvjqBiEtTPaOgmaMaULnFRdZsLSyTRIdX4385NOIu1JTn5GH
+         E9DrBTYLkT0hOO114DNIl+7FCEldZVAfE2nWkqavgdm5ioVPtVT3pal2VCqc7/ONLoVe
+         UK+krTDI6XGlin41Z8o5iaWGxEubBZyrZRxVwdtx7jupoTWS1pObjhRlwzYdPUWIQ+0T
+         oRtw61OpxJ1Slg3haRIRa7BVRtGEmTX6SRnC7Y4N1aHscPEM1DBycxQat8qVYuqhxO7T
+         cxfq6gh8n7HNkARFGtbHb7So6l4GVw+s8wOhJKs9BqIRcIg5qTtoK93ldUfOSA618xqJ
+         JY0Q==
+X-Gm-Message-State: AOJu0YxVgOwHxjPKqc7zNmVGvY2FSDMn4iWMUzvw/ADCwXGMOnN40wht
+	dijuX9sAcsfwiFHpuH50P7FjcXMLPHN7j8LG/67FrlJ+KoLVE02YESGfpojngWfbLpOPx7FAiw0
+	5JSDmJSWjtDb7ANZ5zJFerP5w0rI8zTyXzb0Agw+viKsjdiKV++LJmg==
+X-Gm-Gg: ASbGncvyCMLdpCt8m1byaNR5V6Ybs0Yyi1YbfLeITVcXtbhH/BG+4JJMF/soXAVFbJ6
+	UVwee2whyl0jpcxoYIj0aFD/8kT/SsrIsf77Jm/vXfhkWixRcu2ArF7JruLfsRRmJbBnADMXdIo
+	+tvvsr41matXFZaIzPYQk7eUNa/gUKAbw0daP1YBcdncuHsBKGX7yPzbDBJD/RZQYJg+YaY/pET
+	HzI/bq7HCvYBdK9Lsg/vgYxyt8MItacy1GGmK+eft/b4tofqUwOAcBxkUmH
+X-Received: by 2002:a05:6402:321a:b0:5d3:cff5:634f with SMTP id 4fb4d7f45d1cf-5d972e4ee26mr9809151a12.24.1736502547977;
+        Fri, 10 Jan 2025 01:49:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE7NcV6qvOmi3pOuIGf31hIeLvRpTDpjsTfMUkfqpvbiE2Dvo13pJInSk8Nx0om0nJMaf5Oqg==
+X-Received: by 2002:a05:6402:321a:b0:5d3:cff5:634f with SMTP id 4fb4d7f45d1cf-5d972e4ee26mr9809135a12.24.1736502547530;
+        Fri, 10 Jan 2025 01:49:07 -0800 (PST)
+Received: from leonardi-redhat ([176.206.32.19])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d99008c29fsm1446933a12.9.2025.01.10.01.49.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2025 01:49:06 -0800 (PST)
+Date: Fri, 10 Jan 2025 10:49:02 +0100
+From: Luigi Leonardi <leonardi@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, Wongi Lee <qwerty@theori.io>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Eric Dumazet <edumazet@google.com>, kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>, Jakub Kicinski <kuba@kernel.org>, 
+	Michal Luczaj <mhal@rbox.co>, virtualization@lists.linux.dev, 
+	Bobby Eshleman <bobby.eshleman@bytedance.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net v2 5/5] vsock: prevent null-ptr-deref in
+ vsock_*[has_data|has_space]
+Message-ID: <7ve3d5nuqddbdxbocmexobolzdf4qzsmro7kknnwkuqetznkfk@lispccbzv3lg>
+References: <20250110083511.30419-1-sgarzare@redhat.com>
+ <20250110083511.30419-6-sgarzare@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250110010313.1471063-1-dhowells@redhat.com> <20250110010313.1471063-3-dhowells@redhat.com>
- <20250110055058.GA63811@sol.localdomain> <1478993.1736493228@warthog.procyon.org.uk>
-In-Reply-To: <1478993.1736493228@warthog.procyon.org.uk>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 10 Jan 2025 10:47:54 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXE2mhXJaa9uq==Xki3On9ZKYY+KV-oH0ednqWC6b9BTYw@mail.gmail.com>
-X-Gm-Features: AbW1kvZNBd0gTj-dTR8eQGzNskVAFPXnGvmvtM6UKqY4sqGaw8a7UTaWuNi-eRE
-Message-ID: <CAMj1kXE2mhXJaa9uq==Xki3On9ZKYY+KV-oH0ednqWC6b9BTYw@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/8] crypto/krb5: Provide Kerberos 5 crypto through
- AEAD API
-To: David Howells <dhowells@redhat.com>
-Cc: Eric Biggers <ebiggers@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Chuck Lever <chuck.lever@oracle.com>, Trond Myklebust <trond.myklebust@hammerspace.com>, 
-	"David S. Miller" <davem@davemloft.net>, Marc Dionne <marc.dionne@auristor.com>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, linux-crypto@vger.kernel.org, 
-	linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250110083511.30419-6-sgarzare@redhat.com>
 
-On Fri, 10 Jan 2025 at 08:14, David Howells <dhowells@redhat.com> wrote:
+On Fri, Jan 10, 2025 at 09:35:11AM +0100, Stefano Garzarella wrote:
+>Recent reports have shown how we sometimes call vsock_*_has_data()
+>when a vsock socket has been de-assigned from a transport (see attached
+>links), but we shouldn't.
 >
-> Eric Biggers <ebiggers@kernel.org> wrote:
+>Previous commits should have solved the real problems, but we may have
+>more in the future, so to avoid null-ptr-deref, we can return 0
+>(no space, no data available) but with a warning.
 >
-> > It sounds like a lot of workarounds had to be implemented to fit these
-> > protocols into the crypto_aead API.
-> >
-> > It also seems unlikely that there will be other implementations of these
-> > protocols added to the kernel, besides the one you're adding in crypto/krb5/.
-> >
-> > Given that, providing this functionality as library functions instead would be
-> > much simpler.  Take a look at how crypto/kdf_sp800108.c works, for example.
+>This way the code should continue to run in a nearly consistent state
+>and have a warning that allows us to debug future problems.
 >
-> Yes.  That's how I did my first implementation.  I basically took the code
-> from net/sunrpc/auth_gss/ and made it more generic.  Herbert wants it done
-> this way, however.  :-/
+>Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+>Cc: stable@vger.kernel.org
+>Link: https://lore.kernel.org/netdev/Z2K%2FI4nlHdfMRTZC@v4bel-B760M-AORUS-ELITE-AX/
+>Link: https://lore.kernel.org/netdev/5ca20d4c-1017-49c2-9516-f6f75fd331e9@rbox.co/
+>Link: https://lore.kernel.org/netdev/677f84a8.050a0220.25a300.01b3.GAE@google.com/
+>Co-developed-by: Hyunwoo Kim <v4bel@theori.io>
+>Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+>Co-developed-by: Wongi Lee <qwerty@theori.io>
+>Signed-off-by: Wongi Lee <qwerty@theori.io>
+>Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>---
+> net/vmw_vsock/af_vsock.c | 9 +++++++++
+> 1 file changed, 9 insertions(+)
+>
+>diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>index 74d35a871644..fa9d1b49599b 100644
+>--- a/net/vmw_vsock/af_vsock.c
+>+++ b/net/vmw_vsock/af_vsock.c
+>@@ -879,6 +879,9 @@ EXPORT_SYMBOL_GPL(vsock_create_connected);
+>
+> s64 vsock_stream_has_data(struct vsock_sock *vsk)
+> {
+>+	if (WARN_ON(!vsk->transport))
+>+		return 0;
+>+
+> 	return vsk->transport->stream_has_data(vsk);
+> }
+> EXPORT_SYMBOL_GPL(vsock_stream_has_data);
+>@@ -887,6 +890,9 @@ s64 vsock_connectible_has_data(struct vsock_sock *vsk)
+> {
+> 	struct sock *sk = sk_vsock(vsk);
+>
+>+	if (WARN_ON(!vsk->transport))
+>+		return 0;
+>+
+> 	if (sk->sk_type == SOCK_SEQPACKET)
+> 		return vsk->transport->seqpacket_has_data(vsk);
+> 	else
+>@@ -896,6 +902,9 @@ EXPORT_SYMBOL_GPL(vsock_connectible_has_data);
+>
+> s64 vsock_stream_has_space(struct vsock_sock *vsk)
+> {
+>+	if (WARN_ON(!vsk->transport))
+>+		return 0;
+>+
+> 	return vsk->transport->stream_has_space(vsk);
+> }
+> EXPORT_SYMBOL_GPL(vsock_stream_has_space);
+>-- 
+>2.47.1
 >
 
-What is the reason for shoehorning any of this into the crypto API?
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
 
-I agree with Eric here: it seems both the user (Kerberos) and the
-crypto API are worse off here, due to mutual API incompatibilities
-that seem rather fundamental.
+Thanks!
+Luigi
 
-Are you anticipating other, accelerated implementations of the
-combined algorithms? Isn't it enough to rely on the existing Camellia
-and AES code? Mentioning 'something like the Intel QAT' doesn't
-suggest you have something specific in mind.
-
-Also, this patch is rather big and therefore hard to review.
