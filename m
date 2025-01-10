@@ -1,150 +1,179 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453D720C019
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB10207A33
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736508324; cv=none; b=K3a6QEp0NWdIz3RdVpqNP34m9b/XddEfY6uiQ8yI9QK9rPH99xT7IaPpoAt1uiLEqUcvCdxyMIr3YoI+JfqMuLBD8z7SyOvpDL0JD2Drx5BV0uYf/JTZdxFSy9gg1Ey3/y2Qelvm7hRfURI2sg0wzOwoJm/YLAvwjuAorMtRcDY=
+	t=1736508439; cv=none; b=Zp0sVBjBTPIqxi1DP8ky87X53wqz81Ugdj4CpzWEidjuer/cbvuCDy8JnP9p16feitlLQ7zNRH+ZeANPAvVgJhOmJ92e42vyaeLvjsX1LAkYxZ2B2er6SzA8zS73VhySlOqkXTcWSGSNUqYwwtV563kQDTBk0ZXoOpPwD9lc+tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736508324; c=relaxed/simple;
-	bh=h+3V8Dg/wI18YbTuYBPBYgVfFTOtZGjB+ocTQMzeqlo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aiu6DnJFYxLWXefnkSP19llrOhuXqULV1+OWpJTaqdxYpB1ZiG2L1Exz4p80pQOkRncHB1jn0ndxgA+2C9pWFNM7umX0Y5CzmStjIfLP+M7fPWWqhlR3qcY1uPOvRm/uyyPhZMExZxJVkxMDfp/9FUoG1wPrBccTkvaCnP6148c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i/hWQFu/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i/hWQFu/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736508322;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4Ef2wLHVQGV1IsoMPeKXi5uZyvCqMew4uoHW3wntJAQ=;
-	b=i/hWQFu/XlsmwkjawqwXRu2SzMhUYO+RllhSxgLCm/PdbijVCwwegj5tJdxhuNz3vjnLra
-	ggXI3LPmSMtXUXjVK4wXemf57wDYuQU8WF1oHp1Tgc6MvpWSwg9O86mosVeSDZ0IB3HdJa
-	ibY7DzglQFglss9gVxkZSfiUmAzDEYw=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-421-N8l43eN_N-iwZ8vNmApwug-1; Fri, 10 Jan 2025 06:25:18 -0500
-X-MC-Unique: N8l43eN_N-iwZ8vNmApwug-1
-X-Mimecast-MFC-AGG-ID: N8l43eN_N-iwZ8vNmApwug
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-aa66bc3b46dso150359666b.3
-        for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 03:25:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736508318; x=1737113118;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4Ef2wLHVQGV1IsoMPeKXi5uZyvCqMew4uoHW3wntJAQ=;
-        b=QwTQGf9VqRpE39Bdwe3VoFQvtJfjmQ8aNssigprBKJoDhv7mIMxqwTq4ZmQD0BtwON
-         wgnoMcs25DYo63mB5oEnpQNToL9radX6bPcNSUmS950XZ85fX7oRIbouprBoNaZWYLGW
-         II2yE4LdXN8EuMTE4s94RxOwVjkGV4f2nDlmPK4hiAk7b7F6sHNMpJXcduSQGYYyPfHZ
-         2OG/2zDzbEUO9ZErBS4blKsRviaBqGxq2Vy+VgVHsAj5QOWOpnbZcHAqZZi7gYBS6n61
-         4cL3C6JNS/p2sZF5LdLGAGkJjNmTXGVp/w35ADfliR+ITmbYk+limCvdt52UAdV+RoYO
-         2v0A==
-X-Gm-Message-State: AOJu0YxHsEp20dFUh0gNsFHvqOFDf3aSBI8bD8qQEzGnVlB8V7NYPHgN
-	BGfjSt3TtVE0kkn13e8goJ6LK6mKl/mcimcQgZYoSaTtU/ba4aI6ICAiGfpiYk7cHlpQSHBpSXB
-	JX5P9U4LFUwuT1MoO6eRRR/2pTy26s76f+nzcD6E5JxCOo7C0ufiCHQ==
-X-Gm-Gg: ASbGncsS9LQscej2vOAnzTh8JPxE1o7azzn/GaZ+dQcPz1ygMSEU/6KxF7HUO7xQz56
-	cbf7ejd544B5YnPXHIzEhJ01rpCsi5ntLNJCEJpeOrpTAfIZuyOQBmcPx1tBTRj+S3QAeyvqn7H
-	Gc0VH+fPuJJW4L7SYZd+A07PEAO5bbzwugjer+sm3/kcA3qpobZWLqGDokamb0Wtf4pBDsUWrnq
-	2ODm/oARQAYnvNX+UK9/8nQ0JI5chgNVfJ5vCUc+NlcPSG3Z7YJ70S6WFfQX6M=
-X-Received: by 2002:a05:6402:5194:b0:5d0:fb56:3f with SMTP id 4fb4d7f45d1cf-5d972e0e341mr23290978a12.12.1736508317703;
-        Fri, 10 Jan 2025 03:25:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH3mqsKI2idLOS3bFseUHtOVmXbXG31Er639vFwFDT2akA/HfPxaQl8uNFpTeEdJZcPXxQTRg==
-X-Received: by 2002:a05:6402:5194:b0:5d0:fb56:3f with SMTP id 4fb4d7f45d1cf-5d972e0e341mr23290897a12.12.1736508317029;
-        Fri, 10 Jan 2025 03:25:17 -0800 (PST)
-Received: from sgarzare-redhat ([193.207.202.103])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c95af694sm159293266b.144.2025.01.10.03.25.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2025 03:25:16 -0800 (PST)
-Date: Fri, 10 Jan 2025 12:25:09 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Luigi Leonardi <leonardi@redhat.com>
-Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Wongi Lee <qwerty@theori.io>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Eric Dumazet <edumazet@google.com>, kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>, Jakub Kicinski <kuba@kernel.org>, 
-	Michal Luczaj <mhal@rbox.co>, virtualization@lists.linux.dev, 
-	Bobby Eshleman <bobby.eshleman@bytedance.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net v2 4/5] vsock: reset socket state when de-assigning
- the transport
-Message-ID: <fjx4nkajq3cnaxdbvs3dd2sxtc35tkqlqti3h44t3xuefclwar@havkg6jfisxu>
-References: <20250110083511.30419-1-sgarzare@redhat.com>
- <20250110083511.30419-5-sgarzare@redhat.com>
- <esoasx64en34ixiylalt2hldqi5duvvzrpt65xq7nioro7gbbb@rhp6lth5grj4>
+	s=arc-20240116; t=1736508439; c=relaxed/simple;
+	bh=86aNBKdbVeEYwrNY3ykEWWFCcFhj7ebi7u4x5u+Gqg0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PBk/XdSEaeJaF35kDSh01J7mSCjk2L5QaaR1rWiWBb1rTlDobByzI3eXFyvG44QBI/1Ktdg+Ea7H4PhXeRFHm1zSsqfSczlgvYkIWxCpyA3lrOqLx29DrBqlqfZ0F/kIj0h6uRV7hR1wUFS6i47qN24JQZ6+BT8AWTLch5XJrN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tWDAa-0004ug-2V
+	for netdev@vger.kernel.org; Fri, 10 Jan 2025 12:27:16 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tWDAZ-0009cO-2h
+	for netdev@vger.kernel.org;
+	Fri, 10 Jan 2025 12:27:15 +0100
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id 83BAF3A45AF
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:15 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 52DF73A458B;
+	Fri, 10 Jan 2025 11:27:14 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id d4c76e2f;
+	Fri, 10 Jan 2025 11:27:13 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: [PATCH net-next 0/18] pull-request: can-next 2025-01-10
+Date: Fri, 10 Jan 2025 12:04:08 +0100
+Message-ID: <20250110112712.3214173-1-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <esoasx64en34ixiylalt2hldqi5duvvzrpt65xq7nioro7gbbb@rhp6lth5grj4>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Fri, Jan 10, 2025 at 11:56:28AM +0100, Luigi Leonardi wrote:
->On Fri, Jan 10, 2025 at 09:35:10AM +0100, Stefano Garzarella wrote:
->>Transport's release() and destruct() are called when de-assigning the
->>vsock transport. These callbacks can touch some socket state like
->>sock flags, sk_state, and peer_shutdown.
->>
->>Since we are reassigning the socket to a new transport during
->>vsock_connect(), let's reset these fields to have a clean state with
->>the new transport.
->>
->>Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
->>Cc: stable@vger.kernel.org
->>Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->>---
->>net/vmw_vsock/af_vsock.c | 9 +++++++++
->>1 file changed, 9 insertions(+)
->>
->>diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->>index 5cf8109f672a..74d35a871644 100644
->>--- a/net/vmw_vsock/af_vsock.c
->>+++ b/net/vmw_vsock/af_vsock.c
->>@@ -491,6 +491,15 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
->>		 */
->>		vsk->transport->release(vsk);
->>		vsock_deassign_transport(vsk);
->>+
->>+		/* transport's release() and destruct() can touch some socket
->>+		 * state, since we are reassigning the socket to a new transport
->>+		 * during vsock_connect(), let's reset these fields to have a
->>+		 * clean state.
->>+		 */
->>+		sock_reset_flag(sk, SOCK_DONE);
->>+		sk->sk_state = TCP_CLOSE;
->>+		vsk->peer_shutdown = 0;
->>	}
->>
->>	/* We increase the module refcnt to prevent the transport unloading
->>-- 
->>2.47.1
->>
->
->Hi Stefano,
->I spent some time investigating what would happen if the scheduled work
->ran before `virtio_transport_cancel_close_work`. IIUC that should do 
->no harm and all the fields are reset correctly.
+Hello netdev-team,
 
-Yep, after transport->destruct() call, the delayed work should have 
-already finished or canceled.
+this is a pull request of 18 patches for net-next/master.
 
->
->Thank you,
->Luigi
->
->Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
->
+Pierre-Henry Moussay adds PIC64GX compatibility to the DT bindings for
+Microchip's mpfs-can IP core.
 
-Thanks for the review,
-Stefano
+The next 3 patches are by Sean Nyekjaer and target the tcan4x5x
+driver. First the DT bindings is converted to DT schema, then nWKRQ
+voltage selection is added to the driver.
+
+Dario Binacchi's patch for the sun4i_can makes the driver more
+consistent by adding a likely() to the driver.
+
+Another patch by Sean Nyekjaer for the tcan4x5x driver gets rid of a
+false error message.
+
+Charan Pedumuru converts the atmel-can DT bindings to DT schema.
+
+The next 2 patches are by Oliver Hartkopp. The first one maps Oliver's
+former mail addresses to a dedicated CAN mail address. The second one
+assigns net/sched/em_canid.c additionally to the CAN maintainers.
+
+Ariel Otilibili's patch removes dead code from the CAN dev helper.
+
+The next 3 patches are by Sean Nyekjaer and add HW standby support to
+the tcan4x5x driver.
+
+A patch by Dario Binacchi fixes the DT bindings for the st,stm32-bxcan
+driver.
+
+The last 4 patches are by Jimmy Assarsson and target the kvaser_usb
+and the kvaser_pciefd driver: error statistics are improved and
+CAN_CTRLMODE_BERR_REPORTING is added.
+
+regards,
+Marc
+
+---
+
+The following changes since commit 65ae975e97d5aab3ee9dc5ec701b12090572ed43:
+
+  Merge tag 'net-6.13-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2024-11-28 10:15:20 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next.git tags/linux-can-next-for-6.14-20250110
+
+for you to fetch changes up to c1a6911485b022e093c589c295a953ff744112b9:
+
+  Merge patch series "can: kvaser_usb: Update stats and state even if alloc_can_err_skb() fails" (2025-01-10 11:32:43 +0100)
+
+----------------------------------------------------------------
+linux-can-next-for-6.14-20250110
+
+----------------------------------------------------------------
+Ariel Otilibili (1):
+      can: dev: can_get_state_str(): Remove dead code
+
+Charan Pedumuru (1):
+      dt-bindings: net: can: atmel: Convert to json schema
+
+Dario Binacchi (2):
+      can: sun4i_can: continue to use likely() to check skb
+      dt-bindings: can: st,stm32-bxcan: fix st,gcan property type
+
+Jimmy Assarsson (4):
+      can: kvaser_usb: Update stats and state even if alloc_can_err_skb() fails
+      can: kvaser_usb: Add support for CAN_CTRLMODE_BERR_REPORTING
+      can: kvaser_pciefd: Update stats and state even if alloc_can_err_skb() fails
+      can: kvaser_pciefd: Add support for CAN_CTRLMODE_BERR_REPORTING
+
+Marc Kleine-Budde (3):
+      Merge patch series "can: tcan4x5x: add option for selecting nWKRQ voltage"
+      Merge patch series "can: tcan4x5x/m_can: use standby mode when down and in suspend"
+      Merge patch series "can: kvaser_usb: Update stats and state even if alloc_can_err_skb() fails"
+
+Oliver Hartkopp (2):
+      mailmap: add an entry for Oliver Hartkopp
+      MAINTAINERS: assign em_canid.c additionally to CAN maintainers
+
+Pierre-Henry Moussay (1):
+      dt-bindings: can: mpfs: add PIC64GX CAN compatibility
+
+Sean Nyekjaer (7):
+      dt-bindings: can: convert tcan4x5x.txt to DT schema
+      dt-bindings: can: tcan4x5x: Document the ti,nwkrq-voltage-vio option
+      can: tcan4x5x: add option for selecting nWKRQ voltage
+      can: tcan4x5x: get rid of false clock errors
+      can: m_can: add deinit callback
+      can: tcan4x5x: add deinit callback to set standby mode
+      can: m_can: call deinit/init callback when going into suspend/resume
+
+ .mailmap                                           |   2 +
+ .../bindings/net/can/atmel,at91sam9263-can.yaml    |  58 ++++++
+ .../devicetree/bindings/net/can/atmel-can.txt      |  15 --
+ .../bindings/net/can/microchip,mpfs-can.yaml       |   6 +-
+ .../bindings/net/can/st,stm32-bxcan.yaml           |   2 +-
+ .../devicetree/bindings/net/can/tcan4x5x.txt       |  48 -----
+ .../devicetree/bindings/net/can/ti,tcan4x5x.yaml   | 199 +++++++++++++++++++++
+ MAINTAINERS                                        |   1 +
+ drivers/net/can/dev/dev.c                          |   2 -
+ drivers/net/can/kvaser_pciefd.c                    |  81 +++++----
+ drivers/net/can/m_can/m_can.c                      |  22 ++-
+ drivers/net/can/m_can/m_can.h                      |   1 +
+ drivers/net/can/m_can/tcan4x5x-core.c              |  30 +++-
+ drivers/net/can/m_can/tcan4x5x.h                   |   2 +
+ drivers/net/can/sun4i_can.c                        |   2 +-
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c   |   3 +-
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c  | 133 ++++++--------
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c   |  38 ++--
+ 18 files changed, 432 insertions(+), 213 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/can/atmel,at91sam9263-can.yaml
+ delete mode 100644 Documentation/devicetree/bindings/net/can/atmel-can.txt
+ delete mode 100644 Documentation/devicetree/bindings/net/can/tcan4x5x.txt
+ create mode 100644 Documentation/devicetree/bindings/net/can/ti,tcan4x5x.yaml
 
