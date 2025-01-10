@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8B220C48C
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E6A20C496
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736508443; cv=none; b=sAJEo6j8ScgcsP99HhrfqccslEPcToSyubEXaSH8u3Jldm6iF8kXPUiAdabf3gAk2CJyRYOFxPtEKLCC2fC4JFI7STGLJoMYzHU/j7tVokU+OlcqOFcHWf94O5D9m+fksW5IhKV1fV96hTnJ14MbYusSnB7tb/rtBCpYoI2H8RU=
+	t=1736508446; cv=none; b=XDmnotnhg9QxT5yHilTaObw3V4i4qb371WTf2QUbkM6Rb/5PaYAoxnqra+9HcrDDKCsku9o07QM2QL2yUZEawuNrtdEMs3mZyPai8ZHj/kAanNxZGN/u0y4KJ7xyuQvEzdqqrLjnmivhEreBjYX28TCTP3sbYl9QBNt15pempCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736508443; c=relaxed/simple;
-	bh=jZOoArx5Qmm4yKv1HrwNliFc2jlah4YW0HrKIWnMJUY=;
+	s=arc-20240116; t=1736508446; c=relaxed/simple;
+	bh=0jO7onsQM5Y4j93q1yncyykb3cPDhGX2t2eVpY8VjIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DBWtzGMc5J1tewDSncWS69RsGzEt6iJNdR+vsFOeNta3cz4F7hh60pbsw9gIJsa5p13ClZGctnwleoEHo50QbbC5XMi91jBuseN3j5UclUJ7B4HgFqVK9SAlOcgBSCNQkLomAmHUb+qWCSdEuEoHj7vDRWsAEYFTKb5DppD6ga8=
+	 MIME-Version; b=HxIR8bmwUJ9x41t5ftKGBB6QTKwe/H1iUmeavjNWXDo0RY5C8BCa1eswRQ5zY4KLVbTTl+czPeemNFDi01ZFp2xcmzY1j0mzMc/olucrMHpyDrlkqeSl7O1vds+zW/DMazFx60PJiN6GhfwGh2ZHHYu/Nn2NTnIxm332H5c4mN0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,26 +18,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tWDAe-000503-3C
-	for netdev@vger.kernel.org; Fri, 10 Jan 2025 12:27:20 +0100
+	id 1tWDAf-00052w-Dh
+	for netdev@vger.kernel.org; Fri, 10 Jan 2025 12:27:21 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tWDAb-0009fF-27
+	id 1tWDAc-0009hL-26
 	for netdev@vger.kernel.org;
-	Fri, 10 Jan 2025 12:27:17 +0100
+	Fri, 10 Jan 2025 12:27:18 +0100
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 56DFA3A45E6
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:17 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id 49B4F3A460E
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:18 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id B1EC43A4595;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id F21AC3A459E;
 	Fri, 10 Jan 2025 11:27:14 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 89f2dae8;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 5dd6ffc0;
 	Fri, 10 Jan 2025 11:27:14 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -45,11 +45,11 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Sean Nyekjaer <sean@geanix.com>,
+	Ariel Otilibili <ariel.otilibili-anieli@eurecom.fr>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 06/18] can: tcan4x5x: get rid of false clock errors
-Date: Fri, 10 Jan 2025 12:04:14 +0100
-Message-ID: <20250110112712.3214173-7-mkl@pengutronix.de>
+Subject: [PATCH net-next 10/18] can: dev: can_get_state_str(): Remove dead code
+Date: Fri, 10 Jan 2025 12:04:18 +0100
+Message-ID: <20250110112712.3214173-11-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20250110112712.3214173-1-mkl@pengutronix.de>
 References: <20250110112712.3214173-1-mkl@pengutronix.de>
@@ -65,35 +65,32 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Ariel Otilibili <ariel.otilibili-anieli@eurecom.fr>
 
-tcan4x5x devices only requires the clock "cclk", so call
-devm_clk_get() directly. This is done to avoid
-m_can_class_get_clocks() that checks for both hclk and cclk and
-results in this warning message:
+The default switch case ends with a return; meaning this return is
+never reached.
 
-| tcan4x5x spi0.0: no clock found
-
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20241128-mcancclk-v1-1-a93aac64dbae@geanix.com
+Coverity-ID: 1497123
+Signed-off-by: Ariel Otilibili <ariel.otilibili-anieli@eurecom.fr>
+Link: https://patch.msgid.link/20241221111454.1074285-4-ariel.otilibili-anieli@eurecom.fr
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/m_can/tcan4x5x-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/dev/dev.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/can/m_can/tcan4x5x-core.c b/drivers/net/can/m_can/tcan4x5x-core.c
-index 84b914056b7d..4c9454176607 100644
---- a/drivers/net/can/m_can/tcan4x5x-core.c
-+++ b/drivers/net/can/m_can/tcan4x5x-core.c
-@@ -409,7 +409,7 @@ static int tcan4x5x_can_probe(struct spi_device *spi)
- 		priv->power = NULL;
+diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
+index 6792c14fd7eb..93035a7d50f3 100644
+--- a/drivers/net/can/dev/dev.c
++++ b/drivers/net/can/dev/dev.c
+@@ -85,8 +85,6 @@ const char *can_get_state_str(const enum can_state state)
+ 	default:
+ 		return "<unknown>";
  	}
+-
+-	return "<unknown>";
+ }
+ EXPORT_SYMBOL_GPL(can_get_state_str);
  
--	m_can_class_get_clocks(mcan_class);
-+	mcan_class->cclk = devm_clk_get(mcan_class->dev, "cclk");
- 	if (IS_ERR(mcan_class->cclk)) {
- 		dev_err(&spi->dev, "no CAN clock source defined\n");
- 		freq = TCAN4X5X_EXT_CLK_DEF;
 -- 
 2.45.2
 
