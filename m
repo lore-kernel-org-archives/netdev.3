@@ -1,119 +1,123 @@
-Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940051E0DF6
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 02:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.154.197.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCF6502B1
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 03:01:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736477820; cv=none; b=m2TU6QlKSD/D/7INk8sKFiwRzK8RkQMFbyaS42gOfxUermnvSYQAfgLcQwnAhK9rPqHJA1zxg/+6rOvfNaoJOupzrwUkv97nlHA3j9Lws/bv44FQvdMvqjvEs5WVl9q9b/XkEXYTWutDWaGdqoxc3km6i7MpC/q3+ogGsjV73DA=
+	t=1736478084; cv=none; b=uTmyfeaoS5ZbezPnZxfL72pYLhthasCdmfcQk3udgPFcbpB/D+QGQxn+KedrZSRIjSTf6tLIuT2QU/Oi7/ipXWZ+xF01pH6QH+HHcCpN88Y7mhtAVkFluMHloQvQKU4JkCcChb0JGIsG/38w0DZXPejlnVm5E9JrEpNc7xxqbng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736477820; c=relaxed/simple;
-	bh=EqAXpSTba88t7/f4eE+0DY6Erk3S6gYtGNlxjWCgRNM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GWXDibZH2WBYx/V2vGHj8cEO4nM2lWbuR6kBtqtYSZlyO4lHuEZ76Z/labR9L5zMVPH3omJUHMOfkWB5DQLpXCN2vcbSLPS5Q62E3nBxi0980+zTM6uYcPGXsILvgAmarvqRjcpFuYHiTDJPBwFjHjRADRbEjHmPTu6B7QE1IjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=43.154.197.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: bizesmtpsz4t1736477790tv3445s
-X-QQ-Originating-IP: s7uppSCUMka7YVJGpFuwS6mmghL2M/BfDMjqssol4xc=
-Received: from wxdbg.localdomain.com ( [218.72.126.41])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 10 Jan 2025 10:56:21 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 16333353045298240945
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	linux@armlinux.org.uk,
-	horms@kernel.org,
-	jacob.e.keller@intel.com,
-	netdev@vger.kernel.org,
-	vadim.fedorenko@linux.dev
-Cc: mengyuanlou@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v3 0/4] Support PTP clock for Wangxun NICs
-Date: Fri, 10 Jan 2025 11:17:12 +0800
-Message-Id: <20250110031716.2120642-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.27.0
+	s=arc-20240116; t=1736478084; c=relaxed/simple;
+	bh=OxkOxjTS3fWMLwihl4/17Mf9luvPmMspJ48TJAbinbQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VgWdeQ/5fcPe+Cvm/r5U+mfANwkAmb7bZpO1E6/bBHMJ9XhklRydOBGQBpbqW1R8W+yMdTawyW8BKcsaY3EkV4CvFzp3fu9BiHVKXdZB9nC9N0jObokMeQAKmEP/M5hJf/S9Kl5VanUXsohXnUmOzRli5PgmwT4SpmPXLSP+eIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P2V4sMB/; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P2V4sMB/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736478083; x=1768014083;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OxkOxjTS3fWMLwihl4/17Mf9luvPmMspJ48TJAbinbQ=;
+  b=P2V4sMB/W3cl9G3SS9itQcH++hHA4vPWILXs6y60pQYHtfXCLw3gQWlD
+   P9tMT92+XAiDO5sEcCGIrGr8Ap9tn1Ca/40G3CjwNLlf9IzJFapxrAG9Y
+   HCDeQovmam7eLU0QeZZ4ORvtZK5xUtEgqfTiOxKi79o/3G3x0CvdQMuhP
+   c0e/NCSMKjGcloZzDPsJqJ+/4erVak6kd0W91IXVg2FWmhRBmuncJaO1d
+   fhypyS4tah46jWNe0KsgzzfIpY/SzLgEiJ/EkBrh3qLlFG8Ls6AbDTuJi
+   0R1yt8EAWxRfq1u7+InKZt0k54v7B5TDUrfav+9ZdR6peeSs7Xe5N5nFP
+   A==;
+X-CSE-ConnectionGUID: Jb64aDv+Soil8oG6bzJing==
+X-CSE-MsgGUID: HiGmgjIoQRKGzxPH+wq6Ew==
+X-IronPort-AV: E=McAfee;i="6700,10204,11310"; a="54306661"
+X-IronPort-AV: E=Sophos;i="6.12,302,1728975600"; 
+   d="scan'208";a="54306661"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2025 19:01:22 -0800
+X-CSE-ConnectionGUID: 6w9N8g2pRayk35v4Gfiu1A==
+X-CSE-MsgGUID: qGCggdHAT+CYpiYMF0jpow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,302,1728975600"; 
+   d="scan'208";a="104128428"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 09 Jan 2025 19:01:18 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tW5Gu-000IRn-00;
+	Fri, 10 Jan 2025 03:01:16 +0000
+Date: Fri, 10 Jan 2025 11:00:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ahmed Zaki <ahmed.zaki@intel.com>, netdev@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	intel-wired-lan@lists.osuosl.org, andrew+netdev@lunn.ch,
+	edumazet@google.com, kuba@kernel.org, horms@kernel.org,
+	pabeni@redhat.com, davem@davemloft.net, michael.chan@broadcom.com,
+	tariqt@nvidia.com, anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com, jdamato@fastly.com, shayd@nvidia.com,
+	akpm@linux-foundation.org, shayagr@amazon.com,
+	kalesh-anakkur.purayil@broadcom.com,
+	Ahmed Zaki <ahmed.zaki@intel.com>
+Subject: Re: [Intel-wired-lan] [PATCH net-next v4 3/6] net: napi: add CPU
+ affinity to napi_config
+Message-ID: <202501101047.KVl1kI5I-lkp@intel.com>
+References: <20250109233107.17519-4-ahmed.zaki@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: OfaQ+Y0DiXSPww0jL9eUKxznda9g6G2KbX/tK5zfwuvBkkhnWfatsrXI
-	KG+jvQMnwn2yTmvXG3y2PyjWKj06oxyxXFLDn/ZKfeVwy1uR16Ipo640pIROcUepT4WKNku
-	OIdGS2mNuVA7RTup9iHLp2kLBv6ZVjRZD2Z+smnM+9z6pBJrTPwGS5U9/LVxDPksEEu9dWZ
-	E+EydlvDzCsDfOVPc/Vx8BgSiLkY6dE/ja9JBGSGNd9YGdMEnZNzx7YoguqYkzUCOA4lAyn
-	t4byQW9nwTkOKSU5JtXhUFQDY7bGeLpyCNVOSsDj3ybWmYFXhYPUgQjIFy/rhFC4ZKxJIzz
-	RlTf+AKgvZRm8gdFOzYcXNzOOlSO2VApS7nkTw/PvjULeJB8JXeiTUY9OVlMsFT+yHIY7Vp
-	pE2gSGC17ydpj9aQ1U5kG++uOCWxp9BVkYVsrjiqT+fiK8Jv0O4ger2VTVAVnMds0EW+Ogv
-	1GEX7pgz1+8+xA/yxZ+dqjU/t51S1Jk7wTOvUUjzXFcxw0BPzqjIDbS8jzUMl+C1DfYlwTA
-	vL4BszrZ4MyDEmjimVGK0NIjZJkyY1366j/t2dhRaoWZjUwv45GodzUR+6/pr2vCbeZw7+R
-	q8lj1QdtH9e9uh7+bdT4fvnsa97pq568Qlz38kRPAKroLoKHdkyfkKp6+ZTb9qO2zWrRX3B
-	9tvtWo8uqgTwxLyoPPV8dBxUjqkBGip5yHDUEsUofPyB8L3kaqbkn4Hp1z0RYRlCBhwEZ+f
-	0DykecaUK0CwlW41312aQR9qc11sLI39lGQj9ogYXYBJb3TZ3L97KIQeQt47h59FOW576iy
-	vzJy2Uyg7HA/B9Uh90dH8+yBvKdHuIM0V2U0lgdBHpTr6C4rbcIxn2KnG4i6REbBrogR9r1
-	Kh1enZpv4OLwnvCv8Mk4m2qIwMRlOz/uvMPC5ixz+CnyDMcEbfr0yaghKAwtFwd3MqGwG1Q
-	x6POFuJUyuXzswwNCSd6+u05dU1KWY2QJt9XQr2S+hx1WbisdnJFWbJniS8wI/3xHQ/7H5I
-	slDhEYMLxTmz6aL0bZ
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250109233107.17519-4-ahmed.zaki@intel.com>
 
-Implement support for PTP clock on Wangxun NICs.
+Hi Ahmed,
 
-Changes in v3:
-- Link to v2: https://lore.kernel.org/all/20250106084506.2042912-1-jiawenwu@trustnetic.com/
-- Clean up messy patches
-- Return delay value in wx_ptp_do_aux_work()
-- Remove dev_warn()
-- Implement ethtool get_ts_stats
-- Support PTP_CLK_REQ_PEROUT instead of PTP_CLK_REQ_PPS
-- Change to start polling Tx timestamp once descriptor done bit is set
+kernel test robot noticed the following build errors:
 
-Changes in v2:
-- Link to v1: https://lore.kernel.org/all/20250102103026.1982137-1-jiawenwu@trustnetic.com/
-- Fix build warning
-- Convert to .ndo_hwtstamp_get and .ndo_hwtstamp_set
-- Remove needless timestamp flags
-- Use .do_aux_work instead of driver service task
-- Use the better error code
-- Rename function wx_ptp_start_cyclecounter()
-- Keep the register names consistent between comments and code
+[auto build test ERROR on net-next/main]
 
-Jiawen Wu (4):
-  net: wangxun: Add support for PTP clock
-  net: wangxun: Support to get ts info
-  net: wangxun: Implement do_aux_work of ptp_clock_info
-  net: ngbe: Add support for 1PPS and TOD
+url:    https://github.com/intel-lab-lkp/linux/commits/Ahmed-Zaki/net-move-ARFS-rmap-management-to-core/20250110-073339
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20250109233107.17519-4-ahmed.zaki%40intel.com
+patch subject: [Intel-wired-lan] [PATCH net-next v4 3/6] net: napi: add CPU affinity to napi_config
+config: arm-randconfig-003-20250110 (https://download.01.org/0day-ci/archive/20250110/202501101047.KVl1kI5I-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250110/202501101047.KVl1kI5I-lkp@intel.com/reproduce)
 
- drivers/net/ethernet/wangxun/libwx/Makefile   |    2 +-
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   |   52 +
- .../net/ethernet/wangxun/libwx/wx_ethtool.h   |    4 +
- drivers/net/ethernet/wangxun/libwx/wx_hw.c    |   19 +
- drivers/net/ethernet/wangxun/libwx/wx_hw.h    |    1 +
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |   51 +-
- drivers/net/ethernet/wangxun/libwx/wx_ptp.c   | 1031 +++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_ptp.h   |   20 +
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  105 ++
- .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |    2 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |   20 +-
- drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c |   11 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |    5 +
- .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |    2 +
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |   11 +
- .../net/ethernet/wangxun/txgbe/txgbe_phy.c    |   10 +
- 16 files changed, 1339 insertions(+), 7 deletions(-)
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_ptp.c
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_ptp.h
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501101047.KVl1kI5I-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> net/core/dev.c:6795:37: error: no member named 'rx_cpu_rmap' in 'struct net_device'
+    6795 |         struct cpu_rmap *rmap = napi->dev->rx_cpu_rmap;
+         |                                 ~~~~~~~~~  ^
+>> net/core/dev.c:6797:18: error: no member named 'napi_rmap_idx' in 'struct napi_struct'
+    6797 |         rmap->obj[napi->napi_rmap_idx] = NULL;
+         |                   ~~~~  ^
+   2 errors generated.
+
+
+vim +6795 net/core/dev.c
+
+064d6072cac4f4 Ahmed Zaki 2025-01-09  6789  
+064d6072cac4f4 Ahmed Zaki 2025-01-09  6790  static void
+064d6072cac4f4 Ahmed Zaki 2025-01-09  6791  netif_napi_affinity_release(struct kref *ref)
+064d6072cac4f4 Ahmed Zaki 2025-01-09  6792  {
+064d6072cac4f4 Ahmed Zaki 2025-01-09  6793  	struct napi_struct *napi =
+064d6072cac4f4 Ahmed Zaki 2025-01-09  6794  		container_of(ref, struct napi_struct, notify.kref);
+064d6072cac4f4 Ahmed Zaki 2025-01-09 @6795  	struct cpu_rmap *rmap = napi->dev->rx_cpu_rmap;
+064d6072cac4f4 Ahmed Zaki 2025-01-09  6796  
+064d6072cac4f4 Ahmed Zaki 2025-01-09 @6797  	rmap->obj[napi->napi_rmap_idx] = NULL;
+064d6072cac4f4 Ahmed Zaki 2025-01-09  6798  	cpu_rmap_put(rmap);
+064d6072cac4f4 Ahmed Zaki 2025-01-09  6799  }
+064d6072cac4f4 Ahmed Zaki 2025-01-09  6800  
 
 -- 
-2.27.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
