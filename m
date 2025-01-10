@@ -1,61 +1,108 @@
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A8820ADC3;
-	Fri, 10 Jan 2025 11:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2342220ADFF
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:55:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736509850; cv=none; b=HzvyzM00zNM2Ff5IaDYzkyVpps5rbtZtYzgi1m0upGi08C8qsd4Ar02s4AyCbwdgZQHko5lUfR63haCHlptLKdZxbQ1UW0bkiDAc2efb6TmU0HJvBlPGJe27VahO8orCf6QeZOEzl1NMkQggXOo3UV4QBICJwG7h/9atPcyOCRs=
+	t=1736510154; cv=none; b=UyHHw/FEoExDKbFDr3+mYemijA4mzznvYVDfdktNuIC/KyFiwdIe/SqfxdufLgHHoirDbrghUvlxad4qUTnVKnkFPRfBAV9tHQd6zjR8IEM5KGPW4rAKS7QmItv2aN3x/mdiNp0W2BfTpjOVIGsQbyIW8nh282W/M++NiChWxY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736509850; c=relaxed/simple;
-	bh=H+I9WuSCmkoW3OSUxjg8dHl/jaDJasJmlfxUpGRx7aY=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=MsNwhR8Auo48gmsev8RhsvQt5JUpojWcXWtn5tnkgVA9eRijHeBNkLlaBi9fQgKko4c5glTa5Qs0ShPanArJOwrPmSWL8uyeWV8r5QPF6YiYa5G54JhBLdfl1Vo3Vy1InwW9hs1w86VPgyqW0jKgfbiA/j9eQM4qSuutRIzn9ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 9CAB848FC1;
-	Fri, 10 Jan 2025 12:50:45 +0100 (CET)
-Message-ID: <8ae86a4b-1c4b-48cc-b584-f61f4e13ac4b@proxmox.com>
-Date: Fri, 10 Jan 2025 12:50:44 +0100
+	s=arc-20240116; t=1736510154; c=relaxed/simple;
+	bh=Fsfxz2Yqi9F5DV6PEsxBP8dlNuNGhbGhsOkKNA8EEb4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TJHupuvkOlpay7rfItYHjs6DVTvykW3un6yPDBLrCqPKURQLZ9BJdYyjOsxU1kw5flJ4myi0S4FJvgbeGk2+dd6soXOiWPYjEsc10R9CwRXfB5a72GdrpHxGsBbPKVtB6XrF+jq2Xpwh79vvM9iexR1+nnmA8dl+MROIkPxo8e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6EKDKf5; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6EKDKf5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83ACCC4CED6;
+	Fri, 10 Jan 2025 11:55:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736510153;
+	bh=Fsfxz2Yqi9F5DV6PEsxBP8dlNuNGhbGhsOkKNA8EEb4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=R6EKDKf5/bJffVT0v2JPBVVBPjpF8/VDbkvWMu39fxOdLEWKgjDirUPqpe5c6Bepb
+	 LdnxgStqEtxN3zgATBQX6ss5QF7GSSr8OgbbP5SB3VyZQ8riD1+6BjDyvNo91bhMDI
+	 /7T9JyaXXllefxVicPxFfoqPewpx5Bb+kcT6L6Kt2PIRyfUhEvQm2Wkj4+u9Mbm2wp
+	 zWQkCr7T8Qx5TZ7eZ7rdL4+W17T8qfkEQwV1+70neNPdZ9F8ekZf1esO8lZVeZx59T
+	 rE012vXJGapv89/MmgSSnJCkl+Dx5kGLXyWvjTvXDyWn+K/SCYBRrxZ7ancYXhPwwq
+	 yM8yj5v7U5G6A==
+Date: Fri, 10 Jan 2025 11:55:48 +0000
+From: Simon Horman <horms@kernel.org>
+To: Ahmed Zaki <ahmed.zaki@intel.com>
+Cc: netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+	andrew+netdev@lunn.ch, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, davem@davemloft.net, michael.chan@broadcom.com,
+	tariqt@nvidia.com, anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com, jdamato@fastly.com, shayd@nvidia.com,
+	akpm@linux-foundation.org, shayagr@amazon.com,
+	kalesh-anakkur.purayil@broadcom.com
+Subject: Re: [PATCH net-next v4 2/6] net: napi: add internal ARFS rmap
+ management
+Message-ID: <20250110115548.GB7706@kernel.org>
+References: <20250109233107.17519-1-ahmed.zaki@intel.com>
+ <20250109233107.17519-3-ahmed.zaki@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Friedrich Weber <f.weber@proxmox.com>
-Subject: Re: [ovs-dev] [PATCH net] openvswitch: fix lockup on tx to
- unregistering netdev with carrier
-To: Aaron Conole <aconole@redhat.com>, Ilya Maximets <i.maximets@ovn.org>
-Cc: netdev@vger.kernel.org, dev@openvswitch.org,
- Luca Czesla <luca.czesla@mail.schwarz>, linux-kernel@vger.kernel.org,
- Felix Huettner <felix.huettner@mail.schwarz>,
- Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "David S. Miller" <davem@davemloft.net>
-References: <20250109122225.4034688-1-i.maximets@ovn.org>
- <f7to70fq5n4.fsf@redhat.com>
-Content-Language: en-US
-In-Reply-To: <f7to70fq5n4.fsf@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250109233107.17519-3-ahmed.zaki@intel.com>
 
-On 09/01/2025 18:05, Aaron Conole wrote:
-> [...]
+On Thu, Jan 09, 2025 at 04:31:03PM -0700, Ahmed Zaki wrote:
+> For drivers using the netif_enable_cpu_rmap(), move the IRQ rmap notifier
+> inside the napi_struct.
 > 
-> I tried on with my VMs to reproduce the issue as described in the email
-> report, but I probably didn't give enough resources (or gave too many
-> resources) to get the race condition to bubble up.  I was using kernel
-> 6.13-rc5 (0bc21e701a6f) also.
+> Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
 
-Thanks for trying the reproducer! Sounds plausible that the resources
-assigned to the VM make the issue more/less likely to trigger, and I
-didn't describe them very well. Just in case it helps, I've just posted
-a reply [1] with the QEMU command line I've been using.
+...
 
-[1]
-https://mail.openvswitch.org/pipermail/ovs-discuss/2025-January/053426.html
+> diff --git a/net/core/dev.c b/net/core/dev.c
 
+...
+
+> +static int napi_irq_cpu_rmap_add(struct napi_struct *napi, int irq)
+> +{
+> +	struct cpu_rmap *rmap = napi->dev->rx_cpu_rmap;
+> +	int rc;
+> +
+> +	if (!napi || !rmap)
+> +		return -EINVAL;
+
+Hi Ahmed,
+
+Here it is assumed that napi may be NULL.  But it is dereferenced
+unconditionally on the first like of this function.
+
+Flagged by Smatch.
+
+> +	napi->notify.notify = netif_irq_cpu_rmap_notify;
+> +	napi->notify.release = netif_napi_affinity_release;
+> +	cpu_rmap_get(rmap);
+> +	rc = cpu_rmap_add(rmap, napi);
+> +	if (rc < 0)
+> +		goto err_add;
+> +
+> +	napi->napi_rmap_idx = rc;
+> +	rc = irq_set_affinity_notifier(irq, &napi->notify);
+> +	if (rc)
+> +		goto err_set;
+> +
+> +	return 0;
+> +
+> +err_set:
+> +	rmap->obj[napi->napi_rmap_idx] = NULL;
+> +err_add:
+> +	cpu_rmap_put(rmap);
+> +	return rc;
+> +}
+>  #endif
+>  
+>  void netif_napi_set_irq(struct napi_struct *napi, int irq)
+
+...
+
+-- 
+pw-bot: changes-requested
