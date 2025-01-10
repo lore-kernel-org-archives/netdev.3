@@ -1,106 +1,94 @@
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE36209F58;
-	Fri, 10 Jan 2025 09:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2F320ADE3
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 09:28:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736501302; cv=none; b=IzpBIHX0rAEIeO2yFCWAnbSE1PQJdCXxwK1OrjsJIMlS86xfZwg05/oxdNnAJFwSZTuKF2UpjMDLrwf48I4V126QCBKWbanuRRJ02msSlT9qksc5hyl3panDvVEmi1KdNUjMpDY7YtMR1onOl2wg8CYavDomgJJsk+ReyvQWc1w=
+	t=1736501306; cv=none; b=cENPyfkuVP1nynN/2czDdWWmCIJd4+F8TtGtCIHOMSqstOCB6sqYliHzWIal1PE4wT6MY0JbeO5MEPlUA1XXcdrG/xf8NZhvnXNFdXXXD82SxUJ8PjP9dCi7THzMmTfFgALlRX8BnBvQCz3xNYaMOnh7t+G+jF2YDNA9VdaJ8W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736501302; c=relaxed/simple;
-	bh=312LM2sOolhqlP925LYeIE9hRO6OnsfKwYhz7M2cef0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BpAKnufgAhS0Hty5Q81Uy29KQfY9+qh9iKpt5unHTAmitCCHDeec2NxLUQ+ILUcRsgthqMvq9hLEuMcUT+BZLQtlTGS8EXbPvtsh2wS7NqGfjoG0mN0aecmKAwyDMlbtOk0IhpagyFeU+iJ4HNbSplAEOvQ9ciUD/Vfq5PO7ahg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=krSrSC4C; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+	s=arc-20240116; t=1736501306; c=relaxed/simple;
+	bh=YBFNC/z40WX/1GOmQ+b5h9+ml+NEtHp1K3eBSwvEhUM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F26Q6JzsDQNPiChU0X7Cs5beUcuP6jWof5Xv249tLMSSZL4fGwxrILRGBJaVVdUOrX2ki964QTg9XeQUYT5BEf2ntvVjOlX6v68z4kukCMNXNfvIyhvM5IN+nm9WXsSIrsnm2o4kxTybdOMhB3Yjt49wf9ZKsiGn/ZKqFXfmWI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=jNgqdVhi; arc=none smtp.client-ip=52.119.213.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="krSrSC4C"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=G8+TuLQOgs/0UAFvzlz1GPVAo9yjgLGEOUGTGADsSN0=; b=krSrSC4C66XvbbqPTj4+17rCSE
-	HlaQnAk/3RfBnkGZ7LmstzlKnJvIEj2X+IBlKXLH6jloVr6rf9uD5WFe56FTPXhq/h5N0gc7pZ9si
-	BD1p0VFPxzdqtlQkL1eZCP/BI4gWXFbixBsVif89DS3lMTPINAXqcic3mKiCbmzBY92A8wpW8ch9K
-	Gvc6YgUo5nffD4soAf7HJpnFnfC8xKuYlAJQOfJ9SQKxlChHdUPDKCVpe2k8sL1VQRRPMjTupj/TP
-	drhqDJAjh1t3u8upcKZlvAiqPRqRmroPMrHhDIM7VGXvkx6h3jaDpKwou4wv3R943V/5e3aQF7hYw
-	S3cTAD2A==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1tWB65-007mzq-0U;
-	Fri, 10 Jan 2025 17:27:50 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 10 Jan 2025 17:27:49 +0800
-Date: Fri, 10 Jan 2025 17:27:49 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Breno Leitao <leitao@debian.org>
-Cc: Michael Kelley <mhklinux@outlook.com>,
-	"saeedm@nvidia.com" <saeedm@nvidia.com>,
-	"tariqt@nvidia.com" <tariqt@nvidia.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Thomas Graf <tgraf@suug.ch>, Tejun Heo <tj@kernel.org>,
-	Hao Luo <haoluo@google.com>, Josh Don <joshdon@google.com>,
-	Barret Rhoden <brho@google.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rhashtable: Fix potential deadlock by moving
- schedule_work outside lock
-Message-ID: <Z4DoFYQ3ytB-wS3-@gondor.apana.org.au>
-References: <20241128-scx_lockdep-v1-1-2315b813b36b@debian.org>
- <Z1rYGzEpMub4Fp6i@gondor.apana.org.au>
- <Z2aFL3dNLYOcmzH3@gondor.apana.org.au>
- <20250102-daffy-vanilla-boar-6e1a61@leitao>
- <SN6PR02MB41572415707F0FA6D9A61247D4132@SN6PR02MB4157.namprd02.prod.outlook.com>
- <20250109-marigold-bandicoot-of-exercise-8ebede@leitao>
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="jNgqdVhi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1736501305; x=1768037305;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=EEYrvzro4pXAy2ePhNFvASRwMz4gzEE3m8pZiNb4R4A=;
+  b=jNgqdVhiD3wXVj28dCKjyAySyxooX+2QEN/oeRKdRTeOyYulHkl3pW3b
+   tMLSsGY8HJDrp6ltFlZOh6hUf9369SyESvaTcWC+09bUACIRqsEZL6UXT
+   n2axnqjvXs3U4jjXIkDeAOhl9kBR1I5/ZavikM3c8rbY/ODzsA4xMra2v
+   s=;
+X-IronPort-AV: E=Sophos;i="6.12,303,1728950400"; 
+   d="scan'208";a="262089466"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
+  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 09:28:17 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.7.35:46917]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.29.114:2525] with esmtp (Farcaster)
+ id d820f865-e127-42f2-8c40-b572352c0d3d; Fri, 10 Jan 2025 09:28:17 +0000 (UTC)
+X-Farcaster-Flow-ID: d820f865-e127-42f2-8c40-b572352c0d3d
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Fri, 10 Jan 2025 09:28:16 +0000
+Received: from 6c7e67c6786f.amazon.com (10.118.252.101) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Fri, 10 Jan 2025 09:28:12 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+CC: Donald Hunter <donald.hunter@redhat.com>, Kuniyuki Iwashima
+	<kuniyu@amazon.com>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+	<netdev@vger.kernel.org>
+Subject: [PATCH v1 net-next 03/12] af_unix: Set drop reason in unix_sock_destructor().
+Date: Fri, 10 Jan 2025 18:26:32 +0900
+Message-ID: <20250110092641.85905-4-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250110092641.85905-1-kuniyu@amazon.com>
+References: <20250110092641.85905-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250109-marigold-bandicoot-of-exercise-8ebede@leitao>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D038UWB004.ant.amazon.com (10.13.139.177) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On Thu, Jan 09, 2025 at 02:15:17AM -0800, Breno Leitao wrote:
->
-> I would suggest we revert this patch until we investigate further. I'll
-> prepare and send a revert patch shortly.
+unix_sock_destructor() is called as sk->sk_destruct just before
+the socket is actually freed.
 
-Sorry, I think it was my addition that broke things.  The condition
-for checking whether an entry is inserted is incorrect, thus resulting
-in an underflow of the number of entries after entry removal.
+Let's use SKB_DROP_REASON_SOCKET_CLOSE for skb_queue_purge().
 
-Please test this patch:
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+---
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
----8<---
-The function rhashtable_insert_one only returns NULL iff the
-insertion was successful, so that alone should be tested before
-increment nelems.  Testing the variable data is redundant, and
-buggy because we will have overwritten the original value of data
-by this point.
-
-Reported-by: Michael Kelley <mhklinux@outlook.com>
-Fixes: e1d3422c95f0 ("rhashtable: Fix potential deadlock by moving schedule_work outside lock")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-
-diff --git a/lib/rhashtable.c b/lib/rhashtable.c
-index bf956b85455a..e196b6f0e35a 100644
---- a/lib/rhashtable.c
-+++ b/lib/rhashtable.c
-@@ -621,7 +621,7 @@ static void *rhashtable_try_insert(struct rhashtable *ht, const void *key,
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index a05d25cc5545..41b99984008a 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -640,7 +640,7 @@ static void unix_sock_destructor(struct sock *sk)
+ {
+ 	struct unix_sock *u = unix_sk(sk);
  
- 			rht_unlock(tbl, bkt, flags);
+-	skb_queue_purge(&sk->sk_receive_queue);
++	skb_queue_purge_reason(&sk->sk_receive_queue, SKB_DROP_REASON_SOCKET_CLOSE);
  
--			if (PTR_ERR(data) == -ENOENT && !new_tbl) {
-+			if (!new_tbl) {
- 				atomic_inc(&ht->nelems);
- 				if (rht_grow_above_75(ht, tbl))
- 					schedule_work(&ht->run_work);
+ 	DEBUG_NET_WARN_ON_ONCE(refcount_read(&sk->sk_wmem_alloc));
+ 	DEBUG_NET_WARN_ON_ONCE(!sk_unhashed(sk));
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.39.5 (Apple Git-154)
+
