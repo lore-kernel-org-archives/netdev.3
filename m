@@ -1,163 +1,245 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from out-176.mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FD02080DB
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 13:40:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EC33B1A4
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 13:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736516442; cv=none; b=CoDyFHb2EixqgqprsWGR2gOnc1kmRI9760MDyY+14U8yBcBh1z0tPpwUSvAqi8fqCS8PM53hZsaU9TvnSVK6MPsY9O+YVDgkqVolorCWXJgCSzUXGl1BA4fEq5AG2zg85Og195I681y+guqc9TaiXUJiqAlRsiiuv0loDHKxAxs=
+	t=1736516546; cv=none; b=CFrCKwsAhRvwMJ8eqsBxB+jng4EqHq0vQoqYxE7cXMosjX3/cxonGuq8gU29/U/gZ5XuwXbBxRdBgqiylmwWHxyPC4q1IQQE+tbVPA0zX3ohtwnigj+4FMRlJ9+nfCMPqDgh53Ox4GkykqpRz4FA6RcP80VKDDL9Un6jJSERLAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736516442; c=relaxed/simple;
-	bh=PLerkdNZcgRBNhpGasCoN27kcTo1EYb+lORo5iq5NJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ec0tAHhr1r4WwV6DYX6zqRtAWH7K61XjZLLM7MTe5qFSwRkQmu9DXCJ+k32IWrFW2+43fbQY5AJBWCR+GX10Ys4iqzb4zxetm2Y6I+iCTM0FhBVfYLYFJvIqzaR5aN7CzYfIaAbloBhY0EaJqgoMM4WjVQ1D85vqUc0waIlcIPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tWFFX-0000CQ-Hi; Fri, 10 Jan 2025 14:40:31 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tWFFW-000Axh-1o;
-	Fri, 10 Jan 2025 14:40:30 +0100
-Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 9E0143A47AE;
-	Fri, 10 Jan 2025 13:10:55 +0000 (UTC)
-Date: Fri, 10 Jan 2025 14:10:55 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	linux-can@vger.kernel.org, kernel@pengutronix.de, Jimmy Assarsson <extja@kvaser.com>
-Subject: Re: [PATCH net-next 15/18] can: kvaser_usb: Update stats and state
- even if alloc_can_err_skb() fails
-Message-ID: <20250110-notorious-kangaroo-from-atlantis-1645f8-mkl@pengutronix.de>
-References: <20250110112712.3214173-1-mkl@pengutronix.de>
- <20250110112712.3214173-16-mkl@pengutronix.de>
- <20250110125803.GF7706@kernel.org>
+	s=arc-20240116; t=1736516546; c=relaxed/simple;
+	bh=Q6pJP2PcAv8WSM6vo8FZ22okP5RYFYze62w7Zm6q1zY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sNN1pDV3UzBsjjA+kDrI4kqNyxD5htlgnbgI9Z1V5cTDiftLouvwadZXc6+Xd9iJBxkOVGMJYf8fAghy1HOCvkEao0n//lcnlAwAqN3Lf4WGVi8KgJ07LskUiaNPAIS8BHZkw0rSsLg6sW3BN6sXzq2rtGLC+dj7D8fTgzC63ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rGS6Xehp; arc=none smtp.client-ip=91.218.175.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rGS6Xehp"
+Message-ID: <e2119587-1a3f-4ea4-bd0b-e4f575b1df3b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1736516536;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=M5nhbKZJMhm5aD6BGpuYG3RWPs3HNsSjj3011yItNJs=;
+	b=rGS6Xehpm6fARPAMODJHrhW5PR+iBDkXe9whZo7Lvw6sM6JDyXjXY/tcJQpxHYK6a2SC+J
+	oZNWcp5Pgu+mKiOxlpWldkPe/Un9ocMCREja+QYsSAxRT5EyxgSu0RK/1K1GuGnu3noUUV
+	v6MXRK1M9qA1CKwevGQFiOPBRwvLD/0=
+Date: Fri, 10 Jan 2025 13:42:12 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="cjml7fqyn67m4v2v"
-Content-Disposition: inline
-In-Reply-To: <20250110125803.GF7706@kernel.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v3 3/4] net: wangxun: Implement do_aux_work of
+ ptp_clock_info
+To: Jiawen Wu <jiawenwu@trustnetic.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, richardcochran@gmail.com, linux@armlinux.org.uk,
+ horms@kernel.org, jacob.e.keller@intel.com, netdev@vger.kernel.org
+Cc: mengyuanlou@net-swift.com
+References: <20250110031716.2120642-1-jiawenwu@trustnetic.com>
+ <20250110031716.2120642-4-jiawenwu@trustnetic.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20250110031716.2120642-4-jiawenwu@trustnetic.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
+On 10/01/2025 03:17, Jiawen Wu wrote:
+> Implement watchdog task to detect SYSTIME overflow and error cases of
+> Rx/Tx timestamp.
+> 
+> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> ---
+>   drivers/net/ethernet/wangxun/libwx/wx_ptp.c   | 113 ++++++++++++++++++
+>   drivers/net/ethernet/wangxun/libwx/wx_type.h  |   2 +
+>   drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c |   1 +
+>   .../net/ethernet/wangxun/txgbe/txgbe_phy.c    |   1 +
+>   4 files changed, 117 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+> index d97be12ef37c..e7dc9196ba54 100644
+> --- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+> +++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+> @@ -251,6 +251,116 @@ static void wx_ptp_tx_hwtstamp_work(struct work_struct *work)
+>   	}
+>   }
+>   
+> +/**
+> + * wx_ptp_overflow_check - watchdog task to detect SYSTIME overflow
+> + * @wx: pointer to wx struct
+> + *
+> + * this watchdog task periodically reads the timecounter
+> + * in order to prevent missing when the system time registers wrap
+> + * around. This needs to be run approximately twice a minute for the fastest
+> + * overflowing hardware. We run it for all hardware since it shouldn't have a
+> + * large impact.
+> + */
+> +static void wx_ptp_overflow_check(struct wx *wx)
+> +{
+> +	bool timeout = time_is_before_jiffies(wx->last_overflow_check +
+> +					      WX_OVERFLOW_PERIOD);
+> +	unsigned long flags;
+> +
+> +	if (timeout) {
+> +		/* Update the timecounter */
+> +		spin_lock_irqsave(&wx->tmreg_lock, flags);
+> +		timecounter_read(&wx->hw_tc);
+> +		spin_unlock_irqrestore(&wx->tmreg_lock, flags);
+> +
+> +		wx->last_overflow_check = jiffies;
+> +	}
+> +}
+> +
+> +/**
+> + * wx_ptp_rx_hang - detect error case when Rx timestamp registers latched
+> + * @wx: pointer to wx struct
+> + *
+> + * this watchdog task is scheduled to detect error case where hardware has
+> + * dropped an Rx packet that was timestamped when the ring is full. The
+> + * particular error is rare but leaves the device in a state unable to
+> + * timestamp any future packets.
+> + */
+> +static void wx_ptp_rx_hang(struct wx *wx)
+> +{
+> +	struct wx_ring *rx_ring;
+> +	unsigned long rx_event;
+> +	u32 tsyncrxctl;
+> +	int n;
+> +
+> +	tsyncrxctl = rd32(wx, WX_PSR_1588_CTL);
+> +
+> +	/* if we don't have a valid timestamp in the registers, just update the
+> +	 * timeout counter and exit
+> +	 */
+> +	if (!(tsyncrxctl & WX_PSR_1588_CTL_VALID)) {
+> +		wx->last_rx_ptp_check = jiffies;
+> +		return;
+> +	}
+> +
+> +	/* determine the most recent watchdog or rx_timestamp event */
+> +	rx_event = wx->last_rx_ptp_check;
+> +	for (n = 0; n < wx->num_rx_queues; n++) {
+> +		rx_ring = wx->rx_ring[n];
+> +		if (time_after(rx_ring->last_rx_timestamp, rx_event))
+> +			rx_event = rx_ring->last_rx_timestamp;
+> +	}
+> +
+> +	/* only need to read the high RXSTMP register to clear the lock */
+> +	if (time_is_before_jiffies(rx_event + 5 * HZ)) {
+> +		rd32(wx, WX_PSR_1588_STMPH);
+> +		wx->last_rx_ptp_check = jiffies;
+> +
+> +		wx->rx_hwtstamp_cleared++;
+> +		dev_warn(&wx->pdev->dev, "clearing RX Timestamp hang");
+> +	}
+> +}
+> +
+> +/**
+> + * wx_ptp_tx_hang - detect error case where Tx timestamp never finishes
+> + * @wx: private network wx structure
+> + */
+> +static void wx_ptp_tx_hang(struct wx *wx)
+> +{
+> +	bool timeout = time_is_before_jiffies(wx->ptp_tx_start +
+> +					      WX_PTP_TX_TIMEOUT);
+> +
+> +	if (!wx->ptp_tx_skb)
+> +		return;
+> +
+> +	if (!test_bit(WX_STATE_PTP_TX_IN_PROGRESS, wx->state))
+> +		return;
+> +
+> +	/* If we haven't received a timestamp within the timeout, it is
+> +	 * reasonable to assume that it will never occur, so we can unlock the
+> +	 * timestamp bit when this occurs.
+> +	 */
+> +	if (timeout) {
+> +		cancel_work_sync(&wx->ptp_tx_work);
+> +		wx_ptp_clear_tx_timestamp(wx);
+> +		wx->tx_hwtstamp_timeouts++;
+> +		dev_warn(&wx->pdev->dev, "clearing Tx timestamp hang\n");
+> +	}
+> +}
+> +
+> +static long wx_ptp_do_aux_work(struct ptp_clock_info *ptp)
+> +{
+> +	struct wx *wx = container_of(ptp, struct wx, ptp_caps);
+> +
+> +	wx_ptp_overflow_check(wx);
+> +	if (unlikely(test_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER,
+> +			      wx->flags)))
+> +		wx_ptp_rx_hang(wx);
+> +	wx_ptp_tx_hang(wx);
+> +
+> +	return HZ;
+> +}
+> +
+>   /**
+>    * wx_ptp_create_clock
+>    * @wx: the private board structure
+> @@ -283,6 +393,7 @@ static long wx_ptp_create_clock(struct wx *wx)
+>   	wx->ptp_caps.adjtime = wx_ptp_adjtime;
+>   	wx->ptp_caps.gettimex64 = wx_ptp_gettimex64;
+>   	wx->ptp_caps.settime64 = wx_ptp_settime64;
+> +	wx->ptp_caps.do_aux_work = wx_ptp_do_aux_work;
+>   	if (wx->mac.type == wx_mac_em)
+>   		wx->ptp_caps.max_adj = 500000000;
+>   	else
+> @@ -568,6 +679,8 @@ void wx_ptp_reset(struct wx *wx)
+>   	timecounter_init(&wx->hw_tc, &wx->hw_cc,
+>   			 ktime_to_ns(ktime_get_real()));
+>   	spin_unlock_irqrestore(&wx->tmreg_lock, flags);
+> +
+> +	wx->last_overflow_check = jiffies;
+>   }
+>   EXPORT_SYMBOL(wx_ptp_reset);
 
---cjml7fqyn67m4v2v
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net-next 15/18] can: kvaser_usb: Update stats and state
- even if alloc_can_err_skb() fails
-MIME-Version: 1.0
+I think ptp_schedule_worker(wx->ptp_clock, HZ); is missing in either
+wx_ptp_create_clock() or wx_ptp_start(). Otherwise there is nothing to
+kick in the first iteration of overflow check.
 
-On 10.01.2025 12:58:03, Simon Horman wrote:
-> On Fri, Jan 10, 2025 at 12:04:23PM +0100, Marc Kleine-Budde wrote:
-> > From: Jimmy Assarsson <extja@kvaser.com>
-> >=20
-> > Ensure statistics, error counters, and CAN state are updated consistent=
-ly,
-> > even when alloc_can_err_skb() fails during state changes or error messa=
-ge
-> > frame reception.
-> >=20
-> > Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-> > Link: https://patch.msgid.link/20241230142645.128244-1-extja@kvaser.com
-> > Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
->=20
-> ...
->=20
-> > diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c b/drivers=
-/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
->=20
-> ...
->=20
-> > @@ -1187,11 +1169,18 @@ static void kvaser_usb_leaf_rx_error(const stru=
-ct kvaser_usb *dev,
-> >  		if (priv->can.restart_ms &&
-> >  		    old_state =3D=3D CAN_STATE_BUS_OFF &&
-> >  		    new_state < CAN_STATE_BUS_OFF) {
-> > -			cf->can_id |=3D CAN_ERR_RESTARTED;
-> > +			if (cf)
-> > +				cf->can_id |=3D CAN_ERR_RESTARTED;
-> >  			netif_carrier_on(priv->netdev);
-> >  		}
-> >  	}
-> > =20
-> > +	if (!skb) {
-> > +		stats->rx_dropped++;
-> > +		netdev_warn(priv->netdev, "No memory left for err_skb\n");
-> > +		return;
-> > +	}
-> > +
-> >  	switch (dev->driver_info->family) {
-> >  	case KVASER_LEAF:
-> >  		if (es->leaf.error_factor) {
->=20
-> Hi Jimmy and Marc,
->=20
-> The next line of this function is:
->=20
-> 			cf->can_id |=3D CAN_ERR_BUSERROR | CAN_ERR_PROT;
->=20
-> Which dereferences cf. However, the check added at the top of
-> this hunk assumes that cf may be NULL. This doesn't seem consistent.
+> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+> index e70b397d1104..867d92547b61 100644
+> --- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
+> +++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+> @@ -1174,6 +1174,8 @@ struct wx {
+>   	u32 tx_hwtstamp_timeouts;
+>   	u32 tx_hwtstamp_skipped;
+>   	u32 rx_hwtstamp_cleared;
+> +	unsigned long last_overflow_check;
+> +	unsigned long last_rx_ptp_check;
+>   	unsigned long ptp_tx_start;
+>   	spinlock_t tmreg_lock; /* spinlock for ptp */
+>   	struct cyclecounter hw_cc;
+> diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
+> index c7944e62838a..ea1d7e9a91f3 100644
+> --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
+> +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
+> @@ -111,6 +111,7 @@ static void ngbe_mac_link_up(struct phylink_config *config,
+>   	wr32(wx, WX_MAC_WDG_TIMEOUT, reg);
+>   
+>   	wx->speed = speed;
+> +	wx->last_rx_ptp_check = jiffies;
+>   	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
+>   		wx_ptp_reset_cyclecounter(wx);
+>   }
+> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+> index 60e5f3288ad8..7e17d727c2ba 100644
+> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+> @@ -222,6 +222,7 @@ static void txgbe_mac_link_up(struct phylink_config *config,
+>   	wr32(wx, WX_MAC_WDG_TIMEOUT, wdg);
+>   
+>   	wx->speed = speed;
+> +	wx->last_rx_ptp_check = jiffies;
+>   	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
+>   		wx_ptp_reset_cyclecounter(wx);
+>   }
 
-The driver allocates the skb with:
-
-	skb =3D alloc_can_err_skb(priv->netdev, &cf);
-
-Which in turn calls alloc_can_skb(), which finally calls:
-
-        *cf =3D skb_put_zero(skb, sizeof(struct can_frame));
-
-To put the cf into the skb.
-
-The newly added check "if (!skb)", takes care of skb allocation errors,
-so that the de-referencing of "cf" is OK after this point.
-
-regards,
-Marc
-
-P.S.:
-IIRC smatch stumbled over the same pattern in another driver a while
-back. Is there anything we can do about it?
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---cjml7fqyn67m4v2v
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmeBHFwACgkQKDiiPnot
-vG80LggAjEDGR28sazurzlGbT9gGqqa1ncnBQ78YG2PZ0n/UYeRfQ7aruOozVnkB
-vzNctUW7D6CuCjRIWaZTvDhsRs3tW+fANOKgpad7tMhBrKqyTQguaaeA1zZlipGZ
-M2vDeZx++iwGcEAodiOPVex2uMd0YZR8jNwo11Mv4xrAwH1L2ISYje+ETrFA6yGg
-x0lHKe73FUBGEHRP2B/K0/1u4/XwQupkSsiiVrX48Zddl5Vp7oLEilSUU1dtTCYM
-kKKo9353FE04H5StzVtUMTJu1L2L/IEkMKKuK4jlB7JoaVlVrQKHGRGgKrs9WiBE
-cd9BTCvy8rHvsshubljlLKWsOxbqVw==
-=Iak+
------END PGP SIGNATURE-----
-
---cjml7fqyn67m4v2v--
