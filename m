@@ -1,36 +1,36 @@
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB5A20C016
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 10:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE92620C032
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 10:27:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736504870; cv=none; b=BU026feq1JiGB72Kyz/70RLoPQj2ffVNIlESyBwU7P6kyX9K8MW6QbQQdjMCqxANsCC6BeoF6o+rcPfuT04F6gYiuGagjoUKNIXkw602TpMITLhGD6nkc8b7qdo5vdVQBkRy8Hdv0l46624Yl33Kk/Qz7L9TQNcmS0Bf/hxC9E4=
+	t=1736504872; cv=none; b=aTkh/dPm1MpmkHxSDBLLr2WeteckMaMOHF7Rn1L1AcfS4njgYEwgCcrvchi1m4YAbFN1jzw7lxcoYXLrav68CfNDpS22j+IE7EpsgeaW1pmNNzEjFCRrFkgGY4iNy0uClF6purEQIUmeWjbpuM9DihdAJh8w34QzmVdbhCAsdSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736504870; c=relaxed/simple;
-	bh=dOhUOoFZLHNXAGWYD/iZuUm/VEvLWqNXxTga0FviYzQ=;
+	s=arc-20240116; t=1736504872; c=relaxed/simple;
+	bh=olANluJvVBg9ZC26INmDecmHlW/X+pUYba0Ma1tMplg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SHIm7XawWoyURA7tiFlus/tnuq0GNdRS/xKO2XYtavxQz+kv80HQIqIPc7e3HpNlF2abdynvabWXB3W1AeitFptIVI3JcKFweSWOAStRurh69KpTCXfcp9jsLXsvTotOSXqktdyd5SBYen0/R9e0YCNJSLT3ZphI2AMGlf2leiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.254.200.92
+	 MIME-Version; b=asJ6hSFpSbZUgzElNT8gOcpRDxlvdSKEQgavfYXyiOosUp5Fmv2WW4E4ZuM8FuKEPasxcBC8lhzI6Kr6gY96QZhqkLcSKH9PUFdUpry/8XxhdQhVFfSBsjy8BPI4UT1KWUyjWZUGDgY7kOTV+ULW1xO4ZVc17DwjDSk00N4w4ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.207.22.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: bizesmtp84t1736504857tc3kbcbn
-X-QQ-Originating-IP: QXBtxoCoh5J++0Cs8XQt2+BboPsVmILYuxECocZauco=
+X-QQ-mid: bizesmtp84t1736504847tmskourl
+X-QQ-Originating-IP: bvFpMrLpPCo+8Nj5tS7M/yMr272yGIeQ5xwAvAw5zgw=
 Received: from localhost.localdomain ( [218.72.126.41])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 10 Jan 2025 18:27:35 +0800 (CST)
+	id ; Fri, 10 Jan 2025 18:27:25 +0800 (CST)
 X-QQ-SSF: 0001000000000000000000000000000
 X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 5729733740440106594
+X-BIZMAIL-ID: 13542974320801945132
 From: Mengyuan Lou <mengyuanlou@net-swift.com>
 To: netdev@vger.kernel.org
 Cc: helgaas@kernel.org,
 	jiawenwu@trustnetic.com,
 	duanqiangwen@net-swift.com,
 	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [PATCH net-next v6 5/6] net: ngbe: add sriov function support
-Date: Fri, 10 Jan 2025 18:27:04 +0800
-Message-Id: <20250110102705.21846-6-mengyuanlou@net-swift.com>
+Subject: [PATCH net-next v6 2/6] net: libwx: Add sriov api for wangxun nics
+Date: Fri, 10 Jan 2025 18:27:01 +0800
+Message-Id: <20250110102705.21846-3-mengyuanlou@net-swift.com>
 X-Mailer: git-send-email 2.30.1 (Apple Git-130)
 In-Reply-To: <20250110102705.21846-1-mengyuanlou@net-swift.com>
 References: <20250110102705.21846-1-mengyuanlou@net-swift.com>
@@ -43,287 +43,388 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: bizesmtp:net-swift.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: MmCmH9jyqHC2cGtbdqK1+lhibRilqaWLN5rMHfKu7mIuZTjgKW+GlVy9
-	hcdJpFMZUbnpY0EGj+gDJ64ENhV++bOMHJ4sMxJuVQdh5xkYuhAJzTplPv6TysxUnDvTaKx
-	/alCUYEQXV79Vb2vo7TwB6YqQ6E+SXkKNmEKLg2yJrcMBw/uhH+v+gExiPFX0zLUiNmFy02
-	6wNcYId7mWQTP1Gff77cA2t49xYNTobdpY+Bjr1ZCuQwzRfgS74+87rSCa+c/fXHlyBD4k4
-	p0FDKDdkNUE9Dcqldtd62tN25tssxAMqYDzPW/CEKY/ZYHnULNMdlJcBoJA9KddlwCjgO4c
-	COhlaaBi5/tydw+MSlJWkXKPdIrTWek7CLzE7h4FC6F5Li1I51vapBNTsK0/BKtt+L8kK/i
-	ozb1dPXlmVWzzpZ8YSRmRFRSjof3iUayGdqo7TsDdHbDum67Ojja4nwa0kmSNgi0BDXmdsq
-	/8m/O7g6KTgtznzW3lyewAcGx/70GGQA0ew8bmdU1La4CIWywvMusgluQa78EnLBFVdcH4s
-	XtNPcwwXnjCtrsvUaGB/pM1eZtEyuRm2Af3tjK6l9xtYY/ya2yTNKr1QsZO7U/4DxU/xkdA
-	iCU9omXj1WymkaGis919G0H4kmIuiROvzsP+d/hBEcToJ4+EGkNNO1K7WFJkwOwVh/wQS8E
-	tRoRyyDVN3pp72hk6ic2p68F43Av9XR/hcmhKWX90L7SN5pUSBTGFQqEHu/VfV7OnYOJHAG
-	XzYZ/TibB1LHng2DI+NcVDqz+jV09mSDS08SE+Ils0RzNGMQhUwg4s3KU9o7Fg5cgA4mlW9
-	jG6Jedt/eFEIfJAvKSyw7Q9pBOg6v5l0keBtw67PaNWUVpv1XXFrj2+DRbeR7m7XmnmyB1F
-	s62efhRiUfLBPUPndl2S/C6TMaqvmJq9ze0+mG+QDFwaiRKtPnXTXzYnLJu+MJlo5NXnM+G
-	hY4jPsHPRJ6NvfH/lIN5Vy5U5k8C36FhQf3gFc9L+P3qUUX+op5IaCGuCeLGg+Zp2gxVlLV
-	ou0cQS51T4mqRJuaN+FzpI6+HmkAmIWSTolMQORo9GcKIRXk+U+Hv75dwodo4=
+X-QQ-XMAILINFO: NsAa+YZMvL48QfSWPBQqFA58YFOEL86qhc+1e/JwNqfqaiyDDnSrtybn
+	vcddfCp1AQkzaNahKjxqXS2x4R931gtBp9RWoWtyUimtNeMrpkqX+/96+Hmj7JMOcnde0kh
+	k4DOMZhHv5ZsWhyycjUsWlgPY3A1uMoK0xTOYEdvpVgURHoJ+LpHn0Ifgg+323EhygziidR
+	lE9fqVH+McXdtzVg7eKPVvriABrlSD07ah0llP5ObHzbsJBBzwKv+XvXXl2a4xu5zg5vd7h
+	tlO1aGRL/sVGTurjzgLYtvxm5FUTkGIFNlxybDADcI4qWsdRnssLKEht/8MV9aIInkzwPTc
+	j+WkNg2pQI9A6ymPjFCGwh4vog5kdya8NJRgEWWH5r6inP6JxO8MR960WmzQ5UKUUE+5Wi8
+	jO06PoYzPfoKRtxTLy+uQiF9gUly3soDqWMA9X7GqJ0MSBFbL37ExhRZF2rOxy8WKCQpgbz
+	jmN+/AkV7tph0c9QVYKGrhvG8TWdnCGVIPv3H9sWyS5onr4+5jPR4wjC3SaxKqPpi0mHJsW
+	FrqylAi6K8gv0xURb34g8AMv6OR+D1Xl+eWw02dbHYthjrplsT/PGa+yK7Za0u4Yxnoht+k
+	YzpFj2P3cXattqd+ZknGPdoR0wptrgmyG1i8AmE0AP9a+tPyHqchCmMu0b0fkC59CcXo0bp
+	ZSMEmRRxBkzlSnEaAxEZdzq0HGB8//6fposVjX+4OyHGhezFGMId95oMdgT8vxjBAAxMVrM
+	MNI263KHCELiKAriovRN5eCQIroQXTbEQucfai1iy5/JmPBvBGdtp+ciKbU7PtpU93/POM8
+	mt01zkWfPU1BvCaqMfb0jDr/edi+zHzevo8soQqu77diun2rbFzqQk+4MtzLVZ+J4URpCY3
+	ysFKqFwxjKMMSBX6jKtcQywhdbcBuNHrvNv6PlqHuS2xHIF3jfGqMoN9p7bhMudEQKhqUXY
+	DXOTzJoOKBmSuM1D3jYMjiRi6Fyx0HHFMqAyDLFfNGomV8FD8lIP8DHIguhiLSmnFAPZCso
+	aTBemJmcKb0/XookjoMyeDZftfjvlnqzuvUmV951EMXnJYxHOWz4oqlXwPsFUpWPj3y8roL
+	g==
 X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
 X-QQ-RECHKSPAM: 0
 
-Add sriov_configure for driver ops.
-Add mailbox handler wx_msg_task for ngbe in
-the interrupt handler.
-Add the notification flow when the vfs exist.
+Implement sriov_configure interface for wangxun nics in libwx.
+Enable VT mode and initialize vf control structure, when sriov
+is enabled. Do not be allowed to disable sriov when vfs are
+assigned.
 
 Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_sriov.c | 31 ++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_sriov.h |  2 +
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  2 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 58 +++++++++++++++++--
- drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c | 10 ++++
- drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |  2 +
- 6 files changed, 101 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/Makefile   |   2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_mbx.h   |   4 +
+ drivers/net/ethernet/wangxun/libwx/wx_sriov.c | 210 ++++++++++++++++++
+ drivers/net/ethernet/wangxun/libwx/wx_sriov.h |  10 +
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  |  31 +++
+ 5 files changed, 256 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_sriov.c
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_sriov.h
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
-index 025b20481b86..7f217e0d30bc 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
-@@ -880,3 +880,34 @@ void wx_msg_task(struct wx *wx)
- 	}
- }
- EXPORT_SYMBOL(wx_msg_task);
-+
-+void wx_disable_vf_rx_tx(struct wx *wx)
-+{
-+	wr32(wx, WX_TDM_VFTE_CLR(0), 0);
-+	wr32(wx, WX_RDM_VFRE_CLR(0), 0);
-+	if (wx->mac.type == wx_mac_sp) {
-+		wr32(wx, WX_TDM_VFTE_CLR(1), 0);
-+		wr32(wx, WX_RDM_VFRE_CLR(1), 0);
-+	}
-+}
-+EXPORT_SYMBOL(wx_disable_vf_rx_tx);
-+
-+void wx_ping_all_vfs_with_link_status(struct wx *wx, bool link_up)
-+{
-+	u32 msgbuf[2] = {0, 0};
-+	u16 i;
-+
-+	if (!wx->num_vfs)
-+		return;
-+	msgbuf[0] = WX_PF_NOFITY_VF_LINK_STATUS | WX_PF_CONTROL_MSG;
-+	if (link_up)
-+		msgbuf[1] = (wx->speed << 1) | link_up;
-+	if (wx->notify_down)
-+		msgbuf[1] |= WX_PF_NOFITY_VF_NET_NOT_RUNNING;
-+	for (i = 0 ; i < wx->num_vfs; i++) {
-+		if (wx->vfinfo[i].clear_to_send)
-+			msgbuf[0] |= WX_VT_MSGTYPE_CTS;
-+		wx_write_mbx_pf(wx, msgbuf, 2, i);
-+	}
-+}
-+EXPORT_SYMBOL(wx_ping_all_vfs_with_link_status);
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_sriov.h b/drivers/net/ethernet/wangxun/libwx/wx_sriov.h
-index 5d1486f92dee..3cbec7fb51bc 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_sriov.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_sriov.h
-@@ -7,5 +7,7 @@
- void wx_disable_sriov(struct wx *wx);
- int wx_pci_sriov_configure(struct pci_dev *pdev, int num_vfs);
- void wx_msg_task(struct wx *wx);
-+void wx_disable_vf_rx_tx(struct wx *wx);
-+void wx_ping_all_vfs_with_link_status(struct wx *wx, bool link_up);
+diff --git a/drivers/net/ethernet/wangxun/libwx/Makefile b/drivers/net/ethernet/wangxun/libwx/Makefile
+index 913a978c9032..5b996d973d29 100644
+--- a/drivers/net/ethernet/wangxun/libwx/Makefile
++++ b/drivers/net/ethernet/wangxun/libwx/Makefile
+@@ -4,4 +4,4 @@
  
- #endif /* _WX_SRIOV_H_ */
+ obj-$(CONFIG_LIBWX) += libwx.o
+ 
+-libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_mbx.o
++libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_mbx.o wx_sriov.o
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_mbx.h b/drivers/net/ethernet/wangxun/libwx/wx_mbx.h
+index c09b25f3e43d..172b46b9c14d 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_mbx.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_mbx.h
+@@ -23,6 +23,10 @@
+ 
+ #define WX_VT_MSGINFO_MASK    GENMASK(23, 16)
+ 
++enum wxvf_xcast_modes {
++	WXVF_XCAST_MODE_NONE = 0,
++};
++
+ int wx_write_mbx_pf(struct wx *wx, u32 *msg, u16 size, u16 vf);
+ int wx_read_mbx_pf(struct wx *wx, u32 *msg, u16 size, u16 vf);
+ int wx_check_for_rst_pf(struct wx *wx, u16 mbx_id);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
+new file mode 100644
+index 000000000000..3d4088107a95
+--- /dev/null
++++ b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
+@@ -0,0 +1,210 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2015 - 2025 Beijing WangXun Technology Co., Ltd. */
++
++#include <linux/etherdevice.h>
++#include <linux/pci.h>
++
++#include "wx_type.h"
++#include "wx_mbx.h"
++#include "wx_sriov.h"
++
++static void wx_vf_configuration(struct pci_dev *pdev, int event_mask)
++{
++	unsigned int vfn = (event_mask & GENMASK(5, 0));
++	struct wx *wx = pci_get_drvdata(pdev);
++
++	bool enable = ((event_mask & BIT(31)) != 0);
++
++	if (enable)
++		eth_zero_addr(wx->vfinfo[vfn].vf_mac_addr);
++}
++
++static void wx_alloc_vf_macvlans(struct wx *wx, u8 num_vfs)
++{
++	struct vf_macvlans *mv_list;
++	int num_vf_macvlans, i;
++
++	/* Initialize list of VF macvlans */
++	INIT_LIST_HEAD(&wx->vf_mvs.mvlist);
++
++	num_vf_macvlans = wx->mac.num_rar_entries -
++			  (WX_MAX_PF_MACVLANS + 1 + num_vfs);
++	if (!num_vf_macvlans)
++		return;
++
++	mv_list = kcalloc(num_vf_macvlans, sizeof(struct vf_macvlans),
++			  GFP_KERNEL);
++	if (mv_list) {
++		for (i = 0; i < num_vf_macvlans; i++) {
++			mv_list[i].vf = -1;
++			mv_list[i].free = true;
++			list_add(&mv_list[i].mvlist, &wx->vf_mvs.mvlist);
++		}
++		wx->mv_list = mv_list;
++	}
++}
++
++static void wx_sriov_clear_data(struct wx *wx)
++{
++	/* set num VFs to 0 to prevent access to vfinfo */
++	wx->num_vfs = 0;
++
++	/* free VF control structures */
++	kfree(wx->vfinfo);
++	wx->vfinfo = NULL;
++
++	/* free macvlan list */
++	kfree(wx->mv_list);
++	wx->mv_list = NULL;
++
++	/* set default pool back to 0 */
++	wr32m(wx, WX_PSR_VM_CTL, WX_PSR_VM_CTL_POOL_MASK, 0);
++	wx->ring_feature[RING_F_VMDQ].offset = 0;
++
++	clear_bit(WX_FLAG_SRIOV_ENABLED, wx->flags);
++	/* Disable VMDq flag so device will be set in NM mode */
++	if (wx->ring_feature[RING_F_VMDQ].limit == 1)
++		clear_bit(WX_FLAG_VMDQ_ENABLED, wx->flags);
++}
++
++static int __wx_enable_sriov(struct wx *wx, u8 num_vfs)
++{
++	u32 value = 0;
++	int i;
++
++	set_bit(WX_FLAG_SRIOV_ENABLED, wx->flags);
++	wx_err(wx, "SR-IOV enabled with %d VFs\n", num_vfs);
++
++	/* Enable VMDq flag so device will be set in VM mode */
++	set_bit(WX_FLAG_VMDQ_ENABLED, wx->flags);
++	if (!wx->ring_feature[RING_F_VMDQ].limit)
++		wx->ring_feature[RING_F_VMDQ].limit = 1;
++	wx->ring_feature[RING_F_VMDQ].offset = num_vfs;
++
++	wx->vfinfo = kcalloc(num_vfs, sizeof(struct vf_data_storage),
++			     GFP_KERNEL);
++	if (!wx->vfinfo)
++		return -ENOMEM;
++
++	wx_alloc_vf_macvlans(wx, num_vfs);
++	/* Initialize default switching mode VEB */
++	wr32m(wx, WX_PSR_CTL, WX_PSR_CTL_SW_EN, WX_PSR_CTL_SW_EN);
++
++	for (i = 0; i < num_vfs; i++) {
++		/* enable spoof checking for all VFs */
++		wx->vfinfo[i].spoofchk_enabled = true;
++		wx->vfinfo[i].link_enable = true;
++		/* untrust all VFs */
++		wx->vfinfo[i].trusted = false;
++		/* set the default xcast mode */
++		wx->vfinfo[i].xcast_mode = WXVF_XCAST_MODE_NONE;
++	}
++
++	if (wx->mac.type == wx_mac_sp) {
++		if (num_vfs < 32)
++			value = WX_CFG_PORT_CTL_NUM_VT_32;
++		else
++			value = WX_CFG_PORT_CTL_NUM_VT_64;
++	} else {
++		value = WX_CFG_PORT_CTL_NUM_VT_8;
++	}
++	wr32m(wx, WX_CFG_PORT_CTL,
++	      WX_CFG_PORT_CTL_NUM_VT_MASK,
++	      value);
++
++	return 0;
++}
++
++static void wx_sriov_reinit(struct wx *wx)
++{
++	rtnl_lock();
++	wx->setup_tc(wx->netdev, netdev_get_num_tc(wx->netdev));
++	rtnl_unlock();
++}
++
++void wx_disable_sriov(struct wx *wx)
++{
++	if (!pci_vfs_assigned(wx->pdev))
++		pci_disable_sriov(wx->pdev);
++	else
++		wx_err(wx, "Unloading driver while VFs are assigned.\n");
++
++	/* clear flags and free allloced data */
++	wx_sriov_clear_data(wx);
++}
++EXPORT_SYMBOL(wx_disable_sriov);
++
++static int wx_pci_sriov_enable(struct pci_dev *dev,
++			       int num_vfs)
++{
++	struct wx *wx = pci_get_drvdata(dev);
++	int err = 0, i;
++
++	err = __wx_enable_sriov(wx, num_vfs);
++	if (err)
++		return err;
++
++	wx->num_vfs = num_vfs;
++	for (i = 0; i < wx->num_vfs; i++)
++		wx_vf_configuration(dev, (i | BIT(31)));
++
++	/* reset before enabling SRIOV to avoid mailbox issues */
++	wx_sriov_reinit(wx);
++
++	err = pci_enable_sriov(dev, num_vfs);
++	if (err) {
++		wx_err(wx, "Failed to enable PCI sriov: %d\n", err);
++		goto err_out;
++	}
++
++	return num_vfs;
++err_out:
++	wx_sriov_clear_data(wx);
++	return err;
++}
++
++static void wx_pci_sriov_disable(struct pci_dev *dev)
++{
++	struct wx *wx = pci_get_drvdata(dev);
++
++	wx_disable_sriov(wx);
++	wx_sriov_reinit(wx);
++}
++
++static int wx_check_sriov_allowed(struct wx *wx, int num_vfs)
++{
++	u16 max_vfs;
++
++	max_vfs = (wx->mac.type == wx_mac_sp) ? 63 : 7;
++	if (num_vfs > max_vfs)
++		return -EPERM;
++
++	return 0;
++}
++
++int wx_pci_sriov_configure(struct pci_dev *pdev, int num_vfs)
++{
++	struct wx *wx = pci_get_drvdata(pdev);
++	int err;
++
++	err = wx_check_sriov_allowed(wx, num_vfs);
++	if (err)
++		return err;
++
++	if (!num_vfs) {
++		if (!pci_vfs_assigned(pdev)) {
++			wx_pci_sriov_disable(pdev);
++			return 0;
++		}
++
++		wx_err(wx, "can't free VFs because some are assigned to VMs.\n");
++		return -EBUSY;
++	}
++
++	err = wx_pci_sriov_enable(pdev, num_vfs);
++	if (err)
++		return err;
++
++	return num_vfs;
++}
++EXPORT_SYMBOL(wx_pci_sriov_configure);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_sriov.h b/drivers/net/ethernet/wangxun/libwx/wx_sriov.h
+new file mode 100644
+index 000000000000..a16877f89389
+--- /dev/null
++++ b/drivers/net/ethernet/wangxun/libwx/wx_sriov.h
+@@ -0,0 +1,10 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (c) 2015 - 2025 Beijing WangXun Technology Co., Ltd. */
++
++#ifndef _WX_SRIOV_H_
++#define _WX_SRIOV_H_
++
++void wx_disable_sriov(struct wx *wx);
++int wx_pci_sriov_configure(struct pci_dev *pdev, int num_vfs);
++
++#endif /* _WX_SRIOV_H_ */
 diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 84dabedb7e78..7d085b1ffd94 100644
+index 5dce136c98bd..227aaa9145f5 100644
 --- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
 +++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -90,6 +90,7 @@
- /************************* Port Registers ************************************/
- /* port cfg Registers */
- #define WX_CFG_PORT_CTL              0x14400
-+#define WX_CFG_PORT_CTL_PFRSTD       BIT(14)
- #define WX_CFG_PORT_CTL_DRV_LOAD     BIT(3)
- #define WX_CFG_PORT_CTL_QINQ         BIT(2)
- #define WX_CFG_PORT_CTL_D_VLAN       BIT(0) /* double vlan*/
-@@ -1145,6 +1146,7 @@ struct wx {
- 	enum wx_reset_type reset_type;
+@@ -18,6 +18,7 @@
+ /* MSI-X capability fields masks */
+ #define WX_PCIE_MSIX_TBL_SZ_MASK                0x7FF
+ #define WX_PCI_LINK_STATUS                      0xB2
++#define WX_MAX_PF_MACVLANS                      15
  
- 	/* PHY stuff */
-+	bool notify_down;
- 	unsigned int link;
- 	int speed;
- 	int duplex;
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index 53aeae2f884b..a03a4b5f2766 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -14,6 +14,8 @@
- #include "../libwx/wx_type.h"
- #include "../libwx/wx_hw.h"
- #include "../libwx/wx_lib.h"
-+#include "../libwx/wx_mbx.h"
-+#include "../libwx/wx_sriov.h"
- #include "ngbe_type.h"
- #include "ngbe_mdio.h"
- #include "ngbe_hw.h"
-@@ -128,6 +130,10 @@ static int ngbe_sw_init(struct wx *wx)
- 	wx->tx_work_limit = NGBE_DEFAULT_TX_WORK;
- 	wx->rx_work_limit = NGBE_DEFAULT_RX_WORK;
+ /**************** Global Registers ****************************/
+ #define WX_VF_REG_OFFSET(_v)         ((_v) >> 5)
+@@ -91,6 +92,9 @@
+ #define WX_CFG_TAG_TPID(_i)          (0x14430 + ((_i) * 4))
+ #define WX_CFG_PORT_CTL_NUM_VT_MASK  GENMASK(13, 12) /* number of TVs */
  
-+	wx->mbx.size = WX_VXMAILBOX_SIZE;
-+	wx->setup_tc = ngbe_setup_tc;
-+	set_bit(0, &wx->fwd_bitmask);
-+
- 	return 0;
- }
++#define WX_CFG_PORT_CTL_NUM_VT_8     FIELD_PREP(GENMASK(13, 12), 1)
++#define WX_CFG_PORT_CTL_NUM_VT_32    FIELD_PREP(GENMASK(13, 12), 2)
++#define WX_CFG_PORT_CTL_NUM_VT_64    FIELD_PREP(GENMASK(13, 12), 3)
  
-@@ -197,11 +203,25 @@ static irqreturn_t ngbe_intr(int __always_unused irq, void *data)
+ /* GPIO Registers */
+ #define WX_GPIO_DR                   0x14800
+@@ -166,6 +170,7 @@
+ /******************************* PSR Registers *******************************/
+ /* psr control */
+ #define WX_PSR_CTL                   0x15000
++#define WX_PSR_VM_CTL                0x151B0
+ /* Header split receive */
+ #define WX_PSR_CTL_SW_EN             BIT(18)
+ #define WX_PSR_CTL_RSC_ACK           BIT(17)
+@@ -186,6 +191,7 @@
+ /* mcasst/ucast overflow tbl */
+ #define WX_PSR_MC_TBL(_i)            (0x15200  + ((_i) * 4))
+ #define WX_PSR_UC_TBL(_i)            (0x15400 + ((_i) * 4))
++#define WX_PSR_VM_CTL_POOL_MASK      GENMASK(12, 7)
  
- static irqreturn_t ngbe_msix_other(int __always_unused irq, void *data)
- {
--	struct wx *wx = data;
-+	struct wx_q_vector *q_vector;
-+	struct wx *wx  = data;
-+	u32 eicr;
+ /* VM L2 contorl */
+ #define WX_PSR_VM_L2CTL(_i)          (0x15600 + ((_i) * 4))
+@@ -984,6 +990,7 @@ struct wx_ring_feature {
  
--	/* re-enable the original interrupt state, no lsc, no queues */
--	if (netif_running(wx->netdev))
--		ngbe_irq_enable(wx, false);
-+	q_vector = wx->q_vector[0];
-+
-+	eicr = wx_misc_isb(wx, WX_ISB_MISC);
-+
-+	if (eicr & NGBE_PX_MISC_IC_VF_MBOX)
-+		wx_msg_task(wx);
-+
-+	if (wx->num_vfs == 7) {
-+		napi_schedule_irqoff(&q_vector->napi);
-+		ngbe_irq_enable(wx, true);
-+	} else {
-+		/* re-enable the original interrupt state, no lsc, no queues */
-+		if (netif_running(wx->netdev))
-+			ngbe_irq_enable(wx, false);
-+	}
- 
- 	return IRQ_HANDLED;
- }
-@@ -291,6 +311,22 @@ static void ngbe_disable_device(struct wx *wx)
- 	struct net_device *netdev = wx->netdev;
- 	u32 i;
- 
-+	if (wx->num_vfs) {
-+		/* Clear EITR Select mapping */
-+		wr32(wx, WX_PX_ITRSEL, 0);
-+
-+		/* Mark all the VFs as inactive */
-+		for (i = 0 ; i < wx->num_vfs; i++)
-+			wx->vfinfo[i].clear_to_send = 0;
-+		wx->notify_down = true;
-+		/* ping all the active vfs to let them know we are going down */
-+		wx_ping_all_vfs_with_link_status(wx, false);
-+		wx->notify_down = false;
-+
-+		/* Disable all VFTE/VFRE TX/RX */
-+		wx_disable_vf_rx_tx(wx);
-+	}
-+
- 	/* disable all enabled rx queues */
- 	for (i = 0; i < wx->num_rx_queues; i++)
- 		/* this call also flushes the previous write */
-@@ -313,10 +349,17 @@ static void ngbe_disable_device(struct wx *wx)
- 	wx_update_stats(wx);
- }
- 
-+static void ngbe_reset(struct wx *wx)
-+{
-+	wx_flush_sw_mac_table(wx);
-+	wx_mac_set_default_filter(wx, wx->mac.addr);
-+}
-+
- void ngbe_down(struct wx *wx)
- {
- 	phylink_stop(wx->phylink);
- 	ngbe_disable_device(wx);
-+	ngbe_reset(wx);
- 	wx_clean_all_tx_rings(wx);
- 	wx_clean_all_rx_rings(wx);
- }
-@@ -339,6 +382,11 @@ void ngbe_up(struct wx *wx)
- 		ngbe_sfp_modules_txrx_powerctl(wx, true);
- 
- 	phylink_start(wx->phylink);
-+	/* Set PF Reset Done bit so PF/VF Mail Ops can work */
-+	wr32m(wx, WX_CFG_PORT_CTL,
-+	      WX_CFG_PORT_CTL_PFRSTD, WX_CFG_PORT_CTL_PFRSTD);
-+	if (wx->num_vfs)
-+		wx_ping_all_vfs_with_link_status(wx, false);
- }
- 
- /**
-@@ -725,6 +773,7 @@ static void ngbe_remove(struct pci_dev *pdev)
- 	struct net_device *netdev;
- 
- 	netdev = wx->netdev;
-+	wx_disable_sriov(wx);
- 	unregister_netdev(netdev);
- 	phylink_destroy(wx->phylink);
- 	pci_release_selected_regions(pdev,
-@@ -784,6 +833,7 @@ static struct pci_driver ngbe_driver = {
- 	.suspend  = ngbe_suspend,
- 	.resume   = ngbe_resume,
- 	.shutdown = ngbe_shutdown,
-+	.sriov_configure = wx_pci_sriov_configure,
+ enum wx_ring_f_enum {
+ 	RING_F_NONE = 0,
++	RING_F_VMDQ,
+ 	RING_F_RSS,
+ 	RING_F_FDIR,
+ 	RING_F_ARRAY_SIZE  /* must be last in enum set */
+@@ -1036,7 +1043,26 @@ enum wx_state {
+ 	WX_STATE_NBITS,		/* must be last */
  };
  
- module_pci_driver(ngbe_driver);
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-index a5e9b779c44d..d44204f7e12a 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-@@ -8,6 +8,7 @@
- 
- #include "../libwx/wx_type.h"
- #include "../libwx/wx_hw.h"
-+#include "../libwx/wx_sriov.h"
- #include "ngbe_type.h"
- #include "ngbe_mdio.h"
- 
-@@ -64,6 +65,11 @@ static void ngbe_mac_config(struct phylink_config *config, unsigned int mode,
- static void ngbe_mac_link_down(struct phylink_config *config,
- 			       unsigned int mode, phy_interface_t interface)
- {
-+	struct wx *wx = phylink_to_wx(config);
++struct vf_data_storage {
++	struct pci_dev *vfdev;
++	unsigned char vf_mac_addr[ETH_ALEN];
++	bool spoofchk_enabled;
++	bool link_enable;
++	bool trusted;
++	int xcast_mode;
++};
 +
-+	wx->speed = 0;
-+	/* ping all the active vfs to let them know we are going down */
-+	wx_ping_all_vfs_with_link_status(wx, false);
- }
- 
- static void ngbe_mac_link_up(struct phylink_config *config,
-@@ -103,6 +109,10 @@ static void ngbe_mac_link_up(struct phylink_config *config,
- 	wr32(wx, WX_MAC_PKT_FLT, WX_MAC_PKT_FLT_PR);
- 	reg = rd32(wx, WX_MAC_WDG_TIMEOUT);
- 	wr32(wx, WX_MAC_WDG_TIMEOUT, reg);
++struct vf_macvlans {
++	struct list_head mvlist;
++	int vf;
++	bool free;
++	bool is_macvlan;
++	u8 vf_macvlan[ETH_ALEN];
++};
 +
-+	wx->speed = speed;
-+	/* ping all the active vfs to let them know we are going up */
-+	wx_ping_all_vfs_with_link_status(wx, true);
- }
+ enum wx_pf_flags {
++	WX_FLAG_VMDQ_ENABLED,
++	WX_FLAG_SRIOV_ENABLED,
+ 	WX_FLAG_FDIR_CAPABLE,
+ 	WX_FLAG_FDIR_HASH,
+ 	WX_FLAG_FDIR_PERFECT,
+@@ -1136,10 +1162,15 @@ struct wx {
+ 	u64 hw_csum_rx_good;
+ 	u64 hw_csum_rx_error;
+ 	u64 alloc_rx_buff_failed;
++	unsigned int num_vfs;
++	struct vf_data_storage *vfinfo;
++	struct vf_macvlans vf_mvs;
++	struct vf_macvlans *mv_list;
  
- static const struct phylink_mac_ops ngbe_mac_ops = {
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-index f48ed7fc1805..bb70af035c39 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-@@ -72,11 +72,13 @@
- #define NGBE_PX_MISC_IEN_DEV_RST		BIT(10)
- #define NGBE_PX_MISC_IEN_ETH_LK			BIT(18)
- #define NGBE_PX_MISC_IEN_INT_ERR		BIT(20)
-+#define NGBE_PX_MISC_IC_VF_MBOX			BIT(23)
- #define NGBE_PX_MISC_IEN_GPIO			BIT(26)
- #define NGBE_PX_MISC_IEN_MASK ( \
- 				NGBE_PX_MISC_IEN_DEV_RST | \
- 				NGBE_PX_MISC_IEN_ETH_LK | \
- 				NGBE_PX_MISC_IEN_INT_ERR | \
-+				NGBE_PX_MISC_IC_VF_MBOX | \
- 				NGBE_PX_MISC_IEN_GPIO)
+ 	u32 atr_sample_rate;
+ 	void (*atr)(struct wx_ring *ring, struct wx_tx_buffer *first, u8 ptype);
+ 	void (*configure_fdir)(struct wx *wx);
++	int (*setup_tc)(struct net_device *netdev, u8 tc);
+ 	void (*do_reset)(struct net_device *netdev);
+ };
  
- #define NGBE_INTR_ALL				0x1FF
 -- 
 2.30.1 (Apple Git-130)
 
