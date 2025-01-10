@@ -1,95 +1,148 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CE4209F27;
-	Fri, 10 Jan 2025 09:29:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C01320C46E
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 09:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736501380; cv=none; b=JCCJ5XpIu5qiXUa0USFt1d+vH+TKSxprRd879Pg6g6Zlt5krnncwfKFZeOuNrMIkd4azZQQKGrK9z6BpBkyS56e6ojzwJaRlUoPQOB5PbRD9ddZnh/1662w8L1/7y33Iw9uz9nMNmSEQGm+ovX/zna+Cs8h5vCNmbThQNlbyya4=
+	t=1736501382; cv=none; b=tDSRI2Cq3XiATDW+ZmkJTw4EzmaWdZCF2+ioGWVsKuoR8IrRrRsIamGlZy8Gf2ICEa7Q6jHTPqU/CfPwdzuqhfS46hS96Jr/ruRxVqc0XqzuZNKRTixsfVA56xjXkcUS2EJy7M3MzSVjVXiekl/BKxth5I4R091XGZc1mosWb6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736501380; c=relaxed/simple;
-	bh=FGkhmBkgK/2ki6XHDU56SkvQQB4yKkPfpIUPnQHxMGo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZhEbucoLDwIZotOawW3q+lua2/CV2zw4sC93OUbjVT9rbidsaqW/mr3QM9P3YROE/hi0SrN+O2qk0piycYc8F0WEuLhYCtvFDn1Q8bdElYRPfooA3w2FjLYpjfWJf7UUuVD0BmRISnctrs7ksSwgBC5MRk1/W6UMIi0JU/zay/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=rqevyBnu; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1736501382; c=relaxed/simple;
+	bh=8h8sjxSYvc03RuT3+nX5S1XuL4N5VDBMjfLQggkcSg4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CZDSKNMV+QGEAiLePZwJc9KyXBdzvV0+vIIbx1dfMtPjjiw6m8TYfbfk7u5m+w68/4m944S5+e7911s+DyzBaN4FQFyS/v1VOI6h7mAnwUnq1V2KKiqh8BGSl+UGxGzV3ZNV34v8mXnGSxUDYG7o9Ma0rYj330GQKDv3Zuyfy5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=gwi9DenA; arc=none smtp.client-ip=99.78.197.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="rqevyBnu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1736501378; x=1768037378;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FGkhmBkgK/2ki6XHDU56SkvQQB4yKkPfpIUPnQHxMGo=;
-  b=rqevyBnuLUEYiFvbaJJiWk64t7gpF5u73+0hSe0qXWQHgDrAYWlkbsPx
-   d3sE/VIWSevycsJuMIfs0L2yRd7A9R2MMvMumK3FtCuXOft4JuIj1aYJv
-   tvHOkzzbSrI2TawyY+aVI9hL45LMIB4Q/JREbN2A3K5ycTw0h8uwTt9gO
-   VdRYXyActhL4go6WTdDVd+vpDSLbzBmEgfkHpw0iD0T4qoIrAiTTK/Is7
-   zmS5WX3aOmFrzw6VbAAmDLqSbYP8UOXGQC1QuVL1Fv1m9mPTS3ZuIraLq
-   0Hi6vVK/7DvBDr8LbVSyFmg7Kigrm1e0ciirPSB2qD25sVPOYZo7O8b8O
-   g==;
-X-CSE-ConnectionGUID: ZXymC1RqQb2YdZpceUKUPA==
-X-CSE-MsgGUID: gqk5PFCaQBaNHSW5mBP17Q==
-X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; 
-   d="scan'208";a="36030268"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Jan 2025 02:29:37 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 10 Jan 2025 02:29:32 -0700
-Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Fri, 10 Jan 2025 02:29:29 -0700
-Date: Fri, 10 Jan 2025 09:29:28 +0000
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Eric Dumazet <edumazet@google.com>
-CC: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Lars Povlsen <lars.povlsen@microchip.com>, "Steen
- Hegelund" <Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	<jensemil.schulzostergaard@microchip.com>, <horatiu.vultur@microchip.com>,
-	<jacob.e.keller@intel.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH net-next 4/6] net: sparx5: move SKB consumption to xmit()
-Message-ID: <20250110092928.thsaqm3ucgyhw7s7@DEN-DL-M70577>
-References: <20250109-sparx5-lan969x-switch-driver-5-v1-0-13d6d8451e63@microchip.com>
- <20250109-sparx5-lan969x-switch-driver-5-v1-4-13d6d8451e63@microchip.com>
- <CANn89iKA=ha6y0_UHUp6Pjkf0H4RevRbD-CHswdBqk0O=KkNqg@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="gwi9DenA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1736501381; x=1768037381;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=80uBm5XK40kyyRdwYeGa58p6tHnZvw7FqLJ+2n5VezQ=;
+  b=gwi9DenAiOoYWVWUpgNtgDaOrRY4ioNitPGn4itPC4B1NAxFsuPPluTd
+   JSuGFp9KfskH6Q9qz5om/9v89oaIhN1Y/C/TdEbjPLxfXKNMpkMfs780s
+   Fx04hW9kX73x2VVml8QGPlLXMPaWwfM5wVgPC9Aunt/Zd3WzfjhfyUKzm
+   g=;
+X-IronPort-AV: E=Sophos;i="6.12,303,1728950400"; 
+   d="scan'208";a="13335074"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 09:29:39 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.38.20:51011]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.42.134:2525] with esmtp (Farcaster)
+ id bf29fd59-7e2a-44cc-9f7c-b33f8b2d4a00; Fri, 10 Jan 2025 09:29:38 +0000 (UTC)
+X-Farcaster-Flow-ID: bf29fd59-7e2a-44cc-9f7c-b33f8b2d4a00
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Fri, 10 Jan 2025 09:29:37 +0000
+Received: from 6c7e67c6786f.amazon.com (10.118.252.101) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Fri, 10 Jan 2025 09:29:34 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+CC: Donald Hunter <donald.hunter@redhat.com>, Kuniyuki Iwashima
+	<kuniyu@amazon.com>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+	<netdev@vger.kernel.org>
+Subject: [PATCH v1 net-next 06/12] af_unix: Reuse out_pipe label in unix_stream_sendmsg().
+Date: Fri, 10 Jan 2025 18:26:35 +0900
+Message-ID: <20250110092641.85905-7-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250110092641.85905-1-kuniyu@amazon.com>
+References: <20250110092641.85905-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CANn89iKA=ha6y0_UHUp6Pjkf0H4RevRbD-CHswdBqk0O=KkNqg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D041UWA001.ant.amazon.com (10.13.139.124) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-Hi Eric,
+This is a follow-up of commit d460b04bc452 ("af_unix: Clean up
+error paths in unix_stream_sendmsg().").
 
-> > diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
-> > index b6f635d85820..e776fa0845c6 100644
-> > --- a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
-> > +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
-> > @@ -272,7 +272,6 @@ netdev_tx_t sparx5_port_xmit_impl(struct sk_buff *skb, struct net_device *dev)
-> >             SPARX5_SKB_CB(skb)->rew_op == IFH_REW_OP_TWO_STEP_PTP)
-> >                 return NETDEV_TX_OK;
-> 
-> If packet is freed earlier in sparx5_fdma_xmit(), you have UAF few
-> lines above here ..
-> 
-> stats->tx_bytes += skb->len; // UAF
-> ...
-> if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP &&   // UAF
-> SPARX5_SKB_CB(skb)->rew_op == IFH_REW_OP_TWO_STEP_PTP)   // UAF
-> 
+If we initialise skb with NULL in unix_stream_sendmsg(), we can
+reuse the existing out_pipe label for the SEND_SHUTDOWN check.
 
-Yes, this needs to be done differently. I will rework the SKB consumption in
-v2. Thanks a lot!
+Let's rename do it and adjust the existing label as out_pipe_lock.
 
-/Daniel
+While at it, size and data_len are moved to the while loop scope.
+
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+---
+ net/unix/af_unix.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
+
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index b190ea8b8e9d..6505eeab9957 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2250,13 +2250,11 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 			       size_t len)
+ {
+ 	struct sock *sk = sock->sk;
++	struct sk_buff *skb = NULL;
+ 	struct sock *other = NULL;
+-	int err, size;
+-	struct sk_buff *skb;
+-	int sent = 0;
+ 	struct scm_cookie scm;
+ 	bool fds_sent = false;
+-	int data_len;
++	int err, sent = 0;
+ 
+ 	err = scm_send(sock, msg, &scm, false);
+ 	if (err < 0)
+@@ -2285,16 +2283,12 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 		}
+ 	}
+ 
+-	if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN) {
+-		if (!(msg->msg_flags & MSG_NOSIGNAL))
+-			send_sig(SIGPIPE, current, 0);
+-
+-		err = -EPIPE;
+-		goto out_err;
+-	}
++	if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
++		goto out_pipe;
+ 
+ 	while (sent < len) {
+-		size = len - sent;
++		int size = len - sent;
++		int data_len;
+ 
+ 		if (unlikely(msg->msg_flags & MSG_SPLICE_PAGES)) {
+ 			skb = sock_alloc_send_pskb(sk, 0, 0,
+@@ -2347,7 +2341,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 
+ 		if (sock_flag(other, SOCK_DEAD) ||
+ 		    (other->sk_shutdown & RCV_SHUTDOWN))
+-			goto out_pipe;
++			goto out_pipe_unlock;
+ 
+ 		maybe_add_creds(skb, sock, other);
+ 		scm_stat_add(other, skb);
+@@ -2370,8 +2364,9 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 
+ 	return sent;
+ 
+-out_pipe:
++out_pipe_unlock:
+ 	unix_state_unlock(other);
++out_pipe:
+ 	if (!sent && !(msg->msg_flags & MSG_NOSIGNAL))
+ 		send_sig(SIGPIPE, current, 0);
+ 	err = -EPIPE;
+-- 
+2.39.5 (Apple Git-154)
 
