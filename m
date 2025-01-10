@@ -1,320 +1,208 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0AC2066DD
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 01:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736471055; cv=none; b=M7c2EXqsF+9400aowptCU+7CW+zJTJKSqRbkZPootutudk9LLBJWuGG212Nvn9PjIkUoZjPb714bVieJOqYzrZRfcUn8orUc/V6BCG0lTIdkT7vNHE5fdOu5b8NTRSpAZixPqjK0xwnM07oFgFp2qB3W7z81UBFXDnRUhgpAf5c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736471055; c=relaxed/simple;
-	bh=mB7CSBUc/zPyuAIvcNU1VoCNxE1QrCmcgQm776XUdwc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tx5pNzZzP+zENKpWMTDN9xER4PhtwrDAAtu3/3fHVg8mXlhikny3XRZo3Y/wsQsMttADprG38+pSJmuRhJMKycFEoVq8ZUQn8OPZLy7L2U1GvfukdIpfgDqNu1hGzmG1l/xOk3+GLIE2b4/VMmbIPogincnR3jZKimuy96zcmO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hqjfj624; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377F015E90
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 01:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736471573; cv=fail; b=jK2SdZdY0ZNw6JYlxo0Y/4fOGvcJm/NzGGP87pepA8RpZTGyTOg0D2o+tisFa/6rqZzrmTFmOce52vvQZ9NwfiF28BwtoBiOSOwyeDuKBqT/VseLVlnu2um3K1c1PKPgUyuov1xzfiRm8a+rbRvu4UM4Zcrv2g8jh2w+m7kCNgk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736471573; c=relaxed/simple;
+	bh=DNdMevvnldC3iPuouUgwabPGUu0+yOnrqhSmgiG2EEU=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=bt5hhHKSntFzp72GgV/cxuxDQHzcfJohYyI5Z5KLViskyzfG7F/5RD65+hR846hCfM9vnIf31X36blVvlzABhB3XPK8DTF8GeTpl4r5Ca45v+ymzAfghYetLc5+uXwTWM6TBnV7m2m6jzU5cu8UalE516SD24L3hjHSURGvaMW0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=drkca26j; arc=fail smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hqjfj624"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736471053;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r+BHhLFoDCiqeH2JzrdvAP1GvlO2WIxVq9IEXsMrIfw=;
-	b=hqjfj624dSTrhLGl45XpslUiGVJ43gDxqomzQQcHYbeQgD65yTaIURpMoa2j3AT4Qoq8gC
-	lvQzHgcsHdboIt2i8yKSneLsFpAt2MUG/9ZtBeV33SdqCKvAsxaUAMq0F1KQK1qox71giF
-	6caim0ssWaUNg6Gc//vpmft5sTerjwo=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-111-4VHIN3ueNOC3foRXWS9Fuw-1; Thu,
- 09 Jan 2025 20:04:10 -0500
-X-MC-Unique: 4VHIN3ueNOC3foRXWS9Fuw-1
-X-Mimecast-MFC-AGG-ID: 4VHIN3ueNOC3foRXWS9Fuw
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 29B7419560BD;
-	Fri, 10 Jan 2025 01:04:08 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.12])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5A08F19560AB;
-	Fri, 10 Jan 2025 01:04:04 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Herbert Xu <herbert@gondor.apana.org.au>,
-	Chuck Lever <chuck.lever@oracle.com>
-Cc: David Howells <dhowells@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-crypto@vger.kernel.org,
-	linux-afs@lists.infradead.org,
-	linux-nfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 8/8] rxrpc: rxgk: Implement connection rekeying
-Date: Fri, 10 Jan 2025 01:03:10 +0000
-Message-ID: <20250110010313.1471063-9-dhowells@redhat.com>
-In-Reply-To: <20250110010313.1471063-1-dhowells@redhat.com>
-References: <20250110010313.1471063-1-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="drkca26j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736471571; x=1768007571;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=DNdMevvnldC3iPuouUgwabPGUu0+yOnrqhSmgiG2EEU=;
+  b=drkca26jkynT6sE62BeNXXfMtTxCpEWbpofrG1LY7s0YYiKhqVGKXG6G
+   CfgCISAGxIWbgzonLCniNCic5hH0AJJJxzdaqRkB6veZKZhiZmD/Hy410
+   e+UnTAp7Qt8Iujop0brsnf3I9OlKGjD0HwCAg9VZCjKG4Z1Sgj3IQhxev
+   Lek4Pnzx9Lr9G5PP7KnxXf9Ejf9oUCcHVOcckw+YojFgFSnlKoj9yvrCU
+   s6EeA3m1V96nrDyzuonLR2nVe6/jRlQ+CgsLmTibuFPc34EvILFA060nR
+   GQm6vjaWbsoGfb8Y/78q53OdfgLiK6I/iWMhXAkbyrunlj+U+I5d6HaR3
+   Q==;
+X-CSE-ConnectionGUID: iUpun9/ARhKyb/IDyxqS7w==
+X-CSE-MsgGUID: toihnEYvRG+xiZu5yKGN5g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11310"; a="47749126"
+X-IronPort-AV: E=Sophos;i="6.12,302,1728975600"; 
+   d="scan'208";a="47749126"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2025 17:12:51 -0800
+X-CSE-ConnectionGUID: eOLPCG75QLOIJkfNfp+Iqw==
+X-CSE-MsgGUID: HFNiWKiwQruaysJpSx7NXA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="108683588"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 09 Jan 2025 17:12:51 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Thu, 9 Jan 2025 17:12:50 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Thu, 9 Jan 2025 17:12:50 -0800
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.176)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Thu, 9 Jan 2025 17:12:50 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Srb8gGQxEAzEWfqPP3OZ4tIRjD8yZoYYOdxgyg9HomYwBd/mN2Q2lytoktx4KC6iJu54IK674F5YrdJUyH0to8Zgm7WE49hH3h6yR5ctlyLj0ekopIMXwPa3VgeZHEWmnm4RBajQMLFULaWY4i2QO0kjUENIQHTQVeIZY8fxASjLt9td5LYw8TpGUV2IOVTcNKVElgzfflG2oRHLvZbUPDMO+wx2LCkjE6aoGn7tCvhc8CRn54YA0le2wWQmPWPvksm2yvGtlBi+BDYm+rSiuHnJfnsZIreZL8veSgRZUMcwfSwE+sXrz0qRGDW1dd5wXS3sdRdg4b1i8FlHYLNB5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gz37Da8hF26IRaNgGqLI1MzaKrrqe9HXgtIc6hKuykI=;
+ b=JWImMYBXcEzx5wMd8mkqrZEBum2Paw2kqRpNcctvGZXudBBFe9MMStacZ8dqCt82O9+/msUFVF7zQ7zOUgQP9WM04b1yg4N6HttLLsAXGPAEDedNl4kTEJbS8QFI+f3HbjEgq5YSdLF3uNo0Nyk08wSx1yuehkDjaBcltxarL3t6kvIZ7G0MoMXzmGmtuIESqjWNo5RKzZ2zaYQi72b2SUDqe2i9/iopg42zJVtyq64G5+F7LSKqbCzWjja//iWIRXwqDZDtEPtHVCo/b+m2RgIdI7xfinnRhWd+tMmmAYLvUMgRqmCAQQjFom3M2jRKBsu4sJoHLI6NEghEjZH62Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO1PR11MB5089.namprd11.prod.outlook.com (2603:10b6:303:9b::16)
+ by MW4PR11MB5892.namprd11.prod.outlook.com (2603:10b6:303:16a::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.10; Fri, 10 Jan
+ 2025 01:12:48 +0000
+Received: from CO1PR11MB5089.namprd11.prod.outlook.com
+ ([fe80::7de8:e1b1:a3b:b8a8]) by CO1PR11MB5089.namprd11.prod.outlook.com
+ ([fe80::7de8:e1b1:a3b:b8a8%5]) with mapi id 15.20.8335.012; Fri, 10 Jan 2025
+ 01:12:48 +0000
+Message-ID: <e979594f-b668-4dec-a7e1-f7e60db07133@intel.com>
+Date: Thu, 9 Jan 2025 17:12:45 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net] r8169: remove redundant hwmon support
+To: Heiner Kallweit <hkallweit1@gmail.com>, Realtek linux nic maintainers
+	<nic_swsd@realtek.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni
+	<pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, David Miller
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Simon Horman
+	<horms@kernel.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <afba85f5-987b-4449-83cc-350438af7fe7@gmail.com>
+Content-Language: en-US
+From: Jacob Keller <jacob.e.keller@intel.com>
+In-Reply-To: <afba85f5-987b-4449-83cc-350438af7fe7@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY5PR17CA0042.namprd17.prod.outlook.com
+ (2603:10b6:a03:167::19) To CO1PR11MB5089.namprd11.prod.outlook.com
+ (2603:10b6:303:9b::16)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PR11MB5089:EE_|MW4PR11MB5892:EE_
+X-MS-Office365-Filtering-Correlation-Id: d9a5d8ff-e3c3-4c74-c993-08dd3113e574
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?YUtwVGRTcGdNdy80b3BDejlZVlhUeVZoV2JzSmdjaElDWk1yOUc1cVgvOUhH?=
+ =?utf-8?B?M3RGeHJYTWxDQUNaMWtwVjBIQXEvQmE1MmlabWRUWGo3Q3pXWDk5NlRzV0Vu?=
+ =?utf-8?B?bUUvenlYcTB2TjhzdTZDMytEZStVS0pFVEQwVlBibFZidTRWNjBCanlCM3FQ?=
+ =?utf-8?B?d3M0cGR6QzE1Y2NISGcxNE1FY0tGSUw3V2cxa2U2NzBHZTBmdlp6WUg2TEdj?=
+ =?utf-8?B?MEFxV1N6ajIzbkMwenJzRWF0c0JqWUp1TWc1NkloNWJNaUxhNVRiUXd5ekY3?=
+ =?utf-8?B?b0x0bkNvMkYwS1htM21tNGpZVWY3QVlrRUROR21VZFVMK3VMdTk0eWU3UVFm?=
+ =?utf-8?B?RnJoV2FPbjNWWlBZU0hlTUZLay9adXk3cm43QThKVVVCVi92TEt5MW1HQ3or?=
+ =?utf-8?B?ZE82QmRmVSttVFB4cHlIa1dpVUZQMWVYcFdtNllZQVVwNUJSc1R4R3hOOXYr?=
+ =?utf-8?B?a1BPNmtwcVNJelhoWjR3aW9qWEpGTElGaGZ5SlFNUG1sMStNaFVORHRUb252?=
+ =?utf-8?B?bHc0dnpTbHJORHlkcHlrZnNDTms2UGxoTU1mYk1CMzhGNDlMTWY5bTZDRDBO?=
+ =?utf-8?B?MUYxa001L1BBeDZXaEVWWndFT3lpMlFuVnk5akExY3FkQm9uS1ZWRmZQcWlm?=
+ =?utf-8?B?c1Z0SHBYTmNKbURrU2VDeVluQzRvRDZsTk5BNmcrQTNidldqR2NxKy9rYVE0?=
+ =?utf-8?B?WVgza25rSnJsS0R0OTZSNEFtR2libk1od3ZLSHVXbEpLSWppNjUzUFF5N3Iy?=
+ =?utf-8?B?UmJ5UjlLNWRxQ3k5TXlnVUJCbVVzTjlVQ3ZyY3pSMllDTmR6ZDYrd2dLa2xD?=
+ =?utf-8?B?Mi9zajJyRnhxY2QxY0s5Y2UzSW8zd2hFN0FQc1hEQU1RR3hPcUxRWE04VFBj?=
+ =?utf-8?B?QWFRQ0hjdk1MeFNVQTl1THhlZ3FXQ3FJOVplQitPdVJqaEx4L3UweU1HcFlY?=
+ =?utf-8?B?S3c0Wkk0NG1seko5VFM3MGpRek00bDlEUTVNTldsYkozRm9lT1hjWnZiLzRX?=
+ =?utf-8?B?cGZEVVV6M3JGTnFrVm1MZEpydk5rdnhHQ1EvVXEzMkNvRElTRWJRSFRLOVRU?=
+ =?utf-8?B?VmdPbDRlMWlaOVk5RDJ0bm1qTkpYRURXVGVmanUxZWdBWGJqL2U4VVp0QWJ6?=
+ =?utf-8?B?emJEQlJCU3pJUFIwNFF4ekxvTUw4SkQrNWpuL3pXNE5uNmRxTjI1algzUTBX?=
+ =?utf-8?B?WHl4YXIzd0RhelJZZjlhaFk0NDNpcmJVY0lQa3RVeGdJOFJYaHhtdmVkYWVk?=
+ =?utf-8?B?TUNGTkpnNkVLaHMrbURSVWdlbnlhZ3hqeGZhaDYzb3gweE5UY3B3LzRjTmk2?=
+ =?utf-8?B?QTlDRm5qN1cwS1lXa2JoQ0QvYmJOSkc1dHJlSUlGWU1hOTNYNkZqRDhZT3ll?=
+ =?utf-8?B?ZjBCSjBMM0Z0bTJMQXJSdGg2U1JKWUpNUzdRYUgzckpQNytmTmZuVXlMd1Jy?=
+ =?utf-8?B?WTdHQ3htaHNrc1oyYUU4VkhzWWNCdjNLdnlyM3p0SE5iRXRCRFA5UmlNVUZw?=
+ =?utf-8?B?WXNJOVZRTU1GRmlDWTMzMW5PYmFrRER4cHpwdVA0SjQwUm94U3R3WHhzRS9H?=
+ =?utf-8?B?WHdzRXRBSFpDWlRvSTBDWG95MmlLN015NXUrQUhPeEorbDI3K0V2MWZncTd4?=
+ =?utf-8?B?dkdSMjYxeDgvK0ErVzhyTm5XQUNDbGF6WlZrTWQ3STJsb2pGc01rUjFtMkIx?=
+ =?utf-8?B?ZjFzN1NBalhlNWZuNTJtZTJNM1EzT2lBZWdtNWJvSURBcG1UVnhjMEtaOHR6?=
+ =?utf-8?B?cmswUk0yZVhnYThtUktROXR1UkU5RG9hSkZBYitzSW93OFRxaE1kRFZrWExZ?=
+ =?utf-8?B?cTlaM0tSYWVBQmd3ZGZ4QT09?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB5089.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MlJXaDR0cHNNRDMvL3FJN3cvQmhyQk5RbW56Q1dZUEZlaFpkSHRXY2NCaXdM?=
+ =?utf-8?B?SG5ZME1TQzhpaUg1dHBUNGJPUjJxekVoQ3k0RUI1SDNXM1l2clZJVzI2L2lW?=
+ =?utf-8?B?RjNHSk82dlp2UHVxNEIrSmhWZEo4Y0pnamhnNzhIWEt0WDVsZEdGazMwWlVO?=
+ =?utf-8?B?WnVlNEJ6MStsRU0yM0JzWlNpMmhDbWJxUUhQVnkvNGtPb09XYmVLSXJBc1BF?=
+ =?utf-8?B?VlllaWNzODJiWEYzZWNBK2paczJnTlRaQmdzNkxJekMvdi9KMUJDMkFHVXo2?=
+ =?utf-8?B?TTRhOWZOSlBmcGRlWVBHMDR3Mi9KSGxQbjgxdVdlSW82cWRWWHFVSUQ3TzZy?=
+ =?utf-8?B?N212YzR2U1pMNUdUQUxhaWRRaDM1SWtFVjY2RHEzT0kzNXpmcjU4ZUxxSjZz?=
+ =?utf-8?B?MG9BZkVSNnZQSjg1bE8wcSt5VEY2c1R2U0VrWkp2QXBxbk11NDhrUWxDay9S?=
+ =?utf-8?B?SXZRT015cCtWOXBEaEJBajl5dnFTZG5YUGNIQ0xFSGlOYVhRVnNpam5aUXpB?=
+ =?utf-8?B?aFdKdUpOUlltM04xWjlHTnFpV3hDdnNPNjJVYUxsN0wyUE9hbERiOE1nOGJH?=
+ =?utf-8?B?LzNZTFhpS3JJUVRQaVE5UGg0SWFaaDB2UUVEVm1nOEpnd3dKN3ZTV3BGeWZR?=
+ =?utf-8?B?WFdTcmE0a3g1aEQ1ZDNOZHgxWDFTLzBZMjhJZUpWU2dXQ29KTVdtbytTRXhy?=
+ =?utf-8?B?enY5czZ2QjdIU3Q1dzFsUFpIRlQzZm4yczBGK3BrOFlWWUlKZHZHdmYvSnA5?=
+ =?utf-8?B?ZDNZNnFOcDMrdC83TGlIN1l2K1FHZHdkTTd4RWNhT25kcjlGZ0dYZGpoUFk0?=
+ =?utf-8?B?dUh5eG9iTmhPREQyVVVnb2x5OHVPL20rMktzMExEUEMxRm16VzJuOUhXTVds?=
+ =?utf-8?B?MlpzM1RIR0NUaTR3NXd3VmZlanRHMGlIaVNoVldibkwzZUt6a2luaHpJVDQ5?=
+ =?utf-8?B?UUhiTmt0OUZtVWwrR21kdDlTT1pmSEx5VGY0cmhrTVgwcjg2T0hZbjV5Y0JE?=
+ =?utf-8?B?SGwveGsxWVc2S3lUdUVHREFpVWYzWHdVNHhQV29xZVVDWHBzamlIWFZyM3M3?=
+ =?utf-8?B?SVpQbU04ZWM5cER3SWl2Lzl5L2h1YWhtYXNjMUxIN1J4NzJpMSt4bVlRck9y?=
+ =?utf-8?B?L3RLWC8yNURrTlkxdjFGMzArd0tYbDBBN0RKZFRGU2RzdzV5eCtCMm5Lb2hn?=
+ =?utf-8?B?OWtXMDAzMDVIa3Z0eXBXQlMvMzNVOHNkUjMvOThSMVRFRU5jYmF3SEkwNlJ0?=
+ =?utf-8?B?bFcyRUtqeDIxQUhzdUMyM0pCUkpqTXBTUWhyV2lJS2tHbEpETTkwSGxvUGMz?=
+ =?utf-8?B?c3pTOEJpUng2b2JNV05JZEpYcW9zaGVkb0FoUVpsNjF2NFdCblh4Z1REU2RZ?=
+ =?utf-8?B?akxtam5iYnpQczBPdkF4a3BZcURBcHNYYnRDUm5qdExHbjUwczlORkpWT2hJ?=
+ =?utf-8?B?SUZ6Z1U4ZGh3UktKZGRBU2JKSUhvdUJaRy9YZTVNNHRJRnlzb2xHV2RUcHJH?=
+ =?utf-8?B?aStkdWJkRkZ5endqaUdFREEvRDg3anlpVWRJQm1WbFdXeHVMVzZsb3dJMzZh?=
+ =?utf-8?B?cVVjSG9WZjBlb0NjV2FvUEkyQTNEb3g3UVhsZEllSTZkR050RGxSYTl0bVNj?=
+ =?utf-8?B?Q1MxR2w2bWNPS0lrVUFyVFhRZTJreHB2aUk1VTlHWW0yQk5aYm9NWXB5UERU?=
+ =?utf-8?B?aTF6OTdPaXFDUUs2L2tNL0dTbUpwQmo4TUNlYTZKd0hVT3JmNm1Xa2Q4dlNv?=
+ =?utf-8?B?c3Vrd2cxYndFbDlaNXA3b1I5bUN1Si9yK0lxWjVOL0lSZjRKUDdaYUdGWGZH?=
+ =?utf-8?B?WVRlcDF2YTBPU25jNkQzU3k4dnFtNFQvbXQzWG5acVhMOW9BWm0rUTBPT0pT?=
+ =?utf-8?B?SHBkZE5EczZaU0N6Ry9kcm9JTDI2bFg1ZlBhSHFGU1ZrM1BMZVdadHEzWnBB?=
+ =?utf-8?B?NG9XMGM5QjJkaEoxYXFLZE9ZYytBeE9oUURndUIwdk9aWG1XaG9VaVNCVXpF?=
+ =?utf-8?B?NjlYbldIbmpiaEl1dzV0SE1abDZkY1NDK0lqb01QTnVVQmxicWYrZmozWWtV?=
+ =?utf-8?B?UkJDNVh3bzg1QUJnUXZpS2ZlamY4L2JvM2RNamVjZUgyTlM5NFl6UkFlTG81?=
+ =?utf-8?Q?oYch8mFmlT7fGbGGfDbjcp/wf?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9a5d8ff-e3c3-4c74-c993-08dd3113e574
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5089.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jan 2025 01:12:48.2065
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /T714RnoU1zBlqjqYv6mi4WbHM71WlS7D/gfFFesHxm0fM4OJTPPfJJWZacm4w8NI3GeP+lFg6c2RmzJBAwZQH3GfPCRHkk4IUlLCL8q+WE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB5892
+X-OriginatorOrg: intel.com
 
-Implement rekeying of connections with the RxGK security class.  This
-involves regenerating the keys with a different key number as part of the
-input data after a certain amount of time or a certain amount of bytes
-encrypted.  Rekeying may be triggered by either end.
 
-The LSW of the key number is inserted into the security-specific field in
-the RX header, and we try and expand it to 32-bits to make it last longer.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Herbert Xu <herbert@gondor.apana.org.au>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Chuck Lever <chuck.lever@oracle.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: linux-nfs@vger.kernel.org
-cc: linux-crypto@vger.kernel.org
-cc: netdev@vger.kernel.org
----
- net/rxrpc/ar-internal.h |   5 +-
- net/rxrpc/conn_object.c |   1 +
- net/rxrpc/rxgk.c        | 156 ++++++++++++++++++++++++++++++++++++++--
- 3 files changed, 155 insertions(+), 7 deletions(-)
+On 1/9/2025 2:43 PM, Heiner Kallweit wrote:
+> The temperature sensor is actually part of the integrated PHY and available
+> also on the standalone versions of the PHY. Therefore hwmon support will
+> be added to the Realtek PHY driver and can be removed here.
+> 
+> Fixes: 1ffcc8d41306 ("r8169: add support for the temperature sensor being available from RTL8125B")
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> ---
+> v2:
+> - rebase patch on net
+In the future, please avoid re-sending within 24 hours:
 
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index 736dc6ea20ac..e00f3b0edc98 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -533,11 +533,14 @@ struct rxrpc_connection {
- 			u32	nonce;		/* response re-use preventer */
- 		} rxkad;
- 		struct {
--			struct rxgk_context *keys[1];
-+			struct rxgk_context *keys[4]; /* (Re-)keying buffer */
- 			u64	start_time;	/* The start time for TK derivation */
- 			u8	nonce[20];	/* Response re-use preventer */
-+			u32	key_number;	/* Current key number */
- 		} rxgk;
- 	};
-+	rwlock_t		security_use_lock; /* Security use/modification lock */
-+
- 	unsigned long		flags;
- 	unsigned long		events;
- 	unsigned long		idle_timestamp;	/* Time at which last became idle */
-diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
-index 7eba4d7d9a38..56459b00266d 100644
---- a/net/rxrpc/conn_object.c
-+++ b/net/rxrpc/conn_object.c
-@@ -72,6 +72,7 @@ struct rxrpc_connection *rxrpc_alloc_connection(struct rxrpc_net *rxnet,
- 		skb_queue_head_init(&conn->rx_queue);
- 		conn->rxnet = rxnet;
- 		conn->security = &rxrpc_no_security;
-+		rwlock_init(&conn->security_use_lock);
- 		spin_lock_init(&conn->state_lock);
- 		conn->debug_id = atomic_inc_return(&rxrpc_debug_id);
- 		conn->idle_timestamp = jiffies;
-diff --git a/net/rxrpc/rxgk.c b/net/rxrpc/rxgk.c
-index 7344f19b8ae2..c278a242f855 100644
---- a/net/rxrpc/rxgk.c
-+++ b/net/rxrpc/rxgk.c
-@@ -76,11 +76,153 @@ static void rxgk_describe_server_key(const struct key *key, struct seq_file *m)
- 		seq_printf(m, ": %s", krb5->name);
- }
- 
-+/*
-+ * Handle rekeying the connection when we see our limits overrun or when the
-+ * far side decided to rekey.
-+ *
-+ * Returns a ref on the context if successful or -ESTALE if the key is out of
-+ * date.
-+ */
-+static struct rxgk_context *rxgk_rekey(struct rxrpc_connection *conn,
-+				       const u16 *specific_key_number)
-+{
-+	struct rxgk_context *gk, *dead = NULL;
-+	unsigned int key_number, current_key, mask = ARRAY_SIZE(conn->rxgk.keys) - 1;
-+	bool crank = false;
-+
-+	_enter("%d", specific_key_number ? *specific_key_number : -1);
-+
-+	mutex_lock(&conn->security_lock);
-+
-+	current_key = conn->rxgk.key_number;
-+	if (!specific_key_number) {
-+		key_number = current_key;
-+	} else {
-+		if (*specific_key_number == (u16)current_key)
-+			key_number = current_key;
-+		else if (*specific_key_number == (u16)(current_key - 1))
-+			key_number = current_key - 1;
-+		else if (*specific_key_number == (u16)(current_key + 1))
-+			goto crank_window;
-+		else
-+			goto bad_key;
-+	}
-+
-+	gk = conn->rxgk.keys[key_number & mask];
-+	if (!gk)
-+		goto generate_key;
-+	if (!specific_key_number &&
-+	    test_bit(RXGK_TK_NEEDS_REKEY, &gk->flags))
-+		goto crank_window;
-+
-+grab:
-+	refcount_inc(&gk->usage);
-+	mutex_unlock(&conn->security_lock);
-+	rxgk_put(dead);
-+	return gk;
-+
-+crank_window:
-+	if (current_key == UINT_MAX)
-+		goto bad_key;
-+	if (current_key + 1 == UINT_MAX)
-+		set_bit(RXRPC_CONN_DONT_REUSE, &conn->flags);
-+
-+	key_number = current_key + 1;
-+	if (WARN_ON(conn->rxgk.keys[key_number & mask]))
-+		goto bad_key;
-+	crank = true;
-+
-+generate_key:
-+	gk = conn->rxgk.keys[current_key & mask];
-+	gk = rxgk_generate_transport_key(conn, gk->key, key_number, GFP_NOFS);
-+	if (IS_ERR(gk)) {
-+		mutex_unlock(&conn->security_lock);
-+		return gk;
-+	}
-+
-+	write_lock(&conn->security_use_lock);
-+	if (crank) {
-+		current_key++;
-+		conn->rxgk.key_number = current_key;
-+		dead = conn->rxgk.keys[(current_key - 2) & mask];
-+		conn->rxgk.keys[(current_key - 2) & mask] = NULL;
-+	}
-+	conn->rxgk.keys[current_key & mask] = gk;
-+	write_unlock(&conn->security_use_lock);
-+	goto grab;
-+
-+bad_key:
-+	mutex_unlock(&conn->security_lock);
-+	return ERR_PTR(-ESTALE);
-+}
-+
-+/*
-+ * Get the specified keying context.
-+ *
-+ * Returns a ref on the context if successful or -ESTALE if the key is out of
-+ * date.
-+ */
- static struct rxgk_context *rxgk_get_key(struct rxrpc_connection *conn,
--					 u16 *specific_key_number)
-+					 const u16 *specific_key_number)
- {
--	refcount_inc(&conn->rxgk.keys[0]->usage);
--	return conn->rxgk.keys[0];
-+	struct rxgk_context *gk;
-+	unsigned int key_number, current_key, mask = ARRAY_SIZE(conn->rxgk.keys) - 1;
-+
-+	_enter("{%u},%d",
-+	       conn->rxgk.key_number, specific_key_number ? *specific_key_number : -1);
-+
-+	read_lock(&conn->security_use_lock);
-+
-+	current_key = conn->rxgk.key_number;
-+	if (!specific_key_number) {
-+		key_number = current_key;
-+	} else {
-+		/* Only the bottom 16 bits of the key number are exposed in the
-+		 * header, so we try and keep the upper 16 bits in step.  The
-+		 * whole 32 bits are used to generate the TK.
-+		 */
-+		if (*specific_key_number == (u16)current_key)
-+			key_number = current_key;
-+		else if (*specific_key_number == (u16)(current_key - 1))
-+			key_number = current_key - 1;
-+		else if (*specific_key_number == (u16)(current_key + 1))
-+			goto rekey;
-+		else
-+			goto bad_key;
-+	}
-+
-+	gk = conn->rxgk.keys[key_number & mask];
-+	if (!gk)
-+		goto slow_path;
-+	if (!specific_key_number &&
-+	    key_number < UINT_MAX) {
-+		if (time_after(jiffies, gk->expiry) ||
-+		    gk->bytes_remaining < 0) {
-+			set_bit(RXGK_TK_NEEDS_REKEY, &gk->flags);
-+			goto slow_path;
-+		}
-+
-+		if (test_bit(RXGK_TK_NEEDS_REKEY, &gk->flags))
-+			goto slow_path;
-+	}
-+
-+	refcount_inc(&gk->usage);
-+	read_unlock(&conn->security_use_lock);
-+	return gk;
-+
-+rekey:
-+	_debug("rekey");
-+	if (current_key == UINT_MAX)
-+		goto bad_key;
-+	gk = conn->rxgk.keys[current_key & mask];
-+	if (gk)
-+		set_bit(RXGK_TK_NEEDS_REKEY, &gk->flags);
-+slow_path:
-+	read_unlock(&conn->security_use_lock);
-+	return rxgk_rekey(conn, specific_key_number);
-+bad_key:
-+	read_unlock(&conn->security_use_lock);
-+	return ERR_PTR(-ESTALE);
- }
- 
- /*
-@@ -92,7 +234,8 @@ static int rxgk_init_connection_security(struct rxrpc_connection *conn,
- 	struct rxgk_context *gk;
- 	int ret;
- 
--	_enter("{%d},{%x}", conn->debug_id, key_serial(conn->key));
-+	_enter("{%d,%u},{%x}",
-+	       conn->debug_id, conn->rxgk.key_number, key_serial(conn->key));
- 
- 	conn->security_ix = token->security_index;
- 	conn->security_level = token->rxgk->level;
-@@ -102,10 +245,11 @@ static int rxgk_init_connection_security(struct rxrpc_connection *conn,
- 		do_div(conn->rxgk.start_time, 100);
- 	}
- 
--	gk = rxgk_generate_transport_key(conn, token->rxgk, 0, GFP_NOFS);
-+	gk = rxgk_generate_transport_key(conn, token->rxgk, conn->rxgk.key_number,
-+					 GFP_NOFS);
- 	if (IS_ERR(gk))
- 		return PTR_ERR(gk);
--	conn->rxgk.keys[0] = gk;
-+	conn->rxgk.keys[gk->key_number & 3] = gk;
- 
- 	switch (conn->security_level) {
- 	case RXRPC_SECURITY_PLAIN:
+https://docs.kernel.org/process/maintainer-netdev.html#resending-after-review
 
+Thanks,
+Jake
