@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE1820CCDF
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A622B20CCE9
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736508448; cv=none; b=GKXSa6l+TpNb0dEIPhIAO/HE29N0Kw4chW2i2Zx/dyqal3XEOsjnrFehGjeDCIO5QH7TR2uuiC2VDSK2QpPoM4N+a2mn60QoyH81v/BnaoBnieFpumZ/3k4yd6QZQX8HxyVmYoXcpYbMd+qzncCgt7qmmcryzuclTNIYC/oVpQM=
+	t=1736508448; cv=none; b=narwFP75JkFHiXmE5zMrYwfsXRvKZTmHAAg4lOG5zN6wmxvf5PfBhMtf+UOtTcK8hCjAz1LnC2uiVlCWbOn4jm6MjD8sX7XpFdakAMPvueFSBhOL6hAh1c9qbuRSqCyd9ZVly8Y0rxIFGubwC3iUgWkjCt4ZtXERHEE/DShupKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1736508448; c=relaxed/simple;
-	bh=eDTaj2cSpeELI5MytHZlE7kGIDVwMM4WC+7I4W4yEUg=;
+	bh=h210aFJ8XtOBWwum2XpoLB0dXkBYCGJOjOpeqWcShe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZtChAYzttLYkLJaUg2e3k9dLoJfU4nWL0CeHMnaM4N0gSlPqqaJj24wAEMt05LGF35ptmd+6F3BFwfwvmM7mk6MyYkoRdSZoe9q4Q+pjnU+kZxP6iCy874IhNxU3wDgKK+XpjAb/xmwnnt8P3F7hsHhdcVFYaFbca4H/B3FyDT8=
+	 MIME-Version; b=jIaJynHT6yHGdagp8/vVL3LZSMAFercF+WMAI+Xh1wFbrXs04y64DDr0hIXLj3RlWKqzDWywFZy6LHxV2KCT2Rlofe5PxzvZKG/5Se+cyQ+NrJA7/c9LLuc+Iee2UHW9L/oNn3dQr9HnrM0uTdzfAo+5TjnrKhGSns+fGRGwwsc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,26 +18,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tWDAg-00053o-8W
-	for netdev@vger.kernel.org; Fri, 10 Jan 2025 12:27:22 +0100
+	id 1tWDAh-00058M-8Y
+	for netdev@vger.kernel.org; Fri, 10 Jan 2025 12:27:23 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tWDAc-0009ho-2z
+	id 1tWDAf-0009jX-0Z
 	for netdev@vger.kernel.org;
-	Fri, 10 Jan 2025 12:27:18 +0100
+	Fri, 10 Jan 2025 12:27:21 +0100
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 7C2863A4617
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:18 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id D6EAF3A4628
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:20 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 1A3FA3A45A1;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 774993A45AE;
 	Fri, 10 Jan 2025 11:27:15 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 103f7989;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 618ddf05;
 	Fri, 10 Jan 2025 11:27:14 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -45,11 +45,11 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Sean Nyekjaer <sean@geanix.com>,
+	Jimmy Assarsson <extja@kvaser.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 11/18] can: m_can: add deinit callback
-Date: Fri, 10 Jan 2025 12:04:19 +0100
-Message-ID: <20250110112712.3214173-12-mkl@pengutronix.de>
+Subject: [PATCH net-next 16/18] can: kvaser_usb: Add support for CAN_CTRLMODE_BERR_REPORTING
+Date: Fri, 10 Jan 2025 12:04:24 +0100
+Message-ID: <20250110112712.3214173-17-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20250110112712.3214173-1-mkl@pengutronix.de>
 References: <20250110112712.3214173-1-mkl@pengutronix.de>
@@ -65,51 +65,124 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-This is added in preparation for calling standby mode in the tcan4x5x
-driver or other users of m_can.
-For the tcan4x5x; If Vsup 12V, standby mode will save 7-8mA, when the
-interface is down.
+Add support for CAN_CTRLMODE_BERR_REPORTING,
+allowing Bus Error Reporting to be enabled or disabled.
+Previously, Bus Error Reporting was always active.
 
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20241122-tcan-standby-v3-1-90bafaf5eccd@geanix.com
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://patch.msgid.link/20241230142645.128244-2-extja@kvaser.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/m_can/m_can.c | 7 +++++++
- drivers/net/can/m_can/m_can.h | 1 +
- 2 files changed, 8 insertions(+)
+ .../net/can/usb/kvaser_usb/kvaser_usb_core.c  |  3 +-
+ .../net/can/usb/kvaser_usb/kvaser_usb_hydra.c | 29 ++++++++++---------
+ .../net/can/usb/kvaser_usb/kvaser_usb_leaf.c  | 13 +++++----
+ 3 files changed, 26 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index 16e9e7d7527d..e31ce973892a 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -1756,6 +1756,13 @@ static void m_can_stop(struct net_device *dev)
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+index 7d12776ab63e..dcb0bcbe0565 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+@@ -818,7 +818,8 @@ static int kvaser_usb_init_one(struct kvaser_usb *dev, int channel)
+ 	init_completion(&priv->stop_comp);
+ 	init_completion(&priv->flush_comp);
+ 	init_completion(&priv->get_busparams_comp);
+-	priv->can.ctrlmode_supported = CAN_CTRLMODE_CC_LEN8_DLC;
++	priv->can.ctrlmode_supported = CAN_CTRLMODE_CC_LEN8_DLC |
++				       CAN_CTRLMODE_BERR_REPORTING;
  
- 	/* set the state as STOPPED */
- 	cdev->can.state = CAN_STATE_STOPPED;
-+
-+	if (cdev->ops->deinit) {
-+		ret = cdev->ops->deinit(cdev);
-+		if (ret)
-+			netdev_err(dev, "failed to deinitialize: %pe\n",
-+				   ERR_PTR(ret));
-+	}
- }
+ 	priv->dev = dev;
+ 	priv->netdev = netdev;
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
+index 5ec8b300bebf..8e88b5917796 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
+@@ -1084,8 +1084,8 @@ kvaser_usb_hydra_error_frame(struct kvaser_usb_net_priv *priv,
+ {
+ 	struct net_device *netdev = priv->netdev;
+ 	struct net_device_stats *stats = &netdev->stats;
+-	struct can_frame *cf;
+-	struct sk_buff *skb;
++	struct can_frame *cf = NULL;
++	struct sk_buff *skb = NULL;
+ 	struct can_berr_counter bec;
+ 	enum can_state new_state, old_state;
+ 	u8 bus_status;
+@@ -1101,21 +1101,24 @@ kvaser_usb_hydra_error_frame(struct kvaser_usb_net_priv *priv,
+ 	kvaser_usb_hydra_bus_status_to_can_state(priv, bus_status, &bec,
+ 						 &new_state);
  
- static int m_can_close(struct net_device *dev)
-diff --git a/drivers/net/can/m_can/m_can.h b/drivers/net/can/m_can/m_can.h
-index 92b2bd8628e6..6206535341a2 100644
---- a/drivers/net/can/m_can/m_can.h
-+++ b/drivers/net/can/m_can/m_can.h
-@@ -68,6 +68,7 @@ struct m_can_ops {
- 	int (*write_fifo)(struct m_can_classdev *cdev, int addr_offset,
- 			  const void *val, size_t val_count);
- 	int (*init)(struct m_can_classdev *cdev);
-+	int (*deinit)(struct m_can_classdev *cdev);
- };
+-	skb = alloc_can_err_skb(netdev, &cf);
++	if (priv->can.ctrlmode & CAN_CTRLMODE_BERR_REPORTING)
++		skb = alloc_can_err_skb(netdev, &cf);
+ 	if (new_state != old_state)
+ 		kvaser_usb_hydra_change_state(priv, &bec, cf, new_state);
  
- struct m_can_tx_op {
+-	if (skb) {
+-		struct skb_shared_hwtstamps *shhwtstamps = skb_hwtstamps(skb);
++	if (priv->can.ctrlmode & CAN_CTRLMODE_BERR_REPORTING) {
++		if (skb) {
++			struct skb_shared_hwtstamps *shhwtstamps = skb_hwtstamps(skb);
+ 
+-		shhwtstamps->hwtstamp = hwtstamp;
+-		cf->can_id |= CAN_ERR_BUSERROR | CAN_ERR_CNT;
+-		cf->data[6] = bec.txerr;
+-		cf->data[7] = bec.rxerr;
+-		netif_rx(skb);
+-	} else {
+-		stats->rx_dropped++;
+-		netdev_warn(netdev, "No memory left for err_skb\n");
++			shhwtstamps->hwtstamp = hwtstamp;
++			cf->can_id |= CAN_ERR_BUSERROR | CAN_ERR_CNT;
++			cf->data[6] = bec.txerr;
++			cf->data[7] = bec.rxerr;
++			netif_rx(skb);
++		} else {
++			stats->rx_dropped++;
++			netdev_warn(netdev, "No memory left for err_skb\n");
++		}
+ 	}
+ 
+ 	priv->bec.txerr = bec.txerr;
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+index 0491b4a6d8e8..6a45adcc45bd 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+@@ -1120,8 +1120,8 @@ kvaser_usb_leaf_rx_error_update_can_state(struct kvaser_usb_net_priv *priv,
+ static void kvaser_usb_leaf_rx_error(const struct kvaser_usb *dev,
+ 				     const struct kvaser_usb_err_summary *es)
+ {
+-	struct can_frame *cf;
+-	struct sk_buff *skb;
++	struct can_frame *cf = NULL;
++	struct sk_buff *skb = NULL;
+ 	struct net_device_stats *stats;
+ 	struct kvaser_usb_net_priv *priv;
+ 	struct kvaser_usb_net_leaf_priv *leaf;
+@@ -1142,7 +1142,8 @@ static void kvaser_usb_leaf_rx_error(const struct kvaser_usb *dev,
+ 		return;
+ 
+ 	old_state = priv->can.state;
+-	skb = alloc_can_err_skb(priv->netdev, &cf);
++	if (priv->can.ctrlmode & CAN_CTRLMODE_BERR_REPORTING)
++		skb = alloc_can_err_skb(priv->netdev, &cf);
+ 	kvaser_usb_leaf_rx_error_update_can_state(priv, es, cf);
+ 	new_state = priv->can.state;
+ 
+@@ -1176,8 +1177,10 @@ static void kvaser_usb_leaf_rx_error(const struct kvaser_usb *dev,
+ 	}
+ 
+ 	if (!skb) {
+-		stats->rx_dropped++;
+-		netdev_warn(priv->netdev, "No memory left for err_skb\n");
++		if (priv->can.ctrlmode & CAN_CTRLMODE_BERR_REPORTING) {
++			stats->rx_dropped++;
++			netdev_warn(priv->netdev, "No memory left for err_skb\n");
++		}
+ 		return;
+ 	}
+ 
 -- 
 2.45.2
 
