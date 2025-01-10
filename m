@@ -1,189 +1,207 @@
-Received: from sequoia-grove.ad.secure-endpoints.com (sequoia-grove.ad.secure-endpoints.com [208.125.0.235])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D299C215789
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 18:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=208.125.0.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266A1207E17;
+	Fri, 10 Jan 2025 18:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736533825; cv=none; b=hN+Lrmkr0zz7SatSxQpsDunrAomkfT9XusiUNTTK4BHcjmzxRCRulOGkC8y4qK0yrITVJ1aoqgmOR2FP6sndWiXKyhpWC3YsMkWDpXUSh6aqswr8j28A5uR9bBRZzhKGSHrPyVMGoy8eqOtfr9rBL5INmE98O51Np+IX4dOGrCg=
+	t=1736533865; cv=none; b=ZDHfMKlqGT8bbXmXMYl0RrAdw5jEFXgH6TemkLYhcE/KTX0G41XkLlNIJAnrVYeq/Bp6sBE0C3sbRFBkHMHP095r8KQj9BZg/wIKSqEvd1I5N1jcklJScOAcmyk/lEf7mnTdMIez6/mlaa9d0E1GApcPJmE8BbCkkW3avfmRPyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736533825; c=relaxed/simple;
-	bh=0cJsxkolRPMPnIc+eB0pL/YA1nxHdX9ZHqrciYslF5c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nhm9u65OZmlw85FGbt7WP+W1psdXz1UHHDhzsJNx5TqjPAz6ROD6W9H/4AxsyccfP0qzSiQj04ko05khBm5k6OgCEThiYvOpFxekC9+iKP2gA8PQTCDjVdwptx5FSSlywKaxlLTfn3hliFo/C0UWDNL5A8INQDMJnZk0OEQ574A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auristor.com; spf=pass smtp.mailfrom=auristor.com; dkim=pass (1024-bit key) header.d=auristor.com header.i=jaltman@auristor.com header.b=T87Rjeva; arc=none smtp.client-ip=208.125.0.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auristor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auristor.com
+	s=arc-20240116; t=1736533865; c=relaxed/simple;
+	bh=WwiyA0dJesQja20YtlHeWLKj0GE2PpEvyTNO/sxA0e0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ROs+hNxArNG8PGN4ZHPSm5HKjSAYQzPIYzGhJmhzUlKfeIQvc+6rdw/9qMOynQBJa5R3Z5fcOH33W5jWG8V8dclVH0bI19fAIP45j+ckTRKHyohqiJG6ipMd8kjlmJuLXQs8Dc+GoxdRGK7u/h2uhk0LzxwcWMzBvf74GTUKHMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C+LEolSY; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=auristor.com header.i=jaltman@auristor.com header.b="T87Rjeva"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/relaxed;
-	d=auristor.com; s=MDaemon; r=y; t=1736533351; x=1737138151;
-	i=jaltman@auristor.com; q=dns/txt; h=Message-ID:Date:
-	MIME-Version:User-Agent:Subject:To:Cc:References:
-	Content-Language:From:Organization:Disposition-Notification-To:
-	In-Reply-To:Content-Type; bh=0cJsxkolRPMPnIc+eB0pL/YA1nxHdX9ZHqr
-	ciYslF5c=; b=T87RjevaBSrpv5yD31Rx/rT3cFk5Q5CEwXMMQ5x8w8mKRllFijc
-	lQhFewA+xIL/A2VU9vx9bYu0LSFp2TxiNjhMN2b5P139Xrtx1dByfGQ5+o4azRRO
-	Uw/ajBRhjmKvfOn+j6tLL+qNh5PiBF8R5z08Ul/kgy5Ew+yYSIWRrDNc=
-X-MDAV-Result: clean
-X-MDAV-Processed: sequoia-grove.ad.secure-endpoints.com, Fri, 10 Jan 2025 13:22:31 -0500
-Received: from [IPV6:2603:7000:73c:bb00:409a:c0d5:d5cb:b115] by auristor.com (IPv6:2001:470:1f07:f77:28d9:68fb:855d:c2a5) (MDaemon PRO v25.0.0a) 
-	with ESMTPSA id md5001004415487.msg; Fri, 10 Jan 2025 13:22:30 -0500
-X-Spam-Processed: sequoia-grove.ad.secure-endpoints.com, Fri, 10 Jan 2025 13:22:30 -0500
-	(not processed: message from trusted or authenticated source)
-X-MDRemoteIP: 2603:7000:73c:bb00:409a:c0d5:d5cb:b115
-X-MDHelo: [IPV6:2603:7000:73c:bb00:409a:c0d5:d5cb:b115]
-X-MDArrival-Date: Fri, 10 Jan 2025 13:22:30 -0500
-X-MDOrigin-Country: US, NA
-X-Authenticated-Sender: jaltman@auristor.com
-X-Return-Path: prvs=11058a1cee=jaltman@auristor.com
-X-Envelope-From: jaltman@auristor.com
-X-MDaemon-Deliver-To: netdev@vger.kernel.org
-Message-ID: <f506a4fa-ffa2-4258-ae3c-c3cf4568f9a4@auristor.com>
-Date: Fri, 10 Jan 2025 13:22:23 -0500
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C+LEolSY"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-436341f575fso25554245e9.1;
+        Fri, 10 Jan 2025 10:31:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736533861; x=1737138661; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=L3NNGm+cwpNyKdKKPrgpwBzI7FF+ZnhEVJTGU5fbLV4=;
+        b=C+LEolSYU8HsKEAv00fQO41jJuY8Aeo5Fs3qPkj7/dYcFTYa/LLS/wZz6+y3EfSENw
+         QZ4rq5hfRDU5/x+xlUCNPdwK8SIIQfhyOHMIT3+MgXqOmsh5beUa6ThVEebuVgJg5JTT
+         VfDi3UYPIkADEJ6kdrCPthEttvFXWOOfrcIrqiVRKOKyXa1LwTqaA335nmXiZ5ll1m+W
+         hfm0T4tWHZuu4+WrHqGhfgs8fR8/VP8X7pD1OIxcYUrogen8mN3gSEqJ8E+GaQ1+Riq4
+         u9sfLyqSBMT9avz6csbOfDNEFXYJPGXo0coTejzEjM2y6b7g1ZzNWun/z6jJVUhrLFl5
+         LZmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736533861; x=1737138661;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L3NNGm+cwpNyKdKKPrgpwBzI7FF+ZnhEVJTGU5fbLV4=;
+        b=RFQAozjyPIZJA7VV00KgoM82yD6KQIxZEv001gXXCk/782Xn7A4x2D00OnvcFOBUtP
+         29sdmM6r+o86wCy1iBtP6aEMGTcQFIn4omB2p73HxnzAbOd3yDKHHy2FmWAeCN8mZFKq
+         Nsatvl6Li1cvUCw4WPFLOYBD5+ujzuT5cOnYwDVLjNj+RbbiL34IXTukJt6pSzgd8ktH
+         gVzhnZD8C2MfIks+RMJzYWpY/UHTZQ0j9okZ+Z0+PlP5ulMOz/q30qUjZuOQCZDGQ3cd
+         VuPxBrhbx7rMVUyONWrrLQvv1KoH6ajMRjYbQ5RaH0uTVh+7CX9Hiq+M5Tl2AcekHqIr
+         U1kA==
+X-Forwarded-Encrypted: i=1; AJvYcCV7UAWRukMdYhzB2d2CGnfrS9qqfo9RzbDABA7VDUhMiCk+tAhjw4E0AiLpVRkasZr0e2nIB0/FrsvMe/s=@vger.kernel.org, AJvYcCWZCCdxHU18YFjEEf+JPhnoviBDLrL0G/osEkAWA6UvMYQmwMezhzpSnFtL1X2/iI3r37Tdo4wo@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8PA3lp+sqP0A+H1RlF7xJRAlpjyPRuN0j4oxwnM2AytPH6C//
+	Lr890XilRUPlxAUpE79v5AejqzobvhZlyHExnkttHndDQphxMxas
+X-Gm-Gg: ASbGncuY8ir+2z2wASqIQm9Oq3jbkny7TLuiOa1SsLWQPUrJqN2M/lyz5Q9KlYonVUc
+	vgWHZjR75DtbsAuAvP7Bb7IsHcxEBwW7DlVLOJqQp4xaqQzGHJ9FaUH9aPXwRKnZ0abs+Tp1ntw
+	SlP8i3PyWQsSz02hbqtNZIYODsJIZ+IFtSRM9w/hmkL+o8AqKNqcrLLY/DL/PKtlo9ikyZaYZcH
+	7Yu+QYltbHMiVInsciD/3paFeX6ufBNaLbxwEF5CTz/AWKjoJaJ
+X-Google-Smtp-Source: AGHT+IFoZGL7UdlDDG1RzlDfcxYnTSDSK5yPlwqLxe50qQsTv6c9NUhftzOuA7tgUcwWNKuURwOohg==
+X-Received: by 2002:a05:600c:a09:b0:434:f753:6012 with SMTP id 5b1f17b1804b1-436e26aa593mr124003965e9.17.1736533861280;
+        Fri, 10 Jan 2025 10:31:01 -0800 (PST)
+Received: from debian ([2a00:79c0:6a1:e700:303:6c5b:4b07:6715])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9e03f49sm58950155e9.19.2025.01.10.10.31.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2025 10:31:00 -0800 (PST)
+Date: Fri, 10 Jan 2025 19:30:58 +0100
+From: Dimitri Fedrau <dima.fedrau@gmail.com>
+To: Stefan Eichenberger <eichest@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: phy: marvell-88q2xxx: Add support for PHY LEDs on
+ 88q2xxx
+Message-ID: <20250110183058.GA208903@debian>
+References: <20250110-marvell-88q2xxx-leds-v1-1-22e7734941c2@gmail.com>
+ <Z4FYjw596FQE4RMP@eichest-laptop>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/8] crypto/krb5: Provide Kerberos 5 crypto through
- AEAD API
-To: Herbert Xu <herbert@gondor.apana.org.au>,
- David Howells <dhowells@redhat.com>
-Cc: Chuck Lever <chuck.lever@oracle.com>,
- Trond Myklebust <trond.myklebust@hammerspace.com>,
- "David S. Miller" <davem@davemloft.net>,
- Marc Dionne <marc.dionne@auristor.com>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, linux-crypto@vger.kernel.org,
- linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250110010313.1471063-1-dhowells@redhat.com>
- <20250110010313.1471063-3-dhowells@redhat.com>
- <Z4DwNPgLFcfy6jdl@gondor.apana.org.au>
-Content-Language: en-US
-From: Jeffrey E Altman <jaltman@auristor.com>
-Organization: AuriStor, Inc.
-In-Reply-To: <Z4DwNPgLFcfy6jdl@gondor.apana.org.au>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256; boundary="------------ms080100020601020405080806"
-X-MDCFSigsAdded: auristor.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z4FYjw596FQE4RMP@eichest-laptop>
 
-This is a cryptographically signed message in MIME format.
+Hi Stefan,
 
---------------ms080100020601020405080806
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Am Fri, Jan 10, 2025 at 06:27:43PM +0100 schrieb Stefan Eichenberger:
+> Hi Dimitri ,
+> 
+> On Fri, Jan 10, 2025 at 04:10:04PM +0100, Dimitri Fedrau wrote:
+> > Marvell 88Q2XXX devices support up to two configurable Light Emitting
+> > Diode (LED). Add minimal LED controller driver supporting the most common
+> > uses with the 'netdev' trigger.
+> > 
+> > Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+> > ---
+> >  drivers/net/phy/marvell-88q2xxx.c | 161 ++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 161 insertions(+)
+> > 
+> > diff --git a/drivers/net/phy/marvell-88q2xxx.c b/drivers/net/phy/marvell-88q2xxx.c
+> > index 5107f58338aff4ed6cfea4d91e37282d9bb60ba5..bef3357b9d279fca5d1f86ff0eaa0d45a699e3f9 100644
+> > --- a/drivers/net/phy/marvell-88q2xxx.c
+> > +++ b/drivers/net/phy/marvell-88q2xxx.c
+> > @@ -8,6 +8,7 @@
+> >   */
+> >  #include <linux/ethtool_netlink.h>
+> >  #include <linux/marvell_phy.h>
+> > +#include <linux/of.h>
+> >  #include <linux/phy.h>
+> >  #include <linux/hwmon.h>
+> >  
+> > @@ -27,6 +28,9 @@
+> >  #define MDIO_MMD_AN_MV_STAT2_100BT1		0x2000
+> >  #define MDIO_MMD_AN_MV_STAT2_1000BT1		0x4000
+> >  
+> > +#define MDIO_MMD_PCS_MV_RESET_CTRL		32768
+> > +#define MDIO_MMD_PCS_MV_RESET_CTRL_TX_DISABLE	0x8
+> > +
+> >  #define MDIO_MMD_PCS_MV_INT_EN			32784
+> >  #define MDIO_MMD_PCS_MV_INT_EN_LINK_UP		0x0040
+> >  #define MDIO_MMD_PCS_MV_INT_EN_LINK_DOWN	0x0080
+> > @@ -40,6 +44,15 @@
+> >  #define MDIO_MMD_PCS_MV_GPIO_INT_CTRL			32787
+> >  #define MDIO_MMD_PCS_MV_GPIO_INT_CTRL_TRI_DIS		0x0800
+> >  
+> > +#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL			32790
+> > +#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL_GPIO_MASK		GENMASK(7, 4)
+> > +#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL_TX_EN_MASK	GENMASK(3, 0)
+> > +#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL_LINK		0x0 /* Link established */
+> > +#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL_LINK_RX_TX	0x1 /* Link established, blink for rx or tx activity */
+> > +#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL_RX_TX		0x4 /* Receive or Transmit activity */
+> > +#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL_TX		0x5 /* Transmit activity */
+> > +#define MDIO_MMD_PCS_MV_LED_FUNC_CTRL_LINK_1000BT1	0x7 /* 1000BT1 link established */
+> > +
+> >  #define MDIO_MMD_PCS_MV_TEMP_SENSOR1			32833
+> >  #define MDIO_MMD_PCS_MV_TEMP_SENSOR1_RAW_INT		0x0001
+> >  #define MDIO_MMD_PCS_MV_TEMP_SENSOR1_INT		0x0040
+> > @@ -95,6 +108,9 @@
+> >  
+> >  #define MDIO_MMD_PCS_MV_TDR_OFF_CUTOFF			65246
+> >  
+> > +#define MV88Q2XXX_LED_INDEX_TX_ENABLE	0
+> > +#define MV88Q2XXX_LED_INDEX_GPIO	1
+> 
+> Not sure if I understand this. TX_ENABLE would be LED0 and GPIO would be
+> LED1? In my datasheet the 88Q222x only has a GPIO pin (which is also
+> TX_ENABLE), is this a problem? Would we need a led_count variable per
+> chip? 
+> 
+Yes you understand it correctly.
+Looking at the datasheets for 88Q212x, 88Q211x and 88Q222x, they have all
+TX_ENABLE and GPIO pin. Registers are also the same. Did I miss anything ?
+For which device GPIO pin and TX_ENABLE are the same ?
 
-T24gMS8xMC8yMDI1IDU6MDIgQU0sIEhlcmJlcnQgWHUgd3JvdGU6DQo+IFNvIGRvZXMgeW91
-ciB1c2UtY2FzZSBzdXBwb3J0IGJvdGggc3RhbmRhcmQgQUVBRCBhbGdvcml0aG1zIHN1Y2gN
-Cj4gYXMgR0NNIGFzIHdlbGwgYXMgdGhlc2UgbGVnYWN5IGFsZ29yaXRobXM/DQoNClJYR0sg
-aXMgZGVzY3JpYmVkIGJ5IA0KaHR0cHM6Ly9kYXRhdHJhY2tlci5pZXRmLm9yZy9kb2MvZHJh
-ZnQtd2lsa2luc29uLWFmczMtcnhnay8uDQoNCkFueSBSRkMzOTYxICgiRW5jcnlwdGlvbiBh
-bmQgQ2hlY2tzdW0gU3BlY2lmaWNhdGlvbnMgZm9yIEtlcmJlcm9zIDUiKSANCmZyYW1ld29y
-ayBlbmNyeXB0aW9uIGFsZ29yaXRobSBjYW4gYmUgdXNlZCB3aXRoIGl0Lg0KDQpUaGVyZSBo
-YXZlIGJlZW4gcHJvcG9zYWxzIHRvIGFkZCBBRUFEIGVuY3J5cHRpb24gdHlwZXMgdG8gUkZD
-Mzk2MS4gRm9yIA0KZXhhbXBsZSwgTHVrZSBIb3dhcmQgcHJvcG9zZWQNCg0KaHR0cHM6Ly9k
-YXRhdHJhY2tlci5pZXRmLm9yZy9kb2MvZHJhZnQtaG93YXJkLWtyYi1hZWFkLw0KDQpUaGUg
-U2VjdXJpdHkgQ29uc2lkZXJhdGlvbnMgc2VjdGlvbiBkZXNjcmliZXMgdGhlIHJlYXNvbnMg
-dGhhdCBNSVQncyANCktlcmJlcm9zIHRlYW0gaXMgcmVsdWN0YW50IHRvIGFkZCBBRUFEIGFs
-Z29yaXRobXMgdG8gUkZDMzk2MS4gVGhlIA0KcHJpbWFyeSBvbmUgYmVpbmcgdGhhdCBBRUFE
-IGFsZ29yaXRobXMgYXJlIG5vdCBzYWZlIGZvciBhbGwgb2YgdGhlIA0KZXhpc3RpbmcgUkZD
-Mzk2MSB1c2UgY2FzZXMgYW5kIHRoZXJlIGlzIG5vIG1lYW5zIG9mIGVuc3VyaW5nIHRoYXQg
-QUVBRCANCmVuY3J5cHRpb24gdHlwZXMgd291bGQgbm90IGJlIG1pc3VzZWQuDQoNClJlcXVl
-c3RzIGZvciB0aGUgYWRkaXRpb24gb2YgQUVBRCB0byBSRkMzOTYxIGhhdmUgY29tZSBmcm9t
-IGJvdGggdGhlIA0KTkZTdjQgY29tbXVuaXR5IGFuZCB0aG9zZSBpbXBsZW1lbnRpbmcgUlhH
-Sy4gQWxhcywgdGhlcmUgaGFzIGJlZW4gbm8gDQpmb3J3YXJkIHByb2dyZXNzIHNpbmNlIHRo
-ZSBwdWJsaWNhdGlvbiBvZiBMdWtlJ3MgZHJhZnQuDQoNCkplZmZyZXkgQWx0bWFuDQoNCg==
+> In the 88Q2110 I can see that there is a TX_ENABLE (0) and a GPIO (1)
+> pin. In the register description they just call it LED [0] Control and
+> LED [1] Control. Maybe calling it LED_0 and LED_1 would be easier to
+> understand? Same for MDIO_MMD_PCS_MV_LED_FUNC_CTRL_GPIO_MASK and
+> MDIO_MMD_PCS_MV_LED_FUNC_CTRL_TX_EN_MASK.
+> 
+I named them just as the pin. Probably it would be easier to understand,
+but the mapping between pin and index would be lost. What do you think ?
 
+> > +
+> >  struct mmd_val {
+> >  	int devad;
+> >  	u32 regnum;
+> > @@ -741,8 +757,58 @@ static int mv88q2xxx_hwmon_probe(struct phy_device *phydev)
+> >  }
+> >  #endif
+> >  
+> > +#if IS_ENABLED(CONFIG_OF_MDIO)
+> > +static int mv88q2xxx_leds_probe(struct phy_device *phydev)
+> > +{
+> > +	struct device_node *node = phydev->mdio.dev.of_node;
+> > +	struct device_node *leds;
+> > +	int ret = 0;
+> > +	u32 index;
+> > +
+> > +	if (!node)
+> > +		return 0;
+> > +
+> > +	leds = of_get_child_by_name(node, "leds");
+> > +	if (!leds)
+> > +		return 0;
+> > +
+> > +	for_each_available_child_of_node_scoped(leds, led) {
+> > +		ret = of_property_read_u32(led, "reg", &index);
+> > +		if (ret)
+> > +			goto exit;
+> > +
+> > +		if (index > MV88Q2XXX_LED_INDEX_GPIO) {
+> > +			ret = -EINVAL;
+> > +			goto exit;
+> > +		}
+> > +
+> > +		if (index == MV88Q2XXX_LED_INDEX_TX_ENABLE)
+> > +			ret = phy_clear_bits_mmd(phydev, MDIO_MMD_PCS,
+> > +						 MDIO_MMD_PCS_MV_RESET_CTRL,
+> > +						 MDIO_MMD_PCS_MV_RESET_CTRL_TX_DISABLE);
+> 
+> If I understand it correctly, this switches the function of the pin from
+> TX_DISABLE to GPIO? Can you maybe add a comment here?
+>
+You are right, will add the comment.
 
---------------ms080100020601020405080806
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCC
-DHEwggXSMIIEuqADAgECAhBAAYJpmi/rPn/F0fJyDlzMMA0GCSqGSIb3DQEBCwUAMDoxCzAJ
-BgNVBAYTAlVTMRIwEAYDVQQKEwlJZGVuVHJ1c3QxFzAVBgNVBAMTDlRydXN0SUQgQ0EgQTEz
-MB4XDTIyMDgwNDE2MDQ0OFoXDTI1MTAzMTE2MDM0OFowcDEvMC0GCgmSJomT8ixkAQETH0Ew
-MTQxMEQwMDAwMDE4MjY5OUEyRkQyMDAwMjMzQ0QxGTAXBgNVBAMTEEplZmZyZXkgRSBBbHRt
-YW4xFTATBgNVBAoTDEF1cmlTdG9yIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEB
-AQUAA4IBDwAwggEKAoIBAQCkC7PKBBZnQqDKPtZPMLAy77zo2DPvwtGnd1hNjPvbXrpGxUb3
-xHZRtv179LHKAOcsY2jIctzieMxf82OMyhpBziMPsFAG/ukihBMFj3/xEeZVso3K27pSAyyN
-fO/wJ0rX7G+ges22Dd7goZul8rPaTJBIxbZDuaykJMGpNq4PQ8VPcnYZx+6b+nJwJJoJ46kI
-EEfNh3UKvB/vM0qtxS690iAdgmQIhTl+qfXq4IxWB6b+3NeQxgR6KLU4P7v88/tvJTpxIKkg
-9xj89ruzeThyRFd2DSe3vfdnq9+g4qJSHRXyTft6W3Lkp7UWTM4kMqOcc4VSRdufVKBQNXjG
-IcnhAgMBAAGjggKcMIICmDAOBgNVHQ8BAf8EBAMCBPAwgYQGCCsGAQUFBwEBBHgwdjAwBggr
-BgEFBQcwAYYkaHR0cDovL2NvbW1lcmNpYWwub2NzcC5pZGVudHJ1c3QuY29tMEIGCCsGAQUF
-BzAChjZodHRwOi8vdmFsaWRhdGlvbi5pZGVudHJ1c3QuY29tL2NlcnRzL3RydXN0aWRjYWEx
-My5wN2MwHwYDVR0jBBgwFoAULbfeG1l+KpguzeHUG+PFEBJe6RQwCQYDVR0TBAIwADCCASsG
-A1UdIASCASIwggEeMIIBGgYLYIZIAYb5LwAGAgEwggEJMEoGCCsGAQUFBwIBFj5odHRwczov
-L3NlY3VyZS5pZGVudHJ1c3QuY29tL2NlcnRpZmljYXRlcy9wb2xpY3kvdHMvaW5kZXguaHRt
-bDCBugYIKwYBBQUHAgIwga0MgapUaGlzIFRydXN0SUQgQ2VydGlmaWNhdGUgaGFzIGJlZW4g
-aXNzdWVkIGluIGFjY29yZGFuY2Ugd2l0aCBJZGVuVHJ1c3QncyBUcnVzdElEIENlcnRpZmlj
-YXRlIFBvbGljeSBmb3VuZCBhdCBodHRwczovL3NlY3VyZS5pZGVudHJ1c3QuY29tL2NlcnRp
-ZmljYXRlcy9wb2xpY3kvdHMvaW5kZXguaHRtbDBFBgNVHR8EPjA8MDqgOKA2hjRodHRwOi8v
-dmFsaWRhdGlvbi5pZGVudHJ1c3QuY29tL2NybC90cnVzdGlkY2FhMTMuY3JsMB8GA1UdEQQY
-MBaBFGphbHRtYW5AYXVyaXN0b3IuY29tMB0GA1UdDgQWBBQB+nzqgljLocLTsiUn2yWqEc2s
-gjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwDQYJKoZIhvcNAQELBQADggEBAJwV
-eycprp8Ox1npiTyfwc5QaVaqtoe8Dcg2JXZc0h4DmYGW2rRLHp8YL43snEV93rPJVk6B2v4c
-WLeQfaMrnyNeEuvHx/2CT44cdLtaEk5zyqo3GYJYlLcRVz6EcSGHv1qPXgDT0xB/25etwGYq
-utYF4Chkxu4KzIpq90eDMw5ajkexw+8ARQz4N5+d6NRbmMCovd7wTGi8th/BZvz8hgKUiUJo
-Qle4wDxrdXdnIhCP7g87InXKefWgZBF4VX21t2+hkc04qrhIJlHrocPG9mRSnnk2WpsY0MXt
-a8ivbVKtfpY7uSNDZSKTDi1izEFH5oeQdYRkgIGb319a7FjslV8wggaXMIIEf6ADAgECAhBA
-AXA7OrqBjMk8rp4OuNQSMA0GCSqGSIb3DQEBCwUAMEoxCzAJBgNVBAYTAlVTMRIwEAYDVQQK
-EwlJZGVuVHJ1c3QxJzAlBgNVBAMTHklkZW5UcnVzdCBDb21tZXJjaWFsIFJvb3QgQ0EgMTAe
-Fw0yMDAyMTIyMTA3NDlaFw0zMDAyMTIyMTA3NDlaMDoxCzAJBgNVBAYTAlVTMRIwEAYDVQQK
-EwlJZGVuVHJ1c3QxFzAVBgNVBAMTDlRydXN0SUQgQ0EgQTEzMIIBIjANBgkqhkiG9w0BAQEF
-AAOCAQ8AMIIBCgKCAQEAu6sUO01SDD99PM+QdZkNxKxJNt0NgQE+Zt6ixaNP0JKSjTd+SG5L
-wqxBWjnOgI/3dlwgtSNeN77AgSs+rA4bK4GJ75cUZZANUXRKw/et8pf9Qn6iqgB63OdHxBN/
-15KbM3HR+PyiHXQoUVIevCKW8nnlWnnZabT1FejOhRRKVUg5HACGOTfnCOONrlxlg+m1Vjgn
-o1uNqNuLM/jkD1z6phNZ/G9IfZGI0ppHX5AA/bViWceX248VmefNhSR14ADZJtlAAWOi2un0
-3bqrBPHA9nDyXxI8rgWLfUP5rDy8jx2hEItg95+ORF5wfkGUq787HBjspE86CcaduLka/Bk2
-VwIDAQABo4IChzCCAoMwEgYDVR0TAQH/BAgwBgEB/wIBADAOBgNVHQ8BAf8EBAMCAYYwgYkG
-CCsGAQUFBwEBBH0wezAwBggrBgEFBQcwAYYkaHR0cDovL2NvbW1lcmNpYWwub2NzcC5pZGVu
-dHJ1c3QuY29tMEcGCCsGAQUFBzAChjtodHRwOi8vdmFsaWRhdGlvbi5pZGVudHJ1c3QuY29t
-L3Jvb3RzL2NvbW1lcmNpYWxyb290Y2ExLnA3YzAfBgNVHSMEGDAWgBTtRBnA0/AGi+6ke75C
-5yZUyI42djCCASQGA1UdIASCARswggEXMIIBEwYEVR0gADCCAQkwSgYIKwYBBQUHAgEWPmh0
-dHBzOi8vc2VjdXJlLmlkZW50cnVzdC5jb20vY2VydGlmaWNhdGVzL3BvbGljeS90cy9pbmRl
-eC5odG1sMIG6BggrBgEFBQcCAjCBrQyBqlRoaXMgVHJ1c3RJRCBDZXJ0aWZpY2F0ZSBoYXMg
-YmVlbiBpc3N1ZWQgaW4gYWNjb3JkYW5jZSB3aXRoIElkZW5UcnVzdCdzIFRydXN0SUQgQ2Vy
-dGlmaWNhdGUgUG9saWN5IGZvdW5kIGF0IGh0dHBzOi8vc2VjdXJlLmlkZW50cnVzdC5jb20v
-Y2VydGlmaWNhdGVzL3BvbGljeS90cy9pbmRleC5odG1sMEoGA1UdHwRDMEEwP6A9oDuGOWh0
-dHA6Ly92YWxpZGF0aW9uLmlkZW50cnVzdC5jb20vY3JsL2NvbW1lcmNpYWxyb290Y2ExLmNy
-bDAdBgNVHQ4EFgQULbfeG1l+KpguzeHUG+PFEBJe6RQwHQYDVR0lBBYwFAYIKwYBBQUHAwIG
-CCsGAQUFBwMEMA0GCSqGSIb3DQEBCwUAA4ICAQB/7BKcygLX6Nl4a03cDHt7TLdPxCzFvDF2
-bkVYCFTRX47UfeomF1gBPFDee3H/IPlLRmuTPoNt0qjdpfQzmDWN95jUXLdLPRToNxyaoB5s
-0hOhcV6H08u3FHACBif55i0DTDzVSaBv0AZ9h1XeuGx4Fih1Vm3Xxz24GBqqVudvPRLyMJ7u
-6hvBqTIKJ53uCs3dyQLZT9DXnp+kJv8y7ZSAY+QVrI/dysT8avtn8d7k7azNBkfnbRq+0e88
-QoBnel6u+fpwbd5NLRHywXeH+phbzULCa+bLPRMqJaW2lbhvSWrMHRDy3/d8HvgnLCBFK2s4
-Spns4YCN4xVcbqlGWzgolHCKUH39vpcsDo1ymZFrJ8QR6ihIn8FmJ5oKwAnnd/G6ADXFC9bu
-db9+532phSAXOZrrecIQn+vtP366PC+aClAPsIIDJDsotS5z4X2JUFsNIuEgXGqhiKE7SuZb
-rFG9sdcLprSlJN7TsRDc0W2b9nqwD+rj/5MN0C+eKwha+8ydv0+qzTyxPP90KRgaegGowC4d
-UsZyTk2n4Z3MuAHX5nAZL/Vh/SyDj/ajorV44yqZBzQ3ChKhXbfUSwe2xMmygA2Z5DRwMRJn
-p/BscizYdNk2WXJMTnH+wVLN8sLEwEtQR4eTLoFmQvrK2AMBS9kW5sBkMzINt/ZbbcZ3F+eA
-MDGCBAEwggP9AgEBME4wOjELMAkGA1UEBhMCVVMxEjAQBgNVBAoTCUlkZW5UcnVzdDEXMBUG
-A1UEAxMOVHJ1c3RJRCBDQSBBMTMCEEABgmmaL+s+f8XR8nIOXMwwDQYJYIZIAWUDBAIBBQCg
-ggKEMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDExMDE4
-MjIyM1owLwYJKoZIhvcNAQkEMSIEIJ4onI9Cpb8WG4HZjfKPQd4shgw/EDcHuFJasvx+W3bg
-MF0GCSsGAQQBgjcQBDFQME4wOjELMAkGA1UEBhMCVVMxEjAQBgNVBAoTCUlkZW5UcnVzdDEX
-MBUGA1UEAxMOVHJ1c3RJRCBDQSBBMTMCEEABgmmaL+s+f8XR8nIOXMwwXwYLKoZIhvcNAQkQ
-AgsxUKBOMDoxCzAJBgNVBAYTAlVTMRIwEAYDVQQKEwlJZGVuVHJ1c3QxFzAVBgNVBAMTDlRy
-dXN0SUQgQ0EgQTEzAhBAAYJpmi/rPn/F0fJyDlzMMIIBVwYJKoZIhvcNAQkPMYIBSDCCAUQw
-CwYJYIZIAWUDBAEqMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzANBggqhkiG9w0DAgIBBTAN
-BggqhkiG9w0DAgIBBTAHBgUrDgMCBzANBggqhkiG9w0DAgIBBTAHBgUrDgMCGjALBglghkgB
-ZQMEAgEwCwYJYIZIAWUDBAICMAsGCWCGSAFlAwQCAzALBglghkgBZQMEAgQwCwYJYIZIAWUD
-BAIHMAsGCWCGSAFlAwQCCDALBglghkgBZQMEAgkwCwYJYIZIAWUDBAIKMAsGCSqGSIb3DQEB
-ATALBgkrgQUQhkg/AAIwCAYGK4EEAQsAMAgGBiuBBAELATAIBgYrgQQBCwIwCAYGK4EEAQsD
-MAsGCSuBBRCGSD8AAzAIBgYrgQQBDgAwCAYGK4EEAQ4BMAgGBiuBBAEOAjAIBgYrgQQBDgMw
-DQYJKoZIhvcNAQEBBQAEggEAe8cQC577a4Iu62KiWasPuDMHAx7lgCwsGAiuaSN7muu8B2nO
-qzBRqWkOesgtFGUB7nUYNvpqqZoZ6A+pnn8yUF3WycQlxVO3JNz74buTvUbEI52BqtBpHaHA
-jbXBGIat3rvi3x791ty3GOff2/atrORgwEfepD2e578ap5QnAwjSAouA2lJOttJUtmMQx1WM
-edl+2tTucrLbi7lUBXl2YvADS0j4T2G3rmHS/8tI8T8D6xv8YQ8psT/kQbhmAcQGBCpESNP1
-fRMjGe/hATn+twVSNRpqlwdU9pXru7d+wEwN3Fk+F1263PYgjN1pDOWoePazET6z4g8dh9Fs
-5twEBwAAAAAAAA==
---------------ms080100020601020405080806--
-
+Best regards,
+Dimitri Fedrau
