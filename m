@@ -1,201 +1,203 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47E120B1F2
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 09:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4A2207DFC
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 09:29:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736501334; cv=none; b=f7HqbrQkW/23fI2IO8A5DmW4mmPNXwuNRSpmf7idi0HwZNicrvPdtE9osVpZHZtLIwYZF9Ijb7IaJU8yZ77twtQu9O40ucurWBCcsQ+qaNCugUZT5FV6zArBT3B1De2vRHsPxnBftK0n1WcsrcaFCt0e2Mz8gDxBpfvAQjtpGOI=
+	t=1736501362; cv=none; b=qdXRlJG0R6GUQPxno0ckugqtF+y6+7P4aFG4kMUMSzQ3x+Qepex/piUDhzlhjmfw+KIGu55n7v/zdWxAc0aClKb1wVf0EM7vXLeMCoElc6WIFScLqGbgTzljylYU8YCWlYYyOnbyV19RCIS1HXNcjW3qC5PrRd/qBLo7qEP/lng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736501334; c=relaxed/simple;
-	bh=GWGuc3VMdr5N9fv2KHCFN5USR+3NK9F0l8JRZS0PRfE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=SYxz//sVqbFVTDJVro4WlXAk4XiSYTJ6eq457cSDuVGiBxr89yw/ls6K4LDuncwMJdXXYs0zrzfH1qYzAY6cPnVdhYyZYvmI5M+DCMBFYukFKs5+C/fvKPF8r0meYvXISHJm71yuAZtnFdRrXdYkmRUiOGj7HeQZxzCVYSgudS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com; spf=pass smtp.mailfrom=daynix.com; dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b=W10UwH6h; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=daynix.com
+	s=arc-20240116; t=1736501362; c=relaxed/simple;
+	bh=CIDS+Q6aNlIT1yDXhmZ3EAyn1U4O7v2HsaIp3sJV0NM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nm7saH0t2hmlTj51mgLAQ8rLKsxUYNlpoz8fnS+Gdhm9zpsCYsEK2qyvc78+e4tHcBHsqBZK3ffsWou0IElOKchkaLvxVILVNtn/yxn5zccTgUOvxj09D6JNZw5Pv1+EPIxFd1bymLiMxZ0Ekk754ONnuJUOqIEqAeBLULCRX14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=VINCRfSD; arc=none smtp.client-ip=72.21.196.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b="W10UwH6h"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-21636268e43so37586565ad.2
-        for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 01:28:52 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="VINCRfSD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736501332; x=1737106132; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=igRjP8Z8IeTK8JEZO8XtaE1DaoQy9k12HA0KbHTX3XM=;
-        b=W10UwH6hhB491Ig8wawPXAGEtrvHrsYtOB5aK6Vm9VEk0ketzi+m9fs0oIwvcPscjJ
-         kVnug2qJfIgPZTXRTpV+5m5dbBY8oo1ARQrzx80+n9eDjCW9078AljHrD74+VAUS5yOj
-         9FQpqK1SLS1gkb3HDYGZ+VT01MbItAgcgvX7o4hMqqsoLH7d4S7DssCXp0va/fWvAqbA
-         5KdLi4EEzQwUYbz6Pu8U7Q6K5nyjLMlwoOACKjznM84I36emEl34uzJ+fZ0oot0db0R6
-         O15SAeWRieCUWMTGg7DJnYzS9y2857GF2Zyt3xfhMwmmrGABb4e9/g3F1BNVib2ZQYmd
-         OvRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736501332; x=1737106132;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=igRjP8Z8IeTK8JEZO8XtaE1DaoQy9k12HA0KbHTX3XM=;
-        b=bJuOX6CvyADHiB68eoyDQfaYUD+ysRGa5Yi1EcLN5/tOFuC8t5r44B4tcKZP1GeEhy
-         QgrswCicXyc6yz+vrulOb7wBT3MzrGK5XP56zy2tqejsBC1wdMwgNt8kyz6Sb1nG4vMv
-         LMGNc3ShPnlANBGQ+jldUpxF82dVHuYlyCPh2rwxDSNIwe4LTS2s64uwB0JxFasggcD8
-         FICMrUaJozQIbIEgmppMPivjO3x/jKbvQ1pGp10cbf+LFSucxHec71QjYdHsGEkXmjrd
-         PRxi8s9vcTWpTX6c/6MnUGwv4v+VWVml67/MPeyp2K5yFRNCzpprpumMyffHTZ0sLdt/
-         wLGA==
-X-Forwarded-Encrypted: i=1; AJvYcCU2/DnS/dIvAMwGOC4dpS+9zAgE7kOcx78y4ucQm/L2GrPZHCSxnESYDuwG0WdRCOYuzAmdZvk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDgSayAODiEbf0lbm4laALdr8wFpSVLGc0+hC6zheBvdxkiJXv
-	Qld6kdUsttoRf0ck4uBVkfpgbKWCLqdjXtYpJJyMfsKsdp6hyPOOv+0GgLyFmCY=
-X-Gm-Gg: ASbGncvlV5hZs1IM2XjDrr6SkYvmCmagk7xTNOEEinTtXX0GXVCNLlbr2WcMfXxTpcR
-	J8I9VXI1iXXhzQUyPzG1SQ2Ab9c0QMhRKFLRFpKm7Hlhui5a0kO0WVg1P4q2Er35Fh6ZQHpRZsT
-	syXs+A3U7zsM4aL3KxwVZaG8Y5BG0t+USr1rEhypnhMM2yq35/A0OJYuhHk4c4CJhWfYprM0FFC
-	tLrgvZORNCKLYxlkyNJ5HqRK65bT5UjmfL1Ds+0HgVpSStlXIw2RQL+6A0QQsBNXOE=
-X-Google-Smtp-Source: AGHT+IEbncdNgeHV3NRD5L3UNOBwnx4pcPRNgcfCcKKAqBupE3LuCLH6YhUM6tqENcH7rFNBH/3/jQ==
-X-Received: by 2002:a17:902:dac6:b0:216:4a8a:2665 with SMTP id d9443c01a7336-21a84012a17mr153359295ad.50.1736501332180;
-        Fri, 10 Jan 2025 01:28:52 -0800 (PST)
-Received: from [157.82.203.37] ([157.82.203.37])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f22d5fcsm10340475ad.176.2025.01.10.01.28.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Jan 2025 01:28:51 -0800 (PST)
-Message-ID: <0bcbbc09-e4dd-4e16-ac1a-c9d3f368c145@daynix.com>
-Date: Fri, 10 Jan 2025 18:28:46 +0900
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1736501361; x=1768037361;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=mg59p3COVrzPdxR5HSibX8dKEzv7bL6fBavvhjfvC/0=;
+  b=VINCRfSD7hbr434meOSq11JhNO66Ob59kvAM966zISVRhyj1jPtZxCGU
+   bY2YrxReqoWDw68YnCHEUn29KecAYbpVMokbKHLhEICyPF0XtchifisK8
+   fV53PLrCMSQ6CLKhMagSFfGMl6UG8sA/Z2sxCuYZ9LCia7DrhxyBoe1K4
+   0=;
+X-IronPort-AV: E=Sophos;i="6.12,303,1728950400"; 
+   d="scan'208";a="457845184"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 09:29:14 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.38.20:14868]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.29.65:2525] with esmtp (Farcaster)
+ id 0323833d-46c8-4a38-97db-53311206f70a; Fri, 10 Jan 2025 09:29:12 +0000 (UTC)
+X-Farcaster-Flow-ID: 0323833d-46c8-4a38-97db-53311206f70a
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Fri, 10 Jan 2025 09:29:11 +0000
+Received: from 6c7e67c6786f.amazon.com (10.118.252.101) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Fri, 10 Jan 2025 09:29:07 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+CC: Donald Hunter <donald.hunter@redhat.com>, Kuniyuki Iwashima
+	<kuniyu@amazon.com>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+	<netdev@vger.kernel.org>
+Subject: [PATCH v1 net-next 05/12] af_unix: Set drop reason in unix_stream_connect().
+Date: Fri, 10 Jan 2025 18:26:34 +0900
+Message-ID: <20250110092641.85905-6-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250110092641.85905-1-kuniyu@amazon.com>
+References: <20250110092641.85905-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/6] virtio_net: Add functions for hashing
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>, Jason Wang <jasowang@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux-foundation.org, linux-kselftest@vger.kernel.org,
- Yuri Benditovich <yuri.benditovich@daynix.com>,
- Andrew Melnychenko <andrew@daynix.com>,
- Stephen Hemminger <stephen@networkplumber.org>, gur.stavi@huawei.com
-References: <20250109-rss-v6-0-b1c90ad708f6@daynix.com>
- <20250109-rss-v6-1-b1c90ad708f6@daynix.com>
- <677fd98d89df1_362bc12942f@willemb.c.googlers.com.notmuch>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <677fd98d89df1_362bc12942f@willemb.c.googlers.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D046UWA003.ant.amazon.com (10.13.139.18) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On 2025/01/09 23:13, Willem de Bruijn wrote:
-> Akihiko Odaki wrote:
->> They are useful to implement VIRTIO_NET_F_RSS and
->> VIRTIO_NET_F_HASH_REPORT.
-> 
-> Toeplitz potentially has users beyond virtio. I wonder if we should
-> from the start implement this as net/core/rss.c.
+connect() to a SOCK_STREAM socket could fail for various reasons.
 
-Or in lib/toeplitz.c just as like lib/siphash.c. I just chose the 
-easiest option to implement everything in include/linux/virtio_net.h.
+Let's set drop reasons respectively:
 
-> 
->   
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->>   include/linux/virtio_net.h | 188 +++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 188 insertions(+)
->>
->> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
->> index 02a9f4dc594d..3b25ca75710b 100644
->> --- a/include/linux/virtio_net.h
->> +++ b/include/linux/virtio_net.h
->> @@ -9,6 +9,194 @@
->>   #include <uapi/linux/tcp.h>
->>   #include <uapi/linux/virtio_net.h>
->>   
->> +struct virtio_net_hash {
->> +	u32 value;
->> +	u16 report;
->> +};
->> +
->> +struct virtio_net_toeplitz_state {
->> +	u32 hash;
->> +	const u32 *key;
->> +};
->> +
->> +#define VIRTIO_NET_SUPPORTED_HASH_TYPES (VIRTIO_NET_RSS_HASH_TYPE_IPv4 | \
->> +					 VIRTIO_NET_RSS_HASH_TYPE_TCPv4 | \
->> +					 VIRTIO_NET_RSS_HASH_TYPE_UDPv4 | \
->> +					 VIRTIO_NET_RSS_HASH_TYPE_IPv6 | \
->> +					 VIRTIO_NET_RSS_HASH_TYPE_TCPv6 | \
->> +					 VIRTIO_NET_RSS_HASH_TYPE_UDPv6)
->> +
->> +#define VIRTIO_NET_RSS_MAX_KEY_SIZE 40
->> +
->> +static inline void virtio_net_toeplitz_convert_key(u32 *input, size_t len)
->> +{
->> +	while (len >= sizeof(*input)) {
->> +		*input = be32_to_cpu((__force __be32)*input);
->> +		input++;
->> +		len -= sizeof(*input);
->> +	}
->> +}
->> +
->> +static inline void virtio_net_toeplitz_calc(struct virtio_net_toeplitz_state *state,
->> +					    const __be32 *input, size_t len)
->> +{
->> +	while (len >= sizeof(*input)) {
->> +		for (u32 map = be32_to_cpu(*input); map; map &= (map - 1)) {
->> +			u32 i = ffs(map);
->> +
->> +			state->hash ^= state->key[0] << (32 - i) |
->> +				       (u32)((u64)state->key[1] >> i);
->> +		}
->> +
->> +		state->key++;
->> +		input++;
->> +		len -= sizeof(*input);
->> +	}
->> +}
-> 
-> Have you verified that this algorithm matches a known toeplitz
-> implementation. And computes the expected values for the test
-> inputs in
-> 
-> https://learn.microsoft.com/en-us/windows-hardware/drivers/network/verifying-the-rss-hash-calculation
+  * NO_SOCKET      : No listening socket found
+  * RCV_SHUTDOWN   : The listening socket called shutdown(SHUT_RD)
+  * SOCKET_RCVBUFF : The listening socket's accept queue is full
+  * INVALID_STATE  : The client is in TCP_ESTABLISHED or TCP_LISTEN
+  * SECURITY_HOOK  : LSM refused connect()
 
-Yes.
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+---
+ include/net/dropreason-core.h |  6 ++++++
+ net/unix/af_unix.c            | 22 ++++++++++++++++++----
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
-> 
-> We have a toeplitz implementation in
-> tools/testing/selftests/net/toeplitz.c that can also be used as
-> reference.
- > >> +
->> +static inline u8 virtio_net_hash_key_length(u32 types)
->> +{
->> +	size_t len = 0;
->> +
->> +	if (types & VIRTIO_NET_HASH_REPORT_IPv4)
->> +		len = max(len,
->> +			  sizeof(struct flow_dissector_key_ipv4_addrs));
->> +
->> +	if (types &
->> +	    (VIRTIO_NET_HASH_REPORT_TCPv4 | VIRTIO_NET_HASH_REPORT_UDPv4))
->> +		len = max(len,
->> +			  sizeof(struct flow_dissector_key_ipv4_addrs) +
->> +			  sizeof(struct flow_dissector_key_ports));
->> +
->> +	if (types & VIRTIO_NET_HASH_REPORT_IPv6)
->> +		len = max(len,
->> +			  sizeof(struct flow_dissector_key_ipv6_addrs));
->> +
->> +	if (types &
->> +	    (VIRTIO_NET_HASH_REPORT_TCPv6 | VIRTIO_NET_HASH_REPORT_UDPv6))
->> +		len = max(len,
->> +			  sizeof(struct flow_dissector_key_ipv6_addrs) +
->> +			  sizeof(struct flow_dissector_key_ports));
->> +
->> +	return len + 4;
-> 
-> Avoid magic constants. Please use sizeof or something else to signal
-> what this 4 derives from.
+diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
+index 8823de6539d1..1b5e962f7f33 100644
+--- a/include/net/dropreason-core.h
++++ b/include/net/dropreason-core.h
+@@ -8,7 +8,9 @@
+ 	FN(NO_SOCKET)			\
+ 	FN(SOCKET_CLOSE)		\
+ 	FN(SOCKET_FILTER)		\
++	FN(SOCKET_INVALID_STATE)	\
+ 	FN(SOCKET_RCVBUFF)		\
++	FN(SOCKET_RCV_SHUTDOWN)		\
+ 	FN(PKT_TOO_SMALL)		\
+ 	FN(TCP_CSUM)			\
+ 	FN(UDP_CSUM)			\
+@@ -142,8 +144,12 @@ enum skb_drop_reason {
+ 	SKB_DROP_REASON_SOCKET_CLOSE,
+ 	/** @SKB_DROP_REASON_SOCKET_FILTER: dropped by socket filter */
+ 	SKB_DROP_REASON_SOCKET_FILTER,
++	/** @SKB_DROP_REASON_SOCKET_INVALID_STATE: sk->sk_state is invalid. */
++	SKB_DROP_REASON_SOCKET_INVALID_STATE,
+ 	/** @SKB_DROP_REASON_SOCKET_RCVBUFF: socket receive buff is full */
+ 	SKB_DROP_REASON_SOCKET_RCVBUFF,
++	/** @SKB_DROP_REASON_SOCKET_RCV_SHUTDOWN: socket is shutdown(SHUT_RD) */
++	SKB_DROP_REASON_SOCKET_RCV_SHUTDOWN,
+ 	/** @SKB_DROP_REASON_PKT_TOO_SMALL: packet size is too small */
+ 	SKB_DROP_REASON_PKT_TOO_SMALL,
+ 	/** @SKB_DROP_REASON_TCP_CSUM: TCP checksum error */
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 41b99984008a..b190ea8b8e9d 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1534,6 +1534,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 	struct sock *sk = sock->sk, *newsk = NULL, *other = NULL;
+ 	struct unix_sock *u = unix_sk(sk), *newu, *otheru;
+ 	struct net *net = sock_net(sk);
++	enum skb_drop_reason reason;
+ 	struct sk_buff *skb = NULL;
+ 	unsigned char state;
+ 	long timeo;
+@@ -1581,6 +1582,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 	other = unix_find_other(net, sunaddr, addr_len, sk->sk_type);
+ 	if (IS_ERR(other)) {
+ 		err = PTR_ERR(other);
++		reason = SKB_DROP_REASON_NO_SOCKET;
+ 		goto out_free_skb;
+ 	}
+ 
+@@ -1593,15 +1595,22 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 		goto restart;
+ 	}
+ 
+-	if (other->sk_state != TCP_LISTEN ||
+-	    other->sk_shutdown & RCV_SHUTDOWN) {
++	if (other->sk_state != TCP_LISTEN) {
+ 		err = -ECONNREFUSED;
++		reason = SKB_DROP_REASON_NO_SOCKET;
++		goto out_unlock;
++	}
++
++	if (other->sk_shutdown & RCV_SHUTDOWN) {
++		err = -ECONNREFUSED;
++		reason = SKB_DROP_REASON_SOCKET_RCV_SHUTDOWN;
+ 		goto out_unlock;
+ 	}
+ 
+ 	if (unix_recvq_full_lockless(other)) {
+ 		if (!timeo) {
+ 			err = -EAGAIN;
++			reason = SKB_DROP_REASON_SOCKET_RCVBUFF;
+ 			goto out_unlock;
+ 		}
+ 
+@@ -1609,8 +1618,10 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 		sock_put(other);
+ 
+ 		err = sock_intr_errno(timeo);
+-		if (signal_pending(current))
++		if (signal_pending(current)) {
++			reason = SKB_DROP_REASON_SOCKET_RCVBUFF;
+ 			goto out_free_skb;
++		}
+ 
+ 		goto restart;
+ 	}
+@@ -1621,6 +1632,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 	state = READ_ONCE(sk->sk_state);
+ 	if (unlikely(state != TCP_CLOSE)) {
+ 		err = state == TCP_ESTABLISHED ? -EISCONN : -EINVAL;
++		reason = SKB_DROP_REASON_SOCKET_INVALID_STATE;
+ 		goto out_unlock;
+ 	}
+ 
+@@ -1629,12 +1641,14 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 	if (unlikely(sk->sk_state != TCP_CLOSE)) {
+ 		err = sk->sk_state == TCP_ESTABLISHED ? -EISCONN : -EINVAL;
+ 		unix_state_unlock(sk);
++		reason = SKB_DROP_REASON_SOCKET_INVALID_STATE;
+ 		goto out_unlock;
+ 	}
+ 
+ 	err = security_unix_stream_connect(sk, other, newsk);
+ 	if (err) {
+ 		unix_state_unlock(sk);
++		reason = SKB_DROP_REASON_SECURITY_HOOK;
+ 		goto out_unlock;
+ 	}
+ 
+@@ -1699,7 +1713,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 	unix_state_unlock(other);
+ 	sock_put(other);
+ out_free_skb:
+-	kfree_skb(skb);
++	kfree_skb_reason(skb, reason);
+ out_free_sk:
+ 	unix_release_sock(newsk, 0);
+ out:
+-- 
+2.39.5 (Apple Git-154)
+
