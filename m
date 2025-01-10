@@ -1,70 +1,76 @@
-Received: from rcdn-iport-1.cisco.com (rcdn-iport-1.cisco.com [173.37.86.72])
+Received: from alln-iport-2.cisco.com (alln-iport-2.cisco.com [173.37.142.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A20222572
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD40218AAB
 	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 23:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.142.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736551981; cv=none; b=OLh1kKQHiAdXL8NqFFe2lq+CGUo07uomYEnriSTR72SBWsAvN4skW2OKg/HpBEQm1T0QigexFwJOOtjv8yrWToBYmd+ieynR8vpgaRKz4th+ma872fD9awUvgGWpAFOVp+9dC7ZriMH8h9Py9vEJcid6SrSms+qt9XcoilB81dc=
+	t=1736551981; cv=none; b=F7f9DmnQWyYFk/LC9oDYdWNFQaS9s0QyOPSw7E89ygmaHFBIzxAXYzetneKn2s/clUDAiFFHk0a7DKNN5tCik99nIoaGmPp3KSxSvIYi1fkI2KgJvCK/+DBpxKPdqVFlS2NN1ZnILrSDnJElnFxA6OZpCv4/B3wvKoSdaBA5pGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1736551981; c=relaxed/simple;
-	bh=arGXb5Rus1cUc0CwA06aBsGq1d5jQ96aor8Qrc5jpOc=;
+	bh=gOZ/9xPscm7DHYecaMZItzg+5wHDWiVCyyiGQyAERAM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=L8hi11RrQb+eU1DsWCbzhtDRvNub/xyWzXYIjnG7J5LNi5lW1VdQVYPDtVhkN84fzz+IjmF+DxROZ3gsg2Y6+itHcdQ73xDjasxWhxjiviPUOODT9AFOEECj141EItCirlYDWr6SFOFvXw+q/NhEmZy68wbEeYeL/kLdyUmZiqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b=JnvKXU7Y; arc=none smtp.client-ip=173.37.86.72
+	 MIME-Version; b=cCLp1h2nxOSPEsfdbLD6EYX2CltW8NG/R3P5AnaJupn2xRfp/0WhSkr+C6lFeTXSch/5m6iR2TFL6t2gorE01IQCBBzvyneGFFwIn0rK9mttvT5O2jTTBAncJ1VY7q9uV33JzDojGEUCxYGKhMggoJzcm2rjxebfa+yVhV/ukG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b=S9iYpEbL; arc=none smtp.client-ip=173.37.142.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="JnvKXU7Y"
+	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="S9iYpEbL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=4447; q=dns/txt; s=iport;
-  t=1736551979; x=1737761579;
+  d=cisco.com; i=@cisco.com; l=11406; q=dns/txt;
+  s=iport; t=1736551979; x=1737761579;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=XtwlElowJ1XLKo9eSWoN9x2HL1wNbegz7k2yKy69syY=;
-  b=JnvKXU7YhtjPj8AbMBNK6IXyVUCXbcX6facxPNdsSrF/yrwtFhxJgXUj
-   EuhnLI005EEHqvH+VRd9XxxLGBcRaPwlwwbv5CLScL7/PWqW40FaVJ0KU
-   PiCDH/QiY1eoAE1FsmGrT5H2niOF+kGS4bJQxIk+e4d3trB80W0giU8bw
-   o=;
-X-CSE-ConnectionGUID: uPS7pxIERp60vlphbLfa3w==
-X-CSE-MsgGUID: 0kKjGZBGQUG2OZID7SbKMw==
-X-IPAS-Result: =?us-ascii?q?A0ANAAD8rIFn/47/Ja1aGwEBAQEBAQEBBQEBARIBAQEDA?=
- =?us-ascii?q?wEBAYF/BgEBAQsBgkqBT0NIjHJfiHKeGxSBEQNWDwEBAQ9EBAEBhQcCinQCJ?=
- =?us-ascii?q?jQJDgECBAEBAQEDAgMBAQEBAQEBAQEBAQsBAQUBAQECAQcFgQ4ThgiGWwIBA?=
- =?us-ascii?q?ycLAUYQUSsrBxKDAYJlA7RNgXkzgQHeM4FtgUgBhWqHX3CEdycbgUlEglCBP?=
- =?us-ascii?q?m+EKoZdBIIyhTWeUkiBIQNZLAFVEw0KCwcFgTg6AyILCwwLFBwVAhUfEQYQB?=
- =?us-ascii?q?G1EN4JGaUs6Ag0CNYIeJFiCK4RchEeEVIJLVYJHghR6gRmEAUADCxgNSBEsN?=
- =?us-ascii?q?wYOGwY+bgebJzyDbgGBDxOCADEkApMVG5IVgTSKPpURhCWBY59jGjOqU5gDe?=
- =?us-ascii?q?SKjVVCEZoFnPIFZMxoIGxWDIlIZD4hchVEWFrxGJTI8AgcLAQEDCZA+YAEB?=
-IronPort-Data: A9a23:beXn7ahgonrJey2kuiUfD/lhX161QhEKZh0ujC45NGQN5FlHY01je
- htvX2GHaK3ZZGXzLo9wa9/l8R9TvcXXyIIwGQpvrihmESJjpJueD7x1DKtf0wB+jyHnZBg6h
- ynLQoCYdKjYdleF+FH1dOCn9SQkvU2xbuKUIPbePSxsThNTRi4kiBZy88Y0mYcAbeKRW2thg
- vus5ZSFULOZ82QsaD9Msvvb8EgHUMna4Vv0gHRvPZing3eG/5UlJMp3Db28KXL+Xr5VEoaSL
- 87fzKu093/u5BwkDNWoiN7TKiXmlZaLYGBiIlIPM0STqkAqSh4ai87XB9JAAatjsAhlqvgqo
- Dl7WTNcfi9yVkHEsLx1vxC1iEiSN4UekFPMCSDXXcB+UyQqflO0q8iCAn3aMqUFwt0oGXFv2
- MYAdmgTagiDjca4yemkH7wEasQLdKEHPasFsX1miDWcBvE8TNWbHuPB5MRT23E7gcUm8fT2P
- pVCL2EwKk6dPlsWZg1/5JEWxI9EglH9dD1epFuRqII84nPYy0p6172F3N/9IYTWFZ0Jxh3Hz
- o7A1zz6IRM1Bvaw8AeqqFWep8OQpinYfZ1HQdVU8dYv2jV/3Fc7BBQIWF6TrfCnh0u6XNxDb
- UoZ5kIGoKQv8UW5Q8XVUBq/r3qJ+BUbXrJ4EPAw4SmOx7DS7gLfAXILJhZIbtA8udB1QzE22
- lKXt9f0Azopu739YWqU/LqSrBuoNCQVJHNEbigBJSMD7sXvrZ8bkB3CVJBgHbSzg9mzHiv/q
- w1mtwAkjLkVyMpO3KKh8BWf3nSnp4PCSUg+4QC/sn+Z0z6VrbWNP+SAgWU3J94aRGpFZjFtZ
- EQ5pvU=
-IronPort-HdrOrdr: A9a23:JvqOMqEiJbfyQmtFpLqE78eALOsnbusQ8zAXPo5KJiC9Ffbo8P
- xG88576faZslsssTQb6LK90cq7MBfhHOBOgbX5VI3KNGKNhILrFvAG0WKI+VPd8kPFmtK1rZ
- 0QEJSXzLbLfCFHZQGQ2njfL+od
-X-Talos-CUID: =?us-ascii?q?9a23=3AcOsdd2ihidGs3xLjR8AbsW2AszJub0Xmk2/AAmK?=
- =?us-ascii?q?CETgxVrmNSVW09qo/jJ87?=
-X-Talos-MUID: 9a23:j2dk0AuwCl9vGC8XLs2n3DJBNuhayYuXNW9Xtqcnl5a/Pw9VJGLI
+  bh=+DrN/uoXLwjyelak05gv0W0iTMTTzvP3vTAQgSR6SgA=;
+  b=S9iYpEbLCt12+RQc4Rw8ZMiPzPMaVgp8o0RyJede70xRFNrrPq/Ns54N
+   4OLcpVZLIgp+YUvLl2RIsxWIftuckmz9nmqrj3Ko+MDckd7ArB0/XexYy
+   oghFuUo7DvDRxbo9RxdDWGOegol1D+Ix6E8W0gOlV1HsBDebAUE054LGI
+   0=;
+X-CSE-ConnectionGUID: 1vy9msTsRrC9kOuN1ZfpuQ==
+X-CSE-MsgGUID: d9+2nIlYT3Gxl7Iwp/T/7w==
+X-IPAS-Result: =?us-ascii?q?A0AEAAD8rIFnj4v/Ja1aGwEBAQEBAQEBBQEBARIBAQEDA?=
+ =?us-ascii?q?wEBAYF/BgEBAQsBhBlDSIxyX4hynhsUgREDVg8BAQEPRAQBAYUHAop0AiY0C?=
+ =?us-ascii?q?Q4BAgQBAQEBAwIDAQEBAQEBAQEBAQELAQEFAQEBAgEHBRQBAQEBAQE5BQ47h?=
+ =?us-ascii?q?giGWwIBAycLAUYQUSsrBxKDAYJlA7RNgXkzgQHeM4FtgUgBhWqHX3CEdycbg?=
+ =?us-ascii?q?UlEgRWBO4E+b4QGhwEEgjKFNZ5SSIEhA1ksAVUTDQoLBwWBODoDIgsLDAsUH?=
+ =?us-ascii?q?BUCFR4BEQYQBG1EN4JGaUs6Ag0CNYIeJFiCK4RchEeEVIJLVYJHghR6gRmEA?=
+ =?us-ascii?q?UADCxgNSBEsNwYOGwY+bgebJzyDaAYBgQ4BggUOVZMokh+LcpURhCWBY59jG?=
+ =?us-ascii?q?jOqU5h8IqQlhGaBZzqBWzMaCBsVgyJSGQ+IXIVRDQm8XCUyPAIHCwEBAwmPI?=
+ =?us-ascii?q?y2BTgEB?=
+IronPort-Data: A9a23:PlDq66D1+Yp3hRVW/8zjw5YqxClBgxIJ4kV8jS/XYbTApGx2gT1Rx
+ jMXDzyBb/qNYTf1L9pzao3loEwC7JWBx9VmOVdlrnsFo1CmBibm6XV1Cm+qYkt+++WaFBoPA
+ /02M4eGdIZsCCeB/n9BC5C5xVFkz6aEW7HgP+DNPyF1VGdMRTwo4f5Zs7ZRbrVA357gWWthh
+ fuo+5eCYAb8g2YvWo4pw/vrRC1H7ayaVAww5jTSVdgT1HfCmn8cCo4oJK3ZBxPQXolOE+emc
+ P3Ixbe/83mx109F5gSNy+uTnuUiG9Y+DCDW4pZkc/HKbitq+kTe5p0G2M80Mi+7vdkmc+dZk
+ 72hvbToIesg0zaldO41C3G0GAkmVUFKFSOuzXWX6aSuI0P6n3TEmut/XUQtAZYi4M0mAkZT0
+ 6UqJigQV0XW7w626OrTpuhEnM8vKozveYgYoHwllWufBvc9SpeFSKLPjTNa9G5v3YYVQrCEO
+ pdfMGE+BPjDS0Un1lM/CpU+muuhgnTXeDxDo1XTrq0yi4TW5FApgeK8YYCJIrRmQ+1ZzwXCo
+ EPCzliiLQEea/2A0X25tS2z07qncSTTA99KS+biqZaGmma7ymUNBRg+WVKlrPy9jUCiHdRSN
+ yQ89yYzqKEg+VCDQd76UBm15nWDu3Y0WMdaGsU55RuLx66S5ByWbkANSDJbZcNlssIqSTE0/
+ luUmdWvDjwHmKWcQ3+b95+OoD+yMDRTJmgHDQcCQBcJ7sfLvo4+lFTMQ8xlHarzicf6cQwc2
+ BiQpyQ4wrFWhskR2uDjpxbMgimnod7CSQtdChjrsnyNtx1oNYu+W5eS83OK7tFdCt+rQEGch
+ S1R8ySB19wmAZaInS2LZewCGrC1+vqIWAEwZ3YxRPHNEBzzoBaekZBs3d1oGKt+3i85ld7Vj
+ K375Fg5CHx7ZSfCgUpLj2SZUJtCIU/ITouNaxwsRoASCqWdjSfelM2UWWae3nr2jG8nmrwlN
+ JGQfK6EVClBV/g7k2fqG7tDgdfHIxzSI0uOGvgXKDz6gNKjiIK9E+1t3KamN7pgtf3Y8G05D
+ f4AZ5PQkH2zr9ESkgGMrNZMdgpVRZTKLZv3sMdQPvWSORZrHXppCvnah9scl39NwcxoehPz1
+ ijlACdwkQOn7VWecFniQi44MtvHA80gxU/XyARwZj5ELVB/Ot73tM/ytvIfIdEayQCU5acoH
+ qVcK5/dWJyiiF3volwgUHU0l6Q6HDzDuO5EF3DNjOQXF3K4ezH0xw==
+IronPort-HdrOrdr: A9a23:dsCecq/Xw8DJ9DBwLjRuk+DfI+orL9Y04lQ7vn2ZhyY7TiX+rb
+ HIoB11737JYVoqNU3I3OrwWpVoIkmskaKdn7NwAV7KZmCP0wGVxcNZnO7fKlbbdREWmNQw6U
+ 4ZSdkcNDU1ZmIK9PoTJ2KDYrAd/OU=
+X-Talos-CUID: 9a23:+mKqCGB3HhqI6gj6E3B55R8RAfw+SGf2nXT3PmnhO2hxVYTAHA==
+X-Talos-MUID: =?us-ascii?q?9a23=3AaFS95A2ScMlOZB6Fkrkkb44IDjUj7/XtUkYslaQ?=
+ =?us-ascii?q?64OaUMXNRJC/asHPoXdpy?=
 X-IronPort-Anti-Spam-Filtered: true
 X-IronPort-AV: E=Sophos;i="6.12,305,1728950400"; 
-   d="scan'208";a="304804037"
-Received: from rcdn-l-core-05.cisco.com ([173.37.255.142])
-  by rcdn-iport-1.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 10 Jan 2025 23:32:53 +0000
+   d="scan'208";a="409299240"
+Received: from rcdn-l-core-02.cisco.com ([173.37.255.139])
+  by alln-iport-2.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 10 Jan 2025 23:32:53 +0000
 Received: from cisco.com (savbu-usnic-a.cisco.com [10.193.184.48])
-	by rcdn-l-core-05.cisco.com (Postfix) with ESMTP id 1B1231800023B;
+	by rcdn-l-core-02.cisco.com (Postfix) with ESMTP id 0F25D18000233;
 	Fri, 10 Jan 2025 23:32:53 +0000 (GMT)
 Received: by cisco.com (Postfix, from userid 392789)
-	id E9F2B20F2006; Fri, 10 Jan 2025 15:32:52 -0800 (PST)
+	id DC98E20F2004; Fri, 10 Jan 2025 15:32:52 -0800 (PST)
 From: John Daley <johndale@cisco.com>
 To: benve@cisco.com,
 	satishkh@cisco.com,
@@ -76,9 +82,9 @@ To: benve@cisco.com,
 	netdev@vger.kernel.org
 Cc: John Daley <johndale@cisco.com>,
 	Nelson Escobar <neescoba@cisco.com>
-Subject: [PATCH net-next v5 3/4] enic: Use function pointers for buf alloc, free and RQ service
-Date: Fri, 10 Jan 2025 15:32:48 -0800
-Message-Id: <20250110233249.23258-4-johndale@cisco.com>
+Subject: [PATCH net-next v5 1/4] enic: Refactor RX path common code into helper functions
+Date: Fri, 10 Jan 2025 15:32:46 -0800
+Message-Id: <20250110233249.23258-2-johndale@cisco.com>
 X-Mailer: git-send-email 2.35.2
 In-Reply-To: <20250110233249.23258-1-johndale@cisco.com>
 References: <20250110233249.23258-1-johndale@cisco.com>
@@ -90,10 +96,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Outbound-SMTP-Client: 10.193.184.48, savbu-usnic-a.cisco.com
-X-Outbound-Node: rcdn-l-core-05.cisco.com
+X-Outbound-Node: rcdn-l-core-02.cisco.com
 
-In order to support more than one packet receive processing scheme, use
-pointers for allocate, free and RQ descrptor processing functions.
+In order to more easily support future packet receive processing schemes
+and to simplify the receive path, put common code into helper functions
+in a separate file.
 
 No functional change.
 
@@ -103,100 +110,341 @@ Co-developed-by: Satish Kharat <satishkh@cisco.com>
 Signed-off-by: Satish Kharat <satishkh@cisco.com>
 Signed-off-by: John Daley <johndale@cisco.com>
 ---
- drivers/net/ethernet/cisco/enic/enic.h      |  5 +++++
- drivers/net/ethernet/cisco/enic/enic_main.c | 14 +++++++++-----
- drivers/net/ethernet/cisco/enic/enic_rq.c   |  2 +-
- 3 files changed, 15 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/cisco/enic/Makefile    |   2 +-
+ drivers/net/ethernet/cisco/enic/enic_main.c | 100 ++--------------
+ drivers/net/ethernet/cisco/enic/enic_rq.c   | 120 ++++++++++++++++++++
+ drivers/net/ethernet/cisco/enic/enic_rq.h   |  22 ++++
+ 4 files changed, 150 insertions(+), 94 deletions(-)
+ create mode 100644 drivers/net/ethernet/cisco/enic/enic_rq.c
+ create mode 100644 drivers/net/ethernet/cisco/enic/enic_rq.h
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
-index 10b7e02ba4d0..51f80378d928 100644
---- a/drivers/net/ethernet/cisco/enic/enic.h
-+++ b/drivers/net/ethernet/cisco/enic/enic.h
-@@ -226,6 +226,11 @@ struct enic {
- 	u32 rx_copybreak;
- 	u8 rss_key[ENIC_RSS_LEN];
- 	struct vnic_gen_stats gen_stats;
-+	void (*rq_buf_service)(struct vnic_rq *rq, struct cq_desc *cq_desc,
-+			       struct vnic_rq_buf *buf, int skipped,
-+			       void *opaque);
-+	int (*rq_alloc_buf)(struct vnic_rq *rq);
-+	void (*rq_free_buf)(struct vnic_rq *rq, struct vnic_rq_buf *buf);
- };
+diff --git a/drivers/net/ethernet/cisco/enic/Makefile b/drivers/net/ethernet/cisco/enic/Makefile
+index c3b6febfdbe4..b3b5196b2dfc 100644
+--- a/drivers/net/ethernet/cisco/enic/Makefile
++++ b/drivers/net/ethernet/cisco/enic/Makefile
+@@ -3,5 +3,5 @@ obj-$(CONFIG_ENIC) := enic.o
  
- static inline struct net_device *vnic_get_netdev(struct vnic_dev *vdev)
+ enic-y := enic_main.o vnic_cq.o vnic_intr.o vnic_wq.o \
+ 	enic_res.o enic_dev.o enic_pp.o vnic_dev.o vnic_rq.o vnic_vic.o \
+-	enic_ethtool.o enic_api.o enic_clsf.o
++	enic_ethtool.o enic_api.o enic_clsf.o enic_rq.o
+ 
 diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index fd3d34c1d4d4..d3319f62ad1b 100644
+index 49f6cab01ed5..2a1448e98466 100644
 --- a/drivers/net/ethernet/cisco/enic/enic_main.c
 +++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -1550,7 +1550,7 @@ static int enic_poll(struct napi_struct *napi, int budget)
- 			0 /* don't unmask intr */,
- 			0 /* don't reset intr timer */);
+@@ -55,6 +55,7 @@
+ #include "vnic_vic.h"
+ #include "enic_res.h"
+ #include "enic.h"
++#include "enic_rq.h"
+ #include "enic_dev.h"
+ #include "enic_pp.h"
+ #include "enic_clsf.h"
+@@ -83,7 +84,6 @@ MODULE_AUTHOR("Scott Feldman <scofeldm@cisco.com>");
+ MODULE_LICENSE("GPL");
+ MODULE_DEVICE_TABLE(pci, enic_id_table);
  
--	err = vnic_rq_fill(&enic->rq[0].vrq, enic_rq_alloc_buf);
-+	err = vnic_rq_fill(&enic->rq[0].vrq, enic->rq_alloc_buf);
- 
- 	/* Buffer allocation failed. Stay in polling
- 	 * mode so we can try to fill the ring again.
-@@ -1678,7 +1678,7 @@ static int enic_poll_msix_rq(struct napi_struct *napi, int budget)
- 			0 /* don't unmask intr */,
- 			0 /* don't reset intr timer */);
- 
--	err = vnic_rq_fill(&enic->rq[rq].vrq, enic_rq_alloc_buf);
-+	err = vnic_rq_fill(&enic->rq[rq].vrq, enic->rq_alloc_buf);
- 
- 	/* Buffer allocation failed. Stay in polling mode
- 	 * so we can try to fill the ring again.
-@@ -1883,6 +1883,10 @@ static int enic_open(struct net_device *netdev)
- 	unsigned int i;
- 	int err, ret;
- 
-+	enic->rq_buf_service = enic_rq_indicate_buf;
-+	enic->rq_alloc_buf = enic_rq_alloc_buf;
-+	enic->rq_free_buf = enic_free_rq_buf;
-+
- 	err = enic_request_intr(enic);
- 	if (err) {
- 		netdev_err(netdev, "Unable to request irq.\n");
-@@ -1901,7 +1905,7 @@ static int enic_open(struct net_device *netdev)
- 	for (i = 0; i < enic->rq_count; i++) {
- 		/* enable rq before updating rq desc */
- 		vnic_rq_enable(&enic->rq[i].vrq);
--		vnic_rq_fill(&enic->rq[i].vrq, enic_rq_alloc_buf);
-+		vnic_rq_fill(&enic->rq[i].vrq, enic->rq_alloc_buf);
- 		/* Need at least one buffer on ring to get going */
- 		if (vnic_rq_desc_used(&enic->rq[i].vrq) == 0) {
- 			netdev_err(netdev, "Unable to alloc receive buffers\n");
-@@ -1940,7 +1944,7 @@ static int enic_open(struct net_device *netdev)
- 	for (i = 0; i < enic->rq_count; i++) {
- 		ret = vnic_rq_disable(&enic->rq[i].vrq);
- 		if (!ret)
--			vnic_rq_clean(&enic->rq[i].vrq, enic_free_rq_buf);
-+			vnic_rq_clean(&enic->rq[i].vrq, enic->rq_free_buf);
- 	}
- 	enic_dev_notify_unset(enic);
- err_out_free_intr:
-@@ -1999,7 +2003,7 @@ static int enic_stop(struct net_device *netdev)
- 	for (i = 0; i < enic->wq_count; i++)
- 		vnic_wq_clean(&enic->wq[i].vwq, enic_free_wq_buf);
- 	for (i = 0; i < enic->rq_count; i++)
--		vnic_rq_clean(&enic->rq[i].vrq, enic_free_rq_buf);
-+		vnic_rq_clean(&enic->rq[i].vrq, enic->rq_free_buf);
- 	for (i = 0; i < enic->cq_count; i++)
- 		vnic_cq_clean(&enic->cq[i]);
- 	for (i = 0; i < enic->intr_count; i++)
-diff --git a/drivers/net/ethernet/cisco/enic/enic_rq.c b/drivers/net/ethernet/cisco/enic/enic_rq.c
-index 571af8f31470..ae2ab5af87e9 100644
---- a/drivers/net/ethernet/cisco/enic/enic_rq.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_rq.c
-@@ -114,7 +114,7 @@ int enic_rq_service(struct vnic_dev *vdev, struct cq_desc *cq_desc,
- 	struct enic *enic = vnic_dev_priv(vdev);
- 
- 	vnic_rq_service(&enic->rq[q_number].vrq, cq_desc, completed_index,
--			VNIC_RQ_RETURN_DESC, enic_rq_indicate_buf, opaque);
-+			VNIC_RQ_RETURN_DESC, enic->rq_buf_service, opaque);
- 
+-#define ENIC_LARGE_PKT_THRESHOLD		1000
+ #define ENIC_MAX_COALESCE_TIMERS		10
+ /*  Interrupt moderation table, which will be used to decide the
+  *  coalescing timer values
+@@ -1361,15 +1361,6 @@ static int enic_rq_alloc_buf(struct vnic_rq *rq)
  	return 0;
  }
+ 
+-static void enic_intr_update_pkt_size(struct vnic_rx_bytes_counter *pkt_size,
+-				      u32 pkt_len)
+-{
+-	if (ENIC_LARGE_PKT_THRESHOLD <= pkt_len)
+-		pkt_size->large_pkt_bytes_cnt += pkt_len;
+-	else
+-		pkt_size->small_pkt_bytes_cnt += pkt_len;
+-}
+-
+ static bool enic_rxcopybreak(struct net_device *netdev, struct sk_buff **skb,
+ 			     struct vnic_rq_buf *buf, u16 len)
+ {
+@@ -1389,9 +1380,8 @@ static bool enic_rxcopybreak(struct net_device *netdev, struct sk_buff **skb,
+ 	return true;
+ }
+ 
+-static void enic_rq_indicate_buf(struct vnic_rq *rq,
+-	struct cq_desc *cq_desc, struct vnic_rq_buf *buf,
+-	int skipped, void *opaque)
++void enic_rq_indicate_buf(struct vnic_rq *rq, struct cq_desc *cq_desc,
++			  struct vnic_rq_buf *buf, int skipped, void *opaque)
+ {
+ 	struct enic *enic = vnic_dev_priv(rq->vdev);
+ 	struct net_device *netdev = enic->netdev;
+@@ -1406,7 +1396,6 @@ static void enic_rq_indicate_buf(struct vnic_rq *rq,
+ 	u8 packet_error;
+ 	u16 q_number, completed_index, bytes_written, vlan_tci, checksum;
+ 	u32 rss_hash;
+-	bool outer_csum_ok = true, encap = false;
+ 
+ 	rqstats->packets++;
+ 	if (skipped) {
+@@ -1426,15 +1415,7 @@ static void enic_rq_indicate_buf(struct vnic_rq *rq,
+ 		&ipv4_csum_ok, &ipv6, &ipv4, &ipv4_fragment,
+ 		&fcs_ok);
+ 
+-	if (packet_error) {
+-
+-		if (!fcs_ok) {
+-			if (bytes_written > 0)
+-				rqstats->bad_fcs++;
+-			else if (bytes_written == 0)
+-				rqstats->pkt_truncated++;
+-		}
+-
++	if (enic_rq_pkt_error(rq, packet_error, fcs_ok, bytes_written)) {
+ 		dma_unmap_single(&enic->pdev->dev, buf->dma_addr, buf->len,
+ 				 DMA_FROM_DEVICE);
+ 		dev_kfree_skb_any(skb);
+@@ -1458,66 +1439,11 @@ static void enic_rq_indicate_buf(struct vnic_rq *rq,
+ 		skb_put(skb, bytes_written);
+ 		skb->protocol = eth_type_trans(skb, netdev);
+ 		skb_record_rx_queue(skb, q_number);
+-		if ((netdev->features & NETIF_F_RXHASH) && rss_hash &&
+-		    (type == 3)) {
+-			switch (rss_type) {
+-			case CQ_ENET_RQ_DESC_RSS_TYPE_TCP_IPv4:
+-			case CQ_ENET_RQ_DESC_RSS_TYPE_TCP_IPv6:
+-			case CQ_ENET_RQ_DESC_RSS_TYPE_TCP_IPv6_EX:
+-				skb_set_hash(skb, rss_hash, PKT_HASH_TYPE_L4);
+-				rqstats->l4_rss_hash++;
+-				break;
+-			case CQ_ENET_RQ_DESC_RSS_TYPE_IPv4:
+-			case CQ_ENET_RQ_DESC_RSS_TYPE_IPv6:
+-			case CQ_ENET_RQ_DESC_RSS_TYPE_IPv6_EX:
+-				skb_set_hash(skb, rss_hash, PKT_HASH_TYPE_L3);
+-				rqstats->l3_rss_hash++;
+-				break;
+-			}
+-		}
+-		if (enic->vxlan.vxlan_udp_port_number) {
+-			switch (enic->vxlan.patch_level) {
+-			case 0:
+-				if (fcoe) {
+-					encap = true;
+-					outer_csum_ok = fcoe_fc_crc_ok;
+-				}
+-				break;
+-			case 2:
+-				if ((type == 7) &&
+-				    (rss_hash & BIT(0))) {
+-					encap = true;
+-					outer_csum_ok = (rss_hash & BIT(1)) &&
+-							(rss_hash & BIT(2));
+-				}
+-				break;
+-			}
+-		}
+ 
+-		/* Hardware does not provide whole packet checksum. It only
+-		 * provides pseudo checksum. Since hw validates the packet
+-		 * checksum but not provide us the checksum value. use
+-		 * CHECSUM_UNNECESSARY.
+-		 *
+-		 * In case of encap pkt tcp_udp_csum_ok/tcp_udp_csum_ok is
+-		 * inner csum_ok. outer_csum_ok is set by hw when outer udp
+-		 * csum is correct or is zero.
+-		 */
+-		if ((netdev->features & NETIF_F_RXCSUM) && !csum_not_calc &&
+-		    tcp_udp_csum_ok && outer_csum_ok &&
+-		    (ipv4_csum_ok || ipv6)) {
+-			skb->ip_summed = CHECKSUM_UNNECESSARY;
+-			skb->csum_level = encap;
+-			if (encap)
+-				rqstats->csum_unnecessary_encap++;
+-			else
+-				rqstats->csum_unnecessary++;
+-		}
++		enic_rq_set_skb_flags(rq, type, rss_hash, rss_type, fcoe, fcoe_fc_crc_ok,
++				      vlan_stripped, csum_not_calc, tcp_udp_csum_ok, ipv6,
++				      ipv4_csum_ok, vlan_tci, skb);
+ 
+-		if (vlan_stripped) {
+-			__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), vlan_tci);
+-			rqstats->vlan_stripped++;
+-		}
+ 		skb_mark_napi_id(skb, &enic->napi[rq->index]);
+ 		if (!(netdev->features & NETIF_F_GRO))
+ 			netif_receive_skb(skb);
+@@ -1538,18 +1464,6 @@ static void enic_rq_indicate_buf(struct vnic_rq *rq,
+ 	}
+ }
+ 
+-static int enic_rq_service(struct vnic_dev *vdev, struct cq_desc *cq_desc,
+-	u8 type, u16 q_number, u16 completed_index, void *opaque)
+-{
+-	struct enic *enic = vnic_dev_priv(vdev);
+-
+-	vnic_rq_service(&enic->rq[q_number].vrq, cq_desc,
+-		completed_index, VNIC_RQ_RETURN_DESC,
+-		enic_rq_indicate_buf, opaque);
+-
+-	return 0;
+-}
+-
+ static void enic_set_int_moderation(struct enic *enic, struct vnic_rq *rq)
+ {
+ 	unsigned int intr = enic_msix_rq_intr(enic, rq->index);
+diff --git a/drivers/net/ethernet/cisco/enic/enic_rq.c b/drivers/net/ethernet/cisco/enic/enic_rq.c
+new file mode 100644
+index 000000000000..571af8f31470
+--- /dev/null
++++ b/drivers/net/ethernet/cisco/enic/enic_rq.c
+@@ -0,0 +1,120 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// Copyright 2024 Cisco Systems, Inc.  All rights reserved.
++
++#include <linux/skbuff.h>
++#include <linux/if_vlan.h>
++#include "enic.h"
++#include "enic_rq.h"
++#include "vnic_rq.h"
++#include "cq_enet_desc.h"
++
++#define ENIC_LARGE_PKT_THRESHOLD		1000
++
++void enic_intr_update_pkt_size(struct vnic_rx_bytes_counter *pkt_size,
++			       u32 pkt_len)
++{
++	if (pkt_len >= ENIC_LARGE_PKT_THRESHOLD)
++		pkt_size->large_pkt_bytes_cnt += pkt_len;
++	else
++		pkt_size->small_pkt_bytes_cnt += pkt_len;
++}
++
++void enic_rq_set_skb_flags(struct vnic_rq *vrq, u8 type, u32 rss_hash, u8 rss_type, u8 fcoe,
++			   u8 fcoe_fc_crc_ok, u8 vlan_stripped, u8 csum_not_calc,
++			   u8 tcp_udp_csum_ok, u8 ipv6, u8 ipv4_csum_ok, u16 vlan_tci,
++			   struct sk_buff *skb)
++{
++	struct enic *enic = vnic_dev_priv(vrq->vdev);
++	struct net_device *netdev = enic->netdev;
++	struct enic_rq_stats *rqstats =  &enic->rq[vrq->index].stats;
++	bool outer_csum_ok = true, encap = false;
++
++	if ((netdev->features & NETIF_F_RXHASH) && rss_hash && type == 3) {
++		switch (rss_type) {
++		case CQ_ENET_RQ_DESC_RSS_TYPE_TCP_IPv4:
++		case CQ_ENET_RQ_DESC_RSS_TYPE_TCP_IPv6:
++		case CQ_ENET_RQ_DESC_RSS_TYPE_TCP_IPv6_EX:
++			skb_set_hash(skb, rss_hash, PKT_HASH_TYPE_L4);
++			rqstats->l4_rss_hash++;
++			break;
++		case CQ_ENET_RQ_DESC_RSS_TYPE_IPv4:
++		case CQ_ENET_RQ_DESC_RSS_TYPE_IPv6:
++		case CQ_ENET_RQ_DESC_RSS_TYPE_IPv6_EX:
++			skb_set_hash(skb, rss_hash, PKT_HASH_TYPE_L3);
++			rqstats->l3_rss_hash++;
++			break;
++		}
++	}
++	if (enic->vxlan.vxlan_udp_port_number) {
++		switch (enic->vxlan.patch_level) {
++		case 0:
++			if (fcoe) {
++				encap = true;
++				outer_csum_ok = fcoe_fc_crc_ok;
++			}
++			break;
++		case 2:
++			if (type == 7 && (rss_hash & BIT(0))) {
++				encap = true;
++				outer_csum_ok = (rss_hash & BIT(1)) &&
++						(rss_hash & BIT(2));
++			}
++			break;
++		}
++	}
++
++	/* Hardware does not provide whole packet checksum. It only
++	 * provides pseudo checksum. Since hw validates the packet
++	 * checksum but not provide us the checksum value. use
++	 * CHECSUM_UNNECESSARY.
++	 *
++	 * In case of encap pkt tcp_udp_csum_ok/tcp_udp_csum_ok is
++	 * inner csum_ok. outer_csum_ok is set by hw when outer udp
++	 * csum is correct or is zero.
++	 */
++	if ((netdev->features & NETIF_F_RXCSUM) && !csum_not_calc &&
++	    tcp_udp_csum_ok && outer_csum_ok && (ipv4_csum_ok || ipv6)) {
++		skb->ip_summed = CHECKSUM_UNNECESSARY;
++		skb->csum_level = encap;
++		if (encap)
++			rqstats->csum_unnecessary_encap++;
++		else
++			rqstats->csum_unnecessary++;
++	}
++
++	if (vlan_stripped) {
++		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), vlan_tci);
++		rqstats->vlan_stripped++;
++	}
++}
++
++int enic_rq_pkt_error(struct vnic_rq *vrq, u8 packet_error, u8 fcs_ok, u16 bytes_written)
++{
++	struct enic *enic = vnic_dev_priv(vrq->vdev);
++	struct enic_rq_stats *rqstats = &enic->rq[vrq->index].stats;
++	int ret = 0;
++
++	if (packet_error) {
++		if (!fcs_ok) {
++			if (bytes_written > 0) {
++				rqstats->bad_fcs++;
++				ret = 1;
++			} else if (bytes_written == 0) {
++				rqstats->pkt_truncated++;
++				ret = 2;
++			}
++		}
++	}
++	return ret;
++}
++
++int enic_rq_service(struct vnic_dev *vdev, struct cq_desc *cq_desc,
++		    u8 type, u16 q_number, u16 completed_index, void *opaque)
++{
++	struct enic *enic = vnic_dev_priv(vdev);
++
++	vnic_rq_service(&enic->rq[q_number].vrq, cq_desc, completed_index,
++			VNIC_RQ_RETURN_DESC, enic_rq_indicate_buf, opaque);
++
++	return 0;
++}
+diff --git a/drivers/net/ethernet/cisco/enic/enic_rq.h b/drivers/net/ethernet/cisco/enic/enic_rq.h
+new file mode 100644
+index 000000000000..46ab75fd74a0
+--- /dev/null
++++ b/drivers/net/ethernet/cisco/enic/enic_rq.h
+@@ -0,0 +1,22 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright 2008-2010 Cisco Systems, Inc.  All rights reserved.
++ * Copyright 2007 Nuova Systems, Inc.  All rights reserved.
++ */
++
++#ifndef _ENIC_RQ_H_
++#define _ENIC_RQ_H_
++
++void enic_intr_update_pkt_size(struct vnic_rx_bytes_counter *pkt_size,
++			       u32 pkt_len);
++void enic_rq_set_skb_flags(struct vnic_rq *rq, u8 type, u32 rss_hash, u8 rss_type,
++			   u8 fcoe, u8 fcoe_fc_crc_ok, u8 vlan_stripped,
++			   u8 csum_not_calc, u8 tcp_udp_csum_ok, u8 ipv6,
++			   u8 ipv4_csum_ok, u16 vlan_tci, struct sk_buff *skb);
++int enic_rq_pkt_error(struct vnic_rq *rq, u8 packet_error, u8 fcs_ok,
++		      u16 bytes_written);
++int enic_rq_service(struct vnic_dev *vdev, struct cq_desc *cq_desc,
++		    u8 type, u16 q_number, u16 completed_index, void *opaque);
++void enic_rq_indicate_buf(struct vnic_rq *rq, struct cq_desc *cq_desc,
++			  struct vnic_rq_buf *buf, int skipped, void *opaque);
++#endif /* _ENIC_RQ_H_ */
 -- 
 2.44.0
 
