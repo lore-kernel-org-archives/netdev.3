@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB10207A33
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548DB20B21C
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736508439; cv=none; b=Zp0sVBjBTPIqxi1DP8ky87X53wqz81Ugdj4CpzWEidjuer/cbvuCDy8JnP9p16feitlLQ7zNRH+ZeANPAvVgJhOmJ92e42vyaeLvjsX1LAkYxZ2B2er6SzA8zS73VhySlOqkXTcWSGSNUqYwwtV563kQDTBk0ZXoOpPwD9lc+tE=
+	t=1736508440; cv=none; b=AmMzdFj3n5sc+JORzIhrfwiXasZpjSx0agnNmx8v0Jvd8Vf846xJh7Odro0RoKC5aqihijsrHiIfKXiUg2LACpn4FEB572JNU7SehSbwhfRKqbUfvvk2yYmWWDhw/8yBhrwlyezT+Q6OSX9T2P+bm/SbwMyAAOoLv8Ung3IsIQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736508439; c=relaxed/simple;
-	bh=86aNBKdbVeEYwrNY3ykEWWFCcFhj7ebi7u4x5u+Gqg0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PBk/XdSEaeJaF35kDSh01J7mSCjk2L5QaaR1rWiWBb1rTlDobByzI3eXFyvG44QBI/1Ktdg+Ea7H4PhXeRFHm1zSsqfSczlgvYkIWxCpyA3lrOqLx29DrBqlqfZ0F/kIj0h6uRV7hR1wUFS6i47qN24JQZ6+BT8AWTLch5XJrN8=
+	s=arc-20240116; t=1736508440; c=relaxed/simple;
+	bh=IN7/j6W+WE/FE+6TkA1zbPnXByeQhVHZ//mXxzWpAbs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Sb8l4ZJtuEMTVDZPVbiZgE92VFtUPF2nJodA0UBy22rtZik/dYQ9pkktpik8N68hAiOU0sO2r0ww7CfC0ZSdy1e5NYWSqVSi0hCbH4QAKJCG4EPOv7bzdVj3ekRWzCFPNMaig2/fhjsduXCgmM8tQCzr+1tx1nmDZQQEzW0VP8Q=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,37 +18,42 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tWDAa-0004ug-2V
-	for netdev@vger.kernel.org; Fri, 10 Jan 2025 12:27:16 +0100
+	id 1tWDAb-0004wm-IR
+	for netdev@vger.kernel.org; Fri, 10 Jan 2025 12:27:17 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tWDAZ-0009cO-2h
+	id 1tWDAa-0009dY-1x
 	for netdev@vger.kernel.org;
-	Fri, 10 Jan 2025 12:27:15 +0100
+	Fri, 10 Jan 2025 12:27:16 +0100
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 83BAF3A45AF
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:15 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id 4B3C03A45C3
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:27:16 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 52DF73A458B;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 8A49C3A4590;
 	Fri, 10 Jan 2025 11:27:14 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id d4c76e2f;
-	Fri, 10 Jan 2025 11:27:13 +0000 (UTC)
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id bec37279;
+	Fri, 10 Jan 2025 11:27:14 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: [PATCH net-next 0/18] pull-request: can-next 2025-01-10
-Date: Fri, 10 Jan 2025 12:04:08 +0100
-Message-ID: <20250110112712.3214173-1-mkl@pengutronix.de>
+	kernel@pengutronix.de,
+	Sean Nyekjaer <sean@geanix.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Subject: [PATCH net-next 04/18] can: tcan4x5x: add option for selecting nWKRQ voltage
+Date: Fri, 10 Jan 2025 12:04:12 +0100
+Message-ID: <20250110112712.3214173-5-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250110112712.3214173-1-mkl@pengutronix.de>
+References: <20250110112712.3214173-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,120 +66,92 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hello netdev-team,
+From: Sean Nyekjaer <sean@geanix.com>
 
-this is a pull request of 18 patches for net-next/master.
+The nWKRQ pin supports an output voltage of either the internal reference
+voltage (3.6V) or the reference voltage of
+the digital interface 0-6V (VIO).
+Add the devicetree option ti,nwkrq-voltage-vio to set it to VIO.
 
-Pierre-Henry Moussay adds PIC64GX compatibility to the DT bindings for
-Microchip's mpfs-can IP core.
+If this property is omitted the reset default, the internal reference
+voltage, is used.
 
-The next 3 patches are by Sean Nyekjaer and target the tcan4x5x
-driver. First the DT bindings is converted to DT schema, then nWKRQ
-voltage selection is added to the driver.
-
-Dario Binacchi's patch for the sun4i_can makes the driver more
-consistent by adding a likely() to the driver.
-
-Another patch by Sean Nyekjaer for the tcan4x5x driver gets rid of a
-false error message.
-
-Charan Pedumuru converts the atmel-can DT bindings to DT schema.
-
-The next 2 patches are by Oliver Hartkopp. The first one maps Oliver's
-former mail addresses to a dedicated CAN mail address. The second one
-assigns net/sched/em_canid.c additionally to the CAN maintainers.
-
-Ariel Otilibili's patch removes dead code from the CAN dev helper.
-
-The next 3 patches are by Sean Nyekjaer and add HW standby support to
-the tcan4x5x driver.
-
-A patch by Dario Binacchi fixes the DT bindings for the st,stm32-bxcan
-driver.
-
-The last 4 patches are by Jimmy Assarsson and target the kvaser_usb
-and the kvaser_pciefd driver: error statistics are improved and
-CAN_CTRLMODE_BERR_REPORTING is added.
-
-regards,
-Marc
-
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20241114-tcan-wkrqv-v5-2-a2d50833ed71@geanix.com
+[mkl: remove unused variable in tcan4x5x_get_dt_data()]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
+ drivers/net/can/m_can/tcan4x5x-core.c | 19 +++++++++++++++++++
+ drivers/net/can/m_can/tcan4x5x.h      |  2 ++
+ 2 files changed, 21 insertions(+)
 
-The following changes since commit 65ae975e97d5aab3ee9dc5ec701b12090572ed43:
+diff --git a/drivers/net/can/m_can/tcan4x5x-core.c b/drivers/net/can/m_can/tcan4x5x-core.c
+index 2f73bf3abad8..84b914056b7d 100644
+--- a/drivers/net/can/m_can/tcan4x5x-core.c
++++ b/drivers/net/can/m_can/tcan4x5x-core.c
+@@ -92,6 +92,8 @@
+ #define TCAN4X5X_MODE_STANDBY BIT(6)
+ #define TCAN4X5X_MODE_NORMAL BIT(7)
+ 
++#define TCAN4X5X_NWKRQ_VOLTAGE_VIO BIT(19)
++
+ #define TCAN4X5X_DISABLE_WAKE_MSK	(BIT(31) | BIT(30))
+ #define TCAN4X5X_DISABLE_INH_MSK	BIT(9)
+ 
+@@ -267,6 +269,13 @@ static int tcan4x5x_init(struct m_can_classdev *cdev)
+ 	if (ret)
+ 		return ret;
+ 
++	if (tcan4x5x->nwkrq_voltage_vio) {
++		ret = regmap_set_bits(tcan4x5x->regmap, TCAN4X5X_CONFIG,
++				      TCAN4X5X_NWKRQ_VOLTAGE_VIO);
++		if (ret)
++			return ret;
++	}
++
+ 	return ret;
+ }
+ 
+@@ -318,6 +327,14 @@ static const struct tcan4x5x_version_info
+ 	return &tcan4x5x_versions[TCAN4X5X];
+ }
+ 
++static void tcan4x5x_get_dt_data(struct m_can_classdev *cdev)
++{
++	struct tcan4x5x_priv *tcan4x5x = cdev_to_priv(cdev);
++
++	tcan4x5x->nwkrq_voltage_vio =
++		of_property_read_bool(cdev->dev->of_node, "ti,nwkrq-voltage-vio");
++}
++
+ static int tcan4x5x_get_gpios(struct m_can_classdev *cdev,
+ 			      const struct tcan4x5x_version_info *version_info)
+ {
+@@ -453,6 +470,8 @@ static int tcan4x5x_can_probe(struct spi_device *spi)
+ 		goto out_power;
+ 	}
+ 
++	tcan4x5x_get_dt_data(mcan_class);
++
+ 	tcan4x5x_check_wake(priv);
+ 
+ 	ret = tcan4x5x_write_tcan_reg(mcan_class, TCAN4X5X_INT_EN, 0);
+diff --git a/drivers/net/can/m_can/tcan4x5x.h b/drivers/net/can/m_can/tcan4x5x.h
+index e62c030d3e1e..203399d5e8cc 100644
+--- a/drivers/net/can/m_can/tcan4x5x.h
++++ b/drivers/net/can/m_can/tcan4x5x.h
+@@ -42,6 +42,8 @@ struct tcan4x5x_priv {
+ 
+ 	struct tcan4x5x_map_buf map_buf_rx;
+ 	struct tcan4x5x_map_buf map_buf_tx;
++
++	bool nwkrq_voltage_vio;
+ };
+ 
+ static inline void
+-- 
+2.45.2
 
-  Merge tag 'net-6.13-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2024-11-28 10:15:20 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next.git tags/linux-can-next-for-6.14-20250110
-
-for you to fetch changes up to c1a6911485b022e093c589c295a953ff744112b9:
-
-  Merge patch series "can: kvaser_usb: Update stats and state even if alloc_can_err_skb() fails" (2025-01-10 11:32:43 +0100)
-
-----------------------------------------------------------------
-linux-can-next-for-6.14-20250110
-
-----------------------------------------------------------------
-Ariel Otilibili (1):
-      can: dev: can_get_state_str(): Remove dead code
-
-Charan Pedumuru (1):
-      dt-bindings: net: can: atmel: Convert to json schema
-
-Dario Binacchi (2):
-      can: sun4i_can: continue to use likely() to check skb
-      dt-bindings: can: st,stm32-bxcan: fix st,gcan property type
-
-Jimmy Assarsson (4):
-      can: kvaser_usb: Update stats and state even if alloc_can_err_skb() fails
-      can: kvaser_usb: Add support for CAN_CTRLMODE_BERR_REPORTING
-      can: kvaser_pciefd: Update stats and state even if alloc_can_err_skb() fails
-      can: kvaser_pciefd: Add support for CAN_CTRLMODE_BERR_REPORTING
-
-Marc Kleine-Budde (3):
-      Merge patch series "can: tcan4x5x: add option for selecting nWKRQ voltage"
-      Merge patch series "can: tcan4x5x/m_can: use standby mode when down and in suspend"
-      Merge patch series "can: kvaser_usb: Update stats and state even if alloc_can_err_skb() fails"
-
-Oliver Hartkopp (2):
-      mailmap: add an entry for Oliver Hartkopp
-      MAINTAINERS: assign em_canid.c additionally to CAN maintainers
-
-Pierre-Henry Moussay (1):
-      dt-bindings: can: mpfs: add PIC64GX CAN compatibility
-
-Sean Nyekjaer (7):
-      dt-bindings: can: convert tcan4x5x.txt to DT schema
-      dt-bindings: can: tcan4x5x: Document the ti,nwkrq-voltage-vio option
-      can: tcan4x5x: add option for selecting nWKRQ voltage
-      can: tcan4x5x: get rid of false clock errors
-      can: m_can: add deinit callback
-      can: tcan4x5x: add deinit callback to set standby mode
-      can: m_can: call deinit/init callback when going into suspend/resume
-
- .mailmap                                           |   2 +
- .../bindings/net/can/atmel,at91sam9263-can.yaml    |  58 ++++++
- .../devicetree/bindings/net/can/atmel-can.txt      |  15 --
- .../bindings/net/can/microchip,mpfs-can.yaml       |   6 +-
- .../bindings/net/can/st,stm32-bxcan.yaml           |   2 +-
- .../devicetree/bindings/net/can/tcan4x5x.txt       |  48 -----
- .../devicetree/bindings/net/can/ti,tcan4x5x.yaml   | 199 +++++++++++++++++++++
- MAINTAINERS                                        |   1 +
- drivers/net/can/dev/dev.c                          |   2 -
- drivers/net/can/kvaser_pciefd.c                    |  81 +++++----
- drivers/net/can/m_can/m_can.c                      |  22 ++-
- drivers/net/can/m_can/m_can.h                      |   1 +
- drivers/net/can/m_can/tcan4x5x-core.c              |  30 +++-
- drivers/net/can/m_can/tcan4x5x.h                   |   2 +
- drivers/net/can/sun4i_can.c                        |   2 +-
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c   |   3 +-
- drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c  | 133 ++++++--------
- drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c   |  38 ++--
- 18 files changed, 432 insertions(+), 213 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/can/atmel,at91sam9263-can.yaml
- delete mode 100644 Documentation/devicetree/bindings/net/can/atmel-can.txt
- delete mode 100644 Documentation/devicetree/bindings/net/can/tcan4x5x.txt
- create mode 100644 Documentation/devicetree/bindings/net/can/ti,tcan4x5x.yaml
 
