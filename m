@@ -1,105 +1,163 @@
-Received: from out203-205-221-231.mail.qq.com (out203-205-221-231.mail.qq.com [203.205.221.231])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04B93B1A4;
-	Fri, 10 Jan 2025 13:37:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FD02080DB
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 13:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736516237; cv=none; b=SSFLTdS8uFr03QhfUp4QhRI6X2HT2jrTsP+vJPDSUkfogH3lBZN7NDo4eazZgUVAi5u9bboCPfqBSihEHttu+j/bH9WpDsGVmazdy8WUhSDzgDvg1q5JbGjYWkW7vgjrSijE0IPOit4D+Fwh5KzeZsP3a5z58duteKGN4P5X9uU=
+	t=1736516442; cv=none; b=CoDyFHb2EixqgqprsWGR2gOnc1kmRI9760MDyY+14U8yBcBh1z0tPpwUSvAqi8fqCS8PM53hZsaU9TvnSVK6MPsY9O+YVDgkqVolorCWXJgCSzUXGl1BA4fEq5AG2zg85Og195I681y+guqc9TaiXUJiqAlRsiiuv0loDHKxAxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736516237; c=relaxed/simple;
-	bh=m6VUFaR/D7WTEcmJ6jaCbZjzSM1ny8BZP1vfCmkNa6k=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version:Content-Type; b=XQaabnKMtdGlML+S8EXaQWGnZURI9eivpwrIvEfTcBDig5NVtJ7pbc2aKrwA3FrW+C38Wf6b00j5KiMzvl8ZZtBDk0QUR2jgG6ZEl1eTRsFyj/etglvhRZVOR+l33gQAMRMv1Ww6qJvN27o3cus7dR7qQmpD18qNlxqMJn7jTdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Red54.com; spf=pass smtp.mailfrom=red54.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=kM3tV0F7; arc=none smtp.client-ip=203.205.221.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Red54.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=red54.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="kM3tV0F7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1736516225; bh=rnr34XuBomF9f7/48Lx0eRQBzok2jkeVClqDiRrOUU4=;
-	h=From:To:Cc:Subject:Date;
-	b=kM3tV0F7aninh//ieZeVi3x4L2LyEFZVXHOsxcDPN2ZcjmLvYrZMEf+Npm+z2VP25
-	 8xSjuBBGdcSYVPbwEe08lSU6mhUOOqEms8rzDWeOzZxf34wJCsHNjmZ3Ww1r5eJpoQ
-	 yx0DNtKkOTDVftrQ/Tbn/hSOBZnIn44tyN+xJ0rE=
-Received: from mail.red54.com ([192.42.116.211])
-	by newxmesmtplogicsvrszc16-0.qq.com (NewEsmtp) with SMTP
-	id 92E9CE3B; Fri, 10 Jan 2025 21:36:46 +0800
-X-QQ-mid: xmsmtpt1736516206tohugp5jz
-Message-ID: <tencent_BDD603E969ED7B30ACFBFFBA9EA3DA3D7E09@qq.com>
-X-QQ-XMAILINFO: OQhZ3T0tjf0anjWyCsM5AdhL0tONaeVX0z1ZCM2e6UXPO2V8BXZ6tBK2VU2FAx
-	 h7+wf7n00yNH2+NZ0TX3/Z8l5M7i/uhO7SlDYamRzJ1AiymziFg9rO4gNRa112uPm/EXYN6pQofk
-	 pemtaZQ/zbQ5hVqtOXxR3PrH23hFmpMH6QHTMEtxGGuNu42/6XjcEcTQFFluecIOkQ7K2zh+vbp6
-	 C9UmGMFUp2XfmjTQBYYqNn8scaC9Q6MypCWp1zYumEaS32inpTd0Eo/c/9HO0/ATb8MDZnAN0Bt4
-	 tIOXS0ljsyzF3yAZMZUuWm9Ob65eeTxag1l6gr8OlaGAydpo6A48twEgk2XlSiNuLrcYy+GTD30m
-	 InNaIuA1EenPzVRM19uqbABvf8dVxRDHnxerEwQUP2WiAh/W9iTcUs9lg3VX1JKiRwQjCcdyaSRK
-	 F0o60bzX7qhA7OMddUV3odsvjtStINlWIQqCNAyJu3oGDOLX3gzDPSb+ZWAnO/Mz6QxC0NNwnXjn
-	 zsbmlT5J/H1C5txYMAoi5vvNdrqCemQHZuVOFolu2D17+FwHOJ/yDn5AJK6eQ3/xJtDU1AFrXYsC
-	 0brYKF9gFEtD1ULrnAyrhBmnnz2qXCpEOQPI7/gzmJK0p78YKu0Fz0WFM72wcmTbz102nq2T+hCK
-	 50gTR/G6cpqNmC+5x2IakvpI/51v1tCbm+z2A0ka5KJZn484qnBPBSmYYDUnaI/oCWFHWHS9P90Y
-	 o/6jvHbnK5HtmToQ3tu/dIkUKhdrkNtCltPmWgafFlwrCrVxSLMJj2JmjUas/iPJcrIgMdUBC3Uf
-	 0SNtKsVdYIfPBseLUyEcURLDk5OmbskLKS32WZTD3KvEuctlzaWUsGKW+oA64ZBXKcSTPFfu06GY
-	 uOPvaKL/0gcoM6mhVgF3bYlAs4MvvjRmS6XHgnMVZRnq4kqvnSesqEsDypPPy7FgECaamPOuPhSR
-	 6qGcgYwzLWKxXaE6rbVhyAFhgi92WsAXmgOJv3VkzLkVOnVbewZA==
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
-Sender: yeking@red54.com
-From: Yeking@Red54.com
-To: netdev@vger.kernel.org
-Cc: =?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6=20=28XIE=20Zhibang=29?= <Yeking@Red54.com>,
-	Wells Lu <wellslutw@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Arnd Bergmann <arnd@arndb.de>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v4] net: ethernet: sunplus: Switch to ndo_eth_ioctl
-Date: Fri, 10 Jan 2025 13:29:21 +0000
-X-OQ-MSGID: <20250110132920.81269-2-Yeking@Red54.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1736516442; c=relaxed/simple;
+	bh=PLerkdNZcgRBNhpGasCoN27kcTo1EYb+lORo5iq5NJc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ec0tAHhr1r4WwV6DYX6zqRtAWH7K61XjZLLM7MTe5qFSwRkQmu9DXCJ+k32IWrFW2+43fbQY5AJBWCR+GX10Ys4iqzb4zxetm2Y6I+iCTM0FhBVfYLYFJvIqzaR5aN7CzYfIaAbloBhY0EaJqgoMM4WjVQ1D85vqUc0waIlcIPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tWFFX-0000CQ-Hi; Fri, 10 Jan 2025 14:40:31 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tWFFW-000Axh-1o;
+	Fri, 10 Jan 2025 14:40:30 +0100
+Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 9E0143A47AE;
+	Fri, 10 Jan 2025 13:10:55 +0000 (UTC)
+Date: Fri, 10 Jan 2025 14:10:55 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	linux-can@vger.kernel.org, kernel@pengutronix.de, Jimmy Assarsson <extja@kvaser.com>
+Subject: Re: [PATCH net-next 15/18] can: kvaser_usb: Update stats and state
+ even if alloc_can_err_skb() fails
+Message-ID: <20250110-notorious-kangaroo-from-atlantis-1645f8-mkl@pengutronix.de>
+References: <20250110112712.3214173-1-mkl@pengutronix.de>
+ <20250110112712.3214173-16-mkl@pengutronix.de>
+ <20250110125803.GF7706@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cjml7fqyn67m4v2v"
+Content-Disposition: inline
+In-Reply-To: <20250110125803.GF7706@kernel.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
 
-The device ioctl handler no longer calls ndo_do_ioctl, but calls
-ndo_eth_ioctl to handle mii ioctls. However, sunplus still used
-ndo_do_ioctl when it was introduced. So switch to ndo_eth_ioctl. (found
-by code inspection)
+--cjml7fqyn67m4v2v
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net-next 15/18] can: kvaser_usb: Update stats and state
+ even if alloc_can_err_skb() fails
+MIME-Version: 1.0
 
-Fixes: fd3040b9394c ("net: ethernet: Add driver for Sunplus SP7021")
-Fixes: a76053707dbf ("dev_ioctl: split out ndo_eth_ioctl")
-Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
----
-V3 -> V4: Change Fixes tag back to old style, due to the objection from
-Greg Kroah-Hartman.
-V2 -> V3: Update commit message again, and add short author date to the
-Fixes tag to make it clear at a glance and reduce misunderstandings.
-V1 -> V2: Update commit message
+On 10.01.2025 12:58:03, Simon Horman wrote:
+> On Fri, Jan 10, 2025 at 12:04:23PM +0100, Marc Kleine-Budde wrote:
+> > From: Jimmy Assarsson <extja@kvaser.com>
+> >=20
+> > Ensure statistics, error counters, and CAN state are updated consistent=
+ly,
+> > even when alloc_can_err_skb() fails during state changes or error messa=
+ge
+> > frame reception.
+> >=20
+> > Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+> > Link: https://patch.msgid.link/20241230142645.128244-1-extja@kvaser.com
+> > Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+>=20
+> ...
+>=20
+> > diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c b/drivers=
+/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+>=20
+> ...
+>=20
+> > @@ -1187,11 +1169,18 @@ static void kvaser_usb_leaf_rx_error(const stru=
+ct kvaser_usb *dev,
+> >  		if (priv->can.restart_ms &&
+> >  		    old_state =3D=3D CAN_STATE_BUS_OFF &&
+> >  		    new_state < CAN_STATE_BUS_OFF) {
+> > -			cf->can_id |=3D CAN_ERR_RESTARTED;
+> > +			if (cf)
+> > +				cf->can_id |=3D CAN_ERR_RESTARTED;
+> >  			netif_carrier_on(priv->netdev);
+> >  		}
+> >  	}
+> > =20
+> > +	if (!skb) {
+> > +		stats->rx_dropped++;
+> > +		netdev_warn(priv->netdev, "No memory left for err_skb\n");
+> > +		return;
+> > +	}
+> > +
+> >  	switch (dev->driver_info->family) {
+> >  	case KVASER_LEAF:
+> >  		if (es->leaf.error_factor) {
+>=20
+> Hi Jimmy and Marc,
+>=20
+> The next line of this function is:
+>=20
+> 			cf->can_id |=3D CAN_ERR_BUSERROR | CAN_ERR_PROT;
+>=20
+> Which dereferences cf. However, the check added at the top of
+> this hunk assumes that cf may be NULL. This doesn't seem consistent.
 
- drivers/net/ethernet/sunplus/spl2sw_driver.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The driver allocates the skb with:
 
-diff --git a/drivers/net/ethernet/sunplus/spl2sw_driver.c b/drivers/net/ethernet/sunplus/spl2sw_driver.c
-index 721d8ed3f302..5e0e4c9ecbb0 100644
---- a/drivers/net/ethernet/sunplus/spl2sw_driver.c
-+++ b/drivers/net/ethernet/sunplus/spl2sw_driver.c
-@@ -199,7 +199,7 @@ static const struct net_device_ops netdev_ops = {
- 	.ndo_start_xmit = spl2sw_ethernet_start_xmit,
- 	.ndo_set_rx_mode = spl2sw_ethernet_set_rx_mode,
- 	.ndo_set_mac_address = spl2sw_ethernet_set_mac_address,
--	.ndo_do_ioctl = phy_do_ioctl,
-+	.ndo_eth_ioctl = phy_do_ioctl,
- 	.ndo_tx_timeout = spl2sw_ethernet_tx_timeout,
- };
- 
--- 
-2.43.0
+	skb =3D alloc_can_err_skb(priv->netdev, &cf);
 
+Which in turn calls alloc_can_skb(), which finally calls:
+
+        *cf =3D skb_put_zero(skb, sizeof(struct can_frame));
+
+To put the cf into the skb.
+
+The newly added check "if (!skb)", takes care of skb allocation errors,
+so that the de-referencing of "cf" is OK after this point.
+
+regards,
+Marc
+
+P.S.:
+IIRC smatch stumbled over the same pattern in another driver a while
+back. Is there anything we can do about it?
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--cjml7fqyn67m4v2v
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmeBHFwACgkQKDiiPnot
+vG80LggAjEDGR28sazurzlGbT9gGqqa1ncnBQ78YG2PZ0n/UYeRfQ7aruOozVnkB
+vzNctUW7D6CuCjRIWaZTvDhsRs3tW+fANOKgpad7tMhBrKqyTQguaaeA1zZlipGZ
+M2vDeZx++iwGcEAodiOPVex2uMd0YZR8jNwo11Mv4xrAwH1L2ISYje+ETrFA6yGg
+x0lHKe73FUBGEHRP2B/K0/1u4/XwQupkSsiiVrX48Zddl5Vp7oLEilSUU1dtTCYM
+kKKo9353FE04H5StzVtUMTJu1L2L/IEkMKKuK4jlB7JoaVlVrQKHGRGgKrs9WiBE
+cd9BTCvy8rHvsshubljlLKWsOxbqVw==
+=Iak+
+-----END PGP SIGNATURE-----
+
+--cjml7fqyn67m4v2v--
