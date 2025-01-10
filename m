@@ -1,203 +1,95 @@
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4A2207DFC
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 09:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CE4209F27;
+	Fri, 10 Jan 2025 09:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736501362; cv=none; b=qdXRlJG0R6GUQPxno0ckugqtF+y6+7P4aFG4kMUMSzQ3x+Qepex/piUDhzlhjmfw+KIGu55n7v/zdWxAc0aClKb1wVf0EM7vXLeMCoElc6WIFScLqGbgTzljylYU8YCWlYYyOnbyV19RCIS1HXNcjW3qC5PrRd/qBLo7qEP/lng=
+	t=1736501380; cv=none; b=JCCJ5XpIu5qiXUa0USFt1d+vH+TKSxprRd879Pg6g6Zlt5krnncwfKFZeOuNrMIkd4azZQQKGrK9z6BpBkyS56e6ojzwJaRlUoPQOB5PbRD9ddZnh/1662w8L1/7y33Iw9uz9nMNmSEQGm+ovX/zna+Cs8h5vCNmbThQNlbyya4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736501362; c=relaxed/simple;
-	bh=CIDS+Q6aNlIT1yDXhmZ3EAyn1U4O7v2HsaIp3sJV0NM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nm7saH0t2hmlTj51mgLAQ8rLKsxUYNlpoz8fnS+Gdhm9zpsCYsEK2qyvc78+e4tHcBHsqBZK3ffsWou0IElOKchkaLvxVILVNtn/yxn5zccTgUOvxj09D6JNZw5Pv1+EPIxFd1bymLiMxZ0Ekk754ONnuJUOqIEqAeBLULCRX14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=VINCRfSD; arc=none smtp.client-ip=72.21.196.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1736501380; c=relaxed/simple;
+	bh=FGkhmBkgK/2ki6XHDU56SkvQQB4yKkPfpIUPnQHxMGo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZhEbucoLDwIZotOawW3q+lua2/CV2zw4sC93OUbjVT9rbidsaqW/mr3QM9P3YROE/hi0SrN+O2qk0piycYc8F0WEuLhYCtvFDn1Q8bdElYRPfooA3w2FjLYpjfWJf7UUuVD0BmRISnctrs7ksSwgBC5MRk1/W6UMIi0JU/zay/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=rqevyBnu; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="VINCRfSD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1736501361; x=1768037361;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=mg59p3COVrzPdxR5HSibX8dKEzv7bL6fBavvhjfvC/0=;
-  b=VINCRfSD7hbr434meOSq11JhNO66Ob59kvAM966zISVRhyj1jPtZxCGU
-   bY2YrxReqoWDw68YnCHEUn29KecAYbpVMokbKHLhEICyPF0XtchifisK8
-   fV53PLrCMSQ6CLKhMagSFfGMl6UG8sA/Z2sxCuYZ9LCia7DrhxyBoe1K4
-   0=;
-X-IronPort-AV: E=Sophos;i="6.12,303,1728950400"; 
-   d="scan'208";a="457845184"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 09:29:14 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.38.20:14868]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.29.65:2525] with esmtp (Farcaster)
- id 0323833d-46c8-4a38-97db-53311206f70a; Fri, 10 Jan 2025 09:29:12 +0000 (UTC)
-X-Farcaster-Flow-ID: 0323833d-46c8-4a38-97db-53311206f70a
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Fri, 10 Jan 2025 09:29:11 +0000
-Received: from 6c7e67c6786f.amazon.com (10.118.252.101) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Fri, 10 Jan 2025 09:29:07 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-CC: Donald Hunter <donald.hunter@redhat.com>, Kuniyuki Iwashima
-	<kuniyu@amazon.com>, Kuniyuki Iwashima <kuni1840@gmail.com>,
-	<netdev@vger.kernel.org>
-Subject: [PATCH v1 net-next 05/12] af_unix: Set drop reason in unix_stream_connect().
-Date: Fri, 10 Jan 2025 18:26:34 +0900
-Message-ID: <20250110092641.85905-6-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250110092641.85905-1-kuniyu@amazon.com>
-References: <20250110092641.85905-1-kuniyu@amazon.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="rqevyBnu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1736501378; x=1768037378;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FGkhmBkgK/2ki6XHDU56SkvQQB4yKkPfpIUPnQHxMGo=;
+  b=rqevyBnuLUEYiFvbaJJiWk64t7gpF5u73+0hSe0qXWQHgDrAYWlkbsPx
+   d3sE/VIWSevycsJuMIfs0L2yRd7A9R2MMvMumK3FtCuXOft4JuIj1aYJv
+   tvHOkzzbSrI2TawyY+aVI9hL45LMIB4Q/JREbN2A3K5ycTw0h8uwTt9gO
+   VdRYXyActhL4go6WTdDVd+vpDSLbzBmEgfkHpw0iD0T4qoIrAiTTK/Is7
+   zmS5WX3aOmFrzw6VbAAmDLqSbYP8UOXGQC1QuVL1Fv1m9mPTS3ZuIraLq
+   0Hi6vVK/7DvBDr8LbVSyFmg7Kigrm1e0ciirPSB2qD25sVPOYZo7O8b8O
+   g==;
+X-CSE-ConnectionGUID: ZXymC1RqQb2YdZpceUKUPA==
+X-CSE-MsgGUID: gqk5PFCaQBaNHSW5mBP17Q==
+X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; 
+   d="scan'208";a="36030268"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Jan 2025 02:29:37 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Fri, 10 Jan 2025 02:29:32 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Fri, 10 Jan 2025 02:29:29 -0700
+Date: Fri, 10 Jan 2025 09:29:28 +0000
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Eric Dumazet <edumazet@google.com>
+CC: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Lars Povlsen <lars.povlsen@microchip.com>, "Steen
+ Hegelund" <Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	<jensemil.schulzostergaard@microchip.com>, <horatiu.vultur@microchip.com>,
+	<jacob.e.keller@intel.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH net-next 4/6] net: sparx5: move SKB consumption to xmit()
+Message-ID: <20250110092928.thsaqm3ucgyhw7s7@DEN-DL-M70577>
+References: <20250109-sparx5-lan969x-switch-driver-5-v1-0-13d6d8451e63@microchip.com>
+ <20250109-sparx5-lan969x-switch-driver-5-v1-4-13d6d8451e63@microchip.com>
+ <CANn89iKA=ha6y0_UHUp6Pjkf0H4RevRbD-CHswdBqk0O=KkNqg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D046UWA003.ant.amazon.com (10.13.139.18) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CANn89iKA=ha6y0_UHUp6Pjkf0H4RevRbD-CHswdBqk0O=KkNqg@mail.gmail.com>
 
-connect() to a SOCK_STREAM socket could fail for various reasons.
+Hi Eric,
 
-Let's set drop reasons respectively:
+> > diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
+> > index b6f635d85820..e776fa0845c6 100644
+> > --- a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
+> > +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
+> > @@ -272,7 +272,6 @@ netdev_tx_t sparx5_port_xmit_impl(struct sk_buff *skb, struct net_device *dev)
+> >             SPARX5_SKB_CB(skb)->rew_op == IFH_REW_OP_TWO_STEP_PTP)
+> >                 return NETDEV_TX_OK;
+> 
+> If packet is freed earlier in sparx5_fdma_xmit(), you have UAF few
+> lines above here ..
+> 
+> stats->tx_bytes += skb->len; // UAF
+> ...
+> if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP &&   // UAF
+> SPARX5_SKB_CB(skb)->rew_op == IFH_REW_OP_TWO_STEP_PTP)   // UAF
+> 
 
-  * NO_SOCKET      : No listening socket found
-  * RCV_SHUTDOWN   : The listening socket called shutdown(SHUT_RD)
-  * SOCKET_RCVBUFF : The listening socket's accept queue is full
-  * INVALID_STATE  : The client is in TCP_ESTABLISHED or TCP_LISTEN
-  * SECURITY_HOOK  : LSM refused connect()
+Yes, this needs to be done differently. I will rework the SKB consumption in
+v2. Thanks a lot!
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
----
- include/net/dropreason-core.h |  6 ++++++
- net/unix/af_unix.c            | 22 ++++++++++++++++++----
- 2 files changed, 24 insertions(+), 4 deletions(-)
-
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index 8823de6539d1..1b5e962f7f33 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -8,7 +8,9 @@
- 	FN(NO_SOCKET)			\
- 	FN(SOCKET_CLOSE)		\
- 	FN(SOCKET_FILTER)		\
-+	FN(SOCKET_INVALID_STATE)	\
- 	FN(SOCKET_RCVBUFF)		\
-+	FN(SOCKET_RCV_SHUTDOWN)		\
- 	FN(PKT_TOO_SMALL)		\
- 	FN(TCP_CSUM)			\
- 	FN(UDP_CSUM)			\
-@@ -142,8 +144,12 @@ enum skb_drop_reason {
- 	SKB_DROP_REASON_SOCKET_CLOSE,
- 	/** @SKB_DROP_REASON_SOCKET_FILTER: dropped by socket filter */
- 	SKB_DROP_REASON_SOCKET_FILTER,
-+	/** @SKB_DROP_REASON_SOCKET_INVALID_STATE: sk->sk_state is invalid. */
-+	SKB_DROP_REASON_SOCKET_INVALID_STATE,
- 	/** @SKB_DROP_REASON_SOCKET_RCVBUFF: socket receive buff is full */
- 	SKB_DROP_REASON_SOCKET_RCVBUFF,
-+	/** @SKB_DROP_REASON_SOCKET_RCV_SHUTDOWN: socket is shutdown(SHUT_RD) */
-+	SKB_DROP_REASON_SOCKET_RCV_SHUTDOWN,
- 	/** @SKB_DROP_REASON_PKT_TOO_SMALL: packet size is too small */
- 	SKB_DROP_REASON_PKT_TOO_SMALL,
- 	/** @SKB_DROP_REASON_TCP_CSUM: TCP checksum error */
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 41b99984008a..b190ea8b8e9d 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -1534,6 +1534,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 	struct sock *sk = sock->sk, *newsk = NULL, *other = NULL;
- 	struct unix_sock *u = unix_sk(sk), *newu, *otheru;
- 	struct net *net = sock_net(sk);
-+	enum skb_drop_reason reason;
- 	struct sk_buff *skb = NULL;
- 	unsigned char state;
- 	long timeo;
-@@ -1581,6 +1582,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 	other = unix_find_other(net, sunaddr, addr_len, sk->sk_type);
- 	if (IS_ERR(other)) {
- 		err = PTR_ERR(other);
-+		reason = SKB_DROP_REASON_NO_SOCKET;
- 		goto out_free_skb;
- 	}
- 
-@@ -1593,15 +1595,22 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 		goto restart;
- 	}
- 
--	if (other->sk_state != TCP_LISTEN ||
--	    other->sk_shutdown & RCV_SHUTDOWN) {
-+	if (other->sk_state != TCP_LISTEN) {
- 		err = -ECONNREFUSED;
-+		reason = SKB_DROP_REASON_NO_SOCKET;
-+		goto out_unlock;
-+	}
-+
-+	if (other->sk_shutdown & RCV_SHUTDOWN) {
-+		err = -ECONNREFUSED;
-+		reason = SKB_DROP_REASON_SOCKET_RCV_SHUTDOWN;
- 		goto out_unlock;
- 	}
- 
- 	if (unix_recvq_full_lockless(other)) {
- 		if (!timeo) {
- 			err = -EAGAIN;
-+			reason = SKB_DROP_REASON_SOCKET_RCVBUFF;
- 			goto out_unlock;
- 		}
- 
-@@ -1609,8 +1618,10 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 		sock_put(other);
- 
- 		err = sock_intr_errno(timeo);
--		if (signal_pending(current))
-+		if (signal_pending(current)) {
-+			reason = SKB_DROP_REASON_SOCKET_RCVBUFF;
- 			goto out_free_skb;
-+		}
- 
- 		goto restart;
- 	}
-@@ -1621,6 +1632,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 	state = READ_ONCE(sk->sk_state);
- 	if (unlikely(state != TCP_CLOSE)) {
- 		err = state == TCP_ESTABLISHED ? -EISCONN : -EINVAL;
-+		reason = SKB_DROP_REASON_SOCKET_INVALID_STATE;
- 		goto out_unlock;
- 	}
- 
-@@ -1629,12 +1641,14 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 	if (unlikely(sk->sk_state != TCP_CLOSE)) {
- 		err = sk->sk_state == TCP_ESTABLISHED ? -EISCONN : -EINVAL;
- 		unix_state_unlock(sk);
-+		reason = SKB_DROP_REASON_SOCKET_INVALID_STATE;
- 		goto out_unlock;
- 	}
- 
- 	err = security_unix_stream_connect(sk, other, newsk);
- 	if (err) {
- 		unix_state_unlock(sk);
-+		reason = SKB_DROP_REASON_SECURITY_HOOK;
- 		goto out_unlock;
- 	}
- 
-@@ -1699,7 +1713,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 	unix_state_unlock(other);
- 	sock_put(other);
- out_free_skb:
--	kfree_skb(skb);
-+	kfree_skb_reason(skb, reason);
- out_free_sk:
- 	unix_release_sock(newsk, 0);
- out:
--- 
-2.39.5 (Apple Git-154)
+/Daniel
 
