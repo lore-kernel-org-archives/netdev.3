@@ -1,65 +1,64 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9D220B20C
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 10:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5706818FC80
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 10:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736505582; cv=none; b=GUIchxJtffPHayhPn8SoOP1/9ivrt8Asgdpl09gLC2lkwagHWrmeNjP0jEYiRXWUkNDlwDVOnFVBrKsGw7rdF9SiPFRAbuUMdz1qcUy+8EjN+S4WlXfiaXG1aFp1JkoTs4jtUuyVzByTG/iaP9vxTjkclwQ8T0gmAHDHVrh+oPg=
+	t=1736505686; cv=none; b=D+jwLEFftR81qwXoLeHXrD44eCMuFXtpPROSHP9BMzMWB3LilbAaOh5gEW5/iAwihs+e2WQG7Yve9+Xuuc109O5rd6syCiGTyQoU12CcwUAfBzbhu9J6y3E8hsxY5HTNFKbkJ4ZrVSuDlEC81MBd4U2buntF869s7j1I4NLIXFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736505582; c=relaxed/simple;
-	bh=nYDjkt082ildk9SUT5EE02LseEO5BIkZJJJ6bwirLvE=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=pYYXLdIubeSBBSl16nqUck2EwZTpoyB7gnqLFa0ynF349nYAskQ6qEnW3TZOUEow4g7hl554U3a0hQAT2G669KhH6y5oBff9vghjMzOXlsSSCa/KSFLKQG+Ipk3pDQ4YWcua2fvOAHJ4A+9G301fYRICRR/96Qiewj8CHLNQwBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OpGvi9k/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1736505686; c=relaxed/simple;
+	bh=ZGpsDtnWyo3zEMhwPPCSvj86CNgfHjnIjCy3szDAN18=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pk6B6ie9B2GpafICJQzsjZk9CZ4Jo/lUYGxqoeVaRrsG+xpi0kDpcU3npy5hB+sOGmdDMz79m3LMw8WC/2BFxkbefFxskvHJxIVNfX4Fm5UaH4RyvgVAt2tDJ8q74ZN0gKBSewe8iM8L3Dv4q+/DDx/k+PREz2dwbz6UEpdMEkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=fJnh7G1Z; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OpGvi9k/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736505579;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MKaycnXaFEmpfKgijz27DS1Sq3Bh5gIarl2yz5IREPo=;
-	b=OpGvi9k/HiWroZW7dUZDqlKXbXBa2xsWsmTW/K4xWYp+Ix/3Uo5CPhtmqesPTwoxYMZGw6
-	ru4Mw/fsh+VbYLXgHU/i1afwd8YSZ8y3ThZQcGkOWWQwP/gvCYIi2E3EexA8dqeXA9gItH
-	WALj6Bu/C0xusYBWpkyRqDotvMfCnwU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-97-T1V8_oFHP_6PaqDXB6vHkw-1; Fri,
- 10 Jan 2025 05:39:35 -0500
-X-MC-Unique: T1V8_oFHP_6PaqDXB6vHkw-1
-X-Mimecast-MFC-AGG-ID: T1V8_oFHP_6PaqDXB6vHkw
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5C13319560A2;
-	Fri, 10 Jan 2025 10:39:33 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.12])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1769830001BE;
-	Fri, 10 Jan 2025 10:39:28 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <Z4DwNPgLFcfy6jdl@gondor.apana.org.au>
-References: <Z4DwNPgLFcfy6jdl@gondor.apana.org.au> <20250110010313.1471063-1-dhowells@redhat.com> <20250110010313.1471063-3-dhowells@redhat.com>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: dhowells@redhat.com, Chuck Lever <chuck.lever@oracle.com>,
-    Trond Myklebust <trond.myklebust@hammerspace.com>,
-    "David S. Miller" <davem@davemloft.net>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-    linux-crypto@vger.kernel.org, linux-afs@lists.infradead.org,
-    linux-nfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-    netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 2/8] crypto/krb5: Provide Kerberos 5 crypto through AEAD API
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="fJnh7G1Z"
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 50AAfAQj3021518
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 Jan 2025 04:41:10 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1736505670;
+	bh=mTolHO0NEoSdz2XwlQPySRMV+3zhIKzK5ZkgGbaKBlY=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=fJnh7G1Z8ObhnRvbOKLabZpvThSz3XagmLwCtlU0lsstWO+znde9zC4H01EYDkVc2
+	 STvs2TUajbXJoagMuubuLweACdvNNU/5EtyU8mv97wfsuPbHJ221CILAsdKmH7u1ZR
+	 fW6gfr3wHs/kURynhwIjqEGj1DGIYc/LV9WyEODA=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 50AAfA75009571
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 10 Jan 2025 04:41:10 -0600
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 10
+ Jan 2025 04:41:10 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 10 Jan 2025 04:41:10 -0600
+Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.104])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 50AAf8av079059;
+	Fri, 10 Jan 2025 04:41:09 -0600
+Date: Fri, 10 Jan 2025 16:11:08 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <netdev@vger.kernel.org>,
+        Andrew
+ Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Roger Quadros
+	<rogerq@kernel.org>, Chintan Vankar <c-vankar@ti.com>,
+        Julien Panis
+	<jpanis@baylibre.com>
+Subject: Re: [PATCH net-next] net: ethernet: ti: am65-cpsw: VLAN-aware CPSW
+ only if !DSA
+Message-ID: <t34jbpf2dwhuszreyxby3qzvhachu3nt2wsbqiq4fkbw3uoxrb@aq6uqo3kg6ct>
+References: <20250110092624.287209-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,67 +66,94 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1486112.1736505567.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 10 Jan 2025 10:39:27 +0000
-Message-ID: <1486113.1736505567@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Disposition: inline
+In-Reply-To: <20250110092624.287209-1-alexander.sverdlin@siemens.com>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Herbert Xu <herbert@gondor.apana.org.au> wrote:
+On Fri, Jan 10, 2025 at 10:26:21AM +0100, A. Sverdlin wrote:
+> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+> 
+> Only configure VLAN-aware CPSW mode if no port is used as DSA CPU port.
+> VLAN-aware mode interferes with some DSA tagging schemes and makes stacking
+> DSA switches downstream of CPSW impossible. Previous attempts to address
+> the issue linked below.
+> 
+> Link: https://lore.kernel.org/netdev/20240227082815.2073826-1-s-vadapalli@ti.com/
+> Link: https://lore.kernel.org/linux-arm-kernel/4699400.vD3TdgH1nR@localhost/
+> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+> ---
+>  drivers/net/ethernet/ti/am65-cpsw-nuss.c | 19 +++++++++++++++----
+>  1 file changed, 15 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+> index dcb6662b473d..e445acb29e16 100644
+> --- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+> +++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+> @@ -32,6 +32,7 @@
+>  #include <linux/dma/ti-cppi5.h>
+>  #include <linux/dma/k3-udma-glue.h>
+>  #include <net/page_pool/helpers.h>
+> +#include <net/dsa.h>
+>  #include <net/switchdev.h>
+>  
+>  #include "cpsw_ale.h"
+> @@ -724,13 +725,23 @@ static int am65_cpsw_nuss_common_open(struct am65_cpsw_common *common)
+>  	u32 val, port_mask;
+>  	struct page *page;
+>  
+> +	/* Control register */
+> +	val = AM65_CPSW_CTL_P0_ENABLE | AM65_CPSW_CTL_P0_TX_CRC_REMOVE |
+> +	      AM65_CPSW_CTL_P0_RX_PAD;
+> +	for (port_idx = 0; port_idx < common->port_num; port_idx++) {
+> +		struct am65_cpsw_port *port = &common->ports[port_idx];
+> +
+> +		if (netdev_uses_dsa(port->ndev))
+> +			break;
+> +	}
+> +	/* VLAN aware CPSW mode is incompatible with some DSA tagging schemes */
+> +	if (port_idx == common->port_num)
+> +		val |= AM65_CPSW_CTL_VLAN_AWARE;
+> +	writel(val, common->cpsw_base + AM65_CPSW_REG_CTL);
+> +
 
-> > Authentication tags are not used at all and should cause EINVAL if use=
-d (a
-> > later patch does that).
-> =
+Though it functionally enables VLAN_AWARE mode only when none of the ports
+are a DSA port, the implementation and the comment appear inconsistent.
+The comment states that VLAN aware CPSW mode is incompatible with DSA
+and the lines following it are enabling VLAN_AWARE mode albeit for the
+case where none of the ports are a DSA port. Since the IF condition
+doesn't indicate that in an obvious manner, the implementation could be
+improved to maintain consistency between what the comment states and what
+the code does.
 
-> What do you mean by this? The authentication tag is the checksum
-> that you're referring to and you appear to be using it in the rfc8009
-> encrypt/decrypt functions.
+How about the following?
+-------------------------------------------------------------------------
+	/* Control register */
+	val = AM65_CPSW_CTL_P0_ENABLE | AM65_CPSW_CTL_P0_TX_CRC_REMOVE |
+	      AM65_CPSW_CTL_VLAN_AWARE | AM65_CPSW_CTL_P0_RX_PAD;
 
-Is it?  That's entirely unclear.  The algorithm should deal with inserting=
- the
-checksum in the appropriate place.  The caller should not need to know abo=
-ut
-that or where the checksum is or about extra bits of metadata that may nee=
-d to
-be inserted (as I think the extra gssapi layer does for sunrpc).
+	/* VLAN aware CPSW mode is incompatible with some DSA tagging
+	 * schemes. Therefore disable VLAN_AWARE mode if any of the
+	 * ports is a DSA Port.
+	 */
+	for (port_idx = 0; port_idx < common->port_num; port_idx++)
+		if (netdev_uses_dsa(&common->ports[port_idx]->ndev)) {
+			val &= ~AM65_CPSW_CTL_VLAN_AWARE;
+			break;
+		}
 
-One of the reason the library has a number of layout functions is to handl=
-e
-that stuff transparently.  Unfortunately, I couldn't make it work in the A=
-EAD
-interface.  The previous library implementation was better in that regard.
+	writel(val, common->cpsw_base + AM65_CPSW_REG_CTL);
+-------------------------------------------------------------------------
 
-> > For the moment, the kerberos encryption algorithms use separate hash a=
-nd
-> > cipher algorithms internally, but should really use dual hash+cipher a=
-nd
-> > cipher+hash algorithms if possible to avoid doing these in series.  Of=
-fload
-> > off this may be possible through something like the Intel QAT.
-> =
+>  	if (common->usage_count)
+>  		return 0;
+>  
+> -	/* Control register */
+> -	writel(AM65_CPSW_CTL_P0_ENABLE | AM65_CPSW_CTL_P0_TX_CRC_REMOVE |
+> -	       AM65_CPSW_CTL_VLAN_AWARE | AM65_CPSW_CTL_P0_RX_PAD,
+> -	       common->cpsw_base + AM65_CPSW_REG_CTL);
+>  	/* Max length register */
+>  	writel(AM65_CPSW_MAX_PACKET_SIZE,
+>  	       host_p->port_base + AM65_CPSW_PORT_REG_RX_MAXLEN);
 
-> Please elaborate on what you mean by this.  For IPsec, the main
-> benefit with reframing cbc(aes)+hmac as aead is having a single
-> code-path that supports both types of algorithms.
-
-By "dual" I mean, for example, a piece of code that does the cipher and th=
-e
-hash concurrently.  I think it may be possible to do this using x86 AES an=
-d
-SHA instructions - if there are sufficient registers.  What I want to do i=
-s
-avoid having to call a cipher and a hash sequentially.  It appears that th=
-e
-Intel QAT can actually do this with authenc combos - but the one I have
-doesn't offer CTS(CBC(AES)) but only CBC(AES).
-
-> So does your use-case support both standard AEAD algorithms such
-> as GCM as well as these legacy algorithms?
-
-At the moment AFS's rxgk does not support GCM.  The same goes for sunrpc i=
-n
-the kernel.
-
-David
-
+Regards,
+Siddharth.
