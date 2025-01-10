@@ -1,112 +1,114 @@
-Received: from out203-205-221-231.mail.qq.com (out203-205-221-231.mail.qq.com [203.205.221.231])
+Received: from mta-64-226.siemens.flowmailer.net (mta-64-226.siemens.flowmailer.net [185.136.64.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75BA2063D2;
-	Fri, 10 Jan 2025 12:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D1E2063DC
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 12:09:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736510860; cv=none; b=a23CwSb/zEQ4KqJDC3JB5Oh0iKW+2QW8m2YbFgIWH6CAgZM9Ob/UZmQn4PrCpd+eoJEf0ss73Rm5Iz8L8COrCodXlZcj9N0g+fvHl14O4/RJbY71xWGJKbmaVE6KgVkA2vPk+bUwHLXxG//rnxyU1BE9QMk1WjGIVsi8sGWHOgc=
+	t=1736510958; cv=none; b=dxaggNy97uE52cfeQtEFt6XwQ1V5e2XQlCHSlay/bYyxV3oJj+68SXKvlRstOoShM+DsGuxUKC5hac56hTZQb6dboBO4S0wOz5patlZX3/fx87IbP/Nu5MPNy5xRFhf6AlonWEAdBAonosOmDOnQUcdr5t9LIRp1jSS7weT1Kts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736510860; c=relaxed/simple;
-	bh=dGyXiHXYSkXULV+7gq5B3uZ51dNtzN5PZbK8aBV0on4=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KgYZWABucdoXu20qLWPk9Ov9bVCgOKilErAhYHbqA6jeErREHRtRAwliXoV2hlXdwavsXnEWUB/8wulGq/X+WPhkaCnh/2mKGFl49X+EslMuAJ/Cxt4xixr8AgtxmQ7DHz2JA7U3oRSeQLijpV15BMYJFg08+Sh3Neg+s2eJaYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Red54.com; spf=pass smtp.mailfrom=red54.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=vMIyk6mC; arc=none smtp.client-ip=203.205.221.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Red54.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=red54.com
+	s=arc-20240116; t=1736510958; c=relaxed/simple;
+	bh=Ykh7RxzEeRrpH0T75KKSsW8N9egAGDRlJfdvLYE5ctA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MgYPqROc8ISRtmPZ9WoNOD3Gxa4d49OKV+eUDu0AsGu4n3vHPWJPtE91MpDsFQyP6zdPTuFS8m/h4Ve8WC5RlAVOYENJuhb8P4IO2tJJMKbivhtudEa0yMfsJHT9xRENZIOeeUKDgYGDYCtAGlB/hUPdUUo4MYQUcM7vou7MgTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=hc2OrcqO; arc=none smtp.client-ip=185.136.64.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="vMIyk6mC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1736510850; bh=SppLlbAwX++5g3aw7t0/ZLyCLAOdweh/cAZUiMzXCbY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vMIyk6mC8/CkJ9sjHBi7QZNLwpCCI2Rsc6fAWFJE5SRRUrJJDfNzJiQS2z2kViFIP
-	 9KK9hDQ0sWsLi/bD9m8LLx9UrMQEeu2Ety+IP1mD9cXfMybaMUiHqcAbzPO8NUpbb2
-	 mLyoMezgg5UOmcSQjYYMo3dpphMVjHB+XRSML1EE=
-Received: from mail.red54.com ([185.220.101.106])
-	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
-	id DE229AA3; Fri, 10 Jan 2025 19:55:34 +0800
-X-QQ-mid: xmsmtpt1736510134tfb195ql6
-Message-ID: <tencent_6CF6E720909156A227D23AE8CFE4F9BA5D05@qq.com>
-X-QQ-XMAILINFO: MyirvGjpKb1jifP4Fsi15RpHUIitcR95FdyfWxhH2jqhuP2FXqt6AVIQLZSmHg
-	 I8stj84Ve2RyxVylHtnVfVIWK7rmAHEclkYIQ39AI8jfORQkRIysKYEkuqMdbY6jFF9XPZpKjKgR
-	 r5eu2ofsr7IR9emVwz8+eouymsDG9LmsYs8/I42qPfo5u2NEBNgIoG1/DTNUlqHwWqjwwijhqIj8
-	 6vo1q5ereMqAmbmvMd28TbVfcjO5NmFUCd6JFEIdCp6RmREebBBAcAkkBMwS0uhbYuAAijDUNfiT
-	 0neMQb+u/MtzRmF3TnugOeYU7/fKFjvTGF2JsmAAwcxpUWZig9jbOkslmw4ThwCOGfWUzMDIsbhk
-	 t1NFkg5MT5o9o0FwlKnoQa5uGfV8Do2E/ePIocO2aYuuuZbudOxNGd5b2m2SRlBSGDqt71lLpovJ
-	 91dJMCFa5M0sDe3mKimT7BMMAb9ngb3jtJObR3vntFXCIT+U9YZ9vWFxEPoN5ZgRhWgS3OCge+GT
-	 Q7dWeTOoz9RBcnE5PMFUoIVnQ2VxoLTQEjoz7nV6p9vixmsAhnO29lxrSRhAOGwJ0YwvXOwzdOce
-	 NM/+aDqxD8cwcQ4iS9guG3uPrgt1+8Fys49e6KluonC1hRkCY5Q8gfpTQ/u6b3ZM10XcXKaZMbka
-	 ZPek+MBJly9J07OU5JdLdBQvXaYSGLDSwA4rbv9SOHciUfPky/0wsKakEA3r+XJvw2j2BYS4c0bs
-	 pKRyFoTMj2HGPyTaxCb24p3EvTRPR59UGgnqtZX4AyNDRgdyWmzW+rrXGwPb8po+qFRf5WZLG5fn
-	 2XIVVOacQMf44w4DGww6Gl9/rsbm0fcxoQjbrZs88cAQ6weOYgLCd33SCAZB5c7ABqr29thPviwP
-	 FLAQjaJ4rZFpxUukwMEikC9o/pgCqQbRWIRvocFxgJnB7wypUTS1NFJ660vDsDvlD8oR7OK+gnxg
-	 Tih8qKIhW0xm04we5+Ibd5FFi27cs3
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-Sender: yeking@red54.com
-From: Yeking@Red54.com
-To: kuba@kernel.org
-Cc: =?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6=20=28XIE=20Zhibang=29?= <Yeking@Red54.com>,
-	Wells Lu <wellslutw@gmail.com>,
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="hc2OrcqO"
+Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id 202501101128585c64dabbd2e0fe9dda
+        for <netdev@vger.kernel.org>;
+        Fri, 10 Jan 2025 12:28:58 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=IRbabMtbT7WAvxmJ6HVy6JIV44wcam6j1fimOXGYrD0=;
+ b=hc2OrcqOAXXy+Fl7LWewSEAieF0TkUb9SK7QvO4ANdWg2ilRmH9jrl77N4WHUr5OtxxFRS
+ VyywOLtR49dMjUHkdNF5bEwM7sZSrDntQPg9NNuCMzcpCxHFWTxftvjYSOtktsPoh+LQt4c0
+ uJYDT0a0DacsUiKKuYRF/0dUCtGt37hda/1GchvJWQk1V2UCj1n9qJ/vv/hkBBksEISgsNpx
+ yBkHMKEW5kVi4MJDpbx4/BtChUCQKjDgTJh6q/nonCTqlfukf8jBGo6TAVvcsPMk3gKRVklU
+ /40+KnwAA6X3r/LNXQiMuKpoWwkWLpERoWKlYBanejNNiGZMDQYI+YtA==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: netdev@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Arnd Bergmann <arnd@arndb.de>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3] net: ethernet: sunplus: Switch to ndo_eth_ioctl
-Date: Fri, 10 Jan 2025 11:53:33 +0000
-X-OQ-MSGID: <20250110115332.79191-2-Yeking@Red54.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250109180212.71e4e53c@kernel.org>
-References: <20250109180212.71e4e53c@kernel.org>
+	Roger Quadros <rogerq@kernel.org>,
+	Chintan Vankar <c-vankar@ti.com>,
+	Julien Panis <jpanis@baylibre.com>
+Subject: [PATCH net-next v2] net: ethernet: ti: am65-cpsw: VLAN-aware CPSW only if !DSA
+Date: Fri, 10 Jan 2025 12:27:17 +0100
+Message-ID: <20250110112725.415094-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-From: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-The device ioctl handler no longer calls ndo_do_ioctl, but calls
-ndo_eth_ioctl to handle mii ioctls. However, sunplus still used
-ndo_do_ioctl when it was introduced. So switch to ndo_eth_ioctl. (found
-by code inspection)
+Only configure VLAN-aware CPSW mode if no port is used as DSA CPU port.
+VLAN-aware mode interferes with some DSA tagging schemes and makes stacking
+DSA switches downstream of CPSW impossible. Previous attempts to address
+the issue linked below.
 
-Fixes: fd3040b9394c ("net: ethernet: Add driver for Sunplus SP7021", 2022-05-08)
-Fixes: a76053707dbf ("dev_ioctl: split out ndo_eth_ioctl", 2021-07-27)
-Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+Link: https://lore.kernel.org/netdev/20240227082815.2073826-1-s-vadapalli@ti.com/
+Link: https://lore.kernel.org/linux-arm-kernel/4699400.vD3TdgH1nR@localhost/
+Co-developed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 ---
-V2 -> V3: Update commit message again, and add short author date to the
-Fixes tag to make it clear at a glance and reduce misunderstandings.
-V1 -> V2: Update commit message
+Changelog:
+v2: Thanks to Siddharth it does look much clearer now (conditionally clear
+    AM65_CPSW_CTL_VLAN_AWARE instead of setting)
 
-To Jakub Kicinski:
-The old Fixes tag style is at least 10 years old. It lacks date
-information, which can lead to misjudgment. So I added short author date
-to avoid this. However, if you disagree, I can change it back to the old
-Fixes tag style.
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
- drivers/net/ethernet/sunplus/spl2sw_driver.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/sunplus/spl2sw_driver.c b/drivers/net/ethernet/sunplus/spl2sw_driver.c
-index 721d8ed3f302..5e0e4c9ecbb0 100644
---- a/drivers/net/ethernet/sunplus/spl2sw_driver.c
-+++ b/drivers/net/ethernet/sunplus/spl2sw_driver.c
-@@ -199,7 +199,7 @@ static const struct net_device_ops netdev_ops = {
- 	.ndo_start_xmit = spl2sw_ethernet_start_xmit,
- 	.ndo_set_rx_mode = spl2sw_ethernet_set_rx_mode,
- 	.ndo_set_mac_address = spl2sw_ethernet_set_mac_address,
--	.ndo_do_ioctl = phy_do_ioctl,
-+	.ndo_eth_ioctl = phy_do_ioctl,
- 	.ndo_tx_timeout = spl2sw_ethernet_tx_timeout,
- };
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 5465bf872734..58c840fb7e7e 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -32,6 +32,7 @@
+ #include <linux/dma/ti-cppi5.h>
+ #include <linux/dma/k3-udma-glue.h>
+ #include <net/page_pool/helpers.h>
++#include <net/dsa.h>
+ #include <net/switchdev.h>
  
+ #include "cpsw_ale.h"
+@@ -724,13 +725,22 @@ static int am65_cpsw_nuss_common_open(struct am65_cpsw_common *common)
+ 	u32 val, port_mask;
+ 	struct page *page;
+ 
++	/* Control register */
++	val = AM65_CPSW_CTL_P0_ENABLE | AM65_CPSW_CTL_P0_TX_CRC_REMOVE |
++	      AM65_CPSW_CTL_VLAN_AWARE | AM65_CPSW_CTL_P0_RX_PAD;
++	/* VLAN aware CPSW mode is incompatible with some DSA tagging schemes.
++	 * Therefore disable VLAN_AWARE mode if any of the ports is a DSA Port.
++	 */
++	for (port_idx = 0; port_idx < common->port_num; port_idx++)
++		if (netdev_uses_dsa(common->ports[port_idx].ndev)) {
++			val &= ~AM65_CPSW_CTL_VLAN_AWARE;
++			break;
++		}
++	writel(val, common->cpsw_base + AM65_CPSW_REG_CTL);
++
+ 	if (common->usage_count)
+ 		return 0;
+ 
+-	/* Control register */
+-	writel(AM65_CPSW_CTL_P0_ENABLE | AM65_CPSW_CTL_P0_TX_CRC_REMOVE |
+-	       AM65_CPSW_CTL_VLAN_AWARE | AM65_CPSW_CTL_P0_RX_PAD,
+-	       common->cpsw_base + AM65_CPSW_REG_CTL);
+ 	/* Max length register */
+ 	writel(AM65_CPSW_MAX_PACKET_SIZE,
+ 	       host_p->port_base + AM65_CPSW_PORT_REG_RX_MAXLEN);
 -- 
-2.43.0
+2.47.1
 
