@@ -1,234 +1,150 @@
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26AC5205AC5
-	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:20:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453D720C019
+	for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 11:25:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736508007; cv=none; b=A4bufSLvycXnFhQB0JIMhK9KWDdu6N7bsoZyPBEry0VtrsifCD0VRLS68Bq/sJ6sop5Gk2R1mQ3ttCK+I5Xvf3FRKuT1bhLb1yjN/YzHSy+FEvIOui7oiA+/f5T5DGU1pDUOBOmnbF2GlCrsl9eRBUcFyUfaZ4grWUvctOqsePU=
+	t=1736508324; cv=none; b=K3a6QEp0NWdIz3RdVpqNP34m9b/XddEfY6uiQ8yI9QK9rPH99xT7IaPpoAt1uiLEqUcvCdxyMIr3YoI+JfqMuLBD8z7SyOvpDL0JD2Drx5BV0uYf/JTZdxFSy9gg1Ey3/y2Qelvm7hRfURI2sg0wzOwoJm/YLAvwjuAorMtRcDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736508007; c=relaxed/simple;
-	bh=kOST9puL5O0lgZgd9dvofPANW6nURYuXcTcPeRY6+nk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TH4juXJ9s34Nii6E45xb0UffCCvT0Rk/Kp03nBlFacrTu0VdugTJPKthtiE9ZK5DXvkMnXoX5sAXJPAb7RCt2DHfjivHB5J8kEBg+b7lf6ytnphW1Imxd3UiOdHM3VAhP4Hnf7j5E9A4pD+xYvYPvSoWWvbnv6MBDiBQCVGRuhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4YTzQ66bMjz9sSN;
-	Fri, 10 Jan 2025 12:07:26 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 9565rjOLSGr7; Fri, 10 Jan 2025 12:07:26 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4YTzQ65Z96z9sSL;
-	Fri, 10 Jan 2025 12:07:26 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id AB26E8B787;
-	Fri, 10 Jan 2025 12:07:26 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id X1yPG8Y30LGd; Fri, 10 Jan 2025 12:07:26 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 31B778B768;
-	Fri, 10 Jan 2025 12:07:26 +0100 (CET)
-Message-ID: <8b080760-c1c7-4d9d-a17b-3c0115392b36@csgroup.eu>
-Date: Fri, 10 Jan 2025 12:07:25 +0100
+	s=arc-20240116; t=1736508324; c=relaxed/simple;
+	bh=h+3V8Dg/wI18YbTuYBPBYgVfFTOtZGjB+ocTQMzeqlo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aiu6DnJFYxLWXefnkSP19llrOhuXqULV1+OWpJTaqdxYpB1ZiG2L1Exz4p80pQOkRncHB1jn0ndxgA+2C9pWFNM7umX0Y5CzmStjIfLP+M7fPWWqhlR3qcY1uPOvRm/uyyPhZMExZxJVkxMDfp/9FUoG1wPrBccTkvaCnP6148c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i/hWQFu/; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i/hWQFu/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736508322;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4Ef2wLHVQGV1IsoMPeKXi5uZyvCqMew4uoHW3wntJAQ=;
+	b=i/hWQFu/XlsmwkjawqwXRu2SzMhUYO+RllhSxgLCm/PdbijVCwwegj5tJdxhuNz3vjnLra
+	ggXI3LPmSMtXUXjVK4wXemf57wDYuQU8WF1oHp1Tgc6MvpWSwg9O86mosVeSDZ0IB3HdJa
+	ibY7DzglQFglss9gVxkZSfiUmAzDEYw=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-421-N8l43eN_N-iwZ8vNmApwug-1; Fri, 10 Jan 2025 06:25:18 -0500
+X-MC-Unique: N8l43eN_N-iwZ8vNmApwug-1
+X-Mimecast-MFC-AGG-ID: N8l43eN_N-iwZ8vNmApwug
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-aa66bc3b46dso150359666b.3
+        for <netdev@vger.kernel.org>; Fri, 10 Jan 2025 03:25:18 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736508318; x=1737113118;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4Ef2wLHVQGV1IsoMPeKXi5uZyvCqMew4uoHW3wntJAQ=;
+        b=QwTQGf9VqRpE39Bdwe3VoFQvtJfjmQ8aNssigprBKJoDhv7mIMxqwTq4ZmQD0BtwON
+         wgnoMcs25DYo63mB5oEnpQNToL9radX6bPcNSUmS950XZ85fX7oRIbouprBoNaZWYLGW
+         II2yE4LdXN8EuMTE4s94RxOwVjkGV4f2nDlmPK4hiAk7b7F6sHNMpJXcduSQGYYyPfHZ
+         2OG/2zDzbEUO9ZErBS4blKsRviaBqGxq2Vy+VgVHsAj5QOWOpnbZcHAqZZi7gYBS6n61
+         4cL3C6JNS/p2sZF5LdLGAGkJjNmTXGVp/w35ADfliR+ITmbYk+limCvdt52UAdV+RoYO
+         2v0A==
+X-Gm-Message-State: AOJu0YxHsEp20dFUh0gNsFHvqOFDf3aSBI8bD8qQEzGnVlB8V7NYPHgN
+	BGfjSt3TtVE0kkn13e8goJ6LK6mKl/mcimcQgZYoSaTtU/ba4aI6ICAiGfpiYk7cHlpQSHBpSXB
+	JX5P9U4LFUwuT1MoO6eRRR/2pTy26s76f+nzcD6E5JxCOo7C0ufiCHQ==
+X-Gm-Gg: ASbGncsS9LQscej2vOAnzTh8JPxE1o7azzn/GaZ+dQcPz1ygMSEU/6KxF7HUO7xQz56
+	cbf7ejd544B5YnPXHIzEhJ01rpCsi5ntLNJCEJpeOrpTAfIZuyOQBmcPx1tBTRj+S3QAeyvqn7H
+	Gc0VH+fPuJJW4L7SYZd+A07PEAO5bbzwugjer+sm3/kcA3qpobZWLqGDokamb0Wtf4pBDsUWrnq
+	2ODm/oARQAYnvNX+UK9/8nQ0JI5chgNVfJ5vCUc+NlcPSG3Z7YJ70S6WFfQX6M=
+X-Received: by 2002:a05:6402:5194:b0:5d0:fb56:3f with SMTP id 4fb4d7f45d1cf-5d972e0e341mr23290978a12.12.1736508317703;
+        Fri, 10 Jan 2025 03:25:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH3mqsKI2idLOS3bFseUHtOVmXbXG31Er639vFwFDT2akA/HfPxaQl8uNFpTeEdJZcPXxQTRg==
+X-Received: by 2002:a05:6402:5194:b0:5d0:fb56:3f with SMTP id 4fb4d7f45d1cf-5d972e0e341mr23290897a12.12.1736508317029;
+        Fri, 10 Jan 2025 03:25:17 -0800 (PST)
+Received: from sgarzare-redhat ([193.207.202.103])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c95af694sm159293266b.144.2025.01.10.03.25.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2025 03:25:16 -0800 (PST)
+Date: Fri, 10 Jan 2025 12:25:09 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Luigi Leonardi <leonardi@redhat.com>
+Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, Wongi Lee <qwerty@theori.io>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Eric Dumazet <edumazet@google.com>, kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>, Jakub Kicinski <kuba@kernel.org>, 
+	Michal Luczaj <mhal@rbox.co>, virtualization@lists.linux.dev, 
+	Bobby Eshleman <bobby.eshleman@bytedance.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net v2 4/5] vsock: reset socket state when de-assigning
+ the transport
+Message-ID: <fjx4nkajq3cnaxdbvs3dd2sxtc35tkqlqti3h44t3xuefclwar@havkg6jfisxu>
+References: <20250110083511.30419-1-sgarzare@redhat.com>
+ <20250110083511.30419-5-sgarzare@redhat.com>
+ <esoasx64en34ixiylalt2hldqi5duvvzrpt65xq7nioro7gbbb@rhp6lth5grj4>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] freescale: ucc_geth: Remove set but unused
- variables
-To: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <20250110-ucc-unused-var-v1-1-4cf02475b21d@kernel.org>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20250110-ucc-unused-var-v1-1-4cf02475b21d@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <esoasx64en34ixiylalt2hldqi5duvvzrpt65xq7nioro7gbbb@rhp6lth5grj4>
 
+On Fri, Jan 10, 2025 at 11:56:28AM +0100, Luigi Leonardi wrote:
+>On Fri, Jan 10, 2025 at 09:35:10AM +0100, Stefano Garzarella wrote:
+>>Transport's release() and destruct() are called when de-assigning the
+>>vsock transport. These callbacks can touch some socket state like
+>>sock flags, sk_state, and peer_shutdown.
+>>
+>>Since we are reassigning the socket to a new transport during
+>>vsock_connect(), let's reset these fields to have a clean state with
+>>the new transport.
+>>
+>>Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+>>Cc: stable@vger.kernel.org
+>>Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>>---
+>>net/vmw_vsock/af_vsock.c | 9 +++++++++
+>>1 file changed, 9 insertions(+)
+>>
+>>diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>>index 5cf8109f672a..74d35a871644 100644
+>>--- a/net/vmw_vsock/af_vsock.c
+>>+++ b/net/vmw_vsock/af_vsock.c
+>>@@ -491,6 +491,15 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+>>		 */
+>>		vsk->transport->release(vsk);
+>>		vsock_deassign_transport(vsk);
+>>+
+>>+		/* transport's release() and destruct() can touch some socket
+>>+		 * state, since we are reassigning the socket to a new transport
+>>+		 * during vsock_connect(), let's reset these fields to have a
+>>+		 * clean state.
+>>+		 */
+>>+		sock_reset_flag(sk, SOCK_DONE);
+>>+		sk->sk_state = TCP_CLOSE;
+>>+		vsk->peer_shutdown = 0;
+>>	}
+>>
+>>	/* We increase the module refcnt to prevent the transport unloading
+>>-- 
+>>2.47.1
+>>
+>
+>Hi Stefano,
+>I spent some time investigating what would happen if the scheduled work
+>ran before `virtio_transport_cancel_close_work`. IIUC that should do 
+>no harm and all the fields are reset correctly.
 
+Yep, after transport->destruct() call, the delayed work should have 
+already finished or canceled.
 
-Le 10/01/2025 à 11:18, Simon Horman a écrit :
-> Remove set but unused variables. These seem to provide no value.
-> So in the spirit of less being more, remove them.
+>
+>Thank you,
+>Luigi
+>
+>Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+>
 
-Would be good to identify when those variables became unused.
-
-There is for instance commit 64a99fe596f9 ("ethernet: ucc_geth: remove 
-bd_mem_part and all associated code")
-
-...
-
-> 
-> Compile tested only.
-> No runtime effect intended.
-> 
-> Signed-off-by: Simon Horman <horms@kernel.org>
-
-As you are playing with that driver, there are also sparse warnings to 
-be fixed, getting plenty when building with C=2
-
-> ---
->   drivers/net/ethernet/freescale/ucc_geth.c | 39 +++++++------------------------
->   1 file changed, 8 insertions(+), 31 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-> index 88510f822759..1e3a1cb997c3 100644
-> --- a/drivers/net/ethernet/freescale/ucc_geth.c
-> +++ b/drivers/net/ethernet/freescale/ucc_geth.c
-> @@ -1704,14 +1704,8 @@ static int ugeth_82xx_filtering_clear_addr_in_paddr(struct ucc_geth_private *uge
->   
->   static void ucc_geth_free_rx(struct ucc_geth_private *ugeth)
->   {
-> -	struct ucc_geth_info *ug_info;
-> -	struct ucc_fast_info *uf_info;
-> -	u16 i, j;
->   	u8 __iomem *bd;
-> -
-> -
-> -	ug_info = ugeth->ug_info;
-> -	uf_info = &ug_info->uf_info;
-> +	u16 i, j;
-
-Why do you need to move this declaration ? Looks like cosmetics. That 
-goes beyond the purpose of this patch which is already big enough and 
-should be avoided. The same applies several times in this patch.
-
->   
->   	for (i = 0; i < ucc_geth_rx_queues(ugeth->ug_info); i++) {
->   		if (ugeth->p_rx_bd_ring[i]) {
-> @@ -1743,16 +1737,11 @@ static void ucc_geth_free_rx(struct ucc_geth_private *ugeth)
->   
->   static void ucc_geth_free_tx(struct ucc_geth_private *ugeth)
->   {
-> -	struct ucc_geth_info *ug_info;
-> -	struct ucc_fast_info *uf_info;
-> -	u16 i, j;
->   	u8 __iomem *bd;
-> +	u16 i, j;
->   
->   	netdev_reset_queue(ugeth->ndev);
->   
-> -	ug_info = ugeth->ug_info;
-> -	uf_info = &ug_info->uf_info;
-> -
->   	for (i = 0; i < ucc_geth_tx_queues(ugeth->ug_info); i++) {
->   		bd = ugeth->p_tx_bd_ring[i];
->   		if (!bd)
-> @@ -2036,13 +2025,11 @@ static int ucc_struct_init(struct ucc_geth_private *ugeth)
->   static int ucc_geth_alloc_tx(struct ucc_geth_private *ugeth)
->   {
->   	struct ucc_geth_info *ug_info;
-> -	struct ucc_fast_info *uf_info;
-> +	u8 __iomem *bd;
->   	int length;
->   	u16 i, j;
-> -	u8 __iomem *bd;
->   
->   	ug_info = ugeth->ug_info;
-> -	uf_info = &ug_info->uf_info;
->   
->   	/* Allocate Tx bds */
->   	for (j = 0; j < ucc_geth_tx_queues(ug_info); j++) {
-> @@ -2098,13 +2085,11 @@ static int ucc_geth_alloc_tx(struct ucc_geth_private *ugeth)
->   static int ucc_geth_alloc_rx(struct ucc_geth_private *ugeth)
->   {
->   	struct ucc_geth_info *ug_info;
-> -	struct ucc_fast_info *uf_info;
-> +	u8 __iomem *bd;
->   	int length;
->   	u16 i, j;
-> -	u8 __iomem *bd;
->   
->   	ug_info = ugeth->ug_info;
-> -	uf_info = &ug_info->uf_info;
->   
->   	/* Allocate Rx bds */
->   	for (j = 0; j < ucc_geth_rx_queues(ug_info); j++) {
-> @@ -2155,7 +2140,6 @@ static int ucc_geth_alloc_rx(struct ucc_geth_private *ugeth)
->   
->   static int ucc_geth_startup(struct ucc_geth_private *ugeth)
->   {
-> -	struct ucc_geth_82xx_address_filtering_pram __iomem *p_82xx_addr_filt;
->   	struct ucc_geth_init_pram __iomem *p_init_enet_pram;
->   	struct ucc_fast_private *uccf;
->   	struct ucc_geth_info *ug_info;
-> @@ -2165,8 +2149,8 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
->   	int ret_val = -EINVAL;
->   	u32 remoder = UCC_GETH_REMODER_INIT;
->   	u32 init_enet_pram_offset, cecr_subblock, command;
-> -	u32 ifstat, i, j, size, l2qt, l3qt;
->   	u16 temoder = UCC_GETH_TEMODER_INIT;
-> +	u32 i, j, size, l2qt, l3qt;
->   	u8 function_code = 0;
->   	u8 __iomem *endOfRing;
->   	u8 numThreadsRxNumerical, numThreadsTxNumerical;
-> @@ -2260,7 +2244,7 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
->   	/*                    Set IFSTAT                     */
->   	/* For more details see the hardware spec.           */
->   	/* Read only - resets upon read                      */
-> -	ifstat = in_be32(&ug_regs->ifstat);
-> +	in_be32(&ug_regs->ifstat);
->   
->   	/*                    Clear UEMPR                    */
->   	/* For more details see the hardware spec.           */
-> @@ -2651,10 +2635,6 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
->   		for (j = 0; j < NUM_OF_PADDRS; j++)
->   			ugeth_82xx_filtering_clear_addr_in_paddr(ugeth, (u8) j);
->   
-> -		p_82xx_addr_filt =
-> -		    (struct ucc_geth_82xx_address_filtering_pram __iomem *) ugeth->
-> -		    p_rx_glbl_pram->addressfiltering;
-> -
->   		ugeth_82xx_filtering_clear_all_addr_in_hash(ugeth,
->   			ENET_ADDR_TYPE_GROUP);
->   		ugeth_82xx_filtering_clear_all_addr_in_hash(ugeth,
-> @@ -2889,9 +2869,8 @@ static int ucc_geth_rx(struct ucc_geth_private *ugeth, u8 rxQ, int rx_work_limit
->   	struct sk_buff *skb;
->   	u8 __iomem *bd;
->   	u16 length, howmany = 0;
-> -	u32 bd_status;
-> -	u8 *bdBuffer;
->   	struct net_device *dev;
-> +	u32 bd_status;
->   
->   	ugeth_vdbg("%s: IN", __func__);
->   
-> @@ -2904,7 +2883,7 @@ static int ucc_geth_rx(struct ucc_geth_private *ugeth, u8 rxQ, int rx_work_limit
->   
->   	/* while there are received buffers and BD is full (~R_E) */
->   	while (!((bd_status & (R_E)) || (--rx_work_limit < 0))) {
-> -		bdBuffer = (u8 *) in_be32(&((struct qe_bd __iomem *)bd)->buf);
-> +		in_be32(&((struct qe_bd __iomem *)bd)->buf);
-
-This line should go completely.
-
->   		length = (u16) ((bd_status & BD_LENGTH_MASK) - 4);
->   		skb = ugeth->rx_skbuff[rxQ][ugeth->skb_currx[rxQ]];
->   
-> @@ -3043,14 +3022,12 @@ static irqreturn_t ucc_geth_irq_handler(int irq, void *info)
->   	struct net_device *dev = info;
->   	struct ucc_geth_private *ugeth = netdev_priv(dev);
->   	struct ucc_fast_private *uccf;
-> -	struct ucc_geth_info *ug_info;
->   	register u32 ucce;
->   	register u32 uccm;
->   
->   	ugeth_vdbg("%s: IN", __func__);
->   
->   	uccf = ugeth->uccf;
-> -	ug_info = ugeth->ug_info;
->   
->   	/* read and clear events */
->   	ucce = (u32) in_be32(uccf->p_ucce);
-> 
-> 
+Thanks for the review,
+Stefano
 
