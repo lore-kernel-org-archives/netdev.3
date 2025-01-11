@@ -1,151 +1,239 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9FC1632DF
-	for <netdev@vger.kernel.org>; Sat, 11 Jan 2025 09:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C281885B4
+	for <netdev@vger.kernel.org>; Sat, 11 Jan 2025 09:49:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736588669; cv=none; b=mvH0aXbrrPvJ0PkFPhQsGA5nnAGjW9iA01wtaX6L5eTppSRIHNGqOT5EAmPV80WRZmesCV5BpdVgsJVI/xSI7TvzhIluRucD0wpL2CqMCYXUxnI5/pCWH/Z1ZiuKjvwJZXl5dBt0Scgd4HQQ0CDvNFWBEqywCrnwb7ij8lWQrEw=
+	t=1736588972; cv=none; b=kDlgXoPa+iYW+vOJEie2hUsIW/FeniyZEMMomHJ1r9Rzbhb6DaB/HCGry5cKJv4UQorjYZtxiUixyZKhEXlj7/WfPI4b3npKaQ3DV2DsY1w+nFQXMoBV8JGnqwmDBuBLF+UiGOblflOrBhqaO937j0LypI9TMZVn6SJxQs3V8SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736588669; c=relaxed/simple;
-	bh=Thf+XMgjNdUsavEtQJYBBdNuzU4VMGwpV9YWOFjS5co=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Me57F6lNt2lpiBbYiu3d8Z+o7CqT7NItxCQlGHZRSHTD8uCOrY1RewZDnoC1eBOV75GN8JPxZtFTqIZv2m4KCJRHBeM8EyJIeMzjPYHmlI7YhNom1GzYeiOS2UxekxHQciH/uQ8XnKwvQikSCs4dRYM+PAEPN9A6MnMiW3TgeUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d9qJOSI7; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736588972; c=relaxed/simple;
+	bh=AblgLSACwiCrBiCNEaHlTkmLhzH/lPXUfMBmIVezkAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NV6oYy+F6U/yhB6tEvldgm9B1ddBHKPCbyfAZWKH5TtYtMcN33o1oRn1tOkinh/3q40jW3w2QYMbZyzxpLFE3urty6yavphcsIrEIcM3Jn9cOjCna9A0CQ2i/pBR9Hbe2nBrW+cn1h0rzJZezZCMIGt3lMonqtpf/2QUMe22IP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nbytJWnU; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d9qJOSI7"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-aa67333f7d2so432142566b.0
-        for <netdev@vger.kernel.org>; Sat, 11 Jan 2025 01:44:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736588666; x=1737193466; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=bgoIuCCwBGJeeTbtYs4Pu/RTiCEZwfJuuBmtOOIet+g=;
-        b=d9qJOSI72bk7ExWgmfCSEqqa/6iVe4Bewwkd4SR84vY0ytlUMyE5L+0xF7HOllt8cN
-         mQgxHW9u3pyi9+ygBU+q7ldlk7ytP8jqa5Rj0bE1L/sALrhEvvTvIQMwKG+ZUr/2KoIl
-         rDoVi1rJIvJS6iXVbqAf9mSsjkjyK+z8cPVc4/Xw3b3bjyt4atjF0JH9p5tGf+EnLuYr
-         HpWhSnug/05qadMMDE2aqNKREboiwF5tuAkHPj15CBe7Kd6RWechIKb5e2/6WlnQADfi
-         4ZyNAY//cSu66cTsE02iE8SksX8mLHlIiPljAKEu+QDuWnb+vo6MglEFipSZ8Tm3WE3J
-         AuUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736588666; x=1737193466;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bgoIuCCwBGJeeTbtYs4Pu/RTiCEZwfJuuBmtOOIet+g=;
-        b=Jj6UCFX+LIrBso19IFPlHH9wYLHckXcGmWPDAqjqGZv1RMZGpHg12yNf4baq51mL84
-         1GVMl/ZGIASAMoLf9Zd3jnfevJUFJLtIdZ84GvWjg8GXZmdAqdG7W3SNfU/aGbg37HrS
-         U299D8iPLNR+fqY6h9LYAS9o2hofwgPt/ERbWAiAyZk5yFtu3+t5vjKn0RfIFYtYKXWC
-         kDeFGrHPSUdjVTX0Q8DqEfrVhPs+20GtDVzgeXGMH0JmK1MaJRIbLp1S1zcbGdthkqYK
-         Fg9evfxCNKJkDl04TQPvzYRTc09ycMkvTX0tdIJvNYczi814vska/eKOHFmfVx3MW9EV
-         tyxA==
-X-Forwarded-Encrypted: i=1; AJvYcCUXYByAkHY6XV4IuFCzLUjo/y4++Ocqugtt8GXmJqPV7TzvXGDiAlx1iujfAFNchjssLu+xwl0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnWXK5CafQXwF+KtL8izeuiD6bStcgcR+9QFxKaiE/oM4dlX7u
-	t2Ah7ogBYY9WeMorHEH9Tjx6e7MeNiXCa58E1E+HrvhwRCeVzvB0
-X-Gm-Gg: ASbGncv5doly6PT5xu/ma597qmv4GBrEAwdo08hCBp19LUa51gkKV8HTrVy2e7rYHuq
-	17L1ZYxFAoeB8fKAJt7RzsNvDHXDhkkmE/3PuwGburjnmT8XWctaXuWjTUgCMyAwjFbn9Jkj2rD
-	jINQ8GkPSIJrkrBzDb9PAo0sV7XYKR/u8uA2gxzX10oft5brp5HGJqIwAF6xW50E8MW31jE7s1q
-	Pnzvq7bKz2BzkSybu/n9Hf/3C5O4f/F2kjYb6e6Ko8z7b95fMafBxjyXCRdZRz6L6m4OsJ0S4YH
-	H7xlzcwiJAAYF44PzbRg5esbFX31uYMtLOcWTJ6pGY6dIMqxsRxb3UNNafLGca/tlrD1DhewS1k
-	8JSkAuRd9FNTvLlEkD+aHDZiIL7gd3CeVazqYskv/HVk+qQij
-X-Google-Smtp-Source: AGHT+IF6+1xv96W3AZCPKAnoho/1Lr57hSN4HqhByWirYj8RsQJoeiYbS+Dj7BQFkf1UmEC4Qa6J3w==
-X-Received: by 2002:a17:907:6e9f:b0:aa5:1a1c:d0a2 with SMTP id a640c23a62f3a-ab2ab74b240mr1330467666b.34.1736588666269;
-        Sat, 11 Jan 2025 01:44:26 -0800 (PST)
-Received: from ?IPV6:2a02:3100:a90d:e100:d8f1:2ffc:4f48:89fd? (dynamic-2a02-3100-a90d-e100-d8f1-2ffc-4f48-89fd.310.pool.telefonica.de. [2a02:3100:a90d:e100:d8f1:2ffc:4f48:89fd])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-ab2c905e2f7sm254829566b.24.2025.01.11.01.44.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 11 Jan 2025 01:44:24 -0800 (PST)
-Message-ID: <472f6fe4-18ff-4124-ba43-fd757df7cb4d@gmail.com>
-Date: Sat, 11 Jan 2025 10:44:25 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nbytJWnU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736588970; x=1768124970;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=AblgLSACwiCrBiCNEaHlTkmLhzH/lPXUfMBmIVezkAQ=;
+  b=nbytJWnURn1uOygxQck9ogSLyhnPPn9w5oBjo2PEmSZIQJmCxTjt68kL
+   ze6Ucz0vrnk1DpdC9dTXoyYoezNHm5N79eWg9TcAlTk2qS83390WbVq8S
+   I1nMNhPFMk7fDb19O64o78VXYRSwnR8OdW3WPvvbGAGtUk2wVqy9qCCPg
+   +vkx6ar5szHvSGEV7huEYAy5uc/bhOtCHzlf7yk8h6ndzZ19i0jrxNk65
+   JEFiYifl5nQObeQeftD/FizdXZHkNDKlrh6IT22NMRxjLU9KHXfF9JBm1
+   IslMF8SEf6837audnH1t6K6wy1tb8WsY+fAPm3uymunx4FgViCW08Ivvb
+   g==;
+X-CSE-ConnectionGUID: t4ZbRffJQiap3XlKkSmJ4A==
+X-CSE-MsgGUID: UiVde4brSniTyDCZRBxUNQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="40646915"
+X-IronPort-AV: E=Sophos;i="6.12,306,1728975600"; 
+   d="scan'208";a="40646915"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2025 01:49:30 -0800
+X-CSE-ConnectionGUID: HhaMVm9fQD27h95k9unS1A==
+X-CSE-MsgGUID: BsC9mfnxRnmZUCtprqZFeQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,306,1728975600"; 
+   d="scan'208";a="103766867"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 11 Jan 2025 01:49:26 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tWY7Q-000KSS-1h;
+	Sat, 11 Jan 2025 09:49:24 +0000
+Date: Sat, 11 Jan 2025 17:49:00 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	netdev@vger.kernel.org, Donald Hunter <donald.hunter@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>
+Subject: Re: [PATCH v1 net-next 07/12] af_unix: Set drop reason in
+ unix_stream_sendmsg().
+Message-ID: <202501111754.vEJ6CJgk-lkp@intel.com>
+References: <20250110092641.85905-8-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/9] net: phy: c45: don't accept disabled EEE
- modes in genphy_c45_ethtool_set_eee
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- David Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Simon Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-References: <a002914f-8dc7-4284-bc37-724909af9160@gmail.com>
- <5964fa47-2eff-4968-894c-0b7f487d820c@gmail.com>
- <Z4I4ADNO1nSdZRja@shell.armlinux.org.uk>
-Content-Language: en-US
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Autocrypt: addr=hkallweit1@gmail.com; keydata=
- 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
-In-Reply-To: <Z4I4ADNO1nSdZRja@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250110092641.85905-8-kuniyu@amazon.com>
 
-On 11.01.2025 10:21, Russell King (Oracle) wrote:
-> On Sat, Jan 11, 2025 at 10:06:02AM +0100, Heiner Kallweit wrote:
->> Link modes in phydev->eee_disabled_modes are filtered out by
->> genphy_c45_write_eee_adv() and won't be advertised. Therefore
->> don't accept such modes from userspace.
-> 
-> Why do we need this? Surely if the MAC doesn't support modes, then they
-> should be filtered out of phydev->supported_eee so that userspace knows
-> that the mode is not supported by the network interface as a whole, just
-> like we do for phydev->supported.
-> 
-> That would give us the checking here.
-> 
-Removing EEE modes to be disabled from supported_eee is problematic
-because of how genphy_c45_write_eee_adv() works.
+Hi Kuniyuki,
 
-Let's say we have a 2.5Gbps PHY and want to disable EEE at 2.5Gbps. If we
-remove 2.5Gbps from supported_eee, then the following check is false:
-if (linkmode_intersects(phydev->supported_eee, PHY_EEE_CAP2_FEATURES))
-What would result in the 2.5Gbps mode not getting disabled.
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on net-next/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Kuniyuki-Iwashima/net-dropreason-Gather-SOCKET_-drop-reasons/20250110-173850
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20250110092641.85905-8-kuniyu%40amazon.com
+patch subject: [PATCH v1 net-next 07/12] af_unix: Set drop reason in unix_stream_sendmsg().
+config: mips-ci20_defconfig (https://download.01.org/0day-ci/archive/20250111/202501111754.vEJ6CJgk-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250111/202501111754.vEJ6CJgk-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501111754.vEJ6CJgk-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> net/unix/af_unix.c:2303:6: warning: variable 'reason' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+    2303 |         if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/asm-generic/rwonce.h:47:28: note: expanded from macro 'READ_ONCE'
+      47 | #define READ_ONCE(x)                                                    \
+         |                                                                         ^
+   net/unix/af_unix.c:2403:24: note: uninitialized use occurs here
+    2403 |         kfree_skb_reason(skb, reason);
+         |                               ^~~~~~
+   net/unix/af_unix.c:2303:2: note: remove the 'if' if its condition is always false
+    2303 |         if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    2304 |                 goto out_pipe;
+         |                 ~~~~~~~~~~~~~
+   net/unix/af_unix.c:2268:2: note: variable 'reason' is declared here
+    2268 |         enum skb_drop_reason reason;
+         |         ^
+   1 warning generated.
 
 
+vim +2303 net/unix/af_unix.c
+
+314001f0bf9270 Rao Shoaib        2021-08-01  2264  
+1b784140474e4f Ying Xue          2015-03-02  2265  static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+1b784140474e4f Ying Xue          2015-03-02  2266  			       size_t len)
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2267  {
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2268  	enum skb_drop_reason reason;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2269  	struct sock *sk = sock->sk;
+49efbfa661b688 Kuniyuki Iwashima 2025-01-10  2270  	struct sk_buff *skb = NULL;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2271  	struct sock *other = NULL;
+7cc05662682da4 Christoph Hellwig 2015-01-28  2272  	struct scm_cookie scm;
+8ba69ba6a324b1 Miklos Szeredi    2009-09-11  2273  	bool fds_sent = false;
+49efbfa661b688 Kuniyuki Iwashima 2025-01-10  2274  	int err, sent = 0;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2275  
+7cc05662682da4 Christoph Hellwig 2015-01-28  2276  	err = scm_send(sock, msg, &scm, false);
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2277  	if (err < 0)
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2278  		return err;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2279  
+d9f21b3613337b Kuniyuki Iwashima 2024-01-23  2280  	wait_for_unix_gc(scm.fp);
+d9f21b3613337b Kuniyuki Iwashima 2024-01-23  2281  
+314001f0bf9270 Rao Shoaib        2021-08-01  2282  	if (msg->msg_flags & MSG_OOB) {
+6c444255b193b5 Kuniyuki Iwashima 2024-12-13  2283  		err = -EOPNOTSUPP;
+4edf21aa94ee33 Kuniyuki Iwashima 2022-03-17  2284  #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+314001f0bf9270 Rao Shoaib        2021-08-01  2285  		if (len)
+314001f0bf9270 Rao Shoaib        2021-08-01  2286  			len--;
+314001f0bf9270 Rao Shoaib        2021-08-01  2287  		else
+314001f0bf9270 Rao Shoaib        2021-08-01  2288  #endif
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2289  			goto out_err;
+314001f0bf9270 Rao Shoaib        2021-08-01  2290  	}
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2291  
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2292  	if (msg->msg_namelen) {
+8a34d4e8d9742a Kuniyuki Iwashima 2024-06-04  2293  		err = READ_ONCE(sk->sk_state) == TCP_ESTABLISHED ? -EISCONN : -EOPNOTSUPP;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2294  		goto out_err;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2295  	} else {
+830a1e5c212fb3 Benjamin LaHaise  2005-12-13  2296  		other = unix_peer(sk);
+6c444255b193b5 Kuniyuki Iwashima 2024-12-13  2297  		if (!other) {
+6c444255b193b5 Kuniyuki Iwashima 2024-12-13  2298  			err = -ENOTCONN;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2299  			goto out_err;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2300  		}
+6c444255b193b5 Kuniyuki Iwashima 2024-12-13  2301  	}
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2302  
+49efbfa661b688 Kuniyuki Iwashima 2025-01-10 @2303  	if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+49efbfa661b688 Kuniyuki Iwashima 2025-01-10  2304  		goto out_pipe;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2305  
+6eba6a372b501a Eric Dumazet      2008-11-16  2306  	while (sent < len) {
+49efbfa661b688 Kuniyuki Iwashima 2025-01-10  2307  		int size = len - sent;
+49efbfa661b688 Kuniyuki Iwashima 2025-01-10  2308  		int data_len;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2309  
+a0dbf5f818f908 David Howells     2023-05-22  2310  		if (unlikely(msg->msg_flags & MSG_SPLICE_PAGES)) {
+a0dbf5f818f908 David Howells     2023-05-22  2311  			skb = sock_alloc_send_pskb(sk, 0, 0,
+a0dbf5f818f908 David Howells     2023-05-22  2312  						   msg->msg_flags & MSG_DONTWAIT,
+a0dbf5f818f908 David Howells     2023-05-22  2313  						   &err, 0);
+a0dbf5f818f908 David Howells     2023-05-22  2314  		} else {
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2315  			/* Keep two messages in the pipe so it schedules better */
+b0632e53e0da80 Kuniyuki Iwashima 2024-06-04  2316  			size = min_t(int, size, (READ_ONCE(sk->sk_sndbuf) >> 1) - 64);
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2317  
+e370a723632177 Eric Dumazet      2013-08-08  2318  			/* allow fallback to order-0 allocations */
+e370a723632177 Eric Dumazet      2013-08-08  2319  			size = min_t(int, size, SKB_MAX_HEAD(0) + UNIX_SKB_FRAGS_SZ);
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2320  
+e370a723632177 Eric Dumazet      2013-08-08  2321  			data_len = max_t(int, 0, size - SKB_MAX_HEAD(0));
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2322  
+31ff6aa5c86f75 Kirill Tkhai      2014-05-15  2323  			data_len = min_t(size_t, size, PAGE_ALIGN(data_len));
+31ff6aa5c86f75 Kirill Tkhai      2014-05-15  2324  
+e370a723632177 Eric Dumazet      2013-08-08  2325  			skb = sock_alloc_send_pskb(sk, size - data_len, data_len,
+28d6427109d13b Eric Dumazet      2013-08-08  2326  						   msg->msg_flags & MSG_DONTWAIT, &err,
+28d6427109d13b Eric Dumazet      2013-08-08  2327  						   get_order(UNIX_SKB_FRAGS_SZ));
+a0dbf5f818f908 David Howells     2023-05-22  2328  		}
+e370a723632177 Eric Dumazet      2013-08-08  2329  		if (!skb)
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2330  			goto out_err;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2331  
+f78a5fda911652 David S. Miller   2011-09-16  2332  		/* Only send the fds in the first buffer */
+7cc05662682da4 Christoph Hellwig 2015-01-28  2333  		err = unix_scm_to_skb(&scm, skb, !fds_sent);
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2334  		if (err < 0) {
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2335  			reason = unix_scm_err_to_reason(err);
+d460b04bc452cf Kuniyuki Iwashima 2024-12-13  2336  			goto out_free;
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2337  		}
+d460b04bc452cf Kuniyuki Iwashima 2024-12-13  2338  
+8ba69ba6a324b1 Miklos Szeredi    2009-09-11  2339  		fds_sent = true;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2340  
+a0dbf5f818f908 David Howells     2023-05-22  2341  		if (unlikely(msg->msg_flags & MSG_SPLICE_PAGES)) {
+6bd8614fc2d076 Frederik Deweerdt 2024-12-09  2342  			skb->ip_summed = CHECKSUM_UNNECESSARY;
+a0dbf5f818f908 David Howells     2023-05-22  2343  			err = skb_splice_from_iter(skb, &msg->msg_iter, size,
+a0dbf5f818f908 David Howells     2023-05-22  2344  						   sk->sk_allocation);
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2345  			if (err < 0) {
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2346  				reason = SKB_DROP_REASON_SKB_UCOPY_FAULT;
+d460b04bc452cf Kuniyuki Iwashima 2024-12-13  2347  				goto out_free;
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2348  			}
+d460b04bc452cf Kuniyuki Iwashima 2024-12-13  2349  
+a0dbf5f818f908 David Howells     2023-05-22  2350  			size = err;
+a0dbf5f818f908 David Howells     2023-05-22  2351  			refcount_add(size, &sk->sk_wmem_alloc);
+a0dbf5f818f908 David Howells     2023-05-22  2352  		} else {
+e370a723632177 Eric Dumazet      2013-08-08  2353  			skb_put(skb, size - data_len);
+e370a723632177 Eric Dumazet      2013-08-08  2354  			skb->data_len = data_len;
+e370a723632177 Eric Dumazet      2013-08-08  2355  			skb->len = size;
+c0371da6047abd Al Viro           2014-11-24  2356  			err = skb_copy_datagram_from_iter(skb, 0, &msg->msg_iter, size);
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2357  			if (err) {
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2358  				reason = SKB_DROP_REASON_SKB_UCOPY_FAULT;
+d460b04bc452cf Kuniyuki Iwashima 2024-12-13  2359  				goto out_free;
+a0dbf5f818f908 David Howells     2023-05-22  2360  			}
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2361  		}
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2362  
+1c92b4e50ef926 David S. Miller   2007-05-31  2363  		unix_state_lock(other);
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2364  
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2365  		if (sock_flag(other, SOCK_DEAD)) {
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2366  			reason = SKB_DROP_REASON_SOCKET_CLOSE;
+49efbfa661b688 Kuniyuki Iwashima 2025-01-10  2367  			goto out_pipe_unlock;
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2368  		}
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2369  
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2370  		if (other->sk_shutdown & RCV_SHUTDOWN) {
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2371  			reason = SKB_DROP_REASON_SOCKET_RCV_SHUTDOWN;
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2372  			goto out_pipe_unlock;
+6ca5ecbc3d69e6 Kuniyuki Iwashima 2025-01-10  2373  		}
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2374  
+16e5726269611b Eric Dumazet      2011-09-19  2375  		maybe_add_creds(skb, sock, other);
+3c32da19a858fb Kirill Tkhai      2019-12-09  2376  		scm_stat_add(other, skb);
+7782040b950b5d Paolo Abeni       2020-02-28  2377  		skb_queue_tail(&other->sk_receive_queue, skb);
+1c92b4e50ef926 David S. Miller   2007-05-31  2378  		unix_state_unlock(other);
+676d23690fb62b David S. Miller   2014-04-11  2379  		other->sk_data_ready(other);
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2380  		sent += size;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2381  	}
+^1da177e4c3f41 Linus Torvalds    2005-04-16  2382  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
