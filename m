@@ -1,277 +1,92 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09B41AA1D5;
-	Sat, 11 Jan 2025 14:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF75F1F16B
+	for <netdev@vger.kernel.org>; Sat, 11 Jan 2025 14:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736606843; cv=none; b=Wpcv4f9YHAgug7F3G0TKow4ToO5bJ0p7iGuxZoD6qta4Fcqh6aDVbEM87DlMLtj2qGf9oE/MyYOYLavpO7AW1ce3b15OModJQolgwB5NqACxmiBSClrfkApNjS2oIBGdyFpLpCRkHWHR3flpHwYz4da98OY8Ym+ldpFAeKUa0Ds=
+	t=1736607003; cv=none; b=D5ljsV/ZCIXJTKiB+TRzB2+cayY8zrXapv2NXqeGtVssZnoFHZa9NL5hWh75cVTBxQKikVr28zEgOST422IocBURG2JCHyAWWNB5HV3W8PIZD7SeMeXM3UwYlrxwIMMVIhLySan15SQz4irH42HFP6J0L3gClfY7pNzeYG361J4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736606843; c=relaxed/simple;
-	bh=JmAGQTkukDDimWXHhCgRtGxrqjNAOsiaA0lMqKcmRYo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sZRv1PRLERXiSBKDKpDVuLGH1FD2BzdUtLIod8IoGMZZreTrxQYnpiFaTHtFQVrRhwcU11mydOEcfvtGhp9ws4ZdVdhkhhKlax6evjsAtgda31HKCbr6y+4WdjOWKh0jpaca2HczdUCCm1lG6SjHrcsgnfpxFa87kHaZ9RomWIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ej+oP8at; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736607003; c=relaxed/simple;
+	bh=Z2veQnl3GZ0xw7GbPP0M3mkyYPZQKE8ts7WK0672EFs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Vm+6KFlWQtAF4wfwjDqLI/cZYEQStbodY5aR8aC9qp3edXsXXvkYpFfbOUrot8fLQzvgVi+2v9IABmy8xyNtsGGAEgWByPhfc3JnvZJrcKuqowg8fDdeJ4g6sIX8DaQjYja8I/fFjUgpvSCjNiYaUCzh2gJHv8iHLEEOenAV86Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=zG0t6Mea; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ej+oP8at"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2161eb95317so50102795ad.1;
-        Sat, 11 Jan 2025 06:47:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="zG0t6Mea"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2163b0c09afso52300475ad.0
+        for <netdev@vger.kernel.org>; Sat, 11 Jan 2025 06:50:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736606841; x=1737211641; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1736607001; x=1737211801; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=srPGR2762tzMufhIappCTxxPpiqvApN8ZVTAHeK3Y+w=;
-        b=Ej+oP8atWUckTWrmiEjmhY+hbv0jvzZQ0tOxhIO9C8cLcd1eTWru0DlU2YijKuNgcV
-         TxBhIHkyX9XVtJ0TWlTmkXdIUC6JuBesMa70kUKM6hwX3alYkct451yxAe0oI0EhvJV+
-         ZUBzgRk5L7+RAUYTNiD+iL3SalgHsm+KQSSVb1rkUhyJHCiFN4ks9CiR/9wg2b/PxMOG
-         z2Lyc9iSG+f2bxEUHO3U8puENpu1gsuKWoCoA4mGQZSnicnRBvSahHmbFJMJdZsCOd5R
-         FIAV8FEPm8Kcp1eQaJUtDrK5Xk7a+dpw6alZ1HZ4AhYUiQ/HzPeWhAKKatabRf2cB0+V
-         195g==
+        bh=OffuVC76PBQtLNst+NoTj3k+WlHStXWK3dUsL9+ew/8=;
+        b=zG0t6Meao1NCEaGK5Cf1xC3c23aa7lndX6YCDasaM6cg2IdfHtZIrXCQ9xeLkfCmjw
+         9iI/E0k4UmawWkU3gRxFV92oLH25Mis4rPRE3b6tR5yhxuTOrvAp04IZ1u2+lhydlYvv
+         Am/3d0BXPtklJLJlfJWSuStibvHHHwAtZ8jbsAG62kzHv/A4Cyi0SiLxQHAu4qkVrtcn
+         0WGj17GTIMFQt2nSerJjFZstmzhPBWo1Hafttw4Jbqwix6LsvufDaRsnysRPWLMGmlhW
+         qsOY0f/RTTW6KSgRRc378QecCvqtK+kkzB27ykQpu34CBiJEJR0LVMCn0Pc5OuWu9iHH
+         mUXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736606841; x=1737211641;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1736607001; x=1737211801;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=srPGR2762tzMufhIappCTxxPpiqvApN8ZVTAHeK3Y+w=;
-        b=UWkMgMMgBg1yt7u+JEr4I9TpY/kCv848rh+8we+DgWuNUgglwAEULSevkNPdubKpJL
-         zLDk5ggFosoJrrk6Nw5Ui90wFf0Ss6GtJjU8TObonZs/sJxuqTfI93NCmYsalHALmR74
-         Yef18w7Te7dJRcb4D4eZwv3XboZm4zHzgE9pVui2x0cvS2o6g/X6Z9ASy7gMiGeBbm2j
-         Qr2Nsja00CUOmNJx1Cl/V23LFjyY2HiMQIRmZCDQ/YWY0fCHSTqXQnnL0Z9l+QghtWPL
-         evajW5fo48XUA0CUSnMjaBz2IEL/EIYjUJiYIoNWC8iBpWYaImClQWq3LQSmDk7ftNc0
-         qvWA==
-X-Forwarded-Encrypted: i=1; AJvYcCXO5LHvhBXOafJKOuka/Mxl9uRg8P4Igp+ZtcqpHBVtXP6WqfaJEDkxddWY1+ORFD2BR7oAeKIZ@vger.kernel.org, AJvYcCXks5j9NmBGzJC1E30NLIpEkz4Df5tmRAr35mlA97KWvPmyHh/BNZmrHJHwDqJTbeuRwzWz8Ho3fUo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yws6xNQJRKVok98zsJDMug+FuMDYcCHBPQ83jITqgjmYTzwNDXv
-	rETeENIiZ6F0Fwp/buR6gyZw1lPSrC5t82KVYpSR1NqiLvep8Cj0
-X-Gm-Gg: ASbGncsYl5y4fohRuVuHtFh80aZHAGGi+iomuQa9HlYYBS56wyqKgTx4Ui7pque7/cR
-	KMMYXMfnzDWpvKDR6eIXLUSOBuDaQNElPUzqJCQ7W2moyJl7NnZGWNTqv0a0+nlFnbScCcqWO/Q
-	V444cfyXIMD3+umOWlflBG7tRQzBqDX1Qg0HJmY10OTxzatmWjdoFAHxLm829dTMsKIw7YJe0C6
-	4/KRcPpjd6v/CIuH5gn8whP56P5+LojECmc/y/fLwtoLA==
-X-Google-Smtp-Source: AGHT+IG2xo7ONGH/g5V8MI8GwF7wwP8i/mUQoZTRaDIl1M8rkfJBkZZXBR7kGaC+C8JA6emWVkcxJw==
-X-Received: by 2002:a05:6a20:c703:b0:1e3:da8c:1f3b with SMTP id adf61e73a8af0-1e88d09d877mr24054953637.28.1736606841139;
-        Sat, 11 Jan 2025 06:47:21 -0800 (PST)
-Received: from ap.. ([182.213.254.91])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d40594a06sm3097466b3a.80.2025.01.11.06.47.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jan 2025 06:47:20 -0800 (PST)
-From: Taehee Yoo <ap420073@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	netdev@vger.kernel.org,
-	almasrymina@google.com,
-	donald.hunter@gmail.com,
-	corbet@lwn.net,
-	michael.chan@broadcom.com,
-	andrew+netdev@lunn.ch,
-	hawk@kernel.org,
-	ilias.apalodimas@linaro.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	john.fastabend@gmail.com,
-	dw@davidwei.uk,
-	sdf@fomichev.me,
-	asml.silence@gmail.com,
-	brett.creeley@amd.com,
-	linux-doc@vger.kernel.org
-Cc: kory.maincent@bootlin.com,
-	maxime.chevallier@bootlin.com,
-	danieller@nvidia.com,
-	hengqi@linux.alibaba.com,
-	ecree.xilinx@gmail.com,
-	przemyslaw.kitszel@intel.com,
-	hkallweit1@gmail.com,
-	ahmed.zaki@intel.com,
-	rrameshbabu@nvidia.com,
-	idosch@nvidia.com,
-	jiri@resnulli.us,
-	bigeasy@linutronix.de,
-	lorenzo@kernel.org,
-	jdamato@fastly.com,
-	aleksander.lobakin@intel.com,
-	kaiyuanz@google.com,
-	willemb@google.com,
-	daniel.zahka@gmail.com,
-	ap420073@gmail.com
-Subject: [PATCH net-next v8 10/10] selftest: net-drv: hds: add test for HDS feature
-Date: Sat, 11 Jan 2025 14:45:13 +0000
-Message-Id: <20250111144513.1289403-11-ap420073@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250111144513.1289403-1-ap420073@gmail.com>
-References: <20250111144513.1289403-1-ap420073@gmail.com>
+        bh=OffuVC76PBQtLNst+NoTj3k+WlHStXWK3dUsL9+ew/8=;
+        b=JEsT0P8HOjV0ryBEU8Rfu5pVtUlalQGnLxxOJ90OTU5mNRUxJ2bdO6K61GiChWVYuY
+         hqFsyDm2CFHA2KjuqkgUM8guNiOuNoP3gPB+1OWAY1s6rOU5UWHKrA8VHfJfnIQQRPsZ
+         e+OiNiua6mzWL8Lu8RoyL7RKDnSWgBy4tztfbm98z9S1rCZLF68blLk7Wmrc3Cty5lph
+         0YHPmpnqX2z30p8xrTZpcRpEmb0JYy9JXzVpwzLYh/tZZ9a/rlQjAHbj/OwhrhgYz0et
+         X9Al1OkDM+xwQK6l9ZuqxMr0LciPQNoEV+dzSsqjUDBn3HTGcGNOlP0QGoFDarmZDUoX
+         SfDg==
+X-Gm-Message-State: AOJu0YxG2ubbWPoHoXiA0MuDcfJzZDXtCQiHDGaiSuUdmqowMkAHaNSy
+	8aTG5eSpqv9p3dPscUa7dDHmfjs5SjgbwsASVTGoYoP110974/VkQMbmrdbFjD3LRHgtz9EUVbs
+	5iaGenDrZLSeXpnP6TiMzKMenK4phvfiOItMP
+X-Gm-Gg: ASbGnct+g3yrWweH3PXX+rnrgV/5+MXl29cPjzW3vgGbTzNZXcH+u4wBMoI4mED8gHu
+	ivvIYhNtUQVvYo8sG3HP6vpgNxX2Q7+qw70bf
+X-Google-Smtp-Source: AGHT+IEQpgwsdPDnrVjBCw+HDFMGlk0GiZ4b5kDA+ewxPQ2xfg5Pyzhaq8Co/zzApCfFa5tsPxBOkOEnk+uEQPlWR80=
+X-Received: by 2002:a17:903:18a:b0:218:a5a8:431a with SMTP id
+ d9443c01a7336-21a83fcc47dmr225437885ad.49.1736607001237; Sat, 11 Jan 2025
+ 06:50:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250109143319.26433-1-jhs@mojatatu.com> <20250109102902.3fd9b57d@kernel.org>
+ <CAM0EoMn7uADZkTQkg48VP7K7KD=ZVHPLfZheAwXSumqFWommNg@mail.gmail.com> <20250110183307.4bfba412@kernel.org>
+In-Reply-To: <20250110183307.4bfba412@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Sat, 11 Jan 2025 09:49:50 -0500
+X-Gm-Features: AbW1kvZIx23k_wZZ3K2RFkze_p_QQ3v6sXQhVVt4oapU1iF8YCd4KpHklJY35gM
+Message-ID: <CAM0EoMk9jye5Q2Q-3XcFMhwFZ6U9q9UNrUqqU6B+ndwoUstU=g@mail.gmail.com>
+Subject: Re: [PATCH net 1/1 v2] net: sched: Disallow replacing of child qdisc
+ from one parent to another
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, xiyou.wangcong@gmail.com, 
+	davem@davemloft.net, edumazet@google.com, security@kernel.org, 
+	nnamrec@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-HDS/HDS-thresh features were updated/implemented. so add some tests for
-these features.
+On Fri, Jan 10, 2025 at 9:33=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+[..]
+> >  It could be you just wanted to ensure some grafting happened, in
+> > which case we can adjust the test case.
+>
+> Yes, adjusting the test sounds good. I was testing visibility after
+> supported operations. If the operation is no longer supported there's
+> nothing to test :)
+>
 
-HDS tests are the same with `ethtool -G eth0 tcp-data-split <on | off |
-auto >` but `auto` depends on driver specification.
-So, it doesn't include `auto` case.
+Ok, sending V2 with the Fixes tag, test case fix will follow later
+today after some testing.
 
-HDS-thresh tests are same with `ethtool -G eth0 hds-thresh <0 - MAX>`
-It includes both 0 and MAX cases. It also includes exceed case, MAX + 1.
-
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
----
-
-v8:
- - Use ksft_raises.
-
-v7:
- - Patch added.
-
- tools/testing/selftests/drivers/net/Makefile |   1 +
- tools/testing/selftests/drivers/net/hds.py   | 120 +++++++++++++++++++
- 2 files changed, 121 insertions(+)
- create mode 100755 tools/testing/selftests/drivers/net/hds.py
-
-diff --git a/tools/testing/selftests/drivers/net/Makefile b/tools/testing/selftests/drivers/net/Makefile
-index 0fec8f9801ad..a3bc22b32f2e 100644
---- a/tools/testing/selftests/drivers/net/Makefile
-+++ b/tools/testing/selftests/drivers/net/Makefile
-@@ -10,6 +10,7 @@ TEST_PROGS := \
- 	queues.py \
- 	stats.py \
- 	shaper.py \
-+	hds.py \
- # end of TEST_PROGS
- 
- include ../../lib.mk
-diff --git a/tools/testing/selftests/drivers/net/hds.py b/tools/testing/selftests/drivers/net/hds.py
-new file mode 100755
-index 000000000000..394971b25c0b
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hds.py
-@@ -0,0 +1,120 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+
-+import errno
-+from lib.py import ksft_run, ksft_exit, ksft_eq, ksft_raises, KsftSkipEx
-+from lib.py import EthtoolFamily, NlError
-+from lib.py import NetDrvEnv
-+
-+def get_hds(cfg, netnl) -> None:
-+    try:
-+        rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
-+    except NlError as e:
-+        raise KsftSkipEx('ring-get not supported by device')
-+    if 'tcp-data-split' not in rings:
-+        raise KsftSkipEx('tcp-data-split not supported by device')
-+
-+def get_hds_thresh(cfg, netnl) -> None:
-+    try:
-+        rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
-+    except NlError as e:
-+        raise KsftSkipEx('ring-get not supported by device')
-+    if 'hds-thresh' not in rings:
-+        raise KsftSkipEx('hds-thresh not supported by device')
-+
-+def set_hds_enable(cfg, netnl) -> None:
-+    try:
-+        netnl.rings_set({'header': {'dev-index': cfg.ifindex}, 'tcp-data-split': 'enabled'})
-+    except NlError as e:
-+        if e.error == errno.EINVAL:
-+            raise KsftSkipEx("disabling of HDS not supported by the device")
-+        elif e.error == errno.EOPNOTSUPP:
-+            raise KsftSkipEx("ring-set not supported by the device")
-+    try:
-+        rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
-+    except NlError as e:
-+        raise KsftSkipEx('ring-get not supported by device')
-+    if 'tcp-data-split' not in rings:
-+        raise KsftSkipEx('tcp-data-split not supported by device')
-+
-+    ksft_eq('enabled', rings['tcp-data-split'])
-+
-+def set_hds_disable(cfg, netnl) -> None:
-+    try:
-+        netnl.rings_set({'header': {'dev-index': cfg.ifindex}, 'tcp-data-split': 'disabled'})
-+    except NlError as e:
-+        if e.error == errno.EINVAL:
-+            raise KsftSkipEx("disabling of HDS not supported by the device")
-+        elif e.error == errno.EOPNOTSUPP:
-+            raise KsftSkipEx("ring-set not supported by the device")
-+    try:
-+        rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
-+    except NlError as e:
-+        raise KsftSkipEx('ring-get not supported by device')
-+    if 'tcp-data-split' not in rings:
-+        raise KsftSkipEx('tcp-data-split not supported by device')
-+
-+    ksft_eq('disabled', rings['tcp-data-split'])
-+
-+def set_hds_thresh_zero(cfg, netnl) -> None:
-+    try:
-+        netnl.rings_set({'header': {'dev-index': cfg.ifindex}, 'hds-thresh': 0})
-+    except NlError as e:
-+        if e.error == errno.EINVAL:
-+            raise KsftSkipEx("hds-thresh-set not supported by the device")
-+        elif e.error == errno.EOPNOTSUPP:
-+            raise KsftSkipEx("ring-set not supported by the device")
-+    try:
-+        rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
-+    except NlError as e:
-+        raise KsftSkipEx('ring-get not supported by device')
-+    if 'hds-thresh' not in rings:
-+        raise KsftSkipEx('hds-thresh not supported by device')
-+
-+    ksft_eq(0, rings['hds-thresh'])
-+
-+def set_hds_thresh_max(cfg, netnl) -> None:
-+    try:
-+        rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
-+    except NlError as e:
-+        raise KsftSkipEx('ring-get not supported by device')
-+    if 'hds-thresh' not in rings:
-+        raise KsftSkipEx('hds-thresh not supported by device')
-+    try:
-+        netnl.rings_set({'header': {'dev-index': cfg.ifindex}, 'hds-thresh': rings['hds-thresh-max']})
-+    except NlError as e:
-+        if e.error == errno.EINVAL:
-+            raise KsftSkipEx("hds-thresh-set not supported by the device")
-+        elif e.error == errno.EOPNOTSUPP:
-+            raise KsftSkipEx("ring-set not supported by the device")
-+    rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
-+    ksft_eq(rings['hds-thresh'], rings['hds-thresh-max'])
-+
-+def set_hds_thresh_gt(cfg, netnl) -> None:
-+    try:
-+        rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
-+    except NlError as e:
-+        raise KsftSkipEx('ring-get not supported by device')
-+    if 'hds-thresh' not in rings:
-+        raise KsftSkipEx('hds-thresh not supported by device')
-+    if 'hds-thresh-max' not in rings:
-+        raise KsftSkipEx('hds-thresh-max not defined by device')
-+    hds_gt = rings['hds-thresh-max'] + 1
-+    with ksft_raises(NlError) as e:
-+        netnl.rings_set({'header': {'dev-index': cfg.ifindex}, 'hds-thresh': hds_gt})
-+    ksft_eq(e.exception.nl_msg.error, -errno.EINVAL)
-+
-+def main() -> None:
-+    with NetDrvEnv(__file__, queue_count=3) as cfg:
-+        ksft_run([get_hds,
-+                  get_hds_thresh,
-+                  set_hds_disable,
-+                  set_hds_enable,
-+                  set_hds_thresh_zero,
-+                  set_hds_thresh_max,
-+                  set_hds_thresh_gt],
-+                 args=(cfg, EthtoolFamily()))
-+    ksft_exit()
-+
-+if __name__ == "__main__":
-+    main()
--- 
-2.34.1
-
+cheers,
+jamal
