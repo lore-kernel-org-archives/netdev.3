@@ -1,190 +1,255 @@
-Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B4610E9
-	for <netdev@vger.kernel.org>; Sat, 11 Jan 2025 08:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8926F16B3B7;
+	Sat, 11 Jan 2025 08:52:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736584270; cv=none; b=o91oF0ESHnyy+EKq/86ejg+YnEiQjlZ0f4St2nzmcKHalwYZLVYflUsW5gJNT5VmMkBrhqwsd1z+xrsu6vS2j77reYQijpsTduabn69cCIp+y4eqxBWNkCL5TGUoKSS+Nw+cMVgp2iMnrqoWjAZETgSit6DSfIBYHpIXr+NJdeM=
+	t=1736585548; cv=none; b=Ttu6P8r2gcM3hSqozhBJk9WmdJfcyLNy1+JtC/SeqQ2iSOfHR/N+tSBZKdTeae89ly64SgYCwReViD09aDhH56+VTN/LaBBpQv0yv1YxeyPmnGDa+08ALOL1WkFATnR4gxzNW2taiGxqvAfxIOWfYPVT+Iy0qhRrEleRaWl4/qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736584270; c=relaxed/simple;
-	bh=ucNEuEsqawAm53BJRaIXDyVIUwhyoHZAnELNTjiDAoc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c9LlO1J+Y3jWGX/ejbrS2P00DhNAfBKKxaWPRjOkbsJhNPM4DOAN+wAR94t2AoKxC+oB+Qu7ZsAmNzSXpbpjOMCk7irqlmtdfYHqeSBuFgI0xOqHsw3PlgqstAbKKNl6XAVwKsEvo6CTDqki8p8vpuXwyo8812t9rIDmJ68me9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MGbIOqaL; arc=none smtp.client-ip=209.85.166.172
+	s=arc-20240116; t=1736585548; c=relaxed/simple;
+	bh=24BG19mvghY4M8upLZCYRHe8J40vHEvFiFc28osfeTk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SY9a/rYPQZW+LdNQJRJqgTSfHR2I2lOTSH8Irts5FMd/qC8lCAKFhIrjf9nKvh4AqHQCTi0beBLxlIosGMxlve1GjBL2duQZcgrF6oVIsDCjIHJbIGpmQCyL3KNAbcak6WX/OAsjJ9nhBRH8q18XDvxqrpTJKj+sr5G9pmFCq7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eQ+6xkfM; arc=none smtp.client-ip=209.85.218.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MGbIOqaL"
-Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-3a8c7b02d68so17938395ab.3
-        for <netdev@vger.kernel.org>; Sat, 11 Jan 2025 00:31:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eQ+6xkfM"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aa684b6d9c7so504731166b.2;
+        Sat, 11 Jan 2025 00:52:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736584268; x=1737189068; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TBDCDFNtbAjmcOSF7YBQveTbVFnBCaDxZLows1Fg8ZU=;
-        b=MGbIOqaLchk1Ve9H5SHBz2ygUZg8hAGb0L6hMMt9pDaEV0KmYtAPBItSlw7/L+ylAq
-         +iOUiFL4Bt9xO7wmB35bng2xSM5JOZChSJhrMjCo+kvqVtykTUXJGYkIxqgHYQBqTJvJ
-         38HjRc12vSlbH3iuSsMwisT1FVdqZJulIro7bPbrNHxsdZnOdnreyfHGZEhIAIQYuq/F
-         h/kLBHHNHKwnYOir2yoiQrd7875JgAljHCj3AwBYkTfF5tti8Roa7ZTYnb8wyk8m554V
-         +180aFae+TagGD9S1zM9UgKi+lBB+uYAViNgF6Okf+h790KKTXCkV/1CGkyB7/FcqGzk
-         1VNQ==
+        d=gmail.com; s=20230601; t=1736585545; x=1737190345; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=SA+nWGPnmc3ZsCyHH34PDUVDQxcYcbcA6hP9px0rFXc=;
+        b=eQ+6xkfMZ7rarmHR4zeyjeSRMMgTW20gAk2qyznY3MMmn/tKM6Orb8aA6fZ7apGA/Z
+         hFmExBRmk/h9MT/a9OO4n6Mk8D5yxQC4K731SW7pziQ8W4mraKeaZJpU3NS/b5cUUyhR
+         xU1Ydd+ejGLW7RQVV9Kj11TugJpVQeWkZQd3qObnvTxBPbJD/2BfnGvJoaTOFKfvenYn
+         8PBMLtq3UaR7bEKO6OtrJJghd9dr9J3dMvKFcr0Gj+b8E1M5A7upNuOx9h0CKk30gKOH
+         dniIAjI6KPTaDX8ZqTQZBBoxPXD/hVMxcNgwoJl6/VKIg2NyRIEo5W08VW+H5WCIlnNA
+         ew5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736584268; x=1737189068;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TBDCDFNtbAjmcOSF7YBQveTbVFnBCaDxZLows1Fg8ZU=;
-        b=j/pYpvpqfnxzgikHOMA2JkEpoOt5QkmvjNScRaG+Yo2W2cJNvAKp0S/ik0y/P/NXfS
-         EKndRzB6QcXXA1NGVMAOt1+Q+l5ffPagrKwMp8xVaIGZCMxQD8XXCH9jnPE3pSHuhXh1
-         2s0Yrs9oiPK4DB1+901/FG0wOs5D6vcl3tGGEjMQofuYbRH7cvKA8p1SweuSkC9gGf10
-         koluPliXvry0mooZzHoDhdHkidtLCBPu03pM1f2ZbEiGu/glH+Po15MipJeY8uINJcUn
-         mutXUJ1+jweBI5gT2Cs5jsPVK1HRD7V23GpDx/rUqsBo8SvRepyqTsvSu+nSBMlABQ51
-         gfEA==
-X-Forwarded-Encrypted: i=1; AJvYcCVGSTjCbD42WfTlBoOzMSvCwLFPoUNXe847GKZi0HBVdelBgCyIpmhVT7ARY9q1EuwrlkWRq0M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxaRq4+icvXpM3OpsFa9jgonQHo3K7Y5G35pwLCTRcjGQ+rArUz
-	Fg7FnA3kVGAa9YObdRiXj46xHfAYvpbVYG9Rla4v5gJp9nTFWXosTUe2vgh7Kf9+KwMu9eI4blf
-	qCu/fFldaz/1VzHQ/CJG4NkN5nLM/KLPk
-X-Gm-Gg: ASbGnctJLrWvy+R9o3mie/NnkatY0WWtI8XW8C8HDypbOO78Bnlzq5NmxhzK6wYLRXo
-	YWOiGZ67quWB1IiWhghh5cUksBcwEqwQpmwdH
-X-Google-Smtp-Source: AGHT+IHffGH7TtuwYaSh7k7YKfQTw1Cg3I5epBLO663NCHlUG5RGDhZH7VorCCHgrLthQq5mX83hU0CSYeBPfjTpZVk=
-X-Received: by 2002:a05:6e02:1aad:b0:3ce:6828:896c with SMTP id
- e9e14a558f8ab-3ce68288e6bmr3605125ab.1.1736584268459; Sat, 11 Jan 2025
- 00:31:08 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736585545; x=1737190345;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SA+nWGPnmc3ZsCyHH34PDUVDQxcYcbcA6hP9px0rFXc=;
+        b=YTVfWFvmEB6jB3qeBkb0vNeZLs+Q/XgAiz5pL1aAHr/kqNtpDub+ruJmx5okmUqgad
+         lO6TjkM7chKutXlOc4bnDFgZTFE7k+94eGZX2ulP9QJcxlWrSq35lrilE+8nRXOvD0nX
+         vEVPlW92CAIpMr9RtfX3VnkIeuhworqFFFFFthR0hqYSkllXUNwZLOIz5L9WtGVsXrcR
+         UborDeqetVkRfofXLKZcYaNw34QBxAZoJ0OUg0GnXMf3OeUzVj+PxRy9ij0lxS7QCdqo
+         q5lbb+UY8Lz70wcJcsCZKTWukzsYI1+hxyOQ/a0Xd4+ihtmAQHjS23eDuQ+rL2F1AIDK
+         EO+g==
+X-Forwarded-Encrypted: i=1; AJvYcCUHcicM4m2xj/Fn4JC86DMPYMoDYXSuHqXtoEXQcP7sFYkM2S4CkZCswjffiJUKtnb8THioqoQEbAusNA==@vger.kernel.org, AJvYcCXf0GkNFshK8xZtYl7RwUJ1a57F0yCwiMX1zLL7ISUmzjMaJ4MN3wDQSbikm9ldTvTdUfwgG045@vger.kernel.org
+X-Gm-Message-State: AOJu0YyM0RiBBl/WBi5yMISHC2GWc8B1xl4Vs18kr1PQS5RNaWuY9hQ6
+	hCcMs6RdGPUJ0xVG5QsCY5CnyQGwzElD1f/oYpJLYTC0QVf75dAk
+X-Gm-Gg: ASbGncuLX+z8xTRQbm68KVBziDsCYi4hYP2nXDSQdnCr97zY+fjiSmgZXhLDmbFWx5n
+	IPEfB4NVV8nd/YknxJo5mSohnvDdi1r4/394NbspYaFEzJV79l/8r6+i3qXRQEMTwdiz6T7mI3y
+	Cla6dlB3nakbRjUZhoLILyYdeu+wu4pTPC/NbmafpsawRkRoSvzux7VNoWpNUXDRsMz+Lvulq85
+	f1P2lxPYoer6O3G31cwzsgL2JcDfLBQeYoESIxvGA4EzbJr8AU0JHHeTH8Hw9oG/b6HMgDqno6Q
+	H4obu/GyKVh8LGtg5QZjIF/W5yvGBNXy6M/wZL8tjLdO/8vSkk13nvMHNJa4Em7huZF2l5lMZv9
+	Sui38v+u/83v5hIUlrnCbdIyO1zY1FMoPnqEFTDLs0OEjPKxV
+X-Google-Smtp-Source: AGHT+IHnuZrRBIvyzeOBg+q1DKNtU9c2osjRPduNU2d/DlcqFHGhF7goxEuyroXwjSuuWkEUJAEn3g==
+X-Received: by 2002:a17:907:7d94:b0:aab:8a9d:6d81 with SMTP id a640c23a62f3a-ab2abc6e270mr1099136766b.44.1736585544436;
+        Sat, 11 Jan 2025 00:52:24 -0800 (PST)
+Received: from ?IPV6:2a02:3100:a90d:e100:d8f1:2ffc:4f48:89fd? (dynamic-2a02-3100-a90d-e100-d8f1-2ffc-4f48-89fd.310.pool.telefonica.de. [2a02:3100:a90d:e100:d8f1:2ffc:4f48:89fd])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-ab2c9564a08sm247982766b.121.2025.01.11.00.52.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 11 Jan 2025 00:52:22 -0800 (PST)
+Message-ID: <b944200a-adc0-426b-92c7-5970054e23c2@gmail.com>
+Date: Sat, 11 Jan 2025 09:52:22 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250106181219.1075-1-ouster@cs.stanford.edu> <20250106181219.1075-8-ouster@cs.stanford.edu>
- <20250110092537.GA66547@j66a10360.sqa.eu95> <CAGXJAmyYmizvm350vSGmJqdOt8d+d0soP95FGhBUQ5nr8kNqnw@mail.gmail.com>
-In-Reply-To: <CAGXJAmyYmizvm350vSGmJqdOt8d+d0soP95FGhBUQ5nr8kNqnw@mail.gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Sat, 11 Jan 2025 16:30:32 +0800
-X-Gm-Features: AbW1kvYIEQZdJs7YWcpMjMbe7up0tj1Vg5Rse4C8M-4VS_yQfc6Nicei2SoJKWs
-Message-ID: <CAL+tcoCOSk2ezZ+OnsKBZc_JcO_U01X1q3KmTd6WhObuzbuzsA@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 07/12] net: homa: create homa_sock.h and homa_sock.c
-To: John Ousterhout <ouster@cs.stanford.edu>
-Cc: "D. Wythe" <alibuda@linux.alibaba.com>, netdev@vger.kernel.org, pabeni@redhat.com, 
-	edumazet@google.com, horms@kernel.org, kuba@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 3/3] net: phy: realtek: add hwmon support for
+ temp sensor on RTL822x
+To: Guenter Roeck <linux@roeck-us.net>, Andrew Lunn <andrew@lunn.ch>
+Cc: Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ David Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Simon Horman <horms@kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+ Jean Delvare <jdelvare@suse.com>
+References: <3e2784e3-4670-4d54-932f-b25440747b65@gmail.com>
+ <dbfeb139-808f-4345-afe8-830b7f4da26a@gmail.com>
+ <8d052f8f-d539-45ba-ba21-0a459057f313@lunn.ch>
+ <dca1302a-82d2-482c-acf7-d6af76241a6b@gmail.com>
+ <5deec54e-b88e-4579-b110-6b897f7cebd0@roeck-us.net>
+Content-Language: en-US
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Autocrypt: addr=hkallweit1@gmail.com; keydata=
+ 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
+In-Reply-To: <5deec54e-b88e-4579-b110-6b897f7cebd0@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, Jan 11, 2025 at 8:20=E2=80=AFAM John Ousterhout <ouster@cs.stanford=
-.edu> wrote:
->
-> On Fri, Jan 10, 2025 at 1:25=E2=80=AFAM D. Wythe <alibuda@linux.alibaba.c=
-om> wrote:
-> >
-> > > +void homa_sock_unlink(struct homa_sock *hsk)
-> > > +{
-> > > +     struct homa_socktab *socktab =3D hsk->homa->port_map;
-> > > +     struct homa_socktab_scan *scan;
-> > > +
-> > > +     /* If any scans refer to this socket, advance them to refer to
-> > > +      * the next socket instead.
-> > > +      */
-> > > +     spin_lock_bh(&socktab->write_lock);
-> > > +     list_for_each_entry(scan, &socktab->active_scans, scan_links) {
-> > > +             if (!scan->next || scan->next->sock !=3D hsk)
-> > > +                     continue;
-> > > +             scan->next =3D (struct homa_socktab_links *)
-> > > +                             rcu_dereference(hlist_next_rcu(&scan->n=
-ext->hash_links));
-> > > +     }
-> >
-> > I can't get it.. Why not just mark this sock as unavailable and skip it
-> > when the iterator accesses it ?
-> >
-> > The iterator was used under rcu and given that your sock has the
-> > SOCK_RCU_FREE flag set, it appears that there should be no concerns
-> > regarding dangling pointers.
->
-> The RCU lock needn't be held for the entire lifetime of an iterator,
-> but rather only when certain functions are invoked, such as
-> homa_socktab_next. Thus it's possible for a socket to be reclaimed and
-> freed while a scan is in progress. This is described in the comments
-> for homa_socktab_start_scan. This behavior is necessary because of
-> homa_timer, which needs to call schedule in the middle of a scan and
-> that can't be done without releasing the RCU lock. I don't like this
-> complexity but I haven't been able to find a better alternative.
->
-> > > +     hsk->shutdown =3D true;
-> >
-> > From the actual usage of the shutdown member, I think you should use
-> > sock_set_flag(SOCK_DEAD), and to check it with sock_flag(SOCK_DEAD).
->
-> I wasn't aware of SOCK_DEAD until your email. After poking around a
-> bit to learn more about SOCK_DEAD, I am nervous about following your
-> advice. I'm still not certain exactly when SOCK_DEAD is set or who is
-> allowed to set it. The best information I could find was from ChatGPT
-> which says this:
->
-> "The SOCK_DEAD flag indicates that the socket is no longer referenced
-> by any user-space file descriptors or kernel entities. Essentially,
-> the socket is considered "dead" and ready to be cleaned up."
+On 11.01.2025 01:20, Guenter Roeck wrote:
+> On 1/10/25 13:41, Heiner Kallweit wrote:
+>> On 10.01.2025 22:10, Andrew Lunn wrote:
+>>>> - over-temp alarm remains set, even if temperature drops below threshold
+>>>
+>>>> +int rtl822x_hwmon_init(struct phy_device *phydev)
+>>>> +{
+>>>> +    struct device *hwdev, *dev = &phydev->mdio.dev;
+>>>> +    const char *name;
+>>>> +
+>>>> +    /* Ensure over-temp alarm is reset. */
+>>>> +    phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_TSALRM, 3);
+>>>
+>>> So it is possible to clear the alarm.
+>>>
+>>> I know you wanted to experiment with this some more....
+>>>
+>>> If the alarm is still set, does that prevent the PHY renegotiating the
+>>> higher link speed? If you clear the alarm, does that allow it to
+>>> renegotiate the higher link speed? Or is a down/up still required?
+>>> Does an down/up clear the alarm if the temperature is below the
+>>> threshold?
+>>>
+>> I tested wrt one of your previous questions, when exceeding the
+>> temperature threshold the chip actually removes 2.5Gbps from the
+>> advertisement register.
+>>
+>> If the alarm is set, the chip won't switch back automatically to
+>> 2.5Gbps even if the temperature drops below the alarm threshold.
+>>
+>> When clearing the alarm the chip adds 2.5Gbps back to the advertisement
+>> register. Worth to be mentioned:
+>> The temperature is checked only if the link speed is 2.5Gbps.
+>> Therefore the chip thinks it's safe to add back the 2.5Gbps mode
+>> when the alarm is cleared.
+>>
+>> What I didn't test is whether it's possible to manually add 2.5Gbps
+>> to the advertisement register whilst the alarm is set.
+>> But I assume that's the case.
+>>
+>>> Also, does HWMON support clearing alarms? Writing a 0 to the file? Or
+>>> are they supported to self clear on read?
+>>>
+>> Documentation/hwmon/sysfs-interface.rst states that the alarm
+>> is a read-only attribute:
+>>
+>> +-------------------------------+-----------------------+
+>> | **`in[0-*]_alarm`,        | Channel alarm        |
+>> | `curr[1-*]_alarm`,        |            |
+>> | `power[1-*]_alarm`,        |   - 0: no alarm    |
+>> | `fan[1-*]_alarm`,        |   - 1: alarm        |
+>> | `temp[1-*]_alarm`**        |            |
+>> |                |   RO            |
+>> +-------------------------------+-----------------------+
+>>
+>> Self-clearing is neither mentioned in the documentation nor
+>> implemented in hwmon core.
+> 
+> I would argue that self clearing is implied in "RO". This isn't a hwmon
+> core problem, it needs to be implemented in drivers. Many chips auto-clear
+> alarm attributes on read. For those this is automatic. Others need
+> to explicitly implement clearing alarms.
+> 
+Thanks a lot for the clarifications. Wrt RO and self-clearing see following
+snippet from a PHY datasheet. These namings are quite common IMO. 
+I think using RC in the alarm attribute description would be clearer.
 
-Well, I'm surprised that the GPT is becoming more and more intelligent...
+Type Description
+LH Latch high. If the status is high, this field is set to ‘1’ and remains set.
+RC Read-cleared. The register field is cleared after read.
+RO Read only.
+WO Write only.
+RW Read and Write.
+SC Self-cleared. Writing a ‘1’ to this register field causes the function to be activated immediately, and then
+the field will be automatically cleared to ‘0’.
 
-The above is correct as you can see from this call trace
-(__tcp_close()->sk_orphan()). Let me set TCP as an example, when the
-user decides to close a socket or accidently kill/exit the process,
-the socket would enter into __tcp_close(), which indicates that this
-socket has no longer relationship with its owner (application).
 
->
-> If ChatGPT isn't hallucinating, this would suggest that Homa shouldn't
-> set SOCK_DEAD, since the conditions above might not yet be true when
-> homa_sock_shutdown is invoked.
+>>
+>> @Guenter:
+>> If alarm would just mean "current value > alarm threshold", then we
+>> wouldn't need an extra alarm attribute, as this is something which
+>> can be checked in user space.
+> 
+> Alarm attributes, if implemented properly and if a chip supports interrupts,
+> should generate sysfs and udev events to inform userspace. An alarm
+> doesn't just mean "current value > alarm threshold", it can also mean that
+> the current value was above the threshold at some point since the attribute
+> was read the last time. For that to work, the attribute must be sticky
+> until read.
+> 
+> FWIW, I am sure you'll find lots of drivers not implementing this properly,
+> so there is no need to search for those and use them as precedent.
+> 
+> If you want to support alarm attributes or not is obviously your call,
+> but they should be self clearing if implemented. I don't want to get complaints
+> along the line of "the alarm attribute is set but doesn't clear even though
+> the temperature (or voltage, or whatever) is below the threshold".
+> 
+>> Has it ever been considered that a user may have to explicitly ack
+>> an alarm to clear it? Would you consider it an ABI violation if
+>> alarm is configured as R/W for being able to clear the alarm?
+>>
+> 
+> Yes.
+> 
+> Guenter
+> 
+>>> I'm wondering if we are heading towards ABI issues? You have defined:
+>>>
+>>> - over-temp alarm remains set, even if temperature drops below threshold
+>>>
+>>> so that kind of eliminates the possibility of implementing self
+>>> clearing any time in the future. Explicit clearing via a write is
+>>> probably O.K, because the user needs to take an explicit action.  Are
+>>> there other ABI issues i have not thought about.
+>>>
+>>>     Andrew
+>>
+>> Heiner
+> 
 
-Introducing a common usage about SOCK_DEAD might be a good choice. But
-if it's not that easy to implement, I think we can use the internal
-destruction mechanism instead like you did.
-
->
-> Moreover, I'm concerned that some other entity might set SOCK_DEAD
-> before homa_sock_shutdown is invoked, in which case homa_sock_shutdown
-> would not cleanup the socket properly.
-
-No need to worry about that. If it happens, it usually means there is
-a bug somewhere and then we will fix it.
-
-Thanks,
-Jason
-
->
-> Thus, it seems safest to me for Homa to have its own shutdown flag.
->
-> Let me know if you still think Homa should use SOCK_DEAD.
->
-> > > +
-> > > +     while (!list_empty(&hsk->dead_rpcs))
-> > > +             homa_rpc_reap(hsk, 1000);
-> >
-> > I take a quick look at homa_rpc_reap, although there is no possibility
-> > of an infinite loop founded currently, it still raises concerns.
-> >
-> > It might be better to let homa_rpc_reap() handle this kind of actions b=
-y itself.
-> > For example, code like that:
-> >
-> > homa_rpc_reap(hsk, 0, flags=3DRPC_FORCE_REAP|RPC_REAP_ALL);
-> >
-> > In this way, anyone making modifications to homa_rpc_reap() in the futu=
-re will
-> > at least be aware that there is such a case that needs to be handled we=
-ll.
->
-> I have changed the API for homa_rpc_reap to this:
->
-> int homa_rpc_reap(struct homa_sock *hsk, bool reap_all)
->
-> The caller can no longer specify a count. When reap_all isn't
-> specified, homa_rpc_reap determines for itself what represents a
-> "small amount of work" to perform; no need for the caller to figure
-> this out.
->
-> -John-
->
