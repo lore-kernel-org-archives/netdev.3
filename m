@@ -1,68 +1,58 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3581F18A931;
-	Sat, 11 Jan 2025 09:49:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55E1224D7
+	for <netdev@vger.kernel.org>; Sat, 11 Jan 2025 10:02:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736588973; cv=none; b=YNwH+0adhr8zAqIDzXRTenANr3o8mHc9RfCNG8RP1LMTaeB/S7dv+ImgMJL7AXBvbxlW3KcDMX3XCmkajrbOqjv88qPoQn7xoih0HheVx3khFVjptKXpKwqRNjhxDRB9y7KihCPYxtcOH2Iq4nG1YUnheIOQVS5YMiOXAetfQLw=
+	t=1736589728; cv=none; b=oe4aYgEENhbBiHPjdWaENYytFGTTRzO5t9Za6vi0b/xwU4uFKOC73/12435cdygg8nmVklt2VrcuVdo/P/MaEo55zg/yRWs7UHueLLPhfiWNqrgzeeLCXkKVML06WlCCLRcq221jfe7AISTexbtEWISqS/pt5JicH6ugGuyAbLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736588973; c=relaxed/simple;
-	bh=fJneAG2e2IjqcWED90SuaOpGkKAmPjMZPoMSb92OI7I=;
+	s=arc-20240116; t=1736589728; c=relaxed/simple;
+	bh=NF5za0BArxv4lF/3B6FSt2VbhgvfekPrDjw+xB0Rt4I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RYrzlcjxMWJhNEYJVQoyDVAV5mWoPYdcI5uFtAWS/fBf0D3BjpdinkWt9nKGNx1XnLpnrWJUPvM+g7/XLlZdbDeNUGYCdvi315+4KK9SGO2I7cRrUz1qZWIaU/iP10yF3ZnGuc9UytWC6WRdE5EHggghv5m+TBlSB03LC5OHmCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FV+LnLt6; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=t3R6XOgInWH1uyKV/PxSFzxQArb25gXDut/sA79Rh7rOqLv6skuDBAEJhFJimo2Tts1ZIjy+UuBT3NVzny4Gt948fRrrIB2n3wUF12ha3Avkl884A0hjjiXEXwl/+krXho4GUdpl2QNNel6vzCeSskYTC9L3ksmqidtxLCIGrpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=BA+eJEq7; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FV+LnLt6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736588973; x=1768124973;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fJneAG2e2IjqcWED90SuaOpGkKAmPjMZPoMSb92OI7I=;
-  b=FV+LnLt698HZdvL0awOde+jXItmWtqj+bX8tVlhvzjWbY2uxIMFelbic
-   AefFjUUYdB28lWmkZVbcCH0jGxzsbda0crFiCY6e9czCUs7UgtoQ1Fuuu
-   p/FvdwSuQOXGs5QwX+LTyaGvOsJD7n3IU0n1jncoNjxw54bDQz7z6mQZh
-   RV/fh6A9Kbt8DH3JAfj4O2ftmdTltjuUcItAwtsx+TIxTRxNTHw71lupJ
-   K+GwQTC+hd7+Co1LcG/mDt597inoBST8nVTl5v6WAhRIfKaqz0PHRbx12
-   HaHo9J6CO5HMXAyHfsG4NU6PI4relTyoCrBLjgwoR9StSBCq0BGgK9NuI
-   w==;
-X-CSE-ConnectionGUID: sbYoViubT3ysNSFH6mtfxA==
-X-CSE-MsgGUID: Hr+Tn9SvRla5e9dO5KCMEg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="40646920"
-X-IronPort-AV: E=Sophos;i="6.12,306,1728975600"; 
-   d="scan'208";a="40646920"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2025 01:49:30 -0800
-X-CSE-ConnectionGUID: 8yBD54+gSJ2eZrN1HyEkig==
-X-CSE-MsgGUID: 14ORSzlgSyahUj2kOy/9Tg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,306,1728975600"; 
-   d="scan'208";a="103766866"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 11 Jan 2025 01:49:26 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tWY7Q-000KSP-0u;
-	Sat, 11 Jan 2025 09:49:24 +0000
-Date: Sat, 11 Jan 2025 17:48:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
-	Russell King - ARM Linux <linux@armlinux.org.uk>,
-	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="BA+eJEq7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=bp9MrtnHpJ/ofZ+QhEP8v4uuSTbm/2afaj7se19CfHU=; b=BA+eJEq7pkanJ8OILoi38BLj2e
+	oZvx283mZmbMbpyFBwuFnVbFxWGI2Bh7T1976L+lZgX9SEuyJgA60IfH9bAd+esxmTHew7p9qhhiW
+	RG0fxVRYWWiCyRVZKnpF+m1js90h/FNcSkxGBPli5ZjTenfYnWn7xgxoC0o5w/6mu6onZn/we0xBz
+	vFoJRvyZAu3+DIMATwQPG4KNuQFYS4M6Hcd6GPuKXuTOJVRPsKRFqCil4c/gkBhAAanIbaW967z3V
+	6+hpx3vhHXZEbmfg3u/C9+x2RTBn6KyxpEIQ1arvT9DDOCRuJr6G20PoZSoUPMXECBiN07Pqv9R6a
+	bUkclYqw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53752)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tWYJb-0004Vi-1q;
+	Sat, 11 Jan 2025 10:01:59 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tWYJZ-0000pY-2r;
+	Sat, 11 Jan 2025 10:01:57 +0000
+Date: Sat, 11 Jan 2025 10:01:57 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
 	David Miller <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	netdev@vger.kernel.org,
-	"linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jean Delvare <jdelvare@suse.com>
-Subject: Re: [PATCH net-next 3/3] net: phy: realtek: add hwmon support for
- temp sensor on RTL822x
-Message-ID: <202501111711.i1W0TGwl-lkp@intel.com>
-References: <dbfeb139-808f-4345-afe8-830b7f4da26a@gmail.com>
+	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH net-next 3/9] net: phy: c45: don't accept disabled EEE
+ modes in genphy_c45_ethtool_set_eee
+Message-ID: <Z4JBld9d_UkBgRR4@shell.armlinux.org.uk>
+References: <a002914f-8dc7-4284-bc37-724909af9160@gmail.com>
+ <5964fa47-2eff-4968-894c-0b7f487d820c@gmail.com>
+ <Z4I4ADNO1nSdZRja@shell.armlinux.org.uk>
+ <472f6fe4-18ff-4124-ba43-fd757df7cb4d@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,145 +61,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dbfeb139-808f-4345-afe8-830b7f4da26a@gmail.com>
+In-Reply-To: <472f6fe4-18ff-4124-ba43-fd757df7cb4d@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi Heiner,
+On Sat, Jan 11, 2025 at 10:44:25AM +0100, Heiner Kallweit wrote:
+> On 11.01.2025 10:21, Russell King (Oracle) wrote:
+> > On Sat, Jan 11, 2025 at 10:06:02AM +0100, Heiner Kallweit wrote:
+> >> Link modes in phydev->eee_disabled_modes are filtered out by
+> >> genphy_c45_write_eee_adv() and won't be advertised. Therefore
+> >> don't accept such modes from userspace.
+> > 
+> > Why do we need this? Surely if the MAC doesn't support modes, then they
+> > should be filtered out of phydev->supported_eee so that userspace knows
+> > that the mode is not supported by the network interface as a whole, just
+> > like we do for phydev->supported.
+> > 
+> > That would give us the checking here.
+> > 
+> Removing EEE modes to be disabled from supported_eee is problematic
+> because of how genphy_c45_write_eee_adv() works.
+> 
+> Let's say we have a 2.5Gbps PHY and want to disable EEE at 2.5Gbps. If we
+> remove 2.5Gbps from supported_eee, then the following check is false:
+> if (linkmode_intersects(phydev->supported_eee, PHY_EEE_CAP2_FEATURES))
+> What would result in the 2.5Gbps mode not getting disabled.
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on net-next/main]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Heiner-Kallweit/net-phy-realtek-add-support-for-reading-MDIO_MMD_VEND2-regs-on-RTL8125-RTL8126/20250110-195043
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/dbfeb139-808f-4345-afe8-830b7f4da26a%40gmail.com
-patch subject: [PATCH net-next 3/3] net: phy: realtek: add hwmon support for temp sensor on RTL822x
-config: i386-randconfig-013-20250111 (https://download.01.org/0day-ci/archive/20250111/202501111711.i1W0TGwl-lkp@intel.com/config)
-compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250111/202501111711.i1W0TGwl-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501111711.i1W0TGwl-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/net/phy/realtek_hwmon.c:3:4: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
-       2 |  *
-         |  int
-       3 |  * HWMON support for Realtek PHY's
-         |    ^
->> drivers/net/phy/realtek_hwmon.c:3:9: error: expected ';' after top level declarator
-       3 |  * HWMON support for Realtek PHY's
-         |         ^
-         |         ;
-   drivers/net/phy/realtek_hwmon.c:3:33: warning: missing terminating ' character [-Winvalid-pp-token]
-       3 |  * HWMON support for Realtek PHY's
-         |                                 ^
-   In file included from drivers/net/phy/realtek_hwmon.c:8:
-   In file included from include/linux/hwmon.h:15:
-   In file included from include/linux/bitops.h:5:
-   In file included from ./arch/x86/include/generated/uapi/asm/types.h:1:
-   In file included from include/uapi/asm-generic/types.h:7:
-   include/asm-generic/int-ll64.h:16:9: error: unknown type name '__s8'; did you mean '__u8'?
-      16 | typedef __s8  s8;
-         |         ^~~~
-         |         __u8
-   include/uapi/asm-generic/int-ll64.h:21:23: note: '__u8' declared here
-      21 | typedef unsigned char __u8;
-         |                       ^
-   In file included from drivers/net/phy/realtek_hwmon.c:9:
-   In file included from include/linux/phy.h:15:
-   In file included from include/linux/spinlock.h:60:
-   In file included from include/linux/thread_info.h:60:
-   In file included from arch/x86/include/asm/thread_info.h:59:
-   In file included from arch/x86/include/asm/cpufeature.h:5:
-   In file included from arch/x86/include/asm/processor.h:35:
-   In file included from include/linux/math64.h:6:
-   include/linux/math.h:115:1: error: unknown type name '__s8'; did you mean '__u8'?
-     115 | __STRUCT_FRACT(s8)
-         | ^
-   include/linux/math.h:112:2: note: expanded from macro '__STRUCT_FRACT'
-     112 |         __##type numerator;                             \
-         |         ^
-   <scratch space>:221:1: note: expanded from here
-     221 | __s8
-         | ^
-   include/uapi/asm-generic/int-ll64.h:21:23: note: '__u8' declared here
-      21 | typedef unsigned char __u8;
-         |                       ^
-   In file included from drivers/net/phy/realtek_hwmon.c:9:
-   In file included from include/linux/phy.h:15:
-   In file included from include/linux/spinlock.h:60:
-   In file included from include/linux/thread_info.h:60:
-   In file included from arch/x86/include/asm/thread_info.h:59:
-   In file included from arch/x86/include/asm/cpufeature.h:5:
-   In file included from arch/x86/include/asm/processor.h:35:
-   In file included from include/linux/math64.h:6:
-   include/linux/math.h:115:1: error: unknown type name '__s8'; did you mean '__u8'?
-     115 | __STRUCT_FRACT(s8)
-         | ^
-   include/linux/math.h:113:2: note: expanded from macro '__STRUCT_FRACT'
-     113 |         __##type denominator;                           \
-         |         ^
-   <scratch space>:222:1: note: expanded from here
-     222 | __s8
-         | ^
-   include/uapi/asm-generic/int-ll64.h:21:23: note: '__u8' declared here
-      21 | typedef unsigned char __u8;
-         |                       ^
-   In file included from drivers/net/phy/realtek_hwmon.c:9:
-   In file included from include/linux/phy.h:16:
-   In file included from include/linux/ethtool.h:17:
-   In file included from include/linux/compat.h:17:
-   In file included from include/linux/fs.h:33:
-   In file included from include/linux/percpu-rwsem.h:7:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:11: warning: array index 3 is past the end of the array (that has type 'unsigned long[2]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from drivers/net/phy/realtek_hwmon.c:9:
-   In file included from include/linux/phy.h:16:
-   In file included from include/linux/ethtool.h:17:
-   In file included from include/linux/compat.h:17:
-   In file included from include/linux/fs.h:33:
-   In file included from include/linux/percpu-rwsem.h:7:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:25: warning: array index 2 is past the end of the array (that has type 'unsigned long[2]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                                       ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from drivers/net/phy/realtek_hwmon.c:9:
-   In file included from include/linux/phy.h:16:
-   In file included from include/linux/ethtool.h:17:
-   In file included from include/linux/compat.h:17:
-   In file included from include/linux/fs.h:33:
-   In file included from include/linux/percpu-rwsem.h:7:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:11: warning: array index 3 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-
-
-vim +/int +3 drivers/net/phy/realtek_hwmon.c
-
-   > 3	 * HWMON support for Realtek PHY's
-     4	 *
-     5	 * Author: Heiner Kallweit <hkallweit1@gmail.com>
-     6	 */
-     7	
+Ok. Do we at least remove the broken modes from the supported mask
+reported to userspace?
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
