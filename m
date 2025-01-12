@@ -1,103 +1,116 @@
-Received: from michel.telenet-ops.be (michel.telenet-ops.be [195.130.137.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5CC4C9A
-	for <netdev@vger.kernel.org>; Sun, 12 Jan 2025 12:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.88
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C4A1B218F
+	for <netdev@vger.kernel.org>; Sun, 12 Jan 2025 12:36:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736683411; cv=none; b=ZhjroRGrpEfk6113kTCaYV3ddbf4e0ZK/sRwOdnnGmt4jFs4Z/PJUJYbYD/J8hFPHl6DiHg2tqMvNMadmPKvU/9eptPrgShspKskm3Q1c2+wCQmjF1rqDYJGifY7u09sTmSmzabC3mlQiOdAhDYkCRf+TJg3UfwaORuVYtLQhFQ=
+	t=1736685392; cv=none; b=firTG81y4NmkccUsljCIex82IH/49GjoJG9cSPKTAAJ8PooEHe4p24GXvx55KhOj3BZXxhTmkk/OIaFJjV1+tJEMFYQe9TkucTSVSPaE7i5+QogOFWwMki3qiobbzzl89d7VsWESvJPqy9MUJlC0YtNJNo5LRQF8wRab5tkjyrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736683411; c=relaxed/simple;
-	bh=X2vllrUPWyE4qJGq6kL3ctHerw59PCqTWLtpwbJy6GM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GpsS/htUviArBpnxC5q60OixxpNeAuOX6vPoQE020Ht+rv5xAZt5ypqFxYVsORZQ+k+A5OxanI8qCghpOeHLxuJH+DtCSCJcwpLjMV/AbOeGWyswnpSILB5gnVUMtkcuTZ+h0yAWoyksfuj+CquoxydcFE1jfl4C7L4OkY7+LaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:f7a6:44d1:35dc:44f6])
-	by michel.telenet-ops.be with cmsmtp
-	id 0C3J2E00123R5sA06C3JXL; Sun, 12 Jan 2025 13:03:18 +0100
-Received: from rox.of.borg ([192.168.97.57])
-	by ramsan.of.borg with esmtp (Exim 4.97)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1tWwgT-0000000Ayx9-3ZHY;
-	Sun, 12 Jan 2025 13:03:17 +0100
-Received: from geert by rox.of.borg with local (Exim 4.97)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1tWtuB-0000000AirA-0I5D;
-	Sun, 12 Jan 2025 10:05:11 +0100
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH] ipv4: ip_gre: Fix set but not used warning in ipgre_err() if IPv4-only
-Date: Sun, 12 Jan 2025 10:05:10 +0100
-Message-ID: <3dc917cf6244ef123aa955b2fbbf02473d13cdb5.1736672666.git.geert@linux-m68k.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1736685392; c=relaxed/simple;
+	bh=qLkmNYgljz+xhBGJQQjwx1zz8tTu5vdJgF3nauNQyKY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LTUU3AGKnYR405XDtjysOCSlHnMu9UC5vsvQ7aiASr9tMqmaMIvc6YwHUaZq2DzyyxhrlxIkUDF/HkTX+LpqM0iZYced2LibrX//CF2Mq6yj1nHw04hJorbW5YTwAgvbxoohSVoreEkeYEzjrS2wjWRKy0IOdW+D7wEQZvOcXN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XOzJkVkQ; arc=none smtp.client-ip=95.215.58.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XOzJkVkQ"
+Message-ID: <ac947d88-750e-4058-aa3e-b539a09b89d0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1736685386;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=16i8/HmQrvop6Wq90czxPGnG6F8sVpZRlEdmEypLhGg=;
+	b=XOzJkVkQ3/t6r0eAnc340BPC0gjMQa4eBTcCWyH8oWtCQ9H2vQXZNjYlnUcN2zqXW2jUy6
+	9gHXwt9PRG05mv3Ho85bgnhhzaMCTLGf/pHyTsgp29lIqr+qupcNfngaijyVQpxGHRpCOJ
+	F8tlJzh2UtZzKfU+iLqQ8R7FIFsS0Ps=
+Date: Sun, 12 Jan 2025 20:35:32 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v2] net: stmmac: sti: Switch from CONFIG_PM_SLEEP guards
+ to pm_sleep_ptr()
+To: Raphael Gallais-Pou <rgallaispou@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jose Abreu <joabreu@synopsys.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "'David S . Miller'" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20250109155842.60798-1-rgallaispou@gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yanteng Si <si.yanteng@linux.dev>
+In-Reply-To: <20250109155842.60798-1-rgallaispou@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-if CONFIG_NET_IPGRE is enabled, but CONFIG_IPV6 is disabled:
 
-    net/ipv4/ip_gre.c: In function ‘ipgre_err’:
-    net/ipv4/ip_gre.c:144:22: error: variable ‘data_len’ set but not used [-Werror=unused-but-set-variable]
-      144 |         unsigned int data_len = 0;
-	  |                      ^~~~~~~~
+在 1/9/25 23:58, Raphael Gallais-Pou 写道:
+> Letting the compiler remove these functions when the kernel is built
+> without CONFIG_PM_SLEEP support is simpler and less error prone than the
+> use of #ifdef based kernel configuration guards.
+>
+> Signed-off-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
 
-Fix this by moving all data_len processing inside the IPV6-only section
-that uses its result.
+LGTM!
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501121007.2GofXmh5-lkp@intel.com/
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
----
- net/ipv4/ip_gre.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index f1f31ebfc7934467..6f871af7bb5772b7 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -141,7 +141,6 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
- 	const struct iphdr *iph;
- 	const int type = icmp_hdr(skb)->type;
- 	const int code = icmp_hdr(skb)->code;
--	unsigned int data_len = 0;
- 	struct ip_tunnel *t;
- 
- 	if (tpi->proto == htons(ETH_P_TEB))
-@@ -182,7 +181,6 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
- 	case ICMP_TIME_EXCEEDED:
- 		if (code != ICMP_EXC_TTL)
- 			return 0;
--		data_len = icmp_hdr(skb)->un.reserved[1] * 4; /* RFC 4884 4.1 */
- 		break;
- 
- 	case ICMP_REDIRECT:
-@@ -191,8 +189,9 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
- 
- #if IS_ENABLED(CONFIG_IPV6)
- 	if (tpi->proto == htons(ETH_P_IPV6) &&
--	    !ip6_err_gen_icmpv6_unreach(skb, iph->ihl * 4 + tpi->hdr_len,
--					type, data_len))
-+	    !ip6_err_gen_icmpv6_unreach(skb, iph->ihl * 4 + tpi->hdr_len, type,
-+		type == ICMP_TIME_EXCEEDED ?
-+		icmp_hdr(skb)->un.reserved[1] * 4 /* RFC 4884 4.1 */ : 0))
- 		return 0;
- #endif
- 
--- 
-2.43.0
+Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
 
+
+Thanks,
+
+Yanteng
+
+> ---
+> Changes in v2:
+>    - Split serie in single patches
+>    - Remove irrelevant 'Link:' from commit log
+>    - Link to v1: https://lore.kernel.org/r/20241229-update_pm_macro-v1-5-c7d4c4856336@gmail.com
+> ---
+>   drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c | 8 +++-----
+>   1 file changed, 3 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
+> index eabc4da9e1a9..de9b6dfef15b 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
+> @@ -313,7 +313,6 @@ static void sti_dwmac_remove(struct platform_device *pdev)
+>   	clk_disable_unprepare(dwmac->clk);
+>   }
+>   
+> -#ifdef CONFIG_PM_SLEEP
+>   static int sti_dwmac_suspend(struct device *dev)
+>   {
+>   	struct sti_dwmac *dwmac = get_stmmac_bsp_priv(dev);
+> @@ -333,10 +332,9 @@ static int sti_dwmac_resume(struct device *dev)
+>   
+>   	return stmmac_resume(dev);
+>   }
+> -#endif /* CONFIG_PM_SLEEP */
+>   
+> -static SIMPLE_DEV_PM_OPS(sti_dwmac_pm_ops, sti_dwmac_suspend,
+> -					   sti_dwmac_resume);
+> +static DEFINE_SIMPLE_DEV_PM_OPS(sti_dwmac_pm_ops, sti_dwmac_suspend,
+> +						  sti_dwmac_resume);
+>   
+>   static const struct sti_dwmac_of_data stih4xx_dwmac_data = {
+>   	.fix_retime_src = stih4xx_fix_retime_src,
+> @@ -353,7 +351,7 @@ static struct platform_driver sti_dwmac_driver = {
+>   	.remove = sti_dwmac_remove,
+>   	.driver = {
+>   		.name           = "sti-dwmac",
+> -		.pm		= &sti_dwmac_pm_ops,
+> +		.pm		= pm_sleep_ptr(&sti_dwmac_pm_ops),
+>   		.of_match_table = sti_dwmac_match,
+>   	},
+>   };
