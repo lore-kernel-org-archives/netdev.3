@@ -1,65 +1,65 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535D01B393D
-	for <netdev@vger.kernel.org>; Sun, 12 Jan 2025 13:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5406199223
+	for <netdev@vger.kernel.org>; Sun, 12 Jan 2025 13:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736688726; cv=none; b=udKhmm2KunDBcf4t2YqYB2C/JqdF2NXbNTOf6oG9ZlvKWRwalCehx7Bv3oSweVOTQAJbJ9owI+0R4Jv7I9A5N2BOmmDGYvbgBs/sjb9BxbSyN0TaHfApYYU4HGOOzEeHszfmNnWSZ98ECd1yyRIlA/7dSy0Si8eq62OItV8yJDQ=
+	t=1736688768; cv=none; b=a2sj83B7/lHnlr+muUPkakcxd2/C9rHogycRTsLvt1azjvCvnQo/C61rEaEYdshMLMAOK9UJwJB4oPhd88pmN9Vkg4mOYiueV5XyLF5AZUcmTpzJABOAYmUjJFRjLpIEsTXFXAyMrnKw/qUdKPmSgmDlYe9WI87SqSz/OUAhuA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736688726; c=relaxed/simple;
-	bh=E3x2OQoXJqKkDTmlqFVNtpZpLpsrweRHWHwI3zrKpyA=;
+	s=arc-20240116; t=1736688768; c=relaxed/simple;
+	bh=r7z8eqtCmyI8Zx0zERC05KLHEfA81ZdzkX32UZtxx1o=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ZSFLJXksmO+hhmXx53N7hb3wfMiuhJQyidBfkAE5YxTKW75+liMjjz1mRLLHYvwrrMtGkaTlnQbNqjnkw7fLVV23TMJGy7jwdwRpMgZ2P7rWYWUq+QnleXEEBxpO4SVNviBDTdo8pYp3z1nUkk8Rnn1u48vhAtaTOsWiux2JLb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QagdziYD; arc=none smtp.client-ip=209.85.221.47
+	 In-Reply-To:Content-Type; b=Hbk40tj8DsAGwFsxDX76OgBW1j6mNPfjSAdQ8hMqYSHviW8CGs0JbhzUH8AYR7H435ATxylRvBd6ZNjJNmI8VegTY5FEabAccNoJxtCIxa00eyTCaW5wAFfHE0Vrgo58BIbz5W6PXC8xlV00HaXu5GYflIImWeA1RyGQdjOtvIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=czMYrtdm; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QagdziYD"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-38a8b35e168so2110991f8f.1
-        for <netdev@vger.kernel.org>; Sun, 12 Jan 2025 05:32:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="czMYrtdm"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43675b1155bso39931755e9.2
+        for <netdev@vger.kernel.org>; Sun, 12 Jan 2025 05:32:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736688724; x=1737293524; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736688765; x=1737293565; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=TeDwEnVCu9enUYBZi4CcsChMzu7xhWaZb2+Ok1gyBZ4=;
-        b=QagdziYDtghF00miYu/fNwdYeDz2itLFRg+kK0LwxzouNoaisY1ngdB/ZFBM6dmq4A
-         9I4SKGbm8jRv7uJ1VCbSjpWTBqL7ZFdxPnT3AueuTrZvF8NmfP66SMd+p183fxl+MwRv
-         ai1qNNfa5gSzEDTb1uQqlogaeiCwCzGDk40L/AfBDXb7Q0r1yhC8/5BOFgREbRWYLu8s
-         tJU31gPScchC9vSKLEfY537zvBOpSxv1KT8aNa2PJTFL5k3Zud/kOcuZKyFUKsexIlOe
-         ZL4P2wU/A9XPjbSuU3MKHcva8s+r7i0nDN6bob8JXFVAZ8UmHjWlC3NU7Yj8n0GxQqG2
-         Nh+Q==
+        bh=cYmcB215+jwaUbaNV7Oq5DO/Gb7KhJLZS/KcDfNJSGY=;
+        b=czMYrtdmSmaPmrs1uRy15jxuN3VDBL8T67kY6rcPQrYz0rYbX3Cf+UJbRzqB4YcSDG
+         nYJax3b/9KTcFKeyUKq0HJpHSbn7cv74oCFfluwWgRJE1QLpsTRLxG7OYEEqIKrUbzra
+         DaFQcEpt8YcDmgF/x7tdAg1D/NAzlbbB9Pyq/0+AeUWcYsDMyrh+eFc9PMpzC9KwWl5L
+         u0oSN7e+nP7kCPrSfUAcfaZ7K0142N2hM3FlHT7Xe/JqxCtsXgYytxV+9M+fowLdnd3u
+         MG5NRDRYo0vF2K2oTP0uroXdoSLSnvRPurX/3ryPZJMIqd3tLne5UCL1GPg3t1BknSwi
+         WMNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736688724; x=1737293524;
+        d=1e100.net; s=20230601; t=1736688765; x=1737293565;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TeDwEnVCu9enUYBZi4CcsChMzu7xhWaZb2+Ok1gyBZ4=;
-        b=LmQGBrdYHalv7xCJ05kqHeg0jGypLF+Dd3m7wuut36aeW9MiwGWtvCNKkk1rchptXT
-         1WxICnF498bNSn6ooTKwoMjqa0Ob941OsPWNFE66EIWpcwGHRNLHxSyf3NxkQCwQdEr8
-         PmZC6VT4o8/W3gFnP4Z9hdGEKCVX3mYTX5Ro2nrkSkwm6vBntTfGiXG8pzXKDZsW2Eg1
-         U1gzDpcG4yeKpMuAdoQ7jkoqwkoypmJfIJlzL8vaIXSlvUxnkBDewTMBWru7+Q78Zu6V
-         xJKnZkxwcdBf5FecLpl5/OSQo4nPTq02zP+BdJ3Soha/v0jwRNA2d8L3d0S3idF12tH6
-         iSXQ==
-X-Gm-Message-State: AOJu0Yz/gTpXE7bDIRVESosFkwvnXqwXhxvoQ2SpJe9mNxI92nk9r04T
-	jPEkgKxRiHOqbatQbbW7WmEuCO0CUiJaUFt0UMwvBG/ACkY2dyrT
-X-Gm-Gg: ASbGncv483UbdtOSH13/oHPgiGPt6bNJkzs65bjZResniw6tC5kACeUOw3oO52zEgQS
-	TJj11TtHQY8RI/q206B31dmUzy27VwKXXPtn0Vijtux3TbgnUGs0mMu1PafF0R+Nc1P4lyvKdEr
-	EO2ouh0neGqPfSqE3VtqsBSL7s9zXZJFXEW5QCM8GempxElqPSTSOCGgYI5v4Z+MmzWiBh+Ojrd
-	Va5mCyHgMt5M89G4YW6VE+/jdfY5LiUcTko3RlEl85VuuSRSd6bFaCCdalIdvjn8xBJgkDrc+0s
-	K92+NOoNXw0gSK05RkNLwNm0Tud7C+W+3aVnmg3QoiN/5fofQ3BlCRdzfgbfkCzPV33EQ6Tnhy9
-	hfEW7h3Qv3A2m/sYRieITmKIqcIyNC/IAjBpd4Hu8YJpBQR8p
-X-Google-Smtp-Source: AGHT+IHG+PFtOBbqIBQ97cgSygKA4gDTWX0Lo0FQ6oTgDXfoCS1cjoOrqsS0erF+70zSQan849rteQ==
-X-Received: by 2002:a05:6000:1787:b0:38a:5dc4:6dcd with SMTP id ffacd0b85a97d-38a8b0f2ba7mr11450501f8f.22.1736688723600;
-        Sun, 12 Jan 2025 05:32:03 -0800 (PST)
+        bh=cYmcB215+jwaUbaNV7Oq5DO/Gb7KhJLZS/KcDfNJSGY=;
+        b=K2YLz5QOzvO7YaW9YajxdRD+ZPO2Ks1QqVP2jq8s9aa6uqj/S8TJv/d10pnsBZkUSd
+         lZ5Ul2vG+LLwgnK/2DbnJLsHUsRSIQoL7h+xLCZXp5nkstwK+fEESHw7LrWSsv9fkr/y
+         vq13c2GPSPGogWRYe4ji5rqobLcBqx/0kV0YTF0R6mO1nB1zcR3gtM48mVTllhMkSEpq
+         ttPjtIk8wRu2GzbeYP+u0rTiw336hzjujLe9JvipkwwrfuslcqIU0Gjze0xhR6bmYLEX
+         dIQD9WqbjcSo4Q8xdan08cwuYUwjcfONAygH8KzAHMSiYqzLPLOrhmNlKQKzlfOR87VU
+         yufw==
+X-Gm-Message-State: AOJu0YwtKS3nqaKTf+lrvLyOqHSp+tU1VnTVtSGxW9LnNamcBA4IN4bZ
+	zADUKHGLEBmYyWei7VL7oorzccySXGaHbTli4fnVE+CuO1cQy8Rw
+X-Gm-Gg: ASbGncswa1r5A4C7FpH8hgWXBuJzuOseMTLj10d/BAnHKwz50HgcDp3uit2zjlIXEaP
+	nbUaGj2wf1oAzT94y2tiBYIPqqyBvbYqm1EkPGRhEOquKke+O1HyXZl9QRXLI12DgonDfNc8GZP
+	vOZipk02P7OnEpH45/NWoM4dosm+ac9gx98Q5p+ynZQOxZlkjEgeE2gljRVttuFr6GxZKE/ZLam
+	ZgD8G3eTxH8kgk+8dSJ3qbKBzYcsLhw6QisMqSO7AiAMwVWT1FDndfut4RzB+pn9pwJva0PFInx
+	FivyvB6auZxli/KZwRNUZd+rGiC+NfFl7orcnh/1v9N0COA8qx7ZFQz7PAywL9qygV6SZJ8vEJE
+	KJgHvaCKEGEER2icdnPcf327vQBjrwJbXeBT4QG8Bctpsp6XW
+X-Google-Smtp-Source: AGHT+IG2rFhiT9oIwlz4RjWhu6CrQA18Je90c8mOAldJVDX9/StJqYqVolhjM+Gttg6ILor50osTnw==
+X-Received: by 2002:a5d:5886:0:b0:386:4312:53ec with SMTP id ffacd0b85a97d-38a873049c2mr14957778f8f.17.1736688765322;
+        Sun, 12 Jan 2025 05:32:45 -0800 (PST)
 Received: from ?IPV6:2a02:3100:b0d5:ab00:44ab:526d:76d3:604a? (dynamic-2a02-3100-b0d5-ab00-44ab-526d-76d3-604a.310.pool.telefonica.de. [2a02:3100:b0d5:ab00:44ab:526d:76d3:604a])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-38a8e37d154sm9887118f8f.10.2025.01.12.05.32.01
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-436e9e62126sm110995075e9.34.2025.01.12.05.32.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Jan 2025 05:32:02 -0800 (PST)
-Message-ID: <0d395441-a42f-442d-97e0-33b8d9757a23@gmail.com>
-Date: Sun, 12 Jan 2025 14:32:01 +0100
+        Sun, 12 Jan 2025 05:32:44 -0800 (PST)
+Message-ID: <6cea2ecc-d2a8-4df1-ba4a-b54855090acd@gmail.com>
+Date: Sun, 12 Jan 2025 14:32:43 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,8 +67,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next v3 07/10] net: phy: remove disabled EEE modes from
- advertising in phy_probe
+Subject: [PATCH net-next v3 08/10] net: phy: c45: Don't silently remove
+ disabled EEE modes any longer when writing advertisement register
 From: Heiner Kallweit <hkallweit1@gmail.com>
 To: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
  David Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
@@ -124,51 +124,42 @@ In-Reply-To: <5e36223a-ee52-4dff-93d5-84dbf49187b5@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-A PHY driver may populate eee_disabled_modes in its probe or get_features
-callback, therefore filter the EEE advertisement read from the PHY.
+advertising_eee is adjusted now whenever an EEE mode gets disabled.
+Therefore we can remove the silent removal of disabled EEE modes here.
 
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 ---
- drivers/net/phy/phy_device.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ drivers/net/phy/phy-c45.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index f6a5f986f..ff4b4d42b 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3613,22 +3613,21 @@ static int phy_probe(struct device *dev)
- 	if (err)
- 		goto out;
+diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
+index 2335f4ad1..904a10c02 100644
+--- a/drivers/net/phy/phy-c45.c
++++ b/drivers/net/phy/phy-c45.c
+@@ -683,13 +683,10 @@ EXPORT_SYMBOL_GPL(genphy_c45_read_mdix);
+ static int genphy_c45_write_eee_adv(struct phy_device *phydev,
+ 				    unsigned long *adv)
+ {
+-	__ETHTOOL_DECLARE_LINK_MODE_MASK(tmp);
+ 	int val, changed = 0;
  
--	/* There is no "enabled" flag. If PHY is advertising, assume it is
--	 * kind of enabled.
--	 */
--	phydev->eee_cfg.eee_enabled = !linkmode_empty(phydev->advertising_eee);
-+	/* Get the EEE modes we want to prohibit. */
-+	of_set_phy_eee_broken(phydev);
+-	linkmode_andnot(tmp, adv, phydev->eee_disabled_modes);
+-
+ 	if (linkmode_intersects(phydev->supported_eee, PHY_EEE_CAP1_FEATURES)) {
+-		val = linkmode_to_mii_eee_cap1_t(tmp);
++		val = linkmode_to_mii_eee_cap1_t(adv);
  
- 	/* Some PHYs may advertise, by default, not support EEE modes. So,
--	 * we need to clean them.
-+	 * we need to clean them. In addition remove all disabled EEE modes.
- 	 */
--	if (phydev->eee_cfg.eee_enabled)
--		linkmode_and(phydev->advertising_eee, phydev->supported_eee,
--			     phydev->advertising_eee);
-+	linkmode_and(phydev->advertising_eee, phydev->supported_eee,
-+		     phydev->advertising_eee);
-+	linkmode_andnot(phydev->advertising_eee, phydev->advertising_eee,
-+			phydev->eee_disabled_modes);
+ 		/* IEEE 802.3-2018 45.2.7.13 EEE advertisement 1
+ 		 * (Register 7.60)
+@@ -707,7 +704,7 @@ static int genphy_c45_write_eee_adv(struct phy_device *phydev,
+ 	}
  
--	/* Get the EEE modes we want to prohibit. We will ask
--	 * the PHY stop advertising these mode later on
-+	/* There is no "enabled" flag. If PHY is advertising, assume it is
-+	 * kind of enabled.
- 	 */
--	of_set_phy_eee_broken(phydev);
-+	phydev->eee_cfg.eee_enabled = !linkmode_empty(phydev->advertising_eee);
+ 	if (linkmode_intersects(phydev->supported_eee, PHY_EEE_CAP2_FEATURES)) {
+-		val = linkmode_to_mii_eee_cap2_t(tmp);
++		val = linkmode_to_mii_eee_cap2_t(adv);
  
- 	/* Get master/slave strap overrides */
- 	of_set_phy_timing_role(phydev);
+ 		/* IEEE 802.3-2022 45.2.7.16 EEE advertisement 2
+ 		 * (Register 7.62)
 -- 
 2.47.1
 
