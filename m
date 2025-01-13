@@ -1,160 +1,101 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA05E15F41F
-	for <netdev@vger.kernel.org>; Mon, 13 Jan 2025 08:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D13D14A629;
+	Mon, 13 Jan 2025 08:04:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736755351; cv=none; b=DtCbaNqp048j4SP7xP/wB9E8OWQgnW86UiVCvgtOsZ3/rF1y3Futv3oOIZx1RiJK8Vn4M6WH5iJ8rtipsmzN9iusDSpsE/nqm9kHV7MVfebU02ATqECGeL2eAlBCRAa5XT9PwacssoWyTvlBw9Nbp5ThuUwUIzvLFjOQQEUJTMg=
+	t=1736755459; cv=none; b=SJb6y8ft45QyjKVLw9hPs77CA1anpUsD0vUglnComkA2FR7+Ah3RdCNOLg/FPl4ZyJFMde54zJJRrSRtwKMhcpeoKAipEoDpM33DmY+60RbYKdMy9OsTqaAlbX7HrbyKZwZb3z+Bfis3zwZs/N9TVgiFlM8p6QLxN8o5z3MFCSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736755351; c=relaxed/simple;
-	bh=YnQepySkEhSPTL3ab6PkdM7xkpBa3j6PwVW2DdcQYtI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ckkvbrnX8S7Ba0EXouVT68D6itvNfkkGbME0xTo0QihxJEWodN1YeU+tK1ZBK8LL5cflwr0bqoQnuCUn+3R8I/FbjUH5s9IVWznbN5BGndhXTETncqrQOyPC2LrWuS1izFYzL1GgBvdpx6NgmRcwH6sEWC9YuwnTp5kAtpCTu9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OJbVN6yI; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1736755459; c=relaxed/simple;
+	bh=Rfrp9lOHU4M0RZg8njtneTcHVAWTXMYTfADOMni+x90=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=rsu/kfxSct1HEjzWmwOcm+nFBqcyThm7jGh5i0eylBIhivJX83eMasCEKQMhO121pLrBDM6ks7RlF83oVl44lw+VwerxeWl3FscEh0GeqNUVw1yKHbLPzR+N8/YAjsVQPRXO6tRkpQEzIjLzaS1ljcnH7Ievd0Q6pMmMYoyswz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=THf2oCBc; arc=none smtp.client-ip=198.47.19.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OJbVN6yI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736755350; x=1768291350;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YnQepySkEhSPTL3ab6PkdM7xkpBa3j6PwVW2DdcQYtI=;
-  b=OJbVN6yIntKSozpzUbyPVBAjf/pMaDW8rXSWtBZOYEcoTEmOJzI5iTFC
-   +WWYtK11DyOSzg6sRxt9PsDHsqQVBofDjMr6VKhTqej3NjDS211x3lwXk
-   jIz+I+XpLs9mSkaex67oDeFpY1ZvHDmagjnnvW2DEN5qRUpPTzzY28rZu
-   faN6o8bj9ZRPGOVnJSSqPXdj7BRYf0+5seDBtaClWjxN4igOOvOxq5wQH
-   4Da56EYRHdfO528QEwluA+0I+V1tE7RQL+cmgsXgqtW1GEGXU+O8I6dUG
-   vk1pyd6ZqOrQfv2imsu1lvGjj1cR19PuRkvbGcQl/6E7PuDzrLs4g9ViY
-   A==;
-X-CSE-ConnectionGUID: eSxJpdGVRmOOatfIYGnQMg==
-X-CSE-MsgGUID: QbUj4wiQTRa+uEX2p6Xl1A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11313"; a="48418297"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="48418297"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2025 00:02:29 -0800
-X-CSE-ConnectionGUID: BB7W8DURTOONcEnUbmeZ3g==
-X-CSE-MsgGUID: J6fh3hlDRYyvJDqKCMNUZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="104208046"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2025 00:02:26 -0800
-Date: Mon, 13 Jan 2025 08:59:08 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
-	pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com,
-	somnath.kotur@broadcom.com,
-	Ajit Khaparde <ajit.khaparde@broadcom.com>
-Subject: Re: [PATCH net-next 02/10] bnxt_en Refactor completion ring
- allocation logic for P5_PLUS chips
-Message-ID: <Z4THzLTGKCgp/SUQ@mev-dev.igk.intel.com>
-References: <20250113063927.4017173-1-michael.chan@broadcom.com>
- <20250113063927.4017173-3-michael.chan@broadcom.com>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="THf2oCBc"
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 50D83ZXR026475;
+	Mon, 13 Jan 2025 02:03:35 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1736755415;
+	bh=qSW8VsRMXbq3sSb57eaX0dEK1UpZGs9dyfJAciyuhos=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=THf2oCBc+cWD9sEwWiOq1EUoUG8XfBSDFs/vyyq450/w+4ZLTXiJJacNZ+2oYF/t9
+	 zGZhDIIlUj7wtZ+heIDz8YamomhQ18Wd6alisu5dxljAgRSA4lPfUIZhL+aTk9lZZ1
+	 oa6MaYRMQsC49E+lsW4eYnOgAMqPSWHmMFWw9CJk=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 50D83Z2V045615;
+	Mon, 13 Jan 2025 02:03:35 -0600
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 13
+ Jan 2025 02:03:34 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 13 Jan 2025 02:03:34 -0600
+Received: from [10.24.69.25] (danish-tpc.dhcp.ti.com [10.24.69.25])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 50D83T2u113090;
+	Mon, 13 Jan 2025 02:03:29 -0600
+Message-ID: <e08733fc-3dca-43e8-bcb6-c7d86c9f0982@ti.com>
+Date: Mon, 13 Jan 2025 13:33:28 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250113063927.4017173-3-michael.chan@broadcom.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/5] net: ti: icssg-prueth: Do not print physical
+ memory addresses
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Roger Quadros
+	<rogerq@kernel.org>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Alexandre Torgue
+	<alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha
+ Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team
+	<kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>
+CC: <linux-arm-kernel@lists.infradead.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>, <imx@lists.linux.dev>
+References: <20250112-syscon-phandle-args-net-v1-0-3423889935f7@linaro.org>
+ <20250112-syscon-phandle-args-net-v1-1-3423889935f7@linaro.org>
+Content-Language: en-US
+From: MD Danish Anwar <danishanwar@ti.com>
+In-Reply-To: <20250112-syscon-phandle-args-net-v1-1-3423889935f7@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Sun, Jan 12, 2025 at 10:39:19PM -0800, Michael Chan wrote:
-> Add a new bnxt_hwrm_cp_ring_alloc_p5() function to handle allocating
-> one completion ring on P5_PLUS chips.  This simplifies the existing code
-> and will be useful later in the series.
+
+
+On 12/01/25 7:02 pm, Krzysztof Kozlowski wrote:
+> Debugging messages should not reveal anything about memory addresses.
+> This also solves arm compile test warnings:
 > 
-> Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
-> Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-> ---
->  drivers/net/ethernet/broadcom/bnxt/bnxt.c | 44 +++++++++++------------
->  1 file changed, 21 insertions(+), 23 deletions(-)
+>   drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c:1034:49: error:
+>     format specifies type 'unsigned long long' but the argument has type 'phys_addr_t' (aka 'unsigned int') [-Werror,-Wformat]
 > 
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index 8527788bed91..d364a707664b 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -7172,6 +7172,25 @@ static int bnxt_hwrm_rx_agg_ring_alloc(struct bnxt *bp,
->  	return 0;
->  }
->  
-> +static int bnxt_hwrm_cp_ring_alloc_p5(struct bnxt *bp,
-> +				      struct bnxt_cp_ring_info *cpr)
-> +{
-> +	struct bnxt_napi *bnapi = cpr->bnapi;
-> +	u32 type = HWRM_RING_ALLOC_CMPL;
-Nit, can be const
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-> +	struct bnxt_ring_struct *ring;
-> +	u32 map_idx = bnapi->index;
-> +	int rc;
-> +
-> +	ring = &cpr->cp_ring_struct;
-> +	ring->handle = BNXT_SET_NQ_HDL(cpr);
-> +	rc = hwrm_ring_alloc_send_msg(bp, ring, type, map_idx);
-> +	if (rc)
-> +		return rc;
-> +	bnxt_set_db(bp, &cpr->cp_db, type, map_idx, ring->fw_ring_id);
-> +	bnxt_db_cq(bp, &cpr->cp_db, cpr->cp_raw_cons);
-> +	return 0;
-> +}
-> +
->  static int bnxt_hwrm_ring_alloc(struct bnxt *bp)
->  {
->  	bool agg_rings = !!(bp->flags & BNXT_FLAG_AGG_RINGS);
-> @@ -7215,19 +7234,9 @@ static int bnxt_hwrm_ring_alloc(struct bnxt *bp)
->  		u32 map_idx;
->  
->  		if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS) {
-> -			struct bnxt_cp_ring_info *cpr2 = txr->tx_cpr;
-> -			struct bnxt_napi *bnapi = txr->bnapi;
-> -			u32 type2 = HWRM_RING_ALLOC_CMPL;
-> -
-> -			ring = &cpr2->cp_ring_struct;
-> -			ring->handle = BNXT_SET_NQ_HDL(cpr2);
-> -			map_idx = bnapi->index;
-> -			rc = hwrm_ring_alloc_send_msg(bp, ring, type2, map_idx);
-> +			rc = bnxt_hwrm_cp_ring_alloc_p5(bp, txr->tx_cpr);
->  			if (rc)
->  				goto err_out;
-> -			bnxt_set_db(bp, &cpr2->cp_db, type2, map_idx,
-> -				    ring->fw_ring_id);
-> -			bnxt_db_cq(bp, &cpr2->cp_db, cpr2->cp_raw_cons);
->  		}
->  		ring = &txr->tx_ring_struct;
->  		map_idx = i;
-> @@ -7247,20 +7256,9 @@ static int bnxt_hwrm_ring_alloc(struct bnxt *bp)
->  		if (!agg_rings)
->  			bnxt_db_write(bp, &rxr->rx_db, rxr->rx_prod);
->  		if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS) {
-> -			struct bnxt_cp_ring_info *cpr2 = rxr->rx_cpr;
-> -			struct bnxt_napi *bnapi = rxr->bnapi;
-> -			u32 type2 = HWRM_RING_ALLOC_CMPL;
-> -			struct bnxt_ring_struct *ring;
-> -			u32 map_idx = bnapi->index;
-> -
-> -			ring = &cpr2->cp_ring_struct;
-> -			ring->handle = BNXT_SET_NQ_HDL(cpr2);
-> -			rc = hwrm_ring_alloc_send_msg(bp, ring, type2, map_idx);
-> +			rc = bnxt_hwrm_cp_ring_alloc_p5(bp, rxr->rx_cpr);
->  			if (rc)
->  				goto err_out;
-> -			bnxt_set_db(bp, &cpr2->cp_db, type2, map_idx,
-> -				    ring->fw_ring_id);
-> -			bnxt_db_cq(bp, &cpr2->cp_db, cpr2->cp_raw_cons);
->  		}
->  	}
->  
-> -- 
-> 2.30.1
+Reviewed-by: MD Danish Anwar <danishanwar@ti.com>
 
-Nice simplification
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-
+-- 
+Thanks and Regards,
+Danish
