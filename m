@@ -1,88 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx12lb.world4you.com (mx12lb.world4you.com [81.19.149.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE9C240233;
-	Mon, 13 Jan 2025 21:19:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CAE1B0F30
+	for <netdev@vger.kernel.org>; Mon, 13 Jan 2025 21:20:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736803176; cv=none; b=i0Z9+LWjUtXKf+CeathzRwJaXfRNaG4gNpzOW8VP3dH2VEsIFNSBqiJi4iJciHklwn/7xoY8ulPavA+1SOHq8zPK2MlxrYGbUQa+NoEEPZuLypJimAw8H6sgQC6aznYv9xDqlW+5PEvJWtpS9y4XHQPQgjDNTtNOavLAWj2r0AE=
+	t=1736803225; cv=none; b=gUXSCZSgVXQurN4BUkRdk1bksHykVA4Z0EeNrWu6Em8rFP2eMy8mH78/XNrKUHR9gjWIgD8lOLOX9lJPU01CVw4d0u+L3TepF7j92nvKpPLk7JMaqjY6rr4YIjU5/l4j0j5BAo5wkVrDkBvwzkQ78KWoJPBs0Jmt7fLLVVnu4LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736803176; c=relaxed/simple;
-	bh=6wQ9vMFsf6ItQpJy9k9Wqdx180ffkZRpQUOG+839358=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q28HabeLIthQpJvcMM9mynJKcHmPZyyHvN+WRcpJG1LPZz+mAvPS8md4nsA8hca6cbA6g8+k39zIkOtvLyOr418pUvA+szTtdpqx7/vxZsSBSKkdF2wmgO8AKy75d0zbWSg2YabjfgXk11ZpXPeWxXrPPtJJ6qWxFyELq2z1QfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2XlSY3i; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736803225; c=relaxed/simple;
+	bh=7e05fPjRAO7bKkqzOFLlNKCH6smtLJVOJBmu1EN3xDY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=n+6kaz/peYAUfIolPhlgaR3ixZ5kfzUXP2hvtfWkpde37YknihiqSgx5ozDYrTZonjYM4Zi2hLCHRGv20HlzfMuZuN30oD/Da2e5b0sg5ds5czMOx3G0Kp+SE9ndisCmKWKFKzjsZnRejwXhdTzFVFSYR2gMVVmmmnerKxcPEAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=HUHoj8WK; arc=none smtp.client-ip=81.19.149.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2XlSY3i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3708EC4CED6;
-	Mon, 13 Jan 2025 21:19:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736803175;
-	bh=6wQ9vMFsf6ItQpJy9k9Wqdx180ffkZRpQUOG+839358=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=c2XlSY3iqQYtFQOjDG046jPOjuxrPK47hFAH8eSKIRb/1nEs+MagnYKILcvF1K/B4
-	 Rzirwd9/LOVLwA5ZgrZAejVVFdDZf2Tr+9l3h98Nfut4LZ9YZQEkw28oVDTdIz899l
-	 uq+63nRn5vZV0Di9Mvhlv83GsgCndry7ZAPdMW64SS5uUtCo545BaJoXwvyggyBEZD
-	 yFhSazQgua4dix4jLjYcMm5uBPhdHNzHIDVSnZRZMyVUt6H9fmtN9ovN93geZC8KuV
-	 H8CDNKl3say2o8sNDJCQWcRdPd6vaRrrv276vtvLo0IZIo2iXEg0gVEY19LAnR/IHA
-	 hTrL56/RtKYiQ==
-Date: Mon, 13 Jan 2025 13:19:34 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Potin Lai <potin.lai.pt@gmail.com>
-Cc: Paul Fertser <fercerpav@gmail.com>, "Potin Lai (=?UTF-8?B?6LO05p+P5bu3?=
- )" <Potin.Lai@quantatw.com>, Samuel Mendoza-Jonas <sam@mendozajonas.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Ivan Mikhaylov <fr0st61te@gmail.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>, "Cosmo Chou (
- =?UTF-8?B?5ZGo5qW35Z+5?=)" <Cosmo.Chou@quantatw.com>, "patrick@stwcx.xyz"
- <patrick@stwcx.xyz>, Cosmo Chou <chou.cosmo@gmail.com>
-Subject: Re: =?UTF-8?B?5Zue6KaGOg==?= [External] Re: [PATCH] net/ncsi: fix
- locking in Get MAC Address handling
-Message-ID: <20250113131934.5566be67@kernel.org>
-In-Reply-To: <CAGfYmwVECrisZMhWAddmnczcLqFfNZ2boNAD5=p2HHuOhLy75w@mail.gmail.com>
-References: <20250108192346.2646627-1-kuba@kernel.org>
-	<20250109145054.30925-1-fercerpav@gmail.com>
-	<20250109083311.20f5f802@kernel.org>
-	<TYSPR04MB7868EA6003981521C1B2FDAB8E1C2@TYSPR04MB7868.apcprd04.prod.outlook.com>
-	<20250110181841.61a5bb33@kernel.org>
-	<CAGfYmwVECrisZMhWAddmnczcLqFfNZ2boNAD5=p2HHuOhLy75w@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="HUHoj8WK"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:Cc:References:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=LVbLVDLaM1cX/Cde7QFhnig9GKYNFqB66qI6HFC2hKk=; b=HUHoj8WK+zt2VcVFGOjqxlOwTn
+	FqDubrL6YJtwUQj38nSRA0sa/mdLIxrFyfYRjhocK6a3NvCh3gPoS6CH94sIumyv6dspfVgRt+ele
+	4NxAHByiwu41+7CNtYouxTZXACxyBSktfJwx2NthizwR1NwtsLiQ6mIaJKxgS1Yow9dI=;
+Received: from [88.117.60.28] (helo=[10.0.0.160])
+	by mx12lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tXR6n-000000002in-0ZVL;
+	Mon, 13 Jan 2025 21:32:25 +0100
+Message-ID: <91fc249e-c11a-47a1-aafe-fef833c3bafa@engleder-embedded.com>
+Date: Mon, 13 Jan 2025 21:32:23 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] tsnep: Link queues to NAPIs
+To: Joe Damato <jdamato@fastly.com>, magnus.karlsson@intel.com
+References: <20250110223939.37490-1-gerhard@engleder-embedded.com>
+ <Z4VwrhhXU4uKqYGR@LQ3V64L9R2>
+Content-Language: en-US
+Cc: andrew@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <Z4VwrhhXU4uKqYGR@LQ3V64L9R2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AV-Do-Run: Yes
 
-On Sat, 11 Jan 2025 19:12:51 +0800 Potin Lai wrote:
-> > > Thanks for the new patch.
-> > > I am currently tied up with other tasks, but I=E2=80=99ll make sure t=
-o test
-> > > it as soon as possible and share the results with you. =20
-> >
-> > Understood, would you be able to test it by January 13th?
-> > Depending on how long we need to wait we may be better off
-> > applying the patch already or waiting with committing.. =20
->=20
-> Hi Jakub & Paul,
->=20
-> I had a test yesterday, the patch is working and the kernel panic does
-> not happen any more, but we notice sometimes the config_apply_mac
-> state runs before the gma command is handled.
->=20
-> Cosmo helped me to find a potential state handling issue, and I
-> submitted the v2 version.
-> Please kindly have a look at v2 version with the link below.
-> v2: https://lore.kernel.org/all/20250111-fix-ncsi-mac-v2-0-838e0a1a233a@g=
-mail.com/
+On 13.01.25 20:59, Joe Damato wrote:
+> On Fri, Jan 10, 2025 at 11:39:39PM +0100, Gerhard Engleder wrote:
+>> Use netif_queue_set_napi() to link queues to NAPI instances so that they
+>> can be queried with netlink.
+>>
+>> $ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
+>>                           --dump queue-get --json='{"ifindex": 11}'
+>> [{'id': 0, 'ifindex': 11, 'napi-id': 9, 'type': 'rx'},
+>>   {'id': 1, 'ifindex': 11, 'napi-id': 10, 'type': 'rx'},
+>>   {'id': 0, 'ifindex': 11, 'napi-id': 9, 'type': 'tx'},
+>>   {'id': 1, 'ifindex': 11, 'napi-id': 10, 'type': 'tx'}]
+>>
+>> Additionally use netif_napi_set_irq() to also provide NAPI interrupt
+>> number to userspace.
+>>
+>> $ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
+>>                           --do napi-get --json='{"id": 9}'
+>> {'defer-hard-irqs': 0,
+>>   'gro-flush-timeout': 0,
+>>   'id': 9,
+>>   'ifindex': 11,
+>>   'irq': 42,
+>>   'irq-suspend-timeout': 0}
+>>
+>> Providing information about queues to userspace makes sense as APIs like
+>> XSK provide queue specific access. Also XSK busy polling relies on
+>> queues linked to NAPIs.
+>>
+>> Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+>> ---
+>>   drivers/net/ethernet/engleder/tsnep_main.c | 28 ++++++++++++++++++----
+>>   1 file changed, 23 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
+>> index 45b9f5780902..71e950e023dc 100644
+>> --- a/drivers/net/ethernet/engleder/tsnep_main.c
+>> +++ b/drivers/net/ethernet/engleder/tsnep_main.c
+>> @@ -1984,23 +1984,41 @@ static int tsnep_queue_open(struct tsnep_adapter *adapter,
+>>   
+>>   static void tsnep_queue_enable(struct tsnep_queue *queue)
+>>   {
+>> +	struct tsnep_adapter *adapter = queue->adapter;
+>> +
+>> +	netif_napi_set_irq(&queue->napi, queue->irq);
+>>   	napi_enable(&queue->napi);
+>> -	tsnep_enable_irq(queue->adapter, queue->irq_mask);
+>> +	tsnep_enable_irq(adapter, queue->irq_mask);
+>>   
+>> -	if (queue->tx)
+>> +	if (queue->tx) {
+>> +		netif_queue_set_napi(adapter->netdev, queue->tx->queue_index,
+>> +				     NETDEV_QUEUE_TYPE_TX, &queue->napi);
+>>   		tsnep_tx_enable(queue->tx);
+>> +	}
+>>   
+>> -	if (queue->rx)
+>> +	if (queue->rx) {
+>> +		netif_queue_set_napi(adapter->netdev, queue->rx->queue_index,
+>> +				     NETDEV_QUEUE_TYPE_RX, &queue->napi);
+>>   		tsnep_rx_enable(queue->rx);
+>> +	}
+>>   }
+>>   
+>>   static void tsnep_queue_disable(struct tsnep_queue *queue)
+> A>  {
+>> -	if (queue->tx)
+>> +	struct tsnep_adapter *adapter = queue->adapter;
+>> +
+>> +	if (queue->rx)
+>> +		netif_queue_set_napi(adapter->netdev, queue->rx->queue_index,
+>> +				     NETDEV_QUEUE_TYPE_RX, NULL);
+>> +
+>> +	if (queue->tx) {
+>>   		tsnep_tx_disable(queue->tx, &queue->napi);
+>> +		netif_queue_set_napi(adapter->netdev, queue->tx->queue_index,
+>> +				     NETDEV_QUEUE_TYPE_TX, NULL);
+>> +	}
+>>   
+>>   	napi_disable(&queue->napi);
+>> -	tsnep_disable_irq(queue->adapter, queue->irq_mask);
+>> +	tsnep_disable_irq(adapter, queue->irq_mask);
+>>   
+>>   	/* disable RX after NAPI polling has been disabled, because RX can be
+>>   	 * enabled during NAPI polling
+> 
+> The changes generally look OK to me (it seems RTNL is held on all
+> paths where this code can be called from as far as I can tell), but
+> there was one thing that stood out to me.
+> 
+> AFAIU, drivers avoid marking XDP queues as NETDEV_QUEUE_TYPE_RX
+> or NETDEV_QUEUE_TYPE_TX. I could be wrong, but that was my
+> understanding and I submit patches to several drivers with this
+> assumption.
+> 
+> For example, in commit b65969856d4f ("igc: Link queues to NAPI
+> instances"), I unlinked/linked the NAPIs and queue IDs when XDP was
+> enabled/disabled. Likewise, in commit 64b62146ba9e ("net/mlx4: link
+> NAPI instances to queues and IRQs"), I avoided the XDP queues.
+> 
+> If drivers are to avoid marking XDP queues as NETDEV_QUEUE_TYPE_RX
+> or NETDEV_QUEUE_TYPE_TX, perhaps tsnep needs to be modified
+> similarly?
 
-Is there any reason why you reposted Paul's patch?
-Patch 2 looks like a fix for a separate issue (but for the same=20
-use case), am I wrong?
+With 5ef44b3cb4 ("xsk: Bring back busy polling support") the linking of
+the NAPIs is required for XDP/XSK. So it is strange to me if for XDP/XSK
+the NAPIs should be unlinked. But I'm not an expert, so maybe there is
+a reason why.
 
-Also one thing you have not done is to provide the Tested-by: tag=20
-on Paul's patch :)
+I added Magnus, maybe he knows if XSK queues shall still be linked to
+NAPIs.
+
+Gerhard
