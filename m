@@ -1,189 +1,127 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A60342065
-	for <netdev@vger.kernel.org>; Mon, 13 Jan 2025 02:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16D443AA8;
+	Mon, 13 Jan 2025 02:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736735816; cv=none; b=BXjQf/PhKc3frNlpACtvpdl+LF9Z2l11If5OybYkMfR4OgzARqNpZc5frFp9L764wlo9FgJnAgZ4riMVjthnbSqfhLFV9MkiZKdxMmPCf3DGnJEdGni8ljnNeQ5Q3NFAjMx52CANko+7cmnm420ubmT9aYfvnWeUDTBjqIChDrQ=
+	t=1736735849; cv=none; b=hT7yOynpKNn4uis7wIHBF2mnygu71QdGQizTpmvwjH64Cr8CsTyWEqDqPTes6YyZgPcPpf2ncCyJJmG002eKOE4fDQiJPlsDmmUlCloRYzeNPerIRl9gHqY7UWLYUHKZWFgq7ei+y0+cUOeosGfKRRkISY0fgY9OwKrykhrrMaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736735816; c=relaxed/simple;
-	bh=33atN2c5q5MV+wEeaURs0G2Pk1+6beFwxSOU9ZHJ4zo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jDhV+j8YlM4ZX+Uw5AIlb+pnyo97EPApKMngWTZfrYNMBcV+Pi4uT6IEUHgH2YoLkbKmMzagRjMAIHHEqe7byhnAwLlC1I8Noa2xi5Bp1+h8EzFO85zAHOOdhz5j2H2C2/p/dqk7tPYWlyzUqUlocO6f2zqpvHCodT2ypMhwgGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=avwzXWE8; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1736735849; c=relaxed/simple;
+	bh=UIxfsTwqEIBdcQvZJkRmJ4MdX3kwQJLrA5Opg+OvUZY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aXLJYc5wTo1HUM34NGFMSz/+kl+XYN63tXz5b6VeGRPk/GYtMs3/EMHefnAoQE7LA06B4mkDKe7VI0W0Ktj/1bnpFIbnvodFK8Wq1uUpZrm/2LvbAD/OePkA9BFRQK+Ex/je84E4f9w5OQG3J1kCK4rgL55BfphLtiulBDYKzp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z0SyIWr5; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="avwzXWE8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736735813;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IjbGZVtKCla7smHmd/NdDBnCwHIsn6ZbQJ8PT6NLfpE=;
-	b=avwzXWE808V1GDdWOFBizTtqII0M6iBe3lfkWM9GcXKXDu1dBoh1smszeC5FUkwhOOk5Ar
-	u/x/dHqoL06otZJf6NgUTXMObMQ3R8TVyeOSaeiGHRNF6EH1qKI1Ob0l0PQzQXWsKpGjgj
-	ay4+5mAxRkgFhDb2NtRxUeyRl17ugpM=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-567-IS-2yEJJPnGw2y82Ten3aQ-1; Sun, 12 Jan 2025 21:36:51 -0500
-X-MC-Unique: IS-2yEJJPnGw2y82Ten3aQ-1
-X-Mimecast-MFC-AGG-ID: IS-2yEJJPnGw2y82Ten3aQ
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-aa67fcbb549so482897666b.0
-        for <netdev@vger.kernel.org>; Sun, 12 Jan 2025 18:36:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z0SyIWr5"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2163dc5155fso67771865ad.0;
+        Sun, 12 Jan 2025 18:37:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736735847; x=1737340647; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=L/J8PrmwWc4g1mmb+aK/IpQZdIBa7MQhNVsZGDeANEQ=;
+        b=Z0SyIWr5Duz4SH8NU6CcMiEk3NCcaWMOB9TC6XoN8I1mXVdDYUtFzPHcF/bagbQzQ4
+         +Ws63BLERcY2rr7I2KFtvSSzbI5xzex9pVSEsnkk1tlRR+OMzQqmiqXE540MqIFifMlr
+         ENk1PRr8/lziE8xvanA6G0JB6JVyrUxNZWVCG9bk77zqOp8gAYz4qa9POGOgTAUjhbvh
+         NMgJWn2VjQX6NBCEZ8FCqc4dQktK4SBuxmeSFeQfrrS4kiW9ZcEijqpYwqV+YRQdYU78
+         R5EhUn+DQ6TVMPKxOP/uu3qW631NqCyyHoyDGH+LfLhP/B1ciUcJtu9ZXmTcleEf8BXR
+         j59w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736735810; x=1737340610;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IjbGZVtKCla7smHmd/NdDBnCwHIsn6ZbQJ8PT6NLfpE=;
-        b=ss9fzaqnm6L1Kw5Bw/XLUUYMgV+q1obV2WEgxGYvW6OeLzfUoSgfcf2b7nlustr373
-         03VYxUAwibpUQLQqJiZAPs8mT913wdWpp3mYt+3aCznOrCc+3j8bi25hGwVFkTAqNd3l
-         d8AUFdLrfKeOwnannLIvBVCv80hjyNTqXnuBxrcrG4wx4dkIdeoYxzeiqlaU0BKsa0DT
-         AuMJ5MDUqaOe7SlSezGZnBC5EO7q7ALfWU3yyD1tWNGZxdLnyCVj6bkYgQOfgmFpsKrU
-         yZLtz5zfegVBLYl5ZFyCRWxuYs7RYgofH5O3ATCn7q5t3wqTGwF2gXHNHLEXZuWkuNNf
-         8cfA==
-X-Forwarded-Encrypted: i=1; AJvYcCVw7B8KJ9sPg9OkFKtv4etNq5SExIzr3TK2dTFtSbLVM4MTwAVOkKK8XLYOjte4RNAY4wFlZx8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YziYcn374vTa+uH+2aE8rbEAm4oC/NQY60VUwzWywmirkwsm7ek
-	hoAy89NDmfO+fkNS+Xfl/JX+5hqXd6JrFjZFiYDiXFYwfNOylTXYmWelQHw5Vb1La2ZuxQD3ssX
-	JhIljIgiZGYsRw0bATTrTmdmuzTjYBwKgeWreH7Ol0wbp+O1kRIpVYon4Ns2PgUS7/pMQ0WqdOO
-	zQ1MYZekEQA1Qf8+jBSgGUmUU9gvU0
-X-Gm-Gg: ASbGncu84T4Nsp6r0LQm/jUxHrML8wyOm5Q/1Zrw2ylt8uk3RlWcj7QWUlshgJ2ThXE
-	qwMmhBw8ODZC4C6VF2HHGwvmI9lRgctbgtUJOWTk=
-X-Received: by 2002:a17:907:7288:b0:aa6:73ae:b3b3 with SMTP id a640c23a62f3a-ab2ab5f6f1cmr1637968466b.32.1736735810510;
-        Sun, 12 Jan 2025 18:36:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFaKJ+N3gTUuKbOesPp5xfJ0dnGbxjrRb2BcOPB+C8M6hWol16j29uHgmFXOoNXM/nAg72lLh9aCgqO/JMIO6Q=
-X-Received: by 2002:a17:907:7288:b0:aa6:73ae:b3b3 with SMTP id
- a640c23a62f3a-ab2ab5f6f1cmr1637966866b.32.1736735810150; Sun, 12 Jan 2025
- 18:36:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736735847; x=1737340647;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=L/J8PrmwWc4g1mmb+aK/IpQZdIBa7MQhNVsZGDeANEQ=;
+        b=sima3urFlvk/a67h0W0GwChxgkA05FCZUk1xKTL4Ymg5x3BDP38u33CxNMpIKJahze
+         XBI1koy+5Fs4ppz/9QmsuY9FeRnx8m1TGY8frxxWIFqqq2I6zTDiDqqcKNSp8INEtZMP
+         gbyd+cQrh0vG7GEtXMbVRUH87AdU399uJENYXK6bVeRfcoVzBj++phljVs+7uEpyMJmO
+         ramssR61xCVq55tQ767VPaf5r6iGVTu4eh7b/dafE6cNtSUhmuBX4xYhoyVfWuREhc9d
+         hyHfSoOp/xY8yEjcpDtBv/yau7AYZP/62aE6a5G/Jo49rsxnliNN/2ExZ5sm8q6ZUfiY
+         P88A==
+X-Forwarded-Encrypted: i=1; AJvYcCWYn4ok6V9ofrjKTeOIX1GSMPZ85RJ/jpeO+TqOqKGGhC75XIx1EZtpjHtwAEZwjPyUxHKwNgs2@vger.kernel.org, AJvYcCXEFq23Wy8t0sOb+gQ1fsxe+uVxLnCNCnqB/0oalgcyDxxMG+k0UYReoOodQKeojpT/nKHXxxpMdbQYhD0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzT8CLVFoA00WdkKMQFjBJT3VdXK+vDpDDE54R6692tdcHN6AkP
+	odVAtXsuEhDUlEw8/4k5mJ4JnI/jtxl/o6xhNpmWiUoGf9CGhspy
+X-Gm-Gg: ASbGncs7i4MUjdFRHHXK0mGuA1lLuje8hKms+1eg4wf+wPnBdSsimbdQu9GKUFWFdJn
+	OPmVYlpHCifoijIb+mVOQdKxRzxyC6OfNkc+Uxrqjyrng4ThIY/HHafhQhCb0CRzKvQ/8OD6OXm
+	y1NFdLugFFhxxhofuZiD8rUMpXPmHb601acQ4USpF2cEE+Y6yN2g2FHdX1zabkfHupnlZ2Rpc1r
+	Hc5pCrNvI6Pbkvi8NUpVa3i+Q8GH4yVIqrwL+fpr8mGvCznh4/5rM1WfmKVeN/gZB5KeRHkEdwG
+	H6D94SA54iq60RGH+XWDAR/PU9+SZ1pZiw==
+X-Google-Smtp-Source: AGHT+IHlQz0mBc3CaxiLiwZpvKmkXsqTAr5MAfY8mkqHMCMWaZlILVtddhKOciiElVdCyFISb1811A==
+X-Received: by 2002:a17:902:f545:b0:216:4499:b836 with SMTP id d9443c01a7336-21a83f70dd1mr171648975ad.26.1736735846929;
+        Sun, 12 Jan 2025 18:37:26 -0800 (PST)
+Received: from localhost.localdomain (61-220-246-151.hinet-ip.hinet.net. [61.220.246.151])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f22d2dasm44639045ad.172.2025.01.12.18.37.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Jan 2025 18:37:26 -0800 (PST)
+From: Potin Lai <potin.lai.pt@gmail.com>
+Subject: [PATCH v3 0/2] net/ncsi: fix oem gma command handling and state
+ race issue
+Date: Mon, 13 Jan 2025 10:34:46 +0800
+Message-Id: <20250113-fix-ncsi-mac-v3-0-564c8277eb1d@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241210164456.925060-1-lulu@redhat.com> <20241210164456.925060-8-lulu@redhat.com>
- <20250108071107-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20250108071107-mutt-send-email-mst@kernel.org>
-From: Cindy Lu <lulu@redhat.com>
-Date: Mon, 13 Jan 2025 10:36:12 +0800
-X-Gm-Features: AbW1kvZzKRu6zgb1uk7BzXKIMdzPKzlbctv6VkNibULKkSY0RJRzGOOzIN9zHaQ
-Message-ID: <CACLfguUffb-kTZgUoBnJAJxhpxh-xq8xBM-Hv5CZeWzDoha6tA@mail.gmail.com>
-Subject: Re: [PATCH v4 7/8] vhost: Add new UAPI to support change to task mode
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: jasowang@redhat.com, michael.christie@oracle.com, sgarzare@redhat.com, 
-	linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMZ7hGcC/3WMQQrCMBBFr1Jm7UgmqVBceQ/pIqaTdsCkkpSgl
+ Nzd2L3L9z/v7ZA5CWe4djskLpJljQ3MqQO32DgzytQYtNIXRUTo5Y3RZcFgHRL3DzP53pAnaMo
+ rcfuP3H1svEje1vQ56kX/1j+holHhYAZWlqw2xt7mYOV5dmuAsdb6BYwsO2KoAAAA
+To: Samuel Mendoza-Jonas <sam@mendozajonas.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Ivan Mikhaylov <fr0st61te@gmail.com>, 
+ Paul Fertser <fercerpav@gmail.com>, Patrick Williams <patrick@stwcx.xyz>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Cosmo Chou <cosmo.chou@quantatw.com>, Potin Lai <potin.lai@quantatw.com>, 
+ Potin Lai <potin.lai.pt@gmail.com>, stable@vger.kernel.org, 
+ Cosmo Chou <chou.cosmo@gmail.com>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1736735843; l=1174;
+ i=potin.lai.pt@gmail.com; s=20240724; h=from:subject:message-id;
+ bh=UIxfsTwqEIBdcQvZJkRmJ4MdX3kwQJLrA5Opg+OvUZY=;
+ b=IRl33z4FT55EDEYU0VPK06IXcDng0gkeBMajy9YeN1eX5bvZcXGuE1dCtrom2rlVluZneT3KH
+ cmT1KBuAgn5A5KCysGsSFARoocZjZ+M2FrI3v3M0ARnGxtpoYl5Ta6J
+X-Developer-Key: i=potin.lai.pt@gmail.com; a=ed25519;
+ pk=6Z4H4V4fJwLteH/WzIXSsx6TkuY5FOcBBP+4OflJ5gM=
 
-On Wed, Jan 8, 2025 at 8:13=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com> =
-wrote:
->
-> On Wed, Dec 11, 2024 at 12:41:46AM +0800, Cindy Lu wrote:
-> > Add a new UAPI to enable setting the vhost device to task mode.
-> > The userspace application can use VHOST_SET_INHERIT_FROM_OWNER
-> > to configure the mode if necessary.
-> > This setting must be applied before VHOST_SET_OWNER, as the worker
-> > will be created in the VHOST_SET_OWNER function
-> >
-> > Signed-off-by: Cindy Lu <lulu@redhat.com>
->
-> Good.  I would like to see an option to allow/block this ioctl,
-> to prevent exceeding nproc limits. A Kconfig option is probably
-> sufficient.  "allow legacy threading mode" and default to yes?
->
-sure I will add this in the new version, the legacy thread mode here
-is  kthread mode
-I will change these commit comments and make it more clear
-Thanks
-Cindy
+We are seeing kernel panic when enabling two NCSI interfaces at same
+time. It looks like mutex lock is being used in softirq caused the
+issue.
 
->
-> > ---
-> >  drivers/vhost/vhost.c      | 22 +++++++++++++++++++++-
-> >  include/uapi/linux/vhost.h | 18 ++++++++++++++++++
-> >  2 files changed, 39 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> > index 3e9cb99da1b5..12c3bf3d1ed4 100644
-> > --- a/drivers/vhost/vhost.c
-> > +++ b/drivers/vhost/vhost.c
-> > @@ -2257,15 +2257,35 @@ long vhost_dev_ioctl(struct vhost_dev *d, unsig=
-ned int ioctl, void __user *argp)
-> >  {
-> >       struct eventfd_ctx *ctx;
-> >       u64 p;
-> > -     long r;
-> > +     long r =3D 0;
-> >       int i, fd;
-> > +     u8 inherit_owner;
-> >
-> >       /* If you are not the owner, you can become one */
-> >       if (ioctl =3D=3D VHOST_SET_OWNER) {
-> >               r =3D vhost_dev_set_owner(d);
-> >               goto done;
-> >       }
-> > +     if (ioctl =3D=3D VHOST_SET_INHERIT_FROM_OWNER) {
-> > +             /*inherit_owner can only be modified before owner is set*=
-/
-> > +             if (vhost_dev_has_owner(d)) {
-> > +                     r =3D -EBUSY;
-> > +                     goto done;
-> > +             }
-> > +             if (copy_from_user(&inherit_owner, argp, sizeof(u8))) {
-> > +                     r =3D -EFAULT;
-> > +                     goto done;
-> > +             }
-> > +             /* Validate the inherit_owner value, ensuring it is eithe=
-r 0 or 1 */
-> > +             if (inherit_owner > 1) {
-> > +                     r =3D -EINVAL;
-> > +                     goto done;
-> > +             }
-> > +
-> > +             d->inherit_owner =3D (bool)inherit_owner;
-> >
-> > +             goto done;
-> > +     }
-> >       /* You must be the owner to do anything else */
-> >       r =3D vhost_dev_check_owner(d);
-> >       if (r)
-> > diff --git a/include/uapi/linux/vhost.h b/include/uapi/linux/vhost.h
-> > index b95dd84eef2d..d7564d62b76d 100644
-> > --- a/include/uapi/linux/vhost.h
-> > +++ b/include/uapi/linux/vhost.h
-> > @@ -235,4 +235,22 @@
-> >   */
-> >  #define VHOST_VDPA_GET_VRING_SIZE    _IOWR(VHOST_VIRTIO, 0x82,       \
-> >                                             struct vhost_vring_state)
-> > +
-> > +/**
-> > + * VHOST_SET_INHERIT_FROM_OWNER - Set the inherit_owner flag for the v=
-host device
-> > + *
-> > + * @param inherit_owner: An 8-bit value that determines the vhost thre=
-ad mode
-> > + *
-> > + * When inherit_owner is set to 1:
-> > + *   - The VHOST worker threads inherit its values/checks from
-> > + *     the thread that owns the VHOST device, The vhost threads will
-> > + *     be counted in the nproc rlimits.
-> > + *
-> > + * When inherit_owner is set to 0:
-> > + *   - The VHOST worker threads will use the traditional kernel thread=
- (kthread)
-> > + *     implementation, which may be preferred by older userspace appli=
-cations that
-> > + *     do not utilize the newer vhost_task concept.
-> > + */
-> > +#define VHOST_SET_INHERIT_FROM_OWNER _IOW(VHOST_VIRTIO, 0x83, __u8)
-> > +
-> >  #endif
-> > --
-> > 2.45.0
->
+This patch series try to fix oem gma command handling issue by adding a
+new state, also fix a potential state handling issue. 
+
+Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
+---
+Changes in v3:
+- Fix compile error by removing non-exist variable.
+- Link to v2: https://lore.kernel.org/r/20250111-fix-ncsi-mac-v2-0-838e0a1a233a@gmail.com
+
+Changes in v2:
+- Add second patch for fixing state handling issue.
+- Link to v1: https://lore.kernel.org/all/20250109145054.30925-1-fercerpav@gmail.com/
+
+---
+Cosmo Chou (1):
+      net/ncsi: fix state race during channel probe completion
+
+Paul Fertser (1):
+      net/ncsi: fix locking in Get MAC Address handling
+
+ net/ncsi/internal.h    |  2 ++
+ net/ncsi/ncsi-manage.c | 21 ++++++++++++++++++---
+ net/ncsi/ncsi-rsp.c    | 19 ++++++-------------
+ 3 files changed, 26 insertions(+), 16 deletions(-)
+---
+base-commit: fc033cf25e612e840e545f8d5ad2edd6ba613ed5
+change-id: 20250111-fix-ncsi-mac-1e4b3df431f1
+
+Best regards,
+-- 
+Potin Lai <potin.lai.pt@gmail.com>
 
