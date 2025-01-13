@@ -1,112 +1,225 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADC02343AE;
-	Mon, 13 Jan 2025 08:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EEB23DE
+	for <netdev@vger.kernel.org>; Mon, 13 Jan 2025 08:20:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736756434; cv=none; b=rOJJzHhRfyxA1PaxKxce8DOiahEdpNi5JlPg1V3INQNVGIEZR16rWrXja1y1MtJs+V73EcdF3oqhmA7COrgT2YNjQLa6r8AKx8QN/dYQMCSPI5dWJksMMeIvi7O/PCpe5EVFrKjlwrHN1kKnz3wYCWrUuspjY3Wl2RzOR4c6Vm4=
+	t=1736756458; cv=none; b=nSyRnLmoZVd91p1tF6ArjZlJ/iNxCW5YtJbwr8d0osZHjoTzwZDve5MdMSMb0JFyDVp6xygOUyKfrR5KKI4t0uxseld9BmvBpet19jCCtvMghqtZZaeEXgXkgEo8QH0D9wYwXRZCBy7HLDqOouPcTS85vEoZo5K0eg7Oj3AEKEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736756434; c=relaxed/simple;
-	bh=T2+vwE8Q/jX5sjYtCnlHq5K3xPwjojUoWuI3P0DevBk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=EjJ09pXYpdXzYPWBGqfyBMOCsN4Hcj7hdWcClaX4OEMLRE3ZnPW7N9Lp9L3ZulHXb0y9LiV53aVZkfDs0KEdrgtbejZEfSFQj+62d+Wz9VPRJGCz9FLljl8U7t76MpCw+BVHP1Dnrn8zGlrawbJINBz/RUYeWSTwhbnw2o98y0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=gnQSVPx8; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1736756458; c=relaxed/simple;
+	bh=EcpH4rtyXynVuHAZzQlAPEj/KCxAWwyoDGiub7E8gkk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G4/ejBGZ6dl/avRDP9vbcNHTw2eTl2+oRUcl7NIXtgDBSu/OuiyfTqyiZhFa8fANcpZG5NBBNnjdqivmllgppxzSm4IXkhiQrtctxn6Q1LIa9/1hg3AV1++0g2FpnJ6e1uxr4pHvaCb2ALPH9YyQa46kCHaRb5YNGRAj8L0d02c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IbGZVbOB; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="gnQSVPx8"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50CNVmNK001429;
-	Mon, 13 Jan 2025 08:20:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	KTOGnUSuzyr+oWqVsvrpKAAsSXbxNV6JiMO8j/CSbgA=; b=gnQSVPx8SzXP5jLi
-	GRLKap5D6FO5Ovkep4MJICmvTQMzTTg6B/lnklB+1H3XsC9wzvRXDJy+0HSY2awQ
-	bA85QjI9NVi0cwUjqbSDhtehybG/dr/AiyuMmtnnWlK1VGlH/PSUnGkIhAlCO2oU
-	Z/uS36vr/bXJf+aOXzd5ubwVqI5bqFj6Jswr0TTnS9NXPNDfmu8c2AZ9bM7AKmuT
-	jYn8x4BsG5D4LSDEJm2rgBcfJNqvtGmlU8N3B8Cy4SHRkPqyPKAGbaqpwJFGMqm0
-	htcDpCWFUrUDyheLhC9WrE836jH/GFdNAHXJu8/BWhIPm6WBql4qDmvdFjDBy3Ze
-	8w6VDg==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 444f5bhjr2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jan 2025 08:20:19 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50D8KHKF014816
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jan 2025 08:20:17 GMT
-Received: from [10.253.33.98] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 13 Jan
- 2025 00:20:11 -0800
-Message-ID: <45d3eda0-7a2f-4ba3-9646-1f0e4b4f8943@quicinc.com>
-Date: Mon, 13 Jan 2025 16:20:09 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IbGZVbOB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736756457; x=1768292457;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=EcpH4rtyXynVuHAZzQlAPEj/KCxAWwyoDGiub7E8gkk=;
+  b=IbGZVbOBnjoBC6Ilf+XzWEw2d3K0JJEATqbTF6QibR0sg5Dah7rjePSk
+   k2hnXyqkujtWIxBETavlihIXxCq3pLqaGReQD6LIN115zo/CV78/RzcXy
+   gO7sN1IXLXTaysgN4bxDjj9/7XONiuFm+Wb3b3w0CkjAdY8koTysQQ4jc
+   kLfNB4R3u5pQGTWn6t1b+kCKz4VoxSdSO1rWMqRu7njkR0tKImOhGl3ZQ
+   wVyb6cnDs5NYf9x+IZhyqQkrhy9G8cQlXA2Hzcro2WLpSJpa44fjKWuzP
+   69ICqvoUyeDOKt3UFa0j6x2vAte9NWpoye7I41PU4DHbtdKIQTPQysAQT
+   g==;
+X-CSE-ConnectionGUID: OEOom4F5REKPKN2Vh3ObAg==
+X-CSE-MsgGUID: OUan5i07TmqMOdTFgwrx6w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11313"; a="48379602"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="48379602"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2025 00:20:57 -0800
+X-CSE-ConnectionGUID: vTW6YC88TGCB+eNTz651xQ==
+X-CSE-MsgGUID: tGWvH3umR5+WA2i/3RZASw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="104194047"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2025 00:20:54 -0800
+Date: Mon, 13 Jan 2025 09:17:35 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Michael Chan <michael.chan@broadcom.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
+	pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com,
+	somnath.kotur@broadcom.com
+Subject: Re: [PATCH net-next 05/10] bnxt_en: Refactor bnxt_free_tx_rings() to
+ free per Tx ring
+Message-ID: <Z4TMH1lQWiZWP5h0@mev-dev.igk.intel.com>
+References: <20250113063927.4017173-1-michael.chan@broadcom.com>
+ <20250113063927.4017173-6-michael.chan@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 3/5] net: pcs: qcom-ipq9574: Add PCS
- instantiation and phylink operations
-To: Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	<pabeni@redhat.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Andrew Lunn
-	<andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King
-	<linux@armlinux.org.uk>, <netdev@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <quic_kkumarcs@quicinc.com>,
-        <quic_suruchia@quicinc.com>, <quic_pavir@quicinc.com>,
-        <quic_linchen@quicinc.com>, <quic_luoj@quicinc.com>,
-        <srinivas.kandagatla@linaro.org>, <bartosz.golaszewski@linaro.org>,
-        <vsmuthu@qti.qualcomm.com>, <john@phrozen.org>
-References: <20250108-ipq_pcs_net-next-v4-0-0de14cd2902b@quicinc.com>
- <20250108-ipq_pcs_net-next-v4-3-0de14cd2902b@quicinc.com>
- <20250108100358.GG2772@kernel.org>
- <8ac3167c-c8aa-4ddb-948f-758714df7495@quicinc.com>
- <20250110105252.GY7706@kernel.org> <20250110163225.43fe8043@kernel.org>
-Content-Language: en-US
-From: Lei Wei <quic_leiwei@quicinc.com>
-In-Reply-To: <20250110163225.43fe8043@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 4PZO-eVY0aKhcDrThjj0pMLQBrPJeRZM
-X-Proofpoint-ORIG-GUID: 4PZO-eVY0aKhcDrThjj0pMLQBrPJeRZM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- mlxlogscore=938 malwarescore=0 clxscore=1015 impostorscore=0
- priorityscore=1501 bulkscore=0 suspectscore=0 adultscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501130070
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250113063927.4017173-6-michael.chan@broadcom.com>
 
-
-
-On 1/11/2025 8:32 AM, Jakub Kicinski wrote:
-> On Fri, 10 Jan 2025 10:52:52 +0000 Simon Horman wrote:
->> I don't think there is a need to update the code just to make Smatch happy.
->> Only if there is a real problem. Which, with the discussion at the link
->> above in mind, does not seem to be the case here.
+On Sun, Jan 12, 2025 at 10:39:22PM -0800, Michael Chan wrote:
+> From: Somnath Kotur <somnath.kotur@broadcom.com>
 > 
-> Maybe be good to add a one line comment in the code to make it clear
-> this is intentional. Chances are we'll get a semi-automated "fixes"
-> for this before long.
+> Modify bnxt_free_tx_rings() to free the skbs per Tx ring.
+> This will be useful later in the series.
+> 
+> Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
+> Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+> ---
+>  drivers/net/ethernet/broadcom/bnxt/bnxt.c | 115 ++++++++++++----------
+>  1 file changed, 61 insertions(+), 54 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> index 4c5cb4dd7420..4336a5b54289 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> @@ -3314,74 +3314,81 @@ static int bnxt_poll_p5(struct napi_struct *napi, int budget)
+>  	return work_done;
+>  }
+>  
+> -static void bnxt_free_tx_skbs(struct bnxt *bp)
+> +static void bnxt_free_one_tx_ring_skbs(struct bnxt *bp,
+> +				       struct bnxt_tx_ring_info *txr, int idx)
+>  {
+>  	int i, max_idx;
+>  	struct pci_dev *pdev = bp->pdev;
+>  
+> -	if (!bp->tx_ring)
+> -		return;
+> -
+>  	max_idx = bp->tx_nr_pages * TX_DESC_CNT;
+> -	for (i = 0; i < bp->tx_nr_rings; i++) {
+> -		struct bnxt_tx_ring_info *txr = &bp->tx_ring[i];
+> -		int j;
+>  
+> -		if (!txr->tx_buf_ring)
+> +	for (i = 0; i < max_idx;) {
+> +		struct bnxt_sw_tx_bd *tx_buf = &txr->tx_buf_ring[i];
+> +		struct sk_buff *skb;
+> +		int j, last;
+> +
+> +		if (idx  < bp->tx_nr_rings_xdp &&
+> +		    tx_buf->action == XDP_REDIRECT) {
+> +			dma_unmap_single(&pdev->dev,
+> +					 dma_unmap_addr(tx_buf, mapping),
+> +					 dma_unmap_len(tx_buf, len),
+> +					 DMA_TO_DEVICE);
+> +			xdp_return_frame(tx_buf->xdpf);
+> +			tx_buf->action = 0;
+> +			tx_buf->xdpf = NULL;
+> +			i++;
+>  			continue;
+> +		}
+>  
+> -		for (j = 0; j < max_idx;) {
+> -			struct bnxt_sw_tx_bd *tx_buf = &txr->tx_buf_ring[j];
+> -			struct sk_buff *skb;
+> -			int k, last;
+> -
+> -			if (i < bp->tx_nr_rings_xdp &&
+> -			    tx_buf->action == XDP_REDIRECT) {
+> -				dma_unmap_single(&pdev->dev,
+> -					dma_unmap_addr(tx_buf, mapping),
+> -					dma_unmap_len(tx_buf, len),
+> -					DMA_TO_DEVICE);
+> -				xdp_return_frame(tx_buf->xdpf);
+> -				tx_buf->action = 0;
+> -				tx_buf->xdpf = NULL;
+> -				j++;
+> -				continue;
+> -			}
+> +		skb = tx_buf->skb;
+> +		if (!skb) {
+> +			i++;
+> +			continue;
+> +		}
+>  
+> -			skb = tx_buf->skb;
+> -			if (!skb) {
+> -				j++;
+> -				continue;
+> -			}
+> +		tx_buf->skb = NULL;
+>  
+> -			tx_buf->skb = NULL;
+> +		if (tx_buf->is_push) {
+> +			dev_kfree_skb(skb);
+> +			i += 2;
+> +			continue;
+> +		}
+>  
+> -			if (tx_buf->is_push) {
+> -				dev_kfree_skb(skb);
+> -				j += 2;
+> -				continue;
+> -			}
+> +		dma_unmap_single(&pdev->dev,
+> +				 dma_unmap_addr(tx_buf, mapping),
+> +				 skb_headlen(skb),
+> +				 DMA_TO_DEVICE);
+>  
+> -			dma_unmap_single(&pdev->dev,
+> -					 dma_unmap_addr(tx_buf, mapping),
+> -					 skb_headlen(skb),
+> -					 DMA_TO_DEVICE);
+> +		last = tx_buf->nr_frags;
+> +		i += 2;
+> +		for (j = 0; j < last; j++, i++) {
+> +			int ring_idx = i & bp->tx_ring_mask;
+> +			skb_frag_t *frag = &skb_shinfo(skb)->frags[j];
+>  
+> -			last = tx_buf->nr_frags;
+> -			j += 2;
+> -			for (k = 0; k < last; k++, j++) {
+> -				int ring_idx = j & bp->tx_ring_mask;
+> -				skb_frag_t *frag = &skb_shinfo(skb)->frags[k];
+> -
+> -				tx_buf = &txr->tx_buf_ring[ring_idx];
+> -				dma_unmap_page(
+> -					&pdev->dev,
+> -					dma_unmap_addr(tx_buf, mapping),
+> -					skb_frag_size(frag), DMA_TO_DEVICE);
+> -			}
+> -			dev_kfree_skb(skb);
+> +			tx_buf = &txr->tx_buf_ring[ring_idx];
+> +			dma_unmap_page(&pdev->dev,
+> +				       dma_unmap_addr(tx_buf, mapping),
+> +				       skb_frag_size(frag), DMA_TO_DEVICE);
+>  		}
+> -		netdev_tx_reset_queue(netdev_get_tx_queue(bp->dev, i));
+> +		dev_kfree_skb(skb);
+> +	}
+> +	netdev_tx_reset_queue(netdev_get_tx_queue(bp->dev, idx));
+> +}
+> +
+> +static void bnxt_free_tx_skbs(struct bnxt *bp)
+> +{
+> +	int i;
+> +
+> +	if (!bp->tx_ring)
+> +		return;
+> +
+> +	for (i = 0; i < bp->tx_nr_rings; i++) {
+> +		struct bnxt_tx_ring_info *txr = &bp->tx_ring[i];
+> +
+> +		if (!txr->tx_buf_ring)
+> +			continue;
+> +
+> +		bnxt_free_one_tx_ring_skbs(bp, txr, i);
+>  	}
+>  }
 
-Sure, I will add the comment to make it clear.
+Looks fine, I didn't find any functional changes from previous version.
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+
+>  
+> -- 
+> 2.30.1
