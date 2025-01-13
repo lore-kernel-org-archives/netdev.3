@@ -1,151 +1,162 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379FF188906;
-	Mon, 13 Jan 2025 09:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F8E145A16
+	for <netdev@vger.kernel.org>; Mon, 13 Jan 2025 09:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736759822; cv=none; b=Mgr5eYItueceDUqgdMfDmPuO72JQ2JJZpHlBHMz1w6vy+jHhFILSkFO/6CfmrXQqmTCT/B+7TlR51xnnodQWHANoi57knkuK4JiUPEsXyqITVu9R+Z3C6ML7roOHmr1HeA/yq2eqB+C3trGb1VnB4JdwJ52ZoHutGSso5bcOmdg=
+	t=1736760128; cv=none; b=k8F4nRGm56z9cOn8WmNSR4skI1hzJmNc8HO1EkQe8Pl6d8eUAZX3UdeC2I7zpmkQNnCx9aj7fslgpId8YyVKC0l6UPQQc0cJpfbOJvVc6IW5dlZvKpcJZsVLoyUtxy0mDGsTMb8LH8mUUEOMwJKdzbU4I3BdsV8kX9L0rr/jV6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736759822; c=relaxed/simple;
-	bh=7UnmyNdVe+32W2vUPO1zCBjs8r1y7uMlO2y0GncJoaM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=jKDeAAimS1D6ouwjPDbrh8Lt9dNeDj4wtK9WS9irrVFJfxAlLRg4bunFRqBJLJd74PHv9ZeREw6Vct7RmJipBL6Ek+H+gcWiUZPAkumKcFSE+PMH5l6+sX+hap+91COVBcbHKpp/qS8G0tn4JuUA6vXMutP1mvCODflqW1MmT2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UEi1T877; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1736760128; c=relaxed/simple;
+	bh=D/esqgxMhOa+gKrqWrl9YkbeC6Nlbcann0IkBS2Guhg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f8aCe4mJ6oaAixEDRfnVpzJAcruwcZzyyJnlRmYBlJKWP57/dpxJtS+JWLzlAFbkrOLHHvTBaIRqaLsd6D1+qrEs3YwjSzPUEcyQLKlN2dQAFIAeLtw3RTjO0k0orZqSoccHI12hm0wlVM3zubRvpSxoZ8n1GYzlAYS6ZdujfhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=fYdoFmz7; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UEi1T877"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50D2IePB022963;
-	Mon, 13 Jan 2025 09:16:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=3uxgE4idQR38GT/Gb14Ckn
-	TFHWfCRtOUTFCc7UH8QKE=; b=UEi1T877f2Z18gLc0A+J2zUyAxxVjAfElutp1j
-	9p/q9aBJMPPeioYwhzwURVWNsXkVq2bSoM0BYwGOpE+AKSiDkS96gGc09PHQ3nrN
-	7i/h+RDOzaoAMkOLxEPTQNF+HDNE8BpsRnHxuB/DGb39sKlR9oWzG9CbKQPLkWIB
-	N39ZWLxz+aShsgFWDrWtLOhb3fNwbe+Pil/ErtPhbsFkWQT3aBqsfkYXnk6bUv/M
-	+euarL2FQcfOVv3aUjTaUu2cuJ1kU7g/eAdawxl1rzK28luybtcxbJfo2xnt9ytU
-	wx1Cu97R+n7Efr7y9QBHWYRXWDS35QoPx05lzOqebsFBFn4w==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 444swy8v24-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jan 2025 09:16:51 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50D9GoWa003237
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jan 2025 09:16:50 GMT
-Received: from yijiyang-gv.ap.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 13 Jan 2025 01:16:46 -0800
-From: Yijie Yang <quic_yijiyang@quicinc.com>
-Date: Mon, 13 Jan 2025 17:15:39 +0800
-Subject: [PATCH v3] dt-bindings: net: qcom,ethqos: Correct fallback
- compatible for qcom,qcs615-ethqos
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="fYdoFmz7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=1SSTzS99BYsiM+oBx4byfpdIc4HV6ye8QqH1Uy/uwK8=; b=fYdoFmz7gBQiSp0E0N+IE+M+N0
+	FPcncnIjDuC2EtVNdNKtyxGuoX5fZDq/bAPi7doFZlFyn9BSfhQVBAwgJn/0GfYc6vUqJIYmhZdvc
+	8OwDpi+kSkIcJJ68qnMeO34+RnIUxE3PlIpBo8p+4a1XW5daaIyXjYgBKzDFhuPsbLLAFJYTlBtb+
+	lhphYEILFzAetzKI3H1cxIOXa0Jft4he4cmWgjpaYrFuJABv4aEgmW4qjpO1eJqEI2PPAw7/33Xkf
+	WMPrY+vubq6uZo76PH9DkDYrYu8fbYMgrl+B809jKvAj7Dr3RfKcKA+RO9x7lIZV6zdxlollS4a6s
+	0K7rZRxQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54286)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tXGdU-0006Fg-0X;
+	Mon, 13 Jan 2025 09:21:28 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tXGdK-0003wv-2z;
+	Mon, 13 Jan 2025 09:21:18 +0000
+Date: Mon, 13 Jan 2025 09:21:18 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexander Couzens <lynxis@fe80.eu>,
+	Alexander Duyck <alexanderduyck@fb.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?utf-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	DENG Qingfang <dqfext@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Eric Woudstra <ericwouds@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jose Abreu <Jose.Abreu@synopsys.com>, kernel-team@meta.com,
+	Lars Povlsen <lars.povlsen@microchip.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Madalin Bucur <madalin.bucur@nxp.com>,
+	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Michal Simek <michal.simek@amd.com>, netdev@vger.kernel.org,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Sean Anderson <sean.anderson@seco.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Taras Chornyi <taras.chornyi@plvision.eu>,
+	UNGLinuxDriver@microchip.com, Vladimir Oltean <olteanv@gmail.com>
+Subject: [PATCH net-next v2 0/5] net: phylink: fix PCS without autoneg
+Message-ID: <Z4TbDnXtG8f3SRmC@shell.armlinux.org.uk>
+References: <Z3_n_5BXkxQR4zEG@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20250113-schema_qcs615-v3-1-d5bbf0ee8cb7@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIALvZhGcC/1WPzU7EMAyEX6XKGSPHTYHuifdACCWuS31oupuUa
- tFq351ky484ju1vZnwxWZJKNofmYpJsmnWJRbR3jeHJx3cBHYo2hNShtS1knmT2byfOD7aDMDy
- GdngiptGbwhyTjHq++b28Fh18FgjJR56qyw7Xw0nzuqTPW+5m63mNcBap/46ArQULYxiks734E
- fH59KGske95mU113+gPJHK/IAECIorv0Tl2/X/wuvdMUqZZ173s3rTsZ10PTZTzCj8vF+L6BR4
- bsL0oAQAA
-X-Change-ID: 20250113-schema_qcs615-bd7b3d82c2fa
-To: Vinod Koul <vkoul@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David
- S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio
-	<konradybcio@kernel.org>
-CC: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        <netdev@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Yijie Yang
-	<quic_yijiyang@quicinc.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1736759806; l=1888;
- i=quic_yijiyang@quicinc.com; s=20240408; h=from:subject:message-id;
- bh=7UnmyNdVe+32W2vUPO1zCBjs8r1y7uMlO2y0GncJoaM=;
- b=B3nb3Mn3UmXhfXYL+TDx8mkmaKJCeumdmMZ/TR2FBQpLC3jAyvZSknTWiOUU/gfeViW5H5vBQ
- dqmCc/n4R6zB67B6vn7vH3IjKphJbaQJKRDTFB4WwVYtMQrgPJQFXed
-X-Developer-Key: i=quic_yijiyang@quicinc.com; a=ed25519;
- pk=XvMv0rxjrXLYFdBXoFjTdOdAwDT5SPbQ5uAKGESDihk=
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: WSQ9bUlJ1OFMUT1n9Dnrj5DIwUKwR77t
-X-Proofpoint-ORIG-GUID: WSQ9bUlJ1OFMUT1n9Dnrj5DIwUKwR77t
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
- clxscore=1015 mlxscore=0 bulkscore=0 mlxlogscore=999 impostorscore=0
- phishscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501130078
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z3_n_5BXkxQR4zEG@shell.armlinux.org.uk>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-The qcs615-ride utilizes the same EMAC as the qcs404, rather than the
-sm8150.
-The current fallback could lead to package loss, and the ethernet on
-qcs615-ride was not utilized by anyone. Therefore, it needs to be revised,
-and there is no need to worry about the ABI impact.
+Hi,
 
-Fixes: 32535b9410b8 ("dt-bindings: net: qcom,ethqos: add description for qcs615")
-Signed-off-by: Yijie Yang <quic_yijiyang@quicinc.com>
----
-Changes in v3:
-- Fallback the Ethernet compatible of qcs615 to that of qcs404.
-- Remove unnecessary patches.
-- Enrich the commit description to clarify the ABI impact.
-- Update the base commit to next-20250113.
-- Link to v2: https://lore.kernel.org/r/20241224-schema-v2-0-000ea9044c49@quicinc.com
----
- Documentation/devicetree/bindings/net/qcom,ethqos.yaml | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Eric Woudstra reported that a PCS attached using 2500base-X does not
+see link when phylink is using in-band mode, but autoneg is disabled,
+despite there being a valid 2500base-X signal being received. We have
+these settings:
 
-diff --git a/Documentation/devicetree/bindings/net/qcom,ethqos.yaml b/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
-index f117471fb06fb3b507df811d55d41d0b610ac15f..e7ee0d9efed8330f5cf62e6c0ea41066572415aa 100644
---- a/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
-+++ b/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
-@@ -22,12 +22,12 @@ properties:
-     oneOf:
-       - items:
-           - enum:
--              - qcom,qcs8300-ethqos
--          - const: qcom,sa8775p-ethqos
-+              - qcom,qcs615-ethqos
-+          - const: qcom,qcs404-ethqos
-       - items:
-           - enum:
--              - qcom,qcs615-ethqos
--          - const: qcom,sm8150-ethqos
-+              - qcom,qcs8300-ethqos
-+          - const: qcom,sa8775p-ethqos
-       - enum:
-           - qcom,qcs404-ethqos
-           - qcom,sa8775p-ethqos
+	act_link_an_mode = MLO_AN_INBAND
+	pcs_neg_mode = PHYLINK_PCS_NEG_INBAND_DISABLED
 
----
-base-commit: 12d614e5293b74345f6d0ed93620f8f10ce0f8b9
-change-id: 20250113-schema_qcs615-bd7b3d82c2fa
+Eric diagnosed it to phylink_decode_c37_word() setting state->link
+false because the full-duplex bit isn't set in the non-existent link
+partner advertisement word (which doesn't exist because in-band
+autoneg is disabled!)
 
-Best regards,
+The test in phylink_mii_c22_pcs_decode_state() is supposed to catch
+this state, but since we converted PCS to use neg_mode, testing the
+Autoneg in the local advertisement is no longer sufficient - we need
+to be looking at the neg_mode, which currently isn't provided.
+
+We need to provide this via the .pcs_get_state() method, and this
+will require modifying all PCS implementations to add the extra
+argument to this method.
+
+Patch 1 uses the PCS neg_mode in phylink_mac_pcs_get_state() to correct
+the now obsolute usage of the Autoneg bit in the advertisement.
+
+Patch 2 passes neg_mode into the .pcs_get_state() method, and updates
+all users.
+
+Patch 3 adds neg_mode as an argument to the various clause 22 state
+decoder functions in phylink, modifying drivers to pass the neg_mode
+through.
+
+Patch 4 makes use of phylink_mii_c22_pcs_decode_state() rather than
+using the Autoneg bit in the advertising field.
+
+Patch 5 may be required for Eric's case - it ensures that we report
+the correct state for interface types that we support only one set
+of modes for when autoneg is disabled.
+
+Changes in v2:
+- Add test for NULL pcs in patch 1
+
+I haven't added Eric's t-b because I used a different fix in patch 1.
+
+ drivers/net/dsa/b53/b53_serdes.c                   |  4 +-
+ drivers/net/dsa/mt7530.c                           |  2 +-
+ drivers/net/dsa/mv88e6xxx/pcs-6185.c               |  1 +
+ drivers/net/dsa/mv88e6xxx/pcs-6352.c               |  1 +
+ drivers/net/dsa/mv88e6xxx/pcs-639x.c               |  5 +-
+ drivers/net/dsa/qca/qca8k-8xxx.c                   |  2 +-
+ drivers/net/ethernet/cadence/macb_main.c           |  3 +-
+ drivers/net/ethernet/freescale/fman/fman_dtsec.c   |  4 +-
+ drivers/net/ethernet/marvell/mvneta.c              |  2 +-
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c    |  2 +
+ .../net/ethernet/marvell/prestera/prestera_main.c  |  1 +
+ drivers/net/ethernet/meta/fbnic/fbnic_phylink.c    |  2 +-
+ .../net/ethernet/microchip/lan966x/lan966x_main.h  |  2 +-
+ .../ethernet/microchip/lan966x/lan966x_phylink.c   |  3 +-
+ .../net/ethernet/microchip/lan966x/lan966x_port.c  |  4 +-
+ .../net/ethernet/microchip/sparx5/sparx5_phylink.c |  2 +-
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c  |  3 +-
+ drivers/net/pcs/pcs-lynx.c                         |  4 +-
+ drivers/net/pcs/pcs-mtk-lynxi.c                    |  4 +-
+ drivers/net/pcs/pcs-xpcs.c                         |  7 +--
+ drivers/net/phy/phylink.c                          | 60 ++++++++++++++++------
+ include/linux/phylink.h                            | 11 ++--
+ 22 files changed, 87 insertions(+), 42 deletions(-)
+
 -- 
-Yijie Yang <quic_yijiyang@quicinc.com>
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
