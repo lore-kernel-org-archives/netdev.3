@@ -1,147 +1,143 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from out203-205-221-209.mail.qq.com (out203-205-221-209.mail.qq.com [203.205.221.209])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AD421ADB2
-	for <netdev@vger.kernel.org>; Mon, 13 Jan 2025 09:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30C4235BF6;
+	Mon, 13 Jan 2025 09:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736761365; cv=none; b=ODgICJVBvN/Ced3+CQpvfUwPH0OaV/Gma2ln3sQq9yrr83jk9r7hNhp3Qnv4X1DC7YbIzTPuNcMSJP+TfxDbG6XXm1TO8DHXRe7UR1GaqNWIzOqIGtYmYy+53OGfetEnFXiKtzAEsjNmFWecquwZdmoZyUokDXB40gofUR7/5is=
+	t=1736761536; cv=none; b=dR7/pnFIH5QjwKTyqRJlOWfxo3vsJlcW4gNxTr+uUuWJIjKuTdI+5kWYfMfisIAacShUAf6ZGwdkJjqDWmgCfaxjrFDi7tS5CBQYtKyVor2CcrSH/2Th5GToSCZwqfzTDH8m7bZjA1EQJ5XAkIbhO+ncQ4RF/U4wSc9Vufeehyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736761365; c=relaxed/simple;
-	bh=lhmxskbqGmXej7W9jkDId4T2R4B5O0rubVPO9ENh8cs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sB0Ut5oPYQGJtceVRvswHjSTQ56Cguz3r1Em+o7taivxlMNpJ4aG3/cAAL2Ca9u3/Y7FAmSJfTsLpu3pvs6BWPvDmIPKY79w/IaUsF/dknSa+c52wRFag/D26hj1pcMdktZKmluK6fcovGjdWtCXwRPuyZp2QZwfFIr+kUbuGKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FSvBoOR/; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1736761536; c=relaxed/simple;
+	bh=DGaiv9b5UWVkhDkHFYc1ja0FdSe9pmdaQy72D5NVJjE=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YC8WoMTeeuKyi7LFRgRGNS60dleGPXiFto0q3NiFQR/kO25J9JV/Xzro2iZebbN/vmHAqFdoUzM9KjoTEQ29BcaaV5sgBOA+n9RQlv+g3iIiu/WE9v/Wet1RVLTVJeT3HwQqjBvAN/JNoPwNkup8MJ7qFVoj6zHaEGFLt1DHruQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Red54.com; spf=pass smtp.mailfrom=red54.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=hURS3vGR; arc=none smtp.client-ip=203.205.221.209
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Red54.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=red54.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FSvBoOR/"
-Message-ID: <f1062d1c-f39d-4c9e-9b50-f6ae0bcf27d5@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1736761355;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RjB6WK0e1BonkXyM1rzb2pTfxLH0vAZTTZRJAaWMzIU=;
-	b=FSvBoOR/2lGsPOrxt2XCfKh4xJt4s9aq0Soaqo+ujJeGo1zgsSoFjz/dbxC0X6Wt6Wzm1h
-	gUnPg9mGmD2dnliNDp+r/yXxQpGllafOGvKp2C9uQVepdcAO9uVnIchrJHbE1UMid6zH6e
-	feKvgHJ/zRi0H+1a5Gyl3/QcoKX+jIY=
-Date: Mon, 13 Jan 2025 17:41:41 +0800
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="hURS3vGR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1736761520; bh=8BUcaaeDR8g0TBCHYYEj7TUQmhe8ESqqCwpv/+P8Z6o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=hURS3vGRmYwfKmxo3g9NIuxKGw+L0SJ5hPWU6EmmysH7VgmM6lz+1slPVddPksWuW
+	 ZnON0XNzaicxPL2Yn1MWt0SkJyPafPTOBvHnHBipujD69Pjp+SkllFGbM5e4RiXz/Y
+	 TwYXMixaKrIuD3qi+dQXz/u1EHRYZeb0phFFwlCQ=
+Received: from mail.red54.com ([45.138.16.231])
+	by newxmesmtplogicsvrszb21-0.qq.com (NewEsmtp) with SMTP
+	id B4132020; Mon, 13 Jan 2025 17:45:01 +0800
+X-QQ-mid: xmsmtpt1736761501tgiqcpvb6
+Message-ID: <tencent_EE9140075A979E58EBB03FA7E7DEF6831F07@qq.com>
+X-QQ-XMAILINFO: NbgegmlEc3Jukl1Czjf3/A8q9aptpoeYH0jFNYe+4LOXC+JDf/tj8hrQIFqWoH
+	 Bcrlb5s3D3rBdhKRbzcXlI06CdDqFLnmvCMfshRTGmp6uh35Hamjram09npTGyIGPFNANvC8OYHC
+	 gE8vO/W06TE0I1gNF/j2kBJJ7wfE6DpKYBZRap0IpbY+sPX9rxAwCMYBljRcAbkRS9S89A2IOWzJ
+	 KuiUq6+S74lLKJKX8NipkEhxvtU0yfOyVLlwGnIXNVcsS52s3FVU7a4HymY3lPxe8a9HpEnzn0R7
+	 ap/T86bDytrDmiy1401txtBENQk6vAtIdY4bJZkCXHpt0ChWmt08/xBTPHy530GSrmm4sVHm/ANW
+	 BaOX0LXBHzHDdrb2S8jO5Lx6H4damg+P0YDstrsfYHyOOd9SVqUTqXyePzN3LkQYaYsOJos3yTtt
+	 luKhSuOBjTQC6YebuVzI49W/w/744fvywooG2c5cu5De4zbl4Q0lYMLvqFYEivX4ObzLwTj5E4BD
+	 rM36FjxxZn2muR6M66+b9c5N11zeGFGCTxmNIOQaagJYtzJwkl8xEI6w7KNSCuhgxwPWa3FXBN4m
+	 8czx3wYScoGcXgElYdJfnGd18ApNOzRN5w976kt8JNcHJSpzzF+kgzMabj3n44yKOieymtLY7Bos
+	 T6OrGrp+KvOq/8geZhe9QcUl6oUTlcOqbyfaxPwNmMiEb3d8jgBaEYs1xtyYH3dyDShzEvqFvUPW
+	 l7qVs7A/FiA+LtSwyfTJhtdq54iQsjyK4CtjYk7h3BGpiIRBaV1gHTGuiEYhcj90aL4gBZx9jCFL
+	 fEF6B5BiG8skZzXBd3T0KSAww8kGJOSlD2+yYDjW6SsaET3IMh9vaO2P21+ZAhzUqtU4WqQQ1A7v
+	 QusCadF5b/tA5hkGRR9BhmxUIf10kOlZBfzOIbC2/Yi/hUhTEPPSg6opr3tZhRW+M+D4feKDC5TT
+	 U9aYEduKSEzQQKGZIFuny4w/i/qVa8oXXv4w3NYQlY9zVpjt5yPvFL/gnbqwYJWBSFNyx/leotNL
+	 O/iARV1neApHSipQmMncHrRIsxrEwkp3nHY3CCDQ==
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+Sender: yeking@red54.com
+From: Yeking@Red54.com
+To: kuba@kernel.org
+Cc: Yeking@Red54.com,
+	arnd@arndb.de,
+	davem@davemloft.net,
+	edumazet@google.com,
+	gregkh@linuxfoundation.org,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	prarit@redhat.com,
+	vkuznets@redhat.com
+Subject: [PATCH net v2] net: appletalk: Drop aarp_send_probe_phase1()
+Date: Mon, 13 Jan 2025 09:44:51 +0000
+X-OQ-MSGID: <20250113094451.141836-1-Yeking@Red54.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250110182435.6b811abe@kernel.org>
+References: <20250110182435.6b811abe@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v1 1/3] net: stmmac: Switch to zero-copy in
- non-XDP RX path
-To: Furong Xu <0x1207@gmail.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, xfr@outlook.com
-References: <cover.1736500685.git.0x1207@gmail.com>
- <600c76e88b6510f6a4635401ec1e224b3bbb76ec.1736500685.git.0x1207@gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yanteng Si <si.yanteng@linux.dev>
-In-Reply-To: <600c76e88b6510f6a4635401ec1e224b3bbb76ec.1736500685.git.0x1207@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-在 2025/1/10 17:53, Furong Xu 写道:
-> Avoid memcpy in non-XDP RX path by marking all allocated SKBs to
-> be recycled in the upper network stack.
-> 
-> This patch brings ~11.5% driver performance improvement in a TCP RX
-> throughput test with iPerf tool on a single isolated Cortex-A65 CPU
-> core, from 2.18 Gbits/sec increased to 2.43 Gbits/sec.
-> 
-> Signed-off-by: Furong Xu <0x1207@gmail.com>
-> ---
->   drivers/net/ethernet/stmicro/stmmac/stmmac.h  |  1 +
->   .../net/ethernet/stmicro/stmmac/stmmac_main.c | 23 +++++++++++--------
->   2 files changed, 15 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-> index 548b28fed9b6..5c39292313de 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-> @@ -126,6 +126,7 @@ struct stmmac_rx_queue {
->   	unsigned int cur_rx;
->   	unsigned int dirty_rx;
->   	unsigned int buf_alloc_num;
-> +	unsigned int napi_skb_frag_size;
->   	dma_addr_t dma_rx_phy;
->   	u32 rx_tail_addr;
->   	unsigned int state_saved;
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 038df1b2bb58..43125a6f8f6b 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -1320,7 +1320,7 @@ static unsigned int stmmac_rx_offset(struct stmmac_priv *priv)
->   	if (stmmac_xdp_is_enabled(priv))
->   		return XDP_PACKET_HEADROOM;
->   
-> -	return 0;
-> +	return NET_SKB_PAD;
->   }
->   
->   static int stmmac_set_bfsize(int mtu, int bufsize)
-> @@ -2019,17 +2019,21 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
->   	struct stmmac_channel *ch = &priv->channel[queue];
->   	bool xdp_prog = stmmac_xdp_is_enabled(priv);
->   	struct page_pool_params pp_params = { 0 };
-> -	unsigned int num_pages;
-> +	unsigned int dma_buf_sz_pad, num_pages;
->   	unsigned int napi_id;
->   	int ret;
->   
-> +	dma_buf_sz_pad = stmmac_rx_offset(priv) + dma_conf->dma_buf_sz +
-> +			 SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-> +	num_pages = DIV_ROUND_UP(dma_buf_sz_pad, PAGE_SIZE);
-> +
->   	rx_q->queue_index = queue;
->   	rx_q->priv_data = priv;
-> +	rx_q->napi_skb_frag_size = num_pages * PAGE_SIZE;
->   
->   	pp_params.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
->   	pp_params.pool_size = dma_conf->dma_rx_size;
-> -	num_pages = DIV_ROUND_UP(dma_conf->dma_buf_sz, PAGE_SIZE);
-> -	pp_params.order = ilog2(num_pages);
-> +	pp_params.order = order_base_2(num_pages);
->   	pp_params.nid = dev_to_node(priv->device);
->   	pp_params.dev = priv->device;
->   	pp_params.dma_dir = xdp_prog ? DMA_BIDIRECTIONAL : DMA_FROM_DEVICE;
-> @@ -5574,19 +5578,20 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
->   			/* XDP program may expand or reduce tail */
->   			buf1_len = ctx.xdp.data_end - ctx.xdp.data;
->   
-> -			skb = napi_alloc_skb(&ch->rx_napi, buf1_len);
-> +			skb = napi_build_skb(page_address(buf->page),
-> +					     rx_q->napi_skb_frag_size);
->   			if (!skb) {
-> +				page_pool_recycle_direct(rx_q->page_pool,
-> +							 buf->page);
->   				rx_dropped++;
->   				count++;
->   				goto drain_data;
->   			}
->   
->   			/* XDP program may adjust header */
-> -			skb_copy_to_linear_data(skb, ctx.xdp.data, buf1_len);
-> +			skb_reserve(skb, ctx.xdp.data - ctx.xdp.data_hard_start);
-The network subsystem still requires that the length
-of each line of code should not exceed 80 characters.
-So let's silence the warning:
+From: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
 
-WARNING: line length of 81 exceeds 80 columns
-#87: FILE: drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:5592:
-+			skb_reserve(skb, ctx.xdp.data - ctx.xdp.data_hard_start);
+aarp_send_probe_phase1() used to work by calling ndo_do_ioctl of
+appletalk drivers such as ltpc, cops, or ipddp, but these drivers have
+been removed since the following commits:
+commit dbecb011eb78 ("appletalk: use ndo_siocdevprivate")
+commit 03dcb90dbf62 ("net: appletalk: remove Apple/Farallon LocalTalk PC
+support")
+commit 00f3696f7555 ("net: appletalk: remove cops support")
+commit 1dab47139e61 ("appletalk: remove ipddp driver")
 
-Thanks,
-Yanteng
+Thus aarp_send_probe_phase1() no longer works, so drop it. (found by
+code inspection)
+
+Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+---
+V1 -> V2: Update commit message
+
+ net/appletalk/aarp.c | 32 ++------------------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
+
+diff --git a/net/appletalk/aarp.c b/net/appletalk/aarp.c
+index 9fa0b246902b..af6a737e4dd3 100644
+--- a/net/appletalk/aarp.c
++++ b/net/appletalk/aarp.c
+@@ -432,38 +432,10 @@ static struct atalk_addr *__aarp_proxy_find(struct net_device *dev,
+ 	return a ? sa : NULL;
+ }
+ 
+-/*
+- * Probe a Phase 1 device or a device that requires its Net:Node to
+- * be set via an ioctl.
+- */
+-static void aarp_send_probe_phase1(struct atalk_iface *iface)
+-{
+-	struct ifreq atreq;
+-	struct sockaddr_at *sa = (struct sockaddr_at *)&atreq.ifr_addr;
+-	const struct net_device_ops *ops = iface->dev->netdev_ops;
+-
+-	sa->sat_addr.s_node = iface->address.s_node;
+-	sa->sat_addr.s_net = ntohs(iface->address.s_net);
+-
+-	/* We pass the Net:Node to the drivers/cards by a Device ioctl. */
+-	if (!(ops->ndo_do_ioctl(iface->dev, &atreq, SIOCSIFADDR))) {
+-		ops->ndo_do_ioctl(iface->dev, &atreq, SIOCGIFADDR);
+-		if (iface->address.s_net != htons(sa->sat_addr.s_net) ||
+-		    iface->address.s_node != sa->sat_addr.s_node)
+-			iface->status |= ATIF_PROBE_FAIL;
+-
+-		iface->address.s_net  = htons(sa->sat_addr.s_net);
+-		iface->address.s_node = sa->sat_addr.s_node;
+-	}
+-}
+-
+-
+ void aarp_probe_network(struct atalk_iface *atif)
+ {
+-	if (atif->dev->type == ARPHRD_LOCALTLK ||
+-	    atif->dev->type == ARPHRD_PPP)
+-		aarp_send_probe_phase1(atif);
+-	else {
++	if (atif->dev->type != ARPHRD_LOCALTLK &&
++	    atif->dev->type != ARPHRD_PPP) {
+ 		unsigned int count;
+ 
+ 		for (count = 0; count < AARP_RETRANSMIT_LIMIT; count++) {
+-- 
+2.43.0
+
