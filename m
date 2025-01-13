@@ -1,126 +1,195 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9F313DBA0;
-	Mon, 13 Jan 2025 02:37:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52C279E1;
+	Mon, 13 Jan 2025 03:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736735855; cv=none; b=gXSR23cr7MC2yE7nG1w+/hyujQ2G1mASFCTqYIiZRyfkvmwOwon3wex9oHsvu1zOEAkMQJDZ7jBd2BleDKLlMuKhr0bwzmEAHKpno7o9Q7tJ9mgdd7bmsEeqVnYvR6R/5sI90AN4LbuQJ4nNqFj/uf3BC6kwVPXeoqfMX0JQG2I=
+	t=1736737222; cv=none; b=rWGLD+Ik/ca036BVBdCx88tt91VWpGZS7Y+8s8b4RMTsFTiQ4jyxNzcL2lC0g3Ancgu4qVFuIwOHZiGkRUHcaZHBJgARK5q8RfU4nwcHM3do0AfX0zBWu9zJaWIgTxbAHuBIwcAF1IFn3MudHDb52M3yPGzWZMDDLS9hPBq3k8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736735855; c=relaxed/simple;
-	bh=K6gzNZaHfAuSLirvtETdA1F8MqDRR3VW1Q2Rr7rYRM8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XxnyEcdBekZvUgCVN3P0Rt2szQrWKIYVKaSlDGJNFpldiVLJUCQriKh1D2W8ghI9JoEV3pSf1vuYFTQ8WlurtnYX4/JXA8tUE0ApSoC194eTkkremvAzI8sZAA7KUWBxm2CTkQdgAUBBFwmlBJ/J8Zups2dsHcKlgNVX9P8ITNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TqBArcGd; arc=none smtp.client-ip=209.85.214.170
+	s=arc-20240116; t=1736737222; c=relaxed/simple;
+	bh=vWDv9c+Hb5NFBDqnLC3anS0jUC4B07QypVbhZL/BxTk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pmf+eAJtbIH/LRS8V24RLS3He/IwgfqZL506ztWHylZCrB4fqg/SgCTwMuMrCtb8UqXLm2a2njhg0oVVqYt+7B0Lp0S+QIq73hrZKFXldmyZSsqrhgUQA2V0rRRo9bY5GkvZNtpDiUlUJnWcBwy2FtlLvLbYMqhX8qTPJPBOCJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=msrmVdeE; arc=none smtp.client-ip=209.85.219.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TqBArcGd"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-21619108a6bso63169015ad.3;
-        Sun, 12 Jan 2025 18:37:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="msrmVdeE"
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e3983426f80so5878731276.1;
+        Sun, 12 Jan 2025 19:00:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736735853; x=1737340653; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pCIzEBmjHcbdVFsyOCq/K70+Hj9yCzWnlFxUuAaeM4s=;
-        b=TqBArcGdWaKvcPr0q8uRsVNvuaVPvcLl8mdChLY3IEa5+fOGg9emGr7VzS9y7waitb
-         IJ5BJEndP5yL4qyw0yKsNVOOXHyAGH1Z5CrEs3jA4zL0akIJbs365Fws3HdKzTLHBWec
-         9VGhVHGU7gPqsPnaZ4mi5UkcDVoorAdvxVDQH4kR/7qBJG0azPk4yTEv4stdt07bGFlG
-         4dpLbRrUcCC0fz2Pb3uhftlQi6yGx1VV81GHFdXWPECzzm/d6hhF6bbrK10x+rxFSmAp
-         RbB3W5D1K4sETEDFoW/pEjM1bD5P/PE1jSVUdPBE0RVfyf5VEMXkFo+Pa1XRJb7UVRde
-         S3WQ==
+        d=gmail.com; s=20230601; t=1736737219; x=1737342019; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7vHUyb9eNg2JqWHIeEtx4JxxlaEahhQgvricUcB0kaU=;
+        b=msrmVdeEXhgI6OED5WasaszCm5FJkvfwO3V8oini06lN/Mojp3sV8ykJybQRGFQWuS
+         Ew4rAU1R1AUK5pgbno5Nb9RR+bIkn0OW4uJHmQ7s4+rWo6lPX85smR7wyx5j77HZ9aMq
+         twY7tS0SH6tJqpETq5PeX0L7Kg+L3Gvn6n6nY3cNWnkgziJiZ/GHE427Oj8YzvkBuyz/
+         GVJY80AGg0t+ybgFyfDcoiM6yi5Tt089NLddd9HtHC2v4QDZ3BKyQjQZiPwTRSDOxO0H
+         pn6tFJ8vrNY7+q0LNx/aAirs4YN6unnNSLhHvcsZXTepPJAN2MAPfpXycAhj4NpfjnXN
+         Pvug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736735853; x=1737340653;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1736737219; x=1737342019;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pCIzEBmjHcbdVFsyOCq/K70+Hj9yCzWnlFxUuAaeM4s=;
-        b=Nmgm+nmIfCLAbsVLdSzgGgcJIfv+cFSYJW2Jgvl/LGL+I3gidIJBiyyCU6SxyLameJ
-         s3rQbP9SGcQaMJimpXTbCCGu3+5KD7nac4g7JdGa72oumDDVSZKVc/J5EbsGVa5i1PxM
-         KgNOhj/kmIn6s0gdStWr1UBWhCN1dM/+PdjfJr0mFkpI3B6+zGzrwHL07YUndPjH0aCi
-         sb9mQu0msDxum0Y9JuUAhkV1EPSAS0A4OQxHC8kYLDUG+bd6QjLKu7Ny8R0fNgn4EaPp
-         WXYnCBNzogFGxnBIZvrgWA+qESKT/4eLomG27deMi2lQk5rn+KZW2HJWcW8rPHy6GQ6M
-         crHg==
-X-Forwarded-Encrypted: i=1; AJvYcCW88SBJTrD3H3n7DFYuYOqmoEMmcOpatqceLUVaSOPm8Um4+g5QgooxpV3zE2d1fgimWDOHgJtEJ2Q3wt0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuFbH9IQxpXtfbNi5s5agoiIelj8+2AbFG3orSg8AOZMLIQWTp
-	yD+Ip2pwnSKd0uBgR98/g3rGUiKFE6CW5fpmSbqzr4zztqddagp9
-X-Gm-Gg: ASbGncvA3e7smI8PdzpbCICW9HccyDEaz1vcPVdAR7VA4qNfvmmloYWzF3f7ABsBwsk
-	cb8jpaHIMZ9VI2ELehWs8aeR+yWfK28CgXeke4VSH51GVWv1cGbnxbvCIYueR53yx0PEIHqsG/L
-	jxdlPwHdEUFkkR4z7rXtP98t+0MYm47IsHqFrOtH8iqhA9E5DkG2pHPiKk0Wm90c7IA/FICI3Xi
-	Yd06ucQsu6HXBaAyDscQ3dTuZv7BAOjge3nufG4gB1g1M6GY8OeP7yFM7ruF/92UzsCbl9w4wKw
-	WPaHPj0KRw3ex+Pbe4nvV4zv12yYChq2gg==
-X-Google-Smtp-Source: AGHT+IEdVuOZqroBYneBSuzqVyU9sDDFzZLJWh0eJOjqT0/6Z2B7oluRtIlYJlqEnXcdZ2GgwaZX5Q==
-X-Received: by 2002:a17:903:41c5:b0:215:19ae:77bf with SMTP id d9443c01a7336-21a83f4ea67mr292329925ad.19.1736735853291;
-        Sun, 12 Jan 2025 18:37:33 -0800 (PST)
-Received: from localhost.localdomain (61-220-246-151.hinet-ip.hinet.net. [61.220.246.151])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f22d2dasm44639045ad.172.2025.01.12.18.37.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jan 2025 18:37:32 -0800 (PST)
-From: Potin Lai <potin.lai.pt@gmail.com>
-Date: Mon, 13 Jan 2025 10:34:48 +0800
-Subject: [PATCH v3 2/2] net/ncsi: fix state race during channel probe
- completion
+        bh=7vHUyb9eNg2JqWHIeEtx4JxxlaEahhQgvricUcB0kaU=;
+        b=qTHphbfIIT1Iq8UwDKRHQ574R1okZ5Z2hcmXyK/XKLbBxk293ek3NIvwHiYEZkdrkV
+         mDKlYRl7iwi15/lr4/bfr2t2f3OAh1SjXJMMIU7lfylitsgKmYZZcdTX0KiRrUojYn+m
+         ZsLR8sAgP8VXyitGejHPZrPve5gDE7o4aS4g7nbqR1ubSAoa3dNUa9Y9ZZ4B4oQuxRDV
+         KUbzrdwi8ugQyHhO/lOrR3cJ/r9KUr3kAM5h4o5HAJW1l2rE53rs0OfjaFl17Whtubse
+         jqrTWs+YEPqegIF3irgAaWl3c1h1xH368c9mc0SGfFBxO8MKyCQVuoxpE3Qj4PsGmoAx
+         UYhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUK0CiXomYykw0fdYj25dDmuoz/DZ4uJO3K2AxyvWTU8flJhvikoOuw9IBPC0ybs/6dyjgORcr/@vger.kernel.org, AJvYcCW0ApG1ciJhKM3IKFIVaRBORJuiwNEbF8++CiaFhPEizgTZcR3fwFxpmu/v0dYxgiQYQ08bJBfXlXlZ+H83@vger.kernel.org, AJvYcCW6EaLrO+tG32JQ0cue501tXWsg4XFhspq3VfT/Kba979fUmpClYRfKlTIk4gl7RifjG5EGhYqreHj+@vger.kernel.org, AJvYcCWMmIrFgET8eIEZlM1xmwg7b73IWmYEzR5ajuUQLOtuqeKNwdaFddDaEDpuhyJEFDRo1SpLo1rufE7Dk536ZAg=@vger.kernel.org, AJvYcCWO+oeLv2sCLPYF6YY2NyFoJfy9kMEMoJ3RejC7We6Ihj74u8nqlX9Slin68afjb0DV87ogDvkEZVwW@vger.kernel.org, AJvYcCWTdxm8p1omKnHHmheTqjL4KsjoQFY/8u3ZWOhgQh24MxzIABD6NgS2ZYgHIV9On3utXfGl9F5cK99sreA=@vger.kernel.org, AJvYcCX20F3YL8xNuL17QBGXdtMQBbKB0AYtjkbbvA+2M78HpK1rqJ5godFBk/fGSYflfzYWfL9oa7XPc3YftA==@vger.kernel.org, AJvYcCXcKAb20c0Lj9IQ0urOd6JsQ3dDTXJbz/FVxlUt5o4TuGW2GWcY3PkPA4U5GJ+ptk9WTukgx65oTCA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxobPcfGrskszvDhj9vf0VjY4IUM9aypLXs2avVgcBTYruQ9wj
+	LxtFSMwhhUXvo4qZIPdlv1kWHt3wMZ3vUbgBuyRqYYJDJxzSIUOrOFe2ZGEwUh3hZL4Zd1BEVPd
+	haJYYAgbSONTloICF8jkoCr0T/qo=
+X-Gm-Gg: ASbGncubp5jZFm15NToKBfk87nrjcXQn9k0H3umDmqmj2WsUvn7eB3GNyJggPD3RGxW
+	cPsN4i9M5JtDr0qFhlTPPD8k4sXoiJDcUX2XkNd85rJHDD4/0ni8b+HDHxdYf3w/5Dkr+M08=
+X-Google-Smtp-Source: AGHT+IGsfoH84Emy/3VAy+2ciT/LDM53GHF7kLpSuNtlkY+mcbIYtSqMBLpJAo2tp5wPRRi4KWOuDrwlzY99kXjwbZU=
+X-Received: by 2002:a25:2104:0:b0:e47:f4e3:87e3 with SMTP id
+ 3f1490d57ef6-e54edf25ca4mr10429337276.11.1736737218579; Sun, 12 Jan 2025
+ 19:00:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250113-fix-ncsi-mac-v3-2-564c8277eb1d@gmail.com>
-References: <20250113-fix-ncsi-mac-v3-0-564c8277eb1d@gmail.com>
-In-Reply-To: <20250113-fix-ncsi-mac-v3-0-564c8277eb1d@gmail.com>
-To: Samuel Mendoza-Jonas <sam@mendozajonas.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Ivan Mikhaylov <fr0st61te@gmail.com>, 
- Paul Fertser <fercerpav@gmail.com>, Patrick Williams <patrick@stwcx.xyz>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Cosmo Chou <cosmo.chou@quantatw.com>, Potin Lai <potin.lai@quantatw.com>, 
- Potin Lai <potin.lai.pt@gmail.com>, Cosmo Chou <chou.cosmo@gmail.com>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1736735843; l=1067;
- i=potin.lai.pt@gmail.com; s=20240724; h=from:subject:message-id;
- bh=sce396V6hbw9EP8vuzvWyCBvqGSZSlupwpRkXmGkS5Q=;
- b=eVD64J/F+uLmFWqeWtNdl/FAGp9te8QtW83zFJZsaMwkR45JYAWdfknrNtmfoO7qnnsv+uoks
- z96oBCVl1MLDqza4hRznZsIK47UjmVUbsS42+ayl/olq0Ts8QEzWGP9
-X-Developer-Key: i=potin.lai.pt@gmail.com; a=ed25519;
- pk=6Z4H4V4fJwLteH/WzIXSsx6TkuY5FOcBBP+4OflJ5gM=
+References: <20241227095727.2401257-1-a0282524688@gmail.com>
+ <20241227095727.2401257-7-a0282524688@gmail.com> <20250106135135.GN4068@kernel.org>
+In-Reply-To: <20250106135135.GN4068@kernel.org>
+From: Ming Yu <a0282524688@gmail.com>
+Date: Mon, 13 Jan 2025 11:00:07 +0800
+X-Gm-Features: AbW1kvZmveBm_1ZsSzbrQ6SCqOa0J-Y9vxXUkcqQ9J4x_X6pa8sZdwCwcoEMWQw
+Message-ID: <CAOoeyxWvRzHRVLW-U=nemfUpoF5pcO_bDmvg4U-wVqkFp=V=Yg@mail.gmail.com>
+Subject: Re: [PATCH v4 6/7] hwmon: Add Nuvoton NCT6694 HWMON support
+To: Simon Horman <horms@kernel.org>
+Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl, 
+	andi.shyti@kernel.org, mkl@pengutronix.de, mailhol.vincent@wanadoo.fr, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, wim@linux-watchdog.org, 
+	linux@roeck-us.net, jdelvare@suse.com, alexandre.belloni@bootlin.com, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-rtc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Cosmo Chou <chou.cosmo@gmail.com>
+Dear Simon,
 
-During channel probing, the last NCSI_PKT_CMD_DP command can trigger
-an unnecessary schedule_work() via ncsi_free_request(). We observed
-that subsequent config states were triggered before the scheduled
-work completed, causing potential state handling issues.
+Thank you for your comments,
 
-Fix this by clearing req_flags when processing the last package.
+Simon Horman <horms@kernel.org> =E6=96=BC 2025=E5=B9=B41=E6=9C=886=E6=97=A5=
+ =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=889:51=E5=AF=AB=E9=81=93=EF=BC=9A
+>
+...
+> > +static int nct6694_pwm_read(struct device *dev, u32 attr, int channel,
+> > +                         long *val)
+> > +{
+> > +     struct nct6694_hwmon_data *data =3D dev_get_drvdata(dev);
+> > +     unsigned char pwm_en;
+> > +     int ret;
+> > +
+> > +     guard(mutex)(&data->lock);
+> > +
+> > +     switch (attr) {
+> > +     case hwmon_pwm_enable:
+> > +             pwm_en =3D data->hwmon_en.pwm_en[channel / 8];
+> > +             *val =3D !!(pwm_en & BIT(channel % 8));
+> > +
+> > +             return 0;
+> > +     case hwmon_pwm_input:
+> > +             ret =3D nct6694_read_msg(data->nct6694, NCT6694_RPT_MOD,
+> > +                                    NCT6694_PWM_IDX(channel),
+> > +                                    sizeof(data->rpt->fin),
+> > +                                    &data->rpt->fin);
+> > +             if (ret)
+> > +                     return ret;
+> > +
+> > +             *val =3D data->rpt->fin;
+>
+> Hi Ming Yu,
+>
+> *val is host byte order, but fin is big endian.
+> Elsewhere in this patch this seems to be handled using,
+> which looks correct to me:
+>
+>                 *val =3D be16_to_cpu(data->rpt->fin);
+>
+> Flagged by Sparse.
+>
 
-Fixes: 8e13f70be05e ("net/ncsi: Probe single packages to avoid conflict")
-Signed-off-by: Cosmo Chou <chou.cosmo@gmail.com>
----
- net/ncsi/ncsi-manage.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Yes, it needs to be fixed to be16_to_cpu(). I'll make the modification
+in the next patch.
 
-diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-index bf276eaf9330..99e3a5883617 100644
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -1491,7 +1491,10 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
- 		}
- 		break;
- 	case ncsi_dev_state_probe_dp:
--		ndp->pending_req_num = 1;
-+		if (ndp->package_probe_id + 1 < 8)
-+			ndp->pending_req_num = 1;
-+		else
-+			nca.req_flags = 0;
- 
- 		/* Deselect the current package */
- 		nca.type = NCSI_PKT_CMD_DP;
+> > +
+> > +             return 0;
+> > +     case hwmon_pwm_freq:
+> > +             *val =3D NCT6694_FREQ_FROM_REG(data->hwmon_en.pwm_freq[ch=
+annel]);
+> > +
+> > +             return 0;
+> > +     default:
+> > +             return -EOPNOTSUPP;
+> > +     }
+> > +}
+>
+> ...
+>
+> > +static int nct6694_fan_write(struct device *dev, u32 attr, int channel=
+,
+> > +                          long val)
+> > +{
+> > +     struct nct6694_hwmon_data *data =3D dev_get_drvdata(dev);
+> > +     int ret;
+> > +
+> > +     guard(mutex)(&data->lock);
+> > +
+> > +     switch (attr) {
+> > +     case hwmon_fan_enable:
+> > +             if (val =3D=3D 0)
+> > +                     data->hwmon_en.fin_en[channel / 8] &=3D ~BIT(chan=
+nel % 8);
+> > +             else if (val =3D=3D 1)
+> > +                     data->hwmon_en.fin_en[channel / 8] |=3D BIT(chann=
+el % 8);
+> > +             else
+> > +                     return -EINVAL;
+> > +
+> > +             return nct6694_write_msg(data->nct6694, NCT6694_HWMON_MOD=
+,
+> > +                                      NCT6694_HWMON_CONTROL,
+> > +                                      sizeof(data->msg->hwmon_ctrl),
+> > +                                      &data->hwmon_en);
+> > +     case hwmon_fan_min:
+> > +             ret =3D nct6694_read_msg(data->nct6694, NCT6694_HWMON_MOD=
+,
+> > +                                    NCT6694_HWMON_ALARM,
+> > +                                    sizeof(data->msg->hwmon_alarm),
+> > +                                    &data->msg->hwmon_alarm);
+> > +             if (ret)
+> > +                     return ret;
+> > +
+> > +             val =3D clamp_val(val, 1, 65535);
+> > +             data->msg->hwmon_alarm.fin_ll[channel] =3D (u16)cpu_to_be=
+16(val);
+>
+> cpu_to_be16() returns a 16bit big endian value.
+> And, AFAIKT, the type of data->msg->hwmon_alarm.fin_ll[channel] is __be16=
+.
+>
+> So the cast above seems both unnecessary and misleading.
+>
+> Also flagged by Sparse,
+>
 
--- 
-2.31.1
+Understood. Fix it in v5.
 
+> ...
+
+Best regards,
+Ming
