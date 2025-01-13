@@ -1,68 +1,68 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2050.outbound.protection.outlook.com [40.107.94.50])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2064.outbound.protection.outlook.com [40.107.92.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628C21FBBF5
-	for <netdev@vger.kernel.org>; Mon, 13 Jan 2025 15:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC62A1C5D6A
+	for <netdev@vger.kernel.org>; Mon, 13 Jan 2025 15:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.64
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736782941; cv=fail; b=DvEVrIGgDStbtttyY26dsW0twb8ejW/YSzzl3NsusP5QV+bZPv8KsNkv2FP3UpkZpPZqHrVuMgJmAMvLc4ecfwBDPMA5TIMQfu644y31FCLxW7e0h6DAGur7WBrO5Uapg4qeavFoBvoMtXmkc4TtoGwSYRlq1a+FQ19UuCStWf0=
+	t=1736782945; cv=fail; b=UC4N6c815hIhXAnLuSIwFLr+Bq0pOHNfvnAsc76de31Iz1Hv7xt8L6fXavhzqRAzEo06goVJJJA4Mxi6IJy47jACLrilM2BUir20SAJr6NqhWc+9A3zd37LLdzGmjPgy4GpqB0a7pkrmZMY7+oNu0snH3MkoB7O/u5TKG73epHM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736782941; c=relaxed/simple;
-	bh=kDaG2cOzbIogowgbkL+I+ROP52QcXHrhkZadl4E/2nY=;
+	s=arc-20240116; t=1736782945; c=relaxed/simple;
+	bh=Je32aEfhq5MwRpc0INa1ubjj5aMKIkIc9tjxi9yaVgo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ob4y/INaVWjv9fP6HI5AkS48gFFaiqu/QuFsnuk+Mtn5zoW20Z66OJyV0muoKz6nZ4URQ1ug0AE5bH3/KN5CRIruIKupTu+A/XIxFyRYFEGi7lzTt2maCl8+w2VZruSGtFyJ1U/avCE3GJdW5/OjKBicHaM9JcM6CJqCfxeCSKM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mACokh/V; arc=fail smtp.client-ip=40.107.94.50
+	 MIME-Version:Content-Type; b=TOoHjnbI+ADu2Q3I2DJoM3D3S+yRB5Fdixp1U7UZxpb/vdSA6PcQi23baSWWGdbWksB3JahfAZIKjSkuz/lQ4c/GujLLoe8bse4SiO9whRJZb4h0iN1MQjOnKp9TCYySoyHEDq/0kusPE+ZuH886916J3134bEOCHRNmRX7xykE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XhI6EgKX; arc=fail smtp.client-ip=40.107.92.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mACokh/V"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XhI6EgKX"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VNUDWV0YcuAEXPguTRkzXd8KzzEK+EBDJQoLvgI+5cGWl8DnZRJJzvKiEujWCgxL1QLGo3V+b3jVaG/Thw0tp1C31QsOrMx3xPbcbT3tSoTIH6SY3YSRnlq0beqLLaa6sra9BOwv1szXsmBMM5ebd34ONpxI41zstotP0uH+VUdAFivN6QiK1aWiUUARZs5kP7rM0IFMeVeEFw1hCZ9h9v6h/nKwk79Y1tN3Gft/16rREJ9GmRTEBiUpHyOodTKtqJvXd40LQQCiXiNUxZ3HGbKnre2p1fhCQoGTfAAi3t4AWLly3ZsTrOc9HcxIHcwO36OOl6ZlzzCUxMDp/gUo9A==
+ b=bn1v/d1OliwqVOMZoHLpx5oO1b8PUXKgFCfGsOHhJxQJGM1CMicJ3spKpC4Sr7+BtadxfHace35sako4UT+0fk+DCsNf4ZT95d4T1pXBAwvYFb0Z2n6J4VDFhb4eI/Arhg/dQvNZv1040I3llgAQyZ0lLz4SYdf0C7OWQARUwV03D0A1h8Vcyz2Rj0bsGvbl7ahywoc/B5nA64Q5Zyinpe0ME6Rz4yXJoGdZv0Plz12rNfo21Uz/3lRhVZRzPor+AKnVQU68vec1dsVzgu0URTKNsDedY2aQfAy3DcwP2tOr1CrBgNbrzn2nikhwD/F2JVlVFDMBd+NTGEyP/eudng==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5CI3oAkYeVeN7qpitJWqFdgIlEA6L4pXtKuEepmOtqU=;
- b=nsynSP1KqjqcKAuXR3kuVlsKMppXnKDgw1poi/YRALtJkrFoKG3jf3MsDJnvjjnK/PwkadtxND/aaRxTw7q+yZrB+weBSiYwno5RRJtW+X7puwbhTJFU+tez8mYuR3ZSA2ymNcZyInxlO8wcuGNoI7ff7GRFzuCcg5jGvKS7Nz1LLGJQXQNfZBEI7LX4BBvPLqp/pZ7ElLuqU7QGjAWIIbULSJ3hUZ/FXxPQPmbllqt1m2s9MjLHcGkoQIaARxl5kPWgewLB2hdpFuxgp0xQtUsdJdKt+8R9lOIE2x45jnlXs7PvIaJdMRpWibFLlO1lAxSqSEwPWHkF4ZlGd/Y1JQ==
+ bh=d4v85Pkqu7kuP+kPIIArL35uy7uQdRo7MvI3CDkvr+s=;
+ b=MnhUaApZer4bGnk7CQcKjbhIKwaE3EeXOfQXPZR5gj5J6BqiXojzDoGuKWyNr1C3Pd9aKO2KUL8A3uusqI1m8nZrr0Am7fqqUUW0vRBVd/AeNBQqbNnlb5lqqdyynYWogiBaLpthjAdfYDT99qq5KEnQL13D6SsOs/SBW18XCvl5DukgJV053EqhqSPOrqtg0Z0sbN72Vkje/dKS7NV/tecVMN8O222eEAse6Ge9CzGQI0KC4Y/xSO1DGDySfCBLPyHSbJYVSbyerZhWM72jPxlQqcw9wPjLjrP9ZMldKHDeOkOFqG4PcqRIWR2+4xipfBJhanw8NHgn40lHZ3ohhA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5CI3oAkYeVeN7qpitJWqFdgIlEA6L4pXtKuEepmOtqU=;
- b=mACokh/VHsg56bXoTb8p4Kdp6EkaGHB7okorahpkgyjx5jYx5x8tD/ohibRAL042Fpi8StzzmyaTJEdls7E97LF4gfvXWfVnfHkHW3n2mnT0PvBY9g3/Sdk2iP5SsAmVrdArMRngDnXn7+e8Qk2BSh42dphOPOXiElttNX27TeNCMbuirQPHKfwrnwtme+cx6RD2X1y/NhlmN3kkCSpypXpjuJ722KtRSPZXownoc4oSLQUGcRATPeRQuI2mhPOeI23hh51SU2q012lZ+fovpqSXiQS4Wf3L/dOYlAHeaxNoXYYOsbkoRh+B4lj3gDsBaFQyQx3ZGYWEpI7IJetovQ==
-Received: from BN9PR03CA0565.namprd03.prod.outlook.com (2603:10b6:408:138::30)
- by DM6PR12MB4316.namprd12.prod.outlook.com (2603:10b6:5:21a::18) with
+ bh=d4v85Pkqu7kuP+kPIIArL35uy7uQdRo7MvI3CDkvr+s=;
+ b=XhI6EgKXVf259ZgaY6VE0CHLcfU1EEPuW6rKQ9aQ39U23IvMarGjcbn+cs7bT9T8K+30xKcSh/yt9WgDoqfjfCKVDMusvF7EVMyalAhqSxHW2PS234EZiPVxSxS7Av/PSRwDJMbUTSDydZwZ5BVYbU7nzSSxuxeA6BYTnrtd8Esrag4TTh1UMX919HKQR1TsW1YJSD+kamoS3/tXIuGlX9xH4QBf7I1+3krwIUj1gxabxjVn+Nt0//1e+X0TvSVmgSX+PcOcJwNb3KYSjsRBmLKNxHpnd5xoSqE2KPOsH69SSvB9WRuRJu4+np9iBaP+1WLI3H7B1CcZmzK+bB9BKA==
+Received: from SN6PR01CA0008.prod.exchangelabs.com (2603:10b6:805:b6::21) by
+ PH7PR12MB7913.namprd12.prod.outlook.com (2603:10b6:510:27b::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Mon, 13 Jan
- 2025 15:42:15 +0000
-Received: from BL02EPF0001A102.namprd05.prod.outlook.com
- (2603:10b6:408:138:cafe::3d) by BN9PR03CA0565.outlook.office365.com
- (2603:10b6:408:138::30) with Microsoft SMTP Server (version=TLS1_3,
+ 2025 15:42:20 +0000
+Received: from SA2PEPF00003F67.namprd04.prod.outlook.com
+ (2603:10b6:805:b6:cafe::94) by SN6PR01CA0008.outlook.office365.com
+ (2603:10b6:805:b6::21) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.8335.18 via Frontend Transport; Mon,
- 13 Jan 2025 15:42:15 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ 13 Jan 2025 15:42:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BL02EPF0001A102.mail.protection.outlook.com (10.167.241.134) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SA2PEPF00003F67.mail.protection.outlook.com (10.167.248.42) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8356.11 via Frontend Transport; Mon, 13 Jan 2025 15:42:14 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.8356.11 via Frontend Transport; Mon, 13 Jan 2025 15:42:20 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 13 Jan
- 2025 07:42:01 -0800
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ 2025 07:42:07 -0800
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 13 Jan
- 2025 07:42:00 -0800
+ 2025 07:42:07 -0800
 Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.10)
  with Microsoft SMTP Server id 15.2.1544.4 via Frontend Transport; Mon, 13 Jan
- 2025 07:41:57 -0800
+ 2025 07:42:04 -0800
 From: Tariq Toukan <tariqt@nvidia.com>
 To: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, "Andrew
@@ -71,9 +71,9 @@ CC: <netdev@vger.kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, Gal Pressman
 	<gal@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>, Mark Bloch
 	<mbloch@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, Tariq Toukan
 	<tariqt@nvidia.com>
-Subject: [PATCH net 5/8] net/mlx5e: Fix inversion dependency warning while enabling IPsec tunnel
-Date: Mon, 13 Jan 2025 17:40:51 +0200
-Message-ID: <20250113154055.1927008-6-tariqt@nvidia.com>
+Subject: [PATCH net 7/8] net/mlx5e: Rely on reqid in IPsec tunnel mode
+Date: Mon, 13 Jan 2025 17:40:53 +0200
+Message-ID: <20250113154055.1927008-8-tariqt@nvidia.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20250113154055.1927008-1-tariqt@nvidia.com>
 References: <20250113154055.1927008-1-tariqt@nvidia.com>
@@ -88,382 +88,127 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: AnonymousSubmission
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A102:EE_|DM6PR12MB4316:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3118121e-dc95-4ea0-61d4-08dd33e8da9e
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003F67:EE_|PH7PR12MB7913:EE_
+X-MS-Office365-Filtering-Correlation-Id: f91774f3-ea7e-4873-49f9-08dd33e8dddb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
+	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?wC3rw0fTJWhhSIOC1sreYFQkEg6lqthYhs1VUQazGpJDPLszf8pKAYZRvzQK?=
- =?us-ascii?Q?HmOr/a+X3HacFmHJIrphkCNwPAqTjxVfySIdZUi17Pv1ShuZxOP7iE9kyiyp?=
- =?us-ascii?Q?t96ZbJSxrClcXzvDX5myt5jr3MRmnuxt84gt6Q0o2wcDcQuR19uRQTLv+ZC4?=
- =?us-ascii?Q?ukdv30PMcTK7u+sksb9ZvHtTvoPONPZEGzChab42PK1XypV/Z+qsiQGMoD7/?=
- =?us-ascii?Q?jKFwblijazWGRtASMklV326IyofbB5Do/pXNgbSZIV0DGrdWoX81vQRimqsh?=
- =?us-ascii?Q?L2zrYhQ4ErXnL6JygIcJP1YGgEqbBR6oxoqUt8d6OSDPXg2vMnZ6yLpah31o?=
- =?us-ascii?Q?JlKXifGo3K5/2Q+tJnMz/u2MO6h29H7nt/3uta2cCHRS5VNWYkMqNSOXpeVd?=
- =?us-ascii?Q?Eaza7mshJayHG19MZsGJZgD8zZ2AvmsTk3BI0NspyWYThBwBaukIRxDbPP1a?=
- =?us-ascii?Q?w0XPtGvi0Ovuxiwp3COyyhxhQNL+DhwhriL75t7Yu3szX1I6mPdWlTrjZXZC?=
- =?us-ascii?Q?Wdv541RaTSdsN/OVlNo03YjLwKU+HmI17TAg78yv60+cYRXEpRpOvlt9JGeD?=
- =?us-ascii?Q?sx8i2wBlu8sHhL93Szc1ACC5xiWYWJaCNAtrIC2MODfOzZ2QXttx9RwgxMmN?=
- =?us-ascii?Q?Far4WLXiQ+MX2ec2gHha+NRzq0D0jvxK2a0rbAbrfFXU8bLpjsj7MRYlXT7G?=
- =?us-ascii?Q?/TCh3gcw0Bhcw7P3sFdx3oYt0yML0tl2nxBroLSsFTzyOdISgZOz3Bjk9Me3?=
- =?us-ascii?Q?PDTnnvEaC0SeC+Xait9+ntugM5mpiEHcviwM/nVXgf3ZqVFYTNztLLMK77XZ?=
- =?us-ascii?Q?IndixSF9856gzJ66z632PnO+zSHI3IPZ0UN2ws5Sf27f8gXVtF2v+L+3bHeU?=
- =?us-ascii?Q?qVEHAhd9gu998OqN8n30zrYt2YEXgtGuVKl8yBPTtGa5B9HaETraiToXNGWP?=
- =?us-ascii?Q?bUQku6dBd4TO1XVtU7osmiib7UhT+xIt16vKe7SOd9iAKfFgfuA+ryRiUAZ2?=
- =?us-ascii?Q?eWMX7tioPzWfsvb9Qu6dW8RKpEK/6ttKupkj/Nd7Q45Auvd1mLt3r9/n9SH9?=
- =?us-ascii?Q?nZ7AqupY29reQrAPJVtnWd/AY1cbgxmSsZT26IhC8msh7PMi8MJp+710QQOz?=
- =?us-ascii?Q?GsQLcKvnKHqZmvAs71Xg/2/CcURHiUkM9S+HHZkalMokEWesDl+xMy9Pzx84?=
- =?us-ascii?Q?CjLzTn9vc5qbRgggOonSgJPBR7gepfcFv3EijN9JZYDuKXFwruEDEsrVVay4?=
- =?us-ascii?Q?JlEjUpchljA9oNVRTf1B3z/NvMOpWgOQd1j5AdNHpzdx56LnKK4LTE3KUxHJ?=
- =?us-ascii?Q?fTmvftPxM8bTcTb0fYyoCUDSGSQA8HAkAS1pjzgZULbHYS2sqTLLiZEGV193?=
- =?us-ascii?Q?LHa2gQ2/Ypb0HRGuoyswQu9wAvGSAt/1AIbD42/fsvAZ7YClU3KDbLFS9+ip?=
- =?us-ascii?Q?pJsHH9n0gso2bP+suxvA2boGDwGXldv2VTsJ/sMjUNxeR29XaN/u050QdcNT?=
- =?us-ascii?Q?Z0qBdg0oOj5a3fI=3D?=
+	=?us-ascii?Q?NTxKCM7v4CisDu2dYL7ybI9jZCAqfPOzl8DUE+W14tGLeIxNMF0AoHFsuYay?=
+ =?us-ascii?Q?S1iIc3KS7Zg8NyFD4NgDqcU/1edE0yYpYLAKdyqmoQXNTPCoeI0fqv9oKGvG?=
+ =?us-ascii?Q?tSrVjYQ4HIs+GYO5K3FAtwkEW9WyCf9X9p8YpZRh31WgNFPSG938DsE5Tg+c?=
+ =?us-ascii?Q?LuPLafaah5m7Zllj1QDNiFMyONmchxdzPxho4bF/fUHo7u9wA8MLuEK7FGGf?=
+ =?us-ascii?Q?Sdddvmev8KWPm7cyO+C2NqNkuZKPv5unr0oRcQjfQbqqwTvlTDonTEk0K16u?=
+ =?us-ascii?Q?t1CLaWrQ+L1gGvvbWkqFSHRZZffSc8HKq7u+K/NOgbrmL3MwBdt7eaNTdcmv?=
+ =?us-ascii?Q?Yx3OLS7EnxZCoeIvM0UQthXWwHKSx1IP0O6C7sPJ58ehBFxC0tB7PU7Nj7fu?=
+ =?us-ascii?Q?H+h1RL/UXmZaUmU9SPqP5t2ahnd6HrdXI9P1OPKHhjd9N0m4J3OxxRDpDat4?=
+ =?us-ascii?Q?45nL+WAx8U9o2M89dZKMhYeNp4r4os3bHl5JIx0/gY/V5LyajSRq7mqmWX0m?=
+ =?us-ascii?Q?siHIK2EILIO8qdgr1yYBjqfO/v3I9lLh2rUKBx4Cv1r85smSElMqZy5+UvmN?=
+ =?us-ascii?Q?hRsHqnaKbdoRMAyVuQQY4pN+7dKcJsXWRt3+rPX7A+t2ROLny6Zb3gh0EYnU?=
+ =?us-ascii?Q?9AEmMSbab4KOYTN8VSBZkDNFM691jBMToSpbfOo9CBl8bvpRW8Wy30GeCWja?=
+ =?us-ascii?Q?nSMtqV3p+40cMzMed8KJ8atFdiYtWt2MI8L9leitWbzq41ZpnZMkyqYmt155?=
+ =?us-ascii?Q?hZxMXj66nztmOkoA0wqwXHn1x/bngUcbLRI/tRbxcM5/Zo+AKdY5Q/aq54nk?=
+ =?us-ascii?Q?fB1kj09Alzp3BBYJkCY+dpX7XxYZDafTP2BW2iC0kB0Wsay2klm7uGfuMiZk?=
+ =?us-ascii?Q?E3C/mYlRiVUmyDGmWiF2M2v9op0b79JGWkuNAndgTDbt7DKBTs2SolgP0aZe?=
+ =?us-ascii?Q?Kv6aD9PT5WnGUsocFTLYBXGmCq+NEMQ/HuBHaSG11zh9e8DQxpLO330slsD1?=
+ =?us-ascii?Q?g8JfXQoz3reZhMCvzeQoiIiJZiHtxRBKeRhS7wWIA2bUp+4YWJfLAt2PRNE/?=
+ =?us-ascii?Q?lQ0ZgBocfNwh/hieQ4ArB0frcjr0luU4++mv7G/l+z/3iuRyiPvV+N+kepg8?=
+ =?us-ascii?Q?qT3GzvbW2f3fl0ijDSwfmJ77YE6QDnHT+SMpO1RcpQMS//sKhYBtWTRIuRew?=
+ =?us-ascii?Q?54ru9xDHIHt+YjVzbPK0Wd0/VTNPqGHXlSeu2FIqmZ4AtGgAjC6l5NEUHEMI?=
+ =?us-ascii?Q?V8Gy9Rekl5dIQ6EPnYioPwXDCXeO7WcWIiHTFN/LCkY3opR/jZUyBIS271sm?=
+ =?us-ascii?Q?61oR9tpuWF3ElE85nrvEDQjxCoLndfFf24twh7uuvgtrSC//6i0utrYzdKY2?=
+ =?us-ascii?Q?WJ3eCjtDOw/+dxH/UKUnsv1f4bh3fRfU0IDZs//F/F2Z8B+ivayk7LDMJwv6?=
+ =?us-ascii?Q?jpm0RxITdMbXWPSFK8SaKpppelD3OJe4c/FkNw0N4HKSwoNB2G366LkK1/l5?=
+ =?us-ascii?Q?GdB1yBL5FhRDVIY=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2025 15:42:14.7532
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2025 15:42:20.2481
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3118121e-dc95-4ea0-61d4-08dd33e8da9e
+X-MS-Exchange-CrossTenant-Network-Message-Id: f91774f3-ea7e-4873-49f9-08dd33e8dddb
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A102.namprd05.prod.outlook.com
+	SA2PEPF00003F67.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4316
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7913
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-Attempt to enable IPsec packet offload in tunnel mode in debug kernel
-generates the following kernel panic, which is happening due to two
-issues:
-1. In SA add section, the should be _bh() variant when marking SA mode.
-2. There is not needed flush_workqueue in SA delete routine. It is not
-needed as at this stage as it is removed from SADB and the running work
-will be canceled later in SA free.
+All packet offloads SAs have reqid in it to make sure they have
+corresponding policy. While it is not strictly needed for transparent
+mode, it is extremely important in tunnel mode. In that mode, policy and
+SAs have different match criteria.
 
- =====================================================
- WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
- 6.12.0+ #4 Not tainted
- -----------------------------------------------------
- charon/1337 [HC0[0]:SC0[4]:HE1:SE0] is trying to acquire:
- ffff88810f365020 (&xa->xa_lock#24){+.+.}-{3:3}, at: mlx5e_xfrm_del_state+0xca/0x1e0 [mlx5_core]
+Policy catches the whole subnet addresses, and SA catches the tunnel gateways
+addresses. The source address of such tunnel is not known during egress packet
+traversal in flow steering as it is added only after successful encryption.
 
- and this task is already holding:
- ffff88813e0f0d48 (&x->lock){+.-.}-{3:3}, at: xfrm_state_delete+0x16/0x30
- which would create a new lock dependency:
-  (&x->lock){+.-.}-{3:3} -> (&xa->xa_lock#24){+.+.}-{3:3}
+As reqid is required for packet offload and it is unique for every SA,
+we can safely rely on it only.
 
- but this new dependency connects a SOFTIRQ-irq-safe lock:
-  (&x->lock){+.-.}-{3:3}
+The output below shows the configured egress policy and SA by strongswan:
 
- ... which became SOFTIRQ-irq-safe at:
-   lock_acquire+0x1be/0x520
-   _raw_spin_lock_bh+0x34/0x40
-   xfrm_timer_handler+0x91/0xd70
-   __hrtimer_run_queues+0x1dd/0xa60
-   hrtimer_run_softirq+0x146/0x2e0
-   handle_softirqs+0x266/0x860
-   irq_exit_rcu+0x115/0x1a0
-   sysvec_apic_timer_interrupt+0x6e/0x90
-   asm_sysvec_apic_timer_interrupt+0x16/0x20
-   default_idle+0x13/0x20
-   default_idle_call+0x67/0xa0
-   do_idle+0x2da/0x320
-   cpu_startup_entry+0x50/0x60
-   start_secondary+0x213/0x2a0
-   common_startup_64+0x129/0x138
+[leonro@vm ~]$ sudo ip x s
+src 192.169.101.2 dst 192.169.101.1
+        proto esp spi 0xc88b7652 reqid 1 mode tunnel
+        replay-window 0 flag af-unspec esn
+        aead rfc4106(gcm(aes)) 0xe406a01083986e14d116488549094710e9c57bc6 128
+        anti-replay esn context:
+         seq-hi 0x0, seq 0x0, oseq-hi 0x0, oseq 0x0
+         replay_window 1, bitmap-length 1
+         00000000
+        crypto offload parameters: dev eth2 dir out mode packet
 
- to a SOFTIRQ-irq-unsafe lock:
-  (&xa->xa_lock#24){+.+.}-{3:3}
+[leonro@064 ~]$ sudo ip x p
+src 192.170.0.0/16 dst 192.170.0.0/16
+        dir out priority 383615 ptype main
+        tmpl src 192.169.101.2 dst 192.169.101.1
+                proto esp spi 0xc88b7652 reqid 1 mode tunnel
+        crypto offload parameters: dev eth2 mode packet
 
- ... which became SOFTIRQ-irq-unsafe at:
- ...
-   lock_acquire+0x1be/0x520
-   _raw_spin_lock+0x2c/0x40
-   xa_set_mark+0x70/0x110
-   mlx5e_xfrm_add_state+0xe48/0x2290 [mlx5_core]
-   xfrm_dev_state_add+0x3bb/0xd70
-   xfrm_add_sa+0x2451/0x4a90
-   xfrm_user_rcv_msg+0x493/0x880
-   netlink_rcv_skb+0x12e/0x380
-   xfrm_netlink_rcv+0x6d/0x90
-   netlink_unicast+0x42f/0x740
-   netlink_sendmsg+0x745/0xbe0
-   __sock_sendmsg+0xc5/0x190
-   __sys_sendto+0x1fe/0x2c0
-   __x64_sys_sendto+0xdc/0x1b0
-   do_syscall_64+0x6d/0x140
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
- other info that might help us debug this:
-
-  Possible interrupt unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock(&xa->xa_lock#24);
-                                local_irq_disable();
-                                lock(&x->lock);
-                                lock(&xa->xa_lock#24);
-   <Interrupt>
-     lock(&x->lock);
-
-  *** DEADLOCK ***
-
- 2 locks held by charon/1337:
-  #0: ffffffff87f8f858 (&net->xfrm.xfrm_cfg_mutex){+.+.}-{4:4}, at: xfrm_netlink_rcv+0x5e/0x90
-  #1: ffff88813e0f0d48 (&x->lock){+.-.}-{3:3}, at: xfrm_state_delete+0x16/0x30
-
- the dependencies between SOFTIRQ-irq-safe lock and the holding lock:
- -> (&x->lock){+.-.}-{3:3} ops: 29 {
-    HARDIRQ-ON-W at:
-                     lock_acquire+0x1be/0x520
-                     _raw_spin_lock_bh+0x34/0x40
-                     xfrm_alloc_spi+0xc0/0xe60
-                     xfrm_alloc_userspi+0x5f6/0xbc0
-                     xfrm_user_rcv_msg+0x493/0x880
-                     netlink_rcv_skb+0x12e/0x380
-                     xfrm_netlink_rcv+0x6d/0x90
-                     netlink_unicast+0x42f/0x740
-                     netlink_sendmsg+0x745/0xbe0
-                     __sock_sendmsg+0xc5/0x190
-                     __sys_sendto+0x1fe/0x2c0
-                     __x64_sys_sendto+0xdc/0x1b0
-                     do_syscall_64+0x6d/0x140
-                     entry_SYSCALL_64_after_hwframe+0x4b/0x53
-    IN-SOFTIRQ-W at:
-                     lock_acquire+0x1be/0x520
-                     _raw_spin_lock_bh+0x34/0x40
-                     xfrm_timer_handler+0x91/0xd70
-                     __hrtimer_run_queues+0x1dd/0xa60
-                     hrtimer_run_softirq+0x146/0x2e0
-                     handle_softirqs+0x266/0x860
-                     irq_exit_rcu+0x115/0x1a0
-                     sysvec_apic_timer_interrupt+0x6e/0x90
-                     asm_sysvec_apic_timer_interrupt+0x16/0x20
-                     default_idle+0x13/0x20
-                     default_idle_call+0x67/0xa0
-                     do_idle+0x2da/0x320
-                     cpu_startup_entry+0x50/0x60
-                     start_secondary+0x213/0x2a0
-                     common_startup_64+0x129/0x138
-    INITIAL USE at:
-                    lock_acquire+0x1be/0x520
-                    _raw_spin_lock_bh+0x34/0x40
-                    xfrm_alloc_spi+0xc0/0xe60
-                    xfrm_alloc_userspi+0x5f6/0xbc0
-                    xfrm_user_rcv_msg+0x493/0x880
-                    netlink_rcv_skb+0x12e/0x380
-                    xfrm_netlink_rcv+0x6d/0x90
-                    netlink_unicast+0x42f/0x740
-                    netlink_sendmsg+0x745/0xbe0
-                    __sock_sendmsg+0xc5/0x190
-                    __sys_sendto+0x1fe/0x2c0
-                    __x64_sys_sendto+0xdc/0x1b0
-                    do_syscall_64+0x6d/0x140
-                    entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  }
-  ... key      at: [<ffffffff87f9cd20>] __key.18+0x0/0x40
-
- the dependencies between the lock to be acquired
-  and SOFTIRQ-irq-unsafe lock:
- -> (&xa->xa_lock#24){+.+.}-{3:3} ops: 9 {
-    HARDIRQ-ON-W at:
-                     lock_acquire+0x1be/0x520
-                     _raw_spin_lock_bh+0x34/0x40
-                     mlx5e_xfrm_add_state+0xc5b/0x2290 [mlx5_core]
-                     xfrm_dev_state_add+0x3bb/0xd70
-                     xfrm_add_sa+0x2451/0x4a90
-                     xfrm_user_rcv_msg+0x493/0x880
-                     netlink_rcv_skb+0x12e/0x380
-                     xfrm_netlink_rcv+0x6d/0x90
-                     netlink_unicast+0x42f/0x740
-                     netlink_sendmsg+0x745/0xbe0
-                     __sock_sendmsg+0xc5/0x190
-                     __sys_sendto+0x1fe/0x2c0
-                     __x64_sys_sendto+0xdc/0x1b0
-                     do_syscall_64+0x6d/0x140
-                     entry_SYSCALL_64_after_hwframe+0x4b/0x53
-    SOFTIRQ-ON-W at:
-                     lock_acquire+0x1be/0x520
-                     _raw_spin_lock+0x2c/0x40
-                     xa_set_mark+0x70/0x110
-                     mlx5e_xfrm_add_state+0xe48/0x2290 [mlx5_core]
-                     xfrm_dev_state_add+0x3bb/0xd70
-                     xfrm_add_sa+0x2451/0x4a90
-                     xfrm_user_rcv_msg+0x493/0x880
-                     netlink_rcv_skb+0x12e/0x380
-                     xfrm_netlink_rcv+0x6d/0x90
-                     netlink_unicast+0x42f/0x740
-                     netlink_sendmsg+0x745/0xbe0
-                     __sock_sendmsg+0xc5/0x190
-                     __sys_sendto+0x1fe/0x2c0
-                     __x64_sys_sendto+0xdc/0x1b0
-                     do_syscall_64+0x6d/0x140
-                     entry_SYSCALL_64_after_hwframe+0x4b/0x53
-    INITIAL USE at:
-                    lock_acquire+0x1be/0x520
-                    _raw_spin_lock_bh+0x34/0x40
-                    mlx5e_xfrm_add_state+0xc5b/0x2290 [mlx5_core]
-                    xfrm_dev_state_add+0x3bb/0xd70
-                    xfrm_add_sa+0x2451/0x4a90
-                    xfrm_user_rcv_msg+0x493/0x880
-                    netlink_rcv_skb+0x12e/0x380
-                    xfrm_netlink_rcv+0x6d/0x90
-                    netlink_unicast+0x42f/0x740
-                    netlink_sendmsg+0x745/0xbe0
-                    __sock_sendmsg+0xc5/0x190
-                    __sys_sendto+0x1fe/0x2c0
-                    __x64_sys_sendto+0xdc/0x1b0
-                    do_syscall_64+0x6d/0x140
-                    entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  }
-  ... key      at: [<ffffffffa078ff60>] __key.48+0x0/0xfffffffffff210a0 [mlx5_core]
-  ... acquired at:
-    __lock_acquire+0x30a0/0x5040
-    lock_acquire+0x1be/0x520
-    _raw_spin_lock_bh+0x34/0x40
-    mlx5e_xfrm_del_state+0xca/0x1e0 [mlx5_core]
-    xfrm_dev_state_delete+0x90/0x160
-    __xfrm_state_delete+0x662/0xae0
-    xfrm_state_delete+0x1e/0x30
-    xfrm_del_sa+0x1c2/0x340
-    xfrm_user_rcv_msg+0x493/0x880
-    netlink_rcv_skb+0x12e/0x380
-    xfrm_netlink_rcv+0x6d/0x90
-    netlink_unicast+0x42f/0x740
-    netlink_sendmsg+0x745/0xbe0
-    __sock_sendmsg+0xc5/0x190
-    __sys_sendto+0x1fe/0x2c0
-    __x64_sys_sendto+0xdc/0x1b0
-    do_syscall_64+0x6d/0x140
-    entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
- stack backtrace:
- CPU: 7 UID: 0 PID: 1337 Comm: charon Not tainted 6.12.0+ #4
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x74/0xd0
-  check_irq_usage+0x12e8/0x1d90
-  ? print_shortest_lock_dependencies_backwards+0x1b0/0x1b0
-  ? check_chain_key+0x1bb/0x4c0
-  ? __lockdep_reset_lock+0x180/0x180
-  ? check_path.constprop.0+0x24/0x50
-  ? mark_lock+0x108/0x2fb0
-  ? print_circular_bug+0x9b0/0x9b0
-  ? mark_lock+0x108/0x2fb0
-  ? print_usage_bug.part.0+0x670/0x670
-  ? check_prev_add+0x1c4/0x2310
-  check_prev_add+0x1c4/0x2310
-  __lock_acquire+0x30a0/0x5040
-  ? lockdep_set_lock_cmp_fn+0x190/0x190
-  ? lockdep_set_lock_cmp_fn+0x190/0x190
-  lock_acquire+0x1be/0x520
-  ? mlx5e_xfrm_del_state+0xca/0x1e0 [mlx5_core]
-  ? lockdep_hardirqs_on_prepare+0x400/0x400
-  ? __xfrm_state_delete+0x5f0/0xae0
-  ? lock_downgrade+0x6b0/0x6b0
-  _raw_spin_lock_bh+0x34/0x40
-  ? mlx5e_xfrm_del_state+0xca/0x1e0 [mlx5_core]
-  mlx5e_xfrm_del_state+0xca/0x1e0 [mlx5_core]
-  xfrm_dev_state_delete+0x90/0x160
-  __xfrm_state_delete+0x662/0xae0
-  xfrm_state_delete+0x1e/0x30
-  xfrm_del_sa+0x1c2/0x340
-  ? xfrm_get_sa+0x250/0x250
-  ? check_chain_key+0x1bb/0x4c0
-  xfrm_user_rcv_msg+0x493/0x880
-  ? copy_sec_ctx+0x270/0x270
-  ? check_chain_key+0x1bb/0x4c0
-  ? lockdep_set_lock_cmp_fn+0x190/0x190
-  ? lockdep_set_lock_cmp_fn+0x190/0x190
-  netlink_rcv_skb+0x12e/0x380
-  ? copy_sec_ctx+0x270/0x270
-  ? netlink_ack+0xd90/0xd90
-  ? netlink_deliver_tap+0xcd/0xb60
-  xfrm_netlink_rcv+0x6d/0x90
-  netlink_unicast+0x42f/0x740
-  ? netlink_attachskb+0x730/0x730
-  ? lock_acquire+0x1be/0x520
-  netlink_sendmsg+0x745/0xbe0
-  ? netlink_unicast+0x740/0x740
-  ? __might_fault+0xbb/0x170
-  ? netlink_unicast+0x740/0x740
-  __sock_sendmsg+0xc5/0x190
-  ? fdget+0x163/0x1d0
-  __sys_sendto+0x1fe/0x2c0
-  ? __x64_sys_getpeername+0xb0/0xb0
-  ? do_user_addr_fault+0x856/0xe30
-  ? lock_acquire+0x1be/0x520
-  ? __task_pid_nr_ns+0x117/0x410
-  ? lock_downgrade+0x6b0/0x6b0
-  __x64_sys_sendto+0xdc/0x1b0
-  ? lockdep_hardirqs_on_prepare+0x284/0x400
-  do_syscall_64+0x6d/0x140
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- RIP: 0033:0x7f7d31291ba4
- Code: 7d e8 89 4d d4 e8 4c 42 f7 ff 44 8b 4d d0 4c 8b 45 c8 89 c3 44 8b 55 d4 8b 7d e8 b8 2c 00 00 00 48 8b 55 d8 48 8b 75 e0 0f 05 <48> 3d 00 f0 ff ff 77 34 89 df 48 89 45 e8 e8 99 42 f7 ff 48 8b 45
- RSP: 002b:00007f7d2ccd94f0 EFLAGS: 00000297 ORIG_RAX: 000000000000002c
- RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f7d31291ba4
- RDX: 0000000000000028 RSI: 00007f7d2ccd96a0 RDI: 000000000000000a
- RBP: 00007f7d2ccd9530 R08: 00007f7d2ccd9598 R09: 000000000000000c
- R10: 0000000000000000 R11: 0000000000000297 R12: 0000000000000028
- R13: 00007f7d2ccd9598 R14: 00007f7d2ccd96a0 R15: 00000000000000e1
-  </TASK>
-
-Fixes: 4c24272b4e2b ("net/mlx5e: Listen to ARP events to update IPsec L2 headers in tunnel mode")
+Fixes: b3beba1fb404 ("net/mlx5e: Allow policies with reqid 0, to support IKE policy holes")
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- .../ethernet/mellanox/mlx5/core/en_accel/ipsec.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ .../ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c  | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-index ca92e518be76..21857474ad83 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-@@ -768,9 +768,12 @@ static int mlx5e_xfrm_add_state(struct xfrm_state *x,
- 				   MLX5_IPSEC_RESCHED);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+index 47df02ef5d69..772b329aecc5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+@@ -1743,23 +1743,21 @@ static int tx_add_rule(struct mlx5e_ipsec_sa_entry *sa_entry)
+ 		goto err_alloc;
+ 	}
  
- 	if (x->xso.type == XFRM_DEV_OFFLOAD_PACKET &&
--	    x->props.mode == XFRM_MODE_TUNNEL)
--		xa_set_mark(&ipsec->sadb, sa_entry->ipsec_obj_id,
--			    MLX5E_IPSEC_TUNNEL_SA);
-+	    x->props.mode == XFRM_MODE_TUNNEL) {
-+		xa_lock_bh(&ipsec->sadb);
-+		__xa_set_mark(&ipsec->sadb, sa_entry->ipsec_obj_id,
-+			      MLX5E_IPSEC_TUNNEL_SA);
-+		xa_unlock_bh(&ipsec->sadb);
-+	}
- 
- out:
- 	x->xso.offload_handle = (unsigned long)sa_entry;
-@@ -797,7 +800,6 @@ static int mlx5e_xfrm_add_state(struct xfrm_state *x,
- static void mlx5e_xfrm_del_state(struct xfrm_state *x)
- {
- 	struct mlx5e_ipsec_sa_entry *sa_entry = to_ipsec_sa_entry(x);
--	struct mlx5_accel_esp_xfrm_attrs *attrs = &sa_entry->attrs;
- 	struct mlx5e_ipsec *ipsec = sa_entry->ipsec;
- 	struct mlx5e_ipsec_sa_entry *old;
- 
-@@ -806,12 +808,6 @@ static void mlx5e_xfrm_del_state(struct xfrm_state *x)
- 
- 	old = xa_erase_bh(&ipsec->sadb, sa_entry->ipsec_obj_id);
- 	WARN_ON(old != sa_entry);
+-	if (attrs->family == AF_INET)
+-		setup_fte_addr4(spec, &attrs->saddr.a4, &attrs->daddr.a4);
+-	else
+-		setup_fte_addr6(spec, attrs->saddr.a6, attrs->daddr.a6);
 -
--	if (attrs->mode == XFRM_MODE_TUNNEL &&
--	    attrs->type == XFRM_DEV_OFFLOAD_PACKET)
--		/* Make sure that no ARP requests are running in parallel */
--		flush_workqueue(ipsec->wq);
--
- }
+ 	setup_fte_no_frags(spec);
+ 	setup_fte_upper_proto_match(spec, &attrs->upspec);
  
- static void mlx5e_xfrm_free_state(struct xfrm_state *x)
+ 	switch (attrs->type) {
+ 	case XFRM_DEV_OFFLOAD_CRYPTO:
++		if (attrs->family == AF_INET)
++			setup_fte_addr4(spec, &attrs->saddr.a4, &attrs->daddr.a4);
++		else
++			setup_fte_addr6(spec, attrs->saddr.a6, attrs->daddr.a6);
+ 		setup_fte_spi(spec, attrs->spi, false);
+ 		setup_fte_esp(spec);
+ 		setup_fte_reg_a(spec);
+ 		break;
+ 	case XFRM_DEV_OFFLOAD_PACKET:
+-		if (attrs->reqid)
+-			setup_fte_reg_c4(spec, attrs->reqid);
++		setup_fte_reg_c4(spec, attrs->reqid);
+ 		err = setup_pkt_reformat(ipsec, attrs, &flow_act);
+ 		if (err)
+ 			goto err_pkt_reformat;
 -- 
 2.45.0
 
