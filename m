@@ -1,57 +1,128 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5957C18FDAB
-	for <netdev@vger.kernel.org>; Mon, 13 Jan 2025 22:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192491D54EF;
+	Mon, 13 Jan 2025 22:17:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736806126; cv=none; b=RXEGzlcRuojal0VTrxzQl6TMgBRnmLefLmuyToWz8I5l6jdsqk2/hM75yuPnZPCgbsXt7c+q4ovnsAzD3OfyQlU5V2+qPuoZSU1ZqB9ZIPcvYJ/h1QzSP3nn7sdPxjU9ek9ZprJ/3s4gJ8ck95OR0cBWMepQ0MCmJnOMkYCoBo0=
+	t=1736806653; cv=none; b=hRVi3FNziv3x8JmsS1Bm0zSQgcDij27c4VKVKkXYd1JGFShgaOom51n2a1bZel+2+YjUSLSvT7efoScUUzEMqHO7+p71dvVTLLZyszUPumCgsmOfRA3f0DkUxEi/8K99VRo+DAddw2tqTPhjHmyvV8+JhUeU7sdXZG/LURBX+Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736806126; c=relaxed/simple;
-	bh=oSN4Dq180GuGSWzjfconuOddkZy7J2QWnB+lz169nM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PNxCmNbuR3PHV/zymiCM0XRgutq6PMPonU6QLG51ffN62Ch+kH8KO4uL+G9QQ6Txt6GKuLpSJyv+CSNk9EqbishwNYyG4tOLOJP6e2xvjsLMsq+fAtAEEP3aG9GC8wT017oDAgvbFEk6S2UySvqHtJFnlVHuzP05Yx7HaGs1CYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QPkGC43P; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1736806653; c=relaxed/simple;
+	bh=RQnhJRNgDLemGSI57q+8mmqZ5dCA8weUN4fT2xuvUC0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JmJVltnf3kpBaBkIXdcIc3CWiEsfCM35T4eMUlEEdNXNE0NEIh/19OmjNQadZEjqN3+t9YDhqo9MQMSHoIN79kn+k5i/pYHuYRhPyx5svFeohPHsCGiUG38SNFsEac0ssIxMAXMVd0AVzyqCQVe2uQ9Coqmv2V0wsjQe3/BSzSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=BdQ0piND; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QPkGC43P"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=97HIKhsunGbwAeAiyvAYMhLUrSE/kjVen7uT2KQvSEo=; b=QPkGC43PmCy8mgT3EfpeWO+dIk
-	KIBa/hRlOATwWz313aiG2ujPh+hTsBXK9MTtjW6EEwzdiwuNr6Fzsdq8fU1O6YBsrsqPHaHwf6Hhs
-	t6MCnsHBrcr7eXwSZRsQFD2Lm0IS2tzF8LVjIzvulw1fTcKYXbbabS3dBlD5xPZrcCjE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tXSbv-004Ek0-0h; Mon, 13 Jan 2025 23:08:39 +0100
-Date: Mon, 13 Jan 2025 23:08:39 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Gerhard Engleder <gerhard@engleder-embedded.com>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2 5/5] tsnep: Add PHY loopback selftests
-Message-ID: <b9ba6dd0-a978-421f-8d63-3366ea5e3991@lunn.ch>
-References: <20250110144828.4943-1-gerhard@engleder-embedded.com>
- <20250110144828.4943-6-gerhard@engleder-embedded.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="BdQ0piND"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50DE6U2Y019902;
+	Mon, 13 Jan 2025 22:17:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=2wFLw8tFW9H7uxQCP
+	yaGBT9D6W9KrM8Uc9NqUhP/j70=; b=BdQ0piNDbicMDQ5u6y3/KMV5y5IYroA/L
+	y88AR7DSbzAeLDbRJfSPFD1rkRd/afI+qXwwz3NwMh4Th6NMQVmeE17T2MEC/69G
+	tnq7Ztku2dysZZdaJmNZp0pDt8/8enI8m9K5EB48e8WPXOOCtStyz5TCuKXu6JdP
+	Lvr7gwvplbfDMHbkKMVZz6VWVC++E6IyFEL/vjMxUDRDCdEhMPPnmiUtPQJWcNgD
+	t6G8mHQoDfigUZNzBI0e3llAH1PNDEuwHAUhRrikj2S9RSiajDRWqkOgps86HtOm
+	z9ENHe/wBGWe+Aw2Qs8Rn0bNmXCjatTZTqLLux164x+sFkW/2z6/g==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4454a5a2fa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Jan 2025 22:17:30 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50DJOQr2002666;
+	Mon, 13 Jan 2025 22:17:30 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4443by0f7k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Jan 2025 22:17:30 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50DMHRbT32572044
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Jan 2025 22:17:27 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5942558066;
+	Mon, 13 Jan 2025 22:17:27 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 092AB58055;
+	Mon, 13 Jan 2025 22:17:27 +0000 (GMT)
+Received: from li-4c4c4544-0047-5210-804b-b8c04f323634.ibm.com.com (unknown [9.61.148.44])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 13 Jan 2025 22:17:26 +0000 (GMT)
+From: Nick Child <nnac123@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: nick.child@ibm.com, netdev@vger.kernel.org,
+        Nick Child <nnac123@linux.ibm.com>
+Subject: [PATCH 1/3] hexdump: Implement macro for converting large buffers
+Date: Mon, 13 Jan 2025 16:17:19 -0600
+Message-ID: <20250113221721.362093-2-nnac123@linux.ibm.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250113221721.362093-1-nnac123@linux.ibm.com>
+References: <20250113221721.362093-1-nnac123@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250110144828.4943-6-gerhard@engleder-embedded.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: c4c-LSmt2tDpjExehFmYl8_-zT5dpUXR
+X-Proofpoint-ORIG-GUID: c4c-LSmt2tDpjExehFmYl8_-zT5dpUXR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
+ suspectscore=0 phishscore=0 mlxlogscore=937 spamscore=0 impostorscore=0
+ clxscore=1015 lowpriorityscore=0 bulkscore=0 malwarescore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501130173
 
-On Fri, Jan 10, 2025 at 03:48:28PM +0100, Gerhard Engleder wrote:
-> Add loopback selftests on PHY level. This enables quick testing of
-> loopback functionality to ensure working loopback for testing.
+Define for_each_line_in_hex_dump which loops over a buffer and calls
+hex_dump_to_buffer for each segment in the buffer. This allows the
+caller to decide what to do with the resulting string and is not
+limited by a specific printing format like print_hex_dump.
 
-You don't appear to be sending any packets. So how do you know
-loopback is actually working? I'm not sure this is a useful test.
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+---
+ include/linux/printk.h | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-	 Andrew
+diff --git a/include/linux/printk.h b/include/linux/printk.h
+index 4217a9f412b2..d55968f7ac10 100644
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -755,6 +755,27 @@ enum {
+ extern int hex_dump_to_buffer(const void *buf, size_t len, int rowsize,
+ 			      int groupsize, char *linebuf, size_t linebuflen,
+ 			      bool ascii);
++/**
++ * for_each_line_in_hex_dump - iterate over buffer, converting into hex ASCII
++ * @i - offset in @buff
++ * @rowsize: number of bytes to print per line; must be 16 or 32
++ * @linebuf: where to put the converted data
++ * @linebuflen: total size of @linebuf, including space for terminating NUL
++ *		IOW >= (@rowsize * 2) + ((@rowsize - 1 / @groupsize)) + 1
++ * @groupsize: number of bytes to print at a time (1, 2, 4, 8; default = 1)
++ * @buf: data blob to dump
++ * @len: number of bytes in the @buf
++ */
++ #define for_each_line_in_hex_dump(i, rowsize, linebuf, linebuflen, groupsize, \
++				   buf, len) \
++	for ((i) = 0;							\
++	     (i) < (len) &&						\
++	     hex_dump_to_buffer((unsigned char *)(buf) + (i),		\
++				min((len) - (i), rowsize),		\
++				(rowsize), (groupsize), (linebuf),	\
++				(linebuflen), false);			\
++	     (i) += (rowsize) == 16 || (rowsize) == 32 ? (rowsize) : 16	\
++	    )
+ #ifdef CONFIG_PRINTK
+ extern void print_hex_dump(const char *level, const char *prefix_str,
+ 			   int prefix_type, int rowsize, int groupsize,
+-- 
+2.47.1
+
