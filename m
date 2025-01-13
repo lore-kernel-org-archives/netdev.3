@@ -1,92 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D80D23874D;
-	Mon, 13 Jan 2025 09:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B4423875A;
+	Mon, 13 Jan 2025 09:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736759410; cv=none; b=XMwxes+tW/jtFrw4WyZvMd4vrSVdKdYazQZ8n8YgJ0CBstoxlBadGLjBJ83wJ96NGZhfbNu+mxDpB8acRAXaUjrTqkwgTgK7/jWuljXiJSnbUQ9JjgwlONCP3kS0oEzKDt+Dnh6c1bONyYygO9FLuOgLsajSEE+wFIiqUJFbUbM=
+	t=1736759761; cv=none; b=bszUnBpE94F6lU8rc+P5q2RkJFBbr8TIGGCn6gLvrcTXxVQ3QN0rQWoscqmo6x0wKet71AAh+KB4YQcIBoaEheQOWLOtBTXIydUDoAA5AiE0IJdofIoBIDwvgi9qYuLZzgExGIYb1iRYpKNXYqqiWFvogfJbRtA8LbgGaN4pY6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736759410; c=relaxed/simple;
-	bh=9Aa1qPmlin2WfecpMS1NoRkzYNdA7miPSI+lNJlumUE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=fxhGVMVwL84IE8NHXlpTKMXqRXNZp1CiNnG08NKh84SIx6M/bo3yyROpoSa/hNLaQvWqV9d8BgD33N3/UF2KhlZhGRFXTyoOBf8yV0N8roz4W9g6dw3navF83mlM+chaJ9ADcgAH+vfDk2XLmIuxkH4y3VfWnCWDmmHKGf+VS6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KKAwsPBt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736759761; c=relaxed/simple;
+	bh=2upNpvYvkCawsHSbcv9E7oJy4xTvN7h6IJpVbivirN0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SprTqexOAkKfetMkhFGxTF2NvpHR7q+qLoOJr9aOekPiaIBR8Yy0bHAiLvmW8eEtM4z9fXf5nWbzm7Qq89hErgTLZaTOqwY0gM0vJndSYwtxAX4gMcxWGz71CUFWNMV4T+ea/w20c3V9/yYKol6UnmhD48QwvHxCx+VxzVNFWaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e2P/67+P; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KKAwsPBt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D355C4CED6;
-	Mon, 13 Jan 2025 09:10:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736759410;
-	bh=9Aa1qPmlin2WfecpMS1NoRkzYNdA7miPSI+lNJlumUE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=KKAwsPBt6fSORKobBqiGpHGF0iTiYCbP0G44cXlDEczdsk4yDy0jrnH7ir3Cc+K/o
-	 mwjAp2QJtD2R8rK626UtrqzVoJhFrvBnt4trbBi8MKUqrl3kNKtmxlM42qxgU/16ai
-	 iStO8kVnswfgtju+nFbOMu9txXyFtE8ywMMN3+X+hpkzJ8X6F/93zx7HMaBCA7W94S
-	 NpCqZWGdVkn0AabiRXKTYac1v6akoAaVDyRq8+srnBN8K4ThSK5XOr0s8fOLRWOnN5
-	 Me0i5ssIj4Q37McCZXrq9uylY9BYMJKpJPgG+/uVDvuzQpinB8aAc/ji/fmyFvxK3L
-	 BYlC2MGE0Pdpw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADCFA380AA61;
-	Mon, 13 Jan 2025 09:10:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e2P/67+P"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4361f664af5so46301875e9.1;
+        Mon, 13 Jan 2025 01:15:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736759758; x=1737364558; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=s2ygkQJ95X1g7NdQpmB1nFBFWpKiLZIqDirXmvA8hQQ=;
+        b=e2P/67+PV6JiHLtVTH8ZZPJQTThYaVXYK9S/TEtsV54RnmRyZTDfbZiJxLQpMA4Tko
+         1k/DHFUPrRa8otU5UtQ90q6TAsDAFkxmLSG0KI5AXkGJBaYQWBbbNzRv8DRU9IUsREHh
+         ssQm24ReB2JtdSyia8/fA6eyr6j4EbpbPFUbP4sVj+dFjVGwKmcDRp5bQRTdJBZMOMNO
+         /PrcerwQmEgDN/V51P/i2lPtwIIDbYIJ6wsP4ECsXchxNW3FixbuXaISXDjGb6mGK6uC
+         GO34pS3NoXPQsurW5dVruQgjysW90XMaLpNiEOs1b3ZGwVxf8Lc0aqRW/PdIHRbCSmBM
+         GrgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736759758; x=1737364558;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=s2ygkQJ95X1g7NdQpmB1nFBFWpKiLZIqDirXmvA8hQQ=;
+        b=EDqlAGbF964miv4bIpjlJrS8i2X3n+/lT2CocWPYcrWeos/1gvvUFg0viouzgt2qcH
+         bFN9ZJSbXVZ4xUniWpWi1xzs+QNYd+bD/lHzEvxmLWCw58wNJ9t+H4TV/gzuOfNmGvw7
+         2oO58ornGrM+/qHPLB1FWQ6Y6XWa8K4bx7y2xlgWDd7cr0b7egiyveSWO4TKfNE1kIWa
+         XZrss8WjnO9odtaBxwVP4Brme8hfe7oMIWfKfi+kktpfQY5tfxyCHCAMXUfGkKpafY88
+         +aK1cjCHUXyyC9q/UOgEvAaTW9OSlB9Jqr5/1Gbu+tCRTyjvW1ywYMmvOFeaff1fenRC
+         r9Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCWX19R1+jBbk+jWdyhGOcTkhG6ymFEn9Us/KpSuRY/MPDcatSM1KerrOKn6XOTa3vJpe5ALENBM@vger.kernel.org, AJvYcCX014s1BCrfStjXnnMSsah69MdKbg8qgVt6RTI4TPl6wXL94ZY6y/n7YfiqbF1debyslBtxYJZi1hRIBNU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsrvGCYDRY3t/fUX3ZJ+aEZ/1mH65r000oAqQPHK3eenZuUhL+
+	lyCgMLhcw+OvfnYqUF6pN5xl3xQnOM0jACoQ3YZvaOKL5xTduI0B
+X-Gm-Gg: ASbGncv2mAsLsVFhfgaLJhx/2gc2bA5G9kuvVmhkpDnGQUSqpvI0XPsqOCJTjEYk/tu
+	nwlFYEHCM6lusv5rIwYp8Y6gIKHQbLPQ7mjJEU6fc+N2zxJoP1Mp3eTphDlpEVVDIyo8W7Nb0wS
+	ed7CMHIKSyPQcKPGyLxXOdxIWU1+LWvKIPaJcwJVakU9LbPq6SyImWBPzMHY/kEFaHG/+s9WWM5
+	O2Yx042gPTNlbtTc57dfdyT8aojCrlMhRzj1Fb7tKk+Lzcgm4QbNMJaog==
+X-Google-Smtp-Source: AGHT+IF0tIfGxR4xSSK7aYKVgCXjjGxJs/CrL7Ts/43gR4yqeZ8CBQo7W+fSBsIeceUleYBPCxNjhA==
+X-Received: by 2002:a05:6000:4714:b0:386:3752:b28c with SMTP id ffacd0b85a97d-38a8732bb23mr16193342f8f.41.1736759758185;
+        Mon, 13 Jan 2025 01:15:58 -0800 (PST)
+Received: from localhost ([194.120.133.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9e03f8bsm135849445e9.23.2025.01.13.01.15.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jan 2025 01:15:57 -0800 (PST)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] net: phy: dp83822: Fix typo "outout" -> "output"
+Date: Mon, 13 Jan 2025 09:15:55 +0000
+Message-ID: <20250113091555.23594-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] pktgen: Avoid out-of-bounds access in get_imix_entries
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173675943251.3415908.7564815246317322659.git-patchwork-notify@kernel.org>
-Date: Mon, 13 Jan 2025 09:10:32 +0000
-References: <20250109083039.14004-1-pchelkin@ispras.ru>
-In-Reply-To: <20250109083039.14004-1-pchelkin@ispras.ru>
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, artem.chernyshev@red-soft.ru,
- richardsonnick@google.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
 
-Hello:
+There is a typo in a phydev_err message. Fix it.
 
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/net/phy/dp83822.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Thu,  9 Jan 2025 11:30:39 +0300 you wrote:
-> From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
-> 
-> Passing a sufficient amount of imix entries leads to invalid access to the
-> pkt_dev->imix_entries array because of the incorrect boundary check.
-> 
-> UBSAN: array-index-out-of-bounds in net/core/pktgen.c:874:24
-> index 20 is out of range for type 'imix_pkt [20]'
-> CPU: 2 PID: 1210 Comm: bash Not tainted 6.10.0-rc1 #121
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-> Call Trace:
-> <TASK>
-> dump_stack_lvl lib/dump_stack.c:117
-> __ubsan_handle_out_of_bounds lib/ubsan.c:429
-> get_imix_entries net/core/pktgen.c:874
-> pktgen_if_write net/core/pktgen.c:1063
-> pde_write fs/proc/inode.c:334
-> proc_reg_write fs/proc/inode.c:346
-> vfs_write fs/read_write.c:593
-> ksys_write fs/read_write.c:644
-> do_syscall_64 arch/x86/entry/common.c:83
-> entry_SYSCALL_64_after_hwframe arch/x86/entry/entry_64.S:130
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v2] pktgen: Avoid out-of-bounds access in get_imix_entries
-    https://git.kernel.org/netdev/net/c/76201b597976
-
-You are awesome, thank you!
+diff --git a/drivers/net/phy/dp83822.c b/drivers/net/phy/dp83822.c
+index 4262bc31503b..f89e742281d1 100644
+--- a/drivers/net/phy/dp83822.c
++++ b/drivers/net/phy/dp83822.c
+@@ -762,7 +762,7 @@ static int dp83822_of_init_leds(struct phy_device *phydev)
+ 
+ 	if (dp83822->led_pin_enable[DP83822_LED_INDEX_COL_GPIO2] &&
+ 	    dp83822->set_gpio2_clk_out) {
+-		phydev_err(phydev, "COL(GPIO2) cannot be used as LED outout, already used as clock output\n");
++		phydev_err(phydev, "COL(GPIO2) cannot be used as LED output, already used as clock output\n");
+ 		return -EINVAL;
+ 	}
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.47.1
 
