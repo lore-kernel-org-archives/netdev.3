@@ -1,77 +1,72 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCB3233153
-	for <netdev@vger.kernel.org>; Mon, 13 Jan 2025 08:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F1D19341F;
+	Mon, 13 Jan 2025 08:53:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736758167; cv=none; b=rUCV4dPLtmSVsOVzaP0TE7XKJl8OIJagVD0vAtEbKcGVkmOfADs0+Yafm/FdXIjfEj6Q+WAH/7UW/JT8UDrxyjOf0ljKBLrkkq+3lQdBAvH3OeFvthZYxCpkQHbETyYfNPjORYHSd7LEn1AbDOvFT0zZySjdFhNItNsXuPDrO+g=
+	t=1736758399; cv=none; b=mtzqHkySdXz8TGfLDrmpUWvgKy69oj/iDel/mfJyzsHEAq+U5Ql377NhOGnC9/+0SiCv1xQZh2yM6TCLl8KmFyjQYJolIRSk59y9PPztGF66Huvq1NrVPjAHgfYrupAB9jy732B28bTALhY4mrsRC3TBwrA89yH+2BF6XuSumO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736758167; c=relaxed/simple;
-	bh=vCkDacTWZvcuafWH2kjulsf3aX2Vk3dmsFF092eXKBQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iXBI3X9ZGnFNmP+lucqoZD4qMaPFTSbzZlnPzFVedcVWrWs5w4mUoMxY8m79cj146j9nsmogDmJYa7hJ+gZwzDp//vT84/3cIUBMWYpMeXKw+wWtqGMbGozcdis4dZS+C+bdmDnVVBdAsqgHIKw4tnUsoITTHRIIfgN4rglkpb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at; spf=pass smtp.mailfrom=sigma-star.at; dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b=LBs4KqeJ; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigma-star.at
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b="LBs4KqeJ"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43618283dedso38394005e9.3
-        for <netdev@vger.kernel.org>; Mon, 13 Jan 2025 00:49:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1736758162; x=1737362962; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gnnl0VwLJeV2gkqDwbC1b2CdoHjgb3H7tibMthkFU6U=;
-        b=LBs4KqeJ9tbqT2QtgZWhL6WKL0qB0FRtypV1xtIWqkKypw4ZVN1fPR6UiUnC7UJasQ
-         TQE9m32Wa+mW1OaO5dq4LmpcTHDm4B88vV74+Nw5vP6dGNFhfteKBXjXlYwsS88ILLTr
-         qGxXGoYAcnbYWWpzTqwHIUqypQkz6lB9s5NVGKcCWHvQ0Df60+NKYhkFlwVauo1xo+HY
-         IfFYEojY8qk7baKCbUlOb3N2N2xaE9T2TTnpr2mbI4wr3arO3s+c1EPfmHybferDw8E4
-         U/MY9z9qpQOZJ9NPgdVYe6hjOh2IJNe20v+AlNTjg6Q7nMp2Yigg/RgH4W6biV1kszbN
-         OD8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736758162; x=1737362962;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Gnnl0VwLJeV2gkqDwbC1b2CdoHjgb3H7tibMthkFU6U=;
-        b=i+u4D9uqmhfjoJSy3hwC4z4BMDM0W9sr+6+DbKh4tic/I8B0iOETIexQpSMNvGGKGU
-         lmocbcsdDHKSDf6+ceCeJtVfVr3fr/ULogtb170MNkCeJswq9Q7SV24gpG1bumajmSBN
-         IR+aae+xauSuoIPjW9SCGtvyfMrov1u2dDM05GPihwQLj/YE9PddCSaO5R+PEMKOMxUW
-         23cHmqZx0HGWS1h2WHa7I8RBTvswcRS3//i4FqC4pmakGXiw6sqEx/TTBJAPt7cJtb+f
-         +c+yQXdIb/L46NQud2FgBXkSlaSia/bEWXMg3XYEyTM3qzOjYE/e89eNBUEI+zD5tNR4
-         M3vQ==
-X-Gm-Message-State: AOJu0YxfycQJmHOzbCsjP6Q10pA+81w7UERmDgUUyNfrssgpFztRRRvr
-	whLtFtfA+W1bZYo6k2DzIAYkuUj26R8t5Zn0q/Hiy5D7kpZii3C7Qk8piObl5YgHcwBuiztTJs7
-	Z+PE=
-X-Gm-Gg: ASbGnctXeA2Hcrfg9w4YtgqtCAvbIfsTYDx5hxPu61IfXwuGwens9zOtHNJoehAfM0l
-	JUqTEtCjM7ldHT4ujXCqOnvMLfP3cZl9FaFPbYrOCGNcu1ghQatHOYYMBb74wyfAxHRLJ+k+75E
-	ua9IsCNeqzwN06Mr177VB2aXG7D5Oj1LWqTmbGksM7cEABTWheVZFw+F97XkMSWgm+W9x4p2RMU
-	ikyykrvphUCRxyu2O1epuaD63r/Z0yyB6Y5q/pmJy74rkU5Iy3ANEUaw6K721zk3kXoIhVENMSr
-	H4egmtIZDx6UF4GsVABs
-X-Google-Smtp-Source: AGHT+IFBijnZ0WjmXifiseTgCnAunx2NxiPja28AwiOTHT/QqLpzFwAOQAkeKW+0V1Wumd0RGJ6NuQ==
-X-Received: by 2002:a05:600c:b55:b0:435:1b:65ee with SMTP id 5b1f17b1804b1-436e2707f2cmr148478835e9.24.1736758161975;
-        Mon, 13 Jan 2025 00:49:21 -0800 (PST)
-Received: from localtoast.corp.sigma-star.at ([82.150.214.1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2df2faesm171830825e9.26.2025.01.13.00.49.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 00:49:21 -0800 (PST)
-From: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-To: netdev@vger.kernel.org,
-	andrew@lunn.ch
-Cc: Julian.FRIEDRICH@frequentis.com,
-	f.fainelli@gmail.com,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	upstream+netdev@sigma-star.at,
-	David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Subject: [PATCH v3] net: dsa: mv88e6xxx: propperly shutdown PPU re-enable timer on destroy
-Date: Mon, 13 Jan 2025 09:49:12 +0100
-Message-ID: <20250113084912.16245-1-david.oberhollenzer@sigma-star.at>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1736758399; c=relaxed/simple;
+	bh=+kYpJ/KVCG2w+X4rMMgBTQbw+Rnog2FhHOywqZR6VLc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=u5DppW6r0IU+2S3sBnbRVtuiWzq0q/ZKST29XXNVILeGx2rTt8i31rKH0R+U2Fq1iZZlyZTTHTi9rF2DBkOVZpzUapwykwMfhVN8Pw8gVvyC6D+MBcRkhlDYdPTUXpzU4LrvUI2VuaOlwtXPVsSECJ2U7SLm/nx6i59K8zfpxiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: c7e4e5c4d18b11efa216b1d71e6e1362-20250113
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_DIGIT_LEN
+	HR_FROM_NAME, HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER
+	HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT
+	HR_TO_DOMAIN_COUNT, HR_TO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED
+	SA_EXISTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+	CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
+	GTI_C_BU, AMN_T1, AMN_GOOD, AMN_C_TI, AMN_C_BU
+	ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:3b6df243-79cf-496c-9ad1-556d10a3544e,IP:15,
+	URL:0,TC:0,Content:0,EDM:-30,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,ACT
+	ION:release,TS:-24
+X-CID-INFO: VERSION:1.1.45,REQID:3b6df243-79cf-496c-9ad1-556d10a3544e,IP:15,UR
+	L:0,TC:0,Content:0,EDM:-30,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-24
+X-CID-META: VersionHash:6493067,CLOUDID:ef8c3a63588174d54e3754e1ba308b18,BulkI
+	D:2501131652574KZ42GSN,BulkQuantity:0,Recheck:0,SF:17|19|24|38|45|66|78|81
+	|82|102,TC:nil,Content:0|50,EDM:2,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:
+	nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,AR
+	C:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
+X-UUID: c7e4e5c4d18b11efa216b1d71e6e1362-20250113
+X-User: liucong2@kylinos.cn
+Received: from liucong.. [(116.128.244.171)] by mailgw.kylinos.cn
+	(envelope-from <liucong2@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 989990396; Mon, 13 Jan 2025 16:52:55 +0800
+From: Cong Liu <liucong2@kylinos.cn>
+To: Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"'David S . Miller'" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Cong Liu <liucong2@kylinos.cn>,
+	netdev@vger.kernel.org,
+	mptcp@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 2/3] selftests: mptcp: Fix input fd lifecycle in reconnection loop
+Date: Mon, 13 Jan 2025 16:52:27 +0800
+Message-ID: <20250113085228.121778-3-liucong2@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250113085228.121778-1-liucong2@kylinos.cn>
+References: <20250113085228.121778-1-liucong2@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,102 +75,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The mv88e6xxx has an internal PPU that polls PHY state. If we want to
-access the internal PHYs, we need to disable it. Because enable/disable
-of the PPU is a slow operation, a 10ms timer is used to re-enable it,
-canceled with every access, so bulk operations effectively only disable
-it once and re-enable it some 10ms after the last access.
+When both cfg_input and cfg_sockopt_types.mptfo are set, the input file
+descriptor (fd_in) is opened before the reconnection loop but closed
+within the loop. However, when mptfo is enabled, the descriptor is not
+reopened in the loop, causing subsequent iterations to use an invalid
+file descriptor.
 
-If a PHY is accessed and then the mv88e6xxx module is removed before
-the 10ms are up, the PPU re-enable ends up accessing a dangling pointer.
+Move the file open operation into the loop to ensure fd_in is always
+valid when needed, regardless of mptfo setting.
 
-This especially affects probing during bootup. The MDIO bus and PHY
-registration may succeed, but registration with the DSA framework
-may fail later on (e.g. because the CPU port depends on another,
-very slow device that isn't done probing yet, returning -EPROBE_DEFER).
-In this case, probe() fails, but the MDIO subsystem may already have
-accessed the MIDO bus or PHYs, arming timer.
-
-This is fixed as follows:
- - If probe fails after mv88e6xxx_phy_init(), make sure we also call
-   mv88e6xxx_phy_destroy() before returning
- - In mv88e6xxx_phy_destroy(), grab the ppu_mutex to make sure the work
-   function either has already exited, or (should it run) cannot do
-   anything, mutex_trylock() in the worker function fails to grab the
-   mutex and returns.
- - In addition to destroying the timer, also destroy the work item, in
-   case the timer has already fired.
- - Do all of this synchronously, to make sure timer & work item are
-   destroyed and none of the callbacks are running.
- - Because of the nesting of the timer & work item, cancel_work_sync()
-   alone is not sufficient and the order of the cancellation steps matters.
-
-Fixes: 2e5f032095ff ("dsa: add support for the Marvell 88E6131 switch chip")
-Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+Signed-off-by: Cong Liu <liucong2@kylinos.cn>
 ---
-FWIW, this is a forward port of a patch I'm using on v6.6.
+ tools/testing/selftests/net/mptcp/mptcp_connect.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-Thanks,
-
-David
----
- drivers/net/dsa/mv88e6xxx/chip.c | 8 +++++---
- drivers/net/dsa/mv88e6xxx/phy.c  | 3 +++
- 2 files changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 284270a4ade1..c2af69bed660 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -7264,13 +7264,13 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 	err = mv88e6xxx_switch_reset(chip);
- 	mv88e6xxx_reg_unlock(chip);
- 	if (err)
--		goto out;
-+		goto out_phy;
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.c b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+index 31f4c5618569..4d4ea4627daa 100644
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+@@ -1247,12 +1247,6 @@ int main_loop(void)
+ 	struct addrinfo *peer;
+ 	struct wstate winfo;
  
- 	if (np) {
- 		chip->irq = of_irq_get(np, 0);
- 		if (chip->irq == -EPROBE_DEFER) {
- 			err = chip->irq;
--			goto out;
-+			goto out_phy;
- 		}
- 	}
+-	if (cfg_input && cfg_sockopt_types.mptfo) {
+-		fd_in = open(cfg_input, O_RDONLY);
+-		if (fd_in < 0)
+-			xerror("can't open %s:%d", cfg_input, errno);
+-	}
+-
+ 	memset(&winfo, 0, sizeof(winfo));
+ 	fd = sock_connect_mptcp(cfg_host, cfg_port, cfg_sock_proto, &peer, fd_in, &winfo);
+ 	if (fd < 0)
+@@ -1270,7 +1264,7 @@ int main_loop(void)
+ 	if (cfg_cmsg_types.cmsg_enabled)
+ 		apply_cmsg_types(fd, &cfg_cmsg_types);
  
-@@ -7289,7 +7289,7 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 	mv88e6xxx_reg_unlock(chip);
- 
- 	if (err)
--		goto out;
-+		goto out_phy;
- 
- 	if (chip->info->g2_irqs > 0) {
- 		err = mv88e6xxx_g2_irq_setup(chip);
-@@ -7323,6 +7323,8 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 		mv88e6xxx_g1_irq_free(chip);
- 	else
- 		mv88e6xxx_irq_poll_free(chip);
-+out_phy:
-+	mv88e6xxx_phy_destroy(chip);
- out:
- 	if (pdata)
- 		dev_put(pdata->netdev);
-diff --git a/drivers/net/dsa/mv88e6xxx/phy.c b/drivers/net/dsa/mv88e6xxx/phy.c
-index 8bb88b3d900d..ee9e5d7e5277 100644
---- a/drivers/net/dsa/mv88e6xxx/phy.c
-+++ b/drivers/net/dsa/mv88e6xxx/phy.c
-@@ -229,7 +229,10 @@ static void mv88e6xxx_phy_ppu_state_init(struct mv88e6xxx_chip *chip)
- 
- static void mv88e6xxx_phy_ppu_state_destroy(struct mv88e6xxx_chip *chip)
- {
-+	mutex_lock(&chip->ppu_mutex);
- 	del_timer_sync(&chip->ppu_timer);
-+	cancel_work_sync(&chip->ppu_work);
-+	mutex_unlock(&chip->ppu_mutex);
- }
- 
- int mv88e6185_phy_ppu_read(struct mv88e6xxx_chip *chip, struct mii_bus *bus,
+-	if (cfg_input && !cfg_sockopt_types.mptfo) {
++	if (cfg_input) {
+ 		fd_in = open(cfg_input, O_RDONLY);
+ 		if (fd_in < 0)
+ 			xerror("can't open %s:%d", cfg_input, errno);
 -- 
-2.47.1
+2.43.0
 
