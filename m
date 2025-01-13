@@ -1,44 +1,44 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F8E145A16
-	for <netdev@vger.kernel.org>; Mon, 13 Jan 2025 09:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6B923314E
+	for <netdev@vger.kernel.org>; Mon, 13 Jan 2025 09:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736760128; cv=none; b=k8F4nRGm56z9cOn8WmNSR4skI1hzJmNc8HO1EkQe8Pl6d8eUAZX3UdeC2I7zpmkQNnCx9aj7fslgpId8YyVKC0l6UPQQc0cJpfbOJvVc6IW5dlZvKpcJZsVLoyUtxy0mDGsTMb8LH8mUUEOMwJKdzbU4I3BdsV8kX9L0rr/jV6g=
+	t=1736760160; cv=none; b=VCC4oczLrYlKa16pl+QHqKyYRRgzHySWQKbvurHjalMjaY+IzakyCvzu6+K2fubBPfrc1Ay8Yl64kdtZKaxwj5t4j+WmYanGb/hKfGNIcLB8JOtcOYSHCqWO5cM7pSCDqzfn45LbsPeq/PRuYGVFoTCkI+JbjgZeUabNIrqTVh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736760128; c=relaxed/simple;
+	s=arc-20240116; t=1736760160; c=relaxed/simple;
 	bh=D/esqgxMhOa+gKrqWrl9YkbeC6Nlbcann0IkBS2Guhg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f8aCe4mJ6oaAixEDRfnVpzJAcruwcZzyyJnlRmYBlJKWP57/dpxJtS+JWLzlAFbkrOLHHvTBaIRqaLsd6D1+qrEs3YwjSzPUEcyQLKlN2dQAFIAeLtw3RTjO0k0orZqSoccHI12hm0wlVM3zubRvpSxoZ8n1GYzlAYS6ZdujfhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=fYdoFmz7; arc=none smtp.client-ip=78.32.30.218
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Zki6ob1iDxCnMLKj4etgkfp2XwATPe6mkWyUk7SoW1uni++NZvTi71YP2vMUa9fJo4cKL/VJ3jesjDe8VfRScARws/FritHWGZo8uHb3RveZmlWIjrvGK5Yr/oCoxuoo98CdXX9HRD4R6Dnl8RS2eqck7przM7l4bf/4jN+yrkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=K8tRoCVJ; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="fYdoFmz7"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="K8tRoCVJ"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=1SSTzS99BYsiM+oBx4byfpdIc4HV6ye8QqH1Uy/uwK8=; b=fYdoFmz7gBQiSp0E0N+IE+M+N0
-	FPcncnIjDuC2EtVNdNKtyxGuoX5fZDq/bAPi7doFZlFyn9BSfhQVBAwgJn/0GfYc6vUqJIYmhZdvc
-	8OwDpi+kSkIcJJ68qnMeO34+RnIUxE3PlIpBo8p+4a1XW5daaIyXjYgBKzDFhuPsbLLAFJYTlBtb+
-	lhphYEILFzAetzKI3H1cxIOXa0Jft4he4cmWgjpaYrFuJABv4aEgmW4qjpO1eJqEI2PPAw7/33Xkf
-	WMPrY+vubq6uZo76PH9DkDYrYu8fbYMgrl+B809jKvAj7Dr3RfKcKA+RO9x7lIZV6zdxlollS4a6s
-	0K7rZRxQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54286)
+	bh=1SSTzS99BYsiM+oBx4byfpdIc4HV6ye8QqH1Uy/uwK8=; b=K8tRoCVJfkJt7W2gytM69jIGf/
+	Gz64VZncA/sGPlbhvj1/9oweCp1qnssyN7RjRgH/XPCctSUnnehRbmUPlc8UMMSjKOeHs9CNaVpAH
+	YxEEG1tAd666wMhmENCY+XFQCAiCR0zZG6zNDxWlUdphtmAJ+lEmVVFboqg8PZTZJfgdofnwTl/Pa
+	C4PIaL7HYfOpd/9jJxC7cIR/fTVvVuCG24CntUYuuV+gV5nrTf2fQGHHIyZgC0/l7QGulyQvHiQiN
+	dFSWcTiG5B44xAfXYuCz/X31z9PCbYZ5RY8BRzqn8yhv6eDEKpixnQc5a6syw1i2zjxrhg0Jd8k9M
+	yOEzjByQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:49066)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <linux@armlinux.org.uk>)
-	id 1tXGdU-0006Fg-0X;
-	Mon, 13 Jan 2025 09:21:28 +0000
+	id 1tXGeJ-0006GN-1P;
+	Mon, 13 Jan 2025 09:22:19 +0000
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
 	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tXGdK-0003wv-2z;
-	Mon, 13 Jan 2025 09:21:18 +0000
-Date: Mon, 13 Jan 2025 09:21:18 +0000
+	id 1tXGeF-0003x7-2h;
+	Mon, 13 Jan 2025 09:22:16 +0000
+Date: Mon, 13 Jan 2025 09:22:15 +0000
 From: "Russell King (Oracle)" <linux@armlinux.org.uk>
 To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
 Cc: Alexander Couzens <lynxis@fe80.eu>,
@@ -74,8 +74,7 @@ Cc: Alexander Couzens <lynxis@fe80.eu>,
 	Taras Chornyi <taras.chornyi@plvision.eu>,
 	UNGLinuxDriver@microchip.com, Vladimir Oltean <olteanv@gmail.com>
 Subject: [PATCH net-next v2 0/5] net: phylink: fix PCS without autoneg
-Message-ID: <Z4TbDnXtG8f3SRmC@shell.armlinux.org.uk>
-References: <Z3_n_5BXkxQR4zEG@shell.armlinux.org.uk>
+Message-ID: <Z4TbR93B-X8A8iHe@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,7 +83,6 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z3_n_5BXkxQR4zEG@shell.armlinux.org.uk>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
 Hi,
