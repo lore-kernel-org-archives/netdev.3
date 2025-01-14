@@ -1,69 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from violet.fr.zoreil.com (violet.fr.zoreil.com [92.243.8.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7262135B1
-	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 23:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFB7215798
+	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 23:01:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.243.8.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736895645; cv=none; b=mSvpc0Pgb3iz+Xj96WV5vnw5HMmYkEzkZmc6laog2G/jeHDql6VufWV6gx69Og30KfwvxR7kGzyK04vKfrchYb0LOYCxw88c1IX/mFfFlfxAPnW/LJUAKfmapN4fGbp+l9Mf6yHbaugiTi7BcNJzAnhWZzDlgAaEBgGE+HgPfio=
+	t=1736895690; cv=none; b=KrcQWWvISnXELvwXW9tH3bqNykq6B9UywYOHJ2ld7AMdXBvxvuoJDDpxPgqhHQt1DrK8CriReOS2Lxvl6qxVz9hFr7UIGADF1W+RnlKnpqhL8uRHUN1BXAa9oaFavCsf0vQOz5SkqQPfvjTKGJ51lOzSzZSUoEqVK0fCzC7zLwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736895645; c=relaxed/simple;
-	bh=/yZeoqUg4CR+9Fo38AJo8FzVHVUpTvoc0KzAQl57i0c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kGLsb4aOrzaZgFgJ2t2MKnU4U6qTO1put/Zpfbx1jsyGkDPfFU99NocrpmGH1MMLIrRbqT3KxoFPef64bcePqVjzsinxncIM6732/pw31dIPd/ey33yUUUjCftzG05BCVzLUYUJ9TwvXBbEOjWsDyZ5u+bBPirZSjNRIf+1kFqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X6+hp4c6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736895690; c=relaxed/simple;
+	bh=rd4Tnyfz8LSnzRSPds0qO7hOsBpNdqkYaYIFHlZ1jgQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T991Cnq0oEGJqh99M3HoK7qCRWZommmjDAemd0o6WjmZ/sDCkZ6dla6kHsq63gzN54/cULsRPyiEs0zez+wBSh3jqQZXBunpFb0HnWDDckCtxWeK4PKefk6sfujGmhssKufE2xR3SMfnYlydcGwONiGnjbnsgto2zeQoceg8NGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fr.zoreil.com; spf=pass smtp.mailfrom=fr.zoreil.com; dkim=pass (1024-bit key) header.d=fr.zoreil.com header.i=@fr.zoreil.com header.b=eV411Wd8; arc=none smtp.client-ip=92.243.8.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fr.zoreil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fr.zoreil.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X6+hp4c6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94EE1C4CEDD;
-	Tue, 14 Jan 2025 23:00:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736895644;
-	bh=/yZeoqUg4CR+9Fo38AJo8FzVHVUpTvoc0KzAQl57i0c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=X6+hp4c6TxdhEbc8tcp0alGna3gSrkUJE4H80zEn/o06AZFfZauKGiUalkU2yP8cO
-	 ZZHI1VHyGqg5jfWZIlisy1EwwkIUhacndp9DnxFPr7tHqV5zWL71hD+pQ8nMw4UXhq
-	 3mtVat4o7JlEH3SKGBy45fg1iMQdF3+EZWCi0R7llP83GNZBsq4FULpcU87vcBE4AX
-	 1NGp9P4Y/6L83h2xRDiCWKifZA2x8+GBmzp3e9gy45KV/5xCBBHQXeX324NLeALpTu
-	 iqCgc8ZH+xrhXIcb5ZWsYz51yGtnv1ClihUNG3HW94IHHSBmu/wO9327LqCgV61yre
-	 CEYr44Xb8PeNw==
-Date: Tue, 14 Jan 2025 15:00:43 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, David Miller <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>, Andrew
- Lunn <andrew@lunn.ch>, Russell King - ARM Linux <linux@armlinux.org.uk>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH net-next v3 03/10] ethtool: allow ethtool op set_eee to
- set an NL extack message
-Message-ID: <20250114150043.222e1eb5@kernel.org>
-In-Reply-To: <e3165b27-b627-41dd-be8f-51ab848010eb@gmail.com>
-References: <5e36223a-ee52-4dff-93d5-84dbf49187b5@gmail.com>
-	<e3165b27-b627-41dd-be8f-51ab848010eb@gmail.com>
+	dkim=pass (1024-bit key) header.d=fr.zoreil.com header.i=@fr.zoreil.com header.b="eV411Wd8"
+Received: from violet.fr.zoreil.com ([127.0.0.1])
+	by violet.fr.zoreil.com (8.17.1/8.17.1) with ESMTP id 50EN0bpP1770579;
+	Wed, 15 Jan 2025 00:00:37 +0100
+DKIM-Filter: OpenDKIM Filter v2.11.0 violet.fr.zoreil.com 50EN0bpP1770579
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fr.zoreil.com;
+	s=v20220413; t=1736895637;
+	bh=XWZTbSUiGbCiLrlI7Wy4sn1odnJ9biGAm2xia2tf8C0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eV411Wd8lWchAqMOc7hYPN/E2aHrAb8bSQa9V6admogCB2grWICvNhC7cmgkzwSO4
+	 Ukcd6uryds/wf+ugc+ZOTNhgu7zFSImP1ITxpvj2Gpwwmo/Vq0PZZBrz7p3Uz3PZ8x
+	 2AzWwNgGEVa2Ca1OhY1l9quQmSyni8jbJXT/yjyQ=
+Received: (from romieu@localhost)
+	by violet.fr.zoreil.com (8.17.1/8.17.1/Submit) id 50EN0aTa1770578;
+	Wed, 15 Jan 2025 00:00:36 +0100
+Date: Wed, 15 Jan 2025 00:00:36 +0100
+From: Francois Romieu <romieu@fr.zoreil.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+        pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+        jdamato@fastly.com, pcnet32@frontier.com, anthony.l.nguyen@intel.com,
+        przemyslaw.kitszel@intel.com, marcin.s.wojtas@gmail.com
+Subject: Re: [PATCH net-next 06/11] net: protect NAPI enablement with
+ netdev_lock()
+Message-ID: <20250114230036.GA1769770@electric-eye.fr.zoreil.com>
+References: <20250114035118.110297-1-kuba@kernel.org>
+ <20250114035118.110297-7-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250114035118.110297-7-kuba@kernel.org>
+X-Organisation: Land of Sunshine Inc.
 
-On Sun, 12 Jan 2025 14:28:22 +0100 Heiner Kallweit wrote:
-> diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
-> index f711bfd75..8ee047747 100644
-> --- a/include/linux/ethtool.h
-> +++ b/include/linux/ethtool.h
-> @@ -270,6 +270,7 @@ struct ethtool_keee {
->  	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported);
->  	__ETHTOOL_DECLARE_LINK_MODE_MASK(advertised);
->  	__ETHTOOL_DECLARE_LINK_MODE_MASK(lp_advertised);
-> +	struct netlink_ext_ack *extack;
->  	u32	tx_lpi_timer;
->  	bool	tx_lpi_enabled;
->  	bool	eee_active;
+Jakub Kicinski <kuba@kernel.org> :
+> Wrap napi_enable() / napi_disable() with netdev_lock().
+> Provide the "already locked" flavor of the API"
+> 
+> iavf needs the usual adjustment. A number of drivers call
+> napi_enable() under a spin lock, so they have to be modified
+> to take netdev_lock() first, then spin lock then call
+> napi_enable_locked().
+> 
+> Protecting napi_enable() implies that napi->napi_id is protected
+> by netdev_lock().
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+[...]
+> ---
+>  include/linux/netdevice.h                   | 11 ++----
+>  drivers/net/ethernet/amd/pcnet32.c          | 11 +++++-
+>  drivers/net/ethernet/intel/iavf/iavf_main.c |  4 +-
+>  drivers/net/ethernet/marvell/mvneta.c       |  5 ++-
+>  drivers/net/ethernet/via/via-velocity.c     |  4 +-
 
-:S I don't think we have a precedent for passing extack inside 
-the paramter struct. I see 25 .set_eee callbacks, not crazy many.
-Could you plumb this thru as a separate argument, please?
+For the via-velocity part:
+
+Acked-by: Francois Romieu <romieu@fr.zoreil.com>
+
 -- 
-pw-bot: cr
+Ueimor
