@@ -1,262 +1,127 @@
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F88284A48
-	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 08:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269131C5F2A
+	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 08:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736843062; cv=none; b=E7oEI1MXfPOtjB5Vp+uAGeVH6AMsjv7GP2jCQ/eSqYVCmGRzWiwaD9vmSa6VKcACwn7CbUKFcSN2y14xtALLUTPhzafI00IxaYXp9sOsoEK9ftWdiJUdA58BQZksGDaN/oydXgdSf3bn3whF17I0tTKjYrOpM6EloC4MRvB3Mrs=
+	t=1736843552; cv=none; b=s9zpynn/ORnIgK2t8XddbPNSAZNSbyJtwsDcU3NA+cM70KBI9RgtU+a7TpicMyynX7PkO90lZhmsMg6nsTzIEiF+IT6ZJJGAbzCzqyP0G+xq6YyuLafspLZfm0vK+BD0TK8t22e92EQHJ2HqDAZaJ769HaWoLcAsyVI577friyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736843062; c=relaxed/simple;
-	bh=jiZ+JXMucgnh2KhNQ8BRhQqi8RpEeoCCEKN1MaH6468=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EeAv1m7E86e++lTHN62FIQk685YM+GeZKe6J8U5fdw+sAEaWGhm4qlK2kw2xLJ95nedz13SMmRnCwAznH1s2bhYYMLV+Ex0i36aSEc+tTXJCz2r43N8nxekOhc9jupColt/hqHxkBaoBWFSFq3bMOrye4YxYUJiwsdDH4Yxv0K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.243.244.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: bizesmtpsz9t1736843042tuxi73r
-X-QQ-Originating-IP: T1+VJWjE2JnkjAidPJFipxZ9yrvS7gulFYIcg+Xt1e0=
-Received: from wxdbg.localdomain.com ( [36.20.58.48])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 14 Jan 2025 16:24:01 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 10760654707764697820
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	linux@armlinux.org.uk,
-	horms@kernel.org,
-	jacob.e.keller@intel.com,
-	netdev@vger.kernel.org,
-	vadim.fedorenko@linux.dev
-Cc: mengyuanlou@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v4 3/4] net: wangxun: Implement do_aux_work of ptp_clock_info
-Date: Tue, 14 Jan 2025 16:44:24 +0800
-Message-Id: <20250114084425.2203428-4-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20250114084425.2203428-1-jiawenwu@trustnetic.com>
-References: <20250114084425.2203428-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1736843552; c=relaxed/simple;
+	bh=/0l7iHb7VE3RNMs4qZVkW1iR2byrT52a/j55VuaJ6Iw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JvXxTe9xXtVieUkLacXXH+R1s9F9iJKXjjdtKhqdRV6in8D1YMy5w2sQ+YDtBmqdmbaJAHOlmxYouCHZoqjGfLufw69A4asCUnRODcNa6oCtvqN9XGW8unP1/UDfPeq2fMERLFyXTc3GAaIFW/aKGZFDZG3OpOn609Cciowe7Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=diiM6KCv; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="diiM6KCv"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5d90a5581fcso8816621a12.1
+        for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 00:32:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1736843548; x=1737448348; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=viLJXrRON3LuId3kJGF63clQ3P8ymoENgh5ioS2JxAM=;
+        b=diiM6KCvz/0423dr/4+K64F2501nyc+oTakWc7+olQlBDIKPGND+55qcieoJVKByp5
+         5uVxUUjt/6HXCK3VRS24uiZXtqAHw2fu2gAif8lcBeFQHPIj8sGYbvGhUC9Lc+MUFQ6Z
+         myT9JPFSFHnacRINaiGyyB4oZVc8ltH6QN/uW2JjwCNS1jH3MOMbY8/CLsdnnWh8EY24
+         KpgD7l1Bo98J2dAHw5pNwAW/CQMgL5fOWUUmy2OcYIjN3Yz4gFxKTZ+wnAlbUFkXx5s+
+         HsTrMQrRp72+NFYw6FoBQJ+KWD7+tkABcAWlzl92pUfcoSkYQEV+iosHzc/p9Igdmfss
+         8jyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736843548; x=1737448348;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=viLJXrRON3LuId3kJGF63clQ3P8ymoENgh5ioS2JxAM=;
+        b=rpb7+FWZCOKvdeaSTfAKaax3xNJ5LjC3LxP0arkM38NrDDSYbnayknrhJq0v9XpTcX
+         VqPvO9QqRhgjI72FJGYKRc+vgKbEVWWkMAKpvjDDwxKoZwpmGaE9h+5Xu9zrmoLyws16
+         wYCqsQNGwo57iJ/drR9nKNBHjAbVLwHuLmQWiWWBjG3yGYgzk43MREp8KfK0aW/xDWCB
+         lnfZbpM9cIhUO9wQv15Ytd2PwRIdybATzbZbD52DESosBcI7ax+KUr2Fsi9bIGKYqT/u
+         YBnwGji35WsxAmLUHJpFnbI61mttg0vc+EkILuKKYaBFbyee0AKJW+qn1TVmTjt7eoEC
+         hH/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWFiOMf193W28loknYu9N1SRrFFpADLEO/KLTbHnRavQB+0XgpaXb40FDpZGfxD6yEdKBCDCX8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrUFsVpai1R45GvSwToREe4rEV7nthm083peXJCnjSxbPMWhBh
+	dFqVoBHO3UIOR2bpQAhnpCPjeGLwq9NNyuzSeUG9FDnjtDSYI8ZAqYdiPqMAsMjVzpv70eVT9RZ
+	N
+X-Gm-Gg: ASbGncvVi68MdBmGK91p+cHzjjoKfZUpQGJOOFK3+TVFAEKhJwCNH4f/Mejug++qWbd
+	MnTaXeGYaExtDBVuwlvTFyFEuXwh4yxOikdYsRaXdKAsOXWZ2PsC7VXGtKlCQb3xNDd0CDd2VEB
+	AO0XHYMRorVcUWZk90BVfW/J3Q0oxSpr9H9l/tvqMizA5AWNjpEJUb57+B5X23I6iYx8hVIFxX3
+	EzXfBk50zEQdP1U3+UZLw8FBfekecj81rmiF7Mfjix6gOfhuN0jd1EqEXCsm0ms8po=
+X-Google-Smtp-Source: AGHT+IEoAu/bHC6PMPvHq2cBmT5tImWGnk5L4zFRS9n/NANKyF0/dMSpnJNaS5yxIlE07gPl4SJLNQ==
+X-Received: by 2002:a17:907:1b03:b0:aa6:86d1:c3fe with SMTP id a640c23a62f3a-ab2ab6705b8mr2506074766b.4.1736843547977;
+        Tue, 14 Jan 2025 00:32:27 -0800 (PST)
+Received: from [10.0.5.196] (remote.cdn77.com. [95.168.203.222])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c95b299dsm597600166b.160.2025.01.14.00.32.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jan 2025 00:32:27 -0800 (PST)
+Message-ID: <adf7c053-ffde-4df8-bc24-99740906410d@sedlak.dev>
+Date: Tue, 14 Jan 2025 09:32:26 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Question] Generic way to retrieve IRQ number of Tx/Rx queue
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org
+References: <ca5056ef-0a1a-477c-ac99-d266dea2ff5b@sedlak.dev>
+ <20250113131508.79c8511a@kernel.org>
+Content-Language: en-US
+From: Daniel Sedlak <daniel@sedlak.dev>
+In-Reply-To: <20250113131508.79c8511a@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: M/ESU50hZOEXyX7sqdAqMkkDBqUrMGIFRgBbK+WfsWqL5NjkpxITdFGp
-	xvth1QBgDgQFHihLsiLFPbDu9Hemr3gr4OpMvExga0ZwBq2fTJuj6KazMEJcpDSEFaGx+g1
-	tlHK06WpWyjduLHWsQkLzZn6FuS63wqjKyNDVlPdldZ30aOn6BT+ybxIUlL7SaGPOyiX/Nw
-	JJ3jZOxyTVnSQEaKQ6wK/RNzG3TuVo0G1TSrAZFUKpdmuutSc3UiIy3ImWcMJdvH1aJEPYK
-	ZaWIRhTHikzyJHUQloJshacfH8nHV78pSgLN01URW8IMHo39RcPVXVjPdqxmJ7UHdRDQVdP
-	3Q9OtfOHjAkNGy8NwM4/YZICXVxSHflI5WsEIFmbR+ZwkMwcDRLIRYU/YZTRaI9W7omZf7b
-	uEis6iRd6nPwMHSBS4GhzoFud3ijW6jaN0AB07OviD8qLOpoYZWONMr0/9rhyha9yNH5sRi
-	geKwqOoT/7a9FaJKu18d/i7cqtu30qJCIMXursJO37KHeujOYIyokSaWLibvEVmxBe6ocG4
-	LMzjNBxW7UVDuOS75HrHJe+M86k8dfXsp7IVqTJRJAxz+BqJv3KEaQy6Ci6X4DBxZ6O2QFs
-	8KsbW3gu9ZTh7KnFEUlEz8GxNSe4CEowDQDIOAhLFuJRWP2wjK6nAe+yqoqNlMaRnGpN3lI
-	qfZs3+ry2gdEKO5uSEwTqtzYRRxz12PQFb0NR/3nrzUTeQnQP5M8UvATxOy/hij+FgeVkt4
-	2ZwOztbKco87mVyuldLYoZeBpWSjw7zrYHg/a8Ffqb4DIMr5GcqAFj2H7oymC8BCuA7oWUm
-	YaSv93DoJhJxxHOwgtQtWoyob5Ao0vDBsOV+bqk5Y/RD321Wke+JqB8bJq9zz5KXrK/4Gti
-	izh+RcsNS0WJqJACFIOFfZGdsWvxa2KPwwaElhTtXjJGK6/8udjpPxfefAocf1LtAux3qOv
-	ID0ZXwKgD2xXPrfmwsIaLn81CO2B1lgj15YVhJWUyEibko3YPLFitqjOAK5EUI2X7Eo2Z6+
-	X808/I7pQkrEnzf89Z
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
-X-QQ-RECHKSPAM: 0
 
-Implement watchdog task to detect SYSTIME overflow and error cases of
-Rx/Tx timestamp.
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_ptp.c   | 114 ++++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |   2 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c |   1 +
- .../net/ethernet/wangxun/txgbe/txgbe_phy.c    |   1 +
- 4 files changed, 118 insertions(+)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-index 97d39e8f02da..2e3d9cfc8aba 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-@@ -251,6 +251,116 @@ static void wx_ptp_tx_hwtstamp_work(struct work_struct *work)
- 	}
- }
- 
-+/**
-+ * wx_ptp_overflow_check - watchdog task to detect SYSTIME overflow
-+ * @wx: pointer to wx struct
-+ *
-+ * this watchdog task periodically reads the timecounter
-+ * in order to prevent missing when the system time registers wrap
-+ * around. This needs to be run approximately twice a minute for the fastest
-+ * overflowing hardware. We run it for all hardware since it shouldn't have a
-+ * large impact.
-+ */
-+static void wx_ptp_overflow_check(struct wx *wx)
-+{
-+	bool timeout = time_is_before_jiffies(wx->last_overflow_check +
-+					      WX_OVERFLOW_PERIOD);
-+	unsigned long flags;
-+
-+	if (timeout) {
-+		/* Update the timecounter */
-+		write_seqlock_irqsave(&wx->hw_tc_lock, flags);
-+		timecounter_read(&wx->hw_tc);
-+		write_sequnlock_irqrestore(&wx->hw_tc_lock, flags);
-+
-+		wx->last_overflow_check = jiffies;
-+	}
-+}
-+
-+/**
-+ * wx_ptp_rx_hang - detect error case when Rx timestamp registers latched
-+ * @wx: pointer to wx struct
-+ *
-+ * this watchdog task is scheduled to detect error case where hardware has
-+ * dropped an Rx packet that was timestamped when the ring is full. The
-+ * particular error is rare but leaves the device in a state unable to
-+ * timestamp any future packets.
-+ */
-+static void wx_ptp_rx_hang(struct wx *wx)
-+{
-+	struct wx_ring *rx_ring;
-+	unsigned long rx_event;
-+	u32 tsyncrxctl;
-+	int n;
-+
-+	tsyncrxctl = rd32(wx, WX_PSR_1588_CTL);
-+
-+	/* if we don't have a valid timestamp in the registers, just update the
-+	 * timeout counter and exit
-+	 */
-+	if (!(tsyncrxctl & WX_PSR_1588_CTL_VALID)) {
-+		wx->last_rx_ptp_check = jiffies;
-+		return;
-+	}
-+
-+	/* determine the most recent watchdog or rx_timestamp event */
-+	rx_event = wx->last_rx_ptp_check;
-+	for (n = 0; n < wx->num_rx_queues; n++) {
-+		rx_ring = wx->rx_ring[n];
-+		if (time_after(rx_ring->last_rx_timestamp, rx_event))
-+			rx_event = rx_ring->last_rx_timestamp;
-+	}
-+
-+	/* only need to read the high RXSTMP register to clear the lock */
-+	if (time_is_before_jiffies(rx_event + 5 * HZ)) {
-+		rd32(wx, WX_PSR_1588_STMPH);
-+		wx->last_rx_ptp_check = jiffies;
-+
-+		wx->rx_hwtstamp_cleared++;
-+		dev_warn(&wx->pdev->dev, "clearing RX Timestamp hang");
-+	}
-+}
-+
-+/**
-+ * wx_ptp_tx_hang - detect error case where Tx timestamp never finishes
-+ * @wx: private network wx structure
-+ */
-+static void wx_ptp_tx_hang(struct wx *wx)
-+{
-+	bool timeout = time_is_before_jiffies(wx->ptp_tx_start +
-+					      WX_PTP_TX_TIMEOUT);
-+
-+	if (!wx->ptp_tx_skb)
-+		return;
-+
-+	if (!test_bit(WX_STATE_PTP_TX_IN_PROGRESS, wx->state))
-+		return;
-+
-+	/* If we haven't received a timestamp within the timeout, it is
-+	 * reasonable to assume that it will never occur, so we can unlock the
-+	 * timestamp bit when this occurs.
-+	 */
-+	if (timeout) {
-+		cancel_work_sync(&wx->ptp_tx_work);
-+		wx_ptp_clear_tx_timestamp(wx);
-+		wx->tx_hwtstamp_timeouts++;
-+		dev_warn(&wx->pdev->dev, "clearing Tx timestamp hang\n");
-+	}
-+}
-+
-+static long wx_ptp_do_aux_work(struct ptp_clock_info *ptp)
-+{
-+	struct wx *wx = container_of(ptp, struct wx, ptp_caps);
-+
-+	wx_ptp_overflow_check(wx);
-+	if (unlikely(test_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER,
-+			      wx->flags)))
-+		wx_ptp_rx_hang(wx);
-+	wx_ptp_tx_hang(wx);
-+
-+	return HZ;
-+}
-+
- /**
-  * wx_ptp_create_clock
-  * @wx: the private board structure
-@@ -283,6 +393,7 @@ static long wx_ptp_create_clock(struct wx *wx)
- 	wx->ptp_caps.adjtime = wx_ptp_adjtime;
- 	wx->ptp_caps.gettimex64 = wx_ptp_gettimex64;
- 	wx->ptp_caps.settime64 = wx_ptp_settime64;
-+	wx->ptp_caps.do_aux_work = wx_ptp_do_aux_work;
- 	if (wx->mac.type == wx_mac_em)
- 		wx->ptp_caps.max_adj = 500000000;
- 	else
-@@ -566,6 +677,9 @@ void wx_ptp_reset(struct wx *wx)
- 	timecounter_init(&wx->hw_tc, &wx->hw_cc,
- 			 ktime_to_ns(ktime_get_real()));
- 	write_sequnlock_irqrestore(&wx->hw_tc_lock, flags);
-+
-+	wx->last_overflow_check = jiffies;
-+	ptp_schedule_worker(wx->ptp_clock, HZ);
- }
- EXPORT_SYMBOL(wx_ptp_reset);
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 9199317f7175..c2e58de3559a 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1175,6 +1175,8 @@ struct wx {
- 	u32 tx_hwtstamp_skipped;
- 	u32 tx_hwtstamp_errors;
- 	u32 rx_hwtstamp_cleared;
-+	unsigned long last_overflow_check;
-+	unsigned long last_rx_ptp_check;
- 	unsigned long ptp_tx_start;
- 	seqlock_t hw_tc_lock; /* seqlock for ptp */
- 	struct cyclecounter hw_cc;
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-index c7944e62838a..ea1d7e9a91f3 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-@@ -111,6 +111,7 @@ static void ngbe_mac_link_up(struct phylink_config *config,
- 	wr32(wx, WX_MAC_WDG_TIMEOUT, reg);
- 
- 	wx->speed = speed;
-+	wx->last_rx_ptp_check = jiffies;
- 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
- 		wx_ptp_reset_cyclecounter(wx);
- }
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-index 60e5f3288ad8..7e17d727c2ba 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-@@ -222,6 +222,7 @@ static void txgbe_mac_link_up(struct phylink_config *config,
- 	wr32(wx, WX_MAC_WDG_TIMEOUT, wdg);
- 
- 	wx->speed = speed;
-+	wx->last_rx_ptp_check = jiffies;
- 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
- 		wx_ptp_reset_cyclecounter(wx);
- }
--- 
-2.27.0
+On 1/13/25 10:15 PM, Jakub Kicinski wrote:
+> On Fri, 10 Jan 2025 10:07:18 +0100 Daniel Sedlak wrote:
+>> Hello,
+>> I am writing an affinity scheduler in the userspace for network cards's
+>> Tx/Rx queues. Is there a generic way to retrieve all IRQ numbers for
+>> those queues for each interface?
+>>
+>> My goal is to get all Tx/Rx queues for a given interface, get the IRQ
+>> number of the individual queues, and set an affinity hint for each
+>> queue. I have tried to loop over /proc/interrupts to retrieve all queues
+>> for an interface in a hope that the last column would contain the
+>> interface name however this does not work since the naming is not
+>> unified across drivers. My second attempt was to retrieve all registered
+>> interrupts by network interface from
+>> /sys/class/net/{interface_name}/device/msi_irqs/, but this attempt was
+>> also without luck because some drivers request more IRQs than the number
+>> of queues (for example i40e driver).
+> 
+> We do have an API for that
+> https://docs.kernel.org/next/networking/netlink_spec/netdev.html#napi
+> but unfortunately the driver needs to support it, and i40e currently
+> doesn't:
 
+Thank you for the link, I somehow missed that part of netlink…
+
+> $ git grep --files-with-matches  netif_napi_set_irq
+> drivers/net/ethernet/amazon/ena/ena_netdev.c
+> drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> drivers/net/ethernet/broadcom/tg3.c
+> drivers/net/ethernet/google/gve/gve_utils.c
+> drivers/net/ethernet/intel/e1000/e1000_main.c
+> drivers/net/ethernet/intel/e1000e/netdev.c
+> drivers/net/ethernet/intel/ice/ice_lib.c
+> drivers/net/ethernet/intel/igc/igc_main.c
+> drivers/net/ethernet/mellanox/mlx4/en_cq.c
+> drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+> 
+> Should be easy to add. Let me CC the Intel list in case they already
+> have a relevant change queued for i40e..
+
+Thank you for directions, will check Intel's mailing list and poke 
+around with implementing that.
+
+Daniel
