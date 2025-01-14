@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AED22206A1
-	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 23:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BF42147EE
+	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 23:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736895615; cv=none; b=tfWy7Gexg58Di9CIz11Sm4j4eySVc+BIrzCSgmdU4JOeGrba2Q0GcTCJBSqxpQMuhvDGK4k883/tND4OVa40oLiyDVypWk3XRhGXemppOwPQHwwwG/bvgPFeLan1q2bNuyCN19BtgDEsRLAzcrQi1d8o1XrYxWaYW0WFrWC34Uk=
+	t=1736895619; cv=none; b=Yy0wIb+/yl7KJJxWRVtd9PkmEY49yiucat0YID1Di05r/DjUx8sH7dKJbLyY6Co3HFdeA2XzkIgExSWf/OxEgySq4pCI4dWZZTP6ikPfwa5qvWYc9I1Xcp7///gtl5I5CNpjRaZUU+ISzf6orY74sTVQJ6zjOWPDU/mcxLsVJ2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736895615; c=relaxed/simple;
-	bh=nuP66AnBB3lr0usah5zBWOTcem2+E2Hbve4YWC71rkk=;
+	s=arc-20240116; t=1736895619; c=relaxed/simple;
+	bh=f/QShmR0dYDVRn6FrchQOZ+I/J2lxvBfmSj2QNMw5kI=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=if4BV/yOPV/nmRUClkbKhwloNq6G8VWoLG517DICHrkdcwvoNpdvEMwTFKFPkgh7JTyCqj/uSEbaBldVKkMIDU9gEoE26b/wCREItQlIuQrvRjTjTdq9Uk9jc/6Urm/4my4jWtJM6au/Trb66o7GY1v8BrViu+GGBxXMwCbpBEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+OfneGQ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=s90C+/WGZogJrPY55AV+IGmJo3vceRlZWrX3z7j1KKMdoNaveExiTZCJR7OUGNCMuSav6hHbV8J3y6xCMOCnJWq7OXC6oksfBxiO3wohPvC/JXee1aKLuWsT5o037+0oRQz0XYzl2dg2noMNvSC0Tt2Uz8BWJ0OMC3nhnzcOe60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qm6cM5x6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+OfneGQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D15DC4CEDD;
-	Tue, 14 Jan 2025 23:00:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qm6cM5x6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8171EC2BCC4;
+	Tue, 14 Jan 2025 23:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736895613;
-	bh=nuP66AnBB3lr0usah5zBWOTcem2+E2Hbve4YWC71rkk=;
+	s=k20201202; t=1736895616;
+	bh=f/QShmR0dYDVRn6FrchQOZ+I/J2lxvBfmSj2QNMw5kI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=m+OfneGQNKLt465exRaZ+UEqtVJLKFDewomLDLfHxBoJbCMOEb/i8cFBEyi+LfauH
-	 gZelTgHkn4ITh42iTYK74uIypzFgN5aGtnEYsKKG9iQe75P4+Job0jDkPT06Emm4sY
-	 o+Yke2Y4KziC9sU5g8Js0WypHXEszO5cy8D5jFRK0OG1v6q0SaQtM4hXTwkao4bWwR
-	 U1jcO+NSTcDyZC0aptEme4fuBr6U1WvSMdSVZCX17pmHbaYnlaq30RfG55gQ23a+f8
-	 o6SEiZ6Jdpuqf1dNpnE4lKkIuyLXp4+VZqNKdKSPxRvycFB+V+McoWyvj4DQaHaxOJ
-	 naVLtYCJNjd9w==
+	b=qm6cM5x6+iIMnFNgOJMaPUx2pumZzEDEbGlA0+cTVW8uHhxcxGAzOmEiLtnAsAw1q
+	 CpjtLnUYtbJSdxXGAmINvt+jfxrCZbiBxrzct2hmXTsWG4oNGDWI2ue7iREc9+tbc4
+	 yiQfYfjaovDEbXfvR2KL5fvZ4wWc4JTsthkA7IZsvpf6PE2MHv9aJHNk5LR0NMlS90
+	 wXWlh3oo0S2LF1VNG3g+T7c821gGLpl4vjECF5+Rx7hTG180TLMiuUrK7dfBZpFLeE
+	 +8DENxrnY2/ldRqCenKCTJeDoszdngPpHUwAKVTgwBw/IL73a3y5ZtIPXlab48PFQ1
+	 scxAwa0M+OnYw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 710E9380AA5F;
-	Tue, 14 Jan 2025 23:00:37 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 71DFC380AA5F;
+	Tue, 14 Jan 2025 23:00:40 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/3] net: phy: realtek: add hwmon support
+Subject: Re: [PATCH net-next v2 1/2] docs: netdev: document requirements for
+ Supported status
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <173689563627.170851.17398917606349589259.git-patchwork-notify@kernel.org>
-Date: Tue, 14 Jan 2025 23:00:36 +0000
-References: <7319d8f9-2d6f-4522-92e8-a8a4990042fb@gmail.com>
-In-Reply-To: <7319d8f9-2d6f-4522-92e8-a8a4990042fb@gmail.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: pabeni@redhat.com, kuba@kernel.org, davem@davemloft.net,
- edumazet@google.com, horms@kernel.org, linux@armlinux.org.uk, andrew@lunn.ch,
- netdev@vger.kernel.org
+ <173689563899.170851.15442144645788945342.git-patchwork-notify@kernel.org>
+Date: Tue, 14 Jan 2025 23:00:38 +0000
+References: <20250111024359.3678956-1-kuba@kernel.org>
+In-Reply-To: <20250111024359.3678956-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ aleksander.lobakin@intel.com
 
 Hello:
 
 This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat, 11 Jan 2025 21:48:29 +0100 you wrote:
-> This adds hwmon support for the temperature sensor on RTL822x.
-> It's available on the standalone versions of the PHY's, and on the
-> internal PHY's of RTL8125B(P)/RTL8125D/RTL8126.
+On Fri, 10 Jan 2025 18:43:56 -0800 you wrote:
+> As announced back in April, require running upstream tests
+> to maintain Supported status for NIC drivers:
 > 
-> v2:
-> - patch 2: move Realtek PHY driver to its own subdirectory
-> - patch 3: remove alarm attribute
+>   https://lore.kernel.org/20240425114200.3effe773@kernel.org
+> 
+> Multiple vendors have been "working on it" for months.
+> Let's make it official.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2,1/3] net: phy: realtek: add support for reading MDIO_MMD_VEND2 regs on RTL8125/RTL8126
-    https://git.kernel.org/netdev/net-next/c/3d483a10327f
-  - [net-next,v2,2/3] net: phy: move realtek PHY driver to its own subdirectory
-    https://git.kernel.org/netdev/net-next/c/1416a9b2ba71
-  - [net-next,v2,3/3] net: phy: realtek: add hwmon support for temp sensor on RTL822x
-    https://git.kernel.org/netdev/net-next/c/33700ca45b7d
+  - [net-next,v2,1/2] docs: netdev: document requirements for Supported status
+    https://git.kernel.org/netdev/net-next/c/05baba80f2c4
+  - [net-next,v2,2/2] MAINTAINERS: downgrade Ethernet NIC drivers without CI reporting
+    https://git.kernel.org/netdev/net-next/c/af2bcb5774f8
 
 You are awesome, thank you!
 -- 
