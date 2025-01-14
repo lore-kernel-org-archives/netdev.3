@@ -1,276 +1,167 @@
-Received: from smtp-8faa.mail.infomaniak.ch (smtp-8faa.mail.infomaniak.ch [83.166.143.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF751C3BFC
-	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 18:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B01B1C1AAA;
+	Tue, 14 Jan 2025 18:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736879530; cv=none; b=XoRxSbQPVpV1j5oSmL6/LLtCrIkAVqLgZcujTCQ9nZAtAvdJbRvavXvbN8azFoyufmi5wM/eLsoD2BAyRgyiEBkNIsTVurnIZ6YIKlqjop1Bb3+DTb8I5RiFtL9Q0gcOZlCH0LyfrPB0LSlB1zU+GCIWBNogyn2fysnOWnGIAtQ=
+	t=1736879580; cv=none; b=YWfkfH2TbAdcz+t+hWWXVMXb6Ogl2KpVsFx3/jnfHy5v1QQV/qUtMs3xTXYbsT1zLP56gjRysRt0JJ0m+h4rSdB3amdtBniQNMtscYA03eLLcovQI/SNtrAAQFuQCO65Lx8RC7qrprygF0X/sjKuHPiJk8v8MBALm5DWH3dXmnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736879530; c=relaxed/simple;
-	bh=O14jbt/3oI6eoy9WRO+yQ2SDWHCq+tSet2PgXj18RlA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W/7nARYz/om8Xd3w93sqZhT2LU279+QiyfWluYMvWULQ2x/j1h3zXVyLiX3rmge7ahWeaTk57qrc5QL7SUX/hhOBaBjKMAZj7JpSJTmNEHaTpRrEBD+naejFynhL4oRXABYy51P0+Vc+5hE603ktoqQMFI06LoKECE1IneDYqWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=ZycJNfxY; arc=none smtp.client-ip=83.166.143.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+	s=arc-20240116; t=1736879580; c=relaxed/simple;
+	bh=+VYfghA8rdZLLpmdod8238HnaaeOZHNazblnDuKrS5A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Tfw1sgkd/zQudNdAJKBBjh/gRNQHZUrMi2Q0aG3BPwNkAjBqdOqXhz+GSIsNnctFaLo6dYDkMmsN8S06pd51yc7xo+ZJ0QPUtOXLLuzTk3EZ6lTlyXhubIgr2aCw+e83pYH21fWMppxe020fj3ENwDHF4yPDx51RGi5HijJnoEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dTSufW4e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="ZycJNfxY"
-Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4YXd585TjmzwDB;
-	Tue, 14 Jan 2025 19:31:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1736879516;
-	bh=r0Z3Vg4YsRy6NpGd4P67mYd8Fn/gAqF/oy0GnEUbkus=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZycJNfxYyLhbeHOwo8hho1z0anzHR5SrFb+qjPJMNtMTCm0BpE/YTs53lLHCZdEqq
-	 u4Jl/Zynq56xTT/iMYPj8Z2c8zwhbCXy9DR3Tz5y9XwyZRrV1cz8jdOMEjTD/+7tV9
-	 xBhXor73yaF0no9STjYwnD0pjnzv+qrCG9MhXLws=
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4YXd5818qyzN8x;
-	Tue, 14 Jan 2025 19:31:55 +0100 (CET)
-Date: Tue, 14 Jan 2025 19:31:55 +0100
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
-Cc: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>, 
-	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, willemdebruijn.kernel@gmail.com, 
-	linux-security-module@vger.kernel.org, netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, 
-	yusongping@huawei.com, artem.kuzin@huawei.com, konstantin.meskhidze@huawei.com, 
-	Matthieu Buffet <matthieu@buffet.re>
-Subject: Re: [RFC PATCH v3 01/19] landlock: Support socket access-control
-Message-ID: <20250114.maiR6ueChieD@digikod.net>
-References: <36ac2fde-1344-9055-42e2-db849abf02e0@huawei-partners.com>
- <20241127.oophah4Ueboo@digikod.net>
- <eafd855d-2681-8dfd-a2be-9c02fc07050d@huawei-partners.com>
- <20241128.um9voo5Woo3I@digikod.net>
- <af72be74-50c7-d251-5df3-a2c63c73296a@huawei-partners.com>
- <f6b255c9-5a88-fedd-5d25-dd7d09ddc989@huawei-partners.com>
- <20250110.2893966a7649@gnoack.org>
- <3cdf6001-4ad4-6edc-e436-41a1eaf773f3@huawei-partners.com>
- <20250110.8ae6c145948f@gnoack.org>
- <cd78c2c8-feb3-b7f1-90be-3f6ab3becc09@huawei-partners.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dTSufW4e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4505C4CEDD;
+	Tue, 14 Jan 2025 18:32:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736879579;
+	bh=+VYfghA8rdZLLpmdod8238HnaaeOZHNazblnDuKrS5A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=dTSufW4efKR+RIHqvwO/9tgIApbDDjdv44InVf79nTpH+fqsZoocULrcrwKMVnQQ5
+	 RdzKW96/aFBeiCxYXTefWPYIICbm+Eu6rG7ovKW+JdGiRI47459qzUvUXDQhCB2gRM
+	 701k5jFBY4zSmNTziWErYmRGTY/TYyEiiyWUSgUuEkxH3EbunKYRIF0Wa6wGYshwDr
+	 MxqJ7pDFS6HDOAkfgpagILog3wKencYyaQQmL7omgH5ezoWMJDVFSItmpitzazhtaO
+	 HG+IClazBl+1mEWiDJrI71zrYT1bk7xYW2/7xCY4wqsD1f1YdMI+fhWUJolUp8mxLi
+	 UKEpo9Ifnp0yw==
+Date: Tue, 14 Jan 2025 10:32:57 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Li Li <dualli@chromium.org>
+Cc: Carlos Llamas <cmllamas@google.com>, dualli@google.com, corbet@lwn.net,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ donald.hunter@gmail.com, gregkh@linuxfoundation.org, arve@android.com,
+ tkjos@android.com, maco@android.com, joel@joelfernandes.org,
+ brauner@kernel.org, surenb@google.com, arnd@arndb.de, masahiroy@kernel.org,
+ bagasdotme@gmail.com, horms@kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, netdev@vger.kernel.org, hridya@google.com,
+ smoreland@google.com, kernel-team@android.com
+Subject: Re: [PATCH v11 2/2] binder: report txn errors via generic netlink
+Message-ID: <20250114103257.73e9c0d1@kernel.org>
+In-Reply-To: <CANBPYPjQVqmzZ4J=rVQX87a9iuwmaetULwbK_5_3YWk2eGzkaA@mail.gmail.com>
+References: <20241218203740.4081865-1-dualli@chromium.org>
+	<20241218203740.4081865-3-dualli@chromium.org>
+	<Z32cpF4tkP5hUbgv@google.com>
+	<Z32fhN6yq673YwmO@google.com>
+	<CANBPYPi6O827JiJjEhL_QUztNXHSZA9iVSyzuXPNNgZdOzGk=Q@mail.gmail.com>
+	<Z4Aaz4F_oS-rJ4ij@google.com>
+	<Z4Aj6KqkQGHXAQLK@google.com>
+	<CANBPYPjvFuhi7Pwn_CLArn-iOp=bLjPHKN0sJv+5uoUrDTZHag@mail.gmail.com>
+	<20250109121300.2fc13a94@kernel.org>
+	<Z4BZjHjfanPi5h9W@google.com>
+	<20250109161825.62b31b18@kernel.org>
+	<CANBPYPjQVqmzZ4J=rVQX87a9iuwmaetULwbK_5_3YWk2eGzkaA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cd78c2c8-feb3-b7f1-90be-3f6ab3becc09@huawei-partners.com>
-X-Infomaniak-Routing: alpha
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Happy new year!
+On Mon, 13 Jan 2025 22:01:00 -0800 Li Li wrote:
+> On Thu, Jan 9, 2025 at 4:18=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> w=
+rote:
+> > > Sorry, it was me that suggested NETLINK_URELEASE. BTW, I did try those
+> > > genl_family callbacks first but I couldn't get them to work right away
+> > > so I moved on. I'll have a closer look now to figure out what I did
+> > > wrong. Thanks for the suggestion Jakub! =20
+> >
+> > Hm, that's probably because there is no real multicast group here :(
+> > genl_sk_priv_get() and co. may work better in that case.
+> > your suggestion of NETLINK_URELEASE may work too, tho, I think it's
+> > the most error prone =20
+>=20
+> sock_priv_destroy works with genl_sk_priv_get().
+>=20
+> But, I have to manually modify the generated netlink header file to satis=
+fy CFI.
+>=20
+> -void binder_nl_sock_priv_init(struct my_struct *priv);
+> -void binder_nl_sock_priv_destroy(struct my_struct *priv);
+> +void binder_nl_sock_priv_init(void *priv);
+> +void binder_nl_sock_priv_destroy(void *priv);
+>=20
+> The reason is that these 2 callback functions are defined in
+> include/net/genetlink.h as below
+> void (*sock_priv_init)(void *priv);
+> void (*sock_priv_destroy)(void *priv);
+>=20
+> Otherwise, kernel panic when CFI is enabled.
+>=20
+> CFI failure at genl_sk_priv_get+0x60/0x138 (target:
+> binder_nl_sock_priv_init+0x0/0x34; expected type: 0x0ef81b7d)
+>=20
+> Jakub, we probably need this patch. Please let me know if you have a
+> better idea. Thanks!
+>=20
+> diff --git a/tools/net/ynl/ynl-gen-c.py b/tools/net/ynl/ynl-gen-c.py
+> index 8155ff6d2a38..84033938a75f 100755
+> --- a/tools/net/ynl/ynl-gen-c.py
+> +++ b/tools/net/ynl/ynl-gen-c.py
+> @@ -2352,8 +2352,8 @@ def print_kernel_family_struct_hdr(family, cw):
+>      cw.p(f"extern struct genl_family {family.c_name}_nl_family;")
+>      cw.nl()
+>      if 'sock-priv' in family.kernel_family:
+> -        cw.p(f'void
+> {family.c_name}_nl_sock_priv_init({family.kernel_family["sock-priv"]}
+> *priv);')
+> -        cw.p(f'void
+> {family.c_name}_nl_sock_priv_destroy({family.kernel_family["sock-priv"]}
+> *priv);')
+> +        cw.p(f'void {family.c_name}_nl_sock_priv_init(void *priv);')
+> +        cw.p(f'void {family.c_name}_nl_sock_priv_destroy(void *priv);')
+>          cw.nl()
+>=20
 
-On Fri, Jan 10, 2025 at 07:55:10PM +0300, Mikhail Ivanov wrote:
-> On 1/10/2025 7:27 PM, Günther Noack wrote:
-> > On Fri, Jan 10, 2025 at 04:02:42PM +0300, Mikhail Ivanov wrote:
-> > > Correct, but we also agreed to use bitmasks for "family" field as well:
-> > > 
-> > > https://lore.kernel.org/all/af72be74-50c7-d251-5df3-a2c63c73296a@huawei-partners.com/
-> > 
-> > OK
-> > 
-> > 
-> > > On 1/10/2025 2:12 PM, Günther Noack wrote:
-> > > > I do not understand why this convenience feature in the UAPI layer
-> > > > requires a change to the data structures that Landlock uses
-> > > > internally?  As far as I can tell, struct landlock_socket_attr is only
-> > > > used in syscalls.c and converted to other data structures already.  I
-> > > > would have imagined that we'd "unroll" the specified bitmasks into the
-> > > > possible combinations in the add_rule_socket() function and then call
-> > > > landlock_append_socket_rule() multiple times with each of these?
+Maybe we can codegen a little wrapper call. Can you try this with CFI?
 
-I agree that UAPI should not necessarily dictate the kernel
-implementation.
+---->8------------
 
-> > > 
-> > > I thought about unrolling bitmask into multiple entries in rbtree, and
-> > > came up with following possible issue:
-> > > 
-> > > Imagine that a user creates a rule that allows to create sockets of all
-> > > possible families and types (with protocol=0 for example):
-> > > {
-> > > 	.allowed_access = LANDLOCK_ACCESS_SOCKET_CREATE,
-> > > 	.families = INT64_MAX, /* 64 set bits */
-> > > 	.types = INT16_MAX, /* 16 set bits */
-> > > 	.protocol = 0,
-> > > },
-> > > 
-> > > This will add 64 x 16 = 1024 entries to the rbtree. Currently, the
-> > > struct landlock_rule, which is used to store rules, weighs 40B. So, it
-> > > will be 40kB by a single rule. Even if we allow rules with only
-> > > "existing" families and types, it will be 46 x 7 = 322 entries and ~12kB
-> > > by a single rule.
-> > > 
-> > > I understand that this may be degenerate case and most common rule will
-> > > result in less then 8 (or 4) entries in rbtree, but I think API should
-> > > be as intuitive as possible. User can expect to see the same
-> > > memory usage regardless of the content of the rule.
-> > > 
-> > > I'm not really sure if this case is really an issue, so I'd be glad
-> > > to hear your opinion on it.
-> > 
-> > I think there are two separate questions here:
-> > 
-> > (a) I think it is OK that it is *possible* to allocate 40kB of kernel
-> >      memory.  At least, this is already possible today by calling
-> >      landlock_add_rule() repeatedly.
-> > 
-> >      I assume that the GFP_KERNEL_ACCOUNT flag is limiting the
-> >      potential damage to the caller here?  That flag was added in the
-> >      Landlock v19 patch set [1] ("Account objects to kmemcg.").
-> > 
-> > (b) I agree it might be counterintuitive when a single
-> >      landlock_add_rule() call allocates more space than expected.
-> > 
-> > Mickaël, since it is already possible today (but harder), I assume
-> > that you have thought about this problem before -- is it a problem
-> > when users allocate more kernel memory through Landlock than they
-> > expected?
+diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen=
+_c.py
+index d3a7dfbcf929..9852ba6fd9c3 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_c.py
++++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+@@ -2411,6 +2411,15 @@ _C_KW =3D {
+     if not kernel_can_gen_family_struct(family):
+         return
+=20
++    if 'sock-priv' in family.kernel_family:
++        # Generate "trampolines" to make CFI happy
++        cw.write_func("static void", f"__{family.c_name}_nl_sock_priv_init=
+",
++                      [f"{family.c_name}_nl_sock_priv_init(priv);"], ["voi=
+d *priv"])
++        cw.nl()
++        cw.write_func("static void", f"__{family.c_name}_nl_sock_priv_dest=
+roy",
++                      [f"{family.c_name}_nl_sock_priv_destroy(priv);"], ["=
+void *priv"])
++        cw.nl()
++
+     cw.block_start(f"struct genl_family {family.ident_name}_nl_family __ro=
+_after_init =3D")
+     cw.p('.name\t\t=3D ' + family.fam_key + ',')
+     cw.p('.version\t=3D ' + family.ver_key + ',')
+@@ -2428,9 +2437,8 @@ _C_KW =3D {
+         cw.p(f'.n_mcgrps\t=3D ARRAY_SIZE({family.c_name}_nl_mcgrps),')
+     if 'sock-priv' in family.kernel_family:
+         cw.p(f'.sock_priv_size\t=3D sizeof({family.kernel_family["sock-pri=
+v"]}),')
+-        # Force cast here, actual helpers take pointer to the real type.
+-        cw.p(f'.sock_priv_init\t=3D (void *){family.c_name}_nl_sock_priv_i=
+nit,')
+-        cw.p(f'.sock_priv_destroy =3D (void *){family.c_name}_nl_sock_priv=
+_destroy,')
++        cw.p(f'.sock_priv_init\t=3D __{family.c_name}_nl_sock_priv_init,')
++        cw.p(f'.sock_priv_destroy =3D __{family.c_name}_nl_sock_priv_destr=
+oy,')
+     cw.block_end(';')
+=20
+=20
+--=20
+2.47.1
 
-The imbalance between the user request and the required kernel memory is
-interesting.  It would not be a security issue thanks to the
-GFP_KERNEL_ACCOUNT, but it can be surprising for users that for some
-requests they can receive -ENOMEM but not for quite-similar ones (e.g.
-with only some bits different).  We should keep the principle of least
-astonishment in mind, but also the fact that the kernel implementation
-and the related required memory may change between two kernel versions
-for the exact same user request (because of Landlock implementation
-differences or other parts of the kernel).  In summary, we should be
-careful to prevent users from being able to use a large amount of memory
-with only one syscall.  This which would be an usability issue.
-
-> > 
-> > 
-> > Naive proposal:
-> > 
-> > If this is an issue, how about we set a low limit to the number of
-> > families and the number of types that can be used in a single
-> > landlock_add_rule() invocation?  (It tends to be easier to start with
-> > a restrictive API and open it up later than the other way around.)
-> 
-> Looks like a good approach! Better to return with an error (which almost
-> always won't happen) and let the user to refactor the code than to
-> allow ruleset to eat an unexpected amount of memory.
-> 
-> > 
-> > For instance,
-> > 
-> > * In the families field, at most 2 bits may be set.
-> > * In the types field, at most 2 bits may be set.
-> 
-> Or we can say that rule can contain not more than 4 combinations of
-> family and type.
-> 
-> BTW, 4 seems to be sufficient, at least for IP protocols.
-> 
-> > 
-> > In my understanding, the main use case of the bit vectors is that
-> > there is a short way to say "all IPv4+v6 stream+dgram sockets", but we
-> > do not know scenarios where much more than that is needed?  With that,
-> > we would still keep people from accidentally allocating larger amounts
-> > of memory, while permitting the main use case.
-> 
-> Agreed
-> 
-> > 
-> > Having independent limits for the family and type fields is a bit
-> > easier to understand and document than imposing a limit on the
-> > multiplication result.
-
-This is a safer approach that can indeed be documented, but it looks
-unintuitive and an arbitrary limitation.  Here is another proposal:
-
-Let's ignore my previous suggestion to use bitfields for families and
-protocols.  To keep it simple, we can get back to the initial struct but
-specifically handle the (i64)-1 value (which cannot be a family,
-protocol, nor a type):
-{
-	.allowed_access = LANDLOCK_ACCESS_SOCKET_CREATE,
-	.family = AF_INET,
-	.type = SOCK_STREAM,
-	.protocol = -1,
-},
-
-This would read: deny socket creation except for AF_INET with
-SOCK_STREAM (and any protocol).
-
-Users might need to add several rules (e.g. one for AF_INET and another
-for AF_INET6) but that's OK.  Unfortunately we cannot identify a TCP
-socket with only protocol = IPPROTO_TCP because protocol definitions
-are relative to network families.  Specifying the protocol without the
-family should then return an error.
-
-Before rule could be loaded, users define how much they want to match a
-socket: at least the family, optionally the type, and if the type is
-also set then the protocol can also be set.  These dependencies are
-required to transform this triplet to a key number, see below.
-
-A landlock_ruleset_attr.handled_socket_layers field would define how
-much we want to match a socket:
-- 1: family only
-- 2: family and type
-- 3: family, type, and protocol
-
-According to this ruleset's property, users will be allowed to fill the
-family, type, or protocol fields in landlock_socket_attr rules.  If a
-socket layer is not handled, it should contain (i64)-1 for the kernel to
-detect misuse of the API.
-
-This enables us to get a key from this triplet:
-
-family_bits = 6; // 45 values for now
-type_bits = 3; // 7 values for now
-protocol_bits = 5; // 28 values for now
-
-// attr.* are the sanitized UAPI values, including -1 replaced with 0.
-// In this example, landlock_ruleset_attr.handled_socket_layers is 3, so
-// the key is composed of all the 3 properties.
-landlock_key.data = attr.family << (type_bits + protocol_bits) |
-                    attr.type << protocol_bits | attr.protocol;
-
-For each layer of restriction in a domain, we know how precise they
-define a socket (i.e. with how many "socket layers").  We can then look
-for at most 3 entries in the red-black tree: one with only the family,
-another with the family and the type, and potentially a third also
-including the protocol.  Each key would have the same significant bits
-but with the lower bits masked according to each
-landlock_ruleset_attr.handled_socket_layers .  Composing the related
-access masks according to the defined socket layers, we can create an
-array of struct access_masks for the request and then check if such
-request is allowed by the current domain.  As for the currently stored
-data, we can also identify the domain layer that blocked the request
-(required for audit).
-
-With this design, each sandbox can define a socket as much as it wants.
-
-The downside is that we lost the bitfields and we need several calls to
-filter more complex sockets (e.g. 4 for UDP and TCP with IPv4 and IPv6),
-which looks OK compared to the required calls for filesystem access
-control.
-
-> > 
-> > > > That being said, I am not a big fan of red-black trees for such simple
-> > > > integer lookups either, and I also think there should be something
-> > > > better if we make more use of the properties of the input ranges. The
-> > > > question is though whether you want to couple that to this socket type
-> > > > patch set, or rather do it in a follow up?  (So far we have been doing
-> > > > fine with the red black trees, and we are already contemplating the
-> > > > possibility of changing these internal structures in [2].  We have
-> > > > also used RB trees for the "port" rules with a similar reasoning,
-> > > > IIRC.)
-> > > 
-> > > I think it'll be better to have a separate series for [2] if the socket
-> > > restriction can be implemented without rbtree refactoring.
-> > 
-> > Sounds good to me. 👍
-> > 
-> > [1] https://lore.kernel.org/all/20200707180955.53024-2-mic@digikod.net/
-
-red-black trees are a good generic data structure for the current main
-use case (for dynamic rulesets and static domains), but we'll need to
-use more appropriate data structures.  I think this should not be a
-blocker for this patch series.  It will be required to match (port)
-ranges though (even if the use case seems limited), and in general for
-better performances.
