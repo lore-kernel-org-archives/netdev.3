@@ -1,202 +1,163 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE62E1369AE;
-	Tue, 14 Jan 2025 14:22:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABDA14AD0E;
+	Tue, 14 Jan 2025 14:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736864539; cv=none; b=KEeeuYlxvgAo4j0GfA7+LuBvdFXWuNzvCLAcnoV2msQ1TBsOhV009etYj4ySmLGgcKTggMcD+EqWGgKSIeepfp1T92y6syBr1yDoO05Xm8Op9Iyt6Dh5X2vGVD3qBnNP8HqTRSJvxh8NoHfLKksxEXoabHlyXPKL52Ixb2hZmfs=
+	t=1736864906; cv=none; b=VlGeFoCGELjN5fPgS0XT6BDS40Fo3S++A+XPEr0uHAzkRKl+ybt1hTaDjp1Rp7xp0nXtb5agLYAEHAMcz6PBVlGHwKmwmeUasTfgq+b3uGxpTkBovE1oRRoNWT+lSZ840klx9NMfHyhGPfasmIQ3feRvD6Dm6gQvmmtrLBC3NmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736864539; c=relaxed/simple;
-	bh=SCp71jMFFeorcVLXWoO7AcnDoNjE58ou36mBn9sep4c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tQdclRVPlF2fR8awbQ3aYq5wqZeUz+nu8kHtD3hoLfnCHTur9uMGvtkZPbMOhASnRdDGnaGXk78xTmJYN72+qpldUMA00Q5sXzTQITkFkU9Km2Om/aV9I+5I/nApmzeCSQOJBmy3jnou6J/lpmfZsX3x7ZZgENY+UpTkl4ygT+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=L8ixA7V1; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="L8ixA7V1"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50E3sZbc007080;
-	Tue, 14 Jan 2025 14:21:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Obdh2s
-	p1bG/iJrIhaC8nIXFsNSDoTZS3Zoul3eqaA60=; b=L8ixA7V1onUz11Os0Pudtf
-	VEurMailch8RHVvI8JKcx6l8Yc+62G9u9lt4sWdm5mO5jxcidLwEFj/E75biFI+f
-	QYk5sPeAIfSje3y/P0Zh8LP0nsds4PUDOVLeGHZIaPDUoWMUp4qAwVMmb8y7TgO/
-	kjIY1UE5bnw2c+sLvUzlyfAp/7SMEzALIzy9oC+CfoWX8aGwcvsqT3XhnCAovI0V
-	aa/PvbL058LrPCep6fnzpNhfDO6/0htFJZ9NAjNdm1gjELv+CPJSH0d5cmzP7QKT
-	Q98Nby1GOLVM6Fx59FEn/S48d8+qiUz0Y4CpJDNijXgnxD7ojiAOpgRtl5ElhuEA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 445gdjj8jb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 14:21:12 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50EEK8aA011287;
-	Tue, 14 Jan 2025 14:21:11 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 445gdjj8j9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 14:21:11 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50EBAWjW016485;
-	Tue, 14 Jan 2025 14:21:10 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4445p1k65k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 14:21:10 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50EEL9nj25166578
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Jan 2025 14:21:09 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 982CA5805D;
-	Tue, 14 Jan 2025 14:21:09 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1945B58043;
-	Tue, 14 Jan 2025 14:21:09 +0000 (GMT)
-Received: from [9.24.12.86] (unknown [9.24.12.86])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 14 Jan 2025 14:21:09 +0000 (GMT)
-Message-ID: <9404bb02-0dc9-4d44-a07f-4a81faaa63d6@linux.ibm.com>
-Date: Tue, 14 Jan 2025 08:21:08 -0600
+	s=arc-20240116; t=1736864906; c=relaxed/simple;
+	bh=oM7NzRJJN/8EUgwpdktZfnTOKbasx76P5FUuF4NtChg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iYCcYM/7YXc+4I2VYn9e8HPEIf0XaAFXfmR9mgyit24FzsGCtBlPZ+R12t4UV2ar91C7McNBFtPeh7fgYJ7NHaMDRbHAIPvqXojLI2JNePpG3mpJcAi72HP73KBtn/0+uHAelQeSQsAlTAo03lxQLnhH+nTdvsq1OiSjoiMcfCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4YXWf71wHfzrSLl;
+	Tue, 14 Jan 2025 22:26:39 +0800 (CST)
+Received: from kwepemg500017.china.huawei.com (unknown [7.202.181.81])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9B2EE1402C4;
+	Tue, 14 Jan 2025 22:28:19 +0800 (CST)
+Received: from huawei.com (10.175.127.227) by kwepemg500017.china.huawei.com
+ (7.202.181.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 14 Jan
+ 2025 22:28:18 +0800
+From: Li Lingfeng <lilingfeng3@huawei.com>
+To: <trondmy@kernel.org>, <anna@kernel.org>, <chuck.lever@oracle.com>,
+	<jlayton@kernel.org>, <neilb@suse.de>, <okorniev@redhat.com>,
+	<Dai.Ngo@oracle.com>, <tom@talpey.com>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>
+CC: <linux-nfs@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <yukuai1@huaweicloud.com>, <houtao1@huawei.com>,
+	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <lilingfeng@huaweicloud.com>,
+	<lilingfeng3@huawei.com>
+Subject: [PATCH] SUNRPC: Set tk_rpc_status when RPC_TASK_SIGNALLED is detected
+Date: Tue, 14 Jan 2025 22:41:01 +0800
+Message-ID: <20250114144101.2511043-1-lilingfeng3@huawei.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/10] bindings: ipmi: Add binding for IPMB device intf
-To: corey@minyard.net, Rob Herring <robh@kernel.org>
-Cc: minyard@acm.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, ratbert@faraday-tech.com,
-        openipmi-developer@lists.sourceforge.net, netdev@vger.kernel.org,
-        joel@jms.id.au, andrew@codeconstruct.com.au,
-        devicetree@vger.kernel.org, eajames@linux.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-References: <20250108163640.1374680-1-ninad@linux.ibm.com>
- <20250108163640.1374680-3-ninad@linux.ibm.com>
- <20250110160713.GA2952341-robh@kernel.org>
- <Z4Fejhd_qPfuVLiw@mail.minyard.net>
-Content-Language: en-US
-From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <Z4Fejhd_qPfuVLiw@mail.minyard.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: QqwJVM9EO3zAIwPZ75Cabrp2tcIwXDQZ
-X-Proofpoint-ORIG-GUID: ILtSGlFoh6SB1BgZa686W1TSIkYX-mNx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- suspectscore=0 malwarescore=0 bulkscore=0 clxscore=1015 phishscore=0
- priorityscore=1501 adultscore=0 impostorscore=0 spamscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501140112
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemg500017.china.huawei.com (7.202.181.81)
 
-Hello Cprey,
+Commit 39494194f93b("SUNRPC: Fix races with rpc_killall_tasks()") adds
+rpc_task_set_rpc_status before setting RPC_TASK_SIGNALLED in
+rpc_signal_task, ensuring that rpc_status is definitely set when
+RPC_TASK_SIGNALLED is set.
+Therefore, it seems unnecessary to set rpc_status again after detecting
+RPC_TASK_SIGNALLED in rpc_check_timeout.
 
-On 1/10/25 11:53, Corey Minyard wrote:
-> On Fri, Jan 10, 2025 at 10:07:13AM -0600, Rob Herring wrote:
->> On Wed, Jan 08, 2025 at 10:36:30AM -0600, Ninad Palsule wrote:
->>> Add device tree binding document for the IPMB device interface.
->>> This device is already in use in both driver and .dts files.
->>>
->>> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
->>> ---
->>>   .../devicetree/bindings/ipmi/ipmb-dev.yaml    | 44 +++++++++++++++++++
->>>   1 file changed, 44 insertions(+)
->>>   create mode 100644 Documentation/devicetree/bindings/ipmi/ipmb-dev.yaml
->>>
->>> diff --git a/Documentation/devicetree/bindings/ipmi/ipmb-dev.yaml b/Documentation/devicetree/bindings/ipmi/ipmb-dev.yaml
->>> new file mode 100644
->>> index 000000000000..a8f46f1b883e
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/ipmi/ipmb-dev.yaml
->>> @@ -0,0 +1,44 @@
->>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->>> +%YAML 1.2
->>> +---
->>> +$id: http://devicetree.org/schemas/ipmi/ipmb-dev.yaml#
->>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>> +
->>> +title: IPMB Device
->>> +
->>> +description: IPMB Device interface to receive request and send response
-> First, thank you, this does need to be documented.
->
->> IPMB is not defined anywhere.
-> Indeed.  At least reference the spec, but better do that and provide a
-> basic description.
->
->> Which side of the interface does this apply to? How do I know if I have
->> an ipmb-dev?
->>
->> This document needs to stand on its own. Bindings exist in a standalone
->> tree without kernel drivers or docs.
-> At least to someone who knows what IPMB is, it's pretty clear that you
-> are saying "The i2c device this node is in is on an IPMB bus." However,
-> to someone who is not, this is all a foreign language.  This definitely
-> needs better documentation.
->
-> Why do you have a "reg" property?  I don't see it referenced in the
-> driver.  I assume that's the I2C address, but that's going to be the
-> same as what's in the containing I2C node.  I don't think it's
-> necessary.
+However, in some exceptional cases, invalid and endlessly looping
+rpc_tasks may be generated. The rpc_call_rpcerror in rpc_check_timeout can
+timely terminate such rpc_tasks. Removing rpc_call_rpcerror may cause the
+rpc_task to fall into an infinite loop.
 
-Sorry forgot to answer this question. We are setting extra values for 
-reg for I2C slave.
+For example, in the following situation:
+nfs4_close_done
+ // get err from server
+ nfs4_async_handle_exception
+ // goto out_restart
+                            // umount -f
+                            nfs_umount_begin
+                             rpc_killall_tasks
+                              rpc_signal_task
+                               rpc_task_set_rpc_status
+                                task->tk_rpc_status = -ERESTARTSYS
+                                set_bit
+                                // set RPC_TASK_SIGNALLED to tk_runstate
+ rpc_restart_call_prepare
+  __rpc_restart_call
+   task->tk_rpc_status = 0
+   // clear tk_rpc_status
+  ...
+  rpc_prepare_task
+   nfs4_close_prepare
+    nfs4_setup_sequence
+     rpc_call_start
+      task->tk_action = call_start
 
-I am not sure how it is used in the driver.
+At this point, an rpc_task with RPC_TASK_SIGNALLED set but tk_rpc_status
+as 0 will be generated. This rpc_task will fall into the following loop:
+call_encode --> call_transmit --> call_transmit_status --> call_status
+--> call_encode.
 
-Regards,
+Since RPC_TASK_SIGNALLED is set, no request will be sent in call_transmit.
+Similarly, since RPC_TASK_SIGNALLED is set, rq_majortimeo will not be
+updated in call_status --> rpc_check_timeout, which will cause -ETIMEDOUT
+to be directly set to tk_status in call_transmit_status -->
+xprt_request_wait_receive --> xprt_wait_for_reply_request_def -->
+rpc_sleep_on_timeout --> __rpc_sleep_on_priority_timeout.
 
-Ninad
+Here is the state and loop process of the rpc_task:
+tk_runstate:
+RPC_TASK_RUNNING RPC_TASK_ACTIVE RPC_TASK_NEED_RECV RPC_TASK_SIGNALLED
+tk_xprt->state:
+XPRT_CONNECTED XPRT_BOUND
+tk_flags
+RPC_TASK_ASYNC RPC_TASK_MOVEABLE RPC_TASK_DYNAMIC RPC_TASK_SOFT
+RPC_TASK_NO_RETRANS_TIMEOUT RPC_TASK_CRED_NOREF
 
->
-> -corey
->
->>> +
->>> +maintainers:
->>> +  - Ninad Palsule <ninad@linux.ibm.com>
->>> +
->>> +properties:
->>> +  compatible:
->>> +    enum:
->>> +      - ipmb-dev
->>> +
->>> +  reg:
->>> +    maxItems: 1
->>> +
->>> +  i2c-protocol:
->>> +    description:
->>> +      Use I2C block transfer instead of SMBUS block transfer.
->>> +    type: boolean
->>> +
->>> +required:
->>> +  - compatible
->>> +  - reg
->>> +
->>> +additionalProperties: false
->>> +
->>> +examples:
->>> +  - |
->>> +    i2c {
->>> +        #address-cells = <1>;
->>> +        #size-cells = <0>;
->>> +
->>> +        ipmb-dev@10 {
->>> +            compatible = "ipmb-dev";
->>> +            reg = <0x10>;
->>> +            i2c-protocol;
->>> +        };
->>> +    };
->>> -- 
->>> 2.43.0
->>>
+call_encode
+ xprt_request_enqueue_transmit
+  set_bit // RPC_TASK_NEED_XMIT
+ task->tk_action = call_transmit
+
+call_transmit
+ task->tk_action = call_transmit_status
+ xprt_transmit
+  xprt_request_transmit
+   // check RPC_TASK_SIGNALLED and goto out_dequeue
+   xprt_request_dequeue_transmit
+    xprt_request_dequeue_transmit_locked
+     test_and_clear_bit // RPC_TASK_NEED_XMIT
+
+call_transmit_status
+ task->tk_action = call_status
+ xprt_request_wait_receive
+  xprt_wait_for_reply_request_def
+   xprt_request_timeout // get timeout
+    req->rq_majortimeo // rq_majortimeo will not be updated
+   rpc_sleep_on_timeout
+    __rpc_sleep_on_priority_timeout
+     task->tk_status = -ETIMEDOUT // set ETIMEDOUT
+
+call_status
+ task->tk_action = call_encode
+ rpc_check_timeout
+  // check RPC_TASK_SIGNALLED and skip xprt_reset_majortimeo
+
+Fix it by adding rpc_call_rpcerror back.
+
+Fixes: 39494194f93b ("SUNRPC: Fix races with rpc_killall_tasks()")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+---
+ net/sunrpc/clnt.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index 0090162ee8c3..0acdff19a37c 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -2509,8 +2509,10 @@ rpc_check_timeout(struct rpc_task *task)
+ {
+ 	struct rpc_clnt	*clnt = task->tk_client;
+ 
+-	if (RPC_SIGNALLED(task))
++	if (RPC_SIGNALLED(task)) {
++		rpc_call_rpcerror(task, -ERESTARTSYS);
+ 		return;
++	}
+ 
+ 	if (xprt_adjust_timeout(task->tk_rqstp) == 0)
+ 		return;
+-- 
+2.31.1
+
