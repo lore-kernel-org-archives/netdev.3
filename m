@@ -1,145 +1,103 @@
-Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9471720D50A;
-	Tue, 14 Jan 2025 20:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A9D8493
+	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 20:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736886553; cv=none; b=pDOx0c8ZbQxKjuNEf9psexCd9ObgcvOMP5Mos0e6Xd4oIGaKOCN2Rz78cCYlC1vWUkPxxou4LLYQQ3egSXMxt0/sGBsVP6GASXSll79LGKDZDx12Y0OXPNQrbsu+2DlR7YaorgY4FXsRWDS/dEay3vUBlcur7fPeP4klHMiwbmE=
+	t=1736888136; cv=none; b=rbQ0/Qx/dXuPsYBXYoRRak7i0BkawjOXlBXzeC9pIB9HqHaFWCBCqxHBc5FnWqL1JmgEfcI9QuaCxpJc2FtlQwMnqhmO6MJNuYlIquzzGzmcC6mDLf0NoRb34jw0Pd1m69WcrcdTydoSlsFZXQKeKVg1tl+XX4eRr9c6ksSdbVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736886553; c=relaxed/simple;
-	bh=M3sPUnOlMOUEjIyxNXS7N0GciZ/ZSrap+cHlJvyandE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EC+sR3PMYALVCPVgcvSggPP4YeWhbOMw1M/pR9AaTr3Wpdy6sBvrAPy8Qou2B2y3w5JU+Dajo/3kSIerG0IMWfkMcDr3KPjwt05fSKg7oOsXTspNfxhDGLEEpCQXawsbcM5YEy2+0DBhEwp6TvN0AgM0BaKvDyFJwayszCQGYcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dxuuu.xyz; spf=pass smtp.mailfrom=dxuuu.xyz; dkim=pass (2048-bit key) header.d=dxuuu.xyz header.i=@dxuuu.xyz header.b=F2iErM87; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dtGSZwuF; arc=none smtp.client-ip=202.12.124.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dxuuu.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dxuuu.xyz
+	s=arc-20240116; t=1736888136; c=relaxed/simple;
+	bh=KX3NtLSoeOmqoU8HSnDC/LBmYDxM5bH0yG8ECMwyuNA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=SyzbqISrJth0Dj3l2t6q4fqX+syNMZyQikcSumYGf5zRwuhUB/EqcHl8aNvF6ZbDsA8Jb4uVqUGRGrE1MqhetFfMiDs48v4AC8ocVmVDeMTGmCdBNEZeXh5led+BkNUjcN8X2Umi4J7XIK7v6orlTt8uKV430LYVnl/ATOZW2i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GJO+tqDY; arc=none smtp.client-ip=209.85.222.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dxuuu.xyz header.i=@dxuuu.xyz header.b="F2iErM87";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dtGSZwuF"
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailflow.stl.internal (Postfix) with ESMTP id 285311D40AD4;
-	Tue, 14 Jan 2025 15:29:10 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Tue, 14 Jan 2025 15:29:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dxuuu.xyz; h=cc
-	:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1736886550; x=
-	1736893750; bh=YxyPwDN5jF3WrYeLfnPg62rlODl4h0Cotdz5rtDrqTA=; b=F
-	2iErM87+ojy4AaRSDXpLJeiS9EocxjEFjkBTqf5bRZSPZPXTtAL26KtZJl+OJDoD
-	3w9ZgPNHfZhz/uzzUpK+oGN0Vof11egaXS8OEsvySdQtdygy4akfDTAAfhtKX93f
-	QkKDjgKp8ZrJzkPnMEX85ITo4tVkEDUYyIULYOdUTSn5QksGKqTv+HbszjySiPFu
-	WwEEXsw1MFCbJK+vMklqZkvO9FAqwY0wR2kNFetAhz0Py4WMvdHcxbVxGBH3Zv07
-	ybTm0sSLj+snLN/XFXW8smw3dyizwr/wjxoSPFBUCEOy3m20bbtFGhDGfHrkOC/r
-	js2EizrsMbcSoin69DFIg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1736886550; x=1736893750; bh=Y
-	xyPwDN5jF3WrYeLfnPg62rlODl4h0Cotdz5rtDrqTA=; b=dtGSZwuFpXaRsDDbK
-	CNksfSaz5FfyCg99LTf4LqnIJBAL1GFvW4gOXRqGAdetto09bDowKghV9X/TgZlh
-	8xOc00LJ2dqHqZmvty9lZY56QID/+pDQ1ZrTjshU84M5kJPsAvJ8maHTVYs5iCO9
-	SnoUCGxsWCELb784F+MPs2UtMh4L9nKdWjZBKIHCGFVHbVl4BGJ3BHKKxu7LLlWa
-	EyxmLAvTBwglenh8MPPh/hw+wfO84OMAOvWl3lJgtWAKsr8r2k7ts1e6UzVbF4Yk
-	A/ETcBZN+Zhl/mCjAiE9/YcPdaGAVWgtQaO36fT030tude12gCfVyaPjYAIXYAau
-	yXr6A==
-X-ME-Sender: <xms:FcmGZ3zSNt8-IRUzsZhzDgzbOmU5O4706V4NqFosCtJQVL7YoOmmbA>
-    <xme:FcmGZ_QiuSUVSlBzfXyZv-4cMIy2a-cgtLmRg6drBUsZYCkrSoPWqTZ_ONCuUuw0a
-    hNdBNmgpAYtDTedug>
-X-ME-Received: <xmr:FcmGZxVyiy0wk0KHl_x5AwuoW5SBNC_nlogFVvMpnWVa_uVCtT6UePOzNLElP-vjs307wbP3X9QYm4-E153oOkBwrR9nLhL-Gu8VB9Z7_nTP7VeGWTWa>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehiedgudefjecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenfghrlhcuvffnffculdejtddmnecujfgurhephffvvefufffk
-    ofgjfhgggfestdekredtredttdenucfhrhhomhepffgrnhhivghlucgiuhcuoegugihuse
-    gugihuuhhurdighiiiqeenucggtffrrghtthgvrhhnpefgfefggeejhfduieekvdeuteff
-    leeifeeuvdfhheejleejjeekgfffgefhtddtteenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpegugihusegugihuuhhurdighiiipdhnsggprhgt
-    phhtthhopedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuggrvhgvmhesug
-    grvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgv
-    rdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtth
-    hopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghstheskhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtohepmhgrrhhtihhnrdhlrghusehlihhnuhigrdguvghvpdhrtg
-    hpthhtohepmhgvmhigohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggrnhhivghl
-    sehiohhgvggrrhgsohigrdhnvghtpdhrtghpthhtoheprghnughrihhisehkvghrnhgvlh
-    drohhrgh
-X-ME-Proxy: <xmx:FcmGZxjdHVNpRR74YfMsPNvn86QcnnUAEbsQIKg2AE4ifPSdBVCUcA>
-    <xmx:FcmGZ5B3vhZGB_WX5EzmDcxduhMjD1UGAREDRToHuFcE1W24xEkiiQ>
-    <xmx:FcmGZ6LkKmigffSTzq-xAUih4-H1i_-m19MRWzlIvakxmaReGtrPgA>
-    <xmx:FcmGZ4B2opdmX_5J9WgSXJtWAqNx5FaO3xjLD_vGG_GZlhgi60TA6g>
-    <xmx:FcmGZ4UPJMZe3ZjIWR660X65DIfWK-SVnnXf3X_h92EqztsdLwq-b1A5>
-Feedback-ID: i6a694271:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Jan 2025 15:29:07 -0500 (EST)
-From: Daniel Xu <dxu@dxuuu.xyz>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	ast@kernel.org,
-	martin.lau@linux.dev,
-	memxor@gmail.com,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com
-Cc: john.fastabend@gmail.com,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	kpsingh@kernel.org,
-	sdf@fomichev.me,
-	haoluo@google.com,
-	jolsa@kernel.org,
-	horms@kernel.org,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Martin KaFai Lau <martin.lau@kernel.org>
-Subject: [PATCH bpf-next v7 2/5] bpf: tcp: Mark bpf_load_hdr_opt() arg2 as read-write
-Date: Tue, 14 Jan 2025 13:28:43 -0700
-Message-ID: <730e45f8c39be2a5f3d8c4406cceca9d574cbf14.1736886479.git.dxu@dxuuu.xyz>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1736886479.git.dxu@dxuuu.xyz>
-References: <cover.1736886479.git.dxu@dxuuu.xyz>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GJO+tqDY"
+Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-7b6e1b036e9so574410285a.1
+        for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 12:55:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1736888133; x=1737492933; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=PIcaoj1b/M8RTWFI+8LrXUSw6foRHqsYs1+F+EdLI/w=;
+        b=GJO+tqDYOtwczSOM7UOhe83yukfDwLP4uS7BawbD6jFkXvlKclwpsyDEGQ3BIqpWxG
+         E0sFrGD2ECCamwyv3UY197NDpQWlf4k0c18aP0VCTZTEUZU6QSYzdw2H/mS3UBvTR6lO
+         gaRw+N+uD3SVEzieLrgOblPZJUNasMFdv8YuoMzMli0SV9VY11YyTgczW8Y3aD63qs/i
+         FeA80c+yl2DGjBMFE4K6mFwTqNtPMF4qIIiqsgsnK8Uq9twPcxHpL7k8kQfYbyqfiZXl
+         aN5tT2nYj9QLpMG16ZUXolSJvjn7cQ/Mi1piWUNPRJCE3/8O+bGEs4Qrc3vvvgw+uzWn
+         xGIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736888133; x=1737492933;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PIcaoj1b/M8RTWFI+8LrXUSw6foRHqsYs1+F+EdLI/w=;
+        b=UQ3z3HI/x3x281+lF/XeUWbs0MMjt0Hg8epncdmt44RVLKFpt4SwLyVovAp3mKYVAv
+         facFAlnRZ5ptUDglQDhV1bGYsL1Pcm4ZHwbWfQS7wAbB+SD5sgqosCJABMT8I+yyoKAy
+         maxkR/GrEaf7cPPixViqmXoVfoGXF6/gCPDk8GQGK86X3b22dXSqay9TAIz2JfPpPbh5
+         qP8CZIAaXcMRQfb89Q5Guk96gGc7e95Oe4C9SUzl0bbVw7Kzj88rE6T5G++abis+40W2
+         hVBEyN5d84wdAOgiYhP78PRg42mp2WozFcbSpvq0XnOYDfA0uK2BAvTnbXiqJKIohI73
+         wrhw==
+X-Gm-Message-State: AOJu0YwpnZQUQlFWcvVaFJxOvRTgV1mvVJUFNXZA94Aiu86pDfk+5qy6
+	ZZidQq2ERaswbT33LRvmuEyBpwNQmZCylPBpbiDydCPeRrbUa5fegyf0yuFvGBgSVa4A6NTFNeW
+	PPib8lHUl4A==
+X-Google-Smtp-Source: AGHT+IG/iobBx6KARzmXuTrLdOMNN5/KcgJ6DJXwZOjsX54hrIC5WZFQ0yzykimimG/xncEr7dZbKV/KtlZPZA==
+X-Received: from qknyf6.prod.google.com ([2002:a05:620a:3bc6:b0:7be:3b14:3089])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:3723:b0:7b1:549b:b992 with SMTP id af79cd13be357-7bcd970aa94mr4208688685a.23.1736888133412;
+ Tue, 14 Jan 2025 12:55:33 -0800 (PST)
+Date: Tue, 14 Jan 2025 20:55:26 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.0.rc2.279.g1de40edade-goog
+Message-ID: <20250114205531.967841-1-edumazet@google.com>
+Subject: [PATCH v3 net-next 0/5] net: reduce RTNL pressure in unregister_netdevice()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, Simon Horman <horms@kernel.org>, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-MEM_WRITE attribute is defined as: "Non-presence of MEM_WRITE means that
-MEM is only being read". bpf_load_hdr_opt() both reads and writes from
-its arg2 - void *search_res.
+One major source of RTNL contention resides in unregister_netdevice()
 
-This matters a lot for the next commit where we more precisely track
-stack accesses. Without this annotation, the verifier will make false
-assumptions about the contents of memory written to by helpers and
-possibly prune valid branches.
+Due to RCU protection of various network structures, and
+unregister_netdevice() being a synchronous function,
+it is calling potentially slow functions while holding RTNL.
 
-Fixes: 6fad274f06f0 ("bpf: Add MEM_WRITE attribute")
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
----
- net/core/filter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I think we can release RTNL in two points, so that three
+slow functions are called while RTNL can be used
+by other threads.
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 21131ec25f24..713d6f454df3 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -7643,7 +7643,7 @@ static const struct bpf_func_proto bpf_sock_ops_load_hdr_opt_proto = {
- 	.gpl_only	= false,
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_PTR_TO_CTX,
--	.arg2_type	= ARG_PTR_TO_MEM,
-+	.arg2_type	= ARG_PTR_TO_MEM | MEM_WRITE,
- 	.arg3_type	= ARG_CONST_SIZE,
- 	.arg4_type	= ARG_ANYTHING,
- };
+v3: Deal with CONFIG_NET_NS=n
+    Use net_todo_list_for_cleanup_net in third patch.
+    Split the last patch in two parts for future bisections.
+
+v2: Only temporarily release RTNL from cleanup_net()
+
+v1: https://lore.kernel.org/netdev/20250107130906.098fc8d6@kernel.org/T/#m398c95f5778e1ff70938e079d3c4c43c050ad2a6
+
+
+
+Eric Dumazet (5):
+  net: expedite synchronize_net() for cleanup_net()
+  net: no longer assume RTNL is held in flush_all_backlogs()
+  net: no longer hold RTNL while calling flush_all_backlogs()
+  net: reduce RTNL hold duration in unregister_netdevice_many_notify()
+    (part 1)
+  net: reduce RTNL hold duration in unregister_netdevice_many_notify()
+    (part 2)
+
+ include/net/net_namespace.h |  2 +
+ net/core/dev.c              | 97 ++++++++++++++++++++++++++++---------
+ net/core/net_namespace.c    |  5 ++
+ 3 files changed, 82 insertions(+), 22 deletions(-)
+
 -- 
-2.47.1
+2.48.0.rc2.279.g1de40edade-goog
 
