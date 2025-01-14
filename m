@@ -1,68 +1,68 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2082.outbound.protection.outlook.com [40.107.243.82])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2071.outbound.protection.outlook.com [40.107.94.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675042361C5
-	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 13:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279AE234D0D
+	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 13:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736860254; cv=fail; b=BHnZCjFsh1kNf3b0WV8CIGT9NVh6Mb83wGMRDvamuf96PuhBLFwflpL199dPU16pVJpyoPsm+fzhit1gAu8e8cacKW5fB3qNx6wdThhnqdls29aK3x3o9suOKL4Oo1cLJlRkRn6fLf5sXPdxDicjYyEB/SAHCxYLX77kxtymEZU=
+	t=1736860256; cv=fail; b=qFmyw5y9z2oqGyTUZ5OmbdtGsmyy2ruBFiZ3WQVsVMyBzO7xI/2x4Wp3LX86rvWjDv3OWQT8VNdp5epDVAJ5UA0dAAdb1030bGuXMPcr1XC5xaIloE75rMQpg15Dbw8uvjYY2hnl8YASk+DznC+7iB67NefaObD2VcXS2MR3owE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736860254; c=relaxed/simple;
-	bh=T7mfNfhzkwWpGy/37BuXWdjBsETUZB1QFHYVeD0MANc=;
+	s=arc-20240116; t=1736860256; c=relaxed/simple;
+	bh=R+yAUiHxcysZg38LvXN1QyUSLzI8rXPCFirUC325/Z8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jWOoLQ3l9nQod2IaL0jrxcX7zqmdTVYU75lEoOzO5lrD+XTROmb515sg9OxiOaCB0xSs4tTa8/yvErH7B+kfbo0r8ayhi8khYsKKHhAPHXeegXUmMUsy+v9p+DxaaatKW9yxuJ0KRvB13151+sL/K4mQynzzLrI24YgJBsVla0s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DmNCOsKU; arc=fail smtp.client-ip=40.107.243.82
+	 MIME-Version:Content-Type; b=pgvZQrveSW/XGg7iNC9IapiOn8BhSjWK3IZx5KxEnUE/2GnoaSzKEUSnh2Hgw1Ay3JRVrT8iCZNqwFJSceV1gRY2RBxXjcjl2nklgX0zPPcvvZxBjj7fP5+3jJr4Km/3KmzEmyqN1hnu075ZxSILswQtnTOxly9B/xevVhBS8Co=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hwbmYMNj; arc=fail smtp.client-ip=40.107.94.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DmNCOsKU"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hwbmYMNj"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wSaPYHVGs6R7tgV+dtOhI3mMn8Qsei/cFXMUgs2M8HcZPt7CHqT8Jc5LibOxKOvTnw6/sFbQLEkPJGGhuJyy7gNyjrZhHNGlwVo0bEMgdKHaFvf4erxqO5Wz5c0o3d7dOqFbBCUf7sdV29mpoXcYqukZQU41nxcqN9XSq7iN+RQV2KQx2i8HkIv1CsLULKUuL5e5EUS9XCc9ZgnxL6mT067KnpaPpSvwPM+itb1R9gUukMZfMy30opX1Ky5IDb77vP5rHnA1J5GmdioOZ+CsVUQhsmqKgUZpWy1K4kVxE2ACbBtSiOmYCq08Uu7ygLOyOG+GiQTfRGpm3YTpuptG7w==
+ b=nNSSm6D4xKKeE0bsZs9KcGKHO8mQwVAQtD7DnL/Mlg/lG0mAZj9WnW4p3qYieAn7sjFRKxQghfScXIrl+QHq14RR0vTEM73dYQnDSmIqX545/4GnIMVsxOXWl4aYQxfG9NxxyRpZOlBtA985SZ10HV3cUTqK/guqNOBO2P7ZgtlQsSdksJxWXdXWFqPlORZ162z1tBkkacgqBmQte/B2ktB60qU2dGEaSSX427hr/2aMKrPCcO6RYnMklf71dsmbkXHpzCwQM477w+gRE/IRGnWVve/UR+z3RFzEayBB1eFCBrXdoBnBaiwhIdEO8o72YbUrzMu81zL6O5bh+sQQHg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w3lE9BQY1JtSq2Z9hW0aAJblhBkRi5To4hGKEFUAa84=;
- b=JyUpedNyy+ezKH7iYPSqjhxefM9j2MYOdlUcX70RbIzH6sUp4UIAe3K5O0mRUJVtjvjCf1qBdUfXjWYkKkZKb/8zrJT0zm75VrEVAAVZdf3F7d233ICMvl/FPrsfStkVrJqGtxJ33wvrkReZyiS6H1RXgqoOyqts1tMQ4N5md6504jgXJboAdryqJJ1WkqWXb8qVBfL67S6f9VaTZ0XxrjgVJbm/THJKG9AeJiB1JPr6vVAyZgWoUhwKao6ZCT/OHhSoN0BD5egSUM77Cmw2MDgZIa/GKeNiiCRxtxJeI4jA8sR5ovAuX3Dq6L7wtBcH8+mFAMQj2Idu6P2AlqPxbg==
+ bh=/YI7JuMTlf5m4y9WpeNmQJ5YBg3jRqCs5XDJJn1t89s=;
+ b=YKIULmB7JTJkCgmJGbShg4v3aB1BXa8x1ScHKyK5wo0HIl2OQ0w0aDjQ5j72JK9gCxNLSDgI3MgL7iomMKNW8mqS7LQ07IG56JIt6hIrVDkYOlpepdjVxHQFuZ98BJRIdF0CSLEwMP+l+g1f9HqFMFsBJ3W7F9ssP4Pzr6x0E1CuavwuZrkh+VniTptUt3ZhAIeR67sEnQNuCagD1LwH4UF7hYJ7FJkRfretEqz5dVZauUoza/ffE3VUGuBxCZKFdUEayrf1hgYwOp394RH42D/RcxKmRFGQY0VlfHRQe4KfbrgSS3W0md29OoA55jHG2VMpb6rYVulM3zbYrWTnBQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w3lE9BQY1JtSq2Z9hW0aAJblhBkRi5To4hGKEFUAa84=;
- b=DmNCOsKUxVkEZkkxq4i2aGIWqZ5+xYrK94/Yx3gHK1W3tXNMXOCL/bs6B5pGntpybmF8KHoggPL0Oythb/u/k38CdlYM3QzTzmuCORdTcsjpX8KUd4DmdmSgl5vLQDIFfqt0xO233IOYxWhMQPiFLH7eEQCS3a6plN4xvx4JwFY87+AeEEGT5gKYk77JOPfPD0GvN1pLbhjAtORx8GCVRlRjorprjv+BOcrudOwYqp/8ctDe+ms84pXk73gbu50z04V5fxfk8JtrDQvxdy7N4HvnQnfM5k5g/tf0YHXGjkOnsBRrJLOF4mGAg+QlcVVGYcHvDQiAtGbQMCIylklJAQ==
-Received: from PH7P221CA0059.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:33c::29)
- by DM4PR12MB8499.namprd12.prod.outlook.com (2603:10b6:8:181::10) with
+ bh=/YI7JuMTlf5m4y9WpeNmQJ5YBg3jRqCs5XDJJn1t89s=;
+ b=hwbmYMNjFEJrDC/ZuuLGKHfx3ezzBhLa3ZDVD+56iUBwnnJwy71EupWBpMaOyceIbh2vhCyPQ5MoUFOSCj/BImi+/WXioT9ZBC4d5TJRaZDEI6FijJA0SCZy+MTnw8Dt0PoX+4vbzp3LLxoKsphQGc/r0/8szGfGYJHZXYixAtAtq30fPnH5eFWbiiLcMlUW/DB+DRVeAnmD36iHXcFqzm6kYHwTTJ1khnXzYa+TUY96rYqiqVR8kxhdO9v6VFFN58KWkUQohqIWr3euq+JrA2z/PFcm6GJvrMOU+8m+Kr8+xwnF+G7OUA3g/lrYLEvijEMZLBPVfBhd+dwt3lxFuQ==
+Received: from MW2PR2101CA0031.namprd21.prod.outlook.com (2603:10b6:302:1::44)
+ by PH7PR12MB6538.namprd12.prod.outlook.com (2603:10b6:510:1f1::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Tue, 14 Jan
- 2025 13:10:49 +0000
-Received: from MWH0EPF000A6734.namprd04.prod.outlook.com
- (2603:10b6:510:33c:cafe::8) by PH7P221CA0059.outlook.office365.com
- (2603:10b6:510:33c::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8335.18 via Frontend Transport; Tue,
- 14 Jan 2025 13:10:48 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Tue, 14 Jan
+ 2025 13:10:50 +0000
+Received: from SJ1PEPF00001CE1.namprd05.prod.outlook.com
+ (2603:10b6:302:1:cafe::1f) by MW2PR2101CA0031.outlook.office365.com
+ (2603:10b6:302:1::44) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.13 via Frontend Transport; Tue,
+ 14 Jan 2025 13:10:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- MWH0EPF000A6734.mail.protection.outlook.com (10.167.249.26) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ1PEPF00001CE1.mail.protection.outlook.com (10.167.242.9) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8356.11 via Frontend Transport; Tue, 14 Jan 2025 13:10:48 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.8356.11 via Frontend Transport; Tue, 14 Jan 2025 13:10:50 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 14 Jan
- 2025 05:10:28 -0800
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ 2025 05:10:36 -0800
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 14 Jan
- 2025 05:10:27 -0800
+ 2025 05:10:36 -0800
 Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.6)
  with Microsoft SMTP Server id 15.2.1544.4 via Frontend Transport; Tue, 14 Jan
- 2025 05:10:24 -0800
+ 2025 05:10:32 -0800
 From: Tariq Toukan <tariqt@nvidia.com>
 To: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, "Andrew
@@ -70,10 +70,11 @@ To: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
 CC: <netdev@vger.kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, Gal Pressman
 	<gal@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>, Mark Bloch
 	<mbloch@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, Yevgeny Kliteynik
-	<kliteyn@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
-Subject: [PATCH net-next 1/4] net/mlx5: HWS, rework the check if matcher size can be increased
-Date: Tue, 14 Jan 2025 15:06:43 +0200
-Message-ID: <20250114130646.1937192-2-tariqt@nvidia.com>
+	<kliteyn@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>, Jianbo Liu
+	<jianbol@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
+Subject: [PATCH net-next 3/4] net/mlx5e: CT: Make mlx5_ct_fs_smfs_ct_validate_flow_rule reusable
+Date: Tue, 14 Jan 2025 15:06:45 +0200
+Message-ID: <20250114130646.1937192-4-tariqt@nvidia.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20250114130646.1937192-1-tariqt@nvidia.com>
 References: <20250114130646.1937192-1-tariqt@nvidia.com>
@@ -88,140 +89,276 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: AnonymousSubmission
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A6734:EE_|DM4PR12MB8499:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4fbc9dd5-eb1d-4a05-70da-08dd349cdd02
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE1:EE_|PH7PR12MB6538:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8ca75e38-7822-40b5-dcef-08dd349cde2d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014;
+	BCL:0;ARA:13230040|1800799024|376014|36860700013|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?kKETkINQHyieXbn81+Fd4IjCyS4425bYclpAmW8CyE6EX3KE5mtKbHUjiWwI?=
- =?us-ascii?Q?s5U3LM0XTaxu4S2kRBJ2YuPd0fdczwiHFBaagLt1/sxLz2c278fnmIalPD5J?=
- =?us-ascii?Q?7VydcbsexnfgbiodMs+0ezexH77X3bIXNjZZJTYxqq15yI6HVrnIZDi0z5SX?=
- =?us-ascii?Q?kWei1HfsIpSYQo03N9U3IhdLZu7xC++kkHrtypj3AoggD5iZaeneGTS5tKCT?=
- =?us-ascii?Q?MpgNDTqesoLo3F8/Xpsi7vXyn/g78L0VSQNQ1BEUooaX0UUpRXP0u8U7A2y6?=
- =?us-ascii?Q?HyyAjeVc+NsLucK3lIxs8rUqmHe5RMA1skisexr0WhXHleDSAtBEv1Imh2XW?=
- =?us-ascii?Q?UpgFZQy5g2u+8X0DI8BksvXB9R+Mckqm+nL6YrLCwqovS5OntlXGkS+k+ldy?=
- =?us-ascii?Q?CSvN8MYxCN7J47zEwW7csFCRDwcc4pHlBEKiUDtJK13sohAbOelxo8FTq8XR?=
- =?us-ascii?Q?ibY9uU6vUPSxssoBaA4oh5mhrAEYINekfyB8CpiERedPTmhoZ2dY4R+Zg8uZ?=
- =?us-ascii?Q?zlvpTvISPE0ZkaD0B+/SliO9zBF9X9ELdeWljz3AVWEEYw+4O8nhGwQqIqiC?=
- =?us-ascii?Q?HSb94vkWMc3qtfZbxmBLTT/Dff8uoT6a7Uh7K8yppEiSZ03GK9wHdS2KLoMj?=
- =?us-ascii?Q?g8+KsIJmHWON954nmRB7MeHtzvpX4a6dah/xvmCKKhC6TPmfVmXqQ1/KYvfT?=
- =?us-ascii?Q?GFA25AHi4MHTDJ+6FSEVNdw5alkWBuCqFmZEiUAGvwq0cougknnPpE4x4dUM?=
- =?us-ascii?Q?hQj5hzJW0SIuvj92bLlXmlFpN2fB+iIYoLSaKEBgoeTumsrgOoAy4bGHiRsZ?=
- =?us-ascii?Q?TC8GFmu4mwDuQbFUI7o48GsjuINIlZiD5SK28AY9i6PuepyMK5lg6jonEDjX?=
- =?us-ascii?Q?60LYXFWAKVWOjT8hNgK2Q1XygFtADDgKE6pk+PUpzZqcRRRn5UjpLy8AyFLy?=
- =?us-ascii?Q?8hH3Fx3QL6M7FyCNCn4dtHf9mjerO7m/aCAPftFJoDEyGQPVKc195itAzJj8?=
- =?us-ascii?Q?B4S+5/EG55m1gTWE42qpRO3s3OVtTuUNlJ0vQuJyDeelPWEKVWXKLsQbE2j3?=
- =?us-ascii?Q?boKtzSWAzTecJU69WUlJ78v3WuINTJoyWm96c8gRct2TPRlOrw5Fri6QXgFm?=
- =?us-ascii?Q?4/Tj1UpybGbugs1WN21MsW3aQjW1t9FLHm3G7lnBtxwZ7SpnHDBF3OfmhBlI?=
- =?us-ascii?Q?RIymzWRYoon2sqyukJJkf5sBFoJFpy+u+bmZ9uxPCOAxiAoq4SMRDasxGnU4?=
- =?us-ascii?Q?kwnyC/ZhHjJr7uSslOyy3LrdoIC0MEW40siIVVsQZRZNvbAODI7+2Eug/6aa?=
- =?us-ascii?Q?9Wb6mIcJC9E/f9KukpQkzaZ4Fjs7H4Nhwh3OFeNdOGwY+3hQMxlXvtEY5kkd?=
- =?us-ascii?Q?EXnPDSu00m7TdpfglLBN9bIfDizY8L3P0Ix4G1zVhFtiLQJl+qh1YudpCEF0?=
- =?us-ascii?Q?LcCLK2NcCRFYgrHCT5muIJ87ZN3r3iqK7BUdC9UYCgumKxpfVH6J3lgJuxi1?=
- =?us-ascii?Q?2G2URUhKj6i29r4=3D?=
+	=?us-ascii?Q?URPsaBBf7PcdXksBdP6GEgrLd2ggb8g2Z8jdOvfM7HhbtUp8LiXq0LdEx/tV?=
+ =?us-ascii?Q?gvWl+QWD2DgWwOjKgGv3NEbk6nwBjCpP56VBAKSVFNLffPJqwZObUM7GrNqk?=
+ =?us-ascii?Q?9diB7XWG+RWK8sNDrTNJ59Bhy+qq2d9IkgcUiPgDMXtqEt3VgpoX0xY6OQ/l?=
+ =?us-ascii?Q?EgZchf8VZPVUyS7Y2F39Piixacwot4B9pitDP+rQqaqHb+HWzdL1WTV6ldcA?=
+ =?us-ascii?Q?VRct8mH+s7OXk00ifjbJRD8b3p+x8/UB63Fsf9YlSwWhJsD59L5nersm5ZMR?=
+ =?us-ascii?Q?RgeNppfyL74lh8ya16zWZIHiQHgzLANGgFSmsCOMCKaBbPVYze2Cg6Ms5FaX?=
+ =?us-ascii?Q?Rprsx43fhqK3sJFzzdzaDR96bmYHVqhtgxd6RQwSmGeDRzeUhjGu6jS5kChC?=
+ =?us-ascii?Q?1lQYu+vy4FFtpsu22qjcDEKhtbiLZP+h7lBC8opbH7DibRxDr7VsVjZ2AcCl?=
+ =?us-ascii?Q?5k0ZOjUg8qvxT5UNqaLlfoMw87ZGl1oR106VOzZIeYWswG0uxJPKtt7I4IkE?=
+ =?us-ascii?Q?GsUxAJ21OMTH1Q2fEC0RcoGcYneek5uVorlg/IO2SqD6YQLuBlTBs6xTYYK2?=
+ =?us-ascii?Q?1FqLq8q9jhJgIBB0iUs9A6v/oZvMJTcg01EUxvgnJHD1kRRTEX0slo7MEvRH?=
+ =?us-ascii?Q?62dooPyomgkzsmM461bu5xMHziZuaNeJTysPzT/FJQLnc3F65iQuU9HBvelT?=
+ =?us-ascii?Q?r4rSFN9oq+Ehkomg2g2aY7sxIdvovSa625ZJdtnyMr7FECbnRZFpx+VmxtGB?=
+ =?us-ascii?Q?hgX7bWfIOKLJXTLHliPyN32tNMxnjDK6wTdAlO+cQnJ1zAjK6eW5m9wxIdtz?=
+ =?us-ascii?Q?pkGwHJdWknHsqtAe0dcCPjO+P/g2ASYXkIStE3DGSWvnyvdmXSgtxdQTvM9A?=
+ =?us-ascii?Q?Cwx4apZ8eGfhjX25eAmoS55aCeRC9OJh22jspgKda8GGw6W0r5EwGYxbgTKq?=
+ =?us-ascii?Q?Gw5ZYrRLaMoiQZ4sYrJCNa9PdJUGS2V22EyFOPvi9ALeRbw0GVMgSNJF7HV1?=
+ =?us-ascii?Q?QlCKgbSz5INWC+ysgwSo4t69e0gEXuIC/fuBOkWIcTI8S3yH0ptMVTBzntF8?=
+ =?us-ascii?Q?pYCVVuCJSIm1VF6TqFyGz1AgVTkrSgi+n04J+nXKqHJI7BXJsou6ZhIXBPpO?=
+ =?us-ascii?Q?/oYb6+04jthhBQFWociONiOwjUaUyA/QKNQ+ZARF2EJoTmVC4R4OAJz2Sn1i?=
+ =?us-ascii?Q?eTTh5C5HtecxAeqNvCVxeXiSKUvpJrsgum/wysmbGQaWlyK1wcFpZ32XaZeX?=
+ =?us-ascii?Q?6WcO5SIRIDPmdGUofSurRV7iIYAc6wsOw7dGQa3gRhOGVTQQ5jCohfLLApYG?=
+ =?us-ascii?Q?rDXVsFS/OSQaPbffL9x7BF9GcI8sRAIK8+qSM6w+yAoH8N19H3+rlJBwT3Gr?=
+ =?us-ascii?Q?UXoTZoQS3F1iBkQBDlHXJMU6Lcn9+OllaY/xpp2eTZ1MRj8YP5vMxy69+S7G?=
+ =?us-ascii?Q?L1pz7g+wLqRJwJj5IhovuQ9iPfoZeMN4K0xjvcw1bZHdwMTrbaOC1kA2DInR?=
+ =?us-ascii?Q?kZSrBoqCufXY4eg=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 13:10:48.2383
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 13:10:50.3256
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4fbc9dd5-eb1d-4a05-70da-08dd349cdd02
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8ca75e38-7822-40b5-dcef-08dd349cde2d
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000A6734.namprd04.prod.outlook.com
+	SJ1PEPF00001CE1.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8499
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6538
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-When checking if the matcher size can be increased, check both
-match and action RTCs. Also, consider the increasing step - check
-that it won't cause the new matcher size to become unsupported.
+This function checks whether a flow_rule has the right flow dissector
+keys and masks used for a connection tracking flow offload. It is
+currently used locally by the tc_ct smfs module, but is about to be used
+from another place, so this commit moves it to a better place, renames
+it to mlx5e_tc_ct_is_valid_flow_rule and drops the unused fs argument.
 
-Additionally, since we're using '+ 1' for action RTC size yet
-again, define it as macro and use in all the required places.
-
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- .../mellanox/mlx5/core/steering/hws/bwc.c      | 18 ++++++++++++++++--
- .../mellanox/mlx5/core/steering/hws/matcher.c  |  6 ++++--
- .../mellanox/mlx5/core/steering/hws/matcher.h  |  5 +++++
- 3 files changed, 25 insertions(+), 4 deletions(-)
+ .../mellanox/mlx5/core/en/tc/ct_fs_smfs.c     | 75 +------------------
+ .../ethernet/mellanox/mlx5/core/en/tc_ct.c    | 71 ++++++++++++++++++
+ .../ethernet/mellanox/mlx5/core/en/tc_ct.h    | 10 +++
+ 3 files changed, 82 insertions(+), 74 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
-index a8d886e92144..3dbd4efa21a2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
-@@ -468,8 +468,22 @@ hws_bwc_matcher_size_maxed_out(struct mlx5hws_bwc_matcher *bwc_matcher)
- {
- 	struct mlx5hws_cmd_query_caps *caps = bwc_matcher->matcher->tbl->ctx->caps;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/ct_fs_smfs.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/ct_fs_smfs.c
+index 45737d039252..0c97c5899904 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/ct_fs_smfs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/ct_fs_smfs.c
+@@ -13,7 +13,6 @@
+ #define INIT_ERR_PREFIX "ct_fs_smfs init failed"
+ #define ct_dbg(fmt, args...)\
+ 	netdev_dbg(fs->netdev, "ct_fs_smfs debug: " fmt "\n", ##args)
+-#define MLX5_CT_TCP_FLAGS_MASK cpu_to_be16(be32_to_cpu(TCP_FLAG_RST | TCP_FLAG_FIN) >> 16)
  
--	return bwc_matcher->size_log + MLX5HWS_MATCHER_ASSURED_MAIN_TBL_DEPTH >=
--	       caps->ste_alloc_log_max - 1;
-+	/* check the match RTC size */
-+	if ((bwc_matcher->size_log +
-+	     MLX5HWS_MATCHER_ASSURED_MAIN_TBL_DEPTH +
-+	     MLX5HWS_BWC_MATCHER_SIZE_LOG_STEP) >
-+	    (caps->ste_alloc_log_max - 1))
-+		return true;
-+
-+	/* check the action RTC size */
-+	if ((bwc_matcher->size_log +
-+	     MLX5HWS_BWC_MATCHER_SIZE_LOG_STEP +
-+	     ilog2(roundup_pow_of_two(bwc_matcher->matcher->action_ste.max_stes)) +
-+	     MLX5HWS_MATCHER_ACTION_RTC_UPDATE_MULT) >
-+	    (caps->ste_alloc_log_max - 1))
-+		return true;
-+
-+	return false;
+ struct mlx5_ct_fs_smfs_matcher {
+ 	struct mlx5dr_matcher *dr_matcher;
+@@ -220,78 +219,6 @@ mlx5_ct_fs_smfs_destroy(struct mlx5_ct_fs *fs)
+ 	mlx5_smfs_action_destroy(fs_smfs->fwd_action);
  }
  
- static bool
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/matcher.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/matcher.c
-index 80157a29a076..b61864b32053 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/matcher.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/matcher.c
-@@ -289,7 +289,8 @@ static int hws_matcher_create_rtc(struct mlx5hws_matcher *matcher,
- 		 *     (2 to support writing new STEs for update rule))
- 		 */
- 		ste->order = ilog2(roundup_pow_of_two(action_ste->max_stes)) +
--			     attr->table.sz_row_log + 1;
-+			     attr->table.sz_row_log +
-+			     MLX5HWS_MATCHER_ACTION_RTC_UPDATE_MULT;
- 		rtc_attr.log_size = ste->order;
- 		rtc_attr.log_depth = 0;
- 		rtc_attr.update_index_mode = MLX5_IFC_RTC_STE_UPDATE_MODE_BY_OFFSET;
-@@ -561,7 +562,8 @@ static int hws_matcher_bind_at(struct mlx5hws_matcher *matcher)
- 	pool_attr.flags = MLX5HWS_POOL_FLAGS_FOR_STE_ACTION_POOL;
- 	/* Pool size is similar to action RTC size */
- 	pool_attr.alloc_log_sz = ilog2(roundup_pow_of_two(action_ste->max_stes)) +
--				 matcher->attr.table.sz_row_log + 1;
-+				 matcher->attr.table.sz_row_log +
-+				 MLX5HWS_MATCHER_ACTION_RTC_UPDATE_MULT;
- 	hws_matcher_set_pool_attr(&pool_attr, matcher);
- 	action_ste->pool = mlx5hws_pool_create(ctx, &pool_attr);
- 	if (!action_ste->pool) {
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/matcher.h b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/matcher.h
-index cff4ae854a79..020de70270c5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/matcher.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/matcher.h
-@@ -18,6 +18,11 @@
- /* Required depth of the main large table */
- #define MLX5HWS_MATCHER_ASSURED_MAIN_TBL_DEPTH 2
+-static inline bool
+-mlx5_tc_ct_valid_used_dissector_keys(const u64 used_keys)
+-{
+-#define DISS_BIT(name) BIT_ULL(FLOW_DISSECTOR_KEY_ ## name)
+-	const u64 basic_keys = DISS_BIT(BASIC) | DISS_BIT(CONTROL) |
+-				DISS_BIT(META);
+-	const u64 ipv4_tcp = basic_keys | DISS_BIT(IPV4_ADDRS) |
+-				DISS_BIT(PORTS) | DISS_BIT(TCP);
+-	const u64 ipv6_tcp = basic_keys | DISS_BIT(IPV6_ADDRS) |
+-				DISS_BIT(PORTS) | DISS_BIT(TCP);
+-	const u64 ipv4_udp = basic_keys | DISS_BIT(IPV4_ADDRS) |
+-				DISS_BIT(PORTS);
+-	const u64 ipv6_udp = basic_keys | DISS_BIT(IPV6_ADDRS) |
+-				 DISS_BIT(PORTS);
+-	const u64 ipv4_gre = basic_keys | DISS_BIT(IPV4_ADDRS);
+-	const u64 ipv6_gre = basic_keys | DISS_BIT(IPV6_ADDRS);
+-
+-	return (used_keys == ipv4_tcp || used_keys == ipv4_udp || used_keys == ipv6_tcp ||
+-		used_keys == ipv6_udp || used_keys == ipv4_gre || used_keys == ipv6_gre);
+-}
+-
+-static bool
+-mlx5_ct_fs_smfs_ct_validate_flow_rule(struct mlx5_ct_fs *fs, struct flow_rule *flow_rule)
+-{
+-	struct flow_match_ipv4_addrs ipv4_addrs;
+-	struct flow_match_ipv6_addrs ipv6_addrs;
+-	struct flow_match_control control;
+-	struct flow_match_basic basic;
+-	struct flow_match_ports ports;
+-	struct flow_match_tcp tcp;
+-
+-	if (!mlx5_tc_ct_valid_used_dissector_keys(flow_rule->match.dissector->used_keys)) {
+-		ct_dbg("rule uses unexpected dissectors (0x%016llx)",
+-		       flow_rule->match.dissector->used_keys);
+-		return false;
+-	}
+-
+-	flow_rule_match_basic(flow_rule, &basic);
+-	flow_rule_match_control(flow_rule, &control);
+-	flow_rule_match_ipv4_addrs(flow_rule, &ipv4_addrs);
+-	flow_rule_match_ipv6_addrs(flow_rule, &ipv6_addrs);
+-	if (basic.key->ip_proto != IPPROTO_GRE)
+-		flow_rule_match_ports(flow_rule, &ports);
+-	if (basic.key->ip_proto == IPPROTO_TCP)
+-		flow_rule_match_tcp(flow_rule, &tcp);
+-
+-	if (basic.mask->n_proto != htons(0xFFFF) ||
+-	    (basic.key->n_proto != htons(ETH_P_IP) && basic.key->n_proto != htons(ETH_P_IPV6)) ||
+-	    basic.mask->ip_proto != 0xFF ||
+-	    (basic.key->ip_proto != IPPROTO_UDP && basic.key->ip_proto != IPPROTO_TCP &&
+-	     basic.key->ip_proto != IPPROTO_GRE)) {
+-		ct_dbg("rule uses unexpected basic match (n_proto 0x%04x/0x%04x, ip_proto 0x%02x/0x%02x)",
+-		       ntohs(basic.key->n_proto), ntohs(basic.mask->n_proto),
+-		       basic.key->ip_proto, basic.mask->ip_proto);
+-		return false;
+-	}
+-
+-	if (basic.key->ip_proto != IPPROTO_GRE &&
+-	    (ports.mask->src != htons(0xFFFF) || ports.mask->dst != htons(0xFFFF))) {
+-		ct_dbg("rule uses ports match (src 0x%04x, dst 0x%04x)",
+-		       ports.mask->src, ports.mask->dst);
+-		return false;
+-	}
+-
+-	if (basic.key->ip_proto == IPPROTO_TCP && tcp.mask->flags != MLX5_CT_TCP_FLAGS_MASK) {
+-		ct_dbg("rule uses unexpected tcp match (flags 0x%02x)", tcp.mask->flags);
+-		return false;
+-	}
+-
+-	return true;
+-}
+-
+ static struct mlx5_ct_fs_rule *
+ mlx5_ct_fs_smfs_ct_rule_add(struct mlx5_ct_fs *fs, struct mlx5_flow_spec *spec,
+ 			    struct mlx5_flow_attr *attr, struct flow_rule *flow_rule)
+@@ -304,7 +231,7 @@ mlx5_ct_fs_smfs_ct_rule_add(struct mlx5_ct_fs *fs, struct mlx5_flow_spec *spec,
+ 	int num_actions = 0, err;
+ 	bool nat, tcp, ipv4, gre;
  
-+/* Action RTC size multiplier that is required in order
-+ * to support rule update for rules with action STEs.
-+ */
-+#define MLX5HWS_MATCHER_ACTION_RTC_UPDATE_MULT 1
+-	if (!mlx5_ct_fs_smfs_ct_validate_flow_rule(fs, flow_rule))
++	if (!mlx5e_tc_ct_is_valid_flow_rule(fs->netdev, flow_rule))
+ 		return ERR_PTR(-EOPNOTSUPP);
+ 
+ 	smfs_rule = kzalloc(sizeof(*smfs_rule), GFP_KERNEL);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
+index fec008c540f3..a065e8fafb1d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
+@@ -2430,3 +2430,74 @@ mlx5e_tc_ct_restore_flow(struct mlx5_tc_ct_priv *ct_priv,
+ 	atomic_inc(&ct_priv->debugfs.stats.rx_dropped);
+ 	return false;
+ }
 +
- enum mlx5hws_matcher_offset {
- 	MLX5HWS_MATCHER_OFFSET_TAG_DW1 = 12,
- 	MLX5HWS_MATCHER_OFFSET_TAG_DW0 = 13,
++static bool mlx5e_tc_ct_valid_used_dissector_keys(const u64 used_keys)
++{
++#define DISS_BIT(name) BIT_ULL(FLOW_DISSECTOR_KEY_ ## name)
++	const u64 basic_keys = DISS_BIT(BASIC) | DISS_BIT(CONTROL) |
++				DISS_BIT(META);
++	const u64 ipv4_tcp = basic_keys | DISS_BIT(IPV4_ADDRS) |
++				DISS_BIT(PORTS) | DISS_BIT(TCP);
++	const u64 ipv6_tcp = basic_keys | DISS_BIT(IPV6_ADDRS) |
++				DISS_BIT(PORTS) | DISS_BIT(TCP);
++	const u64 ipv4_udp = basic_keys | DISS_BIT(IPV4_ADDRS) |
++				DISS_BIT(PORTS);
++	const u64 ipv6_udp = basic_keys | DISS_BIT(IPV6_ADDRS) |
++				 DISS_BIT(PORTS);
++	const u64 ipv4_gre = basic_keys | DISS_BIT(IPV4_ADDRS);
++	const u64 ipv6_gre = basic_keys | DISS_BIT(IPV6_ADDRS);
++
++	return (used_keys == ipv4_tcp || used_keys == ipv4_udp || used_keys == ipv6_tcp ||
++		used_keys == ipv6_udp || used_keys == ipv4_gre || used_keys == ipv6_gre);
++}
++
++bool mlx5e_tc_ct_is_valid_flow_rule(const struct net_device *dev, struct flow_rule *flow_rule)
++{
++	struct flow_match_ipv4_addrs ipv4_addrs;
++	struct flow_match_ipv6_addrs ipv6_addrs;
++	struct flow_match_control control;
++	struct flow_match_basic basic;
++	struct flow_match_ports ports;
++	struct flow_match_tcp tcp;
++
++	if (!mlx5e_tc_ct_valid_used_dissector_keys(flow_rule->match.dissector->used_keys)) {
++		netdev_dbg(dev, "ct_debug: rule uses unexpected dissectors (0x%016llx)",
++			   flow_rule->match.dissector->used_keys);
++		return false;
++	}
++
++	flow_rule_match_basic(flow_rule, &basic);
++	flow_rule_match_control(flow_rule, &control);
++	flow_rule_match_ipv4_addrs(flow_rule, &ipv4_addrs);
++	flow_rule_match_ipv6_addrs(flow_rule, &ipv6_addrs);
++	if (basic.key->ip_proto != IPPROTO_GRE)
++		flow_rule_match_ports(flow_rule, &ports);
++	if (basic.key->ip_proto == IPPROTO_TCP)
++		flow_rule_match_tcp(flow_rule, &tcp);
++
++	if (basic.mask->n_proto != htons(0xFFFF) ||
++	    (basic.key->n_proto != htons(ETH_P_IP) && basic.key->n_proto != htons(ETH_P_IPV6)) ||
++	    basic.mask->ip_proto != 0xFF ||
++	    (basic.key->ip_proto != IPPROTO_UDP && basic.key->ip_proto != IPPROTO_TCP &&
++	     basic.key->ip_proto != IPPROTO_GRE)) {
++		netdev_dbg(dev, "ct_debug: rule uses unexpected basic match (n_proto 0x%04x/0x%04x, ip_proto 0x%02x/0x%02x)",
++			   ntohs(basic.key->n_proto), ntohs(basic.mask->n_proto),
++			   basic.key->ip_proto, basic.mask->ip_proto);
++		return false;
++	}
++
++	if (basic.key->ip_proto != IPPROTO_GRE &&
++	    (ports.mask->src != htons(0xFFFF) || ports.mask->dst != htons(0xFFFF))) {
++		netdev_dbg(dev, "ct_debug: rule uses ports match (src 0x%04x, dst 0x%04x)",
++			   ports.mask->src, ports.mask->dst);
++		return false;
++	}
++
++	if (basic.key->ip_proto == IPPROTO_TCP && tcp.mask->flags != MLX5_CT_TCP_FLAGS_MASK) {
++		netdev_dbg(dev, "ct_debug: rule uses unexpected tcp match (flags 0x%02x)",
++			   tcp.mask->flags);
++		return false;
++	}
++
++	return true;
++}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.h b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.h
+index b66c5f98067f..5e9dbdd4a5e9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.h
+@@ -128,6 +128,9 @@ bool
+ mlx5e_tc_ct_restore_flow(struct mlx5_tc_ct_priv *ct_priv,
+ 			 struct sk_buff *skb, u8 zone_restore_id);
+ 
++#define MLX5_CT_TCP_FLAGS_MASK cpu_to_be16(be32_to_cpu(TCP_FLAG_RST | TCP_FLAG_FIN) >> 16)
++bool mlx5e_tc_ct_is_valid_flow_rule(const struct net_device *dev, struct flow_rule *flow_rule);
++
+ #else /* CONFIG_MLX5_TC_CT */
+ 
+ static inline struct mlx5_tc_ct_priv *
+@@ -202,5 +205,12 @@ mlx5e_tc_ct_restore_flow(struct mlx5_tc_ct_priv *ct_priv,
+ 	return false;
+ }
+ 
++static inline bool
++mlx5e_tc_ct_is_valid_flow_rule(const struct net_device *dev,
++			       struct flow_rule *flow_rule)
++{
++	return false;
++}
++
+ #endif /* !IS_ENABLED(CONFIG_MLX5_TC_CT) */
+ #endif /* __MLX5_EN_TC_CT_H__ */
 -- 
 2.45.0
 
