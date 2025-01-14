@@ -1,83 +1,69 @@
-Received: from violet.fr.zoreil.com (violet.fr.zoreil.com [92.243.8.30])
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFB7215798
-	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 23:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.243.8.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EDA215798
+	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 23:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736895690; cv=none; b=KrcQWWvISnXELvwXW9tH3bqNykq6B9UywYOHJ2ld7AMdXBvxvuoJDDpxPgqhHQt1DrK8CriReOS2Lxvl6qxVz9hFr7UIGADF1W+RnlKnpqhL8uRHUN1BXAa9oaFavCsf0vQOz5SkqQPfvjTKGJ51lOzSzZSUoEqVK0fCzC7zLwU=
+	t=1736895701; cv=none; b=c6jKX5tJl7WAvk6n5LCN6d2O7aKRLMMGm1e5aTc6FqSHkw3hom5HmPhx+mzNhka7xKrB49CWSZI0Ay8Wkhk1XCbiqkZ7u2x+ZqD2vauJ6yrm7btjBbHjj9IXUvjcfBWQ7gkVxSYwoDmuQy5E8+12DHhRmkHX12rnrgoyIQvmafA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736895690; c=relaxed/simple;
-	bh=rd4Tnyfz8LSnzRSPds0qO7hOsBpNdqkYaYIFHlZ1jgQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T991Cnq0oEGJqh99M3HoK7qCRWZommmjDAemd0o6WjmZ/sDCkZ6dla6kHsq63gzN54/cULsRPyiEs0zez+wBSh3jqQZXBunpFb0HnWDDckCtxWeK4PKefk6sfujGmhssKufE2xR3SMfnYlydcGwONiGnjbnsgto2zeQoceg8NGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fr.zoreil.com; spf=pass smtp.mailfrom=fr.zoreil.com; dkim=pass (1024-bit key) header.d=fr.zoreil.com header.i=@fr.zoreil.com header.b=eV411Wd8; arc=none smtp.client-ip=92.243.8.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fr.zoreil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fr.zoreil.com
+	s=arc-20240116; t=1736895701; c=relaxed/simple;
+	bh=4Trh14FTujSrp5fcT2f4OE7lzQRLuNXQNkIUrlHItlc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eT9R2afN1veA3TXB5kqxxAcHQUTQl05N5ULgXIF9D5Rsbslrdkin+EU6FHqvxgLXiYD2rnVbXF8ezL/l60r86QePc5F+P6ALIeuFdETH307uBg6lljCo9RC57fLqS0Vk+1ZJoSgxiYKaaaGiPb3NH+3SUh4kiqP5RPURiDx/VEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qRAjLIo6; arc=none smtp.client-ip=91.218.175.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fr.zoreil.com header.i=@fr.zoreil.com header.b="eV411Wd8"
-Received: from violet.fr.zoreil.com ([127.0.0.1])
-	by violet.fr.zoreil.com (8.17.1/8.17.1) with ESMTP id 50EN0bpP1770579;
-	Wed, 15 Jan 2025 00:00:37 +0100
-DKIM-Filter: OpenDKIM Filter v2.11.0 violet.fr.zoreil.com 50EN0bpP1770579
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fr.zoreil.com;
-	s=v20220413; t=1736895637;
-	bh=XWZTbSUiGbCiLrlI7Wy4sn1odnJ9biGAm2xia2tf8C0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eV411Wd8lWchAqMOc7hYPN/E2aHrAb8bSQa9V6admogCB2grWICvNhC7cmgkzwSO4
-	 Ukcd6uryds/wf+ugc+ZOTNhgu7zFSImP1ITxpvj2Gpwwmo/Vq0PZZBrz7p3Uz3PZ8x
-	 2AzWwNgGEVa2Ca1OhY1l9quQmSyni8jbJXT/yjyQ=
-Received: (from romieu@localhost)
-	by violet.fr.zoreil.com (8.17.1/8.17.1/Submit) id 50EN0aTa1770578;
-	Wed, 15 Jan 2025 00:00:36 +0100
-Date: Wed, 15 Jan 2025 00:00:36 +0100
-From: Francois Romieu <romieu@fr.zoreil.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-        pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
-        jdamato@fastly.com, pcnet32@frontier.com, anthony.l.nguyen@intel.com,
-        przemyslaw.kitszel@intel.com, marcin.s.wojtas@gmail.com
-Subject: Re: [PATCH net-next 06/11] net: protect NAPI enablement with
- netdev_lock()
-Message-ID: <20250114230036.GA1769770@electric-eye.fr.zoreil.com>
-References: <20250114035118.110297-1-kuba@kernel.org>
- <20250114035118.110297-7-kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qRAjLIo6"
+Message-ID: <2245508b-a407-4c89-a3ae-3d74a6e2606a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1736895692;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fAFUm8D7a2Uwh+6YLbEYXnPfHtAx5MFcNcrzlymGZl8=;
+	b=qRAjLIo65pu8TxVzWkPxgd1R2aDMCX+aASKUwW+49NIf8D9oj+yFy6m8kJiGiMYq/zJxYo
+	CkdFTmB35wn21geJcU2edkbcaJqYMdTXAjtNV+K2A1+Xk5BobI0DcWLpdV/c3uZhzDCGHD
+	pBgNeTDOaj3StRqq/cdJPY3+YK8wuYE=
+Date: Tue, 14 Jan 2025 15:01:28 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250114035118.110297-7-kuba@kernel.org>
-X-Organisation: Land of Sunshine Inc.
+Subject: Re: [PATCH v3 net-next 2/5] net: no longer assume RTNL is held in
+ flush_all_backlogs()
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
+ eric.dumazet@gmail.com
+References: <20250114205531.967841-1-edumazet@google.com>
+ <20250114205531.967841-3-edumazet@google.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jesse Brandeburg <jesse.brandeburg@linux.dev>
+In-Reply-To: <20250114205531.967841-3-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Jakub Kicinski <kuba@kernel.org> :
-> Wrap napi_enable() / napi_disable() with netdev_lock().
-> Provide the "already locked" flavor of the API"
+On 1/14/25 12:55 PM, Eric Dumazet wrote:
+> flush_all_backlogs() uses per-cpu and static data to hold its
+> temporary data, on the assumption it is called under RTNL
+> protection.
 > 
-> iavf needs the usual adjustment. A number of drivers call
-> napi_enable() under a spin lock, so they have to be modified
-> to take netdev_lock() first, then spin lock then call
-> napi_enable_locked().
+> Following patch in the series will break this assumption.
 > 
-> Protecting napi_enable() implies that napi->napi_id is protected
-> by netdev_lock().
+> Use instead a dynamically allocated piece of memory.
 > 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-[...]
-> ---
->  include/linux/netdevice.h                   | 11 ++----
->  drivers/net/ethernet/amd/pcnet32.c          | 11 +++++-
->  drivers/net/ethernet/intel/iavf/iavf_main.c |  4 +-
->  drivers/net/ethernet/marvell/mvneta.c       |  5 ++-
->  drivers/net/ethernet/via/via-velocity.c     |  4 +-
+> In the unlikely case the allocation fails,
+> use a boot-time allocated memory.
+> 
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-For the via-velocity part:
+Reviewed-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
 
-Acked-by: Francois Romieu <romieu@fr.zoreil.com>
-
--- 
-Ueimor
