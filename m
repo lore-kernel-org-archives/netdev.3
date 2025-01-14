@@ -1,64 +1,64 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074CC21ADD2;
-	Tue, 14 Jan 2025 22:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BD9222589;
+	Tue, 14 Jan 2025 22:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736892169; cv=none; b=B/IctxYoI+mzlvQwjL8810RkDjutQAQMLUdFPFEjcmCz8nd+mSfSUOuVllaMoQqTBXyK6jiV8hUwfvUgv4cOfZZaDAtfgURvK6yh7J4r+8DazuB3cmAOR5jXg60UMZBjqTkmeSm/IPONGca2oCpAnkPLAUoG+x8nB2nWztoBXuw=
+	t=1736892171; cv=none; b=VkcZfEts1eJOcNsqjcSnlWZmu2PPFbFjlNbpcxE4Bab1l5HYaOBB3Id6t1VlVP7aZ0aQp/zRxJyY6OFdEEWxCVE2BecaKCm7tO/0x7XzpabCoyzoyyP30iP/mrC0Tr1oFJ6kD2Q9OWnmVdEDk8bng6m4Ea0JTTb8qI/rxvr1dLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736892169; c=relaxed/simple;
-	bh=b+oeDJ3bTMoNR1eigQ9rbBtgaerX2NjIHLvJTdxhsyQ=;
+	s=arc-20240116; t=1736892171; c=relaxed/simple;
+	bh=ay/xlLnF2UIkqMJHUCgw4xMC7ig0hdNfW+uwg24oVzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lXgbeVbm4evF2bP+SvUldF2/q4sArCwbdgTzAYyi5dOhYkjNZ0WaqD9j0FiuNx07g4L8n+ciX+3M6P+8bEgui9HHOXFWOjjq8yFRn2oG9o3g0V4RSg04PcrOYQOEapl5F7Q98PCgqngRip7ikjEVCkxkMbyj1TQOYMRHHoIW4/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=U77Eacmv; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=b5x40ImZU7ztXdDsxDbzpcu3wHJzVY3pLwHFnI/vS/NRuXRvvbNlJO31qTehQuPPjSHmq0xvmx5yXFYSlrvObX+kQXDu0Va6W1jwWyxCWHMv3yCm7z4pQQNJqJVpxHjplDlmiVd0CkWFaZ2VtFhdjTcnNvM/WRX2zsE5DZ/0vv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=VRmnu1BT; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="U77Eacmv"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50EJ0lh1022734;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="VRmnu1BT"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50EEPcDd028858;
 	Tue, 14 Jan 2025 22:01:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=FvwpfrEgGuj6O2Lps
-	8W2ZtH+Fx+MCupa6IfkENeBymw=; b=U77Eacmvy0HcUD4VbpNwu+pBTNIDGnKo+
-	Rcjkc+R+93X2/2r7Mt5c8Gx1gmdT/R7rLCsbX1+ge8SJMg5Qumah4vlGDZkVLt3I
-	ulRb+WximX5KC1fD7ngUe1/s1JlYhw1KslA16EZjT6Eaa020J3VUtWZVDK8+Inhu
-	mhMVXs+XYCLclu2jwdx28FUvKMSX6+OYykRM2tOQFtru61npYNehKNKSZhFqvO1B
-	swA4EPjBBzSVFVwFQ/XcXHy8ZrRfbd3X6pLEFIRFw/yGCO4lyeAYMAd9tVtisAX3
-	dCv3evpuZxn5RpOM/NjRkSH7LsgnhayZs2TUNanBhJXanhdtD/Vxw==
+	:mime-version:references:subject:to; s=pp1; bh=zcXYfq7y3Ykx9nkv3
+	r9zTbWUpugtYvbNec4z//sgjIQ=; b=VRmnu1BTOy2FY96lpy2TM07TjTv8XAmuQ
+	1K0QJUib22cuaoN6CZek9lOFtKc/0GafgmcrJ6j/t0okoaG0KQImowJBOYTB6S2Y
+	RhXIgbmpN7xoAFDEBAQeJ1jx1gppBQBmtgsHS9WXhNqcPz2rReu8iVKEIPO+G2m2
+	NCS+vW3MHB7GkMsDXJkEmM5cl46yny+ewLM7IDnT5JxkJ1nB933W5MN4q9hMirgj
+	JTfj+XZXrONWIbH6qqKroDEcoWsZItJCJoJW69e9XDSS7Log7+aRbsUJBIHepmoP
+	YKy26PShpF/zJ1pOw0CyyB0r1H35x7ujZ4A0J8N2NHRw8+UccjQhA==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 445m433cpx-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 445cnb4y8b-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 22:01:53 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50EM1rdp018798;
-	Tue, 14 Jan 2025 22:01:53 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 445m433cps-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 22:01:53 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50ELcVU5007396;
+	Tue, 14 Jan 2025 22:01:52 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50EM1RNB021473;
 	Tue, 14 Jan 2025 22:01:52 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4443yn59uq-1
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 445cnb4y88-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 22:01:52 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50EM1pX227918778
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Jan 2025 22:01:52 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50ELB2R6002666;
 	Tue, 14 Jan 2025 22:01:51 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4443by5dj1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jan 2025 22:01:51 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50EM1o8a40698582
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Jan 2025 22:01:50 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DEBED58055;
+	by IMSVA (Postfix) with ESMTP id 0294458043;
 	Tue, 14 Jan 2025 22:01:50 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9B05A5805D;
-	Tue, 14 Jan 2025 22:01:50 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id B366C58059;
+	Tue, 14 Jan 2025 22:01:49 +0000 (GMT)
 Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
 	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 14 Jan 2025 22:01:50 +0000 (GMT)
+	Tue, 14 Jan 2025 22:01:49 +0000 (GMT)
 From: Ninad Palsule <ninad@linux.ibm.com>
 To: minyard@acm.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
         andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
@@ -69,9 +69,9 @@ To: minyard@acm.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
         linux-kernel@vger.kernel.org
 Cc: Ninad Palsule <ninad@linux.ibm.com>
-Subject: [PATCH v5 04/10] ARM: dts: aspeed: system1: Add IPMB device
-Date: Tue, 14 Jan 2025 16:01:38 -0600
-Message-ID: <20250114220147.757075-5-ninad@linux.ibm.com>
+Subject: [PATCH v5 01/10] dt-bindings: net: faraday,ftgmac100: Add phys mode
+Date: Tue, 14 Jan 2025 16:01:35 -0600
+Message-ID: <20250114220147.757075-2-ninad@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250114220147.757075-1-ninad@linux.ibm.com>
 References: <20250114220147.757075-1-ninad@linux.ibm.com>
@@ -83,44 +83,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: oT3G2yull-RzWSXTZQgoEimMRqk0itE_
-X-Proofpoint-GUID: pyHXKbzpIH46EZkHzZKJXP9Epf2o-r-h
+X-Proofpoint-ORIG-GUID: 76MBiHBKeBv7zH-V57kldJaA5JyIP1E9
+X-Proofpoint-GUID: GA3jCc5-1BcKbb-HG3DEmBiQEpl11kYK
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-01-14_07,2025-01-13_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 mlxscore=0 malwarescore=0 impostorscore=0 spamscore=0
- bulkscore=0 mlxlogscore=745 phishscore=0 priorityscore=1501 clxscore=1015
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 bulkscore=0 phishscore=0 clxscore=1015 mlxscore=0
+ mlxlogscore=948 spamscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2411120000 definitions=main-2501140166
 
-Add IPMB device sitting behind PCH module
+Aspeed device supports rgmii, rgmii-id, rgmii-rxid, rgmii-txid so
+document them.
 
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
 ---
- arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-system1.dts | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-system1.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-system1.dts
-index 8f77bc9e860c..0d16987cfc80 100644
---- a/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-system1.dts
-+++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-system1.dts
-@@ -763,6 +763,15 @@ i2c3mux0chn7: i2c@7 {
+diff --git a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+index 9bcbacb6640d..55d6a8379025 100644
+--- a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
++++ b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+@@ -44,6 +44,9 @@ properties:
+   phy-mode:
+     enum:
+       - rgmii
++      - rgmii-id
++      - rgmii-rxid
++      - rgmii-txid
+       - rmii
  
- &i2c4 {
- 	status = "okay";
-+	multi-master;
-+	bus-frequency = <1000000>;
-+
-+	ipmb@10 {
-+		compatible = "ipmb-dev";
-+		reg = <(0x10 | I2C_OWN_SLAVE_ADDRESS)>;
-+
-+		i2c-protocol;
-+	};
- };
- 
- &i2c5 {
+   phy-handle: true
 -- 
 2.43.0
 
