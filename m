@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BF42147EE
-	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 23:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4EB2236EA
+	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 23:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736895619; cv=none; b=Yy0wIb+/yl7KJJxWRVtd9PkmEY49yiucat0YID1Di05r/DjUx8sH7dKJbLyY6Co3HFdeA2XzkIgExSWf/OxEgySq4pCI4dWZZTP6ikPfwa5qvWYc9I1Xcp7///gtl5I5CNpjRaZUU+ISzf6orY74sTVQJ6zjOWPDU/mcxLsVJ2U=
+	t=1736895619; cv=none; b=sQDp6GYbA5FnVnBRfT/DmjCKm+9QaPHrfyhVnakhW5X50vvZxmoqR+/mzr87/pmqPaarysTPX5kZPhGgU7hxRNdWAc637NyIiGnKSL5SL1AeIVg/SWc4jsRo6bh3RjlihFrw0kjUKVUnNf/NEzuF9VkcsvcyuNmamQTGj7YKRiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1736895619; c=relaxed/simple;
-	bh=f/QShmR0dYDVRn6FrchQOZ+I/J2lxvBfmSj2QNMw5kI=;
+	bh=D5byHkrsv5SQKGj+WNn8RIZStWX8kI1/PrV5PEzZm0A=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=s90C+/WGZogJrPY55AV+IGmJo3vceRlZWrX3z7j1KKMdoNaveExiTZCJR7OUGNCMuSav6hHbV8J3y6xCMOCnJWq7OXC6oksfBxiO3wohPvC/JXee1aKLuWsT5o037+0oRQz0XYzl2dg2noMNvSC0Tt2Uz8BWJ0OMC3nhnzcOe60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qm6cM5x6; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=gfq/hUKZ9CmQobazE+U0Ks7Q2U0wvGkglr2Z6UwnHGMie6TpmGeSFKayoSUyg/5q9kM2Bp/CU0sVZv7etaFwpU9dB4x3o6QkHKDxAtj1hhNHPww91a9x0GjabLzMtJ8Ehk42/rFci0cAkrbry11TaRI30MSoZhoxHJE0/PrdDZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=quIcSx7c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qm6cM5x6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8171EC2BCC4;
-	Tue, 14 Jan 2025 23:00:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="quIcSx7c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6275C4CEE1;
+	Tue, 14 Jan 2025 23:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736895616;
-	bh=f/QShmR0dYDVRn6FrchQOZ+I/J2lxvBfmSj2QNMw5kI=;
+	s=k20201202; t=1736895618;
+	bh=D5byHkrsv5SQKGj+WNn8RIZStWX8kI1/PrV5PEzZm0A=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=qm6cM5x6+iIMnFNgOJMaPUx2pumZzEDEbGlA0+cTVW8uHhxcxGAzOmEiLtnAsAw1q
-	 CpjtLnUYtbJSdxXGAmINvt+jfxrCZbiBxrzct2hmXTsWG4oNGDWI2ue7iREc9+tbc4
-	 yiQfYfjaovDEbXfvR2KL5fvZ4wWc4JTsthkA7IZsvpf6PE2MHv9aJHNk5LR0NMlS90
-	 wXWlh3oo0S2LF1VNG3g+T7c821gGLpl4vjECF5+Rx7hTG180TLMiuUrK7dfBZpFLeE
-	 +8DENxrnY2/ldRqCenKCTJeDoszdngPpHUwAKVTgwBw/IL73a3y5ZtIPXlab48PFQ1
-	 scxAwa0M+OnYw==
+	b=quIcSx7cgD9A0L0E/uqHwoCdImsh9ACOP++R5pFgHKNafz+KOv0mwHJEPYQF3bW6G
+	 qnrNyhNrh2e8RFl2eINBY/KgYhslh8JU+ltk3f6fm0YPtImVEsc6ZbQ/sBK7cb5nPI
+	 26Lv8hjZku8e0P0a+/bNrvuu34V7B2pih16SKkl61kqTWyKnIPnA+UoXymheUljAVV
+	 E67N09LHwf/AZSXnPqEE83eVvbs4jrd7FgOrEPM4Zsiu341YhtkZ7tw1Y1m735oaYl
+	 fsbp4J+yy4b0dTugw/+xhTPAgE5rvf2BPDUwv/Wkqpo++RfTl3i4Wq3OdyaXAQ3r2C
+	 XeG0w/NzVljeg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 71DFC380AA5F;
-	Tue, 14 Jan 2025 23:00:40 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAE4F380AA5F;
+	Tue, 14 Jan 2025 23:00:42 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 1/2] docs: netdev: document requirements for
- Supported status
+Subject: Re: [PATCH net-next] net: airoha: Enforce ETS Qdisc priomap
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <173689563899.170851.15442144645788945342.git-patchwork-notify@kernel.org>
-Date: Tue, 14 Jan 2025 23:00:38 +0000
-References: <20250111024359.3678956-1-kuba@kernel.org>
-In-Reply-To: <20250111024359.3678956-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- aleksander.lobakin@intel.com
+ <173689564173.170851.2258072492624534440.git-patchwork-notify@kernel.org>
+Date: Tue, 14 Jan 2025 23:00:41 +0000
+References: <20250112-airoha_ets_priomap-v1-1-fb616de159ba@kernel.org>
+In-Reply-To: <20250112-airoha_ets_priomap-v1-1-fb616de159ba@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: nbd@nbd.name, sean.wang@mediatek.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ netdev@vger.kernel.org, dcaratti@redhat.com
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 10 Jan 2025 18:43:56 -0800 you wrote:
-> As announced back in April, require running upstream tests
-> to maintain Supported status for NIC drivers:
+On Sun, 12 Jan 2025 19:32:45 +0100 you wrote:
+> EN7581 SoC supports fixed QoS band priority where WRR queues have lowest
+> priorities with respect to SP ones.
+> E.g: WRR0, WRR1, .., WRRm, SP0, SP1, .., SPn
 > 
->   https://lore.kernel.org/20240425114200.3effe773@kernel.org
+> Enforce ETS Qdisc priomap according to the hw capabilities.
 > 
-> Multiple vendors have been "working on it" for months.
-> Let's make it official.
+> Suggested-by: Davide Caratti <dcaratti@redhat.com>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2,1/2] docs: netdev: document requirements for Supported status
-    https://git.kernel.org/netdev/net-next/c/05baba80f2c4
-  - [net-next,v2,2/2] MAINTAINERS: downgrade Ethernet NIC drivers without CI reporting
-    https://git.kernel.org/netdev/net-next/c/af2bcb5774f8
+  - [net-next] net: airoha: Enforce ETS Qdisc priomap
+    https://git.kernel.org/netdev/net-next/c/b56e4d660a96
 
 You are awesome, thank you!
 -- 
