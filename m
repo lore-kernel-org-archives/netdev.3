@@ -1,64 +1,64 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634812139C6;
-	Tue, 14 Jan 2025 22:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427A6213E63;
+	Tue, 14 Jan 2025 22:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736892165; cv=none; b=sC3GoyK8t38L0Yit3daSUulQY9V1KvHWBzYbkOi0i2iFoYLoiZPrCZy+BY4/k/zPWguUWh8zWi4Fy8TKBmBp/sxNid7y9QD6uIEckcuw/4UgAeGR13ObN3G3J8SHEP5J1MORfomyhxJ69wAiFTQC4wwku90+rJwro1pTMzK8Ndw=
+	t=1736892166; cv=none; b=nUV6nieXzCGLKLgqgo8NUQWyPUMwZrvzvMk3nRFujb+AA24dl48jTZPgrQmTyEgaHOGHefUMavLTaje/6kTa3swcdMIYJMuvo0utXM32kKWzZ/kacuDMg+eP3QLLk3pm3BCDaiotLJiouZgALW+54iO89Q+PfCIqsryRkqmXoD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736892165; c=relaxed/simple;
-	bh=Tz0aLyuKWjP/IUc1x83w1a364oC4I6OJzsjOizFj7dA=;
+	s=arc-20240116; t=1736892166; c=relaxed/simple;
+	bh=wXYRsc7oiNk+CkDcBkkmY/dw+fz9m01fJpgEi3hoqIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YoszhKhQfMNU6Phs8/0KSr7ncAuDhtspx8x1m+vF2XcxpvZVT3U/1A3JIR/pIDZOWCrA3A4DHCDusstFIjtsk+3h/vfS/phgL+xSx+rxZLTH0zt591iccUUhPlOQkFU0ZXjVzpXa9w9XnBKutPyZpeMy630ChPaYjbN8PbQ4nAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ec28pq20; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=scwnLkP+FtXiRDONadWblos5uTiiClAaUiH7Ojn6Uj1M3tGGepJpedkxzeZfE1mhNqax+FNajOm3pVnF7OeNIBWPHtNP5ULCT+qGS7CgCx08ZzpLyw/DchvD+nh5RG4IWJxXSH9unD5/lTbAl/cBv5GRSdn1M4SHlk3l7Rla45I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kGDxLKdI; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ec28pq20"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50EFUZ1w006008;
-	Tue, 14 Jan 2025 22:01:56 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kGDxLKdI"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50EE6JHN013477;
+	Tue, 14 Jan 2025 22:01:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=lI3o01bHQXZgJL9Xc
-	Zlb7A4E5yqHwfiO2JwhT8zbtNg=; b=ec28pq20SwVMwJkW3i9lCSiMVMaPy8Zy4
-	amfpbb1ymhWOv/tkYMrStBxPk1krfLhggxKHni7iGvydTOhLoWKZrQ+wILY4YQkA
-	AUcUqla6TTJVVkU+GSZ//aJlaUT7Wer7B5+fWsaXblWwDLsZmdc26s4OJq3nqNHK
-	vNn+nv+8EJdrqM8fcRFlNX1XBdyRsCDHDPM7axI+wGMOdXEOSshTjysHuznRWg9n
-	aukN2/xWt2qVMkl3FNf+Y+310pH5XZEiayrBzq2GXd8S44/zvlZVYvc3KuTFCCEj
-	XXN31JqGqHawA83ftOI6WrDljPfowx3S8G9Fqd4CIzKzxJNHCQUGA==
+	:mime-version:references:subject:to; s=pp1; bh=rk3OoVHAVYMfMoueI
+	wWue8QGrekdaZap998SLuh1D5s=; b=kGDxLKdIYf1ioEPeKTU8jO912CZirHfrx
+	KQl6NqvquXbTVE/jXoE6EXsE0v/t1oUcMraQnlQnyYeNTUi+VP7eUXVTJzL9ctcm
+	GGYrrfzF10w/nxzBwd0DkV3aV20ruq8u4/OfUjAOGtj9zwk//qNN94T1Pn3wtq4b
+	TYKVSKlKCGaKeil8MrfVljC8JyxljtWDk1oJdb+v7kMcsJee30UqEOGJUAh47Zqp
+	1UUwPcyQpJqc3KgacdVGh2nXifNSB19/5yoHRv0pADDCAGsqILiLbvlFB5cY9F2M
+	MK7Zm1Km7h9UILarGGbwsnBZYBHcByPLQkjaLvZV58BS427zpGS/w==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 445tmghn8s-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 445sd6213q-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 22:01:55 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50EM174s013660;
-	Tue, 14 Jan 2025 22:01:55 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 445tmghn8p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 22:01:55 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50EJEU1Q016498;
+	Tue, 14 Jan 2025 22:01:54 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50EM0ORw002532;
 	Tue, 14 Jan 2025 22:01:54 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4445p1my7k-1
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 445sd6213k-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 22:01:54 +0000
+	Tue, 14 Jan 2025 22:01:54 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50EIqAbJ016571;
+	Tue, 14 Jan 2025 22:01:53 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4445p1my7g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jan 2025 22:01:53 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50EM1qEO25363102
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50EM1p7T17957492
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Tue, 14 Jan 2025 22:01:52 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9120058043;
-	Tue, 14 Jan 2025 22:01:52 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id C13B75805D;
+	Tue, 14 Jan 2025 22:01:51 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5685C5805D;
-	Tue, 14 Jan 2025 22:01:52 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 8782B58059;
+	Tue, 14 Jan 2025 22:01:51 +0000 (GMT)
 Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
 	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 14 Jan 2025 22:01:52 +0000 (GMT)
+	Tue, 14 Jan 2025 22:01:51 +0000 (GMT)
 From: Ninad Palsule <ninad@linux.ibm.com>
 To: minyard@acm.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
         andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
@@ -69,9 +69,9 @@ To: minyard@acm.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
         linux-kernel@vger.kernel.org
 Cc: Ninad Palsule <ninad@linux.ibm.com>
-Subject: [PATCH v5 10/10] ARM: dts: aspeed: system1: Disable gpio pull down
-Date: Tue, 14 Jan 2025 16:01:44 -0600
-Message-ID: <20250114220147.757075-11-ninad@linux.ibm.com>
+Subject: [PATCH v5 07/10] ARM: dts: aspeed: system1: Update LED gpio name
+Date: Tue, 14 Jan 2025 16:01:41 -0600
+Message-ID: <20250114220147.757075-8-ninad@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250114220147.757075-1-ninad@linux.ibm.com>
 References: <20250114220147.757075-1-ninad@linux.ibm.com>
@@ -83,68 +83,125 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: c8C_KsBQNEgFT4YhF8zQHLFtQPAtGzNk
-X-Proofpoint-ORIG-GUID: MrTv6CNgHQPgrpuIK_BBVP3xX9v_YVCl
+X-Proofpoint-GUID: RiQCFsceMDCN1Yyspn4e3vp8LBh_sWgr
+X-Proofpoint-ORIG-GUID: ddkUly4p33QBRvJgq6JNHgsgqYNM6TkP
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-01-14_07,2025-01-13_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 phishscore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0
- impostorscore=0 adultscore=0 malwarescore=0 mlxlogscore=875 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
+ clxscore=1015 phishscore=0 spamscore=0 suspectscore=0 priorityscore=1501
+ mlxlogscore=771 bulkscore=0 lowpriorityscore=0 malwarescore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2411120000 definitions=main-2501140166
 
-Disable internal pull down for the following GPIO lines.
-- GPIOL4 - Reset PCH registers in the rtc.
-- GPIOL5 - Reset portition of Intel ME
-- GPIOL6 - FM smi active
-- GPIOL7 - psu all dc power good.
+Rename LEDs with meaningful names for easier identification.
 
 Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
 ---
- .../dts/aspeed/aspeed-bmc-ibm-system1.dts     | 28 +++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ .../dts/aspeed/aspeed-bmc-ibm-system1.dts     | 36 +++++++++----------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
 diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-system1.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-system1.dts
-index 1f0a6247f97e..723cbbbc72bf 100644
+index ca55a4fb6dff..1e0b1111ea9a 100644
 --- a/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-system1.dts
 +++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-system1.dts
-@@ -355,7 +355,35 @@ &uhci {
- 	status = "okay";
- };
+@@ -116,63 +116,63 @@ vga_memory: region@bf000000 {
+ 	leds {
+ 		compatible = "gpio-leds";
  
-+&pinctrl {
-+	pinctrl_gpiol4_unbiased: gpiol4 {
-+		pins = "C15";
-+		bias-disable;
-+	};
-+
-+	pinctrl_gpiol5_unbiased: gpiol5 {
-+		pins = "F15";
-+		bias-disable;
-+	};
-+
-+	pinctrl_gpiol6_unbiased: gpiol6 {
-+		pins = "B14";
-+		bias-disable;
-+	};
-+
-+	pinctrl_gpiol7_unbiased: gpiol7 {
-+		pins = "C14";
-+		bias-disable;
-+	};
-+};
-+
- &gpio0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpiol4_unbiased
-+		&pinctrl_gpiol5_unbiased
-+		&pinctrl_gpiol6_unbiased
-+		&pinctrl_gpiol7_unbiased>;
-+
- 	gpio-line-names =
- 	/*A0-A7*/	"","","","","","","","",
- 	/*B0-B7*/	"","","","","bmc-tpm-reset","","","",
+-		led-0 {
++		led-bmc-ready {
+ 			gpios = <&gpio0 ASPEED_GPIO(L, 7) GPIO_ACTIVE_HIGH>;
+ 		};
+ 
+-		led-1 {
++		led-bmc-hb {
+ 			gpios = <&gpio0 ASPEED_GPIO(P, 7) GPIO_ACTIVE_HIGH>;
+ 		};
+ 
+-		led-2 {
++		led-rear-enc-fault0 {
+ 			gpios = <&gpio0 ASPEED_GPIO(S, 6) GPIO_ACTIVE_HIGH>;
+ 		};
+ 
+-		led-3 {
++		led-rear-enc-id0 {
+ 			gpios = <&gpio0 ASPEED_GPIO(S, 7) GPIO_ACTIVE_HIGH>;
+ 		};
+ 
+-		led-4 {
++		led-fan0-fault {
+ 			gpios = <&pca3 5 GPIO_ACTIVE_LOW>;
+ 		};
+ 
+-		led-5 {
++		led-fan1-fault {
+ 			gpios = <&pca3 6 GPIO_ACTIVE_LOW>;
+ 		};
+ 
+-		led-6 {
++		led-fan2-fault {
+ 			gpios = <&pca3 7 GPIO_ACTIVE_LOW>;
+ 		};
+ 
+-		led-7 {
++		led-fan3-fault {
+ 			gpios = <&pca3 8 GPIO_ACTIVE_LOW>;
+ 		};
+ 
+-		led-8 {
++		led-fan4-fault {
+ 			gpios = <&pca3 9 GPIO_ACTIVE_LOW>;
+ 		};
+ 
+-		led-9 {
++		led-fan5-fault {
+ 			gpios = <&pca3 10 GPIO_ACTIVE_LOW>;
+ 		};
+ 
+-		led-a {
++		led-fan6-fault {
+ 			gpios = <&pca3 11 GPIO_ACTIVE_LOW>;
+ 		};
+ 
+-		led-b {
++		led-nvmed0-fault {
+ 			gpios = <&pca4 4 GPIO_ACTIVE_HIGH>;
+ 		};
+ 
+-		led-c {
++		led-nvmed1-fault {
+ 			gpios = <&pca4 5 GPIO_ACTIVE_HIGH>;
+ 		};
+ 
+-		led-d {
++		led-nvmed2-fault {
+ 			gpios = <&pca4 6 GPIO_ACTIVE_HIGH>;
+ 		};
+ 
+-		led-e {
++		led-nvmed3-fault {
+ 			gpios = <&pca4 7 GPIO_ACTIVE_HIGH>;
+ 		};
+ 	};
+@@ -368,14 +368,14 @@ &gpio0 {
+ 	/*I0-I7*/	"","","","","","","","",
+ 	/*J0-J7*/	"","","","","","","","",
+ 	/*K0-K7*/	"","","","","","","","",
+-	/*L0-L7*/	"","","","","","","","bmc-ready",
++	/*L0-L7*/	"","","","","","","","led-bmc-ready",
+ 	/*M0-M7*/	"","","","","","","","",
+ 	/*N0-N7*/	"pch-reset","","","","","flash-write-override","","",
+ 	/*O0-O7*/	"","","","","","","","",
+-	/*P0-P7*/	"","","","","","","","bmc-hb",
++	/*P0-P7*/	"","","","","","","","led-bmc-hb",
+ 	/*Q0-Q7*/	"","","","","","","pch-ready","",
+ 	/*R0-R7*/	"","","","","","","","",
+-	/*S0-S7*/	"","","","","","","rear-enc-fault0","rear-enc-id0",
++	/*S0-S7*/	"","","","","","","led-rear-enc-fault0","led-rear-enc-id0",
+ 	/*T0-T7*/	"","","","","","","","",
+ 	/*U0-U7*/	"","","","","","","","",
+ 	/*V0-V7*/	"","rtc-battery-voltage-read-enable","","power-chassis-control","","","","",
 -- 
 2.43.0
 
