@@ -1,120 +1,92 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7A11E4AE;
-	Tue, 14 Jan 2025 23:18:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195CA1C3BEB
+	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 23:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736896711; cv=none; b=LwCpOw9Rc+H+IqUDVsKFUmP//odFovMY5pQa2USZmeA2uSY4WaTwQWkHgDbVgrfcgUY/79IY0kujBAFdUEsQ2nN0LAk+S11T73lXcNukiGRxKJEvDLd7La/k3xCC7zCEex2SKXvtROoRv4k63dzvnMQnQkaYxxch6kNrmneYvzw=
+	t=1736896765; cv=none; b=i9bkno9xaB0qAtSDTbsaBdyyfKI05GE/X3E0Pp265CrY99Wn9l3ZJjXg3G7IwzChX37hvDziudzlrlEHrrzfMT3tkofrNeIQrgmQ2J2sfn6NelCJAqklyi6DsK/Wc0wPVXelw/Y9Bdeoe99hbl9vLtJdBavIx2EyLqeJJNUm5xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736896711; c=relaxed/simple;
-	bh=DeQxjHBk4IBUkeU6pTbydiFb7KZTGq6XP6rGHm950KE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Sxx2sYY4q4sELLO9CPZXWCfxW9HDytiQM3BBVUQ51q2F4Ya3Emy/stuIgjV6kCmBqp5c2BUYshJzgG34WTMe7qP8BWJlvh+C7DrQ+/FK7BscVt7YNZV6sd01DGsz2MF9Y/oR586IQVCY6m7if9kVRmDQVYeWQsv8tgatuwnwVv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MlY1wm8O; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1736896765; c=relaxed/simple;
+	bh=oW3Jl1eIZZ7xy6597Shv3w9NGNA648r1kNJb71xiCbY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ohUPQbjHlIjmsi4djnUP1ppLs097/LR3O3+fLfzUEUK4D1Ak4MAzx0SiiqActtWxcLKqVMKu4l6afx1q3c0jVx6agHfIOgZ92Gb9v5Z/a2GyBFR2RyTtg5Rs0hFvtwkdAkpTNWhABLApUjxuVELPiues3TPFmzrEJP0WavqPeds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=Titk9AUu; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MlY1wm8O"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736896710; x=1768432710;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=DeQxjHBk4IBUkeU6pTbydiFb7KZTGq6XP6rGHm950KE=;
-  b=MlY1wm8O7Cz1Xq3pyd6eQbNVz7hpxbeJdtj3onEAiWtadPAaTPyJryBP
-   1d43kWFwFEZhkzF9NYTJwC23Gqa17s8PbWUs3LfgD1l3T808CrnjIzXKX
-   yT+HyFnzyFtr0vGt91JNgEiTLcpbDkVlgDWwodv3BPv/usITq6q/slzy7
-   N/Vh20IeuJFozrVYfaB7H7H6S77y8zJIoMzTklZOT0cjZoK5/PdkMTgwY
-   UysVINOPCi42vvu9lNqzRWallJxdN5ukft9PAnFUPOldfTajBbzwIsc+u
-   DoxbgHuyV1NAv2jJzv9EJ2zYMpC3b530LFdMo7pHq4Pe+FupCjCktgYC0
-   A==;
-X-CSE-ConnectionGUID: cvWIod+fQSKbjmVwu0ph5w==
-X-CSE-MsgGUID: /J1nEJtRTC+aLeZWcVmEgA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="36911044"
-X-IronPort-AV: E=Sophos;i="6.12,315,1728975600"; 
-   d="scan'208";a="36911044"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 15:18:28 -0800
-X-CSE-ConnectionGUID: jkWNoME/R4CEcxvBTqTJqw==
-X-CSE-MsgGUID: 11erSqDASgWkH3VZqQtjFg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,315,1728975600"; 
-   d="scan'208";a="105034110"
-Received: from p2dy149cchoong.png.intel.com ([10.107.243.50])
-  by orviesa006.jf.intel.com with ESMTP; 14 Jan 2025 15:18:26 -0800
-From: Chwee-Lin Choong <chwee.lin.choong@intel.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 1/1] net: ethtool: mm: Allow Verify Enabled before Tx Enabled
-Date: Wed, 15 Jan 2025 14:59:31 +0800
-Message-ID: <20250115065933.17357-1-chwee.lin.choong@intel.com>
-X-Mailer: git-send-email 2.42.0
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="Titk9AUu"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2eec9b3a1bbso8092990a91.3
+        for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 15:19:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fastly.com; s=google; t=1736896763; x=1737501563; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JbvYctdrGd1fMR1YU0UDT9rZXrxXW/NPmAnjaYjCXGE=;
+        b=Titk9AUubJpYd12pr7qqvAH1oKqtEeXoOTxtjo8hFR8Muci9h7K9hkpElC1FDGz73R
+         sZBeQHzdF58VXYd/EoevcKOJ7mGT7fBNnPZa9tIw+JKyrv7BktdNoPDMODNhGFhgrUqJ
+         6BqQHWoo+9x9F7Bw87uSBfmyjxwGaQDvZCrVI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736896763; x=1737501563;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JbvYctdrGd1fMR1YU0UDT9rZXrxXW/NPmAnjaYjCXGE=;
+        b=N011mvrkrNQEXWUjAzVVGINTWkw4j4Emfxb0Ur7WBjTUDqc6arNPyKBzWM6GBurNz3
+         KclYfMTNRN56wdk1HFSDoLC3dCqqAnBqmBVlDfC9NEywpCEE0V7amFgrkX6Qei/wjRz2
+         6pbrX6q9BkJOQm5AjC+cyfCTn7xLfgQBo7/29qB9370Sc/CL/wfxp2D+4tCTtNvPtliM
+         m6T0+At7bGYXbvdFspSutlK9ufkbByNXm+ZCqMaOZhWJDIZDfhyEgtE27ouRilPAj5ws
+         OTzZtIbZei99EekDRsoSQtlW7G8EZIS+G5UYqFZQWEWGVZVKv2p+xqzncgUQ2Pz2jbA7
+         PRAw==
+X-Forwarded-Encrypted: i=1; AJvYcCVPFv4oQs2KhdXlEIbL8oAqJ9IimF0HaLvsmBpRejfW3ga6OGZN34Rz3RvObCbWG7cEmdgBJg8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4hDqRB3VkuN5Qa5ZbAwMMrHRpRZg6thTega642skFXPTB3gx5
+	hKAJGvTgMm0lhgRORrptNiCI3WXbxzrFDioxX9IwDaSfhM3qeT2qF/w/EELqdNU=
+X-Gm-Gg: ASbGncsst1SJQkwIcbSzVaSEbip61HCAe4ADP2Ldlr3Vk6JnqF7d8z2Ihw4JFiEFdeh
+	QKpdIUHvThqy9qemcqpqO5tUX6mDOBboKHlc9LvSix2CeZKTNYAQA8JwLsCG1K2DJbyzLVFZq91
+	dlvwea0BpvRYA39wvoYDt+imrH9Iugdo7n+4oL1V3opgRFEdII7paR/K+ZYOrjDYL0m2OPNLzmH
+	P93peThMJJngzRWTk2/lEswh2OWt52oFIaCfkBgKUEsgz+UqmahkIiTqoTNdK36WZJkkTAJJga7
+	rhczAOZ0DM9HajF0Nwl3OHE=
+X-Google-Smtp-Source: AGHT+IHFi96ZW3/FlOq6X21nV+AE31+5XhD2kjVGg+hmUGkASSLpTCq/52bYiK6IFby7uzRfV70YKw==
+X-Received: by 2002:a17:90b:2e41:b0:2ee:96a5:721e with SMTP id 98e67ed59e1d1-2f548eb25cfmr46358849a91.12.1736896763372;
+        Tue, 14 Jan 2025 15:19:23 -0800 (PST)
+Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f72c2f673esm80109a91.46.2025.01.14.15.19.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2025 15:19:22 -0800 (PST)
+Date: Tue, 14 Jan 2025 15:19:20 -0800
+From: Joe Damato <jdamato@fastly.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org
+Subject: Re: [PATCH net-next 09/11] net: protect napi->irq with netdev_lock()
+Message-ID: <Z4bw-LRerFnH6gIA@LQ3V64L9R2>
+Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
+	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, horms@kernel.org
+References: <20250114035118.110297-1-kuba@kernel.org>
+ <20250114035118.110297-10-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250114035118.110297-10-kuba@kernel.org>
 
-The current implementation of ethtool --set-mm restricts
-enabling the "verify_enabled" flag unless Tx preemption
-(tx_enabled) is already enabled. By default, verification
-is disabled, and enabling Tx preemption immediately activates
-preemption.
+On Mon, Jan 13, 2025 at 07:51:15PM -0800, Jakub Kicinski wrote:
+> Take netdev_lock() in netif_napi_set_irq(). All NAPI "control fields"
+> are now protected by that lock (most of the other ones are set during
+> napi add/del). The napi_hash_node is fully protected by the hash
+> spin lock, but close enough for the kdoc...
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  include/linux/netdevice.h | 10 +++++++++-
+>  net/core/dev.c            |  2 +-
+>  2 files changed, 10 insertions(+), 2 deletions(-)
 
-When verification is intended, users can only enable verification
-after enabling tx_enabled, which temporarily deactivates preemption
-until verification completes. This creates an inconsistent and
-restrictive workflow.
-
-This patch modifies ethtool --set-mm to allow users to pre-enable
-verification locally using ethtool before Tx preemption is enabled
-via ethtool or negotiated through LLDP with a link partner.
-
-Current Workflow:
-1. Enable pmac_enabled → Preemption supported
-2. Enable tx_enabled → Preemption Tx enabled
-3. verify_enabled defaults to off → Preemption active
-4. Enable verify_enabled → Preemption deactivates → Verification starts
-                         → Verification success → Preemption active.
-
-Proposed Workflow:
-1. Enable pmac_enabled → Preemption supported
-2. Enable verify_enabled → Preemption supported and Verify enabled
-3. Enable tx_enabled → Preemption Tx enabled → Verification starts
-                     → Verification success → Preemption active.
-
-Fixes: 35b288d6e3d4 ("net: ethtool: mm: sanitize some UAPI configurations")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chwee-Lin Choong <chwee.lin.choong@intel.com>
-Reviewed-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
-Reviewed-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
----
- net/ethtool/mm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/ethtool/mm.c b/net/ethtool/mm.c
-index 2816bb23c3ad..8a66ea3148d1 100644
---- a/net/ethtool/mm.c
-+++ b/net/ethtool/mm.c
-@@ -214,8 +214,8 @@ static int ethnl_set_mm(struct ethnl_req_info *req_info, struct genl_info *info)
- 		return -ERANGE;
- 	}
- 
--	if (cfg.verify_enabled && !cfg.tx_enabled) {
--		NL_SET_ERR_MSG(extack, "Verification requires TX enabled");
-+	if (cfg.verify_enabled && !cfg.pmac_enabled) {
-+		NL_SET_ERR_MSG(extack, "Verify enabled requires pMAC enabled");
- 		return -EINVAL;
- 	}
- 
--- 
-2.34.1
-
+Reviewed-by: Joe Damato <jdamato@fastly.com>
