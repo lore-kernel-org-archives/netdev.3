@@ -1,70 +1,70 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742CC243328
-	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 13:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EF82135AF
+	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 13:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736859951; cv=none; b=ndc+QGr3WTDxx22Rf3wy4tXXWn8T3ea9895flexORz5fWKDdh26XLWt4JY4Kt8bw5Jtdvp+jPfuI4RkP3YAX5WXJBU795jowwv6Nz5bCG/1zt4EpFstBdcFTNFRhavCbKvmOioDuZ8DL9XcR6n12E1B4CNUwpEoLYG4xv0y7b3U=
+	t=1736860109; cv=none; b=T+LqeUfCCCpwe1IIRiVXwtn9txluOaGAf9MwFcrjlqtDAuS78SJQ2mV+aLVUZc1KCLLYvGAsHD6GCsi4PLFQRWwCZ1O73s4nXCZZPLO8Y33bEb4YPwoxbRA0mOW2kKM2F4FoTgwVQcLs0CKb2Rv15l9zNNxnl+Z02L2xMDGOLGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736859951; c=relaxed/simple;
-	bh=DljJxNqz4rAgV/3YmFb7ej8BfAE9L119q6FzMUilKo4=;
+	s=arc-20240116; t=1736860109; c=relaxed/simple;
+	bh=uiCC/1Mbf2s7+vn1p3NnnSItnyOGPWYgQ1y6gQY/z+s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lndu2aaSuUhDTzH8s4l06sTG8ZtNhrnFVF7uLsAbQR2RR4bZOZX59X5GfHNt/rL+nh2XiG53LPqB4N86WvoUl7ZNzGqcRks6kAn8HB8G/zP85KCPPgNV+NWNeaCHYCGZnAcIWLlvEgEPYwzItNZEfwYwYtUrPaKf1D8/CwT2brw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pAFFyXfB; arc=none smtp.client-ip=209.85.208.41
+	 To:Cc:Content-Type; b=kYpjm8V/zPJpo9PW9RYzWMiF+bGdmuB5rXq0BxJQERiivA5x9ZmjrJ2sHcdUBKO8z7cGasIUyJPxxyNUO8CCCrJIRrvJ+k60MgoZIukL4naqHCkdTEvT7qwmzdjGBjejPhMSl4+hicuzHQObZcVO1EKGdHbC1BqmwfmxXZCXxbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r6NIwvfS; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pAFFyXfB"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5d88c355e0dso9579711a12.0
-        for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 05:05:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r6NIwvfS"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5d96944401dso9230562a12.0
+        for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 05:08:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736859948; x=1737464748; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1736860106; x=1737464906; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DljJxNqz4rAgV/3YmFb7ej8BfAE9L119q6FzMUilKo4=;
-        b=pAFFyXfBJC+i8a8+DEpZgyQtng1sERPPvDNgB+p8GmRopJ6ADu4m4vzGfH6CRyPgyR
-         UFBOcE1VHgllDtx63Ptd+Ck2Jgcl4zPIdXbxaFfqnmuOVaRAdtBQs8UaySbaE24d8wFU
-         pSKmFp+oy+bw9Kt76iKcd1GgHcLZR6Xh9baBm/6dqfiFXgVMsnrHL98gx/pV+xhq4+tq
-         OF5Nx5autaKZSNxD+09L4G6WRJPARe4dcSj3TlWu0un+hKpHJurISG75FsdfR/3YQXd+
-         uy6Mx2wVRSZ4nLfc9aOcX1BKbpAyXCw/Vq5TCpNtzouB5jvcW9vG4IG68w7cGbBjWQwO
-         GUFw==
+        bh=uiCC/1Mbf2s7+vn1p3NnnSItnyOGPWYgQ1y6gQY/z+s=;
+        b=r6NIwvfSCFe/DrfaOWbs3FiLp7aSEXLUmyRzZ28caBHPBojyCOot4hLNkxCBsr7dnm
+         WlS1JVA1TSNgZESblXeXPTh4jrOPhfjlY+mXbbAGeCQgcxqtxwHaXMugDlhlydtteGrz
+         icL5UBv8vnIUzF6p24HMdN+9jzMNBzjRVoOlyz/8ab3uSjqedYGwrUnylLYvIKJumI1b
+         H7wB0DyvEVygiViJ5BDZbLNAuVZ8VEcama9ZKzn/1idgGxUYXazR2tFAU7MqEYix7+JQ
+         VRQ6Lo7+Ag75BXNltIQhhBw3KlSeCbPRhqLgFzWftBUBasdlPiF+L+9XDcFt3ulgiH8Y
+         kWxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736859948; x=1737464748;
+        d=1e100.net; s=20230601; t=1736860106; x=1737464906;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DljJxNqz4rAgV/3YmFb7ej8BfAE9L119q6FzMUilKo4=;
-        b=L7jbbTo1kc4Kw+erZiqVlVU1IEo6e4TNRc1bSefpzdQyYOnOc43Q09WeOejRPU9P8t
-         MysVkKqWqrg5RjQbhdg6JzzMZE2DuteoZFJhmDKH7arxhVHzXqylOqb3yvY8tzqqhqcB
-         7QnS4sihjpSz+NYyX1beSrby8wVevx8OvwRjFnqSTRvUM+PjcIi4dOYm9mM6vrh8t0yh
-         MMzroi+VJlpI1v/M+3wNRmU2lea31fDJFO7Rins0ZSy7Y74GNAs4zsWHLJtSHcWor4wp
-         PfFA5qYdHN77+58/vPARWYsQM08TJE794mNbFnufSuNTDd25aqZ8gFwH0vUsRBwoeqTA
-         mnuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcV4Y6fIEEkeTESJpSDtLguigfz57GDdexb2rterM3UdfM0RwTdnEe+R5pwd4SHzLVenOnOlE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz71tT6GsxUSsMUa+FmWHmM5ULZXNMYkpTRyugolNv+bo2dZ+po
-	UPMNj6CSJN3/KrJCJw4/Pha5CzF8LTseuBT7fvEhvAgzPhAt5UjX/xT7zVTQ8kVNtPweufG3+JV
-	UrWeUJoqUuUzf2wF7Z316rfdV8abcfBKfiKTA
-X-Gm-Gg: ASbGncsAB/lCDmgC+uPolM1+2w/ekzJ1NUaKDr4ER8JfudwZN95T0xMA76En5N+q8Tn
-	4ERq55rjd5dw7+DMV4zf7RaKGNP6ek3+PbH55ng==
-X-Google-Smtp-Source: AGHT+IG1mrzfl/mCpiWN86nTDGPJCeOWpWvpg66ZEfU+aAWNszH31ik3CGTDrtqwjmQaikYFaKqGSZnWny7ldrg8X5U=
-X-Received: by 2002:a05:6402:4416:b0:5cf:c33c:34cf with SMTP id
- 4fb4d7f45d1cf-5d972e1c42amr23297010a12.15.1736859947587; Tue, 14 Jan 2025
- 05:05:47 -0800 (PST)
+        bh=uiCC/1Mbf2s7+vn1p3NnnSItnyOGPWYgQ1y6gQY/z+s=;
+        b=ZIn/fg4jAQnMYGaP5BwL5NgoVRcdl2o78iYCy/3sNNn+bz0rp8dShCg1Nt3esCAbWF
+         04MiYnEAsvJ5wZBDFbEf6W6151uKzrj9/4GHSfrDOqMhZec1cGbuUWSiSixdoZp98CUz
+         eoHkLQ3rLTTXc2nV3hhLh18t5aRHszG2PimduP3fzFgHqpUfxYO6w5pkRPBwzLCt3ssb
+         4Lr6BUNzkpoYC4PCCEGJCU1ngcG1JvI/E+hTf/VauLMoSy0PhWfbdx0y67KcmDw3/uQw
+         dEo4bZkguEeJezYTODMnlTmc7pBtjskbESBavQucot0jFlqWN3Y108Pbx7GECKFSPOw/
+         dUBw==
+X-Forwarded-Encrypted: i=1; AJvYcCVrVKc4Tc6kcLN6cAgKztY/KLH0k023DHe/lHkUxuV6u8vflo9SbTVmzpd/p/Y07+f82lKrfKs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFw4FLf2SMgFSAjSQCuxKXJtDe2GPNIZCvh2qv9zXLCjp+dd9j
+	l924F0Gkl+HQkk36krggM6AQcUIDTKo/Zy1UhiZKq4CQnNxFrJIHzq3eXndEZhgu5p6+uqQnLAd
+	442zXU1A0p51DgbsMqTbrFOHIpDawJc28dpoz
+X-Gm-Gg: ASbGnctYMJwnqjehHW2zj0GrgA/LNxhSU0SW5+9V2b+T6Upr3+PnwwHLql9g/jo+g9F
+	wXzP5Eb9DNqOl3pHFa2sjESoH1UmCquhhKs80VQ==
+X-Google-Smtp-Source: AGHT+IFvY3Qv6OcIDb0c8RQoZ3hbh27Jt9No4xK26zAAxWjnaPWcTBLdIreGupnBNEPH2VswM4s1J+vEXV/AkpyPLMc=
+X-Received: by 2002:a05:6402:348d:b0:5d9:6a8b:468f with SMTP id
+ 4fb4d7f45d1cf-5d972e6d1b4mr25901681a12.28.1736860105871; Tue, 14 Jan 2025
+ 05:08:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250114035118.110297-1-kuba@kernel.org> <20250114035118.110297-4-kuba@kernel.org>
-In-Reply-To: <20250114035118.110297-4-kuba@kernel.org>
+References: <20250114035118.110297-1-kuba@kernel.org> <20250114035118.110297-5-kuba@kernel.org>
+In-Reply-To: <20250114035118.110297-5-kuba@kernel.org>
 From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 14 Jan 2025 14:05:36 +0100
-X-Gm-Features: AbW1kvY_x3BgN8yx_65m-XzC4BxFs0Ao_PXyV8lJ-iubESwOYdnTMD7MsNb_PCs
-Message-ID: <CANn89iK_2YSXGU=A6RyyDHaHQg4-tFYjP+3u=uR0aJDn5EiyLA@mail.gmail.com>
-Subject: Re: [PATCH net-next 03/11] net: make netdev_lock() protect netdev->reg_state
+Date: Tue, 14 Jan 2025 14:08:15 +0100
+X-Gm-Features: AbW1kvZuDJ5edetrUosCDv6nWvO9y9-0KnK8oofqh2T3e20fDDJkSM2PwYQvpvw
+Message-ID: <CANn89iKMMhw94mi8sRWrXz3+zLVUUqe4EGum7t64AFmq=-Hszw@mail.gmail.com>
+Subject: Re: [PATCH net-next 04/11] net: add netdev->up protected by netdev_lock()
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: davem@davemloft.net, netdev@vger.kernel.org, pabeni@redhat.com, 
 	andrew+netdev@lunn.ch, horms@kernel.org, jdamato@fastly.com
@@ -74,17 +74,24 @@ Content-Transfer-Encoding: quoted-printable
 On Tue, Jan 14, 2025 at 4:51=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
 ote:
 >
-> Protect writes to netdev->reg_state with netdev_lock().
-> From now on holding netdev_lock() is sufficient to prevent
-> the net_device from getting unregistered, so code which
-> wants to hold just a single netdev around no longer needs
-> to hold rtnl_lock.
+> Some uAPI (netdev netlink) hide net_device's sub-objects while
+> the interface is down to ensure uniform behavior across drivers.
+> To remove the rtnl_lock dependency from those uAPIs we need a way
+> to safely tell if the device is down or up.
 >
-> We do not protect the NETREG_UNREGISTERED -> NETREG_RELEASED
-> transition. We'd need to move mutex_destroy(netdev->lock)
-> to .release, but the real reason is that trying to stop
-> the unregistration process mid-way would be unsafe / crazy.
-> Taking references on such devices is not safe, either.
-> So the intended semantics are to lock REGISTERED devices.
+> Add an indication of whether device is open or closed, protected
+> by netdev->lock. The semantics are the same as IFF_UP, but taking
+> netdev_lock around every write to ->flags would be a lot of code
+> churn.
+>
+> We don't want to blanket the entire open / close path by netdev_lock,
+> because it will prevent us from applying it to specific structures -
+> core helpers won't be able to take that lock from any function
+> called by the drivers on open/close paths.
+>
+> So the state of the flag is "pessimistic", as in it may report false
+> negatives, but never false positives.
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
 Reviewed-by: Eric Dumazet <edumazet@google.com>
