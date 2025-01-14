@@ -1,88 +1,116 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CE3236EC1
-	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 13:25:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53FE234D0B;
+	Tue, 14 Jan 2025 13:25:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736861123; cv=none; b=jX8G6TwR38WHHYCaLur92Yd8/gSII6W+dGt7o4oRTF4+6DYvjMIcI+Wga4eJDFfRVenbQq9D0PV0cGQiPaWDAdWBENRcFsEA3lx2O4wdUt4AMBBEWmK5NxTY5TSMeMGaRxH6GNfbUeFa54EXvh+nf5NgZFtZE7aYWfTNGrYlUgk=
+	t=1736861136; cv=none; b=g+Va4qCFDbd0EvfDx5UPFuNzCgRLy8OrqoftbfsWh6XVX+JX+MU4QF8JuUON439TbEkCKyyslcnUUsFm6J5fPCbVlFkiiex+jf6dny2Iq9TGZLqH5RrOnhatfsKUy4kZ5gSGrBQ9ccJY4F+nTt09Zttz+x93DkSOsRbmgJs7Hbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736861123; c=relaxed/simple;
-	bh=SV86mLfH2qulLkaFoaZuHBdXwGvvIm0KfODsbYPfvz8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fv1sbOGWo7jEbkkuy43rurhSYf0ONWVRG90RU8MeLmgGrPejc9TJlCpUKIBVHvHiilVaRCZ1lxhju6d4m96LAce3796Q6pFMKJRUBtMIuAcQpTNIY84hPBFBllzc+WYSnb6AG5OjlhQYWRJZv00Krx+eT2opJpOMaCmbElpDM7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xISF7MZ8; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1736861136; c=relaxed/simple;
+	bh=RJmrHncmAiYfQZgHBbGZ9N6pX/NJqX1TU++10eqVLQ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ukBUYIuvDRbwHYLiPY5pU93H4pHi37rXWCaTJF6q/7QauzvqViTjU0VgVoa8zCVyC4R8OuRcVL+ABsUMMpoxtbHOC7fZjXKcFnF5Co1FELK4M5zSOKhE4mr0gejC1rkkxtWD3VDcj2advT23AAw+W3tO3ldg6tolEobFC61+SBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=jxOejWNy; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xISF7MZ8"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-aaee2c5ee6eso967701266b.1
-        for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 05:25:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736861120; x=1737465920; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SV86mLfH2qulLkaFoaZuHBdXwGvvIm0KfODsbYPfvz8=;
-        b=xISF7MZ8CuN2PTXcD9XPNDHKH9tm2feDbGGdG/zwbaQVsXHKJ0kmDB1mvKrWLq6rUS
-         bveNWhgtDc+g9JqnLdH6M0FBafljRCGDDHJN5U0O9bN69bVDFxnA4Z6Xh5abjjgATRqa
-         tHtsrxx+aE5jXtyaosHHCf4sQkbu1lliO8f2HF5cH3hirTuBpodCweAJMuzoF92uEGpc
-         370zNBowBfk0FSmn9WBLc3o3g/V6WIbGgL66BPNEgP+ccAyLh1jYR1+D/U2a5FYZMH/d
-         t1x9pb1NFCvpnZV2C0CW5kucNlfZQMTKrGsCiX6T52wUY+d0oAZ3Y9cxcoyVA511m7e1
-         O2lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736861120; x=1737465920;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SV86mLfH2qulLkaFoaZuHBdXwGvvIm0KfODsbYPfvz8=;
-        b=WYmEdGkRAvmoybkNsAGtCZXhKb2lpvDoW7Jwg1Aj6AA/RStMXMwXqUCGwlrFylqUOh
-         yGd9LMSL1xgMlczaHbeHmp29jdUNYq0VmPKaz6TYX/cTYgNdIe83RYipbF2+d/BYva3u
-         yAa4IINFeRfug0BnP/mWi83/TaJDXOBu09ywhWLQZBj1FwRNMu+YkIQ6SZMeaOwOIfU8
-         6Nn2cy5OLVfrhkyEcR3dvb5vNwtF1jrMt9MECfhyEQOdORU12lzISyyqXFojii//wnfI
-         oaELjcTba1l9cERtuzo7hOiqvb2KpR/ceq35KkpsSNvJPYF2hsJ0XBCj42nXEFBFAV9+
-         clvw==
-X-Forwarded-Encrypted: i=1; AJvYcCUPR46mtTOll26ybHhKwjX7z9/Lc/yChvkbKsJ8YjptH2rQO3sJAeudRnLFhwBy4CPyfskKpXw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzn+sMNmfankX+X/wmXu/s58afGla8gTm5/eYaDftammqqPof2o
-	vY8EcdYIqmSRE1amLuJOObZnfTrpXI/zsp2V0TSQtE0rGj2kltVMig53qPc42xrsX0EW+c03Atn
-	bLH45yqpLwQcAopuC/vQJfvYfchwpMka7Mtcb
-X-Gm-Gg: ASbGncsancE6LDlzS1TAE4+tHJJWwSNpxlqxVX9c5gwg8oXXTGbdNbsgTMQOnxvWpSd
-	A1xguupQcokdr6OVMaQ8TvM0DJjsCIuDI3bh5eA==
-X-Google-Smtp-Source: AGHT+IG6+0zkonIw+2h9nrkHRFstNyak85Mve3pFwFCrg26ZQs/niCLBKhqu6NV/iXbHAtDAfxtCLSgtYfSm12WEhQc=
-X-Received: by 2002:a17:907:7d94:b0:aab:8a9d:6d81 with SMTP id
- a640c23a62f3a-ab2abc6e270mr2038851866b.44.1736861119878; Tue, 14 Jan 2025
- 05:25:19 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="jxOejWNy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=W1HRi
+	UHKkNK4KFvLch5WDTwcRDvo+NOPbJJW0YrzMOo=; b=jxOejWNyRUUQNiDaTtAGO
+	Ek5cxsEvB6UG1cF9+OQgqPX/W/A18Ad1puBOeT9Vn5JN6EezsXfI011poKU9PmuX
+	4DqqzC88n+oXWS93RlqwYa1ZuHftTGkgIkjO8qtyDBHrUEdmKiV9vBu23YRdtiSK
+	8VikMwRjCNSZg9BI3ZGkIQ=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgCn_E1RZYZnl71AAw--.33013S5;
+	Tue, 14 Jan 2025 21:24:15 +0800 (CST)
+From: Jiayuan Chen <mrpre@163.com>
+To: bpf@vger.kernel.org,
+	jakub@cloudflare.com,
+	john.fastabend@gmail.com
+Cc: netdev@vger.kernel.org,
+	martin.lau@linux.dev,
+	ast@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	song@kernel.org,
+	andrii@kernel.org,
+	mhal@rbox.co,
+	yonghong.song@linux.dev,
+	daniel@iogearbox.net,
+	xiyou.wangcong@gmail.com,
+	horms@kernel.org,
+	corbet@lwn.net,
+	eddyz87@gmail.com,
+	cong.wang@bytedance.com,
+	shuah@kernel.org,
+	mykolal@fb.com,
+	jolsa@kernel.org,
+	haoluo@google.com,
+	sdf@fomichev.me,
+	kpsingh@kernel.org,
+	linux-doc@vger.kernel.org,
+	Jiayuan Chen <mrpre@163.com>
+Subject: [PATCH bpf v6 3/3] strparser, docs: Add new callback
+Date: Tue, 14 Jan 2025 21:23:11 +0800
+Message-ID: <20250114132312.49407-4-mrpre@163.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250114132312.49407-1-mrpre@163.com>
+References: <20250114132312.49407-1-mrpre@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250114035118.110297-1-kuba@kernel.org> <20250114035118.110297-12-kuba@kernel.org>
-In-Reply-To: <20250114035118.110297-12-kuba@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 14 Jan 2025 14:25:09 +0100
-X-Gm-Features: AbW1kvboT8eHHM3kTg2uGJd948NGmEkMU9iip547WDv2Um0A9rWNrC9MfQd-EW0
-Message-ID: <CANn89iJXZfsPC_fSziLW_aUjO3sEmRZV-hRKYzQS4NSad0uDsg@mail.gmail.com>
-Subject: Re: [PATCH net-next 11/11] netdev-genl: remove rtnl_lock protection
- from NAPI ops
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, pabeni@redhat.com, 
-	andrew+netdev@lunn.ch, horms@kernel.org, jdamato@fastly.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgCn_E1RZYZnl71AAw--.33013S5
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKryDXFyruFy5GF4rAw17trb_yoWkCrcEka
+	yS9Fs5GFykZF43KayUua1kWr93GrWI9r18ZF4rtFZxC348XrykXF95Jrn5Zr18WrW3ury3
+	K3s5JFyfJr129jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRNsjj7UUUUU==
+X-CM-SenderInfo: xpus2vi6rwjhhfrp/1tbiDxfUp2eGWhbp4gABsM
 
-On Tue, Jan 14, 2025 at 4:51=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> NAPI lifetime, visibility and config are all fully under
-> netdev_lock protection now.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+sockmap with strparser need customized read operations to fix copied_seq
+error.
 
-Very nice series Jakub, thanks a lot.
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+---
+ Documentation/networking/strparser.rst | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-Hopefully we can use this per device lock in more contexts soon (ethtool...=
-)
+diff --git a/Documentation/networking/strparser.rst b/Documentation/networking/strparser.rst
+index 6cab1f74ae05..e41c18eee2f4 100644
+--- a/Documentation/networking/strparser.rst
++++ b/Documentation/networking/strparser.rst
+@@ -112,7 +112,7 @@ Functions
+ Callbacks
+ =========
+ 
+-There are six callbacks:
++There are seven callbacks:
+ 
+     ::
+ 
+@@ -182,6 +182,15 @@ There are six callbacks:
+     the length of the message. skb->len - offset may be greater
+     then full_len since strparser does not trim the skb.
+ 
++    ::
++
++	int (*read_sock)(struct strparser *strp, read_descriptor_t *desc,
++                     sk_read_actor_t recv_actor);
++
++    read_sock is called when the user specify it, allowing for customized
++    read operations. If the callback is not set (NULL in strp_init) native
++    read_sock operation of the socket is used.
++
+     ::
+ 
+ 	int (*read_sock_done)(struct strparser *strp, int err);
+-- 
+2.43.5
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
