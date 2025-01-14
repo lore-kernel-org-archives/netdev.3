@@ -1,89 +1,169 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33E7236A6D
-	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 12:50:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54AD22DC30;
+	Tue, 14 Jan 2025 12:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736859040; cv=none; b=FJAaVYKn15Y1WH7daf9F1DWLk7sQsA5nldwV2ABhXVFpnfo0US6Ho+vaUoqYKxOfdLqdNusPWt0VSsabBB8SlWQYYqljSSmfnRQ24OQW/hxUdNGA3vrLgozXwSDfmN49mi//1pBcY003P9wmbSIub86InHMN8+JNs7uHrKRps+Q=
+	t=1736859124; cv=none; b=iKhn/s825F/rEs48H6mTe/0KxER5qXH0YiPBYzGMVXoNZWf++k+47DuInxgVxMn9SAihvQRg9/kxyC78A2oT7b67x21O7tom3eCczPn5Fgw6wUtJwuFkCsDpzkBZi0GK+5zwkZy1t7RfQKFSiMN3V5ftiQIQ0ht96iVqUgk0Y38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736859040; c=relaxed/simple;
-	bh=8yV2djqU9qw17t4pFmsvjclk+CtUGHBErb91Z2cUiCk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AuIyBHGcNXIMCo4+zgg5xL0b+f0tZGYuIOnEWlUhqO4ESXi89OvPhOd1dEtsus/j/aRezwNAQXPPk2NbBLf0ihvPW8YqAhAc98re8R95/FYUb4eIreg0BMdzrDZpst6DjcxKFBqZyPE/148Hve85MJB7UeVwnaU+LxOfTTh36UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R4O7Q2bR; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1736859124; c=relaxed/simple;
+	bh=SYfZWK9TvFTZe6In6RKVq7NCBphTzJrl+/lNUSQlifE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OTQnMrIOaq1qJVEYhwORJaCqJveA+SJsZhZfYlxL9V8vwPj9HdEVYWvYX/et8W5hyg6qKxEeOsZ+pVfhzKIdMr/cGVgFBJF/ynF+SX68vuMyC+TW3flT8Jdcr8zxafsX5+nCJl3oxf89qBf5JHsH5sSOxnS/fvWTv0jTuPY+gME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=BhfM8vgI; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R4O7Q2bR"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5d3bdccba49so9244873a12.1
-        for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 04:50:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736859037; x=1737463837; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8yV2djqU9qw17t4pFmsvjclk+CtUGHBErb91Z2cUiCk=;
-        b=R4O7Q2bR48Pp2f1flihdN5j7M3EjzaJuDURt/4oTf6XY9Je9jGfzaVhctuVJrznPfZ
-         vohR3te2M9QWxxjMrRl5LbjpEw4QWuP81xYGAFKfBct/ARVZ5eJ9iKpgX/vk2cqYzdQ3
-         P5UKGm6MjoDDlaDlUC8+nwNVZtmmfYrGoTZMLp3G0NS4PK2MfcGKeqrnxQesBQ7SczzP
-         qbeTDnSKn80UTWSNPBuVD1QZhz9jh2C91RWADL5QlzJvOJl/1txzlY/F7oENT5AaWb07
-         002yz1Zz7HGSTA/zg3M6/tQoStTakq0P99s5rcyCaPN++FHPIJd0ULvxKhgnzTnvlO0n
-         VaPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736859037; x=1737463837;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8yV2djqU9qw17t4pFmsvjclk+CtUGHBErb91Z2cUiCk=;
-        b=REgt29ByQlHz2fPvW9SS15C17hTGv+2qV8fCyGyYEHkKzSuIF1rROOH5WTFgRcXcLh
-         GeXECnF04RCV/LvZs+fY1qUUggs0X6jax+GHHLHm64XDjzWdO1vGrS34d72NuQUojyAX
-         V80S1YHZG50C7l3mQh8CSGmuYNXCRlKZ1FJLjdN06HLEOl9kEpYLmIIP+k9uFGYISY4Y
-         LHTwhm9cCWkoxOVPkevdMZXLxMp1UOotB+GLpfATWqh2QfjIoLJVqexj6i4th5wrYLN2
-         CAHVLztCJVrxOna1w7sNjQKdQ3gVonnmyz1Ho1Co9tVo9tJxariSaZMCyjdm37vy2+aJ
-         Ya+g==
-X-Forwarded-Encrypted: i=1; AJvYcCUvdp4c+eEW7DZPZr40//An8nDGlPqbr+5JCqXSwaANmvi4+A2ny+KFZfD1DdEHWd5Spc4M7oU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/zvM9Pt6CvP393eG+Qspz0aD5R8qvp5DVGjr9XicEFH8SlBvq
-	vk801deywDJmLrNgizhubCQ8NxBIECb8ogmOGqq1HyB9ByKFQZ8dLp8ZAaGOFj6yA1xueSYvpb2
-	DbA4ptgW+sJcLWKO2yaRm8zjZxCQ/PWjwON/X
-X-Gm-Gg: ASbGncukQ0hIjmlSqCytSAb95qldu8jSfSRYYdWWufVwI7qWy6Pdk6yjNMST4UBsgci
-	Xe8/Tp13NyfZxTyx2GKIG0OCkT7Mi6tYLy2CEKA==
-X-Google-Smtp-Source: AGHT+IGYyAbBOlnb7zIb4T64sA/ACDrhCmZcPRgXJP2AU9qaPLn0jOyb72soXGCgDfV8qiDBIAmKCpoDrQow5zFX6aU=
-X-Received: by 2002:a17:907:60d3:b0:aa6:81dc:6638 with SMTP id
- a640c23a62f3a-ab2ab6fe4f4mr2157378566b.16.1736859036988; Tue, 14 Jan 2025
- 04:50:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="BhfM8vgI"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50EB5hh3006236;
+	Tue, 14 Jan 2025 04:51:38 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=A
+	t3C1WKDtG6S1RY1nYk1VnH/7KZD3XT6PBtA9dylKOg=; b=BhfM8vgI4ikw9wm0W
+	6UGWxZqcZ/cy0yBKvpt9LWLN3Ip3beoENKxhSiT0WYhU+dLf8z2xvKHhcWO+NZg2
+	OH6Btpg8VC8XfKu0fTdqm6Q14x0cS4uov9LdPpFNN1JJQkR1vYAmLFUgC5k4un1P
+	Kbvgc1n6cvOUDgsP7HnV3QkTilHVnNksPS3CgCi/tzxd0CnKXDd3t5GL3QgtVqo6
+	LGR1mIraJ8YTPOxDTgwXAMRr1cnzwhLfTkZ9OhtDNZr717Ob8Fya6t17Isam+hOH
+	o6UV2OKGoNBNy52V8lmWR1l3n9aekCn9E1Ybd/t3EV6yGQzOng88x3jVuEbZ3gHl
+	zm2IQ==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 445prd0547-3
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jan 2025 04:51:38 -0800 (PST)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Tue, 14 Jan 2025 04:51:30 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Tue, 14 Jan 2025 04:51:30 -0800
+Received: from ubuntu-PowerEdge-T110-II.sclab.marvell.com (unknown [10.106.27.86])
+	by maili.marvell.com (Postfix) with ESMTP id 3A74F5B6927;
+	Tue, 14 Jan 2025 04:51:30 -0800 (PST)
+From: Shinas Rasheed <srasheed@marvell.com>
+To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <hgani@marvell.com>, <sedara@marvell.com>, <vimleshk@marvell.com>,
+        <thaller@redhat.com>, <wizhao@redhat.com>, <kheib@redhat.com>,
+        <konguyen@redhat.com>, <horms@kernel.org>, <einstein.xue@synaxg.com>,
+        "Shinas
+ Rasheed" <srasheed@marvell.com>,
+        Veerasenareddy Burru <vburru@marvell.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        "Paolo
+ Abeni" <pabeni@redhat.com>,
+        Abhijit Ayarekar <aayarekar@marvell.com>,
+        Satananda Burla <sburla@marvell.com>
+Subject: [PATCH net v7 2/4] octeon_ep: remove firmware stats fetch in ndo_get_stats64
+Date: Tue, 14 Jan 2025 04:51:22 -0800
+Message-ID: <20250114125124.2570660-3-srasheed@marvell.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250114125124.2570660-1-srasheed@marvell.com>
+References: <20250114125124.2570660-1-srasheed@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250114035118.110297-1-kuba@kernel.org> <20250114035118.110297-2-kuba@kernel.org>
-In-Reply-To: <20250114035118.110297-2-kuba@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 14 Jan 2025 13:50:26 +0100
-X-Gm-Features: AbW1kvZlH9JTJXksVqSuQcWjkHsdTdB6fVFAjbB7Owenq6Su1nxYrFj9JV2pal8
-Message-ID: <CANn89iKUMkWZQHspZ2r26_ft9zp0wy_yZs96kn2fWFVcNuocdA@mail.gmail.com>
-Subject: Re: [PATCH net-next 01/11] net: add netdev_lock() / netdev_unlock() helpers
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, pabeni@redhat.com, 
-	andrew+netdev@lunn.ch, horms@kernel.org, jdamato@fastly.com, 
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, jiri@resnulli.us
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: Xx-kcL3bVXgSmVHJ7n0hcK_70p_QNgnk
+X-Proofpoint-ORIG-GUID: Xx-kcL3bVXgSmVHJ7n0hcK_70p_QNgnk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.687,Hydra:6.0.235,FMLib:17.0.607.475
+ definitions=2020-10-13_15,2020-10-13_02,2020-04-07_01
 
-On Tue, Jan 14, 2025 at 4:51=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> Add helpers for locking the netdev instance and use it in drivers
-> and the shaper code. This will make grepping for the lock usage
-> much easier, as we extend the lock to cover more fields.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: anthony.l.nguyen@intel.com
-> CC: przemyslaw.kitszel@intel.com
-> CC: jiri@resnulli.us
-> ---
+The per queue stats are available already and are retrieved
+from register reads during ndo_get_stats64. The firmware stats
+fetch call that happens in ndo_get_stats64() is currently not
+required
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+The warn log is given below:
+
+[  123.316837] ------------[ cut here ]------------
+[  123.316840] Voluntary context switch within RCU read-side critical section!
+[  123.316917] pc : rcu_note_context_switch+0x2e4/0x300
+[  123.316919] lr : rcu_note_context_switch+0x2e4/0x300
+[  123.316947] Call trace:
+[  123.316949]  rcu_note_context_switch+0x2e4/0x300
+[  123.316952]  __schedule+0x84/0x584
+[  123.316955]  schedule+0x38/0x90
+[  123.316956]  schedule_timeout+0xa0/0x1d4
+[  123.316959]  octep_send_mbox_req+0x190/0x230 [octeon_ep]
+[  123.316966]  octep_ctrl_net_get_if_stats+0x78/0x100 [octeon_ep]
+[  123.316970]  octep_get_stats64+0xd4/0xf0 [octeon_ep]
+[  123.316975]  dev_get_stats+0x4c/0x114
+[  123.316977]  dev_seq_printf_stats+0x3c/0x11c
+[  123.316980]  dev_seq_show+0x1c/0x40
+[  123.316982]  seq_read_iter+0x3cc/0x4e0
+[  123.316985]  seq_read+0xc8/0x110
+[  123.316987]  proc_reg_read+0x9c/0xec
+[  123.316990]  vfs_read+0xc8/0x2ec
+[  123.316993]  ksys_read+0x70/0x100
+[  123.316995]  __arm64_sys_read+0x20/0x30
+[  123.316997]  invoke_syscall.constprop.0+0x7c/0xd0
+[  123.317000]  do_el0_svc+0xb4/0xd0
+[  123.317002]  el0_svc+0xe8/0x1f4
+[  123.317005]  el0t_64_sync_handler+0x134/0x150
+[  123.317006]  el0t_64_sync+0x17c/0x180
+[  123.317008] ---[ end trace 63399811432ab69b ]---
+
+Fixes: 6a610a46bad1 ("octeon_ep: add support for ndo ops")
+Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
+---
+V7:
+  - No changes
+
+V6: https://lore.kernel.org/all/20250110122730.2551863-3-srasheed@marvell.com/
+  - Corrected patch to apply properly
+
+V5: https://lore.kernel.org/all/20250109103221.2544467-3-srasheed@marvell.com/
+  - No changes
+
+V4: https://lore.kernel.org/all/20250102112246.2494230-3-srasheed@marvell.com/
+  - No changes
+
+V3: https://lore.kernel.org/all/20241218115111.2407958-3-srasheed@marvell.com/
+  - Added warn log that happened due to rcu_read_lock in commit message
+
+V2: https://lore.kernel.org/all/20241216075842.2394606-3-srasheed@marvell.com/
+  - No changes
+
+V1: https://lore.kernel.org/all/20241203072130.2316913-3-srasheed@marvell.com/
+
+ drivers/net/ethernet/marvell/octeon_ep/octep_main.c | 10 ----------
+ 1 file changed, 10 deletions(-)
+
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+index fdc549f727c4..b622d7146847 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+@@ -1006,20 +1006,10 @@ static void octep_get_stats64(struct net_device *netdev,
+ 		rx_bytes += oct->stats_oq[q].bytes;
+ 	}
+ 
+-	if (netif_running(netdev))
+-		octep_ctrl_net_get_if_stats(oct,
+-					    OCTEP_CTRL_NET_INVALID_VFID,
+-					    &oct->iface_rx_stats,
+-					    &oct->iface_tx_stats);
+-
+ 	stats->tx_packets = tx_packets;
+ 	stats->tx_bytes = tx_bytes;
+ 	stats->rx_packets = rx_packets;
+ 	stats->rx_bytes = rx_bytes;
+-	stats->multicast = oct->iface_rx_stats.mcast_pkts;
+-	stats->rx_errors = oct->iface_rx_stats.err_pkts;
+-	stats->collisions = oct->iface_tx_stats.xscol;
+-	stats->tx_fifo_errors = oct->iface_tx_stats.undflw;
+ }
+ 
+ /**
+-- 
+2.25.1
+
