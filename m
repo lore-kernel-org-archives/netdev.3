@@ -1,226 +1,72 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mail.bonusplay.pl (unknown [132.226.202.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3108413C695;
-	Tue, 14 Jan 2025 22:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B103212FB6
+	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 22:09:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=132.226.202.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736892519; cv=none; b=XQxKE63scQIkCBU0xavI6QE9MYFaKMpqSKaP9Rn8u4lm0+b5GBya1GjMa4bsWPnjBjaNReuBU4PgS1XRNsgHQQpRSFTxWHuWxYyzHfZ7zDe8Ep+7dSPrHf54jcon+TgQveFAb7JPL59/MEmw0HaQe0IZjJ+AWFgX/2OH4CGAUrM=
+	t=1736892569; cv=none; b=hvZYEKc3WDd98c+aTC6L5zqhD4RK9il2JdlHJDbZrQmTDIT4hsgHHkRuU6x+zrdNfPGvlpHDoadXgEDmuSgMVSr2SjJTBt+0qBGTMulYLxRiMNPADnYW0yMWlE/85KUtGoOR9mQiR9uC7v2diiO0Skf0WhRHzooIGXU04jz+Z0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736892519; c=relaxed/simple;
-	bh=RjaH06Ur5Nsy32iWym5oZcS0dz6r2UxIy1BQ1RRKS0s=;
+	s=arc-20240116; t=1736892569; c=relaxed/simple;
+	bh=07l9m4MOpdkOhMzymkbAbJcpxTym7/9yTGo2BBVId0Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Sl7BhG8lvSX3EGmqgKebCmF+qihcIU4gXjJV7Yg6OtWRZZkgpm1qG7YUDO8t0tjQ2OVW2ibDEiktJ3NEaHykuU7UHytGcaZ+maBqdEO/6dntnV/cedmq7b2jVdRuEz+H66ubfGF+YZiSJjZM0ctbRdexg7IquoJwB7T/teuiVBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rzD4kMaQ; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=HtigfUDdg+kU3oCJ7NhNEX7UeOLYQXBjiic7KVfeCJrea+emyTXCg54EAsK8WH3kDT6GFiA6ww+V4lAVGGBuTHlyu9UILbifzB6Y/EFyHFgR+Kul/ZkmJtFYw2DTrxSDJ5tjX52MsR7AL6aThrEbDtvDJy0n25XuWw1vTAfWjrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bonusplay.pl; spf=pass smtp.mailfrom=bonusplay.pl; dkim=pass (2048-bit key) header.d=bonusplay.pl header.i=@bonusplay.pl header.b=RQv6yCk6; arc=none smtp.client-ip=132.226.202.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bonusplay.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bonusplay.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rzD4kMaQ"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50EFUS7u020161;
-	Tue, 14 Jan 2025 22:08:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=H9FTzM
-	RGKReVo8rRd51mMDR1WUTZm8UGLKzKl1Ziuew=; b=rzD4kMaQ+5YxCEChLLPEXm
-	W6guXK23lS9Fn9Uv4NQ5UaODFoctFHzatf8ruqrMX2XLg5+HDXTB2DLjyTnk3Q3I
-	J0Lb5vsOjO+5V/cl3pxC71UwDhEhnZ8XbMtJX4mnotc7f0DciITaDpaTqy4UyNp0
-	5Ki5BM8U+xXaP/wqhOjG79+l2MmrnitWTUpjS6FzrXCb1HslWN2V6uMJumGIWmtc
-	+HTvzG7Wnf5DIjDpsdaHyL942COFy+2uKZ9ms72AlN59FjmFiLypqOa2CiIwIFnn
-	35yb4UHbo8OoKUTAgGPWfavgjGzu3WJd5nrw3dgl9prok8M2kmpNyCB3hmEz4Xlg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 445tmghpby-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 22:07:59 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50EM7pTd011791;
-	Tue, 14 Jan 2025 22:07:59 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 445tmghpbv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 22:07:59 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50EIvnK6001110;
-	Tue, 14 Jan 2025 22:07:58 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44456jw2r8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jan 2025 22:07:58 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50EM7vp428050170
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Jan 2025 22:07:57 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7373558054;
-	Tue, 14 Jan 2025 22:07:57 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 43E5C5805A;
-	Tue, 14 Jan 2025 22:07:56 +0000 (GMT)
-Received: from [9.61.120.113] (unknown [9.61.120.113])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 14 Jan 2025 22:07:56 +0000 (GMT)
-Message-ID: <6eb91fb6-eac9-4386-98c8-196ac3d51e7b@linux.ibm.com>
-Date: Tue, 14 Jan 2025 16:07:55 -0600
+	dkim=pass (2048-bit key) header.d=bonusplay.pl header.i=@bonusplay.pl header.b="RQv6yCk6"
+Authentication-Results: mail.bonusplay.pl;
+	auth=pass (plain)
+Message-ID: <0f41d81b-8ba3-464f-b0d0-701b3bfc3694@bonusplay.pl>
+Date: Tue, 14 Jan 2025 23:09:24 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/9] bindings: ipmi: Add binding for IPMB device intf
-To: corey@minyard.net
-Cc: minyard@acm.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com,
-        openipmi-developer@lists.sourceforge.net, netdev@vger.kernel.org,
-        joel@jms.id.au, andrew@codeconstruct.com.au,
-        devicetree@vger.kernel.org, eajames@linux.ibm.com,
-        linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-References: <20250113194822.571884-1-ninad@linux.ibm.com>
- <20250113194822.571884-3-ninad@linux.ibm.com>
- <Z4aUyX8g-JprzLpd@mail.minyard.net>
+Subject: Re: be2net: oops due to RCU context switch
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Ajit Khaparde <ajit.khaparde@broadcom.com>,
+ Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>,
+ Somnath Kotur <somnath.kotur@broadcom.com>, netdev@vger.kernel.org
+References: <515516c7-e6e9-450a-9a74-685a60d64497@bonusplay.pl>
+ <20250114110849.0eb0ff2c@kernel.org>
 Content-Language: en-US
-From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <Z4aUyX8g-JprzLpd@mail.minyard.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: C0WHlT9TpC8xSLH_NeldTho0i_3p3X2Z
-X-Proofpoint-ORIG-GUID: isMDwKsHEYgDk1WkKrzf-SSVOFPHI0hO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-14_07,2025-01-13_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- lowpriorityscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
- adultscore=0 mlxlogscore=999 mlxscore=0 spamscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501140166
+From: Bonus <kernel@bonusplay.pl>
+In-Reply-To: <20250114110849.0eb0ff2c@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received: from localhost (Unknown [127.0.0.1])
+	by mail.bonusplay.pl (Haraka) with ESMTPSA id D2231BD6-852A-4318-8CB0-EECC642467E2.1
+	envelope-from <kernel@bonusplay.pl>
+	tls TLS_AES_256_GCM_SHA384 (authenticated bits=0);
+	Tue, 14 Jan 2025 22:09:25 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bonusplay.pl;
+ h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
+ Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
+ s=s20211118323; t=1736892565;
+ bh=VM65KAkYlMAfAmyzWffb78oPVj+tlsg7tj2czRcDqTE=;
+ b=RQv6yCk63MD7uadDb5XVSvlVy1XLEUKqy2WT7YsvFfAzv5NCKJdhHmdxXj2L3qfnvxaG91sDb
+ 0NE0zlUoz3HGMjglgWr0xwC9btcnWmWQAMo48R0xsxREj+o/9cPWzpt+XifGj8uC9D1/8Ua1zOQ
+ a4Gz4uJu17XoOyqSwRQKyCOTJgbfSU7MrpayalYN2xgn6TIpIUOeClrx2T4z7JRoqnCvyxZLngD
+ F/mhM+oyELi4kXLkl9nV3/QNvizaynErrJ7InlQ0tpCwODydmunAaiXaTnQnQwsZ1u1wrz9dr9s
+ dlOjCoSHi71qQR4wquLQaFcTonYd/js+N7V59VtcfebA==
 
-Hello Corey,
+On 1/14/25 20:08, Jakub Kicinski wrote:
+> On Tue, 14 Jan 2025 11:37:36 +0100 Bonus wrote:
+>> I've encountered a regression with kernel 6.12 immediately after 
+>> booting. I don't encounter it on 6.6. If required i can try to bisect 
+>> it, as it is very easy to reproduce.
+> Hm. Bisection would be helpful. I scrolled back 2 years, I don't see
+> anything very relevant. The driver sees very few changes these days.
+> ndo_bridge_getlink has always been called under RCU.
 
-Thanks for the review.
+I probably should have done debugging on my side, before reporting this here.
+Turns out, this is somehow NVIDIA's driver fault.
+Blacklisting it and booting with nouveau fixes the problem.
 
-On 1/14/25 10:46, Corey Minyard wrote:
-> On Mon, Jan 13, 2025 at 01:48:12PM -0600, Ninad Palsule wrote:
->> Add device tree binding document for the IPMB device interface.
->> This device is already in use in both driver and .dts files.
->>
->> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
->> ---
->>   .../devicetree/bindings/ipmi/ipmb-dev.yaml    | 55 +++++++++++++++++++
->>   1 file changed, 55 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/ipmi/ipmb-dev.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/ipmi/ipmb-dev.yaml b/Documentation/devicetree/bindings/ipmi/ipmb-dev.yaml
->> new file mode 100644
->> index 000000000000..136806cba632
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/ipmi/ipmb-dev.yaml
->> @@ -0,0 +1,55 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/ipmi/ipmb-dev.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: The Intelligent Platform Management Bus(IPMB) Device
->> +
->> +description: |
->> +  The IPMB is an I2C bus which provides interconnection between Baseboard
-> "Baseboard -> "a Baseboard"
-Fixed.
->
->> +  Management Controller(BMC) and chassis electronics. The BMC sends IPMI
->> +  requests to intelligent controllers like Satellite Management Controller(MC)
->> +  device via IPMB and the device sends a response back to the BMC.
-> device -> devices
-> "a response" -> responses
-Fixed
->
->> +  This device binds backend Satelite MC which is a I2C slave device with the BMC
-> You use IPMB devices on both the BMC and the MCs.  The sentence above is
-> a little confusing, too.  How about:
->
-> This device uses an I2C slave device to send and receive IPMB messages,
-> either on a BMC or other MC.
-Changed
->
->> +  for management purpose. A miscalleneous device provices a user space program
-> Misspelling: miscellaneous
-Fixed.
->
->> +  to communicate with kernel and backend device. Some IPMB devices only support
-> "kernel" -> "the kernel"
-Fixed
->
->> +  I2C protocol instead of SMB protocol.
-> the I2C protocol and not the SMB protocol.
->
-> Yes, the English language uses way too many articles...
->
-> That is a lot of detail, but it looks good beyond what I've commented
-> on.
-Changed.
->
->> +
->> +  IPMB communications protocol Specification V1.0
->> +  https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ipmp-spec-v1.0.pdf
->> +
->> +maintainers:
->> +  - Ninad Palsule <ninad@linux.ibm.com>
->> +
->> +properties:
->> +  compatible:
->> +    enum:
->> +      - ipmb-dev
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  i2c-protocol:
->> +    description:
->> +      Use I2C block transfer instead of SMBUS block transfer.
->> +    type: boolean
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    i2c {
->> +        #address-cells = <1>;
->> +        #size-cells = <0>;
->> +
->> +        ipmb-dev@10 {
->> +            compatible = "ipmb-dev";
->> +            reg = <0x10>;
-> I'm not sure of the conventions around device tree here, but the reg is
-> not used in the driver and it will always be the I2C address that
-> already in that node just one level up.  It does not serve any purpose
-> that I can see.  My suggestion would be to remove it.
+Kind Regards,
+Bonus
 
-There are some boards already using reg so I will not be able to remove
-
-but I have updated the example which reflects what those boards are doing
-
-  which indicates that node address is ORed with I2C slaved address.
-
-Regards,
-
-Ninad
-
->
-> -corey
->
->> +            i2c-protocol;
->> +        };
->> +    };
->> -- 
->> 2.43.0
->>
