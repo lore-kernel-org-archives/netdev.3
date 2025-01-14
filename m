@@ -1,70 +1,76 @@
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C86231A48;
-	Tue, 14 Jan 2025 03:24:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A31A231A54
+	for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 03:30:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736825053; cv=none; b=sCdoEpBEPZA5MhJRAATSmQFb+eG2WbARYvobeNW78rT+kR5+ScUwn7rizqt66XVjvXTEd78E4fIwBx8jioIx68rXS9VeRA/h7+OpyelI/j0CY0NsrDPityJtbU/tp7ZB4psrgJ2M7UDp/GTfCIkuYZ0M4UAYpStnyOg1+NsGKgA=
+	t=1736825414; cv=none; b=eLMfQHjJbTtmgNfbJjaSV+JrevubeE5r7fA6JnUYAYuzT/jSdL4Fg6TR+cdAzdZ9jAzDzM3JvHFa0QMnhIZCgAewIkW/qXj0/SU0EGxB+8c/0THFF0f+QkQv+uV/OZVorp5ixvhgfjv4UKzkNbEmJiBrqm3iPGbpRw7YNJsUUFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736825053; c=relaxed/simple;
-	bh=5eB+v5y7a0S7ozASMJhJBZW6/n1IaNxrt/MFjsqxWJE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T14Sf8Kf4eFXCbu7WXM+l6NjZA3K6fbndOPEE73WJ5jqm0OcPYw1+Ek+ARcR0488503+dGonOzVyBbKFz7eNImGjvwIl6Lb5Bs58+8P6c7JGiG8pjLUN2pnNC16jtPT57QyCEjjFZiG2o5UhQgrRJ2dwtCPxg+nNKgH+GpqE9Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=XVo4zAoi; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+	s=arc-20240116; t=1736825414; c=relaxed/simple;
+	bh=C+wP2ZORcXQzXbgPyq7FVItp0pPTbPN3+of1gXWm3v0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=VifmJhA2jtN1k2P/ULE3ecT03JIrUIwk8m9EMX/hbnGNCsRA02yFf/MRoE/8KMtvGdd+ha/zUebCjpEFF0l+JF8o+AGV/uxZIrCIqpt480enS1SuLsMHBW3mYJugf367WWEx9vdRsGuZ9bvUOlDxArX9T7VgFEAJPqrLm6AjMK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lx1ChFbH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="XVo4zAoi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=m/L7P+qbDs+wGT6qC6Jzb9UGmeaK50Kc/N50docTS6E=; b=XVo4zAoiyt9SieJM+3CKhNVidz
-	2tVB6liBKtWp65ucOvXT172qF7Wenh4uIh3G/LRb16mHg7fCt0934Cbt6TcgZeddN20wYvmiqOMfb
-	m3Of1ogSPvMaX4pORktaUUzIomZcBVY5xNWlW6FinuhvizMMUtRzcillYAKsZ87Wx2pgQWQZ3OaRK
-	Ew9T9mqdHyYK+F24OP2hkrpZsFjvY3FbivSBMzMLxuV7XIy5XOOryhwkAUUkcEN+Nzoolp4y6l0qj
-	NGNartVZfCz8qNWcO901ND4A/U3Bsm4CVFQAmDixPdHURlgWPHWbBxU2Eg4ZAdZVenHQqN60xCe6L
-	aZRx/lyA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1tXXJv-008xH2-1d;
-	Tue, 14 Jan 2025 11:23:45 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 14 Jan 2025 11:23:44 +0800
-Date: Tue, 14 Jan 2025 11:23:44 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Breno Leitao <leitao@debian.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Thomas Graf <tgraf@suug.ch>, Tejun Heo <tj@kernel.org>,
-	Hao Luo <haoluo@google.com>, Josh Don <joshdon@google.com>,
-	Barret Rhoden <brho@google.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rhashtable: Fix potential deadlock by moving
- schedule_work outside lock
-Message-ID: <Z4XYwOeZv8dexDm5@gondor.apana.org.au>
-References: <20241128-scx_lockdep-v1-1-2315b813b36b@debian.org>
- <6a0b432d-284a-45eb-991a-c7bba2c93e0b@roeck-us.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lx1ChFbH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF38AC4CEDF;
+	Tue, 14 Jan 2025 03:30:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736825412;
+	bh=C+wP2ZORcXQzXbgPyq7FVItp0pPTbPN3+of1gXWm3v0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=lx1ChFbHugcdBBF02LTx+ky3yt0zsuumDiYPdvLlvVCeAz4ltH7tjZ2I+ru82dtLX
+	 Uxl2SK/RWpYRK1B/3ZO76J69ILmVL+OBSOs5CvDAHQKU/pjrGiUdiet2r76ibcDYrB
+	 wv304gD6EWueVoY5e4lPoxQ8rG39bTvtmD1/jbyLDQBp1l7TTDiqRKaIg5kbp4TJSx
+	 DGAosa8f/lOibzvvVXu0LAIOZt/dNHFjwpENF8YyFXt+SlT2XCwjk8JgW8gkDj4WJs
+	 JzEiQ8vwnT/tYk04U45vdh9zzKkspTNAXF6tjNKmpfuQIch/fo8vCf9twBdVqClfEn
+	 8M8Hq1Ujm59dw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE03F380AA5F;
+	Tue, 14 Jan 2025 03:30:36 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6a0b432d-284a-45eb-991a-c7bba2c93e0b@roeck-us.net>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 net] r8169: remove redundant hwmon support
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173682543550.3721274.13811220006094990948.git-patchwork-notify@kernel.org>
+Date: Tue, 14 Jan 2025 03:30:35 +0000
+References: <afba85f5-987b-4449-83cc-350438af7fe7@gmail.com>
+In-Reply-To: <afba85f5-987b-4449-83cc-350438af7fe7@gmail.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: nic_swsd@realtek.com, andrew+netdev@lunn.ch, pabeni@redhat.com,
+ kuba@kernel.org, davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+ netdev@vger.kernel.org
 
-On Mon, Jan 13, 2025 at 11:50:36AM -0800, Guenter Roeck wrote:
->
-> With this patch in linux-next, I get some unit test errors.
+Hello:
 
-Thanks! This patch should fix the problem.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-https://patchwork.kernel.org/project/linux-crypto/patch/Z4XWx5X0doetOJni@gondor.apana.org.au/
+On Thu, 9 Jan 2025 23:43:12 +0100 you wrote:
+> The temperature sensor is actually part of the integrated PHY and available
+> also on the standalone versions of the PHY. Therefore hwmon support will
+> be added to the Realtek PHY driver and can be removed here.
+> 
+> Fixes: 1ffcc8d41306 ("r8169: add support for the temperature sensor being available from RTL8125B")
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2,net] r8169: remove redundant hwmon support
+    https://git.kernel.org/netdev/net/c/1f691a1fc4be
+
+You are awesome, thank you!
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
