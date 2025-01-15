@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBFE13AC1;
-	Wed, 15 Jan 2025 02:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4F5846D
+	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 02:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736909407; cv=none; b=Vg1dLKtD87ZUbZxDKiCrDVkltrcYwNdiETvw5KpTgA2iwfruVZQgRWGak/mk6i0oj7fK2wTjJI8KkHUI+qQJqgvl+jhXfe4pQaaTsp/bSPucqI/G4Mx50iLBB8mo/3JE3C8kJkqEAN+Af3uictxDFkuic2USrEE03lZDjvmCnnY=
+	t=1736909412; cv=none; b=FK+cm9ps1binm0Pitb3JDpSAP+6WS5kBQr7y4StdHG4dE8rxhnq55kAIjj5dsRzXZ0uk1WZyOtTmhRDImShpw9xyU+9FPILl0dZWJ9Q+UMGNIS9lFGDArsdYotYrLOp4lN1lPUYhLmfAscZuKx0OzOnKSis9fW9nX9yJAKxWcvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736909407; c=relaxed/simple;
-	bh=5vRjQ0Ak6VS4Bjx+qWcc5Jj1D3n45Hd5LDHX8d9QKn8=;
+	s=arc-20240116; t=1736909412; c=relaxed/simple;
+	bh=XZnxBk+FcFoHxx191qImvZNg7w+IyFMnBMHTXx6L5ZE=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=VeI+T2/IA3YGUCuMMQbn3ZSHVx68aTBeqv546E+iHRWBMlMjuJvzfgTftoMwRv1rBBHKA6cOoPNtCUmPqs1iFI6jwj2KRtST7P8mYuBLYeQjt0bsI27kkP/AhI6dGAxt9CwY7OwgzUQWyyUkj11JrN/ryxWX3gjoKT0W+zmazQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XtIAtuDP; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=aQDaemVJPGr6DiOMVw2/b8p714ZGA5UX2hVY6poo6aTWMj5PohPRO/Htx24jB4pkpoAqqcUZM0UZ5AENMFSH2KLhswbSh5XVDOpXExbbg4p7wYyKN7Nbl32RLYbEIynDlowUSE8SdfOFOVR/FRGxSMLHTXPdRpBnBByJwLP1IC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ro8Q5VSG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XtIAtuDP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F77C4CEDD;
-	Wed, 15 Jan 2025 02:50:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ro8Q5VSG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C91EC4CEDD;
+	Wed, 15 Jan 2025 02:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736909407;
-	bh=5vRjQ0Ak6VS4Bjx+qWcc5Jj1D3n45Hd5LDHX8d9QKn8=;
+	s=k20201202; t=1736909412;
+	bh=XZnxBk+FcFoHxx191qImvZNg7w+IyFMnBMHTXx6L5ZE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=XtIAtuDPC8ZoAKXRSvQZPgrINdu6+yLfXeaxx4hkNSytMzWdJUl5+OUuxxUqWFSvl
-	 6w6q5+Eyn61VkcEImP2yFp0RIszDU3Rw+CcXlHgKi2M6ivUEiCuKfRll1MkRyf325U
-	 ANt/xD0v5GPtuSI2pwYbPnfv2gLrscp0izMghGiLxtmQ9kApe0riBH5JhXjI1lVFts
-	 0o7lbAhgcOCBEhyq1SElfozY42oTWS55sXz5aww/VBmYQL3mS+aA1mit5FkA++zbg0
-	 1qcNBcbEZwGaILamacTtei7hjoOlkfwznQsi/GEOt9mOgP6kPkoMMnXj2U1wMCgOSz
-	 e44EVgZMe+zCw==
+	b=ro8Q5VSGF3ozPz8UtYtwIDdO3bUq+DZXh2zvyVFoMzBbsLYiAfm0Vhyg06qEZ6YAm
+	 hUU7XtQe6frBDOBahLq5YkoW0eCCXPnnQrKvt9HrlyJ7sADGmfRjJyL84Y7sVoDhEY
+	 xyeLkf5MwkMqaeLR2neatqE0uO95H+6LLQotiMElQEwL2hd20j4CxXyRxVq6b1CFhv
+	 1BDnko5EJzTjyqnD38D9cijquhOAfRudMIUk62JMZc55P0HJvHJCJ95c4bshAwlSYQ
+	 YWsmpNQDzQyrO8HcMLjOlVmpNMEoRPRe0QH71rBohz9nhmnTjuCtVBYevmCab+XFwS
+	 c5TgBbBqAT9Ng==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 356FD380AA5F;
-	Wed, 15 Jan 2025 02:50:31 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 34A5F380AA5F;
+	Wed, 15 Jan 2025 02:50:36 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,58 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 1/1] net: fec: handle page_pool_dev_alloc_pages error
+Subject: Re: [PATCH net-next 0/9] net: stmmac: further EEE cleanups (and one fix!)
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <173690943001.230797.14718449559307154902.git-patchwork-notify@kernel.org>
-Date: Wed, 15 Jan 2025 02:50:30 +0000
-References: <20250113154846.1765414-1-kgroeneveld@lenbrook.com>
-In-Reply-To: <20250113154846.1765414-1-kgroeneveld@lenbrook.com>
-To: Kevin Groeneveld <kgroeneveld@lenbrook.com>
-Cc: wei.fang@nxp.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
+ <173690943498.230797.5869251402223823826.git-patchwork-notify@kernel.org>
+Date: Wed, 15 Jan 2025 02:50:34 +0000
+References: <Z4T84SbaC4D-fN5y@shell.armlinux.org.uk>
+In-Reply-To: <Z4T84SbaC4D-fN5y@shell.armlinux.org.uk>
+To: Russell King (Oracle) <linux@armlinux.org.uk>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, alexandre.torgue@foss.st.com,
  andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ ericwouds@gmail.com, kuba@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, mcoquelin.stm32@gmail.com,
+ netdev@vger.kernel.org, pabeni@redhat.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 13 Jan 2025 10:48:45 -0500 you wrote:
-> The fec_enet_update_cbd function calls page_pool_dev_alloc_pages but did
-> not handle the case when it returned NULL. There was a WARN_ON(!new_page)
-> but it would still proceed to use the NULL pointer and then crash.
+On Mon, 13 Jan 2025 11:45:37 +0000 you wrote:
+> Hi,
 > 
-> This case does seem somewhat rare but when the system is under memory
-> pressure it can happen. One case where I can duplicate this with some
-> frequency is when writing over a smbd share to a SATA HDD attached to an
-> imx6q.
+> This series continues the EEE cleanup of the stmmac driver, and
+> includes one fix.
+> 
+> As mentioned in the previous series, I wasn't entirely happy with the
+> "stmmac_disable_sw_eee_mode" name, so the first patch renames this to
+> "stmmac_stop_sw_lpi" instead, which I think better describes what this
+> function is doing - stopping the transmit of the LPI state because we
+> have a packet ot send.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,1/1] net: fec: handle page_pool_dev_alloc_pages error
-    https://git.kernel.org/netdev/net/c/001ba0902046
+  - [net-next,1/9] net: stmmac: rename stmmac_disable_sw_eee_mode()
+    https://git.kernel.org/netdev/net-next/c/900782a029e5
+  - [net-next,2/9] net: stmmac: correct priv->eee_sw_timer_en setting
+    https://git.kernel.org/netdev/net-next/c/4fe09a0d64d5
+  - [net-next,3/9] net: stmmac: simplify TX cleanup decision for ending sw LPI mode
+    https://git.kernel.org/netdev/net-next/c/bfa9e131c9b2
+  - [net-next,4/9] net: stmmac: check priv->eee_sw_timer_en in suspend path
+    https://git.kernel.org/netdev/net-next/c/c920e6402523
+  - [net-next,5/9] net: stmmac: add stmmac_try_to_start_sw_lpi()
+    https://git.kernel.org/netdev/net-next/c/0cf44bd0c118
+  - [net-next,6/9] net: stmmac: provide stmmac_eee_tx_busy()
+    https://git.kernel.org/netdev/net-next/c/82f2025dda76
+  - [net-next,7/9] net: stmmac: provide function for restarting sw LPI timer
+    https://git.kernel.org/netdev/net-next/c/af5dc22bdb5f
+  - [net-next,8/9] net: stmmac: combine stmmac_enable_eee_mode()
+    https://git.kernel.org/netdev/net-next/c/ec8553673b1f
+  - [net-next,9/9] net: stmmac: restart LPI timer after cleaning transmit descriptors
+    https://git.kernel.org/netdev/net-next/c/d28e89244978
 
 You are awesome, thank you!
 -- 
