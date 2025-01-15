@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C67F22F384
-	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 03:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4A722F397
+	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 03:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736913220; cv=none; b=hJl82UyNQCwjmMdTPHub88yYvl8LeYWmXfYzstVF/+xxfhcrXyVVC9Cw8dqJr9GSCftyBvwXew/1/LjQA9pc7D9fSIRaGBoS6gEq/qizSSO/DF2GHY/BbfA7Z13Nh7AjCJ7NtF6yqowbGzUHr8nEznIPDchEKOWUL2W7k0Y92R8=
+	t=1736913221; cv=none; b=R5fFrt6p8ozq2Ai17CuyAR14ZmmSeEKIBbksuOo/PPvXfFYK0/zhUSz6e6dp1NUfZ1vCCNdphsuwj53oJFcn43f3yGwBDygtoCG96Co3MSZUJh0VQqs+s34ZWdeIJQH2TZ0kWfEcHIXZdCBds7Pq/bWsMnXG+W0YtBT595yLqqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736913220; c=relaxed/simple;
-	bh=YU5BJr5+AhcU+7nxIPi6zQfeg2hjxzOYzMVdeA1MHpM=;
+	s=arc-20240116; t=1736913221; c=relaxed/simple;
+	bh=4jodZjNT8rZQ3LqPSS9vu73sgZn78TXGULYqlc9RbVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abyBJjMlGwiHaMAhhIrstHhSdlHq+tVl1mexKjEmGogveOs2UirHtIDw0tFAAb5BVDzCm1hYqiVUeQ1+hkGcVwcdXbEMox2q2M1FuqVgpXwfWDGObBXTk35tPovZ1xnoiASMxoZwnY2lgi+hgeiNEbpjCC2x730oN+XUHYZjyzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iIyNeoRt; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=CbkgSyDM6WBVk6xzU5XXWMmIDz68cLRUBTSnw1Rb/fK9w416f+QOB177ZdLyHftwvMnESisYhPM8y6orSvnel8QKNNHlOStwBRC1MaNF3fKKH6h3l69vmVlewAMIV3SFje0bEgOaAe6AeouofZlpZAFR5l98of1HoscD0rhazOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJ8zSO82; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iIyNeoRt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F21C4CEE5;
-	Wed, 15 Jan 2025 03:53:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NJ8zSO82"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E93C4CEE6;
+	Wed, 15 Jan 2025 03:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736913219;
-	bh=YU5BJr5+AhcU+7nxIPi6zQfeg2hjxzOYzMVdeA1MHpM=;
+	s=k20201202; t=1736913220;
+	bh=4jodZjNT8rZQ3LqPSS9vu73sgZn78TXGULYqlc9RbVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iIyNeoRtvtKOWld4LblK/EvtREqfdrjq+4DaolrEwkRTQ9J/S2h4EXtt2na28azdv
-	 y8pkI4NqcxivrYkIeVXpqMCy7fhqaUlqthreOrXRv7fBU3stePMhGFdZnK5KG9A/rp
-	 jkLRmXPjhh5HQnJkOOk6vp5HTMel5iQRzbFrGWyvGipEeQKnX+msu5htLhjp3zA5We
-	 sZn5Z0/vAlBdV8XAvzbHOSWAVLi5bitibTUe52jkLThuVHM03wiVRg2xarL0GBJ9hC
-	 0eldhJfokwFoihItTycOQnZUhSqClTYdRTY4STkJ/a37/FtG7c0oGjALvqsHIz/cRR
-	 uWufz0IiMIjkw==
+	b=NJ8zSO82bwvIqiBJCXG2bo8gNi1POz/W0RjZM1JYLv+cdsNF1+5mRScE6Z6beP6yR
+	 hHh3FEbABy2pEnD1UhHB00sXP9GT3ntCwL+7ACI+K4kZ+teAIgDnPB7whRXEd+ZOTh
+	 i3+A0g0ieyab7CRc4lWpKnB14eyFu8FyyxVJJQTHaHmZeJl99bJFN+btswlcFPdk2j
+	 KbC0cFCjNP8O+S5PKpO6vKXLl0QXiPyAe2xcgf00hto8/CqHimgMv/1DNuM9Xw6UVs
+	 xKuXv2evT2c6ww/Vjn9JjUskQqDaZuJOzk8ozIrUkdN958mLoT5p9NxEFGdBk/fxh1
+	 Gv/Sq7NHdjDEQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -35,9 +35,9 @@ Cc: netdev@vger.kernel.org,
 	horms@kernel.org,
 	jdamato@fastly.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 05/11] net: protect netdev->napi_list with netdev_lock()
-Date: Tue, 14 Jan 2025 19:53:13 -0800
-Message-ID: <20250115035319.559603-6-kuba@kernel.org>
+Subject: [PATCH net-next v2 07/11] net: make netdev netlink ops hold netdev_lock()
+Date: Tue, 14 Jan 2025 19:53:15 -0800
+Message-ID: <20250115035319.559603-8-kuba@kernel.org>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250115035319.559603-1-kuba@kernel.org>
 References: <20250115035319.559603-1-kuba@kernel.org>
@@ -49,203 +49,183 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hold netdev->lock when NAPIs are getting added or removed.
-This will allow safe access to NAPI instances of a net_device
-without rtnl_lock.
+In prep for dropping rtnl_lock, start locking netdev->lock in netlink
+genl ops. We need to be using netdev->up instead of flags & IFF_UP.
 
-Create a family of helpers which assume the lock is already taken.
-Switch iavf to them, as it makes extensive use of netdev->lock,
-already.
+We can remove the RCU lock protection for the NAPI since NAPI list
+is protected by netdev->lock already.
 
-Reviewed-by: Joe Damato <jdamato@fastly.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- include/linux/netdevice.h                   | 54 ++++++++++++++++++---
- drivers/net/ethernet/intel/iavf/iavf_main.c |  6 +--
- net/core/dev.c                              | 15 ++++--
- 3 files changed, 60 insertions(+), 15 deletions(-)
+ net/core/dev.h         |  1 -
+ net/core/dev.c         |  3 ++-
+ net/core/netdev-genl.c | 46 +++++++++++++++++++++++-------------------
+ 3 files changed, 27 insertions(+), 23 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index fdf3a8d93185..e8c8a5ea7326 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2456,7 +2456,7 @@ struct net_device {
- 	 * Drivers are free to use it for other protection.
- 	 *
- 	 * Protects:
--	 *	@net_shaper_hierarchy, @reg_state
-+	 *	@napi_list, @net_shaper_hierarchy, @reg_state
- 	 *
- 	 * Partially protects (writers must hold both @lock and rtnl_lock):
- 	 *	@up
-@@ -2712,8 +2712,19 @@ static inline void netif_napi_set_irq(struct napi_struct *napi, int irq)
-  */
- #define NAPI_POLL_WEIGHT 64
+diff --git a/net/core/dev.h b/net/core/dev.h
+index ef37e2dd44f4..a5b166bbd169 100644
+--- a/net/core/dev.h
++++ b/net/core/dev.h
+@@ -23,7 +23,6 @@ struct sd_flow_limit {
  
--void netif_napi_add_weight(struct net_device *dev, struct napi_struct *napi,
--			   int (*poll)(struct napi_struct *, int), int weight);
-+void netif_napi_add_weight_locked(struct net_device *dev,
-+				  struct napi_struct *napi,
-+				  int (*poll)(struct napi_struct *, int),
-+				  int weight);
-+
-+static inline void
-+netif_napi_add_weight(struct net_device *dev, struct napi_struct *napi,
-+		      int (*poll)(struct napi_struct *, int), int weight)
-+{
-+	netdev_lock(dev);
-+	netif_napi_add_weight_locked(dev, napi, poll, weight);
-+	netdev_unlock(dev);
-+}
+ extern int netdev_flow_limit_table_len;
  
- /**
-  * netif_napi_add() - initialize a NAPI context
-@@ -2731,6 +2742,13 @@ netif_napi_add(struct net_device *dev, struct napi_struct *napi,
- 	netif_napi_add_weight(dev, napi, poll, NAPI_POLL_WEIGHT);
- }
- 
-+static inline void
-+netif_napi_add_locked(struct net_device *dev, struct napi_struct *napi,
-+		      int (*poll)(struct napi_struct *, int))
-+{
-+	netif_napi_add_weight_locked(dev, napi, poll, NAPI_POLL_WEIGHT);
-+}
-+
- static inline void
- netif_napi_add_tx_weight(struct net_device *dev,
- 			 struct napi_struct *napi,
-@@ -2741,6 +2759,15 @@ netif_napi_add_tx_weight(struct net_device *dev,
- 	netif_napi_add_weight(dev, napi, poll, weight);
- }
- 
-+static inline void
-+netif_napi_add_config_locked(struct net_device *dev, struct napi_struct *napi,
-+			     int (*poll)(struct napi_struct *, int), int index)
-+{
-+	napi->index = index;
-+	napi->config = &dev->napi_config[index];
-+	netif_napi_add_weight_locked(dev, napi, poll, NAPI_POLL_WEIGHT);
-+}
-+
- /**
-  * netif_napi_add_config - initialize a NAPI context with persistent config
-  * @dev: network device
-@@ -2752,9 +2779,9 @@ static inline void
- netif_napi_add_config(struct net_device *dev, struct napi_struct *napi,
- 		      int (*poll)(struct napi_struct *, int), int index)
- {
--	napi->index = index;
--	napi->config = &dev->napi_config[index];
--	netif_napi_add_weight(dev, napi, poll, NAPI_POLL_WEIGHT);
-+	netdev_lock(dev);
-+	netif_napi_add_config_locked(dev, napi, poll, index);
-+	netdev_unlock(dev);
- }
- 
- /**
-@@ -2774,6 +2801,8 @@ static inline void netif_napi_add_tx(struct net_device *dev,
- 	netif_napi_add_tx_weight(dev, napi, poll, NAPI_POLL_WEIGHT);
- }
- 
-+void __netif_napi_del_locked(struct napi_struct *napi);
-+
- /**
-  *  __netif_napi_del - remove a NAPI context
-  *  @napi: NAPI context
-@@ -2782,7 +2811,18 @@ static inline void netif_napi_add_tx(struct net_device *dev,
-  * containing @napi. Drivers might want to call this helper to combine
-  * all the needed RCU grace periods into a single one.
-  */
--void __netif_napi_del(struct napi_struct *napi);
-+static inline void __netif_napi_del(struct napi_struct *napi)
-+{
-+	netdev_lock(napi->dev);
-+	__netif_napi_del_locked(napi);
-+	netdev_unlock(napi->dev);
-+}
-+
-+static inline void netif_napi_del_locked(struct napi_struct *napi)
-+{
-+	__netif_napi_del_locked(napi);
-+	synchronize_net();
-+}
- 
- /**
-  *  netif_napi_del - remove a NAPI context
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index ab908d620285..2db97c5d9f9e 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1800,8 +1800,8 @@ static int iavf_alloc_q_vectors(struct iavf_adapter *adapter)
- 		q_vector->v_idx = q_idx;
- 		q_vector->reg_idx = q_idx;
- 		cpumask_copy(&q_vector->affinity_mask, cpu_possible_mask);
--		netif_napi_add(adapter->netdev, &q_vector->napi,
--			       iavf_napi_poll);
-+		netif_napi_add_locked(adapter->netdev, &q_vector->napi,
-+				      iavf_napi_poll);
- 	}
- 
- 	return 0;
-@@ -1827,7 +1827,7 @@ static void iavf_free_q_vectors(struct iavf_adapter *adapter)
- 	for (q_idx = 0; q_idx < num_q_vectors; q_idx++) {
- 		struct iavf_q_vector *q_vector = &adapter->q_vectors[q_idx];
- 
--		netif_napi_del(&q_vector->napi);
-+		netif_napi_del_locked(&q_vector->napi);
- 	}
- 	kfree(adapter->q_vectors);
- 	adapter->q_vectors = NULL;
+-struct napi_struct *netdev_napi_by_id(struct net *net, unsigned int napi_id);
+ struct napi_struct *
+ netdev_napi_by_id_lock(struct net *net, unsigned int napi_id);
+ struct net_device *dev_get_by_napi_id(unsigned int napi_id);
 diff --git a/net/core/dev.c b/net/core/dev.c
-index 4cba553a4742..7511207057e5 100644
+index 9cf93868ac7e..9734c3f5b862 100644
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -6909,9 +6909,12 @@ netif_napi_dev_list_add(struct net_device *dev, struct napi_struct *napi)
- 	list_add_rcu(&napi->dev_list, higher); /* adds after higher */
+@@ -767,7 +767,8 @@ static struct napi_struct *napi_by_id(unsigned int napi_id)
  }
  
--void netif_napi_add_weight(struct net_device *dev, struct napi_struct *napi,
--			   int (*poll)(struct napi_struct *, int), int weight)
-+void netif_napi_add_weight_locked(struct net_device *dev,
-+				  struct napi_struct *napi,
-+				  int (*poll)(struct napi_struct *, int),
-+				  int weight)
+ /* must be called under rcu_read_lock(), as we dont take a reference */
+-struct napi_struct *netdev_napi_by_id(struct net *net, unsigned int napi_id)
++static struct napi_struct *
++netdev_napi_by_id(struct net *net, unsigned int napi_id)
  {
-+	netdev_assert_locked(dev);
- 	if (WARN_ON(test_and_set_bit(NAPI_STATE_LISTED, &napi->state)))
- 		return;
+ 	struct napi_struct *napi;
  
-@@ -6952,7 +6955,7 @@ void netif_napi_add_weight(struct net_device *dev, struct napi_struct *napi,
- 		dev->threaded = false;
- 	netif_napi_set_irq(napi, -1);
- }
--EXPORT_SYMBOL(netif_napi_add_weight);
-+EXPORT_SYMBOL(netif_napi_add_weight_locked);
+diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+index c59619a2ec23..810a446ab62c 100644
+--- a/net/core/netdev-genl.c
++++ b/net/core/netdev-genl.c
+@@ -167,7 +167,7 @@ netdev_nl_napi_fill_one(struct sk_buff *rsp, struct napi_struct *napi,
+ 	void *hdr;
+ 	pid_t pid;
  
- void napi_disable(struct napi_struct *n)
- {
-@@ -7023,8 +7026,10 @@ static void flush_gro_hash(struct napi_struct *napi)
- }
+-	if (!(napi->dev->flags & IFF_UP))
++	if (!napi->dev->up)
+ 		return 0;
  
- /* Must be called in process context */
--void __netif_napi_del(struct napi_struct *napi)
-+void __netif_napi_del_locked(struct napi_struct *napi)
- {
-+	netdev_assert_locked(napi->dev);
-+
- 	if (!test_and_clear_bit(NAPI_STATE_LISTED, &napi->state))
- 		return;
+ 	hdr = genlmsg_iput(rsp, info);
+@@ -230,17 +230,16 @@ int netdev_nl_napi_get_doit(struct sk_buff *skb, struct genl_info *info)
+ 		return -ENOMEM;
  
-@@ -7044,7 +7049,7 @@ void __netif_napi_del(struct napi_struct *napi)
- 		napi->thread = NULL;
+ 	rtnl_lock();
+-	rcu_read_lock();
+ 
+-	napi = netdev_napi_by_id(genl_info_net(info), napi_id);
++	napi = netdev_napi_by_id_lock(genl_info_net(info), napi_id);
+ 	if (napi) {
+ 		err = netdev_nl_napi_fill_one(rsp, napi, info);
++		netdev_unlock(napi->dev);
+ 	} else {
+ 		NL_SET_BAD_ATTR(info->extack, info->attrs[NETDEV_A_NAPI_ID]);
+ 		err = -ENOENT;
  	}
- }
--EXPORT_SYMBOL(__netif_napi_del);
-+EXPORT_SYMBOL(__netif_napi_del_locked);
  
- static int __napi_poll(struct napi_struct *n, bool *repoll)
+-	rcu_read_unlock();
+ 	rtnl_unlock();
+ 
+ 	if (err) {
+@@ -266,7 +265,7 @@ netdev_nl_napi_dump_one(struct net_device *netdev, struct sk_buff *rsp,
+ 	unsigned int prev_id;
+ 	int err = 0;
+ 
+-	if (!(netdev->flags & IFF_UP))
++	if (!netdev->up)
+ 		return err;
+ 
+ 	prev_id = UINT_MAX;
+@@ -303,13 +302,15 @@ int netdev_nl_napi_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+ 
+ 	rtnl_lock();
+ 	if (ifindex) {
+-		netdev = __dev_get_by_index(net, ifindex);
+-		if (netdev)
++		netdev = netdev_get_by_index_lock(net, ifindex);
++		if (netdev) {
+ 			err = netdev_nl_napi_dump_one(netdev, skb, info, ctx);
+-		else
++			netdev_unlock(netdev);
++		} else {
+ 			err = -ENODEV;
++		}
+ 	} else {
+-		for_each_netdev_dump(net, netdev, ctx->ifindex) {
++		for_each_netdev_lock_scoped(net, netdev, ctx->ifindex) {
+ 			err = netdev_nl_napi_dump_one(netdev, skb, info, ctx);
+ 			if (err < 0)
+ 				break;
+@@ -358,17 +359,16 @@ int netdev_nl_napi_set_doit(struct sk_buff *skb, struct genl_info *info)
+ 	napi_id = nla_get_u32(info->attrs[NETDEV_A_NAPI_ID]);
+ 
+ 	rtnl_lock();
+-	rcu_read_lock();
+ 
+-	napi = netdev_napi_by_id(genl_info_net(info), napi_id);
++	napi = netdev_napi_by_id_lock(genl_info_net(info), napi_id);
+ 	if (napi) {
+ 		err = netdev_nl_napi_set_config(napi, info);
++		netdev_unlock(napi->dev);
+ 	} else {
+ 		NL_SET_BAD_ATTR(info->extack, info->attrs[NETDEV_A_NAPI_ID]);
+ 		err = -ENOENT;
+ 	}
+ 
+-	rcu_read_unlock();
+ 	rtnl_unlock();
+ 
+ 	return err;
+@@ -442,7 +442,7 @@ netdev_nl_queue_fill(struct sk_buff *rsp, struct net_device *netdev, u32 q_idx,
  {
+ 	int err;
+ 
+-	if (!(netdev->flags & IFF_UP))
++	if (!netdev->up)
+ 		return -ENOENT;
+ 
+ 	err = netdev_nl_queue_validate(netdev, q_idx, q_type);
+@@ -474,11 +474,13 @@ int netdev_nl_queue_get_doit(struct sk_buff *skb, struct genl_info *info)
+ 
+ 	rtnl_lock();
+ 
+-	netdev = __dev_get_by_index(genl_info_net(info), ifindex);
+-	if (netdev)
++	netdev = netdev_get_by_index_lock(genl_info_net(info), ifindex);
++	if (netdev) {
+ 		err = netdev_nl_queue_fill(rsp, netdev, q_id, q_type, info);
+-	else
++		netdev_unlock(netdev);
++	} else {
+ 		err = -ENODEV;
++	}
+ 
+ 	rtnl_unlock();
+ 
+@@ -499,7 +501,7 @@ netdev_nl_queue_dump_one(struct net_device *netdev, struct sk_buff *rsp,
+ {
+ 	int err = 0;
+ 
+-	if (!(netdev->flags & IFF_UP))
++	if (!netdev->up)
+ 		return err;
+ 
+ 	for (; ctx->rxq_idx < netdev->real_num_rx_queues; ctx->rxq_idx++) {
+@@ -532,13 +534,15 @@ int netdev_nl_queue_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+ 
+ 	rtnl_lock();
+ 	if (ifindex) {
+-		netdev = __dev_get_by_index(net, ifindex);
+-		if (netdev)
++		netdev = netdev_get_by_index_lock(net, ifindex);
++		if (netdev) {
+ 			err = netdev_nl_queue_dump_one(netdev, skb, info, ctx);
+-		else
++			netdev_unlock(netdev);
++		} else {
+ 			err = -ENODEV;
++		}
+ 	} else {
+-		for_each_netdev_dump(net, netdev, ctx->ifindex) {
++		for_each_netdev_lock_scoped(net, netdev, ctx->ifindex) {
+ 			err = netdev_nl_queue_dump_one(netdev, skb, info, ctx);
+ 			if (err < 0)
+ 				break;
 -- 
 2.48.0
 
