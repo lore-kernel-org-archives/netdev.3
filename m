@@ -1,21 +1,22 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37699248BAF;
-	Wed, 15 Jan 2025 11:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7C31E98F7;
+	Wed, 15 Jan 2025 11:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736939904; cv=none; b=FloLWf4DVlqtQNWAYxRStOrPAxqvdmatrF/ebSUCYJD4O5xGmM1uiR33ayAFLJAOF9Ilq2ounlOYH1oeoDeUnXaZD5ha555r56GEpeJYSG4ICHPXuBVblLSZUlBOAnwAD3AI9BxbOivpC70l5qcrkGcrYbemNMZVm6y5Thh02T8=
+	t=1736940128; cv=none; b=q6S4+7CLbNMzklPdeEQ+r2FADH0SNgCQpOBC0XpZL21qE9qusq2dAuQf0x82naDpNfrSAf/3lu3qcxB3Lh2nMaTuBCQvRnyJk7bWQqzTqysywaeVa1UE3VElbbMBkBLwT4a3u78KXvHeYZlgki7CwY6n1QXnvyjeulNQibEcuWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736939904; c=relaxed/simple;
+	s=arc-20240116; t=1736940128; c=relaxed/simple;
 	bh=pwsX18usbktm25mgc4uzTaiIAHaEKB959Q8iZ85JH9E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SVDtC+QFf9TaShbawsZGoAQXUJPLNe6x9VvK5INJ0/o5bAyuErennGjuQNvbgxWkmqA8yxZfI51rM0UKOEmqghKG3g8Q13/B4DTPmCkoXdBPyYm9ZREbZFh6FSny7hKzxXgLVPueO24lXLfUWfvUF4Oi26N0KqSsjQKpIxm9fVU=
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NnitFWAuFcAgqOMEJi9uzvKOPSN4ql9Xcap3nruYScehyQ4kZ0zmBY7Bo9Cezm6e6nt9QPrB/1gffsch7OrVth533yGO0YzV1gXTYKuHedC0IXicXhTIp2PSthaI7ozluf7EbF3rQRfeNxVLtxL3vuRmNtlHenwi0t0yM0s0WVA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 66ce4facd33211efa216b1d71e6e1362-20250115
+X-UUID: f0719c1ed33211efa216b1d71e6e1362-20250115
+X-CID-CACHE: Type:Local,Time:202501151918+08,HitQuantity:1
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:0b01e704-e624-4ff4-adf1-1a736c75150b,IP:0,U
+X-CID-O-INFO: VERSION:1.1.45,REQID:0db3acc2-2ed9-40fc-8862-c947832eab80,IP:0,U
 	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
 	:release,TS:-5
 X-CID-META: VersionHash:6493067,CLOUDID:4d76710ffbe74445e2c240dbcc414b51,BulkI
@@ -24,19 +25,19 @@ X-CID-META: VersionHash:6493067,CLOUDID:4d76710ffbe74445e2c240dbcc414b51,BulkI
 	PR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-UUID: 66ce4facd33211efa216b1d71e6e1362-20250115
+X-CID-FACTOR: TF_CID_SPAM_ULS,TF_CID_SPAM_SNR
+X-UUID: f0719c1ed33211efa216b1d71e6e1362-20250115
 Received: from node4.com.cn [(10.44.16.170)] by mailgw.kylinos.cn
 	(envelope-from <zhangxiangqian@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 1977798110; Wed, 15 Jan 2025 19:18:09 +0800
+	with ESMTP id 127755485; Wed, 15 Jan 2025 19:22:00 +0800
 Received: from node4.com.cn (localhost [127.0.0.1])
-	by node4.com.cn (NSMail) with SMTP id A142316002081;
-	Wed, 15 Jan 2025 19:18:09 +0800 (CST)
-X-ns-mid: postfix-67879971-5119731743
+	by node4.com.cn (NSMail) with SMTP id 83B5616002081;
+	Wed, 15 Jan 2025 19:22:00 +0800 (CST)
+X-ns-mid: postfix-67879A58-3921841750
 Received: from localhost.localdomain (unknown [172.25.83.26])
-	by node4.com.cn (NSMail) with ESMTPA id DBE5B16002081;
-	Wed, 15 Jan 2025 11:18:07 +0000 (UTC)
+	by node4.com.cn (NSMail) with ESMTPA id BD7F816002081;
+	Wed, 15 Jan 2025 11:21:59 +0000 (UTC)
 From: Xiangqian Zhang <zhangxiangqian@kylinos.cn>
 To: andrew+netdev@lunn.ch
 Cc: davem@davemloft.net,
@@ -46,9 +47,9 @@ Cc: davem@davemloft.net,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Xiangqian Zhang <zhangxiangqian@kylinos.cn>
-Subject: [PATCH] net: mii: Fix the Speed display when the network cable is not connected
-Date: Wed, 15 Jan 2025 19:18:05 +0800
-Message-Id: <20250115111805.3894377-1-zhangxiangqian@kylinos.cn>
+Subject: [PATCH v3 RESEND] net: mii: Fix the Speed display when the network cable is not connected
+Date: Wed, 15 Jan 2025 19:21:57 +0800
+Message-Id: <20250115112157.3894984-1-zhangxiangqian@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
