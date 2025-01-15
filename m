@@ -1,34 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A661FECCD
-	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 09:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73001E7C24
+	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 09:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736933413; cv=none; b=r4DU2gWHv99Y+vzX46sv5T0q4ISARp4em4W2spgM/OJIP6nXaxEI9fkvGxmXQ4n9swE2CT/ZdMQhcQNeoZCBpXkKlmSeqMJ06+wZLJUaYDSk8txcNxTFab8injVrDLy73lnbL8KvcX/OZpvVBWGrc6mTi4KA10IWy1QUHxUWdfw=
+	t=1736934001; cv=none; b=BkToDinXghpAb2ltQIxXlFu7vApE9f73mPLXATBfPRL8XVEsofPIXs5ij995ByxbBeih6Ii7G9Gy64g+0dgj+4ORXdN8BTrSluiI3KOI7WYnUvMy5e/bcWlZgc4pSj+/sKJppMptK9rc4XIexYwAi2b/fqqlgdCJ8S/DOjTsmEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736933413; c=relaxed/simple;
-	bh=twzrNx93SRRUGKGzxi7PEomiqzymrzJ8vhi/NySryQ4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=U2ST9N44M2Se+2VeojrQbkCB4C08qL9FfQafAnaedfbS6kgPtiCeFlqccBkYBTYGWPquPRJxm3eer74bNIUnSbd1EhDTycPGbYbjzxLKX0EFaNECr5tLImaTmyFE2ekfFkrOGTeWMYuO52IO3Jr6DHPS1sMOWQbv3jzCABjte5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gcxKP9gN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736934001; c=relaxed/simple;
+	bh=Z5i4BhvAn51rU0KLNHv8bLVq/oJuZP6nEI6HlSGsqzk=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=ABZCxJQ8PeJIIFiJuVGvkn8y+Ubk4FHoS4zLvauzTmMZ+qZ3Mn1YHMtls1ApSiInT75Y8ZoZeEw7nDx3U/QHz8EftK68PNC2KnGgdIxueCNARrvV6TkcGuzMkuMf4qG0GfixgjweUJCnh1cBBiYlp+XZNVQTZfNUhogcgsdMrS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WJuvtM4u; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gcxKP9gN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4800C4AF62;
-	Wed, 15 Jan 2025 09:30:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WJuvtM4u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A337C4CEDF;
+	Wed, 15 Jan 2025 09:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736933412;
-	bh=twzrNx93SRRUGKGzxi7PEomiqzymrzJ8vhi/NySryQ4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=gcxKP9gNQoof9NxzodGYvVmU5Hry6fO47iyGhYS6OjHXAlmM54smt+ah/ETLIYK6s
-	 9lmYig80aqUdyArAQirxiKzf6h9LkshDpFOxC5kkxzzn2N0iaCxTsANXFBjHlCQ1aA
-	 zT0BRhtse0T+gZgi/vEgra0dD5nvURC7I5qdNUcn0H4YQr2ODqpCDaIbSw/6o0ngNb
-	 0zfByNWAPE0BxE9xUWG4C6I/IP5EsQo8Wv8xImgNV9t/qu0h770YvFM9K91TJM/6k0
-	 mH3bN3rZQJTKTcBuZHqEceKm/Gg2Jn0N7WiGmxSVY6cAtU8wXMettWdFBol3ZVgZly
-	 Hu4N/FF/BqNxQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AFECC380AA5F;
-	Wed, 15 Jan 2025 09:30:36 +0000 (UTC)
+	s=k20201202; t=1736934001;
+	bh=Z5i4BhvAn51rU0KLNHv8bLVq/oJuZP6nEI6HlSGsqzk=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=WJuvtM4uZQoKnDHshsZdEUMhx6wYtOwViNQ7xLCi+ZQ8i5l1rfVCWPblqa6TjCAaw
+	 Y/dAVGVC6b2DhH4E6U5MFCYIEpiPWerXD7F8737dHePOu7gxLOj/0TZWdh4nXEL16e
+	 7Ho2ZaHeKv1Dl1rV3pTFxZlnckBSLsHvHnm2BmRDdjTNd5k5MGDj+1eBhWBfiISkjh
+	 aSCpQTigEPg1+CnzUwwbb/E3BUMiFHukyUjfEHUE3e9XBkA1U+WyCcp2rdBowk+Kqh
+	 kGA1z5KyW0peCZLqIunZvPi+hB7bh6qsLF9H/QEefUk6IsAk7U6icUVYdfdCCY1qP7
+	 YT+O6e04f7I6A==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -36,43 +33,47 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] selftests: net: Adapt ethtool mq tests to fix in qdisc
- graft
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173693343553.643594.5825676788697761376.git-patchwork-notify@kernel.org>
-Date: Wed, 15 Jan 2025 09:30:35 +0000
-References: <20250111211515.2783472-1-victor@mojatatu.com>
-In-Reply-To: <20250111211515.2783472-1-victor@mojatatu.com>
-To: Victor Nogueira <victor@mojatatu.com>
-Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, jhs@mojatatu.com,
- kernel@mojatatu.com, netdev@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250114112401.545a70f7@kernel.org>
+References: <20250113161842.134350-1-atenart@kernel.org> <20250114112401.545a70f7@kernel.org>
+Subject: Re: [PATCH net] net: avoid race between device unregistration and set_channels
+From: Antoine Tenart <atenart@kernel.org>
+Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com, netdev@vger.kernel.org, Edward Cree <ecree.xilinx@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Date: Wed, 15 Jan 2025 10:39:57 +0100
+Message-ID: <173693399736.5893.16178689571036969424@kwain>
 
-Hello:
+Quoting Jakub Kicinski (2025-01-14 20:24:01)
+> On Mon, 13 Jan 2025 17:18:40 +0100 Antoine Tenart wrote:
+> > This is because unregister_netdevice_many_notify might run before
+> > set_channels (both are under rtnl).=20
+>=20
+> But that is very bad, not at all sane. The set call should not proceed
+> once dismantle begins.
+>=20
+> How about this?
+>=20
+> diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c index 849c98e6=
+37c6..913c8e329a06 100644
+> --- a/net/ethtool/netlink.c
+> +++ b/net/ethtool/netlink.c
+> @@ -90,7 +90,7 @@ int ethnl_ops_begin(struct net_device *dev)
+>                 pm_runtime_get_sync(dev->dev.parent);
+> =20
+>         if (!netif_device_present(dev) ||
+> -           dev->reg_state =3D=3D NETREG_UNREGISTERING) {
+> +           dev->reg_state > NETREG_REGISTERED) {
+>                 ret =3D -ENODEV;
+>                 goto err;
+>         }
 
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
+That looks better, I'll send a v2 with this. Now I recall adding the
+above for a similar issue...
 
-On Sat, 11 Jan 2025 18:15:15 -0300 you wrote:
-> Because of patch[1] the graft behaviour changed
-> 
-> So the command:
-> 
-> tcq replace parent 100:1 handle 204:
-> 
-> Is no longer valid and will not delete 100:4 added by command:
-> 
-> [...]
+This makes me think we should do the same in the trylock/restart_syscall
+series as this will also allow calls to run after dismantle begins. It
+also might be time to make dev_isalive available and use it outside of
+net-sysfs.
 
-Here is the summary with links:
-  - [net] selftests: net: Adapt ethtool mq tests to fix in qdisc graft
-    https://git.kernel.org/netdev/net/c/0a5b8fff01bd
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks!
+Antoine
