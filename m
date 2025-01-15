@@ -1,70 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-184.mta1.migadu.com (out-184.mta1.migadu.com [95.215.58.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99E72B9BC
-	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 01:05:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFA8182C5
+	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 01:17:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736903120; cv=none; b=YL9yst8663OPeZWPxkEygvmw9j6dUkRJDhQE05qILjcOVBJNhUDbyMbEh7TboONmfDLTnJ6mF0bpHtZZj3ZpIFfyPRXbKvUkbTjqRCFR+WGcrgCD/TFWYb4teKTY6WGDxxnK3ljs2RLZVqtppVdJp75Uaob4irqPaVgv9C8qbuk=
+	t=1736903852; cv=none; b=adF9rw+7c5fIEQW78W1fcuZlbRqHVXb71ZXUGD7lGZG7ls/8tQC6+fCEs0qPRXYIsbheRVRP98MUm4ASckRVfQkk+G9g+YRWwUpQQce1O2xKFJPiu/2EQhbgu+miKnV1cOIB9ueO5aVGi2Fa/VrVuP46fhKB+8h+iUAsyE7RB5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736903120; c=relaxed/simple;
-	bh=RZSv0CI/9d7FeETOZYCHAa2iEyKS+si83OTS0qw4YTk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IEfj++IG/5tBvwNkh7mmGUKHnNdrZp1HV6uFUVgR1ql3yu/lWMbQH7j8IApoRfRPjvfyePr9TXYT2DGp1U5uC+52EKOiLb2d00X6GoLRqi4tVaVlui71C5RWjMQZObhlMzoFMDFB+D9H1TT4U5nR+O6pBl4Qskzz4s0b7uTMp3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NyCaBcLh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736903852; c=relaxed/simple;
+	bh=tNhwArqPp1gm4tyy9B3TK51+REmy7c+T3o6UBlbJc3s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tV5o9DKRQ0rrCHGn+o6W/3aCWwfrGyBsiizox4HFED27LnMy4FYNjtc/no+DdOwFMekmFaW5lVb9LEp9z9Au/VkBzvZsNhyEu44MbTvCuypmw5QgILdDp6/bVJBswD/uB1mAP27ieYgwUtZ2t1WjWcgxVqw/N2swDyNz80mkrno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=H+zLI7/L; arc=none smtp.client-ip=95.215.58.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NyCaBcLh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DB7C4CEDD;
-	Wed, 15 Jan 2025 01:05:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736903117;
-	bh=RZSv0CI/9d7FeETOZYCHAa2iEyKS+si83OTS0qw4YTk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NyCaBcLh/btNJeOEYPITebYw+g/dtFi+H98/MJsSaQLWizzmsvC0wABadiGwDjcu/
-	 /zFcUYxgHalzcHjnI8IlKDFKJ2uGaBg6Lg0HL41bWN8wJfgT7d07MqeKkDDWbeseJO
-	 mQFfyqDeekS/dX7ieWFOHwhE0RRkEQX4sKI/bhR5u/IbJNOGHlP03I37xd1p5S93rs
-	 AAZDIvcfmW3ilMCDTYoPv2a+hVcgnvveIRmnwofHBnVhrUW0VaIfO7Pe176x3Fj1Ix
-	 9BOGT48IktXAmK0N5+jHHwCvbcHcVaNolWa8VHLLH5Qy6ilRwX6vITq+x/yvsZ3p+S
-	 rJimABO1IzyTA==
-Date: Tue, 14 Jan 2025 17:05:16 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Donald Hunter <donald.hunter@redhat.com>, Kuniyuki
- Iwashima <kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: Re: [PATCH v2 net-next 06/11] af_unix: Set drop reason in
- unix_stream_sendmsg().
-Message-ID: <20250114170516.2a923a87@kernel.org>
-In-Reply-To: <20250112040810.14145-7-kuniyu@amazon.com>
-References: <20250112040810.14145-1-kuniyu@amazon.com>
-	<20250112040810.14145-7-kuniyu@amazon.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="H+zLI7/L"
+Message-ID: <02031003-872e-49bf-a658-c22bc7e1a954@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1736903848;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MGSguZrh0S4QzlRr4LAZHQzehwExWEFMcRJhr7aDRNI=;
+	b=H+zLI7/LdGHjQVnED81vuI5604DztE1UF+YtLvWPyX/BPy0afKzr4TR7BSFCIW51xlUlgw
+	BybGGpzlPoifHOpn11/NF168AKEcEznyC5zfquJPFTtw45ghwMpwZ1c2A8m9O9774aSTF0
+	1U5d2Vpm+biog7p0oV6Kt2bl3rrArPg=
+Date: Tue, 14 Jan 2025 17:17:20 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Subject: Re: [PATCH net-next v5 03/15] bpf: introduce timestamp_used to allow
+ UDP socket fetched in bpf prog
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, dsahern@kernel.org, willemdebruijn.kernel@gmail.com,
+ willemb@google.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+ john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
+ haoluo@google.com, jolsa@kernel.org, horms@kernel.org, bpf@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20250112113748.73504-1-kerneljasonxing@gmail.com>
+ <20250112113748.73504-4-kerneljasonxing@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+Content-Language: en-US
+In-Reply-To: <20250112113748.73504-4-kerneljasonxing@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Sun, 12 Jan 2025 13:08:05 +0900 Kuniyuki Iwashima wrote:
-> @@ -2249,14 +2265,13 @@ static int queue_oob(struct socket *sock, struct msghdr *msg, struct sock *other
->  static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
->  			       size_t len)
->  {
-> +	enum skb_drop_reason reason;
+On 1/12/25 3:37 AM, Jason Xing wrote:
+> timestamp_used consists of two parts, one is is_fullsock, the other
+> one is for UDP socket which will be support in the next round.
+> 
+> Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+> ---
+>   include/linux/filter.h | 1 +
+>   net/core/filter.c      | 4 ++--
+>   net/core/sock.c        | 1 +
+>   net/ipv4/tcp_input.c   | 2 ++
+>   net/ipv4/tcp_output.c  | 2 ++
+>   5 files changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/filter.h b/include/linux/filter.h
+> index a3ea46281595..daca3fe48b8f 100644
+> --- a/include/linux/filter.h
+> +++ b/include/linux/filter.h
+> @@ -1508,6 +1508,7 @@ struct bpf_sock_ops_kern {
+>   	void	*skb_data_end;
+>   	u8	op;
+>   	u8	is_fullsock;
+> +	u8	timestamp_used;
+>   	u8	remaining_opt_len;
+>   	u64	temp;			/* temp and everything after is not
+>   					 * initialized to 0 before calling
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index c6dd2d2e44c8..1ac996ec5e0f 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -10424,10 +10424,10 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
+>   		}							      \
+>   		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(			      \
+>   						struct bpf_sock_ops_kern,     \
+> -						is_fullsock),		      \
+> +						timestamp_used),	      \
+>   				      fullsock_reg, si->src_reg,	      \
+>   				      offsetof(struct bpf_sock_ops_kern,      \
+> -					       is_fullsock));		      \
+> +					       timestamp_used));	      \
 
-I feel like we should draw the line somewhere for the reason codes.
-We started with annotating packet drops in the stack, which are
-otherwise hard to notice, we don't even have counters for all of them.
-But at this point we're annotating sendmsg() errors? The fact we free
-an skb on the error path seems rather coincidental for a sendmsg error.
-IOW aren't we moving from packet loss annotation into general tracing
-territory here?
+hmm... I don't think it is the right change. This change may disallow the bpf 
+prog from reading skops->sk. It is fine to allow bpf prog (includes the new 
+timestamp callback) getting the skops->sk as long as skops->sk is a fullsock.
 
-If there is no ambiguity and application will get an error from a system
-call I'd just use consume_skb().
+The actual thing that needs to address is writing to sk, like:
 
-I'm probably the most resistant to the drop reason codes, so I defer 
-to Paolo / Eric for the real judgment...
+	case offsetof(struct bpf_sock_ops, sk_txhash):
+		SOCK_OPS_GET_OR_SET_FIELD(sk_txhash, sk_txhash,
+                                           struct sock, type);
+
+
+and also all the SOCK_OPS_GET_TCP_SOCK_FIELD() to prepare for the udp sock 
+support. After this patch 3, I think I start to understand the udp/fullsock 
+discussion in patch 2. is_fullsock here does not mean it is tcp, although it is 
+always a tcp_sock now. It literally means it is a full "struct sock". The 
+verifier will treat the skops->sk as "struct sock" instead of "struct tcp_sock".
+
+>   		*insn++ = BPF_JMP_IMM(BPF_JEQ, fullsock_reg, 0, jmp);	      \
+>   		if (si->dst_reg == si->src_reg)				      \
+>   			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,	      \
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index e06bcafb1b2d..dbb9326ae9d1 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -958,6 +958,7 @@ void bpf_skops_tx_timestamping(struct sock *sk, struct sk_buff *skb, int op)
+>   	if (sk_is_tcp(sk) && sk_fullsock(sk))
+>   		sock_ops.is_fullsock = 1;
+>   	sock_ops.sk = sk;
+> +	sock_ops.timestamp_used = 1;
+>   	__cgroup_bpf_run_filter_sock_ops(sk, &sock_ops, CGROUP_SOCK_OPS);
+>   }
+>   #endif
+> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> index 4811727b8a02..cad41ad34bd5 100644
+> --- a/net/ipv4/tcp_input.c
+> +++ b/net/ipv4/tcp_input.c
+> @@ -169,6 +169,7 @@ static void bpf_skops_parse_hdr(struct sock *sk, struct sk_buff *skb)
+>   	memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
+>   	sock_ops.op = BPF_SOCK_OPS_PARSE_HDR_OPT_CB;
+>   	sock_ops.is_fullsock = 1;
+> +	sock_ops.timestamp_used = 1;
+>   	sock_ops.sk = sk;
+>   	bpf_skops_init_skb(&sock_ops, skb, tcp_hdrlen(skb));
+>   
+> @@ -185,6 +186,7 @@ static void bpf_skops_established(struct sock *sk, int bpf_op,
+>   	memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
+>   	sock_ops.op = bpf_op;
+>   	sock_ops.is_fullsock = 1;
+> +	sock_ops.timestamp_used = 1;
+>   	sock_ops.sk = sk;
+>   	/* sk with TCP_REPAIR_ON does not have skb in tcp_finish_connect */
+>   	if (skb)
+> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+> index 0e5b9a654254..7b4d1dfd57d4 100644
+> --- a/net/ipv4/tcp_output.c
+> +++ b/net/ipv4/tcp_output.c
+> @@ -522,6 +522,7 @@ static void bpf_skops_hdr_opt_len(struct sock *sk, struct sk_buff *skb,
+>   		sock_owned_by_me(sk);
+>   
+>   		sock_ops.is_fullsock = 1;
+> +		sock_ops.timestamp_used = 1;
+>   		sock_ops.sk = sk;
+>   	}
+>   
+> @@ -567,6 +568,7 @@ static void bpf_skops_write_hdr_opt(struct sock *sk, struct sk_buff *skb,
+>   		sock_owned_by_me(sk);
+>   
+>   		sock_ops.is_fullsock = 1;
+> +		sock_ops.timestamp_used = 1;
+
+The "timestamp_used = 1;' assignment has missed some places. At least in the 
+tcp_call_bpf().
+
+Also, the name "timestamp_used" is confusing. Like setting timestamp_used in the 
+bpf_skops_*_hdr_opt() callback here when it is not a timestamp callback.
+
+Altogether, need to rethink what to add to sock_ops instead of timestamp_used 
+and it should be checked in "some" of the SOCK_OPS_*_FIELD(). A quick thought 
+(not 100% sure) is to add "u8 allow_direct_access" which is only set for the 
+existing sockops callbacks.
+
+[ I will continue the rest later. ]
+
+>   		sock_ops.sk = sk;
+>   	}
+>   
+
