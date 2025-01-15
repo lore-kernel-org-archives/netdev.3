@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD606FB9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB182AD2F
 	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 00:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736899737; cv=none; b=pZIDfbXgw9MGxjKP4BfaKm6596ydJZULR7AY7K8IwAjnvIJKSILXp15zdXEg0B52QU4ScbkVZtpIAkuXVtOtkyGSRjgPmfBm6A3WJ74q+RrcwksDhpqx1//X6UBZi7fXtaR8CjjD0CLWHdwSjaNHgpf0bANavIYuGKJMWaK1TuU=
+	t=1736899738; cv=none; b=HBNrkvx5PRJ/o2LSwtBGqe1h0h9mSdRAXKTpL2TW2TyWDVug3I+ZV8aEJ/rWq6hwv8B1gY+yc5+z2Kep0XNdVEFuCYG+ZrTTDROyVHsP/KU0hbVOCdGYjAzmSL+AorLqnCBfPtiAYxa1FO43qdGmk0KWDcMw7uH1p/XeY82vV9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736899737; c=relaxed/simple;
-	bh=W43vtbRTfk61f7o9uDx1IH0WgkO64zm4gkwG4+EQtQs=;
+	s=arc-20240116; t=1736899738; c=relaxed/simple;
+	bh=bB74ZHhycH96hzRhIIogjeshJ8bwhPYtHgAdwYxid0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KbGjZllZ+gfU6EBCJYQICvCnvgkbG+ONs3DsfV3n4DVh4BIbjeE5CnbmFpoeqgXWDhLa45Z1ujE6ZFx+ubnH6rvEcoqt0uU2I926Kw94f0Kd+LtVMuh4TIernxa+Iu4C6z+6z2cSlvAlWAPImDtoZGnJtq5O8xmsrhabClDrdk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XuZDQxNj; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=H/ojm7QXkhtv7Jj5tqG/om2UwwOyzraF0RtgmGEng4zi/QvK03ZtLk7B2+Vqd58rOcpuz0eBUAn6lUv0QSgI6Irhm4jWDN5yUG0MTh3EgDgy961Lhh3v9kUEXOYaa2M6gwKwvhr/uCqPwOesD7yR4eLQv4Hw5r1aRs9/PMX8pzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j0AwYJZW; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XuZDQxNj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j0AwYJZW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736899736; x=1768435736;
+  t=1736899737; x=1768435737;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=W43vtbRTfk61f7o9uDx1IH0WgkO64zm4gkwG4+EQtQs=;
-  b=XuZDQxNjKIVbTItYWi1uEExScx5+34qF7O4IUIan2CDBhhPc7uKuMmGt
-   Mv3o37IFUkPId6PxlXqllV53sVBY2Paxfq+Yi//IsDF+PpH4j96pNwG0c
-   D1fRXe5ICAx5OSsagFQ93Z43sIgqVzvxJaJ8gG/+f5a2b51IVIAC2eXCF
-   1exRBGLLQBxWEG30sVwzerZJRhUkFXzVXbyfLp5oN/a8dfMyhr5tIeCwC
-   63n6ylj0WCh1nvNgPfbm8XG+3n86foUB/mfLxe3Sj/IwgWDZUDOG55ypp
-   K/kBN9fnZZk7FFAW5fqYsjVn/FitrZAjYfvbvSMFimGh+jvSd+IgCwLhU
+  bh=bB74ZHhycH96hzRhIIogjeshJ8bwhPYtHgAdwYxid0M=;
+  b=j0AwYJZWn4iNP7MUTSMs3RHp7ny+fsl/oP8mujHsSGn7SAsaky+2Ewas
+   hM8XsrNY0nP65wZzkM1jBtjy8kTBldRmvBglwu5Bfkjer2jPZ47JnG5xT
+   Nwp2rNKail0Q0Y5Rh1MVp3KHhgXaJ0KJY+0UMglKYjrr1Xo3t32DSDmb5
+   xJxCbeh6YCQ7b0BXtUGKkRfb7ArQRx8ShedUIrGhVBdXk4Vi6HrPUg2YV
+   iDW4C3oexOolfDKFjjWLVuzXyoNaOqNIY7malM3EpYm71jwkRlawfzECP
+   gj/GBb/RDq/498aIxCQ5DP40yr8zDbwphNZbw+EeDEuFUrwk9gk6iQx2Y
    A==;
-X-CSE-ConnectionGUID: TIMJUF9EScS6F8nDtWFrAw==
-X-CSE-MsgGUID: yUhLjZxLRvOWxJtgp3rx9Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="40897476"
+X-CSE-ConnectionGUID: VLlCWvshTc+qOelVZ5UFhQ==
+X-CSE-MsgGUID: QmzLig92SmWcW0SqZmC/eA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="40897494"
 X-IronPort-AV: E=Sophos;i="6.12,315,1728975600"; 
-   d="scan'208";a="40897476"
+   d="scan'208";a="40897494"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 16:08:52 -0800
-X-CSE-ConnectionGUID: u+D9OLZvTxSjKcpO8dRd8A==
-X-CSE-MsgGUID: QeoXZ1IyQB2m5eHB6gh7/A==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 16:08:53 -0800
+X-CSE-ConnectionGUID: y8b24wfyTM2GGemzMH+xlg==
+X-CSE-MsgGUID: Vjg3W49ZQAKjGzFZs8EozA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="128211410"
+   d="scan'208";a="128211419"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa002.fm.intel.com with ESMTP; 14 Jan 2025 16:08:52 -0800
+  by fmviesa002.fm.intel.com with ESMTP; 14 Jan 2025 16:08:53 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,15 +50,14 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+Cc: R Sundar <prosunofficial@gmail.com>,
 	anthony.l.nguyen@intel.com,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Subject: [PATCH net-next v2 05/13] ice: add recipe priority check in search
-Date: Tue, 14 Jan 2025 16:08:31 -0800
-Message-ID: <20250115000844.714530-6-anthony.l.nguyen@intel.com>
+	richardcochran@gmail.com,
+	kernel test robot <lkp@intel.com>,
+	Julia Lawall <julia.lawall@inria.fr>
+Subject: [PATCH net-next v2 07/13] ice: use string choice helpers
+Date: Tue, 14 Jan 2025 16:08:33 -0800
+Message-ID: <20250115000844.714530-8-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250115000844.714530-1-anthony.l.nguyen@intel.com>
 References: <20250115000844.714530-1-anthony.l.nguyen@intel.com>
@@ -70,60 +69,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: R Sundar <prosunofficial@gmail.com>
 
-The new recipe should be added even if exactly the same recipe already
-exists with different priority.
+Use string choice helpers for better readability.
 
-Example use case is when the rule is being added from TC tool context.
-It should has the highest priority, but if the recipe already exists
-the rule will inherit it priority. It can lead to the situation when
-the rule added from TC tool has lower priority than expected.
-
-The solution is to check the recipe priority when trying to find
-existing one.
-
-Previous recipe is still useful. Example:
-RID 8 -> priority 4
-RID 10 -> priority 7
-
-The difference is only in priority rest is let's say eth + mac +
-direction.
-
-Adding ARP + MAC_A + RX on RID 8, forward to VF0_VSI
-After that IP + MAC_B + RX on RID 10 (from TC tool), forward to PF0
-
-Both will work.
-
-In case of adding ARP + MAC_A + RX on RID 8, forward to VF0_VSI
-ARP + MAC_A + RX on RID 10, forward to PF0.
-
-Only second one will match, but this is expected.
-
-Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Julia Lawall <julia.lawall@inria.fr>
+Closes: https://lore.kernel.org/r/202410121553.SRNFzc2M-lkp@intel.com/
+Signed-off-by: R Sundar <prosunofficial@gmail.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_switch.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index 0e740342e294..4a91e0aaf0a5 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -4784,7 +4784,8 @@ ice_find_recp(struct ice_hw *hw, struct ice_prot_lkup_ext *lkup_exts,
- 			 */
- 			if (found && recp[i].tun_type == rinfo->tun_type &&
- 			    recp[i].need_pass_l2 == rinfo->need_pass_l2 &&
--			    recp[i].allow_pass_l2 == rinfo->allow_pass_l2)
-+			    recp[i].allow_pass_l2 == rinfo->allow_pass_l2 &&
-+			    recp[i].priority == rinfo->priority)
- 				return i; /* Return the recipe ID */
- 		}
- 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index 518893f23372..6f9d4dc82997 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -391,7 +391,7 @@ static int ice_cfg_cgu_pll_e82x(struct ice_hw *hw,
+ 
+ 	/* Log the current clock configuration */
+ 	ice_debug(hw, ICE_DBG_PTP, "Current CGU configuration -- %s, clk_src %s, clk_freq %s, PLL %s\n",
+-		  dw24.ts_pll_enable ? "enabled" : "disabled",
++		  str_enabled_disabled(dw24.ts_pll_enable),
+ 		  ice_clk_src_str(dw24.time_ref_sel),
+ 		  ice_clk_freq_str(dw9.time_ref_freq_sel),
+ 		  bwm_lf.plllock_true_lock_cri ? "locked" : "unlocked");
+@@ -469,7 +469,7 @@ static int ice_cfg_cgu_pll_e82x(struct ice_hw *hw,
+ 
+ 	/* Log the current clock configuration */
+ 	ice_debug(hw, ICE_DBG_PTP, "New CGU configuration -- %s, clk_src %s, clk_freq %s, PLL %s\n",
+-		  dw24.ts_pll_enable ? "enabled" : "disabled",
++		  str_enabled_disabled(dw24.ts_pll_enable),
+ 		  ice_clk_src_str(dw24.time_ref_sel),
+ 		  ice_clk_freq_str(dw9.time_ref_freq_sel),
+ 		  bwm_lf.plllock_true_lock_cri ? "locked" : "unlocked");
+@@ -546,7 +546,7 @@ static int ice_cfg_cgu_pll_e825c(struct ice_hw *hw,
+ 
+ 	/* Log the current clock configuration */
+ 	ice_debug(hw, ICE_DBG_PTP, "Current CGU configuration -- %s, clk_src %s, clk_freq %s, PLL %s\n",
+-		  dw24.ts_pll_enable ? "enabled" : "disabled",
++		  str_enabled_disabled(dw24.ts_pll_enable),
+ 		  ice_clk_src_str(dw23.time_ref_sel),
+ 		  ice_clk_freq_str(dw9.time_ref_freq_sel),
+ 		  ro_lock.plllock_true_lock_cri ? "locked" : "unlocked");
+@@ -651,7 +651,7 @@ static int ice_cfg_cgu_pll_e825c(struct ice_hw *hw,
+ 
+ 	/* Log the current clock configuration */
+ 	ice_debug(hw, ICE_DBG_PTP, "New CGU configuration -- %s, clk_src %s, clk_freq %s, PLL %s\n",
+-		  dw24.ts_pll_enable ? "enabled" : "disabled",
++		  str_enabled_disabled(dw24.ts_pll_enable),
+ 		  ice_clk_src_str(dw23.time_ref_sel),
+ 		  ice_clk_freq_str(dw9.time_ref_freq_sel),
+ 		  ro_lock.plllock_true_lock_cri ? "locked" : "unlocked");
 -- 
 2.47.1
 
