@@ -1,42 +1,42 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE171D88D3
-	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 20:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2431D6199
+	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 20:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736973775; cv=none; b=h0cUgAWrqXKdMwy3qvI/0Ay57j2T0zDSEDxxKZiHEkZIG8TUK995kGj1VqF3NBDzHESI5yfhYMiuaQd35gwrImZH56BZsCtatJEZ62hQ+BM3bJ0MZmWETWzJyM6I2mX7r9bxHz2uDFmpVhfzx5ToApceg8qQq/sEa16sHr2MWIA=
+	t=1736973780; cv=none; b=E7iFZDFf3U0cHm4F1bD47pNHUJE1sqPt1GZTE28ZtxMly+n55Rzpkqe/KJl15V3iDmAVTzVx4YupUKsTlwAcsKDbLXNHrSqBj+lSf3Kc9PFUU4c8M9HOMAgIHkIIfEf25uRb3w6XmfyORgMc4YvL+Wg/84lAKai12WU2k4yq0Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736973775; c=relaxed/simple;
-	bh=WLFmhNR+bELIaIwLyubleNx4vpW3xHsEL1hCy9cvIpU=;
+	s=arc-20240116; t=1736973780; c=relaxed/simple;
+	bh=E22Xbff9ivBMzZkOMuA/Ie9pqJp1RTzPlxxM2Lz0si4=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=QevQROj3KtmsUKdSbh+Og19v01HA7QPGkWiLDRfFiP0L+Eq3ttt+rcgHLae3svZK3tXJ8EjFuoQdSnMAsKjIziQGUzbUtzIRVaEq6PRH878SH4pF/JOjg9vPjMaJZfdV2c/mtlSY68O2PRbCaUY4QYokCxwW427tYtruZy3bvhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=xCN7L5XJ; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=o10bMmdxuNNIeQyz89/9U/Unta2w9mM60amOGEsLLGsczf3j9UI786vcEUA5hPYkfnfckR5DANN+P9NNJV0fZA6sS/aaU2cxvFVP49EKKxJ1Z9B6dyR4xp5u5r8VjY58uQG9WtTmsUu0ObRwjWPCYyTT9U38f+njj8/TvA9xcD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=g951auMi; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="xCN7L5XJ"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="g951auMi"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=yqNVbj3MVpY+7D9FsZ5FX3gjtvbIvX8GZPT80w1IszY=; b=xCN7L5XJ6uub0u6KMFY1SWhBIs
-	6s8VwiAooMvZHkNqlFBdKZ71XEWRVPTcsP55BGfBn+BDYCf70+KgiCCDUmfl0fVzFNFXgztKlGhZJ
-	UrHRHSDnFjnaL9kWsba1jiGRAdn7r+aco9UuY6UlwlCiWq7WlqZ/8KrPebvHS3NiPLHO+gFd9Nfqy
-	aEg+4akv1FVWcCTX3QljcAAEiS8EMTI24I++dScnsFKGz3/MjxIN4+iI5nxUz+7zK8aNzN56BL2Uk
-	3A0dM0CdhphEnLuwhKau1R0sXIb85KDpEHbRv9JTbsLUi6h074G7kuBrqXQJ3rTuxIEy9b6hGKT94
-	2yXQhmEg==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:59884 helo=rmk-PC.armlinux.org.uk)
+	bh=OZcXDFelwtfpcW3nqfH6VfMWYnTJDhzteJIFMDC1ehI=; b=g951auMiFMfH/LnUUNxnYBs3ko
+	sofqGj03ShM228yfHBmAUeB0i2qqTcLp4/WARfFdwTR115QZvCjP6iTK/n3QLbPr2lfGZFGlYy5kf
+	71sk5AlI4B1MXm/MfPJFJBsmuo8pJXEFiSLxpEjm1GccVHBpAwAOsNtG4xcyM2l3DSmmjH7paieVM
+	JrnG1EksUuYSODjivzoeE5ZDVcOE1RIpwp45Crqe6/pWyEgROWXcPDyfYogVgjzHXFPch6rHJcfVM
+	SC9SLKmXRcmKtN1tHjI0Gi29yuVD8I935PWWRu1XSdbZuUk492otTuCSHLuhksjaZkW6Z/qHndklp
+	7Nwg/qEA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:54724 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1tYADu-0001iD-0k;
-	Wed, 15 Jan 2025 20:42:46 +0000
+	id 1tYADz-0001iQ-1L;
+	Wed, 15 Jan 2025 20:42:51 +0000
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1tYADb-0014PV-6T; Wed, 15 Jan 2025 20:42:27 +0000
+	id 1tYADg-0014Pb-AJ; Wed, 15 Jan 2025 20:42:32 +0000
 In-Reply-To: <Z4gdtOaGsBhQCZXn@shell.armlinux.org.uk>
 References: <Z4gdtOaGsBhQCZXn@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -55,8 +55,8 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>,
 	UNGLinuxDriver@microchip.com
-Subject: [PATCH net-next 1/9] net: mdio: add definition for clock stop capable
- bit
+Subject: [PATCH net-next 2/9] net: phy: add support for querying PHY clock
+ stop capability
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,32 +66,65 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1tYADb-0014PV-6T@rmk-PC.armlinux.org.uk>
+Message-Id: <E1tYADg-0014Pb-AJ@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 15 Jan 2025 20:42:27 +0000
+Date: Wed, 15 Jan 2025 20:42:32 +0000
 
-Add a definition for the clock stop capable bit in the PCS MMD. This
-bit indicates whether the MAC is able to stop the transmit xMII clock
-while it is signalling LPI.
+Add support for querying whether the PHY allows the transmit xMII clock
+to be stopped while in LPI mode. This will be used by phylink to pass
+to the MAC driver so it can configure the generation of the xMII clock
+appropriately.
 
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- include/uapi/linux/mdio.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/phy.c | 20 ++++++++++++++++++++
+ include/linux/phy.h   |  1 +
+ 2 files changed, 21 insertions(+)
 
-diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
-index f0d3f268240d..6975f182b22c 100644
---- a/include/uapi/linux/mdio.h
-+++ b/include/uapi/linux/mdio.h
-@@ -125,6 +125,7 @@
- #define MDIO_STAT1_LPOWERABLE		0x0002	/* Low-power ability */
- #define MDIO_STAT1_LSTATUS		BMSR_LSTATUS
- #define MDIO_STAT1_FAULT		0x0080	/* Fault */
-+#define MDIO_PCS_STAT1_CLKSTOP_CAP	0x0040
- #define MDIO_AN_STAT1_LPABLE		0x0001	/* Link partner AN ability */
- #define MDIO_AN_STAT1_ABLE		BMSR_ANEGCAPABLE
- #define MDIO_AN_STAT1_RFAULT		BMSR_RFAULT
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index c008fe050245..d0c1718e2b16 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -1703,6 +1703,26 @@ void phy_mac_interrupt(struct phy_device *phydev)
+ }
+ EXPORT_SYMBOL(phy_mac_interrupt);
+ 
++/**
++ * phy_eee_tx_clock_stop_capable() - indicate whether the MAC can stop tx clock
++ * @phydev: target phy_device struct
++ *
++ * Indicate whether the MAC can disable the transmit xMII clock while in LPI
++ * state. Returns 1 if the MAC may stop the transmit clock, 0 if the MAC must
++ * not stop the transmit clock, or negative error.
++ */
++int phy_eee_tx_clock_stop_capable(struct phy_device *phydev)
++{
++	int stat1;
++
++	stat1 = phy_read_mmd(phydev, MDIO_MMD_PCS, MDIO_STAT1);
++	if (stat1 < 0)
++		return stat1;
++
++	return !!(stat1 & MDIO_PCS_STAT1_CLKSTOP_CAP);
++}
++EXPORT_SYMBOL_GPL(phy_eee_tx_clock_stop_capable);
++
+ /**
+  * phy_eee_rx_clock_stop() - configure PHY receive clock in LPI
+  * @phydev: target phy_device struct
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index afaae74d0949..244f747b3cd9 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2146,6 +2146,7 @@ int phy_unregister_fixup(const char *bus_id, u32 phy_uid, u32 phy_uid_mask);
+ int phy_unregister_fixup_for_id(const char *bus_id);
+ int phy_unregister_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask);
+ 
++int phy_eee_tx_clock_stop_capable(struct phy_device *phydev);
+ int phy_eee_rx_clock_stop(struct phy_device *phydev, bool clk_stop_enable);
+ int phy_init_eee(struct phy_device *phydev, bool clk_stop_enable);
+ int phy_get_eee_err(struct phy_device *phydev);
 -- 
 2.30.2
 
