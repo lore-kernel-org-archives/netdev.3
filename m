@@ -1,81 +1,80 @@
-Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5881EEA23
-	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 08:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C0B246A0A;
+	Wed, 15 Jan 2025 09:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736931449; cv=none; b=FKpUYGU8HC0C7omDnvIe3TaNnnjJfCFMhVzsiqaKi6AVV3939azHtsNOypTZ3tzhbFUEaTN6JikfH7HxnBYSZL1q0P85qetFq8YsCwxfvoiNGCIO5aHkNNONIOs+RiLEsAbvjCafLq9a9EmR8Nmj6SIjzYVa9lTfI2fJefmEUWA=
+	t=1736931682; cv=none; b=Hw200hfTR9BHkdVERP+XILgsImpUpSeE9g06K9SyrHouFFZEpr1MLA4srZdTQ2Z6IleoNHAuARLJ6YeK5qtRdbdTptP9UWuyJM3ZxYKUCgzH+2NeLFjxm38ZMbB+E9iJ2QihcPZ3zkVzuhSEpuSMxOux9u0yeiG7mCVaQMYkdKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736931449; c=relaxed/simple;
-	bh=t51leM6A63Gc1e2+cz3/qCdC96aXqxNmaaT423B49M4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MupTh3eUH5WqF+z3DLe1C8IE77SeB+xsTD9RJOZ2qNE+5rLBH7V8KYpjZo9Fy5+Ga1FMwd7va0UsI/Oqq1rMGUzbi5kUFVz2XSDcHcYD5S1b21BC7q+IdsSVla7jek+qE0hryQOV49GsIZ1n0dA4MtjV1PrFzPzYnUNR5zJLel0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=SXll84yS; arc=none smtp.client-ip=99.78.197.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1736931682; c=relaxed/simple;
+	bh=q3HYT4ZHzpL87rBDQkzBwnE4mY7jF4YGkJyzWWDd+ug=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pd8IE7A9MHE20uKVX1rzBOKKF1C5ILk7JShJ1FEJe2ykytttMry1FiICPaV9LigYIWyPuyEwsKeAZ4YIB3zaXAwhjl6tFqtMLPUT3/WbTMD13GNYypkBJvpdL/fDNuKUrOIwju0WkMUgKC0NCpnaq6gDoDRQSnhJMVcw3Q3T/K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=QJ2WymP/; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="SXll84yS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1736931448; x=1768467448;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=KNXSFbUwBZTsGU8N9hb9kceJdUGcdDk9a9OWfbgtunE=;
-  b=SXll84yS3WD8gsYIjUBfAAiV+RcYVig1G5rWspqU+6DroH2znw0N46Wh
-   S8tSR2UFsBYYb9+GtLfbLVSnWLnwk1DszHoH2mT+rE0dkg8gAVlzXZMVl
-   uwOtNmDM74B3Ooqy1/1hHkHqUKIzh8WeP11gTU36sSpJrjgBOh2KY08WP
-   c=;
-X-IronPort-AV: E=Sophos;i="6.12,316,1728950400"; 
-   d="scan'208";a="164311357"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 08:57:26 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [10.0.38.20:9965]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.19.219:2525] with esmtp (Farcaster)
- id 2fb121ea-c2b4-4664-850f-e52859a00133; Wed, 15 Jan 2025 08:57:26 +0000 (UTC)
-X-Farcaster-Flow-ID: 2fb121ea-c2b4-4664-850f-e52859a00133
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Wed, 15 Jan 2025 08:57:25 +0000
-Received: from 6c7e67c6786f.amazon.com (10.118.248.178) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Wed, 15 Jan 2025 08:57:22 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <kuba@kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<horms@kernel.org>, <jdamato@fastly.com>, <netdev@vger.kernel.org>,
-	<pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@amazon.com>
-Subject: Re: [PATCH net-next v2 05/11] net: protect netdev->napi_list with netdev_lock()
-Date: Wed, 15 Jan 2025 17:57:11 +0900
-Message-ID: <20250115085711.42898-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250115035319.559603-6-kuba@kernel.org>
-References: <20250115035319.559603-6-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="QJ2WymP/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1736931681; x=1768467681;
+  h=from:to:subject:date:message-id:mime-version;
+  bh=q3HYT4ZHzpL87rBDQkzBwnE4mY7jF4YGkJyzWWDd+ug=;
+  b=QJ2WymP/X/4m0H9pkaExKv5lmF6R4BNeMos2+7G8xO9qJwtIcC+TvNuS
+   vpcsfBkE9FGweCVUgYEChj5I3JE/GIbFNvP0/Q99ZAvuDa008QEcC1CNn
+   8/KseYFpCUI35sgWm/xoi7jTacorTkuBFmZqhj4DXr58amAQr9mflbVwt
+   Kjytf1xbQe+tEYkgbDAEd2ov0p0IFKv3WT/fB7NdffU89SIB6WjH3MsG0
+   1m6ZgJZFiyUuCulXXjJhevvLF2+zyj6kl+sD4w+dYW0fn1YEEFd8+spBf
+   pxidc0YUFWt1eXn9vGhJ/iVKEcmXb3bHfaGV2VZ8iBAUJjR71+h58a4dR
+   g==;
+X-CSE-ConnectionGUID: 7oHBm2DsQWu43T667TRqKQ==
+X-CSE-MsgGUID: VLZEHSu4QvmsRO+YBIQX+g==
+X-IronPort-AV: E=Sophos;i="6.12,316,1728975600"; 
+   d="scan'208";a="267831894"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 15 Jan 2025 02:01:14 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 15 Jan 2025 02:00:33 -0700
+Received: from training-HP-280-G1-MT-PC.microchip.com (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.35 via Frontend Transport; Wed, 15 Jan 2025 02:00:29 -0700
+From: Divya Koppera <divya.koppera@microchip.com>
+To: <andrew@lunn.ch>, <arun.ramadoss@microchip.com>,
+	<UNGLinuxDriver@microchip.com>, <hkallweit1@gmail.com>,
+	<linux@armlinux.org.uk>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <richardcochran@gmail.com>,
+	<vadim.fedorenko@linux.dev>
+Subject: [PATCH net-next v3 0/3] Add PEROUT library for RDS PTP supported phys
+Date: Wed, 15 Jan 2025 14:36:31 +0530
+Message-ID: <20250115090634.12941-1-divya.koppera@microchip.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D046UWA003.ant.amazon.com (10.13.139.18) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-From: Jakub Kicinski <kuba@kernel.org>
-Date: Tue, 14 Jan 2025 19:53:13 -0800
-> Hold netdev->lock when NAPIs are getting added or removed.
-> This will allow safe access to NAPI instances of a net_device
-> without rtnl_lock.
-> 
-> Create a family of helpers which assume the lock is already taken.
-> Switch iavf to them, as it makes extensive use of netdev->lock,
-> already.
-> 
-> Reviewed-by: Joe Damato <jdamato@fastly.com>
-> Reviewed-by: Eric Dumazet <edumazet@google.com>
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Adds support for PEROUT library, where phy can generate
+periodic output signal on supported pin out.
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Divya Koppera (3):
+  net: phy: microchip_rds_ptp: Header file library changes for PEROUT
+  net: phy: microchip_t1: Enable pin out specific to lan887x phy for
+    PEROUT signal
+  net: phy: microchip_rds_ptp : Add PEROUT feature library for RDS PTP
+    supported Microchip phys
+
+ drivers/net/phy/microchip_rds_ptp.c | 270 ++++++++++++++++++++++++++++
+ drivers/net/phy/microchip_rds_ptp.h |  24 +++
+ drivers/net/phy/microchip_t1.c      |  14 +-
+ 3 files changed, 307 insertions(+), 1 deletion(-)
+
+-- 
+2.17.1
+
