@@ -1,183 +1,99 @@
-Received: from out-184.mta1.migadu.com (out-184.mta1.migadu.com [95.215.58.184])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFA8182C5
-	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 01:17:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69490F9D6;
+	Wed, 15 Jan 2025 01:21:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736903852; cv=none; b=adF9rw+7c5fIEQW78W1fcuZlbRqHVXb71ZXUGD7lGZG7ls/8tQC6+fCEs0qPRXYIsbheRVRP98MUm4ASckRVfQkk+G9g+YRWwUpQQce1O2xKFJPiu/2EQhbgu+miKnV1cOIB9ueO5aVGi2Fa/VrVuP46fhKB+8h+iUAsyE7RB5c=
+	t=1736904119; cv=none; b=gaqtdpYB01mCZqEu0JXxeqHZXMpDiehVsJ5QFSdXJo/vWUhBxJxb+Ynw3kxJZuEsyYCtFwAZ88xvYALudiXUaNczliBqrwyPcP28O8aImAqgu70YED1+GGiEvmkrVuMaM1n5s0swHBbHGc38KW1qafiQF5FTyE/5szvC+vvKdg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736903852; c=relaxed/simple;
-	bh=tNhwArqPp1gm4tyy9B3TK51+REmy7c+T3o6UBlbJc3s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tV5o9DKRQ0rrCHGn+o6W/3aCWwfrGyBsiizox4HFED27LnMy4FYNjtc/no+DdOwFMekmFaW5lVb9LEp9z9Au/VkBzvZsNhyEu44MbTvCuypmw5QgILdDp6/bVJBswD/uB1mAP27ieYgwUtZ2t1WjWcgxVqw/N2swDyNz80mkrno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=H+zLI7/L; arc=none smtp.client-ip=95.215.58.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1736904119; c=relaxed/simple;
+	bh=H4/QQ7eT0HZFPZJJblHfOvOeTwSt4izsyDxEWwx4iuQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=Pqg74lzbZHjUmlpAWFWvTWGpXOuNnIiUL2Qd/duiegukn+eedXN+vLROH00RXbspVYbbXou/R+U0iv02iX9zTibOYYMfCjTK/XZogL8FmANqOa9d0Mtf2b/4Yy70nulcuLKH2klJAT1RBHhudyw9KHEYNwkv1cpzflfYfS0ew5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=Nbgizg/+; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="H+zLI7/L"
-Message-ID: <02031003-872e-49bf-a658-c22bc7e1a954@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1736903848;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MGSguZrh0S4QzlRr4LAZHQzehwExWEFMcRJhr7aDRNI=;
-	b=H+zLI7/LdGHjQVnED81vuI5604DztE1UF+YtLvWPyX/BPy0afKzr4TR7BSFCIW51xlUlgw
-	BybGGpzlPoifHOpn11/NF168AKEcEznyC5zfquJPFTtw45ghwMpwZ1c2A8m9O9774aSTF0
-	1U5d2Vpm+biog7p0oV6Kt2bl3rrArPg=
-Date: Tue, 14 Jan 2025 17:17:20 -0800
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="Nbgizg/+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1736904106;
+	bh=kb7+rS4racKCDrINUR7ofdq57fmaVolCAbgQYocRaBs=;
+	h=Date:From:To:Cc:Subject:From;
+	b=Nbgizg/+TILeb1ftRQFrkMKVnc/cEfVs/6E0tPymKsjVRSG5Wo2Zw/CRyzTNFqHkr
+	 M6yQU1g3+yTzZ/I1ub6xO/Xd2ZDcYw3EaZmaFMBcCQvMykOpDe1QbaEtJ6z/JaeNTh
+	 3vmyewGA4xwrYCizNDTGq/lMgfnm/jNHmTs8eso2lMeD7jhdc4sTJ+cVWI4GM5tTed
+	 1ew4O9rd4MQFxV2KS4cnCSl1ZjS+uY/Z8WuWDn1IE2txb6G+J651hjbW1BcB7EeB/R
+	 BMNOHsgM6nnGWKAx5zYIDFoQJffvGwlLN11fiolapmuWVZAsHmHfOp9OiZktCw9L2V
+	 o8kfiUHIyHSoQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4YXpB21ZnJz4wj1;
+	Wed, 15 Jan 2025 12:21:45 +1100 (AEDT)
+Date: Wed, 15 Jan 2025 12:21:52 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Networking <netdev@vger.kernel.org>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the net-next tree with the net tree
+Message-ID: <20250115122152.760b4e8d@canb.auug.org.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v5 03/15] bpf: introduce timestamp_used to allow
- UDP socket fetched in bpf prog
-To: Jason Xing <kerneljasonxing@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, dsahern@kernel.org, willemdebruijn.kernel@gmail.com,
- willemb@google.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
- john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
- haoluo@google.com, jolsa@kernel.org, horms@kernel.org, bpf@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20250112113748.73504-1-kerneljasonxing@gmail.com>
- <20250112113748.73504-4-kerneljasonxing@gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-Content-Language: en-US
-In-Reply-To: <20250112113748.73504-4-kerneljasonxing@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: multipart/signed; boundary="Sig_/ZV3m6HjlaBf_wsy8=.bV=5S";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
-On 1/12/25 3:37 AM, Jason Xing wrote:
-> timestamp_used consists of two parts, one is is_fullsock, the other
-> one is for UDP socket which will be support in the next round.
-> 
-> Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
-> ---
->   include/linux/filter.h | 1 +
->   net/core/filter.c      | 4 ++--
->   net/core/sock.c        | 1 +
->   net/ipv4/tcp_input.c   | 2 ++
->   net/ipv4/tcp_output.c  | 2 ++
->   5 files changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/filter.h b/include/linux/filter.h
-> index a3ea46281595..daca3fe48b8f 100644
-> --- a/include/linux/filter.h
-> +++ b/include/linux/filter.h
-> @@ -1508,6 +1508,7 @@ struct bpf_sock_ops_kern {
->   	void	*skb_data_end;
->   	u8	op;
->   	u8	is_fullsock;
-> +	u8	timestamp_used;
->   	u8	remaining_opt_len;
->   	u64	temp;			/* temp and everything after is not
->   					 * initialized to 0 before calling
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index c6dd2d2e44c8..1ac996ec5e0f 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -10424,10 +10424,10 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
->   		}							      \
->   		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(			      \
->   						struct bpf_sock_ops_kern,     \
-> -						is_fullsock),		      \
-> +						timestamp_used),	      \
->   				      fullsock_reg, si->src_reg,	      \
->   				      offsetof(struct bpf_sock_ops_kern,      \
-> -					       is_fullsock));		      \
-> +					       timestamp_used));	      \
+--Sig_/ZV3m6HjlaBf_wsy8=.bV=5S
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-hmm... I don't think it is the right change. This change may disallow the bpf 
-prog from reading skops->sk. It is fine to allow bpf prog (includes the new 
-timestamp callback) getting the skops->sk as long as skops->sk is a fullsock.
+Hi all,
 
-The actual thing that needs to address is writing to sk, like:
+Today's linux-next merge of the net-next tree got a conflict in:
 
-	case offsetof(struct bpf_sock_ops, sk_txhash):
-		SOCK_OPS_GET_OR_SET_FIELD(sk_txhash, sk_txhash,
-                                           struct sock, type);
+  drivers/net/ethernet/realtek/r8169_main.c
 
+between commit:
 
-and also all the SOCK_OPS_GET_TCP_SOCK_FIELD() to prepare for the udp sock 
-support. After this patch 3, I think I start to understand the udp/fullsock 
-discussion in patch 2. is_fullsock here does not mean it is tcp, although it is 
-always a tcp_sock now. It literally means it is a full "struct sock". The 
-verifier will treat the skops->sk as "struct sock" instead of "struct tcp_sock".
+  1f691a1fc4be ("r8169: remove redundant hwmon support")
 
->   		*insn++ = BPF_JMP_IMM(BPF_JEQ, fullsock_reg, 0, jmp);	      \
->   		if (si->dst_reg == si->src_reg)				      \
->   			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,	      \
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index e06bcafb1b2d..dbb9326ae9d1 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -958,6 +958,7 @@ void bpf_skops_tx_timestamping(struct sock *sk, struct sk_buff *skb, int op)
->   	if (sk_is_tcp(sk) && sk_fullsock(sk))
->   		sock_ops.is_fullsock = 1;
->   	sock_ops.sk = sk;
-> +	sock_ops.timestamp_used = 1;
->   	__cgroup_bpf_run_filter_sock_ops(sk, &sock_ops, CGROUP_SOCK_OPS);
->   }
->   #endif
-> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> index 4811727b8a02..cad41ad34bd5 100644
-> --- a/net/ipv4/tcp_input.c
-> +++ b/net/ipv4/tcp_input.c
-> @@ -169,6 +169,7 @@ static void bpf_skops_parse_hdr(struct sock *sk, struct sk_buff *skb)
->   	memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
->   	sock_ops.op = BPF_SOCK_OPS_PARSE_HDR_OPT_CB;
->   	sock_ops.is_fullsock = 1;
-> +	sock_ops.timestamp_used = 1;
->   	sock_ops.sk = sk;
->   	bpf_skops_init_skb(&sock_ops, skb, tcp_hdrlen(skb));
->   
-> @@ -185,6 +186,7 @@ static void bpf_skops_established(struct sock *sk, int bpf_op,
->   	memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
->   	sock_ops.op = bpf_op;
->   	sock_ops.is_fullsock = 1;
-> +	sock_ops.timestamp_used = 1;
->   	sock_ops.sk = sk;
->   	/* sk with TCP_REPAIR_ON does not have skb in tcp_finish_connect */
->   	if (skb)
-> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-> index 0e5b9a654254..7b4d1dfd57d4 100644
-> --- a/net/ipv4/tcp_output.c
-> +++ b/net/ipv4/tcp_output.c
-> @@ -522,6 +522,7 @@ static void bpf_skops_hdr_opt_len(struct sock *sk, struct sk_buff *skb,
->   		sock_owned_by_me(sk);
->   
->   		sock_ops.is_fullsock = 1;
-> +		sock_ops.timestamp_used = 1;
->   		sock_ops.sk = sk;
->   	}
->   
-> @@ -567,6 +568,7 @@ static void bpf_skops_write_hdr_opt(struct sock *sk, struct sk_buff *skb,
->   		sock_owned_by_me(sk);
->   
->   		sock_ops.is_fullsock = 1;
-> +		sock_ops.timestamp_used = 1;
+from the net tree and commit:
 
-The "timestamp_used = 1;' assignment has missed some places. At least in the 
-tcp_call_bpf().
+  152d00a91396 ("r8169: simplify setting hwmon attribute visibility")
 
-Also, the name "timestamp_used" is confusing. Like setting timestamp_used in the 
-bpf_skops_*_hdr_opt() callback here when it is not a timestamp callback.
+from the net-next tree.
 
-Altogether, need to rethink what to add to sock_ops instead of timestamp_used 
-and it should be checked in "some" of the SOCK_OPS_*_FIELD(). A quick thought 
-(not 100% sure) is to add "u8 allow_direct_access" which is only set for the 
-existing sockops callbacks.
+I fixed it up (I used the former version) and can carry the fix as
+necessary. This is now fixed as far as linux-next is concerned, but any
+non trivial conflicts should be mentioned to your upstream maintainer
+when your tree is submitted for merging.  You may also want to consider
+cooperating with the maintainer of the conflicting tree to minimise any
+particularly complex conflicts.
 
-[ I will continue the rest later. ]
+--=20
+Cheers,
+Stephen Rothwell
 
->   		sock_ops.sk = sk;
->   	}
->   
+--Sig_/ZV3m6HjlaBf_wsy8=.bV=5S
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmeHDbAACgkQAVBC80lX
+0GwBfQf/R67Fl0s5Zwk9umBbwj6GeR594BEapLVealWbPfmaJiaNVPJsTO5+1b7W
+EEVXVCdhYONHJOftNPQ39xgZjH9MCo7PL+DJCRQRbvYkbqVrz6ME8CmzI2LgoOko
+xXR8WC2f7takrF+5dd11x7o/morx9cpHIedgkiDMD2qDtxbFwcPE0gkNtM8jOa7e
+zWr5G3BuI6DazPXA1ZDAY92obYyVdyGqwFg9ebZ1bx3keIb3jszWAltmQDA7/V4Z
+4QfqWknfqRUPpHUwuYvcmOetUuvcVRKO+KLJW2NQpkWDs/qClQvDnqF/HZHQt4sI
+bSVVhXYm91j4jPI6wgwWcA1Tshj2Fg==
+=Qb+O
+-----END PGP SIGNATURE-----
+
+--Sig_/ZV3m6HjlaBf_wsy8=.bV=5S--
