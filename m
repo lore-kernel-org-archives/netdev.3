@@ -1,141 +1,107 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E132D600;
-	Wed, 15 Jan 2025 02:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D0022DF8F
+	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 02:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736909460; cv=none; b=Fh+QrwyimEhBP9u8jkavGd8aoP66rI7TCRoR7ts/evZCB8HpuBkFh1o7xppYnBslPuvVkETEqJYs28zig7zE9l+PktVmjAUT/wWo4guiX8QIaXNKjgyZzbXFilFKoE2ioFHj7yfhL20xAvWtbhz3pC64wDXC8kIotYjdoo9cFcw=
+	t=1736909478; cv=none; b=eYACVCCN4ixF51dbGaKcp5UDZCHzdVgwyh0LK7umBimeZy2AqK0kAH20cUD2ijWQr96b7jfJd6JyI4F6F3P6Ox0YLkWcl44651SVzL72b6Wc1FeAzT/c/FCTnDB2FpIKPOWUegAe5NSMq1X/hetVIZQKCwGGu39piKFT66oZ/n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736909460; c=relaxed/simple;
-	bh=k+VcSSRYDW6G1ONdmDMR75pcGEaFM85covYOckH3vKA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K5LzUMR2z1kWCm/wcQkpfLBuj0sdDImoQkSI9OxOzHqt2lx/dTSQDghV5z6AfonYcm8HBmAiEqu7Dy2N+habKUZFsQEuLkdx9E9ynCmnpEQCEcQ9syrNvjVGchYTTBm7gH0cKm4G6IyWaaRMKEj3jASvLyDSDMA889hNEqxjBXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=vu7T6gYc; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1736909478; c=relaxed/simple;
+	bh=Ol1foyh0v+J/5oTdMoykClI9Rf1Br3w7yVmhBxRK+sU=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=jdTNPcCg6wU1Rw/SfuHEvaaDG2VNsNkz1CGJyiw8c/hd6SyY6MwlqBPAXc0+K6uQrb9D0eKaOhIOUo6qMbjuUBN3TpVPGBWUklAOR37V2Qwb00R4jd65qek4z9OAE56AOtKCh73lFuiVxWBScmUcrbFo9EwbLC6RWfXacHYvir8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FNVmokXp; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="vu7T6gYc"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=x5wCmHhsGS0A1OidXlTesaZoOIKeXQZp/eLun9Bsv/I=; b=vu7T6gYc4hXzdL8Iez/4QN7MNs
-	fFxXInsV47fKLh9GUknptzB0Q0Tc6qa+ohoSVjvpboq3uJC97AhE+APE1GJDFpBWGOFv3fo+xKEEC
-	6Ryr3ScXSXJ7zF9tIBZexgp0pUwYAziH/9j8VmDDw+dLlIx3ZxuzozsxPy7D6J/tNuVA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tXtUH-004e9t-Pq; Wed, 15 Jan 2025 03:50:33 +0100
-Date: Wed, 15 Jan 2025 03:50:33 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: phy: realtek: clear status if link is down
-Message-ID: <7dd12859-dd20-4ce1-a877-4c93b335b911@lunn.ch>
-References: <229e077bad31d1a9086426f60c3a4f4ac20d2c1a.1736901813.git.daniel@makrotopia.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FNVmokXp"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43621d27adeso42908505e9.2
+        for <netdev@vger.kernel.org>; Tue, 14 Jan 2025 18:51:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736909474; x=1737514274; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=97jHUU/zDxIQl5qdvo3rd8r3MNE7feZ3PfjTB4KTijE=;
+        b=FNVmokXpBA3PT1GbBh7lWpe+i6PrNK2AxDhAFgV8Q5d6xIiCiWxb9ccnuKDc5vzDGx
+         SCqyVEslGVNmhYFA5DEVPB+2D7wrpK8HpI8zJNGtngUSjb42gwxqHIhJbOcfhSZgiBCo
+         HhRF3ER2ynRWlOceVYO0u7gscfEqXDu9R479l6gpKMeexPqL9j80/LozvN5Z3Oa7s5pH
+         H6Tq1oyFJvm+YkInvt+Gm6+GOPg98fmLRM5yr4Cd5o7gzCoMe2CpX1ZG7YR6ybeja94I
+         QAsWovl1VkVVobE2PqIIC38VMTJ6aTvrvQ0J3UB6GyWsR10pkrV8NLXvzHY2C/DYnSro
+         cCZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736909474; x=1737514274;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=97jHUU/zDxIQl5qdvo3rd8r3MNE7feZ3PfjTB4KTijE=;
+        b=i3tz2Ua4T0KcpD7YSc4KSVDzISJoURE+M81PeQEU8w+A+eGk9nfT5McszJIRi3b7gN
+         dahyYMt3AMtSH9n2Hnt31k3z4A6whkhOrz++sucVPfOi2oGiW21qnhFN9WVHKNV/B73c
+         4ZCzsoSzz/nPqTUsdwUgioAUW6ORT6zHL0jqI4SpLoW3vMF7eGyJ+Ia0/JueWOhWtysz
+         19KEX/Ct3JJ+IjEDwHlSKnghaUjD4LTWHhxnRiIpTkGTKrWFMAuqPEwnDY5n/cSX8Ngm
+         Se+75oVODmNejL9lrlx2DLsPVW12YFyFwXaRIqp+Y8iIn75VVc0TZ9wqHxt0dX1m461W
+         TwJA==
+X-Forwarded-Encrypted: i=1; AJvYcCUpMQGXT7siZKu+n2GDQiyc3C+lC/zMdrBdigHxIa8ZawLrPKz2eCaGDwkxSBe0W7o9JGWDvtw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDk0UL5J6NAAlCR5I+fVjuYmGEm8+lTe+i6DloxMFUlmxfE7Jc
+	7mvhSikEaUeothNmwOYpW8tJO+ewfKXw+4zQrDYvq8BsrSY+Ct9b5NRiqw==
+X-Gm-Gg: ASbGncschSiRC+2WeL+mt/TkgddsrS3c5KgfFfDrO3bcDD6Vy1buOSC9lS+xyNIGpKz
+	oU1xHDCqx1WOSuugRxWkZ0CWCh2rKhnur+q/oSCSy/Qdurnk6szoEWiPInOyiwb8P+Tzfd9B7HE
+	/hg/yrTNKFtWoLi/oLtWNbsTYFeJMSR4qoLiu7XzkTmwov78GMbmFRLidbNsfQB1whW9H8fc6Of
+	hBWNpusMl+S1GjXbncMHbj+3opYz+5Ld1A5GXb3Isp+y7Mcj7PFXu4VyQglR12b9nHuwJxGeZXb
+	vfJW9rYsvqUIT5D8SuNWCAPydT9tYUElHVZ1RylAPxSV
+X-Google-Smtp-Source: AGHT+IFzWMQ4xPPxDUyyDouZPHa9Vc4zJh/mL0EaxCe51iBMJJUz4R9wg04YBWfSPKYEFB+ZkZ3sUA==
+X-Received: by 2002:a05:600c:5750:b0:436:e3ea:4447 with SMTP id 5b1f17b1804b1-436e3ea445dmr266356435e9.30.1736909474253;
+        Tue, 14 Jan 2025 18:51:14 -0800 (PST)
+Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e37d2f5sm16501529f8f.17.2025.01.14.18.51.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jan 2025 18:51:13 -0800 (PST)
+Subject: Re: [PATCH net] net: avoid race between device unregistration and
+ set_channels
+To: Jakub Kicinski <kuba@kernel.org>, Antoine Tenart <atenart@kernel.org>
+Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
+ netdev@vger.kernel.org
+References: <20250113161842.134350-1-atenart@kernel.org>
+ <20250114112401.545a70f7@kernel.org>
+From: Edward Cree <ecree.xilinx@gmail.com>
+Message-ID: <f87576e0-93d2-42fe-a6da-09430386bc16@gmail.com>
+Date: Wed, 15 Jan 2025 02:51:12 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <229e077bad31d1a9086426f60c3a4f4ac20d2c1a.1736901813.git.daniel@makrotopia.org>
+In-Reply-To: <20250114112401.545a70f7@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 15, 2025 at 12:46:11AM +0000, Daniel Golle wrote:
-> Clear speed, duplex and master/slave status in case the link is down
-> to avoid reporting bogus link(-partner) properties.
+On 14/01/2025 19:24, Jakub Kicinski wrote:
+> On Mon, 13 Jan 2025 17:18:40 +0100 Antoine Tenart wrote:
+>> This is because unregister_netdevice_many_notify might run before
+>> set_channels (both are under rtnl). 
 > 
-> Fixes: 5cb409b3960e ("net: phy: realtek: clear 1000Base-T link partner advertisement")
-> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-> ---
->  drivers/net/phy/realtek.c | 20 ++++++++++++++------
->  1 file changed, 14 insertions(+), 6 deletions(-)
+> But that is very bad, not at all sane. The set call should not proceed
+> once dismantle begins.
 > 
-> diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
-> index f65d7f1f348e..3f0e03e2abce 100644
-> --- a/drivers/net/phy/realtek.c
-> +++ b/drivers/net/phy/realtek.c
-> @@ -720,8 +720,12 @@ static int rtlgen_read_status(struct phy_device *phydev)
->  	if (ret < 0)
->  		return ret;
+> How about this?
+> 
+> diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c index 849c98e637c6..913c8e329a06 100644
+> --- a/net/ethtool/netlink.c
+> +++ b/net/ethtool/netlink.c
+> @@ -90,7 +90,7 @@ int ethnl_ops_begin(struct net_device *dev)
+>                 pm_runtime_get_sync(dev->dev.parent);
 >  
-> -	if (!phydev->link)
-> +	if (!phydev->link) {
-> +		phydev->duplex = DUPLEX_UNKNOWN;
-> +		phydev->master_slave_state = MASTER_SLAVE_STATE_UNKNOWN;
-> +		phydev->speed = SPEED_UNKNOWN;
->  		return 0;
-> +	}
->  
+>         if (!netif_device_present(dev) ||
+> -           dev->reg_state == NETREG_UNREGISTERING) {
+> +           dev->reg_state > NETREG_REGISTERED) {
+>                 ret = -ENODEV;
+>                 goto err;
+>         }
+> 
 
-I must be missing something here...
-
-
-rtlgen_read_status() first calls genphy_read_status(phydev);
-
-
-int genphy_read_status(struct phy_device *phydev)
-{
-	int err, old_link = phydev->link;
-
-	/* Update the link, but return if there was an error */
-	err = genphy_update_link(phydev);
-	if (err)
-		return err;
-
-	/* why bother the PHY if nothing can have changed */
-	if (phydev->autoneg == AUTONEG_ENABLE && old_link && phydev->link)
-		return 0;
-
-	phydev->master_slave_get = MASTER_SLAVE_CFG_UNSUPPORTED;
-	phydev->master_slave_state = MASTER_SLAVE_STATE_UNSUPPORTED;
-	phydev->speed = SPEED_UNKNOWN;
-	phydev->duplex = DUPLEX_UNKNOWN;
-	phydev->pause = 0;
-	phydev->asym_pause = 0;
-
-Why is that not sufficient ?
-
->  	val = phy_read_paged(phydev, 0xa43, 0x12);
->  	if (val < 0)
-> @@ -1028,11 +1032,11 @@ static int rtl822x_c45_read_status(struct phy_device *phydev)
->  		return ret;
->  
->  	if (phydev->autoneg == AUTONEG_DISABLE ||
-> -	    !genphy_c45_aneg_done(phydev))
-> +	    !genphy_c45_aneg_done(phydev) ||
-> +	    !phydev->link) {
->  		mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
-> -
-> -	/* Vendor register as C45 has no standardized support for 1000BaseT */
-> -	if (phydev->autoneg == AUTONEG_ENABLE) {
-> +	} else {
-> +		/* Vendor register as C45 has no standardized support for 1000BaseT */
->  		val = phy_read_mmd(phydev, MDIO_MMD_VEND2,
->  				   RTL822X_VND2_GANLPAR);
->  		if (val < 0)
-> @@ -1041,8 +1045,12 @@ static int rtl822x_c45_read_status(struct phy_device *phydev)
->  		mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising, val);
->  	}
->  
-> -	if (!phydev->link)
-> +	if (!phydev->link) {
-> +		phydev->duplex = DUPLEX_UNKNOWN;
-> +		phydev->master_slave_state = MASTER_SLAVE_STATE_UNKNOWN;
-> +		phydev->speed = SPEED_UNKNOWN;
->  		return 0;
-> +	}
-
-
-rtl822x_c45_read_status() calls genphy_c45_read_link() which again
-clears state from phydev.
-
-	Andrew
+Would __dev_ethtool() need a similar check?
