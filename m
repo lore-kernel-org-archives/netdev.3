@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F00620ED
-	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 00:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD606FB9
+	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 00:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736899736; cv=none; b=m9+IWike3Jo5mpBYrSo477UA2rTKmbdEs3XStlc2CJXsWqHCZ7wtmJ4gMaAtKpTcjumJmhGfH0BUiNnbHezcgzeJ1fzrZO19NGjpHb8YUtGyjoDZjTn8m9nC4hSAlnkiNPSP+RHWg/SFANJGv61wrB+ZK5MlUVvuNhV5TGXGDyg=
+	t=1736899737; cv=none; b=pZIDfbXgw9MGxjKP4BfaKm6596ydJZULR7AY7K8IwAjnvIJKSILXp15zdXEg0B52QU4ScbkVZtpIAkuXVtOtkyGSRjgPmfBm6A3WJ74q+RrcwksDhpqx1//X6UBZi7fXtaR8CjjD0CLWHdwSjaNHgpf0bANavIYuGKJMWaK1TuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736899736; c=relaxed/simple;
-	bh=H2rjiwuBDH+v++VYQzOQXaoIqU6zYrlDWgNkO9LruCo=;
+	s=arc-20240116; t=1736899737; c=relaxed/simple;
+	bh=W43vtbRTfk61f7o9uDx1IH0WgkO64zm4gkwG4+EQtQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUBjNWhUklUXEDijubGMdzZgAdJ9X3QA53//u+1ULCbcYoB98+mibjt6mzCeEYd1uq9uQ7KoznVuSz39qaTfjICovDpi/Zfk1AsAAocIZxqq7GOb5EUYwMEdKwOGfC5vdSoSY9UNpnxbFXgyl8wrEfM1vaqZvjC2Q+0mZtChgLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QfP8fWFU; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=KbGjZllZ+gfU6EBCJYQICvCnvgkbG+ONs3DsfV3n4DVh4BIbjeE5CnbmFpoeqgXWDhLa45Z1ujE6ZFx+ubnH6rvEcoqt0uU2I926Kw94f0Kd+LtVMuh4TIernxa+Iu4C6z+6z2cSlvAlWAPImDtoZGnJtq5O8xmsrhabClDrdk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XuZDQxNj; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QfP8fWFU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XuZDQxNj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736899734; x=1768435734;
+  t=1736899736; x=1768435736;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=H2rjiwuBDH+v++VYQzOQXaoIqU6zYrlDWgNkO9LruCo=;
-  b=QfP8fWFUPBeQsF5lYAQVVEX/Urlh+IfIwB8sx61J6L/wT/D6UcXtMGdx
-   qw0WGeaefu+qh08qGnhxkvcESMGdFpaKlXdStBVK49b0foJb0qR8vQvMg
-   ES4u1Jbk3I+b5HOxrmu/NNKKls+UkQpr7GJJvQ5lHGOBkc3e2a/fnfb06
-   1UJasxTxvHxcZ222A5vcCOTTVbM1ITnk+RavYbnu8Rf7299h9Ccrm5NWE
-   FvoOqPsCO3QPElO8IpuZwHvoy6kbEk4xO1WEThjgQmsWJ/TTyRiv312XO
-   QwND+eHeITRTD/MVNYTH2ULs5oh7Z8dwfs/HCeCKhqqYR7V+CUUX1OEKe
-   g==;
-X-CSE-ConnectionGUID: pgbrobdCT0yjz1F1NtqeeQ==
-X-CSE-MsgGUID: zU3lBsynQuGzuC+PR+j+Dw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="40897464"
+  bh=W43vtbRTfk61f7o9uDx1IH0WgkO64zm4gkwG4+EQtQs=;
+  b=XuZDQxNjKIVbTItYWi1uEExScx5+34qF7O4IUIan2CDBhhPc7uKuMmGt
+   Mv3o37IFUkPId6PxlXqllV53sVBY2Paxfq+Yi//IsDF+PpH4j96pNwG0c
+   D1fRXe5ICAx5OSsagFQ93Z43sIgqVzvxJaJ8gG/+f5a2b51IVIAC2eXCF
+   1exRBGLLQBxWEG30sVwzerZJRhUkFXzVXbyfLp5oN/a8dfMyhr5tIeCwC
+   63n6ylj0WCh1nvNgPfbm8XG+3n86foUB/mfLxe3Sj/IwgWDZUDOG55ypp
+   K/kBN9fnZZk7FFAW5fqYsjVn/FitrZAjYfvbvSMFimGh+jvSd+IgCwLhU
+   A==;
+X-CSE-ConnectionGUID: TIMJUF9EScS6F8nDtWFrAw==
+X-CSE-MsgGUID: yUhLjZxLRvOWxJtgp3rx9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="40897476"
 X-IronPort-AV: E=Sophos;i="6.12,315,1728975600"; 
-   d="scan'208";a="40897464"
+   d="scan'208";a="40897476"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
   by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 16:08:52 -0800
-X-CSE-ConnectionGUID: DLB97dZYSVi5bsj3j27Tyw==
-X-CSE-MsgGUID: mRbSAJHdSiGwDYYSaRk62A==
+X-CSE-ConnectionGUID: u+D9OLZvTxSjKcpO8dRd8A==
+X-CSE-MsgGUID: QeoXZ1IyQB2m5eHB6gh7/A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="128211397"
+   d="scan'208";a="128211410"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa002.fm.intel.com with ESMTP; 14 Jan 2025 16:08:51 -0800
+  by fmviesa002.fm.intel.com with ESMTP; 14 Jan 2025 16:08:52 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,13 +50,15 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
 	anthony.l.nguyen@intel.com,
 	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Subject: [PATCH net-next v2 03/13] ice: minor: rename goto labels from err to unroll
-Date: Tue, 14 Jan 2025 16:08:29 -0800
-Message-ID: <20250115000844.714530-4-anthony.l.nguyen@intel.com>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Subject: [PATCH net-next v2 05/13] ice: add recipe priority check in search
+Date: Tue, 14 Jan 2025 16:08:31 -0800
+Message-ID: <20250115000844.714530-6-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250115000844.714530-1-anthony.l.nguyen@intel.com>
 References: <20250115000844.714530-1-anthony.l.nguyen@intel.com>
@@ -68,74 +70,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-Clean up goto labels after previous commit, to conform to single naming
-scheme in ice_probe() and ice_init_dev().
+The new recipe should be added even if exactly the same recipe already
+exists with different priority.
+
+Example use case is when the rule is being added from TC tool context.
+It should has the highest priority, but if the recipe already exists
+the rule will inherit it priority. It can lead to the situation when
+the rule added from TC tool has lower priority than expected.
+
+The solution is to check the recipe priority when trying to find
+existing one.
+
+Previous recipe is still useful. Example:
+RID 8 -> priority 4
+RID 10 -> priority 7
+
+The difference is only in priority rest is let's say eth + mac +
+direction.
+
+Adding ARP + MAC_A + RX on RID 8, forward to VF0_VSI
+After that IP + MAC_B + RX on RID 10 (from TC tool), forward to PF0
+
+Both will work.
+
+In case of adding ARP + MAC_A + RX on RID 8, forward to VF0_VSI
+ARP + MAC_A + RX on RID 10, forward to PF0.
+
+Only second one will match, but this is expected.
 
 Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_switch.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 5d7d4a66fbcd..7fd79482116f 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4799,7 +4799,7 @@ int ice_init_dev(struct ice_pf *pf)
- 	if (err) {
- 		dev_err(dev, "ice_init_interrupt_scheme failed: %d\n", err);
- 		err = -EIO;
--		goto err_init_interrupt_scheme;
-+		goto unroll_pf_init;
+diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
+index 0e740342e294..4a91e0aaf0a5 100644
+--- a/drivers/net/ethernet/intel/ice/ice_switch.c
++++ b/drivers/net/ethernet/intel/ice/ice_switch.c
+@@ -4784,7 +4784,8 @@ ice_find_recp(struct ice_hw *hw, struct ice_prot_lkup_ext *lkup_exts,
+ 			 */
+ 			if (found && recp[i].tun_type == rinfo->tun_type &&
+ 			    recp[i].need_pass_l2 == rinfo->need_pass_l2 &&
+-			    recp[i].allow_pass_l2 == rinfo->allow_pass_l2)
++			    recp[i].allow_pass_l2 == rinfo->allow_pass_l2 &&
++			    recp[i].priority == rinfo->priority)
+ 				return i; /* Return the recipe ID */
+ 		}
  	}
- 
- 	/* In case of MSIX we are going to setup the misc vector right here
-@@ -4810,14 +4810,14 @@ int ice_init_dev(struct ice_pf *pf)
- 	err = ice_req_irq_msix_misc(pf);
- 	if (err) {
- 		dev_err(dev, "setup of misc vector failed: %d\n", err);
--		goto err_req_irq_msix_misc;
-+		goto unroll_irq_scheme_init;
- 	}
- 
- 	return 0;
- 
--err_req_irq_msix_misc:
-+unroll_irq_scheme_init:
- 	ice_clear_interrupt_scheme(pf);
--err_init_interrupt_scheme:
-+unroll_pf_init:
- 	ice_deinit_pf(pf);
- 	return err;
- }
-@@ -5324,18 +5324,18 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
- 	devl_lock(priv_to_devlink(pf));
- 	err = ice_load(pf);
- 	if (err)
--		goto err_load;
-+		goto unroll_init;
- 
- 	err = ice_init_devlink(pf);
- 	if (err)
--		goto err_init_devlink;
-+		goto unroll_load;
- 	devl_unlock(priv_to_devlink(pf));
- 
- 	return 0;
- 
--err_init_devlink:
-+unroll_load:
- 	ice_unload(pf);
--err_load:
-+unroll_init:
- 	devl_unlock(priv_to_devlink(pf));
- 	ice_deinit(pf);
- unroll_hw_init:
 -- 
 2.47.1
 
