@@ -1,137 +1,123 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B5F1DC9B3
-	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 20:39:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A601D6199
+	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 20:42:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736973596; cv=none; b=KGfItottsywzEhEjAwURZoD0Hbq39vZ7CdE6+omNgP77khMwqcDTS3J9k6PnBsMjzDffnkSEmpMnFaDmSYGNAKt+UV0Z7K+4gFFbgoOmsDyoPc7JRTtLM3PdkH2psxEQc+5wnyEZSQOHB/51PyT3AKWlNPPSWNEAxEWudpn3kPg=
+	t=1736973763; cv=none; b=U/XgIf+r828yf0vDIzFlRa3MN1Tvui+zFW6+EATFDuYlGzad9mATXgHURUyIqU/JrQyNTGclMMXyKEIDNV18o1E6ouKODeVyub8N5wO+bHuhQv99s6AFtBxTSLn+nnPV4G/hFi9OuY7gcBFvQ0BAHti8YFy0X9PRwzAXCTLx1SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736973596; c=relaxed/simple;
-	bh=0U+WdmrcGoX+2GDiVHap8V6ikJGwwsUi+S2MGMhBqsw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TKfNBdV4IGFVdzd51KGUnkgf6IwFKTuUq6BmtJK3vTnLvjGGhbybz7qvh0C2oXbWgaRWzxMRp7Rzp4ysXbcFkUyIF7NPzoHkp0WdM2DfKzYgnDBXSgZWODoUeJPa0zysG/wMXjdZso49UPFkSbv+mcTS7EotHN+c4m6R+3VInB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=QRYnrT6t; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1736973763; c=relaxed/simple;
+	bh=8nVyPV5oJN2ppauJvDUSm6gZf0eTEUOcvMiU7BMw+04=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=uZ0Ib75l5HzfSyqWM7UBXChGZtRKA9048AVpqtKdAlFimhu34TcUrDTx2emTmZ2FygFAxqlUOs6hqQCe0fQ+pywF82IhZs1EeHKQLs5VG3UwKr5+1nuySfSxywPkz3SlV4rrFLxKRuH4nEbeSHsSip5zDlrhYsMol35qy7huX9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Yf/i3LX0; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="QRYnrT6t"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2161eb94cceso1303285ad.2
-        for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 12:39:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1736973594; x=1737578394; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BpSxMGZKuuwfwCy7eG2/ooQQTFo9sFOtmBMODSSN0ZI=;
-        b=QRYnrT6t1I1MQYUQf+gXK28eOTu8vYlvMzKSSqvKuoiE70tEzZcZ5xy91W6d1P85+G
-         cQ9enj69OBCwgvWkAdWG+tPIDeCxreHbwZGZs1l2uENwHbf1gJgEAlfFmJZS9j3Fn2mq
-         adX0ZOzX5o5mTJDouT6K84XY/tRDbOOlqDlb4I2whF6AHeEq0YFrttTwkbYwbojiKOwP
-         i4+jkcQpSanq19UQ1f5r5i9DRKddVjuqQLo0frGUv8jidjRmNtdxeofC3BY/XmCX9x85
-         lF7oBQpLw2x7SK+5G0mDsWKrD4EMx7sS7jHcvZp1qU6D//fmb/6ft1haHg2mFfz5MISY
-         QqXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736973594; x=1737578394;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BpSxMGZKuuwfwCy7eG2/ooQQTFo9sFOtmBMODSSN0ZI=;
-        b=nfHrpYrjapVMadvpEOH1EFODRTGV0RwdRXp+3mEwFAFYakwwW+33xytdkndXXBj/zj
-         WD1jvyAWmfSCF+Y5P3MyWpfLAf4LWx+6COwOD9Xu7v3GZSMEOQ7pTviKQGeZ6oGVKGnY
-         FHhLAP3fi0Y9uFdcZBNINL/ByKYrvsSKdap/sfqGcXk3KLsAsZjRi8BoWmwRC7OIRKIx
-         O22G9JBDzAyQ3Iu4Vf6+tXBS854oWWyQZ6FcYod66CpmBY/gaHCk9keqa3kS9ez8BG0S
-         RBibtvug1yQL0RKI6r1/vwumicoAoTavnsY1cXZRx29Um6VtVPAkN6067G3MhjyKLt5H
-         eHsA==
-X-Gm-Message-State: AOJu0YwzrYajCLMCZncW744ejLUeKe12aLG4f/RK5G4MEQ4yCw9Ptl75
-	K3la4MkP0ov6pvMhGPHsqHw0otcF3G2r/JfKQzEVIpAFBkWe8qzRfsplfeNWCfgJofXtp3KIRtV
-	9hO8sBd6DSvlZFDu9F+e12hTu8L4U2uPynRrB
-X-Gm-Gg: ASbGncu48FjeUUFdoqQ4vvNDMpBFX8pvV+hD3cKFOF6fq+7YwM9LBcI2Rc+M3IEusrt
-	gcbxNwWQl2NANSuENQPMURlhp3sLuCFKo9/Dg
-X-Google-Smtp-Source: AGHT+IEaJjEW0MEYjng5rR2glqaHLzWA4Hbxv9qrYwBJYgxX1HDNkQPjGdAfRKLMur/nRtNXj/wZKDqmKnszCGFzsF0=
-X-Received: by 2002:a05:6a00:4c14:b0:726:64a5:5f67 with SMTP id
- d2e1a72fcca58-72d21fea927mr39739025b3a.12.1736973594364; Wed, 15 Jan 2025
- 12:39:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Yf/i3LX0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=i99JrEwvVL6vZ28JyF12/j0Oq/JzEnb/KviOot0d0XM=; b=Yf/i3LX0LboP0eiOYuh54qyiIB
+	0zqiJ5iJEDXjO+ofCI0Axrb+gMWGHL59zLCdnWGKAcqXADAue7Frf1odUnuIcLDzwhusuSOdWoV8X
+	LKKXXwPHr26c14wi8jfrgM9zkdNY+pftU2Hy0G5rDqlHOPNQInyDzgHWFHiNkWVNz6NNzAmoO7uvK
+	2aDIo3a4Ztx6HX/G5ru1ZsldrYRJAEl++0pYhKoVBxqteiOTcmmDwMqoZZI7DLoTDkN7+9WR2+q9s
+	HRHO7LxDY1HdMdXINBLyejEUvawFaPT/c9ae5kI6uPD4tFPz7wAN0TKAd3FqBeNBmd2pPswJ2llnV
+	IfSsD1EQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53790)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tYADe-0001hw-3D;
+	Wed, 15 Jan 2025 20:42:31 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tYADc-0006UU-1C;
+	Wed, 15 Jan 2025 20:42:28 +0000
+Date: Wed, 15 Jan 2025 20:42:28 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Bryan Whitehead <bryan.whitehead@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>, UNGLinuxDriver@microchip.com
+Subject: [PATCH net-next 0/9] net: add phylink managed EEE support
+Message-ID: <Z4gdtOaGsBhQCZXn@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250111151455.75480-1-jhs@mojatatu.com> <20250114172620.7e7e97b4@kernel.org>
- <CAM0EoMnYi3JBPS7KyPoW5-St-xAaJ8Xa1tEp8JH9483Z5k8cLg@mail.gmail.com>
- <20250115063655.21be5c74@kernel.org> <CAM0EoMk0rKe=AqoD_vNZNj2dz9eKSQpgS0Cc7Bi+FQwqpyHXaw@mail.gmail.com>
- <20250115075154.528eee8a@kernel.org>
-In-Reply-To: <20250115075154.528eee8a@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Wed, 15 Jan 2025 15:39:43 -0500
-X-Gm-Features: AbW1kvYg1gdEKGWE3FzIyTUPoBZU2X5KGk_sryd50yfDlJsib_LHQfFSUV9UhGY
-Message-ID: <CAM0EoM=zzidXbUNYUfnV-P5vVU7KOYZJPw7bdfKt4+nSdyWCvw@mail.gmail.com>
-Subject: Re: [PATCH net 1/1 v3] net: sched: Disallow replacing of child qdisc
- from one parent to another
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, jiri@resnulli.us, xiyou.wangcong@gmail.com, 
-	davem@davemloft.net, edumazet@google.com, security@kernel.org, 
-	nnamrec@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Wed, Jan 15, 2025 at 10:51=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
-rote:
->
-> On Wed, 15 Jan 2025 09:53:27 -0500 Jamal Hadi Salim wrote:
-> > > > I may be missing something - what does TC_H_MAJ() provide?
-> > > > The 3:1 and 1:3 in that example are both descendants of the same
-> > > > parent. It could have been 1:3 vs 1:2 and the same rules would appl=
-y.
-> > >
-> > > Let me flip the question. What qdisc movement / grafts are you intend=
-ing
-> > > to still support?
-> > >
-> >
-> > Grafting essentially boils down to a del/add of a qdisc. The
-> > ambiguities: Does it mean deleting it from one hierachy point and
-> > adding it to another point? Or does it mean not deleting it from the
-> > first location but making it available in the other one?
-> >
-> > > From the report it sounds like we don't want to support _any_ movemen=
-t
-> > > of existing qdiscs within the hierarchy. Only purpose of graft would
-> > > be to install a new / fresh qdisc as a child.
-> >
-> > That sounded like the safest approach. If there is a practical use for
-> > moving queues around (I am not aware of any, doesnt mean there is no
-> > practical use) then we can do the much bigger surgery.
->
-> So coming back to the code I would have expected the patch to look
-> something along the lines of:
->
-> diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-> index 300430b8c4d2..fac9c946a4c7 100644
-> --- a/net/sched/sch_api.c
-> +++ b/net/sched/sch_api.c
-> @@ -1664,6 +1664,10 @@ static int tc_modify_qdisc(struct sk_buff *skb, st=
-ruct nlmsghdr *n,
->                                 q =3D qdisc_lookup(dev, tcm->tcm_handle);
->                                 if (!q)
->                                         goto create_n_graft;
-> +                               if (q->parent !=3D tcm->tcm_parent) {
-> +                                       NL_SET_ERR_MSG(extack, "Cannot mo=
-ve an existing qdisc to a different parent");
-> +                                       return -EINVAL;
-> +                               }
+Hi,
 
-Yes, this should work as well - doesnt have to save the leaf_q, so more opt=
-imal.
-Please send the patch.
+Adding managed EEE support to phylink has been on the cards ever since
+the idea in phylib was mooted. This overly large series attempts to do
+so. I've included all the patches as it's important to get the driver
+patches out there.
 
-cheers,
-jamal
->                                 if (n->nlmsg_flags & NLM_F_EXCL) {
->                                         NL_SET_ERR_MSG(extack, "Exclusivi=
-ty flag on, cannot override");
->                                         return -EEXIST;
->
->
-> Whether a real (non-default) leaf already existed in that spot
-> is not important..
+Patch 1 adds a definition for the clock stop capable bit in the PCS
+MMD status register.
+
+Patch 2 adds a phylib API to query whether the PHY allows the transmit
+xMII clock to be stopped while in LPI mode. This capability is for MAC
+drivers to save power when LPI is active, to allow them to stop their
+transmit clock.
+
+Patch 3 extracts a phylink internal helper for determining whether the
+link is up.
+
+Patch 4 adds basic phylink managed EEE support. Two new MAC APIs are
+added, to enable and disable LPI. The enable method is passed the LPI
+timer setting which it is expected to program into the hardware, and
+also a flag ehther the transmit clock should be stopped.
+
+I have taken the decision to make enable_tx_lpi() to return an error
+code, but not do much with it other than report it - the intention
+being that we can later use it to extend functionality if needed
+without reworking loads of drivers.
+
+I have also dropped the validation/limitation of the LPI timer, and
+left that in the driver code prior to calling phylink_ethtool_set_eee().
+
+The remainder of the patches convert mvneta, lan743x and stmmac, and
+add support for mvneta.
+
+Since yesterday's RFC:
+- fixed the mvpp2 GENMASK()
+- dropped the DSA patch
+- changed how phylink restricts EEE advertisement, and the EEE support
+  reported to userspace which fixes a bug.
+
+ drivers/net/ethernet/marvell/mvneta.c             | 107 ++++++++++------
+ drivers/net/ethernet/marvell/mvpp2/mvpp2.h        |   5 +
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c   |  86 +++++++++++++
+ drivers/net/ethernet/microchip/lan743x_ethtool.c  |  21 ---
+ drivers/net/ethernet/microchip/lan743x_main.c     |  46 ++++++-
+ drivers/net/ethernet/microchip/lan743x_main.h     |   1 -
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |  57 +++++++--
+ drivers/net/phy/phy.c                             |  20 +++
+ drivers/net/phy/phylink.c                         | 149 ++++++++++++++++++++--
+ include/linux/phy.h                               |   1 +
+ include/linux/phylink.h                           |  45 +++++++
+ include/uapi/linux/mdio.h                         |   1 +
+ 12 files changed, 446 insertions(+), 93 deletions(-)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
