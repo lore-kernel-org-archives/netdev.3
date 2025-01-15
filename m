@@ -1,38 +1,38 @@
 Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6CE1D63E1
-	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 19:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649931D63D4
+	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 19:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736967622; cv=none; b=dM9IBYpEFCVJTgEdg+Bbqrw62+xioP8P2n5LYjV44iuZbUt4KyOz/sA8xH2swO7WuqKlJU4bEduR6580p1TAbMWk1T2gQL9BXLeQ/tBRnSoq+qmTXPWQYQ04Uk5rbOKSOBqXu0eVIwZ84YELRGyiqyFzhKD02SwG+BvaZLV2/go=
+	t=1736967650; cv=none; b=RSD6x9NnRgZhfC9nOOAt4mmsdd999JLY1mt8Z8xTY1l+j3b8ziP7Wj+nTYrJlyYmE1+Y+fQ0Q2ofC7cyA63Tc2c8fhans7EVSovtPOzeGzyaLOIRXfOPlt46Ed7i9mHS4y7TwuWLEn1RscOhbQWzD+SdzI/jAOujd5g1KO5L4Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736967622; c=relaxed/simple;
-	bh=iaO2lseeivt+kjHoNMj/r+PzwETytoSNk4yEkbL372U=;
+	s=arc-20240116; t=1736967650; c=relaxed/simple;
+	bh=0NTYY2wqzYQs1MBxoXtmSNdXB+YkCJ8qGksDiFSDJcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A0GQSY1gS3VmbJQqyNDkMFFOFU01Ky5DBWQXmeKBPFTBrTEG76SJWe5p2vHiGCT1u6FjQRxZrF751XrLjGqxm7KX96cSJrIj9NCBVSWl/LP3a9Ndev+zQu4FOlNwcdRjQTa4gVHVgkqjBUzoiF08I56p7qd7wBlLaTF0xDh/ewg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=D2IaE+g1; arc=none smtp.client-ip=171.64.64.25
+	 MIME-Version; b=COnLdG25deocgiq78OlE5XkfyukDn4VUzpSu3IqxfduE6/wFklSGC2oiqYngSIjhL0772D789A44KAdrooOtmc8UTMJg+KsdZ8kKS/W/NZ56RAMd92JrcCp3R8Fdjxzzxiu39rmWRqVYOjxlJBGuemE+n17q201b5pa+rLNsM04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=hNYvEUpN; arc=none smtp.client-ip=171.64.64.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="D2IaE+g1"
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="hNYvEUpN"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=zQU8T52eLhArSTXAa+8lZmYci5vzLcFkYcoKtBoKkMw=; t=1736967620; x=1737831620; 
-	b=D2IaE+g1VEqtMqQrjJIZn8WEEBZo3aVsdVgytbk8i4VtxUT7ApXSdGM+QsoVHkC/OX5buej5HBZ
-	bGYajE6EYrzJa+zCy6rHcZz0ECsguRTnbPH4MCmjyz06RE0LpDQb4QGViXpT3e3ZP7y8EqvxRrLri
-	wLN1baeWAD6JwHKp4/T7+/ky6My5Duq+1JZdVF9v0SHW4X9DAVngpq/YBaWX5PUTVADnvsURf2ZIF
-	NyScVCG55jgV6U3co4FX5Sf+RdIHF43oqLS22kiTrwtM4TFjDKKQejOg03XpxUtRCrzq8XqZN2fG4
-	nGvTdoojS4lwcIAOYsrvCtV1+85zoXai1Ghw==;
+	bh=R9FiQTXh5yB8VuxbIxxH6DtxUaszNiXgs0nvXC60jSA=; t=1736967622; x=1737831622; 
+	b=hNYvEUpNk8szNFOLdL2N2HmBm9WYO+0InZTlIVHsQaRJ7Av7iLAKBsMaGdnmQw3x2R9Y0I2PSK6
+	o4rAPE+221rwUsV8bdNt4sHt/APc4y8qb/UPjrCR9tWh2kE9ge9FRJMB85SlQ8mgJOM4zPubxSOB5
+	YsJJ2eJgnM9M9RAmnyLQGuQRWGjNnn64IXwSsW5fekhjBsum26DxgC4ERcqQqQtnnuyRIxRm94Qes
+	k8RIIbLOS0pP0XzRFyQK2bMXa//zRtFapw8j37Ur4tFmgXiX4l5MynMZnZudWE5qmP9Pjtyv5rKqJ
+	vIgdSepfLDLamR6ZIpFoMcvvBIC29nesFDAA==;
 Received: from ouster448.stanford.edu ([172.24.72.71]:52661 helo=localhost.localdomain)
 	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ouster@cs.stanford.edu>)
-	id 1tY8ck-0002BF-MH; Wed, 15 Jan 2025 11:00:20 -0800
+	id 1tY8cg-0002BF-T7; Wed, 15 Jan 2025 11:00:16 -0800
 From: John Ousterhout <ouster@cs.stanford.edu>
 To: netdev@vger.kernel.org
 Cc: pabeni@redhat.com,
@@ -40,9 +40,9 @@ Cc: pabeni@redhat.com,
 	horms@kernel.org,
 	kuba@kernel.org,
 	John Ousterhout <ouster@cs.stanford.edu>
-Subject: [PATCH net-next v6 06/12] net: homa: create homa_peer.h and homa_peer.c
-Date: Wed, 15 Jan 2025 10:59:30 -0800
-Message-ID: <20250115185937.1324-7-ouster@cs.stanford.edu>
+Subject: [PATCH net-next v6 04/12] net: homa: create homa_pool.h and homa_pool.c
+Date: Wed, 15 Jan 2025 10:59:28 -0800
+Message-ID: <20250115185937.1324-5-ouster@cs.stanford.edu>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20250115185937.1324-1-ouster@cs.stanford.edu>
 References: <20250115185937.1324-1-ouster@cs.stanford.edu>
@@ -54,631 +54,640 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Score: -101.0
-X-Scan-Signature: 6a1e6d00c4f3ccc917a18e227a4785a3
+X-Scan-Signature: 143830b5bd7864a16b8cd0dea17a92d6
 
-Homa needs to keep a small amount of information for each peer that
-it has communicated with. These files define that state and provide
-functions for storing and accessing it.
+These files implement Homa's mechanism for managing application-level
+buffer space for incoming messages This mechanism is needed to allow
+Homa to copy data out to user space in parallel with receiving packets;
+it was discussed in a talk at NetDev 0x17.
 
 Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
 ---
- net/homa/homa_peer.c | 366 +++++++++++++++++++++++++++++++++++++++++++
- net/homa/homa_peer.h | 233 +++++++++++++++++++++++++++
- 2 files changed, 599 insertions(+)
- create mode 100644 net/homa/homa_peer.c
- create mode 100644 net/homa/homa_peer.h
+ net/homa/homa_pool.c | 453 +++++++++++++++++++++++++++++++++++++++++++
+ net/homa/homa_pool.h | 154 +++++++++++++++
+ 2 files changed, 607 insertions(+)
+ create mode 100644 net/homa/homa_pool.c
+ create mode 100644 net/homa/homa_pool.h
 
-diff --git a/net/homa/homa_peer.c b/net/homa/homa_peer.c
+diff --git a/net/homa/homa_pool.c b/net/homa/homa_pool.c
 new file mode 100644
-index 000000000000..04056936bf71
+index 000000000000..0b2ec83b6174
 --- /dev/null
-+++ b/net/homa/homa_peer.c
-@@ -0,0 +1,366 @@
++++ b/net/homa/homa_pool.c
+@@ -0,0 +1,453 @@
 +// SPDX-License-Identifier: BSD-2-Clause
 +
-+/* This file provides functions related to homa_peer and homa_peertab
-+ * objects.
-+ */
-+
 +#include "homa_impl.h"
-+#include "homa_peer.h"
-+#include "homa_rpc.h"
++#include "homa_pool.h"
++
++/* This file contains functions that manage user-space buffer pools. */
++
++/* Pools must always have at least this many bpages (no particular
++ * reasoning behind this value).
++ */
++#define MIN_POOL_SIZE 2
++
++/* Used when determining how many bpages to consider for allocation. */
++#define MIN_EXTRA 4
 +
 +/**
-+ * homa_peertab_init() - Constructor for homa_peertabs.
-+ * @peertab:  The object to initialize; previous contents are discarded.
-+ *
-+ * Return:    0 in the normal case, or a negative errno if there was a problem.
++ * set_bpages_needed() - Set the bpages_needed field of @pool based
++ * on the length of the first RPC that's waiting for buffer space.
++ * The caller must own the lock for @pool->hsk.
++ * @pool: Pool to update.
 + */
-+int homa_peertab_init(struct homa_peertab *peertab)
++static void set_bpages_needed(struct homa_pool *pool)
 +{
-+	/* Note: when we return, the object must be initialized so it's
-+	 * safe to call homa_peertab_destroy, even if this function returns
-+	 * an error.
-+	 */
-+	int i;
++	struct homa_rpc *rpc = list_first_entry(&pool->hsk->waiting_for_bufs,
++			struct homa_rpc, buf_links);
++	pool->bpages_needed = (rpc->msgin.length + HOMA_BPAGE_SIZE - 1)
++			>> HOMA_BPAGE_SHIFT;
++}
 +
-+	spin_lock_init(&peertab->write_lock);
-+	INIT_LIST_HEAD(&peertab->dead_dsts);
-+	peertab->buckets = vmalloc(HOMA_PEERTAB_BUCKETS *
-+				   sizeof(*peertab->buckets));
-+	if (!peertab->buckets)
-+		return -ENOMEM;
-+	for (i = 0; i < HOMA_PEERTAB_BUCKETS; i++)
-+		INIT_HLIST_HEAD(&peertab->buckets[i]);
++/**
++ * homa_pool_init() - Initialize a homa_pool; any previous contents are
++ * destroyed.
++ * @hsk:          Socket containing the pool to initialize.
++ * @region:       First byte of the memory region for the pool, allocated
++ *                by the application; must be page-aligned.
++ * @region_size:  Total number of bytes available at @buf_region.
++ * Return: Either zero (for success) or a negative errno for failure.
++ */
++int homa_pool_init(struct homa_sock *hsk, void __user *region,
++		   __u64 region_size)
++{
++	struct homa_pool *pool = hsk->buffer_pool;
++	int i, result;
++
++	homa_pool_destroy(hsk->buffer_pool);
++
++	if (((uintptr_t)region) & ~PAGE_MASK)
++		return -EINVAL;
++	pool->hsk = hsk;
++	pool->region = (char __user *)region;
++	pool->num_bpages = region_size >> HOMA_BPAGE_SHIFT;
++	pool->descriptors = NULL;
++	pool->cores = NULL;
++	if (pool->num_bpages < MIN_POOL_SIZE) {
++		result = -EINVAL;
++		goto error;
++	}
++	pool->descriptors = kmalloc_array(pool->num_bpages,
++					  sizeof(struct homa_bpage),
++					  GFP_ATOMIC);
++	if (!pool->descriptors) {
++		result = -ENOMEM;
++		goto error;
++	}
++	for (i = 0; i < pool->num_bpages; i++) {
++		struct homa_bpage *bp = &pool->descriptors[i];
++
++		spin_lock_init(&bp->lock);
++		atomic_set(&bp->refs, 0);
++		bp->owner = -1;
++		bp->expiration = 0;
++	}
++	atomic_set(&pool->free_bpages, pool->num_bpages);
++	pool->bpages_needed = INT_MAX;
++
++	/* Allocate and initialize core-specific data. */
++	pool->cores = kmalloc_array(nr_cpu_ids, sizeof(struct homa_pool_core),
++				    GFP_ATOMIC);
++	if (!pool->cores) {
++		result = -ENOMEM;
++		goto error;
++	}
++	pool->num_cores = nr_cpu_ids;
++	for (i = 0; i < pool->num_cores; i++) {
++		pool->cores[i].page_hint = 0;
++		pool->cores[i].allocated = 0;
++		pool->cores[i].next_candidate = 0;
++	}
++	pool->check_waiting_invoked = 0;
++
++	return 0;
++
++error:
++	kfree(pool->descriptors);
++	kfree(pool->cores);
++	pool->region = NULL;
++	return result;
++}
++
++/**
++ * homa_pool_destroy() - Destructor for homa_pool. After this method
++ * returns, the object should not be used unless it has been reinitialized.
++ * @pool: Pool to destroy.
++ */
++void homa_pool_destroy(struct homa_pool *pool)
++{
++	if (!pool->region)
++		return;
++	kfree(pool->descriptors);
++	kfree(pool->cores);
++	pool->region = NULL;
++}
++
++/**
++ * homa_pool_get_rcvbuf() - Return information needed to handle getsockopt
++ * for HOMA_SO_RCVBUF.
++ * @hsk:          Socket on which getsockopt request was made.
++ * @args:         Store info here.
++ */
++void homa_pool_get_rcvbuf(struct homa_sock *hsk,
++			  struct homa_rcvbuf_args *args)
++{
++	homa_sock_lock(hsk, "homa_pool_get_rcvbuf");
++	args->start = (uintptr_t)hsk->buffer_pool->region;
++	args->length = hsk->buffer_pool->num_bpages << HOMA_BPAGE_SHIFT;
++	homa_sock_unlock(hsk);
++}
++
++/**
++ * homa_pool_get_pages() - Allocate one or more full pages from the pool.
++ * @pool:         Pool from which to allocate pages
++ * @num_pages:    Number of pages needed
++ * @pages:        The indices of the allocated pages are stored here; caller
++ *                must ensure this array is big enough. Reference counts have
++ *                been set to 1 on all of these pages (or 2 if set_owner
++ *                was specified).
++ * @set_owner:    If nonzero, the current core is marked as owner of all
++ *                of the allocated pages (and the expiration time is also
++ *                set). Otherwise the pages are left unowned.
++ * Return: 0 for success, -1 if there wasn't enough free space in the pool.
++ */
++int homa_pool_get_pages(struct homa_pool *pool, int num_pages, __u32 *pages,
++			int set_owner)
++{
++	int core_num = raw_smp_processor_id();
++	struct homa_pool_core *core;
++	__u64 now = sched_clock();
++	int alloced = 0;
++	int limit = 0;
++
++	core = &pool->cores[core_num];
++	if (atomic_sub_return(num_pages, &pool->free_bpages) < 0) {
++		atomic_add(num_pages, &pool->free_bpages);
++		return -1;
++	}
++
++	/* Once we get to this point we know we will be able to find
++	 * enough free pages; now we just have to find them.
++	 */
++	while (alloced != num_pages) {
++		struct homa_bpage *bpage;
++		int cur, ref_count;
++
++		/* If we don't need to use all of the bpages in the pool,
++		 * then try to use only the ones with low indexes. This
++		 * will reduce the cache footprint for the pool by reusing
++		 * a few bpages over and over. Specifically this code will
++		 * not consider any candidate page whose index is >= limit.
++		 * Limit is chosen to make sure there are a reasonable
++		 * number of free pages in the range, so we won't have to
++		 * check a huge number of pages.
++		 */
++		if (limit == 0) {
++			int extra;
++
++			limit = pool->num_bpages
++					- atomic_read(&pool->free_bpages);
++			extra = limit >> 2;
++			limit += (extra < MIN_EXTRA) ? MIN_EXTRA : extra;
++			if (limit > pool->num_bpages)
++				limit = pool->num_bpages;
++		}
++
++		cur = core->next_candidate;
++		core->next_candidate++;
++		if (cur >= limit) {
++			core->next_candidate = 0;
++
++			/* Must recompute the limit for each new loop through
++			 * the bpage array: we may need to consider a larger
++			 * range of pages because of concurrent allocations.
++			 */
++			limit = 0;
++			continue;
++		}
++		bpage = &pool->descriptors[cur];
++
++		/* Figure out whether this candidate is free (or can be
++		 * stolen). Do a quick check without locking the page, and
++		 * if the page looks promising, then lock it and check again
++		 * (must check again in case someone else snuck in and
++		 * grabbed the page).
++		 */
++		ref_count = atomic_read(&bpage->refs);
++		if (ref_count >= 2 || (ref_count == 1 && (bpage->owner < 0 ||
++				bpage->expiration > now)))
++			continue;
++		if (!spin_trylock_bh(&bpage->lock))
++			continue;
++		ref_count = atomic_read(&bpage->refs);
++		if (ref_count >= 2 || (ref_count == 1 && (bpage->owner < 0 ||
++				bpage->expiration > now))) {
++			spin_unlock_bh(&bpage->lock);
++			continue;
++		}
++		if (bpage->owner >= 0)
++			atomic_inc(&pool->free_bpages);
++		if (set_owner) {
++			atomic_set(&bpage->refs, 2);
++			bpage->owner = core_num;
++			bpage->expiration = now + 1000 *
++					pool->hsk->homa->bpage_lease_usecs;
++		} else {
++			atomic_set(&bpage->refs, 1);
++			bpage->owner = -1;
++		}
++		spin_unlock_bh(&bpage->lock);
++		pages[alloced] = cur;
++		alloced++;
++	}
 +	return 0;
 +}
 +
 +/**
-+ * homa_peertab_destroy() - Destructor for homa_peertabs. After this
-+ * function returns, it is unsafe to use any results from previous calls
-+ * to homa_peer_find, since all existing homa_peer objects will have been
-+ * destroyed.
-+ * @peertab:  The table to destroy.
++ * homa_pool_allocate() - Allocate buffer space for an RPC.
++ * @rpc:  RPC that needs space allocated for its incoming message (space must
++ *        not already have been allocated). The fields @msgin->num_buffers
++ *        and @msgin->buffers are filled in. Must be locked by caller.
++ * Return: The return value is normally 0, which means either buffer space
++ * was allocated or the @rpc was queued on @hsk->waiting. If a fatal error
++ * occurred, such as no buffer pool present, then a negative errno is
++ * returned.
 + */
-+void homa_peertab_destroy(struct homa_peertab *peertab)
++int homa_pool_allocate(struct homa_rpc *rpc)
 +{
-+	struct hlist_node *next;
-+	struct homa_peer *peer;
-+	int i;
++	struct homa_pool *pool = rpc->hsk->buffer_pool;
++	int full_pages, partial, i, core_id;
++	__u32 pages[HOMA_MAX_BPAGES];
++	struct homa_pool_core *core;
++	struct homa_bpage *bpage;
++	struct homa_rpc *other;
 +
-+	if (!peertab->buckets)
-+		return;
++	if (!pool->region)
++		return -ENOMEM;
 +
-+	for (i = 0; i < HOMA_PEERTAB_BUCKETS; i++) {
-+		hlist_for_each_entry_safe(peer, next, &peertab->buckets[i],
-+					  peertab_links) {
-+			dst_release(peer->dst);
-+			kfree(peer);
++	/* First allocate any full bpages that are needed. */
++	full_pages = rpc->msgin.length >> HOMA_BPAGE_SHIFT;
++	if (unlikely(full_pages)) {
++		if (homa_pool_get_pages(pool, full_pages, pages, 0) != 0)
++			goto out_of_space;
++		for (i = 0; i < full_pages; i++)
++			rpc->msgin.bpage_offsets[i] = pages[i] <<
++					HOMA_BPAGE_SHIFT;
++	}
++	rpc->msgin.num_bpages = full_pages;
++
++	/* The last chunk may be less than a full bpage; for this we use
++	 * the bpage that we own (and reuse it for multiple messages).
++	 */
++	partial = rpc->msgin.length & (HOMA_BPAGE_SIZE - 1);
++	if (unlikely(partial == 0))
++		goto success;
++	core_id = raw_smp_processor_id();
++	core = &pool->cores[core_id];
++	bpage = &pool->descriptors[core->page_hint];
++	if (!spin_trylock_bh(&bpage->lock))
++		spin_lock_bh(&bpage->lock);
++	if (bpage->owner != core_id) {
++		spin_unlock_bh(&bpage->lock);
++		goto new_page;
++	}
++	if ((core->allocated + partial) > HOMA_BPAGE_SIZE) {
++		if (atomic_read(&bpage->refs) == 1) {
++			/* Bpage is totally free, so we can reuse it. */
++			core->allocated = 0;
++		} else {
++			bpage->owner = -1;
++
++			/* We know the reference count can't reach zero here
++			 * because of check above, so we won't have to decrement
++			 * pool->free_bpages.
++			 */
++			atomic_dec_return(&bpage->refs);
++			spin_unlock_bh(&bpage->lock);
++			goto new_page;
 +		}
 +	}
-+	vfree(peertab->buckets);
-+	homa_peertab_gc_dsts(peertab, ~0);
++	bpage->expiration = sched_clock() +
++			1000 * pool->hsk->homa->bpage_lease_usecs;
++	atomic_inc(&bpage->refs);
++	spin_unlock_bh(&bpage->lock);
++	goto allocate_partial;
++
++	/* Can't use the current page; get another one. */
++new_page:
++	if (homa_pool_get_pages(pool, 1, pages, 1) != 0) {
++		homa_pool_release_buffers(pool, rpc->msgin.num_bpages,
++					  rpc->msgin.bpage_offsets);
++		rpc->msgin.num_bpages = 0;
++		goto out_of_space;
++	}
++	core->page_hint = pages[0];
++	core->allocated = 0;
++
++allocate_partial:
++	rpc->msgin.bpage_offsets[rpc->msgin.num_bpages] = core->allocated
++			+ (core->page_hint << HOMA_BPAGE_SHIFT);
++	rpc->msgin.num_bpages++;
++	core->allocated += partial;
++
++success:
++	return 0;
++
++	/* We get here if there wasn't enough buffer space for this
++	 * message; add the RPC to hsk->waiting_for_bufs.
++	 */
++out_of_space:
++	homa_sock_lock(pool->hsk, "homa_pool_allocate");
++	list_for_each_entry(other, &pool->hsk->waiting_for_bufs, buf_links) {
++		if (other->msgin.length > rpc->msgin.length) {
++			list_add_tail(&rpc->buf_links, &other->buf_links);
++			goto queued;
++		}
++	}
++	list_add_tail_rcu(&rpc->buf_links, &pool->hsk->waiting_for_bufs);
++
++queued:
++	set_bpages_needed(pool);
++	homa_sock_unlock(pool->hsk);
++	return 0;
 +}
 +
 +/**
-+ * homa_peertab_get_peers() - Return information about all of the peers
-+ * currently known
-+ * @peertab:    The table to search for peers.
-+ * @num_peers:  Modified to hold the number of peers returned.
-+ * Return:      kmalloced array holding pointers to all known peers. The
-+ *		caller must free this. If there is an error, or if there
-+ *	        are no peers, NULL is returned.
++ * homa_pool_get_buffer() - Given an RPC, figure out where to store incoming
++ * message data.
++ * @rpc:        RPC for which incoming message data is being processed; its
++ *              msgin must be properly initialized and buffer space must have
++ *              been allocated for the message.
++ * @offset:     Offset within @rpc's incoming message.
++ * @available:  Will be filled in with the number of bytes of space available
++ *              at the returned address (could be zero if offset is
++ *              (erroneously) past the end of the message).
++ * Return:      The application's virtual address for buffer space corresponding
++ *              to @offset in the incoming message for @rpc.
 + */
-+struct homa_peer **homa_peertab_get_peers(struct homa_peertab *peertab,
-+					  int *num_peers)
++void __user *homa_pool_get_buffer(struct homa_rpc *rpc, int offset,
++				  int *available)
 +{
-+	struct homa_peer **result;
-+	struct hlist_node *next;
-+	struct homa_peer *peer;
-+	int i, count;
++	int bpage_index, bpage_offset;
 +
-+	*num_peers = 0;
-+	if (!peertab->buckets)
++	bpage_index = offset >> HOMA_BPAGE_SHIFT;
++	if (offset >= rpc->msgin.length) {
++		WARN_ONCE(true, "%s got offset %d >= message length %d\n",
++			  __func__, offset, rpc->msgin.length);
++		*available = 0;
 +		return NULL;
-+
-+	/* Figure out how many peers there are. */
-+	count = 0;
-+	for (i = 0; i < HOMA_PEERTAB_BUCKETS; i++) {
-+		hlist_for_each_entry_safe(peer, next, &peertab->buckets[i],
-+					  peertab_links)
-+			count++;
 +	}
++	bpage_offset = offset & (HOMA_BPAGE_SIZE - 1);
++	*available = (bpage_index < (rpc->msgin.num_bpages - 1))
++			? HOMA_BPAGE_SIZE - bpage_offset
++			: rpc->msgin.length - offset;
++	return rpc->hsk->buffer_pool->region +
++			rpc->msgin.bpage_offsets[bpage_index] + bpage_offset;
++}
 +
-+	if (count == 0)
-+		return NULL;
++/**
++ * homa_pool_release_buffers() - Release buffer space so that it can be
++ * reused.
++ * @pool:         Pool that the buffer space belongs to. Doesn't need to
++ *                be locked.
++ * @num_buffers:  How many buffers to release.
++ * @buffers:      Points to @num_buffers values, each of which is an offset
++ *                from the start of the pool to the buffer to be released.
++ * Return:        0 for success, otherwise a negative errno.
++ */
++int homa_pool_release_buffers(struct homa_pool *pool, int num_buffers,
++			      __u32 *buffers)
++{
++	int result = 0;
++	int i;
 +
-+	result = kmalloc_array(count, sizeof(peer), GFP_KERNEL);
-+	if (!result)
-+		return NULL;
-+	*num_peers = count;
-+	count = 0;
-+	for (i = 0; i < HOMA_PEERTAB_BUCKETS; i++) {
-+		hlist_for_each_entry_safe(peer, next, &peertab->buckets[i],
-+					  peertab_links) {
-+			result[count] = peer;
-+			count++;
++	if (!pool->region)
++		return result;
++	for (i = 0; i < num_buffers; i++) {
++		__u32 bpage_index = buffers[i] >> HOMA_BPAGE_SHIFT;
++		struct homa_bpage *bpage = &pool->descriptors[bpage_index];
++
++		if (bpage_index < pool->num_bpages) {
++			if (atomic_dec_return(&bpage->refs) == 0)
++				atomic_inc(&pool->free_bpages);
++		} else {
++			result = -EINVAL;
 +		}
 +	}
 +	return result;
 +}
 +
 +/**
-+ * homa_peertab_gc_dsts() - Invoked to free unused dst_entries, if it is
-+ * safe to do so.
-+ * @peertab:       The table in which to free entries.
-+ * @now:           Current time, in sched_clock() units; entries with expiration
-+ *                 dates no later than this will be freed. Specify ~0 to
-+ *                 free all entries.
++ * homa_pool_check_waiting() - Checks to see if there are enough free
++ * bpages to wake up any RPCs that were blocked. Whenever
++ * homa_pool_release_buffers is invoked, this function must be invoked later,
++ * at a point when the caller holds no locks (homa_pool_release_buffers may
++ * be invoked with locks held, so it can't safely invoke this function).
++ * This is regrettably tricky, but I can't think of a better solution.
++ * @pool:         Information about the buffer pool.
 + */
-+void homa_peertab_gc_dsts(struct homa_peertab *peertab, __u64 now)
++void homa_pool_check_waiting(struct homa_pool *pool)
 +{
-+	while (!list_empty(&peertab->dead_dsts)) {
-+		struct homa_dead_dst *dead =
-+			list_first_entry(&peertab->dead_dsts,
-+					 struct homa_dead_dst, dst_links);
-+		if (dead->gc_time > now)
++	if (!pool->region)
++		return;
++	while (atomic_read(&pool->free_bpages) >= pool->bpages_needed) {
++		struct homa_rpc *rpc;
++
++		homa_sock_lock(pool->hsk, "buffer pool");
++		if (list_empty(&pool->hsk->waiting_for_bufs)) {
++			pool->bpages_needed = INT_MAX;
++			homa_sock_unlock(pool->hsk);
 +			break;
-+		dst_release(dead->dst);
-+		list_del(&dead->dst_links);
-+		kfree(dead);
++		}
++		rpc = list_first_entry(&pool->hsk->waiting_for_bufs,
++				       struct homa_rpc, buf_links);
++		if (!homa_rpc_try_lock(rpc, "homa_pool_check_waiting")) {
++			/* Can't just spin on the RPC lock because we're
++			 * holding the socket lock (see sync.txt). Instead,
++			 * release the socket lock and try the entire
++			 * operation again.
++			 */
++			homa_sock_unlock(pool->hsk);
++			continue;
++		}
++		list_del_init(&rpc->buf_links);
++		if (list_empty(&pool->hsk->waiting_for_bufs))
++			pool->bpages_needed = INT_MAX;
++		else
++			set_bpages_needed(pool);
++		homa_sock_unlock(pool->hsk);
++		homa_pool_allocate(rpc);
++		if (rpc->msgin.num_bpages > 0)
++			/* Allocation succeeded; "wake up" the RPC. */
++			rpc->msgin.resend_all = 1;
++		homa_rpc_unlock(rpc);
 +	}
 +}
-+
-+/**
-+ * homa_peer_find() - Returns the peer associated with a given host; creates
-+ * a new homa_peer if one doesn't already exist.
-+ * @peertab:    Peer table in which to perform lookup.
-+ * @addr:       Address of the desired host: IPv4 addresses are represented
-+ *              as IPv4-mapped IPv6 addresses.
-+ * @inet:       Socket that will be used for sending packets.
-+ *
-+ * Return:      The peer associated with @addr, or a negative errno if an
-+ *              error occurred. The caller can retain this pointer
-+ *              indefinitely: peer entries are never deleted except in
-+ *              homa_peertab_destroy.
-+ */
-+struct homa_peer *homa_peer_find(struct homa_peertab *peertab,
-+				 const struct in6_addr *addr,
-+				 struct inet_sock *inet)
-+{
-+	/* Note: this function uses RCU operators to ensure safety even
-+	 * if a concurrent call is adding a new entry.
-+	 */
-+	struct homa_peer *peer;
-+	struct dst_entry *dst;
-+
-+	__u32 bucket = hash_32((__force __u32)addr->in6_u.u6_addr32[0],
-+			       HOMA_PEERTAB_BUCKET_BITS);
-+
-+	bucket ^= hash_32((__force __u32)addr->in6_u.u6_addr32[1],
-+			  HOMA_PEERTAB_BUCKET_BITS);
-+	bucket ^= hash_32((__force __u32)addr->in6_u.u6_addr32[2],
-+			  HOMA_PEERTAB_BUCKET_BITS);
-+	bucket ^= hash_32((__force __u32)addr->in6_u.u6_addr32[3],
-+			  HOMA_PEERTAB_BUCKET_BITS);
-+	hlist_for_each_entry_rcu(peer, &peertab->buckets[bucket],
-+				 peertab_links) {
-+		if (ipv6_addr_equal(&peer->addr, addr))
-+			return peer;
-+	}
-+
-+	/* No existing entry; create a new one.
-+	 *
-+	 * Note: after we acquire the lock, we have to check again to
-+	 * make sure the entry still doesn't exist (it might have been
-+	 * created by a concurrent invocation of this function).
-+	 */
-+	spin_lock_bh(&peertab->write_lock);
-+	hlist_for_each_entry_rcu(peer, &peertab->buckets[bucket],
-+				 peertab_links) {
-+		if (ipv6_addr_equal(&peer->addr, addr))
-+			goto done;
-+	}
-+	peer = kmalloc(sizeof(*peer), GFP_ATOMIC);
-+	if (!peer) {
-+		peer = (struct homa_peer *)ERR_PTR(-ENOMEM);
-+		goto done;
-+	}
-+	peer->addr = *addr;
-+	dst = homa_peer_get_dst(peer, inet);
-+	if (IS_ERR(dst)) {
-+		kfree(peer);
-+		peer = (struct homa_peer *)PTR_ERR(dst);
-+		goto done;
-+	}
-+	peer->dst = dst;
-+	INIT_LIST_HEAD(&peer->grantable_rpcs);
-+	INIT_LIST_HEAD(&peer->grantable_links);
-+	hlist_add_head_rcu(&peer->peertab_links, &peertab->buckets[bucket]);
-+	peer->outstanding_resends = 0;
-+	peer->most_recent_resend = 0;
-+	peer->least_recent_rpc = NULL;
-+	peer->least_recent_ticks = 0;
-+	peer->current_ticks = -1;
-+	peer->resend_rpc = NULL;
-+	peer->num_acks = 0;
-+	spin_lock_init(&peer->ack_lock);
-+
-+done:
-+	spin_unlock_bh(&peertab->write_lock);
-+	return peer;
-+}
-+
-+/**
-+ * homa_dst_refresh() - This method is called when the dst for a peer is
-+ * obsolete; it releases that dst and creates a new one.
-+ * @peertab:  Table containing the peer.
-+ * @peer:     Peer whose dst is obsolete.
-+ * @hsk:      Socket that will be used to transmit data to the peer.
-+ */
-+void homa_dst_refresh(struct homa_peertab *peertab, struct homa_peer *peer,
-+		      struct homa_sock *hsk)
-+{
-+	struct homa_dead_dst *save_dead;
-+	struct dst_entry *dst;
-+	__u64 now;
-+
-+	/* Need to keep around the current entry for a while in case
-+	 * someone is using it. If we can't do that, then don't update
-+	 * the entry.
-+	 */
-+	save_dead = kmalloc(sizeof(*save_dead), GFP_ATOMIC);
-+	if (unlikely(!save_dead))
-+		return;
-+
-+	dst = homa_peer_get_dst(peer, &hsk->inet);
-+	if (IS_ERR(dst)) {
-+		kfree(save_dead);
-+		return;
-+	}
-+
-+	spin_lock_bh(&peertab->write_lock);
-+	now = sched_clock();
-+	save_dead->dst = peer->dst;
-+	save_dead->gc_time = now + 100000000;   /* 100 ms */
-+	list_add_tail(&save_dead->dst_links, &peertab->dead_dsts);
-+	homa_peertab_gc_dsts(peertab, now);
-+	peer->dst = dst;
-+	spin_unlock_bh(&peertab->write_lock);
-+}
-+
-+/**
-+ * homa_peer_get_dst() - Find an appropriate dst structure (either IPv4
-+ * or IPv6) for a peer.
-+ * @peer:   The peer for which a dst is needed. Note: this peer's flow
-+ *          struct will be overwritten.
-+ * @inet:   Socket that will be used for sending packets.
-+ * Return:  The dst structure (or an ERR_PTR).
-+ */
-+struct dst_entry *homa_peer_get_dst(struct homa_peer *peer,
-+				    struct inet_sock *inet)
-+{
-+	memset(&peer->flow, 0, sizeof(peer->flow));
-+	if (inet->sk.sk_family == AF_INET) {
-+		struct rtable *rt;
-+
-+		flowi4_init_output(&peer->flow.u.ip4, inet->sk.sk_bound_dev_if,
-+				   inet->sk.sk_mark, inet->tos,
-+				   RT_SCOPE_UNIVERSE, inet->sk.sk_protocol, 0,
-+				   peer->addr.in6_u.u6_addr32[3],
-+				   inet->inet_saddr, 0, 0, inet->sk.sk_uid);
-+		security_sk_classify_flow(&inet->sk, &peer->flow.u.__fl_common);
-+		rt = ip_route_output_flow(sock_net(&inet->sk),
-+					  &peer->flow.u.ip4, &inet->sk);
-+		if (IS_ERR(rt))
-+			return (struct dst_entry *)(PTR_ERR(rt));
-+		return &rt->dst;
-+	}
-+	peer->flow.u.ip6.flowi6_oif = inet->sk.sk_bound_dev_if;
-+	peer->flow.u.ip6.flowi6_iif = LOOPBACK_IFINDEX;
-+	peer->flow.u.ip6.flowi6_mark = inet->sk.sk_mark;
-+	peer->flow.u.ip6.flowi6_scope = RT_SCOPE_UNIVERSE;
-+	peer->flow.u.ip6.flowi6_proto = inet->sk.sk_protocol;
-+	peer->flow.u.ip6.flowi6_flags = 0;
-+	peer->flow.u.ip6.flowi6_secid = 0;
-+	peer->flow.u.ip6.flowi6_tun_key.tun_id = 0;
-+	peer->flow.u.ip6.flowi6_uid = inet->sk.sk_uid;
-+	peer->flow.u.ip6.daddr = peer->addr;
-+	peer->flow.u.ip6.saddr = inet->pinet6->saddr;
-+	peer->flow.u.ip6.fl6_dport = 0;
-+	peer->flow.u.ip6.fl6_sport = 0;
-+	peer->flow.u.ip6.mp_hash = 0;
-+	peer->flow.u.ip6.__fl_common.flowic_tos = inet->tos;
-+	peer->flow.u.ip6.flowlabel = ip6_make_flowinfo(inet->tos, 0);
-+	security_sk_classify_flow(&inet->sk, &peer->flow.u.__fl_common);
-+	return ip6_dst_lookup_flow(sock_net(&inet->sk), &inet->sk,
-+			&peer->flow.u.ip6, NULL);
-+}
-+
-+/**
-+ * homa_peer_lock_slow() - This function implements the slow path for
-+ * acquiring a peer's @unacked_lock. It is invoked when the lock isn't
-+ * immediately available. It waits for the lock, but also records statistics
-+ * about the waiting time.
-+ * @peer:    Peer to  lock.
-+ */
-+void homa_peer_lock_slow(struct homa_peer *peer)
-+	__acquires(&peer->ack_lock)
-+{
-+	spin_lock_bh(&peer->ack_lock);
-+}
-+
-+/**
-+ * homa_peer_add_ack() - Add a given RPC to the list of unacked
-+ * RPCs for its server. Once this method has been invoked, it's safe
-+ * to delete the RPC, since it will eventually be acked to the server.
-+ * @rpc:    Client RPC that has now completed.
-+ */
-+void homa_peer_add_ack(struct homa_rpc *rpc)
-+{
-+	struct homa_peer *peer = rpc->peer;
-+	struct homa_ack_hdr ack;
-+
-+	homa_peer_lock(peer);
-+	if (peer->num_acks < HOMA_MAX_ACKS_PER_PKT) {
-+		peer->acks[peer->num_acks].client_id = cpu_to_be64(rpc->id);
-+		peer->acks[peer->num_acks].server_port = htons(rpc->dport);
-+		peer->num_acks++;
-+		homa_peer_unlock(peer);
-+		return;
-+	}
-+
-+	/* The peer has filled up; send an ACK message to empty it. The
-+	 * RPC in the message header will also be considered ACKed.
-+	 */
-+	memcpy(ack.acks, peer->acks, sizeof(peer->acks));
-+	ack.num_acks = htons(peer->num_acks);
-+	peer->num_acks = 0;
-+	homa_peer_unlock(peer);
-+	homa_xmit_control(ACK, &ack, sizeof(ack), rpc);
-+}
-+
-+/**
-+ * homa_peer_get_acks() - Copy acks out of a peer, and remove them from the
-+ * peer.
-+ * @peer:    Peer to check for possible unacked RPCs.
-+ * @count:   Maximum number of acks to return.
-+ * @dst:     The acks are copied to this location.
-+ *
-+ * Return:   The number of acks extracted from the peer (<= count).
-+ */
-+int homa_peer_get_acks(struct homa_peer *peer, int count, struct homa_ack *dst)
-+{
-+	/* Don't waste time acquiring the lock if there are no ids available. */
-+	if (peer->num_acks == 0)
-+		return 0;
-+
-+	homa_peer_lock(peer);
-+
-+	if (count > peer->num_acks)
-+		count = peer->num_acks;
-+	memcpy(dst, &peer->acks[peer->num_acks - count],
-+	       count * sizeof(peer->acks[0]));
-+	peer->num_acks -= count;
-+
-+	homa_peer_unlock(peer);
-+	return count;
-+}
-diff --git a/net/homa/homa_peer.h b/net/homa/homa_peer.h
+diff --git a/net/homa/homa_pool.h b/net/homa/homa_pool.h
 new file mode 100644
-index 000000000000..556aeda49656
+index 000000000000..6dbe7d77dd07
 --- /dev/null
-+++ b/net/homa/homa_peer.h
-@@ -0,0 +1,233 @@
++++ b/net/homa/homa_pool.h
+@@ -0,0 +1,154 @@
 +/* SPDX-License-Identifier: BSD-2-Clause */
 +
-+/* This file contains definitions related to managing peers (homa_peer
-+ * and homa_peertab).
++/* This file contains definitions used to manage user-space buffer pools.
 + */
 +
-+#ifndef _HOMA_PEER_H
-+#define _HOMA_PEER_H
++#ifndef _HOMA_POOL_H
++#define _HOMA_POOL_H
 +
-+#include "homa_wire.h"
-+#include "homa_sock.h"
-+
-+struct homa_rpc;
++#include "homa_rpc.h"
 +
 +/**
-+ * struct homa_dead_dst - Used to retain dst_entries that are no longer
-+ * needed, until it is safe to delete them (I'm not confident that the RCU
-+ * mechanism will be safe for these: the reference count could get incremented
-+ * after it's on the RCU list?).
++ * struct homa_bpage - Contains information about a single page in
++ * a buffer pool.
 + */
-+struct homa_dead_dst {
-+	/** @dst: Entry that is no longer used by a struct homa_peer. */
-+	struct dst_entry *dst;
++struct homa_bpage {
++	union {
++		/**
++		 * @cache_line: Ensures that each homa_bpage object
++		 * is exactly one cache line long.
++		 */
++		char cache_line[L1_CACHE_BYTES];
++		struct {
++			/** @lock: to synchronize shared access. */
++			spinlock_t lock;
 +
-+	/**
-+	 * @gc_time: Time (in units of sched_clock()) when it is safe
-+	 * to free @dst.
-+	 */
-+	__u64 gc_time;
++			/**
++			 * @refs: Counts number of distinct uses of this
++			 * bpage (1 tick for each message that is using
++			 * this page, plus an additional tick if the @owner
++			 * field is set).
++			 */
++			atomic_t refs;
 +
-+	/** @dst_links: Used to link together entries in peertab->dead_dsts. */
-+	struct list_head dst_links;
++			/**
++			 * @owner: kernel core that currently owns this page
++			 * (< 0 if none).
++			 */
++			int owner;
++
++			/**
++			 * @expiration: time (in sched_clock() units) after
++			 * which it's OK to steal this page from its current
++			 * owner (if @refs is 1).
++			 */
++			__u64 expiration;
++		};
++	};
 +};
 +
 +/**
-+ * define HOMA_PEERTAB_BUCKET_BITS - Number of bits in the bucket index for a
-+ * homa_peertab.  Should be large enough to hold an entry for every server
-+ * in a datacenter without long hash chains.
++ * struct homa_pool_core - Holds core-specific data for a homa_pool (a bpage
++ * out of which that core is allocating small chunks).
 + */
-+#define HOMA_PEERTAB_BUCKET_BITS 16
++struct homa_pool_core {
++	union {
++		/**
++		 * @cache_line: Ensures that each object is exactly one
++		 * cache line long.
++		 */
++		char cache_line[L1_CACHE_BYTES];
++		struct {
++			/**
++			 * @page_hint: Index of bpage in pool->descriptors,
++			 * which may be owned by this core. If so, we'll use it
++			 * for allocating partial pages.
++			 */
++			int page_hint;
 +
-+/** define HOME_PEERTAB_BUCKETS - Number of buckets in a homa_peertab. */
-+#define HOMA_PEERTAB_BUCKETS BIT(HOMA_PEERTAB_BUCKET_BITS)
++			/**
++			 * @allocated: if the page given by @page_hint is
++			 * owned by this core, this variable gives the number of
++			 * (initial) bytes that have already been allocated
++			 * from the page.
++			 */
++			int allocated;
 +
-+/**
-+ * struct homa_peertab - A hash table that maps from IPv6 addresses
-+ * to homa_peer objects. IPv4 entries are encapsulated as IPv6 addresses.
-+ * Entries are gradually added to this table, but they are never removed
-+ * except when the entire table is deleted. We can't safely delete because
-+ * results returned by homa_peer_find may be retained indefinitely.
-+ *
-+ * This table is managed exclusively by homa_peertab.c, using RCU to
-+ * permit efficient lookups.
-+ */
-+struct homa_peertab {
-+	/**
-+	 * @write_lock: Synchronizes addition of new entries; not needed
-+	 * for lookups (RCU is used instead).
-+	 */
-+	spinlock_t write_lock;
-+
-+	/**
-+	 * @dead_dsts: List of dst_entries that are waiting to be deleted.
-+	 * Hold @write_lock when manipulating.
-+	 */
-+	struct list_head dead_dsts;
-+
-+	/**
-+	 * @buckets: Pointer to heads of chains of homa_peers for each bucket.
-+	 * Malloc-ed, and must eventually be freed. NULL means this structure
-+	 * has not been initialized.
-+	 */
-+	struct hlist_head *buckets;
++			/**
++			 * @next_candidate: when searching for free bpages,
++			 * check this index next.
++			 */
++			int next_candidate;
++		};
++	};
 +};
 +
 +/**
-+ * struct homa_peer - One of these objects exists for each machine that we
-+ * have communicated with (either as client or server).
++ * struct homa_pool - Describes a pool of buffer space for incoming
++ * messages for a particular socket; managed by homa_pool.c. The pool is
++ * divided up into "bpages", which are a multiple of the hardware page size.
++ * A bpage may be owned by a particular core so that it can more efficiently
++ * allocate space for small messages.
 + */
-+struct homa_peer {
++struct homa_pool {
 +	/**
-+	 * @addr: IPv6 address for the machine (IPv4 addresses are stored
-+	 * as IPv4-mapped IPv6 addresses).
++	 * @hsk: the socket that this pool belongs to.
 +	 */
-+	struct in6_addr addr;
-+
-+	/** @flow: Addressing info needed to send packets. */
-+	struct flowi flow;
++	struct homa_sock *hsk;
 +
 +	/**
-+	 * @dst: Used to route packets to this peer; we own a reference
-+	 * to this, which we must eventually release.
++	 * @region: beginning of the pool's region (in the app's virtual
++	 * memory). Divided into bpages. 0 means the pool hasn't yet been
++	 * initialized.
 +	 */
-+	struct dst_entry *dst;
++	char __user *region;
++
++	/** @num_bpages: total number of bpages in the pool. */
++	int num_bpages;
++
++	/** @descriptors: kmalloced area containing one entry for each bpage. */
++	struct homa_bpage *descriptors;
 +
 +	/**
-+	 * @grantable_rpcs: Contains all homa_rpcs (both requests and
-+	 * responses) involving this peer whose msgins require (or required
-+	 * them in the past) and have not been fully received. The list is
-+	 * sorted in priority order (head has fewest bytes_remaining).
-+	 * Locked with homa->grantable_lock.
++	 * @free_bpages: the number of pages still available for allocation
++	 * by homa_pool_get pages. This equals the number of pages with zero
++	 * reference counts, minus the number of pages that have been claimed
++	 * by homa_get_pool_pages but not yet allocated.
 +	 */
-+	struct list_head grantable_rpcs;
++	atomic_t free_bpages;
 +
 +	/**
-+	 * @grantable_links: Used to link this peer into homa->grantable_peers.
-+	 * If this RPC is not linked into homa->grantable_peers, this is an
-+	 * empty list pointing to itself.
++	 * @bpages_needed: the number of free bpages required to satisfy the
++	 * needs of the first RPC on @hsk->waiting_for_bufs, or INT_MAX if
++	 * that queue is empty.
 +	 */
-+	struct list_head grantable_links;
++	int bpages_needed;
++
++	/** @cores: core-specific info; dynamically allocated. */
++	struct homa_pool_core *cores;
++
++	/** @num_cores: number of elements in @cores. */
++	int num_cores;
 +
 +	/**
-+	 * @peertab_links: Links this object into a bucket of its
-+	 * homa_peertab.
++	 * @check_waiting_invoked: incremented during unit tests when
++	 * homa_pool_check_waiting is invoked.
 +	 */
-+	struct hlist_node peertab_links;
-+
-+	/**
-+	 * @outstanding_resends: the number of resend requests we have
-+	 * sent to this server (spaced @homa.resend_interval apart) since
-+	 * we received a packet from this peer.
-+	 */
-+	int outstanding_resends;
-+
-+	/**
-+	 * @most_recent_resend: @homa->timer_ticks when the most recent
-+	 * resend was sent to this peer.
-+	 */
-+	int most_recent_resend;
-+
-+	/**
-+	 * @least_recent_rpc: of all the RPCs for this peer scanned at
-+	 * @current_ticks, this is the RPC whose @resend_timer_ticks
-+	 * is farthest in the past.
-+	 */
-+	struct homa_rpc *least_recent_rpc;
-+
-+	/**
-+	 * @least_recent_ticks: the @resend_timer_ticks value for
-+	 * @least_recent_rpc.
-+	 */
-+	__u32 least_recent_ticks;
-+
-+	/**
-+	 * @current_ticks: the value of @homa->timer_ticks the last time
-+	 * that @least_recent_rpc and @least_recent_ticks were computed.
-+	 * Used to detect the start of a new homa_timer pass.
-+	 */
-+	__u32 current_ticks;
-+
-+	/**
-+	 * @resend_rpc: the value of @least_recent_rpc computed in the
-+	 * previous homa_timer pass. This RPC will be issued a RESEND
-+	 * in the current pass, if it still needs one.
-+	 */
-+	struct homa_rpc *resend_rpc;
-+
-+	/**
-+	 * @num_acks: the number of (initial) entries in @acks that
-+	 * currently hold valid information.
-+	 */
-+	int num_acks;
-+
-+	/**
-+	 * @acks: info about client RPCs whose results have been completely
-+	 * received.
-+	 */
-+	struct homa_ack acks[HOMA_MAX_ACKS_PER_PKT];
-+
-+	/**
-+	 * @ack_lock: used to synchronize access to @num_acks and @acks.
-+	 */
-+	spinlock_t ack_lock;
++	int check_waiting_invoked;
 +};
 +
-+void     homa_dst_refresh(struct homa_peertab *peertab,
-+			  struct homa_peer *peer, struct homa_sock *hsk);
-+void     homa_peertab_destroy(struct homa_peertab *peertab);
-+struct homa_peer **
-+		homa_peertab_get_peers(struct homa_peertab *peertab,
-+				       int *num_peers);
-+int      homa_peertab_init(struct homa_peertab *peertab);
-+void     homa_peer_add_ack(struct homa_rpc *rpc);
-+struct homa_peer
-+	       *homa_peer_find(struct homa_peertab *peertab,
-+			       const struct in6_addr *addr,
-+			       struct inet_sock *inet);
-+int      homa_peer_get_acks(struct homa_peer *peer, int count,
-+			    struct homa_ack *dst);
-+struct dst_entry
-+	       *homa_peer_get_dst(struct homa_peer *peer,
-+				  struct inet_sock *inet);
-+void     homa_peer_lock_slow(struct homa_peer *peer);
-+void     homa_peertab_gc_dsts(struct homa_peertab *peertab, __u64 now);
++int      homa_pool_allocate(struct homa_rpc *rpc);
++void     homa_pool_check_waiting(struct homa_pool *pool);
++void     homa_pool_destroy(struct homa_pool *pool);
++void __user *homa_pool_get_buffer(struct homa_rpc *rpc, int offset,
++				  int *available);
++int      homa_pool_get_pages(struct homa_pool *pool, int num_pages,
++			     __u32 *pages, int leave_locked);
++void     homa_pool_get_rcvbuf(struct homa_sock *hsk,
++			      struct homa_rcvbuf_args *args);
++int      homa_pool_init(struct homa_sock *hsk, void *buf_region,
++			__u64 region_size);
++int      homa_pool_release_buffers(struct homa_pool *pool,
++				   int num_buffers, __u32 *buffers);
 +
-+/**
-+ * homa_peer_lock() - Acquire the lock for a peer's @unacked_lock. If the lock
-+ * isn't immediately available, record stats on the waiting time.
-+ * @peer:    Peer to lock.
-+ */
-+static inline void homa_peer_lock(struct homa_peer *peer)
-+	__acquires(&peer->ack_lock)
-+{
-+	if (!spin_trylock_bh(&peer->ack_lock))
-+		homa_peer_lock_slow(peer);
-+}
-+
-+/**
-+ * homa_peer_unlock() - Release the lock for a peer's @unacked_lock.
-+ * @peer:   Peer to lock.
-+ */
-+static inline void homa_peer_unlock(struct homa_peer *peer)
-+	__releases(&peer->ack_lock)
-+{
-+	spin_unlock_bh(&peer->ack_lock);
-+}
-+
-+/**
-+ * homa_get_dst() - Returns destination information associated with a peer,
-+ * updating it if the cached information is stale.
-+ * @peer:   Peer whose destination information is desired.
-+ * @hsk:    Homa socket; needed by lower-level code to recreate the dst.
-+ * Return:   Up-to-date destination for peer.
-+ */
-+static inline struct dst_entry *homa_get_dst(struct homa_peer *peer,
-+					     struct homa_sock *hsk)
-+{
-+	if (unlikely(peer->dst->obsolete > 0))
-+		homa_dst_refresh(hsk->homa->peers, peer, hsk);
-+	return peer->dst;
-+}
-+
-+#endif /* _HOMA_PEER_H */
++#endif /* _HOMA_POOL_H */
 -- 
 2.34.1
 
