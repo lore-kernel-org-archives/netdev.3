@@ -1,119 +1,141 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6688634C
-	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 12:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D912475C8
+	for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 12:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736944858; cv=none; b=hbmZM+HknkwaKGkRU29vF2sX0F7i+ErSbRnYxvoRZFFttzpJEFal4oVb19ZAwseuVJ9NRXupL7/F6dx5RrZhMkjIE+3RN7pl1DwUs1wZy30+Nh6DwB/HZxpgEs4qrCV7LdP487kA+FcWUL2mwlJTYDQSuSFJHNoo1L0/06dn/VU=
+	t=1736945102; cv=none; b=aV50grgU4emNezIkWV4J2orrM0kobtGHKrHQnL6HOuTIuKGRYagEYS+RYewihZYyoJAwCGSRGu9AzzUTWK2Pxwk11AvNftquj/uCfKwrfBeNMNVMs1lYY+nyz3+VFQ3WKgSU7jKvwnzX0Gfl3r7SliTNR7pj8kfceRFqDKnBnWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736944858; c=relaxed/simple;
-	bh=KP6bbmkVXA6DN61BQl4jtzHB/Yy6FMxyDtzEAEA0IpM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Iv2ByLOjgnAdVJoJXJt20cr49HDyHbYQGEOMqmEICMwofJ1MeHxtA+eQDr9NovsMwny7wJRADyNqrgbiMIgOXXvypLGHezjIzKP7eCccX5b7t2W9NnAYv/1NUWMSvZGEst1a7O7wu1E64/tm3fQr2FBj6yUONW4WzREpSN1uzvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hhlvrczW; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1736945102; c=relaxed/simple;
+	bh=+0Pp6MfZvYi31RiamzwKQPw5KC6VEPCDjQ1AOgXLRHw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=AEiwPDwgjjA/8skg8EkCR6c6wRhZoRXKsmfM8KyJ/0/aJIzK1ZccWPHuiKuDUst5O4BuY0OqxIlftrHMqSdXXBK6YlAyMqw40XIwUPxJXDmsEe6LMD9OIBLYtMpefFYggKg0zMRvOgu91LcCtYCaX2G0cU7oip7Gb75vHTcDknY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QZ4EBjzU; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hhlvrczW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736944856; x=1768480856;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=KP6bbmkVXA6DN61BQl4jtzHB/Yy6FMxyDtzEAEA0IpM=;
-  b=hhlvrczWLxK0mFvILsxL/GlVLPkttGlT+p6xYeRc9d5fZSWXFyGVVPEK
-   O/o05nQL1XBndAlnGQI5+ylsUW9AWJQZ8dWJrrUXDmCe4zIqvudX+Z3gX
-   aBkTLQsvwuqgOwaakkk2b4G3tX7SaqL5Oaf7bxRA6SvtQWGjjP+0bF3sZ
-   H8OBQjuV/7fbnFOPN/PwYtfEgXm/LZqYKU1Ja59DaJR6GV4+EI1l2QT/e
-   8kpu9Vs7NbQ2VndVHnN4n4m6giVtWmIW76vRPlh0XUvlA6gA5mpDl/vE9
-   nwKgFxXAGKLvoqq/349d9Aq3Hlujg+8ouSlPBtsf0B7E2TJRrZUeHGbg9
-   Q==;
-X-CSE-ConnectionGUID: j9vvXQsCTgipAeP3s0ogBw==
-X-CSE-MsgGUID: FQfBasp6TGqzCjr8dartmA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="47864508"
-X-IronPort-AV: E=Sophos;i="6.13,206,1732608000"; 
-   d="scan'208";a="47864508"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 04:40:56 -0800
-X-CSE-ConnectionGUID: fb7Z3i7cRDCRgMwVHgEhgA==
-X-CSE-MsgGUID: ydbmevfXTKuBkTkQteBPTA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="104982119"
-Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by orviesa010.jf.intel.com with ESMTP; 15 Jan 2025 04:40:54 -0800
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH iwl-next v1] ixgbe: add support for thermal sensor event reception
-Date: Wed, 15 Jan 2025 13:27:20 +0100
-Message-Id: <20250115122720.431223-1-jedrzej.jagielski@intel.com>
-X-Mailer: git-send-email 2.31.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QZ4EBjzU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736945099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=68ei5DOvAa/E5bc2+JnDKedc78DBOvWfZQBNFL4tRhM=;
+	b=QZ4EBjzU3OWDp8+iVrOEoTPfrfP8RlDyK6p+j3VtwqSeFk52J6ixrjEfpalnvNFXXb20r4
+	RLjEuM5kqCzzv2dnn7FvJcBNrIiftE8jL4xUOmc9ioTRF6LMD/0XkcF7sR3Sfq52mrKSUN
+	rVj9jOa+dwIYfXnDjm+1Jkwd4pfD52k=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-631-UeG64twPPeC9HVpzBkbWHg-1; Wed, 15 Jan 2025 07:44:56 -0500
+X-MC-Unique: UeG64twPPeC9HVpzBkbWHg-1
+X-Mimecast-MFC-AGG-ID: UeG64twPPeC9HVpzBkbWHg
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-436248d1240so31598455e9.0
+        for <netdev@vger.kernel.org>; Wed, 15 Jan 2025 04:44:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736945095; x=1737549895;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=68ei5DOvAa/E5bc2+JnDKedc78DBOvWfZQBNFL4tRhM=;
+        b=qyg/vY0bu4TMJOlEfued+oo5REkiufn5bLj+zNt0vMeb3PeyPQtFmYNhRbQatZjGa7
+         Qx3cLlCUVK/wMU4cPg3DzXtuNgTIivvoxTyKqE8cFLx3+J8BEyEoEj7RnZT32tx5ALx7
+         ESRJkXDv9v565Mkc2zfsTYfigu/G7phlAb3uJLLofFNUbLCGeULNrMQuFNfFS3zWds/l
+         P/ua9cZeWV8kSmRKBelUAXHHyu89uXyerNhk9voczua+JAykW64JlE9eOFtAYWBroqcK
+         PzUhXWJtw3KRuD5+p2KAbDsoQua1GmW+R7yGG15Jhp8LexN50XGVcUjCmHUimr2Q8nKM
+         xmfw==
+X-Gm-Message-State: AOJu0Yy+ztyHmYulZCElKyFUbIpqsc/oDwlq/VoZq48/Fm964doTZ+wj
+	S6xRE/glPzKP5JQxolnIj525VTznBuVvoRlKrI55HMfeIb4WpQtNX7dZ/vj/QI88HexPMud3pNX
+	FTOW8aJ/4p/0+f7QgGdyT2g5TNt0g7jIm3O+uHNCY9UiVEySC4K3z7A==
+X-Gm-Gg: ASbGncvOHvXNdsiw11CCgtXEmpcutyuZzbY23pnB9zl7bJXRX3bWp3XiIida5uvcMMr
+	KAt7s/LeqzCbSyUF8dfGOk7tkRs5m6k6OSXPaEkIFgD2wGpHcxfPYYfex785hAFEulk4WT5EfK6
+	PU5wjM+ctO/XE4c+NgZSbY8rj8dTh9IPEQDfdXUSoyBlFLJbBZyg68I2x92ZCUE/3LkpZbGrJC6
+	STEc2KtjatAFwysko6iQOps/yf3kg0NhghhJGrGgGLpDl8jZKGR1fIXJrNh8Vnx0cYmSS69/oWE
+	TJXAXJIY10CtEJxfRljRsCvOpCAhFgykONvX
+X-Received: by 2002:a05:600c:1c8b:b0:434:f5c0:32b1 with SMTP id 5b1f17b1804b1-436e26a7578mr278574635e9.15.1736945095096;
+        Wed, 15 Jan 2025 04:44:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEWMt27yG2kMWi1F5AG48AAxfZOpqYQ28lr80ZUv7RadtO0edXKJh06nLDhYNQLkMgaeFpJow==
+X-Received: by 2002:a05:600c:1c8b:b0:434:f5c0:32b1 with SMTP id 5b1f17b1804b1-436e26a7578mr278574395e9.15.1736945094701;
+        Wed, 15 Jan 2025 04:44:54 -0800 (PST)
+Received: from debian (2a01cb058d23d6009e7a50f94171b2f9.ipv6.abo.wanadoo.fr. [2a01:cb05:8d23:d600:9e7a:50f9:4171:b2f9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c7499502sm22098855e9.4.2025.01.15.04.44.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jan 2025 04:44:54 -0800 (PST)
+Date: Wed, 15 Jan 2025 13:44:52 +0100
+From: Guillaume Nault <gnault@redhat.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH net-next] ipv4: Prepare inet_rtm_getroute() to .flowi4_tos
+ conversion.
+Message-ID: <7bc1c7dc47ad1393569095d334521fae59af5bc7.1736944951.git.gnault@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-E610 NICs unlike the previous devices utilising ixgbe driver
-are notified in the case of overheat by the FW ACI event.
+Store rtm->rtm_tos in a dscp_t variable, which can then be used for
+setting fl4.flowi4_tos and also be passed as parameter of
+ip_route_input_rcu().
 
-In event of overheat when treshhold is exceeded, FW suspends all
-traffic and sends overtemp event to the driver. Then driver
-loggs appropriate message and closes the adapter instance.
-The card remains in that state until the platform is rebooted.
+The .flowi4_tos field is going to be converted to dscp_t to ensure ECN
+bits aren't erroneously taken into account during route lookups. Having
+a dscp_t variable available will simplify that conversion, as we'll
+just have to drop the inet_dscp_to_dsfield() call.
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Note that we can't just convert rtm->rtm_tos to dscp_t because this
+structure is exported to user space.
+
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c      | 5 +++++
- drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h | 3 +++
- 2 files changed, 8 insertions(+)
+ net/ipv4/route.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 7236f20c9a30..5c804948dd1f 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -3165,6 +3165,7 @@ static void ixgbe_aci_event_cleanup(struct ixgbe_aci_event *event)
- static void ixgbe_handle_fw_event(struct ixgbe_adapter *adapter)
- {
- 	struct ixgbe_aci_event event __cleanup(ixgbe_aci_event_cleanup);
-+	struct net_device *netdev = adapter->netdev;
- 	struct ixgbe_hw *hw = &adapter->hw;
- 	bool pending = false;
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 9f9d4e6ea1b9..1f7e2a02dd25 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -3269,6 +3269,7 @@ static int inet_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 	struct flowi4 fl4 = {};
+ 	__be32 dst = 0;
+ 	__be32 src = 0;
++	dscp_t dscp;
+ 	kuid_t uid;
+ 	u32 iif;
  	int err;
-@@ -3185,6 +3186,10 @@ static void ixgbe_handle_fw_event(struct ixgbe_adapter *adapter)
- 		case ixgbe_aci_opc_get_link_status:
- 			ixgbe_handle_link_status_event(adapter, &event);
- 			break;
-+		case ixgbe_aci_opc_temp_tca_event:
-+			e_crit(drv, "%s\n", ixgbe_overheat_msg);
-+			ixgbe_close(netdev);
-+			break;
- 		default:
- 			e_warn(hw, "unknown FW async event captured\n");
- 			break;
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-index 8d06ade3c7cd..617e07878e4f 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-@@ -171,6 +171,9 @@ enum ixgbe_aci_opc {
- 	ixgbe_aci_opc_done_alt_write			= 0x0904,
- 	ixgbe_aci_opc_clear_port_alt_write		= 0x0906,
+@@ -3283,6 +3284,7 @@ static int inet_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 	dst = nla_get_in_addr_default(tb[RTA_DST], 0);
+ 	iif = nla_get_u32_default(tb[RTA_IIF], 0);
+ 	mark = nla_get_u32_default(tb[RTA_MARK], 0);
++	dscp = inet_dsfield_to_dscp(rtm->rtm_tos);
+ 	if (tb[RTA_UID])
+ 		uid = make_kuid(current_user_ns(), nla_get_u32(tb[RTA_UID]));
+ 	else
+@@ -3307,7 +3309,7 @@ static int inet_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
  
-+	/* TCA Events */
-+	ixgbe_aci_opc_temp_tca_event                    = 0x0C94,
-+
- 	/* debug commands */
- 	ixgbe_aci_opc_debug_dump_internals		= 0xFF08,
+ 	fl4.daddr = dst;
+ 	fl4.saddr = src;
+-	fl4.flowi4_tos = rtm->rtm_tos & INET_DSCP_MASK;
++	fl4.flowi4_tos = inet_dscp_to_dsfield(dscp);
+ 	fl4.flowi4_oif = nla_get_u32_default(tb[RTA_OIF], 0);
+ 	fl4.flowi4_mark = mark;
+ 	fl4.flowi4_uid = uid;
+@@ -3331,9 +3333,8 @@ static int inet_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 		fl4.flowi4_iif = iif; /* for rt_fill_info */
+ 		skb->dev	= dev;
+ 		skb->mark	= mark;
+-		err = ip_route_input_rcu(skb, dst, src,
+-					 inet_dsfield_to_dscp(rtm->rtm_tos),
+-					 dev, &res) ? -EINVAL : 0;
++		err = ip_route_input_rcu(skb, dst, src, dscp, dev,
++					 &res) ? -EINVAL : 0;
  
-
-base-commit: 09a7ccb316bce8347fefad05809426526b6699f3
+ 		rt = skb_rtable(skb);
+ 		if (err == 0 && rt->dst.error)
 -- 
-2.31.1
+2.39.2
 
