@@ -1,74 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA6717BD3;
-	Thu, 16 Jan 2025 02:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from chinatelecom.cn (smtpnm6-07.21cn.com [182.42.151.156])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1AE1862;
+	Thu, 16 Jan 2025 02:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=182.42.151.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736995732; cv=none; b=ejpegEn2Ivk4yEAziXAV8ePla3hDwaScCwmnW1BQWp/t6AzBKPy/At+k/sM4qEtSvFdebT6nJYaowrPAIvU8hN5bhJDPpGx6iEXQm90bR9G16g+dO0leXgV1BRXxOYSJE9BJBmkh/jQyeFwhA8uFP37+GTtBYxZYXp1Rl++iMk0=
+	t=1736995807; cv=none; b=RfN/kXEiKMRQ8vX1M8fdIa2wDPBIzp1GXODR6xUH5HTsVErEpU3XN4kNWM3lBIUOYqZcQc1W/RXq11W66Nmvas4ASvyeKuspBrqantjDEiCUPUswWeavOzb2LnfzJhFWzzcw83xLG5I3wNx8x3lNiakGTzsM+AQMbnJzuA9jizY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736995732; c=relaxed/simple;
-	bh=5ETaFEkTljab3ojVYsXyNwdOM6bFvmz7QnYyt2ttLZI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bI7C+Sh/UELj7qNbPgXjZVKWHHHgiMXQeH/r+Ykd+OXmJk6WHmXe8O2HKVGrGcssHcHARbFLm/GkAd8OyVlpMu0ROV1dvtlPrBcYaMZVcxhcNjdyHt40nCRKqhySywhJvK7Pr6HDiSn+N91JarX7+r6YxsXLygsghy7OUEV8jlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gDModgfc; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gDModgfc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8757AC4CED1;
-	Thu, 16 Jan 2025 02:48:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736995732;
-	bh=5ETaFEkTljab3ojVYsXyNwdOM6bFvmz7QnYyt2ttLZI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gDModgfcodXAhBnQqgwvUtLlCJEnFJLTVI3fFDcQDTjBnCMs6tMVzZsWZhy8TR6eX
-	 5b3xHIoh2t6B0P9aPDnlmbs60/v61PpEVtittIIi7o/KHeXcN+lTpuQG6HNkJUz2lr
-	 vFAuMW5pQ0j8K4CB+TZxRk2P/EcITwHPQz2SIJ/XxMh8+DSTGb4a/vAXFxIP4I9lWJ
-	 /hG5oE8UZ/S58kl/g9DgI5x4R545wonRCZTiv22MlQ0BCP5aPsWhdfah7kP0cKwMj5
-	 UHNC6S8cTJ6RhmmYiTo2jcCCR1u9uw5lik9rAfkGQnNy1cQUXgp6QyKh6FNJxipyaw
-	 xwrZmac6TEsJQ==
-Date: Wed, 15 Jan 2025 18:48:50 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Pavel Begunkov <asml.silence@gmail.com>
-Cc: David Wei <dw@davidwei.uk>, io-uring@vger.kernel.org,
- netdev@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, Paolo Abeni
- <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jesper Dangaard Brouer <hawk@kernel.org>, David
- Ahern <dsahern@kernel.org>, Mina Almasry <almasrymina@google.com>,
- Stanislav Fomichev <stfomichev@gmail.com>, Joe Damato <jdamato@fastly.com>,
- Pedro Tammela <pctammela@mojatatu.com>
-Subject: Re: [PATCH net-next v10 01/22] net: make page_pool_ref_netmem work
- with net iovs
-Message-ID: <20250115184850.4d30e408@kernel.org>
-In-Reply-To: <52fffbfb-dadb-48fe-84e4-8296b18fd22e@gmail.com>
-References: <20250108220644.3528845-1-dw@davidwei.uk>
-	<20250108220644.3528845-2-dw@davidwei.uk>
-	<20250115163019.3e810c0d@kernel.org>
-	<52fffbfb-dadb-48fe-84e4-8296b18fd22e@gmail.com>
+	s=arc-20240116; t=1736995807; c=relaxed/simple;
+	bh=vXJPN5fkl5Edzzx788oumQZZKn0BfcPryAIxLhZ/bzk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=fsI3c0YapoKOaW4sAjBpek2ACtd0h8qN2y3NbxLkwh94HBjNaURRb5Fqm8gEGa51xOv2PlEHkIFtXf4Xsl38Kw47zL2T8IYRYA3T4KSGRMc92h8uLty0JQn/rSvcYZH5UsztV1n8+XgyFNN6+n3WzllrG76+nte7zQcONgJxugk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chinatelecom.cn; spf=pass smtp.mailfrom=chinatelecom.cn; arc=none smtp.client-ip=182.42.151.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chinatelecom.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chinatelecom.cn
+HMM_SOURCE_IP:192.168.138.117:0.1690985996
+HMM_ATTACHE_NUM:0000
+HMM_SOURCE_TYPE:SMTP
+Received: from clientip-36.111.140.9 (unknown [192.168.138.117])
+	by chinatelecom.cn (HERMES) with SMTP id 519309F5EB;
+	Thu, 16 Jan 2025 10:40:39 +0800 (CST)
+X-189-SAVE-TO-SEND: +liyonglong@chinatelecom.cn
+Received: from  ([36.111.140.9])
+	by gateway-ssl-dep-84dfd8c7d7-bnxj5 with ESMTP id 15e972f1e60c426da08153c9f1bcac9e for linux-kernel@vger.kernel.org;
+	Thu, 16 Jan 2025 10:40:45 CST
+X-Transaction-ID: 15e972f1e60c426da08153c9f1bcac9e
+X-Real-From: liyonglong@chinatelecom.cn
+X-Receive-IP: 36.111.140.9
+X-MEDUSA-Status: 0
+Sender: liyonglong@chinatelecom.cn
+From: Yonglong Li <liyonglong@chinatelecom.cn>
+To: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	liyonglong@chinatelecom.cn
+Subject: [PATCH] seg6: inherit inner IPv4 TTL on ip4ip6 encapsulation
+Date: Thu, 16 Jan 2025 10:40:36 +0800
+Message-Id: <1736995236-23063-1-git-send-email-liyonglong@chinatelecom.cn>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 16 Jan 2025 02:12:06 +0000 Pavel Begunkov wrote:
-> On 1/16/25 00:30, Jakub Kicinski wrote:
-> > On Wed,  8 Jan 2025 14:06:22 -0800 David Wei wrote:  
-> >> From: Pavel Begunkov <asml.silence@gmail.com>
-> >>
-> >> page_pool_ref_netmem() should work with either netmem representation, but
-> >> currently it casts to a page with netmem_to_page(), which will fail with
-> >> net iovs. Use netmem_get_pp_ref_count_ref() instead.  
-> > 
-> > This is a fix, right? If we try to coalesce a cloned netmem skb
-> > we'll crash.  
-> 
-> True, I missed it it's actually used.
+inherit inner IPv4 TTL on ip4ip6 SHR encapsulation like as inherit 
+inner hop_limit on ip6ip6 SHR encapsulation
 
-I'll add:
+Signed-off-by: Yonglong Li <liyonglong@chinatelecom.cn>
+---
+ net/ipv6/seg6_iptunnel.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-Fixes: 8ab79ed50cf1 ("page_pool: devmem support")
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 098632a..2f1f9cf 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -160,7 +160,10 @@ int seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh, int proto)
+ 		hdr->hop_limit = inner_hdr->hop_limit;
+ 	} else {
+ 		ip6_flow_hdr(hdr, 0, flowlabel);
+-		hdr->hop_limit = ip6_dst_hoplimit(skb_dst(skb));
++		if (skb->protocol == htons(ETH_P_IP))
++			hdr->hop_limit = ((struct iphdr *)inner_hdr)->ttl;
++		else
++			hdr->hop_limit = ip6_dst_hoplimit(skb_dst(skb));
+ 
+ 		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
+ 
+@@ -249,7 +252,10 @@ static int seg6_do_srh_encap_red(struct sk_buff *skb,
+ 		hdr->hop_limit = inner_hdr->hop_limit;
+ 	} else {
+ 		ip6_flow_hdr(hdr, 0, flowlabel);
+-		hdr->hop_limit = ip6_dst_hoplimit(skb_dst(skb));
++		if (skb->protocol == htons(ETH_P_IP))
++			hdr->hop_limit = ((struct iphdr *)inner_hdr)->ttl;
++		else
++			hdr->hop_limit = ip6_dst_hoplimit(skb_dst(skb));
+ 
+ 		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
+ 		IP6CB(skb)->iif = skb->skb_iif;
+-- 
+1.8.3.1
 
-and we'll send it to Linus tomorrow. Hope that's okay.
