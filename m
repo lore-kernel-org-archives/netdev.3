@@ -1,112 +1,72 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541917082D;
-	Thu, 16 Jan 2025 02:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7736B1862;
+	Thu, 16 Jan 2025 02:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736994745; cv=none; b=SEZgLPUttAzI2bbwQTQnzyHAF151XbvJjEWUQVvd/VRrJibaTDhFWorxiAcwMFxY7EACmRi+yQG9S20Fgyfyh0HzDs9ckNqZkEtrP1U+eMY1V4H9qQvN6JARZUDzL4QJi5pel+veAN7TAU8HyvPsyzAxAHoAprRUuXtsFtG3f+w=
+	t=1736995268; cv=none; b=GKHq5DN2VtGNtfBYKwHmjMONnbQx3y8S0U7rBUKS/zwgAaGezrZwXNPAti/kUA7g2XvIwt5LgkvWLwV+Q0hEhRNQCoiCE3WW5urD18Wk5RyRmZ/1RWfp/tYw9fMj1GHNKYSbXj+ij1tRXZ71rruf7diXhKm7dGsnyWq4Xwkof2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736994745; c=relaxed/simple;
-	bh=mlZF2KzEKTCQLyWxk2mMb72L0SIqh7F5h/n7Xgy5HV4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fQYDLc+JiDvuzw+mKs5MrPiq4yqAg3rxGeUw6AOKegUKI9bke6V6KgsIOfh89ZaSZrDHz11I67Xp4enm5xWWZ6oBSaDoD7xIDaNfhEgv8nda4WXrfT4G9aS0F3DQVGONODRF+Z92774liMmkSRum0r2P5H2w8KKyC+2gLqljz8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q8UBQvJq; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736995268; c=relaxed/simple;
+	bh=357X8ueNSmXmBC6zxKI/63tEqCXBjNeDU6GK2yNvUAc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=p3n6Jm98K+ammeKvIR1XIBS3WEV5oWPQIzdXeTa4vFoaUn2TGDB0BKJy9GCfc2V04ZBSn+OKpVGWXf3F2nSX1xDOI0ay+YErjMwdpWtukedSzG6lkduZrCSZXTn+59FZWAhv8/qmuAuO/mMacnuvA128XY0vtv7Y8RAB0PdWjfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JPasyAZ2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q8UBQvJq"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-aaec61d0f65so96378366b.1;
-        Wed, 15 Jan 2025 18:32:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736994741; x=1737599541; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=azrkXtzoOMBRva/zKYDVVsxqYQXPULoD/TFyqPsj3tA=;
-        b=Q8UBQvJqcnwbF81h+ZF8RsXXpX1+r+xAZ3jcM44mO8cQQAKei7JjyTF53oo3V/Stb5
-         aYcAxOPyzSRnej+96gYlQpgpQWqjm/XKrDt4r9xgwfHfUb+IMtlCaQ71iwJORvGVryWc
-         LyOXJwE7qsP+L4tFtcOJOvQKzlc3/HHNmH2WS4Qgvn3TpER4tqXBeYV7jOXsPz0nGmwx
-         svUwqZIgMRqr3dDSHbV8D5CethLFMAu7avB7jEqG+tC7Bwnf75ICW1DeiupyPoucuhdn
-         7/l+sutkEbZnS6WuVaOVMHe6sBQ/TQIC2KI8ECwARrwtdTi2g2Hmfh9YDUYRevMqvJPe
-         w9kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736994741; x=1737599541;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=azrkXtzoOMBRva/zKYDVVsxqYQXPULoD/TFyqPsj3tA=;
-        b=PrnuZA3BFDxpHC27fvdETVMc3E9btLPKCsxN4p93UIQPRdy2CL78iBCD2OEsuyOejC
-         8ii5FB5A1jgPi2PS6k5lmCNMOzCPvY10Q74vdg/f43N5Rty2CB6BV9UJMb46V/lJn0Co
-         HptAcy+J1A7F+tDNuSPehb/WXsdAFBLARCsZpl4x+CFAxxMOTDF6SzW0XJbAxfqlU6dT
-         yXf2WRCL/AHROSwqeFguU8ktWhKsAB2LPVZtDopXZ4bE6XNNKZGaGLlBAKsfpbadnhYx
-         E51HB3JVgaVNf7mi5rRO9YxIXXUuJYOJ3YpNna2jFoUGlJdGc8n4BX4qcvnqxEn+pquo
-         QJpw==
-X-Forwarded-Encrypted: i=1; AJvYcCVGDvDnCKPD2c6Y5tee9uLFGeuEyqUJKGs0v4ZLuv8VIJyVTNxQFxqhnEGxdNGNMwy/26ute+c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzmubrzbZqhN6/QTX4hTuX+9nG6PJhPy5XXXqwCE2YYncCbJtD
-	lDpQL3WiwXkfepkXAXSYBriFHFfbT41ymm04xnRgzW6PsAXquFUN
-X-Gm-Gg: ASbGncvmyIwnzXPCkPxr8a3dS4014DBk0RGch6Y95o+m1CWoRn3890FOrENgC+O3PRi
-	3kxmk8bst52Ceh3POf6xf8vCVaq6brl2BYBrVzUlywfqoa6mVX4dMsyj2WvLbPaV7nfZu3DGDCJ
-	mATFTP6l/8NGDxLKjDMgE2wva2vGDOv7WoLjvSk4VWLDy8+PZjLwro3P9Fqa8pDvvRz5MqTiTup
-	E6QJ7/dKRC8syCueSQgI31j86anZz0LL4yJJqA4yPFFc+qiJgSJ5H2MaILo7QJL0Rc=
-X-Google-Smtp-Source: AGHT+IHU9PhGUtYrV/uxBobHRmGKihlPiypiDAKawHcNoQkRHSXU1PjyPSq3aOg2AGAmZniQWZUYwg==
-X-Received: by 2002:a17:907:1b03:b0:aab:eefd:4ceb with SMTP id a640c23a62f3a-ab2ab66d63cmr3274819566b.10.1736994741276;
-        Wed, 15 Jan 2025 18:32:21 -0800 (PST)
-Received: from [192.168.8.100] ([148.252.147.234])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c90dacf1sm846550066b.63.2025.01.15.18.32.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Jan 2025 18:32:20 -0800 (PST)
-Message-ID: <bb19ef4d-6871-4ae9-b478-34dd2efcb361@gmail.com>
-Date: Thu, 16 Jan 2025 02:33:06 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JPasyAZ2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E850C4CED1;
+	Thu, 16 Jan 2025 02:41:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736995267;
+	bh=357X8ueNSmXmBC6zxKI/63tEqCXBjNeDU6GK2yNvUAc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=JPasyAZ2pXyo8qbSFD7ZwIEuV1EKK/LSSeua5vU//cH6s7iu3tSTYwGQSny2KAC7D
+	 VznLxn5ygEAW5jlVKrZMx3n+Sb+AI/Jy66mm7E0ZwL2ppZuSFXd1dwS8tP+plcfKUj
+	 QEWcn41dyqz32+oVWK4tkBXlo6v9cCydSkC7dtKql1zZv0dq7H7lIlVi1/HTR0NrFa
+	 coEvsEQlICfRbB9IWB+lIvHzUMx1DQzdBK8NXErtZL694f3SCcyssiyaNNhzDscAwg
+	 o/LC8tuOBCs6gsUPk/KAvTSKdjKbY5lditIZMMnjqOkQdiPRWKRMWU3mjDNdvkOG2J
+	 9YoR6N03JSnOw==
+Date: Wed, 15 Jan 2025 18:41:05 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+ "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+ <davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+ "pabeni@redhat.com" <pabeni@redhat.com>, "christophe.leroy@csgroup.eu"
+ <christophe.leroy@csgroup.eu>, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
+ <imx@lists.linux.dev>
+Subject: Re: [PATCH v2 net-next 07/13] net: enetc: add RSS support for
+ i.MX95 ENETC PF
+Message-ID: <20250115184105.139aed9c@kernel.org>
+In-Reply-To: <PAXPR04MB8510B52B7D27640C557680B4881A2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250113082245.2332775-1-wei.fang@nxp.com>
+	<20250113082245.2332775-8-wei.fang@nxp.com>
+	<20250115140042.63b99c4f@kernel.org>
+	<PAXPR04MB8510B52B7D27640C557680B4881A2@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v10 14/22] io_uring/zcrx: grab a net device
-To: Jakub Kicinski <kuba@kernel.org>, David Wei <dw@davidwei.uk>
-Cc: io-uring@vger.kernel.org, netdev@vger.kernel.org,
- Jens Axboe <axboe@kernel.dk>, Paolo Abeni <pabeni@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jesper Dangaard Brouer <hawk@kernel.org>, David Ahern <dsahern@kernel.org>,
- Mina Almasry <almasrymina@google.com>,
- Stanislav Fomichev <stfomichev@gmail.com>, Joe Damato <jdamato@fastly.com>,
- Pedro Tammela <pctammela@mojatatu.com>
-References: <20250108220644.3528845-1-dw@davidwei.uk>
- <20250108220644.3528845-15-dw@davidwei.uk>
- <20250115170644.57409b2f@kernel.org>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <20250115170644.57409b2f@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 1/16/25 01:06, Jakub Kicinski wrote:
-> On Wed,  8 Jan 2025 14:06:35 -0800 David Wei wrote:
->> From: Pavel Begunkov <asml.silence@gmail.com>
->>
->> Zerocopy receive needs a net device to bind to its rx queue and dma map
->> buffers. As a preparation to following patches, resolve a net device
->> from the if_idx parameter with no functional changes otherwise.
+On Thu, 16 Jan 2025 02:24:10 +0000 Wei Fang wrote:
+> > Why create full ops for something this trivial?  
 > 
-> How do you know if someone unregisters this netdevice?
-> The unregister process waits for all the refs to be released,
-> for *ekhm* historic reasons. Normally ref holders subscribe
-> to netdev events and kill their dependent objects. Perhaps
-> it is somewhere else/later in the series...
+> We add enetc_pf_hw_ops to implement different hardware ops
+> for different chips. So that they can be called in common functions.
+> Although the change is minor, it is consistent with the original
+> intention of adding enetc_pf_hw_ops.
 
-Ok, I can pin the struct device long term instead and kill
-netdev in the uninstall callback off
-unregister_netdevice_many_notify(), if that works with you.
+In other words you prefer ops.
 
->> +#include <linux/rtnetlink.h>
-> 
-> Do you need anything more than rtnl_lock from this header?
-
-No, I don't believe so
-
--- 
-Pavel Begunkov
-
+Now imagine you have to refactor such piece of code in 10 drivers 
+and each of them has 2 layers of indirect ops like you do.
+Unnecessary complexity.
