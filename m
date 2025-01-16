@@ -1,31 +1,31 @@
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4057F194AD5;
-	Thu, 16 Jan 2025 07:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47356156C76;
+	Thu, 16 Jan 2025 07:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737014201; cv=none; b=lBJakf+ZTTwvuIdvb6k0o8px/kh3rhfAzSVGdvb3OQGiTnquVjWeDO8uedneY2wpLsj/HlIqpjcCXNYBc9mIYZZ6wMqV1rqv6WrZ3GX6CscZherQb7tUhQ1wSwjwULFEsiKfS0GEEd1vT791qokh8ho3Om+DOlwoXWnnf5PTI2s=
+	t=1737014220; cv=none; b=Z877Z4onnREOU9M6zmE0x3pSQfQc18HB+M3VNVot3EQ9LPiHrQmqvU/VC3+m4BH7S/tgWw3Vd6BvuvA9Of/SI4he1BT7/C9Dzq7DL5OIfm+1RyJoXdWIuxE4I+9gx9MdZWGCoabxgvWxtvFuwepinpGamXjRCKViYyUYQM6inZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737014201; c=relaxed/simple;
-	bh=pkqdGjdMYi1yzQk1vCN3PKgu8+/8JJKz6CLoOkKB+s8=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=Egf0DjVeqL/vOtFq96N4MROTvqfrBolbnWxEbG0a5zR9TXGGtvveklUiaAfc+yKzhA7jfmvLwK7fSdalGJUnPR2PceA0ypewiCH7Jmm1pyL+bYptTS3UUUJqIqyeaNfhtm1XPUN/m1FHD3wGEiOxzTXQvyIghSpObLDkfcCfzls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=V3o+/kXN; arc=none smtp.client-ip=115.124.30.119
+	s=arc-20240116; t=1737014220; c=relaxed/simple;
+	bh=ic1Tdl5eQV9IhEkanXH8pQd/pPr8stQL+iCCxmLxuHk=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=qL+6nfrpnCE3rKgCnV51OzrP8LBzNKrpqRq6sVw4RoYFyx2jBRZI6IkdO5ptZP/G/MS9C2RRe1sCJUH4EbcB5dGh6BANf49r5Dhv/L1wxQq5rck2c380eOQiZ1cLou1vKqzeepYoZJKg/BEA1IU3XdojNDnMuzt7cOwgxBSXbT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=GAaEeVRo; arc=none smtp.client-ip=115.124.30.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="V3o+/kXN"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="GAaEeVRo"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1737014197; h=Message-ID:Subject:Date:From:To;
-	bh=QyeVoBuE8ZtHm/3gJn14NT7ilefLQr2T3k8o7w8Ll+c=;
-	b=V3o+/kXNC4J7+Kle5bZ3MO5P2qt4IG822PS7G9t7WpWYwVOLawutZnNHBM8At5FsLJLwUI3we+Z36UiKJMbkn880qcmrV2JHQ59gNWhQSoTdd5JOeBwN/T/UN6ciNrA2CZ2RiBcGhKunDXxg9ngmuRve+qlORQJak/EiUB6fsWk=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WNkwH05_1737014194 cluster:ay36)
+	t=1737014216; h=Message-ID:Subject:Date:From:To;
+	bh=ki0PBrtLkvSDIfEjuIbvOsNpP0XUwjZ9O5tjmqTVT3A=;
+	b=GAaEeVRosPZUDXc2KPO+EeMo0urZfSkaxcnagbyHCvDcZ81Od3SjM6phF+QHcEd3huuYxFd6ytDpKyCFoTT4d/EYmDHRqLBCpEYJBqYkq+baY9thJQCaVVzav8957Ju8qlaCQHy0nwghj0+pnQSHo6l1ykYGD6/eKnkHseLCF1I=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WNl-Mc3_1737014213 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Thu, 16 Jan 2025 15:56:35 +0800
-Message-ID: <1737013994.1861002-1-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH net-next v2 3/4] virtio_net: Map NAPIs to queues
-Date: Thu, 16 Jan 2025 15:53:14 +0800
+          Thu, 16 Jan 2025 15:56:54 +0800
+Message-ID: <1737014207.587077-2-xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH net-next v2 4/4] virtio_net: Use persistent NAPI config
+Date: Thu, 16 Jan 2025 15:56:47 +0800
 From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 To: Joe Damato <jdamato@fastly.com>
 Cc: gerhard@engleder-embedded.com,
@@ -40,147 +40,89 @@ Cc: gerhard@engleder-embedded.com,
  Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>,
  Paolo Abeni <pabeni@redhat.com>,
- Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
  virtualization@lists.linux.dev (open list:VIRTIO CORE AND NET DRIVERS),
  linux-kernel@vger.kernel.org (open list),
- bpf@vger.kernel.org (open list:XDP (eXpress Data Path):Keyword:(?:\b|_)xdp(?:\b|_)),
  netdev@vger.kernel.org
 References: <20250116055302.14308-1-jdamato@fastly.com>
- <20250116055302.14308-4-jdamato@fastly.com>
-In-Reply-To: <20250116055302.14308-4-jdamato@fastly.com>
+ <20250116055302.14308-5-jdamato@fastly.com>
+In-Reply-To: <20250116055302.14308-5-jdamato@fastly.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
-On Thu, 16 Jan 2025 05:52:58 +0000, Joe Damato <jdamato@fastly.com> wrote:
-> Use netif_queue_set_napi to map NAPIs to queue IDs so that the mapping
-> can be accessed by user apps.
+On Thu, 16 Jan 2025 05:52:59 +0000, Joe Damato <jdamato@fastly.com> wrote:
+> Use persistent NAPI config so that NAPI IDs are not renumbered as queue
+> counts change.
 >
-> $ ethtool -i ens4 | grep driver
-> driver: virtio_net
->
-> $ sudo ethtool -L ens4 combined 4
+> $ sudo ethtool -l ens4  | tail -5 | egrep -i '(current|combined)'
+> Current hardware settings:
+> Combined:	4
 >
 > $ ./tools/net/ynl/pyynl/cli.py \
->        --spec Documentation/netlink/specs/netdev.yaml \
->        --dump queue-get --json='{"ifindex": 2}'
-> [{'id': 0, 'ifindex': 2, 'napi-id': 8289, 'type': 'rx'},
->  {'id': 1, 'ifindex': 2, 'napi-id': 8290, 'type': 'rx'},
->  {'id': 2, 'ifindex': 2, 'napi-id': 8291, 'type': 'rx'},
->  {'id': 3, 'ifindex': 2, 'napi-id': 8292, 'type': 'rx'},
+>     --spec Documentation/netlink/specs/netdev.yaml \
+>     --dump queue-get --json='{"ifindex": 2}'
+> [{'id': 0, 'ifindex': 2, 'napi-id': 8193, 'type': 'rx'},
+>  {'id': 1, 'ifindex': 2, 'napi-id': 8194, 'type': 'rx'},
+>  {'id': 2, 'ifindex': 2, 'napi-id': 8195, 'type': 'rx'},
+>  {'id': 3, 'ifindex': 2, 'napi-id': 8196, 'type': 'rx'},
 >  {'id': 0, 'ifindex': 2, 'type': 'tx'},
 >  {'id': 1, 'ifindex': 2, 'type': 'tx'},
 >  {'id': 2, 'ifindex': 2, 'type': 'tx'},
 >  {'id': 3, 'ifindex': 2, 'type': 'tx'}]
 >
-> Note that virtio_net has TX-only NAPIs which do not have NAPI IDs, so
-> the lack of 'napi-id' in the above output is expected.
+> Now adjust the queue count, note that the NAPI IDs are not renumbered:
+>
+> $ sudo ethtool -L ens4 combined 1
+> $ ./tools/net/ynl/pyynl/cli.py \
+>     --spec Documentation/netlink/specs/netdev.yaml \
+>     --dump queue-get --json='{"ifindex": 2}'
+> [{'id': 0, 'ifindex': 2, 'napi-id': 8193, 'type': 'rx'},
+>  {'id': 0, 'ifindex': 2, 'type': 'tx'}]
+>
+> $ sudo ethtool -L ens4 combined 8
+> $ ./tools/net/ynl/pyynl/cli.py \
+>     --spec Documentation/netlink/specs/netdev.yaml \
+>     --dump queue-get --json='{"ifindex": 2}'
+> [{'id': 0, 'ifindex': 2, 'napi-id': 8193, 'type': 'rx'},
+>  {'id': 1, 'ifindex': 2, 'napi-id': 8194, 'type': 'rx'},
+>  {'id': 2, 'ifindex': 2, 'napi-id': 8195, 'type': 'rx'},
+>  {'id': 3, 'ifindex': 2, 'napi-id': 8196, 'type': 'rx'},
+>  {'id': 4, 'ifindex': 2, 'napi-id': 8197, 'type': 'rx'},
+>  {'id': 5, 'ifindex': 2, 'napi-id': 8198, 'type': 'rx'},
+>  {'id': 6, 'ifindex': 2, 'napi-id': 8199, 'type': 'rx'},
+>  {'id': 7, 'ifindex': 2, 'napi-id': 8200, 'type': 'rx'},
+>  [...]
 >
 > Signed-off-by: Joe Damato <jdamato@fastly.com>
+
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+
 > ---
 >  v2:
->    - Eliminate RTNL code paths using the API Jakub introduced in patch 1
->      of this v2.
->    - Added virtnet_napi_disable to reduce code duplication as
->      suggested by Jason Wang.
+>    - New in this v2. Adds persistent NAPI config so that NAPI IDs are
+>      not renumbered and napi_config settings are persisted.
 >
->  drivers/net/virtio_net.c | 34 +++++++++++++++++++++++++++++-----
->  1 file changed, 29 insertions(+), 5 deletions(-)
+>  drivers/net/virtio_net.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 >
 > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index cff18c66b54a..c6fda756dd07 100644
+> index c6fda756dd07..52094596e94b 100644
 > --- a/drivers/net/virtio_net.c
 > +++ b/drivers/net/virtio_net.c
-> @@ -2803,9 +2803,18 @@ static void virtnet_napi_do_enable(struct virtqueue *vq,
->  	local_bh_enable();
->  }
->
-> -static void virtnet_napi_enable(struct virtqueue *vq, struct napi_struct *napi)
-> +static void virtnet_napi_enable(struct virtqueue *vq,
-> +				struct napi_struct *napi)
->  {
-> +	struct virtnet_info *vi = vq->vdev->priv;
-> +	int q = vq2rxq(vq);
-> +	u16 curr_qs;
-> +
->  	virtnet_napi_do_enable(vq, napi);
-> +
-> +	curr_qs = vi->curr_queue_pairs - vi->xdp_queue_pairs;
-> +	if (!vi->xdp_enabled || q < curr_qs)
-> +		netif_queue_set_napi(vi->dev, q, NETDEV_QUEUE_TYPE_RX, napi);
-
-So what case the check of xdp_enabled is for?
-
-And I think we should merge this to last commit.
-
-Thanks.
-
->  }
->
->  static void virtnet_napi_tx_enable(struct virtnet_info *vi,
-> @@ -2826,6 +2835,20 @@ static void virtnet_napi_tx_enable(struct virtnet_info *vi,
->  	virtnet_napi_do_enable(vq, napi);
->  }
->
-> +static void virtnet_napi_disable(struct virtqueue *vq,
-> +				 struct napi_struct *napi)
-> +{
-> +	struct virtnet_info *vi = vq->vdev->priv;
-> +	int q = vq2rxq(vq);
-> +	u16 curr_qs;
-> +
-> +	curr_qs = vi->curr_queue_pairs - vi->xdp_queue_pairs;
-> +	if (!vi->xdp_enabled || q < curr_qs)
-> +		netif_queue_set_napi(vi->dev, q, NETDEV_QUEUE_TYPE_RX, NULL);
-> +
-> +	napi_disable(napi);
-> +}
-> +
->  static void virtnet_napi_tx_disable(struct napi_struct *napi)
->  {
->  	if (napi->weight)
-> @@ -2842,7 +2865,8 @@ static void refill_work(struct work_struct *work)
->  	for (i = 0; i < vi->curr_queue_pairs; i++) {
->  		struct receive_queue *rq = &vi->rq[i];
->
-> -		napi_disable(&rq->napi);
-> +		virtnet_napi_disable(rq->vq, &rq->napi);
-> +
->  		still_empty = !try_fill_recv(vi, rq, GFP_KERNEL);
->  		virtnet_napi_enable(rq->vq, &rq->napi);
->
-> @@ -3042,7 +3066,7 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
->  static void virtnet_disable_queue_pair(struct virtnet_info *vi, int qp_index)
->  {
->  	virtnet_napi_tx_disable(&vi->sq[qp_index].napi);
-> -	napi_disable(&vi->rq[qp_index].napi);
-> +	virtnet_napi_disable(vi->rq[qp_index].vq, &vi->rq[qp_index].napi);
->  	xdp_rxq_info_unreg(&vi->rq[qp_index].xdp_rxq);
->  }
->
-> @@ -3313,7 +3337,7 @@ static void virtnet_rx_pause(struct virtnet_info *vi, struct receive_queue *rq)
->  	bool running = netif_running(vi->dev);
->
->  	if (running) {
-> -		napi_disable(&rq->napi);
-> +		virtnet_napi_disable(rq->vq, &rq->napi);
->  		virtnet_cancel_dim(vi, &rq->dim);
->  	}
->  }
-> @@ -5932,7 +5956,7 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
->  	/* Make sure NAPI is not using any XDP TX queues for RX. */
->  	if (netif_running(dev)) {
->  		for (i = 0; i < vi->max_queue_pairs; i++) {
-> -			napi_disable(&vi->rq[i].napi);
-> +			virtnet_napi_disable(vi->rq[i].vq, &vi->rq[i].napi);
->  			virtnet_napi_tx_disable(&vi->sq[i].napi);
->  		}
->  	}
+> @@ -6420,8 +6420,9 @@ static int virtnet_alloc_queues(struct virtnet_info *vi)
+>  	INIT_DELAYED_WORK(&vi->refill, refill_work);
+>  	for (i = 0; i < vi->max_queue_pairs; i++) {
+>  		vi->rq[i].pages = NULL;
+> -		netif_napi_add_weight(vi->dev, &vi->rq[i].napi, virtnet_poll,
+> -				      napi_weight);
+> +		netif_napi_add_config(vi->dev, &vi->rq[i].napi, virtnet_poll,
+> +				      i);
+> +		vi->rq[i].napi.weight = napi_weight;
+>  		netif_napi_add_tx_weight(vi->dev, &vi->sq[i].napi,
+>  					 virtnet_poll_tx,
+>  					 napi_tx ? napi_weight : 0);
 > --
 > 2.25.1
 >
