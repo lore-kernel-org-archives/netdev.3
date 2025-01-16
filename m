@@ -1,258 +1,201 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C754145A11
-	for <netdev@vger.kernel.org>; Thu, 16 Jan 2025 09:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737020745; cv=fail; b=QYdMg3msjO1YSTsWYdf1U/L1PrhBTiNoHVCLUuB7TKRro+6EhG3JC9JObkqmYVcAaPmItjpbgE3FaMRo2XmMIEHns3EYWyKF803rxLizhFBLkMjfktOv+YiXJn/A3lIXGYguqIOkMULLnJSjZdv6hAcANbDbSj+X8EQjv25m2/Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737020745; c=relaxed/simple;
-	bh=ktunQyTnqJG8V3w42nMJnjfszEM90v8F1uX5aAjgVOA=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=TiWuYFWoKpy63bbkTm8bcth6jo2FBx05mGk5yDXeFPgdcHToUQaIf8bMg/m55dHrAPID3gPSNw1Tbu5fiKCRRYz6U/JKli8TnZf5PODCTv5pl71Z+v0jIrakrFmU4dtICCKdsVQtPR7PYAyt+FbqbWpOYm1OknGPbSLB+8lcPE4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IXVJzifO; arc=fail smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF711A0731;
+	Thu, 16 Jan 2025 09:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737021391; cv=none; b=GgWC+34+V61Rcmta2lAK7Yr4voWnLmI67QDRCBclsJr8QRVomyD03ac8ydMbXnDnu+DAumR8oq3cDuLMIbbeMw43BrwETcZRIp0s+zKhpnPqC5u9pRGADYwdAfhthCz46jihoatPs5wjPGU2ZMXOROJz1SyAx3KwtTI7Pr8vDZw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737021391; c=relaxed/simple;
+	bh=hZHwfCafp/2jaIcxq0xCA2JGNMReouh9aUpppvq7Rnc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qCP9wqQ59giWOZksuB1EvIUXX4AfW07HRpz/svBLCQvqgHUthg9k/vT2KDNgvBaMqH50Rr12ayisqeLR93bY6JML6TVZFzN8Q1lCKOODNGcnfPr2zy3nsCzFK6P6U6NcDPSWp45XQ1K1cF8zvJqKHXhfgNqAj9G7boUAS5aiv3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XDjARZru; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IXVJzifO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737020743; x=1768556743;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=ktunQyTnqJG8V3w42nMJnjfszEM90v8F1uX5aAjgVOA=;
-  b=IXVJzifOueBproiEYkK4RJLerYl+6SvzzSgB6OMyviHFE1NF/DDymEWn
-   k80B88/RgPrWA7e0X33P2jMoZoKj7J7+nzp5CkytqgysqTErRfnmqNSnF
-   wJxUIlnDZ7C0+t0lM01X36syRZpCCMjNJvQpWoxX+JpexvE8IC1a1XPQE
-   yheic7LqOh9xPTTXRMloHw52/SrWghXCQlSbwf8rPZm0neoRh8pVu7kHq
-   IygHrE5LnvGP9S+OcEHhV9vwgrUFBR7oy9lyyajH1WzX6ylEeQlRoRSLE
-   hnmqmNp7FIj80xGDIfoqrBnUspFmYaGOrRcNtpKL4f6UXV8ng3Dcew/HC
-   A==;
-X-CSE-ConnectionGUID: I9/mWLrEQTawcriOxcH4nw==
-X-CSE-MsgGUID: DZGb8s3TSWOJPNQIULxgQA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="48055726"
-X-IronPort-AV: E=Sophos;i="6.13,209,1732608000"; 
-   d="scan'208";a="48055726"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 01:44:49 -0800
-X-CSE-ConnectionGUID: KQf+mghsSXKHqzyNUgf9Ag==
-X-CSE-MsgGUID: DYUQIjinQNGe69Wghc93GA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,209,1732608000"; 
-   d="scan'208";a="110408782"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 16 Jan 2025 01:44:48 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Thu, 16 Jan 2025 01:44:48 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Thu, 16 Jan 2025 01:44:48 -0800
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.41) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 16 Jan 2025 01:44:47 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mdXsW9UNLSwMqEXs72WaCZYrZYbNqM82Kp51SgUfP9HxhnqM/Qkm5XA+WgAqSiWDtgwRbmVeKaZbYAiBLfHuSyAgSX054jbLmtNTN2ApihAztmOk6liVTv35tzIKR3jWnMt0HlycPXOXf8XI3ig9evHrREMBqaKN0mh5FYvMDWdDiH5pRkdW/EJaPseRHgHtECy0QB48dj4iaOObqNXQIUhuJP3S8+o4InScM60FoZTZ+tggAfEGxSZtYxlcPwACqt/TXHpnH3pHsTHe4j6sVHfAFfV69dczHcAvz/nju3KymHn/Ok4QWxPlIDaLkS4JWK7sYJMDfh83n4+LIO60OA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E+LHc08mOrYDdekwohmklJgO+1aEADTcyo5uHkEZUGs=;
- b=o3z6Cz31xGMJhoyTDNv9GWWflMao7rQAWxxBle/Kbj4DKv+kLe8CSrc1CU+Y8lGr7jY+0rt622IO9iQadmb48Ask/id0NTc8d7wwlGvhsaytIayV4FSaj4rYwfq44PsDVwpRNLG1ZR967ZPjzoOVBYDOzb5JHXT5hEZ5fUdOPmIZr+C1QIwBYeHXwbBNH82wYzxXfJgb2NYyO/0cHe2nIm/TJbvZjxx86BnWnzG1Ke/ykUOhcMHUDRG6zblNodWvFlg7vGpt13Q6mxLcz4leTDyB0FeiRnr2Su7rqGWX0UoOoQZmeCOTSuEOf5EezZiZnQ2LucvJH7ajNwMK3bvVUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MN6PR11MB8102.namprd11.prod.outlook.com (2603:10b6:208:46d::9)
- by DS7PR11MB7906.namprd11.prod.outlook.com (2603:10b6:8:ec::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Thu, 16 Jan
- 2025 09:44:46 +0000
-Received: from MN6PR11MB8102.namprd11.prod.outlook.com
- ([fe80::15b2:ee05:2ae7:cfd6]) by MN6PR11MB8102.namprd11.prod.outlook.com
- ([fe80::15b2:ee05:2ae7:cfd6%6]) with mapi id 15.20.8356.010; Thu, 16 Jan 2025
- 09:44:46 +0000
-Message-ID: <8fdd6e04-c7ae-4d2f-b984-98d41d4ef8bc@intel.com>
-Date: Thu, 16 Jan 2025 10:44:40 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: avoid race between device unregistration and
- ethnl ops
-To: Antoine Tenart <atenart@kernel.org>
-CC: <ecree.xilinx@gmail.com>, <netdev@vger.kernel.org>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>
-References: <20250116092159.50890-1-atenart@kernel.org>
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Content-Language: en-US
-In-Reply-To: <20250116092159.50890-1-atenart@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ZR0P278CA0017.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:16::27) To MN6PR11MB8102.namprd11.prod.outlook.com
- (2603:10b6:208:46d::9)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XDjARZru"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-38a25d4b9d4so397478f8f.0;
+        Thu, 16 Jan 2025 01:56:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737021387; x=1737626187; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jv50vXLyCohKkolh8HL4ExMX3KlgCPYX7TMDlSK4yyQ=;
+        b=XDjARZrus829y+9lDfMDsrHCWkBNLgqeRb0MXH3k/qmVJ3R6s+ANAhUVOWPm8SdemE
+         RljfMMTBAS3wD8NBDLEYTPThzr21PjVcwcdM5iUIyO409YIwFG1dOZNnY5Q+Q0WDUw3T
+         aao3aVEI5+6uI7W0QSu4TzGvArXOJetQfRS3OFxg2Lrj7kgF01DCKuA1TAxaVnHylXLX
+         FdEVl1RQLYDzBEFRYBl/LAn22i2oKc7JGIqz02zWtJQWGOW3pJuRhOmVnfvT3VG718FD
+         9L20uth9C0SZ6uTFPgV0JSdwq8tuqtMUC6taYShl5OQA+gQ4YiuFgZLjFVyQUWJAYJjy
+         IhkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737021387; x=1737626187;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jv50vXLyCohKkolh8HL4ExMX3KlgCPYX7TMDlSK4yyQ=;
+        b=VCYC64CNRaBuYeJwoPU650cHhXG8GwX2CAO2BsbDYYhNQI1/PSAY78N3mtVPjVARP2
+         WkJYYsJnHGI27peR1iiVknWT9TE4IOndQfzedouSsEe2tRD9nZqQkij0cGbsy7uLEJi0
+         cAesOzUQCjfH3XD18wgwnLHXPGvIpdYQHKAR9JH/iELNDmzdLlOrUlZ6UUDKq+h5YVEy
+         hiiUzT0L7TISJ2sN98cZCYGgX/iPhWP2OWqqOBGZ+JdTMLYtDrojnlbRBon6qUCFfd9W
+         yjMsktOrAS+IvTd9Mtk0BQ18yL1/4M35x2bghqTZX/L89172kC2lLIi72Zq1gFfVFwW1
+         b8gw==
+X-Forwarded-Encrypted: i=1; AJvYcCUv6Wl63f239MGbAQhWavBzJUtZFyJaRFkeDsl/tMhe5a8ZUQ4CuKnw59zJxUSNlkJkKmKb2yUn5y1a@vger.kernel.org, AJvYcCW/Dz4eP4BS6vNjDQZ14AGvwsGW3GL08zMf3h7L+XroCpZThhuNDD+XnOMk1C2Qxuil+ui9As/mnL8mIKza@vger.kernel.org, AJvYcCXL+wV8/69ajyy9uVisXKpZzEalAGmtuHidoylZ3ootauMHp7wZVmtAm+cLKUe3BKs9bVa9lR/Y@vger.kernel.org
+X-Gm-Message-State: AOJu0YyE+nF76sySbJn7J4aUOMFz2d8HsG/cP8TVKVRBYvDiXo1f74ee
+	gtarV4QLVtz4QQJ/ZfH0GugFXbAnFWQRXKMhniQEKIQ51RO//PCc
+X-Gm-Gg: ASbGnct8Vd+pwi1Kyb6A2PiQ5g6sW5yGopgMTOc4hMHr+bAHx9qhW+gPdlDtuWs0A4K
+	ASghUHja64tf1IWTXYhw+KidftvPkAaXJqTyWJl/X6CVlZKRbxTSXHfCRlYX8HJZ/wGFWK2tFIs
+	4UHCcqnTcBZiaScC9aIRpGt8GGf4p/k8JAMe3FS4c5HWxT2ywXC7HO7fpByy7SXFP8MHd2heF7c
+	OqcdZJZf3+/2IYlgWf7tmZXij4/if6OipzCUXAKEX5xg4p7jjYn
+X-Google-Smtp-Source: AGHT+IHzH1W8ReHz81xgqmeQjgmWXXdbxuZnQGUcOlWiMkSjs6qBP8f4LT8IkgM6yePzS/DnvD9siw==
+X-Received: by 2002:a5d:64eb:0:b0:386:41bd:53a3 with SMTP id ffacd0b85a97d-38a87310667mr28181865f8f.50.1737021387053;
+        Thu, 16 Jan 2025 01:56:27 -0800 (PST)
+Received: from debian ([2a00:79c0:650:2c00:303:6c5b:4b07:6715])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bdc0d8e4bsm10844258f8f.42.2025.01.16.01.56.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2025 01:56:26 -0800 (PST)
+Date: Thu, 16 Jan 2025 10:56:24 +0100
+From: Dimitri Fedrau <dima.fedrau@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: dimitri.fedrau@liebherr.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 0/2] net: phy: dp83822: Add support for changing
+ the transmit amplitude voltage
+Message-ID: <20250116095624.GA4526@debian>
+References: <20250113-dp83822-tx-swing-v1-0-7ed5a9d80010@liebherr.com>
+ <fcffef06-c8d1-4398-bc20-30d252cd2fd2@lunn.ch>
+ <20250113141828.GA4250@debian>
+ <5118eb9a-ff6e-4e78-8529-d174e09cf52e@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN6PR11MB8102:EE_|DS7PR11MB7906:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7cf51af5-d383-46a3-d612-08dd36126937
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?aEU3Z05kTW5LT2pzRG9XL09KSUZJbTlVK2hGUCtTQW9rM0IveDhCbkVnTjNn?=
- =?utf-8?B?bmVaamVNRW56YlRFRDNoMkdzNXg2VWJrR3NWcjBQb3NhWUMzMHhJb2tWQmVa?=
- =?utf-8?B?K3dDeWI1OU9sRVA5cTVBUFZzZEk4SFFTT0E1NFROTjZLZnVPSGJoYVRrTTd6?=
- =?utf-8?B?T3VBS21teVZQaGczYjhMVjdHQWRtMGxWQjJUZEgwanpjV3VaRTVKRncrdWFk?=
- =?utf-8?B?VnNrejdwOFp5SittbU9ic0lLbVNvbWNxS2hhUXdYdWtDN2VocnV6TWFuejVi?=
- =?utf-8?B?VUdabHVhaGdDVmhJdGczVlo1QUlPYkpTdHBGTU5JZytuMnFZRURCaXh5U28x?=
- =?utf-8?B?SEo4Wnk5RFJ0R29sWlVrYlQ0Um5BL1pqVmpFNlhWU2RhU2VLZzdrRm5RTGlG?=
- =?utf-8?B?VVptS1lrUjh6amdoSzVKZ0JaK3FPMVMwbnVhaDFTSlcvWXBsNng5Y0FMUW9s?=
- =?utf-8?B?NnZUK2s4QmtzWC9OUEEyNnA2Qi9JSVZubitoTmJPaFk2b0ltTU1nZ0ZyT3d2?=
- =?utf-8?B?eStpVmpaUkl3OWRTU09FUzJzeGhvQklpK2xuK0p6RWRlT2NWdXpLbU1OQXRG?=
- =?utf-8?B?OUdWUnZEWUNLam90OUlnaEJSNERtb2hmUjRMcTUwVWxsS1lwWURubEVnQnkw?=
- =?utf-8?B?V1ZVdUQra2dCa2R0VTFpL0dKS2hwcGJOWmNPc1dKbzl3UjN6MEx6NjJxWEFv?=
- =?utf-8?B?ZnFkKzVkUTE2WFI5dm44cTlLNnVnNVEyRG0vWER3SFlMMjQ4Rzl6RERYcitN?=
- =?utf-8?B?cEUzTUZxam55SU5admJtT1BiQXhucDgvazV5RWo0dmFNMXEwaDc0ZVFVeVpr?=
- =?utf-8?B?Z28zSitHMExrTXRBK2RrT2RvcWtQNUZTeHR1ZmdOVEh1TW5xSUJKVDVSMWVq?=
- =?utf-8?B?bWtTanpWNkxpcVRRNmNiM1htRElTQ3ZaU2JsUGVMMU0yZHdGNHYzd0RqVFJV?=
- =?utf-8?B?UDZlNXdNT2c1SVhJaXZtNDVyU0lsajQ4azN4UHpheWE2dVN6cWJmS0I3YS9H?=
- =?utf-8?B?NEJmbS9RcEZzRmVpb3JWWHl5dE9oSWdJTUdVK3JzL1ZBeUV3aVpNNmc4WlNh?=
- =?utf-8?B?RDBDUVJKTEtwL1V2ajAzQkFXb24zTWRJZGllYXRmaExzaXZRVThNU2Q0alRK?=
- =?utf-8?B?aXd2WnhoRnNGeVNiL09DQ2dub0FmbHJ6RFJoWmhNV0dHNzVCRkp4aUhnNFBC?=
- =?utf-8?B?aWs5c3V2cDM0VWtOanVqazlsMUlVaFNYWUVNbnBoY25NbXRxMmVGY1p1VlBr?=
- =?utf-8?B?b2xWMmRKMmt2WTROeVIxeERKa1c3QThlN09BbHJ5ZjFMU1FGMzFtTnBOK0V6?=
- =?utf-8?B?a3hYek1nN1JleGI3OGJkdHlQVVM3eUcxOEwyNkU3UUxjczhJcVY5UW56Wk1Y?=
- =?utf-8?B?ZXE0UWFyWVJrTDJnYWF0VU0zSkJNWk9HaU9TYW5YdUx0YWsvVFVqYitvWFo3?=
- =?utf-8?B?MktHYis4Uk1IWkZraDZZVCtlZnV3YUdsNmdkYzRsUUVzeWdvbFV3dkZOOGFp?=
- =?utf-8?B?ZE1OSGpXQ0YzcWZNTlYwM0UrMEhCTkg0emQ5aFFIUjd3MTRhWmxtRjFHZVVH?=
- =?utf-8?B?WFdyRG1MYUJrc0VWRVVGQzZjeG85RTJkQ0FKVEg1bTNqZzI2Q3FIbjFCK2Iv?=
- =?utf-8?B?R2tqRmVWMGs4Q2VxMDA4aGVsdVB2NExRVmx2MWc4aDExWlhEQmdHRjFwZmEv?=
- =?utf-8?B?VFFMYWtyQnI3b1RVempYN1A4L2I1TWlZUnErbFU0NU00VzRKZUZqSktYTzJB?=
- =?utf-8?B?VGtGc0tlMjgxekw0b0J6UVI2SjZqbVpodUtBb0gyS1pvUUNraFJ0bXhxSXox?=
- =?utf-8?B?Z3MrNWdXakhnTWE0WGMxTnlsWFZsb1U4L051UFl2ZFpxbE5XUEFVV3p2cTlL?=
- =?utf-8?Q?ZtZ7/1zViy2GD?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN6PR11MB8102.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VEREVWRNY2tOajAzNDU3Rk5CcnJTYVgrcnpHZGRheHkxdEdLSnJ1TU00aFRt?=
- =?utf-8?B?eXBFUk5DUmVqWlZuMGVCaU10U01aS2xVd0ExaWZJK0NocURmTUxMZDh0YkJD?=
- =?utf-8?B?Vi90bEpNZXdGOWxTVi9FbjQxWlBNN0NybDFwQmVQcDdmYVp3WHpQalVnZjFP?=
- =?utf-8?B?MkdPM1hwSHdsQnRJaWtQbTNtdEdGZnVSZGxqUkx1T3Z6c3RLS1kzREtUekFr?=
- =?utf-8?B?a05DVExiZ0JOMjJtZU55cHY3RWFUVlBaN3lWQStMbGlmaWNxTzhlYllFamJN?=
- =?utf-8?B?VGJLa3Nqc1V0aytVK0tHU0xYSVZMWVhPVmVWVXRPRExNaFM2QVY3bU14M2Jj?=
- =?utf-8?B?NzBkTlY4dVdON1IwclVGY2hHb2JMMmMvZEtLeDJmcXFRWnVWT3diZWF4eU8x?=
- =?utf-8?B?bERwQk92SVh1UGwyU2lvd1lMR092MmNsZ0FSSkhRTVRIYkgyZndXUUVNNWNH?=
- =?utf-8?B?WWJhdzNpalZQc2ZTV0J2TU9CdEJzd2xueWF3eDFUc3hTdUJ3SEladjJFcFdB?=
- =?utf-8?B?cmlQMFFQeCtjaDh0SkM3YVVwcTBqUTlJN0ZyWDl1b1ppREhjd1hUZ3RKVUo5?=
- =?utf-8?B?Z0xEeFNtN1N0LzJuOHRhUkpQYVJ6eUVEY1ZGb1ZwOTNHVFpMU2dNdnNZNHNW?=
- =?utf-8?B?SUVvbER6Qk5zajdyanVqY0JrNnU2THYxYnByc0tLbThFMlg0ZzhrU3lRZXFL?=
- =?utf-8?B?Yk1yRklOTHdhcmozMVM4NlRUelIwenZPODN3cU02a0d6Uks5RmwzOWRRSzJP?=
- =?utf-8?B?eWJvbzZCeWpuRzZWb2pla2Z5aDh2OVFJQmEvRzdUOWZ5dWZOdlQ3RWhRSFRi?=
- =?utf-8?B?MlJlZ3k4eDFOMDlEMzdWTWQya1B1emFYT25FeWYzRGhlRDhBeW1SbHN2Q25K?=
- =?utf-8?B?RFlTT3B1UXE2cXZlUlFhclFjMldMVFpXZ0g2Z3VDc0xTdlNZSTlTUmJmcWdq?=
- =?utf-8?B?SlVkd2N3STc4M1lOVmVoSjF6anVVR1I1TzRWVEdOa0hIdnBXdFhTUllLMXVh?=
- =?utf-8?B?YUFMT2J0NnJxUEhuaEpHU2FrKzVHUHYrMlFBL2h0ajFRa1YxbU5tWHlZaTJm?=
- =?utf-8?B?MWtVdTYyTytBWUtJTkRiRGIyb1lEdG4yZFJpQllPd1VJRTdsMzgwdXhXdUxB?=
- =?utf-8?B?djVRWVVIeERSMTBSQU9BOGpTamNwNUdCV3JpN1U0eVR6dHJ3YjJjdDlSd0lh?=
- =?utf-8?B?aGNKaWZocy9sZHVJYXFPVkQ2Ynd3Uk8xclJmM2pERVdxbUw2OFk2Vzh2U1py?=
- =?utf-8?B?Y2hGWW5Td3d4ZVZCaWxZRWVaRlJ6Z2gzb3JYMzQyb3Y1Z0dDYXpkUEhFU3pG?=
- =?utf-8?B?NmNjbnhIejNKK21aeUI5bUszcUVMTlVnSU1rbGEzeE1HUVh5VkdZYzhWcENp?=
- =?utf-8?B?ZFN6akMycHcxZHkzbFdySlg1NUIrK3BvRzd5a0RJc0VvVFNRR3lEUXdGYmhv?=
- =?utf-8?B?VWc3S1RYTmo3V2FBSlBJeEVrcGhzVExrQzd6VlBpSVEzLzI5RTdmKzRhSG5D?=
- =?utf-8?B?bytoZFhUK2R1NGp1R0swV3BFZStBUVlYYVJLeGNXWmJLUTk1Rk5GWHp3QzNZ?=
- =?utf-8?B?ZEY0N1dMaVlTNmxjZ2lRc3A0TUpJbzRzZi94NEY1eVFkbEgybTMwOG15NWhL?=
- =?utf-8?B?QThMZ3BRN1JVcGJwbzFON0pDMHN1ODg4VnN4WGI0ZDJiK1BFcGZRN1pKZFJS?=
- =?utf-8?B?MGxWQXdWNVplN1RjMW54Rm5Zc0k1VmNUSkFzd3I4cGhlUFdibUN5M0FYd1hD?=
- =?utf-8?B?WHFQbEZoLzRkSzZZWGQ2VGt0ME8zeE9zLzduY1NYaWl5VU8rZ3EvcU54WHQw?=
- =?utf-8?B?RU1rVzh5SzlVNDRCS3kxL2hEV0I1YWVlNWZ1b25ZcDdINDZ0RXF3Z1RwaWMy?=
- =?utf-8?B?c2ZTajdUbmhqaVN3SU5CcFVPbDRmMmRLYVYvcEFSUEFVenRUTmdXUDVLc1Yr?=
- =?utf-8?B?QmtpTXhFa3pZdjlSNG9BVFM0OWQxNUhWMC9tKzdCU3JXYnV5L0lUTVovUmJ3?=
- =?utf-8?B?YlZ1OGgrcWdkVzFieXAyeTVmNytaSW1YTUJvRVFGcGwwTnlCbHZ1QlEyMnFJ?=
- =?utf-8?B?V2VnNUNNc0xUeGw4bXpVTGFKMWx3RFA4RXhvUVdzUlc3ZnBja1pRelA5RytL?=
- =?utf-8?B?T3RWWFVUdFR6MzVyY2c0eE1yeHpoL1hYL25PZjEwWFVVTnZrR2loL3kySk91?=
- =?utf-8?B?NkE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7cf51af5-d383-46a3-d612-08dd36126937
-X-MS-Exchange-CrossTenant-AuthSource: MN6PR11MB8102.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2025 09:44:46.0001
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wCI13MZiQcg6SZULwx/3CnnenMhycOjaOB48Id/pjYwTYVL9jVpQYZqHxX7IUE4ZSi32ZdoN+Nt5UcLYLN+d/qO1bkZkBr/z7SUkfS0c6zU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7906
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5118eb9a-ff6e-4e78-8529-d174e09cf52e@lunn.ch>
 
-On 1/16/25 10:21, Antoine Tenart wrote:
-> The following trace can be seen if a device is being unregistered while
-> its number of channels are being modified.
+Hi Andrew,
+
+Am Mon, Jan 13, 2025 at 04:59:38PM +0100 schrieb Andrew Lunn:
+> On Mon, Jan 13, 2025 at 03:18:28PM +0100, Dimitri Fedrau wrote:
+> > Hi Andrew,
+> > 
+> > Am Mon, Jan 13, 2025 at 02:54:28PM +0100 schrieb Andrew Lunn:
+> > > On Mon, Jan 13, 2025 at 06:40:11AM +0100, Dimitri Fedrau via B4 Relay wrote:
+> > > > Add support for changing the transmit amplitude voltage in 100BASE-TX mode.
+> > > > Add support for configuration via DT.
+> > > 
+> > > The commit message is supposed to answer the question "Why?". Isn't
+> > > reducing the voltage going to make the device non conforming? Why
+> > > would i want to break it? I could understand setting it a bit higher
+> > > than required to handle losses on the PCB and connector, so the
+> > > voltages measured on the RJ45 pins are conforming.
+> > >
+> > - Will add the "Why?" to the commit description. You already answered it.
+> > - Yes you are right.
+> > - I don't want to break it, the PHY just provides these settings. And I
+> >   just wanted to reflect this in the code, although it probably doesn't
+> >   make sense.
+> > - In my case I want to set it a bit higher to be conforming.
 > 
->    DEBUG_LOCKS_WARN_ON(lock->magic != lock)
->    WARNING: CPU: 3 PID: 3754 at kernel/locking/mutex.c:564 __mutex_lock+0xc8a/0x1120
->    CPU: 3 UID: 0 PID: 3754 Comm: ethtool Not tainted 6.13.0-rc6+ #771
->    RIP: 0010:__mutex_lock+0xc8a/0x1120
->    Call Trace:
->     <TASK>
->     ethtool_check_max_channel+0x1ea/0x880
->     ethnl_set_channels+0x3c3/0xb10
->     ethnl_default_set_doit+0x306/0x650
->     genl_family_rcv_msg_doit+0x1e3/0x2c0
->     genl_rcv_msg+0x432/0x6f0
->     netlink_rcv_skb+0x13d/0x3b0
->     genl_rcv+0x28/0x40
->     netlink_unicast+0x42e/0x720
->     netlink_sendmsg+0x765/0xc20
->     __sys_sendto+0x3ac/0x420
->     __x64_sys_sendto+0xe0/0x1c0
->     do_syscall_64+0x95/0x180
->     entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> I have seen use cases for deeply embedded systems where they want to
+> reduce it, to avoid some EMC issues and save some power/heat. They
+> know the cable lengths, so know a lower voltage won't cause an
+> issue. The issue in that case is that the configuration was policy,
+> not a description of the hardware. So i pushed for it to be a PHY
+> tunable, which can be set at runtime. Your use case is however about
+> the hardware, you need a slightly higher voltage because of the
+> hardware design. So for this case, i think DT is O.K. But you will
+> need to make this clear in the commit message, you want to make the
+> device conform by increasing the voltage. And put something in the
+> binding description to indicate this setting should be used to tune
+> the PHY for conformance. It is not our problem if somebody misuses it
+> for EMC/power saving and makes there device non-conform.
 > 
-> This is because unregister_netdevice_many_notify might run before the
-> rtnl lock section of ethnl operations, eg. set_channels in the above
-> example. In this example the rss lock would be destroyed by the device
-> unregistration path before being used again, but in general running
-> ethnl operations while dismantle has started is not a good idea.
+Thanks for the explanation. Will add the comment in the commit message.
+
+> > > Also, what makes the dp8382 special? I know other PHYs can actually do
+> > > this. So why are we adding some vendor specific property just for
+> > > 100base-tx?
+> > >
+> > I don't think that the dp83822 is special in this case. I just didn't
+> > know better. Would be removing the vendor specific property enough ?
+> > Or is there already a defined property describing this. Didn't found
+> > anything.
 > 
-> Fix this by denying any operation on devices being unregistered. A check
-> was already there in ethnl_ops_begin, but not wide enough.
+> If i remember correctly, there might be a property for
+> automotive/safety critical, where there is a choice of two
+> voltages. But it might be just deciding which of the two voltages are
+> used?
 > 
-> Note that the same issue cannot be seen on the ioctl version
-> (__dev_ethtool) because the device reference is retrieved from within
-> the rtnl lock section there. Once dismantle started, the net device is
-> unlisted and no reference will be found.
+> There is also:
 > 
-> Fixes: dde91ccfa25f ("ethtool: do not perform operations on net devices being unregistered")
-> Signed-off-by: Antoine Tenart <atenart@kernel.org>
-> ---
-
-for future submissions, please add a changelog and a link to previous
-revisions
-
->   net/ethtool/netlink.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   ti,cfg-dac-minus-one-bp:
+>     description: |
+>        DP83826 PHY only.
+>        Sets the voltage ratio (with respect to the nominal value)
+>        of the logical level -1 for the MLT-3 encoded TX data.
+>     enum: [5000, 5625, 6250, 6875, 7500, 8125, 8750, 9375, 10000,
+>            10625, 11250, 11875, 12500, 13125, 13750, 14375, 15000]
+>     default: 10000
 > 
-> diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
-> index e3f0ef6b851b..4d18dc29b304 100644
-> --- a/net/ethtool/netlink.c
-> +++ b/net/ethtool/netlink.c
-> @@ -90,7 +90,7 @@ int ethnl_ops_begin(struct net_device *dev)
->   		pm_runtime_get_sync(dev->dev.parent);
->   
->   	if (!netif_device_present(dev) ||
-> -	    dev->reg_state == NETREG_UNREGISTERING) {
-> +	    dev->reg_state >= NETREG_UNREGISTERING) {
+>   ti,cfg-dac-plus-one-bp:
+>     description: |
+>        DP83826 PHY only.
+>        Sets the voltage ratio (with respect to the nominal value)
+>        of the logical level +1 for the MLT-3 encoded TX data.
+>     enum: [5000, 5625, 6250, 6875, 7500, 8125, 8750, 9375, 10000,
+>            10625, 11250, 11875, 12500, 13125, 13750, 14375, 15000]
+>     default: 10000
+> 
+> I'm not so much an analogue person, but these don't make too much
+> sense to me. A ratio of 10,000 relative to nominal sounds rather
+> large. I would of expected a ration of 1 as the default? Since this
+> makes little sense to me, i don't think it is a good idea to copy it!
+> 
 
-looks good, but I would add a comment above enum netdev_reg_state
-definition, to avoid any new state added "at the end"
+I think the ratio of 10.000 was chosen to avoid truncation when calculating
+register values. These are in steps of 6,25%. Using gain in DT seems to me
+the more generic way of describing amplitude modification. But converting
+the gain to register values might be more challenging in some cases. And
+I think we also need to scale when we want to represent it as gain. The
+DP83822 allows to modify the amplitude in terms of gain by 1.65% per
+step and for 10BASE-TE gain is 9% per step. I don't have any other PHY that
+allows me to modify the amplitude, so I'm quite biased. Do you know any other
+PHY supporting this ?
 
-what about NETREG_DUMMY? you want to cover it here too?
+> I've not looked at 802.3.... Do we need different settings for
+> different link modes?  Are the losses dependent on the link mode?  Are
+> the voltages different for different link modes? Is voltage actually
+> the best unit, if different link modes have different differential
+> voltages? Would a gain make more sense for a generic binding, and then
+> let the PHY driver convert that into whatever the hardware uses?
+> 
 
->   		ret = -ENODEV;
->   		goto err;
->   	}
+I had a quick look at 802.3, but I don't have much knowledge regarding
+the analogue part:
 
+- Different link modes have different differential voltages.
+- I would prefer gain instead of voltage, should also fit for fiber
+  optics.
+- I would prefer separate settings for the link modes. Specs for the
+  link modes are quite different, not that I could really judge. Maybe
+  someone can help us out ?
+- Maybe something like tx-amplitude-100base-tx-gain-milli or
+  tx-amplitude-100base-tx-gain-micro ?
+
+[...]
+
+Best regards,
+Dimitri Fedrau
