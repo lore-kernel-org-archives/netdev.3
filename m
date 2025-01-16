@@ -1,101 +1,160 @@
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774366F30C;
-	Thu, 16 Jan 2025 01:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36BD6136;
+	Thu, 16 Jan 2025 01:23:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736990532; cv=none; b=oUOy6uhm9f1eswX6c82AmOW7+2TQ9ujC662be01VTtbCRuewflJARpu3PsB+L1q3tAuvVKkSw5Em0VYqBrCJwHOTopLh4mQzcCB29KB9G04+QFIgAw4LoeRFXNw/y3/m4WYtItJQhZH6LMQvnpHXTCev0nvzsdlBvU+8Tz/BUiA=
+	t=1736990592; cv=none; b=NcGUtCPdeZ6B70hRf37gLNGtptLxcIDNMY9mjHYnNXSScb5b/j5iPvo5iOWT4CuqjSd8ntE1twBnHravWD5G2XGa2QeTLqJsakpMwpP0PvrqlRUJGPsjg3/JcQ2DDLksMAC7Df1a9p5cMjE/nsiCy9RZHVs6GrREwq9eY9a5mx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736990532; c=relaxed/simple;
-	bh=YQEP35h+FkVcMOLGZdxS33flgeaOs4uF4dJ+h/eHPLU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lc0EY98/b85Ao7/MfEUEqYw9Kg/tk+Mr5gyTlSGlD20EFH902rRZU/ud10OzxyzqPYMdNhTd4hOO3HD7VaRcvz/x4NWtWdA+K5XCnjp2TFEP6QkuWJlw+0GFrceLWUc8LUMTd8kOMNEu4K73ReJVKEjbaWvlBRkaZA19hnws4g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=TJPeFUJy; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+	s=arc-20240116; t=1736990592; c=relaxed/simple;
+	bh=RBcaA5Qs3Sl79hmCs+h8iDGCvOrlk79gpNojaTiLrrE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QzfflFc1eVhz1O/fRxAItwyAVdOXmSz78WTlGlUbB0K+tVs73ZazskeAqbA180gJNFhSb8JSNamF0jPJxrbK/JNrwtSrM7kFSvmejifIWirXH3hdfTLsLPci/hSL6ItvcqF4BUfx93fxy152BkE0QwfbCiHGD7G6PTleWAErdkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i6o5kyq1; arc=none smtp.client-ip=209.85.166.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="TJPeFUJy"
-X-UUID: 49a08276d3a811efbd192953cf12861f-20250116
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=eSHmQM8NATK6SZ+a/IRk6MOrqMnMNmxZlWOSIrLuWAw=;
-	b=TJPeFUJyRE3CSIis570PGm9UUWgBBlSpSYSrpOBnFhsrus2ODSILJ6lxTwN6EZqSSvUqzTIkvsY2d7kpZcEf+LP2adTN3WwxFRD5OguSY7oTZ64uwMs3ecbrr8zdsBK75hkY3+DzwjMaQ8FviR0LT4kWNLnBi4NRlA4PEFYBFfg=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.46,REQID:cd1acd00-8274-41e8-b6b1-c79d0d92de5e,IP:0,U
-	RL:0,TC:0,Content:0,EDM:-25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:60aa074,CLOUDID:0c95f50e-078a-483b-8929-714244d25c49,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:1|19,IP:
-	nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,L
-	ES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 49a08276d3a811efbd192953cf12861f-20250116
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-	(envelope-from <skylake.huang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 266821136; Thu, 16 Jan 2025 09:22:01 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Thu, 16 Jan 2025 09:22:00 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.28 via Frontend Transport; Thu, 16 Jan 2025 09:22:00 +0800
-From: Sky Huang <SkyLake.Huang@mediatek.com>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Daniel Golle
-	<daniel@makrotopia.org>, Qingfang Deng <dqfext@gmail.com>, SkyLake Huang
-	<SkyLake.Huang@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, "Simon
- Horman" <horms@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>
-CC: Steven Liu <Steven.Liu@mediatek.com>, Sky Huang
-	<skylake.huang@mediatek.com>
-Subject: [PATCH net-next 0/3] net: phy: mediatek: Add token-ring ops
-Date: Thu, 16 Jan 2025 09:21:55 +0800
-Message-ID: <20250116012159.3816135-1-SkyLake.Huang@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i6o5kyq1"
+Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-3ce7a77e5a1so1396905ab.0;
+        Wed, 15 Jan 2025 17:23:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736990590; x=1737595390; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uvYa6gBShMYLfc1ehjv5ezyY0fRHP8xKJ616OqcJkdg=;
+        b=i6o5kyq1oCDKdgxvDzTY9J/yxq4OfvXNIIuMw9iA4jBjXsxTvhBqVL0TwWJj0PiMnK
+         T5aHTWhshj9eP3hJy91px575XxvACtkL7X0NzZ5b0B2k8i5P0RfdrEeTCm/y0S+QYETR
+         YKcu9dkKPwCt4gWeUzLxRoljnb+lv6pZ3uGDOfkGiDdxbR2BShrKa3kvN9lGUUoaiju7
+         UajOa7nsAXY+CIaEPzP0V1NrDSmej1+WHkYlWIbK822eHZIJ8yewD+s+rvaPwRARAAan
+         Sn3RZjAm+N/pErJq5q6hwcuzwxoLe7MWKtRkWmUnEGYFhyXtZco5APPYGGSuMgjZOjm2
+         yCCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736990590; x=1737595390;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uvYa6gBShMYLfc1ehjv5ezyY0fRHP8xKJ616OqcJkdg=;
+        b=FXJr6JLanXiJvfl0+8rdX1bKxPSycEHFN1bMh4NfD9W0yH2BDm8uH6BSzEaab8knqZ
+         QrQ0sPoYhVP+I9DeCazOf8tg4wUiCY8TXQfXmek5iqACILHN75iAAJfeUrFbbs2U/kz6
+         srRkb5LE7H/yLb4VF4q2pItTYpIkulvUbG82NgWVYOxnELssbsIFtKgKEO9GrwOvtnsH
+         sBro/wxsH0o2lTx304znKPVl+W6VV+MRO/tt0l6ZTnfRXVTWEMhv0n6mrxARyqjj6m0T
+         K1AYIk7ORpvtX8DcdaehcpbwirE/EoAZydpXfXUQePHrAYeN++HCPS0IJngJlNNRM02R
+         DXcg==
+X-Forwarded-Encrypted: i=1; AJvYcCVfdBTRaGdJ7wwfQI9hkiTOGT6lus96l+8p/24aU2kjnYlTPKVnoMMCbjz24mXRzbpGVMn1NA7g@vger.kernel.org, AJvYcCXyHez+RJJOgLMKus6dIwx0YTLL0XFm4H1s0CFh5tJlSssMo3uT69Satz9XsRKsC6MdxeI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNhnqCOWHXSKAs893JiS4LrqYkA21F9GsjZjmu+DrgqfEQV9pU
+	VTYJVsidXuoZn2DZRt6nDjnVF/gFG69OgR+kSx0mzk8MjsmlMebqtfRDl6qaeARNcZVj6ry6ZEb
+	9ywLqZY76CD6g7sdFEWJPo5IW+e0=
+X-Gm-Gg: ASbGncsWvwEgq+koJ/k4Y+V6MLR5iM78X4vq0hBPUSkoo3WJ0oImq/8s3TrmU31F85B
+	DAKK2q9IrOWvmdFH6NkviwYNCr1/4+R7JMGj/
+X-Google-Smtp-Source: AGHT+IGSFwXspnnJ+/rQwX1+9nIbZKKjx0HH32EmB1nGas3RFsKQVO1fZDkbvMkquAb8ofmuGkP9nZ6l27awyd8v0Fg=
+X-Received: by 2002:a05:6e02:1808:b0:3ce:665b:cdf7 with SMTP id
+ e9e14a558f8ab-3ce665bd10amr128208305ab.14.1736990589714; Wed, 15 Jan 2025
+ 17:23:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+References: <20250112113748.73504-1-kerneljasonxing@gmail.com>
+ <20250112113748.73504-14-kerneljasonxing@gmail.com> <5d9ba064-3288-4926-b9dc-3119bb3404c1@linux.dev>
+ <CAL+tcoCe-Ee92r5B7LwV8GCxEBWDzq3X_g_oOWWzo7-u4wYZzw@mail.gmail.com> <d9601490-26f6-4aaf-80f0-0c92464e0c42@linux.dev>
+In-Reply-To: <d9601490-26f6-4aaf-80f0-0c92464e0c42@linux.dev>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Thu, 16 Jan 2025 09:22:33 +0800
+X-Gm-Features: AbW1kvb2vs2P9WxqvK19o8s7BIB_j8jMMqUgpVTx_3AZLlwDETgHXyeMeAu3NoM
+Message-ID: <CAL+tcoBu=5Ub_5E3HNK6uub4MiHEOpRCgtWMRQX3heKObM9rHA@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 13/15] net-timestamp: support tcp_sendmsg for
+ bpf extension
+To: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, dsahern@kernel.org, willemdebruijn.kernel@gmail.com, 
+	willemb@google.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
+	john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me, 
+	haoluo@google.com, jolsa@kernel.org, horms@kernel.org, bpf@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Sky Huang <skylake.huang@mediatek.com>
+On Thu, Jan 16, 2025 at 9:18=E2=80=AFAM Martin KaFai Lau <martin.lau@linux.=
+dev> wrote:
+>
+> On 1/15/25 4:41 PM, Jason Xing wrote:
+> >>> diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+> >>> index a0aff1b4eb61..87420c0f2235 100644
+> >>> --- a/include/uapi/linux/bpf.h
+> >>> +++ b/include/uapi/linux/bpf.h
+> >>> @@ -7037,6 +7037,9 @@ enum {
+> >>>                                         * feature is on. It indicates=
+ the
+> >>>                                         * recorded timestamp.
+> >>>                                         */
+> >>> +     BPF_SOCK_OPS_TS_TCP_SND_CB,     /* Called when every tcp_sendms=
+g
+> >>> +                                      * syscall is triggered
+> >>> +                                      */
+> >>
+> >> UDP will need this also?
+> >
+> > Yep.
+>
+> Then the TCP naming will need to be adjusted.
 
-This patchset add token-ring ops and moves some macros from mtk-ge.c
-into mtk-phy-lib.c. Also, MediaTek's built-in 2.5Gphy driver is added.
+Right, right!
 
-Signed-off-by: Sky Huang <skylake.huang@mediatek.com>
----
-Sky Huang (2):
-  net: phy: mediatek: Move some macros to phy-lib for later use
-  net: phy: mediatek: add driver for built-in 2.5G ethernet PHY on
-    MT7988
+>
+> While on UDP, how the UDP bpf callback will look like during sendmsg?
+>
+> >>> @@ -1067,10 +1068,15 @@ int tcp_sendmsg_locked(struct sock *sk, struc=
+t msghdr *msg, size_t size)
+> >>>        int flags, err, copied =3D 0;
+> >>>        int mss_now =3D 0, size_goal, copied_syn =3D 0;
+> >>>        int process_backlog =3D 0;
+> >>> +     u32 first_write_seq =3D 0;
+> >>>        int zc =3D 0;
+> >>>        long timeo;
+> >>>
+> >>>        flags =3D msg->msg_flags;
+> >>> +     if (SK_BPF_CB_FLAG_TEST(sk, SK_BPF_CB_TX_TIMESTAMPING)) {
+> >>> +             first_write_seq =3D tp->write_seq;
+> >>> +             bpf_skops_tx_timestamping(sk, NULL, BPF_SOCK_OPS_TS_TCP=
+_SND_CB);
+> >>
+> >> My preference is to skip this bpf callout for now and depends on a bpf=
+ trace
+> >> program if it is really needed.
+> >
+> > I have no idea if the bpf program wants to record the timestamp here
+> > without the above three lines? Please enlighten me more. Thanks in
+> > advance.
+> >
+> > I guess there is one way which I don't know yet to monitor at the
+> > beginning of tcp_sendmsg_locked().
+>
+> The tracing bpf program (fentry in particular here). Give the one-liner b=
+pftrace
+> script a try.
+>
+> Take a look at trace_tcp_connect in test_sk_storage_tracing.c. It uses fe=
+ntry
+> and also bpf_sk_storage_get.
 
-SkyLake.Huang (1):
-  net: phy: mediatek: Add token ring access helper functions in
-    mtk-phy-lib
+Thanks for the reference!
 
- MAINTAINERS                            |   1 +
- drivers/net/phy/mediatek/Kconfig       |  11 +
- drivers/net/phy/mediatek/Makefile      |   1 +
- drivers/net/phy/mediatek/mtk-2p5ge.c   | 343 +++++++++++++++++++++++++
- drivers/net/phy/mediatek/mtk-ge-soc.c  | 297 +++++++++++++--------
- drivers/net/phy/mediatek/mtk-ge.c      |  78 ++++--
- drivers/net/phy/mediatek/mtk-phy-lib.c |  91 +++++++
- drivers/net/phy/mediatek/mtk.h         |  17 ++
- 8 files changed, 714 insertions(+), 125 deletions(-)
- create mode 100644 drivers/net/phy/mediatek/mtk-2p5ge.c
+>
+> If tcp_sendmsg_locked is inline-d, it can go up to the tcp_sendmsg(). It =
+would
+> be nice to have a stable bpf callback if it is really useful but I suspec=
+t this
+> can be revisited later with the UDP support.
 
--- 
-2.45.2
+Got it!
 
+>
+> [ I will followup other replies later. ]
+>
+
+Thank you!
