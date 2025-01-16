@@ -1,86 +1,75 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D7E22B8BD
-	for <netdev@vger.kernel.org>; Thu, 16 Jan 2025 16:24:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250F48632B;
+	Thu, 16 Jan 2025 16:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737044689; cv=none; b=hOWgG+8PQAysl9Vv3qd+/yMJcQXt+wLR8Oi3RMyAnHZxgWZX3do8hBRg0ya3h6teugTrydKUP1vlMg4sLU3HPO1p0xvDwa1M21bZUe2PDFCrQ6/CREPbCsi5wEl78y/F7ukkE4laqPRQLbRFupojZZD8QnlesYtrwDjFvXScIfs=
+	t=1737045099; cv=none; b=d/xxXGor+fKsI0weNJBIwQWtxcsW8i+vavBzJTZx+8v3UzOYpKEzmhrFrXCLx+csw+DmlKGPKfWbH6mG7NcqOJ54QEztt5Zpq4xKLw3oQN/JAuUGE4//XH0+UAq186WhXPkDBMkbGm2d0hYzhyBolBXEEki3klaY8hE7tWYrtfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737044689; c=relaxed/simple;
-	bh=XI8wPbhtc9+CNenZCKwgymcwjp4BI2m19BV0+/pBKeo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tDgGnLAbJ/FGUmumKbJe7sUOEP4vnvL2eIvUhaf5jwo/7QPPj+bPEniO1q46q+xY7OSX1MZ82vwUHDtv6+DGYarOE5BzQzk3BhQtKkaV9vTowngVkJDGixGsU326QlwwkHB8QzBoOtq7HJKHosYuVNEyFixGOe5Z3Al1pQ3jHlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RSs8XMHB; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1737045099; c=relaxed/simple;
+	bh=c/pB9MvUB5Rcm/tw9gT1SXD7fMVGER9S8EYn1QfX+kM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iEH4aWxqDPw1y958aKEH16lyr14MDqRDQdfp+2lLobce4Lg7vmYlW9/scoEFOZOub4I1L1a6oPdMHV3QnO8IWsWkIyls6gc83osv/8CmcJkY7j0FVzhCIeFGMLHjlLDB/JMtTkcJuMUS9Muq3SwGRg3cWXGZmgTAi8kMFgdBm9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dFljLtnv; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RSs8XMHB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737044686;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VPXvDT4dJ6cL5FU/96cNilUckLvKAmOMIGjX69ZK5Fg=;
-	b=RSs8XMHBmirnb9vBKMHg2KKQZRWAUTnW4oQSRbs6nwDiDYKmcemf+IQtNUsdimzOfwp8il
-	revm0zgbbqNo4XH4C3CQ1UZ0y6ESTV3087zIrL950kYUCfH2cflx58nAcn0Blb68NmSpbm
-	0rXayaamEEm1QM1RY72K75IaYqYSI1U=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-115-OOkyWBUNOoeM8HTtUJeWuw-1; Thu, 16 Jan 2025 11:24:45 -0500
-X-MC-Unique: OOkyWBUNOoeM8HTtUJeWuw-1
-X-Mimecast-MFC-AGG-ID: OOkyWBUNOoeM8HTtUJeWuw
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-216387ddda8so24670475ad.3
-        for <netdev@vger.kernel.org>; Thu, 16 Jan 2025 08:24:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dFljLtnv"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-21628b3fe7dso21570615ad.3;
+        Thu, 16 Jan 2025 08:31:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737045097; x=1737649897; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ARDjCcRGT03WV/jJzISRYsEH/PAIJYg2xIBjnV8W+gg=;
+        b=dFljLtnvjHyckCYYo9LWtg6hGpZ2mFBLbK979gyAd77+LfW18nv+KzPJUTNA6aZwRX
+         UZvHOo6Fg8OasHH5z6YiVp0DjvyaFMjszuP5fj5BQGdYO9D8VG76pAhDBE4u0aJECNUn
+         ITiA26lBOGV6kQ+1x7oOLbyUHti0pBNADEyH+x6pGYZOWhAp896/Dn2u9+40lemNL65b
+         G/SrbB+Mb15bAihJBuUpEmqM9smcvDSQom7y7i2ZR7btm+oT5UTju1lS/sAv5Jj6E+T7
+         PqP5l0KYJ/CVa/6u/DJFP6HMwyHx6yb+zMpXeO0PrSWyDz7DunwFNorzum13t242TcAV
+         bAVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737044684; x=1737649484;
+        d=1e100.net; s=20230601; t=1737045097; x=1737649897;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=VPXvDT4dJ6cL5FU/96cNilUckLvKAmOMIGjX69ZK5Fg=;
-        b=aZ1dhAkCZTWkQpoG/Aniqz5gZ4W20X9GSunP5qhcZnSzf8tgzZM2sIowXaOPxTGYWv
-         PJHcwsxrAgElomU3y3N8fY9GfqJBqAsvwZnZdj6LwAJv9Wv8bN62IB3FkpbRQFw06CrV
-         8O3oetb3yL7cAVW5mgenqc9lcmENIfay0BJaLxFYFfBr8Iq9Tc+lXZeGVjKvRHDKwTdD
-         S6cOad3NFi2UO19lwuhPoT9J0hV9xfPFXWOkIxLOglqqIBekbq8Gunb/4XyBcwCumxMi
-         +PQS9DzAp7hwR2YVly6FlIT3u2AH7T+qE/zwqOCYb4Y8rU7M/3mRJgPb1abSw9653H3u
-         U8Tw==
-X-Forwarded-Encrypted: i=1; AJvYcCUlnu2K1qvnRkGTULoNqplVwtey1M0kMOW8ARYXcIQJXuuPttPalR9lwojTRMlyNvKgabOmzQU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHb2YnKhvgvwVfwRVipJLOuPPvZ5TCBu5N16zzNoRZVb/C/lhp
-	r4iG/c/2a+YprNLlyGtECb5XTyrTQV7HH2a0K/mhL4RZa4upxXwscTz7CkfKXTuw/PDxmdHzaNy
-	F2KuGUhLul0KwDjMUBteb3mP1uriBOAYX8j3DJ7PXyT/33dA7z3Pv7Q==
-X-Gm-Gg: ASbGncsKFFtmt3q9ZBNyPXqq5FyXBFvp8Cibae3CpysEGHky3u48yivhCpQzJE/k1nP
-	agAiHjvqANhsCs62wnpBzeDkPsrNUp3k3YNH2cuqNeOSk1wIZXW5zBjSkjo6uBkGvpJAMcA6PMA
-	lZL4orGeLwIHBOxA2SJTPU2cvMxGb5kfxhKiRBWOjjtjO60qALe6gT6umD75aXQ8bKEl6TCiOwk
-	ao2Yi+maBWM90MqbtOc+44a8Spx0U6HSAQ/E8d1r73XTudbbpZaHSAw0KfSOnDZUIZ9VqTX7yCC
-	uDREE72rtLF1
-X-Received: by 2002:a17:902:d491:b0:215:54a1:8584 with SMTP id d9443c01a7336-21a83f4c070mr499559145ad.17.1737044684403;
-        Thu, 16 Jan 2025 08:24:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFyUbLUdMgg1c+CW6qpS6QMO3ywPJZ9HpadXLf470xOZzTswQX7dby0DqNdRKCsjvta9teINw==
-X-Received: by 2002:a17:902:d491:b0:215:54a1:8584 with SMTP id d9443c01a7336-21a83f4c070mr499558685ad.17.1737044684017;
-        Thu, 16 Jan 2025 08:24:44 -0800 (PST)
-Received: from jkangas-thinkpadp1gen3.rmtuswa.csb ([2601:1c2:4301:5e20:98fe:4ecb:4f14:576b])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2d3d7b0esm2142155ad.162.2025.01.16.08.24.42
+        bh=ARDjCcRGT03WV/jJzISRYsEH/PAIJYg2xIBjnV8W+gg=;
+        b=QGpDkdR3qSfosoxwgyF0yjqsVSm6BpY0G7QZ905muaOs1EIa6gmcAflD8BqxggSjFr
+         tPoFWwEPr0/Gie31/tiHsdIfhYHzOKU2ryKgBQVOfBKxMNoXXFYzrTIQpbYDPNhAV6ne
+         38C4Tja1f7lv5BR0VKVHs6oWy1rBetq0Bfd4J4KPaPc271lqURAuR7E2+rCsOiQzdDqk
+         PSegCn3lpAZHs5xkgd596+8i1gPGkbELk2qilqP6yG05eejjJNKsjZ2KHX01R2IekXdV
+         Sbf/ACnFZK6JKGYuLdLal7T/9FwCrRUX+tvVegyO9HGpVbd5YE2In/h+BI8gsbpRx3yY
+         n/9w==
+X-Forwarded-Encrypted: i=1; AJvYcCUHJuEHLjWx5qcZT47COAkV1EoODqLSiwNmZ2+ZCUTj9lsEz2UQlKKJOGMO9OEt8dT6AqMpnmDj@vger.kernel.org, AJvYcCUolDfbXzFtuQoAIMH7byIf2BRoLJTupdkZ4VgJ7uN/UFhGeEnkrk+xAJJ59AwGx7Y5OmUpwNdF/1dxXEA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyDsMlMdGHAKkBo/DcLqYZajoIHX74L4J+5gS2w9/IVjL8iHXD
+	R5CR6y7R6caC5pP7oFvIWpsqD9VE5zNMIM/oDrAqu/94hUy6PWVs
+X-Gm-Gg: ASbGnctWFS6gt1ZpUEF6vyK8ofOKqMuesEVWajsw8cV7PwPuS2ZCs2RduJ7OBBmqOMr
+	KSaOW9hVhMCzwxzx8zMCO0EDE3zkargYu5ggSUUQzCgZNunVs5RuL5T0NjgIckiiLjAjDdAxT+r
+	2F5BxO9p79y8EVJj2tfadvlJ7KcKsZwwMXHN9GPSxK1koP83p+iu/cUvkS3ycqBpl2WMg2jI0Po
+	FNYmZ37gQ2t6r9lORYwW+UKvDQ2L+oZcB0CrzOC/LcBhNYQ/5YzuZl2eN28lloY3jzqc2KMdmDr
+	WL0BSg==
+X-Google-Smtp-Source: AGHT+IHstWMd+CWUx3IaPktREduKNzy4NF5JqEL4Gn7RlChbOWkHBGTUy2DrCBCQC9bznntdLIzaZQ==
+X-Received: by 2002:a17:903:1cf:b0:21a:8300:b9d5 with SMTP id d9443c01a7336-21a83f4cd36mr543199275ad.23.1737045095907;
+        Thu, 16 Jan 2025 08:31:35 -0800 (PST)
+Received: from localhost.localdomain ([121.185.186.233])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2d406cb5sm2205315ad.246.2025.01.16.08.31.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jan 2025 08:24:43 -0800 (PST)
-From: Jared Kangas <jkangas@redhat.com>
-To: bpf@vger.kernel.org
-Cc: davem@davemloft.net,
+        Thu, 16 Jan 2025 08:31:35 -0800 (PST)
+From: Jeongjun Park <aha310510@gmail.com>
+To: bh74.an@samsung.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	horms@kernel.org,
-	martin.lau@kernel.org,
-	jkangas@redhat.com,
-	ast@kernel.org,
-	johannes.berg@intel.com,
-	kafai@fb.com,
-	songliubraving@fb.com,
+	richardcochran@gmail.com,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH bpf] bpf: use attach_btf instead of vmlinux in bpf_sk_storage_tracing_allowed
-Date: Thu, 16 Jan 2025 08:23:56 -0800
-Message-ID: <20250116162356.1054047-1-jkangas@redhat.com>
-X-Mailer: git-send-email 2.47.1
+	linux-kernel@vger.kernel.org,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH net-next] net: sxgbe: change conditional statement from if to switch
+Date: Fri, 17 Jan 2025 01:03:14 +0900
+Message-ID: <20250116160314.23873-1-aha310510@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,110 +78,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When loading BPF programs, bpf_sk_storage_tracing_allowed() assumes that
-the type is present in the vmlinux BTF. However, if a non-vmlinux kernel
-BTF is attached to, this assumption is invalid and btf_type_by_id()
-returns a null pointer. Proof-of-concept on a kernel with CONFIG_IPV6=m:
+Change the if conditional statement in sxgbe_rx_ctxt_wbstatus() to a switch
+conditional statement to improve readability, and also add processing for
+cases where all conditions are not satisfied.
 
-    $ cat bpfcrash.c
-    #include <unistd.h>
-    #include <linux/bpf.h>
-    #include <sys/syscall.h>
-
-    static int bpf(enum bpf_cmd cmd, union bpf_attr *attr)
-    {
-        return syscall(__NR_bpf, cmd, attr, sizeof(*attr));
-    }
-
-    int main(void)
-    {
-        const int btf_fd = bpf(BPF_BTF_GET_FD_BY_ID, &(union bpf_attr) {
-            .btf_id = BTF_ID,
-        });
-        if (btf_fd < 0)
-            return 1;
-
-        const int bpf_sk_storage_get = 107;
-        const struct bpf_insn insns[] = {
-            { .code = BPF_JMP | BPF_CALL, .imm = bpf_sk_storage_get},
-            { .code = BPF_JMP | BPF_EXIT },
-        };
-        return bpf(BPF_PROG_LOAD, &(union bpf_attr) {
-            .prog_type            = BPF_PROG_TYPE_TRACING,
-            .expected_attach_type = BPF_TRACE_FENTRY,
-            .license              = (unsigned long)"GPL",
-            .insns                = (unsigned long)&insns,
-            .insn_cnt             = sizeof(insns) / sizeof(insns[0]),
-            .attach_btf_obj_fd    = btf_fd,
-            .attach_btf_id        = TYPE_ID,
-        });
-    }
-    $ sudo bpftool btf list | grep ipv6
-    2: name [ipv6]  size 928200B
-    $ sudo bpftool btf dump id 2 | awk '$3 ~ /inet6_sock_destruct/'
-    [130689] FUNC 'inet6_sock_destruct' type_id=130677 linkage=static
-    $ gcc -D_DEFAULT_SOURCE -DBTF_ID=2 -DTYPE_ID=130689 \
-        bpfcrash.c -o bpfcrash
-    $ sudo ./bpfcrash
-
-This results in a null pointer dereference:
-
-    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-    Call trace:
-     bpf_sk_storage_tracing_allowed+0x8c/0xb0 P
-     check_helper_call.isra.0+0xa8/0x1730
-     do_check+0xa18/0xb40
-     do_check_common+0x140/0x640
-     bpf_check+0xb74/0xcb8
-     bpf_prog_load+0x598/0x9a8
-     __sys_bpf+0x580/0x980
-     __arm64_sys_bpf+0x28/0x40
-     invoke_syscall.constprop.0+0x54/0xe8
-     do_el0_svc+0xb4/0xd0
-     el0_svc+0x44/0x1f8
-     el0t_64_sync_handler+0x13c/0x160
-     el0t_64_sync+0x184/0x188
-
-To get the proper type, use prog->aux->attach_btf instead of assuming
-the type is in vmlinux.
-
-Fixes: 8e4597c627fb ("bpf: Allow using bpf_sk_storage in FENTRY/FEXIT/RAW_TP")
-Signed-off-by: Jared Kangas <jkangas@redhat.com>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 ---
- net/core/bpf_sk_storage.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ .../net/ethernet/samsung/sxgbe/sxgbe_desc.c   | 43 +++++++++++++------
+ 1 file changed, 30 insertions(+), 13 deletions(-)
 
-diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
-index 2f4ed83a75ae..74584dd12550 100644
---- a/net/core/bpf_sk_storage.c
-+++ b/net/core/bpf_sk_storage.c
-@@ -352,8 +352,8 @@ const struct bpf_func_proto bpf_sk_storage_delete_proto = {
+diff --git a/drivers/net/ethernet/samsung/sxgbe/sxgbe_desc.c b/drivers/net/ethernet/samsung/sxgbe/sxgbe_desc.c
+index b33ebf2dca47..5e69ab8a4b90 100644
+--- a/drivers/net/ethernet/samsung/sxgbe/sxgbe_desc.c
++++ b/drivers/net/ethernet/samsung/sxgbe/sxgbe_desc.c
+@@ -421,31 +421,48 @@ static void sxgbe_rx_ctxt_wbstatus(struct sxgbe_rx_ctxt_desc *p,
+ 	if (p->tstamp_dropped)
+ 		x->timestamp_dropped++;
  
- static bool bpf_sk_storage_tracing_allowed(const struct bpf_prog *prog)
- {
--	const struct btf *btf_vmlinux;
- 	const struct btf_type *t;
-+	const struct btf *btf;
- 	const char *tname;
- 	u32 btf_id;
+-	/* ptp */
+-	if (p->ptp_msgtype == RX_NO_PTP)
++	/* PTP Msg type */
++	switch (p->ptp_msgtype) {
++	case RX_NO_PTP:
+ 		x->rx_msg_type_no_ptp++;
+-	else if (p->ptp_msgtype == RX_PTP_SYNC)
++		break;
++	case RX_PTP_SYNC:
+ 		x->rx_ptp_type_sync++;
+-	else if (p->ptp_msgtype == RX_PTP_FOLLOW_UP)
++		break;
++	case RX_PTP_FOLLOW_UP:
+ 		x->rx_ptp_type_follow_up++;
+-	else if (p->ptp_msgtype == RX_PTP_DELAY_REQ)
++		break;
++	case RX_PTP_DELAY_REQ:
+ 		x->rx_ptp_type_delay_req++;
+-	else if (p->ptp_msgtype == RX_PTP_DELAY_RESP)
++		break;
++	case RX_PTP_DELAY_RESP:
+ 		x->rx_ptp_type_delay_resp++;
+-	else if (p->ptp_msgtype == RX_PTP_PDELAY_REQ)
++		break;
++	case RX_PTP_PDELAY_REQ:
+ 		x->rx_ptp_type_pdelay_req++;
+-	else if (p->ptp_msgtype == RX_PTP_PDELAY_RESP)
++		break;
++	case RX_PTP_PDELAY_RESP:
+ 		x->rx_ptp_type_pdelay_resp++;
+-	else if (p->ptp_msgtype == RX_PTP_PDELAY_FOLLOW_UP)
++		break;
++	case RX_PTP_PDELAY_FOLLOW_UP:
+ 		x->rx_ptp_type_pdelay_follow_up++;
+-	else if (p->ptp_msgtype == RX_PTP_ANNOUNCE)
++		break;
++	case RX_PTP_ANNOUNCE:
+ 		x->rx_ptp_announce++;
+-	else if (p->ptp_msgtype == RX_PTP_MGMT)
++		break;
++	case RX_PTP_MGMT:
+ 		x->rx_ptp_mgmt++;
+-	else if (p->ptp_msgtype == RX_PTP_SIGNAL)
++		break;
++	case RX_PTP_SIGNAL:
+ 		x->rx_ptp_signal++;
+-	else if (p->ptp_msgtype == RX_PTP_RESV_MSG)
++		break;
++	case RX_PTP_RESV_MSG:
+ 		x->rx_ptp_resv_msg_type++;
++		break;
++	default:
++		pr_err("Invalid PTP Message type\n");
++		break;
++	}
+ }
  
-@@ -371,12 +371,12 @@ static bool bpf_sk_storage_tracing_allowed(const struct bpf_prog *prog)
- 		return true;
- 	case BPF_TRACE_FENTRY:
- 	case BPF_TRACE_FEXIT:
--		btf_vmlinux = bpf_get_btf_vmlinux();
--		if (IS_ERR_OR_NULL(btf_vmlinux))
-+		btf = prog->aux->attach_btf;
-+		if (!btf)
- 			return false;
- 		btf_id = prog->aux->attach_btf_id;
--		t = btf_type_by_id(btf_vmlinux, btf_id);
--		tname = btf_name_by_offset(btf_vmlinux, t->name_off);
-+		t = btf_type_by_id(btf, btf_id);
-+		tname = btf_name_by_offset(btf, t->name_off);
- 		return !!strncmp(tname, "bpf_sk_storage",
- 				 strlen("bpf_sk_storage"));
- 	default:
--- 
-2.47.1
-
+ /* Get rx timestamp status */
+--
