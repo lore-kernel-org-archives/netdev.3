@@ -1,78 +1,122 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B4424A7EE
-	for <netdev@vger.kernel.org>; Thu, 16 Jan 2025 20:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A172D18E750;
+	Thu, 16 Jan 2025 20:36:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737059370; cv=none; b=mzXdQrHDgC2Vjg0drfFAUJENfgKDYS/nk8MQP0pvSAdd52svCYpP56l8ZM4dSfr63wsXMeF8rFfGiqmG96CaSOAQPsdAYnjGAzalMIih+b7GGQgJR7i0Far3pobmKBV/hOhZDUdpcJvJ0qwB+3q/ishvdQ3oZT+quAlUdbgGx6E=
+	t=1737059779; cv=none; b=tEIbRa+nkc5q1X08zj1wsRSbBm5tQLXKSPnT4HPXhQaBrib3PVueoKeUp7lds/e72ZGesizvdsDS11i1JgdN1vUCdlQyCkWLGoFyVTViGgPS4usr3ozzDwzB80PiqQKSV4PQ2xvyqFc59sIvt0Z3FFnfcKlxhDZJdaWfnEOddiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737059370; c=relaxed/simple;
-	bh=gmW7mnZEWm3GiEUSfBvY0bTteiclHvivM+E7Zsn7w8Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SUNiw1UaE53OZjT4OSGu2+gwECwpBb6CXofp1d2+O5IMoQU5FqV6FWMdfkFBHLvslKWCJ7tCEuEihh9FTIs/Gr1vcd3fi3uK33W1ECjSrQWFN5GK1LawaV3tlo4Cblg5ax4E0sZiKmG0gn2SuCXAy2JKJj4JAf3ovNv/Z4oqZyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=xv3dhr/u; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1737059779; c=relaxed/simple;
+	bh=ay/xlLnF2UIkqMJHUCgw4xMC7ig0hdNfW+uwg24oVzw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=l7JBbA2lqs+kdYZpOf9GYxxpud5GffjkaabhYc33myqV1ct6O4YDo5JOuQ6J/ubxkZj0+AuQQZqNIpmF178d7hiL3Ym2sMqHa44H0ghip98zABpTn1jAhPwo2u7Ehgfa7LfFqVzKbWBy5IShlAqooD9Ls9Btvs+AKBAYOIhJEg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Z1udj7xs; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="xv3dhr/u"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=RPaqiSiJvZL+VT0MFmJkziq8qXx7oEBBscaf9+lsCto=; b=xv3dhr/uXQdwaYB3bPyem54sOM
-	P7ISK8C9sQ+jJl4+DlnQjez+/7swrvTGDRjKjuGRN8mCQVBTxvf3Pm1j4Xico+jZSA61enJZ/BQzf
-	TzNcwkEwOrDoWkeuk7Ecz7sdlSEMn8SA0R1/RDOxfa3/TeS7pPzTAjhgit0gzu9gstDU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tYWUX-005EEt-2q; Thu, 16 Jan 2025 21:29:25 +0100
-Date: Thu, 16 Jan 2025 21:29:25 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
-Cc: netdev@vger.kernel.org
-Subject: Re: Generic sk_buff contract documentation ?
-Message-ID: <cfdd904f-f9cb-4a6f-81c8-53b378626daf@lunn.ch>
-References: <1f09214d-0a30-4537-82ca-ebecc0c2f2bb@orange.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Z1udj7xs"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50GESRLC007667;
+	Thu, 16 Jan 2025 20:35:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=zcXYfq7y3Ykx9nkv3
+	r9zTbWUpugtYvbNec4z//sgjIQ=; b=Z1udj7xsccEMJyAqV9xuj1MZHH+TOGL79
+	cOMrg+yrPJUEUMCr1C1b1RbYRsNrXxMKTVvNUddfIxZRI+PbYlJq1bgVDQnERQuu
+	U1QIgi3Zani6kzheUSk91VB2+OdvZPjNVRsa7BvI2R0/ahGhuikR+o0FSO2u0aee
+	JhabYhGwjRFEF4jVrojVPbY5a261SuVVabdxCGhjIuXRXAcmuhrlH+0qEk1YhRZW
+	/H0qwghVzPgZQFrVMAyaI03ZlWjqdVXyIinVP2veAVLutDv2UsTbintOTRspuEXi
+	kw30Nie+V501zuxwmm2RZyOArSKcMz+62U7VfKUxnwRkaWj/+xNqw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 446tkcmnvd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jan 2025 20:35:36 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50GKYF07013070;
+	Thu, 16 Jan 2025 20:35:36 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 446tkcmnvb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jan 2025 20:35:36 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50GHOwPU007364;
+	Thu, 16 Jan 2025 20:35:34 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4443ynfmgt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jan 2025 20:35:34 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50GKZXQr12124554
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Jan 2025 20:35:33 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8122E58059;
+	Thu, 16 Jan 2025 20:35:33 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6D10958058;
+	Thu, 16 Jan 2025 20:35:32 +0000 (GMT)
+Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 16 Jan 2025 20:35:32 +0000 (GMT)
+From: Ninad Palsule <ninad@linux.ibm.com>
+To: minyard@acm.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com,
+        openipmi-developer@lists.sourceforge.net, netdev@vger.kernel.org,
+        joel@jms.id.au, andrew@codeconstruct.com.au,
+        devicetree@vger.kernel.org, eajames@linux.ibm.com,
+        linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org
+Cc: Ninad Palsule <ninad@linux.ibm.com>
+Subject: [PATCH v6 01/10] dt-bindings: net: faraday,ftgmac100: Add phys mode
+Date: Thu, 16 Jan 2025 14:35:16 -0600
+Message-ID: <20250116203527.2102742-2-ninad@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250116203527.2102742-1-ninad@linux.ibm.com>
+References: <20250116203527.2102742-1-ninad@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1f09214d-0a30-4537-82ca-ebecc0c2f2bb@orange.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Upf2eS7rTwO2GUArfiLsvKzpNki0PdwK
+X-Proofpoint-GUID: ErUzenTtv79y361SWL-C2FyTPHA6IFP0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-16_09,2025-01-16_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
+ impostorscore=0 mlxscore=0 spamscore=0 priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 suspectscore=0 clxscore=1015
+ mlxlogscore=946 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2501160151
 
-On Thu, Jan 16, 2025 at 08:51:26AM +0100, Alexandre Ferrieux wrote:
-> Hi,
-> 
-> Recently digging into a driver-specific issue with sk_buff->protocol, I
-> discovered (with surprise) that the computation of this field (which is *always*
-> necessary for protocol handlers to kick in) was somehow "delegated" to
-> individual network interface drivers. This can be seen by looking for callers of
-> eth_type_trans(), e.g:
-> 
-> - tg3: called from tg3_poll_work
-> - ixgbe: called from ixgbe_clean_rx_irq
-> - veth: called from veth_xmit (though indirectly via __dev_forward_skb)
-> 
-> This is a surprise as one would naively expect this ubiquitous behavior to be
-> triggered from generic code, depending only on the L2 header structure (but not
-> on the specific NIC hardware at hand). Another surprise was *not* to find any
-> mention of this "contract" in Documentation/*.
-> 
-> So, is it an unspoken tradition for NIC driver developers, to
-> "just know" that prior to emitting an skb from the rx path, they must fill
-> skb->protocol (along with who knows how many other metadata items) ?
+Aspeed device supports rgmii, rgmii-id, rgmii-rxid, rgmii-txid so
+document them.
 
-Ideally, a new driver is simply a copy/paste of some existing driver,
-which already has all this code. Trying to write a driver from scratch
-without copying code is likely to run into a number of issues like
-this, and why would you pass up so much usable code which has passed
-review and has been heavily tested and debugged.
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+---
+ Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Could this be moved into the bottom of the stack? Maybe. But do you
-want to modify 327 files?
+diff --git a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+index 9bcbacb6640d..55d6a8379025 100644
+--- a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
++++ b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+@@ -44,6 +44,9 @@ properties:
+   phy-mode:
+     enum:
+       - rgmii
++      - rgmii-id
++      - rgmii-rxid
++      - rgmii-txid
+       - rmii
+ 
+   phy-handle: true
+-- 
+2.43.0
 
-	Andrew
