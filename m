@@ -1,108 +1,164 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8187C1DE4F0
-	for <netdev@vger.kernel.org>; Thu, 16 Jan 2025 12:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0DB1DE4D4;
+	Thu, 16 Jan 2025 12:23:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737030019; cv=none; b=o9idbGaNNyol1n/mVQs8rlh35ox7yN5rH7RMFY9X+XuEwi8OpFwKvazcv2INvEo7bjTt+zAzP9DEMw34plueeWCbwrYi53DPLpTG1KLp3D8jcbxMNvLVZK7UJfvS8S8GLmpHWyy3DfvhOpplMbzKCnX8Friyfh2dVAIoiIp5rdk=
+	t=1737030193; cv=none; b=XxzFmYw8kXskbEVsZfAp4StUD62X6nDl/kmg7Y0MgIR+oKzw6TKlFfuq2EOwcxQBilqQxdlNppzdHM/AXCEMdIlIUTWQRrQ080HlVyKflMYBjn4WbG1d5Wf2PgQfM3ovz4tmzh4uvInbJlC5RoI6l0t9Z4zKcKJT+eLL/Dwq8Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737030019; c=relaxed/simple;
-	bh=6avLKqbMIyAcFLsUgJ3ddPhVImaldHFi2l2dSLz4a2Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nkgP5D1y81BgQ60URLdhU+8BFK9xbKYs7PMXa/EcLPjzu+mUSxYSuhpqAaQXA8vbVrjYio/OexPGglbSYANyfScdtgo4NtqzUKG6dxFyvZj+WuDObGOD8ZXUnA5o5ofHg5OWN1d2/kzFVLxLvtHAgEjxjlidT0e6dU412K56shA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e0PAUUeh; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1737030193; c=relaxed/simple;
+	bh=DHqEvLwf3HDkS2JVIwmCrqfeDQIkB8B3EbXIvh3PJ8s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jTUmeOX+Q3Oe4YoQ+5+XASb2HUZ8DgjecY/CkLe3lb4S2SQYYl4MfLj5rd6LNa/piutsA70HQVXOEltrylRFhWom21PbLzW6QZ5GWRMmtiAuHXbSmywFREIfPRcKMrsZVtd4HtaaVAZ5zdiJljdEj5DCMviuv0Dk3r7tsVxoDOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=aBbdOx0G; arc=none smtp.client-ip=115.124.30.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e0PAUUeh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737030016;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LdvNaT5AMAbzNC+V/K1g6AuiGLizxX8gl1cmIdzr4t4=;
-	b=e0PAUUehyoR21wKUKNsxxZi9+NH86QBuWDVnvj25gvrDbeMxLeWX+NPUU8ROyyofQYvrIW
-	qfW/4Ba1hvjfjUaRjSkiD1alOZi+qai+MYI3+v5vrtna1im1CwudWCeqvUOgysRbapXsVl
-	tjs+d7ygTEWhPDx6E86fKT3Sv5mh2Ow=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-490-8MC4aUBsOoijeL-664pBag-1; Thu, 16 Jan 2025 07:20:15 -0500
-X-MC-Unique: 8MC4aUBsOoijeL-664pBag-1
-X-Mimecast-MFC-AGG-ID: 8MC4aUBsOoijeL-664pBag
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4679db55860so17063091cf.3
-        for <netdev@vger.kernel.org>; Thu, 16 Jan 2025 04:20:15 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737030015; x=1737634815;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LdvNaT5AMAbzNC+V/K1g6AuiGLizxX8gl1cmIdzr4t4=;
-        b=uiCZm5w788dEg7KQ9IUbpJnIciK9qt0Y23HtHXZFXmWdjJBz0RUUZnv3JfZbAanopd
-         f5bAK87gyDkeZgSffr+cG+oZPDuXzWU16B1euxCE30b5aqcOMGhaYMPi0i+QFf4zP6+y
-         ad+lUuOuGyJOetDcB98GMYhfwiL4DaZuCT0hCBjFwC1f9oaBTUW0ozCrQJ77kEQqPPCo
-         bS2RPhWNv3MWkZfcfwzRdi2Y9qgdRwu9/Jd5dGWm/YS7mTC8BwmIqoNcDNpUqBmzeHnA
-         z8iBBJYmuHw/FG8U51SniHcuum6qyUlIKtwRoXZGL7/46FG8d3S+KIBVncEWgFIaQKXH
-         txUg==
-X-Gm-Message-State: AOJu0YwQU5XgXzcBY1JtISgJFDSXA5IfPrseA/iUZrMPElc4fsWirSwS
-	AhHZnT1tAH0Jmizs6zet/L7QJu/kUj6Ltej217x/diDIoqcLKgx3LtyWVShWsH3WxdYu/m5usoI
-	9bUyDSbBWueynwzSOUBPNRJUoqStW+4Lx3MK0UdxIve+jssOl6DP8TA==
-X-Gm-Gg: ASbGncusTf57nkKGc3IyTEYvyKUESyDAgbS2R1hu/Cx3hDLk8yWENGAqMxvV0dSNEOs
-	xXAKfZRpywaPxv65ks1kMC/6KOIbT784lY+f1T/Xy0KgbuHLm6k9d0ACLbbjdOcZexGnzyzMcPt
-	WMJ+10Mz9S+nZhn9p/FNwPCVtScqcn4MhoGx8biv0iKO5PGzmSC8QfmPoWk1+Yw0wR94htzYxr5
-	S8o4YYyidahpdRxDQrPYX7bpYfeU0vad+Quw7LR1+vSw5OhIYv5CRtZ/wyuWIxOat7bfwYOJucQ
-	nl2+JLCfWew=
-X-Received: by 2002:a05:6214:4e07:b0:6e1:69cb:4292 with SMTP id 6a1803df08f44-6e169cb44b9mr243270556d6.33.1737030014830;
-        Thu, 16 Jan 2025 04:20:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEKFTAnHKeQ3NEu83F7oQ+Fqd55Mxu5etNZ1OGZtLq6UUBtIWUaZJUe+CpmMHyKcIwMC+azcA==
-X-Received: by 2002:a05:6214:4e07:b0:6e1:69cb:4292 with SMTP id 6a1803df08f44-6e169cb44b9mr243270246d6.33.1737030014505;
-        Thu, 16 Jan 2025 04:20:14 -0800 (PST)
-Received: from [192.168.88.253] (146-241-15-169.dyn.eolo.it. [146.241.15.169])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46c873ce201sm74898461cf.55.2025.01.16.04.20.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Jan 2025 04:20:14 -0800 (PST)
-Message-ID: <cc0541ea-00e6-4444-ae90-a6cbeec3f6d9@redhat.com>
-Date: Thu, 16 Jan 2025 13:20:11 +0100
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="aBbdOx0G"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1737030181; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=z/2X4QCJz0+PjyBqoo8pjyWfSn+lHxhP2Hw0xitx+xw=;
+	b=aBbdOx0GBWv0xqNbiQwOCdBdCoX7wngQbPTG8guLWzkYLFE0NLORM3BXK6GJE2Zu7UCdzw6OMMpw7YXoOOIdRlCYHicTQVcl9yqM50YBkq0oyxE8ucKfOMiVXE1MYjrbR0xf09kbLtrUK0ZCwXymIr9qy87SZ9e3OLAYyX99j3s=
+Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0WNlhgBZ_1737030179 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 16 Jan 2025 20:23:00 +0800
+Date: Thu, 16 Jan 2025 20:22:59 +0800
+From: Dust Li <dust.li@linux.alibaba.com>
+To: "D. Wythe" <alibuda@linux.alibaba.com>, kgraul@linux.ibm.com,
+	wenjia@linux.ibm.com, jaka@linux.ibm.com, ast@kernel.org,
+	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
+	pabeni@redhat.com, song@kernel.org, sdf@google.com,
+	haoluo@google.com, yhs@fb.com, edumazet@google.com,
+	john.fastabend@gmail.com, kpsingh@kernel.org, jolsa@kernel.org,
+	guwen@linux.alibaba.com
+Cc: kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: Re: [PATCH bpf-next v6 2/5] net/smc: Introduce generic hook smc_ops
+Message-ID: <20250116122259.GE89233@linux.alibaba.com>
+Reply-To: dust.li@linux.alibaba.com
+References: <20250116074442.79304-1-alibuda@linux.alibaba.com>
+ <20250116074442.79304-3-alibuda@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] netdev: avoid CFI problems with sock priv helpers
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
- horms@kernel.org, Li Li <dualli@chromium.org>, donald.hunter@gmail.com,
- sdf@fomichev.me, almasrymina@google.com
-References: <20250115161436.648646-1-kuba@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250115161436.648646-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250116074442.79304-3-alibuda@linux.alibaba.com>
 
-
-
-On 1/15/25 5:14 PM, Jakub Kicinski wrote:
-> Li Li reports that casting away callback type may cause issues
-> for CFI. Let's generate a small wrapper for each callback,
-> to make sure compiler sees the anticipated types.
+On 2025-01-16 15:44:39, D. Wythe wrote:
+>The introduction of IPPROTO_SMC enables eBPF programs to determine
+>whether to use SMC based on the context of socket creation, such as
+>network namespaces, PID and comm name, etc.
+>
+>As a subsequent enhancement, to introduce a new generic hook that
+>allows decisions on whether to use SMC or not at runtime, including
+>but not limited to local/remote IP address or ports.
+>
+>Moreover, in the future, we can achieve more complex extensions to the
+>protocol stack by extending this ops.
+>
+>Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+>---
+> include/net/netns/smc.h |  3 ++
+> include/net/smc.h       | 53 +++++++++++++++++++++++
+> net/ipv4/tcp_output.c   | 18 ++++++--
+> net/smc/Kconfig         | 12 ++++++
+> net/smc/Makefile        |  1 +
+> net/smc/smc_ops.c       | 53 +++++++++++++++++++++++
+> net/smc/smc_ops.h       | 28 ++++++++++++
+> net/smc/smc_sysctl.c    | 94 +++++++++++++++++++++++++++++++++++++++++
+> 8 files changed, 258 insertions(+), 4 deletions(-)
+> create mode 100644 net/smc/smc_ops.c
+> create mode 100644 net/smc/smc_ops.h
+>
+>diff --git a/include/net/netns/smc.h b/include/net/netns/smc.h
+>index fc752a50f91b..81b3fdb39cd2 100644
+>--- a/include/net/netns/smc.h
+>+++ b/include/net/netns/smc.h
+>@@ -17,6 +17,9 @@ struct netns_smc {
+> #ifdef CONFIG_SYSCTL
+> 	struct ctl_table_header		*smc_hdr;
+> #endif
+>+#if IS_ENABLED(CONFIG_SMC_OPS)
+>+	struct smc_ops __rcu		*ops;
+>+#endif /* CONFIG_SMC_OPS */
+> 	unsigned int			sysctl_autocorking_size;
+> 	unsigned int			sysctl_smcr_buf_type;
+> 	int				sysctl_smcr_testlink_time;
+>diff --git a/include/net/smc.h b/include/net/smc.h
+>index db84e4e35080..271838591b63 100644
+>--- a/include/net/smc.h
+>+++ b/include/net/smc.h
+>@@ -18,6 +18,8 @@
+> #include "linux/ism.h"
 > 
-> Reported-by: Li Li <dualli@chromium.org>
-> Link: https://lore.kernel.org/CANBPYPjQVqmzZ4J=rVQX87a9iuwmaetULwbK_5_3YWk2eGzkaA@mail.gmail.com
-> Fixes: 170aafe35cb9 ("netdev: support binding dma-buf to netdevice")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: donald.hunter@gmail.com
-> CC: sdf@fomichev.me
-> CC: almasrymina@google.com
+> struct sock;
+>+struct tcp_sock;
+>+struct inet_request_sock;
+> 
+> #define SMC_MAX_PNETID_LEN	16	/* Max. length of PNET id */
+> 
+>@@ -97,4 +99,55 @@ struct smcd_dev {
+> 	u8 going_away : 1;
+> };
+> 
+>+#define  SMC_OPS_NAME_MAX 16
+>+
+>+enum {
+>+	/* ops can be inherit from init_net */
+>+	SMC_OPS_FLAG_INHERITABLE = 0x1,
+>+
+>+	SMC_OPS_ALL_FLAGS = SMC_OPS_FLAG_INHERITABLE,
+>+};
+>+
+>+struct smc_ops {
+>+	/* priavte */
+>+
+>+	struct list_head list;
+>+	struct module *owner;
+>+
+>+	/* public */
+>+
+>+	/* unique name */
+>+	char name[SMC_OPS_NAME_MAX];
+>+	int flags;
+>+
+>+	/* Invoked before computing SMC option for SYN packets.
+>+	 * We can control whether to set SMC options by returning varios value.
+>+	 * Return 0 to disable SMC, or return any other value to enable it.
+>+	 */
+>+	int (*set_option)(struct tcp_sock *tp);
+>+
+>+	/* Invoked before Set up SMC options for SYN-ACK packets
+>+	 * We can control whether to respond SMC options by returning varios
+>+	 * value. Return 0 to disable SMC, or return any other value to enable
+>+	 * it.
+>+	 */
+>+	int (*set_option_cond)(const struct tcp_sock *tp,
+>+			       struct inet_request_sock *ireq);
+>+};
+>+
+>+#if IS_ENABLED(CONFIG_SMC_OPS)
+>+#define smc_call_retops(init_val, sk, func, ...) ({	\
+>+	typeof(init_val) __ret = (init_val);		\
+>+	struct smc_ops *ops;				\
+>+	rcu_read_lock();				\
+>+	ops = READ_ONCE(sock_net(sk)->smc.ops);		\
+>+	if (ops && ops->func)				\
+>+		__ret = ops->func(__VA_ARGS__);		\
+>+	rcu_read_unlock();				\
+>+	!!__ret;					\
+>+})
 
-FTR, I took the liberty of applying this patch before the 24H grace
-period to fit todays net PR and avoid shipping a 6.13 final with a known
-serious issue.
+Here you force the return value to be bool by !!ret, what if the
+future caller expects the return value to be an integer or other types ?
 
-/P
+Best regards,
+Dust
 
