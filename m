@@ -1,65 +1,65 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2080.outbound.protection.outlook.com [40.107.92.80])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2061.outbound.protection.outlook.com [40.107.237.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EBA22CBFA
-	for <netdev@vger.kernel.org>; Thu, 16 Jan 2025 16:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7066422D4C0
+	for <netdev@vger.kernel.org>; Thu, 16 Jan 2025 16:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737045575; cv=fail; b=C/O5ssZsOScdjIS8G6kDdhWFn+reSdTsApHO7NxO6l/aGcWv6kWUzCfdCMJoRq7qifkHoAo9Lsf6WwGER6yasCtTZgT/0OUw7dBYu37lDNMTTTVMrUuBNrNw+DbDFNJXoDl3uVX2fHGiaid8cZ7uNPQH/3J8Kclx+qMWbeGKzAg=
+	t=1737045584; cv=fail; b=m4wdp6CGTCTGDEtKwI4FTJnenJvIYk38LVuI4XhYbTZLUnbi++Q66Ws17cqkLBYiXWrIXaouCK9MIIGeYH5EOKvNJTMb+XjhYFxb8MByZuSEjHDlmsIDO5ZxfYocFw+GBqnaEeag2vFK55acEA1xFIv0JLxk+BSRwRUbmjXRtd4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737045575; c=relaxed/simple;
-	bh=FIuWgcJOhqhTlanmzp7pP303irSU0JkuPDbiAY8wk+s=;
+	s=arc-20240116; t=1737045584; c=relaxed/simple;
+	bh=AnEpKqpSF6mzdjIQWPGDKQC5aUhE9uAYD6mWLYudkRo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RPB9v7IiJLgDkB9TlyClf5xwq+3nZvQucnbwSMxZgSfZVniyO2i+zhfVj1NNghLBk3868HvzNc5+aCipGpLb4nundCakbXJLQ0dIygsohLQUCSSfF0lWYPwHlwLAMJpLTgw6oBLPCUUFx/ynjYr6zODqMEdPetVLoRbm1v1MNY4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qlxmhChs; arc=fail smtp.client-ip=40.107.92.80
+	 MIME-Version:Content-Type; b=XhrnkPLNQIB2E5+67NLtZeV0JAsyunkhSYrWPynwd1/eJ56bvFX8jXfp6xCcfGKOPgG5LN3TlypdU7gBgzOssczynWQWfIGcTDN09qDOPrQz2KB4Jdie7v5q3Djkm4BWANqFBJjakS3Haa7GYW59KYFG+Bqmpffc6ivK7zCri90=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nH8csihK; arc=fail smtp.client-ip=40.107.237.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qlxmhChs"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nH8csihK"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wktZEmYL2UMK//QAbBEnjCrpDVO9bUevlg2WO28D808YjO2WA+aTi0E3qQky5q3mgolSwniQ4aUw0sJyfbIJ0PgxUgVpeqRbdDwjVfFdNwPsUXEHr96lS27W6wrZMaiYD+CeXZM95BXZs1251Hy69gjuFkJsn9GQrgzQVv5rP0rTnfcAAF5ppZ+41hGTu2E5vw/6sSHQeEtP0oqEbSr1dyR56XNvl+s78f0XsxOVg116N58qJScmYeTq0b5ieDT588EPUndPnuLORgMtI2CpJfK7kJ70gXCSDSjSrhX3GS/DapffnKIQjLVWTFX6efKZE1442wvzVKjEEroq1YZpBw==
+ b=b8vrhE29eEDbxTDxGnrUmFVgCecMJ3vZpLpJXwiG3h442+CDno0QSG/vY/pgk+V83W1SU5Su3bz0a07fuQtaEJRewo71FYp4PQkBt7tYktYirSyYorkAxUNwwHnCfnYUR7kk0P0ks9TT2qgy5H1huqulVRYQGuisUGezgUQ31XtPE1caE7GAv9TqI7mCjCXHDV8Zj6GmftgeMsKp52fmIe5++6ci41swbGn/Fhkd2e+lc3SZndfvFXvZq/O7BaHlc1Q20NS+D+SEW65q+Tyq/Sn1qYxhn1WgJrzUr2ZzMZoPwkOVXl4bIlPibJrqgKL4PAUmEJDRv65/GpMzlto3iA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CmHP++FsWELmohWdO0E1JwEffKtPDOOq1QJObM/0ntI=;
- b=BNda3gGs2M/yAE7f9r4c9DPt2/LugI+dkz1A64tBgh/fs+QBKiVLpYe26IJTxZAn/NrKMEM1clDDBgX533WKK67wT9zgUKj/A1nynCWOVx9JNBE/HmVMGRZ0eglYGdNzItH7f4kRcuqC3ignstQyktb4QK4cV6AoFg4E7u+Jmalgl0ejyWb5ja5V5mQTkb4rLPCTsc+Zjcg9lm3V/qeuYL0oEo7YSP+HpuQ8nTtg/WJVc08mssjIQCVbt1CDh8gHyDPvQtK/6/HlfJIdLdjM1kan0igNk2IKRstnmiw9WgzYkySW2dpvz8rffwJeJxAzS3fQyVN2AaGrkvcMzfnkEQ==
+ bh=w+ObXwRZCkU/VBwi/o7yYoiCz/Rag5RD5aBdVEJBfxs=;
+ b=RqJwA4TDKokMBtt86Esx6zVg6xl6or2HdUTgq/NetvY3RMWfxYOyAhuCG1PzzfsvNmptIzLndLMC8kGliPj4F1xd6HkFykqsjaWmLp+thspgFasig/wSZE8gUq46IURRiMFSlGZms9X4hExBLWsic6zQ1kXIII/3PXNexikGPVXj4QbGAf5bj+ykWVm/Te05JfsYKbROkN8izcSXMAwrUI/mVDfmBwTLb8gGuUoZipQ+oyDhS9JBc+6UyFHWfp4ESzieBsDtZhUaE6NEtI7/1r0GUTLal7LPNVu81eGyj46Rf8jtfzc78NAzTwmgOcF0drM7nWOSCNlcR/G4Rlc+2g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
+ 216.228.117.161) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CmHP++FsWELmohWdO0E1JwEffKtPDOOq1QJObM/0ntI=;
- b=qlxmhChsCc7/yd1Zyzr7tgwbx9CCPByvHU8FqAAX5EXUcr73THWjZVRRZ8jgbcURq4fWZ7JXa33uMGe4iIdaZ//5CnSXUpjqn8PPIqVdLQGWzRiDoZgwxTrRYye4EzLlHzGZ9cGjk7DlLy1f95r7TelONEabWkdOUV9avlpWUIUzHHNSresGgAH92W6jyoaAJiO8Ow0QAhyz0n/++CLN2xhVFK/+01XEbXWcYFu6GCxI2NaDtcp4I6lT6PQkd/MOkdEqQ2jWP5Ow93A+VCzIQwjliYpWNyMu8G3h3z4+jia0jv9JeHNsWt6xlB9aJIjGrG2R/alUFRLgq5uL8Hmjwg==
-Received: from BL6PEPF00016414.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:22e:400:0:1004:0:c) by PH8PR12MB7135.namprd12.prod.outlook.com
- (2603:10b6:510:22c::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.17; Thu, 16 Jan
- 2025 16:39:28 +0000
-Received: from BN3PEPF0000B070.namprd21.prod.outlook.com
- (2a01:111:f403:c803::1) by BL6PEPF00016414.outlook.office365.com
- (2603:1036:903:4::a) with Microsoft SMTP Server (version=TLS1_3,
+ bh=w+ObXwRZCkU/VBwi/o7yYoiCz/Rag5RD5aBdVEJBfxs=;
+ b=nH8csihK0b21T+0hRRg6WQoiMTvH/5iFdLWoSgNdPRimRQkUMqtomcBMgpbx6+fmkd+/h+sGZu281RYcUs8TSE5yE5+hpX97vdvfRclXMDJolEENwvOx6hR4PEilxmJZgCQ9hk12nNfXKT2ELmpohQ/YNDx05r3zyWlOe0WrbjlBBi98R650jWFli0cshgVgZspvoFuWRybXKI9x2KxvhZwXDeTk6ERLL9A2tybzWDzI91mrLjJOj6JMkk5mX8GYV5oxAhpFIQUMaSlowfFOh6rxiLc47R04OszFGynhdfG0HyMT2KqmTDcDQKxd6V4OLIew5HXwLB/lL2c668A3IA==
+Received: from PH1PEPF000132F4.NAMP220.PROD.OUTLOOK.COM (2603:10b6:518:1::39)
+ by MW3PR12MB4492.namprd12.prod.outlook.com (2603:10b6:303:57::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.14; Thu, 16 Jan
+ 2025 16:39:36 +0000
+Received: from SN1PEPF000397B0.namprd05.prod.outlook.com
+ (2a01:111:f403:f90f::3) by PH1PEPF000132F4.outlook.office365.com
+ (2603:1036:903:47::3) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.13 via Frontend Transport; Thu,
- 16 Jan 2025 16:39:28 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ 16 Jan 2025 16:39:35 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN3PEPF0000B070.mail.protection.outlook.com (10.167.243.75) with Microsoft
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SN1PEPF000397B0.mail.protection.outlook.com (10.167.248.54) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8377.0 via Frontend Transport; Thu, 16 Jan 2025 16:39:28 +0000
+ 15.20.8356.11 via Frontend Transport; Thu, 16 Jan 2025 16:39:34 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 16 Jan
- 2025 08:39:08 -0800
+ 2025 08:39:18 -0800
 Received: from fedora.mtl.com (10.126.230.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 16 Jan
- 2025 08:39:03 -0800
+ 2025 08:39:13 -0800
 From: Petr Machata <petrm@nvidia.com>
 To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
 	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
@@ -68,9 +68,9 @@ To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
 CC: Richard Cochran <richardcochran@gmail.com>, Ido Schimmel
 	<idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, <mlxsw@nvidia.com>,
 	Amit Cohen <amcohen@nvidia.com>
-Subject: [PATCH net-next 2/5] mlxsw: Initialize txhdr_info according to PTP operations
-Date: Thu, 16 Jan 2025 17:38:15 +0100
-Message-ID: <efcaacd4bedef524e840a0c29f96cebf2c4bc0e0.1737044384.git.petrm@nvidia.com>
+Subject: [PATCH net-next 4/5] mlxsw: Move Tx header handling to PCI driver
+Date: Thu, 16 Jan 2025 17:38:17 +0100
+Message-ID: <293a81e6f7d59a8ec9f9592edb7745536649ff11.1737044384.git.petrm@nvidia.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1737044384.git.petrm@nvidia.com>
 References: <cover.1737044384.git.petrm@nvidia.com>
@@ -86,190 +86,535 @@ X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B070:EE_|PH8PR12MB7135:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5be9cb0f-582e-4b74-e9a8-08dd364c587f
+X-MS-TrafficTypeDiagnostic: SN1PEPF000397B0:EE_|MW3PR12MB4492:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2208d631-dc69-404c-9d85-08dd364c5c51
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|376014|36860700013|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?4yl0u1tQub1bWyEVfHvhHtmHN1d4jwO7GHfQ1SZtJ0k4VXdOe9UKs4ZwqdjG?=
- =?us-ascii?Q?O9uGGcWiwdjBf0FxbXnPHVl9hYNH7fiL6e9j1XFCR1+9cG6Rasz40x346E9c?=
- =?us-ascii?Q?mOg5xk/Pezx/VEVDtN4ZbO4Ip9T/eqIZ7q5AlkBYqdT+U2Na7EU19G98gVbk?=
- =?us-ascii?Q?3CPmuFsG4LImu5VWGTUMDyLy9gaZGDT8hEyV66jrtcTMRQ8QuyVVLhSfxPZU?=
- =?us-ascii?Q?B8GnCLj4qmdCXTswbW0L1c+8RP/mNmBFwLLNW4gLAeJMANhTdLBMCQJ+dcEI?=
- =?us-ascii?Q?wCOYBKGmSi6hujQO2EpLQCHHdNTcLfYO4jihA+18GWPx6bT6ICKgwK2235zl?=
- =?us-ascii?Q?DJAFfSkn/5MblO3oNHrEvIznibowExUlIXtI3eFDhtyrEkJibT625wXtS4JA?=
- =?us-ascii?Q?Tt+m9u0vq6P20l3Kauh3r4/g3fPoRoEN0tqsbDM/lArqChcoqbFVd53Nxj2f?=
- =?us-ascii?Q?9yCYoXCmsW1Q5wt7yC0zhjdo7BxEur/z7Rsy6yausxWd6FRidNqI01pfgMGx?=
- =?us-ascii?Q?6Sm51MPGC3iRVNjxnOnttKxzItfDLau9B6MSQQnJ4SaKL7xte3J5QLCDUOd1?=
- =?us-ascii?Q?R3gbwZNSfFjudrdusNZL5uIcITqgFzCvdEQ9l1QoMpYd9NcWVbF3xnoqhqMr?=
- =?us-ascii?Q?15nhWEevt7QZdmJ/CMbQT0EPrPm/rlXJkgBgR6MmuPiRPgKeA7nkwfqIUuR8?=
- =?us-ascii?Q?iyWKNBSwVWDf8QJXWQOufx4BHa08TRgkNWnu0u6iQU4+AD4aKg0FuiD3mjx1?=
- =?us-ascii?Q?Op+cemphrH06Ox6kMeMXQvRmXyon2gD7kAVYsAHH2Ot/Kpa66ih9zaausujy?=
- =?us-ascii?Q?rcTy9W6tum17YdIKXehs0LjdGaAuez59Ko6POVlU4isHsiMA9XYSwPNRu0PK?=
- =?us-ascii?Q?Xi3quIr01xCPIpTfQaEHx28wZBCCzY+Mppy1uubyBePH94ox+LjCg40PmpIh?=
- =?us-ascii?Q?jiQl5CPblvV/6/eHWqmVC6GV/UR5QH6iLeTzM4PeIrnmYYQrapyj1d4NT9iA?=
- =?us-ascii?Q?KX0PYZIv6XH1nN+mRmKl3aa1cyx055ubBXt9f7E483KWfTbDvbYmKahlRJjA?=
- =?us-ascii?Q?GWDKx2io9omBnGD2+eDCJvF2apCwMvdXHg9MBRVffmRTQWuNWbRTCHd2P/JG?=
- =?us-ascii?Q?xh8WWZ15B0q1CTVzynr1kqB4ZbHoSWF3SkzXN+Nrysc9+ncq298+jC8mlh6F?=
- =?us-ascii?Q?xxWO4nSx/5LdGCwO/xh6Bo4MdDWRYqBnmVBwgjLXkDprERa9s90+yiLOV+Qk?=
- =?us-ascii?Q?jcbDSJoaV5i3X3EIvgsIlAmchQyl2DMgidY5x8zJ6eigLYPIbgUr3vOkEO8m?=
- =?us-ascii?Q?Lu2koiJvCRBCTlU2Do5eRyrIQtq2IXXTsa2x2ou2tNJ7xVWT1cHyltnvBIC8?=
- =?us-ascii?Q?YSy/Sel64RaB5+h/LNzovXZmUZ2ZENnDnANpkSqdEd+B3jWxspyBX4id/zc7?=
- =?us-ascii?Q?AfkolFPnVu0ai3ezi19C5G6c/BIfGrZiOTSUKWkfmuId5ESW/M1iKA=3D=3D?=
+	=?us-ascii?Q?ydIuezjxedgqmecyLClmtrCwYk2oBFlDuERdeLDmrnbyyLWM7dS5mVKoep6x?=
+ =?us-ascii?Q?AnrbvTXv+0Wqc+jMmwKTOKvFpdJnSnCG3JLFeBBVIzF9qnhyJRKmCE46dcba?=
+ =?us-ascii?Q?jJRU4lBR7xJhxedr84Bp7dRepP8SRbjAjvt8O96AfEzrPDwwcc2NeTHG7G7R?=
+ =?us-ascii?Q?2BbJxy3AZu9kcgKR2YoaovsPkbyadjpffhKMzHGux9VsYN/HKVjFR3FIOeXR?=
+ =?us-ascii?Q?hOAKSOFf76vkDXI6ioXEjOXyyOCISpySFCCwYbr/naZiunwnLC4oTQhcweoE?=
+ =?us-ascii?Q?Sci6DGhhhz2mMZkuRGmzFpT3aGawpn5kjftrE409MG4cJdX2dZMTeq6Ub7X5?=
+ =?us-ascii?Q?JMlKigpmmfBZOMR3dgnmZFdAsLr4erq/9fXuFD3o3TWWiGzwVs/hRYAORRs7?=
+ =?us-ascii?Q?kuUFPA2mi0R0xesOOusSrYXynF10hixic6zkLMawqUs1B4hDlBKBkQFjJc7r?=
+ =?us-ascii?Q?LnjUIUODkQp0t1yL3cFgJMJEe09Z7d0/EkU2/eDk69cCaf912zvy5oKQu04q?=
+ =?us-ascii?Q?mBFZqg+voJwxsZisVZxZbcLhUDkAttSpA7qDQvCass3JmJsQTP7g5HZEPEGm?=
+ =?us-ascii?Q?xvNsqB/t6EL5PCzV0kqUO55G9QYr2j0gNwzequ5iKMooDu1cVIQJP+Buk2zv?=
+ =?us-ascii?Q?9coK2e5Hsizb5VR4Kag6pV6UpPzNWaVdgAcwzE28v/Fdq6M4lQhC0T4VOPdU?=
+ =?us-ascii?Q?aRejHbQH8BefX2NhacEkQJxDdqtkLFg58UWXLjB6mwU7MewV/2+GKtWZGbkl?=
+ =?us-ascii?Q?jgTs75uSj5OXmrkstmwZQv+XJv0f6OcOT/r8sil6589Wa5IR8Vpurx8xouvZ?=
+ =?us-ascii?Q?F51IYJpdnOQOyc36ZFYbiT67QkWZhCbaqH1PyFEEHCqDePHHDHKbBkKqM45X?=
+ =?us-ascii?Q?zpV9AYqLWnEzBWlhxeK7Um5+40APojvP1TETeX6hMlQTRrrvrWEBozeiJ5NW?=
+ =?us-ascii?Q?TLNpwpg5FNO44Do0L0kT0eMYX0cngwnRA/wAIczqHZybk+vMobEb+t5dOE/m?=
+ =?us-ascii?Q?zid3omXRSW2qLL2Z72QjoGzhWBurepQrI7mHb+86o34UxHhKfXpEV3ahygG/?=
+ =?us-ascii?Q?+8orSImFrz/Qw3f7UfIZmjWaTgtqHnuz8uAr8RtEPh/kiHseu3l8+bE8h2d+?=
+ =?us-ascii?Q?jZXjF7pRd2trr7agfC6CmndHDyrtFfvUgDFgrSQ8kGJV51LGUhepe1cl+0Z/?=
+ =?us-ascii?Q?nMTkIgl2qiaAFjl1sNvUGoSClHKBH1S4aMvuukOncJ2qQGcwQw9Q2hPa3L7D?=
+ =?us-ascii?Q?CVw1Utpdb9iIFde4bAPTCUl5XA4PS8hMV9fXJFXk7xvdzsTHVifaYlJfkG2x?=
+ =?us-ascii?Q?PyRyTNanPCYk1wh7sgrL7TKK1ckcns17hOO1znUxyU1tHyZq85d6t6YtY4fQ?=
+ =?us-ascii?Q?ihFWKeBUPEbGKzYT4yj/vKeJdrqKQ6dZb/OR2xJ7VAa09gHYds1phyOuG3Wt?=
+ =?us-ascii?Q?a4tN2XoYXFqFqRJFw9xXuydWUmxqyQ2tSIlBm+pTGe049zhZc2WZ0Q=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2025 16:39:28.4639
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2025 16:39:34.9339
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5be9cb0f-582e-4b74-e9a8-08dd364c587f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2208d631-dc69-404c-9d85-08dd364c5c51
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B070.namprd21.prod.outlook.com
+	SN1PEPF000397B0.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7135
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4492
 
 From: Amit Cohen <amcohen@nvidia.com>
 
-A next patch will construct Tx header as part of pci.c. The switch driver
-(mlxsw_spectrum.ko) should encapsulate all the differences between the
-different ASICs and the bus driver (mlxsw_pci.ko) should remain unaware.
+Tx header should be added to all packets transmitted from the CPU to
+Spectrum ASICs. Historically, handling this header was added as a driver
+function, as Tx header is different between Spectrum and Switch-X. See
+SwitchX implementation in commit 31557f0f9755 ("mlxsw: Introduce
+Mellanox SwitchX-2 ASIC support"). From May 2021, there is no support
+for SwitchX-2 ASIC, and all the relevant code was removed.
 
-As preparation, add the relevant info as part of mlxsw_txhdr_info
-structure, so later bus driver will merely construct the Tx header based on
-information passed from the switch driver.
+For now, there is no justification to handle Tx header as part of
+spectrum.c, we can handle this as part of PCI, in skb_transmit().
 
-Most of the packets are transmitted as control packets, but PTP packets in
-Spectrum-2 and Spectrum-3 should be handled differently. The driver
-transmits them as data packets, and the default VLAN tag (4095) is added if
-the packet is not already tagged.
+A future patch set will add support for XDP in mlxsw driver, to support
+XDP_TX and XDP_REDIRECT actions, Tx header should be added before
+transmitting the packet. As preparation for this, move Tx header handling
+to PCI driver, so then XDP code will not have to call API from spectrum.c.
+This also improves the code as now Tx header is pushed just before
+transmitting, so it is not done from many flows which might miss something.
 
-Extend PTP operations to store a boolean which indicates whether packets
-should be transmitted as data packets. Set it for Spectrum-2 and
-Spectrum-3 only. Extend mlxsw_txhdr_info to store fields which will be used
-later to construct Tx header. Initialize such fields according to the new
-boolean which is stored in PTP operations.
+Note that for PTP, we should configure Tx header differently, use the
+fields from mlxsw_txhdr_info to configure the packets correctly in PCI
+driver. Handle VLAN tagging in switch driver, verify that packet which
+should be transmitted as data is tagged, otherwise, tag it.
 
-Note that for now, mlxsw_txhdr_info structure is initialized, but not used,
-a next patch will use it.
+Remove the calls for thxdr_construct() functions, as now this is done as
+part of skb_transmit().
 
 Signed-off-by: Amit Cohen <amcohen@nvidia.com>
 Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 Signed-off-by: Petr Machata <petrm@nvidia.com>
 ---
- drivers/net/ethernet/mellanox/mlxsw/core.h    |  2 ++
- .../net/ethernet/mellanox/mlxsw/spectrum.c    | 32 ++++++++++++++++++-
- .../net/ethernet/mellanox/mlxsw/spectrum.h    |  1 +
- .../ethernet/mellanox/mlxsw/spectrum_ptp.c    |  4 +++
- 4 files changed, 38 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/core.c    |   6 +-
+ drivers/net/ethernet/mellanox/mlxsw/core.h    |   2 -
+ drivers/net/ethernet/mellanox/mlxsw/pci.c     |  38 ++++++
+ .../net/ethernet/mellanox/mlxsw/spectrum.c    | 121 ++++--------------
+ .../net/ethernet/mellanox/mlxsw/spectrum.h    |  10 --
+ .../ethernet/mellanox/mlxsw/spectrum_ptp.c    |  40 ------
+ .../ethernet/mellanox/mlxsw/spectrum_ptp.h    |  28 ----
+ 7 files changed, 65 insertions(+), 180 deletions(-)
 
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/core.c b/drivers/net/ethernet/mellanox/mlxsw/core.c
+index a3c032da4b4b..39888678a2bd 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/core.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/core.c
+@@ -737,9 +737,8 @@ static int mlxsw_emad_transmit(struct mlxsw_core *mlxsw_core,
+ 	if (!skb)
+ 		return -ENOMEM;
+ 
+-	trace_devlink_hwmsg(priv_to_devlink(mlxsw_core), false, 0,
+-			    skb->data + mlxsw_core->driver->txhdr_len,
+-			    skb->len - mlxsw_core->driver->txhdr_len);
++	trace_devlink_hwmsg(priv_to_devlink(mlxsw_core), false, 0, skb->data,
++			    skb->len);
+ 
+ 	atomic_set(&trans->active, 1);
+ 	err = mlxsw_core_skb_transmit(mlxsw_core, skb, &trans->txhdr_info);
+@@ -995,7 +994,6 @@ static int mlxsw_emad_reg_access(struct mlxsw_core *mlxsw_core,
+ 	trans->type = type;
+ 
+ 	mlxsw_emad_construct(mlxsw_core, skb, reg, payload, type, trans->tid);
+-	mlxsw_core->driver->txhdr_construct(skb, &trans->txhdr_info.tx_info);
+ 
+ 	spin_lock_bh(&mlxsw_core->emad.trans_list_lock);
+ 	list_add_tail_rcu(&trans->list, &mlxsw_core->emad.trans_list);
 diff --git a/drivers/net/ethernet/mellanox/mlxsw/core.h b/drivers/net/ethernet/mellanox/mlxsw/core.h
-index cd33ceb2154b..38d1b507348f 100644
+index 38d1b507348f..d842af24465d 100644
 --- a/drivers/net/ethernet/mellanox/mlxsw/core.h
 +++ b/drivers/net/ethernet/mellanox/mlxsw/core.h
-@@ -74,6 +74,8 @@ struct mlxsw_tx_info {
+@@ -432,8 +432,6 @@ struct mlxsw_driver {
+ 	int (*trap_policer_counter_get)(struct mlxsw_core *mlxsw_core,
+ 					const struct devlink_trap_policer *policer,
+ 					u64 *p_drops);
+-	void (*txhdr_construct)(struct sk_buff *skb,
+-				const struct mlxsw_tx_info *tx_info);
+ 	int (*resources_register)(struct mlxsw_core *mlxsw_core);
+ 	int (*kvd_sizes_get)(struct mlxsw_core *mlxsw_core,
+ 			     const struct mlxsw_config_profile *profile,
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/pci.c b/drivers/net/ethernet/mellanox/mlxsw/pci.c
+index e8e0a06cd4e0..5b44c931b660 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/pci.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/pci.c
+@@ -21,6 +21,7 @@
+ #include "cmd.h"
+ #include "port.h"
+ #include "resources.h"
++#include "txheader.h"
  
- struct mlxsw_txhdr_info {
- 	struct mlxsw_tx_info tx_info;
-+	bool data;
-+	u16 max_fid; /* Used for PTP packets which are sent as data. */
- };
- 
- struct mlxsw_rx_md_info {
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-index 3bd6230307aa..061a3bb81c72 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-@@ -299,6 +299,33 @@ static bool mlxsw_sp_skb_requires_ts(struct sk_buff *skb)
- 	return !!ptp_parse_header(skb, type);
+ #define mlxsw_pci_write32(mlxsw_pci, reg, val) \
+ 	iowrite32be(val, (mlxsw_pci)->hw_addr + (MLXSW_PCI_ ## reg))
+@@ -2095,6 +2096,39 @@ static void mlxsw_pci_fini(void *bus_priv)
+ 	mlxsw_pci_free_irq_vectors(mlxsw_pci);
  }
  
-+static void mlxsw_sp_txhdr_info_data_init(struct mlxsw_core *mlxsw_core,
-+					  struct sk_buff *skb,
-+					  struct mlxsw_txhdr_info *txhdr_info)
++static int mlxsw_pci_txhdr_construct(struct sk_buff *skb,
++				     const struct mlxsw_txhdr_info *txhdr_info)
 +{
-+	/* Resource validation was done as part of PTP init. */
-+	u16 max_fid = MLXSW_CORE_RES_GET(mlxsw_core, FID);
++	const struct mlxsw_tx_info tx_info = txhdr_info->tx_info;
++	char *txhdr;
 +
-+	txhdr_info->data = true;
-+	txhdr_info->max_fid = max_fid;
++	if (skb_cow_head(skb, MLXSW_TXHDR_LEN))
++		return -ENOMEM;
++
++	txhdr = skb_push(skb, MLXSW_TXHDR_LEN);
++	memset(txhdr, 0, MLXSW_TXHDR_LEN);
++
++	mlxsw_tx_hdr_version_set(txhdr, MLXSW_TXHDR_VERSION_1);
++	mlxsw_tx_hdr_proto_set(txhdr, MLXSW_TXHDR_PROTO_ETH);
++	mlxsw_tx_hdr_swid_set(txhdr, 0);
++
++	if (unlikely(txhdr_info->data)) {
++		u16 fid = txhdr_info->max_fid + tx_info.local_port - 1;
++
++		mlxsw_tx_hdr_rx_is_router_set(txhdr, true);
++		mlxsw_tx_hdr_fid_valid_set(txhdr, true);
++		mlxsw_tx_hdr_fid_set(txhdr, fid);
++		mlxsw_tx_hdr_type_set(txhdr, MLXSW_TXHDR_TYPE_DATA);
++	} else {
++		mlxsw_tx_hdr_ctl_set(txhdr, MLXSW_TXHDR_ETH_CTL);
++		mlxsw_tx_hdr_control_tclass_set(txhdr, 1);
++		mlxsw_tx_hdr_port_mid_set(txhdr, tx_info.local_port);
++		mlxsw_tx_hdr_type_set(txhdr, MLXSW_TXHDR_TYPE_CONTROL);
++	}
++
++	return 0;
 +}
 +
-+static void
-+mlxsw_sp_txhdr_preparations(struct mlxsw_sp *mlxsw_sp, struct sk_buff *skb,
-+			    struct mlxsw_txhdr_info *txhdr_info)
+ static struct mlxsw_pci_queue *
+ mlxsw_pci_sdq_pick(struct mlxsw_pci *mlxsw_pci,
+ 		   const struct mlxsw_tx_info *tx_info)
+@@ -2131,6 +2165,10 @@ static int mlxsw_pci_skb_transmit(void *bus_priv, struct sk_buff *skb,
+ 	int i;
+ 	int err;
+ 
++	err = mlxsw_pci_txhdr_construct(skb, txhdr_info);
++	if (err)
++		return err;
++
+ 	if (skb_shinfo(skb)->nr_frags > MLXSW_PCI_WQE_SG_ENTRIES - 1) {
+ 		err = skb_linearize(skb);
+ 		if (err)
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
+index 4e4d1d366d6c..d2886a8db83d 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
+@@ -165,61 +165,6 @@ void mlxsw_sp_flow_counter_free(struct mlxsw_sp *mlxsw_sp,
+ 			       counter_index);
+ }
+ 
+-void mlxsw_sp_txhdr_construct(struct sk_buff *skb,
+-			      const struct mlxsw_tx_info *tx_info)
+-{
+-	char *txhdr = skb_push(skb, MLXSW_TXHDR_LEN);
+-
+-	memset(txhdr, 0, MLXSW_TXHDR_LEN);
+-
+-	mlxsw_tx_hdr_version_set(txhdr, MLXSW_TXHDR_VERSION_1);
+-	mlxsw_tx_hdr_ctl_set(txhdr, MLXSW_TXHDR_ETH_CTL);
+-	mlxsw_tx_hdr_proto_set(txhdr, MLXSW_TXHDR_PROTO_ETH);
+-	mlxsw_tx_hdr_swid_set(txhdr, 0);
+-	mlxsw_tx_hdr_control_tclass_set(txhdr, 1);
+-	mlxsw_tx_hdr_port_mid_set(txhdr, tx_info->local_port);
+-	mlxsw_tx_hdr_type_set(txhdr, MLXSW_TXHDR_TYPE_CONTROL);
+-}
+-
+-int
+-mlxsw_sp_txhdr_ptp_data_construct(struct mlxsw_core *mlxsw_core,
+-				  struct mlxsw_sp_port *mlxsw_sp_port,
+-				  struct sk_buff *skb,
+-				  const struct mlxsw_tx_info *tx_info)
+-{
+-	char *txhdr;
+-	u16 max_fid;
+-	int err;
+-
+-	if (skb_cow_head(skb, MLXSW_TXHDR_LEN)) {
+-		err = -ENOMEM;
+-		goto err_skb_cow_head;
+-	}
+-
+-	if (!MLXSW_CORE_RES_VALID(mlxsw_core, FID)) {
+-		err = -EIO;
+-		goto err_res_valid;
+-	}
+-	max_fid = MLXSW_CORE_RES_GET(mlxsw_core, FID);
+-
+-	txhdr = skb_push(skb, MLXSW_TXHDR_LEN);
+-	memset(txhdr, 0, MLXSW_TXHDR_LEN);
+-
+-	mlxsw_tx_hdr_version_set(txhdr, MLXSW_TXHDR_VERSION_1);
+-	mlxsw_tx_hdr_proto_set(txhdr, MLXSW_TXHDR_PROTO_ETH);
+-	mlxsw_tx_hdr_rx_is_router_set(txhdr, true);
+-	mlxsw_tx_hdr_fid_valid_set(txhdr, true);
+-	mlxsw_tx_hdr_fid_set(txhdr, max_fid + tx_info->local_port - 1);
+-	mlxsw_tx_hdr_type_set(txhdr, MLXSW_TXHDR_TYPE_DATA);
+-	return 0;
+-
+-err_res_valid:
+-err_skb_cow_head:
+-	this_cpu_inc(mlxsw_sp_port->pcpu_stats->tx_dropped);
+-	dev_kfree_skb_any(skb);
+-	return err;
+-}
+-
+ static bool mlxsw_sp_skb_requires_ts(struct sk_buff *skb)
+ {
+ 	unsigned int type;
+@@ -242,46 +187,38 @@ static void mlxsw_sp_txhdr_info_data_init(struct mlxsw_core *mlxsw_core,
+ 	txhdr_info->max_fid = max_fid;
+ }
+ 
+-static void
++static struct sk_buff *
++mlxsw_sp_vlan_tag_push(struct mlxsw_sp *mlxsw_sp, struct sk_buff *skb)
 +{
-+	if (likely(!mlxsw_sp_skb_requires_ts(skb)))
-+		return;
-+
-+	if (!mlxsw_sp->ptp_ops->tx_as_data)
-+		return;
-+
-+	/* Special handling for PTP events that require a time stamp and cannot
-+	 * be transmitted as regular control packets.
++	/* In some Spectrum ASICs, in order for PTP event packets to have their
++	 * correction field correctly set on the egress port they must be
++	 * transmitted as data packets. Such packets ingress the ASIC via the
++	 * CPU port and must have a VLAN tag, as the CPU port is not configured
++	 * with a PVID. Push the default VLAN (4095), which is configured as
++	 * egress untagged on all the ports.
 +	 */
-+	mlxsw_sp_txhdr_info_data_init(mlxsw_sp->core, skb, txhdr_info);
++	if (skb_vlan_tagged(skb))
++		return skb;
++
++	return vlan_insert_tag_set_proto(skb, htons(ETH_P_8021Q),
++					 MLXSW_SP_DEFAULT_VID);
 +}
 +
- static int mlxsw_sp_txhdr_handle(struct mlxsw_core *mlxsw_core,
- 				 struct mlxsw_sp_port *mlxsw_sp_port,
- 				 struct sk_buff *skb,
-@@ -721,7 +748,7 @@ static netdev_tx_t mlxsw_sp_port_xmit(struct sk_buff *skb,
- 	struct mlxsw_sp_port *mlxsw_sp_port = netdev_priv(dev);
- 	struct mlxsw_sp *mlxsw_sp = mlxsw_sp_port->mlxsw_sp;
- 	struct mlxsw_sp_port_pcpu_stats *pcpu_stats;
--	const struct mlxsw_txhdr_info txhdr_info = {
-+	struct mlxsw_txhdr_info txhdr_info = {
- 		.tx_info.local_port = mlxsw_sp_port->local_port,
- 		.tx_info.is_emad = false,
- 	};
-@@ -738,6 +765,8 @@ static netdev_tx_t mlxsw_sp_port_xmit(struct sk_buff *skb,
++static struct sk_buff *
+ mlxsw_sp_txhdr_preparations(struct mlxsw_sp *mlxsw_sp, struct sk_buff *skb,
+ 			    struct mlxsw_txhdr_info *txhdr_info)
+ {
+ 	if (likely(!mlxsw_sp_skb_requires_ts(skb)))
+-		return;
++		return skb;
+ 
+ 	if (!mlxsw_sp->ptp_ops->tx_as_data)
+-		return;
++		return skb;
+ 
+ 	/* Special handling for PTP events that require a time stamp and cannot
+ 	 * be transmitted as regular control packets.
+ 	 */
+ 	mlxsw_sp_txhdr_info_data_init(mlxsw_sp->core, skb, txhdr_info);
+-}
+-
+-static int mlxsw_sp_txhdr_handle(struct mlxsw_core *mlxsw_core,
+-				 struct mlxsw_sp_port *mlxsw_sp_port,
+-				 struct sk_buff *skb,
+-				 const struct mlxsw_tx_info *tx_info)
+-{
+-	struct mlxsw_sp *mlxsw_sp = mlxsw_core_driver_priv(mlxsw_core);
+-
+-	/* In Spectrum-2 and Spectrum-3, PTP events that require a time stamp
+-	 * need special handling and cannot be transmitted as regular control
+-	 * packets.
+-	 */
+-	if (unlikely(mlxsw_sp_skb_requires_ts(skb)))
+-		return mlxsw_sp->ptp_ops->txhdr_construct(mlxsw_core,
+-							  mlxsw_sp_port, skb,
+-							  tx_info);
+-
+-	if (skb_cow_head(skb, MLXSW_TXHDR_LEN)) {
+-		this_cpu_inc(mlxsw_sp_port->pcpu_stats->tx_dropped);
+-		dev_kfree_skb_any(skb);
+-		return -ENOMEM;
+-	}
+-
+-	mlxsw_sp_txhdr_construct(skb, tx_info);
+-	return 0;
++	return mlxsw_sp_vlan_tag_push(mlxsw_sp, skb);
+ }
+ 
+ enum mlxsw_reg_spms_state mlxsw_sp_stp_spms_state(u8 state)
+@@ -697,12 +634,11 @@ static netdev_tx_t mlxsw_sp_port_xmit(struct sk_buff *skb,
  		return NETDEV_TX_OK;
  	}
  
-+	mlxsw_sp_txhdr_preparations(mlxsw_sp, skb, &txhdr_info);
-+
- 	err = mlxsw_sp_txhdr_handle(mlxsw_sp->core, mlxsw_sp_port, skb,
- 				    &txhdr_info.tx_info);
- 	if (err)
-@@ -2812,6 +2841,7 @@ static const struct mlxsw_sp_ptp_ops mlxsw_sp2_ptp_ops = {
+-	mlxsw_sp_txhdr_preparations(mlxsw_sp, skb, &txhdr_info);
+-
+-	err = mlxsw_sp_txhdr_handle(mlxsw_sp->core, mlxsw_sp_port, skb,
+-				    &txhdr_info.tx_info);
+-	if (err)
++	skb = mlxsw_sp_txhdr_preparations(mlxsw_sp, skb, &txhdr_info);
++	if (!skb) {
++		this_cpu_inc(mlxsw_sp_port->pcpu_stats->tx_dropped);
+ 		return NETDEV_TX_OK;
++	}
+ 
+ 	/* TX header is consumed by HW on the way so we shouldn't count its
+ 	 * bytes as being sent.
+@@ -2753,7 +2689,6 @@ static const struct mlxsw_sp_ptp_ops mlxsw_sp1_ptp_ops = {
+ 	.get_stats_count = mlxsw_sp1_get_stats_count,
+ 	.get_stats_strings = mlxsw_sp1_get_stats_strings,
+ 	.get_stats	= mlxsw_sp1_get_stats,
+-	.txhdr_construct = mlxsw_sp_ptp_txhdr_construct,
+ };
+ 
+ static const struct mlxsw_sp_ptp_ops mlxsw_sp2_ptp_ops = {
+@@ -2772,7 +2707,6 @@ static const struct mlxsw_sp_ptp_ops mlxsw_sp2_ptp_ops = {
+ 	.get_stats_count = mlxsw_sp2_get_stats_count,
  	.get_stats_strings = mlxsw_sp2_get_stats_strings,
  	.get_stats	= mlxsw_sp2_get_stats,
- 	.txhdr_construct = mlxsw_sp2_ptp_txhdr_construct,
-+	.tx_as_data     = true,
+-	.txhdr_construct = mlxsw_sp2_ptp_txhdr_construct,
+ 	.tx_as_data     = true,
  };
  
- static const struct mlxsw_sp_ptp_ops mlxsw_sp4_ptp_ops = {
+@@ -2792,7 +2726,6 @@ static const struct mlxsw_sp_ptp_ops mlxsw_sp4_ptp_ops = {
+ 	.get_stats_count = mlxsw_sp2_get_stats_count,
+ 	.get_stats_strings = mlxsw_sp2_get_stats_strings,
+ 	.get_stats	= mlxsw_sp2_get_stats,
+-	.txhdr_construct = mlxsw_sp_ptp_txhdr_construct,
+ };
+ 
+ struct mlxsw_sp_sample_trigger_node {
+@@ -3954,7 +3887,6 @@ static struct mlxsw_driver mlxsw_sp1_driver = {
+ 	.trap_policer_fini		= mlxsw_sp_trap_policer_fini,
+ 	.trap_policer_set		= mlxsw_sp_trap_policer_set,
+ 	.trap_policer_counter_get	= mlxsw_sp_trap_policer_counter_get,
+-	.txhdr_construct		= mlxsw_sp_txhdr_construct,
+ 	.resources_register		= mlxsw_sp1_resources_register,
+ 	.kvd_sizes_get			= mlxsw_sp_kvd_sizes_get,
+ 	.ptp_transmitted		= mlxsw_sp_ptp_transmitted,
+@@ -3992,7 +3924,6 @@ static struct mlxsw_driver mlxsw_sp2_driver = {
+ 	.trap_policer_fini		= mlxsw_sp_trap_policer_fini,
+ 	.trap_policer_set		= mlxsw_sp_trap_policer_set,
+ 	.trap_policer_counter_get	= mlxsw_sp_trap_policer_counter_get,
+-	.txhdr_construct		= mlxsw_sp_txhdr_construct,
+ 	.resources_register		= mlxsw_sp2_resources_register,
+ 	.ptp_transmitted		= mlxsw_sp_ptp_transmitted,
+ 	.txhdr_len			= MLXSW_TXHDR_LEN,
+@@ -4029,7 +3960,6 @@ static struct mlxsw_driver mlxsw_sp3_driver = {
+ 	.trap_policer_fini		= mlxsw_sp_trap_policer_fini,
+ 	.trap_policer_set		= mlxsw_sp_trap_policer_set,
+ 	.trap_policer_counter_get	= mlxsw_sp_trap_policer_counter_get,
+-	.txhdr_construct		= mlxsw_sp_txhdr_construct,
+ 	.resources_register		= mlxsw_sp2_resources_register,
+ 	.ptp_transmitted		= mlxsw_sp_ptp_transmitted,
+ 	.txhdr_len			= MLXSW_TXHDR_LEN,
+@@ -4064,7 +3994,6 @@ static struct mlxsw_driver mlxsw_sp4_driver = {
+ 	.trap_policer_fini		= mlxsw_sp_trap_policer_fini,
+ 	.trap_policer_set		= mlxsw_sp_trap_policer_set,
+ 	.trap_policer_counter_get	= mlxsw_sp_trap_policer_counter_get,
+-	.txhdr_construct		= mlxsw_sp_txhdr_construct,
+ 	.resources_register		= mlxsw_sp2_resources_register,
+ 	.ptp_transmitted		= mlxsw_sp_ptp_transmitted,
+ 	.txhdr_len			= MLXSW_TXHDR_LEN,
 diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.h b/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
-index 8d3c61287696..27ccd99ae801 100644
+index 27ccd99ae801..b10f80fc651b 100644
 --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
 +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
-@@ -247,6 +247,7 @@ struct mlxsw_sp_ptp_ops {
- 			       struct mlxsw_sp_port *mlxsw_sp_port,
- 			       struct sk_buff *skb,
- 			       const struct mlxsw_tx_info *tx_info);
-+	bool tx_as_data;
+@@ -243,10 +243,6 @@ struct mlxsw_sp_ptp_ops {
+ 	void (*get_stats_strings)(u8 **p);
+ 	void (*get_stats)(struct mlxsw_sp_port *mlxsw_sp_port,
+ 			  u64 *data, int data_index);
+-	int (*txhdr_construct)(struct mlxsw_core *mlxsw_core,
+-			       struct mlxsw_sp_port *mlxsw_sp_port,
+-			       struct sk_buff *skb,
+-			       const struct mlxsw_tx_info *tx_info);
+ 	bool tx_as_data;
  };
  
- struct mlxsw_sp_fid_core_ops {
+@@ -712,12 +708,6 @@ int mlxsw_sp_flow_counter_alloc(struct mlxsw_sp *mlxsw_sp,
+ 				unsigned int *p_counter_index);
+ void mlxsw_sp_flow_counter_free(struct mlxsw_sp *mlxsw_sp,
+ 				unsigned int counter_index);
+-void mlxsw_sp_txhdr_construct(struct sk_buff *skb,
+-			      const struct mlxsw_tx_info *tx_info);
+-int mlxsw_sp_txhdr_ptp_data_construct(struct mlxsw_core *mlxsw_core,
+-				      struct mlxsw_sp_port *mlxsw_sp_port,
+-				      struct sk_buff *skb,
+-				      const struct mlxsw_tx_info *tx_info);
+ bool mlxsw_sp_port_dev_check(const struct net_device *dev);
+ struct mlxsw_sp *mlxsw_sp_lower_get(struct net_device *dev);
+ struct mlxsw_sp_port *mlxsw_sp_port_dev_lower_find(struct net_device *dev);
 diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
-index d94081c7658e..c5a7aae14262 100644
+index c5a7aae14262..ca8b9d18fbb9 100644
 --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
 +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
-@@ -1353,6 +1353,10 @@ struct mlxsw_sp_ptp_state *mlxsw_sp2_ptp_init(struct mlxsw_sp *mlxsw_sp)
- 	struct mlxsw_sp2_ptp_state *ptp_state;
- 	int err;
+@@ -1683,43 +1683,3 @@ int mlxsw_sp2_ptp_get_ts_info(struct mlxsw_sp *mlxsw_sp,
  
-+	/* Max FID will be used in data path, check validity as part of init. */
-+	if (!MLXSW_CORE_RES_VALID(mlxsw_sp->core, FID))
-+		return ERR_PTR(-EIO);
-+
- 	ptp_state = kzalloc(sizeof(*ptp_state), GFP_KERNEL);
- 	if (!ptp_state)
- 		return ERR_PTR(-ENOMEM);
+ 	return 0;
+ }
+-
+-int mlxsw_sp_ptp_txhdr_construct(struct mlxsw_core *mlxsw_core,
+-				 struct mlxsw_sp_port *mlxsw_sp_port,
+-				 struct sk_buff *skb,
+-				 const struct mlxsw_tx_info *tx_info)
+-{
+-	if (skb_cow_head(skb, MLXSW_TXHDR_LEN)) {
+-		this_cpu_inc(mlxsw_sp_port->pcpu_stats->tx_dropped);
+-		dev_kfree_skb_any(skb);
+-		return -ENOMEM;
+-	}
+-
+-	mlxsw_sp_txhdr_construct(skb, tx_info);
+-	return 0;
+-}
+-
+-int mlxsw_sp2_ptp_txhdr_construct(struct mlxsw_core *mlxsw_core,
+-				  struct mlxsw_sp_port *mlxsw_sp_port,
+-				  struct sk_buff *skb,
+-				  const struct mlxsw_tx_info *tx_info)
+-{
+-	/* In Spectrum-2 and Spectrum-3, in order for PTP event packets to have
+-	 * their correction field correctly set on the egress port they must be
+-	 * transmitted as data packets. Such packets ingress the ASIC via the
+-	 * CPU port and must have a VLAN tag, as the CPU port is not configured
+-	 * with a PVID. Push the default VLAN (4095), which is configured as
+-	 * egress untagged on all the ports.
+-	 */
+-	if (!skb_vlan_tagged(skb)) {
+-		skb = vlan_insert_tag_set_proto(skb, htons(ETH_P_8021Q),
+-						MLXSW_SP_DEFAULT_VID);
+-		if (!skb) {
+-			this_cpu_inc(mlxsw_sp_port->pcpu_stats->tx_dropped);
+-			return -ENOMEM;
+-		}
+-	}
+-
+-	return mlxsw_sp_txhdr_ptp_data_construct(mlxsw_core, mlxsw_sp_port, skb,
+-						 tx_info);
+-}
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.h b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.h
+index c8aa1452fbb9..102db9060135 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.h
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.h
+@@ -49,11 +49,6 @@ void mlxsw_sp1_get_stats_strings(u8 **p);
+ void mlxsw_sp1_get_stats(struct mlxsw_sp_port *mlxsw_sp_port,
+ 			 u64 *data, int data_index);
+ 
+-int mlxsw_sp_ptp_txhdr_construct(struct mlxsw_core *mlxsw_core,
+-				 struct mlxsw_sp_port *mlxsw_sp_port,
+-				 struct sk_buff *skb,
+-				 const struct mlxsw_tx_info *tx_info);
+-
+ struct mlxsw_sp_ptp_clock *
+ mlxsw_sp2_ptp_clock_init(struct mlxsw_sp *mlxsw_sp, struct device *dev);
+ 
+@@ -78,11 +73,6 @@ int mlxsw_sp2_ptp_hwtstamp_set(struct mlxsw_sp_port *mlxsw_sp_port,
+ int mlxsw_sp2_ptp_get_ts_info(struct mlxsw_sp *mlxsw_sp,
+ 			      struct kernel_ethtool_ts_info *info);
+ 
+-int mlxsw_sp2_ptp_txhdr_construct(struct mlxsw_core *mlxsw_core,
+-				  struct mlxsw_sp_port *mlxsw_sp_port,
+-				  struct sk_buff *skb,
+-				  const struct mlxsw_tx_info *tx_info);
+-
+ #else
+ 
+ static inline struct mlxsw_sp_ptp_clock *
+@@ -157,15 +147,6 @@ static inline void mlxsw_sp1_get_stats(struct mlxsw_sp_port *mlxsw_sp_port,
+ {
+ }
+ 
+-static inline int
+-mlxsw_sp_ptp_txhdr_construct(struct mlxsw_core *mlxsw_core,
+-			     struct mlxsw_sp_port *mlxsw_sp_port,
+-			     struct sk_buff *skb,
+-			     const struct mlxsw_tx_info *tx_info)
+-{
+-	return -EOPNOTSUPP;
+-}
+-
+ static inline struct mlxsw_sp_ptp_clock *
+ mlxsw_sp2_ptp_clock_init(struct mlxsw_sp *mlxsw_sp, struct device *dev)
+ {
+@@ -211,15 +192,6 @@ mlxsw_sp2_ptp_hwtstamp_set(struct mlxsw_sp_port *mlxsw_sp_port,
+ {
+ 	return -EOPNOTSUPP;
+ }
+-
+-static inline int
+-mlxsw_sp2_ptp_txhdr_construct(struct mlxsw_core *mlxsw_core,
+-			      struct mlxsw_sp_port *mlxsw_sp_port,
+-			      struct sk_buff *skb,
+-			      const struct mlxsw_tx_info *tx_info)
+-{
+-	return -EOPNOTSUPP;
+-}
+ #endif
+ 
+ static inline void mlxsw_sp2_ptp_shaper_work(struct work_struct *work)
 -- 
 2.47.0
 
