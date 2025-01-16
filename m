@@ -1,88 +1,79 @@
-Received: from chinatelecom.cn (smtpnm6-07.21cn.com [182.42.151.156])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1AE1862;
-	Thu, 16 Jan 2025 02:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=182.42.151.156
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79ABE555;
+	Thu, 16 Jan 2025 02:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736995807; cv=none; b=RfN/kXEiKMRQ8vX1M8fdIa2wDPBIzp1GXODR6xUH5HTsVErEpU3XN4kNWM3lBIUOYqZcQc1W/RXq11W66Nmvas4ASvyeKuspBrqantjDEiCUPUswWeavOzb2LnfzJhFWzzcw83xLG5I3wNx8x3lNiakGTzsM+AQMbnJzuA9jizY=
+	t=1736995859; cv=none; b=oFt579jMBy3/xLcPsvqaIimeUKoEmv3XZP6VgYFC6GJuT51Xuc62VVjUc+45VNGLZgXYGAJ8BznnM1sqpht0x+FwCjPOIIaVw60Fr1uvJJ5ouUHcR5ccHA6dLliqxM0HKFfpD54bhfvjE2yW0aPuieATYEQ1eEV9hzn8oDIHm0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736995807; c=relaxed/simple;
-	bh=vXJPN5fkl5Edzzx788oumQZZKn0BfcPryAIxLhZ/bzk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=fsI3c0YapoKOaW4sAjBpek2ACtd0h8qN2y3NbxLkwh94HBjNaURRb5Fqm8gEGa51xOv2PlEHkIFtXf4Xsl38Kw47zL2T8IYRYA3T4KSGRMc92h8uLty0JQn/rSvcYZH5UsztV1n8+XgyFNN6+n3WzllrG76+nte7zQcONgJxugk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chinatelecom.cn; spf=pass smtp.mailfrom=chinatelecom.cn; arc=none smtp.client-ip=182.42.151.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chinatelecom.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chinatelecom.cn
-HMM_SOURCE_IP:192.168.138.117:0.1690985996
-HMM_ATTACHE_NUM:0000
-HMM_SOURCE_TYPE:SMTP
-Received: from clientip-36.111.140.9 (unknown [192.168.138.117])
-	by chinatelecom.cn (HERMES) with SMTP id 519309F5EB;
-	Thu, 16 Jan 2025 10:40:39 +0800 (CST)
-X-189-SAVE-TO-SEND: +liyonglong@chinatelecom.cn
-Received: from  ([36.111.140.9])
-	by gateway-ssl-dep-84dfd8c7d7-bnxj5 with ESMTP id 15e972f1e60c426da08153c9f1bcac9e for linux-kernel@vger.kernel.org;
-	Thu, 16 Jan 2025 10:40:45 CST
-X-Transaction-ID: 15e972f1e60c426da08153c9f1bcac9e
-X-Real-From: liyonglong@chinatelecom.cn
-X-Receive-IP: 36.111.140.9
-X-MEDUSA-Status: 0
-Sender: liyonglong@chinatelecom.cn
-From: Yonglong Li <liyonglong@chinatelecom.cn>
-To: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	liyonglong@chinatelecom.cn
-Subject: [PATCH] seg6: inherit inner IPv4 TTL on ip4ip6 encapsulation
-Date: Thu, 16 Jan 2025 10:40:36 +0800
-Message-Id: <1736995236-23063-1-git-send-email-liyonglong@chinatelecom.cn>
-X-Mailer: git-send-email 1.8.3.1
+	s=arc-20240116; t=1736995859; c=relaxed/simple;
+	bh=+ZYNwZATOq0t2LdGXDouWYN7G+SKSyQoiBOOSmTuqyA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=DCvA3da8HQCVMv7ptXMzVcoU3BnfkerDp15Mje5RNW/1HxhHWxsXZ/0sgw/nN1uUkEDPZ1tx0EbmuAFhiEY09zzEpX7U4fJZ47BwqL7IIgrf0uqoMWURWP8teHgeyLtDOrhumuVW88CZeIdLsOSgVjN7FCsc2MgpLPQUL4lHEIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VcGWGV/n; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VcGWGV/n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EFFC4CED1;
+	Thu, 16 Jan 2025 02:50:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736995859;
+	bh=+ZYNwZATOq0t2LdGXDouWYN7G+SKSyQoiBOOSmTuqyA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=VcGWGV/nnfVGLM4fXGW5RSC/Xei+1ResxNcw3ICxmalD15Skcrz6hFpF4iJ97/asV
+	 fD3GEBmm5G6tw0DStQQEtaUi1hprYUF8WjLzzQtN+Hs4tVlq4cbvKPlEwYNP/PW9sO
+	 3ZlAMcNZrpX2p47LRcsqAGG+vHFfgHloDgjsSNH+17/Bx69su/JE59/U+OUsan7Jun
+	 EmXc9ekXUp6xxsR2sIY6fQtoOGLwNz/2ewU+LIowhYuBLzDQCFY241LrwcPmEKE9Nl
+	 3OEPo0h6xeqtMSnEnOA9/GEPsP6eK+npDHooDglX0bO4oVxployOg1NYctRcmL4nhJ
+	 amInC/r1aaanA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 712EE380AA5F;
+	Thu, 16 Jan 2025 02:51:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3] net: wwan: iosm: Fix hibernation by re-binding the driver
+ around it
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173699588213.987898.18343161167546299162.git-patchwork-notify@kernel.org>
+Date: Thu, 16 Jan 2025 02:51:22 +0000
+References: <e60287ebdb0ab54c4075071b72568a40a75d0205.1736372610.git.mail@maciej.szmigiero.name>
+In-Reply-To: <e60287ebdb0ab54c4075071b72568a40a75d0205.1736372610.git.mail@maciej.szmigiero.name>
+To: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+Cc: m.chetan.kumar@intel.com, loic.poulain@linaro.org, ryazanov.s.a@gmail.com,
+ johannes@sipsolutions.net, bhelgaas@google.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ rafael@kernel.org, netdev@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
 
-inherit inner IPv4 TTL on ip4ip6 SHR encapsulation like as inherit 
-inner hop_limit on ip6ip6 SHR encapsulation
+Hello:
 
-Signed-off-by: Yonglong Li <liyonglong@chinatelecom.cn>
----
- net/ipv6/seg6_iptunnel.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 098632a..2f1f9cf 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -160,7 +160,10 @@ int seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh, int proto)
- 		hdr->hop_limit = inner_hdr->hop_limit;
- 	} else {
- 		ip6_flow_hdr(hdr, 0, flowlabel);
--		hdr->hop_limit = ip6_dst_hoplimit(skb_dst(skb));
-+		if (skb->protocol == htons(ETH_P_IP))
-+			hdr->hop_limit = ((struct iphdr *)inner_hdr)->ttl;
-+		else
-+			hdr->hop_limit = ip6_dst_hoplimit(skb_dst(skb));
- 
- 		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
- 
-@@ -249,7 +252,10 @@ static int seg6_do_srh_encap_red(struct sk_buff *skb,
- 		hdr->hop_limit = inner_hdr->hop_limit;
- 	} else {
- 		ip6_flow_hdr(hdr, 0, flowlabel);
--		hdr->hop_limit = ip6_dst_hoplimit(skb_dst(skb));
-+		if (skb->protocol == htons(ETH_P_IP))
-+			hdr->hop_limit = ((struct iphdr *)inner_hdr)->ttl;
-+		else
-+			hdr->hop_limit = ip6_dst_hoplimit(skb_dst(skb));
- 
- 		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
- 		IP6CB(skb)->iif = skb->skb_iif;
+On Thu,  9 Jan 2025 00:33:50 +0100 you wrote:
+> Currently, the driver is seriously broken with respect to the
+> hibernation (S4): after image restore the device is back into
+> IPC_MEM_EXEC_STAGE_BOOT (which AFAIK means bootloader stage) and needs
+> full re-launch of the rest of its firmware, but the driver restore
+> handler treats the device as merely sleeping and just sends it a
+> wake-up command.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v3] net: wwan: iosm: Fix hibernation by re-binding the driver around it
+    https://git.kernel.org/netdev/net-next/c/0b6f6593aa8c
+
+You are awesome, thank you!
 -- 
-1.8.3.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
