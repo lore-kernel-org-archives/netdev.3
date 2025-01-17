@@ -1,110 +1,613 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBEB1FF1DD
-	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 12:43:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019401FF1B6
+	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 12:43:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737117837; cv=none; b=jpBSvz+oq1boBOBvbGRZXJyp7xwdCd/lx3knH0Y3JKwuiHibq5Fs/y1qeuXSJTFPUm8r+wmPaxuFCi05UdDrhO9bpknr/CGKpU9XL/BGawqmKRCT3rwAi5UTbIc4mHP0zJZ8qkKzHdTZzEqYXQDUid5WK4wK6l7whXt1ltSLegY=
+	t=1737117839; cv=none; b=lHOS/4BYZ8WKQMjKeR62s+0eKMDCzJK6ktA4Vfmtg6b5Ezrs57O91QLUkKAQRJgv6JOETZQ/isPpmjCIg0xxsc8A1Zb8L5caalOSfhm3yEPIu9v5Wm3E80G5TqZkYl8i68Lg/dDGWjCJ8RTdAta6wD2LP755tltfTTxYRHXZ+eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737117837; c=relaxed/simple;
-	bh=+zykB88dG5lsQpKBJ0HHZ+LIhLvermH0yDY5HlcO3hc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oCiuFwQcOS75QML7/Ph04kTTTj9Fk0BeWnouyCrL1q9VS0DPuznM5S9tEaGGtfoZXPdW7w1iPpipd5/VfA0rQwNCY8GxNQbx13DtyIDBZErDI8BBZo5fhyz3XF9l2qtrsyDbBvlFjE1yCZS4HodbYGs5vIyUehsPHTHaeGW2Dhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FJMM21QM; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1737117839; c=relaxed/simple;
+	bh=BB5EWrPXSYbHUb2FexZwe6N3meBAnECzP96oOKCY1Rw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=scQ/QasktgH7OyOnoOcWlCg6DfTjUlFVIWw3y6TzhGEFajLuEZUvSk8xgJnv2G4ISWqPfjoTlI3OxZ5lHzeBWlOJpOQ+DucNNN0EViRKSlq+zqPBOvgPqVikOe7H3ufUNRG6ABGqhjVY4OtJc+jSpGeWPa+TLul0JIugEB2HNds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nUYBSy5+; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FJMM21QM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737117834;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+zykB88dG5lsQpKBJ0HHZ+LIhLvermH0yDY5HlcO3hc=;
-	b=FJMM21QMUxnwSXJ+jmVcnq8yrHGx80zF2hhoYJpe0B2M+KSS6hqB6wAfKfoCJ60QZW89hW
-	0IxqoMujuRd9UKzbaCO1gEgFmgoqF3WrMXJRhvu8kpG5eR9OTFYqntSzgTtiFhjIdZLtLJ
-	lpXhhnq9QQj+RGcp9ZVM97lW7/Eu9GI=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-322-QF2KOvfFMfuHziXVSV8GBw-1; Fri, 17 Jan 2025 07:43:53 -0500
-X-MC-Unique: QF2KOvfFMfuHziXVSV8GBw-1
-X-Mimecast-MFC-AGG-ID: QF2KOvfFMfuHziXVSV8GBw
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5d40c0c728aso1950173a12.2
-        for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 04:43:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737117832; x=1737722632;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+zykB88dG5lsQpKBJ0HHZ+LIhLvermH0yDY5HlcO3hc=;
-        b=LloRiZC3OE86U3SjUfGyRzvtPW9rQphksmgdslrItLieLM2+HF9ELOjLlVf6JWXS0I
-         LCI65VSfnqXkO7PEueRb9OWG7vGlwgD8ge/xaQU3zITi1AZ5nQgGp5hblPsKKSclXFse
-         On5GkRPwQTbPIeKqG91hIrJDNLbqNNFzM1PVzB9SSAstCw0lMm6fxg56TsHiL/td/kAg
-         jDqAHONFC4gZwZZcEFOaRcFny3GlC04fW76NLBzptYHNS8mL94M+kKXNauBUJRS6FnXM
-         IsrdUD3XTh0jO/pgOAOD69H1+K8DEYXjUZrp60MWzQ8IihWgajl4i732fL3uknbctKuU
-         UyXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXI4Fb7+p5TGSV/+YxGgezZClNqP8AQQDzyIiYovhlUU66PNJ2AQFKu/bSXFdJBwEtD6R/aFcw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yww8qUBgPrJm7JyU+WXYkDsizuQYgcKo4/ZWIBKXeGKOjHhXbh9
-	fCI0EofdZYk7+tQmY0szLQeHDryhY1uKrkea5ZDCK87G2imjqb0qhKfOEaqxsfGobzremE//MA4
-	9RTepuYDrFN4/q953ihAT2pe13ZSB0SkT6kG7Z1j+2J8Iy2gZm2ru7Q==
-X-Gm-Gg: ASbGncuHY2ECMQGZ6tj1mkWaBdRMbkQap+I2TtA4WecoKxwS5eBGbDC9aEE5a5LGmXR
-	9sdQfpPFatKADVm6dEQQjHvkkqK7sOVISFtFLAKNVZnS5wJS8gVYqXjIn84keLTtPLbj1doTOsF
-	9VJatmop8YUp6LZmwKNOKMduNLfVuH8f1IyScXi4PkyQT6nFPcREsU9HtAN18WIbPEVeMYCkr2c
-	qt91QAiKEmJsMYW9AmxR9my0Homa25iaczeI5sv+siYJ9xTersu+Iq0unUfvPwKMDLqJoFQ3JUd
-	xyX66g==
-X-Received: by 2002:a05:6402:518a:b0:5d3:ba42:e9e3 with SMTP id 4fb4d7f45d1cf-5db7d2f5ec0mr5872116a12.13.1737117832334;
-        Fri, 17 Jan 2025 04:43:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGLlw+tf9R7HynsAHI9siG0tNAf70xgcN7yQ8QdeHS81e7hKnmmBmhhrwwYWsYR/zzg31juZQ==
-X-Received: by 2002:a05:6402:518a:b0:5d3:ba42:e9e3 with SMTP id 4fb4d7f45d1cf-5db7d2f5ec0mr5872062a12.13.1737117831977;
-        Fri, 17 Jan 2025 04:43:51 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5db73eb5b9bsm1406605a12.55.2025.01.17.04.43.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jan 2025 04:43:50 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 44F1617E7868; Fri, 17 Jan 2025 13:43:49 +0100 (CET)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Alexander Lobakin <aleksander.lobakin@intel.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>, Lorenzo Bianconi
- <lorenzo@kernel.org>, Daniel Xu <dxu@dxuuu.xyz>, Alexei Starovoitov
- <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
- <andrii@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Jesper
- Dangaard Brouer <hawk@kernel.org>, Martin KaFai Lau
- <martin.lau@linux.dev>, netdev@vger.kernel.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/8] net: gro: expose GRO init/cleanup to
- use outside of NAPI
-In-Reply-To: <20250115151901.2063909-3-aleksander.lobakin@intel.com>
-References: <20250115151901.2063909-1-aleksander.lobakin@intel.com>
- <20250115151901.2063909-3-aleksander.lobakin@intel.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Fri, 17 Jan 2025 13:43:49 +0100
-Message-ID: <87frlhobju.fsf@toke.dk>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nUYBSy5+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737117837; x=1768653837;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=BB5EWrPXSYbHUb2FexZwe6N3meBAnECzP96oOKCY1Rw=;
+  b=nUYBSy5+XxOIMBLnwiqASEtZ5SUZGZJDcf7a2llJNfo732FmxupcMPXA
+   UAwWLqZtVZGtsgstmiRHVdYI7JbNAZWnSvHeSy3y7hnbDv1L3W+rd1SkK
+   fNGQc61So9CY9BQX0ztQkQHF5MTsJkSmdW89adbAxLCM49GjyKoMALjUG
+   HoxtiHbqlh1F/oD2xh95fwdsamiT4B0DP8XIIwulYCy7Me7rQ2FbN3w4/
+   DFfQC0xwBaqmnhfzimUGb/qPxZUHgq4EvOrSLajXckTBJ7Hk/+9OVGCIj
+   yu1qxOSqOU8P78y/KHOrFyH67qstZNhCTo2Z656d392QM6B0EhMOVp5RP
+   g==;
+X-CSE-ConnectionGUID: 8NZgcOjDQNCAO584ylAfsw==
+X-CSE-MsgGUID: lvBsKj6xQr+VssZW6WJtTw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11318"; a="37431007"
+X-IronPort-AV: E=Sophos;i="6.13,212,1732608000"; 
+   d="scan'208";a="37431007"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2025 04:43:57 -0800
+X-CSE-ConnectionGUID: dsiBw4knS9idYKCwT7YAuQ==
+X-CSE-MsgGUID: ruqMVhUpQ9i1lFEBp23HQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="136681765"
+Received: from unknown (HELO localhost.igk.intel.com) ([10.102.22.54])
+  by fmviesa001.fm.intel.com with ESMTP; 17 Jan 2025 04:43:55 -0800
+From: Milena Olech <milena.olech@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	Milena Olech <milena.olech@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Willem de Bruijn <willemb@google.com>
+Subject: [PATCH v5 iwl-next 06/10] idpf: add PTP clock configuration
+Date: Fri, 17 Jan 2025 13:41:12 +0100
+Message-Id: <20250117124109.967889-7-milena.olech@intel.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20250117124109.967889-1-milena.olech@intel.com>
+References: <20250117124109.967889-1-milena.olech@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Alexander Lobakin <aleksander.lobakin@intel.com> writes:
+PTP clock configuration operations - set time, adjust time and adjust
+frequency are required to control the clock and maintain synchronization
+process.
 
-> Make GRO init and cleanup functions global to be able to use GRO
-> without a NAPI instance. Taking into account already global gro_flush(),
-> it's now fully usable standalone.
-> New functions are not exported, since they're not supposed to be used
-> outside of the kernel core code.
->
-> Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-> Tested-by: Daniel Xu <dxu@dxuuu.xyz>
+Extend get PTP capabilities function to request for the clock adjustments
+and add functions to enable these actions using dedicated virtchnl
+messages.
 
-Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Milena Olech <milena.olech@intel.com>
+---
+ drivers/net/ethernet/intel/idpf/idpf_ptp.c    | 191 ++++++++++++++++++
+ drivers/net/ethernet/intel/idpf/idpf_ptp.h    |  43 +++-
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   |   3 +
+ .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   | 142 ++++++++++++-
+ 4 files changed, 376 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+index 01e28085eb39..54b7ccb16da0 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_ptp.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+@@ -48,6 +48,20 @@ void idpf_ptp_get_features_access(const struct idpf_adapter *adapter)
+ 	ptp->get_cross_tstamp_access = idpf_ptp_get_access(adapter,
+ 							   direct,
+ 							   mailbox);
++
++	/* Set the device clock time */
++	direct = VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME;
++	mailbox = VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME;
++	ptp->set_dev_clk_time_access = idpf_ptp_get_access(adapter,
++							   direct,
++							   mailbox);
++
++	/* Adjust the device clock time */
++	direct = VIRTCHNL2_CAP_PTP_ADJ_DEVICE_CLK;
++	mailbox = VIRTCHNL2_CAP_PTP_ADJ_DEVICE_CLK_MB;
++	ptp->adj_dev_clk_time_access = idpf_ptp_get_access(adapter,
++							   direct,
++							   mailbox);
+ }
+ 
+ /**
+@@ -296,6 +310,154 @@ static int idpf_ptp_gettimex64(struct ptp_clock_info *info,
+ 	return 0;
+ }
+ 
++/**
++ * idpf_ptp_settime64 - Set the time of the clock
++ * @info: the driver's PTP info structure
++ * @ts: timespec64 structure that holds the new time value
++ *
++ * Set the device clock to the user input value. The conversion from timespec
++ * to ns happens in the write function.
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++static int idpf_ptp_settime64(struct ptp_clock_info *info,
++			      const struct timespec64 *ts)
++{
++	struct idpf_adapter *adapter = idpf_ptp_info_to_adapter(info);
++	enum idpf_ptp_access access;
++	int err;
++	u64 ns;
++
++	access = adapter->ptp->set_dev_clk_time_access;
++	if (access != IDPF_PTP_MAILBOX)
++		return -EOPNOTSUPP;
++
++	ns = timespec64_to_ns(ts);
++
++	err = idpf_ptp_set_dev_clk_time(adapter, ns);
++	if (err) {
++		pci_err(adapter->pdev, "Failed to set the time, err: %pe\n", ERR_PTR(err));
++		return err;
++	}
++
++	return 0;
++}
++
++/**
++ * idpf_ptp_adjtime_nonatomic - Do a non-atomic clock adjustment
++ * @info: the driver's PTP info structure
++ * @delta: Offset in nanoseconds to adjust the time by
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++static int idpf_ptp_adjtime_nonatomic(struct ptp_clock_info *info, s64 delta)
++{
++	struct timespec64 now, then;
++	int err;
++
++	err = idpf_ptp_gettimex64(info, &now, NULL);
++	if (err)
++		return err;
++
++	then = ns_to_timespec64(delta);
++	now = timespec64_add(now, then);
++
++	return idpf_ptp_settime64(info, &now);
++}
++
++/**
++ * idpf_ptp_adjtime - Adjust the time of the clock by the indicated delta
++ * @info: the driver's PTP info structure
++ * @delta: Offset in nanoseconds to adjust the time by
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++static int idpf_ptp_adjtime(struct ptp_clock_info *info, s64 delta)
++{
++	struct idpf_adapter *adapter = idpf_ptp_info_to_adapter(info);
++	enum idpf_ptp_access access;
++	int err;
++
++	access = adapter->ptp->adj_dev_clk_time_access;
++	if (access != IDPF_PTP_MAILBOX)
++		return -EOPNOTSUPP;
++
++	/* Hardware only supports atomic adjustments using signed 32-bit
++	 * integers. For any adjustment outside this range, perform
++	 * a non-atomic get->adjust->set flow.
++	 */
++	if (delta > S32_MAX || delta < S32_MIN)
++		return idpf_ptp_adjtime_nonatomic(info, delta);
++
++	err = idpf_ptp_adj_dev_clk_time(adapter, delta);
++	if (err) {
++		pci_err(adapter->pdev, "Failed to adjust the clock with delta %lld err: %pe\n", delta, ERR_PTR(err));
++		return err;
++	}
++
++	return 0;
++}
++
++/**
++ * idpf_ptp_adjfine - Adjust clock increment rate
++ * @info: the driver's PTP info structure
++ * @scaled_ppm: Parts per million with 16-bit fractional field
++ *
++ * Adjust the frequency of the clock by the indicated scaled ppm from the
++ * base frequency.
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++static int idpf_ptp_adjfine(struct ptp_clock_info *info, long scaled_ppm)
++{
++	struct idpf_adapter *adapter = idpf_ptp_info_to_adapter(info);
++	enum idpf_ptp_access access;
++	u64 incval, diff;
++	int err;
++
++	access = adapter->ptp->adj_dev_clk_time_access;
++	if (access != IDPF_PTP_MAILBOX)
++		return -EOPNOTSUPP;
++
++	incval = adapter->ptp->base_incval;
++
++	diff = adjust_by_scaled_ppm(incval, scaled_ppm);
++	err = idpf_ptp_adj_dev_clk_fine(adapter, diff);
++	if (err)
++		pci_err(adapter->pdev, "Failed to adjust clock increment rate for scaled ppm %ld %pe\n", scaled_ppm, ERR_PTR(err));
++
++	return 0;
++}
++
++/**
++ * idpf_ptp_verify_pin - Verify if pin supports requested pin function
++ * @info: the driver's PTP info structure
++ * @pin: Pin index
++ * @func: Assigned function
++ * @chan: Assigned channel
++ *
++ * Return: EOPNOTSUPP as not supported yet.
++ */
++static int idpf_ptp_verify_pin(struct ptp_clock_info *info, unsigned int pin,
++			       enum ptp_pin_function func, unsigned int chan)
++{
++	return -EOPNOTSUPP;
++}
++
++/**
++ * idpf_ptp_gpio_enable - Enable/disable ancillary features of PHC
++ * @info: the driver's PTP info structure
++ * @rq: The requested feature to change
++ * @on: Enable/disable flag
++ *
++ * Return: EOPNOTSUPP as not supported yet.
++ */
++static int idpf_ptp_gpio_enable(struct ptp_clock_info *info,
++				struct ptp_clock_request *rq, int on)
++{
++	return -EOPNOTSUPP;
++}
++
+ /**
+  * idpf_ptp_set_caps - Set PTP capabilities
+  * @adapter: Driver specific private structure
+@@ -310,7 +472,13 @@ static void idpf_ptp_set_caps(const struct idpf_adapter *adapter)
+ 		 KBUILD_MODNAME, pci_name(adapter->pdev));
+ 
+ 	info->owner = THIS_MODULE;
++	info->max_adj = adapter->ptp->max_adj;
+ 	info->gettimex64 = idpf_ptp_gettimex64;
++	info->settime64 = idpf_ptp_settime64;
++	info->adjfine = idpf_ptp_adjfine;
++	info->adjtime = idpf_ptp_adjtime;
++	info->verify = idpf_ptp_verify_pin;
++	info->enable = idpf_ptp_gpio_enable;
+ 
+ #if IS_ENABLED(CONFIG_ARM_ARCH_TIMER)
+ 	info->getcrosststamp = idpf_ptp_get_crosststamp;
+@@ -361,6 +529,7 @@ static int idpf_ptp_create_clock(const struct idpf_adapter *adapter)
+  */
+ int idpf_ptp_init(struct idpf_adapter *adapter)
+ {
++	struct timespec64 ts;
+ 	int err;
+ 
+ 	if (!idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS, VIRTCHNL2_CAP_PTP)) {
+@@ -388,10 +557,32 @@ int idpf_ptp_init(struct idpf_adapter *adapter)
+ 	if (err)
+ 		goto free_ptp;
+ 
++	/* Write the default increment time value if the clock adjustments
++	 * are enabled.
++	 */
++	if (adapter->ptp->adj_dev_clk_time_access != IDPF_PTP_NONE) {
++		err = idpf_ptp_adj_dev_clk_fine(adapter,
++						adapter->ptp->base_incval);
++		if (err)
++			goto remove_clock;
++	}
++
++	/* Write the initial time value if the set time operation is enabled */
++	if (adapter->ptp->set_dev_clk_time_access != IDPF_PTP_NONE) {
++		ts = ktime_to_timespec64(ktime_get_real());
++		err = idpf_ptp_settime64(&adapter->ptp->info, &ts);
++		if (err)
++			goto remove_clock;
++	}
++
+ 	pci_dbg(adapter->pdev, "PTP init successful\n");
+ 
+ 	return 0;
+ 
++remove_clock:
++	ptp_clock_unregister(adapter->ptp->clock);
++	adapter->ptp->clock = NULL;
++
+ free_ptp:
+ 	kfree(adapter->ptp);
+ 	adapter->ptp = NULL;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.h b/drivers/net/ethernet/intel/idpf/idpf_ptp.h
+index 572ee0e79ba2..e7ccdcbdbd47 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_ptp.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.h
+@@ -40,6 +40,18 @@ struct idpf_ptp_dev_clk_regs {
+ 	void __iomem *sys_time_ns_l;
+ 	void __iomem *sys_time_ns_h;
+ 
++	/* Main timer adjustments */
++	void __iomem *incval_l;
++	void __iomem *incval_h;
++	void __iomem *shadj_l;
++	void __iomem *shadj_h;
++
++	/* PHY timer adjustments */
++	void __iomem *phy_incval_l;
++	void __iomem *phy_incval_h;
++	void __iomem *phy_shadj_l;
++	void __iomem *phy_shadj_h;
++
+ 	/* Command */
+ 	void __iomem *cmd;
+ 	void __iomem *phy_cmd;
+@@ -76,11 +88,15 @@ struct idpf_ptp_secondary_mbx {
+  * @info: structure defining PTP hardware capabilities
+  * @clock: pointer to registered PTP clock device
+  * @adapter: back pointer to the adapter
++ * @base_incval: base increment value of the PTP clock
++ * @max_adj: maximum adjustment of the PTP clock
+  * @cmd: HW specific command masks
+  * @dev_clk_regs: the set of registers to access the device clock
+  * @caps: PTP capabilities negotiated with the Control Plane
+  * @get_dev_clk_time_access: access type for getting the device clock time
+  * @get_cross_tstamp_access: access type for the cross timestamping
++ * @set_dev_clk_time_access: access type for setting the device clock time
++ * @adj_dev_clk_time_access: access type for the adjusting the device clock
+  * @rsv: reserved bits
+  * @secondary_mbx: parameters for using dedicated PTP mailbox
+  */
+@@ -88,12 +104,16 @@ struct idpf_ptp {
+ 	struct ptp_clock_info info;
+ 	struct ptp_clock *clock;
+ 	struct idpf_adapter *adapter;
++	u64 base_incval;
++	u64 max_adj;
+ 	struct idpf_ptp_cmd cmd;
+ 	struct idpf_ptp_dev_clk_regs dev_clk_regs;
+ 	u32 caps;
+ 	enum idpf_ptp_access get_dev_clk_time_access:2;
+ 	enum idpf_ptp_access get_cross_tstamp_access:2;
+-	u32 rsv:28;
++	enum idpf_ptp_access set_dev_clk_time_access:2;
++	enum idpf_ptp_access adj_dev_clk_time_access:2;
++	u8 rsv;
+ 	struct idpf_ptp_secondary_mbx secondary_mbx;
+ };
+ 
+@@ -130,6 +150,9 @@ int idpf_ptp_get_dev_clk_time(struct idpf_adapter *adapter,
+ 			      struct idpf_ptp_dev_timers *dev_clk_time);
+ int idpf_ptp_get_cross_time(struct idpf_adapter *adapter,
+ 			    struct idpf_ptp_dev_timers *cross_time);
++int idpf_ptp_set_dev_clk_time(struct idpf_adapter *adapter, u64 time);
++int idpf_ptp_adj_dev_clk_fine(struct idpf_adapter *adapter, u64 incval);
++int idpf_ptp_adj_dev_clk_time(struct idpf_adapter *adapter, s64 delta);
+ #else /* CONFIG_PTP_1588_CLOCK */
+ static inline int idpf_ptp_init(struct idpf_adapter *adapter)
+ {
+@@ -160,5 +183,23 @@ idpf_ptp_get_cross_time(struct idpf_adapter *adapter,
+ 	return -EOPNOTSUPP;
+ }
+ 
++static inline int idpf_ptp_set_dev_clk_time(struct idpf_adapter *adapter,
++					    u64 time)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline int idpf_ptp_adj_dev_clk_fine(struct idpf_adapter *adapter,
++					    u64 incval)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline int idpf_ptp_adj_dev_clk_time(struct idpf_adapter *adapter,
++					    s64 delta)
++{
++	return -EOPNOTSUPP;
++}
++
+ #endif /* CONFIG_PTP_1588_CLOCK */
+ #endif /* _IDPF_PTP_H */
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 139d19353e28..b7c9c5d84350 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -166,6 +166,9 @@ static bool idpf_ptp_is_mb_msg(u32 op)
+ 	switch (op) {
+ 	case VIRTCHNL2_OP_PTP_GET_DEV_CLK_TIME:
+ 	case VIRTCHNL2_OP_PTP_GET_CROSS_TIME:
++	case VIRTCHNL2_OP_PTP_SET_DEV_CLK_TIME:
++	case VIRTCHNL2_OP_PTP_ADJ_DEV_CLK_FINE:
++	case VIRTCHNL2_OP_PTP_ADJ_DEV_CLK_TIME:
+ 		return true;
+ 	default:
+ 		return false;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+index e51fa16d13cd..5f39889d8f27 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+@@ -20,7 +20,9 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+ 		.caps = cpu_to_le32(VIRTCHNL2_CAP_PTP_GET_DEVICE_CLK_TIME |
+ 				    VIRTCHNL2_CAP_PTP_GET_DEVICE_CLK_TIME_MB |
+ 				    VIRTCHNL2_CAP_PTP_GET_CROSS_TIME |
+-				    VIRTCHNL2_CAP_PTP_GET_CROSS_TIME_MB)
++				    VIRTCHNL2_CAP_PTP_GET_CROSS_TIME_MB |
++				    VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME_MB |
++				    VIRTCHNL2_CAP_PTP_ADJ_DEVICE_CLK_MB)
+ 	};
+ 	struct idpf_vc_xn_params xn_params = {
+ 		.vc_op = VIRTCHNL2_OP_PTP_GET_CAPS,
+@@ -29,6 +31,7 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+ 		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
+ 	};
+ 	struct virtchnl2_ptp_cross_time_reg_offsets cross_tstamp_offsets;
++	struct virtchnl2_ptp_clk_adj_reg_offsets clk_adj_offsets;
+ 	struct virtchnl2_ptp_clk_reg_offsets clock_offsets;
+ 	struct idpf_ptp_secondary_mbx *scnd_mbx;
+ 	struct idpf_ptp *ptp = adapter->ptp;
+@@ -51,6 +54,8 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+ 		return -EIO;
+ 
+ 	ptp->caps = le32_to_cpu(recv_ptp_caps_msg->caps);
++	ptp->base_incval = le64_to_cpu(recv_ptp_caps_msg->base_incval);
++	ptp->max_adj = le32_to_cpu(recv_ptp_caps_msg->max_adj);
+ 
+ 	scnd_mbx = &ptp->secondary_mbx;
+ 	scnd_mbx->peer_mbx_q_id = le16_to_cpu(recv_ptp_caps_msg->peer_mbx_q_id);
+@@ -89,7 +94,7 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+ cross_tstamp:
+ 	access_type = ptp->get_cross_tstamp_access;
+ 	if (access_type != IDPF_PTP_DIRECT)
+-		return 0;
++		goto discipline_clock;
+ 
+ 	cross_tstamp_offsets = recv_ptp_caps_msg->cross_time_offsets;
+ 
+@@ -102,6 +107,39 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+ 	temp_offset = le32_to_cpu(cross_tstamp_offsets.cmd_sync_trigger);
+ 	ptp->dev_clk_regs.cmd_sync = idpf_get_reg_addr(adapter, temp_offset);
+ 
++discipline_clock:
++	access_type = ptp->adj_dev_clk_time_access;
++	if (access_type != IDPF_PTP_DIRECT)
++		return 0;
++
++	clk_adj_offsets = recv_ptp_caps_msg->clk_adj_offsets;
++
++	/* Device clock offsets */
++	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_cmd_type);
++	ptp->dev_clk_regs.cmd = idpf_get_reg_addr(adapter, temp_offset);
++	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_incval_l);
++	ptp->dev_clk_regs.incval_l = idpf_get_reg_addr(adapter, temp_offset);
++	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_incval_h);
++	ptp->dev_clk_regs.incval_h = idpf_get_reg_addr(adapter, temp_offset);
++	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_shadj_l);
++	ptp->dev_clk_regs.shadj_l = idpf_get_reg_addr(adapter, temp_offset);
++	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_shadj_h);
++	ptp->dev_clk_regs.shadj_h = idpf_get_reg_addr(adapter, temp_offset);
++
++	/* PHY clock offsets */
++	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_cmd_type);
++	ptp->dev_clk_regs.phy_cmd = idpf_get_reg_addr(adapter, temp_offset);
++	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_incval_l);
++	ptp->dev_clk_regs.phy_incval_l = idpf_get_reg_addr(adapter,
++							   temp_offset);
++	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_incval_h);
++	ptp->dev_clk_regs.phy_incval_h = idpf_get_reg_addr(adapter,
++							   temp_offset);
++	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_shadj_l);
++	ptp->dev_clk_regs.phy_shadj_l = idpf_get_reg_addr(adapter, temp_offset);
++	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_shadj_h);
++	ptp->dev_clk_regs.phy_shadj_h = idpf_get_reg_addr(adapter, temp_offset);
++
+ 	return 0;
+ }
+ 
+@@ -176,3 +214,103 @@ int idpf_ptp_get_cross_time(struct idpf_adapter *adapter,
+ 
+ 	return 0;
+ }
++
++/**
++ * idpf_ptp_set_dev_clk_time - Send virtchnl set device time message
++ * @adapter: Driver specific private structure
++ * @time: New time value
++ *
++ * Send virtchnl set time message to set the time of the clock.
++ *
++ * Return: 0 on success, -errno otherwise..
++ */
++int idpf_ptp_set_dev_clk_time(struct idpf_adapter *adapter, u64 time)
++{
++	struct virtchnl2_ptp_set_dev_clk_time set_dev_clk_time_msg = {
++		.dev_time_ns = cpu_to_le64(time),
++	};
++	struct idpf_vc_xn_params xn_params = {
++		.vc_op = VIRTCHNL2_OP_PTP_SET_DEV_CLK_TIME,
++		.send_buf.iov_base = &set_dev_clk_time_msg,
++		.send_buf.iov_len = sizeof(set_dev_clk_time_msg),
++		.recv_buf.iov_base = &set_dev_clk_time_msg,
++		.recv_buf.iov_len = sizeof(set_dev_clk_time_msg),
++		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
++	};
++	int reply_sz;
++
++	reply_sz = idpf_vc_xn_exec(adapter, &xn_params);
++	if (reply_sz < 0)
++		return reply_sz;
++	if (reply_sz != sizeof(set_dev_clk_time_msg))
++		return -EIO;
++
++	return 0;
++}
++
++/**
++ * idpf_ptp_adj_dev_clk_time - Send virtchnl adj device clock time message
++ * @adapter: Driver specific private structure
++ * @delta: Offset in nanoseconds to adjust the time by
++ *
++ * Send virtchnl adj time message to adjust the clock by the indicated delta.
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++int idpf_ptp_adj_dev_clk_time(struct idpf_adapter *adapter, s64 delta)
++{
++	struct virtchnl2_ptp_adj_dev_clk_time adj_dev_clk_time_msg = {
++		.delta = cpu_to_le64(delta),
++	};
++	struct idpf_vc_xn_params xn_params = {
++		.vc_op = VIRTCHNL2_OP_PTP_ADJ_DEV_CLK_TIME,
++		.send_buf.iov_base = &adj_dev_clk_time_msg,
++		.send_buf.iov_len = sizeof(adj_dev_clk_time_msg),
++		.recv_buf.iov_base = &adj_dev_clk_time_msg,
++		.recv_buf.iov_len = sizeof(adj_dev_clk_time_msg),
++		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
++	};
++	int reply_sz;
++
++	reply_sz = idpf_vc_xn_exec(adapter, &xn_params);
++	if (reply_sz < 0)
++		return reply_sz;
++	if (reply_sz != sizeof(adj_dev_clk_time_msg))
++		return -EIO;
++
++	return 0;
++}
++
++/**
++ * idpf_ptp_adj_dev_clk_fine - Send virtchnl adj time message
++ * @adapter: Driver specific private structure
++ * @incval: Source timer increment value per clock cycle
++ *
++ * Send virtchnl adj fine message to adjust the frequency of the clock by
++ * incval.
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++int idpf_ptp_adj_dev_clk_fine(struct idpf_adapter *adapter, u64 incval)
++{
++	struct virtchnl2_ptp_adj_dev_clk_fine adj_dev_clk_fine_msg = {
++		.incval = cpu_to_le64(incval),
++	};
++	struct idpf_vc_xn_params xn_params = {
++		.vc_op = VIRTCHNL2_OP_PTP_ADJ_DEV_CLK_FINE,
++		.send_buf.iov_base = &adj_dev_clk_fine_msg,
++		.send_buf.iov_len = sizeof(adj_dev_clk_fine_msg),
++		.recv_buf.iov_base = &adj_dev_clk_fine_msg,
++		.recv_buf.iov_len = sizeof(adj_dev_clk_fine_msg),
++		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
++	};
++	int reply_sz;
++
++	reply_sz = idpf_vc_xn_exec(adapter, &xn_params);
++	if (reply_sz < 0)
++		return reply_sz;
++	if (reply_sz != sizeof(adj_dev_clk_fine_msg))
++		return -EIO;
++
++	return 0;
++}
+-- 
+2.31.1
 
