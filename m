@@ -1,321 +1,147 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6721E7660
-	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 18:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263AF1ACEA2;
+	Fri, 17 Jan 2025 18:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737139098; cv=none; b=gfnHVZzcq507Ng5q242hqWiNeTa6S3PUMZFRhjcn3xDmtG7FL+bxahKA7O2OiO/BDy3PsakDg+P4Pp0iB1mTsfKr6Xh2UmZbDS5cXaIduaNRDEjSVvUJcH/nJOlQJ8pMmPwHTE6gVOC9sZurfucX4WaNuKJeX9iB79+zLtnMhuk=
+	t=1737139310; cv=none; b=q+eQ7U0vy+HqysPZsJj+JO/WFXP0AcCoxqWrT6kHKhxPk62JSJ6+d4IMljWCHQDLOtsTfGOk6NyJALHinAJWiUiNECBYIrImAi5nSgNYc8Rlh23aFOALSWNBFWEact12xk8pKOMh4BtjHyBNG11oiwF7c4kxP7ooDql2RD9VYgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737139098; c=relaxed/simple;
-	bh=A8Scky0OSRO1JfZCXbqO5/MUxTXn6pnbjwov6Z5AwNw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jm847PdxnbiI5FRxgVQL+30/d8tTfeXN2jA4ZQt4MP+tfPWA3aehRPux7Rsib2V2DsmqM2Dl82oalM3kpC/THBxeu/9+8uRQs4BBFY9eEoDhkH7DmxsKhFfOep8j0zCJALy3ddmeEB/UNX9s7T9QuxgAulYA2p1zLQMi8GNJZUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EsBNZh4f; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1737139310; c=relaxed/simple;
+	bh=ppd0S/67u/BA6Vxk5fv3pnmLF9P/Q7DFmrk02Nh+47o=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kCXpXyOzgQxSusSzN4c4aosq6SvtUqxntejAVEujNYcILcM7Mqwoa1/tEDDcDa9zFUKd1rI5rgbdKmdJhcZ7ognJbeDKxEeK9oLLHeCw/cQvHPCFN4yeVzFWpVz4VHYJmT1R18S3FyHN03xB3KP+1UOFtwmxHjRdUoJe8FCsXXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZK8HfPhx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EsBNZh4f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737139094;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VUdIHvshqbDI3SKJG7zZrNXQynWh0xsi1VxwXXTYC50=;
-	b=EsBNZh4fgP7VkhxA+cg5ZEbsdSvS1QM/orGbC4rkQqDvZndZV8Jeu5hIABLFlU0EwLCs4Z
-	Kva+CvYVN0m6nLWRtI3H+eWzfTQ0tq7Jr9Zh3O0HPrC+5JUTipjT1+239C7DKojTSOLDGy
-	x103O1ztFkT78XdYeskQ1/CLp8Ea1xI=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-dfIR3iOXMUSq95idAxcj6w-1; Fri,
- 17 Jan 2025 13:38:10 -0500
-X-MC-Unique: dfIR3iOXMUSq95idAxcj6w-1
-X-Mimecast-MFC-AGG-ID: dfIR3iOXMUSq95idAxcj6w
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8C34919560B4;
-	Fri, 17 Jan 2025 18:38:08 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.5])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 43D7E1955F10;
-	Fri, 17 Jan 2025 18:38:04 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Herbert Xu <herbert@gondor.apana.org.au>,
-	Chuck Lever <chuck.lever@oracle.com>
-Cc: David Howells <dhowells@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	linux-crypto@vger.kernel.org,
-	linux-afs@lists.infradead.org,
-	linux-nfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 24/24] rxrpc: rxgk: Implement connection rekeying
-Date: Fri, 17 Jan 2025 18:35:33 +0000
-Message-ID: <20250117183538.881618-25-dhowells@redhat.com>
-In-Reply-To: <20250117183538.881618-1-dhowells@redhat.com>
-References: <20250117183538.881618-1-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZK8HfPhx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D68C4CEDD;
+	Fri, 17 Jan 2025 18:41:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737139309;
+	bh=ppd0S/67u/BA6Vxk5fv3pnmLF9P/Q7DFmrk02Nh+47o=;
+	h=From:Subject:Date:To:Cc:From;
+	b=ZK8HfPhxQaR+5CUvUtp6qDplIgLjk3uyh6KeKzUfyHOTHbUVLT6WSqG8sgFZZxCTS
+	 booGDXJ1fsXaH1qMNR1Y2GLjyQrJzseDZ+qrf/sbICAkVPS8kbaGL5yNtARqmxMIvf
+	 J3o075NFuXt0cFMEez68YFAT24Y6M0MKwBZ+jvEYo5ONUN5tNnHk+R6XkycUbd4iGg
+	 n8BfO//Gd4hKibFAz8mxIJlAhrGHY67OgsfGkGxQl/VyhpA9Og161Sbzk/tbmX9cSr
+	 O/Sxq9lcu82MVAWQHiEeK7bwKA9ADzyG8KZIB9V3QZh30pzwlJm3J2/2i9w00vJvr0
+	 PlAoLKnljJvDA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net-next v2 00/15] mptcp: pm: misc cleanups, part 2
+Date: Fri, 17 Jan 2025 19:41:32 +0100
+Message-Id: <20250117-net-next-mptcp-pm-misc-cleanup-2-v2-0-61d4fe0586e8@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFykimcC/42NwQqDMBBEf6XsuVs2qYr01P8oHjTd6FKNIUnFI
+ v57g9B7D3N4DDNvg8hBOMLttEHgRaLMLoM+n8AMresZ5ZkZNOmSlKrQccpZE04+GY9+wkmiQTN
+ y694eNXZkS2Jra6oLyDc+sJX1UDzgt4YmN4PENIfP4V7U0f+vWRQSGuqKq1W1ZaruLw6Ox8sce
+ mj2ff8C50VlCtsAAAA=
+X-Change-ID: 20250116-net-next-mptcp-pm-misc-cleanup-2-b0f50eff8084
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3085; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=ppd0S/67u/BA6Vxk5fv3pnmLF9P/Q7DFmrk02Nh+47o=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBniqRq0LTTaFG5TRp7WBhLiAvm3KMyX3dnRVe4S
+ f7XCJT7eJWJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ4qkagAKCRD2t4JPQmmg
+ c5F2EADKoCaGKTXGOwyunaFz2DcytvIbTxUhIQhb/+HXCFpWI/IwxG/2yFIXi5hUUU2HSy/KsMS
+ dTyTQ8TTudxC2GtMj9a4eSmPRNVScs6h8zhvz4yJcJm4RS6zbB6pk//vEcMrInfNBVymLBxXuYs
+ qHOOM2xmoK8e4TO1pZHWTWk6wBKBe1KG9jo820MBz8Fv8F/ZVINXkbxGKW8hD7JKLhJnERweyoX
+ ANJPEek/beIYmPTo7GUz4Q3/7tMrwPfcEdgoIJWGCWV6/srh3I3i+z/FsNDFN4dQ3Ce4A9eR9Sg
+ 3NzVVoubeWZMBB1K3C2cfteeTk69ZvRAgDqKqqXFriyaIvJH5Ov8dRz++m8wKyBN3nVThyUTyXS
+ V/uMmFbb8DZS8nXSLjgt8d6kBC2sjhWWtATLMwOEIYRopbFSJ9p7oRbv2/3t4w0+QBs2GT2W7g8
+ /TWkTj8XsVBQBM5Krx7JikAm5DGqOu1iLh6N8nJd43qLi7Qcm8sOMeVSsh7ZJoYvNQM5lOcnhYR
+ a+/M/Ka8+EI72HwwBV4x0drlbC67HsSkMYACXcUySUWWmMCzL8DjKumSAoYX7QtuwM/ak72hOJc
+ o85p/YujUPOgqxdAawEoCUJ6xPVAXzpOk5iGXg+IKxjJ26/yHTj6eaU8vB3C5p8hc0TtQXL051K
+ cLl0OSSPfah7Xbw==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-Implement rekeying of connections with the RxGK security class.  This
-involves regenerating the keys with a different key number as part of the
-input data after a certain amount of time or a certain amount of bytes
-encrypted.  Rekeying may be triggered by either end.
+These cleanups lead the way to the unification of the path-manager
+interfaces, and allow future extensions. The following patches are not
+all linked to each others, but are all related to the path-managers.
 
-The LSW of the key number is inserted into the security-specific field in
-the RX header, and we try and expand it to 32-bits to make it last longer.
+- Patch 1: drop unneeded parameter in a function helper.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Herbert Xu <herbert@gondor.apana.org.au>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Chuck Lever <chuck.lever@oracle.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: linux-crypto@vger.kernel.org
-cc: netdev@vger.kernel.org
+- Patch 2: clearer NL error message when an NL attribute is missing.
+
+- Patch 3: more precise NL messages by avoiding 'this or that is NOK'.
+
+- Patch 4: improve too vague or missing NL err messages.
+
+- Patch 5: use GENL_REQ_ATTR_CHECK to look for mandatory NL attributes.
+
+- Patch 6: avoid overriding the error message.
+
+- Patch 7: check all mandatory NL attributes with GENL_REQ_ATTR_CHECK.
+
+- Patch 8: use NL_SET_ERR_MSG_ATTR instead of GENL_SET_ERR_MSG
+
+- Patch 9: move doit callbacks used for both PM to pm.c.
+
+- Patch 10: drop another unneeded parameter in a function helper.
+
+- Patch 11: share the ID parsing code for the 'get_addr' callback.
+
+- Patch 12: share sending NL code for the 'get_addr' callback.
+
+- Patch 13: drop yet another unneeded parameter in a function helper.
+
+- Patch 14: pick the usual structure type for the remote address.
+
+- Patch 15: share the local addr parsing code for the 'set_flags' cb.
+
+The behaviour when there are no errors should then not be modified.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/rxrpc/ar-internal.h |   5 +-
- net/rxrpc/conn_object.c |   1 +
- net/rxrpc/rxgk.c        | 156 ++++++++++++++++++++++++++++++++++++++--
- 3 files changed, 155 insertions(+), 7 deletions(-)
+Changes in v2:
+- Patch 11: a variable was no longer assigned, but still used in this
+  patch (and no longer used in the next one). (Simon)
+- I hope it is OK to have this series in parallel of "mptcp: sysctl: add
+  syn_retrans_before_tcp_fallback", we had 16 patches left in the queue :)
+- Link to v1: https://lore.kernel.org/r/20250116-net-next-mptcp-pm-misc-cleanup-2-v1-0-c0b43f18fe06@kernel.org
 
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index 736dc6ea20ac..e00f3b0edc98 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -533,11 +533,14 @@ struct rxrpc_connection {
- 			u32	nonce;		/* response re-use preventer */
- 		} rxkad;
- 		struct {
--			struct rxgk_context *keys[1];
-+			struct rxgk_context *keys[4]; /* (Re-)keying buffer */
- 			u64	start_time;	/* The start time for TK derivation */
- 			u8	nonce[20];	/* Response re-use preventer */
-+			u32	key_number;	/* Current key number */
- 		} rxgk;
- 	};
-+	rwlock_t		security_use_lock; /* Security use/modification lock */
-+
- 	unsigned long		flags;
- 	unsigned long		events;
- 	unsigned long		idle_timestamp;	/* Time at which last became idle */
-diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
-index 7eba4d7d9a38..56459b00266d 100644
---- a/net/rxrpc/conn_object.c
-+++ b/net/rxrpc/conn_object.c
-@@ -72,6 +72,7 @@ struct rxrpc_connection *rxrpc_alloc_connection(struct rxrpc_net *rxnet,
- 		skb_queue_head_init(&conn->rx_queue);
- 		conn->rxnet = rxnet;
- 		conn->security = &rxrpc_no_security;
-+		rwlock_init(&conn->security_use_lock);
- 		spin_lock_init(&conn->state_lock);
- 		conn->debug_id = atomic_inc_return(&rxrpc_debug_id);
- 		conn->idle_timestamp = jiffies;
-diff --git a/net/rxrpc/rxgk.c b/net/rxrpc/rxgk.c
-index 9c5c616c40cb..367d65aa7731 100644
---- a/net/rxrpc/rxgk.c
-+++ b/net/rxrpc/rxgk.c
-@@ -76,11 +76,153 @@ static void rxgk_describe_server_key(const struct key *key, struct seq_file *m)
- 		seq_printf(m, ": %s", krb5->name);
- }
- 
-+/*
-+ * Handle rekeying the connection when we see our limits overrun or when the
-+ * far side decided to rekey.
-+ *
-+ * Returns a ref on the context if successful or -ESTALE if the key is out of
-+ * date.
-+ */
-+static struct rxgk_context *rxgk_rekey(struct rxrpc_connection *conn,
-+				       const u16 *specific_key_number)
-+{
-+	struct rxgk_context *gk, *dead = NULL;
-+	unsigned int key_number, current_key, mask = ARRAY_SIZE(conn->rxgk.keys) - 1;
-+	bool crank = false;
-+
-+	_enter("%d", specific_key_number ? *specific_key_number : -1);
-+
-+	mutex_lock(&conn->security_lock);
-+
-+	current_key = conn->rxgk.key_number;
-+	if (!specific_key_number) {
-+		key_number = current_key;
-+	} else {
-+		if (*specific_key_number == (u16)current_key)
-+			key_number = current_key;
-+		else if (*specific_key_number == (u16)(current_key - 1))
-+			key_number = current_key - 1;
-+		else if (*specific_key_number == (u16)(current_key + 1))
-+			goto crank_window;
-+		else
-+			goto bad_key;
-+	}
-+
-+	gk = conn->rxgk.keys[key_number & mask];
-+	if (!gk)
-+		goto generate_key;
-+	if (!specific_key_number &&
-+	    test_bit(RXGK_TK_NEEDS_REKEY, &gk->flags))
-+		goto crank_window;
-+
-+grab:
-+	refcount_inc(&gk->usage);
-+	mutex_unlock(&conn->security_lock);
-+	rxgk_put(dead);
-+	return gk;
-+
-+crank_window:
-+	if (current_key == UINT_MAX)
-+		goto bad_key;
-+	if (current_key + 1 == UINT_MAX)
-+		set_bit(RXRPC_CONN_DONT_REUSE, &conn->flags);
-+
-+	key_number = current_key + 1;
-+	if (WARN_ON(conn->rxgk.keys[key_number & mask]))
-+		goto bad_key;
-+	crank = true;
-+
-+generate_key:
-+	gk = conn->rxgk.keys[current_key & mask];
-+	gk = rxgk_generate_transport_key(conn, gk->key, key_number, GFP_NOFS);
-+	if (IS_ERR(gk)) {
-+		mutex_unlock(&conn->security_lock);
-+		return gk;
-+	}
-+
-+	write_lock(&conn->security_use_lock);
-+	if (crank) {
-+		current_key++;
-+		conn->rxgk.key_number = current_key;
-+		dead = conn->rxgk.keys[(current_key - 2) & mask];
-+		conn->rxgk.keys[(current_key - 2) & mask] = NULL;
-+	}
-+	conn->rxgk.keys[current_key & mask] = gk;
-+	write_unlock(&conn->security_use_lock);
-+	goto grab;
-+
-+bad_key:
-+	mutex_unlock(&conn->security_lock);
-+	return ERR_PTR(-ESTALE);
-+}
-+
-+/*
-+ * Get the specified keying context.
-+ *
-+ * Returns a ref on the context if successful or -ESTALE if the key is out of
-+ * date.
-+ */
- static struct rxgk_context *rxgk_get_key(struct rxrpc_connection *conn,
--					 u16 *specific_key_number)
-+					 const u16 *specific_key_number)
- {
--	refcount_inc(&conn->rxgk.keys[0]->usage);
--	return conn->rxgk.keys[0];
-+	struct rxgk_context *gk;
-+	unsigned int key_number, current_key, mask = ARRAY_SIZE(conn->rxgk.keys) - 1;
-+
-+	_enter("{%u},%d",
-+	       conn->rxgk.key_number, specific_key_number ? *specific_key_number : -1);
-+
-+	read_lock(&conn->security_use_lock);
-+
-+	current_key = conn->rxgk.key_number;
-+	if (!specific_key_number) {
-+		key_number = current_key;
-+	} else {
-+		/* Only the bottom 16 bits of the key number are exposed in the
-+		 * header, so we try and keep the upper 16 bits in step.  The
-+		 * whole 32 bits are used to generate the TK.
-+		 */
-+		if (*specific_key_number == (u16)current_key)
-+			key_number = current_key;
-+		else if (*specific_key_number == (u16)(current_key - 1))
-+			key_number = current_key - 1;
-+		else if (*specific_key_number == (u16)(current_key + 1))
-+			goto rekey;
-+		else
-+			goto bad_key;
-+	}
-+
-+	gk = conn->rxgk.keys[key_number & mask];
-+	if (!gk)
-+		goto slow_path;
-+	if (!specific_key_number &&
-+	    key_number < UINT_MAX) {
-+		if (time_after(jiffies, gk->expiry) ||
-+		    gk->bytes_remaining < 0) {
-+			set_bit(RXGK_TK_NEEDS_REKEY, &gk->flags);
-+			goto slow_path;
-+		}
-+
-+		if (test_bit(RXGK_TK_NEEDS_REKEY, &gk->flags))
-+			goto slow_path;
-+	}
-+
-+	refcount_inc(&gk->usage);
-+	read_unlock(&conn->security_use_lock);
-+	return gk;
-+
-+rekey:
-+	_debug("rekey");
-+	if (current_key == UINT_MAX)
-+		goto bad_key;
-+	gk = conn->rxgk.keys[current_key & mask];
-+	if (gk)
-+		set_bit(RXGK_TK_NEEDS_REKEY, &gk->flags);
-+slow_path:
-+	read_unlock(&conn->security_use_lock);
-+	return rxgk_rekey(conn, specific_key_number);
-+bad_key:
-+	read_unlock(&conn->security_use_lock);
-+	return ERR_PTR(-ESTALE);
- }
- 
- /*
-@@ -92,7 +234,8 @@ static int rxgk_init_connection_security(struct rxrpc_connection *conn,
- 	struct rxgk_context *gk;
- 	int ret;
- 
--	_enter("{%d},{%x}", conn->debug_id, key_serial(conn->key));
-+	_enter("{%d,%u},{%x}",
-+	       conn->debug_id, conn->rxgk.key_number, key_serial(conn->key));
- 
- 	conn->security_ix = token->security_index;
- 	conn->security_level = token->rxgk->level;
-@@ -102,10 +245,11 @@ static int rxgk_init_connection_security(struct rxrpc_connection *conn,
- 		do_div(conn->rxgk.start_time, 100);
- 	}
- 
--	gk = rxgk_generate_transport_key(conn, token->rxgk, 0, GFP_NOFS);
-+	gk = rxgk_generate_transport_key(conn, token->rxgk, conn->rxgk.key_number,
-+					 GFP_NOFS);
- 	if (IS_ERR(gk))
- 		return PTR_ERR(gk);
--	conn->rxgk.keys[0] = gk;
-+	conn->rxgk.keys[gk->key_number & 3] = gk;
- 
- 	switch (conn->security_level) {
- 	case RXRPC_SECURITY_PLAIN:
+---
+Geliang Tang (9):
+      mptcp: pm: drop info of userspace_pm_remove_id_zero_address
+      mptcp: pm: userspace: use GENL_REQ_ATTR_CHECK
+      mptcp: pm: make three pm wrappers static
+      mptcp: pm: drop skb parameter of get_addr
+      mptcp: pm: add id parameter for get_addr
+      mptcp: pm: reuse sending nlmsg code in get_addr
+      mptcp: pm: drop skb parameter of set_flags
+      mptcp: pm: change rem type of set_flags
+      mptcp: pm: add local parameter for set_flags
+
+Matthieu Baerts (NGI0) (6):
+      mptcp: pm: userspace: flags: clearer msg if no remote addr
+      mptcp: pm: more precise error messages
+      mptcp: pm: improve error messages
+      mptcp: pm: remove duplicated error messages
+      mptcp: pm: mark missing address attributes
+      mptcp: pm: use NL_SET_ERR_MSG_ATTR when possible
+
+ net/mptcp/pm.c           |  86 +++++++++++++++++--
+ net/mptcp/pm_netlink.c   | 129 ++++++++++-------------------
+ net/mptcp/pm_userspace.c | 209 +++++++++++++++++++++--------------------------
+ net/mptcp/protocol.h     |  14 ++--
+ 4 files changed, 225 insertions(+), 213 deletions(-)
+---
+base-commit: 7d2eba0f83a59d360ed1e77ed2778101a6e3c4a1
+change-id: 20250116-net-next-mptcp-pm-misc-cleanup-2-b0f50eff8084
+
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
