@@ -1,239 +1,313 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85161DF97F;
-	Fri, 17 Jan 2025 18:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983231DFDA7
+	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 18:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737139025; cv=none; b=hzDOfvCnXZV2kzFRa1k0enYlCAs87UKJmy9u6FQOSMytV+v1CvPdw7tHopYONovyUhdDjnBk14FYRS7JwQgWh1RYKpxEmpYK7Z8hoTaPV+shckQAzKGMYAgS7HBB0J+lBb/z71DoDfFjyfG+4bM9A5jG9z379GlC6wjUn7MJBR0=
+	t=1737139029; cv=none; b=QYETy2TtpJ5IqgE2j767u5M4MyD2f0VTXUnmQMwDy+mWrQjj/J4BIdzpubPUwvjl8hg/9UxnFZa+sCNqXNRKDyaqSkwtB6DcBPQf0zfw4gBcIQ/Gzge/cNMgvwTEuxYk2G1w0klEQXzFW0/P1j7jmjjwRdci/Rl3O5Jup9HeAZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737139025; c=relaxed/simple;
-	bh=L5nptAiaGY2hZpZb1eHBCcH++P2uqkiVoyI3tk7Jz1U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I+s1BBT3dw9Qj4lMlFrHkkMoIhIzLhraCS8URoB1IMYiFu5+8/gNs5fTtGtsMgRdIrNvgA+9XKh/WBVy/pIkZfbEYeOFoNi9Ig+GzZeOZbEhYraDhsSyJYlzFBHEF047hTf+sFxChxx9+KqymFyfo71xucGBl4El9DTiq3QYYIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jBnz7DNy; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737139029; c=relaxed/simple;
+	bh=T+nQufoVNZLDZ/UR8mKpiPUxsPPDQzy/4rL9N36QyrM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uoreOJ/YWTWSu5Yf9ZXTSpk35gwUSXyFKrR/ETo+OX8U6ANKXOE/alwqpJOwsSJJXZ+MFrFlWs4bl/orqgflTkDYLis9pcvxyhaNTYK/gUH/Pg2yhekX9k+x7T4USFWWy97iGmCbiOVsU4bV8RAGVj0z2Fq+y45KVtJSbxZ1BJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CIFoMwc7; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jBnz7DNy"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2ef87d24c2dso3462428a91.1;
-        Fri, 17 Jan 2025 10:37:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737139023; x=1737743823; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/paU3XV2YsdW8sqUdUFAzVL/jr9cL20VV7Pd7X+jfQo=;
-        b=jBnz7DNyBDc0KzCvuble9xh/KNs1BDPuaAL027+/jWJXt5aHFI6WmvjGowjx73grX0
-         B45n4ZMvy7XaOXuIlBeJirgLcHyhEU71VAl4Dah7hci+oCfFM2NTj0OcDUZufDKSqdCm
-         pG1YZkJcy4chxfWvDOQjlAoqVgjfNQcek1QN7rlEgGnbefnWPV1+pJgo7FJvSmkCHac6
-         RiVxb6ifmoQZ+qXEepD6krrhT7vI06JJtehYk2gL5nFLdjf0GIbzI1Ls7TLAeuVObI7e
-         6CUPzn7VAhG1fEwInaYH12i2Zbcq0hhEiyLW2cG03mhjeyee5EP1yhrTFn+K+TTb2VmL
-         lFXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737139023; x=1737743823;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/paU3XV2YsdW8sqUdUFAzVL/jr9cL20VV7Pd7X+jfQo=;
-        b=W54ayDDRb5j5++2Cy7YR0TgOx3iKe3lPUhIldk+S8e1YIk+Sph+qvdeZ5eC7Mo6X7K
-         +Q6fVfN3OUx557MVCLDbS3uVnlVYu6CYQ5CbdC6dPV0dVsnLWOP8xYZljpCLBe92zh7V
-         XPfihaSyANHtRwlXmRR2pFgzlqhPoFx+791inxvei11lL/IA6ps8W8/1oQdIbRSxvDH5
-         b4jBp5a2xI7om1gzP8CzVeD7+813No+oYDgiffdUBwK0UFZTRfleRp3mkNq0IQcY8kKo
-         La0plFIVhdB37UDvxROvr6P0oaM2iq/0uGQzKRQ1MZ++GsgVyAcGLlSD2qkEmdJ8ARWp
-         vBkw==
-X-Forwarded-Encrypted: i=1; AJvYcCV7G9ibuecgzcXVg6QJWnkWE8EUy53WostzEl27HVNEhWbjCifeYnf2REEmFUg+IOZ534wPfbLM@vger.kernel.org, AJvYcCX5J1Zk0sAQyZRbumtVUUCFJR77qotZ4bN6KloH1OvWw81CjbrA3yhY0rjs0URWOKFQrWo=@vger.kernel.org, AJvYcCXEtZnLYCeEOWPluCxdbA01ldcl4VLlmQQ3VUOSmCt/SJav9YT7kLz3axEXb9BhpDhaeLAHaV48i7sYXg==@vger.kernel.org, AJvYcCXcfC9jb0I6JF/68KWoGILKz6Y1/E/2Qj2Lz0sT00QegSPGYqXqN25qvyMSG8JLKX9foNsaG4uvab0lqg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywn519TAm8z0PCrvawjiITyEGZQj9ChAxj2+3S6yLenUneVyq8b
-	ORiG9jFG8xCuJj86e2yBF5qxL8eb0Jv2nykJA1VE8bl06OWsXaHtCdXGvvVac9uTlqN7OqeLpL/
-	ComVtxjfTzjnns9LZzOm0gtyrzXI=
-X-Gm-Gg: ASbGnctCEF21aOtTplhr0CGacO6HnsJBOmSZ9oiGTdAqTf57gWOS5BAJLAlptdBNJNo
-	RURZK1tPJ2cdqskgGwkO1vxIz4Wga7RPE0b5C
-X-Google-Smtp-Source: AGHT+IHlKXjKmNWGoqU/eH4r2mE6aT+7ReHvtK4TLTDiMthduAsThbIwDyr+XObLaRSjQuTbphVlH9jain7orH9zxZE=
-X-Received: by 2002:a17:90b:534b:b0:2ee:a6f0:f54 with SMTP id
- 98e67ed59e1d1-2f782c93df5mr5199405a91.13.1737139023096; Fri, 17 Jan 2025
- 10:37:03 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CIFoMwc7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1737139026;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UXIFg9z/ar1Bce2UwdWJS063IpDdtdzXSOr0+jgand4=;
+	b=CIFoMwc7auTIA5tUZhwuI0TZyGvmRUeoKI73s9TyOfNjWky6fWp3D9owXCijVhOGZgg+RE
+	tL87KmQNnRK1czAcX0OhuZjUobD1j8S0MawMqys/ANm+PF7wlUWQRNG322fKrU11QYvCBl
+	J1gB1mr+GL8YzA1bXQ8JJ/GnHEHSP3c=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-574-XQlCwximOPa4oWwiYymq2g-1; Fri,
+ 17 Jan 2025 13:37:00 -0500
+X-MC-Unique: XQlCwximOPa4oWwiYymq2g-1
+X-Mimecast-MFC-AGG-ID: XQlCwximOPa4oWwiYymq2g
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 917E4195608A;
+	Fri, 17 Jan 2025 18:36:57 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.5])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4A44D195608A;
+	Fri, 17 Jan 2025 18:36:53 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>,
+	Chuck Lever <chuck.lever@oracle.com>
+Cc: David Howells <dhowells@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	linux-crypto@vger.kernel.org,
+	linux-afs@lists.infradead.org,
+	linux-nfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 12/24] crypto/krb5: Implement the Kerberos5 rfc3961 encrypt and decrypt functions
+Date: Fri, 17 Jan 2025 18:35:21 +0000
+Message-ID: <20250117183538.881618-13-dhowells@redhat.com>
+In-Reply-To: <20250117183538.881618-1-dhowells@redhat.com>
+References: <20250117183538.881618-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250116074442.79304-1-alibuda@linux.alibaba.com> <20250116074442.79304-5-alibuda@linux.alibaba.com>
-In-Reply-To: <20250116074442.79304-5-alibuda@linux.alibaba.com>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Fri, 17 Jan 2025 10:36:50 -0800
-X-Gm-Features: AbW1kvZPOA_e4VBRxGF2UR8BvcgPSnH8-FR3ERgszYydOW9nflDbMRjIRPEPz28
-Message-ID: <CAEf4BzZvxqiQ2J1XQMm-ZDBjSsmtJJk6-_RbexPk9vWxAO=ksw@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v6 4/5] libbpf: fix error when st-prefix_ops and
- ops from differ btf
-To: "D. Wythe" <alibuda@linux.alibaba.com>
-Cc: kgraul@linux.ibm.com, wenjia@linux.ibm.com, jaka@linux.ibm.com, 
-	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, 
-	pabeni@redhat.com, song@kernel.org, sdf@google.com, haoluo@google.com, 
-	yhs@fb.com, edumazet@google.com, john.fastabend@gmail.com, kpsingh@kernel.org, 
-	jolsa@kernel.org, guwen@linux.alibaba.com, kuba@kernel.org, 
-	davem@davemloft.net, netdev@vger.kernel.org, linux-s390@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-On Wed, Jan 15, 2025 at 11:45=E2=80=AFPM D. Wythe <alibuda@linux.alibaba.co=
-m> wrote:
->
-> When a struct_ops named xxx_ops was registered by a module, and
-> it will be used in both built-in modules and the module itself,
-> so that the btf_type of xxx_ops will be present in btf_vmlinux
-> instead of in btf_mod, which means that the btf_type of
-> bpf_struct_ops_xxx_ops and xxx_ops will not be in the same btf.
->
-> Here are four possible case:
->
-> +--------+---------------+-------------+---------------------------------=
+Add functions that encrypt and decrypt a message according to rfc3961 sec
+5.3, using Ki to checksum the data to be secured and Ke to encrypt it
+during the encryption phase, then decrypting with Ke and verifying the
+checksum with Ki in the decryption phase.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Herbert Xu <herbert@gondor.apana.org.au>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Chuck Lever <chuck.lever@oracle.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: linux-nfs@vger.kernel.org
+cc: linux-crypto@vger.kernel.org
+cc: netdev@vger.kernel.org
+---
+ crypto/krb5/internal.h           |  13 +++
+ crypto/krb5/rfc3961_simplified.c | 146 +++++++++++++++++++++++++++++++
+ 2 files changed, 159 insertions(+)
+
+diff --git a/crypto/krb5/internal.h b/crypto/krb5/internal.h
+index 8418c23d5018..4533fb342953 100644
+--- a/crypto/krb5/internal.h
++++ b/crypto/krb5/internal.h
+@@ -7,6 +7,8 @@
+ 
+ #include <linux/scatterlist.h>
+ #include <crypto/krb5.h>
++#include <crypto/hash.h>
++#include <crypto/skcipher.h>
+ 
+ /*
+  * Profile used for key derivation and encryption.
+@@ -137,6 +139,8 @@ int krb5_derive_Ki(const struct krb5_enctype *krb5, const struct krb5_buffer *TK
+  */
+ extern const struct krb5_crypto_profile rfc3961_simplified_profile;
+ 
++int crypto_shash_update_sg(struct shash_desc *desc, struct scatterlist *sg,
++			   size_t offset, size_t len);
+ int krb5enc_derive_encrypt_keys(const struct krb5_enctype *krb5,
+ 				const struct krb5_buffer *TK,
+ 				unsigned int usage,
+@@ -156,3 +160,12 @@ int rfc3961_load_checksum_key(const struct krb5_enctype *krb5,
+ 			      const struct krb5_buffer *Kc,
+ 			      struct krb5_buffer *setkey,
+ 			      gfp_t gfp);
++ssize_t krb5_aead_encrypt(const struct krb5_enctype *krb5,
++			  struct crypto_aead *aead,
++			  struct scatterlist *sg, unsigned int nr_sg, size_t sg_len,
++			  size_t data_offset, size_t data_len,
++			  bool preconfounded);
++int krb5_aead_decrypt(const struct krb5_enctype *krb5,
++		      struct crypto_aead *aead,
++		      struct scatterlist *sg, unsigned int nr_sg,
++		      size_t *_offset, size_t *_len);
+diff --git a/crypto/krb5/rfc3961_simplified.c b/crypto/krb5/rfc3961_simplified.c
+index d25fbd574dde..55f295f3ac5f 100644
+--- a/crypto/krb5/rfc3961_simplified.c
++++ b/crypto/krb5/rfc3961_simplified.c
+@@ -66,7 +66,10 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/random.h>
++#include <linux/skbuff.h>
+ #include <linux/slab.h>
++#include <linux/highmem.h>
+ #include <linux/lcm.h>
+ #include <crypto/skcipher.h>
+ #include <crypto/hash.h>
+@@ -75,6 +78,31 @@
+ /* Maximum blocksize for the supported crypto algorithms */
+ #define KRB5_MAX_BLOCKSIZE  (16)
+ 
++int crypto_shash_update_sg(struct shash_desc *desc, struct scatterlist *sg,
++			   size_t offset, size_t len)
++{
++	do {
++		int ret;
 +
-> |        | st_ops_xxx_ops| xxx_ops     |                                 =
-|
-> +--------+---------------+-------------+---------------------------------=
++		if (offset < sg->length) {
++			struct page *page = sg_page(sg);
++			void *p = kmap_local_page(page);
++			void *q = p + sg->offset + offset;
++			size_t seg = min_t(size_t, len, sg->length - offset);
 +
-> | case 0 | btf_vmlinux   | bft_vmlinux | be used and reg only in vmlinux =
-|
-> +--------+---------------+-------------+---------------------------------=
++			ret = crypto_shash_update(desc, q, seg);
++			kunmap_local(p);
++			if (ret < 0)
++				return ret;
++			len -= seg;
++			offset = 0;
++		} else {
++			offset -= sg->length;
++		}
++	} while (len > 0 && (sg = sg_next(sg)));
++	return 0;
++}
 +
-> | case 1 | btf_vmlinux   | bpf_mod     | INVALID                         =
-|
-> +--------+---------------+-------------+---------------------------------=
+ static int rfc3961_do_encrypt(struct crypto_sync_skcipher *tfm, void *iv,
+ 			      const struct krb5_buffer *in, struct krb5_buffer *out)
+ {
+@@ -503,6 +531,122 @@ int rfc3961_load_checksum_key(const struct krb5_enctype *krb5,
+ 		return -ENOMEM;
+ 	return 0;
+ }
 +
-> | case 2 | btf_mod       | btf_vmlinux | reg in mod but be used both in  =
-|
-> |        |               |             | vmlinux and mod.                =
-|
-> +--------+---------------+-------------+---------------------------------=
++/*
++ * Apply encryption and checksumming functions to part of a scatterlist.
++ */
++ssize_t krb5_aead_encrypt(const struct krb5_enctype *krb5,
++			  struct crypto_aead *aead,
++			  struct scatterlist *sg, unsigned int nr_sg, size_t sg_len,
++			  size_t data_offset, size_t data_len,
++			  bool preconfounded)
++{
++	struct aead_request *req;
++	ssize_t ret, done;
++	size_t bsize, base_len, secure_offset, secure_len, pad_len, cksum_offset;
++	void *buffer;
++	u8 *iv;
 +
-> | case 3 | btf_mod       | btf_mod     | be used and reg only in mod     =
-|
-> +--------+---------------+-------------+---------------------------------=
++	if (WARN_ON(data_offset != krb5->conf_len))
++		return -EINVAL; /* Data is in wrong place */
 +
->
-> At present, cases 0, 1, and 3 can be correctly identified, because
-> st_ops_xxx_ops is searched from the same btf with xxx_ops. In order to
-> handle case 2 correctly without affecting other cases, we cannot simply
-> change the search method for st_ops_xxx_ops from find_btf_by_prefix_kind(=
-)
-> to find_ksym_btf_id(), because in this way, case 1 will not be
-> recognized anymore.
->
-> To address the issue, we always look for st_ops_xxx_ops first,
-> figure out the btf, and then look for xxx_ops with the very btf to avoid
-> such issue.
->
-> Fixes: 590a00888250 ("bpf: libbpf: Add STRUCT_OPS support")
-> Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-> ---
->  tools/lib/bpf/libbpf.c | 41 +++++++++++++++++++++++------------------
->  1 file changed, 23 insertions(+), 18 deletions(-)
->
++	secure_offset	= 0;
++	base_len	= krb5->conf_len + data_len;
++	pad_len		= 0;
++	secure_len	= base_len + pad_len;
++	cksum_offset	= secure_len;
++	if (WARN_ON(cksum_offset + krb5->cksum_len > sg_len))
++		return -EFAULT;
++
++	bsize = krb5_aead_size(aead) +
++		krb5_aead_ivsize(aead);
++	buffer = kzalloc(bsize, GFP_NOFS);
++	if (!buffer)
++		return -ENOMEM;
++
++	/* Insert the confounder into the buffer */
++	ret = -EFAULT;
++	if (!preconfounded) {
++		get_random_bytes(buffer, krb5->conf_len);
++		done = sg_pcopy_from_buffer(sg, nr_sg, buffer, krb5->conf_len,
++					    secure_offset);
++		if (done != krb5->conf_len)
++			goto error;
++	}
++
++	/* We may need to pad out to the crypto blocksize. */
++	if (pad_len) {
++		done = sg_zero_buffer(sg, nr_sg, pad_len, data_offset + data_len);
++		if (done != pad_len)
++			goto error;
++	}
++
++	/* Hash and encrypt the message. */
++	req = buffer;
++	iv = buffer + krb5_aead_size(aead);
++
++	aead_request_set_tfm(req, aead);
++	aead_request_set_callback(req, 0, NULL, NULL);
++	aead_request_set_crypt(req, sg, sg, secure_len, iv);
++	ret = crypto_aead_encrypt(req);
++	if (ret < 0)
++		goto error;
++
++	ret = secure_len + krb5->cksum_len;
++
++error:
++	kfree_sensitive(buffer);
++	return ret;
++}
++
++/*
++ * Apply decryption and checksumming functions to a message.  The offset and
++ * length are updated to reflect the actual content of the encrypted region.
++ */
++int krb5_aead_decrypt(const struct krb5_enctype *krb5,
++		      struct crypto_aead *aead,
++		      struct scatterlist *sg, unsigned int nr_sg,
++		      size_t *_offset, size_t *_len)
++{
++	struct aead_request *req;
++	size_t bsize;
++	void *buffer;
++	int ret;
++	u8 *iv;
++
++	if (WARN_ON(*_offset != 0))
++		return -EINVAL; /* Can't set offset on aead */
++
++	if (*_len < krb5->conf_len + krb5->cksum_len)
++		return -EPROTO;
++
++	bsize = krb5_aead_size(aead) +
++		krb5_aead_ivsize(aead);
++	buffer = kzalloc(bsize, GFP_NOFS);
++	if (!buffer)
++		return -ENOMEM;
++
++	/* Decrypt the message and verify its checksum. */
++	req = buffer;
++	iv = buffer + krb5_aead_size(aead);
++
++	aead_request_set_tfm(req, aead);
++	aead_request_set_callback(req, 0, NULL, NULL);
++	aead_request_set_crypt(req, sg, sg, *_len, iv);
++	ret = crypto_aead_decrypt(req);
++	if (ret < 0)
++		goto error;
++
++	/* Adjust the boundaries of the data. */
++	*_offset += krb5->conf_len;
++	*_len -= krb5->conf_len + krb5->cksum_len;
++	ret = 0;
++
++error:
++	kfree_sensitive(buffer);
++	return ret;
++}
++
+ const struct krb5_crypto_profile rfc3961_simplified_profile = {
+ 	.calc_PRF		= rfc3961_calc_PRF,
+ 	.calc_Kc		= rfc3961_calc_DK,
+@@ -512,4 +656,6 @@ const struct krb5_crypto_profile rfc3961_simplified_profile = {
+ 	.load_encrypt_keys	= krb5enc_load_encrypt_keys,
+ 	.derive_checksum_key	= rfc3961_derive_checksum_key,
+ 	.load_checksum_key	= rfc3961_load_checksum_key,
++	.encrypt		= krb5_aead_encrypt,
++	.decrypt		= krb5_aead_decrypt,
+ };
 
-Other than a few nits below, LGTM
-
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-
-> diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-> index 66173ddb5a2d..202bc4c1001e 100644
-> --- a/tools/lib/bpf/libbpf.c
-> +++ b/tools/lib/bpf/libbpf.c
-> @@ -1005,14 +1005,33 @@ find_struct_ops_kern_types(struct bpf_object *obj=
-, const char *tname_raw,
->         const struct btf_member *kern_data_member;
->         struct btf *btf =3D NULL;
->         __s32 kern_vtype_id, kern_type_id;
-> -       char tname[256];
-> +       char tname[256], stname[256];
-> +       int ret;
->         __u32 i;
->
->         snprintf(tname, sizeof(tname), "%.*s",
->                  (int)bpf_core_essential_name_len(tname_raw), tname_raw);
->
-> -       kern_type_id =3D find_ksym_btf_id(obj, tname, BTF_KIND_STRUCT,
-> +       ret =3D snprintf(stname, sizeof(stname), "%s%s", STRUCT_OPS_VALUE=
-_PREFIX,
-> +                      tname);
-> +       if (ret < 0 || ret >=3D sizeof(stname))
-> +               return -ENAMETOOLONG;
-
-see preexisting snprintf() above, we don't really handle truncation
-errors explicitly, they are extremely unlikely and not expected at
-all, and worst case nothing will be found and user will get some
--ENOENT or something like that eventually. I'd drop this extra error
-checking and keep it streamlines, similar to tname
-
-> +
-> +       /* Look for the corresponding "map_value" type that will be used
-> +        * in map_update(BPF_MAP_TYPE_STRUCT_OPS) first, figure out the b=
-tf
-> +        * and the mod_btf.
-> +        * For example, find "struct bpf_struct_ops_tcp_congestion_ops".
-> +        */
-> +       kern_vtype_id =3D find_ksym_btf_id(obj, stname, BTF_KIND_STRUCT,
->                                         &btf, mod_btf);
-
-nit: if this fits under 100 characters, keep it single line
-
-> +       if (kern_vtype_id < 0) {
-> +               pr_warn("struct_ops init_kern: struct %s is not found in =
-kernel BTF\n",
-> +                               stname);
-
-same nit about preserving single-line statements as much as possible,
-they are much easier to read
-
-> +               return kern_vtype_id;
-> +       }
-> +       kern_vtype =3D btf__type_by_id(btf, kern_vtype_id);
-> +
-> +       kern_type_id =3D btf__find_by_name_kind(btf, tname, BTF_KIND_STRU=
-CT);
->         if (kern_type_id < 0) {
->                 pr_warn("struct_ops init_kern: struct %s is not found in =
-kernel BTF\n",
->                         tname);
-> @@ -1020,20 +1039,6 @@ find_struct_ops_kern_types(struct bpf_object *obj,=
- const char *tname_raw,
->         }
->         kern_type =3D btf__type_by_id(btf, kern_type_id);
->
-> -       /* Find the corresponding "map_value" type that will be used
-> -        * in map_update(BPF_MAP_TYPE_STRUCT_OPS).  For example,
-> -        * find "struct bpf_struct_ops_tcp_congestion_ops" from the
-> -        * btf_vmlinux.
-> -        */
-> -       kern_vtype_id =3D find_btf_by_prefix_kind(btf, STRUCT_OPS_VALUE_P=
-REFIX,
-> -                                               tname, BTF_KIND_STRUCT);
-> -       if (kern_vtype_id < 0) {
-> -               pr_warn("struct_ops init_kern: struct %s%s is not found i=
-n kernel BTF\n",
-> -                       STRUCT_OPS_VALUE_PREFIX, tname);
-> -               return kern_vtype_id;
-> -       }
-> -       kern_vtype =3D btf__type_by_id(btf, kern_vtype_id);
-> -
->         /* Find "struct tcp_congestion_ops" from
->          * struct bpf_struct_ops_tcp_congestion_ops {
->          *      [ ... ]
-> @@ -1046,8 +1051,8 @@ find_struct_ops_kern_types(struct bpf_object *obj, =
-const char *tname_raw,
->                         break;
->         }
->         if (i =3D=3D btf_vlen(kern_vtype)) {
-> -               pr_warn("struct_ops init_kern: struct %s data is not foun=
-d in struct %s%s\n",
-> -                       tname, STRUCT_OPS_VALUE_PREFIX, tname);
-> +               pr_warn("struct_ops init_kern: struct %s data is not foun=
-d in struct %s\n",
-> +                       tname, stname);
->                 return -EINVAL;
->         }
->
-> --
-> 2.45.0
->
