@@ -1,174 +1,108 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0DE1B042D
-	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 22:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F23B67F
+	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 22:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737152518; cv=none; b=XMP5ZfrwlHNrKM2U3TMl5W3qSLI94qpDVE7w6eslFK4h3ilNvVyQ1ZlIBLjSWlM8EeFse4XFNxSemT2zncRVD2im1gqc9BvFwu6wK2+dszNRgNo+1b3tAl8V+tVYSZCJZQ1c6XHPowL++TD3QVM1mmPes5wKliGbzkZUqvjCcKI=
+	t=1737152870; cv=none; b=q7IwraXWkioOAj93r07L/Vwt3d1XXIf6VsKenyKbFeehA7yqYiqZCm3r8melTC0B+cEgCnpyxJtvbQ7gOtswoXQF5qpIChXMUATwKfYHrrGBp23O/Aizc40k0i/Y+3Rko6S04OiZC1I2jOmhWgdVx2O7dVeQG8wdE/0vXMKqiI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737152518; c=relaxed/simple;
-	bh=7hKjVTcgsoWn8fwhkRoAQZi2+kPBFHP88sLo+yNmNoU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ij2bd2bE1KUYltKGC8gHJfNRvihbH9Dbo3JVJqz+vDbpPMK8xHfCTep2rRxr6lFPWxZNGF4GG6QHMs4oVWTAqjikncHdg6L9hTXuv2tvh3uV+kIqQSEx5ae87aMZ+87jO4W3CwLD4rihY+mdd0tF8NYwGWc5usek5mHTa4Nc4eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YsPKB7NE; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1737152870; c=relaxed/simple;
+	bh=wa0DMPdlPlQ3EzT4REGbFRr8PW+qEY8zytKqoiMoGLo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UDwu1yxMpBbRq5yWx6FlhUTyR1OfmAKIobxKTxLP5Hj0nKckYjWHGSfSoZKu+4NG9SDB0oqNkQXhOH8HIOdpeRsQXDX0yYZOJa87y8sE7OSJbFEqP6SND3A+Y6FyOmYavrO2LQPtzBggDyFXk2AULwaBllOFp9Bhphb13561QyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jU4yOI/2; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YsPKB7NE"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5d0ac27b412so3462659a12.1
-        for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 14:21:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737152514; x=1737757314; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q883B+1Hz5jWmW032DWa4S/tgymd7Yel6BotCiFXAZQ=;
-        b=YsPKB7NE+hKZlsfGXh4d9bKpVXfK+NiBOq5libwk5f847f17Wq+TsXpAKTisN18YGg
-         o/2I5mLuFBk2rZcoxl3+l2mEGUDpyv6ByDYTm7GOvz+Ft9U2nr6l7Q4jLh5W/1oj038b
-         FuPjbO1TLXikpihRsaDY5BcYG0dz5YEckoaXHw+/I5ctQjqjIZapOT1l8qbuveT0oMlP
-         d7x6z65JztEsVbeB5wF8gSW295CcqJeBTFMH76gfmF4f2p5mAcTkIcalzfDA3gbQ2ewn
-         yJ6ivxD9WHZrtyBado0HJTGHle0efeQxY6ahqxmqHR97QHmfJJFouTcQiog77W28K66l
-         XOCw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jU4yOI/2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1737152867;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wa0DMPdlPlQ3EzT4REGbFRr8PW+qEY8zytKqoiMoGLo=;
+	b=jU4yOI/2RUkXDvb0Y4dQefoGJB3uvX6ffkspgdWBlFGvS1Uok8Rj00wyPcj03/VCoFrmup
+	3pdGBFEVxlM5NUdn05WpYWYRfmolLd7hTKTvQqJP1+XLxfJwGtC4dlAztig6wrlHSNH/w5
+	oCjk2CDrPJKpXWO138L4qRrYSCUIQf8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-586-4QD9n5ccNoqcmPjjx7_XIQ-1; Fri, 17 Jan 2025 17:27:45 -0500
+X-MC-Unique: 4QD9n5ccNoqcmPjjx7_XIQ-1
+X-Mimecast-MFC-AGG-ID: 4QD9n5ccNoqcmPjjx7_XIQ
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3862c67763dso1027953f8f.3
+        for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 14:27:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737152514; x=1737757314;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q883B+1Hz5jWmW032DWa4S/tgymd7Yel6BotCiFXAZQ=;
-        b=rcyJihGHWW622Ne6oFBzWrt8YRvu7Wvb53mQ7+enpW9p/4S00plnCPQ/mXtwLZk5Jd
-         /A/gvl9+UGDJw1WPRYK1S3wZxbV+jVLj4TJm0j/ksdIn9muMhb5t3KSXlfZUY53fVu7A
-         LbnPMCD/jykj/A5IEJiTfEnzAzd7NrCafBmVy8Qrw7gNkyvoOs9Tauo+ryUy//cHnOzT
-         HuytQZOvRbTmdn73SxgXHEP/jXLOCSoXmf9BkBqxQVIIUilBAHLQgwzfCz0GD9jNRPRj
-         S9DJOAvUaNpiUy4DG+xmhnuBGYI2guozp62cSUXG/e7bszMAvttagCdy72KU0hAjtXLo
-         jSBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUCfQ8bZ/71sMpeXsNuHtvoQNiXnW8nMs5NlOP9JtTtlNIBauTl1qZVDhaZeMLVZkJf3/Vzk0E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKrH5BIdAEV4EXUKbtX/B0zopQyoqrqisAIjLJAImlwSNynwgi
-	a/F3xBHRslaklW9P2GogwbX6l9ZtSPcGU4xhJLdydsYriWg8J6b40AcwLZbh0Fblw4FUARg+U1z
-	3trOE/qBO/A5m7TvMb9T6MXaSfrbgUhbmSu5e
-X-Gm-Gg: ASbGncu3TeAewNjxoVDvF7AqExF3ZnSPyGhh6eiGglGj35pLUuRKMuio/wn78Js5P4Y
-	kRBrYxjMuYjj7ZXKdgF99+Rx1gR4DAfFki1KtAVLR4jY2FQ8/rv6p
-X-Google-Smtp-Source: AGHT+IFNvEIh5FcL5N94lVMFOyZZYUm3PjpgsVGH68PcGMEFFW/HldggiPUqrIL9tyfTc165QgAKzshDQEWdbFsjv70=
-X-Received: by 2002:a05:6402:13d1:b0:5db:7316:6303 with SMTP id
- 4fb4d7f45d1cf-5db7d2e36bcmr3132279a12.4.1737152514477; Fri, 17 Jan 2025
- 14:21:54 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737152864; x=1737757664;
+        h=content-transfer-encoding:mime-version:organization:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wa0DMPdlPlQ3EzT4REGbFRr8PW+qEY8zytKqoiMoGLo=;
+        b=mVRxbbPKmjX0aPAVv15+lW6yTD1TXIPXg1ZNtn6x9UrQXpmxgP3RMDFYjJK4Fo92r9
+         LqOdcD15AdfJ29jDt+syt+u4Yd8poElJHB1QiRGYyHj+iiNJulHuvghMk+7mKKDoI9SJ
+         De3gwCIXbZX8JHevZofJIgCAmHfWLFH8Lh3965sXoSaWX185+fqX/BCUTkqjfdjGX1r+
+         FGRaE8R3w59Bs32vmytXDS2vsaSUXnj66QhPRr22lLSD5IFFqB63iHGiqrjwDeVlIWk3
+         qwKl9LPGoaODtqi3Q+7xZ0o8mDV+BexCQZhsHn23TVzVewj2iA3eD2E63VnKFVg3Q4YC
+         9ZGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXgIRJQCuMNpNSIVaHM+eCFHbKnkFreyb9JI8+lzYZlmJX2NdPKzvBtKEoqyEZ0tKl79ETwdWI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjhYuTgrnq7z90qo8wghZ5mDc9TnCfiEXMUv+Z/8ZSp4zJITvT
+	GOHnUp3kxT7Z+NUOTH5ZUui3k2vOa0zqIhXbHVIt9oVRBhZi2VhfMnVc8L+TKJLrTtaSGAH1V6u
+	BVyus5bgFmn8LB5Xwzseozdlr9PQQMgzkoEyBFFUk5oFRp5SbCH6qDQ==
+X-Gm-Gg: ASbGncup5zNgiv7egot9ca7zkVs5YLr9HucWVu0jISai3gSw1mAKDo7D9hEs5KqV1Kr
+	mwAY6UfpbxT39RYgk/Cv80BeuNpTzHX2qsBFfh48tZiKrqrORLtIeE/Uj6gsErjZhgDNPx45y6O
+	baf9zNoL/WnBh1MFjEOLAt51aTav9Udv0srw+m+YkK7h6sg5oqww6F/NaXBtjjrLTtah5S/F3x7
+	IcFHPFl+6EceoTcD+OkLL5AsulZCGBOr2umJ9gH0ovvEgdZQQysRa3jK0ZWbc9Oopk+ZXb/rIOY
+	w1p/3A==
+X-Received: by 2002:a5d:5888:0:b0:38a:4b8b:c57a with SMTP id ffacd0b85a97d-38bf57a6e78mr5049913f8f.44.1737152864369;
+        Fri, 17 Jan 2025 14:27:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGgsqGs0eBTicGZ0c/NUkNMdGgieSa64DsriG+QUy1VuXSGZh78FVPqac2yNWP+LB5UeoG3qA==
+X-Received: by 2002:a5d:5888:0:b0:38a:4b8b:c57a with SMTP id ffacd0b85a97d-38bf57a6e78mr5049904f8f.44.1737152864017;
+        Fri, 17 Jan 2025 14:27:44 -0800 (PST)
+Received: from maya.myfinge.rs (ifcgrfdd.trafficplex.cloud. [2a10:fc81:a806:d6a9::1])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf328dc08sm3511447f8f.101.2025.01.17.14.27.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jan 2025 14:27:41 -0800 (PST)
+Date: Fri, 17 Jan 2025 23:27:39 +0100
+From: Stefano Brivio <sbrivio@redhat.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: jmaloy@redhat.com, netdev@vger.kernel.org, davem@davemloft.net,
+ kuba@kernel.org, passt-dev@passt.top, lvivier@redhat.com,
+ dgibson@redhat.com, Menglong Dong <menglong8.dong@gmail.com>,
+ eric.dumazet@gmail.com
+Subject: Re: [net,v2] tcp: correct handling of extreme memory squeeze
+Message-ID: <20250117232739.1b7e3554@elisabeth>
+In-Reply-To: <CANn89i+Ks52JVTBsMFQBM4CqUR4cegXhbSCH77aMCqFpd-S_1A@mail.gmail.com>
+References: <20250117214035.2414668-1-jmaloy@redhat.com>
+	<CANn89i+Ks52JVTBsMFQBM4CqUR4cegXhbSCH77aMCqFpd-S_1A@mail.gmail.com>
+Organization: Red Hat
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250115035319.559603-6-kuba@kernel.org> <20250115085711.42898-1-kuniyu@amazon.com>
-In-Reply-To: <20250115085711.42898-1-kuniyu@amazon.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 17 Jan 2025 23:21:43 +0100
-X-Gm-Features: AbW1kvbuqIVTyxD7TraWrqLjSgLpdyK9vxuEM9VzIlWpTbbgwoSlyNMzSXfwfIg
-Message-ID: <CANn89i+o79p0tYH=ttRB7rQUp62fTrVXcxGQ3MN1vw9ZcoBg6w@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 05/11] net: protect netdev->napi_list with netdev_lock()
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	horms@kernel.org, jdamato@fastly.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 15, 2025 at 9:57=E2=80=AFAM Kuniyuki Iwashima <kuniyu@amazon.co=
-m> wrote:
+[Fixed Cc: for Menglong Dong, this is a reply to:
+ https://lore.kernel.org/all/CANn89i+Ks52JVTBsMFQBM4CqUR4cegXhbSCH77aMCqFpd=
+-S_1A@mail.gmail.com/]
+
+On Fri, 17 Jan 2025 23:09:27 +0100
+Eric Dumazet <edumazet@google.com> wrote:
+
+> On Fri, Jan 17, 2025 at 10:40=E2=80=AFPM <jmaloy@redhat.com> wrote:
 >
-> From: Jakub Kicinski <kuba@kernel.org>
-> Date: Tue, 14 Jan 2025 19:53:13 -0800
-> > Hold netdev->lock when NAPIs are getting added or removed.
-> > This will allow safe access to NAPI instances of a net_device
-> > without rtnl_lock.
-> >
-> > Create a family of helpers which assume the lock is already taken.
-> > Switch iavf to them, as it makes extensive use of netdev->lock,
-> > already.
-> >
-> > Reviewed-by: Joe Damato <jdamato@fastly.com>
-> > Reviewed-by: Eric Dumazet <edumazet@google.com>
-> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->
-> Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+> > v1: -Posted on Apr 6, 2024 =20
+>=20
+> Could you post the link, this was a long time ago and I forgot the contex=
+t.
 
-Jakub, has anyone sent the following fix yet ?
+https://lore.kernel.org/all/20240406182107.261472-1-jmaloy@redhat.com/#r
 
-CONFIG_DEBUG_MUTEXES=3Dy should show a splat I think otherwise.
+--=20
+Stefano
 
-[1]
-DEBUG_LOCKS_WARN_ON(lock->magic !=3D lock)
-WARNING: CPU: 0 PID: 5971 at kernel/locking/mutex.c:564
-__mutex_lock_common kernel/locking/mutex.c:564 [inline]
-WARNING: CPU: 0 PID: 5971 at kernel/locking/mutex.c:564
-__mutex_lock+0xdac/0xee0 kernel/locking/mutex.c:735
-Modules linked in:
-CPU: 0 UID: 0 PID: 5971 Comm: syz-executor Not tainted
-6.13.0-rc7-syzkaller-01131-g8d20dcda404d #0
-Hardware name: Google Google Compute Engine/Google Compute Engine,
-BIOS Google 12/27/2024
-RIP: 0010:__mutex_lock_common kernel/locking/mutex.c:564 [inline]
-RIP: 0010:__mutex_lock+0xdac/0xee0 kernel/locking/mutex.c:735
-Code: 0f b6 04 38 84 c0 0f 85 1a 01 00 00 83 3d 6f 40 4c 04 00 75 19
-90 48 c7 c7 60 84 0a 8c 48 c7 c6 00 85 0a 8c e8 f5 dc 91 f5 90 <0f> 0b
-90 90 90 e9 c7 f3 ff ff 90 0f 0b 90 e9 29 f8 ff ff 90 0f 0b
-RSP: 0018:ffffc90003317580 EFLAGS: 00010246
-RAX: ee0f97edaf7b7d00 RBX: ffff8880299f8cb0 RCX: ffff8880323c9e00
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffc90003317710 R08: ffffffff81602ac2 R09: 1ffff110170c519a
-R10: dffffc0000000000 R11: ffffed10170c519b R12: 0000000000000000
-R13: 0000000000000000 R14: 1ffff92000662ec4 R15: dffffc0000000000
-FS: 000055557a046500(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fd581d46ff8 CR3: 000000006f870000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-netdev_lock include/linux/netdevice.h:2691 [inline]
-__netif_napi_del include/linux/netdevice.h:2829 [inline]
-netif_napi_del include/linux/netdevice.h:2848 [inline]
-free_netdev+0x2d9/0x610 net/core/dev.c:11621
-netdev_run_todo+0xf21/0x10d0 net/core/dev.c:11189
-nsim_destroy+0x3c3/0x620 drivers/net/netdevsim/netdev.c:1028
-__nsim_dev_port_del+0x14b/0x1b0 drivers/net/netdevsim/dev.c:1428
-nsim_dev_port_del_all drivers/net/netdevsim/dev.c:1440 [inline]
-nsim_dev_reload_destroy+0x28a/0x490 drivers/net/netdevsim/dev.c:1661
-nsim_drv_remove+0x58/0x160 drivers/net/netdevsim/dev.c:1676
-device_remove drivers/base/dd.c:567 [inline]
-__device_release_driver drivers/base/dd.c:1273 [inline]
-device_release_driver_internal+0x4a9/0x7c0 drivers/base/dd.c:1296
-bus_remove_device+0x34f/0x420 drivers/base/bus.c:576
-device_del+0x57a/0x9b0 drivers/base/core.c:3854
-device_unregister+0x20/0xc0 drivers/base/core.c:3895
-nsim_bus_dev_del drivers/net/netdevsim/bus.c:462 [inline]
-del_device_store+0x363/0x480 drivers/net/netdevsim/bus.c:226
-kernfs_fop_write_iter+0x3a0/0x500 fs/kernfs/file.c:334
-new_sync_write fs/read_write.c:586 [inline]
-vfs_write+0xaeb/0xd30 fs/read_write.c:679
-ksys_write+0x18f/0x2b0 fs/read_write.c:731
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index fe5f5855593db34cb4bc31e6a637b59b9041bb73..fab4899b83f745a3c13c982775e=
-287b1ff2f547d
-100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -11593,8 +11593,6 @@ void free_netdev(struct net_device *dev)
-                return;
-        }
-
--       mutex_destroy(&dev->lock);
--
-        kfree(dev->ethtool);
-        netif_free_tx_queues(dev);
-        netif_free_rx_queues(dev);
-@@ -11621,6 +11619,8 @@ void free_netdev(struct net_device *dev)
-
-        netdev_free_phy_link_topology(dev);
-
-+       mutex_destroy(&dev->lock);
-+
-        /*  Compatibility with error handling in drivers */
-        if (dev->reg_state =3D=3D NETREG_UNINITIALIZED ||
-            dev->reg_state =3D=3D NETREG_DUMMY) {
