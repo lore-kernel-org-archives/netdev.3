@@ -1,109 +1,148 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9721422A8;
-	Fri, 17 Jan 2025 15:10:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B24818B495
+	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 15:19:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737126627; cv=none; b=obcYnHBi1CivnyF7zbZ71MAMoKEAaDfgmnp0QXbFrLhNSNcGr+//HgqtguNG4ZTDu4Rt3rW8mDUrzYalFQFH6CaCu5K6GBlq3C97FP+CTOM6x1egPGtCGkG3I3nJxb6vVAvSGCnzYNfhgGhlre0+VPGpDk/7iZSFoGwSnkh/B0I=
+	t=1737127157; cv=none; b=bVHIBitowHSnRLfbw989i6pkN8cUmFT2aNaTsnKlq7HlAF3ePk3QDx94+M/RmXYIdWosDPO4eAOJYhTa9M/OmxP25AYtwyg2w1e6/RA5XjhGukuwaYNvHrYrPYXfeavKyXlBBz7VAOIQ9BC8pIQHlyxH5lGwY2f6FNp61Mt3qio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737126627; c=relaxed/simple;
-	bh=/F1NSaZSaoh3iZrteHw4vFeMNr4B8Gk9P2RaO1Q38Lo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e0JFW96m4w8aAP2XYDA4XwGHq6A/Y/kPu/nwvuMMOG7CIoaAOb4GstQA0yheTGRSwUud3r+8o5Ru67OMmD1jLJGtdOPCLNuoPYuNS9wilLK2jbgTlinoJzxKpeaVOKVklgp5rRL+wzHsGZb9owAsK7xZystxhrZptHxTXQTbppM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=hQff27DG; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1737127157; c=relaxed/simple;
+	bh=T/jTb+qgNEiS7HadM8rfU43d+/3SlKlJJpnFJPXWXQY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IGrMyddVg7Yf610li8C/hiD4gYCJx0mNUUnCiF6AxXZoHtrx5aI4qbTMpRcrmBa2M9+WCoc5CfM5IZCSpZUKSEqNa9NGhEqDbxfd5SdXnmmjPkvj4wi9J6zAYmaCI6e4Z3r/W71WmMmAKeYxgLNmYqchz6IQs9mPRedVap3Q7eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A95jSaak; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="hQff27DG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=yauV8prAIYm9rGO6ViqfmekcH2CfXwo7qVm4duZxONs=; b=hQff27DGqU9tGK9FOpN2SWfq6a
-	4HBudKQltQnE1+wbePuVGrpv9W9S2kctnhTEZK4w2X4CfjxwgXVEfOwDMwWZZuLeLS6x0WYjS7DkI
-	bWD3Cf72P8iOU9DmXx71bpBbpKlNx6CpSjIOU5x0VZLqMfTjo7pKDRV5oDton9ZWYZH0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tYnzG-005TdA-8M; Fri, 17 Jan 2025 16:10:18 +0100
-Date: Fri, 17 Jan 2025 16:10:18 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Alexandra Winter <wintera@linux.ibm.com>
-Cc: dust.li@linux.alibaba.com, Julian Ruess <julianr@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Jan Karcher <jaka@linux.ibm.com>, Gerd Bayer <gbayer@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	David Miller <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Thorsten Winkler <twinkler@linux.ibm.com>, netdev@vger.kernel.org,
-	linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>
-Subject: Re: [RFC net-next 0/7] Provide an ism layer
-Message-ID: <3e97f471-69fd-42bd-acf4-64201eaf6994@lunn.ch>
-References: <20250115195527.2094320-1-wintera@linux.ibm.com>
- <20250116093231.GD89233@linux.alibaba.com>
- <D73H7Q080GUQ.3BDOH23P4WDOL@linux.ibm.com>
- <0f96574a-567e-495a-b815-6aef336f12e6@linux.ibm.com>
- <20250117021353.GF89233@linux.alibaba.com>
- <80330f0e-d769-4251-be2f-a2b5adb12ef2@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A95jSaak"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4678c9310afso223971cf.1
+        for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 07:19:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1737127155; x=1737731955; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fhoBIkKOhoYfmdi6JZxaNgKaAcxAfQDccoZIuvfZzxQ=;
+        b=A95jSaakj3xXxKgECPbsGfr1AngIzuGUH7WUaYX+VQf8c74RLUn9aGsSuRLXknk0IA
+         w6zz4YGm7qgOO5xiuRD8kpyB2qhHAYOJotBlw1353uEkIo94JrM7rt/dPk7ElCAs4puZ
+         K8UqyTSELjKwoF6XM3v8r/aUkwqG+Smg8hA7W7nm4qmyudD3f+xvwjvQXf6f5Rw4RPxe
+         9ewU5nvl7Yb8z1vddND0dLbUoC/L+Agwb/tjByb1gU8Zd9J+mY7jqkoofYfLMdFAFa+G
+         7yeAXx9a+zr04VmNY5mzOnNDT0Jpe27dp4QwtBLLTZpc6QqgjcH6Br4iyTRtV7+AixIp
+         zxRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737127155; x=1737731955;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fhoBIkKOhoYfmdi6JZxaNgKaAcxAfQDccoZIuvfZzxQ=;
+        b=iV43leX44VZ8woiBxFqxpuaGHCMb9b75VuvlnvAAID6kKN9lJAfIoKog1B1g/U787g
+         uw+XsJCxF8wKvY4CmoVuAC4iYZPg8OEixbqlPrmkJirUmu2UqWwVd9JGf9lWC83oqVcW
+         M9Rv/nhV/qSKGM0w7i3w8PSxK0woK4QLW70wI53rAIDhiiRC4sZNFscSMHAYgkpJSMTF
+         i1+zD0tryvbVZ40xR2vJCH7/e7mspIRPvnY9+GMPfV9YAhgPT4356LPFa+1QhxZnbA+7
+         FG3NSmBWhteS929K8ZlwbuZ9eL5ZOvE0tqoHDx6iBxkgFDULzcvZ40oJTIWpHcAG28Q8
+         7J/A==
+X-Forwarded-Encrypted: i=1; AJvYcCXM0s4yR4B1RvHLmD5iVVXJFApFZOLrrU98bBLmb7uVr1XBCuGWnLa/khbh8TR+l8xQGiii8Uw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNmPXe1nPAMxYBA2quXWSq3FQNbmI7K+3NJmQjsLCURUsJFZus
+	7BZ1ziMFscPWSTkiqo1G2BstpZ4yTe0ov/fuz7cReilYMVe5Kv7FxrhypnNdSp4VvDL4X7Rqq8H
+	8l9+AQ3+gh3AdkTqsQT8FuGeKhr+jO3lmYOVG
+X-Gm-Gg: ASbGncuD+2xkj2zxA87Cz2OYP3cNnKsg/DFEC48S/ezKjK+yofv+JBANexoH0uSPE1P
+	UYWdRz7qPfOvRV7nDAYdS6zPQm/TTTiU4GiWuPb1HM5LrkjoazBaG3HEAjN9vdOwEd2l/yw==
+X-Google-Smtp-Source: AGHT+IF/AT9f2+6ySPtpjnphdaZgu1f8T5/RwVNn/6TrQGroAetNMw5+d/6pJXhP1AVw7IgNOifchNGzLRfqQGJJGlg=
+X-Received: by 2002:a05:622a:612:b0:460:491e:d2a2 with SMTP id
+ d75a77b69052e-46e130af6cbmr2827401cf.17.1737127154633; Fri, 17 Jan 2025
+ 07:19:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <80330f0e-d769-4251-be2f-a2b5adb12ef2@linux.ibm.com>
+References: <CGME20241203081005epcas2p247b3d05bc767b1a50ba85c4433657295@epcas2p2.samsung.com>
+ <20241203081247.1533534-1-youngmin.nam@samsung.com> <CANn89iK+7CKO31=3EvNo6-raUzyibwRRN8HkNXeqzuP9q8k_tA@mail.gmail.com>
+ <CADVnQynUspJL4e3UnZTKps9WmgnE-0ngQnQmn=8gjSmyg4fQ5A@mail.gmail.com>
+ <20241203181839.7d0ed41c@kernel.org> <Z0/O1ivIwiVVNRf0@perf>
+ <CANn89iKms_9EX+wArf1FK7Cy3-Cr_ryX+MJ2YC8yt1xmvpY=Uw@mail.gmail.com>
+ <009e01db4620$f08f42e0$d1adc8a0$@samsung.com> <CADVnQykPo35mQ1y16WD3zppENCeOi+2Ea_2m-AjUQVPc9SXm4g@mail.gmail.com>
+ <Z4nl0h1IZ5R/KDEc@perf>
+In-Reply-To: <Z4nl0h1IZ5R/KDEc@perf>
+From: Neal Cardwell <ncardwell@google.com>
+Date: Fri, 17 Jan 2025 10:18:58 -0500
+X-Gm-Features: AbW1kvYA0q8_2KcZgEsEwVs6B5bKlc445mPvRK-RqcuhEo1dFHXWs5fjJyItqDw
+Message-ID: <CADVnQykZYT+CTWD3Ss46aGHPp5KtKMYqKjLxEmd5DDgdG3gfDA@mail.gmail.com>
+Subject: Re: [PATCH] tcp: check socket state before calling WARN_ON
+To: Youngmin Nam <youngmin.nam@samsung.com>
+Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net, 
+	dsahern@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	guo88.liu@samsung.com, yiwang.cai@samsung.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, joonki.min@samsung.com, hajun.sung@samsung.com, 
+	d7271.choe@samsung.com, sw.ju@samsung.com, 
+	"Dujeong.lee" <dujeong.lee@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 17, 2025 at 02:00:55PM +0100, Alexandra Winter wrote:
-> 
-> 
-> On 17.01.25 03:13, Dust Li wrote:
-> >>>> Modular Approach: I've made the ism_loopback an independent kernel
-> >>>> module since dynamic enable/disable functionality is not yet supported
-> >>>> in SMC. Using insmod and rmmod for module management could provide the
-> >>>> flexibility needed in practical scenarios.
-> >>
-> >> With this proposal ism_loopback is just another ism device and SMC-D will
-> >> handle removal just like ism_client.remove(ism_dev) of other ism devices.
-> >>
-> >> But I understand that net/smc/ism_loopback.c today does not provide enable/disable,
-> >> which is a big disadvantage, I agree. The ism layer is prepared for dynamic
-> >> removal by ism_dev_unregister(). In case of this RFC that would only happen
-> >> in case of rmmod ism. Which should be improved.
-> >> One way to do that would be a separate ism_loopback kernel module, like you say.
-> >> Today ism_loopback is only 10k LOC, so I'd be fine with leaving it in the ism module.
-> >> I also think it is a great way for testing any ISM client, so it has benefit for
-> >> anybody using the ism module.
-> >> Another way would be e.g. an 'enable' entry in the sysfs of the loopback device.
-> >> (Once we agree if and how to represent ism devices in genera in sysfs).
-> > This works for me as well. I think it would be better to implement this
-> > within the common ISM layer, rather than duplicating the code in each
-> > device. Similar to how it's done in netdevice.
-> > 
-> > Best regards,
-> > Dust
-> 
-> 
-> Is there a specific example for enable/disable in the netdevice code, you have in mind?
-> Or do you mean in general how netdevice provides a common layer?
-> Yes, everything that is common for all devices should be provided by the network layer.
+On Fri, Jan 17, 2025 at 12:04=E2=80=AFAM Youngmin Nam <youngmin.nam@samsung=
+.com> wrote:
+>
+> > Thanks for all the details! If the ramdump becomes available again at
+> > some point, would it be possible to pull out the following values as
+> > well:
+> >
+> > tp->mss_cache
+> > inet_csk(sk)->icsk_pmtu_cookie
+> > inet_csk(sk)->icsk_ca_state
+> >
+> > Thanks,
+> > neal
+> >
+>
+> Hi Neal. Happy new year.
+>
+> We are currently trying to capture a tcpdump during the problem situation
+> to construct the Packetdrill script. However, this issue does not occur v=
+ery often.
+>
+> By the way, we have a full ramdump, so we can provide the information you=
+ requested.
+>
+> tp->packets_out =3D 0
+> tp->sacked_out =3D 0
+> tp->lost_out =3D 4
+> tp->retrans_out =3D 1
+> tcp_is_sack(tp) =3D 1
+> tp->mss_cache =3D 1428
+> inet_csk(sk)->icsk_ca_state =3D 4
+> inet_csk(sk)->icsk_pmtu_cookie =3D 1500
+>
+> If you need any specific information from the ramdump, please let me know=
+.
 
-Again, lack of basic understanding.... but why is it not a network
-device? Network devices are not just Ethernet. We also have CAN, SLIP,
-FDDI, etc.
+The icsk_ca_state =3D 4 is interesting, since that's TCP_CA_Loss,
+indicating RTO recovery. Perhaps the socket suffered many recurring
+timeouts and timed out with ETIMEDOUT,
+causing the tcp_write_queue_purge() call that reset packets_out to
+0... and then some race happened during the teardown process that
+caused another incoming packet to be processed in this resulting
+inconsistent state?
 
-	Andrew
+Do you have a way to use GDB or a similar tool to print all the fields
+of the socket? Like:
+
+  (gdb)  p *(struct tcp_sock*) some_hex_address_goes_here
+
+?
+
+If so, that could be useful in extracting further hints about what
+state this socket is in.
+
+If that's not possible, but a few extra fields are possible, would you
+be able to pull out the following:
+
+tp->retrans_stamp
+tp->tcp_mstamp
+icsk->icsk_retransmits
+icsk->icsk_backoff
+icsk->icsk_rto
+
+thanks,
+neal
