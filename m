@@ -1,209 +1,147 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from sonic308-2.consmr.mail.bf2.yahoo.com (sonic308-2.consmr.mail.bf2.yahoo.com [74.6.130.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F2D19E7D1
-	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 22:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0204B1A9B5C
+	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 22:08:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.6.130.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737151640; cv=none; b=OOiVn7RJnMQc0stzmCT+/+sH1/N9mzjYhebc+Kswoiu1CyZ2ajKzn2xCgqKB5FSko+l/PlkY5PhN83qxSWKZ1kEQrsi32hkJlEYz4XRux5bANcEZoyKmIpdBhLk3CmqOrPStdohqOpchm7GtVj5iY0aWHqhd4Mdna1qIFswebuc=
+	t=1737151713; cv=none; b=UV4eCDnM4A0hLS21dY3pou7ZmKQZTPNc2hSvWDreSgn8CgIh4H+5Ymvx9THXZoO6huHL54JB6YRohKk1fEYloYNhhsqRydTddyvDUVTBVpLBqrD9uUdy23EQ4DgSMB9VUNIieFCsvt2XGFSLP8SYOwF6YdHQ8ZenC67p6SR25dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737151640; c=relaxed/simple;
-	bh=tUe46uuOFuBc9Sp1dXYTXVHuhFYTCtu8Ckr0hrRvcTM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MWXAOkYyhZ0garzC2lhs+073Fhiz2qTh0lMGynvyuskIdFwNumo+2RlXDgZDxekn0Ng9l/yur+1kOdymonS+ck7pqk5JAs/iNL5zjomFNIci4qfoj4AfKM6Co4jgLlEoctikacBnBzH3X7cLRpgRNLH67FzYVK9XA5luU4zkIiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=MxWvjjb4; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1737151713; c=relaxed/simple;
+	bh=kkyJpN2H8f20qQxk/PKUdwzdlkTFXqkJ4LLKWy+l3gE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=sJNncF5Gx515KTZFbIz0e8o8AxW3WiK6/KzRiBcBs1np0s+UIykq+TmeVAV5Zm+RF6WmLY8pJ5P3CP66AnGfgA/h3/VkXPNzYzpp9h+/pi0LJNxU4zFSURgHrazpTeUb2hnCNzOj+SW/b902j6F3k+GOMdby2sqtBklZKFlRsD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=QTG2Hu+D; arc=none smtp.client-ip=74.6.130.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="MxWvjjb4"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-aa679ad4265so717299566b.0
-        for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 14:07:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1737151635; x=1737756435; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=I1x9/3rtT8xahu83WqhvesVp14sIcbGuzyo8Y5wksbs=;
-        b=MxWvjjb47Dl4GQDpEWSyVWz17B1K1C11XTgyFDez2kf26m5Bj+WiGZloOowlDDdET6
-         JxpgZaD+EvX5LSFrF470Vxqq1ly/qXrXNWqvT48SCRMOIyNfq7FZO9pFCfig3980x3iL
-         ysU/XZ5jWOrHBwBhVB2SHAblhNANLIDVYNeRA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737151635; x=1737756435;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=I1x9/3rtT8xahu83WqhvesVp14sIcbGuzyo8Y5wksbs=;
-        b=b2m2CVNyb64eP5tUqcmrEI/xMIQfpomnshAqySLBSBlvFzf12Q2II9sFORhYRateip
-         vH5U4JlVmfk6fFVW/ruYPDayoadH/xf8SjrjJy1W2vq4JhRYtXGJ3evU5JOb9JBIK9GQ
-         0x9QUp9v07eyQ6koJcFpGxt/1r1cYtlYm7udSTNwAzo77/QzFo2Mu6EgvT5JYkNEqItu
-         qOXpZwxc792pWHSBFzxzvu9ceEAR7JVY4IrZrWv35Xvao8SsU5wl6vFSuJ3XFgCPq9Zu
-         bgtKD6YRdBDYx9GOpR+j8t524aHc5yAb5jRTFS344BKbP//az/qek6BLLUqcPw2FqI31
-         fRiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWNYDkE441YlPUVoqM2mGE3oeFg9P/Aub0wNR18w68o1ae4Jzt7OzHu3jiYbQS+VjrmX4k9eRg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxL+apM7NhFiozsx0iKILRQhkvBKp2DAbQ80Mg9y73XuVxg+11U
-	Mb6XQhT1uL62yr8RsLBVwxPA3s5U87KuiSOvF6p0PE/n5TPmfLnmb3AYFm/2tf2evmTxkEt7V2O
-	y2sg4KWkzBx9Hkg4e8ZNFQoh9HF0XbHemnU2n
-X-Gm-Gg: ASbGncsll4FV5p2ptLAcEoELcKuCa6bv8dsK87kUSgPHsKYRQwjU2iSbSZJH5slOpac
-	h8JAUHLZ5m/1W4xHoOVisg1zCovThIIqzuyrBp3A=
-X-Google-Smtp-Source: AGHT+IGtGk4zuRPsjGphCgcUl9ULsvtRiqrQbnsGUxJyzIxM0Pkb3B86Uqg8oeeWFo22g2nBFlYI/gryKDboWbBudXo=
-X-Received: by 2002:a17:907:9405:b0:aa5:53d4:8876 with SMTP id
- a640c23a62f3a-ab36e406c75mr848564966b.20.1737151635413; Fri, 17 Jan 2025
- 14:07:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="QTG2Hu+D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1737151710; bh=UA83hC/G4Of1hbLyj+LRwSJ/EKvVgrTXzPyDrvhG2+g=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=QTG2Hu+DkkxZnUWFW0ELYk9dPSiePXV5d/+CB7NnRsB8S/zgbF5aMhG/WnuDPPArqZTAXYOHW2+4I3TOqll/7iWnIazWGySWkfVhgpksORS6qal0OYbnT01itTQt20ZVr1BKgW049j+PLryQ44g7AjME5gMhOE6+GJLmWSKV0RxGeFYi3ndHXUFQZ+Pi8tVqtjH3wCRrMKeM24bkKHHW8fk1kDG7DogImNrSHDCLB96tL/ksL17nT3w6+gwdyNCsyDZDSR2y6YNq4f0vG0HILuxCKjoZYeG3qw/1VxID9sziT24gPzIbJ9luEO2mpkx2jyIoUAMfbe3uNrF531hVwg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1737151710; bh=kHF1Kxmi1SQTEC6hFA4jIew2kM0/HkP+++mUjsRKA1j=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=ZI95PnsGeSXo6n6y8e7GPwropNBqcEFxHrGWdFL2/qSEfTEBZx60N7o+RnRsXQdIn/2a8qDJEyxDO45m3smz4me4/EGUymE6q2Zxv2+VcTP3Zl0okdh65mjqT1xvSrGB2VBCLJ6+bLgKH3lVblWNI49wRqY4G5ekT9pGrJdrOShaKQA7nCkAjzpCQYVhJ5HYirV8CSA+B408t9b7G5T5rDFFRlVcI81qezrBJu/CCXdcoJvTj1OWZapNI3EuPAbJpDTBxX5tp/AYd5CR2jPLF7zCersJYKKiBCXHv9W3WOUafO3jFzV8S70l/YqZqWVZ9u3eRGM+OzJuCxoFLXbsYQ==
+X-YMail-OSG: xfvZO4IVM1mZQpVg_g9IRENk._e2vX13yiM66cF1HNQExz0_RdVYBichFLlNzYQ
+ Ms7se2AOldbZCHZ3atmyVmPXmYedvFnLw9YaZknhH9xrh.AzmZypUotMCAvWLRcePYLT7AHE4zty
+ 0kWrwZtVxWklQOMzMhsVpf5INuHfFdyJRqk_9vGtWrAUa8ZbHGyeezW889a2fHn8Y4oYFrQd.rL7
+ BtVPfuKo6S9FRPxxXs9IpmPiEtx74SH_goO0a3IJsbcwZ6iPXPRf48oOeKhz7kTK4cmsEaBeR1Tc
+ Y86miLVkZwYfdVdPOk99zrZT_wsmNe1HhlYLTVYiAqoBzXh4e61xXWHlBpT4fxudPyxZAoXTlmQZ
+ HlQ.74afJbAmzWK0xnfcIHTX0jEf_GQkyECzashz0v1hMRBTP9aNcfKJiyqp8dGhnK1c_3XB6W6k
+ gpZ9Mz8H48RVBFpJaEYrdyXZAlD3TWiOQtZa9t_BsnVuef5TQ5LvWt3HURC77EJf09a8WsVT92pp
+ CQ8FJTC7XRD9JtsQGlmOwm7FIwYT8cCANyafL4avfTIomdYf1qYQDMq4TDtEzSltmJWs8sk..3cc
+ OPDC_DBUyZJtYuf7ALLI2poNAlIB7UTaM1IzqLtPEQ8QcCESANloDbJLLSC4fv_Vd_D2rxdWW18i
+ 5fOxX1koFE49PccEhK.jCwVDo4lfJ2QH4Kva4HwNh7tqaBG_Tb814Uw6k30w7HciCXAKUgiqPRTC
+ xmixjec6DJ8g7hU92LMKEKE0Fa9h7BE6xFbcv9X.cQgmaNZhh0KWd4VEmhy0o5Wt.TMX8WTSm3Bh
+ F31GRXfRXCQXvVAdsVuo95fbVQhAe89MFa1Lkv0F6DdpVEZFP1jxT3jixUU50AU_PPMp3T0r0SYz
+ 8p8QlC2_ybIb8T5z9Q_MpF4Hg08fIg89JsDYHeD6V27MvTbdjJWamdxKz0fZ69gn2Q3.5Vgk_8Tx
+ IRJAiZyo7cTTBFMIDKw7MKHhVOiv2_uZfVxe4ZeAKLP2uugIX9DtLa0xFLaLL.wOPF0xYohFCxEz
+ 6z_nCgG6J9XOjvxNuVmz8Ij9oEBN2vB.AU_oBOG8G7HGuVqwMsKy_St125mv2giKS4Ww4HEUTeoH
+ M1rpKXbJI.rzF1ga1d9EYc5DaV7DnhAqBwQTyh.UHaaMx_XAlTFRQIj.zC99qYgRzux4atmmP1P4
+ zmm6ozclCd01p.pI2yxaBwKTjKspzdsrpMT.l3VCFLvUzFRvCqwUqlqb1c2_mO7Y0IrvDnJk4Bot
+ BxmfGRh6xwStsEkxlrvRUJCc08f4Dy8f6c8r4piLjBfAvdhnd38pvYu5r01b9YfkPy90vQEYzJtM
+ lzqqbj2MjrG2mVsNESnza8x0wbmcgfGG1aABPL.4AHnsy2fBLbyhOnuFbr5wnk8df4RLPBAwkqia
+ NLbwcE_ajF6yVDxGYygo_FwUtlicGBYWsjXlmfYVCiJzMbqqA6BMka8zWK3PKT_b5.k_lra97.Dv
+ YjrNd6JBWbpLBLMuqDUHOtyKf.PBkbG4TuklXcNnYZOckd72GnW3VAJHhjfWuI5Vf4pk445GVgon
+ K3QoPFB8aTngcF9jemk3cbYOTyvkpk8qoi7Kgb6giqfXVTv9Z_YJgaq8RhgFWwtWpcw22J84pe8k
+ gYrrCdcXqlMhHpU_6q4qq9MrpLvv9_aHQ8aSJhuJvozTMIpTHkbJ1H_BgeZcWgdltzH29QHh3kxH
+ x6_A3bOJa08ZJAzGh0OCwEZntX04C6oqWOOe0WGnuGM3flaqgRYI0ybOYH1QPClOJzMQu6EdM1cP
+ 8WgE.x49lW3SPb7omA8vTFid11Nsr9EgGT8fUJtSYXZ2SkLdcD4cpSb8rQBLVIm7r6wPOTGBll6q
+ JE4EXzlD0R2e4jwkyNLS4aozAWHTTxCN1HG2f.NbEv.PTW7R3QmOQ7JbVOTVpIDbUByKIlwNGGJl
+ W89lYPN4Pem1_w3vDb7vRQUdN0GGbKmdzPPHB15KwPmjcMxm20J34LGRw_RKMIgt1CCRZ3uBvFst
+ sq66S2W_t_nW43OK6_SSvAxiiqDcTEkSm9XfimErwmIZPzfBmDhmLFEiGAQRD9X9Ddj9AIQMDL0v
+ bF_pWEVwNnNDjELBFlcCvmPQCGkVXyfSD6oo6kQcgrkyN5AbqDvVKmBZain.zDC.HrJ86e09es6m
+ B_SSxZevMk4InCWHCCn.Weo.TETfvzSzBWiAXHAn.iJ3C63KsSqe9PhrLR_bTwqTT9ch4cNDV1SQ
+ xkUCBZqQwbHRTxQ6DU2FWeJh2IwuGqEf8SbVzc3m.lRBF4mZpPOZSVS5bIlLYnA01Pw--
+X-Sonic-MF: <ma.arghavani@yahoo.com>
+X-Sonic-ID: c0853c38-5a01-4c1b-b29e-0e25507b8384
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.bf2.yahoo.com with HTTP; Fri, 17 Jan 2025 22:08:30 +0000
+Received: by hermes--production-gq1-5dd4b47f46-pfhh2 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID faeef59307ebb752fac77bc703b94179;
+          Fri, 17 Jan 2025 21:38:06 +0000 (UTC)
+From: Mahdi Arghavani <ma.arghavani@yahoo.com>
+To: netdev@vger.kernel.org
+Cc: ncardwell@google.com,
+	edumazet@google.com,
+	haibo.zhang@otago.ac.nz,
+	david.eyers@otago.ac.nz,
+	abbas.arghavani@mdu.se,
+	Mahdi Arghavani <ma.arghavani@yahoo.com>,
+	Jason Xing <kerneljasonxing@gmail.com>
+Subject: [PATCH net v3] tcp_cubic: fix incorrect HyStart round start detection
+Date: Fri, 17 Jan 2025 21:37:51 +0000
+Message-ID: <20250117213751.2404-1-ma.arghavani@yahoo.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250117194815.1514410-1-kuba@kernel.org> <20250117194815.1514410-3-kuba@kernel.org>
-In-Reply-To: <20250117194815.1514410-3-kuba@kernel.org>
-From: Michael Chan <michael.chan@broadcom.com>
-Date: Fri, 17 Jan 2025 14:07:03 -0800
-X-Gm-Features: AbW1kvaI-VVP_vSHoHAHpX2ZL1iOvOZ9JlOKmV6n85PD6wllY2YGgqJBVXRp7Tk
-Message-ID: <CACKFLinRxGgrgz8LUROsK0O+KTk=4a2B=mF-b2269JU+CigFPQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 2/6] net: provide pending ring configuration in net_device
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
-	pavan.chebbi@broadcom.com, ap420073@gmail.com
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000002c1727062bee2205"
+Content-Transfer-Encoding: 8bit
+References: <20250117213751.2404-1-ma.arghavani.ref@yahoo.com>
 
---0000000000002c1727062bee2205
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I noticed that HyStart incorrectly marks the start of rounds,
+leading to inaccurate measurements of ACK train lengths and
+resetting the `ca->sample_cnt` variable. This inaccuracy can impact
+HyStart's functionality in terminating exponential cwnd growth during
+Slow-Start, potentially degrading TCP performance.
 
-On Fri, Jan 17, 2025 at 11:48=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
-rote:
->
-> Record the pending configuration in net_device struct.
-> ethtool core duplicates the current config and the specific
-> handlers (for now just ringparam) can modify it.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The issue arises because the changes introduced in commit 4e1fddc98d25
+("tcp_cubic: fix spurious Hystart ACK train detections for not-cwnd-limited flows")
+moved the caller of the `bictcp_hystart_reset` function inside the `hystart_update` function.
+This modification added an additional condition for triggering the caller,
+requiring that (tcp_snd_cwnd(tp) >= hystart_low_window) must also
+be satisfied before invoking `bictcp_hystart_reset`.
 
-> @@ -688,21 +690,35 @@ static int ethnl_default_set_doit(struct sk_buff *s=
-kb, struct genl_info *info)
->                         goto out_dev;
->         }
->
-> +       dev =3D req_info.dev;
-> +
-> +       dev->cfg_pending =3D kmemdup(dev->cfg, sizeof(*dev->cfg),
-> +                                  GFP_KERNEL_ACCOUNT);
-> +       if (!dev->cfg_pending) {
-> +               ret =3D -ENOMEM;
-> +               goto out_tie_cfg;
-> +       }
-> +
->         rtnl_lock();
-> -       ret =3D ethnl_ops_begin(req_info.dev);
-> +       ret =3D ethnl_ops_begin(dev);
->         if (ret < 0)
->                 goto out_rtnl;
->
->         ret =3D ops->set(&req_info, info);
->         if (ret <=3D 0)
->                 goto out_ops;
-> -       ethtool_notify(req_info.dev, ops->set_ntf_cmd, NULL);
-> +       ethtool_notify(dev, ops->set_ntf_cmd, NULL);
->
->         ret =3D 0;
->  out_ops:
-> -       ethnl_ops_complete(req_info.dev);
-> +       ethnl_ops_complete(dev);
->  out_rtnl:
->         rtnl_unlock();
-> +       if (ret >=3D 0) /* success! */
-> +               swap(dev->cfg, dev->cfg_pending);
-> +       kfree(dev->cfg_pending);
-> +out_tie_cfg:
-> +       dev->cfg_pending =3D dev->cfg;
+This fix ensures that `bictcp_hystart_reset` is correctly called
+at the start of a new round, regardless of the congestion window size.
+This is achieved by moving the condition
+(tcp_snd_cwnd(tp) >= hystart_low_window)
+from before calling `bictcp_hystart_reset` to after it.
 
-If I understand this correctly, cfg_pending can momentarily point to
-the old cfg and freed memory before pointing to the new cfg outside of
-rtnl_lock.  Shouldn't it be inside the rtnl_lock?
+I tested with a client and a server connected through two Linux software routers.
+In this setup, the minimum RTT was 150 ms, the bottleneck bandwidth was 50 Mbps,
+and the bottleneck buffer size was 1 BDP, calculated as (50M / 1514 / 8) * 0.150 = 619 packets.
+I conducted the test twice, transferring data from the server to the client for 1.5 seconds.
+Before the patch was applied, HYSTART-DELAY stopped the exponential growth of cwnd when
+cwnd = 516, and the bottleneck link was not yet saturated (516 < 619).
+After the patch was applied, HYSTART-ACK-TRAIN stopped the exponential growth of cwnd when
+cwnd = 632, and the bottleneck link was saturated (632 > 619).
+In this test, applying the patch resulted in 300 KB more data delivered.
 
-In the bnxt patch, we now look at cfg_pending so it must always point
-to the correct cfg.
+Fixes: 4e1fddc98d25 ("tcp_cubic: fix spurious Hystart ACK train detections for not-cwnd-limited flows")
+Signed-off-by: Mahdi Arghavani <ma.arghavani@yahoo.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Cc: Neal Cardwell <ncardwell@google.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Haibo Zhang <haibo.zhang@otago.ac.nz>
+Cc: David Eyers <david.eyers@otago.ac.nz>
+Cc: Abbas Arghavani <abbas.arghavani@mdu.se>
+---
+ net/ipv4/tcp_cubic.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---0000000000002c1727062bee2205
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+diff --git a/net/ipv4/tcp_cubic.c b/net/ipv4/tcp_cubic.c
+index 5dbed91c6178..76c23675ae50 100644
+--- a/net/ipv4/tcp_cubic.c
++++ b/net/ipv4/tcp_cubic.c
+@@ -392,6 +392,10 @@ static void hystart_update(struct sock *sk, u32 delay)
+ 	if (after(tp->snd_una, ca->end_seq))
+ 		bictcp_hystart_reset(sk);
+ 
++	/* hystart triggers when cwnd is larger than some threshold */
++	if (tcp_snd_cwnd(tp) < hystart_low_window)
++		return;
++
+ 	if (hystart_detect & HYSTART_ACK_TRAIN) {
+ 		u32 now = bictcp_clock_us(sk);
+ 
+@@ -467,9 +471,7 @@ __bpf_kfunc static void cubictcp_acked(struct sock *sk, const struct ack_sample
+ 	if (ca->delay_min == 0 || ca->delay_min > delay)
+ 		ca->delay_min = delay;
+ 
+-	/* hystart triggers when cwnd is larger than some threshold */
+-	if (!ca->found && tcp_in_slow_start(tp) && hystart &&
+-	    tcp_snd_cwnd(tp) >= hystart_low_window)
++	if (!ca->found && tcp_in_slow_start(tp) && hystart)
+ 		hystart_update(sk, delay);
+ }
+ 
+-- 
+2.45.2
 
-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
-OnaLEot1MoQO7BIe5S9H4AcCEXXcrJJiAtMCl47ARpyHmvQFQFFTrHgUYEd9V+9bOzY7MBIGSV1N
-/JfsT1sZw6HT0lJkSQefhPGpBniAob62DJP3qr11tu8CAwEAAaOCAdowggHWMA4GA1UdDwEB/wQE
-AwIFoDCBowYIKwYBBQUHAQEEgZYwgZMwTgYIKwYBBQUHMAKGQmh0dHA6Ly9zZWN1cmUuZ2xvYmFs
-c2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNydDBBBggrBgEFBQcw
-AYY1aHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAw
-TQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYBBQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2Jh
-bHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwSQYDVR0fBEIwQDA+oDygOoY4aHR0cDov
-L2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcmwwJAYDVR0R
-BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQU31rAyTdZweIF0tJTFYwfOv2w
-L4QwDQYJKoZIhvcNAQELBQADggEBACcuyaGmk0NSZ7Kio7O7WSZ0j0f9xXcBnLbJvQXFYM7JI5uS
-kw5ozATEN5gfmNIe0AHzqwoYjAf3x8Dv2w7HgyrxWdpjTKQFv5jojxa3A5LVuM8mhPGZfR/L5jSk
-5xc3llsKqrWI4ov4JyW79p0E99gfPA6Waixoavxvv1CZBQ4Stu7N660kTu9sJrACf20E+hdKLoiU
-hd5wiQXo9B2ncm5P3jFLYLBmPltIn/uzdiYpFj+E9kS9XYDd+boBZhN1Vh0296zLQZobLfKFzClo
-E6IFyTTANonrXvCRgodKS+QJEH8Syu2jSKe023aVemkuZjzvPK7o9iU7BKkPG2pzLPgxggJtMIIC
-aQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQD
-EyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxeQGjDntHGb2iaQkIw
-DQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIPwEgWin0+1vPUi/waNyl0KsoE/boNIp
-TjQgMKS0s6fIMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDEx
-NzIyMDcxNVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCG
-SAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQC
-ATANBgkqhkiG9w0BAQEFAASCAQBTI35vgt+57p1SAstIZFtvGL8TXxANr2UF24mzj1IBlKEI0m/6
-fYk5p8KMYW6XTryG7GIKz09m2gQlUakoZ2WLw3fFaOTePbBQwWXFNjdHGCP8U+HyxsFD/yYCkD35
-cR41twoXhFrHvEZiEo9C327Qyt9QYsKi67ahfWCJAJjl3J/jCYbChSqrRPtsUkrzZHHLT2NjcZI1
-bPec3Zfmp0XnhLlQpScnlZDYM4t/wA0J+4vOm99R0jpXix5r9AmsawDD1wdJZHavPH8E++4LHaQa
-UpWqvxIfWVIfY9qlXMxma5aay33G4993UgszQL3S4HnI62br8gU9Hd/zjUhIrxhb
---0000000000002c1727062bee2205--
