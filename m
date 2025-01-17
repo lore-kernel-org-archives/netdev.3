@@ -1,184 +1,220 @@
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55961AAA1A;
-	Fri, 17 Jan 2025 21:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843721AA1F1
+	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 21:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737149530; cv=none; b=DRZBdcIAmlEMkQghdSLysk6TF204GYXVVNi0rSgm5onH2Hyptp9CjWJnVw/QT5QLoUFrc++NxvkuIIEJCNOkXO/oC4joqkGRStKQ8GiQ2KBBVI1K4m1K8gDE8ZLVrnnuMP1PITa6T2WemrZWygZi4k+LpYHdDU8ftbnI+m62KvY=
+	t=1737150054; cv=none; b=aFDJfk/ATIA0OVO1qbrI9de6lsyCV4Hwh0Fne1MGC2lTtumoxOFC3RP3qbnRhvWtfTIu9NbdYubDIU2gbqbYydFW8MylxoWX9WRvN+pOG0ESG69cpfK+oWrmNhhXy4UyXIbgCrlzWuqpoA03fbbXSj4Y5CArrRrjfkSHu53O/g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737149530; c=relaxed/simple;
-	bh=RT5KFYi9rjDBfUSmWxVyHhs9joAIfzlu7Cq3Vfea9rM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DrGuebXjNZshWsNpXQD1m9XhCn05dS7YbzhofPQYjXR/yx9HTeRtipGs5M6SUz3pxv3ft7uLvimVQzCoNf7NwW2Oeib77CDVhLMHkcgH8KrhjWF6ZP6TCVYn8PmPAMylibHkOo5eFGNOQolVt1VwR8LyrjSIGOoXCM+pKgTSXv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pmvjg57z; arc=none smtp.client-ip=209.85.217.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737150054; c=relaxed/simple;
+	bh=KbSuyfbIITYzUAGZqF5lo/NkFkYeBB68XIjm5QUptXQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mmGzj+qIYFvepQq9Ndc+Cm2oXx6kQiXqz9/PIHud6RGLf3Yg6e4M46D8XtxRvgL7xe+xgypxgEVt3zzU9V2JuyEMyFbgkLralHMQFyLcOkEPBuhs9wA83hhuFG88m6/8AdGKeMqhcyYRW+UusdxQmbhoFH+bCo5LMA/f8nD2sCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A/E6TdrQ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pmvjg57z"
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-4afe4f1ce18so694796137.3;
-        Fri, 17 Jan 2025 13:32:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737149527; x=1737754327; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rji6jECYg9vqAK27wpja8rPr0seyPgDoXVWjax/UQ6k=;
-        b=Pmvjg57zNFcMfMEj9v2VZfuWA2SNxryumksEZ+tyF5HRr0OSGiiSpO1zE2QJUEzpJA
-         JCvEfs1FWBBQ+JCTaRoKB65Ojx+We+t7OuaD5HDRiFezulTbq+cm0W70b1NDVNGawybm
-         8KcutmA7zR78WDDBdzIzDCWJwDB2SE3wUD/rGdKZy8wYdkJKFWdlxrj7vRB0J7vHMAlm
-         5C/qxzenn+A7F2vt1NGiyL3C1LUzdR3WQ0lus+5tsApJ5EmMAhXD7HFsC2HHMKsvYIxL
-         lhiVJZvklNudvSjSYRq+Cb3Ffo2NOKt1QQoeI5rU8Ukf5Pnc0yeiZrYxLP/47mynXbmb
-         jUaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737149527; x=1737754327;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Rji6jECYg9vqAK27wpja8rPr0seyPgDoXVWjax/UQ6k=;
-        b=Ex4a8RfeOVocF+9FOyDSobF9IEfysGgDM4nq5U+Ecaxg4nb6CPGTiTXlWPJRzDyuFT
-         aNiAnCAE+avjZBSf1t/mSbE6lDhfmx40GJKcepHuJ7kBwKSrj9hueyr+QTCiv4du8lMi
-         xjp+TpuIGei6Pv+mHISN0M0m5XdqIt9TU53nulZAEhfPW+GHc3tFyUAADlunELmXbkj5
-         RNliDt+UgRSPDbFWAaCpFGJ1gpj6oc5MvFXLqT5IDRXFU+gpKdRJLIMrykyy84kUeJu7
-         JU7CrYUS3gNAppw0Z+3a/Z3n69mTubPym8dJ+IO4jxkty1SOx8o/Pr42UUmt5JDQsTOV
-         YxXw==
-X-Forwarded-Encrypted: i=1; AJvYcCW59pRVand60v9KwrV9x+A3gC54eiWud9l8HrFM3+2kf5RdGCBqdPhNeHzLtB4lfI10TC+rYGQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOig9x98lfrFQgxUg+U/asPUlrYUfVqPXbHtoTI32R/LkA0dhO
-	VzFyzOV/h4CT6ca6tValYvnRLeysyKZGjt6zWiZOYZqXCCNWDJoDfT6XIe3C
-X-Gm-Gg: ASbGncuSljidTJ9z3DA8JdkjkqTtGurToSYYKFqp+r43ZEy04yeB/RMLZ2MSeNw2/d6
-	1Q8MT5BlMzRZF6FySmPLX6H+crwmkKAuVxWk17LSnxclPkLbyXxaSiSiwcPKqWVjs6QXi7ECENZ
-	PrRA0yyX7+EaXTGnpwtgrsrxYHgT8rtDZS/kU5NGneBGR1ts2BKWJLIJ5l/D6D8HnwVW0BX9eoi
-	oBJZLhTv/kmAKHk+HoDCBQZHLWAiFNGT+T8mE8ULY5W+1KAJ92MqV/rZP0ntku1EU1uCHTQatQH
-	dt6payhu1lUvnEswpy1KkZSGoQna
-X-Google-Smtp-Source: AGHT+IHBPsSt8tMKnV0kxsNkGjS0QLi3kVmdXYfsBJOXganYv9d3wXIzSnsKwN9pNtIpTjR/qk3/TA==
-X-Received: by 2002:a05:6102:f0d:b0:4b4:e5c6:4c66 with SMTP id ada2fe7eead31-4b690bb56c4mr4838769137.6.1737149527461;
-        Fri, 17 Jan 2025 13:32:07 -0800 (PST)
-Received: from lvondent-mobl5.. (syn-107-146-107-067.res.spectrum.com. [107.146.107.67])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-8642cc7f77esm697390241.24.2025.01.17.13.32.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jan 2025 13:32:05 -0800 (PST)
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: pull request: bluetooth-next 2025-01-15
-Date: Fri, 17 Jan 2025 16:32:03 -0500
-Message-ID: <20250117213203.3921910-1-luiz.dentz@gmail.com>
-X-Mailer: git-send-email 2.47.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A/E6TdrQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1737150051;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=aq9MWQIX3mm2TtOspqMrqHd+ZJ2mtFutJbPOVlX++30=;
+	b=A/E6TdrQuBxb+Y/7/70pagw58uLkHLWuv5kKMBZfCA7CYGVcA1J24/WoX95i6k/aQBAhSz
+	mihQe2gwkLHpKso0w3zXL+K1ua+bJSjb08T94S6LF6Th7/BBAkh0Oa71O/UVgbQKChIR1j
+	+paf548gcunWww7LJZlu/S6KjOYWsYk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-658-zPmk1L_IPOeG9PDa_y2COw-1; Fri,
+ 17 Jan 2025 16:40:47 -0500
+X-MC-Unique: zPmk1L_IPOeG9PDa_y2COw-1
+X-Mimecast-MFC-AGG-ID: zPmk1L_IPOeG9PDa_y2COw
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 29B841956056;
+	Fri, 17 Jan 2025 21:40:46 +0000 (UTC)
+Received: from jmaloy-thinkpadp16vgen1.rmtcaqc.csb (unknown [10.22.64.91])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2006C19560A3;
+	Fri, 17 Jan 2025 21:40:42 +0000 (UTC)
+From: jmaloy@redhat.com
+To: netdev@vger.kernel.org,
+	davem@davemloft.net
+Cc: kuba@kernel.org,
+	passt-dev@passt.top,
+	jmaloy@redhat.com,
+	sbrivio@redhat.com,
+	lvivier@redhat.com,
+	dgibson@redhat.com,
+	imagedong@tencent.com,
+	eric.dumazet@gmail.com,
+	edumazet@google.com
+Subject: [net,v2] tcp: correct handling of extreme memory squeeze
+Date: Fri, 17 Jan 2025 16:40:35 -0500
+Message-ID: <20250117214035.2414668-1-jmaloy@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-The following changes since commit d90e36f8364d99c737fe73b0c49a51dd5e749d86:
+From: Jon Maloy <jmaloy@redhat.com>
 
-  Merge branch 'mlx5-next' of git://git.kernel.org/pub/scm/linux/kernel/git/mellanox/linux (2025-01-14 11:13:35 -0800)
+Testing with iperf3 using the "pasta" protocol splicer has revealed
+a bug in the way tcp handles window advertising in extreme memory
+squeeze situations.
 
-are available in the Git repository at:
+Under memory pressure, a socket endpoint may temporarily advertise
+a zero-sized window, but this is not stored as part of the socket data.
+The reasoning behind this is that it is considered a temporary setting
+which shouldn't influence any further calculations.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git tags/for-net-next-2025-01-15
+However, if we happen to stall at an unfortunate value of the current
+window size, the algorithm selecting a new value will consistently fail
+to advertise a non-zero window once we have freed up enough memory.
+This means that this side's notion of the current window size is
+different from the one last advertised to the peer, causing the latter
+to not send any data to resolve the sitution.
 
-for you to fetch changes up to 26fbd3494a7dd26269cb0817c289267dbcfdec06:
+The problem occurs on the iperf3 server side, and the socket in question
+is a completely regular socket with the default settings for the
+fedora40 kernel. We do not use SO_PEEK or SO_RCVBUF on the socket.
 
-  Bluetooth: MGMT: Fix slab-use-after-free Read in mgmt_remove_adv_monitor_sync (2025-01-15 10:37:38 -0500)
+The following excerpt of a logging session, with own comments added,
+shows more in detail what is happening:
 
-----------------------------------------------------------------
-bluetooth-next pull request for net-next:
+//              tcp_v4_rcv(->)
+//                tcp_rcv_established(->)
+[5201<->39222]:     ==== Activating log @ net/ipv4/tcp_input.c/tcp_data_queue()/5257 ====
+[5201<->39222]:     tcp_data_queue(->)
+[5201<->39222]:        DROPPING skb [265600160..265665640], reason: SKB_DROP_REASON_PROTO_MEM
+                       [rcv_nxt 265600160, rcv_wnd 262144, snt_ack 265469200, win_now 131184]
+                       [copied_seq 259909392->260034360 (124968), unread 5565800, qlen 85, ofoq 0]
+[5201<->39222]:     tcp_data_queue(<-) OFO queue: gap: 65480, len: 0
+[5201<->39222]:     __tcp_transmit_skb(->)
+[5201<->39222]:       tcp_select_window(->) tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160
+[5201<->39222]:         (inet_csk(sk)->icsk_ack.pending & ICSK_ACK_NOMEM) --> TRUE
+[5201<->39222]:       tcp_select_window(<-) tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160, returning 0
+[5201<->39222]:       ADVERTISING WIN 0, ACK_SEQ: 265600160
+[5201<->39222]:     __tcp_transmit_skb(<-) tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160
+[5201<->39222]:   tcp_rcv_established(<-)
+[5201<->39222]: tcp_v4_rcv(<-)
 
- - btusb: Add new VID/PID 13d3/3610 for MT7922
- - btusb: Add new VID/PID 13d3/3628 for MT7925
- - btusb: Add MT7921e device 13d3:3576
- - btusb: Add RTL8851BE device 13d3:3600
- - btusb: Add ID 0x2c7c:0x0130 for Qualcomm WCN785x
- - btusb: add sysfs attribute to control USB alt setting
- - qca: Expand firmware-name property
- - qca: Fix poor RF performance for WCN6855
- - L2CAP: handle NULL sock pointer in l2cap_sock_alloc
- - Allow reset via sysfs
- - ISO: Allow BIG re-sync
- - dt-bindings: Utilize PMU abstraction for WCN6750
- - MGMT: Mark LL Privacy as stable
+// Receive queue is at 85 buffers and we are out of memory.
+// We drop the incoming buffer, although it is in sequence, and decide
+// to send an advertisement with a window of zero.
+// We don't update tp->rcv_wnd and tp->rcv_wup accordingly, which means
+// we unconditionally shrink the window.
 
-----------------------------------------------------------------
-Andrew Halaney (1):
-      Bluetooth: btusb: Add new VID/PID 13d3/3610 for MT7922
+[5201<->39222]: tcp_recvmsg_locked(->)
+[5201<->39222]:   __tcp_cleanup_rbuf(->) tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160
+[5201<->39222]:     [new_win = 0, win_now = 131184, 2 * win_now = 262368]
+[5201<->39222]:     [new_win >= (2 * win_now) ? --> time_to_ack = 0]
+[5201<->39222]:     NOT calling tcp_send_ack()
+[5201<->39222]:   __tcp_cleanup_rbuf(<-) tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160
+[5201<->39222]: tcp_recvmsg_locked(<-) returning 6104 bytes.
+                [rcv_nxt 265600160, rcv_wnd 262144, snt_ack 265469200, win_now 131184]
+                [copied_seq 260040464->260040464 (0), unread 5559696, qlen 85, ofoq 0]
 
-Charles Han (1):
-      Bluetooth: btbcm: Fix NULL deref in btbcm_get_board_name()
+// After each read, the algorithm for calculating the new receive
+// window in __tcp_cleanup_rbuf() finds it is too small to advertise
+// or to update tp->rcv_wnd.
+// Meanwhile, the peer thinks the window is zero, and will not send
+// any more data to trigger an update from the interrupt mode side.
 
-Cheng Jiang (3):
-      dt-bindings: net: bluetooth: qca: Expand firmware-name property
-      Bluetooth: qca: Update firmware-name to support board specific nvm
-      Bluetooth: qca: Expand firmware-name to load specific rampatch
+[5201<->39222]: tcp_recvmsg_locked(->)
+[5201<->39222]:   __tcp_cleanup_rbuf(->) tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160
+[5201<->39222]:     [new_win = 262144, win_now = 131184, 2 * win_now = 262368]
+[5201<->39222]:     [new_win >= (2 * win_now) ? --> time_to_ack = 0]
+[5201<->39222]:     NOT calling tcp_send_ack()
+[5201<->39222]:   __tcp_cleanup_rbuf(<-) tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160
+[5201<->39222]: tcp_recvmsg_locked(<-) returning 131072 bytes.
+                [rcv_nxt 265600160, rcv_wnd 262144, snt_ack 265469200, win_now 131184]
+                [copied_seq 260099840->260171536 (71696), unread 5428624, qlen 83, ofoq 0]
 
-Dr. David Alan Gilbert (1):
-      Bluetooth: hci: Remove deadcode
+// The above pattern repeats again and again, since nothing changes
+// between the reads.
 
-En-Wei Wu (1):
-      Bluetooth: btusb: Add new VID/PID 13d3/3628 for MT7925
+[...]
 
-Fedor Pchelkin (1):
-      Bluetooth: L2CAP: handle NULL sock pointer in l2cap_sock_alloc
+[5201<->39222]: tcp_recvmsg_locked(->)
+[5201<->39222]:   __tcp_cleanup_rbuf(->) tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160
+[5201<->39222]:     [new_win = 262144, win_now = 131184, 2 * win_now = 262368]
+[5201<->39222]:     [new_win >= (2 * win_now) ? --> time_to_ack = 0]
+[5201<->39222]:     NOT calling tcp_send_ack()
+[5201<->39222]:   __tcp_cleanup_rbuf(<-) tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160
+[5201<->39222]: tcp_recvmsg_locked(<-) returning 131072 bytes.
+                [rcv_nxt 265600160, rcv_wnd 262144, snt_ack 265469200, win_now 131184]
+                [copied_seq 265469200->265545488 (76288), unread 54672, qlen 1, ofoq 0]
 
-Garrett Wilke (2):
-      Bluetooth: btusb: Add MT7921e device 13d3:3576
-      Bluetooth: btusb: Add RTL8851BE device 13d3:3600
+[5201<->39222]: tcp_recvmsg_locked(->)
+[5201<->39222]:   __tcp_cleanup_rbuf(->) tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160
+[5201<->39222]:     [new_win = 262144, win_now = 131184, 2 * win_now = 262368]
+[5201<->39222]:     [new_win >= (2 * win_now) ? --> time_to_ack = 0]
+[5201<->39222]:     NOT calling tcp_send_ack()
+[5201<->39222]:   __tcp_cleanup_rbuf(<-) tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160
+[5201<->39222]: tcp_recvmsg_locked(<-) returning 54672 bytes.
+                [rcv_nxt 265600160, rcv_wnd 262144, snt_ack 265469200, win_now 131184]
+                [copied_seq 265600160->265600160 (0), unread 0, qlen 0, ofoq 0]
 
-Hao Qin (1):
-      Bluetooth: btmtk: Remove resetting mt7921 before downloading the fw
+// The receive queue is empty, but no new advertisement has been sent.
+// The peer still thinks the receive window is zero, and sends nothing.
+// We have ended up in a deadlock situation.
 
-Hsin-chen Chuang (3):
-      Bluetooth: Remove the cmd timeout count in btusb
-      Bluetooth: Get rid of cmd_timeout and use the reset callback
-      Bluetooth: Allow reset via sysfs
+Furthermore, we have observed that in these situations this side may
+send out an updated 'th->ack_seq´ which is not stored in tp->rcv_wup
+as it should be. Backing ack_seq seems to be harmless, but is of
+course still wrong from a protocol viewpoint.
 
-Iulia Tanasescu (1):
-      Bluetooth: iso: Allow BIG re-sync
+We fix this by setting tp->rcv_wnd and tp->rcv_wup even when a packet
+has been dropped because of memory exhaustion and we have to advertize
+a zero window.
 
-Janaki Ramaiah Thota (1):
-      dt-bindings: bluetooth: Utilize PMU abstraction for WCN6750
+Further testing shows that the connection recovers neatly from the
+squeeze situation, and traffic can continue indefinitely.
 
-Krzysztof Kozlowski (1):
-      Bluetooth: Use str_enable_disable-like helpers
+Fixes: e2142825c120 ("net: tcp: send zero-window ACK when no memory")
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Jon Maloy <jmaloy@redhat.com>
+---
+v1: -Posted on Apr 6, 2024
+v2: -Improved commit log to clarify how we end up in this situation.
+    -After feedback from Eric Dumazet, removed references to use of
+     SO_PEEK and SO_PEEK_OFF which may lead to a misunderstanding
+     about how this situation occurs. Those flags are used at the
+     peer side's incoming connection, and not on this one.
+---
+ net/ipv4/tcp_output.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-Luiz Augusto von Dentz (1):
-      Bluetooth: MGMT: Mark LL Privacy as stable
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 0e5b9a654254..ba295f798e5e 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -265,11 +265,13 @@ static u16 tcp_select_window(struct sock *sk)
+ 	u32 cur_win, new_win;
+ 
+ 	/* Make the window 0 if we failed to queue the data because we
+-	 * are out of memory. The window is temporary, so we don't store
+-	 * it on the socket.
++	 * are out of memory.
+ 	 */
+-	if (unlikely(inet_csk(sk)->icsk_ack.pending & ICSK_ACK_NOMEM))
++	if (unlikely(inet_csk(sk)->icsk_ack.pending & ICSK_ACK_NOMEM)) {
++		tp->rcv_wnd = 0;
++		tp->rcv_wup = tp->rcv_nxt;
+ 		return 0;
++	}
+ 
+ 	cur_win = tcp_receive_window(tp);
+ 	new_win = __tcp_select_window(sk);
+-- 
+2.48.0
 
-Mark Dietzer (1):
-      Bluetooth: btusb: Add ID 0x2c7c:0x0130 for Qualcomm WCN785x
-
-Max Chou (1):
-      Bluetooth: btrtl: check for NULL in btrtl_setup_realtek()
-
-Mazin Al Haddad (1):
-      Bluetooth: MGMT: Fix slab-use-after-free Read in mgmt_remove_adv_monitor_sync
-
-Ying Hsu (1):
-      Bluetooth: btusb: add sysfs attribute to control USB alt setting
-
-Zijun Hu (1):
-      Bluetooth: qca: Fix poor RF performance for WCN6855
-
- .../bindings/net/bluetooth/qualcomm-bluetooth.yaml |  10 +-
- drivers/bluetooth/btbcm.c                          |   3 +
- drivers/bluetooth/btintel.c                        |  17 +-
- drivers/bluetooth/btmrvl_main.c                    |   3 +-
- drivers/bluetooth/btmtk.c                          |   4 +-
- drivers/bluetooth/btmtksdio.c                      |   4 +-
- drivers/bluetooth/btqca.c                          | 200 ++++++++++++++-------
- drivers/bluetooth/btqca.h                          |   5 +-
- drivers/bluetooth/btrtl.c                          |   4 +-
- drivers/bluetooth/btusb.c                          |  73 +++++---
- drivers/bluetooth/hci_qca.c                        |  33 ++--
- include/net/bluetooth/hci.h                        |   1 -
- include/net/bluetooth/hci_core.h                   |  14 +-
- include/net/bluetooth/hci_sync.h                   |   1 -
- net/bluetooth/hci_core.c                           |  24 +--
- net/bluetooth/hci_sync.c                           |  76 ++++----
- net/bluetooth/hci_sysfs.c                          |  19 ++
- net/bluetooth/iso.c                                |  36 ++++
- net/bluetooth/l2cap_sock.c                         |   3 +-
- net/bluetooth/mgmt.c                               | 145 ++-------------
- 20 files changed, 340 insertions(+), 335 deletions(-)
