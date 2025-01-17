@@ -1,174 +1,122 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C02B1F941F;
-	Fri, 17 Jan 2025 10:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0273E71750
+	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 10:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737109171; cv=none; b=DYV/5hc7f+XS7BMLk9Ok26ZtVUfQRe86NousmFSJAR7f9JHUBK0sReHPfUz1uq3m7/UizZ8XlmewvqoBBhRMONIhseusWgdZdSxN6T81dDGoEgG/jVyRuzp5Nng9N+R9WPUl4R5oZ9PZ7I83wokQDcIPtTmtf+UhH6GpnASjIQY=
+	t=1737109407; cv=none; b=op5zR3sIpeVmz210SsnfiNBFTEMgmLc8xWjIhCfcn+PVALA2bY8snPOGCBfxoCR6qnhPUt5QDAT60xAvBBpK0njce/dN1FN6esWFEWgZzJz/nMtLt/k/DoyzOTt7QB6GpN7DgdcwZrYOaJsGr6NGASsKY504RV+5q1NG329IUuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737109171; c=relaxed/simple;
-	bh=trBebw4L+wNpFVxLvcQsr5wqD59SAiHduvT3EkoHqPM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e4Nc3HP/D5hbHTV7N/zxvs6jhYFIDq0fAHx3XaVcbplGPDWPLWwyioBg02L0yDPgDYCu9TUbmxM8yfe2AiHBOVOXTEiUm9Rrz6OLLQwRikEsvEQESbt0M9mNr2Guybimhr6K+Ewmh0DDjVpnTpDSPcTtqRHJ4MShmwTPHiXOJKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l5SDUN6V; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1737109407; c=relaxed/simple;
+	bh=Shfj2iDGTcqv57itPEupTtFhVPemDARtS6EZEwmb++U=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=fPcRfRXstDbTNh/q9FciXYY6js8pyh2/5IVBZDk5Wcp3dU9GrLBAkIXECX/8yhp0LXyD8knt9dEy0kwJzY4xjSWEV5j51KYmTmALK0aItC4PfCtucN9YXQoOULEyXWdCYoDJZRof7DwPe33XLcRFevpaTpfLmPxo0CmBGSr3aa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W3ulusjh; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l5SDUN6V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737109168; x=1768645168;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=trBebw4L+wNpFVxLvcQsr5wqD59SAiHduvT3EkoHqPM=;
-  b=l5SDUN6VfWJSu4qikU3H5yjmgNX8j68yR+qvQn1aBJrqAPrTRILSPc+k
-   JBmpFwsUs/81NdZg2nPK3Q9oBpShpWdTYdOm7zwx1+XaOMPQxYwJm+IPj
-   FU/AI4zJEXoclnHCVhuydAjLa6/gEaacOSXWqgr49ILJ9ZtCSpaicDjhY
-   vs/TCkP+HQYA1cEyXVblE1BckSPpJiib+TMNInmqc7Hkgn9sGWUGoPc0e
-   RZMRmdCPvBZLuRVYONGZs+UOxr5dXsqyloT20UPW9uC0uT7P+sdsKXzcu
-   Rmrs/kILlc4Sset1vp4gYg16V/rLe98hjPwGyztr49S1wwX+qw/Z04dSA
-   A==;
-X-CSE-ConnectionGUID: oNZYXsEhQbeWSi4RoRK5+A==
-X-CSE-MsgGUID: q/KVQwGdTtqgSEaQ0FW0sg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11317"; a="36746391"
-X-IronPort-AV: E=Sophos;i="6.13,211,1732608000"; 
-   d="scan'208";a="36746391"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2025 02:19:28 -0800
-X-CSE-ConnectionGUID: UZprYXwuTHyYRjiGhNSEpw==
-X-CSE-MsgGUID: qd9KN/6WS+mbUq2ieYCq9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,211,1732608000"; 
-   d="scan'208";a="105827619"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 17 Jan 2025 02:19:23 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tYjRf-000T3r-2A;
-	Fri, 17 Jan 2025 10:19:19 +0000
-Date: Fri, 17 Jan 2025 18:18:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jason Xing <kerneljasonxing@gmail.com>, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	dsahern@kernel.org, willemdebruijn.kernel@gmail.com,
-	willemb@google.com, ast@kernel.org, daniel@iogearbox.net,
-	andrii@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com,
-	song@kernel.org, yonghong.song@linux.dev, john.fastabend@gmail.com,
-	kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com,
-	jolsa@kernel.org, horms@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, Jason Xing <kerneljasonxing@gmail.com>
-Subject: Re: [PATCH net-next v5 05/15] net-timestamp: add strict check in
- some BPF calls
-Message-ID: <202501171802.CSquHTL3-lkp@intel.com>
-References: <20250112113748.73504-6-kerneljasonxing@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W3ulusjh"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43622267b2eso18153845e9.0
+        for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 02:23:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737109404; x=1737714204; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jQxE00xwDdztL1PB3TvziSm/QBihE9Uxgd4Ub65TbHI=;
+        b=W3ulusjhxHqAKKzM80RYgCy5lCmxDYkNjYoYOJnIhxuCfecT82+vCJpzB0IcHswYZe
+         WWQfyfzU2/Mhv2AitRJR29zyDVLWMglVbPOJkKJF2k3MdSaIRlT1f2M5AEgsBT8OBM3G
+         RJzWaCyCc2p1sdRQYlx7L8FIZHbTAOS+9Hup9JMFlqkYdvvPG/f1InXq5Y5PpM0uK4my
+         vFV3tS9/iKQFASxbM5DOr1r2/Sy30ysnVKGLdpghNdX1dNqp3b/gFWSPwNYT1mMbvh0e
+         jYl6IlOJQXR7oU8W1kvjyxIBB7+UVzh/7XscEcgeocfVOwB7o/7P/bRlAeRrijmUGsip
+         ZuSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737109404; x=1737714204;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jQxE00xwDdztL1PB3TvziSm/QBihE9Uxgd4Ub65TbHI=;
+        b=KKanSjJe620u4NUzi+c+KEHWI/qQsr24wu1OjZHVEFdPbvGCNXusJlawELxhCt+l1b
+         GUxH16MGhGco4m6e7ZnLtY0oq8DDUW4CxVjaEqlzMThFPNDmKKQz0GFxwI1R9eYaXm2c
+         uDhdSZiSOMKvblR7hfj1ha76nJoTmntwkr0DG+g7pQh8W8m5/i0A1or3HXKOTh/VdA8Z
+         28kUyMJb8+BJqSFEDwkeG4piSaBW89qaUWBvRhuPdx79dKyLUWEqThK/8wUH7PiehN8L
+         KmR/0LwIQ+DV+/8XpzwHedKqhMUiBCWWrBTsr3POQq0wBQVi/4/jOK81KLNLq/Gt47hs
+         Joqw==
+X-Gm-Message-State: AOJu0YzbdLmnPKaPxfzR/t8BgZcREVRV7W5+JZIeRQTBwdJqvkox5rYs
+	qPhSK3hNyWIf6LY8oIDI/cIUW7FWyuWy/rjadB3fnH1dpN4gJXSQDlgmiw==
+X-Gm-Gg: ASbGnct5PnP7bEr4IP20l41pcfGGagcOoJaKI0/UIRQFBr3l7crKdZ/HcrOffLQRWHC
+	Ck40tWf6FLcaSde2zkr2SzsI2acLW2mTJTJw8d+2mgsPDPW2JWkehHAdtl0wpOk3e7KlaVfNHxM
+	3HzXiYYNnIGjuJpqQRx8o63gTFvSs5BDCZJ265Fp+QaW/BirnnOngUIYaLcl4RqFqSo9i7d0PNt
+	4+JefqBINEtKynMGsjBAe8kJ2f0d7U6oD57Zc7S6XPv5BbOxbLYMqRR/FHHpVRaicAH3EJt94DF
+	Wh4Usftl13rSxG/Xe0Cp5H9mlVbsxzfd0Gsdx/dYZnC5
+X-Google-Smtp-Source: AGHT+IG2ASDVaUyVZ1n8SgyW8AsgfvSnJbxEjPqNkXW2FaG4eBev/zqvxKRdyqNH9RsayZzzjT8sQQ==
+X-Received: by 2002:a05:600c:9a3:b0:434:fa73:a907 with SMTP id 5b1f17b1804b1-4389191b819mr17771805e9.13.1737109403950;
+        Fri, 17 Jan 2025 02:23:23 -0800 (PST)
+Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43890367b48sm28825495e9.0.2025.01.17.02.23.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Jan 2025 02:23:23 -0800 (PST)
+Subject: Re: [PATCH net v2] net: avoid race between device unregistration and
+ ethnl ops
+To: Antoine Tenart <atenart@kernel.org>, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, edumazet@google.com
+Cc: netdev@vger.kernel.org
+References: <20250116092159.50890-1-atenart@kernel.org>
+From: Edward Cree <ecree.xilinx@gmail.com>
+Message-ID: <9835ebf2-0b27-ff7d-98b8-bd8837d35be2@gmail.com>
+Date: Fri, 17 Jan 2025 10:23:22 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250112113748.73504-6-kerneljasonxing@gmail.com>
+In-Reply-To: <20250116092159.50890-1-atenart@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 
-Hi Jason,
+On 16/01/2025 09:21, Antoine Tenart wrote:
+> The following trace can be seen if a device is being unregistered while
+> its number of channels are being modified.
+> 
+>   DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+>   WARNING: CPU: 3 PID: 3754 at kernel/locking/mutex.c:564 __mutex_lock+0xc8a/0x1120
+>   CPU: 3 UID: 0 PID: 3754 Comm: ethtool Not tainted 6.13.0-rc6+ #771
+>   RIP: 0010:__mutex_lock+0xc8a/0x1120
+>   Call Trace:
+>    <TASK>
+>    ethtool_check_max_channel+0x1ea/0x880
+>    ethnl_set_channels+0x3c3/0xb10
+>    ethnl_default_set_doit+0x306/0x650
+>    genl_family_rcv_msg_doit+0x1e3/0x2c0
+>    genl_rcv_msg+0x432/0x6f0
+>    netlink_rcv_skb+0x13d/0x3b0
+>    genl_rcv+0x28/0x40
+>    netlink_unicast+0x42e/0x720
+>    netlink_sendmsg+0x765/0xc20
+>    __sys_sendto+0x3ac/0x420
+>    __x64_sys_sendto+0xe0/0x1c0
+>    do_syscall_64+0x95/0x180
+>    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> 
+> This is because unregister_netdevice_many_notify might run before the
+> rtnl lock section of ethnl operations, eg. set_channels in the above
+> example. In this example the rss lock would be destroyed by the device
+> unregistration path before being used again, but in general running
+> ethnl operations while dismantle has started is not a good idea.
+> 
+> Fix this by denying any operation on devices being unregistered. A check
+> was already there in ethnl_ops_begin, but not wide enough.
+> 
+> Note that the same issue cannot be seen on the ioctl version
+> (__dev_ethtool) because the device reference is retrieved from within
+> the rtnl lock section there. Once dismantle started, the net device is
+> unlisted and no reference will be found.
+> 
+> Fixes: dde91ccfa25f ("ethtool: do not perform operations on net devices being unregistered")
+> Signed-off-by: Antoine Tenart <atenart@kernel.org>
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on net-next/main]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Xing/net-timestamp-add-support-for-bpf_setsockopt/20250112-194115
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20250112113748.73504-6-kerneljasonxing%40gmail.com
-patch subject: [PATCH net-next v5 05/15] net-timestamp: add strict check in some BPF calls
-config: arm-randconfig-r071-20250117 (https://download.01.org/0day-ci/archive/20250117/202501171802.CSquHTL3-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 14.2.0
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501171802.CSquHTL3-lkp@intel.com/
-
-smatch warnings:
-net/core/filter.c:7631 ____bpf_sock_ops_load_hdr_opt() warn: always true condition '(bpf_sock->op != 1009) => (0-255 != 1009)'
-
-vim +7631 net/core/filter.c
-
-  7622	
-  7623	BPF_CALL_4(bpf_sock_ops_load_hdr_opt, struct bpf_sock_ops_kern *, bpf_sock,
-  7624		   void *, search_res, u32, len, u64, flags)
-  7625	{
-  7626		bool eol, load_syn = flags & BPF_LOAD_HDR_OPT_TCP_SYN;
-  7627		const u8 *op, *opend, *magic, *search = search_res;
-  7628		u8 search_kind, search_len, copy_len, magic_len;
-  7629		int ret;
-  7630	
-> 7631		if (bpf_sock->op != SK_BPF_CB_FLAGS)
-  7632			return -EINVAL;
-  7633	
-  7634		/* 2 byte is the minimal option len except TCPOPT_NOP and
-  7635		 * TCPOPT_EOL which are useless for the bpf prog to learn
-  7636		 * and this helper disallow loading them also.
-  7637		 */
-  7638		if (len < 2 || flags & ~BPF_LOAD_HDR_OPT_TCP_SYN)
-  7639			return -EINVAL;
-  7640	
-  7641		search_kind = search[0];
-  7642		search_len = search[1];
-  7643	
-  7644		if (search_len > len || search_kind == TCPOPT_NOP ||
-  7645		    search_kind == TCPOPT_EOL)
-  7646			return -EINVAL;
-  7647	
-  7648		if (search_kind == TCPOPT_EXP || search_kind == 253) {
-  7649			/* 16 or 32 bit magic.  +2 for kind and kind length */
-  7650			if (search_len != 4 && search_len != 6)
-  7651				return -EINVAL;
-  7652			magic = &search[2];
-  7653			magic_len = search_len - 2;
-  7654		} else {
-  7655			if (search_len)
-  7656				return -EINVAL;
-  7657			magic = NULL;
-  7658			magic_len = 0;
-  7659		}
-  7660	
-  7661		if (load_syn) {
-  7662			ret = bpf_sock_ops_get_syn(bpf_sock, TCP_BPF_SYN, &op);
-  7663			if (ret < 0)
-  7664				return ret;
-  7665	
-  7666			opend = op + ret;
-  7667			op += sizeof(struct tcphdr);
-  7668		} else {
-  7669			if (!bpf_sock->skb ||
-  7670			    bpf_sock->op == BPF_SOCK_OPS_HDR_OPT_LEN_CB)
-  7671				/* This bpf_sock->op cannot call this helper */
-  7672				return -EPERM;
-  7673	
-  7674			opend = bpf_sock->skb_data_end;
-  7675			op = bpf_sock->skb->data + sizeof(struct tcphdr);
-  7676		}
-  7677	
-  7678		op = bpf_search_tcp_opt(op, opend, search_kind, magic, magic_len,
-  7679					&eol);
-  7680		if (IS_ERR(op))
-  7681			return PTR_ERR(op);
-  7682	
-  7683		copy_len = op[1];
-  7684		ret = copy_len;
-  7685		if (copy_len > len) {
-  7686			ret = -ENOSPC;
-  7687			copy_len = len;
-  7688		}
-  7689	
-  7690		memcpy(search_res, op, copy_len);
-  7691		return ret;
-  7692	}
-  7693	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
