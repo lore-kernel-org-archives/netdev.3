@@ -1,98 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5C92EAE5
-	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 12:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666071F7917
+	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 12:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737117943; cv=none; b=JRQvwS+AsuXzvEwsIh4m5Bv+K0+i5ddYBo3sCK/TuHMarOqIA6Im3ou5Xyx9iO9IHuekdcLWp6tSkjksYieKARoSVy/F9JONi0hryMvXQ5ynF6mjAo3pi0WPswWXIdxCp9yCi7UsM+3ksFvsqZ8evsxK0zu0p7sIX9NiKlWTQEg=
+	t=1737118390; cv=none; b=N45LjVZyPcnqfNgwsUkfKxqioYY345im1r6tvRFUutIgP+eh2Y5k62NRv5+i54ocg6H/LIzlIV6kAbPSe6WSExGM7U+VZSNRDOwaq0FVi5ub0eT1kWO/yguCQKSywhXTQbHBgo/Wzpb4W6FC2gxmGdIF/dZyugGzOzmVm+GpMkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737117943; c=relaxed/simple;
-	bh=lO44xu74L9hP8teUnj4QEYpRhlSZ+ynqWFZz1/lGBeM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K5mOTUNW4QTL1sR63jHQvrksm1SMtmlrhMjxzMok6i4nMoD+tv3reg0oCpVCpg31FTRHY8+qBuHVkyKxovC8llWwjb1+TQl1mM4AMV7d4r2ez3wUGZQ1jnz+fOEnL/6qddrjdGxc95mIJrPSpIV+FXtTTDaadUC5pgVdurkaIog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U35uVHrK; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1737118390; c=relaxed/simple;
+	bh=qN6oQdM0gmq9bZuCu0hFeMmKij2Q4XKghqJIhff84jU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=b0eFiJdoAjb+Egp7IDSu63f/I+NHREE7tNasfSGyAUzoI1GuwmFQ90vHUTkB0cnsXzPntM9U+bhyBbsDS2OWCq7wJKkw8K4q3DJzN2it28JPbOoen949TFmabYHFcWDWblviDpC7VMl+EDjGpBvJ1zrjx/xjLRQtpzz5RY38MgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ais6Urze; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U35uVHrK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737117942; x=1768653942;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lO44xu74L9hP8teUnj4QEYpRhlSZ+ynqWFZz1/lGBeM=;
-  b=U35uVHrKdTnAORZEbq3AghWfzgJgh4n+BdYjidVW0GsoZ2k6gvS6CplM
-   ag7YOKGEqex5UMRkTDyOjwMLuJtBBkL/DNnf/ePkLirfSIJzg0VVWSKK+
-   mkOD00rKbZ9z4i0TVEONWqUOx6BwXlpLxiuz1DuhCXdL4tQhyayDhaSBq
-   YzKoQ1wTsTPDSo02/T9yuHy727q56we8oasyrUgAYqkN7BPfSwtxtSUqs
-   LDcuQhTsJXoo0DqZ1ee6pRYgyLwXsXKZF8+QkfTssudslyyH20U/RFsCa
-   0NbjdoFYbgzPQKZSmGYLn2mdUpU8S0a8EnW9fGoQ20zblRSHuoXLtxDYs
-   Q==;
-X-CSE-ConnectionGUID: rgmT8Xk9SwyjCJH30z9DDg==
-X-CSE-MsgGUID: nwSaZ06LR1WIL7jOSRs+Zw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11318"; a="37431254"
-X-IronPort-AV: E=Sophos;i="6.13,212,1732608000"; 
-   d="scan'208";a="37431254"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2025 04:45:42 -0800
-X-CSE-ConnectionGUID: w5ahOcPVSbO3p87VkUzOOA==
-X-CSE-MsgGUID: PxT6/IYlSLyKp6OTF/7L1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="136681921"
-Received: from unknown (HELO localhost.igk.intel.com) ([10.102.22.54])
-  by fmviesa001.fm.intel.com with ESMTP; 17 Jan 2025 04:45:40 -0800
-From: Milena Olech <milena.olech@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Milena Olech <milena.olech@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>
-Subject: [PATCH v5 iwl-next 10/10] idpf: change the method for mailbox workqueue allocation
-Date: Fri, 17 Jan 2025 13:41:21 +0100
-Message-Id: <20250117124109.967889-11-milena.olech@intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20250117124109.967889-1-milena.olech@intel.com>
-References: <20250117124109.967889-1-milena.olech@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ais6Urze"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1737118387;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qN6oQdM0gmq9bZuCu0hFeMmKij2Q4XKghqJIhff84jU=;
+	b=ais6Urze9Hz61k47VIL93sPL3uGdTbsrTIfI7DZobbHIpiVnYr+thJmcj+d7SsIySvYoWt
+	zwZmcjytQ70EQi8j56t3agoylIkv2YYEk7sIBUmJ3ufJk6SOrr/ZgTP5HRQXC7nlqnHPX0
+	6JBMieRBQyJV3I5uS1EXRTiuRBW+JMQ=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-46-tydmje8_MNGgsAQ5FEk3bw-1; Fri, 17 Jan 2025 07:53:06 -0500
+X-MC-Unique: tydmje8_MNGgsAQ5FEk3bw-1
+X-Mimecast-MFC-AGG-ID: tydmje8_MNGgsAQ5FEk3bw
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-aa66bc3b46dso173810366b.3
+        for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 04:53:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737118385; x=1737723185;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qN6oQdM0gmq9bZuCu0hFeMmKij2Q4XKghqJIhff84jU=;
+        b=quG19wZFiQs0vYRwO97JOpp5ZzCEtN9sKDUsGFncR2kHR5t7Ia/Q8agjm55/p6EOUo
+         /Cjh1uv7eHfDexYj8/pSS4LpLheEUcVzo++x0k4trUWcOSsleYxVoj7iRvav2Q3e5Ix/
+         q1SAx1mq3wXO5vADTLMhiVApZnta2AKku0idrnqBlKvsyZ2nc81Rl0LnCD+0qDiPRDo9
+         asaE/J8sW0J09740/zueJFlX+mZJuL1qnz+BTp3ChHOfoxuw0x4MYiYjlUOmAAfosWp8
+         Njb/s7bCSisd1WeHZ08wskB/7p8Goa+IHW7gQopcViJde8Guvsqbcuo3NaO3QBZt14da
+         A98A==
+X-Forwarded-Encrypted: i=1; AJvYcCVexxBR7U1Nc5GvnbVx9Cn6KL2tjfYNjL9WNH4CRtDrYL30BB/VC4uhXdyod0WfxIHHvum3epo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4e8xRegYo3cwWRpTp+40adcjXioGCmEbMbVRONWqVpf+QJKkM
+	Gx1CGIv3I9rWwenpnv9+fOvSUfbD0Yctss/O94wMKTeiup6VeHwlagAk+FlecqpXHpc1wo8VqFb
+	vMIZk1ep8cVqbVcLCkhlrML92B71/oV34Da9nNINf5pAs51usTnwoXw==
+X-Gm-Gg: ASbGncuA/EnVlUfRD5338yIWKqST3kAWcgQk9n5x3TeSPR5yx7p4Wb2tv7v16yfjPhq
+	q1bNMzRkOvCrn2zoCeAmaYoNVrAMgxWisOPhayZY7+SgjVBOofDbzDsz0OP7Y9yvJI7WrgSxmQx
+	0tSKzZBEwcx+Kp0IkUfKYlORh9fL13PVB1oOqSZWvxuNYLLmcodMdICwFickh/LTGCgwt5lzc14
+	Gaanhio3rNOTyuRMFWhpb4b8bth0vswc8bUDWeLE3mAdt861klmgQ==
+X-Received: by 2002:a05:6402:518d:b0:5d0:ed92:cdf6 with SMTP id 4fb4d7f45d1cf-5db7d30114amr5261873a12.19.1737118384727;
+        Fri, 17 Jan 2025 04:53:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IECEDgqEa9N1u7Nf9uT2ewMSMFMEzvISL0C0K2RPIRXP5iZTwga5ZJuTpP90f83OYACuxDQZQ==
+X-Received: by 2002:a05:6402:518d:b0:5d0:ed92:cdf6 with SMTP id 4fb4d7f45d1cf-5db7d30114amr5261800a12.19.1737118384305;
+        Fri, 17 Jan 2025 04:53:04 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5db73670d52sm1471453a12.24.2025.01.17.04.53.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jan 2025 04:53:03 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 4674017E786F; Fri, 17 Jan 2025 13:53:02 +0100 (CET)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Alexander Lobakin <aleksander.lobakin@intel.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>, Lorenzo Bianconi
+ <lorenzo@kernel.org>, Daniel Xu <dxu@dxuuu.xyz>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
+ <andrii@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Jesper
+ Dangaard Brouer <hawk@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, netdev@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 4/8] bpf: cpumap: reuse skb array instead of
+ a linked list to chain skbs
+In-Reply-To: <20250115151901.2063909-5-aleksander.lobakin@intel.com>
+References: <20250115151901.2063909-1-aleksander.lobakin@intel.com>
+ <20250115151901.2063909-5-aleksander.lobakin@intel.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Fri, 17 Jan 2025 13:53:02 +0100
+Message-ID: <87a5bpob4h.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Since workqueues are created per CPU, the works scheduled to this
-workqueues are run on the CPU they were assigned. It may result in
-overloaded CPU that is not able to handle virtchnl messages in
-relatively short time. Allocating workqueue with WQ_UNBOUND and
-WQ_HIGHPRI flags allows scheduler to queue virtchl messages on less loaded
-CPUs, what eliminates delays.
+Alexander Lobakin <aleksander.lobakin@intel.com> writes:
 
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Milena Olech <milena.olech@intel.com>
----
- drivers/net/ethernet/intel/idpf/idpf_main.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+> cpumap still uses linked lists to store a list of skbs to pass to the
+> stack. Now that we don't use listified Rx in favor of
+> napi_gro_receive(), linked list is now an unneeded overhead.
+> Inside the polling loop, we already have an array of skbs. Let's reuse
+> it for skbs passed to cpumap (generic XDP) and keep there in case of
+> XDP_PASS when a program is installed to the map itself. Don't list
+> regular xdp_frames after converting them to skbs as well; store them
+> in the mentioned array (but *before* generic skbs as the latters have
+> lower priority) and call gro_receive_skb() for each array element after
+> they're done.
+>
+> Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> Tested-by: Daniel Xu <dxu@dxuuu.xyz>
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-index 85c65c2145f7..66f9e4633e3a 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-@@ -222,9 +222,8 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_serv_wq_alloc;
- 	}
- 
--	adapter->mbx_wq = alloc_workqueue("%s-%s-mbx",
--					  WQ_UNBOUND | WQ_MEM_RECLAIM, 0,
--					  dev_driver_string(dev),
-+	adapter->mbx_wq = alloc_workqueue("%s-%s-mbx", WQ_UNBOUND | WQ_HIGHPRI,
-+					  0, dev_driver_string(dev),
- 					  dev_name(dev));
- 	if (!adapter->mbx_wq) {
- 		dev_err(dev, "Failed to allocate mailbox workqueue\n");
--- 
-2.31.1
+Clever approach. A little hard to follow all the memmoves, but I think
+it checks out given the description above :)
+
+Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 
