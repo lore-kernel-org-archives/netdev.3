@@ -1,45 +1,45 @@
 Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E061B394F
-	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 22:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CC81ABEA8
+	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 22:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737151221; cv=none; b=mkm9l9ch0I/iyRVJuTXA1k1Or94RatVjhb6MjV4sCCHFeMltWt2yBlYZLSo6lyQUhH3jRKxk0jtbF1FiBoY5S07d9fJUXjhLH2UxFFCcjm6YJVgucT3RQIE438ADVwu+6bxHx5ff1UfQbwmqmCvKO6Zb88UxmawguPGePQ5ezyA=
+	t=1737151222; cv=none; b=oigNwT/AEaK7XEHTkv2ivEVyhU72rLyjKRQYIt8gAlpEYOTnX0SIGQAUV/8LYKkXlBiA+g8FEs9M4DLmW4+MqI8d1qtNDDXnEDK203lUWTPDcMpDlw3SCp0+KzfE4DyR+aVgb0AggpO0+WcGfqQPS0tlj3FQcZzDWmtaeVX8uVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737151221; c=relaxed/simple;
-	bh=zOyHN4J5SzHuCoLdZaQ6Sz50VcvPgiiPgWFa6eOw9Ws=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=VFN3+9W3CK98aF24+GopPA6iYNJ31Q/sccXEsizWOKhrZw49dXVGqUzITRf0BdGuYUQ14aj9z9hK//EFEhngBDByIWYsSbmcsPLkVYfup5Sq3i4PRRb/KheCQn6GHlGJpnKMuK77d2F0YASMjgjMepCWLMsLFTl8azFLhoGvjks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=Y4TNiVpB; arc=none smtp.client-ip=185.226.149.38
+	s=arc-20240116; t=1737151222; c=relaxed/simple;
+	bh=N1rpXhpDAxKvR72WGSUVuwZyQ7pLT66spvjJsOPYAP4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=EYkc4bflitmBSL7RfLvnJmxNsvOcJlRA3J+pXiSGttf1mL9ShW89SIFgvhxmVvfPr/C8s2SeRdJZSzZSqWiEVTGwILhr37vn1wbQF4F3xrGY9cz58VyiV+AX73GDGHT+4ivUyLLSxUwuXTxH34m2CNpNeH0nnf3Whh0OQ80XwW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=qlqGfWX+; arc=none smtp.client-ip=185.226.149.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="Y4TNiVpB"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="qlqGfWX+"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
 	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1tYuNq-008tgG-UQ; Fri, 17 Jan 2025 23:00:06 +0100
+	id 1tYuO0-008tnH-0I; Fri, 17 Jan 2025 23:00:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-Id:Date:Subject:From; bh=lZrgMIPqrwL81qHRF7ZBsqshsVG/SOpFzOsxKOwVFdU=
-	; b=Y4TNiVpBmoeSFAV9C06XmhyaSQmDN3tiNRKvwWCxB3sNONaK98e3QmG19MjOcUepqKiTrmzLC
-	VgKX2FE/48ElY+RgeM7n1ZL0cB4YsiLrSVfq12SPb6XxOaC18YsHnX1Bc7saUKsUGichO2dx1qz8g
-	OcIEqpwOax7HZkQEj+m7+6o1i/+Pwck+22x/StM10d51LAeUBWr7zu8ah22kIwN0JsgpMrgwvJkSa
-	BlgL/TxfoZ6xCVXl4PYsJOXcCWl5lgJJWqd3l49kdvsj6lBWgCUjrUwvlqHcZ2gLQnsJCsm7NsDhi
-	hQtLQbbK3c0X43OycUsRfqTQXTyu5g5YFrdsNg==;
+	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=f863rsH4oB2jDNyGTa+fje+52f5FupXXD3xN2+ozrh4=; b=qlqGfWX+0IZWElkglHGZYgfn+7
+	lQOAgbEXMVdH8bsNxK/kpx+JpNyY7mfLoCCZrZid7CSAroX8g9rbHy5eN3YFncCGTrtG5sk3FDAd+
+	gdoX9UKfZ+5ICgIQuWHHf2z6sHGBMi21HGAxLxuP1oA4f7qnBcBwVmD6CJYOORobcrq8UxOSfPrYF
+	fTsRjJVCLMcglJ9rh7SmvoVltGZDgrMul8PQS2m+VksT8by2Yzue4Hk0yYpeZsmhHDw9ggC10ZPL+
+	MbPM+lre8C/+IJ7fnZdjzD6N5BAS4W51gsUmuO8g+hZ4V8d3ZRsben6FX0qzP5cP5x5ylRpH1f9mX
+	6VnKFI/Q==;
 Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1tYuNq-0004sV-1L; Fri, 17 Jan 2025 23:00:06 +0100
+	id 1tYuNz-0004tm-Dr; Fri, 17 Jan 2025 23:00:15 +0100
 Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1tYuNj-006md8-ED; Fri, 17 Jan 2025 22:59:59 +0100
+	id 1tYuNm-006md8-5j; Fri, 17 Jan 2025 23:00:02 +0100
 From: Michal Luczaj <mhal@rbox.co>
-Subject: [PATCH net 0/5] vsock: Transport reassignment and error handling
- issues
-Date: Fri, 17 Jan 2025 22:59:40 +0100
-Message-Id: <20250117-vsock-transport-vs-autobind-v1-0-c802c803762d@rbox.co>
+Date: Fri, 17 Jan 2025 22:59:45 +0100
+Subject: [PATCH net 5/5] vsock/test: Add test for connect() retries
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,10 +48,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMzSimcC/x3MwQqDMAwA0F+RnBdoyxzor4wdMhtnEFJJOhHEf
- 1/Z8V3eCc4m7DB2Jxjv4lK0Id46mBbSD6PkZkgh9SHGB+5ephWrkfpWrDYjfWt5i2ZMme7DHHN
- PgaANm/Esx39/gnKF13X9AJWyOGVyAAAA
-X-Change-ID: 20250116-vsock-transport-vs-autobind-2da49f1d5a0a
+Message-Id: <20250117-vsock-transport-vs-autobind-v1-5-c802c803762d@rbox.co>
+References: <20250117-vsock-transport-vs-autobind-v1-0-c802c803762d@rbox.co>
+In-Reply-To: <20250117-vsock-transport-vs-autobind-v1-0-c802c803762d@rbox.co>
 To: Stefano Garzarella <sgarzare@redhat.com>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -60,31 +59,86 @@ To: Stefano Garzarella <sgarzare@redhat.com>,
 Cc: netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
 X-Mailer: b4 0.14.2
 
-Series deals with two issues:
-- socket reference count imbalance due to an unforgiving transport release
-  (triggered by transport reassignment);
-- unintentional API feature, a failing connect() making the socket
-  impossible to use for any subsequent connect() attempts.
+Deliberately fail a connect() attempt; expect error. Then verify that
+subsequent attempt (using the same socket) can still succeed, rather than
+fail outright.
 
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
-Michal Luczaj (5):
-      vsock: Keep the binding until socket destruction
-      vsock: Allow retrying on connect() failure
-      vsock/test: Introduce vsock_bind()
-      vsock/test: Add test for UAF due to socket unbinding
-      vsock/test: Add test for connect() retries
+ tools/testing/vsock/vsock_test.c | 52 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
- net/vmw_vsock/af_vsock.c         |  13 +++-
- tools/testing/vsock/util.c       |  56 +++++++---------
- tools/testing/vsock/util.h       |   1 +
- tools/testing/vsock/vsock_test.c | 136 ++++++++++++++++++++++++++++++++++-----
- 4 files changed, 155 insertions(+), 51 deletions(-)
----
-base-commit: 5d6a361dc01d823cb7c10697f16695d45a82b909
-change-id: 20250116-vsock-transport-vs-autobind-2da49f1d5a0a
+diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+index 7f1916e23858b5ba407c34742a05b7bd6cfdcc10..712650f993e9df68ceb68ae02334c2775be09c7c 100644
+--- a/tools/testing/vsock/vsock_test.c
++++ b/tools/testing/vsock/vsock_test.c
+@@ -1520,6 +1520,53 @@ static void test_seqpacket_transport_uaf_server(const struct test_opts *opts)
+ 	control_expectln("DONE");
+ }
+ 
++static void test_stream_connect_retry_client(const struct test_opts *opts)
++{
++	struct sockaddr_vm addr = {
++		.svm_family = AF_VSOCK,
++		.svm_cid = opts->peer_cid,
++		.svm_port = opts->peer_port
++	};
++	int s, alen = sizeof(addr);
++
++	s = socket(AF_VSOCK, SOCK_STREAM, 0);
++	if (s < 0) {
++		perror("socket");
++		exit(EXIT_FAILURE);
++	}
++
++	if (!connect(s, (struct sockaddr *)&addr, alen)) {
++		fprintf(stderr, "Unexpected connect() #1 success\n");
++		exit(EXIT_FAILURE);
++	}
++
++	control_writeln("LISTEN");
++	control_expectln("LISTENING");
++
++	if (connect(s, (struct sockaddr *)&addr, alen)) {
++		perror("connect() #2");
++		exit(EXIT_FAILURE);
++	}
++
++	close(s);
++}
++
++static void test_stream_connect_retry_server(const struct test_opts *opts)
++{
++	int fd;
++
++	control_expectln("LISTEN");
++
++	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
++	if (fd < 0) {
++		perror("accept");
++		exit(EXIT_FAILURE);
++	}
++
++	vsock_wait_remote_close(fd);
++	close(fd);
++}
++
+ static struct test_case test_cases[] = {
+ 	{
+ 		.name = "SOCK_STREAM connection reset",
+@@ -1655,6 +1702,11 @@ static struct test_case test_cases[] = {
+ 		.run_client = test_seqpacket_transport_uaf_client,
+ 		.run_server = test_seqpacket_transport_uaf_server,
+ 	},
++	{
++		.name = "connectible retry failed connect()",
++		.run_client = test_stream_connect_retry_client,
++		.run_server = test_stream_connect_retry_server,
++	},
+ 	{},
+ };
+ 
 
-Best regards,
 -- 
-Michal Luczaj <mhal@rbox.co>
+2.47.1
 
