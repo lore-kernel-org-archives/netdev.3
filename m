@@ -1,85 +1,78 @@
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEE31FECBC
-	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 12:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2962A1FF1C1
+	for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 12:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737117245; cv=none; b=FkMuTU+LyV3aPVFLzP/p2oAxuzl5Z7jqLEw6ILvxur0YwAgvpwlq4MZACiKLlEBx78ljlgjDRXoT5A1CZMl7nEQqKWrhybqr7Hb5w7Hzva6NstLQKDD05/iGzrfNlB/oJBYM/6WRE5ZqQ+J1wiXc0vfSZF/4i4/K694XLicKIhk=
+	t=1737117575; cv=none; b=ciGi6/AjxTpOFqAst2DcNd6POM7k2w2oXjDXVxeCRyFJ7eZja9Jmb2Pn7GfszJTPDf9lxdost7fwxSbjeLvfAuH4V2S6c9jmDPre1fPALBFMdngSYdzPfWqEtOcYjdWuc/RBFnadNTLQqG9BfYbd3kofAjOsvDf0pYtyAK4zK7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737117245; c=relaxed/simple;
-	bh=f6UH6L4B+hKtCwzKAlYd+xmm5Ot1kU+xbkfzuFhko94=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=Hr993dGSlWMjI3j6R+SZAS8jRMBYVjq8qsy3wQcUCG+gVZICEimFTX5r0Vo9nwHLKrRyrtIp7QNX64GTk8gnzuM3f54q24keNJNdXdCqpKpnO4oQ5zv1jrnP/+lz9j7QybRJrAAdWEAGbic7aQRN3YUEL0aUISaKQabQnhH4vBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a814bfb77bso25847045ab.0
-        for <netdev@vger.kernel.org>; Fri, 17 Jan 2025 04:34:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737117243; x=1737722043;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QvZtm/UtggZQ4vZzY3P7eWyMLxgL/oSk0kGt7oXniJs=;
-        b=XxyBpqAdAlIWrlUZGPRZwaJ7ZOXsBM24FipO9cxt7W7vmW+K/d416AK0+ycrWDAeCi
-         6ZL4LEWoVdTwQASxy0TVaU2ct0rmjTOmjodHUldjqUkp/ETEpPN465ekMhT3IGVWV6Wl
-         /QrJUi7umO8xAbODlas2vTk3bsDMZW2mVnA262s0r2g+j3MmEcsfqudhtCWLAqs+Hakl
-         HWQwyDwGlsBMu4C51tdnt+eLtO0esd71pYBPQ6mAFMpvgTl7W94x3JCIpIgoZD03ykwP
-         iJxan+OJme+WJUX97Moo0s6KVtfjLhEA/z0HvXbBjWtlcysnME1Q4JipjGSrwNblE0YL
-         6Iqw==
-X-Forwarded-Encrypted: i=1; AJvYcCX2BXS/FA4MdgxrOJm93miGdIlUXdvgcGikPq5ol5ULrTtur+AExr+DtP3ONSHX05wS+R1hapM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIF2QbVPoZ7moOboLNYjL2EHbzMPCrym74lSY5tE040NmxkQvM
-	dVyyXRSUwrL+z9NXNbyUWK4Gry+OaW6H6YmyZvYl7g4RbS+q8pl8mY3bMArlKZT97xVmdJFo+tV
-	rq6c3dBcCg4e5HkeNKoP5Q3/iHzsvJtO4gN/KFDbpIZ9bPufGYGAAFf4=
-X-Google-Smtp-Source: AGHT+IGSN+89+ev6I1KKIKrYVVMo2ys84hMSR+T3BfDaLgnUIIaFdFWMTnr/kHWhlVvZWahKwsOImXHsCYbnOPCcr/MWQDnXuHB1
+	s=arc-20240116; t=1737117575; c=relaxed/simple;
+	bh=lVzlYqo0AAiRB8Y7iHYECcZgZjk4c05E3QpFk19PthY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=simS/2eYC+6xOCACWgB0TbrVuSAhd+zUlA7h3cjelc7cpsVuq7oEWUVJ/r2145dL4MBbfmoQeSN4j4EirRnAb7PdL6XmGa5WiK+/9GaxKBOWPUZ1EsXto8uccq2ymj0C9ctqCYvqTc4XlqittlegXWaHq1JxcMBxcGaA/w0WypA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+Received: from kero.packetmixer.de (p200300c5973c90d8a96Dd71A2E03F697.dip0.t-ipconnect.de [IPv6:2003:c5:973c:90d8:a96d:d71a:2e03:f697])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 443D5FA197;
+	Fri, 17 Jan 2025 13:39:31 +0100 (CET)
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: kuba@kernel.org,
+	davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 02/10] batman-adv: Reorder includes for distributed-arp-table.c
+Date: Fri, 17 Jan 2025 13:39:02 +0100
+Message-Id: <20250117123910.219278-3-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250117123910.219278-1-sw@simonwunderlich.de>
+References: <20250117123910.219278-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:148e:b0:3ce:7cc9:9f46 with SMTP id
- e9e14a558f8ab-3cf748b4d2dmr14934665ab.9.1737117243572; Fri, 17 Jan 2025
- 04:34:03 -0800 (PST)
-Date: Fri, 17 Jan 2025 04:34:03 -0800
-In-Reply-To: <0000000000001e66f5061fe3b883@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <678a4e3b.050a0220.303755.0005.GAE@google.com>
-Subject: Re: [syzbot] [cgroups?] possible deadlock in console_lock_spinning_enable
- (5)
-From: syzbot <syzbot+622acb507894a48b2ce9@syzkaller.appspotmail.com>
-To: andrii@kernel.org, ast@kernel.org, bpf@vger.kernel.org, 
-	cgroups@vger.kernel.org, daniel@iogearbox.net, davem@davemloft.net, 
-	elic@nvidia.com, gregkh@linuxfoundation.org, hannes@cmpxchg.org, 
-	hawk@kernel.org, jasowang@redhat.com, jirislaby@kernel.org, 
-	john.fastabend@gmail.com, kafai@fb.com, kpsingh@kernel.org, kuba@kernel.org, 
-	len.brown@intel.com, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-serial@vger.kernel.org, mingo@redhat.com, mkoutny@suse.com, 
-	mst@redhat.com, netdev@vger.kernel.org, parav@nvidia.com, pavel@ucw.cz, 
-	rafael@kernel.org, rostedt@goodmis.org, songliubraving@fb.com, 
-	syzkaller-bugs@googlegroups.com, tj@kernel.org, yhs@fb.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-syzbot has bisected this issue to:
+From: Sven Eckelmann <sven@narfation.org>
 
-commit bc0d90ee021f1baecd6aaa010d787eb373aa74dd
-Author: Parav Pandit <parav@nvidia.com>
-Date:   Tue Jan 5 10:32:02 2021 +0000
+The commit 5f60d5f6bbc1 ("move asm/unaligned.h to linux/unaligned.h")
+changed the include without adjusting the order (to match the rest of the
+file).
 
-    vdpa: Enable user to query vdpa device info
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/distributed-arp-table.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1440c2b0580000
-start commit:   619f0b6fad52 Merge tag 'seccomp-v6.13-rc8' of git://git.ke..
-git tree:       upstream
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=1640c2b0580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=1240c2b0580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d1cb4a1f148c0861
-dashboard link: https://syzkaller.appspot.com/bug?extid=622acb507894a48b2ce9
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=175029df980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16f29a18580000
+diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
+index 801eff8a40e5..48b72c2be098 100644
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -7,7 +7,6 @@
+ #include "distributed-arp-table.h"
+ #include "main.h"
+ 
+-#include <linux/unaligned.h>
+ #include <linux/atomic.h>
+ #include <linux/bitops.h>
+ #include <linux/byteorder/generic.h>
+@@ -32,6 +31,7 @@
+ #include <linux/stddef.h>
+ #include <linux/string.h>
+ #include <linux/udp.h>
++#include <linux/unaligned.h>
+ #include <linux/workqueue.h>
+ #include <net/arp.h>
+ #include <net/genetlink.h>
+-- 
+2.39.5
 
-Reported-by: syzbot+622acb507894a48b2ce9@syzkaller.appspotmail.com
-Fixes: bc0d90ee021f ("vdpa: Enable user to query vdpa device info")
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
