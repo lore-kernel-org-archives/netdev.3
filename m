@@ -1,43 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74F2BA27;
-	Sun, 19 Jan 2025 01:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF6C33F3;
+	Sun, 19 Jan 2025 01:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737248759; cv=none; b=sls33rjZUYT6CDG1/U2YANl8tBWu4nGSfEBQb6f+Tbra6+15FG47Qkgd3Zx7Ytrhog8BJHWWhqCAfEm8VAMGAbtQnABpE8e6u2rvHKQ2hQRW+ZL/cPnOYF0EWyCLi7YhlkRP0Y+vrFAZlFpKRlTp6Kp9sczNbbxaa+XN68vdsyw=
+	t=1737249520; cv=none; b=NnJNMHocxGIOvY0wHKy0hVf3CFefmbHihTJpxC6H/gikLkDRMnaEJATRbNEXirDQpCTwKEj4Afq0qbxwucfDO5udehr1BGl7XvDJc1nxTLz9D6bBEhn7Qlfbpls/nIaSP1AiAuQrgp5edHnW3s5M/2hY4DQNEed/O46HKYDLBuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737248759; c=relaxed/simple;
-	bh=vRRlsD9TmN8rxirfApX/K5soEYyvXnGxyUL7tGwgxco=;
+	s=arc-20240116; t=1737249520; c=relaxed/simple;
+	bh=jMKpCmcqxvK3DzGSgrWoq4Cf+fLj1e49WAIOl9sn4Bw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e0+1q/W/Zz6DIhFPCgjFW1wW4ds2rKJpvZo+8JnWZC4t5p1OP/ijfTi7XteieeMKMWRhhtgFR1IQCr34759NtAYO7v6hmT0vY9J8TBj5juVMi9qufmzg1X/ett59ma6XyyPRsdxZFOqFgJYzOLGzRcqGhIC3rSWDhwtUv4ckedY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LUTEudmE; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Adc0CobJkV3OUEV6HZEaUFENqdInigx+Ku7qgEgxLj3bcj3NpthvK6Snmb+tiKhB0YjEd61Tq3QgAu01f6gUGZt8a+UbqByvshZVYfvW/7PfnXb1RG7emO+WAiUowXHATKv3Vf1qHEmWI+bZm/fbE80f5gG7wDhFvX5SXXEBFP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FypJzpKX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LUTEudmE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28F9C4CED1;
-	Sun, 19 Jan 2025 01:05:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FypJzpKX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B37C4CED1;
+	Sun, 19 Jan 2025 01:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737248759;
-	bh=vRRlsD9TmN8rxirfApX/K5soEYyvXnGxyUL7tGwgxco=;
+	s=k20201202; t=1737249519;
+	bh=jMKpCmcqxvK3DzGSgrWoq4Cf+fLj1e49WAIOl9sn4Bw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LUTEudmE+1J9Lg1N3qLdK+f4Sf/zdixF9Uc6ZrdJ0QXj9aq+LOEFtRztBfgfCyg43
-	 lrx/21Bz/0WPeDuLa2GRuqSdoLADtuRKvh5Fkp2WuPHdsoPTMAZ28DSQxdIzYBTcpS
-	 ZFvr+3Ol/bKRR60kbub4QwZacIlTUv95hb9L0HHLzn/bU4im+7Ik2+vB0drWK+kB1o
-	 Mo65eGUUmgBBK5OWfTBumtBmBY0wURvLMovFE+wbZ+HE0qaDrTxnXNfhIM9OZGUZYx
-	 cMUjQ1MPEK/H3Hf71/ingiMGConP3xgFXhSZBDMn2JjZaPM98BIpNxWNE8fik4boJJ
-	 hJOWLOvPBcopw==
-Date: Sat, 18 Jan 2025 17:05:57 -0800
+	b=FypJzpKXhRnecHOXBnK4x7g/SScCG/2nh+yqlCEizq567Kq/kBgEru/17+9uCocP5
+	 eJe1BcJaoMGYagxJe6FvZZ3SPKfNzAS89vwZ5sIgR4+J6j9/NGyrEdwH2ZipmogB9Q
+	 steQy6Y/gxSA64JEC69CiF+yQZrQIk5V1iINWkjpJeWcDTISTnOUZC6K5uWpcNG2Fj
+	 BLe67d7mhG3sYShHECxv6zv5TR7xGKNQpYMWLfVCSbdeeYuNzjGgngxNKHKdnwA3hc
+	 9i4R47cU8S/Wo/o9rIwkR58wRiyySpmHQ0XOXF45SI0ezGeuLlwTh8MDT8tLH5wfyV
+	 REdq7OprwISqQ==
+Date: Sat, 18 Jan 2025 17:18:38 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
- netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
- fw@strlen.de
-Subject: Re: [PATCH net-next 12/14] netfilter: conntrack: rework offload
- nf_conn timeout extension logic
-Message-ID: <20250118170557.69238151@kernel.org>
-In-Reply-To: <20250116171902.1783620-13-pablo@netfilter.org>
-References: <20250116171902.1783620-1-pablo@netfilter.org>
-	<20250116171902.1783620-13-pablo@netfilter.org>
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Radhey Shyam Pandey
+ <radhey.shyam.pandey@amd.com>, netdev@vger.kernel.org, Michal Simek
+ <michal.simek@amd.com>, linux-kernel@vger.kernel.org, Shannon Nelson
+ <shannon.nelson@amd.com>, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next v4 5/6] net: xilinx: axienet: Get coalesce
+ parameters from driver state
+Message-ID: <20250118171838.215e58ec@kernel.org>
+In-Reply-To: <20250116232954.2696930-6-sean.anderson@linux.dev>
+References: <20250116232954.2696930-1-sean.anderson@linux.dev>
+	<20250116232954.2696930-6-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,15 +49,21 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 16 Jan 2025 18:19:00 +0100 Pablo Neira Ayuso wrote:
+On Thu, 16 Jan 2025 18:29:53 -0500 Sean Anderson wrote:
 > +/**
-> + * nf_flow_table_tcp_timeout() - new timeout of offloaded tcp entry
-> + * @ct:		Flowtable offloaded tcp ct
-> + *
-> + * Return number of seconds when ct entry should expire.
+> + * axienet_cr_params() - Extract coalesce parameters from the CR
+> + * @lp: Device private data
+> + * @cr: The control register to parse
+> + * @count: Number of packets before an interrupt
+> + * @usec: Idle time (in usec) before an interrupt
 > + */
-> +static u32 nf_flow_table_tcp_timeout(const struct nf_conn *ct)
+> +static void axienet_coalesce_params(struct axienet_local *lp, u32 cr,
+> +				    u32 *count, u32 *usec)
 
-FWIW kernel-doc -Wall wants a : after the word Return:
+W=1 builds hit:
 
-net/netfilter/nf_flow_table_core.c:435: warning: No description found for return value of 'nf_flow_table_tcp_timeout'
+drivers/net/ethernet/xilinx/xilinx_axienet_main.c:277: warning: expecting prototype for axienet_cr_params(). Prototype was for axienet_coalesce_params() instead
+
+I'll apply the first 2 patches, 2nd one is almost a fix..
+The rest may need to wait until after the merge window, unless Linus
+tags -rc8.
