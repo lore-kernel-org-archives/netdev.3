@@ -1,118 +1,108 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E2A6125;
-	Sun, 19 Jan 2025 17:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6CB4502A;
+	Sun, 19 Jan 2025 17:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.188.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737307232; cv=none; b=ku0doJbVq1xT62sZI71aDhu3+19pOwlskfxQ2WrCqZ+XyeBt9OR3lLSvhqAA2U43uQcbGdAaS8byujKBf6ZrIpoNB1WpGoDSc4pCTA+4htiPFEwUmPeI6kQwI0zVd4KXNarEfuONFomyUDvLWAyL5QaqKfwJp5c4e9X2eltRKvU=
+	t=1737307266; cv=none; b=SnO5e4HslrPMMBRzBb1shvvYJEn9GmhHPtivxlrg9l53rYms4KFbFC/5OoZybbi/C00VccWWyoUWzfjDSWqw8BMyXwnfn8yszgZvONE7zV8QHXMixc1oAOOTP/kCqMJ6vWAaTULXl84q+pGDgxkCSiQ5gw/OosNkR5jP/Meg7Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737307232; c=relaxed/simple;
-	bh=J7v+BgIY5shT8MHdg4IpkqYCZQ3Diu+7902fJTq5oos=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bzUzcpuncqBWG4lXC/7cVRBZWOwYCFlcQgFSjyRLZO30tSxtHHOGfuqzWJhjCwQX48iNdGqWy6g+yzF01FJgW9++EKsyZBgxU5tLxpgSPWzl+eXT+8xQho4zmf+fdn+tkBSibWYSms4qnVnLcTUp/oGf6fekyqVfHYhJf6hME1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=LPld0bsq; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="LPld0bsq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=ccUdV+bJB0JqpX+VeyHCjAkIupowyxA6d+tOpsGgVs8=; b=LPld0bsqaGGBAyeqvvQre2TI23
-	miBlbXSrArijsZvPeONXoENHJdsXIGQEi9LK2NJdr6jhD1RpFJja6Kwz8Ii330917aD1RZv4CqPSF
-	WtKZ1/51B9vBAojad7ShDX/VrN3J3Keah9SOvqSm/ZYRT2SghI5OaCwnC3bqhnyYFeIc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tZYy9-0066hN-2y; Sun, 19 Jan 2025 18:20:17 +0100
-Date: Sun, 19 Jan 2025 18:20:17 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Sky Huang <SkyLake.Huang@mediatek.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Qingfang Deng <dqfext@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Steven Liu <Steven.Liu@mediatek.com>
-Subject: Re: [PATCH net-next 2/3] net: phy: mediatek: Move some macros to
- phy-lib for later use
-Message-ID: <af88a47d-9514-4969-9b39-a387d51fdf82@lunn.ch>
-References: <20250116012159.3816135-1-SkyLake.Huang@mediatek.com>
- <20250116012159.3816135-3-SkyLake.Huang@mediatek.com>
+	s=arc-20240116; t=1737307266; c=relaxed/simple;
+	bh=x457vClxdXwyX0BUMXFilhpbcmdZI8gmCMn1+4QaMCM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=htgy/h9kp8wU7IM7n9OUov3g4TlQEl8q4cJEGS4yEdpOCja0tNoloXswM+2S1kEfGvLF/NV5hJPoWseWTROPSBlWPu/WciPAW/7tuPKSAYZbPcECjL5h80ohkktgfps/Ma7Pv15ijJmI8317SO8JbnuGow9k0pHdZVFreB45Zes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=217.70.188.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	fw@strlen.de
+Subject: [PATCH net-next 02/14] netfilter: br_netfilter: remove unused conditional and dead code
+Date: Sun, 19 Jan 2025 18:20:39 +0100
+Message-Id: <20250119172051.8261-3-pablo@netfilter.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20250119172051.8261-1-pablo@netfilter.org>
+References: <20250119172051.8261-1-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250116012159.3816135-3-SkyLake.Huang@mediatek.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 16, 2025 at 09:21:57AM +0800, Sky Huang wrote:
-> From: Sky Huang <skylake.huang@mediatek.com>
-> 
-> Move some macros to phy-lib because MediaTek's 2.5G built-in
-> ethernet PHY will also use them.
-> 
-> Signed-off-by: Sky Huang <skylake.huang@mediatek.com>
-> ---
->  drivers/net/phy/mediatek/mtk-ge.c | 4 ----
->  drivers/net/phy/mediatek/mtk.h    | 4 ++++
->  2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/phy/mediatek/mtk-ge.c b/drivers/net/phy/mediatek/mtk-ge.c
-> index 79663da..937254a 100644
-> --- a/drivers/net/phy/mediatek/mtk-ge.c
-> +++ b/drivers/net/phy/mediatek/mtk-ge.c
-> @@ -8,10 +8,6 @@
->  #define MTK_GPHY_ID_MT7530		0x03a29412
->  #define MTK_GPHY_ID_MT7531		0x03a29441
->  
-> -#define MTK_PHY_PAGE_EXTENDED_1			0x0001
-> -#define MTK_PHY_AUX_CTRL_AND_STATUS		0x14
-> -#define   MTK_PHY_ENABLE_DOWNSHIFT		BIT(4)
-> -
->  #define MTK_PHY_PAGE_EXTENDED_2			0x0002
->  #define MTK_PHY_PAGE_EXTENDED_3			0x0003
->  #define MTK_PHY_RG_LPI_PCS_DSP_CTRL_REG11	0x11
-> diff --git a/drivers/net/phy/mediatek/mtk.h b/drivers/net/phy/mediatek/mtk.h
-> index 712a9f0..cda1dc8 100644
-> --- a/drivers/net/phy/mediatek/mtk.h
-> +++ b/drivers/net/phy/mediatek/mtk.h
-> @@ -8,7 +8,11 @@
->  #ifndef _MTK_EPHY_H_
->  #define _MTK_EPHY_H_
->  
-> +#define MTK_PHY_AUX_CTRL_AND_STATUS		0x14
-> +#define   MTK_PHY_ENABLE_DOWNSHIFT		BIT(4)
-> +
->  #define MTK_EXT_PAGE_ACCESS			0x1f
-> +#define MTK_PHY_PAGE_EXTENDED_1			0x0001
->  #define MTK_PHY_PAGE_STANDARD			0x0000
->  #define MTK_PHY_PAGE_EXTENDED_52B5		0x52b5
+From: Antoine Tenart <atenart@kernel.org>
 
-A patch like this i can easily review. I can see somethings removed
-from one file and added to another, without any changes. It is
-obviously correct, and toke about 10 seconds to review.
+The SKB_DROP_REASON_IP_INADDRERRORS drop reason is never returned from
+any function, as such it cannot be returned from the ip_route_input call
+tree. The 'reason != SKB_DROP_REASON_IP_INADDRERRORS' conditional is
+thus always true.
 
-Another way to look at this. Say somebody reports your previous patch
-breaks their system. How are you going to debug it? If rather than
-being one huge patch, it was 10 simpler patches, you could ask them to
-run a git bisect. That will narrow down the code where you need to
-look for the bug to 1/10 of the code. And that one patch will
-hopefully be a lot simpler, making the code inspection to find the
-problem a lot simpler....
+Looking back at history, commit 50038bf38e65 ("net: ip: make
+ip_route_input() return drop reasons") changed the ip_route_input
+returned value check in br_nf_pre_routing_finish from -EHOSTUNREACH to
+SKB_DROP_REASON_IP_INADDRERRORS. It turns out -EHOSTUNREACH could not be
+returned either from the ip_route_input call tree and this since commit
+251da4130115 ("ipv4: Cache ip_error() routes even when not
+forwarding.").
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Not a fix as this won't change the behavior. While at it use
+kfree_skb_reason.
 
-    Andrew
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+---
+ net/bridge/br_netfilter_hooks.c | 30 +-----------------------------
+ 1 file changed, 1 insertion(+), 29 deletions(-)
+
+diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
+index 451e45b9a6a5..94cbe967d1c1 100644
+--- a/net/bridge/br_netfilter_hooks.c
++++ b/net/bridge/br_netfilter_hooks.c
+@@ -393,38 +393,10 @@ static int br_nf_pre_routing_finish(struct net *net, struct sock *sk, struct sk_
+ 		reason = ip_route_input(skb, iph->daddr, iph->saddr,
+ 					ip4h_dscp(iph), dev);
+ 		if (reason) {
+-			struct in_device *in_dev = __in_dev_get_rcu(dev);
+-
+-			/* If err equals -EHOSTUNREACH the error is due to a
+-			 * martian destination or due to the fact that
+-			 * forwarding is disabled. For most martian packets,
+-			 * ip_route_output_key() will fail. It won't fail for 2 types of
+-			 * martian destinations: loopback destinations and destination
+-			 * 0.0.0.0. In both cases the packet will be dropped because the
+-			 * destination is the loopback device and not the bridge. */
+-			if (reason != SKB_DROP_REASON_IP_INADDRERRORS || !in_dev ||
+-			    IN_DEV_FORWARD(in_dev))
+-				goto free_skb;
+-
+-			rt = ip_route_output(net, iph->daddr, 0,
+-					     ip4h_dscp(iph), 0,
+-					     RT_SCOPE_UNIVERSE);
+-			if (!IS_ERR(rt)) {
+-				/* - Bridged-and-DNAT'ed traffic doesn't
+-				 *   require ip_forwarding. */
+-				if (rt->dst.dev == dev) {
+-					skb_dst_drop(skb);
+-					skb_dst_set(skb, &rt->dst);
+-					goto bridged_dnat;
+-				}
+-				ip_rt_put(rt);
+-			}
+-free_skb:
+-			kfree_skb(skb);
++			kfree_skb_reason(skb, reason);
+ 			return 0;
+ 		} else {
+ 			if (skb_dst(skb)->dev == dev) {
+-bridged_dnat:
+ 				skb->dev = br_indev;
+ 				nf_bridge_update_protocol(skb);
+ 				nf_bridge_push_encap_header(skb);
+-- 
+2.30.2
+
