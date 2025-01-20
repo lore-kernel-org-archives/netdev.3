@@ -1,167 +1,106 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53511E103B;
-	Mon, 20 Jan 2025 13:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE26E1E22FC;
+	Mon, 20 Jan 2025 13:50:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737380192; cv=none; b=e/ko4EF7+qIgWDSQySnjmNGKj4AlV1kbGImgZKPjfg2FkXAl2I3FGNkpvqsOmUztuoI4eNfWm/lLk5Xjlzu/MOfYD2yjhebYwnggQDls30QxMWbaZZv/doXFnfeNJg8vFCnNB73z1hCWCQZV3Gm/AQCgS0Z+mP9+5/vGp4XIdHc=
+	t=1737381030; cv=none; b=MGu010LXLVVToR/rAY8DoBG0BI9QS72q0/yiIOTrwsSLMLtFDJi6FBmXA/NCwAY2/7m0eQGZGHWtvejFff9VlA3rqJEUqeWdhEoRM4lgKhHEckcLCXhUkD0jiXfXGbV1HjhrNDB5QmKT115ATMsqg4/TEiMzuCbjoSdfQltdeXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737380192; c=relaxed/simple;
-	bh=yXGEOFfEZ0jP+43nLRn7rdoSQHgU5ToywJv+x3kOVyo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WqQ7J7KRjxWLnZztwQnZ6dVUlW6ve17r+y6N+wtAWpdFKo/rIVYkWMwHySm089MdFxvlb/mpLr7GAL0QnjkKm7nexlB9XowuS/McCJiPlKktrvJpOs/9RfOQWXy7j315epHukXkAkATm3t/JPfI5W4N3PRwJUAKwKse0fgP7MY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XlRkuQ21; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737381030; c=relaxed/simple;
+	bh=1ximHPbMmEHEBuLgHpQFBwbcsdYKRx5fYUW+fBDJ4NI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=p+g2jiHX9LROvkt6A2/DsiE7sR4uz+ElEEsi+Y8A/bJKLOAArUFYFiFPhObQ7BnZAkecrC28lrxy4eN6ksgj1hpXKKRRo/2cJ3iLLU/VLbqwVuI6As/BUC8ic0fCxcVCb0DqWGLh5iX1zZZbUACbN23ajAcJc1oqk2BtvLYJX1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oa/M5wTF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XlRkuQ21"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5439e331cceso2772561e87.1;
-        Mon, 20 Jan 2025 05:36:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737380189; x=1737984989; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zch4l4X9MuCbcNAX4Ida9DiTgs8Oh2Jd8KdR3iffvMg=;
-        b=XlRkuQ2111ha71eODEMXzeK45LIkm245rCgWBKgWX3d3FNiQPnDr93biP6nathLkbK
-         0u7dqkYA1OT9ra4YP7EqUAbyxuGDgejCkN+/qPhnBnxHLDfPMCLqk9NvbN7URqkggeKU
-         MEOzmWQ/gDkWjUtlmHfRm9qoF3NLr3QRDJF5OUf61IUAetAwhPzKdKwsyNwCuel6UUww
-         hc1bDAAXdAwptudpbweOzH1y6eWLUMnPMkvvjQFOWVHk23C7xDZhAHVSUjxsRtlbOs4j
-         8yvi6VZvSz+WmwFVxmLT7mePVP4pJJf1NtS/m39LJywG52wq34BagcS2zPqQsbwof34r
-         iljQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737380189; x=1737984989;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zch4l4X9MuCbcNAX4Ida9DiTgs8Oh2Jd8KdR3iffvMg=;
-        b=DBbMUhMUulpKwy449uZ90VlNo7S7EjXmVqmjvxpSnPZtX7D1PVKVJET0jUIdymaFua
-         r9M3q9An8PVk6ty83/m9ZOCNYNmCxUSjYxb2UZ41OoQHSFtBQ8Y//4VzGw2r2ovqMIx7
-         sh1CRl+D6TqxzU2WFQ1mgUq7v3Q2sX8DLm1DTQYBjlFh6CISZKDg/mTc73jRVljurROG
-         GYQn6R6sdtZBrBieQb8kW6iGeYFFn4l0KTK73jM0NQCWSZRoJQ8qMvh/aIYFd5WYJROH
-         3PhE6Y4cy9wDcYpTfVX91QY51i3i2P4xc/PoypVau+yF5EDiIVLSEl08jmgCRgQdD1O3
-         XjGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJgRYMB4gVnz0EZHki/0kGL4ecqjrY23aQMwdCtN6vkhebCz04bjcR177yLTfCCtXU64DRgCkPeF9xGOQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2Px5YLUQw+7d/BpJlD+y7JHbAC5HM5Y7eDOxKsE2NbqFxsJgH
-	bg57IpJrVihTSK9mx4F+I4gaDv8Qvpe/AHTZiIsRRPaNCrnUt3yj
-X-Gm-Gg: ASbGncvG3/C/T/QqbEooKDfCPyyNIE8xMu5872BpWKgIpGwF7ARhHN7uVD2eMyZcRC6
-	bQ9WwPY/BD+Ti7LqzSwJ50aKU27iwa8wm8onH7DhwPbJkRY1noQhd99P7zEgbUFK6DqtpYDub3n
-	sXnj2lmXKLNu7nv79UVzpPL3Y5BpBec8dsFxY0+1H7LYJGzwK7LlXKEDOn6FwXg26Rwhnh2j7Yg
-	SDpSNQQtWwcZKgQAXWdIUVorxNZuEv0UJ7SWfFuj5WMk2JGxKtteXOf6NWLsaXpk6H3q9+z9XtG
-	e+1iO+5Y
-X-Google-Smtp-Source: AGHT+IE2tnsHwDqKUybIhRlgq7wQzlLG4yfkzZGFi91L9aafO0eBpi+cuT6S9ZOU6LdLPetKOtSv/Q==
-X-Received: by 2002:a05:6512:2213:b0:53e:3a79:1ad2 with SMTP id 2adb3069b0e04-5439c265cdcmr3822191e87.40.1737380188538;
-        Mon, 20 Jan 2025 05:36:28 -0800 (PST)
-Received: from home.paul.comp (paulfertser.info. [2001:470:26:54b:226:9eff:fe70:80c2])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5439af66c36sm1329401e87.160.2025.01.20.05.36.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jan 2025 05:36:27 -0800 (PST)
-Received: from home.paul.comp (home.paul.comp [IPv6:0:0:0:0:0:0:0:1])
-	by home.paul.comp (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTP id 50KDaOs0029244;
-	Mon, 20 Jan 2025 16:36:25 +0300
-Received: (from paul@localhost)
-	by home.paul.comp (8.15.2/8.15.2/Submit) id 50KDaMuK029243;
-	Mon, 20 Jan 2025 16:36:22 +0300
-From: Paul Fertser <fercerpav@gmail.com>
-To: Peter Delevoryas <peter@pjd.dev>,
-        Samuel Mendoza-Jonas <sam@mendozajonas.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ivan Mikhaylov <fr0st61te@gmail.com>,
-        Paul Fertser <fercerpav@gmail.com>
-Subject: [PATCH] net/ncsi: use dev_set_mac_address() for Get MC MAC Address handling
-Date: Mon, 20 Jan 2025 16:35:36 +0300
-Message-Id: <20250120133536.29184-1-fercerpav@gmail.com>
-X-Mailer: git-send-email 2.30.2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oa/M5wTF"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1ADBFC4CEE5;
+	Mon, 20 Jan 2025 13:50:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737381030;
+	bh=1ximHPbMmEHEBuLgHpQFBwbcsdYKRx5fYUW+fBDJ4NI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Oa/M5wTFtX1O5DURgESD8reMP52NQxnwuU7vQoh1MHLuOIyW59dlIvYZcRInzT+kx
+	 OmOypZuCEfe9SloL/4NjdH4/hVWWviqxNZRP5TiZXzMgXbu5wsCtnAi66e7ZAUb/h/
+	 ctc6LeBGbXXZLCWxvJRY9JqEM3d3RSPzTYZVQEEjj78rz2UPQ+glN/aSD9ATXmclrg
+	 6MP4jMuMhPSQ4/SoMCkKiewFlHdE8fLwCmwNlZf775XXqHUWrRfzvhfaDt8o1vxggh
+	 561hCTyDrFACkW6qwatot5YtxAZMMdl9Wye+3HKNGKDS7NFouQUKnik/k2xf1WWXYQ
+	 NK4aU5wi7HcQA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0928AC02185;
+	Mon, 20 Jan 2025 13:50:30 +0000 (UTC)
+From: Dimitri Fedrau via B4 Relay <devnull+dimitri.fedrau.liebherr.com@kernel.org>
+Date: Mon, 20 Jan 2025 14:50:21 +0100
+Subject: [PATCH net-next v2 1/3] dt-bindings: net: ethernet-phy: add
+ property tx-amplitude-100base-tx-gain-milli
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250120-dp83822-tx-swing-v2-1-07c99dc42627@liebherr.com>
+References: <20250120-dp83822-tx-swing-v2-0-07c99dc42627@liebherr.com>
+In-Reply-To: <20250120-dp83822-tx-swing-v2-0-07c99dc42627@liebherr.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>, 
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Florian Fainelli <f.fainelli@gmail.com>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Dimitri Fedrau <dimitri.fedrau@liebherr.com>, 
+ Dimitri Fedrau <dima.fedrau@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1737381028; l=1340;
+ i=dimitri.fedrau@liebherr.com; s=20241202; h=from:subject:message-id;
+ bh=o9/uYCQMqtj7aA5WdqSP5I74ZoABiwwXrCBqYSBeaRI=;
+ b=HzyehliKyx0cDcSOOj1zdjTN00xtHbx8p1oWQhEu6VA+ZEHW4tacLpYoWV+UINcjc+I4h7prx
+ Qi9d8HHyTAmD0s4KUAnN6oAkRgRiacX5MoX82SV9n0eucRtIOeerheh
+X-Developer-Key: i=dimitri.fedrau@liebherr.com; a=ed25519;
+ pk=rT653x09JSQvotxIqQl4/XiI4AOiBZrdOGvxDUbb5m8=
+X-Endpoint-Received: by B4 Relay for dimitri.fedrau@liebherr.com/20241202
+ with auth_id=290
+X-Original-From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Reply-To: dimitri.fedrau@liebherr.com
 
-Copy of the rationale from 790071347a0a1a89e618eedcd51c687ea783aeb3:
+From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 
-Change ndo_set_mac_address to dev_set_mac_address because
-dev_set_mac_address provides a way to notify network layer about MAC
-change. In other case, services may not aware about MAC change and keep
-using old one which set from network adapter driver.
+Add property tx-amplitude-100base-tx-gain-milli in the device tree bindings
+for configuring the tx amplitude of 100BASE-TX PHYs. Modifying it can be
+necessary to compensate losses on the PCB and connector, so the voltages
+measured on the RJ45 pins are conforming.
 
-As example, DHCP client from systemd do not update MAC address without
-notification from net subsystem which leads to the problem with acquiring
-the right address from DHCP server.
-
-Since dev_set_mac_address requires RTNL lock the operation can not be
-performed directly in the response handler, see
-9e2bbab94b88295dcc57c7580393c9ee08d7314d.
-
-The way of selecting the first suitable MAC address from the list is
-changed, instead of having the driver check it this patch just assumes
-any valid MAC should be good.
-
-Fixes: b8291cf3d118 ("net/ncsi: Add NC-SI 1.2 Get MC MAC Address command")
-Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 ---
+ Documentation/devicetree/bindings/net/ethernet-phy.yaml | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Peter, this is compile-tested only as I do not have a suitable
-hardware setup to try it on. Please also pick
-https://patchwork.kernel.org/project/netdevbpf/patch/20250116152900.8656-1-fercerpav@gmail.com/
-if you happen to be able to test this before that fix is merged.
+diff --git a/Documentation/devicetree/bindings/net/ethernet-phy.yaml b/Documentation/devicetree/bindings/net/ethernet-phy.yaml
+index 2c71454ae8e362e7032e44712949e12da6826070..ce65413410c2343a3525e746e72b6c6c8bb120d0 100644
+--- a/Documentation/devicetree/bindings/net/ethernet-phy.yaml
++++ b/Documentation/devicetree/bindings/net/ethernet-phy.yaml
+@@ -232,6 +232,14 @@ properties:
+       PHY's that have configurable TX internal delays. If this property is
+       present then the PHY applies the TX delay.
+ 
++  tx-amplitude-100base-tx-gain-milli:
++    description: |
++      Transmit amplitude gain applied (in milli units) for 100BASE-TX. When
++      omitted, the PHYs default will be left as is. If not present, default to
++      1000 (no actual gain applied).
++    $ref: /schemas/types.yaml#/definitions/uint32
++    default: 1000
++
+   leds:
+     type: object
+ 
 
-
- net/ncsi/ncsi-rsp.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
-
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index 14bd66909ca4..4a8ce2949fae 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -1089,14 +1089,12 @@ static int ncsi_rsp_handler_netlink(struct ncsi_request *nr)
- static int ncsi_rsp_handler_gmcma(struct ncsi_request *nr)
- {
- 	struct ncsi_dev_priv *ndp = nr->ndp;
-+	struct sockaddr *saddr = &ndp->pending_mac;
- 	struct net_device *ndev = ndp->ndev.dev;
- 	struct ncsi_rsp_gmcma_pkt *rsp;
--	struct sockaddr saddr;
--	int ret = -1;
- 	int i;
- 
- 	rsp = (struct ncsi_rsp_gmcma_pkt *)skb_network_header(nr->rsp);
--	saddr.sa_family = ndev->type;
- 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
- 
- 	netdev_info(ndev, "NCSI: Received %d provisioned MAC addresses\n",
-@@ -1108,20 +1106,20 @@ static int ncsi_rsp_handler_gmcma(struct ncsi_request *nr)
- 			    rsp->addresses[i][4], rsp->addresses[i][5]);
- 	}
- 
-+	saddr->sa_family = ndev->type;
- 	for (i = 0; i < rsp->address_count; i++) {
--		memcpy(saddr.sa_data, &rsp->addresses[i], ETH_ALEN);
--		ret = ndev->netdev_ops->ndo_set_mac_address(ndev, &saddr);
--		if (ret < 0) {
-+		if (!is_valid_ether_addr(rsp->addresses[i])) {
- 			netdev_warn(ndev, "NCSI: Unable to assign %pM to device\n",
--				    saddr.sa_data);
-+				    rsp->addresses[i]);
- 			continue;
- 		}
--		netdev_warn(ndev, "NCSI: Set MAC address to %pM\n", saddr.sa_data);
-+		memcpy(saddr->sa_data, rsp->addresses[i], ETH_ALEN);
-+		netdev_warn(ndev, "NCSI: Will set MAC address to %pM\n", saddr->sa_data);
- 		break;
- 	}
- 
--	ndp->gma_flag = ret == 0;
--	return ret;
-+	ndp->gma_flag = 1;
-+	return 0;
- }
- 
- static struct ncsi_rsp_handler {
 -- 
-2.34.1
+2.39.5
+
 
