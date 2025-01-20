@@ -1,29 +1,29 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0FF1EE014;
-	Mon, 20 Jan 2025 17:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0D11EE02F;
+	Mon, 20 Jan 2025 17:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737394054; cv=none; b=eW+TP4Q33lNc73dpmpppobPyfv34iLf+GaaWgpVd7d73SmS0qSvHBpw6nVfajVqnljIwYypm5IgPUBxSRkn0hCfoB9HeLPHXZBciuGgK/9LoQ3Iivsm/QFDMi0RfhV7GyDwnLnbHE0uEOuhSFh9rQbAFZMEHgSa3YSXqzlUVlNo=
+	t=1737394055; cv=none; b=jHXjTc7zqsyL3yhfzFB5FRJ+qLErWjsBSlpAdRXRRU+5sD/2xSLrHCohnwNGKtt2fwr4XvLKMkxC0A3qEJo+WPpkxMDqNpylIX91n4Z3LhYVpgPS7y3OSrfYd3GYNx4VCXZ2Ls+I3g0khbfTYOCvVmuVrVaH/9XVEOwJO82LBz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737394054; c=relaxed/simple;
-	bh=4rOaSNwFNkuSA0YqJyiF6u1r+Z1gpC+Pi4Bsoc70oAc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=b9LRSf6nj2K0A/rYIW8p44+Doi2P43AfZzKbd1j18ftOATgf4xeB3yJjvLBIjDZQjlQ1leRCyUZWVbwYDvqlRjmeCEqKzUgAVLyaOLwkzsPNFhH+8CsHw78GaD9j7GEajVwDBE7GDixlZnffSCUZd4EXjFJZ93MGIdBrm9E4xeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=i6nEMFkt; arc=none smtp.client-ip=13.77.154.182
+	s=arc-20240116; t=1737394055; c=relaxed/simple;
+	bh=PYOrqQxzNHYnf+KWBiZK+CFRAyryVBsNbmttmqKrMsM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=SCZKd/izw+LEJOftgxjh9SCEv4a8ifAGQykJoMWCfZCh++n9XfKYghH95T01i7NrOACak1getJ3dqg4yIuobDuDhvDjI7qCDJ/zdLW4f44N5UbBnN4BleQIJ51nNeBcjke5tmrnMS5kH7P986FhsBh6Kc8ccNaSbcndmRfFX27g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=lscGDzgO; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="i6nEMFkt"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="lscGDzgO"
 Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 145FF205A9CB;
+	by linux.microsoft.com (Postfix) with ESMTPSA id 4817E205A9CD;
 	Mon, 20 Jan 2025 09:27:26 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 145FF205A9CB
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4817E205A9CD
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1737394046;
-	bh=PE5zeG/zFarNbY/Oa5jiQLAhl13zDYbSVMNFPVROx+0=;
+	bh=Ev/ugUf7j8aXjIyIOEcly1CoRsR5j3zIdl2kzD7vcfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i6nEMFktw3zhIuStWtgZdGDSy+T1ZtTvIY5gqtulK39wcsezp3UkOn3Q/SebsrWLu
-	 xrkTKt9Y+nmxGZ1dx3ekxMRusQiz+3Hs0mq1HqSmfUAAu+EtSi9YHluLhT3wsJ+Az+
-	 MSs3qjc28r0Udl+zCpyALqKUZe/9YUteyWH9FkJo=
+	b=lscGDzgO4aS7wqc/Qhi1LQu7byEVCd8E1HXM4PBZ+EJN3czd2bE98RBlz8J/XcKuU
+	 5mc61fAkYJmZOrR3PgeW4C6o93NfFlgzz+gCRD2wMHkFoOyWrxMdveNihvaEiI1NHM
+	 YaAq6dXqIK8SJyO+hZqTqBu7st9QyS7kABDhGrGE=
 From: Konstantin Taranov <kotaranov@linux.microsoft.com>
 To: kotaranov@microsoft.com,
 	shirazsaleem@microsoft.com,
@@ -43,9 +43,9 @@ Cc: linux-rdma@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-hyperv@vger.kernel.org
-Subject: [PATCH rdma-next 05/13] RDMA/mana_ib: Create and destroy UD/GSI QP
-Date: Mon, 20 Jan 2025 09:27:11 -0800
-Message-Id: <1737394039-28772-6-git-send-email-kotaranov@linux.microsoft.com>
+Subject: [PATCH rdma-next 07/13] RDMA/mana_ib: create/destroy AH
+Date: Mon, 20 Jan 2025 09:27:13 -0800
+Message-Id: <1737394039-28772-8-git-send-email-kotaranov@linux.microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1737394039-28772-1-git-send-email-kotaranov@linux.microsoft.com>
 References: <1737394039-28772-1-git-send-email-kotaranov@linux.microsoft.com>
@@ -57,167 +57,221 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
 From: Konstantin Taranov <kotaranov@microsoft.com>
 
-Implement HW requests to create and destroy UD/GSI QPs.
-An UD/GSI QP has send and receive queues.
+Implement create and destroy AH for kernel.
+
+In mana_ib, AV is passed as an sge in WQE.
+Allocate DMA memory and write an AV there.
 
 Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
 Reviewed-by: Shiraz Saleem <shirazsaleem@microsoft.com>
 ---
- drivers/infiniband/hw/mana/main.c    | 58 ++++++++++++++++++++++++++++
- drivers/infiniband/hw/mana/mana_ib.h | 49 +++++++++++++++++++++++
- 2 files changed, 107 insertions(+)
+ drivers/infiniband/hw/mana/Makefile  |  2 +-
+ drivers/infiniband/hw/mana/ah.c      | 58 ++++++++++++++++++++++++++++
+ drivers/infiniband/hw/mana/device.c  | 13 ++++++-
+ drivers/infiniband/hw/mana/mana_ib.h | 30 ++++++++++++++
+ 4 files changed, 101 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/infiniband/hw/mana/ah.c
 
-diff --git a/drivers/infiniband/hw/mana/main.c b/drivers/infiniband/hw/mana/main.c
-index f2f6bb3..b0c55cb 100644
---- a/drivers/infiniband/hw/mana/main.c
-+++ b/drivers/infiniband/hw/mana/main.c
-@@ -1013,3 +1013,61 @@ int mana_ib_gd_destroy_rc_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp)
+diff --git a/drivers/infiniband/hw/mana/Makefile b/drivers/infiniband/hw/mana/Makefile
+index 88655fe..6e56f77 100644
+--- a/drivers/infiniband/hw/mana/Makefile
++++ b/drivers/infiniband/hw/mana/Makefile
+@@ -1,4 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-$(CONFIG_MANA_INFINIBAND) += mana_ib.o
+ 
+-mana_ib-y := device.o main.o wq.o qp.o cq.o mr.o
++mana_ib-y := device.o main.o wq.o qp.o cq.o mr.o ah.o
+diff --git a/drivers/infiniband/hw/mana/ah.c b/drivers/infiniband/hw/mana/ah.c
+new file mode 100644
+index 0000000..f56952e
+--- /dev/null
++++ b/drivers/infiniband/hw/mana/ah.c
+@@ -0,0 +1,58 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (c) 2024, Microsoft Corporation. All rights reserved.
++ */
++
++#include "mana_ib.h"
++
++int mana_ib_create_ah(struct ib_ah *ibah, struct rdma_ah_init_attr *attr,
++		      struct ib_udata *udata)
++{
++	struct mana_ib_dev *mdev = container_of(ibah->device, struct mana_ib_dev, ib_dev);
++	struct mana_ib_ah *ah = container_of(ibah, struct mana_ib_ah, ibah);
++	struct rdma_ah_attr *ah_attr = attr->ah_attr;
++	const struct ib_global_route *grh;
++	enum rdma_network_type ntype;
++
++	if (ah_attr->type != RDMA_AH_ATTR_TYPE_ROCE ||
++	    !(rdma_ah_get_ah_flags(ah_attr) & IB_AH_GRH))
++		return -EINVAL;
++
++	if (udata)
++		return -EINVAL;
++
++	ah->av = dma_pool_zalloc(mdev->av_pool, GFP_ATOMIC, &ah->dma_handle);
++	if (!ah->av)
++		return -ENOMEM;
++
++	grh = rdma_ah_read_grh(ah_attr);
++	ntype = rdma_gid_attr_network_type(grh->sgid_attr);
++
++	copy_in_reverse(ah->av->dest_mac, ah_attr->roce.dmac, ETH_ALEN);
++	ah->av->udp_src_port = rdma_flow_label_to_udp_sport(grh->flow_label);
++	ah->av->hop_limit = grh->hop_limit;
++	ah->av->dscp = (grh->traffic_class >> 2) & 0x3f;
++	ah->av->is_ipv6 = (ntype == RDMA_NETWORK_IPV6);
++
++	if (ah->av->is_ipv6) {
++		copy_in_reverse(ah->av->dest_ip, grh->dgid.raw, 16);
++		copy_in_reverse(ah->av->src_ip, grh->sgid_attr->gid.raw, 16);
++	} else {
++		ah->av->dest_ip[10] = 0xFF;
++		ah->av->dest_ip[11] = 0xFF;
++		copy_in_reverse(&ah->av->dest_ip[12], &grh->dgid.raw[12], 4);
++		copy_in_reverse(&ah->av->src_ip[12], &grh->sgid_attr->gid.raw[12], 4);
++	}
++
++	return 0;
++}
++
++int mana_ib_destroy_ah(struct ib_ah *ibah, u32 flags)
++{
++	struct mana_ib_dev *mdev = container_of(ibah->device, struct mana_ib_dev, ib_dev);
++	struct mana_ib_ah *ah = container_of(ibah, struct mana_ib_ah, ibah);
++
++	dma_pool_free(mdev->av_pool, ah->av, ah->dma_handle);
++
++	return 0;
++}
+diff --git a/drivers/infiniband/hw/mana/device.c b/drivers/infiniband/hw/mana/device.c
+index 215dbce..d534ef1 100644
+--- a/drivers/infiniband/hw/mana/device.c
++++ b/drivers/infiniband/hw/mana/device.c
+@@ -19,6 +19,7 @@ static const struct ib_device_ops mana_ib_dev_ops = {
+ 	.add_gid = mana_ib_gd_add_gid,
+ 	.alloc_pd = mana_ib_alloc_pd,
+ 	.alloc_ucontext = mana_ib_alloc_ucontext,
++	.create_ah = mana_ib_create_ah,
+ 	.create_cq = mana_ib_create_cq,
+ 	.create_qp = mana_ib_create_qp,
+ 	.create_rwq_ind_table = mana_ib_create_rwq_ind_table,
+@@ -27,6 +28,7 @@ static const struct ib_device_ops mana_ib_dev_ops = {
+ 	.dealloc_ucontext = mana_ib_dealloc_ucontext,
+ 	.del_gid = mana_ib_gd_del_gid,
+ 	.dereg_mr = mana_ib_dereg_mr,
++	.destroy_ah = mana_ib_destroy_ah,
+ 	.destroy_cq = mana_ib_destroy_cq,
+ 	.destroy_qp = mana_ib_destroy_qp,
+ 	.destroy_rwq_ind_table = mana_ib_destroy_rwq_ind_table,
+@@ -44,6 +46,7 @@ static const struct ib_device_ops mana_ib_dev_ops = {
+ 	.query_port = mana_ib_query_port,
+ 	.reg_user_mr = mana_ib_reg_user_mr,
+ 
++	INIT_RDMA_OBJ_SIZE(ib_ah, mana_ib_ah, ibah),
+ 	INIT_RDMA_OBJ_SIZE(ib_cq, mana_ib_cq, ibcq),
+ 	INIT_RDMA_OBJ_SIZE(ib_pd, mana_ib_pd, ibpd),
+ 	INIT_RDMA_OBJ_SIZE(ib_qp, mana_ib_qp, ibqp),
+@@ -135,15 +138,22 @@ static int mana_ib_probe(struct auxiliary_device *adev,
+ 		goto destroy_rnic;
  	}
+ 
++	dev->av_pool = dma_pool_create("mana_ib_av", mdev->gdma_context->dev,
++				       MANA_AV_BUFFER_SIZE, MANA_AV_BUFFER_SIZE, 0);
++	if (!dev->av_pool)
++		goto destroy_rnic;
++
+ 	ret = ib_register_device(&dev->ib_dev, "mana_%d",
+ 				 mdev->gdma_context->dev);
+ 	if (ret)
+-		goto destroy_rnic;
++		goto deallocate_pool;
+ 
+ 	dev_set_drvdata(&adev->dev, dev);
+ 
  	return 0;
- }
-+
-+int mana_ib_gd_create_ud_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp,
-+			    struct ib_qp_init_attr *attr, u32 doorbell, u32 type)
-+{
-+	struct mana_ib_cq *send_cq = container_of(qp->ibqp.send_cq, struct mana_ib_cq, ibcq);
-+	struct mana_ib_cq *recv_cq = container_of(qp->ibqp.recv_cq, struct mana_ib_cq, ibcq);
-+	struct mana_ib_pd *pd = container_of(qp->ibqp.pd, struct mana_ib_pd, ibpd);
-+	struct gdma_context *gc = mdev_to_gc(mdev);
-+	struct mana_rnic_create_udqp_resp resp = {};
-+	struct mana_rnic_create_udqp_req req = {};
-+	int err, i;
-+
-+	mana_gd_init_req_hdr(&req.hdr, MANA_IB_CREATE_UD_QP, sizeof(req), sizeof(resp));
-+	req.hdr.dev_id = gc->mana_ib.dev_id;
-+	req.adapter = mdev->adapter_handle;
-+	req.pd_handle = pd->pd_handle;
-+	req.send_cq_handle = send_cq->cq_handle;
-+	req.recv_cq_handle = recv_cq->cq_handle;
-+	for (i = 0; i < MANA_UD_QUEUE_TYPE_MAX; i++)
-+		req.dma_region[i] = qp->ud_qp.queues[i].gdma_region;
-+	req.doorbell_page = doorbell;
-+	req.max_send_wr = attr->cap.max_send_wr;
-+	req.max_recv_wr = attr->cap.max_recv_wr;
-+	req.max_send_sge = attr->cap.max_send_sge;
-+	req.max_recv_sge = attr->cap.max_recv_sge;
-+	req.qp_type = type;
-+	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
-+	if (err) {
-+		ibdev_err(&mdev->ib_dev, "Failed to create ud qp err %d", err);
-+		return err;
-+	}
-+	qp->qp_handle = resp.qp_handle;
-+	for (i = 0; i < MANA_UD_QUEUE_TYPE_MAX; i++) {
-+		qp->ud_qp.queues[i].id = resp.queue_ids[i];
-+		/* The GDMA regions are now owned by the RNIC QP handle */
-+		qp->ud_qp.queues[i].gdma_region = GDMA_INVALID_DMA_REGION;
-+	}
-+	return 0;
-+}
-+
-+int mana_ib_gd_destroy_ud_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp)
-+{
-+	struct mana_rnic_destroy_udqp_resp resp = {0};
-+	struct mana_rnic_destroy_udqp_req req = {0};
-+	struct gdma_context *gc = mdev_to_gc(mdev);
-+	int err;
-+
-+	mana_gd_init_req_hdr(&req.hdr, MANA_IB_DESTROY_UD_QP, sizeof(req), sizeof(resp));
-+	req.hdr.dev_id = gc->mana_ib.dev_id;
-+	req.adapter = mdev->adapter_handle;
-+	req.qp_handle = qp->qp_handle;
-+	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
-+	if (err) {
-+		ibdev_err(&mdev->ib_dev, "Failed to destroy ud qp err %d", err);
-+		return err;
-+	}
-+	return 0;
-+}
+ 
++deallocate_pool:
++	dma_pool_destroy(dev->av_pool);
+ destroy_rnic:
+ 	xa_destroy(&dev->qp_table_wq);
+ 	mana_ib_gd_destroy_rnic_adapter(dev);
+@@ -161,6 +171,7 @@ static void mana_ib_remove(struct auxiliary_device *adev)
+ 	struct mana_ib_dev *dev = dev_get_drvdata(&adev->dev);
+ 
+ 	ib_unregister_device(&dev->ib_dev);
++	dma_pool_destroy(dev->av_pool);
+ 	xa_destroy(&dev->qp_table_wq);
+ 	mana_ib_gd_destroy_rnic_adapter(dev);
+ 	mana_ib_destroy_eqs(dev);
 diff --git a/drivers/infiniband/hw/mana/mana_ib.h b/drivers/infiniband/hw/mana/mana_ib.h
-index 79ebd95..5e470f1 100644
+index 5e470f1..7b079d8 100644
 --- a/drivers/infiniband/hw/mana/mana_ib.h
 +++ b/drivers/infiniband/hw/mana/mana_ib.h
-@@ -115,6 +115,17 @@ struct mana_ib_rc_qp {
- 	struct mana_ib_queue queues[MANA_RC_QUEUE_TYPE_MAX];
+@@ -11,6 +11,7 @@
+ #include <rdma/ib_umem.h>
+ #include <rdma/mana-abi.h>
+ #include <rdma/uverbs_ioctl.h>
++#include <linux/dmapool.h>
+ 
+ #include <net/mana/mana.h>
+ 
+@@ -32,6 +33,11 @@
+  */
+ #define MANA_CA_ACK_DELAY	16
+ 
++/*
++ * The buffer used for writing AV
++ */
++#define MANA_AV_BUFFER_SIZE	64
++
+ struct mana_ib_adapter_caps {
+ 	u32 max_sq_id;
+ 	u32 max_rq_id;
+@@ -65,6 +71,7 @@ struct mana_ib_dev {
+ 	struct gdma_queue **eqs;
+ 	struct xarray qp_table_wq;
+ 	struct mana_ib_adapter_caps adapter_caps;
++	struct dma_pool *av_pool;
  };
  
-+enum mana_ud_queue_type {
-+	MANA_UD_SEND_QUEUE = 0,
-+	MANA_UD_RECV_QUEUE,
-+	MANA_UD_QUEUE_TYPE_MAX,
+ struct mana_ib_wq {
+@@ -88,6 +95,25 @@ struct mana_ib_pd {
+ 	u32 tx_vp_offset;
+ };
+ 
++struct mana_ib_av {
++	u8 dest_ip[16];
++	u8 dest_mac[ETH_ALEN];
++	u16 udp_src_port;
++	u8 src_ip[16];
++	u32 hop_limit	: 8;
++	u32 reserved1	: 12;
++	u32 dscp	: 6;
++	u32 reserved2	: 5;
++	u32 is_ipv6	: 1;
++	u32 reserved3	: 32;
 +};
 +
-+struct mana_ib_ud_qp {
-+	struct mana_ib_queue queues[MANA_UD_QUEUE_TYPE_MAX];
-+	u32 sq_psn;
++struct mana_ib_ah {
++	struct ib_ah ibah;
++	struct mana_ib_av *av;
++	dma_addr_t dma_handle;
 +};
 +
- struct mana_ib_qp {
- 	struct ib_qp ibqp;
- 
-@@ -122,6 +133,7 @@ struct mana_ib_qp {
- 	union {
- 		struct mana_ib_queue raw_sq;
- 		struct mana_ib_rc_qp rc_qp;
-+		struct mana_ib_ud_qp ud_qp;
- 	};
- 
- 	/* The port on the IB device, starting with 1 */
-@@ -146,6 +158,8 @@ enum mana_ib_command_code {
- 	MANA_IB_DESTROY_ADAPTER = 0x30003,
- 	MANA_IB_CONFIG_IP_ADDR	= 0x30004,
- 	MANA_IB_CONFIG_MAC_ADDR	= 0x30005,
-+	MANA_IB_CREATE_UD_QP	= 0x30006,
-+	MANA_IB_DESTROY_UD_QP	= 0x30007,
- 	MANA_IB_CREATE_CQ       = 0x30008,
- 	MANA_IB_DESTROY_CQ      = 0x30009,
- 	MANA_IB_CREATE_RC_QP    = 0x3000a,
-@@ -297,6 +311,37 @@ struct mana_rnic_destroy_rc_qp_resp {
- 	struct gdma_resp_hdr hdr;
- }; /* HW Data */
- 
-+struct mana_rnic_create_udqp_req {
-+	struct gdma_req_hdr hdr;
-+	mana_handle_t adapter;
-+	mana_handle_t pd_handle;
-+	mana_handle_t send_cq_handle;
-+	mana_handle_t recv_cq_handle;
-+	u64 dma_region[MANA_UD_QUEUE_TYPE_MAX];
-+	u32 qp_type;
-+	u32 doorbell_page;
-+	u32 max_send_wr;
-+	u32 max_recv_wr;
-+	u32 max_send_sge;
-+	u32 max_recv_sge;
-+}; /* HW Data */
+ struct mana_ib_mr {
+ 	struct ib_mr ibmr;
+ 	struct ib_umem *umem;
+@@ -532,4 +558,8 @@ int mana_ib_gd_destroy_rc_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp);
+ int mana_ib_gd_create_ud_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp,
+ 			    struct ib_qp_init_attr *attr, u32 doorbell, u32 type);
+ int mana_ib_gd_destroy_ud_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp);
 +
-+struct mana_rnic_create_udqp_resp {
-+	struct gdma_resp_hdr hdr;
-+	mana_handle_t qp_handle;
-+	u32 queue_ids[MANA_UD_QUEUE_TYPE_MAX];
-+}; /* HW Data*/
-+
-+struct mana_rnic_destroy_udqp_req {
-+	struct gdma_req_hdr hdr;
-+	mana_handle_t adapter;
-+	mana_handle_t qp_handle;
-+}; /* HW Data */
-+
-+struct mana_rnic_destroy_udqp_resp {
-+	struct gdma_resp_hdr hdr;
-+}; /* HW Data */
-+
- struct mana_ib_ah_attr {
- 	u8 src_addr[16];
- 	u8 dest_addr[16];
-@@ -483,4 +528,8 @@ int mana_ib_gd_destroy_cq(struct mana_ib_dev *mdev, struct mana_ib_cq *cq);
- int mana_ib_gd_create_rc_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp,
- 			    struct ib_qp_init_attr *attr, u32 doorbell, u64 flags);
- int mana_ib_gd_destroy_rc_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp);
-+
-+int mana_ib_gd_create_ud_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp,
-+			    struct ib_qp_init_attr *attr, u32 doorbell, u32 type);
-+int mana_ib_gd_destroy_ud_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp);
++int mana_ib_create_ah(struct ib_ah *ibah, struct rdma_ah_init_attr *init_attr,
++		      struct ib_udata *udata);
++int mana_ib_destroy_ah(struct ib_ah *ah, u32 flags);
  #endif
 -- 
 2.43.0
