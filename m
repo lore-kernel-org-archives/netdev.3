@@ -1,29 +1,29 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276AD1E3DFC;
-	Mon, 20 Jan 2025 17:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3E81EE7A1;
+	Mon, 20 Jan 2025 17:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737394053; cv=none; b=KMlU/aHDy6ZW0I9WV7RwxO+vtIEvBH+MwdH35QOm/O28+atAo/HBYRoHBxUDbAEc7YQGJxz0knKNcqSsWeSsV+KCB4njWhrKc60HNJ9psUQO4VdaK2PPwYAkV5sdUvlcqlu8yq1RHNh0TCPUCPPglgGSr3dObmGNB9ppX1Aojv8=
+	t=1737394054; cv=none; b=miujQfoaasHDPAh2LkwMlr3LKfDIG4gSINmRfvvTG8qD/Lm/UX9E7n6+Ivq14m5J+nSjfRMOgn06a1C8BHItka7lORb0Ox4acniDpF850iv3eMQz7bdLH0ZbYy+Ds6iqoZM+9OcXCF1hA201zC2gm+oUAEJHB6/ZBPQmXiqTh2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737394053; c=relaxed/simple;
-	bh=9bw+UBu/tOCWjJ6Fg8uY75GtYdYQK7A9ut5Y49yI7to=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=NxPh34+LxJ3dcrUB1OZOJp5h0IDTyIhsddFe5vESG1IhhCCa7eEYTp5HOTlt393JwyEJQq3EEUK5BvP9HpiaDsukI7hWvUl5WDj7hrwvUy8UAGv4BLMJGBADMPDGM50BDgrTOT3MGlfY202CL9qJ6grpmkLrkzf30ZgH3dV8bVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=YBlaLAV+; arc=none smtp.client-ip=13.77.154.182
+	s=arc-20240116; t=1737394054; c=relaxed/simple;
+	bh=zyvWJfU+VD+5jShb6kQWiBoF/AbzAYlzIv7tUwhNXoQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=icj/Wm3JX+FyBYq7e0G4OMgKr0QHoO0JZJ2Rv0x76Dc8K+YD1lekPpXmHuWcd6KyCwugznjyiY2WKZqhFidDUxXjJzCobEuACo/Df7Gz2CQLe4fwtNI/H3erjMYyGSZEFvidhvH44BQZrMlvHN6JEBG/EC2uXPBVNlwLCsUdyDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=QkgDshjB; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="YBlaLAV+"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="QkgDshjB"
 Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
-	by linux.microsoft.com (Postfix) with ESMTPSA id D5271205A9C9;
-	Mon, 20 Jan 2025 09:27:25 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D5271205A9C9
+	by linux.microsoft.com (Postfix) with ESMTPSA id 615FE205A9CE;
+	Mon, 20 Jan 2025 09:27:26 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 615FE205A9CE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1737394045;
-	bh=M7twiefFnYi507g6r9hAld0uVIT8tdnuhUU8hD5ipcc=;
+	s=default; t=1737394046;
+	bh=E9YsxzL8NQza6Vhl7MjU359dvF64cn5FlJw09fYmMaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YBlaLAV+DmY3us2prFIBjapX9OGfv4w8adkw8Rt7lDWZVMRiM6xDqKFzByxa1dd2y
-	 HuI+8/Ktwag27zasz1LIJxrusZR1EyI0I4zSxBwb7ebr5loxLYiEaRg0vmnfV08O/I
-	 AWJqrq4py/uNEtRjE1T7xEHBgfgkJnyEHSbJQqQc=
+	b=QkgDshjBHx/b/psps5f8rlt/1/QEpFaaVqdkGlIPFw9v751nibIFi4hfh+pVvbLVZ
+	 EFbQ7D+sPWxMnN8NyI/uw7hzAdtLYxLEj0SQS2LH3YWWNwZ70zFJSVz+NsU9KwydOW
+	 vr37nZRcf5sYZQ2zblO1Hxh9+kYiBcjPOd+GPQZc=
 From: Konstantin Taranov <kotaranov@linux.microsoft.com>
 To: kotaranov@microsoft.com,
 	shirazsaleem@microsoft.com,
@@ -43,9 +43,9 @@ Cc: linux-rdma@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-hyperv@vger.kernel.org
-Subject: [PATCH rdma-next 03/13] RDMA/mana_ib: helpers to allocate kernel queues
-Date: Mon, 20 Jan 2025 09:27:09 -0800
-Message-Id: <1737394039-28772-4-git-send-email-kotaranov@linux.microsoft.com>
+Subject: [PATCH rdma-next 08/13] net/mana: fix warning in the writer of client oob
+Date: Mon, 20 Jan 2025 09:27:14 -0800
+Message-Id: <1737394039-28772-9-git-send-email-kotaranov@linux.microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1737394039-28772-1-git-send-email-kotaranov@linux.microsoft.com>
 References: <1737394039-28772-1-git-send-email-kotaranov@linux.microsoft.com>
@@ -57,90 +57,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
 From: Konstantin Taranov <kotaranov@microsoft.com>
 
-Introduce helpers to allocate queues for kernel-level use.
+Do not warn on missing pad_data when oob is in sgl.
 
 Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
 Reviewed-by: Shiraz Saleem <shirazsaleem@microsoft.com>
 ---
- drivers/infiniband/hw/mana/main.c             | 23 +++++++++++++++++++
- drivers/infiniband/hw/mana/mana_ib.h          |  3 +++
- .../net/ethernet/microsoft/mana/gdma_main.c   |  1 +
- 3 files changed, 27 insertions(+)
+ drivers/net/ethernet/microsoft/mana/gdma_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mana/main.c b/drivers/infiniband/hw/mana/main.c
-index 45b251b..f2f6bb3 100644
---- a/drivers/infiniband/hw/mana/main.c
-+++ b/drivers/infiniband/hw/mana/main.c
-@@ -240,6 +240,27 @@ void mana_ib_dealloc_ucontext(struct ib_ucontext *ibcontext)
- 		ibdev_dbg(ibdev, "Failed to destroy doorbell page %d\n", ret);
- }
- 
-+int mana_ib_create_kernel_queue(struct mana_ib_dev *mdev, u32 size, enum gdma_queue_type type,
-+				struct mana_ib_queue *queue)
-+{
-+	struct gdma_context *gc = mdev_to_gc(mdev);
-+	struct gdma_queue_spec spec = {};
-+	int err;
-+
-+	queue->id = INVALID_QUEUE_ID;
-+	queue->gdma_region = GDMA_INVALID_DMA_REGION;
-+	spec.type = type;
-+	spec.monitor_avl_buf = false;
-+	spec.queue_size = size;
-+	err = mana_gd_create_mana_wq_cq(&gc->mana_ib, &spec, &queue->kmem);
-+	if (err)
-+		return err;
-+	/* take ownership into mana_ib from mana */
-+	queue->gdma_region = queue->kmem->mem_info.dma_region_handle;
-+	queue->kmem->mem_info.dma_region_handle = GDMA_INVALID_DMA_REGION;
-+	return 0;
-+}
-+
- int mana_ib_create_queue(struct mana_ib_dev *mdev, u64 addr, u32 size,
- 			 struct mana_ib_queue *queue)
- {
-@@ -279,6 +300,8 @@ void mana_ib_destroy_queue(struct mana_ib_dev *mdev, struct mana_ib_queue *queue
- 	 */
- 	mana_ib_gd_destroy_dma_region(mdev, queue->gdma_region);
- 	ib_umem_release(queue->umem);
-+	if (queue->kmem)
-+		mana_gd_destroy_queue(mdev_to_gc(mdev), queue->kmem);
- }
- 
- static int
-diff --git a/drivers/infiniband/hw/mana/mana_ib.h b/drivers/infiniband/hw/mana/mana_ib.h
-index b53a5b4..79ebd95 100644
---- a/drivers/infiniband/hw/mana/mana_ib.h
-+++ b/drivers/infiniband/hw/mana/mana_ib.h
-@@ -52,6 +52,7 @@ struct mana_ib_adapter_caps {
- 
- struct mana_ib_queue {
- 	struct ib_umem *umem;
-+	struct gdma_queue *kmem;
- 	u64 gdma_region;
- 	u64 id;
- };
-@@ -388,6 +389,8 @@ int mana_ib_create_dma_region(struct mana_ib_dev *dev, struct ib_umem *umem,
- int mana_ib_gd_destroy_dma_region(struct mana_ib_dev *dev,
- 				  mana_handle_t gdma_region);
- 
-+int mana_ib_create_kernel_queue(struct mana_ib_dev *mdev, u32 size, enum gdma_queue_type type,
-+				struct mana_ib_queue *queue);
- int mana_ib_create_queue(struct mana_ib_dev *mdev, u64 addr, u32 size,
- 			 struct mana_ib_queue *queue);
- void mana_ib_destroy_queue(struct mana_ib_dev *mdev, struct mana_ib_queue *queue);
 diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index e97af7a..3cb0543 100644
+index 3cb0543..a8a9cd7 100644
 --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
 +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -867,6 +867,7 @@ free_q:
- 	kfree(queue);
- 	return err;
- }
-+EXPORT_SYMBOL_NS(mana_gd_create_mana_wq_cq, NET_MANA);
+@@ -1042,7 +1042,7 @@ static u32 mana_gd_write_client_oob(const struct gdma_wqe_request *wqe_req,
+ 	header->inline_oob_size_div4 = client_oob_size / sizeof(u32);
  
- void mana_gd_destroy_queue(struct gdma_context *gc, struct gdma_queue *queue)
- {
+ 	if (oob_in_sgl) {
+-		WARN_ON_ONCE(!pad_data || wqe_req->num_sge < 2);
++		WARN_ON_ONCE(wqe_req->num_sge < 2);
+ 
+ 		header->client_oob_in_sgl = 1;
+ 
 -- 
 2.43.0
 
