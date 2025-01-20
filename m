@@ -1,370 +1,176 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7F31EEA5F;
-	Mon, 20 Jan 2025 17:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2281213AA5D;
+	Mon, 20 Jan 2025 17:30:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737394056; cv=none; b=gUzXUiIVaupj8nkNIo9T9piJ7ipfVEz3O+1nkLca8SOAr8eLUtUq6r0JQ8o/PsMRoLpTx29cEaAHX1F8M2ON07Xj9VeGp3H30xC3TLRoXhCcR3hpLaZhLBtKaDsxioUFGoq6DAKI+5rUysNbu4AasLPOP7OCie8WE+6CWS02oWs=
+	t=1737394255; cv=none; b=m3zlEzzHUMMIf1pjdyQ8pPwjzHIPiQie1mmh7O1Lc7sAD0Knfcc82yJ0ylVmayGRaInlxXzCpj27sDr7PLDbuUXFFjIQBubvu2X5bRpbkCqeYWt7fQ4V8azWJh32SQ3JOiElyRhfDPm0dizxWzCeT2MS4iOJNGA3ntYgDSxQJ6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737394056; c=relaxed/simple;
-	bh=4fLh5UQLHHRmshMGYyFWJWzr1+9w8Xu9aDzghOzWYeg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=r3w2cJhMGsnYFn1oklgXpUqZn7m5T7blIpRY3IEOtcN15QgUeL9zGU0NRyWYzazmjfyHNao5uj+77BMy6ixDihhaEbcztFHx5m+HmXvzFluwyigUJ/wh8V2j26Q0NjA41NHzgQ+i91OgRxkAyWTy+UnHCpqnyotlga0BEGjDnAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Qx6i2upy; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Qx6i2upy"
-Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
-	by linux.microsoft.com (Postfix) with ESMTPSA id CA292205A9D2;
-	Mon, 20 Jan 2025 09:27:26 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CA292205A9D2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1737394046;
-	bh=qG1FpShzw+bS0gWcYNpI4AfTFBUrXB/OO4d9mh8iM8U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qx6i2upycnTod6pTogBkRnOqQqAqE6M+/aPimcrkpXT4xOibikTa+DoDGz+IMvUMh
-	 +mubUIyb80AzkrCQ+/aLgsF+9sujto7XiSJiCwMzCcvttPQYHp7x8ceLYgrm0VtdBe
-	 vPf56TNdZZIrCLyxujZLvRXAYA93qCRv+pwF+WSc=
-From: Konstantin Taranov <kotaranov@linux.microsoft.com>
-To: kotaranov@microsoft.com,
-	shirazsaleem@microsoft.com,
-	pabeni@redhat.com,
-	haiyangz@microsoft.com,
-	kys@microsoft.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	decui@microsoft.com,
-	wei.liu@kernel.org,
-	sharmaajay@microsoft.com,
-	longli@microsoft.com,
-	jgg@ziepe.ca,
-	leon@kernel.org
-Cc: linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-hyperv@vger.kernel.org
-Subject: [PATCH rdma-next 12/13] RDMA/mana_ib: polling of CQs for GSI/UD
-Date: Mon, 20 Jan 2025 09:27:18 -0800
-Message-Id: <1737394039-28772-13-git-send-email-kotaranov@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1737394039-28772-1-git-send-email-kotaranov@linux.microsoft.com>
-References: <1737394039-28772-1-git-send-email-kotaranov@linux.microsoft.com>
+	s=arc-20240116; t=1737394255; c=relaxed/simple;
+	bh=co4rh7mcehuLyfpxVs2kCx5deaYX52yDp0kZrDc/z8M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HJV9cA1BHEerbKeqZF272KuyAsbR0NvfhfFGDD+Z/KL55Dg0idWg2huL+cXt7VoB/OPDgEf3KFBRLZvSB72w0jaPa8m0YrdfevyztDa92cjQeSncdg3FPPqC/q/uvlJNWnVr3QsOkoyMsEPKqpf365KNzuLt/nC4K/KVK2M8ZOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-aaef00ab172so731937366b.3;
+        Mon, 20 Jan 2025 09:30:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737394251; x=1737999051;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vjKwZAMnGwVfQ1uehkUpRVLkmdlR6xAZAUrURRogCUo=;
+        b=UA+tJNjEI011ydMho2eKpEGke/lnr9t3W4TkJU3JA88y+I8q4Qmp/2+8VfS+de5fZp
+         7qMFxon3YJ326lkjkBN0B++jXnwoi1VCKFgrr39w8NLavSxwW5GcNbMirINhVJQCzM6V
+         dUxCJ15KzJcSFbCwvla+TurQxfr055lzMX99QVdiGa7RKp16sJ6Ei1faz6lfDvb3VflU
+         /Wlg/NmHNfusMInhjAFbGJIIqqPjFQriTSxYNWNSPCezTAJa+H8R9sxg56oObko596w3
+         mFiSY2NVvyLU3UaPXVBLQJiYCE9idDIrg67ymp2rYeDsLO85S1kd3dofkaQ8tlK6n9l4
+         rnTg==
+X-Forwarded-Encrypted: i=1; AJvYcCV76LXJiQo9e94fk3FYMR54nkMiHghvzPGX0f2m5AdnTorBsiua2Rs+q7BxNQQ3hbIgLRuasfgo@vger.kernel.org, AJvYcCWHjn9VoDZEkYI5SC4x1HnQbl20dAT2wO5kOsf1cMD4I7SX7DTQOM822X10N6geaab8IiFIEmrIvIKgfzb/@vger.kernel.org, AJvYcCWXZ3CGBESslPQcLXu7DHZsVXrJMzJzv47Rs0YH/ekufSj8CqSHwPy09ob2fMehDGKBAjjtDTiAu9U=@vger.kernel.org, AJvYcCXdq+aVjP53tYybWRdbdWb5HW+7C9RM+zc/8QZkmNZ8twsPpxiAYyERkGLrytsFqmaAPPjfKjQNhC3YNYmmL9+d@vger.kernel.org
+X-Gm-Message-State: AOJu0YygsUuKzmLiyeuDntvjhtQ7cMUo7SK/kTF9S/jFaJp1tn9WmQ5m
+	fRrllNzFRD0kY8oDhbfQ8ZqN1H0uBW8AfM0TNWPbSrQiKUU9diQZ
+X-Gm-Gg: ASbGnctc+7zxUyYsuxCAEZJsLHBLbzNXiblKrZHlQx5/sY7aR7tHWG2R4otVWXrzVvP
+	NkwzoWhzhmEyu+k9dwP3waHI9R9K1xPzCJ2HhmS++vKj1h6mLzLF2EDAmkNzckysdhJTshJMwm0
+	Kii7nLgsjoukA/T/M+apfmkbtfNS/EenlGssH2QtymZjsywOaz1UnRudWsEK3Azp3XBT/5n6qDP
+	UYa0ZjHBCdWJglp4YCU9yTu44/CfGFx8lHD8uQhBrJQW5T89Q4cv8YHvJV3
+X-Google-Smtp-Source: AGHT+IHHBMwM1y47uiYGiCZ5wJnCsj0WmgnVWFyMm4lJpp3CtPhJHPHE4Y68jLBM9H+zTGUpmqtIfQ==
+X-Received: by 2002:a05:6402:50d4:b0:5d0:cfad:f71 with SMTP id 4fb4d7f45d1cf-5db7db2bea3mr32816210a12.32.1737394251064;
+        Mon, 20 Jan 2025 09:30:51 -0800 (PST)
+Received: from gmail.com ([2a03:2880:30ff:9::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab384fcd73dsm646619066b.178.2025.01.20.09.30.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jan 2025 09:30:50 -0800 (PST)
+Date: Mon, 20 Jan 2025 09:30:48 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kernel-team@meta.com,
+	max@kutsevol.com, thepacketgeek@gmail.com
+Subject: Re: [PATCH net-next v2 3/5] netconsole: add support for sysdata and
+ CPU population
+Message-ID: <20250120-rational-bullfrog-of-tornado-2cd6f4@leitao>
+References: <20250115-netcon_cpu-v2-0-95971b44dc56@debian.org>
+ <20250115-netcon_cpu-v2-3-95971b44dc56@debian.org>
+ <20250116174405.20a0e20b@kernel.org>
+ <20250117-terrestrial-clam-of-satiation-cf312f@leitao>
+ <20250117183520.11d93f4d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250117183520.11d93f4d@kernel.org>
 
-From: Konstantin Taranov <kotaranov@microsoft.com>
+On Fri, Jan 17, 2025 at 06:35:20PM -0800, Jakub Kicinski wrote:
+> On Fri, 17 Jan 2025 03:02:40 -0800 Breno Leitao wrote:
+> > > Looks like previously all the data was on the stack, now we have a mix.  
+> > 
+> > Not sure I followed. The data ({userdata,extradata}_complete) was always
+> > inside nt field, which belongs to target_list.
+> 
+> I mean the buffer we use for formatting. Today it's this:
+> 
+> 	static char buf[MAX_PRINT_CHUNK]; /* protected by target_list_lock */
+> 	int header_len, msgbody_len;
+> 	const char *msgbody;
+> 
+> right? I missed that "static" actually so it's not on the stack, 
+> it's in the .bss section.
 
-Add polling for the kernel CQs.
-Process completion events for UD/GSI QPs.
+Since you raised this topic, I don't think buf needs to be static
+for a functional perspective, since `buf` is completely overwritten
+every time send_msg functions are called.
 
-Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
-Reviewed-by: Shiraz Saleem <shirazsaleem@microsoft.com>
----
- drivers/infiniband/hw/mana/cq.c               | 135 ++++++++++++++++++
- drivers/infiniband/hw/mana/device.c           |   1 +
- drivers/infiniband/hw/mana/mana_ib.h          |  32 +++++
- drivers/infiniband/hw/mana/qp.c               |  33 +++++
- .../net/ethernet/microsoft/mana/gdma_main.c   |   1 +
- 5 files changed, 202 insertions(+)
+> > > Maybe we can pack all the bits of state into a struct for easier
+> > > passing around, but still put it on the stack?  
+> > 
+> > It depends on what state you need here. We can certainly pass runtime
+> > (aka sysdata in this patchset) data in the stack, but doing the same for
+> > userdata would require extra computation in runtime. In other words, the
+> > userdata_complete and length are calculated at configfs update time
+> > today, and only read during runtime, and there is no connection between
+> > configfs and runtime (write_ext_msg()) except through the stack.
+> > 
+> > 
+> > On the other side, if we want to have extradata_complete in the stack, I
+> > still think that userdata will need to be in the stack, and create a
+> > buffer in runtime's frame and copy userdata + sysdata at run time, doing
+> > an extra copy. 
+> > 
+> > Trying to put this in code, this is what I thought:
+> > 
+> > 	/* Copy to the stack (buf) the userdata string + sysdata */
+> > 	static void append_runtime_sysdata(struct netconsole_target *nt, char *buf) {
+> > 		if (!(nt->sysdata_fields & CPU_NR))
+> > 			return;
+> > 
+> > 		return scnprintf(buf,  MAX_EXTRADATA_ENTRY_LEN * MAX_EXTRADATA_ITEMS,
+> > 				  "%s cpu=%u\n", nt->userdata_complete, raw_smp_processor_id());
+> > 	}
+> > 
+> > 	/* Move complete string in the stack and send from there */
+> > 	static void send_ext_msg_udp(struct netconsole_target *nt, const char *msg,
+> > 				     int msg_len) {
+> > 		...
+> > 	#ifdef CONFIG_NETCONSOLE_DYNAMIC
+> > 		struct char buf[MAX_EXTRADATA_ENTRY_LEN * MAX_EXTRADATA_ITEMS];
+> > 		extradata_len = append_runtime_sysdata(nt, buf);
+> > 	#endif
+> > 
+> > 		send_msg_{no}_fragmentation(nt, msg, buf, extradata_len, release_len)
+> > 		...
+> > 	}
+> 
+> My thinking was to handle it like the release.
+> Print it at the send_msg_no_fragmentation() stage directly 
+> into the static buffer. Does that get hairy coding-wise?
 
-diff --git a/drivers/infiniband/hw/mana/cq.c b/drivers/infiniband/hw/mana/cq.c
-index 82f1462..5c325ef 100644
---- a/drivers/infiniband/hw/mana/cq.c
-+++ b/drivers/infiniband/hw/mana/cq.c
-@@ -90,6 +90,10 @@ int mana_ib_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
- 		}
- 	}
- 
-+	spin_lock_init(&cq->cq_lock);
-+	INIT_LIST_HEAD(&cq->list_send_qp);
-+	INIT_LIST_HEAD(&cq->list_recv_qp);
-+
- 	return 0;
- 
- err_remove_cq_cb:
-@@ -180,3 +184,134 @@ int mana_ib_arm_cq(struct ib_cq *ibcq, enum ib_cq_notify_flags flags)
- 	mana_gd_ring_cq(gdma_cq, SET_ARM_BIT);
- 	return 0;
- }
-+
-+static inline void handle_ud_sq_cqe(struct mana_ib_qp *qp, struct gdma_comp *cqe)
-+{
-+	struct mana_rdma_cqe *rdma_cqe = (struct mana_rdma_cqe *)cqe->cqe_data;
-+	struct gdma_queue *wq = qp->ud_qp.queues[MANA_UD_SEND_QUEUE].kmem;
-+	struct ud_sq_shadow_wqe *shadow_wqe;
-+
-+	shadow_wqe = shadow_queue_get_next_to_complete(&qp->shadow_sq);
-+	if (!shadow_wqe)
-+		return;
-+
-+	shadow_wqe->header.error_code = rdma_cqe->ud_send.vendor_error;
-+
-+	wq->tail += shadow_wqe->header.posted_wqe_size;
-+	shadow_queue_advance_next_to_complete(&qp->shadow_sq);
-+}
-+
-+static inline void handle_ud_rq_cqe(struct mana_ib_qp *qp, struct gdma_comp *cqe)
-+{
-+	struct mana_rdma_cqe *rdma_cqe = (struct mana_rdma_cqe *)cqe->cqe_data;
-+	struct gdma_queue *wq = qp->ud_qp.queues[MANA_UD_RECV_QUEUE].kmem;
-+	struct ud_rq_shadow_wqe *shadow_wqe;
-+
-+	shadow_wqe = shadow_queue_get_next_to_complete(&qp->shadow_rq);
-+	if (!shadow_wqe)
-+		return;
-+
-+	shadow_wqe->byte_len = rdma_cqe->ud_recv.msg_len;
-+	shadow_wqe->src_qpn = rdma_cqe->ud_recv.src_qpn;
-+	shadow_wqe->header.error_code = IB_WC_SUCCESS;
-+
-+	wq->tail += shadow_wqe->header.posted_wqe_size;
-+	shadow_queue_advance_next_to_complete(&qp->shadow_rq);
-+}
-+
-+static void mana_handle_cqe(struct mana_ib_dev *mdev, struct gdma_comp *cqe)
-+{
-+	struct mana_ib_qp *qp = mana_get_qp_ref(mdev, cqe->wq_num, cqe->is_sq);
-+
-+	if (!qp)
-+		return;
-+
-+	if (qp->ibqp.qp_type == IB_QPT_GSI || qp->ibqp.qp_type == IB_QPT_UD) {
-+		if (cqe->is_sq)
-+			handle_ud_sq_cqe(qp, cqe);
-+		else
-+			handle_ud_rq_cqe(qp, cqe);
-+	}
-+
-+	mana_put_qp_ref(qp);
-+}
-+
-+static void fill_verbs_from_shadow_wqe(struct mana_ib_qp *qp, struct ib_wc *wc,
-+				       const struct shadow_wqe_header *shadow_wqe)
-+{
-+	const struct ud_rq_shadow_wqe *ud_wqe = (const struct ud_rq_shadow_wqe *)shadow_wqe;
-+
-+	wc->wr_id = shadow_wqe->wr_id;
-+	wc->status = shadow_wqe->error_code;
-+	wc->opcode = shadow_wqe->opcode;
-+	wc->vendor_err = shadow_wqe->error_code;
-+	wc->wc_flags = 0;
-+	wc->qp = &qp->ibqp;
-+	wc->pkey_index = 0;
-+
-+	if (shadow_wqe->opcode == IB_WC_RECV) {
-+		wc->byte_len = ud_wqe->byte_len;
-+		wc->src_qp = ud_wqe->src_qpn;
-+		wc->wc_flags |= IB_WC_GRH;
-+	}
-+}
-+
-+static int mana_process_completions(struct mana_ib_cq *cq, int nwc, struct ib_wc *wc)
-+{
-+	struct shadow_wqe_header *shadow_wqe;
-+	struct mana_ib_qp *qp;
-+	int wc_index = 0;
-+
-+	/* process send shadow queue completions  */
-+	list_for_each_entry(qp, &cq->list_send_qp, cq_send_list) {
-+		while ((shadow_wqe = shadow_queue_get_next_to_consume(&qp->shadow_sq))
-+				!= NULL) {
-+			if (wc_index >= nwc)
-+				goto out;
-+
-+			fill_verbs_from_shadow_wqe(qp, &wc[wc_index], shadow_wqe);
-+			shadow_queue_advance_consumer(&qp->shadow_sq);
-+			wc_index++;
-+		}
-+	}
-+
-+	/* process recv shadow queue completions */
-+	list_for_each_entry(qp, &cq->list_recv_qp, cq_recv_list) {
-+		while ((shadow_wqe = shadow_queue_get_next_to_consume(&qp->shadow_rq))
-+				!= NULL) {
-+			if (wc_index >= nwc)
-+				goto out;
-+
-+			fill_verbs_from_shadow_wqe(qp, &wc[wc_index], shadow_wqe);
-+			shadow_queue_advance_consumer(&qp->shadow_rq);
-+			wc_index++;
-+		}
-+	}
-+
-+out:
-+	return wc_index;
-+}
-+
-+int mana_ib_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *wc)
-+{
-+	struct mana_ib_cq *cq = container_of(ibcq, struct mana_ib_cq, ibcq);
-+	struct mana_ib_dev *mdev = container_of(ibcq->device, struct mana_ib_dev, ib_dev);
-+	struct gdma_queue *queue = cq->queue.kmem;
-+	struct gdma_comp gdma_cqe;
-+	unsigned long flags;
-+	int num_polled = 0;
-+	int comp_read, i;
-+
-+	spin_lock_irqsave(&cq->cq_lock, flags);
-+	for (i = 0; i < num_entries; i++) {
-+		comp_read = mana_gd_poll_cq(queue, &gdma_cqe, 1);
-+		if (comp_read < 1)
-+			break;
-+		mana_handle_cqe(mdev, &gdma_cqe);
-+	}
-+
-+	num_polled = mana_process_completions(cq, num_entries, wc);
-+	spin_unlock_irqrestore(&cq->cq_lock, flags);
-+
-+	return num_polled;
-+}
-diff --git a/drivers/infiniband/hw/mana/device.c b/drivers/infiniband/hw/mana/device.c
-index 63e12c3..97502bc 100644
---- a/drivers/infiniband/hw/mana/device.c
-+++ b/drivers/infiniband/hw/mana/device.c
-@@ -40,6 +40,7 @@ static const struct ib_device_ops mana_ib_dev_ops = {
- 	.mmap = mana_ib_mmap,
- 	.modify_qp = mana_ib_modify_qp,
- 	.modify_wq = mana_ib_modify_wq,
-+	.poll_cq = mana_ib_poll_cq,
- 	.post_recv = mana_ib_post_recv,
- 	.post_send = mana_ib_post_send,
- 	.query_device = mana_ib_query_device,
-diff --git a/drivers/infiniband/hw/mana/mana_ib.h b/drivers/infiniband/hw/mana/mana_ib.h
-index 5e4ca55..cd771af 100644
---- a/drivers/infiniband/hw/mana/mana_ib.h
-+++ b/drivers/infiniband/hw/mana/mana_ib.h
-@@ -127,6 +127,10 @@ struct mana_ib_mr {
- struct mana_ib_cq {
- 	struct ib_cq ibcq;
- 	struct mana_ib_queue queue;
-+	/* protects CQ polling */
-+	spinlock_t cq_lock;
-+	struct list_head list_send_qp;
-+	struct list_head list_recv_qp;
- 	int cqe;
- 	u32 comp_vector;
- 	mana_handle_t  cq_handle;
-@@ -169,6 +173,8 @@ struct mana_ib_qp {
- 	/* The port on the IB device, starting with 1 */
- 	u32 port;
- 
-+	struct list_head cq_send_list;
-+	struct list_head cq_recv_list;
- 	struct shadow_queue shadow_rq;
- 	struct shadow_queue shadow_sq;
- 
-@@ -435,6 +441,31 @@ struct rdma_send_oob {
- 	};
- }; /* HW DATA */
- 
-+struct mana_rdma_cqe {
-+	union {
-+		struct {
-+			u8 cqe_type;
-+			u8 data[GDMA_COMP_DATA_SIZE - 1];
-+		};
-+		struct {
-+			u32 cqe_type		: 8;
-+			u32 vendor_error	: 9;
-+			u32 reserved1		: 15;
-+			u32 sge_offset		: 5;
-+			u32 tx_wqe_offset	: 27;
-+		} ud_send;
-+		struct {
-+			u32 cqe_type		: 8;
-+			u32 reserved1		: 24;
-+			u32 msg_len;
-+			u32 src_qpn		: 24;
-+			u32 reserved2		: 8;
-+			u32 imm_data;
-+			u32 rx_wqe_offset;
-+		} ud_recv;
-+	};
-+}; /* HW DATA */
-+
- static inline struct gdma_context *mdev_to_gc(struct mana_ib_dev *mdev)
- {
- 	return mdev->gdma_dev->gdma_context;
-@@ -602,5 +633,6 @@ int mana_ib_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
- int mana_ib_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
- 		      const struct ib_send_wr **bad_wr);
- 
-+int mana_ib_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *wc);
- int mana_ib_arm_cq(struct ib_cq *ibcq, enum ib_cq_notify_flags flags);
- #endif
-diff --git a/drivers/infiniband/hw/mana/qp.c b/drivers/infiniband/hw/mana/qp.c
-index 2528046..b05e64b 100644
---- a/drivers/infiniband/hw/mana/qp.c
-+++ b/drivers/infiniband/hw/mana/qp.c
-@@ -600,6 +600,36 @@ destroy_queues:
- 	return err;
- }
- 
-+static void mana_add_qp_to_cqs(struct mana_ib_qp *qp)
-+{
-+	struct mana_ib_cq *send_cq = container_of(qp->ibqp.send_cq, struct mana_ib_cq, ibcq);
-+	struct mana_ib_cq *recv_cq = container_of(qp->ibqp.recv_cq, struct mana_ib_cq, ibcq);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&send_cq->cq_lock, flags);
-+	list_add_tail(&qp->cq_send_list, &send_cq->list_send_qp);
-+	spin_unlock_irqrestore(&send_cq->cq_lock, flags);
-+
-+	spin_lock_irqsave(&recv_cq->cq_lock, flags);
-+	list_add_tail(&qp->cq_recv_list, &recv_cq->list_recv_qp);
-+	spin_unlock_irqrestore(&recv_cq->cq_lock, flags);
-+}
-+
-+static void mana_remove_qp_from_cqs(struct mana_ib_qp *qp)
-+{
-+	struct mana_ib_cq *send_cq = container_of(qp->ibqp.send_cq, struct mana_ib_cq, ibcq);
-+	struct mana_ib_cq *recv_cq = container_of(qp->ibqp.recv_cq, struct mana_ib_cq, ibcq);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&send_cq->cq_lock, flags);
-+	list_del(&qp->cq_send_list);
-+	spin_unlock_irqrestore(&send_cq->cq_lock, flags);
-+
-+	spin_lock_irqsave(&recv_cq->cq_lock, flags);
-+	list_del(&qp->cq_recv_list);
-+	spin_unlock_irqrestore(&recv_cq->cq_lock, flags);
-+}
-+
- static int mana_ib_create_ud_qp(struct ib_qp *ibqp, struct ib_pd *ibpd,
- 				struct ib_qp_init_attr *attr, struct ib_udata *udata)
- {
-@@ -654,6 +684,8 @@ static int mana_ib_create_ud_qp(struct ib_qp *ibqp, struct ib_pd *ibpd,
- 	if (err)
- 		goto destroy_qp;
- 
-+	mana_add_qp_to_cqs(qp);
-+
- 	return 0;
- 
- destroy_qp:
-@@ -840,6 +872,7 @@ static int mana_ib_destroy_ud_qp(struct mana_ib_qp *qp, struct ib_udata *udata)
- 		container_of(qp->ibqp.device, struct mana_ib_dev, ib_dev);
- 	int i;
- 
-+	mana_remove_qp_from_cqs(qp);
- 	mana_table_remove_qp(mdev, qp);
- 
- 	destroy_shadow_queue(&qp->shadow_rq);
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 823f7e7..2da15d9 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -1222,6 +1222,7 @@ int mana_gd_poll_cq(struct gdma_queue *cq, struct gdma_comp *comp, int num_cqe)
- 
- 	return cqe_idx;
- }
-+EXPORT_SYMBOL_NS(mana_gd_poll_cq, NET_MANA);
- 
- static irqreturn_t mana_gd_intr(int irq, void *arg)
- {
--- 
-2.43.0
+I suppose the advantage of doing this approach is to reduce a
+memcpy/strcpy, right?
 
+If this is what your motivation, I think we cannot remove it from the
+fragmented case. Let me share my thought process:
+
+1) sysdata needs to be appended to both send_msg_fragmented() and
+send_msg_no_fragmentation(). The fragmented case is the problem.
+
+2) It is trivially done in send_msg_fragmented() case.
+
+3) For the send_msg_no_fragmentation() case, there is no trivial way to
+get it done without using a secondary buffer and then memcpy to `buf`.
+
+Let's suppose sysdata has "cpu=42", and original `buf` has only 5 available
+chars, thus it needs to have 2 msgs to accommodate the full message.
+
+Then the it needs to track that `cpu=4` will be sent in a msg and create
+another message with the missing `2`.
+
+The only way to do it properly is having a extra buffer where we
+have `cpu=42` and copy 5 bytes from there, and then copy the last one in
+the next iteration. I am not sure we can do it in one shot.
+
+On top of that, I am planning to increase other features in sysdata
+(such as current task name, modules and even consolidate the release as
+sysdata), which has two implications:
+
+1) Average messages size will become bigger. Thus, memcpy will be needed
+one way or another.
+
+2) Unless we can come up with a smart solution, this solution will be
+harder to reason about.
+
+If you want to invest more time in this direction, I am more than happy
+to create a PoC, so we can discuss more concretely. 
+
+Thanks,
+--breno
