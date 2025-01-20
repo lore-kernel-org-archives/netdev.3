@@ -1,214 +1,234 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2071.outbound.protection.outlook.com [40.107.94.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E79C1EE7D9;
-	Mon, 20 Jan 2025 17:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737393954; cv=none; b=hR6F6036tfwoyswUCXxQ1AtPWaJzmWbX7lR1qahaU62l1RoX8iiiKd4nhkUs0/CVUuECC+bqNfKvjiSVQvMfbCKqYrvkc0JFD+IdIdTuhb75mu5UIQjkqTq+s/NE26lEIUgYecFd2/HPbuDfLDm8uiFGsHGoAI6gZTkVzxnQTxQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737393954; c=relaxed/simple;
-	bh=b1izEIOG/9ykKpvXnFEOtTy6u9+Kx9WqQ3YLIyChENc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RO0LAJ11VDAGQVb+qO74S3SsTRhUpW8X6aP9CasufLkHe86m0AXCf2opNPlM6x4MiCBcZS6EqEPaIWFrRCswmOwCZW8HaaFuhSrLsRKm941yXuh8TcLA5SPQG8mP6Er9MWc80VSH8s/Qt/vsqCwwDE6eXBj2DohNRDkvhdxHVy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=c+5nWuEK; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71BE1E3DFC;
+	Mon, 20 Jan 2025 17:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737394036; cv=fail; b=alIsSoWZZheS0sq9yIfgK11BzNNk9SM9pet7G8U50gbuPP6p59sa/oCDqsAgBHZu8DM6DKFctRMryK6zhqxB4pzOb6Wikp/vQEfkpUllYfVSCQ/NrCxbfELzlPZHI+0kdVhGZQdw/1hYoIQ0rSZGouQz/DjCTFf8z2+vx9Djjx8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737394036; c=relaxed/simple;
+	bh=dw/ETGkjhFF59LTIW9v/qLvcfQ/q3ZQ9hcORaabjX1A=;
+	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=gDv5nnRR1ZWS1LCFaaUzb+MpgVzmL+ZDJhzmA+1crh2EqupBDTIoFgwfPKPubjznSrxLi8ki7np/PeEC1zcC49d5xW48rEfoXpX0BbwMYvP5XBbmmCUZIMI6iqduDz2EEPhY6JJus8/fIaeQsYtn9M8o+eQkYK+7XvuRRLx61Zg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=APPL+5I0; arc=fail smtp.client-ip=40.107.94.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="c+5nWuEK"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50KGZTF3003190;
-	Mon, 20 Jan 2025 17:25:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=u11oEO
-	UQKzuAopTeuM0V0EwaEGs6wWe3STtKZB1hQS0=; b=c+5nWuEKEWkrqJuTThZLTu
-	U4yo0pBtW2BB7kYRUTQnmhRPSeJ2c7mKUAdDHdKsB4gIb+1QScvI1TD4Ie/c19Cx
-	11nrlHKWoMsyf1n1nBGB/XmaFep2al97KxwgdSE6+Q+wRCdTrtyHm7kis0KLqlnW
-	b4VKfA4NzFBPfnAJEo5Y9KG6ZvlZVX0R9F4mqsv83yiQOQ1JkBEElE3g9qGou2Ma
-	gxMpoA2Y65JmpQ2ckQosIhBc2/5s33B2WM4N6xr/dOW5E65h4ECd0C/6z37E/Rn8
-	X3FyG3HgbGhTP7DF1g57AIqz4aIRNgLEu67bbjMO4G8fhORw9KRoQk1pJ8FNxH7A
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 449ga7b3ns-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jan 2025 17:25:44 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50KHNh0F012524;
-	Mon, 20 Jan 2025 17:25:44 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 449ga7b3nn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jan 2025 17:25:44 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50KDU5Ad021074;
-	Mon, 20 Jan 2025 17:25:43 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 448sb171as-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jan 2025 17:25:43 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50KHPeZ122217188
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Jan 2025 17:25:40 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E90A520043;
-	Mon, 20 Jan 2025 17:25:39 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A40E020040;
-	Mon, 20 Jan 2025 17:25:39 +0000 (GMT)
-Received: from [9.152.224.153] (unknown [9.152.224.153])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 20 Jan 2025 17:25:39 +0000 (GMT)
-Message-ID: <8f973fe8-04d1-4659-ac90-4b76178f6055@linux.ibm.com>
-Date: Mon, 20 Jan 2025 18:25:39 +0100
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="APPL+5I0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=v3zlgbBoNi3vFxErysFbJlAx033lOq2XmoqTCbu+TjkvGW0SwDHE2lS5bI9VwK1bM0ZwpSskWm0JfxNKDSO3KiNaZGUnV/NnsjDDo9bI9FoAIvV/6BmQIXlpoorCbjDwsNdNugiOWz17N7Jce0+NH1ZT9oq+qZnQd3QAyg43uSFOlbLMZxOOf06fWOgN+GkvkFV0le4/3WbewsAocDK1GYyotwfqXsfIylXegTnX2PbLgjN+RTeE8x920SMDZdkmmLgdpc/rF0gDpf3QBCLozVHcVD4ods03Ry6TaQ5gWr0zEfD05Rkbqg6PPP9WyA1yeVcQmPkP1BiWFrs3xVkN+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8hVUpCAgFVdcs+skyz0xGOLcXigsfpxgb3YUZluQEm4=;
+ b=wsNL3jwSgN+Qpiy4nTBOdB5YKjTUgaahXQh50qIhkcqDCMjIJaGauHhzXHYMyB8sHIDQD0M2cL5aSAHplrVzk0I+7i4W1EC4RH4gRKfMsXzm8ErJryAs3Ym11SVT/P2l9Qfan4lsGo5oabOGi/U1keBfch/S8KN9U8C/46cIylcNzF3e1vc0mWYkxjIyiAJNjleFh5wauqn92Fii7k3cZvcSA9RXs3z6htCC5ho9eNkVwiTPPM4u2U3hHkL+AWmIzdTAO117B99LJ51lKvNreSunY07VWTLmc4+ukJuxUM5ANbIehhEvw0xhSEP7kMwA7w72Z937ZJYkhF7d3BgRlg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8hVUpCAgFVdcs+skyz0xGOLcXigsfpxgb3YUZluQEm4=;
+ b=APPL+5I0askrwugB7NjonqTsWglvYAAMS5yhaUno3XiqJgFiox5abHFwgJSvt4b8G/U75SYnUMDSlMK+hrpVcFUKyE8fTFf2VBP1oOwrHxZqQhGjePAqQdcZcA93Savk5E51hm8v+P0lCNIB/iBnMNGXG4Bi2eCMmJ/gdJOx5b8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB4202.namprd12.prod.outlook.com (2603:10b6:5:219::22)
+ by DM6PR12MB4355.namprd12.prod.outlook.com (2603:10b6:5:2a3::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.22; Mon, 20 Jan
+ 2025 17:27:12 +0000
+Received: from DM6PR12MB4202.namprd12.prod.outlook.com
+ ([fe80::f943:600c:2558:af79]) by DM6PR12MB4202.namprd12.prod.outlook.com
+ ([fe80::f943:600c:2558:af79%7]) with mapi id 15.20.8356.017; Mon, 20 Jan 2025
+ 17:27:12 +0000
+Message-ID: <56186794-e514-e606-8a3e-1b73bdee7bae@amd.com>
+Date: Mon, 20 Jan 2025 17:27:07 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v9 14/27] sfc: create type2 cxl memdev
+Content-Language: en-US
+To: Dan Williams <dan.j.williams@intel.com>, alejandro.lucero-palau@amd.com,
+ linux-cxl@vger.kernel.org, netdev@vger.kernel.org, edward.cree@amd.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, dave.jiang@intel.com
+References: <20241230214445.27602-1-alejandro.lucero-palau@amd.com>
+ <20241230214445.27602-15-alejandro.lucero-palau@amd.com>
+ <678b14cf84ccf_20fa294f4@dwillia2-xfh.jf.intel.com.notmuch>
+From: Alejandro Lucero Palau <alucerop@amd.com>
+In-Reply-To: <678b14cf84ccf_20fa294f4@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PR1P264CA0021.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:19f::8) To DM6PR12MB4202.namprd12.prod.outlook.com
+ (2603:10b6:5:219::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC net-next 0/7] Provide an ism layer
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: dust.li@linux.alibaba.com, Niklas Schnelle <schnelle@linux.ibm.com>,
-        Julian Ruess <julianr@linux.ibm.com>,
-        Wenjia Zhang <wenjia@linux.ibm.com>, Jan Karcher <jaka@linux.ibm.com>,
-        Gerd Bayer <gbayer@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
-        "D. Wythe" <alibuda@linux.alibaba.com>,
-        Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        Thorsten Winkler <twinkler@linux.ibm.com>, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>
-References: <0f96574a-567e-495a-b815-6aef336f12e6@linux.ibm.com>
- <20250117021353.GF89233@linux.alibaba.com>
- <dc2ff4c83ce8f7884872068570454f285510bda2.camel@linux.ibm.com>
- <034e69fe-84b4-44f2-80d1-7c36ab4ee4c9@lunn.ch>
- <64df7d8ca3331be205171ddaf7090cae632b7768.camel@linux.ibm.com>
- <7dc80dfb-5a75-4638-9d44-d5a080ddb693@lunn.ch>
- <c2eb6fd7e9a786749d70a17266a04fb50dbd5bb8.camel@linux.ibm.com>
- <85d94131-6c2b-41bd-ad93-c0e7c24801db@lunn.ch>
- <20250120062112.GL89233@linux.alibaba.com>
- <7fc92a63-0017-4d59-bdaf-8976bf8dcee1@linux.ibm.com>
- <13a42088-8409-4603-83d7-4afbfc609f65@lunn.ch>
-Content-Language: en-US
-From: Alexandra Winter <wintera@linux.ibm.com>
-In-Reply-To: <13a42088-8409-4603-83d7-4afbfc609f65@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: J72ykVmjBOMZiT23CokzoARb4A4nd-tx
-X-Proofpoint-GUID: IUYLwCSoHea1O_R1qB8_couGupEx8TYQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-20_04,2025-01-20_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
- impostorscore=0 suspectscore=0 clxscore=1015 spamscore=0
- lowpriorityscore=0 priorityscore=1501 bulkscore=0 adultscore=0
- phishscore=0 mlxlogscore=538 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2501200140
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4202:EE_|DM6PR12MB4355:EE_
+X-MS-Office365-Filtering-Correlation-Id: 46ec0402-4e39-484b-8dc4-08dd3977ad30
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ajA0MWlxRElENjRTd29pcnc1ZEZIZUxDVFVxNGYrSmN1M2tzUk9WS0hwK2FS?=
+ =?utf-8?B?aUtJUWpwNDdoSVh5bUt4cWxCbW9hWGpvem5IS3VScUF2SkVqdnhlUE0ya053?=
+ =?utf-8?B?UExuSWlReUt2OXlEN2pNYlpZWVNrREpyR2UzSk04VitiMXkreksxRXhFcUd2?=
+ =?utf-8?B?VkhoT1JVN0tnblhIZG1XN2phbnpxRENhNURDN1Z1VkNZUGNoeWVkWDR6ZnJS?=
+ =?utf-8?B?S3JXNFZqclhCcXk1UUswV3BXRytNK1pUSjZzMzAxZm5xZVh1WGJoRG50UmJa?=
+ =?utf-8?B?MUtRSmNLWlhRZG95VDVXYUIwU1VVOW95S0pyNWR2RHd3SlhVWDZ5dlJHNnJT?=
+ =?utf-8?B?Y04rWVprdDR0a1o3elBmbnlUTWh2aVZTbklWMkRDbk9ONm5EcVJlQ0dEWnJi?=
+ =?utf-8?B?TzNtak5Vbys5WTlBVXlRQ1JaVmIrVFJGVU5pN0t1aFRNS0haYURTLzcwcHN1?=
+ =?utf-8?B?N3BNTXFKN1YwZ1ZnWXdiUG9qU1JKeDlMQm1oZHIzU3d1OTV3VTRiRnc2OFNk?=
+ =?utf-8?B?T2lYVEltazF1R21ZdU02bEtZSTlJZk9oRklJSHYyMloxSDc3VlNlUnE4YWRi?=
+ =?utf-8?B?ZzZCbGp3V01Gc3FhOHFjaS9kSjhIWFp5bzB0UFUvTTgzUWxScVliOUo2R0kr?=
+ =?utf-8?B?ZjE3WVNWazNvQkNoK2ovWTdMTXozVHdFVjNWYkZ3SjlkL0EwVyt5VDlwb3BP?=
+ =?utf-8?B?TzltaGJ6S0EyTzQzTFd1cGlKR2RncTExOHhjM2E2aTFaWW9JMzZ2VkFEWnpu?=
+ =?utf-8?B?aENYbHRKK3BZbFJEblM4Wm9qdHlxVFp3bndRdmpYdk5yMmUrbGpUcFZqYTlJ?=
+ =?utf-8?B?eXI5SlJVYTlmNEt6WTBsZndmbG1idVlvMXJlRm5EMWczOUZNbDZmSG93aTFB?=
+ =?utf-8?B?eFlJWi9jKzQ0ZGhPa2MyVkVsTVFiUFUxVXdkMjAySGt1dlE4TTRWME9PcTJ5?=
+ =?utf-8?B?NVhZQ3dLRnZ5MnlGMVI2Y1gwM2dCWktKNjlpNndjSllwZ3pjbng2QThrREhk?=
+ =?utf-8?B?Tnd5alZYdVUzdUd0cEMyWC9NVzdUcjZBcEQ5L05CSEdUbDZJK25uK0pZYWk1?=
+ =?utf-8?B?dVl0MnVsd1c2YXdTeDFIU2JHZzNvOElSeE5PNEFlaVlqUS8wQnU2NUlCNUNM?=
+ =?utf-8?B?eFNIMm0xQU16eHNjUi82NUtGdGl1NGNsY3JGOVBvc1U5K1Fac3FZMFpSSGRV?=
+ =?utf-8?B?VXVNM29NRE02S1A3WmdlbWFEZXlrYkhReWp1MHk0OFBNQ0VIOUhtZURrbGh0?=
+ =?utf-8?B?Q2hSYjBHTTF1K3hmWlRIMXdNaDhvdStQRElkSDZnN3h5TFA4TVlnWUxQb2Nn?=
+ =?utf-8?B?VzhNREhBOEZJR3l0VFhnNU5wN2pmcUdjTi9OdlVSK0ZUbENVaC9OZ0JoTFFX?=
+ =?utf-8?B?VStzZ2hNcERodjRlVWNGNmNCaTg2RGR3YzBUZGErNTVQWlZtaGNsQTV2SW9I?=
+ =?utf-8?B?SXd0djNXWUhSUU00c201Q1RpZ0dzSTRraFY2Q1htTGM2YXRUTUdjL2QvMklm?=
+ =?utf-8?B?MWNnVytXZE0vWlF5a3NnRXRsUlBVMDhvUmYwZnFraEU2THJTOXIzZWRUamdK?=
+ =?utf-8?B?a09ENG42cWdicTVvdk42d0xPRERIdVFNV0psNzRWNVVLZ0VQbHpHZ2N3SWpL?=
+ =?utf-8?B?ZnhTSnJqaUxiYXVNQ0hZcFJNL2pyWEpST2U0REVweUExZjUrVWtVM0hrdS92?=
+ =?utf-8?B?b1BkNTRybDB1YU9uVkVpVGNvcldvNWtWYmF6Z1NEbmhvSkk5REVUUHFMWDRi?=
+ =?utf-8?B?VHVpZG1QdVpONDRDS3B6bEg5UmVtVUswaWFybnEvb0Q0QlBBK05DR0hoZlAv?=
+ =?utf-8?B?c2JoN1Qybnk2eEhvNDZCUHlpR2VMN1BaSHJhRDlnbndGMS9CTXpDb2Vtdmhy?=
+ =?utf-8?B?ZFpLS0JwekJrSXV4bWFPR3gxNG1qTlRDOFZVVDRaRGZQMERXSWVLK1J4MnJm?=
+ =?utf-8?Q?WPruRXnBJk0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4202.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SHAyKzlpN3paditvSDkxR1N1YlYvWTRUWkdRbGt0ZjlHTDVuMzM2ejZJUG9N?=
+ =?utf-8?B?MFM2T0sxWi84bG5UaU0xSEFzWXRabjVkV0J6U0kySnJKb1FybWJTMFlZTmdR?=
+ =?utf-8?B?RElTLzFUbm1uWlV2Kzh1YU0rZDNqSDBib3VvR242bVZsVXJJQnFxQWlUa3la?=
+ =?utf-8?B?VEdCMi9kVlhiaXFzZGIvWUwzVWtrK0dSUm53ZCtNclRsUlBzVloxa21KZkxN?=
+ =?utf-8?B?aFhTbVQ3VC9ZMHRyRUZEcVVaN3BjMDR4NEU3WmRXdlVTbmMraEo0aWRhZDFS?=
+ =?utf-8?B?QUxnbk14MXNJNG9YOFZnOTZhc0FaMFVaK2dxb2pNb2ZQem1JNkRmbUt4Nnha?=
+ =?utf-8?B?SHlQRWVEVjI5U0R3NDk3L2F4VEI3QUpHSFFqYy90VHRtbDJJQ09zT0d4R3hp?=
+ =?utf-8?B?WERhT0RNWmdsZEN4SWxwd3pyRDc5VHptRW1VK1o2RXJjaHFYMnFZdjV3VE5T?=
+ =?utf-8?B?aHlDMXc4YXloQTRFUGt5cldzWFkyS3hWdFlQYkp3amx6MEZwRzBBM2NLaWhN?=
+ =?utf-8?B?NnZLbjFlWkZWcnhtazhqOVVNNFdUclR6empHQXdzSjBXdi9WQ0dyaXo3SS90?=
+ =?utf-8?B?Q0dZQk43SjRqWUcxbStGTy9yZVBTbFQ1NTBLeU9QZ2xIU0dlUHB2SEduOXhS?=
+ =?utf-8?B?YU8zMS9UdXh3ZW9TRWUycGF1VnFiRUNvMHhVQTRYdmJObUI2WW5aUnQweHQv?=
+ =?utf-8?B?M3JNQVgvMGFGSXdvWWE2TmJDeWNUVmsySVVERnpFd2Y3c05kT3BGa0xCSFN2?=
+ =?utf-8?B?VTUza3ZDdlJSQ1lKTjIwejV4UEkvZ2c5RTV0UkRxMjZSVlFPTC9TaCs2V2wy?=
+ =?utf-8?B?U2FURnA5YzRDV2RGQVh0SkNpK0FQN240dGViWDhTellqQmxtRzBHWFM5M2pE?=
+ =?utf-8?B?VGJoV3oraW9SdmpPR1JYNnZINmNaS0hPeXBPYUVzbm1pMHpObjd5cWRycFNo?=
+ =?utf-8?B?ZXNiVmxvTkF5RDVrbHY5OURhTjRkL2R3cHNHbVNjTGZTY09yeU1XSWY3Qjky?=
+ =?utf-8?B?QUxweE91ZnBrVEY0RjJVdEJVaVhjS1F1bGxldldZdDBFcDVFY2g1K0JNaklS?=
+ =?utf-8?B?aFAyNjJhZnpwVDVXM3JqaXRDZ01zQ3hNaTBld2NzU1V3YjVSdW12dVVaaTEw?=
+ =?utf-8?B?NjAzcitNaDZOZkJ3R3RYSHlKVVlYY3Npb1RvVmpRblpzT1ZFeVFRV0xVZkQ5?=
+ =?utf-8?B?aENVT2IvRmVKMlAzNFRHYkJrcWh5dHNzM2JkUlE0NXhkRzFoYXBKWVl5Ly9h?=
+ =?utf-8?B?elVGTTVEUnZoU0IvK3Rrb0lOMDM4SzcwWjZmRm5yZ0pJWWJQRnV3eWZtdDRv?=
+ =?utf-8?B?QjNNTENDczNlUzdNTnVycWI2QVRtcGVsRWxaRm5oNjk3aStFaEQvZHBPOTc4?=
+ =?utf-8?B?UDRCbGFIWC9sQXlYZWllUmRpQWt5SGdEK2cyWnZTOWI1RmFTMzRTeXJ5S2xV?=
+ =?utf-8?B?N0dQT0hCOVVSYUZQRXRUWndER1RWejMrZTROUDE3NGd5V1pndlRWb093ZTN0?=
+ =?utf-8?B?cmUyZytsQ0VabHpNb21NQ2FEbWszL2xadVpRWXpHYlA5dmVMOE1EOTdGcElP?=
+ =?utf-8?B?VEVuMWdrTGVIKy9BZVZyMittc0VMWFBVazY0aEtvWi9Qa1VML1FkU0xUUUdl?=
+ =?utf-8?B?d0xPUXBTeG5FUUJ5L0IxcjdVZWpQa0g0OXFMSkx3THNSZUdvaVVhV29pc2t2?=
+ =?utf-8?B?RDZwcGxGelpVeTRCYUpIRVBzU200Y21rcDNtQzMzLzhLWHRwMFJWc1l5S1hV?=
+ =?utf-8?B?QWF0R2lEdWtqOXdGVVZOd2RLaU12azc0eDR0UW5ZcFF6SjFKWmpTV256R2x5?=
+ =?utf-8?B?UXJxT0tObVBGODZENkU3cGR6K3MwclN6d2Zjb0pCcTlmK3Y0QVE4Wk9oNEJt?=
+ =?utf-8?B?VHFWbEd1Q3U3UWVZQUdaWXB2NUNzVXdGOW9aY25BNEFQT3hWSG00eENoOUFp?=
+ =?utf-8?B?bVU5Yk5kV3h6SjFWUWJmVWV4K1RZT0lrSFJCWkhDOG42blByaXJFcS9UOFZi?=
+ =?utf-8?B?MStxWnZFdWhkWkVNY1FpUDBSNjNkdkNGQmptWDZxYmUzeExHWDRQamNOMC9m?=
+ =?utf-8?B?MEljcGZTQnhBN043WkdSY3ovNVcwWDc0MkU2eUlkUkRhV001ZVZoTXd3THIy?=
+ =?utf-8?Q?B3LH6Uq8/XudoYq1X1x/yjAPO?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46ec0402-4e39-484b-8dc4-08dd3977ad30
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4202.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2025 17:27:12.8011
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pzzhPthF1O+ziumtl03Ll7aJJ94UWsP/3Y3n+rYRxjfkTDON0E9PWh4gyhMh26mMLn8k8yF7sRISmgLUbjcsGQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4355
 
 
-
-On 20.01.25 17:01, Andrew Lunn wrote:
->> What is central to ISM is the DMB (Direct Memory Buffer). The concept
->> that there is a DMB dedicated to one writer and one reader. It is owned
->> by the reader and only this writer can write at any offset into the DMB
->> (Fabric controlled). (Reader can technically read/write as well).
+On 1/18/25 02:41, Dan Williams wrote:
+> alejandro.lucero-palau@ wrote:
+>> From: Alejandro Lucero <alucerop@amd.com>
 >>
->> So for the client API I think the core functions are
->> - move_data(*data, target_dmb_token, offset) - called by the sending
->> client, to move data at some offset into a DMB.
-> 
-> Missing a length, but otherwise this looks O.K.
+>> Use cxl API for creating a cxl memory device using the type2
+>> cxl_dev_state struct.
+>>
+>> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+>> Reviewed-by: Martin Habets <habetsm.xilinx@gmail.com>
+>> Reviewed-by: Fan Ni <fan.ni@samsung.com>
+>> Acked-by: Edward Cree <ecree.xilinx@gmail.com>
+>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> ---
+>>   drivers/net/ethernet/sfc/efx_cxl.c | 9 +++++++++
+>>   1 file changed, 9 insertions(+)
+>>
+>> diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
+>> index 911f29b91bd3..f4bf137fd878 100644
+>> --- a/drivers/net/ethernet/sfc/efx_cxl.c
+>> +++ b/drivers/net/ethernet/sfc/efx_cxl.c
+>> @@ -96,10 +96,19 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
+>>   	 */
+>>   	cxl_set_media_ready(cxl->cxlds);
+> It is unfortunate the media_ready is just being used as an
+> offline/online flag for memdevs. I would be open to just switching to
+> typical device online/offline semantics and drop the "media_ready" flag.
 
 
-Right, move_data() has a length field. My bad.
-
-> 
->> - receive_signal(dmb_token, some_signal_info) - called by the ism layer
->> to signal the client, that this DMB needs handling. (currently called
->> handle_irq)
-> 
-> So there is no indication where in the DMB there is new content?
-> 
-
-The existing ism implementations pass a bit mask in 'some_signal_info'
-that can be used to signal which parts of the DMB have data to look at.
+Not sure I understand the semantics here. Note our device, as the 
+related register being optional, has no way for asking the HW about this 
+(by CXL means), mainly because it is not necessary. I guess this 
+hardware state is there because it can be needed, but again, not sure I 
+understand media-ready vs memory online.
 
 
-> And when you say "This DMB" does that imply there are multiple DMB
-> shared between two peers?
-> 
-
-Yes, there can be multiple DMBs between the same two peers. And/or an
-ism device can provide multiple DMBs that are shared with different peers.
-
-
-> Maybe i have the wrong idea about a DMB. I was thinking of maybe 64K
-> to a few Mega bytes of memory, in a memory which could truly be shared
-> by CPUs. But maybe a DMB is just a 4K Page, and you have lots of them?
-> If you are 'faking' a shared memory with DMA, they can be anywhere in
-> the address space where the DMA engine can access them.
-> 
-
-More the latter. Although they can be large, if the client or
-application wants to spend so much memory.
-
-Which brings us back to the other thread, that ISM may not be the best
-name for this concept. MCD - 'Memory Communication Device', was a
-proposals without 'Shared' in the name...
-
-
->> I would not want to abstract that to a message based API, because then
->> we need queues etc and are almost at a net_device. All that is not
->> needed for ism, because DMBs are dedicated to a single writer (who has
->> the responsibility).
-> 
-> But i assume there are "protocols" above this. You talked about
-> running a TTY over this. That should be standardized, so everybody
-> implements TTYs in exactly the same way. 
-> 
-
-Yes, the 'clients' are the protocols above this.
+>
+>>   
+>> +	cxl->cxlmd = devm_cxl_add_memdev(&pci_dev->dev, cxl->cxlds);
+>> +	if (IS_ERR(cxl->cxlmd)) {
+>> +		pci_err(pci_dev, "CXL accel memdev creation failed");
+>> +		rc = PTR_ERR(cxl->cxlmd);
+>> +		goto err_memdev;
+>> +	}
+>> +
+>>   	probe_data->cxl = cxl;
+>>   
+>>   	return 0;
+>>   
+>> +err_memdev:
+>> +	cxl_release_resource(cxl->cxlds, CXL_RES_RAM);
+>>   err_resource_set:
+>>   	kfree(cxl->cxlds);
+> In general a function should not mix devm and goto as that is a recipe
+> for bugs.
+>
+> The bug I see here is that devm_cxl_add_memdev() runs the teardown flow
+> *after* efx_pci_probe() returns an error code. That happens in
+> device_unbind_cleanup(), but when it goes to cleanup endpoint decoders
+> and anything else that might reference @cxlds it crashes because @cxlds
+> is long gone.
+>
+> So if you use devm_cxl_add_memdev() then cxlds must be devm allocated as
+> well to make sure it gets freed in the proper reverse order.
 
 
->>> One thing we cannot hide, however, is whether the operation is zero-copy
->>> or copy. This distinction is important because we can reuse the data at
->>> different times in copy mode and zero-copy mode.
-> 
-> This needs more explanation. Are you talking about putting data into
-> the DMB, or moving the DMB to the peer?
-> 
+That is true and I think it is easy to fix, even with your changes for 
+patch 1.
 
-The former: putting data into the DMB.
-But yes the concept of attached, no-copy DMBs, that was introduced by
-ism-loopback needs a better description.
+I'll show it in v10.
 
+Thanks!
 
-> If you have a DMA engine
-> moving stuff around, the data can be anywhere the DMA engine can
-> access. But if you have a true shared memory, ideally you want to
-> avoid copying into it.
-> 
-> Then you have the API used by your protocol drivers above. For a TTY
-> running at 9600 baud, a copy into the DMB does not matter. But if you
-> are talking about a network protocol stack on top, your copy from user
-> space to kernel space probably wants to go direct into the DMB. So
-> maybe your API also needs to include allocating/freeing DMBs in an
-> abstract way so it can hide the difference between true shared memory,
-> and kernel memory which can be DMAed?
-> 
-> 	Andrew
-> 
-> 
-The ism_ops register_dmb() and unregister_dmb() are meant to provide
-that API.
