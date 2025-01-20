@@ -1,143 +1,86 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DC91B87DB;
-	Mon, 20 Jan 2025 16:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1351494CC;
+	Mon, 20 Jan 2025 17:00:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737391812; cv=none; b=MgcotX9x2mNRKaedq21B5bT1lfVspuCJqIuTXUZUc24P5roMCBSjmix95TVXO1Z/tSWWWYXE/gxR7fUN4ziLAmLZO81xdOIzrIEUu6AaexoRDrauljlqWK2S/njM2KfMmt+ueQLPy/qGeyXT7GBMnwN8VfEuqj6lG0194IMgAc4=
+	t=1737392460; cv=none; b=dr6gLe0SgBWHeTmVqHZ2TY4ApH3IwomdFfqeM/ktGjlKCbY5g1Jo5yq1f4cRNpEAwA2OJh9FCrSCth1G8UfTt1qD3pCgrPt38uWnkXIfkL8+jpwwM22tzJEEX/iI1e0s274DFVxLeq7QniuS68MF9iSUklLxb8YTwlB8kc7P2Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737391812; c=relaxed/simple;
-	bh=3hGivv5L0ZJwWyGudvruWZfniXpzbxbpcHcFUlSE8hY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sv9C8t+f0nMifjDZ5zRdwW3yOIeTg3pHiJPLcl7KX36zQ8IKzSMCjaQSSdrAHfUE8mR0rcUd9aNv07QajI2DqtfeVfO/t9MA9xPJYJOBwH4tk5NVEsootkr6R4NjLHrgVta52Dzi4rRjZLV0kF7iQqu8ykmP/k/hmB3Ybut/p7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=D33MXrMk; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="D33MXrMk"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=FoFI85rkVFBhTO2so9SNQoSkivg8MsoOQMlqZ8as4og=; b=D33MXrMklXGaGHGOc2v/lGG1Cq
-	wAXHeEbVrNr4AwJ5BVzB9A/TubsknReXImJIK2XPWJDQkwQv43Zg6810meNNRzo5JN7zyFWbLKeIN
-	prsrIGwQpsKyFYnbZ74p4Nv3EVmgQmnTI5dhxuMKqdhxLiIcsNiNrUvzreXGfdmNGJ2I=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tZuyJ-006OCq-8Z; Mon, 20 Jan 2025 17:49:55 +0100
-Date: Mon, 20 Jan 2025 17:49:55 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yijie Yang <quic_yijiyang@quicinc.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/3] net: stmmac: qcom-ethqos: Enable RX programmable
- swap on qcs615
-Message-ID: <0fe23cfd-9326-4664-9c94-cf010aec882c@lunn.ch>
-References: <20241225-support_10m100m-v1-0-4b52ef48b488@quicinc.com>
- <20241225-support_10m100m-v1-2-4b52ef48b488@quicinc.com>
- <4b4ef1c1-a20b-4b65-ad37-b9aabe074ae1@kernel.org>
- <278de6e8-de8f-458a-a4b9-92b3eb81fa77@quicinc.com>
- <e47f3b5c-9efa-4b71-b854-3a5124af06d7@lunn.ch>
- <87a7729d-ccdd-46f0-bcfd-3915452344fd@quicinc.com>
- <7e046761-7787-4f01-b47b-9374402489ac@lunn.ch>
- <5bc3f4e0-6c3f-412c-a825-54707c70f779@quicinc.com>
+	s=arc-20240116; t=1737392460; c=relaxed/simple;
+	bh=1F0Ehs/r8JdKDfeHpnYmVhwcJ8E1h9i7owVErbWz3sY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DnVMu52m4PG/QwyCaW49Z/KuHOmjakceRUW3PMGFZK105ZnOiOnTqP54ik7DX9BD/RQphPKPfUWO8+INejRmt7UeYd28ReU3v/2e8GcOj2Goiorf7a93d/z2WKmT6XHHl/f8JYfbKdTQvSiJ72Pqnl0LCxhuz6jFWOFtavX7ruY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [220.197.236.33])
+	by APP-01 (Coremail) with SMTP id qwCowABXXtI6gY5n3d1qCA--.65459S2;
+	Tue, 21 Jan 2025 01:00:47 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Daniele Palmas <dnlplm@gmail.com>,
+	Breno Leitao <leitao@debian.org>,
+	netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>
+Subject: [PATCH] net: usb: qmi_wwan: Add error handling for usbnet_get_ethernet_addr
+Date: Tue, 21 Jan 2025 01:00:26 +0800
+Message-ID: <20250120170026.1880-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5bc3f4e0-6c3f-412c-a825-54707c70f779@quicinc.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowABXXtI6gY5n3d1qCA--.65459S2
+X-Coremail-Antispam: 1UD129KBjvJXoWrKw4fAw1fGFy5uF1fuF1xXwb_yoW8Jr4DpF
+	WUGay8ZF97XrW5Ja4UA3y8Cay5Zw4vkryDCFy7Cws3ur9rA3W7GrWj9a4fKa4UKFW8G3W3
+	CF4DCrs8WFs8GrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUSNtxUUU
+	UU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYIA2eOJZ7AQQAAsS
 
-> > So this indicates any board might need this feature, not just this one
-> > board. Putting the board name in the driver then does not scale.
-> > 
-> 
-> Should I ignore this if I choose to use the following standard properties?
+In qmi_wwan_bind(), usbnet_get_ethernet_addr() is called
+without error handling, risking unnoticed failures and
+inconsistent behavior compared to other parts of the code.
 
-You should always follow standard properties unless they don't
-work. And if they don't work, your commit message needs to explain why
-they don't work forcing your to do something special.
+Fix this issue by adding an error handling for the
+usbnet_get_ethernet_addr(), improving code robustness.
 
-> > > This means the time
-> > > delay introduced by the PC board may not be zero. Therefore, it's necessary
-> > > for software developers to tune both the RX programming swap bit and the
-> > > delay to ensure correct sampling.
-> > 
-> > O.K. Now look at how other boards tune their delays. There are
-> > standard properties for this:
-> > 
-> >          rx-internal-delay-ps:
-> >            description:
-> >              RGMII Receive Clock Delay defined in pico seconds. This is used for
-> >              controllers that have configurable RX internal delays. If this
-> >              property is present then the MAC applies the RX delay.
-> >          tx-internal-delay-ps:
-> >            description:
-> >              RGMII Transmit Clock Delay defined in pico seconds. This is used for
-> >              controllers that have configurable TX internal delays. If this
-> >              property is present then the MAC applies the TX delay.
-> > 
-> > I think you can use these properties, maybe with an additional comment
-> > in the binding. RGMII running at 1G has a clock of 125MHz. That is a
-> > period of 8ns. So a half clock cycle delay is then 4ns.
-> > 
-> > So an rx-internal-delay-ps of 0-2000 means this clock invert should be
-> > disabled. A rx-internal-delay-ps of 4000-6000 means the clock invert
-> > should be enabled.
-> 
-> This board was designed to operate at different speed rates, not a fixed
-> speed, and the clock rate varies for each speed. Thus, the delay introduced
-> by inverting the clock is not fixed. Additionally, I noticed that some
-> vendors apply the same routine for this property across all speeds in their
-> driver code. Can this property be used just as a flag, regardless of its
-> actual value?
+Fixes: 423ce8caab7e ("net: usb: qmi_wwan: New driver for Huawei QMI based WWAN devices")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/net/usb/qmi_wwan.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Maybe you should go read the RGMII standard, and then think about how
-your hardware actually works.
-
-RGMII always has a variable clock, with different clock speeds for
-10/100/1G. So your board design is just plain normal, not
-special. Does the standard talk about different delays for different
-speeds? As you say, other drivers apply the same delay for all
-speeds. Why should your hardware be special?
-
-RGMII has been around for 25 years. Do you really think your RGMII
-implementation needs something special which no other implementation
-has needed in the last 25 years?
-
-> > Now, ideally, you want the PHY to add the RGMII delays, that is what i
-> > request all MAC/PHY pairs do, so we have a uniform setup across all
-> > boards. So unless the PHY does not support RGMII delays, you would
-> > expect rx-internal-delay-ps to be either just a small number of
-> > picoseconds for fine tuning, or a small number of picoseconds + 4ns
-> > for fine tuning.
-> 
-> The delay for both TX and RX sides is added by the MAC in the Qualcomm
-> driver, which was introduced by the initial patch. I believe there may be a
-> refactor in the future to ensure it follows the requirements.
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index e9208a8d2bfa..7aa576bfe76b 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -779,7 +779,9 @@ static int qmi_wwan_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	/* errors aren't fatal - we can live with the dynamic address */
+ 	if (cdc_ether && cdc_ether->wMaxSegmentSize) {
+ 		dev->hard_mtu = le16_to_cpu(cdc_ether->wMaxSegmentSize);
+-		usbnet_get_ethernet_addr(dev, cdc_ether->iMACAddress);
++		status = usbnet_get_ethernet_addr(dev, cdc_ether->iMACAddress);
++		if (status < 0)
++			goto err;
+ 	}
  
-You can do it in the MAC. But you probably want to clearly document
-this, that your design is different to > 95% of systems in Linux which
-have the PHY do the delays.
+ 	/* claim data interface and set it up */
+-- 
+2.42.0.windows.2
 
-	Andrew
