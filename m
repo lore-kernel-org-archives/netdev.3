@@ -1,69 +1,75 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DE1BE65
-	for <netdev@vger.kernel.org>; Mon, 20 Jan 2025 16:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7CC1E9B37
+	for <netdev@vger.kernel.org>; Mon, 20 Jan 2025 16:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737391131; cv=none; b=iW8G7QVlQkkfQWhLAy+bom8He+leBrhQ1OrU2tIZbOToXxHaqc8GBX5VJPuDaDMbeydooKuAVWkRmikRzL43eb33fP34Za4DYVkiORZTZawg9GtEzWVoBn7zgcwD/zr8Bv4cIYQcKOojdNBtJy++LCaPxspF/6mFJz3oyryKLCg=
+	t=1737391808; cv=none; b=BwTvJYm5lYMaRPPc37/+vThdijMvBeNLOS7p7+IGduMKLWcCszLIEgz+mqPfo0KnOsNhAB/H7PLJfO6H1CUsVuWd7yYR+Wv3qM7jWe3PobMJeZOtZ4SQEhpX/VrfInFuI1inIBAhl1Vy7u228wdeA0kLpVzVSIMD9fdB9dLey78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737391131; c=relaxed/simple;
-	bh=c0xlwRDQNm8uVGKxRC9PeZrdMybvdgoujTDDGoxlHM0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oXNjjK4hYKsBt47iaM0SfP2ARK1l8B77dpa/sI6uU4Vm1QtBl1qXy0HLrmqRiMoTbVBrFwea6o09yidqVV3RctOnX+xUsZ6/Xx647Un3Tvi024W1wDjaM29F9Xx0OEMplF94HWfYWY5NvIneZPDhd22ys81QRXDUwXETsyIu7do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PuocawU+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1737391808; c=relaxed/simple;
+	bh=KrArXC5UxZDe4aRI3/NUDH/Yv+VFXYyF6TRYd0Ru5qQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ErzWFj3oew4BsqiblV4L2WPZ67AKTsJC+PF5trkLHQTbQanBiZ3k2HGSobjAYPw6WPsYHCZ26Nu5vkw85+Ioshajfd4jJmfa/2SJsFAni0tKm77/N10dbDeYPmK9DiaEQxvuiIkuHQJOusRWbB/JoVmiYHp669FkcRc6mePAImM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PIx31Q3g; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PuocawU+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A9AC4CEDD;
-	Mon, 20 Jan 2025 16:38:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PIx31Q3g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D9CC4CEDD;
+	Mon, 20 Jan 2025 16:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737391131;
-	bh=c0xlwRDQNm8uVGKxRC9PeZrdMybvdgoujTDDGoxlHM0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PuocawU+BoxAJiHkULhiJo2gO//KfciOKMPcChpM2z6rabZQZkuC4UH5Ey9lqIXu7
-	 gRCuOpbp2KSCISCl6BNs4Md3xmmnygvy1mlA/5d6ymBJ9spuhIQTzvKvxRc0Mn2fdF
-	 oqVnQxykyq+jT2v30ps1WxI3r6KCqLRLCtZySz9gmZLLez0A2mO87DZhZFvYPtooBP
-	 bwg6ul8nNm7JuJrA/eNgIolBmop9BMR68NQzOqCYDzRSF2xRtqosToHP2X8xP2nd51
-	 6BC2Qyv4vdtv7BevHw9YcR34UTKbuJvdaKEpDG12bXXiW0Z/qW7pRdaDdZFGc+LlOM
-	 mL7PKSA1ZdJWQ==
-Date: Mon, 20 Jan 2025 16:38:46 +0000
-From: Simon Horman <horms@kernel.org>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com, magnus.karlsson@intel.com,
-	jacob.e.keller@intel.com, xudu@redhat.com, mschmidt@redhat.com,
-	jmaxwell@redhat.com, poros@redhat.com, przemyslaw.kitszel@intel.com
-Subject: Re: [PATCH v3 iwl-net 1/3] ice: put Rx buffers after being done with
- current frame
-Message-ID: <20250120163846.GB6206@kernel.org>
-References: <20250120155016.556735-1-maciej.fijalkowski@intel.com>
- <20250120155016.556735-2-maciej.fijalkowski@intel.com>
+	s=k20201202; t=1737391807;
+	bh=KrArXC5UxZDe4aRI3/NUDH/Yv+VFXYyF6TRYd0Ru5qQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=PIx31Q3gL1rvvXc9yJcA7NVr7JVtZEBET2gCIFzIBDlyloc2rshPYT8ysGe4eQ6D1
+	 rNCk1iLob2+rtcy8wz1cN1/m2wdCRyTzddd0lPgp7oKOx6PAQof+9WQ6h368D6pfTz
+	 Jp0/RuMzytobCXKZtcXW+/5IRvnnadD3LjguVy9cyIsD4r1td0XEgulFqxTRrc66/f
+	 tyf0xFTQLvzhuQ/7CBgTsAyAA7Zl70JrNJgycFOeLs/KAJIdrDkZgXtukMFDihEazq
+	 OSehRFrDiSn1hiEHcsFRPTX2PDwu9ZQjMByGDtPQiCNToF2YNUK2ewRO/0DPynGic5
+	 DAp4WDyTJe76w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EBE94380AA62;
+	Mon, 20 Jan 2025 16:50:32 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250120155016.556735-2-maciej.fijalkowski@intel.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH iproute2-next] ip: vxlan: Support IFLA_VXLAN_RESERVED_BITS
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173739183175.3583404.7779729992198774050.git-patchwork-notify@kernel.org>
+Date: Mon, 20 Jan 2025 16:50:31 +0000
+References: <5eaf7a5df51b687f3354d9e065c3358f56b5ad34.1737387719.git.petrm@nvidia.com>
+In-Reply-To: <5eaf7a5df51b687f3354d9e065c3358f56b5ad34.1737387719.git.petrm@nvidia.com>
+To: Petr Machata <petrm@nvidia.com>
+Cc: stephen@networkplumber.org, dsahern@kernel.org, netdev@vger.kernel.org
 
-On Mon, Jan 20, 2025 at 04:50:14PM +0100, Maciej Fijalkowski wrote:
-> Introduce a new helper ice_put_rx_mbuf() that will go through gathered
-> frags from current frame and will call ice_put_rx_buf() on them. Current
-> logic that was supposed to simplify and optimize the driver where we go
-> through a batch of all buffers processed in current NAPI instance turned
-> out to be broken for jumbo frames and very heavy load that was coming
-> from both multi-thread iperf and nginx/wrk pair between server and
-> client. The delay introduced by approach that we are dropping is simply
-> too big and we need to take the decision regarding page
-> recycling/releasing as quick as we can.
+Hello:
+
+This patch was applied to iproute2/iproute2-next.git (main)
+by David Ahern <dsahern@kernel.org>:
+
+On Mon, 20 Jan 2025 16:43:06 +0100 you wrote:
+> A new attribute, IFLA_VXLAN_RESERVED_BITS, was added in Linux kernel
+> commit 6c11379b104e ("vxlan: Add an attribute to make VXLAN header
+> validation configurable") (See the link below for the full patchset).
 > 
-> While at it, address an error path of ice_add_xdp_frag() - we were
-> missing buffer putting from day 1 there.
+> The payload is a 64-bit binary field that covers the VXLAN header. The set
+> bits indicate which bits in a VXLAN packet header should be allowed to
+> carry 1's. Support the new attribute through a CLI keyword "reserved_bits".
 > 
-> As a nice side effect we get rid of annoying and repetetive three-liner:
+> [...]
 
-nit: repetitive
+Here is the summary with links:
+  - [iproute2-next] ip: vxlan: Support IFLA_VXLAN_RESERVED_BITS
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=1db4f568789b
 
-...
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
