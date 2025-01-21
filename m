@@ -1,98 +1,88 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5081E7C07
-	for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 10:09:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3940219E0;
+	Tue, 21 Jan 2025 10:17:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737454181; cv=none; b=JzXD+PvmgjsBhHJ6gVBlk6ztr0m9oBhNzdvTZVS7IYB/BJVYZpY1bo3mcE/Ja87Lu+5D9TI+plY9zI8/SzHJ4sCRvIDLV3FcXW4lr71xAA7KSoJhHmfwkz6lwlUTbtF1vjUm8HtBI92scz6xfHDF394ifYlV0cw4leW/jGqfpJE=
+	t=1737454657; cv=none; b=FhUEBDpuwo6tCNpUUaT5tz7AcKrcmzjCYuWk+1ljGt5NLyjNuu6oNaD0UwCybjjIdwmQXBlBc3Vq3gN3FFyozIasL2rLMbE5Ax8rsV6hgPxAxYWl6cbv6cVt+2sBSrvJXqxBU8h2KHjOU0SIDx0asTpMsQBcckUr0WdZH5UgPIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737454181; c=relaxed/simple;
-	bh=JsAmvh5IZR6gXOlJbUqYkbDAThzeWUdtg+8hlx1xAB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=EpuzMm/56O4UHcdfrhFqCuuM6gSQzMmQHsrDPNpVvIaNGsKeQe38mgir7sbUrnWxPsrn4zy6IDJw4vLivTBaPv77vRd1yfIstzthD5rUFWsxIqciNVXZV6wlO5znN/09GH4ezg5g7Sg1aDDUK4SJSHyZxn+eJQTiHSJhZLj96ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J+WB9Chv; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737454657; c=relaxed/simple;
+	bh=6mXqJe6B8alS7DCJy1K/TAUwfPmG26n8CKqlEqTvj9U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZyuIhA7ct7qknHr+OKpyu4WWHR9npYToZFlMl0N3lcKhco1wRzbXIx7TO6q4OzuKt074sQ9GULgkUOfpZo+B8oPQiix2POawtUoBLAfmiJ4f/m1fbSmKEwUKiB6qubQwdR0J4ItAhnH5ahljgJd3SUUP8nMWA+luC6W9NS6vDfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q+Ffryq/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J+WB9Chv"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2163dc5155fso101135355ad.0
-        for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 02:09:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737454180; x=1738058980; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KvU1rIPeOTZsNjVO7sqKwmrTv6yJOEyqSDtbMI+Suio=;
-        b=J+WB9ChvWka/nBsUaEJSDx9f32HHxz4PcguX0dcqhNZSsjPk2Sp5kNoHtw9clLr1bW
-         tGeVKKvzPYdlIDUtAZTRbDiGdx6RCLrzRy6iTzojew8lN0oC6Q/De6g6Nf6Vw1KW5gvt
-         2XzgXap9B6BrWw/F0DSI8IYHTLbkf6xmitnUG4qmCwsp6lXPOScrxbXNdmcM4B2wM6uY
-         HX47ko2rPYNwTikOiH5amV5AK/A6dP6D7K5ZIIZLTNH31osai88MVpNbzb9qW64Y1+OW
-         iPyLaf1v1mnwZDt0xlTofmXXXM+H7pylFXHyTUf0AWRmGQ1aQkJ8Ife7wauElbfQKAtH
-         pMQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737454180; x=1738058980;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KvU1rIPeOTZsNjVO7sqKwmrTv6yJOEyqSDtbMI+Suio=;
-        b=dNlztg9wEvF/amYGyUj0gwQng5nbDsseP2QrhO9m6r4INOrNfFGreFmmVGQYfdZIct
-         cDDD95wOsQHLO+QbWdxu4VFirXNayYd+o9q6A9Eq4a8ogqWnPb7M3I1sRMYyjacEEmjK
-         zkTRPuJYsJsd95UgQBDE1txyy6SuAAi80wjRQcQEsFT2KkpPbiy9NJr0bCA7H7qp7Nbq
-         lVu1aFOO2INsP2r8gKiTGuHThjInGcMKM/ARXSzWxdNZuYGu/5+i7nsUUMLPtAJ0jDAC
-         NoRE2rtNj89UJrHYRxR71g6kbcX7jiSNqmcgrKtTEVCruZk/kYk6HGIMErg+41sk9oiO
-         ytWQ==
-X-Gm-Message-State: AOJu0Yx9dtiGHqICJLyHYhfRtegToRHbnvxFKbo1un/3V0f8WKHia6ex
-	MfewQjtgFzkxq9LUGTct2Ab9alsWdxn6PRJombOIDa/iXFelGMuv
-X-Gm-Gg: ASbGncugyRFvbu0TaJsrTmRGqInWREWT43GBZ1FRER1Ps4G38+tp0HbDJlhZyuw2mvT
-	53Azp0l1wn33/qv2EZmWGIiFP5GQp/AeKljU5K+NUtZQ4gBugTtz3hpEB7LsNy13ve33zcho7JZ
-	d0D5N2/ZrIoxxVc8KUeDxtLtWJTww5OOM4CG3VvCD97l9TcxRmP9fkn7/BrqkKf0jFON7SaK1eI
-	8yI3koh1uJFzStc2ZLE0InMgy8yfh4BjsT4wPQRh7pPAXf4XtjAf885V1kkHZDLv1/9pUteVow=
-X-Google-Smtp-Source: AGHT+IFJ7jzS/+Nns56Tu4dVUmSf62rsvtPsIYZ84Hxwlna02Q2y/JgJOJDlaf8sCe7ldYcZndpP+w==
-X-Received: by 2002:a17:902:ce01:b0:212:63c0:d9e7 with SMTP id d9443c01a7336-21c34cc00f8mr241164745ad.0.1737454179742;
-        Tue, 21 Jan 2025 02:09:39 -0800 (PST)
-Received: from fedora ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2ceba9afsm74414545ad.74.2025.01.21.02.09.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jan 2025 02:09:39 -0800 (PST)
-Date: Tue, 21 Jan 2025 10:09:35 +0000
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: Jay Vosburgh <jv@jvosburgh.net>
-Cc: netdev@vger.kernel.org, Liang Li <liali@redhat.com>
-Subject: [Question] Bonding: change bond dev_addr when fail_over_mac=2
-Message-ID: <Z49yXz1dx2ZzqhC1@fedora>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q+Ffryq/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F5AC4CEDF;
+	Tue, 21 Jan 2025 10:17:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737454657;
+	bh=6mXqJe6B8alS7DCJy1K/TAUwfPmG26n8CKqlEqTvj9U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=q+Ffryq/DmXIf93TuLspRCgUD/wiZWWnVWDhaulCRcQSyQnP4nXE0bfGgTjwpKsiM
+	 W+FbiHoCkF5RhjBUx+AtE/hL+Bpp26kn+yFpNGuAa/yP/muT2dHfNa6UZVQIK9ppHe
+	 3eYMCbvFRULwd2KMAe91dv839SKtRnjXxak1T5ay1iZkWEx+1I69yjWN8snmbjuPow
+	 E3EcWXPr3RfLGqfa5IkLW/SGoQHFm/+npgJ6yJl+acaCNIsgUklAW+Op78G4gL34DU
+	 TSGv/PR0oBeZGxxMR54vzFHzvwr/0C72gre0yer+7o7+xWleWFCpZzG5loJWPD8zlk
+	 4NrToOAsR4bXQ==
+Date: Tue, 21 Jan 2025 11:17:34 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Dimitri Fedrau <dima.fedrau@gmail.com>
+Subject: Re: [PATCH net-next v2 1/3] dt-bindings: net: ethernet-phy: add
+ property tx-amplitude-100base-tx-gain-milli
+Message-ID: <20250121-augmented-coati-of-correction-1f30db@krzk-bin>
+References: <20250120-dp83822-tx-swing-v2-0-07c99dc42627@liebherr.com>
+ <20250120-dp83822-tx-swing-v2-1-07c99dc42627@liebherr.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+In-Reply-To: <20250120-dp83822-tx-swing-v2-1-07c99dc42627@liebherr.com>
 
-Hi Jay,
+On Mon, Jan 20, 2025 at 02:50:21PM +0100, Dimitri Fedrau wrote:
+> Add property tx-amplitude-100base-tx-gain-milli in the device tree bindings
+> for configuring the tx amplitude of 100BASE-TX PHYs. Modifying it can be
+> necessary to compensate losses on the PCB and connector, so the voltages
+> measured on the RJ45 pins are conforming.
+> 
+> Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+> ---
+>  Documentation/devicetree/bindings/net/ethernet-phy.yaml | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/ethernet-phy.yaml b/Documentation/devicetree/bindings/net/ethernet-phy.yaml
+> index 2c71454ae8e362e7032e44712949e12da6826070..ce65413410c2343a3525e746e72b6c6c8bb120d0 100644
+> --- a/Documentation/devicetree/bindings/net/ethernet-phy.yaml
+> +++ b/Documentation/devicetree/bindings/net/ethernet-phy.yaml
+> @@ -232,6 +232,14 @@ properties:
+>        PHY's that have configurable TX internal delays. If this property is
+>        present then the PHY applies the TX delay.
+>  
+> +  tx-amplitude-100base-tx-gain-milli:
+> +    description: |
+> +      Transmit amplitude gain applied (in milli units) for 100BASE-TX. When
 
-Our QE reported that, when setup bonding with fail_over_mac=2. Then release
-the first enslaved device. The bond and other slave's mac address with
-conflicts with the release device. e.g.
+milli is unit prefix, not the unit. What is the unit? percentage? basis
+point?
 
-# modprobe bonding mode=1 miimon=100 max_bonds=1 fail_over_mac=2
-# ip link set bond0 up
-# ifenslave bond0 eth0 eth1
-# ifenslave -d bond0 eth0
+> +      omitted, the PHYs default will be left as is. If not present, default to
+> +      1000 (no actual gain applied).
 
-Then we can see the bond0 and eth1 both still using eth0's address.
+Don't repeat constraints in free form text.
 
-I saw in __bond_release_one() we have 
+Best regards,
+Krzysztof
 
-        if (!all && (!bond->params.fail_over_mac ||
-                     BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)) {
-                if (ether_addr_equal_64bits(bond_dev->dev_addr, slave->perm_hwaddr) &&
-                    bond_has_slaves(bond))
-                        slave_warn(bond_dev, slave_dev, "the permanent HWaddr of slave - %pM - is still in use by bond - set the HWaddr of slave to a different address to avoid conflicts\n",
-                                   slave->perm_hwaddr);
-        }
-
-So why not just change the bond_dev->dev_addr to another slave's perm_hwaddr
-instead of keep using the released one?
-
-Thanks
-Hangbin
