@@ -1,117 +1,166 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD491F1508;
-	Tue, 21 Jan 2025 14:34:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1AF1F3D51
+	for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 14:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737470077; cv=none; b=WG9ke0W0UWrUixmEMeECZujHxFDEQdGIDjvE8vYPxJGcmxa3sv98jfI+wIE+yVVSPFQXyVlU1ljYpBKdubeVkn2DcuEzoPBcGKgMgNKcqA/ThlE2/JQBtaXpN8lXUqy75pm5j3UWVpjDOKv1wiK5qfFIhmjSZMjqR9azMn7yxm4=
+	t=1737470186; cv=none; b=KaumIUToXrknzjh4jxlBuN/YuMJ8sUKw3h0gRyTepn0EreQ2XTYwzc/hHLn7QrR2RPdWNs4ZBQPxpqaQ3cNiCdyfwkgWw6ReY9cIx8AmYGUc9bgn8W3CUCSDKLQYatV/oCayG9uF1defHpLZ5ZGQNgZWl/OoDVRfuKLZRpoOCHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737470077; c=relaxed/simple;
-	bh=KI4hyPnJz8LjTimAis5H99w6OwrSz7DrW76BQAXYScM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=airL7Y/IZCiso/uP5Fv/UZ/mIgqYRI/A5ViWXfOpX4sx9fxnz5v4dsAC7bFaWdfevGpa0YDN1NG7R7XPxpQYNN8RjJLJ71du1dyZNc3Yggf9rHwrqUTtvMfSKfvszsTD8/m9sA+aK2BsJ8wSltA6SdkiLyxeFGqCIAeTPOY9U6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=gEupoOAP; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="gEupoOAP"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=5MfTDBXKnfQgtBuHJqYH787sbTmGoB/81OUCCryIhhg=; b=gEupoOAP7LxUmTZs8ih/lPQx+i
-	wUawPIwk0bYMEQK3Z66L6KQowqftXS6uuEiU2QO1fkwWu50PRRBamuVf7fcweqfXwhjeG5q6Jeh5m
-	VdhQUHHCvED6l70O75wAiLkX4ycCNm0PkyBRgKonlciLC0XgnteJFOioUSjqJPK7akWo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1taFKd-006enL-3z; Tue, 21 Jan 2025 15:34:19 +0100
-Date: Tue, 21 Jan 2025 15:34:19 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yijie Yang <quic_yijiyang@quicinc.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/3] net: stmmac: qcom-ethqos: Enable RX programmable
- swap on qcs615
-Message-ID: <ebf3238c-12ec-4da7-bcdf-594bbe070a82@lunn.ch>
-References: <20241225-support_10m100m-v1-0-4b52ef48b488@quicinc.com>
- <20241225-support_10m100m-v1-2-4b52ef48b488@quicinc.com>
- <4b4ef1c1-a20b-4b65-ad37-b9aabe074ae1@kernel.org>
- <278de6e8-de8f-458a-a4b9-92b3eb81fa77@quicinc.com>
- <e47f3b5c-9efa-4b71-b854-3a5124af06d7@lunn.ch>
- <87a7729d-ccdd-46f0-bcfd-3915452344fd@quicinc.com>
- <7e046761-7787-4f01-b47b-9374402489ac@lunn.ch>
- <5bc3f4e0-6c3f-412c-a825-54707c70f779@quicinc.com>
- <0fe23cfd-9326-4664-9c94-cf010aec882c@lunn.ch>
- <89d4df79-a202-407a-bcfd-6af5315c403c@quicinc.com>
+	s=arc-20240116; t=1737470186; c=relaxed/simple;
+	bh=hsdTDRdueMnbG+uiskwcVMhMRMBzdXwYvgRD/QiFinw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CaHp7MG9a4E+ZlKthEZWpST+XU88Gq9RcI+IM0iCcv370vas6e2iUfvj+LN4FfbBpWsSCtKXNjeQEVuElgP82CA9ehzyG5yh4M0IM5CTJWw8NLlQ0yBs3aoXAIl35m2kVABjAyfcxfyDrcZn4PS+REj+4Wk45TGYKhzkio5ho1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1taFMT-0007tg-PJ; Tue, 21 Jan 2025 15:36:13 +0100
+Message-ID: <5c4be0e8-d8c5-4955-98c7-7face42fbb5c@pengutronix.de>
+Date: Tue, 21 Jan 2025 15:36:11 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <89d4df79-a202-407a-bcfd-6af5315c403c@quicinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: fec: Refactor MAC reset to function
+To: =?UTF-8?B?Q3PDs2vDoXMsIEJlbmNl?= <csokas.bence@prolan.hu>,
+ Jakub Kicinski <kuba@kernel.org>, Laurent Badel <laurentbadel@eaton.com>,
+ imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+ Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>
+References: <20250121103857.12007-3-csokas.bence@prolan.hu>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250121103857.12007-3-csokas.bence@prolan.hu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-> > Maybe you should go read the RGMII standard, and then think about how
-> > your hardware actually works.
-> > 
-> > RGMII always has a variable clock, with different clock speeds for
-> > 10/100/1G. So your board design is just plain normal, not
-> > special. Does the standard talk about different delays for different
-> > speeds? As you say, other drivers apply the same delay for all
-> > speeds. Why should your hardware be special?
-> > 
-> > RGMII has been around for 25 years. Do you really think your RGMII
-> > implementation needs something special which no other implementation
-> > has needed in the last 25 years?
+Hi,
+
+On 21.01.25 11:38, Csókás, Bence wrote:
+> The core is reset both in `fec_restart()`
+> (called on link-up) and `fec_stop()`
+> (going to sleep, driver remove etc.).
+> These two functions had their separate
+> implementations, which was at first only
+> a register write and a `udelay()` (and
+> the accompanying block comment).
+> However, since then we got soft-reset
+> (MAC disable) and Wake-on-LAN support,
+> which meant that these implementations
+> diverged, often causing bugs. For instance,
+> as of now, `fec_stop()` does not check for
+> `FEC_QUIRK_NO_HARD_RESET`. To eliminate
+> this bug-source, refactor implementation
+> to a common function.
+
+please make the lines a bit longer for v2. 43 characters is much too limited.
+
+Thanks,
+Ahmad
+
 > 
-> I do not intend to violate the regulations of the RGMII standard and aim to
-> maintain the same delay across all speeds. But the RX programming swap bit
-> can only introduce a delay of 180 degrees. Should I assume the 1G speed
-> clock to calculate and determine if this bit should be enabled for all
-> speeds?
+> Fixes: c730ab423bfa ("net: fec: Fix temporary RMII clock reset on link up")
+> Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+> ---
+> 
+> Notes:
+>     Recommended options for this patch:
+>     `--color-moved --color-moved-ws=allow-indentation-change`
+> 
+>  drivers/net/ethernet/freescale/fec_main.c | 50 +++++++++++------------
+>  1 file changed, 23 insertions(+), 27 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+> index 68725506a095..850ef3de74ec 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -1064,6 +1064,27 @@ static void fec_enet_enable_ring(struct net_device *ndev)
+>  	}
+>  }
+>  
+> +/* Whack a reset.  We should wait for this.
+> + * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+> + * instead of reset MAC itself.
+> + */
+> +static void fec_ctrl_reset(struct fec_enet_private *fep, bool wol)
+> +{
+> +	if (!wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
+> +		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
+> +		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
+> +			writel(0, fep->hwp + FEC_ECNTRL);
+> +		} else {
+> +			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
+> +			udelay(10);
+> +		}
+> +	} else {
+> +		val = readl(fep->hwp + FEC_ECNTRL);
+> +		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
+> +		writel(val, fep->hwp + FEC_ECNTRL);
+> +	}
+> +}
+> +
+>  /*
+>   * This function is called to start or restart the FEC during a link
+>   * change, transmit timeout, or to reconfigure the FEC.  The network
+> @@ -1080,17 +1101,7 @@ fec_restart(struct net_device *ndev)
+>  	if (fep->bufdesc_ex)
+>  		fec_ptp_save_state(fep);
+>  
+> -	/* Whack a reset.  We should wait for this.
+> -	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+> -	 * instead of reset MAC itself.
+> -	 */
+> -	if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
+> -	    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
+> -		writel(0, fep->hwp + FEC_ECNTRL);
+> -	} else {
+> -		writel(1, fep->hwp + FEC_ECNTRL);
+> -		udelay(10);
+> -	}
+> +	fec_ctrl_reset(fep, false);
+>  
+>  	/*
+>  	 * enet-mac reset will reset mac address registers too,
+> @@ -1344,22 +1355,7 @@ fec_stop(struct net_device *ndev)
+>  	if (fep->bufdesc_ex)
+>  		fec_ptp_save_state(fep);
+>  
+> -	/* Whack a reset.  We should wait for this.
+> -	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+> -	 * instead of reset MAC itself.
+> -	 */
+> -	if (!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
+> -		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
+> -			writel(0, fep->hwp + FEC_ECNTRL);
+> -		} else {
+> -			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
+> -			udelay(10);
+> -		}
+> -	} else {
+> -		val = readl(fep->hwp + FEC_ECNTRL);
+> -		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
+> -		writel(val, fep->hwp + FEC_ECNTRL);
+> -	}
+> +	fec_ctrl_reset(fep, true);
+>  	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
+>  	writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
+>  
 
-Lets rewind a bit.
 
-The RGMII standard specified which edge you sample on. Since it is
-defined, no other driver has a configuration like this, they just
-setup there hardware to be standards compliant.
-
-Why do you need the ability to break the standard, and sample on the
-wrong edge?
-
-I can think of two reasons:
-
-1) You have a PHY which is broken, it also samples on the wrong
-edge. This is a workaround for that broken PHY.
-
-2) You have a board with a clock line driver inserted between the
-RGMII output pins and the PHY, and this line driver includes a NOT?
-This line driver is causing the clocking to break the RGMII
-standard. You are working around this broken board design by getting
-the MAC to invert the clock.
-
-Is there a third reason?
-
-Lets first understand the details of why you need to be able to invert
-the clock.
-
-	Andrew
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
