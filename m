@@ -1,26 +1,27 @@
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8190F33F7
-	for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 02:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452C514F102
+	for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 02:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737426073; cv=none; b=f6jXEs//9uwX3vD+ra0ORbTj1zWgoLGNzn8MUrIE5E24PA3NkKaA9MeIOJGtO+vp/FBYugYqF0F/CfG5YhFH//RxX8LqmTCfE5macXR9iCJyxc3zDccoAuEg3m29PW3iPB2QAyOqzj4oEnXNlJmiPI2ePa94xqxiJpimtAQQNFU=
+	t=1737426079; cv=none; b=B5DlNLMDC/eDuCdWIKZ6xEfT7IrxD+9qnTWVz2Gs0mjxcCF6br2DKPbnTxsCxvcExKzcG9CaYm6fGwDZtz8k/2GGmdz4Cuxk1w0XF2zPxepNw+RAZpOYPIuu98IMA+Qqwy1V4N0H9hNVgfRTGG+HeanR9I6wRDNhnnvt7jBgYrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737426073; c=relaxed/simple;
-	bh=CuO4sMLRNu0w4gzwmF3nm1w7ffx/KnIN9Sxf30Dn6mk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CkTotDeVFBbJStWTvzpS8M/2jGniwvF7XIZN5pGgh3UUougiBWNFF6AkhBKkzmnp7//Zp35e0Ph39AuDqTqAiTZJPblFb0/Fw9+wPRfmF1awV8owu0MWYb/AQVjIivNaXQZzYDqtlDZ+iwJ0O1lBOIpmDZawic9HPhYBOYTq+Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.128
+	s=arc-20240116; t=1737426079; c=relaxed/simple;
+	bh=Qq8SSureU8S3Ou0zbBou6Got6asQczN5/bB2E+jm894=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=tQDwZJVqlkxabmq709DinwIDGmNjE15s28JKPoP2Ra4yP2sDH1YTEjMNN2Vf7QqlKshE/Jlib3h4L2GN7lcqGcHUw9UUQc2m798kf5+Vlci3dpx8zhCaTXbhi87J2t4XCYIMH4EkQVVQALbq7/ut7rQn+e1kfjZtMqa8flCL0oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: bizesmtpsz7t1737426059t905onh
-X-QQ-Originating-IP: UeCzlNfsBpuA/5Io+T51Vwhm+HQRVF5RmEMWlvAS0+I=
+X-QQ-mid: bizesmtpsz7t1737426065tlh4a5j
+X-QQ-Originating-IP: 4GniKO5LTGuVtzqKArswU9/zBicqXOjPwSBTh8CuvFw=
 Received: from wxdbg.localdomain.com ( [115.197.136.137])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 21 Jan 2025 10:20:50 +0800 (CST)
+	id ; Tue, 21 Jan 2025 10:21:03 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 13450581408083396056
+X-BIZMAIL-ID: 4162427598436202465
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
@@ -35,10 +36,12 @@ To: andrew+netdev@lunn.ch,
 	vadim.fedorenko@linux.dev
 Cc: mengyuanlou@net-swift.com,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v6 0/4] Support PTP clock for Wangxun NICs
-Date: Tue, 21 Jan 2025 10:20:30 +0800
-Message-Id: <20250121022034.2321131-1-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v6 2/4] net: wangxun: Support to get ts info
+Date: Tue, 21 Jan 2025 10:20:32 +0800
+Message-Id: <20250121022034.2321131-3-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20250121022034.2321131-1-jiawenwu@trustnetic.com>
+References: <20250121022034.2321131-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,94 +51,133 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: bizesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: OccmtviHNKX22KWLF/Qbo7OA1126/A/WTnGw5oa4sNKW5QEyGOcqimYK
-	Ee67okDbBoX9NsPvAPT1w8N28SVl+TpOUe+D5Bw6oC7h5mDn4K9LM3AUXmVgiyp1yRxWFrY
-	zDrsiDOGm6ckIvvsD4Lpe3yLI61q4KxYbWU4uZ/G7RNQY95zMi7Twj/dky42wj1waRof0n+
-	CNqrNI1cwoR1Y6hoGIOLGMykcOFzLs58GdZD7JqthcjXIJuEQq5/cud8RxyJ2QGBP4xD5gC
-	bTpqwlEiiRDzYlRTpFW6EAjsEZ5pYXfItmjrmx3s4w6v9ATmexosQrjloKWjSafOQ0PC1sk
-	pNcdj58fQFl/7VbXaYXMPTbZPjhTwou1/91YI7OOI276OAo6ikcnY2uwbZXDoVnNUsMA1jG
-	vxMttbOSHfCYtwksLSZE1i+2x5f9LHxoo5SRjf821lDebp7TSEe8oI/+T9cKfGPs13JUJfR
-	skYzUjaPSqBqsO62NfEmMzzlKgDL7qqZ749xLFeUK9TdACEZ/0J2TbNrOfEzxOS1EM2j0o1
-	Udcngok+IEickr1ZATN5r+qoE/9CBncn4BgEV7CM8xbvh66XChXbfv1MepVRMZahI9PlqxX
-	sRt0rLUisIgJSNaAVTnJtGq3KoiNh6rJ+X4TAk9UYRgZKe2A7mlPUgEt0SE3Shu9mxffHPe
-	jPnZlNwKCIz8GXwkcV1//oJ9HG4WnV1dMEiVUG7zu2ggUT7xk4Q/UYudKvV6Z5LhZ8mcSuU
-	rBi13+sSyg2zmcjTYAuAwLQCu+0Lhh+skOD4Qs/c+20GZytzz8P89TACm2g6/GY9RWFjbvm
-	e3z+dDEf0gwDMBUzWwitxR4rxwfsLbSP2o1r3rc2eC+h+rsmcJcHbUn+Bp4LVSsXY0eKDj4
-	asV0D4TIDvFhxPVml2n18FL3prDBwSAl/qwvfg2XTUpQTwz6yfnVITtFHaLgiN+F2uFSwQY
-	aIJlD/tw9S4T5CHOOoWnji3n/AjeqDx1wDkGTuFYWls1ytA==
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+X-QQ-XMAILINFO: MRY6qckr/MVJe+EJqxTGTBWjhPgmMc5UUqabebmyCqCAmBpGlj9wNyDS
+	WBl5fsJ/DCP3zwg1Sc9vS88Hx8hT4nK+vUqtPROraGekQ0ofXXSLtyRsoTLup65KRGdnARe
+	9ziUYJwpXhcA1tzvBOeknyZnFp+/GL1/5b2/fvNqVhR5OBZEjaEgzEuGR4NxhSirWzYuvTk
+	y1QdkbRtwOa2lnlZd99yGyPfz/s+cP/YQqjWQ/YvQ3fgWdboUSKUuMzlmx1aIs35DQSJTtk
+	Bk9mBbmlJn4a+DWTjy2RVA4SPVK5BxO8RNPnuBvFueFapNESl2tk4HAfGjsn0QVEStpyJqC
+	q84LOvkfM3X8fVxYahIENyv6BJvoUAu2dw2f1XOtmrdFBREAiLMT9RlM9N+qqsJmjiMqeIS
+	ZFu9ESEBtqxoAkQeKisqW/vetzZkLE927tgd+ebSr5HOxFaYebnrBZZJTztLi5Uu4troiKF
+	hAJnCDilVR8yRftKUtT/z1+1OL+T1OChSboGNck7qDQNH7T+W2cC0WqugFYA+sy3rRcwMnM
+	m470UVKzGzZOZec3EsdhD3x5xZ5812vqUaTx9VXqsGXniCsoFLgg3DIq2zBJR5lGvCyCvlz
+	0DFE7NwtenF1lWD472fOmGdtEpk1REiVg4Zk8M1gjm+U4kLlDmuqk7/XlzbzYX3nESVVjSo
+	ZqzITkqTVB2OTPZIckvxFEphS+CacwWYwea35O/dRsNpBEfwazsP8RmXHMauPob+EVLMT89
+	Da+5pOkoezQtZE1nikbbgLRBFhxwrFdbwqWQo8J5bDU0RsakEtDgoUuHKLpnDULcGB7CWPj
+	iBD4KGwPPN3UPNeRHLMkZfzFLPB/pWHe2176qveXLKD+BJsqhBvJA57jC2CMVdIR1OE12Ra
+	hALUL40/nZtnNIIG8adAv4SdvCHoXvBQBU7MRIQCL9t4A4fPHbKI5OqvTJOHnpQ3Aw6tiE0
+	Or9xAmOr9Nsojzi0ze+RF/MjYqehkDI3C1nNVrhn4FYerbA==
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
 X-QQ-RECHKSPAM: 0
 
-Implement support for PTP clock on Wangxun NICs.
+Implement the function get_ts_info and get_ts_stats in ethtool_ops to
+get the HW capabilities and statistics for timestamping.
 
-Changes in v6:
-- Link to v5: https://lore.kernel.org/all/20250117062051.2257073-1-jiawenwu@trustnetic.com/
-- Add "depends on PTP_1588_CLOCK_OPTIONAL" in Kconfig to fix build
-  errors
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+---
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   | 50 +++++++++++++++++++
+ .../net/ethernet/wangxun/libwx/wx_ethtool.h   |  4 ++
+ .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |  2 +
+ .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |  2 +
+ 4 files changed, 58 insertions(+)
 
-Changes in v5:
-- Link to v4: https://lore.kernel.org/all/20250114084425.2203428-1-jiawenwu@trustnetic.com/
-- Use reading template for timecounter_cyc2time()
-- Move the same piece of codes to the functions
-- Fix read sequence for time registers
-- Remove skb_shared_hwtstamps zero out
-- Pass duty cycle for the pulse width
-
-Changes in v4:
-- Link to v3: https://lore.kernel.org/all/20250110031716.2120642-1-jiawenwu@trustnetic.com/
-- Add tx_hwtstamp_errors to record errors of DMA mapping
-- Remove flag bits clear for default case in setting TS mode
-- Change to use seqlock_t hw_tc_lock
-- Add ptp_schedule_worker in wx_ptp_reset()
-- Remove perout index check
-- Refactor the same code into a function
-
-Changes in v3:
-- Link to v2: https://lore.kernel.org/all/20250106084506.2042912-1-jiawenwu@trustnetic.com/
-- Clean up messy patches
-- Return delay value in wx_ptp_do_aux_work()
-- Remove dev_warn()
-- Implement ethtool get_ts_stats
-- Support PTP_CLK_REQ_PEROUT instead of PTP_CLK_REQ_PPS
-- Change to start polling Tx timestamp once descriptor done bit is set
-
-Changes in v2:
-- Link to v1: https://lore.kernel.org/all/20250102103026.1982137-1-jiawenwu@trustnetic.com/
-- Fix build warning
-- Convert to .ndo_hwtstamp_get and .ndo_hwtstamp_set
-- Remove needless timestamp flags
-- Use .do_aux_work instead of driver service task
-- Use the better error code
-- Rename function wx_ptp_start_cyclecounter()
-- Keep the register names consistent between comments and code
-
-Jiawen Wu (4):
-  net: wangxun: Add support for PTP clock
-  net: wangxun: Support to get ts info
-  net: wangxun: Implement do_aux_work of ptp_clock_info
-  net: ngbe: Add support for 1PPS and TOD
-
- drivers/net/ethernet/wangxun/Kconfig          |    1 +
- drivers/net/ethernet/wangxun/libwx/Makefile   |    2 +-
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   |   53 +
- .../net/ethernet/wangxun/libwx/wx_ethtool.h   |    4 +
- drivers/net/ethernet/wangxun/libwx/wx_hw.c    |   19 +
- drivers/net/ethernet/wangxun/libwx/wx_hw.h    |    1 +
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |   52 +-
- drivers/net/ethernet/wangxun/libwx/wx_ptp.c   | 1021 +++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_ptp.h   |   20 +
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  106 ++
- .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |    2 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |   20 +-
- drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c |   11 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |    5 +
- .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |    2 +
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |   11 +
- .../net/ethernet/wangxun/txgbe/txgbe_phy.c    |   10 +
- 17 files changed, 1333 insertions(+), 7 deletions(-)
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_ptp.c
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_ptp.h
-
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index c4b3b00b0926..28f982fbc64c 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -455,3 +455,53 @@ void wx_set_msglevel(struct net_device *netdev, u32 data)
+ 	wx->msg_enable = data;
+ }
+ EXPORT_SYMBOL(wx_set_msglevel);
++
++int wx_get_ts_info(struct net_device *dev,
++		   struct kernel_ethtool_ts_info *info)
++{
++	struct wx *wx = netdev_priv(dev);
++
++	info->rx_filters = BIT(HWTSTAMP_FILTER_NONE) |
++			   BIT(HWTSTAMP_FILTER_PTP_V1_L4_SYNC) |
++			   BIT(HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ) |
++			   BIT(HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
++			   BIT(HWTSTAMP_FILTER_PTP_V2_L4_EVENT) |
++			   BIT(HWTSTAMP_FILTER_PTP_V2_SYNC) |
++			   BIT(HWTSTAMP_FILTER_PTP_V2_L2_SYNC) |
++			   BIT(HWTSTAMP_FILTER_PTP_V2_L4_SYNC) |
++			   BIT(HWTSTAMP_FILTER_PTP_V2_DELAY_REQ) |
++			   BIT(HWTSTAMP_FILTER_PTP_V2_L2_DELAY_REQ) |
++			   BIT(HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ) |
++			   BIT(HWTSTAMP_FILTER_PTP_V2_EVENT);
++
++	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
++				SOF_TIMESTAMPING_TX_HARDWARE |
++				SOF_TIMESTAMPING_RX_HARDWARE |
++				SOF_TIMESTAMPING_RAW_HARDWARE;
++
++	if (wx->ptp_clock)
++		info->phc_index = ptp_clock_index(wx->ptp_clock);
++	else
++		info->phc_index = -1;
++
++	info->tx_types = BIT(HWTSTAMP_TX_OFF) |
++			 BIT(HWTSTAMP_TX_ON);
++
++	return 0;
++}
++EXPORT_SYMBOL(wx_get_ts_info);
++
++void wx_get_ptp_stats(struct net_device *dev,
++		      struct ethtool_ts_stats *ts_stats)
++{
++	struct wx *wx = netdev_priv(dev);
++
++	if (wx->ptp_clock) {
++		ts_stats->pkts = wx->tx_hwtstamp_pkts;
++		ts_stats->lost = wx->tx_hwtstamp_timeouts +
++				 wx->tx_hwtstamp_skipped +
++				 wx->rx_hwtstamp_cleared;
++		ts_stats->err = wx->tx_hwtstamp_errors;
++	}
++}
++EXPORT_SYMBOL(wx_get_ptp_stats);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.h b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.h
+index 600c3b597d1a..9e002e699eca 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.h
+@@ -40,4 +40,8 @@ int wx_set_channels(struct net_device *dev,
+ 		    struct ethtool_channels *ch);
+ u32 wx_get_msglevel(struct net_device *netdev);
+ void wx_set_msglevel(struct net_device *netdev, u32 data);
++int wx_get_ts_info(struct net_device *dev,
++		   struct kernel_ethtool_ts_info *info);
++void wx_get_ptp_stats(struct net_device *dev,
++		      struct ethtool_ts_stats *ts_stats);
+ #endif /* _WX_ETHTOOL_H_ */
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
+index e868f7ef4920..7e2d9ec38a30 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
+@@ -138,6 +138,8 @@ static const struct ethtool_ops ngbe_ethtool_ops = {
+ 	.set_channels		= ngbe_set_channels,
+ 	.get_msglevel		= wx_get_msglevel,
+ 	.set_msglevel		= wx_set_msglevel,
++	.get_ts_info		= wx_get_ts_info,
++	.get_ts_stats		= wx_get_ptp_stats,
+ };
+ 
+ void ngbe_set_ethtool_ops(struct net_device *netdev)
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
+index d98314b26c19..78999d484f18 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
+@@ -529,6 +529,8 @@ static const struct ethtool_ops txgbe_ethtool_ops = {
+ 	.set_rxnfc		= txgbe_set_rxnfc,
+ 	.get_msglevel		= wx_get_msglevel,
+ 	.set_msglevel		= wx_set_msglevel,
++	.get_ts_info		= wx_get_ts_info,
++	.get_ts_stats		= wx_get_ptp_stats,
+ };
+ 
+ void txgbe_set_ethtool_ops(struct net_device *netdev)
 -- 
 2.27.0
 
