@@ -1,181 +1,99 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6BB1F37BE;
-	Tue, 21 Jan 2025 14:14:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8384163CF
+	for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 14:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737468862; cv=none; b=MLmNlyief/sAhcbRYIix8F/FnUCJ5n8ZUoDxYka6DCYG7PSoGF0zpn4plqfIkDG/JKtjnQduEgjmb4kcawSbpq4exZrxAbNYAK/qv7G2Z7QifjBh/n5Q9RkH8fx4fxRXkNPiU8MELTu3HW/dROI4R27iqdwj/5yQHxFaL97N6v8=
+	t=1737469025; cv=none; b=TL4Xz4o2o4vfkcKeoFGo9o+U1pODaeCRAnLvM9YCaB1alBnJzRJXn+fO7NCFD51qehDocf+6UEVxmBewkt82tXq1GM9bNtLayh9Wi2Pxixd4eIgT+O2ur6oP4WORqtJVh9msqqmg0UV9JomXAOZ/rU4pO45x1TlovOJBd/N/hQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737468862; c=relaxed/simple;
-	bh=FHoIyD5h8UELHGOcuWQAqIu3vCDHYj8wOGNm8Y2JtxI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f4Tpp5tzUJfU68rRR02T6LQCfyv2kG34SoBq6cqlhWvnIqYMoxKVe0NIB6ShW3cEmxmnCuZYgbnx80GtLR86u0LLQflU3msDErF5N2k8YTBzifd6/zmDHEVRRD14aq2I8N9t0iz1XYKnXzWz9Eq1lkDThYrSkQTB+4FXoswlyvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dk131RJ7; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1737469025; c=relaxed/simple;
+	bh=5xP8UEwi0MJSzAk4wpe04SszpkSMTyfHr+LM9M80T60=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jzYICmz/LRQM9GfexzfISt4oSw8aeKiUxFkeYEKYCqDI1C+je2uSzA7fN9b7JT5F4TEgyjkVFSVXxJl5UXOueco0Vp75o03txsQTrZCGJvE5GX/783c6y5qpgdB+Edy2EwtfFcc5FQ+hfr+cFx7n1NgLg6lWnpDZhlwRs6nS65A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YnNF2iN6; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dk131RJ7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737468861; x=1769004861;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=FHoIyD5h8UELHGOcuWQAqIu3vCDHYj8wOGNm8Y2JtxI=;
-  b=dk131RJ7gve6dd4oeu3O/FHgnzV6E9nL8AMpsphEvwZrz3W/8kwmCOkC
-   C67lt8b4HyhFpyg2aI6Tl17OSIA6aTAmibeXjCCMwJ79gbJL086dh0i2O
-   FcF4tv38r+Db8ABPWN2x03rA5CCnTdkGUJrq4/DMYQ0wo8pKrUbl8TfbF
-   Eit974QENldss1eJRhV/bAfJ4O6RhwDWA5KqaLoJtbcJh/mX6YIjvjSzi
-   gkHilyySYz4GQ/ttTKp1l1dUxXNhEsD+eVAh00uYsKVyqd9r/QwtWeCKL
-   vbh6zcGQ7UaUfCiPgF43gmWTXeqTG/cMi3XMWvn3rLyiyTk8dpF/kK1R1
-   g==;
-X-CSE-ConnectionGUID: gP2USCIFTkm0yW7kfLAvOg==
-X-CSE-MsgGUID: ctAb9QueTAaegmTOPsbusA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="25483657"
-X-IronPort-AV: E=Sophos;i="6.13,222,1732608000"; 
-   d="scan'208";a="25483657"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2025 06:14:20 -0800
-X-CSE-ConnectionGUID: OSaQhjstTjW7AbaDjjC4cg==
-X-CSE-MsgGUID: XpadcvqhTemBkQlrfFGBgw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="111435419"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2025 06:14:00 -0800
-Date: Tue, 21 Jan 2025 15:10:35 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: =?iso-8859-1?B?Q3Pza+FzLA==?= Bence <csokas.bence@prolan.hu>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Laurent Badel <laurentbadel@eaton.com>, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH] net: fec: Refactor MAC reset to function
-Message-ID: <Z4+q28pPnFcrMC/K@mev-dev.igk.intel.com>
-References: <20250121103857.12007-3-csokas.bence@prolan.hu>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YnNF2iN6"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-305d843d925so47953251fa.2
+        for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 06:17:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737469021; x=1738073821; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yBAYTypERn/gg1hxfG2FXIvk/fBTXqjfTdOQNsUyf24=;
+        b=YnNF2iN6tlGqHLph3RXxUJNERMGJy9RSF8u1uMnFLc91uDUuDslxDFHUtXWGCz0JGh
+         ou/pSbfI6YILxgrnnvuT4Ekab9gc6xbK+4wqwMlF7gOqLIOPWaNXXUgkV1SaXAXAOqhj
+         KCDL4SoHfVG2QJPlpTpz9hqQK9dumFfo2FFGpnsaBLfXBMJQgDBcdCVBdnPL2y1SQUGc
+         ro8VqOuBMfSseM+dWe0ouxBkvXbMK7ZmtAFdWilC5vxGxYuPLWYdvhynsLKjKEL0lhvC
+         Ja/X6voOmqyLO8ApxMVflmj5rk20fwav4ZEH2odEKkiMpezOWY0IRL7WoztoCQwbzHei
+         3BWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737469021; x=1738073821;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yBAYTypERn/gg1hxfG2FXIvk/fBTXqjfTdOQNsUyf24=;
+        b=D6J/gcbHYO+vtOh9uIGGiak8MiM4khopwi5dnff9Lxh3rk2cjNVxYGVO7hEeDh9Vjx
+         7wrenyCP+0D8lCAHAQERGg2t1XmpIC0OnbGHRXncB9nd4Imsh18UGVjeYks+BJYgYZsF
+         8Q+yKLHmzs7IvY7Jm38iy3dxYZeon1BbqImhikvENeN7OywCLP2l54/Rf9P+bTddPXWY
+         7cGXtkJrKzHrubiebfuaVPa/iAiTQGtoFi94g71/qbv0dQW0FKlNqYP2Dlg3L4P5AgXY
+         ACZtimFBWDICUkXzKhGd8DovP/iIEVEy3LAvNGJR2ENhWDTsIC67PM1V5hIpHwvzdT23
+         xjHA==
+X-Gm-Message-State: AOJu0YzwVcZqekDPKIyWQSnlMzZSvnptnXPGKofUPXx3F+5wiViVuCXP
+	6AnCo6rnUZW0cJgwWQPOI4He9crIGp3q7oACwrlPrRKpb8PeFUCs
+X-Gm-Gg: ASbGnctYOYDdHUK6x170ufduv71ytq8U0uVx/dkUgHRnyWXF9ddYUjk7RzOQT1BpcPu
+	9JOw8t8Kwccd29BoVeP+2GJGmlShuRhmN+2htnUTcX7DEtzgiIyMfnz8GpXJQMBfOscG37mXhSD
+	EvtyUAs3j398XZWfo+t3Sc1oHqtSYA9lmn/kM0EuPmoLzpRUSYYWCSBwbUXn2CW0S662Dw9jR/f
+	w4XJ20c3kgoJFHKBntXco2prOcjiLuKSE/lHKEyOZjAJatvjpRGE4FtpYMMRImxWhkl9g==
+X-Google-Smtp-Source: AGHT+IEJaIoypSP3Gv+MUOwSteimDSvbChXgQLrr94krYvEQ2cZ/yTX3j7P2iZ+fZLUz5wqkwyoVYg==
+X-Received: by 2002:a05:6512:692:b0:540:1e5e:3876 with SMTP id 2adb3069b0e04-5439c27d2ebmr5711531e87.52.1737469021246;
+        Tue, 21 Jan 2025 06:17:01 -0800 (PST)
+Received: from X220-Tablet.. ([83.217.203.236])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5439af073dfsm1856854e87.30.2025.01.21.06.17.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jan 2025 06:17:00 -0800 (PST)
+From: Denis Kirjanov <kirjanov@gmail.com>
+To: stephen@networkplumber.org,
+	dsahern@kernel.org
+Cc: netdev@vger.kernel.org,
+	Denis Kirjanov <kirjanov@gmail.com>
+Subject: [PATCH iproute] iplink: emit the error message if open_fds_add failed
+Date: Tue, 21 Jan 2025 17:16:42 +0300
+Message-ID: <20250121141642.28899-1-kirjanov@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250121103857.12007-3-csokas.bence@prolan.hu>
 
-On Tue, Jan 21, 2025 at 11:38:58AM +0100, Csókás, Bence wrote:
-> The core is reset both in `fec_restart()`
-> (called on link-up) and `fec_stop()`
-> (going to sleep, driver remove etc.).
-> These two functions had their separate
-> implementations, which was at first only
-> a register write and a `udelay()` (and
-> the accompanying block comment).
-> However, since then we got soft-reset
-> (MAC disable) and Wake-on-LAN support,
-> which meant that these implementations
-> diverged, often causing bugs. For instance,
-> as of now, `fec_stop()` does not check for
-> `FEC_QUIRK_NO_HARD_RESET`. To eliminate
-> this bug-source, refactor implementation
-> to a common function.
-> 
-> Fixes: c730ab423bfa ("net: fec: Fix temporary RMII clock reset on link up")
-> Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-> ---
-> 
-> Notes:
->     Recommended options for this patch:
->     `--color-moved --color-moved-ws=allow-indentation-change`
-> 
->  drivers/net/ethernet/freescale/fec_main.c | 50 +++++++++++------------
->  1 file changed, 23 insertions(+), 27 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index 68725506a095..850ef3de74ec 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -1064,6 +1064,27 @@ static void fec_enet_enable_ring(struct net_device *ndev)
->  	}
->  }
->  
-> +/* Whack a reset.  We should wait for this.
-> + * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
-> + * instead of reset MAC itself.
-> + */
-> +static void fec_ctrl_reset(struct fec_enet_private *fep, bool wol)
-> +{
-> +	if (!wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
-> +		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
-> +		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
-> +			writel(0, fep->hwp + FEC_ECNTRL);
-> +		} else {
-> +			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
-> +			udelay(10);
-> +		}
-> +	} else {
-> +		val = readl(fep->hwp + FEC_ECNTRL);
-> +		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
-> +		writel(val, fep->hwp + FEC_ECNTRL);
-> +	}
-> +}
-> +
->  /*
->   * This function is called to start or restart the FEC during a link
->   * change, transmit timeout, or to reconfigure the FEC.  The network
-> @@ -1080,17 +1101,7 @@ fec_restart(struct net_device *ndev)
->  	if (fep->bufdesc_ex)
->  		fec_ptp_save_state(fep);
->  
-> -	/* Whack a reset.  We should wait for this.
-> -	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
-> -	 * instead of reset MAC itself.
-> -	 */
-> -	if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
-> -	    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
-> -		writel(0, fep->hwp + FEC_ECNTRL);
-> -	} else {
-> -		writel(1, fep->hwp + FEC_ECNTRL);
-Nit, in case of a need for v2 you can mark in commit message that
-FEC_ECR_RESET == 1, so define can be use instead of 1.
+open_fds_add may fail since it adds an open fd
+to the fixed array. Print the error message in
+the such case.
 
-> -		udelay(10);
-> -	}
-> +	fec_ctrl_reset(fep, false);
->  
->  	/*
->  	 * enet-mac reset will reset mac address registers too,
-> @@ -1344,22 +1355,7 @@ fec_stop(struct net_device *ndev)
->  	if (fep->bufdesc_ex)
->  		fec_ptp_save_state(fep);
->  
-> -	/* Whack a reset.  We should wait for this.
-> -	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
-> -	 * instead of reset MAC itself.
-> -	 */
-> -	if (!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
-> -		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
-> -			writel(0, fep->hwp + FEC_ECNTRL);
-> -		} else {
-> -			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
-> -			udelay(10);
-> -		}
-> -	} else {
-> -		val = readl(fep->hwp + FEC_ECNTRL);
-> -		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
-> -		writel(val, fep->hwp + FEC_ECNTRL);
-> -	}
-> +	fec_ctrl_reset(fep, true);
->  	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
->  	writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
->  
+Signed-off-by: Denis Kirjanov <kirjanov@gmail.com>
+---
+ ip/iplink.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+diff --git a/ip/iplink.c b/ip/iplink.c
+index 59e8caf4..1396da23 100644
+--- a/ip/iplink.c
++++ b/ip/iplink.c
+@@ -666,7 +666,9 @@ int iplink_parse(int argc, char **argv, struct iplink_req *req, char **type)
+ 			if (netns < 0)
+ 				invarg("Invalid \"netns\" value\n", *argv);
+ 
+-			open_fds_add(netns);
++			if (open_fds_add(netns))
++				invarg("No descriptors left\n", *argv);
++
+ 			addattr_l(&req->n, sizeof(*req), IFLA_NET_NS_FD,
+ 				  &netns, 4);
+ 			move_netns = true;
+-- 
+2.43.0
 
-> -- 
-> 2.48.1
