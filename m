@@ -1,94 +1,89 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEF415442A
-	for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 14:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741C21F1508;
+	Tue, 21 Jan 2025 14:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737469568; cv=none; b=kpcPucXL3NwIOFgLUcFRrF//SedBsUHFRS3MPCUrXj8ZcKPoGgUxJp70ysvxn3cv79aYx8jclYnKhQoTHzyVNSEkuKkHX+cZmh4idf9LpeOeneQrKAitPyPHsckRxbZx8TrpOczu3vhVvKPeQgSMz4pLAzmNWbkYqWDd5v4oziU=
+	t=1737470072; cv=none; b=r/bXP+tZg1RJuRC1LU9lOR5nPVK0S/InUt6iw3LKQCk4nV06tSBQLnuqD7KzMmBYviqVhXxNVi45pZRPxobfzGtOGFV6EtI2wxEXAWN6glxQG1Sv5jDkX/P7JqrFbte+F1YTDNS6dyY49hKFsrYsqUckKM3ScoBvXojJeijtQ7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737469568; c=relaxed/simple;
-	bh=Rjp+hmWDO5OTfT2ysMv61UtgN9kBNntHkBGEm553axg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=PNZK1ExlWiQ/GhG274e+0G1w/BrhmCnaWdVaTiKf43EhK2rsDgEr1Gktaont1Aa6Sw1mvb08Y0VwfcQ4Vh7rpNgDI7bHcrdp4qOs5OHY1fBQLNIhjvO9wat82QEPNn3TSfwihfzQUG6vOU/WKqU06l0bK5vYNxVngbMv6WLPzXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=VzKJV7c5; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1737470072; c=relaxed/simple;
+	bh=opwCPYJorhwvT6LPZcF1FJUI08RBTf3CePh0PA5llic=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CrI8amJvHainObrJCXsl2tzdlaeJwE4MsKLwEVGkGvBaHywK++kZa05SDOuU3EHqG7q1bsdgKlxEJ2vmFLecGyrairZhvzWusPaCZcAjFOuanB8cxjrxbxigIleI502DFSWbd0Al4ZWg3OaCiGURuNTxg0egslwVeT+kEvLZdRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cLkVc/Yl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="VzKJV7c5"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ab633d9582aso251047166b.1
-        for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 06:26:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1737469565; x=1738074365; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rjp+hmWDO5OTfT2ysMv61UtgN9kBNntHkBGEm553axg=;
-        b=VzKJV7c5sszDBE+DajCUYyQthAweExG4XCb6BMSV9Evtb2gEIZbJog4hZjLVHWd1i6
-         tzzSM+ZHes1R6Ip874NJNBmws8E9N/R6hxSUz2IG8bO3i1NvgEUHjglgcob5o8oCcUle
-         gC3jz7PVEEhni6NQTY1YoyK6LuNK5cjlAfIXOeOYwts4J9iSYfI20TNrapTRW/wjbxRB
-         1giGF2bjoV9eHj1oDwgjtEgJKxZPUL/Cj4QFjfSz46BNs+Z2J1ZuPfQuVXlKvXS3jD3C
-         TXpIbSeRp/Uu1UPuWc8e9+E0EXCA/sFMpNYypQHGpejE83CcyvGCJZQ+gZX6PvxedoOG
-         6ssg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737469565; x=1738074365;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rjp+hmWDO5OTfT2ysMv61UtgN9kBNntHkBGEm553axg=;
-        b=dYpv4QRF/6rZcwcfbE1fCqmrQZ5RUWlEdvK9N4SLS0QX4d4eToIgQgj4h16uV5cS22
-         VEdPI1wDZ4q0KLxKm4v5Kt5IVyp2jm+neqjKzxHtYybWYyYIkaXTqxG5aGecwlixWQR9
-         ShabCkvTu1ts1kK0yBnZRImdyRzrgawewO0YZQogB2o3XHlyvV6vBhvuLaTpdPYESYfD
-         V+kl1bq9K7naKKVTZxCl59k2fDgsrcNXG1EkDx0txViW8lEcFbCXUE54QbhGrnVzgaQa
-         xsmv7aVjzfjMQA/za3YpMHZdbgE0dWMTHXDm4jriPkHJlkgC/ldeTWwhmC7JRcw6ievr
-         3PFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXkxAvU7iyHCcCpWsbSXroys5L7Z9KiNfAztGlPv1yi3ogovn4UKW1HIdSI2bKeOgo/hj1RFXg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGNpqfUZ3UOMBLZpNRTXt/eLg2NizucZy3OXUDtrMNU1p9HvUQ
-	QzRNokiaHF86iLXLj0qq4mvYskRyAA9ZRJNT5gi3Sliny0PyHkimznkzjA5pbOY=
-X-Gm-Gg: ASbGncv9ZD5aOmJbLZrydnSd8ABQMSQXLzeq7KW1NyLx3FI8FX+wy8+BZIlBubdPJAy
-	fKPtIgRuYqL++rDCfaAXRiHCtByKygkhz9n2IRSv9HmZvHkF/Eg/6MCMhGk+C+oI5uGOh8Bbl73
-	Xwkk7rzmPO58XYcFNowKS30lggwIb+S0l8psLMw6so/EPszLtrxNiR99HJcEMg1ONgARzuSDYry
-	ElKvL5tzEIgjlOQrI35Xzy3pSRYXrcT2dpGhnH5u/bqJf9G7/nxT8g2Gkt5Ww==
-X-Google-Smtp-Source: AGHT+IHwlnK2zw9uivEKoPguTLSLMAAZPkuD0ILNy3EmWF7Ejd0QSjCd/rdjvIvH/M8AXJrGyDq9hg==
-X-Received: by 2002:a17:907:9802:b0:aae:8491:bab5 with SMTP id a640c23a62f3a-ab38b30e1admr1420221266b.26.1737469564730;
-        Tue, 21 Jan 2025 06:26:04 -0800 (PST)
-Received: from cloudflare.com ([2a09:bac1:5b80:d60::38a:3e])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab384ce0172sm749653166b.44.2025.01.21.06.26.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jan 2025 06:26:03 -0800 (PST)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Jiayuan Chen <mrpre@163.com>
-Cc: bpf@vger.kernel.org,  john.fastabend@gmail.com,  netdev@vger.kernel.org,
-  martin.lau@linux.dev,  ast@kernel.org,  edumazet@google.com,
-  davem@davemloft.net,  dsahern@kernel.org,  kuba@kernel.org,
-  pabeni@redhat.com,  linux-kernel@vger.kernel.org,  song@kernel.org,
-  andrii@kernel.org,  mhal@rbox.co,  yonghong.song@linux.dev,
-  daniel@iogearbox.net,  xiyou.wangcong@gmail.com,  horms@kernel.org,
-  corbet@lwn.net,  eddyz87@gmail.com,  cong.wang@bytedance.com,
-  shuah@kernel.org,  mykolal@fb.com,  jolsa@kernel.org,  haoluo@google.com,
-  sdf@fomichev.me,  kpsingh@kernel.org,  linux-doc@vger.kernel.org,
-  linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH bpf v8 4/5] selftests/bpf: fix invalid flag of recv()
-In-Reply-To: <20250121050707.55523-5-mrpre@163.com> (Jiayuan Chen's message of
-	"Tue, 21 Jan 2025 13:07:06 +0800")
-References: <20250121050707.55523-1-mrpre@163.com>
-	<20250121050707.55523-5-mrpre@163.com>
-Date: Tue, 21 Jan 2025 15:26:02 +0100
-Message-ID: <87sepcgs5h.fsf@cloudflare.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cLkVc/Yl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7D7C4CEE0;
+	Tue, 21 Jan 2025 14:34:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737470070;
+	bh=opwCPYJorhwvT6LPZcF1FJUI08RBTf3CePh0PA5llic=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cLkVc/YlAJpwQYy+cYFcs1XhLSNDMvDRKBgPdkIYbK2YYHRHFLNcimHUh8RwYDjOo
+	 nq2lplWtdsnshi/g+iIGCxdRo4vU2qTK8IX++5w7ADqDZFfp7O/XHjJojwFvOfZikh
+	 ubroASzZtTQvwSAheRQlv2gXiIkll3zEKiW7rjFhgTk1Bk4NhCnRbOTtXYl2zZB3nJ
+	 uDFZI6NwazDKUC9j217TmO6B1cGZScFvlB5iuHtr1KsG5RqrANWtdSQdvm//RKsFQA
+	 OJal0McGcp6vBCNZran/gqjxIUUMXpqSKpNJag7dgLyR7zDft5hYyS5C8PR+OZCO0a
+	 Doluqd+98sfzQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	shuah@kernel.org,
+	willemb@google.com,
+	matttbe@kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next] selftests/net: packetdrill: more xfail changes (and a correction)
+Date: Tue, 21 Jan 2025 06:34:23 -0800
+Message-ID: <20250121143423.215261-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 21, 2025 at 01:07 PM +08, Jiayuan Chen wrote:
-> SOCK_NONBLOCK flag is only effective during socket creation, not during
-> recv. Use MSG_DONTWAIT instead.
->
-> Signed-off-by: Jiayuan Chen <mrpre@163.com>
-> ---
+Recent change to add more cases to XFAIL has a broken regex,
+the matching needs a real regex not a glob pattern.
 
-Good catch.
+While at it add the cases Willem pointed out during review.
 
-Fixes: 1fa1fe8ff161 ("bpf, sockmap: Test shutdown() correctly exits epoll and recv()=0")
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Fixes: 3030e3d57ba8 ("selftests/net: packetdrill: make tcp buf limited timing tests benign")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+CC: shuah@kernel.org
+CC: willemb@google.com
+CC: matttbe@kernel.org
+CC: linux-kselftest@vger.kernel.org
+---
+ tools/testing/selftests/net/packetdrill/ksft_runner.sh | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/net/packetdrill/ksft_runner.sh b/tools/testing/selftests/net/packetdrill/ksft_runner.sh
+index e15c43b7359b..ef8b25a606d8 100755
+--- a/tools/testing/selftests/net/packetdrill/ksft_runner.sh
++++ b/tools/testing/selftests/net/packetdrill/ksft_runner.sh
+@@ -39,11 +39,13 @@ if [[ -n "${KSFT_MACHINE_SLOW}" ]]; then
+ 	# xfail tests that are known flaky with dbg config, not fixable.
+ 	# still run them for coverage (and expect 100% pass without dbg).
+ 	declare -ar xfail_list=(
++		"tcp_eor_no-coalesce-retrans.pkt"
+ 		"tcp_fast_recovery_prr-ss.*.pkt"
++		"tcp_slow_start_slow-start-after-win-update.pkt"
+ 		"tcp_timestamping.*.pkt"
+ 		"tcp_user_timeout_user-timeout-probe.pkt"
+ 		"tcp_zerocopy_epoll_.*.pkt"
+-		"tcp_tcp_info_tcp-info-*-limited.pkt"
++		"tcp_tcp_info_tcp-info-.*-limited.pkt"
+ 	)
+ 	readonly xfail_regex="^($(printf '%s|' "${xfail_list[@]}"))$"
+ 	[[ "$script" =~ ${xfail_regex} ]] && failfunc=ktap_test_xfail
+-- 
+2.48.1
+
