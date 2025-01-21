@@ -1,263 +1,117 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B1518E3F
-	for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 02:21:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C5E153BE8
+	for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 02:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737426086; cv=none; b=s+17ko5GcrJiuwQab8m98cAOgNjFJffMFkeAV/Wq3fZSro4K5Hh4NRbQUSTsvRLDtQmOky+hsqwUTe5h1sUlVB2lqKgJBTJboUwB13CZkM+UdDfl0uPalh/4kbkz0PKyoCoMroLJ0xBPuzru5iFK3PgekD4u+RMlIgs7Kgjt/sY=
+	t=1737426604; cv=none; b=HSAmXI6BLblW06bOqKfEKr7gCLYIblLhEGBeJIKi+ShOzi5XgmF4HSHRkzEJhfaH/Ucs+SBKTgOBqXSM2XjlfhnzSLZbyVI1RkiE30RfFZ1zkdCGocNMd1Rsrq9/VpSHPyp4HPS1rcAbrxGkwK1sNYo0Zk0VqEvxu+WPkO48568=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737426086; c=relaxed/simple;
-	bh=AzlYGc/DEAsD4C1HQAFUs7hHDPCnh2QEggAD5x7dEvo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ukhR5ocZk1sAb72GF7AulG+Wqx2wbkmTbGlpxxDh2ZEV6Z/8bDsibD03Z1ZNmLw2e0BUZ8bggGDzJYfyGebBOMiZXUFNp/w4jkP1fMxkW+wiYhln1d5gczoC0vEC/kUjoilYh9f5H/aGKpG8mlmkAYBzkIIwJ8tP6k+x4HOtuc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.194.254.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: bizesmtpsz7t1737426067t22p9mg
-X-QQ-Originating-IP: O3sqi0UicVv04pYgfj+z85iJfj6DyExxbu+rxsd4ybs=
-Received: from wxdbg.localdomain.com ( [115.197.136.137])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 21 Jan 2025 10:21:06 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 7415060779553432430
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	linux@armlinux.org.uk,
-	horms@kernel.org,
-	jacob.e.keller@intel.com,
-	netdev@vger.kernel.org,
-	vadim.fedorenko@linux.dev
-Cc: mengyuanlou@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v6 3/4] net: wangxun: Implement do_aux_work of ptp_clock_info
-Date: Tue, 21 Jan 2025 10:20:33 +0800
-Message-Id: <20250121022034.2321131-4-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20250121022034.2321131-1-jiawenwu@trustnetic.com>
-References: <20250121022034.2321131-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1737426604; c=relaxed/simple;
+	bh=kkfCkGHH/5pcAL0xqI/wvdSZvH51iCZ4dgaEReAVEIE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AI3N/YdrtP+CnNb5EWQ0E0GOH51/n3V5BbqxqjhtudTPeVGPNjrJsE6ezeHPU4Zjm7TodSPQrDMxdkQUzJE0HGUWSgol+tv3EzYdFOn3xXUDnAoqC0lRgATqaIYtVUJzXiEadpIuJ7jPlc8JEkjPT1HqP7V4GzQv3565GYIgm3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u8nO/kyE; arc=none smtp.client-ip=209.85.166.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u8nO/kyE"
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3a818cd5dcbso45ab.0
+        for <netdev@vger.kernel.org>; Mon, 20 Jan 2025 18:30:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1737426602; x=1738031402; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HPH2l5qf1qTVXhW3y6X6yrEqTd9SkGMkHh8IfEKrlFk=;
+        b=u8nO/kyE5GH6ee2wsFEwh1foOoz4DgjTuauzcqHWH1ZzPUFFMF/x1upQGnSRtuXD+O
+         Nl+kU47W5nGKMLg11zujBUY7CVn+Js7xVFRNKI8+h+xLoXFzrs/HH30sgVDtacKqdEay
+         A+Y1N+7kqVEFpaNs9ZylkYpsJq4YsIj4Ddl/3/RTi0g/FQbrOYDI/wzDY4U1X/q6IA5A
+         VBO3tQwrpO3UXrDbLN2zu/nR8yYYbP7b+vkn5DkY8ImVHFurX6HVnTuhhcRTfQZfEIBG
+         /ooaYOI0Iwfe5dbtB7xX+wkJkj63D2FeyHwgNeUi7y0ayZlLB/JCmnunBQ+2pltGc3IG
+         zGIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737426602; x=1738031402;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HPH2l5qf1qTVXhW3y6X6yrEqTd9SkGMkHh8IfEKrlFk=;
+        b=d9BH1aDjE6a6rKMvRNpeb06EmLvdqIgiDPsOIjGqyo3YhekNZoE7JAULSBkARsaoA2
+         Vonecisg9ZJuKqYhSMRzRBr4V5ayRdnzpiaq6JKFOAlr4R1oRsGR6XAkpdaizkeIz4M2
+         OVztiSVfRLN8bcHTchP3/5FUSHC/uUBnb3dhqsTNVnfMsZpsrgeuj+fZ2dTQaWo42nlW
+         zaEJtYJfd+T4AFGn5S0Py7TAiKnSbPuIoFOj3al+vbb0jcPF2PqHcpYG+Df9fwEwT2Ph
+         fRW0no3QZe1QlEIbwZbEfH40hMWtf5e7rse2h9QrMm+FB5hYqfu6DmyAJjRn0NtX6qes
+         VzSw==
+X-Forwarded-Encrypted: i=1; AJvYcCWN31ZowMQDGHYpJS4dcqyxs+lS/Bn34cx/OoHAEAP57MFTakxCglI5r1S2yA7qdUTkrJDBUuQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywtf4ibIOsZVoyYHGhqGW/3sZCfnJ/Q9zEBqs7z3nSMnntGDAav
+	EC8KQ4zdZqVGdvZg8q2A3zxyDZcbxsrHBqppJzEZD41cv0jaRESBMaJtbm4Arf2vCaUARgdamIa
+	+/LdR6Xcu1NNmLm5zXv4GPPVwbur5vQcQ07Bd
+X-Gm-Gg: ASbGncvE2NPeqenXxPJ59Y/ql/jHaLQO3q5NmZdaNC8TZkkkILZQ/eORZT7ZteyugcY
+	GRNcsyorGWud6mg6mgYTeLcxmEdXSTjNcAz+y13u44CVISSaAPMASMb/NTh719FFCuAyvcB4o6K
+	cqo/2Pcw==
+X-Google-Smtp-Source: AGHT+IFlz4TxB3vciHD96WStNcWKfDv2nt6pDTX2HSfNXumM8/MVKhR4YG5/U51YA28bK2CS8jm9EvWOsee1FBpIG28=
+X-Received: by 2002:a05:6e02:1111:b0:3ce:51bd:3b05 with SMTP id
+ e9e14a558f8ab-3cfa9443651mr11835ab.2.1737426600885; Mon, 20 Jan 2025 18:30:00
+ -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: M4lPCacZ9Yleq5EtLZmvVItOhcWvZ42TiH56TK0TQyXY41EdKUwR92y1
-	SKV5QY0bEUz3VyDjbP10/xilDKebJ7kIzkHKuqncCFX3OZ6XMOZH0UL5tj7pUPA/qwaIDFy
-	23h/QGEvzY0Hj6BfeFMaYYpowdUucWE50cUmMfCAhDQVeWTnvXPDnpCgoDqaD4oHhawnau2
-	2llvpZrEWbLzKN8Li0NK2DudjOSSxyfvAOs4398ILuDiKBEWV8xTqNWYijGYbuWdpH8H3zm
-	B+W68e5etS27vdCRHASnyUj7sQKf3xs8m2IJ+r1DipALVVsIhPXwJ2Bs7ATXeps2wr1Mz3i
-	25yzrtLgc4SYae+AmlDt489SkDZfe4lrWmdCwfrpQHa1jIvtm7p6M5d90hszJEXa65tXuFE
-	TuvpduEXVxBmmeyF7GxenruMWQkLbhuGl9CVwVuHe/q1lbjLYuJOBMDTGaoN/7gFaY3BDuC
-	L58OywxpqtPrfb42pZ2p3Qv6lMYtiUp6YnxMViVtM7e7EWC/EliLOufUToRGD3+ki3yAORX
-	NsSO75nqtgBlERTKLeaeKEFt4rNCsYhfbZSZYOxCf/ISuyAEtkDlx8BfDUioR+n8wiTB+ga
-	2yNULi27ujJXMpMTOWs+a3+jgZq2C9oZWs6pKXFxhJmtSyYhl3ujTK5c4zG/Et91vl14g02
-	RZxWHQqRH16aJpYnbcN9uYGNXDZw7KtQuzfKYUQfgcv6AZJUJgcioU8DJtzAxaRCbUvVYX0
-	AQ5bkvuJbS0+mroKFvKvs6rHLrtF3ONxX6Rn67CVBchtT4P9WOVaOMjGS1CnGO83vSEZobT
-	8I2ktWlke9L7GUFYyF/qjuVWsQqpBA4J8yZGBtX//FjB2Bchld8U7Ub/JrwQvcC9eXAgNkU
-	odZWUh+ssOcOC76+XVj1Uil9ZwbWmr1o/bWUH/e1jy7PmCXKJcpMbhfnHUq15jV3jzduoXN
-	sUDB2s6DTMgjrcqcMp5KSbwYlqEsygxcA5zdDnLWYIEZC+Uk7W2dEeuqj0GN0xM/MXzlKR+
-	P2eLisOw==
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-X-QQ-RECHKSPAM: 0
+References: <20250117081600.150863-1-yuyanghuang@google.com> <20250120164621.287af2eb@kernel.org>
+In-Reply-To: <20250120164621.287af2eb@kernel.org>
+From: Yuyang Huang <yuyanghuang@google.com>
+Date: Tue, 21 Jan 2025 11:29:24 +0900
+X-Gm-Features: AWEUYZkgAGWY6e-kgWc5FZORob9sGJ4tEP4o23gzR672JEL0GNHYtT3vCoErJAY
+Message-ID: <CADXeF1F5R+p7ohvMRDBsRSxxqqAO-zXwctSz5KvMJEPbQLy90Q@mail.gmail.com>
+Subject: Re: [PATCH net-next, v6 1/2] netlink: support dumping IPv4 multicast addresses
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+	netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>, 
+	Shuah Khan <shuah@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>, 
+	Hangbin Liu <liuhangbin@gmail.com>, Daniel Borkmann <daniel@iogearbox.net>, 
+	linux-kselftest@vger.kernel.org, =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>, 
+	Lorenzo Colitti <lorenzo@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Implement watchdog task to detect SYSTIME overflow and error cases of
-Rx/Tx timestamp.
+Thanks for the feedback.
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
----
- drivers/net/ethernet/wangxun/libwx/wx_ptp.c   | 114 ++++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |   2 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c |   1 +
- .../net/ethernet/wangxun/txgbe/txgbe_phy.c    |   1 +
- 4 files changed, 118 insertions(+)
+>IIUC Paolo's suggestion was to create a new header file under net/ipv4,
+>if you consider addrconf.h unsuitable. There is no need to expose this
+>argument struct in kernel-wide headers.
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-index e50209b12845..69b8989b7712 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-@@ -266,6 +266,116 @@ static void wx_ptp_tx_hwtstamp_work(struct work_struct *work)
- 	}
- }
- 
-+/**
-+ * wx_ptp_overflow_check - watchdog task to detect SYSTIME overflow
-+ * @wx: pointer to wx struct
-+ *
-+ * this watchdog task periodically reads the timecounter
-+ * in order to prevent missing when the system time registers wrap
-+ * around. This needs to be run approximately twice a minute for the fastest
-+ * overflowing hardware. We run it for all hardware since it shouldn't have a
-+ * large impact.
-+ */
-+static void wx_ptp_overflow_check(struct wx *wx)
-+{
-+	bool timeout = time_is_before_jiffies(wx->last_overflow_check +
-+					      WX_OVERFLOW_PERIOD);
-+	unsigned long flags;
-+
-+	if (timeout) {
-+		/* Update the timecounter */
-+		write_seqlock_irqsave(&wx->hw_tc_lock, flags);
-+		timecounter_read(&wx->hw_tc);
-+		write_sequnlock_irqrestore(&wx->hw_tc_lock, flags);
-+
-+		wx->last_overflow_check = jiffies;
-+	}
-+}
-+
-+/**
-+ * wx_ptp_rx_hang - detect error case when Rx timestamp registers latched
-+ * @wx: pointer to wx struct
-+ *
-+ * this watchdog task is scheduled to detect error case where hardware has
-+ * dropped an Rx packet that was timestamped when the ring is full. The
-+ * particular error is rare but leaves the device in a state unable to
-+ * timestamp any future packets.
-+ */
-+static void wx_ptp_rx_hang(struct wx *wx)
-+{
-+	struct wx_ring *rx_ring;
-+	unsigned long rx_event;
-+	u32 tsyncrxctl;
-+	int n;
-+
-+	tsyncrxctl = rd32(wx, WX_PSR_1588_CTL);
-+
-+	/* if we don't have a valid timestamp in the registers, just update the
-+	 * timeout counter and exit
-+	 */
-+	if (!(tsyncrxctl & WX_PSR_1588_CTL_VALID)) {
-+		wx->last_rx_ptp_check = jiffies;
-+		return;
-+	}
-+
-+	/* determine the most recent watchdog or rx_timestamp event */
-+	rx_event = wx->last_rx_ptp_check;
-+	for (n = 0; n < wx->num_rx_queues; n++) {
-+		rx_ring = wx->rx_ring[n];
-+		if (time_after(rx_ring->last_rx_timestamp, rx_event))
-+			rx_event = rx_ring->last_rx_timestamp;
-+	}
-+
-+	/* only need to read the high RXSTMP register to clear the lock */
-+	if (time_is_before_jiffies(rx_event + 5 * HZ)) {
-+		rd32(wx, WX_PSR_1588_STMPH);
-+		wx->last_rx_ptp_check = jiffies;
-+
-+		wx->rx_hwtstamp_cleared++;
-+		dev_warn(&wx->pdev->dev, "clearing RX Timestamp hang");
-+	}
-+}
-+
-+/**
-+ * wx_ptp_tx_hang - detect error case where Tx timestamp never finishes
-+ * @wx: private network wx structure
-+ */
-+static void wx_ptp_tx_hang(struct wx *wx)
-+{
-+	bool timeout = time_is_before_jiffies(wx->ptp_tx_start +
-+					      WX_PTP_TX_TIMEOUT);
-+
-+	if (!wx->ptp_tx_skb)
-+		return;
-+
-+	if (!test_bit(WX_STATE_PTP_TX_IN_PROGRESS, wx->state))
-+		return;
-+
-+	/* If we haven't received a timestamp within the timeout, it is
-+	 * reasonable to assume that it will never occur, so we can unlock the
-+	 * timestamp bit when this occurs.
-+	 */
-+	if (timeout) {
-+		cancel_work_sync(&wx->ptp_tx_work);
-+		wx_ptp_clear_tx_timestamp(wx);
-+		wx->tx_hwtstamp_timeouts++;
-+		dev_warn(&wx->pdev->dev, "clearing Tx timestamp hang\n");
-+	}
-+}
-+
-+static long wx_ptp_do_aux_work(struct ptp_clock_info *ptp)
-+{
-+	struct wx *wx = container_of(ptp, struct wx, ptp_caps);
-+
-+	wx_ptp_overflow_check(wx);
-+	if (unlikely(test_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER,
-+			      wx->flags)))
-+		wx_ptp_rx_hang(wx);
-+	wx_ptp_tx_hang(wx);
-+
-+	return HZ;
-+}
-+
- /**
-  * wx_ptp_create_clock
-  * @wx: the private board structure
-@@ -298,6 +408,7 @@ static long wx_ptp_create_clock(struct wx *wx)
- 	wx->ptp_caps.adjtime = wx_ptp_adjtime;
- 	wx->ptp_caps.gettimex64 = wx_ptp_gettimex64;
- 	wx->ptp_caps.settime64 = wx_ptp_settime64;
-+	wx->ptp_caps.do_aux_work = wx_ptp_do_aux_work;
- 	if (wx->mac.type == wx_mac_em)
- 		wx->ptp_caps.max_adj = 500000000;
- 	else
-@@ -577,6 +688,9 @@ void wx_ptp_reset(struct wx *wx)
- 	timecounter_init(&wx->hw_tc, &wx->hw_cc,
- 			 ktime_to_ns(ktime_get_real()));
- 	write_sequnlock_irqrestore(&wx->hw_tc_lock, flags);
-+
-+	wx->last_overflow_check = jiffies;
-+	ptp_schedule_worker(wx->ptp_clock, HZ);
- }
- EXPORT_SYMBOL(wx_ptp_reset);
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 9199317f7175..c2e58de3559a 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1175,6 +1175,8 @@ struct wx {
- 	u32 tx_hwtstamp_skipped;
- 	u32 tx_hwtstamp_errors;
- 	u32 rx_hwtstamp_cleared;
-+	unsigned long last_overflow_check;
-+	unsigned long last_rx_ptp_check;
- 	unsigned long ptp_tx_start;
- 	seqlock_t hw_tc_lock; /* seqlock for ptp */
- 	struct cyclecounter hw_cc;
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-index c7944e62838a..ea1d7e9a91f3 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-@@ -111,6 +111,7 @@ static void ngbe_mac_link_up(struct phylink_config *config,
- 	wr32(wx, WX_MAC_WDG_TIMEOUT, reg);
- 
- 	wx->speed = speed;
-+	wx->last_rx_ptp_check = jiffies;
- 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
- 		wx_ptp_reset_cyclecounter(wx);
- }
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-index 60e5f3288ad8..7e17d727c2ba 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-@@ -222,6 +222,7 @@ static void txgbe_mac_link_up(struct phylink_config *config,
- 	wr32(wx, WX_MAC_WDG_TIMEOUT, wdg);
- 
- 	wx->speed = speed;
-+	wx->last_rx_ptp_check = jiffies;
- 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
- 		wx_ptp_reset_cyclecounter(wx);
- }
--- 
-2.27.0
+Currently the structure is like follows:
 
+IPv4:  `struct inet_fill_args` in igmp.h and use it in igmp.c/devinet.c
+IPv6: `struct inet6_fill_args` in addrconf.h and use it in mld.c/addrconf.c
+
+We could move `struct inet_fill_args` to a separate header file, but
+this would cause the IPv4 and IPv6 code to diverge. Therefore, we may
+need to modify the IPv6 header structure slightly as well.
+
+I propose moving `struct inet_fill_args` to `igmp_internal.h` and, in
+a separate patch, moving struct inet6_fill_args to
+addrconf_internal.h.
+
+Please let me know if you have any other suggestions.
+
+Thanks,
+
+Yuyang
+
+
+
+On Tue, Jan 21, 2025 at 9:46=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Fri, 17 Jan 2025 17:15:58 +0900 Yuyang Huang wrote:
+> >  include/linux/igmp.h | 12 +++++++
+> >  net/ipv4/devinet.c   | 76 ++++++++++++++++++++++++++++++++++++--------
+> >  net/ipv4/igmp.c      | 13 +++++---
+>
+> IIUC Paolo's suggestion was to create a new header file under net/ipv4,
+> if you consider addrconf.h unsuitable. There is no need to expose this
+> argument struct in kernel-wide headers.
