@@ -1,60 +1,60 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48A01F76A7
-	for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 19:11:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD051F666C
+	for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 19:11:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737486673; cv=none; b=Qta2HK7Zfewse+FBhn8K06R52IwXMvp0kvYdhUuplPWoUs0lejIHMeKXQGNyqgRcl8uPt87cO7pN4T63ervHmdSbcwqfc4oj8y/RdUo4W4ogB94E21n/irxWd88qjO5Rek4E8neCrjRUnENdAQfzPC/DbryaK4/DIPjRJQvqELE=
+	t=1737486674; cv=none; b=bHtDG3BZefKud3k2Dk5nqsQczjAlvRNxhFix8Ubsc4NdBPSvKCG9n05gF7/muD+JY3ZxS4BAoLXEki8xg0J2E3ubYIazmatSmwWLZqGcjCvVoagzg+DK5UD13pMacRnwoJME2jR370NWw6CO1ndNR+RToAC7AShRrmANGAlvsfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737486673; c=relaxed/simple;
-	bh=36m+Ryb9CJuvJR9nbvQowFH7ClbOSrNUnAqBaTNmIQY=;
+	s=arc-20240116; t=1737486674; c=relaxed/simple;
+	bh=CCW7kggp+rYbKpVhb0njIkNRisnJGwdMk+Hd84d4x2g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Z9JUqUTHPh8F+uNRrc1r5XRdNN/1qlOMK5hUJBhfEUL9fymw+VSpjb6JSzQNz//ZcP3KeVgkwBmF8BBFVW+4v4OFHmAW4apiSgQJloNPO5KHVKE4epI1RXODl4XwXJfLNJqHrIlTIPo5BfqJC/iZZdhMHodEK1i7uf/XrAk761g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=X422TL3N; arc=none smtp.client-ip=209.85.216.50
+	 MIME-Version; b=ERzkvF/uhNeqDJ8/Wo+SxlGT3+CjgRRSWpX0C5r4g04ND//EPiICMarJRy3RKF2AFuvWHB6RQpyGc3SnDQRPaKKVRsMX9yYeMP6lWAPGZGALYrFheK+4FKlb6fqv9kfDvw3JCP25sTNDRWfPha18bvOAnmXMjC7id1hwpinAgY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=MBzaNvjs; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="X422TL3N"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2eed82ca5b4so10396023a91.2
-        for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 11:11:10 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="MBzaNvjs"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ee51f8c47dso8325077a91.1
+        for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 11:11:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1737486669; x=1738091469; darn=vger.kernel.org;
+        d=fastly.com; s=google; t=1737486672; x=1738091472; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FDwiQXOb0dtbRJ3DmhupJOiqoOo1ySphxgwOZ65b5Lc=;
-        b=X422TL3NgiDRJB9TLcq0u5EBu2w1v5ZZuFriMvZtJRVPqlQxCpFEvdkuozAlgADo09
-         wrb0sKV4WC9ZNLGRbw7W4vYgPAn2rVo0JLUNJ87Fe9XyeyP9qBsPpvuz/K/ND6pG3KaF
-         XzomIJxyA9JzADSCTyp9SgLZo2+8jQppuyxc4=
+        bh=BIxZmc2dYAqFea8fzwYrgwOnSbwHFqsyPk6MUVa0VxU=;
+        b=MBzaNvjse7oevDYEBFWFKxZbDmgGUTUeZuKqKDYYq6jYzXhWxsXrb7XPPXxhnhTtKE
+         9sirjjKXjzShNZ3fJBquEHmrtN3LKamzoC0YboN1lcadLa21ntzmmmoL/W7hzWwutDca
+         wU19tnULStfkBwK7iTMX/kWcBxHKbQNAML64E=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737486669; x=1738091469;
+        d=1e100.net; s=20230601; t=1737486672; x=1738091472;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FDwiQXOb0dtbRJ3DmhupJOiqoOo1ySphxgwOZ65b5Lc=;
-        b=UkdrJOhmZ6R1qy2Yo5CojuEQUnFojPR/sm87QG+NfgwizJ2Lyt24HVvKAWS8zLNtUL
-         gSQ3KSVmWTnKVaSjoOUm8u6UGCGul+k40rIUs0Z1UniG68upovPJY+nbWHKWLQgDtwjK
-         G0VP3AHKHJTrX5lk0ku2NZQUhyczCyJT5bELP+w9Hyrj3UWarjDWxNN27QWbXhvvCRj0
-         Md1FUiWybd/xvzhESXI9WOHn3EwNRFXtQCwBAZ+2F5S9UqbeWItmStF48O/dGmTjKbB2
-         beuZr1/S3R5X6tfAy9OHmByLOh6KHolIyTbqIoKp966nKOr1l9HZvMQHj1o8a3T+qquY
-         1VVw==
-X-Gm-Message-State: AOJu0YzShw03Sswymf2w+wzcenIsHM/AIG52/HCSvt8fIU1EKNzP7YCL
-	GhxURFnHC+o9cUqWNx64OKt11sCid5hfau1FUHnKxPhgElnpNnlKswIkOEolvUKUT3YhyrqCBCj
-	YZFVZP/HF+CmGcblizq1WI/zvbj2hmhnbo0/cfwRlUWs5kBc/7m4sMMPf3kPnsN+iXuhtkOVMT7
-	nTh0Kxpkcj8mYMRiEWKFPLKJ5QWryTrQLnPFY=
-X-Gm-Gg: ASbGncvehyzVa/hFBn35cs/wFXq75hf5Xz48lNDATI1QftUoKmt3zdPeLcBWIEmDTfI
-	3dkZbMNcgpnUZOMOmvJw9DIqjKCTCuE+Q6BXgWnlrZsjMR5d1GQ79kogbCaTWBpKovM0g8jeBwp
-	U/hVWbkcnpNLMojbWKV8q7ittPZLbT/7gSxvinTTDpQNNdj4BYow5E4M+s8zikc6Senu8q70WJf
-	Bi0n/EZqCl0SKfTSGjUF5Dxb4ActLfAlYKs29m9NTa5/g6y5PQwn3XpRfPmncm4j6AZ794PVOir
-	pg==
-X-Google-Smtp-Source: AGHT+IFrbRJ/R0m0SceTG3oQbb0XNatc3hOdnfunYdBKaQ+YC8e4bymwDNEoE5iJLWgFoSXDDDTmQQ==
-X-Received: by 2002:a17:90a:d60f:b0:2ef:31a9:95af with SMTP id 98e67ed59e1d1-2f782d32956mr26450648a91.27.1737486668611;
-        Tue, 21 Jan 2025 11:11:08 -0800 (PST)
+        bh=BIxZmc2dYAqFea8fzwYrgwOnSbwHFqsyPk6MUVa0VxU=;
+        b=DFFLW58y3r+reFocPOA/3BOT2B2jetd+/PteELueIyaPr4N6eR+UHeFW8ajUhMQBe3
+         RqMSbsrcwx3sZKbOxyG5qSjmwCzkYFNZGi5lH0B+6UBT3WTjW8/wZIRqsqTkRDfHA3JL
+         9r1N9oh0ndd8WI36Wi398PCboRY+l1hBEl4q/h4m0HSsKwhk0OM/xpPsb5LZBEO0iKuy
+         4qrh5krso4JvlhotOXhExb5RlevA5fB2hvP+/FT7gTVt2d5ODiLflGfToZxwW6rHEh6U
+         5qFOx/ZpSWb1qDZX+1vDW6ewFcGKrgdE5hioaDp38ooqrRC3dQfKmgeMUDWxNFEnJHAc
+         5KeQ==
+X-Gm-Message-State: AOJu0YxFLE0ApAgcC+AkPLVcc/vaEQ1Bf79QkwSvw/ctDKxXqDpIaXCw
+	BbeWwOXWgAV3uoIO9avIoErz80P6C9GmSROcCKvXb9ZxRMQPAhMEePfwsVPcTULWQjJYTDm0oZl
+	wTpNvK3k+HSnT3ypv0ltI329WYhUCj6U7YJwzVwgomra0DH8KDdVBNJ665evxAaosjqkvkMOFNx
+	JDuCCeTb7ANv4xWlhPneNkKsWhrb556LMJeJc=
+X-Gm-Gg: ASbGncsgcjk9+n0ngA7OwT4t0ep33nL72nIZYw61m6ukMyiG3diCmDn1b1HWGjAxRId
+	oEk15891fkGBLQM3eghnXTZIf6Gtw1odfAItw5z310er4o7K/lUlzKO1klPLBW7hDm3/nRKmuva
+	6q+KLaGdkz1c2f8c5CudXjTCPEje9c4Ld4B6sURjfNsDjEALGud1UErKxGknWCU9NN7SL3fT5/T
+	UHoBxdvzGOPOuFlxIzVr0I4yWk+121eXP48Q4Jcq+pGQU+2jrtODO2nEeOUpTd//ENdLBip1l0Y
+	yA==
+X-Google-Smtp-Source: AGHT+IFmMAsVqWPTr/+MdaRMifAEOsKB5cFMykGXnqvqzynVvQlUx7VWgc1M158q6rlxSpFG7RmfQw==
+X-Received: by 2002:a17:90b:5206:b0:2f4:f7f8:fc8b with SMTP id 98e67ed59e1d1-2f782d4ed77mr26908949a91.27.1737486672019;
+        Tue, 21 Jan 2025 11:11:12 -0800 (PST)
 Received: from localhost.localdomain ([2620:11a:c019:0:65e:3115:2f58:c5fd])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7db6ab125sm1793440a91.26.2025.01.21.11.11.07
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7db6ab125sm1793440a91.26.2025.01.21.11.11.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jan 2025 11:11:08 -0800 (PST)
+        Tue, 21 Jan 2025 11:11:11 -0800 (PST)
 From: Joe Damato <jdamato@fastly.com>
 To: netdev@vger.kernel.org
 Cc: gerhard@engleder-embedded.com,
@@ -62,21 +62,19 @@ Cc: gerhard@engleder-embedded.com,
 	leiyang@redhat.com,
 	xuanzhuo@linux.alibaba.com,
 	mkarsten@uwaterloo.ca,
-	Jakub Kicinski <kuba@kernel.org>,
 	Joe Damato <jdamato@fastly.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	virtualization@lists.linux.dev (open list:VIRTIO CORE AND NET DRIVERS),
 	linux-kernel@vger.kernel.org (open list)
-Subject: [RFC net-next v3 1/4] net: protect queue -> napi linking with netdev_lock()
-Date: Tue, 21 Jan 2025 19:10:41 +0000
-Message-Id: <20250121191047.269844-2-jdamato@fastly.com>
+Subject: [RFC net-next v3 3/4] virtio_net: Map NAPIs to queues
+Date: Tue, 21 Jan 2025 19:10:43 +0000
+Message-Id: <20250121191047.269844-4-jdamato@fastly.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250121191047.269844-1-jdamato@fastly.com>
 References: <20250121191047.269844-1-jdamato@fastly.com>
@@ -88,115 +86,114 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jakub Kicinski <kuba@kernel.org>
+Use netif_queue_set_napi to map NAPIs to queue IDs so that the mapping
+can be accessed by user apps.
 
-netdev netlink is the only reader of netdev_{,rx_}queue->napi,
-and it already holds netdev->lock. Switch protection of the
-writes to netdev->lock as well.
+$ ethtool -i ens4 | grep driver
+driver: virtio_net
 
-Add netif_queue_set_napi_locked() for API completeness,
-but the expectation is that most current drivers won't have
-to worry about locking any more. Today they jump thru hoops
-to take rtnl_lock.
+$ sudo ethtool -L ens4 combined 4
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Joe Damato <jdamato@fastly.com>
+$ ./tools/net/ynl/pyynl/cli.py \
+       --spec Documentation/netlink/specs/netdev.yaml \
+       --dump queue-get --json='{"ifindex": 2}'
+[{'id': 0, 'ifindex': 2, 'napi-id': 8289, 'type': 'rx'},
+ {'id': 1, 'ifindex': 2, 'napi-id': 8290, 'type': 'rx'},
+ {'id': 2, 'ifindex': 2, 'napi-id': 8291, 'type': 'rx'},
+ {'id': 3, 'ifindex': 2, 'napi-id': 8292, 'type': 'rx'},
+ {'id': 0, 'ifindex': 2, 'type': 'tx'},
+ {'id': 1, 'ifindex': 2, 'type': 'tx'},
+ {'id': 2, 'ifindex': 2, 'type': 'tx'},
+ {'id': 3, 'ifindex': 2, 'type': 'tx'}]
+
+Note that virtio_net has TX-only NAPIs which do not have NAPI IDs, so
+the lack of 'napi-id' in the above output is expected.
+
+Signed-off-by: Joe Damato <jdamato@fastly.com>
 ---
+ rfcv3:
+   - Eliminated XDP checks; NAPIs will always be mapped to RX queues, as
+     Gerhard Engleder suggested.
+
  v2:
-   - Added in v2 from Jakub.
+   - Eliminate RTNL code paths using the API Jakub introduced in patch 1
+     of this v2.
+   - Added virtnet_napi_disable to reduce code duplication as
+     suggested by Jason Wang.
 
- include/linux/netdevice.h     |  9 +++++++--
- include/net/netdev_rx_queue.h |  2 +-
- net/core/dev.c                | 16 +++++++++++++---
- 3 files changed, 21 insertions(+), 6 deletions(-)
+ drivers/net/virtio_net.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 8da4c61f97b9..4709d16bada5 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -691,7 +691,7 @@ struct netdev_queue {
-  * slow- / control-path part
-  */
- 	/* NAPI instance for the queue
--	 * Readers and writers must hold RTNL
-+	 * Readers and writers must hold netdev->lock
- 	 */
- 	struct napi_struct	*napi;
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index cff18c66b54a..c120cb2106c0 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2805,7 +2805,11 @@ static void virtnet_napi_do_enable(struct virtqueue *vq,
  
-@@ -2467,7 +2467,8 @@ struct net_device {
- 	 * Partially protects (writers must hold both @lock and rtnl_lock):
- 	 *	@up
- 	 *
--	 * Also protects some fields in struct napi_struct.
-+	 * Also protects some fields in:
-+	 *	struct napi_struct, struct netdev_queue, struct netdev_rx_queue
- 	 *
- 	 * Ordering: take after rtnl_lock.
- 	 */
-@@ -2694,6 +2695,10 @@ static inline void *netdev_priv(const struct net_device *dev)
- void netif_queue_set_napi(struct net_device *dev, unsigned int queue_index,
- 			  enum netdev_queue_type type,
- 			  struct napi_struct *napi);
-+void netif_queue_set_napi_locked(struct net_device *dev,
-+				 unsigned int queue_index,
-+				 enum netdev_queue_type type,
-+				 struct napi_struct *napi);
- 
- static inline void netdev_lock(struct net_device *dev)
+ static void virtnet_napi_enable(struct virtqueue *vq, struct napi_struct *napi)
  {
-diff --git a/include/net/netdev_rx_queue.h b/include/net/netdev_rx_queue.h
-index 596836abf7bf..9fcac0b43b71 100644
---- a/include/net/netdev_rx_queue.h
-+++ b/include/net/netdev_rx_queue.h
-@@ -23,7 +23,7 @@ struct netdev_rx_queue {
- 	struct xsk_buff_pool            *pool;
- #endif
- 	/* NAPI instance for the queue
--	 * Readers and writers must hold RTNL
-+	 * Readers and writers must hold netdev->lock
- 	 */
- 	struct napi_struct		*napi;
- 	struct pp_memory_provider_params mp_params;
-diff --git a/net/core/dev.c b/net/core/dev.c
-index afa2282f2604..ab361fd9efd9 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -6842,14 +6842,24 @@ EXPORT_SYMBOL(dev_set_threaded);
-  */
- void netif_queue_set_napi(struct net_device *dev, unsigned int queue_index,
- 			  enum netdev_queue_type type, struct napi_struct *napi)
-+{
-+	netdev_lock(dev);
-+	netif_queue_set_napi_locked(dev, queue_index, type, napi);
-+	netdev_unlock(dev);
-+}
-+EXPORT_SYMBOL(netif_queue_set_napi);
++	struct virtnet_info *vi = vq->vdev->priv;
 +
-+void netif_queue_set_napi_locked(struct net_device *dev,
-+				 unsigned int queue_index,
-+				 enum netdev_queue_type type,
+ 	virtnet_napi_do_enable(vq, napi);
++
++	netif_queue_set_napi(vi->dev, vq2rxq(vq), NETDEV_QUEUE_TYPE_RX, napi);
+ }
+ 
+ static void virtnet_napi_tx_enable(struct virtnet_info *vi,
+@@ -2826,6 +2830,16 @@ static void virtnet_napi_tx_enable(struct virtnet_info *vi,
+ 	virtnet_napi_do_enable(vq, napi);
+ }
+ 
++static void virtnet_napi_disable(struct virtqueue *vq,
 +				 struct napi_struct *napi)
++{
++	struct virtnet_info *vi = vq->vdev->priv;
++
++	netif_queue_set_napi(vi->dev, vq2rxq(vq), NETDEV_QUEUE_TYPE_RX, NULL);
++
++	napi_disable(napi);
++}
++
+ static void virtnet_napi_tx_disable(struct napi_struct *napi)
  {
- 	struct netdev_rx_queue *rxq;
- 	struct netdev_queue *txq;
+ 	if (napi->weight)
+@@ -2842,7 +2856,8 @@ static void refill_work(struct work_struct *work)
+ 	for (i = 0; i < vi->curr_queue_pairs; i++) {
+ 		struct receive_queue *rq = &vi->rq[i];
  
- 	if (WARN_ON_ONCE(napi && !napi->dev))
- 		return;
--	if (dev->reg_state >= NETREG_REGISTERED)
--		ASSERT_RTNL();
-+	netdev_assert_locked_or_invisible(dev);
+-		napi_disable(&rq->napi);
++		virtnet_napi_disable(rq->vq, &rq->napi);
++
+ 		still_empty = !try_fill_recv(vi, rq, GFP_KERNEL);
+ 		virtnet_napi_enable(rq->vq, &rq->napi);
  
- 	switch (type) {
- 	case NETDEV_QUEUE_TYPE_RX:
-@@ -6864,7 +6874,7 @@ void netif_queue_set_napi(struct net_device *dev, unsigned int queue_index,
- 		return;
+@@ -3042,7 +3057,7 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
+ static void virtnet_disable_queue_pair(struct virtnet_info *vi, int qp_index)
+ {
+ 	virtnet_napi_tx_disable(&vi->sq[qp_index].napi);
+-	napi_disable(&vi->rq[qp_index].napi);
++	virtnet_napi_disable(vi->rq[qp_index].vq, &vi->rq[qp_index].napi);
+ 	xdp_rxq_info_unreg(&vi->rq[qp_index].xdp_rxq);
+ }
+ 
+@@ -3313,7 +3328,7 @@ static void virtnet_rx_pause(struct virtnet_info *vi, struct receive_queue *rq)
+ 	bool running = netif_running(vi->dev);
+ 
+ 	if (running) {
+-		napi_disable(&rq->napi);
++		virtnet_napi_disable(rq->vq, &rq->napi);
+ 		virtnet_cancel_dim(vi, &rq->dim);
  	}
  }
--EXPORT_SYMBOL(netif_queue_set_napi);
-+EXPORT_SYMBOL(netif_queue_set_napi_locked);
- 
- static void napi_restore_config(struct napi_struct *n)
- {
+@@ -5932,7 +5947,7 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
+ 	/* Make sure NAPI is not using any XDP TX queues for RX. */
+ 	if (netif_running(dev)) {
+ 		for (i = 0; i < vi->max_queue_pairs; i++) {
+-			napi_disable(&vi->rq[i].napi);
++			virtnet_napi_disable(vi->rq[i].vq, &vi->rq[i].napi);
+ 			virtnet_napi_tx_disable(&vi->sq[i].napi);
+ 		}
+ 	}
 -- 
 2.25.1
 
