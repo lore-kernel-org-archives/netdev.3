@@ -1,102 +1,259 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0870645979;
-	Tue, 21 Jan 2025 10:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF291B87C2
+	for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 10:09:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737453758; cv=none; b=ll94qip6fR2gDj4zaFUKav2gokuhyw6sQCL1Y6QN80YLZ0jPc5PPbBIDYlRc7b0uvwinlzFgM+5Ef2pJbl60KGGTAcEKb0bwvT5lM8KQepBt0fC7bIBVEKV98Gt5bM0u2c4iSqa8D0YI8bna01ZN8FaOR2TMmQsEoGQTymXMB2s=
+	t=1737454147; cv=none; b=rV3lUSF2bhUdZhYeD9NTb6HU284Z3vauLI70yB9ghUERsl539xounyNsiWIC3fMlHB5tQB5qic0k70XRc1xneAsUSoilT5fb0cYMlRV4rBBLTemJJsEUseDkGvIwe6Pk4wb+vcBFXMnOaDrOUqjXfyHjpwQNnjyia+XFHgMJO5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737453758; c=relaxed/simple;
-	bh=KXSPEkUIF0JzVtdBjndel3ro9adPxzNR8DNm/ag8xvg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qI054vML6xECxXon0V4REeUoL9ajxHmxWPvVCravGHoVmtgJ6tN71i4r+seg2x0MNFQVYbL13jx0h2f+KFgWvTQ+59bOMgMHXHTUvhCG5PrMMp9nh+kOxdRlRHIKfBEiXn5pmm9r6o0z/QU6tqMtvYdYNUhBEkRcbHcGwFR/A2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=N33ZDkvv; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1737454147; c=relaxed/simple;
+	bh=CIoRvxh0tYJOrVs1EoTWir0rXa4iK1r16yYT7r8G1ck=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CzdMk98AmLWNOCW6/sJTNLMUgPlw2GZY9uq/4IDcyIGMspYfZ1mX/wNOg1TBf47Qn3NIG7Rctk5F8UHbA+Yn5xka1GJofPyz62ddSSV6WVH8cBGXnATDoKwjt/09JhnWE25UIkxg3jL6QT07b9RYiz00U5tmpnXQfHIF1fErRbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=g25L3FYo; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="N33ZDkvv"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=nXijuf6z20+j5FjanvTi+20Qon2gmNQyAEVAl4cnE/0=; b=N33ZDkvv5UdKeCAe2f8lPwxcKC
-	TGTibZ3nbfWsiyjjxUkdLrUOHCfs7DUK7uHcgZYeHoDSH/upVGZNIvFUmWjIW0ABTsOn/+cXmSo8O
-	x2dz55e2AOsQ73Kw02neVAqZB6xG7FgiB4Yqli3pTt5kqaIul3+xuWjGGkdh0nnIeEVgHKqpC3rrE
-	tIIdEvRORumWvuuLRQPg1EzofCBHkuC8BpXrq3JyEoy8CYM0AcTQ0HnVy01Yafv54pdtTmnw4qZmJ
-	2R0GovUjPXfcVc24ifVy+WOycZ5Wexz+cJmi5VzPK1kSLBeluP0Zo1jo/pSiprAUEzUjAe03jyISH
-	5V6F/YUw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:40054)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1taB5Y-00074A-3D;
-	Tue, 21 Jan 2025 10:02:29 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1taB5U-0003o0-2I;
-	Tue, 21 Jan 2025 10:02:24 +0000
-Date: Tue, 21 Jan 2025 10:02:24 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Kory Maincent <kory.maincent@bootlin.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	thomas.petazzoni@bootlin.com, Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next v3] net: phy: Fix suspicious rcu_dereference
- usage
-Message-ID: <Z49wsE4A94PGVes1@shell.armlinux.org.uk>
-References: <20250120141926.1290763-1-kory.maincent@bootlin.com>
- <20250120111228.6bd61673@kernel.org>
- <20250121103845.6e135477@kmaincent-XPS-13-7390>
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="g25L3FYo"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ab2e308a99bso1131815066b.1
+        for <netdev@vger.kernel.org>; Tue, 21 Jan 2025 02:09:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1737454143; x=1738058943; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=EdHZMLAWAvzRRsC9kFvBMZ6QC0+a+h97UqoEznWJJKY=;
+        b=g25L3FYo4bgSsaWND1prwAA6FYinAjk1YEAej1drcQ1qDZ6+yqi0DrnydpRp6uOxWL
+         UgjE0QbESAFPnOp9UOk2JkjTmUJgkFnm3HQXbdLwjMac2fbiw3rkgnjUgQuiEbIco51d
+         jpjV4GaLqrLegMqA2sHVhxUuA4DXyeUgvABbKv3WLmt0nxDkVBeU/JX+KrgUcF8qO30P
+         WLJWH9cGJ7NUFVNaawJuZ4sSu4HdfMbyyWTBbSRvCuC+nM+B3wccFgIAgiwgj7v8NPHK
+         FYqVhj10Xd+B517LOBgYd6elvTkVR+1r5i2yv3Hdvx/uJgNI7mgulyT+C1oKMQV4xkXL
+         aaEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737454143; x=1738058943;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EdHZMLAWAvzRRsC9kFvBMZ6QC0+a+h97UqoEznWJJKY=;
+        b=JuqcbkFwhOIFU5NiM4h18taxHYLske3UrjnI4h/q5YBGjrJax7gdvykWF+kXzFOFCs
+         OYOK45/zI1sbERkBF+y8uSQeyUwx4QdiFjQll54k8N/J/CyjUJLpXq1vhwBwWEgpcTzS
+         NFsYqoXiuiQPCzz++3Sl0buSQJudk1GYaO/qsEFV4BSrMRqITEB/TnJJQMRPPGa+es1x
+         YEV6VDR8GDfkPGzqwi4pmPYS9eWquZIedBdvMVk08nTsauMuxD7WSPAlrMxPeDpOz700
+         fBTEPEeeVd/WJodXTrnRYCxMYv3bx5cD/cahqZSsMLJUMWNlRbsXpTioL0X7pPK8EREc
+         SdFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXKCAlCatO3AM6AQniH+beq7eIt3+E+LeF3mvz6rU3NGhyOkWdS9F3H3VhqYs0aHkqxjlPpf1M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgHkZre+Wwvuke0r7+0VEvDvvWw1oNXMTaw7bXsHvAjAtJSjfu
+	J8v0IJjEOzQtTKqysxQLHSzbRfyPUQjBXRwiKfwiiBruiKEmkX6KTJIXXTT5EyoIb1j5Ps3jWpe
+	V
+X-Gm-Gg: ASbGncupjNv8L5BThWFDDmbe7gNT0mVwFrq7jO/FKJ+HRkz2s4IJDQSMg4mu9hlkVA1
+	OGscE+5mrNBPQqNlskGyCWc1kVu3agVUCfdTr8DQwfJfVq8jVBMk2kG5kzJLnd8pVPwASsh3OdY
+	ZsrXY8N0LUFbCubfkCdQNgKCaCCKnWg1PjaXUYQ5M+X3jfmciz4Nr/DtW/QQoE414GDOTk/QvHQ
+	hoBDWRR4xmss8qSmrKhE7RB7SRQ90HkPLp65nzV2xoCGpuZiNriqP98XQDqUyqS7Gc4+ukjfOsM
+	r2KUW8qHdZa/USflq+2t9muk6PC4+sn4
+X-Google-Smtp-Source: AGHT+IHrNNV4karXwwvJHgzdeUYY3mI+wBUSsFkiWajrElhatJ9j3ZJc9iP7MgLUug3+z/IRDGOZGg==
+X-Received: by 2002:a17:907:3f24:b0:ab3:a2f9:d977 with SMTP id a640c23a62f3a-ab3a2f9f1f6mr1150646866b.22.1737454143576;
+        Tue, 21 Jan 2025 02:09:03 -0800 (PST)
+Received: from ?IPV6:2001:67c:2fbc:1:2b1b:6df9:ad3c:c183? ([2001:67c:2fbc:1:2b1b:6df9:ad3c:c183])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab384fccf7dsm736626766b.171.2025.01.21.02.09.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Jan 2025 02:09:03 -0800 (PST)
+Message-ID: <bcb0ef0a-8c4c-404f-b171-7948e46da897@openvpn.net>
+Date: Tue, 21 Jan 2025 11:10:00 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250121103845.6e135477@kmaincent-XPS-13-7390>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v18 20/25] ovpn: implement peer
+ add/get/dump/delete via netlink
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: ryazanov.s.a@gmail.com, netdev@vger.kernel.org,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
+ Shuah Khan <shuah@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Xiao Liang <shaw.leon@gmail.com>
+References: <20250113-b4-ovpn-v18-0-1f00db9c2bd6@openvpn.net>
+ <20250113-b4-ovpn-v18-20-1f00db9c2bd6@openvpn.net> <Z4pDpqN2hCc-7DGt@hog>
+ <f5507529-e61c-4b81-ab93-4ea6c8df46e9@openvpn.net> <Z4qPjuK3_fQUYLJi@hog>
+ <33710520-5f4f-4d33-a28d-99dc64afc9c3@openvpn.net> <Z44gwl2d8ThTshzQ@hog>
+ <94e44fdb-314c-41b0-8091-cff5789735b2@openvpn.net>
+ <4238ae90-9d3f-4c6a-b540-bea3c2e1addc@openvpn.net> <Z49v7Ah4nUPMVgMM@hog>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <Z49v7Ah4nUPMVgMM@hog>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 21, 2025 at 10:38:45AM +0100, Kory Maincent wrote:
-> On Mon, 20 Jan 2025 11:12:28 -0800
-> Jakub Kicinski <kuba@kernel.org> wrote:
+On 21/01/2025 10:59, Sabrina Dubroca wrote:
+> 2025-01-20, 22:20:40 +0100, Antonio Quartulli wrote:
+>> On 20/01/2025 11:45, Antonio Quartulli wrote:
+>> [...]
+>>>>>>>> I'm not sure what this (and the peer flushing on NETDEV_DOWN) is
+>>>>>>>> trying to accomplish. Is it a problem to keep peers
+>>>>>>>> when the netdevice
+>>>>>>>> is down?
+>>>>>>>
+>>>>>>> This is the result of my discussion with Sergey that
+>>>>>>> started in v23 5/23:
+>>>>>>>
+>>>>>>> https://lore.kernel.org/r/netdev/20241029-b4-ovpn-v11-5-
+>>>>>>> de4698c73a25@openvpn.net/
+>>>>>>>
+>>>>>>> The idea was to match operational state with actual
+>>>>>>> connectivity to peer(s).
+>>>>>>>
+>>>>>>> Originally I wanted to simply kee the carrier always on,
+>>>>>>> but after further
+>>>>>>> discussion (including the meaning of the openvpn option
+>>>>>>> --persist- tun) we
+>>>>>>> agreed on following the logic where an UP device has a
+>>>>>>> peer connected (logic
+>>>>>>> is slightly different between MP and P2P).
+>>>>>>>
+>>>>>>> I am not extremely happy with the resulting complexity,
+>>>>>>> but it seemed to be
+>>>>>>> blocker for Sergey.
+>>>>>>
+>>>>>> [after re-reading that discussion with Sergey]
+>>>>>>
+>>>>>> I don't understand why "admin does 'ip link set tun0 down'" means "we
+>>>>>> should get rid of all peers. For me the carrier situation goes the
+>>>>>> other way: no peer, no carrier (as if I unplugged the cable from my
+>>>>>> ethernet card), and it's independent of what the user does (ip link
+>>>>>> set XXX up/down). You have that with netif_carrier_{on,off}, but
+>>>>>> flushing peers when the admin does "ip link set tun0 down" is separate
+>>>>>> IMO.
+>>>>>
+>>>>> The reasoning was "the user is asking the VPN to go down - it should be
+>>>>> assumed that from that moment on no VPN traffic whatsoever
+>>>>> should flow in
+>>>>> either direction".
+>>>>> Similarly to when you bring an Eth interface dwn - the phy link
+>>>>> goes down as
+>>>>> well.
+>>>>>
+>>>>> Does it make sense?
+>>>>
+>>>> I'm not sure. If I turn the ovpn interface down for a second, the
+>>>> peers are removed. Will they come back when I bring the interface back
+>>>> up?  That'd have to be done by userspace (which could also watch for
+>>>> the DOWN events and tell the kernel to flush the peers) - but some of
+>>>> the peers could have timed out in the meantime.
+>>>>
+>>>> If I set the VPN interface down, I expect no packets flowing through
+>>>> that interface (dropping the peers isn't necessary for that), but all
+>>>> non-data (key exchange etc sent by openvpn's userspace) should still
+>>>> go through, and IMO peer keepalive fits in that "non-data" category.
+>>>
+>>> This was my original thought too and my original proposal followed this
+>>> idea :-)
+>>>
+>>> However Sergey had a strong opinion about "the user expect no traffic
+>>> whatsoever".
+>>>
+>>> I'd be happy about going again with your proposed approach, but I need
+>>> to be sure that on the next revision nobody will come asking to revert
+>>> this logic again :(
+>>>
+>>>>
+>>>>
+>>>> What does openvpn currently do if I do
+>>>>       ip link set tun0 down ; sleep 5 ; ip link set tun0 up
+>>>> with a tuntap interface?
+>>>
+>>> I think nothing happens, because userspace doesn't monitor the netdev
+>>> status. Therefore, unless tun closed the socket (which I think it does
+>>> only when the interface is destroyed), userspace does not even realize
+>>> that the interface went down.
+>>
+>> What does IPsec do in this case? Does it keep connections open and
+>> keepalives flowing?
 > 
-> > On Mon, 20 Jan 2025 15:19:25 +0100 Kory Maincent wrote:
-> > > The path reported to not having RTNL lock acquired is the suspend path of
-> > > the ravb MAC driver. Without this fix we got this warning:  
-> > 
-> > I maintain that ravb is buggy, plenty of drivers take rtnl_lock 
-> > from the .suspend callback. We need _some_ write protection here,
-> > the patch as is only silences a legitimate warning.
+> I don't think IPsec is a good comparison, because it can be used
+> without any interface at all (and without UDP/TCP encap sockets), and
+> they're not strongly tied to packet processing. If an interface is
+> used, the implementation will send the packets through it, otherwise
+> it's perfectly happy to send packets back and forth without it.
 > 
-> Indeed if the suspend path is buggy we should fix it. Still there is lots of
-> ethernet drivers calling phy_disconnect without rtnl (IIUC) if probe return an
-> error or in the remove path. What should we do about it?
+> MACsec is a bit more similar (all crypto state is bound to the macsec
+> netdevice -- but no socket and no keepalive), and here the key
+> exchange packets all flow directly through the real interface (eth0 or
+> whatever), without worrying about the state of the macsec device
+> (although I guess the userspace taking care of key exchange is free to
+> stop sending when the admin turns the link down).
 
-They could trigger the same warning, although I think they would be
-relatively safe because register_netdev() hasn't been called, and thus
-nothing that the netdev provides should be used. (If it can be used, as
-the driver has not completed initialisation, then it's probably racy
-anyway.)
+Thanks for the explanation!
 
-I don't think throwing ASSERT_RTNL() into phy_detach() will do anything
-to solve this. If the RCU warning doesn't trigger (because phy_detach()
-only gets called on error which practically never happens) then
-ASSERT_RTNL() isn't going to trigger either. Warnings in functions will
-only work when they're called in a context that will trigger the
-warning!
+> 
+>> One counter example we have in the kernel are 802.11 interfaces.
+>> Any 802.11 interface must be brought up before you can possibly establish a
+>> WiFi link. If you bring the interface down the link is closed and no 802.11
+>> control packets flow anymore.
+>>
+>> However, 802.11 is different as we are controlling a "physical behaviour",
+>> while in ovpn (like other tunneling modules) we are controlling a "virtual
+>> behaviour".
+> 
+> Agree, 802.11 is a bit special.
+> 
+> (I see you already answered my previous message, but since I've
+> written all this anyway... :))
+> 
 
-So, I think it's something that can only be addressed by reviewing
-drivers and patching.
+Eheh
+This confirms once more that I should go back to keeping peers alive on 
+ifdown.
+
+Thanks a lot!
+
+Regards,
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Antonio Quartulli
+OpenVPN Inc.
+
