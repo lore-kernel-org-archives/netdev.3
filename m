@@ -1,142 +1,173 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904761F1508;
-	Tue, 21 Jan 2025 14:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE5A1F3FD8;
+	Tue, 21 Jan 2025 14:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737470375; cv=none; b=BGlkdOLyCZF/auQf7xUyuu2J5ggV3fvC/0RewYNqjd/yWi3bn1fmLYIoNTHCfQlSLUPcGsCCqns4UiWWq6j2rxpEuse3HgGaDXw2u2QoVWIkqfUAg0OUhPC0A6YzrloQuYHqYDe/becZ8RLAg2op7NbdY31TDEMhF6otE1JlTM0=
+	t=1737470407; cv=none; b=ZPZxoL43Nt1oAPLgqYUzv6lxLJvL5RS6DnwTDa9wX49AZ6ymx88lbFMzptq+hamAcHXkvXAKpldDpgr4SEuMevUGM0Wuu2opgo7S6HV3/gWf+SC3u+WXU9DHJsULujeaWbouWMXrYliOdRDn6Lq7UheGhW9pZMBe9ak58JV1Mwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737470375; c=relaxed/simple;
-	bh=4TEa7Lov74WvDD9VbiPQrlS9Dg8723r7IvA82a28054=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uZlZ6DUN9ZwchugrlshOMcZqOOvXpCaO9zeyvBfPzDcNWj6PUlH3OUaQefGHwAybZAftLqFdZWtd8WPw1gpQGNbLV9Pkm9JsC1QILmVkqIMnNI647gL5I/ZKo4TkFyMAFdMFP+iLZj+bZsNVZMlE4BVPcDiIR2axUVLXb1foxtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nGIn3Ng9; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1737470407; c=relaxed/simple;
+	bh=RoOPEw1pnjf93BWu1H+vv+vMseKv0LAkB8QIKntc2D8=;
+	h=Date:From:To:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=Cdr0s4rnZrUb2KEHrpoeMDL+uKPPB5PjjjI6THBHpLkRFjQyoU9Eizz8hzMy7KufCYZMRVLU8IDM7DTYuNS1o7dNas+KTF4fyQ8HxVyRZx8buAoynUDXIOhpStyp9Tp9dreWtWxX5ESn+tuchPff6s851b2GaPKbeLTwBp8+37o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ow2/N6rG; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nGIn3Ng9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737470374; x=1769006374;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4TEa7Lov74WvDD9VbiPQrlS9Dg8723r7IvA82a28054=;
-  b=nGIn3Ng9viFqQqEolX4VOJHLhhnqdSfTesd2ywkGpWqA3tz6YzPEEt3E
-   uQZjyi3RiG6T2ArlUqdlwD3oVT4Kkd34e2uhcYQ7uLyz3K+hPHBt8H6b6
-   U3YmxMUS7tBm3Vt5YTKbNvZ4PGyYaosKSWdAbazpD7t+QigkHAfl/jF1T
-   KhH8pkGlBcGf/0pYeQ6fB1Bb7lMA08P5dNmdGx4FGbDLTmeoWJsMwysFO
-   oIhLLevenLfSI9kKUsrhR8PbXQsWTpNU0GsrSH9XpeVaTmXiwULuXgAQZ
-   nRk0yj8uaRYq7+g0Qf7s+bC8iw1fzhMiuRGreZZD7R3CsErchj+MzpIO7
-   Q==;
-X-CSE-ConnectionGUID: +80xK/itQa+cldqqVz/Vag==
-X-CSE-MsgGUID: wnf6R6AQTlCOxZWnjtOocQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="48878320"
-X-IronPort-AV: E=Sophos;i="6.13,222,1732608000"; 
-   d="scan'208";a="48878320"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2025 06:39:33 -0800
-X-CSE-ConnectionGUID: g4gx3czdQDWba+a06Y3bDA==
-X-CSE-MsgGUID: aO3yH/gcQAu+RD0sSwprCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="111445223"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2025 06:39:30 -0800
-Date: Tue, 21 Jan 2025 15:36:04 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Aryan Srivastava <Aryan.Srivastava@alliedtelesis.co.nz>
-Cc: "andrew@lunn.ch" <andrew@lunn.ch>,
-	"olteanv@gmail.com" <olteanv@gmail.com>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"jiri@resnulli.us" <jiri@resnulli.us>,
-	"horms@kernel.org" <horms@kernel.org>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>
-Subject: Re: [RFC net-next v1 2/2] net: dsa: add option for bridge port HW
- offload
-Message-ID: <Z4+w1O/tS7nw0jlS@mev-dev.igk.intel.com>
-References: <20250120004913.2154398-1-aryan.srivastava@alliedtelesis.co.nz>
- <20250120004913.2154398-3-aryan.srivastava@alliedtelesis.co.nz>
- <bb9cf9af-2f17-4af6-9d1c-3981cc8468c0@lunn.ch>
- <5d5cc80b20e878d01c3d7d739f0fc7e429a840ed.camel@alliedtelesis.co.nz>
- <17952bc5-31eb-452c-8fec-957260e9afd1@lunn.ch>
- <f8e90a949d08d3aba01a77f761efa41b44924345.camel@alliedtelesis.co.nz>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ow2/N6rG"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7b700c13edaso303446385a.3;
+        Tue, 21 Jan 2025 06:40:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737470405; x=1738075205; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SGQfSzGMb0K2xpDR8R+dRZzW8GV9BBlFM9+N4B0KulE=;
+        b=Ow2/N6rG03ktTfCSUj4+ZMDgjhPocbxqlwSIFd3xXQzhnFBsGTTWyKf61ZqRqKaGQc
+         29aXBOmc42ocimuf3r44m2y8MUNv2LN5BwFSwtVwZHuuNTf+ZIJ5Ghd5J1YxL+fREngP
+         6pvqz43F7ldltbZXuQsIUSB1IZyi1dQd77tLLdh5aUEdxYJm8UvLrG69N4QGflqoFEez
+         FKWgk6HC3izQBacH07DwmyOJqUJSBzDIhZ2ErABKda+1nVlS/a7Tj33ThD/IBoO2mH3i
+         QbR2agosqWixbD3nZCeVicHy4Zzi1cysMBWd0xSiKlmQiP+YRmRPUZhrlu8hfPMrrt5/
+         Q04w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737470405; x=1738075205;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SGQfSzGMb0K2xpDR8R+dRZzW8GV9BBlFM9+N4B0KulE=;
+        b=CHP2giN/rr25Not5M4aTkZfqCFpebD/v5utLscz3yIc5jN6FumpQin0sbTcHSwS5YP
+         11NWK5ivW2cd22BdP4+8T5gBOUMC5DS55bV3C596LwJoTNy6vn9h2/V+NLxuQ/qq7C2X
+         idxrjRqndLAkuInsRoTUj3rPCouBjkAZTYGYvZ7LVGtNemOdygwkTDdz3wwlaXQrCD5/
+         XNMJbp73JjDwptCuYlbD9VmYzWqSlv0u3r9VFk023Y/AhPCPkfHYcdOMhANnTwB+ZG91
+         eLa+a+vwUhRmFFSxU+oRWrXX3EUoOSF0g1WFPl4cXRHnBXHnKS5RyoLXf3+bXMvnRtzS
+         S68g==
+X-Forwarded-Encrypted: i=1; AJvYcCUymrgrHRhuQWotFPTqplM+B9UzaXLPE1LAAFUjDk+9zgk6iy31/7bspmNspLNo1r4MwU0BhvQt6sDzL3Sy@vger.kernel.org, AJvYcCVe+Hls4EKe27WWZ2vG3vKnBh031Qiqt74vR/AmKA6j6FPRlGjqFKFXc1G9X4kkZxa6Im78MnTt/PsbgnUnYKHP@vger.kernel.org, AJvYcCWIg04mfIBKbJjSatYRPWPY9JBRqy2RVI8tixI52Rn+IUHreq9PAGapjBey5zV/RrKVTTY=@vger.kernel.org, AJvYcCWk4TkcL+GMm+3ninooQUga7TNjTEZdRX1t6D8iecy2NQxcil5FsPZGW/Mc1m2vzwwkQqidGHvgbdTF@vger.kernel.org, AJvYcCXDru/uirb6RE/ex5G4O6RniDTl24WBLGgAJelDHouDPXkBafs+3q2p89KYRvvtwBCME1I78EQM@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHAOIMI6HwHxIoor+lZJ1fjkEARj0SWmMq/7XxjY6kOjjR4j3K
+	qRjMRkMwy/acI29vOxFZ0bDvdMIDLWR4aDozTHDg4YtkW/jP22IE
+X-Gm-Gg: ASbGncss6222td6S81Lc/crawGBidWM/3Bwz6930W2y7N4GmJmrrE0tggYg980/aSQj
+	S8lj8K2MQyZNroaLaPEm+egSjzALJAa5tO/KuyP8udns7IylnDHnnBRdrWIaqHUYZt7aDXH2i0B
+	KN1EopaPZpqyzI0Z3OS/Tosk7cugKew64JppV/Nf+K9nRWtAK73BYSFQzF60e416twi9L30M+50
+	TB0X8GEp0GrA2b4+Bt+F1RikOrVHMjThj/NkgXk8vSO8z2nGy+ArTiz43wr2qYyJau003A0o+TN
+	HAlKvKbWBixhWNOLNmLuBvddpT7G+UcEQ4EUaaQVsA==
+X-Google-Smtp-Source: AGHT+IEm9uh2oi8GwqrdV15LlWS/Rqn7wndmxNzv/1SRiy16/A1ivtq3hKiACLTKq3h6bJm+AeDuYg==
+X-Received: by 2002:a05:6214:c25:b0:6d8:899e:c3bf with SMTP id 6a1803df08f44-6e1b21c47f9mr251116416d6.34.1737470404863;
+        Tue, 21 Jan 2025 06:40:04 -0800 (PST)
+Received: from localhost (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e1afce3215sm51677466d6.100.2025.01.21.06.40.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jan 2025 06:40:04 -0800 (PST)
+Date: Tue, 21 Jan 2025 09:40:03 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Jason Wang <jasowang@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ Shuah Khan <shuah@kernel.org>, 
+ linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, 
+ kvm@vger.kernel.org, 
+ virtualization@lists.linux-foundation.org, 
+ linux-kselftest@vger.kernel.org, 
+ Yuri Benditovich <yuri.benditovich@daynix.com>, 
+ Andrew Melnychenko <andrew@daynix.com>, 
+ Stephen Hemminger <stephen@networkplumber.org>, 
+ gur.stavi@huawei.com, 
+ devel@daynix.com
+Message-ID: <678fb1c3d123b_23e15a2946c@willemb.c.googlers.com.notmuch>
+In-Reply-To: <806def7d-16f3-4d53-abc8-7d18e8c22dcb@daynix.com>
+References: <20250120-tun-v4-0-ee81dda03d7f@daynix.com>
+ <20250120-tun-v4-8-ee81dda03d7f@daynix.com>
+ <678e327e34602_19c737294b4@willemb.c.googlers.com.notmuch>
+ <806def7d-16f3-4d53-abc8-7d18e8c22dcb@daynix.com>
+Subject: Re: [PATCH net-next v4 8/9] tap: Keep hdr_len in tap_get_user()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f8e90a949d08d3aba01a77f761efa41b44924345.camel@alliedtelesis.co.nz>
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 20, 2025 at 09:36:57PM +0000, Aryan Srivastava wrote:
-> On Mon, 2025-01-20 at 04:12 +0100, Andrew Lunn wrote:
-> > > > This is not a very convincing description. What is your real use
-> > > > case
-> > > > for not offloading?
-> > > > 
-> > > The real use case for us is packet inspection. Due to the bridge
-> > > ports
-> > > being offloaded in hardware, we can no longer inspect the traffic
-> > > on
-> > > them, as the packets never hit the CPU.
+Akihiko Odaki wrote:
+> On 2025/01/20 20:24, Willem de Bruijn wrote:
+> > Akihiko Odaki wrote:
+> >> hdr_len is repeatedly used so keep it in a local variable.
+> >>
+> >> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> >> ---
+> >>   drivers/net/tap.c | 17 +++++++----------
+> >>   1 file changed, 7 insertions(+), 10 deletions(-)
+> >>
+> >> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+> >> index 061c2f27dfc83f5e6d0bea4da0e845cc429b1fd8..7ee2e9ee2a89fd539b087496b92d2f6198266f44 100644
+> >> --- a/drivers/net/tap.c
+> >> +++ b/drivers/net/tap.c
+> >> @@ -645,6 +645,7 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
+> >>   	int err;
+> >>   	struct virtio_net_hdr vnet_hdr = { 0 };
+> >>   	int vnet_hdr_len = 0;
+> >> +	int hdr_len = 0;
+> >>   	int copylen = 0;
+> >>   	int depth;
+> >>   	bool zerocopy = false;
+> >> @@ -672,6 +673,7 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
+> >>   		err = -EINVAL;
+> >>   		if (tap16_to_cpu(q, vnet_hdr.hdr_len) > iov_iter_count(from))
+> >>   			goto err;
+> >> +		hdr_len = tap16_to_cpu(q, vnet_hdr.hdr_len);
+> >>   	}
+> >>   
+> >>   	len = iov_iter_count(from);
+> >> @@ -683,11 +685,8 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
+> >>   	if (msg_control && sock_flag(&q->sk, SOCK_ZEROCOPY)) {
+> >>   		struct iov_iter i;
+> >>   
+> >> -		copylen = vnet_hdr.hdr_len ?
+> >> -			tap16_to_cpu(q, vnet_hdr.hdr_len) : GOODCOPY_LEN;
+> >> -		if (copylen > good_linear)
+> >> -			copylen = good_linear;
+> >> -		else if (copylen < ETH_HLEN)
+> >> +		copylen = min(hdr_len ? hdr_len : GOODCOPY_LEN, good_linear);
+> >> +		if (copylen < ETH_HLEN)
+> >>   			copylen = ETH_HLEN;
+> >>   		linear = copylen;
+> >>   		i = *from;
+> >> @@ -698,11 +697,9 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
+> >>   
+> >>   	if (!zerocopy) {
+> >>   		copylen = len;
+> >> -		linear = tap16_to_cpu(q, vnet_hdr.hdr_len);
+> >> -		if (linear > good_linear)
+> >> -			linear = good_linear;
+> >> -		else if (linear < ETH_HLEN)
+> >> -			linear = ETH_HLEN;
+> >> +		linear = min(hdr_len, good_linear);
+> >> +		if (copylen < ETH_HLEN)
+> >> +			copylen = ETH_HLEN;
 > > 
-> > So are you using libpcap to bring them into user space? Or are you
-> > using eBPF?
-> > 
-> > What i'm thinking about is, should this actually be a devlink option,
-> > or should it happen on its own because you have attached something
-> > which cannot be offloaded to the hardware, so hardware offload should
-> > be disabled by the kernel?
-> Yes, so we use various in-kernel (eBPF) and some out of tree methods
-> (netmap). To service both, I thought that a devlink config would be
-> best.
+> > Similar to previous patch, I don't think this patch is significant
+> > enough to warrant the code churn.
 > 
-> Also aside from specific kernel feature use-cases the actual port we
-> are trying to service is meant to be a dedicated NIC, whose
-> implementation detail is that it is on a switch chip. By offloading
-> aspects of its config, we end up with inconsistent behaviour across NIC
-> ports on our devices. As the port is not meant to behave like a
-> switchport, the fact it happens to be on the end of a switch should not
-> force it to HW offload bridging. The HW bridging results in CPU bypass,
-> where as SW bridging will be a more desirable method of bridging for
-> this port. Therefore it is desirable to have a method to configure
-> certain ports for SW bridging only, rather than the driver
-> automatically choosing to do HW offload if capable.
-> > 
-> > > > net-next is closed for the merge window.
-> > 
-> > > I was unsure about uploading this right now (as you said net-next
-> > > is
-> > > closed), but the netdev docs page states that RFC patches are
-> > > welcome
-> > > anytime, please let me know if this is not case, and if so I
-> > > apologize
-> > > for my erroneous submission.
-> > 
-> > It would be good to say what you are requesting comments about.
-> > 
-> Ah yes, I understand. I will add the request in the cover letter next
-> time, but essentially I just wanted comments about the best way to go
-> about this. Specifically if there was already a method in kernel to
-> prevent HW offload of certain features or if there are alternative
-> methods to devlink to add specific switch config options on a per port
-> basis.
+> The following patch will require replacing
+> tap16_to_cpu(q, vnet_hdr.hdr_len)
+> with
+> tap16_to_cpu(q->flags, vnet_hdr.hdr_len)
+>
+> It will make some lines a bit too long. Calling tap16_to_cpu() at 
+> multiple places is also not good to keep the vnet implementation unified 
+> as the function inspects vnet_hdr.
+> 
+> This patch is independently too trivial, but I think it is a worthwhile 
+> cleanup combined with the following patch.
 
-For debug purpouse I am turning off HW bridge offload by setting aging to 0.
-Don't know if it is appropriate in your case.
-
-Thanks
-Michal
-
-> 
-> 	Aryan
-> 
-> 
-> 
+Ok. I see what you mean.
