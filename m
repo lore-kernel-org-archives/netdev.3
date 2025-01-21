@@ -1,126 +1,163 @@
-Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E71C195B37;
-	Tue, 21 Jan 2025 04:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.248.49.38
+Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B439FA55;
+	Tue, 21 Jan 2025 05:09:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737434508; cv=none; b=H7VZkB9elU4JzNL/1jTqVNM/My5xU7lMN9jcVYp+0U9zuDoHk9lxYE1Hw0UDDgbUXK4RuU1edhIqUDEQHbSJZTN/O2N3cAC4G7iS5My31imtS0R08bLo1/T0y7wkvMZbbuwpvjF09c/v44O6jOzBye5ZUTIu7cg5fral3cc0FBM=
+	t=1737436155; cv=none; b=JlnSUzunTSv5H36+L2Q8YcqFd/LQ02CeJNPvYBGY71Tx+jXW6wwVuvNKxmVUNGAQDOGkwqnboPWkBOhpt+MDfJxlFaPLv6uyR/NRIT/7x0ZEOTygvl21sKzASFS1npj7dEE0PTtsUrlQNm9c8lc2i8swP1MRLyNph5BZrEINWAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737434508; c=relaxed/simple;
-	bh=qIGnc4wf9D/ddorQ7LFwkA9iDLncpdyT3J3OZsAbxlc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Z3HbNYPY7YYgTU9padn5Md7pigV4JlAytoGgVyqtW5D/tr6V2i1fEGQ7b7PSTS+y6U4yHMBuTHEGxeOr84bKhwN8P48qtP2E+p4QesFMzkHi3jHNDT+OFvDrq3ki9w+GtpE0v9rIwLkRaqFsAvoH2/JLTDsBnJffp7E5t5NrADI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=socionext.com
-Received: from unknown (HELO kinkan2-ex.css.socionext.com) ([172.31.9.52])
-  by mx.socionext.com with ESMTP; 21 Jan 2025 13:41:44 +0900
-Received: from mail.mfilter.local (mail-arc02.css.socionext.com [10.213.46.40])
-	by kinkan2-ex.css.socionext.com (Postfix) with ESMTP id 1F030200847B;
-	Tue, 21 Jan 2025 13:41:44 +0900 (JST)
-Received: from kinkan2.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Tue, 21 Jan 2025 13:41:44 +0900
-Received: from plum.e01.socionext.com (unknown [10.212.245.39])
-	by kinkan2.css.socionext.com (Postfix) with ESMTP id C93EC66E;
-	Tue, 21 Jan 2025 13:41:43 +0900 (JST)
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Furong Xu <0x1207@gmail.com>,
-	Joao Pinto <Joao.Pinto@synopsys.com>,
-	Vince Bridgers <vbridger@opensource.altera.com>,
-	netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Subject: [PATCH net v2 3/3] net: stmmac: Specify hardware capability value when FIFO size isn't specified
-Date: Tue, 21 Jan 2025 13:41:38 +0900
-Message-Id: <20250121044138.2883912-4-hayashi.kunihiko@socionext.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250121044138.2883912-1-hayashi.kunihiko@socionext.com>
-References: <20250121044138.2883912-1-hayashi.kunihiko@socionext.com>
+	s=arc-20240116; t=1737436155; c=relaxed/simple;
+	bh=Mpfwg8Y/Q/+cD9ry0PP+5YwfNW9+Cak+CUzG7cR8D38=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rCdpAnYffwsWQme/aV28K/JDskur431DQxahx73ZK129J7Wr2YiMUPoFpI6yZ3Um7wzK4wQP4nH9erLG8twBQNz7DAHGc2LPyVXplnZO9t3wrX8fVEOJBM45FItKsxqv2iI9M+1sm7+jyeC+2oERG+dZepFXNQqKkHy6iT/Iriw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mUVapJcm; arc=none smtp.client-ip=209.85.166.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mUVapJcm"
+Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-3cf880d90bdso7616905ab.3;
+        Mon, 20 Jan 2025 21:09:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737436153; x=1738040953; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cJQfRyC3Wsudpzv9LLtI4oTXgl7XjBx9DhB6xX5CRmA=;
+        b=mUVapJcmbPWOBCQ0mv1EiZNNpGKVLFq0RUnwZ9ZWNPy9LIZuGmkrZSh+3CKqs/dTH2
+         nbJ0t2CfuC5GWfjlBH0fSRh9WZfrL5CFPYvonCrczluNx9NSjh4pWvcbCWM5rsVC0uLV
+         93RUTYJI1padj22Ec4Drq1czjc0H2zyt04jkdM9jMC5BrbIdv4LBobzu7wWZ22YTe0jk
+         fQUnktTq/ID25HAu9/8LW3tGDth8G2usYXH6k/+f/c0oKbiCzIYhkDpwnxlsOXmB8UvH
+         PQzctDUKnPIIKoKYH6UswRk8zqYvU408d9nWIt1y5KwQ0FDW7uXN+fnodEv+gDbFGNNA
+         G9bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737436153; x=1738040953;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cJQfRyC3Wsudpzv9LLtI4oTXgl7XjBx9DhB6xX5CRmA=;
+        b=eryiJPb+zTpMaXL8WBCzyOp7U+yCHbUrsyT+HTV77E2p/C8mAZ3PdIF/ROAeiZEcmD
+         iwk2c0qQ4KXckIo/wvg/quA2grC1Sg2qlXCphZ6e6Aqz+LaGmJXfQPAfw1Zo1G5BmX1n
+         3YlV0LfAEkQmOgMX5+B6DJp0w9FeUTgN9dUivSVSCRX//0/m8e15InvziFjz/yqNcvEy
+         dV1WqfF0v/V0y8yzngamXiznvWXa4Sz7w0m5SSK4dmMv4/PDrDHs0Odm8BbLVd/oO10O
+         LVdrOFX4u/LJCd4J1L+rScVlanqWHPhHSJHUoJhP7sgr/qMRPoFQgIOR9KTkANXxbPWP
+         khAA==
+X-Forwarded-Encrypted: i=1; AJvYcCWNbox1m4LfC5nqP10mZ+PVnxFNC9FJqzydB/Tay+nSMETtmkaQrYtKW6wBL4qySWGcR7Gs5B0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxsbxs1wbrosdYTPm6aT22TQCO7N2B5F7ekHAeJdluvlUUdQxBM
+	58xQJI8fJhau2tthE0EgMlYE/fX5MYaCjLJkGnT+cPc9ViTYhvOVo4jxlAlXwxWCtrJHPXwMD6e
+	zkBxapgsIr3gBkZk+cb4w70eK0dw=
+X-Gm-Gg: ASbGncumJ5wJ2hbEklG9BuBMOMs/MA8bTVCVgntzTFasPjnScdBWkTDmwPm5Gf2atMX
+	25yoplceqmzkAdh71ZfWIilJITiWpsm66vxWdP2sYV9PAG6sT2Jc=
+X-Google-Smtp-Source: AGHT+IE08hPon2t7JQWZ73xzkucKDLJ54/L0vyFfsq41RSDlrT3eZ3yA5ijWsa93jHwNsPWITrVQHFtBIQsiaJKbASI=
+X-Received: by 2002:a05:6e02:148f:b0:3cf:6c4f:396f with SMTP id
+ e9e14a558f8ab-3cf7447c7cfmr125236365ab.15.1737436152686; Mon, 20 Jan 2025
+ 21:09:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250121012901.87763-1-kerneljasonxing@gmail.com> <20250121012901.87763-3-kerneljasonxing@gmail.com>
+In-Reply-To: <20250121012901.87763-3-kerneljasonxing@gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Tue, 21 Jan 2025 13:08:36 +0800
+X-Gm-Features: AbW1kvYarHVuBxdCmtWDJVlNxImYh8P0fsc9x69htjnLMINBztSjTf-Mq-C2Uq4
+Message-ID: <CAL+tcoBzgjPn1Gmw9NdL0rXhomMJka=s0yvCpc=7GY+DP=AKmA@mail.gmail.com>
+Subject: Re: [RFC PATCH net-next v6 02/13] net-timestamp: prepare for
+ timestamping callbacks use
+To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, dsahern@kernel.org, willemdebruijn.kernel@gmail.com, 
+	willemb@google.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org, 
+	yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org, 
+	sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, horms@kernel.org
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When Tx/Rx FIFO size is not specified in advance, the driver checks if the
-value is zero and sets the hardware capability value in functions where
-that value is used.
+On Tue, Jan 21, 2025 at 9:29=E2=80=AFAM Jason Xing <kerneljasonxing@gmail.c=
+om> wrote:
+>
+> Later, I would introduce four callback points to report information
+> to user space based on this patch.
+>
+> As to skb initialization here, people can follow these three steps
+> as below to fetch the shared info from the exported skb in the bpf
+> prog:
+> 1. skops_kern =3D bpf_cast_to_kern_ctx(skops);
+> 2. skb =3D skops_kern->skb;
+> 3. shinfo =3D bpf_core_cast(skb->head + skb->end, struct skb_shared_info)=
+;
+>
+> More details can be seen in the last selftest patch of the series.
+>
+> Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+> ---
+>  include/net/sock.h |  7 +++++++
+>  net/core/sock.c    | 13 +++++++++++++
+>  2 files changed, 20 insertions(+)
+>
+> diff --git a/include/net/sock.h b/include/net/sock.h
+> index 7916982343c6..6f4d54faba92 100644
+> --- a/include/net/sock.h
+> +++ b/include/net/sock.h
+> @@ -2923,6 +2923,13 @@ int sock_set_timestamping(struct sock *sk, int opt=
+name,
+>                           struct so_timestamping timestamping);
+>
+>  void sock_enable_timestamps(struct sock *sk);
+> +#if defined(CONFIG_CGROUP_BPF)
+> +void bpf_skops_tx_timestamping(struct sock *sk, struct sk_buff *skb, int=
+ op);
+> +#else
+> +static inline void bpf_skops_tx_timestamping(struct sock *sk, struct sk_=
+buff *skb, int op)
+> +{
+> +}
+> +#endif
+>  void sock_no_linger(struct sock *sk);
+>  void sock_set_keepalive(struct sock *sk);
+>  void sock_set_priority(struct sock *sk, u32 priority);
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index eae2ae70a2e0..e165163521dc 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -948,6 +948,19 @@ int sock_set_timestamping(struct sock *sk, int optna=
+me,
+>         return 0;
+>  }
+>
 
-This sets the hardware capability value as a default and removes redundant
-statements.
+Oops, I accidentally remove the following protection:
+#if defined(CONFIG_CGROUP_BPF)
+> +void bpf_skops_tx_timestamping(struct sock *sk, struct sk_buff *skb, int=
+ op)
+> +{
+> +       struct bpf_sock_ops_kern sock_ops;
+> +
+> +       memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
+> +       sock_ops.op =3D op;
+> +       sock_ops.is_fullsock =3D 1;
+> +       sock_ops.sk =3D sk;
+> +       bpf_skops_init_skb(&sock_ops, skb, 0);
+> +       /* Timestamping bpf extension supports only TCP and UDP full sock=
+et */
+> +       __cgroup_bpf_run_filter_sock_ops(sk, &sock_ops, CGROUP_SOCK_OPS);
+> +}
 
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
----
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 21 ++++++-------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+And here:
+#endif
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index da3316e3e93b..486283c27963 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2375,11 +2375,6 @@ static void stmmac_dma_operation_mode(struct stmmac_priv *priv)
- 	u32 chan = 0;
- 	u8 qmode = 0;
- 
--	if (rxfifosz == 0)
--		rxfifosz = priv->dma_cap.rx_fifo_size;
--	if (txfifosz == 0)
--		txfifosz = priv->dma_cap.tx_fifo_size;
--
- 	/* Split up the shared Tx/Rx FIFO memory on DW QoS Eth and DW XGMAC */
- 	if (priv->plat->has_gmac4 || priv->plat->has_xgmac) {
- 		rxfifosz /= rx_channels_count;
-@@ -2851,11 +2846,6 @@ static void stmmac_set_dma_operation_mode(struct stmmac_priv *priv, u32 txmode,
- 	int rxfifosz = priv->plat->rx_fifo_size;
- 	int txfifosz = priv->plat->tx_fifo_size;
- 
--	if (rxfifosz == 0)
--		rxfifosz = priv->dma_cap.rx_fifo_size;
--	if (txfifosz == 0)
--		txfifosz = priv->dma_cap.tx_fifo_size;
--
- 	/* Adjust for real per queue fifo size */
- 	rxfifosz /= rx_channels_count;
- 	txfifosz /= tx_channels_count;
-@@ -5856,9 +5846,6 @@ static int stmmac_change_mtu(struct net_device *dev, int new_mtu)
- 	const int mtu = new_mtu;
- 	int ret;
- 
--	if (txfifosz == 0)
--		txfifosz = priv->dma_cap.tx_fifo_size;
--
- 	txfifosz /= priv->plat->tx_queues_to_use;
- 
- 	if (stmmac_xdp_is_enabled(priv) && new_mtu > ETH_DATA_LEN) {
-@@ -7245,13 +7232,17 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
- 		priv->plat->tx_queues_to_use = priv->dma_cap.number_tx_queues;
- 	}
- 
--	if (priv->plat->rx_fifo_size > priv->dma_cap.rx_fifo_size) {
-+	if (!priv->plat->rx_fifo_size) {
-+		priv->plat->rx_fifo_size = priv->dma_cap.rx_fifo_size;
-+	} else if (priv->plat->rx_fifo_size > priv->dma_cap.rx_fifo_size) {
- 		dev_warn(priv->device,
- 			 "Rx FIFO size exceeds dma capability (%d)\n",
- 			 priv->plat->rx_fifo_size);
- 		priv->plat->rx_fifo_size = priv->dma_cap.rx_fifo_size;
- 	}
--	if (priv->plat->tx_fifo_size > priv->dma_cap.tx_fifo_size) {
-+	if (!priv->plat->tx_fifo_size) {
-+		priv->plat->tx_fifo_size = priv->dma_cap.tx_fifo_size;
-+	} else if (priv->plat->tx_fifo_size > priv->dma_cap.tx_fifo_size) {
- 		dev_warn(priv->device,
- 			 "Tx FIFO size exceeds dma capability (%d)\n",
- 			 priv->plat->tx_fifo_size);
--- 
-2.25.1
+I'll add them in the next version.
 
+Thanks,
+Jason
+
+> +
+>  void sock_set_keepalive(struct sock *sk)
+>  {
+>         lock_sock(sk);
+> --
+> 2.43.5
+>
