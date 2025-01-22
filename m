@@ -1,65 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9E71AF0C9
-	for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 06:16:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A381A9B4E;
+	Wed, 22 Jan 2025 06:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737526605; cv=none; b=KNLBAiqgNKEiqarc1PQNVPGYMSBdLMnXq+owkCuUHaoA8z6f3xdu9gEjNgCNN4P63Ncgb2Kf2AQNUhwf15KZOLwgazFurmJfVxnqgF8lJMUujVfUkdSnltxNhZHOz2+x0K5ZngcM2HRB9wCzKrf80FlJiC5Hetaye+YVhXR3cXM=
+	t=1737528940; cv=none; b=rikd7YEKCWb5fFFNhRL/uAiE6iJf9+LlkYXmAvyFgFLcUwIdGDJ75hkPpwLeUdlsnuK1iztBHRZdPgKtn+AAwv8gg5e/LCNYRhDV2Od1cXdBYxra2JAhrG1ENZx6YG4aUOWL/KQ5Ui+epVz6Wg31aXi+NxztI97ECu9pIYSyDbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737526605; c=relaxed/simple;
-	bh=GZGUwVzWf5+5sjzsGJcUxmWjuTb6BhXtQolSlxaJT00=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZW+wS9NnA1G+qvuZXYjHUO8iI28kQRwcfV5hkXfH3lYeIDIptmIR2rMfktaSnU122aM2SL7TfF4u/BWAV4wnvuXzbSqbBYe9tIgG41sphcBP6KtGX/jLbxGN/Y7xKdXmL5NHlL308cni+SOH9Sp66AuMqg1sjV4i5v8PFyylh7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CxwuzoYe; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CxwuzoYe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737526603;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TypPk55BtLKceg++bY0mZyDDDIxWVaP+cjWBoSEYbfM=;
-	b=CxwuzoYeSW8FJXcQqJiHuuV3GFAOaBM+VEoB9z81/gtF6w66VH735PYxLlduTTJBsK0DYe
-	GBC7w/5/6pBy2Gz5MhpBlXMfW682KQI5TUSpHRQdV1RS73jJvBIRij6tHbMvyi+ITW5+I2
-	0i8nVARWqKAwj0ywCy4kEuMetRjOnZ0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-221-MofZaBIbNiyjfo_FPljYyg-1; Wed,
- 22 Jan 2025 01:16:38 -0500
-X-MC-Unique: MofZaBIbNiyjfo_FPljYyg-1
-X-Mimecast-MFC-AGG-ID: MofZaBIbNiyjfo_FPljYyg
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7007B19560B7;
-	Wed, 22 Jan 2025 06:16:36 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.72.112.209])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 97BBA195608A;
-	Wed, 22 Jan 2025 06:16:29 +0000 (UTC)
-From: Jason Wang <jasowang@redhat.com>
-To: mst@redhat.com,
-	jasowang@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next RFC 2/2] virtio-net: free old xmit skbs only in NAPI
-Date: Wed, 22 Jan 2025 14:16:00 +0800
-Message-ID: <20250122061600.16781-3-jasowang@redhat.com>
-In-Reply-To: <20250122061600.16781-1-jasowang@redhat.com>
-References: <20250122061600.16781-1-jasowang@redhat.com>
+	s=arc-20240116; t=1737528940; c=relaxed/simple;
+	bh=9EgEYI2zaQqMWwarkNInCEJONpKjuj6Zj6CocwsWjGQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bPsoylG9gBxddG+sX/vxMlHfHBtbKe/1g7QOrpzksfwMO32vyYg0Rpuy1/zbHigHWntPdNE6gmExukQ76biPMf/pjsd9MTxG20bXCs3rHYX363HVuGICePUm4X64pzDzdm3bEb6c18M2IhSMD9qUHz3N5Bn+fKfA7eN/3oW0PcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YdFCm1TCvz6K92s;
+	Wed, 22 Jan 2025 14:53:40 +0800 (CST)
+Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7221C1400DB;
+	Wed, 22 Jan 2025 14:55:35 +0800 (CST)
+Received: from china (10.200.201.82) by frapeml500005.china.huawei.com
+ (7.182.85.13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 22 Jan
+ 2025 07:55:22 +0100
+From: Gur Stavi <gur.stavi@huawei.com>
+To: <przemyslaw.kitszel@intel.com>
+CC: <andrew+netdev@lunn.ch>, <cai.huoqing@linux.dev>, <corbet@lwn.net>,
+	<davem@davemloft.net>, <edumazet@google.com>, <gongfan1@huawei.com>,
+	<guoxin09@huawei.com>, <gur.stavi@huawei.com>, <helgaas@kernel.org>,
+	<horms@kernel.org>, <kuba@kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <luosifu@huawei.com>,
+	<meny.yossefi@huawei.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+	<shenchenyang1@hisilicon.com>, <shijing34@huawei.com>, <sumang@marvell.com>,
+	<wulike1@huawei.com>, <zhoushuai28@huawei.com>
+Subject: Re: [PATCH net-next v04 1/1] hinic3: module initialization and tx/rx logic
+Date: Wed, 22 Jan 2025 09:07:52 +0200
+Message-ID: <20250122070752.3966233-1-gur.stavi@huawei.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <3bc8a815-96c3-46cd-ae87-b46b61648bca@intel.com>
+References: <3bc8a815-96c3-46cd-ae87-b46b61648bca@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,99 +47,183 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ frapeml500005.china.huawei.com (7.182.85.13)
 
-When NAPI mode is enabled, we try to free old transmited packets
-before sending a packet. This has several side effects:
+> > Auxiliary driver registration.
+> > Net device_ops registration but open/stop are empty stubs.
+> > tx/rx logic.
+>
+> Take care for spelling: Tx/Rx; HW (just below).
 
-- transmitted packets need to be freed before sending a packet, this
-  introduces delay and increases the average packets transmit time.
-- more time in hold the TX lock that causes more TX lock contention
-  with the TX NAPI
+Please elaborate. Spelling of what?
 
-This would be more noticeable when using a fast device like
-vhost-user/DPDK. So this patch tries to avoid those issues by not
-cleaning transmitted packets in start_xmit() when TX NAPI is
-enabled. Notification will be disabled at the beginning of the
-start_xmit() but we can't enable delayed notification after TX is
-stopped. Instead, the delayed notification needs to be enabled if we
-need to kick the virtqueue.
+>
+> >
+> > All major data structures of the driver are fully introduced with the
+> > code that uses them but without their initialization code that requires
+> > management interface with the hw.
+> >
+> > Submitted-by: Gur Stavi <gur.stavi@huawei.com>
+>
+> this tag is not needed
+>
+> > Signed-off-by: Gur Stavi <gur.stavi@huawei.com>
+>
+> your tag should be last
+>
+> > Signed-off-by: Xin Guo <guoxin09@huawei.com>
+>
+> no idea what Xin did, if you want to give credit to someone
+> you could use Co-developed-by: tag (put it just above the SoB)
+>
+> > Signed-off-by: gongfan <gongfan1@huawei.com>
+>
+> It would be much appricieated if you will spell the full name
+> for gongfan, at least two parts (like you did for the rest),
+> especially for someone you put into the MAINTAINERS file.
+> OTOH, please keep in mind that maintainer should be active
+> on the mailing list (regarding this driver).
+>
 
-Performance numbers:
+Ack
 
-1) pktgen_sample03_burst_single_flow.sh (burst 256) + testpmd (rxonly)
-   on the host:
+> > +
+> > +Global function ID
+> > +------------------
+> > +
+> > +Every function, PF or VF, has a unique ordinal identification within the device.
+> > +Many commands to management (mbox or cmdq) contain this ID so HW can apply the
+>
+> s/commands to management/management commands/
+>
 
-- When pinning TX IRQ to pktgen VCPU: split virtqueue PPS were
-  increased 62% from 6.45 Mpps to 10.5 Mpps; packed virtqueue PPS were
-  increased 60% from 7.8 Mpps to 12.5 Mpps.
-- When pinning TX IRQ to VCPU other than pktgen: split virtqueue PPS
-  were increased 25% from 6.15 Mpps to 7.7 Mpps; packed virtqueue PPS
-  were increased 50.6% from 8.3Mpps to 12.5 Mpps.
+Ack
 
-2) Netperf:
+> > +L:	netdev@vger.kernel.org
+> > +S:	Supported
+>
+> there is a (relatively new) requirement that the device needs to report
+> to the netdev CI to have an "S" here, so for now you should use "M"
+>
 
-- Netperf in guest + vhost-net/TAP on the host doesn't show obvious
-  differences.
+Ack
 
-Signed-off-by: Jason Wang <jasowang@redhat.com>
----
- drivers/net/virtio_net.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+> > +	# Fields of HW and management structures are little endian and are
+> > +	# currently not converted
+> > +	depends on !CPU_BIG_ENDIAN
+> > +	depends on X86 || ARM64 || COMPILE_TEST
+> > +	depends on PCI_MSI && 64BIT
+> > +	select AUXILIARY_BUS
+> > +	help
+> > +	  This driver supports HiNIC PCIE Ethernet cards.
+> > +	  To compile this driver as part of the kernel, choose Y here.
+> > +	  If unsure, choose N.
+> > +	  The default is N.
+>
+> the last 3 lines are very much obvious/redundant
+>
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 2f6c3dc68ba0..3d5c44546dc1 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3271,15 +3271,10 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	bool use_napi = sq->napi.weight;
- 	bool kick;
- 
--	/* Free up any pending old buffers before queueing new ones. */
--	do {
--		if (use_napi)
--			virtqueue_disable_cb(sq->vq);
--
-+	if (!use_napi)
- 		free_old_xmit(sq, txq, false);
--
--	} while (use_napi && !xmit_more &&
--	       unlikely(!virtqueue_enable_cb_delayed(sq->vq)));
-+	else
-+		virtqueue_disable_cb(sq->vq);
- 
- 	/* timestamp packet in software */
- 	skb_tx_timestamp(skb);
-@@ -3305,7 +3300,18 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
- 		nf_reset_ct(skb);
- 	}
- 
--	check_sq_full_and_disable(vi, dev, sq);
-+	if (tx_may_stop(vi, dev, sq) && !use_napi &&
-+	    unlikely(virtqueue_enable_cb_delayed(sq->vq))) {
-+		/* More just got used, free them then recheck. */
-+		free_old_xmit(sq, txq, false);
-+		if (sq->vq->num_free >= 2+MAX_SKB_FRAGS) {
-+			netif_start_subqueue(dev, qnum);
-+			u64_stats_update_begin(&sq->stats.syncp);
-+			u64_stats_inc(&sq->stats.wake);
-+			u64_stats_update_end(&sq->stats.syncp);
-+			virtqueue_disable_cb(sq->vq);
-+		}
-+	}
- 
- 	kick = use_napi ? __netdev_tx_sent_queue(txq, skb->len, xmit_more) :
- 			  !xmit_more || netif_xmit_stopped(txq);
-@@ -3317,6 +3323,9 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
- 		}
- 	}
- 
-+	if (use_napi && kick && unlikely(!virtqueue_enable_cb_delayed(sq->vq)))
-+		virtqueue_napi_schedule(&sq->napi, sq->vq);
-+
- 	return NETDEV_TX_OK;
- }
- 
--- 
-2.34.1
+Ack
 
+> > diff --git a/drivers/net/ethernet/huawei/hinic3/Makefile b/drivers/net/ethernet/huawei/hinic3/Makefile
+> > new file mode 100644
+> > index 000000000000..02656853f629
+> > --- /dev/null
+> > +++ b/drivers/net/ethernet/huawei/hinic3/Makefile
+> > @@ -0,0 +1,21 @@
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +# Copyright (c) Huawei Technologies Co., Ltd. 2024. All rights reserved.
+>
+> too late
+>
+
+Ack
+
+> > +
+> > +obj-$(CONFIG_HINIC3) += hinic3.o
+> > +
+> > +hinic3-objs := hinic3_hwdev.o \
+> > +	       hinic3_lld.o \
+> > +	       hinic3_common.o \
+> > +	       hinic3_hwif.o \
+> > +	       hinic3_hw_cfg.o \
+> > +	       hinic3_queue_common.o \
+> > +	       hinic3_mbox.o \
+> > +	       hinic3_hw_comm.o \
+> > +	       hinic3_wq.o \
+> > +	       hinic3_nic_io.o \
+> > +	       hinic3_nic_cfg.o \
+> > +	       hinic3_tx.o \
+> > +	       hinic3_rx.o \
+> > +	       hinic3_netdev_ops.o \
+> > +	       hinic3_rss.o \
+> > +	       hinic3_main.o
+>
+> in general, any list of random things could be sorted (to ease out git
+> merges in the future)
+>
+
+Ack
+
+> > +	(((u32)(hwdev)->cfg_mgmt->svc_cap.chip_svc_type) & BIT(HINIC3_SERVICE_T_NIC))
+> > +
+> > +bool hinic3_support_nic(struct hinic3_hwdev *hwdev)
+> > +{
+> > +	if (!IS_NIC_TYPE(hwdev))
+> > +		return false;
+> > +
+> > +	return true;
+>
+> this is just:
+> 	return IS_NIC_TYPE(hwdev);
+>
+
+Ack
+
+> > +static int comm_msg_to_mgmt_sync(struct hinic3_hwdev *hwdev, u16 cmd, const void *buf_in,
+> > +				 u32 in_size, void *buf_out, u32 *out_size)
+> > +{
+> > +	return hinic3_send_mbox_to_mgmt(hwdev, HINIC3_MOD_COMM, cmd, buf_in,
+> > +					in_size, buf_out, out_size, 0);
+> > +}
+> > +
+> > +int hinic3_func_reset(struct hinic3_hwdev *hwdev, u16 func_id, u64 reset_flag)
+> > +{
+> > +	struct comm_cmd_func_reset func_reset;
+>
+>   = {}
+>
+> > +	u32 out_size = sizeof(func_reset);
+> > +	int err;
+> > +
+> > +	memset(&func_reset, 0, sizeof(func_reset));
+>
+> with "= {}" above, memset() could be eliminated
+>
+> > +	func_reset.func_id = func_id;
+> > +	func_reset.reset_flag = reset_flag;
+>
+> alternative would be
+> 	struct comm_cmd_func_reset func_reset = {
+> 		.func_id = func_id,
+> 		.reset_flag = reset_flag,
+> 	};
+>
+
+Ack
+
+> > +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_intf.h
+> > @@ -0,0 +1,88 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +/* Copyright (c) Huawei Technologies Co., Ltd. 2024. All rights reserved. */
+> > +
+> > +#ifndef HINIC3_HW_INTF_H
+>
+> please add two underscores to the header guards
+>
+
+Ack
+
+> > +#define HINIC3_HW_INTF_H
