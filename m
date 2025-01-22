@@ -1,170 +1,127 @@
-Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4635F1B808
-	for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 18:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD08170A11
+	for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 18:12:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737568968; cv=none; b=Dvl9NFIIHB+/MnFlELzk3GZF2xtNUy5E7CNqSZmILr3Rte8w23Md/lKrRVGJcwvwf8jOkY3iEjoIUTjQH/FUBYnRhdFaFlTrexNjnMCORHDdc+Px067RpevfVoj3cbRew12vn7J28DDisxlmu1OMqO7I2Q+Rqpk7ctp7o1kgRJ4=
+	t=1737569560; cv=none; b=Txq4MWkCWUgWIVx4Q2jPjQue9OEhhWnI406OKPLa4CaUjFxxPsOF/EUwwDcQgs7qZGcaNH82vrCfoXlAcO9HzvdwVQ7iryhqo98oWQrd7K80/ZOu/K80mPIFHAN4gMU60OVT+4OE78Uzmo+ptI9PRAuYZpbl6g9FBHOBR673xKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737568968; c=relaxed/simple;
-	bh=rLyAXJgLL/2Ffqw6ML0Y4FFKAvNovEoRKkxltL34v6w=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=CKVeQQcx1RFcEqixTBKeWZjSt1BGg/cBo2XW319Pq07C95SxqB1zKbOWnWvQfRvoRuTkFi0ktLTYA69/H54bk3EgvbbM6AuEPhmxrWR8ENrcM2UTwJ6rzrbMH0JAjIwTscsp/qvTd9BruVeUVat5tk/zaZ/efGeh+I5cQzim85Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lYwnJmo4; arc=none smtp.client-ip=209.85.160.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1737569560; c=relaxed/simple;
+	bh=cQXnSSLwRoU6BvSddDKTmQP1VV4hsu/ppMC0RUGck8M=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NRmSAq4LvWJQ/ZgHYgEHxmrymBH4tOvQwLxxcV3nVI1su1lvjibCA28nf9X5UBEOgb6J2NYePF9FIIWD6khRR+H6yLoAmn3QUsJ59XMut6wqeCkmOkHCWxAONYPKZVbcg0ypFMynNh6GSlwxkoVOMtdx6ZiyshwpDLugNF5UFN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=Bj3SXpgp; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lYwnJmo4"
-Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-468f6f2f57aso574821cf.0
-        for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 10:02:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737568966; x=1738173766; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5KnI9jxAXcR7oywRwA8+76jlpqhg+RydA6gAwJrgLIk=;
-        b=lYwnJmo4eI2bbyiSI1u/xJaSe2X1Go+ODIGwJxLnIRriPxtHSVq5b7qiN+BNyCdsBu
-         9+JN0dq59YlsHsZp3XyM+YtUKpb04rw55Ra2OJpkhCo27yfCxFl/k+O372zbl5lQAccM
-         6z3aVWReFL4OgnlVQGv3O/FhmBDvjT3iro+VJjJIKQo8PLFRY5FzeMWRM+39ahKxnpJQ
-         KhWXKmxjk2jmpMcGOEhV5vo+U+vuw0ezqtftBBrAvOoVZ1IZIdY8e5S8jAMGmg7WRRhE
-         OuVTwGFAvfU7f75W3SRDSLyBb7GFDziZ9mbnD5JJJjBQFTtmekCkFbvT1G3IDTg8d+sF
-         soJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737568966; x=1738173766;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5KnI9jxAXcR7oywRwA8+76jlpqhg+RydA6gAwJrgLIk=;
-        b=KTOk7a1ZY1bEfUW+K7xQYPw5v/eycVVVEFLXJcUZL7XI61O+qdUFz2f63Ug4CosHeq
-         yx197iorb564Wo6wF1anEAEL35Gx2et04j9rLR0w5G/FEFIwKOI8fCkpd+b0dmHobrw6
-         KUgQ+6kvatla6R4uGmN2XY6wYIaaHOKiyV90Wb4BlG0l0XUH9ZErRy9bF3NlB8AIq6+M
-         tQlT4gvIFy0WDgYp1LdvSU6c1tZxRxK9uMlvnpwU+Cy2ABZBIu++U/a8skwATrEC/COb
-         hKfeIRZklypEu39xnjSW2bTtH5F9qj4O/1PjIJjbstVhsC3doFd1WatekQZe+McDkwi2
-         8g2A==
-X-Gm-Message-State: AOJu0YwLbYFWGiZI+EkGyh3ddNUhXRALGNcU5WfoUAvd0xmvvZF5JVUp
-	jmmtC/DaueCXBzQOq/6vChwFBEtovCc6+j4lMAx+JzfGmhMq9nEauUnebWrP8il5F3PBt2i6a14
-	tvJWrnxeHvg==
-X-Google-Smtp-Source: AGHT+IF6dKcQlqg2xiUsUHwOzLzUrL6rHfDAPURD12rdPq+w2hhqUJ043iIhFDIekNSuTETP02P8lEgoxc9auw==
-X-Received: from qtqf22.prod.google.com ([2002:ac8:4996:0:b0:467:8f83:cafe])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:1b92:b0:45d:9357:1cca with SMTP id d75a77b69052e-46e12a554a6mr369943781cf.14.1737568966114;
- Wed, 22 Jan 2025 10:02:46 -0800 (PST)
-Date: Wed, 22 Jan 2025 18:02:44 +0000
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="Bj3SXpgp"
+Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50MI0ExI028601
+	for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 10:12:37 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2021-q4;
+	 bh=yqFW9ZhJ1B4oRjXbf71eCXT7/vw7OOexYESWNK1x/Nk=; b=Bj3SXpgpHa/X
+	bE4CIzjrxzSqEIE0XUqU/XRX6lnCp4XxiOpISFyYj8OZye1UupaWQUM6hAAEIKHI
+	HMugOqL79ryA0RyJ0yYEfBZQPoRATTadx5LtlAb/viKmzxO6RYitK1il5TKlQJml
+	WWioairUL/xG3thwI60UL4iERiGym75MN8oV7tBjTSbjZHVZWF/Yt3M+EKJBgQ6E
+	fdLUQMZ4xMXBAIAkqXBMNgH9LCtFQ6MWy6rHksshO5fgQZV6Iw+ergTu1LVirr5N
+	ptYTgCmlcsw/4S4CdcdNtoc9EMyBXHMsL5t9FfYMHshrAAhvhxJuRyyHF8+wWdjI
+	Euc2ZUk62A==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 44b4harp8a-5
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 10:12:36 -0800 (PST)
+Received: from twshared24170.03.ash8.facebook.com (2620:10d:c0a8:1c::1b) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.1544.14; Wed, 22 Jan 2025 18:12:10 +0000
+Received: by devbig072.ftw6.facebook.com (Postfix, from userid 678122)
+	id 499BE1204305; Wed, 22 Jan 2025 10:12:03 -0800 (PST)
+From: Michael Edwards <mkedwards@meta.com>
+To: <netdev@vger.kernel.org>, <mkubecek@suse.cz>
+CC: Michael Edwards <mkedwards@meta.com>
+Subject: [PATCH] ethtool: Fix JSON output for IRQ coalescing
+Date: Wed, 22 Jan 2025 09:40:15 -0800
+Message-ID: <20250122181153.2563289-1-mkedwards@meta.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250121181732.4f74b6a6@kernel.org>
+References: <20250121181732.4f74b6a6@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.48.1.262.g85cc9f2d1e-goog
-Message-ID: <20250122180244.1861468-1-edumazet@google.com>
-Subject: [PATCH net] net: rose: fix timer races against user threads
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, Simon Horman <horms@kernel.org>, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot <syzkaller@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-FB-Internal: Safe
+Content-Type: text/plain
+X-Proofpoint-GUID: zucXTIyZEUWD-XPDkp17CfSoo8kaVMrs
+X-Proofpoint-ORIG-GUID: zucXTIyZEUWD-XPDkp17CfSoo8kaVMrs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-22_08,2025-01-22_02,2024-11-22_01
 
-Rose timers only acquire the socket spinlock, without
-checking if the socket is owned by one user thread.
+Currently, for a NIC that supports CQE mode settings, the output of
+ethtool --json -c eth0 looks like this:
 
-Add a check and rearm the timers if needed.
+[ {
+        "ifname": "eth0",
+        "rx": false,
+        "tx": false,
+        "rx-usecs": 33,
+        "rx-frames": 88,
+        "tx-usecs": 158,
+        "tx-frames": 128,
+        "rx": true,
+        "tx": false
+    } ]
 
-BUG: KASAN: slab-use-after-free in rose_timer_expiry+0x31d/0x360 net/rose/rose_timer.c:174
-Read of size 2 at addr ffff88802f09b82a by task swapper/0/0
+This diff will change the first rx/tx pair to adaptive-{rx|tx} and
+the second pair to cqe-mode-{rx|tx} to match the keys used to set
+the corresponding settings.
 
-CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.13.0-rc5-syzkaller-00172-gd1bf27c4e176 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Call Trace:
- <IRQ>
-  __dump_stack lib/dump_stack.c:94 [inline]
-  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
-  print_address_description mm/kasan/report.c:378 [inline]
-  print_report+0x169/0x550 mm/kasan/report.c:489
-  kasan_report+0x143/0x180 mm/kasan/report.c:602
-  rose_timer_expiry+0x31d/0x360 net/rose/rose_timer.c:174
-  call_timer_fn+0x187/0x650 kernel/time/timer.c:1793
-  expire_timers kernel/time/timer.c:1844 [inline]
-  __run_timers kernel/time/timer.c:2418 [inline]
-  __run_timer_base+0x66a/0x8e0 kernel/time/timer.c:2430
-  run_timer_base kernel/time/timer.c:2439 [inline]
-  run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2449
-  handle_softirqs+0x2d4/0x9b0 kernel/softirq.c:561
-  __do_softirq kernel/softirq.c:595 [inline]
-  invoke_softirq kernel/softirq.c:435 [inline]
-  __irq_exit_rcu+0xf7/0x220 kernel/softirq.c:662
-  irq_exit_rcu+0x9/0x30 kernel/softirq.c:678
-  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
-  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1049
- </IRQ>
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Fixes: 7e5c1ddbe67d ("pause: add --json support")
+Fixes: ecfb7302cfe6 ("netlink: settings: add netlink support for coalesce=
+ cqe mode parameter")
+Signed-off-by: Michael Edwards <mkedwards@meta.com>
 ---
- net/rose/rose_timer.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ netlink/coalesce.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/rose/rose_timer.c b/net/rose/rose_timer.c
-index f06ddbed3fed6396b4ea510a29bb9f8025cfb35..1525773e94aa175dd2b73b27314259da0f1dc23 100644
---- a/net/rose/rose_timer.c
-+++ b/net/rose/rose_timer.c
-@@ -122,6 +122,10 @@ static void rose_heartbeat_expiry(struct timer_list *t)
- 	struct rose_sock *rose = rose_sk(sk);
- 
- 	bh_lock_sock(sk);
-+	if (sock_owned_by_user(sk)) {
-+		sk_reset_timer(sk, &sk->sk_timer, jiffies + HZ/20);
-+		goto out;
-+	}
- 	switch (rose->state) {
- 	case ROSE_STATE_0:
- 		/* Magic here: If we listen() and a new link dies before it
-@@ -152,6 +156,7 @@ static void rose_heartbeat_expiry(struct timer_list *t)
- 	}
- 
- 	rose_start_heartbeat(sk);
-+out:
- 	bh_unlock_sock(sk);
- 	sock_put(sk);
- }
-@@ -162,6 +167,10 @@ static void rose_timer_expiry(struct timer_list *t)
- 	struct sock *sk = &rose->sock;
- 
- 	bh_lock_sock(sk);
-+	if (sock_owned_by_user(sk)) {
-+		sk_reset_timer(sk, &rose->timer, jiffies + HZ/20);
-+		goto out;
-+	}
- 	switch (rose->state) {
- 	case ROSE_STATE_1:	/* T1 */
- 	case ROSE_STATE_4:	/* T2 */
-@@ -182,6 +191,7 @@ static void rose_timer_expiry(struct timer_list *t)
- 		}
- 		break;
- 	}
-+out:
- 	bh_unlock_sock(sk);
- 	sock_put(sk);
- }
-@@ -192,6 +202,10 @@ static void rose_idletimer_expiry(struct timer_list *t)
- 	struct sock *sk = &rose->sock;
- 
- 	bh_lock_sock(sk);
-+	if (sock_owned_by_user(sk)) {
-+		sk_reset_timer(sk, &rose->idletimer, jiffies + HZ/20);
-+		goto out;
-+	}
- 	rose_clear_queues(sk);
- 
- 	rose_write_internal(sk, ROSE_CLEAR_REQUEST);
-@@ -207,6 +221,7 @@ static void rose_idletimer_expiry(struct timer_list *t)
- 		sk->sk_state_change(sk);
- 		sock_set_flag(sk, SOCK_DEAD);
- 	}
-+out:
- 	bh_unlock_sock(sk);
- 	sock_put(sk);
- }
--- 
-2.48.1.262.g85cc9f2d1e-goog
+diff --git a/netlink/coalesce.c b/netlink/coalesce.c
+index bb93f9b224d6..bc8b57b6d412 100644
+--- a/netlink/coalesce.c
++++ b/netlink/coalesce.c
+@@ -39,9 +39,9 @@ int coalesce_reply_cb(const struct nlmsghdr *nlhdr, voi=
+d *data)
+ 		show_cr();
+ 	print_string(PRINT_ANY, "ifname", "Coalesce parameters for %s:\n",
+ 		     nlctx->devname);
+-	show_bool("rx", "Adaptive RX: %s  ",
++	show_bool("adaptive-rx", "Adaptive RX: %s  ",
+ 		  tb[ETHTOOL_A_COALESCE_USE_ADAPTIVE_RX]);
+-	show_bool("tx", "TX: %s\n", tb[ETHTOOL_A_COALESCE_USE_ADAPTIVE_TX]);
++	show_bool("adaptive-tx", "TX: %s\n", tb[ETHTOOL_A_COALESCE_USE_ADAPTIVE=
+_TX]);
+ 	show_u32("stats-block-usecs", "stats-block-usecs:\t",
+ 		 tb[ETHTOOL_A_COALESCE_STATS_BLOCK_USECS]);
+ 	show_u32("sample-interval", "sample-interval:\t",
+@@ -85,9 +85,9 @@ int coalesce_reply_cb(const struct nlmsghdr *nlhdr, voi=
+d *data)
+ 	show_u32("tx-frame-high", "tx-frame-high:\t",
+ 		 tb[ETHTOOL_A_COALESCE_TX_MAX_FRAMES_HIGH]);
+ 	show_cr();
+-	show_bool("rx", "CQE mode RX: %s  ",
++	show_bool("cqe-mode-rx", "CQE mode RX: %s  ",
+ 		  tb[ETHTOOL_A_COALESCE_USE_CQE_MODE_RX]);
+-	show_bool("tx", "TX: %s\n", tb[ETHTOOL_A_COALESCE_USE_CQE_MODE_TX]);
++	show_bool("cqe-mode-tx", "TX: %s\n", tb[ETHTOOL_A_COALESCE_USE_CQE_MODE=
+_TX]);
+ 	show_cr();
+ 	show_u32("tx-aggr-max-bytes", "tx-aggr-max-bytes:\t",
+ 		 tb[ETHTOOL_A_COALESCE_TX_AGGR_MAX_BYTES]);
+--=20
+2.43.5
 
