@@ -1,45 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098FD15B546
-	for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 06:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6148D170826
+	for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 06:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737526589; cv=none; b=GFj4NEd4gs4/TaUwZP9AyyVWPdoFiMunf6gvaxJjF+/yLKdKvS44hdXKf0FoJ/Oe31+Oj+fc+MMo6rC72DEK+C1Cl9/7PtOXwuMZqTvG9P+GDk4s6jkweP5zzdqtC1jS19Q19n5GtSRw3jtJlMAUFKr3+LGeANztKrFbUiLCTIE=
+	t=1737526596; cv=none; b=XT+2jHfFS8YDD5pvFaZKU1/x+j+y6nrF9VDKymGn+F8iHJRT+DqqiFjAAb1TvvC2UayF+vhkd2uhphiR9WNQh4X2OwynZjHdpF9YR39fg2RYIaLwYQAjTBSgA/KULiIUPLnyBjXXqQjCJ7U3Drac37U6sIAzKdEomdjlop1n9k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737526589; c=relaxed/simple;
-	bh=5uxtqZMfHCev+JG6XrIgLTHL5fLil3E67cwwPRm0LA0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mjHeTWnvfReYd8Xuj+McSBTobS8h2+LUUVZIDokBd8igzTO0RhUEISxDd9oPbOmf1p2xAOhEuiy7eNlp53NE+mJX5b7G0VVMlZ6I2kNLpzWWrp+GYWazCW61QFVH4kMlZPtJGMli8vpu1IVJ6MpdbSsMaWC22CpKmZJTAm/PvQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ai9mafA3; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1737526596; c=relaxed/simple;
+	bh=MT2Dh3Y6UWz7kMEHCO0eCOmGA36V0EnMYj/v3RzV2OY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=p29G7gJVcKD6RN/tqBIWWoghnnAbE1APipnVP25uKXl5tqZqAol6S506XxlmJaslaavep1x+E/S8zuWZd4vLs4nTcl2ppEy1niUYvAc6W/m/vm9AcSewbedFi+WqLOYlnTGue/rXQopC9K5Pv0EztVIfCcCXSB3Wdd6Lz9Dodpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DbAHYE32; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ai9mafA3"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DbAHYE32"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737526586;
+	s=mimecast20190719; t=1737526594;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=hr9kjAOl5Zo07A2Y7Yx2gYOn95HiryxvxLZNJycD00I=;
-	b=Ai9mafA3r4XvszfxJVpmckvzA1routdekyO3ylF1KXsE7qamYHDGBHdjibKohfOOQLycCq
-	vtP62lzhMwUvmeONO1jbb8yJq7CBqgxKpvEvDU51Jowq1ecbROnAfBEillZDhMxO45Qlqf
-	+4kbvVXXCJpu7YMwuKThDSxizHdXe9g=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LUcQNxydkL92jLreS5YjwBGir+KoqMaS0EjOwxHRgcA=;
+	b=DbAHYE32BXqIAiQ8iePlz/F0DZ1OuVlY7FU78JQMBFmIvsN/naG6Qd8Ann2MrOWy7WvrCH
+	DvDx9gzoMWsWZ0kMB22UY71e+dZlPVrZvS1qxOFQRBlmrzsAeppUtZGjBc5VU1YXiI4GcG
+	gxKhHey2E0jVll6W9+5nFPYAIQMT+jA=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-0wK6emrzNx-ouvt_v_isJQ-1; Wed,
- 22 Jan 2025 01:16:21 -0500
-X-MC-Unique: 0wK6emrzNx-ouvt_v_isJQ-1
-X-Mimecast-MFC-AGG-ID: 0wK6emrzNx-ouvt_v_isJQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-aAtdN_yZO8On6VXg3OtIrg-1; Wed,
+ 22 Jan 2025 01:16:30 -0500
+X-MC-Unique: aAtdN_yZO8On6VXg3OtIrg-1
+X-Mimecast-MFC-AGG-ID: aAtdN_yZO8On6VXg3OtIrg
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 69BCA19560B8;
-	Wed, 22 Jan 2025 06:16:19 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B27AB19560B7;
+	Wed, 22 Jan 2025 06:16:28 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.209])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8FAC3195608A;
-	Wed, 22 Jan 2025 06:16:03 +0000 (UTC)
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 826CE19560AB;
+	Wed, 22 Jan 2025 06:16:19 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: mst@redhat.com,
 	jasowang@redhat.com,
@@ -53,9 +55,11 @@ Cc: andrew+netdev@lunn.ch,
 	virtualization@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next RFC 0/2] don't clean packets in start_xmit in TX NAPI mode
-Date: Wed, 22 Jan 2025 14:15:58 +0800
-Message-ID: <20250122061600.16781-1-jasowang@redhat.com>
+Subject: [PATCH net-next RFC 1/2] virtio-net: factor out logic for stopping TX
+Date: Wed, 22 Jan 2025 14:15:59 +0800
+Message-ID: <20250122061600.16781-2-jasowang@redhat.com>
+In-Reply-To: <20250122061600.16781-1-jasowang@redhat.com>
+References: <20250122061600.16781-1-jasowang@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,23 +69,59 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-Hi all:
+This patch factors out the logic of checking and stopping TX into a
+dedicated helper. This will be used by following patch.
 
-This is an RFC to try to speed up TX by avoid cleaning transmitted
-packets in start_xmit() when TX NAPI mode is enabled. This increase
-25%-62% PPS depending on the setups while keeping the TCP throughput.
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+---
+ drivers/net/virtio_net.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-More numbers could be seen in patch 2.
-
-Thanks
-
-Jason Wang (2):
-  virtio-net: factor out logic for stopping TX
-  virtio-net: free old xmit skbs only in NAPI
-
- drivers/net/virtio_net.c | 53 ++++++++++++++++++++++++++++++----------
- 1 file changed, 40 insertions(+), 13 deletions(-)
-
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 7646ddd9bef7..2f6c3dc68ba0 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -1088,11 +1088,10 @@ static bool is_xdp_raw_buffer_queue(struct virtnet_info *vi, int q)
+ 		return false;
+ }
+ 
+-static void check_sq_full_and_disable(struct virtnet_info *vi,
+-				      struct net_device *dev,
+-				      struct send_queue *sq)
++static bool tx_may_stop(struct virtnet_info *vi,
++			struct net_device *dev,
++			struct send_queue *sq)
+ {
+-	bool use_napi = sq->napi.weight;
+ 	int qnum;
+ 
+ 	qnum = sq - vi->sq;
+@@ -1114,6 +1113,25 @@ static void check_sq_full_and_disable(struct virtnet_info *vi,
+ 		u64_stats_update_begin(&sq->stats.syncp);
+ 		u64_stats_inc(&sq->stats.stop);
+ 		u64_stats_update_end(&sq->stats.syncp);
++
++		return true;
++	}
++
++	return false;
++}
++
++static void check_sq_full_and_disable(struct virtnet_info *vi,
++				      struct net_device *dev,
++				      struct send_queue *sq)
++{
++	bool use_napi = sq->napi.weight;
++	int qnum;
++
++	qnum = sq - vi->sq;
++
++	if (tx_may_stop(vi, dev, sq)) {
++		struct netdev_queue *txq = netdev_get_tx_queue(dev, qnum);
++
+ 		if (use_napi) {
+ 			if (unlikely(!virtqueue_enable_cb_delayed(sq->vq)))
+ 				virtqueue_napi_schedule(&sq->napi, sq->vq);
 -- 
 2.34.1
 
