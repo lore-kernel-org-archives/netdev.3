@@ -1,128 +1,91 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A999020FA8A;
-	Wed, 22 Jan 2025 10:05:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD6216BE3A;
+	Wed, 22 Jan 2025 10:11:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737540315; cv=none; b=DgHC8WdomHragYrbhXkMfqasWONDoXiZv1bdGoUC5TxLO94ugeXvCdEck0dvWza/BWAzxLyp6WR9BA8lG6XVV/HkSoC4pNJe0iGTghBgEVJog0Gt3Hc82j7+ZcFfFrsXArVH0hfpkGOu+O0u3nIye9aZy6h8+9cpPiQ8N7zycGk=
+	t=1737540669; cv=none; b=ikdHOe6hTPxtB+CpGiug+AWFEJI31jGmKmDB9nxL68rJFZ77JMF1Fw6y872GciyzHzRhhSvzQt6dgVfWTWBcLE0Eix0seIN8caj0mP1h8ssQ4+sEruBLaPgqHsWEgg3mhEPw83gOf6DTxaL87W7pPkCRruHhVPqOsY0H9YLMBkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737540315; c=relaxed/simple;
-	bh=1/GuKaxEhwOAKgFiGB5TJk1TBjQaQ1frM+7ZuBKqiW0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=mkhEZgwUlFTdv+DBoiVxYyC5RVHhp0SaT7wbwp0xoVbNhgcLR5gaX6if2DyoRYWGAMzStTgPUCYXntLB0V2zmt3+DlgWQsKvMTntkvpYbKI3JUYE8bRMbyLhH0CI3lVju1exzg8pLugnFsJkAEmtdHTLnK7PGOhWbjDRlqQW9XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NnMwcwut; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1737540669; c=relaxed/simple;
+	bh=D9w/pMsns+WhsexWHwjgDMkbkMbWFRLCfpie+u/t+Sw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QJkMP/Lweh8JtGWsv0xrWuCARUUXUUIyPRtWw1p0yHJF1/resQJvqKAxXMbtfmiMMhccfnxmjIZsDOemqMdJ+rvCxvaa4f+oqaWduw2MeY//TX0mnHSqtG1Z+rvAn4EnHLAXf3PxSWtwKVE/xS2DL2pNGrVVvCVXwNOyWeAPnA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q7K9KGlh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NnMwcwut"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50M9Qml5030077;
-	Wed, 22 Jan 2025 10:04:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	zFmj7zj/Lq0aydtI5Gp746tMc3UoW0yD2aMedlR5Jng=; b=NnMwcwutVfIdifgQ
-	drCmbTCZm+mM+1nGU24aAw7TJAb6OO1fJolXxfqq9cty5jAvoyergGx/DxRCM5Ek
-	acY2oBAyGlpkpBInkkvbnddd8s+DxlUEPiZZmLFnfjuCEhmaHPVMDKreyaHolD2L
-	gyKLFnNqdebpDl/kMrUIV1TZmIAkmq83Jxui5HU7askqXE72Zi3Y5iXpInyvo27A
-	OkMW45ydqMlkdWidY+NxHKV8r7BNO8zwWpaohWqEoCkHFEWSh3sbQTVtLmseWmup
-	smWWiVwUhJ1Vlsao1rOaiTvsmrFZGQvtimrpGK9/0kqnUOBROsHxxLIVosMUkzTm
-	yxrNAA==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44ax1yr38p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Jan 2025 10:04:47 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50MA4lCa010810
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Jan 2025 10:04:47 GMT
-Received: from [10.253.35.93] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 22 Jan
- 2025 02:04:40 -0800
-Message-ID: <23a9f6cf-3921-48c1-9c28-aeede639cf40@quicinc.com>
-Date: Wed, 22 Jan 2025 18:04:38 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q7K9KGlh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EACC4CED6;
+	Wed, 22 Jan 2025 10:11:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737540668;
+	bh=D9w/pMsns+WhsexWHwjgDMkbkMbWFRLCfpie+u/t+Sw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q7K9KGlhCcJDR+t52l4yjftsVH5j1vTfOmHKyudlc2hogYUPMChwsbUwjxpJeq6ff
+	 fL2hUYMRG9Ztwf2KB2TUexzF8knuLjOzme9vWOpkmvXZcZzVlF9sCXCX2J11KEw6Ok
+	 scFjXRspfHsoylw0tDKsqnPBI+WQ3OwC8yhKW5jIWYqRUPyqjlpJs/pjFMG8bQrFPL
+	 nTnL8wGf2gUMc514aTCFQlnyRtE5N9kYkyivuH3/4ZQxa0Is95XxMoI5Hj/tKlXfME
+	 QgbCTIUOAmI4QYYESH4d6qM9mEfNxy9d5doq+OhKU742vmlc3MREi23zLN/M4DtMYz
+	 ewCvUPGmDlqhw==
+Date: Wed, 22 Jan 2025 10:11:03 +0000
+From: Simon Horman <horms@kernel.org>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Christophe Ricard <christophe.ricard@gmail.com>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] NFC: nci: Add bounds checking in nci_hci_create_pipe()
+Message-ID: <20250122101103.GD385045@kernel.org>
+References: <bcf5453b-7204-4297-9c20-4d8c7dacf586@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/4] net: stmmac: dwmac-qcom-ethqos: Mask PHY mode if
- configured with rgmii-id
-To: Andrew Lunn <andrew@lunn.ch>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio
-	<konradybcio@kernel.org>,
-        Richard Cochran <richardcochran@gmail.com>, <netdev@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20250121-dts_qcs615-v3-0-fa4496950d8a@quicinc.com>
- <20250121-dts_qcs615-v3-2-fa4496950d8a@quicinc.com>
- <bf45ec15-d430-499a-ba30-825611369402@lunn.ch>
-Content-Language: en-US
-From: Yijie Yang <quic_yijiyang@quicinc.com>
-In-Reply-To: <bf45ec15-d430-499a-ba30-825611369402@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: tYKueVtLj5-_nOleRcVBv1tEtZKa-_lh
-X-Proofpoint-GUID: tYKueVtLj5-_nOleRcVBv1tEtZKa-_lh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-22_04,2025-01-22_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 malwarescore=0 adultscore=0 mlxlogscore=951 clxscore=1015
- lowpriorityscore=0 spamscore=0 mlxscore=0 suspectscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501220073
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bcf5453b-7204-4297-9c20-4d8c7dacf586@stanley.mountain>
 
-
-
-On 2025-01-22 01:10, Andrew Lunn wrote:
->> To address the ABI compatibility issue between the kernel and DTS caused by
->> this change, handle the compatible string 'qcom,qcs404-evb-4000' in the
->> code, as it is the only legacy board that mistakenly uses the 'rgmii'
->> phy-mode.
+On Fri, Jan 17, 2025 at 12:38:41PM +0300, Dan Carpenter wrote:
+> The "pipe" variable is a u8 which comes from the network.  If it's more
+> than 127, then it results in memory corruption in the caller,
+> nci_hci_connect_gate().
 > 
-> Are you saying every other board DT got this correct? How do you know
-> that? Was this SoC never shipped to anybody, so the only possible
-> board is the QCOM RDK which never left the lab?
+> Cc: stable@vger.kernel.org
+> Fixes: a1b0b9415817 ("NFC: nci: Create pipe on specific gate in nci_hci_connect_gate")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+
+Hi Dan,
+
+Based on your analysis, which I agree with, this looks good.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+
+But this is a limited review, as I am not sufficiently familiar with NFC
+to go by much more than your analysis. A review by Krzysztof would be great.
+
+> ---
+>  net/nfc/nci/hci.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> I doubt this is true, so you are probably breaking out of tree
-> boards. We care less about out of tree boards, but we also don't
-> needlessly break them.
+> diff --git a/net/nfc/nci/hci.c b/net/nfc/nci/hci.c
+> index de175318a3a0..082ab66f120b 100644
+> --- a/net/nfc/nci/hci.c
+> +++ b/net/nfc/nci/hci.c
+> @@ -542,6 +542,8 @@ static u8 nci_hci_create_pipe(struct nci_dev *ndev, u8 dest_host,
+>  
+>  	pr_debug("pipe created=%d\n", pipe);
+>  
+> +	if (pipe >= NCI_HCI_MAX_PIPES)
+> +		pipe = NCI_HCI_INVALID_PIPE;
 
-You're right. My conclusion was based solely on browsing all RGMII-type 
-Qualcomm boards under the source tree, and I didn't take the scenario 
-you mentioned into account. I will work on coming up with a new 
-solution. If you have any suggestions, I will gladly take them as a 
-reference.
+Ceci n'est pas une pipe [1]
 
-> 
-> 	Andrew
+>  	return pipe;
+>  }
 
--- 
-Best Regards,
-Yijie
-
+[1] https://en.wikipedia.org/wiki/The_Treachery_of_Images
