@@ -1,124 +1,90 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537E74EB38;
-	Wed, 22 Jan 2025 08:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852D71F7569;
+	Wed, 22 Jan 2025 08:58:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737536274; cv=none; b=Lrf6ZDrTyVjaBR3RsIULOMC6uMGiRa4BGVZ3CBbcbNqd17pQAvOO6Idtclzx7BXQLp0HcHSGfL6+e91urwTqt2A5JdJQPt956rPiSq4LPvXDbTSJ3KKmrO3O55GS6efoTKS0I8R22Ws7naogsLp7oB7kzlGCfajhzRPbgeIUTtU=
+	t=1737536312; cv=none; b=Tg+WcoW1U8hpwlGJUcqFMxzYlg1R2avqZcW/xBHOZu8s6VVqzvqFS0Wkr3F+yi54iS5LoKrs7J6sA+6jM8jywCJ3Ea+ZTHsu4LF41MJyEFmDuGqGdQjn1u+gzaspgNsstYLchwkCytMTyL5EtT1TGUtxinxkUR5c6spaxGXz/6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737536274; c=relaxed/simple;
-	bh=sU298wtMU+gMgPfWkGzp++POQ1xOAgiZrBAXE8FB4LM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FLPGsxf9Hr0VdE+4jPjNo1rjA5NRSPqpiHv8D7v3AJIBOvr749DCkz9/Z7p9seR/32gFs0/rBUWGOSwlkPMd0WxRAgNaEbSW8V6Vdae82Y3oBPmpQ4zPSuzDOs+gdlR8+lkEsPW3U4b31g1mO1LbGNFZ5QT+DrMSfhsYuiF9ESo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B/trVRql; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737536312; c=relaxed/simple;
+	bh=siYRE1nFcu9/Tpmus2K/lGpGkfvZ4aZvpuRcNTB8f5k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=npRitBn8cg1iRrmYtUpDlSC0lHc7l2RKtG2scPrWtjSDMJp6K7pSFcWbdZLaM8nk27qhweTNVjYXaFcGSx87M+tzO21Jh5Z7cnkvawhTsutuaDdZuPR5WS3rQbw1d8gaWhqRP7DcH5CttrXOba8UXqK9PWCWlHbtyu2zqknUwOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=FKkCOGRs; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B/trVRql"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ef6ee55225so1363133a91.0;
-        Wed, 22 Jan 2025 00:57:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737536272; x=1738141072; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o+4rWF4CG+aBfHBC/5V8BT3aj9TO/uoTwJ8l9BOGJeM=;
-        b=B/trVRqlu3PV7QW8hT8F/szFSxqr2m7tnclTsgwxpB4823EAEKaXFpek/FXWriJ9JV
-         XuNtG+AE1MULW4aUBT5zFJ91hl0lm/xv6VOfT4gyEKwHrbArbj6/x4uqDrLmPyFjcS5R
-         GkTr2Ia4go+TlBy9dtmwHRZm3W4G9eAIPnqmZEeSOV5Ee2Y4WMXsopePAkgzaymIXcLH
-         QVBwOAFbHVrMGUxRP4FcNCR512ZDiV2hRPnTr/Rnhh5DraubbIMpwH/oUGc5ssbMdZvE
-         dcD82nrMfWT4unAfxDIJLU9tjOTAYMyk/knIt/NLy2Pa2GgOFcANp1rQixrQnkd/fACY
-         4dpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737536272; x=1738141072;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o+4rWF4CG+aBfHBC/5V8BT3aj9TO/uoTwJ8l9BOGJeM=;
-        b=YtawMkn5/CipssGTr3k5r3B/6rpWjBREQRwsjaI0qhBM9xQK15rw1Qey4+2OJ+jVZB
-         L3sG/DriHKnJMHsX85ahrRBLDwyLo1iy1npr0t8YiVDQBylET+zxx0nMyDlu94i5fcID
-         2pCHaoPSXHr0GODCp4oKum39qlKWHMDPwXsy/N6tca19efNTBvYdNKKFUpRnRB6xgP1H
-         Zq/vzyGe1JwmDXT9CcAKSH8KtUSFvUpg8mPicMwJHw1LCLneuPKJDijpFB8rgfZVIIxU
-         Oxa6T7kxkga8+ZCYhEetsDF4SdzoIXqmu2r9WAoU17A2bTTA/04CvIb8AWmcCsRZd7XQ
-         CeLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcbTalkk8kOWUwaFRrg+ZL9ZNLcILHW/TR7eMgauRNH6XVAHR76dQcxyKlH0HurSlrkO81OwAO3aHbIAgYjfk=@vger.kernel.org, AJvYcCWDQbo8D71w/oC+ysEsgkZGULATRx8so9yxi/hgUkEyrqEBVtau9jljDPXclkCzjm71iS0Kp+c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhZ9x1bqSrImzcDW/+L7UbOEgFQ92V1Fncbr3lEI5NS8/7cQjV
-	uhx9PdtINmzWOza/yMmFRauyzHI6vv43a62ujTEXIzkrg89zFu+BdT0HIt/50yrFggmVV84cF73
-	PAe810PPNC/9DzoRjPjHDqgXkzNI=
-X-Gm-Gg: ASbGncu+sgQLhKoj9OrT3nNM/9akHWfWtdJBhlfIKH+HNRIbsgg5qcFo6gNpcKKt9qw
-	DznrWWBg3COrcRCqWPInXBnp2Ct5OIhjGVmXpb7Huo6vQ7nzGY+o=
-X-Google-Smtp-Source: AGHT+IET9r8JSmss5wncs58ue1ECkJgLujCKETsp3piHO3mpOMSewKO+YqHU7WDcXQ4s/4pzCBVFG86fXm1njs0O9E8=
-X-Received: by 2002:a17:90b:5387:b0:2ee:f59a:94d3 with SMTP id
- 98e67ed59e1d1-2f7e3e0fcf1mr1749187a91.0.1737536272516; Wed, 22 Jan 2025
- 00:57:52 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="FKkCOGRs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=fdH99S8aSABLTDlS78RW75OrnD7RF2jsBZ3DmY1uhSo=;
+	b=FKkCOGRs601uN/TOJ1AlyVi3CR2MM295h5qC83D1Sto6LVKghpUW8kVg91xZFH
+	nDRlWK+DrpitF05vRUygyceYoTsLiShNX5C6z5JNzR5UBhwWgGf1sBX1N7UqzV1v
+	kz0GJXF09Q9dQ9T6IM4nZeiOTC0ouaqFzT4PjQXbVTR6M=
+Received: from iZ0xi1olgj2q723wq4k6skZ (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD314ZmspBnkxRVHw--.35771S2;
+	Wed, 22 Jan 2025 16:55:12 +0800 (CST)
+Date: Wed, 22 Jan 2025 16:55:01 +0800
+From: Jiayuan Chen <mrpre@163.com>
+To: Jakub Sitnicki <jakub@cloudflare.com>
+Cc: bpf@vger.kernel.org, john.fastabend@gmail.com, netdev@vger.kernel.org, 
+	martin.lau@linux.dev, ast@kernel.org, edumazet@google.com, davem@davemloft.net, 
+	dsahern@kernel.org, kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org, 
+	song@kernel.org, andrii@kernel.org, mhal@rbox.co, yonghong.song@linux.dev, 
+	daniel@iogearbox.net, xiyou.wangcong@gmail.com, horms@kernel.org, corbet@lwn.net, 
+	eddyz87@gmail.com, cong.wang@bytedance.com, shuah@kernel.org, mykolal@fb.com, 
+	jolsa@kernel.org, haoluo@google.com, sdf@fomichev.me, kpsingh@kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH bpf v8 2/5] bpf: fix wrong copied_seq calculation
+Message-ID: <cwd4ezi6lnvbdiqtzwvfzayzvziu7xibobmdgqirbhuhlgzdv6@vsbxhyqa44ko>
+References: <20250121050707.55523-1-mrpre@163.com>
+ <20250121050707.55523-3-mrpre@163.com>
+ <875xm8i729.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250116044100.80679-1-fujita.tomonori@gmail.com>
- <20250116044100.80679-3-fujita.tomonori@gmail.com> <CANiq72=kuZcLCgsSkKa6MrYCJY9UsWSV9VLvj2TcVOQEf0Cnmg@mail.gmail.com>
- <20250122.163728.1738626154854951916.fujita.tomonori@gmail.com>
-In-Reply-To: <20250122.163728.1738626154854951916.fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 22 Jan 2025 09:57:40 +0100
-X-Gm-Features: AbW1kva7CLhxOl4_GYMA5C5vdZCSXsUOyMdUnIwhKy-TXUNa6kTCcW4ZlzmNa0A
-Message-ID: <CANiq72nL8JYDZx8xZoUzh9KdYWCeMZ28GWAoTOSUqRN2WT8Ovw@mail.gmail.com>
-Subject: Re: [PATCH v8 2/7] rust: time: Introduce Delta type
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, andrew@lunn.ch, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, hkallweit1@gmail.com, 
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org, 
-	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
-	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, 
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <875xm8i729.fsf@cloudflare.com>
+X-CM-TRANSID:_____wD314ZmspBnkxRVHw--.35771S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uw48CrW8ZrWfWF1UAF47Arb_yoW8JFWDpF
+	ykAayrWFnrtFyxAw1DJ3y2gF1Fq3yftay5Xrn5Way2vw42krna9rWkKa4fAFWkGFWrZr4j
+	vw4UXrW2qan8Aa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UnNVgUUUUU=
+X-CM-SenderInfo: xpus2vi6rwjhhfrp/1tbiDwHcp2eQsMso1gAAsH
 
-On Wed, Jan 22, 2025 at 8:37=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> Yes, please create such. I'll add more docs but I'm sure that there
-> will be room for improvement.
+On Tue, Jan 21, 2025 at 03:18:38PM +0100, Jakub Sitnicki wrote:
+> On Tue, Jan 21, 2025 at 01:07 PM +08, Jiayuan Chen wrote:
+> > 'sk->copied_seq' was updated in the tcp_eat_skb() function when the
+> > action of a BPF program was SK_REDIRECT. For other actions, like SK_PASS,
+> > the update logic for 'sk->copied_seq' was moved to
+> > tcp_bpf_recvmsg_parser() to ensure the accuracy of the 'fionread' feature.
+> >
+> > It works for a single stream_verdict scenario, as it also modified
+> > 'sk_data_ready->sk_psock_verdict_data_ready->tcp_read_skb'
+> > to remove updating 'sk->copied_seq'.
+> >
+> > However, for programs where both stream_parser and stream_verdict are
+> > active(strparser purpose), tcp_read_sock() was used instead of
+> 
+> Nit: missing space, "active (strparser purpose)"
+>             ^
+> 
+> > tcp_read_skb() (sk_data_ready->strp_data_ready->tcp_read_sock)
+> 
+> Nit: missing period, "… (sk_data_ready->strp_data_ready->tcp_read_sock)."
+>                                                                        ^
+> 
+> > tcp_read_sock() now still update 'sk->copied_seq', leading to duplicated
+> 
+> Nit: grammar "still updates"
+>                           ^
+> Please run commit descriptions through a language tool or an LLM, if
+> possible. This makes reviewing easier.
+> 
+Thanks Jakub, I'll review all commit messages and code comments, and also
+use LLLM for grammar checks.
 
-Sounds good, will do!
-
-> You want to add the above explanation to all the
-> Delta::from_[millis|micro|secs], right?
-
-Yeah, I meant to add the saturating note to each of them.
-
-> Is there any existing source code I can refer to? I'm not sure
-> how "module-level docs" should be written.
-
-You can see e.g.
-
-    rust/kernel/block/mq.rs
-    rust/kernel/init.rs
-    rust/kernel/workqueue.rs
-
-(grep `^//!` for others).
-
-In general, you can use the module-level docs to talk about how things
-relate between items of that module. For instance, when I saw in your
-commit message this note:
-
-    Implement the subtraction operator for Instant:
-
-    Delta =3D Instant A - Instant B
-
-I thought something like: "It would be nice to explain how `Delta` and
-`Instant` fit together / how they are related / how all fits together
-in the `time` module".
-
-> I'll try to improve.
-
-Thanks a lot! (really -- I personally appreciate good docs)
-
-Cheers,
-Miguel
