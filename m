@@ -1,118 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D9B49659;
-	Wed, 22 Jan 2025 04:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393598467;
+	Wed, 22 Jan 2025 04:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737518840; cv=none; b=cl1FB9+efvIhv/YlfhyQLywA/eKmx5wGk4ZoAo5JXYAsxxxQYqbndu1r8p2UmGQvCL0yNPQo6qtG4rcLmopHcdrz1NdVe6W8IlTN1ly7YYgB+nsHb4ikq84HtIL0/XKjTuRw7pjEg0bXKGECakz4BsJYzT9ISLZxAG42Li1h4y8=
+	t=1737518981; cv=none; b=KNX/AvM65XyWoEU7WEyCMVJrb6pPzBlAbiD8Bz78YY4Exe+fq+mXBI314MpQyzIXel8SWQloXv6YrMHuSPhYr1CQuSQD7h+VW3UW/ZbUvRUyXuE4vH3bQM+963q++YU5wr3pZsIG9VyQN2Uk79iOuxbslH7ckv8vAoxp0diWje8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737518840; c=relaxed/simple;
-	bh=LmVFa7+rsczkSeaam0lpFKFM5NAG/xrl389XXjfwFyU=;
+	s=arc-20240116; t=1737518981; c=relaxed/simple;
+	bh=6SfJfQjzLtST0Yq+yaGTF/b70gSByACb4yDZimVTQvY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fan+L+Icm9u5iZ0urhqdPW17Eg0/+ozNs7HkMAI099G5LlFVpzuNalYbHSazitk2CRdCr7TszCiLxpZ9W+DWvm9goqZoyNLnD0uU2k1dn3Eb83eAKlq9ukwKTLK4pD/2j7bGGg3MogRtsst7sStXqqjdVfCniNyNEs19XNIgKjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s0Bv2SIn; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=Ca76J4KETtShVd7cZTKmCt7Bs6u3h5dCsg7uD3H7HYi9dXf2ccKUKSA2tVZJ33aNViy/Jqrdpvjh26iLeBcmdBZWqGZC1qgy945MR2mmRgVwxzTFBWiC7A6ezgXelsCNvAyZ3vv+7S6stl/WgncQhPRzuaDeMJpWyLVTIqMx39o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=leDNzgi2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s0Bv2SIn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A14C4CEE8;
-	Wed, 22 Jan 2025 04:07:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="leDNzgi2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AA6C4CEE4;
+	Wed, 22 Jan 2025 04:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737518839;
-	bh=LmVFa7+rsczkSeaam0lpFKFM5NAG/xrl389XXjfwFyU=;
+	s=k20201202; t=1737518980;
+	bh=6SfJfQjzLtST0Yq+yaGTF/b70gSByACb4yDZimVTQvY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=s0Bv2SInDBYUDA0dquHfwvSs6sDWP7pgGegBG/CTjnyu8YzVC4iizkTx1csr+9Fil
-	 ZSX1J7RvvSrgJO/idvK+MkSnI3ENKpld5p1382mASDYiW8zUu9SoPtHSFxlJ7jgCPv
-	 wpNz6+DRFvSknoh+H+6QSPQ+1AcNTKUxpTrTUyK28tRofEEtMQ9Nx/nFAMsS7WiwFZ
-	 SvV2rUp100x/RSnH4tXvXXZF8tthWs/bzOTTeQnPBCzzl2JDyKAYETU9+sugOcRRRI
-	 BcemDRbG3T/BTJdFN0lMQyk67Ets0EMjX3cRHB6JKW4p1JQY8lLtH5nSDVZj07ABW2
-	 oJFTqJqPgejag==
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5d3f28881d6so9340907a12.1;
-        Tue, 21 Jan 2025 20:07:19 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVDCsn1kLaeOuenuZa4BPWyBikTI2AvAfEfWjkSUPVMIcVEuz1vVKGNQ/v3/NIm9jhmqW1yZEo6@vger.kernel.org, AJvYcCW3pikVnY3y0kFb4/rBp3w9XeBHc8zGmGAjOc3HBnnz90OpG3BK3a7aj2dcS2P7bRCKz0W8irDe80s6ftc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJtBOZbDpojg5CdciH150D2+PV6WYSWjAR0O0n6j+/BtiLee09
-	RfQMyk5vJAs+WpVj7wRgmHhhVhaMghOjqFcsW6bBM80KvICLs7mndCDF6dJT1zjVV61qAlBte8R
-	7tQhxoXXi3mIOInLcou4YKX+U45o=
-X-Google-Smtp-Source: AGHT+IH83euRaIbr8Kiv3H0t0U/K5dEsWA9P4TmWerd02oA1XpuDA1ifRCyHX0MTZ/ZxXdVfhs+PSnb2PFcdbAY09n0=
-X-Received: by 2002:a05:6402:4313:b0:5db:f5e9:6760 with SMTP id
- 4fb4d7f45d1cf-5dbf5e96a10mr1862552a12.2.1737518838103; Tue, 21 Jan 2025
- 20:07:18 -0800 (PST)
+	b=leDNzgi2xOZiv8bygiEslg9mNY6Zg/G57H+6u3QbG2Z8BCRd1dXxeK8ndkxZErjyj
+	 wE2iS7G0wTpVmPDX/SOGM1juH5ihk5Ezn4sHnVCiQmcrN7QtvR3/15RECIj7x+1Mg9
+	 XJQvKUeg0waFfAv6BD48qb8ljXKdBegyCsT/W0WyKeWFFHJHNgawl1/nf87gRTMC/d
+	 Cv4SubwHqnGUmCDu+jRqX9Qn7ngkY8GSU7jfSHPlvl3b/wfdjkjUUp9PpUiEQ3vCIK
+	 O8i4cVvK+ZhJnKwx9NJMGZgsF/XworO6pFgBKyWaTM0bLfou5oAotDJY/CF07CssGw
+	 PZfT3o+tBwdhQ==
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5d3f28a4fccso9999664a12.2;
+        Tue, 21 Jan 2025 20:09:40 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUKPT4SZenjY6YRsDuhTpzSZra3va8M5K0y+lmvevRDISotRNfiOq3kre4XeUf2yOti6LSvsLpv@vger.kernel.org, AJvYcCXV0Fzgl6eca7SNxueAw65wjqEGTvYUn45NK5s4PDEB7rpPJM56JzwY7hDbEQRkw2wY738eH8DiqmrFsoM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwSXYpkuwC5loQQHSJyPbIzZbYvFRcsJHr9t9Qh0trvqQ7IIRy
+	Bynzyr9+QNUgGFsvM3z/cjhNVPn45A+X0DaHngHgQhGY+WseKFke3LWAbPpKgas6SlWwpO1D70B
+	x0ObJ012xHORYkT9tTcV7Qezr5SM=
+X-Google-Smtp-Source: AGHT+IH4lHqnyHsRuGktvUptLHu6v24gv23EmvFpq7uzvlDcmEy19Fs91EyXg2Jk2HqWEty/JTL+R8RYTHZ0KVUAe2A=
+X-Received: by 2002:a17:907:1b1c:b0:aab:d8de:64ed with SMTP id
+ a640c23a62f3a-ab38b165f86mr1680588966b.25.1737518979142; Tue, 21 Jan 2025
+ 20:09:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250121044138.2883912-1-hayashi.kunihiko@socionext.com>
- <20250121044138.2883912-3-hayashi.kunihiko@socionext.com> <07f2f6d0-e025-4b21-ac41-caaf71bb6fff@linux.dev>
-In-Reply-To: <07f2f6d0-e025-4b21-ac41-caaf71bb6fff@linux.dev>
+References: <20250121082536.11752-1-zhaoqunqin@loongson.cn>
+ <CAAhV-H7LA7OBCxRzQogCbDeniY39EsxA6GVN07WM=e6EzasM0w@mail.gmail.com> <20250121101107.349a565b@kernel.org>
+In-Reply-To: <20250121101107.349a565b@kernel.org>
 From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 22 Jan 2025 12:07:07 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4qrr5x9PL5NjmvT0AF9XYtOpZBMjBj-QkTF2V6h6_Vhg@mail.gmail.com>
-X-Gm-Features: AbW1kvaIG0rIpsEVvPRfxgbYSjwLxqw5Bd0bCr51SyrGjTbJBRNoxlLrUYz_02I
-Message-ID: <CAAhV-H4qrr5x9PL5NjmvT0AF9XYtOpZBMjBj-QkTF2V6h6_Vhg@mail.gmail.com>
-Subject: Re: [PATCH net v2 2/3] net: stmmac: Limit FIFO size by hardware capability
-To: Yanteng Si <si.yanteng@linux.dev>
-Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu <joabreu@synopsys.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Furong Xu <0x1207@gmail.com>, 
-	Joao Pinto <Joao.Pinto@synopsys.com>, Vince Bridgers <vbridger@opensource.altera.com>, 
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
+Date: Wed, 22 Jan 2025 12:09:28 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6HDOvjr5sA3n+dUMTLm22_p9fAFaTgEUcrufR3XHrj9Q@mail.gmail.com>
+X-Gm-Features: AbW1kvYyHoSfUV4Y7rKzt4loTuGX6YrpFbpLikCcI11jI6dLozt2wMSQwYS5WMc
+Message-ID: <CAAhV-H6HDOvjr5sA3n+dUMTLm22_p9fAFaTgEUcrufR3XHrj9Q@mail.gmail.com>
+Subject: Re: [PATCH] net: stmmac: dwmac-loongson: Add fix_soc_reset function
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Qunqin Zhao <zhaoqunqin@loongson.cn>, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, pabeni@redhat.com, si.yanteng@linux.dev, 
+	fancer.lancer@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 22, 2025 at 1:15=E2=80=AFAM Yanteng Si <si.yanteng@linux.dev> w=
-rote:
->
-> =E5=9C=A8 1/21/25 12:41, Kunihiko Hayashi =E5=86=99=E9=81=93:
-> > Tx/Rx FIFO size is specified by the parameter "{tx,rx}-fifo-depth" from
-> > stmmac_platform layer.
-> >
-> > However, these values are constrained by upper limits determined by the
-> > capabilities of each hardware feature. There is a risk that the upper
-> > bits will be truncated due to the calculation, so it's appropriate to
-> > limit them to the upper limit values and display a warning message.
-> >
-> > Fixes: e7877f52fd4a ("stmmac: Read tx-fifo-depth and rx-fifo-depth from=
- the devicetree")
-> > Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-> > ---
-> >   drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 13 +++++++++++++
-> >   1 file changed, 13 insertions(+)
-> >
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/driver=
-s/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > index 251a8c15637f..da3316e3e93b 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > @@ -7245,6 +7245,19 @@ static int stmmac_hw_init(struct stmmac_priv *pr=
-iv)
-> >               priv->plat->tx_queues_to_use =3D priv->dma_cap.number_tx_=
-queues;
-> >       }
-> >
->
-> > +     if (priv->plat->rx_fifo_size > priv->dma_cap.rx_fifo_size) {
->
-> > +             dev_warn(priv->device,
-> > +                      "Rx FIFO size exceeds dma capability (%d)\n",
-> > +                      priv->plat->rx_fifo_size);
-> > +             priv->plat->rx_fifo_size =3D priv->dma_cap.rx_fifo_size;
-> I executed grep and found that only dwmac4 and dwxgmac2 have initialized
-> dma_cap.rx_fifo_size. Can this code still work properly on hardware
-> other than these two?
-Agree, this will make my below patch not work again, because
-dwmac-loongson is based on dwmac1000.
+Hi, Jakub,
 
-https://lore.kernel.org/netdev/20250121093703.2660482-1-chenhuacai@loongson=
-.cn/T/#u
+On Wed, Jan 22, 2025 at 2:11=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Tue, 21 Jan 2025 17:29:37 +0800 Huacai Chen wrote:
+> > Hi, Qunqin,
+> >
+> > The patch itself looks good to me, but something can be improved.
+> > 1. The title can be "net: stmmac: dwmac-loongson: Add fix_soc_reset() c=
+allback"
+> > 2. You lack a "." at the end of the commit message.
+> > 3. Add a "Cc: stable@vger.kernel.org" because it is needed to backport
+> > to 6.12/6.13.
+>
+> Please don't top post.
+I know about inline replies, but in this case I agree with the code
+itself so I cannot reply after the code.
 
 Huacai
-
->
->
-> Thanks,
-> Yanteng
->
