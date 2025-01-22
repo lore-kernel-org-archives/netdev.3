@@ -1,91 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD6216BE3A;
-	Wed, 22 Jan 2025 10:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BB21F7914;
+	Wed, 22 Jan 2025 10:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737540669; cv=none; b=ikdHOe6hTPxtB+CpGiug+AWFEJI31jGmKmDB9nxL68rJFZ77JMF1Fw6y872GciyzHzRhhSvzQt6dgVfWTWBcLE0Eix0seIN8caj0mP1h8ssQ4+sEruBLaPgqHsWEgg3mhEPw83gOf6DTxaL87W7pPkCRruHhVPqOsY0H9YLMBkU=
+	t=1737540695; cv=none; b=rgx/c62FI6Eld7wL41pz6+CEzxUSiU7MyBs+vrqqh6HP7ruX99o9BzZ/0yNar8lgexOUVuPD50/8GIaBi9foxVYMhlQIenSJT+OtUy3EdtTFCzCfavw+bgfetM0pS0dC6UV2XpBKS9ZtxiGTpQHDhRxJ/CchTowM2gp4MvVTW2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737540669; c=relaxed/simple;
-	bh=D9w/pMsns+WhsexWHwjgDMkbkMbWFRLCfpie+u/t+Sw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QJkMP/Lweh8JtGWsv0xrWuCARUUXUUIyPRtWw1p0yHJF1/resQJvqKAxXMbtfmiMMhccfnxmjIZsDOemqMdJ+rvCxvaa4f+oqaWduw2MeY//TX0mnHSqtG1Z+rvAn4EnHLAXf3PxSWtwKVE/xS2DL2pNGrVVvCVXwNOyWeAPnA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q7K9KGlh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1737540695; c=relaxed/simple;
+	bh=nKWu84r5RQKGBqm5xElMSa7RfxVJ2SqHd74Gi/uAVuc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Kp1FtTeBwC5OQziVYKOwkfCBvnHhSTlivX8/QFiL1+7DpFVMFx1K68p3/o7R0rie1B0q4YpkrQAlPo9EdK827n1uKZ2kOhJmBb+9puU0c9rxKbr/nemr+MeTFEJAnysQOR0w8/HOKiBWK3RSHtn0L05pNbCmL9BadE8Pu3Yv9yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=TTbd3Pd0; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q7K9KGlh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EACC4CED6;
-	Wed, 22 Jan 2025 10:11:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737540668;
-	bh=D9w/pMsns+WhsexWHwjgDMkbkMbWFRLCfpie+u/t+Sw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q7K9KGlhCcJDR+t52l4yjftsVH5j1vTfOmHKyudlc2hogYUPMChwsbUwjxpJeq6ff
-	 fL2hUYMRG9Ztwf2KB2TUexzF8knuLjOzme9vWOpkmvXZcZzVlF9sCXCX2J11KEw6Ok
-	 scFjXRspfHsoylw0tDKsqnPBI+WQ3OwC8yhKW5jIWYqRUPyqjlpJs/pjFMG8bQrFPL
-	 nTnL8wGf2gUMc514aTCFQlnyRtE5N9kYkyivuH3/4ZQxa0Is95XxMoI5Hj/tKlXfME
-	 QgbCTIUOAmI4QYYESH4d6qM9mEfNxy9d5doq+OhKU742vmlc3MREi23zLN/M4DtMYz
-	 ewCvUPGmDlqhw==
-Date: Wed, 22 Jan 2025 10:11:03 +0000
-From: Simon Horman <horms@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Christophe Ricard <christophe.ricard@gmail.com>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] NFC: nci: Add bounds checking in nci_hci_create_pipe()
-Message-ID: <20250122101103.GD385045@kernel.org>
-References: <bcf5453b-7204-4297-9c20-4d8c7dacf586@stanley.mountain>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="TTbd3Pd0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version:
+	Content-Type; bh=QWWYmC4TDSJZjNRxBuhFocor1RdCIg5ChEjlLlaKCnE=;
+	b=TTbd3Pd0dveYS7fHJATPaag2gs30E4nPLyWYVMolF8pHbrYMPef9j+M9Qj2Nrv
+	XTvDgj5Qg9wDCvaP0c3/V1L9QfxleGnfRMMxzF0L6W6Y+tP23cN1XMuXHayj0Gx9
+	lZJd78gN0AczG1xChg2EwdZ4pg2nbtCJKh5PWE+QLkk3Q=
+Received: from localhost.localdomain (unknown [47.252.33.72])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgAHUcjUw5Bn_UIhKA--.64788S2;
+	Wed, 22 Jan 2025 18:09:36 +0800 (CST)
+From: Jiayuan Chen <mrpre@163.com>
+To: bpf@vger.kernel.org,
+	jakub@cloudflare.com,
+	john.fastabend@gmail.com
+Cc: netdev@vger.kernel.org,
+	martin.lau@linux.dev,
+	ast@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	song@kernel.org,
+	andrii@kernel.org,
+	mhal@rbox.co,
+	yonghong.song@linux.dev,
+	daniel@iogearbox.net,
+	xiyou.wangcong@gmail.com,
+	horms@kernel.org,
+	corbet@lwn.net,
+	eddyz87@gmail.com,
+	cong.wang@bytedance.com,
+	shuah@kernel.org,
+	mykolal@fb.com,
+	jolsa@kernel.org,
+	haoluo@google.com,
+	sdf@fomichev.me,
+	kpsingh@kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Jiayuan Chen <mrpre@163.com>
+Subject: [PATCH bpf v9 0/5] bpf: fix wrong copied_seq calculation and add tests
+Date: Wed, 22 Jan 2025 18:09:12 +0800
+Message-ID: <20250122100917.49845-1-mrpre@163.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bcf5453b-7204-4297-9c20-4d8c7dacf586@stanley.mountain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PigvCgAHUcjUw5Bn_UIhKA--.64788S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWFyrGFyfXw4kuryDAFyxKrg_yoW5ZrWfpa
+	ykC34rGr47tFyxZws7A3yIqF4Fgw4rGay5KF1Fq3yfZF4jkryjvrs29F1aqr98GrWY9F1U
+	Cr13Wr4Y934UAFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0z_pnQ7UUUUU=
+X-CM-SenderInfo: xpus2vi6rwjhhfrp/xtbBDwjcp2eQr31LCwACsb
 
-On Fri, Jan 17, 2025 at 12:38:41PM +0300, Dan Carpenter wrote:
-> The "pipe" variable is a u8 which comes from the network.  If it's more
-> than 127, then it results in memory corruption in the caller,
-> nci_hci_connect_gate().
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: a1b0b9415817 ("NFC: nci: Create pipe on specific gate in nci_hci_connect_gate")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+A previous commit described in this topic
+http://lore.kernel.org/bpf/20230523025618.113937-9-john.fastabend@gmail.com
+directly updated 'sk->copied_seq' in the tcp_eat_skb() function when the
+action of a BPF program was SK_REDIRECT. For other actions, like SK_PASS,
+the update logic for 'sk->copied_seq' was moved to
+tcp_bpf_recvmsg_parser() to ensure the accuracy of the 'fionread' feature.
 
-Hi Dan,
+That commit works for a single stream_verdict scenario, as it also
+modified 'sk_data_ready->sk_psock_verdict_data_ready->tcp_read_skb'
+to remove updating 'sk->copied_seq'.
 
-Based on your analysis, which I agree with, this looks good.
+However, for programs where both stream_parser and stream_verdict are
+active (strparser purpose), tcp_read_sock() was used instead of
+tcp_read_skb() (sk_data_ready->strp_data_ready->tcp_read_sock).
+tcp_read_sock() now still updates 'sk->copied_seq', leading to duplicated
+updates.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+In summary, for strparser + SK_PASS, copied_seq is redundantly calculated
+in both tcp_read_sock() and tcp_bpf_recvmsg_parser().
 
-But this is a limited review, as I am not sufficiently familiar with NFC
-to go by much more than your analysis. A review by Krzysztof would be great.
+The issue causes incorrect copied_seq calculations, which prevent
+correct data reads from the recv() interface in user-land.
 
-> ---
->  net/nfc/nci/hci.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/net/nfc/nci/hci.c b/net/nfc/nci/hci.c
-> index de175318a3a0..082ab66f120b 100644
-> --- a/net/nfc/nci/hci.c
-> +++ b/net/nfc/nci/hci.c
-> @@ -542,6 +542,8 @@ static u8 nci_hci_create_pipe(struct nci_dev *ndev, u8 dest_host,
->  
->  	pr_debug("pipe created=%d\n", pipe);
->  
-> +	if (pipe >= NCI_HCI_MAX_PIPES)
-> +		pipe = NCI_HCI_INVALID_PIPE;
+Also we added test cases for bpf + strparser and separated them from
+sockmap_basic, as strparser has more encapsulation and parsing
+capabilities compared to sockmap.
 
-Ceci n'est pas une pipe [1]
+---
+V8 -> v9
+https://lore.kernel.org/bpf/20250121050707.55523-1-mrpre@163.com/
+Fixed some issues suggested by Jakub Sitnicki.
 
->  	return pipe;
->  }
+V7 -> V8
+https://lore.kernel.org/bpf/20250116140531.108636-1-mrpre@163.com/
+Avoid using add read_sock to psock. (Jakub Sitnicki)
+Avoid using warpper function to check whether strparser is supported.
 
-[1] https://en.wikipedia.org/wiki/The_Treachery_of_Images
+V3 -> V7:
+https://lore.kernel.org/bpf/20250109094402.50838-1-mrpre@163.com/
+https://lore.kernel.org/bpf/20241218053408.437295-1-mrpre@163.com/
+Avoid introducing new proto_ops. (Jakub Sitnicki).
+Add more edge test cases for strparser + bpf.
+Fix patchwork fail of test cases code.
+Fix psock fetch without rcu lock.
+Move code of modifying to tcp_bpf.c.
+
+V1 -> V3:
+https://lore.kernel.org/bpf/20241209152740.281125-1-mrpre@163.com/
+Fix patchwork fail by adding Fixes tag.
+Save skb data offset for ENOMEM. (John Fastabend)
+---
+
+Jiayuan Chen (5):
+  strparser: add read_sock callback
+  bpf: fix wrong copied_seq calculation
+  bpf: disable non stream socket for strparser
+  selftests/bpf: fix invalid flag of recv()
+  selftests/bpf: add strparser test for bpf
+
+ Documentation/networking/strparser.rst        |   9 +-
+ include/linux/skmsg.h                         |   2 +
+ include/net/strparser.h                       |   2 +
+ include/net/tcp.h                             |   8 +
+ net/core/skmsg.c                              |   7 +
+ net/core/sock_map.c                           |   5 +-
+ net/ipv4/tcp.c                                |  29 +-
+ net/ipv4/tcp_bpf.c                            |  36 ++
+ net/strparser/strparser.c                     |  11 +-
+ .../selftests/bpf/prog_tests/sockmap_basic.c  |  59 +--
+ .../selftests/bpf/prog_tests/sockmap_strp.c   | 454 ++++++++++++++++++
+ .../selftests/bpf/progs/test_sockmap_strp.c   |  53 ++
+ 12 files changed, 610 insertions(+), 65 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/sockmap_strp.c
+ create mode 100644 tools/testing/selftests/bpf/progs/test_sockmap_strp.c
+
+-- 
+2.43.5
+
