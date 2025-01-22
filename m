@@ -1,95 +1,89 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224201E4AB;
-	Wed, 22 Jan 2025 13:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DB12135DC
+	for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 13:44:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737553404; cv=none; b=b1hZW59BioLpKI/nSzYTVC1KG9yQ9aNFxZ0ATFlv3KJqs1mgwMgJihGLAYO/Ch0PwyLRBeYivC6RU9FdAOZnub3QYnJ91N3BKShH7WuloPLG22DwGVqlZCr7gT2QoY/UHdJRVAE2ajrpFevQypj1eGvNZkWGjqvB/2/2XTqzorY=
+	t=1737553477; cv=none; b=lWgelg9XKj3jz6zihxVGrESufF1Oa3gLM69PjGmMYOdDbryjNu1LE3BNUV83/4KyHmoeNO3bhbpQDZ6feL+5G6VVh1GF2Yb2V3tu9inYRjVDlS6iU+phAJmIKxcTnQqEDrkL+AO/1BmMk48qO1hp935nik24m3MLhgDNIX6w4lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737553404; c=relaxed/simple;
-	bh=VYNm3EvhdL0Eo3xnHsMFwg23UYv3DBxtjOavunSS+EE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ogpjkVDsPJUg9DMi+2drNm59+UNlPvViiV/rpM6zegIrjvpxfJsr/dmDxhdCcr5hmMKdpvbNrjh1xmP3SWXUZNH6MkouHPv//+SXmb6Ma+AFOLMhgVKg65ro9mS+otfAat5h9aWjH8LR3PjOzldUh+bh25n08E4AVJRezpOmYdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=B8GfoPTf; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1737553477; c=relaxed/simple;
+	bh=BIvCWp8FFu3JhEClwVZrpfTGXiC20e9nDxcxKC7KN+I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rfJf9Cldvx67kumyt3yJnIjvVa2PDSoaaa05aMtOEvCydkKN6vecOQAi6YnRBBsOqzPjqkEMDAyeAeKveCRWHOJxatrVwnL2I7WWUoYq6WAtoi8+hWTxigDHo1cxClm2WUUlaPGRnOPaviVOjocc3uFessHjXJb+YxxzGizxOdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XfgyXjsU; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="B8GfoPTf"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=YJXkNjhw3Aw/eM4XePKe96UikbQjmvVIAHBl8Bw77+Q=; b=B8GfoPTfvztONar6kUdDGB6Dln
-	7QBlQaOUSNpq42nxCfsTaoD3g3hgp47FjRCIS6AU2SKA/m/CrcaVKKcqG9b0JqCGmLYeX/U1X30qD
-	94jcupitsrV3UmMeENlw+nIXGNaQvv4/Oi516Qi9D1zrSIK77B6nbt4uH5Gnu0mnmPR8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tab0X-006xSm-6T; Wed, 22 Jan 2025 14:43:01 +0100
-Date: Wed, 22 Jan 2025 14:43:01 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Basharath Hussain Khaja <basharath@couthit.com>
-Cc: danishanwar <danishanwar@ti.com>, rogerq <rogerq@kernel.org>,
-	andrew+netdev <andrew+netdev@lunn.ch>, davem <davem@davemloft.net>,
-	edumazet <edumazet@google.com>, kuba <kuba@kernel.org>,
-	pabeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-	krzk+dt <krzk+dt@kernel.org>, conor+dt <conor+dt@kernel.org>,
-	nm <nm@ti.com>, ssantosh <ssantosh@kernel.org>,
-	tony <tony@atomide.com>, richardcochran <richardcochran@gmail.com>,
-	parvathi <parvathi@couthit.com>, schnelle <schnelle@linux.ibm.com>,
-	rdunlap <rdunlap@infradead.org>, diogo ivo <diogo.ivo@siemens.com>,
-	m-karicheri2 <m-karicheri2@ti.com>, horms <horms@kernel.org>,
-	jacob e keller <jacob.e.keller@intel.com>,
-	m-malladi <m-malladi@ti.com>,
-	javier carrasco cruz <javier.carrasco.cruz@gmail.com>,
-	afd <afd@ti.com>, s-anna <s-anna@ti.com>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-	netdev <netdev@vger.kernel.org>,
-	devicetree <devicetree@vger.kernel.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	linux-omap <linux-omap@vger.kernel.org>,
-	pratheesh <pratheesh@ti.com>, prajith <prajith@ti.com>,
-	vigneshr <vigneshr@ti.com>, praneeth <praneeth@ti.com>,
-	srk <srk@ti.com>, rogerq <rogerq@ti.com>,
-	krishna <krishna@couthit.com>, pmohan <pmohan@couthit.com>,
-	mohan <mohan@couthit.com>
-Subject: Re: [RFC PATCH 01/10] dt-bindings: net: ti: Adds device tree binding
- for DUAL-EMAC mode support on PRU-ICSS2 for AM57xx SOCs
-Message-ID: <ef90ecc9-7bb1-4f18-bd14-c5a82f07021b@lunn.ch>
-References: <20250109105600.41297-1-basharath@couthit.com>
- <20250109105600.41297-2-basharath@couthit.com>
- <7870d1e4-074f-4dc5-aae5-ac5fc725cc43@lunn.ch>
- <1556294138.382514.1737552374554.JavaMail.zimbra@couthit.local>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XfgyXjsU"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5d4e2aa7ea9so12746260a12.2
+        for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 05:44:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1737553474; x=1738158274; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BIvCWp8FFu3JhEClwVZrpfTGXiC20e9nDxcxKC7KN+I=;
+        b=XfgyXjsURJWWI1SQ9+iI4bKv51kVsSjblV5Fa6TEsbq6GPUQmGrfspO6k1KNrbGdq0
+         viMReKUz2C2gJ89NkOim0zAC7XDfy/POrs3g6Z8yM/bEE3KHqtTKRYMyLnbYxCw74wFR
+         0gnGLnb+Hs9jmxI6tjkm1f0KQnAmqqRoVuTo+lZWuymRSekZngU6d0nZySLLc80ev6TF
+         rmEvNVehLEF5zqJUjs3uQv8phbuFMuNjb2nec+F4uLcJohMbZL/7AbkDlXR4y/mHZNAK
+         JEx9LLDBZG87s1NI4S9k4izWzgbezKKoDqg0fYw74uR+Yb0iutZCmAommnr6L9ncaFtM
+         Y4lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737553474; x=1738158274;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BIvCWp8FFu3JhEClwVZrpfTGXiC20e9nDxcxKC7KN+I=;
+        b=wmwlBtCGUr0tZH1Igo6nn64bkPXOStJEou3Z8LMp4pjPZcI8kzycPYwgahDM3ldk/Z
+         br4oBC/IxVJV1HFGTWnNUqe7g6CAiOjIKNszzUdDRUnYl9xoixK8OAs0KXCGY7s3eVy6
+         vUg01HxdAJXn+lM/DTdi84IrpRDHcXRQ0hBo+O9PZT/JzNVPkd5esRF10AGxc8odk4zD
+         OtZwKycLWMT88zHgr1EjYhFe05LPJK0K6p5XgJ4hqbqY3vOAFbwpV1XteRVw/fenQnzJ
+         qVMsXabu3F8FhWoyrYHntCYuSn7LMdldwkefaD3C/eFSNHBMMAThrKRJQVIc5RNzXr7Y
+         N12w==
+X-Forwarded-Encrypted: i=1; AJvYcCX4MFAnlJ0SGQcqZpW8Ms4u5DpL/dKCbGJhWuIc9hgE0OhKMwMRUuVM3e9rjoV2QeSejB4QwRo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZSxNVfCbCRu9yqJ9WPZGr9QrDfDkOZQHAWURSxuulb6TeLITV
+	qPhj40j/ajwonOypx6uOMPnZQGR9w5disRfGw1rU40noRQve+iWU2uQcczMdRW7ER2jeBGXGHg9
+	zimOjyeJeoxxgl4RENgCRdRjdIlecqKCoCcrSw7dLNV6PzeGe3Q==
+X-Gm-Gg: ASbGncvFyIRQ+xv9zfzNjhtbYOhKqpIEKzB2+2nl1TXYcOg4QTrwaNh2FLt11xCOO3E
+	vJLXCR+7ZX+/l2I5rEuRCzh9NTvIpPOZPSjJrheFexhAdYHBxaw==
+X-Google-Smtp-Source: AGHT+IFIQIEMRT2LZWeFpL4TMoPbPAe83obaJAYSAVPrIeKUDOD3KAY4PXuFRASJoKQmWnfT0gvCQ/QN0jc5q1RFqMc=
+X-Received: by 2002:a05:6402:5251:b0:5d2:d72a:77e4 with SMTP id
+ 4fb4d7f45d1cf-5db7db1234bmr21211043a12.28.1737553474328; Wed, 22 Jan 2025
+ 05:44:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1556294138.382514.1737552374554.JavaMail.zimbra@couthit.local>
+References: <20250121221519.392014-1-kuba@kernel.org> <20250121221519.392014-4-kuba@kernel.org>
+In-Reply-To: <20250121221519.392014-4-kuba@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 22 Jan 2025 14:44:22 +0100
+X-Gm-Features: AbW1kvZ7amq2FQ0lgMye820n3-QVW1OgwMgjmK3wGHBWcUMzn1aXt9TVvZZIMOg
+Message-ID: <CANn89i+r5RN25jvXJmF7w_HcFph9xEKJfzAMsk+T6fgdPJUkOg@mail.gmail.com>
+Subject: Re: [PATCH net-next 3/7] eth: forcedeth: fix calling napi_enable() in
+ atomic context
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, pabeni@redhat.com, 
+	andrew+netdev@lunn.ch, horms@kernel.org, dan.carpenter@linaro.org, 
+	rain.1986.08.12@gmail.com, zyjzyj2000@gmail.com, kuniyu@amazon.com, 
+	romieu@fr.zoreil.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 22, 2025 at 06:56:14PM +0530, Basharath Hussain Khaja wrote:
-> 
-> >> +          ti,no-half-duplex:
-> >> +            type: boolean
-> >> +            description:
-> >> +              Disable half duplex operation on ICSSM MII port.
-> > 
-> > I already asked this in the next patch, but why have this property? Is
-> > it because the hardware is broken? Or is this some sort of policy?
-> > Policy should not be in DT, DT describes the hardware, not the policy
-> > of how you use the hardware.
-> > 
-> 
-> This series of patches enables support for full-duplex only. Support for 
-> half-duplex will be added in subsequent revisions. We will clean it up in
-> the next version.
+On Tue, Jan 21, 2025 at 11:15=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> w=
+rote:
+>
+> napi_enable() may sleep now, take netdev_lock() before np->lock.
+>
+> Fixes: 413f0271f396 ("net: protect NAPI enablement with netdev_lock()")
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Link: https://lore.kernel.org/dcfd56bc-de32-4b11-9e19-d8bd1543745d@stanle=
+y.mountain
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
 
-So you don't need this property. All you need to do is remove the 1/2
-duplex link modes using phy_remove_link_mode() and user space will not
-get the option to enable them, not will auto-neg advertise them.
-
-	Andrew
+Reviewed-by: Eric Dumazet <edumazet@google.com>
