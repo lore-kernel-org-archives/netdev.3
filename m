@@ -1,148 +1,185 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021113.outbound.protection.outlook.com [52.101.100.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D840420FA9C;
-	Wed, 22 Jan 2025 18:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737571092; cv=none; b=Q0yJJDnLqgz2OPIerQFOIgJckmuvNKror8MDIc92w7V02lg7k40jOxeTe+PCAHuteLrcp67mCfWSQIjpd+6yohgCjvv+2A/SYwVWqIx1Fn4BUvc7h99e9X/uUcQpWEQU/wlqWPpT/Bu9Q+ZsiR9gRx7uWA49iO6tIQsDplY8GCE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737571092; c=relaxed/simple;
-	bh=UsW6dFnKhaemqjbzDn4FQ1Ys8eg1VzUhk4uRja24jJg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QdGrUl8QKpyRsJ4qT8OjqtPbWfXmTeYXVQpMF44beCP25/aPpDuSEu0cuDR856GHmMzSi02WJFge1MrwNtujBkGZVV058r6zjvFS8aedlMVKfakO8/eYgs+beDDpgH11BeP1Wockq0Pr2TxkZdC3YshdoQk5I0G0pjj8tdSJG+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JhRisKd8; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850BB215057;
+	Wed, 22 Jan 2025 18:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.113
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737571124; cv=fail; b=gTI4mayas7LVPfSXohqYNIEoH6nbLsP1gNPmemFj31QfTQ7FlnahIHz97H7VUmJp9RMDW/o81lu2i5N20wrT6QTsREW7D4WR6hPaZPZo8AA4NrofAx87W0PQMYtZF/r+e05ZEZ2WjNUp5KFNWpQixV8DV1g31HsG28ORkdewqSc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737571124; c=relaxed/simple;
+	bh=REAU07lGX8juS5DZKDeLAn6r3jn5qsXZST7m2WWJgLQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=s10NJBH+GpgbLJcflBxoIW8/4jMInHELbXcYKBnrIM120yB5uEZzgqA3YCF/vQdPuvTt/XPIct4hWcZVyaiWA3zNwnTkaiYwG+TuPZAP09jQJy2Ei6sZMKF8yzNyHgEVzh+ZfgS/bjIXroiVJzyts1oCfkm5sMgnUkBVfgAShOE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ZgvH8ZvQ; arc=fail smtp.client-ip=52.101.100.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JhRisKd8"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50MDFMEv002717;
-	Wed, 22 Jan 2025 18:37:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=6YaKnAKHb9JWYzTRJt/INcyPojCHVKwdCnG7gWV3k
-	NI=; b=JhRisKd8Kp/C82YnwaUZBUn1U1mQapPHZ0ScSMMlkl+7e2r1tgfSpCdjo
-	nMMLkvszt+9csYFReFm8AKpFC05rH957YOfeTvt7JaHVCwtESRhJOR+T4gBDDqE3
-	BlOnMqpkhacC9u3qR/TgdinIm7vvtDQusatLaesmEL9IOzoue88aVMIk4rtvRxLc
-	Pwovn3yDeWcw6QsH7MqgT4/0EZPA0VsmsMtPSpNkfh04NPgV0qhiA40g9Wv6EaIR
-	aHlw+KGK7n3VTk5vnKkftsq9GNx2NFdAfN7fA2fWyfXF2NAGVHBVUHdnqorGoriO
-	en7Uw5vVb6Es5WjP9YdFv6DPPgp/g==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44aqgym79t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Jan 2025 18:37:31 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50MIZh0S010420;
-	Wed, 22 Jan 2025 18:37:30 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44aqgym79n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Jan 2025 18:37:30 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50MGrJbm019287;
-	Wed, 22 Jan 2025 18:37:30 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 448pmshyqt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Jan 2025 18:37:30 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50MIbSE255509436
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 Jan 2025 18:37:28 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4FE932004E;
-	Wed, 22 Jan 2025 18:37:28 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8DC022004D;
-	Wed, 22 Jan 2025 18:37:23 +0000 (GMT)
-Received: from li-621bac4c-27c7-11b2-a85c-c2bf7c4b3c07.ibm.com.com (unknown [9.43.24.222])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 22 Jan 2025 18:37:23 +0000 (GMT)
-From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-To: bpf@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: ast@kernel.org, hbathini@linux.ibm.com, andrii@kernel.org,
-        daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
-        hawk@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com,
-        edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
-        song@kernel.org, yonghong.song@linux.dev, john.fastabend@gmail.com,
-        kpsingh@kernel.org
-Subject: [PATCH] bpf: Fix mix-up of 4096 and page size.
-Date: Thu, 23 Jan 2025 00:07:20 +0530
-Message-ID: <20250122183720.1411176-1-skb99@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ZgvH8ZvQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qYeZHNv0FEZAQtH9ASsq7gDiYhmmYubZqZSG+XPq4hrMxioetF7wHB3LEm98umx38IMRf7o+pqQ39CxZAgUMgbHWxUpbs1LcTGb4oHEObmD7inRgoknkgAVQLP90gGQEHbeJCbDEmiqyrwhCZKo8ky07rDzg//dkozNGrDm3yIvBmHwMGs6QzPHnPEUFS/dUdkKPcCFxtDX2r1gPuIUotHa4UwjOotPNMvV5fCXhccRKVjjtwHXy0Z2geqBvvr1n6IdNI/JIKHXdZ5OwzmLam4Na4Zna71y4c7h6ZfmfGLAngAnBfNAkTLCrWrlqeQy/S1IsLr48KZ1+uswc0nJYYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xxBjZhcQJRs8X/9wYPFHigUK1WQUHDV+/l4CSF4gpGA=;
+ b=P9+gGc7GE3PyScT3jobiyRYmKfRGYUzJm+JsdMT9E5b9zh4mhB5wCilDiOAX1A1RVye4KBFbz0qr3pG8pz8VcQ7ujCjzneF3aTd6ACfcDYHzXGTFGqMls8bXRuXx3kn1gUG0vH+vFRSnO2y6QutbvXcHdC1Z2TD5Qo0C8zlzV790k2mCdcNjGsEnC8f2XCFWbqk4n4yquzIvSHKVyY7jf/IR6d+MWmSnrLeDeuBXQDiLbWWUJduy5cW/LjWClwMQr7NsAN8TSPCB6ROBRQHz+iH6vQgbqJosJIe5nhbhC9KhxXKBhmqXUvGUsonQzTw8N7abJsbZs1E5rXxE4Pl+iA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xxBjZhcQJRs8X/9wYPFHigUK1WQUHDV+/l4CSF4gpGA=;
+ b=ZgvH8ZvQ4i7OxT/+KMhd4/Uah2Fkcm5U2c3WhHUPT2j4dhXbvqvoJ0h7qcIYHt6HxrLyWJRXRGQF4yboymr8AfKKbS3ZHEcp8EgH1dZ+OxYJxx3HeEdkUwJhrYwRhBKQ0lO0d70AyR/NoRoxNFNXgO07Gl9i6fNsYlYcOFLNmEc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO2P265MB3183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:164::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.16; Wed, 22 Jan
+ 2025 18:38:40 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%5]) with mapi id 15.20.8356.020; Wed, 22 Jan 2025
+ 18:38:40 +0000
+Date: Wed, 22 Jan 2025 18:38:37 +0000
+From: Gary Guo <gary@garyguo.net>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Trevor Gross <tmgross@umich.edu>, Alice
+ Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ ojeda@kernel.org, alex.gaynor@gmail.com, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de,
+ frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de, jstultz@google.com,
+ sboyd@kernel.org, mingo@redhat.com, peterz@infradead.org,
+ juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com
+Subject: Re: [PATCH v8 1/7] rust: time: Add PartialEq/Eq/PartialOrd/Ord
+ trait to Ktime
+Message-ID: <20250122183837.79ad9dcf.gary@garyguo.net>
+In-Reply-To: <20250116044100.80679-2-fujita.tomonori@gmail.com>
+References: <20250116044100.80679-1-fujita.tomonori@gmail.com>
+	<20250116044100.80679-2-fujita.tomonori@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0083.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:190::16) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: eNmxWv_rYL7kuZ1_SjbPNZr0lpltiFQW
-X-Proofpoint-ORIG-GUID: _iPiVWzVRZgy4W6mo6hAClJGjHx6zskT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-22_08,2025-01-22_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- phishscore=0 priorityscore=1501 bulkscore=0 mlxlogscore=999
- impostorscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 suspectscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501220132
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO2P265MB3183:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ef88b70-1461-4d99-5291-08dd3b13fda1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|1800799024|376014|366016|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?3hnc0aN+4cOjsizAUJbgC5mcsw2NCk0t0NEu6jNhNU4Mp0/jOSCxTBRS4j1x?=
+ =?us-ascii?Q?OZwDErtUpLlhRbsKvh1KWoegbcYScsbjztjzjSZaSraxwQWYB9MI4GMjMjh0?=
+ =?us-ascii?Q?AlFCXfnHiHpf1UYtUCCK8O0FRk82SY66KizwrFfZ9guxtlJYAxOSp9ZJSaAh?=
+ =?us-ascii?Q?xabvU220cAEkg7Z7g0CPyvbD2mgFxWEPeReKYQa6vHjcPTJ+zp6NxvcRdrxA?=
+ =?us-ascii?Q?1Vs6wu0ewQEWMqgP9X9UWGTcg/D4loZd5ZO0BAeZXGTF+x7f7rrBDsmo1rN7?=
+ =?us-ascii?Q?nTRoJ7Zt7GNVMY80MWDem0dl+0VJLvJBXKveDajBZ46SXGQEkNPKIJ/V2jS8?=
+ =?us-ascii?Q?8ICQpC/i1kIHTNscG+E/GvDjjMGrlC9/fGYrkDKpRh0PyL2wGAszkS6IlKve?=
+ =?us-ascii?Q?H2OuSQt1V31eaCHpZb3lM9m55eXShYlWnL7CQdMpujfmsbBQTzvSdCJIhg38?=
+ =?us-ascii?Q?rJXEs2hteWtQCmRFIT+0SU2iQGF3hDVKDNgzlNpZmczHyDg4ZvsswqVBl4X7?=
+ =?us-ascii?Q?0Fk+4q/d6noHXFp8y3z36kZOwCFPxF1z7IRxFNh0idajopmddTwlBeao1aeg?=
+ =?us-ascii?Q?ItKkmMbV73z+6T60IbtcybkQzUwH52LgKoHY+CuJpgBM0FKUXC1Bykk3GXlb?=
+ =?us-ascii?Q?/kBrZF8a1DHPHRngKofiFZMWUDpBoWHhilBXqjZOVLsJSWOJDTt/SObLn/Nb?=
+ =?us-ascii?Q?2MidfYzl+xNqT8wgXfkJ2Chfiac5rEYFvKW/6c5k8PbWIOejdDrMNvqCJhKH?=
+ =?us-ascii?Q?Qx7Jn0285Ru7mz6f2BLMOX7A3EOobFSeTqd/DZxB6n2qYYt+iFacX7xYM2+g?=
+ =?us-ascii?Q?jp4r44KcG7ZQB46eTzk4RnCCU5+DQRlf1RcW2Ogj9/YZiKZJdj9aPFE1A+q2?=
+ =?us-ascii?Q?l5PYnOjAIK+W6aPVrYCl2rlxB9Cx/SiSJYowqKSOsEUbbLyrYbrsyucCnjOM?=
+ =?us-ascii?Q?EmxXniTd6FS/O8ZXkR5ecwFAMNSzOhDt5mKO914ykUSFv6dE5Hm/Vn8rZZxR?=
+ =?us-ascii?Q?5kn++3lAxgxxobavw++nvxcZch5w9sAeyhxcV3HkzbTvEEfW3jNAmJgyn8/C?=
+ =?us-ascii?Q?pO2VyzfsghEdIVWIzL9YaXkJumrFubLlvgg76M5tbeYnL6dPhflvUmz/SBa0?=
+ =?us-ascii?Q?E7lTnnVQLwOhE30VFN/T5iZVyCMIKoP+TLw0MO8ZYNlkNfV39hqQ3B9Yllvv?=
+ =?us-ascii?Q?4AbxkHckLKz8HuZwj1rTdvQLpD6wsuM3QEf63JQAyWSiLflYtQefyURgdWkN?=
+ =?us-ascii?Q?u0MawXBOsucAFQsJDMW86XOZNtjsHIW2Z0NaahC6zNxgVcEmBmevEjIq8kyl?=
+ =?us-ascii?Q?iKqJPJRYGArBu7R+Uj3S2RYDaaesig74uCNHIeUJZmoDNxKW8jTa8Ae4N4CJ?=
+ =?us-ascii?Q?XegiCYIlOM40F7T+dAyiIbNqiNnt?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(366016)(7416014)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xI3k8FQ1SVtA4DSpBFbyoYnStuI77THDji+vmzskht2ucsmYdigByyTbq4+Q?=
+ =?us-ascii?Q?MkccMs5R5XquC3tB3hyhbGbJSyumcPoQTKlWaant6FGCLs0uUTQK3Dd9305R?=
+ =?us-ascii?Q?m0ctwllR9U+5qZuNEuw+yPe8SuW2do9bqgN0azC6dcbE8RexnAhE6Xlz/CaY?=
+ =?us-ascii?Q?dViQJwPGAZQYoYzg48P9/1XT8VXhm/n0bVpJl9h9xm60RfyByD7pA1+VmFY6?=
+ =?us-ascii?Q?VZVGFdUtgIoCV2yT4pJo+xE8Ju6P5eCRI1Qf156sNF27TU9hCx2OsPBu0l6f?=
+ =?us-ascii?Q?rp9uxKKbkRXVKy86tsnjPVqdWwWb8QZGsgeQ9SJrFVLk7aWfMUu/K+DKPnYH?=
+ =?us-ascii?Q?58y25J8jEf3Y+LlHcCondrarvtkBD2RIuV9DBEYLksOCaTSEW/PKY/wUYGXU?=
+ =?us-ascii?Q?u2AbL9eF4Y7iZ+GRzpmuZNayC7rdpLmBI7R5PKdFK04t+1smn5IJ3TfFHoFX?=
+ =?us-ascii?Q?kd45qC230unr41DZvdi04+/T2A5+2XntVOCm4hdwlEgWfXCXZzU6dnGuIx+d?=
+ =?us-ascii?Q?Jg8EHPG7H8CzWsbvxh9KG7TCKfRHNhiKRhYiCuGYAoC0rSYRsFsLlRWm03Pa?=
+ =?us-ascii?Q?f0mJPpQgVhlgBZzulpbGCtzH1cmXkSshQVggaYAY5/Br/r4t7eKzV2SWUdNg?=
+ =?us-ascii?Q?AfK9Zny7ElnB1ygT12BjQHIeLD9732cfCvq28lQetCabHV3wmcX3sfZisiTI?=
+ =?us-ascii?Q?u1HZJlNiy6g97Wd4s5S74j3RfMaJk4HWZ8JUhOnxeLeZ3mLNh7pqImK36ZQ3?=
+ =?us-ascii?Q?xw9h2I3+UWclXYP7v8aTD0d85NI6x1IMAFDk8eu1kywzIG9citu0zyFQo28W?=
+ =?us-ascii?Q?fFzY0ATARS8Lw8j+OzuUfFmoiGCtrpGgX1u4kL9NpCjbcMhkYwTPo+pFGie7?=
+ =?us-ascii?Q?I/obpaY46cIQFD9sXXAiPxT4FodKkJhBTMRLnJ5IjL89pzl7PB0a/bO3AqiZ?=
+ =?us-ascii?Q?B1hVZx+pQO4GHfqpDCgwKBNB3i3gf1MHS7O3OVzx7v0MREJR/QyQDn/x3pFz?=
+ =?us-ascii?Q?z4+q9OCaEnpFG2sBzLa3NO9OLVA6slnh6dKizOCRZnjUj/aAZnkR75X1McUy?=
+ =?us-ascii?Q?cBG6M6Vyxcg6CTk94HduzwtWr7+Y6jrhXgMfJavthNdChzhvj+OTZ8w7piiM?=
+ =?us-ascii?Q?WUay8rKnHjDxtGJKZL5+LmqkLxMl+Qpabl4BUp/809AMs/4ylBAnn7KPubXf?=
+ =?us-ascii?Q?S+e7HBgI8CJ/a3gl0O9kC1BuRj/0XycTlZFFfCNmGA8RgMSqXSnONdkOCktb?=
+ =?us-ascii?Q?ULyS7HBbNuhUoVEskWIWBzARrMVEP9XNqsfOkbbh+w94MHVomX5AqbZAvxn8?=
+ =?us-ascii?Q?+PnHkrfPKG0letEq+INjPdCHGPArfdarcMouuR5uTmp0CSvp0YUUGDZkd6K2?=
+ =?us-ascii?Q?lhES61nl3z9GNluWV8oSiHdjtZ1pEn7OD5+9OZ2BfofcKwiInpo83/XFrvCy?=
+ =?us-ascii?Q?Jbccgx7HEsXAjt8Q8oMZBdCSU5fhK35Bk1cAR79XsSTNh11Nqzbw/xgSdRxn?=
+ =?us-ascii?Q?JlgEzHCd0Oc8OsEo/B1OyBoZUkLoLCIo0f7Z4ggqMlU+LPYyog0Or0QOWi22?=
+ =?us-ascii?Q?GTcj+qwycv3FTfxV47G83I3/OMByyQjNA3ALGlg7e2qyadEsM6WFwpII3n6w?=
+ =?us-ascii?Q?Lg=3D=3D?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ef88b70-1461-4d99-5291-08dd3b13fda1
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2025 18:38:40.3390
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iMTB193sgQEbJMDY64+yfAw0B3nHobnh4oEMosC4uQi1loHmU3Igd3NRlfXtxS6tj9Ugmw9HieOqy+4aoUMpAg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB3183
 
-For platforms on powerpc architecture with a default page size greater
-than 4096, there was an inconsistency in fragment size calculation.
-This caused the BPF selftest xdp_adjust_tail/xdp_adjust_frags_tail_grow
-to fail on powerpc.
+On Thu, 16 Jan 2025 13:40:53 +0900
+FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
 
-The issue occurred because the fragment buffer size in
-bpf_prog_test_run_xdp() was set to 4096, while the actual data size in
-the fragment within the shared skb was checked against PAGE_SIZE
-(65536 on powerpc) in min_t, causing it to exceed 4096 and be set
-accordingly. This discrepancy led to an overflow when
-bpf_xdp_frags_increase_tail() checked for tailroom, as skb_frag_size(frag)
-could be greater than rxq->frag_size (when PAGE_SIZE > 4096).
+> Add PartialEq/Eq/PartialOrd/Ord trait to Ktime so two Ktime instances
+> can be compared to determine whether a timeout is met or not.
+> 
+> Use the derive implements; we directly touch C's ktime_t rather than
+> using the C's accessors because it is more efficient and we already do
+> in the existing code (Ktime::sub).
+> 
+> Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-This commit updates the page size references to 4096 to ensure consistency
-and prevent overflow issues in fragment size calculations.
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-Fixes: 1c1949982524 ("bpf: introduce frags support to bpf_prog_test_run_xdp()")
-Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
----
- net/bpf/test_run.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 501ec4249..eb5476184 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -124,7 +124,7 @@ struct xdp_test_data {
-  * must be updated accordingly this gets changed, otherwise BPF selftests
-  * will fail.
-  */
--#define TEST_XDP_FRAME_SIZE (PAGE_SIZE - sizeof(struct xdp_page_head))
-+#define TEST_XDP_FRAME_SIZE (4096 - sizeof(struct xdp_page_head))
- #define TEST_XDP_MAX_BATCH 256
- 
- static void xdp_test_run_init_page(netmem_ref netmem, void *arg)
-@@ -660,7 +660,7 @@ static void *bpf_test_init(const union bpf_attr *kattr, u32 user_size,
- 	void __user *data_in = u64_to_user_ptr(kattr->test.data_in);
- 	void *data;
- 
--	if (size < ETH_HLEN || size > PAGE_SIZE - headroom - tailroom)
-+	if (size < ETH_HLEN || size > 4096 - headroom - tailroom)
- 		return ERR_PTR(-EINVAL);
- 
- 	if (user_size > size)
-@@ -1297,7 +1297,7 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
- 			frag = &sinfo->frags[sinfo->nr_frags++];
- 
- 			data_len = min_t(u32, kattr->test.data_size_in - size,
--					 PAGE_SIZE);
-+					 4096);
- 			skb_frag_fill_page_desc(frag, page, 0, data_len);
- 
- 			if (copy_from_user(page_address(page), data_in + size,
--- 
-2.43.5
+> ---
+>  rust/kernel/time.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index 379c0f5772e5..48b71e6641ce 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -27,7 +27,7 @@ pub fn msecs_to_jiffies(msecs: Msecs) -> Jiffies {
+>  
+>  /// A Rust wrapper around a `ktime_t`.
+>  #[repr(transparent)]
+> -#[derive(Copy, Clone)]
+> +#[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord)]
+>  pub struct Ktime {
+>      inner: bindings::ktime_t,
+>  }
 
