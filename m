@@ -1,241 +1,154 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6370A12B71
-	for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 16:01:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBD0211287;
+	Wed, 22 Jan 2025 16:01:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737561677; cv=none; b=k2qVc7dKwTFTzuxcLyvpgkg8noxC2OgI6O+mBV/oJUCLmTU41Q0csYKnjXql4XjxkOezB/qn88b077mS4lUU495xfC9RWo8T/psOMWF9avgVJLUXk41X2mI9ysX2cyL5Dx1rtwIyFWYM0YfbwSdEGl44+TMdgC6MdqU87NShPkM=
+	t=1737561684; cv=none; b=HFSWCPDcTCPe28HqLAKbEjymQwzjb89sscGB0cLhAs/2BBD9GOt9krVGvFvm41r08eJv7q8I1mHguOAl7RsOxUkyB+5ShNmiPN8pnCjpPpp3iP8A4Km0Lr8U+oU2ip09CNfzqHmQVK2gCCerGFbFZSfiQdKC4JGByHiyLGJzEwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737561677; c=relaxed/simple;
-	bh=QDATWEJUjWuzNKG8OAAcMl8/rarR3yMkDbeCKXtDEYg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l1VEHsp/QWCLBzCTTjOdg+chz+8x62290Zq7I6dJ7ZdJ0vGkJvncg18gKzLUIywAY9OTOw2Lw4stObPHDXPWtzra2HVfWuz7knaPSG/KBmi9iaFml+GC5eQzRLleYc9se7SKZwOjX7YJcwQ7wdHdjxOR/JSXcKvNtaO9GtuMrH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D1QJbze+; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1737561684; c=relaxed/simple;
+	bh=e8KJ7L8z+Xf7GP0K4PTyN/ifRd7iUNh70Fvo3UGOCYY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IFYhZ2E49cBw0m+yzWiDYbcNTBenz/LPrNIqRD1+bZKgklsrQSaaB2RFE00221uTsnt9w4X3SFVQ6/fWyDP45TVC33sORri+skEJagEcDr+KRqnkiOr2x/iyd/yKQhSZbxb2v3erb1nEVs3kDGMOPlr6/w5b39COu59SRVXDcs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CAit0cn+; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D1QJbze+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737561674;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XMKUEN5MHdAxy6GkxwuxV79GlOrnXUk2pyO8Oo1XZa8=;
-	b=D1QJbze+gpx5mUg/2wliX2uXWJkCF3j16OBiW25JqDljoQoTSUPSENJrzuoty+hpZnuQKb
-	P3bgYeYaL12/g9wiaGUVPJVMVhvZ5Ak4efYsndHz4pjPPfT0EDmH1/tIR6kRlqoH+L/690
-	mQC3Q7kx3Yng40Y0usrEsGymV3MNZ3E=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-692-gmTU8M_APGG6YR1WsK38zA-1; Wed, 22 Jan 2025 11:01:12 -0500
-X-MC-Unique: gmTU8M_APGG6YR1WsK38zA-1
-X-Mimecast-MFC-AGG-ID: gmTU8M_APGG6YR1WsK38zA
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7b6e1c50ef1so1025338585a.2
-        for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 08:01:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737561672; x=1738166472;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XMKUEN5MHdAxy6GkxwuxV79GlOrnXUk2pyO8Oo1XZa8=;
-        b=BMUQ1ZMRsuFncYMpIzYZJq8LgXQbNlL/cbJDk1kqUlHsHeAlRTOqIshIfMmtKDwa7R
-         6nUlEqIN4TcOIJGV8wbH18RwA6zudb2odi5UCB2VpdZNSlN8KMQXsmmLZ2N4olQG5b2Q
-         7XuHy5tdrtnBmqqD2vnXGAdxUthV3qQvxTNVL7OVmiA+xwJa5m72/Z4T3yt4ufqtpe6i
-         fjoJ78nsexb2WcfqErO/Y9f1Lsu/5N6G5l/dK7ybKf/fzGi3OBWKdnwGK2L8fQTpQTRx
-         jzSZGzDDUra8ctyTBAsP97nh1RtUxE0ktJer5TbDl8bg31VWgoyWw2hEMkymnyxWNOe8
-         ifPA==
-X-Forwarded-Encrypted: i=1; AJvYcCXYlEvzNVfhFFh9LMmS6GiSQB2Dp1jHa3YTAY2M5PCY9dbeCNNO04s3Jp7UfGxQReF27WOy22E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxixxbGrIHtbnGA7vOxYMNg7HT7wVrFM+wSyFNsgEPBQGeQrOKH
-	i398v6OukA62F/inRIRcQXu+fNQvnknTo5Xldf3XcBKiM1gHw+0IZnKU7n5osAY8Eix/Ulet/jc
-	R69v9QG+zyUTdo+Ja5dZLTcKxowtghIcS826LlW9S67xVk3SXoTtrVw==
-X-Gm-Gg: ASbGncs9bH3M9vt5lhJxN+u5eTnAFGQCZdNtki8YaecsiXdi66GRzMuBSU7KWzZf1MD
-	tpq3tumBl+fsonEu/MoXsHg9RrdZDTLPb5OJTkHNUda8yPPc6GEjDt2l4u/X9ifINpAA6n9h6K7
-	8bRO/quDj8W1p7aIEcxr4d+Zpfl9cMzQGHdBF+MOkD4SLctMv/+Rk1Bc0s0EWz4Qm/5o3f3emdG
-	jrKDV4COPcytdE3hJSPBDVm/SbiuioHHDv+la8nL9M/v3CrZl0J1qED2AndOXa4AllZevJjtQ==
-X-Received: by 2002:a05:620a:4094:b0:7b6:db05:1435 with SMTP id af79cd13be357-7be6320c108mr3150895285a.10.1737561671998;
-        Wed, 22 Jan 2025 08:01:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE2zGkE94SUjCftUqQ/6Wsu0C5dAR/r3uSM8TXId9D4r2wyxUWiBhUy9no8+elSdb5HQRT1+w==
-X-Received: by 2002:a05:620a:4094:b0:7b6:db05:1435 with SMTP id af79cd13be357-7be6320c108mr3150891285a.10.1737561671681;
-        Wed, 22 Jan 2025 08:01:11 -0800 (PST)
-Received: from leonardi-redhat ([176.206.32.19])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7be614743easm674872885a.24.2025.01.22.08.01.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jan 2025 08:01:11 -0800 (PST)
-Date: Wed, 22 Jan 2025 17:01:07 +0100
-From: Luigi Leonardi <leonardi@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Stefano Garzarella <sgarzare@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	George Zhang <georgezhang@vmware.com>, Dmitry Torokhov <dtor@vmware.com>, Andy King <acking@vmware.com>, 
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net v2 3/6] vsock/test: Introduce vsock_bind()
-Message-ID: <xzvqojpgicztj3waxetzemx5kzmjy57yl5hv5t7y2sh4bda27l@wwvuhac6zkgg>
-References: <20250121-vsock-transport-vs-autobind-v2-0-aad6069a4e8c@rbox.co>
- <20250121-vsock-transport-vs-autobind-v2-3-aad6069a4e8c@rbox.co>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CAit0cn+"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50MCPHXU013713;
+	Wed, 22 Jan 2025 14:46:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=f+OQIE
+	QKsjPJaq/H92kYav0p4h1QhbDXTKlscMHn6AI=; b=CAit0cn+lJi3IVIKB/B0Jl
+	J7F2FpFiAovDvXrT8Of6lMmaKQb6uGAMQhgUAH+rjaPlp4rIjsa0u4cwQCE1CTZB
+	13oIN7UjQxCv/uq6xfFqREdU+OhjyfMWMptpvxHat8i0qFd7gmerciTWtjloNXqW
+	oBOAMSh6riKEvdelFyHoM2qkyKshxIZeXCRXoszUr/YNv28jgirhbZVX3qJcaaOv
+	UNo+LjKJqXbNGk2ofEf4TNJLDHykkO4JGLq1zczUw+G1MHNDJSFycawwpNYnh8+c
+	jNADNhH+tMg90Wtk0OblCQCqEsYyPgfhyWqsYxY+wRkh6UIiEUgVOJL4oKYz0f0w
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44apr9bbcs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jan 2025 14:46:23 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50MEe8ZL003819;
+	Wed, 22 Jan 2025 14:46:22 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44apr9bbck-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jan 2025 14:46:22 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50MBerdH021080;
+	Wed, 22 Jan 2025 14:46:21 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 448sb1ggdh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jan 2025 14:46:21 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50MEkIAk32375116
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Jan 2025 14:46:18 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EEF3620040;
+	Wed, 22 Jan 2025 14:46:17 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E8A8C20043;
+	Wed, 22 Jan 2025 14:46:16 +0000 (GMT)
+Received: from [9.171.82.13] (unknown [9.171.82.13])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Jan 2025 14:46:16 +0000 (GMT)
+Message-ID: <8c4ef401-9777-4a00-9b1f-0c66650a826d@linux.ibm.com>
+Date: Wed, 22 Jan 2025 15:46:16 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250121-vsock-transport-vs-autobind-v2-3-aad6069a4e8c@rbox.co>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC net-next 3/7] net/ism: Use uuid_t for ISM GID
+To: Simon Horman <horms@kernel.org>
+Cc: Wenjia Zhang <wenjia@linux.ibm.com>, Jan Karcher <jaka@linux.ibm.com>,
+        Gerd Bayer <gbayer@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+        "D. Wythe" <alibuda@linux.alibaba.com>,
+        Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
+        Peter Oberparleiter
+ <oberpar@linux.ibm.com>,
+        David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        Julian Ruess <julianr@linux.ibm.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Thorsten Winkler <twinkler@linux.ibm.com>, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>
+References: <20250115195527.2094320-1-wintera@linux.ibm.com>
+ <20250115195527.2094320-4-wintera@linux.ibm.com>
+ <20250120171820.GC6206@kernel.org>
+Content-Language: en-US
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <20250120171820.GC6206@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 9iHLN6_9EVQNvi39JaMn8IUOy96Ozs9n
+X-Proofpoint-ORIG-GUID: JlVzvFPDl7QM20ixpCvq5t5ta9abVVYe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-22_06,2025-01-22_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 mlxscore=0
+ spamscore=0 clxscore=1015 bulkscore=0 phishscore=0 malwarescore=0
+ mlxlogscore=926 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2501220107
 
-On Tue, Jan 21, 2025 at 03:44:04PM +0100, Michal Luczaj wrote:
->Add a helper for socket()+bind(). Adapt callers.
->
->Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
->Signed-off-by: Michal Luczaj <mhal@rbox.co>
->---
-> tools/testing/vsock/util.c       | 56 +++++++++++++++++-----------------------
-> tools/testing/vsock/util.h       |  1 +
-> tools/testing/vsock/vsock_test.c | 17 +-----------
-> 3 files changed, 25 insertions(+), 49 deletions(-)
->
->diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
->index 34e9dac0a105f8aeb8c9af379b080d5ce8cb2782..31ee1767c8b73c05cfd219c3d520a677df6e66a6 100644
->--- a/tools/testing/vsock/util.c
->+++ b/tools/testing/vsock/util.c
->@@ -96,33 +96,42 @@ void vsock_wait_remote_close(int fd)
-> 	close(epollfd);
-> }
->
->-/* Bind to <bind_port>, connect to <cid, port> and return the file descriptor. */
->-int vsock_bind_connect(unsigned int cid, unsigned int port, unsigned int bind_port, int type)
-If you need to send a v3, it would be nice to have a comment for 
-vsock_bind, as there used to be one.
->+int vsock_bind(unsigned int cid, unsigned int port, int type)
-> {
->-	struct sockaddr_vm sa_client = {
->-		.svm_family = AF_VSOCK,
->-		.svm_cid = VMADDR_CID_ANY,
->-		.svm_port = bind_port,
->-	};
->-	struct sockaddr_vm sa_server = {
->+	struct sockaddr_vm sa = {
-> 		.svm_family = AF_VSOCK,
-> 		.svm_cid = cid,
-> 		.svm_port = port,
-> 	};
->+	int fd;
->
->-	int client_fd, ret;
->-
->-	client_fd = socket(AF_VSOCK, type, 0);
->-	if (client_fd < 0) {
->+	fd = socket(AF_VSOCK, type, 0);
->+	if (fd < 0) {
-> 		perror("socket");
-> 		exit(EXIT_FAILURE);
-> 	}
->
->-	if (bind(client_fd, (struct sockaddr *)&sa_client, sizeof(sa_client))) {
->+	if (bind(fd, (struct sockaddr *)&sa, sizeof(sa))) {
-> 		perror("bind");
-> 		exit(EXIT_FAILURE);
-> 	}
->
->+	return fd;
->+}
->+
->+/* Bind to <bind_port>, connect to <cid, port> and return the file descriptor. */
->+int vsock_bind_connect(unsigned int cid, unsigned int port, unsigned int bind_port, int type)
->+{
->+	struct sockaddr_vm sa_server = {
->+		.svm_family = AF_VSOCK,
->+		.svm_cid = cid,
->+		.svm_port = port,
->+	};
->+
->+	int client_fd, ret;
->+
->+	client_fd = vsock_bind(VMADDR_CID_ANY, bind_port, type);
->+
-> 	timeout_begin(TIMEOUT);
-> 	do {
-> 		ret = connect(client_fd, (struct sockaddr *)&sa_server, sizeof(sa_server));
->@@ -192,28 +201,9 @@ int vsock_seqpacket_connect(unsigned int cid, unsigned int port)
-> /* Listen on <cid, port> and return the file descriptor. */
-> static int vsock_listen(unsigned int cid, unsigned int port, int type)
-> {
->-	union {
->-		struct sockaddr sa;
->-		struct sockaddr_vm svm;
->-	} addr = {
->-		.svm = {
->-			.svm_family = AF_VSOCK,
->-			.svm_port = port,
->-			.svm_cid = cid,
->-		},
->-	};
-> 	int fd;
->
->-	fd = socket(AF_VSOCK, type, 0);
->-	if (fd < 0) {
->-		perror("socket");
->-		exit(EXIT_FAILURE);
->-	}
->-
->-	if (bind(fd, &addr.sa, sizeof(addr.svm)) < 0) {
->-		perror("bind");
->-		exit(EXIT_FAILURE);
->-	}
->+	fd = vsock_bind(cid, port, type);
->
-> 	if (listen(fd, 1) < 0) {
-> 		perror("listen");
->diff --git a/tools/testing/vsock/util.h b/tools/testing/vsock/util.h
->index ba84d296d8b71e1bcba2abdad337e07aac45e75e..7736594a15d29449d98bd1e9e19c3acd1a623443 100644
->--- a/tools/testing/vsock/util.h
->+++ b/tools/testing/vsock/util.h
->@@ -43,6 +43,7 @@ int vsock_connect(unsigned int cid, unsigned int port, int type);
-> int vsock_accept(unsigned int cid, unsigned int port,
-> 		 struct sockaddr_vm *clientaddrp, int type);
-> int vsock_stream_connect(unsigned int cid, unsigned int port);
->+int vsock_bind(unsigned int cid, unsigned int port, int type);
-> int vsock_bind_connect(unsigned int cid, unsigned int port,
-> 		       unsigned int bind_port, int type);
-> int vsock_seqpacket_connect(unsigned int cid, unsigned int port);
->diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
->index 48f17641ca504316d1199926149c9bd62eb2921d..28a5083bbfd600cf84a1a85cec2f272ce6912dd3 100644
->--- a/tools/testing/vsock/vsock_test.c
->+++ b/tools/testing/vsock/vsock_test.c
->@@ -108,24 +108,9 @@ static void test_stream_bind_only_client(const struct test_opts *opts)
->
-> static void test_stream_bind_only_server(const struct test_opts *opts)
-> {
->-	union {
->-		struct sockaddr sa;
->-		struct sockaddr_vm svm;
->-	} addr = {
->-		.svm = {
->-			.svm_family = AF_VSOCK,
->-			.svm_port = opts->peer_port,
->-			.svm_cid = VMADDR_CID_ANY,
->-		},
->-	};
-> 	int fd;
->
->-	fd = socket(AF_VSOCK, SOCK_STREAM, 0);
->-
->-	if (bind(fd, &addr.sa, sizeof(addr.svm)) < 0) {
->-		perror("bind");
->-		exit(EXIT_FAILURE);
->-	}
->+	fd = vsock_bind(VMADDR_CID_ANY, opts->peer_port, SOCK_STREAM);
->
-> 	/* Notify the client that the server is ready */
-> 	control_writeln("BIND");
->
->-- 
->2.48.1
->
 
-Thanks for the patch, I left small a comment, but if no v3 is needed 
-then:
 
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+On 20.01.25 18:18, Simon Horman wrote:
+>> +static inline void copy_to_smcdgid(struct smcd_gid *sgid, uuid_t *igid)
+>> +{
+>> +	__be64 temp;
+>> +
+>> +	memcpy(&temp, igid, sizeof(sgid->gid));
+>> +	sgid->gid = ntohll(temp);
+>> +	memcpy(&temp, igid + sizeof(sgid->gid), sizeof(sgid->gid_ext));
+> Hi Alexandra,
+> 
+> The stride of the pointer arithmetic is the width of igid
+> so this write will be at an offset of:
+> 
+>    sizeof(igid) + sizeof(sgid->gid) = 128 bytes
+> 
+> Which is beyond the end of *igid.
+
+
+Duh, what a stupid mistake. Thank you.
+
+
+> I think the desired operation is to write at an offset of 8 bytes, so
+> perhaps this is a way to achieve that, as the bi field is a
+> 16 byte array of u8:
+> 
+> 	memcpy(&temp, igid->b + sizeof(sgid->gid), sizeof(sgid->gid_ext));
+
+I propose to keep the
+memcpy(&temp, (u8 *)igid + sizeof(sgid->gid), sizeof(sgid->gid_ext));
+like in the orginal net/smc/smc_loopback.c
+
+
+> Flagged by W=1 builds with gcc-14 and clang-19, and by Smatch.
+> 
+>> +	sgid->gid_ext = ntohll(temp);
+>> +}
+
+I actually overlooked it in my smatch run (too many old warnings), but I
+cannot get W=1 to flag it. I'll try to improve my setup.
+
 
