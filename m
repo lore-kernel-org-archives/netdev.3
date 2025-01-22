@@ -1,91 +1,83 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DDF211A3D
-	for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 14:10:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1B5211A3D
+	for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 14:12:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737555037; cv=none; b=t/H9loEYn5oEK3FZK+id0VUbmFL/4bIy8blulNHG+nh08EofbbcnCFvLIHtEAyH9EkPwjaFKWwbdfoGrY2kl1dOz6hYiI0LFLRit44UmWOWz6nF3HnC/UxSlHoPqUGbWj+W6dR7IGLAWX49ER5II+rNLVQpHTRkhmvaqK28w7lo=
+	t=1737555158; cv=none; b=SWBQH3DzVCwpfJB/BUCwn8xUoE/w215FfzxPH+mjuj3vPV+zMw6MkDzqUnJSdpabmg+Ca0SRvHmjTgo3fWYubIaV7eSqa0zP+JKowAZ4aOnSr3tL0UAh6v5VZEbp39I9UBpQ9dx3+Om09yPqin9JIMqEYnppI+4XI4vpkOT2PGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737555037; c=relaxed/simple;
-	bh=6TJ5VnTqM5pyJvoiZqGAu7NcBiQnT7SazTezEKHorkk=;
+	s=arc-20240116; t=1737555158; c=relaxed/simple;
+	bh=dDS/SDqhcfA0lnJz6d+2NEp+PwW+d1annRtLdt+AUDI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AFcyjWLkzb2CMPAX7+zHsJrWnFw9hSJhsid2liBpaLbqNq5loH7OQ18LgDgQscKzZLDYq8uS4urhyRiw/3/LoWFGxt9dP9tjU7eXVlceMV609oR3zDkTgSqsw6dm8l+Q16/nJObRqCPntlDAjaE8hT7UYQyWXFI9RLR9noHufeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bFzum6mz; arc=none smtp.client-ip=209.85.208.46
+	 To:Cc:Content-Type; b=AbdPkmex0VxtT7aaEoxMXvFI+iFYVYlYW9uLM+IQ2nhdQoG6eKCOHd6Xml6O+kxr49LvHwpX9XWMfAoJIMv5i3VUfI1ZbEvfb4osG482VZxcvjJiaDNVNL//LNyDxj300bh5P1PZw3oUFMyGWnqw+L/wUU1hcOtvGFjs0HxcbDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b82AfAJa; arc=none smtp.client-ip=209.85.208.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bFzum6mz"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5d3d143376dso10494446a12.3
-        for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 06:10:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b82AfAJa"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5d3e6274015so4584439a12.0
+        for <netdev@vger.kernel.org>; Wed, 22 Jan 2025 06:12:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737555034; x=1738159834; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1737555155; x=1738159955; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6TJ5VnTqM5pyJvoiZqGAu7NcBiQnT7SazTezEKHorkk=;
-        b=bFzum6mzeby12VmAhwHZlsNiMviBUvztz+dARoPW0Y+xWB+mCT4PSkEID1ghbR9vQe
-         IigXjEU4HXz5GPoO3MsuUVoR1uY/Zbzx6XjxIH2fBrU9bNY7srCt5ZMjtqEbiZOqvlIl
-         wEWPyFnWwUq7mDwpUa106IqLN3Td9syWkjJucyF/xIRj3WYcLFqi9291lvRKdQ0G/Ilg
-         QCFJVlrXzv84BRguSTGPhlTb91wqa4aQJSSjbxm3wkQVDbAYbgPvlb9EKJAKo/3CsGhe
-         AQ08O5DwFjwJ9ZzVE/N8b4jRK57x5jviB4ZdZVaCX6ecf9yc72FOPMzqJbQHBvAXvIFY
-         b54Q==
+        bh=dDS/SDqhcfA0lnJz6d+2NEp+PwW+d1annRtLdt+AUDI=;
+        b=b82AfAJaKvkTt1AJGFJpZ+/abTAIQzjIWcMCs+gYJEhxJDVapqFWRKhW2ckMz4koyT
+         DLHpySYj+n0xzJC8m8rzB/hz5Xzl6Fo2k4BXc7ZabD22ciOHiM5KCtG8NvxkQ9srjGC6
+         SBJtE7/FKQ2svntmYwvcBC6nzclDdSPFex+z82394KJ9wEPRewIU9WaOcbKc5B9Y1BlB
+         HO/5xHrhZ3Wz+/KtarmCGhfKXgsT46YvE30Mdp3Uf3dstSMBZzsuIuaVr8JABm7ZMS8g
+         JDM75O9wdaxPpcg6tSfwNWTXDChuc05ptOHt/HhRrjBp/bDDYV3w4uZBVQ92yr8U9Xsl
+         60Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737555034; x=1738159834;
+        d=1e100.net; s=20230601; t=1737555155; x=1738159955;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6TJ5VnTqM5pyJvoiZqGAu7NcBiQnT7SazTezEKHorkk=;
-        b=exgiOvRKmiMoFW1dlVzuXpXTphYJtKk8ERPwd+MDG+pSS0BmRFcMHFjhz3b95jahR8
-         fgfHegNk+spwhxg2mh0p3QYU2JodFC3EmEos4bH6gsFD5kzv4ETeyTyZmyU6jIKpQlcO
-         0/bPtAmJeIVORgZrKToZu76BeR6tNKht7nEhB9b26mDuU5ZPqcoq50bGN2J2RLMmPJl0
-         y7yCg3SwagMxsm4lC2q2I5HWo98ix35zfCFXMj2vUPrjBT1YNjxPk1tXWchxbeWroiph
-         aRskwjjr9A85Wyriju3eT9qLIFLNJtnDg7MzdgAjObj6qqaIroR6t5HanxaduNwZ/zFH
-         02MA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQJVw8HGuA+Yi6pMrvRznxRYBLtc8oM+k2BFVLWiEv21fcb8O/i819FGokJYeT14wEUqOw8M0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yweupwi4MI4+9S9CqWKSPe7wRJvNdTxN8ys89QY222xWovArCk6
-	raoXkgERjmesVhdwNLkmKSES11GoCKUhlHCAowNFDlnGQTZuq8PRbTKmqKH+G/N60+6hVZvQlp5
-	8t+9D+10P8XpvVM2DFzjarGQYPeg0m/emCiRAT+jqYGPw386xBw==
-X-Gm-Gg: ASbGncuxHxyUrLRqJaGfywiucxsSTnXLpGrW1uH5P6qzNOtieFwy2+qWZATwCCbWNY7
-	vlcttELhNsvPb2R1ZGWdfXFi0fJEmQlwlvz0igDYImY9ZG4Vj6A==
-X-Google-Smtp-Source: AGHT+IFfOFMkpFjYviXe0YqCSfFhFwVbLFodgDNBaqGoabqPQ2tadfiZb7twFaAwo1kc9n9xtmLXAMOTFhmNJ/ta3T0=
-X-Received: by 2002:a50:954b:0:b0:5d3:cf08:d64d with SMTP id
- 4fb4d7f45d1cf-5db7db2bfcemr15436774a12.32.1737555033615; Wed, 22 Jan 2025
- 06:10:33 -0800 (PST)
+        bh=dDS/SDqhcfA0lnJz6d+2NEp+PwW+d1annRtLdt+AUDI=;
+        b=ZfWciiaaq5V00edgTv1bSqfoNxdosK/Apc/0pjAJHwnJEF2TTipiEYXMqr0LkTySjF
+         IsixMNyp4TNcOm5nRiROi/X1yDAFL4cxkIHiR3p40xwgIRMQO30jWRMYyLxIWsosoPIS
+         r7X0PLEUx43//ELB+i188/7R76PnwIUq8kpyI0glQzdOPiVOHLM4ti18ksxcYfjYwswj
+         rO8F2aaK2BtQ+u5TO+qG9tTNTv8VOJihcrz+y68vgZcSxzwKnrLN7NCNew1194zFBOcL
+         vfQjeQMxExWX72kc6iCyYz4Plja/qcYJPqIoYZ8PXDFwokOhh0Xzyhp0EwuAB8Ro6qYb
+         0uyw==
+X-Forwarded-Encrypted: i=1; AJvYcCUQGwkGDQKJOxxAk7o6If0L5DQ2OsCEJihWrWmXhzKI/nRspGy4MttY0H6hRcZJBXCcGbmi9NE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQHMM+JAipeexppWNKMiXv67wvP/AIgmXJyIO0T7VMkNAgUeve
+	yxIlMmmHBP2WRrzijcy4JpOEDOMVmtcL4BvojAk7MeQGSXmKmTyXLI6VtQ5dkuY+XdDMPl5pejZ
+	2HbMmO+Sevsy6VR8C+SD3j8IOpuuP7T+z3ZIFzztgbm3X1Ed4lg==
+X-Gm-Gg: ASbGnctZcISS77VXJrn7hUxE8ZgldrjthoU6xftocgWzukYvXST+pjPFrcjbvq5ORMk
+	cUJQfnKia2cWFFPzbIlazFKLEdsjjXOZKErkWVTiMl2z9KhU7Zw==
+X-Google-Smtp-Source: AGHT+IGl75hBXd7Ltqx93ygoqn1dF70pIe1XSduh8IQ3KDc7ROLMBMfTVQv3IcDPdZbgsS62arQCK+tBmvgc2nwOg/8=
+X-Received: by 2002:a17:907:72d0:b0:aa6:7cae:dba7 with SMTP id
+ a640c23a62f3a-ab38b1e1dfcmr2147033466b.4.1737555154551; Wed, 22 Jan 2025
+ 06:12:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250121221519.392014-1-kuba@kernel.org> <20250121221519.392014-2-kuba@kernel.org>
-In-Reply-To: <20250121221519.392014-2-kuba@kernel.org>
+References: <20250121221519.392014-1-kuba@kernel.org> <20250121221519.392014-5-kuba@kernel.org>
+In-Reply-To: <20250121221519.392014-5-kuba@kernel.org>
 From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 22 Jan 2025 15:10:22 +0100
-X-Gm-Features: AbW1kvYlJ-M6C3qGLQrz_lj377rWYAvf_wb7SLb4AGIf4ag06YgMTwgD-WgMKmE
-Message-ID: <CANn89iLFr48RWMz4ikX=O0qPyuJmwLjpiwXMDtS8Zg4HqWoCYg@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/7] eth: tg3: fix calling napi_enable() in
+Date: Wed, 22 Jan 2025 15:12:23 +0100
+X-Gm-Features: AbW1kva5xoVW8uVQEuZuSZlqVx3jURevwWxjSZ9LFqv64T0DVpZ9rVD78dA9jjI
+Message-ID: <CANn89iKGh=M6r80FjZxsx1k7YwbTtPQwKOq=JDusDNB4LDS08g@mail.gmail.com>
+Subject: Re: [PATCH net-next 4/7] eth: 8139too: fix calling napi_enable() in
  atomic context
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: davem@davemloft.net, netdev@vger.kernel.org, pabeni@redhat.com, 
 	andrew+netdev@lunn.ch, horms@kernel.org, dan.carpenter@linaro.org, 
-	pavan.chebbi@broadcom.com, mchan@broadcom.com, kuniyu@amazon.com, 
-	romieu@fr.zoreil.com
+	romieu@fr.zoreil.com, kuniyu@amazon.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Tue, Jan 21, 2025 at 11:15=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> w=
 rote:
 >
-> tg3 has a spin lock protecting most of the config,
-> switch to taking netdev_lock() explicitly on enable/start
-> paths. Disable/stop paths seem to not be under the spin
-> lock (since napi_disable() already couldn't sleep),
-> so leave that side as is.
->
-> tg3_restart_hw() releases and re-takes the spin lock,
-> we need to do the same because dev_close() needs to
-> take netdev_lock().
+> napi_enable() may sleep now, take netdev_lock() before tp->lock and
+> tp->rx_lock.
 >
 > Fixes: 413f0271f396 ("net: protect NAPI enablement with netdev_lock()")
 > Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
