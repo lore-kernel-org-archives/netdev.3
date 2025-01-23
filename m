@@ -1,107 +1,189 @@
-Received: from violet.fr.zoreil.com (violet.fr.zoreil.com [92.243.8.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5200A14A4E1
-	for <netdev@vger.kernel.org>; Thu, 23 Jan 2025 22:51:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.243.8.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38441139CEF
+	for <netdev@vger.kernel.org>; Thu, 23 Jan 2025 23:12:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737672676; cv=none; b=XHyTYveHY4b93eZqRCT7SYLQ/4wvPv9fVht78FCYhDPm9ITFyyzZJLgPK1/kutFPvKq1IrEawKd2R4r1q75bYdwJ30Koua5HcEJ+ASP+l7QyMtpMOMHzLPvraklFO/5RfIW+odccvrb4rvqI+iUYp1Kxf1nY4KlbrzV7UADOSE4=
+	t=1737673959; cv=none; b=ozyXYdbHCG63peOk3XDGEv5ZMcx8ChiAIu+CPHqlJN43qWYxFWjYmmQfj5kM+7XjOKVawdyjMuevOjc4dh/g/eZx2JCFPWBhlffSt+/mwT0I1sLGTK+KT8GLPy45ZN/Z28/7G8TKgxOlX9EOpu6vb9OfzATXi7st24JxNRlUmqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737672676; c=relaxed/simple;
-	bh=qgFHtDLubgczIuL0ZYBHjoNre/n1EVJvuZASN6L5QZY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P7BlNcciwqBOsYm0iIqz509WTAXS9eWJMHiXs41OiP8s6YTMMwKKI1duuEpSFOUBZdawhPJxVV+l9ES/gNRxDb60zVsLi/tMEdDoiR+WZ+5Ls4b0OWCj1vB36PbwCbue/z80eqt37MHMPnC3MBV0gcD9gxlFwYSXlOSmsBv/ySo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fr.zoreil.com; spf=pass smtp.mailfrom=fr.zoreil.com; dkim=pass (1024-bit key) header.d=fr.zoreil.com header.i=@fr.zoreil.com header.b=NMeSD0mJ; arc=none smtp.client-ip=92.243.8.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fr.zoreil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fr.zoreil.com
+	s=arc-20240116; t=1737673959; c=relaxed/simple;
+	bh=JQHRcENH+j6qiC6qeChHNpAzTsg0urhF7CpKb9v+rss=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=M0D6nS5cMIAAFDrzQh9NxHfGs5XNPJuF0PqPojOy3a3sWGqAMsimCVSaUjxLgKfvCwe7d/a0C0a/rl+qRMP2N1Ttx7sKKGlWtUiRkLMMxliRNNWuTZwkqCeDTNwk5Z3B0rW62tIPfovCccj/b9xD80r1ATp6Zm0rfnBn0oq+OTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VIyVEHuI; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fr.zoreil.com header.i=@fr.zoreil.com header.b="NMeSD0mJ"
-Received: from violet.fr.zoreil.com ([127.0.0.1])
-	by violet.fr.zoreil.com (8.17.1/8.17.1) with ESMTP id 50NMmaef2035355;
-	Thu, 23 Jan 2025 23:48:36 +0100
-DKIM-Filter: OpenDKIM Filter v2.11.0 violet.fr.zoreil.com 50NMmaef2035355
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fr.zoreil.com;
-	s=v20220413; t=1737672516;
-	bh=vD5tV6KFOJoi4vMlQ5Yc1S8T7BXYAcEXpxunyk1ccqU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NMeSD0mJbMT9UvwxWu1pnFYQwgLXsSVrl+q/7TSBoDkcdHZlFUKCdTgRctVnRWFtb
-	 k5tK1VsoDXPFRU8OqoYJG/PY0B9TZBu91Aav8nicNNOyR6/Ux3B6VFgvIpYaX3kKf2
-	 E9AjK6K5lW1nV15nIgLUrv7kdkPzmoVM10IqUO4o=
-Received: (from romieu@localhost)
-	by violet.fr.zoreil.com (8.17.1/8.17.1/Submit) id 50NMmaAt2035354;
-	Thu, 23 Jan 2025 23:48:36 +0100
-Date: Thu, 23 Jan 2025 23:48:35 +0100
-From: Francois Romieu <romieu@fr.zoreil.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-        pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
-        dan.carpenter@linaro.org, kuniyu@amazon.com
-Subject: Re: [PATCH net v2 4/7] eth: 8139too: fix calling napi_enable() in
- atomic context
-Message-ID: <20250123224835.GA2034432@electric-eye.fr.zoreil.com>
-References: <20250123004520.806855-1-kuba@kernel.org>
- <20250123004520.806855-5-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VIyVEHuI"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ef91d5c863so3053461a91.2
+        for <netdev@vger.kernel.org>; Thu, 23 Jan 2025 15:12:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1737673957; x=1738278757; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HF4G1xyVJrDcJpcFoHM4c0Y75qeijYE/HkmrsCL2B8o=;
+        b=VIyVEHuIdqOsb64X3TEmRvgAAIewfN9EChTJ5IWuQvYgtRk0mG3fnmEp+HKZ07YSpb
+         UBI53FGZdxt7qwiWbZ2ylqTZBKMChTY4nYr/PmLI/J1Hutq1nHDVv6riEdC2arY6tjs1
+         oqzcyF+rOSsZsaLaFFhVqYl172EIHdvPDSq4WH4q4ccrIICzf5YdwN9j6dA1qQdig9Ok
+         BKBVYgSZme9rvwuSdFWbGbZttmM2HaZytLEBq9IHrxlb3lV9G71+M9c2PHHmxkCek72u
+         qtO5Xf9MnFi6wYV2N+t5TA1PjFKr1H8wkuixDzTZqakZxFz3ElmeJjBPHY9Z6lw+x7oF
+         Nsfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737673957; x=1738278757;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HF4G1xyVJrDcJpcFoHM4c0Y75qeijYE/HkmrsCL2B8o=;
+        b=kwt4xT6xEWqcV3u854v9Tg8aPugYMYnfdBbf8dM3hkBQvdEdpIo1xqkJKcUAlwZ3gs
+         wlwYjVzauVMLqj3fzySoG9UKWOjZImnHGufhOGWo7J800kH07PjpuyssgFN4+KI0kknX
+         xpY3DdkLLydyF6GmS4CrCBuytV99b/Qi3L0Y8/Qcl4DuRAYgzZUc0dxm/51rAVBFc43O
+         nMuN1g0jcjWRVNoAlTFChGQjO6almUIi7ar43DtGPlrgY0stKrrGjztvgw1dgiBLQtTL
+         XIE5uBngDxP79SqaNGJqhmlYgDZ8UMuRuz8usS1EiA0TH9rAomL2bFgNrjUp6MRqG2MV
+         Wsbg==
+X-Gm-Message-State: AOJu0YzjS5oCUCwwCRF4ZusaohcAA2pB5ERWcWINzBr0+6CpTSg1xOwN
+	AxAN3i1wzJivevajeDINe73ggiFdEA2cxnK1Z1xLiUULsP3vMTc9i7hgtmaUZ4ZDKrEwsVssQEE
+	uKDqnz6tAtg==
+X-Google-Smtp-Source: AGHT+IFyx+vpmFG7adIVWGvCGFeo+Yj/ZyWwb0ZYs0VF1yzGrWuDgvJ3dNchuJBFa0CFzOM6TleblCrdm8LwQw==
+X-Received: from pjbdy8.prod.google.com ([2002:a17:90b:6c8:b0:2ef:9239:aab1])
+ (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:56c7:b0:2ee:9b09:7d3d with SMTP id 98e67ed59e1d1-2f782c9a73emr37805987a91.19.1737673957421;
+ Thu, 23 Jan 2025 15:12:37 -0800 (PST)
+Date: Thu, 23 Jan 2025 23:12:32 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250123004520.806855-5-kuba@kernel.org>
-X-Organisation: Land of Sunshine Inc.
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.262.g85cc9f2d1e-goog
+Message-ID: <20250123231236.2657321-1-skhawaja@google.com>
+Subject: [PATCH net-next v2 0/4] Add support to do threaded napi busy poll
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Jakub Kicinski <kuba@kernel.org>, "David S . Miller " <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, almasrymina@google.com
+Cc: netdev@vger.kernel.org, skhawaja@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-Jakub Kicinski <kuba@kernel.org> :
-> napi_enable() may sleep now, take netdev_lock() before tp->lock and
-> tp->rx_lock.
-[...]
-> diff --git a/drivers/net/ethernet/realtek/8139too.c b/drivers/net/ethernet/realtek/8139too.c
-> index 9ce0e8a64ba8..a73dcaffa8c5 100644
-> --- a/drivers/net/ethernet/realtek/8139too.c
-> +++ b/drivers/net/ethernet/realtek/8139too.c
-> @@ -1684,6 +1684,7 @@ static void rtl8139_tx_timeout_task (struct work_struct *work)
->  	if (tmp8 & CmdTxEnb)
->  		RTL_W8 (ChipCmd, CmdRxEnb);
->  
-> +	netdev_lock(dev);
->  	spin_lock_bh(&tp->rx_lock);
->  	/* Disable interrupts by clearing the interrupt mask. */
->  	RTL_W16 (IntrMask, 0x0000);
-> @@ -1694,11 +1695,12 @@ static void rtl8139_tx_timeout_task (struct work_struct *work)
->  	spin_unlock_irq(&tp->lock);
->  
->  	/* ...and finally, reset everything */
-> -	napi_enable(&tp->napi);
-> +	napi_enable_locked(&tp->napi);
->  	rtl8139_hw_start(dev);
->  	netif_wake_queue(dev);
->  
->  	spin_unlock_bh(&tp->rx_lock);
-> +	netdev_unlock(dev);
->  }
+Extend the already existing support of threaded napi poll to do continuous
+busy polling.
 
-I wonder why the old-style napi_enable could not be moved right before
-spin_lock_bh(&tp->rx_lock) above.
+This is used for doing continuous polling of napi to fetch descriptors from
+backing RX/TX queues for low latency applications. Allow enabling of threaded
+busypoll using netlink so this can be enabled on a set of dedicated napis for
+low latency applications.
 
-/me checks...
+It allows enabling NAPI busy poll for any userspace application
+indepdendent of userspace API being used for packet and event processing
+(epoll, io_uring, raw socket APIs). Once enabled user can fetch the PID
+of the kthread doing NAPI polling and set affinity, priority and
+scheduler for it depending on the low-latency requirements.
 
-The napi poll handler of the driver only does Rx processing. Tx completion
-is performed in the IRQ handler [*]. rtl8139_tx_timeout_task is only triggered
-after Tx timeout. The bh locked section above provides exclusion against the
-whole content of the napi poll handler 
+Currently threaded napi is only enabled at device level using sysfs. Add
+support to enable/disable threaded mode for a napi individually. This can be
+done using the netlink interface. Extend `napi-set` op in netlink spec that
+allows setting the `threaded` attribute of a napi.
 
-If a request for the napi poll handler is instantly racing with the timeout
-task right before spin_lock_bh(&tp->rx_lock) ... CmdTxEnb may be enabled early
-in rtl8139_rx_err. :o(
+Extend the threaded attribute in napi struct to add an option to enable
+continuous busy polling. Extend the netlink and sysfs interface to allow
+enabled/disabling threaded busypolling at device or individual napi level.
 
-RTL_W8(ChipCmd, CmdRxEnb) above is PCI posted and thus already racy wrt
-CmdTxEnb but simply moving napi_enable can't be formally claimed to be
-safe. Too bad.
+We use this for our AF_XDP based hard low-latency usecase using onload
+stack (https://github.com/Xilinx-CNS/onload) that runs in userspace. Our
+usecase is a fixed frequency RPC style traffic with fixed
+request/response size. We simulated this using neper by only starting
+next transaction when last one has completed. The experiment results are
+listed below,
 
-Acked-by: Francois Romieu <romieu@fr.zoreil.com>
+Setup:
 
-[*] Not that uncommon pre subprime crisis napi design style btw.
+- Running on Google C3 VMs with idpf driver with following configurations.
+- IRQ affinity and coalascing is common for both experiments.
+- There is only 1 RX/TX queue configured.
+- First experiment enables busy poll using sysctl for both epoll and
+  socket APIs.
+- Second experiment enables NAPI threaded busy poll for the full device
+  using sysctl.
+
+Non threaded NAPI busy poll enabled using sysctl.
+```
+echo 400 | sudo tee /proc/sys/net/core/busy_poll
+echo 400 | sudo tee /proc/sys/net/core/busy_read
+echo 2 | sudo tee /sys/class/net/eth0/napi_defer_hard_irqs
+echo 15000  | sudo tee /sys/class/net/eth0/gro_flush_timeout
+```
+
+Results using following command,
+```
+sudo EF_NO_FAIL=0 EF_POLL_USEC=100000 taskset -c 3-10 onload -v \
+		--profile=latency ./neper/tcp_rr -Q 200 -R 400 -T 1 -F 50 \
+		-p 50,90,99,999 -H <IP> -l 10
+
+...
+...
+
+num_transactions=2835
+latency_min=0.000018976
+latency_max=0.049642100
+latency_mean=0.003243618
+latency_stddev=0.010636847
+latency_p50=0.000025270
+latency_p90=0.005406710
+latency_p99=0.049807350
+latency_p99.9=0.049807350
+```
+
+Results with napi threaded busy poll using following command,
+```
+sudo EF_NO_FAIL=0 EF_POLL_USEC=100000 taskset -c 3-10 onload -v \
+                --profile=latency ./neper/tcp_rr -Q 200 -R 400 -T 1 -F 50 \
+                -p 50,90,99,999 -H <IP> -l 10
+
+...
+...
+
+num_transactions=460163
+latency_min=0.000015707
+latency_max=0.200182942
+latency_mean=0.000019453
+latency_stddev=0.000720727
+latency_p50=0.000016950
+latency_p90=0.000017270
+latency_p99=0.000018710
+latency_p99.9=0.000020150
+```
+
+Here with NAPI threaded busy poll in a separate core, we are able to
+consistently poll the NAPI to keep latency to absolute minimum. And also
+we are able to do this without any major changes to the onload stack and
+threading model.
+
+v2:
+ - Add documentation in napi.rst.
+ - Provide experiment data and usecase details.
+ - Update busy_poller selftest to include napi threaded poll testcase.
+ - Define threaded mode enum in netlink interface.
+ - Included NAPI threaded state in napi config to save/restore.
+
+Samiullah Khawaja (4):
+  Add support to set napi threaded for individual napi
+  net: Create separate gro_flush helper function
+  Extend napi threaded polling to allow kthread based busy polling
+  selftests: Add napi threaded busy poll test in `busy_poller`
+
+ Documentation/ABI/testing/sysfs-class-net     |   3 +-
+ Documentation/netlink/specs/netdev.yaml       |  14 ++
+ Documentation/networking/napi.rst             |  80 ++++++++++-
+ .../net/ethernet/atheros/atl1c/atl1c_main.c   |   2 +-
+ include/linux/netdevice.h                     |  24 +++-
+ include/uapi/linux/netdev.h                   |   7 +
+ net/core/dev.c                                | 127 ++++++++++++++----
+ net/core/net-sysfs.c                          |   2 +-
+ net/core/netdev-genl-gen.c                    |   5 +-
+ net/core/netdev-genl.c                        |   9 ++
+ tools/include/uapi/linux/netdev.h             |   7 +
+ tools/testing/selftests/net/busy_poll_test.sh |  25 +++-
+ tools/testing/selftests/net/busy_poller.c     |  14 +-
+ 13 files changed, 282 insertions(+), 37 deletions(-)
 
 -- 
-Ueimor
+2.48.1.262.g85cc9f2d1e-goog
+
