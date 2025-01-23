@@ -1,224 +1,243 @@
-Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABE720B20A;
-	Thu, 23 Jan 2025 09:30:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737624644; cv=none; b=bcTeCwuROmBGxZg+s5bLq4DaH+qUg/MaeeHR1jtSz+8sOmDsOdpbZq0MfMQoM6EHwLk+qHHJUPjrD114s/gTT/imqre1bOkzCEk1g+i/R6G4FXlfAGR3FOMrI9ZFjm1Dr0RWLAMPwp1Lg96l4yq+KorYGw6NCF6S4lyPqQgHf9c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737624644; c=relaxed/simple;
-	bh=BsHxpYJJNdgKfsMDO0pJSDMYMsnvorygu2aT26gXqzw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lcG978Id3WJ3TrFO0+Up8kzZAkCmlnsOpna3Ztmh7Czr++M1Ep59bwJNIHO6bYqi1nvYbZXYI2xzAEKy75ffXK0odVUqOPfmuwqhHmcbobphRAH4suWioalVXRv0ubdnZNz1qlCgeArANLzYbYIw10CzKrjorccY9nT8QFqZGnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
-X-CSE-ConnectionGUID: giwD5+mqTwasTBP0JB5HdQ==
-X-CSE-MsgGUID: 5hzCABarQzWypGRf5igLYA==
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 23 Jan 2025 18:30:39 +0900
-Received: from [10.24.1.109] (unknown [10.24.1.109])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 3D0044005B4D;
-	Thu, 23 Jan 2025 18:30:34 +0900 (JST)
-Message-ID: <2b3c7d24-96b1-4569-b3d1-0112cd582ada@bp.renesas.com>
-Date: Thu, 23 Jan 2025 09:30:33 +0000
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676781BC3F;
+	Thu, 23 Jan 2025 09:33:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737624796; cv=fail; b=k8QzGspwO45a2u93ogBHffxI1Ml/+2oJwu4Wz0tftfebmzPfyltoMPvGcj7kD9kSuk79oXcmta9uchpolpejs4iPgTyX2UH9S67yyBprwwIiq57OokQrsJgOBQU91eJe2QnWKoLOhajQn2hu7k7dmkOJ8rHxistAW+pJKyakNAw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737624796; c=relaxed/simple;
+	bh=k9xfm5bpqUGpC4eiiAkSISSxFtlGsuDWs+4XCrIvz6Y=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=n3WIFpWGfHx038W5q7RFu6KXCZ87dDO6gP8I3WGxrCChEzP2qplo2kwPsPlIr/p19vHVPrRxS7EsYEQLomxz536bPgwisMKGjW3LshkpbYenD49VUI/i8qtQ3TxK4LhiGTD//RtqGn86MXUO0UpTYiYjRpTM53PPYyHK8SqDhwI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NOlnhCMo; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NOlnhCMo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737624795; x=1769160795;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=k9xfm5bpqUGpC4eiiAkSISSxFtlGsuDWs+4XCrIvz6Y=;
+  b=NOlnhCMo2GnK5n0EVZRAq9drfNqd8Qcjs8oxBZdQ71OLxXmDWVz80tiw
+   SqO0++IbNN7NQusY7Pbe5UFACWvuytMZVIBgMk0TVOXGiwayj+y6duFCU
+   2Pc3nh4HRLx81lyBvfjPMsWrzTqHAR+h0bfSapbZXPYHg34FNfzY+0Frf
+   IcxSlMxnbPAh4e86OwMne4yfjEaHKZPe66BvQSpD7Mf95yx5BlisgXo1P
+   arvwPMotFkxu6E3XT3THJ4UrUVIbVAKXdedqVwqmtPeECvhzO8DMZ8pxH
+   qL43YlzS3S++SsVrE3aF5I6VoHNe6PJV3GY6ALgx5iDu4gfdKDuVuZAgW
+   g==;
+X-CSE-ConnectionGUID: XB0T8OqqQ2eP00y0xIY7Zg==
+X-CSE-MsgGUID: n5qV/YK6TPS9fHpQVxXHSw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="38363965"
+X-IronPort-AV: E=Sophos;i="6.13,228,1732608000"; 
+   d="scan'208";a="38363965"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 01:33:13 -0800
+X-CSE-ConnectionGUID: Cczr19EaSWa7Hwxa7DNJlw==
+X-CSE-MsgGUID: HdiijQpBQ4WQ6PNnSLThDA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,228,1732608000"; 
+   d="scan'208";a="107324645"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 23 Jan 2025 01:33:12 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Thu, 23 Jan 2025 01:33:11 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Thu, 23 Jan 2025 01:33:11 -0800
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.45) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Thu, 23 Jan 2025 01:33:11 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ppj2ZC1g3pvPHOUbIjY9LSwV4PXB5kYSq+3sFTk31WXVnrMt1pzYHGG2p0hJKHpuyobnarQBDSHmRmdaCUVNbhYgT+/l3xmLPYhCEO1W/16opEnf99hOrIAZzebtWAezxbGz0hGmDnGb1oeS8XyOszitIobnlQq3dgWIbnJYlWeNld++Fh4jfU2aVkCMPOYxXFBSO3zLgf6LftnL4bizdVG1s+ruyhZXal4cwWhcE4mHtc/Qu4XzYlXxqp1Mpr3acWe1oHJeG9YV+VtR+na88QLqUmPoo8Q06IgYZAFM3uxUQRJ6aJNd3WIAQKZgYzCqjfd1A4K/clGtMzWu0SmFvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1EKoaKQY9MnbZNehmrdlwTnk0gcarGfYUQNggOKFY5o=;
+ b=lhL0O1lB7UquqaT9dZ5JJAGi70GLfmqBHcnFqXSePhf7TfBa9AXfJQGeiylkoQ7R72t1kPzzqjyv5f2IcxFRGbLhEuFEtvosHVhHKuwfFRAsqmeKC3JOirv2GyrOvlSEhteaXRWkwzXN/4Z2JrTiNFQrSXxviRFPKCWmmztvde3gDinTkziaqr0CNFreuZ54kquqwxqPAi2G55BD/A6vbzYpk4YZwTd8N10TiHYfWWggcXIquqa4Y//qtsycKMXEpy5y6L6Cs0uap42y5PQk5VTwieBYrVroU22zeg+o7VmqfGHPJD9ADh5oWBgvM8m2Y7qr7FvGCEUWfk0o4wCQ1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MN6PR11MB8102.namprd11.prod.outlook.com (2603:10b6:208:46d::9)
+ by CO1PR11MB4916.namprd11.prod.outlook.com (2603:10b6:303:9c::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.16; Thu, 23 Jan
+ 2025 09:33:04 +0000
+Received: from MN6PR11MB8102.namprd11.prod.outlook.com
+ ([fe80::15b2:ee05:2ae7:cfd6]) by MN6PR11MB8102.namprd11.prod.outlook.com
+ ([fe80::15b2:ee05:2ae7:cfd6%6]) with mapi id 15.20.8377.009; Thu, 23 Jan 2025
+ 09:33:04 +0000
+Message-ID: <b001ae7f-d250-4f3b-8d2b-29b6c5adb642@intel.com>
+Date: Thu, 23 Jan 2025 10:32:56 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v04 1/1] hinic3: module initialization and tx/rx
+ logic
+To: Gur Stavi <gur.stavi@huawei.com>
+CC: <andrew+netdev@lunn.ch>, <cai.huoqing@linux.dev>, <corbet@lwn.net>,
+	<davem@davemloft.net>, <edumazet@google.com>, <gongfan1@huawei.com>,
+	<guoxin09@huawei.com>, <helgaas@kernel.org>, <horms@kernel.org>,
+	<kuba@kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <luosifu@huawei.com>,
+	<meny.yossefi@huawei.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+	<shenchenyang1@hisilicon.com>, <shijing34@huawei.com>, <sumang@marvell.com>,
+	<wulike1@huawei.com>, <zhoushuai28@huawei.com>
+References: <566b3d82-5e66-4e97-9808-a0e8e212fe67@intel.com>
+ <20250123082016.3985519-1-gur.stavi@huawei.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Content-Language: en-US
+In-Reply-To: <20250123082016.3985519-1-gur.stavi@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1PR08CA0248.eurprd08.prod.outlook.com
+ (2603:10a6:803:dc::21) To MN6PR11MB8102.namprd11.prod.outlook.com
+ (2603:10b6:208:46d::9)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/2] net: ravb: Fix missing rtnl lock in suspend path
-Content-Language: en-GB
-To: Kory Maincent <kory.maincent@bootlin.com>,
- =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Mikhail Ulyanov <mikhail.ulyanov@cogentembedded.com>,
- Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, netdev@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250122-fix_missing_rtnl_lock_phy_disconnect-v1-0-8cb9f6f88fd1@bootlin.com>
- <20250122-fix_missing_rtnl_lock_phy_disconnect-v1-1-8cb9f6f88fd1@bootlin.com>
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
-In-Reply-To: <20250122-fix_missing_rtnl_lock_phy_disconnect-v1-1-8cb9f6f88fd1@bootlin.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------I0aju55XMk8E0pIqXAtwz0fF"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN6PR11MB8102:EE_|CO1PR11MB4916:EE_
+X-MS-Office365-Filtering-Correlation-Id: de1e26a5-eef7-4cb6-4712-08dd3b90efe8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?bFpSZHBGcVZSZ3QrTlh3WUtqWVNYdFVlMk1QSDhRNER3cG1NZGpZMGtzUTc5?=
+ =?utf-8?B?YUNhWCthQU52OXc0ZXBtYjZ3VXNvWXRhZ1FjTTBiOGFFZVhYREo3Z3ZsY0pE?=
+ =?utf-8?B?cWFiTHdzVVliZHZwTWs5bWxPaUphckw0bzJYRm1KYlMzbUc5clRxL1dyNWFo?=
+ =?utf-8?B?MWlMK1V3QVNsdTI4SllNQkpXTnZxNTBodk01VGkyTjNqblRRbEtxR2xJblBF?=
+ =?utf-8?B?a21aVkxiL2VMMC9Pc3A3UWdWeER2UmI0aTBBTmN4M3g0ZGduM0pZWE9UaVBT?=
+ =?utf-8?B?TWI3QmJrdkttT3F4MFpVNTJjaEo4VUk5ZVI3WEpyemF1UGN5NGtuMjJId1hV?=
+ =?utf-8?B?eHBNTElVenBwekZVTldteVZMcmlvd3dzUUY1KzROUkVIa1Z1Vk56NWRNdW9w?=
+ =?utf-8?B?bzBvL21WWFQxWkJRbS83QlMvU1c2WjdCMmVpRnNlYXlDVm5iMVpHTHNndlRR?=
+ =?utf-8?B?QXVodTlZbkRLZDRQamFVSllYdFN3R1F0L1c3WFlOTDlZdHpvUlpsZzhNcFpH?=
+ =?utf-8?B?bzNhV3ZidkdrQ1dDL2RCbkNNZENDMUNYVjlVRlNIWFM2VUo3ejQrem1uYUhs?=
+ =?utf-8?B?d0huRHhpRkduamVxRHhzVDg2Z3VKNGJLZVdxanVaS0lnVjZxM1NoU3lTbG5k?=
+ =?utf-8?B?M1JGYnNWcmhFbWNyeE84RXkyMTd6dGdJUDFkMDluQVdib0g4REZkV2Jnd3V2?=
+ =?utf-8?B?cEhyVFlGdHd5MmwwUEF0Tktnc2RzK0lOcjJKVWtab2wyNW5zKzZTVXNXbTZ5?=
+ =?utf-8?B?Yklhb0hFNzJCSWpVaUtYeXNJd1lQV0U1QU1OeGNQLzVZa1FtT1RUUktBNy9x?=
+ =?utf-8?B?YklPczF0aGJJNXVLajFvUlNidUVUWEdiQnF2RFVuUHBOM1dPYkZNQjY2SE5I?=
+ =?utf-8?B?ajJvVTZlY2dyd2VqL0xZakdMZUJwWm5MVVVZd2RMYjNpZUh6ZkIzTi93a0hh?=
+ =?utf-8?B?N09FNGwvblFuYk9CT3Bld2NGZ3NQMzlDaitUeXlCSEU0YWdObkVzcHU2VUtN?=
+ =?utf-8?B?VVpTQjRyVUxjaUY4aE82bUQ4T0FhdUZyOWJxODMwVW1jUm1OOTZhZ2tpRTZI?=
+ =?utf-8?B?RnFUcE9UaDFYQlpaZUpHWFo1cTBhRDVaT2pSWkIxQktCS0JYTmp5VDNVdjVC?=
+ =?utf-8?B?UXdiVndTcXE5Sm5sV1Babk44R2syVDRVbmtkQlFhKzY4M25ML1E0Z3l3emZl?=
+ =?utf-8?B?N3RWUHdZWnprVC9QTFVuY2tFaXp3Z3pzYSs0eW16KzlOek93VDhsZHJQWTl0?=
+ =?utf-8?B?dEJCSURIQ0Y5bURZY3R2TndqblNxMDdZTFNCb0hXTkJ3cm1qV25JVUJrQ1c0?=
+ =?utf-8?B?Tk53SVJzTXAvOEIvVm93MjEreDd1OFhENTdNSlJlUjBLeDFFZUh1d0JFcXVG?=
+ =?utf-8?B?SFdHeU1RTVdLNmN2b0cyeHViM09KTU9BSmpXN3ZSbW9CNGF5ejNFbTNCdFVG?=
+ =?utf-8?B?T0Y3TUdOV0NCYlV2TWtZN0tzWkhYUDBFM255SmV0Z1RwMEZIVVRtZVFhbmNU?=
+ =?utf-8?B?TFhwN3hYRzV6MTV2T3lYZnFnWWsrMEZEWDF4SXBmS0NIQTNrSURzRzJBTkpj?=
+ =?utf-8?B?dHRrZ05XaUF1dWl6Q3pxN04rcFNkaXJheHNmUGo2V0hRR0FvcWNvb1YwZXV4?=
+ =?utf-8?B?NWtTYTgvdElkU2EzNHpkZG52WUlwVTBkTGFIMkU0VnMva3BHOEFycnBZL01x?=
+ =?utf-8?B?RElUU0g3Vk1BcGdhMEx1QjRRRDBVMjRsQjBHbHMxVXN5bTNNNEkzRE10em5l?=
+ =?utf-8?B?MjBMczdGblVkMTZMTFAyaXBZOXZxLzlIWFVMSGkwRW11VTZrVGhhVTNIcFFt?=
+ =?utf-8?B?bldXNWEvbHdkbzIzZUVRNExKQVRrdTVLN2JlSXhDa1hoRXNtR3FVWGFvZXly?=
+ =?utf-8?Q?fPeOjad4AxhfI?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN6PR11MB8102.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SUMrZ3NidGh2Y2JmOXo5K0pmRzQ2K3YzUWYzWE1LUzlXWkZyN2N2T01sbzA5?=
+ =?utf-8?B?RFQxUE9lb0p3OXdvdy9OMXd3cVR1dm83bnRNazdjYmhybkpSOW4wSi9KY1BN?=
+ =?utf-8?B?QWtTUm8zNy84WEZ5MDRzZmtkUmkwTHhmL1VoajdjbVY4MUZDVnpFeTJhVmo1?=
+ =?utf-8?B?b1YrK05vUUt6blFKMnNqTWhiallvZEd6ay8wTUc2WllUMVF4T3NOcVVtSlFR?=
+ =?utf-8?B?K2ovTmVLcUxzYW91Z2NKSWdZbWJSZENCcnpaMStQKzFxN3pBcUlucWs4cmNy?=
+ =?utf-8?B?S2oxUHJRL0Z5Y1FZeUgrUUJoYVZkVnhnWE1vQlZ0b1NvYmVJaXdWcDdvWUdo?=
+ =?utf-8?B?MmJZYTI5YW9DSWR2b0UrUFJ2eDlBVDJ3YUJtV0Raa1hXT1pWZXhrWUpNYVN6?=
+ =?utf-8?B?cE8xRmZkZURiK2drUkROQmgzenhxZDhCYmh6TFJIaFBSVHBzTldFd0wxaVpa?=
+ =?utf-8?B?a1IycE5rTmx1L09TVmUrMUlGTnk2K29vYUJoc0F5dllWMHArOFFNRytoMUZv?=
+ =?utf-8?B?aHVSR0tMMXdmOWxMMUpwa0RUMTVUQVZrengrTTBVTlFOMXh0WThSNThtYUxB?=
+ =?utf-8?B?RWdjNUFUVFFwNEJydzZxSE9KRDRPMy9OMStqT0psMmc5ei9wUWMvU0hqa2h2?=
+ =?utf-8?B?eFNRZ1c0MENRQW8xdXhvUnB3bjdaeGlzUGI1Ykh3a2xERUwrREt5SVEyVkZI?=
+ =?utf-8?B?TDIvOVpGaU5KYnJtTjlFZlJlMlpaRE8zZkdnU1JRMC9wVk1ES3hpOXNYK0lr?=
+ =?utf-8?B?Rmh1dGo4YkR6Y2FzdFl1MVBCV3JDcG1xOVJzVW94c3JwRFZQSk9SWXRSL2s2?=
+ =?utf-8?B?NlBFNG92ZkdIT1AvMkx5Q1o4OG5kemltRFZDOUFWclB5b0daZlNsTlVCcklp?=
+ =?utf-8?B?N3FWdWl6elJBbGpGMWJpcnQ5aFM0VGdqZmdFQnpUSlR6N3hxZnE2YlUzeXpF?=
+ =?utf-8?B?T2hJYnArR0xWU1p4bU5Bd0xsMjAzZC95WWFmaEtsMm5QeDVyekxXTmZpTFFU?=
+ =?utf-8?B?VHkvMk1IN0lBN29Hc25FaDFzcEdNYWtQcDA3YW1qUDlMd200dHB3ekd1WFR4?=
+ =?utf-8?B?UFlESVVJZnR1emlsMWJDVnA2YlNZeUUyL3lSMDFETThPVHdmSXRqUVc1WkpO?=
+ =?utf-8?B?dGdqVmdGb0VXeXlaWmJxY0g4MjBvd21NaE1BWGRmRjZVMmZ6N1VLU1Z2ZGFY?=
+ =?utf-8?B?OVVWVWxjMkxvRUxtNGVHWFBMK29pdUJmTUJpQ09oMmt2dzV5SkhjakZkYTY3?=
+ =?utf-8?B?OXhaQkZjTk1JUk5mZVBxMXN5VGNvRkdNRGgybVQ2SFV6RUpzdG9Ed2RjV2wr?=
+ =?utf-8?B?UTVud1MybTJ4TkxuVERWRzkwdzd1UWJKREkyeHUrSzJraExIdTJvYllIbGoz?=
+ =?utf-8?B?UmNZd3hyUnkwVXNud3BNeXdYZ0pBdEozdlEvaGJ4bjB4WkFudkNWdjVQdEZE?=
+ =?utf-8?B?MTE2YnJzMHg4K0czc1BHRmFwczJwc08raFNQYk1qSXc2aUUzSDBmcGkzS1M4?=
+ =?utf-8?B?SVBOTmdBU0gyWUhLY3RUWWFoODUwdW5PMEVqRmNjTDlqU1VVQytsOEVhaTdH?=
+ =?utf-8?B?V3AvWFlGRkcyem84aVg0T094QzJUVTg3VEd0SDNRdHNDcWZlTzgvR0ZnR1hS?=
+ =?utf-8?B?UFhWdEJUNXJvSWFCdndBdU1iZG9OdkRkWUprR1ZDZ1owRTJTMUJIM2xlTmNB?=
+ =?utf-8?B?dWM3d1QyTUVQZGx0WGRlZVRONVgwL0s3SkhSdkFBaWVjN25LZHl2bVlGcnAx?=
+ =?utf-8?B?UjJ2VHpUK09Ceks3MVhFVS9MVmhZRG1LM1dLbE8yWGpFdWdnL00xSDNMaWVi?=
+ =?utf-8?B?UUx6cnRHUG92SGtFRHpOcmtLRGg2eitrUThaN2tsMi8yakNsVis3T0NQRExa?=
+ =?utf-8?B?aTdjVFYwSFZyN0Z6MWxPdEphTW5PSG5IOWx1Uzk4YUNvUlg4QUtveU9tUkl1?=
+ =?utf-8?B?RW84bG9ldVdDMkdHWnFVWk5YMUhiNDltM1R6ME9ONXIzdmxGVi8yaGsveGx5?=
+ =?utf-8?B?bUcwWmxadHY5L3hKdUlQR1o4TERTcm0rVHFhMlBleWY0eTh2UCs2NGNidDVo?=
+ =?utf-8?B?TkJDcnpuSm1NZFlvR2pMYnhhdUpscThHb3hCbWkyOEdpcFRzUTR1UVFkM05z?=
+ =?utf-8?B?bFZUQkhKQlpWM2lPcXh4MHlhQ3ZYVXFEWjc3d0dQUlJrL3JRVlQ3ODBPb3R4?=
+ =?utf-8?Q?fuZxR4NoVZcVOgiA1Mq7LMM=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: de1e26a5-eef7-4cb6-4712-08dd3b90efe8
+X-MS-Exchange-CrossTenant-AuthSource: MN6PR11MB8102.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2025 09:33:04.3821
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YKBswEjArfvaY4S3HBdHAMh1L0IUdsc28vYWtBz8Njxq6gAfi999FLGZqMpgOFO8uWcSbbEr89a2A6AdyhWMoNHFvWLxLD7ezUlgKAcejpI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4916
+X-OriginatorOrg: intel.com
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------I0aju55XMk8E0pIqXAtwz0fF
-Content-Type: multipart/mixed; boundary="------------Tt0opsrKIekoTuEgE7lnME0y";
- protected-headers="v1"
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
-To: Kory Maincent <kory.maincent@bootlin.com>,
- =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Mikhail Ulyanov <mikhail.ulyanov@cogentembedded.com>,
- Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, netdev@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-ID: <2b3c7d24-96b1-4569-b3d1-0112cd582ada@bp.renesas.com>
-Subject: Re: [PATCH net 1/2] net: ravb: Fix missing rtnl lock in suspend path
-References: <20250122-fix_missing_rtnl_lock_phy_disconnect-v1-0-8cb9f6f88fd1@bootlin.com>
- <20250122-fix_missing_rtnl_lock_phy_disconnect-v1-1-8cb9f6f88fd1@bootlin.com>
-In-Reply-To: <20250122-fix_missing_rtnl_lock_phy_disconnect-v1-1-8cb9f6f88fd1@bootlin.com>
+On 1/23/25 09:20, Gur Stavi wrote:
+>>>>> Auxiliary driver registration.
+>>>>> Net device_ops registration but open/stop are empty stubs.
+>>>>> tx/rx logic.
+>>>>
+>>>> Take care for spelling: Tx/Rx; HW (just below).
+>>>
+>>> Please elaborate. Spelling of what?
+>>
+>> In all code comments and commit messages the acronyms and abbreviations
+>> have their proper spelling, like "Tx", "Rx", "HW', "SW", "ID".
+>>
+>> of course lowercase names are still allowed for variables/fields
+>>
+> 
+> Grepped drivers/net/ethernet (whole word only):
+> 
+> hw 34681   HW 3708   Hw  170
+> sw  1198   SW  675   Sw    3
+> rx  5913   RX 4042   Rx 4042
+> tx  5424   TX 4095   Tx 4907
+> id  5545   ID 1967   Id   56
+> 
+> I don't know a quick way to separate variables from comments but I
+> believe that there are very few hw and sw variables and most tx, rx
+> related variables will have some prefix or suffix so lots of the
+> whole-word-only come from comments.
+> Can we agree that while Hw, Sw and Id are improper, the remaining
+> forms are acceptable?
 
---------------Tt0opsrKIekoTuEgE7lnME0y
-Content-Type: multipart/mixed; boundary="------------mzxbfbYmJ1LxAofluLF0Q2Qb"
+"tx", "rx", "hw" are very common variable/field names, "sw" could be
+also a shortcut for "switch"
 
---------------mzxbfbYmJ1LxAofluLF0Q2Qb
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+If you want to argue, the stats should be only for the comments, and
+excluding things like "@hw" from the kdoc.
+But then, anyway, "current code misspells a lot" is not a reason to
+continue the practice.
 
-On 22/01/2025 16:19, Kory Maincent wrote:
-> Fix the suspend path by ensuring the rtnl lock is held where required.
-> Calls to ravb_open, ravb_close and wol operations must be performed und=
-er
-> the rtnl lock to prevent conflicts with ongoing ndo operations.
->=20
-> Without this fix, the following warning is triggered:
-> [   39.032969] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [   39.032983] WARNING: suspicious RCU usage
-> [   39.033019] -----------------------------
-> [   39.033033] drivers/net/phy/phy_device.c:2004 suspicious
-> rcu_dereference_protected() usage!
-> ...
-> [   39.033597] stack backtrace:
-> [   39.033613] CPU: 0 UID: 0 PID: 174 Comm: python3 Not tainted
-> 6.13.0-rc7-next-20250116-arm64-renesas-00002-g35245dfdc62c #7
-> [   39.033623] Hardware name: Renesas SMARC EVK version 2 based on
-> r9a08g045s33 (DT)
-> [   39.033628] Call trace:
-> [   39.033633]  show_stack+0x14/0x1c (C)
-> [   39.033652]  dump_stack_lvl+0xb4/0xc4
-> [   39.033664]  dump_stack+0x14/0x1c
-> [   39.033671]  lockdep_rcu_suspicious+0x16c/0x22c
-> [   39.033682]  phy_detach+0x160/0x190
-> [   39.033694]  phy_disconnect+0x40/0x54
-> [   39.033703]  ravb_close+0x6c/0x1cc
-> [   39.033714]  ravb_suspend+0x48/0x120
-> [   39.033721]  dpm_run_callback+0x4c/0x14c
-> [   39.033731]  device_suspend+0x11c/0x4dc
-> [   39.033740]  dpm_suspend+0xdc/0x214
-> [   39.033748]  dpm_suspend_start+0x48/0x60
-> [   39.033758]  suspend_devices_and_enter+0x124/0x574
-> [   39.033769]  pm_suspend+0x1ac/0x274
-> [   39.033778]  state_store+0x88/0x124
-> [   39.033788]  kobj_attr_store+0x14/0x24
-> [   39.033798]  sysfs_kf_write+0x48/0x6c
-> [   39.033808]  kernfs_fop_write_iter+0x118/0x1a8
-> [   39.033817]  vfs_write+0x27c/0x378
-> [   39.033825]  ksys_write+0x64/0xf4
-> [   39.033833]  __arm64_sys_write+0x18/0x20
-> [   39.033841]  invoke_syscall+0x44/0x104
-> [   39.033852]  el0_svc_common.constprop.0+0xb4/0xd4
-> [   39.033862]  do_el0_svc+0x18/0x20
-> [   39.033870]  el0_svc+0x3c/0xf0
-> [   39.033880]  el0t_64_sync_handler+0xc0/0xc4
-> [   39.033888]  el0t_64_sync+0x154/0x158
-> [   39.041274] ravb 11c30000.ethernet eth0: Link is Down
->=20
-> Reported-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-> Closes: https://lore.kernel.org/netdev/4c6419d8-c06b-495c-b987-d66c2e1f=
-f848@tuxon.dev/
-> Fixes: 0184165b2f42 ("ravb: add sleep PM suspend/resume support")
-> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+> 
+>>>
+>>>>
+>>>>>
+>>>>> All major data structures of the driver are fully introduced with the
+>>>>> code that uses them but without their initialization code that requires
+>>>>> management interface with the hw.
 
-I think we can simplify ravb_suspend() and ravb_resume() with a bit of
-refactoring, but that can be done as a follow-up.
-
-Reviewed-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-
---=20
-Paul Barker
---------------mzxbfbYmJ1LxAofluLF0Q2Qb
-Content-Type: application/pgp-keys; name="OpenPGP_0x27F4B3459F002257.asc"
-Content-Disposition: attachment; filename="OpenPGP_0x27F4B3459F002257.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
-
------BEGIN PGP PUBLIC KEY BLOCK-----
-
-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3D
-=3DsIIN
------END PGP PUBLIC KEY BLOCK-----
-
---------------mzxbfbYmJ1LxAofluLF0Q2Qb--
-
---------------Tt0opsrKIekoTuEgE7lnME0y--
-
---------------I0aju55XMk8E0pIqXAtwz0fF
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wnsEABYIACMWIQSiu8gv1Xr0fIw/aoLbaV4Vf/JGvQUCZ5IMOQUDAAAAAAAKCRDbaV4Vf/JGvc+l
-AP9QeZggjClLk5P+v+HO6osK5TCcuWnfZHgwbs4BKjgi7wEAqLgbDrOh0x8uWKt/tnhAbiAS6zun
-GvD08dZyoWC7xgo=
-=Qte5
------END PGP SIGNATURE-----
-
---------------I0aju55XMk8E0pIqXAtwz0fF--
