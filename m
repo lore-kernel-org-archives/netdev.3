@@ -1,229 +1,414 @@
-Received: from mta-65-226.siemens.flowmailer.net (mta-65-226.siemens.flowmailer.net [185.136.65.226])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70817155A59
-	for <netdev@vger.kernel.org>; Thu, 23 Jan 2025 17:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F65814A4D1
+	for <netdev@vger.kernel.org>; Thu, 23 Jan 2025 17:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737653682; cv=none; b=LqJF2yM6In9le0MZvxFPG0QGCM+tVQvCoenRZCZUe1c+9Tso6a8HcvkStH6S59n3S6EnGcmMq5v2fg3qWGdnb0SMf5aoNe0XVIfxdxDCl5caiz1TDIi3sdLlXYcenTVC7Pp5qQ8Zm63qS+8iRd5kmiFDZNlLaaxD+6M4GoJPGBM=
+	t=1737654319; cv=none; b=r5kHeb8ifWdswwRZfbBXoY/491Im6m32WYJ0zCfqttAmZ5UApwvlFaBg3MoFnyIZVXSfCgzz93eDBnRcIF2+jdArZQnVN+hWsKnjAenvclTl8uyTvykjQaZxpuqQ127jFir9W7ElrcLLt+wTZTfvLSmks47yf1yVehPzBfG+/sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737653682; c=relaxed/simple;
-	bh=EC8kDeSwT8BCE6L3361eSA2oMrWX/LhNkzLG0ssN7bw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pm9ZdtSgCQrR1hg4e3ykRsPYl2nFb0Pz5PGpk4AhQiLXcjQzgPAuuptiCw5sbFMDprxK/19iSqV8MafVzJrLWfzxLOnCUvm5DvHUWkSIfZv9Gl+g43bRujMqw0wrGsLlKpxy52NgGO2DqFPPxm1iJQlVEjPP/O2nzL8RuNvikZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b=avfOWyEP; arc=none smtp.client-ip=185.136.65.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+	s=arc-20240116; t=1737654319; c=relaxed/simple;
+	bh=cuFrawK0/AjFL4au1asXXvINUATD4G5e1QeJ2ahF9eA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C9xc1pvfK6Tl+BcTYLsYJTmpCAisQ6W5jf0ezG73TXpbIt/32bCmCBk6LwsRM2QYhgfouBVHJw8JOIKIQTUd5NtFTExo4hKx21L7a9DXHR6gHQ8/hzyAnSCEMuqYqQZghMap5fysSA/Tf0KiTqyJx7bqIsA/ZVdOk8CE39yBtQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UK8/ssJ9; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b="avfOWyEP"
-Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id 20250123172423df5fa0669e07a1a893
-        for <netdev@vger.kernel.org>;
-        Thu, 23 Jan 2025 18:24:24 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
- d=siemens.com; i=florian.bezdeka@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=oxINAJ0LeLqJ3M0qS3mB6DNG37C/XjqZ02n4XQg2+vE=;
- b=avfOWyEPThY0qZHFWBl2B3Waotz+8loLJ+mZUtGGItUwfJOUtG7FrfOs0qOKpl8WBbOxTJ
- hmxCiPBT8gqw2waOxbkfTxYZZHTxmmdmq4PuV6EuhYS6vXo67MhLp5hspGJKBF2pL9FC0+Qo
- MynnVI+uRPOsDiP0334hKKXlZ+L4Bf/rJn8iadkanOpnW1TPw4Y69HZ940bExo8i6vtnn/2C
- O0P4fqcEZTdD+oO2Fpdf1JfU18oZI2bdZ4VkBWvUV9rdG4Kw9NJ32KkkBu5OAE07aaDI1nwa
- Rry4DyQN0YMb5WgK/aYrOP/K5Kg61gheKSrhrhKKNf5XcktSigozEdDg==;
-Message-ID: <ea087229cc6f7953875fc69f1b73df1ae1ee9b72.camel@siemens.com>
-Subject: Re: [PATCH bpf-next v6 4/4] igc: Add launch time support to XDP ZC
-From: Florian Bezdeka <florian.bezdeka@siemens.com>
-To: "Song, Yoong Siang" <yoong.siang.song@intel.com>, "Bouska, Zdenek"
- <zdenek.bouska@siemens.com>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Willem de
- Bruijn <willemb@google.com>, Donald Hunter <donald.hunter@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>, Bjorn Topel <bjorn@kernel.org>,
- "Karlsson, Magnus" <magnus.karlsson@intel.com>, "Fijalkowski, Maciej"
- <maciej.fijalkowski@intel.com>, Jonathan Lemon <jonathan.lemon@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer
- <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, "Damato, Joe"
- <jdamato@fastly.com>, Stanislav Fomichev <sdf@fomichev.me>, Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>, Mina Almasry <almasrymina@google.com>, Daniel
- Jurgens <danielj@nvidia.com>, Andrii Nakryiko <andrii@kernel.org>, Eduard
- Zingerman <eddyz87@gmail.com>, Mykola Lysenko <mykolal@fb.com>, Martin
- KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Yonghong Song
- <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, Hao Luo
- <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, Shuah Khan
- <shuah@kernel.org>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose
- Abreu <joabreu@synopsys.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
- <przemyslaw.kitszel@intel.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "linux-stm32@st-md-mailman.stormreply.com"
- <linux-stm32@st-md-mailman.stormreply.com>, 
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "intel-wired-lan@lists.osuosl.org"
- <intel-wired-lan@lists.osuosl.org>, "xdp-hints@xdp-project.net"
- <xdp-hints@xdp-project.net>
-Date: Thu, 23 Jan 2025 18:24:22 +0100
-In-Reply-To: <PH0PR11MB583095A2F12DA10D57781D18D8E02@PH0PR11MB5830.namprd11.prod.outlook.com>
-References: <20250116155350.555374-1-yoong.siang.song@intel.com>
-	 <20250116155350.555374-5-yoong.siang.song@intel.com>
-	 <AS1PR10MB5675499EE0ED3A579151D3D3EBE02@AS1PR10MB5675.EURPRD10.PROD.OUTLOOK.COM>
-	 <PH0PR11MB583095A2F12DA10D57781D18D8E02@PH0PR11MB5830.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UK8/ssJ9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1737654314;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EmcZf0OpZkyja4d1Ct34f1VNDJ5QFDsGyx+s8LcNX9Y=;
+	b=UK8/ssJ9ydTt6QO7aKPBFehUcqd+B+kcoVen6+6Ppv7k9XmUlOIwv/mMkbRcCXMrjs8XJ/
+	fPy8IsfNL9awiapPpGrbKxKNJr40m2Mj8aajy3G4YugYIS0z0m1cAOCt3ZRafNIEIzSoXs
+	SMH2MvKEeXL3jMw4vvT/vOfHpogMSjQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-80-oANBBQvoM76iToALtAIrlg-1; Thu, 23 Jan 2025 12:45:13 -0500
+X-MC-Unique: oANBBQvoM76iToALtAIrlg-1
+X-Mimecast-MFC-AGG-ID: oANBBQvoM76iToALtAIrlg
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-38a873178f2so674310f8f.1
+        for <netdev@vger.kernel.org>; Thu, 23 Jan 2025 09:45:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737654312; x=1738259112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EmcZf0OpZkyja4d1Ct34f1VNDJ5QFDsGyx+s8LcNX9Y=;
+        b=U79FvIw8DgW9KrafJLrrcz7oEZmkULV1HhEbhECjqwSV/tOW6EKbFFnIlGhXIX5bGu
+         KlkGzzdyKbmal3aECUwgduQVn0i6yaAZgPiJdyrYyDWFCI0YwqSyI+szHia437Fon8Xq
+         RtPXNdPz69jQ0u5wlsL5QmNuempHhqTaPNyPCksIiLQeYxPQIky09BR2UdSwkjMM1rVn
+         XNefgq1qCBi0eNk0bGDAIOV6ZVlNGaVFHhjJbho8Hm4xAAxF6roPfw8LMxw44n11SkQb
+         rtKK7QU81ThHIZ1u9z8QLmu/04xl5CoIRZLWEF63aQJfHEWkG4xGdvzJ7NLSzvytbnW0
+         z0Fg==
+X-Forwarded-Encrypted: i=1; AJvYcCVNImZVyNcl93js3hfcHUCUJeXJ5qWr3xBkLpoQ+j62Zf7N1qebKD8ZCn6wS6QMNlM3ib4Yk5s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzj/Wf7NGQ/M/Os9urnkalSmR1Ms5mxwLpIEFxN1infOoUA059+
+	RoMpIUuuP7UqLMl6qCYilb8lcGTY+EnNlz+yMfM2RYWWmdpVxi8pE7/XqSz6s4/TeZ788fDXvZE
+	tFAc1nOjdNW6YC870Xs4sWMETnTfs9eMyDlSEE7p4uZ4v/TmIF5hT5g==
+X-Gm-Gg: ASbGncsHm4/o24eyU8P6QIYFW4RxITioewekNvU/qB+MOdTq69Oc0NNcpQi8FQ/f/6x
+	FqQv2djWZxDLb/I5Rbsb7x1R1Yg7ERq89oUbiSE/pNiB8s20xPZTnz5b/uYMnKKipMBIxjpg6xQ
+	guYabdZFl4AUBxXED137vE+FNbS9w30Lz7bC8MHyAnDiDYNThkirA8Gw32LkDB5WT67QcPfnogg
+	F4VRj/cRdBP59gu++AyebG3Uzx7cKz4RXp0rzu+j0orAwSHdLncg9zm+eJ5uzWUVysPmjbA3Sq6
+	dq/w8Mrwq+wb1QYvDlRl72lL
+X-Received: by 2002:a5d:4dc2:0:b0:386:4034:f9a8 with SMTP id ffacd0b85a97d-38bf57a2911mr24372362f8f.38.1737654311503;
+        Thu, 23 Jan 2025 09:45:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG4Fo3FDjjHSJEuK8v8tpxtb9lSbJywhJphAzoGtDgKgsxjHAhPuXPRJNlbq8+1W/6Tj3O45g==
+X-Received: by 2002:a5d:4dc2:0:b0:386:4034:f9a8 with SMTP id ffacd0b85a97d-38bf57a2911mr24372336f8f.38.1737654311061;
+        Thu, 23 Jan 2025 09:45:11 -0800 (PST)
+Received: from [192.168.88.253] (146-241-27-215.dyn.eolo.it. [146.241.27.215])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a188689sm295624f8f.48.2025.01.23.09.45.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Jan 2025 09:45:10 -0800 (PST)
+Message-ID: <8faebc20-2b79-4b5f-aed6-b403d5b0f33d@redhat.com>
+Date: Thu, 23 Jan 2025 18:45:09 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-68982:519-21489:flowmailer
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 06/12] net: homa: create homa_peer.h and
+ homa_peer.c
+To: John Ousterhout <ouster@cs.stanford.edu>, netdev@vger.kernel.org
+Cc: edumazet@google.com, horms@kernel.org, kuba@kernel.org
+References: <20250115185937.1324-1-ouster@cs.stanford.edu>
+ <20250115185937.1324-7-ouster@cs.stanford.edu>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250115185937.1324-7-ouster@cs.stanford.edu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi all,
+On 1/15/25 7:59 PM, John Ousterhout wrote:
+> +/**
+> + * homa_peertab_get_peers() - Return information about all of the peers
+> + * currently known
+> + * @peertab:    The table to search for peers.
+> + * @num_peers:  Modified to hold the number of peers returned.
+> + * Return:      kmalloced array holding pointers to all known peers. The
+> + *		caller must free this. If there is an error, or if there
+> + *	        are no peers, NULL is returned.
+> + */
+> +struct homa_peer **homa_peertab_get_peers(struct homa_peertab *peertab,
+> +					  int *num_peers)
 
-On Thu, 2025-01-23 at 16:41 +0000, Song, Yoong Siang wrote:
-> On Thursday, January 23, 2025 11:40 PM, Bouska, Zdenek <zdenek.bouska@sie=
-mens.com> wrote:
-> >=20
-> > Hi Siang,
-> >=20
-> > I tested this patch series on 6.13 with Intel I226-LM (rev 04).
-> >=20
-> > I also applied patch "selftests/bpf: Actuate tx_metadata_len in xdp_hw_=
-metadata" [1]
-> > and "selftests/bpf: Enable Tx hwtstamp in xdp_hw_metadata" [2] so that =
-TX timestamps
-> > work.
-> >=20
-> > HW RX-timestamp was small (0.5956 instead of 1737373125.5956):
-> >=20
-> > HW RX-time:   595572448 (sec:0.5956) delta to User RX-time sec:17373731=
-24.9873 (1737373124987318.750 usec)
-> > XDP RX-time:   1737373125582798388 (sec:1737373125.5828) delta to User =
-RX-time sec:0.0001 (92.733 usec)
-> >=20
-> > Igc's raw HW RX-timestamp in front of frame data was overwritten by BPF=
- program on
-> > line 90 in tools/testing/selftests/bpf: meta->hint_valid =3D 0;
-> >=20
-> > "HW timestamp has been copied into local variable" comment is outdated =
-on
-> > line 2813 in drivers/net/ethernet/intel/igc/igc_main.c after
-> > commit 069b142f5819 igc: Add support for PTP .getcyclesx64() [3].
-> >=20
-> > Workaround is to add unused data to xdp_meta struct:
-> >=20
-> > --- a/tools/testing/selftests/bpf/xdp_metadata.h
-> > +++ b/tools/testing/selftests/bpf/xdp_metadata.h
-> > @@ -49,4 +49,5 @@ struct xdp_meta {
-> >                __s32 rx_vlan_tag_err;
-> >        };
-> >        enum xdp_meta_field hint_valid;
-> > +       __u8 avoid_IGC_TS_HDR_LEN[16];
-> > };
-> >=20
->=20
-> Hi Zdenek Bouska,=20
->=20
-> Thanks for your help on testing this patch set.
-> You are right, there is some issue with the Rx hw timestamp,
-> I will submit the bug fix patch when the solution is finalized,
-> but the fix will not be part of this launch time patch set.
-> Until then, you can continue to use your WA.
+Look like this function is unsed in the current series. Please don't
+introduce unused code.
 
-I think there is no simple fix for that. That needs some discussion
-around the "expectations" to the headroom / meta data area in front of
-the actual packet data.
+> +{
+> +	struct homa_peer **result;
+> +	struct hlist_node *next;
+> +	struct homa_peer *peer;
+> +	int i, count;
+> +
+> +	*num_peers = 0;
+> +	if (!peertab->buckets)
+> +		return NULL;
+> +
+> +	/* Figure out how many peers there are. */
+> +	count = 0;
+> +	for (i = 0; i < HOMA_PEERTAB_BUCKETS; i++) {
+> +		hlist_for_each_entry_safe(peer, next, &peertab->buckets[i],
+> +					  peertab_links)
 
-To be able to write generic BPF programs - generic in terms of "works
-with all drivers" - the headroom is expected to be available for use
-inside the BPF program.
+No lock acquired, so others process could concurrently modify the list;
+hlist_for_each_entry_safe() is not the correct helper to use. You should
+probably use hlist_for_each_entry_rcu(), adding rcu protection. Assuming
+the thing is actually under an RCU schema, which is not entirely clear.
 
-I think that is true for most drivers / devices, but at least igc is
-different in this regard. Devices deliver the RX timestamp in front of
-the actual data while other devices deliver the meta information as
-part of the RX descriptor.
+> +			count++;
+> +	}
+> +
+> +	if (count == 0)
+> +		return NULL;
+> +
+> +	result = kmalloc_array(count, sizeof(peer), GFP_KERNEL);
+> +	if (!result)
+> +		return NULL;
+> +	*num_peers = count;
+> +	count = 0;
+> +	for (i = 0; i < HOMA_PEERTAB_BUCKETS; i++) {
+> +		hlist_for_each_entry_safe(peer, next, &peertab->buckets[i],
+> +					  peertab_links) {
+> +			result[count] = peer;
+> +			count++;
+> +		}
+> +	}
+> +	return result;
+> +}
+> +
+> +/**
+> + * homa_peertab_gc_dsts() - Invoked to free unused dst_entries, if it is
+> + * safe to do so.
+> + * @peertab:       The table in which to free entries.
+> + * @now:           Current time, in sched_clock() units; entries with expiration
+> + *                 dates no later than this will be freed. Specify ~0 to
+> + *                 free all entries.
+> + */
+> +void homa_peertab_gc_dsts(struct homa_peertab *peertab, __u64 now)
+> +{
 
-For igc we get:
+Apparently this is called under (and need) peertab lock, an annotation
+or a comment would be helpful.
 
-+----------+-----------------+-----+------+
-| headroom | custom metadata |RX TS| data |
-+----------+-----------------+-----+------+
-           ^                       ^
-           |                       |
- xdp_buff->data_meta        xdp_buff->data
+> +	while (!list_empty(&peertab->dead_dsts)) {
+> +		struct homa_dead_dst *dead =
+> +			list_first_entry(&peertab->dead_dsts,
+> +					 struct homa_dead_dst, dst_links);
+> +		if (dead->gc_time > now)
+> +			break;
+> +		dst_release(dead->dst);
+> +		list_del(&dead->dst_links);
+> +		kfree(dead);
+> +	}
+> +}
+> +
+> +/**
+> + * homa_peer_find() - Returns the peer associated with a given host; creates
+> + * a new homa_peer if one doesn't already exist.
+> + * @peertab:    Peer table in which to perform lookup.
+> + * @addr:       Address of the desired host: IPv4 addresses are represented
+> + *              as IPv4-mapped IPv6 addresses.
+> + * @inet:       Socket that will be used for sending packets.
+> + *
+> + * Return:      The peer associated with @addr, or a negative errno if an
+> + *              error occurred. The caller can retain this pointer
+> + *              indefinitely: peer entries are never deleted except in
+> + *              homa_peertab_destroy.
+> + */
+> +struct homa_peer *homa_peer_find(struct homa_peertab *peertab,
+> +				 const struct in6_addr *addr,
+> +				 struct inet_sock *inet)
+> +{
+> +	/* Note: this function uses RCU operators to ensure safety even
+> +	 * if a concurrent call is adding a new entry.
+> +	 */
+> +	struct homa_peer *peer;
+> +	struct dst_entry *dst;
+> +
+> +	__u32 bucket = hash_32((__force __u32)addr->in6_u.u6_addr32[0],
+> +			       HOMA_PEERTAB_BUCKET_BITS);
+> +
+> +	bucket ^= hash_32((__force __u32)addr->in6_u.u6_addr32[1],
+> +			  HOMA_PEERTAB_BUCKET_BITS);
+> +	bucket ^= hash_32((__force __u32)addr->in6_u.u6_addr32[2],
+> +			  HOMA_PEERTAB_BUCKET_BITS);
+> +	bucket ^= hash_32((__force __u32)addr->in6_u.u6_addr32[3],
+> +			  HOMA_PEERTAB_BUCKET_BITS);
+> +	hlist_for_each_entry_rcu(peer, &peertab->buckets[bucket],
+> +				 peertab_links) {
+> +		if (ipv6_addr_equal(&peer->addr, addr))
 
+The caller does not acquire the RCU read lock, so this looks buggy.
 
-The only information the application gets is a pointer to the start of
-the data section. For calculating / finding the beginning of the meta
-data area the application has to go backward.
+AFAICS UaF is not possible because peers are removed only by
+homa_peertab_destroy(), at unload time. That in turn looks
+dangerous/wrong. What about memory utilization for peers over time?
+apparently bucket list could grow in an unlimited way.
 
-That is exactly how it is currently implemented in the selftest.
+[...]
+> +/**
+> + * homa_peer_lock_slow() - This function implements the slow path for
+> + * acquiring a peer's @unacked_lock. It is invoked when the lock isn't
+> + * immediately available. It waits for the lock, but also records statistics
+> + * about the waiting time.
+> + * @peer:    Peer to  lock.
+> + */
+> +void homa_peer_lock_slow(struct homa_peer *peer)
+> +	__acquires(&peer->ack_lock)
+> +{
+> +	spin_lock_bh(&peer->ack_lock);
 
-Problem: By writing into the calculated meta data area the BPF program
-might already destroy meta information delivered by the driver. At
-least for igc this is a problem.
+Is this just a placeholder for future changes?!? I don't see any stats
+update here, and currently homa_peer_lock() is really:
 
-I hope that was clear...
+	if (!spin_trylock_bh(&peer->ack_lock))
+		spin_lock_bh(&peer->ack_lock);
 
-Best regards,
-Florian
+which does not make much sense to me. Either document this is going to
+change very soon (possibly even how and why) or use a plain spin_lock_bh()
 
->=20
-> > But Launch time still does not work:
-> >=20
-> > HW Launch-time:   1737374407515922696 (sec:1737374407.5159) delta to HW=
- TX-complete-time sec:-0.9999 (-999923.649 usec)
-> >=20
-> > Command "sudo ethtool -X enp1s0 start 1 equal 1" was in v4 [4] but is n=
-ot in v6.
-> > Was that intentional? After executing it Launch time feature works:
->=20
-> This ethtool command is to use RSS method to route the incoming packet
-> to the queue which has launch time enabled. However, not every device sup=
-port
-> RSS. So I move to use a more generic method, which is vlan priority metho=
-d,
-> to route the incoming packet. Therefore, you need to send an
-> UDP packet with VLAN priority 1 to port 9091 of DUT.
->=20
-> Below is example of my python script to generate the vlan UDP packet.
-> You can have a quick try on it.
->=20
-> from scapy.all import *
-> from scapy.all import Ether, Dot1Q, IP, UDP
-> packet =3D Ether(src=3D"44:ab:bc:bb:21:44", dst=3D"22:ab:bc:bb:12:34") / =
-Dot1Q(vlan=3D100, prio=3D1) / IP(src=3D"169.254.1.2", dst=3D"169.254.1.1") =
-/ UDP(dport=3D9091)
-> sendp(packet, iface=3D"enp1s0")
->=20
-> Thanks & Regards
-> Siang
->=20
-> >=20
-> > HW Launch-time:   1737374618088557111 (sec:1737374618.0886) delta to HW=
- TX-complete-time sec:0.0000 (0.012 usec)
-> >=20
-> > Thank you for XDP launch time support!
-> >=20
-> > [1] https://lore.kernel.org/linux-kernel/20241205044258.3155799-1-
-> > yoong.siang.song@intel.com/
-> > [2] https://lore.kernel.org/linux-kernel/20241205051936.3156307-1-
-> > yoong.siang.song@intel.com/
-> > [3]
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
-it/?id=3D069
-> > b142f58196bd9f47b35e493255741e2c663c7
-> > [4] https://lore.kernel.org/linux-kernel/20250106135724.9749-1-
-> > yoong.siang.song@intel.com/
-> >=20
-> > Best regards,
-> > Zdenek Bouska
-> >=20
-> > --
-> > Siemens, s.r.o
-> > Foundational Technologies
-> >=20
+> +}
+> +
+> +/**
+> + * homa_peer_add_ack() - Add a given RPC to the list of unacked
+> + * RPCs for its server. Once this method has been invoked, it's safe
+> + * to delete the RPC, since it will eventually be acked to the server.
+> + * @rpc:    Client RPC that has now completed.
+> + */
+> +void homa_peer_add_ack(struct homa_rpc *rpc)
+> +{
+> +	struct homa_peer *peer = rpc->peer;
+> +	struct homa_ack_hdr ack;
+> +
+> +	homa_peer_lock(peer);
+> +	if (peer->num_acks < HOMA_MAX_ACKS_PER_PKT) {
+> +		peer->acks[peer->num_acks].client_id = cpu_to_be64(rpc->id);
+> +		peer->acks[peer->num_acks].server_port = htons(rpc->dport);
+> +		peer->num_acks++;
+> +		homa_peer_unlock(peer);
+> +		return;
+> +	}
+> +
+> +	/* The peer has filled up; send an ACK message to empty it. The
+> +	 * RPC in the message header will also be considered ACKed.
+> +	 */
+> +	memcpy(ack.acks, peer->acks, sizeof(peer->acks));
+> +	ack.num_acks = htons(peer->num_acks);
+> +	peer->num_acks = 0;
+> +	homa_peer_unlock(peer);
+> +	homa_xmit_control(ACK, &ack, sizeof(ack), rpc);
+> +}
+> +
+> +/**
+> + * homa_peer_get_acks() - Copy acks out of a peer, and remove them from the
+> + * peer.
+> + * @peer:    Peer to check for possible unacked RPCs.
+> + * @count:   Maximum number of acks to return.
+> + * @dst:     The acks are copied to this location.
+> + *
+> + * Return:   The number of acks extracted from the peer (<= count).
+> + */
+> +int homa_peer_get_acks(struct homa_peer *peer, int count, struct homa_ack *dst)
+> +{
+> +	/* Don't waste time acquiring the lock if there are no ids available. */
+> +	if (peer->num_acks == 0)
+> +		return 0;
+> +
+> +	homa_peer_lock(peer);
+> +
+> +	if (count > peer->num_acks)
+> +		count = peer->num_acks;
+> +	memcpy(dst, &peer->acks[peer->num_acks - count],
+> +	       count * sizeof(peer->acks[0]));
+> +	peer->num_acks -= count;
+> +
+> +	homa_peer_unlock(peer);
+> +	return count;
+> +}
+> diff --git a/net/homa/homa_peer.h b/net/homa/homa_peer.h
+> new file mode 100644
+> index 000000000000..556aeda49656
+> --- /dev/null
+> +++ b/net/homa/homa_peer.h
+> @@ -0,0 +1,233 @@
+> +/* SPDX-License-Identifier: BSD-2-Clause */
+> +
+> +/* This file contains definitions related to managing peers (homa_peer
+> + * and homa_peertab).
+> + */
+> +
+> +#ifndef _HOMA_PEER_H
+> +#define _HOMA_PEER_H
+> +
+> +#include "homa_wire.h"
+> +#include "homa_sock.h"
+> +
+> +struct homa_rpc;
+> +
+> +/**
+> + * struct homa_dead_dst - Used to retain dst_entries that are no longer
+> + * needed, until it is safe to delete them (I'm not confident that the RCU
+> + * mechanism will be safe for these: the reference count could get incremented
+> + * after it's on the RCU list?).
+> + */
+> +struct homa_dead_dst {
+> +	/** @dst: Entry that is no longer used by a struct homa_peer. */
+> +	struct dst_entry *dst;
+> +
+> +	/**
+> +	 * @gc_time: Time (in units of sched_clock()) when it is safe
+> +	 * to free @dst.
+> +	 */
+> +	__u64 gc_time;
+> +
+> +	/** @dst_links: Used to link together entries in peertab->dead_dsts. */
+> +	struct list_head dst_links;
+> +};
+> +
+> +/**
+> + * define HOMA_PEERTAB_BUCKET_BITS - Number of bits in the bucket index for a
+> + * homa_peertab.  Should be large enough to hold an entry for every server
+> + * in a datacenter without long hash chains.
+> + */
+> +#define HOMA_PEERTAB_BUCKET_BITS 16
+> +
+> +/** define HOME_PEERTAB_BUCKETS - Number of buckets in a homa_peertab. */
+> +#define HOMA_PEERTAB_BUCKETS BIT(HOMA_PEERTAB_BUCKET_BITS)
+> +
+> +/**
+> + * struct homa_peertab - A hash table that maps from IPv6 addresses
+> + * to homa_peer objects. IPv4 entries are encapsulated as IPv6 addresses.
+> + * Entries are gradually added to this table, but they are never removed
+> + * except when the entire table is deleted. We can't safely delete because
+> + * results returned by homa_peer_find may be retained indefinitely.
+> + *
+> + * This table is managed exclusively by homa_peertab.c, using RCU to
+> + * permit efficient lookups.
+> + */
+> +struct homa_peertab {
+> +	/**
+> +	 * @write_lock: Synchronizes addition of new entries; not needed
+> +	 * for lookups (RCU is used instead).
+> +	 */
+> +	spinlock_t write_lock;
+
+This look looks potentially havily contented on add, why don't you use a
+per bucket lock?
+
+> +
+> +	/**
+> +	 * @dead_dsts: List of dst_entries that are waiting to be deleted.
+> +	 * Hold @write_lock when manipulating.
+> +	 */
+> +	struct list_head dead_dsts;
+> +
+> +	/**
+> +	 * @buckets: Pointer to heads of chains of homa_peers for each bucket.
+> +	 * Malloc-ed, and must eventually be freed. NULL means this structure
+> +	 * has not been initialized.
+> +	 */
+> +	struct hlist_head *buckets;
+> +};
+> +
+> +/**
+> + * struct homa_peer - One of these objects exists for each machine that we
+> + * have communicated with (either as client or server).
+> + */
+> +struct homa_peer {
+> +	/**
+> +	 * @addr: IPv6 address for the machine (IPv4 addresses are stored
+> +	 * as IPv4-mapped IPv6 addresses).
+> +	 */
+> +	struct in6_addr addr;
+> +
+> +	/** @flow: Addressing info needed to send packets. */
+> +	struct flowi flow;
+> +
+> +	/**
+> +	 * @dst: Used to route packets to this peer; we own a reference
+> +	 * to this, which we must eventually release.
+> +	 */
+> +	struct dst_entry *dst;
+> +
+> +	/**
+> +	 * @grantable_rpcs: Contains all homa_rpcs (both requests and
+> +	 * responses) involving this peer whose msgins require (or required
+> +	 * them in the past) and have not been fully received. The list is
+> +	 * sorted in priority order (head has fewest bytes_remaining).
+> +	 * Locked with homa->grantable_lock.
+> +	 */
+> +	struct list_head grantable_rpcs;
+
+Apparently not used in this patch series. More field below with similar
+problem. Please introduce such fields in the same series that will
+actualy use them.
+
+/P
 
