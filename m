@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB2D20C03B;
-	Thu, 23 Jan 2025 09:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0194020DD5C;
+	Thu, 23 Jan 2025 09:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737624609; cv=none; b=LYTRwlLM5Jo1hEI1hQSf/nULCNpv4WOkcAGvoRWW8adasoga58+fvmwd5ZWJqAomDaYj4xL94tlNv4m7rwVYK42mTrQLToAmwDQm61ndj5GZUgTQUmS+5Y8aIn4d3BJNDnPNaeDtq1e7otR5UjAcWuwyRFgC8etOJTEtVVW/Pww=
+	t=1737624612; cv=none; b=sGHKy++YQ9byI+yHXwhRILy/3v+Y/dNaGN8uwdDY2qg5rxwrBBNuxaAdFsOkniCvWl8vgIUE0EKILz1OVupnrkNd/FlnKHS1AbkTuq3loQ1N3BYwpqHkDs/RshH1VJfXfDqnGQqeDSjiPKv7h9HW6O1/sClNoz4TuW6mjJbpPYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737624609; c=relaxed/simple;
-	bh=jZN9jLDJvmyVut4U17jzLZHkmU1soT4xWLsz8Po2LLM=;
+	s=arc-20240116; t=1737624612; c=relaxed/simple;
+	bh=N8ZOqsvilbTZc2nD+9GQpHaU6FbhHEu8mqq6T/91CSM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=sC2SSgP+PK9A2fx7/XIlmOrVaP8Whh64ZvXp2S19S/iHD4MCaRPvMqtMgmWj+gZI9ZdZE+fmnvgaQJ8lq1A6MtW4CuDFvEjhMQkCLI/wVy7N92xn6flkdbWXlRyg69i133SWoXnX5fNO9xQcF1NBKUlYf5LA1FSzFktw97pdis8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iGEVshvf; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=aq/PbESZU3Nt149o3Hv4IsxiQtOPIsshYv4V9rwXxph7T3N5kSFD/P2H6VCddkqMs1Xogy3mED/fNcbhmGQ1zDOd+Cd86c0wAdOqP/R+9sBPI89PenaPqjW3WR8EvoaHoJKz9UZcnMrFTcqrgnSlLEYhqNR1PjrbmSFsDLjgYog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o7ksDXmM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iGEVshvf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7683C4CED3;
-	Thu, 23 Jan 2025 09:30:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o7ksDXmM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A482C4CEE4;
+	Thu, 23 Jan 2025 09:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737624608;
-	bh=jZN9jLDJvmyVut4U17jzLZHkmU1soT4xWLsz8Po2LLM=;
+	s=k20201202; t=1737624610;
+	bh=N8ZOqsvilbTZc2nD+9GQpHaU6FbhHEu8mqq6T/91CSM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=iGEVshvfanj0r6qBrF7wC21dHMJl4qPSXbcKp5LPC3y7x2X1TcSvdply27XffJwIr
-	 mRa+KI7DXkgrw8IhKPtBekgk3UtOag/h9lTeiglFYTn6NacDlIujk16NuH266n/wZh
-	 khO3zAIiVqGaq1uIRi6+ZAPZl9sO7bQpfg389eW0JwCKitrBx4wpTjN+n+38cubnP0
-	 onZJ5d1+6tendPpn/g/ChbXKWew0IH55r/VNpbH+F2UuG5d6xxfVrrWY2ZPW89UAvQ
-	 Ndgoc7cz8jY8uzYzCZgBGItYnADvyyNWKJQFMdZS7Z2Ws5nlJ9I5DTgYp86eNj2/22
-	 roWe927dYmTSA==
+	b=o7ksDXmM7YkeQPbj+bORg6ySYCEYovw1USaHf+dRyoOqlUK1U7qIXeW8M+oIP6OWc
+	 s/YBsw2SHnf6HW8XOqviZW7B1brCD1AJLp8CNDFfj8fNP/oFBk7AI35FzdynTLYQga
+	 EuPiNG8t3oHtIVT4NZLa1XTKJcHgJ9ZrDumLaIORmyGYPyzP+exaAuaIJPEi+/c5p7
+	 wNUuv+5msyP8JgPBqWtIbKLdjxs5vNACCMc/HJ6Jm6QyiWQXp2MgMA1NbjMY3PRxP3
+	 DQADCkimsAVKp+9eev1lfji+dYRmPeJijacpOme/NYl5f4yRDC+WGaCS4szk2k/Yfr
+	 /xq/DN86a1XUg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADFAC380AA78;
-	Thu, 23 Jan 2025 09:30:34 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33DF1380AA78;
+	Thu, 23 Jan 2025 09:30:36 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v4 net] net: fec: implement TSO descriptor cleanup
+Subject: Re: [PATCH v2] net: phy: marvell-88q2xxx: Fix temperature measurement
+ with reset-gpios
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <173762463352.1296391.18044327523641569587.git-patchwork-notify@kernel.org>
-Date: Thu, 23 Jan 2025 09:30:33 +0000
-References: <20250120085430.99318-1-dheeraj.linuxdev@gmail.com>
-In-Reply-To: <20250120085430.99318-1-dheeraj.linuxdev@gmail.com>
-To: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
-Cc: wei.fang@nxp.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <173762463474.1296391.8377642042031495293.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Jan 2025 09:30:34 +0000
+References: <20250118-marvell-88q2xxx-fix-hwmon-v2-1-402e62ba2dcb@gmail.com>
+In-Reply-To: <20250118-marvell-88q2xxx-fix-hwmon-v2-1-402e62ba2dcb@gmail.com>
+To: Dimitri Fedrau <dima.fedrau@gmail.com>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ niklas.soderlund+renesas@ragnatech.se, gregor.herburger@ew.tq-group.com,
+ eichest@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Mon, 20 Jan 2025 14:24:30 +0530 you wrote:
-> Implement cleanup of descriptors in the TSO error path of
-> fec_enet_txq_submit_tso(). The cleanup
-> 
-> - Unmaps DMA buffers for data descriptors skipping TSO header
-> - Clears all buffer descriptors
-> - Handles extended descriptors by clearing cbd_esc when enabled
+On Sat, 18 Jan 2025 19:43:43 +0100 you wrote:
+> When using temperature measurement on Marvell 88Q2XXX devices and the
+> reset-gpios property is set in DT, the device does a hardware reset when
+> interface is brought down and up again. That means that the content of
+> the register MDIO_MMD_PCS_MV_TEMP_SENSOR2 is reset to default and that
+> leads to permanent deactivation of the temperature measurement, because
+> activation is done in mv88q2xxx_probe. To fix this move activation of
+> temperature measurement to mv88q222x_config_init.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v4,net] net: fec: implement TSO descriptor cleanup
-    https://git.kernel.org/netdev/net/c/61dc1fd9205b
+  - [v2] net: phy: marvell-88q2xxx: Fix temperature measurement with reset-gpios
+    https://git.kernel.org/netdev/net/c/a197004cf3c2
 
 You are awesome, thank you!
 -- 
