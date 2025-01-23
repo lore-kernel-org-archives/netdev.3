@@ -1,80 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6449020CCD6
-	for <netdev@vger.kernel.org>; Thu, 23 Jan 2025 10:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470B020CCD6;
+	Thu, 23 Jan 2025 10:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737628988; cv=none; b=s72brT3hpyFw8fZnpecvkbwbZsaVSZWqt3E/GNPhQbI2T4W8QxMyAEELp+A4XarWcEDFulCkrBgeJZA0+ctYnTjRpMUeI0nYLFw9ia2P2xQINDu9XmFmItfNPADrvCuXNitWo5MWqtky+7w2AQwTsucvSA8ZRdLZAvalw8DmBMg=
+	t=1737628994; cv=none; b=u1YChVB8ctQgliTLP7W7qQYZAWvAGOWmWSN7iMN7y1PmtSlAJEbMKlmR3ZFPP9W89dnkAJCN1rcAav89klOu2uQ2B6SM95/JnZgaRjqRdyHLShAn/YWm3MRYdLcKiRHVBrtw4bLGDvNvN5EciF4+LH3m4Vd5IvcE460cQBfHIG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737628988; c=relaxed/simple;
-	bh=2GQbGUS1wJQc4Ky9t4ihKM4Dc3qUZ8b7Jo6+U6rH8LA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kXfr/NyNi1XqjG35Pdek0WoHnHYZES3gBhc7URa2SHfhTve4BSgRy6MPNGZ2IrJht7vDrhPsD6IcJIAgKdV1qcOC6xkAtBSMzH59rzbUkkAeoVpy80XEnCyvjzWqqCQh6nUuj7zl0umPKZoCSG3joNnzcGqZkshz0klubxuGtaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E+R+SER/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1737628994; c=relaxed/simple;
+	bh=fnLtwIc6MV8b5IUPyw308udN4u67DVdokrzGS7M8PFo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QKHdoWvvZi+6qBChwp3TIru5uT78WvnWIMQwN0RTaceEWVCBRS0CA2bs0l3nny0G6OGWGrCxWsgl28MnyhIPA5hjEB/dv550SanWi3Absrecg8butWGytAWLpM1B/tilemHAjRO0vO3sl8U8hiDBDLyHF44kfrP8DHlmsO8H+8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OKTZ0eXB; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E+R+SER/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 200BCC4CED3;
-	Thu, 23 Jan 2025 10:43:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737628988;
-	bh=2GQbGUS1wJQc4Ky9t4ihKM4Dc3qUZ8b7Jo6+U6rH8LA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E+R+SER/dr+BbH6v7s1u8zD9TbUMoH+k8bDIXLNX0uKzxQxUrYohb9FehVjMPIoKX
-	 2W4OiyytV71o4s9je1JZsgQku1h7TsIt8Fhwbg+qXun6Uv5wjrk9q98RBEOQZmLNuR
-	 3xoMpxcOzjq38ZsiElB7G+hdMwyNe5pMAhW4klwAtLv5lpYvJSJkDU3ok8sUe3uszd
-	 RjZjLPyfJ77BeM2o0MtberEZC13THr22HXB49ORHt+Jjk/2Er7TmybO6ho2AQHh7CV
-	 bgw5T2ZmoVkRMAuV5+0YxWM78BDGDZtnh9dUVRuJjqoP1Z/XdiusBwdB08+Mt5kuj/
-	 NDOSvZ/6UFMaA==
-Date: Thu, 23 Jan 2025 10:43:03 +0000
-From: Simon Horman <horms@kernel.org>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com, magnus.karlsson@intel.com,
-	jacob.e.keller@intel.com, xudu@redhat.com, mschmidt@redhat.com,
-	jmaxwell@redhat.com, poros@redhat.com, przemyslaw.kitszel@intel.com
-Subject: Re: [PATCH v4 iwl-net 1/3] ice: put Rx buffers after being done with
- current frame
-Message-ID: <20250123104303.GJ395043@kernel.org>
-References: <20250122151046.574061-1-maciej.fijalkowski@intel.com>
- <20250122151046.574061-2-maciej.fijalkowski@intel.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OKTZ0eXB"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 66FDF1C000E;
+	Thu, 23 Jan 2025 10:43:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1737628989;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tLUfkUuRz3nRthcoDnA3/VSyQ9KzaT4t1CIzkWnxXYw=;
+	b=OKTZ0eXBaLQy6Rq432EqyJslmMw2hRhB07qvB1bN8W0Wt0CRMzqS8GwtweDXvvZKWvgy31
+	RTizLkQ9+JGW+tIGMkPWbTR0wU7ipdRR8npWIto6KFI/jJMLqEbUvqWJQMNLs+sFs0cc5d
+	f90N+nLimTcYUf587XRFHQ74p7RDhNQGnc5WxLIHxnOC0BjxgWNxn90abQEhgzx3I2T7Pt
+	XmYs7N5XEmhrXhLgfergYerdeNv0fzPZnbUmFw4qkVV2Cgg5KmeWDT3asDSsOqGPXux1Gg
+	MEvgJbD5Rf64zTj+4MHWbAim+8U1jSLCoFjoaLCOLZ+U/NqeC6y3aDxCrEwO5g==
+Date: Thu, 23 Jan 2025 11:43:06 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski
+ <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, Heiner Kallweit
+ <hkallweit1@gmail.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Marek
+ =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>, Oleksij Rempel
+ <o.rempel@pengutronix.de>, =?UTF-8?B?Tmljb2zDsg==?= Veronese
+ <nicveronese@gmail.com>, Simon Horman <horms@kernel.org>,
+ mwojtas@chromium.org, Antoine Tenart <atenart@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>
+Subject: Re: [PATCH net-next RFC v2 0/6] net: phy: Introduce a port
+ representation
+Message-ID: <20250123114306.5c2f767e@kmaincent-XPS-13-7390>
+In-Reply-To: <20250123113121.1d151582@kmaincent-XPS-13-7390>
+References: <20250122174252.82730-1-maxime.chevallier@bootlin.com>
+	<20250123113121.1d151582@kmaincent-XPS-13-7390>
+Organization: bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250122151046.574061-2-maciej.fijalkowski@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: kory.maincent@bootlin.com
 
-On Wed, Jan 22, 2025 at 04:10:44PM +0100, Maciej Fijalkowski wrote:
-> Introduce a new helper ice_put_rx_mbuf() that will go through gathered
-> frags from current frame and will call ice_put_rx_buf() on them. Current
-> logic that was supposed to simplify and optimize the driver where we go
-> through a batch of all buffers processed in current NAPI instance turned
-> out to be broken for jumbo frames and very heavy load that was coming
-> from both multi-thread iperf and nginx/wrk pair between server and
-> client. The delay introduced by approach that we are dropping is simply
-> too big and we need to take the decision regarding page
-> recycling/releasing as quick as we can.
-> 
-> While at it, address an error path of ice_add_xdp_frag() - we were
-> missing buffer putting from day 1 there.
-> 
-> As a nice side effect we get rid of annoying and repetitive three-liner:
-> 
-> 	xdp->data = NULL;
-> 	rx_ring->first_desc = ntc;
-> 	rx_ring->nr_frags = 0;
-> 
-> by embedding it within introduced routine.
-> 
-> Fixes: 1dc1a7e7f410 ("ice: Centrallize Rx buffer recycling")
-> Reported-and-tested-by: Xu Du <xudu@redhat.com>
-> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> Co-developed-by: Jacob Keller <jacob.e.keller@intel.com>
-> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+On Thu, 23 Jan 2025 11:31:21 +0100
+Kory Maincent <kory.maincent@bootlin.com> wrote:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+> On Wed, 22 Jan 2025 18:42:45 +0100
+> Maxime Chevallier <maxime.chevallier@bootlin.com> wrote:
+>=20
+> > Hello everyone,
+> >=20
+> > This is a second RFC for the introduction of a front-facing interfaces
+> > for ethernet devices.
+> >=20
+> > The firts RFC[1] already got some reviews, focusing on the DT part of
+> > that work. To better lay the ground for further discussions, this second
+> > round includes a binding :)
+> >=20
+> > Oleksij suggested some further possibilities for improving this binding,
+> > as we could consider describing connectors in great details for
+> > crossover detection, PoE ping mappings, etc. However, as this is
+> > preliminary work, the included binding is still quite simple but can
+> > certainly be extended.
+> >=20
+> > This RFC V2 doesn't bring much compared to V1 :
+> >  - A binding was introduced
+> >  - A warning has been fixed in the dp83822 patch
+> >  - The "lanes" property has been made optional =20
+>=20
+> Small question, I know you want to begin with something simple but would =
+it be
+> possible to consider how to support the port representation in NIT and
+> switch drivers? Maybe it is out of your scope but it would be nice if you
+> consider how NIT and switches can support it in your development.
+
+s/NIT/NIC/
+
+Sorry.
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
