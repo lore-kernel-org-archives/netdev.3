@@ -1,101 +1,152 @@
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47691BD01F;
-	Thu, 23 Jan 2025 07:25:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFDD20B1FD;
+	Thu, 23 Jan 2025 07:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737617107; cv=none; b=ZfTFzYk4GE0LlkvUiFx0iW6FdXN9Ymj9C17jXiltb6cQrU7kILTbwnBLi5uQpWOCdt2pC3FXHnZ8ijOYLtYBC/vR4HyMPLK+T1SXo633HdnOPaOb3TANjR2kP9pPoLGXJT4oUfIWEVxu04N2LebJF9S/kib3zYzh6Gn/FNwNNrA=
+	t=1737617132; cv=none; b=CLaenUIxIcaCUls63kF6p/cY53FJGMbO8YSf/BhrARVBHNMMJH9KTVPFwEb5Z/AwrVq4A/lvQqUS0kmdMo4V4vVZKYAb+bNnPw8gnnROdJiqE8oI7OZ0M6O1ZRXYP7mvMpdlPHG+NZFoqJuN6289qfYilzGo/cSrZKLgcnHE5qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737617107; c=relaxed/simple;
-	bh=Debs92GqllIvAo5tz//ts3ajdhLFtAitLJrVVjdqBw8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Pxe1sYmbGa1mYgW5/JJR8M+pKjuUfV6UanMnoRs3QiY3tzZt/qwRCUfcsysN2FY0dPyFdipyiAoWsTNy8IdhjWvcU6rwRA+JU69OzMHlHqgo/a92KjKkw2HaoKSyn9OEasMeLPUui0apxzmCdoyUMnCd03SKlAFKgzRLDSZtfwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=nPgc0KvF; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+	s=arc-20240116; t=1737617132; c=relaxed/simple;
+	bh=zMv/TiG+ah/03Csaypc7gUgqfNDfS6VRfIl8Xy9TzZA=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=FO/sD5w3KzhN157ceMcYdq1rraJfNNRFxuZJttSvjEEtiJgIpvxNVNAHxA39kfPyXYUQUjRqExufb0AZFdIp+8ymWAQR5mjfY4KY0d16QqVaIKV9Kwf9+VcH7WvyFWl7F0fpXMUHxiRwis1yFHzu95qIUcAFhYSKUt2nNGgz1oQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nx/z1QSc; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="nPgc0KvF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1737617092;
-	bh=Debs92GqllIvAo5tz//ts3ajdhLFtAitLJrVVjdqBw8=;
-	h=From:Date:Subject:To:Cc:From;
-	b=nPgc0KvFnQsgcmBz6nL7PVbWNpMqc0xTZmcKiei/kB3EXKi4GVDoHvolxaByrDc2+
-	 b8wqO6embvBMw2MmOqEYeooIJ5iQwNzeVEsjCA6ve2uNxYNLM6ZehHxpcVTt/4HpQ+
-	 jlEZDjV4aymiFEEc0wIZmnUC5JrFWMs1xbvJmnAE=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Thu, 23 Jan 2025 08:22:40 +0100
-Subject: [PATCH RESEND net] ptp: Ensure info->enable callback is always set
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nx/z1QSc"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2156e078563so7256965ad.2;
+        Wed, 22 Jan 2025 23:25:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737617130; x=1738221930; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mglLasBQ6UAhjc7fwRWJg6n/lLTMQwudiiJlW3FCDz8=;
+        b=Nx/z1QScXKIyqYq9DXhb91qGg2ArOK7ZGRDLxkL26+qQ3wNisJeRbQQ4JN6lXNxWgZ
+         i8tJpltseOCa4n6K5WKJHwRl7Flrd01MkUuJts6xaNW9ZNpvdhMByFE8bMNIlcYwA8+2
+         2VWXAi0Br+oUjSqJvppWdyHqhLgTaPrkJPqy/Nbqdm0T7ZWsJGSLX02MaG6C6F+vwgJM
+         Z869/DhZnVfayo6foux2wHl5QZ3xrDEsBXiE1Vg+zyjY2uh514WkCtycgKeW6H43+NTF
+         nLdkGOl7NkcrrsSmhdh0hDb/EktV6kXsi9bXu7kpR9i3Lxb1D+NHAmLgSKHUeeZP8ZOV
+         42TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737617130; x=1738221930;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=mglLasBQ6UAhjc7fwRWJg6n/lLTMQwudiiJlW3FCDz8=;
+        b=N23164FT2o1yAlSP4zqShFNnquU65yiZSE+g8hOmnc/pNJVow503pu8pvK93v0LHGX
+         te6nQ7OcnIPnTyu6nTBmDbHlIVf0Q+5bmjvDDDTwVZm/HLSa4uO+KEmXOLa6kk6PJWKo
+         1hVixPswjblxk/d3oT7zL96r2hQEZjqZUnYSGvAoC/6Oh0AAg6un0tmyf4Zk+/2ZgyYK
+         FQGD3KWLsjTm+MaadZAd1jLmEwgpzBH2213Ml1/CN2jdTJfp+hqoBsXhgKJNqLojKiR/
+         eGiL4JcFKuvQ8J7ly+uMpFR+kE7/0kUJwIiGgmq/OR6USY96BLGnW+APZcyYalcGasMv
+         Dqkg==
+X-Forwarded-Encrypted: i=1; AJvYcCWxOKF4VuTqHYPGhoHGa4xJAVobrjprESK/oQDgiU6sP100LudG4ZmiTgYc1MZJqH+QzSxrCkQVLBK2+Xc=@vger.kernel.org, AJvYcCWySmm6W3iHPMpvkOt7YHZMksl7FMA21iMZzVV1BKLq2tAFJJZ6fS/sJmIKR4N8EsGu96gq1ANo@vger.kernel.org, AJvYcCXEKqVLenDBISJZ8ZyoWoJMZBQWoGb40v3jh7pR6B2jB3QW/WV+szyHBpT+RUuOXHjnbLSuSl99FTDe2dQ5cq0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1R24lRgC1fcVEntrN9EUlX2jVAd82yhFy+aau9yHHQiLGR0ig
+	1w8GtoLUJHtuQ/9daqOgSRK9PDX6geER1vfjhckFuK9lSAWbLtvA
+X-Gm-Gg: ASbGncuO8sbh8bs6r6x4NX8dDPJZGOBMzPCEs7IAoQw6nA6srS2RoR0oVQriUul4C8w
+	s2J8bX8zZG3YC8iKX/DjQGGuZnF4tL4mBb22QoqgAUDY5FA8PfeXi+MUB376yvk8rD2F1bZMiYF
+	GTMRY+vWYewHuo6J/p0fkgZczZuQzl7WRPhxa6dpXXauxvovZ4kEafgMiQxbj8Z7Bl8F+XqjnVa
+	rGiVqeDLVXm2omk5MU7zwPQrZzcx2VunYHRczHp5CaHItyFxKIDsy+jHDec1nfXcv/657uHUmJw
+	s+RWJ2hq2we2W/pVEkQT8Gr4A9EFT1T/sBA+E9NChW3bt8CUpndrMPs2+BW+aQ==
+X-Google-Smtp-Source: AGHT+IEH/Wi3WdaSKzSPl0LEqkocaSd8XuIkzat23e7beAx1OP2VoOnLU1WfnqycivkxABnI19OnRQ==
+X-Received: by 2002:a05:6a00:448a:b0:728:eb32:356c with SMTP id d2e1a72fcca58-72daf97a62emr35484219b3a.11.1737617129851;
+        Wed, 22 Jan 2025 23:25:29 -0800 (PST)
+Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72daba4895csm12693767b3a.130.2025.01.22.23.25.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jan 2025 23:25:29 -0800 (PST)
+Date: Thu, 23 Jan 2025 16:25:20 +0900 (JST)
+Message-Id: <20250123.162520.1427672620079645345.fujita.tomonori@gmail.com>
+To: gary@garyguo.net
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ boqun.feng@gmail.com, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
+ aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
+ tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
+Subject: Re: [PATCH v8 6/7] rust: Add read_poll_timeout functions
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20250122183612.60f3c62d.gary@garyguo.net>
+References: <20250116044100.80679-1-fujita.tomonori@gmail.com>
+	<20250116044100.80679-7-fujita.tomonori@gmail.com>
+	<20250122183612.60f3c62d.gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250123-ptp-enable-v1-1-b015834d3a47@weissschuh.net>
-To: Richard Cochran <richardcochran@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- John Stultz <john.stultz@linaro.org>, Arnd Bergmann <arnd@arndb.de>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1737617091; l=1710;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=Debs92GqllIvAo5tz//ts3ajdhLFtAitLJrVVjdqBw8=;
- b=4Al51+qegCJBhYdwnvbSjp14rgVlerdoz/4tUDHZtdP5i2+8gsmxpgR9VHN3WoVl8/mo96/41
- zQ29mJfDQzXA3d/gwBvCNMcag0ocRtDk6cywydr6rt8DuZSN+a1OOi9
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-The ioctl and sysfs handlers unconditionally call the ->enable callback.
-Not all drivers implement that callback, leading to NULL dereferences.
-Example of affected drivers: ptp_s390.c, ptp_vclock.c and ptp_mock.c.
+On Wed, 22 Jan 2025 18:36:12 +0000
+Gary Guo <gary@garyguo.net> wrote:
 
-Instead use a dummy callback if no better was specified by the driver.
+>> +#[track_caller]
+>> +pub fn read_poll_timeout<Op, Cond, T: Copy>(
+> 
+> I wonder if we can lift the `T: Copy` restriction and have `Cond` take
+> `&T` instead. I can see this being useful in many cases.
+> 
+> I know that quite often `T` is just an integer so you'd want to pass by
+> value, but I think almost always `Cond` is a very simple closure so
+> inlining would take place and they won't make a performance difference.
 
-Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- drivers/ptp/ptp_clock.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Yeah, we can. More handy for the users of this function. I'll do.
 
-diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-index b932425ddc6a3789504164a69d1b8eba47da462c..35a5994bf64f6373c08269d63aaeac3f4ab31ff0 100644
---- a/drivers/ptp/ptp_clock.c
-+++ b/drivers/ptp/ptp_clock.c
-@@ -217,6 +217,11 @@ static int ptp_getcycles64(struct ptp_clock_info *info, struct timespec64 *ts)
- 		return info->gettime64(info, ts);
- }
- 
-+static int ptp_enable(struct ptp_clock_info *ptp, struct ptp_clock_request *request, int on)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static void ptp_aux_kworker(struct kthread_work *work)
- {
- 	struct ptp_clock *ptp = container_of(work, struct ptp_clock,
-@@ -294,6 +299,9 @@ struct ptp_clock *ptp_clock_register(struct ptp_clock_info *info,
- 			ptp->info->getcrosscycles = ptp->info->getcrosststamp;
- 	}
- 
-+	if (!ptp->info->enable)
-+		ptp->info->enable = ptp_enable;
-+
- 	if (ptp->info->do_aux_work) {
- 		kthread_init_delayed_work(&ptp->aux_work, ptp_aux_kworker);
- 		ptp->kworker = kthread_run_worker(0, "ptp%d", ptp->index);
+>> +    mut op: Op,
+>> +    cond: Cond,
+>> +    sleep_delta: Delta,
+>> +    timeout_delta: Delta,
+>> +) -> Result<T>
+>> +where
+>> +    Op: FnMut() -> Result<T>,
+>> +    Cond: Fn(T) -> bool,
+>> +{
+>> +    let start = Instant::now();
+>> +    let sleep = !sleep_delta.is_zero();
+>> +    let timeout = !timeout_delta.is_zero();
+>> +
+>> +    might_sleep(Location::caller());
+> 
+> This should only be called if `timeout` is true?
 
----
-base-commit: c4b9570cfb63501638db720f3bee9f6dfd044b82
-change-id: 20250122-ptp-enable-831339c62428
+Oops, I messed up this in v6 somehow. I'll fix.
 
-Best regards,
--- 
-Thomas Weißschuh <linux@weissschuh.net>
+>> +    let val = loop {
+>> +        let val = op()?;
+>> +        if cond(val) {
+>> +            // Unlike the C version, we immediately return.
+>> +            // We know a condition is met so we don't need to check again.
+>> +            return Ok(val);
+>> +        }
+>> +        if timeout && start.elapsed() > timeout_delta {
+>> +            // Should we return Err(ETIMEDOUT) here instead of call op() again
+>> +            // without a sleep between? But we follow the C version. op() could
+>> +            // take some time so might be worth checking again.
+>> +            break op()?;
+> 
+> Maybe the reason is `ktime_get` can take some time (due to its use of
+> seqlock and thus may require retrying?) Although this logic breaks down
+> when `read_poll_timeout_atomic` also has this extra `op(args)` despite
+> the condition being trivial.
 
+ktime_get() might do retrying (read_seqcount) but compared to the op
+function, I think that ktime_get() is fast (usually an op function
+waits for hardware).
+
+> So I really can't convince myself that this additional `op()` call is
+> needed. I can't think of any case where this behaviour would be
+> depended on by a driver, so I'd be tempted just to return ETIMEOUT
+> straight.
+
+As I commented in the code, I just mimic the logic of the C version,
+which has been used for a long time. But as you said, looks like we
+can return Err(ETIMEOUT) immediately here. I'll do that in the next
+version.
