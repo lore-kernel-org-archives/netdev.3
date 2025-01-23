@@ -1,45 +1,56 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3337F26AF5;
-	Thu, 23 Jan 2025 08:08:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A1020B80A
+	for <netdev@vger.kernel.org>; Thu, 23 Jan 2025 08:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737619694; cv=none; b=NIvdncbrQ5e1X5K3Ii94OEBfUibA46sjQZPONrQ5IYCtd7Ul8ztPiKhp8feJad9tvH+Rh2oThkCyPnkAeusaebXhohTSsHoSneJavjySTXrFCrfPpv5YBV+2TH5NKglHrVhJz+d+MP0f4X5WGjq3YsRaf/rb8W8oSMiVAnr/LtU=
+	t=1737620343; cv=none; b=AVC/x5RMZHGqHgWSPLiTxcTJiBmNnlkAnQVo0xgsm0OWFJq1lPRSzEnzyL1imKX/h7wkd5hXwmvBawlHGmwOQ2eZcTFjuT9h2IBMWhW8/fnpKcg6ZwjzbVbuWGQufwFur2ECuInZ4edXvv0r1IFqmRzXmxiwZi+YpjHDK/vlrfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737619694; c=relaxed/simple;
-	bh=6eUXLLsO5+YBK05pnwwwcSNSgNcQr52XvtTm4+at4Y0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cv/lxbWEGCaEoTgvvzqljuHmVZJK1NgWapCz3ytM67NCz/O/jp9vJtrZDToKQZO7gDiJ9CAOd2d1uxb6TBQP9RqR7LPEukEO92pmz+PNXrQw9Fta8fwR/jmje6dUpngwa3O/Pre8HOpPyfnGENoRumlSX8r313aMa7njQot0Ubk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Ydtmn6QVRz6J7pc;
-	Thu, 23 Jan 2025 16:06:01 +0800 (CST)
-Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
-	by mail.maildlp.com (Postfix) with ESMTPS id AD34D140519;
-	Thu, 23 Jan 2025 16:07:58 +0800 (CST)
-Received: from china (10.200.201.82) by frapeml500005.china.huawei.com
- (7.182.85.13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 23 Jan
- 2025 09:07:46 +0100
-From: Gur Stavi <gur.stavi@huawei.com>
-To: <przemyslaw.kitszel@intel.com>
-CC: <andrew+netdev@lunn.ch>, <cai.huoqing@linux.dev>, <corbet@lwn.net>,
-	<davem@davemloft.net>, <edumazet@google.com>, <gongfan1@huawei.com>,
-	<guoxin09@huawei.com>, <gur.stavi@huawei.com>, <helgaas@kernel.org>,
-	<horms@kernel.org>, <kuba@kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <luosifu@huawei.com>,
-	<meny.yossefi@huawei.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
-	<shenchenyang1@hisilicon.com>, <shijing34@huawei.com>, <sumang@marvell.com>,
-	<wulike1@huawei.com>, <zhoushuai28@huawei.com>
-Subject: Re: [PATCH net-next v04 1/1] hinic3: module initialization and tx/rx logic
-Date: Thu, 23 Jan 2025 10:20:16 +0200
-Message-ID: <20250123082016.3985519-1-gur.stavi@huawei.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <566b3d82-5e66-4e97-9808-a0e8e212fe67@intel.com>
-References: <566b3d82-5e66-4e97-9808-a0e8e212fe67@intel.com>
+	s=arc-20240116; t=1737620343; c=relaxed/simple;
+	bh=e1qw4y4PLJCQfmeGcA03ZD+XvKSBFChpfjWZUn2EDtQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=T5e2ccAF/HbSMokHOyLU/Cdgy3eb//s2vZ9ZmNuoMomIiSyEGfx5S4fXtn+SixpWIuqNJySftS/xjrZCeTNbr3jJDnN3raNasirqpPP4C8QP09IY7gwbMNiNTl+ezEsVW1J/hztDNYRXlxG89X0B1v7a3X58UAY0otrkMTKPziA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GNd3WSUE; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GNd3WSUE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737620342; x=1769156342;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=e1qw4y4PLJCQfmeGcA03ZD+XvKSBFChpfjWZUn2EDtQ=;
+  b=GNd3WSUEi/KqWucFtI5gAv3ALa0fRgtEmb5/Li5ePAMci0I78fc7WEWw
+   6mF7CWQ5OyXvcnB+byOxyeoDJvxxDCr9KB9vMwVt2Oq+s2G04s9y41Lru
+   qtYKGJr8QSqiTzGFTO4tL1lNlVq1Ek2J91aOZXcw1vrrgXiG/QQ9AxEZZ
+   5w9xEL/rJcTc1wl2F5VsRSp0q1EUgdAArXmH5ptgYih7gn2ox1+w5G/Eh
+   hJuaNPd1GquxHKNLMKHR/J4sTEXd8O8VsC5CrzaK0J/Z8fvyfR9tac1AN
+   +OZPn6Tlf6LsAqGCLVdGpNQmieRFfSU67me2HSgzvbMOAYm7KhMxVojGZ
+   g==;
+X-CSE-ConnectionGUID: 4B9gfZwrTvi5P79/MPsZ4g==
+X-CSE-MsgGUID: TajNjvshQyy1aajfsKev8w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="37367431"
+X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; 
+   d="scan'208";a="37367431"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 00:19:01 -0800
+X-CSE-ConnectionGUID: 3BCBMiajSwWA8L2gLrBW1A==
+X-CSE-MsgGUID: t4F6L9C8RSG1qdHzUJ8/kA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="144631774"
+Received: from gklab-003-001.igk.intel.com ([10.211.3.1])
+  by orviesa001.jf.intel.com with ESMTP; 23 Jan 2025 00:19:00 -0800
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Subject: [PATCH iwl-net v1] ice: fix memory leak in aRFS after reset
+Date: Thu, 23 Jan 2025 09:15:39 +0100
+Message-Id: <20250123081539.1814685-1-grzegorz.nitka@intel.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,42 +58,61 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- frapeml500005.china.huawei.com (7.182.85.13)
 
->>>> Auxiliary driver registration.
->>>> Net device_ops registration but open/stop are empty stubs.
->>>> tx/rx logic.
->>>
->>> Take care for spelling: Tx/Rx; HW (just below).
->>
->> Please elaborate. Spelling of what?
->
->In all code comments and commit messages the acronyms and abbreviations
->have their proper spelling, like "Tx", "Rx", "HW', "SW", "ID".
->
->of course lowercase names are still allowed for variables/fields
->
+Fix aRFS (accelerated Receive Flow Steering) structures memory leak by
+adding a checker to verify if aRFS memory is already allocated while
+configuring VSI. aRFS objects are allocated in two cases:
+- as part of VSI initialization (at probe), and
+- as part of reset handling
 
-Grepped drivers/net/ethernet (whole word only):
+However, VSI reconfiguration executed during reset involves memory
+allocation one more time, without prior releasing already allocated
+resources. This led to the memory leak with the following signature:
 
-hw 34681   HW 3708   Hw  170
-sw  1198   SW  675   Sw    3
-rx  5913   RX 4042   Rx 4042
-tx  5424   TX 4095   Tx 4907
-id  5545   ID 1967   Id   56
+[root@os-delivery ~]# cat /sys/kernel/debug/kmemleak
+unreferenced object 0xff3c1ca7252e6000 (size 8192):
+  comm "kworker/0:0", pid 8, jiffies 4296833052
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 0):
+    [<ffffffff991ec485>] __kmalloc_cache_noprof+0x275/0x340
+    [<ffffffffc0a6e06a>] ice_init_arfs+0x3a/0xe0 [ice]
+    [<ffffffffc09f1027>] ice_vsi_cfg_def+0x607/0x850 [ice]
+    [<ffffffffc09f244b>] ice_vsi_setup+0x5b/0x130 [ice]
+    [<ffffffffc09c2131>] ice_init+0x1c1/0x460 [ice]
+    [<ffffffffc09c64af>] ice_probe+0x2af/0x520 [ice]
+    [<ffffffff994fbcd3>] local_pci_probe+0x43/0xa0
+    [<ffffffff98f07103>] work_for_cpu_fn+0x13/0x20
+    [<ffffffff98f0b6d9>] process_one_work+0x179/0x390
+    [<ffffffff98f0c1e9>] worker_thread+0x239/0x340
+    [<ffffffff98f14abc>] kthread+0xcc/0x100
+    [<ffffffff98e45a6d>] ret_from_fork+0x2d/0x50
+    [<ffffffff98e083ba>] ret_from_fork_asm+0x1a/0x30
+    ...
 
-I don't know a quick way to separate variables from comments but I
-believe that there are very few hw and sw variables and most tx, rx
-related variables will have some prefix or suffix so lots of the
-whole-word-only come from comments.
-Can we agree that while Hw, Sw and Id are improper, the remaining
-forms are acceptable?
+Fixes: 28bf26724fdb ("ice: Implement aRFS")
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice_arfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->>
->>>
->>>>
->>>> All major data structures of the driver are fully introduced with the
->>>> code that uses them but without their initialization code that requires
->>>> management interface with the hw.
+diff --git a/drivers/net/ethernet/intel/ice/ice_arfs.c b/drivers/net/ethernet/intel/ice/ice_arfs.c
+index 7cee365cc7d1..405ddd17de1b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_arfs.c
++++ b/drivers/net/ethernet/intel/ice/ice_arfs.c
+@@ -511,7 +511,7 @@ void ice_init_arfs(struct ice_vsi *vsi)
+ 	struct hlist_head *arfs_fltr_list;
+ 	unsigned int i;
+ 
+-	if (!vsi || vsi->type != ICE_VSI_PF)
++	if (!vsi || vsi->type != ICE_VSI_PF || ice_is_arfs_active(vsi))
+ 		return;
+ 
+ 	arfs_fltr_list = kcalloc(ICE_MAX_ARFS_LIST, sizeof(*arfs_fltr_list),
+
+base-commit: 3ef16bb459c1a3af2c071cb5651877a47cd03295
+-- 
+2.39.3
+
