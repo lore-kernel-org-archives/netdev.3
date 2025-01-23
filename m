@@ -1,80 +1,88 @@
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4B9179A7;
-	Thu, 23 Jan 2025 07:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3337F26AF5;
+	Thu, 23 Jan 2025 08:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737617591; cv=none; b=iKDAnX/oMc8NwoD9jp7Yik+qTMGpwCoPKkECqYH6DlUPTqXTlH6LKNwNt536MWjDNLD1B3q4VbuSXqgMVFVpYVJEoTzvTZYe2q0BAXrZMLWgSHXl0TdMDYw92n82JU2qOMF4U7qHA4HafzCbeba9ZMiz7B4hbYuQFCRp1M7V/Lo=
+	t=1737619694; cv=none; b=NIvdncbrQ5e1X5K3Ii94OEBfUibA46sjQZPONrQ5IYCtd7Ul8ztPiKhp8feJad9tvH+Rh2oThkCyPnkAeusaebXhohTSsHoSneJavjySTXrFCrfPpv5YBV+2TH5NKglHrVhJz+d+MP0f4X5WGjq3YsRaf/rb8W8oSMiVAnr/LtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737617591; c=relaxed/simple;
-	bh=VgZ6NpiJIBnOImn9hg7EpJtXzuG0hqCcxpeAx/83DGU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iPw1qIGLgj7eJHN2ubCFly561K0z/DIh2aelKvLCmktEqAwPU5UiY9Rd/tXfRw4hlD61Kuq8jVWbRAL9EeELhgMEo3DnsikxpgzKQ+xLfhYW7Sghv2ca0IjlhagwlMNgZQYeWYWwES7htXYHfUvXm1LpFlEFpG6h7TYs09oqu+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=EFkqSsMM; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="EFkqSsMM"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1737617586; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=VgZ6NpiJIBnOImn9hg7EpJtXzuG0hqCcxpeAx/83DGU=;
-	b=EFkqSsMMESJ61Y+71C2oLESm0t9h+WHbiNghTaD/0OU2G3PN7ifrYpYCUB/tTCsuBhccmTKyyHc1cq6SDmmaRkybSrZ08Zao1MHCa8tqIO31ueBumgmv5HpjzEXsJoYQNo6/4gIxHjR0YQfW98Xump2Ff+1BISChQKM1kGgYZSA=
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0WOAr9.D_1737617584 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 23 Jan 2025 15:33:04 +0800
-Date: Thu, 23 Jan 2025 15:33:03 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: "D. Wythe" <alibuda@linux.alibaba.com>, kgraul@linux.ibm.com,
-	wenjia@linux.ibm.com, jaka@linux.ibm.com, ast@kernel.org,
-	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
-	pabeni@redhat.com, song@kernel.org, sdf@google.com,
-	haoluo@google.com, yhs@fb.com, edumazet@google.com,
-	john.fastabend@gmail.com, kpsingh@kernel.org, jolsa@kernel.org,
-	guwen@linux.alibaba.com
-Cc: kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: Re: [PATCH bpf-next v7 0/6] net/smc: Introduce smc_ops
-Message-ID: <20250123073303.GR89233@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20250123015942.94810-1-alibuda@linux.alibaba.com>
+	s=arc-20240116; t=1737619694; c=relaxed/simple;
+	bh=6eUXLLsO5+YBK05pnwwwcSNSgNcQr52XvtTm4+at4Y0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cv/lxbWEGCaEoTgvvzqljuHmVZJK1NgWapCz3ytM67NCz/O/jp9vJtrZDToKQZO7gDiJ9CAOd2d1uxb6TBQP9RqR7LPEukEO92pmz+PNXrQw9Fta8fwR/jmje6dUpngwa3O/Pre8HOpPyfnGENoRumlSX8r313aMa7njQot0Ubk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Ydtmn6QVRz6J7pc;
+	Thu, 23 Jan 2025 16:06:01 +0800 (CST)
+Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
+	by mail.maildlp.com (Postfix) with ESMTPS id AD34D140519;
+	Thu, 23 Jan 2025 16:07:58 +0800 (CST)
+Received: from china (10.200.201.82) by frapeml500005.china.huawei.com
+ (7.182.85.13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 23 Jan
+ 2025 09:07:46 +0100
+From: Gur Stavi <gur.stavi@huawei.com>
+To: <przemyslaw.kitszel@intel.com>
+CC: <andrew+netdev@lunn.ch>, <cai.huoqing@linux.dev>, <corbet@lwn.net>,
+	<davem@davemloft.net>, <edumazet@google.com>, <gongfan1@huawei.com>,
+	<guoxin09@huawei.com>, <gur.stavi@huawei.com>, <helgaas@kernel.org>,
+	<horms@kernel.org>, <kuba@kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <luosifu@huawei.com>,
+	<meny.yossefi@huawei.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+	<shenchenyang1@hisilicon.com>, <shijing34@huawei.com>, <sumang@marvell.com>,
+	<wulike1@huawei.com>, <zhoushuai28@huawei.com>
+Subject: Re: [PATCH net-next v04 1/1] hinic3: module initialization and tx/rx logic
+Date: Thu, 23 Jan 2025 10:20:16 +0200
+Message-ID: <20250123082016.3985519-1-gur.stavi@huawei.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <566b3d82-5e66-4e97-9808-a0e8e212fe67@intel.com>
+References: <566b3d82-5e66-4e97-9808-a0e8e212fe67@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250123015942.94810-1-alibuda@linux.alibaba.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ frapeml500005.china.huawei.com (7.182.85.13)
 
-On 2025-01-23 09:59:36, D. Wythe wrote:
->This patch aims to introduce BPF injection capabilities for SMC and
->includes a self-test to ensure code stability.
+>>>> Auxiliary driver registration.
+>>>> Net device_ops registration but open/stop are empty stubs.
+>>>> tx/rx logic.
+>>>
+>>> Take care for spelling: Tx/Rx; HW (just below).
+>>
+>> Please elaborate. Spelling of what?
 >
->Since the SMC protocol isn't ideal for every situation, especially
->short-lived ones, most applications can't guarantee the absence of
->such scenarios. Consequently, applications may need specific strategies
->to decide whether to use SMC. For example, an application might limit SMC
->usage to certain IP addresses or ports.
+>In all code comments and commit messages the acronyms and abbreviations
+>have their proper spelling, like "Tx", "Rx", "HW', "SW", "ID".
 >
->To maintain the principle of transparent replacement, we want applications
->to remain unaffected even if they need specific SMC strategies. In other
->words, they should not require recompilation of their code.
+>of course lowercase names are still allowed for variables/fields
 >
->Additionally, we need to ensure the scalability of strategy implementation.
->While using socket options or sysctl might be straightforward, it could
->complicate future expansions.
->
->Fortunately, BPF addresses these concerns effectively. Users can write
->their own strategies in eBPF to determine whether to use SMC, and they can
->easily modify those strategies in the future.
 
-The series looks good to me, except the name of smc_ops, we should come
-up with a better name.
+Grepped drivers/net/ethernet (whole word only):
 
-Best regards,
-Dust
+hw 34681   HW 3708   Hw  170
+sw  1198   SW  675   Sw    3
+rx  5913   RX 4042   Rx 4042
+tx  5424   TX 4095   Tx 4907
+id  5545   ID 1967   Id   56
 
+I don't know a quick way to separate variables from comments but I
+believe that there are very few hw and sw variables and most tx, rx
+related variables will have some prefix or suffix so lots of the
+whole-word-only come from comments.
+Can we agree that while Hw, Sw and Id are improper, the remaining
+forms are acceptable?
+
+>>
+>>>
+>>>>
+>>>> All major data structures of the driver are fully introduced with the
+>>>> code that uses them but without their initialization code that requires
+>>>> management interface with the hw.
