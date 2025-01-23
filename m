@@ -1,208 +1,195 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11023112.outbound.protection.outlook.com [40.93.201.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB031B4150;
-	Thu, 23 Jan 2025 22:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737671793; cv=none; b=py6JC4gXvw42qQVJCj3N/HrMMc5DmlAB6i8g8ilLpa5OfwxwkhAjA4SM0m+16hSmfvsYEDFWRg8Dl1EpMt/R277gAJLOd6/Q08/CUS2qC+3TO4PRg2W41mS0qElV4WPSJynFLdxRcDP8tfVU3p/Rp7bphV+09wvaE26E6A2EhgI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737671793; c=relaxed/simple;
-	bh=YB48H/+ARqmRoWKUkkmP0pzuQRt8I7HFrtDDzOWrcpI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sqA8OPOWJv5Xjt/x31hN9OxongAYEhWQt68OLprpTehcmKXiB55y3hlfWbDAK2LLfCVBMst6eQTbcKaLfeWmTE580fF814wdIWwH8mpoET4EeLyyxLNiyXpxQC1E3vFzVbAL2YtqHF5kZY4xwck1+WACal+HNjsWRNRiI4Vyne0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=nkFccJbk; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA9F3232;
+	Thu, 23 Jan 2025 22:48:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737672530; cv=fail; b=kTLGezRCipbaM8t6nDNiOlU+zVwyVWBTfWRijWV+QY1Kaa4aHuTnF7qAS/8F2bUY/ZIPdeOP3tsdv68OOlXHdviSojeBCUmbazUpIuacqmyjzNb/K5faOoJK8jthPCTha1MLw+tUVhbY8IYnwkfMOkdXiwgXMMdR732EMGqzU8I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737672530; c=relaxed/simple;
+	bh=YKWrjNxFVoPka0gbmy9T7mrdifV7xpKzOi9jhvSo/FY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=hSDtQyIf5eZWbSBUWjRewO4JuFFrcVp7SrGu7zRdkv2HG0clfoOguumaP+z/peUiNJHkVCccpqJuix/zYTd19R+kKrm8i7j9wcjGZntytdLaXAAapPizBzOeOvbCyLgoHXyXNLlpKmJ5lA3WGtFB8N13V30wo/xl+TLDYb4vd48=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=FL4vlv2Z; arc=fail smtp.client-ip=40.93.201.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="nkFccJbk"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=ghHc9zLCAckGzCmJHTVT77V0K7lkwTGFHtjBntGfz7Q=; b=nkFccJbkw/nE4ngc8WkoJU4i5B
-	l6eM++6eTShelItHhv1/yE0SL+aKjJuOlUJodBYdgA6eS05vb9775D7KCSmOQnq+JkOQJtvCwwIuq
-	jTWC9RkZo0HJRES8RHcaB3/vT56ycPBbLoaj4gxVHXXddwW8MsuXHt1wpvPz+0pnXkHhho5Q93kZp
-	nlx4t1MEKZwhNTAoXgiieHj4klJM0n+yKLBdYBuLd6GN3UedGv0RJT33LcCboxMumGry2VDCuScP1
-	YMCiFeO39H+URp1KGHQt8LgUQzwWiHvqAfgNIQJJblz3CjEi9iXuWfeNN5pc6lLkYzwr1ocgtDgaZ
-	Cm9k8ZEg==;
-Received: from sslproxy07.your-server.de ([78.47.199.104])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1tb5oH-0003xi-1w;
-	Thu, 23 Jan 2025 23:36:26 +0100
-Received: from [85.1.206.226] (helo=[192.168.1.114])
-	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1tb5oH-000Kpu-0k;
-	Thu, 23 Jan 2025 23:36:25 +0100
-Message-ID: <4a6be957-f932-426a-99bf-7209620f8fa9@iogearbox.net>
-Date: Thu, 23 Jan 2025 23:36:25 +0100
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="FL4vlv2Z"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rNelyhkBJx87s2yh//nw0+IfVgACK/uu2kCD+V7gDLMkaLVMZZQ6TkpVytrvqJH/gZeSseGvqDVvWswzsU1ZoEHEW3Q3dlt9Fmithor7eHXBxonQhcvJeSH+PIwaGnIMO5iASG5uc8xaF2Jky8HljjwalC4t3ImufTVCIKaj4asdK9xbQpXlhmQtHpvtM4nCvwcJgoLpIiF8UaG/upOvp+bSfroGXf2xR9tgNEeFtJCzW8/8M5HuAFiKe01rQD3msEYgNrRDS8R6XXW6RSJsiygnMnqEDr2mIt562PGCe5IAvb7/5BcvRdR/cJFKReo4Tzzm0VpkAo+hBB/+0dVwFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3NY2DamcTsXbPRtJQlgqY07b+2TpjnewaT5xCfMnG+I=;
+ b=QyS2RzYRTJuETTcnOkgMqKMdEd5rrtBchYGww7INKbU4AryrWV3ZEYbScvbP6bVqErsktfiQFK55EGmmlvWEgYGdac2ZRP9Gf5H8ClxKK50zgroKDuroI6RvX+xPKTO9LOsBDbs/hfrp2fVZ3joCk4FYERuvJirVCqB/7BmoJLnHCDZmWzUsiEgmOsNr7cxxkWvXszxIk0npvk8QVrsrCmwQUKD7yDxx4/85+2G2XbEgtMkuyByUPcZCNs2YMK2tqKsnBoURRvWy8cjf8YZC/PeKSTDv/8z2KAeUBDVCXHClleTwyu0qHiWsLbZIMt64O4pjpjplgjg9nI4LpyNY4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3NY2DamcTsXbPRtJQlgqY07b+2TpjnewaT5xCfMnG+I=;
+ b=FL4vlv2ZgtUeZw4fqn1oBEUEXT+OD0GJfDVJXtPok91fR0Mb21PeBLhdX5RgBDKPp95tDP9HnBExSOd7BRMwOZicFZdDKxZI4CDHhNUdoajzIE2OGHFj84Lq9SVM63/14IaZt+qN5WlAwBNs0HewHFiLm5+hnlOGTWYvZwftPT0=
+Received: from SA6PR21MB4231.namprd21.prod.outlook.com (2603:10b6:806:412::20)
+ by MN0PR21MB3556.namprd21.prod.outlook.com (2603:10b6:208:3d3::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.9; Thu, 23 Jan
+ 2025 22:48:46 +0000
+Received: from SA6PR21MB4231.namprd21.prod.outlook.com
+ ([fe80::5c62:d7c6:4531:3aff]) by SA6PR21MB4231.namprd21.prod.outlook.com
+ ([fe80::5c62:d7c6:4531:3aff%5]) with mapi id 15.20.8398.005; Thu, 23 Jan 2025
+ 22:48:46 +0000
+From: Long Li <longli@microsoft.com>
+To: Konstantin Taranov <kotaranov@linux.microsoft.com>, Konstantin Taranov
+	<kotaranov@microsoft.com>, Shiraz Saleem <shirazsaleem@microsoft.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, Haiyang Zhang
+	<haiyangz@microsoft.com>, KY Srinivasan <kys@microsoft.com>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "davem@davemloft.net" <davem@davemloft.net>, Dexuan Cui
+	<decui@microsoft.com>, "wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"sharmaajay@microsoft.com" <sharmaajay@microsoft.com>, "jgg@ziepe.ca"
+	<jgg@ziepe.ca>, "leon@kernel.org" <leon@kernel.org>
+CC: "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>
+Subject: RE: [PATCH rdma-next 08/13] net/mana: fix warning in the writer of
+ client oob
+Thread-Topic: [PATCH rdma-next 08/13] net/mana: fix warning in the writer of
+ client oob
+Thread-Index: AQHba2CVL6AquS7CykeBekAIiBLkYbMk+xfQ
+Date: Thu, 23 Jan 2025 22:48:45 +0000
+Message-ID:
+ <SA6PR21MB4231E9223002447E72150F78CEE02@SA6PR21MB4231.namprd21.prod.outlook.com>
+References: <1737394039-28772-1-git-send-email-kotaranov@linux.microsoft.com>
+ <1737394039-28772-9-git-send-email-kotaranov@linux.microsoft.com>
+In-Reply-To: <1737394039-28772-9-git-send-email-kotaranov@linux.microsoft.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=186d0aae-59fe-4506-bafa-1df3d468cca6;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2025-01-23T22:48:30Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
+ 3, 0, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA6PR21MB4231:EE_|MN0PR21MB3556:EE_
+x-ms-office365-filtering-correlation-id: e67352da-21b1-4d74-14ff-08dd3c00181b
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|7416014|366016|921020|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?RU7LHG5hYnMbeFIoGOLO9SZFH0DlQNwd35YIyYBgp/+wpnzfQ4ch+lqI9tWb?=
+ =?us-ascii?Q?wKkNiVSMxKCnxZWWoXVjL+RLNFChSGKtYV2XtnQvJkWZDKzxZ0EaKbtih706?=
+ =?us-ascii?Q?peeQ/lAPbfbROl24py6LleOWSJ94lyXTociyq+5CIdBj1TKgy4DRXpjNmITv?=
+ =?us-ascii?Q?r7SiZW3JmrobqxUYvoyGE1ycR+Fhjo9jXDnPvhXkS2PV5MNgmYfe7xKv1VB6?=
+ =?us-ascii?Q?V6olT+wnKMsTmJ9qxGgCPCp73e1paNhKYN3EHvAZ5pU+x/WvvOFCrEdEUL2X?=
+ =?us-ascii?Q?g61qD/apf4+OWkB8jJ9RMSTFZZeP44MGSC7FABxWWksPI6FeITAFEzKJMCGU?=
+ =?us-ascii?Q?OVeN4ullHYNGtT62VGKxxMRCfZVIK6voQ5Y+7RqTHnRtcPg+rTvmhUVFXF2W?=
+ =?us-ascii?Q?ZxUORvErUBQgYEKDgaD4fTQx5b1N+HMgKGYAx5qbeCsm2+0ZorVRUsXb7B6u?=
+ =?us-ascii?Q?02rl7PJLUVrJzHn+utuGaDGNo3kU3MwjSrRDl6jCmpKnn35yjybMpwYWV4nG?=
+ =?us-ascii?Q?lqc86PAwkhfkjBnvSgiQ02Wat+UsHcizKA1XAuE9le4XDG1DjSkzGOkNjHPU?=
+ =?us-ascii?Q?xcRBIqKYKFkawj7Jlj47oBxB4LKFVep6h+LJTD7wuo/MI+LRA+wCI8W8bUxx?=
+ =?us-ascii?Q?PMPteGDOXJswhBf+1x5BxUNWSkbrNJWiVIaAvEy3xiErbVhBzLLlTdDqsyP5?=
+ =?us-ascii?Q?MUfhkSl4dk0STycvi9OBo+kouDc2R3BjASTNXl4mTCQZnQ/QOhnHoHvMRe/f?=
+ =?us-ascii?Q?yjKIbFBzL3sVYIS7VXwrnFnqZx1IdDiaKOsm8xC8XUGxQXwjBApWvN0ZUBDD?=
+ =?us-ascii?Q?p7hWLsAJ5QIVuudsljcXZ6Hupxs2jgMac+Tfm/Yqz6Az7LbOn1GaAL0VlLMq?=
+ =?us-ascii?Q?JrrvuYAfwuaaF3xNEpRl6mbdkPrwo2m8Bm6pZsahqElp4hiqj20yf9GBDNAo?=
+ =?us-ascii?Q?Oq9HZlcAyo3ijhcTy+/tQlUakla3gYOuiCik6iLvRhtWmGmxKnbrAgvs7HYT?=
+ =?us-ascii?Q?dNi/hvzD6jahAmbbN3kHAy0EJABQ5g0Er5cR9pDxZGI8vByreZF9AdWp5eJ/?=
+ =?us-ascii?Q?zI88K4/xl5pwbWShtj3U2pOc5IXz/A03tnLR/LSO8GxsLSmWj/NVzwKbvOD6?=
+ =?us-ascii?Q?Dlstf/fQC9Yguin945bCLSGtInwteID2t17CREyYbHJE3+aPZt+aMPJjii68?=
+ =?us-ascii?Q?TgGA8FKUQcXcbGyirXsnNeYPqGvgFl4rf2nzdjfhc9lqcjSh8vESnXVzdJD0?=
+ =?us-ascii?Q?gNU682fwHdEyA8NaygBsxni+VUUsYHAp8kenzp8OkvXdEhIMhDpcjsqF6bvu?=
+ =?us-ascii?Q?XB7CTiujDkwsoy/4hWtIeLqVS3WPcg/ykvJIBUDcUGy8ap4M0LWvPybdMhsw?=
+ =?us-ascii?Q?bNnr3N19KavUwIodMN+UUQDPKZU0ABOqSU3VCQ8UGFQ7hFNGaS5XY7ZzU0nu?=
+ =?us-ascii?Q?14+iMprF0HoE2DS1U5iF6kRccbhSPt8F?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA6PR21MB4231.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(921020)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?+JXt9MOAxadXQgQLknuZ4naYlRa9cuW8WyITb1jDuz7Dx97Lt+Xab10UpPCL?=
+ =?us-ascii?Q?9SFUcmmkushsBn37BOieilWKPxqYZ4Z4T0gAZ1qgs7sToy2Hi6LeC66GRhtH?=
+ =?us-ascii?Q?u1L73iCdHreb4NakfY7YcjYL1jpfnkaa2MdJOvxemN2Ok5jjDo4ThiCYNtQ7?=
+ =?us-ascii?Q?AnQfzkeBvM0GcNVFGLtUDBJL+pOT3bQIs/iRN/HUkddo9pWnzI54aQOXU0Zm?=
+ =?us-ascii?Q?Iy0VT1EWQJ18X0E85xYf79xROVfTMaqX2SCNvlXNDjQ4mbZBdNC8xoQskrgN?=
+ =?us-ascii?Q?hmbqpZy+0kHIn+RSVfRttkn2HLfw0wBeGiVle/KqpITFkdBp/pegXf13h4Wo?=
+ =?us-ascii?Q?1RKfnUnwzfKW0kps7ZLFuWOu/ckBjEsACPaqLFUmLhgnT6rg0hvw50XoL0Pz?=
+ =?us-ascii?Q?T6Abzo4W7nwLU2s478Slra1gh7u/4XhBttAjWgIPBe+sKSzvVyK4w/iIYe7q?=
+ =?us-ascii?Q?JU6CRWInT4V54s1VwUbvuKYIgNzv/2QHGnUWDFLXzIu/jM+r1t/HK3sv53IT?=
+ =?us-ascii?Q?VHQgEu4gZOzACGNG8aQDP+O+YjV/EXFVDnfS8hJe1iisHSmsuufypw77HPDs?=
+ =?us-ascii?Q?ZWmoEcLn9rgNj4VcRP6kWcdJKzLos88eaDIuqKPmrydsHqo0/xgxafKilXSi?=
+ =?us-ascii?Q?5QI/jhYfy7+5ahaiU4Xe3y2t1072jjT9hcz1HoTkEmx4NyU+qN18iWEXoM79?=
+ =?us-ascii?Q?t8vbvaBPxVPxlCeqJibiZfbp579+U7muGYuoHFiA4WsMkdiUO16ifn7mJgPk?=
+ =?us-ascii?Q?m1Kt6+sYN9uPZw0J80FWXye52NDSTcK1N3g9/Duc9QARJtfjRbyn14SV8c0F?=
+ =?us-ascii?Q?RMZuE1IXzzNReZVlrfjK/x5zs/15Z6w2XWQAwaWh+164hldNmrjTpXZ5b++g?=
+ =?us-ascii?Q?WMmuQYEnKefD4o3djW81vzTzVGv2cggA4gjadPAtTl5Fj0K0wOp8Dj9V9jI+?=
+ =?us-ascii?Q?NsLivtjjRUCJZhSymY186wCqzNhKfEl2X+9BCocb9RpplWykwOkQ7trirP4n?=
+ =?us-ascii?Q?ZqzNomin9RJ9OpP0CU5Ol6y4etbI3w8FcAp6ICrK2cYjAmwbiUFBzJJAZSn3?=
+ =?us-ascii?Q?dphE69/xcXhHxSQOnkj3s0XHAIdxaqFC7fiw7HJJvkApsbotssra2futS4hU?=
+ =?us-ascii?Q?oJe7jqh8XzVh8uOAzZpovp3iHFiV5fumkLOWwCTw9TQXGTXisBC87SDHmyVm?=
+ =?us-ascii?Q?4Y7Im8/hnmxzH7h+z/4/fnc3VJwR0WBo2/R7gjtl5Q0zGSkdgU10noE3+sSs?=
+ =?us-ascii?Q?rtE03bSBooNVOFHvZ+OLv+pu4A2izVKR3jje+txbii5o7JNes7otqC91xrwY?=
+ =?us-ascii?Q?5sEe3PUEYH/Cd47M49AlOLwjz0d9hfUFYxcIMZ3u8W+ZrTKrKlKl8tY8RCBb?=
+ =?us-ascii?Q?bYimYKSRN0TBneWg5slDQC1sQjxzSzcxTSW/zd0ETuHNMVl7rPPFCsMzdFn3?=
+ =?us-ascii?Q?tFn83ASUIVg5Kbtn8ZRqfKmk2N6RIdZHCmmhA00/FX3gscjbtEhtrVbCjTdx?=
+ =?us-ascii?Q?XbnWK0ld1d5TPVJ7J3EyF4qM8PBMp25EAgtfCeHmVuYXrcA5C+25aTrm2BQW?=
+ =?us-ascii?Q?jAuw2CBXiY6CGYPxqsrM4hRDDFuV1wjVpuv1sFva?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf] bpf: fix classic bpf reads from negative offset
- outside of linear skb portion
-To: =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>,
- =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <zenczykowski@gmail.com>,
- Alexei Starovoitov <ast@kernel.org>
-Cc: Linux Network Development Mailing List <netdev@vger.kernel.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- BPF Mailing List <bpf@vger.kernel.org>, Stanislav Fomichev
- <sdf@fomichev.me>, Willem de Bruijn <willemb@google.com>,
- Matt Moeller <moeller.matt@gmail.com>
-References: <20250122200402.3461154-1-maze@google.com>
-Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- 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
-In-Reply-To: <20250122200402.3461154-1-maze@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27527/Thu Jan 23 10:44:17 2025)
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA6PR21MB4231.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e67352da-21b1-4d74-14ff-08dd3c00181b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jan 2025 22:48:45.8518
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: VuEnmVsN253Rto5idNEkchZQ+nqW2mXXfoSEbVufzVIzWDOAVtGmf8eBLiOaxd/sY6sEDzmMV0bM4Me3p3L2tA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR21MB3556
 
-On 1/22/25 9:04 PM, Maciej Żenczykowski wrote:
-> We're received reports of cBPF code failing to accept DHCP packets.
-> "BPF filter for DHCP not working (android14-6.1-lts + android-14.0.0_r74)"
+> Subject: [PATCH rdma-next 08/13] net/mana: fix warning in the writer of c=
+lient
+> oob
+>=20
+> From: Konstantin Taranov <kotaranov@microsoft.com>
+>=20
+> Do not warn on missing pad_data when oob is in sgl.
+>=20
+> Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
+> Reviewed-by: Shiraz Saleem <shirazsaleem@microsoft.com>
 
-I presume this is cBPF on AF_PACKET, right?
+Reviewed-by: Long Li <longli@microsoft.com>
 
-> The relevant Android code is at:
->    https://cs.android.com/android/platform/superproject/main/+/main:packages/modules/NetworkStack/jni/network_stack_utils_jni.cpp;l=95;drc=9df50aef1fd163215dcba759045706253a5624f5
-> which uses a lot of macros from:
->    https://cs.android.com/android/platform/superproject/main/+/main:packages/modules/Connectivity/bpf/headers/include/bpf/BpfClassic.h;drc=c58cfb7c7da257010346bd2d6dcca1c0acdc8321
-> 
-> This is widely used and does work on the vast majority of drivers,
-> but is exposing a core kernel cBPF bug related to driver skb layout.
-> 
-> Root cause is iwlwifi driver, specifically on (at least):
->    Dell 7212: Intel Dual Band Wireless AC 8265
->    Dell 7220: Intel Wireless AC 9560
->    Dell 7230: Intel Wi-Fi 6E AX211
-> delivers frames where the UDP destination port is not in the skb linear
-> portion, while the cBPF code is using SKF_NET_OFF relative addressing.
-> 
-> simplified from above, effectively:
->    BPF_STMT(BPF_LDX | BPF_B | BPF_MSH, SKF_NET_OFF)
->    BPF_STMT(BPF_LD  | BPF_H | BPF_IND, SKF_NET_OFF + 2)
->    BPF_JUMP(BPF_JMP | BPF_JEQ | BPF_K, 68, 1, 0)
->    BPF_STMT(BPF_RET | BPF_K, 0)
->    BPF_STMT(BPF_RET | BPF_K, 0xFFFFFFFF)
-> fails to match udp dport=68 packets.
-> 
-> Specifically the 3rd cBPF instruction fails to match the condition:
->    if (ptr >= skb->head && ptr + size <= skb_tail_pointer(skb))
-> within bpf_internal_load_pointer_neg_helper() and thus returns NULL,
-> which results in reading -EFAULT.
-> 
-> This is because bpf_skb_load_helper_{8,16,32} don't include the
-> "data past headlen do skb_copy_bits()" logic from the non-negative
-> offset branch in the negative offset branch.
-> 
-> Note: I don't know sparc assembly, so this doesn't fix sparc...
-> ideally we should just delete bpf_internal_load_pointer_neg_helper()
-> This seems to have always been broken (but not pre-git era, since
-> obviously there was no eBPF helpers back then), but stuff older
-> than 5.4 is no longer LTS supported anyway, so using 5.4 as fixes tag.
-> 
-> Cc: Alexei Starovoitov <ast@kernel.org>
-> Cc: Daniel Borkmann <daniel@iogearbox.net>
-> Cc: Stanislav Fomichev <sdf@fomichev.me>
-> Cc: Willem de Bruijn <willemb@google.com>
-> Reported-by: Matt Moeller <moeller.matt@gmail.com>
-> Closes: https://issuetracker.google.com/384636719 [Treble - GKI partner internal]
-> Signed-off-by: Maciej Żenczykowski <maze@google.com>
-> Fixes: 219d54332a09 ("Linux 5.4")
+> ---
+>  drivers/net/ethernet/microsoft/mana/gdma_main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> index 3cb0543..a8a9cd7 100644
+> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> @@ -1042,7 +1042,7 @@ static u32 mana_gd_write_client_oob(const struct
+> gdma_wqe_request *wqe_req,
+>  	header->inline_oob_size_div4 =3D client_oob_size / sizeof(u32);
+>=20
+>  	if (oob_in_sgl) {
+> -		WARN_ON_ONCE(!pad_data || wqe_req->num_sge < 2);
+> +		WARN_ON_ONCE(wqe_req->num_sge < 2);
+>=20
+>  		header->client_oob_in_sgl =3D 1;
+>=20
+> --
+> 2.43.0
 
-Hm, so not strictly broken, just that using relative SKF_NET_OFF offset
-is limited in that it requires the data to be in linear section. Some
-potential workarounds that come to mind:
-
-1) When you say vast majority of drivers, have you checked how much they
-    typically pull into linear section and whether it would make sense also
-    for iwlwifi to do the same? (It sounds like start of network header is
-    already in non-linear part for iwlwifi?)
-
-2) Perhaps rework the filter to avoid relying on SKF_NET_OFF.. tradeoff
-    are more instructions, e.g.,
-
-   # tcpdump -dd udp dst port 68
-   { 0x28, 0, 0, 0x0000000c },
-   { 0x15, 0, 4, 0x000086dd },
-   { 0x30, 0, 0, 0x00000014 },
-   { 0x15, 0, 11, 0x00000011 },
-   { 0x28, 0, 0, 0x00000038 },
-   { 0x15, 8, 9, 0x00000044 },
-   { 0x15, 0, 8, 0x00000800 },
-   { 0x30, 0, 0, 0x00000017 },
-   { 0x15, 0, 6, 0x00000011 },
-   { 0x28, 0, 0, 0x00000014 },
-   { 0x45, 4, 0, 0x00001fff },
-   { 0xb1, 0, 0, 0x0000000e },
-   { 0x48, 0, 0, 0x00000010 },
-   { 0x15, 0, 1, 0x00000044 },
-   { 0x6, 0, 0, 0x00040000 },
-   { 0x6, 0, 0, 0x00000000 },
-
-3) Use eBPF asm, e.g. you can pull in data into linear section via helper
-    bpf_skb_pull_data() if needed, or use bpf_skb_load_bytes() which works
-    for linear & non-linear data.
-
-4) What about pulling in linear data in AF_PACKET code right before the
-    cBPF filter is run (perhaps usage of SKF_NET_OFF could be detected and
-    then only done if really needed by the filter)?
-
-Thanks,
-Daniel
