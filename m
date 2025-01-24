@@ -1,290 +1,124 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDD51BFE10
-	for <netdev@vger.kernel.org>; Fri, 24 Jan 2025 21:00:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54321D8E18
+	for <netdev@vger.kernel.org>; Fri, 24 Jan 2025 21:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737752440; cv=none; b=jS6xIlqgqyswFDSQDWd956o5BAo9N+fYfj8nvMHKe4ggB+TPjrYDE1f0qnTa7VFPwimOjIQwqzyu7xqAW6+SpouJOHLvUS3cLk5UjjMZPWVTY437cSrR64B2mWpjdsF3dR48YuaTvR0xffc/kUKxgueJpnoC1ZMU9YSBmDbPRzs=
+	t=1737754340; cv=none; b=e0KHfz+gya4pGAV0YM4sMly0s51NdPSdxbkW+lBLGQLZMqxRbHMmdNcE88NLpcdA+MQy6dyoXQbWNmUlCSw71525iS9sZPbLpe2TPT0DOxZO10ofxtT8rUAaC4zJa0jKou2TRzWvd6OUu74ZLg9xuFKTcnYvrRYTtHID5P1RMNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737752440; c=relaxed/simple;
-	bh=NvfHr00aSc6I0bmziBtJ7im3yipPykgOC0co9Z50OFs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U8Ft41rCX8cWTAPJE0Z0ADiyaGBMvXjwpZZK8mhhiOgBd7Qn0wJUSnHVL3bkNG7n1U5ffgRmGBYhqL3v457Mk3NgVT0WlJDbF0rA2PjDLzA5A/11dUOdssa0Jm4DoVTqfrGv0Gw8wDtZygT2JIxGMMps4ztqpjzmlLns2PD0V0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q/ohFZl8; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1737754340; c=relaxed/simple;
+	bh=q2WLPddkIW8mplX8Y6BMNf9ZSFOEagNutqDg07mYe0Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dd0q6IhlLaaMy36A3XRfae5bww6o3rR39qRbI7c6miyzrkMD+XzhvSW7dLO0+wloJcuMrCyIjU62fdoSUETfco5x8UjfUi9CBrjbcCkc6OFzbwvY+1h9kDWSlD4jgXigwWtJ3R+TeBio/4y8+3A46qrTHcqEp7LUD+ozcFld1JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lzY8eI5A; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q/ohFZl8"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-215740b7fb8so34065ad.0
-        for <netdev@vger.kernel.org>; Fri, 24 Jan 2025 13:00:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737752437; x=1738357237; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p4RhiyWIlpgw424T2u9N5su0ja76zrTPD9zqkUmKKRE=;
-        b=q/ohFZl8IagjNkbOkOzwulNaoVJqNG0zVbTFEIk+yPoM0pua8y6dhEAkupakDlEgWj
-         SSJgPxD6HA5fCsaAOMbLdYuA2WHuQcYbAIIl8WgwnthPIahqpOKvrAQcVN8OALGhurv3
-         ZIie5EP91/mUh5dK61X8P3rdwJkwGpz97Y35hdW1VcIzOasOXY9Hrkl7wI1rpJdDaroF
-         WbDw9Abtx/jsqy2JvQ22d1wqllnY532e8ZPMMl61Euh8NGUKB7FK8/TCCFELxyND678v
-         jS4opcCiTXmTl3AIf1+20OMCZZKjNHLSO5OCjwJMZ46f0qa4lgMdmQ1Qdb2ainmkuIHb
-         6GHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737752437; x=1738357237;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p4RhiyWIlpgw424T2u9N5su0ja76zrTPD9zqkUmKKRE=;
-        b=uh8NJaRxyuD7Z+Jr5lnJBXxtApElXk94gpXnTY1vat/IM0PIVWUeU3CzDKhuDxyRDr
-         UZm9/EIgv2o5yerVkw/JosOfOJHykoN0s2czr/aMA6cWrfYO8GuwO5VMBvu2POtmrJ3e
-         6RKMaFSndzbNu65VHRISd9gcXzeF59oAaDWFNLFqTcAHv5r6CIytwnsOBD9JwItjx9zW
-         6mxtPbhV4Rok+i0jov/ZVbCzgtiSWili1A7r/CKlKkuoZbANBUaoWAN2YXvl2tJKUXjh
-         xVEsQtA3y3vdkWJIGW5ZWKtsE7bWjjnv946pHPYzrrjJGUBQ04F5mlfxr1ha9wjcXbQb
-         XVQg==
-X-Forwarded-Encrypted: i=1; AJvYcCWA3dMAk1sTukMIEp5xcgMiLSg59OybcaLl24BeKRXdoCt39YKulJRtD1GrzDN0W6i0sla3Rys=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/rEe41x8jdRZkz51LG0SLfbfWwLaz1kmOPXvhajTnRom/3pdy
-	G9jpZm4E6KFlSZda34cEbSBksa5cdOOReQEiYL2OeSP3OWi3S9u+UdqMdWPq9LS6ThOG2OxTgXs
-	UlhSMGdMASiNRRNHDHk7+hhDDyzmnZyJ8xzrp
-X-Gm-Gg: ASbGnctCGugSjSqPOC+lZn3r9qilGp7cKLE58qQEuBZLjndWnVUYP0gWCDDvAJN+dhd
-	8R8xmk8ZRVamxXqjayPW6DDatnTqlCgYnGHL4cW60/l2ShlA+MiFkKxQFEEsqIGpswuQaIMHFA3
-	Vw1YTMul3zM/VhZiyj
-X-Google-Smtp-Source: AGHT+IFsqKhQ7vF1hLCIyXxXTaVjpE246ch3/P3mJ5X7+uLwbHjv4whrt3otT4GHPlnN9hA/6ss9yNC7E2Edex0j2PQ=
-X-Received: by 2002:a17:902:eb83:b0:200:97b5:dc2b with SMTP id
- d9443c01a7336-21daf41d424mr354945ad.15.1737752437233; Fri, 24 Jan 2025
- 13:00:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lzY8eI5A"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737754339; x=1769290339;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=q2WLPddkIW8mplX8Y6BMNf9ZSFOEagNutqDg07mYe0Q=;
+  b=lzY8eI5A80rN600hioRErjsqzczoteR936yl87zWBD87uLjlWI60tXr+
+   ZHjwRAW1lC5+mcj5D4QVguiNwE7emLnrDOgA1I1FtyJUUZt59Cyjt2O5H
+   s8kWtu9Edda0XeDpTPzlx4FFMB0Y9QGPPCgcBfSpaFSFrdQl1DIMxovJu
+   dbqr8RnfN+FmsaGytCzO6TTvI+dD3eZlOKdsprnPj/dN1SG2JlE4HdkvC
+   +kWbHgtfcIKbXHu+BTo8B4QAnpjjsrYPKCAG28BfZiTVorgidpUym0uQD
+   9ISsX0m2yZYdFJMWyUfK5/BbstJntPmZQv7hk1IM+f0szy70M6YYbW0zU
+   w==;
+X-CSE-ConnectionGUID: o1Ln+o3RQTyJbI8ztH8NQg==
+X-CSE-MsgGUID: U2ZN8tsnShGSIjIvXkcSRA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="41140376"
+X-IronPort-AV: E=Sophos;i="6.13,232,1732608000"; 
+   d="scan'208";a="41140376"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2025 13:32:17 -0800
+X-CSE-ConnectionGUID: 8si73MqZRlyeeCBlOz/ErQ==
+X-CSE-MsgGUID: Qw604W7rTdCt34TjsTUn+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,232,1732608000"; 
+   d="scan'208";a="107861072"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by orviesa006.jf.intel.com with ESMTP; 24 Jan 2025 13:32:16 -0800
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH net 0/8][pull request] Intel Wired LAN Driver Updates 2025-01-24 (idpf, ice, iavf)
+Date: Fri, 24 Jan 2025 13:32:02 -0800
+Message-ID: <20250124213213.1328775-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250123231620.1086401-1-kuba@kernel.org>
-In-Reply-To: <20250123231620.1086401-1-kuba@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 24 Jan 2025 13:00:24 -0800
-X-Gm-Features: AWEUYZkmC9h0u1WGaFlnF2_uiVRDVKtFf48DmsMdYapzJhQYStrY65J_VCoRBLM
-Message-ID: <CAHS8izNdpe7rDm7K4zn4QU-6VqwMwf-LeOJrvXOXhpaikY+tLg@mail.gmail.com>
-Subject: Re: [PATCH net] net: page_pool: don't try to stash the napi id
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, hawk@kernel.org, 
-	ilias.apalodimas@linaro.org, asml.silence@gmail.com, kaiyuanz@google.com, 
-	willemb@google.com, mkarsten@uwaterloo.ca, jdamato@fastly.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 23, 2025 at 3:16=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> Page ppol tried to cache the NAPI ID in page pool info to avoid
+For idpf:
 
-Page pool
+Emil adds memory barrier when accessing control queue descriptors and
+restores call to idpf_vc_xn_shutdown() when resetting.
 
-> having a dependency on the life cycle of the NAPI instance.
-> Since commit under Fixes the NAPI ID is not populated until
-> napi_enable() and there's a good chance that page pool is
-> created before NAPI gets enabled.
->
-> Protect the NAPI pointer with the existing page pool mutex,
-> the reading path already holds it. napi_id itself we need
+Manoj Vishwanathan expands transaction lock to properly protect xn->salt
+value and adds additional debugging information.
 
-The reading paths in page_pool.c don't hold the lock, no? Only the
-reading paths in page_pool_user.c seem to do.
+Marco Leogrande converts workqueues to be unbound.
 
-I could not immediately wrap my head around why pool->p.napi can be
-accessed in page_pool_napi_local with no lock, but needs to be
-protected in the code in page_pool_user.c. It seems
-READ_ONCE/WRITE_ONCE protection is good enough to make sure
-page_pool_napi_local doesn't race with
-page_pool_disable_direct_recycling in a way that can crash (the
-reading code either sees a valid pointer or NULL). Why is that not
-good enough to also synchronize the accesses between
-page_pool_disable_direct_recycling and page_pool_nl_fill? I.e., drop
-the locking?
+For ice:
 
-Is there some guarantee the napi won't change/get freed while
-page_pool_local is running, but can change while page_pool_nl_fill is
-running?
+Przemek fixes incorrect size use for array.
 
-> to READ_ONCE(), it's protected by netdev_lock() which are
-> not holding in page pool.
->
-> Before this patch napi IDs were missing for mlx5:
->
->  # ./cli.py --spec netlink/specs/netdev.yaml --dump page-pool-get
->
->  [{'id': 144, 'ifindex': 2, 'inflight': 3072, 'inflight-mem': 12582912},
->   {'id': 143, 'ifindex': 2, 'inflight': 5568, 'inflight-mem': 22806528},
->   {'id': 142, 'ifindex': 2, 'inflight': 5120, 'inflight-mem': 20971520},
->   {'id': 141, 'ifindex': 2, 'inflight': 4992, 'inflight-mem': 20447232},
->   ...
->
-> After:
->
->  [{'id': 144, 'ifindex': 2, 'inflight': 3072, 'inflight-mem': 12582912,
->    'napi-id': 565},
->   {'id': 143, 'ifindex': 2, 'inflight': 4224, 'inflight-mem': 17301504,
->    'napi-id': 525},
->   {'id': 142, 'ifindex': 2, 'inflight': 4288, 'inflight-mem': 17563648,
->    'napi-id': 524},
->   ...
->
-> Fixes: 86e25f40aa1e ("net: napi: Add napi_config")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: hawk@kernel.org
-> CC: ilias.apalodimas@linaro.org
-> CC: asml.silence@gmail.com
-> CC: almasrymina@google.com
-> CC: kaiyuanz@google.com
-> CC: willemb@google.com
-> CC: mkarsten@uwaterloo.ca
-> CC: jdamato@fastly.com
-> ---
->  include/net/page_pool/types.h |  1 -
->  net/core/page_pool_priv.h     |  2 ++
->  net/core/dev.c                |  2 +-
->  net/core/page_pool.c          |  2 ++
->  net/core/page_pool_user.c     | 15 +++++++++------
->  5 files changed, 14 insertions(+), 8 deletions(-)
->
-> diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.=
-h
-> index ed4cd114180a..7f405672b089 100644
-> --- a/include/net/page_pool/types.h
-> +++ b/include/net/page_pool/types.h
-> @@ -237,7 +237,6 @@ struct page_pool {
->         struct {
->                 struct hlist_node list;
->                 u64 detach_time;
-> -               u32 napi_id;
->                 u32 id;
->         } user;
->  };
-> diff --git a/net/core/page_pool_priv.h b/net/core/page_pool_priv.h
-> index 57439787b9c2..2fb06d5f6d55 100644
-> --- a/net/core/page_pool_priv.h
-> +++ b/net/core/page_pool_priv.h
-> @@ -7,6 +7,8 @@
->
->  #include "netmem_priv.h"
->
-> +extern struct mutex page_pools_lock;
-> +
->  s32 page_pool_inflight(const struct page_pool *pool, bool strict);
->
->  int page_pool_list(struct page_pool *pool);
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index afa2282f2604..07b2bb1ce64f 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -6708,7 +6708,7 @@ void napi_resume_irqs(unsigned int napi_id)
->  static void __napi_hash_add_with_id(struct napi_struct *napi,
->                                     unsigned int napi_id)
->  {
-> -       napi->napi_id =3D napi_id;
-> +       WRITE_ONCE(napi->napi_id, napi_id);
->         hlist_add_head_rcu(&napi->napi_hash_node,
->                            &napi_hash[napi->napi_id % HASH_SIZE(napi_hash=
-)]);
->  }
-> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> index a3de752c5178..ed0f89373259 100644
-> --- a/net/core/page_pool.c
-> +++ b/net/core/page_pool.c
-> @@ -1147,7 +1147,9 @@ void page_pool_disable_direct_recycling(struct page=
-_pool *pool)
->         WARN_ON(!test_bit(NAPI_STATE_SCHED, &pool->p.napi->state));
->         WARN_ON(READ_ONCE(pool->p.napi->list_owner) !=3D -1);
->
-> +       mutex_lock(&page_pools_lock);
->         WRITE_ONCE(pool->p.napi, NULL);
-> +       mutex_unlock(&page_pools_lock);
->  }
->  EXPORT_SYMBOL(page_pool_disable_direct_recycling);
->
-> diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
-> index 48335766c1bf..6677e0c2e256 100644
-> --- a/net/core/page_pool_user.c
-> +++ b/net/core/page_pool_user.c
-> @@ -3,6 +3,7 @@
->  #include <linux/mutex.h>
->  #include <linux/netdevice.h>
->  #include <linux/xarray.h>
-> +#include <net/busy_poll.h>
->  #include <net/net_debug.h>
->  #include <net/netdev_rx_queue.h>
->  #include <net/page_pool/helpers.h>
-> @@ -14,10 +15,11 @@
->  #include "netdev-genl-gen.h"
->
->  static DEFINE_XARRAY_FLAGS(page_pools, XA_FLAGS_ALLOC1);
-> -/* Protects: page_pools, netdevice->page_pools, pool->slow.netdev, pool-=
->user.
-> +/* Protects: page_pools, netdevice->page_pools, pool->p.napi, pool->slow=
-.netdev,
-> + *     pool->user.
->   * Ordering: inside rtnl_lock
->   */
-> -static DEFINE_MUTEX(page_pools_lock);
-> +DEFINE_MUTEX(page_pools_lock);
->
->  /* Page pools are only reachable from user space (via netlink) if they a=
-re
->   * linked to a netdev at creation time. Following page pool "visibility"
-> @@ -216,6 +218,7 @@ page_pool_nl_fill(struct sk_buff *rsp, const struct p=
-age_pool *pool,
->  {
->         struct net_devmem_dmabuf_binding *binding =3D pool->mp_priv;
->         size_t inflight, refsz;
-> +       unsigned int napi_id;
->         void *hdr;
->
->         hdr =3D genlmsg_iput(rsp, info);
-> @@ -229,8 +232,10 @@ page_pool_nl_fill(struct sk_buff *rsp, const struct =
-page_pool *pool,
->             nla_put_u32(rsp, NETDEV_A_PAGE_POOL_IFINDEX,
->                         pool->slow.netdev->ifindex))
->                 goto err_cancel;
-> -       if (pool->user.napi_id &&
-> -           nla_put_uint(rsp, NETDEV_A_PAGE_POOL_NAPI_ID, pool->user.napi=
-_id))
-> +
-> +       napi_id =3D pool->p.napi ? READ_ONCE(pool->p.napi->napi_id) : 0;
+Mateusz removes reporting of invalid parameter and value.
 
-Flowing up on above, I wonder if this can be similar to the code in
-page_pool_napi_local to work without the mutex protection:
+For iavf:
 
-napi =3D READ_ONCE(pool->p.napi);
-if (napi)
-   napi_id =3D READ_ONCE(napi->napi_id);
+Michal adjusts some VLAN changes to occur without a PF call to avoid
+timing issues with the calls.
 
-> +       if (napi_id >=3D MIN_NAPI_ID &&
+The following are changes since commit 15a901361ec3fb1c393f91880e1cbf24ec0a88bd:
+  ipmr: do not call mr_mfc_uses_dev() for unres entries
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue 200GbE
 
-I think this check is added to filter out 0? Nit: I would check for 0
-here, since any non zero napi_id should come from the napi->napi_id,
-which should be valid, but not a necessary change.
+Emil Tantilov (2):
+  idpf: add read memory barrier when checking descriptor done bit
+  idpf: fix transaction timeouts on reset
 
-> +           nla_put_uint(rsp, NETDEV_A_PAGE_POOL_NAPI_ID, napi_id))
->                 goto err_cancel;
->
->         inflight =3D page_pool_inflight(pool, false);
-> @@ -319,8 +324,6 @@ int page_pool_list(struct page_pool *pool)
->         if (pool->slow.netdev) {
->                 hlist_add_head(&pool->user.list,
->                                &pool->slow.netdev->page_pools);
-> -               pool->user.napi_id =3D pool->p.napi ? pool->p.napi->napi_=
-id : 0;
-> -
->                 netdev_nl_page_pool_event(pool, NETDEV_CMD_PAGE_POOL_ADD_=
-NTF);
->         }
->
-> --
-> 2.48.1
->
+Manoj Vishwanathan (2):
+  idpf: Acquire the lock before accessing the xn->salt
+  idpf: add more info during virtchnl transaction timeout/salt mismatch
 
---=20
-Thanks,
-Mina
+Marco Leogrande (1):
+  idpf: convert workqueues to unbound
+
+Mateusz Polchlopek (1):
+  ice: remove invalid parameter of equalizer
+
+Michal Swiatkowski (1):
+  iavf: allow changing VLAN state without calling PF
+
+Przemek Kitszel (1):
+  ice: fix ice_parser_rt::bst_key array size
+
+ drivers/net/ethernet/intel/iavf/iavf_main.c   | 19 ++++++++++++--
+ .../net/ethernet/intel/ice/ice_adminq_cmd.h   |  1 -
+ drivers/net/ethernet/intel/ice/ice_ethtool.c  |  1 -
+ drivers/net/ethernet/intel/ice/ice_ethtool.h  |  1 -
+ drivers/net/ethernet/intel/ice/ice_parser.h   |  6 ++---
+ .../net/ethernet/intel/ice/ice_parser_rt.c    | 12 ++++-----
+ .../net/ethernet/intel/idpf/idpf_controlq.c   |  6 +++++
+ drivers/net/ethernet/intel/idpf/idpf_main.c   | 15 +++++++----
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 25 ++++++++++++++-----
+ 9 files changed, 59 insertions(+), 27 deletions(-)
+
+-- 
+2.47.1
+
