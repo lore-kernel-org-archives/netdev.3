@@ -1,116 +1,495 @@
-Received: from mx10lb.world4you.com (mx10lb.world4you.com [81.19.149.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F471E98FC
-	for <netdev@vger.kernel.org>; Fri, 24 Jan 2025 22:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971411DD526
+	for <netdev@vger.kernel.org>; Fri, 24 Jan 2025 23:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737757947; cv=none; b=NQbD8Yd7QfT55jKUqbpHBS8ACfvpiT8iqXjVo6KTGAnT+1zTaJgWVIOqfJA7iD4IwqP8mxB4xM0+feE/R9laZVYxmmj+eL1GZjIUgmaIyp1Z9QVhet8oVY8TeUI2xO2MIUGEtyrKkrPxheBhOJLshcS01GeRr3yvMcJ0pkzSFw4=
+	t=1737760429; cv=none; b=quTdnDoDPu8/mvmJGPtO8my3y46w2k9kWDEa+cxvYiSnvx3K9YpeYAMsUse3CT4QIzcn0NpZnFIy6m13+9IIsRRKqaqVG2zqk/RdgCDAa4ImAi9IIWT/DDWSrTZpZ9rXNMpEE73hYzamyFSX0twv2Bke0Dgk39R3aAMcisOQyhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737757947; c=relaxed/simple;
-	bh=QunuxMjW5Ydt490SFL68VMYXIJqmr7rmBnAwzwJfq/g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=goSb4Rer6yAbWM7jPB78lMampBiCS2oacJ/Dndidfyt9SoqkcwSgpaQlGL0SKJmqtOvM68IepDoFlf2jouCUs1GCfoM9TBGCE+QjL/hedirvXQg2L57hjsX3KzBBqTkc8uclyvWu2mjrKfcv+TZpO+PSCcoJ4wmAGNW9ai9EJT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=Lha/IGd7; arc=none smtp.client-ip=81.19.149.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1737760429; c=relaxed/simple;
+	bh=Obld9qTIYm3KJefEoogJrCRjwtgalbvJDpPbleMuOYE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sSVP/5AGRUwsDjGcef3TzuJ0eBu0tGwZUaL9HXoGU6h4pkUttV3veVk71aDU5mjGH3SPA7M6P0Lf85+gqH79fJh50OGCJYWeOZJpLEkNthx7Y1O199D6e059zBk0QAFWNCf7UflbHEdysaxLCZfd3wq9bMe4Jg/UP/iO9R6oqjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=SFEhTafe; arc=none smtp.client-ip=209.85.166.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="Lha/IGd7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=hoa2uBgB0cK+6yFYS5AMqSXYocqmNE1Ym9X1PxGFp+A=; b=Lha/IGd7UCqQGTkUckb5HpjNod
-	03nLQ7ZF6tu+Rii3LI+mVww2FIID6MqRkK5ggAh17FB1DXIjT8RWjUEPdMm/SFsOeh/MBhC+zindH
-	r3yLatNRlEfyzMxW/wCmEBfI/WP0alkwlYJy8cZ6jDU1uqfh9+t05Y+DYFxb5WVjHZHE=;
-Received: from 88-117-60-28.adsl.highway.telekom.at ([88.117.60.28] helo=hornet.engleder.at)
-	by mx10lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1tbRny-000000005Ng-0lyq;
-	Fri, 24 Jan 2025 23:05:34 +0100
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	Gerhard Engleder <gerhard@engleder-embedded.com>
-Subject: [RFC PATCH net-next v3 3/7] net: phy: micrel: Add loopback support
-Date: Fri, 24 Jan 2025 23:05:12 +0100
-Message-Id: <20250124220516.113798-4-gerhard@engleder-embedded.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250124220516.113798-1-gerhard@engleder-embedded.com>
-References: <20250124220516.113798-1-gerhard@engleder-embedded.com>
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="SFEhTafe"
+Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-844df397754so71059239f.2
+        for <netdev@vger.kernel.org>; Fri, 24 Jan 2025 15:13:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fastly.com; s=google; t=1737760427; x=1738365227; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h0XaHocYpjBMm1kr/4P6FLGq+gbasSGEMI2ExACwoaU=;
+        b=SFEhTafe0bnBNt1Lnf2g25JCJ7pnRoVbO3BY9rIUCS+ZgMhP0v2QxxykEA63CJrdgk
+         +bJh4/B7Vzzm0LJqT4Oj/vt/huwSMtE7d2PQxctJ9mTBAY8vSJwygtIhIg64tLy99M8t
+         snMaxS/JAUzJPLmnGmiNgHUnJ7ZdpykzIbMUA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737760427; x=1738365227;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=h0XaHocYpjBMm1kr/4P6FLGq+gbasSGEMI2ExACwoaU=;
+        b=AQCR2+QLCy6S6ctqKeJsinrOkWwX4yhx6WWwn3NyRYGRy8oljwYG4tJaNmd3zRDnGu
+         SGgAr3Q7f3NgMMpDaJKbrTGKDPyr1f3kd7ht7GgpyE1yx5rCm9RqbnEOfPSiUB5/3UIk
+         Thi3Z8TlLr6gQZLMj/QEMcp/WddMN2qSMArMjaNfW2OlhyN1GkACQ3iIz4h3jKORlUEP
+         pehCaolE2bgN/ir/7QGDcvvtFys0b/sgaJREGQOkKnOQdgItQ2zveOJmwYz3EurlJwb9
+         G+q9FZXJv1S+XGMizdOsewBC3YKGEFSRovwSW/zs77U71kg3fw6uqBFsVhpa0lVEFvjT
+         /ItA==
+X-Forwarded-Encrypted: i=1; AJvYcCVuO6wBrtqd9lrtnlHXwwvGAq8gKEbXvqWmnDaKSSM+iHEL9XsZaqrZDtyhuUAYVStNTs8FMG8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNldiT95Kea7rD/Y/WPzLHYLllzWXQZvLfyia++YfEVajmaw6F
+	e+b9jUuorxPLcVGCBTQ7xJq05drWRIpGc46hqneQiwpKyPs6IERaj03AUgQPOkE=
+X-Gm-Gg: ASbGncvPGzRZ6M2Cjq66mbGDuRh8DpdSl6iJYdlJBJ0dG5sevDKtPJfnNq+k7pk5WkY
+	fy3psmArS31uiyJATESSn5qZPbVXds92MzgqM0PzVoK2mkAfz/OGtqbfvCcfvAvYDmqb+aEF3SX
+	yIF6wTzaA3aOqKYhVOHffmQlF7sDGzRk9bNzHTF8DPIFCpgYsSrPWgQRHH9D6izfNBcfHfI3wnL
+	Ff5Kuz2MxeJMsQdf2eaRMo68OGH9JcB7bo+Xt3CKJyo3y8=
+X-Google-Smtp-Source: AGHT+IGVVBGfEdi2ND44dQvzJycmDmT9wC964cNHWq8xu4fhYbtR7D+cmmqExueT+DEvZOFAxLuYGA==
+X-Received: by 2002:a05:6602:3e88:b0:84f:41cb:1895 with SMTP id ca18e2360f4ac-851b616dc39mr2821802739f.1.1737760426589;
+        Fri, 24 Jan 2025 15:13:46 -0800 (PST)
+Received: from LQ3V64L9R2 ([75.104.111.203])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ec1da4461dsm917901173.56.2025.01.24.15.13.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jan 2025 15:13:45 -0800 (PST)
+Date: Fri, 24 Jan 2025 15:13:04 -0800
+From: Joe Damato <jdamato@fastly.com>
+To: Basharath Hussain Khaja <basharath@couthit.com>
+Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, nm@ti.com, ssantosh@kernel.org,
+	tony@atomide.com, richardcochran@gmail.com, parvathi@couthit.com,
+	schnelle@linux.ibm.com, rdunlap@infradead.org,
+	diogo.ivo@siemens.com, m-karicheri2@ti.com, horms@kernel.org,
+	jacob.e.keller@intel.com, m-malladi@ti.com,
+	javier.carrasco.cruz@gmail.com, afd@ti.com, s-anna@ti.com,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org, pratheesh@ti.com, prajith@ti.com,
+	vigneshr@ti.com, praneeth@ti.com, srk@ti.com, rogerq@ti.com,
+	krishna@couthit.com, pmohan@couthit.com, mohan@couthit.com
+Subject: Re: [RFC v2 PATCH 04/10] net: ti: prueth: Adds link detection, RX
+ and TX support.
+Message-ID: <Z5QegAP71PkbppOO@LQ3V64L9R2>
+Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
+	Basharath Hussain Khaja <basharath@couthit.com>, danishanwar@ti.com,
+	rogerq@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, nm@ti.com,
+	ssantosh@kernel.org, tony@atomide.com, richardcochran@gmail.com,
+	parvathi@couthit.com, schnelle@linux.ibm.com, rdunlap@infradead.org,
+	diogo.ivo@siemens.com, m-karicheri2@ti.com, horms@kernel.org,
+	jacob.e.keller@intel.com, m-malladi@ti.com,
+	javier.carrasco.cruz@gmail.com, afd@ti.com, s-anna@ti.com,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org, pratheesh@ti.com, prajith@ti.com,
+	vigneshr@ti.com, praneeth@ti.com, srk@ti.com, rogerq@ti.com,
+	krishna@couthit.com, pmohan@couthit.com, mohan@couthit.com
+References: <20250124122353.1457174-1-basharath@couthit.com>
+ <20250124123707.1457639-5-basharath@couthit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AV-Do-Run: Yes
-X-ACL-Warn: X-W4Y-Internal
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250124123707.1457639-5-basharath@couthit.com>
 
-The KSZ9031 PHYs requires full duplex for loopback mode. Add PHY
-specific set_loopback() to ensure this.
+On Fri, Jan 24, 2025 at 06:07:01PM +0530, Basharath Hussain Khaja wrote:
+> From: Roger Quadros <rogerq@ti.com>
+> 
+> Changes corresponding to link configuration such as speed and duplexity.
+> IRQ and handler initializations are performed for packet reception.Firmware
+> receives the packet from the wire and stores it into OCMC queue. Next, it
+> notifies the CPU via interrupt. Upon receiving the interrupt CPU will
+> service the IRQ and packet will be processed by pushing the newly allocated
+> SKB to upper layers.
+> 
+> When the user application want to transmit a packet, it will invoke
+> sys_send() which will inturn invoke the PRUETH driver, then it will write
+> the packet into OCMC queues. PRU firmware will pick up the packet and
+> transmit it on to the wire.
+> 
+> Signed-off-by: Roger Quadros <rogerq@ti.com>
+> Signed-off-by: Andrew F. Davis <afd@ti.com>
+> Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
+> Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
+> ---
+>  drivers/net/ethernet/ti/icssm/icssm_prueth.c | 599 ++++++++++++++++++-
+>  drivers/net/ethernet/ti/icssm/icssm_prueth.h |  46 ++
+>  2 files changed, 640 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+> index 82ed0e3a0d88..0ba1d16a7a15 100644
+> --- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+> +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
 
-Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
----
- drivers/net/phy/micrel.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+[...]
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 9c0b1c229af6..f0cecd898312 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -1030,6 +1030,33 @@ static int ksz9021_config_init(struct phy_device *phydev)
- #define MII_KSZ9031RN_EDPD		0x23
- #define MII_KSZ9031RN_EDPD_ENABLE	BIT(0)
- 
-+static int ksz9031_set_loopback(struct phy_device *phydev, bool enable,
-+				int speed)
-+{
-+	u16 ctl = BMCR_LOOPBACK;
-+	int ret, val;
-+
-+	if (!enable)
-+		return genphy_loopback(phydev, enable, 0);
-+
-+	if (speed == SPEED_10 || speed == SPEED_100 || speed == SPEED_1000)
-+		phydev->speed = speed;
-+	else if (speed)
-+		return -EINVAL;
-+	phydev->duplex = DUPLEX_FULL;
-+
-+	ctl |= mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
-+
-+	phy_modify(phydev, MII_BMCR, ~0, ctl);
-+
-+	ret = phy_read_poll_timeout(phydev, MII_BMSR, val, val & BMSR_LSTATUS,
-+				    5000, 500000, true);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
- static int ksz9031_of_load_skew_values(struct phy_device *phydev,
- 				       const struct device_node *of_node,
- 				       u16 reg, size_t field_sz,
-@@ -5564,6 +5591,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.resume		= kszphy_resume,
- 	.cable_test_start	= ksz9x31_cable_test_start,
- 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
-+	.set_loopback	= ksz9031_set_loopback,
- }, {
- 	.phy_id		= PHY_ID_LAN8814,
- 	.phy_id_mask	= MICREL_PHY_ID_MASK,
--- 
-2.39.5
+> +/**
+> + * icssm_prueth_tx_enqueue - queue a packet to firmware for transmission
+> + *
+> + * @emac: EMAC data structure
+> + * @skb: packet data buffer
+> + * @queue_id: priority queue id
+> + *
+> + * Return: 0 (Success)
+> + */
+> +static int icssm_prueth_tx_enqueue(struct prueth_emac *emac,
+> +				   struct sk_buff *skb,
+> +				   enum prueth_queue_id queue_id)
+> +{
 
+[...]
+
+> +
+> +	/* which port to tx: MII0 or MII1 */
+> +	txport = emac->tx_port_queue;
+> +	src_addr = skb->data;
+> +	pktlen = skb->len;
+> +	/* Get the tx queue */
+> +	queue_desc = emac->tx_queue_descs + queue_id;
+> +	txqueue = &queue_infos[txport][queue_id];
+> +
+> +	buffer_desc_count = txqueue->buffer_desc_end -
+> +			    txqueue->buffer_desc_offset;
+> +	buffer_desc_count /= BD_SIZE;
+> +	buffer_desc_count++;
+> +
+> +	bd_rd_ptr = readw(&queue_desc->rd_ptr);
+> +	bd_wr_ptr = readw(&queue_desc->wr_ptr);
+> +
+> +	/* the PRU firmware deals mostly in pointers already
+> +	 * offset into ram, we would like to deal in indexes
+> +	 * within the queue we are working with for code
+> +	 * simplicity, calculate this here
+> +	 */
+> +	write_block = (bd_wr_ptr - txqueue->buffer_desc_offset) / BD_SIZE;
+> +	read_block = (bd_rd_ptr - txqueue->buffer_desc_offset) / BD_SIZE;
+
+Seems like there's a lot of similar code repeated in the rx code
+path.
+
+Maybe there's a way to simplify it all with a helper of some sort?
+
+> +	if (write_block > read_block) {
+> +		free_blocks = buffer_desc_count - write_block;
+> +		free_blocks += read_block;
+> +	} else if (write_block < read_block) {
+> +		free_blocks = read_block - write_block;
+> +	} else { /* they are all free */
+> +		free_blocks = buffer_desc_count;
+> +	}
+> +
+> +	pkt_block_size = DIV_ROUND_UP(pktlen, ICSS_BLOCK_SIZE);
+> +	if (pkt_block_size > free_blocks) /* out of queue space */
+> +		return -ENOBUFS;
+> +
+> +	/* calculate end BD address post write */
+> +	update_block = write_block + pkt_block_size;
+> +
+> +	/* Check for wrap around */
+> +	if (update_block >= buffer_desc_count) {
+> +		update_block %= buffer_desc_count;
+> +		buffer_wrapped = true;
+> +	}
+> +
+> +	/* OCMC RAM is not cached and write order is not important */
+> +	ocmc_ram = (__force void *)emac->prueth->mem[PRUETH_MEM_OCMC].va;
+> +	dst_addr = ocmc_ram + txqueue->buffer_offset +
+> +		   (write_block * ICSS_BLOCK_SIZE);
+> +
+> +	/* Copy the data from socket buffer(DRAM) to PRU buffers(OCMC) */
+> +	if (buffer_wrapped) { /* wrapped around buffer */
+> +		int bytes = (buffer_desc_count - write_block) * ICSS_BLOCK_SIZE;
+> +		int remaining;
+> +
+> +		/* bytes is integral multiple of ICSS_BLOCK_SIZE but
+> +		 * entire packet may have fit within the last BD
+> +		 * if pkt_info.length is not integral multiple of
+> +		 * ICSS_BLOCK_SIZE
+> +		 */
+> +		if (pktlen < bytes)
+> +			bytes = pktlen;
+> +
+> +		/* copy non-wrapped part */
+> +		memcpy(dst_addr, src_addr, bytes);
+> +
+> +		/* copy wrapped part */
+> +		src_addr += bytes;
+> +		remaining = pktlen - bytes;
+> +		dst_addr = ocmc_ram + txqueue->buffer_offset;
+> +		memcpy(dst_addr, src_addr, remaining);
+> +	} else {
+> +		memcpy(dst_addr, src_addr, pktlen);
+> +	}
+> +
+> +       /* update first buffer descriptor */
+> +	wr_buf_desc = (pktlen << PRUETH_BD_LENGTH_SHIFT) &
+> +		       PRUETH_BD_LENGTH_MASK;
+> +	writel(wr_buf_desc, dram + bd_wr_ptr);
+> +
+> +	/* update the write pointer in this queue descriptor, the firmware
+> +	 * polls for this change so this will signal the start of transmission
+> +	 */
+> +	update_wr_ptr = txqueue->buffer_desc_offset + (update_block * BD_SIZE);
+> +	writew(update_wr_ptr, &queue_desc->wr_ptr);
+> +
+> +	return 0;
+> +}
+
+[...]
+
+> +
+> +/* get packet from queue
+> + * negative for error
+> + */
+
+The comment above seems superfluous and does not seem to follow the
+format of the tx comment which appears to use kdoc style
+
+> +int icssm_emac_rx_packet(struct prueth_emac *emac, u16 *bd_rd_ptr,
+> +			 struct prueth_packet_info *pkt_info,
+> +			 const struct prueth_queue_info *rxqueue)
+> +{
+
+[...]
+
+> +
+> +	/* the PRU firmware deals mostly in pointers already
+> +	 * offset into ram, we would like to deal in indexes
+> +	 * within the queue we are working with for code
+> +	 * simplicity, calculate this here
+> +	 */
+> +	buffer_desc_count = rxqueue->buffer_desc_end -
+> +			    rxqueue->buffer_desc_offset;
+> +	buffer_desc_count /= BD_SIZE;
+> +	buffer_desc_count++;
+> +	read_block = (*bd_rd_ptr - rxqueue->buffer_desc_offset) / BD_SIZE;
+> +	pkt_block_size = DIV_ROUND_UP(pkt_info->length, ICSS_BLOCK_SIZE);
+> +
+> +	/* calculate end BD address post read */
+> +	update_block = read_block + pkt_block_size;
+> +
+> +	/* Check for wrap around */
+> +	if (update_block >= buffer_desc_count) {
+> +		update_block %= buffer_desc_count;
+> +		if (update_block)
+> +			buffer_wrapped = true;
+> +	}
+> +
+> +	/* calculate new pointer in ram */
+> +	*bd_rd_ptr = rxqueue->buffer_desc_offset + (update_block * BD_SIZE);
+
+Seems like there's a lot of repeated math here and in the above
+function. Maybe this can be simplified with a helper function to
+avoid repeating the math in multiple places?
+
+> +
+> +	/* Pkt len w/ HSR tag removed, If applicable */
+> +	actual_pkt_len = pkt_info->length - start_offset;
+> +
+> +	/* Allocate a socket buffer for this packet */
+> +	skb = netdev_alloc_skb_ip_align(ndev, actual_pkt_len);
+> +	if (!skb) {
+> +		if (netif_msg_rx_err(emac) && net_ratelimit())
+> +			netdev_err(ndev, "failed rx buffer alloc\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	dst_addr = skb->data;
+> +
+> +	/* OCMC RAM is not cached and read order is not important */
+> +	ocmc_ram = (__force void *)emac->prueth->mem[PRUETH_MEM_OCMC].va;
+> +
+> +	/* Get the start address of the first buffer from
+> +	 * the read buffer description
+> +	 */
+> +	src_addr = ocmc_ram + rxqueue->buffer_offset +
+> +		   (read_block * ICSS_BLOCK_SIZE);
+> +	src_addr += start_offset;
+> +
+> +	/* Copy the data from PRU buffers(OCMC) to socket buffer(DRAM) */
+> +	if (buffer_wrapped) { /* wrapped around buffer */
+> +		int bytes = (buffer_desc_count - read_block) * ICSS_BLOCK_SIZE;
+> +		int remaining;
+> +		/* bytes is integral multiple of ICSS_BLOCK_SIZE but
+> +		 * entire packet may have fit within the last BD
+> +		 * if pkt_info.length is not integral multiple of
+> +		 * ICSS_BLOCK_SIZE
+> +		 */
+> +		if (pkt_info->length < bytes)
+> +			bytes = pkt_info->length;
+> +
+> +		/* If applicable, account for the HSR tag removed */
+> +		bytes -= start_offset;
+> +
+> +		/* copy non-wrapped part */
+> +		memcpy(dst_addr, src_addr, bytes);
+> +
+> +		/* copy wrapped part */
+> +		dst_addr += bytes;
+> +		remaining = actual_pkt_len - bytes;
+> +
+> +		src_addr = ocmc_ram + rxqueue->buffer_offset;
+> +		memcpy(dst_addr, src_addr, remaining);
+> +		src_addr += remaining;
+> +	} else {
+> +		memcpy(dst_addr, src_addr, actual_pkt_len);
+> +		src_addr += actual_pkt_len;
+> +	}
+> +
+> +	if (!pkt_info->sv_frame) {
+> +		skb_put(skb, actual_pkt_len);
+> +
+> +		/* send packet up the stack */
+> +		skb->protocol = eth_type_trans(skb, ndev);
+> +		local_bh_disable();
+> +		netif_receive_skb(skb);
+> +		local_bh_enable();
+> +	} else {
+> +		dev_kfree_skb_any(skb);
+> +	}
+> +
+> +	/* update stats */
+> +	ndev->stats.rx_bytes += actual_pkt_len;
+> +	ndev->stats.rx_packets++;
+
+See comment below about atomicity.
+
+> +	return 0;
+> +}
+> +
+> +/**
+> + * icssm_emac_rx_thread - EMAC Rx interrupt thread handler
+> + * @irq: interrupt number
+> + * @dev_id: pointer to net_device
+> + *
+> + * EMAC Rx Interrupt thread handler - function to process the rx frames in a
+> + * irq thread function. There is only limited buffer at the ingress to
+> + * queue the frames. As the frames are to be emptied as quickly as
+> + * possible to avoid overflow, irq thread is necessary. Current implementation
+> + * based on NAPI poll results in packet loss due to overflow at
+> + * the ingress queues. Industrial use case requires loss free packet
+> + * processing. Tests shows that with threaded irq based processing,
+> + * no overflow happens when receiving at ~92Mbps for MTU sized frames and thus
+> + * meet the requirement for industrial use case.
+
+That's interesting. Any idea why this is the case? Is there not
+enough CPU for softirq/NAPI processing to run or something? I
+suppose I'd imagine that NAPI would run and if data is arriving fast
+enough, the NAPI would be added to the repoll list and processed
+later.
+
+So I guess either there isn't enough CPU or the ingress queues don't
+have many descriptors or something like that ?
+
+> + *
+> + * Return: interrupt handled condition
+> + */
+> +static irqreturn_t icssm_emac_rx_thread(int irq, void *dev_id)
+> +{
+> +	struct net_device *ndev = (struct net_device *)dev_id;
+> +	struct prueth_emac *emac = netdev_priv(ndev);
+> +	struct prueth_queue_desc __iomem *queue_desc;
+> +	const struct prueth_queue_info *rxqueue;
+> +	struct prueth *prueth = emac->prueth;
+> +	struct net_device_stats *ndevstats;
+> +	struct prueth_packet_info pkt_info;
+> +	int start_queue, end_queue;
+> +	void __iomem *shared_ram;
+> +	u16 bd_rd_ptr, bd_wr_ptr;
+> +	u16 update_rd_ptr;
+> +	u8 overflow_cnt;
+> +	u32 rd_buf_desc;
+> +	int used = 0;
+> +	int i, ret;
+> +
+> +	ndevstats = &emac->ndev->stats;
+
+FWIW the docs in include/linux/netdevice.h say:
+
+/**
+ ...
+ *      @stats:         Statistics struct, which was left as a legacy, use
+ *                      rtnl_link_stats64 instead
+ ...
+ */
+struct net_device {
+  ...
+  struct net_device_stats stats; /* not used by modern drivers */
+  ...
+};
+
+perhaps consider using rtnl_link_stats64 as suggested instead?
+
+> +	shared_ram = emac->prueth->mem[PRUETH_MEM_SHARED_RAM].va;
+> +
+> +	start_queue = emac->rx_queue_start;
+> +	end_queue = emac->rx_queue_end;
+> +retry:
+> +	/* search host queues for packets */
+> +	for (i = start_queue; i <= end_queue; i++) {
+> +		queue_desc = emac->rx_queue_descs + i;
+> +		rxqueue = &queue_infos[PRUETH_PORT_HOST][i];
+> +
+> +		overflow_cnt = readb(&queue_desc->overflow_cnt);
+> +		if (overflow_cnt > 0) {
+> +			emac->ndev->stats.rx_over_errors += overflow_cnt;
+> +			/* reset to zero */
+> +			writeb(0, &queue_desc->overflow_cnt);
+> +		}
+> +
+> +		bd_rd_ptr = readw(&queue_desc->rd_ptr);
+> +		bd_wr_ptr = readw(&queue_desc->wr_ptr);
+> +
+> +		/* while packets are available in this queue */
+> +		while (bd_rd_ptr != bd_wr_ptr) {
+> +			/* get packet info from the read buffer descriptor */
+> +			rd_buf_desc = readl(shared_ram + bd_rd_ptr);
+> +			icssm_parse_packet_info(prueth, rd_buf_desc, &pkt_info);
+> +
+> +			if (pkt_info.length <= 0) {
+> +				/* a packet length of zero will cause us to
+> +				 * never move the read pointer ahead, locking
+> +				 * the driver, so we manually have to move it
+> +				 * to the write pointer, discarding all
+> +				 * remaining packets in this queue. This should
+> +				 * never happen.
+> +				 */
+> +				update_rd_ptr = bd_wr_ptr;
+> +				ndevstats->rx_length_errors++;
+
+See question below.
+
+> +			} else if (pkt_info.length > EMAC_MAX_FRM_SUPPORT) {
+> +				/* if the packet is too large we skip it but we
+> +				 * still need to move the read pointer ahead
+> +				 * and assume something is wrong with the read
+> +				 * pointer as the firmware should be filtering
+> +				 * these packets
+> +				 */
+> +				update_rd_ptr = bd_wr_ptr;
+> +				ndevstats->rx_length_errors++;
+
+in netdevice.h it says:
+
+* struct net_device_stats* (*ndo_get_stats)(struct net_device *dev);
+*      Called when a user wants to get the network device usage
+*      statistics. Drivers must do one of the following:
+*      1. Define @ndo_get_stats64 to fill in a zero-initialised
+*         rtnl_link_stats64 structure passed by the caller.
+*      2. Define @ndo_get_stats to update a net_device_stats structure
+*         (which should normally be dev->stats) and return a pointer to
+*         it. The structure may be changed asynchronously only if each
+*         field is written atomically.
+*      3. Update dev->stats asynchronously and atomically, and define
+*         neither operation.
+
+I didn't look in the other patches to see if ndo_get_stats is
+defined or not, but are these increments atomic?
