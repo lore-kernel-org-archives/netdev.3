@@ -1,173 +1,150 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4CE1E98FD
-	for <netdev@vger.kernel.org>; Fri, 24 Jan 2025 21:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071291E98ED
+	for <netdev@vger.kernel.org>; Fri, 24 Jan 2025 21:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737754345; cv=none; b=FyAjZprKwM2CsE64ectnjp5GerK8NRO+IcVg7r3wBS/Y9oe8N2jPec1ijkIUraY4k3E2U485SefOAwgrdyZuMsvpVDC/WGCln1Zt7w88lijuKxivKxXHRo2hmpgo0Rv4stKWsSwN9hDtTAJK73QzybbPfWFSvP1qBVre/0NOp6c=
+	t=1737754703; cv=none; b=nU62zVcHdMveky0d4Qo3C18A5eiNE8BBr+k+92mi+CVSel2BQl7xx49Q3E18A4QtXndb51pISMsNLHU1IF3/lZgL86uAdPKHzxx7/pBPc3sOdvVBTgA6IPIBvNVLnFQ7DjDUia/YRK0Xvh80EEdvDBHEocruIjZaIquS5BiX/C0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737754345; c=relaxed/simple;
-	bh=H8nOM7SSy24Jz13dsHfv/Pc3sazm6NLngjfMS12J8n4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lGcHGt2JwA0nQ2P1hMvdypWBpXrYNDqtK5ml1pp8TSdzJHK7FfU0Y3dtPFyV+15JMvBKeOSLg1maO8vZZZ3HuocY66/CRsPYhydpu3fS8IdfFde2A6p+dxQ8mn9fUDiQKlNLT/VKkcb2QGGF692qDozIRjgoqI/psqbVGmH7/PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EXuJXbq1; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1737754703; c=relaxed/simple;
+	bh=dSUEcI2CszeXa/YUSv7xQrrYhrK0pI0Cvk4UmxjCXSc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cYbch5aCwv7UIDJTGDT4c0wUk4yZRHGFq7f6uIT90jYVh8folg9j8szVXOj+ETL3/SE/ujB4nSP30Pv7/wqig8Qdf3VBsGk22d7rr/Scqi8iQ0jlOAsZbuUZmSQAew+ahwlU9O18e2utYESa41wNpk8Vyy11crmtMkGxKW0muEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=gzH/9a/W; arc=none smtp.client-ip=171.64.64.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EXuJXbq1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737754344; x=1769290344;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=H8nOM7SSy24Jz13dsHfv/Pc3sazm6NLngjfMS12J8n4=;
-  b=EXuJXbq1XSNI0SEkYehfgnop+mtpbfKTRInQEntJATZ2vM5bxVfIFWLL
-   t+XjXrVsI4ZRvcp7R9sJcHRCglhUDV5sVsmcPHubCgsSeeTprPiPpdWhE
-   kNZNW4i3uyeLZMxPVDwfAWG9j5ETsT9W5c0r8bwHzK+cSLer3cctJcPJT
-   HCehVldAwxiS1tJveSO6+7g+H/08atT4DoKaW7wBqcXC3fHwmbG5LWTKD
-   bczPXk82nhK+jQLiFuIYKkjZo6cjvrMfEg1ydwHPmn/k+KJMvdgPRHC6c
-   ZGB9SuNhA91Z9hMP5G9horzUaEcSq2RgrPJalzVItudeobU9VUwTEPRZL
-   g==;
-X-CSE-ConnectionGUID: app9tB01TrOwjN2mI4svzg==
-X-CSE-MsgGUID: fPnc8g2nTrWWvVnP+gpbSw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="41140429"
-X-IronPort-AV: E=Sophos;i="6.13,232,1732608000"; 
-   d="scan'208";a="41140429"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2025 13:32:18 -0800
-X-CSE-ConnectionGUID: FcZtJZDLQVSbBLLJmm7FGw==
-X-CSE-MsgGUID: Myn2BTtRQCmCOpLNVhjK8A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,232,1732608000"; 
-   d="scan'208";a="107861099"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa006.jf.intel.com with ESMTP; 24 Jan 2025 13:32:18 -0800
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	anthony.l.nguyen@intel.com,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net 8/8] iavf: allow changing VLAN state without calling PF
-Date: Fri, 24 Jan 2025 13:32:10 -0800
-Message-ID: <20250124213213.1328775-9-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250124213213.1328775-1-anthony.l.nguyen@intel.com>
-References: <20250124213213.1328775-1-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="gzH/9a/W"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:Content-Type:Cc:To:
+	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Sender:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=pdBEaRCSvyWvsIRlqORJ7WlPyopfS1jbm96449rlIh4=; t=1737754702; x=1738618702; 
+	b=gzH/9a/WiO8OkMRTqNGaQ5kvkzN1v4bf7aAKc3i0bS3rWB9LFPr3nCDBJaO/ky1cXBjGnT/jYYe
+	sXArrLcuHQflM3uUviqhvPfDT6zJs1aID0QACJT2MEnjvaCfPZr08CydpVsql+bQPTL3dPnRTZlnR
+	Lkra9Toku7GLxR64GipFrmTk1Kx8XlWi5U5QaGHlGkE+QxtR1+JhHHn5C868bydSnGVvPpwB1ISlq
+	ZueWgxKvqFRq5KY5ycp5sac7FU32ETM6cxZWkL5dvcfnYyACAp0kOoT8ZrZzpe5rEBzjbAlAKtesn
+	FhoSvA44abCDl8hwJyjUT2RD5/eVQxRgjaOg==;
+Received: from mail-oa1-f47.google.com ([209.85.160.47]:45222)
+	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.94.2)
+	(envelope-from <ouster@cs.stanford.edu>)
+	id 1tbR88-0004OQ-Oq
+	for netdev@vger.kernel.org; Fri, 24 Jan 2025 13:22:21 -0800
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-2a3c075ddb6so1357525fac.2
+        for <netdev@vger.kernel.org>; Fri, 24 Jan 2025 13:22:20 -0800 (PST)
+X-Gm-Message-State: AOJu0Yz40x+q2wr5h/GJ1KKjQERQxkW49ecLHt/ZZ8GI53J7b3geQWll
+	f53EOs6dVHyB3FB3jt1X/KLslbf6pJBdfFn1y3f8d1697ssIyb6OrMjcw3pCwUD9m+LXnVuVNt5
+	aSoHrj9iFJfbm9aYIKwbjPPbLox8=
+X-Google-Smtp-Source: AGHT+IEMKGH2Ikj8XAt+E1qDsuhAm/QbG9QKISQbxfbNEAzix4lDaoB8WuGDVHrYleMsBRTXaV+H8NWflyPdurYo+Tc=
+X-Received: by 2002:a05:6870:2f0d:b0:29e:5522:8eea with SMTP id
+ 586e51a60fabf-2b1c0b6cdc0mr19516054fac.38.1737753740167; Fri, 24 Jan 2025
+ 13:22:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250115185937.1324-1-ouster@cs.stanford.edu> <20250115185937.1324-4-ouster@cs.stanford.edu>
+ <08c42b4a-6eed-4814-8bf8-fad40de6f2ed@redhat.com>
+In-Reply-To: <08c42b4a-6eed-4814-8bf8-fad40de6f2ed@redhat.com>
+From: John Ousterhout <ouster@cs.stanford.edu>
+Date: Fri, 24 Jan 2025 13:21:44 -0800
+X-Gmail-Original-Message-ID: <CAGXJAmzcifEeNthmE2J0epFYUhJYH=XxoJUSxQEqPCjkbhHdBw@mail.gmail.com>
+X-Gm-Features: AWEUYZk3clALfpaUMRAlTCLktkAdFUtMo6S8ZsS46I0zTEx3NbvkwXiHF7IXWqk
+Message-ID: <CAGXJAmzcifEeNthmE2J0epFYUhJYH=XxoJUSxQEqPCjkbhHdBw@mail.gmail.com>
+Subject: Re: [PATCH net-next v6 03/12] net: homa: create shared Homa header files
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Score: -1.0
+X-Spam-Level: 
+X-Scan-Signature: daeb03f1a6494d8fe08e106a714ef916
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+On Thu, Jan 23, 2025 at 3:01=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> On 1/15/25 7:59 PM, John Ousterhout wrote:
+> [...]
+> > +/**
+> > + * union sockaddr_in_union - Holds either an IPv4 or IPv6 address (sma=
+ller
+> > + * and easier to use than sockaddr_storage).
+> > + */
+> > +union sockaddr_in_union {
+> > +     /** @sa: Used to access as a generic sockaddr. */
+> > +     struct sockaddr sa;
+> > +
+> > +     /** @in4: Used to access as IPv4 socket. */
+> > +     struct sockaddr_in in4;
+> > +
+> > +     /** @in6: Used to access as IPv6 socket.  */
+> > +     struct sockaddr_in6 in6;
+> > +};
+>
+> There are other protocol using the same struct with a different name
+> (sctp) or  a very similar struct (mptcp). It would be nice to move this
+> in a shared header and allow re-use.
 
-First case:
-> ip l a l $VF name vlanx type vlan id 100
-> ip l d vlanx
-> ip l a l $VF name vlanx type vlan id 100
+I would be happy to do this, but I suspect it should be done
+separately from this patch series. It's not obvious to me where such a
+definition should go; can you suggest an appropriate place for it?
 
-As workqueue can be execute after sometime, there is a window to have
-call trace like that:
-- iavf_del_vlan
-- iavf_add_vlan
-- iavf_del_vlans (wq)
+> [...]
+> > +     /**
+> > +      * @core: Core on which @thread was executing when it registered
+> > +      * its interest.  Used for load balancing (see balance.txt).
+> > +      */
+> > +     int core;
+>
+> I don't see a 'balance.txt' file in this submission, possibly stray
+> reference?
 
-It means that our VLAN 100 will change the state from IAVF_VLAN_ACTIVE
-to IAVF_VLAN_REMOVE (iavf_del_vlan). After that in iavf_add_vlan state
-won't be changed because VLAN 100 is on the filter list. The final
-result is that the VLAN 100 filter isn't added in hardware (no
-iavf_add_vlans call).
+This is a file in the GitHub repo that I hadn't (yet) been including
+with the code being upstreamed. I've now added this file (and a couple
+of other explanatory .txt files) to the manifest for upstreaming.
 
-To fix that change the state if the filter wasn't removed yet directly
-to active. It is save as IAVF_VLAN_REMOVE means that virtchnl message
-wasn't sent yet.
+> [...]
+> > +     /**
+> > +      * @pacer_wake_time: time (in sched_clock units) when the pacer l=
+ast
+> > +      * woke up (if the pacer is running) or 0 if the pacer is sleepin=
+g.
+> > +      */
+> > +     __u64 pacer_wake_time;
+>
+> why do you use the '__' variant here? this is not uapi, you should use
+> the plain u64/u32 (more occurrences below).
 
-Second case:
-> ip l a l $VF name vlanx type vlan id 100
-Any type of VF reset ex. change trust
-> ip l s $PF vf $VF_NUM trust on
-> ip l d vlanx
-> ip l a l $VF name vlanx type vlan id 100
+Sorry, newbie mistake (I wasn't aware of the difference). I will fix everyw=
+here.
 
-In case of reset iavf driver is responsible for readding all filters
-that are being used. To do that all VLAN filters state are changed to
-IAVF_VLAN_ADD. Here is even longer window for changing VLAN state from
-kernel side, as workqueue isn't called immediately. We can have call
-trace like that:
+> [...]
+> > +     /**
+> > +      * @prev_default_port: The most recent port number assigned from
+> > +      * the range of default ports.
+> > +      */
+> > +     __u16 prev_default_port __aligned(L1_CACHE_BYTES);
+>
+> I think the idiomatic way to express the above is to use:
+>
+>         u16 prev_default_port ____cacheline_aligned;
+>
+> or
+>
+>         u16 prev_default_port ____cacheline_aligned_in_smp;
+>
+> more similar occourrences below.
 
-- changing to IAVF_VLAN_ADD (after reset)
-- iavf_del_vlan (called from kernel ops)
-- iavf_del_vlans (wq)
+I will fix everywhere.
 
-Not exsisitng VLAN filters will be removed from hardware. It isn't a
-bug, ice driver will handle it fine. However, we can have call trace
-like that:
+Thanks for the comments.
 
-- changing to IAVF_VLAN_ADD (after reset)
-- iavf_del_vlan (called from kernel ops)
-- iavf_add_vlan (called from kernel ops)
-- iavf_del_vlans (wq)
 
-With fix for previous case we end up with no VLAN filters in hardware.
-We have to remove VLAN filters if the state is IAVF_VLAN_ADD and delete
-VLAN was called. It is save as IAVF_VLAN_ADD means that virtchnl message
-wasn't sent yet.
-
-Fixes: 0c0da0e95105 ("iavf: refactor VLAN filter states")
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/iavf/iavf_main.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index cbfaaa5b7d02..2d7a18fcc3be 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -773,6 +773,11 @@ iavf_vlan_filter *iavf_add_vlan(struct iavf_adapter *adapter,
- 		f->state = IAVF_VLAN_ADD;
- 		adapter->num_vlan_filters++;
- 		iavf_schedule_aq_request(adapter, IAVF_FLAG_AQ_ADD_VLAN_FILTER);
-+	} else if (f->state == IAVF_VLAN_REMOVE) {
-+		/* IAVF_VLAN_REMOVE means that VLAN wasn't yet removed.
-+		 * We can safely only change the state here.
-+		 */
-+		f->state = IAVF_VLAN_ACTIVE;
- 	}
- 
- clearout:
-@@ -793,8 +798,18 @@ static void iavf_del_vlan(struct iavf_adapter *adapter, struct iavf_vlan vlan)
- 
- 	f = iavf_find_vlan(adapter, vlan);
- 	if (f) {
--		f->state = IAVF_VLAN_REMOVE;
--		iavf_schedule_aq_request(adapter, IAVF_FLAG_AQ_DEL_VLAN_FILTER);
-+		/* IAVF_ADD_VLAN means that VLAN wasn't even added yet.
-+		 * Remove it from the list.
-+		 */
-+		if (f->state == IAVF_VLAN_ADD) {
-+			list_del(&f->list);
-+			kfree(f);
-+			adapter->num_vlan_filters--;
-+		} else {
-+			f->state = IAVF_VLAN_REMOVE;
-+			iavf_schedule_aq_request(adapter,
-+						 IAVF_FLAG_AQ_DEL_VLAN_FILTER);
-+		}
- 	}
- 
- 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
--- 
-2.47.1
-
+-John-
