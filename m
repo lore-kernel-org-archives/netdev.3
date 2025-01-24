@@ -1,295 +1,114 @@
-Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5A214C59B;
-	Fri, 24 Jan 2025 14:47:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186D01428F3
+	for <netdev@vger.kernel.org>; Fri, 24 Jan 2025 14:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737730046; cv=none; b=rbkE9iht1T6qiwK8D2El63hfyqb3v/0MGh72by+CouKHOHUQFzVLCgjdyGp2eElaU6M7ejRhatwVHuCGbvyALJ4dJAD5DWpVMW4NZaU0z6GGrkVCTia4P/yBeZzqw4FAk+Na9mJnV4lOOD4+6DL/06HcA0fqbpsYOij5ZEEWRwE=
+	t=1737730152; cv=none; b=PmflLUj3WKXXbKU3Mu9H5eJ5DKohVoHDQ2V5Fzvr9PfKUpCslq+pIL833fpbqcQAfNzLYUGiltH/Je8n6COOUruYAmDL/qUWDzQbS4GlRGaZo2tCut/DvdhrDWEhvOyNgO7CCVE6nq+pf+PU4WJEJyifCHOcz2pXTXztrAHqyVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737730046; c=relaxed/simple;
-	bh=wu2GQcsOUddOTFtvDnQ95BD4CSom32zfXUWay83ow6s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=joGPNZDkbqc3h/gQzNGAAVSfRanppNen/zDvCZL8QZmr+aC1mQrb5kFjVTPWRIvInDmTupaTdtcfLjkzuD9GIm51TVzrdv86ovp+lBUPlYKlUM3rPDZ/3Ois/JQhyQ2pqeeqirUqdQREKqso9IIN2xWUdoM0i/U3nFGXg98ZQHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=yrgNEFGE; arc=none smtp.client-ip=162.240.238.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+	s=arc-20240116; t=1737730152; c=relaxed/simple;
+	bh=NydxaqTP6EDkgEiMRsHp+UOOwmDSujay0sykB5esncE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=cJC0EiK7E86uVQZe2N4ZvaVl7mRAI2g63BIlbXlA2Si4WPHKKEV4oaN3rCbBCAYn2Q739e6ntCE6LW5CRz1f1p1kxtmAV7dDroML7t7yd9tyPwh/Laq7GympqgpO1nulqtT7jXMd4AuYDgnGTZSlbpaRh7bD9CRhTeySb2l8bVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JfHvaCro; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="yrgNEFGE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=dTwVv8Q9VsLbA3MBy8CxgGJuPV4S+1OozgFAK6N4E8c=; b=yrgNEFGEsZD37kqZUYUJGYx9+r
-	7vUEpi2dLwSvI2RSjuL8smY0+dniLHr81+5nxFmLtnx7/nGxsYGBTMWKPcJVOcFJeOulxwcDN+x50
-	TUGCMTqbFuQlvGFxEVg3QoGUfVWCkqoZyajskOQAu+lrL8waj02Lhgl6r/8JnVIxc3pEepeY65ep8
-	iFtVXhgTWZbOuh9K7xnMGnoyrVGUzP8pleVSjij9buZWiR3IXlsb3uvYsYK7IeWJMRSNwY4007aOi
-	M3kAi6M//fisyZGYL/HL1Two/eFCr8axjDbxdz5YXlEyCuMeabdswguE+KV1SxzpTzYV9CoE/cUem
-	JUz62tyg==;
-Received: from [122.175.9.182] (port=38494 helo=cypher.couthit.local)
-	by server.wki.vra.mybluehostin.me with esmtpa (Exim 4.96.2)
-	(envelope-from <basharath@couthit.com>)
-	id 1tbKxr-0006Wf-1n;
-	Fri, 24 Jan 2025 20:17:20 +0530
-From: Basharath Hussain Khaja <basharath@couthit.com>
-To: danishanwar@ti.com,
-	rogerq@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	nm@ti.com,
-	ssantosh@kernel.org,
-	tony@atomide.com,
-	richardcochran@gmail.com,
-	parvathi@couthit.com,
-	basharath@couthit.com,
-	schnelle@linux.ibm.com,
-	rdunlap@infradead.org,
-	diogo.ivo@siemens.com,
-	m-karicheri2@ti.com,
-	horms@kernel.org,
-	jacob.e.keller@intel.com,
-	m-malladi@ti.com,
-	javier.carrasco.cruz@gmail.com,
-	afd@ti.com,
-	s-anna@ti.com
-Cc: linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	pratheesh@ti.com,
-	prajith@ti.com,
-	vigneshr@ti.com,
-	praneeth@ti.com,
-	srk@ti.com,
-	rogerq@ti.com,
-	krishna@couthit.com,
-	pmohan@couthit.com,
-	mohan@couthit.com
-Subject: [RFC v2 PATCH 10/10] arm: dts: ti: Adds device tree nodes for PRU Cores, IEP and eCAP modules of PRU-ICSS2 Instance.
-Date: Fri, 24 Jan 2025 20:15:55 +0530
-Message-Id: <20250124144555.1462044-11-basharath@couthit.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250124122353.1457174-1-basharath@couthit.com>
-References: <20250124122353.1457174-1-basharath@couthit.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JfHvaCro"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4362bae4d7dso15748505e9.1
+        for <netdev@vger.kernel.org>; Fri, 24 Jan 2025 06:49:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1737730149; x=1738334949; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eMkuRdm7dMRfIqCxtB5bKSUeXy3ZdBxZh7yMlRtwENM=;
+        b=JfHvaCrotFxm9c1I7INCx8GEipqinY+truHUK5gAvBakqZ8GZSiBZMDKupviSi+tmJ
+         Cfwhgeg96ASoMuR1tfwbJwhs0d2a/i62aOR2gGw9MmtuJFiFZVYwZ5/lGVrK6YR4GlMq
+         Iq7cn2oMytPXCvavphWgsKfZgN6Al9npXznOteFrgZpwn5qXgK8AbLU92k8LKZgDyquG
+         7CEs3zjrEshn2s2kbTa0rGoLpV2JJ4HLEAhUiHwoGr8kcOOOQp+eDU2TQ4qAjapqSb0z
+         4HeqxgPYdFd0yUKVmK0PfHhp+VuZEMkXaeC8M9GlTglK48p5HwK+kj+Zeenk3cpsSuK1
+         RjhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737730149; x=1738334949;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eMkuRdm7dMRfIqCxtB5bKSUeXy3ZdBxZh7yMlRtwENM=;
+        b=nh+E1hW9i97m2c+KrLsY9wmjP/vKFxbwXS9KoypBte9lbsPxy4BxF+hUwQQZ2IfDb8
+         kOpZBusozv5anpl2NGfTXGq+wiWIebzoREQxqTn5vwAfoA6cdffEZf3kZ4068CfKx4TC
+         9dt+gVzDlRJa7PI2lqvbSn78ZjAgYIfdVGDdrG+qU7zEwIO10bh3iMfhkNLYbkFekv91
+         i+Gy9mNfikxIXICClOKdqWxnEc54UplMi8zUstadSjWLuklNVHyeKlVeeYZS1pKLSKlM
+         Trilkiaz/4fK4UhO6zLSegKxeAc3KnlhP7ySJnonLsvxdLmW5akiDFJQWd/Wd90et0yX
+         DSgA==
+X-Forwarded-Encrypted: i=1; AJvYcCVygJM/Ni5A85t7FW5DcqGAUThgLcsTGEcK8mBoMM7cPCmTOfuHquSKb2XM+1dGo9H6EUtgFr0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxI0OJ1U3oEC+JNICg3DcLMJnNEHrWrKGSYTap4EBg04JGXG+dW
+	TOii+Blficdmy1CFzWypZ6gxSNmM7sv7xicrEYArK8mLSuunSXI82+U0VRT9SGs=
+X-Gm-Gg: ASbGnctsr0I5g6MGFotf/kZ26V14tIMUpgRZ8Wpfp4gFbIF3Axfu/k2nyFXXvfnZuud
+	eNs7bX3fyqdXLdUjtiJFU1SJe8osc6uI0j4trnc9bL8y4z34de1ialLJMTME1b2nYSEMQtJxGYM
+	hsJ7mn8A9ubcm0dBByX+3NeZ9lx4EPr6SU4whXtWe2XbPCkBZbhICo+whwL1fY7lbk5ARmxZE6U
+	mt7TI1SHPNjLC9UVfnNqIDluQG9Fy134SbOP2XAasVFa4Qz72WMrp0Vc2QyHmx5ijD/eT+tqF0r
+	BTKRTpjrrA==
+X-Google-Smtp-Source: AGHT+IEgUTZS8mCn7dY7aS1e3HW4uNtkQsxfIiRO3BnkLr8VQ2g9RvGQrurzRlcy0FFiD4+EtIbf7Q==
+X-Received: by 2002:a05:600c:524c:b0:435:306:e5dd with SMTP id 5b1f17b1804b1-4389143a66dmr264487745e9.22.1737730149323;
+        Fri, 24 Jan 2025 06:49:09 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a188bf5sm2964758f8f.50.2025.01.24.06.49.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jan 2025 06:49:09 -0800 (PST)
+Date: Fri, 24 Jan 2025 17:49:05 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: William Tu <u9012063@gmail.com>
+Cc: Pravin B Shelar <pshelar@ovn.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	dev@openvswitch.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH net] net: ovs: prevent underflow in queue_userspace_packet()
+Message-ID: <4d6d9d9e-b4d9-42f1-aa78-1a5979679b2e@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.wki.vra.mybluehostin.me
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.wki.vra.mybluehostin.me: authenticated_id: basharath@couthit.com
-X-Authenticated-Sender: server.wki.vra.mybluehostin.me: basharath@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-From: Roger Quadros <rogerq@ti.com>
+If "hlen" less than "cutlen" then when we call upcall_msg_size()
+the "hlen - cutlen" parameter will be a very high positive
+number.
 
-The TI Sitara AM57xx series of devices consists of 2 PRU-ICSS instances
-(PRU-ICSS1 and PRU-ICSS2). This patch adds the device tree nodes for the
-PRU-ICSS2 instance to support DUAL-MAC mode of operation.
+Later in the function we use "skb->len - cutlen" but this change
+addresses that potential underflow since skb->len is always going to
+be greater than or equal to hlen.
 
-Each PRU-ICSS instance consists of two PRU cores along with various
-peripherals such as the Interrupt Controller (PRU_INTC), the Industrial
-Ethernet Peripheral(IEP), the Real Time Media Independent Interface
-controller (MII_RT), and the Enhanced Capture (eCAP) event module.
-
-am57-pruss.dtsi - Adds IEP and eCAP peripheral as child nodes of
-the PRUSS subsystem node.
-
-am57xx-idk-common.dtsi - Adds PRU-ICSS2 instance node along with
-PRU eth port information and corresponding port configuration. It includes
-interrupt mapping for packet reception, HW timestamp collection, and
-PRU Ethernet ports in MII mode.
-
-am571x-idk.dts, am572x-idk.dts and am574x-idk.dts - GPIO configuration
-along with delay configuration for individual PRU Ethernet port.
-
-Signed-off-by: Roger Quadros <rogerq@ti.com>
-Signed-off-by: Andrew F. Davis <afd@ti.com>
-Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
-Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
-Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
+Fixes: f2a4d086ed4c ("openvswitch: Add packet truncation support.")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 ---
- arch/arm/boot/dts/ti/omap/am57-pruss.dtsi     | 11 ++++
- arch/arm/boot/dts/ti/omap/am571x-idk.dts      |  8 ++-
- arch/arm/boot/dts/ti/omap/am572x-idk.dts      | 10 +--
- arch/arm/boot/dts/ti/omap/am574x-idk.dts      | 10 +--
- .../boot/dts/ti/omap/am57xx-idk-common.dtsi   | 61 +++++++++++++++++++
- 5 files changed, 91 insertions(+), 9 deletions(-)
+From code review not testing.
 
-diff --git a/arch/arm/boot/dts/ti/omap/am57-pruss.dtsi b/arch/arm/boot/dts/ti/omap/am57-pruss.dtsi
-index 46c5383f0eee..f73316625608 100644
---- a/arch/arm/boot/dts/ti/omap/am57-pruss.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am57-pruss.dtsi
-@@ -170,6 +170,17 @@ pruss2_iepclk_mux: iepclk-mux@30 {
- 				};
- 			};
+ net/openvswitch/datapath.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index 225f6048867f..bb25a2bbe8a0 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -477,6 +477,11 @@ static int queue_userspace_packet(struct datapath *dp, struct sk_buff *skb,
+ 	else
+ 		hlen = skb->len;
  
-+			pruss2_iep: iep@2e000 {
-+				compatible = "ti,am5728-icss-iep";
-+				reg = <0x2e000 0x31c>;
-+				clocks = <&pruss2_iepclk_mux>;
-+			};
++	if (hlen < cutlen) {
++		err = -EINVAL;
++		goto out;
++	}
 +
-+			pruss2_ecap: ecap@30000 {
-+				compatible = "ti,pruss-ecap";
-+				reg = <0x30000 0x60>;
-+			};
-+
- 			pruss2_mii_rt: mii-rt@32000 {
- 				compatible = "ti,pruss-mii", "syscon";
- 				reg = <0x32000 0x58>;
-diff --git a/arch/arm/boot/dts/ti/omap/am571x-idk.dts b/arch/arm/boot/dts/ti/omap/am571x-idk.dts
-index 322cf79d22e9..02653b440585 100644
---- a/arch/arm/boot/dts/ti/omap/am571x-idk.dts
-+++ b/arch/arm/boot/dts/ti/omap/am571x-idk.dts
-@@ -214,5 +214,11 @@ &pruss1_mdio {
- };
- 
- &pruss2_mdio {
--	status = "disabled";
-+	reset-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
-+	reset-delay-us = <2>;   /* PHY datasheet states 1uS min */
-+};
-+
-+&pruss2_eth {
-+	ti,pruss-gp-mux-sel = <4>,      /* MII2, needed for PRUSS1_MII0 */
-+			      <4>;      /* MII2, needed for PRUSS1_MII1 */
- };
-diff --git a/arch/arm/boot/dts/ti/omap/am572x-idk.dts b/arch/arm/boot/dts/ti/omap/am572x-idk.dts
-index 94a738cb0a4d..54a8ccb9ca14 100644
---- a/arch/arm/boot/dts/ti/omap/am572x-idk.dts
-+++ b/arch/arm/boot/dts/ti/omap/am572x-idk.dts
-@@ -28,10 +28,12 @@ &mmc2 {
- 	pinctrl-2 = <&mmc2_pins_ddr_rev20>;
- };
- 
--&pruss1_mdio {
--	status = "disabled";
-+&pruss2_eth0_phy {
-+	reset-gpios = <&gpio5 8 GPIO_ACTIVE_LOW>;
-+	reset-assert-us = <2>;   /* PHY datasheet states 1uS min */
- };
- 
--&pruss2_mdio {
--	status = "disabled";
-+&pruss2_eth1_phy {
-+	reset-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
-+	reset-assert-us = <2>;   /* PHY datasheet states 1uS min */
- };
-diff --git a/arch/arm/boot/dts/ti/omap/am574x-idk.dts b/arch/arm/boot/dts/ti/omap/am574x-idk.dts
-index 47b9174d2353..47b6c6cb210c 100644
---- a/arch/arm/boot/dts/ti/omap/am574x-idk.dts
-+++ b/arch/arm/boot/dts/ti/omap/am574x-idk.dts
-@@ -40,10 +40,12 @@ &emif1 {
- 	status = "okay";
- };
- 
--&pruss1_mdio {
--	status = "disabled";
-+&pruss2_eth0_phy {
-+	reset-gpios = <&gpio5 8 GPIO_ACTIVE_LOW>;
-+	reset-assert-us = <2>;   /* PHY datasheet states 1uS min */
- };
- 
--&pruss2_mdio {
--	status = "disabled";
-+&pruss2_eth1_phy {
-+	reset-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
-+	reset-assert-us = <2>;   /* PHY datasheet states 1uS min */
- };
-diff --git a/arch/arm/boot/dts/ti/omap/am57xx-idk-common.dtsi b/arch/arm/boot/dts/ti/omap/am57xx-idk-common.dtsi
-index 43e3623f079c..0a7db6e8eef1 100644
---- a/arch/arm/boot/dts/ti/omap/am57xx-idk-common.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am57xx-idk-common.dtsi
-@@ -155,6 +155,52 @@ src_clk_x1: src_clk_x1 {
- 		compatible = "fixed-clock";
- 		clock-frequency = <20000000>;
- 	};
-+
-+	/* Dual-MAC Ethernet application node on PRU-ICSS2 */
-+	pruss2_eth: pruss2-eth {
-+		compatible = "ti,am57-prueth";
-+		ti,prus = <&pru2_0>, <&pru2_1>;
-+		sram = <&ocmcram1>;
-+		ti,mii-rt = <&pruss2_mii_rt>;
-+		ti,iep = <&pruss2_iep>;
-+		ecap = <&pruss2_ecap>;
-+		interrupts = <20 2 2>, <21 3 3>;
-+		interrupt-names = "rx_hp", "rx_lp";
-+		interrupt-parent = <&pruss2_intc>;
-+
-+		ethernet-ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			pruss2_emac0: ethernet-port@0 {
-+				reg = <0>;
-+				phy-handle = <&pruss2_eth0_phy>;
-+				phy-mode = "mii";
-+				interrupts = <20 2 2>, <26 6 6>, <23 6 6>;
-+				interrupt-names = "rx", "emac_ptp_tx",
-+								"hsr_ptp_tx";
-+				/* Filled in by bootloader */
-+				local-mac-address = [00 00 00 00 00 00];
-+			};
-+
-+			pruss2_emac1: ethernet-port@1 {
-+				reg = <1>;
-+				phy-handle = <&pruss2_eth1_phy>;
-+				phy-mode = "mii";
-+				interrupts = <21 3 3>, <27 9 7>, <24 9 7>;
-+				interrupt-names = "rx", "emac_ptp_tx",
-+								"hsr_ptp_tx";
-+				/* Filled in by bootloader */
-+				local-mac-address = [00 00 00 00 00 00];
-+			};
-+		};
-+	};
-+
-+};
-+
-+&pruss2_iep {
-+	interrupt-parent = <&pruss2_intc>;
-+	interrupts = <7 7 8>;
-+	interrupt-names = "iep_cap_cmp";
- };
- 
- &dra7_pmx_core {
-@@ -606,3 +652,18 @@ dpi_out: endpoint {
- 		};
- 	};
- };
-+
-+&pruss2_mdio {
-+	status = "okay";
-+	pruss2_eth0_phy: ethernet-phy@0 {
-+		reg = <0>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <30 IRQ_TYPE_EDGE_FALLING>;
-+	};
-+
-+	pruss2_eth1_phy: ethernet-phy@1 {
-+		reg = <1>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <31 IRQ_TYPE_EDGE_FALLING>;
-+	};
-+};
+ 	len = upcall_msg_size(upcall_info, hlen - cutlen,
+ 			      OVS_CB(skb)->acts_origlen);
+ 	user_skb = genlmsg_new(len, GFP_ATOMIC);
 -- 
-2.34.1
+2.45.2
 
