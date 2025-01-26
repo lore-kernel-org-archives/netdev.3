@@ -1,187 +1,217 @@
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B4955887;
-	Sun, 26 Jan 2025 08:41:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41F818B03;
+	Sun, 26 Jan 2025 08:49:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737880890; cv=none; b=D7GkJzKPnDCBBS5E3C1w38nqtLv/fQ/XyacCTGWp+TEd7Z1rSU+TOiXQ6gwYdLtfmHaECjnxsE1GBwzD2k+SyncgyZHmMk/DvgwOYZkrJtV3CgpWZFp13X3qgLypCbiv0+xEDB9zDjh7M8nFtoOeYIZAdpR6Akeivwfgs+gsrZ4=
+	t=1737881395; cv=none; b=M1MlgJLJl5iJcRilgQiMreDcHHmebogdIbBFJstMEXfleeAA2LrgzB85Gkqo2xCuBgz0K/GRnKi5yUXO2F6MOcN+giDHCK80Sx6Hlt/o/ovq/sn9vM/gvj5k2F+qN1roM2/2kPbKc6JAUDqpVN9qFDFDm9IZzofVnwyxrbHQ4TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737880890; c=relaxed/simple;
-	bh=1uU+IlNal+3EPTF/c40sK/iz5IjYkn5z3LCvgEtMl1E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JHOHozoAMlMTWIGeVPHF+m6VKnRmYyqpeFkzTr0vkzAFcDZw4kTBBHDv7I8nVVGuolzWLK4hEINMWShQfcS1o9/69rTZGg/vzA6wBRZiya2QgltASlodV7d0jbpTa+XU9WmSuGuPtv0HEOYGqykHdHMfuHDxpJMutO6qR74H64I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ghCz0DMH; arc=none smtp.client-ip=202.12.124.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
+	s=arc-20240116; t=1737881395; c=relaxed/simple;
+	bh=AMFPi86GG75ePAlO70JW0HOzwi2MdoBF0k541T6jnyc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GabODLV/NkXlkXAfE5ngwHZnK3hWW5D5eQOu01lVT5+D8nLwhyKXQmk0A68sS1A6B4DMP0prTdqGyK2+Nb2tqI9RdKcaHTZswDpWj3VnMIht0yS9GCoilUL0mJqsc8GOENGpcLYYxI6ZC5jTFV14yyrDvPR5T0QmV4ot2byByBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CxdpL7b9; arc=none smtp.client-ip=209.85.166.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ghCz0DMH"
-Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 18FA92540103;
-	Sun, 26 Jan 2025 03:41:27 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Sun, 26 Jan 2025 03:41:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1737880886; x=1737967286; bh=HftiZnevtp2qsnswvVZXprhygnVO8ILoeqm
-	v/RLP7DQ=; b=ghCz0DMHEyWWC3P4FQncx+iKypq2RfrGaudZw7qPikAVrYP5SwZ
-	QqHH8AD13TlGQIK45fiecOhOQ+MR7XQx1mdMGSSsZ/ACh6Gm0HQMyOsLdBGYNnwO
-	yz7n2jlZ6i/8nUAd3qbmSjcK5nmfA7v2mAfVldbxTYiK+qvm077iPn2+DUwXnDrY
-	3R+FasvmpRUGlU+gY3ceEOVtNNpNzgyd+HyHsTA4SNBxXSqEXq4XxuioWKp+IeXi
-	oXqkJqdT5Wh+WMhIQ4/9nNN+kx8tHgzM59DuF45tPWHw3NrqfLLyGyCeNIka2X+0
-	unRuexvZamJouX19sI2prUzLN8qmyHCSgKQ==
-X-ME-Sender: <xms:NvWVZ0GRQYxjN6EG78mYvtoUJtC_ZiT3Nz5Ielkg8WTBSZPiqzj0lg>
-    <xme:NvWVZ9VaTS6rBkMbcs6FBEe_iRUj6vurXEom1CZvZhizN2lcgmneeBZp_cW03KxHJ
-    icjy_K5ISVFAec>
-X-ME-Received: <xmr:NvWVZ-JiR6BmOphchStlHlgASuJae87b5-qgMN4Clstgr8x6KXBPCRlwxtsV>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudejgedgleektdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrd
-    horhhgqeenucggtffrrghtthgvrhhnpeehhfdtjedviefffeduuddvffegteeiieeguefg
-    udffvdfftdefheeijedthfejkeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihguohhstghh
-    sehiughoshgthhdrohhrghdpnhgspghrtghpthhtohepudekpdhmohguvgepshhmthhpoh
-    huthdprhgtphhtthhopedtgiduvddtjeesghhmrghilhdrtghomhdprhgtphhtthhopegr
-    nhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopegsghhrihhffhhishesnhhvihguih
-    grrdgtohhmpdhrtghpthhtohepjhhonhgrthhhrghnhhesnhhvihguihgrrdgtohhmpdhr
-    tghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    eplhhinhhugidqshhtmhefvdesshhtqdhmugdqmhgrihhlmhgrnhdrshhtohhrmhhrvghp
-    lhihrdgtohhmpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsth
-    hsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghl
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvghkshgrnhguvghrrd
-    hlohgsrghkihhnsehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:NvWVZ2GSd8rk6Q76dOpZQVJFjbCP83n5WvR-tm9AO6WUJTCBEp_oaA>
-    <xmx:NvWVZ6U9HO7GkxTTz7l2XFE8pYwGF8Ea_Brtb9sX78E8xo2LsSofpw>
-    <xmx:NvWVZ5MZayxKuK-jiCAay_c4NJHybliV6nwQ_NEUwGE6oOYXn34uaA>
-    <xmx:NvWVZx2HtaJT4RUf0DUY4FfOYjvzUe6p6IH6tR2genF6FfOmYRQPnA>
-    <xmx:NvWVZ4Yxox-UqScH-CKvvBbjRcJSxt4_PDvqf-1AqmL7Qg46l4QJ_VMC>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 26 Jan 2025 03:41:25 -0500 (EST)
-Date: Sun, 26 Jan 2025 10:41:23 +0200
-From: Ido Schimmel <idosch@idosch.org>
-To: Furong Xu <0x1207@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Brad Griffis <bgriffis@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, xfr@outlook.com,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-Subject: Re: [PATCH net-next v3 1/4] net: stmmac: Switch to zero-copy in
- non-XDP RX path
-Message-ID: <Z5X1M0Fs-K6FkSAl@shredder>
-References: <cover.1736910454.git.0x1207@gmail.com>
- <bd7aabf4d9b6696885922ed4bef8fc95142d3004.1736910454.git.0x1207@gmail.com>
- <d465f277-bac7-439f-be1d-9a47dfe2d951@nvidia.com>
- <20250124003501.5fff00bc@orangepi5-plus>
- <e6305e71-5633-48bf-988d-fa2886e16aae@nvidia.com>
- <ccbecd2a-7889-4389-977e-10da6a00391c@lunn.ch>
- <20250124104256.00007d23@gmail.com>
- <Z5S69kb7Qz_QZqOh@shredder>
- <20250125224342.00006ced@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CxdpL7b9"
+Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-3cf8c7b2dd5so9812115ab.0;
+        Sun, 26 Jan 2025 00:49:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737881393; x=1738486193; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uBuZ1Xz/Z+VftvmIpRqBRhK9GCtM2HvGZd92IHISFNE=;
+        b=CxdpL7b99gmhgnvIRkRbd96qGjAKeeIZ5ltf3e2AZydhIodRaihnMvT1q3TwH78YA7
+         n8WDCWJorEzwozoGaO7Zl4PIZTioWNFgt02dZSU3yBqcM2maTQUrOqsYkJQv+lpodQTK
+         fbYxYKdgn/M9+VhoHiM5lkj+aWMYT1uC26w0SU4XB9ddaE5ATWCnDqBw6Sb4eTBpNpMQ
+         /dNNfeNfU3NH8odCcputGbYFtKouT6W1+y6J5TQ25gtcf/wtqXaQGoAJ5bvOREIGWgpp
+         RfVVOfC0JA9P0/En+13UoaEDPQ0ICnPQV+VSX2gVjSpsyVsEtkP5lFbcXyEEqACf5MDL
+         U4Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737881393; x=1738486193;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uBuZ1Xz/Z+VftvmIpRqBRhK9GCtM2HvGZd92IHISFNE=;
+        b=WM1YWWASX5+MF/ZJog7jSrB6AP6RV+DHj+wRkKa2ugvmunN+ehFij6JyNimtsJFDPq
+         6EQXIHsXFGj/cTn9MWAEdE/1db7XmKpNV37L9Lc8iNw5o+N/3+Se9GwRkGIMnpMxBRcl
+         f5eH+oxO9kp9coWgAIOCpaEVynrzXXd6LUypqJdWW7zCgRFn1RYt9Z1ZKcUBscESarxD
+         9qQ85SheXiQAHxE/uiwp87mHsB5HRhU3ylNSqjRrYLdTCxKgS2OoMjVhCGjj+f3xOc5v
+         lJzALF7wX19QkQRF1MlIvYDqcSinb1QjN3XcKn+XaKJEm0zb/kIchwpBYBCtILEIxSbN
+         nPDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVAeCdC4z34In79SMTaj9FO33Vt0bcB677wEpE8hbX8NSEYGuvNiBQ0pvO1dMhQwBWuRVxKQXzb@vger.kernel.org, AJvYcCVl+6sVWUXts3ORKVXJU+JiatcPoez6fEFcF+3bfzCWRCDPTrBZHFr76MLV1p2jIxaHlEcS2tU74LTviDE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAfismN12mKLGPq5JeoT9RfZAdq6tJVsYCygZsovtzJvFuMigU
+	SJmIkemtss2N8I+fAVCOCas5ARSCNSWiRIMWD7XzhBbxc1NZjEdFPPxBD/iEOzadG5wJYJ7Zy99
+	jgyJJzzpY7wKV5qKzVt9Rp7hQb9E=
+X-Gm-Gg: ASbGnctLCemmhgCipsdO/zHzLJZz7FoHlwWCsnxjqNBimciX2zWVQDJSf2cXoex4RaQ
+	GS8NZiiM5xqqJCRI9n8H5CwkWwlO8hBzu+MmtdMsQ3/L56Ofo/QMvVc4KCVfH
+X-Google-Smtp-Source: AGHT+IH9IFo3U5eVjnGCMJw6TXyhgapZEGYnIq/Uui/5PLey81s8XQomxyKOsOFpWYpwR0P6GC0za8L1arz5uWBmm7s=
+X-Received: by 2002:a05:6e02:19c5:b0:3ce:8ed9:ca81 with SMTP id
+ e9e14a558f8ab-3cf743d912bmr303149995ab.5.1737881392824; Sun, 26 Jan 2025
+ 00:49:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250125224342.00006ced@gmail.com>
+References: <202501261315.c6c7dbb4-lkp@intel.com>
+In-Reply-To: <202501261315.c6c7dbb4-lkp@intel.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Sun, 26 Jan 2025 16:49:16 +0800
+X-Gm-Features: AWEUYZnJrHvu3ywaEtOrkLS8ezRSktPOq7CR8KmCAEFphS5QIGVZLpOxW50oUVw
+Message-ID: <CAL+tcoBBjLsmWUt9PkzDhVtGLm-s53EyTzcHhpTkVnLpgz0FXw@mail.gmail.com>
+Subject: Re: [linus:master] [tcp_cubic] 25c1a9ca53: packetdrill.packetdrill/gtests/net/tcp/cubic/cubic-bulk-166k-idle-restart_ipv4-mapped-v6.fail
+To: kernel test robot <oliver.sang@intel.com>
+Cc: Mahdi Arghavani <ma.arghavani@yahoo.com>, oe-lkp@lists.linux.dev, lkp@intel.com, 
+	linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Neal Cardwell <ncardwell@google.com>, Eric Dumazet <edumazet@google.com>, 
+	Haibo Zhang <haibo.zhang@otago.ac.nz>, David Eyers <david.eyers@otago.ac.nz>, 
+	Abbas Arghavani <abbas.arghavani@mdu.se>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Sun, Jan 26, 2025 at 2:30=E2=80=AFPM kernel test robot <oliver.sang@inte=
+l.com> wrote:
+>
+>
+>
+> Hello,
+>
+> kernel test robot noticed "packetdrill.packetdrill/gtests/net/tcp/cubic/c=
+ubic-bulk-166k-idle-restart_ipv4-mapped-v6.fail" on:
+>
+> (
+> in fact, there are other failed cases which can pass on parent:
+>
+> 4395a44acb15850e 25c1a9ca53db5780757e7f53e68
+> ---------------- ---------------------------
+>        fail:runs  %reproduction    fail:runs
+>            |             |             |
+>            :6          100%           6:6     packetdrill.packetdrill/gte=
+sts/net/tcp/cubic/cubic-bulk-166k-idle-restart_ipv4-mapped-v6.fail
+>            :6          100%           6:6     packetdrill.packetdrill/gte=
+sts/net/tcp/cubic/cubic-bulk-166k-idle-restart_ipv4.fail
+>            :6          100%           6:6     packetdrill.packetdrill/gte=
+sts/net/tcp/cubic/cubic-bulk-166k-idle-restart_ipv6.fail
+>            :6          100%           6:6     packetdrill.packetdrill/gte=
+sts/net/tcp/cubic/cubic-bulk-166k_ipv4-mapped-v6.fail
+>            :6          100%           6:6     packetdrill.packetdrill/gte=
+sts/net/tcp/cubic/cubic-bulk-166k_ipv4.fail
+>            :6          100%           6:6     packetdrill.packetdrill/gte=
+sts/net/tcp/cubic/cubic-bulk-166k_ipv6.fail
 
-On Sat, Jan 25, 2025 at 10:43:42PM +0800, Furong Xu wrote:
-> Hi Ido
-> 
-> On Sat, 25 Jan 2025 12:20:38 +0200, Ido Schimmel wrote:
-> 
-> > On Fri, Jan 24, 2025 at 10:42:56AM +0800, Furong Xu wrote:
-> > > On Thu, 23 Jan 2025 22:48:42 +0100, Andrew Lunn <andrew@lunn.ch>
-> > > wrote: 
-> > > > > Just to clarify, the patch that you had us try was not intended
-> > > > > as an actual fix, correct? It was only for diagnostic purposes,
-> > > > > i.e. to see if there is some kind of cache coherence issue,
-> > > > > which seems to be the case?  So perhaps the only fix needed is
-> > > > > to add dma-coherent to our device tree?    
-> > > > 
-> > > > That sounds quite error prone. How many other DT blobs are
-> > > > missing the property? If the memory should be coherent, i would
-> > > > expect the driver to allocate coherent memory. Or the driver
-> > > > needs to handle non-coherent memory and add the necessary
-> > > > flush/invalidates etc.  
-> > > 
-> > > stmmac driver does the necessary cache flush/invalidates to
-> > > maintain cache lines explicitly.  
-> > 
-> > Given the problem happens when the kernel performs syncing, is it
-> > possible that there is a problem with how the syncing is performed?
-> > 
-> > I am not familiar with this driver, but it seems to allocate multiple
-> > buffers per packet when split header is enabled and these buffers are
-> > allocated from the same page pool (see stmmac_init_rx_buffers()).
-> > Despite that, the driver is creating the page pool with a non-zero
-> > offset (see __alloc_dma_rx_desc_resources()) to avoid syncing the
-> > headroom, which is only present in the head buffer.
-> > 
-> > I asked Thierry to test the following patch [1] and initial testing
-> > seems OK. He also confirmed that "SPH feature enabled" shows up in the
-> > kernel log.
-> > BTW, the commit that added split header support (67afd6d1cfdf0) says
-> > that it "reduces CPU usage because without the feature all the entire
-> > packet is memcpy'ed, while that with the feature only the header is".
-> > This is no longer correct after your patch, so is there still value in
-> > the split header feature? With two large buffers being allocated from
-> 
-> Thanks for these great insights!
-> 
-> Yes, when "SPH feature enabled", it is not correct after my patch,
-> pp_params.offset should be updated to match the offset of split payload.
-> 
-> But I would like to let pp_params.max_len remains to
-> dma_conf->dma_buf_sz since the sizes of both header and payload are
-> limited to dma_conf->dma_buf_sz by DMA engine, no more than
-> dma_conf->dma_buf_sz bytes will be written into a page buffer.
-> So my patch would be like [2]:
-> 
-> BTW, the split header feature will be very useful on some certain
-> cases, stmmac driver should support this feature always.
-> 
-> [2]
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index edbf8994455d..def0d893efbb 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -2091,7 +2091,7 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
->         pp_params.nid = dev_to_node(priv->device);
->         pp_params.dev = priv->device;
->         pp_params.dma_dir = xdp_prog ? DMA_BIDIRECTIONAL : DMA_FROM_DEVICE;
-> -       pp_params.offset = stmmac_rx_offset(priv);
-> +       pp_params.offset = priv->sph ? 0 : stmmac_rx_offset(priv);
+Thanks for the report. I remembered that Mahdi once modified/adjusted
+some of them, please see the link[1].
 
-SPH is the only scenario in which the driver uses multiple buffers per
-packet?
+[1]: https://lore.kernel.org/all/223960459.607292.1737102176209@mail.yahoo.=
+com/
 
->         pp_params.max_len = dma_conf->dma_buf_sz;
+I think we're supposed to update them altogether?
 
-Are you sure this is correct? Page pool documentation says that "For
-pages recycled on the XDP xmit and skb paths the page pool will use the
-max_len member of struct page_pool_params to decide how much of the page
-needs to be synced (starting at offset)" [1].
+Thanks,
+Jason
 
-While "no more than dma_conf->dma_buf_sz bytes will be written into a
-page buffer", for the head buffer they will be written starting at a
-non-zero offset unlike buffers used for the data, no?
-
-[1] https://docs.kernel.org/networking/page_pool.html#dma-sync
+> )
+>
+> commit: 25c1a9ca53db5780757e7f53e688b8f916821baa ("tcp_cubic: fix incorre=
+ct HyStart round start detection")
+> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+>
+> [test failed on linus/master      405057718a1f9074133979a9f2ff0c9fa4a1994=
+8]
+> [test failed on linux-next/master 5ffa57f6eecefababb8cbe327222ef171943b18=
+3]
+>
+> in testcase: packetdrill
+> version: packetdrill-x86_64-8d63bbc-1_20250115
+> with following parameters:
+>
+>
+> config: x86_64-rhel-9.4-func
+> compiler: gcc-12
+> test machine: 8 threads 1 sockets Intel(R) Core(TM) i7-4770 CPU @ 3.40GHz=
+ (Haswell) with 8G memory
+>
+> (please refer to attached dmesg/kmsg for entire log/backtrace)
+>
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <oliver.sang@intel.com>
+> | Closes: https://lore.kernel.org/oe-lkp/202501261315.c6c7dbb4-lkp@intel.=
+com
+>
+>
+>
+> FAIL [/lkp/benchmarks/packetdrill/gtests/net/tcp/cubic/cubic-bulk-166k-id=
+le-restart.pkt (ipv4-mapped-v6)]
+> stdout:
+> 20
+> 30
+> 36
+> stderr:
+> FAIL [/lkp/benchmarks/packetdrill/gtests/net/tcp/cubic/cubic-bulk-166k-id=
+le-restart.pkt (ipv6)]
+> stdout:
+> 20
+> 30
+> 36
+> stderr:
+>
+> ...
+>
+> FAIL [/lkp/benchmarks/packetdrill/gtests/net/tcp/cubic/cubic-bulk-166k-id=
+le-restart.pkt (ipv4)]
+> stdout:
+> 20
+> 30
+> 36
+> stderr:
+>
+> ...
+>
+> FAIL [/lkp/benchmarks/packetdrill/gtests/net/tcp/cubic/cubic-bulk-166k.pk=
+t (ipv4)]
+> stdout:
+> 20
+> 30
+> 36
+> stderr:
+>
+> ...
+>
+> FAIL [/lkp/benchmarks/packetdrill/gtests/net/tcp/cubic/cubic-bulk-166k.pk=
+t (ipv4-mapped-v6)]
+> stdout:
+> 20
+> 30
+> 36
+> stderr:
+>
+> ...
+>
+> FAIL [/lkp/benchmarks/packetdrill/gtests/net/tcp/cubic/cubic-bulk-166k.pk=
+t (ipv6)]
+> stdout:
+> 20
+> 30
+> 36
+> stderr:
+>
+>
+>
+> The kernel config and materials to reproduce are available at:
+> https://download.01.org/0day-ci/archive/20250126/202501261315.c6c7dbb4-lk=
+p@intel.com
+>
+>
+>
+> --
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
+>
