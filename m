@@ -1,309 +1,197 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD6570838
-	for <netdev@vger.kernel.org>; Mon, 27 Jan 2025 06:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737958026; cv=fail; b=fOtuQ1gHyOUPIdOEh0Y6yiRcG8kzyL02lLwsvC64kyXB44qqz1kXcQKiUtFocfR7y50zANBqR1xbC4tL6zY0CjUpnYqubJjkKTb60wo3DARJczcOOlJBCembv47F+5B1Y0TJFayDnGSOn8IA6mL6VTXNyQHkrlMhs8QrWxlrUlk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737958026; c=relaxed/simple;
-	bh=n5GTvwzPcBU+UhEMRto/Z/SNcQsbVP1ff4WT50RFtUU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=OiFOcwWVHdrxsZEHpLRzieda1fLeQbuBOoLd7NZFllHnivQzKCT5JyydtAV9jyT6sY0n74KWEMvtdLu25khT9x89ODRW/IcPgnA6gkrpzAe9fIMUMAWa+KwiNq4gm0onEsQ369gKs5hHIwth/8qTYmE3jqVBvBFO/8/0GagU0Zs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YHEX42iY; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA77291E
+	for <netdev@vger.kernel.org>; Mon, 27 Jan 2025 06:08:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737958086; cv=none; b=tLT58uwvL8VpCbdjhl7ZtcHHag9vZhYqv/ur4PYG01PpSNYvgbOMGxAOp5RD3Xh2IrrmxQGbcNfhCyiAnMUFTxUgUgy/S6yO/Qt7eWaQJ4h8UAfjCBffTliDcQRwSGymwZ5b+r0IZ+wGE31jGpa+xN+hoJUMJ21NJLK8QnlxfUw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737958086; c=relaxed/simple;
+	bh=VsaGG5NR94ct6n+k56hN1fyPxcyLKrK9QNuUJBCy+ZU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JBx2IYf2tcnbnEDx3g/0aPaN/jiXRZix7fjHJJCIqalpNSFHC8fvZHVJp07Y0hDE2A6EO/Dzou/Lp8T8tNHYNna/1DlqeDGB8zNSJNV6FwNQN+6y1hnTpnagjVjXjVJiqC6IThaKM3ZKjEP1lG9kHT1zicm698j1RuD0AEhsiaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=cgtYwLNN; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YHEX42iY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737958024; x=1769494024;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=n5GTvwzPcBU+UhEMRto/Z/SNcQsbVP1ff4WT50RFtUU=;
-  b=YHEX42iYp429zcio67Jq0RU3sXPoqqgeWZxeTwjy3VmO3fJ6vS6homj0
-   bkMdjdFCawk1GVlhhVpwF7MDNAuo079+dzHTK8OnTJA0MVSLEtQ8EmvBn
-   74yqAoKhnk/LvABTjRMy+4L6DH7f5k78Bj7GJzCc6sl//tYIBpWM480DW
-   V8AEX103U0q4DoBLesJJXfHOOrwUiKokW9Mud8/eS9uNg8iwlL+64tJfw
-   nXXBjL1AEoWO65v//7YK4/jf1uugKLgaWbqCotbt6XoOkEnvPYRYIxpsn
-   iMkD214EBoMTrOYZhVWSfN1ZCfLdyLgT5TmRpBzUxxybnn9rTC/fc4xNR
-   A==;
-X-CSE-ConnectionGUID: ReKqC2GyRemSrOtKG7puNQ==
-X-CSE-MsgGUID: fZEKnejaQhu+EyJAtp6hrA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11327"; a="38319546"
-X-IronPort-AV: E=Sophos;i="6.13,237,1732608000"; 
-   d="scan'208";a="38319546"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2025 22:07:03 -0800
-X-CSE-ConnectionGUID: Zf5X52JITGm+wHcEcTHFPw==
-X-CSE-MsgGUID: 8n6dhJ+LSJqglDbXZ13ceg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,237,1732608000"; 
-   d="scan'208";a="139224927"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 26 Jan 2025 22:07:04 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="cgtYwLNN"
+Received: from localhost (localhost [127.0.0.1])
+	by a.mx.secunet.com (Postfix) with ESMTP id 3D1F7207B3;
+	Mon, 27 Jan 2025 07:08:01 +0100 (CET)
+X-Virus-Scanned: by secunet
+Received: from a.mx.secunet.com ([127.0.0.1])
+	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id sPC5Fu0LZyBZ; Mon, 27 Jan 2025 07:08:00 +0100 (CET)
+Received: from cas-essen-02.secunet.de (rl2.secunet.de [10.53.40.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by a.mx.secunet.com (Postfix) with ESMTPS id 768D52074B;
+	Mon, 27 Jan 2025 07:08:00 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 768D52074B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1737958080;
+	bh=4doNUptqiuVBiYhQzBX6nBtkgeRT8MZ+1fdSCAjjB4w=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=cgtYwLNN0Ng/f74kHYi3xr0vkZWgZBf2ihI2/WedmBsUx2QCaRJ9pa5EdKLrp1rG6
+	 YIGdJy5Q8KRJEIZFyy4qRpRV2dvcuBwytbOQmYoMwWhvywdXlp71wwOH0I0u19S6Np
+	 9T5SkgXFMc9g65QjZKVNHGyAyr5TT4TVRGizo2Hs2VlAFaBoeQrUxtL9NTGMZvRvT7
+	 LJQLuO/SuJZMVoelxY1MN5pWu23lnEaZA3j4HaRnIQwbeW7wIA8fu71D3Eqx2/jP9F
+	 eM2hT0/P6xMCwoVkjJ5eygDMkILH7mNq1F/wEIgxC5BaepT2mqotLqYM1j9a6Rezvo
+	 xbClr5kSshfxw==
+Received: from mbx-essen-02.secunet.de (10.53.40.198) by
+ cas-essen-02.secunet.de (10.53.40.202) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Sun, 26 Jan 2025 22:07:03 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Sun, 26 Jan 2025 22:07:03 -0800
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.41) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Sun, 26 Jan 2025 22:07:02 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=djhXFp63obdrg9nuN3EF7G2HFSlZ4+ZJSwYbpErpe0dpEUsW+DLH3nkayM9M0pT0ovTI7fwR7/x382lcYVrVd7s595QvMPZbmHEMGJLpjmOdkGKw1CvQqnQR4BCoXC7s7gTDA9HJjDro6wsmwzUuqMiKuluBQaxKIOxZpZhU89thEUWGrQThEryce/Um1DkM+7E1FCWRWcYM3kh+xoN8CkI+D1okIt9dLaSdLbkOIkxLzPF4V56eJwXqiWMmD0dezk+E2st2T/C+S/wKO0VWRfgaBdCQj2LtvH9CfisTNjKMVuvEtm2yMWbE/YqQ/DX/rXjDkTT1M+MfvDiMAgkxrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3Wq0eId/w8FYxbHov1nwTbhXSlGqXwVwjRjQA8u824Q=;
- b=vNzSH/izdS+FgSB0gepGomxY5fhw1x9FAr0h1NhIrt7f9hguUe6If09nt/w1IRNMzikyYEP94eZ7W61BWSDuUbG1pYmmZvVhKFtwzxnIPGPBNAt9S8oA6ENan1bLtY+uCDA8eoYn8ehI+TddInZj0COapaIJXMElKhHtYuxC1YflcJEVRw9JekO1t7tSQkodmWE2nG2a1aWDJ6fw2B5nY4RLv3yQYanI1DbLXA4tW369i45inYzZowwEMqMgPcbWJTMHhZsENzjT8GxDxj6Yo/3KmMP8y8eoQd2sSG5du067TPSoen9hfgmfqAbB2c/ht3Olvsi90rjIldDpS8I9YA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MW4PR11MB5911.namprd11.prod.outlook.com (2603:10b6:303:16b::16)
- by DS7PR11MB6128.namprd11.prod.outlook.com (2603:10b6:8:9c::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8377.21; Mon, 27 Jan 2025 06:06:20 +0000
-Received: from MW4PR11MB5911.namprd11.prod.outlook.com
- ([fe80::1d00:286c:1800:c2f2]) by MW4PR11MB5911.namprd11.prod.outlook.com
- ([fe80::1d00:286c:1800:c2f2%4]) with mapi id 15.20.8377.009; Mon, 27 Jan 2025
- 06:06:20 +0000
-From: "Singh, Krishneil K" <krishneil.k.singh@intel.com>
-To: Tarun K Singh <tarun.k.singh@intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [PATCH iwl-net v1 0/4] fix locking issue
-Thread-Topic: [PATCH iwl-net v1 0/4] fix locking issue
-Thread-Index: AQHbL8ybR6VjMtQ/m0in9oRrm5+t3bMnU+GA
-Date: Mon, 27 Jan 2025 06:06:20 +0000
-Message-ID: <MW4PR11MB5911F6BAECF5DAC79199B362BAEC2@MW4PR11MB5911.namprd11.prod.outlook.com>
-References: <20241105184859.741473-1-tarun.k.singh@intel.com>
-In-Reply-To: <20241105184859.741473-1-tarun.k.singh@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MW4PR11MB5911:EE_|DS7PR11MB6128:EE_
-x-ms-office365-filtering-correlation-id: 54b3fc22-1003-4255-6cb1-08dd3e98b851
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018|7053199007;
-x-microsoft-antispam-message-info: =?us-ascii?Q?5kG+XADAOwT8qY7F+oTp8ty9sGDYg4irbQmtJoTAP96Xb4PvBpSSrUYfuqr4?=
- =?us-ascii?Q?qPzfZeNOEnpUcJLl6n/cVNQERmmTqfTxr9YGoZEccDafDZMeFLnb8y6xvQeS?=
- =?us-ascii?Q?Dn65VlxnamaMaLGKmj0s1kfZxG7DNnBKifJEQ+O9Grqnm6CjMOlB27McnE6t?=
- =?us-ascii?Q?4grHR+WigWWK20iVjqEtrT/ahiuJcccsicRgrcdhg69UB6nYbUoo/M0LI+i/?=
- =?us-ascii?Q?cZpBfLv1qc2vhdyLSq7rnvPhgiRhnICtFi1oKfgYIWqRsGSrQA7AYyNLMhJS?=
- =?us-ascii?Q?ly7nb0wkbMzPz3ICYAQEmW/MOeUUXwEGMmlZohqmMfl4BPTDDArVitka4yHO?=
- =?us-ascii?Q?ROJ+BE9QbcT+pyZnOH85ilga2IxX5ZV8MIk8wWPaCqr8H92Uk3WbxRnWWOG2?=
- =?us-ascii?Q?DcM+q7ojSCStFSPKc8TwAP3JwqdpeQyxVk1KfqBnMY4aTwMGcvc2BVyAH7EA?=
- =?us-ascii?Q?PpBekFEOlYOlx3U4Huxc5huYqHLO0551cvlNjYoyA38+Jj042fH9GLb7GlFN?=
- =?us-ascii?Q?JgUEDBdzg4TfWQuUSsdpax4Zc839MNWtHzXGt87UIhOplzqspJk7YqLbNG1T?=
- =?us-ascii?Q?sDtCSiHfRE6/Fq2jge4wNnYO8IpbX5mtmbHRh54ofbOmHpRk7L+q6gTOsUvC?=
- =?us-ascii?Q?TCwc44xw68eUE3xzwhGfGEl2nLhTP2oKReEd4qwdprU/OnFtS7ptglNDsTL7?=
- =?us-ascii?Q?GYumMjW7z4eAjh8bK4a9Xkv3UqvpNn9Q7/ND/7Le1zHLQnkiDCdTYTE9TPUc?=
- =?us-ascii?Q?E/TIaivcZIaxSrP7D2lowGgxJT63PoFkNitku/Qm2gCMC1nzgJzIxGrr7JHi?=
- =?us-ascii?Q?024Bj7f44Atwuni4Fx4q/5tMS+YVmfVgZJQJfV7bfPZxjIx13j24DWQw/wMM?=
- =?us-ascii?Q?6Hsc1WPs2L78T2VAbRJDaQmavA0G09Hsujuj+bIo7AH8cMZAL4Eg8ZzZdxUb?=
- =?us-ascii?Q?9+s2E70VwT7WAAYu9ClbYRGsQL4M4c2rAEzxZ9nMd9mrcFY7pdJfuxrz/vit?=
- =?us-ascii?Q?b7n9OzvE1AylOeHJIIFk8Q2PVNRdT35EFT++QFddA2g/ipde5UiPMWehIqqs?=
- =?us-ascii?Q?TAP/opPJXPxR6ZadDs/vjpuz1hwSTdHg0gayfTZKjSUY+81ocNeJXwXsOpxp?=
- =?us-ascii?Q?t+jqrMLCQvHHrXE8aYYL54aMvSDifOod9lScNQ9BAosQ9FrShBjpHAtzS2UA?=
- =?us-ascii?Q?IvqGSpAm8+djXzlebPKvzFHs4FhthYqdvx81harL0Ygdv0iPukYkcblwjQrw?=
- =?us-ascii?Q?cUz8Opge2eTtpjBIpTHLfHyqJjSEJ/j5xo1w54MMDVnWjP1XZDMZiJxZHg+Y?=
- =?us-ascii?Q?suGvLqTmve32DEjU2R1Uaa+r7Gf6ceDes6r73lGrdp4g7RDrsCIKLj07WNYe?=
- =?us-ascii?Q?46zQ8I+Ab3skOZFAt1sxqP6vXTGd72AL4xZn7PKN5qyj6UxZe8lMUaVt3lOj?=
- =?us-ascii?Q?69Jpt+oLSPjCghtSTmap3UO9DEWwfvdz?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5911.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018)(7053199007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?PXx2G88nysyCo2IepU28T92MPHbzq2kqNJS2Ts/leM4dNTx9z35jivT0yPIL?=
- =?us-ascii?Q?QyY2kxi4mMxVpTFosaePRXvwuhevbQXjE4gAl++bBldtNMLV/Ktryn0tQDDs?=
- =?us-ascii?Q?Zd4+BTw3T/NSfy2yhxd5q1xeGNjqTIGdb375iHYwNicseq3JoDA4VWNa96tb?=
- =?us-ascii?Q?PvyLPsPPxiZKFeOO8jPry+P34G8ID0pD7IwI4L5mPspji5zKkFVRJRdQ/HxR?=
- =?us-ascii?Q?8giuQNkiCptsHAJ8kRLPMUQVvC29rSPslVbbyopJb2zqyCXna5Ec678TLpe5?=
- =?us-ascii?Q?eI020QYFa8iYJSjjZurXkv3VqrggofifpGXTSytn+lfeFQD22Qo1WirZLrMg?=
- =?us-ascii?Q?83q5Of6+mYG1SLM5Md/31vB+CGnHS4ywP9omnbKrOgpZ0HoBMpe3y4HHQ3Wb?=
- =?us-ascii?Q?tySDno9kEQRLOTW9i+lAj4thmT7Mx7L2lwtqt2+tzBFsTt9PuRoEXL+xBU0Y?=
- =?us-ascii?Q?S2Yk7bP+sLb9otSPqDDvibqDZRAgWPtbTjosSAxDb7VKmEmGW10bzh7fy46k?=
- =?us-ascii?Q?roniPMWLGUBrei8QpPYSZAY+5OV52PVtRwwQ4rG07sX7STJv7tZoT5O2ihNi?=
- =?us-ascii?Q?jfGYLEaIMbTAAWi3AigaN6KOCdFzOq3cW+TB2sWsYJwU5SKMkJp5qxTKAQqh?=
- =?us-ascii?Q?gU71eT9cmbC13Sv/DyOTqbprAPDjWGUEyjwvTzlqiPNur6aJuU7/WoRZQ/ol?=
- =?us-ascii?Q?VrlcMgFcToo71pITH37rRF/7MbG5YZmfQtv3yptPG51tbzL5e74FOWnKRqV3?=
- =?us-ascii?Q?SbGurWc43W49ZImpsRUEyKOZ4dopVZ1DXg9XDMvCuGuXPJ5taAkk4Fciz+l+?=
- =?us-ascii?Q?ZCr7Jk15tD9N3xBDp/ovX+vJdkvr8LKhhBSGWRVQQb6iw2FOzSAQnuv+VKie?=
- =?us-ascii?Q?XRydpfdgsVh6kztGnox9T17TvgYc0AODeOpjBhvxDjyYKrF/YbKo4lhKkOFz?=
- =?us-ascii?Q?UsZmq9wRsyOxSHQbSKDAw05pMaU28MRPM4+kGFvSf538uBVokxZRvPCzwYP5?=
- =?us-ascii?Q?T6Rv5MyRrGNPgoLmD1HdfB0vHLL4cxL4CoNpDntfP4mMJCeWZsOWVvaw9CLO?=
- =?us-ascii?Q?G5EP3fy8yxekjnetx/obzOiAi3mgRMcfwLAuDKM4qcrEPQRDKfyN/kHdpzz+?=
- =?us-ascii?Q?NCimF1b/X0L9Qj+5nQexIs4wOwFBbWHZX36bwc3F7ELrAPZ6eqWCBLgp/E02?=
- =?us-ascii?Q?2J/ad+I7imK/aZk/fCxcpVXInj19MOJtuqCjSFXN3AMbF/lQSRn3RpsAyIsZ?=
- =?us-ascii?Q?ILDJwyJTmDFF8DFRXYmX5iLi60Ooy7VqePcf6gfRcIFEbDa+luZqVlDJf4SY?=
- =?us-ascii?Q?UHXioo5BUn2w70hp6zUjZTkXbPqRvjQqk4puJYW2mBqiD4hb8cZsrTinxAJF?=
- =?us-ascii?Q?sK84Ic/ivuA46z78WdrSfEZdktFgFg00Fh1JT3upICbmHJzfFpcAjTh0pxHg?=
- =?us-ascii?Q?jaLKdULA4GHOBHNgDLQihugzHJEH84mYr4EydqIV6ktUHN2Id19JO6edsa0w?=
- =?us-ascii?Q?PO1LZe/waBFvzrNUgSapqSHSORF04XddhGYbD4nl77SSXF5pSD1eH+NQa7q+?=
- =?us-ascii?Q?1gD7RDSAZLtKtxHg+O6Ue4a9owfRBymJVVbKW7ar?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 15.1.2507.39; Mon, 27 Jan 2025 07:08:00 +0100
+Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
+ (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 27 Jan
+ 2025 07:08:00 +0100
+Received: by gauss2.secunet.de (Postfix, from userid 1000)
+	id D537D3184172; Mon, 27 Jan 2025 07:07:59 +0100 (CET)
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
+	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
+Subject: [PATCH 4/5] xfrm: Fix the usage of skb->sk
+Date: Mon, 27 Jan 2025 07:07:56 +0100
+Message-ID: <20250127060757.3946314-5-steffen.klassert@secunet.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250127060757.3946314-1-steffen.klassert@secunet.com>
+References: <20250127060757.3946314-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5911.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54b3fc22-1003-4255-6cb1-08dd3e98b851
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jan 2025 06:06:20.4261
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NaapDhoaRWnZle7Iuf8dMkTl1DMBMBaFX97F8k8J8iu9YzuKhZssyuhFCK+S/HK4k8U0sV7kN5E4FFXVp1BBttX8y++Q0BTsSi0OjrV4z1k=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6128
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
+ mbx-essen-02.secunet.de (10.53.40.198)
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
+xfrm assumed to always have a full socket at skb->sk.
+This is not always true, so fix it by converting to a
+full socket before it is used.
 
-> -----Original Message-----
-> From: Tarun K Singh <tarun.k.singh@intel.com>
-> Sent: Tuesday, November 5, 2024 10:49 AM
-> To: intel-wired-lan@lists.osuosl.org
-> Cc: netdev@vger.kernel.org
-> Subject: [PATCH iwl-net v1 0/4] fix locking issue
->=20
-> This series fix deadlock issues in the driver. The first patch changes
-> argument of function 'idpf_vport_ctrl_lock' to adapter. The second patch
-> renames 'vport_ctrl_lock' to 'vport_cfg_lock'. The first 2 patches make t=
-he
-> third patch easier to review. The third patch fixes the locking issue,
-> and the fourth patch prevents lockdep from complaining.
->=20
-> Ahmed Zaki (1):
->   idpf: add lock class key
->=20
-> Tarun K Singh (3):
->   idpf: Change function argument
->   idpf: rename vport_ctrl_lock
->   idpf: Add init, reinit, and deinit control lock
->=20
->  drivers/net/ethernet/intel/idpf/idpf.h        | 49 ++++++++----
->  .../net/ethernet/intel/idpf/idpf_ethtool.c    | 59 +++++++-------
->  drivers/net/ethernet/intel/idpf/idpf_lib.c    | 80 +++++++++++++------
->  drivers/net/ethernet/intel/idpf/idpf_main.c   | 39 ++++++---
->  4 files changed, 149 insertions(+), 78 deletions(-)
->=20
-> --
-> 2.46.0
->=20
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+---
+ net/ipv4/esp4.c                | 2 +-
+ net/ipv6/esp6.c                | 2 +-
+ net/ipv6/xfrm6_output.c        | 4 ++--
+ net/xfrm/xfrm_interface_core.c | 2 +-
+ net/xfrm/xfrm_output.c         | 7 ++++---
+ net/xfrm/xfrm_policy.c         | 2 +-
+ 6 files changed, 10 insertions(+), 9 deletions(-)
 
-After additional testing on this [series|patch] we discovered an issue afte=
-r doing ifdown while device is in a reset, which can result in a <null poin=
-ter dereference(?)>.=20
-
-kernel: idpf 0000:af:00.0: resetting
-kernel: idpf 0000:af:00.0: reset done
-kernel: idpf 0000:af:00.0: HW reset detected
-kernel: idpf 0000:af:00.0: Device HW Reset initiated
-kernel: BUG: kernel NULL pointer dereference, address: 00000000000001a0
-kernel: #PF: supervisor write access in kernel mode
-kernel: #PF: error_code(0x0002) - not-present page
-kernel: PGD 0 P4D 0
-kernel: Oops: Oops: 0002 [#1] PREEMPT SMP NOPTI
-kernel: CPU: 77 UID: 0 PID: 303278 Comm: ip Not tainted 6.13.0-rc7-p18.g587=
-9fe0+ #1
-kernel: Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86=
-B.02.01.0015.032120220358 03/21/2022
-kernel: RIP: 0010:mutex_lock+0x1c/0x30
-kernel: Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 4=
-4 00 00 55 48 89 fd e8 ce e7 ff ff 65 48 8b 15 c6 7b 20 6f 31 c0 <f0> 48 0f=
- b1 55 00 75 06 5d c3 cc cc cc cc 48 89 ef 5d eb b0 90 90
-kernel: RSP: 0018:ffffb73e43907768 EFLAGS: 00010246
-kernel: RAX: 0000000000000000 RBX: ffff8df786a37000 RCX: 0000000000000000
-kernel: RDX: ffff8de876922f80 RSI: 00000000fffffe00 RDI: 00000000000001a0
-kernel: RBP: 00000000000001a0 R08: ffffb73e439076f8 R09: 0000000000000000
-kernel: R10: ffff8de823b5e000 R11: 0000000000000100 R12: 0000000000000000
-kernel: R13: ffff8df786a37188 R14: 0000000000000001 R15: 0000000000000001
-kernel: FS:  00007fe6f6a30740(0000) GS:ffff8df73fe80000(0000) knlGS:0000000=
-000000000
-kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-kernel: CR2: 00000000000001a0 CR3: 000000011bb58006 CR4: 00000000007726f0
-kernel: DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-kernel: DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-kernel: PKRU: 55555554
-kernel: Call Trace:
-kernel:  <TASK>
-kernel:  ? __die+0x24/0x70
-kernel:  ? page_fault_oops+0x158/0x4f0
-kernel:  ? exc_page_fault+0x77/0x190
-kernel:  ? asm_exc_page_fault+0x26/0x30
-kernel:  ? mutex_lock+0x1c/0x30
-kernel:  ? mutex_lock+0x12/0x30
-kernel:  idpf_stop+0x39/0x60 [idpf]
-kernel:  __dev_close_many+0xa9/0x150
-kernel:  __dev_change_flags+0x114/0x250
-kernel:  dev_change_flags+0x25/0x60
-kernel:  do_setlink.constprop.0+0x215/0x1030
-kernel:  ? avc_has_perm_noaudit+0x6b/0xf0
-kernel:  ? cred_has_capability.isra.0+0x78/0x120
-kernel:  ? security_capable+0x58/0x90
-kernel:  rtnl_newlink+0x7c2/0xb90
-kernel:  ? avc_has_perm_noaudit+0x6b/0xf0
-kernel:  ? cred_has_capability.isra.0+0x78/0x120
-kernel:  ? rtnl_lock_killable+0x3/0x20
-kernel:  ? netdev_run_todo+0x6f/0x590
-kernel:  ? __pfx_rtnl_newlink+0x10/0x10
-kernel:  rtnetlink_rcv_msg+0x361/0x410
-kernel:  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
-kernel:  netlink_rcv_skb+0x58/0x110
-kernel:  netlink_unicast+0x247/0x370
-kernel:  netlink_sendmsg+0x1fa/0x440
-kernel:  ____sys_sendmsg+0x3ac/0x3e0
-kernel:  ? import_iovec+0x1a/0x20
-kernel:  ? copy_msghdr_from_user+0x6d/0xa0
-kernel:  ___sys_sendmsg+0x88/0xd0
-kernel:  ? set_ptes.constprop.0+0x28/0x90
-kernel:  ? __memcg_slab_free_hook+0xd9/0x120
-kernel:  __sys_sendmsg+0x6c/0xc0
-kernel:  do_syscall_64+0x64/0x170
-kernel:  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-kernel: RIP: 0033:0x7fe6f6b5cc94
-kernel: Code: 15 a1 41 0c 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1=
-f 00 f3 0f 1e fa 80 3d 6d c9 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00=
- f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
-kernel: RSP: 002b:00007ffe89733418 EFLAGS: 00000202 ORIG_RAX: 0000000000000=
-02e
-kernel: RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007fe6f6b5cc94
-kernel: RDX: 0000000000000000 RSI: 00007ffe89733480 RDI: 0000000000000003
-kernel: RBP: 0000000000000003 R08: 0000000067941450 R09: 00005560018342a0
-kernel: R10: 00007fe6f6c21ce0 R11: 0000000000000202 R12: 0000000067941451
-kernel: R13: 0000555fd0b8d040 R14: 0000000000000001 R15: 0000000000000000
-kernel:  </TASK>
-kernel: Modules linked in: kheaders idpf libeth cmac nls_utf8 cifs cifs_arc=
-4 nls_ucs2_utils cifs_md4 dns_resolver netfs xt_conntrack nft_chain_nat xt_=
-MASQUERADE nf_nat nf_conntrack_netlink nf_conntrack nf_defrag_ipv6 nf_defra=
-g_ipv4 xt_addrtype nft_compat nf_tables nfnetlink br_netfilter bridge stp l=
-lc rpcrdma intel_rapl_msr intel_rapl_common skx_edac skx_edac_common nfit r=
-fkill libnvdimm overlay x86_pkg_temp_thermal intel_powerclamp coretemp kvm_=
-intel kvm rapl intel_cstate iTCO_wdt ipmi_ssif iTCO_vendor_support vfat fat=
- acpi_power_meter i2c_i801 intel_uncore joydev ipmi_si acpi_ipmi lpc_ich pc=
-spkr i2c_smbus ipmi_devintf ioatdma ipmi_msghandler mei_me acpi_pad mei int=
-el_pch_thermal dca nfsd auth_rpcgss nfs_acl lockd grace sunrpc zram ast drm=
-_client_lib crct10dif_pclmul i2c_algo_bit crc32_pclmul drm_shmem_helper drm=
-_kms_helper ghash_clmulni_intel nvme sha512_ssse3 i40e sha256_ssse3 drm nvm=
-e_core sha1_ssse3 libie wmi sctp libcrc32c crc32c_intel ip6_udp_tunnel udp_=
-tunnel fuse
-kernel: CR2: 00000000000001a0
-kernel: ---[ end trace 0000000000000000 ]---
-
-
-Thank You=20
-Krishneil Singh
-
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index f3281312eb5e..8cf5f6634775 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -279,7 +279,7 @@ static void esp_output_done(void *data, int err)
+ 		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 			esp_output_tail_tcp(x, skb);
+ 		else
+-			xfrm_output_resume(skb->sk, skb, err);
++			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
+ 	}
+ }
+ 
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index b2400c226a32..fad4d7c9fa50 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -315,7 +315,7 @@ static void esp_output_done(void *data, int err)
+ 		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 			esp_output_tail_tcp(x, skb);
+ 		else
+-			xfrm_output_resume(skb->sk, skb, err);
++			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
+ 	}
+ }
+ 
+diff --git a/net/ipv6/xfrm6_output.c b/net/ipv6/xfrm6_output.c
+index 5f7b1fdbffe6..b3d5d1f266ee 100644
+--- a/net/ipv6/xfrm6_output.c
++++ b/net/ipv6/xfrm6_output.c
+@@ -82,14 +82,14 @@ static int __xfrm6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 
+ 	toobig = skb->len > mtu && !skb_is_gso(skb);
+ 
+-	if (toobig && xfrm6_local_dontfrag(skb->sk)) {
++	if (toobig && xfrm6_local_dontfrag(sk)) {
+ 		xfrm6_local_rxpmtu(skb, mtu);
+ 		kfree_skb(skb);
+ 		return -EMSGSIZE;
+ 	} else if (toobig && xfrm6_noneed_fragment(skb)) {
+ 		skb->ignore_df = 1;
+ 		goto skip_frag;
+-	} else if (!skb->ignore_df && toobig && skb->sk) {
++	} else if (!skb->ignore_df && toobig && sk) {
+ 		xfrm_local_error(skb, mtu);
+ 		kfree_skb(skb);
+ 		return -EMSGSIZE;
+diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
+index 98f1e2b67c76..c397eb99d867 100644
+--- a/net/xfrm/xfrm_interface_core.c
++++ b/net/xfrm/xfrm_interface_core.c
+@@ -506,7 +506,7 @@ xfrmi_xmit2(struct sk_buff *skb, struct net_device *dev, struct flowi *fl)
+ 	skb_dst_set(skb, dst);
+ 	skb->dev = tdev;
+ 
+-	err = dst_output(xi->net, skb->sk, skb);
++	err = dst_output(xi->net, skb_to_full_sk(skb), skb);
+ 	if (net_xmit_eval(err) == 0) {
+ 		dev_sw_netstats_tx_add(dev, 1, length);
+ 	} else {
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index e5722c95b8bb..1fb4dc0a76e1 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -796,7 +796,7 @@ static int xfrm4_tunnel_check_size(struct sk_buff *skb)
+ 	     !skb_gso_validate_network_len(skb, ip_skb_dst_mtu(skb->sk, skb)))) {
+ 		skb->protocol = htons(ETH_P_IP);
+ 
+-		if (skb->sk)
++		if (skb->sk && sk_fullsock(skb->sk))
+ 			xfrm_local_error(skb, mtu);
+ 		else
+ 			icmp_send(skb, ICMP_DEST_UNREACH,
+@@ -832,6 +832,7 @@ static int xfrm6_tunnel_check_size(struct sk_buff *skb)
+ {
+ 	int mtu, ret = 0;
+ 	struct dst_entry *dst = skb_dst(skb);
++	struct sock *sk = skb_to_full_sk(skb);
+ 
+ 	if (skb->ignore_df)
+ 		goto out;
+@@ -846,9 +847,9 @@ static int xfrm6_tunnel_check_size(struct sk_buff *skb)
+ 		skb->dev = dst->dev;
+ 		skb->protocol = htons(ETH_P_IPV6);
+ 
+-		if (xfrm6_local_dontfrag(skb->sk))
++		if (xfrm6_local_dontfrag(sk))
+ 			ipv6_stub->xfrm6_local_rxpmtu(skb, mtu);
+-		else if (skb->sk)
++		else if (sk)
+ 			xfrm_local_error(skb, mtu);
+ 		else
+ 			icmpv6_send(skb, ICMPV6_PKT_TOOBIG, 0, mtu);
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 4408c11c0835..c27da1fd070e 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -2959,7 +2959,7 @@ static void xfrm_policy_queue_process(struct timer_list *t)
+ 		skb_dst_drop(skb);
+ 		skb_dst_set(skb, dst);
+ 
+-		dst_output(net, skb->sk, skb);
++		dst_output(net, skb_to_full_sk(skb), skb);
+ 	}
+ 
+ out:
+-- 
+2.34.1
 
