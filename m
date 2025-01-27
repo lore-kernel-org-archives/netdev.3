@@ -1,113 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C338F17BA1
-	for <netdev@vger.kernel.org>; Mon, 27 Jan 2025 17:54:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6471D17C21B;
+	Mon, 27 Jan 2025 18:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738000497; cv=none; b=enlReJFFyUp7kV3Nw/wdxgt6e4HWXmnR5za2luEYQtruC9t6DK+bLDeqVxK+X3wE4eGi6Bh88wLhghvpADfKrif0iZ65F4+Rlq6c3womBJ1mx84iun7zqz82sVHgGOkO4fh+njVpdaVwYG6c75vqsgzKPL4WRXSlPvl1QBoT5e8=
+	t=1738000818; cv=none; b=BkuIGhSBaIwKua3Wauee7v4QeY+//EQJ+Z7c83K0S/OFgV3BHcZM11qKr2vYbVuySJ0eZlpDamn0fEyXvin8Li7ndzy9B81ofkyU59Ap7Hh2tDw93nVEvbzzcjb4/WM7BksONqeZqWF5X8qqskc3F9X/kivN9T/NZsppdRTe5i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738000497; c=relaxed/simple;
-	bh=IViCoF7hcqWsn0jtSyJ2X8Yq8zYcy5YyiujDaN1V4MA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YTgTpY/1JrhwcQb1Ng84f/Ob1WF0NjmJGrizB+GT5CDwqTV8GZULtqeek2GV4/FFYBEl0Ok7R3EJc/Mw468vPKdmRQo8ZjNA6FqEHiAqhyjWck7mXOIjjf5W2qxPEWbVuMNVbY37ZCK8ZCEQnTOt140SjpacdsFlkG3Vq2WUugM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YDNqhmtX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738000818; c=relaxed/simple;
+	bh=xBOnkwxkj+F7pXvj7siWC2DHHQaflqkH6KLzeuO1l2c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZPnLephuGJ0ftHSyLW9GdtjankEjdMauJoDEyE3meIyMLxS5uAWfiAttseHLPeHQpm5Ps14eDesK/dtqx5cV9UAnNiZ05wiEkeC0MxEe54I8LCLBvqXPseF1bwN1rY8oQ1wBU6Kf6sqm/8LSmjCHAyAlKxx5Mn0IP6qdr+tSd8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=qp1TErAB; arc=none smtp.client-ip=192.19.144.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YDNqhmtX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6047C4CEE0;
-	Mon, 27 Jan 2025 17:54:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738000497;
-	bh=IViCoF7hcqWsn0jtSyJ2X8Yq8zYcy5YyiujDaN1V4MA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YDNqhmtXDFrxCkSRM1ecsliSAUYksUOtNwFlLFKbUcbXGpcyVT4TxvworKJkODQT8
-	 s3BFxXQoVmHyyW7CcNvRA1e1bRs2IEJaN094yN7/co6LOPU5XJBu4oXlH3lROOgLrd
-	 MaOoIlwLfK1ByNYZSiv70lVVUarTE9OOg4FULRqQcDvYVQ4CB0nTxhBRogcVzL3b6b
-	 UDO2rvsbc36+d0ps81GFD/xedVjhoOaa5MxzloqzIAT/sn1HzChWtDrfQqo4p7IgCo
-	 PDZSqtnABuOnngYeqF12YDiUdZbLMp2vn/Mj6/M43SdeHAace64UpNiLDp6aVNFu20
-	 pijquhVlYV7qQ==
-Date: Mon, 27 Jan 2025 17:54:53 +0000
-From: Simon Horman <horms@kernel.org>
-To: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
-	quanglex97@gmail.com, mincho@theori.io,
-	Cong Wang <cong.wang@bytedance.com>
-Subject: Re: [Patch net 2/4] Add test case to check for pfifo_tail_enqueue()
- behaviour when limit == 0
-Message-ID: <20250127175453.GG5024@kernel.org>
-References: <20250124060740.356527-1-xiyou.wangcong@gmail.com>
- <20250124060740.356527-3-xiyou.wangcong@gmail.com>
- <20250124113743.GA34605@kernel.org>
- <Z5WqCnOiSF72PGws@pop-os.localdomain>
- <Z5Wxh/oUF2meTEBS@pop-os.localdomain>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="qp1TErAB"
+Received: from mail-lvn-it-01.lvn.broadcom.net (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 1AE2EC003DEF;
+	Mon, 27 Jan 2025 09:52:02 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 1AE2EC003DEF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+	s=dkimrelay; t=1738000322;
+	bh=xBOnkwxkj+F7pXvj7siWC2DHHQaflqkH6KLzeuO1l2c=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qp1TErABzrCtKKrjttBFU8XVA5Icmq2beeM+8AkoW15bnE3HljLD/ZElGoUYNbcih
+	 4jELgE1b2TifP25Veq3s0h/7eaxv7NpduaTHpj691qj3AJHzYavHLqhZToHTMq0QLQ
+	 eRXXJke06B0616fO2SH5c02Re/qiLqXmP9Rz68CA=
+Received: from fainelli-desktop.igp.broadcom.net (fainelli-desktop.dhcp.broadcom.net [10.67.48.245])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPSA id A3D7018041CAC6;
+	Mon, 27 Jan 2025 09:52:01 -0800 (PST)
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+To: netdev@vger.kernel.org
+Cc: =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Simon Horman <horms@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Murali Krishna Policharla <murali.policharla@broadcom.com>,
+	Ray Jui <ray.jui@broadcom.com>,
+	Arun Parameswaran <arun.parameswaran@broadcom.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net v2] bgmac: reduce max frame size to support just MTU 1500
+Date: Mon, 27 Jan 2025 09:51:59 -0800
+Message-ID: <20250127175159.1788246-1-florian.fainelli@broadcom.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z5Wxh/oUF2meTEBS@pop-os.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, Jan 25, 2025 at 07:52:39PM -0800, Cong Wang wrote:
-> On Sat, Jan 25, 2025 at 07:20:42PM -0800, Cong Wang wrote:
-> > On Fri, Jan 24, 2025 at 11:37:43AM +0000, Simon Horman wrote:
-> > > On Thu, Jan 23, 2025 at 10:07:38PM -0800, Cong Wang wrote:
-> > > > From: Quang Le <quanglex97@gmail.com>
-> > > > 
-> > > > When limit == 0, pfifo_tail_enqueue() must drop new packet and
-> > > > increase dropped packets count of scheduler.
-> > > > 
-> > > > Signed-off-by: Quang Le <quanglex97@gmail.com>
-> > > > Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-> > > 
-> > > Hi Cong, all,
-> > > 
-> > > This test is reporting "not ok" in the Netdev CI.
-> > > 
-> > > # not ok 577 d774 - Check pfifo_head_drop qdisc enqueue behaviour when limit == 0
-> > > # Could not match regex pattern. Verify command output:
-> > > # qdisc pfifo_head_drop 1: root refcnt 2 limit 0p
-> > > #  Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
-> > > #  backlog 0b 0p requeues 0
-> > 
-> > Oops... It worked on my side, let me take a look.
-> > 
-> 
-> I ran it again for multiple times, it still worked for me:
-> 
-> 1..16
-> ok 1 a519 - Add bfifo qdisc with system default parameters on egress
-> ok 2 585c - Add pfifo qdisc with system default parameters on egress
-> ok 3 a86e - Add bfifo qdisc with system default parameters on egress with handle of maximum value
-> ok 4 9ac8 - Add bfifo qdisc on egress with queue size of 3000 bytes
-> ok 5 f4e6 - Add pfifo qdisc on egress with queue size of 3000 packets
-> ok 6 b1b1 - Add bfifo qdisc with system default parameters on egress with invalid handle exceeding maximum value
-> ok 7 8d5e - Add bfifo qdisc on egress with unsupported argument
-> ok 8 7787 - Add pfifo qdisc on egress with unsupported argument
-> ok 9 c4b6 - Replace bfifo qdisc on egress with new queue size
-> ok 10 3df6 - Replace pfifo qdisc on egress with new queue size
-> ok 11 7a67 - Add bfifo qdisc on egress with queue size in invalid format
-> ok 12 1298 - Add duplicate bfifo qdisc on egress
-> ok 13 45a0 - Delete nonexistent bfifo qdisc
-> ok 14 972b - Add prio qdisc on egress with invalid format for handles
-> ok 15 4d39 - Delete bfifo qdisc twice
-> ok 16 d774 - Check pfifo_head_drop qdisc enqueue behaviour when limit == 0
-> 
-> Could you provide a link for me to check?
+From: Rafał Miłecki <rafal@milecki.pl>
 
-I'll send you some links off-list.
+bgmac allocates new replacement buffer before handling each received
+frame. Allocating & DMA-preparing 9724 B each time consumes a lot of CPU
+time. Ideally bgmac should just respect currently set MTU but it isn't
+the case right now. For now just revert back to the old limited frame
+size.
 
-> 
-> Just in case, please make sure patch 1/4 is applied before this test,
-> otherwise packets would not be dropped.
+This change bumps NAT masquerade speed by ~95%.
 
-Yes, I am pretty sure that is the case.
+Since commit 8218f62c9c9b ("mm: page_frag: use initial zero offset for
+page_frag_alloc_align()"), the bgmac driver fails to open its network
+interface successfully and runs out of memory in the following call
+stack:
 
-> 
-> Meanwhile, I do need to update this patch anyway, because it hardcoded
-> dummy2...
-> 
-> Thanks.
-> 
+bgmac_open
+  -> bgmac_dma_init
+    -> bgmac_dma_rx_skb_for_slot
+      -> netdev_alloc_frag
+
+BGMAC_RX_ALLOC_SIZE = 10048 and PAGE_FRAG_CACHE_MAX_SIZE = 32768.
+
+Eventually we land into __page_frag_alloc_align() with the following
+parameters across multiple successive calls:
+
+__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=0
+__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=10048
+__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=20096
+__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=30144
+
+So in that case we do indeed have offset + fragsz (40192) > size (32768)
+and so we would eventually return NULL. Reverting to the older 1500
+bytes MTU allows the network driver to be usable again.
+
+Fixes: 8c7da63978f1 ("bgmac: configure MTU and add support for frames beyond 8192 byte size")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+[florian: expand commit message about recent commits]
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+---
+Changes in v2:
+
+- collected Simon's R-b tag
+- removed Change-Id
+
+ drivers/net/ethernet/broadcom/bgmac.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/broadcom/bgmac.h b/drivers/net/ethernet/broadcom/bgmac.h
+index d73ef262991d..6fee9a41839c 100644
+--- a/drivers/net/ethernet/broadcom/bgmac.h
++++ b/drivers/net/ethernet/broadcom/bgmac.h
+@@ -328,8 +328,7 @@
+ #define BGMAC_RX_FRAME_OFFSET			30		/* There are 2 unused bytes between header and real data */
+ #define BGMAC_RX_BUF_OFFSET			(NET_SKB_PAD + NET_IP_ALIGN - \
+ 						 BGMAC_RX_FRAME_OFFSET)
+-/* Jumbo frame size with FCS */
+-#define BGMAC_RX_MAX_FRAME_SIZE			9724
++#define BGMAC_RX_MAX_FRAME_SIZE			1536
+ #define BGMAC_RX_BUF_SIZE			(BGMAC_RX_FRAME_OFFSET + BGMAC_RX_MAX_FRAME_SIZE)
+ #define BGMAC_RX_ALLOC_SIZE			(SKB_DATA_ALIGN(BGMAC_RX_BUF_SIZE + BGMAC_RX_BUF_OFFSET) + \
+ 						 SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
+-- 
+2.43.0
+
