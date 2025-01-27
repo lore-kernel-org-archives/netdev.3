@@ -1,26 +1,26 @@
 Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC091FCFC5;
-	Mon, 27 Jan 2025 09:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88401FCFFB;
+	Mon, 27 Jan 2025 09:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.248.49.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737969903; cv=none; b=LHMAnaP7FsBzkhdybu5HRzpQP3Zy3stK2zAIa5kcRkFvELU7gR3GTwF1pXcRxbNlYqHybTRDJfTHfIVA4oeM0qr0YwnYGzxNxrpt7LgvuwSA8F8Fh6OXBs2hGJKGKto4AB20LXumoH9V0R6UU7ueOkmdN5a6I70iDKUjD3B31+Q=
+	t=1737969904; cv=none; b=TNC8tekHoxKEI+g2JsK6Niw3KkQzpApLt73vE6ElHrj5GETq46G9AcGbn4pP9ofMwFsAOTwJpXtOwawoQ9qlxtHb4Cil8LGMnfS4C9jz9YmpbkefchPj1uPKIUQuJkpM5iM6lJ4CvxzQ3s3kblekKgqPXQYklu6s6W+93J9MdTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737969903; c=relaxed/simple;
-	bh=NL1KOGzHFnM7vRC/AL3GHdK7FWSKGHiUE5U8IFAELYI=;
+	s=arc-20240116; t=1737969904; c=relaxed/simple;
+	bh=1Bm1EjOqPGULASeVmVzWQbP1B6OsDmHLXOD3Wk2v8vw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GFhAAJ6UOOwRhqKmFNpswf0JZEd+T0L4O0F37o5X3/2KfPbE2MfVnwVj2xB/e96NeFNCnWCMBsaeb9UJOAvA/UdZ50NNp2oAtul7MXEotJX1J6X5BijCHja0L5C1Mjoh3iv+4hUSZlClL+pa+nSIjVfsmmOpvlu6cfT5Umy6aoc=
+	 MIME-Version; b=YHZVy531/rRu8EhazTmYR50W/3Oehx8OBMXdTY7yjTo+Apdb1SXzO/8UOWX/wKwENCV3zhsIpqRM6BpeccB7AN12GU2MDiQZK9ypZc0wWW+4cH/sbWkFtDCX850oOUk4jbXZXS6aaHdNfPTIz/LjRMaXcAURA2AIXq6CXW+XjOY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=socionext.com
 Received: from unknown (HELO kinkan2-ex.css.socionext.com) ([172.31.9.52])
-  by mx.socionext.com with ESMTP; 27 Jan 2025 18:24:59 +0900
-Received: from mail.mfilter.local (mail-arc01.css.socionext.com [10.213.46.36])
-	by kinkan2-ex.css.socionext.com (Postfix) with ESMTP id 246AC200B5D4;
-	Mon, 27 Jan 2025 18:24:59 +0900 (JST)
-Received: from kinkan2.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Mon, 27 Jan 2025 18:24:59 +0900
+  by mx.socionext.com with ESMTP; 27 Jan 2025 18:25:00 +0900
+Received: from mail.mfilter.local (mail-arc02.css.socionext.com [10.213.46.40])
+	by kinkan2-ex.css.socionext.com (Postfix) with ESMTP id 47147200B5D4;
+	Mon, 27 Jan 2025 18:25:00 +0900 (JST)
+Received: from kinkan2.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Mon, 27 Jan 2025 18:25:00 +0900
 Received: from plum.e01.socionext.com (unknown [10.212.245.39])
-	by kinkan2.css.socionext.com (Postfix) with ESMTP id 87E16661;
-	Mon, 27 Jan 2025 18:24:58 +0900 (JST)
+	by kinkan2.css.socionext.com (Postfix) with ESMTP id 996D8AB187;
+	Mon, 27 Jan 2025 18:24:59 +0900 (JST)
 From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Jose Abreu <joabreu@synopsys.com>,
@@ -33,9 +33,9 @@ Cc: netdev@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Subject: [PATCH net 1/3] net: stmmac: Fix use of queue max macros for Rx interrupt name
-Date: Mon, 27 Jan 2025 18:24:48 +0900
-Message-Id: <20250127092450.2945611-2-hayashi.kunihiko@socionext.com>
+Subject: [PATCH net 3/3] net: stmmac: Fix use of queue max macros for irq statistics
+Date: Mon, 27 Jan 2025 18:24:50 +0900
+Message-Id: <20250127092450.2945611-4-hayashi.kunihiko@socionext.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250127092450.2945611-1-hayashi.kunihiko@socionext.com>
 References: <20250127092450.2945611-1-hayashi.kunihiko@socionext.com>
@@ -49,25 +49,27 @@ Content-Transfer-Encoding: 8bit
 
 Fix macros for maximum queue number to keep consistency.
 
-Fixes: 8532f613bc78 ("net: stmmac: introduce MSI Interrupt routines for mac, safety, RX & TX")
+Fixes: 38cc3c6dcc09 ("net: stmmac: protect updates of 64-bit statistics counters")
 Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/common.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-index ea135203ff2e..86c071baedf2 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-@@ -354,7 +354,7 @@ struct stmmac_priv {
- 	char int_name_sfty[IFNAMSIZ + 10];
- 	char int_name_sfty_ce[IFNAMSIZ + 10];
- 	char int_name_sfty_ue[IFNAMSIZ + 10];
--	char int_name_rx_irq[MTL_MAX_TX_QUEUES][IFNAMSIZ + 14];
-+	char int_name_rx_irq[MTL_MAX_RX_QUEUES][IFNAMSIZ + 14];
- 	char int_name_tx_irq[MTL_MAX_TX_QUEUES][IFNAMSIZ + 18];
+diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+index 684489156dce..b6966218cb77 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -101,8 +101,8 @@ struct stmmac_rxq_stats {
+ /* Updates on each CPU protected by not allowing nested irqs. */
+ struct stmmac_pcpu_stats {
+ 	struct u64_stats_sync syncp;
+-	u64_stats_t rx_normal_irq_n[MTL_MAX_TX_QUEUES];
+-	u64_stats_t tx_normal_irq_n[MTL_MAX_RX_QUEUES];
++	u64_stats_t rx_normal_irq_n[MTL_MAX_RX_QUEUES];
++	u64_stats_t tx_normal_irq_n[MTL_MAX_TX_QUEUES];
+ };
  
- #ifdef CONFIG_DEBUG_FS
+ /* Extra statistic and debug information exposed by ethtool */
 -- 
 2.25.1
 
