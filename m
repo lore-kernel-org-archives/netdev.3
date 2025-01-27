@@ -1,101 +1,100 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay0.mail.gandi.net (relay0.mail.gandi.net [217.70.178.220])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F5815747D
-	for <netdev@vger.kernel.org>; Mon, 27 Jan 2025 14:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC71D10A3E;
+	Mon, 27 Jan 2025 14:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737987287; cv=none; b=eX6AUtykNJYazKIl3njfkQqEje0ss1e3aJSwLEGYJxaM8tBlJ+xVswlyRPDzDZ3PlaEY6jHOxNnOw3kTRMnzkhoKMyL9JGyJ2IEYkG3IhzSIR6+44u0qrc/BM/XbvRXxKk3hJSlWYhlaQ9RKulFDLD9JZk9YlB4jLkWfL4bFIns=
+	t=1737987639; cv=none; b=QrDILofS8CZDIet9SCsb30esDiapD4nQAaWj61GLp1F/61GY5wxEGKtpH7ZhxY9/rsItIu2SErHzVIYE2nnymtZEhdFSbQzBi3NWHwwAyJRzE7ZuTYsZCvMghHATPNPCaNCdDwMGueAn13Wax2LTt8FJt2StvFcTgFOl3WV8p6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737987287; c=relaxed/simple;
-	bh=q0hnqzxRKJe1xlk3rjc0tgYufyPj0tvzGIF+8G1Tygk=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=kGIr/1iSsUpjmyIqcxycdSTNOja26wCfyvBdxiCd4DLQwtzf9ArM4lW+Oe+nyNHN1sdiLzThKR6lmTkWMSwJd6ggc1uikoSSSBLc86raI4RTXn5dzBHBIWew/be66zNbSszI3GNT1wRgWfBpeMG8aD1TkLvwge8YP6RSc9OzmKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dwafEZOm; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737987639; c=relaxed/simple;
+	bh=uOM6tJrJ5zFAqB9991Cmwb9IscRLSSl/ju7jaqZLfNU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ig4i0aFFvH/VLJ2BFR9/brGiMdcONkXclwPG3FlPR6Ivn9GMDiLVV0TvHIfNHnrLNv8dDOTjA5JDmYLa2y8kvDLH9/tQmqkCBojrzgQUEUIhNjvsoVdb6GZN7/gE4aDafBmXVWmRT04ni0su4lNBpIxzBEU9xwrmAaR7rUzY5x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=clip-os.org; spf=pass smtp.mailfrom=clip-os.org; dkim=pass (2048-bit key) header.d=clip-os.org header.i=@clip-os.org header.b=oGfM8hEc; arc=none smtp.client-ip=217.70.178.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=clip-os.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=clip-os.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dwafEZOm"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3862d161947so2312550f8f.3
-        for <netdev@vger.kernel.org>; Mon, 27 Jan 2025 06:14:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737987284; x=1738592084; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b7OEX1FEH30CiSTxvGdqR6kzrrVdogX9xTrr5eYHX4c=;
-        b=dwafEZOmWt4OvkdacyVGTQQ8BVHLTAv46RZPAb7QpYDJYHp5EUqfWs11W2X1pa/VnT
-         qNH5wrJH9xtnJ1rb+kCUxPv+pJATCLUmfGHno15hUAWjcAA0BSDLbMoi1/fbd+VOxIZU
-         +fUN+VrqwezqdLuVD7CE9ADO7E8HNlt59OmyE0k5n5rJJhHAjxIcbbicsxBkNMh0xc0g
-         KlN06rEm2NVdU4oYispjh+dYKwVfFjE4KdjNgVCZxdnYIrutA7nl8sods4VypNsTJOIR
-         yH0OaCcFCn14DDUpUEq7ZVU5pBiJJJcukFUSRVsYXHy0fSZ6OwVADdC/AhR9LwqpCMxi
-         xaRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737987284; x=1738592084;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b7OEX1FEH30CiSTxvGdqR6kzrrVdogX9xTrr5eYHX4c=;
-        b=ZL3nUmwT9KI3y5y0kGCbsOw6bJFb96RfuDs1QXXxqghlMv9Q4eVhZfTImQcZP/mJVk
-         pi8dsd06zALgZhmVoqbxx90+9+NzfkDKzJiZ1pB4DpMhLoow+15VhuGfR2B4mKL7CEa6
-         wwW9h64JgMMR7LW00h7TCYcnH7Vx7/8zFJPCrqVQVmPuye2LufJ+ofJA/Is7Q4tSCh/e
-         jhWFGlgziq8iaWMoBY65u8zjntw19yYxkMwufglwnvRsnW57vfMa9q0s5SXxcN/BEOWm
-         aSxPfLj0pyETZsxVUZI+/n6ILVukKBgqqC8t8WT/iGTtfXVYH/ys+xPNrnXnf8dPn3IT
-         EGcw==
-X-Forwarded-Encrypted: i=1; AJvYcCWXswj878Xttu8gVS7/teKBsvXn6PA7tbK+KCLkOQEQcFtn8DzBJElQp9Q7bf/StT+SW+Nk8Ms=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfeFrQXxCLE9aTW/773cIqLlQLSynJWDfhCYkwsRe301dsidBB
-	mPyGQaDitqe3Xt9BEKNIrrbz9qxRpvvyDLuj2+j+7UYzfVcz/qA0
-X-Gm-Gg: ASbGncvFxnKSi643ZmJYgLxFtLNUa3GJ5mU+QXRC+kc6zciU8DUMDWHO2eFvf6Hhh5f
-	F9ZsgaamIsIHP3tMcojlTE61Pl6dpWbqOxquGWFmgPYC6MjVWHVYOWe5jQ13zCvPxcpgsMfyQWb
-	FNt92BAeyP9L+oc4rFFDURuGb91vzzZdulixRQLMC8XHKClhp+zHLcxpq1LgrssuHToO6kRjoH8
-	yTgNuF5rlWHUaRkAfWHhM0RPFB+kJ+FqSe39+TUSP6vakOuCYa7k/5iNEJlb0bOcBfS65OWFfIQ
-	OWJwnzpGvrRxT6vVBlgWZLSOEQlwmEs4LEju1e7rBiiyl7pJh5ATlsrVTLLglrmEMeTj
-X-Google-Smtp-Source: AGHT+IGEL5JL+cJVUE1bYbaZQ7AmorMrsrb1eqNQjioeHxGKVZpxRCj5puuA6vAAUFwzNi0gldGodg==
-X-Received: by 2002:a05:6000:ac1:b0:385:f7d2:7e9b with SMTP id ffacd0b85a97d-38bf5673c57mr23086282f8f.30.1737987284242;
-        Mon, 27 Jan 2025 06:14:44 -0800 (PST)
-Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a1761f4sm11179423f8f.20.2025.01.27.06.14.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jan 2025 06:14:43 -0800 (PST)
-Subject: Re: [PATCH net] ethtool: Fix set RXNFC command with symmetric RSS
- hash
-To: Gal Pressman <gal@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Ahmed Zaki <ahmed.zaki@intel.com>, Tariq Toukan <tariqt@nvidia.com>
-References: <20250126191845.316589-1-gal@nvidia.com>
-From: Edward Cree <ecree.xilinx@gmail.com>
-Message-ID: <d0bad3a5-1f5b-9b48-59f6-879ea803efd7@gmail.com>
-Date: Mon, 27 Jan 2025 14:14:42 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	dkim=pass (2048-bit key) header.d=clip-os.org header.i=@clip-os.org header.b="oGfM8hEc"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F3F7F44110;
+	Mon, 27 Jan 2025 14:20:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=clip-os.org; s=gm1;
+	t=1737987635;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Oh2Oh3J91gJ6kMI4DpWRpPpzvF6a8IlOhQ3OUmVv56o=;
+	b=oGfM8hEcKeVYftipEUcCIgrl3RS5xlEqAGFYdkhoUKn1Pch0bzV+vwXNsglCz24FGDOAbn
+	Iy2BjzrK70hn7hpqby5VCKBJXrDxl2+xIZr+wucN6kywcmrXV8jRlzTr2HmZ15GRDb8tAs
+	cx0hXXUdREn7ePmSnMoz3e3UPWlQerAQI/spJZ9ozyrygdmvijfAwxobnulxJvaYX0LrsD
+	uU/7MxG9x9Wb/09ga9tRAAOk5TDT2CYHJrwUjf7Ta4Fn2Fgr22vR4yewwPRreqVjuWRymv
+	3H3XkeZkqo1jiFDt9vM9BYVx+cUNc+FbPV/qBpm0WZXqMuCE8oFi3M+YjOQEPg==
+From: nicolas.bouchinet@clip-os.org
+To: linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	codalist@coda.cs.cmu.edu,
+	linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org
+Cc: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
+	Joel Granados <j.granados@samsung.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH v1 2/9] sysctl: Fixes nf_conntrack_expect_max bounds
+Date: Mon, 27 Jan 2025 15:19:59 +0100
+Message-ID: <20250127142014.37834-3-nicolas.bouchinet@clip-os.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250127142014.37834-1-nicolas.bouchinet@clip-os.org>
+References: <20250127142014.37834-1-nicolas.bouchinet@clip-os.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20250126191845.316589-1-gal@nvidia.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -60
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudejgedgudefgedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenogfuohhrthgvugftvggtihhpvdculdegtddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepnhhitgholhgrshdrsghouhgthhhinhgvthestghlihhpqdhoshdrohhrghenucggtffrrghtthgvrhhnpeetheefteekueejtefhheeilefhjeefudetjeeileevgeeffeeiueehieettefhveenucfkphepledtrdeifedrvdegiedrudekjeenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpeeltddrieefrddvgeeirddukeejpdhhvghloheprghrtghhlhhinhhugidrrddpmhgrihhlfhhrohhmpehnihgtohhlrghsrdgsohhutghhihhnvghtsegtlhhiphdqohhsrdhorhhgpdhnsggprhgtphhtthhopeduiedprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhrughmrgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhstghsihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohgurghlihhsthestghouggrrdgtshdrtghmuhdrvgguuhdpr
+ hgtphhtthhopehlihhnuhigqdhnfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthhfihhlthgvrhdquggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhrvghtvggrmhesnhgvthhfihhlthgvrhdrohhrgh
+X-GND-Sasl: nicolas.bouchinet@clip-os.org
 
-On 26/01/2025 19:18, Gal Pressman wrote:
-> The sanity check that both source and destination are set when symmetric
-> RSS hash is requested is only relevant for ETHTOOL_SRXFH (rx-flow-hash),
-> it should not be performed on any other commands (e.g.
-> ETHTOOL_SRXCLSRLINS/ETHTOOL_SRXCLSRLDEL).
-> 
-> This resolves accessing uninitialized 'info.data' field, and fixes false
-> errors in rule insertion:
->   # ethtool --config-ntuple eth2 flow-type ip4 dst-ip 255.255.255.255 action -1 loc 0
->   rmgr: Cannot insert RX class rule: Invalid argument
->   Cannot insert classification rule
-> 
-> Fixes: 13e59344fb9d ("net: ethtool: add support for symmetric-xor RSS hash")
-> Cc: Ahmed Zaki <ahmed.zaki@intel.com>
-> Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-> Signed-off-by: Gal Pressman <gal@nvidia.com>
+From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
 
-Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
+Bound nf_conntrack_expect_max sysctl writings between SYSCTL_ONE
+and SYSCTL_INT_MAX.
+
+The proc_handler has thus been updated to proc_dointvec_minmax.
+
+The lower bound is SYSCTL_ONE as defined in the sysctl documentation.
+
+Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+---
+ net/netfilter/nf_conntrack_standalone.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
+index 40ed3ef9cb22d..3ea60ff7a6a49 100644
+--- a/net/netfilter/nf_conntrack_standalone.c
++++ b/net/netfilter/nf_conntrack_standalone.c
+@@ -657,7 +657,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
+ 		.data		= &nf_ct_expect_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ONE,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	[NF_SYSCTL_CT_ACCT] = {
+ 		.procname	= "nf_conntrack_acct",
+-- 
+2.48.1
+
