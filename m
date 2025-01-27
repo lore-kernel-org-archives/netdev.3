@@ -1,44 +1,43 @@
 Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428081FBEBB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89F615C13A
 	for <netdev@vger.kernel.org>; Mon, 27 Jan 2025 06:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737958086; cv=none; b=TwDq1Avb8I5tRu4Q/QZ3EmikQeyuz7CnfvjaqY3COjQDr/qon8G6PujlefxhBdiwyc/sAPRXBQhp0QLz8E69YxZAOZxe6/snBdSMJ6ETNKL/UmydFXW67lTLf099lCcAqITiQRkLitNOzrqTlv9JQgLW0uWcxXWicQpzlg5epBk=
+	t=1737958087; cv=none; b=DHn7gJRR+FshAPD6MvYMCsPbM3whmKna482OjAkR9ETo5Q2Io4E+IYkoJXfS3bhAw43xI1eUsb8ALZApTDX/EC+4VXM5BUh+5zvA7H/HizR+1j1P2/Toh5QhmUDC0Bxvx5vCI4vcA9yl0KoWMDt88SMdcSayOBRtolTTR6IXC+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737958086; c=relaxed/simple;
-	bh=qvFhziT254o4L4NkTSjefSsh+TpcA4eNxqbb6kika78=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=umhsqcSo+binH77i13aewv0IKVraFCE6+sgaiSa8DMnqAkSvDX569Kb/srPqnSZyLDOJlifZBqXxVJjHDIa4WKgLlnu2eBfIxasXTh4LF0kC79u/glyeAOJGO4StJA77n4uFJFb8/sdRTg5Vv91eWlGyoqHkwrt1b2ZoUWf3Ffs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=SrCy34E9; arc=none smtp.client-ip=62.96.220.36
+	s=arc-20240116; t=1737958087; c=relaxed/simple;
+	bh=lXQ51tKKhR7BNwhn8ASJ+7YNtA/DKLP6LOLLma5kZow=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nkaKKQGIzQtcLivViqD3QzkFEp06LJ568vkUB+pgBylRA3GD4mhz5l6r1YtDYxIcsqJA31HMeCV8WonBYWk1LcvqjPYsd1MSS7C8xDUfSoG8ZO9RguGXH3Hhi0XYbIWRgpWl+5d+Nad33cG4h+PsTY2+LTqloIjClX+FUqvOqfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=voOonaOB; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="SrCy34E9"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="voOonaOB"
 Received: from localhost (localhost [127.0.0.1])
-	by a.mx.secunet.com (Postfix) with ESMTP id A4282201E2;
-	Mon, 27 Jan 2025 07:08:02 +0100 (CET)
+	by a.mx.secunet.com (Postfix) with ESMTP id 29DEF2074F;
+	Mon, 27 Jan 2025 07:08:03 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from a.mx.secunet.com ([127.0.0.1])
 	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id pDnnTeyHJdQL; Mon, 27 Jan 2025 07:08:01 +0100 (CET)
+	with ESMTP id SbqEpdhwsqDQ; Mon, 27 Jan 2025 07:08:02 +0100 (CET)
 Received: from cas-essen-02.secunet.de (rl2.secunet.de [10.53.40.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by a.mx.secunet.com (Postfix) with ESMTPS id B2F0120518;
-	Mon, 27 Jan 2025 07:08:00 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com B2F0120518
+	by a.mx.secunet.com (Postfix) with ESMTPS id 110F8207B2;
+	Mon, 27 Jan 2025 07:08:01 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 110F8207B2
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1737958080;
-	bh=BUKKA63mDsYNpAQE70jIuYZ1vdfg+FbF+jLS+ZVlnDg=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=SrCy34E9jGAYwh6oRcpYooe+Nbj2YujMO9cAjkL2qvbsXgj8eIFeBZJ+doNOcw++o
-	 hr9FQJu+FxWL4luf6ElByUlkYXroZEDeXmKqfo/ykNa/zPcF8JtmwIjHAiLwY4E7C0
-	 0HoIs4pkeoIrl0uoEvNqAIKGxplW5LryGS3Dcdx+f8uaEw3IOf51G7CWKU2CLbr945
-	 C9EgWsFWkAp+MfVd3eQRW4wL4DkF6Jmu+COKdjSiS1FA6e3bKUBBGObbw1z6zCdLVw
-	 UqmFhMiMMNFc+LuiH3bkplpSkPJp4NIG625dYIQYJH2W8KF2vlYJv+AzjKDav0R0UT
-	 RiuWtj+8uI9Zg==
+	s=202301; t=1737958081;
+	bh=2nIEm+ym58VpH7EgQQg1KPaQcWk0KzYEeqmePv792Yc=;
+	h=From:To:CC:Subject:Date:From;
+	b=voOonaOBBMfnp61XEBXtwOjh3cfU/7gwxik8QEpMnkNfIgAzkxut82XWMgCPNQp+Z
+	 LgERTqqA8SxLX+5dmlLfpDsuniV7wp4gnoLmE05LpOdds8mLe70usDSE3+dB5uED9g
+	 oDeLoqhaTkiNdC4J1CGinErUaCXGvMAOeoUkw1EFt2kTPAdeCfG8raFCs4X+YrxJI4
+	 FhAQdjt2feODmEzGuA4sTX7ViKQBBQjrfjXNMOqWr5WS5CrsYh9lcA5mCi0b6ApNWI
+	 HAa5/Ktnazp5GxyZF+WOey4B4KGLGKDvR8yznUuTdzoiynyRB+XQB+22ctd1kggKBC
+	 71JlrI+Rx65eg==
 Received: from mbx-essen-02.secunet.de (10.53.40.198) by
  cas-essen-02.secunet.de (10.53.40.202) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
@@ -46,19 +45,17 @@ Received: from mbx-essen-02.secunet.de (10.53.40.198) by
 Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
  (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 27 Jan
- 2025 07:07:59 +0100
+ 2025 07:08:00 +0100
 Received: by gauss2.secunet.de (Postfix, from userid 1000)
-	id CD0123183FAF; Mon, 27 Jan 2025 07:07:59 +0100 (CET)
+	id C51613183BF2; Mon, 27 Jan 2025 07:07:59 +0100 (CET)
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 2/5] xfrm: state: fix out-of-bounds read during lookup
-Date: Mon, 27 Jan 2025 07:07:54 +0100
-Message-ID: <20250127060757.3946314-3-steffen.klassert@secunet.com>
+Subject: [PATCH 0/5] pull request (net): ipsec 2025-01-27
+Date: Mon, 27 Jan 2025 07:07:52 +0100
+Message-ID: <20250127060757.3946314-1-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250127060757.3946314-1-steffen.klassert@secunet.com>
-References: <20250127060757.3946314-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,289 +68,63 @@ X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
  mbx-essen-02.secunet.de (10.53.40.198)
 X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-From: Florian Westphal <fw@strlen.de>
+1) Fix incrementing the upper 32 bit sequence numbers for GSO skbs.
+   From Jianbo Liu.
 
-lookup and resize can run in parallel.
+2) Fix an out-of-bounds read on xfrm state lookup.
+   From Florian Westphal.
 
-The xfrm_state_hash_generation seqlock ensures a retry, but the hash
-functions can observe a hmask value that is too large for the new hlist
-array.
+3) Fix secpath handling on packet offload mode.
+   From Alexandre Cassen.
 
-rehash does:
-  rcu_assign_pointer(net->xfrm.state_bydst, ndst) [..]
-  net->xfrm.state_hmask = nhashmask;
+4) Fix the usage of skb->sk in the xfrm layer.
 
-While state lookup does:
-  h = xfrm_dst_hash(net, daddr, saddr, tmpl->reqid, encap_family);
-  hlist_for_each_entry_rcu(x, net->xfrm.state_bydst + h, bydst) {
+5) Don't disable preemption while looking up cache state
+   to fix PREEMPT_RT.
+   From Sebastian Sewior.
 
-This is only safe in case the update to state_bydst is larger than
-net->xfrm.xfrm_state_hmask (or if the lookup function gets
-serialized via state spinlock again).
+Please pull or let me know if there are problems.
 
-Fix this by prefetching state_hmask and the associated pointers.
-The xfrm_state_hash_generation seqlock retry will ensure that the pointer
-and the hmask will be consistent.
+Thanks!
 
-The existing helpers, like xfrm_dst_hash(), are now unsafe for RCU side,
-add lockdep assertions to document that they are only safe for insert
-side.
+The following changes since commit 9bb88c659673003453fd42e0ddf95c9628409094:
 
-xfrm_state_lookup_byaddr() uses the spinlock rather than RCU.
-AFAICS this is an oversight from back when state lookup was converted to
-RCU, this lock should be replaced with RCU in a future patch.
+  selftests: net: test extacks in netlink dumps (2024-11-24 17:00:06 -0800)
 
-Reported-by: syzbot+5f9f31cb7d985f584d8e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/CACT4Y+azwfrE3uz6A5ZErov5YN2LYBN5KrsymBerT36VU8qzBA@mail.gmail.com/
-Diagnosed-by: Dmitry Vyukov <dvyukov@google.com>
-Fixes: c2f672fc9464 ("xfrm: state lookup can be lockless")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
----
- net/xfrm/xfrm_state.c | 89 ++++++++++++++++++++++++++++++++++---------
- 1 file changed, 70 insertions(+), 19 deletions(-)
+are available in the Git repository at:
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 67ca7ac955a3..1781728ca428 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -34,6 +34,8 @@
- 
- #define xfrm_state_deref_prot(table, net) \
- 	rcu_dereference_protected((table), lockdep_is_held(&(net)->xfrm.xfrm_state_lock))
-+#define xfrm_state_deref_check(table, net) \
-+	rcu_dereference_check((table), lockdep_is_held(&(net)->xfrm.xfrm_state_lock))
- 
- static void xfrm_state_gc_task(struct work_struct *work);
- 
-@@ -62,6 +64,8 @@ static inline unsigned int xfrm_dst_hash(struct net *net,
- 					 u32 reqid,
- 					 unsigned short family)
- {
-+	lockdep_assert_held(&net->xfrm.xfrm_state_lock);
-+
- 	return __xfrm_dst_hash(daddr, saddr, reqid, family, net->xfrm.state_hmask);
- }
- 
-@@ -70,6 +74,8 @@ static inline unsigned int xfrm_src_hash(struct net *net,
- 					 const xfrm_address_t *saddr,
- 					 unsigned short family)
- {
-+	lockdep_assert_held(&net->xfrm.xfrm_state_lock);
-+
- 	return __xfrm_src_hash(daddr, saddr, family, net->xfrm.state_hmask);
- }
- 
-@@ -77,11 +83,15 @@ static inline unsigned int
- xfrm_spi_hash(struct net *net, const xfrm_address_t *daddr,
- 	      __be32 spi, u8 proto, unsigned short family)
- {
-+	lockdep_assert_held(&net->xfrm.xfrm_state_lock);
-+
- 	return __xfrm_spi_hash(daddr, spi, proto, family, net->xfrm.state_hmask);
- }
- 
- static unsigned int xfrm_seq_hash(struct net *net, u32 seq)
- {
-+	lockdep_assert_held(&net->xfrm.xfrm_state_lock);
-+
- 	return __xfrm_seq_hash(seq, net->xfrm.state_hmask);
- }
- 
-@@ -1041,16 +1051,38 @@ xfrm_init_tempstate(struct xfrm_state *x, const struct flowi *fl,
- 	x->props.family = tmpl->encap_family;
- }
- 
--static struct xfrm_state *__xfrm_state_lookup_all(struct net *net, u32 mark,
-+struct xfrm_hash_state_ptrs {
-+	const struct hlist_head *bydst;
-+	const struct hlist_head *bysrc;
-+	const struct hlist_head *byspi;
-+	unsigned int hmask;
-+};
-+
-+static void xfrm_hash_ptrs_get(const struct net *net, struct xfrm_hash_state_ptrs *ptrs)
-+{
-+	unsigned int sequence;
-+
-+	do {
-+		sequence = read_seqcount_begin(&net->xfrm.xfrm_state_hash_generation);
-+
-+		ptrs->bydst = xfrm_state_deref_check(net->xfrm.state_bydst, net);
-+		ptrs->bysrc = xfrm_state_deref_check(net->xfrm.state_bysrc, net);
-+		ptrs->byspi = xfrm_state_deref_check(net->xfrm.state_byspi, net);
-+		ptrs->hmask = net->xfrm.state_hmask;
-+	} while (read_seqcount_retry(&net->xfrm.xfrm_state_hash_generation, sequence));
-+}
-+
-+static struct xfrm_state *__xfrm_state_lookup_all(const struct xfrm_hash_state_ptrs *state_ptrs,
-+						  u32 mark,
- 						  const xfrm_address_t *daddr,
- 						  __be32 spi, u8 proto,
- 						  unsigned short family,
- 						  struct xfrm_dev_offload *xdo)
- {
--	unsigned int h = xfrm_spi_hash(net, daddr, spi, proto, family);
-+	unsigned int h = __xfrm_spi_hash(daddr, spi, proto, family, state_ptrs->hmask);
- 	struct xfrm_state *x;
- 
--	hlist_for_each_entry_rcu(x, net->xfrm.state_byspi + h, byspi) {
-+	hlist_for_each_entry_rcu(x, state_ptrs->byspi + h, byspi) {
- #ifdef CONFIG_XFRM_OFFLOAD
- 		if (xdo->type == XFRM_DEV_OFFLOAD_PACKET) {
- 			if (x->xso.type != XFRM_DEV_OFFLOAD_PACKET)
-@@ -1084,15 +1116,16 @@ static struct xfrm_state *__xfrm_state_lookup_all(struct net *net, u32 mark,
- 	return NULL;
- }
- 
--static struct xfrm_state *__xfrm_state_lookup(struct net *net, u32 mark,
-+static struct xfrm_state *__xfrm_state_lookup(const struct xfrm_hash_state_ptrs *state_ptrs,
-+					      u32 mark,
- 					      const xfrm_address_t *daddr,
- 					      __be32 spi, u8 proto,
- 					      unsigned short family)
- {
--	unsigned int h = xfrm_spi_hash(net, daddr, spi, proto, family);
-+	unsigned int h = __xfrm_spi_hash(daddr, spi, proto, family, state_ptrs->hmask);
- 	struct xfrm_state *x;
- 
--	hlist_for_each_entry_rcu(x, net->xfrm.state_byspi + h, byspi) {
-+	hlist_for_each_entry_rcu(x, state_ptrs->byspi + h, byspi) {
- 		if (x->props.family != family ||
- 		    x->id.spi       != spi ||
- 		    x->id.proto     != proto ||
-@@ -1114,6 +1147,7 @@ struct xfrm_state *xfrm_input_state_lookup(struct net *net, u32 mark,
- 					   __be32 spi, u8 proto,
- 					   unsigned short family)
- {
-+	struct xfrm_hash_state_ptrs state_ptrs;
- 	struct hlist_head *state_cache_input;
- 	struct xfrm_state *x = NULL;
- 	int cpu = get_cpu();
-@@ -1135,7 +1169,9 @@ struct xfrm_state *xfrm_input_state_lookup(struct net *net, u32 mark,
- 		goto out;
- 	}
- 
--	x = __xfrm_state_lookup(net, mark, daddr, spi, proto, family);
-+	xfrm_hash_ptrs_get(net, &state_ptrs);
-+
-+	x = __xfrm_state_lookup(&state_ptrs, mark, daddr, spi, proto, family);
- 
- 	if (x && x->km.state == XFRM_STATE_VALID) {
- 		spin_lock_bh(&net->xfrm.xfrm_state_lock);
-@@ -1155,15 +1191,16 @@ struct xfrm_state *xfrm_input_state_lookup(struct net *net, u32 mark,
- }
- EXPORT_SYMBOL(xfrm_input_state_lookup);
- 
--static struct xfrm_state *__xfrm_state_lookup_byaddr(struct net *net, u32 mark,
-+static struct xfrm_state *__xfrm_state_lookup_byaddr(const struct xfrm_hash_state_ptrs *state_ptrs,
-+						     u32 mark,
- 						     const xfrm_address_t *daddr,
- 						     const xfrm_address_t *saddr,
- 						     u8 proto, unsigned short family)
- {
--	unsigned int h = xfrm_src_hash(net, daddr, saddr, family);
-+	unsigned int h = __xfrm_src_hash(daddr, saddr, family, state_ptrs->hmask);
- 	struct xfrm_state *x;
- 
--	hlist_for_each_entry_rcu(x, net->xfrm.state_bysrc + h, bysrc) {
-+	hlist_for_each_entry_rcu(x, state_ptrs->bysrc + h, bysrc) {
- 		if (x->props.family != family ||
- 		    x->id.proto     != proto ||
- 		    !xfrm_addr_equal(&x->id.daddr, daddr, family) ||
-@@ -1183,14 +1220,17 @@ static struct xfrm_state *__xfrm_state_lookup_byaddr(struct net *net, u32 mark,
- static inline struct xfrm_state *
- __xfrm_state_locate(struct xfrm_state *x, int use_spi, int family)
- {
-+	struct xfrm_hash_state_ptrs state_ptrs;
- 	struct net *net = xs_net(x);
- 	u32 mark = x->mark.v & x->mark.m;
- 
-+	xfrm_hash_ptrs_get(net, &state_ptrs);
-+
- 	if (use_spi)
--		return __xfrm_state_lookup(net, mark, &x->id.daddr,
-+		return __xfrm_state_lookup(&state_ptrs, mark, &x->id.daddr,
- 					   x->id.spi, x->id.proto, family);
- 	else
--		return __xfrm_state_lookup_byaddr(net, mark,
-+		return __xfrm_state_lookup_byaddr(&state_ptrs, mark,
- 						  &x->id.daddr,
- 						  &x->props.saddr,
- 						  x->id.proto, family);
-@@ -1264,6 +1304,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 		unsigned short family, u32 if_id)
- {
- 	static xfrm_address_t saddr_wildcard = { };
-+	struct xfrm_hash_state_ptrs state_ptrs;
- 	struct net *net = xp_net(pol);
- 	unsigned int h, h_wildcard;
- 	struct xfrm_state *x, *x0, *to_put;
-@@ -1328,8 +1369,10 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 	else if (acquire_in_progress) /* XXX: acquire_in_progress should not happen */
- 		WARN_ON(1);
- 
--	h = xfrm_dst_hash(net, daddr, saddr, tmpl->reqid, encap_family);
--	hlist_for_each_entry_rcu(x, net->xfrm.state_bydst + h, bydst) {
-+	xfrm_hash_ptrs_get(net, &state_ptrs);
-+
-+	h = __xfrm_dst_hash(daddr, saddr, tmpl->reqid, encap_family, state_ptrs.hmask);
-+	hlist_for_each_entry_rcu(x, state_ptrs.bydst + h, bydst) {
- #ifdef CONFIG_XFRM_OFFLOAD
- 		if (pol->xdo.type == XFRM_DEV_OFFLOAD_PACKET) {
- 			if (x->xso.type != XFRM_DEV_OFFLOAD_PACKET)
-@@ -1362,8 +1405,9 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 	if (best || acquire_in_progress)
- 		goto found;
- 
--	h_wildcard = xfrm_dst_hash(net, daddr, &saddr_wildcard, tmpl->reqid, encap_family);
--	hlist_for_each_entry_rcu(x, net->xfrm.state_bydst + h_wildcard, bydst) {
-+	h_wildcard = __xfrm_dst_hash(daddr, &saddr_wildcard, tmpl->reqid,
-+				     encap_family, state_ptrs.hmask);
-+	hlist_for_each_entry_rcu(x, state_ptrs.bydst + h_wildcard, bydst) {
- #ifdef CONFIG_XFRM_OFFLOAD
- 		if (pol->xdo.type == XFRM_DEV_OFFLOAD_PACKET) {
- 			if (x->xso.type != XFRM_DEV_OFFLOAD_PACKET)
-@@ -1401,7 +1445,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 
- 	if (!x && !error && !acquire_in_progress) {
- 		if (tmpl->id.spi &&
--		    (x0 = __xfrm_state_lookup_all(net, mark, daddr,
-+		    (x0 = __xfrm_state_lookup_all(&state_ptrs, mark, daddr,
- 						  tmpl->id.spi, tmpl->id.proto,
- 						  encap_family,
- 						  &pol->xdo)) != NULL) {
-@@ -2180,10 +2224,13 @@ struct xfrm_state *
- xfrm_state_lookup(struct net *net, u32 mark, const xfrm_address_t *daddr, __be32 spi,
- 		  u8 proto, unsigned short family)
- {
-+	struct xfrm_hash_state_ptrs state_ptrs;
- 	struct xfrm_state *x;
- 
- 	rcu_read_lock();
--	x = __xfrm_state_lookup(net, mark, daddr, spi, proto, family);
-+	xfrm_hash_ptrs_get(net, &state_ptrs);
-+
-+	x = __xfrm_state_lookup(&state_ptrs, mark, daddr, spi, proto, family);
- 	rcu_read_unlock();
- 	return x;
- }
-@@ -2194,10 +2241,14 @@ xfrm_state_lookup_byaddr(struct net *net, u32 mark,
- 			 const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 			 u8 proto, unsigned short family)
- {
-+	struct xfrm_hash_state_ptrs state_ptrs;
- 	struct xfrm_state *x;
- 
- 	spin_lock_bh(&net->xfrm.xfrm_state_lock);
--	x = __xfrm_state_lookup_byaddr(net, mark, daddr, saddr, proto, family);
-+
-+	xfrm_hash_ptrs_get(net, &state_ptrs);
-+
-+	x = __xfrm_state_lookup_byaddr(&state_ptrs, mark, daddr, saddr, proto, family);
- 	spin_unlock_bh(&net->xfrm.xfrm_state_lock);
- 	return x;
- }
--- 
-2.34.1
+  git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec.git tags/ipsec-2025-01-27
 
+for you to fetch changes up to 6c9b7db96db62ee9ad8d359d90ff468d462518c4:
+
+  xfrm: Don't disable preemption while looking up cache state. (2025-01-24 07:46:11 +0100)
+
+----------------------------------------------------------------
+ipsec-2025-01-27
+
+----------------------------------------------------------------
+Alexandre Cassen (1):
+      xfrm: delete intermediate secpath entry in packet offload mode
+
+Florian Westphal (1):
+      xfrm: state: fix out-of-bounds read during lookup
+
+Jianbo Liu (1):
+      xfrm: replay: Fix the update of replay_esn->oseq_hi for GSO
+
+Sebastian Sewior (1):
+      xfrm: Don't disable preemption while looking up cache state.
+
+Steffen Klassert (1):
+      xfrm: Fix the usage of skb->sk
+
+ include/net/xfrm.h             | 16 ++++++--
+ net/ipv4/esp4.c                |  2 +-
+ net/ipv6/esp6.c                |  2 +-
+ net/ipv6/xfrm6_output.c        |  4 +-
+ net/xfrm/xfrm_interface_core.c |  2 +-
+ net/xfrm/xfrm_output.c         |  7 ++--
+ net/xfrm/xfrm_policy.c         |  2 +-
+ net/xfrm/xfrm_replay.c         | 10 +++--
+ net/xfrm/xfrm_state.c          | 93 ++++++++++++++++++++++++++++++++----------
+ 9 files changed, 100 insertions(+), 38 deletions(-)
