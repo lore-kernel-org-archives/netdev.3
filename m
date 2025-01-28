@@ -1,257 +1,199 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025AB1DE3D6;
-	Tue, 28 Jan 2025 16:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700892904;
+	Tue, 28 Jan 2025 16:46:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738081947; cv=none; b=neMFKJPG4neYyxkhkVqi1aoECTVQheg1zWH/OMToTGFw14eOTkZUdLz77YsTqey0l63Fk431gW9AizyZU95Pep3S+dPd/1pGblBEWDf60PC+6CG8/oYPPnOsSrMAR7Ats/4giKCAOLg1m1EzCXpCTmV/MeQaiOt0SR8VPkdxiCU=
+	t=1738082815; cv=none; b=T4PJRgH+7zsceXUgCb0no4Vmx9DPtZCLBJVpaCXHdz6lEudr2Mr9KNmJyooPWyNVagxiJBgKi84oizDrMetThKylUYxXy83aPxGTnEGSQ9tYI03eCMnIHxN0G/lrJMrU2qA1Tl99MlAnknMij7qt2Itm1B/E9dF9pJveY9dARL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738081947; c=relaxed/simple;
-	bh=QtHvsJjZ7QxNIZ1SXB/444BY4v4g0ky8bprkBlrEpN0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VXd+5PRWLkpod4+w3rgnTuTFQkijCg8NQPgOGm/ZwWJ4natf005ofiH//dwHuUQF7+yo1Y7AAiX3GyWOFPaSewLWJitaMSpOJBAZb1Z7TenN/AZCUl8/34r/tvSFJ2AvA07S89SHUA/YtW7jUG5LFPgP02AQaluaNT/J10DuPUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=CIC+imA5; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1738082815; c=relaxed/simple;
+	bh=MnNisqc0NqM7r0VRLdYxL9biktVBMmD/OyitwnsNYBQ=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=n2NFDmO4g907QLI9+Rl4GLTpewG+m1dZVGJPOdTMdPg4BAUsWtLUI6iZmpnxOp80CzAT1+6Rh9Jz12KpCby7uJCGA+aZvSXSNpas+/iNsruAbC6bW1ovuz9OzhGu+3bVhLf6Qb0GMkGlZJiEnZW6MswMg+o+peDLFKiL1cDJXt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PywFc3sI; arc=none smtp.client-ip=209.85.219.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="CIC+imA5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=yL1fK2nTJPYp1w26Ib1wtTlGVYi51YwH3nZezu81Cvg=; b=CIC+imA5nIk3vQZvFVSuiB/DOu
-	OvYjQTJfciDD+qwZLzOgCJZRoeI2AALXlFqDWGYh4EZR4sWGDZRRKpys5fwYSNP225P1yu8e+BHeg
-	TiMGPxYo7wEYKvbTVuFTIKDrMwAzb17C5vh7pw0kpvaQrl8u0QZf8/h67uTc9c7+FCA+5weiplxgU
-	E3hxl/qGN84WT66ueGstLQ3W1Nh7hyhd9mVHRLBH03UAILwSb/oGClPU2KM3uK+iyHTF/skkPylJK
-	kYFBZV4nOJTI2k3g5zUycSr2xrppDceB0a5Dz9i/riDFYn39Hs+dsQNIdNu4X/6v2OYy2S95ZOCo1
-	txj30CiA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50786)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tcoVX-0007eZ-1x;
-	Tue, 28 Jan 2025 16:32:11 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tcoVT-0002n8-2p;
-	Tue, 28 Jan 2025 16:32:07 +0000
-Date: Tue, 28 Jan 2025 16:32:07 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Vladimir Oltean <olteanv@gmail.com>
-Cc: Tristram.Ha@microchip.com, Woojung Huh <woojung.huh@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PywFc3sI"
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e53a5ff2233so10578620276.3;
+        Tue, 28 Jan 2025 08:46:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738082812; x=1738687612; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y7I3FQn+a3IeKpvoyXVLY346phLoqlukuEhizyoucyY=;
+        b=PywFc3sI7IvCYfljupHJDeqTN0qgHFuNtm2sh616Yi8HMGe2uxDSrhfnaTmR9sg7vQ
+         6ast+9ATzSkJ3NlSFXzTAo2bhl7P5evAdCuyTOgOxOFJEULLPZ+35CwXDkjsXi9N01iO
+         11ZXNqCgIg0hMSYsOxxKFzmlqsrB2cLYt4VyXBOp6SajaegBWAn9ZGn2IejJ1U1KrlRR
+         YEY6BMmnxLUeFIvcoD9Uv+yHiIS1k8B26GdLmR925inSOod88Dg3/3alN9VKd8/aB3dS
+         +mz70cyQvZLp3MqNQT7L8inlKyB6EOg0bZF2mpmr35eBUdxtue7z/kQKv3zUHWuN6Oxc
+         55DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738082812; x=1738687612;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y7I3FQn+a3IeKpvoyXVLY346phLoqlukuEhizyoucyY=;
+        b=u2JorK4Vnik8rYcCOp4uMQ8ZAKh3jjQEm914r9ZMQMbJLX2fWTrPSzGXrhgkdsDchW
+         4Mq5I2CamEzSyRI5iXOoAvNMcH1QCzVCEfpo/2/llO3zjna9dVAqowVS9Hd16By6sZGt
+         X5jzvrzouqnwS/Q0xqt6jau/anRShgoL983+0MBjKrFI/CmkDqQuzBH1enN2ul1GDXMl
+         bOrfCAxvkCCoN4v0d5V/uDCWsHfbG/9wtlakGNF2fBvtpu0yAgnYa8B23dpxKdABd1r/
+         u6S56tLJ01scBuKsGqAgm3DupUqnYILcCfcbzYm9QS+NubYDmk2B5Qck0qc2+h5SaWBw
+         6d8w==
+X-Forwarded-Encrypted: i=1; AJvYcCUw7A4/aKodNnfvJHQ9JFMNzR3F2GOT4qtClourtrtGxU5WXERiJTuFnJ0d7VKf7eierPEZ8y7W4Sxb4A==@vger.kernel.org, AJvYcCV3QVjvxW205kpZNF74ZCGay4xwepFP0ZT+W/GWCPrncTH5Qo3tVZBS782yjvzL3nd9e0lrTfY7@vger.kernel.org, AJvYcCWuh9YLWqNU+pS2jYMh7lExdNi5NKoIG1Y7AjyNwoOz8sHPM84dDuZlXV/0PW9UEX9+xBKqXX0oq2d46pMZ@vger.kernel.org, AJvYcCWulg7RuwxTFIT+30FXb1AI8UnASifUSUqn1fzIpcMKlEWEEZ9+LuIVPaP2V9gWNh96StgLW9/34VVw@vger.kernel.org, AJvYcCX1HbcttBIKrNALy0J9adrE0rj+9P2QYOaBNBW+JSowLrDufexrqfLsDJOMuP+oGm7VbF/uQTGO08bS81Q=@vger.kernel.org, AJvYcCXqK43iZzu1fqPj4nVKYyfryRzLnMFbjlm3Ys2mUZRkHvT60NvIt2gEODfD1fD6BsSp2JIBas5Pyx8wdw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywjo2ljoqSVzCl6flbi/G8VHhaHbEsQBqLWSSE6l/W1ZVFhFb6Q
+	n1iL+GisL04b+8zPZhhgXujr4kHhKK3WoyCJSRX5X32tpJ6ZCfPyCVomGxa1/Ao=
+X-Gm-Gg: ASbGncuBMGFLWFBJEjwXGljiZN+hN4PXJTkMqLfvMVQg+5kEG6DGk7aemKsJLfBuyE6
+	AWHEQFd7im1O5LwqrTpuVlEuR5gFnthWrBs/3kpzW4p1hAeugRNDXV+JiXabqhxdr2eDRMkI/Jn
+	21ayFxP8xiHMzyZjK0QPyeW0oEN4sXfmDs7aLH9R0xHCBfSUmHoaOEKxvaNWsFzKeX/O5w2/HdU
+	vmiMM+Nn3gZVeWOhMao1xAPt0iKJYriGSe5tibfo0JBu520VFMi0YT/a7BVSihEvd40sUHPHbM5
+	po/lcQKWxEdfIhpmCFU2gvf8/rUXkQK6UxNipyBj3i6qzdexi5w=
+X-Google-Smtp-Source: AGHT+IFvmgf54bypeg06iXMG7R6vW3zKyn1725RIYJUIjUALciExdJNbHjTn7B/5gtx7qirVGTp6aA==
+X-Received: by 2002:a05:6902:70c:b0:e58:5a:7694 with SMTP id 3f1490d57ef6-e58005a7945mr26770575276.20.1738082811957;
+        Tue, 28 Jan 2025 08:46:51 -0800 (PST)
+Received: from localhost (c-73-224-175-84.hsd1.fl.comcast.net. [73.224.175.84])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e583b7697c9sm2098812276.16.2025.01.28.08.46.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jan 2025 08:46:51 -0800 (PST)
+From: Yury Norov <yury.norov@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-nvme@lists.infradead.org,
+	linux-hyperv@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Rick Lindsley <ricklind@linux.ibm.com>,
+	Nick Child <nnac123@linux.ibm.com>,
+	Thomas Falcon <tlfalcon@linux.ibm.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	UNGLinuxDriver@microchip.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC net-next 1/2] net: pcs: xpcs: Add special code to
- operate in Microchip KSZ9477 switch
-Message-ID: <Z5kGhzWr2ZSxGdlX@shell.armlinux.org.uk>
-References: <20250128033226.70866-1-Tristram.Ha@microchip.com>
- <20250128033226.70866-2-Tristram.Ha@microchip.com>
- <Z5iiXWkhm2OvbjOx@shell.armlinux.org.uk>
- <20250128102128.z3pwym6kdgz4yjw4@skbuf>
- <Z5jOhzmQAGkv9Jlw@shell.armlinux.org.uk>
- <20250128152324.3p2ccnxoz5xta7ct@skbuf>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	James Smart <james.smart@broadcom.com>,
+	Dick Kennedy <dick.kennedy@broadcom.com>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Matt Wu <wuqiang.matt@bytedance.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Greg Kurz <groug@kaod.org>,
+	Peter Xu <peterx@redhat.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>
+Subject: [PATCH v2 00/13] cpumask: cleanup cpumask_next_wrap() implementation and usage
+Date: Tue, 28 Jan 2025 11:46:29 -0500
+Message-ID: <20250128164646.4009-1-yury.norov@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250128152324.3p2ccnxoz5xta7ct@skbuf>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Jan 28, 2025 at 05:23:24PM +0200, Vladimir Oltean wrote:
-> On Tue, Jan 28, 2025 at 12:33:11PM +0000, Russell King (Oracle) wrote:
-> > I wonder what the original Synopsys documentation says about the AN
-> > control register.
-> 
-> My private XPCS databook 2017-12.pdf, the applicability of which I cannot
-> vouch for, has a section with programming guidelines for SGMII
-> Auto-Negotiation. I quote:
+cpumask_next_wrap() is overly complicated, comparing to it's generic
+version find_next_bit_wrap(), not mentioning it duplicates the above.
+It roots to the times when the function was used in the implementation
+of for_each_cpu_wrap() iterator. The function has 2 additional parameters
+that were used to catch loop termination condition for the iterator.
+(Although, only one is needed.)
 
-Thanks for this, most useful.
+Since 4fe49b3b97c262 ("lib/bitmap: introduce for_each_set_bit_wrap()
+macro"), for_each_cpu_wrap() is wired to corresponding generic
+wrapping bitmap iterator, and additional complexity of
+cpumask_next_wrap() is not needed anymore.
 
-> | Clause 37 auto-negotiation can be performed in the SGMII mode by
-> | programming various registers as follows:
-> | 
-> | 1. In configurations with both 10G and 1G mode speed mode, switch
-> |    DWC_xpcs to 1G speed mode by following the steps described in
-> |    "Switching to 1G or KX Mode and 10 or 100 Mbps SGMII Speed".
-> | 
-> | 2. In Backplane Ethernet PCS configurations, program bit[12] (AN_EN) of
-> |    SR_AN_CTRL Register to 0 and bit[12] (CL37_BP) of VR_XS_PCS_DIG_CTRL1
-> |    Register to 1.
-> | 
-> | 3. Disable Clause 37 auto-negotiation by programming bit [12]
-> |    (AN_ENABLE) of SR_MII_CTRL Register to 0 (in case it is already
-> |    enabled).
-> | 
-> | 4. Program various fields of VR_MII_AN_CTRL Register appropriately as
-> |    follows:
-> |    - Program PCS_MODE to 2’b10
-> |    - Program TX_CONFIG to 1 (PHY side SGMII) or 0 (MAC side SGMII) based
-> |      on your requirement
-> |    - Program MII_AN_INTR_EN to 1, to enable auto-negotiation complete
-> |      interrupt
-> |    - If TX_CONFIG is set to 1 and bit[0] of VR_MII_DIG_CTRL1 Register is
-> |      set to 0, program SGMII_LINK_STS to indicate the link status to the
-> |      MAC side SGMII.
-> |    - Program MII_CTRL to 0 or 1, as per your requirement.
-> | 
-> | 5. If DWC_xpcs is configured as PHY-side SGMII in the above step, you
-> |    can program bit [0] of VR_MII_DIG_CTRL1 Register to 1, if you wish to
-> |    use the values of the xpcs_sgmii_link_sts_i input ports.
-> |    xpcs_sgmii_full_duplex_i and xpcs_sgmii_link_speed_i as the
-> |    transmitted configuration word.
-> | 
-> | 6. If DWC_xpcs is configured as PHY-side SGMII and if bit[0] of
-> |    VR_MII_DIG_CTRL1 Register is set to 0,
-> |    - Program SS13 and SS6 bits of SR_MII_CTRL Register to the required
-> |      SGMII Speed
-> |    - Program bit [5] (FD) of SR_MII_AN_ADV to the desired mode. This
-> |      step is mandatory even if you wish to leave the FD register bit to
-> |      its default value.
+All existing users call cpumask_next_wrap() in a manner that makes
+it possible to turn it to a straight and simple alias to
+find_next_bit_wrap().
 
-I suspect this is where the requirement comes from in the KSZ9477
-documentation - and it's been "translated" badly. I note that in the
-KSZ9477 documentation, bit[0] of VR_MII_DIG_CTRL1 is marked as
-"reserved" and takes the value zero, so in the case of PHY-side SGMII,
-(6) always applies to KSZ9477 and (5) never does.
+This series replaces historical 4-parameter cpumask_next_wrap() with a
+thin 2-parameter wrapper around find_next_bit_wrap().
 
-This also solves my concern about 2a22b7ae2fa3 ("net: pcs: xpcs: adapt
-Wangxun NICs for SGMII mode"), because there (5) would apply.
+Where it's possible to use for_each_cpu_wrap() iterator, the code is
+switched to use it because it's always preferable to use iterators over
+open loops.
 
-> | 
-> | 7. If DWC_xpcs is configured as MAC-side SGMII in step 4, program bit[9]
-> |    of VR_MII_DIG_CTRL1 Register to 1, for DWC_xpcs to automatically
-> |    switch to the negotiated link-speed, after the completion of
-> |    auto-negotiation.
-> | 
-> | 8. Enable CL37 Auto-negotiation, by programming bit[12] of the
-> |    SR_MII_CTRL Register to 1.
-> 
-> In my reading of these steps, writing to DW_VR_MII_AN_CTRL does not
-> depend on a subsequent write to SR_MII_AN_ADV to take effect.
-> But there is this additional note in the databook:
-> 
-> | If TX_CONFIG=1 and Bit[0] (SGMII_PHY_MODE_CTRL) of VR_MII_DIG_CTRL1 = 0,
-> | program the SR_MII_AN_ADV only after programming 'SGMII_LINK_STS' bit
-> | (of VR_MII_AN_CTRL) and SS13 and SS6 bits (of SR_MII_CTRL)
-> 
-> So my understanding is that SR_MII_AN_ADV needs to be written only if
-> TX_CONFIG=1 (SJA1105 calls this AUTONEG_CONTROL[PHY_MODE]).
+This series touches various scattered subsystems and To-list for the
+whole series is quite a long. To minimize noise, I send cover-letter and
+key patches #5 and 6 to every person involved. All other patches are sent
+individually to those pointed by scripts/get_maintainers.pl.
 
-Yes, agreed. Thankfully, SJA1105 sets PHY_MODE/TX_CONFIG=0 and leaves
-SGMII_PHY_MODE_CTRL unaltered. TXGBE sets TX_CONFIG=1 but sets
-SGMII_PHY_MODE_CTRL=1 which also avoids this requirement.
+I'd like to move the series with my bitmap-for-next branch as a whole.
 
-> That's quite
-> different, and that will make sense when you consider that there's also
-> a table with the places the autoneg code word gets its info from:
-> 
-> Config_Reg Bits in the 1000BASE-X and SGMII Mode
-> 
->  +----------------+-------------------+--------------------+--------------------------------------------+
->  | Config_Reg bit | 1000Base-X mode   | SGMII mode value   | SGMII mode value                           |
->  |                |                   | when TX_CONFIG = 0 | when TX_CONFIG = 1                         |
->  +----------------+-------------------+--------------------+--------------------------------------------+
->  | 15             | Next page support | 0                  | Link up or down.                           |
->  |                |                   |                    | If DW_VR_MII_DIG_CTRL1_PHY_MODE_CTRL == 0, |
->  |                |                   |                    | this bit is derived from Bit 4             |
->  |                |                   |                    | (SGMII_LINK_STS) of the VR_MII_AN_CTRL.    |
->  |                |                   |                    | If DW_VR_MII_DIG_CTRL1_PHY_MODE_CTRL == 1, |
->  |                |                   |                    | this bit is derived from the input port    |
->  |                |                   |                    | 'xpcs_sgmii_link_sts_i'                    |
->  +----------------+-------------------+--------------------+--------------------------------------------+
->  | 14             | ACK               | 1                  | 1                                          |
->  +----------------+-------------------+--------------------+--------------------------------------------+
->  | 13             | RF[1]             | 0                  | 0                                          |
->  +----------------+-------------------+--------------------+--------------------------------------------+
->  | 12             | RF[0]             | 0                  | FULL_DUPLEX                                |
->  |                |                   |                    | If DW_VR_MII_DIG_CTRL1_PHY_MODE_CTRL == 0, |
->  |                |                   |                    | this bit is derived from Bit 5 (FD) of     |
->  |                |                   |                    | the SR_MII_AN_ADV.                         |
->  |                |                   |                    | If DW_VR_MII_DIG_CTRL1_PHY_MODE_CTRL == 1, |
->  |                |                   |                    | this bit is derived from the input port    |
->  |                |                   |                    | 'xpcs_sgmii_full_duplex_i'                 |
->  +----------------+-------------------+--------------------+--------------------------------------------+
->  | 11:10          | Reserved          | 0                  | SPEED                                      |
->  |                |                   |                    | If DW_VR_MII_DIG_CTRL1_PHY_MODE_CTRL == 0, |
->  |                |                   |                    | these bits are derived from Bit 13 (SS13)  |
->  |                |                   |                    | and Bit 6 (SS6) of the SR_MII_CTRL.        |
->  |                |                   |                    | If DW_VR_MII_DIG_CTRL1_PHY_MODE_CTRL == 1, |
->  |                |                   |                    | this bit is derived from the input port    |
->  |                |                   |                    | 'xpcs_sgmii_link_speed_i[1:0]'             |
->  +----------------+-------------------+--------------------+--------------------------------------------+
->  | 9              | Reserved          | 0                  | 0                                          |
->  +----------------+-------------------+--------------------+--------------------------------------------+
->  | 8:7            | PAUSE[1:0]        | 0                  | 0                                          |
->  +----------------+-------------------+--------------------+--------------------------------------------+
->  | 6              | HALF_DUPLEX       | 0                  | 0                                          |
->  +----------------+-------------------+--------------------+--------------------------------------------+
->  | 5              | FULL_DUPLEX       | 0                  | 0                                          |
->  +----------------+-------------------+--------------------+--------------------------------------------+
->  | 4:1            | Reserved          | 0                  | 0                                          |
->  +----------------+-------------------+--------------------+--------------------------------------------+
->  | 0              | Reserved          | 1                  | 1                                          |
->  +----------------+-------------------+--------------------+--------------------------------------------+
-> 
-> I haven't figured out either what might be going on with the KSZ9477
-> integration, I just made a quick refresher and I thought this might be
-> useful for you as well, Russell. I do notice Tristram does force
-> TX_CONFIG=1 (DW_VR_MII_TX_CONFIG_PHY_SIDE_SGMII), but I don't understand
-> what's truly behind that. Hopefully just a misunderstanding.
+v1: https://lore.kernel.org/netdev/20241228184949.31582-1-yury.norov@gmail.com/T/
+v2:
+ - rebase on top of today's origin/master;
+ - drop #v1-10: not needed since v6.14 @ Sagi Grinberg;
+ - #2, #3: fix picking next unused CPU @ Nick Child;
+ - fix typos, cleanup comments @ Bjorn Helgaas, Alexander Gordeev;
+ - CC Christoph Hellwig for the whole series.
 
-If you want to peek at the KSZ9477 documentation, what I'm looking at is
-available from here:
-https://www.microchip.com/en-us/product/ksz9477#Documentation
+Yury Norov (13):
+  objpool: rework objpool_pop()
+  virtio_net: simplify virtnet_set_affinity()
+  ibmvnic: simplify ibmvnic_set_queue_affinity()
+  powerpc/xmon: simplify xmon_batch_next_cpu()
+  cpumask: deprecate cpumask_next_wrap()
+  cpumask: re-introduce cpumask_next{,_and}_wrap()
+  cpumask: use cpumask_next_wrap() where appropriate
+  padata: switch padata_find_next() to using cpumask_next_wrap()
+  s390: switch stop_machine_yield() to using cpumask_next_wrap()
+  scsi: lpfc: switch lpfc_irq_rebalance() to using cpumask_next_wrap()
+  scsi: lpfc: rework lpfc_next_{online,present}_cpu()
+  PCI: hv: Switch hv_compose_multi_msi_req_get_cpu() to using
+    cpumask_next_wrap()
+  cpumask: drop cpumask_next_wrap_old()
 
-Interestingly, there are a number of errata:
-
-Module 7 - SGMII auto-negotiation does not set bit 0 in the
-auto-negotiation code word
-Basically requires MII_ADVERTISE to be written as 0x1a0, and is only
-needed after power-up or reset.
-
-Module 8 - SGMII port link details from the connected SGMII PHY are not
-passed properly to the port 7 GMAC
-Basically, AUTONEG_INTR_STATUS needs to be read, and the PCS
-manually programmed for the speed.
-
-Module 15 - SGMII registers are not initialized by hardware reset
-Requires that bit 15 of BASIC_CONTROL is set to reset the registers.
-
-All three are not scheduled to be fixed, apparently.
-
-There seems to be no information listed there regarding the requirement
-for SGMII PHY mode.
-
-> Tristram, why do you set this field to 1? Linux only supports the
-> configuration where a MAC behaves like a MAC. There needs to be an
-> entire discussion if you want to configure a MAC to be a SGMII autoneg
-> master (like a PHY), how to model that.
-
-(Using SJA1105 register terminology...)
-
-Looking at the patch, Tristram is setting PHY_MODE=1 and SGMII_LINK=1
-not when configuring for SGMII, but when configuring for 1000base-X.
-
-This is reflected in the documentation for KSZ9477 - which states that
-both these bits need to be set in "SerDes" aka 1000base-X mode. The
-question is... where did that statement come from, and should we be
-doing that for 1000base-X mode anyway?
+ arch/powerpc/xmon/xmon.c            |  6 +--
+ arch/s390/kernel/processor.c        |  2 +-
+ drivers/net/ethernet/ibm/ibmvnic.c  | 18 +++++---
+ drivers/net/virtio_net.c            | 12 ++---
+ drivers/pci/controller/pci-hyperv.c |  3 +-
+ drivers/scsi/lpfc/lpfc.h            | 23 +++-------
+ drivers/scsi/lpfc/lpfc_init.c       |  2 +-
+ include/linux/cpumask.h             | 69 ++++++++++++++++++++---------
+ include/linux/objpool.h             |  7 ++-
+ kernel/padata.c                     |  2 +-
+ lib/cpumask.c                       | 37 +---------------
+ 11 files changed, 81 insertions(+), 100 deletions(-)
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.43.0
+
