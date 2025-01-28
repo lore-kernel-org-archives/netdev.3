@@ -1,112 +1,104 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6108199E8D
-	for <netdev@vger.kernel.org>; Tue, 28 Jan 2025 16:30:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6768199E8D;
+	Tue, 28 Jan 2025 16:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738081853; cv=none; b=Jc/3HLREkFt5+kyx/lwk0JA2gHEhinM2PgU6OfgdNiFR6cbJ7sCpTPsnpmw/JdbD4/XxwcgNm7YUWyDKP2xPfsxfhlReqKLw06+GrffS5XL15q2zqwpFXOvRd/EAglSYStkWQQ+uhmE5upvJBsuKT1FEDJzkK0hTiBsguFrr5ms=
+	t=1738081943; cv=none; b=d1C1kdUdHB98N0nx6PgBfKIT6FdCZ4o2bybY6+a2B+Wet4e2Ru+WvEuf/LZSe90E7bO/dW31s8Ataj14DAzlDpQGTdp2390MkhwT37q/DvATfc+R9Cqo84hdGFdTX0InyHGfwkGk1ClMLbK3CwYXKhOCbMBBYZal6mFSV6CBmdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738081853; c=relaxed/simple;
-	bh=u5O791YdxIpS8aoD45P7jv082v8LlinLwr77M4V6kdk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=l/35vPfjNvmze2zaLs2l0aSP9cdzY8erYyc/HIqoqIrEjtexWUPwM9XBpGt7ISX7btIw0wo7fVJzYv+Mw5iYAXIg9EKJ+UdX9EyaNzENwp3fGsafO8OhyP+v3RByH7DTU8h8NO2LqcO8Whgsl8h600yiDwx2sgEc8glJlE4CBeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=PhU9Pn52; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	s=arc-20240116; t=1738081943; c=relaxed/simple;
+	bh=JKPRQNGo6c05mOEmhP70KvkTAwaDPBWMaGDQBYo3ZRE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JXquVtfsAWMn1zxOzV/1kgbFCGJ0CcfG2/geQXHkBJ2ZbDIZLwagb3bkTLOQz/Il3NJBkMikphZCmB9GrcdjQmT5epZBj8hCvT9HHChZ3Ldej8E3H8cl4AW2CfXIj+GzaxUXDFI70d/6irZ5eUjYfzUpBp457vg6yxjlxeNx4Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xyen8+KX; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="PhU9Pn52"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2161eb95317so104910735ad.1
-        for <netdev@vger.kernel.org>; Tue, 28 Jan 2025 08:30:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xyen8+KX"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43616bf3358so9301045e9.3;
+        Tue, 28 Jan 2025 08:32:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1738081850; x=1738686650; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LX1jGIIkfllcVoAdPxK+2jAwohid6/STTjw8AE9goHI=;
-        b=PhU9Pn52Nhcdh8hUwoiPWhrn4XkO7ifq3byXC8m+ySnEkClz20K2dTh0V7mbpS0To4
-         X3ojx5TQO558YgIhEP/J3ADb5Anbh9w7knNg4oaONZUz8NZblOdeDfRyc1yM0SF4USIL
-         r8HWqLcdNNslMg1egK6ymkFIDPYcRf7C+DkLE=
+        d=gmail.com; s=20230601; t=1738081939; x=1738686739; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SbISzZ/bYtDhpiUav/h8xTZnz5VMDjY6HJC4K2tyU3o=;
+        b=Xyen8+KXDrNuxt28vng1g2G7zmqTY6r143wy59PtWskNlSJzvw6o+tisvSRG0W4L7K
+         7bWl6lEb7UWR8QwYxEvyAQlw/p9a57o9DUvUL176liPX+6HXrloDPO2BOZ3zqbIfw5U2
+         jHObk8E+6cQl5bL9P+/Wz1JydBt8SYwzygMqDXWf9kvsl4NFsAhva++2tJKU78cl0Vkx
+         0EursLtHE2znm1BcM7WBzkcVOCfUwLmogA5BhJybmN3jtBlQSFV6sSNFDv4sewMXPavS
+         ToGC7S7904FPsrxVnrzMm+gDJSgrAmNrnkW+U+euvXsyB+IPTQv1v1Ygk1Qf9VE+xrRe
+         0E4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738081850; x=1738686650;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LX1jGIIkfllcVoAdPxK+2jAwohid6/STTjw8AE9goHI=;
-        b=eP0wdBMwads90NJv+r0XDCgJg93iSb1buQ7bFyacqx0Ctkm2o1ZCQGFXSJvBI1gu5Q
-         JrluB+1jzRfoDGLQG3yUaXqNJvA5pQyLuQJtsEt2qYJ4f2EZpVgQLIso+PqA2Yj9yZrY
-         tqClHsWWWrETZlBUp/tH5a/ymTVAc7/OeLqa5VIKnCB+d+0uFHNzD5xCud6i7KYeRdXc
-         HLpZecvqIqfoGpYwZI9IUoWKJpRj+miOvQUE6/kZoMpp3iki8WrapDreu4u2JGULBMSu
-         qatgmVOcEGxIjYXnebytSeJDiEpNP/SrMP1ksqqYm6ckmVI4XoSqjbmOXcJFgJIg82iP
-         09Kw==
-X-Gm-Message-State: AOJu0Yx46wZFEB9rgowLd6Rlf5ga2w6y9MjrFFdyPggw4GUVgwIgRa9h
-	GEJxOACkwFlAl6wTLHua8mroCwgewxGMm2nxrtXRAFWwj5IIgRSFqpvZYpCFdZMnn4eUqaYXeh3
-	sF4JZJQpzbFVgLz8mf3hzCA7LPRvhyD9HyuEgEX7Kq+Bg+SYw0RbiH4Q3Ccr3EPQIK9frkZoYv2
-	LbVdPMbDucVSm08xiNCDd/wgbwSr4WWbj6SK8=
-X-Gm-Gg: ASbGncs5X+wS8sj690cB2NeNHOMhzUhS7nkEbHqYPEmBS3XPJOxjHRZbsJe9yWMW2r8
-	a/pQ6J4i9JDl5aEIBBWIk0b6ADkDj300a6EkBypcfwkoGp36srfOEQ/+G0TUusaK2hKzb1L0RyG
-	qKHNa854Knv1iqku1JJugot4ryX+i/iOPcgxL0SroGcB7YlRezA3x9qJMxMtBk8GWs0lYVdWt6N
-	U1bQKIqL2G/HJHMYC2DoECNlvs24slRsMaVmgFXdRrn5SrqLDdZmKSfblT9devJvj37OadoCRPN
-	+jj6QNXPK9Z0Eb4Ems8v9jU=
-X-Google-Smtp-Source: AGHT+IEAl/Zi42GFgnT8NQz6rfBEjd3C3YnMh7rFy+I613HyXYnDjSd+uiXcdCJPwy5Jeu918ctDNA==
-X-Received: by 2002:a17:902:f64b:b0:215:b087:5d62 with SMTP id d9443c01a7336-21c355b5684mr738165195ad.36.1738081848738;
-        Tue, 28 Jan 2025 08:30:48 -0800 (PST)
-Received: from localhost.localdomain ([2620:11a:c019:0:65e:3115:2f58:c5fd])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da4141302sm83759335ad.154.2025.01.28.08.30.47
+        d=1e100.net; s=20230601; t=1738081939; x=1738686739;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SbISzZ/bYtDhpiUav/h8xTZnz5VMDjY6HJC4K2tyU3o=;
+        b=LqmrEJHE5/De50eBES0LP4AcZRSdCZ2HXN3N0/0/cbFQeSkP8Z0Y3hMV+wxec11i1P
+         RFYcgHcIbJXmIRuvjN7jLssp34T86hoazD/ldys/IbcUMKDiJiVV10HM3Ef2Eqwmi/UQ
+         u5UnRLp3CrPuq0j6Ysx+QLJPBSlMOyoNLjCM88uGodQj3dVtN8wxZlgBB3hfEltIRp9h
+         ntsCa3h1BJbKPGkTOdeKpbJHtFOrNys2P2mBD3coDRqRXg/G/UYyHWBmA8o7xZ/40V7V
+         MtH2b0wVah6bzZkUlSL08CsZbXipckuEUAiwky3rMn/MX95XXFLIDoTGy3kjSsthL4Yw
+         FxaA==
+X-Forwarded-Encrypted: i=1; AJvYcCVRb7dgLZvCc104Hq0mNTLor9L0vfv10NWL1KqmS7pAsmgOwghZ/qjpWjTREdmcKnQFfAccnjUS@vger.kernel.org, AJvYcCXbzNe+noflVo02zeSnGAWl6/+8XfEk/E0EPMedW1xp1+70oERft3SsQYaGF2v7krhePP35S8h5KAOzgCw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5rSaGS0LC1VQVtTfulhmmeiIYwJmf/Vm3uej8fzsB55YJTuJP
+	sUK90/8vHcbE+UcIMvzIeI8EqS9V4qgQMrVv8zeGbXENFhfuUSjO
+X-Gm-Gg: ASbGncub1oGUVdxJ1uTJXx+gvAEqXoENTg+uLKdc8mBmRK+EnKxtvj7yeTynpyiaZtJ
+	DAtzMifw/LH7weWqBW47wG6ciBjzbmMuhh0BE+GcHXS3U9wfz/r6iLNb6UCOySDHoDgjYboMBPG
+	2LHjcqNE0o9sh7F78SQFdROedXgAmyJxrNk9jnja57EPn2ai6hSuWx7RIec2RbHKt/FAP/57A5Z
+	HYK9BbCGRfqUd1kEGzCg4OSFR1lyKvPfcw8jpmlmLyzIelOoO72MgAGVH5e0mhWdXNgnot3kbOU
+	aaI=
+X-Google-Smtp-Source: AGHT+IFltqlhR556R2ZjnbCvfwmfPzvxxBlkD0aWPYrGciZhaW9rfiS9WTDOkrDeIogbDkCsdRWjwA==
+X-Received: by 2002:a05:6000:4582:b0:38c:28d0:7517 with SMTP id ffacd0b85a97d-38c28d0756dmr5142286f8f.6.1738081938778;
+        Tue, 28 Jan 2025 08:32:18 -0800 (PST)
+Received: from skbuf ([86.127.124.81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a17d7a7sm14904105f8f.32.2025.01.28.08.32.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jan 2025 08:30:48 -0800 (PST)
-From: Joe Damato <jdamato@fastly.com>
-To: netdev@vger.kernel.org
-Cc: sridhar.samudrala@intel.com,
-	Joe Damato <jdamato@fastly.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Mina Almasry <almasrymina@google.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [RFC net-next] netdev-genl: Elide napi_id for TX-only NAPIs
-Date: Tue, 28 Jan 2025 16:30:37 +0000
-Message-Id: <20250128163038.429864-1-jdamato@fastly.com>
-X-Mailer: git-send-email 2.25.1
+        Tue, 28 Jan 2025 08:32:18 -0800 (PST)
+Date: Tue, 28 Jan 2025 18:32:15 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Elliot Ayrey <Elliot.Ayrey@alliedtelesis.co.nz>
+Cc: "andrew@lunn.ch" <andrew@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"netdev@kapio-technology.com" <netdev@kapio-technology.com>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>
+Subject: Re: [PATCH net] net: dsa: mv88e6xxx: Fix switchdev error code
+Message-ID: <20250128163215.4yyf6xo5bd6kr6ns@skbuf>
+References: <20241217043930.260536-1-elliot.ayrey@alliedtelesis.co.nz>
+ <ab85afaf-bd9d-416a-b54c-9c85062f3f3f@lunn.ch>
+ <e546520005bfbdb09e66d7b9e823af1da796aae6.camel@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e546520005bfbdb09e66d7b9e823af1da796aae6.camel@alliedtelesis.co.nz>
 
-TX-only NAPIs currently do not have NAPI IDs. If a TX queue happens to
-be linked with a TX-only NAPI, elide the NAPI ID from the netlink output
-as a NAPI ID of 0 is not useful for users.
+On Sun, Jan 26, 2025 at 10:07:26PM +0000, Elliot Ayrey wrote:
+> On Tue, 2024-12-17 at 10:54 +0100, Andrew Lunn wrote:
+> > I just had a quick look at other users of call_switchdev_notifiers()
+> > and all but vxlan_core.c and this one discarded the return
+> > value. Would that be a better fix, making the code more uniform?
+> > 
+> > 	Andrew
+> 
+> Hi Andrew, I am hesitant to remove this error as it was very helpful
+> during development and helped to diagnose some subtle issues that would
+> have otherwise been very hard to notice.
 
-Signed-off-by: Joe Damato <jdamato@fastly.com>
----
- net/core/netdev-genl.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index 715f85c6b62e..3116e683e516 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -397,9 +397,12 @@ netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
- 		break;
- 	case NETDEV_QUEUE_TYPE_TX:
- 		txq = netdev_get_tx_queue(netdev, q_idx);
--		if (txq->napi && nla_put_u32(rsp, NETDEV_A_QUEUE_NAPI_ID,
--					     txq->napi->napi_id))
-+		if (!txq->napi)
- 			goto nla_put_failure;
-+		if (txq->napi->napi_id >= MIN_NAPI_ID)
-+			if (nla_put_u32(rsp, NETDEV_A_QUEUE_NAPI_ID,
-+					txq->napi->napi_id))
-+				goto nla_put_failure;
- 	}
- 
- 	genlmsg_end(rsp, hdr);
-
-base-commit: 0ad9617c78acbc71373fb341a6f75d4012b01d69
--- 
-2.25.1
-
+Can you give more details about how you encountered this issue?
+One could similarly argue that a call_switchdev_notifiers() error was
+ignored until now, and maybe the system still did something reasonable
+and thus, properly handling the error now risks introducing a regression
+for them. No way to really know except if the commit author (you) makes
+a reasonable analysis in the commit message leading to the conclusion
+that the patch is worthy of backporting to stable kernels (i.e. fixes a
+user-visible incorrect behavior).
