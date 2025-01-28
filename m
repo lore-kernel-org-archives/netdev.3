@@ -1,217 +1,237 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08967BE40
-	for <netdev@vger.kernel.org>; Tue, 28 Jan 2025 15:04:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738076690; cv=none; b=tKZxjvN55rA9aEthxDuH4kPZlnfeF8MsI+f10wJWe9OARLObpWuaAMk5b7hbWBJZ3KWHKFAi3fFbyrbHnlTeC8lnimprIU2KwNbGylBqtHr/Eet1ZGb/mx0s5Jr68xIL0Yzd+rGgXTLRbZ981RSxEhVLR2MWIDWzakWFx58fLlI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738076690; c=relaxed/simple;
-	bh=fAmEpo226QtHevfIyba67iDsWRi5SJvysppcugXKAyw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W6sQe77mlou47fHAHFVjitXDA8oXllltiydSEaM6zNhyX91PgE2O8+Pi/Z8SQj9GKoOtv+sk0Es8uJK27bJYWai3/njiRpMeVkMTKZnuf6UgABCuG+jB7ZwcIq5IF5UglqJFG7ptp1JkngANpsHcAURcQeuGUJJSEVl1C0YQawY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ckwcdrG/; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E8418DF86;
+	Tue, 28 Jan 2025 15:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738076741; cv=fail; b=N1GCGEIm7fMOnBFquuLiAHmB2613e2l/Wnb2VVCA6lJGW1mnO++1N3ZM+7lfEBjpGp0w2yzau6c/GYqKnE+SnWKI0HxAFH+p+vnFe/byZ/2rz828THbDz6VIRW+deKEdh6uvZZFdIzL9Y1bJoKyPHXjSGq4rTuItwzMHqxWNlJ0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738076741; c=relaxed/simple;
+	bh=DQZUp2vkYRTJgZXLjszM+3ZB7+ZzDmG1RIF1EyWX4ic=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=DyXkl2/YTHQPjhR/yXZySFi4/ixcux94GSqayz5YWVeYq5Q1qlKvo/0Ut9+kQQvjczy9F8r+jsGU7UjE1RIXB4NNr81jE862LDf/ZZKXumcjAnt5kW+EWA666cyvv5FxwPHKjfpSr2rhsjlOAnIAuG/GVGNFeazlJvzft6oyaEQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dRIQ96aj; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ckwcdrG/"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5d4e2aa7ea9so11261167a12.2
-        for <netdev@vger.kernel.org>; Tue, 28 Jan 2025 07:04:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738076687; x=1738681487; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LGL2HN8Fi3DZ+QAMnHPNFn5nofKWEuhiofUzFLXfui4=;
-        b=ckwcdrG/baCPSkMr7V5rhi+laaCf+jMg5qKbM6JdL0FDwIy8qOSssh4vU5swo53DUM
-         sJRW/Hs/AxEUNV/go3uuoHI/b1dST7gpp+6ahq8N0hzerW12t+wfmaMTWm2Q7GXLgQji
-         XvF82mRX0GIRSaircde9GOLcaLUCgLhlUiiuSauYXWeMzhZR5efmof055weFEvs0kQQT
-         CrUOK48TjIcMonuFvyOMQv12Xk1ZhEly585tfY53fvR1XEFPnH9MatUabwcA/as/7+BX
-         6vo+cwSv/dUoGxg6H+2SBUwlrDt9JzS1e91Rg0frCSaXK4ixYPskW04EYY2nble41i2o
-         9hfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738076687; x=1738681487;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LGL2HN8Fi3DZ+QAMnHPNFn5nofKWEuhiofUzFLXfui4=;
-        b=IU8eJZkceaSIwVqcxRZ2EZ20ZhEUaI+6oVzd3nVFaWZEaDiLCcp2RzgKOOXm08OJfU
-         uZDmp9VRWlGaCeWLdLVVPF+ZRM3Bit50HE9xop44hyPsqAGKc0wfEPLkmd7m55wRRwHy
-         JihEXeQSqxRNVw8A3aZWVNiLs0HHq3Lq0iswVlMGM6nPiGgrw1KmVTeC8qOOHOXvurFC
-         fm1jnuNK/22R3J9xPw9cuiN0rhzEj8cH4C/nlcwT06LmX/HjG5OxhVDQqGoJZvQz2ZJT
-         k7R0QhINKOof/B1H0iLAWFdxWndFvVcGRsrmVQEyUtGHgDiCL7F6ZUny+IA9EDRYtWq6
-         Hb2w==
-X-Gm-Message-State: AOJu0YwqItbi/hnj6iMGUWvsU5SeWumNBCauiamt25xgXM1HYlL5viKt
-	Aa6m5tfcLr9jzmTpg/1G6TWP81+IO+BEPK/UoqIOwZxlbCIe/3ZZoCVHooT9GZY7LOMA7hploqf
-	Fl9cPlqIXtY59WXBy/gvG2OgMP0EPpxEmjIOuKlPyYZ2nk/EqVw==
-X-Gm-Gg: ASbGncuct8SobWZ8fHDfPTp5rB7T77Tt9sIXPad5JL5KKs8Ch3zW/LNiz1Dh2ojo8Vf
-	JV3bonS6esBeoPsHzm8Pu46/hu6ugBo3u9k6PlWKPfqEqzHQCpPLMUsWt6aWc1t/QR3ewdtVG
-X-Google-Smtp-Source: AGHT+IG4TfeiDzyLV55UIi3oKvEjswQDFrkuEId3QHk3G2v8/Fk7yBARO4qNH5VDIlVndtab7nqCFhMiLnrTNvVioSw=
-X-Received: by 2002:a05:6402:1d53:b0:5dc:10fe:4d6b with SMTP id
- 4fb4d7f45d1cf-5dc10fe5068mr14887397a12.8.1738076686732; Tue, 28 Jan 2025
- 07:04:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dRIQ96aj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738076740; x=1769612740;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=DQZUp2vkYRTJgZXLjszM+3ZB7+ZzDmG1RIF1EyWX4ic=;
+  b=dRIQ96aj6h4wkeCh36TZYXRR1mqEXoGSaFE4zfqkexlt1RBMy+3qJoGb
+   nGl/PvmSKw3t2afU+RUgTIXvREN+384/T1TyPGSK5zkRJvnMOzk0dWalA
+   VBTqNzaVPeoNG/THHGA9KrV7k0Lcgawj3Wj9Li2T5TCA01fW+m2/pRcTL
+   3ucJ43EcudPLeA5VZMNUEpZkedTY8yKOkwPxA0iTn6pO07tjhISkGngwo
+   N3PeOLtGUhMCmaqGziBH9vJos+iauAVHbGqTNQqFPj00CFK2N6RMq5MdW
+   5y73/UGQYd4k53zKvUdY6ZIdb1XOZ6U5UO6HpXXMPzE2tT6IkO6l5NPfX
+   A==;
+X-CSE-ConnectionGUID: +9L0npZuTTanOJAFLHIDXw==
+X-CSE-MsgGUID: LbTfteHSTNa8Ft/RUFzv2A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11329"; a="38597195"
+X-IronPort-AV: E=Sophos;i="6.13,241,1732608000"; 
+   d="scan'208";a="38597195"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2025 07:05:39 -0800
+X-CSE-ConnectionGUID: u4n85xpaQXCtvcMYtpSMxQ==
+X-CSE-MsgGUID: q6B9q60dQaGsyKvW4XpWjw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,241,1732608000"; 
+   d="scan'208";a="109334292"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 28 Jan 2025 07:05:38 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Tue, 28 Jan 2025 07:05:37 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Tue, 28 Jan 2025 07:05:37 -0800
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.168)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Tue, 28 Jan 2025 07:05:36 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=t6RbBEDL05q3MDOtLI6llYe/28vV+N0U+CgYBellZOzC97on4pHubSTAszl+R7/vvQZrthmkBVZ9LaOeNc+Pb0IiEOoAGAqsr4z/neZ1AROIFNlr6+SR3ZWYRphG6EDq3m+mp9fBTHsNjhRslEbzhDJdnyEIRaSx4tQlP9yNeMwVrNj216poHBTMdbC1dsyJqKsUirxfnm/hUtz/OR6xCDRhCHFnTvzl6xQbJEszaUQFPue5WomtGIXDdI6I63pE3rV0xDSlftsxl2yFs/4L8h2CAGGfUT5BCsKa+oVSYVFjGJY9gMixZY8JjL7QR+e7UDTZoL3CDo9x75o42v8GBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=q+hAtAqcbmw7vzp8y97iM83ShoGsfjDbyPTiURjOMeo=;
+ b=Yy8pOcAsxx3ElQ1BsCv1qajZNO3C/64/t7J2X/iJBsvi+vleCb+aAhb13aOdyl0/rDAr9Uiw+mTKzxRGC5R26JkBe0lePf5W2B8V5mpVJmEoDWcTxQRKzz1HJEDwerLXOm970fUTh8cFWIuYDnu532nRNgPN7T6CiNcwzA5HxImte0lrk1H/eEhD9Gw+DUAFSE3+se72NR1MJGY0254GQNo4w4z56Pz7J89tZQCCV+2cB4ZW8Bb+4/b6085UtLj72kwh9CrFOB/zATyVtFFloMQwPbjVX/QZss2+lexJ3Ich+MKpOZirPeTwmyvkC+WlbvvareZHfFVjy6tmIq6XdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
+ by PH7PR11MB5817.namprd11.prod.outlook.com (2603:10b6:510:13a::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.22; Tue, 28 Jan
+ 2025 15:05:23 +0000
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::4b3b:9dbe:f68c:d808]) by DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::4b3b:9dbe:f68c:d808%5]) with mapi id 15.20.8377.021; Tue, 28 Jan 2025
+ 15:05:22 +0000
+Message-ID: <332c50f5-3c68-4fce-8bb3-161f76f2119c@intel.com>
+Date: Tue, 28 Jan 2025 16:03:11 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] bpf: Fix mix-up of 4096 and page size.
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, Saket Kumar Bhaskar
+	<skb99@linux.ibm.com>
+CC: bpf <bpf@vger.kernel.org>, Network Development <netdev@vger.kernel.org>,
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, LKML
+	<linux-kernel@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, "Hari
+ Bathini" <hbathini@linux.ibm.com>, Andrii Nakryiko <andrii@kernel.org>,
+	"Daniel Borkmann" <daniel@iogearbox.net>, "David S. Miller"
+	<davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard
+ Brouer <hawk@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Eddy Z
+	<eddyz87@gmail.com>, "Eric Dumazet" <edumazet@google.com>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Song Liu
+	<song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, John Fastabend
+	<john.fastabend@gmail.com>, "KP Singh" <kpsingh@kernel.org>
+References: <20250122183720.1411176-1-skb99@linux.ibm.com>
+ <CAADnVQJcmyMmxPfSaKgqMiCDZP=Pe8-Jf7NnEdfgxejvZr+44g@mail.gmail.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+Content-Language: en-US
+In-Reply-To: <CAADnVQJcmyMmxPfSaKgqMiCDZP=Pe8-Jf7NnEdfgxejvZr+44g@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MI1P293CA0025.ITAP293.PROD.OUTLOOK.COM
+ (2603:10a6:290:3::11) To DS0PR11MB8718.namprd11.prod.outlook.com
+ (2603:10b6:8:1b9::20)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250127231304.1465565-1-jmaloy@redhat.com>
-In-Reply-To: <20250127231304.1465565-1-jmaloy@redhat.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 28 Jan 2025 16:04:35 +0100
-X-Gm-Features: AWEUYZkVMA_GntVpsZOW3H6t5RGIw4P6CdrSeoblQDHq3rqfDn6c2ELbk1Himzo
-Message-ID: <CANn89i+x2RGHDA6W-oo=Hs8bM=4Ao_aAKFsRrFhq=U133j+FvA@mail.gmail.com>
-Subject: Re: [net,v3] tcp: correct handling of extreme memory squeeze
-To: jmaloy@redhat.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	passt-dev@passt.top, sbrivio@redhat.com, lvivier@redhat.com, 
-	dgibson@redhat.com, memnglong8.dong@gmail.com, kerneljasonxing@gmail.com, 
-	ncardwell@google.com, eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|PH7PR11MB5817:EE_
+X-MS-Office365-Filtering-Correlation-Id: 676e21b3-be9a-4a76-9ce2-08dd3fad300d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?VENEUnA4MmJEbjNhdENDQ2k2eFhmVm1aVGgrbEUydU81QnQvUWZTaFowOVIw?=
+ =?utf-8?B?cjkxQzB6enZhU2V6bktqMk5PVUNmWUdia0NZcVlreUgvSlYxdlQxQnMxc0xW?=
+ =?utf-8?B?YUE3ajliWHhpd1BWVEl5ODBKKy85cWlYRW9IZjFoNmpKTDRSeW1DT0FtWHVR?=
+ =?utf-8?B?OTNqR00rZHVJVEpZRFIxS3RyWmx1TWFOdFJYSlJYQThUT3pjSGJvaDlBOFdG?=
+ =?utf-8?B?aURkRDBtRUNXZFg0ZlpjbnpnSXZXRTZWR09kWnlUQ1hSNk1sK0FqNkJBdTJu?=
+ =?utf-8?B?eXMvMEFGUEVHVFJHU3FITEMweHFVWUdBUWlmTjJPTUY4TWdabURvVElEK0JY?=
+ =?utf-8?B?amJDU3Vack5keEtMWnVQRTJpRjNHbjl0bisxdkhLZDZqdzFIT2FvMS95cTVr?=
+ =?utf-8?B?MUpkU0w1RmpQVll0Smhrd1JiYmwvTlo0akw3c21DZlBKTVlmb1N1Y25DampF?=
+ =?utf-8?B?NEZxZUtWa0RmYlVCME11WEJweHNGREhlSmRidXFXNGgzTmYwVWluWXFTR2FB?=
+ =?utf-8?B?ckM2YjhzTUdYV1p0QUdTaDIwY05Dd3U4azAwNStaL1pQZzdiTXd4K3ZjZ2ZN?=
+ =?utf-8?B?QUdhT0svWE1wTTBZcEFtVGg5Z0I5WE9YckpOOXcwR05TbENDMUVXT1JWOHBB?=
+ =?utf-8?B?WWhQOXhzSzhBRGVtVGw4ZWl5MjJIZ09VSGVNVDBwVE15a2ZCMzRFL2hBWXJj?=
+ =?utf-8?B?UmxYMnMrQ0RhS21ocHBSeU9Da0FOSTFvdzY5cElMRHUzREFTSnRCczYydnhk?=
+ =?utf-8?B?Q3RNWlMxRzI3OUplMGN6MURoSWhVVHVBZ0ZYNmM5c0NxMFd1YkpUWDcrVFJv?=
+ =?utf-8?B?OUNHZ3ZMc2pyTDIvb3RueTRYWC9MTEdnbytCeUJaOUowaURGMWhWWHZWOHRj?=
+ =?utf-8?B?NjJIZjNscW1vYlBtMUZDMzVEcTcxamg1Y2RaeTJzSEhVWWF1ZzV3alhIaGJM?=
+ =?utf-8?B?Q1hWOW9zcWlDSi92NE9ud25jQU5zYUtWMUk0UURZQndHdXFTcVRDYUcveHFl?=
+ =?utf-8?B?bytBb3Flc2VSL1lIQ1I1Zkl6TzVZSjE5S1JrWGhqaFdBOTBPTEtIejg5cThC?=
+ =?utf-8?B?eGNqWVNhQjFLUG8xNXNVY3hjcEhIdUU5SStRUHNhdlNlelVVeTgwS0luZ01W?=
+ =?utf-8?B?c01oNGowNkhLY0hrNVQrYjU0Y091NG1tZ2c0RUpTQmpVOVdxSmNYOEhFS1oz?=
+ =?utf-8?B?eUUyc0FZV01ybVBwRnBLdFA1bkFyUUsyWHhjY0g2SGlWZ2ZBcTlJNXV1VFh0?=
+ =?utf-8?B?b0xYS3VGOFV1MHlldFFSMGpYWWtERUdwTC9Sck5mTDc4OWxZbWlVczJ2WmJt?=
+ =?utf-8?B?WEdVejNscVkzOHZNbGhYSWZLaGFuZVlJbUwxSS82QzFFazlxYVhzRDhEekxs?=
+ =?utf-8?B?dU5nbzQwVXcrOFhOMzBrL3BOWWVocVNIdG1GalUyVk9vS1pkWGx1bTZZVGta?=
+ =?utf-8?B?Vzhjb3VpTkQvVVJ4QVZ4RkFzaWF1MUhNRUhqakdDdWFYTUJDV3pkMlVWb0Vz?=
+ =?utf-8?B?ZURxbjFBN0JvZjlqSFQxV3FsdFJFa0Z4RjNZd1Btd3R4bDZvK0trWWo3OE1k?=
+ =?utf-8?B?b3djN0dTTkI1ZWxPbkFJQ3d5RFFmblhFRE5hR1Z4RTUvUW50TkhLS095OUNw?=
+ =?utf-8?B?VzBwOUQraXYzRVZzSE1qNCtoRzcxM2VLRmxNTjE4S2FZa09pT3J2ZTJSUEZs?=
+ =?utf-8?B?YjR6cHdoZTBOeEcvcEFZcGdla1IySGhXL29CZWFEclNLK3ZWdXpQTHNiSEQ3?=
+ =?utf-8?B?c3JGMjNLbXpKK2t3dHBEbktjcFU1S21NcHlma2VRZGZDbGFNNGF2UGxLS3NE?=
+ =?utf-8?B?Z2kyZCtGOUhOeUF4T3d3Y0pVdWxXS1JxZjhZU0lhcThvckZhZEo4ZDh0Y01X?=
+ =?utf-8?Q?buyFTFwPaLTKm?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Z2syb3JwTWVvcUdZU0hhdEZqN0xDYjBBTHZNRmg1MHZQYVJPNFNjeXRkOVh5?=
+ =?utf-8?B?MUtWQ0p3QlFiYW54SWF6aUVuMjEzUmk5M0hBUUNEQy9pZWZ0QkwyNHNKNkxM?=
+ =?utf-8?B?VVBETGZMTE5HZEkzRmQxM3krWFJnNUJpYmxRVzg4OTZNbkpkdmROSERkc2w2?=
+ =?utf-8?B?aTdSNG02UXNFYlVZczJHeVZXODQ0Rkx5Ylc3eGo4RGRwTC9KTFE0WHkwd1My?=
+ =?utf-8?B?MHJJcXgwU0ZlM2ZFK1JRTUQwN2d2R3J1ZVZDVTdOYWppU0JTYXhFZ0xGVHdq?=
+ =?utf-8?B?N2xLU3VyMTNqaVphTzVVNTQxelJKN1hhcVpVSDRDNG1ydWQ0aEdEY09OaWpi?=
+ =?utf-8?B?UGNHM2Q2OURLQkMzQkNqRUNFTkxEM2FRR3ZSVDdBcTZ5MzQ5bU9jNXdDenh0?=
+ =?utf-8?B?Q2tFbGRub0hiUDVWY1QyV1lSejVzOGxrbmtRTDlKbWVCd3lvYkZVcC8vZEZN?=
+ =?utf-8?B?d08yS1BvejRNTVZsbDFuR0pUQ2h3aUU1TUF4Sk8xUmpUUGE0c21RbGV1NFA2?=
+ =?utf-8?B?Y2t0YndUZzM5eEc0S2RYSExkWFlVZmhJK1NoK08vODQwVXdTRUZxTGE3TGlM?=
+ =?utf-8?B?b3J6RFZNSnovcWp0YmFuV21TR0xOMGtmN0t1Yk03blhuUEk5ZnpTZWx0bkd0?=
+ =?utf-8?B?d3pCMC9kdVRPZHJIY2oyR205eEl0akV0cGhudGJVQW1QSjhJWE8vNjdmdlp5?=
+ =?utf-8?B?NmYwVnVxbmJHSDdlNEFmOVlWbW5NTWc1WWs5ZkVYQ0djeERWYWcrUUhpVTQ0?=
+ =?utf-8?B?Y1BraHdGaDgzd2NWWnJjek55cE01QmN3VGlyOFlKYlBKMU1tdy80WWpneHBR?=
+ =?utf-8?B?K2pOKzk4dWZmeVJOUmh0OWxrVlBXZVZ3MGJFajRWYnpMQ0VLU2NOYmNoSk92?=
+ =?utf-8?B?UWVqY0pmOU15eTZOTUQrZFdJZjJCUjhZRmR5aXBPT3pHRmRRdE0wVjBZeG5K?=
+ =?utf-8?B?TmR0U29uZ2JmOVg1eUUxWUlyaUlSazFJbEJOUnI3cWt4RmJybUVUM2dyNkRi?=
+ =?utf-8?B?eVV3ckhML2Z1YzNQdzV6cUpOUE5Kblp4RDJScjNvYUFVMmg1S09SWmhhZGpr?=
+ =?utf-8?B?V0trdWtIZWtYYWlIR0o3a2ZkNVNMNi9ZZFIyVGI4VERGY2ZKd2NPdnJhY2k4?=
+ =?utf-8?B?WDQ3SlVmRHUxWmk2S2hGeUdwQ3BNU05LU2M0SFZOQlROSWZKVVNhN2pWUGFp?=
+ =?utf-8?B?cE1NWEROcmN4bWl0VytuR0lXVGR6aU5QWUJod3RHcWVWejFld3pGSE5meFVR?=
+ =?utf-8?B?QWN1ZmR0bnN0aVh1WFNmNENldHV6S1ZKRkhic3MrTFUwTmQxcTV6dU9qQkxo?=
+ =?utf-8?B?LzUyR1ZKNExqbXRkODMzbFBSTEtYYThmV2REL245VzdNZzlMdnFWSVpuRzdJ?=
+ =?utf-8?B?M2JjMlFzU3MraUc1NnJQVDFVMVV0MjlmbEdvekY2VWs0ZUpKKzc1MkZOZzgv?=
+ =?utf-8?B?cnBzTXlEczdNS21uZVBPS1hpRUNaaEJVQmxsRExsa1duSDVhTzdpNWwwdzJ4?=
+ =?utf-8?B?MnRIekduUzRxRXhPU244OEh2S3NHQ1d3dkJRbGZpb0JxUDMrZ1pSRTlWazZL?=
+ =?utf-8?B?bUR0dHVFVWZPUXFaL3Ivb05xUzYzVmJtTS9NWENBTUF4OG9WckpPQ1NyMkg0?=
+ =?utf-8?B?WlVMYlJaQkd4UlA0aXVGcVc0WUtLdnVVeGd0dHJNNmk3SVErUGxjWTBUcHdj?=
+ =?utf-8?B?c2dXZ0RHS010a3NQdWxISnlJelZDd1V6ZXc4bGpNV082eFVScEU0OUg2OW42?=
+ =?utf-8?B?NGtnTE53TXBrTW9leHVwZTFlY3pybUJsSDV5YmhYdjlETGNjeDhpTGNXRm1k?=
+ =?utf-8?B?d3FrWlZiN01uSXR6dThoZmx1K0Q2Vml4Qnlpclk3dHFqMXNyTjdObmMyci9R?=
+ =?utf-8?B?NmVudTQ4SSt2SWtFS2JFMnFTcXkxbyt2VkQ0em5qcVdqQTd3bDdGTEphUzBz?=
+ =?utf-8?B?ak5GRE5wTjV4Q3ovcEp5ZkR5RS8xQnNCbnZOekpGamE3amNER0lVdm1wSURp?=
+ =?utf-8?B?NUxMTC9BWkhjdDdjclcvOW1OSGxmTEM1UldPdmQ1VnhST1VYamdLNUk3N25O?=
+ =?utf-8?B?Sm5ScnExeENxdEN6eE5aT2orTllvdlZWNGdhckloRHZSRWluQmtvZmZqV3dU?=
+ =?utf-8?B?dEg0TEwvRkhuV0NxZlA1VjlKOHlWMmFST05TMTl5SHQ4L3NSSmltQkwvc1E4?=
+ =?utf-8?B?cmc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 676e21b3-be9a-4a76-9ce2-08dd3fad300d
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2025 15:05:22.8183
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: a7kqqjreIxkmOq+Cgs/SqZ88/EGWWh5vPglxYZ8AQpm33qShUGmWf/1KzgLgJDbceat6dqTA830w0Pe8T+ijlEEAyBfQY8Q76aOseSsFTr4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5817
+X-OriginatorOrg: intel.com
 
-On Tue, Jan 28, 2025 at 12:13=E2=80=AFAM <jmaloy@redhat.com> wrote:
->
-> From: Jon Maloy <jmaloy@redhat.com>
->
-> Testing with iperf3 using the "pasta" protocol splicer has revealed
-> a bug in the way tcp handles window advertising in extreme memory
-> squeeze situations.
->
-> Under memory pressure, a socket endpoint may temporarily advertise
-> a zero-sized window, but this is not stored as part of the socket data.
-> The reasoning behind this is that it is considered a temporary setting
-> which shouldn't influence any further calculations.
->
-> However, if we happen to stall at an unfortunate value of the current
-> window size, the algorithm selecting a new value will consistently fail
-> to advertise a non-zero window once we have freed up enough memory.
-> This means that this side's notion of the current window size is
-> different from the one last advertised to the peer, causing the latter
-> to not send any data to resolve the sitution.
->
-> The problem occurs on the iperf3 server side, and the socket in question
-> is a completely regular socket with the default settings for the
-> fedora40 kernel. We do not use SO_PEEK or SO_RCVBUF on the socket.
->
-> The following excerpt of a logging session, with own comments added,
-> shows more in detail what is happening:
->
-> //              tcp_v4_rcv(->)
-> //                tcp_rcv_established(->)
-> [5201<->39222]:     =3D=3D=3D=3D Activating log @ net/ipv4/tcp_input.c/tc=
-p_data_queue()/5257 =3D=3D=3D=3D
-> [5201<->39222]:     tcp_data_queue(->)
-> [5201<->39222]:        DROPPING skb [265600160..265665640], reason: SKB_D=
-ROP_REASON_PROTO_MEM
->                        [rcv_nxt 265600160, rcv_wnd 262144, snt_ack 265469=
-200, win_now 131184]
->                        [copied_seq 259909392->260034360 (124968), unread =
-5565800, qlen 85, ofoq 0]
->                        [OFO queue: gap: 65480, len: 0]
-> [5201<->39222]:     tcp_data_queue(<-)
-> [5201<->39222]:     __tcp_transmit_skb(->)
->                         [tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp-=
->rcv_nxt 265600160]
-> [5201<->39222]:       tcp_select_window(->)
-> [5201<->39222]:         (inet_csk(sk)->icsk_ack.pending & ICSK_ACK_NOMEM)=
- ? --> TRUE
->                         [tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp-=
->rcv_nxt 265600160]
->                         returning 0
-> [5201<->39222]:       tcp_select_window(<-)
-> [5201<->39222]:       ADVERTISING WIN 0, ACK_SEQ: 265600160
-> [5201<->39222]:     [__tcp_transmit_skb(<-)
-> [5201<->39222]:   tcp_rcv_established(<-)
-> [5201<->39222]: tcp_v4_rcv(<-)
->
-> // Receive queue is at 85 buffers and we are out of memory.
-> // We drop the incoming buffer, although it is in sequence, and decide
-> // to send an advertisement with a window of zero.
-> // We don't update tp->rcv_wnd and tp->rcv_wup accordingly, which means
-> // we unconditionally shrink the window.
->
-> [5201<->39222]: tcp_recvmsg_locked(->)
-> [5201<->39222]:   __tcp_cleanup_rbuf(->) tp->rcv_wup: 265469200, tp->rcv_=
-wnd: 262144, tp->rcv_nxt 265600160
-> [5201<->39222]:     [new_win =3D 0, win_now =3D 131184, 2 * win_now =3D 2=
-62368]
-> [5201<->39222]:     [new_win >=3D (2 * win_now) ? --> time_to_ack =3D 0]
-> [5201<->39222]:     NOT calling tcp_send_ack()
->                     [tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv=
-_nxt 265600160]
-> [5201<->39222]:   __tcp_cleanup_rbuf(<-)
->                   [rcv_nxt 265600160, rcv_wnd 262144, snt_ack 265469200, =
-win_now 131184]
->                   [copied_seq 260040464->260040464 (0), unread 5559696, q=
-len 85, ofoq 0]
->                   returning 6104 bytes
-> [5201<->39222]: tcp_recvmsg_locked(<-)
->
-> // After each read, the algorithm for calculating the new receive
-> // window in __tcp_cleanup_rbuf() finds it is too small to advertise
-> // or to update tp->rcv_wnd.
-> // Meanwhile, the peer thinks the window is zero, and will not send
-> // any more data to trigger an update from the interrupt mode side.
->
-> [5201<->39222]: tcp_recvmsg_locked(->)
-> [5201<->39222]:   __tcp_cleanup_rbuf(->) tp->rcv_wup: 265469200, tp->rcv_=
-wnd: 262144, tp->rcv_nxt 265600160
-> [5201<->39222]:     [new_win =3D 262144, win_now =3D 131184, 2 * win_now =
-=3D 262368]
-> [5201<->39222]:     [new_win >=3D (2 * win_now) ? --> time_to_ack =3D 0]
-> [5201<->39222]:     NOT calling tcp_send_ack()
->                     [tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv=
-_nxt 265600160]
-> [5201<->39222]:   __tcp_cleanup_rbuf(<-)
->                   [rcv_nxt 265600160, rcv_wnd 262144, snt_ack 265469200, =
-win_now 131184]
->                   [copied_seq 260099840->260171536 (71696), unread 542862=
-4, qlen 83, ofoq 0]
->                   returning 131072 bytes
-> [5201<->39222]: tcp_recvmsg_locked(<-)
->
-> // The above pattern repeats again and again, since nothing changes
-> // between the reads.
->
-> [...]
->
-> [5201<->39222]: tcp_recvmsg_locked(->)
-> [5201<->39222]:   __tcp_cleanup_rbuf(->) tp->rcv_wup: 265469200, tp->rcv_=
-wnd: 262144, tp->rcv_nxt 265600160
-> [5201<->39222]:     [new_win =3D 262144, win_now =3D 131184, 2 * win_now =
-=3D 262368]
-> [5201<->39222]:     [new_win >=3D (2 * win_now) ? --> time_to_ack =3D 0]
-> [5201<->39222]:     NOT calling tcp_send_ack()
->                     [tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv=
-_nxt 265600160]
-> [5201<->39222]:   __tcp_cleanup_rbuf(<-)
->                   [rcv_nxt 265600160, rcv_wnd 262144, snt_ack 265469200, =
-win_now 131184]
->                   [copied_seq 265600160->265600160 (0), unread 0, qlen 0,=
- ofoq 0]
->                   returning 54672 bytes
-> [5201<->39222]: tcp_recvmsg_locked(<-)
->
-> // The receive queue is empty, but no new advertisement has been sent.
-> // The peer still thinks the receive window is zero, and sends nothing.
-> // We have ended up in a deadlock situation.
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Thu, 23 Jan 2025 21:14:04 -0800
 
-This so-called 'deadlock' only occurs if a remote TCP stack is unable
-to send win0 probes.
+> On Wed, Jan 22, 2025 at 10:38 AM Saket Kumar Bhaskar
+> <skb99@linux.ibm.com> wrote:
+>>
+>> For platforms on powerpc architecture with a default page size greater
+>> than 4096, there was an inconsistency in fragment size calculation.
+>> This caused the BPF selftest xdp_adjust_tail/xdp_adjust_frags_tail_grow
+>> to fail on powerpc.
+>>
+>> The issue occurred because the fragment buffer size in
+>> bpf_prog_test_run_xdp() was set to 4096, while the actual data size in
+>> the fragment within the shared skb was checked against PAGE_SIZE
+>> (65536 on powerpc) in min_t, causing it to exceed 4096 and be set
+>> accordingly. This discrepancy led to an overflow when
+>> bpf_xdp_frags_increase_tail() checked for tailroom, as skb_frag_size(frag)
+>> could be greater than rxq->frag_size (when PAGE_SIZE > 4096).
+>>
+>> This commit updates the page size references to 4096 to ensure consistency
+>> and prevent overflow issues in fragment size calculations.
+> 
+> This isn't right. Please fix the selftest instead.
 
-In this case, sending some ACK will not help reliably if these ACK get lost=
-.
+It's not _that_ easy, I had tried in the past. Anyway, this patch is
+*not* a good "solution".
 
-I find the description tries very hard to hide a bug in another stack,
-for some reason.
+If you (Saket) really want to fix this, both test_run and the selftest
+must be in sync, so you need to (both are arch-dependent): 1) get the
+correct PAGE_SIZE; 2) calculate the correct tailroom in userspace (which
+depends on sizeof(shinfo) and SKB_DATA_ALIGN -> SMP_CACHE_BYTES).
 
-When under memory stress, not sending an opening ACK as fast as possible,
-giving time for the host to recover from this memory stress was also a
-sensible thing to do.
+> 
+> pw-bot: cr
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-
-Thanks for the fix.
+Thanks,
+Olek
