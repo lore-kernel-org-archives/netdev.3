@@ -1,241 +1,384 @@
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450521B0434
-	for <netdev@vger.kernel.org>; Wed, 29 Jan 2025 11:25:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282B2186615;
+	Wed, 29 Jan 2025 11:31:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738149907; cv=none; b=eysE3gfO+zbCZAvNLu+DCp5FVgmQWtgRnXuWRePZrM0kS+80HfoI+T39xz7yPGG3zjix2QMpDknQFVeGuw2dgRBtBXXHqE1jxB87CCvcPpwin7d+N6QQHYipTk/NJ6n/OvcS9rX6ogErASwpYt8LcCjA1zEzJVS5fnbjCaLL66s=
+	t=1738150301; cv=none; b=cKYQkBm9lrY7vkegz18CAUlpQ8PQ+R8/eH4OGFdYBT4pDliCIN92NhIXL8jy5ab0IU2mid/MKKx8/7gtbQqNQP1taZiKeJeGq0c8d/8ixdYpE8yezUsYRZPWPVdZCp4SljLwNDDGWY3rkI72sWYNKsLwGxs9VJAk38YloLX0VEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738149907; c=relaxed/simple;
-	bh=J1Ie4jiZwLz5gqjKkiEK3Hl+b1Wh2aFcy3HyOD+UtsM=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
-	 Content-Type:References; b=CRus7aHIGGvbFQNDRyrehAwcm2uBZOsmaMkSH97fqSwfsK3kGhWGfSSKGTXMA5Qvq0FJNl6d+lvLW4eQ7Wz0dnxv0s2h9uE3DL0VUcMBiFX4QEjU0Fz6sx/f2zAQA05H/uLRu0kee7jxCi3UzmR5BatNw5h50eQyoDJxn3SFXW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=rsGLB8N6; arc=none smtp.client-ip=203.254.224.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1738150301; c=relaxed/simple;
+	bh=WUl8faxreAR5NMBCJ1M6ObnVZ59G1D8IoPaqQ74AJ1o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gU7l7PGJbLgpr+Vz0daq1GesC4TPOFEfaTL72P7EjbrH4G6rXGuNW1qsPKxBU7Iy8jDheEn7apXF4abJybtnsGX3gHe08BNCEwYDijoIpGWu+yVclJFSC6ncauQlokGliYU2zNYEt0EE/OdM1e0LAvLNoV7lRja03PV1Zx0hRK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nU2nFaWk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=j1kw4YWE; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HV3JnNK4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=L3zKaIXh; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="rsGLB8N6"
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20250129111528epoutp0179dda26069bdb9e3ef264b2a10365877~fJZr6Rpbp2275322753epoutp01c
-	for <netdev@vger.kernel.org>; Wed, 29 Jan 2025 11:15:28 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20250129111528epoutp0179dda26069bdb9e3ef264b2a10365877~fJZr6Rpbp2275322753epoutp01c
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1738149328;
-	bh=xGuALcrPuSIk/tk+ACOlUB8rfuEt7Bvx3muPFTz4zHE=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-	b=rsGLB8N6va6oUb3YqxGVT2IOpORfLhi4/PlOznnJIPedlqMZI//gP8WVO24JGsuUE
-	 rVqfAvq60Gw6O4RQSOLOVeMjHiNbM2wLcNmMiUSUiKH0aNWiN1qapE0JQQYhWbtJvp
-	 8T2QUFPYOLmmcBqQBnjVnIXMNV/0eZ7lB4msCskE=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTP id
-	20250129111528epcas5p4ece79fb77edd90a7a080715fceb8fc57~fJZrScBPq1814118141epcas5p47;
-	Wed, 29 Jan 2025 11:15:28 +0000 (GMT)
-Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.175]) by
-	epsnrtp4.localdomain (Postfix) with ESMTP id 4YjfhY7429z4x9Pw; Wed, 29 Jan
-	2025 11:15:25 +0000 (GMT)
-Received: from epcas5p3.samsung.com ( [182.195.41.41]) by
-	epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	E6.71.29212.DCD0A976; Wed, 29 Jan 2025 20:15:25 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-	20250129091811epcas5p338ea019f7d192f9105b9439da53abbaa~fHzR7Mapz0667606676epcas5p36;
-	Wed, 29 Jan 2025 09:18:11 +0000 (GMT)
-Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20250129091811epsmtrp2b18e9e73296966f0b490b888948628d5~fHzR42lxZ0365703657epsmtrp2B;
-	Wed, 29 Jan 2025 09:18:11 +0000 (GMT)
-X-AuditID: b6c32a50-801fa7000000721c-2d-679a0dcd7119
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	77.13.23488.352F9976; Wed, 29 Jan 2025 18:18:11 +0900 (KST)
-Received: from FDSFTE596 (unknown [107.122.82.131]) by epsmtip2.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20250129091807epsmtip2f010d378103714dd2c89521cab520491~fHzOT0pot1058210582epsmtip2s;
-	Wed, 29 Jan 2025 09:18:07 +0000 (GMT)
-From: "Swathi K S" <swathi.ks@samsung.com>
-To: "'Krzysztof Kozlowski'" <krzk@kernel.org>
-Cc: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-samsung-soc@vger.kernel.org>,
-	<alexandre.torgue@foss.st.com>, <peppe.cavallaro@st.com>,
-	<joabreu@synopsys.com>, <rcsekar@samsung.com>, <ssiddha@tesla.com>,
-	<jayati.sahu@samsung.com>, <pankaj.dubey@samsung.com>,
-	<ravi.patel@samsung.com>, <gost.dev@samsung.com>, <robh@kernel.org>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <conor+dt@kernel.org>, <richardcochran@gmail.com>,
-	<mcoquelin.stm32@gmail.com>, <andrew@lunn.ch>, <alim.akhtar@samsung.com>,
-	<linux-fsd@tesla.com>
-In-Reply-To: <1da56c20-c522-428e-81ff-bc2f9ee0f524@kernel.org>
-Subject: RE: [PATCH v5 1/4] dt-bindings: net: Add FSD EQoS device tree
- bindings
-Date: Wed, 29 Jan 2025 14:48:05 +0530
-Message-ID: <002d01db722e$b6fc4610$24f4d230$@samsung.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nU2nFaWk";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="j1kw4YWE";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HV3JnNK4";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="L3zKaIXh"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EF8BF210F7;
+	Wed, 29 Jan 2025 11:31:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1738150297; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gm6ZkWTIU04p43tALdfwd8iDD1PBnWsYZdHrDAB1F10=;
+	b=nU2nFaWkzOahH2RbEzX1MP1tFf2th6c0/rqe9JxI8yG7IS1xw5wa2Z/oJ4LAORbu2tbqTp
+	ntt9kL90u3KsR2LfCsw5fCxm0PZpZbGc6aX4Pc9VTK13fbRl3vVG9yKSlVtQeJHY+Qe6t4
+	Fz0B8CuvezUvBgbpEbBsXcuSzJOWncw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1738150297;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gm6ZkWTIU04p43tALdfwd8iDD1PBnWsYZdHrDAB1F10=;
+	b=j1kw4YWEx74S9RkAT7eY6t4D6u2Z3VS8wKZ3KOI20Cw1XARFymibEOnH4fLZ9k2EQhI5A/
+	BYPhmMiaz4cjsEDA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HV3JnNK4;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=L3zKaIXh
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1738150296; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gm6ZkWTIU04p43tALdfwd8iDD1PBnWsYZdHrDAB1F10=;
+	b=HV3JnNK4w4Y4/uhTqrgfzJT0vZ+ksyfNfogjuG78leRGkSmx88aYUT3kHzrshhew9aqRQW
+	U89QWkaoO+pXK4IrJ4ypRppNHRo+1HuebXymKRaTtdsuFwYs5/TjtG1Ms+ex6WPe1yLDZm
+	mSuqriENMgm9YjOn2s8F4Ypey8b3w48=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1738150296;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gm6ZkWTIU04p43tALdfwd8iDD1PBnWsYZdHrDAB1F10=;
+	b=L3zKaIXhP8KijyNLmmlPMTRks2w8Q8RXl0SHU+DJGJ0yRzsMA3SupEsobZf2I9u5wuyL+A
+	mFo1RS6GJ7db47Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C6571137DB;
+	Wed, 29 Jan 2025 11:31:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id r3JpL5gRmmftYgAAD6G6ig
+	(envelope-from <tbogendoerfer@suse.de>); Wed, 29 Jan 2025 11:31:36 +0000
+Date: Wed, 29 Jan 2025 12:31:29 +0100
+From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+To: Eric Dumazet <edumazet@google.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Simon Horman
+ <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 net] gro_cells: Avoid packet re-ordering for cloned
+ skbs
+Message-ID: <20250129123129.0c102586@samweis>
+In-Reply-To: <CANn89iJODT0+qe678jOfs4ssy10cNXg5ZsYbvgHKDYyZ6q_rgg@mail.gmail.com>
+References: <20250121115010.110053-1-tbogendoerfer@suse.de>
+	<3fe1299c-9aea-4d6a-b65b-6ac050769d6e@redhat.com>
+	<CANn89iLwOWvzZqN2VpUQ74a5BXRgvZH4_D2iesQBdnGWmZodcg@mail.gmail.com>
+	<de2d5f6e-9913-44c1-9f4e-3e274b215ebf@redhat.com>
+	<CANn89iJODT0+qe678jOfs4ssy10cNXg5ZsYbvgHKDYyZ6q_rgg@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-suse-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQDx5RsunPn3lkU9PtjwM0wRa6rGBAHz93duAhzDMjcC64gLR7TIsIcg
-Content-Language: en-in
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Ta1BUZRieb8+ePYsGHbl+4Vh0igqaBVZg+yBAQsY5A8yIOFrROLjCaZeA
-	3WUvCpaDgaYQETaT2HK/iIIhuAIuBLQCkUGy4AUxRZHLgAsBBjFQQ7bsgeLf8z7zvO/zPu83
-	Hx+zrSKc+fEyNaOUiRMp3iZuY4ebm+CmtVbi1TnvjZafngVouKiRh4xD7Rj6vrWXgwqMJ7io
-	uLMXR+NdIwS6b2jioM7uCg56VDaDI6OxjkB9jTk40o0O4OiJ6X10u7mAh84Z2zgoa2AMR0Ur
-	NTjqKnFEiz3TAJU1LBDo+VQDQE/mWgik7dPjqPPXSQw9b9ETqGy4BA/eStdX3efQ4183EHST
-	doigS3QaWledyaOvVqTRTfp5Dj3bdpdH59RXA/p6m5AeX2rF6Pof5wH9T3ohQc/rXo60iU4I
-	kDLiOEbpwshi5XHxMkkgFb43ZmeMr8hLKBD6oXcoF5k4iQmkQiMiBbviE80noVwOixM1ZipS
-	rFJRnkEBSrlGzbhI5Sp1IMUo4hIVPgoPlThJpZFJPGSM2l/o5bXd1yw8mCCdyj8FFPkOKXla
-	I34cNJNZwIoPSR94cuk0ngU28W3JFgB/r63issUfAN563EywxSKAk7pF3nqLob56TdUK4Kmh
-	XowtJgGs7Z/krqp4pDssy2kjVrE9KYBXBy9YRmFkDw4NDRmWUVZkEDx/OR9fxXbkHlg8mGPh
-	uaQrvNb/pYW3Jv3gg6JhwOIt8JfvxiwGGPk2rCydwtiVXODyeKVZzzeb7YLP7n3ASpzgT8vZ
-	luUgOWIFLy7eAKw+FHY0NOEstoOmn+sJFjvD+ZnWtZgx8FLOXS6LpXDorzNr/A5ouFPAXfXC
-	SDdY2+zJ0tvgt92XOayvDfzq7zEOy1tDfdE6fg2uTA2sjXwJNp6fJXIBpd2QTLshmXZDBO3/
-	biWAWw2cGYUqScLE+iqEAhlz5L8nj5Un6YDlz7hH6sGluhWPdsDhg3YA+Rhlb32g95zE1jpO
-	nHqUUcpjlJpERtUOfM33PoM5O8TKzZ9Opo4R+vh5+YhEIh8/b5GQcrLOaDohsSUlYjWTwDAK
-	Rrnex+FbOR/nuORFEYKu/pNOi0EXDnk//IIvjdiSPPMoJC+uYsTV9KnmldKUd1OCI9xT02v2
-	v35wCd6yCXhosNvfpw+bGTeFf/OYwt6zK2gOmWiVyrfibkfl2UYJmTGdLrG/FnD9zcEjVccO
-	dS9kbtMkeu29UprqP6xsrsErO3qCx23Alew5LDo32uHzBdVoXd32j0dbpTdf1e8+ra54sFnk
-	9uJvsYUl1FPXP9vPRh6YixI57pYYZtMycpTpe3h3QvbZbr6dHXYjdLDNc+LDnYWfhO7TaArC
-	ZP3toWnJHs8k4Unl5UuGkR0vTF/8gbj3mf8buqJcTUpyZlXY4beWTRNM+cQxUxSv+CPHSgHF
-	VUnFQndMqRL/C7mz+EC8BAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupjleLIzCtJLcpLzFFi42LZdlhJXjf408x0gxMf+Cx+vpzGaPFg3jY2
-	i/N3DzFbrNl7jslizvkWFov5R86xWjw99ojd4uaBnUwWR04tYbK4t+gdq8X58xvYLS5s62O1
-	2PT4GqvFw1fhFpd3zWGzmHF+H5NF17UnrBbz/q5ltTi2QMzi2+k3jBaLtn5ht/j/eiujxcMP
-	e9gtZl3YwWpx5MwLZov/e3awWyx6sIDVQdpjy8qbTB5P+7eye+ycdZfdY8GmUo9NqzrZPDYv
-	qffYueMzk8f7fVfZPPq2rGL0OLjP0OPpj73MHlv2f2b0+Nc0l93j8ya5AL4oLpuU1JzMstQi
-	fbsEroyOQzvYCs6KVDxfvYO1gfENfxcjJ4eEgInEgS2rWLoYuTiEBHYzShzds4ARIiEp8al5
-	KiuELSyx8t9zdhBbSOAZo8TtaUUgNpuAlsSivn1gcREBXYnNN5aD2cwCL1kljq6JgBj6llFi
-	5ZMtYEM5Bewklq6bDTZUWMBfYtqlg2A2i4CqxPaL3WA2r4ClxO15DxghbEGJkzOfsEAM1Zbo
-	fdjKCGMvW/iaGeI4BYmfT5cB9XIAHeEm8fF6BESJuMTRnz3MExiFZyGZNAvJpFlIJs1C0rKA
-	kWUVo2RqQXFuem6yYYFhXmq5XnFibnFpXrpecn7uJkZwktHS2MH47luT/iFGJg7GQ4wSHMxK
-	Iryx52akC/GmJFZWpRblxxeV5qQWH2KU5mBREuddaRiRLiSQnliSmp2aWpBaBJNl4uCUamBK
-	vVkhe6vuGefvOrmJWjr+u2/EVq7fN/fJrwfKUnOlBbXrN1/7yHGu5wuf+faeyIq+0wGK03m4
-	um52fLyS4qy/xCo4P8bUgpvrwfVnZapC/Gr/Wo6dMbn9zeDMgrUHYsTvCLUzRAi3uy+baxSQ
-	1nC0b/HX3Z7Mkzj/cvhztQe+ejSn1mfKGvWue17XP6c9DBDi2b3ZzzuAl3tyVtaH07U+s+6v
-	qfDj+ujO1i98fpPrjFCXW7ePTGp9YR2+O9hZsrpq58najU8d+TMX8na63Nd6c0rl6vcvUpMv
-	r4w/kM7yN3dJYje3wqt7gSIMKozJ0/frvrnxeTWf6P4pN5JvPN5enll65qTAqlqZpKUFX+Yo
-	sRRnJBpqMRcVJwIAzQB4eqEDAAA=
-X-CMS-MailID: 20250129091811epcas5p338ea019f7d192f9105b9439da53abbaa
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250128102725epcas5p44b02ac2980a3aeb0016ce9fdef011ecf
-References: <20250128102558.22459-1-swathi.ks@samsung.com>
-	<CGME20250128102725epcas5p44b02ac2980a3aeb0016ce9fdef011ecf@epcas5p4.samsung.com>
-	<20250128102558.22459-2-swathi.ks@samsung.com>
-	<1da56c20-c522-428e-81ff-bc2f9ee0f524@kernel.org>
+X-Rspamd-Queue-Id: EF8BF210F7
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.01
+X-Spam-Flag: NO
+
+On Thu, 23 Jan 2025 11:43:05 +0100
+Eric Dumazet <edumazet@google.com> wrote:
+
+> On Thu, Jan 23, 2025 at 11:42=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> =
+wrote:
+> >
+> > On 1/23/25 11:07 AM, Eric Dumazet wrote: =20
+> > > On Thu, Jan 23, 2025 at 9:43=E2=80=AFAM Paolo Abeni <pabeni@redhat.co=
+m> wrote: =20
+> > >> On 1/21/25 12:50 PM, Thomas Bogendoerfer wrote: =20
+> > >>> gro_cells_receive() passes a cloned skb directly up the stack and
+> > >>> could cause re-ordering against segments still in GRO. To avoid
+> > >>> this queue cloned skbs and use gro_normal_one() to pass it during
+> > >>> normal NAPI work.
+> > >>>
+> > >>> Fixes: c9e6bc644e55 ("net: add gro_cells infrastructure")
+> > >>> Suggested-by: Eric Dumazet <edumazet@google.com>
+> > >>> Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+> > >>> --
+> > >>> v2: don't use skb_copy(), but make decision how to pass cloned skbs=
+ in
+> > >>>     napi poll function (suggested by Eric)
+> > >>> v1: https://lore.kernel.org/lkml/20250109142724.29228-1-tbogendoerf=
+er@suse.de/
+> > >>>
+> > >>>  net/core/gro_cells.c | 9 +++++++--
+> > >>>  1 file changed, 7 insertions(+), 2 deletions(-)
+> > >>>
+> > >>> diff --git a/net/core/gro_cells.c b/net/core/gro_cells.c
+> > >>> index ff8e5b64bf6b..762746d18486 100644
+> > >>> --- a/net/core/gro_cells.c
+> > >>> +++ b/net/core/gro_cells.c
+> > >>> @@ -2,6 +2,7 @@
+> > >>>  #include <linux/skbuff.h>
+> > >>>  #include <linux/slab.h>
+> > >>>  #include <linux/netdevice.h>
+> > >>> +#include <net/gro.h>
+> > >>>  #include <net/gro_cells.h>
+> > >>>  #include <net/hotdata.h>
+> > >>>
+> > >>> @@ -20,7 +21,7 @@ int gro_cells_receive(struct gro_cells *gcells, s=
+truct sk_buff *skb)
+> > >>>       if (unlikely(!(dev->flags & IFF_UP)))
+> > >>>               goto drop;
+> > >>>
+> > >>> -     if (!gcells->cells || skb_cloned(skb) || netif_elide_gro(dev)=
+) {
+> > >>> +     if (!gcells->cells || netif_elide_gro(dev)) {
+> > >>>               res =3D netif_rx(skb);
+> > >>>               goto unlock;
+> > >>>       }
+> > >>> @@ -58,7 +59,11 @@ static int gro_cell_poll(struct napi_struct *nap=
+i, int budget)
+> > >>>               skb =3D __skb_dequeue(&cell->napi_skbs);
+> > >>>               if (!skb)
+> > >>>                       break;
+> > >>> -             napi_gro_receive(napi, skb);
+> > >>> +             /* Core GRO stack does not play well with clones. */
+> > >>> +             if (skb_cloned(skb))
+> > >>> +                     gro_normal_one(napi, skb, 1);
+> > >>> +             else
+> > >>> +                     napi_gro_receive(napi, skb); =20
+> > >>
+> > >> I must admit it's not clear to me how/why the above will avoid OoO. I
+> > >> assume OoO happens when we observe both cloned and uncloned packets
+> > >> belonging to the same connection/flow.
+> > >>
+> > >> What if we have a (uncloned) packet for the relevant flow in the GRO,
+> > >> 'rx_count - 1' packets already sitting in 'rx_list' and a cloned pac=
+ket
+> > >> for the critical flow reaches gro_cells_receive()?
+> > >>
+> > >> Don't we need to unconditionally flush any packets belonging to the =
+same
+> > >> flow? =20
+> > >
+> > > It would only matter if we had 2 or more segments that would belong
+> > > to the same flow and packet train (potential 'GRO super packet'), with
+> > > the 'cloned'
+> > > status being of mixed value on various segments.
+> > >
+> > > In practice, the cloned status will be the same for all segments. =20
+> >
+> > I agree with the above, but my doubt is: does the above also mean that
+> > in practice there are no OoO to deal with, even without this patch?
+> >
+> > To rephrase my doubt: which scenario is addressed by this patch that
+> > would lead to OoO without it? =20
+>=20
+> Fair point, a detailed changelog would be really nice.
+
+My test scenario is simple:
+
+TCP Sender in namespace A -> ip6_tunnel -> ipvlan -> ipvlan -> ip6_tunnel -=
+> TCP receiver
+
+Sender does continuous writes in 15k chunks, receiver reads data from socke=
+t in a loop.
+
+And that is what I see:
+
+   40   0.002766      1000::1 =E2=86=92 2000::1      TCP 15088 51238 =E2=86=
+=92 5060 [PSH, ACK] Seq=3D2862576060 Ack=3D1152583678 Win=3D65536 Len=3D150=
+00 TSval=3D3343493494 TSecr=3D629171944
+   41   0.002844      1000::1 =E2=86=92 2000::1      TCP 9816 51238 =E2=86=
+=92 5060 [PSH, ACK] Seq=3D2862591060 Ack=3D1152583678 Win=3D65536 Len=3D972=
+8 TSval=3D3343493494 TSecr=3D629171944
+   42   0.004122      1000::1 =E2=86=92 2000::1      TCP 1468 [TCP Previous=
+ segment not captured] 51238 =E2=86=92 5060 [ACK] Seq=3D2862642188 Ack=3D11=
+52583678 Win=3D65536 Len=3D1380 TSval=3D3343493496 TSecr=3D629171946
+   43   0.004128      1000::1 =E2=86=92 2000::1      TCP 20788 [TCP Out-Of-=
+Order] 51238 =E2=86=92 5060 [PSH, ACK] Seq=3D2862600788 Ack=3D1152583678 Wi=
+n=3D65536 Len=3D20700 TSval=3D3343493496 TSecr=3D629171946
+   44   0.004133      1000::1 =E2=86=92 2000::1      TCP 20788 [TCP Out-Of-=
+Order] 51238 =E2=86=92 5060 [PSH, ACK] Seq=3D2862621488 Ack=3D1152583678 Wi=
+n=3D65536 Len=3D20700 TSval=3D3343493496 TSecr=3D629171946
+   45   0.004169      1000::1 =E2=86=92 2000::1      TCP 500 [TCP Previous =
+segment not captured] 51238 =E2=86=92 5060 [PSH, ACK] Seq=3D2862665648 Ack=
+=3D1152583678 Win=3D65536 Len=3D412 TSval=3D3343493496 TSecr=3D629171946
+   46   0.004180      1000::1 =E2=86=92 2000::1      TCP 22168 [TCP Out-Of-=
+Order] 51238 =E2=86=92 5060 [PSH, ACK] Seq=3D2862643568 Ack=3D1152583678 Wi=
+n=3D65536 Len=3D22080 TSval=3D3343493496 TSecr=3D629171946
+   47   0.004187      1000::1 =E2=86=92 2000::1      TCP 13888 51238 =E2=86=
+=92 5060 [PSH, ACK] Seq=3D2862666060 Ack=3D1152583678 Win=3D65536 Len=3D138=
+00 TSval=3D3343493496 TSecr=3D629171946
+   48   0.004201      1000::1 =E2=86=92 2000::1      TCP 1288 51238 =E2=86=
+=92 5060 [PSH, ACK] Seq=3D2862679860 Ack=3D1152583678 Win=3D65536 Len=3D120=
+0 TSval=3D3343493496 TSecr=3D629171946
+   49   0.004273      1000::1 =E2=86=92 2000::1      TCP 13888 51238 =E2=86=
+=92 5060 [PSH, ACK] Seq=3D2862681060 Ack=3D1152583678 Win=3D65536 Len=3D138=
+00 TSval=3D3343493496 TSecr=3D629171946
+
+IMHO these ooO are retransmits for segments still waiting in GRO. With the
+v2 patch this looks applied trace looks like this:
+
+ 2856   9.526256      1000::1 =E2=86=92 2000::1      TCP 64948 50452 =E2=86=
+=92 5060 [PSH, ACK] Seq=3D1871837193 Ack=3D209151777 Win=3D65536 Len=3D6486=
+0 TSval=3D2755210164 TSecr=3D2795235137
+ 2857   9.526258      1000::1 =E2=86=92 2000::1      TCP 5480 50452 =E2=86=
+=92 5060 [PSH, ACK] Seq=3D1871902053 Ack=3D209151777 Win=3D65536 Len=3D5392=
+ TSval=3D2755210164 TSecr=3D2795235137
+ 2858   9.535262      1000::1 =E2=86=92 2000::1      TCP 1340 [TCP Retransm=
+ission] 50452 =E2=86=92 5060 [ACK] Seq=3D1871906193 Ack=3D209151777 Win=3D6=
+5536 Len=3D1252 TSval=3D2755210174 TSecr=3D2795235137
+ 2859   9.585477      1000::1 =E2=86=92 2000::1      TCP 64948 50452 =E2=86=
+=92 5060 [PSH, ACK] Seq=3D1871907445 Ack=3D209151777 Win=3D65536 Len=3D6486=
+0 TSval=3D2755210224 TSecr=3D2795235197
+ 2860   9.585486      1000::1 =E2=86=92 2000::1      TCP 64948 50452 =E2=86=
+=92 5060 [PSH, ACK] Seq=3D1871972305 Ack=3D209151777 Win=3D65536 Len=3D6486=
+0 TSval=3D2755210224 TSecr=3D2795235197
+
+Looks ok to me, but without a GRO flush there is still a chance of ooO pack=
+ets.
+I've worked on a new patch (below as a RFC) which pushes the check for skb_=
+cloned()
+into GRO. Result is comparable to the v2 patch:
+
+  604   1.987863      1000::1 =E2=86=92 2000::1      TCP 64948 57278 =E2=86=
+=92 5060 [PSH, ACK] Seq=3D1220895319 Ack=3D1484877190 Win=3D65536 Len=3D648=
+60 TSval=3D646104760 TSecr=3D459787214
+  605   1.987866      1000::1 =E2=86=92 2000::1      TCP 16488 57278 =E2=86=
+=92 5060 [PSH, ACK] Seq=3D1220960179 Ack=3D1484877190 Win=3D65536 Len=3D164=
+00 TSval=3D646104760 TSecr=3D459787214
+  606   1.998231      1000::1 =E2=86=92 2000::1      TCP 1308 [TCP Retransm=
+ission] 57278 =E2=86=92 5060 [ACK] Seq=3D1220975359 Ack=3D1484877190 Win=3D=
+65536 Len=3D1220 TSval=3D646104771 TSecr=3D459787214
+  607   2.049288      1000::1 =E2=86=92 2000::1      TCP 64948 57278 =E2=86=
+=92 5060 [PSH,
+  ACK] Seq=3D1220976579 Ack=3D1484877190 Win=3D65536 Len=3D64860 TSval=3D64=
+6104822
+  TSecr=3D459787276
+  608   2.049304      1000::1 =E2=86=92 2000::1      TCP 64948 57278 =E2=86=
+=92 5060 [PSH,
+  ACK] Seq=3D1221041439 Ack=3D1484877190 Win=3D65536 Len=3D64860 TSval=3D64=
+6104822
+  TSecr=3D459787276
 
 
 
-> -----Original Message-----
-> From: Krzysztof Kozlowski <krzk=40kernel.org>
-> Sent: 28 January 2025 19:45
-> To: Swathi K S <swathi.ks=40samsung.com>; robh=40kernel.org;
-> davem=40davemloft.net; edumazet=40google.com; kuba=40kernel.org;
-> pabeni=40redhat.com; conor+dt=40kernel.org; richardcochran=40gmail.com;
-> mcoquelin.stm32=40gmail.com; andrew=40lunn.ch; alim.akhtar=40samsung.com;
-> linux-fsd=40tesla.com
-> Cc: netdev=40vger.kernel.org; devicetree=40vger.kernel.org; linux-
-> kernel=40vger.kernel.org; linux-stm32=40st-md-mailman.stormreply.com;
-> linux-arm-kernel=40lists.infradead.org; linux-samsung-soc=40vger.kernel.o=
-rg;
-> alexandre.torgue=40foss.st.com; peppe.cavallaro=40st.com;
-> joabreu=40synopsys.com; rcsekar=40samsung.com; ssiddha=40tesla.com;
-> jayati.sahu=40samsung.com; pankaj.dubey=40samsung.com;
-> ravi.patel=40samsung.com; gost.dev=40samsung.com
-> Subject: Re: =5BPATCH v5 1/4=5D dt-bindings: net: Add FSD EQoS device tre=
-e
-> bindings
->=20
-> On 28/01/2025 11:25, Swathi K S wrote:
-> > +  Tesla ethernet devices based on dwmmac support Gigabit ethernet.
-> > +
-> > +allOf:
-> > +  - =24ref: snps,dwmac.yaml=23
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: tesla,fsd-ethqos.yaml
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +
-> > +  clocks:
-> > +    minItems: 5
-> > +    maxItems: 10
->=20
-> Why is this flexible?
->=20
-> Anyway, you need to list and describe the items instead of min/maxItems.
+diff --git a/net/core/gro_cells.c b/net/core/gro_cells.c
+index ff8e5b64bf6b..06e6889138ba 100644
+--- a/net/core/gro_cells.c
++++ b/net/core/gro_cells.c
+@@ -20,7 +20,7 @@ int gro_cells_receive(struct gro_cells *gcells, struct sk=
+_buff *skb)
+ 	if (unlikely(!(dev->flags & IFF_UP)))
+ 		goto drop;
+=20
+-	if (!gcells->cells || skb_cloned(skb) || netif_elide_gro(dev)) {
++	if (!gcells->cells || netif_elide_gro(dev)) {
+ 		res =3D netif_rx(skb);
+ 		goto unlock;
+ 	}
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index 2308665b51c5..66a2bb849e85 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -322,6 +322,12 @@ struct sk_buff *tcp_gro_receive(struct list_head *head=
+, struct sk_buff *skb,
+ 	if (!p)
+ 		goto out_check_final;
+=20
++	if (unlikely(skb_cloned(skb))) {
++		NAPI_GRO_CB(skb)->flush |=3D 1;
++		NAPI_GRO_CB(skb)->same_flow =3D 0;
++		return p;
++	}
++
+ 	th2 =3D tcp_hdr(p);
+ 	flush =3D (__force int)(flags & TCP_FLAG_CWR);
+ 	flush |=3D (__force int)((flags ^ tcp_flag_word(th2)) &
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index a5be6e4ed326..a9c85b0556ce 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -647,6 +647,11 @@ struct sk_buff *udp4_gro_receive(struct list_head *hea=
+d, struct sk_buff *skb)
+ 	struct sock *sk =3D NULL;
+ 	struct sk_buff *pp;
+=20
++	if (unlikely(skb_cloned(skb))) {
++		NAPI_GRO_CB(skb)->same_flow =3D 0;
++		goto flush;
++	}
++
+ 	if (unlikely(!uh))
+ 		goto flush;
+=20
+diff --git a/net/ipv6/udp_offload.c b/net/ipv6/udp_offload.c
+index b41152dd4246..b754747e3e8a 100644
+--- a/net/ipv6/udp_offload.c
++++ b/net/ipv6/udp_offload.c
+@@ -134,6 +134,11 @@ struct sk_buff *udp6_gro_receive(struct list_head *hea=
+d, struct sk_buff *skb)
+ 	struct sock *sk =3D NULL;
+ 	struct sk_buff *pp;
+=20
++	if (unlikely(skb_cloned(skb))) {
++		NAPI_GRO_CB(skb)->same_flow =3D 0;
++		goto flush;
++	}
++
+ 	if (unlikely(!uh))
+ 		goto flush;
+=20
 
-Hi Krzysztof,
-There are 2 Ethernet instances where Eth0 has 5 clocks and Eth1 has 10 cloc=
-ks.
-Would it be sufficient to list the clock names?
+What do you think about this approach ?
 
->=20
-> > +
-> > +  clock-names:
-> > +    minItems: 5
-> > +    maxItems: 10
->=20
-> Same here.
+Thomas.
 
-Ack
-
->=20
-> > +
-> > +  iommus:
-> > +    maxItems: 1
-> > +
-> > +  phy-mode:
-> > +    enum:
-> > +     - rgmii-id
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - interrupts
-> > +  - clocks
-> > +  - clock-names
-> > +  - iommus
-> > +  - phy-mode
-> > +
-> > +unevaluatedProperties: false
-> > +
-> > +examples:
-> > +  - =7C
-> > +    =23include <dt-bindings/clock/fsd-clk.h>
-> > +    =23include <dt-bindings/interrupt-controller/arm-gic.h>
-> > +
-> > +    ethernet_1: ethernet=4014300000 =7B
->=20
-> Please implement last comment from Rob.
->=20
-> > +              compatible =3D =22tesla,fsd-ethqos=22;
-> > +              reg =3D <0x0 0x14300000 0x0 0x10000>;
->=20
-> And since there is going to be new version, switch to the preferred
-> indentation (4-space). Other option is 2 spaces, but not 8.
-
-Ack, will update it this way in v6.
-
-- Swathi
-
->=20
-> > +...
->=20
->=20
-> Best regards,
-> Krzysztof
-
+--=20
+SUSE Software Solutions Germany GmbH
+HRB 36809 (AG N=C3=BCrnberg)
+Gesch=C3=A4ftsf=C3=BChrer: Ivo Totev, Andrew McDonald, Werner Knoblich
