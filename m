@@ -1,338 +1,280 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-8fad.mail.infomaniak.ch (smtp-8fad.mail.infomaniak.ch [83.166.143.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97F81474A7;
-	Wed, 29 Jan 2025 14:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD019191F95
+	for <netdev@vger.kernel.org>; Wed, 29 Jan 2025 14:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738161397; cv=none; b=MYv9X/GRTlfeNDx1MPUQQplREv9JZqmvA06f5TbOK6IFWwiMheMWYF6gxWWHMLoJsR1va4U/s6NNUtMg02QxOb5WsZHLFsfzLQL4AMJkR5QuORtpVwjoB+27yOqg98eES8d/v8IePsE1qDZA7MJg0xpVLIrq5qNwuWvjX02wDRs=
+	t=1738162311; cv=none; b=X1I7uD4JFZKvnk6HC52sMdg4+itwPmw0jcfTZSkEvKdcpm1ibtPIJ8Sl9+iZwD4zsWjn2rS5Axjc1LdPyMcFd6nMRi+FfyNmJtNmZRhgtjW+UoP/eruVFBnHKNOLYj/1yfF0l62St6qBDIPfyLQ12UL+YkMC4hgYtBtcJ+fx8CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738161397; c=relaxed/simple;
-	bh=GdEI/Xk2j5FiMtc++O5jVQhNKnf5OWc1lfUXq0M/18Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDbZpo+lxsrWXi5Wl7I6Y5MDfxF/1w/1Q2bApVJ6ayVMYGG+yr7m75vzECBPF590Pu75OCzMF5KzbALQfFTwd2tbn/kp2llsAJ4SUcgyP6zvcaw8clKsHMsRF/0rAXJUo3DUsvk8gzIzZw+3tmybIH1KyhjSxxyV49os/xyV6pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gVEoiwXE; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738162311; c=relaxed/simple;
+	bh=uuQ4gUyr4T98j5sQ5sSoBuo1/xncsxBUuh+PdKyTBVc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CnlXlYztSO+Dtuo+larVbKugtQ4VMtBNyCzaiufSMwqgTcXGhg+KwxH6QcTv239CBrTyGTdkp7yMRLq80wAV8ZqhL1wyOkCGLsExmZthMLN4gcjR7jcUL2Di7EmqvGPHRqrLFBepAzRucJHhBKsGmOp6JLehk0V5mY4JPaFVwFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=cNHnr2G6; arc=none smtp.client-ip=83.166.143.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gVEoiwXE"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-436326dcb1cso47785775e9.0;
-        Wed, 29 Jan 2025 06:36:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738161394; x=1738766194; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2sIfHEvcxCY3pnpcdFB+oh5QhdHA0BfWgcYNXklwgHQ=;
-        b=gVEoiwXEhbU7gcgOlXvyBV/94kE87QEpe2/EAJjQDGG8TDFHwpqszN2RnO7a2VJJ3r
-         BVT9um0fuUzwsT/akDGHGZqf6hF3p/1vYxECEQm+b7jldCW5xLcCT7dvk+gC2mF9RcJn
-         CzVfgdWWWTkRWRE82escxV14YLFklHOfxtmS1AwGpQr5QKavDYRsgAVyRV2zxtdJLfXc
-         sHhKxkKpGt3FvIiUpKmjY9QPeeE2H1plvUZje6a4xr6ozK4IMIdYFtlrhLhUTOM5drrL
-         qy+MZPh94vZMSdT2JljT4Aa+Uatrp4TvVr7HEcPzLSK5E9zBDixUoSCJXwEt5XPMBr5A
-         ZI9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738161394; x=1738766194;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2sIfHEvcxCY3pnpcdFB+oh5QhdHA0BfWgcYNXklwgHQ=;
-        b=msPYg1/NEkngLUwdm70XMq7HFeeKqrDyLd9ZPwxr5z2YvInk5h6NAaU/rz0nxn510W
-         0Hb/xavHFUtw8TDIMCTESv/wtgqfXrNJzgfF7otaKk/5q+/6CQUpIzIZFAIlFPpdAVO+
-         Vh6ZY6ogvuKKnM1n2fzMK5tQ2VLF97jUStOFeUEKcqUsAyqd3iMsmuydoKLIIRmeoX47
-         2CQ3lmofjmz+hgR3uO7zpQ3OJpSp7it/NE41vpoEiphdLk13BYXDwGHfxfiibtGySXxm
-         grhjeDsDnlj1gviH+uexI5kYVHQP9J9k9ct/Byep7eLmpWOqukaspP7Ribq5cIeboDjm
-         Pcfg==
-X-Forwarded-Encrypted: i=1; AJvYcCV5DuS3nWj0z9tdxWVBePjvBWLJnxsXwOVNQOL3mt+kWc36NsCVsvT8y6IiynfUPmiG35kOOqdrIBghFgJr49A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzm++kkmT598d7GVi8SQZfsBBOzCs6x3zKQLpHb4Lpx9XbMndIw
-	GInGIHxBEo5uhF6T1x4gXG1cTQg95Cv2iNsOvI3g0p7osqYH9pCBZfplCqrm
-X-Gm-Gg: ASbGncsM/Oh1iyY09IsZ/fsqtGRkp9OAGZKGqx0mSdI/2d2buffv4uh5G7GHxsfcRNs
-	/y4JwrDl0zTZJ/wmkrdG7V1BhIcCMQ3GYMtI/sFypq5NdlB0TYm2aWaPo7X1onsdwUY09xQF40U
-	OCruDEEdL8bC3tUUm8oKrbzryVexxMkbX6N1zWnB+JL+X7iE+ZyxCuc1rrSc9muLUX9KOBBv/02
-	iT+XumUd5oTvhOLDTtPyNpT2OkzQvIMPpu6f7M2j2iouJ8TMFhq/viOl8My72JbbXywCCIXFizj
-	TY1OHzvMuVmbkJTvxse4MOANpbYiM15UqDYPfw==
-X-Google-Smtp-Source: AGHT+IFIFR8iv/eVaU11QgIa3cyc7+1szefMZosV1a+eSFkjJCYbCxA9WYj1pFXZGMSpdhB9/X2Z0w==
-X-Received: by 2002:a05:600c:1f15:b0:434:f335:83b with SMTP id 5b1f17b1804b1-438dc3a84aamr31947285e9.5.1738161393326;
-        Wed, 29 Jan 2025 06:36:33 -0800 (PST)
-Received: from localhost.localdomain ([2001:4c4e:1eb5:de00:1ff8:8b09:84cb:1239])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc6df36sm26472465e9.25.2025.01.29.06.36.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2025 06:36:32 -0800 (PST)
-From: Anna Emese Nyiri <annaemesenyiri@gmail.com>
-To: netdev@vger.kernel.org
-Cc: fejes@inf.elte.hu,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	willemb@google.com,
-	idosch@idosch.org,
-	davem@davemloft.net,
-	horms@kernel.org,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Anna Emese Nyiri <annaemesenyiri@gmail.com>
-Subject: [PATCH net-next 1/1] selftests: net: Add support for testing SO_RCVMARK and SO_RCVPRIORITY
-Date: Wed, 29 Jan 2025 15:36:01 +0100
-Message-ID: <20250129143601.16035-2-annaemesenyiri@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250129143601.16035-1-annaemesenyiri@gmail.com>
-References: <20250129143601.16035-1-annaemesenyiri@gmail.com>
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="cNHnr2G6"
+Received: from smtp-4-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10:40ca:feff:fe05:1])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4YjlV3415nzfSj;
+	Wed, 29 Jan 2025 15:51:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1738162299;
+	bh=2erhwkosldZzlYXN0aQNMdfWuWfgAvD7dxnnGlGxpL8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cNHnr2G6Ooekqbm7My2q4rIn6J5wICpi8LnTdj8sUbTTzAjmOAJn/sG4LRLNklStU
+	 zRWF09DWvM60RwwRH2PNVKsQwGwQ/Gt/X5XfujgsE3ea+VdEfDJ2RIdDV8GE0+NK7S
+	 OBX9jIzjJkIpCtrxhEVxuW31Dzl8dkiNl1HWwDS0=
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4YjlV26H4hzX82;
+	Wed, 29 Jan 2025 15:51:38 +0100 (CET)
+Date: Wed, 29 Jan 2025 15:51:37 +0100
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>, gnoack@google.com, 
+	willemdebruijn.kernel@gmail.com, matthieu@buffet.re, linux-security-module@vger.kernel.org, 
+	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, yusongping@huawei.com, 
+	artem.kuzin@huawei.com, konstantin.meskhidze@huawei.com, 
+	MPTCP Linux <mptcp@lists.linux.dev>, linux-nfs@vger.kernel.org, Paul Moore <paul@paul-moore.com>
+Subject: Re: [RFC PATCH v2 1/8] landlock: Fix non-TCP sockets restriction
+Message-ID: <20250129.Oo1xou8ieche@digikod.net>
+References: <20250124.gaegoo0Ayahn@digikod.net>
+ <2f970b00-7648-1865-858a-214c5c6af0c4@huawei-partners.com>
+ <20250127.Uph4aiph9jae@digikod.net>
+ <d3d589c3-a70b-fc6e-e1bb-d221833dfef5@huawei-partners.com>
+ <594263fc-f4e7-43ce-a613-d3f8ebb7f874@kernel.org>
+ <f6e72e71-c5ed-8a9c-f33e-f190a47b8c27@huawei-partners.com>
+ <2e727df0-c981-4e0c-8d0d-09109cf27d6f@kernel.org>
+ <103de503-be0e-2eb2-b6f0-88567d765148@huawei-partners.com>
+ <1d1d58b3-2516-4fc8-9f9a-b10604bbe05b@kernel.org>
+ <b9823ff1-2f66-3992-b389-b8e631ec03ba@huawei-partners.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <b9823ff1-2f66-3992-b389-b8e631ec03ba@huawei-partners.com>
+X-Infomaniak-Routing: alpha
 
-Introduce tests to verify the correct functionality of the SO_RCVMARK and 
-SO_RCVPRIORITY socket options.
+On Wed, Jan 29, 2025 at 02:47:19PM +0300, Mikhail Ivanov wrote:
+> On 1/29/2025 2:33 PM, Matthieu Baerts wrote:
+> > On 29/01/2025 12:02, Mikhail Ivanov wrote:
+> > > On 1/29/2025 1:25 PM, Matthieu Baerts wrote:
+> > > > Hi Mikhail,
+> > > > 
+> > > > On 29/01/2025 10:52, Mikhail Ivanov wrote:
+> > > > > On 1/28/2025 9:14 PM, Matthieu Baerts wrote:
+> > > > > > Hi Mikhail,
+> > > > > > 
+> > > > > > Sorry, I didn't follow all the discussions in this thread, but here are
+> > > > > > some comments, hoping this can help to clarify the MPTCP case.
+> > > > > 
+> > > > > Thanks a lot for sharing your knowledge, Matthieu!
+> > > > > 
+> > > > > > 
+> > > > > > On 28/01/2025 11:56, Mikhail Ivanov wrote:
+> > > > > > > On 1/27/2025 10:48 PM, Mickaël Salaün wrote:
+> > > > > > 
+> > > > > > (...)
+> > > > > > 
+> > > > > > > > I'm a bit worried that we miss some of these places (now or in future
+> > > > > > > > kernel versions).  We'll need a new LSM hook for that.
+> > > > > > > > 
+> > > > > > > > Could you list the current locations?
+> > > > > > > 
+> > > > > > > Currently, I know only about TCP-related transformations:
+> > > > > > > 
+> > > > > > > * SMC can fallback to TCP during connection. TCP connection is used
+> > > > > > >      (1) to exchange CLC control messages in default case and (2)
+> > > > > > > for the
+> > > > > > >      communication in the case of fallback. If socket was connected or
+> > > > > > >      connection failed, socket can not be reconnected again. There
+> > > > > > > is no
+> > > > > > >      existing security hook to control the fallback case,
+> > > > > > > 
+> > > > > > > * MPTCP uses TCP for communication between two network interfaces
+> > > > > > > in the
+> > > > > > >      default case and can fallback to plain TCP if remote peer does not
+> > > > > > >      support MPTCP. AFAICS, there is also no security hook to
+> > > > > > > control the
+> > > > > > >      fallback transformation,
+> > > > > > 
+> > > > > > There are security hooks to control the path creation, but not to
+> > > > > > control the "fallback transformation".
+> > > > > > 
+> > > > > > Technically, with MPTCP, the userspace will create an IPPROTO_MPTCP
+> > > > > > socket. This is only used "internally": to communicate between the
+> > > > > > userspace and the kernelspace, but not directly used between network
+> > > > > > interfaces. This "external" communication is done via one or multiple
+> > > > > > kernel TCP sockets carrying extra TCP options for the mapping. The
+> > > > > > userspace cannot directly control these sockets created by the kernel.
+> > > > > > 
+> > > > > > In case of fallback, the kernel TCP socket "simply" drop the extra TCP
+> > > > > > options needed for MPTCP, and carry on like normal TCP. So on the wire
+> > > > > > and in the Linux network stack, it is the same TCP connection, without
+> > > > > > the MPTCP options in the TCP header. The userspace continue to
+> > > > > > communicate with the same socket.
+> > > > > > 
+> > > > > > I'm not sure if there is a need to block the fallback: it means only
+> > > > > > one
+> > > > > > path can be used at a time.
 
-Key changes include:
+Thanks Matthieu.
 
-- so_rcv_listener.c: Implements a receiver application to test the correct 
-behavior of the SO_RCVMARK and SO_RCVPRIORITY options.
-- test_so_rcv.sh: Provides a shell script to automate testing for these options.
-- Makefile: Integrates test_so_rcv.sh into the kernel selftests.
+So user space needs to specific IPPROTO_MPTCP to use MPTCP, but on the
+network this socket can translate to "augmented" or plain TCP.
 
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Suggested-by: Ferenc Fejes <fejes@inf.elte.hu>
-Signed-off-by: Anna Emese Nyiri <annaemesenyiri@gmail.com>
+From Landlock point of view, what matters is to have a consistent policy
+that maps to user space code.  The fear was that a malicious user space
+that is only allowed to use MPTCP could still transform an MPTCP socket
+to a TCP socket, while it wasn't allowed to create a TCP socket in the
+first place.  I now think this should not be an issue because:
+1. MPTCP is kind of a superset of TCP
+2. user space legitimately using MPTCP should not get any error related
+   to a Landlock policy because of TCP/any automatic fallback.  To say
+   it another way, such fallback is independent of user space requests
+   and may not be predicted because it is related to the current network
+   path.  This follows the principle of least astonishment (at least
+   from user space point of view).
 
----
- tools/testing/selftests/net/Makefile          |   1 +
- tools/testing/selftests/net/so_rcv_listener.c | 147 ++++++++++++++++++
- tools/testing/selftests/net/test_so_rcv.sh    |  56 +++++++
- 3 files changed, 204 insertions(+)
- create mode 100644 tools/testing/selftests/net/so_rcv_listener.c
- create mode 100755 tools/testing/selftests/net/test_so_rcv.sh
+So, if I understand correctly, this should be simple for the Landlock
+socket creation control:  we only check socket properties at creation
+time and we ignore potential fallbacks.  This should be documented
+though.
 
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 73ee88d6b043..98f05473e672 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -33,6 +33,7 @@ TEST_PROGS += gro.sh
- TEST_PROGS += gre_gso.sh
- TEST_PROGS += cmsg_so_mark.sh
- TEST_PROGS += cmsg_so_priority.sh
-+TEST_PROGS += test_so_rcv.sh
- TEST_PROGS += cmsg_time.sh cmsg_ipv6.sh
- TEST_PROGS += netns-name.sh
- TEST_PROGS += nl_netdev.py
-diff --git a/tools/testing/selftests/net/so_rcv_listener.c b/tools/testing/selftests/net/so_rcv_listener.c
-new file mode 100644
-index 000000000000..53b09582a7e3
---- /dev/null
-+++ b/tools/testing/selftests/net/so_rcv_listener.c
-@@ -0,0 +1,147 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <errno.h>
-+#include <netdb.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <linux/types.h>
-+#include <sys/socket.h>
-+#include <netinet/in.h>
-+#include <arpa/inet.h>
-+
-+#ifndef SO_RCVPRIORITY
-+#define SO_RCVPRIORITY 82
-+#endif
-+
-+struct options {
-+	__u32 val;
-+	int name;
-+	int rcvname;
-+	const char *host;
-+	const char *service;
-+} opt;
-+
-+static void __attribute__((noreturn)) usage(const char *bin)
-+{
-+	printf("Usage: %s [opts] <dst host> <dst port / service>\n", bin);
-+	printf("Options:\n"
-+		"\t\t-M val  Test SO_RCVMARK\n"
-+		"\t\t-P val  Test SO_RCVPRIORITY\n"
-+		"");
-+	exit(EXIT_FAILURE);
-+}
-+
-+static void parse_args(int argc, char *argv[])
-+{
-+	int o;
-+
-+	while ((o = getopt(argc, argv, "M:P:")) != -1) {
-+		switch (o) {
-+		case 'M':
-+			opt.val = atoi(optarg);
-+			opt.name = SO_MARK;
-+			opt.rcvname = SO_RCVMARK;
-+			break;
-+		case 'P':
-+			opt.val = atoi(optarg);
-+			opt.name = SO_PRIORITY;
-+			opt.rcvname = SO_RCVPRIORITY;
-+			break;
-+		default:
-+			usage(argv[0]);
-+			break;
-+		}
-+	}
-+
-+	if (optind != argc - 2)
-+		usage(argv[0]);
-+
-+	opt.host = argv[optind];
-+	opt.service = argv[optind + 1];
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	int err = 0;
-+	int recv_fd = -1;
-+	int ret_value = 0;
-+	__u32 recv_val;
-+	struct cmsghdr *cmsg;
-+	char cbuf[1024];
-+	char recv_buf[1024];
-+	struct iovec iov[1];
-+	struct msghdr msg;
-+	struct sockaddr_in recv_addr;
-+
-+	parse_args(argc, argv);
-+
-+	recv_fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-+	if (recv_fd < 0) {
-+		perror("Can't open recv socket");
-+		ret_value = -errno;
-+		goto cleanup;
-+	}
-+
-+	err = setsockopt(recv_fd, SOL_SOCKET, opt.rcvname, &opt.val, sizeof(opt.val));
-+	if (err < 0) {
-+		perror("Recv setsockopt error");
-+		ret_value = -errno;
-+		goto cleanup;
-+	}
-+
-+	memset(&recv_addr, 0, sizeof(recv_addr));
-+	recv_addr.sin_family = AF_INET;
-+	recv_addr.sin_port = htons(atoi(opt.service));
-+
-+	if (inet_pton(AF_INET, opt.host, &recv_addr.sin_addr) <= 0) {
-+		perror("Invalid address");
-+		ret_value = -errno;
-+		goto cleanup;
-+	}
-+
-+	err = bind(recv_fd, (struct sockaddr *)&recv_addr, sizeof(recv_addr));
-+	if (err < 0) {
-+		perror("Recv bind error");
-+		ret_value = -errno;
-+		goto cleanup;
-+	}
-+
-+	iov[0].iov_base = recv_buf;
-+	iov[0].iov_len = sizeof(recv_buf);
-+
-+	memset(&msg, 0, sizeof(msg));
-+	msg.msg_iov = iov;
-+	msg.msg_iovlen = 1;
-+	msg.msg_control = cbuf;
-+	msg.msg_controllen = sizeof(cbuf);
-+
-+	err = recvmsg(recv_fd, &msg, 0);
-+	if (err < 0) {
-+		perror("Message receive error");
-+		ret_value = -errno;
-+		goto cleanup;
-+	}
-+
-+	for (cmsg = CMSG_FIRSTHDR(&msg); cmsg != NULL; cmsg = CMSG_NXTHDR(&msg, cmsg)) {
-+		if (cmsg->cmsg_level == SOL_SOCKET && cmsg->cmsg_type == opt.name) {
-+			recv_val = *(__u32 *)CMSG_DATA(cmsg);
-+			printf("Received value: %u\n", recv_val);
-+
-+			if (recv_val != opt.val) {
-+				fprintf(stderr, "Error: expected value: %u, got: %u\n",
-+					opt.val, recv_val);
-+				ret_value = -EINVAL;
-+				goto cleanup;
-+			}
-+		}
-+	}
-+
-+cleanup:
-+	if (recv_fd >= 0)
-+		close(recv_fd);
-+
-+	return ret_value;
-+}
-diff --git a/tools/testing/selftests/net/test_so_rcv.sh b/tools/testing/selftests/net/test_so_rcv.sh
-new file mode 100755
-index 000000000000..12d37f9ab905
---- /dev/null
-+++ b/tools/testing/selftests/net/test_so_rcv.sh
-@@ -0,0 +1,56 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+HOST=127.0.0.1
-+PORT=1234
-+TOTAL_TESTS=0
-+FAILED_TESTS=0
-+
-+declare -A TESTS=(
-+	["SO_RCVPRIORITY"]="-P 2"
-+	["SO_RCVMARK"]="-M 3"
-+)
-+
-+check_result() {
-+	((TOTAL_TESTS++))
-+	if [ "$1" -ne 0 ]; then
-+		((FAILED_TESTS++))
-+	fi
-+}
-+
-+for test_name in "${!TESTS[@]}"; do
-+	echo "Running $test_name test"
-+	arg=${TESTS[$test_name]}
-+
-+	./so_rcv_listener $arg $HOST $PORT &
-+	LISTENER_PID=$!
-+
-+	if ./cmsg_sender $arg $HOST $PORT; then
-+		echo "Sender succeeded for $test_name"
-+	else
-+		echo "Sender failed for $test_name"
-+		kill "$LISTENER_PID" 2>/dev/null
-+		wait "$LISTENER_PID"
-+		check_result 1
-+		continue
-+	fi
-+
-+	wait "$LISTENER_PID"
-+	LISTENER_EXIT_CODE=$?
-+
-+	if [ "$LISTENER_EXIT_CODE" -eq 0 ]; then
-+		echo "Rcv test OK for $test_name"
-+		check_result 0
-+	else
-+		echo "Rcv test FAILED for $test_name"
-+		check_result 1
-+	fi
-+done
-+
-+if [ "$FAILED_TESTS" -ne 0 ]; then
-+	echo "FAIL - $FAILED_TESTS/$TOTAL_TESTS tests failed"
-+	exit 1
-+else
-+	echo "OK - All $TOTAL_TESTS tests passed"
-+	exit 0
-+fi
--- 
-2.43.0
+As an example, if a Landlock policies only allows MPTCP: socket(...,
+IPPROTO_MPTCP) should be allowed and any legitimate use of the returned
+socket (according to MPTCP) should be allowed, including TCP fallback.
+However, socket(..., IPPROTO_TCP/0), should only be allowed if TCP is
+explicitly allowed.  This means that we might end up with an MPTCP
+socket only using TCP, which is OK.
 
+I guess this should be the same for other protocols, except if user
+space can explicitly transform a specific socket type to use an
+*arbitrary* protocol, but I think this is not possible.
+
+> > > > > 
+> > > > > You mean that users always rely on a plain TCP communication in the case
+> > > > > the connection of MPTCP multipath communication fails?
+> > > > 
+> > > > Yes, that's the same TCP connection, just without extra bit to be able
+> > > > to use multiple TCP connections associated to the same MPTCP one.
+> > > 
+> > > Indeed, so MPTCP communication should be restricted the same way as TCP.
+> > > AFAICS this should be intuitive for MPTCP users and it'll be better
+> > > to let userland define this dependency.
+> > 
+> > Yes, I think that would make more sense.
+> > 
+> > I guess we can look at MPTCP as TCP with extra features.
+> 
+> Yeap
+> 
+> > 
+> > So if TCP is blocked, MPTCP should be blocked as well. (And eventually
+> > having the possibility to block only TCP but not MPTCP and the opposite,
+> > but that's a different topic: a possible new feature, but not a bug-fix)
+> What do you mean by the "bug fix"?
+> 
+> > 
+> > > > > > > * IPv6 -> IPv4 transformation for TCP and UDP sockets withon
+> > > > > > >      IPV6_ADDRFORM. Can be controlled with setsockopt() security hook.
+
+According to the man page: "It is allowed only for IPv6 sockets that are
+connected and bound to a v4-mapped-on-v6 address."
+
+This compatibility feature makes sense from user space point of view and
+should not result in an error because of Landlock.
+
+> > > > > > > 
+> > > > > > > As I said before, I wonder if user may want to use SMC or MPTCP and
+> > > > > > > deny
+> > > > > > > TCP communication, since he should rely on fallback transformation
+> > > > > > > during the connection in the common case. It may be unexpected for
+> > > > > > > connect(2) to fail during the fallback due to security politics.
+> > > > > > 
+> > > > > > With MPTCP, fallbacks can happen at the beginning of a connection, when
+> > > > > > there is only one path. This is done after the userspace's
+> > > > > > connect(). If
+
+A remaining question is then, can we repurpose an MPTCP socket that did
+fallback to TCP, to (re)connect to another destination (this time
+directly with TCP)?
+
+I guess this is possible.  If it is the case, I think it should be OK
+anyway.  That could be used by an attacker, but that should not give
+more access because of the MPTCP fallback mechanism anyway.  We should
+see MPTCP as a superset of TCP.  At the end, security policy is in the
+hands of user space.
+
+> > > > > > the fallback is blocked, I guess the userspace will get the same errors
+> > > > > > as when an open connection is reset.
+> > > > > 
+> > > > > In the case of blocking due to security policy, userspace should get
+> > > > > -EACESS. I mean, the user might not expect the fallback path to be
+> > > > > blocked during the connection if he has allowed only MPTCP communication
+> > > > > using the Landlock policy.
+> > > > 
+> > > > A "fallback" can happen on different occasions as mentioned in the
+> > > > RFC8684 [1], e.g.
+> > > > 
+> > > > - The client asks to use MPTCP, but the other peer doesn't support it:
+> > > > 
+> > > >     Client                Server
+> > > >     |     SYN + MP_CAPABLE     |
+> > > >     |------------------------->|
+> > > >     |         SYN/ACK          |
+> > > >     |<-------------------------|  => Fallback on the client side
+> > > >     |           ACK            |
+> > > >     |------------------------->|
+> > > > 
+> > > > - A middle box doesn't touch the 3WHS, but intercept the communication
+> > > > just after:
+> > > > 
+> > > >     Client                Server
+> > > >     |     SYN + MP_CAPABLE     |
+> > > >     |------------------------->|
+> > > >     |   SYN/ACK + MP_CAPABLE   |
+> > > >     |<-------------------------|
+> > > >     |     ACK + MP_CAPABLE     |
+> > > >     |------------------------->|
+> > > >     |        DSS + data        | => but the server doesn't receive the DSS
+> > > >     |------------------------->| => So fallback on the server side
+> > > >     |           ACK            |
+> > > >     |<-------------------------| => Fallback on the client side
+> > > > 
+> > > > - etc.
+> > > > 
+> > > > So the connect(), even in blocking mode, can be OK, but the "fallback"
+> > > > will happen later.
+> > > 
+> > > Thanks! Theoretical "socket transformation" control should cover all
+> > > these cases.
+> > > 
+> > > You mean that it might be reasonable for a Landlock policy to block
+> > > MPTCP fallback when establishing first sublflow (when client does not
+> > > receive MP_CAPABLE)?
+> > 
+> > Personally, I don't even know if there is really a need for such
+> > policies. The fallback is there not to block a connection if the other
+> > peer doesn't support MPTCP, or if a middlebox decides to mess-up with
+> > MPTCP options. So instead of an error, the connection continues but is
+> > "degraded" by not being able to create multiple paths later on.
+
+I agree, this kind of compatibility feature should not be denied.
+
+> > 
+> > Maybe best to wait for a concrete use-case before implementing this?
+> 
+> Ok, got it! I agree that such policies does not seem to be useful.
+> 
+> > 
+> > (...)
+> > 
+> > Cheers,
+> > Matt
+> 
