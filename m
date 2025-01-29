@@ -1,282 +1,188 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC321E0DD9
-	for <netdev@vger.kernel.org>; Wed, 29 Jan 2025 17:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E88372
+	for <netdev@vger.kernel.org>; Wed, 29 Jan 2025 17:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738171494; cv=none; b=o/b9XeB1g1qJUvxhLoiIHhxrtuOhlQJIn3sW9C3HcBA8ZVOfPLgFlfnX2DU2CoXDOqXZ9tRkYnS5kPc5ORp69dluuKrjEmuZkRZ/NOKCd0ZetDmVayqDUavUlJc87L0UmFmckMT+5yymy7iQZLjXnKMVr5ZhWIasj0RimPUdZu8=
+	t=1738171966; cv=none; b=qgcmhE5HpT1pHoC2Bm1tgKZVPJghA+LD5BSWG83WO5S61Y1pqWrUvUQWg62kUxogJ5a5fc5VSCCwFf9F+NskuuCc0Sm18N+GdmwP9IWZtdfApIwz/qaO8+2anHNOlhO/BZz3kh42hB9tnakRAfaPjPoB34b3Pm/GbCKQzfWopYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738171494; c=relaxed/simple;
-	bh=BozksO6LrJi91zWTtnxb5prUWQsVfI9vGsKzYHUvw/4=;
+	s=arc-20240116; t=1738171966; c=relaxed/simple;
+	bh=bzI2HF00fiDQjFXMHdTBDTNovNNwt3zxrGTPuK/4xm4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=V2jk9ETJpCbyOTEB5wgCGfWctmJ1hd0cbxkTyQ5rYUlpfi/TL0eGtzFV62LoqPVyd0bL+UD8yp1Fkybiz3SUQnYLJCQakcm/QlBrcVnf7g8hcAdF1ZO1wxD7xNKNKIK7QOHYNXqZMV77HFjnJvojm7vdl5ekZv+wjCPIpDWC0us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=si3kvSEw; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	 MIME-Version:Content-Type; b=rnWjMqXb4TD3PVTU2GGoQ6+k/r2jIhh0xZdMzWBPlns5G4Pwoksr5a20SYmB4MKGA/T39ozkk7Jqnh1x79a4Yi6Ulcvd8yN2ZdYZNCFjUx8akMnYNgui3Hv+WGOhUuq3MBv3+IArnWf9AV1ivnT4bsKqcGUs8F2GDEg1OqIj7vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=SQHcc07h; arc=none smtp.client-ip=209.85.161.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="si3kvSEw"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2164b662090so141420025ad.1
-        for <netdev@vger.kernel.org>; Wed, 29 Jan 2025 09:24:52 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="SQHcc07h"
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5fc0c06e1deso166524eaf.1
+        for <netdev@vger.kernel.org>; Wed, 29 Jan 2025 09:32:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1738171492; x=1738776292; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1738171964; x=1738776764; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6IxZoTSZC8XkF6q0qbcWevoPwZ9BA7mGu7R6RBmsTJw=;
-        b=si3kvSEwF3+vza/NrKTOGpls4Z8nEdhR6CbvO9LSC/cgdWJdvR+DCdHGO88OpleZKg
-         3x6HlShsnk47wM/Ign1PwPqs1bCC+Y5F6W67bqfLgGGlb7YBgvEGun2H9bLeop7AwxNm
-         AzC7xq8GoSKgdE7YPdOik57jMssXY8wkcGG5c=
+        bh=+mmqNHhmNdxqC4g8IfZMWhVXE5QHm3xsHzzSXQvlgXs=;
+        b=SQHcc07hsid9ukcKvxFdI1BTp5rBtFyJBC5nH0X+/JMyzpi0dLSOfG+AN1p1wU5MA6
+         krznTPLO6uXGEA4cR9Mey7xHJRyEyjoxwRWY2RZ+FX3iUFRwQUycrS5yKX17Nc4rpHxn
+         NVwd+sGA7nWCgEqGhkKvCH7LBmeA1KOHu+uwo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738171492; x=1738776292;
+        d=1e100.net; s=20230601; t=1738171964; x=1738776764;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6IxZoTSZC8XkF6q0qbcWevoPwZ9BA7mGu7R6RBmsTJw=;
-        b=oT6sOWFiNeNfjj+iRXE1o2RtI6FX59DKg9WncUNdEYhniLUMZh44qIcdx+giPKnmuP
-         ec186Bjc0JFgkGCSLeterLaUGzYnXGWj1VD/SoELfRsNlmTd55jc1cZ6TkQoXCLUbGFO
-         WrHrHH3oq7RgXit/usOq13onMA/ZezK6Fopm0YWW3TsS0gScCXaoIFQpeCoZ9SJuwLPG
-         QJXB67Xs1navYKGlJj0m+t8USJe6XqW5RPzuanLR1nzifM8P8kOEOydV586Nnx1cIRFX
-         HKUWcY9g7R0BKTWk6pZixb3MwXr6m0o1b4Nz0sIs7jw7NNO4u1ssMvNkhheqrbDyStUU
-         sLMA==
-X-Gm-Message-State: AOJu0YwKqmlhLD1LF6UFIpRpYLMUVJJsGWJsUUdbJsf7iTy464VL5EB6
-	8d/bGkDL3F636OOagFRvw01hs2bGrR4RH2CkkbKAP3GIT8nvVgqv/IeaRmfnF+gFM+m7JKZ1Sac
-	BEeyP5SXpCFgYCATjTZCAv+5gjkAi2FlAAIt1jIoXT0rWodg+ewUwdNBDUsqGrJHhYmoxrcBttZ
-	e875fZpY+JXAf00RzUFWDFkbYYPyKUN31zRrg=
-X-Gm-Gg: ASbGnctQBAdOCjBn5MHQTO8aiaDhSfyv41tPbCR5RFMI3bEm8dAU8+uj6zpT3lh/cLj
-	A6MFQQS9xh60fxKxwImqKEKV35cfYaCwBT9NzNKcXv3cgmTHutZ2OEvj4Ak7RI9QRIf6AYBF6ZN
-	QmNldj2kK9xH2VFbTpGdsAY7aekw+lIBgANe+RZkg+pxHp5pEq0MG9XkL4OvWr/kHEN2i9oJBLH
-	5MUeDLJLylwSk/M0RbT2YAFKZIYIXPYuLRJAtC9ISsYPv7LJQ3n8m4f4qtWj89lpILku60QFCOW
-	eLz/BjQgDMIGNUg7CK6yt/M=
-X-Google-Smtp-Source: AGHT+IFqx522D4nQTHyMFazUvJWxvG0j+Zqt3odIeyZB35qDEJj8NgO23teWx1vp1NnyLXGolcBjJQ==
-X-Received: by 2002:a17:903:1cb:b0:21c:2f41:f4cd with SMTP id d9443c01a7336-21dd7dea7b3mr66633765ad.43.1738171491752;
-        Wed, 29 Jan 2025 09:24:51 -0800 (PST)
-Received: from localhost.localdomain ([2620:11a:c019:0:65e:3115:2f58:c5fd])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da4bc5c1fsm101147295ad.82.2025.01.29.09.24.50
+        bh=+mmqNHhmNdxqC4g8IfZMWhVXE5QHm3xsHzzSXQvlgXs=;
+        b=QCTRKznGV0njW7A4hILYFYEgeuyV0XMk6UbZTdqp4pImMhLeiEA4RAS5rhKstTtPCd
+         15XldGvDEW95PvezEOZ9gV/ClL3xysn46w8DUVpGL5pSxMO10atKKKf3B5XH9pbj/r79
+         D4ZOb9fQKj/cx5QL5iBvyNmZY85pvFW+1+x03k2/tVFPOauic7gsqTfrKFZVPD/eR5x4
+         QiluZJkfmucdJkNxFyuqSSEoiEPnVgCIrpy5S5RlkxNrro2sLDKIADiCKjultSV0dgMN
+         auLkaTbO2AHDUwbg9AaRhj47UFBBCZ4E8QpjBoJ3oqDt0JDbEiMRFl/lPB72/9VMBxUa
+         WItQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVpQ0kOKwdPm2YyV1dFiEUrUI9VbbBFvsHpBNbTssWsWs/SgoaG4s3g0WKYoTXbnuG6/1d/lRw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAPdy/DwmIcw7SKUvF4wItpatvSmoSuaAwNCpFis5JhSBnH/J3
+	93Ib+b01lNenDCKf3Vp6PYTREJfhXLlvlUd5dwHX1r+57CvjXvc/iWMQdU33jw==
+X-Gm-Gg: ASbGnctMEXh3yw7rgSiYBXzDXk/SbiWHgwfNUYoImrrQ41wsePdN71cQYLxQ21eIbaB
+	JLWmunpIKHDp4bzE2bEmk3n3QeAzDF3cNdYHfQHf39S/KwmxO0xvpTkFQK9wKQSGh93Odi5vX/D
+	vz/+Q4KveAr8GEUqwnHtFBnX0/DK1EEf4oDpp+XQ/8YLwAr6zuKq5jMCieaQz+IGcWcGEzojy48
+	Pzqd559Z3liqqzYqQKstwkmbB6djUUP+WfANgTIGDL0jJt4lRXcfwmRfOBr7EA4GyIfqFDQpHgQ
+	BZCPpzwuBP7/klCs5oPVbcclVTtuUhC1AEGsN7dcXELCWBeBnruSCFCTg6wD86R66m9dASEhOZI
+	auFHtpshI5FuFhZu/cOhieL/aq1Mk
+X-Google-Smtp-Source: AGHT+IFFBOio0yS/W6+Ih6T9hzMuo5ZubUZrMuApePYc4nO6eAq1BblChDvzYJG9wtKlB2BVi3YxWg==
+X-Received: by 2002:a05:6820:810a:b0:5fa:4c16:e641 with SMTP id 006d021491bc7-5fc00297daamr2598155eaf.3.1738171964013;
+        Wed, 29 Jan 2025 09:32:44 -0800 (PST)
+Received: from sankartest7x-virtual-machine.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5fa8b5296e5sm3623678eaf.7.2025.01.29.09.32.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2025 09:24:51 -0800 (PST)
-From: Joe Damato <jdamato@fastly.com>
-To: netdev@vger.kernel.org
-Cc: sridhar.samudrala@intel.com,
-	Joe Damato <jdamato@fastly.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	linux-kernel@vger.kernel.org (open list),
-	linux-kselftest@vger.kernel.org (open list:KERNEL SELFTEST FRAMEWORK),
-	bpf@vger.kernel.org (open list:XDP (eXpress Data Path):Keyword:(?:\b|_)xdp(?:\b|_))
-Subject: [RFC net-next 2/2] selftests: drv-net: Test queue xsk attribute
-Date: Wed, 29 Jan 2025 17:24:25 +0000
-Message-Id: <20250129172431.65773-3-jdamato@fastly.com>
+        Wed, 29 Jan 2025 09:32:42 -0800 (PST)
+From: Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
+To: kuba@kernel.org
+Cc: alexanderduyck@fb.com,
+	alexandr.lobakin@intel.com,
+	andrew+netdev@lunn.ch,
+	ast@kernel.org,
+	bcm-kernel-feedback-list@broadcom.com,
+	bpf@vger.kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	ronak.doshi@broadcom.com,
+	sankararaman.jayaraman@broadcom.com,
+	u9012063@gmail.com
+Subject: [PATCH net] vmxnet3: Fix tx queue race condition with XDP
+Date: Wed, 29 Jan 2025 23:04:15 +0530
+Message-Id: <20250129173414.147705-1-sankararaman.jayaraman@broadcom.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250129172431.65773-1-jdamato@fastly.com>
-References: <20250129172431.65773-1-jdamato@fastly.com>
+In-Reply-To: <20250127143635.623dc3b0@kernel.org>
+References: <20250127143635.623dc3b0@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Test that queues which are used for AF_XDP have the xsk attribute set.
+If XDP traffic runs on a CPU which is greater than or equal to
+the number of the Tx queues of the NIC, then vmxnet3_xdp_get_tq()
+always picks up queue 0 for transmission as it uses reciprocal scale
+instead of simple modulo operation.
 
-Signed-off-by: Joe Damato <jdamato@fastly.com>
+vmxnet3_xdp_xmit() and vmxnet3_xdp_xmit_frame() use the above
+returned queue without any locking which can lead to race conditions
+when multiple XDP xmits run in parallel on different CPU's.
+
+This patch uses a simple module scheme when the current CPU equals or
+exceeds the number of Tx queues on the NIC. It also adds locking in
+vmxnet3_xdp_xmit() and vmxnet3_xdp_xmit_frame() functions.
+
+Fixes: 54f00cce1178 ("vmxnet3: Add XDP support.")
+Signed-off-by: Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
+Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
 ---
- tools/testing/selftests/drivers/.gitignore    |  1 +
- tools/testing/selftests/drivers/net/Makefile  |  3 +
- tools/testing/selftests/drivers/net/queues.py | 32 ++++++-
- .../selftests/drivers/net/xdp_helper.c        | 90 +++++++++++++++++++
- 4 files changed, 124 insertions(+), 2 deletions(-)
- create mode 100644 tools/testing/selftests/drivers/net/xdp_helper.c
+ drivers/net/vmxnet3/vmxnet3_xdp.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/.gitignore b/tools/testing/selftests/drivers/.gitignore
-index 09e23b5afa96..3c109144f7ff 100644
---- a/tools/testing/selftests/drivers/.gitignore
-+++ b/tools/testing/selftests/drivers/.gitignore
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0-only
- /dma-buf/udmabuf
- /s390x/uvdevice/test_uvdevice
-+/net/xdp_helper
-diff --git a/tools/testing/selftests/drivers/net/Makefile b/tools/testing/selftests/drivers/net/Makefile
-index 137470bdee0c..f6ec08680f48 100644
---- a/tools/testing/selftests/drivers/net/Makefile
-+++ b/tools/testing/selftests/drivers/net/Makefile
-@@ -1,10 +1,13 @@
- # SPDX-License-Identifier: GPL-2.0
-+CFLAGS += $(KHDR_INCLUDES)
+diff --git a/drivers/net/vmxnet3/vmxnet3_xdp.c b/drivers/net/vmxnet3/vmxnet3_xdp.c
+index 1341374a4588..e3f94b3374f9 100644
+--- a/drivers/net/vmxnet3/vmxnet3_xdp.c
++++ b/drivers/net/vmxnet3/vmxnet3_xdp.c
+@@ -28,7 +28,7 @@ vmxnet3_xdp_get_tq(struct vmxnet3_adapter *adapter)
+ 	if (likely(cpu < tq_number))
+ 		tq = &adapter->tx_queue[cpu];
+ 	else
+-		tq = &adapter->tx_queue[reciprocal_scale(cpu, tq_number)];
++		tq = &adapter->tx_queue[cpu % tq_number];
  
- TEST_INCLUDES := $(wildcard lib/py/*.py) \
- 		 $(wildcard lib/sh/*.sh) \
- 		 ../../net/net_helper.sh \
- 		 ../../net/lib.sh \
+ 	return tq;
+ }
+@@ -124,6 +124,7 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
+ 	u32 buf_size;
+ 	u32 dw2;
  
-+TEST_GEN_PROGS := xdp_helper
-+
- TEST_PROGS := \
- 	netcons_basic.sh \
- 	netcons_overflow.sh \
-diff --git a/tools/testing/selftests/drivers/net/queues.py b/tools/testing/selftests/drivers/net/queues.py
-index 38303da957ee..4bd4710b1a79 100755
---- a/tools/testing/selftests/drivers/net/queues.py
-+++ b/tools/testing/selftests/drivers/net/queues.py
-@@ -8,7 +8,10 @@ from lib.py import NetDrvEnv
- from lib.py import cmd, defer, ip
- import errno
- import glob
--
-+import os
-+import socket
-+import struct
-+import subprocess
++	spin_lock(&tq->tx_lock);
+ 	dw2 = (tq->tx_ring.gen ^ 0x1) << VMXNET3_TXD_GEN_SHIFT;
+ 	dw2 |= xdpf->len;
+ 	ctx.sop_txd = tq->tx_ring.base + tq->tx_ring.next2fill;
+@@ -134,6 +135,7 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
  
- def sys_get_queues(ifname, qtype='rx') -> int:
-     folders = glob.glob(f'/sys/class/net/{ifname}/queues/{qtype}-*')
-@@ -21,6 +24,31 @@ def nl_get_queues(cfg, nl, qtype='rx'):
-         return len([q for q in queues if q['type'] == qtype])
-     return None
+ 	if (vmxnet3_cmd_ring_desc_avail(&tq->tx_ring) == 0) {
+ 		tq->stats.tx_ring_full++;
++		spin_unlock(&tq->tx_lock);
+ 		return -ENOSPC;
+ 	}
  
-+def check_xdp(cfg, nl, xdp_queue_id=0) -> None:
-+    test_dir = os.path.dirname(os.path.realpath(__file__))
-+    xdp = subprocess.Popen([f"{test_dir}/xdp_helper", f"{cfg.ifindex}", f"{xdp_queue_id}"],
-+                           stdin=subprocess.PIPE, stdout=subprocess.PIPE, bufsize=1,
-+                           text=True)
-+
-+    stdout, stderr = xdp.communicate(timeout=10)
-+    rx = tx = False
-+
-+    queues = nl.queue_get({'ifindex': cfg.ifindex}, dump=True)
-+    if queues:
-+        for q in queues:
-+            if q['id'] == 0:
-+                if q['type'] == 'rx':
-+                    rx = True
-+                if q['type'] == 'tx':
-+                    tx = True
-+
-+                ksft_eq(q['xsk'], 1)
-+            else:
-+                ksft_eq(q['xsk'], 0)
-+
-+    ksft_eq(rx, True)
-+    ksft_eq(tx, True)
-+    xdp.kill()
+@@ -142,8 +144,10 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
+ 		tbi->dma_addr = dma_map_single(&adapter->pdev->dev,
+ 					       xdpf->data, buf_size,
+ 					       DMA_TO_DEVICE);
+-		if (dma_mapping_error(&adapter->pdev->dev, tbi->dma_addr))
++		if (dma_mapping_error(&adapter->pdev->dev, tbi->dma_addr)) {
++			spin_unlock(&tq->tx_lock);
+ 			return -EFAULT;
++		}
+ 		tbi->map_type |= VMXNET3_MAP_SINGLE;
+ 	} else { /* XDP buffer from page pool */
+ 		page = virt_to_page(xdpf->data);
+@@ -182,6 +186,7 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
+ 	dma_wmb();
+ 	gdesc->dword[2] = cpu_to_le32(le32_to_cpu(gdesc->dword[2]) ^
+ 						  VMXNET3_TXD_GEN);
++	spin_unlock(&tq->tx_lock);
  
- def get_queues(cfg, nl) -> None:
-     snl = NetdevFamily(recv_size=4096)
-@@ -81,7 +109,7 @@ def check_down(cfg, nl) -> None:
+ 	/* No need to handle the case when tx_num_deferred doesn't reach
+ 	 * threshold. Backend driver at hypervisor side will poll and reset
+@@ -226,6 +231,7 @@ vmxnet3_xdp_xmit(struct net_device *dev,
+ 	struct vmxnet3_adapter *adapter = netdev_priv(dev);
+ 	struct vmxnet3_tx_queue *tq;
+ 	int i;
++	struct netdev_queue *nq;
  
- def main() -> None:
-     with NetDrvEnv(__file__, queue_count=100) as cfg:
--        ksft_run([get_queues, addremove_queues, check_down], args=(cfg, NetdevFamily()))
-+        ksft_run([get_queues, addremove_queues, check_down, check_xdp], args=(cfg, NetdevFamily()))
-     ksft_exit()
+ 	if (unlikely(test_bit(VMXNET3_STATE_BIT_QUIESCED, &adapter->state)))
+ 		return -ENETDOWN;
+@@ -236,6 +242,9 @@ vmxnet3_xdp_xmit(struct net_device *dev,
+ 	if (tq->stopped)
+ 		return -ENETDOWN;
  
++	nq = netdev_get_tx_queue(adapter->netdev, tq->qid);
++
++	__netif_tx_lock(nq, smp_processor_id());
+ 	for (i = 0; i < n; i++) {
+ 		if (vmxnet3_xdp_xmit_frame(adapter, frames[i], tq, true)) {
+ 			tq->stats.xdp_xmit_err++;
+@@ -243,6 +252,7 @@ vmxnet3_xdp_xmit(struct net_device *dev,
+ 		}
+ 	}
+ 	tq->stats.xdp_xmit += i;
++	__netif_tx_unlock(nq);
  
-diff --git a/tools/testing/selftests/drivers/net/xdp_helper.c b/tools/testing/selftests/drivers/net/xdp_helper.c
-new file mode 100644
-index 000000000000..8ed5f0e7233e
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/xdp_helper.c
-@@ -0,0 +1,90 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <sys/mman.h>
-+#include <sys/socket.h>
-+#include <linux/if_xdp.h>
-+#include <linux/if_link.h>
-+#include <net/if.h>
-+#include <inttypes.h>
-+
-+#define UMEM_SZ (1U << 16)
-+#define NUM_DESC (UMEM_SZ / 2048)
-+
-+/**
-+ * this is a simple helper program that creates an XDP socket and does the
-+ * minimum necessary to get bind() to succeed.
-+ *
-+ * this test program is not intended to actually process packets, but could be
-+ * extended in the future if that is actually needed.
-+ *
-+ * it is used by queues.py to ensure the xsk netlinux attribute is set
-+ * correctly.
-+ */
-+int main(int argc, char **argv)
-+{
-+	struct xdp_umem_reg umem_reg = { 0 };
-+	struct sockaddr_xdp sxdp = { 0 };
-+	int num_desc = NUM_DESC;
-+	void *umem_area;
-+	int ifindex;
-+	int sock_fd;
-+	int queue;
-+	char byte;
-+
-+	if (argc != 3) {
-+		fprintf(stderr, "Usage: %s ifindex queue_id", argv[0]);
-+		return 1;
-+	}
-+
-+	sock_fd = socket(AF_XDP, SOCK_RAW, 0);
-+	if (sock_fd < 0) {
-+		perror("socket creation failed");
-+		return 1;
-+	}
-+
-+	ifindex = atoi(argv[1]);
-+	queue = atoi(argv[2]);
-+
-+	umem_area = mmap(NULL, UMEM_SZ, PROT_READ | PROT_WRITE, MAP_PRIVATE |
-+			MAP_ANONYMOUS, -1, 0);
-+	if (umem_area == MAP_FAILED)
-+		return -1;
-+
-+	umem_reg.addr = (uintptr_t)umem_area;
-+	umem_reg.len = UMEM_SZ;
-+	umem_reg.chunk_size = 2048;
-+	umem_reg.headroom = 0;
-+
-+	setsockopt(sock_fd, SOL_XDP, XDP_UMEM_REG, &umem_reg,
-+		   sizeof(umem_reg));
-+	setsockopt(sock_fd, SOL_XDP, XDP_UMEM_FILL_RING, &num_desc,
-+		   sizeof(num_desc));
-+	setsockopt(sock_fd, SOL_XDP, XDP_UMEM_COMPLETION_RING, &num_desc,
-+		   sizeof(num_desc));
-+	setsockopt(sock_fd, SOL_XDP, XDP_RX_RING, &num_desc, sizeof(num_desc));
-+
-+	sxdp.sxdp_family = AF_XDP;
-+	sxdp.sxdp_ifindex = ifindex;
-+	sxdp.sxdp_queue_id = queue;
-+	sxdp.sxdp_flags = 0;
-+
-+	if (bind(sock_fd, (struct sockaddr *)&sxdp, sizeof(sxdp)) != 0) {
-+		perror("bind failed");
-+		close(sock_fd);
-+		return 1;
-+	}
-+
-+	/* give the parent program some data when the socket is ready*/
-+	fprintf(stdout, "%d\n", sock_fd);
-+
-+	/* parent program will write a byte to stdin when its ready for this
-+	 * helper to exit
-+	 */
-+	read(STDIN_FILENO, &byte, 1);
-+
-+	close(sock_fd);
-+	return 0;
-+}
+ 	return i;
+ }
 -- 
 2.25.1
 
