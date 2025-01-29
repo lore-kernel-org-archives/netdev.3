@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B4F18FC65
-	for <netdev@vger.kernel.org>; Wed, 29 Jan 2025 20:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5AAB1DE2D5
+	for <netdev@vger.kernel.org>; Wed, 29 Jan 2025 20:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738181651; cv=none; b=RD6v3PW07BbyYaSiUfGjBi4N9yWbgg4oTx9Kk3MKtvEBBbZU67evArgQHg0EX2hejNo41s/ucnyB7RYRKlUxu4wshT4zH3sH50HyzmKTb0p3n7kh8RorNkpedPtrx10DBlbq6D4OF/6SY6MBVPaLHea5esnkuDnCKNzLMDWWAow=
+	t=1738182213; cv=none; b=q4Lzt06nu0CLGlC48wjLkf+qKY9WTeI3288R11i5OzA2X+SRhAwBMINPfJxs+U9ecpo3o1cgbQCeUqBQWL7b4vyyvKKuKa4pYB+8lSiUOKyljgC2PKdDKI9i39dweI6eqQ/WLWgINLpUqIM1r4UrF18/l8xMeb+LpsZ0k1HBYC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738181651; c=relaxed/simple;
-	bh=yx3yY/slSq5xw8TnnIPisPq9WFOY4us/KORWOt0txpE=;
+	s=arc-20240116; t=1738182213; c=relaxed/simple;
+	bh=mAsz4aIlxFkKOs+g1gpsqduz6W2Lf802dacAt0osgTc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iw25JSTmZnHBVlXzW24aF5V6ngDm/mcU/PIRycw8TBllHGzW7c/hdgHJTPNp8ZmzB2AlNnn5GENwENGMr4UssDukcMsB+aojPtmJY8QX8JhNidUv6gBOp5urEwxXaVyZCfI1uL24V9sqRHkoizpGHBwMaHCyZ1cG54Rdl05r5NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I4+Zx2YO; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=mRysGcAoFKZLBSiYnqAA4dkCNl50968JIWRZzhHLYxyQtXPh/4k1LhIyMufwlnn2GAdV1G/gb8UKKnLuTJozrKprpEbl/vLOsvIiXpd8+1fSO+YcKhVw3dIg31AnQw8PM3FcntRmHVS6QnScn09nKcsqPR0PpCTAMY4R+oujllQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l4Ta15ds; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I4+Zx2YO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8791DC4CED1;
-	Wed, 29 Jan 2025 20:14:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l4Ta15ds"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448E5C4CED1;
+	Wed, 29 Jan 2025 20:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738181649;
-	bh=yx3yY/slSq5xw8TnnIPisPq9WFOY4us/KORWOt0txpE=;
+	s=k20201202; t=1738182213;
+	bh=mAsz4aIlxFkKOs+g1gpsqduz6W2Lf802dacAt0osgTc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=I4+Zx2YOs/LPGAf/ubcZoa5aGbTaq7MhRAp2ZjmpGVz66jsJlF4op2qzOHyu9JCtA
-	 qaY9cV9M3Qc4yc3r6AieC5gl7NOM8s8kM8GJrBqXXwaktvEjAoAH4N+hbuQhl4E69Y
-	 sSqbrclKeFGjGi2JnjPwquZpP1Ev6elUsJUU7rlAjbmajou2INleKhnio27Y0HmxN5
-	 ggpIQXP6HWDZhJ3/qIkTQH9Jgw8x9acL6u16y9zJW+WK1HzvO1cghs6nt1Blw82ybY
-	 mJ0Qz7sz+NoRIoNVXyXE8f2YkTPGcXpk5c3cvDdloY/qcGKXQEfZ18rfTOO8b5dsdB
-	 EpehJVCEjwErw==
-Date: Wed, 29 Jan 2025 12:14:08 -0800
+	b=l4Ta15ds0BaMMqMIH7W/9mpLnrgf62IVwVg3WR2hkk57Cyo7OCG1+WK6gJFoFkblH
+	 dLY7uoAG7o79s8L2qZpBPV2NgFAwus1jnNwJTTbk6smoODEbOEuu/qUh4fP6Ymq9ay
+	 44jgRzjM+H2uoT7MlaqBFlkElcYWA/OR2cVGSIS0EsaZrfCbAhep+lIBlgSf+YZI0k
+	 LWzr3PN92uQWXVt19mZSuiPqiWvwt4iveDghhGg8jMbK1jl/lKJ8YXeYBj5AnzSNmh
+	 0UtxeC3rWo7b5QutKipVx53gKb2YUuCmyZIZxmHJxSLckyEE4IxVYfdWF0CuZsQL18
+	 1GFIEqwEW6h0Q==
+Date: Wed, 29 Jan 2025 12:23:32 -0800
 From: Jakub Kicinski <kuba@kernel.org>
 To: Justin Iurman <justin.iurman@uliege.be>
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
  pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- dsahern@kernel.org
-Subject: Re: [PATCH net 2/2] net: ipv6: fix dst ref loops in rpl, seg6 and
+ dsahern@kernel.org, Tom Herbert <tom@herbertland.com>
+Subject: Re: [PATCH net 1/2] net: ipv6: fix dst refleaks in rpl, seg6 and
  ioam6 lwtunnels
-Message-ID: <20250129121408.0fe5d481@kernel.org>
-In-Reply-To: <4a30a0aa-2893-4f6a-a858-61e51b2430b2@uliege.be>
+Message-ID: <20250129122332.20b6b172@kernel.org>
+In-Reply-To: <d4cb495d-6549-4b5a-bcf4-38dbbdda202e@uliege.be>
 References: <20250129021346.2333089-1-kuba@kernel.org>
-	<20250129021346.2333089-2-kuba@kernel.org>
-	<4a30a0aa-2893-4f6a-a858-61e51b2430b2@uliege.be>
+	<d4cb495d-6549-4b5a-bcf4-38dbbdda202e@uliege.be>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,18 +47,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 29 Jan 2025 17:50:14 +0100 Justin Iurman wrote:
-> > +		if (dst->lwtstate != cache_dst->lwtstate) {
-> > +			local_bh_disable();
-> > +			dst_cache_set_ip6(&ilwt->cache, cache_dst, &fl6.saddr);
-> > +			local_bh_enable();
-> > +		}  
+On Wed, 29 Jan 2025 17:17:28 +0100 Justin Iurman wrote:
+> >   net/ipv6/ioam6_iptunnel.c | 5 +++--
+> >   net/ipv6/rpl_iptunnel.c   | 6 ++++--
+> >   net/ipv6/seg6_iptunnel.c  | 6 ++++--
+> >   3 files changed, 11 insertions(+), 6 deletions(-)  
 > 
-> I agree the above patch fixes what kmemleak reported. However, I think 
-> it'd bring the double-reallocation issue back when the packet 
-> destination did not change (i.e., cache will always be empty). I'll try 
-> to come up with a solution...
+> I think both ila_output() and tipc_udp_xmit() should also be patched 
+> accordingly. Other users seem fine.
 
-True, dunno enough about use cases so I may be missing the point.
-But the naive solution would be to remember that the tunnel "doesn't
-re-route" and use dst directly, instead of cache_dst?
+TIPC is not a lwt, the cache belongs to a socket not another dst,
+AFAICT.
+
+I think in ILA ilwt->connected will only be set if we re-routed
+the traffic to the real address already? So the dst can't match.
+CC: Tom, full patch:
+https://lore.kernel.org/all/20250129021346.2333089-2-kuba@kernel.org/
