@@ -1,53 +1,48 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DCC25761;
-	Fri, 31 Jan 2025 14:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E3F1C54A6;
+	Fri, 31 Jan 2025 14:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738332969; cv=none; b=O4Fh3i6sbzB5UD/bZzBkBjrsA6gwQM4Uv0lL7rtzr9m3KZIIiusXnBD87nlEn/A/0YqxfSl5TtMXlzhXvuURNAP49Sqs+KjihwT3SW5rUL4T/faTHh9i+yZARgcIe+xyNgClKI6SbJ7Yn0PPYsEMlfzbV7qHRumbv+DNPNr+0bM=
+	t=1738333208; cv=none; b=GFmCjTFwVvz45AuWsVLa5aAiNob0tmNEkfh/GtW8fjNf7m5Ee3GvuwrKC3LDhQCw5F/TRQIc7upf+8JG+U6sGp0xuqI5rlT3u4mrUModXkR9CnviOL4oYarsL3UXoTAteafF3UatubbETfvbVQHa+gF+z3NLjBMvgX0wenKD8xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738332969; c=relaxed/simple;
-	bh=MguGDaREPUyfjHAQR3E13sI9sAH/3W0uJMw+qIQdsso=;
+	s=arc-20240116; t=1738333208; c=relaxed/simple;
+	bh=FZhwMfs9fD5RA+73mQJnoO+Nm1Cc7xy26j1wGSrMuwo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bsW6mFJqvuPwjfN2zvHR6OtAWcRysQKyoO05VS4oxqkSugPcLA/1f41nVRrh9kmLZ7tOxm2AqAbsxfxPSq1vHuiiOH++4nJdYdYBkx1UKJHUKL7Mtjay5Ko9Sb41OfZWBlVOEL14cBiSVxfUjeWVmGrbIb8qFMZDMEFrPaifR/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cs/OOv4t; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=sDmeIU37K6uH32KjXZbvYQLV5NQB/7VyzS3/xBLgbUeGh3jXIwNmWl9WWIkKsLikugpX4WDcTkUGDd7iwXC6fAnwCDpc5KxHaAldBvRuOk86MBTmXlic9QdvBbthSfl/VZdWg0h/TKZKtzgQriLDeIaErEh2zZ/1Ovd8MCRGaf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=556/dFeN; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cs/OOv4t"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="556/dFeN"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=6KGuy4EAuLHG4r0AND1uGQsHYqV6ULruAexpzmPJXj0=; b=cs/OOv4teDCakZI2PNJHMNZY5F
-	CSThPpDFV0qXz+D/8t74/eKu7sLH3JHb0lWt9GptCZKYkRblomsN3tBxQ2ezCc7QZ8ITuLvBv2ELB
-	Rl39HYkp2SOoBPdTfUr2haWDYhJDyPZfL0rzyIh88Kt3Jxl4qc24UOTI6XJ+lkFB5moQ=;
+	bh=5cyljd9OIda9+79SRYr/QtAErJYk/aKrcLSUZ+ZZE2U=; b=556/dFeNsCV0rY2ToK3iDTqQkT
+	3iRhlODgOJylJLHCCMR+58HmQzGZBmwXK6fppeNlB4BAQRiV/d9oNtgLOqszV8aE8xViAVvLpsIo7
+	FvQMg5SlglEoIx+540S5En4a5Ti3p+vqf3ueAnUTVAKVxaPS4MCR9NBW3+w7RZLugEPk=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1tdrnz-009iDb-1e; Fri, 31 Jan 2025 15:15:35 +0100
-Date: Fri, 31 Jan 2025 15:15:35 +0100
+	id 1tdrsI-009iHd-3k; Fri, 31 Jan 2025 15:20:02 +0100
+Date: Fri, 31 Jan 2025 15:20:02 +0100
 From: Andrew Lunn <andrew@lunn.ch>
-To: Steven Price <steven.price@arm.com>
-Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Yanteng Si <si.yanteng@linux.dev>, Furong Xu <0x1207@gmail.com>,
-	Joao Pinto <Joao.Pinto@synopsys.com>, netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v4 3/3] net: stmmac: Specify hardware capability
- value when FIFO size isn't specified
-Message-ID: <fc08926d-b9af-428f-8811-4bfe08acc5b7@lunn.ch>
-References: <20250127013820.2941044-1-hayashi.kunihiko@socionext.com>
- <20250127013820.2941044-4-hayashi.kunihiko@socionext.com>
- <07af1102-0fa7-45ad-bcbc-aef0295ceb63@arm.com>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org,
+	Linux Regressions <regressions@lists.linux.dev>,
+	Netdev <netdev@vger.kernel.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Yanteng Si <si.yanteng@linux.dev>, Paolo Abeni <pabeni@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Theodore Grey <theodore.grey@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Steven Price <steven.price@arm.com>
+Subject: Re: next-20250129: rk3399-rock-pi-4b NFS mount and boot failed
+Message-ID: <8548ba31-762a-4ccb-b832-3365c9d5caf4@lunn.ch>
+References: <CA+G9fYtqv_S+nK2cZB623yUuQS7HL18ELARpq_6W3_5m9ci7zA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,46 +51,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <07af1102-0fa7-45ad-bcbc-aef0295ceb63@arm.com>
+In-Reply-To: <CA+G9fYtqv_S+nK2cZB623yUuQS7HL18ELARpq_6W3_5m9ci7zA@mail.gmail.com>
 
-On Fri, Jan 31, 2025 at 09:46:41AM +0000, Steven Price wrote:
-> On 27/01/2025 01:38, Kunihiko Hayashi wrote:
-> > When Tx/Rx FIFO size is not specified in advance, the driver checks if
-> > the value is zero and sets the hardware capability value in functions
-> > where that value is used.
-> > 
-> > Consolidate the check and settings into function stmmac_hw_init() and
-> > remove redundant other statements.
-> > 
-> > If FIFO size is zero and the hardware capability also doesn't have upper
-> > limit values, return with an error message.
+On Fri, Jan 31, 2025 at 04:07:24PM +0530, Naresh Kamboju wrote:
+> The arm64 rk3399-rock-pi-4b boot failed on Linux next-20250129
+> while mounting rootfs via NFS. Whereas other arm64 devices boot fine.
 > 
-> This patch breaks my Firefly RK3288 board. It appears that all of the 
-> following are true:
+> rk3399-rock-pi-4b:
+>   boot:
+>     * gcc-13-lkftconfig
 > 
->  * priv->plat->rx_fifo_size == 0
->  * priv->dma_cap.rx_fifo_size == 0
->  * priv->plat->tx_fifo_size == 0
->  * priv->dma_cap.tx_fifo_size == 0
+> First seen on the the Linux next-20250129..next-20250130
+> Good: next-20250128
+> Bad: next-20250129
 > 
-> Simply removing the "return -ENODEV" lines gets this platform working 
-> again (and AFAICT matches the behaviour before this patch was applied).
-> I'm not sure whether this points to another bug causing these to 
-> all be zero or if this is just an oversight. The below patch gets my 
-> board working:
+> Theodore Grey bisected this to,
+> first bad commit:
+>   [8865d22656b442b8d0fb019e6acb2292b99a9c3c]
+>   net: stmmac: Specify hardware capability value when FIFO size isn't specified
+> 
+> Anyone have noticed this boot problem on rk3399-rock-pi-4b running the
+> Linux next-20250129 and next-20250130 kernel.
 
-Thanks for the quick report of the problem.
-
-Your 'fix' basically just reverts the patch. Let first try to
-understand what is going on, and fix the patch. We can do a revert
-later if we cannot find a better solution.
-
-I'm guessing, but in your setup, i assume the value is never written
-to a register, hence 0 is O.K. e.g. dwmac1000_dma_operation_mode_rx(),
-the fifosz value is used to determine if flow control can be used, but
-is otherwise ignored.
-
-We should determine which versions of stmmac actually need values, and
-limit the test to those versions.
+Thanks for the report. Steven Price <steven.price@arm.com> also
+noticed it, and there is a thread started about this issue.
 
 	Andrew
