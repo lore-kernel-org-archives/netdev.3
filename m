@@ -1,151 +1,149 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE08214885B;
-	Fri, 31 Jan 2025 07:00:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E024683;
+	Fri, 31 Jan 2025 07:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738306814; cv=none; b=nEb2RU62+E+WocnWGDcYRwUyT5Z5PQ75aavdoj71Sji8BMpaJgii7A/uf3tXrY2rFvExwIX4kBxYsCDawepV+ey8qkBSS1mrtAN7cbrVswFT20JPft4ZZwwKB1zvvoWHmCbb6pKXhL+eb5r/Y8jWery7PA3AuLvyb653/hMDCuo=
+	t=1738308111; cv=none; b=S5zEFwPEMJGeRLI038buyX9sXuBiD1D8YN47cIAty5I5ZGhwFrGCbHekaHntN6IwedCp8pqkr82ySNx8ThQe6E0/aeXtcpVmFXHIjAKiKhrvEArnvstEHfgblAixeWhGb8JlX//yTGCIPda4UEt7b0LGhPYq+F9kM03RmTU2Rho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738306814; c=relaxed/simple;
-	bh=UVM+F0b39UD/id5lC4ozCJ/wtWd6poX6H5neKCRmBjU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QX3PKnK/bGaytWQFCPEWmE4E43jXEkKGvY1c9Tz7R4vw1jWv4wffOYmd/YOA8QBlRo96QzWxwiEWXQRPTRro/Kvixm4AGXBZeMI5PuFLt7Fj9CdNcG7/3rzDTDeoL5zW5AKhkCBw6R4n2Ax1pYU8UJxwYCEUa9lZ5FFjY1C1yI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.98)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1tdkd8-000000002Cy-1baG;
-	Fri, 31 Jan 2025 06:35:54 +0000
-Date: Fri, 31 Jan 2025 06:35:50 +0000
-From: Daniel Golle <daniel@makrotopia.org>
-To: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Cc: lee@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	tsbogend@alpha.franken.de, hkallweit1@gmail.com,
-	linux@armlinux.org.uk, sander@svanheule.net,
-	markus.stockhausen@gmx.de, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-mips@vger.kernel.org
-Subject: Re: [PATCH v5 2/4] dt-bindings: mfd: Add MDIO interface to
- rtl9301-switch
-Message-ID: <Z5xvRlKQiQ5cm0gl@makrotopia.org>
-References: <20250131010151.2527688-1-chris.packham@alliedtelesis.co.nz>
- <20250131010151.2527688-3-chris.packham@alliedtelesis.co.nz>
+	s=arc-20240116; t=1738308111; c=relaxed/simple;
+	bh=G1mQtbBezYR4g2FL8YenYsWn2FkBkKbc/L95NOOsMLM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Xy5+V32yo4JyNdn6VCOg0TXNSWXqnwfCuwH69S26Bkrm02HuXefqDYeXVaOaWHz/04R4eogxos9nolWJzv7+r473E511xlOr+HkgV6XKXDFnWU9k3UGPHWK1JYw0gRM9vLaVI2yB7UaowN+JAoD6R2uQKiHGfv6dxoA0M4ApEu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=M5/cazeK; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="M5/cazeK"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 53A63442CD;
+	Fri, 31 Jan 2025 07:21:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1738308106;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qvRMOflZcE1Dy/k3AvNk+EOJWj9DfDs/QUCF/RGgSbQ=;
+	b=M5/cazeKMja7vJfG5KJVTfua089HROREBbHVMizhcY+iY5yuxpE9zMIIH6ue1tTOmaC0eU
+	Ix/U68mP2EI6BoaDp2Eg+zLEvghGXXQ+KrqU5+zoHh7wVjlTcmx4oZZUP7WSFP3oc48+6/
+	d++zVCryn4P32HAVnE1ur9MH8cIDGj5g7iHWX6qYCAqYKRTltOyQsC98Y4bNO6rPdkrb6G
+	+D+//LfaVh85DS2kAWYcfmyspLZoN79y4U3MnpTOEnXhSeYZw1gQr07G5nNw02DxkaV3ig
+	4QeaCF6nDv4U1fLZJqPrXVDokf4nA5FWUqzm8/bUoqXscffqYqeC4eDJ0bEBWw==
+From: "Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>
+Subject: [PATCH bpf-next v4 00/14] selftests/bpf: Migrate
+ test_xdp_redirect_multi.sh to test_progs
+Date: Fri, 31 Jan 2025 08:21:39 +0100
+Message-Id: <20250131-redirect-multi-v4-0-970b33678512@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250131010151.2527688-3-chris.packham@alliedtelesis.co.nz>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAR6nGcC/33NQQ6CMBQE0KuYrq1pC0Vx5T2MC/r5lZ8AJW0lG
+ MLdbXCjkricTObNzAJ6wsDOu5l5HCmQ61PI9zsGTdXfkVOdMlNCaSFFxj3W5BEi7x5tJK5yXRd
+ YWaNrydJo8GhpWsErM4PlPU6R3VLTUIjOP9enUa79G1XyFx0lF9woqTHT1mqhL8a52FJ/ANet2
+ Kj+AyoBFkqooDJQGLUFsk/gtAGyBIAELMqyPIKQ38CyLC8iF7R4OgEAAA==
+X-Change-ID: 20250103-redirect-multi-245d6eafb5d1
+To: Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Andrii Nakryiko <andrii@kernel.org>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, 
+ Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Mykola Lysenko <mykolal@fb.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: Alexis Lothore <alexis.lothore@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>
+X-Mailer: b4 0.14.2
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekudegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfhrhhomhepfdeurghsthhivghnucevuhhruhhttghhvghtucdlvgeurffhucfhohhunhgurghtihhonhdmfdcuoegsrghsthhivghnrdgtuhhruhhttghhvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefhgfehkeduheegudeiudefvedtjeejvdffkefftedujeeigfekgfeiueehfedtjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrudegngdpmhgrihhlfhhrohhmpegsrghsthhivghnrdgtuhhruhhttghhvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvgedprhgtphhtthhopehjohhhnhdrfhgrshhtrggsvghnugesghhmrghilhdrtghomhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepsggrshhtihgvnhdrtghurhhuthgthhgvthessghoohhtlhhinhdrtghomhdpr
+ hgtphhtthhopehhrgholhhuohesghhoohhglhgvrdgtohhmpdhrtghpthhtohepuggrnhhivghlsehiohhgvggrrhgsohigrdhnvghtpdhrtghpthhtoheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhg
+X-GND-Sasl: bastien.curutchet@bootlin.com
 
-Hi Chris,
+Hi all,
 
-afaik net-next is still closed right now, but lets discuss the series as RFC
-in the meantime maybe, right?
+This patch series continues the work to migrate the *.sh tests into
+prog_tests framework.
 
-On Fri, Jan 31, 2025 at 02:01:49PM +1300, Chris Packham wrote:
-> The MDIO controller is part of the switch on the RTL9300 family of
-> devices. Add a $ref to the mfd binding for these devices.
-> 
-> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-> ---
-> 
-> Notes:
->     This patch is dependent on "dt-bindings: net: Add Realtek MDIO
->     controller" which adds the realtek,rtl9301-mdio.yaml binding.
->     
->     Changes in v5:
->     - Note dependency on realtek,rtl9301-mdio.yaml patch
->     - Add back reg property to the mdio-controller node.
->     Changes in v4:
->     - There is a single MDIO controller that has MDIO buses as children
->     Changes in v3:
->     - None
->     Changes in v2:
->     - None
-> 
->  .../bindings/mfd/realtek,rtl9301-switch.yaml  | 29 +++++++++++++++++++
->  1 file changed, 29 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch.yaml b/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch.yaml
-> index f053303ab1e6..89e10213a4ee 100644
-> --- a/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch.yaml
-> +++ b/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch.yaml
-> @@ -28,6 +28,9 @@ properties:
->    reg:
->      maxItems: 1
->  
-> +  mdio-controller:
-> +    $ref: /schemas/net/realtek,rtl9301-mdio.yaml#
-> +
->    '#address-cells':
->      const: 1
->  
-> @@ -41,6 +44,10 @@ patternProperties:
->    'i2c@[0-9a-f]+$':
->      $ref: /schemas/i2c/realtek,rtl9301-i2c.yaml#
->  
-> +  'mdio-controller@[0-9a-f]+$':
-> +    $ref: /schemas/net/realtek,rtl9301-mdio.yaml#
-> +
-> +
->  required:
->    - compatible
->    - reg
-> @@ -110,5 +117,27 @@ examples:
->            };
->          };
->        };
-> +
-> +      mdio-controller@ca00 {
-> +        compatible = "realtek,rtl9301-mdio";
-> +        reg = <0xca00 0x200>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        mdio-bus@0 {
-> +          reg = <0>;
-> +          #address-cells = <1>;
-> +          #size-cells = <0>;
-> +
-> +          ethernet-phy@0 {
-> +            reg = <0>;
-> +            realtek,port = <1>;
+test_xdp_redirect_multi.sh tests the XDP redirections done through
+bpf_redirect_map().
 
-Aren't all those PHYs referenced as phandles by DSA switch ports?
+This is already partly covered by test_xdp_veth.c that already tests
+map redirections at XDP level. What isn't covered yet by test_xdp_veth is
+the use of the broadcast flags (BPF_F_BROADCAST or BPF_F_EXCLUDE_INGRESS)
+and XDP egress programs.
 
-Imho it would be better to not introduce a new property but instead
-let the driver of the mdio-controller parse the DSA switch description
-and follow the existing 'phy-handle' properties in order to infer the
-mapping of all ports to all PHYs, and by that then be able to also
-know the reverse mapping.
-You could reference the switch node in the mdio-controller node.
+Hence, this patch series add test cases to test_xdp_veth.c to get rid of
+the test_xdp_redirect_multi.sh:
+ - PATCH 1 Add an helper to generate unique names
+ - PATCH 2 to 9 rework test_xdp_veth to make it more generic and allow to
+   configure different test cases
+ - PATCH 10 adds test cases for 'classic' bpf_redirect_map()
+ - PATCH 11 and 12 cover the broadcast flags
+ - PATCH 13 covers the XDP egress programs
+ - PATCH 14 removes test_xdp_redirect_multi.sh
 
-That would avoid redundant information in the device tree, as we
-would then only have one mapping instead of having it two times
-(once by the usual 'phy-handle' property of the DSA user port and
-another time reverse using your newly introduce 'realtek,port'
-property of each ethernet-phy).
+Signed-off-by: Bastien Curutchet (eBPF Foundation) <bastien.curutchet@bootlin.com>
+---
+Changes in v4:
+- Remove the NO_IP #define
+- append_tid() takes string's size as input to ensure there is enough
+  space to fit the thread ID at the end
+- Fix PATCH 12's commit log
+- Link to v3: https://lore.kernel.org/r/20250128-redirect-multi-v3-0-c1ce69997c01@bootlin.com
 
+Changes in v3:
+- Add append_tid() helper and use unique names to allow parallel testing
+- Check create_network()'s return value through ASSERT_OK()
+- Remove check_ping() and unused defines
+- Change next_veth type (from string to int)
+- Link to v2: https://lore.kernel.org/r/20250121-redirect-multi-v2-0-fc9cacabc6b2@bootlin.com
 
-> +          };
-> +          ethernet-phy@1 {
-> +            reg = <1>;
-> +            realtek,port = <0>;
-> +          };
-> +        };
-> +      };
->      };
->  
-> -- 
-> 2.48.1
-> 
-> 
+Changes in v2:
+- Use serial_test_* to avoid conflict between tests
+- Link to v1: https://lore.kernel.org/r/20250121-redirect-multi-v1-0-b215e35ff505@bootlin.com
+
+---
+Bastien Curutchet (eBPF Foundation) (14):
+      selftests/bpf: helpers: Add append_tid()
+      selftests/bpf: test_xdp_veth: Remove unused defines
+      selftests/bpf: test_xdp_veth: Remove unecessarry check_ping()
+      selftests/bpf: test_xdp_veth: Use int to describe next veth
+      selftests/bpf: test_xdp_veth: Split network configuration
+      selftests/bpf: test_xdp_veth: Rename config[]
+      selftests/bpf: test_xdp_veth: Add prog_config[] table
+      selftests/bpf: test_xdp_veth: Add XDP flags to prog_configuration
+      selftests/bpf: test_xdp_veth: Use unique names
+      selftests/bpf: test_xdp_veth: Add new test cases for XDP flags
+      selftests/bpf: Optionally select broadcasting flags
+      selftests/bpf: test_xdp_veth: Add XDP broadcast redirection tests
+      selftests/bpf: test_xdp_veth: Add XDP program on egress test
+      selftests/bpf: Remove test_xdp_redirect_multi.sh
+
+ tools/testing/selftests/bpf/Makefile               |   2 -
+ tools/testing/selftests/bpf/network_helpers.c      |  17 +
+ tools/testing/selftests/bpf/network_helpers.h      |  12 +
+ .../selftests/bpf/prog_tests/test_xdp_veth.c       | 588 ++++++++++++++++-----
+ .../testing/selftests/bpf/progs/xdp_redirect_map.c |  89 ++++
+ .../selftests/bpf/progs/xdp_redirect_multi_kern.c  |  41 +-
+ .../selftests/bpf/test_xdp_redirect_multi.sh       | 214 --------
+ tools/testing/selftests/bpf/xdp_redirect_multi.c   | 226 --------
+ 8 files changed, 615 insertions(+), 574 deletions(-)
+---
+base-commit: 421ec9c8f46a25743870a8cbaff76de293752e00
+change-id: 20250103-redirect-multi-245d6eafb5d1
+
+Best regards,
+-- 
+Bastien Curutchet (eBPF Foundation) <bastien.curutchet@bootlin.com>
+
