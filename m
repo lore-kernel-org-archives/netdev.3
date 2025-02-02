@@ -1,99 +1,105 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A6FE573
-	for <netdev@vger.kernel.org>; Sun,  2 Feb 2025 06:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8F3155336;
+	Sun,  2 Feb 2025 10:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738477472; cv=none; b=Byb28U0Yz/QfZUZuvNU3/Ve/6udcenKVKfZE9Lukzb4+Kj9EkJvscR5kCyMeg9INj+6oiuEbkfY0KCLlvkGaNzfW3qyMshx1wUacidxondI3rtI7u/2z7KHJtrTnLT/H6kr8zeVD+sffx8F2WibjxvaasJoPB9/Xk2fFkLnzkI8=
+	t=1738490795; cv=none; b=Oq95r8uOYFfJt6xngy86Sa+ZJmZicvrbL59PjCYQeNiQBFxW76gstvR6gk445KS3IYBThl1dbb3lr6RtxXQYZ+QShGC3J/EmJq/U3w7n8LxMT/OMEvi5V+ZSxsjcfmCRT2m2h/t57++gdNEaaxyrgY0R+U/YHKpJpHhzsfC2kSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738477472; c=relaxed/simple;
-	bh=Pnip2h4XNIWMgvL8oAId92Nu6kEwDFKJxgEPR7PbRHs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DpRPIlgPySyzUDeHF6PkcW2XGRrSLhD2fyq5VmBvzy+V0z1Xh1UMlCGpIvb8nm0ICCZbJ6HQyTxycxOHZtqsuBMlirHxNj81VlAQ5c0ORIW0n3GKB5S73ahLXhcKwfH1sBt/OeA+gbA1XOLTXPvtXlWBKpNtMGJUmZrc/7iB6BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a2jU44DT; arc=none smtp.client-ip=209.85.216.47
+	s=arc-20240116; t=1738490795; c=relaxed/simple;
+	bh=eibt3Lh6er0cl/46qYhA7FxgdPAUMkq76azP7GqyryU=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B9/rmo9s9pLhPnkWkVA+b6rMbjMycpOqkyGl6qOVvrZRAotjyOAkvANl8pXWysSYwXVGHNUgvFxGAy31hQ1XJEdpOxmhA3wQxpVM2lbgKCDBJKyAsGPkyJfQKfIIJ1btORMRiTXhk1hGmZxXoQgRZOuSbEuR6/6UN7wzF+ObsOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M3RMa4Pf; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a2jU44DT"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ee9a780de4so4289506a91.3
-        for <netdev@vger.kernel.org>; Sat, 01 Feb 2025 22:24:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M3RMa4Pf"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ab2b29dfc65so553003966b.1;
+        Sun, 02 Feb 2025 02:06:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738477470; x=1739082270; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eTCA/SKa9InIf+Kf02iyJXhxqOfl3ZMPLJSo9EyZ94I=;
-        b=a2jU44DTQN1Nrr3D08nRSKi3xYTGM9LMPhIXLEsmOKfxYZh5EvCNblwC9r8ftZ7IQA
-         bHCKuINfgEVYK2Qk1R6Ci3bLGMIXRPZtwLTpWpzUzbnCWKap0y6C87fUJOQ001l/PJGe
-         SVG42vWNP2Chyd3crZBGd3niTbu921BTFq7qg+gxSfjzM+c7Vp1DasBdXFfpkJSXIxdo
-         TezTwv+NQSvopIecHdlu11G72AiHouI4OGLxFxDFQEeDHOgUMe5CjIfanNlVNjmGbJCO
-         oe510+bhY4t5bcI2xrD0v8qRNhx7i5VIA+DGh5SMpZ46FmwRHec4omAz9v+fYKF6M2zf
-         pe5Q==
+        d=gmail.com; s=20230601; t=1738490792; x=1739095592; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=vP80Ll/PNjgw877UXJRsX5g02CC+j9UoNcZ3BPAo0r0=;
+        b=M3RMa4PfDtWbvKfvITB0HKvQXvUUj02LCxqr82t5Uylx/o5Q9+xKJPLmsrkoPeufph
+         BbOZiwEgdUZpXl5KFeUOpOl/QkumTsCyonC7wXqKNv+kIZ7mYGbRy6E1GG8a+1KUTwQk
+         qYJkpRxVEHSy4lnCiRGLaZcy+jZf6m4bWJfni34AhIhNMBF8he/RAGOH7iBkFwynQ7Ux
+         KRoFNXTrY065vmde3A6ArU5c7SQ9Qju5c+B7CIkN0/5LbAeC6kL/aPfvJjDBo+cOErVg
+         4SWFEixL6Zlo4UdBmEPgCpEGB0xwBtpnFuWoeC96uEl3W6L4idR7FS1gHZWTUAXOTrMZ
+         giDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738477470; x=1739082270;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eTCA/SKa9InIf+Kf02iyJXhxqOfl3ZMPLJSo9EyZ94I=;
-        b=gGBa8UYhzluhDSHx3LZ4hdRxKUh2TFE3SPuqSvW1k2o+itwr2o6VLoQQ5qNhID6k3Q
-         Y9NK2ybYbq3cL6rpGXPvZow3tSEfB264dSwRgWjtlKcpDi94ZspKGbec5uOZdBx43rkm
-         SA6fjhsQiJHnPK1ZqAf+Xylq/h5laoWGLIgrAGtQ2dVxfA/p57xRX1FZr74D4CY0oyrM
-         uDyYoOoNUJX1aVBdbxvhjY4MjnSIx0Ffnl97jS2WhmLbnVhBEr1RKpY/9ibeq8FEHnNP
-         /bxG34HJAC3FRE6nBJfMbKTkudtUWtxtVFa+BRRu//z8V2FL/1S4JRtWabT6enLyua8c
-         VNDQ==
-X-Gm-Message-State: AOJu0YzPw8ta5u0COsKqDE0vvSCxB0NbDHCmrriwq/f7cn2pm59qBrXq
-	P8fzpbuXEA3Q+lb9tPDDhL22FrbNPIJSRAFev124qDNZqCgl1lOz
-X-Gm-Gg: ASbGnctmRWh6EYBChJ9kqlEulQiPt/ej8nF4M9otgEjYrRKIDC1PFrRRZD5wPMqwhAq
-	uMj8idexyIqorInrg04unpPqFnJvA/4n8TdG2FNGtx1I76gWtRDE39oyL+sJYZ5mYl84MY8m+W9
-	oZOyrMBYbLVfJmG1jIFmIF1qbHh0J8I8EjbrZxt1qRCZOWAlUDDbjoMYk+YjJn7gLOvjqtaC3Vf
-	YbXZz9axuP0DVrue8bbEK2wxmeuhVSviy6Qlp+zTBqtxd9MYR5+MenosnlPHaV3MBrFYw01GmyN
-	L32Grmuk7GCMeO6fO9ybOi/7Tm0givz1W9o=
-X-Google-Smtp-Source: AGHT+IHk+ibHlZauGAb0/a6fFWctJ4sDxgPIJKXoPI8J872Zxqabfwejx5lWsuDiTxEpwoYjl6/ilg==
-X-Received: by 2002:a17:90b:5190:b0:2ee:d63f:d8f with SMTP id 98e67ed59e1d1-2f83abb91d4mr25539249a91.13.1738477470164;
-        Sat, 01 Feb 2025 22:24:30 -0800 (PST)
-Received: from hoboy.vegasvil.org ([2600:1700:2430:6f6f:e2d5:5eff:fea5:802f])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f83bcd1605sm8936219a91.18.2025.02.01.22.24.29
+        d=1e100.net; s=20230601; t=1738490792; x=1739095592;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vP80Ll/PNjgw877UXJRsX5g02CC+j9UoNcZ3BPAo0r0=;
+        b=X1oLSwFd7vrSnXsbTuWgvRvvSCnldJrjSHQVr2QEc0vWU/Oq+8zyJhcD+33JP0E4Bn
+         KWnoyHeS2B8Jq0Ag4UvBlzDRusAhmDwU41PFnSEZExg9v/pfZro1KK4TIeuM8L3suLUW
+         szDrR9IyzUYeiqoJ8hQJo7ku4cDqYM/V8ZkHOkZmlWW+rrxR0N0iI+36dVmKRU9V8qG+
+         b7ohnRNe5FCLOl+l8ANIS6FiS6jBG0+zE0D54aJ6t5bNMvpvD1c/fnJ/6Ciu/ZKYBqvK
+         vZ51cMr1yUBtKVnvHAgF6xLCLfBFTqGmjEG7KwXf8jPeBmEQcXmjMWbgPtAVtvQKuUce
+         JdhA==
+X-Forwarded-Encrypted: i=1; AJvYcCUgoRUXyl1voMFg3f1WGM6VtAsRuVLacUdpcSM8yWwxV0gtUnZyctlGXlnMB8jl4dgGa4AuyWi3@vger.kernel.org, AJvYcCWsoUQM+r6S116y8ioF5QbqW+qFpYHwCOII+yOEGp+s5168gO2nLN3uYvZ3p7L+TlVIAeU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznhxA2u+vc+wwx/zJzhxzz4KvU0iSALVt9AHTDTnEX2epaLZ6E
+	ch6qKU8fN4ClCP07ELa/KaLGe6mTn4hYLQPeGNRUIJwaR2NJ76wC
+X-Gm-Gg: ASbGncvYjOZvGukOuo9a2+EB29jXKFNqs8JBqw4FAIU+z+sp1Hsx1aUyjp43n6s9X2/
+	hRnZWDtd1vMMe4NXMYgY++guBMxMhDjWaDnWNwpYGNFdXNdZA7lb+lJCnUmqPtgd3jbGc+1A+Cm
+	uEilZO886Ua95fZMQeM7Jn4h3xpGmNqToxJs2/WwIH+R9xQ9fQNnZ1f0lldBkV+lOh8a0M1EG31
+	3QxbBFfY8Gt0OkNAsVQlxPyBfoW+QtugGkFjF8ZmQak9MyYbGeh6vSjkKlWjymvtQPhbeVxkqzs
+	X85kW+1gm5HdCcXEBA5Oog==
+X-Google-Smtp-Source: AGHT+IEVXRaEp77yKVNwR7B7xh5bHwyQs7F+LF8dtiFtrTypQ1ye/9BA4YzULDjz+3kyf3Z5nwjPmw==
+X-Received: by 2002:a17:907:948a:b0:aab:f11f:f360 with SMTP id a640c23a62f3a-ab6cfcb39ffmr2052568066b.2.1738490791506;
+        Sun, 02 Feb 2025 02:06:31 -0800 (PST)
+Received: from krava (37-188-150-0.red.o2.cz. [37.188.150.0])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab703a41cb1sm328912766b.103.2025.02.02.02.06.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Feb 2025 22:24:29 -0800 (PST)
-Date: Sat, 1 Feb 2025 22:24:27 -0800
-From: Richard Cochran <richardcochran@gmail.com>
-To: Wojtek Wasko <wwasko@nvidia.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH RFC net-next] ptp: Add file permission checks on PHC
- chardevs
-Message-ID: <Z58Pm4BL44gQzyKD@hoboy.vegasvil.org>
-References: <DM4PR12MB8558AB3C0DEA666EE334D8BCBEE82@DM4PR12MB8558.namprd12.prod.outlook.com>
+        Sun, 02 Feb 2025 02:06:31 -0800 (PST)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Sun, 2 Feb 2025 11:06:26 +0100
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Jiri Olsa <olsajiri@gmail.com>, Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf <bpf@vger.kernel.org>,
+	Network Development <netdev@vger.kernel.org>,
+	Yan Zhai <yan@cloudflare.com>
+Subject: Re: [PATCH v2 bpf] net: Add rx_skb of kfree_skb to
+ raw_tp_null_args[].
+Message-ID: <Z59Donij6yuw9hvB@krava>
+References: <20250201030142.62703-1-kuniyu@amazon.com>
+ <Z53Xv-okoj3PDT50@krava>
+ <CAADnVQJodt1fBaR5d0wTR2pwipJVVdKSd+7_ou_vE-gRMzbT6w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <DM4PR12MB8558AB3C0DEA666EE334D8BCBEE82@DM4PR12MB8558.namprd12.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAADnVQJodt1fBaR5d0wTR2pwipJVVdKSd+7_ou_vE-gRMzbT6w@mail.gmail.com>
 
-On Fri, Jan 31, 2025 at 06:29:23PM +0000, Wojtek Wasko wrote:
-> Udev sets strict 600 permissions on /dev/ptp* devices, preventing
-
-Udev is user space, isn't it?
-
-> unprivileged users from accessing the time [1]. This patch enables
-> more granular permissions and allows readonly access to the PTP clocks.
+On Sat, Feb 01, 2025 at 09:15:28AM +0100, Alexei Starovoitov wrote:
+> On Sat, Feb 1, 2025 at 9:13 AM Jiri Olsa <olsajiri@gmail.com> wrote:
+> >
+> > > v2:
+> > >   * Add kfree_skb to raw_tp_null_args[] instead of annotating
+> > >     rx_skb with __nullable
+> >
+> > Acked-by: Jiri Olsa <jolsa@kernel.org>
 > 
-> Add permission checking for ioctls which modify the state of device.
-> Notably, require WRITE for polling as it is only used for later reading
-> timestamps from the queue (there is no peek support). POSIX clock
-> operations (settime, adjtime) are checked in the POSIX layer.
+> Jiri, Kumar,
+> how come that we missed it earlier?
+> Is this a new change in the tracepoint?
 
-This change log is not comprehensible.
-A proper change log has three parts:
+must have slipped, sry.. I'll double check tracepoints again
 
-1. context
-
-2. problem   (What is the issue?)
-
-3. solution  (How does the patch address the issue?)
-
-Thanks,
-Richard
+jirka
