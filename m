@@ -1,81 +1,44 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01672063EF
-	for <netdev@vger.kernel.org>; Mon,  3 Feb 2025 14:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A10209F26;
+	Mon,  3 Feb 2025 14:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738594284; cv=none; b=e7Z13WMzD6pknd2jWSa2uDjimsPIlCoTJppHClbE3GPW2VNNIHyryUQeDCw3cahEQCZnFMOEb4A2B2Xw3xPOINP+3SZ0kuWYXv1sLFmCjvhpZmjxDzyPQHHH/mhCD+GayYRdD8EFjHbVmNY+Xiu9xV1xW34l3DMucHAva47O5DQ=
+	t=1738594464; cv=none; b=i29AHhG3gZlQlE0VuBtIu4u0I2qVGO7r9xuQy6cZJaUwcvMiA2o5YBbOA57XPb0Q7JL6wEvFfL34wGbdSW6buPZGwrzkMLDeymWIyzaw4QMebJPg4Lsoo2dHZWqkalgt48HCX74RtC9Kgp0HQpHQBWVB1k9dIbUX8ibW9mq/Ti8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738594284; c=relaxed/simple;
-	bh=uc9jPXSOkJumH2MlKMyRP4Ub4Dtbc0RCc9o6JV0zI/I=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=m5KizBJzXo7EaykSO9MC8MvtGEa+VvAAuGVyVV+pYPmv+bMSZFaUiNpJ1BasWi9ZyQ0/KORuBwNnsEzHUD/G/gkc644PgMUAoIuniF752XIqeWH6rpdkQMTz1fjhYQmul9/jFohipL7rdO1YkLxhnC1vhW23Lztc78yV1LaAIu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aZwPak+4; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1738594464; c=relaxed/simple;
+	bh=EusyX0VMt0J4uk6uIg0A/SJi9AyYQDUrosE0EDhUqrA=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=mkkxF934yEVGWEd0/K/JVULMssdo61Wczki5jJuRvXxf8ogGL0DGlqKLnhL8jjAAQMvXXvPGFTs/NqpBuPB8hZOdKaXvMND9ga5Wqnj4tJXjm9Lb39iXcV5ogLsKzK0CmqkbJaIGDeAwsPz+qkd3pJM2MVOyI6Cf2ZEp9w76++w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PMg4Xm+z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aZwPak+4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738594282;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=263/793DicuReYm8n6LPz47U+pOenJtRCwlDeJnQaDk=;
-	b=aZwPak+4vM7bBAwxaRapJGvJYtuOBtXUWslssuOg7wGq6IfTPtbyHSfeVEYMLoCGuIDODe
-	LMUAtWEiMufJlPQGeiRKZrmo8RlfnUczuXrMXrkw1JWLuYKz5AXCbKJf7wg/oI3RPE9XQC
-	YqoRyCVxLcUhB/on+WvwNMXGzBQOjgg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-nfZ4DFVIMHum5Xd7-j1IbA-1; Mon,
- 03 Feb 2025 09:51:18 -0500
-X-MC-Unique: nfZ4DFVIMHum5Xd7-j1IbA-1
-X-Mimecast-MFC-AGG-ID: nfZ4DFVIMHum5Xd7-j1IbA
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 872951956080;
-	Mon,  3 Feb 2025 14:51:12 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.92])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 439391956094;
-	Mon,  3 Feb 2025 14:51:08 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20250203142343.248839-1-dhowells@redhat.com>
-References: <20250203142343.248839-1-dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: dhowells@redhat.com, Herbert Xu <herbert@gondor.apana.org.au>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Jakub Kicinski <kuba@kernel.org>,
-    "David S.
- Miller" <davem@davemloft.net>,
-    Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-    Simon Horman <horms@kernel.org>,
-    Trond Myklebust <trond.myklebust@hammerspace.com>,
-    Chuck Lever <chuck.lever@oracle.com>,
-    Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-    linux-crypto@vger.kernel.org, linux-afs@lists.infradead.org,
-    linux-nfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 00/24] net/rxrpc, crypto: Add Kerberos crypto lib and AF_RXRPC GSSAPI security class
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PMg4Xm+z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40A3C4CEE0;
+	Mon,  3 Feb 2025 14:54:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738594464;
+	bh=EusyX0VMt0J4uk6uIg0A/SJi9AyYQDUrosE0EDhUqrA=;
+	h=Date:From:To:Subject:From;
+	b=PMg4Xm+z3mGY8nj1j9+kcidvM2VIbgxcLeuK+Ks30zT0CcvQtiW1Dxsg4T8mW/UhR
+	 +uzIIw+guDwKNr/Pdaycf0T0eiDZ0zGX6wcgmxf2lux059tnBEDpQirLQ7g2FBe0Ua
+	 LBGcsfH8OWwxX3jNoHN9Cv5F43247HWcKes2RJKEmcpixYmIN8waAn5v+alABq8rZt
+	 TvreFpQr0QRoyKEjmSyNbgPRVvBTwWiw2zmYlw1Az+NbczSpApGcLA68dEBlciFAfM
+	 7ffXhFH43d7ean6ifcXtV3s++juc4FEeWvuMOWjnGX49UsEcPhjcVKaD4mi8DYchlo
+	 15h5j2oq2lrRQ==
+Date: Mon, 3 Feb 2025 06:54:23 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: netdev@vger.kernel.org, netdev-driver-reviewers@vger.kernel.org
+Subject: [ANN] net-next is OPEN
+Message-ID: <20250203065423.03f4cec4@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <252339.1738594267.1@warthog.procyon.org.uk>
-Date: Mon, 03 Feb 2025 14:51:07 +0000
-Message-ID: <252340.1738594267@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Oops.  This should have been tagged for net-next, not for net.
+Hi!
 
-David
-
+net-next is open, and ready for your patches :)
