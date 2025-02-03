@@ -1,28 +1,28 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2081.outbound.protection.outlook.com [40.107.93.81])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2080.outbound.protection.outlook.com [40.107.237.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EF0211466
-	for <netdev@vger.kernel.org>; Mon,  3 Feb 2025 21:37:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97A1200BB4
+	for <netdev@vger.kernel.org>; Mon,  3 Feb 2025 21:37:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.80
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738618642; cv=fail; b=tM9xD7fA+2cxP60JJxRhpZLjncehAtxS9Vm6SgTiRiMwWB2ACDTofkrGDYAdDfM1cJ4JDtJIwaAQ5UiTR3qR7/iELi8d8sBurTrH+dRPm9yODXokYQVBsr1/bIgAPDRITX91JxS3QGExXf40nub+tAB9EvrgoGkTsotw8UqaWNg=
+	t=1738618647; cv=fail; b=qULkB/DXy8f9uVZ8pOABDunmmPsPaoGqztCPwXTynlpbPfzAn7hsspcY7PWA1yQbHW6esmZjAvJ4abwJ2SgK5wuGtkhrnT+eammkLgB8+D9nnG6bvQmBvNPzhLZjiW3Yg4atS/z6SqZpdRndH4OuiNTUZGywm4sLAk7nVUdiqlc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738618642; c=relaxed/simple;
-	bh=bmvDntj2+dd9TpQkLXOQGnYehseNvG0nBFbQGERRwFc=;
+	s=arc-20240116; t=1738618647; c=relaxed/simple;
+	bh=hLAQuwEUf0atSJl5522vq3VGzOlduGvHAjs89O1mXYQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QC6HQ03b1pBh6DoT8K8ihbgEclBtVflZ7gHkfrLbr5kA4DtRNDq+ItdyPOvIHZoxuAIpi79qQFWCJyfug3NzRCySsWU3sMXgzOOV0vt2j+fUEo6Rne7iw2pZ1IgTH/6ddzRBTlJXTKkOP25MfP3eMYGQXhKjEpSpwIb4NkTXcNY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lHFIFck8; arc=fail smtp.client-ip=40.107.93.81
+	 MIME-Version:Content-Type; b=NXg4CIazD/7GgCv/8MIrpAtwBd1hqlJm9IVcOuXj3LA+9vU+1aT7q/zycmU9l2ziWGR3s8ASLY81JpCrw59Jl/nozxjNO5jum2qh/Es4+MTve13nuXCcNR7s5+vB52kHHXFxLx2gU//qTampnwEkkpUOMYOlP4FmVldcvdic7uw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=X6nbJD5B; arc=fail smtp.client-ip=40.107.237.80
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lHFIFck8"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="X6nbJD5B"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ytFYWEX5qObGAUvXomNIhEtPEv9blUV41QqZgxkNcf+niCzRzeAPHFwjV5TQxftrcDT/l3BIEU8khBjy8PFVP6LZQf1+dwLhIu0cPEBXC2LM6TkbS1jCYBg3j7iadVUNOCuazuqA2/XdQ21ZzqHJM6B3vC8Z+WEleOlh+/ms4LBq8PQWTNOChZsMjbZTgxvNBrbkvkLV6UQxsq65UENUfuttEghU20fIYUM1o5g8RFt8vdUgLz7RjdgmpfjEvgz2QtYHTrRmMD2ck2A5xjvWi1mSSnNF5C3RH6X6liyu8M5VM6LiuSUroFbSInwqAgLg7ZRPadZGIWFrZqbxxKzMFQ==
+ b=Fx/3ulnFYW9vZVZJ9EFQ2Rm9Hm3owT11rlNzMRu0X9Ow9vcuG2xV+l2kGFhSYf6SvxYQiSpQTsYmSFEeuO1ugNliQHICi08lgmRDf+Ke4HVi7LQP5PobRLKvxom3VnOPUgFNhkvjZ4ngifKqY+veLdWhaBd17c8EoFsV6W1H/ezes5dx/Ub0hJ3yzI7faU7sbMHNvF2Z0xS0yJw9wlxEw8G2Ny2xyK51ypjnUijAVHNGbBlsSiLHLEk4v91xO0QnNVQcmNSc6DVrqorBm8JH43WV8oVqzQdnryht/2kNsRH2BlnuB/cphiZOuw2Rfdi2ZwR7HM4Qro/FoT53TZfksA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O2bmWb0vdl3i/JOG8UTHtxGSZkIMem6+WQx0iPo1vlU=;
- b=bblSdP5S1ukWAMSEO7DENn2nevdbenSCGGM6YvBLW0kMwQPa8ZlSqNUMy1+1F6VpjnGv69iBY1hRWTW31Zk2rkVKpHoBQtNLazO8qS6yLeKaKOgf2K7MmtjiFFC80OmQwDgmhppkUVq67SjIs3Xjlu/VVQ+HjEfcq9e8i/wpypsCaHFU3BDzKpXtepmKYD8StmSNiJrBElH4vY2WHFUSKZqfSKM9Hk1q1ui00vcdYbv3HCVfHiLDtYUqc7IBTp4U97SKoZUG4SwthfzbvunEN65ih27b1Pf+9WdX3orDk0wCjGMJaTgTwe8TcvgkDqEriSX88saweJJ2S1TCQceHUQ==
+ bh=bTDOoi6/xK/cbnbRZJ0PR49l2CvM2i/wsKiWaQrnRgU=;
+ b=WQwuZkSZt48NriXKWlk/S8RphRNA6Mwt8KcR5xS6Oy09XnMadzayc5AUbI5NQ/8p3yXF6On9tHeMGkrTWrrusZ02jRasYNBnLueabHSOjB1XA6NQH96KOZGdZvy0amUSfqNO3A4fc/SuJqtfZhUv6oYrUXKgxgYn45OMYbKbyfRKw9d5cr5K/IdM2vi5Ys4Fdy3A4ulXKuAzNeG3pJY0TdWP3n4t772+6KXhD/epKL3YbluVRpeYSqIrCg+pq+ExfOqYmCbd9zsB+sWm0AIQfy1Hnp1lUIzBWvAQkjBmTcfhz7K0MMIkQW6njhJwd6QIVJYhEAotRLRstLQJTtfqGQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -30,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O2bmWb0vdl3i/JOG8UTHtxGSZkIMem6+WQx0iPo1vlU=;
- b=lHFIFck8RJFWfNDChENhQE/0vfIlM04vzB9E9m5dKrOpOFQqZZVgc7PZrO8gZ4uoSV6qakHNRIuy2e+lkLSYD7Hr7T5U8ihO2ZZtebCqMb1xCtOaMoE0u6PkFrexk2u0yMzjoo3b2uyGxciDeZaJjPMbYVn9U9Yg2+sMQNmIv9IJ0RaO9jByiOPMEeXxj0S0o58PvRPkWbpTU7YsYcgAMPwSfbhYzpDYbNrkpkWANSinciGaBmcw7i6cLYTDfLmu1jyFrDFsAxbseDWNVK4ks7TH0pB69Vemg3SZNX8e0r0J3E6Dkh5+Z4fmTfx5/okLsgT0BS/x3z4afsO1USfqNg==
-Received: from SJ0PR05CA0199.namprd05.prod.outlook.com (2603:10b6:a03:330::24)
- by BL3PR12MB6547.namprd12.prod.outlook.com (2603:10b6:208:38e::6) with
+ bh=bTDOoi6/xK/cbnbRZJ0PR49l2CvM2i/wsKiWaQrnRgU=;
+ b=X6nbJD5BsLO2l7cT6+PqsChJ4f6GZ5ZLPLIK5y2gA847kO4jhL1er9cFaPu2AkXbuUqBNacaX8Ttvp/j6Nad/85Xp2yZx4qnT1WfCScz5cwN4sn7pdRI9guWKQn5i60Et6O5ZLUjGDB6yg2o5bMAVNr7qFr9WZdsuDBV/YFH+21wW/mC3HodlnOrhKqr/ka/yrG9koxWnguyziaJ2U6irvD84QDTTYLv9qi37AAGkLuoH2alf3ONu7orMQO7YadyiK+K8TEzseKachEjon7Vm/pcp3jv1dVxI9IH2Ne5ZgOHWaQnxnpW0qFMTgxzV9o+O12vicaHbUeECevHsi6fmQ==
+Received: from SJ0PR03CA0113.namprd03.prod.outlook.com (2603:10b6:a03:333::28)
+ by SN7PR12MB8601.namprd12.prod.outlook.com (2603:10b6:806:26e::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Mon, 3 Feb
- 2025 21:37:07 +0000
-Received: from SJ1PEPF00002322.namprd03.prod.outlook.com
- (2603:10b6:a03:330:cafe::57) by SJ0PR05CA0199.outlook.office365.com
- (2603:10b6:a03:330::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.21 via Frontend Transport; Mon,
- 3 Feb 2025 21:37:06 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.25; Mon, 3 Feb
+ 2025 21:37:20 +0000
+Received: from SJ1PEPF00002321.namprd03.prod.outlook.com
+ (2603:10b6:a03:333:cafe::d6) by SJ0PR03CA0113.outlook.office365.com
+ (2603:10b6:a03:333::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.23 via Frontend Transport; Mon,
+ 3 Feb 2025 21:37:20 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -49,20 +49,20 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.160 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.160) by
- SJ1PEPF00002322.mail.protection.outlook.com (10.167.242.84) with Microsoft
+ SJ1PEPF00002321.mail.protection.outlook.com (10.167.242.91) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8398.14 via Frontend Transport; Mon, 3 Feb 2025 21:37:06 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ 15.20.8398.14 via Frontend Transport; Mon, 3 Feb 2025 21:37:20 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 3 Feb 2025
- 13:36:49 -0800
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ 13:37:05 -0800
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 3 Feb
- 2025 13:36:49 -0800
+ 2025 13:37:04 -0800
 Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.8)
  with Microsoft SMTP Server id 15.2.1544.14 via Frontend Transport; Mon, 3 Feb
- 2025 13:36:45 -0800
+ 2025 13:37:01 -0800
 From: Tariq Toukan <tariqt@nvidia.com>
 To: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, "Andrew
@@ -70,11 +70,11 @@ To: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
 CC: <netdev@vger.kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, Gal Pressman
 	<gal@nvidia.com>, Jianbo Liu <jianbol@nvidia.com>, Moshe Shemesh
 	<moshe@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>, Mark Bloch
-	<mbloch@nvidia.com>, Shahar Shitrit <shshitrit@nvidia.com>, Tariq Toukan
+	<mbloch@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>, Tariq Toukan
 	<tariqt@nvidia.com>
-Subject: [PATCH net-next 10/15] ethtool: Add support for 200Gbps per lane link modes
-Date: Mon, 3 Feb 2025 23:35:11 +0200
-Message-ID: <20250203213516.227902-11-tariqt@nvidia.com>
+Subject: [PATCH net-next 14/15] net/mlx5e: Remove unused mlx5e_tc_flow_action struct
+Date: Mon, 3 Feb 2025 23:35:15 +0200
+Message-ID: <20250203213516.227902-15-tariqt@nvidia.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20250203213516.227902-1-tariqt@nvidia.com>
 References: <20250203213516.227902-1-tariqt@nvidia.com>
@@ -89,223 +89,82 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: AnonymousSubmission
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002322:EE_|BL3PR12MB6547:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3c435356-0963-4030-4139-08dd449ae80d
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002321:EE_|SN7PR12MB8601:EE_
+X-MS-Office365-Filtering-Correlation-Id: b0ec5422-68b8-4583-ed77-08dd449af073
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014;
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?tKD5rMlZ7afo5GNIh05bQzDMRb8/rtgHyisJ7ej4thWP82qqkHtszClc7Yef?=
- =?us-ascii?Q?RNZzmZXnqBpfnKISd2wNyBrqL0N26Fb449K6fo7Rli4vhfeAGFruvW51wc3U?=
- =?us-ascii?Q?OG3ALIWRC94P1O/HoH5Fm4I4XgqwCqqnHjEzW7Jtkp2isvXSskqh8l6vD39m?=
- =?us-ascii?Q?wPgnAhgrxpYF6rd66icH7FugcoNcPaf2ns9lsLTvKd4EjBxmI89P+rRMqF30?=
- =?us-ascii?Q?tjZenUNjSzdyjqZkXiof+gjjZWc2t1paOAXTdxxUEuwH/kej+1L59oJjnTSY?=
- =?us-ascii?Q?o0MU8hEeyGnVTOtudq7ymHUpxLIWGLFpO5Q8Jq28LnZ3pt8kQkepIPURaY2x?=
- =?us-ascii?Q?kF3Sl7PDX+N2I5tPANIpYcojpc0WdPTDQKwhTlV9sF4aagvI/F9ukSALMluY?=
- =?us-ascii?Q?tuV2hfTUZupy3duNu2lMyBfqhvkjPdpeNLkv9yFEZwxkdntUgJLB/OGmKtoY?=
- =?us-ascii?Q?s03A5jk8ZNbL0yqmVPwHIonL4lUhuz1Q+Tiolu60CgGgxmcPDRuajla4rTpZ?=
- =?us-ascii?Q?R8G0kaJ6RklvygmlRT8YvjoiCrHcrgzwTxAzl5+C6Obp8E6lj4rIKVJH4wCg?=
- =?us-ascii?Q?Cvf4h5MFS4S8SditING+o0PvPPPKAqTmP5oKqSajpF7LHeJOjFQRfn6X4vKw?=
- =?us-ascii?Q?qpuQkdPt/XVhp4k6uo980uhiUqFX5t7E2gZFdxm8HaXevxU7n+5sPl+3beEq?=
- =?us-ascii?Q?L4JzhV5bBsNJf+1RF2jXqEfGlORBHPZ28Vj8g+A5RchuGecZgcAzddyR5RQz?=
- =?us-ascii?Q?3n0nJk10erEMWqr94CTu5F8N6GFMZ+QmvdBdFqe/9KA8zDUCqx4Ij93MyPeC?=
- =?us-ascii?Q?9rayDolsb7wHBLUwGaJjlrZh1BQM3vu45qtPG1VlFoNhyaBL/KaVf8noQtaC?=
- =?us-ascii?Q?AYqYivH1ftQA4GCZAFLZLR/+uSvi2Uwf0bgPfxO62Y8Q6p5i4V0Q5av5qeVi?=
- =?us-ascii?Q?+hTYFyqblhuZWAtPHaexgVEPtRrAz4sDD1/POk/paWOu6r2xDZoDuCd5HnJe?=
- =?us-ascii?Q?seT01cxvoHQUWOjBTHVMw0rIzwMVBWplj2mjRQJpIzaLXnnpb03JEZpz63IM?=
- =?us-ascii?Q?isxqIBQCFJYsqklbk+tLeQGgwnnrjZUYNSsCNf+1Hrsdr0y3xjv8Hp+njNJx?=
- =?us-ascii?Q?o4MkP7RINw/H13bgxHfZg5ub0E9PmuHfsee0oVgYQkr50O7wAUY3HTFYgXQt?=
- =?us-ascii?Q?sskpN2ew1h2dCF9MoZKYpZI+ZhsLsYeEagWhejQmNqYdl7V/0Hd4XtypeT7u?=
- =?us-ascii?Q?iAoZ27qieejfVKpMLr/4W8FezwJyge7X98r+bvejEaa9LsVWmInF1MMvx3NH?=
- =?us-ascii?Q?XZlGutKA4RxR9SKA3Esrhhg+omxsl3BDm5bAX69a5TEMnM6r9x2RXwH9kKTK?=
- =?us-ascii?Q?SyFCgA/rnaTMVtgPQPY+Cuhgs2vCkdrXxlzR3g3JeL/rsXCRIacc4wiZzsEf?=
- =?us-ascii?Q?UDEDXnIdPoFqZo0KdIvU/r3CFvpXrsOmGkSw9l8Xco5y7PeEz22VoqgX2xkP?=
- =?us-ascii?Q?hK58wBaT/UoBNf0=3D?=
+	=?us-ascii?Q?js8zgT5+U71t9MtGmEBqZV2up/OIx6E4xiOK3nVdwd14YR4KpIJ8IwQLjzO3?=
+ =?us-ascii?Q?piHxCvpXPheE4BiZ23m1ftJTKMsZs+ncwgobFfAhd96mAyXlf+A6sqdn77XZ?=
+ =?us-ascii?Q?6oqmRR3IkB9fG6Y6aHzRzCu5aTdnSSjRtQlRJK2a16v/a6QB91tB3J97DlFU?=
+ =?us-ascii?Q?evdduedQU3T2HZai+8UOQXciVrbBvh45JQZo3P0gzT4TX7dOoftNaZmdH93h?=
+ =?us-ascii?Q?nA4VSNUtIXvlixbg1nIdGxT3CvutHZgzXb6RpxxISmxt7ozY0DX+P7KGOppa?=
+ =?us-ascii?Q?SoABBGyHsVzUqnQsTGMsPDDkBnaBcmRv4zzT61YcqRpxCYQYJhGs2PptNX43?=
+ =?us-ascii?Q?MGWWvzaCtGRe41uDkNSXXPLR15Dh74F82XD3YivQ216aUDZ1HLYFxRdX/SNB?=
+ =?us-ascii?Q?hQBg7JRBaxav0AYeUZw6q493RJwK2Yv5YSxdavhMidF/i7IHNXXI/oWlIMlb?=
+ =?us-ascii?Q?sZIhDaq737mte7E7oTjZaxwwJfPt8eVzdJGc5OhAcR3f9KIErfpfbynb4yxm?=
+ =?us-ascii?Q?TIg00rHOCR6vaDppd/8uG6F75fwcIwSeDLZuST7ChooXcxBNc9W0i4ESrgG/?=
+ =?us-ascii?Q?VOjhmEGgHghvqGGfZ7ZyXoTFjHYLnSqy7tj496ruY4EZ2hbefsT7x5CJxOlT?=
+ =?us-ascii?Q?ojHpM7rgvu6bDyZscK2dyArlrEMr/5t1Zz7mYCJoDFngbO/ZZt2Hb2GxhkTG?=
+ =?us-ascii?Q?PNzsonuWqEhUlGzMWYTLwtmyTqN9d4i8HrseWvh80dhSKjoYLJeD9kavAQ2T?=
+ =?us-ascii?Q?vF9s7Rix9NekJdQ22gNCD2MlIRgE5JhWZWTvdomUneGMuzSRmEY8oGK2hGUw?=
+ =?us-ascii?Q?iKQRcHW5QmCDwrZaAjJ4HsIy5tdMhfgIYVUuZBkUBrDqpI+KYwu+MjMAxyYO?=
+ =?us-ascii?Q?qwHazl4D9yTr/+z1j76aun6Ct0Dm4UjW4ErVD3PG9py85AP17vr/DJI11BZQ?=
+ =?us-ascii?Q?oN8ttGSmaRnd9YCsml1Wa9wMNWjVPO4OiwaYCMGnnpOZZMk38dIg5EfmTrAH?=
+ =?us-ascii?Q?ii3OHrWLUU/zPxCq8jbnch2F6IH8/LP22MZhgEZRyI1kbUaG8YarErl6s1N4?=
+ =?us-ascii?Q?4N1Sk3KsOvW1OYwdgfqyUkOGHZr1GDkkrR5E5KTkOVXwYbDbzxkX897JwPF5?=
+ =?us-ascii?Q?1KMv01G3P3c6MHfxa9u0lEN+9gnScN/Ut092Fp2afaAzvS1P9r2y8oFaYkmD?=
+ =?us-ascii?Q?jfvWovdTGHmO/Kh6aTE2tez+B+H68F4Di8bK8mY7HOP9M6E0ONCZQesxiKbZ?=
+ =?us-ascii?Q?8kzf7IZBZp5Em3Tm+zFHXS6fWEUcbTR58OG8/PhQj/Zp3O5XAEDtAKCvyplw?=
+ =?us-ascii?Q?otEcsl4kneO5h+eY93Ef5JPESxN+Om8H8SQ77pnJao5ntfRC3ywoYPo/RHC0?=
+ =?us-ascii?Q?3bSOL1neIKRtc5D00hjS4konO6kClCS9SdqGj8SP5sEkMqlHx2f1SyG/jmuY?=
+ =?us-ascii?Q?PgX+GQse1mhkRpOlKFM53RNOwSeL1JWk6boy+h3Nfj52U7XcyChccacGyusx?=
+ =?us-ascii?Q?PsnKRlY3rYyI2vk=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2025 21:37:06.5157
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2025 21:37:20.5791
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c435356-0963-4030-4139-08dd449ae80d
+X-MS-Exchange-CrossTenant-Network-Message-Id: b0ec5422-68b8-4583-ed77-08dd449af073
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002322.namprd03.prod.outlook.com
+	SJ1PEPF00002321.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6547
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8601
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Gal Pressman <gal@nvidia.com>
 
-Define 200G, 400G and 800G link modes using 200Gbps per lane.
+Commit 67efaf45930d ("net/mlx5e: TC, Remove CT action reordering")
+removed the usage of mlx5e_tc_flow_action struct, remove the struct as
+well.
 
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- drivers/net/phy/phy-core.c   | 20 ++++++++++++++++-
- include/uapi/linux/ethtool.h | 18 ++++++++++++++++
- net/ethtool/common.c         | 42 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 79 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/act.h | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/net/phy/phy-core.c b/drivers/net/phy/phy-core.c
-index 6bf3ec985f3d..f181f05cb429 100644
---- a/drivers/net/phy/phy-core.c
-+++ b/drivers/net/phy/phy-core.c
-@@ -13,7 +13,7 @@
-  */
- const char *phy_speed_to_str(int speed)
- {
--	BUILD_BUG_ON_MSG(__ETHTOOL_LINK_MODE_MASK_NBITS != 103,
-+	BUILD_BUG_ON_MSG(__ETHTOOL_LINK_MODE_MASK_NBITS != 121,
- 		"Enum ethtool_link_mode_bit_indices and phylib are out of sync. "
- 		"If a speed or mode has been added please update phy_speed_to_str "
- 		"and the PHY settings array.\n");
-@@ -169,6 +169,12 @@ static const struct phy_setting settings[] = {
- 	PHY_SETTING( 800000, FULL, 800000baseDR8_2_Full		),
- 	PHY_SETTING( 800000, FULL, 800000baseSR8_Full		),
- 	PHY_SETTING( 800000, FULL, 800000baseVR8_Full		),
-+	PHY_SETTING( 800000, FULL, 800000baseCR4_Full		),
-+	PHY_SETTING( 800000, FULL, 800000baseKR4_Full		),
-+	PHY_SETTING( 800000, FULL, 800000baseDR4_Full		),
-+	PHY_SETTING( 800000, FULL, 800000baseDR4_2_Full		),
-+	PHY_SETTING( 800000, FULL, 800000baseSR4_Full		),
-+	PHY_SETTING( 800000, FULL, 800000baseVR4_Full		),
- 	/* 400G */
- 	PHY_SETTING( 400000, FULL, 400000baseCR8_Full		),
- 	PHY_SETTING( 400000, FULL, 400000baseKR8_Full		),
-@@ -180,6 +186,12 @@ static const struct phy_setting settings[] = {
- 	PHY_SETTING( 400000, FULL, 400000baseLR4_ER4_FR4_Full	),
- 	PHY_SETTING( 400000, FULL, 400000baseDR4_Full		),
- 	PHY_SETTING( 400000, FULL, 400000baseSR4_Full		),
-+	PHY_SETTING( 400000, FULL, 400000baseCR2_Full		),
-+	PHY_SETTING( 400000, FULL, 400000baseKR2_Full		),
-+	PHY_SETTING( 400000, FULL, 400000baseDR2_Full		),
-+	PHY_SETTING( 400000, FULL, 400000baseDR2_2_Full		),
-+	PHY_SETTING( 400000, FULL, 400000baseSR2_Full		),
-+	PHY_SETTING( 400000, FULL, 400000baseVR2_Full		),
- 	/* 200G */
- 	PHY_SETTING( 200000, FULL, 200000baseCR4_Full		),
- 	PHY_SETTING( 200000, FULL, 200000baseKR4_Full		),
-@@ -191,6 +203,12 @@ static const struct phy_setting settings[] = {
- 	PHY_SETTING( 200000, FULL, 200000baseLR2_ER2_FR2_Full	),
- 	PHY_SETTING( 200000, FULL, 200000baseDR2_Full		),
- 	PHY_SETTING( 200000, FULL, 200000baseSR2_Full		),
-+	PHY_SETTING( 200000, FULL, 200000baseCR_Full		),
-+	PHY_SETTING( 200000, FULL, 200000baseKR_Full		),
-+	PHY_SETTING( 200000, FULL, 200000baseDR_Full		),
-+	PHY_SETTING( 200000, FULL, 200000baseDR_2_Full		),
-+	PHY_SETTING( 200000, FULL, 200000baseSR_Full		),
-+	PHY_SETTING( 200000, FULL, 200000baseVR_Full		),
- 	/* 100G */
- 	PHY_SETTING( 100000, FULL, 100000baseCR4_Full		),
- 	PHY_SETTING( 100000, FULL, 100000baseKR4_Full		),
-diff --git a/include/uapi/linux/ethtool.h b/include/uapi/linux/ethtool.h
-index d1089b88efc7..e0bd726f84c1 100644
---- a/include/uapi/linux/ethtool.h
-+++ b/include/uapi/linux/ethtool.h
-@@ -2057,6 +2057,24 @@ enum ethtool_link_mode_bit_indices {
- 	ETHTOOL_LINK_MODE_10baseT1S_Half_BIT		 = 100,
- 	ETHTOOL_LINK_MODE_10baseT1S_P2MP_Half_BIT	 = 101,
- 	ETHTOOL_LINK_MODE_10baseT1BRR_Full_BIT		 = 102,
-+	ETHTOOL_LINK_MODE_200000baseCR_Full_BIT		 = 103,
-+	ETHTOOL_LINK_MODE_200000baseKR_Full_BIT		 = 104,
-+	ETHTOOL_LINK_MODE_200000baseDR_Full_BIT		 = 105,
-+	ETHTOOL_LINK_MODE_200000baseDR_2_Full_BIT	 = 106,
-+	ETHTOOL_LINK_MODE_200000baseSR_Full_BIT		 = 107,
-+	ETHTOOL_LINK_MODE_200000baseVR_Full_BIT		 = 108,
-+	ETHTOOL_LINK_MODE_400000baseCR2_Full_BIT	 = 109,
-+	ETHTOOL_LINK_MODE_400000baseKR2_Full_BIT	 = 110,
-+	ETHTOOL_LINK_MODE_400000baseDR2_Full_BIT	 = 111,
-+	ETHTOOL_LINK_MODE_400000baseDR2_2_Full_BIT	 = 112,
-+	ETHTOOL_LINK_MODE_400000baseSR2_Full_BIT	 = 113,
-+	ETHTOOL_LINK_MODE_400000baseVR2_Full_BIT	 = 114,
-+	ETHTOOL_LINK_MODE_800000baseCR4_Full_BIT	 = 115,
-+	ETHTOOL_LINK_MODE_800000baseKR4_Full_BIT	 = 116,
-+	ETHTOOL_LINK_MODE_800000baseDR4_Full_BIT	 = 117,
-+	ETHTOOL_LINK_MODE_800000baseDR4_2_Full_BIT	 = 118,
-+	ETHTOOL_LINK_MODE_800000baseSR4_Full_BIT	 = 119,
-+	ETHTOOL_LINK_MODE_800000baseVR4_Full_BIT	 = 120,
- 
- 	/* must be last entry */
- 	__ETHTOOL_LINK_MODE_MASK_NBITS
-diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-index 2bd77c94f9f1..5489d0c9d13f 100644
---- a/net/ethtool/common.c
-+++ b/net/ethtool/common.c
-@@ -213,6 +213,24 @@ const char link_mode_names[][ETH_GSTRING_LEN] = {
- 	__DEFINE_LINK_MODE_NAME(10, T1S, Half),
- 	__DEFINE_LINK_MODE_NAME(10, T1S_P2MP, Half),
- 	__DEFINE_LINK_MODE_NAME(10, T1BRR, Full),
-+	__DEFINE_LINK_MODE_NAME(200000, CR, Full),
-+	__DEFINE_LINK_MODE_NAME(200000, KR, Full),
-+	__DEFINE_LINK_MODE_NAME(200000, DR, Full),
-+	__DEFINE_LINK_MODE_NAME(200000, DR_2, Full),
-+	__DEFINE_LINK_MODE_NAME(200000, SR, Full),
-+	__DEFINE_LINK_MODE_NAME(200000, VR, Full),
-+	__DEFINE_LINK_MODE_NAME(400000, CR2, Full),
-+	__DEFINE_LINK_MODE_NAME(400000, KR2, Full),
-+	__DEFINE_LINK_MODE_NAME(400000, DR2, Full),
-+	__DEFINE_LINK_MODE_NAME(400000, DR2_2, Full),
-+	__DEFINE_LINK_MODE_NAME(400000, SR2, Full),
-+	__DEFINE_LINK_MODE_NAME(400000, VR2, Full),
-+	__DEFINE_LINK_MODE_NAME(800000, CR4, Full),
-+	__DEFINE_LINK_MODE_NAME(800000, KR4, Full),
-+	__DEFINE_LINK_MODE_NAME(800000, DR4, Full),
-+	__DEFINE_LINK_MODE_NAME(800000, DR4_2, Full),
-+	__DEFINE_LINK_MODE_NAME(800000, SR4, Full),
-+	__DEFINE_LINK_MODE_NAME(800000, VR4, Full),
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/act.h b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/act.h
+index d6c12d0ea55b..2e528b2c34d6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/act.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/act.h
+@@ -73,11 +73,6 @@ struct mlx5e_tc_act {
+ 	bool is_terminating_action;
  };
- static_assert(ARRAY_SIZE(link_mode_names) == __ETHTOOL_LINK_MODE_MASK_NBITS);
  
-@@ -221,8 +239,11 @@ static_assert(ARRAY_SIZE(link_mode_names) == __ETHTOOL_LINK_MODE_MASK_NBITS);
- #define __LINK_MODE_LANES_CR4		4
- #define __LINK_MODE_LANES_CR8		8
- #define __LINK_MODE_LANES_DR		1
-+#define __LINK_MODE_LANES_DR_2		1
- #define __LINK_MODE_LANES_DR2		2
-+#define __LINK_MODE_LANES_DR2_2		2
- #define __LINK_MODE_LANES_DR4		4
-+#define __LINK_MODE_LANES_DR4_2		4
- #define __LINK_MODE_LANES_DR8		8
- #define __LINK_MODE_LANES_KR		1
- #define __LINK_MODE_LANES_KR2		2
-@@ -251,6 +272,9 @@ static_assert(ARRAY_SIZE(link_mode_names) == __ETHTOOL_LINK_MODE_MASK_NBITS);
- #define __LINK_MODE_LANES_T1L		1
- #define __LINK_MODE_LANES_T1S		1
- #define __LINK_MODE_LANES_T1S_P2MP	1
-+#define __LINK_MODE_LANES_VR		1
-+#define __LINK_MODE_LANES_VR2		2
-+#define __LINK_MODE_LANES_VR4		4
- #define __LINK_MODE_LANES_VR8		8
- #define __LINK_MODE_LANES_DR8_2		8
- #define __LINK_MODE_LANES_T1BRR		1
-@@ -378,6 +402,24 @@ const struct link_mode_info link_mode_params[] = {
- 	__DEFINE_LINK_MODE_PARAMS(10, T1S, Half),
- 	__DEFINE_LINK_MODE_PARAMS(10, T1S_P2MP, Half),
- 	__DEFINE_LINK_MODE_PARAMS(10, T1BRR, Full),
-+	__DEFINE_LINK_MODE_PARAMS(200000, CR, Full),
-+	__DEFINE_LINK_MODE_PARAMS(200000, KR, Full),
-+	__DEFINE_LINK_MODE_PARAMS(200000, DR, Full),
-+	__DEFINE_LINK_MODE_PARAMS(200000, DR_2, Full),
-+	__DEFINE_LINK_MODE_PARAMS(200000, SR, Full),
-+	__DEFINE_LINK_MODE_PARAMS(200000, VR, Full),
-+	__DEFINE_LINK_MODE_PARAMS(400000, CR2, Full),
-+	__DEFINE_LINK_MODE_PARAMS(400000, KR2, Full),
-+	__DEFINE_LINK_MODE_PARAMS(400000, DR2, Full),
-+	__DEFINE_LINK_MODE_PARAMS(400000, DR2_2, Full),
-+	__DEFINE_LINK_MODE_PARAMS(400000, SR2, Full),
-+	__DEFINE_LINK_MODE_PARAMS(400000, VR2, Full),
-+	__DEFINE_LINK_MODE_PARAMS(800000, CR4, Full),
-+	__DEFINE_LINK_MODE_PARAMS(800000, KR4, Full),
-+	__DEFINE_LINK_MODE_PARAMS(800000, DR4, Full),
-+	__DEFINE_LINK_MODE_PARAMS(800000, DR4_2, Full),
-+	__DEFINE_LINK_MODE_PARAMS(800000, SR4, Full),
-+	__DEFINE_LINK_MODE_PARAMS(800000, VR4, Full),
- };
- static_assert(ARRAY_SIZE(link_mode_params) == __ETHTOOL_LINK_MODE_MASK_NBITS);
- 
+-struct mlx5e_tc_flow_action {
+-	unsigned int num_entries;
+-	struct flow_action_entry **entries;
+-};
+-
+ extern struct mlx5e_tc_act mlx5e_tc_act_drop;
+ extern struct mlx5e_tc_act mlx5e_tc_act_trap;
+ extern struct mlx5e_tc_act mlx5e_tc_act_accept;
 -- 
 2.45.0
 
