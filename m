@@ -1,85 +1,138 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F4C214203
-	for <netdev@vger.kernel.org>; Mon,  3 Feb 2025 23:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACD0202C44
+	for <netdev@vger.kernel.org>; Mon,  3 Feb 2025 23:14:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738623869; cv=none; b=RxgdETqaN8CGc15XlwPL1c4slUPGzHsiOVKVdRVjUEadCjo5ISHA2wv6Kl858eUl9tdS15tEY6joqcY2+Wg2VBuceaYrsOxUuZBqrVJ8lPcoMytDl1qo2sU6GGh3RCfQsnHlb1yuIpuN502Ok6mYKieuYaz0ljzRz8pZU2zC2Ug=
+	t=1738624503; cv=none; b=FHwlccfwq2lbL1bDZOHNm42dtQpS7gknSEP6cPm5XCfpjX2qmerXhTNu12apxSEhyuwSEw+sdPiW20fD/6DdTdRc0u5C0OjrlZQbiab6SQ8Mqq2iwU+z9b96Au8jwP4cyQi1aLzkYRSenmvpFcLyrIsdDZWrUhayBsG6aSFwi/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738623869; c=relaxed/simple;
-	bh=HFQLMRrZg9NxekR+e95vKsdvpTOq91fRYa9iajbwHJI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GHHJ/J21tJrfyTSuzHWfIP5sf0rftV0Y3HL+19m0SifPXOioLbn3y2h+eScYAyRjZs2bPMaNshCKLVQzc/hs+r0dd7skh85RRqUvGzsl7LwkjzIWTtCrsKhcbSS1IOLiEOhCiAX/IQgvnAeEbgmz6XSmXcjWST07GTXCxJ7O73Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=JdOCnAte; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1738624503; c=relaxed/simple;
+	bh=Ps2PoqAxD07pYevA0h9KDZKI7xrmfxmRhIPvcx08oFE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cUjLYHVAe07S6qh4PmXEdLLZcjICw4R0hbBAvbkMJFxy1OVft4zus0S10Hfqt1jpb4N1WXmSgj1XKtz1v7L0QqmRKgIsZQqqOxron0uolrU0kZidLJJLyO0uiwtpkep27TIZO3owal2vGhUjklug+4dVoo+LywbKKrEOleXcrDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UUL9ZsPt; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="JdOCnAte"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=m348aVu8Wuh1HbmqBwF4oU+cnXMsf2WOFO+93ATmJB0=; b=Jd
-	OCnAteYfG8Vjbxt668arB6TftHC4pcQGX6A/FyTFdIm4S3nEVWdsjWkN4pzL9zaBDMFVXLTPcxfS0
-	a9bnPah7tR/Fl/WKmdUMtxaP4y+9xbNoxB+Wwr89CcSq11XOgdHH+hvwI9kvd52hunXote9O9inlF
-	cc1EjtFGCn2W4sA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tf5U9-00AfnT-AL; Tue, 04 Feb 2025 00:04:09 +0100
-Date: Tue, 4 Feb 2025 00:04:09 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next] net: netdevsim: Support setting dev->perm_addr
-Message-ID: <4b9a6e08-df15-44c1-accd-8f157c62849f@lunn.ch>
-References: <20250203-netdevsim-perm_addr-v1-1-10084bc93044@redhat.com>
- <20250203143958.6172c5cd@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="UUL9ZsPt"
+Message-ID: <3b3e0cdf-9c2b-4423-b638-0a79b238eb93@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1738624497;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=anNuJrUoZKOIBzp0YXKNGYgRPx+u+ceChV7XBbB+m7c=;
+	b=UUL9ZsPtZ6QzoN35VpQJIHAnyDkmQOKfw06XXVU+T2u5IMW+uJKEIfUIR9szQcPOgYfU8a
+	un46SK5EF9ejyG48LB/rfR4lrlb2oPfVmFHsCxwokC8G+DVZS4zGCOWAiulEkpftG17IWI
+	npwmVM2A9UkVBMeVr/7st63ZfHbrziA=
+Date: Mon, 3 Feb 2025 15:14:42 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250203143958.6172c5cd@kernel.org>
+Subject: Re: [PATCH bpf-next v7 05/13] net-timestamp: prepare for isolating
+ two modes of SO_TIMESTAMPING
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, dsahern@kernel.org, willemdebruijn.kernel@gmail.com,
+ willemb@google.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+ john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
+ haoluo@google.com, jolsa@kernel.org, horms@kernel.org, bpf@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20250128084620.57547-1-kerneljasonxing@gmail.com>
+ <20250128084620.57547-6-kerneljasonxing@gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+In-Reply-To: <20250128084620.57547-6-kerneljasonxing@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, Feb 03, 2025 at 02:39:58PM -0800, Jakub Kicinski wrote:
-> On Mon, 03 Feb 2025 18:21:24 +0100 Toke Høiland-Jørgensen wrote:
-> > Network management daemons that match on the device permanent address
-> > currently have no virtual interface types to test against.
-> > NetworkManager, in particular, has carried an out of tree patch to set
-> > the permanent address on netdevsim devices to use in its CI for this
-> > purpose.
-> > 
-> > To support this use case, add a debugfs file for netdevsim to set the
-> > permanent address to an arbitrary value.
+On 1/28/25 12:46 AM, Jason Xing wrote:
+> No functional changes here. I add skb_enable_app_tstamp() to test
+> if the orig_skb matches the usage of application SO_TIMESTAMPING
+> and skb_sw_tstamp_tx() to distinguish the software and hardware
+
+There is no skb_sw_tstamp_tx() in the code. An outdated commit message?
+
+> timestamp when tsflag is SCM_TSTAMP_SND.
 > 
-> netdevsim is not for user space testing. We have gone down the path
-> of supporting random features in it already, and then wasted time trying
-> to maintain them thru various devlink related perturbations, just to
-> find out that the features weren't actually used any more.
+> Also, I deliberately distinguish the the software and hardware
+> SCM_TSTAMP_SND timestamp by passing 'sw' parameter in order to
+> avoid such a case where hardware may go wrong and pass a NULL
+> hwstamps, which is even though unlikely to happen. If it really
+> happens, bpf prog will finally consider it as a software timestamp.
+> It will be hardly recognized. Let's make the timestamping part
+> more robust.
 > 
-> NetworkManager can do the HW testing using virtme-ng.
+> After this patch, I will soon add checks about bpf SO_TIMESTAMPING.
+
+This needs to be updated also. BPF does not use the SO_TIMESTAMPING socket option.
+
+> In this way, we can support two modes parallelly.
+
+s/parallely/in parallel/
+
 > 
-> If you want to go down the netdevsim path you must provide a meaningful 
-> in-tree test, but let's be clear that we will 100% delete both the test
-> and the netdevsim functionality if it causes any issues.
+> Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+> ---
+>   include/linux/skbuff.h | 13 +++++++------
+>   net/core/dev.c         |  2 +-
+>   net/core/skbuff.c      | 32 ++++++++++++++++++++++++++++++--
+>   net/ipv4/tcp_input.c   |  3 ++-
+>   4 files changed, 40 insertions(+), 10 deletions(-)
+> 
+> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+> index bb2b751d274a..dfc419281cc9 100644
+> --- a/include/linux/skbuff.h
+> +++ b/include/linux/skbuff.h
+> @@ -39,6 +39,7 @@
+>   #include <net/net_debug.h>
+>   #include <net/dropreason-core.h>
+>   #include <net/netmem.h>
+> +#include <uapi/linux/errqueue.h>
+>   
+>   /**
+>    * DOC: skb checksums
+> @@ -4533,18 +4534,18 @@ void skb_complete_tx_timestamp(struct sk_buff *skb,
+>   
+>   void __skb_tstamp_tx(struct sk_buff *orig_skb, const struct sk_buff *ack_skb,
+>   		     struct skb_shared_hwtstamps *hwtstamps,
+> -		     struct sock *sk, int tstype);
+> +		     struct sock *sk, bool sw, int tstype);
+>   
+>   /**
+> - * skb_tstamp_tx - queue clone of skb with send time stamps
+> + * skb_tstamp_tx - queue clone of skb with send HARDWARE timestamps
+>    * @orig_skb:	the original outgoing packet
+>    * @hwtstamps:	hardware time stamps, may be NULL if not available
+>    *
+>    * If the skb has a socket associated, then this function clones the
+>    * skb (thus sharing the actual data and optional structures), stores
+> - * the optional hardware time stamping information (if non NULL) or
+> - * generates a software time stamp (otherwise), then queues the clone
 
-Hi Toke
+This line is removed. Does it mean no software timestamp now after this change?
 
-What are your actual requirements? A permanent address is not expected
-to change, it is by definition, permanent. Could it be hard coded in
-netdevsim that the first instance created gets the MAC address
-24:42:42:42:42:42? And maybe to make testing a bit more evil, keep the
-current behaviour that the actually used MAC is random, since that MAC
-address is not permanent.
+> - * to the error queue of the socket.  Errors are silently ignored.
+> + * the optional hardware time stamping information (if non NULL) then
+> + * queues the clone to the error queue of the socket.  Errors are
+> + * silently ignored.
+>    */
+>   void skb_tstamp_tx(struct sk_buff *orig_skb,
+>   		   struct skb_shared_hwtstamps *hwtstamps);
+> @@ -4565,7 +4566,7 @@ static inline void skb_tx_timestamp(struct sk_buff *skb)
+>   {
+>   	skb_clone_tx_timestamp(skb);
+>   	if (skb_shinfo(skb)->tx_flags & SKBTX_SW_TSTAMP)
+> -		skb_tstamp_tx(skb, NULL);
+> +		__skb_tstamp_tx(skb, NULL, NULL, skb->sk, true, SCM_TSTAMP_SND);
+>   }
 
-	Andrew
+
