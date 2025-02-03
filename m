@@ -1,78 +1,163 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795C01FFC55
-	for <netdev@vger.kernel.org>; Mon,  3 Feb 2025 13:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A012205503;
+	Mon,  3 Feb 2025 13:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738589372; cv=none; b=NYxDxvmMqVQ5Jrkagp5G5Hzch0UoYlnjCtcOOtvG21ChktrAUgnGgPW77HyW1HjtfShrpbl42EWVGAx1j2QP64skyzZ03MoveOewSi7jEi7mPM2o4m44ypX9dfdh/dUE/2cV9/4M+fmEA1QmKv1vILM1jgg5LYtM41D4h3gR6gA=
+	t=1738589420; cv=none; b=Vt64WLC66JsNNVLaBaU/8oidRTCUJCPf6yTYv6vPsEdDQVJa/ZoPTwQ3rZlRrm9T6gGRlmuAMEuVFbyb95cIWGg0vcUqYDVRJsJMVF46K8OOe9fx9bJylfg/KAjuI2ZCLT0XNovU4F1pFI+1vIwFpug7Vp2iMuxJTcxhw5Nrpqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738589372; c=relaxed/simple;
-	bh=0dIoHeYAb91XrmBhaJbibyq1jqsIK7uqMVx4WiU/JJI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FfAdoBeoDK+yfBP/2PH/UorLFrWbLEVvyUnB/YsZvhzr7HISrs2m/E9sqkQ9FiGwZFkFmU8S9WVmcosZRywMWhRoTaffI1Q04/Phoy57Lo+SlDuFCkgHMv710VqUmBcLQG2B0yEcGVEaC1vAH+kqovOuJZDYuusfbzESfoQh2lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2yGuMu/H; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1738589420; c=relaxed/simple;
+	bh=UHsxuptmb3xV5kDfCGAfaTxvZvdoOS9QghuWlrwnouQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f28t2Cx/DaNV8NWHKjwDZqbMt784o5tA6iqO6n/Uyjw26MKIq05nOqzPbVs6/JIZ28iGMecoBMOTph6RxAgzQBEqk5U/J2BX6VpoHIrAZK3ooteZLpa+a2MJpkffAOpux+6Gr7QyL6LAj7Pa47BHD1IPUYp2wZzR+N5we3sxWHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DqMZGUJK; arc=none smtp.client-ip=217.70.178.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2yGuMu/H"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=sF8hLZSirL52B5+nEtwimjobmj4GY8eaORQupXGOCT0=; b=2yGuMu/Hvp37AS0dGNsfBaRROu
-	26IHIZhsN8fGevOcxgbF4GzZIqiJho0BR0xoV0W+y1dWETXFKKlKAF12jLsDNSD+SHYnVpkZtUf0x
-	pJg4otRBKqTI3pUCMMgDlqywftn2KMdM6NJQkUx+cwrPVKVi9Tg9xnooJGA2oRNmVXho=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tewVv-00AXNy-No; Mon, 03 Feb 2025 14:29:23 +0100
-Date: Mon, 3 Feb 2025 14:29:23 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Simon Horman <horms@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
-	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
-	andrew+netdev@lunn.ch
-Subject: Re: [PATCH net 2/2] MAINTAINERS: add a sample ethtool section entry
-Message-ID: <9f6c2d87-bb45-4c95-af93-7d2ca5f1dcc3@lunn.ch>
-References: <20250202021155.1019222-1-kuba@kernel.org>
- <20250202021155.1019222-2-kuba@kernel.org>
- <20250203105647.GG234677@kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DqMZGUJK"
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+	by mslow3.mail.gandi.net (Postfix) with ESMTP id D04C1583DE9;
+	Mon,  3 Feb 2025 12:59:18 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 639374328A;
+	Mon,  3 Feb 2025 12:59:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1738587550;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kud0vb2rndObrFVvKzvzQHf1HyyWb9BxitskvcdGEnE=;
+	b=DqMZGUJKFTNXDmN2A3VAGBpAWNbvfP5Hrg1MTSGoA43JU0pawR054fEAdXBsaUttAA7kJ0
+	6tA80lf1b0vhwJo6yMTUqTVzP74pLAhkNRasL8pvbLX7Q6fReJHm9cZqEghk4gLv8Hh/+Q
+	v2AaME9sZsUS4NHfE06In9Z8nQeH9V8JoIo+eKJAKSOfgaOpTvTpk4fBhpoWkMyEIPCUJI
+	vSiFfLyecBMxpQqHOiiul21J4dWefaoPzzUPNa4bho2v5A0jfFGIO3Zq5vENRruJ9bKr2V
+	QENSUuOIXtH9r7MYcOCD/P7StfFmPGU6tudk3AUKlG79PG9cM/Pgdx5MM4LT1g==
+Message-ID: <1b2965bc-87d6-4b44-bf7d-e491a08d89cd@bootlin.com>
+Date: Mon, 3 Feb 2025 13:59:08 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250203105647.GG234677@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf-next v4 12/14] selftests/bpf: test_xdp_veth: Add XDP
+ broadcast redirection tests
+To: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
+ KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
+ Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+ Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>,
+ Alexis Lothore <alexis.lothore@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250131-redirect-multi-v4-0-970b33678512@bootlin.com>
+ <20250131-redirect-multi-v4-12-970b33678512@bootlin.com>
+ <bba86a91-e945-4ab2-825e-b915216ba3c7@linux.dev>
+Content-Language: en-US
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+In-Reply-To: <bba86a91-e945-4ab2-825e-b915216ba3c7@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddujeeiiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeeurghsthhivghnucevuhhruhhttghhvghtuceosggrshhtihgvnhdrtghurhhuthgthhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvdeiueejvdevvedvtdekteejieeuvdfgjefgvddtvdevjeegleeufeekteevkedvnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrudegngdpmhgrihhlfhhrohhmpegsrghsthhivghnrdgtuhhruhhttghhvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvfedprhgtphhtthhopehmrghrthhinhdrlhgruheslhhinhhugidruggvvhdprhgtphhtthhopegrshhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhesihhoghgvrghrsghogidrnhgvthdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtt
+ hhopehhrgifkheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhohhhnrdhfrghsthgrsggvnhgusehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghnughrihhisehkvghrnhgvlhdrohhrgh
+X-GND-Sasl: bastien.curutchet@bootlin.com
 
-On Mon, Feb 03, 2025 at 10:56:47AM +0000, Simon Horman wrote:
-> On Sat, Feb 01, 2025 at 06:11:55PM -0800, Jakub Kicinski wrote:
-> > I feel like we don't do a good enough keeping authors of driver
-> > APIs around. The ethtool code base was very nicely compartmentalized
-> > by Michal. Establish a precedent of creating MAINTAINERS entries
-> > for "sections" of the ethtool API. Use Andrew and cable test as
-> > a sample entry. The entry should ideally cover 3 elements:
-> > a core file, test(s), and keywords. The last one is important
-> > because we intend the entries to cover core code *and* reviews
-> > of drivers implementing given API!
-> > 
-> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> > ---
-> > This patch is a nop from process perspective, since Andrew already
-> > is a maintainer and reviews all this code. Let's focus on discussing
-> > merits of the "section entries" in abstract?
+Hi Martin,
+
+On 2/1/25 2:33 AM, Martin KaFai Lau wrote:
+> On 1/30/25 11:21 PM, Bastien Curutchet (eBPF Foundation) wrote:
+>> +#define BROADCAST_REDIRECT_SKEL_NB    2
+>> +static void xdp_veth_broadcast_redirect(u32 attach_flags, u64
+
+[...]
+
+>> +
+>> +    group_map = bpf_map__fd(xdp_redirect_multi_kern->maps.map_all);
+>> +    if (!ASSERT_OK_FD(group_map, "open map_all"))
+>> +        goto destroy_xdp_redirect_map;
+>> +
+>> +    flags_map = bpf_map__fd(xdp_redirect_multi_kern- 
+>> >maps.redirect_flags);
+>> +    if (!ASSERT_OK_FD(group_map, "open map_all"))
+>> +        goto destroy_xdp_redirect_map;
+>> +
+>> +    err = bpf_map_update_elem(flags_map, &protocol, &redirect_flags, 
+>> BPF_NOEXIST);
+>> +    if (!ASSERT_OK(err, "init IP count"))
+>> +        goto destroy_xdp_redirect_map;
+>> +
+>> +    cnt_map = bpf_map__fd(xdp_redirect_map->maps.rxcnt);
+>> +    if (!ASSERT_OK_FD(cnt_map, "open rxcnt map"))
+>> +        goto destroy_xdp_redirect_map;
+>> +
+>> +    bpf_objs[0] = xdp_redirect_multi_kern->obj;
+>> +    bpf_objs[1] = xdp_redirect_map->obj;
+>> +    for (i = 0; i < VETH_PAIRS_COUNT; i++) {
+>> +        int ifindex = if_nametoindex(net_config[i].local_veth);
+>> +
+>> +        if (attach_programs_to_veth_pair(bpf_objs, 
+>> BROADCAST_REDIRECT_SKEL_NB,
+>> +                         net_config, prog_cfg, i))
+>> +            goto destroy_xdp_redirect_map;
+>> +
+>> +        SYS(destroy_xdp_redirect_map,
+>> +            "ip -n %s neigh add %s lladdr 00:00:00:00:00:01 dev %s",
+>> +            net_config[i].namespace, IP_NEIGH, 
+>> net_config[i].remote_veth);
+>> +
+>> +        devmap_val.ifindex = ifindex;
+>> +        err = bpf_map_update_elem(group_map, &ifindex, &devmap_val, 0);
 > 
-> In the first instance this seems like a good direction to go in to me.
-> My only slight concern is that we might see an explosion in entries.
+> I ran this test in a loop and failed at this line permanently (errno 
+> E2BIG -7) after enough iterations. I believe the problem is the 
+> group_map (aka "map_all" in the BPF program) has a max_entries 1024 and 
+> ifindex can go beyond 1024 after some "./test_progs" iterations. 
+> Understood that it is likely an existing assumption in the "map_all" 
+> definition but it needs to be addressed first before moving to test_progs.
+> 
+>> +        if (!ASSERT_OK(err, "bpf_map_update_elem"))
+>> +            goto destroy_xdp_redirect_map;
+>> +
+>> +    }
+>> +
 
-I don't think that will happen. I don't think we really have many
-sections of ethtool which people personally care about, always try to
-review across all drivers.
+[...]
 
-Even if it does explode, so what. Is ./scripts/get_maintainer.pl the
-bottleneck in any workflows?
+>> diff --git a/tools/testing/selftests/bpf/progs/xdp_redirect_map.c b/ 
+>> tools/testing/selftests/bpf/progs/xdp_redirect_map.c
+>> index 
+>> 682dda8dabbc9abbb5d1b0b22dd5f81124142e79..14385df71d7fc40c3b0ee5c6ea0760d0e7336d71 100644
+>> --- a/tools/testing/selftests/bpf/progs/xdp_redirect_map.c
+>> +++ b/tools/testing/selftests/bpf/progs/xdp_redirect_map.c
+>> @@ -1,7 +1,11 @@
+>>   // SPDX-License-Identifier: GPL-2.0
+>> +#include <linux/if_ether.h>
+>> +#include <linux/ip.h>
+> 
+> I have compiler error complaining about __always_inline not defined. 
+> Likely ordering issue and environment specific. Regardless, I believe 
+> the ip.h is unnecessary, so better clean it up.
+> 
+> I am going to land the patch 1-10 and change the cover letter a little 
+> to reflect the fact that patch 11-14 will be a followup. Please post the 
+> remaining patches after fixing the bpf_map_update_elem issue. Thanks.
+> 
 
-	Andrew
+Ok thank you, I plan to solve this issue by using a dedicated namespace 
+instead of the root namespace so the index won't be incremented every 
+time `test_progs` is launched.
+I'll send the new iteration once tested on my side.
+
+Best regards,
+Bastien
