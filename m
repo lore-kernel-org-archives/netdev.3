@@ -1,153 +1,355 @@
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx23lb.world4you.com (mx23lb.world4you.com [81.19.149.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8E1192B74
-	for <netdev@vger.kernel.org>; Mon,  3 Feb 2025 19:09:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A091DB12C
+	for <netdev@vger.kernel.org>; Mon,  3 Feb 2025 19:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738609755; cv=none; b=U73A0pq3v3r4Sh6H4Dp5i76GKBqPcAXqz/657EXr12+Uw11eqSKMFO7aYw2hcfWu49V7PdidQcLrdEVPzjP/c2QXUkYGL6G3QTU/JKRX/Tn1glAXsYITX6VTnJtxTpfEfmD+7Zk9AQNzRIlcqrLUOmBv3Ah3nEjuUJjJiORiR7c=
+	t=1738609885; cv=none; b=TEsKf8jdIUXlulxj2hpORjPXr68mOYab54dmKQ6yVHSxYaWc5ps8YD3uOPjV/5RY0NHzsBewwKfE1rinEx3rJJuFc/IIJHsuXSmsi9dfhcp1dxzJLIOJ3FZaJXJBQPbJKBIC8HPp9dtglYaHFt6WicjHvUtSzHZOTv1arWOXBxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738609755; c=relaxed/simple;
-	bh=ZjK74YNbZOKeEc9DattBh/8nhipSihzWQ3Am6C3D2zo=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=hTHh3Qwy/2RU7iKRV1OifLOCx+oC345zdM8YT8CH+NQFuWL53XCeqOXs3gCkTj7GUkizB0imvtIT4GVUp2K/N2NkIxsuc8WbUMR2jXZ2hZK91PwISXVJYO4SqfGMmpnT+/Ln623I4/oOsREKirHC2HZff7JRd8Q7UUI3mzpgQ1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hsc3vGnU; arc=none smtp.client-ip=209.85.221.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738609885; c=relaxed/simple;
+	bh=REGb3yyOZ/H1iNE3uYTqFQIiahkM7n1YL0oMtJ2qELw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=hBVDG+Y+XUULR9WWA0JPc1MU0QunCmdD6lYiLIhIk6NChV0uJh2BV8WGOoYycmv9tj3V+ft1QDowIXIqGGD3j0jZGlBj3P6xYyikJRYKrpx3KsoAlQNsZuXqJHX0XTSZihTpwoEgZIbm/jhwgERCW8aKW7PrZ0BAkFxNQKm3l+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=oNsdd+f/; arc=none smtp.client-ip=81.19.149.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hsc3vGnU"
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-51873e55d27so2853564e0c.1
-        for <netdev@vger.kernel.org>; Mon, 03 Feb 2025 11:09:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738609752; x=1739214552; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZjK74YNbZOKeEc9DattBh/8nhipSihzWQ3Am6C3D2zo=;
-        b=hsc3vGnU3h9NRruwMtLuh7mrTIxndged97RjDiIutr6VZfhgwcnYyrkAlG4Au4gawl
-         QDcR485IXeA2rGl5kNbKIxCJI31FZQTp3SLGAwG7ID6b7KKZAqzPUj8RgO+mROvm6D3w
-         MSXwdj6YBr3JeyVmWiBZGi5RvCtOfTCHJLwOvTcdOpSs6a8NRFr8BW9nfflVEdwsAaV3
-         jf0bLmrJhAzEzzjbmC0iWTMopTNd5MCVLzrvYnUcFxBw5iq0TkncUc46Y//RKKvY2oxU
-         9stcKLOMZR1F3QDwJhBM9qfHmfv9whZZ1ZU8l63bx03Uxrm0fjSYLy1FLVVva/HhGQLk
-         A+Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738609752; x=1739214552;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ZjK74YNbZOKeEc9DattBh/8nhipSihzWQ3Am6C3D2zo=;
-        b=ITTcYsr8hRrMwpLYx16hhkG6H8iM3BxmrbM8f7ET0lf3McC8ae0YJcHiX5NsyEzYsX
-         rCQLqUOXiM2A5boxf12+u+HNNN/Ct8G8BuUv7w2YumXWHAloGa+l2e0IGqiSSaW4kU/C
-         lRE2DqDjSZPFdpSbmmdxVAZ3XH75Nai2ZOXnhCkPMBwiJKNEfRFh2fj+y5j2Ue2ctBQT
-         +vh11XvnywY0UaMgohr5s+xQ42yY+gQqIIk9XfKYI6wo3t7CTeCOKKTuBDnJO7mKR7p7
-         NVlN7h3Fm77B3VDo/8pzlYQ5xfvTbROYi29lnIV5F0ZSTGNo4DC4h4AyKk1csTj6XdK6
-         EnZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVU/Im46F0vQCadfqNblmOgemoPetCyuBJUjZHmFOV++Q6URmzMjFJJ+8OQU8GICp75Z8y1Cg8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNDfnSv1tPod9ESNB/BByhsG+LnOz5G0hcxUzeRJ+vLEsYZqBS
-	Ia4KvYaHSANoaEenfOuFw+cHbqw4t6j15HllVrB2FJLWLTNm+uFR
-X-Gm-Gg: ASbGncumK2DIxNTyaQ68EJDghFiMJh2ho0D2TK7qQCmHBMZE3VUqK3mRshc7/X1ZIhL
-	3FDlhWSPU9SAUoO/YJnHFXr511TDBfoKxT/9Y0oFKADkrOnKGzUFzgH5EjlibShYoMRaFNRlUnA
-	Zq0U6fLqZaevjTMNKafakI0cMRVV/saurY5U4d57SUX1kgup36CBtBSk1bHvXkfzQLiM0v/Tc/A
-	WwodUDpG7KRbqYwAFDY7mOTdg+YkXKrOZIDB+1K3uc58qX7d0Gmf83bMAfyC8kH1hQs5PMeRsd+
-	s7oNyyjoBlIseGtKHjFJnPrTYcyVBhrOxfeqxjIJXn0/u/aFo5iP3lRO70zRNGE=
-X-Google-Smtp-Source: AGHT+IE23oWtqz0kTJ0f7I+X4OkxEevAZIVOQaTdJBW6WPvOQq8syqkwxoY0a8Sf5xd2K2vqwVKJqA==
-X-Received: by 2002:a05:6122:8c6:b0:515:20e6:7861 with SMTP id 71dfb90a1353d-51ef966291bmr724855e0c.2.1738609752521;
-        Mon, 03 Feb 2025 11:09:12 -0800 (PST)
-Received: from localhost (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51eb1c3d0bfsm1446616e0c.27.2025.02.03.11.09.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Feb 2025 11:09:11 -0800 (PST)
-Date: Mon, 03 Feb 2025 14:09:11 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: stsp <stsp2@yandex.ru>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- netdev@vger.kernel.org
-Cc: davem@davemloft.net, 
- kuba@kernel.org, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- jasowang@redhat.com, 
- Willem de Bruijn <willemb@google.com>, 
- Ondrej Mosnacek <omosnace@redhat.com>
-Message-ID: <67a114574eee7_2f0e52948e@willemb.c.googlers.com.notmuch>
-In-Reply-To: <48edf7d4-0c1f-4980-b22f-967d203a403d@yandex.ru>
-References: <20250203150615.96810-1-willemdebruijn.kernel@gmail.com>
- <48edf7d4-0c1f-4980-b22f-967d203a403d@yandex.ru>
-Subject: Re: [PATCH net] tun: revert fix group permission check
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="oNsdd+f/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=2y/ddngm7uQjl2sDwaxO871pIaHn3Y0gtWDU/Eb0iPY=; b=oNsdd+f/zrmG4a6Uzcqv/6mLBC
+	IBzlvQA3QAV2+r+GxMtrarebv1i7ocN6/NmbzB7XfRgfvJ4dNRBDqBiF2yNd02l4L3Vjyq9Bm9W7+
+	TjRyaTRi5BQ5CAoUvJccHtqu3eSJAu9XPSgrIqys8c7SVB1r1wfuqZKgoVTMPTel6zUk=;
+Received: from 88-117-60-28.adsl.highway.telekom.at ([88.117.60.28] helo=hornet.engleder.at)
+	by mx23lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tf1qo-000000004RY-3gVk;
+	Mon, 03 Feb 2025 20:11:20 +0100
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	Gerhard Engleder <gerhard@engleder-embedded.com>
+Subject: [PATCH net-next v4 2/7] net: phy: Support speed selection for PHY loopback
+Date: Mon,  3 Feb 2025 20:10:52 +0100
+Message-Id: <20250203191057.46351-3-gerhard@engleder-embedded.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250203191057.46351-1-gerhard@engleder-embedded.com>
+References: <20250203191057.46351-1-gerhard@engleder-embedded.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-AV-Do-Run: Yes
+X-ACL-Warn: X-W4Y-Internal
 
-stsp wrote:
-> 03.02.2025 18:05, Willem de Bruijn =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
-> > From: Willem de Bruijn <willemb@google.com>
-> >
-> > This reverts commit 3ca459eaba1bf96a8c7878de84fa8872259a01e3.
-> >
-> > The blamed commit caused a regression when neither tun->owner nor
-> > tun->group is set. This is intended to be allowed, but now requires
-> > CAP_NET_ADMIN.
-> >
-> > Discussion in the referenced thread pointed out that the original
-> > issue that prompted this patch can be resolved in userspace.
-> =
+phy_loopback() leaves it to the PHY driver to select the speed of the
+loopback mode. Thus, the speed of the loopback mode depends on the PHY
+driver in use.
 
-> The point of the patch was
-> not to fix userspace, but this
-> bug: when you have owner set,
-> then adding group either changes
-> nothing at all, or removes all
-> access. I.e. there is no valid case
-> for adding group when owner
-> already set.
+Add support for speed selection to phy_loopback() to enable loopback
+with defined speeds. Ensure that link up is signaled if speed changes
+as speed is not allowed to change during link up. Link down and up is
+necessary for a new speed.
 
-As long as no existing users are affected, no need to relax this after
-all these years.
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+---
+ drivers/net/ethernet/engleder/tsnep_main.c    |  2 +-
+ .../net/ethernet/hisilicon/hns/hns_ethtool.c  |  4 +-
+ .../hisilicon/hns3/hns3pf/hclge_main.c        |  4 +-
+ .../hisilicon/hns3/hns3pf/hclge_mdio.c        |  2 +-
+ .../stmicro/stmmac/stmmac_selftests.c         |  8 +-
+ drivers/net/phy/phy.c                         | 76 +++++++++++++++++++
+ drivers/net/phy/phy_device.c                  | 35 ---------
+ include/linux/phy.h                           |  2 +-
+ net/core/selftests.c                          |  4 +-
+ 9 files changed, 89 insertions(+), 48 deletions(-)
 
-It is up to users to not choose an overly restrictive setting, similar
-to how they should not set chmod a-rwx on a file.
+diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
+index 18df6a5cbfc6..a16b12137edb 100644
+--- a/drivers/net/ethernet/engleder/tsnep_main.c
++++ b/drivers/net/ethernet/engleder/tsnep_main.c
+@@ -230,7 +230,7 @@ static int tsnep_phy_loopback(struct tsnep_adapter *adapter, bool enable)
+ {
+ 	int retval;
+ 
+-	retval = phy_loopback(adapter->phydev, enable);
++	retval = phy_loopback(adapter->phydev, enable, 0);
+ 
+ 	/* PHY link state change is not signaled if loopback is enabled, it
+ 	 * would delay a working loopback anyway, let's ensure that loopback
+diff --git a/drivers/net/ethernet/hisilicon/hns/hns_ethtool.c b/drivers/net/ethernet/hisilicon/hns/hns_ethtool.c
+index 6c458f037262..60a586a951a0 100644
+--- a/drivers/net/ethernet/hisilicon/hns/hns_ethtool.c
++++ b/drivers/net/ethernet/hisilicon/hns/hns_ethtool.c
+@@ -266,9 +266,9 @@ static int hns_nic_config_phy_loopback(struct phy_device *phy_dev, u8 en)
+ 		if (err)
+ 			goto out;
+ 
+-		err = phy_loopback(phy_dev, true);
++		err = phy_loopback(phy_dev, true, 0);
+ 	} else {
+-		err = phy_loopback(phy_dev, false);
++		err = phy_loopback(phy_dev, false, 0);
+ 		if (err)
+ 			goto out;
+ 
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 3f17b3073e50..f8161d6eb152 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -7875,7 +7875,7 @@ static int hclge_enable_phy_loopback(struct hclge_dev *hdev,
+ 	if (ret)
+ 		return ret;
+ 
+-	return phy_loopback(phydev, true);
++	return phy_loopback(phydev, true, 0);
+ }
+ 
+ static int hclge_disable_phy_loopback(struct hclge_dev *hdev,
+@@ -7883,7 +7883,7 @@ static int hclge_disable_phy_loopback(struct hclge_dev *hdev,
+ {
+ 	int ret;
+ 
+-	ret = phy_loopback(phydev, false);
++	ret = phy_loopback(phydev, false, 0);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
+index 80079657afeb..9a456ebf9b7c 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
+@@ -258,7 +258,7 @@ void hclge_mac_start_phy(struct hclge_dev *hdev)
+ 	if (!phydev)
+ 		return;
+ 
+-	phy_loopback(phydev, false);
++	phy_loopback(phydev, false, 0);
+ 
+ 	phy_start(phydev);
+ }
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+index 3ca1c2a816ff..a01bc394d1ac 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+@@ -382,14 +382,14 @@ static int stmmac_test_phy_loopback(struct stmmac_priv *priv)
+ 	if (!priv->dev->phydev)
+ 		return -EOPNOTSUPP;
+ 
+-	ret = phy_loopback(priv->dev->phydev, true);
++	ret = phy_loopback(priv->dev->phydev, true, 0);
+ 	if (ret)
+ 		return ret;
+ 
+ 	attr.dst = priv->dev->dev_addr;
+ 	ret = __stmmac_test_loopback(priv, &attr);
+ 
+-	phy_loopback(priv->dev->phydev, false);
++	phy_loopback(priv->dev->phydev, false, 0);
+ 	return ret;
+ }
+ 
+@@ -1985,7 +1985,7 @@ void stmmac_selftest_run(struct net_device *dev,
+ 		case STMMAC_LOOPBACK_PHY:
+ 			ret = -EOPNOTSUPP;
+ 			if (dev->phydev)
+-				ret = phy_loopback(dev->phydev, true);
++				ret = phy_loopback(dev->phydev, true, 0);
+ 			if (!ret)
+ 				break;
+ 			fallthrough;
+@@ -2018,7 +2018,7 @@ void stmmac_selftest_run(struct net_device *dev,
+ 		case STMMAC_LOOPBACK_PHY:
+ 			ret = -EOPNOTSUPP;
+ 			if (dev->phydev)
+-				ret = phy_loopback(dev->phydev, false);
++				ret = phy_loopback(dev->phydev, false, 0);
+ 			if (!ret)
+ 				break;
+ 			fallthrough;
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index d0c1718e2b16..f6ca13ab8674 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -1703,6 +1703,82 @@ void phy_mac_interrupt(struct phy_device *phydev)
+ }
+ EXPORT_SYMBOL(phy_mac_interrupt);
+ 
++/**
++ * phy_loopback - Configure loopback mode of PHY
++ * @phydev: target phy_device struct
++ * @enable: enable or disable loopback mode
++ * @speed: enable loopback mode with speed
++ *
++ * Configure loopback mode of PHY and signal link down and link up if speed is
++ * changing.
++ */
++int phy_loopback(struct phy_device *phydev, bool enable, int speed)
++{
++	bool link_up = false;
++	int ret = 0;
++
++	if (!phydev->drv)
++		return -EIO;
++
++	mutex_lock(&phydev->lock);
++
++	if (enable && phydev->loopback_enabled) {
++		ret = -EBUSY;
++		goto out;
++	}
++
++	if (!enable && !phydev->loopback_enabled) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	if (enable) {
++		/*
++		 * Link up is signaled with a defined speed. If speed changes,
++		 * then first link down and after that link up needs to be
++		 * signaled.
++		 */
++		if (phydev->link && phydev->state == PHY_RUNNING) {
++			/* link is up and signaled */
++			if (speed && phydev->speed != speed) {
++				/* signal link down and up for new speed */
++				phydev->link = false;
++				phydev->state = PHY_NOLINK;
++				phy_link_down(phydev);
++
++				link_up = true;
++			}
++		} else {
++			/* link is not signaled */
++			if (speed) {
++				/* signal link up for new speed */
++				link_up = true;
++			}
++		}
++	}
++
++	if (phydev->drv->set_loopback)
++		ret = phydev->drv->set_loopback(phydev, enable, speed);
++	else
++		ret = genphy_loopback(phydev, enable, speed);
++
++	if (ret)
++		goto out;
++
++	if (link_up) {
++		phydev->link = true;
++		phydev->state = PHY_RUNNING;
++		phy_link_up(phydev);
++	}
++
++	phydev->loopback_enabled = enable;
++
++out:
++	mutex_unlock(&phydev->lock);
++	return ret;
++}
++EXPORT_SYMBOL(phy_loopback);
++
+ /**
+  * phy_eee_tx_clock_stop_capable() - indicate whether the MAC can stop tx clock
+  * @phydev: target phy_device struct
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 15c797580070..139bdebcc6f9 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -2052,41 +2052,6 @@ int phy_resume(struct phy_device *phydev)
+ }
+ EXPORT_SYMBOL(phy_resume);
+ 
+-int phy_loopback(struct phy_device *phydev, bool enable)
+-{
+-	int ret = 0;
+-
+-	if (!phydev->drv)
+-		return -EIO;
+-
+-	mutex_lock(&phydev->lock);
+-
+-	if (enable && phydev->loopback_enabled) {
+-		ret = -EBUSY;
+-		goto out;
+-	}
+-
+-	if (!enable && !phydev->loopback_enabled) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
+-	if (phydev->drv->set_loopback)
+-		ret = phydev->drv->set_loopback(phydev, enable, 0);
+-	else
+-		ret = genphy_loopback(phydev, enable, 0);
+-
+-	if (ret)
+-		goto out;
+-
+-	phydev->loopback_enabled = enable;
+-
+-out:
+-	mutex_unlock(&phydev->lock);
+-	return ret;
+-}
+-EXPORT_SYMBOL(phy_loopback);
+-
+ /**
+  * phy_reset_after_clk_enable - perform a PHY reset if needed
+  * @phydev: target phy_device struct
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 4e84df2294d2..f9723367e2f7 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -1886,7 +1886,7 @@ int phy_init_hw(struct phy_device *phydev);
+ int phy_suspend(struct phy_device *phydev);
+ int phy_resume(struct phy_device *phydev);
+ int __phy_resume(struct phy_device *phydev);
+-int phy_loopback(struct phy_device *phydev, bool enable);
++int phy_loopback(struct phy_device *phydev, bool enable, int speed);
+ int phy_sfp_connect_phy(void *upstream, struct phy_device *phy);
+ void phy_sfp_disconnect_phy(void *upstream, struct phy_device *phy);
+ void phy_sfp_attach(void *upstream, struct sfp_bus *bus);
+diff --git a/net/core/selftests.c b/net/core/selftests.c
+index 8f801e6e3b91..e99ae983fca9 100644
+--- a/net/core/selftests.c
++++ b/net/core/selftests.c
+@@ -299,7 +299,7 @@ static int net_test_phy_loopback_enable(struct net_device *ndev)
+ 	if (!ndev->phydev)
+ 		return -EOPNOTSUPP;
+ 
+-	return phy_loopback(ndev->phydev, true);
++	return phy_loopback(ndev->phydev, true, 0);
+ }
+ 
+ static int net_test_phy_loopback_disable(struct net_device *ndev)
+@@ -307,7 +307,7 @@ static int net_test_phy_loopback_disable(struct net_device *ndev)
+ 	if (!ndev->phydev)
+ 		return -EOPNOTSUPP;
+ 
+-	return phy_loopback(ndev->phydev, false);
++	return phy_loopback(ndev->phydev, false, 0);
+ }
+ 
+ static int net_test_phy_loopback_udp(struct net_device *ndev)
+-- 
+2.39.5
 
-A user will immediately find out if they mess up this configuration,
-and it takes extra steps (ioctls) to reach it, so is unlikely to be
-reached by accident.
-
-> During the discussion it became
-> obvious that simpler fixes may
-> exist (like eg either-or semantic),
-> so why not to revert based on
-> that?
-
-We did not define either-or in detail. Do you mean failing the
-TUNSETOWNER or TUNSETGROUP ioctl if the other is already set? That
-could break existing users that set both.
-
-> > The relaxed access control may now make a device accessible when it
-> > previously wasn't, while existing users may depend on it to not be.
-> >
-> > Since the fix is not critical and introduces security risk, revert,
-> Well, I don't agree with that justification.
-> My patch introduced the usability
-> problem, but not a security risk.
-> I don't want to be attributed with
-> the security risk when this wasn't
-> the case (to the very least, you
-> still need the perms to open /dev/net/tun),
-> so could you please remove that part?
-> I don't think you need to exaggerate
-> anything: it introduces the usability
-> regression, which should be enough
-> for any instant revert.
-
-This is not intended to cast blame, of course.
-
-That said, I can adjust the wording.
-
-The access control that we relaxed is when a process is not allowed
-to access a device until the administrator adds it to the right group.
-Is this used? I doubt it. But we cannot be sure.
