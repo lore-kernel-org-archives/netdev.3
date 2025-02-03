@@ -1,28 +1,28 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2075.outbound.protection.outlook.com [40.107.236.75])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2084.outbound.protection.outlook.com [40.107.94.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E0720B7EE
-	for <netdev@vger.kernel.org>; Mon,  3 Feb 2025 21:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558E41F4275
+	for <netdev@vger.kernel.org>; Mon,  3 Feb 2025 21:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.84
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738618600; cv=fail; b=rIhJ0YVykS/lY5ch31e1r2Pfm4p3UZZe5Vp0FB3OlLvpiDa9y7TzfusgN9YMQwBUC/rhfA5WHVcTgi5SAMa5eCL3e6wQTBaRWCHGT8ss5biyntu3FEET+UKyeEqIwesrXHVxEwpsSqrZnI+RDp6kx/xnUhN1EjevFFBUSSefQSQ=
+	t=1738618607; cv=fail; b=U5/Km7sB+SmgXR0uQzEVtLUHCXDsFOBByGiNdr3iwAJxW9jpkxtyKuqyoohpS4sU1fIU9iQxn9JbXb1liSoegcqSe+6Ss9ubnxu9knmuc4PffLzx/slR3odLUYmARGgh1E2er49C8y/HkgXS5LpBfrIKeEZOeT88KacATPaItE4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738618600; c=relaxed/simple;
-	bh=csZ5vQLsxJzJDIRAv7v6R0WPaFus13YvMpCFXNoMII8=;
+	s=arc-20240116; t=1738618607; c=relaxed/simple;
+	bh=U/c+u3HaScZlS76XQn4mK+KjHgriPS/qlIcFqdFpU5s=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BXT1xm9ydQf1sMzhbELfXY10HbTdhmL51FLynSCAjEkvGx4Azbj6NfcswWSuwOPckKqf55IRCi3zUBeHyj7RlOaNj+07eabfOrEGmH8BSiYoFOFybjpFD+HjLxzzKD4vIOiQditwjHedOhsANmYKGB9fxBfVJO9vmHzLod9szyo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lzfhtLUf; arc=fail smtp.client-ip=40.107.236.75
+	 MIME-Version:Content-Type; b=q9yyzZOpFgDCG2FXELm7WY/oZvA2mgmAQjSDCjjYZ60+7BR2fm9yLRNum3PHrptJImUpkzMdXmzsQaZbIooYwhOLK8Sit3wkgfVVP8OBeNbiN6jfMltHPqOoJvfC4UW+qX0PpxDZ3y0eBtngTIrsMIOdDERBdcZCoL5LoizMaoU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DD6Ck/4P; arc=fail smtp.client-ip=40.107.94.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lzfhtLUf"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DD6Ck/4P"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TTqn+BoaPGMWt/QL+pG4JQ9kkayrsii5ozK0ID4BifTTSy2VspJ7UnvG5UVrV076pX7WAn5R07etfQhYZnRvTBiDnE4yVei6Ccfof1zAB4AVtpt2GxCy8JyrfMOafc1xG7qU/qOTq0Fzu/CMopck+A6xkHQToZkq3CYXd97JoOmYH1NDEYJ01pokyPtN3W5KI2hIRTSkBgnoezbCyuZiZdo6/LcQnIj9LYd5LzGx8C2Q06Pjt3ygNTtls3lwfHVPlfTJqTEHLjOx4FUQAjg69wgeHYQllIOV1Avc4eBWOAuUAy1q53lbxmM9ide3iI0y8XRFTXtAOyE08eMMa7bpEA==
+ b=V/MEzkOZx1tUbS4fID6equOJ4i2e0OxwMC5AMEWaeO7cBYDMlisHTUyYT4F5oJRb4JBCOO+VQ8udkgi8A32wq8SAwJe6Z8IZ5wvU1HVZLot+RTUDYMa/5ql78EyyPqtBfuP4xJDQNSf7eKRMrimQoxfuZnC2uzTtW/TyvezYSC6U95/hRpIa0ZKpi2nW8d+ViRqjEsgoc9rHvUhrF/nYBx2Yf5t6b9a7tZoDqg2lxuDRIFImwmtz6QiC/QUnwrrZYQyQ0kUvSRE8gwDt/yKeFgwNJ8Mh4+072ShVaZ2ZYgWZYhFUoySItTLxE/fIGk73AGy/MNdDJ75NuVk1osW1yQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uYkex5FJ5kKN8egXMJh7OJoR2jabuM38I4CrGkPlWQo=;
- b=VYQZTwdQEYcs4Zn8QgBq1ZTOHzRjN86n+iiHpGzQuVwRTFYiA9mdUyushK5E8skVJPVQGE8cIhD2pPlErdCLJXjnJTmBgkZBtuImRx3Dp9dk/JgYO1LoadyGPuhQWV9rt2wWqYoVILTUQPQZ9fz6VmjacMpO+X9528LRapCXKcI9DUas2Rh6QvhwkCT5lpRXHHmh4e8jQJR/S6sKF0T4UdNbPalbVQfjUuldu2n6RssdzATeXqCF07vYKNIpmOBOt80DAn6bGLDKz8HhnP77BChPWisGoFTi+r66CjKwUrQrE018+5u5WjkiBtqH0qn86NKccD2bgs1q95l1k/adBw==
+ bh=87e3U99kE1PW2ayiv+74C8vRrFOygj02uZGO8bKIEP8=;
+ b=pha6vZmGg4ekrw8z+6SwYt+O3r3r5uorXaA7taqv7jzjg2g5UKQr9PwRUzuL56Jis+R4ZhYtvKOo2Lp2qBDORoQv1fKLFX50oDYEgcy/WaVGaMa3fEHZdflqnXbfK8GowEAEl4Cs9griQTqtiO2lDJsFwZF03wTxaQ+TWd36hHJ1kkPmWBlgNqhILueCZ8qzPobHTNP5KWwxB+OMYUi8akzxi6OBY32OtCbzMK8hHWjR9V+9C4ZOfbjmQCiM82joh2a2JDqLGvnGSILSyrIA/h4nLdY3ABM4Ka5XTYDezWSdzPlmTzfv5iNv+eM2xDzGAXwQARqFJoV0+Ifrxd8CYA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -30,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uYkex5FJ5kKN8egXMJh7OJoR2jabuM38I4CrGkPlWQo=;
- b=lzfhtLUfZfXplF0u1tQNSpq7LMAbnuqNsEOhCY3EL+l9O+efsAMM35McREajPJl0E6gmst5TXFXLgaBtZR3+hZfrJ90ircxNi0rrrhMHJSso4ONg1n+WmYZkOWtRxFobVoICQJLWjSJRYxZNYcEOAnGE6paAdPtDdgpaTFKQZ90XLzrAm1dQGgEgKZOLfLhjn5i7H9A4vwPsin3ateHAw6VSgLjS2/Ggs/PhtIcxUvUpNYICL5wABI/b5+qmxr/MqxLWPs1YgH2olM6BT1mAQ9wGr+llV1AOI6cJLQ9BZU4QBhvisC00BVRV5Cmih5YOlBdi8fYAzLFlEPIXnAEDhA==
-Received: from SJ0PR03CA0114.namprd03.prod.outlook.com (2603:10b6:a03:333::29)
- by PH7PR12MB7987.namprd12.prod.outlook.com (2603:10b6:510:27c::21) with
+ bh=87e3U99kE1PW2ayiv+74C8vRrFOygj02uZGO8bKIEP8=;
+ b=DD6Ck/4PbGkt+EbdlgMQ2LL62/7z/b/mr8Xw8J9NGMOH0Mi32Rz003RHTNVGYVRf8fKFattry591DGmKgSyjwycZor0uo0Zmt8LflRGrKSPc/HdjZ7H3qgooStYf156eyVGBrzOEMTPlYdyzpEOw6+ZE8eUu5x6+sN4rY4X1FawwCGvlQZ/3PbSGx26ybqdG7pFAw4Ir55R8C6sVnYGuZbHJWCTj34eS79LvKBesH/bs0sPFTrcyDaZpsFSWLknhzkCid/orU8k4X7lPHINUkyTP9tQ8QJ0TM7NuaN+3bXbik8nzK4KNA9hlN1lwJDmIFF23dsqoYTfECbC6AXwSTg==
+Received: from SJ0PR05CA0181.namprd05.prod.outlook.com (2603:10b6:a03:330::6)
+ by CY8PR12MB7490.namprd12.prod.outlook.com (2603:10b6:930:91::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.17; Mon, 3 Feb
- 2025 21:36:32 +0000
-Received: from SJ1PEPF00002321.namprd03.prod.outlook.com
- (2603:10b6:a03:333:cafe::51) by SJ0PR03CA0114.outlook.office365.com
- (2603:10b6:a03:333::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.25 via Frontend Transport; Mon,
- 3 Feb 2025 21:36:32 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Mon, 3 Feb
+ 2025 21:36:40 +0000
+Received: from SJ1PEPF00002322.namprd03.prod.outlook.com
+ (2603:10b6:a03:330:cafe::d5) by SJ0PR05CA0181.outlook.office365.com
+ (2603:10b6:a03:330::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.23 via Frontend Transport; Mon,
+ 3 Feb 2025 21:36:40 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -49,20 +49,20 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.160 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.160) by
- SJ1PEPF00002321.mail.protection.outlook.com (10.167.242.91) with Microsoft
+ SJ1PEPF00002322.mail.protection.outlook.com (10.167.242.84) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8398.14 via Frontend Transport; Mon, 3 Feb 2025 21:36:31 +0000
+ 15.20.8398.14 via Frontend Transport; Mon, 3 Feb 2025 21:36:40 +0000
 Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 3 Feb 2025
- 13:36:10 -0800
+ 13:36:20 -0800
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
  (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 3 Feb
- 2025 13:36:10 -0800
+ 2025 13:36:20 -0800
 Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.8)
  with Microsoft SMTP Server id 15.2.1544.14 via Frontend Transport; Mon, 3 Feb
- 2025 13:36:06 -0800
+ 2025 13:36:16 -0800
 From: Tariq Toukan <tariqt@nvidia.com>
 To: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, "Andrew
@@ -72,9 +72,9 @@ CC: <netdev@vger.kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, Gal Pressman
 	<moshe@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>, Mark Bloch
 	<mbloch@nvidia.com>, Carolina Jubran <cjubran@nvidia.com>, Dragos Tatulea
 	<dtatulea@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
-Subject: [PATCH net-next 01/15] net/mlx5: Add helper functions for PTP callbacks
-Date: Mon, 3 Feb 2025 23:35:02 +0200
-Message-ID: <20250203213516.227902-2-tariqt@nvidia.com>
+Subject: [PATCH net-next 03/15] net/mlx5: Add init and destruction functions for a single HW clock
+Date: Mon, 3 Feb 2025 23:35:04 +0200
+Message-ID: <20250203213516.227902-4-tariqt@nvidia.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20250203213516.227902-1-tariqt@nvidia.com>
 References: <20250203213516.227902-1-tariqt@nvidia.com>
@@ -89,145 +89,157 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: AnonymousSubmission
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002321:EE_|PH7PR12MB7987:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3b490361-5a5d-4976-b69e-08dd449ad35b
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002322:EE_|CY8PR12MB7490:EE_
+X-MS-Office365-Filtering-Correlation-Id: a55a95c1-ef80-4f07-9d59-08dd449ad860
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|376014|1800799024;
+	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/H/n99tBjOMebn0yJRw/iIghbE97Y4MXMiQ3O1JkDRTBEj9dEGGivtrG7eu4?=
- =?us-ascii?Q?aqoprLqVDIqHLLixA+tjTV1nXWame2qWWyfvGdgHzb7XiThGkNeASsudAGyf?=
- =?us-ascii?Q?kS3OgOJYUfPTic+0PVuGpifgOwDPv8NUdRlRF4ZJ/go15T4Z5l8fkrYVWP1O?=
- =?us-ascii?Q?yBwgldqzO7q1ZCp4BCOHw2k2RH2NJKcuaJOuugbP/eVjbwNqHCPI1UKlCbWI?=
- =?us-ascii?Q?bpFFZgmvbPgoREZ8/mmsUrHDsf3/sJg6yaWKGafRhPPWq/CMC0oNux0mQ49P?=
- =?us-ascii?Q?4giTyvB2aAGq1OxvYRm60IGYhDi4h+RECSw5rEoCdftJ/jrtUwLPoDRzvMFz?=
- =?us-ascii?Q?FdiVVD5IJUWQ2GKoaRIkbfcYG+3pgL5SD6BwLgZmyeBnTC8do01c57hchJHt?=
- =?us-ascii?Q?vRXYmLU86DFY4ZxNNmrBZpQ6pXSqzj9cXafIQ4dZHrZvFvH4TkoryHbsX9Cj?=
- =?us-ascii?Q?NhM8MGR3cl5Fb5vH81ej5Fsa3AMk1OjbIFtG0WAseF38/S+W8cfXKfJjxtzu?=
- =?us-ascii?Q?w4kKlyH97pYz8K8Z6e2C4fM3XGv8pRHZY7/5ehTFpjFSYZ6+MmBY+geyCBJs?=
- =?us-ascii?Q?mNwPWKtZuJa1dfNPQxIOWii9vCIBzD43wEdW8qt7HFfVQAkOvAQBqvfyZoQR?=
- =?us-ascii?Q?EHMeTes/XpBLDhTsBTCyB7wqDsRx9wRPQss30cccIQTbIIgCjkICD/oaDXi6?=
- =?us-ascii?Q?Gt7yRcXT6wi/uSzh+GlDahiZdzvhXa3AiWCyn1y1THp9eE5Ywpql/N0JrM/U?=
- =?us-ascii?Q?rFfn6pU2Qt6BROGqk/fdeLjEmzwQBs60QuKVVk5Ly0Z6xsspVQ2Lmp0ctpKE?=
- =?us-ascii?Q?xuytTflISnBSrgLESpK7oIK85FiquttaAdmABUDdELFdY50aOgnulIxyayDp?=
- =?us-ascii?Q?MnK+WUNCKkn8H+YQPA9KqLubwkvUTIm1ATJ0l+tjTAHrCJF0kFSS1W0jql6N?=
- =?us-ascii?Q?kC5bloxVPvwSkkXxmyh1o/E82GtiojY2xfRQQlSP0Pu5hDmTXin7Z6O9qAJn?=
- =?us-ascii?Q?kovl3eGB5OON2j3Nc6T+BBLkTYmb5JPnOgBdL4MmodLGLWKtAQnCBxI9aGPa?=
- =?us-ascii?Q?xJu3RobX22YcFNoMUSGuRGdYV+vGZx5uw0kCDbh4coTOT6kLAcNgQqdvdXKx?=
- =?us-ascii?Q?zxPemlNCY6T0J/r5FKLh3Eupz0hWNbxvkIu6sic8XcD/WvBrRzskTcVQLk59?=
- =?us-ascii?Q?9sFU+S61fvupng29Q5af4/CfYcrkbUG25Ve7C2dKmfuPvr9nGqPHLsfkGvL1?=
- =?us-ascii?Q?SUjaF86Pto/v1qbD0ccVnsnzLNvzyIMJmWOtWzAEpRkczcsckEOJGuM6PFjW?=
- =?us-ascii?Q?j02TjIeVuQdVPsLvyNm7M76jxc3mU7CgN6rfbkBjdllTWysxys+pLI4VQi/T?=
- =?us-ascii?Q?If0eVSiW67q7NZ5OkTtcuu5zZVoMn7Hk/jj27fKY3miTUQ1dhCoaKU18Brk6?=
- =?us-ascii?Q?H06CMdTL+Uo448gfu12yamhKhtr+0F/NOFql4IJYVpfLnhADMeoX/2Fk3crL?=
- =?us-ascii?Q?zV9KzAmUEaujmBc=3D?=
+	=?us-ascii?Q?UvB0/Em16Mn4boAsF1qn+gPwUYxchuAWZPMTrvoHCQB3aRHQ8HVyG8fuPnl4?=
+ =?us-ascii?Q?Pb67FtWvDD4ffV7gA3HaHp0G2nk+x9q0Cy1kdHJyKJlyD5bpX3WLNscoyND5?=
+ =?us-ascii?Q?J0ewmgrykpctMmn1S4KceqOZ9G4+/Sj+fyWCVxO9unYUjSgICAsJxXls+dn2?=
+ =?us-ascii?Q?Ju+QS/sNv4XlVSknpA2YmDkZipn1VuJvTFjO1WzhevrfNJ9EP7dcK2/SBN2F?=
+ =?us-ascii?Q?4LzEoQDNg7D6hPDSEevS8VtBXo0M5hO+Tsulb5lfxWArnyY+mSq/89lXcdm5?=
+ =?us-ascii?Q?+v1HRb5kgOpe6eWfDW63lTY6CoSPMuwJ4Cxby5sgznMcVuPNLRVXkuO6rJh0?=
+ =?us-ascii?Q?ISCPfY4+cWSsQndzrQQ0Kwg5wr2S+zLSho3K32tI2isD+/UAe+/foz9V3Ghh?=
+ =?us-ascii?Q?iJLuGnx9ULiD5u6HwA1vOytYWyur+rfJhRq7Uns3UyAafjh+F9Y1cf06Yg/I?=
+ =?us-ascii?Q?2R6X3vbARM39fZ1QcSTj4gw/2upoBhEC1Qtt0jdfba5W9M2F/cLF6d/bYlD3?=
+ =?us-ascii?Q?43LLDEeTlJ27zkkJBAEOeh7w7lBQAbYbJY20QGqJYdrhIlZID/To2OhYzD5Y?=
+ =?us-ascii?Q?7ywCyQNZdwOn/H//toFxC8Q5u4vmorazGAv+6i7ld0XJORWCNoTmhtdGHvsb?=
+ =?us-ascii?Q?z+AfkFTXajtf2yLwVRSuZ0fxP62krM+GSsEXFQafXYzBMaDRR0ZKiKI1EB4p?=
+ =?us-ascii?Q?giM9Fq63xlIpupTXUa2Pdi9/k+TfaAQkPCUfCJL4zKpXbHOhE/ah652vXF9D?=
+ =?us-ascii?Q?wakTMgFG1/npogr8epUwaznoXSxZ3yOfqR4pdoW454XA+v+61iPri3sb8E+e?=
+ =?us-ascii?Q?ALA8trBLS8elZACMzswq5crK/iCBTeiq6dzsmO1Kq0sTrAjS3AALbF/6xhQK?=
+ =?us-ascii?Q?Ml/djFMZtgPicf5fUEqAtYt8fvgpeRJa1gJtGsBIsk91gMI0p4TFKRvgsqPq?=
+ =?us-ascii?Q?l5BPMmEz8k3UH9Qpn8lkGhyv6l80z3ocTihEHsVDXb4amA9j5Ufk3dv0eVAb?=
+ =?us-ascii?Q?KvpcjDtxRWqb0DyOacbAJLc4Opl2ZZMZRmYPNabAqmp9WOiolPiyuauzQ3Dj?=
+ =?us-ascii?Q?4aWMvAhWrLYn3Lvtx4faM8rhDgJQYmQg5PaR4J2Lx+e7Gn/NvbNSeu+d2lMO?=
+ =?us-ascii?Q?nkkY9mHeCLP6/VwqaFw/ZU1stRgUONJDB0XPr4MfHYVa79RJ11KoYDO2jlhK?=
+ =?us-ascii?Q?KzlGQyQAh1WIPicoWw84DaVBBV7mb1nLD3iP8sPBBuTl1zktc+PUOGrGuSeF?=
+ =?us-ascii?Q?7TPA1bvB7QYarrSt7MiawXLIRye6kLqzcIggbDcve4QWBWPHK05plasG7pFD?=
+ =?us-ascii?Q?EKWVths5pgdhj9OgDHQbmqXZyGejcTas2O7aBxBjuvigj8CFaEkrVmAVEf80?=
+ =?us-ascii?Q?jkXaazbcBjoffhfhboXPgufsn4OJiXcGK0wT83pWxkGrMjrrojnqnETR7LiX?=
+ =?us-ascii?Q?E3fNtE8BAepp9aq9LXhpz3E2bahEQ6rE48w/w39/+qvayGYuQk7U2BcnbTES?=
+ =?us-ascii?Q?HVPZZqbd4V75xvQ=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2025 21:36:31.7665
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2025 21:36:40.2028
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b490361-5a5d-4976-b69e-08dd449ad35b
+X-MS-Exchange-CrossTenant-Network-Message-Id: a55a95c1-ef80-4f07-9d59-08dd449ad860
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002321.namprd03.prod.outlook.com
+	SJ1PEPF00002322.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7987
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7490
 
 From: Jianbo Liu <jianbol@nvidia.com>
 
-The PTP callback functions should not be used directly by internal
-callers. Add helpers that can be used internally and externally.
+Move hardware clock initialization and destruction to the functions,
+which will be used for dynamically allocated clock. Such clock is
+shared by all the devices if the queried clock identities are same.
+
+The out_work is for PPS out event, which can't be triggered when clock
+is shared, so INIT_WORK is not moved to the initialization function.
+Besides, we still need to register notifier for each device.
 
 Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
 Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
 Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- .../ethernet/mellanox/mlx5/core/lib/clock.c   | 32 +++++++++++++------
- 1 file changed, 22 insertions(+), 10 deletions(-)
+ .../ethernet/mellanox/mlx5/core/lib/clock.c   | 48 ++++++++++++-------
+ 1 file changed, 31 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-index d61a1a9297c9..eaf343756026 100644
+index e7e4bdba02a3..cc0a491bf617 100644
 --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
 +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-@@ -119,6 +119,13 @@ static u32 mlx5_ptp_shift_constant(u32 dev_freq_khz)
- 		   ilog2((U32_MAX / NSEC_PER_MSEC) * dev_freq_khz));
+@@ -1153,17 +1153,11 @@ static void mlx5_init_pps(struct mlx5_core_dev *mdev)
+ 	mlx5_init_pin_config(mdev);
  }
  
-+static s32 mlx5_clock_getmaxphase(struct mlx5_core_dev *mdev)
-+{
-+	return MLX5_CAP_MCAM_FEATURE(mdev, mtutc_time_adjustment_extended_range) ?
-+		       MLX5_MTUTC_OPERATION_ADJUST_TIME_EXTENDED_MAX :
-+			     MLX5_MTUTC_OPERATION_ADJUST_TIME_MAX;
-+}
-+
- static s32 mlx5_ptp_getmaxphase(struct ptp_clock_info *ptp)
+-void mlx5_init_clock(struct mlx5_core_dev *mdev)
++static void mlx5_init_clock_dev(struct mlx5_core_dev *mdev)
  {
- 	struct mlx5_clock *clock = container_of(ptp, struct mlx5_clock, ptp_info);
-@@ -126,14 +133,12 @@ static s32 mlx5_ptp_getmaxphase(struct ptp_clock_info *ptp)
+ 	struct mlx5_clock *clock = &mdev->clock;
  
- 	mdev = container_of(clock, struct mlx5_core_dev, clock);
- 
--	return MLX5_CAP_MCAM_FEATURE(mdev, mtutc_time_adjustment_extended_range) ?
--		       MLX5_MTUTC_OPERATION_ADJUST_TIME_EXTENDED_MAX :
--			     MLX5_MTUTC_OPERATION_ADJUST_TIME_MAX;
-+	return mlx5_clock_getmaxphase(mdev);
- }
- 
- static bool mlx5_is_mtutc_time_adj_cap(struct mlx5_core_dev *mdev, s64 delta)
- {
--	s64 max = mlx5_ptp_getmaxphase(&mdev->clock.ptp_info);
-+	s64 max = mlx5_clock_getmaxphase(mdev);
- 
- 	if (delta < -max || delta > max)
- 		return false;
-@@ -361,15 +366,12 @@ static int mlx5_ptp_settime_real_time(struct mlx5_core_dev *mdev,
- 	return mlx5_set_mtutc(mdev, in, sizeof(in));
- }
- 
--static int mlx5_ptp_settime(struct ptp_clock_info *ptp, const struct timespec64 *ts)
-+static int mlx5_clock_settime(struct mlx5_core_dev *mdev, struct mlx5_clock *clock,
-+			      const struct timespec64 *ts)
- {
--	struct mlx5_clock *clock = container_of(ptp, struct mlx5_clock, ptp_info);
- 	struct mlx5_timer *timer = &clock->timer;
--	struct mlx5_core_dev *mdev;
- 	unsigned long flags;
- 
--	mdev = container_of(clock, struct mlx5_core_dev, clock);
+-	if (!MLX5_CAP_GEN(mdev, device_frequency_khz)) {
+-		mlx5_core_warn(mdev, "invalid device_frequency_khz, aborting HW clock init\n");
+-		return;
+-	}
 -
- 	if (mlx5_modify_mtutc_allowed(mdev)) {
- 		int err = mlx5_ptp_settime_real_time(mdev, ts);
+ 	seqlock_init(&clock->lock);
+-	INIT_WORK(&clock->pps_info.out_work, mlx5_pps_out);
  
-@@ -385,6 +387,16 @@ static int mlx5_ptp_settime(struct ptp_clock_info *ptp, const struct timespec64
- 	return 0;
+ 	/* Initialize the device clock */
+ 	mlx5_init_timer_clock(mdev);
+@@ -1179,28 +1173,19 @@ void mlx5_init_clock(struct mlx5_core_dev *mdev)
+ 		clock->ptp = NULL;
+ 	}
+ 
+-	MLX5_NB_INIT(&clock->pps_nb, mlx5_pps_event, PPS_EVENT);
+-	mlx5_eq_notifier_register(mdev, &clock->pps_nb);
+-
+ 	if (clock->ptp)
+ 		ptp_schedule_worker(clock->ptp, 0);
  }
  
-+static int mlx5_ptp_settime(struct ptp_clock_info *ptp, const struct timespec64 *ts)
+-void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
++static void mlx5_destroy_clock_dev(struct mlx5_core_dev *mdev)
+ {
+ 	struct mlx5_clock *clock = &mdev->clock;
+ 
+-	if (!MLX5_CAP_GEN(mdev, device_frequency_khz))
+-		return;
+-
+-	mlx5_eq_notifier_unregister(mdev, &clock->pps_nb);
+ 	if (clock->ptp) {
+ 		ptp_clock_unregister(clock->ptp);
+ 		clock->ptp = NULL;
+ 	}
+ 
+-	cancel_work_sync(&clock->pps_info.out_work);
+-
+ 	if (mdev->clock_info) {
+ 		free_page((unsigned long)mdev->clock_info);
+ 		mdev->clock_info = NULL;
+@@ -1208,3 +1193,32 @@ void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
+ 
+ 	kfree(clock->ptp_info.pin_config);
+ }
++
++void mlx5_init_clock(struct mlx5_core_dev *mdev)
 +{
-+	struct mlx5_clock *clock = container_of(ptp, struct mlx5_clock, ptp_info);
-+	struct mlx5_core_dev *mdev;
++	struct mlx5_clock *clock = &mdev->clock;
 +
-+	mdev = container_of(clock, struct mlx5_core_dev, clock);
++	if (!MLX5_CAP_GEN(mdev, device_frequency_khz)) {
++		mlx5_core_warn(mdev, "invalid device_frequency_khz, aborting HW clock init\n");
++		return;
++	}
 +
-+	return  mlx5_clock_settime(mdev, clock, ts);
++	mlx5_init_clock_dev(mdev);
++
++	INIT_WORK(&clock->pps_info.out_work, mlx5_pps_out);
++	MLX5_NB_INIT(&clock->pps_nb, mlx5_pps_event, PPS_EVENT);
++	mlx5_eq_notifier_register(mdev, &clock->pps_nb);
 +}
 +
- static
- struct timespec64 mlx5_ptp_gettimex_real_time(struct mlx5_core_dev *mdev,
- 					      struct ptp_system_timestamp *sts)
-@@ -1129,7 +1141,7 @@ static void mlx5_init_timer_clock(struct mlx5_core_dev *mdev)
- 		struct timespec64 ts;
- 
- 		ktime_get_real_ts64(&ts);
--		mlx5_ptp_settime(&clock->ptp_info, &ts);
-+		mlx5_clock_settime(mdev, clock, &ts);
- 	}
- }
- 
++void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
++{
++	struct mlx5_clock *clock = &mdev->clock;
++
++	if (!MLX5_CAP_GEN(mdev, device_frequency_khz))
++		return;
++
++	mlx5_eq_notifier_unregister(mdev, &clock->pps_nb);
++	cancel_work_sync(&clock->pps_info.out_work);
++
++	mlx5_destroy_clock_dev(mdev);
++}
 -- 
 2.45.0
 
