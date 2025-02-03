@@ -1,61 +1,126 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9427E201270;
-	Mon,  3 Feb 2025 15:16:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B28B134A8
+	for <netdev@vger.kernel.org>; Mon,  3 Feb 2025 15:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738595791; cv=none; b=nK1HLSdepvuIPliRZU2Pm92OKnPPz67YNgGRKWIl7KnBKUB2iXmhYWPhJPHJ2tFFl0qBqPGLbAWdMZqKgyzC3/TgO+qeDsf06sal3AqkxNxir7iBQQd4eWbAxioLi/JTDjMKANQ9W+lRZ3KeRyuzAriOuLMeBgLBdOR4afdjXw4=
+	t=1738595835; cv=none; b=sz95s41ADIOL4/Mqiy/7tHUnNlWUEODb267eR4YXxzfoxeX8iyXE8q+p1sD1t/D41t6XKjSZ6Bpd3Xm6+VqWNumO0bA/unNHsSXUJ8ymIxuvQR5geDhKAaHZCeLL1GJ11n5SxxLs7ofUY2I/Yn9Dur3DVfCXP7hITgq10EXItVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738595791; c=relaxed/simple;
-	bh=CpdxEgWxsh/HD3WPMCKSXTB1zyGno1z1Tpc3+MlTe9Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mC5/htlN5o7rsp6z7IJxgdnhPLk6luXiSRwlwJfwq/sPAlGTqEvMtPSq0ShJ3cocPk89hUuYuTdYHehXWYndj64gYMeZGlbshCBT2u867V9OHK/fBO7ylPW/AX1xgg7pBJWNKfeVvgHDymB7cmHTVmap5objf+x0rwKZbx4mkn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=JyR4WKj9; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1738595835; c=relaxed/simple;
+	bh=hrU4YUoQ6tChpjI4I/QYVbfh+gFvdGcc89so4FDsqrs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CWjAJBekzwZl7aUHxkH7CyI76S4xJof/Hjzbqb67KdPGR5qHv6m8dqBBzxiJa+YG8ss4bT6odZOhag/vilKdgGbtGQoRR0RbAbhCgtjNZ400XvjVUv1wW9a08frOHjZxjt7njRSFc+WDGQha4MSsrfzCJDU8p6lODs6FvRN092U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=csl7Qdto; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="JyR4WKj9"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=N3u4JBf86fRDaSu925+9l7ZXKLUFVUb4F+sjhB0CDjY=; b=JyR4WKj9O7+8WVc6f0z25l3VeL
-	GpN7qM6xi4rS8W/kFcOaJgCCq8nZFNWlvePbHN8EFfQruPlfI6Mf5zH1w4hnsA3Uo+I3JLhe2Lo4H
-	tzOTntfq1IGMMG3CF/wIC5gwS0xWNCapdDQ5+5o1TrYzcT3w1Pw1UTEyF9Qf+XCb8SM8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1teyBL-00AZ0H-LV; Mon, 03 Feb 2025 16:16:15 +0100
-Date: Mon, 3 Feb 2025 16:16:15 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Ninad Palsule <ninad@linux.ibm.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, ratbert@faraday-tech.com,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/1] dt-bindings: net: faraday,ftgmac100: Add phys mode
-Message-ID: <e8cf65f4-a7d8-486e-b055-11f304c8feae@lunn.ch>
-References: <20250203151306.276358-1-ninad@linux.ibm.com>
- <20250203151306.276358-2-ninad@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="csl7Qdto"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738595834; x=1770131834;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=hrU4YUoQ6tChpjI4I/QYVbfh+gFvdGcc89so4FDsqrs=;
+  b=csl7QdtoMJz6LIYJUNsQFs0GkNc5JIrxks35rUojLl1HRIRVdjngYV7y
+   /NLWJDyd2SMv9dMylVMRylISM/Trg7tBy14852yy3VR1mMJ0dJfaUV/sT
+   j7iGo9plCyO3PFIIgMw83rfmdm+Rjh5QZ+d31LbYP+CkiSS5D3J6E5GuG
+   GtU4VrZoUEHBgeuJfgkDmz4EFIUvNBIk06TTPXFMT/vNxh6ND3SaSJB1u
+   2vogall4qJTC30MHFO4Jn9HNVws2BmjjRangabdd0PTJduL6mrJ6WlVZo
+   zplwwTvHcsUvX4M95u/l+26kCeCe6dJf0UWDBHT35UKEelGRQX9RgrLb2
+   A==;
+X-CSE-ConnectionGUID: vt9vw+ObQF2DcETu64OQTg==
+X-CSE-MsgGUID: uNRjniLaSzqltMeXgw8Sbg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="56519785"
+X-IronPort-AV: E=Sophos;i="6.13,256,1732608000"; 
+   d="scan'208";a="56519785"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 07:17:14 -0800
+X-CSE-ConnectionGUID: NI01GYFKS/K6RJndj5OXwA==
+X-CSE-MsgGUID: Dit3lA5yRAGJ84UG2BKAfw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,256,1732608000"; 
+   d="scan'208";a="110886201"
+Received: from os-delivery.igk.intel.com ([10.102.18.218])
+  by fmviesa009.fm.intel.com with ESMTP; 03 Feb 2025 07:17:11 -0800
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: anthony.l.nguyen@intel.com,
+	netdev@vger.kernel.org,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Subject: [PATCH iwl-next v1 00/13] ixgbe: Add basic devlink support
+Date: Mon,  3 Feb 2025 16:03:15 +0100
+Message-Id: <20250203150328.4095-1-jedrzej.jagielski@intel.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250203151306.276358-2-ninad@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 03, 2025 at 09:12:55AM -0600, Ninad Palsule wrote:
-> Aspeed device supports rgmii, rgmii-id, rgmii-rxid, rgmii-txid so
-> document them.
-> 
-> Acked-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+Create devlink specific directory for more convenient future feature
+development.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Flashing and reloading are supported only by E610 devices.
 
-    Andrew
+Introduce basic FW/NVM validation since devlink reload introduces
+possibility of runtime NVM update. Check FW API version, FW recovery mode
+and FW rollback mode. Introduce minimal recovery probe to let user to
+reload the faulty FW when recovery mode is detected.
+
+This series is based on the series introducing initial E610 device
+support:
+https://lore.kernel.org/intel-wired-lan/20241205084450.4651-1-piotr.kwapulinski@intel.com/
+
+Andrii Staikov (1):
+  ixgbe: add support for FW rollback mode
+
+Jedrzej Jagielski (9):
+  ixgbe: add initial devlink support
+  ixgbe: add handler for devlink .info_get()
+  ixgbe: add .info_get extension specific for E610 devices
+  ixgbe: add E610 functions getting PBA and FW ver info
+  ixgbe: extend .info_get with stored versions
+  ixgbe: add device flash update via devlink
+  ixgbe: add support for devlink reload
+  ixgbe: add FW API version check
+  ixgbe: add E610 implementation of FW recovery mode
+
+Slawomir Mrozowicz (3):
+  ixgbe: add E610 functions for acquiring flash data
+  ixgbe: read the OROM version information
+  ixgbe: read the netlist version information
+
+ Documentation/networking/devlink/index.rst    |    1 +
+ Documentation/networking/devlink/ixgbe.rst    |  105 ++
+ drivers/net/ethernet/intel/Kconfig            |    2 +
+ drivers/net/ethernet/intel/ixgbe/Makefile     |    3 +-
+ .../ethernet/intel/ixgbe/devlink/devlink.c    |  625 +++++++
+ .../ethernet/intel/ixgbe/devlink/devlink.h    |   10 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe.h      |   14 +
+ .../net/ethernet/intel/ixgbe/ixgbe_82598.c    |    1 +
+ .../net/ethernet/intel/ixgbe/ixgbe_82599.c    |    1 +
+ .../net/ethernet/intel/ixgbe/ixgbe_common.c   |    1 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 1510 +++++++++++++++--
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h |   16 +
+ .../net/ethernet/intel/ixgbe/ixgbe_ethtool.c  |   12 +
+ .../ethernet/intel/ixgbe/ixgbe_fw_update.c    |  709 ++++++++
+ .../ethernet/intel/ixgbe/ixgbe_fw_update.h    |   12 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c |  180 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type.h |    5 +
+ .../ethernet/intel/ixgbe/ixgbe_type_e610.h    |  161 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c |    1 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c |    1 +
+ 20 files changed, 3253 insertions(+), 117 deletions(-)
+ create mode 100644 Documentation/networking/devlink/ixgbe.rst
+ create mode 100644 drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
+ create mode 100644 drivers/net/ethernet/intel/ixgbe/devlink/devlink.h
+ create mode 100644 drivers/net/ethernet/intel/ixgbe/ixgbe_fw_update.c
+ create mode 100644 drivers/net/ethernet/intel/ixgbe/ixgbe_fw_update.h
+
+
+base-commit: 09a7ccb316bce8347fefad05809426526b6699f3
+-- 
+2.31.1
+
