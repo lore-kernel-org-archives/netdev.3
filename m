@@ -1,45 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11210202C30
-	for <netdev@vger.kernel.org>; Mon,  3 Feb 2025 11:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FF81D5146
+	for <netdev@vger.kernel.org>; Mon,  3 Feb 2025 11:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738580602; cv=none; b=GrZhMJh75VmrLuNnAu7DIUiLJ8MfHrPpP7HV3V+reUYdzCQmZd6c94biX/oFFFOGEz3hoBwJ4jdvIJESgd+E/6Q2OhPx+CpxxV5eCWpHCm9oQWvg1WfCC3WWPLnoFyNU2z9zd74wHWI43jhfaF3Vrz5GCDwM+No2kdQZudaIBrA=
+	t=1738580623; cv=none; b=r0JPTr4v3uNGSWLuVf495em9hBSko+AC8H+PB8yJugmBclKpk4Gm3IFb0IQEH0a2gxdcwOYfXDbBA8DAeywR3R96kiB/CH4YC+so9Bqrc2wSEw80hHOY0WcqzUut3Yxa/gyFBOdEIZtFPnogDCsFVaRXLrQiugH16Lm2YZB8+ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738580602; c=relaxed/simple;
-	bh=xaAAHpyaS+ihWCjpvL1g5q1b2wxX+3o/PQXqetgkm/U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=drev63JgklYzou2N8XTe315TnEfLyTVciSvS8YsZjTB3iJZVH42PdIu3qV/nY/3Fx1MroqlirP4moY9Q2mrOsgHiTEbLkSOeFCDGkifWxbayETTj0YRrmXKZ8GFeeLC8SntoKQCzUJW+l6hwnoUjwxrsyEWmfsDDEhymfCD5PZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E50cCWi9; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1738580623; c=relaxed/simple;
+	bh=9ttUZ5MeuwK6L18C0A/46Tx2d9LnOwn9KM4EyWin0n8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HYjfyyFHxP7hAl1HFEf41KfweBuY5J4ZLp1oPM/aoGNztreNQjB0GnnQbKC6ZwY4UnXPQN5jPmuZGx06KVrHqZTC8Dgm1aUDxqflp8OwVr9qyj4VblFjHiZxmnXVDprBuDRTW1o7x9rDq6A3r5pxhbeVCkXYrpq1QeKc1PaQXLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RC7u+LC5; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E50cCWi9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RC7u+LC5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738580599;
+	s=mimecast20190719; t=1738580620;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WiB2eGPnUWekIgORYbul68z2a+sk8HOanBsmp7E6tqU=;
-	b=E50cCWi9DWsQWS3G4q6zh35FuR8FmfFDXEtPYuBLL/B6G9BZAfL1UY/yz35/3ciy2M0hQI
-	RypgyGZphWbAIM2ZpykTZy8rK4mArQku8g7M5h+ABvJ5NH07Q2/EfUPW+UDsX8Bh7Eulbc
-	7uQ6p8rYEn0HvFMW/xUMSdAlzDoDZGQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QepoMhZxvCaprwxe/kKQUIMTTRdToaS1EIkiLoYlbcE=;
+	b=RC7u+LC53f8JsOJfHR5sTpK2Z8kOJ/M59bia19J+Xp1zYIs5ZNUVc4Htu2zUPq8Ulw64lX
+	7dI4yKCfBOp0E9IUwkOAThmQnkR9p2kp98FTjEYeDVe9/cpMaqwzY6IYuH+on8bPIjOq2q
+	B75CfXfaLek4GJd6Qxr59ib1oIgBCfE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-606-S-VfnZG0NW6UvWz9FE0fzw-1; Mon,
- 03 Feb 2025 06:03:16 -0500
-X-MC-Unique: S-VfnZG0NW6UvWz9FE0fzw-1
-X-Mimecast-MFC-AGG-ID: S-VfnZG0NW6UvWz9FE0fzw
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-QFtrjEV2MZqm7YBy8_mTYw-1; Mon,
+ 03 Feb 2025 06:03:35 -0500
+X-MC-Unique: QFtrjEV2MZqm7YBy8_mTYw-1
+X-Mimecast-MFC-AGG-ID: QFtrjEV2MZqm7YBy8_mTYw
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 46A3818009CD;
-	Mon,  3 Feb 2025 11:03:15 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 28FCF1956055;
+	Mon,  3 Feb 2025 11:03:33 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.92])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8B2AF1956094;
-	Mon,  3 Feb 2025 11:03:12 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 143A7180A313;
+	Mon,  3 Feb 2025 11:03:27 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: netdev@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -49,10 +51,13 @@ Cc: David Howells <dhowells@redhat.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 0/2] rxrpc: Miscellaneous fixes
-Date: Mon,  3 Feb 2025 11:03:02 +0000
-Message-ID: <20250203110307.7265-1-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH net 2/2] rxrpc: Fix the rxrpc_connection attend queue handling
+Date: Mon,  3 Feb 2025 11:03:04 +0000
+Message-ID: <20250203110307.7265-3-dhowells@redhat.com>
+In-Reply-To: <20250203110307.7265-1-dhowells@redhat.com>
+References: <20250203110307.7265-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,38 +65,95 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Here some miscellaneous fixes for AF_RXRPC:
+The rxrpc_connection attend queue is never used because conn::attend_link
+is never initialised and so is always NULL'd out and thus always appears to
+be busy.  This requires the following fix:
 
- (1) Fix the state of a call to not treat the challenge-response cycle as
-     part of an incoming call's state set.  The problem is that it makes
-     handling received of the final packet in the receive phase difficult
-     as that wants to change the call state - but security negotiations may
-     not yet be complete.
+ (1) Fix this the attend queue problem by initialising conn::attend_link.
 
- (2) Fix the queuing of connections seeking attention from offloaded ops
-     such as challenge/response.  The problem was that the attention link
-     always seemed to be busy because it was never initialised from NULL.
-     This further masked two further bugs, also fixed in the patch.
+And, consequently, two further fixes for things masked by the above bug:
 
-David
+ (2) Fix rxrpc_input_conn_event() to handle being invoked with a NULL
+     sk_buff pointer - something that can now happen with the above change.
 
+ (3) Fix the RXRPC_SKB_MARK_SERVICE_CONN_SECURED message to carry a pointer
+     to the connection and a ref on it.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
 ---
-The patches can be found here also:
-
-	http://git.kernel.org/cgit/linux/kernel/git/dhowells/linux-fs.git/log/?h=rxrpc-fixes
-
-David Howells (2):
-  rxrpc: Fix call state set to not include the SERVER_SECURING state
-  rxrpc: Fix the rxrpc_connection attend queue handling
-
  include/trace/events/rxrpc.h |  1 +
- net/rxrpc/ar-internal.h      |  2 +-
- net/rxrpc/call_object.c      |  6 ++----
- net/rxrpc/conn_event.c       | 21 +++++++++++----------
+ net/rxrpc/conn_event.c       | 17 ++++++++++-------
  net/rxrpc/conn_object.c      |  1 +
- net/rxrpc/input.c            |  4 ++--
- net/rxrpc/sendmsg.c          |  2 +-
- 7 files changed, 19 insertions(+), 18 deletions(-)
+ 3 files changed, 12 insertions(+), 7 deletions(-)
+
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index 2f119d18a061..cad50d91077e 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -219,6 +219,7 @@
+ 	EM(rxrpc_conn_get_conn_input,		"GET inp-conn") \
+ 	EM(rxrpc_conn_get_idle,			"GET idle    ") \
+ 	EM(rxrpc_conn_get_poke_abort,		"GET pk-abort") \
++	EM(rxrpc_conn_get_poke_secured,		"GET secured ") \
+ 	EM(rxrpc_conn_get_poke_timer,		"GET poke    ") \
+ 	EM(rxrpc_conn_get_service_conn,		"GET svc-conn") \
+ 	EM(rxrpc_conn_new_client,		"NEW client  ") \
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index d93b041c4894..4d9c5e21ba78 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -270,6 +270,7 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
+ 			 * we've already received the packet, put it on the
+ 			 * front of the queue.
+ 			 */
++			sp->conn = rxrpc_get_connection(conn, rxrpc_conn_get_poke_secured);
+ 			skb->mark = RXRPC_SKB_MARK_SERVICE_CONN_SECURED;
+ 			rxrpc_get_skb(skb, rxrpc_skb_get_conn_secured);
+ 			skb_queue_head(&conn->local->rx_queue, skb);
+@@ -435,14 +436,16 @@ void rxrpc_input_conn_event(struct rxrpc_connection *conn, struct sk_buff *skb)
+ 	if (test_and_clear_bit(RXRPC_CONN_EV_ABORT_CALLS, &conn->events))
+ 		rxrpc_abort_calls(conn);
+ 
+-	switch (skb->mark) {
+-	case RXRPC_SKB_MARK_SERVICE_CONN_SECURED:
+-		if (conn->state != RXRPC_CONN_SERVICE)
+-			break;
++	if (skb) {
++		switch (skb->mark) {
++		case RXRPC_SKB_MARK_SERVICE_CONN_SECURED:
++			if (conn->state != RXRPC_CONN_SERVICE)
++				break;
+ 
+-		for (loop = 0; loop < RXRPC_MAXCALLS; loop++)
+-			rxrpc_call_is_secure(conn->channels[loop].call);
+-		break;
++			for (loop = 0; loop < RXRPC_MAXCALLS; loop++)
++				rxrpc_call_is_secure(conn->channels[loop].call);
++			break;
++		}
+ 	}
+ 
+ 	/* Process delayed ACKs whose time has come. */
+diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
+index 7eba4d7d9a38..2f1fd1e2e7e4 100644
+--- a/net/rxrpc/conn_object.c
++++ b/net/rxrpc/conn_object.c
+@@ -67,6 +67,7 @@ struct rxrpc_connection *rxrpc_alloc_connection(struct rxrpc_net *rxnet,
+ 		INIT_WORK(&conn->destructor, rxrpc_clean_up_connection);
+ 		INIT_LIST_HEAD(&conn->proc_link);
+ 		INIT_LIST_HEAD(&conn->link);
++		INIT_LIST_HEAD(&conn->attend_link);
+ 		mutex_init(&conn->security_lock);
+ 		mutex_init(&conn->tx_data_alloc_lock);
+ 		skb_queue_head_init(&conn->rx_queue);
 
