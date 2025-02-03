@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10451FC7FD
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F861FC11E
 	for <netdev@vger.kernel.org>; Mon,  3 Feb 2025 08:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738573133; cv=none; b=ntQpIU7q71IvfJB24ou6JK5Lpk5w6ubjtEedK1V8wCs0SoUy0dplfAIJbmmgp8ZqeVgWf4KrJVJQH7y5LxQiSSEOuXD7Prd/lws0hvUDvHOZwyEsmRfa0yF499Pj86OmvJPQ4KLgjWXsvuhb0Nq5TpXbfv5Je/SPB1Ok4uvHXT0=
+	t=1738573134; cv=none; b=rUvmM1SGxdLy9tuPbb1/rpn3+PtUdbjw0ifsD/ntXO/kNKlsjIjrjU2MzNEJ/leqt8gS4ba6eeJAOP6yVYiqm+XQOU9egXOPongxU2H2UlHYsnluVeU3T/+7KJgyElYEiKdL/RKYQnMUNWAxGQfpJFeWao3Jt5AY9MirYfa16GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738573133; c=relaxed/simple;
-	bh=66RywZ0JRagI5ZhzICafvsmxcJtS7MtCvp7n3FefA6A=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WuULmzbjg+ilgzzB4I6KAVZO3ADur3AEl2lXVjyMwQtTF0sa+UA/KqCFdrNKUGXPKDxWfgFfppRT5gHua0/HC/9FTZ248Vuw6n/nnK7DgZUiqUlo0tLkXbzNSMTofTuGbwfGc70u1UYjSCpM0dv9Jv/gtd+F4Ks38EeXCPo2XBI=
+	s=arc-20240116; t=1738573134; c=relaxed/simple;
+	bh=Pty7ItAK931ryI0Vl88ZaIMJp/sOQMsBR1Dr9vvgOjE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=QPaDCq3Cd+Luh6QhlE++l8kIeNHpqwyVeQzxgAia7P2b1/VgaRoWGyY1P6a2+KxHYrOfg0Yjm7Sj+vIcAYdu9wQpoheSWrUbYbIhDa9CZaZqJ+kuOuGQ20jxsammhCSGT2PyIy2ohPYk7QYc0Y68yNKKkUlJEZHaQRO3zvOKuQg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tesHf-0006KE-I4; Mon, 03 Feb 2025 09:58:23 +0100
+	id 1tesHf-0006KG-Ig; Mon, 03 Feb 2025 09:58:23 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tesHd-003GNl-2g;
+	id 1tesHd-003GNn-2q;
 	Mon, 03 Feb 2025 09:58:21 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tesHd-002YYj-2Q;
+	id 1tesHd-002YZ3-2a;
 	Mon, 03 Feb 2025 09:58:21 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Rob Herring <robh@kernel.org>,
@@ -41,15 +42,18 @@ To: Rob Herring <robh@kernel.org>,
 	Woojung Huh <woojung.huh@microchip.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v3 0/4] Add support for Priva E-Measuringbox board
-Date: Mon,  3 Feb 2025 09:58:16 +0100
-Message-Id: <20250203085820.609176-1-o.rempel@pengutronix.de>
+Subject: [PATCH v3 2/4] dt-bindings: arm: stm32: Add Priva E-Measuringbox board
+Date: Mon,  3 Feb 2025 09:58:18 +0100
+Message-Id: <20250203085820.609176-3-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250203085820.609176-1-o.rempel@pengutronix.de>
+References: <20250203085820.609176-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,31 +66,32 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-This patch series introduces support for the Priva E-Measuringbox board
-based on the ST STM32MP133 SoC. The set includes all the necessary
-changes for device tree bindings, vendor prefixes, thermal support, and
-board-specific devicetree to pass devicetree validation and checkpatch
-tests.
+Add support for the Priva E-Measuringbox ('pri,prihmb') board based on
+the ST STM32MP133 SoC to the STM32 devicetree bindings.
 
-changes v2:
-- drop: dt-bindings: net: Add TI DP83TD510 10BaseT1L PHY
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ Documentation/devicetree/bindings/arm/stm32/stm32.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Oleksij Rempel (2):
-  dt-bindings: vendor-prefixes: Add prefix for Priva
-  dt-bindings: arm: stm32: Add Priva E-Measuringbox board
-
-Roan van Dijk (2):
-  arm: dts: stm32: Add thermal support for STM32MP131
-  arm: dts: stm32: Add Priva E-Measuringbox devicetree
-
- .../devicetree/bindings/arm/stm32/stm32.yaml  |   6 +
- .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
- arch/arm/boot/dts/st/Makefile                 |   1 +
- arch/arm/boot/dts/st/stm32mp131.dtsi          |  35 ++
- arch/arm/boot/dts/st/stm32mp133c-prihmb.dts   | 496 ++++++++++++++++++
- 5 files changed, 540 insertions(+)
- create mode 100644 arch/arm/boot/dts/st/stm32mp133c-prihmb.dts
-
---
+diff --git a/Documentation/devicetree/bindings/arm/stm32/stm32.yaml b/Documentation/devicetree/bindings/arm/stm32/stm32.yaml
+index b6c56d4ce6b9..2cea166641c5 100644
+--- a/Documentation/devicetree/bindings/arm/stm32/stm32.yaml
++++ b/Documentation/devicetree/bindings/arm/stm32/stm32.yaml
+@@ -51,6 +51,12 @@ properties:
+               - st,stm32mp135f-dk
+           - const: st,stm32mp135
+ 
++      - description: ST STM32MP133 based Boards
++        items:
++          - enum:
++              - pri,prihmb   # Priva E-Measuringbox board
++          - const: st,stm32mp133
++
+       - description: ST STM32MP151 based Boards
+         items:
+           - enum:
+-- 
 2.39.5
 
