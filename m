@@ -1,301 +1,330 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2049.outbound.protection.outlook.com [40.107.212.49])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F402E20D4F7
-	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 12:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEEB25A620;
+	Tue,  4 Feb 2025 12:36:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738672380; cv=fail; b=MzkgWF/qlJ2UP6rnA8GSdswIyboIKyQLY1BAMv1c+tM1J/YREOWbO1EBVa4uxPs/WUs8moJf7kDaE9UZSY9fWrpXiIkqLsd/MSbuvYPW3Ik4wyQJbMnPrLVpVb1aOL0y/NQd0WexP2M9cclYJGxMnntc2LJeIpMaSaXNWaQ1LdM=
+	t=1738672609; cv=fail; b=pInFESTrNRSJfvazJdZW36vZgfbujt2VZKhAa6pLx898txbErm/5wKcBNwK2ISoF+KPhPu3TO0/8WjfqLXIk7byXsFgcrKOAI4wx3eNTAOGsRSwbWO765CcLGdvTStkfTgNFg3oaCPSxlIvSdGFNf2ubdWKB+Zwo/QG9mk/akmo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738672380; c=relaxed/simple;
-	bh=SP4tT+dA3PM5xku0H2QmMBn8h3UaW6wEIcBFCICH5bE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MCVBAiXWqgCmYhVg/Y5C4FOySJUBM8oD2CbFk2FMCnPTaJ2Sa5b9RTSNT+lnPkB/wvMLpseZpngfsPzLdOvc6OFOH15L4hqgN8NlPqxKyNwBKRuW4B0lHl2XvVVP9xRzHIcOiBj2g3U4Xb4krR4PrU4I6pWSqCN/AJEz7m4fKu0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rHxNUiv5; arc=fail smtp.client-ip=40.107.212.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1738672609; c=relaxed/simple;
+	bh=iDCQdpBiiCn8mqOsf+Br4X6kx0WzbjCtCfKdqKBSIaA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Y0n0Vklch5hsKP6dNv1vjxY1aasPzsqylrtoNOA1Ww0A2py76QyPfSQ6f5qlSpE2BdWEGn53rpU/+bPvU9qjmwOdcWicCO6oX9sAMhH+Wh5c1N+e5//4igbqj9p0mRiOJHm0QrdXiJQJbOBFD/qg/F4rKBNeMHnEcJBwtsM8J8I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PPQeBm1p; arc=fail smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rHxNUiv5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PPQeBm1p"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738672607; x=1770208607;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=iDCQdpBiiCn8mqOsf+Br4X6kx0WzbjCtCfKdqKBSIaA=;
+  b=PPQeBm1pV4/wU4Xd4NhD3kwlWEyoE9ZEZ5jOqCx/GQRRN5OTMnRwlp9X
+   ydICfC89VhZUhUWzilACzoxGPAdBlIVlKIUfzHs+IVglJ9/zM2Xf5oLDK
+   wRTvau/txeMC1YLX6tPMo3EZScV1GwCDzWi2dhkW3lUCKJ0TNosl5F9Zs
+   DWS8Iuhtj0Bl7xFTZxMAjHBoyW0R43F/5Mdyw7F4n9LaFsEPU7ncKEa+q
+   ygVwnrj9YUUGsBm9/wByl68qdLGvF2XgwFZ7N013JxZRdLX3MA8qpsuQj
+   YXYgZoyiQBu+BF+SQCoYnm5SCOhXDRg6ZJl0/ZMwkt0FckBQKuIisqjv6
+   w==;
+X-CSE-ConnectionGUID: EBdLhY2hTuGlZpmi6+q/KA==
+X-CSE-MsgGUID: O9ZcyopRTlCcm+JQDeChvA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="42944733"
+X-IronPort-AV: E=Sophos;i="6.13,258,1732608000"; 
+   d="scan'208";a="42944733"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 04:36:46 -0800
+X-CSE-ConnectionGUID: 8fXdphAERX2bmMsvNKwj/A==
+X-CSE-MsgGUID: 13xTsSTyTEm9+m3PrSJGVw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="114640679"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 04 Feb 2025 04:36:45 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Tue, 4 Feb 2025 04:36:43 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Tue, 4 Feb 2025 04:36:43 -0800
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.40) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Tue, 4 Feb 2025 04:36:43 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Zw6Ixr81cmvvCpBlk+EpjABS2UmIQNyHE8rbhEDp/75qdZyPBDRAZznuyEtpR6bjZ+sdrbfaI3BYEaxC5x0YKZiRFjEoSdKjNMoW59XmoDUg7ygwjlvi9dcftniX1D/Clv6bQJOI3IV7ej9sUr9zm0WxWL6Sqtzvy2hVWgZNF/biYoJB83aynVOHKo4WYR5wY4Stcy2wqfrZrut0x9pTDv4si1EBijEgA4SQJjktn9oLfqsBkhFu/C9m1Sicmnr4Qi/c4C1S1cCzoDCC6d3SY/A69rvaRNkGNeS4ZtiulvwmETMAaUPT6E8fHAagrRj6vRPwOl5GKPJPXImGH/cRRA==
+ b=ffK+yJHkoDfGGHVE+u6/XAOysPKRQBfnBLzsiaHvblrS4sIKsm0NDe+UCbs4G1kinjsIaUl4QSnN8dYalG7kUUXI+Jdx2VBZz64jhopApipNlIlu0rd4ci6v4BIG6lzaIenJbUnkapvt15f+AsuciMBk7l8PjfBNU1C0kEidPFswvNjfZHdyG2Gls/GqNkQI3lMur9z/eY1D9FGprU+5y5RYMmzINhykyKmZCRMlJ/5pVo9PAxyWVlz7CsS3Oyg5Amc49UZRYozMYsJ6bEeF9FYCCxkD0HLked+p9rp6uls7swoCc+0cijJHZYqCgbhMc93crhNjBG1QI39bzaTRSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xnrKnaqc1kSkbMG28qxbNDl9QHnwV4ELMeEVH/wltqM=;
- b=iVGKN163zIgjzcFtF3oXtt5IjKDYgyqQBxLzxLugEI7byZayJy9nhNbso8Qv6ZktuOQbhr0nDFTyqZYq2vIn8AMB3ofEM6LiJflxF/maWuDdZj1xnF24KI5oyc2iSMVbrVzr2Ej/VoGtELM64QiClk/hJOaURDD3kOgumdCScCSqpW/MzadJbiNYwmBWKOQ9tYPVe0F+nMxoSvPaQUmOClu2C23LRAj+iUtO342xdD1dJhNG3yJXiZg27eYdjgaH8eN54vd0W3C51wrf23QJCttFPu7SzS8jPO1/W8bGMMZJXAu97g0Nf//vwT99B8CX2dz7cptDKRMCwE05RCKiiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xnrKnaqc1kSkbMG28qxbNDl9QHnwV4ELMeEVH/wltqM=;
- b=rHxNUiv5+P4b8zq9J3V+iVBZa4iv3A5s9t5bDXQQSFZrtkxYUmD8Y/HGkwstcYr7EId/M6zSo/40uaGgPce35q6pb0AESVMYT3ObnUzcZfyYk5qSd2YFzyXKiAbLjDVht6npm7egrecwCZ947cF/m9aNR31VIidfDN3GIdOocUDI92viUqDGEM14X3iV3KgySkK3jFxCiUhx07O4aOrXOMKyiHn+wMvfBSWCkasXsv0s8Cl+1dnIkS0ffpKCQF64SZnGsmBB3mA6qQpdT5Ys+Wh96TiogIKacgimuNryz9B3fQ/L8dj/m878UC/KuWGtveGAyEUDJmKqhdOM6lzN8g==
-Received: from BY5PR04CA0003.namprd04.prod.outlook.com (2603:10b6:a03:1d0::13)
- by SN7PR12MB7786.namprd12.prod.outlook.com (2603:10b6:806:349::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.23; Tue, 4 Feb
- 2025 12:32:37 +0000
-Received: from CO1PEPF000066EC.namprd05.prod.outlook.com
- (2603:10b6:a03:1d0:cafe::3d) by BY5PR04CA0003.outlook.office365.com
- (2603:10b6:a03:1d0::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.24 via Frontend Transport; Tue,
- 4 Feb 2025 12:32:37 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CO1PEPF000066EC.mail.protection.outlook.com (10.167.249.8) with Microsoft
+ bh=bNlS5M3fzPl3P0X6NvEZsY0b7VVDvEC6HeaAYe6z1Fw=;
+ b=p50MD4DCKvcB4UetJE3Ww9RFkDahE6Ty53fLTUPSaNX1p/1YwFYsyTPq0G/XoF9dmaw7SaXDgN1dhv1V+HyTLtcjYCCCWYjzAf0wosuOXNaidErX3SW+iq2DYNRNmnby0cLrggqypYBBRFtXL98cbJMxO4tHDD3NkkCa09a6SGiQ3iqg4xb74Kr7ilWUiJ9X3ewrZ1el9q/ggssYEovDeNqpLMXFuhBPEAHDXNI3q1q1a84+W30nGBjwjSZX4YiFBPUYdytZGlqlbyUIUuHBsyDtTO2zskJ26IeiATiPFU6qEMYURFUhST3kjRc875itQKnyiFgkHhMFWrpH/J2k/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM4PR11MB6117.namprd11.prod.outlook.com (2603:10b6:8:b3::19) by
+ MN0PR11MB6278.namprd11.prod.outlook.com (2603:10b6:208:3c2::8) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8398.14 via Frontend Transport; Tue, 4 Feb 2025 12:32:37 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 4 Feb 2025
- 04:32:25 -0800
-Received: from shredder.mtl.com (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 4 Feb
- 2025 04:32:23 -0800
-From: Ido Schimmel <idosch@nvidia.com>
-To: <netdev@vger.kernel.org>
-CC: <dsahern@gmail.com>, <stephen@networkplumber.org>, <petrm@nvidia.com>,
-	<joe@atomic.ac>, Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH iproute2-next] tc_util: Add support for 64-bit hardware packets counter
-Date: Tue, 4 Feb 2025 14:31:43 +0200
-Message-ID: <20250204123143.1146078-1-idosch@nvidia.com>
-X-Mailer: git-send-email 2.48.1
+ 15.20.8398.24; Tue, 4 Feb 2025 12:36:01 +0000
+Received: from DM4PR11MB6117.namprd11.prod.outlook.com
+ ([fe80::d19:56fe:5841:77ca]) by DM4PR11MB6117.namprd11.prod.outlook.com
+ ([fe80::d19:56fe:5841:77ca%5]) with mapi id 15.20.8398.021; Tue, 4 Feb 2025
+ 12:36:01 +0000
+Date: Tue, 4 Feb 2025 13:35:50 +0100
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: "Song, Yoong Siang" <yoong.siang.song@intel.com>
+CC: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Willem de Bruijn
+	<willemb@google.com>, "Bezdeka, Florian" <florian.bezdeka@siemens.com>,
+	Donald Hunter <donald.hunter@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
+	Bjorn Topel <bjorn@kernel.org>, "Karlsson, Magnus"
+	<magnus.karlsson@intel.com>, Jonathan Lemon <jonathan.lemon@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer
+	<hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, "Damato, Joe"
+	<jdamato@fastly.com>, Stanislav Fomichev <sdf@fomichev.me>, Xuan Zhuo
+	<xuanzhuo@linux.alibaba.com>, Mina Almasry <almasrymina@google.com>, "Daniel
+ Jurgens" <danielj@nvidia.com>, Andrii Nakryiko <andrii@kernel.org>, "Eduard
+ Zingerman" <eddyz87@gmail.com>, Mykola Lysenko <mykolal@fb.com>, "Martin
+ KaFai Lau" <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Yonghong Song
+	<yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, Hao Luo
+	<haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, Shuah Khan
+	<shuah@kernel.org>, Alexandre Torgue <alexandre.torgue@foss.st.com>, "Jose
+ Abreu" <joabreu@synopsys.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Faizal Rahim
+	<faizal.abdul.rahim@linux.intel.com>, Choong Yong Liang
+	<yong.liang.choong@linux.intel.com>, "Bouska, Zdenek"
+	<zdenek.bouska@siemens.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"linux-stm32@st-md-mailman.stormreply.com"
+	<linux-stm32@st-md-mailman.stormreply.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>, "xdp-hints@xdp-project.net"
+	<xdp-hints@xdp-project.net>
+Subject: Re: [PATCH bpf-next v7 4/5] igc: Refactor empty packet insertion
+ into a reusable function
+Message-ID: <Z6IJppEFhSzMbmi9@boxer>
+References: <20250204004907.789330-1-yoong.siang.song@intel.com>
+ <20250204004907.789330-5-yoong.siang.song@intel.com>
+ <Z6Hi5G0ngTnb7lb/@boxer>
+ <PH0PR11MB58306CEAFF46FD493030943BD8F42@PH0PR11MB5830.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <PH0PR11MB58306CEAFF46FD493030943BD8F42@PH0PR11MB5830.namprd11.prod.outlook.com>
+X-ClientProxiedBy: DUZP191CA0035.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:10:4f8::27) To DM4PR11MB6117.namprd11.prod.outlook.com
+ (2603:10b6:8:b3::19)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000066EC:EE_|SN7PR12MB7786:EE_
-X-MS-Office365-Filtering-Correlation-Id: d75b7049-a60a-4d27-b8e4-08dd45180208
+X-MS-TrafficTypeDiagnostic: DM4PR11MB6117:EE_|MN0PR11MB6278:EE_
+X-MS-Office365-Filtering-Correlation-Id: c10a7034-2bdd-4db4-be1e-08dd45187b64
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?C7uzkWdUqHCQ2ULKyjVoATj6yhB36HKfjBDzhvVFzQRHSmbsy4SF5k8fMNei?=
- =?us-ascii?Q?TuFHFBkptAF5AKutlxex9bRp2l33uefoim8LRe/7HVjimE/6n9TA/RyHSp0j?=
- =?us-ascii?Q?e48eUVbGqfz+GwsNyUkD3bwtbeiGp5vQ45RR4HEXwCvJimQ8A8IhxYRmfDzi?=
- =?us-ascii?Q?eHG+TVgQIepYnmrBvENeT+S2UjQussPFUyMgQPW/N0eiDJxMD6hXjZCxHbwR?=
- =?us-ascii?Q?eLjwda+wCC2steG+g1VudK7Wxokly2jNlmO48Lq1XeCvqGEo88OCrK//2beP?=
- =?us-ascii?Q?k9tlW5d8GjivGP65yNlHUSq9/OQH7xfJAkNbHQ6J0C7CCJiC5Sn1vjkBzehe?=
- =?us-ascii?Q?L3T7ztBxdDi49yw/vMVHx66J5XJmmNj4FUI3RQP//3lpApVFc5ZaYURVbJNt?=
- =?us-ascii?Q?wxfeht+IQI6E24+CjZoFdPl8tX7j43wl+SfVIrtjK34MG4hJUZD4T+Rgsjyq?=
- =?us-ascii?Q?vRBjxDwJrofM2tbspDZdSm/HoKYoVrOmNDkvHitJ0rptCLbJj67t+FjXeNNQ?=
- =?us-ascii?Q?GUz4GrJE8p3qO8mWQz8EpV3fnahNBmiiwaCCjJ43kNcUBGMI+3NoZPij05+h?=
- =?us-ascii?Q?cFNQXo7UKmZ/VyZM8JA+3q3n1T+Tt1vRPEZfzR2x0Ikr9rLZV8bjes+9rWXs?=
- =?us-ascii?Q?8M+eox6l3w/mSao8t7fD5i3pRI27ozFz1M1cZep0f+9APRIPZmA4G1sitDvd?=
- =?us-ascii?Q?V85mHqz1+F5V6uVoQ+GqQ4LfDf8Bg74/zZhgXUH4DycogWma+y8nxAfVSZFk?=
- =?us-ascii?Q?6yuU0tgKyhB83rev3X4lTCgODecwv3R+TmaghiEXvAtKw63NtY3m86V34H5I?=
- =?us-ascii?Q?/ZHmW3Ru/57Dv9KsBZqru2hrnomBAlZ1xcpYHPRGNSS+n78QanJPJ0LzsZ7j?=
- =?us-ascii?Q?EnPmU1DZwin7BOnB03lJOZGLm7sQWxfi0KX1FwrQ0WhULqM+FplMRfmf6Hyo?=
- =?us-ascii?Q?18MTjzkiPsnTYLiOG5o7n8ydVigEuMSZtxgFhXtDnXkysJEkkp+eedDs15KC?=
- =?us-ascii?Q?VAqydd2BHeiwLockODCeTv3Mos7ANx+edrIyTxPmGLcR6DGReOzo8k9qCRAP?=
- =?us-ascii?Q?swRMZD8dIvDl5zxdTbo0yJLfSv5mpInurs4gxtp8ZDuT8bkpKhjGXfJPurnS?=
- =?us-ascii?Q?KZnOraL/ZDSBe0AaV8me0tson7f2y95l55cWlx+BQ/BMQsIesBvN5jqJxC1T?=
- =?us-ascii?Q?r8vyb9a4o3f1ObPfPW+uug31XxdkqKiODdwPsBWf1h6vqoO+LIeUTs/b6ViF?=
- =?us-ascii?Q?IYFYSDcdZChnSVIY/4qrm4QGRai0+EwKEfEFW7hWsfoB/oFNdYM29aNkAvCq?=
- =?us-ascii?Q?V/+2BZKTlHKvPkS0cQpMlVIhJHbDQA1cGCrEZjwrVmvevz6IFpLBJwLSwrpz?=
- =?us-ascii?Q?Dlr+ZFnr/PIxq8k90liOUXhVpVj3RULszbPjs2OmORon/N/4ZNGOBMrBQX9m?=
- =?us-ascii?Q?NpAuzq+nkdJ+U0aczuAOHcGrOBz7+qgfvaTz7KDqEfgJ5uwrLSXGeZOOla7F?=
- =?us-ascii?Q?vrQEMp3urZzm0IU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2025 12:32:37.1198
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?igZwTfs0vLtZkKP217Iwc8wLWa1oS7Qb0IpuEwdzbOqL/cKEGT3uxil7QhdZ?=
+ =?us-ascii?Q?PEIOaxOydWePSe4va92hQnyJRWM2FWw05iRL3seDsGVfGVjIeoTgRSULMwBF?=
+ =?us-ascii?Q?epTEP3iEXSfd7Wjoh46ftQcb3iyuaaGpPQKzISa9LvVTI/DqdsppQEDJBgvK?=
+ =?us-ascii?Q?RJUokTfETJSAFI3GOkhvgSTXDvmta6I/4siw7t0M8nP15mTLgGdAwJ/awgAl?=
+ =?us-ascii?Q?7chEfXNeyBaLuIXeSJM39RY7VYGWg4aBE7ZshTiVx7zpOEdkdmhqrGLIerBX?=
+ =?us-ascii?Q?S+XMor5hmdseoQoxn4ZfzSR5fOmu3n1jYkVso2NLU+q+yxHUzQtMJf3cTdDe?=
+ =?us-ascii?Q?c8jsIF3Jcg/YYBG7kA0o/QXeZ0bDEVFktO4nGWtENSA3BRUsZcC/N0cX2T/m?=
+ =?us-ascii?Q?ShxnWXJ0Z+XzyqdmMoT+QUWO3yFXFeyJfhNVWajoIe8t9Wtc2LUHXtsTl+wB?=
+ =?us-ascii?Q?i9tMLSbI0CqSn6GFrM1GcaRwn+N1mwJpX88R2mAcMl6a82n4H5iHnyn3VlV6?=
+ =?us-ascii?Q?UsAwmYnECA/UAuis7hV1V02Ro1/0/F+Nw2a/lQkr9+DwrEjI4dMMkUQ3PQnh?=
+ =?us-ascii?Q?fEP5ULw13gUnsvI++XYa/xI1/UbYdc3sQtqWaRSACEyBIVraAmpfWilVeLfN?=
+ =?us-ascii?Q?fb7y4Ri4Fp5O91X5wAUtM2i1aIbGz4RQ3/k830fmgIr6pLW5udqiP2AEZjfJ?=
+ =?us-ascii?Q?fwOj5xupfp7zFl4JdjG3AAf792ONhM+OQxc5yZ1KIhY/YxHj8eSPRcXCAaPP?=
+ =?us-ascii?Q?/5+jp4cufEN+PP36+3FVlEmjmGd111DsJYSDmXuEOMSTSc9HP2D8w7Q7HxAT?=
+ =?us-ascii?Q?eB4lYLU823x7w3Aw3lfj3GUj7EkNgXJ/8S0OpWHMoKTxTGYWUteW6GHo7Y2u?=
+ =?us-ascii?Q?V24rq5RW9NNfqtbHjuWl2AU4MeKsLNbgV7UKafZAxkvT2HB1eb/AflX0kcAo?=
+ =?us-ascii?Q?918zOXpw9fAjeepDX2RtxHORKGJJ9p5EO7Rd4elEvyvnKcOFpdpG1/9+s+pP?=
+ =?us-ascii?Q?a3RiBGoHpwiVBhwFLgnQhaoY7bSxn+v3BBcM3IoLcPwPd6SadI8QFltDKcmD?=
+ =?us-ascii?Q?O3x9Knex2jMLwsdsAS0OrpI5NPGvTcd5GYlGpvBnDbKADJJw7etD0Sssfn2d?=
+ =?us-ascii?Q?O5lWegSarV9zpN2VOofqByBSGG7rW6JuDugTnsTWU89mVfIX2Cv0BiH+289c?=
+ =?us-ascii?Q?4eYCYunVJS/sBKVxykHioAS+HQKxHVNmeyM1yIt7qXdeY+A05Qw7pfIb/4KW?=
+ =?us-ascii?Q?+9mTt/oB6/o2Kina8gwuWugd/1Il9BpVZaOn6QbR16fzOYp22xIcF4PAlwyP?=
+ =?us-ascii?Q?cVmqKxNSlZ3tbPQwVChVAgeeV8sFA6fBpPSYdkwn7mZo7zT1X9o+Z90ORvk6?=
+ =?us-ascii?Q?SK4G0J7uODOJFsxL6G9pZR9GZkW3?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6117.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?LuJ1qH4Ze9FMAZkr3pIniT0ySlGSPFbJKzAoDyg5esotrh0hNcPrHZDfmGDK?=
+ =?us-ascii?Q?v3utsjtU/SWKyZYlZZrfm5unot7nTMoK/il39GLTAKqn0efIl+GWqBDWt1mk?=
+ =?us-ascii?Q?BLARNsHPGkurm8AItl+aGIWTuCuB80o2KIpmbeVgOh7lgmK+ldnr3mmbMg5/?=
+ =?us-ascii?Q?Ds17aBFWfQFcfRzgFpiPtCtvsQKugHWR3soCjk0ybxwBkFjamxkJUO6RQCdH?=
+ =?us-ascii?Q?5ur9R9fu8EDmKiYnnrsw8hPts3zeNT+mvb/PRP5KECy8Zrxs4b0YWOW3Gw38?=
+ =?us-ascii?Q?QNUmlRue7oi0fi4jpBjIcb8y86OOGBhTq77MzXXX0XwCN+kbcb9uxGYnj29h?=
+ =?us-ascii?Q?W/6dNdjserylo4HdPP2yPn0vWdy495dFyWCMCWp+W/wN59quUfUo2l6sbhVn?=
+ =?us-ascii?Q?AzHOcDlRLgP19Sqo/qbokPQyUtTeczERFIoPezCRpkMTi4TawyctUQx+tFTx?=
+ =?us-ascii?Q?aCoc/30EaLguA7IM/3qo5DjdpGAS5E7Uw+waJBWjZXTKvr7WTU4zvl7lg18u?=
+ =?us-ascii?Q?pRcD+A5DuDLOdOuXiYpq0d0ZU2USA+n2eEc3FSls3TQp0EyJAXfKqINReCzp?=
+ =?us-ascii?Q?tIUwEaar+8U2/3V8YNBoHrTzi+pD/OQoVH8Z4/o9+nFKMxdwunDcusTsEkDs?=
+ =?us-ascii?Q?hGca+PIckhfk0x1Juy4j0067O6QaeqHFhdoEYPjiZVjnBqyy+K8Jp9gXLQ9A?=
+ =?us-ascii?Q?cm3eR7RM+QNoE7gwEVU8IRAjYp4dRoHdMC/Dm+gM4qsYN//5Cy8XOj3JAEEQ?=
+ =?us-ascii?Q?RMit+iY1UWkfcVAFzSll25x3ZPacXGVQMqP4prx9pEhpIBivv9yiV6YVdqK/?=
+ =?us-ascii?Q?BQFqWbrZVF9fXdjk4mcz9lOOnTpJ1zv6gC0auBAHEtTO91EK9G3KgH8q4p0x?=
+ =?us-ascii?Q?MvAAj1GEQT0ie6V+zqlgqyhPAdiUTlWq3v3drhRS6xRE4hD/G5g/REU5qB3k?=
+ =?us-ascii?Q?S39Y4XDNnMXmUyhX5tsgwk1ftM8hKoZBhb4FqicfPrMkaq0n2k9QJy/UKTU2?=
+ =?us-ascii?Q?71MCyh0E4ENdyYPrZfpffvMvZbq8+yXra8ur9V/e35yFe7r/mA0nq997THPr?=
+ =?us-ascii?Q?4JlzdrbbkibcyZEnheYZQzS7Np5xUjiekLr1ZOhvEbj+KZNoawKVVkAikD8e?=
+ =?us-ascii?Q?w3kxJHcJd7f2jiZfidNzWn7yjh9LG1mM0wR5JcjIuwWuJYF6IbivvUDuxsH9?=
+ =?us-ascii?Q?65SS6GTZBvP0VoU1soFfXQcrMuYFP3vZwNa+ziajLyl1ul9Aa0yLB6wHnUVQ?=
+ =?us-ascii?Q?2xCBteLvORShNVAmLzENk3pVpDzoK4YtaIRD+mX7SlaA6dNr1MQjOygtUz+K?=
+ =?us-ascii?Q?DVIPWTd4cQGKHKvMN/ERpzIVN8XlkggfqjtUBM8niccBXYsaOl9+98iOsv1U?=
+ =?us-ascii?Q?vd8FpXeAgpgN91d6Irz4fc8jNlIpT9ewxC6Z2uZC5l92LQ2Uj7PcZRjYnhwo?=
+ =?us-ascii?Q?AH6qcaDmgETdrzPVQioPTXjhLJBmtcX6bu1byJrQP5aF1WM0XbdRZX9FRDzO?=
+ =?us-ascii?Q?7paTOpdDhWIJhBcvyytzkRMRyuuDoTRmWwel96Ms+T5eok4hJT2LxO7gQY6U?=
+ =?us-ascii?Q?k6GlrvRxI05z9BgwtHqm4E2cpXD3TyUAVg5+C2ihygbYyEr4K0pvRGwGvXvt?=
+ =?us-ascii?Q?JA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: c10a7034-2bdd-4db4-be1e-08dd45187b64
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6117.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2025 12:36:00.9520
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d75b7049-a60a-4d27-b8e4-08dd45180208
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000066EC.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7786
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PSBdPB9+MU3pploiVaeSrZXgfT7cu1IZZjSAldxMp8SoSQHoamAAb6IDNRyf3nMmpDk3NAefq4q0iPnetfY7UnfBd/2FH3ydJbNdqub6obU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6278
+X-OriginatorOrg: intel.com
 
-The netlink nest that carriers tc action statistics looks as follows:
+On Tue, Feb 04, 2025 at 12:07:21PM +0100, Song, Yoong Siang wrote:
+> On Tuesday, February 4, 2025 5:50 PM, Fijalkowski, Maciej <maciej.fijalkowski@intel.com> wrote:
+> >On Tue, Feb 04, 2025 at 08:49:06AM +0800, Song Yoong Siang wrote:
+> >> Refactor the code for inserting an empty packet into a new function
+> >> igc_insert_empty_packet(). This change extracts the logic for inserting
+> >> an empty packet from igc_xmit_frame_ring() into a separate function,
+> >> allowing it to be reused in future implementations, such as the XDP
+> >> zero copy transmit function.
+> >>
+> >> This patch introduces no functional changes.
+> >>
+> >> Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
+> >> ---
+> >>  drivers/net/ethernet/intel/igc/igc_main.c | 42 ++++++++++++-----------
+> >>  1 file changed, 22 insertions(+), 20 deletions(-)
+> >>
+> >> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c
+> >b/drivers/net/ethernet/intel/igc/igc_main.c
+> >> index 56a35d58e7a6..c3edd8bcf633 100644
+> >> --- a/drivers/net/ethernet/intel/igc/igc_main.c
+> >> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
+> >> @@ -1566,6 +1566,26 @@ static bool igc_request_tx_tstamp(struct igc_adapter
+> >*adapter, struct sk_buff *s
+> >>  	return false;
+> >>  }
+> >>
+> >> +static void igc_insert_empty_packet(struct igc_ring *tx_ring)
+> >> +{
+> >> +	struct igc_tx_buffer *empty_info;
+> >> +	struct sk_buff *empty;
+> >> +	void *data;
+> >> +
+> >> +	empty_info = &tx_ring->tx_buffer_info[tx_ring->next_to_use];
+> >> +	empty = alloc_skb(IGC_EMPTY_FRAME_SIZE, GFP_ATOMIC);
+> >> +	if (!empty)
+> >> +		return;
+> >> +
+> >> +	data = skb_put(empty, IGC_EMPTY_FRAME_SIZE);
+> >> +	memset(data, 0, IGC_EMPTY_FRAME_SIZE);
+> >> +
+> >> +	igc_tx_ctxtdesc(tx_ring, 0, false, 0, 0, 0);
+> >> +
+> >> +	if (igc_init_tx_empty_descriptor(tx_ring, empty, empty_info) < 0)
+> >> +		dev_kfree_skb_any(empty);
+> >> +}
+> >> +
+> >>  static netdev_tx_t igc_xmit_frame_ring(struct sk_buff *skb,
+> >>  				       struct igc_ring *tx_ring)
+> >>  {
+> >> @@ -1603,26 +1623,8 @@ static netdev_tx_t igc_xmit_frame_ring(struct
+> >sk_buff *skb,
+> >>  	skb->tstamp = ktime_set(0, 0);
+> >>  	launch_time = igc_tx_launchtime(tx_ring, txtime, &first_flag,
+> >&insert_empty);
+> >>
+> >> -	if (insert_empty) {
+> >> -		struct igc_tx_buffer *empty_info;
+> >> -		struct sk_buff *empty;
+> >> -		void *data;
+> >> -
+> >> -		empty_info = &tx_ring->tx_buffer_info[tx_ring->next_to_use];
+> >> -		empty = alloc_skb(IGC_EMPTY_FRAME_SIZE, GFP_ATOMIC);
+> >> -		if (!empty)
+> >> -			goto done;
+> >
+> >shouldn't this be 'goto drop' from day 1? pretty weird to silently ignore
+> >allocation error.
+> >
+> 
+> Hi Fijalkowski Maciej,
+> 
+> Thanks for your comments.
+> 
+> "insert an empty packet" is a launch time trick to send a packet in
+> next Qbv cycle. The design is, the driver will still sending the
+> packet, even the empty packet insertion trick is fail (unable to
+> allocate). The intention of this patch set is to enable launch time
+> on XDP zero-copy data path, so I try not to change the original
+> behavior of launch time.
+> 
+> btw, do you think driver should drop the packet if something went
+> wrong with the launch time, like launch time offload not enabled,
+> launch time over horizon, empty packet insertion fail, etc?
+> If yes, then maybe i can submit another patch to change the behavior
+> of launch time and we can continue to discuss there.
 
-[TCA_ACT_STATS]
-	[TCA_STATS_BASIC]
-	[TCA_STATS_BASIC_HW]
+That's rather a question to you since I am no TSN expert here :P
+the alloc skbs failures would rather be a minor thing but anyways it
+didn't look correct from a first glance to silently ignore this behavior
+if rest of the logic relies on this. I won't be insisting on any changes
+here but it's something you could consider to change maybe.
 
-Where 'TCA_STATS_BASIC' carries the combined software and hardware
-packets (32-bits) and bytes (64-bit) counters and 'TCA_STATS_BASIC_HW'
-carries the hardware statistics.
+The real question is in 5/5, regarding the cleaning of these empty descs
+from ZC path.
 
-When the number of packets exceeds 0xffffffff, the kernel emits the
-'TCA_STATS_PKT64' attribute:
-
-[TCA_ACT_STATS]
-	[TCA_STATS_BASIC]
-	[TCA_STATS_PKT64]
-	[TCA_STATS_BASIC_HW]
-	[TCA_STATS_PKT64]
-
-This layout is not ideal as the only way for user space to know what
-each 'TCA_STATS_PKT64' attribute carries is to check which attribute
-precedes it, which is exactly what some applications are doing [1].
-
-Do the same in iproute2 so that users with existing kernels could read
-the 64-bit hardware packets counter of tc actions instead of reading the
-truncated 32-bit counter.
-
-Before:
-
-$ tc -s filter show dev swp2 ingress
-filter protocol all pref 1 flower chain 0
-filter protocol all pref 1 flower chain 0 handle 0x1
-  skip_sw
-  in_hw in_hw_count 1
-        action order 1: mirred (Egress Redirect to device swp1) stolen
-        index 1 ref 1 bind 1 installed 47 sec used 23 sec
-        Action statistics:
-        Sent 368689092544 bytes 5760767071 pkt (dropped 0, overlimits 0 requeues 0)
-        Sent software 0 bytes 0 pkt
-        Sent hardware 368689092544 bytes 1465799775 pkt
-        backlog 0b 0p requeues 0
-        used_hw_stats immediate
-
-Where 5760767071 - 1465799775 = 0x100000000
-
-After:
-
-$ tc -s filter show dev swp2 ingress
-filter protocol all pref 1 flower chain 0
-filter protocol all pref 1 flower chain 0 handle 0x1
-  skip_sw
-  in_hw in_hw_count 1
-        action order 1: mirred (Egress Redirect to device swp1) stolen
-        index 1 ref 1 bind 1 installed 71 sec used 47 sec
-        Action statistics:
-        Sent 368689092544 bytes 5760767071 pkt (dropped 0, overlimits 0 requeues 0)
-        Sent software 0 bytes 0 pkt
-        Sent hardware 368689092544 bytes 5760767071 pkt
-        backlog 0b 0p requeues 0
-        used_hw_stats immediate
-
-[1] https://github.com/openvswitch/ovs/commit/006e1c6dbfbadf474c17c8fa1ea358918d371588
-
-Reported-by: Joe Botha <joe@atomic.ac>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
----
- tc/tc_util.c | 44 +++++++++++++++++++++++++++++++++-----------
- 1 file changed, 33 insertions(+), 11 deletions(-)
-
-diff --git a/tc/tc_util.c b/tc/tc_util.c
-index cf89fb7cbabc..ff0ac170730b 100644
---- a/tc/tc_util.c
-+++ b/tc/tc_util.c
-@@ -665,7 +665,8 @@ void print_tm(const struct tcf_t *tm)
- 			   tm->expires / hz);
- }
- 
--static void print_tcstats_basic_hw(struct rtattr **tbs, const char *prefix)
-+static void print_tcstats_basic_hw(struct rtattr **tbs, const char *prefix,
-+				   __u64 packets64, __u64 packets64_hw)
- {
- 	struct gnet_stats_basic bs_hw;
- 
-@@ -674,8 +675,9 @@ static void print_tcstats_basic_hw(struct rtattr **tbs, const char *prefix)
- 
- 	memcpy(&bs_hw, RTA_DATA(tbs[TCA_STATS_BASIC_HW]),
- 	       MIN(RTA_PAYLOAD(tbs[TCA_STATS_BASIC_HW]), sizeof(bs_hw)));
-+	packets64_hw = packets64_hw ? : bs_hw.packets;
- 
--	if (bs_hw.bytes == 0 && bs_hw.packets == 0)
-+	if (bs_hw.bytes == 0 && packets64_hw == 0)
- 		return;
- 
- 	if (tbs[TCA_STATS_BASIC]) {
-@@ -684,15 +686,16 @@ static void print_tcstats_basic_hw(struct rtattr **tbs, const char *prefix)
- 		memcpy(&bs, RTA_DATA(tbs[TCA_STATS_BASIC]),
- 		       MIN(RTA_PAYLOAD(tbs[TCA_STATS_BASIC]),
- 			   sizeof(bs)));
-+		packets64 = packets64 ? : bs.packets;
- 
--		if (bs.bytes >= bs_hw.bytes && bs.packets >= bs_hw.packets) {
-+		if (bs.bytes >= bs_hw.bytes && packets64 >= packets64_hw) {
- 			print_nl();
- 			print_string(PRINT_FP, NULL, "%s", prefix);
- 			print_lluint(PRINT_ANY, "sw_bytes",
- 				     "Sent software %llu bytes",
- 				     bs.bytes - bs_hw.bytes);
--			print_uint(PRINT_ANY, "sw_packets", " %u pkt",
--				   bs.packets - bs_hw.packets);
-+			print_lluint(PRINT_ANY, "sw_packets", " %llu pkt",
-+				     packets64 - packets64_hw);
- 		}
- 	}
- 
-@@ -700,21 +703,40 @@ static void print_tcstats_basic_hw(struct rtattr **tbs, const char *prefix)
- 	print_string(PRINT_FP, NULL, "%s", prefix);
- 	print_lluint(PRINT_ANY, "hw_bytes", "Sent hardware %llu bytes",
- 		     bs_hw.bytes);
--	print_uint(PRINT_ANY, "hw_packets", " %u pkt", bs_hw.packets);
-+	print_lluint(PRINT_ANY, "hw_packets", " %llu pkt", packets64_hw);
-+}
-+
-+static void parse_packets64(const struct rtattr *nest, __u64 *p_packets64,
-+			    __u64 *p_packets64_hw)
-+{
-+	unsigned short prev_type = __TCA_STATS_MAX;
-+	const struct rtattr *pos;
-+
-+	/* 'TCA_STATS_PKT64' can appear twice in the 'TCA_ACT_STATS' nest.
-+	 * Whether the attribute carries the combined or hardware only
-+	 * statistics depends on the attribute that precedes it in the nest.
-+	 */
-+	rtattr_for_each_nested(pos, nest) {
-+		if (pos->rta_type == TCA_STATS_PKT64 &&
-+		    prev_type == TCA_STATS_BASIC)
-+			*p_packets64 = rta_getattr_u64(pos);
-+		else if (pos->rta_type == TCA_STATS_PKT64 &&
-+			 prev_type == TCA_STATS_BASIC_HW)
-+			*p_packets64_hw = rta_getattr_u64(pos);
-+		prev_type = pos->rta_type;
-+	}
- }
- 
- void print_tcstats2_attr(struct rtattr *rta, const char *prefix, struct rtattr **xstats)
- {
- 	struct rtattr *tbs[TCA_STATS_MAX + 1];
-+	__u64 packets64 = 0, packets64_hw = 0;
- 
- 	parse_rtattr_nested(tbs, TCA_STATS_MAX, rta);
-+	parse_packets64(rta, &packets64, &packets64_hw);
- 
- 	if (tbs[TCA_STATS_BASIC]) {
- 		struct gnet_stats_basic bs = {0};
--		__u64 packets64 = 0;
--
--		if (tbs[TCA_STATS_PKT64])
--			packets64 = rta_getattr_u64(tbs[TCA_STATS_PKT64]);
- 
- 		memcpy(&bs, RTA_DATA(tbs[TCA_STATS_BASIC]),
- 		       MIN(RTA_PAYLOAD(tbs[TCA_STATS_BASIC]), sizeof(bs)));
-@@ -740,7 +762,7 @@ void print_tcstats2_attr(struct rtattr *rta, const char *prefix, struct rtattr *
- 	}
- 
- 	if (tbs[TCA_STATS_BASIC_HW])
--		print_tcstats_basic_hw(tbs, prefix);
-+		print_tcstats_basic_hw(tbs, prefix, packets64, packets64_hw);
- 
- 	if (tbs[TCA_STATS_RATE_EST64]) {
- 		struct gnet_stats_rate_est64 re = {0};
--- 
-2.48.1
-
+> 
+> >> -
+> >> -		data = skb_put(empty, IGC_EMPTY_FRAME_SIZE);
+> >> -		memset(data, 0, IGC_EMPTY_FRAME_SIZE);
+> >> -
+> >> -		igc_tx_ctxtdesc(tx_ring, 0, false, 0, 0, 0);
+> >> -
+> >> -		if (igc_init_tx_empty_descriptor(tx_ring,
+> >> -						 empty,
+> >> -						 empty_info) < 0)
+> >> -			dev_kfree_skb_any(empty);
+> >
+> >ditto
+> >
+> 
+> ditto
+> 
+> >> -	}
+> >> +	if (insert_empty)
+> >> +		igc_insert_empty_packet(tx_ring);
+> >>
+> >>  done:
+> >>  	/* record the location of the first descriptor for this packet */
+> >> --
+> >> 2.34.1
+> >>
+> 
+> Thanks & Regards
+> Siang
