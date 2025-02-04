@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B456319C54B
-	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 09:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBE9207676
+	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 09:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738661863; cv=none; b=eLZg1pOliTwFDmvNZ78E/YY3ibZM03aghwq9PRKjO1OATinb0ZzsOGviwvf9RV+7n8879gH7PDLc80ifwECMlDWHGinmxpKAQ66r8leeR0Qt0wqSrZZy1Zc8RDDi7qcvZWGXMRIL9jo5muzQFMLUdZygc3RVLHhtn/p9b6ENU2E=
+	t=1738661990; cv=none; b=CmN4o4aLzQoVX9jUPHHOetZnxlPUcaBfyVARgoA4hNM4E40giqSUIYOotd3Z9TVX9qy6ZctVyX3+PqSNtQafpKsBOURE8StFmQbQKwvU5Q0JKE1jSzo1BDvkXyiAJORph6JE5oTgwTDCswEM0rvzSb2DPksaDjyQQdT7CZXPxvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738661863; c=relaxed/simple;
-	bh=8zNbwK1vwrzQD6jDobFuih98R5+ZquvpF5oBG92Z+24=;
+	s=arc-20240116; t=1738661990; c=relaxed/simple;
+	bh=A3HRjbEOJaU2P11eRHH6Suppazg1Uw6ciFV/wddELVU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FISRx/JOKu0LcLlaHja9aNKt/pmo82QHRKw+YWSGX9470diseB/sU0eUsE37xjMlvu85yNwTknsQ1fMO449QkTLPoarvp8F7ukYL/Gir4TJz2Cmi93K84s2wnZIz+pVbpGH84GPKd4DDk+ViwdFme6fYZ/iE3TCCR8rHXX0M0ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iSzGONQP; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=g+oQtVd7BjlDtY4Fu6LgqeGgET/LMh9FfwbC1Q8OPwRhlpO6vwDnPIznf8QBYlNtQYq/iDuy9EjMbVf0m7U92ghB0auPK+R5pbVogy1YRz8DGTp2mob4lABkarfFQ88DINf6662czh/iCJvYC2OXXP5A7oHLzBUscUrYwhXT4vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HE3s1T5B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iSzGONQP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF37C4CEE3;
-	Tue,  4 Feb 2025 09:37:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HE3s1T5B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE5BC4CEDF;
+	Tue,  4 Feb 2025 09:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738661863;
-	bh=8zNbwK1vwrzQD6jDobFuih98R5+ZquvpF5oBG92Z+24=;
+	s=k20201202; t=1738661989;
+	bh=A3HRjbEOJaU2P11eRHH6Suppazg1Uw6ciFV/wddELVU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iSzGONQPON9ujaWdcVR0Co2VjZ2lqp7b+YBMD0S/toitLDiZlZ/tGlnfBWPxDtbM+
-	 n+uoe7PqRnDwJkIEoG1daWL/h/isRkaO3BbAWspcNtFDxE56KRKo5b0IC7vV7y5ZRB
-	 ATGu02AWq32c9vG0Ls4Zmq17wL8R4UN05zGrhF4yV0PdY1r2HFXMTXYXY06fnBJ5yH
-	 shOEk2SHYK95vHdw/FBQM8Z4bCe5LK/MWaNx24s/biRZqEi6gRbc9VPEteGpVoxDjE
-	 s9fojtK/AQOqLPiIuscI6X7D5mAOBW2R7n/2vTh18q0wPUNxXRp9AQhAcC6N5PdNHA
-	 OO3Y99tei+x6Q==
-Date: Tue, 4 Feb 2025 09:37:37 +0000
+	b=HE3s1T5B5DGuSDxVNqHIt9XS89Bkb2J53ruK7gFTpNpBGPLTghlQXljWgvggELxoc
+	 kNxsfHHDFkdfmlt09VA8WV9FNqqFW5PXOnXukpH/YnLWacyIDWbulxALAYQQOqOkf/
+	 2CVvz1O/bBdpfJUy8BSzEowaANwXnBQY0hb6ZcWMB0TtEKe0zaTn95YLhCi08e2Jon
+	 /Au3Wka6Zj7tgxipA585L7bcWHqZUWBSexDjJ913Ac35WIJGkLHiNKHNli56cQLfgN
+	 UB14BHV92gJzlwjSiQmZviiYzHvH0kuYb9g+mikHKR9Vv7+4Kv2ELw6p5jkHWDbcnI
+	 a3FhUQkY+8vJw==
+Date: Tue, 4 Feb 2025 09:39:45 +0000
 From: Simon Horman <horms@kernel.org>
-To: "Christian Marangi (Ansuel)" <ansuelsmth@gmail.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, nbd@nbd.name,
-	sean.wang@mediatek.com, upstream@airoha.com
-Subject: Re: Move airoha in a dedicated folder
-Message-ID: <20250204093737.GL234677@kernel.org>
-References: <Z54XRR9DE7MIc0Sk@lore-desk>
- <20250201155009.GA211663@kernel.org>
- <CA+_ehUwFTa2VvfqeTPyedFDWBHj3PeUem=ASMrrh1h3++yLc_A@mail.gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	andrew+netdev@lunn.ch
+Subject: Re: [PATCH net 2/2] MAINTAINERS: add a sample ethtool section entry
+Message-ID: <20250204093945.GM234677@kernel.org>
+References: <20250202021155.1019222-1-kuba@kernel.org>
+ <20250202021155.1019222-2-kuba@kernel.org>
+ <20250203105647.GG234677@kernel.org>
+ <9f6c2d87-bb45-4c95-af93-7d2ca5f1dcc3@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,60 +46,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CA+_ehUwFTa2VvfqeTPyedFDWBHj3PeUem=ASMrrh1h3++yLc_A@mail.gmail.com>
+In-Reply-To: <9f6c2d87-bb45-4c95-af93-7d2ca5f1dcc3@lunn.ch>
 
-On Sun, Feb 02, 2025 at 04:50:33PM +0100, Christian Marangi (Ansuel) wrote:
-> Il giorno sab 1 feb 2025 alle ore 16:50 Simon Horman
-> <horms@kernel.org> ha scritto:
-> >
-> > On Sat, Feb 01, 2025 at 01:44:53PM +0100, Lorenzo Bianconi wrote:
-> > > Hi all,
-> > >
-> > > Since more features are on the way for airoha_eth driver (support for flowtable
-> > > hw offloading, 10g phy support, ..), I was wondering if it is neater to move
-> > > the driver in a dedicated folder (e.g. drivers/net/ethernet/airoha or
-> > > drivers/net/ethernet/mediatek/airoha) or if you prefer to keep current
-> > > approach. Thanks.
-> >
-> > <2c>
-> >
-> > Hi Lorenzo,
-> >
-> > There already seem drivers to be drivers under drivers/net/ethernet/mediatek/
-> > which are built from more than once .c file. So I think it is fine
-> > to leave Airoha's source there. But, OTOH, I do think it would
-> > be neater to move it into it's own directory. Which is to say,
-> > I for one am happy either way.
-> >
-> > If you do chose to go for a new directory, I would suggest
-> > drivers/net/ethernet/mediatek/airoha assuming as it is a Mediatek device.
-> >
+On Mon, Feb 03, 2025 at 02:29:23PM +0100, Andrew Lunn wrote:
+> On Mon, Feb 03, 2025 at 10:56:47AM +0000, Simon Horman wrote:
+> > On Sat, Feb 01, 2025 at 06:11:55PM -0800, Jakub Kicinski wrote:
+> > > I feel like we don't do a good enough keeping authors of driver
+> > > APIs around. The ethtool code base was very nicely compartmentalized
+> > > by Michal. Establish a precedent of creating MAINTAINERS entries
+> > > for "sections" of the ethtool API. Use Andrew and cable test as
+> > > a sample entry. The entry should ideally cover 3 elements:
+> > > a core file, test(s), and keywords. The last one is important
+> > > because we intend the entries to cover core code *and* reviews
+> > > of drivers implementing given API!
+> > > 
+> > > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> > > ---
+> > > This patch is a nop from process perspective, since Andrew already
+> > > is a maintainer and reviews all this code. Let's focus on discussing
+> > > merits of the "section entries" in abstract?
+> > 
+> > In the first instance this seems like a good direction to go in to me.
+> > My only slight concern is that we might see an explosion in entries.
 > 
-> Hi,
-> may I push for a dedicated Airoha directory? (/net/ethernet/airoha ?)
+> I don't think that will happen. I don't think we really have many
+> sections of ethtool which people personally care about, always try to
+> review across all drivers.
 > 
-> With new SoC it seems Airoha is progressively detaching from Mediatek.
-> 
-> There are some similarities but for example for the PPE only the logical entry
-> table is similar but rest of the stuff is handled by a coprocessor
-> with dedicated
-> firmware. My big concern is that we will start to bloat the mediatek directory
-> with very different kind of code.
-> 
-> Putting stuff in ethernet/mediatek/airoha would imply starting to use
-> format like
-> #include "../stuff.h" and maybe we would start to import stuff from
-> mediatek that
-> should not be used by airoha.
-> 
-> Keeping the 2 thing split might make the similarities even more
-> evident and easier
-> to handle as we will have to rework the header to use the generic include/linux.
-> 
-> Hope all of this makes sense, it's really to prevent situation and keep things
-> organized from the start.
+> Even if it does explode, so what. Is ./scripts/get_maintainer.pl the
+> bottleneck in any workflows?
 
-Thanks Christian,
+Thanks Andrew,
 
-Given the above and the conversation thus far elsewhere in this thread
-I now agree that drivers/net/ethernet/airoha is a good option.
+I'm not overly concerned by the points I raised either, but I did think
+they were worth raising.  And given that doing so didn't raise any alarm
+bells (so far), I'm happy for this patch to proceed.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+
