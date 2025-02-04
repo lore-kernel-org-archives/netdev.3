@@ -1,96 +1,66 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5072063DB
-	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 20:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1571E0087
+	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 20:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738699744; cv=none; b=E1wMpQHXZ5X+lTsltfv+HCRI1M44Rookm4DqZKfPfuOQVwjAmxsyfxPM8YJ7Xx2MTU8/hhcosqn2f9SHLhlQjHwL4IMoxaKe9XAtLKui0CS4vE6HN2dvPxdPez0Cq2dnTx+JufJ+tQc9ixvWxja88ZDSwpehSKw5bC31hFCj7ss=
+	t=1738699872; cv=none; b=OT196VPB9ciUrwoyXjnDtQ5X0Ni/VpJXAzulY64E7wqgMb4N2iq5PjCPxjkkFehFNo4BFQodY0pd+BWAPQJ0idCVfzbcnrIsG4E6DB7ggsqUrVE/ZP8Jo/TiqFvwovT7Bt9BJRnNt7ZuiHj+rl7OwHq19AzLTV3mO9G72jPjnXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738699744; c=relaxed/simple;
-	bh=j8WMMwH8T5XWzuLoFTNF44Zl9T2jicDXJwYmEbB86Xw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZvQIekZZhGsIQfCgWSlTg/oXSdwt2uAUTtP8n6OTBCLAidoYqTvUWIGip09CG3qvlGJa14Jm/uE9MZl48uVc2ipcNf/+b3bksXDYdRCu1NPPw+QRdRxGVdf9hwsBoBpHDDsSQ22jz1bN5/rxgD/K9RBKDBfnndQSRFHe32HjpgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SIB4SUiN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738699872; c=relaxed/simple;
+	bh=fn7KECgeaEFokVrniGp68GeakWgPDRa7VOMu32zpqRc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W7Vtk3UU1er7ztAfYpeL8Yf0s87DPuy8i+rK/NMzphXn4HmeZXlAt6R3/vykiVyDj4xzTHr6pBikFlNCVECu9GFpw2GvFGSoB/lyJFi2eEgy4HjbrqaShGVSrTBm/h7rg3PKeREjcxSEHidDnBt+JOl7EvMcGZbrVbc1CL2IOVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IxMYra2H; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SIB4SUiN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12DA8C4CEDF;
-	Tue,  4 Feb 2025 20:09:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IxMYra2H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F362C4CEDF;
+	Tue,  4 Feb 2025 20:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738699744;
-	bh=j8WMMwH8T5XWzuLoFTNF44Zl9T2jicDXJwYmEbB86Xw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SIB4SUiN3OlZR1QcxASA3hlTZEsdO+kjXCZRmFS/y7oWC2CeWxodXKHC7r/T8p2Sj
-	 GZAsOuj9qDuwMxB3B1rqZwziUO0jRDrb3rNp4Laoap+Iv45Ased0fSelhGo7YuBszc
-	 QAL4qxlVOO9vYbxAXujGHu6b/6Gb3dPz/nRasQqUzFirJYOK2B2zr/rdBzTBPIe3Co
-	 GuBfrP820IHbterN0NYmhPXIqAil2rC4GRj7wsTGoRSzhIcyMfekR+hAzjAFBnvUt5
-	 zuPdL5IHuFcAEOXcF/r1QBSk19Uie/wi2rtV1qcG8XtWlVi41fbWJumCoerJusHjSp
-	 hbXYmRZy+vZDQ==
-Date: Tue, 4 Feb 2025 12:09:03 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
- <pabeni@redhat.com>, netdev@vger.kernel.org, Kuniyuki Iwashima
- <kuniyu@amazon.com>, Simon Horman <horms@kernel.org>,
- eric.dumazet@gmail.com
-Subject: Re: [PATCH v3 net 11/16] ipv6: input: convert to dev_net_rcu()
-Message-ID: <20250204120903.6c616fc8@kernel.org>
-In-Reply-To: <20250204132357.102354-12-edumazet@google.com>
-References: <20250204132357.102354-1-edumazet@google.com>
-	<20250204132357.102354-12-edumazet@google.com>
+	s=k20201202; t=1738699870;
+	bh=fn7KECgeaEFokVrniGp68GeakWgPDRa7VOMu32zpqRc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IxMYra2HBjrkqod/mKwUkhu1n3hwnf2vL9SsegCIXmTmidaQG4bS5XKbITgmIGWlN
+	 jpL5Balj1q04TVaZvhQic0yIrVnDm1rv08T0/Ck23hLCnMY95j9bTDmqcFGZE+dvYS
+	 N7VNyvzp+iAee0B+GcpLJqgY0tmqf19tW1X/etzrVK6ujp7EIcJ+1k2U2Kwm7BVfsh
+	 /y1YFAfE7gGtjhW1IxKxkcES58c5VMw1jOG/3XmMdggkMz6dqDTiG6SC0DWoy7rtch
+	 46To/7tNs+vihC0J49Vb42xgLZVx8eAcezKn197WkJNiyOguU1b0zrAaDrDrSgsBl1
+	 RgdSJA8TveuFQ==
+Date: Tue, 4 Feb 2025 20:11:07 +0000
+From: Simon Horman <horms@kernel.org>
+To: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
+	netdev@vger.kernel.org, pmenzel@molgen.mpg.de,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: Re: [PATCH iwl-next v2] ixgbe: add support for thermal sensor event
+ reception
+Message-ID: <20250204201107.GP234677@kernel.org>
+References: <20250204071700.8028-1-jedrzej.jagielski@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250204071700.8028-1-jedrzej.jagielski@intel.com>
 
-On Tue,  4 Feb 2025 13:23:52 +0000 Eric Dumazet wrote:
-> @@ -488,7 +488,7 @@ static int ip6_input_finish(struct net *net, struct sock *sk, struct sk_buff *sk
->  int ip6_input(struct sk_buff *skb)
->  {
->  	return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_IN,
-> -		       dev_net(skb->dev), NULL, skb, skb->dev, NULL,
-> +		       dev_net_rcu(skb->dev), NULL, skb, skb->dev, NULL,
->  		       ip6_input_finish);
->  }
->  EXPORT_SYMBOL_GPL(ip6_input);
+On Tue, Feb 04, 2025 at 08:17:00AM +0100, Jedrzej Jagielski wrote:
+> E610 NICs unlike the previous devices utilising ixgbe driver
+> are notified in the case of overheatning by the FW ACI event.
+> 
+> In event of overheat when treshold is exceeded, FW suspends all
 
-One more here:
+A nit flagged by checkpatch.pl --codespell.
+In case there is a v3 for some other reason you may want to correct the
+spelling of threshold.
 
-[ 4326.034939][   T50] =============================
-[ 4326.035125][   T50] WARNING: suspicious RCU usage
-[ 4326.035299][   T50] 6.13.0-virtme #1 Not tainted
-[ 4326.035955][   T50] -----------------------------
-[ 4326.036124][   T50] ./include/net/net_namespace.h:404 suspicious rcu_dereference_check() usage!
-[ 4326.036398][   T50] 
-[ 4326.036398][   T50] other info that might help us debug this:
-[ 4326.036398][   T50] 
-[ 4326.036684][   T50] 
-[ 4326.036684][   T50] rcu_scheduler_active = 2, debug_locks = 1
-[ 4326.036910][   T50] 2 locks held by kworker/2:1/50:
-[ 4326.037111][   T50]  #0: ffff8880010a9548 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x7ec/0x16d0
-[ 4326.037439][   T50]  #1: ffffc9000036fd40 ((work_completion)(&trans->work)){+.+.}-{0:0}, at: process_one_work+0xe0b/0x16d0
-[ 4326.037741][   T50] 
-[ 4326.037741][   T50] stack backtrace:
-[ 4326.037930][   T50] CPU: 2 UID: 0 PID: 50 Comm: kworker/2:1 Not tainted 6.13.0-virtme #1
-[ 4326.037935][   T50] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-[ 4326.037937][   T50] Workqueue: events xfrm_trans_reinject
-[ 4326.037947][   T50] Call Trace:
-[ 4326.037949][   T50]  <TASK>
-[ 4326.037952][   T50]  dump_stack_lvl+0xb0/0xd0
-[ 4326.037963][   T50]  lockdep_rcu_suspicious+0x1ea/0x280
-[ 4326.037975][   T50]  ip6_input+0x262/0x3e0
-[ 4326.038009][   T50]  xfrm_trans_reinject+0x2a2/0x460
-[ 4326.038055][   T50]  process_one_work+0xe55/0x16d0
-[ 4326.038098][   T50]  worker_thread+0x58c/0xce0
-[ 4326.038121][   T50]  kthread+0x359/0x5d0
-[ 4326.038141][   T50]  ret_from_fork+0x31/0x70
-[ 4326.038150][   T50]  ret_from_fork_asm+0x1a/0x30
+> traffic and sends overtemp event to the driver. Then driver
+> logs appropriate message and closes the adapter instance.
+> The card remains in that state until the platform is rebooted.
+> 
+> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-Test output:
-https://netdev-3.bots.linux.dev/vmksft-net-dbg/results/978202/61-l2tp-sh/
-Decoded:
-https://netdev-3.bots.linux.dev/vmksft-net-dbg/results/978202/vm-crash-thr2-0
+...
