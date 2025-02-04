@@ -1,393 +1,102 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84DDB2139DF;
-	Tue,  4 Feb 2025 12:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5ED82101BD;
+	Tue,  4 Feb 2025 12:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738670764; cv=none; b=B9fhtsQwUnF8TG9ioc1psxame4joxvHpztvkrWv6v9gJG4yJB8Q0HDSU/h2Lt1n3xumzbipGKUT9Fv1MlgiRccdsyUwFDrvrCjEhcRCQqcoaiEXfSPW3D9kXhfJjJJdcxJ2s1oHGxvBcanwHjyOP9vzn3GJPqm1odj2RDlVZW2w=
+	t=1738670987; cv=none; b=C+WxczdxmSZmSunx4kbZb4yhkBmRrS+vsN0YUJ715cZkkmCgvoQ0Jbf/AWiGCNffsgl8NiPnZUlaO0bsgg1Ro+XqXMJ8rMZRBRv+LhjueK+pk0XaZ194nt+Z/uREydt6Y6jTrsQA3zbya+FPM9w7xmLN6JhdQCM7tIivDtceMZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738670764; c=relaxed/simple;
-	bh=/U+kaLSG64l1tkdzVouyWd1VCftIOfKxVebHmgy1c+c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sb0T9x710lyRZydn8bmN5Zsi5GSDSFCzIl96JoC5s/AS7lLHmDh8KnfJ8JbRYRsFuMbq+m4WfWIC8gWf0OOAL+Dgh3SIQvtfHIGNe8sOliX41oOp0m8DMF0WHSv2gvxog1T79xhW016JlXsuMv8dDihFGRz5lQ0jRSaDMQVx74I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lMpVpITS; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1738670987; c=relaxed/simple;
+	bh=d8BFEH60jD/R5jxvAVRS4XOFB9XxrdufokPf3pA63BU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l7T4Abn9yU47sPo8I+rBApTG0CPr0/EPYEn4qUzBkdrbeFX0ipk4XX7yzCtoQu7ECZxpeDgORfX0/ZB6Wx/P29tild3poTrgzWX2llaf0PhwIryfD0UmY8OYZyVIfJJUddnHMLGZuqt9OaZ1dODEMAvfLpbI4YdP6QizY5m0NMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=grjh7xGP; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lMpVpITS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738670762; x=1770206762;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=/U+kaLSG64l1tkdzVouyWd1VCftIOfKxVebHmgy1c+c=;
-  b=lMpVpITSn8iafhPXTHhdzrzXvJerIFJCLpxydwKjAxg0ig5amQkukAyW
-   M4r3oDLXL36zC3CERLjrNH53OaLKYLxvxu286QXymiaR4zZ4FPuKzlpLS
-   Aev6ght/B4anUrgC22oIeuVPz0ekZsz4ZeFgiqz5dSJPHfU4Fm/YgC8Xa
-   FOiV0CZzSX/SR+tQyNa9rmZ7lRgPkrdJhMA0GwkwEvSwrRObpyvENpFiK
-   Vr7vxDn35smYx1oC3NFCT31iI+7UVQyWxi/2ta3sO1Xci4Ur6SWLA8Kr6
-   J5pnXvLbJIbrBl0+xZV7QimtMpvxacANFEqUOS13HX3XyW02U4Wb87zif
-   w==;
-X-CSE-ConnectionGUID: OQD0seUDTj+RpJ+pYK1rEQ==
-X-CSE-MsgGUID: Lz57XWrjSxCCVteaFIAU9g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="38424874"
-X-IronPort-AV: E=Sophos;i="6.13,258,1732608000"; 
-   d="scan'208";a="38424874"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 04:06:02 -0800
-X-CSE-ConnectionGUID: 7WqvoXQTS8mV1ZgpISH4Aw==
-X-CSE-MsgGUID: iMmkJcOmTzqfP4Zepua/Kw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="147783270"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by orviesa001.jf.intel.com with ESMTP; 04 Feb 2025 04:05:58 -0800
-Received: from lincoln.igk.intel.com (lincoln.igk.intel.com [10.102.21.235])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 4CC0232CA9;
-	Tue,  4 Feb 2025 12:05:57 +0000 (GMT)
-From: Larysa Zaremba <larysa.zaremba@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	intel-wired-lan@lists.osuosl.org
-Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="grjh7xGP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=rox8IBA4TOog/Xi9d+CxsHeyf4Lozl25g79JAYxmrsE=; b=grjh7xGPy1aXjV8j/7VAJRQ/3Q
+	Zq+FAY0cDbRfh8SEOCyMIV1sMNeR3vmdA4pZtUw+BnlN6lhG2on+Btf+bSiva7Db/YMxo3UGx9Oro
+	9NpsoE4iXTuhscCT73b1FFUfGw/NpiYwJw03GvNr7R74HprHXSBG91FnziUApwNBAVuNBN0vN3vVQ
+	NM9Y34zvc+ynj9Gt07JXEehZEc4GfFbRKq1vvfRLBqmB9q4XfR8hCmC99NPeOidVjlz2C/poPwJwx
+	B8/RLvAKHGc9fg+IFjS8I9g9n2f8zGD1y+5e64/F6tdwo8zhM6iEceRokQhidTowc8xIC9O9DjWJq
+	JVdGvBZA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43894)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tfHji-0003Tg-3A;
+	Tue, 04 Feb 2025 12:09:03 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tfHje-0001NM-1y;
+	Tue, 04 Feb 2025 12:08:58 +0000
+Date: Tue, 4 Feb 2025 12:08:58 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Choong Yong Liang <yong.liang.choong@linux.intel.com>
+Cc: Simon Horman <horms@kernel.org>, Jose Abreu <joabreu@synopsys.com>,
+	Jose Abreu <Jose.Abreu@synopsys.com>,
+	David E Box <david.e.box@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+	David E Box <david.e.box@intel.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
-Subject: [PATCH iwl-next v2 6/6] ice: enable LLDP TX for VFs through tc
-Date: Tue,  4 Feb 2025 12:50:56 +0100
-Message-ID: <20250204115111.1652453-7-larysa.zaremba@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250204115111.1652453-1-larysa.zaremba@intel.com>
-References: <20250204115111.1652453-1-larysa.zaremba@intel.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Serge Semin <fancer.lancer@gmail.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next v6 4/7] stmmac: intel: configure SerDes
+ according to the interface mode
+Message-ID: <Z6IDWiRF73sdVWob@shell.armlinux.org.uk>
+References: <20250204061020.1199124-1-yong.liang.choong@linux.intel.com>
+ <20250204061020.1199124-5-yong.liang.choong@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250204061020.1199124-5-yong.liang.choong@linux.intel.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Only a single VSI can be in charge of sending LLDP frames, sometimes it is
-beneficial to assign this function to a VF, that is possible to do with tc
-capabilities in the switchdev mode. It requires first blocking the PF from
-sending the LLDP frames with a following command:
+On Tue, Feb 04, 2025 at 02:10:17PM +0800, Choong Yong Liang wrote:
+> +	int (*config_serdes)(struct net_device *ndev,
+> +			     void *priv,
+> +			     phy_interface_t interface);
 
-tc filter add dev <ifname> egress protocol lldp flower skip_sw action drop
+Since you call this from phylink's mac_finish() method, I would much
+rather the call down into platform code was also called the same so
+we don't end up with a proliferation of methods called from that
+function. As such, please also arrange for it to pass the AN mode as
+well.
 
-Then it becomes possible to configure a forward rule from a VF port
-representor to uplink instead.
+Thanks.
 
-tc filter add dev <vf_ifname> ingress protocol lldp flower skip_sw
-action mirred egress redirect dev <ifname>
-
-How LLDP exclusivity was done previously is LLDP traffic was blocked for a
-whole port by a single rule and PF was bypassing that. Now at least in the
-switchdev mode, every separate VSI has to have its own drop rule. Another
-complication is the fact that tc does not respect when the driver refuses
-to delete a rule, so returning an error results in a HW rule still present
-with no way to reference it through tc. This is addressed by allowing the
-PF rule to be deleted at any time, but making the VF forward rule "dormant"
-in such case, this means it is deleted from HW but stays in tc and driver's
-bookkeeping to be restored when drop rule is added back to the PF.
-
-Implement tc configuration handling which enables the user to transmit LLDP
-packets from VF instead of PF.
-
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_eswitch.c |   2 +
- drivers/net/ethernet/intel/ice/ice_repr.c    |   7 +
- drivers/net/ethernet/intel/ice/ice_tc_lib.c  | 159 +++++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_tc_lib.h  |   2 +
- drivers/net/ethernet/intel/ice/ice_vf_lib.h  |   4 +
- 5 files changed, 174 insertions(+)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index 70a523e962d8..40547ff65e25 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -29,6 +29,7 @@ static int ice_eswitch_setup_env(struct ice_pf *pf)
- 			return -ENODEV;
- 
- 	ice_remove_vsi_fltr(&pf->hw, uplink_vsi->idx);
-+	ice_vsi_cfg_sw_lldp(uplink_vsi, true, false);
- 
- 	netif_addr_lock_bh(netdev);
- 	__dev_uc_unsync(netdev, NULL);
-@@ -283,6 +284,7 @@ static void ice_eswitch_release_env(struct ice_pf *pf)
- 	ice_fltr_add_mac_and_broadcast(uplink_vsi,
- 				       uplink_vsi->port_info->mac.perm_addr,
- 				       ICE_FWD_TO_VSI);
-+	ice_vsi_cfg_sw_lldp(uplink_vsi, true, true);
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c b/drivers/net/ethernet/intel/ice/ice_repr.c
-index f81bf60f8365..cb08746556a6 100644
---- a/drivers/net/ethernet/intel/ice/ice_repr.c
-+++ b/drivers/net/ethernet/intel/ice/ice_repr.c
-@@ -337,6 +337,7 @@ void ice_repr_destroy(struct ice_repr *repr)
- static void ice_repr_rem_vf(struct ice_repr *repr)
- {
- 	ice_eswitch_decfg_vsi(repr->src_vsi, repr->parent_mac);
-+	ice_pass_vf_tx_lldp(repr->src_vsi, true);
- 	unregister_netdev(repr->netdev);
- 	ice_devlink_destroy_vf_port(repr->vf);
- 	ice_virtchnl_set_dflt_ops(repr->vf);
-@@ -418,6 +419,10 @@ static int ice_repr_add_vf(struct ice_repr *repr)
- 	if (err)
- 		goto err_netdev;
- 
-+	err = ice_drop_vf_tx_lldp(repr->src_vsi, true);
-+	if (err)
-+		goto err_drop_lldp;
-+
- 	err = ice_eswitch_cfg_vsi(repr->src_vsi, repr->parent_mac);
- 	if (err)
- 		goto err_cfg_vsi;
-@@ -430,6 +435,8 @@ static int ice_repr_add_vf(struct ice_repr *repr)
- 	return 0;
- 
- err_cfg_vsi:
-+	ice_pass_vf_tx_lldp(repr->src_vsi, true);
-+err_drop_lldp:
- 	unregister_netdev(repr->netdev);
- err_netdev:
- 	ice_devlink_destroy_vf_port(vf);
-diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-index 095c1fe51d97..691ecd64667d 100644
---- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-@@ -762,6 +762,153 @@ static int ice_eswitch_tc_parse_action(struct net_device *filter_dev,
- 	return 0;
- }
- 
-+static bool ice_is_fltr_lldp(struct ice_tc_flower_fltr *fltr)
-+{
-+	return fltr->outer_headers.l2_key.n_proto == htons(ETH_P_LLDP);
-+}
-+
-+static bool ice_is_fltr_pf_tx_lldp(struct ice_tc_flower_fltr *fltr)
-+{
-+	struct ice_vsi *vsi = fltr->src_vsi, *uplink;
-+
-+	if (!ice_is_switchdev_running(vsi->back))
-+		return false;
-+
-+	uplink = vsi->back->eswitch.uplink_vsi;
-+	return vsi == uplink && fltr->action.fltr_act == ICE_DROP_PACKET &&
-+	       ice_is_fltr_lldp(fltr) &&
-+	       fltr->direction == ICE_ESWITCH_FLTR_EGRESS &&
-+	       fltr->flags == ICE_TC_FLWR_FIELD_ETH_TYPE_ID;
-+}
-+
-+static bool ice_is_fltr_vf_tx_lldp(struct ice_tc_flower_fltr *fltr)
-+{
-+	struct ice_vsi *vsi = fltr->src_vsi, *uplink;
-+
-+	uplink = vsi->back->eswitch.uplink_vsi;
-+	return fltr->src_vsi->type == ICE_VSI_VF && ice_is_fltr_lldp(fltr) &&
-+	       fltr->direction == ICE_ESWITCH_FLTR_EGRESS &&
-+	       fltr->dest_vsi == uplink;
-+}
-+
-+static struct ice_tc_flower_fltr *
-+ice_find_pf_tx_lldp_fltr(struct ice_pf *pf)
-+{
-+	struct ice_tc_flower_fltr *fltr;
-+
-+	hlist_for_each_entry(fltr, &pf->tc_flower_fltr_list, tc_flower_node)
-+		if (ice_is_fltr_pf_tx_lldp(fltr))
-+			return fltr;
-+
-+	return NULL;
-+}
-+
-+static bool ice_any_vf_lldp_tx_ena(struct ice_pf *pf)
-+{
-+	struct ice_vf *vf;
-+	unsigned int bkt;
-+
-+	ice_for_each_vf(pf, bkt, vf)
-+		if (vf->lldp_tx_ena)
-+			return true;
-+
-+	return false;
-+}
-+
-+int ice_pass_vf_tx_lldp(struct ice_vsi *vsi, bool deinit)
-+{
-+	struct ice_rule_query_data remove_entry = {
-+		.rid = vsi->vf->lldp_recipe_id,
-+		.rule_id = vsi->vf->lldp_rule_id,
-+		.vsi_handle = vsi->idx,
-+	};
-+	struct ice_pf *pf = vsi->back;
-+	int err;
-+
-+	if (vsi->vf->lldp_tx_ena)
-+		return 0;
-+
-+	if (!deinit && !ice_find_pf_tx_lldp_fltr(vsi->back))
-+		return -EINVAL;
-+
-+	if (!deinit && ice_any_vf_lldp_tx_ena(pf))
-+		return -EINVAL;
-+
-+	err = ice_rem_adv_rule_by_id(&pf->hw, &remove_entry);
-+	if (!err)
-+		vsi->vf->lldp_tx_ena = true;
-+
-+	return err;
-+}
-+
-+int ice_drop_vf_tx_lldp(struct ice_vsi *vsi, bool init)
-+{
-+	struct ice_rule_query_data rule_added;
-+	struct ice_adv_rule_info rinfo = {
-+		.sw_act = {
-+			.fltr_act = ICE_DROP_PACKET,
-+			.flag = ICE_FLTR_TX,
-+		},
-+		.priority = 7,
-+		.flags_info.act_valid = true,
-+		.sw_act.src = vsi->idx,
-+		.src_vsi = vsi->idx,
-+		.sw_act.vsi_handle = vsi->idx,
-+	};
-+	struct ice_adv_lkup_elem list[3];
-+	struct ice_pf *pf = vsi->back;
-+	int err;
-+
-+	if (!init && !vsi->vf->lldp_tx_ena)
-+		return 0;
-+
-+	ice_rule_add_direction_metadata(&list[0]);
-+	ice_rule_add_src_vsi_metadata(&list[1]);
-+	list[2].type = ICE_ETYPE_OL;
-+	list[2].h_u.ethertype.ethtype_id = htons(ETH_P_LLDP);
-+	list[2].m_u.ethertype.ethtype_id = htons(0xFFFF);
-+
-+	err = ice_add_adv_rule(&pf->hw, list, ARRAY_SIZE(list), &rinfo,
-+			       &rule_added);
-+	if (err) {
-+		dev_err(&pf->pdev->dev,
-+			"Failed to add an LLDP rule to VSI 0x%X: %d\n",
-+			vsi->idx, err);
-+	} else {
-+		vsi->vf->lldp_recipe_id = rule_added.rid;
-+		vsi->vf->lldp_rule_id = rule_added.rule_id;
-+		vsi->vf->lldp_tx_ena = false;
-+	}
-+
-+	return err;
-+}
-+
-+static void ice_handle_add_pf_lldp_drop_rule(struct ice_vsi *vsi)
-+{
-+	struct ice_tc_flower_fltr *fltr;
-+	struct ice_pf *pf = vsi->back;
-+
-+	hlist_for_each_entry(fltr, &pf->tc_flower_fltr_list, tc_flower_node) {
-+		if (!ice_is_fltr_vf_tx_lldp(fltr))
-+			continue;
-+		ice_pass_vf_tx_lldp(fltr->src_vsi, true);
-+		break;
-+	}
-+}
-+
-+static void ice_handle_del_pf_lldp_drop_rule(struct ice_pf *pf)
-+{
-+	int i;
-+
-+	/* Make the VF LLDP fwd to uplink rule dormant */
-+	ice_for_each_vsi(pf, i) {
-+		struct ice_vsi *vf_vsi = pf->vsi[i];
-+
-+		if (vf_vsi && vf_vsi->type == ICE_VSI_VF)
-+			ice_drop_vf_tx_lldp(vf_vsi, false);
-+	}
-+}
-+
- static int
- ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
- {
-@@ -779,6 +926,9 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
- 		return -EOPNOTSUPP;
- 	}
- 
-+	if (ice_is_fltr_vf_tx_lldp(fltr))
-+		return ice_pass_vf_tx_lldp(vsi, false);
-+
- 	lkups_cnt = ice_tc_count_lkups(flags, fltr);
- 	list = kcalloc(lkups_cnt, sizeof(*list), GFP_ATOMIC);
- 	if (!list)
-@@ -850,6 +1000,9 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
- 		goto exit;
- 	}
- 
-+	if (ice_is_fltr_pf_tx_lldp(fltr))
-+		ice_handle_add_pf_lldp_drop_rule(vsi);
-+
- 	/* store the output params, which are needed later for removing
- 	 * advanced switch filter
- 	 */
-@@ -1965,6 +2118,12 @@ static int ice_del_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
- 	struct ice_pf *pf = vsi->back;
- 	int err;
- 
-+	if (ice_is_fltr_pf_tx_lldp(fltr))
-+		ice_handle_del_pf_lldp_drop_rule(pf);
-+
-+	if (ice_is_fltr_vf_tx_lldp(fltr))
-+		return ice_drop_vf_tx_lldp(vsi, false);
-+
- 	rule_rem.rid = fltr->rid;
- 	rule_rem.rule_id = fltr->rule_id;
- 	rule_rem.vsi_handle = fltr->dest_vsi_handle;
-diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.h b/drivers/net/ethernet/intel/ice/ice_tc_lib.h
-index da09fbba03ad..2e7d2ea08ee0 100644
---- a/drivers/net/ethernet/intel/ice/ice_tc_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.h
-@@ -218,6 +218,8 @@ int
- ice_del_cls_flower(struct ice_vsi *vsi, struct flow_cls_offload *cls_flower);
- void ice_replay_tc_fltrs(struct ice_pf *pf);
- bool ice_is_tunnel_supported(struct net_device *dev);
-+int ice_drop_vf_tx_lldp(struct ice_vsi *vsi, bool init);
-+int ice_pass_vf_tx_lldp(struct ice_vsi *vsi, bool deinit);
- 
- static inline bool ice_is_forward_action(enum ice_sw_fwd_act_type fltr_act)
- {
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.h b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-index f4c9ca1f51ce..482f4285fd35 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-@@ -124,6 +124,7 @@ struct ice_vf {
- 	u8 spoofchk:1;
- 	u8 link_forced:1;
- 	u8 link_up:1;			/* only valid if VF link is forced */
-+	u8 lldp_tx_ena:1;
- 
- 	u32 ptp_caps;
- 
-@@ -150,6 +151,9 @@ struct ice_vf {
- 	/* devlink port data */
- 	struct devlink_port devlink_port;
- 
-+	u16 lldp_recipe_id;
-+	u16 lldp_rule_id;
-+
- 	u16 num_msix;			/* num of MSI-X configured on this VF */
- 	struct ice_vf_qs_bw qs_bw[ICE_MAX_RSS_QS_PER_VF];
- };
 -- 
-2.43.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
