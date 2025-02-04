@@ -1,73 +1,73 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2065.outbound.protection.outlook.com [40.107.236.65])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2044.outbound.protection.outlook.com [40.107.243.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D944216E2C
-	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 13:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961BC216E30
+	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 13:41:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738676463; cv=fail; b=ZL5llvoq0G25NclHZjbpAKd/3sDV8zu/OITcQyV0NKo3LpjHTwxsK9czbFWfWjsjXRUerNp3bocg4pKuZlgkwufo/CmWtfQZdFn8NW7FTIirGR5KDFiYrl7r0PZxgOUap+1NXGeZQGSNexbaFGMyfjI78hsYtliz+Ul6/mJjcdU=
+	t=1738676463; cv=fail; b=k+hrCsCQxl4PqoJtUTSxRUtVAA1lYeT9uDjBz+klKYZE5Q5g/bGU7AlXBVhMFoe1rL+fRq1vR4xfYbgQEjAgeGGHdOaqf6EaUOv6yM9AhUljhIh5oxYc/ogl6XmckbTLYlEA6ZjXiJN6BMYpoci3+Z83M+ieAdnvPV7W8JVJd4A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1738676463; c=relaxed/simple;
-	bh=e9m6BNPmmRztnDMNEsnNW0+mQJupAn6Mmu3cQkBG7nc=;
+	bh=Zx0/+K/rnzIf2jGc1c9koJptncvvP99PPezgWLthsjo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DLlMkpCWxPDyGSDvUqbEs1rJFL9P81FATfEr4n+Dtg6Yx5ULp0ZFv+fat2SvduZrjWyheM3VkWC7u+LMCxN5dwJYWGS95pIMoJNse2A0qqlE1r/vuT6tpcMmMHYyhXR8Y0v4cqByWZJIzyTBYyduVq9zIdCk+HgH6V9TOPqG9co=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XZkh+qmw; arc=fail smtp.client-ip=40.107.236.65
+	 MIME-Version:Content-Type; b=Sx/2EbxfFV3a5ya6AGxQxkkFkAi5IXXIN+013z4dpeApPcHVtg+MVKDocujX3IyuyIRlsE4fg1qmZ8X6By/GlqEmy2dY5Bj6JAg/Jck64ul94mhfeiUBj7R01JaiMqKeBQ7qlV3dl25BD/In+hOGZpKQLX2Xbgh7Ukam7TBTqBc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=s6RGp5Un; arc=fail smtp.client-ip=40.107.243.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XZkh+qmw"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="s6RGp5Un"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LrdDwGi42/fYGiYY3vbeXsJjG/NLO7VLNoryVduCL8RyO6Ct4vhdFr1PKI+2XhmYnHKf0Xmptg92Gd0pv4xweeTWZArWdYRsR5UbgszRWItguW4so8phEVEqbLFWkLn4aW8EZZmg3lrGI1BQp49yy+GNP7rvML8mRufe/qZAqp6jaXZGZkQf++YDvRZ2SqRZTsXVeF/u5M/ogt3bXkQ0Lk4DRcxVwOoeb2aJQpDmzsm11JoldF8EgkMdVwFOHGTN4uEABMAtaW+u7jvoX8r41PHjbHxOTGZ6Ow4xmD6hEmw4tREMZWauIaQOHNnr+DSlj9B+tjGD7YFSkxAteJGZ2w==
+ b=Yk3GWFroaupDEb66RNaQ5Hy7/PxCHfNbUwP8e9Yv64L63MALcpfPLbmDiLYST5NwCUzeP38OrgCHBVuHH4fQWL2GZ6iMSp6LqyDUbYu5nPWecS0JQ62kIkvIrK5dsnnMjPdWSVLCH5JpGZtf9QA0WbWq0AigEg1xPy7ad+Ltn7jVCU5QBdHjdku+PIrcAIGRBry3VHWWmi59Q9s6Ew7XpdDYN2Zhk1K0E+NcxnNXZA0CunZuz6A0zoP35EPj49FxeQ16FgIzC+gioHBVhxY/S+yoOKYL5mRHGO8SZmPdFGqbgOuikiDTi5/jwM4qfPqlW/NIh21uHhuSDySPGrNmug==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QzibSuJlm61xq+P8NEB/aSrwul22Sf3i3RVOztrmbmY=;
- b=LfRxkYQx6UHxDA9QT3I2v62drO+lpAI1irjpaewKVWt8WsREoj2R89/eGLVdfKvGba59LVeYEineaj+CxHM8kizeQFfozEIpgC4qIepVemmemm00muHY1ZsaNEDmuOf5PpORIzJWYucV52PsI5Ey4MFOyoZTWzBIq54xZrkVdnk27WCuqkoSaETk3JSbgKDlP9/v767GdKiubHU8cLPB8gLuG13/5omRhCyslN1DP56Fr/aT+Xt6BIabhwy/9LJbe4+SZkkBsCMh9RxZTkWk1wIMgcQKeZNDRTb43FiznGBZKuCAgsdm10FVOC9vP7yRTTLVj7fE8Yq8MM/oXtd+uQ==
+ bh=eLfXyIeMS4xgv9gSt8ngINbyVm96MZJ6MFHEos6i8Zg=;
+ b=kUzwK3wYd4ui+nHqFwnEAqC/7Gbfu38HYY4muGzj6hNnA3KNcLrRjOZbp8h4xPJs5aps1CHRxV3UWJKq54j6cPs25SwktVIpvQiN3U0i0BgczRUyjzUBG6Oc1ZDt/SVB4iBZjvTc6E0HijC4bG9Goya/Dm6SIhuxlra3Ajbe+y5HUMJgOHIO+3LFSJjgdjWA0noWntFMKSTP/Rv0/6yuiKrbOUw2V9Ql1dlxJRReZvVAbNtOyjivl3DQULH7Y6erjmCEDXDaB/vkKaAE2VN+fz7xRnMkfV2OgByCFOPbKQu4DgXUC6fKcyTrxXQ/8R+rCnKAo83+ASxCFzrKf8uwYw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QzibSuJlm61xq+P8NEB/aSrwul22Sf3i3RVOztrmbmY=;
- b=XZkh+qmwAb/4Dalp9/LS/cn44dmN+MVWFHWbY8mDMXNEY62BugAaku8bLzX3qW5Zr9SAxemYq1Qq32pFbCiLNORCINireybpAMBXVG2rt1EhD8gFO4dooGw8UZSFkb/nCJhIiHBdO4LbXPAyqu/6mrxKNkwApKwUuWTZyNuiAv7fsF+VN57UyCllKcKHG7zsrQlDYbxEEPIUssU8Ua+G++GkfM2EtoIvQdJX0N/uqRDTGZEU3ZuhfzYT6csSE3k2B4yQvApMCjUyvZ7SJJdpTx3OmUlKSefYMjvutJeZr+eMHuO3AoUhMLpr4oYKfmfAaZM5oXq2xqzgFoOnhbdq8Q==
-Received: from SA1P222CA0057.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:2c1::6)
- by BY5PR12MB4083.namprd12.prod.outlook.com (2603:10b6:a03:20d::18) with
+ bh=eLfXyIeMS4xgv9gSt8ngINbyVm96MZJ6MFHEos6i8Zg=;
+ b=s6RGp5UnNptFHZ4fSNBmrRscYdcqYyPAWxJgMMbuAn8E3lJ48y/zYEWKPg1OD63EOqXsUilnFidgSUw9kEIqzws9Xsj3k5wFeVGpgJyKFhE0Yufh55LWQRgCx2oK+hEpxN2FxwQgjVmKBFKkQiQwbv25RWSnVPxCbXJkQEY1ABsLVjLWEo67+Fn7HyE5tOI3hWCTlx5nvkH5+xUjYFkUa4GQwezkOdwzlnyocOUi4gcVRoLA514PeXkCHLI6dakveErLO2/PZXTZlcMt5MklAFx6a28UAq8bFOzLXRr0YxI+drCdgy4gYLWpTaa+g6h3rAN2XbHPRMR5pcy6Q6Xbkg==
+Received: from BN0PR10CA0002.namprd10.prod.outlook.com (2603:10b6:408:143::16)
+ by PH7PR12MB8795.namprd12.prod.outlook.com (2603:10b6:510:275::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.25; Tue, 4 Feb
- 2025 13:40:55 +0000
-Received: from SA2PEPF00003F67.namprd04.prod.outlook.com
- (2603:10b6:806:2c1:cafe::6) by SA1P222CA0057.outlook.office365.com
- (2603:10b6:806:2c1::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.27 via Frontend Transport; Tue,
- 4 Feb 2025 13:40:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Tue, 4 Feb
+ 2025 13:40:58 +0000
+Received: from MN1PEPF0000F0E1.namprd04.prod.outlook.com
+ (2603:10b6:408:143:cafe::3d) by BN0PR10CA0002.outlook.office365.com
+ (2603:10b6:408:143::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.26 via Frontend Transport; Tue,
+ 4 Feb 2025 13:40:57 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SA2PEPF00003F67.mail.protection.outlook.com (10.167.248.42) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ MN1PEPF0000F0E1.mail.protection.outlook.com (10.167.242.39) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8398.14 via Frontend Transport; Tue, 4 Feb 2025 13:40:53 +0000
+ 15.20.8398.14 via Frontend Transport; Tue, 4 Feb 2025 13:40:57 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 4 Feb 2025
- 05:40:38 -0800
+ 05:40:34 -0800
 Received: from dev-r-vrt-155.mtr.labs.mlnx (10.126.230.35) by
  rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Tue, 4 Feb 2025 05:40:36 -0800
+ 15.2.1544.14; Tue, 4 Feb 2025 05:40:31 -0800
 From: Danielle Ratson <danieller@nvidia.com>
 To: <netdev@vger.kernel.org>
 CC: <mkubecek@suse.cz>, <matt@traverse.com.au>, <daniel.zahka@gmail.com>,
 	<amcohen@nvidia.com>, <nbu-mlxsw@exchange.nvidia.com>, Danielle Ratson
 	<danieller@nvidia.com>
-Subject: [PATCH ethtool-next v3 11/16] qsfp: Enable JSON output support for SFF8636 modules
-Date: Tue, 4 Feb 2025 15:39:52 +0200
-Message-ID: <20250204133957.1140677-12-danieller@nvidia.com>
+Subject: [PATCH ethtool-next v3 09/16] cmis: Enable JSON output support in CMIS modules
+Date: Tue, 4 Feb 2025 15:39:50 +0200
+Message-ID: <20250204133957.1140677-10-danieller@nvidia.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250204133957.1140677-1-danieller@nvidia.com>
 References: <20250204133957.1140677-1-danieller@nvidia.com>
@@ -83,119 +83,108 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003F67:EE_|BY5PR12MB4083:EE_
-X-MS-Office365-Filtering-Correlation-Id: 488d01da-31ea-4286-c12a-08dd45218be8
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E1:EE_|PH7PR12MB8795:EE_
+X-MS-Office365-Filtering-Correlation-Id: 35839707-43fa-43e9-1d94-08dd45218e30
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014;
+	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700013;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?i7ZGMKpAcLkWXxuGujQ8Zisq5FYFAFmdc3Jegf3/VezMnIUxDFuui6LnvSE9?=
- =?us-ascii?Q?/V/lukhZWRam51y9K/tiL/Lcaa0p4g50jkia9jXWvb4HvcGpmFT2GUqFQCvO?=
- =?us-ascii?Q?3bYAfbpWj+NxsQ+G3MnmoGwhl7zpk+g6PVSbxV6MWMbwOZbsM62p+xWhcjBM?=
- =?us-ascii?Q?4iU8JGS9uvsQ+eXfwzYfi/5OnDZVUw+DqmvlgGvIVac9UG7Dso59tJp7/a8B?=
- =?us-ascii?Q?0heCMzl0s4/8pMFOYW8fs8BeR9WzRoa1Y8tw9/ZOWAw7ZUETmtbGvjt5MEe/?=
- =?us-ascii?Q?ez2YjtT6G0AC/cqVGYOC7CQ3Inp+pg7Tijn6YADHfFb7xS1T5zOrRXXcp9mC?=
- =?us-ascii?Q?vMyGBUNWzpO572ADi5OGBUmzb01fG0mk2mSgbqddzUcqmdnxy5bDTXa32WWE?=
- =?us-ascii?Q?OaK13Y+sZS4Y1Q5PjnYRA83/DEMuBsYItyZKsSvZlXJ35FdkcDigCQkquH+I?=
- =?us-ascii?Q?lK8l1n9UdrvDBFRKjuoX3GRCI0q/WkixKMiK3tJG0puYyrn1S0fMrVX/dcuX?=
- =?us-ascii?Q?aCrHm/f3v48sOuPzwNffupPi3jxWuUKU/7Pm6HaiQ4hh6Oymk7jSyEQzs7YH?=
- =?us-ascii?Q?xNBUebSIWBf4bwWK9mgx0yj7BidagWkWiBh4TX/9N0QSry35boq8XaOqUV+A?=
- =?us-ascii?Q?xIZB3AK1Xf4VqpiTmJWBfo+nVr5HKIP6305WpeIB1MqyGrjXf4BPRUzhAQkz?=
- =?us-ascii?Q?YGxerq/Iw7EBaBSmGW4Rr/nGhEwYo+6rGvnOnkphIFeTQH+7ZbkxqaDPn/kA?=
- =?us-ascii?Q?AQZs6f/NgbJxx1jxZgB6B/vWMfYeDNWbeqRvW0eJOrtJfW3NQLXM8p+JoHcQ?=
- =?us-ascii?Q?bqiur0Jfw5PwV0Jn2AcJSQaBKccQXlZJeuogtgGuhYwdCHgb6sYa8wwJi5gy?=
- =?us-ascii?Q?10b+5SS6ynhDVaxf1nVK/zr4gq3XmXWlywVe9zfQ/FcfkV83rudP892OPgAM?=
- =?us-ascii?Q?P2GOe8USKt3mPeaB5iZFUVwXy6HDzACcWi/gbu8IYUfTc0vCajkl+N7rp1z6?=
- =?us-ascii?Q?RAZTTCNvqbqIImOYYwobSh04nveIpZn/bSHzf/qsdfN2XhhdRFxzh4DNOSD4?=
- =?us-ascii?Q?gqRVdDD/8gvYojYTGGJ9EyBLpgYUtLwQCyx0giV8qMAqy1Lg3k+goBly/DIp?=
- =?us-ascii?Q?HOX1mnBO9ri9HAs105ryYzqGSw9urne5Ro1lLr7l+BB5eHoZxbLkBiZowl/O?=
- =?us-ascii?Q?XUjLGXd00sfNQ9eSF2Ozks2H4Ual7rRgW7S6AXH2vkDXoM8ZCZrruvcsUpkD?=
- =?us-ascii?Q?W/0yiiuO5+Qs+Ke7GZFVWNgSyNmCnCnDmvh08P+BvKKjN4OZ2YEHLTSuvsb0?=
- =?us-ascii?Q?U8OsWgSb1hYOvoiVGH6AGiDRfuh1lZuVQ8nPWZ8hzFYEeGI0dcOMUQ+y7T+u?=
- =?us-ascii?Q?1CcFA0KJmvlZUtu/iClMY0ScmfhnhzT3GkyDISL+3hdnCi/bwkT2vNpxJYkj?=
- =?us-ascii?Q?8lPF/RIGoNsay3Vw2Co6DF+y1PdxPl1QVw/gUFzToUzeWHc4DTHmyDqrjg4+?=
- =?us-ascii?Q?5gcJA5rLYwfFJWY=3D?=
+	=?us-ascii?Q?rJIiMEVG9nKulMelK4x4ykMGXWPpJOUeOp8uvny66YQNOrYcm5NKCkns6V2V?=
+ =?us-ascii?Q?0bVAVgQhZBs8L19UiBSWHzE1Pmgj2oAb0hDQy3mWGLEmVzp5XMfkkc3itm9U?=
+ =?us-ascii?Q?XJA2fBM5LpzVtpBleTARgekF5thpBOs58Dv41+6lz23aotd1pIZ6+8MwhqbS?=
+ =?us-ascii?Q?MHRyYOFUxze/nD/GpUpTOfAOe3qf8kroiUNEh43YOIfxdkRhE7L3f2DNYeZk?=
+ =?us-ascii?Q?FnHCTBeD9se3Oi+gJ7HUhFn0CQHBRSt/VSWHCEQBeBV31EA2lzEf0BplJ12G?=
+ =?us-ascii?Q?9egzpI7z+TPa3MKt7VwdD37SAxLbxQU74PNqO049UcxLlY5VINxldDoLe7Fl?=
+ =?us-ascii?Q?GMhYlaFwjaCGA335xJZH+lkhtaqCFq4xBaqhCl7fFAE2+536jWeGA0ynY8ZF?=
+ =?us-ascii?Q?nLfRSdyoMRJnM/03a+3Y3LOb7T8Ze5WRO4I6jgUi+D95RdQ8fSiOi97/gKqm?=
+ =?us-ascii?Q?kFD2nymL7BHIEN6jKRND1jBDKxlkEpwi16+zr69smenoPzHSehfLkm4sQFwB?=
+ =?us-ascii?Q?iuneGP27QKbg+uzWpS138DmK9P1WtlYlu3BOZTBa+/eUT2M216w16qacSc7C?=
+ =?us-ascii?Q?2O0XCf8HFNoN2AfIsWil8raeMB+m/mMQqcVvt/UbDFsI+8J1aIxbcm4laIGf?=
+ =?us-ascii?Q?jvgObhI3V07fwH/YMDRfywJ6fG+q8zTLk6Dinz4HOXdncDoodjGBtk7RPyFv?=
+ =?us-ascii?Q?Rcrb1CqGCtlXtIjXVZm46RBIi6rLkKRrDmVyYInKqkGgSah8/cHyit3EGMZT?=
+ =?us-ascii?Q?Lr8zWQZPum+KebiLEyICSZYNARNM5Hn00iIJh1M4+q46SMzc7fMOiBlVWKJO?=
+ =?us-ascii?Q?ebgzEAymwaBk+wC7pS+Y8b2HlLtSDmF42i7PlVQtmQhwOotcMnZNZtdbZYRd?=
+ =?us-ascii?Q?FTQOyM8fHnFsH58ivrFyXvx2MaLskvV7Do+5snESl/Ah5jggbhPx+CXrJEET?=
+ =?us-ascii?Q?6AwlHi177wzwP79GbnvM6Pbf2p8IbrCO0990/wIRTGBBQ3dFV7OdJMaD5SPH?=
+ =?us-ascii?Q?ew0fH75AC1U0vo8rrZUhiMutftrFiwi4e10+g+YXm/fx1KzBswWFE6TL18ZR?=
+ =?us-ascii?Q?+5zXFshytLBBn3O5EImfhf0s4Gte1OXUG2e+4Ty1QYNd9U7yeACwow8B8jas?=
+ =?us-ascii?Q?2dpKyy4IQfs7t7VnjaziuD41AZtE/MOHSv+pk+VjDVeTrP78Qv3t/7Tz2dsz?=
+ =?us-ascii?Q?688HhpkAWL4xdW9FGpjSZGLVsVvxefm/Jxsdg2Pog2p4pYDh/2sRMN1HUAOX?=
+ =?us-ascii?Q?2y0wgaMeMZMXWrkVm02PCkIg7L3V/FHyqixEA/jPxybdd2JTyYB5dfQ+WK6+?=
+ =?us-ascii?Q?V8xL/aXmCz1It+hS7CeJM5erxyyCtpaLjiSnzCOqfCP4s7wNAhFlSK1Xh+8O?=
+ =?us-ascii?Q?g5WL6MQ/iwJlibGrGIgZWNi6Z9RhzgrJ6PcWhFPlEUQ7JJsdfew8EKLh2MGh?=
+ =?us-ascii?Q?hFh8IpAyo5MVi2BirMGWDvr/1sdCCjaYy0AKk44tAlVQ5HKxVhVtzrCdib9I?=
+ =?us-ascii?Q?dj1K7XGmdJraYT4=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2025 13:40:53.8752
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2025 13:40:57.6046
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 488d01da-31ea-4286-c12a-08dd45218be8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 35839707-43fa-43e9-1d94-08dd45218e30
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00003F67.namprd04.prod.outlook.com
+	MN1PEPF0000F0E1.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4083
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8795
 
 A sample output:
 
-$ ethtool --json -m swp13
+$ ethtool --json -m swp23
 [ {
-        "identifier": 17,
-        "identifier_description": "QSFP28",
-        "extended_identifier": {
-            "value": 207,
-            "description": "3.5W max. Power consumption",
-            "description": "CDR present in TX, CDR present in RX",
-            "description": "5.0W max. Power consumption, High Power
-Class (> 3.5 W) enabled"
-        },
-        "power_set": false,
-        "power_override": true,
-        "connector": 35,
-        "connector_description": "No separable connector",
-        "transceiver_codes": [ 128,0,0,0,0,0,0,0 ],
-        "transceiver_type": "Active Optical Cable with 50GAUI, 100GAUI-2
-or 200GAUI-4 C2M. Providing a worst BER of 10-6 or below",
-        "encoding": 8,
-        "encoding_description": "PAM4",
-        "br_nominal": 25500,
-        "rate_identifier": 2,
-        "length_(smf)": 0,
-        "length_(om3)": 0,
-        "length_(om2)": 0,
-        "length_(om1)": 0,
-        "length_(copper_or_active_cable)": 3,
+        "identifier": 24,
+        "identifier_description": "QSFP-DD Double Density 8X Pluggable
+Transceiver (INF-8628)",
+        "power_class": 5,
+        "max_power": 10,
+        "connector": 40,
+        "connector_description": "MPO 1x16",
+        "cable_assembly_length": 0,
+        "tx_cdr_bypass_control": false,
+        "rx_cdr_bypass_control": false,
+        "tx_cdr": true,
+        "rx_cdr": true,
         "transmitter_technology": 0,
         "transmitter_technology_description": "850 nm VCSEL",
         "laser_wavelength": 850,
-        "laser_wavelength_tolerance": 150,
-        "vendor_name": "Mellanox",
-        "vendor_oui": [ 0,2,201 ],
-        "vendor_pn": "MFS1S00-V003E",
-        "vendor_rev": "A6",
-        "vendor_sn": "MT1915FT03913",
-        "date_code": "190412",
-        "revision_compliance": "Unallocated",
-        "rx_loss_of_signal": [ "Yes","Yes","Yes","Yes" ],
+        "laser_wavelength_tolerance": 94.8,
+        "length_(smf)": 0,
+        "length_(om5)": 0,
+        "length_(om4)": 100,
+        "length_(om3)": 70,
+        "length_(om2)": 0,
+        "vendor_name": "FINISAR CORP.",
+        "vendor_oui": [ 0,144,101 ],
+        "vendor_pn": "FTCD8613E1PCM",
+        "vendor_rev": "A0",
+        "vendor_sn": "X6LBE6H",
+        "date_code": "211229__",
+        "revision_compliance": {
+            "major": 4,
+            "minor": 0
+        },
+        "rx_loss_of_signal": [
+"Yes","Yes","Yes","Yes","Yes","Yes","Yes","Yes" ],
         "tx_loss_of_signal": false,
-        "rx_loss_of_lock": [ "Yes","Yes","Yes","Yes" ],
+        "rx_loss_of_lock": false,
         "tx_loss_of_lock": false,
-        "tx_adaptive_eq_fault": false,
-        "module_temperature": 56.9805,
-        "module_voltage": 3.259,
-        "alarm/warning_flags_implemented": true,
-        "laser_tx_bias_current": [ 0,0,0,0 ],
-        "transmit_avg_optical_power": [ 0,0,0,0 ],
+        "tx_fault": false,
+        "module_state": 3,
+        "module_state_description": "ModuleReady",
+        "low_pwr_allow_request_hw": false,
+        "low_pwr_request_sw": false,
+        "module_temperature": 37.5273,
+        "module_voltage": 3.3358,
+        "laser_tx_bias_current": [ 0,0,0,0,0,0,0,0 ],
+        "transmit_avg_optical_power": [
+0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001 ],
         "rx_power": {
-            "values": [ 0.0449,0.0475,0.042,0.0394 ],
+            "values": [
+0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001 ],
             "type": "Rcvr signal avg optical power"
         },
-        "laser_bias_current_high_alarm": [ false,false,false,false ],
-        "laser_bias_current_low_alarm": [ false,false,false,false ],
-        "laser_bias_current_high_warning": [ false,false,false,false ],
-        "laser_bias_current_low_warning": [ false,false,false,false ],
-        "laser_tx_power_high_alarm": [ false,false,false,false ],
-        "laser_tx_power_low_alarm": [ false,false,false,false ],
-        "laser_tx_power_high_warning": [ false,false,false,false ],
-        "laser_tx_power_low_warning": [ false,false,false,false ],
-        "laser_rx_power_high_alarm": [ false,false,false,false ],
-        "laser_rx_power_low_alarm": [ true,true,true,true ],
-        "laser_rx_power_high_warning": [ false,false,false,false ],
-        "laser_rx_power_low_warning": [ true,true,true,true ],
         "module_temperature_high_alarm": false,
         "module_temperature_low_alarm": false,
         "module_temperature_high_warning": false,
@@ -204,69 +193,121 @@ or 200GAUI-4 C2M. Providing a worst BER of 10-6 or below",
         "module_voltage_low_alarm": false,
         "module_voltage_high_warning": false,
         "module_voltage_low_warning": false,
+        "laser_bias_current_high_alarm": [
+false,false,false,false,false,false,false,false ],
+        "laser_bias_current_low_alarm": [
+false,false,false,false,false,false,false,false ],
+        "laser_bias_current_high_warning": [
+false,false,false,false,false,false,false,false ],
+        "laser_bias_current_low_warning": [
+false,false,false,false,false,false,false,false ],
+        "laser_tx_power_high_alarm": [
+false,false,false,false,false,false,false,false ],
+        "laser_tx_power_low_alarm": [
+false,false,false,false,false,false,false,false ],
+        "laser_tx_power_high_warning": [
+false,false,false,false,false,false,false,false ],
+        "laser_tx_power_low_warning": [
+false,false,false,false,false,false,false,false ],
+        "laser_rx_power_high_alarm": [
+false,false,false,false,false,false,false,false ],
+        "laser_rx_power_low_alarm": [
+false,false,false,false,false,false,false,false ],
+        "laser_rx_power_high_warning": [
+false,false,false,false,false,false,false,false ],
+        "laser_rx_power_low_warning": [
+false,false,false,false,false,false,false,false ],
         "laser_bias_current": {
-            "high_alarm_threshold": 8.5,
-            "low_alarm_threshold": 5.492,
-            "high_warning_threshold": 8,
-            "low_warning_threshold": 6
+            "high_alarm_threshold": 13,
+            "low_alarm_threshold": 3,
+            "high_warning_threshold": 11,
+            "low_warning_threshold": 5
         },
         "laser_output_power": {
-            "high_alarm_threshold": 3.4673,
-            "low_alarm_threshold": 0.0724,
-            "high_warning_threshold": 1.7378,
-            "low_warning_threshold": 0.1445
+            "high_alarm_threshold": 3.1623,
+            "low_alarm_threshold": 0.1,
+            "high_warning_threshold": 1.9953,
+            "low_warning_threshold": 0.1585
         },
         "module_temperature": {
-            "high_alarm_threshold": 80,
-            "low_alarm_threshold": -10,
+            "high_alarm_threshold": 75,
+            "low_alarm_threshold": -5,
             "high_warning_threshold": 70,
             "low_warning_threshold": 0
         },
         "module_voltage": {
-            "high_alarm_threshold": 3.5,
-            "low_alarm_threshold": 3.1,
-            "high_warning_threshold": 3.465,
-            "low_warning_threshold": 3.135
+            "high_alarm_threshold": 3.465,
+            "low_alarm_threshold": 3.135,
+            "high_warning_threshold": 3.45,
+            "low_warning_threshold": 3.15
         },
         "laser_rx_power": {
-            "high_alarm_threshold": 3.4673,
-            "low_alarm_threshold": 0.0467,
-            "high_warning_threshold": 1.7378,
-            "low_warning_threshold": 0.0933
-        }
+            "high_alarm_threshold": 3.1623,
+            "low_alarm_threshold": 0.0398,
+            "high_warning_threshold": 2.5119,
+            "low_warning_threshold": 0.0794
+        },
+        "active_firmware_version": {
+            "major": 2,
+            "minor": 7
+        },
+        "inactive_firmware_version": {
+            "major": 2,
+            "minor": 7
+        },
+        "cdb_instances": 1,
+        "cdb_background_mode": "Supported",
+        "cdb_epl_pages": 0,
+        "cdb_maximum_epl_rw_length": 128,
+        "cdb_maximum_lpl_rw_length": 128,
+        "cdb_trigger_method": "Single write"
     } ]
 
 Signed-off-by: Danielle Ratson <danieller@nvidia.com>
+Reviewed-by: Amit Cohen <amcohen@nvidia.com>
 ---
 
 Notes:
     v3:
     	* Reword commit message.
 
- qsfp.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ cmis.c    | 6 ++++++
+ ethtool.c | 1 +
+ 2 files changed, 7 insertions(+)
 
-diff --git a/qsfp.c b/qsfp.c
-index 43a26cc..66f59bb 100644
---- a/qsfp.c
-+++ b/qsfp.c
-@@ -1081,10 +1081,16 @@ int sff8636_show_all_nl(struct cmd_context *ctx)
- 	struct sff8636_memory_map map = {};
+diff --git a/cmis.c b/cmis.c
+index 267d088..305814c 100644
+--- a/cmis.c
++++ b/cmis.c
+@@ -1122,10 +1122,16 @@ int cmis_show_all_nl(struct cmd_context *ctx)
+ 	struct cmis_memory_map map = {};
  	int ret;
  
 +	new_json_obj(ctx->json);
 +	open_json_object(NULL);
 +
- 	ret = sff8636_memory_map_init_pages(ctx, &map);
+ 	ret = cmis_memory_map_init_pages(ctx, &map);
  	if (ret < 0)
  		return ret;
- 	sff8636_show_all_common(&map);
+ 	cmis_show_all_common(&map);
  
 +	close_json_object();
 +	delete_json_obj();
 +
  	return 0;
  }
+diff --git a/ethtool.c b/ethtool.c
+index a1393bc..0b876e8 100644
+--- a/ethtool.c
++++ b/ethtool.c
+@@ -6050,6 +6050,7 @@ static const struct option args[] = {
+ 	},
+ 	{
+ 		.opts	= "-m|--dump-module-eeprom|--module-info",
++		.json	= true,
+ 		.func	= do_getmodule,
+ 		.nlfunc = nl_getmodule,
+ 		.help	= "Query/Decode Module EEPROM information and optical diagnostics if available",
 -- 
 2.47.0
 
