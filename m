@@ -1,85 +1,72 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6268520A5D3
-	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 09:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0566E19C54B;
+	Tue,  4 Feb 2025 09:35:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738661595; cv=none; b=Y+ZoG9Uc2/O1tPKMTQld61rwuc80s344IC8RLe+qQ4b6p7C0E+Mt5c65lyfWgy/v63nzegJ5OfF+vXcyvb6rJnRzmBfZ7w7Vm0DnngJ2rDpy6ZuXowkkeO0zpAWLToAWubHm8fYKcNMxnWBCxu9EcRziuHSQrZI7R9Z9JHr/ALI=
+	t=1738661732; cv=none; b=MhjY+ekjqzIoLOyZly9fxuAcqUZ1nhOgfYhkdP62ZBTRPYW99/TFcHy+WqN+AavOOEUxwui4Syvzd/p2S2R+JAQ84yDyooTuwcj8rspPdCQrOXe9EkJ+D006e9MYUg0OGZXQC/xmb0LLgh7lNA9g5RUsAvX7uy8uOsqMBOfmhsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738661595; c=relaxed/simple;
-	bh=UhmlX7NngGlKiQg7PIi1PHmw2RN8jM0tc7R87ORha08=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CIdBizfV4H5DnyfovZgnqr0ZHJl209on0uwS6BNW7Ln0Dvd4FfsKVpxsXBF/FnZtIZeDwXVqBpNQSbHiTbYLEB6oOAhV48u6JqongiFNSqckDAFrgbMilF+0F+DSs7+0uK8yQl8V6Le9NydnHe92hSujxmBKjr7vnUmXYqX54rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tfFIR-0002hT-5P; Tue, 04 Feb 2025 10:32:43 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tfFIP-003RRm-2s;
-	Tue, 04 Feb 2025 10:32:41 +0100
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tfFIP-00ABRw-2d;
-	Tue, 04 Feb 2025 10:32:41 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1738661732; c=relaxed/simple;
+	bh=XsdL0HyKzrkFPB8QhC4PtBlbmqD9wYUifbbufUXba/c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=joSV/tiiWIxPdST+hb7AS2uWIrAf89wBHLVMqypKj87gxW4XalYaBjUA5M+uq4csAtzU7Cv0shG+PDn5mF7B3ToQghdzuHA7bF7aNodQZIuNdc9IX2gMH2oshTlnuoiZFGmSAbIOp8WunwtDBStPvPgvIYujfxurbEx2FK3lDUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I2s9RH5y; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I2s9RH5y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05744C4CEDF;
+	Tue,  4 Feb 2025 09:35:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738661731;
+	bh=XsdL0HyKzrkFPB8QhC4PtBlbmqD9wYUifbbufUXba/c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I2s9RH5yZFpv1QBN20aPw2+outg8LNoMSK7WLSyvS99Tf+wZvHpW1D79nuqzCnR4x
+	 v8aBVzyK97Z0T5TD8rQCAtyWDrpyiaV9TXaCImvytpqvyMtxt9/WEzRYTfJdKQrfzu
+	 am96RSoYSZqVP8bjndCnoY5F67szg+8AYhaE59iWo/1MZ/w+ktbGgLbKaCAfAN3usD
+	 KpftbGirkiv4ESOQECdFdH/x2+ofBFR3ipHo4+0hG30ZhxBMnsQwgLSXQNdvIjoKfa
+	 ffwC3cg6OrEYbZOs2Z+NbTjPCmjaNhhNjWtBB/EjF0w5TOp5ffpYRP5fkClmvVv74n
+	 Ln/+1w9FG7piQ==
+Date: Tue, 4 Feb 2025 09:35:26 +0000
+From: Simon Horman <horms@kernel.org>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v1 0/2] Use PHYlib for reset randomization and adjustable polling
-Date: Tue,  4 Feb 2025 10:32:37 +0100
-Message-Id: <20250204093239.2427263-1-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Alexandre Ferrieux <alexandre.ferrieux@gmail.com>,
+	netdev@vger.kernel.org, workflows@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH net] docs: netdev: Document guidance on inline functions
+Message-ID: <20250204093526.GK234677@kernel.org>
+References: <20250203-inline-funk-v1-1-2f48418e5874@kernel.org>
+ <a2ae1cda-8210-4e6c-86ea-0ee864e13b23@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a2ae1cda-8210-4e6c-86ea-0ee864e13b23@lunn.ch>
 
-Hi all,
+On Mon, Feb 03, 2025 at 04:10:24PM +0100, Andrew Lunn wrote:
+> >  Conversely, spelling and grammar fixes are not discouraged.
+> >  
+> > +Inline functions
+> > +----------------
+> > +
+> > +The use of static inline functions in .c file is strongly discouraged
+> 
+> I don't think 'static' is relevant here. They probably are static, if
+> they are inline, and to avoid warnings about missing declarations. But
+> we just prefer not to have any sort of inline functions without good
+> justifications within a .c file.
+> 
+> A nit pick, so:
+> 
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-This patch set tackles a DP83TG720 reset lock issue and improves PHY
-polling. Rather than adding a separate polling worker to randomize PHY
-resets, I chose to extend the PHYlib framework - which already handles
-most of the needed functionality - with adjustable polling. This
-approach not only addresses the DP83TG720-specific problem (where
-synchronized resets can lock the link) but also lays the groundwork for
-optimizing PHY stats polling across all PHY drivers. With generic PHY
-stats coming in, we can adjust the polling interval based on hardware
-characteristics, such as using longer intervals for PHYs with stable HW
-counters or shorter ones for high-speed links prone to counter
-overflows.
+Thanks Andrew,
 
-Oleksij Rempel (2):
-  net: phy: Add support for driver-specific next update time
-  net: phy: dp83tg720: Add randomized polling intervals for unstable
-    link detection
-
- drivers/net/phy/dp83tg720.c | 78 +++++++++++++++++++++++++++++++++++++
- drivers/net/phy/phy.c       | 28 ++++++++++++-
- include/linux/phy.h         | 13 +++++++
- 3 files changed, 117 insertions(+), 2 deletions(-)
-
---
-2.39.5
-
+I agree that static is not helpful here, I'll drop that in a v2.
