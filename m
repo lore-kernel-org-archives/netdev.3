@@ -1,40 +1,65 @@
-Received: from out.smtpout.orange.fr (out-65.smtpout.orange.fr [193.252.22.65])
+Received: from mail-pj1-f68.google.com (mail-pj1-f68.google.com [209.85.216.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0DA20C029;
-	Tue,  4 Feb 2025 14:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7EE20A5E0;
+	Tue,  4 Feb 2025 14:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738678738; cv=none; b=uutKAiPN/kq2UolKzYKjQ3v5C3gHvvDMaj0UV6DXmL2cEEGIGTngQ8klFJCiFkjIdAxnlwDACcMmzePfVAooSXJiDmh57wPLzFSvbsFme5DCoQU4sRhlzdhIOobI2YJNuI9KTOfgAshjCHx0KdvkjfLlRNjgeoIfRgmPFKWfNxw=
+	t=1738679034; cv=none; b=plLNUz9QjJwMEqLFoWOjTjS2T7lsQtqii5hMYSGBm2ejob5xo3LQ29JUBocI5YVfUW5tkWMbBld5M84RAumR2rn8rRqBt4nsk+gsMeA2d1E7/KbrfB/C2Rs6A4y1X6S1vWrnLAPg8pJPpNdacH56pAbbNqpc3ZJZOadx1yQXDQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738678738; c=relaxed/simple;
-	bh=nvNHt7cwQmDcJEtj+2bHSw5+iiQ9a5ScOXgH8QpHeWc=;
+	s=arc-20240116; t=1738679034; c=relaxed/simple;
+	bh=GkanHTg8YJfOIYZPl5qFaUDX3s4sbctMSazV6gA65H8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K79jc+kS7uOvEiZ+ILMEAB39mr5V5O6b1d543ZgiPhrG8gA1GnGk8Rg3i9DPMf5BhsnavYft7FntFrpfJG1dtl85z4qNsbe+HZl9H8YHSiz15qYCl7Z/bZfsLQ0fW1aTm/Iv8a98x8i8upzG9IvTGhOcpAQORJzOGZb+6+HZ4Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=stm50rGq; arc=none smtp.client-ip=193.252.22.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+	 In-Reply-To:Content-Type; b=Bx/UDXWSQqb1VtZZ4hQ+eLnvaiKgfiCqSMf3hiYQM0CMk8i4MncXUk42WXdT/BD6d0BjzTFPiSIBsFJeJcbpxsDXuzBN+/8IEK1q0gv7KH+LxqWsPMMi/PggR4/3lMLun3v/u2BYlmIcV9z98NlcpmKA6QpURgUNJZSAk5jrkxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aEnSuUvW; arc=none smtp.client-ip=209.85.216.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="stm50rGq"
-Received: from [172.16.82.72] ([124.33.176.97])
-	by smtp.orange.fr with ESMTPA
-	id fJc6tfzAathYvfJcBtDPQV; Tue, 04 Feb 2025 15:09:28 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1738678168;
-	bh=tUcBiUpcHUfI6arbSS7myC+Gqdvvs9Qfr5JLm5sdhwk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=stm50rGq3KIg8byMh5Ql5KS8pcLbdesu1KN2un/jypmXff+cANo+hyFBEHKmC5AwT
-	 bDdB7xLc0EmUPWljpSx22kJ4LeH7OERsR9tbcNgHJuep+Gfck6xoxGrx+pbfxJazR7
-	 4q6HYgOjHqoKr6m/95A1qKijGrgDolwqfQ8fanCDn0u8qu3hLfxzAEKwTARVJH9KBa
-	 OOkMt4oBoNYym7X2A42r8Fzg7/qpYIQ6azTv/9h8AAGdEcscm/rVqF/68AxkFBIxTF
-	 c/ugwzgobylldjyVcq5CG9gsOul6R29iI+VGEynRtLnk9mzwn6z+7eMHwdeEYDwbeL
-	 Bxs5hING+DHxQ==
-X-ME-Helo: [172.16.82.72]
-X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 04 Feb 2025 15:09:28 +0100
-X-ME-IP: 124.33.176.97
-Message-ID: <b25b21b2-c999-4f21-9ad0-30113b4c655d@wanadoo.fr>
-Date: Tue, 4 Feb 2025 23:09:17 +0900
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aEnSuUvW"
+Received: by mail-pj1-f68.google.com with SMTP id 98e67ed59e1d1-2f9d74037a7so379057a91.2;
+        Tue, 04 Feb 2025 06:23:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738679032; x=1739283832; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QyhfawIW6BL9ao0Gk2vDilOwFrFbnNBUuoOSGGmZbwg=;
+        b=aEnSuUvWlraNL4NLtZs/XCTtHdjUA1ZapQ30UpRHw6HhwQGQZbBgH2hWj25A16N4+Q
+         O2P8LQDh1pk0HvkKU/GkJVeB6/o2xGxeBck/RiOP276IAc8jEiPpTCAzT2Hv2RAoMqTv
+         jUkateTOQgNirim1elRNfx7h5TJAVp7XImQUFF/nHIBzgQgTevq8hJCfNFzS7n4uiqaR
+         zZcJcGTR1/7pyUrWnLZPEjpw0YqD7rGwDsk66eRxewdYew1dLzmNC9j3G/eGsSvYiYhF
+         hwGiIOIKfDD4Of68btSenw/Sn1mJVXhhvtdQtwe2UzulnbJyAAUkyArPVhTYnvuNTCGX
+         W6uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738679032; x=1739283832;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QyhfawIW6BL9ao0Gk2vDilOwFrFbnNBUuoOSGGmZbwg=;
+        b=X2b/kUeEQaR+4UHQwmiFCiYGrgjNbbKSy22rVu3ebClMtVHtVDZPS2L8dQVARWNcs+
+         2ssdHEsHkJDReBIF8qPAxMc1kicCYODT8FHz7q/0Ipg1UNlztFn6KCa7srb3IXWIyNtB
+         q9hlNxdl8TuI2DDanxEKbi9pb/bahQlq4JbXIxGKB6DlNMwyDc85fiCchIyt2NTzIwxa
+         320QTNjBghP32krOI/XAbEwFFTIzvfiZ1EfG5KeI5uLpObvUqFq1i9SlAd7AbPy9Trxv
+         qjBjvDC+JcKhSP0M8Wrj/+nMceEp+tOV36Bh4sLo+ENHN/CD/gh8XxuDiWGy8CzDLcJ6
+         IWaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV6ALcW1lgJt5xBKT9ig3Q+G3mx9sBjwtT0rFWCWvq5bmfFb4xVCm7YYPyWWbrn5NuL0pmIyNYfvksCvoo=@vger.kernel.org, AJvYcCXMsjUyQfPIqQagUTD91LqHDUoV3J0+Bs3oczzFGLZ42LePo4m1EpH60xYUzFfX1Yzk2QQA62Uu@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxHHY8MieSCdIfYqHxNmwyOIF62Sh+Lh+S7Svl+cIEg90J20PA
+	j05Yi/XELiLRcGixCegR3nNUaamOcEd8HwLBwyy8hL1eOeSecwu4
+X-Gm-Gg: ASbGncsKhO5J9QSXM0iWmk4FUjpPeaipst/NJp81B3oc+BzOC4nrBpPY83ALtEpRhgI
+	UOU5mZC49r0OrHu+DVXkOdXNai+e1Sr4Kfoe99mVY7ZbJkPGM3CNbWLvr4rhFTt0+J8i2FqNyHc
+	y1cDJsJqggISCOoAyv2O7kjQHQ3vKxCc8cK45nbPD7pO43z9vwu09AOCAgVjvzTkuyCQyXPTrBQ
+	4rTZzhbUmWOBm1z5IaCpcbbXy83sNJYWFBfA5AtrERHXhq8pmwqf69LbAJ9eEccFziRgLePS38r
+	n2pYE0XTRV7cTwBzljotGO8FMZAc4p70URVJh1DzEj8b0bhiOn/AsEgk32OiqYOTQQfCTIZEYrs
+	XstU=
+X-Google-Smtp-Source: AGHT+IF0T9oZQc1Tw7DdE7b1zk1AYdK5JS5KIXLtSzoJadaSG6bKYNHl/8toZwcR/pyHhtDXi9GUPQ==
+X-Received: by 2002:a17:90a:1189:b0:2f9:c56b:6ec8 with SMTP id 98e67ed59e1d1-2f9c56b6fb0mr3538171a91.10.1738679032080;
+        Tue, 04 Feb 2025 06:23:52 -0800 (PST)
+Received: from ?IPV6:2409:8a55:301b:e120:3936:dcf4:dc64:c1b9? ([2409:8a55:301b:e120:3936:dcf4:dc64:c1b9])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f83bc97d95sm14927006a91.8.2025.02.04.06.23.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Feb 2025 06:23:51 -0800 (PST)
+Message-ID: <c4b8f494-1928-4cf6-afe2-61ab1ac7e641@gmail.com>
+Date: Tue, 4 Feb 2025 22:23:43 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,101 +67,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: general protection fault in devlink_info_serial_number_put
-To: YAN KANG <kangyan91@outlook.com>, Jiri Pirko <jiri@resnulli.us>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: "syzkaller@googlegroups.com" <syzkaller@googlegroups.com>,
- "David S. Miller\"" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- "linux-can@vger.kernel.org" <linux-can@vger.kernel.org>,
- Marc Kleine-Budde <mkl@pengutronix.de>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <SY8P300MB0421E0013C0EBD2AA46BA709A1F42@SY8P300MB0421.AUSP300.PROD.OUTLOOK.COM>
+Subject: Re: [RFC v8 3/5] page_pool: fix IOMMU crash when driver has already
+ unbound
+To: Christoph Hellwig <hch@infradead.org>,
+ Yunsheng Lin <linyunsheng@huawei.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ zhangkun09@huawei.com, liuyonglong@huawei.com, fanghaiqing@huawei.com,
+ Robin Murphy <robin.murphy@arm.com>,
+ Alexander Duyck <alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Eric Dumazet
+ <edumazet@google.com>, Simon Horman <horms@kernel.org>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20250127025734.3406167-1-linyunsheng@huawei.com>
+ <20250127025734.3406167-4-linyunsheng@huawei.com>
+ <Z5h1OMgcHuPSMaHM@infradead.org>
 Content-Language: en-US
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Autocrypt: addr=mailhol.vincent@wanadoo.fr; keydata=
- xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
- LFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI+wrIEExYKAFoC
- GwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQTtj3AFdOZ/IOV06OKrX+uI
- bbuZwgUCZx41XhgYaGtwczovL2tleXMub3BlbnBncC5vcmcACgkQq1/riG27mcIYiwEAkgKK
- BJ+ANKwhTAAvL1XeApQ+2NNNEwFWzipVAGvTRigA+wUeyB3UQwZrwb7jsQuBXxhk3lL45HF5
- 8+y4bQCUCqYGzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrbYZzu0JG5w8gxE6EtQe6LmxKMqP6E
- yR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDldOjiq1/riG27mcIFAmceMvMCGwwF
- CQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8VzsZwr/S44HCzcz5+jkxnVVQ5LZ4B
- ANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
-In-Reply-To: <SY8P300MB0421E0013C0EBD2AA46BA709A1F42@SY8P300MB0421.AUSP300.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8
+From: Yunsheng Lin <yunshenglin0825@gmail.com>
+In-Reply-To: <Z5h1OMgcHuPSMaHM@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-+To: Jiri Pirko
-+To: Jakub Kicinski
-+CC: David S. Miller
-+CC: Eric Dumazet
-+CC: Paolo Abeni
-+CC: Simon Horman
-+CC: netdev@vger.kernel.org
-
-On 04/02/2025 at 16:44, YAN KANG wrote:
-> Dear developers and maintainers,
+On 1/28/2025 2:12 PM, Christoph Hellwig wrote:
+> On Mon, Jan 27, 2025 at 10:57:32AM +0800, Yunsheng Lin wrote:
+>> Note, the devmem patchset seems to make the bug harder to fix,
+>> and may make backporting harder too. As there is no actual user
+>> for the devmem and the fixing for devmem is unclear for now,
+>> this patch does not consider fixing the case for devmem yet.
 > 
-> I found a new kernel  NULL-Pointer-Dereference bug titiled "general protection fault in devlink_info_serial_number_put" while using modified syzkaller fuzzing tool. I Itested it on the latest Linux upstream version (6.13.0-rc7)related to ETAS ES58X CAN/USB DRIVER, and it was able to be triggered.
-> 
-> The bug info is:
-> 
-> kernel revision: v6.13-rc7
-> OOPS message: general protection fault in devlink_info_serial_number_put
-> reproducer:YES
-> 
-> After preliminary analysis,  The root casue may be :
-> in the function:  es58x_devlink_info_get drivers/net/can/usb/etas_es58x/es58x_devlink.c
-> es58x_dev->udev->serial   == NULL ,but no check for it.
-> 
->  devlink_info_serial_number_put(req, es58x_dev->udev->serial) triggers NPD .
-> 
-> Fix suggestion: Check es58x_dev->udev->serial before deference pointer.
+> Is there another outstanding patchet?  Or do you mean the existing
+> devmem code already merged?  If that isn't actually used it should
+> be removed, but otherwise you need to fix it.
 
-Thanks for the report. I acknowledge the issue: the serial number of a
-USB device may be NULL and I forget to check this condition.
+The last time I checked, only the code for networking stack supporting
+the devmem had been merged.
 
-@netdev and devlink maintainers
+The first driver suppporting seems to be bnxt, which seems to be under
+review:
+https://lore.kernel.org/all/20241022162359.2713094-1-ap420073@gmail.com/
 
-I can of course fix this locally, but this that this kind of issue looks
-like some nasty pitfall to me. So, I was wondering if it wouldn't be
-safer to add the NULL check in the framework instead of in the device.
-The netlink is not part of the hot path, so a NULL check should not have
-performance impacts.
-
-I am thinking of:
-
-diff --git a/include/net/netlink.h b/include/net/netlink.h
-index e015ffbed819..eaee9a1aa91f 100644
---- a/include/net/netlink.h
-+++ b/include/net/netlink.h
-@@ -1617,6 +1617,8 @@ static inline int nla_put_sint(struct sk_buff
-*skb, int attrtype, s64 value)
- static inline int nla_put_string(struct sk_buff *skb, int attrtype,
-                                 const char *str)
- {
-+       if (!str)
-+               return 0;
-        return nla_put(skb, attrtype, strlen(str) + 1, str);
- }
-
-Of course, it is also possible to do the check in
-devlink_info_serial_number_put().
-
-What do you think?
-
-> If you fix this issue, please add the following tag to the commit:
-> Reported-by: yan kang <kangyan91@outlook.com>
-> Reported-by: yue sun <samsun1006219@gmail.com
-> 
-> I hope it helps.
-> Best regards
-> yan kang
-
-
-Yours sincerely,
-Vincent Mailhol
-
+As my understanding, this should work for the devmem too if the devmem
+provide a ops to do the per-netmem dma unmapping
+It would be good that devmem people can have a look at it and see if
+this fix works for the specific page_pool mp provider.
