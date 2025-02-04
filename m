@@ -1,138 +1,142 @@
-Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D20027456;
-	Tue,  4 Feb 2025 00:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F314120B
+	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 00:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738628433; cv=none; b=Y5B2DIoL+myNievxcakPvQQEX6cxRm54889l9jqXnv9TVVgL7BfZlFxMhm+Oo7E1hFci7Cu2RK5nAZHTkItLp0z3MbBeXiXhpa7xcPwPlrsRP7+BSOly45I3Z0cDbZ0tAoWhGkFook7zRAB/5Ms1EDRaGOwXRSyeX2zhiI9OvwQ=
+	t=1738629007; cv=none; b=YGa8JfVvI2MgnEqIYCDH2/LmQk2OY9rAT8Wze+3W7Z1BzPQWKJ/4cVJ2RaEZUWsTIYz+wwxhou0woOh2I2vk2M3yEcuPQ/Mpt8B9kHVlrWgj6lA6Rb6PmcXIcZPtch5pZDOgrdTd3zzYcLfJYmdcHxJ2sqAwtP1bXV4NX2j2KS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738628433; c=relaxed/simple;
-	bh=STtq33ta4bEsqsI5UgFP9VMsgX6krD4EJB+oHjyFi7s=;
+	s=arc-20240116; t=1738629007; c=relaxed/simple;
+	bh=NrOjKgLQr3QfAne2gG2ROs8/SBnGodNEd1uyXzcB0Qo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UrC8MYr6A+5dkZns3Q64VWCYA1bWixNMFv19J8MlCklAH1NHucdqN6xtV2o9YP4jqYqgl0Gyo76uM39rosadsLnz/uYxu0NNsKkkjMxP53hY/uGJAzP0OQVo25KF3X+VsvEFXXAv6rKfIR0RI0h/mDWekCx3d6Byj17gUfwiVkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kCT7ysUL; arc=none smtp.client-ip=209.85.166.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=VURPhKEa+WMjltfkT7TR8dXmtskcuVub9BOC3w0Q2wGz4/bWAmqlVigT9roxAKBi5G0k/XOiQ//J/2MdQNbr+IBONtffNsCeVCwQGBYJbqm8MxoES41QswoNzh8lHdfnyqJ2yBnCu5nrEwHXzbdRAidr7ztFvRZqXoN6PAu3Exw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=AcOX3u0C; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kCT7ysUL"
-Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-3cda56e1dffso14819605ab.1;
-        Mon, 03 Feb 2025 16:20:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="AcOX3u0C"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-6f975a19f4fso4974587b3.1
+        for <netdev@vger.kernel.org>; Mon, 03 Feb 2025 16:30:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738628431; x=1739233231; darn=vger.kernel.org;
+        d=paul-moore.com; s=google; t=1738629005; x=1739233805; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mxmW4Y2+wOmylyn5P7dlnLdORXbzWfEJhbDwSFBnIAI=;
-        b=kCT7ysULP6qlrM+b2NOu+Yu4adrojZNNB/77NuQ/UEkPrKokdGK9qErwJ1Qge/tjvY
-         BioD4EimDXDFtSgJM6dQhJIdR4cXJSi7UAJNQ57Imv3uIXwiPyOdjvxV8pehwYcQXeGG
-         Mbi+Mum8p7lVyFDaG/trAKSGSPJel5f3GBW1sS8lW0LzZBTrNp3rfVtmaWxKRImMCV8F
-         BKi4WpAQjgbypjK7JWT77++8ihMCkSCbg2EoL7eQi5rN1nqJUIyWUf0NJO+sGoDZGEXj
-         T6hFMYU2lU9Wp3uyhLeVRV4fnTXs+4jkJjABGVy3Zq2Czf0FJHCnSJjdZxnlMgD/ZFRF
-         pNaA==
+        bh=NrOjKgLQr3QfAne2gG2ROs8/SBnGodNEd1uyXzcB0Qo=;
+        b=AcOX3u0CE8uA7DeD5MPddVECOozCU1QSyO17jqn5/GUixgkVaAXBQUiMNVzVCxMS9x
+         4mDjmn9tqsPMasGp/j+f2kZrGNas8X+mWTdhU2+rx2ZRDMtFb+QARHLxCwxV9uRn4POi
+         Lw5H6FM34Jq/+xWV7ZHCCti4vdThpZU4SxTY0CmPg81GKwEV78QcCtGVfkYzO6O5O1az
+         L5Xkx7Kn8bZ6WLR54p/1heCupZRtxj0RTSIqdUFKjtaFSGRb3b3ygaeHZmRaRY5lvW4r
+         iL180QOPEhI1oyoVHJkz0txXrAFp+nX8dw+mYQBL7cQ9faAGrW/Xy7wq7eJvJHyEZVGc
+         iOJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738628431; x=1739233231;
+        d=1e100.net; s=20230601; t=1738629005; x=1739233805;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mxmW4Y2+wOmylyn5P7dlnLdORXbzWfEJhbDwSFBnIAI=;
-        b=ZMLkZLg4mNnNfvB6pLomLyYwKCrvmhh5AP+nOXQ6KDAlsnMfQXKSnCldEHu/JxMbAs
-         3pY/n0cWK7lInrqDBo2gW70Nx5QSsyseUIFveUfP79SfBzqCdJ9aF4id06KD3lXtVsZT
-         F93MrROqOz07Y+F2g64cyzQdXW3jbJjcZ6d+XCL/BXc9EC12Jr5WRYOGQKsSKUsZ/7yj
-         sgoLQ8nlLxbaFT+kfSo1BdfOj+9IrND+iivNk4YbfdtMOQ16lxM8gvIb3PazI4wj0DdH
-         f+MdHcvMFlfbI47B1MiLGh5gtsKxtuDsXVYNSvRhwT78XlcsUfUdA2/NQNyQ3gO68/FZ
-         fzRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUR5JO17Eixumr/XZ65UecfiB39VBmnwZdAkkPdOuuo1dE6fqmgV6jTfx9Tlq58IMzQYn0ZKeT2@vger.kernel.org, AJvYcCUnFyK0FSN6U5aRqdjMHgl3X7TE9+r7lpb9wN4BQjru8k3OXpq/KKZdHEI1W6IEBa0+MK8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdRHooBsaeeGkyBYvCqcdKJxSLklEEA17j6Z+xS+XUuPX92Egw
-	0iu+my6nsTJp6H4ZHzYKlA3wX4Gshf+PeMP2/ym3uMXlupPxKdmKd3+I3K9u45zzGe2dW+kiRcn
-	XEUFxR6ThGyNGcPmuT1JiVhC+XPk=
-X-Gm-Gg: ASbGncsDzorDECYmW2yEbd8vO7Cem4EL+S6cHCEgBgeSUCqgaVyarWHAXsookho+OAz
-	nUDKxY5cvhJiUzCBhFEQ7veOmzYDx/bfvB2H3p+plS4D3Wlhhox48Fu5dz/kEY1LD7EnhITiY
-X-Google-Smtp-Source: AGHT+IGxgTtWRrw2PnhuY8Fcwym41F1DXW9WLqIdNWtmF5t5YQyEsuvKGTHGWnXrrt54IGjKYmgTjakhH6h/rYoMtww=
-X-Received: by 2002:a05:6e02:3789:b0:3d0:124d:99e8 with SMTP id
- e9e14a558f8ab-3d0124da53emr123648135ab.13.1738628430413; Mon, 03 Feb 2025
- 16:20:30 -0800 (PST)
+        bh=NrOjKgLQr3QfAne2gG2ROs8/SBnGodNEd1uyXzcB0Qo=;
+        b=JOPdMapw+eCzTnob51Q1HHkHhV95gghejtksygPMuXz9tt/mhit34cH2TpOAAru510
+         CVbK5GFvRNzX7Wkr2dxcz5VcsI5CCQPpArTpKd4McEvn/Ud7nEWcJNgItV/nx0C6nUlz
+         y5SvpE2DivdWJNn4/mPQ1tTY9+e6nBLFPtON5ioUgOv0UJOqgJqWEOfJ4pXTIVkMO+Wd
+         q2L6UKhQSFTDqikn0WVEOHWw4ZfRGiWvCMoM/hv7HG386tsjn+7oAzPQv+1DyZ5zuZ/1
+         T6kUgwoGMbYkBc+R8zjmrWeo1Rui754o4ubO5SKXIg5CuGUcy0XzosrAc8D5oRCahCG0
+         XTGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXyFMJYCIAp3aPws7N7VjED0CNdUHuNsaT5aXg7/9VWNk9XkX32Cn8NBNZJtsB97Xzar/LNkrs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5CVGQw5XdKaG1C7mR4jD/B5whtU0H/oLkLbcBKwvcq1UqIHC/
+	Z+1mY9TqTQ0F4lTJW0YS1F5K7svL7WKoNI0+wvjLZl29S2HC0udQ1RXZrgcAs0daz50fWrRSs5L
+	tMGAC/ROOqMOEx2m92JsFzjVaT5zrUWqMbGo5
+X-Gm-Gg: ASbGncurkWEY352if9sCbA/xdyaGpvd3K/4ggLjaoaP7Qv7IsgoHC2Dv9H+W4J31E8Q
+	2JuDkNRzP+uzXkIoNep8zO7ZCdO4lR3Bj4MObblHDPVGSAty9O9eM3WbZ488NbzthbvEzOr8=
+X-Google-Smtp-Source: AGHT+IEVbwtz+5w3Q/0H35+gEOBvf9lHbFARWTV19VmX2LqAuhVy8RS03DnQT9OFtbiSGhWCOlD2FbmJsxoDJGFVn2U=
+X-Received: by 2002:a05:690c:7445:b0:6f8:cedc:570d with SMTP id
+ 00721157ae682-6f8cedc5710mr129600047b3.6.1738629004567; Mon, 03 Feb 2025
+ 16:30:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250128084620.57547-1-kerneljasonxing@gmail.com>
- <20250128084620.57547-7-kerneljasonxing@gmail.com> <2097d7a3-97f0-4c79-8f82-aa7e2b7d9d2b@linux.dev>
-In-Reply-To: <2097d7a3-97f0-4c79-8f82-aa7e2b7d9d2b@linux.dev>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Tue, 4 Feb 2025 08:19:54 +0800
-X-Gm-Features: AWEUYZleHSm7zkiMLx6jYNiRa6_1bVsT3cAFIc-w-tN0I_6DSTsVLMGmwAmJrDA
-Message-ID: <CAL+tcoB5AVYkHu74VN+Xsiq=Lu-H=9q5qFEr-331T5YV8OfThA@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v7 06/13] net-timestamp: support SCM_TSTAMP_SCHED
- for bpf extension
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, dsahern@kernel.org, willemdebruijn.kernel@gmail.com, 
-	willemb@google.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
-	john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me, 
-	haoluo@google.com, jolsa@kernel.org, horms@kernel.org, bpf@vger.kernel.org, 
-	netdev@vger.kernel.org
+References: <CAFqZXNtkCBT4f+PwyVRmQGoT3p1eVa01fCG_aNtpt6dakXncUg@mail.gmail.com>
+ <e8b6c6f9-9647-4ab6-8bbb-ccc94b04ade4@yandex.ru> <67979d24d21bc_3f1a29434@willemb.c.googlers.com.notmuch>
+ <CAFqZXNscJnX2VF-TyZaEC5nBtUUXdWPM2ejXTWBL8=5UyakssA@mail.gmail.com>
+ <6798f1fb5e1ba_987d9294dc@willemb.c.googlers.com.notmuch> <c4413e16-d04f-4370-8edc-e4db21cc25f6@yandex.ru>
+ <67996154e30ce_d9324294c4@willemb.c.googlers.com.notmuch> <8b81a534-9c30-4123-bd7d-bf3a9d89dfcb@yandex.ru>
+ <679a376739b99_132e08294f3@willemb.c.googlers.com.notmuch>
+ <04879909-72e5-4ab6-8c28-5d3cb551feb5@yandex.ru> <679bace3a753f_1d35f32942d@willemb.c.googlers.com.notmuch>
+In-Reply-To: <679bace3a753f_1d35f32942d@willemb.c.googlers.com.notmuch>
+From: Paul Moore <paul@paul-moore.com>
+Date: Mon, 3 Feb 2025 19:29:53 -0500
+X-Gm-Features: AWEUYZmUsmD5zCo4hDfd3nWC-dGlKyR6ryMJMAzMHvcapPBgUl5n85uHWuFs7UY
+Message-ID: <CAHC9VhS-uSaVmy65oA8p6tCzMZxMsuzdmxO-vf7L0p44ZKO=_A@mail.gmail.com>
+Subject: Re: Possible mistake in commit 3ca459eaba1b ("tun: fix group
+ permission check")
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: stsp <stsp2@yandex.ru>, Ondrej Mosnacek <omosnace@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Jason Wang <jasowang@redhat.com>, 
+	Jakub Kicinski <kuba@kernel.org>, network dev <netdev@vger.kernel.org>, 
+	Linux Security Module list <linux-security-module@vger.kernel.org>, 
+	SElinux list <selinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 4, 2025 at 7:23=E2=80=AFAM Martin KaFai Lau <martin.lau@linux.d=
-ev> wrote:
->
-> On 1/28/25 12:46 AM, Jason Xing wrote:
-> > diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> > index 6042961dfc02..d19d577b996f 100644
-> > --- a/net/core/skbuff.c
-> > +++ b/net/core/skbuff.c
-> > @@ -5564,6 +5564,24 @@ static bool skb_enable_app_tstamp(struct sk_buff=
- *skb, int tstype, bool sw)
-> >       return false;
-> >   }
+On Thu, Jan 30, 2025 at 11:48=E2=80=AFAM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
+> stsp wrote:
+> > 29.01.2025 17:12, Willem de Bruijn =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+> > > stsp wrote:
+> > >> 29.01.2025 01:59, Willem de Bruijn =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+> > >>> stsp wrote:
+> > >>>> By doing that you indeed avoid
+> > >>>> the problem of "completely
+> > >>>> inaccessible tap". However, that
+> > >>>> breaks my setup, as I really
+> > >>>> intended to provide tap to the
+> > >>>> owner and the unrelated group.
+> > >>>> This is because, eg when setting
+> > >>>> a CI job, you can add the needed
+> > >>>> user to the needed group, but
+> > >>>> you also need to re-login, which
+> > >>>> is not always possible. :(
+> > >>> Could you leave tun->owner unset?
+> > >> That's exactly the problem: when
+> > >> the user is not in the needed group,
+> > >> then you need to unset _both_.
+> > >> Unsetting only owner is not enough.
+> > >> Adding the user to the group is not
+> > >> enough because then you need to
+> > >> re-login (bad for CI jobs).
+> > > At some point we can question whether the issue is with the setup,
+> > > rather than the kernel mechanism.
+> > >
+> > > Why does your setup have an initial user that lacks the group
+> > > permissions of the later processes, and a tun instance that has both
+> > > owner and group constraints set?
+> > >
+> > > Can this be fixed in userspace, rather than allow this odd case in th=
+e
+> > > kernel. Is it baked deeply into common containerization tools, say?
 > >
-> > +static void skb_tstamp_tx_bpf(struct sk_buff *skb, struct sock *sk, in=
-t tstype)
-> > +{
-> > +     int op;
-> > +
-> > +     if (!sk)
+> > No-no, its not a real or unfixible
+> > problem. At the end, I can just
+> > drop both group and user ownership
+> > of the TAP, and simply not to care.
 >
-> This check is redundant.
+> In that case the safest course of action is to revert the patch.
+>
+> It relaxes some access control restrictions that other users may have
+> come to depend on.
+>
+> Say, someone expects that no process can use the device until it
+> adds the user to one of the groups.
+>
+> It's farfetched, but in cases of access control, err on the side of
+> caution. Especially retroactively.
 
-Thanks. Will remove it.
+If a revert is the best path forward for v6.14, do you think it would
+be possible to get this fixed this week, or do you expect it to take
+longer?
 
->
-> > +             return;
-> > +
-> > +     switch (tstype) {
-> > +     case SCM_TSTAMP_SCHED:
-> > +             op =3D BPF_SOCK_OPS_TS_SCHED_OPT_CB;
-> > +             break;
-> > +     default:
-> > +             return;
-> > +     }
-> > +
-> > +     bpf_skops_tx_timestamping(sk, skb, op);
-> > +}
-> > +
-> >   void __skb_tstamp_tx(struct sk_buff *orig_skb,
-> >                    const struct sk_buff *ack_skb,
-> >                    struct skb_shared_hwtstamps *hwtstamps,
-> > @@ -5576,6 +5594,11 @@ void __skb_tstamp_tx(struct sk_buff *orig_skb,
-> >       if (!sk)
->
-> It has been tested here...
->
-> >               return;
-> >
-> > +     /* bpf extension feature entry */
-> > +     if (skb_shinfo(orig_skb)->tx_flags & SKBTX_BPF)
-> > +             skb_tstamp_tx_bpf(orig_skb, sk, tstype);
->
-> ...before calling this.
->
-> > +
-> > +     /* application feature entry */
-> >       if (!skb_enable_app_tstamp(orig_skb, tstype, sw))
-> >               return;
+--
+paul-moore.com
