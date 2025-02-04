@@ -1,165 +1,100 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC39E217647
-	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 19:27:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2ED204C15
+	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 19:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738697266; cv=none; b=tOhEOJloXSkTkTrlT6xG2x2xqrU7yoyT3JBRC3s5055Os4AtZMnrRfp/koiSDyE+GSXVR/YuZfL+BvjZEBuUC6ao7D7VHWeSYExL5Q/mHdMRKbQYtRozAWrEy9TrNDHBYvGTBf8Bvn4Rcdt1S88UI/JdIVUhZT6vz4Hfhqd9UkA=
+	t=1738698030; cv=none; b=OqdQCbWoystjlY3QUgS7FHDA54Y4Y9HNFH2/RANucalO6s6LtQ2Dla/SiEL2cJu4Nvrvd8p3pchGrgFa/+JtnRrsLvunrVDWT5a1/0QKn28c1Yh1wvFxB7f7WPjdCyd1SsXj4r4KZexFNDLQ5IjAWr6ogb0rQZayTXxxJP3gaU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738697266; c=relaxed/simple;
-	bh=CvYBgsQQ2sB2qTH/ispwYnc1GT/UJnN//HUW4OU8uMM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WcjLTesvOzWSbQ7mCJDTlWj4w6JKJZjA5ru/Fi9YSTngdcEBg2kkxShhGAR6lIR9IDqWoFBTm91xH94EtaIXQJFZ2Q543lBWuSny9T/RQMTtsYQ8Y9F5aaP27cxvgyp9AWupxuXVkFwnkeg75jOezmAk1npyZHWEnQCo/ThqdzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=YT6TKoqJ; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	s=arc-20240116; t=1738698030; c=relaxed/simple;
+	bh=cdGM8kH/xxgAF7oW0/bgae15mno8ZQcgJPZlTYmiWZE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ON0VJ/dHj9qHn06hJN0/sZUKdcDBXMmDebUsGAzKo3aYyQcxlYgdnIwIL/qsPCoqR5Cvcsowfy/PK4IsoYXlTaPhZ+UDDdluj7DM9fsDuslNoQMTuBZUMmedOlHiV1SI0pD3+n/WL+f5WXitrRJB74C6PG+RBJqlqqbjbDjo0i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=d3NXN8oF; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="YT6TKoqJ"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-219f8263ae0so113002645ad.0
-        for <netdev@vger.kernel.org>; Tue, 04 Feb 2025 11:27:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="d3NXN8oF"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6f6715734d9so41587357b3.3
+        for <netdev@vger.kernel.org>; Tue, 04 Feb 2025 11:40:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1738697264; x=1739302064; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8iOEoCrXIGW4Q927eer0s+nYHhVWh5aiFKVXEGf2lEo=;
-        b=YT6TKoqJ7WsNaU+ANvUyl/P7tTsIpeZaq9xNB6t7fFXo8U4f/ivhuojjWKtYtUZTkY
-         9SUfuxys4+rnRJ9KFDTJBsIWkjCZ1vdpJPGJ8RC2TPjIBNZ5zmluauJHRELBK4ePGuOl
-         kvuoU1APaQ2N+lGzVexTIPtQeL966q2z29lys=
+        d=paul-moore.com; s=google; t=1738698027; x=1739302827; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cdGM8kH/xxgAF7oW0/bgae15mno8ZQcgJPZlTYmiWZE=;
+        b=d3NXN8oFQqFBWyO+ks0oq+4M809qaZyO2jGqGfNsN+VoGNYYz+0QTB9hVBW2tvpugj
+         H6tQTAqBdL+XeCTgwyrQLw933fsmCeQlO5WqYByqTvC58P/OKrqSWE9FNsLgr4yvTmtW
+         6qB5rCWqD/xjbcoOP62icgHlvlKltiSlGxAIoSMTgrtodd2F04Z8n3n3/vkO1STlTdqs
+         BIclB0A6qCDQFaTRqzJxYXlXMWkjLAJi5T7df6ZDFPrNbdHWpxS3iqQMdRkZmepAJIcT
+         d5vjFHA/F6OfdSdyMCYE882LjZFNsZbR49XLtD5Bm1E7k2NFMN94OppGJ3HVbdnk0RFI
+         cS7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738697264; x=1739302064;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8iOEoCrXIGW4Q927eer0s+nYHhVWh5aiFKVXEGf2lEo=;
-        b=pVjKyawP5/iKLxKwcz8YWT2aPcTRR15nru2rck5o6nSJDDkqU6HNwKQWj+3PENWqir
-         Ns24BGFs+KYwYqa3dUvEExKeuFi01/KjJGLCCdnKQ1LqeQMk6MYFSInx3dv+6OvBr0Y3
-         JVP3hueWz7miNL91RpLBD+siNHwhVH4EF34Mb3Y23Sf1RKptkxB6IulKti8ln4Auy4TV
-         qJT/xY2DNFyqufULX8O+GeYL3EIA+Y6W8KM+XYw2TglavwlNWyMZXqMVoon+uRqEekwr
-         dbmpjg89OKW8Zbt2wZVkkReu8aRIW/4SZWQUSYYDtBIvgCvSZgx4eiiW6Aq8wJhYdg8+
-         2DRA==
-X-Gm-Message-State: AOJu0YyKy78swAmnsnp2D+Ek8zjJGzCY2PygNF83f6yH5ACWc1FPeniK
-	uU17Xtx61JeRrqu0UUffl6Ec+2edV7P5IoxGVWeudYd1ySjRaTD3uasY+hKK9EPKpeMJjbNyRQI
-	01MojshuzfUG9lIUsHWt0B5ONQsAdm9ivH/Cgdv14UCoTuBb57LwfBbVFq616dV2KuzSlSsqmPh
-	+0hMhXncW2rVbGNl5i6+Bk5T2A8S3PZJmwAhs=
-X-Gm-Gg: ASbGnctxIqBd1Vf+ZZYqobpM1lekdDOGAh6YLDGhPrbE6ypD2c2H5/X/1UlQ6h82Y2H
-	FKk2hsoAUjTLbhegR9Uh3FR/UH0hFlT/VJoJEDhXwTk4Xeq0/lH09JwEFyvJFq69WcQbT+w+NkJ
-	QvHVItw2uKdbE2aE8ezkx4g8t4CXDeY+5NxJ5ugDyftjSBuVyWT4RNJQaLLyVdTRHUzlkk8+B0q
-	ZLACnH/I+23vyskxDSLLRK/A52OfN70rkahuo79/S5CWmDkcSVsIwoRiMpiwvutfLqlZNs9amRB
-	onmcBwVRGX88meauXVcLJSM=
-X-Google-Smtp-Source: AGHT+IE+7dWcfNLhQTOMhd0Vsf5ukouIeilZjFgIDC26Ks2ade1xUAcue6WYJyYElM16Cq1HmnYHfA==
-X-Received: by 2002:a17:903:2406:b0:215:8dd3:536a with SMTP id d9443c01a7336-21f17e2a49fmr393235ad.4.1738697263622;
-        Tue, 04 Feb 2025 11:27:43 -0800 (PST)
-Received: from localhost.localdomain ([2620:11a:c019:0:65e:3115:2f58:c5fd])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de331ddfdsm99261345ad.210.2025.02.04.11.27.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Feb 2025 11:27:43 -0800 (PST)
-From: Joe Damato <jdamato@fastly.com>
-To: netdev@vger.kernel.org
-Cc: pabeni@redhat.com,
-	edumazet@google.com,
-	sridhar.samudrala@intel.com,
-	Joe Damato <jdamato@fastly.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Mina Almasry <almasrymina@google.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net-next v3] netdev-genl: Elide napi_id when not present
-Date: Tue,  4 Feb 2025 19:27:21 +0000
-Message-ID: <20250204192724.199209-1-jdamato@fastly.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1738698027; x=1739302827;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cdGM8kH/xxgAF7oW0/bgae15mno8ZQcgJPZlTYmiWZE=;
+        b=ZjJ6TVnfbtxREWBcEBiGy46eSy2zrjQP7rlo4JXUvpQhXdYlTskBHFt3lIf1r01yJ1
+         v1gyTBABlezcfPBkU5j2vFVcOUt6cijBFJhu4cQBtnFqhm72jyoP+CHGB3L/z80+Av1X
+         kqCn/9s5mlOB2THSXbOJuCiRsT5ldtZ5n+GDgSdKbgSe6r5JT9a4ZOwNlZ5N5kQy4Fr9
+         HYPygEiSDDaXZ7/LHThwgT4NAUuamKu7HzWMXeQrFXU9P24gdRDGKDwb8T3gJoPH4Flb
+         PPnJfnF4ZVrGUXpTLPKeMJVuhHRRTtjSCJavXtqSkigAPWJB03WEDEVoF7pB/oHd9XfP
+         F6og==
+X-Forwarded-Encrypted: i=1; AJvYcCUYRFrcZ9mY40UnRortBQzYQXPTieXLBK3Q013SE/3tJbJesdUve65KvbkMHMaZ1F8s5uCIeMg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKeUYorh4tJFHWHnFXJXCow3ajC8I9N6ygL3UQwFAKMf6HJtst
+	V73xnTxUaG1cB8AIb8bkjXpPNQxPR3wRkkBpMpWQZoKIa7gOjI3DBiOqJx74pWPoGfnyn7fvdQo
+	O4MlzChdePTf2BZNOvmyjzVDrp6uH0J0Sjlmv
+X-Gm-Gg: ASbGncsCrRUB6W79a+9pQFknK3xrZGcrilkRaqh7fNrpUGXiHtm/phOl6YfPs4vEt5I
+	YslZ416jipwzadhLeDtoRFyfbvejXPbKTaEkN+n/pARIiQDRQSOYVdXt8SMnwrHobkFwUqrI=
+X-Google-Smtp-Source: AGHT+IHWFCt3o0biOX5PlAx1Q1W7sOdakfYdrhJja4liqbRx2tgJL0CHhFhrdJ07R5vN7YVhHWgWbLaOhNespI1IhNc=
+X-Received: by 2002:a05:690c:4681:b0:6ef:7dde:bdef with SMTP id
+ 00721157ae682-6f989f89aa9mr771557b3.23.1738698027698; Tue, 04 Feb 2025
+ 11:40:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAFqZXNtkCBT4f+PwyVRmQGoT3p1eVa01fCG_aNtpt6dakXncUg@mail.gmail.com>
+ <e8b6c6f9-9647-4ab6-8bbb-ccc94b04ade4@yandex.ru> <67979d24d21bc_3f1a29434@willemb.c.googlers.com.notmuch>
+ <CAFqZXNscJnX2VF-TyZaEC5nBtUUXdWPM2ejXTWBL8=5UyakssA@mail.gmail.com>
+ <6798f1fb5e1ba_987d9294dc@willemb.c.googlers.com.notmuch> <c4413e16-d04f-4370-8edc-e4db21cc25f6@yandex.ru>
+ <67996154e30ce_d9324294c4@willemb.c.googlers.com.notmuch> <8b81a534-9c30-4123-bd7d-bf3a9d89dfcb@yandex.ru>
+ <679a376739b99_132e08294f3@willemb.c.googlers.com.notmuch>
+ <04879909-72e5-4ab6-8c28-5d3cb551feb5@yandex.ru> <679bace3a753f_1d35f32942d@willemb.c.googlers.com.notmuch>
+ <CAHC9VhS-uSaVmy65oA8p6tCzMZxMsuzdmxO-vf7L0p44ZKO=_A@mail.gmail.com> <CAFqZXNtq7SZSu_JyY5yaiOQy89c=5jG+vqdg3_RSUWm4JNN00w@mail.gmail.com>
+In-Reply-To: <CAFqZXNtq7SZSu_JyY5yaiOQy89c=5jG+vqdg3_RSUWm4JNN00w@mail.gmail.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Tue, 4 Feb 2025 14:40:16 -0500
+X-Gm-Features: AWEUYZn2hhrCR2-AHfRC_KOGhFrEXsKH0qPJHGGH-UvtSfO7A88HAuI2_QqeHyw
+Message-ID: <CAHC9VhRF0bka4zY5y1uNYUGXNSSwz6cdta+c0NH_YDO0MxauRg@mail.gmail.com>
+Subject: Re: Possible mistake in commit 3ca459eaba1b ("tun: fix group
+ permission check")
+To: Ondrej Mosnacek <omosnace@redhat.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, stsp <stsp2@yandex.ru>, 
+	Willem de Bruijn <willemb@google.com>, Jason Wang <jasowang@redhat.com>, 
+	Jakub Kicinski <kuba@kernel.org>, network dev <netdev@vger.kernel.org>, 
+	Linux Security Module list <linux-security-module@vger.kernel.org>, 
+	SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-There are at least two cases where napi_id may not present and the
-napi_id should be elided:
+On Tue, Feb 4, 2025 at 11:19=E2=80=AFAM Ondrej Mosnacek <omosnace@redhat.co=
+m> wrote:
+> On Tue, Feb 4, 2025 at 1:30=E2=80=AFAM Paul Moore <paul@paul-moore.com> w=
+rote:
+> >
+> > If a revert is the best path forward for v6.14, do you think it would
+> > be possible to get this fixed this week, or do you expect it to take
+> > longer?
+>
+> Willem has already posted patches on netdev [1][2] (thanks!), so I
+> expect it will be fixed soon.
 
-1. Queues could be created, but napi_enable may not have been called
-   yet. In this case, there may be a NAPI but it may not have an ID and
-   output of a napi_id should be elided.
+Great, thanks everyone!
 
-2. TX-only NAPIs currently do not have NAPI IDs. If a TX queue happens
-   to be linked with a TX-only NAPI, elide the NAPI ID from the netlink
-   output as a NAPI ID of 0 is not useful for users.
-
-Signed-off-by: Joe Damato <jdamato@fastly.com>
----
- v3:
-  - Took Eric's suggested patch to refactor the code to use helpers,
-    which improves the code quality significantly.
-
- v2: https://lore.kernel.org/netdev/20250203191714.155526-1-jdamato@fastly.com/
-   - Updated to elide NAPI IDs for RX queues which may have not called
-     napi_enable yet.
-
- rfc: https://lore.kernel.org/lkml/20250128163038.429864-1-jdamato@fastly.com/
-
- include/net/busy_poll.h |  5 +++++
- net/core/netdev-genl.c  | 13 +++++++++----
- 2 files changed, 14 insertions(+), 4 deletions(-)
-
-diff --git a/include/net/busy_poll.h b/include/net/busy_poll.h
-index c39a426ebf52..741fa7754700 100644
---- a/include/net/busy_poll.h
-+++ b/include/net/busy_poll.h
-@@ -24,6 +24,11 @@
-  */
- #define MIN_NAPI_ID ((unsigned int)(NR_CPUS + 1))
- 
-+static inline bool napi_id_valid(unsigned int napi_id)
-+{
-+	return napi_id >= MIN_NAPI_ID;
-+}
-+
- #define BUSY_POLL_BUDGET 8
- 
- #ifdef CONFIG_NET_RX_BUSY_POLL
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index 715f85c6b62e..5aa3ed870b2c 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -364,6 +364,13 @@ int netdev_nl_napi_set_doit(struct sk_buff *skb, struct genl_info *info)
- 	return err;
- }
- 
-+static int nla_put_napi_id(struct sk_buff *skb, const struct napi_struct *napi)
-+{
-+	if (napi && napi_id_valid(napi->napi_id))
-+		return nla_put_u32(skb, NETDEV_A_QUEUE_NAPI_ID, napi->napi_id);
-+	return 0;
-+}
-+
- static int
- netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
- 			 u32 q_idx, u32 q_type, const struct genl_info *info)
-@@ -385,8 +392,7 @@ netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
- 	switch (q_type) {
- 	case NETDEV_QUEUE_TYPE_RX:
- 		rxq = __netif_get_rx_queue(netdev, q_idx);
--		if (rxq->napi && nla_put_u32(rsp, NETDEV_A_QUEUE_NAPI_ID,
--					     rxq->napi->napi_id))
-+		if (nla_put_napi_id(rsp, rxq->napi))
- 			goto nla_put_failure;
- 
- 		binding = rxq->mp_params.mp_priv;
-@@ -397,8 +403,7 @@ netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
- 		break;
- 	case NETDEV_QUEUE_TYPE_TX:
- 		txq = netdev_get_tx_queue(netdev, q_idx);
--		if (txq->napi && nla_put_u32(rsp, NETDEV_A_QUEUE_NAPI_ID,
--					     txq->napi->napi_id))
-+		if (nla_put_napi_id(rsp, rxq->napi))
- 			goto nla_put_failure;
- 	}
- 
-
-base-commit: c2933b2befe25309f4c5cfbea0ca80909735fd76
--- 
-2.43.0
-
+--=20
+paul-moore.com
