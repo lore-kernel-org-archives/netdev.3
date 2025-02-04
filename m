@@ -1,135 +1,77 @@
-Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A307878F4F;
-	Tue,  4 Feb 2025 02:45:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1136B25A634
+	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 02:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738637138; cv=none; b=IbnuZu7QjS23r1vQgmr7BSknhLWYZY7+CqSlmqH+pnVobT7A5Tc6zeNihzQlkw/dNchHe3shWN9kXx6taFwFUm2RyN1yGcpQTroRp+5qF5ioLaTMcx+c3UDNyMMTZjM1hoUt8GNyAhKQxb6ZkP2CAaf5B4IHBdSiWihIdkLcBeY=
+	t=1738637407; cv=none; b=LshqOV35RecMFcfMVLlJGwUvNWw52bRIfPYvlLdh5/aFigfFq/p5Rc/CaygSg+VNPgpXtOwDvL4jLdsFa3Ghqs/mZa1LIh4a3KdzGVqYN2xfUrNDRIfrVRFniVuvD920CdSCCk1OMAYEuYWAuq0BpaloLsT1Q7xB+lTIi1saXZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738637138; c=relaxed/simple;
-	bh=yflwYZPaRxLnXTEznbm21UWh+afWaz33wb1Y8tW5Y4c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t7rZtM6B/v/rFk+qn3GIWSgEkPIqWuBpfI+ogOAfmAJgFFK89RouAYncmN0k1h6WUDOWlPk5BGyNlyMl4GTv5swnIShxZxQoJYGBzg4DShTGbRPTO+TY5jm6xdx2DjWy6T2svje6pwLd9HkhVjQ5e3GhNLqjBCJhxG3S9oZgEJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UDxf3ysp; arc=none smtp.client-ip=209.85.166.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738637407; c=relaxed/simple;
+	bh=3nW+gL2OJzhamvUDQ3NVRjubbFHJOfzHepSSb2tWQlA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ZxIm+16PLnvufQp44eMSJy9qNIeqNc1tMcvrDJG3XZC+op0KBPSXnf/gCqKBErBACeoBPUOErxkEXFdntpu05AoWbb+2+5hXP7JZSrtQxc/h/RtxUsvEvpD+8gaXRRqsxAOnf6knnBhSsqtRmYalaCYUCyC1i6TkLpfp+pIVM0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lxL3gCTR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UDxf3ysp"
-Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-3cfe17f75dfso38094815ab.2;
-        Mon, 03 Feb 2025 18:45:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738637135; x=1739241935; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yflwYZPaRxLnXTEznbm21UWh+afWaz33wb1Y8tW5Y4c=;
-        b=UDxf3yspfiqjNhzmEUt0lFyYDGlNowWL2qUsMKqIk30FP8MHwjFNCcf78lQxfldcD3
-         AlDefWkIVs9qQrmOmQ8C+EzYhd6g5j7K5+5QYXhBcyEzvZmLvGMrLoQlMo5GvftNoqhw
-         XHyfVBIZeWbGbm8uqakCqtcxb/evb8ZJ0Y0IztKI+w9CB01VxUkumMCsM37rBrTIUmxW
-         nw7ajyHPwAS86BdsM+iETyeYtrufjgzxWRb1l6P0YuS7JUbWfB47Z+vO2hA6sQPbwHUM
-         hu3zQpa5kzdF22/Nrr4QNi6nYyc8amWITOs+AzL6Z1Ai+XWMPK/3sP9AL7zyccsma+Jc
-         ES4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738637135; x=1739241935;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yflwYZPaRxLnXTEznbm21UWh+afWaz33wb1Y8tW5Y4c=;
-        b=rTBH1PuQ6M98Q5VhPY0ebtVVUfINCSZncWHiGTDzySi+HG5FSL197+1fg5zug7TXl+
-         OtZaXkF6lh6Ec202XBmy5bIwpvF/AL8dNFZDajX8WF0+nEVM7XMsAsqXdoxGYYWrCgPH
-         3lmhlzT7IVUujHkHxa58tfSfcUUsbN2zCc5Xotqck41+PNrgt55Df3p8n0TMKlRzvT/Z
-         1i/DMpslRevNiQ3AjZIUWomnXfXEQSLED+yB04q8hP6v2JVa+inWlzzr3blIvLtTvJiH
-         utToq6Lk8LgaJJaASFQ7QXCzEAJkPQoEma0ErdS4ghyloeZVwppl/RBDFm6Eis9zTjtD
-         53BA==
-X-Forwarded-Encrypted: i=1; AJvYcCVA0roTxYH1UVgNwzBDCnY9XvPLGOAPiUx9Ls5wovqAnXE+DjWT+8QxmynMWncYIu5VnC8=@vger.kernel.org, AJvYcCVDc1QwJZTn5/HtXbzArGZ7MxD74Gw8uPDXnQiVzmolDGxOxpMuAY/XoJug1mNt6+iYKCjaDqBx@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyyDTa95BPTBDyWg0WWSRDiYU1F6HZMy8ZJQseizwgVYccRT7g
-	ETt6JagR3Xf8f02es8JVqGYVJGSzB7M9gfH6BG6kr+CYBh/lzsra2iW0mcUaTgMDwIvTpFBpLND
-	rhJ/oC/kIuMEjJ/3Btb09ft5Q2jI=
-X-Gm-Gg: ASbGncvCk02kvA4n3sTfvhM+m/7obdHLzy0dAls9Ez4EZFtmdt0rFlN+dSFmcy8TtE9
-	xKtAf/w2UaMUO9dAkI+PkZBG9ZpHTzh11mj+KOJiiNgXYntLmIVVAr+e6lGON6Lwe0d/gmWq2
-X-Google-Smtp-Source: AGHT+IHG5VycRtiTomtf+qEUPk+KV4HRLcyfKnPsEEx2gBJJG+b10iF7cIpTiskYJ4yFisu0Ol8m1swNk1m10hmj/BA=
-X-Received: by 2002:a92:cda9:0:b0:3cf:bb3e:884c with SMTP id
- e9e14a558f8ab-3cffe44793amr217609435ab.16.1738637135552; Mon, 03 Feb 2025
- 18:45:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lxL3gCTR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3FBC4CEE0;
+	Tue,  4 Feb 2025 02:50:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738637406;
+	bh=3nW+gL2OJzhamvUDQ3NVRjubbFHJOfzHepSSb2tWQlA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=lxL3gCTRyipvzJMsdHJhNPm8/LTnoRSMv3HqGGEYgXaDgiTgvY+Dq7HTrFHM4ouEZ
+	 QNwBUn9XqymjE49Or6pZbh09Rl0nEka+sAixjxqZawuhxZfsA5nN8BWFFzH5GP7ORd
+	 xndD8raI+eDcY4UyXNDwXA2UoVCtZ0rlBuO70C5OpNtCQtYJwRi0sHLm1+IfxeKiMK
+	 CXgZ5SidLHc0UjWUn4PsZe2mKMAFIHk8VaIbHwxHqqnFkwRr1o0xkRZzAGOXRxBy5M
+	 M6frZaYHLbyZdRfhSIM7gyNGPL5rLdaZqevm9hpK/XAq3w1eAIVMnlYKRgRs148yya
+	 NYC8hnbjltRKQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADFFA380AA67;
+	Tue,  4 Feb 2025 02:50:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250128084620.57547-1-kerneljasonxing@gmail.com> <2706706c-3d85-4f43-ad91-d04bbb4f2b92@linux.dev>
-In-Reply-To: <2706706c-3d85-4f43-ad91-d04bbb4f2b92@linux.dev>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Tue, 4 Feb 2025 10:44:59 +0800
-X-Gm-Features: AWEUYZlBosmRW8GmSkfO8lOW172NcH1aNf6246Q1fFbHbXfTjPSpMmiE8GCFGU0
-Message-ID: <CAL+tcoAXcDuAsy6rqGBh3Sb1dkdZ0xn6YFCQec-K6QSPyaVwEA@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v7 00/13] net-timestamp: bpf extension to equip
- applications transparently
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, dsahern@kernel.org, willemdebruijn.kernel@gmail.com, 
-	willemb@google.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
-	john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me, 
-	haoluo@google.com, jolsa@kernel.org, horms@kernel.org, bpf@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: armonize tstats and dstats
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173863743353.3581294.5552119952119307159.git-patchwork-notify@kernel.org>
+Date: Tue, 04 Feb 2025 02:50:33 +0000
+References: <2e1c444cf0f63ae472baff29862c4c869be17031.1738432804.git.pabeni@redhat.com>
+In-Reply-To: <2e1c444cf0f63ae472baff29862c4c869be17031.1738432804.git.pabeni@redhat.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, horms@kernel.org, andrew+netdev@lunn.ch, gnault@redhat.com
 
-On Tue, Feb 4, 2025 at 10:27=E2=80=AFAM Martin KaFai Lau <martin.lau@linux.=
-dev> wrote:
->
-> On 1/28/25 12:46 AM, Jason Xing wrote:
-> > "Timestamping is key to debugging network stack latency. With
-> > SO_TIMESTAMPING, bugs that are otherwise incorrectly assumed to be
-> > network issues can be attributed to the kernel." This is extracted
-> > from the talk "SO_TIMESTAMPING: Powering Fleetwide RPC Monitoring"
-> > addressed by Willem de Bruijn at netdevconf 0x17).
-> >
-> > There are a few areas that need optimization with the consideration of
-> > easier use and less performance impact, which I highlighted and mainly
-> > discussed at netconf 2024 with Willem de Bruijn and John Fastabend:
-> > uAPI compatibility, extra system call overhead, and the need for
-> > application modification. I initially managed to solve these issues
-> > by writing a kernel module that hooks various key functions. However,
-> > this approach is not suitable for the next kernel release. Therefore,
-> > a BPF extension was proposed. During recent period, Martin KaFai Lau
-> > provides invaluable suggestions about BPF along the way. Many thanks
-> > here!
-> >
-> > In this series, I only support foundamental codes and tx for TCP.
->
-> *fundamental*.
->
-> May be just "only tx time stamping for TCP is supported..."
->
-> > This approach mostly relies on existing SO_TIMESTAMPING feature, users
-> > only needs to pass certain flags through bpf_setsocktopt() to a separat=
-e
-> > tsflags. Please see the last selftest patch in this series.
-> >
-> > After this series, we could step by step implement more advanced
-> > functions/flags already in SO_TIMESTAMPING feature for bpf extension.
->
-> Patch 1-4 and 6-11 can use an extra "bpf:" tag in the subject line. Patch=
- 13
-> should be "selftests/bpf:" instead of "bpf:" in the subject.
->
-> Please revisit the commit messages of this patch set to check for outdate=
-d
-> comments from the earlier revisions. I may have missed some of them.
+Hello:
 
-Roger that, sir. Thanks for your help!
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
->
-> Overall, it looks close. I will review at your replies later.
->
-> Willem, could you also take a look? Thanks.
+On Sat,  1 Feb 2025 19:02:51 +0100 you wrote:
+> After the blamed commits below, some UDP tunnel use dstats for
+> accounting. On the xmit path, all the UDP-base tunnels ends up
+> using iptunnel_xmit_stats() for stats accounting, and the latter
+> assumes the relevant (tunnel) network device uses tstats.
+> 
+> The end result is some 'funny' stat report for the mentioned UDP
+> tunnel, e.g. when no packet is actually dropped and a bunch of
+> packets are transmitted:
+> 
+> [...]
 
-Right, some related parts need reviews from netdev experts as well.
+Here is the summary with links:
+  - [net] net: armonize tstats and dstats
+    https://git.kernel.org/netdev/net/c/d3ed6dee73c5
 
-Willem, please help me review this when you're available. No rush :)
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Thanks,
-Jason
+
