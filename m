@@ -1,127 +1,70 @@
-Received: from mx05lb.world4you.com (mx05lb.world4you.com [81.19.149.115])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D38203710;
-	Tue,  4 Feb 2025 20:34:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3CE25A62C;
+	Tue,  4 Feb 2025 21:00:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738701290; cv=none; b=qGoWoqRU1VOpM/1eroaB/8mzMdcX55DEljpdnI2a3PI1itPYryJKijUmtqxF9A5JBt9UzesBY1FeQ9Hb7vk+Pn0huf68XjvDva7+jjz4o2xpsf9vDho/9zJJZDGd29B+ltVJ/VwBRcHX3Uji/yStejxUdfW3KdLXBQ9ro7IXuz0=
+	t=1738702827; cv=none; b=mP8lW5Oj7KZ3OkoeLWzjRxL6FNGR7GoISG5xJ61MC7gnz9V7woOS0IprUZ/OIxPOmuomXhx+wkEjEjbPPOJHR4T8aWwqXKmvheJghUJKv2ya9Hems/G4Jf+CK91aEEVI6XhhEge8VYVRlgmjCk5U55YQeCXNoVIIxu3VM4pPcJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738701290; c=relaxed/simple;
-	bh=iu18eYYQR4fLthqgNOhu/VAmwYelaQmKNYCEv86pKn4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u4CXL+rqF+zaFMnwGA7hnG0ztzdMjb+U5Umf1PIIm9h0gc5J5th5j/GjfaH3O2LGVp3PWjEGk3SLOgRlmUqlwMlksCVKKEpEKGD5VSAbNWYtCbS4tb5J7xcAXBxikxqxUztiXnsl4tVkzaxcGEEgnmgrS5Fvq21mx9FKeiHYolU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=wH/g5+st; arc=none smtp.client-ip=81.19.149.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1738702827; c=relaxed/simple;
+	bh=W3IUp80uPm8G9kvSFtyK/LEkA+g/UOfW+rNQmYJ1D5k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Mkhr7gqBPN8IoSvguf0c4VBGAppPIsk7A+JxKT3H3a/iXpfuoW2vY5PLZWLZr6z+FUZaYuxPYYbguBZOCJ720u+lMkYNb9jSy0XX71bfbgGvLFlnQyVqJk6EL6LfJ40yTGjK6+Ybo+q+mM6JXzkxyeqFLWBEj1X9YPC1i+5fWlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zbp+ElhJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="wH/g5+st"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Dso1EsGyxnhW5FWhayp/zMY4aUV2+LaYO3ijOICijXI=; b=wH/g5+strem6Fjbax6JIGuA4jI
-	zAz+g1rjHx2TLNWIJccj9GLm/xwcXe9FkCI5BIZFy3yXAWoaU1WMs4Zn7YjJLn7dKfMhLeavUdNJh
-	/pjcw3iMEz4nrkA+a8xScAmUKmcEE2XhzLwCPfjRK+kna7A46CgYgiZ/bdZ8qkKkDPPs=;
-Received: from [88.117.60.28] (helo=[10.0.0.160])
-	by mx05lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1tfPNK-000000005UN-3Y68;
-	Tue, 04 Feb 2025 21:18:27 +0100
-Message-ID: <bd604c16-0f5c-479c-aa13-932f1570e5b5@engleder-embedded.com>
-Date: Tue, 4 Feb 2025 21:18:25 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zbp+ElhJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1787C4CEDF;
+	Tue,  4 Feb 2025 21:00:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738702827;
+	bh=W3IUp80uPm8G9kvSFtyK/LEkA+g/UOfW+rNQmYJ1D5k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Zbp+ElhJ51fTx9UNtLXKEo3gtVIOMX7vulziTrxYpYa5ImkVs/pmNpYo63zuuOO6X
+	 s9GYZRmh838dP54uC6thBFKlECADIbDLVyaV+IRg7XAh/7no7LaGfOkPPtU17WXoMZ
+	 FUSmGP52A4GStL3biJaZfg3JFKFrRza7EPS5W6y9QG6niHkXA6ILWNuOGReIVhGCMW
+	 rVnx86Z59f5M0GO1r4VXaAyBhzRW09nWtMbzZi1FwHvpsflc28+kX373rcMmuZFhy1
+	 3lPuQVXJoopSkWfd8KQWztO/S2oN6j+SdPrQeae8vakn9WTa7kEil8krVPikHpEf55
+	 /WkL0SPAF67gA==
+Date: Tue, 4 Feb 2025 13:00:25 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
+ <pabeni@redhat.com>, netdev@vger.kernel.org, Kuniyuki Iwashima
+ <kuniyu@amazon.com>, Simon Horman <horms@kernel.org>,
+ eric.dumazet@gmail.com, rcu@vger.kernel.org
+Subject: Re: [PATCH v3 net 11/16] ipv6: input: convert to dev_net_rcu()
+Message-ID: <20250204130025.33682a8d@kernel.org>
+In-Reply-To: <CANn89i+2TrrYYXr7RFX2ZwtYfUwWQS6Qg9GNL6FGt8cdWR1dhQ@mail.gmail.com>
+References: <20250204132357.102354-1-edumazet@google.com>
+	<20250204132357.102354-12-edumazet@google.com>
+	<20250204120903.6c616fc8@kernel.org>
+	<CANn89i+2TrrYYXr7RFX2ZwtYfUwWQS6Qg9GNL6FGt8cdWR1dhQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-next v4] e1000e: Fix real-time violations on link up
-To: anthony.l.nguyen@intel.com
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-pci@vger.kernel.org, przemyslaw.kitszel@intel.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, bhelgaas@google.com,
- pmenzel@molgen.mpg.de, aleksander.lobakin@intel.com,
- Gerhard Engleder <eg@keba.com>, Vitaly Lifshits <vitaly.lifshits@intel.com>,
- Avigail Dahan <avigailx.dahan@intel.com>, Simon Horman <horms@kernel.org>
-References: <20241219192743.4499-1-gerhard@engleder-embedded.com>
- <20250106111752.GC4068@kernel.org>
-Content-Language: en-US
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-In-Reply-To: <20250106111752.GC4068@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-AV-Do-Run: Yes
 
-On 06.01.25 12:17, Simon Horman wrote:
-> On Thu, Dec 19, 2024 at 08:27:43PM +0100, Gerhard Engleder wrote:
->> From: Gerhard Engleder <eg@keba.com>
->>
->> Link down and up triggers update of MTA table. This update executes many
->> PCIe writes and a final flush. Thus, PCIe will be blocked until all
->> writes are flushed. As a result, DMA transfers of other targets suffer
->> from delay in the range of 50us. This results in timing violations on
->> real-time systems during link down and up of e1000e in combination with
->> an Intel i3-2310E Sandy Bridge CPU.
->>
->> The i3-2310E is quite old. Launched 2011 by Intel but still in use as
->> robot controller. The exact root cause of the problem is unclear and
->> this situation won't change as Intel support for this CPU has ended
->> years ago. Our experience is that the number of posted PCIe writes needs
->> to be limited at least for real-time systems. With posted PCIe writes a
->> much higher throughput can be generated than with PCIe reads which
->> cannot be posted. Thus, the load on the interconnect is much higher.
->> Additionally, a PCIe read waits until all posted PCIe writes are done.
->> Therefore, the PCIe read can block the CPU for much more than 10us if a
->> lot of PCIe writes were posted before. Both issues are the reason why we
->> are limiting the number of posted PCIe writes in row in general for our
->> real-time systems, not only for this driver.
->>
->> A flush after a low enough number of posted PCIe writes eliminates the
->> delay but also increases the time needed for MTA table update. The
->> following measurements were done on i3-2310E with e1000e for 128 MTA
->> table entries:
->>
->> Single flush after all writes: 106us
->> Flush after every write:       429us
->> Flush after every 2nd write:   266us
->> Flush after every 4th write:   180us
->> Flush after every 8th write:   141us
->> Flush after every 16th write:  121us
->>
->> A flush after every 8th write delays the link up by 35us and the
->> negative impact to DMA transfers of other targets is still tolerable.
->>
->> Execute a flush after every 8th write. This prevents overloading the
->> interconnect with posted writes.
->>
->> Signed-off-by: Gerhard Engleder <eg@keba.com>
->> Link: https://lore.kernel.org/netdev/f8fe665a-5e6c-4f95-b47a-2f3281aa0e6c@lunn.ch/T/
->> CC: Vitaly Lifshits <vitaly.lifshits@intel.com>
->> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
->> Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
->> ---
->> v4:
->> - add PREEMPT_RT dependency again (Vitaly Lifshits)
->> - fix comment styple (Alexander Lobakin)
->> - add to comment each 8th and explain why (Alexander Lobakin)
->> - simplify check for every 8th write (Alexander Lobakin)
->>
->> v3:
->> - mention problematic platform explicitly (Bjorn Helgaas)
->> - improve comment (Paul Menzel)
->>
->> v2:
->> - remove PREEMPT_RT dependency (Andrew Lunn, Przemek Kitszel)
+On Tue, 4 Feb 2025 21:10:59 +0100 Eric Dumazet wrote:
+> > Test output:
+> > https://netdev-3.bots.linux.dev/vmksft-net-dbg/results/978202/61-l2tp-sh/
+> > Decoded:
+> > https://netdev-3.bots.linux.dev/vmksft-net-dbg/results/978202/vm-crash-thr2-0  
 > 
-> Reviewed-by: Simon Horman <horms@kernel.org>
+> Oh well. So many bugs.
 
-Is there anything left from my side to get this change over iwl-next
-into net-next?
+TBH I'm slightly confused by this, and the previous warnings.
 
-Gerhard
+The previous one was from a timer callback.
+
+This one is with BH disabled.
+
+I thought BH implies RCU protection. We certainly depend on that 
+in NAPI for XDP. And threaded NAPI does the exact same thing as
+xfrm_trans_reinject(), a bare local_bh_disable().
+
+RCU folks, did something change or is just holes in my brain again?
