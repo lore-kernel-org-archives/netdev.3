@@ -1,120 +1,97 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E04A2147F6;
-	Tue,  4 Feb 2025 16:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7852139D8;
+	Tue,  4 Feb 2025 16:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738684946; cv=none; b=EoZRwZaa41WQldoGmvyM7osBO/7XuLLvrag8fVKDX+oOnT8LIWAVujygpTo3LVAgA9RA73jmREOn+jgIJtY9Zv4NO8uaowdONcaWtW4nBiOfnXvY/M3Bpi1BZLtzXRG3zJusTS08qxD28qxbGbp2QVFWnx6vmFUilN5eJUqUDM0=
+	t=1738685032; cv=none; b=RTZunOqPHQnbsu6NvflCgj+OqBK2Mp/HbzfcBqpvsi43tEV8JjyD/3hH/CANH5FuZS/oRRR2Jk59NvdnoxxNMhNV2kS0CsY1k4mOSS/SZbRdHGNtD2s+s027Caqu66/Kk6tj5tyhT80xbDK8x0tzdqPaEeBO+wRYRXfSoeZSjtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738684946; c=relaxed/simple;
-	bh=If8coQdhF5Nd+vwH+6qeES812n9PDmFQAtpVc1rdr7g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RwwzVm80dOilTmmBiH6qFtlxy13xogYOMyAa6ONdP22xJgNRVQ4QaahDkvY29CwIleafpFWo64pYugCXO8aidoDmQLo8iwlXLhgbSAw2LzMf96nDnIGcTRmVfzEfL7Zqs0k7/e3AQbqWV/3ugFQXNRCIKafEn3cC81oyVHtOjP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HFNPYCz9; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738685032; c=relaxed/simple;
+	bh=2LOVhSPouXm27QUnmCvrnatlAab8qMXu8O47AZsRIAA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P8Fgkse1rWglys21naKNFdVdeAPx9fkIQ2lb6Bcxl+1i62TdRWFC+PdCUPg07c4Wl51pL/2wtQbFxaDujy1a/zn6pnHPY8ef6alZ8BCOSrbW16qAfDffHRaczuWVbqnY1nKul3tn0o0TeD8c1WVgQ5DK1TG+nh3vR8P5ZpYXK/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aX4YN+Vl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HFNPYCz9"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-38da88e6db0so465684f8f.2;
-        Tue, 04 Feb 2025 08:02:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738684943; x=1739289743; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=If8coQdhF5Nd+vwH+6qeES812n9PDmFQAtpVc1rdr7g=;
-        b=HFNPYCz9T9jVryZqJPgQO0FkL3BB7GNs5vFJTnTPf1StX1I4yBrwvlW7fMgUQJFkY5
-         nVWYj3b7P7yYGuXEQq+2Ap5ZrLyB7Hu/z0WpxitYAyOmg4M7jQcjlIR1dNgQPi6SX/77
-         KkYs8meGgONaGooIQlReV7Dr/1HNMC9w6WMnrcmof7KF0lpEFQfuGnfC8VLmjqaH9OsG
-         G0Gi3XlSH8kHJ3vzCiDTha7ldIs0PvQ8FgD5WZ8vDciSOY8IFrV/7Pn8IyYMeYShpEKK
-         4kQCswLm5YFN1hZS93GUS3CERhArpVH9f0vB9ZXPYMNKnYKQlbNSWKP5T0WOF21oM9+X
-         7XJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738684943; x=1739289743;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=If8coQdhF5Nd+vwH+6qeES812n9PDmFQAtpVc1rdr7g=;
-        b=ulpohp/PtzYMcT46j1R9efWbkOP6zYJp+OJ49I96Mh3SejuEtCjvAL2gaMz60e648Q
-         ddUZ+mzcQRfuYOUJGagJyx/oCtdrVmMgtMeGSD1Sz+z/pvMD49pI60B2WmJRS+2y1F9Z
-         Z8vVKUbPmG7gu4+J+9raih6VjyqqcDjGbJWRJMW7AWoDx/HktvaIaBIdbWltGOpbAsWd
-         AMP+wAfdiqgssmuCMLA12fv/Z26K8kJIzPEMQuS7HxLwU6B0I2b5mgJzcS0XJV9otU2z
-         ZpIvFatrtTGq0M9C6FaWomG0p6DUGTOnFJ+vmnQe+BqSv71Dkunlnl0kDAPPsaCbJOzc
-         19iQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUKywhIOqJ9ht2L0lQSB4yaQQrYHdNUSavSmAmGTrVjxTNaQILuaV+Jf1mOSMILweld0so=@vger.kernel.org, AJvYcCXeEYGMXwrUiGCCQa+oFZMP4o7thSIVChxGdeWyDjPX3DwblIwz+H8cglD4uJk8NjPxmlLElzHx@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEVIpK9b2PsbwFUHYGDUMsHTXntTlMBgbPgAZZFgh7+MWeI8hc
-	pqnainZXSue4qpPGtiohR9ovNeCrqwcwSyOPhS5yaN3A1cWUhIDurhs8KSJ5k2T2AUoDQ8xQBj9
-	P0+BQPmYMvaiZEyK9XbJsXszMbm8=
-X-Gm-Gg: ASbGncvxOZwSi0zxkM1uhHpBGaslpw949yg/t6v2d7HgesVh3/zz1uh7gEb9q+tltsg
-	ouyndrC47A5R/9tpjCUhjmePKD2Tscx/vzapjYVrA2Z0sPO1HJQi7+pchnCGJV8gr7QkkFRxYYt
-	FWk9eAW7OAyZF5
-X-Google-Smtp-Source: AGHT+IHeN97gerTQvzADmizTaOUdKrsOPcpv4a+weyZuEv2JCgTjbx35ZkJM0XcK3avJjhtGXI0gbgiqRC+ZlCTBpNg=
-X-Received: by 2002:a5d:64a1:0:b0:385:f220:f798 with SMTP id
- ffacd0b85a97d-38c5194ca80mr20871753f8f.6.1738684943008; Tue, 04 Feb 2025
- 08:02:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aX4YN+Vl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16EFC4CEDF;
+	Tue,  4 Feb 2025 16:03:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738685032;
+	bh=2LOVhSPouXm27QUnmCvrnatlAab8qMXu8O47AZsRIAA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aX4YN+Vlr2UVaRoE17hIxFXWJDtVjPudSAMymgQyQeUZoDA+jTiW2MOi6M5U519Cv
+	 GvjQBNz2/ZiGwdzfbrreccR5WlDwj2Kak2aXLpHtHZzhbzdK73wKek/Aym19JmU4JL
+	 vqaMTlPfR1e5nEuMUi4Yzx16o/CrtSZd14GCyixKUo5bdXUlBc1+w9PJ1/NibF7Ksb
+	 2XupNgcVJuW4esZbOeZKdipRmwuBpMrpb1nkXJcrHLDHmtE/IFJHt9kU857oBvrWGD
+	 m9gxp6nmAQANCZYzmaTqk7crK9LVG9coEZeMdoJ5WapzPe2Kv4qJ2LxTItinXkOcbl
+	 ZJI7ix+RrcrQw==
+Date: Tue, 4 Feb 2025 10:03:50 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Cc: netdev@vger.kernel.org, linux-mips@vger.kernel.org,
+	devicetree@vger.kernel.org, hkallweit1@gmail.com, kuba@kernel.org,
+	conor+dt@kernel.org, lee@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, pabeni@redhat.com, tsbogend@alpha.franken.de,
+	linux@armlinux.org.uk, sander@svanheule.net, krzk+dt@kernel.org,
+	markus.stockhausen@gmx.de, daniel@makrotopia.org,
+	linux-kernel@vger.kernel.org, edumazet@google.com
+Subject: Re: [PATCH net-next v6 2/6] dt-bindings: net: Add Realtek MDIO
+ controller
+Message-ID: <173868503036.2827831.5451264142133943992.robh@kernel.org>
+References: <20250204030249.1965444-1-chris.packham@alliedtelesis.co.nz>
+ <20250204030249.1965444-3-chris.packham@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1738665783.git.petrm@nvidia.com> <CAADnVQKMN4+Zg9ZG4FpH9pJw4KdmwWmT2d4BiJgHUUQ-Hd7OkQ@mail.gmail.com>
- <BL1PR12MB59225F7D902ACBC6A91511C3CBF42@BL1PR12MB5922.namprd12.prod.outlook.com>
-In-Reply-To: <BL1PR12MB59225F7D902ACBC6A91511C3CBF42@BL1PR12MB5922.namprd12.prod.outlook.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 4 Feb 2025 16:02:12 +0000
-X-Gm-Features: AWEUYZmfN46xxQRo3nRVY9d3svhIhjNTxveJyvu3-bNeq5DbAeH4VL7q771GjKs
-Message-ID: <CAADnVQLJfd201t_-bgWHRJRDHm4FQDNapbmAQhPd18OEFq_QdA@mail.gmail.com>
-Subject: Re: [PATCH net-next 00/12] mlxsw: Preparations for XDP support
-To: Amit Cohen <amcohen@nvidia.com>
-Cc: Petr Machata <petrm@nvidia.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Network Development <netdev@vger.kernel.org>, 
-	Ido Schimmel <idosch@nvidia.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, bpf <bpf@vger.kernel.org>, mlxsw <mlxsw@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250204030249.1965444-3-chris.packham@alliedtelesis.co.nz>
 
-On Tue, Feb 4, 2025 at 3:59=E2=80=AFPM Amit Cohen <amcohen@nvidia.com> wrot=
-e:
->
->
->
-> > -----Original Message-----
-> > From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-> > Sent: Tuesday, 4 February 2025 17:56
-> > To: Petr Machata <petrm@nvidia.com>
-> > Cc: David S. Miller <davem@davemloft.net>; Eric Dumazet <edumazet@googl=
-e.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
-> > <pabeni@redhat.com>; Andrew Lunn <andrew+netdev@lunn.ch>; Network Devel=
-opment <netdev@vger.kernel.org>; Amit Cohen
-> > <amcohen@nvidia.com>; Ido Schimmel <idosch@nvidia.com>; Alexei Starovoi=
-tov <ast@kernel.org>; Daniel Borkmann
-> > <daniel@iogearbox.net>; Jesper Dangaard Brouer <hawk@kernel.org>; John =
-Fastabend <john.fastabend@gmail.com>; bpf
-> > <bpf@vger.kernel.org>; mlxsw <mlxsw@nvidia.com>
-> > Subject: Re: [PATCH net-next 00/12] mlxsw: Preparations for XDP support
-> >
-> > On Tue, Feb 4, 2025 at 11:06=E2=80=AFAM Petr Machata <petrm@nvidia.com>=
- wrote:
-> > >
-> > > Amit Cohen writes:
-> > >
-> > > A future patch set will add support for XDP in mlxsw driver. This set=
- adds
-> > > some preparations.
-> >
-> > Why?
-> > What is the goal here?
-> > My understanding is that mlxsw is a hw switch and skb-s are used to
-> > implement tap functionality for few listeners.
-> > The volume of such packets is supposed to be small.
-> > Even if XDP is added there is a huge mismatch in packet rates.
-> > Hence the question. Why bother?
->
-> You're right, most of packets should be handled by HW, XDP is mainly usef=
-ul for telemetry.
 
-Why skb path is not enough?
+On Tue, 04 Feb 2025 16:02:45 +1300, Chris Packham wrote:
+> Add dtschema for the MDIO controller found in the RTL9300 SoCs. The
+> controller is slightly unusual in that direct MDIO communication is not
+> possible. We model the MDIO controller with the MDIO buses as child
+> nodes and the PHYs as children of the buses. The mapping of switch port
+> number to MDIO bus/addr requires the ethernet-ports sibling to provide
+> the mapping via the phy-handle property.
+> 
+> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+> ---
+> 
+> Notes:
+>     Changes in v6:
+>     - Remove realtek,port property. The driver will parse the ethernet-ports
+>       sibling node to figure out the mapping (do I need to mention that
+>       somewhere in this binding?).
+>     - Correct number of mdio buses. 4 possible buses numbered 0-3.
+>     Changes in v5:
+>     - Add back reg property to mdio-controller node
+>     - Make unit address in the node name required
+>     - Andrew suggested perhaps doing away with the realtek,port property and
+>       providing the overall mapping via an array of phandles. I've explored
+>       this a little, it is doable but I'm not sure it actually makes things
+>       any clearer when the portmap has gaps so I haven't made this change.
+>     Changes in v4:
+>     - Model the MDIO controller with the buses as child nodes. We still need
+>       to deal with the switch port number so this is represented with the
+>       "realtek,port" property which needs to be added to the MDIO bus
+>       children (i.e. the PHYs)
+>     - Because the above is quite a departure from earlier I've dropped the
+>       r-by
+>     Changes in v3:
+>     - Add r-by from Connor
+>     Changes in v2:
+>     - None
+> 
+>  .../bindings/net/realtek,rtl9301-mdio.yaml    | 86 +++++++++++++++++++
+>  1 file changed, 86 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/realtek,rtl9301-mdio.yaml
+> 
+
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+
