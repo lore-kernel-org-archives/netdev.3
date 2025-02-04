@@ -1,105 +1,142 @@
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out.smtpout.orange.fr (out-65.smtpout.orange.fr [193.252.22.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD47182B4
-	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 14:16:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0DA20C029;
+	Tue,  4 Feb 2025 14:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738678572; cv=none; b=okUtnTUdxXZSuvbqz6MkPvFOu1dxaFIqXIz84Bn6z2YNmvdmV5AfNsoWOmgmKXmLKWStqPVXD2Ixtwem6S+OVTgaV/pfnbEkTVeODQNc5aghd0+KPIUW5hgOKECWX5iDVq1OuccVStdYbgy5Y7F3AjHF6Ek+/C4WM9bA7DIjf+w=
+	t=1738678738; cv=none; b=uutKAiPN/kq2UolKzYKjQ3v5C3gHvvDMaj0UV6DXmL2cEEGIGTngQ8klFJCiFkjIdAxnlwDACcMmzePfVAooSXJiDmh57wPLzFSvbsFme5DCoQU4sRhlzdhIOobI2YJNuI9KTOfgAshjCHx0KdvkjfLlRNjgeoIfRgmPFKWfNxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738678572; c=relaxed/simple;
-	bh=AV6+9IWF6FtgfhC8Xm1p8j/tHcOkfk369ICNT/3j8f0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gHS/reRIFHdZBj+G5jEeYKF+I9Ly8X/PJLq+5pFuGsEEGsyB5nyXMF6kPw3PLpB4mu/u6SThSOfp6TaxvzNb+4sNJtUHwkrbt4efDohlFTukq611eU8rNVciwZQSafFI/shvdmlNafTTM4Hj+9LGaaZ7TD9+m+R+3ZJjZN6JsrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VbRtB60n; arc=none smtp.client-ip=202.12.124.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
+	s=arc-20240116; t=1738678738; c=relaxed/simple;
+	bh=nvNHt7cwQmDcJEtj+2bHSw5+iiQ9a5ScOXgH8QpHeWc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K79jc+kS7uOvEiZ+ILMEAB39mr5V5O6b1d543ZgiPhrG8gA1GnGk8Rg3i9DPMf5BhsnavYft7FntFrpfJG1dtl85z4qNsbe+HZl9H8YHSiz15qYCl7Z/bZfsLQ0fW1aTm/Iv8a98x8i8upzG9IvTGhOcpAQORJzOGZb+6+HZ4Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=stm50rGq; arc=none smtp.client-ip=193.252.22.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VbRtB60n"
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 1F40325401F0;
-	Tue,  4 Feb 2025 09:16:09 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 04 Feb 2025 09:16:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1738678568; x=1738764968; bh=9WOlv/Y8KzKs7MKB4BHJAJkMTs/Y8SoXaf8
-	016qHiJY=; b=VbRtB60nWLZ1bOZ0Nv+MLxy8y09PZciuDZObn8CrfvD77Ac2G7j
-	kdff5PFGQrg6cSyeMQJ7fiosaZUX7kNxwLTSRswrZIWleJypqYGEecBwgDZw1IaS
-	rHMDm9I/LGVQalEFTZTn5MwD3YKV9lWcmGcO2mTrMqzQV3VRfOnwuWPd6VMC7qw0
-	xQCg2p4T8uiEwdZCsqZhAhyocPrj6h3o8iWU2kA+TYanvOBwCdyseutDorncEtLp
-	Tbehd0K5gynfO/qmIwKG++TZok3abJGF3p+ycBFupvTUCE12bGfTOAU28P506ZPo
-	pcbeqVz3HXhRnpcNMbq5tSutLhVyRAQGEag==
-X-ME-Sender: <xms:KCGiZ21kKY8sMnMVVFcrNTH_yXVvDIQ2ZW1Hh4tUUEvLaCXbWxDBZg>
-    <xme:KCGiZ5HMS4fa22tsGhexT7Fk-k5yVq0F_voaI-csZG26Qg5dlyVLR1-Pgtfw_8CRv
-    FNCGKB-j1ktgJ4>
-X-ME-Received: <xmr:KCGiZ-63HAAkvtpcrXPrX9ATXagSVe7QdO3ixXKPxFxwmnxJXgLTKJf1q03N>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdejgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrd
-    horhhgqeenucggtffrrghtthgvrhhnpedvudefveekheeugeeftddvveefgfduieefudei
-    fefgleekheegleegjeejgeeghfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhgpdhnsggprhgtphht
-    thhopeejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeiinhhstghntghhvghnse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgv
-    thdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
-    epkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughh
-    rghtrdgtohhmpdhrtghpthhtoheprghnughrvgifodhnvghtuggvvheslhhunhhnrdgthh
-    dprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:KCGiZ32QxRG1lCGB9O-eeVVgViohwwnuJqG6-hNoBl2ECMlBXBF3MQ>
-    <xmx:KCGiZ5GXbua5YpyNWkskUyIZQ5KAZi_e_7tFQt7O3BkUb1C37C69dg>
-    <xmx:KCGiZw9r1XH9KhmBQTzoTGtL9yMrf2pszjw_AfkqArV1MUGXFq1bTQ>
-    <xmx:KCGiZ-mgf1xvQELg7eg7Biw95jONYQfqoLGT1hyBNB0nooS3zUxbXQ>
-    <xmx:KCGiZ-6-HLnTjjJNqh3kwHs1kSuXuuVO5FdWcuSredXT9IIfNiOUtGI6>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 4 Feb 2025 09:16:07 -0500 (EST)
-Date: Tue, 4 Feb 2025 16:16:05 +0200
-From: Ido Schimmel <idosch@idosch.org>
-To: Ted Chen <znscnchen@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org
-Subject: Re: [PATCH RFC net-next 1/3] vxlan: vxlan_vs_find_vni(): Find
- vxlan_dev according to vni and remote_ip
-Message-ID: <Z6IhJZR8JacO8oHk@shredder>
-References: <20250201113207.107798-1-znscnchen@gmail.com>
- <20250201113400.107815-1-znscnchen@gmail.com>
- <Z59ddOmNCCIlFwm9@shredder>
- <Z6IRbns62vv7eJIg@t-dallas>
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="stm50rGq"
+Received: from [172.16.82.72] ([124.33.176.97])
+	by smtp.orange.fr with ESMTPA
+	id fJc6tfzAathYvfJcBtDPQV; Tue, 04 Feb 2025 15:09:28 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1738678168;
+	bh=tUcBiUpcHUfI6arbSS7myC+Gqdvvs9Qfr5JLm5sdhwk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=stm50rGq3KIg8byMh5Ql5KS8pcLbdesu1KN2un/jypmXff+cANo+hyFBEHKmC5AwT
+	 bDdB7xLc0EmUPWljpSx22kJ4LeH7OERsR9tbcNgHJuep+Gfck6xoxGrx+pbfxJazR7
+	 4q6HYgOjHqoKr6m/95A1qKijGrgDolwqfQ8fanCDn0u8qu3hLfxzAEKwTARVJH9KBa
+	 OOkMt4oBoNYym7X2A42r8Fzg7/qpYIQ6azTv/9h8AAGdEcscm/rVqF/68AxkFBIxTF
+	 c/ugwzgobylldjyVcq5CG9gsOul6R29iI+VGEynRtLnk9mzwn6z+7eMHwdeEYDwbeL
+	 Bxs5hING+DHxQ==
+X-ME-Helo: [172.16.82.72]
+X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 04 Feb 2025 15:09:28 +0100
+X-ME-IP: 124.33.176.97
+Message-ID: <b25b21b2-c999-4f21-9ad0-30113b4c655d@wanadoo.fr>
+Date: Tue, 4 Feb 2025 23:09:17 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6IRbns62vv7eJIg@t-dallas>
+User-Agent: Mozilla Thunderbird
+Subject: Re: general protection fault in devlink_info_serial_number_put
+To: YAN KANG <kangyan91@outlook.com>, Jiri Pirko <jiri@resnulli.us>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: "syzkaller@googlegroups.com" <syzkaller@googlegroups.com>,
+ "David S. Miller\"" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ "linux-can@vger.kernel.org" <linux-can@vger.kernel.org>,
+ Marc Kleine-Budde <mkl@pengutronix.de>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <SY8P300MB0421E0013C0EBD2AA46BA709A1F42@SY8P300MB0421.AUSP300.PROD.OUTLOOK.COM>
+Content-Language: en-US
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Autocrypt: addr=mailhol.vincent@wanadoo.fr; keydata=
+ xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
+ LFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI+wrIEExYKAFoC
+ GwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQTtj3AFdOZ/IOV06OKrX+uI
+ bbuZwgUCZx41XhgYaGtwczovL2tleXMub3BlbnBncC5vcmcACgkQq1/riG27mcIYiwEAkgKK
+ BJ+ANKwhTAAvL1XeApQ+2NNNEwFWzipVAGvTRigA+wUeyB3UQwZrwb7jsQuBXxhk3lL45HF5
+ 8+y4bQCUCqYGzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrbYZzu0JG5w8gxE6EtQe6LmxKMqP6E
+ yR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDldOjiq1/riG27mcIFAmceMvMCGwwF
+ CQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8VzsZwr/S44HCzcz5+jkxnVVQ5LZ4B
+ ANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
+In-Reply-To: <SY8P300MB0421E0013C0EBD2AA46BA709A1F42@SY8P300MB0421.AUSP300.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 04, 2025 at 09:09:02PM +0800, Ted Chen wrote:
-> I didn't see target addresses were appended into the FDB when an unicast
-> remote_ip had been configured.
-> 
-> e.g.
-> Usually when (2)(3) are invoked, (1) is not called to configure a unicast
-> remote_ip to the VTEP (though it's allowed to call (1)).
-> 
-> (1) ip link add vxlan42 type vxlan id 42 \
->                 local 10.0.0.1 remote 10.0.0.2 dstport 4789
-> (2) bridge fdb append to 00:00:00:00:00:00 dst 10.0.0.3 dev vxlan42
-> (3) bridge fdb append to 00:00:00:00:00:00 dst 10.0.0.4 dev vxlan42
-> 
-> So, this patch just leverages the case when remote_ip is configured in the
-> VTEP to stand for P2P.
-> 
-> Do you think there's a better way to identify P2P more precisely?
++To: Jiri Pirko
++To: Jakub Kicinski
++CC: David S. Miller
++CC: Eric Dumazet
++CC: Paolo Abeni
++CC: Simon Horman
++CC: netdev@vger.kernel.org
 
-I think it will require a new uAPI (e.g., a new VXLAN netlink attribute)
-as it's a behavior change, but I really prefer not to go there when the
-problem can be solved in other ways (e.g., the tc solution I mentioned
-or using multiple VNIs).
+On 04/02/2025 at 16:44, YAN KANG wrote:
+> Dear developers and maintainers,
+> 
+> I found a new kernel  NULL-Pointer-Dereference bug titiled "general protection fault in devlink_info_serial_number_put" while using modified syzkaller fuzzing tool. I Itested it on the latest Linux upstream version (6.13.0-rc7)related to ETAS ES58X CAN/USB DRIVER, and it was able to be triggered.
+> 
+> The bug info is:
+> 
+> kernel revision: v6.13-rc7
+> OOPS message: general protection fault in devlink_info_serial_number_put
+> reproducer:YES
+> 
+> After preliminary analysis,  The root casue may be :
+> in the function:  es58x_devlink_info_get drivers/net/can/usb/etas_es58x/es58x_devlink.c
+> es58x_dev->udev->serial   == NULL ,but no check for it.
+> 
+>  devlink_info_serial_number_put(req, es58x_dev->udev->serial) triggers NPD .
+> 
+> Fix suggestion: Check es58x_dev->udev->serial before deference pointer.
+
+Thanks for the report. I acknowledge the issue: the serial number of a
+USB device may be NULL and I forget to check this condition.
+
+@netdev and devlink maintainers
+
+I can of course fix this locally, but this that this kind of issue looks
+like some nasty pitfall to me. So, I was wondering if it wouldn't be
+safer to add the NULL check in the framework instead of in the device.
+The netlink is not part of the hot path, so a NULL check should not have
+performance impacts.
+
+I am thinking of:
+
+diff --git a/include/net/netlink.h b/include/net/netlink.h
+index e015ffbed819..eaee9a1aa91f 100644
+--- a/include/net/netlink.h
++++ b/include/net/netlink.h
+@@ -1617,6 +1617,8 @@ static inline int nla_put_sint(struct sk_buff
+*skb, int attrtype, s64 value)
+ static inline int nla_put_string(struct sk_buff *skb, int attrtype,
+                                 const char *str)
+ {
++       if (!str)
++               return 0;
+        return nla_put(skb, attrtype, strlen(str) + 1, str);
+ }
+
+Of course, it is also possible to do the check in
+devlink_info_serial_number_put().
+
+What do you think?
+
+> If you fix this issue, please add the following tag to the commit:
+> Reported-by: yan kang <kangyan91@outlook.com>
+> Reported-by: yue sun <samsun1006219@gmail.com
+> 
+> I hope it helps.
+> Best regards
+> yan kang
+
+
+Yours sincerely,
+Vincent Mailhol
+
