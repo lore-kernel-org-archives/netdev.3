@@ -1,133 +1,127 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2FC21770E
-	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 20:11:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D19A218AAC
+	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 20:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738699874; cv=none; b=QoKJA6waJj4rWz21XAtZ2IAVblv7a+ZDB3EOz+kkGc0zhlxet8Yi7WabkKlL9KJYdAfHekXOp5I7BJh4G/vmO7fv8cVjuBxJeTPBf4wKCh0wzLPO2kE2U0J42ZvCY3WY2rar/MuhHOKUUhCcHcmrW/k+VG6HgUq6daLlmKefriA=
+	t=1738700096; cv=none; b=euQmHFjEU4eUHyqVFS2cwDyUbDKWPf3NPgwPF9z8uKyOQocJ9hJjQumpzy+tUkzAqiVxVx+ck9vceh3ktDAvMthizCNxzPODOjw9w1bif75p4yKpdYPFQ3UHbPvY2UgxUn9GytkTmG5unjtmb65Uvx8KyKdrzIAbs6L1sTcrjCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738699874; c=relaxed/simple;
-	bh=WsrPXnM6PNvN34Z8zs3+2y6NFrXkyse+DS/6xw0lBY0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J1V3ju1507hKHpEhsrGWCz49Cp8zztm5//u+wVbQoGhnWTC65+7tSofzLIhNUZtDq5oA+cAr7+DCPnwUbCCV9Eb7wlMA2wff3CbdaAzDZbWxX/+3/ZwX32JON9BVEqnfCxLoNbeD25xOeld7xjhJ86Qv2k5fGl5DmE6EuJkAItg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xis+jjnE; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738700096; c=relaxed/simple;
+	bh=nurUDXp2o4MyvC3A0GkMdYpyppUckZpuZWdZNoV48dk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fhSIVm8yYH+A+uAKQvMSYLa8OCWLr/IgewLshfYYpeWWXfypZbmBvPj6GuLYD8PJwBUMljBDZa9V9IjG1Wnx9GMETn/dkcvW0eaeZprhtLMPWukIMJdwrsLy5MCbx0q3O6lCy8F1cc5QrYv3WZN7o7Qva/7Zm/8AStna3+rjymk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=j+bv7sTF; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xis+jjnE"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ab68a4ab074so731145266b.0
-        for <netdev@vger.kernel.org>; Tue, 04 Feb 2025 12:11:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738699871; x=1739304671; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qto3MTRCj9/6vU00cfUF/BCQhzpteH8UN5nSCKpTBJY=;
-        b=xis+jjnEYj1qh6J0vh/YYOXo/FodpGqNC1lG3BolPrDhC9dqF5hP+42vYQ3VUKprz+
-         02LPuk2m4eASldgmEFfqrhRE2l3SF6E4oL/OTCsy0aTxBFwVuJqWLrvz9Mg6PolKwTel
-         lmoG/qiYv0YWYERavfxf+nsz2JD/wYNrb9qmkc+jV/lycgB2FRbzebK90Tjug/UCxvCX
-         hIZnALmfcoydhnUF0W1+QOP5MVtXeVrcJR0Am2ehOZRfnrcuj7i49Q45JrgCZc7/JJ0u
-         pXD0yb+y5hEHckO/wk+U3yqoL2kw5rVn3nlM6WFY22cTjH/L4CXMcx5zyjil4s5mLlzI
-         AUXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738699871; x=1739304671;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qto3MTRCj9/6vU00cfUF/BCQhzpteH8UN5nSCKpTBJY=;
-        b=fjeZKe74YK0FtLnFLLif1OsTka9gA7XA8eV67J53jKwcb9giRdniNyM/y0r6mtYljO
-         huJRU2yqRe1scFdkniDgAqGXLPOapfvgaH2RfKRays9Rld0lgEC2jAq9DJ6hjbA3E9po
-         jYJuRmKgihvZZFhBo/X8XgoxQ35aHacHi1tIg6BW6fti6/FKa6Jfq+XNsXGQ0IEV94vO
-         QuY+fGgc9gu1rW9cK9Pz15iyIvqAXUBqcFAPyD+gl840PwAC0eS8ekK/hIkP9CW2CAgV
-         yrX85evV+dBNpNjj7v7BFXrdQmvEwINJGTr2ezeOGVwsbmgM6+zNFGKnEACMVQQlieHL
-         ZarQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQIZ43s2yj1CwNVRkdDIZ4EcR/gLStQL8YD84ExZTG0zYGkoZ41jpco4Cmk5DDY+mTwDzIKWE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpVsF/x7z3o2GMhhXDumzEy3WZ0UYgdWVyN2P6sYNGd5cQXsiS
-	wDo2yc6TalmPv51Ito+i4ffLNUCX1heu0kRR33rkJaBR2M6n5JnX3+UI6dndkjNHZUBvOF0iwJ4
-	rNFLcs85pchFMH7jDmxJITh+WK196BYyYc9mt
-X-Gm-Gg: ASbGnctUjAr97uaWQlpWqKE021ocaFYw8MZaaNB7+uwM8FyDr4Qydaqjnr96a69BI0/
-	wluZTptFytc4vu49BDzJ5U/OgEMRu+d/dLtaXwZ18BPD56+HMOJcqrJ8q7bAOibDEowaZeNM=
-X-Google-Smtp-Source: AGHT+IHMhqkv6lKEfNTL+he4FKoQnE1rfVU2/ZdP4J9UneDWcHja0XlO+sAlmBiI6yxfpFC2WRYrsHwk3TUw9mznlaE=
-X-Received: by 2002:a05:6402:234e:b0:5dc:7374:261d with SMTP id
- 4fb4d7f45d1cf-5dcdb6f9f81mr912712a12.7.1738699870599; Tue, 04 Feb 2025
- 12:11:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="j+bv7sTF"
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 97F032C0504;
+	Wed,  5 Feb 2025 09:14:50 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1738700090;
+	bh=nurUDXp2o4MyvC3A0GkMdYpyppUckZpuZWdZNoV48dk=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=j+bv7sTFl3xyS2iPOJ7LZgGQavE8W4YOZZ2LwjJH7D7kFAI/WWY1ktWFn6VSJk/6q
+	 RcUAiOjKwH6gmtF0R9lxPOtmRP3+eFnVdZP5FxmJSnPQYZP4sjtIIvULwefJuB6Dv3
+	 zOTGDYxbDZMPfYtnqq4DDJw2wSbYGJ6zyGumXzOErgPIxVDNOHRoNU4F1DrIyMcQbe
+	 EsClpNdJKP5d5wT1Rexjy1jLrh6/UN29vqDpTzcM+xo8/R7W3PPfimtp2ojX+e5dkR
+	 JbOGjSxfLf6px3NwLcs82dS6B1tWgWqXfp3Qrd1kRDeU1SxxaPoFqdd1R+AI39MXvE
+	 hQa1gv8hU5xcA==
+Received: from svr-chch-ex2.atlnz.lc (Not Verified[2001:df5:b000:bc8::76]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B67a2753a0001>; Wed, 05 Feb 2025 09:14:50 +1300
+Received: from svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) by
+ svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Wed, 5 Feb 2025 09:14:50 +1300
+Received: from svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567]) by
+ svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567%15]) with mapi id
+ 15.02.1544.014; Wed, 5 Feb 2025 09:14:50 +1300
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: "lee@kernel.org" <lee@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "tsbogend@alpha.franken.de"
+	<tsbogend@alpha.franken.de>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "sander@svanheule.net"
+	<sander@svanheule.net>, "daniel@makrotopia.org" <daniel@makrotopia.org>,
+	"markus.stockhausen@gmx.de" <markus.stockhausen@gmx.de>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCH net-next v6 1/6] dt-bindings: mfd: Add switch to RTL9300
+Thread-Topic: [PATCH net-next v6 1/6] dt-bindings: mfd: Add switch to RTL9300
+Thread-Index: AQHbdrFNdM+zCo+02kyxGj8ZSMB8nrM18P+AgADKkoA=
+Date: Tue, 4 Feb 2025 20:14:50 +0000
+Message-ID: <3087ea19-8c2a-47c8-adbe-d05009c6f07b@alliedtelesis.co.nz>
+References: <20250204030249.1965444-1-chris.packham@alliedtelesis.co.nz>
+ <20250204030249.1965444-2-chris.packham@alliedtelesis.co.nz>
+ <20250204-eccentric-deer-of-felicity-02b7ee@krzk-bin>
+In-Reply-To: <20250204-eccentric-deer-of-felicity-02b7ee@krzk-bin>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <FF262CAB6F67264C92EB4994F80E6A84@alliedtelesis.co.nz>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250204132357.102354-1-edumazet@google.com> <20250204132357.102354-12-edumazet@google.com>
- <20250204120903.6c616fc8@kernel.org>
-In-Reply-To: <20250204120903.6c616fc8@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 4 Feb 2025 21:10:59 +0100
-X-Gm-Features: AWEUYZm-h8K5nde5GRBHncwy1Mqs7qtxS-BH5oU6JlDpaa2y8pQ9Fh0V76ECUOs
-Message-ID: <CANn89i+2TrrYYXr7RFX2ZwtYfUwWQS6Qg9GNL6FGt8cdWR1dhQ@mail.gmail.com>
-Subject: Re: [PATCH v3 net 11/16] ipv6: input: convert to dev_net_rcu()
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	Kuniyuki Iwashima <kuniyu@amazon.com>, Simon Horman <horms@kernel.org>, eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=QNvLRRLL c=1 sm=1 tr=0 ts=67a2753a a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=75chYTbOgJ0A:10 a=IkcTkHD0fZMA:10 a=T2h4t0Lz3GQA:10 a=0d4TXYnWXBS5P1Ol6EEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-SEG-SpamProfiler-Score: 0
 
-On Tue, Feb 4, 2025 at 9:09=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
-te:
->
-> On Tue,  4 Feb 2025 13:23:52 +0000 Eric Dumazet wrote:
-> > @@ -488,7 +488,7 @@ static int ip6_input_finish(struct net *net, struct=
- sock *sk, struct sk_buff *sk
-> >  int ip6_input(struct sk_buff *skb)
-> >  {
-> >       return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_IN,
-> > -                    dev_net(skb->dev), NULL, skb, skb->dev, NULL,
-> > +                    dev_net_rcu(skb->dev), NULL, skb, skb->dev, NULL,
-> >                      ip6_input_finish);
-> >  }
-> >  EXPORT_SYMBOL_GPL(ip6_input);
->
-> One more here:
->
-> [ 4326.034939][   T50] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [ 4326.035125][   T50] WARNING: suspicious RCU usage
-> [ 4326.035299][   T50] 6.13.0-virtme #1 Not tainted
-> [ 4326.035955][   T50] -----------------------------
-> [ 4326.036124][   T50] ./include/net/net_namespace.h:404 suspicious rcu_d=
-ereference_check() usage!
-> [ 4326.036398][   T50]
-> [ 4326.036398][   T50] other info that might help us debug this:
-> [ 4326.036398][   T50]
-> [ 4326.036684][   T50]
-> [ 4326.036684][   T50] rcu_scheduler_active =3D 2, debug_locks =3D 1
-> [ 4326.036910][   T50] 2 locks held by kworker/2:1/50:
-> [ 4326.037111][   T50]  #0: ffff8880010a9548 ((wq_completion)events){+.+.=
-}-{0:0}, at: process_one_work+0x7ec/0x16d0
-> [ 4326.037439][   T50]  #1: ffffc9000036fd40 ((work_completion)(&trans->w=
-ork)){+.+.}-{0:0}, at: process_one_work+0xe0b/0x16d0
-> [ 4326.037741][   T50]
-> [ 4326.037741][   T50] stack backtrace:
-> [ 4326.037930][   T50] CPU: 2 UID: 0 PID: 50 Comm: kworker/2:1 Not tainte=
-d 6.13.0-virtme #1
-> [ 4326.037935][   T50] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-> [ 4326.037937][   T50] Workqueue: events xfrm_trans_reinject
-> [ 4326.037947][   T50] Call Trace:
-> [ 4326.037949][   T50]  <TASK>
-> [ 4326.037952][   T50]  dump_stack_lvl+0xb0/0xd0
-> [ 4326.037963][   T50]  lockdep_rcu_suspicious+0x1ea/0x280
-> [ 4326.037975][   T50]  ip6_input+0x262/0x3e0
-> [ 4326.038009][   T50]  xfrm_trans_reinject+0x2a2/0x460
-> [ 4326.038055][   T50]  process_one_work+0xe55/0x16d0
-> [ 4326.038098][   T50]  worker_thread+0x58c/0xce0
-> [ 4326.038121][   T50]  kthread+0x359/0x5d0
-> [ 4326.038141][   T50]  ret_from_fork+0x31/0x70
-> [ 4326.038150][   T50]  ret_from_fork_asm+0x1a/0x30
->
-> Test output:
-> https://netdev-3.bots.linux.dev/vmksft-net-dbg/results/978202/61-l2tp-sh/
-> Decoded:
-> https://netdev-3.bots.linux.dev/vmksft-net-dbg/results/978202/vm-crash-th=
-r2-0
-
-Oh well. So many bugs.
+SGkgS3J6eXN6dG9mLA0KDQpPbiAwNC8wMi8yMDI1IDIxOjA5LCBLcnp5c3p0b2YgS296bG93c2tp
+IHdyb3RlOg0KPiBPbiBUdWUsIEZlYiAwNCwgMjAyNSBhdCAwNDowMjo0NFBNICsxMzAwLCBDaHJp
+cyBQYWNraGFtIHdyb3RlOg0KPj4gQWRkIGJpbmRpbmdzIGZvciB0aGUgZXRoZXJuZXQtc3dpdGNo
+IHBvcnRpb24gb2YgdGhlIFJUTDkzMDAuDQo+Pg0KPj4gU2lnbmVkLW9mZi1ieTogQ2hyaXMgUGFj
+a2hhbSA8Y2hyaXMucGFja2hhbUBhbGxpZWR0ZWxlc2lzLmNvLm56Pg0KPj4gLS0tDQo+Pg0KPj4g
+Tm90ZXM6DQo+PiAgICAgIENoYW5nZXMgaW4gdjY6DQo+PiAgICAgIC0gTmV3DQo+PiAgICAgIC0g
+SSdkIGxpa2UgdG8gZW5mb3JjZSB0aGUgcHJvcGVydHkgYmVpbmcgImV0aGVybmV0LXBvcnRzIiBi
+dXQgSSBzZWUgdGhlDQo+PiAgICAgICAgZ2VuZXJpYyBiaW5kaW5nIGFsbG93cyAicG9ydHMiIGFz
+IHdlbGwuIENhbiBJIGp1c3QgYWRkIGV0aGVybmV0LXBvcnRzOg0KPj4gICAgICAgIHR5cGU6IG9i
+amVjdCBoZXJlIG9yIGRvZXMgYnkgZHJpdmVyIG5lZWQgdG8gaGFuZGxlIGJvdGggInBvcnRzIiBh
+bmQNCj4+ICAgICAgICAiZXRoZXJuZXQtcG9ydHMiIChJIHNlZSBzb21lIGRvIGFuZCBzb21lIGRv
+bid0KS4NCj4+DQo+PiAgIC4uLi9iaW5kaW5ncy9tZmQvcmVhbHRlayxydGw5MzAxLXN3aXRjaC55
+YW1sICAgICB8IDE2ICsrKysrKysrKysrKysrKy0NCj4+ICAgMSBmaWxlIGNoYW5nZWQsIDE1IGlu
+c2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvRG9jdW1lbnRh
+dGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL21mZC9yZWFsdGVrLHJ0bDkzMDEtc3dpdGNoLnlhbWwg
+Yi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvbWZkL3JlYWx0ZWsscnRsOTMwMS1z
+d2l0Y2gueWFtbA0KPj4gaW5kZXggZjA1MzMwM2FiMWU2Li5jYjU0YWJkYTVlNmEgMTAwNjQ0DQo+
+PiAtLS0gYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvbWZkL3JlYWx0ZWsscnRs
+OTMwMS1zd2l0Y2gueWFtbA0KPj4gKysrIGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRp
+bmdzL21mZC9yZWFsdGVrLHJ0bDkzMDEtc3dpdGNoLnlhbWwNCj4+IEBAIC0xNCw2ICsxNCw4IEBA
+IGRlc2NyaXB0aW9uOg0KPj4gICAgIG51bWJlciBvZiBkaWZmZXJlbnQgcGVyaXBoZXJhbHMgYXJl
+IGFjY2Vzc2VkIHRocm91Z2ggYSBjb21tb24gcmVnaXN0ZXIgYmxvY2ssDQo+PiAgICAgcmVwcmVz
+ZW50ZWQgaGVyZSBhcyBhIHN5c2NvbiBub2RlLg0KPj4gICANCj4+ICskcmVmOiAvc2NoZW1hcy9u
+ZXQvZXRoZXJuZXQtc3dpdGNoLnlhbWwjDQo+PiArDQo+PiAgIHByb3BlcnRpZXM6DQo+PiAgICAg
+Y29tcGF0aWJsZToNCj4+ICAgICAgIGl0ZW1zOg0KPj4gQEAgLTQ1LDcgKzQ3LDcgQEAgcmVxdWly
+ZWQ6DQo+PiAgICAgLSBjb21wYXRpYmxlDQo+PiAgICAgLSByZWcNCj4+ICAgDQo+IEkgZG9uJ3Qg
+Z2V0IHdoeSB0aGlzIGRldmljZSByZWNlaXZlcyBub3cgY2hpbGRyZW4gd2l0aG91dCBhZGRyZXNz
+ZXMuDQo+IEVpdGhlciB5b3VyIGNoaWxkcmVuIGhhdmUgJ3JlZycgb3IgdGhleSBkbyBub3QuIE1p
+eGluZyBpcyBhIHNpZ24gb2YgYQ0KPiBtZXNzLCBsaWtlIHRoaXMgd2FzIG5ldmVyIGFjdHVhbGx5
+IHNpbXBsZS1tZmQuDQo+DQo+IFlvdSB3b3VsZCBnZXQgdGhpcyBjb21tZW50IGlmIHlvdSBwb3N0
+ZWQgY29tcGxldGUgc2NoZW1hIHRoZSBmaXJzdCB0aW1lLg0KDQpZZXMgZmFpciBlbm91Z2guIEkg
+dGhpbmsgSSBlcnJlZCB0b28gZmFyIG9uIHRoZSBzaWRlIG9mIHRyeWluZyB0byBzZW5kIA0Kc21h
+bGwgY2h1bmtzIChhbmQgYWxzbyBub3Qgd2FudGluZyB0byBjb21taXQgdG8gYSBiaW5kaW5nIGJl
+Zm9yZSBJIGhhZCANCndvcmtpbmcgZHJpdmVycykuDQoNClNvIGhvdyBkbyB3ZSBtb3ZlIGZvcndh
+cmQ/IFRoZXJlJ3Mgb25lIG1vcmUgcGF0Y2ggSSBoYXZlbid0IHNlbnQgeWV0IA0KdGhhdCBhZGRz
+IGludGVycnVwdHMgZm9yIHRoZSBzd2l0Y2ggYmxvY2suIEJ1dCBvdGhlciB0aGFuIHRoYXQgSSB0
+aGluayANCndoYXQgSSBoYXZlIG5vdyBjb3ZlcnMgYWxsIG9mIHRoZSBtYWpvciBjb21wb25lbnRz
+IGluIHRoaXMgY2hpcC4NCg0KVGhlcmUncyBvbmx5IG9uZSBpbi10cmVlIGJvYXJkIHRoYXQgdXNl
+cyB0aGlzIGFuZCBJJ20gdGhlIG1haW50YWluZXIgb2YgDQppdCBzbyB3aXRoZHJhd2luZyB0aGUg
+bWZkIGJpbmRpbmcgYW5kIHJlcGxhY2luZyBpdCB3aXRoIHNvbWV0aGluZyBlbHNlIA0KaXMgbm90
+IG91dCBvZiB0aGUgcXVlc3Rpb24uIFRoZXJlIG1heSBiZSBzb21lIGNvbXBsYWludHMgZnJvbSBt
+YWtlIA0KZHRic19jaGVjayB3aGlsZSB3ZSBnZXQgdGhpcyBzb3J0ZWQgYnV0IGhvcGVmdWxseSB3
+ZSBjYW4gZ2V0IHRoYXQgZG9uZSBzb29uLg0KDQo=
