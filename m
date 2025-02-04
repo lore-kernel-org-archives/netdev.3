@@ -1,62 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D2B21ADA3;
-	Tue,  4 Feb 2025 22:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2C71FAC5C;
+	Tue,  4 Feb 2025 22:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738707535; cv=none; b=c+GbJ+ymVPlRliCnPH4NK6ZCP8Bi74/jYffZ5uC69ay/fQ1Y21HcxtKnYO+TSTOib4dZ3qM/zrCH7qaVcJofCzhTJzHk0XoiiAXXHEOvNcuh/5AuX/ifDFCNFnanGs+69V0alxOqhmD8s/o2OMz57IzbCMywbwocLCs1PAJkuOg=
+	t=1738707606; cv=none; b=rrRUIDrHbKXPR/hP0g5PE11cy6N7nBHJpkoV2GGnk6HH+ht/7hVipHfryPbZOJbMKudfyMLkHyeCM5LsCb/mx/eeiL4O3Upok9XBGnnLetFOw0O2SwzIWuhFvwnZEQ9Hll3A/cTEj7g5APRNEym5GnJ2OemuWYv4eJbduEP15WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738707535; c=relaxed/simple;
-	bh=xi52YlCiURIzYt7oiiVPCmGs1xaM0138JGjoEXB0VmA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WU3N70hqTRrC1c0fVqEif07M5KL3ZnN47hVj7k2btL8yHAOIM47Bu3IwVk5Z5XhAaC5QDyhGxhqtKLBSGQ7edlb9TjxzV7//+Br6Ir6IKG5+bS4ghHm5UQrdwMf1Xqii8Og1KbOwEdkNz3s+tQCph8msRAVmlfH9B69ULiEqbUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=msbEOqiy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738707606; c=relaxed/simple;
+	bh=HWUZxbxxlfRII5fR5qoo/z6Lap3FCCYecC2bT8Mxaq0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hieJfz3a5juOy3m2CkqpCQXY7q46922stBncCG3lV/bS4e1fihLb84w9dRgImfxQF4oUVRsHT+AYDn9URy0/vMisxgxZBg5JFtddo1KXXhn/Y7ZBVCIa9ollrOMKmdolT4acm3L0J2U+wgx+e0uBOF/JF2s8O4SVD6AdtrRQ0Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YqTxvH8D; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="msbEOqiy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643CCC4AF0D;
-	Tue,  4 Feb 2025 22:18:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YqTxvH8D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D84AC4CEDF;
+	Tue,  4 Feb 2025 22:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738707533;
-	bh=xi52YlCiURIzYt7oiiVPCmGs1xaM0138JGjoEXB0VmA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=msbEOqiy+ou9MOC6AeV1xMv/m5svo19dMbeofq9kr9OHhgo/S2eTt9lMnHrtMKzdl
-	 VKeA1FHWYDpONMh2DT/HGCXMb1Cz7NoiCDXwURjGNLlPApogfzUEGSL884MFIys2DU
-	 Fe2MJANKbHwqk0atFce7uP90GHQW3PaIM6m+lPIrYjQL/KvClZ6exBNLzmoh1tKJqB
-	 fCWd3PfcqO6OSpVnwh24+F4TfCqmNvIN0EvpH4KYB2aVwjVyfF7iptxlb70iVM7Ead
-	 /XZaeW6OiyLkxYacqwkPddjnwLGkTSPjStDEQn5Z1b6MfyunqGd4z4GRWuydLKD6/x
-	 PQxoo2qUNJ9wg==
-Date: Tue, 4 Feb 2025 14:18:51 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Amery Hung <ameryhung@gmail.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, daniel@iogearbox.net,
- andrii@kernel.org, alexei.starovoitov@gmail.com, martin.lau@kernel.org,
- edumazet@google.com, xiyou.wangcong@gmail.com, cong.wang@bytedance.com,
- jhs@mojatatu.com, sinquersw@gmail.com, toke@redhat.com, jiri@resnulli.us,
- stfomichev@gmail.com, ekarani.silvestre@ccc.ufcg.edu.br,
- yangpeihao@sjtu.edu.cn, yepeilin.cs@gmail.com, ming.lei@redhat.com,
- kernel-team@meta.com
-Subject: Re: [PATCH bpf-next v3 08/18] bpf: net_sched: Support
- implementation of Qdisc_ops in bpf
-Message-ID: <20250204141851.522ae938@kernel.org>
-In-Reply-To: <20250131192912.133796-9-ameryhung@gmail.com>
-References: <20250131192912.133796-1-ameryhung@gmail.com>
-	<20250131192912.133796-9-ameryhung@gmail.com>
+	s=k20201202; t=1738707605;
+	bh=HWUZxbxxlfRII5fR5qoo/z6Lap3FCCYecC2bT8Mxaq0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=YqTxvH8D411ZXFF9tvgxeRyKYi7PgEhyFa2JcaSbP/c+3/ZovvdnSeFvytip6Yd9e
+	 1F5pyFLGUXdv2KB/tq3CF6y3BPUJKMhUF4DO2XmkxI/TCih62hPc7xR/bRegxDfTZI
+	 S0KbREGHA6L1bIF4MAZ/0EuqzDCQ5/J6ET5VUC+0XC9sslz9OiwzeJhr93ox0zPXc+
+	 hGFciiWp3bhfiY9O6fYkzOqrVQ+8uZwa2k3JihY/DhGEn0HOF5WEYg7qNzDdVdh3R1
+	 CB3uQro5xOrUzgBuVPRgCAzkiaouFmVEStBSYuAQmbp4/QeoAiwrm9LPKV9oSPyO1u
+	 CxwXN3Gjd2YGA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE94380AA7E;
+	Tue,  4 Feb 2025 22:20:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] net: atlantic: fix warning during hot unplug
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173870763231.165851.17410649919538989009.git-patchwork-notify@kernel.org>
+Date: Tue, 04 Feb 2025 22:20:32 +0000
+References: <20250203143604.24930-3-mail@jakemoroni.com>
+In-Reply-To: <20250203143604.24930-3-mail@jakemoroni.com>
+To: Jacob Moroni <mail@jakemoroni.com>
+Cc: irusskikh@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ Pavel.Belous@aquantia.com, Alexander.Loktionov@aquantia.com,
+ Dmitrii.Tarakanov@aquantia.com, vomlehn@texas.net,
+ Dmitry.Bezrukov@aquantia.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Fri, 31 Jan 2025 11:28:47 -0800 Amery Hung wrote:
-> +		if (new &&
-> +		    !(parent->flags & TCQ_F_MQROOT) &&
-> +		    new->ops->owner == BPF_MODULE_OWNER) {
-> +			NL_SET_ERR_MSG(extack, "BPF qdisc not supported on a non root");
-> +			return -EINVAL;
-> +		}
+Hello:
 
-This check should live in bpf_qdisc.c
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon,  3 Feb 2025 09:36:05 -0500 you wrote:
+> Firmware deinitialization performs MMIO accesses which are not
+> necessary if the device has already been removed. In some cases,
+> these accesses happen via readx_poll_timeout_atomic which ends up
+> timing out, resulting in a warning at hw_atl2_utils_fw.c:112:
+> 
+> [  104.595913] Call Trace:
+> [  104.595915]  <TASK>
+> [  104.595918]  ? show_regs+0x6c/0x80
+> [  104.595923]  ? __warn+0x8d/0x150
+> [  104.595925]  ? aq_a2_fw_deinit+0xcf/0xe0 [atlantic]
+> [  104.595934]  ? report_bug+0x182/0x1b0
+> [  104.595938]  ? handle_bug+0x6e/0xb0
+> [  104.595940]  ? exc_invalid_op+0x18/0x80
+> [  104.595942]  ? asm_exc_invalid_op+0x1b/0x20
+> [  104.595944]  ? aq_a2_fw_deinit+0xcf/0xe0 [atlantic]
+> [  104.595952]  ? aq_a2_fw_deinit+0xcf/0xe0 [atlantic]
+> [  104.595959]  aq_nic_deinit.part.0+0xbd/0xf0 [atlantic]
+> [  104.595964]  aq_nic_deinit+0x17/0x30 [atlantic]
+> [  104.595970]  aq_ndev_close+0x2b/0x40 [atlantic]
+> [  104.595975]  __dev_close_many+0xad/0x160
+> [  104.595978]  dev_close_many+0x99/0x170
+> [  104.595979]  unregister_netdevice_many_notify+0x18b/0xb20
+> [  104.595981]  ? __call_rcu_common+0xcd/0x700
+> [  104.595984]  unregister_netdevice_queue+0xc6/0x110
+> [  104.595986]  unregister_netdev+0x1c/0x30
+> [  104.595988]  aq_pci_remove+0xb1/0xc0 [atlantic]
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v2] net: atlantic: fix warning during hot unplug
+    https://git.kernel.org/netdev/net/c/028676bb189e
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
