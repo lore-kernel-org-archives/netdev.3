@@ -1,117 +1,89 @@
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFF9215177
-	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 15:38:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0870C25A659
+	for <netdev@vger.kernel.org>; Tue,  4 Feb 2025 15:42:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738683484; cv=none; b=KfTL+6ahSECS92WKlTuGUMUDrCP+yJoc4MG17s5lRW/cI9U1AnsbUzQHi7BXKNIXO0Ws8sb2Z/qteS8tKSWJQMzVkAYKTMTN0YTHdL9bd6Qr62nUF5gOHsC3jVTu+OmKnlNzEHDXu2DSK0GVrm8fM0IPzGKHNTFZEzp5xCFVlu8=
+	t=1738683723; cv=none; b=C+SyzdMcmrhpnv0RyEohX0Bov5g1pEaGURHiz+53+529PEWUZVJp1JQMHGOxNVVTAVrAi+9v25wmIVYSIDPbcGIpYpWlaZcqDZ3WZnLwS6QeAiaG4AA5mNh4b5ToZG88ptlZs5zo6ezJncjpqikIMJMA2M2cnDikHH09FduVwkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738683484; c=relaxed/simple;
-	bh=ltZ949oM+lMRV7UBAxtOUIjP4ivNHQ9d0hi0WriRce8=;
+	s=arc-20240116; t=1738683723; c=relaxed/simple;
+	bh=pznf7y+6TBfYJKYfjaZEPMGCIaASsTIg8FeHb/sUrUo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y3OBbViOkSl43eIcw5lbHkikd8Bpn2mYs14zP/7hiH3xZ6QiJkm7R1dxgnYcFxHNP9z3OZFLUKmEdI1ZGPCbrmzYy7ghwVG62wyVig786KX+E8oFHTqo7bPFFKJ5jz/Vyqe5FY+vcoIoyuiAPk3OCgILuLBkl2+pvL22ikUG8t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NN5UQJkz; arc=none smtp.client-ip=209.85.219.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 To:Cc:Content-Type; b=qiATk0NMqMsBSlu5BxC41757FRi/aXTEdE54w8jWz8Jp1ND3S95P1XfiRvgksOGrcl6pIXAcKpsRgTKKDnrRmoEYkW8InKwhb+lBqjLw3JsaWNJRK88JDd4PeWZ9dHEsM7LZWXdvF1D9QlaMjx6Cj4lbM0HaNwmOhVpTjDzLDWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WkUINHil; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NN5UQJkz"
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e549b0f8d57so5420407276.3
-        for <netdev@vger.kernel.org>; Tue, 04 Feb 2025 07:38:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WkUINHil"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5dc89df7eccso7107712a12.3
+        for <netdev@vger.kernel.org>; Tue, 04 Feb 2025 07:42:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1738683481; x=1739288281; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=jVMfm8ZhSAvtr5Dot2F5GueOESbiJOB9RRL5JCbpZyU=;
-        b=NN5UQJkzSiz6IcxyAbcgc8IiV5ZkupT6U310HuXW4brkLUc5nDuzAipx5IP46ct4gd
-         EpyHisjAgdO+AnSGAlHo3RPO4wV1QEVBMkSNP0oxEpCNirBeuLGQ2ydqn5gsJLyNGYpf
-         KinFAh3wjqvzfw+ndKa/L2JOouFYVOzOG6qf099WTnigAqNL1KIvo8y7IZ5l8otHJsST
-         L0wNbuojoah+F5eaDOn3wOkbTF0VluC7NSMO1Ncv9IrkJVkWiyUR/plsL88NnZ01XA/z
-         SYRlRtV9lS5ABP/W6POaMQ2TIJQMGuBeAY04VpokBgral376cUrNsjvBdy9/shF7fsd9
-         KkDw==
+        d=google.com; s=20230601; t=1738683720; x=1739288520; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pznf7y+6TBfYJKYfjaZEPMGCIaASsTIg8FeHb/sUrUo=;
+        b=WkUINHil+5QIJs0GE18+A/pWaxCyWo9pP9m1TfRfm8RZof0ViVFHTrbUr+30yQ/Ne+
+         oyrB5/DpYvGRpoov/Huj3Zl5s1F6r5BMG9HNHWPNmJNzHui4qhUiJPQYT52XijeSW0vJ
+         PA8XGINPHPf8rFEIKH/RddpzMQzFdWTUhKFqF2zxTO6fYJY/HF7q9glLGTznffxJf1mU
+         szIiJQxs/Y8tCcnrswD54AYL5f1RCsMJ5nh2Rm9prhq0jBUqo3IaMnrgoOOFeZM8b8R+
+         QtMRxrY3EqnDwaHEz26J7hz/XRSj/gxJZSlzu1JrQ9dGAxhAa8/PBo56WKdoZnAOskah
+         EmBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738683481; x=1739288281;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jVMfm8ZhSAvtr5Dot2F5GueOESbiJOB9RRL5JCbpZyU=;
-        b=asjXanyLjTgbGDSBSCDIBDlXRGFx2QuEkzQoATOgN2WqeAaqF0+dSzz3N+rvWtthDG
-         w3bYkF5Kh6FY7L9qpeISlkKPTM1RZM6MmRix0H05L+GC9v5267zZSbU305+0CRnmt4tj
-         gqETbplD3Sq8wi7wc/bwbylGBFizCHw1+9hZN9LWPkxj1KLcuKNWrvn2pP6H7X6eOens
-         uom1pMBXNC+xP8NNaph4H+nHajueM7ITonAcfDYT31cpI3d62VgDVeqUsGBQ8VUUuWU0
-         6+AEiXbY7yuTvPMAFT63iWfcv3RpZA/HIOR46nuqv4T7qewzDDw9RGZPda0sYlrgM8Qn
-         0VYw==
-X-Forwarded-Encrypted: i=1; AJvYcCUk1E158X3nUZSypnblxRIYo2TQg3qVy3QKisQgXDeWMt0JkUGnRA3uUqeHzylNcx7JL6nB/GU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxzr7E507fwojA/i/lH3a0/JvHLb/NL7FtXA+RdorZ2dO6/TrNr
-	L196KZXcktbFfv689JW9EBaXp0MeMYB6uXKtnyE0fDCA2llZ4eRUnQ6uqZOs3/SL0OBjRQgowDY
-	jUcndA1sipJkKwOCFLaKBXgNwvL9SXA7mHKwYgA==
-X-Gm-Gg: ASbGncvBtEWQ+K59HdD1loJupDjJQUvrKA5LrOv5XPbn6vJF1jF+ErMpSXk0fsW/Rcc
-	NZT8iPqxRIgXCV3rKAnXM4U4jH6LFo/tyhTAEp883JcPoNqK2957uWMh6H/QdOMu/v6HRTBV4CA
-	==
-X-Google-Smtp-Source: AGHT+IHvgaaPpDS+6zz+NW+qWTxfxKZ5xGI5mBb28CNf8euDfNNskCLrVmo+9LeT8cifH6u3mLCbOQvZ3PdCNlYInak=
-X-Received: by 2002:a05:6902:2409:b0:e5b:22a9:fd44 with SMTP id
- 3f1490d57ef6-e5b22a9fedamr351835276.27.1738683481129; Tue, 04 Feb 2025
- 07:38:01 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738683720; x=1739288520;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pznf7y+6TBfYJKYfjaZEPMGCIaASsTIg8FeHb/sUrUo=;
+        b=su1W0ce3LVWhOKlovKQFr1ow+HkrcDrg5bR7moq2eYi50vGIxl081HhhPsvUles8pb
+         H1YTUQj5JIAoABwXPqiNfZEiWG3OYkaYfVNIYzPS/aRlJYVIYuJi+0EG7/BMBs629kLz
+         YzLdAvumxObvaOM2pZF5jYNojI8uCfUWAdf4QV1L8p2VZeEHM8ZSdzT2MSnpEyM85zuI
+         C154ewTf4Kn85HNx0zJ3EmMAvVtcFLWXD0mST5NXV5F6JOjPz2Asq/kD4tWhBLSttoFe
+         qNAkensOc/wLqHGa4q/RCVOwLoZs7WaTAjFQv0BnDnAO6hNifn0iaMSj2pNnlJg7SXKL
+         H0ug==
+X-Gm-Message-State: AOJu0YwjmBnBe8ShNusDT3cEYAEnI0lWulZhim2PDT7VcbZjg3aSMaL1
+	UoRXDJnlrMhXaBPD62foV/73unNUDZwTbPj2lxMh+9oAyj6ar545SpCaYpwRmwvyt8XXwnIyM3Z
+	YCz7yTa/wpSldd9yval2gzExyeysxIK3Oj2C5
+X-Gm-Gg: ASbGncvLebrOJXI7IiTNv9CuoowdzPpf0qYkzH4ChIEXj/VGH7yFte70Dzg8Vw1JI5d
+	nCWPW8Vw7CO2ZM5YThIYqR3IyMJsWSv7oYwgY6wCfnhDfr4JyHJJFRF3tzzhFDzkG85t9Cgk=
+X-Google-Smtp-Source: AGHT+IGBYYosawA+JL9Y08qex6Gus99Y2FRU7BSzVPGVY240m2TatGr5loJvkzpu/vgwMg+o8hBvR0BN4OhXoWmVl/c=
+X-Received: by 2002:a05:6402:51d4:b0:5dc:cf9b:b043 with SMTP id
+ 4fb4d7f45d1cf-5dccf9bb32cmr1704740a12.11.1738683720015; Tue, 04 Feb 2025
+ 07:42:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250131-gpio-set-array-helper-v1-0-991c8ccb4d6e@baylibre.com> <20250131-gpio-set-array-helper-v1-9-991c8ccb4d6e@baylibre.com>
-In-Reply-To: <20250131-gpio-set-array-helper-v1-9-991c8ccb4d6e@baylibre.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 4 Feb 2025 16:37:25 +0100
-X-Gm-Features: AWEUYZk_FOEufbv4XIOWWo19tqsP-vJZAmqSGiOD8X2-D-NUV7n8lB7W5hF96hc
-Message-ID: <CAPDyKFqnEtnCRcu963t1cBqjHvz2nV+Ymahtpef+ZoCD9-C2Ew@mail.gmail.com>
-Subject: Re: [PATCH 09/13] mmc: pwrseq_simple: use gpiods_set_array_value_cansleep
-To: David Lechner <dlechner@baylibre.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Andy Shevchenko <andy@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-sound@vger.kernel.org
+References: <20250204145549.1216254-1-idosch@nvidia.com> <20250204145549.1216254-2-idosch@nvidia.com>
+In-Reply-To: <20250204145549.1216254-2-idosch@nvidia.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 4 Feb 2025 16:41:48 +0100
+X-Gm-Features: AWEUYZltbg0fgww7OKcOLyQZXKvlEW833D9Ht2NfdSXEwT3bgaQHYPIMyLNLoPQ
+Message-ID: <CANn89iJfdyUAmuDPoR8B5Bobb3bj_Fs=Jdnh79ewQ=cbVVDAZQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/8] vxlan: Annotate FDB data races
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, petrm@nvidia.com, 
+	razor@blackwall.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 31 Jan 2025 at 21:25, David Lechner <dlechner@baylibre.com> wrote:
+On Tue, Feb 4, 2025 at 3:56=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> wro=
+te:
 >
-> Reduce verbosity by using gpiods_set_array_value_cansleep() instead of
-> gpiods_set_array_value_cansleep().
+> The 'used' and 'updated' fields in the FDB entry structure can be
+> accessed concurrently by multiple threads, leading to reports such as
+> [1]. Can be reproduced using [2].
 >
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> Suppress these reports by annotating these accesses using
+> READ_ONCE() / WRITE_ONCE().
+>
+>
+> Reviewed-by: Petr Machata <petrm@nvidia.com>
+> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+>
 
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-
-Kind regards
-Uffe
-
-> ---
->  drivers/mmc/core/pwrseq_simple.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/drivers/mmc/core/pwrseq_simple.c b/drivers/mmc/core/pwrseq_simple.c
-> index 37cd858df0f4d7123683e1fe23a4c3fcd7817d13..b3a6d053c826741005f1484ad81df30b6bf75bbc 100644
-> --- a/drivers/mmc/core/pwrseq_simple.c
-> +++ b/drivers/mmc/core/pwrseq_simple.c
-> @@ -54,8 +54,7 @@ static void mmc_pwrseq_simple_set_gpios_value(struct mmc_pwrseq_simple *pwrseq,
->                 else
->                         bitmap_zero(values, nvalues);
->
-> -               gpiod_set_array_value_cansleep(nvalues, reset_gpios->desc,
-> -                                              reset_gpios->info, values);
-> +               gpiods_set_array_value_cansleep(reset_gpios, values);
->
->                 bitmap_free(values);
->         }
->
-> --
-> 2.43.0
->
+Reviewed-by: Eric Dumazet <edumazet@google.com>
