@@ -1,134 +1,177 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65297215F42
-	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 23:07:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8E31F473C
+	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 23:09:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738796851; cv=none; b=DvX/6rQrsCZzPJvXz0UL1LiAOZYmqVCzfLpMN1NmsPYScRknuJPVZiZ8CaRJam8TOAN0AIKIUM5f2+Y7mTwjWZ1o9sbY7t1otmQ/fiducYWRnNEYXstRXSGaOZnQ2Od8PppwTRSf82sHKJjLk5frpxNgcZFHfocf9EbkmmcVaJ0=
+	t=1738796976; cv=none; b=B59lx1iDmPc/vgKf2x1N3Qv/Ps9t6Xag/9h2if30AGhAl0S56Gcyq4Z3rZ4qvOhy0+m15u8t3W71gzKUK1Hr6PIISWFT1WZV/swVx1XjkWEsg5MsFGJf1kkPj4JHRgV7LSak6AENQTo2fWdDRXN4g+669zNPd+q+pMJtiqg9VlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738796851; c=relaxed/simple;
-	bh=HFT37ec+sRmG1cHS4L1k0j/4DXXVwyXDumHH3SQs6zI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FVwpZEYdh1dEUjuFPdExsGvbeeWaASPBtQ2v59HDDr61x1w6KrdDcfuNMMZl+9mhOKWvJwDjWTbJOMkQhT+pRId4lyUC6xO0l1kThJea/Rc7wQMoa033QLVE4PXbFLqULmu/Sq8qP+cxioEhgVC9ntDq11+9QjaA5RqZinGeaBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=Jmbwh/8X; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1738796976; c=relaxed/simple;
+	bh=0tONOp1b5SRsZAROp+esw8aYqCFtQ0EOoMDmhHZVrpo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=mZ7QVXH/pO4PpLlWE6KPbwBNflYFp5ExbWWbwhtn6h7ptgk3UztyKOiVx2vxBsxriuOSefagATc0euf7mdwjWFWFek9ocm9RderNGFLcjrtADKR3oJ757jZkQOL/428b/E05tHUB61iJn1gBKMAgihfN08ggfCmKEd/JzgOQwe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=khYF0LSF; arc=none smtp.client-ip=185.125.188.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="Jmbwh/8X"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1tfoUR-008kqD-FD; Thu, 06 Feb 2025 00:07:27 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=CApnBZY8aW04rYiLWasp59iJjgpPrNdh8OevlYFQObE=; b=Jmbwh/8XKyhIYxJcRBvdWvirRF
-	kkRQs6yyO8HTWKFapFuIvOFFYcxg89w8wCG+LqqSp+DfV6FDxfA2hBPBQpLMhyzTl9LOEnminTytg
-	CUifG5Qulv36b0GIm76bcaUy8vH+1y9Hvbubl5XSWgMUpYIXH7z6pAdHZlgpTBfJXHgoveTuO+itz
-	+bsqLAP+9I9JEfv5le+FFQBptcYr3psm3oKO9fhjoRrJBtlBcZnegTYPS8TGLaIXhXyxQZ0xdwLtw
-	s4AhuNgmf8XeH2cyP68ZwciErAHcPCqQA+itunakdoK8Cr6xibJhFX7XWhuyHUb+bmS2vl8sfmSMi
-	0WChT9UA==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1tfoUQ-0006Hq-RU; Thu, 06 Feb 2025 00:07:27 +0100
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1tfoU5-009hRv-Mr; Thu, 06 Feb 2025 00:07:05 +0100
-From: Michal Luczaj <mhal@rbox.co>
-Date: Thu, 06 Feb 2025 00:06:47 +0100
-Subject: [PATCH net v2 1/2] vsock: Orphan socket after transport release
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="khYF0LSF"
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id A058E3F867
+	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 23:09:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1738796966;
+	bh=IHCQzji28xdd+EhWALB92Wl84qSvADw6a0Gh6qa1QcU=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type;
+	b=khYF0LSFpGa8+4Xz/v0o5mXfss4tkRzzBZEqNJhuihQbXO/pTewfIngwnQ13KlZYx
+	 4smtsU8QddmiwfFcOhlxqR62K8iS3i3c6gDz0oJhjbvFwRLHZW8t40hB79nXC/G7XU
+	 tHty2hjbs0+TMcEWgC3t9IswBmowNqAtfuZnxK4490c6hB6VFUi+bA2VvKKGjeo2OW
+	 ujpK+mAppu+ALiyKukfTPt7hgPSkMJfFXhnwuFVZ6Ymx3OM7WhobdXIErnk+FOYK/U
+	 hDmX/+VJId0oQNerofvNYA/DtgxnhPwCH6CRqiItqJ+s/m3x6QhhZmf0us1IWkXyET
+	 j3FDmydaeYXPA==
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5dca72b752fso328277a12.0
+        for <netdev@vger.kernel.org>; Wed, 05 Feb 2025 15:09:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738796965; x=1739401765;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IHCQzji28xdd+EhWALB92Wl84qSvADw6a0Gh6qa1QcU=;
+        b=jg8D+PmWjwFvqbiJKiBQ40YMrEYkY/odTJkFGlO2fw7F8fRMB7oDu6kbgv12Tu+50d
+         rc7P2YMCBU88HIvbXbG3Q18Xy6GFt12pxiAectlyLjWFziHgRchn67lFTlUGSlSkgwz2
+         MMaG+bcyRkdl0hUYznB/6n4Ukl6N18otpAuFhChCN+xQNkfXGq+MIITMavElKO7guVxC
+         LlUkveQNlHGKL1qYKzVmEbcaoNE5Xeq5hXVPjBLFxnip9D0rkFJU2B2xSe2AnySuyZ/B
+         nGpxV7BfWP3V9UCje/vlbEAvhqPU42WPhmKB/HZH8WBTJyq3RKXKaasW1xx2GSS1pkiF
+         mMOw==
+X-Forwarded-Encrypted: i=1; AJvYcCXmoVfnis2NiRG9Tp1WzXfM714asFADWWDsCCAa1EpYYZIdwDWJpNYZImfGj+ZwRaAlGikQTj0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyddhqGw2AutRDknq+CshbJCDtgiJzQpm2HME1nevkGNomtbmOp
+	eveRcphTcenmtC2gPirV2VwVkRLKwSfQJHMtjagg4jOy3vPuNU602QQj4iyHjVH/5G6/TgI0QEO
+	RJwigK9qeCRYol87P7pq9qTNHeP8INelYgWK08F1dWiR34+grVGpfnD9F0iY1A8Do0DM77E/FBP
+	cwGH+G1ZVznklJYINqBHnTv3yasHPtPNEEcE8AJeANcEju
+X-Gm-Gg: ASbGncuV4vscWbxOGixWhIS5LsnzbiiH+FZKveb130fMX7+ainhErZqBvmPdXjKMTr7
+	IgY8iCE4OxDJcJTCQmfqHfeV3Co3zpkWw691Cvit3ThemB833u/CcaxYztAtd
+X-Received: by 2002:a05:6402:1ece:b0:5dc:8ff2:8b67 with SMTP id 4fb4d7f45d1cf-5dcdb776ea5mr4739833a12.27.1738796964867;
+        Wed, 05 Feb 2025 15:09:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF1fESLv5gzNaM5MizNpi9j0ovNWs8X15bEZqC1NhnGeYx/WSsczY28A2jsvF5N18HMtSIAoHtF1Twd9VUhmHE=
+X-Received: by 2002:a05:6402:1ece:b0:5dc:8ff2:8b67 with SMTP id
+ 4fb4d7f45d1cf-5dcdb776ea5mr4739819a12.27.1738796964455; Wed, 05 Feb 2025
+ 15:09:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250206-vsock-linger-nullderef-v2-1-f8a1f19146f8@rbox.co>
-References: <20250206-vsock-linger-nullderef-v2-0-f8a1f19146f8@rbox.co>
-In-Reply-To: <20250206-vsock-linger-nullderef-v2-0-f8a1f19146f8@rbox.co>
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>, 
- syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com, 
- Luigi Leonardi <leonardi@redhat.com>
-X-Mailer: b4 0.14.2
+From: Mitchell Augustin <mitchell.augustin@canonical.com>
+Date: Wed, 5 Feb 2025 17:09:13 -0600
+X-Gm-Features: AWEUYZnzdf7jVs6wvqeBgViHpu3kv7yl_bB8qHrwzZfoQ814nnZ-IMm4yhtr57E
+Message-ID: <CAHTA-uaH9w2LqQdxY4b=7q9WQsuA6ntg=QRKrsf=mPfNBmM5pw@mail.gmail.com>
+Subject: modprobe mlx5_core on OCI bare-metal instance causes unrecoverable
+ hang and I/O error
+To: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, 
+	andrew+netdev@lunn.ch, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Cc: Talat Batheesh <talatb@nvidia.com>, Feras Daoud <ferasda@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
 
-During socket release, sock_orphan() is called without considering that it
-sets sk->sk_wq to NULL. Later, if SO_LINGER is enabled, this leads to a
-null pointer dereferenced in virtio_transport_wait_close().
+Hello,
 
-Orphan the socket only after transport release.
+I have identified a bug in the mlx5_core module, or some related component.
 
-While there, reflow the other comment.
+Doing the following on a freshly provisioned Oracle Cloud bare metal
+node with this configuration [0] will reliably cause the entire
+instance to become unresponsive:
 
-Partially reverts the 'Fixes:' commit.
+rmmod mlx5_ib; rmmod mlx5_core; modprobe mlx5_core
 
-KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
- lock_acquire+0x19e/0x500
- _raw_spin_lock_irqsave+0x47/0x70
- add_wait_queue+0x46/0x230
- virtio_transport_release+0x4e7/0x7f0
- __vsock_release+0xfd/0x490
- vsock_release+0x90/0x120
- __sock_release+0xa3/0x250
- sock_close+0x14/0x20
- __fput+0x35e/0xa90
- __x64_sys_close+0x78/0xd0
- do_syscall_64+0x93/0x1b0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+This also produces the following output:
 
-Reported-by: syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9d55b199192a4be7d02c
-Fixes: fcdd2242c023 ("vsock: Keep the binding until socket destruction")
-Tested-by: Luigi Leonardi <leonardi@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- net/vmw_vsock/af_vsock.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+[  331.267175] I/O error, dev sda, sector 35602992 op 0x0:(READ) flags
+0x80700 phys_seg 33 prio class 0
+[  331.376575] I/O error, dev sda, sector 35600432 op 0x0:(READ) flags
+0x84700 phys_seg 320 prio class 0
+[  331.487509] I/O error, dev sda, sector 35595064 op 0x0:(READ) flags
+0x80700 phys_seg 159 prio class 0
+[  528.386085] INFO: task kworker/u290:0:453 blocked for more than 122 seconds.
+[  528.470497]       Not tainted 6.14.0-rc1 #1
+[  528.520546] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
+disables this message.
+[  528.615268] INFO: task kworker/u290:3:820 blocked for more than 123 seconds.
+[  528.699641]       Not tainted 6.14.0-rc1 #1
+[  528.749690] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
+disables this message.
+[  528.843577] INFO: task jbd2/sda1-8:1128 blocked for more than 123 seconds.
+[  528.925922]       Not tainted 6.14.0-rc1 #1
+[  528.975971] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
+disables this message.
+[  529.069854] INFO: task systemd-journal:1218 blocked for more than
+123 seconds.
+[  529.156382]       Not tainted 6.14.0-rc1 #1
+[  529.206441] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
+disables this message.
+[  529.300407] INFO: task kworker/u290:4:1828 blocked for more than 123 seconds.
+[  529.385892]       Not tainted 6.14.0-rc1 #1
+[  529.435942] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
+disables this message.
+[  529.529973] INFO: task rs:main Q:Reg:2184 blocked for more than 124 seconds.
+[  529.614607]       Not tainted 6.14.0-rc1 #1
+[  529.664656] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
+disables this message.
+[  529.758690] INFO: task gomon:2258 blocked for more than 124 seconds.
+[  529.834832]       Not tainted 6.14.0-rc1 #1
+[  529.884887] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
+disables this message.
+[  529.978867] INFO: task kworker/u290:5:3255 blocked for more than 124 seconds.
+[  530.064351]       Not tainted 6.14.0-rc1 #1
+[  530.114398] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
+disables this message.
+[  651.265588] INFO: task kworker/u290:0:453 blocked for more than 245 seconds.
+[  651.349980]       Not tainted 6.14.0-rc1 #1
+[  651.400028] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
+disables this message.
+[  651.494126] INFO: task kworker/u290:3:820 blocked for more than 245 seconds.
+[  651.578543]       Not tainted 6.14.0-rc1 #1
+[  651.628600] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
+disables this message.
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 075695173648d3a4ecbd04e908130efdbb393b41..85d20891b771a25b8172a163983054a2557f98c1 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -817,20 +817,25 @@ static void __vsock_release(struct sock *sk, int level)
- 	vsk = vsock_sk(sk);
- 	pending = NULL;	/* Compiler warning. */
- 
--	/* When "level" is SINGLE_DEPTH_NESTING, use the nested
--	 * version to avoid the warning "possible recursive locking
--	 * detected". When "level" is 0, lock_sock_nested(sk, level)
--	 * is the same as lock_sock(sk).
-+	/* When "level" is SINGLE_DEPTH_NESTING, use the nested version to avoid
-+	 * the warning "possible recursive locking detected". When "level" is 0,
-+	 * lock_sock_nested(sk, level) is the same as lock_sock(sk).
- 	 */
- 	lock_sock_nested(sk, level);
- 
--	sock_orphan(sk);
-+	/* Indicate to vsock_remove_sock() that the socket is being released and
-+	 * can be removed from the bound_table. Unlike transport reassignment
-+	 * case, where the socket must remain bound despite vsock_remove_sock()
-+	 * being called from the transport release() callback.
-+	 */
-+	sock_set_flag(sk, SOCK_DEAD);
- 
- 	if (vsk->transport)
- 		vsk->transport->release(vsk);
- 	else if (sock_type_connectible(sk->sk_type))
- 		vsock_remove_sock(vsk);
- 
-+	sock_orphan(sk);
- 	sk->sk_shutdown = SHUTDOWN_MASK;
- 
- 	skb_queue_purge(&sk->sk_receive_queue);
+I tried using the function_graph tracer to identify if there were any
+functions within mlx5_core that were executing for an excessive amount
+of time, but did not find anything conclusive.
+
+Attached[1] is the stack trace that I see when I force the kernel to
+panic once a hang has been detected. I did this 3 times, and each
+trace was similar in that they all referred to ext4_* functions, which
+seems to line up with the I/O errors that I see each time.
+
+I should also note that I was able to trigger a similar I/O error on a
+DGX A100 one time (running Ubuntu-6.8.0-52-generic kernel and modules
+installed via a repackaged version of DOCA-OFED) - but I have not been
+able to reliably reproduce this issue on that machine with the pure
+upstream inbox drivers, like I can with the OCI instance. (I was also
+still able to interact with the A100 - but attempting to run any
+command resulted in a "command not found" error, which again lines up
+with the idea that this might have been interfering with ext4 somehow)
+
+Has anything like this been observed by other users?
+
+Please let me know if there is anything else I should do or provide to
+help debug this issue, or if there is already a known root cause.
+
+[0]
+System specs:
+OCI bare-metal Node, BM.Optimized3.36 shape with RoCE connectivity to
+another identical node
+Kernel: mainline @ 6.14.0-rc1 with this config:
+https://pastebin.ubuntu.com/p/5Jm2WFZY62/
+ibstat output: https://pastebin.ubuntu.com/p/S5dfFSdDxd/
+lscpu output: https://pastebin.ubuntu.com/p/dfPyYQWnhX/
+
+[1]
+https://pastebin.ubuntu.com/p/kxw2dsmwFV/
 
 -- 
-2.48.1
-
+Mitchell Augustin
+Software Engineer - Ubuntu Partner Engineering
