@@ -1,43 +1,43 @@
 Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A451FC7F6;
-	Wed,  5 Feb 2025 17:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DA31DDC2E
+	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 17:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738777588; cv=none; b=muJGiBOI2dm/4U0qd0PssKEjinpAPuX+z7GMqWcwMWQET5X28Jr63+TZkZkqgrvKfwIyVMoI4RX4J9fKpz3rnQCWirmKqcbE4oKcqIsUUApKmX56SpCbojS2m8XDyCAkl6FJUfNYUHR5UH7fAnhYoEA7bG6baGmu8PUQhWyvGSI=
+	t=1738777741; cv=none; b=IFjAkv/LYFsV8M0+nj5ayprEOeFkjyTalkbvV2I6f0au0+UV6Nqf/ZWSzl7XtPBiewgdtkfy5HcKsgOTPdeC9b5M3IrbwKGkTYVdJGr3+oP66ygzuCh69M92h8mibHFCfykg3ldJ0yOLpJywJv+rZeiak68zlYUxI5kPKx4GKac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738777588; c=relaxed/simple;
-	bh=8C1HNH4qVUSwKDMJatvHx29Le0IdvOg84YisPyZytOo=;
+	s=arc-20240116; t=1738777741; c=relaxed/simple;
+	bh=1MWoRg5t72EEoZQoeULR1gql2L5PlTz0JTIEbJlUGRc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nUxpHfaIIlh3kzTOP2TE1TPp+lRi2mfsb8pP7qq/K0MluGCCbnzBRqnk89qUztShLEcJc3dqd9raVsn305xRDYUeMyWmnr0iAIfFyr/7aF08sUDFHHNxivbq2EDzWENVthW1pC7AG6NbpYeG/doNggs5DYirTW+7zdLhCCwuEhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=r2luspiz; arc=none smtp.client-ip=202.12.124.152
+	 Content-Type:Content-Disposition:In-Reply-To; b=sHwXkW3kFfcieqjHFkSodwA/qOqfCYyzZ2k+qllL51/tHuV54YH24VMq0NutzGiz1ie9OYXtvdqEBrw0828ZUibIy7HMhJjbnsqs4JPX/BLLYHPSHsUe97KNii21NPPEDzKhTJ22WB3jxkROpKHNJ6DWrK9ZI0gKNJHnM9/K+lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cXI8jDyz; arc=none smtp.client-ip=202.12.124.152
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="r2luspiz"
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cXI8jDyz"
 Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 243E12540196;
-	Wed,  5 Feb 2025 12:46:25 -0500 (EST)
+	by mailfhigh.stl.internal (Postfix) with ESMTP id C248A2540196;
+	Wed,  5 Feb 2025 12:48:58 -0500 (EST)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 05 Feb 2025 12:46:25 -0500
+  by phl-compute-02.internal (MEProxy); Wed, 05 Feb 2025 12:48:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1738777584; x=1738863984; bh=HEskk/2SpuLO/Xrp6JjdV4QHbWz2DrijKvj
-	/WGpMo98=; b=r2luspizoix2AEF4EaO2ehJhs7Fw4jAPTtpliuS8JBSUfGJyPua
-	qLdsjnxyl17PnEZrM4NHbR0U+29fas76j99i19IxBZURQBifLWxhbBqW55hLySrx
-	HAVXCsRLmha2HcqHknDjkL9Xeidf4rObORpsZyMfh5Sh3d027iSyZfBz4EzQqP+g
-	m01JL38qT4d+2xoffTqqVpTOqa0+KIuGWPiDNHhSa5VLQhJe1yIQwKQapH1D+A2w
-	MrEUldAKDRixrRe9FXa1hGt0oYIx1AP3k/BxL5lJIGHjq+LNbgWNgo19+fF9B1a2
-	7z4uNy2MiJ6gkm/dGMNt19qfUpvbLRREaDw==
-X-ME-Sender: <xms:76OjZxlYzksRscRa_qX5S04h1IkoM8bn-hTsZOcJs7JyXwTEf9lRwA>
-    <xme:76OjZ80UBNf8ydUkrTr-5DJ_vaOkIknryww7-2SJIuyzqEUoknba85E7p97tABPvO
-    HqhNu5PCTaAYnk>
-X-ME-Received: <xmr:76OjZ3phySEI9zZFX2fLzlWk0i1_zAvHzDKe_9rYPI_Jp7XAtN684i8eLv1I>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgedutdcutefuodetggdotefrod
+	1738777738; x=1738864138; bh=ZQJH3Vgzpez4pytmAYWHVpi708BSsvjDUOy
+	VGmyJR/0=; b=cXI8jDyzT9KXRChegvtDSwGFvK7fN+K3S5sEeKvkbz5LmgDW1da
+	PvtclhVYWO7ymggBTRoEZ4fyG9azuLmHZ08BZrotv4kQFZdP5YvKBdASxZ5X2UPO
+	qcizLEnTYZaAbbUG45pJCc+pO+ybHYTWVD1lus1m8220wCyRXM9Wq8/8+x++e8j2
+	eNt7sbqcZhyfDHR1HHNPctSccI20pV/I7gM7psBdtObSiMSl4onV6PtUxlP5CVoy
+	K090QKWPusM8NvecrXX0IvjweUOBIUAzubp7ozzvitQJqJm3ohKoF+imCfl51ePZ
+	qeAe1VUlbk+/AIOovMukQgOD+WpyE8EZrFA==
+X-ME-Sender: <xms:iqSjZ_Xdh5yI4iaTHXZ3vVf1S0Pd0jBmCNBCMhSiaN-M4UvYZox_DA>
+    <xme:iqSjZ3m7FRPZSTWfYeAGi4bwKj3XlrEA80DXzMEq5kHa7_SauTKCPIrHILhvp9APf
+    3TFl-g1jvSx6NQ>
+X-ME-Received: <xmr:iqSjZ7bgm18nZaCAQDkrjIGbJ1XBwuS_sgISsGpGP8BUFph_a2XpwybGfRrj>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeduudcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
     uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
     hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
@@ -45,42 +45,34 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgedutdcutefuodetgg
     horhhgqeenucggtffrrghtthgvrhhnpedvudefveekheeugeeftddvveefgfduieefudei
     fefgleekheegleegjeejgeeghfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
     epmhgrihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhgpdhnsggprhgtphht
-    thhopedvhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhdqmhgrlhhlrgguih
-    esthhirdgtohhmpdhrtghpthhtoheprhhoghgvrhhqsehkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopegurghnihhshhgrnhifrghrsehtihdrtghomhdprhgtphhtthhopehprggsvg
-    hnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
-    epuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegrnhgurhgvfido
-    nhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepsghpfhesvhhgvghrrdhkvghrnh
-    gvlhdrohhrgh
-X-ME-Proxy: <xmx:76OjZxmJrT1mw4cGC5Z3PVwsGehnoRCjZxYdJ_ABfe7RSiEUpwplPA>
-    <xmx:76OjZ_2ZX3nJ9G-5vJnVR0qR9wI4381VmwucynYbHX0TQW3fcgNk8w>
-    <xmx:76OjZwt7MG6j-mRcytoklvUnMHVjIFGoXdLvzheatidojseNs3d1tA>
-    <xmx:76OjZzXX8eMbKVIFytFckbC4ddt2sHqyb_DKlX_qbpoIeIP9ViJf-Q>
-    <xmx:8KOjZ6GI8IvEawqZnrxSUKqmofGTrPSXj8dpIMcsPw-APgDOhhVJr7tK>
+    thhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrrgiiohhrsegslhgrtg
+    hkfigrlhhlrdhorhhgpdhrtghpthhtohepiihnshgtnhgthhgvnhesghhmrghilhdrtgho
+    mhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtoh
+    epvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprh
+    gtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohep
+    nhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:iqSjZ6Wd7QFUJdD5i8ygjENu5-9gDrDUTqSSnzjzz4uh8yw-iiupvA>
+    <xmx:iqSjZ5khLvTTmvw4ht7XoT0N1fouvHj571KITO8esguK_Qi6tjwBhQ>
+    <xmx:iqSjZ3dgxpGLgyKp82YbZ8g8D7C3o0AknEcIMPVx8TbKUTwD5rbORg>
+    <xmx:iqSjZzGOc94UjgkT16BNrl-SDE-13_P-_r-34IFRx1Lx4kXB8JX4XQ>
+    <xmx:iqSjZ_UVOUk2gRJLVK0PCHwpF9foGq69t0_vPfMB2r5T5ijJCCj2AbLE>
 Feedback-ID: i494840e7:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 5 Feb 2025 12:46:22 -0500 (EST)
-Date: Wed, 5 Feb 2025 19:46:21 +0200
+ 5 Feb 2025 12:48:57 -0500 (EST)
+Date: Wed, 5 Feb 2025 19:48:55 +0200
 From: Ido Schimmel <idosch@idosch.org>
-To: "Malladi, Meghana" <m-malladi@ti.com>
-Cc: rogerq@kernel.org, danishanwar@ti.com, pabeni@redhat.com,
-	kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
-	andrew+netdev@lunn.ch, bpf@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, robh@kernel.org,
-	matthias.schiffer@ew.tq-group.com, dan.carpenter@linaro.org,
-	rdunlap@infradead.org, diogo.ivo@siemens.com,
-	schnelle@linux.ibm.com, glaroque@baylibre.com,
-	john.fastabend@gmail.com, hawk@kernel.org, daniel@iogearbox.net,
-	ast@kernel.org, srk@ti.com, Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [EXTERNAL] Re: [PATCH net 3/3] net: ti: icssg-prueth: Add AF_XDP
- support
-Message-ID: <Z6Oj7eMRV9z9lF2I@shredder>
-References: <20250122124951.3072410-1-m-malladi@ti.com>
- <20250122124951.3072410-4-m-malladi@ti.com>
- <Z5J7kGFU_ZgneFAF@shredder>
- <f1cf5bfc-e767-4ced-9aad-76a578c53706@ti.com>
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Ted Chen <znscnchen@gmail.com>, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] vxlan: vxlan_rcv(): Update comment to inlucde
+ ipv6
+Message-ID: <Z6OkhzUHMPuSD6YM@shredder>
+References: <20250205114448.113966-1-znscnchen@gmail.com>
+ <7fcca70c-9bfe-4fd7-b82d-e21f765b8b87@blackwall.org>
+ <Z6NcWfVbqDJJ4c11@t-dallas>
+ <e5373a02-959b-4609-8a3f-7e25c69d97b8@blackwall.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,20 +81,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f1cf5bfc-e767-4ced-9aad-76a578c53706@ti.com>
+In-Reply-To: <e5373a02-959b-4609-8a3f-7e25c69d97b8@blackwall.org>
 
-On Tue, Feb 04, 2025 at 11:25:39PM +0530, Malladi, Meghana wrote:
-> On 1/23/2025 10:55 PM, Ido Schimmel wrote:
-> > XDP program could have changed the packet length, but driver seems to be
-> 
-> This will be true given, emac->xdp_prog is not NULL. What about when XDP is
-> not enabled ?
-
-I don't understand the question. My point is that the packet doesn't
-necessarily look the same after XDP ran.
-
-> 
-> > building the skb using original length read from the descriptor.
-> > Consider using xdp_build_skb_from_buff()
+On Wed, Feb 05, 2025 at 02:48:36PM +0200, Nikolay Aleksandrov wrote:
+> On 2/5/25 14:40, Ted Chen wrote:
+> > On Wed, Feb 05, 2025 at 02:12:50PM +0200, Nikolay Aleksandrov wrote:
+> >> On 2/5/25 13:44, Ted Chen wrote:
+> >>> Update the comment to indicate that both net/ipv4/udp.c and net/ipv6/udp.c
+> >>> invoke vxlan_rcv() to process packets.
+> >>>
+> >>> The comment aligns with that for vxlan_err_lookup().
+> >>>
+> >>> Cc: Ido Schimmel <idosch@idosch.org>
+> >>> Signed-off-by: Ted Chen <znscnchen@gmail.com>
+> >>> ---
+> >>>  drivers/net/vxlan/vxlan_core.c | 2 +-
+> >>>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+> >>> index 5ef40ac816cc..8bdf91d1fdfe 100644
+> >>> --- a/drivers/net/vxlan/vxlan_core.c
+> >>> +++ b/drivers/net/vxlan/vxlan_core.c
+> >>> @@ -1684,7 +1684,7 @@ static bool vxlan_ecn_decapsulate(struct vxlan_sock *vs, void *oiph,
+> >>>  	return err <= 1;
+> >>>  }
+> >>>  
+> >>> -/* Callback from net/ipv4/udp.c to receive packets */
+> >>> +/* Callback from net/ipv{4,6}/udp.c to receive packets */
+> >>>  static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
+> >>>  {
+> >>>  	struct vxlan_vni_node *vninode = NULL;
+> >>
+> >> Your subject has a typo
+> >> s/inlucde/include
+> > Oops. Sorry for that.
+> >  
+> >> IMO these comments are unnecessary, encap_rcv callers are trivial to find.
+> > I'm fine with either way. No comment is better than a wrong comment.
+> > Please let me know if I need to send a new version to correct the subject or
+> > remove the comments for both vxlan_rcv() and vxlan_err_lookup().
 > > 
 > 
+> Up to you, I don't have a strong preference. You have to wait 24 hours
+> before posting another version anyway, so you have time to decide. :)
+
+Looks like nobody will miss these comments, so I think they can be
+safely removed in v2 :)
