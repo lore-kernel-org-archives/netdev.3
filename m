@@ -1,97 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5084E13C9C4;
-	Wed,  5 Feb 2025 13:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417C4FC0B;
+	Wed,  5 Feb 2025 13:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763310; cv=none; b=dD9cNBIygyX63Ie8PKLfL6mMGe32UKCeB8bG/uC55nQFQHsrJxYyW25aCuCqeElK6h7pmO0KjxC3a61bDqxRsZtkzvPQ98EywEAcCw3qF1j774fA5tspUlTOxLvz/tsq+jSqPAkAvT9wzs1iuPniUILXlm7zNniJcWNFelfUdYc=
+	t=1738763638; cv=none; b=il40EihCLrnRitvovRS6+7o7IwBo2zkTVA1FukSzAwgfgeR/p9rkV39nz2ZlnaeQs4vAKVL7ad79a9p9NM6SYlHH42SJd1tmboZvh6q6oY7fTJ4/7Qk06uNJ7WkFS/GIBAVNViyJ0ywKcu9NYknTYth4feTubqlKEgDQ7SMLdnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763310; c=relaxed/simple;
-	bh=KJBytwIPJFAahEOcJ20tY1yTFejn1o0rqevE84nSVPo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A72M58W87RyUt17JKDh0kPg3ZDNSV17TDZTTZ0F72HDcXx6P1+aMEVYa2mPhXY75cp8XKeumlp+w+Hlsa+N46j3/hy3nhZ9OiklnfYYulQv352KJC1xu28bdx0UZjhBtTcTbG5vps4dk+AAVtA0vWba4lqrJ6uIF6IM1tmpKvbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tIHbyfCN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738763638; c=relaxed/simple;
+	bh=y3CiBkw5TX3BsdV/FD36Lb1NBMtemKSZtBYTWCzcAgU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=bEUxXh6MN2IfYYzrXOes3xEY0o059YLvW3xaETX9NJMzqUdrekGhK1zoURqgiVnGqHwl/sRy0l8Ci9xTV/23OCv+QDGdaIORHAF8lkCX/W+dFU2B/pQkgkDONT0uWZ/TN/Z4D0VmZAIEORWb3IlwMKSBNL28UcgJCATDV2Vd6qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=N3qbXKjD; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tIHbyfCN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11405C4CED1;
-	Wed,  5 Feb 2025 13:48:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738763310;
-	bh=KJBytwIPJFAahEOcJ20tY1yTFejn1o0rqevE84nSVPo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tIHbyfCNTR7ePdAi/9DhRFtH+kpYwytBniwChEvC9MRW7ixGrYznNKQiP1yYYf9hh
-	 yQVQofUVvJ0qmmNvKis16Q/gM9z5HhWxW/XvSi8t7Wnt9amaxLjaUqwyyfCmS7srlW
-	 ySavdZY6YrKQVlzOYGjIqvtPE6krjLT4EPIA3O79RqkHFr/y5I+sI3aYPzlQ4o6ScD
-	 sBXQs3clHlLpWaImQxCbZ+5x/Sb8IBge/bqm4u2iVZ55oGWomyNS5ySkMCbQW3GKbf
-	 r9fdPWHmRJ3At2rhMaq8C4eLbT8LBZcPC3HL7ZZJUCPnVg52L0Po76hNv3+jF1YUA2
-	 /aR+krBiH1GNg==
-Date: Wed, 5 Feb 2025 13:48:24 +0000
-From: Simon Horman <horms@kernel.org>
-To: =?utf-8?B?Q3PDs2vDoXMs?= Bence <csokas.bence@prolan.hu>
-Cc: Laurent Badel <laurentbadel@eaton.com>,
-	Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	imx@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH] net: fec: Refactor MAC reset to function
-Message-ID: <20250205134824.GF554665@kernel.org>
-References: <20250204093604.253436-2-csokas.bence@prolan.hu>
- <20250205132832.GC554665@kernel.org>
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="N3qbXKjD"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 91186A0397;
+	Wed,  5 Feb 2025 14:53:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=0IKFTDRpezqJ0hTkQTF4
+	PSBLn0guyPuTMu30l2R43VU=; b=N3qbXKjD27mtNdAYnL3dXw3b/rOVUSBua3th
+	MJbGegBlh94DeX2g5hnYVCGNeWT9ngiL1ZXpjYSoOQAIQvY8wCgnbl5SscLO+NNu
+	7VGMrIazgL7pYZMgtG3KIraw09Z5Zo0vCrPL72v6PEyIYm2muI78gqLoMiT84bBu
+	KQC31eVNghQwFi1z4nUug6OvQPTtYuBlxoYDu9jyAaPTMlTzfM6qxM7rq87FThg7
+	V+G/KLkSbskqUJeEsYZHB+hGIXFh2E968xlL4ldEepKvzA8q7wZIFBL4794v9ocn
+	RLDE7qagS0NoWfV6NPjXm7qjEgHSd6oiyZdVkP7nS96xCjBLEKQ/ZpXa3Q9Qgntu
+	2TLMqDFdyzyKXw6+8G2T5v8v5GFWw8LjW6pwau2AdblR7cjWU8Rqu2ClEzaTIAfG
+	LeHUabapaxLyjJTz3yg5P0IhY6lWCtk+V/4DF3Bu6BJ6psuYcWnATZVkZHJBeAg0
+	eGXDVy2RextY2QJyfdMaZrDWjI4HVm2+pgX2bf472tVDE/tzik8fRwjknNqncCsF
+	E4fdN/TiRgCQ1VMXM2EL6Z0AKvDeZBC1ynPhu9+SF9tVXpa0JYqHN8PJWZ6JIwlN
+	j6TaBsSR9LyILS1R9YWct9zyuwOuEUuPuwUyP9ScUeJSq/21IQwkmlDkwTs+rWA9
+	AjEQsJU=
+Message-ID: <7501c8ee-9272-4c13-91a9-5c614c585fcf@prolan.hu>
+Date: Wed, 5 Feb 2025 14:53:50 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] net: fec: Refactor MAC reset to function
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Laurent Badel <laurentbadel@eaton.com>, Andrew Lunn <andrew@lunn.ch>,
+	<imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	"Simon Horman" <horms@kernel.org>, Michal Swiatkowski
+	<michal.swiatkowski@linux.intel.com>, Jacob Keller
+	<jacob.e.keller@intel.com>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
+	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+References: <20250122163935.213313-2-csokas.bence@prolan.hu>
+ <20250204093756.253642-2-csokas.bence@prolan.hu>
+ <20250204074504.523c794c@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
+In-Reply-To: <20250204074504.523c794c@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250205132832.GC554665@kernel.org>
+X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
+ ATLAS.intranet.prolan.hu (10.254.0.229)
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2980D9485266726A
 
-On Wed, Feb 05, 2025 at 01:28:32PM +0000, Simon Horman wrote:
-> On Tue, Feb 04, 2025 at 10:36:03AM +0100, Csókás, Bence wrote:
-> > The core is reset both in `fec_restart()` (called on link-up) and
-> > `fec_stop()` (going to sleep, driver remove etc.). These two functions
-> > had their separate implementations, which was at first only a register
-> > write and a `udelay()` (and the accompanying block comment). However,
-> > since then we got soft-reset (MAC disable) and Wake-on-LAN support, which
-> > meant that these implementations diverged, often causing bugs.
-> > 
-> > For instance, as of now, `fec_stop()` does not check for
-> > `FEC_QUIRK_NO_HARD_RESET`, meaning the MII/RMII mode is cleared on eg.
-> > a PM power-down event; and `fec_restart()` missed the refactor renaming
-> > the "magic" constant `1` to `FEC_ECR_RESET`.
-> > 
-> > To harmonize current implementations, and eliminate this source of
-> > potential future bugs, refactor implementation to a common function.
-> > 
-> > Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> > Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-> > Fixes: c730ab423bfa ("net: fec: Fix temporary RMII clock reset on link up")
-> > Fixes: ff049886671c ("net: fec: Refactor: #define magic constants")
-> > Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Hi,
+
+On 2025. 02. 04. 16:45, Jakub Kicinski wrote:
+ > Please don't post new versions in-reply-to, and add lore links to
+ > the previous version in the changelog.
+
+Will do. Is it okay to only include the last version, or should I 
+collect them going back to v1?
+
+> On Tue, 4 Feb 2025 10:37:54 +0100 Csókás, Bence wrote:
+>> For instance, as of now, `fec_stop()` does not check for
+>> `FEC_QUIRK_NO_HARD_RESET`, meaning the MII/RMII mode is cleared on eg.
+>> a PM power-down event; and `fec_restart()` missed the refactor renaming
+>> the "magic" constant `1` to `FEC_ECR_RESET`.
 > 
-> Reviewed-by: Simon Horman <horms@kernel.org>
+> Laurent responded to v1 saying this was intentional. Please give more
+> details on how problem you're seeing and on what platforms. Otherwise
+> this is not a fix but refactoring.
 
-Sorry, I think I have to take that back for now.
+True, but he also said:
+On 2025. 01. 21. 17:09, Badel, Laurent wrote:
+ > If others disagree and there's a consensus that this change is ok, 
+I'm happy
+ > for the patch to get through, but I tend to err on the side of 
+caution in such
+ > cases.
 
-Unfortunately when I was looking over this I failed to notice: that there
-is a newer version of this patch (v3); the following response from Jakub to
-v3; and, the response from Laurent that he is referring to.
+I understand he is cautious, but I'd argue that the fact that two people 
+already posted Reviewed-by: (not counting Simon, who since withdrew it), 
+means that others also agree that we should err on the OTHER side of 
+caution, and do the check in both cases. He also mentions that the 
+reason he didn't do the check in `fec_stop()` was that he believed that 
+the only time that gets called is on driver/interface remove, but that 
+is not the case, as I outlined in the message already.
 
-  "Laurent responded to v1 saying this was intentional. Please give more
-   details on how problem you're seeing and on what platforms. Otherwise
-   this is not a fix but refactoring.
-
-  "Please don't post new versions in-reply-to, and add lore links to
-   the previous version in the changelog.
-
-  Link: https://lore.kernel.org/netdev/20250204074504.523c794c@kernel.org/
+Bence
 
