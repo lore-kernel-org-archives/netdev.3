@@ -1,80 +1,129 @@
-Received: from mail78-36.sinamail.sina.com.cn (mail78-36.sinamail.sina.com.cn [219.142.78.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95BF21C9E3
-	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 12:00:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=219.142.78.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521F0151986;
+	Wed,  5 Feb 2025 12:01:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738756829; cv=none; b=XKixwmNmHNRxCvUThuXc1jweJJXYdS7a9ezFQrmE1oUieFCiwN1FEPmy/AwQ03nuY9/KuXXyzCgAv9QqbvKoo5W3t24y0hbtQSJ30r5f2Zg0/UiOhr42gHW5/6yg+tMaCc0rtuwWdAT69x/6JMYbiEBSJTvEOrrNx8fUwJGyH+s=
+	t=1738756874; cv=none; b=P8/CnJg6cJrbzlchRVVYCABC4yqleitZvP8qZDkJdqeYpHqS+8HkDU3FzKfZGSeifn02NSOUgoq7KQBB0ryuqPcB5P3mV0lQ90YtBurtvPijA5QpbngmOHRf9XwVZy5V+gxsEkkR+MvuaKgesuRgbdcgC4s/SkG/q5AMOoFnocA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738756829; c=relaxed/simple;
-	bh=oUwvX+uOb3xbRTu7xJ24WvLsk4TWa4T1nP0vhd3iVUY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QBlcEnviounoI2WjgUeY0aET1dQ4Uqzt8yPtPX90vCm77XZ0KmmYxIa/VK/RRVdhe0OrEYdci5awZcaBeSE+k5M2aAAz3841zkajkp8ysluBFpX7M2gC1p0xG6dPp6aDFjfbjjhLKlbLk4a4ZsxjbMrx6qz2/MZnJcP7WaTD13g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; arc=none smtp.client-ip=219.142.78.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([113.88.48.12])
-	by sina.com (10.185.250.24) with ESMTP
-	id 67A34C8C00000DC7; Wed, 5 Feb 2025 19:33:36 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=hdanton@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=hdanton@sina.com
-X-SMAIL-MID: 35320310748441
-X-SMAIL-UIID: D470E7C931B4486BB415BBDC3338ED6A-20250205-193336-1
-From: Hillf Danton <hdanton@sina.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: YAN KANG <kangyan91@outlook.com>,
-	netdev <netdev@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: general protection fault in ip6_pol_route
-Date: Wed,  5 Feb 2025 19:33:31 +0800
-Message-ID: <20250205113334.1960-1-hdanton@sina.com>
-In-Reply-To: <CANn89iKCqR_wid4+g65Mx6jVTAuqJcKOocMCs09-7J+knSAKoQ@mail.gmail.com>
-References: 
+	s=arc-20240116; t=1738756874; c=relaxed/simple;
+	bh=9n6a9uQl9i/L5M+Gtt/Zbkst7PZzAhCGCzvZ1sOdLME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gLZRkQ21ViOrp8h+3s1I8yXhdTSMEiC7QDqcM456uibcvzRyJE+Uedd373vH0KmrtYunOXHGycZeokZYspje2tonBppYTRCJQiwMSlF164VnrX/94qHHyZLvDV/MGfSnmxtiID0hypDrM9sRZFNni8ZbDDBkCRwoxbScs2SzrKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KmptyAqV; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KmptyAqV"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2163dc5155fso117591315ad.0;
+        Wed, 05 Feb 2025 04:01:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738756872; x=1739361672; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nsWH4bkHCYOuJvzfoXTwaNIHGXBOrXdOaMsxD9Y32S0=;
+        b=KmptyAqVXGVhSC5OYFkiVV9UpDTUFPYN7+lhhZKol4R0nNMrl0FBf8ZVyopBmeaE88
+         HnuzMude+wI/rZim5qGHY/8F4zF/v1sY66eA/6n3AqO1x2xw3kzbDVBGOFjKSFoOWEPZ
+         2jxXZ3B7/Vd7i8w65Z+siLvZBovJ9+S4nZ7vEacn3EwiuHXZp5zVrU5pl01rZY2jKD7M
+         Wa9E/pkpSHsUc1PuLKyLM/AJf8Yv6urhkFkNqdRdgkn+cn3WsMk0/FMt0e8RNKfK7Xcv
+         GfTIKVKKyEg1dmpSXjEZQR7xLSVCatij3xfiAnBYh9NsTEy4VAo984/h3CvGET7t2S5c
+         wxFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738756872; x=1739361672;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nsWH4bkHCYOuJvzfoXTwaNIHGXBOrXdOaMsxD9Y32S0=;
+        b=RUSx76NHaSqHfolTwCzUoAfUS5aHmF2gwWaSqu0cS5OtzCJuStG3WwN657F1ZTGHOR
+         BIPnTtYjgn1SeeeHVAFsnYXpsOtouOVzobwoH/VI/rurxYxqN/XzLD1QWvmvLILLtIEn
+         tddcvZUH74NNFZN5qKOKSfw4/8yO0gpK8yzopSRdu3qGh6BOhaslCkBog4ydUssOJY3z
+         4TZ20zLUhtoc7qNBmqcTw+5SQod6vDjJXCrbS6VkMoqlmNrf+S/yChLdVxk0np9y6kLw
+         hOxcQ0oi3WHww4nK8gUCXEgyd8GNf2XJ7AnSY2GHDxhh2vCUgsOJlXnE+vHpGxFDA8vd
+         rEhg==
+X-Forwarded-Encrypted: i=1; AJvYcCUpS6KrBQxnIGnfjRqAzXuJTHISXZRCHeduYMQejWEdcXDF2o0PlKHTErEo0L13hsixgBVDuhO7oIrgX24=@vger.kernel.org, AJvYcCVqy08wUL+2v+hme/FV4d2NVsuj7ASHm3SEewJrFCNNp2HpeZBGgRJoiu5AEV1/ysgbruQoorQlkc/F4SB6PoNs@vger.kernel.org
+X-Gm-Message-State: AOJu0YybVwKnC2srDcl+yMFzxplWGlDaYRXeNgS6soEZrKcCDEWSigOn
+	mmahw7uOkYQSasl3FEmL/J7Bf2ODHw1av/bBQEhV1WOiPpfLdxkvIVckQXY2eh8=
+X-Gm-Gg: ASbGncvEePbbKaLANyoo1po9OVSNMxCkaNjMQwezLZRRmtokDl+k2nrCWBOaPMj+DCz
+	UJ56DrR0A+wp9e80SOERrZkhrxVvlxszb0dzR+rM3cuoJMfONLKPu/b59ybACCE5zyfWnqtuK8s
+	s3pQm9AGsya5q24i7Al4TmjFvLcKgjGx6j53q2s8EXK3GQuKLWZ5ABl0cO9SDxEgiyYcwPsoRSl
+	WkLBaV7+rZJ+rMsBQ72SXKk2rY0i+3qAqMz+DymQPl2hc/CdDZW4xzOBlbQpVJRFZkrKKiFQmff
+	VDbzzUxeeINPVh43HFT7
+X-Google-Smtp-Source: AGHT+IHbUO12GorCrmQIRZNcPoHPznkzO7CbXQYcdmUxThQjrieOYuKxhwBHCmv49y5FFm7+e7PUHg==
+X-Received: by 2002:a05:6a21:6e41:b0:1e1:a829:bfb6 with SMTP id adf61e73a8af0-1ede881baecmr4405764637.3.1738756871955;
+        Wed, 05 Feb 2025 04:01:11 -0800 (PST)
+Received: from fedora ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72fe69ba38bsm12566007b3a.90.2025.02.05.04.01.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Feb 2025 04:01:11 -0800 (PST)
+Date: Wed, 5 Feb 2025 12:01:03 +0000
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Simon Horman <horms@kernel.org>, Jianbo Liu <jianbol@nvidia.com>,
+	Boris Pismenny <borisp@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>, Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 1/2] bonding: fix incorrect MAC address setting to
+ receive NA messages
+Message-ID: <Z6NS_7rbUVLy_yJn@fedora>
+References: <20250205080336.2197369-1-liuhangbin@gmail.com>
+ <20250205080336.2197369-2-liuhangbin@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250205080336.2197369-2-liuhangbin@gmail.com>
 
-On Tue, 4 Feb 2025 15:07:49 +0100 Eric Dumazet <edumazet@google.com>
-> On Tue, Feb 4, 2025 at 2:47 PM YAN KANG <kangyan91@outlook.com> wrote:
-> >
-> > Dear maintainers,
-> >
-> > I found a kernel  bug titiled "general protection fault in ip6_pol_route" while using modified syzkaller fuzzing tool. I Itested it on the latest Linux upstream version (6.13.0-rc7) .
-> >
-> >
-> > After preliminary analysis, the rootcause may be in ip6_pol_route function  net/ipv6/route.c
-> >     res is a stack object.    [1]
-> >     fib6_select_path(net, &res, fl6, oif, false, skb, strict)  call  may initialize res->nh.[2]
-> >     rt = rt6_get_pcpu_route( &res);   [3]
-> >            pcpu_rt = this_cpu_read(*res->nh->rt6i_pcpu); // *res->nh is NULL, crash
-> >
-> >    in [2], res->nh can be initialized in several ways,possibly one of which initializes it to NULL.
-> >
-> >  Unfortunately, I don't have any reproducer for this bug yet.
-> >
-> > If you fix this issue, please add the following tag to the commit:
-> > Reported-by: yan kang <kangyan91@outlook.com>
-> > Reported-by: yue sun <samsun1006219@gmail.com
-> >
-> This is a dup of a syzbot report under investigation.
-> 
-> Unless you have a repro and/or a patch, I would recommend you not
-> sending these fuzzer reports anymore.
-> 
-> Releasing such reports without a fix is an obvious security risk.
-> 
-Can you specify a bit why report like this one links to security risk, Eric,
-given no fix yet delivered to the syzbot report [1] so far?
 
-[1] https://yhbt.net/lore/lkml/67a21f26.050a0220.163cdc.0068.GAE@google.com/
+Oh, I just found the subject is incorrect. We want to receive the NS
+message, not NA message on backup slaves.
+
+Thanks
+Hangbin
+On Wed, Feb 05, 2025 at 08:03:35AM +0000, Hangbin Liu wrote:
+> In order to receive the neighbor solicitation messages on the backup slave,
+> we should add the NS target's corresponding MAC address. But the target in
+> bonding is a unicast addresses. We can't use it directly. Instead, we should
+> convert it to a Solicited-Node Multicast Address first and then convert
+> the multicast address to the right MAC address.
+> 
+> Fixes: 8eb36164d1a6 ("bonding: add ns target multicast address to slave device")
+> Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+> ---
+>  drivers/net/bonding/bond_options.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+> index 327b6ecdc77e..63cf209dcdc9 100644
+> --- a/drivers/net/bonding/bond_options.c
+> +++ b/drivers/net/bonding/bond_options.c
+> @@ -1246,6 +1246,7 @@ static void slave_set_ns_maddrs(struct bonding *bond, struct slave *slave, bool
+>  {
+>  	struct in6_addr *targets = bond->params.ns_targets;
+>  	char slot_maddr[MAX_ADDR_LEN];
+> +	struct in6_addr mcaddr;
+>  	int i;
+>  
+>  	if (!slave_can_set_ns_maddr(bond, slave))
+> @@ -1255,7 +1256,8 @@ static void slave_set_ns_maddrs(struct bonding *bond, struct slave *slave, bool
+>  		if (ipv6_addr_any(&targets[i]))
+>  			break;
+>  
+> -		if (!ndisc_mc_map(&targets[i], slot_maddr, slave->dev, 0)) {
+> +		addrconf_addr_solict_mult(&targets[i], &mcaddr);
+> +		if (!ndisc_mc_map(&mcaddr, slot_maddr, slave->dev, 0)) {
+>  			if (add)
+>  				dev_mc_add(slave->dev, slot_maddr);
+>  			else
+> -- 
+> 2.39.5 (Apple Git-154)
+> 
