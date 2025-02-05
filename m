@@ -1,127 +1,93 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC4E1FCF63;
-	Wed,  5 Feb 2025 16:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0212014B088;
+	Wed,  5 Feb 2025 16:49:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738774007; cv=none; b=ua9z97edMPQCt7YxyqRkITdQMh/t82KDB6X4lcsirR51+EhNEY93YwdBV27wAz0W6KGPlUYlxzM9k84rsQVYu9PKb8ewq//PT9XUN4zoBInAq6zfJ1/WRZUhawSGMwDk/E4qkVlYNk3UK1BXx9oVpXDNy7V9+cvOHFXxOKJDcok=
+	t=1738774187; cv=none; b=ORe1qkgGsbX8qk/ke5S+yky3C0Jr6uSmu3aZO7W4P5an52DbKPIUXUAQzCtYZgaKAMK7gFGpD7LKEvkqryfM2otOEAls6STAfwG1KZASxvkDNgG/Z8qE3IHrshF5KjncXej274V5ZObNzFXDay86N0EFLQiSO/J423X7F0IL0vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738774007; c=relaxed/simple;
-	bh=EDUd8AUDXZD+TVEFowQGG4u/w1Xjx6TUQuNUxP09fkg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OqHByadauyI7CxNoT6jy7bml7zgxMwpGo9+wkQ7Tu+LSZXPWjFPuNSpERJ/ZmN2/pagK1MiRaoJT9/nq/Nb6VJDIum+LwNnIeSegQzHUZ9GfMo6FHgS0EfP5g+n53oZWGRqYO3CHMPW8TgkxEag4MVMbu2/FqgjPXudB9pA4uU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i/wbPNQr; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1738774187; c=relaxed/simple;
+	bh=qqOru803PJBpLRoFdE8E4L+PVvp3s1DzHzqu8RFhS2U=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=At8Q7oIp4yAiAjajaCKNyuXacxZdzLKgGMd6wXo4qqU3Xdpf7zo4CvGz7HYD9NMySRAVlNEvtMDxUTJsCkBMtcRUKGhGue2qyWXL7gAYSp/CPbR1mjMzhoGsMmFHRGUQ1iKo5nAMqWVEBAjIQTdmRFTG7tyTjHqEKK6+d7sjKR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BReColQu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i/wbPNQr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738774006; x=1770310006;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=EDUd8AUDXZD+TVEFowQGG4u/w1Xjx6TUQuNUxP09fkg=;
-  b=i/wbPNQrpmS0IlxkU9wqlfTa6UztjCNh7F7JQ9MhbmFD2FAWGU9UcHtd
-   KqrSD9OcRB7+rIEVEU0SovRFDna625YEELsimDWPQxSkm1ThHA3xGBAMT
-   j3sUrsV0Pysnmt0EYiTq25ow2LdSwre/TI253QmckfCZPo/HznxPNTcOA
-   9GmiebvUifHis0DtpxhFsjgSnDxNnwVP+Ql+CJruLL81hcklXeY19mA53
-   qNb58Ow+kivg+1OH4dNuEgrGpSRWxSvPypZPzoPwaP9y/ba/jRBHk/sZf
-   18SWeuWum1BR5DgZOlmV08faEWXCjuPOhu3/YqQJyAFgSAr18aCa8dFvA
-   Q==;
-X-CSE-ConnectionGUID: YyANVcUZTriBuh1Nce15lA==
-X-CSE-MsgGUID: n0xYfkZAQZyeQ7ZUafdewg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="50741194"
-X-IronPort-AV: E=Sophos;i="6.13,262,1732608000"; 
-   d="scan'208";a="50741194"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 08:40:23 -0800
-X-CSE-ConnectionGUID: rhcFTesQQ1qklFGQYzXS6g==
-X-CSE-MsgGUID: 0sm3FrgjTVyBBvPAKZs7OQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,262,1732608000"; 
-   d="scan'208";a="110742149"
-Received: from newjersey.igk.intel.com ([10.102.20.203])
-  by orviesa009.jf.intel.com with ESMTP; 05 Feb 2025 08:40:19 -0800
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Daniel Xu <dxu@dxuuu.xyz>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Subject: [PATCH net-next v4 8/8] xdp: remove xdp_alloc_skb_bulk()
-Date: Wed,  5 Feb 2025 17:36:09 +0100
-Message-ID: <20250205163609.3208829-9-aleksander.lobakin@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205163609.3208829-1-aleksander.lobakin@intel.com>
-References: <20250205163609.3208829-1-aleksander.lobakin@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BReColQu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A1BC4CED1;
+	Wed,  5 Feb 2025 16:49:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738774186;
+	bh=qqOru803PJBpLRoFdE8E4L+PVvp3s1DzHzqu8RFhS2U=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=BReColQuEWyn4yxIv5AeBS7crCvCtH77t2Lu1COtQJY6hhi81ZT7gr/XuUL4huCOA
+	 aQ/tMbxYGPJALf+0XeeMY1GmLkcGNosbFLmBX/ax4wYDcOct4ZHqPbtKLlGrekQkjJ
+	 Xa52OwH/bhQVsDepXGMqs849SdSdsIeisitUPLTNpFbHQDwJiSXhfGQ4wpUN0gcdGm
+	 3LezgOcdbWDuZiayPN3Gx8IUKu4ysxoU0sSABtr79TxYuijIA4lac1rrGMajJZ7m9l
+	 3YPJeDKHuC9chZYzjEPw6oSChcXsWE1tEw0CEyrhahsdMaJFBTprkKKVH7oA36exUP
+	 mGryIMZi01LMA==
+Date: Wed, 05 Feb 2025 10:49:45 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: netdev@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Dinh Nguyen <dinguyen@kernel.org>, kernel@pengutronix.de, 
+ linux-kernel@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, 
+ devicetree@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+In-Reply-To: <20250205-v6-12-topic-socfpga-agilex5-v4-2-ebf070e2075f@pengutronix.de>
+References: <20250205-v6-12-topic-socfpga-agilex5-v4-0-ebf070e2075f@pengutronix.de>
+ <20250205-v6-12-topic-socfpga-agilex5-v4-2-ebf070e2075f@pengutronix.de>
+Message-Id: <173877418502.1694868.7734639778320336620.robh@kernel.org>
+Subject: Re: [PATCH v4 2/6] dt-bindings: net: dwmac: Convert socfpga dwmac
+ to DT schema
 
-The only user was veth, which now uses napi_skb_cache_get_bulk().
-It's now preferred over a direct allocation and is exported as
-well, so remove this one.
 
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
----
- include/net/xdp.h |  1 -
- net/core/xdp.c    | 10 ----------
- 2 files changed, 11 deletions(-)
+On Wed, 05 Feb 2025 16:32:23 +0100, Steffen Trumtrar wrote:
+> Changes to the binding while converting:
+> - add "snps,dwmac-3.7{0,2,4}a". They are used, but undocumented.
+> - altr,f2h_ptp_ref_clk is not a required property but optional.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  .../bindings/net/pcs/altr,gmii-to-sgmii.yaml       |  47 ++++++++++
+>  .../devicetree/bindings/net/socfpga-dwmac.txt      |  57 ------------
+>  .../devicetree/bindings/net/socfpga-dwmac.yaml     | 102 +++++++++++++++++++++
+>  3 files changed, 149 insertions(+), 57 deletions(-)
+> 
 
-diff --git a/include/net/xdp.h b/include/net/xdp.h
-index 4dafc5e021f1..48efacbaa35d 100644
---- a/include/net/xdp.h
-+++ b/include/net/xdp.h
-@@ -343,7 +343,6 @@ struct sk_buff *__xdp_build_skb_from_frame(struct xdp_frame *xdpf,
- 					   struct net_device *dev);
- struct sk_buff *xdp_build_skb_from_frame(struct xdp_frame *xdpf,
- 					 struct net_device *dev);
--int xdp_alloc_skb_bulk(void **skbs, int n_skb, gfp_t gfp);
- struct xdp_frame *xdpf_clone(struct xdp_frame *xdpf);
- 
- static inline
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index 2c6ab6fb452f..f86eedad586a 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -618,16 +618,6 @@ void xdp_warn(const char *msg, const char *func, const int line)
- };
- EXPORT_SYMBOL_GPL(xdp_warn);
- 
--int xdp_alloc_skb_bulk(void **skbs, int n_skb, gfp_t gfp)
--{
--	n_skb = kmem_cache_alloc_bulk(net_hotdata.skbuff_cache, gfp, n_skb, skbs);
--	if (unlikely(!n_skb))
--		return -ENOMEM;
--
--	return 0;
--}
--EXPORT_SYMBOL_GPL(xdp_alloc_skb_bulk);
--
- /**
-  * xdp_build_skb_from_buff - create an skb from &xdp_buff
-  * @xdp: &xdp_buff to convert to an skb
--- 
-2.48.1
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/pcs/altr,gmii-to-sgmii.example.dtb: phy@100000240: reg: [[1, 576], [8, 1], [512, 64]] is too short
+	from schema $id: http://devicetree.org/schemas/pcs/altr,gmii-to-sgmii.yaml#
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/pcs/altr,gmii-to-sgmii.example.dtb: phy@100000240: 'clock-names', 'clocks' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pcs/altr,gmii-to-sgmii.yaml#
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250205-v6-12-topic-socfpga-agilex5-v4-2-ebf070e2075f@pengutronix.de
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
