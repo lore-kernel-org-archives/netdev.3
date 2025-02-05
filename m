@@ -1,109 +1,109 @@
-Received: from mx14lb.world4you.com (mx14lb.world4you.com [81.19.149.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D751FF1B3
-	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 19:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F1E1E0DE4
+	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 19:52:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738784514; cv=none; b=STdTgPtxQ3Ra9+8TzV2neb/V4WV3zvSYxQsoRnZeJHEfgx3sJT43LJo+ff4gGK7HEzWkzD0AMrTP/6aXidCsd0ScjNR4a/oLd3BDROV99rdqTjAweMHwBitAf/AZ+FxJB1PqzSOyK5SlTVGbqofQeinYqD9kdaGR8MSXdLuyoqk=
+	t=1738785155; cv=none; b=eNLlODjp33Q3CC+l58ZE+ZLuAw5UveW7HqbXm34SYo95Ter4IdwuaWT7QzZUl5Li0huGJwFuO0iCNr5VG8MH3llsTtJYInFpenD1pvh5MgkUq+YqmdI/WCP/rVLOIg4EoVAVs45W9w2AaPtC0pz6JOlxWrWBvHPb6HAz6OMKJXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738784514; c=relaxed/simple;
-	bh=3o17YmOzA7WR7Cr0v92ZJBUQStTL8kr2ScupHii+TQo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XD53ppQpCvWwcvqzAftsQ6omAHFmFyzLHp2zpjCgqcSJfLRjAdqAkmSrZ+cGZIsKA5JdQgXwjnTAm9zxsKLxP7XQn9RXIfZXt5l50Pit7eg2+I+2jLDAM5OHUrQZW95YiiPbpWgmpospI7f8phOhD8LxvO+bqYbp5S2j6Pgy6MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=DtyLteaN; arc=none smtp.client-ip=81.19.149.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1738785155; c=relaxed/simple;
+	bh=ylXsVJQ4SkSRoIxit5Ty1D4Df/HyuC5GpDfK6nUoWVY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CZhymE4O/r/FJS/3uTwvRlpVarOLkJaPgtg0ROquB28ykaLYMwxAQZJhJcvi6R8cBx4xVjCMplRolhiwZnssKF8hawq+XvBLVp/K3x9SHVfz3UJPD+JyuvvmKk5do9+hAtK5CTPD1/itjBf7bwMw43KUwZn49Q6hREOY+8f0jkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UpB1XR5E; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="DtyLteaN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ze69fUJSKANAoIvDAXRHBxnEpe6Ys/LNFmN7SGuZ7B8=; b=DtyLteaNjUHBis1MXh0D7ww68T
-	9wHiksxuV90jeaFiwhC0oMaG4w/0UtydQMlJETqe4PvZbZ+Q0RBG+1sPGdw7faA2NPHslEsk4Qpro
-	dfsgUmyrXyZtNl8MTYrAdiPGmukuApPHUueXc5D7d1XcHuQgjanFKExpgmuys0nKI8MU=;
-Received: from 88-117-60-28.adsl.highway.telekom.at ([88.117.60.28] helo=hornet.engleder.at)
-	by mx14lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1tfklF-0000000017b-10aM;
-	Wed, 05 Feb 2025 20:08:34 +0100
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	Gerhard Engleder <gerhard@engleder-embedded.com>
-Subject: [PATCH net-next v5 5/7] tsnep: Select speed for loopback
-Date: Wed,  5 Feb 2025 20:08:21 +0100
-Message-Id: <20250205190823.23528-6-gerhard@engleder-embedded.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250205190823.23528-1-gerhard@engleder-embedded.com>
-References: <20250205190823.23528-1-gerhard@engleder-embedded.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UpB1XR5E"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-21f032484d4so26735ad.0
+        for <netdev@vger.kernel.org>; Wed, 05 Feb 2025 11:52:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738785153; x=1739389953; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FWWB+QEPZ+Au3FNEZ2YpDzx0U4CEf7uGyoSwdOXplO8=;
+        b=UpB1XR5EmxINE2f/mfWjDipOftmw7hO5LdxoEeNMTw09zC+JiN0JAUo+m51ldCY1AE
+         rRAPP09/qVH2y7LQJkisZkV1Im452uVrI6JIIyhu6BPH0yhKL2yA9XeVLeVMBItPgx7a
+         2u7Ehtm4ZlT6SxeENivcsRN6lbjl3QzdKL2/ZEA6giQUw6Z8GW5G7MhzsTxtaqufIF+o
+         77h9IZTipLicVd4gcARjzVJhTS4DToxwD6d2Te8Z1wvYkXbB6h7qjHKD/2cL/JMp3cE4
+         bEDDToDfLnyG4PQhOPxS+9p7f9W+Ba3QFiYisKC9iktLLMfBP1miIKmZ2QAd2a73k2ya
+         JnWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738785153; x=1739389953;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FWWB+QEPZ+Au3FNEZ2YpDzx0U4CEf7uGyoSwdOXplO8=;
+        b=QaLp2/fz/jU5ScQ8tnP9mcHwm5N7mu6BJeU+/rrncxx73Gz6RRdH9Wb/qdHCiNS93p
+         mFQMhO9o7Hx1bwzyaBFAYBpZ7NK9denhbrzUeyyCQNutNzbyh4zPvQbfAoH/RPmg3fcA
+         ZhPqmte4MedJBG4eUkQqdyvSkMAEZ+DAMe102isUcxVmQLEuJ6Zfchou53ppxw30/3qZ
+         1OdD8z9l1qTOkyPEelsh2yo9YHUadXx+DxQgcfE/XAsnl8pyXI8QgDeNHUw83xG+eivV
+         ov3Y6Rxt9jPZQ2coDiNBxYvyj3PTs2fv6TMLBNATeNzAOHiOUZQH2fcjdf62v+NG0nE0
+         uK6A==
+X-Gm-Message-State: AOJu0YztCQJSNeio78ck27STv2Tt//UYiseiKFJPdBrJny4+cWgmgwGL
+	mTuld4irOnVpUjRD4zN8DABDsqWbICHNlCnlUgXLdPNzDa+EDK7k2hmotEqsvjmnbcZbmeO7ktM
+	aFcJje8ba4+Wy3zNaZDarn56O7kJTlsz36pab
+X-Gm-Gg: ASbGncvT4UY/XkUaXLavQYdU27DmoA90boa49D1PwzSg8kO7kh8oglR/cwSIJktPMeC
+	LZs4Qc+C6Iz1mqD+FwgzX9YJJvyH51YCl7tzaGaW8oyp5cmlKnzlCjYQpxDob5+AaK6DocL3/
+X-Google-Smtp-Source: AGHT+IHSXvK084oC3z+1fgrASub/JYpZd/AoLG9lE82EQY5MiiDttWHzSDZOOWYo0x2zVfAmQP+VclfQEe9+CUjMAGc=
+X-Received: by 2002:a17:902:f64c:b0:21c:e29:b20d with SMTP id
+ d9443c01a7336-21f311d088bmr191825ad.3.1738785153331; Wed, 05 Feb 2025
+ 11:52:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AV-Do-Run: Yes
-X-ACL-Warn: X-W4Y-Internal
+References: <20250203223916.1064540-1-almasrymina@google.com> <20250204180833.48cb40cb@kernel.org>
+In-Reply-To: <20250204180833.48cb40cb@kernel.org>
+From: Mina Almasry <almasrymina@google.com>
+Date: Wed, 5 Feb 2025 11:52:20 -0800
+X-Gm-Features: AWEUYZndLUQ3-Ja5MRaU3KyullgQr0rdTygpMSUSH9To-Lupoe-x8bvGN-ZuNjE
+Message-ID: <CAHS8izNxi+Dc6mXPNaQSjtmz5YzmeA-Sn8JdMWLpYRomJdCWMA@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 0/6] Device memory TCP TX
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	Donald Hunter <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Neal Cardwell <ncardwell@google.com>, David Ahern <dsahern@kernel.org>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	sdf@fomichev.me, asml.silence@gmail.com, dw@davidwei.uk, 
+	Jamal Hadi Salim <jhs@mojatatu.com>, Victor Nogueira <victor@mojatatu.com>, 
+	Pedro Tammela <pctammela@mojatatu.com>, Samiullah Khawaja <skhawaja@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Use 100 Mbps only if the PHY is configured to this speed. Otherwise use
-always the maximum speed of 1000 Mbps.
+On Tue, Feb 4, 2025 at 6:08=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
+te:
+>
+> On Mon,  3 Feb 2025 22:39:10 +0000 Mina Almasry wrote:
+> > v3: https://patchwork.kernel.org/project/netdevbpf/list/?series=3D92940=
+1&state=3D*
+> > =3D=3D=3D
+> >
+> > RFC v2: https://patchwork.kernel.org/project/netdevbpf/list/?series=3D9=
+20056&state=3D*
+>
+> nit: lore links are better
+>
 
-Also remove explicit setting of carrier on and link mode after loopback.
-This is not needed anymore, because phy_loopback() with selected speed
-signals the link and the speed to the MAC.
+Will do.
 
-Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
----
- drivers/net/ethernet/engleder/tsnep_main.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+> please stick to RFC until a driver implementation is ready and
+> included
 
-diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
-index a16b12137edb..d77a5b423c4c 100644
---- a/drivers/net/ethernet/engleder/tsnep_main.c
-+++ b/drivers/net/ethernet/engleder/tsnep_main.c
-@@ -228,20 +228,19 @@ static void tsnep_phy_link_status_change(struct net_device *netdev)
- 
- static int tsnep_phy_loopback(struct tsnep_adapter *adapter, bool enable)
- {
--	int retval;
--
--	retval = phy_loopback(adapter->phydev, enable, 0);
-+	int speed;
- 
--	/* PHY link state change is not signaled if loopback is enabled, it
--	 * would delay a working loopback anyway, let's ensure that loopback
--	 * is working immediately by setting link mode directly
--	 */
--	if (!retval && enable) {
--		netif_carrier_on(adapter->netdev);
--		tsnep_set_link_mode(adapter);
-+	if (enable) {
-+		if (adapter->phydev->autoneg == AUTONEG_DISABLE &&
-+		    adapter->phydev->speed == SPEED_100)
-+			speed = SPEED_100;
-+		else
-+			speed = SPEED_1000;
-+	} else {
-+		speed = 0;
- 	}
- 
--	return retval;
-+	return phy_loopback(adapter->phydev, enable, speed);
- }
- 
- static int tsnep_phy_open(struct tsnep_adapter *adapter)
--- 
-2.39.5
+For the RX path proposals I kept the driver implementation out of the
+series and linked to it in the cover letter. Just to confirm, is that
+OK for this series as well?
 
+--=20
+Thanks,
+Mina
