@@ -1,115 +1,121 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6180713D897;
-	Wed,  5 Feb 2025 18:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409901FCCE1;
+	Wed,  5 Feb 2025 18:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738779658; cv=none; b=L0P+oT+Izra/YNnXMM9jPzQsq/Rxr8mewt+g3sOHpjh58ywWpnhgJ5Pfq94dXYcVMBlyY5woDN/Cs7o+eLBry2mllOaPsN/HqeK3Sw0kEDN1X0Ufk9gKo4wVaoU60u4ZrmEmDDmikWFmPJpyUIRn2KK1x+6W3xpQj0w6meRtIAo=
+	t=1738779723; cv=none; b=NL5mkNLWxMevKi+nsDnGiEOTIlWwHBhaybkBh/qrJw+NXOQFDyRe3RYwfzAdxOi/Hqx+Eit7xXq6eAr/48NOMyd36lrpFkga7Ofnm4p64s7cnrH4fXBojWag+UmhqsC2VjglZoumfhebFr2RBHBaLJ7W76ExVzIISryh6ch7n7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738779658; c=relaxed/simple;
-	bh=r597A/mrJflwwdNJJ4+diLkn7fbJg1NeWa572JQU1lw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WUXezYm28VIRNSv5VIXofbfvOVqDjaS6CCY1AHSZmUuKTm+KT8eYtFO2lFqgez478T+LcAQ7oprSUOyy8UHLFh0caI0TP6oECtQnMy7Ixqy3RckYsT44ZUoZ8frottP8qVMnH1kFm+NjCIOqr3rMAdCyuMdrTNuD40JjhVhRNeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MYfe2IX4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738779723; c=relaxed/simple;
+	bh=SqMKmdlV8li1b5GqGJ7nzzQ4TW5jigeCPr1xbGk1wJA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=r8+NroDpjR7RVfDwtypiddHt+VaVzhufMLhJvBHQOrcZ3w31EZRlnZI0QHuXoswuLHte2xfc8zb7Z1BZ78JeqpIjhTt1PYRsjBliK0pUN4//VfUeGQ8oHf3Etv1vHT15QFLHEztJGws8bUjmc/x6Y+kTks1PA+5MefLhh9HVafc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AKr7Bwoh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MYfe2IX4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B24C4CED1;
-	Wed,  5 Feb 2025 18:20:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AKr7Bwoh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 366EDC4CED1;
+	Wed,  5 Feb 2025 18:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738779657;
-	bh=r597A/mrJflwwdNJJ4+diLkn7fbJg1NeWa572JQU1lw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MYfe2IX4HHbHPFfeTLqPwyEVtvpFDLtQ00dxIz1HjgifTX5I+ow4/9aoj5Q7bwSGw
-	 mc+2+jPV2QpDJtcj6EPEFG4kTsO1y2HN5YfDVQ7ZdVuk3umAK0mpzO7VhPz1fVGnwl
-	 UVG+SW389mHoZR649iKJxBV0xu2WinFdAIVeSj+EJeKtsANxOr2l0Vfsqqt670ttpK
-	 f2OE6CNM6O/JsY9XrN6k/Ja0YWNwG7Lu1oNMZe4ITunBeFS77VdjchkrLXqSEOadJ7
-	 eAuQ829nfbzkHAZu2M3RdiHZL5yoFzXOfDPrQfKsvy9P2/f1hYird3LIvLqhavDz+h
-	 pYaCG+Vj3IFDQ==
-From: Leon Romanovsky <leon@kernel.org>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Ayush Sawal <ayush.sawal@chelsio.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	hariprasad <hkelam@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	intel-wired-lan@lists.osuosl.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-doc@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	Louis Peens <louis.peens@corigine.com>,
-	netdev@vger.kernel.org,
-	oss-drivers@corigine.com,
-	Paolo Abeni <pabeni@redhat.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Ilia Lin <ilia.lin@kernel.org>
-Subject: [PATCH ipsec-next 3/5] xfrm: rely on XFRM offload
-Date: Wed,  5 Feb 2025 20:20:22 +0200
-Message-ID: <3de0445fa7bf53af388bb8d05faf60e3deb81dc2.1738778580.git.leon@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1738778580.git.leon@kernel.org>
-References: <cover.1738778580.git.leon@kernel.org>
+	s=k20201202; t=1738779722;
+	bh=SqMKmdlV8li1b5GqGJ7nzzQ4TW5jigeCPr1xbGk1wJA=;
+	h=From:Subject:Date:To:Cc:From;
+	b=AKr7Bwohk7fQ2NjKiLGD4FDOIFn52qFzErjfd4iCCrBiIX2QR5DBLQwuOnPVi8hdd
+	 uUq1kTBY0k+Nm6KxBoUVngwzzzcc6vS625mPd8ZUHYZje51sVBLTYC2QFtPLKqWpt4
+	 kqxCh2RhTAgzySGmSBwUQSM61FXnik9dt7m6o1Ka3hvOuklQ9oQyTjgNrdYGUjsCKD
+	 lSGFiXgqPog17icF6a5f4PEz7TRYHWMwkMxKEWc1QJSHo4Q4YXgnucojc49H3iqqBt
+	 woK4BO3ejsCMkLrivCiesSqYUddLy9b5z794MqM/cHDlwS3q/MVYZxButCV/9/4w4d
+	 fltVqqII4Xkdw==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Subject: [PATCH net-next 00/13] Introduce flowtable hw offloading in
+ airoha_eth driver
+Date: Wed, 05 Feb 2025 19:21:19 +0100
+Message-Id: <20250205-airoha-en7581-flowtable-offload-v1-0-d362cfa97b01@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB+so2cC/x2NywqDMBAAf0X27EIehpb+SvGwaTZ1QRJJihaC/
+ 27wNnOZaVC5CFd4DQ0K71Ilpy56HOCzUPoySugORhmnjHJIUvJCyOnhnhrjmo8f+ZUxx84UkC1
+ p7a23EwXola1wlP99eM/neQHYrpJ4cQAAAA==
+X-Change-ID: 20250205-airoha-en7581-flowtable-offload-e3a11b3b34ad
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org, 
+ upstream@airoha.com, Christian Marangi <ansuelsmth@gmail.com>
+X-Mailer: b4 0.14.2
 
-From: Leon Romanovsky <leonro@nvidia.com>
+Introduce netfilter flowtable integration in airoha_eth driver to
+offload 5-tuple flower rules learned by the PPE module if the user
+accelerates them using a nft configuration similar to the one reported
+below:
 
-After change of initialization of x->type_offload pointer to be valid
-only for offloaded SAs. There is no need to rely both on x->type_offload
-and x->xso.type to determine if SA is offloaded or not.
+table inet filter {
+	flowtable ft {
+		hook ingress priority filter
+		devices = { lan1, lan2, lan3, lan4, eth1 }
+		flags offload;
+	}
+	chain forward {
+		type filter hook forward priority filter; policy accept;
+		meta l4proto { tcp, udp } flow add @ft
+	}
+}
 
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Packet Processor Engine (PPE) module available on EN7581 SoC populates
+the PPE table with 5-tuples flower rules learned from traffic forwarded
+between the GDM ports connected to the Packet Switch Engine (PSE) module.
+airoha_eth driver configures and collects data from the PPE module via a
+Network Processor Unit (NPU) RISC-V module available on the EN7581 SoC.
+Move airoha_eth driver in a dedicated folder
+(drivers/net/ethernet/airoha).
+
 ---
- net/xfrm/xfrm_device.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+Lorenzo Bianconi (13):
+      net: airoha: Move airoha_eth driver in a dedicated folder
+      net: airoha: Move definitions in airoha_eth.h
+      net: airoha: Move reg/write utility routines in airoha_eth.h
+      net: airoha: Move register definitions in airoha_regs.h
+      net: airoha: Move DSA tag in DMA descriptor
+      net: airoha: Enable support for multiple net_devices
+      net: airoha: Move REG_GDM_FWD_CFG() initialization in airoha_dev_init()
+      net: airoha: Rename airoha_set_gdm_port_fwd_cfg() in airoha_set_vip_for_gdm_port()
+      dt-bindings: net: airoha: Add airoha,npu phandle property
+      net: airoha: Introduce PPE initialization via NPU
+      net: airoha: Introduce flowtable offload support
+      net: airoha: Add loopback support for GDM2
+      net: airoha: Introduce PPE debugfs support
 
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index e01a7f5a4c75..c3c170953bf9 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -420,13 +420,11 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
- 	struct xfrm_dst *xdst = (struct xfrm_dst *)dst;
- 	struct net_device *dev = x->xso.dev;
- 
--	if (!x->type_offload ||
--	    (x->xso.type == XFRM_DEV_OFFLOAD_UNSPECIFIED && x->encap))
-+	if (x->xso.type == XFRM_DEV_OFFLOAD_UNSPECIFIED)
- 		return false;
- 
- 	if (x->xso.type == XFRM_DEV_OFFLOAD_PACKET ||
--	    ((!dev || (dev == xfrm_dst_path(dst)->dev)) &&
--	     !xdst->child->xfrm)) {
-+	    ((dev == xfrm_dst_path(dst)->dev) && !xdst->child->xfrm)) {
- 		mtu = xfrm_state_mtu(x, xdst->child_mtu_cached);
- 		if (skb->len <= mtu)
- 			goto ok;
-@@ -438,8 +436,8 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
- 	return false;
- 
- ok:
--	if (dev && dev->xfrmdev_ops && dev->xfrmdev_ops->xdo_dev_offload_ok)
--		return x->xso.dev->xfrmdev_ops->xdo_dev_offload_ok(skb, x);
-+	if (dev->xfrmdev_ops->xdo_dev_offload_ok)
-+		return dev->xfrmdev_ops->xdo_dev_offload_ok(skb, x);
- 
- 	return true;
- }
+ .../devicetree/bindings/net/airoha,en7581-eth.yaml |    8 +
+ drivers/net/ethernet/Kconfig                       |    2 +
+ drivers/net/ethernet/Makefile                      |    1 +
+ drivers/net/ethernet/airoha/Kconfig                |   23 +
+ drivers/net/ethernet/airoha/Makefile               |    9 +
+ .../net/ethernet/{mediatek => airoha}/airoha_eth.c | 1263 +++++---------------
+ drivers/net/ethernet/airoha/airoha_eth.h           |  625 ++++++++++
+ drivers/net/ethernet/airoha/airoha_npu.c           |  500 ++++++++
+ drivers/net/ethernet/airoha/airoha_ppe.c           |  812 +++++++++++++
+ drivers/net/ethernet/airoha/airoha_ppe_debugfs.c   |  175 +++
+ drivers/net/ethernet/airoha/airoha_regs.h          |  793 ++++++++++++
+ drivers/net/ethernet/mediatek/Kconfig              |    8 -
+ drivers/net/ethernet/mediatek/Makefile             |    1 -
+ 13 files changed, 3217 insertions(+), 1003 deletions(-)
+---
+base-commit: 135c3c86a7cef4ba3d368da15b16c275b74582d3
+change-id: 20250205-airoha-en7581-flowtable-offload-e3a11b3b34ad
+
+Best regards,
 -- 
-2.48.1
+Lorenzo Bianconi <lorenzo@kernel.org>
 
