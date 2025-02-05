@@ -1,166 +1,146 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7B422A4DF
-	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 09:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4384422A4F5
+	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 09:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738746700; cv=none; b=MZDRzgbcgug/Ce/dPWjBR9nAc2rtT/riAjr66UpTIjajdBY4gCWuAdyQOIp1EngIOYtm/oG+ZuujQSiJLSd8+CPUX/HGAIj0NCZkK9S/s0bg3aDQhFyMAbTuSTN69RftlZK8LHefKY/yGUU/0mkHafaEriKEkbZJIxPDhgrsUoU=
+	t=1738746725; cv=none; b=bu6zqenB4H1Kzh4SPN7285k5ajC9dSsc5IOXuuN9ZWL2Ah/F3Jad26vENL/D0ah4eaYU3VTMIl3d95TQ+d+1sA2J4jGXJqM2JJdawhBHXbdqcK3w8x9rM2z6oMuLMAscnNTS1q+zOf6E4B1gTUn6cXgC8s97A9/1PnbbuVYQTPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738746700; c=relaxed/simple;
-	bh=FrfX+Va6jShG2kQ7vxJe5JbRNE5XziiWylZStKahXbA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R4rZB5uX681O4G9ogtaffTcNxXIy9eFgDy/80g1tlLorCXTlymZMPzcPZNyE3Lx0oaTY7HN6krtCxWD9KkfstnK1PJKAEg4LuAAp/gF/uKZMgeJ4sk2+kM9pitthkFsLfjn500+xqyoF+KhAIDx3Bfaoe7NJPuF4OF13u3mbFIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=ROXlN+eo; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="ROXlN+eo"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ab69bba49e2so967560166b.2
-        for <netdev@vger.kernel.org>; Wed, 05 Feb 2025 01:11:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1738746697; x=1739351497; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=hN00tjsFn+X2j7iH9Mfyzq5iQc++plfpKz8SCs0r79A=;
-        b=ROXlN+eo+V0u7RDQCIjMLzPFMpkdHKcwnRcuGapESZCagpUAvTkmoCO1Nr6AStIwJH
-         aVpAq6tiep5D48HxImSHQy+4JGIctmqMdnGz4ynZqdLoLuxOhysVYyMYgi5xDayzP4Zh
-         Vq7mSBBxlfdgor1zyk/69XbvNMgVhrBr0x7NI92mTSHaRIvrAqnA00l9gI8AXzGNerRO
-         DQvg2uiSHyVIqXCpMkSDWSYVu5YA6SES0/8Eg0Qba+lGUuEco8u0smBTMSgFBIPC4DAd
-         K+/ZJZQn8UXgoJZnDmTMX+bpJrV044vgeijbyj1V8Tviz2tkxaBZcGowXNgvgJ6w0AVt
-         k9fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738746697; x=1739351497;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hN00tjsFn+X2j7iH9Mfyzq5iQc++plfpKz8SCs0r79A=;
-        b=SXy5ZUZ47rGRrgi3N2g/FfOA+pUpPyQP5AOM/JMOqbSuHYFpyck4+iumKODI37KVwl
-         llSrIOUfOEHilf1wlf/al+bYbIP2erHurgnEvvpPUrarIikMoOiK2YCrGj/RE6F/YAzq
-         C06B+voCdgPrH+oMM+Z0BYyTHDWLEfmcxph66SaxtUWPMi+XcL4bz9bW4rvBzukebhD0
-         Fv8N/p0B4g512qecxtbpun05Cusf5cI5sR3YdTLmPmJeYNZtcR4vwSMFWZ0YhYtyx4Pq
-         zgEgXc158aW+geF32JAUoN+fgqnkGBDFwnwTUmPSk9qjjdimxruoBQ2vIkguL1pOHQsV
-         s93Q==
-X-Gm-Message-State: AOJu0YyOb66Gs7FP3Hk4KGzyUWDWi8weak/FZtB/KhWGPw2S5e0H5zHi
-	qhhK1voH3KqUOprLO1zzuAWxx8XWHcTDUDVJSrPAob2Ns0nfIdgVZH37/GbP4Yw=
-X-Gm-Gg: ASbGncuH3PMdMTNC40L5h4VT7NWRyu6Qx5ecTajuVPTVXJqzHnaQEBjTpE4P1HeItfA
-	Z+aloEeuh81rWCtYB1SSe/q4iCw1PVqLKHpcYXs8F08pUU3G6YqJKnG4x6Acl4NSfKPqE4Wimds
-	4tJMzrbCB0LpVRJqPaE6PDImrVLxbdkYo9pVNXgaLP8a9BqOkRlabwgdy+dY5rmGVgAcqM9WAYH
-	TqJ6WWOt/y2wURXAy2PNfPpgEFKbc2paK2kY21qWHb8QN5vhntkNls3PVn1GwGF1+4V7BFCfdk8
-	d+oUtdq8JBm+4HtO7ewfSFX7ajE8FzRs29BuQ1tUhsAQD3mAW0xVuA==
-X-Google-Smtp-Source: AGHT+IEoQAuCOq42UVqvlrSsUfc0NnaMiOTk8hK4xlAbqdB6mJYOEgWtx7QtTS2IN0r2sXN8sU1+Gg==
-X-Received: by 2002:a05:6402:13c8:b0:5dc:80ba:dda1 with SMTP id 4fb4d7f45d1cf-5dcdb711b67mr4827035a12.9.1738746696686;
-        Wed, 05 Feb 2025 01:11:36 -0800 (PST)
-Received: from ?IPV6:2001:67c:2fbc:1:e45d:9f15:4f3d:f5b0? ([2001:67c:2fbc:1:e45d:9f15:4f3d:f5b0])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab6e47d1014sm1069717466b.66.2025.02.05.01.11.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Feb 2025 01:11:35 -0800 (PST)
-Message-ID: <4c97399a-8975-40ca-aa6a-0c18a366d596@openvpn.net>
-Date: Wed, 5 Feb 2025 10:12:45 +0100
+	s=arc-20240116; t=1738746725; c=relaxed/simple;
+	bh=pbXBgqmpa8g7lHJjiKhKj13eV+pZcw3MOSN/M6mpvZI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=uuwB7RKg7W8YremuWO8i3pzGB/ciFDaN8a9VA1axmeAD0oKMvPrD4e7FrMR7yA/EJwyyD6U9o21ej8iLdHyqH4X7oCKEyR/nrJRtDfg+VmXF8NjUtVHb6jSDQXHGNrZ7CTR7NBeEPVQDMTw6CHY5jYP/G1S2BANlyu5q0Un9rOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tfbRq-0000GC-C3; Wed, 05 Feb 2025 10:11:54 +0100
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tfbRo-003bto-2B;
+	Wed, 05 Feb 2025 10:11:52 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tfbRo-0095Ou-1x;
+	Wed, 05 Feb 2025 10:11:52 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v2 1/2] net: phy: Add support for driver-specific next update time
+Date: Wed,  5 Feb 2025 10:11:50 +0100
+Message-Id: <20250205091151.2165678-2-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250205091151.2165678-1-o.rempel@pengutronix.de>
+References: <20250205091151.2165678-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v18 07/25] ovpn: implement basic TX path (UDP)
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>,
- ryazanov.s.a@gmail.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Xiao Liang <shaw.leon@gmail.com>
-References: <20250113-b4-ovpn-v18-0-1f00db9c2bd6@openvpn.net>
- <20250113-b4-ovpn-v18-7-1f00db9c2bd6@openvpn.net> <Z6CR6QGVrMqauP2H@hog>
- <Z6I9yn3Nh-9Ebvv9@hog>
-Content-Language: en-US
-From: Antonio Quartulli <antonio@openvpn.net>
-Autocrypt: addr=antonio@openvpn.net; keydata=
- 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
-Organization: OpenVPN Inc.
-In-Reply-To: <Z6I9yn3Nh-9Ebvv9@hog>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On 04/02/2025 17:18, Sabrina Dubroca wrote:
-> 2025-02-03, 10:52:41 +0100, Sabrina Dubroca wrote:
->> 2025-01-13, 10:31:26 +0100, Antonio Quartulli wrote:
->>> +static void ovpn_encrypt_post(struct sk_buff *skb, int ret)
->>> +{
->>> +	struct ovpn_peer *peer = ovpn_skb_cb(skb)->peer;
->>> +
->>> +	if (unlikely(ret < 0))
->>> +		goto err;
->>> +
->>> +	skb_mark_not_on_list(skb);
->>> +
->>> +	switch (peer->sock->sock->sk->sk_protocol) {
->>
->> We have a ref on the peer, but not on the ovpn_sock. DEL_PEER could
->> have detached the sock by the time the crypto completes.
->>
->> (unfortunately I don't have any idea to fix this yet)
-> 
-> Maybe an idea:
-> 
-> Since ovpn_sock itself lives under RCU (because of sk_user_data),
-> peer->sock should be an RCU pointer and also follow RCU rules. For
-> most parts (io.c, netlink.c) the conversion is not too
-> problematic. TCP is more difficult.
-> 
-> I still need to think about whether this works, and whether this is
-> worth the complexity, or if we could solve this in another way.
+Introduce the `phy_get_next_update_time` function to allow PHY drivers
+to dynamically determine the time (in milliseconds) until the next state
+update event. This enables more flexible and adaptive polling intervals
+based on the link state or other conditions.
 
-It may actually be a reasonable solution.
-And maybe it is not that complex to get done.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+changes v2:
+- phy_get_next_update_time: remove useless variable
+---
+ drivers/net/phy/phy.c | 26 ++++++++++++++++++++++++--
+ include/linux/phy.h   | 13 +++++++++++++
+ 2 files changed, 37 insertions(+), 2 deletions(-)
 
-I'll see what I come up with.
-
-Regards,
-
-
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index d0c1718e2b16..2df1e57dd9aa 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -1501,6 +1501,23 @@ void phy_free_interrupt(struct phy_device *phydev)
+ }
+ EXPORT_SYMBOL(phy_free_interrupt);
+ 
++/**
++ * phy_get_next_update_time - Determine the next PHY update time
++ * @phydev: Pointer to the phy_device structure
++ *
++ * This function queries the PHY driver to get the time for the next polling
++ * event. If the driver does not implement the callback, a default value is used.
++ *
++ * Return: The time for the next polling event in milliseconds
++ */
++static unsigned int phy_get_next_update_time(struct phy_device *phydev)
++{
++	if (phydev->drv && phydev->drv->get_next_update_time)
++		return phydev->drv->get_next_update_time(phydev);
++
++	return PHY_STATE_TIME;
++}
++
+ enum phy_state_work {
+ 	PHY_STATE_WORK_NONE,
+ 	PHY_STATE_WORK_ANEG,
+@@ -1579,8 +1596,13 @@ static enum phy_state_work _phy_state_machine(struct phy_device *phydev)
+ 	 * state machine would be pointless and possibly error prone when
+ 	 * called from phy_disconnect() synchronously.
+ 	 */
+-	if (phy_polling_mode(phydev) && phy_is_started(phydev))
+-		phy_queue_state_machine(phydev, PHY_STATE_TIME);
++	if (phy_polling_mode(phydev) && phy_is_started(phydev)) {
++		unsigned int next_update_time =
++			phy_get_next_update_time(phydev);
++
++		phy_queue_state_machine(phydev,
++					msecs_to_jiffies(next_update_time));
++	}
+ 
+ 	return state_work;
+ }
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 19f076a71f94..d5cf979f4a6b 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -1273,6 +1273,19 @@ struct phy_driver {
+ 	 */
+ 	int (*led_polarity_set)(struct phy_device *dev, int index,
+ 				unsigned long modes);
++
++	/**
++	 * @get_next_update_time: Get the time until the next update event
++	 * @dev: PHY device which has the LED
++	 *
++	 * Callback to determine the time (in milliseconds) until the next
++	 * update event for the PHY state  machine. Allows PHY drivers to
++	 * dynamically adjust polling intervals based on link state or other
++	 * conditions.
++	 *
++	 * Returns the time in milliseconds until the next update event.
++	 */
++	unsigned int (*get_next_update_time)(struct phy_device *dev);
+ };
+ #define to_phy_driver(d) container_of_const(to_mdio_common_driver(d),		\
+ 				      struct phy_driver, mdiodrv)
 -- 
-Antonio Quartulli
-OpenVPN Inc.
+2.39.5
 
