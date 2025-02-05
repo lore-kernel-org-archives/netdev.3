@@ -1,73 +1,76 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2046.outbound.protection.outlook.com [40.107.94.46])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2066.outbound.protection.outlook.com [40.107.244.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E1018DF64
-	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 15:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C26518DF64
+	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 15:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738770924; cv=fail; b=Cf/E84BkeQbbNypLcyTlFDoM+zQ30bcY/ugagJb45H2VLrbYOTN4oqZPZwHGqR4sKtnIv80mKQFZeFGx3AhCmmPPL0y8RjV7gRYX1MEbondg568PJ+FGYo2vZUNb7RscnFE0cLU1sVb5x7KwEyY5V15gk2k83S/1DGvZ3yoEl0s=
+	t=1738770930; cv=fail; b=jH/v09cdSrb6Abb977nAiEhCXjbTbC117ADoHPUkkVEhJDJ9iXwICiapxQkM1BLStQdVZkF8XvbDtgXjuBqxq/o+PRWjF9W4AN1oF5t17SopMNYqehFGlpg35rcrmkUBUrIeqMxg8C193d20wy8m4FW50lvw7pAMZzBxFy9korI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738770924; c=relaxed/simple;
-	bh=KPMMQ1ZubD+jZI5qU7lU94KFr/pjBv8FxEj0a3niVH4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZGChbB/yloKgUpOI4qcuMAyVlx5tr0/UjA4Wqs++ShhU0LOMS1M+G5ZFieMYNTT4KhDkq4rKBBbyubHIXs1RLfrwl/zu3AnbJPm+TM/A34W9E4zAjhaYjKTQkTntkBDfri76olZ9QR2f5407PKA9V63dvDuXQg2z3yIpLcntwD0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rGhnTt7s; arc=fail smtp.client-ip=40.107.94.46
+	s=arc-20240116; t=1738770930; c=relaxed/simple;
+	bh=XDharbSpQhQtiPQcW2BQBIpwZhJAc3S4ufsSo698PVg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=M1mwzbpRkIAtUNOh73xfOf29SMg1gKGuxbge4AigGaqgiuNOAtdhG2+oXa+BpfdirmLDEEHzGTJc3dVXJn7m1HiWPJ+YeE+xr1CZd8gBi/NkdI1DWUepWvS4oCg7HELtV+DDyB12naNYLCSUF8gadRo1geXdxRi/ycpj2fIMawE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nApj2/e/; arc=fail smtp.client-ip=40.107.244.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rGhnTt7s"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nApj2/e/"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h3dCs+v1UMkKX//SgRENmIODy9qykDy6wqxkw/jMILAywAdGWfcJNYNqeSivsOPqbdrmd1E0x/Y5oTCfqZW4Ju71wgh6bIgKGk6qK5KaeUhmKQ1+GT3Ss/3nk+WbUT5DIfl+sxutyf2wytSM83upwDRvXhDlvgMuOgBLqAkjrByaHS1lp0BkMXpqg2OSrAxdxlJcUm0lVQUr8FTFPN7I705IUQ7Cy/nLrRc2Epg8mglrLvtcRfzCtGh3XNHmg1QdVsAdBxhvECWLFp67+m6TiNx/wSznKaFRIs/MS21NrnRmMUjGk+2GlOImxY+QFWyqkTg45uQmjEsiFzFMyPEmdQ==
+ b=RU1OAJb65JVprOsFpuXRSBkTjJZ8u8FdJnmUPrWoHEcpjty6DHpo6MoUZ4NO3hMYq3JzpmLMRoBwp239gLWOEsMqZZYopoghaj+lJDAbgIlbsLnSq7peXsC38eQMlfFqrQ1b1l5ZIgryeis0hNkEX1/Xn8zQ8UeKKswHQtFpHb2Irf2RvGKben9SQr9XNDpr0utpv8IC8kkjgAu9STHmAwZlnevRatvyF/Mg2eQTBrztyGQZ1wDuzldWMXRK2rMMuyDLjvc/kn5DJrFhSsScPWdCsx21qaXrq++KNMtxInwnvGDu1fMsNP9LqUA0XyGQOGwwRrtdfHYTOXQL17iJmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ai+C1RC+nDGCvC4lZA3sfCwa7f/jGpwRjA4NO7O5Ivs=;
- b=YnYLH4TgNPI4sr33dhs0ZY/WWDH7JZ/ky7X0kwcq5fcQ/dOTK7+RLAeJ7kKVfW0reY5y89zAeF5GjjYFmdN0sN5T0310tfTJOI9Ng8FBATRNx7bxZcAgihny7USmS993XE6jCz5sDzl0L+l+KgE7shdjjd3qkW+Jac0zHcSPYZt+TaQ9V2wJRj0FO1qFIblAGbCBl/S1aH7rWS1W2xCXFXZmWduIzfou5HhD4iWJMTp26XKyhQWcMXXnFFMapP+EASTShTetERVbXBVtiAELVHh+zOpmUkodOAQqa8tVfVKR/lcy7TaO3SrvdWYUcgGVSm33r4T6BRasA+l53jhBgw==
+ bh=WiL2+r9JXHgDjDoPXr9lnayjlJh8Bj0TcmiGAODIs8I=;
+ b=vGeWH3xpHaLmmYEQvjfXCNmv52nhfdGanTNgZp2v3ZJtMNPZYQopPMJdDc3EnGGoiizT9We16jdB2bi4iJZ/YPamHvK5OtiyTWjt7xCoZsMoMPfzIbHbvT9QkAbLyR1nJ6Ihjy8GWFIxvvaqMgVV/nXjTy507lui7CxQcVzQODI3RvDcR/fuR0PgVkq/B+rOv8bDt2yUM7uei+XK04NaZgvd3ZCrTDcxqIRB0BDGTXoeJScf05Qhgr8NvIjb57DG/DTmhU2LEkWmOh+JBF10LOa+AA2DT5DMB343fCabOttsgOZZRC2xHr90MiOaThJ15tOckVZiFyKPoeqE4GAG7A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ai+C1RC+nDGCvC4lZA3sfCwa7f/jGpwRjA4NO7O5Ivs=;
- b=rGhnTt7szkAMvw0OMlB69PxKjg3W3OIattRhiZy4YvO/uOgNeIohm6Dnpd9QPBxT2YDNsuluI1pNM1LE2viTs64pbDly+nQamiwt8aWaa9VPfIcsKCgqG/8GCvdVyRsxj/JSq3JlSE7y4Cibs14OcLGX1jMcyrPFKY1w+Bj3rqvureqQqqNNKlhYznsFvA0gMMdj4PHwZYFueU0mo1AH11HqpW9lIu8QFpLvs2DHW5joB7Ko5Rpeumtx5c2aamHIvVG7gZYO9wyE3zg0NNuqSSicuvXlxhoV6got5QQZuhD4SS2rZuFnMpdNhhSfGSBKlRcSJl+1gq0UcZZ4NfMTew==
-Received: from MN0P220CA0006.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:52e::30)
- by IA1PR12MB6260.namprd12.prod.outlook.com (2603:10b6:208:3e4::17) with
+ bh=WiL2+r9JXHgDjDoPXr9lnayjlJh8Bj0TcmiGAODIs8I=;
+ b=nApj2/e/XKLH+EnYwuXnjlN1Q16CMN+hWEUA79LAzMBAbFLjX6DmjAZQH1X4SMLqutjB24P+tkdbMl9DD3MfmqzX0Asx15OkT1N9IKzX7nlmWSiih4u2GwPs04rQaymPHoqPNpZhmakQCznhyeN3LvIHYFVa+/O00H48rhgIvvpvsj0kUz60qtEyGQDM0Yyz/xHruWCLwNUQtjcRUvPsfRtmYkBHj5jmJdRf810kCS4DKMDLW2gmjwuW7PQwnGXUcIy0Vm/Lm018jf8MQsbpmI4ygRM7Bgv9bbGTiT63DdIcJiXyP6MuuSJCUrwpifTVq0iiwBCll7Gge7+pabFP9w==
+Received: from BL1PR13CA0144.namprd13.prod.outlook.com (2603:10b6:208:2bb::29)
+ by SN7PR12MB6957.namprd12.prod.outlook.com (2603:10b6:806:263::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.25; Wed, 5 Feb
- 2025 15:55:15 +0000
-Received: from BN2PEPF000055E1.namprd21.prod.outlook.com
- (2603:10b6:208:52e:cafe::a3) by MN0P220CA0006.outlook.office365.com
- (2603:10b6:208:52e::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.27 via Frontend Transport; Wed,
- 5 Feb 2025 15:55:15 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.23; Wed, 5 Feb
+ 2025 15:55:17 +0000
+Received: from BL6PEPF0001AB78.namprd02.prod.outlook.com
+ (2603:10b6:208:2bb:cafe::ae) by BL1PR13CA0144.outlook.office365.com
+ (2603:10b6:208:2bb::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.24 via Frontend Transport; Wed,
+ 5 Feb 2025 15:55:16 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN2PEPF000055E1.mail.protection.outlook.com (10.167.245.11) with Microsoft
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BL6PEPF0001AB78.mail.protection.outlook.com (10.167.242.171) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8398.0 via Frontend Transport; Wed, 5 Feb 2025 15:55:14 +0000
+ 15.20.8398.14 via Frontend Transport; Wed, 5 Feb 2025 15:55:16 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 5 Feb 2025
- 07:54:56 -0800
+ 07:55:01 -0800
 Received: from dev-r-vrt-155.mtr.labs.mlnx (10.126.231.35) by
  rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Wed, 5 Feb 2025 07:54:54 -0800
+ 15.2.1544.14; Wed, 5 Feb 2025 07:54:59 -0800
 From: Danielle Ratson <danieller@nvidia.com>
 To: <netdev@vger.kernel.org>
 CC: <mkubecek@suse.cz>, <matt@traverse.com.au>, <daniel.zahka@gmail.com>,
 	<amcohen@nvidia.com>, <nbu-mlxsw@exchange.nvidia.com>, Danielle Ratson
 	<danieller@nvidia.com>
-Subject: [PATCH ethtool-next v4 00/16] Add JSON output to --module-info
-Date: Wed, 5 Feb 2025 17:54:20 +0200
-Message-ID: <20250205155436.1276904-1-danieller@nvidia.com>
+Subject: [PATCH ethtool-next v4 02/16] ethtool: Standardize Link Length field names across module types
+Date: Wed, 5 Feb 2025 17:54:22 +0200
+Message-ID: <20250205155436.1276904-3-danieller@nvidia.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250205155436.1276904-1-danieller@nvidia.com>
+References: <20250205155436.1276904-1-danieller@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,139 +83,133 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000055E1:EE_|IA1PR12MB6260:EE_
-X-MS-Office365-Filtering-Correlation-Id: fc11187c-5455-4222-3e0d-08dd45fd7b0c
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB78:EE_|SN7PR12MB6957:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c26f80f-3d84-4d6c-2911-08dd45fd7bf5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026;
+	BCL:0;ARA:13230040|1800799024|376014|36860700013|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?wywbi78F50kl6WlUSBwvQUkh4TJZo78sRN0CZ7kCisz2+szz2hyz0ZLbsiuR?=
- =?us-ascii?Q?lkJJq1RTmQeIIkgoZL3jhQLMnzP+orjROk+8RqDmX5QUdG3PKn9jjVJnVvK4?=
- =?us-ascii?Q?XiCOudICoL0pWs15AtRGXNF15DaB4n2DOWdS0y5tpXHzjKcv6EXtrezexWmE?=
- =?us-ascii?Q?7inN20ObEMB1IG/8qDbJSw4lmMOlEI0PYlKDarkTR+/YZLZbKSBqVK5hKkqF?=
- =?us-ascii?Q?ty0hlMdz/sVWbeqM/td/xq2tyXVsgdhUa6pihcFAutbCpG9iBEqM+NbCaZqa?=
- =?us-ascii?Q?F7kwsfIBd5cEZmwxgJ7J5hPn3XUehd0LphYASh3jbB585KddKl4DANN1acL+?=
- =?us-ascii?Q?UpNFuZk5Qo0nt9phLaqMwbGdjbN9zFmaiIAs6h4aX/lWOppdcle//KJv/Crt?=
- =?us-ascii?Q?kFib22HhqOk50sVy6cmCbTTOYIyJZB7t33gjpnuFVvhI1JdRH9Ikq5iHwN3O?=
- =?us-ascii?Q?9f+oBDjQu8+8bV52SMAS/pS5cptXA0mahaBizm5jbyYXYkw0UbAKkuxOJ0zR?=
- =?us-ascii?Q?YoHPTkpidW2/IfHxnhkxqjPvSUT0sGv7Pr9pfLND4ZR6UomT2EsIHx0sgNd1?=
- =?us-ascii?Q?XzEtCI3+HyVKrG5tv2JPOEbm+QB0XkzAdL5fl7PPaK/0iRO/g8A+Ke63kaK2?=
- =?us-ascii?Q?yWxx4o/rjx1/U7TxXuU5HtYkyi59uEXnLKbXLmBg3qmihS+NFJI+4mb8C9CC?=
- =?us-ascii?Q?QRGRJMsvYSPdMGsU7+Ek4SZVXREPN44iQq79EgdWFKs8RQpFAUDVTW9xz1f1?=
- =?us-ascii?Q?tpln03YunHCa3aTpSYPZpjPPpe1eeyUvQ5oIqiM/BgawFxxBcyCgztWCHl2i?=
- =?us-ascii?Q?+pBjMDggZxbOObDVXNA7Ay+d0b0nlIsHCSIpYWeyRp5Io4+jwYnPAa82bo2V?=
- =?us-ascii?Q?1QCGTJhVs2aJOQXKHVoKXysouoD5xpM+kWey/hrV17EkvJQv/NVgAZEfSxWS?=
- =?us-ascii?Q?1jL6tNf4oAO19OYJ6pPl9qzyzSMu4h1Z7YQs09CJjletjQ0xdxbnzg2zQgEG?=
- =?us-ascii?Q?QXSfugkBHd1+AV4h2eV1Hi4fL44plHMweIpQ7/oinh0IO0cW0xS/G3rq4hEs?=
- =?us-ascii?Q?vDbPf/rtuavejkVfblzLvJGYylDsxN0jajWJhokQwNsHFjZGZbtEzEFArUHq?=
- =?us-ascii?Q?ATtIWzJ4UTJn1d0dLOJKNKFeNqKyozbNb7JREvyiKV0Z5Uts35Vn02jsM8Nm?=
- =?us-ascii?Q?piBaKmcUi20Ex1jm2NluNIXrLru0E3gbt0lraXLtbg8VLVSbyHbz4tvZYvum?=
- =?us-ascii?Q?tjbQBsQrv12C0ZlvB2dpss/DbU90w/9j++RVInPkZcWLxD2bHe85LP1zFkUx?=
- =?us-ascii?Q?ettYZSiluPbrYitC3xNXGVWAg3uj3c4XVa5k9utkrxVDTfBd2TV0GP2lgveW?=
- =?us-ascii?Q?GXgGGFZVJWXF6Ev0ECuPVkRLIcAKmxNjlB5y+KxEbIOS12gXkWm6s5FfVuhZ?=
- =?us-ascii?Q?+s/NsMyipRxm85AczkxCoShK5XQsy1wx02CpAMSqlnQ9Z7s0x0hCpFW7lyWD?=
- =?us-ascii?Q?SQ4xizqPRFJu+yE=3D?=
+	=?us-ascii?Q?gIStDAF1OQJNobCgGx4E/VD/4/w4/AroPXZPvoKsgAcFL0BMfhE+Du4AWmja?=
+ =?us-ascii?Q?OOiNJFfVPDSDZe7t3+ao1u48JLNG7sz4ILRny/VOq8m++xq7/AHCkwYcADOZ?=
+ =?us-ascii?Q?TYqpXaNTKsg/rirepsoLsJY8idSdKiYasJY8vhs2Tc1jlKFndaoSQnEQ6OMl?=
+ =?us-ascii?Q?8b+sKZ8H79aUQlY4x5faSWDKUogNmWXQ9WCfEbx6uiDYh2+ZDk4JywlIkOO8?=
+ =?us-ascii?Q?EUH1RxwN5qp2Q0KbxaFEP68s6C8RIpDXBCcsel50z4mmL0Sv1Ebtw4002/JE?=
+ =?us-ascii?Q?7c6uFx9Q6IbCyb46D/gHTONmvPSRBifzqugN1S+8+NjrBT7zoq0B5OIXHvcg?=
+ =?us-ascii?Q?b4xEkccyUzBHo0B2rAnOCd7lPTc7WhzHfwJuwX/YAcJ/J99sc4Q9I9bUQlof?=
+ =?us-ascii?Q?w9Yu67ik7CAjmrhUS1PvCqsl6HFyftDp/VXXiltl+tL2X98QquEl9L4LKJlK?=
+ =?us-ascii?Q?wX38LCU183lZ02LIdkLi/lukCucZjXc7bQNzYG1aJqkflgfAYAU3gKjO4o05?=
+ =?us-ascii?Q?v9aFlrmTtVN9rbn/76H4c4/ayudxh5Kq1ZdNpnxv/325OiO1UjLSkp6xbsGl?=
+ =?us-ascii?Q?bg+MavYF6xDpgFc7jHyqF7JsGtsFsPaHbvyFc/xFrLft3961kda1dYBqMwNv?=
+ =?us-ascii?Q?7NBEx3Z9wOur81cAbFgRv4XcJ+Z0o8erDWo60/k5sEl7NZuNMHbdRDccOSqR?=
+ =?us-ascii?Q?lAloVk1gvfFS5bPH2p9aUw76xqx25M6mLuZutkA/XOaODdqVTcfCTl5c+iXW?=
+ =?us-ascii?Q?y4ebl8zpToWJODbFdnd08P6RAJVHm6Ra4RZcj5ogYlFbnCkE52iYU3e6Au4F?=
+ =?us-ascii?Q?hgXqrhUDklp6dTgw6gPfgl4Y7RdTY0PFqiu+YF0B2xJOaywhQdPkCJeJoAxf?=
+ =?us-ascii?Q?K7WR8NJRdvSo1txBkCUzJYAjSkSzDDINDxQG0+2TRPlp2/vFqsJoKXySJIxX?=
+ =?us-ascii?Q?OnVtV+pOhbtUWVYiKtw5jzeXmwSKTIprB9ioMEO8SQXLW+FGpqP657v2XEya?=
+ =?us-ascii?Q?f6ksan8yC1Mx4CaCp9+4tv29TrARbCkoeeBdQXp7NrA+xCpKWb1n4aMqkn2p?=
+ =?us-ascii?Q?ROWrIHH/hXTwt165ggPM3Nom23OkH4fpr9bAIIm47s8xb3IzyPlvR1WtAJpd?=
+ =?us-ascii?Q?rptvp7ImmusOWQa3Tt9+ygd+YBVJuxBXYOkdqt6iIJAGuLDnhTdQCJIfr48h?=
+ =?us-ascii?Q?uu/CAP7qnAXXm9ZDdH1nydokS7Wm7L8etZUKT3ylqq4gvmws7vmaT5O1xHfM?=
+ =?us-ascii?Q?r0igElF9lV6XJgEW22DEvpA+VhaQhHPC9en2yh7ZW2GVFsX7TdwQCJ2QS/p6?=
+ =?us-ascii?Q?/ZqBb2gt8fu2PakTp69BKBc6CBQAtEjILRVqwNxtE6P3IaCpxvEKMZ9/W2/W?=
+ =?us-ascii?Q?DQ+I2h0EKboy1vrJIuqSEZMJ20P1CT/JnD695qlfVBhh0UTOp4ckvbspCHhP?=
+ =?us-ascii?Q?Vxkf38pqBgWf3YcOPdhsyHEofZOPkJvrntDY9PmKoEFxsEQZmf2MFht8qAWI?=
+ =?us-ascii?Q?JLGdWNbYH6n1dfQ=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2025 15:55:14.7889
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2025 15:55:16.3310
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fc11187c-5455-4222-3e0d-08dd45fd7b0c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c26f80f-3d84-4d6c-2911-08dd45fd7bf5
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF000055E1.namprd21.prod.outlook.com
+	BL6PEPF0001AB78.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6260
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6957
 
-Add JSON output for 'ethtool -m' / --module-info, following the
-guideline below:
+The 'Link Length' fields have inconsistent naming across different
+module types.
 
-1. Fields with description, will have a separate description field.
-2. Units will be documented in a separate module-info.json file.
-3. ASCII fields will be presented as strings.
-4. On/Off is rendered as true/false.
-5. Yes/no is rendered as true/false.
-6. Per-channel fields will be presented as array, when each element
-   represents a channel.
-7. Fields that hold version, will be split to major and minor sub
-   fields.
+To ensure consistency, especially with the upcoming JSON support for the
+EEPROM dump, these field names should be aligned.
 
-This patchset suppose to extend [1] to cover all types of modules.
+Standardize the Link Length fields across all module types.
 
-Patchset overview:
-Patches #1-#7: Preparations.
-Patches #8-#9: Add JSON output support for CMIS compliant modules.
-Patches #10-#11: Add JSON output support for SFF8636 modules.
-Patches #12-#14: Add JSON output support for SFF8079 and SFF8472 modules.
-Patch #15: Add a new schema JSON file for units documentation.
-Patches #16: Add '-j' support to ethtool
+Signed-off-by: Danielle Ratson <danieller@nvidia.com>
+---
 
-[1] https://lore.kernel.org/all/20220704054114.22582-2-matt@traverse.com.au/
+Notes:
+    v3:
+    	* New patch.
 
-v4:
-	Patch #10:
-		* In extended_identifier field, use an array for all
-		  descriptions instead of 3 different descriptions.
-		* Remove duplicated definition of YESNO() and ONOFF()
-		* defines.
+ cmis.c  |  4 ++--
+ qsfp.c  |  8 ++++----
+ sfpid.c | 11 ++++++-----
+ 3 files changed, 12 insertions(+), 11 deletions(-)
 
-v3:
-	* Remove unit fields from JSON output.
-	* Reword commit messages.
-	* Add patch #2 and #15.
-	* Enable properly JSON output support for SFF8079.
-	* Remove printings from fields that might be empty strings.
-	* Fix JSON output in sff8636_show_dom_mod_lvl_flags().
-
-v2:
-	* In rx_power JSON field, add a type field to let the user know
-	  what type is printed in "value".
-	* Use uint instead of hexa fields in JSON context.
-	* Simplify sff8636_show_dom().
-	* Use "false" in module_show_lane_status() instead of "None" in
-	  JSON context.
-  module_common: Add a new file to all the common code for all module
-    types
-  ethtool: Standardize Link Length field names across module types
-  sff_common: Move sff_show_revision_compliance() to qsfp.c
-  cmis: Change loop order in cmis_show_dom_chan_lvl_flags()
-  qsfp: Reorder the channel-level flags list for SFF8636 module type
-  qsfp: Refactor sff8636_show_dom() by moving code into separate
-    functions
-  module_common: Add helpers to support JSON printing for common value
-    types
-  cmis: Add JSON output handling to --module-info in CMIS modules
-  cmis: Enable JSON output support in CMIS modules
-  qsfp: Add JSON output handling to --module-info in SFF8636 modules
-  qsfp: Enable JSON output support for SFF8636 modules
-  sfpid: Add JSON output handling to --module-info in SFF8079 modules
-  sfpdiag: Add JSON output handling to --module-info in SFF8472 modules
-  ethtool: Enable JSON output support for SFF8079 and SFF8472 modules
-  module_info: Add a new JSON file for units documentation
-  ethtool: Add '-j' support to ethtool
-
- Makefile.am             |   7 +-
- cmis.c                  | 493 +++++++++++-----------
- cmis.h                  |  65 ---
- ethtool.c               |  10 +-
- module-common.c         | 662 +++++++++++++++++++++++++++++
- module-common.h         | 287 +++++++++++++
- module_info.json        | 191 +++++++++
- netlink/module-eeprom.c |  26 +-
- qsfp.c                  | 894 +++++++++++++++++++++-------------------
- qsfp.h                  | 108 -----
- sff-common.c            | 348 ++++------------
- sff-common.h            | 119 ++----
- sfpdiag.c               |  52 ++-
- sfpid.c                 | 446 +++++++++++---------
- 14 files changed, 2250 insertions(+), 1458 deletions(-)
- create mode 100644 module-common.c
- create mode 100644 module-common.h
- create mode 100644 module_info.json
-
+diff --git a/cmis.c b/cmis.c
+index 71f0745..5efafca 100644
+--- a/cmis.c
++++ b/cmis.c
+@@ -282,9 +282,9 @@ static void cmis_show_link_len(const struct cmis_memory_map *map)
+ 	module_show_value_with_unit(map->page_01h, CMIS_OM4_LEN_OFFSET,
+ 				    "Length (OM4)", 2, "m");
+ 	module_show_value_with_unit(map->page_01h, CMIS_OM3_LEN_OFFSET,
+-				    "Length (OM3 50/125um)", 2, "m");
++				    "Length (OM3)", 2, "m");
+ 	module_show_value_with_unit(map->page_01h, CMIS_OM2_LEN_OFFSET,
+-				    "Length (OM2 50/125um)", 1, "m");
++				    "Length (OM2)", 1, "m");
+ }
+ 
+ /**
+diff --git a/qsfp.c b/qsfp.c
+index 6d774f8..1aa75fd 100644
+--- a/qsfp.c
++++ b/qsfp.c
+@@ -736,13 +736,13 @@ static void sff8636_show_page_zero(const struct sff8636_memory_map *map)
+ 				    "BR, Nominal", 100, "Mbps");
+ 	sff8636_show_rate_identifier(map);
+ 	module_show_value_with_unit(map->page_00h, SFF8636_SM_LEN_OFFSET,
+-				    "Length (SMF,km)", 1, "km");
++				    "Length (SMF)", 1, "km");
+ 	module_show_value_with_unit(map->page_00h, SFF8636_OM3_LEN_OFFSET,
+-				    "Length (OM3 50um)", 2, "m");
++				    "Length (OM3)", 2, "m");
+ 	module_show_value_with_unit(map->page_00h, SFF8636_OM2_LEN_OFFSET,
+-				    "Length (OM2 50um)", 1, "m");
++				    "Length (OM2)", 1, "m");
+ 	module_show_value_with_unit(map->page_00h, SFF8636_OM1_LEN_OFFSET,
+-				    "Length (OM1 62.5um)", 1, "m");
++				    "Length (OM1)", 1, "m");
+ 	module_show_value_with_unit(map->page_00h, SFF8636_CBL_LEN_OFFSET,
+ 				    "Length (Copper or Active cable)", 1, "m");
+ 	sff8636_show_wavelength_or_copper_compliance(map);
+diff --git a/sfpid.c b/sfpid.c
+index 459ed0b..d128f48 100644
+--- a/sfpid.c
++++ b/sfpid.c
+@@ -395,11 +395,12 @@ static void sff8079_show_all_common(const __u8 *id)
+ 		sff8079_show_encoding(id);
+ 		printf("\t%-41s : %u%s\n", "BR, Nominal", br_nom, "MBd");
+ 		sff8079_show_rate_identifier(id);
+-		module_show_value_with_unit(id, 14, "Length (SMF,km)", 1, "km");
+-		module_show_value_with_unit(id, 15, "Length (SMF)", 100, "m");
+-		module_show_value_with_unit(id, 16, "Length (50um)", 10, "m");
+-		module_show_value_with_unit(id, 17, "Length (62.5um)", 10, "m");
+-		module_show_value_with_unit(id, 18, "Length (Copper)", 1, "m");
++		module_show_value_with_unit(id, 14, "Length (SMF)", 1, "km");
++		module_show_value_with_unit(id, 16, "Length (OM2)", 10, "m");
++		module_show_value_with_unit(id, 17, "Length (OM1)", 10, "m");
++		module_show_value_with_unit(id, 18,
++					    "Length (Copper or Active cable)",
++					    1, "m");
+ 		module_show_value_with_unit(id, 19, "Length (OM3)", 10, "m");
+ 		sff8079_show_wavelength_or_copper_compliance(id);
+ 		module_show_ascii(id, 20, 35, "Vendor name");
 -- 
 2.47.0
 
