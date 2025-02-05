@@ -1,161 +1,159 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E93E22A81E
-	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 06:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AB022A81A;
+	Wed,  5 Feb 2025 06:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738736599; cv=none; b=CzCURx0gsWKL6JjGFd269OsgnxTg6vQQxhvp3SEZ5jkSGMHLHeakoo9TnlHd4Gl5SACUiF9I9YxFpNLX3o9/FeZBj88j8FiFNcueIFhiVU1apwueFw2AqflinbmqlpgCl4aGxhgEUS3bqI5ozOl/YUg2vjLLKkVDaKkRSJLK2XM=
+	t=1738736603; cv=none; b=maV1mLReaZRDP3js+Hjv3qa/hQ2/eWcZ+aV9I0ipEXVYJb5u+GTdZ1wCyj0dHKH/dzpozjHjAmiVGvajNO8rR/QGlA7vRV2f/AnbQpoTwv9A2ZQE0MLcil/+oAb8GeH50gVXrNbU3TeexyK30Z+MKfU+MhdHmQ8xYltKcHxBMno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738736599; c=relaxed/simple;
-	bh=a8oH3PNmwIVYj2tKdIrFjYF4Tj+2irxY4kfMh7WOKvo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To; b=lTxruTgQEp5JIybk0ci/FYHj7Oj7wKvqPZXNaFjccjbIlLX+v+xYSdYMx0FOT0PHsvmgFSbpqJhV6Qu1RaQnE5xI9l/OpUnTONC5xyvSYdhnTiXmXb3YZJWOvYpgBphIjphlGfoaRx5wz/QV/20jCcwYYUrkV0+mMk27tb6J3aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com; spf=pass smtp.mailfrom=daynix.com; dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b=RhWE+Q9Y; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=daynix.com
+	s=arc-20240116; t=1738736603; c=relaxed/simple;
+	bh=HP9+g74QEkY9kBAOGEAE+ZVm8tC/bXMDrX7XPQ/5eCs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X1efEgjdOJJf6UoYMy6u0XOH5YKcn/dIbTUyNN4kFTVo6MmWlvr+/AhY3JD7v5+dpYiVsfKtjR6Z+e9MLebRQCjE6O0Nzjf2VX/JChk9Cs8WBCKKLMPJFBJwDtu3jhWGpDTGW0vp+S1sARGwjC76kiO5GZCntRdVKdbmLaeNwi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e8cEwSlT; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b="RhWE+Q9Y"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-21c2f1b610dso152180975ad.0
-        for <netdev@vger.kernel.org>; Tue, 04 Feb 2025 22:23:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1738736597; x=1739341397; darn=vger.kernel.org;
-        h=to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=M8srIBeyhs4OWM9PodAkxe8Sc4dGj/gPqaYG7YjTXw0=;
-        b=RhWE+Q9YEROWBWGUSsYw4nh41epxfN9ekdl/kBLgKyRwQ/XWMNxfvCWGeJBidggLOG
-         twM0vPMHhK1Y8DeiC38RTqjBea6wvvmOJVW3RlkMBPs/u9tKbv5WfMExqbKBftGbyKg5
-         er7LClnJskywKV3zwzNZpCkak5i8VF3KY2vlGOtEkEAQ9qtWBcRqVpYw/IVcq+ZcqiEx
-         gtW1Iqi2IcPmtNBPB3Bs9Wi5QwCAf2IAiIvFgiJV3ns4SCSXOKZPYz9/SexaKIc9UC1Q
-         OpLpLGkuyz6RNuxUg0iHOcQBDTz9i6KEfHZOoLCmb+l+FcInIRKEmK2hKERtEE53Es1I
-         NsKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738736597; x=1739341397;
-        h=to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=M8srIBeyhs4OWM9PodAkxe8Sc4dGj/gPqaYG7YjTXw0=;
-        b=Xu54/Udk8DJJ/Jr3287bTVGA7olL5pZltXn1QA49SLPr9upsV6bZf4kxM/mid9wsM+
-         xvO/aluT14OT2xtXUDAC/ippP+kcLavjzWw7smmXlmFHcW+HgXtP9orPKbeSHtSzyolq
-         VIVplVq438K3UonV0N9SU3TetkryMUFJUB994lzl3i3/vhWGLpGidlbtSZyCEzUobt6u
-         TPTau9SNHn0tFgcifET5aUhmAbxcPG1Mc/gREhK1HGgVcDwQTqgZroKkFwJVnHhR+MGV
-         LLuQNTATQqCiqUjsLpGG7Ks0KSnOjqfYPXfK7GX5AmY8+i7fh0+JKCKjXZB27v+lzAbN
-         9Erw==
-X-Forwarded-Encrypted: i=1; AJvYcCV00mjv/jkkkPtVxa12pdQyJK1obahXXze8TkbbYJSVTgxdNBcFXXP68i+C5hj5nlUoTCg5Y/4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywf/5VzQHVQs5ZGQJelnorJ29bM5KH4LlVv8MNaSMEn3IDlX0pT
-	PL178Iuiav71bGEnc0n2CRMZ8aKITfhgxWcieFQiL6xh9XmneVHacS/3FM4SLu4=
-X-Gm-Gg: ASbGnctxlyuBtV6k03DA7nDh/JU/tAFGkiF3EJNvfozBq4WpKY7rG6yTTDk0OtS4UPU
-	07bFirnCXXnDlQCUBjfq1dIOYm4h1zDjbdbfvxZuP2Smuk0Jf7dMYYI2n4w1OKYqagp6lqjKJ3I
-	kHx8ckCegqHnseg8HnEwBPetKQ6UNIM18qWryfTcPzVEdYZQ5OqwTzlmJ6o5tnY75iyUv/T9SnZ
-	TAq9Oj6J6HtymrK14Qukp2iU3hy0dJeyKM4r/SIJm4HO2UyDVFxJA9vR4MQNsFTYbpW+EXmpUjQ
-	61wi5KE17MRaTNG0OHY=
-X-Google-Smtp-Source: AGHT+IHg1+FvFT5HDL6SfSKULAJ1AqWAEtxmHva7Bnl4TG97CsA76lSGxTRKSfzGYdWpbEr3lj3N/w==
-X-Received: by 2002:a05:6a00:2e14:b0:725:ffe:4dae with SMTP id d2e1a72fcca58-73035122ac9mr1991170b3a.10.1738736596777;
-        Tue, 04 Feb 2025 22:23:16 -0800 (PST)
-Received: from localhost ([157.82.207.107])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-72fe631be56sm11600664b3a.4.2025.02.04.22.23.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Feb 2025 22:23:16 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 05 Feb 2025 15:22:28 +0900
-Subject: [PATCH net-next v5 6/7] tap: Keep hdr_len in tap_get_user()
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e8cEwSlT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738736602; x=1770272602;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HP9+g74QEkY9kBAOGEAE+ZVm8tC/bXMDrX7XPQ/5eCs=;
+  b=e8cEwSlTMGAmWU+v55sr7xi1ZsTR6AKg72BLnhiyhIRqjgLjJ756JDXu
+   IU+CSxiw7tjdsuDDF2Hn32pMKEljctspR74m8MiypSAPEy5kg1y9+nOVW
+   gWsFVJstprBEhr0eF5uxCe+1MWQ8ub4AWNDJKPdLLG22dLJRdyGsAEu79
+   JOBKYdd8qKpJEJ4gjOOj7QrBsVGIR1D7jyYvX2Zs1hbcDlJSijmVRVNdR
+   pyQDyQ0YY6KWZE+5jk9ClqrXwtQxqSMFi7Q59ssp8zkUFuLkeHOWEQhYu
+   wvWUAxC3tg8tfWDpV5ccwK9R4ZUHmMGj5C3e4ovi+MpD0Cye5AKqqDix6
+   Q==;
+X-CSE-ConnectionGUID: hRtmhj0AT1uW69XcsVvUkA==
+X-CSE-MsgGUID: H43w0JfrTCGokTQzv5lfeA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39187854"
+X-IronPort-AV: E=Sophos;i="6.13,260,1732608000"; 
+   d="scan'208";a="39187854"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 22:23:14 -0800
+X-CSE-ConnectionGUID: lNSBHWnpTgCzYu0jrN7DVQ==
+X-CSE-MsgGUID: bRJ2CwhTQgWO+oJMETI0/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="141696589"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 22:23:09 -0800
+Date: Wed, 5 Feb 2025 07:19:37 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Eric Woudstra <ericwouds@gmail.com>
+Cc: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Frank Wunderlich <frank-w@public-files.de>,
+	Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH v2 net-next] net: ethernet: mtk_ppe_offload: Allow QinQ
+Message-ID: <Z6MC+WUALT3H6unG@mev-dev.igk.intel.com>
+References: <20250204194624.46560-1-ericwouds@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250205-tun-v5-6-15d0b32e87fa@daynix.com>
-References: <20250205-tun-v5-0-15d0b32e87fa@daynix.com>
-In-Reply-To: <20250205-tun-v5-0-15d0b32e87fa@daynix.com>
-To: Jonathan Corbet <corbet@lwn.net>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Jason Wang <jasowang@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>, 
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, kvm@vger.kernel.org, 
- virtualization@lists.linux-foundation.org, linux-kselftest@vger.kernel.org, 
- Yuri Benditovich <yuri.benditovich@daynix.com>, 
- Andrew Melnychenko <andrew@daynix.com>, 
- Stephen Hemminger <stephen@networkplumber.org>, gur.stavi@huawei.com, 
- devel@daynix.com, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250204194624.46560-1-ericwouds@gmail.com>
 
-hdr_len is repeatedly used so keep it in a local variable.
+On Tue, Feb 04, 2025 at 08:46:24PM +0100, Eric Woudstra wrote:
+> mtk_foe_entry_set_vlan() in mtk_ppe.c already seems to support
+> double vlan tagging, but mtk_flow_offload_replace() in
+> mtk_ppe_offload.c only allows for 1 vlan tag, optionally in
+> combination with pppoe and dsa tags.
+> 
+> This patch adds QinQ support to mtk_flow_offload_replace().
+> 
+> Only PPPoE-in-Q (as before) and Q-in-Q are allowed. A combination
+> of PPPoE and Q-in-Q is not allowed.
+> 
+> Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
+> ---
+> 
+> Since the RFC v1 did not recieve any comments, I'm sending v2 as PATCH
+> unchanged.
+> 
+> Tested on the BPI-R3(mini), on non-dsa-ports and dsa-ports.
+> 
+>  .../net/ethernet/mediatek/mtk_ppe_offload.c   | 21 +++++++++++--------
+>  1 file changed, 12 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+> index f20bb390df3a..c19789883a9d 100644
+> --- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+> +++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+> @@ -34,8 +34,10 @@ struct mtk_flow_data {
+>  	u16 vlan_in;
+>  
+>  	struct {
+> -		u16 id;
+> -		__be16 proto;
+> +		struct {
+> +			u16 id;
+> +			__be16 proto;
+> +		} vlans[2];
+>  		u8 num;
+>  	} vlan;
+>  	struct {
+> @@ -349,18 +351,19 @@ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
+>  		case FLOW_ACTION_CSUM:
+>  			break;
+>  		case FLOW_ACTION_VLAN_PUSH:
+> -			if (data.vlan.num == 1 ||
+> +			if (data.vlan.num + data.pppoe.num == 2 ||
+>  			    act->vlan.proto != htons(ETH_P_8021Q))
+>  				return -EOPNOTSUPP;
+>  
+> -			data.vlan.id = act->vlan.vid;
+> -			data.vlan.proto = act->vlan.proto;
+> +			data.vlan.vlans[data.vlan.num].id = act->vlan.vid;
+> +			data.vlan.vlans[data.vlan.num].proto = act->vlan.proto;
+>  			data.vlan.num++;
+>  			break;
+>  		case FLOW_ACTION_VLAN_POP:
+>  			break;
+>  		case FLOW_ACTION_PPPOE_PUSH:
+> -			if (data.pppoe.num == 1)
+> +			if (data.pppoe.num == 1 ||
+> +			    data.vlan.num == 2)
+>  				return -EOPNOTSUPP;
+>  
+>  			data.pppoe.sid = act->pppoe.sid;
+> @@ -450,11 +453,11 @@ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
+>  	if (offload_type == MTK_PPE_PKT_TYPE_BRIDGE)
+>  		foe.bridge.vlan = data.vlan_in;
+>  
+> -	if (data.vlan.num == 1) {
+> -		if (data.vlan.proto != htons(ETH_P_8021Q))
+> +	for (i = 0; i < data.vlan.num; i++) {
+> +		if (data.vlan.vlans[i].proto != htons(ETH_P_8021Q))
+It is already checked in FLOW_ACTION_VLAN_PUSH, so data.vlan.num can't be
+increased if proto is different. No need to check it again.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- drivers/net/tap.c | 30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+Other than that rest looks fine.
 
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index 5aa41d5f7765a6dcf185bccd3cba2299bad89398..c55c432bac48d395aebc9ceeaa74f7d07e25af4c 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -645,6 +645,7 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 	int err;
- 	struct virtio_net_hdr vnet_hdr = { 0 };
- 	int vnet_hdr_len = 0;
-+	int hdr_len = 0;
- 	int copylen = 0;
- 	int depth;
- 	bool zerocopy = false;
-@@ -663,13 +664,13 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 		if (!copy_from_iter_full(&vnet_hdr, sizeof(vnet_hdr), from))
- 			goto err;
- 		iov_iter_advance(from, vnet_hdr_len - sizeof(vnet_hdr));
--		if ((vnet_hdr.flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) &&
--		     tap16_to_cpu(q, vnet_hdr.csum_start) +
--		     tap16_to_cpu(q, vnet_hdr.csum_offset) + 2 >
--			     tap16_to_cpu(q, vnet_hdr.hdr_len))
--			vnet_hdr.hdr_len = cpu_to_tap16(q,
--				 tap16_to_cpu(q, vnet_hdr.csum_start) +
--				 tap16_to_cpu(q, vnet_hdr.csum_offset) + 2);
-+		hdr_len = tap16_to_cpu(q, vnet_hdr.hdr_len);
-+		if (vnet_hdr.flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) {
-+			hdr_len = max(tap16_to_cpu(q, vnet_hdr.csum_start) +
-+				      tap16_to_cpu(q, vnet_hdr.csum_offset) + 2,
-+				      hdr_len);
-+			vnet_hdr.hdr_len = cpu_to_tap16(q, hdr_len);
-+		}
- 		err = -EINVAL;
- 		if (tap16_to_cpu(q, vnet_hdr.hdr_len) > len)
- 			goto err;
-@@ -682,11 +683,8 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 	if (msg_control && sock_flag(&q->sk, SOCK_ZEROCOPY)) {
- 		struct iov_iter i;
- 
--		copylen = vnet_hdr.hdr_len ?
--			tap16_to_cpu(q, vnet_hdr.hdr_len) : GOODCOPY_LEN;
--		if (copylen > good_linear)
--			copylen = good_linear;
--		else if (copylen < ETH_HLEN)
-+		copylen = min(hdr_len ? hdr_len : GOODCOPY_LEN, good_linear);
-+		if (copylen < ETH_HLEN)
- 			copylen = ETH_HLEN;
- 		linear = copylen;
- 		i = *from;
-@@ -697,11 +695,9 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 
- 	if (!zerocopy) {
- 		copylen = len;
--		linear = tap16_to_cpu(q, vnet_hdr.hdr_len);
--		if (linear > good_linear)
--			linear = good_linear;
--		else if (linear < ETH_HLEN)
--			linear = ETH_HLEN;
-+		linear = min(hdr_len, good_linear);
-+		if (copylen < ETH_HLEN)
-+			copylen = ETH_HLEN;
- 	}
- 
- 	skb = tap_alloc_skb(&q->sk, TAP_RESERVE, copylen,
-
--- 
-2.48.1
-
+>  			return -EOPNOTSUPP;
+>  
+> -		mtk_foe_entry_set_vlan(eth, &foe, data.vlan.id);
+> +		mtk_foe_entry_set_vlan(eth, &foe, data.vlan.vlans[i].id);
+>  	}
+>  	if (data.pppoe.num == 1)
+>  		mtk_foe_entry_set_pppoe(eth, &foe, data.pppoe.sid);
+> -- 
+> 2.47.1
+> 
