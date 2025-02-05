@@ -1,85 +1,169 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mx14lb.world4you.com (mx14lb.world4you.com [81.19.149.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12597211472;
-	Wed,  5 Feb 2025 19:35:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4AB1FE476
+	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 19:37:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738784119; cv=none; b=feNYjoH+o1w2khJjyIi23inqeHbmNOpbAl33kMo623xtebYC2XUf5F/R1B6bkevjFQDinyg79inw6ydDbyK3sHVgbnb5w+BRuIPy3P/zOtaW3Pv3rASAZH7oTXcD5IWnnWfiWgUSfMOR/CxCRwE/ZwXMrI0F/1g9P09R0Z8796g=
+	t=1738784247; cv=none; b=MPOOUGmNm8QNe+HjQF3t0GrAJJtpZu6KpS1Qk+AOTR6pQOARDOqhkviEPeKoD5DngKT36JuKJdiG60PeeAVasyl4B9IE4EoIGNL8twbm2J2S80ogZTvbcfFE3CxCTneTSkshM2eYiNnC490J1JOCIsW1i22sKXWJXpySIoyfhP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738784119; c=relaxed/simple;
-	bh=DO6FpVoqzj5kCjnT44+RkYsqLTR3OjhBRC7wUK5LZZE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AvKeCH0ug0ZmSAPgDjmrWqebyNbWUJK+mykYbL38RiIR3uqcH3uqKX9J3DKvHliv9b4/+/6sNYoCGOb6aCbxLFoBrIakx1TntEsuPVX3QJ/w0Wyj3I5KdqiVX2GPzv7CX/6iwh2CAqbF9hqGJ6aSoG2Igss0PUFxknwPvnXgb4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bKVstiUN; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1738784247; c=relaxed/simple;
+	bh=8ye0a9/fdhMZZ0ytbbI4m36+PkOdsLRg1d8Da9EOIe4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=MouyNjnrlwXM4SMOL4IO8pwJYdmbJKk/JbU3LDqvpsRxuDQeT4R8ZIYb5bIHnzQ2bTgCEY4A+muPowsfe5c8dE3rUcSW2gOF2Q9RrGFKKzLzHImGFtKNu7SlnRhX6TlC6j2ks+1236rOLXUoBzdKEx+9zLwpUeiR0c4m6Et/2+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=CM2fLVlx; arc=none smtp.client-ip=81.19.149.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bKVstiUN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=826zsmKNv9Jw5QB/wJ9JVPtGcQjVlcATi9B8bvTUPOc=; b=bKVstiUNxvz75cQPO0AULFZQDS
-	Xud6Id3iizvk9wCZ3Jd86tRqhwel4z1IPZZpBxdXdOy/wmDqxVQc8MTy16DMiI3eXKNbBFoWSUB13
-	zszWQ7Bl/pE6jpqmAJZbFOSlOVHUzy12vVAANaJjldqyR0Grso0P+IvUYVxseBbllets=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tflAz-00BHnk-Rr; Wed, 05 Feb 2025 20:35:09 +0100
-Date: Wed, 5 Feb 2025 20:35:09 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michael Dege <michael.dege@renesas.com>,
-	Christian Mardmoeller <christian.mardmoeller@renesas.com>,
-	Dennis Ostermann <dennis.ostermann@renesas.com>
-Subject: Re: [PATCH net-next] net: renesas: rswitch: cleanup max_speed setting
-Message-ID: <18a72981-9896-4725-8f5b-5783224de300@lunn.ch>
-References: <20250203170941.2491964-1-nikita.yoush@cogentembedded.com>
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="CM2fLVlx"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=FI62flwppvBCl5cLI4ZTmqK7t8EmrqPHcCaIoTN1mBk=; b=CM2fLVlxMRLxGUwt3WZ9Aj0ZBc
+	WTm/qgd/fRy/Ucz0VoS/DXFfiQZvWzAKPn3JO2KKFIhR0fn4ehPBWO7MWSU34TOwOqGMpruGamV46
+	TTgyWiBc9KBTAvRXoqORtnwG6wqkESf+ZUq59i6jQpVUNnvv/S1qOj/fjj2MWEbXEktY=;
+Received: from 88-117-60-28.adsl.highway.telekom.at ([88.117.60.28] helo=hornet.engleder.at)
+	by mx14lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tfklE-0000000017b-06d7;
+	Wed, 05 Feb 2025 20:08:33 +0100
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	Gerhard Engleder <gerhard@engleder-embedded.com>
+Subject: [PATCH net-next v5 4/7] net: phy: marvell: Align set_loopback() implementation
+Date: Wed,  5 Feb 2025 20:08:20 +0100
+Message-Id: <20250205190823.23528-5-gerhard@engleder-embedded.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250205190823.23528-1-gerhard@engleder-embedded.com>
+References: <20250205190823.23528-1-gerhard@engleder-embedded.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250203170941.2491964-1-nikita.yoush@cogentembedded.com>
+Content-Transfer-Encoding: 8bit
+X-AV-Do-Run: Yes
+X-ACL-Warn: X-W4Y-Internal
 
-> +	err = of_get_phy_mode(rdev->np_port, &etha->phy_interface);
->  	if (err)
->  		return err;
->  
-> -	err = of_property_read_u32(rdev->np_port, "max-speed", &max_speed);
-> -	if (!err) {
-> -		rdev->etha->speed = max_speed;
-> -		return 0;
-> -	}
-> -
-> -	/* if no "max-speed" property, let's use default speed */
-> -	switch (rdev->etha->phy_interface) {
-> -	case PHY_INTERFACE_MODE_MII:
-> -		rdev->etha->speed = SPEED_100;
-> -		break;
-> +	switch (etha->phy_interface) {
->  	case PHY_INTERFACE_MODE_SGMII:
-> -		rdev->etha->speed = SPEED_1000;
-> +		etha->max_speed = SPEED_1000;
->  		break;
->  	case PHY_INTERFACE_MODE_USXGMII:
-> -		rdev->etha->speed = SPEED_2500;
-> +	case PHY_INTERFACE_MODE_5GBASER:
-> +		etha->max_speed = SPEED_2500;
+Use genphy_loopback() to disable loopback like ksz9031_set_loopback().
+This way disable loopback is implemented only once within
+genphy_loopback() and the set_loopback() implementations look similar.
 
-If the interface mode is 5GBASER why set the speed to SPEED_2500?
-Also, USXGMII allows up to 10G. So this all looks a bit odd.
+Also fix comment about msleep() in the out-of loopback case which is not
+executed in the out-of loopback case.
 
-	Andrew
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+---
+ drivers/net/phy/marvell.c | 72 ++++++++++++++++++---------------------
+ 1 file changed, 33 insertions(+), 39 deletions(-)
+
+diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+index 4ed7ec1be74f..ca8b7d97c964 100644
+--- a/drivers/net/phy/marvell.c
++++ b/drivers/net/phy/marvell.c
+@@ -2133,56 +2133,50 @@ static void marvell_get_stats_simple(struct phy_device *phydev,
+ 
+ static int m88e1510_loopback(struct phy_device *phydev, bool enable, int speed)
+ {
++	u16 bmcr_ctl, mscr2_ctl = 0;
+ 	int err;
+ 
+-	if (enable) {
+-		u16 bmcr_ctl, mscr2_ctl = 0;
++	if (!enable)
++		return genphy_loopback(phydev, enable, 0);
+ 
+-		if (speed == SPEED_10 || speed == SPEED_100 ||
+-		    speed == SPEED_1000)
+-			phydev->speed = speed;
+-		else if (speed)
+-			return -EINVAL;
+-
+-		bmcr_ctl = mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
+-
+-		err = phy_write(phydev, MII_BMCR, bmcr_ctl);
+-		if (err < 0)
+-			return err;
++	if (speed == SPEED_10 || speed == SPEED_100 || speed == SPEED_1000)
++		phydev->speed = speed;
++	else if (speed)
++		return -EINVAL;
+ 
+-		if (phydev->speed == SPEED_1000)
+-			mscr2_ctl = BMCR_SPEED1000;
+-		else if (phydev->speed == SPEED_100)
+-			mscr2_ctl = BMCR_SPEED100;
++	bmcr_ctl = mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
+ 
+-		err = phy_modify_paged(phydev, MII_MARVELL_MSCR_PAGE,
+-				       MII_88E1510_MSCR_2, BMCR_SPEED1000 |
+-				       BMCR_SPEED100, mscr2_ctl);
+-		if (err < 0)
+-			return err;
++	err = phy_write(phydev, MII_BMCR, bmcr_ctl);
++	if (err < 0)
++		return err;
+ 
+-		/* Need soft reset to have speed configuration takes effect */
+-		err = genphy_soft_reset(phydev);
+-		if (err < 0)
+-			return err;
++	if (phydev->speed == SPEED_1000)
++		mscr2_ctl = BMCR_SPEED1000;
++	else if (phydev->speed == SPEED_100)
++		mscr2_ctl = BMCR_SPEED100;
+ 
+-		err = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
+-				 BMCR_LOOPBACK);
++	err = phy_modify_paged(phydev, MII_MARVELL_MSCR_PAGE,
++			       MII_88E1510_MSCR_2, BMCR_SPEED1000 |
++			       BMCR_SPEED100, mscr2_ctl);
++	if (err < 0)
++		return err;
+ 
+-		if (!err) {
+-			/* It takes some time for PHY device to switch
+-			 * into/out-of loopback mode.
+-			 */
+-			msleep(1000);
+-		}
++	/* Need soft reset to have speed configuration takes effect */
++	err = genphy_soft_reset(phydev);
++	if (err < 0)
+ 		return err;
+-	} else {
+-		err = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK, 0);
+-		if (err < 0)
+-			return err;
+ 
+-		return phy_config_aneg(phydev);
++	err = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
++			 BMCR_LOOPBACK);
++
++	if (!err) {
++		/*
++		 * It takes some time for PHY device to switch into loopback
++		 * mode.
++		 */
++		msleep(1000);
+ 	}
++	return err;
+ }
+ 
+ static int marvell_vct5_wait_complete(struct phy_device *phydev)
+-- 
+2.39.5
+
