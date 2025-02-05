@@ -1,313 +1,156 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F4822B5B7
-	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 06:23:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C1781ACA;
+	Wed,  5 Feb 2025 06:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738736607; cv=none; b=YnEhnww0k0TYHyHs6GMWU169HNpAWKnO1dAacNEY8+Dg3diyQlyi0WdlEmPtJW2kn38sFyQkvwi5+f1ScvB+8VQkuEJK8WhzqCoHqrFn2SrblDEwC6WWRs4ikY6nMredp29CngRhGSee8rOK73sin5HmKwjcbBkrYo2qud7HFoY=
+	t=1738738246; cv=none; b=H9/i2u+6qoiQAiBJPLBewl9NxZf5yUzp3gHI9wgqLo2QIvH7QILzriPysVepQTVjcvlz3+5PAYZDQHNMCotpuUV+pvaKpOgLplqsaZ0M6uMHkZOTttrUpq7ZTlrtRaI/5xZIUyaIZEhgw9oVM7ML/L0gI2QpwLjblC34v0MTUwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738736607; c=relaxed/simple;
-	bh=j0g58kzxP4/vEuyCfLiH4Cm8UrUU1sRmr41Z0gm9CHs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To; b=EYDOSVZNmrZ/cmPzWJv1KI0MwlV2Dfb3ZhqvtnHs7PdlyyOYVFjnLnt+suUJIK57UF5BnMMWUHDHRbIfCG3va4sm9Jc5SX0zqnPsPTelJMD0ZhcPTtPwvWhDDcX5tOcpyGQWKeTnC70ReQJTe2BfGvdYOPf8TGQvI0Xh8EBBVv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com; spf=pass smtp.mailfrom=daynix.com; dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b=bixQjHby; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=daynix.com
+	s=arc-20240116; t=1738738246; c=relaxed/simple;
+	bh=55hxtyx4DMhF2qYY+kBeRk1DqvJKGJ9IUbKzhKO8vbg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e/EhxuY1VQiw0nvJF3TLZHpji+7makHByp2jbmjKgQFuMCoTmMEnNrRyTQ+5tvoyJ2ntJ/vhpV0UjfF/IzuwusTd+fXBvy9HWEI5ig48oIkCgcPAdofyQaXWY6CP4dOx9NXbSYKhTw+iOFJDlG1isczb4t+6KTagyHRt/N0XbyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nhPqipja; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b="bixQjHby"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-21670dce0a7so133685595ad.1
-        for <netdev@vger.kernel.org>; Tue, 04 Feb 2025 22:23:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1738736604; x=1739341404; darn=vger.kernel.org;
-        h=to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lKHFkihW1aXGiNptzm3Sa+/HPN1Hv4LNNLF+gqhLrP8=;
-        b=bixQjHbymQM+QC0x/bX3pnR0UTTs8dByyu0UsPKEdxUisLs9b3BfqTFDqxYnUfHAZi
-         AznDjO5yFfB0fPSqOF4JYAASt71bj4WVw0HLcAD8Mqi7Z4OZ0UBBCzexh5kyqPw+XCXe
-         hIyyTMWMHrdJNK+BcI0biu0D9dpV61Iry+rubRwI9LOGSY7BaOOYXTpqciDSk6cMNGaT
-         mgVSoGb9YcBMz5M8AuqYvZ6aSTpbkGAMpjrMcRBV+DGLszBLdkC9CwcBRjuly5rJE1bL
-         HTifde/ZBTwyj7eDbguWPeXysZLPxZuRupx9XcFP6gce23iCU299w+bjME6Gm5tH024j
-         vB7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738736604; x=1739341404;
-        h=to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lKHFkihW1aXGiNptzm3Sa+/HPN1Hv4LNNLF+gqhLrP8=;
-        b=ulWbt88db/MXtfY7fYjLv8fYmdfnjigTnCNhVzmoqL8eAW3KljjQbk9jdwECvjaibd
-         6n2gz1A/4xLj+pVFsOfeE4R6PIck41CiZphidU5OIi/n+7kALF0kbNKzI+twYjP6d2cY
-         gIYIyG8ekIq2SCDXyFREP5NY9Gibij1DVKXaALtWC9kJW4TvCZqZeeCyPcWfb02/Khzd
-         VoG6f9xdkqluAl80Kt25XaAMosQpG/oPGtQp9dRD4Nvsa27tGfQ2YJZ5ywhyeNl/Y6qo
-         1tzFtfL/FgM+0GtAEjp279n92wggBJDGyWNmHZhYdu9NJQHrEgaoRU14FTmnlv6fugwy
-         hTQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEzPmpa3fEjCR2vrTis4HsUS0cKMLSskL6mCnOFFAzaRlYZ7jteg7ENkwDKI+TVLPpVB6c3l4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZBInYfEZC9SqjlP2H6o8ycwHiEhiPZc1MppGlzzBJ/bL/gXAy
-	WB8rYwzdFHj70UIrdpWj2ZNklMH869E9dOIRgSJ+ZjV++co2f+QTYoq0co8YtwTkGs+dtUzqhf2
-	KgKg=
-X-Gm-Gg: ASbGnct/ZnIuMkWS6gp7W859PotiEb5MxBfRXyDqEUD48duUB3su8UTiSsl3xoDNEtG
-	WCpGL7IKISFjGIYLSmdKgcWE6fLKhWrFX/Ojvogmss3oyJhhqGsizs9FQK+4XBpdMTIXFzYs0qo
-	KvXQMoFdlnRH/irhVInPs8dL08yImxvMItYoSuqI7L4JYHm5OywMz81JmtMDzp6hHN7cKuruBiq
-	crpi3utI5i/MqY7Ja9gHw+8paXT4AO9cDzUZKS99kHQFtRnnYp3Alx8EabSYDi4tBiPZdY6K3qz
-	1P4/LgDvj5bjmDprlnA=
-X-Google-Smtp-Source: AGHT+IFZKvlrRVLjtwvw+VdsovlMCszHkLbdku1z+OZ4qORt0cXqSHDLFnqL7kzfZxkVlY66TbVvjw==
-X-Received: by 2002:a05:6a00:400b:b0:72a:8461:d172 with SMTP id d2e1a72fcca58-7303510391fmr3462095b3a.3.1738736604537;
-        Tue, 04 Feb 2025 22:23:24 -0800 (PST)
-Received: from localhost ([157.82.207.107])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-72fe64275c4sm12127023b3a.61.2025.02.04.22.23.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Feb 2025 22:23:24 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 05 Feb 2025 15:22:29 +0900
-Subject: [PATCH net-next v5 7/7] tap: Use tun's vnet-related code
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nhPqipja"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738738245; x=1770274245;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=55hxtyx4DMhF2qYY+kBeRk1DqvJKGJ9IUbKzhKO8vbg=;
+  b=nhPqipjarUlvAQgFPw0DZquSzEriwI7ib5RgFAzJdk267ojoBmHAK8Cy
+   tHcEyJtyYY78etwxTeKwx7b7qP2fTdNVKSjDjO+6/dO9zY2OOYH2bJset
+   8AJI1Rbg0ihZ3Aouhib5q0cbPUK4t2RBfHRh8TVGgQdmaJAexL7Z/HBJG
+   c1EgAtctSooBTjxZ6Y5Xb6Ua+vr2agnxh/k2EFmtrmWSeT8aT2vlCWQi4
+   UO+Igk8as8CqNoYLXyk772FCOBE7tZXbBOx4F8eWYL6g/SLyUkfJ5LDcM
+   yrSzfV/plUwaPp+0EbbvrRgxnwF2zL8tz/Kn7j2icxVHoSRL9nqLaZm8A
+   A==;
+X-CSE-ConnectionGUID: n1DyovVeSVm4N8O9bareYg==
+X-CSE-MsgGUID: vES0pDkRRKabU9xeLDhYaw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39175591"
+X-IronPort-AV: E=Sophos;i="6.13,260,1732608000"; 
+   d="scan'208";a="39175591"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 22:50:44 -0800
+X-CSE-ConnectionGUID: oo32QqH1QrmHW2tYAHIDrw==
+X-CSE-MsgGUID: W8AT1xq9Tz+DU8R6MpUXgA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,260,1732608000"; 
+   d="scan'208";a="111400846"
+Received: from choongyo-mobl.gar.corp.intel.com (HELO [10.247.100.100]) ([10.247.100.100])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 22:50:35 -0800
+Message-ID: <c25c2da7-18fa-46b7-b992-fb5b17a01749@linux.intel.com>
+Date: Wed, 5 Feb 2025 14:50:31 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 1/7] net: phylink: use act_link_an_mode to
+ determine PHY
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Simon Horman <horms@kernel.org>, Jose Abreu <joabreu@synopsys.com>,
+ Jose Abreu <Jose.Abreu@synopsys.com>,
+ David E Box <david.e.box@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H . Peter Anvin" <hpa@zytor.com>,
+ Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+ David E Box <david.e.box@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Jiawen Wu <jiawenwu@trustnetic.com>,
+ Mengyuan Lou <mengyuanlou@net-swift.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Andrew Halaney <ahalaney@redhat.com>, Serge Semin <fancer.lancer@gmail.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+References: <20250204061020.1199124-1-yong.liang.choong@linux.intel.com>
+ <20250204061020.1199124-2-yong.liang.choong@linux.intel.com>
+ <Z6ICO06RbJ1ulDh1@shell.armlinux.org.uk>
+Content-Language: en-US
+From: Choong Yong Liang <yong.liang.choong@linux.intel.com>
+In-Reply-To: <Z6ICO06RbJ1ulDh1@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250205-tun-v5-7-15d0b32e87fa@daynix.com>
-References: <20250205-tun-v5-0-15d0b32e87fa@daynix.com>
-In-Reply-To: <20250205-tun-v5-0-15d0b32e87fa@daynix.com>
-To: Jonathan Corbet <corbet@lwn.net>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Jason Wang <jasowang@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>, 
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, kvm@vger.kernel.org, 
- virtualization@lists.linux-foundation.org, linux-kselftest@vger.kernel.org, 
- Yuri Benditovich <yuri.benditovich@daynix.com>, 
- Andrew Melnychenko <andrew@daynix.com>, 
- Stephen Hemminger <stephen@networkplumber.org>, gur.stavi@huawei.com, 
- devel@daynix.com, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14.2
 
-tun and tap implements the same vnet-related features so reuse the code.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- drivers/net/tap.c | 152 ++++++------------------------------------------------
- 1 file changed, 16 insertions(+), 136 deletions(-)
 
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index c55c432bac48d395aebc9ceeaa74f7d07e25af4c..40b077aa639be03cf5a6e9a85734833b289f6b86 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -26,74 +26,9 @@
- #include <linux/virtio_net.h>
- #include <linux/skb_array.h>
- 
--#define TAP_IFFEATURES (IFF_VNET_HDR | IFF_MULTI_QUEUE)
--
--#define TAP_VNET_LE 0x80000000
--#define TAP_VNET_BE 0x40000000
--
--#ifdef CONFIG_TUN_VNET_CROSS_LE
--static inline bool tap_legacy_is_little_endian(struct tap_queue *q)
--{
--	return q->flags & TAP_VNET_BE ? false :
--		virtio_legacy_is_little_endian();
--}
--
--static long tap_get_vnet_be(struct tap_queue *q, int __user *sp)
--{
--	int s = !!(q->flags & TAP_VNET_BE);
--
--	if (put_user(s, sp))
--		return -EFAULT;
--
--	return 0;
--}
--
--static long tap_set_vnet_be(struct tap_queue *q, int __user *sp)
--{
--	int s;
--
--	if (get_user(s, sp))
--		return -EFAULT;
--
--	if (s)
--		q->flags |= TAP_VNET_BE;
--	else
--		q->flags &= ~TAP_VNET_BE;
--
--	return 0;
--}
--#else
--static inline bool tap_legacy_is_little_endian(struct tap_queue *q)
--{
--	return virtio_legacy_is_little_endian();
--}
--
--static long tap_get_vnet_be(struct tap_queue *q, int __user *argp)
--{
--	return -EINVAL;
--}
--
--static long tap_set_vnet_be(struct tap_queue *q, int __user *argp)
--{
--	return -EINVAL;
--}
--#endif /* CONFIG_TUN_VNET_CROSS_LE */
--
--static inline bool tap_is_little_endian(struct tap_queue *q)
--{
--	return q->flags & TAP_VNET_LE ||
--		tap_legacy_is_little_endian(q);
--}
--
--static inline u16 tap16_to_cpu(struct tap_queue *q, __virtio16 val)
--{
--	return __virtio16_to_cpu(tap_is_little_endian(q), val);
--}
-+#include "tun_vnet.h"
- 
--static inline __virtio16 cpu_to_tap16(struct tap_queue *q, u16 val)
--{
--	return __cpu_to_virtio16(tap_is_little_endian(q), val);
--}
-+#define TAP_IFFEATURES (IFF_VNET_HDR | IFF_MULTI_QUEUE)
- 
- static struct proto tap_proto = {
- 	.name = "tap",
-@@ -655,25 +590,13 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 	if (q->flags & IFF_VNET_HDR) {
- 		vnet_hdr_len = READ_ONCE(q->vnet_hdr_sz);
- 
--		err = -EINVAL;
--		if (len < vnet_hdr_len)
-+		hdr_len = tun_vnet_hdr_get(vnet_hdr_len, q->flags, from, &vnet_hdr);
-+		if (hdr_len < 0) {
-+			err = hdr_len;
- 			goto err;
--		len -= vnet_hdr_len;
--
--		err = -EFAULT;
--		if (!copy_from_iter_full(&vnet_hdr, sizeof(vnet_hdr), from))
--			goto err;
--		iov_iter_advance(from, vnet_hdr_len - sizeof(vnet_hdr));
--		hdr_len = tap16_to_cpu(q, vnet_hdr.hdr_len);
--		if (vnet_hdr.flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) {
--			hdr_len = max(tap16_to_cpu(q, vnet_hdr.csum_start) +
--				      tap16_to_cpu(q, vnet_hdr.csum_offset) + 2,
--				      hdr_len);
--			vnet_hdr.hdr_len = cpu_to_tap16(q, hdr_len);
- 		}
--		err = -EINVAL;
--		if (tap16_to_cpu(q, vnet_hdr.hdr_len) > len)
--			goto err;
-+
-+		len -= vnet_hdr_len;
- 	}
- 
- 	err = -EINVAL;
-@@ -729,8 +652,7 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 	skb->dev = tap->dev;
- 
- 	if (vnet_hdr_len) {
--		err = virtio_net_hdr_to_skb(skb, &vnet_hdr,
--					    tap_is_little_endian(q));
-+		err = tun_vnet_hdr_to_skb(q->flags, skb, &vnet_hdr);
- 		if (err) {
- 			rcu_read_unlock();
- 			drop_reason = SKB_DROP_REASON_DEV_HDR;
-@@ -793,23 +715,17 @@ static ssize_t tap_put_user(struct tap_queue *q,
- 	int total;
- 
- 	if (q->flags & IFF_VNET_HDR) {
--		int vlan_hlen = skb_vlan_tag_present(skb) ? VLAN_HLEN : 0;
- 		struct virtio_net_hdr vnet_hdr;
- 
- 		vnet_hdr_len = READ_ONCE(q->vnet_hdr_sz);
--		if (iov_iter_count(iter) < vnet_hdr_len)
--			return -EINVAL;
--
--		if (virtio_net_hdr_from_skb(skb, &vnet_hdr,
--					    tap_is_little_endian(q), true,
--					    vlan_hlen))
--			BUG();
- 
--		if (copy_to_iter(&vnet_hdr, sizeof(vnet_hdr), iter) !=
--		    sizeof(vnet_hdr))
--			return -EFAULT;
-+		ret = tun_vnet_hdr_from_skb(q->flags, NULL, skb, &vnet_hdr);
-+		if (ret)
-+			return ret;
- 
--		iov_iter_advance(iter, vnet_hdr_len - sizeof(vnet_hdr));
-+		ret = tun_vnet_hdr_put(vnet_hdr_len, iter, &vnet_hdr);
-+		if (ret)
-+			return ret;
- 	}
- 	total = vnet_hdr_len;
- 	total += skb->len;
-@@ -1068,42 +984,6 @@ static long tap_ioctl(struct file *file, unsigned int cmd,
- 		q->sk.sk_sndbuf = s;
- 		return 0;
- 
--	case TUNGETVNETHDRSZ:
--		s = q->vnet_hdr_sz;
--		if (put_user(s, sp))
--			return -EFAULT;
--		return 0;
--
--	case TUNSETVNETHDRSZ:
--		if (get_user(s, sp))
--			return -EFAULT;
--		if (s < (int)sizeof(struct virtio_net_hdr))
--			return -EINVAL;
--
--		q->vnet_hdr_sz = s;
--		return 0;
--
--	case TUNGETVNETLE:
--		s = !!(q->flags & TAP_VNET_LE);
--		if (put_user(s, sp))
--			return -EFAULT;
--		return 0;
--
--	case TUNSETVNETLE:
--		if (get_user(s, sp))
--			return -EFAULT;
--		if (s)
--			q->flags |= TAP_VNET_LE;
--		else
--			q->flags &= ~TAP_VNET_LE;
--		return 0;
--
--	case TUNGETVNETBE:
--		return tap_get_vnet_be(q, sp);
--
--	case TUNSETVNETBE:
--		return tap_set_vnet_be(q, sp);
--
- 	case TUNSETOFFLOAD:
- 		/* let the user check for future flags */
- 		if (arg & ~(TUN_F_CSUM | TUN_F_TSO4 | TUN_F_TSO6 |
-@@ -1147,7 +1027,7 @@ static long tap_ioctl(struct file *file, unsigned int cmd,
- 		return ret;
- 
- 	default:
--		return -EINVAL;
-+		return tun_vnet_ioctl(&q->vnet_hdr_sz, &q->flags, cmd, sp);
- 	}
- }
- 
-@@ -1194,7 +1074,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
- 	skb->protocol = eth_hdr(skb)->h_proto;
- 
- 	if (vnet_hdr_len) {
--		err = virtio_net_hdr_to_skb(skb, gso, tap_is_little_endian(q));
-+		err = tun_vnet_hdr_to_skb(q->flags, skb, gso);
- 		if (err)
- 			goto err_kfree;
- 	}
+On 4/2/2025 8:04 pm, Russell King (Oracle) wrote:
+> On Tue, Feb 04, 2025 at 02:10:14PM +0800, Choong Yong Liang wrote:
+>> When the interface mode is SGMII and act_link_an_mode is MLO_AN_INBAND,
+>> switching to the 2500BASE-X interface mode will trigger
+>> phylink_major_config, and act_link_an_mode will be updated to MLO_AN_PHY
+>> in phylink_pcs_neg_mode when the PCS does not support in-band mode.
+>> The MAC and PCS will configure according to the interface mode
+>> and act_link_an_mode.
+> 
+> act_link_an_mode must only ever be updated by phylink_major_config()
+> since it defines state for the currently configured mode, and must
+> stay in sync with how the hardware has been programmed at all times.
+> 
+>> However, when the interface goes link down and then link up again, the MAC
+>> will attempt to attach the PHY.
+> 
+> Why is the MAC trying to disconnect and reconnect the PHY on link
+> changes? Do you really mean "link down" and "link up" as in "connection
+> with the link partner" or do you mean administratively taking the
+> interface down and up (which is a completely different thing.)
+> 
 
--- 
-2.48.1
+The "link down" and "link up" I mention in this part refer to using the 
+command:
+ifconfig <interface> down/up
+
+>> The interface mode remains as 2500BASE-X,
+>> but cfg_link_an_mode still holds MLO_AN_INBAND. This causes a failure to
+>> attach the PHY.
+> 
+> Hmm.
+> 
+> pl->link_interface is the configured setting from firmware etc and doesn't
+> change.
+> 
+> pl->cfg_link_an_mode is the configured mode from firmware etc which was
+> passed to phylink_create(), and again doesn't change.
+> 
+> So there should be no difference unless something weird is going on,
+> which as you're talking about stmmac, could be the case.
+> 
+
+Thank you for pointing that out.
+
+I think I was confused between pl->link_interface and
+pl->link_config.interface. The function phylink_attach_phy() uses
+pl->link_interface, whereas phylink_expects_phy() uses
+pl->link_config.interface.
+
+When the interface switches from SGMII to 2500BASE-X,
+pl->link_config.interface is updated by phylink_major_config().
+So, when the STMMAC link goes down and comes up again,
+it is blocked by phylink_expects_phy().
+At this point, pl->cfg_link_an_mode is MLO_AN_INBAND and 
+pl->link_config.interface is 2500BASE-X.
+
+Since phylink_expects_phy() is trying to achieve the same checking 
+condition as phylink_attach_phy(), it should use pl->link_interface for the 
+check as well.
+
+Does that make sense to you?
+
+> More information needed, but as this patch currently stands, I deem it
+> to be incorrect, sorry.
+> 
 
