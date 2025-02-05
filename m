@@ -1,44 +1,45 @@
 Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D6422CBF0;
-	Wed,  5 Feb 2025 12:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7909E22CBCB;
+	Wed,  5 Feb 2025 12:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738759375; cv=none; b=XrVARagHYr/1n3rzdpR+eQP9xnGcf3/PbV0dIYkMTmqs+9/DyFsulTtECQIJeLt3rXvwN6RCzu4/NocHvkyDMLQU632d4LR/7oG3t09epXWyqNouA8pX7J3I0RvrAz9ufpv9VsR2MrbDGvWQvckTR52zD3mvnZFdM+ctE3cGGAM=
+	t=1738759376; cv=none; b=V8VduFdHZcxdRbufE9SDc3+/PUQQhi/NCpDL7E7I/OcYzJlpM7RPvEFnGoZFdEhHOCOy8z6gjpo7MSUS0yTYF273m1EwzNgNvElCcuwhDuIeKytWJxISA5sEMkkSOl90YKTw5XuXcmLxn6Oj0q4UIYOPN73N4ibvfsorPK5EGqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738759375; c=relaxed/simple;
-	bh=M59bAyhFbBpgimep1aNSv2IjiEbV0AW5sYtPvby1jk4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j9yyysl5DI4ibldkYfsSEUN3gsEAeeDPDQXfeBTfd24S/45RdjlDv3frhyk7aTFK56Knnx04g67/N0DMmGjPoprUgCgzd5scPWzCvnm+5XwP8DsyDB4J/3XvtmsqWsaGueAmsw5zq9ggjJlzZD0ASQ86ivN9LA5DQAIr5fzdwXE=
+	s=arc-20240116; t=1738759376; c=relaxed/simple;
+	bh=Y+PbL3g5MHWDusedvGVDe9KvRFajozz29XVsuVVdSl4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ckIGqqKROtHM0Joam5tKGJkG/H/oQbpsiP4Y0tlv8hHmwGCZI1rJXU8gtEz9zJchv208re1NRFSSl9fPa4RWXlKOT3RbFTvD7kVRz0UPTJxjTyZreRq48y+oQ/y5EfQ4HYw2o5/Ub27eNjmiq7z2zlImXUNx2v653bpty54ZuuU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
-X-CSE-ConnectionGUID: T6ydRXaWRROGraya7wGKig==
-X-CSE-MsgGUID: KqT/9pnmRKGRVER+RoQePg==
+X-CSE-ConnectionGUID: ZYBSvqR2SPypyda14ZjJqg==
+X-CSE-MsgGUID: iVy0GdVoTqan1oKXy0U8xA==
 Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie5.idc.renesas.com with ESMTP; 05 Feb 2025 21:42:52 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 05 Feb 2025 21:42:51 +0900
 Received: from localhost.localdomain (unknown [10.226.92.225])
-	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 18CD341F86A7;
-	Wed,  5 Feb 2025 21:42:48 +0900 (JST)
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 268DD41F8497;
+	Wed,  5 Feb 2025 21:42:37 +0900 (JST)
 From: Biju Das <biju.das.jz@bp.renesas.com>
-To: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
+To: Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Cc: Biju Das <biju.das.jz@bp.renesas.com>,
-	linux-renesas-soc@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	netdev@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Biju Das <biju.das.au@gmail.com>
-Subject: [PATCH net-next v2 2/7] net: dsa: rzn1_a5psw: Use of_get_available_child_by_name()
-Date: Wed,  5 Feb 2025 12:42:22 +0000
-Message-ID: <20250205124235.53285-3-biju.das.jz@bp.renesas.com>
+	Biju Das <biju.das.au@gmail.com>,
+	linux-renesas-soc@vger.kernel.org
+Subject: [PATCH net-next v2 0/7] Add of_get_available_child_by_name()
+Date: Wed,  5 Feb 2025 12:42:20 +0000
+Message-ID: <20250205124235.53285-1-biju.das.jz@bp.renesas.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250205124235.53285-1-biju.das.jz@bp.renesas.com>
-References: <20250205124235.53285-1-biju.das.jz@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,45 +48,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Simplify a5psw_probe() by using of_get_available_child_by_name().
+There are lot of net drivers using of_get_child_by_name() followed by
+of_device_is_available() to find the available child node by name for a
+given parent. Provide a helper for these users to simplify the code.
 
-While at it, move of_node_put(mdio) inside the if block to avoid code
-duplication.
-
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
----
 v1->v2:
- * Rebased and added patch suffix net-next.
----
- drivers/net/dsa/rzn1_a5psw.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ * Make it as a series as per [1] to cover the dependency.
+ * Added Rb tag from Rob for patch#1 and this patch can be merged through
+   net as it is the main user.
+ * Updated all the patches with patch suffix net-next
+ * Dropped _free() usage.
+ 
+[1]
+https://lore.kernel.org/all/CAL_JsqLo4uSGYMcLXN=0iSUMHdW8RaGCY+o8ThQHq3_eUTV9wQ@mail.gmail.com/
 
-diff --git a/drivers/net/dsa/rzn1_a5psw.c b/drivers/net/dsa/rzn1_a5psw.c
-index 66974379334a..31ea8130a495 100644
---- a/drivers/net/dsa/rzn1_a5psw.c
-+++ b/drivers/net/dsa/rzn1_a5psw.c
-@@ -1248,18 +1248,16 @@ static int a5psw_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto clk_disable;
  
--	mdio = of_get_child_by_name(dev->of_node, "mdio");
--	if (of_device_is_available(mdio)) {
-+	mdio = of_get_available_child_by_name(dev->of_node, "mdio");
-+	if (mdio) {
- 		ret = a5psw_probe_mdio(a5psw, mdio);
-+		of_node_put(mdio);
- 		if (ret) {
--			of_node_put(mdio);
- 			dev_err(dev, "Failed to register MDIO: %d\n", ret);
- 			goto hclk_disable;
- 		}
- 	}
- 
--	of_node_put(mdio);
--
- 	ds = &a5psw->ds;
- 	ds->dev = dev;
- 	ds->num_ports = A5PSW_PORTS_NUM;
+Biju Das (7):
+  of: base: Add of_get_available_child_by_name()
+  net: dsa: rzn1_a5psw: Use of_get_available_child_by_name()
+  net: dsa: sja1105: Use of_get_available_child_by_name()
+  net: ethernet: mtk-star-emac: Use of_get_available_child_by_name()
+  net: ethernet: mtk_eth_soc: Use of_get_available_child_by_name()
+  net: ethernet: actions: Use of_get_available_child_by_name()
+  net: ibm: emac: Use of_get_available_child_by_name()
+
+ drivers/net/dsa/rzn1_a5psw.c                  |  8 +++---
+ drivers/net/dsa/sja1105/sja1105_mdio.c        |  6 +----
+ drivers/net/ethernet/actions/owl-emac.c       |  7 +----
+ drivers/net/ethernet/ibm/emac/core.c          |  7 +----
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c   |  7 +----
+ drivers/net/ethernet/mediatek/mtk_star_emac.c |  7 +----
+ drivers/of/base.c                             | 27 +++++++++++++++++++
+ include/linux/of.h                            |  9 +++++++
+ 8 files changed, 44 insertions(+), 34 deletions(-)
+
 -- 
 2.43.0
 
