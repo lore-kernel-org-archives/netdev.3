@@ -1,26 +1,64 @@
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3123122A4D3
-	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 09:08:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7B422A4DF
+	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 09:11:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738746527; cv=none; b=WK8+6P2cKbUNtnJ6ITGkf/l7Fu5AdqtmtY7Ddrus6x8aM3OeIB7LIcREmi3BSvizWpccm9MJDJl2HoxgyaQpUsjdff9GzYEl8ClT8A4nTVW329amHAvpni/nmlmFyw2S5dC8jB8xQ0BWYqMPLP2phMVJ5gIaoLIYQXq3yLolChI=
+	t=1738746700; cv=none; b=MZDRzgbcgug/Ce/dPWjBR9nAc2rtT/riAjr66UpTIjajdBY4gCWuAdyQOIp1EngIOYtm/oG+ZuujQSiJLSd8+CPUX/HGAIj0NCZkK9S/s0bg3aDQhFyMAbTuSTN69RftlZK8LHefKY/yGUU/0mkHafaEriKEkbZJIxPDhgrsUoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738746527; c=relaxed/simple;
-	bh=eyjwSYL6CHbXEnYtbrhgqV9Nj0bQSbv15fevYa1u4po=;
+	s=arc-20240116; t=1738746700; c=relaxed/simple;
+	bh=FrfX+Va6jShG2kQ7vxJe5JbRNE5XziiWylZStKahXbA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ALglS+TAanEzRXf5vQ+3lHOBFZYL5r9D+vZSPJ1eA/kDTHsRFKA8DF2ax8ZCfx8hUFDDCjDDmTI7IXchp2vmtCxlIqQIHKXp1JBxVmwnjP5cCFAJ5VqvrDNeXPcY3SUpP4X3mfVzkKvqYJfVarf0Fr/YQSq3puwLx/YcfEIyGWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
-X-CSE-ConnectionGUID: 9t/rlZf1TleT2iiKV3LsQg==
-X-CSE-MsgGUID: ofUtRyAHT/yTp1bZV5XZEg==
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 05 Feb 2025 18:08:41 +0900
-Received: from [10.24.0.173] (unknown [10.24.0.173])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 6A44F4017963;
-	Wed,  5 Feb 2025 18:08:24 +0900 (JST)
-Message-ID: <ec6e53a9-8d3e-4b83-b4d9-1f089920fe84@bp.renesas.com>
-Date: Wed, 5 Feb 2025 09:08:23 +0000
+	 In-Reply-To:Content-Type; b=R4rZB5uX681O4G9ogtaffTcNxXIy9eFgDy/80g1tlLorCXTlymZMPzcPZNyE3Lx0oaTY7HN6krtCxWD9KkfstnK1PJKAEg4LuAAp/gF/uKZMgeJ4sk2+kM9pitthkFsLfjn500+xqyoF+KhAIDx3Bfaoe7NJPuF4OF13u3mbFIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=ROXlN+eo; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="ROXlN+eo"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ab69bba49e2so967560166b.2
+        for <netdev@vger.kernel.org>; Wed, 05 Feb 2025 01:11:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1738746697; x=1739351497; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=hN00tjsFn+X2j7iH9Mfyzq5iQc++plfpKz8SCs0r79A=;
+        b=ROXlN+eo+V0u7RDQCIjMLzPFMpkdHKcwnRcuGapESZCagpUAvTkmoCO1Nr6AStIwJH
+         aVpAq6tiep5D48HxImSHQy+4JGIctmqMdnGz4ynZqdLoLuxOhysVYyMYgi5xDayzP4Zh
+         Vq7mSBBxlfdgor1zyk/69XbvNMgVhrBr0x7NI92mTSHaRIvrAqnA00l9gI8AXzGNerRO
+         DQvg2uiSHyVIqXCpMkSDWSYVu5YA6SES0/8Eg0Qba+lGUuEco8u0smBTMSgFBIPC4DAd
+         K+/ZJZQn8UXgoJZnDmTMX+bpJrV044vgeijbyj1V8Tviz2tkxaBZcGowXNgvgJ6w0AVt
+         k9fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738746697; x=1739351497;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hN00tjsFn+X2j7iH9Mfyzq5iQc++plfpKz8SCs0r79A=;
+        b=SXy5ZUZ47rGRrgi3N2g/FfOA+pUpPyQP5AOM/JMOqbSuHYFpyck4+iumKODI37KVwl
+         llSrIOUfOEHilf1wlf/al+bYbIP2erHurgnEvvpPUrarIikMoOiK2YCrGj/RE6F/YAzq
+         C06B+voCdgPrH+oMM+Z0BYyTHDWLEfmcxph66SaxtUWPMi+XcL4bz9bW4rvBzukebhD0
+         Fv8N/p0B4g512qecxtbpun05Cusf5cI5sR3YdTLmPmJeYNZtcR4vwSMFWZ0YhYtyx4Pq
+         zgEgXc158aW+geF32JAUoN+fgqnkGBDFwnwTUmPSk9qjjdimxruoBQ2vIkguL1pOHQsV
+         s93Q==
+X-Gm-Message-State: AOJu0YyOb66Gs7FP3Hk4KGzyUWDWi8weak/FZtB/KhWGPw2S5e0H5zHi
+	qhhK1voH3KqUOprLO1zzuAWxx8XWHcTDUDVJSrPAob2Ns0nfIdgVZH37/GbP4Yw=
+X-Gm-Gg: ASbGncuH3PMdMTNC40L5h4VT7NWRyu6Qx5ecTajuVPTVXJqzHnaQEBjTpE4P1HeItfA
+	Z+aloEeuh81rWCtYB1SSe/q4iCw1PVqLKHpcYXs8F08pUU3G6YqJKnG4x6Acl4NSfKPqE4Wimds
+	4tJMzrbCB0LpVRJqPaE6PDImrVLxbdkYo9pVNXgaLP8a9BqOkRlabwgdy+dY5rmGVgAcqM9WAYH
+	TqJ6WWOt/y2wURXAy2PNfPpgEFKbc2paK2kY21qWHb8QN5vhntkNls3PVn1GwGF1+4V7BFCfdk8
+	d+oUtdq8JBm+4HtO7ewfSFX7ajE8FzRs29BuQ1tUhsAQD3mAW0xVuA==
+X-Google-Smtp-Source: AGHT+IEoQAuCOq42UVqvlrSsUfc0NnaMiOTk8hK4xlAbqdB6mJYOEgWtx7QtTS2IN0r2sXN8sU1+Gg==
+X-Received: by 2002:a05:6402:13c8:b0:5dc:80ba:dda1 with SMTP id 4fb4d7f45d1cf-5dcdb711b67mr4827035a12.9.1738746696686;
+        Wed, 05 Feb 2025 01:11:36 -0800 (PST)
+Received: from ?IPV6:2001:67c:2fbc:1:e45d:9f15:4f3d:f5b0? ([2001:67c:2fbc:1:e45d:9f15:4f3d:f5b0])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab6e47d1014sm1069717466b.66.2025.02.05.01.11.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Feb 2025 01:11:35 -0800 (PST)
+Message-ID: <4c97399a-8975-40ca-aa6a-0c18a366d596@openvpn.net>
+Date: Wed, 5 Feb 2025 10:12:45 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -28,183 +66,101 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 3/4] Extend napi threaded polling to allow
- kthread based busy polling
-To: Samiullah Khawaja <skhawaja@google.com>, Jakub Kicinski
- <kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- almasrymina@google.com
-Cc: netdev@vger.kernel.org
-References: <20250205001052.2590140-1-skhawaja@google.com>
- <20250205001052.2590140-4-skhawaja@google.com>
-Content-Language: en-GB
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
-In-Reply-To: <20250205001052.2590140-4-skhawaja@google.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------1kpSb298BunWTlYxHAN3qMpe"
+Subject: Re: [PATCH net-next v18 07/25] ovpn: implement basic TX path (UDP)
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>,
+ ryazanov.s.a@gmail.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Xiao Liang <shaw.leon@gmail.com>
+References: <20250113-b4-ovpn-v18-0-1f00db9c2bd6@openvpn.net>
+ <20250113-b4-ovpn-v18-7-1f00db9c2bd6@openvpn.net> <Z6CR6QGVrMqauP2H@hog>
+ <Z6I9yn3Nh-9Ebvv9@hog>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <Z6I9yn3Nh-9Ebvv9@hog>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------1kpSb298BunWTlYxHAN3qMpe
-Content-Type: multipart/mixed; boundary="------------l02xccWfJ0nA5JQRtJQ00pBR";
- protected-headers="v1"
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
-To: Samiullah Khawaja <skhawaja@google.com>, Jakub Kicinski
- <kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- almasrymina@google.com
-Cc: netdev@vger.kernel.org
-Message-ID: <ec6e53a9-8d3e-4b83-b4d9-1f089920fe84@bp.renesas.com>
-Subject: Re: [PATCH net-next v3 3/4] Extend napi threaded polling to allow
- kthread based busy polling
-References: <20250205001052.2590140-1-skhawaja@google.com>
- <20250205001052.2590140-4-skhawaja@google.com>
-In-Reply-To: <20250205001052.2590140-4-skhawaja@google.com>
+On 04/02/2025 17:18, Sabrina Dubroca wrote:
+> 2025-02-03, 10:52:41 +0100, Sabrina Dubroca wrote:
+>> 2025-01-13, 10:31:26 +0100, Antonio Quartulli wrote:
+>>> +static void ovpn_encrypt_post(struct sk_buff *skb, int ret)
+>>> +{
+>>> +	struct ovpn_peer *peer = ovpn_skb_cb(skb)->peer;
+>>> +
+>>> +	if (unlikely(ret < 0))
+>>> +		goto err;
+>>> +
+>>> +	skb_mark_not_on_list(skb);
+>>> +
+>>> +	switch (peer->sock->sock->sk->sk_protocol) {
+>>
+>> We have a ref on the peer, but not on the ovpn_sock. DEL_PEER could
+>> have detached the sock by the time the crypto completes.
+>>
+>> (unfortunately I don't have any idea to fix this yet)
+> 
+> Maybe an idea:
+> 
+> Since ovpn_sock itself lives under RCU (because of sk_user_data),
+> peer->sock should be an RCU pointer and also follow RCU rules. For
+> most parts (io.c, netlink.c) the conversion is not too
+> problematic. TCP is more difficult.
+> 
+> I still need to think about whether this works, and whether this is
+> worth the complexity, or if we could solve this in another way.
 
---------------l02xccWfJ0nA5JQRtJQ00pBR
-Content-Type: multipart/mixed; boundary="------------oXeR6Z2an66MZ0vDJUc7ftVa"
+It may actually be a reasonable solution.
+And maybe it is not that complex to get done.
 
---------------oXeR6Z2an66MZ0vDJUc7ftVa
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+I'll see what I come up with.
 
-On 05/02/2025 00:10, Samiullah Khawaja wrote:
-> Add a new state to napi state enum:
->=20
-> - STATE_THREADED_BUSY_POLL
->   Threaded busy poll is enabled/running for this napi.
->=20
-> Following changes are introduced in the napi scheduling and state logic=
-:
->=20
-> - When threaded busy poll is enabled through sysfs it also enables
->   NAPI_STATE_THREADED so a kthread is created per napi. It also sets
->   NAPI_STATE_THREADED_BUSY_POLL bit on each napi to indicate that we ar=
-e
->   supposed to busy poll for each napi.
->=20
-> - When napi is scheduled with STATE_SCHED_THREADED and associated
->   kthread is woken up, the kthread owns the context. If
->   NAPI_STATE_THREADED_BUSY_POLL and NAPI_SCHED_THREADED both are set
->   then it means that we can busy poll.
->=20
-> - To keep busy polling and to avoid scheduling of the interrupts, the
->   napi_complete_done returns false when both SCHED_THREADED and
->   THREADED_BUSY_POLL flags are set. Also napi_complete_done returns
->   early to avoid the STATE_SCHED_THREADED being unset.
->=20
-> - If at any point STATE_THREADED_BUSY_POLL is unset, the
->   napi_complete_done will run and unset the SCHED_THREADED bit also.
->   This will make the associated kthread go to sleep as per existing
->   logic.
->=20
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> Reviewed-by: Willem de Bruijn <willemb@google.com>
-> ---
->  Documentation/ABI/testing/sysfs-class-net     |  3 +-
->  Documentation/netlink/specs/netdev.yaml       | 12 ++--
->  Documentation/networking/napi.rst             | 67 ++++++++++++++++-
->  .../net/ethernet/atheros/atl1c/atl1c_main.c   |  2 +-
->  drivers/net/ethernet/mellanox/mlxsw/pci.c     |  2 +-
->  drivers/net/ethernet/renesas/ravb_main.c      |  2 +-
->  drivers/net/wireless/ath/ath10k/snoc.c        |  2 +-
->  include/linux/netdevice.h                     | 20 ++++--
->  include/uapi/linux/netdev.h                   |  6 ++
->  net/core/dev.c                                | 72 ++++++++++++++++---=
+Regards,
 
->  net/core/net-sysfs.c                          |  2 +-
->  net/core/netdev-genl-gen.c                    |  2 +-
->  net/core/netdev-genl.c                        |  2 +-
->  tools/include/uapi/linux/netdev.h             |  6 ++
->  14 files changed, 171 insertions(+), 29 deletions(-)
 
-Please copy in the maintainers of the network drivers which have been cha=
-nged.
+-- 
+Antonio Quartulli
+OpenVPN Inc.
 
-For ravb,
-Acked-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-
---=20
-Paul Barker
---------------oXeR6Z2an66MZ0vDJUc7ftVa
-Content-Type: application/pgp-keys; name="OpenPGP_0x27F4B3459F002257.asc"
-Content-Disposition: attachment; filename="OpenPGP_0x27F4B3459F002257.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
-
------BEGIN PGP PUBLIC KEY BLOCK-----
-
-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3D
-=3DsIIN
------END PGP PUBLIC KEY BLOCK-----
-
---------------oXeR6Z2an66MZ0vDJUc7ftVa--
-
---------------l02xccWfJ0nA5JQRtJQ00pBR--
-
---------------1kpSb298BunWTlYxHAN3qMpe
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wnsEABYIACMWIQSiu8gv1Xr0fIw/aoLbaV4Vf/JGvQUCZ6MqhwUDAAAAAAAKCRDbaV4Vf/JGvVgg
-AQCbAO5s/EKoR46bSjmpFU6/A7aciTYTJXxSnvuQkNyrbQD/UalBuQLPMQYS5ZKhxwoL+662EeKJ
-0KRi7lazDRWxAQY=
-=dRyP
------END PGP SIGNATURE-----
-
---------------1kpSb298BunWTlYxHAN3qMpe--
