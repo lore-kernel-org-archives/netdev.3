@@ -1,284 +1,127 @@
-Received: from mx14lb.world4you.com (mx14lb.world4you.com [81.19.149.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AAA1FF7BB
-	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 19:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F421FECD4;
+	Wed,  5 Feb 2025 19:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738782523; cv=none; b=inXTw/3Eb2IZvMc07ftiYz0ufgyQRX4Q6Q3Gy5W/dDMP/860E4J93vBohfUAS8BLohKRowDrECmgJCwJ7QdUvNMNdH49bRBu0XAck7cbQjbMdgReKk6uWbi5QiYp1ZmaHbZ8rTJLTyWoDnllu2o/zFyP5QEmTXe7XRdYB10UjPA=
+	t=1738782635; cv=none; b=LSZUKBEDb4hfNPSSq7Mc6EZNxH3ALq2Tbb4BS2FQLR8ODXZgdEYlinT1R8oHOxoYCnlCVj7YNXhsIsQ4CPl5cDER1IlTVi2ojqQJhjuHrKiPegVh+Y0q1EGMFa9LKQiCpQrsTyPbnO8Bjp+hePa2wRlnubXG6VxinHatxodieqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738782523; c=relaxed/simple;
-	bh=vS4sQVfb16y9DLPEwlNhNIiEXXsLUpY2oHAQ+Oa7gG4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Tv5jDFMbscwjr67StwYRBMUz5wFd7qi+FBitCRgKjUqx6oJxItsT0hm928OgIb70GirxGasgYPhcZHT5mUwWlx75dJ3h2CwLvHLGA3/LXebLlZi2jDxcE2fzvPgS2MKuGEDqKtZc71os9dJnYUBIqeRdp6641veDNs30Xke8Tvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=ofqufMZ1; arc=none smtp.client-ip=81.19.149.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1738782635; c=relaxed/simple;
+	bh=ETdqFpdQWKnBh+I298fz06UxdSXFr90lIy6URSg4kaA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FC4Pxiyw5DkyypyqsKULrC+m4btDmTjQdMvSLsU5kaJ2VfcSP+FZAEk1WpJmxFQYZmTzRZ8UiOZAY3jnK9kEGB1GyJ0XxKaoxHZBdVSjHkMbHsCBNil8QqKOoUH1tgej32MA556udqWyrhkcq0EGg0PQPlLKtGX5s00lCmDAegE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IW9+39AI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="ofqufMZ1"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=2D5GiUUykY89hChn3aAP5ndnXdPq65QEBMcFLEpBzdc=; b=ofqufMZ11KevFH/Awbfy3pvCdN
-	On9rTjlvwIQq9Ge+aKcJKMlpRoMpZ5gJCbw0sIdKipGyOMzrIoYL7VqwrxIT/dAXfM+PZnhiR2nu6
-	Cx7RmD2KsfcfHQM9hmfhFzihbXjiUrA1FXtW7QOctuQgjdT1UDAXWCm/bYP2fX8ncA3I=;
-Received: from 88-117-60-28.adsl.highway.telekom.at ([88.117.60.28] helo=hornet.engleder.at)
-	by mx14lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1tfklI-0000000017b-1rUC;
-	Wed, 05 Feb 2025 20:08:37 +0100
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	Gerhard Engleder <gerhard@engleder-embedded.com>
-Subject: [PATCH net-next v5 7/7] tsnep: Add PHY loopback selftests
-Date: Wed,  5 Feb 2025 20:08:23 +0100
-Message-Id: <20250205190823.23528-8-gerhard@engleder-embedded.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250205190823.23528-1-gerhard@engleder-embedded.com>
-References: <20250205190823.23528-1-gerhard@engleder-embedded.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IW9+39AI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19032C4CED1;
+	Wed,  5 Feb 2025 19:10:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738782634;
+	bh=ETdqFpdQWKnBh+I298fz06UxdSXFr90lIy6URSg4kaA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IW9+39AID1lcEbXaiCKZIk7Cm+9fGecb98BRFaRHhP9a1Iyi3q9gmTF0VE+8Gqdz6
+	 6Gn3MD174LfUMy2NeBzeXsMH66CTU4yWmleh54TGTdYvywqkeSWFULL3UeTmJ4UmpO
+	 EhrA66XdJDnwXnJCUSt/+6KbgSDUsy97XJflygurMKjb6jH27FBAJR2IcqHGqzBuQ0
+	 rXCqaRMa4d8QxePE6ZYQl2vTvHym5SKVhHHeF/vFQsAe8f+2rML9WgboYcBcubtXzq
+	 9gyiIdc5MukId3ZAjg6yjOEwoXCW92eam1wc3FM9/L0LUxgr//JEP52TxjR7MzWPtu
+	 IzvlMlC6Gb90g==
+Date: Wed, 5 Feb 2025 19:10:28 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
+	upstream@airoha.com
+Subject: Re: [PATCH net-next 09/13] dt-bindings: net: airoha: Add airoha,npu
+ phandle property
+Message-ID: <20250205-cleaver-evaluator-648c8f0b99bb@spud>
+References: <20250205-airoha-en7581-flowtable-offload-v1-0-d362cfa97b01@kernel.org>
+ <20250205-airoha-en7581-flowtable-offload-v1-9-d362cfa97b01@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AV-Do-Run: Yes
-X-ACL-Warn: X-W4Y-Internal
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="JnOj/fdaK/Kw9pqY"
+Content-Disposition: inline
+In-Reply-To: <20250205-airoha-en7581-flowtable-offload-v1-9-d362cfa97b01@kernel.org>
 
-Add loopback selftests on PHY level. This enables quick testing of
-loopback functionality to ensure working loopback for testing.
 
-Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
----
- drivers/net/ethernet/engleder/Kconfig         |   1 +
- .../net/ethernet/engleder/tsnep_selftests.c   | 153 +++++++++++++++++-
- 2 files changed, 150 insertions(+), 4 deletions(-)
+--JnOj/fdaK/Kw9pqY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/net/ethernet/engleder/Kconfig b/drivers/net/ethernet/engleder/Kconfig
-index 3df6bf476ae7..8245a9c4377d 100644
---- a/drivers/net/ethernet/engleder/Kconfig
-+++ b/drivers/net/ethernet/engleder/Kconfig
-@@ -32,6 +32,7 @@ config TSNEP_SELFTESTS
- 	bool "TSN endpoint self test support"
- 	default n
- 	depends on TSNEP
-+	imply NET_SELFTESTS
- 	help
- 	  This enables self test support within the TSN endpoint driver.
- 
-diff --git a/drivers/net/ethernet/engleder/tsnep_selftests.c b/drivers/net/ethernet/engleder/tsnep_selftests.c
-index 8a9145f93147..c9857e5a8033 100644
---- a/drivers/net/ethernet/engleder/tsnep_selftests.c
-+++ b/drivers/net/ethernet/engleder/tsnep_selftests.c
-@@ -4,12 +4,15 @@
- #include "tsnep.h"
- 
- #include <net/pkt_sched.h>
-+#include <net/selftests.h>
- 
- enum tsnep_test {
- 	TSNEP_TEST_ENABLE = 0,
- 	TSNEP_TEST_TAPRIO,
- 	TSNEP_TEST_TAPRIO_CHANGE,
- 	TSNEP_TEST_TAPRIO_EXTENSION,
-+	TSNEP_TEST_PHY_1000_LOOPBACK,
-+	TSNEP_TEST_PHY_100_LOOPBACK,
- };
- 
- static const char tsnep_test_strings[][ETH_GSTRING_LEN] = {
-@@ -17,6 +20,8 @@ static const char tsnep_test_strings[][ETH_GSTRING_LEN] = {
- 	"TAPRIO                (offline)",
- 	"TAPRIO change         (offline)",
- 	"TAPRIO extension      (offline)",
-+	"PHY 1000Mbps loopback (offline)",
-+	"PHY 100Mbps loopback  (offline)",
- };
- 
- #define TSNEP_TEST_COUNT (sizeof(tsnep_test_strings) / ETH_GSTRING_LEN)
-@@ -754,6 +759,133 @@ static bool tsnep_test_taprio_extension(struct tsnep_adapter *adapter)
- 	return false;
- }
- 
-+static bool test_loopback(struct tsnep_adapter *adapter, int speed)
-+{
-+	struct phy_device *phydev = adapter->phydev;
-+	int retval;
-+
-+	retval = phy_loopback(phydev, true, speed);
-+	if (retval || !phydev->loopback_enabled || !phydev->link ||
-+	    phydev->speed != speed)
-+		return false;
-+
-+	retval = net_test_phy_loopback_udp(adapter->netdev);
-+	if (retval)
-+		return false;
-+
-+	retval = net_test_phy_loopback_udp_mtu(adapter->netdev);
-+	if (retval)
-+		return false;
-+
-+	retval = net_test_phy_loopback_tcp(adapter->netdev);
-+	if (retval)
-+		return false;
-+
-+	retval = phy_loopback(phydev, false, 0);
-+	if (retval || phydev->loopback_enabled)
-+		return false;
-+
-+	return true;
-+}
-+
-+static bool set_speed(struct tsnep_adapter *adapter, int speed)
-+{
-+	struct ethtool_link_ksettings cmd;
-+	int retval;
-+
-+	retval = tsnep_ethtool_ops.get_link_ksettings(adapter->netdev, &cmd);
-+	if (retval)
-+		return false;
-+
-+	if (speed) {
-+		cmd.base.speed = speed;
-+		cmd.base.duplex = DUPLEX_FULL;
-+		cmd.base.autoneg = AUTONEG_DISABLE;
-+	} else {
-+		cmd.base.autoneg = AUTONEG_ENABLE;
-+	}
-+
-+	retval = tsnep_ethtool_ops.set_link_ksettings(adapter->netdev, &cmd);
-+	if (retval)
-+		return false;
-+
-+	return true;
-+}
-+
-+static bool tsnep_test_phy_1000_loopback(struct tsnep_adapter *adapter)
-+{
-+	if (!adapter->netdev->phydev)
-+		return false;
-+
-+	if (!test_loopback(adapter, 1000))
-+		goto failed;
-+
-+	/* after autonegotiation */
-+	if (!set_speed(adapter, 0))
-+		goto failed;
-+	if (!test_loopback(adapter, 1000))
-+		goto failed;
-+
-+	/* after 100Mbps fixed speed */
-+	if (!set_speed(adapter, 100))
-+		goto failed;
-+	if (!test_loopback(adapter, 1000))
-+		goto failed;
-+
-+	/* after 1000Mbps fixed speed */
-+	if (!set_speed(adapter, 1000))
-+		goto failed;
-+	if (!test_loopback(adapter, 1000))
-+		goto failed;
-+
-+	if (!set_speed(adapter, 0))
-+		goto failed;
-+
-+	return true;
-+
-+failed:
-+	phy_loopback(adapter->phydev, false, 0);
-+	set_speed(adapter, 0);
-+	return false;
-+}
-+
-+static bool tsnep_test_phy_100_loopback(struct tsnep_adapter *adapter)
-+{
-+	if (!adapter->netdev->phydev)
-+		return false;
-+
-+	if (!test_loopback(adapter, 100))
-+		goto failed;
-+
-+	/* after autonegotiation */
-+	if (!set_speed(adapter, 0))
-+		goto failed;
-+	if (!test_loopback(adapter, 100))
-+		goto failed;
-+
-+	/* 100Mbps fixed speed */
-+	if (!set_speed(adapter, 100))
-+		goto failed;
-+	if (!test_loopback(adapter, 100))
-+		goto failed;
-+
-+	/* 1000Mbps fixed speed */
-+	if (!set_speed(adapter, 1000))
-+		goto failed;
-+	if (!test_loopback(adapter, 100))
-+		goto failed;
-+
-+	if (!set_speed(adapter, 0))
-+		goto failed;
-+
-+	return true;
-+
-+failed:
-+	phy_loopback(adapter->phydev, false, 0);
-+	set_speed(adapter, 0);
-+	return false;
-+}
-+
- int tsnep_ethtool_get_test_count(void)
- {
- 	return TSNEP_TEST_COUNT;
-@@ -768,15 +900,14 @@ void tsnep_ethtool_self_test(struct net_device *netdev,
- 			     struct ethtool_test *eth_test, u64 *data)
- {
- 	struct tsnep_adapter *adapter = netdev_priv(netdev);
-+	int i;
- 
- 	eth_test->len = TSNEP_TEST_COUNT;
- 
- 	if (eth_test->flags != ETH_TEST_FL_OFFLINE) {
- 		/* no tests are done online */
--		data[TSNEP_TEST_ENABLE] = 0;
--		data[TSNEP_TEST_TAPRIO] = 0;
--		data[TSNEP_TEST_TAPRIO_CHANGE] = 0;
--		data[TSNEP_TEST_TAPRIO_EXTENSION] = 0;
-+		for (i = 0; i < TSNEP_TEST_COUNT; i++)
-+			data[i] = 0;
- 
- 		return;
- 	}
-@@ -808,4 +939,18 @@ void tsnep_ethtool_self_test(struct net_device *netdev,
- 		eth_test->flags |= ETH_TEST_FL_FAILED;
- 		data[TSNEP_TEST_TAPRIO_EXTENSION] = 1;
- 	}
-+
-+	if (tsnep_test_phy_1000_loopback(adapter)) {
-+		data[TSNEP_TEST_PHY_1000_LOOPBACK] = 0;
-+	} else {
-+		eth_test->flags |= ETH_TEST_FL_FAILED;
-+		data[TSNEP_TEST_PHY_1000_LOOPBACK] = 1;
-+	}
-+
-+	if (tsnep_test_phy_100_loopback(adapter)) {
-+		data[TSNEP_TEST_PHY_100_LOOPBACK] = 0;
-+	} else {
-+		eth_test->flags |= ETH_TEST_FL_FAILED;
-+		data[TSNEP_TEST_PHY_100_LOOPBACK] = 1;
-+	}
- }
--- 
-2.39.5
+On Wed, Feb 05, 2025 at 07:21:28PM +0100, Lorenzo Bianconi wrote:
+> Introduce the airoha,npu property for the npu syscon node available on
+> EN7581 SoC. The airoha Network Processor Unit (NPU) is used to offload
+> network traffic forwarded between Packet Switch Engine (PSE) ports.
+>=20
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml=
+ b/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml
+> index c578637c5826db4bf470a4d01ac6f3133976ae1a..6388afff64e990a20230b0c4e=
+58534aa61f984da 100644
+> --- a/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml
+> +++ b/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml
+> @@ -63,6 +63,12 @@ properties:
+>    "#size-cells":
+>      const: 0
+> =20
+> +  airoha,npu:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description:
+> +      Phandle to the syscon node used to configure the NPU module
+> +      used for traffic offloading.
 
+Why do you need a phandle for this, instead of a lookup by compatible?
+Do you have multiple instances of this ethernet controller on the
+device, that each need to look up a different npu?
+
+> +
+>  patternProperties:
+>    "^ethernet@[1-4]$":
+>      type: object
+> @@ -132,6 +138,8 @@ examples:
+>                       <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>,
+>                       <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>;
+> =20
+> +        airoha,npu =3D <&npu>;
+> +
+>          #address-cells =3D <1>;
+>          #size-cells =3D <0>;
+> =20
+>=20
+> --=20
+> 2.48.1
+>=20
+
+--JnOj/fdaK/Kw9pqY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ6O3pAAKCRB4tDGHoIJi
+0r90AQCPFWieY3rJFPgYre/U5p5JhiHPBES11cYsO6z7cPd7JgD+LbhWNBtMLabp
+sVw4Vk5SnTfpxAWmdYRThF4q2n8QHAU=
+=ee/X
+-----END PGP SIGNATURE-----
+
+--JnOj/fdaK/Kw9pqY--
