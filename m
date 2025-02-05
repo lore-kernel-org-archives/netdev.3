@@ -1,36 +1,36 @@
 Received: from mx14lb.world4you.com (mx14lb.world4you.com [81.19.149.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F95155335
-	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 19:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74C31FE476
+	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 19:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738784093; cv=none; b=JxtSfz97F4g88E16OdUgzeLPNUlc2tUZKYwUp6mrDhUOxPsmUmZO8NayCRVGmHCIzbX2YMTemz0JbM2q03uZ+Dir+tJWUjf9n7VtgOYEZrEsfMiD4n+UtO35Fdzsrkk6ArvXjb7kujDLDihoWv2RH0QHu7mwr8uNYltFKvUuHgw=
+	t=1738784116; cv=none; b=pwXYwqhWi4E79Vv9+WBsIsGKFfULSS8GKMTAHzMkUqdxc1MupuWCsJApKO5b256n4gh4u7+Ltdz47fzMMU3VXXVjUgYDSjoBe+EyuL9N6YeWgtpH7AloJp5q5y6x8N+iGbfeYW3Be59QLE+dwO+uqLmJzN2tAN4mt25Evjbcx3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738784093; c=relaxed/simple;
-	bh=Vf6MgmQ+cAB6pVE6LuQE1Hci2f1mTFwxqKsctMTF6Vo=;
+	s=arc-20240116; t=1738784116; c=relaxed/simple;
+	bh=nfNUKuL4p2w3ZZpEiJqOMQ4Qj54968XzhXFxOVSaT1U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=J0G/TMT2eNh7V4p+cErGqLuEoi9j4SOd0SuXckmzr5r+34QHyrLCDqZdBsU7liPLggUmkOZoQQZZk3lAk0uB5zmr1R+yhrSD31sp3kX6fKosZN7FjPVSYOJ3o4IBM1dD5uRCih8opARBP9XIXTzTcLiFQPXwGvWE+CTeuCzFAEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=v3/npVPq; arc=none smtp.client-ip=81.19.149.124
+	 MIME-Version; b=lL9oJ4cvcjv1cGH3/vtHb2VLfV093uLoFRZn1fhlYGeDPct2KkNlbLwNl2btCtpGppEkjYNvvi9eMmDTcY3pFquw/CKxIkuNOhubkNDCZ+FGyaP4QOGQS7NjnweRcXqyMluiwt71VbDaEbS2DFfigPKTJb467T6z8j8KAX6Q3lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=XkC5pVKv; arc=none smtp.client-ip=81.19.149.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="v3/npVPq"
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="XkC5pVKv"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=d00kdXkxGzpJFasIUHuiHU8O5NvLGRgMg5n39bdQfn4=; b=v3/npVPqTpDoGhOUsW3Cr3eyGa
-	EDPgdk3bJwLYOKUrYgw9bfpdZOQggpCZir80/gah7mBGWlxbTc/LnJ7X1aA20jAgT2nRjJRCiMkvP
-	GBPB9eEEfBe5WrDvm+/ONo4ZP7nvBBO7etiUWwLuNYE9ayb1pwWZMnaZ9FrwkeAMBQ2k=;
+	bh=uWD1guAOAk6y8SPOU+es5MTsq1VfXQtvh9PvPbgIeWI=; b=XkC5pVKvVz0OYDG+pxNw/cYfS+
+	l2WHZgtdvhRIM/OCjoH/oj+HwbUbXs6EROflgSe2uoNQrj+/FuTCpCOv/omhRoUt0UauLLIFDA/TN
+	y91dV1qJfE7Pmo2VBntZr9Apv5V1zZ0y4ucDC3Gf82BP9ewSoAnRzoSsFT3AynVwS7x0=;
 Received: from 88-117-60-28.adsl.highway.telekom.at ([88.117.60.28] helo=hornet.engleder.at)
 	by mx14lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1tfklH-0000000017b-0Gmq;
-	Wed, 05 Feb 2025 20:08:36 +0100
+	id 1tfkl9-0000000017b-3r61;
+	Wed, 05 Feb 2025 20:08:29 +0100
 From: Gerhard Engleder <gerhard@engleder-embedded.com>
 To: andrew@lunn.ch,
 	hkallweit1@gmail.com,
@@ -40,11 +40,10 @@ To: andrew@lunn.ch,
 	kuba@kernel.org,
 	pabeni@redhat.com
 Cc: netdev@vger.kernel.org,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>
-Subject: [PATCH net-next v5 6/7] net: selftests: Export net_test_phy_loopback_*
-Date: Wed,  5 Feb 2025 20:08:22 +0100
-Message-Id: <20250205190823.23528-7-gerhard@engleder-embedded.com>
+	Gerhard Engleder <gerhard@engleder-embedded.com>
+Subject: [PATCH net-next v5 1/7] net: phy: Allow loopback speed selection for PHY drivers
+Date: Wed,  5 Feb 2025 20:08:17 +0100
+Message-Id: <20250205190823.23528-2-gerhard@engleder-embedded.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250205190823.23528-1-gerhard@engleder-embedded.com>
 References: <20250205190823.23528-1-gerhard@engleder-embedded.com>
@@ -58,103 +57,244 @@ Content-Transfer-Encoding: 8bit
 X-AV-Do-Run: Yes
 X-ACL-Warn: X-W4Y-Internal
 
-net_selftests() provides a generic set of selftests for netdevs with
-PHY. Those selftests rely on an existing link to inherit the speed for
-the loopback mode.
+PHY drivers support loopback mode, but it is not possible to select the
+speed of the loopback mode. The speed is chosen by the set_loopback()
+operation of the PHY driver. Same is valid for genphy_loopback().
 
-net_selftests() is not designed to extend existing selftests of drivers,
-but with net_test_phy_loopback_* it contains useful test infrastructure.
-
-Export net_test_phy_loopback_* to enable reuse in existing selftests of
-other drivers. This also enables driver specific loopback modes, which
-don't rely on an existing link.
+There are PHYs that support loopback with different speeds. Extend
+set_loopback() to make loopback speed selection possible.
 
 Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-CC: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- include/net/selftests.h | 19 +++++++++++++++++++
- net/core/selftests.c    |  9 ++++++---
- 2 files changed, 25 insertions(+), 3 deletions(-)
+ drivers/net/phy/adin1100.c          |  5 ++++-
+ drivers/net/phy/dp83867.c           |  5 ++++-
+ drivers/net/phy/marvell.c           |  8 +++++++-
+ drivers/net/phy/mxl-gpy.c           | 11 +++++++----
+ drivers/net/phy/phy-c45.c           |  5 ++++-
+ drivers/net/phy/phy_device.c        | 12 +++++++++---
+ drivers/net/phy/xilinx_gmii2rgmii.c |  7 ++++---
+ include/linux/phy.h                 | 16 ++++++++++++----
+ 8 files changed, 51 insertions(+), 18 deletions(-)
 
-diff --git a/include/net/selftests.h b/include/net/selftests.h
-index e65e8d230d33..a13237c33e58 100644
---- a/include/net/selftests.h
-+++ b/include/net/selftests.h
-@@ -6,6 +6,10 @@
- 
- #if IS_ENABLED(CONFIG_NET_SELFTESTS)
- 
-+int net_test_phy_loopback_udp(struct net_device *ndev);
-+int net_test_phy_loopback_udp_mtu(struct net_device *ndev);
-+int net_test_phy_loopback_tcp(struct net_device *ndev);
-+
- void net_selftest(struct net_device *ndev, struct ethtool_test *etest,
- 		  u64 *buf);
- int net_selftest_get_count(void);
-@@ -13,6 +17,21 @@ void net_selftest_get_strings(u8 *data);
- 
- #else
- 
-+static inline int net_test_phy_loopback_udp(struct net_device *ndev)
-+{
-+	return 0;
-+}
-+
-+static inline int net_test_phy_loopback_udp_mtu(struct net_device *ndev)
-+{
-+	return 0;
-+}
-+
-+static inline int net_test_phy_loopback_tcp(struct net_device *ndev)
-+{
-+	return 0;
-+}
-+
- static inline void net_selftest(struct net_device *ndev, struct ethtool_test *etest,
- 				u64 *buf)
- {
-diff --git a/net/core/selftests.c b/net/core/selftests.c
-index e99ae983fca9..d4e0e2eff991 100644
---- a/net/core/selftests.c
-+++ b/net/core/selftests.c
-@@ -310,15 +310,16 @@ static int net_test_phy_loopback_disable(struct net_device *ndev)
- 	return phy_loopback(ndev->phydev, false, 0);
+diff --git a/drivers/net/phy/adin1100.c b/drivers/net/phy/adin1100.c
+index 6bb469429b9d..bd7a47a903ac 100644
+--- a/drivers/net/phy/adin1100.c
++++ b/drivers/net/phy/adin1100.c
+@@ -215,8 +215,11 @@ static int adin_resume(struct phy_device *phydev)
+ 	return adin_set_powerdown_mode(phydev, false);
  }
  
--static int net_test_phy_loopback_udp(struct net_device *ndev)
-+int net_test_phy_loopback_udp(struct net_device *ndev)
+-static int adin_set_loopback(struct phy_device *phydev, bool enable)
++static int adin_set_loopback(struct phy_device *phydev, bool enable, int speed)
  {
- 	struct net_packet_attrs attr = { };
- 
- 	attr.dst = ndev->dev_addr;
- 	return __net_test_loopback(ndev, &attr);
++	if (enable && speed)
++		return -EOPNOTSUPP;
++
+ 	if (enable)
+ 		return phy_set_bits_mmd(phydev, MDIO_MMD_PCS, MDIO_PCS_10T1L_CTRL,
+ 					BMCR_LOOPBACK);
+diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+index c1451df430ac..063266cafe9c 100644
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -1009,8 +1009,11 @@ static void dp83867_link_change_notify(struct phy_device *phydev)
+ 	}
  }
-+EXPORT_SYMBOL_GPL(net_test_phy_loopback_udp);
  
--static int net_test_phy_loopback_udp_mtu(struct net_device *ndev)
-+int net_test_phy_loopback_udp_mtu(struct net_device *ndev)
+-static int dp83867_loopback(struct phy_device *phydev, bool enable)
++static int dp83867_loopback(struct phy_device *phydev, bool enable, int speed)
  {
- 	struct net_packet_attrs attr = { };
- 
-@@ -326,8 +327,9 @@ static int net_test_phy_loopback_udp_mtu(struct net_device *ndev)
- 	attr.max_size = ndev->mtu;
- 	return __net_test_loopback(ndev, &attr);
++	if (enable && speed)
++		return -EOPNOTSUPP;
++
+ 	return phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
+ 			  enable ? BMCR_LOOPBACK : 0);
  }
-+EXPORT_SYMBOL_GPL(net_test_phy_loopback_udp_mtu);
+diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+index 44e1927de499..4ed7ec1be74f 100644
+--- a/drivers/net/phy/marvell.c
++++ b/drivers/net/phy/marvell.c
+@@ -2131,13 +2131,19 @@ static void marvell_get_stats_simple(struct phy_device *phydev,
+ 		data[i] = marvell_get_stat_simple(phydev, i);
+ }
  
--static int net_test_phy_loopback_tcp(struct net_device *ndev)
-+int net_test_phy_loopback_tcp(struct net_device *ndev)
+-static int m88e1510_loopback(struct phy_device *phydev, bool enable)
++static int m88e1510_loopback(struct phy_device *phydev, bool enable, int speed)
  {
- 	struct net_packet_attrs attr = { };
+ 	int err;
  
-@@ -335,6 +337,7 @@ static int net_test_phy_loopback_tcp(struct net_device *ndev)
- 	attr.tcp = true;
- 	return __net_test_loopback(ndev, &attr);
+ 	if (enable) {
+ 		u16 bmcr_ctl, mscr2_ctl = 0;
+ 
++		if (speed == SPEED_10 || speed == SPEED_100 ||
++		    speed == SPEED_1000)
++			phydev->speed = speed;
++		else if (speed)
++			return -EINVAL;
++
+ 		bmcr_ctl = mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
+ 
+ 		err = phy_write(phydev, MII_BMCR, bmcr_ctl);
+diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
+index 94d9cb727121..a6cca8d43253 100644
+--- a/drivers/net/phy/mxl-gpy.c
++++ b/drivers/net/phy/mxl-gpy.c
+@@ -813,7 +813,7 @@ static void gpy_get_wol(struct phy_device *phydev,
+ 	wol->wolopts = priv->wolopts;
  }
-+EXPORT_SYMBOL_GPL(net_test_phy_loopback_tcp);
  
- static const struct net_test {
- 	char name[ETH_GSTRING_LEN];
+-static int gpy_loopback(struct phy_device *phydev, bool enable)
++static int gpy_loopback(struct phy_device *phydev, bool enable, int speed)
+ {
+ 	struct gpy_priv *priv = phydev->priv;
+ 	u16 set = 0;
+@@ -822,6 +822,9 @@ static int gpy_loopback(struct phy_device *phydev, bool enable)
+ 	if (enable) {
+ 		u64 now = get_jiffies_64();
+ 
++		if (speed)
++			return -EOPNOTSUPP;
++
+ 		/* wait until 3 seconds from last disable */
+ 		if (time_before64(now, priv->lb_dis_to))
+ 			msleep(jiffies64_to_msecs(priv->lb_dis_to - now));
+@@ -845,15 +848,15 @@ static int gpy_loopback(struct phy_device *phydev, bool enable)
+ 	return 0;
+ }
+ 
+-static int gpy115_loopback(struct phy_device *phydev, bool enable)
++static int gpy115_loopback(struct phy_device *phydev, bool enable, int speed)
+ {
+ 	struct gpy_priv *priv = phydev->priv;
+ 
+ 	if (enable)
+-		return gpy_loopback(phydev, enable);
++		return gpy_loopback(phydev, enable, speed);
+ 
+ 	if (priv->fw_minor > 0x76)
+-		return gpy_loopback(phydev, 0);
++		return gpy_loopback(phydev, 0, 0);
+ 
+ 	return genphy_soft_reset(phydev);
+ }
+diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
+index 0dac08e85304..84c24e8847c3 100644
+--- a/drivers/net/phy/phy-c45.c
++++ b/drivers/net/phy/phy-c45.c
+@@ -1230,8 +1230,11 @@ int gen10g_config_aneg(struct phy_device *phydev)
+ }
+ EXPORT_SYMBOL_GPL(gen10g_config_aneg);
+ 
+-int genphy_c45_loopback(struct phy_device *phydev, bool enable)
++int genphy_c45_loopback(struct phy_device *phydev, bool enable, int speed)
+ {
++	if (enable && speed)
++		return -EOPNOTSUPP;
++
+ 	return phy_modify_mmd(phydev, MDIO_MMD_PCS, MDIO_CTRL1,
+ 			      MDIO_PCS_CTRL1_LOOPBACK,
+ 			      enable ? MDIO_PCS_CTRL1_LOOPBACK : 0);
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 46713d27412b..15c797580070 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -2072,9 +2072,9 @@ int phy_loopback(struct phy_device *phydev, bool enable)
+ 	}
+ 
+ 	if (phydev->drv->set_loopback)
+-		ret = phydev->drv->set_loopback(phydev, enable);
++		ret = phydev->drv->set_loopback(phydev, enable, 0);
+ 	else
+-		ret = genphy_loopback(phydev, enable);
++		ret = genphy_loopback(phydev, enable, 0);
+ 
+ 	if (ret)
+ 		goto out;
+@@ -2843,12 +2843,18 @@ int genphy_resume(struct phy_device *phydev)
+ }
+ EXPORT_SYMBOL(genphy_resume);
+ 
+-int genphy_loopback(struct phy_device *phydev, bool enable)
++int genphy_loopback(struct phy_device *phydev, bool enable, int speed)
+ {
+ 	if (enable) {
+ 		u16 ctl = BMCR_LOOPBACK;
+ 		int ret, val;
+ 
++		if (speed == SPEED_10 || speed == SPEED_100 ||
++		    speed == SPEED_1000)
++			phydev->speed = speed;
++		else if (speed)
++			return -EINVAL;
++
+ 		ctl |= mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
+ 
+ 		phy_modify(phydev, MII_BMCR, ~0, ctl);
+diff --git a/drivers/net/phy/xilinx_gmii2rgmii.c b/drivers/net/phy/xilinx_gmii2rgmii.c
+index 7c51daecf18e..2024d8ef36d9 100644
+--- a/drivers/net/phy/xilinx_gmii2rgmii.c
++++ b/drivers/net/phy/xilinx_gmii2rgmii.c
+@@ -64,15 +64,16 @@ static int xgmiitorgmii_read_status(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
+-static int xgmiitorgmii_set_loopback(struct phy_device *phydev, bool enable)
++static int xgmiitorgmii_set_loopback(struct phy_device *phydev, bool enable,
++				     int speed)
+ {
+ 	struct gmii2rgmii *priv = mdiodev_get_drvdata(&phydev->mdio);
+ 	int err;
+ 
+ 	if (priv->phy_drv->set_loopback)
+-		err = priv->phy_drv->set_loopback(phydev, enable);
++		err = priv->phy_drv->set_loopback(phydev, enable, speed);
+ 	else
+-		err = genphy_loopback(phydev, enable);
++		err = genphy_loopback(phydev, enable, speed);
+ 	if (err < 0)
+ 		return err;
+ 
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 19f076a71f94..4e84df2294d2 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -1189,8 +1189,16 @@ struct phy_driver {
+ 	int (*set_tunable)(struct phy_device *dev,
+ 			    struct ethtool_tunable *tuna,
+ 			    const void *data);
+-	/** @set_loopback: Set the loopback mood of the PHY */
+-	int (*set_loopback)(struct phy_device *dev, bool enable);
++	/**
++	 * @set_loopback: Set the loopback mode of the PHY
++	 * enable selects if the loopback mode is enabled or disabled. If the
++	 * loopback mode is enabled, then the speed of the loopback mode can be
++	 * requested with the speed argument. If the speed argument is zero,
++	 * then any speed can be selected. If the speed argument is > 0, then
++	 * this speed shall be selected for the loopback mode or EOPNOTSUPP
++	 * shall be returned if speed selection is not supported.
++	 */
++	int (*set_loopback)(struct phy_device *dev, bool enable, int speed);
+ 	/** @get_sqi: Get the signal quality indication */
+ 	int (*get_sqi)(struct phy_device *dev);
+ 	/** @get_sqi_max: Get the maximum signal quality indication */
+@@ -1993,7 +2001,7 @@ int genphy_read_status(struct phy_device *phydev);
+ int genphy_read_master_slave(struct phy_device *phydev);
+ int genphy_suspend(struct phy_device *phydev);
+ int genphy_resume(struct phy_device *phydev);
+-int genphy_loopback(struct phy_device *phydev, bool enable);
++int genphy_loopback(struct phy_device *phydev, bool enable, int speed);
+ int genphy_soft_reset(struct phy_device *phydev);
+ irqreturn_t genphy_handle_interrupt_no_ack(struct phy_device *phydev);
+ 
+@@ -2035,7 +2043,7 @@ int genphy_c45_pma_baset1_read_master_slave(struct phy_device *phydev);
+ int genphy_c45_read_status(struct phy_device *phydev);
+ int genphy_c45_baset1_read_status(struct phy_device *phydev);
+ int genphy_c45_config_aneg(struct phy_device *phydev);
+-int genphy_c45_loopback(struct phy_device *phydev, bool enable);
++int genphy_c45_loopback(struct phy_device *phydev, bool enable, int speed);
+ int genphy_c45_pma_resume(struct phy_device *phydev);
+ int genphy_c45_pma_suspend(struct phy_device *phydev);
+ int genphy_c45_fast_retrain(struct phy_device *phydev, bool enable);
 -- 
 2.39.5
 
