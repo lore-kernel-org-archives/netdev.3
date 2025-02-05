@@ -1,199 +1,279 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B67122B8B0;
-	Wed,  5 Feb 2025 10:25:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D78622B5A3
+	for <netdev@vger.kernel.org>; Wed,  5 Feb 2025 10:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738751155; cv=none; b=tjyzFWZ04Caoa62WM1b8//vL/ZUPn1LamkKRACPTE9tfNHnVq5h+dhAvpEjblAlcB7dk80svmXqXhkSgS+69k1zvdVqz3tqxbZhgH1M9FteqJFuM21/hWDwXSn3CzSoHzXRZr3llDaH38R07NjXp9wSMarYS34nN6hLJDje09/w=
+	t=1738751952; cv=none; b=Y1IoGEvJ0eDC1O2h5bsDxSJmwlKk3Z/Y3lsUh4ZTDtt1oc0PIkxQBNsOs0B1VAIc3ay9NU4aGtDdXBGoCkWjzr5VHUpihOaCj7OdeWWG5V39XZOW1BRw6t+6RLTkSplxry+XQnq9K/6cwzqwyXfVfJ1InUrG8Ym+2ajll3ycylE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738751155; c=relaxed/simple;
-	bh=uTikdtqcwI70CYjt1eBAl6OBhR7bcW+BJKotwkv0YMM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DsED5G3SmMFJ/X31gbIjfxGfuJ1jbmqUY2SZ8dL53D6aJj8wT/x4SGvo5Rbwb7rhBgBMb9DsD2rihLZgQDqMsKXkRSYABXqK+bMiXxKG+hR4QJa1E4xnA/pyQl8WeNczlPlPHkdBtbIwlK9ef7um9dQS6egVp5evzVA9+dCmf/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=CcmkXnBI; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="CcmkXnBI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=CeLAvSZweSdrpa/u3kDJ87mrxAvNI6bzP9fmmM0QN+c=;
-	b=CcmkXnBIzXBWq2qG4vmjOV4VHbVi11/CUvr2RxMrE07MBQO9niwbAPhSO6m0hK
-	Ywx7SNPkQktVKBok01PGxGwJcEdDO3ke9aDzRTb6Xf41kng/gWTF6HA5QxBdiEbo
-	rM/LW26hHFRDWFYE7H+ZiapntEMYpOAdPXEmzvJJ0WVWo=
-Received: from hello.company.local (unknown [111.205.82.7])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgAXxtnAOKNnOb6iMw--.46599S2;
-	Wed, 05 Feb 2025 18:09:05 +0800 (CST)
-From: Liang Jie <buaajxlj@163.com>
-To: kuniyu@amazon.com
-Cc: buaajxlj@163.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	liangjie@lixiang.com,
+	s=arc-20240116; t=1738751952; c=relaxed/simple;
+	bh=P0VU7UMU1X2gguhoQwApVSnZes7wcczyANucJcp6haI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XlH7Ciq3VrxsnFUgVfxk3WhYLEFujk7b0SIQDXrGsMZBD/DKjB63W/07RQErZRcXtrF0Rz3SirZA/UwaMIqEzKqAPgesxj4G7vRIfo0Opnov3Xg4Q3ume4CJWlEROeiB6IkwaqoqG5A8ErbVLED5TTz/1T56FUiQZWpUIY1sHME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tfcnx-0003EZ-3I; Wed, 05 Feb 2025 11:38:49 +0100
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tfcnv-003cUo-1b;
+	Wed, 05 Feb 2025 11:38:47 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tfcnv-009XYV-1O;
+	Wed, 05 Feb 2025 11:38:47 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
-	mhal@rbox.co,
 	netdev@vger.kernel.org,
-	pabeni@redhat.com
-Subject: Re: [PATCH net-next] af_unix: Refine UNIX domain sockets autobind identifier length
-Date: Wed,  5 Feb 2025 18:09:04 +0800
-Message-Id: <20250205100904.2534565-1-buaajxlj@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250205082841.94701-1-kuniyu@amazon.com>
-References: <20250205082841.94701-1-kuniyu@amazon.com>
+	Russell King <linux@armlinux.org.uk>
+Subject: [PATCH net-next v1 1/1] net: phy: dp83td510: introduce LED framework support
+Date: Wed,  5 Feb 2025 11:38:46 +0100
+Message-Id: <20250205103846.2273833-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgAXxtnAOKNnOb6iMw--.46599S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxKr47CrWUKFW5Kr13uF4kZwb_yoW7AF4kpF
-	WFk3Z0vrWkJrsrWr1Iqa18Arsayw4rt3W7CryDGF1IkFsIgryI9F1DKF10934Dur48tw1S
-	qr4jgFy29FyDArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUIksDUUUUU=
-X-CM-SenderInfo: pexdtyx0omqiywtou0bp/1tbiNhbqIGejLVKpngAAsm
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Wed, 5 Feb 2025 17:28:41 +0900, Kuniyuki Iwashima <kuniyu@amazon.com> wrote:
-> From: Liang Jie <buaajxlj@163.com>
-> Date: Wed,  5 Feb 2025 14:06:53 +0800
-> > From: Liang Jie <liangjie@lixiang.com>
-> > 
-> > Refines autobind identifier length for UNIX domain sockets, addressing
-> > issues of memory waste and code readability.
-> > 
-> > The previous implementation in the unix_autobind function of UNIX domain
-> > sockets used hardcoded values such as 16, 6, and 5 for memory allocation
-> > and setting the length of the autobind identifier, which was not only
-> > inflexible but also led to reduced code clarity. Additionally, allocating
-> > 16 bytes of memory for the autobind path was excessive, given that only 6
-> > bytes were ultimately used.
-> > 
-> > To mitigate these issues, introduces the following changes:
-> >  - A new macro AUTOBIND_LEN is defined to clearly represent the total
-> >    length of the autobind identifier, which improves code readability and
-> >    maintainability. It is set to 6 bytes to accommodate the unique autobind
-> >    process identifier.
-> >  - Memory allocation for the autobind path is now precisely based on
-> >    AUTOBIND_LEN, thereby preventing memory waste.
-> >  - The sprintf() function call is updated to dynamically format the
-> >    autobind identifier according to the defined length, further enhancing
-> >    code consistency and readability.
-> > 
-> > The modifications result in a leaner memory footprint and elevated code
-> > quality, ensuring that the functional aspect of autobind behavior in UNIX
-> > domain sockets remains intact.
-> > 
-> > Signed-off-by: Liang Jie <liangjie@lixiang.com>
-> > ---
-> >  net/unix/af_unix.c | 13 ++++++++++---
-> >  1 file changed, 10 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-> > index 34945de1fb1f..5dcc55f2e3a1 100644
-> > --- a/net/unix/af_unix.c
-> > +++ b/net/unix/af_unix.c
-> > @@ -1186,6 +1186,13 @@ static struct sock *unix_find_other(struct net *net,
-> >  	return sk;
-> >  }
-> >  
-> > +/*
-> > + * Define the total length of the autobind identifier for UNIX domain sockets.
-> > + * - The first byte distinguishes abstract sockets from filesystem-based sockets.
-> 
-> Now it's called pathname socket, but I think we don't need a comment here.
-> We already have enough comment/doc in other places and the man page.
-> 
-> $ man 7 unix
-> ...
-> The address consists of a null byte followed by 5 bytes in the character set [0-9a-f].
-> 
-> 
-> > + * - The subsequent five bytes store a unique identifier for the autobinding process.
-> > + */
-> > +#define AUTOBIND_LEN 6
-> 
-> UNIX_AUTOBIND_LEN
-> 
-> 
-> > +
-> >  static int unix_autobind(struct sock *sk)
-> >  {
-> >  	struct unix_sock *u = unix_sk(sk);
-> > @@ -1204,11 +1211,11 @@ static int unix_autobind(struct sock *sk)
-> >  
-> >  	err = -ENOMEM;
-> >  	addr = kzalloc(sizeof(*addr) +
-> > -		       offsetof(struct sockaddr_un, sun_path) + 16, GFP_KERNEL);
-> > +		       offsetof(struct sockaddr_un, sun_path) + AUTOBIND_LEN, GFP_KERNEL);
-> >  	if (!addr)
-> >  		goto out;
-> >  
-> > -	addr->len = offsetof(struct sockaddr_un, sun_path) + 6;
-> > +	addr->len = offsetof(struct sockaddr_un, sun_path) + AUTOBIND_LEN;
-> >  	addr->name->sun_family = AF_UNIX;
-> >  	refcount_set(&addr->refcnt, 1);
-> >  
-> > @@ -1217,7 +1224,7 @@ static int unix_autobind(struct sock *sk)
-> >  	lastnum = ordernum & 0xFFFFF;
-> >  retry:
-> >  	ordernum = (ordernum + 1) & 0xFFFFF;
-> > -	sprintf(addr->name->sun_path + 1, "%05x", ordernum);
-> > +	sprintf(addr->name->sun_path + 1, "%0*x", AUTOBIND_LEN - 1, ordernum);
-> 
-> I feel %05 is easier to read.  Note that man page mentions 5 bytes.
-> 
-> 1 is also hard-coded here, but I don't think we should write
-> 
-> sprintf(addr->name->sun_path + UNIX_ABSTRACT_NAME_OFFSET,
->         "%0*x", UNIX_AUTOBIND_LEN - 1, ordernum)
-> 
+Add LED brightness, mode, HW control and polarity functions to enable
+external LED control in the TI DP83TD510 PHY.
 
-Hi Kuniyuki,
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/net/phy/dp83td510.c | 187 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 187 insertions(+)
 
-Thank you very much for your suggestions. I will incorporate them and
-submit [PATCH v2] accordingly.
-
-The logs from 'netdev/build_allmodconfig_warn' indicate that the patch has
-given rise to the following warning:
-
- - ../net/unix/af_unix.c: In function ‘unix_autobind’:
- - ../net/unix/af_unix.c:1227:48: warning: ‘sprintf’ writing a terminating nul past the end of the destination [-Wformat-overflow=]
- -  1227 |         sprintf(addr->name->sun_path + 1, "%0*x", AUTOBIND_LEN - 1, ordernum);
- -       |                                                ^
- - ../net/unix/af_unix.c:1227:9: note: ‘sprintf’ output 6 bytes into a destination of size 5
- -  1227 |         sprintf(addr->name->sun_path + 1, "%0*x", AUTOBIND_LEN - 1, ordernum);
- -       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-It appears that the 'sprintf' call attempts to write a terminating null
-byte past the end of the 'sun_path' array, potentially causing an overflow.
-
-To address this issue, I am considering the following approach:
-
-	char orderstring[6];
-
-	sprintf(orderstring, "%05x", ordernum);
-	memcpy(addr->name->sun_path + 1, orderstring, 5);
-
-This would prevent the buffer overflow by using 'memcpy' to safely copy the
-formatted string into 'sun_path'.
-
-Before proceeding with a patch submission, I wanted to consult with you to
-see if you have any suggestions for a better or more elegant solution to
-this problem.
-
-Thank you for your time and assistance. I look forward to your guidance on
-this matter.
-
-Best regards,
-Liang Jie
-
-> 
-> >  
-> >  	new_hash = unix_abstract_hash(addr->name, addr->len, sk->sk_type);
-> >  	unix_table_double_lock(net, old_hash, new_hash);
-> > -- 
-> > 2.25.1
+diff --git a/drivers/net/phy/dp83td510.c b/drivers/net/phy/dp83td510.c
+index a42af9c168ec..23af1ac194fa 100644
+--- a/drivers/net/phy/dp83td510.c
++++ b/drivers/net/phy/dp83td510.c
+@@ -204,10 +204,191 @@ struct dp83td510_priv {
+ #define DP83TD510E_UNKN_030E				0x30e
+ #define DP83TD510E_030E_VAL				0x2520
+ 
++#define DP83TD510E_LEDS_CFG_1				0x460
++#define DP83TD510E_LED_FN(idx, val)		(((val) & 0xf) << ((idx) * 4))
++#define DP83TD510E_LED_FN_MASK(idx)			(0xf << ((idx) * 4))
++/* link OK */
++#define DP83TD510E_LED_MODE_LINK_OK			0x0
++/* TX/RX activity */
++#define DP83TD510E_LED_MODE_TX_RX_ACTIVITY		0x1
++/* TX activity */
++#define DP83TD510E_LED_MODE_TX_ACTIVITY			0x2
++/* RX activity */
++#define DP83TD510E_LED_MODE_RX_ACTIVITY			0x3
++/* LR */
++#define DP83TD510E_LED_MODE_LR				0x4
++/* SR */
++#define DP83TD510E_LED_MODE_SR				0x5
++/* LED SPEED: High for 10Base-T */
++#define DP83TD510E_LED_MODE_LED_SPEED			0x6
++/* Duplex mode */
++#define DP83TD510E_LED_MODE_DUPLEX			0x7
++/* link + blink on activity with stretch option */
++#define DP83TD510E_LED_MODE_LINK_BLINK			0x8
++/* blink on activity with stretch option */
++#define DP83TD510E_LED_MODE_BLINK_ACTIVITY		0x9
++/* blink on tx activity with stretch option */
++#define DP83TD510E_LED_MODE_BLINK_TX			0xa
++/* blink on rx activity with stretch option */
++#define DP83TD510E_LED_MODE_BLINK_RX			0xb
++/* link_lost */
++#define DP83TD510E_LED_MODE_LINK_LOST			0xc
++/* PRBS error: toggles on error */
++#define DP83TD510E_LED_MODE_PRBS_ERROR			0xd
++/* XMII TX/RX Error with stretch option */
++#define DP83TD510E_LED_MODE_XMII_ERR			0xe
++
++#define DP83TD510E_LED_COUNT				4
++
++#define DP83TD510E_LEDS_CFG_2				0x469
++#define DP83TD510E_LED_POLARITY(idx)			BIT((idx) * 4 + 2)
++#define DP83TD510E_LED_DRV_VAL(idx)			BIT((idx) * 4 + 1)
++#define DP83TD510E_LED_DRV_EN(idx)			BIT((idx) * 4)
++
+ #define DP83TD510E_ALCD_STAT				0xa9f
+ #define DP83TD510E_ALCD_COMPLETE			BIT(15)
+ #define DP83TD510E_ALCD_CABLE_LENGTH			GENMASK(10, 0)
+ 
++static int dp83td510_led_brightness_set(struct phy_device *phydev, u8 index,
++					enum led_brightness brightness)
++{
++	u32 val;
++
++	if (index >= DP83TD510E_LED_COUNT)
++		return -EINVAL;
++
++	val = DP83TD510E_LED_DRV_EN(index);
++
++	if (brightness)
++		val |= DP83TD510E_LED_DRV_VAL(index);
++
++	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_LEDS_CFG_2,
++			      DP83TD510E_LED_DRV_VAL(index) |
++			      DP83TD510E_LED_DRV_EN(index), val);
++}
++
++static int dp83td510_led_mode(u8 index, unsigned long rules)
++{
++	if (index >= DP83TD510E_LED_COUNT)
++		return -EINVAL;
++
++	switch (rules) {
++	case BIT(TRIGGER_NETDEV_LINK):
++		return DP83TD510E_LED_MODE_LINK_OK;
++	case BIT(TRIGGER_NETDEV_LINK_10):
++		return DP83TD510E_LED_MODE_LED_SPEED;
++	case BIT(TRIGGER_NETDEV_FULL_DUPLEX):
++		return DP83TD510E_LED_MODE_DUPLEX;
++	case BIT(TRIGGER_NETDEV_TX):
++		return DP83TD510E_LED_MODE_TX_ACTIVITY;
++	case BIT(TRIGGER_NETDEV_RX):
++		return DP83TD510E_LED_MODE_RX_ACTIVITY;
++	case BIT(TRIGGER_NETDEV_TX) | BIT(TRIGGER_NETDEV_RX):
++		return DP83TD510E_LED_MODE_TX_RX_ACTIVITY;
++	case BIT(TRIGGER_NETDEV_LINK) | BIT(TRIGGER_NETDEV_TX) |
++			BIT(TRIGGER_NETDEV_RX):
++		return DP83TD510E_LED_MODE_LINK_BLINK;
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++static int dp83td510_led_hw_is_supported(struct phy_device *phydev, u8 index,
++					 unsigned long rules)
++{
++	int ret;
++
++	ret = dp83td510_led_mode(index, rules);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
++static int dp83td510_led_hw_control_set(struct phy_device *phydev, u8 index,
++					unsigned long rules)
++{
++	int mode, ret;
++
++	mode = dp83td510_led_mode(index, rules);
++	if (mode < 0)
++		return mode;
++
++	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_LEDS_CFG_1,
++			     DP83TD510E_LED_FN_MASK(index),
++			     DP83TD510E_LED_FN(index, mode));
++	if (ret)
++		return ret;
++
++	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_LEDS_CFG_2,
++				DP83TD510E_LED_DRV_EN(index), 0);
++}
++
++static int dp83td510_led_hw_control_get(struct phy_device *phydev,
++					u8 index, unsigned long *rules)
++{
++	int val;
++
++	val = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_LEDS_CFG_1);
++	if (val < 0)
++		return val;
++
++	val &= DP83TD510E_LED_FN_MASK(index);
++	val >>= index * 4;
++
++	switch (val) {
++	case DP83TD510E_LED_MODE_LINK_OK:
++		*rules = BIT(TRIGGER_NETDEV_LINK);
++		break;
++	/* LED mode: LED SPEED (10BaseT1L indicator) */
++	case DP83TD510E_LED_MODE_LED_SPEED:
++		*rules = BIT(TRIGGER_NETDEV_LINK_10);
++		break;
++	case DP83TD510E_LED_MODE_DUPLEX:
++		*rules = BIT(TRIGGER_NETDEV_FULL_DUPLEX);
++		break;
++	case DP83TD510E_LED_MODE_TX_ACTIVITY:
++		*rules = BIT(TRIGGER_NETDEV_TX);
++		break;
++	case DP83TD510E_LED_MODE_RX_ACTIVITY:
++		*rules = BIT(TRIGGER_NETDEV_RX);
++		break;
++	case DP83TD510E_LED_MODE_TX_RX_ACTIVITY:
++		*rules = BIT(TRIGGER_NETDEV_TX) | BIT(TRIGGER_NETDEV_RX);
++		break;
++	case DP83TD510E_LED_MODE_LINK_BLINK:
++		*rules = BIT(TRIGGER_NETDEV_LINK) |
++			 BIT(TRIGGER_NETDEV_TX) |
++			 BIT(TRIGGER_NETDEV_RX);
++		break;
++	default:
++		*rules = 0;
++		break;
++	}
++
++	return 0;
++}
++
++static int dp83td510_led_polarity_set(struct phy_device *phydev, int index,
++				      unsigned long modes)
++{
++	u16 polarity = DP83TD510E_LED_POLARITY(index);
++	u32 mode;
++
++	for_each_set_bit(mode, &modes, __PHY_LED_MODES_NUM) {
++		switch (mode) {
++		case PHY_LED_ACTIVE_LOW:
++			polarity = 0;
++			break;
++		default:
++			return -EINVAL;
++		}
++	}
++
++	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_LEDS_CFG_2,
++			      DP83TD510E_LED_POLARITY(index), polarity);
++}
++
+ /**
+  * dp83td510_update_stats - Update the PHY statistics for the DP83TD510 PHY.
+  * @phydev: Pointer to the phy_device structure.
+@@ -712,6 +893,12 @@ static struct phy_driver dp83td510_driver[] = {
+ 	.get_phy_stats	= dp83td510_get_phy_stats,
+ 	.update_stats	= dp83td510_update_stats,
+ 
++	.led_brightness_set = dp83td510_led_brightness_set,
++	.led_hw_is_supported = dp83td510_led_hw_is_supported,
++	.led_hw_control_set = dp83td510_led_hw_control_set,
++	.led_hw_control_get = dp83td510_led_hw_control_get,
++	.led_polarity_set = dp83td510_led_polarity_set,
++
+ 	.suspend	= genphy_suspend,
+ 	.resume		= genphy_resume,
+ } };
+-- 
+2.39.5
 
