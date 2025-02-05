@@ -1,80 +1,92 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BD222A4E8;
-	Wed,  5 Feb 2025 09:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C1F21A458;
+	Wed,  5 Feb 2025 09:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738748233; cv=none; b=F6y5rQ21CJxBnbQ9XhP+MTh3j3IXgJ9KpowhmcOUueyG15PFwZjzaelJTV2Hh7NFD3GsZBLec5EldHoSGTq01GBsXDHyfnRdvBF6qMTLRLxCJnWsY+JmLbrk6Ecvt6+i6M4zxvxGCMSmzxNj35LpY+OK6Rnk8i2UDH9s63KdEko=
+	t=1738748692; cv=none; b=t8YufhxlUS2guBh2W+iiTFdykAPMaqda2+N+M9fW514c1ttNETiH7YXYz2oTbXJjdPtqAFjMh7xUDuAb85384XbKkSjzkNEi3zehzBm3XkpoZXscRcJuuKbleMyNsvsOZjdLOPmWeEYETLlQX44vrruXj/hDSZkZme5yFFKR6iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738748233; c=relaxed/simple;
-	bh=Lg1j6RbsiZx0WEcUvereTbE7lg7iw5fnvk+9en3k8D8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=khY8aStfr+nJpCs7Krw56rTUH+LlGynwsi8rgJBzd55VfBwuSrPTsvJXIGjn1/eP7wuP3EbXfBe6tgcmlq+b+r27gWetcfUZZjcRBfmzJfPgWgofD2mijR1DfwJajOd5wSiqGsQ36pR9G4WegcMV/6dJDfXy/C6+eRLkiSKgQJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei-partners.com; spf=pass smtp.mailfrom=huawei-partners.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei-partners.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei-partners.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Ynw7B1zcmz6M4KQ;
-	Wed,  5 Feb 2025 17:34:46 +0800 (CST)
-Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
-	by mail.maildlp.com (Postfix) with ESMTPS id AEFA814034E;
-	Wed,  5 Feb 2025 17:37:01 +0800 (CST)
-Received: from mscphis02103.huawei.com (10.123.65.215) by
- mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Wed, 5 Feb 2025 12:37:01 +0300
-From: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
-To: <mic@digikod.net>, <gnoack@google.com>
-CC: <willemdebruijn.kernel@gmail.com>, <matthieu@buffet.re>,
-	<linux-security-module@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<netfilter-devel@vger.kernel.org>, <yusongping@huawei.com>,
-	<artem.kuzin@huawei.com>, <konstantin.meskhidze@huawei.com>
-Subject: [RFC PATCH v3 0/3] Fix non-TCP sockets restriction
-Date: Wed, 5 Feb 2025 17:36:48 +0800
-Message-ID: <20250205093651.1424339-1-ivanov.mikhail1@huawei-partners.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1738748692; c=relaxed/simple;
+	bh=J6AXsn3lH7MBCqC6dF7yAkLsCQbHWrYkDB7bo9+iMlY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AbG2fi4XSAo5IIn0B3LQixOnyr8BCzCBEVmow6zooqwNdBlxNeNsYVDXMX71XNq4eC9nC2X/SZOyXY6bs3v66vmgJYMtSfJ7DMwq9QMSdDALK6q4Ke9bUqClu2SluS/WGejnBzPYY5x76ecPgBJeexmZQg9WU18pN17wk4j6UNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fUuCAvQK; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fUuCAvQK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738748687; x=1770284687;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=J6AXsn3lH7MBCqC6dF7yAkLsCQbHWrYkDB7bo9+iMlY=;
+  b=fUuCAvQK1H9xny/lo4SBZ7vn2djeCn0cjUQvjQdVGNXliVydg8DXSrL0
+   6otbPX0dMwdG3l81Ge2JDaSolGbjqQ5RgUoIvBi9jm9lUrEDrAoPYjCcZ
+   QTqjunuJUw97Rn8mNsykiY8FlpzAenZTSPNxmMHZf65wJNiPlYbt9P1e9
+   RRsOiOnX5EgRk3/raTYQiaI+wb9lusS9C/a3pCT1K7lGqW3gVwYWSPKAS
+   dLPXqPRuwGvtnozMJrW6Hjh4qPR8fEWa1Xmvvse1JOtOApbxFt6Eq9fcP
+   /zPugS+q285zX5vyg6Q30iNtzBXlnqk6eR+P0jQ4Dpe8o4i1J+1Q8KTQh
+   w==;
+X-CSE-ConnectionGUID: RT2ZXwbQSuOb1x8C7ITICQ==
+X-CSE-MsgGUID: 67HaaBpVScmY2GbozbQ6Sw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39463536"
+X-IronPort-AV: E=Sophos;i="6.13,261,1732608000"; 
+   d="scan'208";a="39463536"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 01:44:46 -0800
+X-CSE-ConnectionGUID: gsJi0kixTue3luxQo5W+OA==
+X-CSE-MsgGUID: JKqigt94Szu8N4LOKnQWqw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,261,1732608000"; 
+   d="scan'208";a="110707699"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 01:44:43 -0800
+Date: Wed, 5 Feb 2025 10:41:11 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>
+Cc: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
+	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"Knitter, Konrad" <konrad.knitter@intel.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: Build error on
+ "drivers/net/ethernet/intel/ice/devlink/health.c:35:3: error: initializer
+ element is not constant"
+Message-ID: <Z6MyN8U6rt/6Ayye@mev-dev.igk.intel.com>
+References: <CY8PR11MB7134BF7A46D71E50D25FA7A989F72@CY8PR11MB7134.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500004.china.huawei.com (7.188.26.250)
+In-Reply-To: <CY8PR11MB7134BF7A46D71E50D25FA7A989F72@CY8PR11MB7134.namprd11.prod.outlook.com>
 
-Hello!
+On Wed, Feb 05, 2025 at 03:18:30AM +0000, Zhuo, Qiuxu wrote:
+> Hi,
+> 
+> I got the build error messages as below:
+> My GCC is: gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0.
+> 
 
-This patch fixes incorrect restriction of non-TCP bind/connect actions.
-There is two commits that extend TCP tests with MPTCP test suits and
-IPPROTO_TCP test suits.
+Try compiling with gcc 8.1 or newer.
 
-Closes: https://github.com/landlock-lsm/linux/issues/40
+Thanks,
+Michal
 
-General changes after v2
-========================
- * Rebases on current linux-mic/next
- * Extracts non-TCP restriction fix into separate patchset
-
-Previous versions
-=================
-v2: https://lore.kernel.org/all/20241017110454.265818-1-ivanov.mikhail1@huawei-partners.com/
-v1: https://lore.kernel.org/all/20241003143932.2431249-1-ivanov.mikhail1@huawei-partners.com/
-
-Mikhail Ivanov (3):
-  landlock: Fix non-TCP sockets restriction
-  selftests/landlock: Test TCP accesses with protocol=IPPROTO_TCP
-  selftests/landlock: Test that MPTCP actions are not restricted
-
- security/landlock/net.c                     |   3 +-
- tools/testing/selftests/landlock/common.h   |   1 +
- tools/testing/selftests/landlock/config     |   2 +
- tools/testing/selftests/landlock/net_test.c | 124 +++++++++++++++++---
- 4 files changed, 114 insertions(+), 16 deletions(-)
-
-
-base-commit: 24a8e44deae4b549b0fe5fbb271fe8d169f0933f
--- 
-2.34.1
-
+> 
+>   CC [M]  drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.o
+> drivers/net/ethernet/intel/ice/devlink/health.c:35:3: error: initializer element is not constant
+>    ice_common_port_solutions, {ice_port_number_label}},
+>    ^~~~~~~~~~~~~~~~~~~~~~~~~
