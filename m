@@ -1,115 +1,128 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9A622617B
-	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 15:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6471F416F;
+	Thu,  6 Feb 2025 16:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738857586; cv=none; b=j+gdJl5U3un1lEpObw+3pYNu049lOSalziSTO7cwh4G3lYLwMHxABGl2ddccKvr10r/Ve0kYxrp+jbw+FCG3q+71E/pf56UkLIVAWQt3yyDYwKhartovPkZ+bSjSy5nW+cU5IRkRRJGibLomtedBZGXpQy9jeTPRGpPkg5jok7Q=
+	t=1738857668; cv=none; b=tvPeLl4hjwq/tArrU0Ffp8jMHeX/OzM4Li/w3N3epBs+WFGmzwYrvxYbKBpP1bcvh2igHWGMH6b7SLDsyitjkzMvTSMVyD7j480fweUhE6DK83xKTw4x7thRkVQrMSKKteiwXDkOb5b8bhyp5Ly+gfbLWXnZ7QxGchL2qLFYlpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738857586; c=relaxed/simple;
-	bh=olSie/7EBh8alXKr5hkItA/0Nn+OwVa4XWVccRk5lj4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ut1NzZbSfxcBAtgQNjWuS4gMYufaTwDZo11uVvgrGIaqTzJOELg/+EC9d4jt7awOdJl3VDLVLnRemaPfkD/BuY51g5zpa0uS7xH47TFqY5BxIO018My5xbTf69jRJb2Qnp+gp+yp/+9qIiMjl4at62vs7dmHaQOPPQCBiB/bcRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=noo221zP; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738857668; c=relaxed/simple;
+	bh=CRbUrt8hTzi7475aDlmDlLKM7hBdm42ThEEOGqT4H4g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tmz0rFm0bolvefaMWC7FfgyPdcsQZz3DfjlmvC2idh27Uw4V5vSp0XAzHYBpVjWKzNEwgbEkp/P9oyaikpW87eSAIWtJARx8tHrDCKXa60edwdb+7XwRl3TeaeYhxCCVODNcAlbIqVTuyzBDROv1g7jB8DFo4s86arwn2A2T9aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fxvu6Zx0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="noo221zP"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4678d6925a4so121cf.1
-        for <netdev@vger.kernel.org>; Thu, 06 Feb 2025 07:59:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738857584; x=1739462384; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sWR9oJPKssdhza1nYQKKsQU21w2ncXfqnG8efMNfd0Y=;
-        b=noo221zPO4iGot9+PBGfkYXeqJL4p2VLr7rGUI7QKz90oJdwN37h6o5RpmBif6K0QH
-         BISKZsO2slVStbDFz505W51D/mbzpJRYczAY6QrEExU4t6iCt6xAAZCFLtFQd/ySyMqI
-         Y/oBYPsgkp2FwEIuoG+7CBhnngY6KOZMdByzWQkgly1E3ooXbTTlL5NBWS15mIul/3g+
-         jKPK1TR7PTZnnNwOyQbbtfC/6mKtOEvzkJ8Bk+qbNEOtd8igfUdMiY7nd8O69u82VJi1
-         lRPVwE76VtVR6ShLrZWhwItJA6KuJypKDCcx0CdGalaAby3RLQ4BIfY4s0lbjlQOYL6L
-         g5AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738857584; x=1739462384;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sWR9oJPKssdhza1nYQKKsQU21w2ncXfqnG8efMNfd0Y=;
-        b=TfVrhUSra8m3oLqOqSwwAbp+s4l8mViWG6DAKvM38T/tXCeIlIOI0guGnMzk4753os
-         51U/GXojZqu22fZm9oyM8DUf3srQSZ2lB38MZivCFKBFFwanIuaruw0/rmXbMZQb15nD
-         AaM2oSklIxm26HkLuvOdEeY4LrFyssVkMD+KcPgEksFWxmIwoXXkQ9IQnkVXdWuuGt0T
-         9dOt6s8OgKr9ewmq3RQexVbshl5EO/8n66g1RE3IBi1T2daAqWjlqQrHJwALbi14eO4L
-         t0S1RkgBfx0cpoCEQUlyOZeP7dw5xAQktEjn83JvGiQBw5LuISQ8IyebPou/QEfqlGRr
-         ov4g==
-X-Forwarded-Encrypted: i=1; AJvYcCXI0OyDb9NR9FeVyLkJpdukWDPznDvEXymtmYvsXEAMxavlyLGlcm1S+GWqEGsCpJbJ6VcrwiY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4mbDDBAPH9E6MejaQFgN4VGUvHZudyMbxPQaUmfwspFa7A4en
-	1g4NfmdBBLHWG8KJwUCRLKwFw/8T7sWD14UP89Nj/3pgJffJW7UdUQHe2gxHnjrgMLSivXOGrbc
-	5Zg/AswUppwDliHh7wZ8orqbYGvPMhCNqg8wC
-X-Gm-Gg: ASbGncviNgTjp2vYAWAf5r4ZNVCv73skTSJmZqi7/dOrHMhz3PMtGXjMp6lAyAH2vyt
-	WSSXjFzMh16eo/iuLQcfrdO0Z/zsiJVoF16CaGuhoyU073tax8g2xGoZvDQdpkmtHGJx4/Shydn
-	8L7ZfIDaruo7e/x2eo7GW0mNszUrsgvA==
-X-Google-Smtp-Source: AGHT+IGH7hsPF5SPtvgDNjPtztM3BVJU7tfmP0H3iF/9iVPHoSTkUMp5iK1R9AA19xlpHDkDamYS1MpqyylKUWYY6aU=
-X-Received: by 2002:a05:622a:1805:b0:46e:457d:3b77 with SMTP id
- d75a77b69052e-47165a82e58mr130811cf.1.1738857583450; Thu, 06 Feb 2025
- 07:59:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fxvu6Zx0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F367C4CEDD;
+	Thu,  6 Feb 2025 16:01:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738857667;
+	bh=CRbUrt8hTzi7475aDlmDlLKM7hBdm42ThEEOGqT4H4g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Fxvu6Zx0Q8P6eCMe27z0y2ijR0hj+oqqiDVgyU0FaM/WikmqoNkuynWHz8cFAweNB
+	 LprWdS7bUJcjd34W9B4dU/MK7oCkEYhrzXjsZ7zOhqHHRMaydF1h5r7VHl2x4UhALD
+	 XSrlvV8lpc6tAOP8PZU9JOodxhbDVhrMq2S4mCnc+aFZXZmht4LDL9ce00FuSV+XEp
+	 OKyIEwNtJqsLVHpriVmMqEUK1Nj+1Ep3Iu+HrJ2rK357D1pti3uo3RCuJq/UK4qB3m
+	 awo3jKHl0qZepCjaWzj2DYVRXjHjOwGT/Q5nBjutRntk+Ww5wVnm6hlKrobRRGtwUk
+	 +24DXo11ef+aw==
+Date: Thu, 6 Feb 2025 16:01:03 +0000
+From: Simon Horman <horms@kernel.org>
+To: Peter Seiderer <ps.report@gmx.net>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>
+Subject: Re: [PATCH net-next v4 13/17] net: pktgen: fix access outside of
+ user given buffer in pktgen_if_write()
+Message-ID: <20250206160103.GV554665@kernel.org>
+References: <20250205131153.476278-1-ps.report@gmx.net>
+ <20250205131153.476278-14-ps.report@gmx.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250204091918.2652604-1-yuyanghuang@google.com>
- <20250204091918.2652604-2-yuyanghuang@google.com> <5c11113e-c7d0-4c71-9f5c-02e7a90940fe@redhat.com>
-In-Reply-To: <5c11113e-c7d0-4c71-9f5c-02e7a90940fe@redhat.com>
-From: Yuyang Huang <yuyanghuang@google.com>
-Date: Fri, 7 Feb 2025 00:59:06 +0900
-X-Gm-Features: AWEUYZk7cbJAarhb2cqsOUMx5yzgFTIkZpsJTYlSbj3SkN-NU4ddBvCaqMPTFuE
-Message-ID: <CADXeF1HWUkDE_dS0sEWcfqRjYca83ESrF6F4TDaOKEVVDd2PhA@mail.gmail.com>
-Subject: Re: [PATCH net-next, v7 2/2] selftests/net: Add selftest for IPv4
- RTM_GETMULTICAST support
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
-	netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>, 
-	Shuah Khan <shuah@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>, 
-	Hangbin Liu <liuhangbin@gmail.com>, Daniel Borkmann <daniel@iogearbox.net>, 
-	linux-kselftest@vger.kernel.org, =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>, 
-	Lorenzo Colitti <lorenzo@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250205131153.476278-14-ps.report@gmx.net>
 
->The preferred way of handling this case is to define a new class, still
->derived from YnlFamily, setting the correct path in the constructor.
+On Wed, Feb 05, 2025 at 02:11:49PM +0100, Peter Seiderer wrote:
+> Honour the user given buffer size for the hex32_arg(), num_arg(),
+> strn_len(), get_imix_entries() and get_labels() calls (otherwise they will
+> access memory outside of the user given buffer).
+> 
+> Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+> ---
+> Changes v3 -> v4:
+>   - replace C99 comment (suggested by Paolo Abeni)
+>   - drop available characters check in strn_len() (suggested by Paolo Abeni)
+>   - factored out patch 'net: pktgen: align some variable declarations to the
+>     most common pattern' (suggested by Paolo Abeni)
+>   - factored out patch 'net: pktgen: remove extra tmp variable (re-use len
+>     instead)' (suggested by Paolo Abeni)
+>   - factored out patch 'net: pktgen: remove some superfluous variable
+>     initializing' (suggested by Paolo Abeni)
+>   - factored out patch 'net: pktgen: fix mpls maximum labels list parsing'
+>     (suggested by Paolo Abeni)
+>   - factored out 'net: pktgen: hex32_arg/num_arg error out in case no
+>     characters are available' (suggested by Paolo Abeni)
+>   - factored out 'net: pktgen: num_arg error out in case no valid character
+>     is parsed' (suggested by Paolo Abeni)
+> 
+> Changes v2 -> v3:
+>   - no changes
+> 
+> Changes v1 -> v2:
+>   - additional fix get_imix_entries() and get_labels()
 
-Thanks for the advice. Will fix it in the next patch version.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Thanks,
-Yuyang
+> ---
+>  net/core/pktgen.c | 176 ++++++++++++++++++++++++++++++----------------
+
+...
+
+> @@ -1015,7 +1025,8 @@ static ssize_t pktgen_if_write(struct file *file,
+>  	}
+>  
+>  	if (!strcmp(name, "min_pkt_size")) {
+> -		len = num_arg(&user_buffer[i], DEC_10_DIGITS, &value);
+> +		max = min(DEC_10_DIGITS, count - i);
+> +		len = num_arg(&user_buffer[i], max, &value);
+>  		if (len < 0)
+>  			return len;
+>  
+
+As an aside:
+
+The code immediately following the hunk above is as follows.
+And this block it is representative of many (all?) of the code
+modified by the hunks that make up the remainder of this patch.
+
+My observation is that i is incremented but never used again -
+the function subsequently returns at the end of the if condition.
+
+So perhaps it would be a nice, as a follow-up, to clean this up
+be removing the increment of i from this and similar blocks.
 
 
-On Thu, Feb 6, 2025 at 11:23=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wro=
-te:
->
-> On 2/4/25 10:19 AM, Yuyang Huang wrote:
-> > diff --git a/tools/testing/selftests/net/lib/py/ynl.py b/tools/testing/=
-selftests/net/lib/py/ynl.py
-> > index ad1e36baee2a..7b1e29467e46 100644
-> > --- a/tools/testing/selftests/net/lib/py/ynl.py
-> > +++ b/tools/testing/selftests/net/lib/py/ynl.py
-> > @@ -38,8 +38,8 @@ class EthtoolFamily(YnlFamily):
-> >
-> >
-> >  class RtnlFamily(YnlFamily):
-> > -    def __init__(self, recv_size=3D0):
-> > -        super().__init__((SPEC_PATH / Path('rt_link.yaml')).as_posix()=
-,
-> > +    def __init__(self, recv_size=3D0, spec=3D'rt_link.yaml'):
-> > +        super().__init__((SPEC_PATH / Path(spec)).as_posix(),
-> >                           schema=3D'', recv_size=3Drecv_size)
->
-> The preferred way of handling this case is to define a new class, still
-> derived from YnlFamily, setting the correct path in the constructor.
->
-> /P
->
+		if (len < 0)
+			return len;
+
+		i += len;
+		if (value < 14 + 20 + 8)
+			value = 14 + 20 + 8;
+		if (value != pkt_dev->min_pkt_size) {
+			pkt_dev->min_pkt_size = value;
+			pkt_dev->cur_pkt_size = value;
+		}
+		sprintf(pg_result, "OK: min_pkt_size=%d",
+			pkt_dev->min_pkt_size);
+		return count;
+	}
+
+...
