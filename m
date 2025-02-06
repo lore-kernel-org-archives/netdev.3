@@ -1,206 +1,227 @@
-Received: from FR6P281CU001.outbound.protection.outlook.com (mail-germanywestcentralazon11020117.outbound.protection.outlook.com [52.101.171.117])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EA022DF86
-	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 12:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.171.117
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738844600; cv=fail; b=Wr8PphSrSRI13ypbpvaNdZqde7Sn4nUyMkkMhyO7mqyFJtc+nCyiSx8woG65SdNg2uHY6270anCS77BXyQvthN7XODg0NTBed9luXAQgVQqUGQWezp2YaV6IIKRPKvAk4qyrF77t92km+V+7+1JWlglKbzt0mJxefNPqTRE8Uxk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738844600; c=relaxed/simple;
-	bh=Z3AzdwSxvkax2wqsHW3OyiFwvyILDyiVDtER+Ziuhgg=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=bZiUFYsWlJhMalyYjN4zXGDtzPTHuFfbf1FgQVHzA0mV07QQlsrAOBC/egjhkg9/VlLdRjAdgHx1qfyxNrM/tOXDCeUs/d4+y9a9qK3jgDhyUvASmlXU9YsUuEg0LkeRDY86+01bTgfkCdJc4wsMThLjAg15FahHnNJCY9XpvYM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eckelmann.de; spf=pass smtp.mailfrom=eckelmann.de; dkim=pass (1024-bit key) header.d=eckelmann.de header.i=@eckelmann.de header.b=MIBZY8+v; arc=fail smtp.client-ip=52.101.171.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eckelmann.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eckelmann.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D352522DFBE
+	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 12:32:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738845131; cv=none; b=XPAWQgLlRpBC28y2O9gH/oiRWfdi387vRD6EDURHwiWHhKTA28WrIkDkOFzBFGEoiL4B0dlnTiMG0Do3cOl4QNKZjmfb0r3ymS6s7G5lSHeHit+FObglyYlNLG73lb6aP5SXEOuhcZDFj4BZzaCEVxMBlSJg+mHZ14LEiGmwnBc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738845131; c=relaxed/simple;
+	bh=D6rSv5QJt8rljmi1u+LhaGbvWVdAvFOUbjBSD9nJTkE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ccb841ZBi4Fq2G5zRSt8zyfBfC8fz2GeeNp0lh/x970NKZ/sJT8fsgeJmVwNlzb8gimN60S2cqmx3S+1kINLcPJ843SWYXFp9/i/Jn90Z5kILy4tG40w+4Wmhznc2UL0QnbqumAK9mKwkGIdqFWBMV9QTmlkbHObw10edmN3I/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=II48N7hC; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=eckelmann.de header.i=@eckelmann.de header.b="MIBZY8+v"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AupmwcZc6drHnZEdor9caIvC+OewYj/2PFCDXW1WI2AEu0+0tTONtQuchKNQsYtbLz0DoqUoaEqH5Cfz4h4eYYM46YCunWEHQXH3YWvHLwhqT+zQkftS8yQBikmsQlz36J+DUTgeJynnV7dVfoL/60d7TqlPUeNnpQ1P3oZ0lCcAJ6Jg63iZWYfnQE02ekZfmRmAHqTQaCuTu7egwD3u4E1hCFDGM1f3KPEXn8iw1vEMWJPjkEfZG+B+xvca3GdfjR7dRvWBVmbaw6Qi6V/R4CShT3oEI/5QydJGGbiirWrQcmtxXNTqrcRXIdjXlk1kH08HZXZE+A9tUYYzjhYYxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yYjgGwm+XmApi78rSzISEbxSi8k/Z3vS+fCiWtAV4V8=;
- b=u5PYBSnQRRu4KqUynwivHjxWymoZ3/YqsZF5/XlmvbSC39tplpbvqoCJJ21SeKAEriFTzupeR72kIs6orG63rL8dGza9OAvnsl10Jd3SIQ4Nu/XOVPMfdulZN5zQwbMZ9yVhbC1K+/uUJKXDxdpfuw4N+hQkGG5aoSra5+GnKl0APcbwVkXOj4kSq9BfoYpA4W6bbGMorV/Wv1G4kEWKMPau8gatePUDMVT4EsrjZJkz5+TK3nrAndJto8UuGM8zXQ7AUUob/EX36Kko8hVGEDh8Jr8MEhhIimvj6xACDr5JN/F+0Tn6jLIRLvNgAgy8xyCj0/f1x2ppJd3tHz5IAA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=eckelmann.de; dmarc=pass action=none header.from=eckelmann.de;
- dkim=pass header.d=eckelmann.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=eckelmann.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yYjgGwm+XmApi78rSzISEbxSi8k/Z3vS+fCiWtAV4V8=;
- b=MIBZY8+vwOI4ZcK8c5Nm+35r9yBCCbyl0KndVWByRI6Um2F4vG/MHOKLgA7ITNCUOMl26lwiRk/CRazMEpSp/mbsOqRoj3Agpi6v0cfj+LyA7ZdDvCkvNC2klLbxMRPsj5ObuBzDFUfeKznf6k/78kNtfMCQ3aMm1e/TCXMztqw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=eckelmann.de;
-Received: from FR4P281MB3510.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:da::13)
- by BEYP281MB4405.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:b0::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.13; Thu, 6 Feb
- 2025 12:23:12 +0000
-Received: from FR4P281MB3510.DEUP281.PROD.OUTLOOK.COM
- ([fe80::3927:fe99:bb4:1aa7]) by FR4P281MB3510.DEUP281.PROD.OUTLOOK.COM
- ([fe80::3927:fe99:bb4:1aa7%6]) with mapi id 15.20.8422.010; Thu, 6 Feb 2025
- 12:23:10 +0000
-From: Thorsten Scherer <t.scherer@eckelmann.de>
-To: netdev@vger.kernel.org
-Cc: Woojung Huh <woojung.huh@microchip.com>,
-	UNGLinuxDriver@microchip.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	kernel@pengutronix.de,
-	t.scherer@eckelmann.de
-Subject: [PATCH] net: dsa: microchip: KSZ8563 register regmap alignment to 32 bit boundaries
-Date: Thu,  6 Feb 2025 13:22:45 +0100
-Message-ID: <20250206122246.58115-1-t.scherer@eckelmann.de>
-X-Mailer: git-send-email 2.47.2
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR3P281CA0004.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:1d::23) To FR4P281MB3510.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:da::13)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="II48N7hC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738845128;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=K1Qok3qY+Sgc1nq8fGNVOEuzrOY5wRE4ZSW4ewvvA58=;
+	b=II48N7hCv097474MAjEq8Vm35XaFOhCwtK3aluMzhLI1QgZAo5VLaPaWh6o3Fnq2HMyrx+
+	OzA+BtDOwiRAsmQ0o3vs2+DnvwgaZZGrgCe2rdCms2+K7axuGSgSMFc6hvsLS8e9cGSr3/
+	l+2Mgdt/Swbjnc8sFt+5wV5PrIn7lQs=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-_goKTm1ENwuqRiiM2bRrZw-1; Thu,
+ 06 Feb 2025 07:32:03 -0500
+X-MC-Unique: _goKTm1ENwuqRiiM2bRrZw-1
+X-Mimecast-MFC-AGG-ID: _goKTm1ENwuqRiiM2bRrZw
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0FA401955DD0;
+	Thu,  6 Feb 2025 12:32:02 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.32.200])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E0CE01800352;
+	Thu,  6 Feb 2025 12:31:59 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: torvalds@linux-foundation.org
+Cc: kuba@kernel.org,
+	davem@davemloft.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Networking for v6.14-rc2
+Date: Thu,  6 Feb 2025 13:31:06 +0100
+Message-ID: <20250206123106.37283-1-pabeni@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: FR4P281MB3510:EE_|BEYP281MB4405:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1f187e7a-ba2e-437b-0b84-08dd46a90449
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UARl3SeskQju7ATPGMxvU6KbKabG6EqTUFZWZlV1RKiN/nx6E2WwXukieMWQ?=
- =?us-ascii?Q?BPhXqj7U/CmRl2egbE+IwlLbsHAiDMsPWDekxmi2upbDP6R0w5ZMCexGzMkX?=
- =?us-ascii?Q?f5tQadA7ufHhrdGFciNlEBXjlMcwVMx6MvT7xxChMx3I0Ecw6tqgxffl/n2E?=
- =?us-ascii?Q?Ldkj05wxBefbLVU5WR1wvrLz3+iQJWo5qrP5AMgn9kRxvxXypXs6llvEpInW?=
- =?us-ascii?Q?QJmA++sIOjeuaiCd/dxEj8Se9moGbJ5gTmSkvAphUGjLhEtmDFaz9GUQz6ae?=
- =?us-ascii?Q?n1ewg+nDTMaNftaptfVJxqCBNmGIscjf8nu8Yej4xl+YCD+NqEttxNYRbuO5?=
- =?us-ascii?Q?o4EKtlJZkYDE5mUOp+k6St2JeRmecYLUfaWrwn5PUCOJmdbc3YvKrkQtS8D3?=
- =?us-ascii?Q?TPeB7tIY79nA6+JE3pdF5W8LGN3Y3cIxqcflsmCELU0ny3Zz49ooIJExM7WA?=
- =?us-ascii?Q?+M/ktdrbrADJJIKqkbvcQOed5zKmcJM3kb2PNizbedoSm5xwg67JSYb8oZds?=
- =?us-ascii?Q?eep7EZnRgmxt3HtqeFFY7dvw+XypQHOcwIe7V/9ZvjaOJQ4gdZPn2wCFzT/N?=
- =?us-ascii?Q?HFCU0BeTjGTxdUhNxtUNfDMZUVFBB6f/piQ/XtY65wwhUfu4KMkoV/SGeWGm?=
- =?us-ascii?Q?sWYzLmO49ZxNaqkUnOwJE3iOfsgKVbzXjqBzMfXJil6MEXnU75NV3zyxyuvS?=
- =?us-ascii?Q?JRy98jJyr/lHKPDHa52YSDbm0N6INy0GV8Jom1/7Quv0M1NLNN5+oMuNCQbX?=
- =?us-ascii?Q?Gqj3TOnx7ApgEacJDvxBsI5kvaz2PYPlY4WY+FIchcjViI2yN2dxjJa5JoQQ?=
- =?us-ascii?Q?kJfz6i5vfGtqIMuLPNwzCXMHZQ89KcjBuYp4JVUnH55DxNR9h19xXTJTJb97?=
- =?us-ascii?Q?Ekw784vrbFiuAOCwpOcQXwHyGqpuNTaqtD6JLHeVOY0/hbn7EjoeEMACkfD3?=
- =?us-ascii?Q?PjtjKk+5vDwTeuF/ovo2MES6iYcghViPk3H1RjU4/4zBR91btPcqY6FN/AMN?=
- =?us-ascii?Q?TjCzs32HYzWsf2ziWo/g9Y80XP4Se97d2m7mKkN+ifejaGBed2YG88a9E5xo?=
- =?us-ascii?Q?bGFJAEDwdwpdyCkl/PGEOzaI8y1ZyOXaLoqnRr651NckdmeXQ/hp2w124/0D?=
- =?us-ascii?Q?P9sg6XmlGcptjOddEJGHfObnA8fytaC88WZHJCoXSlG6MerTyXAdg7dRqXwK?=
- =?us-ascii?Q?IdNxgy+uOmbrCwx/h60xjOCA5hc5HTuFCs9MUzF82y2Fkv07f+y3/ADWo8ml?=
- =?us-ascii?Q?e0wQW/VxEiHdKDqKc6aXxnK2fIsk5R7F8ZQWhCGs7P5RjHhCpIyktVraGgsc?=
- =?us-ascii?Q?UNlyOoPKHkIDE1KPMa4BO1edT2ezzVFyN/Ceup5vV/QguD+j9B4GOJedcgYM?=
- =?us-ascii?Q?QqAXNPoEJfp7RhoxPf8ZX+BwwVaN?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR4P281MB3510.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HbJavuOvYcQdmyRDE4ryHJ1iQ/lYJTD9LCsdc3q8zLniwbGaVVkvSL4JR1ms?=
- =?us-ascii?Q?waZMwYlJ+r7lmCqShqt4zXzvjvK2uYBfngNvY1fg7pOI1zl97BgrS6Ivmzjl?=
- =?us-ascii?Q?Ld9lUVvgooqTgCjAqksJaVRrQlydYT+R/WbUNJspKADxQArrblScByLb+PlP?=
- =?us-ascii?Q?hbnIlBKG9X2pSiV0RNMwQlcKG50IltYuwITIZbrNKFIXm/X0c+xzIM5Nb+rM?=
- =?us-ascii?Q?V2AyoWXLaReXLCY1BJnvSt+Fe3+3E3DTGRnMWhiNpv9TrBNnDoq9PZcHeCMl?=
- =?us-ascii?Q?KJUXoOk/vkc5eJJRRFRaxS9MBKLPO2+f9841lFocO5ityTGW7dzdgutu99GE?=
- =?us-ascii?Q?Xm9tFWEeb8ASz1TxK7+cx9rL19x0Rj0pjO9SUXtJtMHhi/ULHUIwS/X9oEMG?=
- =?us-ascii?Q?99/AEj+rQk31EaqUlE2nmieftpK0YxR2KpV8EVRw7kPf80twLS3Tz5hCnwBS?=
- =?us-ascii?Q?ylC+GOO4wccaYd7YJ/j/AQWy7O+JcLEuSJLf3PGcaWiLQ3NtAydygvXi1JYx?=
- =?us-ascii?Q?WRYxdJ60zf9rde5Uv2buu7jl3p7tGMcRK5067qHINWjqBCetXzxkplx0s4dz?=
- =?us-ascii?Q?RFBs0GQrR3OkV0mTUtz0OKVG5FLHR78XBjg22b8XObldLklvJFoFz1e/T186?=
- =?us-ascii?Q?rH2OwED/60iDylyASCCHh7Kshjn2w/BchOuORcVcJRG9b/RlJPzkMbXmOg8d?=
- =?us-ascii?Q?jlwiRz0o2xAOMFk9KNVa3a0qMffGOJmnocgYehnmBKDmqSQ3C5thAAAUECP/?=
- =?us-ascii?Q?IhcDAa8246fYpC3949tvA8ME2lJ5wHhODA64y5iFMR/anAPMY+kcnT0qnCfw?=
- =?us-ascii?Q?epQ+sRtfmV3F/aY6OY2/lPER9q9R6o9bjIFAqQhnuJqVsRrx3OkeE2RnKXMJ?=
- =?us-ascii?Q?RZgIYhsSf/ebmfFGXCrlLiyi7yYr2m1LAChfYnaQ4F7vNjK/UKzNu+5bB8zV?=
- =?us-ascii?Q?xKrSAQP7oQhs43aX4ILzcE4J1vNgNSKk0CBzHoziCWkP4a7XsGCDEpyvkcua?=
- =?us-ascii?Q?/WPRj0jDqz7w9VOwxTkBVpDY1wxL4zpqGD3N0Bl/juQerBc/DV8Gtu/temc9?=
- =?us-ascii?Q?iTE+rM3Z6dO2OAHpDgBErS1oeAL3kUnNrIlEKmIqSGPevN70OB9ivXExYVE7?=
- =?us-ascii?Q?eeMI8uyFq0lbgiTN6y+Hxk/mmDckK/UifVCHcI+LMEFVO31u/ZG8vHbWoBDF?=
- =?us-ascii?Q?YUVifpsXpS5MWOrKbm7/IvVrxrfAsta9udU5nfQQt0W5aw/2t0H73zWwXGg4?=
- =?us-ascii?Q?MRqhJakk+9zyProDTyPbo1nnECWePBOMm46c0dRyuyyrK8BEu+o1VQy6rl//?=
- =?us-ascii?Q?t3GeikfZ+VxbK/Ba3GamwnJEnB+6JETh6VxoDILY4oAmFmyCJniJuXnqDxo2?=
- =?us-ascii?Q?2/lBKMhgwaw5DzMaO11vEIgT2jOxzOI4Mw9Swsy8Op+W30tHY89b+lIqF6YO?=
- =?us-ascii?Q?0z7ndQLbUMkE60Ax/v0GIe6pYshm9t6z81lOCUOiVFvcD/snarvFpQBqLeZ8?=
- =?us-ascii?Q?MCfhNSAV40pRJ7wDzXITIwHGhs10BVQixIqvp0NtGCLtnjLF/hdgRHyindIT?=
- =?us-ascii?Q?kxlwHPHoZSqU59mXpJahmFsxCUADJtiRJ2MrYmxBXhsBue7FvDfkVIWov2vK?=
- =?us-ascii?Q?QjiMnHsknOp0JCskBpzMHNlt7+cUqB0WtyTN+t0H22HPePGrI8lLgdTtnvUQ?=
- =?us-ascii?Q?8pf7tg=3D=3D?=
-X-OriginatorOrg: eckelmann.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f187e7a-ba2e-437b-0b84-08dd46a90449
-X-MS-Exchange-CrossTenant-AuthSource: FR4P281MB3510.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2025 12:23:09.8786
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 62e24f58-823c-4d73-8ff2-db0a5f20156c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y+xqfi7h2h/WKw3O97cT2mZAx8oBGorcDmM441/OIgp2OOAqtGlaIbn5O/ywY/7qo8tJpUchs9DtvwjJyprsDA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BEYP281MB4405
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Even though there is no errata for the KSZ8563 the device shows the same
-error as the one fixed in commit 5af53577c64f ("net: dsa: microchip:
-KSZ9896 register regmap alignment to 32 bit boundaries").
+Hi Linus!
 
-ksz-switch spi1.0: can't rmw 32bit reg 0x113c: -EIO
-ksz-switch spi1.0: can't rmw 32bit reg 0x1134: -EIO
-ksz-switch spi1.0 lan0 (uninitialized): failed to connect to PHY: -EIO
-ksz-switch spi1.0 lan0 (uninitialized): error -5 setting up PHY for tree 0, switch 0, port 0
-ksz-switch spi1.0: can't rmw 32bit reg 0x213c: -EIO
-ksz-switch spi1.0: can't rmw 32bit reg 0x2134: -EIO
-ksz-switch spi1.0 lan1 (uninitialized): failed to connect to PHY: -EIO
-ksz-switch spi1.0 lan1 (uninitialized): error -5 setting up PHY for tree 0, switch 0, port 1
+Interestingly the recent kmemleak improvements allowed our CI to
+catch a couple of percpu leaks addressed here.
+We (mostly Jakub, to be accurate) are working to increase review
+coverage over the net code-base tweaking the MAINTAINER entries.
 
-So apply the same changes to the ksz8563_valid_regs struct to fix this
-issue.
+The following changes since commit c2933b2befe25309f4c5cfbea0ca80909735fd76:
 
-Fixes: 5c844d57aa78 ("net: dsa: microchip: fix writes to phy registers >= 0x10")
-Signed-off-by: Thorsten Scherer <t.scherer@eckelmann.de>
----
- drivers/net/dsa/microchip/ksz_common.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+  Merge tag 'net-6.14-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-01-30 12:24:20 -0800)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 89f0796894af..25226490d467 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -717,10 +717,9 @@ static const struct regmap_range ksz8563_valid_regs[] = {
- 	regmap_reg_range(0x1030, 0x1030),
- 	regmap_reg_range(0x1100, 0x1111),
- 	regmap_reg_range(0x111a, 0x111d),
--	regmap_reg_range(0x1122, 0x1127),
--	regmap_reg_range(0x112a, 0x112b),
--	regmap_reg_range(0x1136, 0x1139),
--	regmap_reg_range(0x113e, 0x113f),
-+	regmap_reg_range(0x1120, 0x112b),
-+	regmap_reg_range(0x1134, 0x113b),
-+	regmap_reg_range(0x113c, 0x113f),
- 	regmap_reg_range(0x1400, 0x1401),
- 	regmap_reg_range(0x1403, 0x1403),
- 	regmap_reg_range(0x1410, 0x1417),
-@@ -747,10 +746,9 @@ static const struct regmap_range ksz8563_valid_regs[] = {
- 	regmap_reg_range(0x2030, 0x2030),
- 	regmap_reg_range(0x2100, 0x2111),
- 	regmap_reg_range(0x211a, 0x211d),
--	regmap_reg_range(0x2122, 0x2127),
--	regmap_reg_range(0x212a, 0x212b),
--	regmap_reg_range(0x2136, 0x2139),
--	regmap_reg_range(0x213e, 0x213f),
-+	regmap_reg_range(0x2120, 0x212b),
-+	regmap_reg_range(0x2134, 0x213b),
-+	regmap_reg_range(0x213c, 0x213f),
- 	regmap_reg_range(0x2400, 0x2401),
- 	regmap_reg_range(0x2403, 0x2403),
- 	regmap_reg_range(0x2410, 0x2417),
--- 
-2.39.5
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-6.14-rc2
+
+for you to fetch changes up to 2a64c96356c87aa8af826605943e5524bf45e24d:
+
+  Revert "net: stmmac: Specify hardware capability value when FIFO size isn't specified" (2025-02-06 11:53:54 +0100)
+
+----------------------------------------------------------------
+Current release - regressions:
+
+  - core: harmonize tstats and dstats
+
+  - ipv6: fix dst refleaks in rpl, seg6 and ioam6 lwtunnels
+
+  - eth: tun: revert fix group permission check
+
+  - eth: stmmac: revert "specify hardware capability value when FIFO size isn't specified"
+
+Previous releases - regressions:
+
+  - udp: gso: do not drop small packets when PMTU reduces
+
+  - rxrpc: fix race in call state changing vs recvmsg()
+
+  - eth: ice: fix Rx data path for heavy 9k MTU traffic
+
+  - eth: vmxnet3: fix tx queue race condition with XDP
+
+Previous releases - always broken:
+
+  - sched: pfifo_tail_enqueue: drop new packet when sch->limit == 0
+
+  - ethtool: ntuple: fix rss + ring_cookie check
+
+  - rxrpc: fix the rxrpc_connection attend queue handling
+
+Misc:
+
+  - recognize Kuniyuki Iwashima as a maintainer
+
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+
+----------------------------------------------------------------
+Cong Wang (2):
+      netem: Update sch->q.qlen before qdisc_tree_reduce_backlog()
+      selftests/tc-testing: Add a test case for qdisc_tree_reduce_backlog()
+
+David Howells (3):
+      rxrpc: Fix the rxrpc_connection attend queue handling
+      rxrpc: Fix call state set to not include the SERVER_SECURING state
+      rxrpc: Fix race in call state changing vs recvmsg()
+
+Eric Dumazet (1):
+      net: rose: lock the socket in rose_bind()
+
+Florian Fainelli (1):
+      net: bcmgenet: Correct overlaying of PHY and MAC Wake-on-LAN
+
+Ido Schimmel (1):
+      net: sched: Fix truncation of offloaded action statistics
+
+Jacob Moroni (1):
+      net: atlantic: fix warning during hot unplug
+
+Jakub Kicinski (17):
+      net: ipv6: fix dst refleaks in rpl, seg6 and ioam6 lwtunnels
+      net: ipv6: fix dst ref loops in rpl, seg6 and ioam6 lwtunnels
+      Merge branch '100GbE' of git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue
+      MAINTAINERS: list openvswitch docs under its entry
+      MAINTAINERS: add Kuniyuki Iwashima to TCP reviewers
+      MAINTAINERS: add a general entry for BSD sockets
+      MAINTAINERS: add entry for UNIX sockets
+      Merge branch 'maintainers-recognize-kuniyuki-iwashima-as-a-maintainer'
+      ethtool: rss: fix hiding unsupported fields in dumps
+      ethtool: ntuple: fix rss + ring_cookie check
+      selftests: drv-net: rss_ctx: add missing cleanup in queue reconfigure
+      selftests: drv-net: rss_ctx: don't fail reconfigure test if queue offset not supported
+      Merge branch 'ethtool-rss-minor-fixes-for-recent-rss-changes'
+      Merge branch 'net_sched-two-security-bug-fixes-and-test-cases'
+      Merge branch 'rxrpc-call-state-fixes'
+      MAINTAINERS: add entry for ethtool
+      MAINTAINERS: add a sample ethtool section entry
+
+Jiasheng Jiang (1):
+      ice: Add check for devm_kzalloc()
+
+Lenny Szubowicz (1):
+      tg3: Disable tg3 PCIe AER on system reboot
+
+Maciej Fijalkowski (3):
+      ice: put Rx buffers after being done with current frame
+      ice: gather page_count()'s of each frag right before XDP prog call
+      ice: stop storing XDP verdict within ice_rx_buf
+
+Matthieu Baerts (NGI0) (1):
+      selftests: mptcp: connect: -f: no reconnect
+
+Paolo Abeni (1):
+      net: harmonize tstats and dstats
+
+Quang Le (2):
+      pfifo_tail_enqueue: Drop new packet when sch->limit == 0
+      selftests/tc-testing: Add a test case for pfifo_head_drop qdisc when limit==0
+
+Russell King (Oracle) (1):
+      Revert "net: stmmac: Specify hardware capability value when FIFO size isn't specified"
+
+Sankararaman Jayaraman (1):
+      vmxnet3: Fix tx queue race condition with XDP
+
+Willem de Bruijn (1):
+      tun: revert fix group permission check
+
+Yan Zhai (1):
+      udp: gso: do not drop small packets when PMTU reduces
+
+ MAINTAINERS                                        |  43 ++++++
+ drivers/net/ethernet/aquantia/atlantic/aq_nic.c    |   4 +-
+ drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c |  16 ++-
+ drivers/net/ethernet/broadcom/tg3.c                |  58 ++++++++
+ drivers/net/ethernet/intel/ice/devlink/devlink.c   |   3 +
+ drivers/net/ethernet/intel/ice/ice_txrx.c          | 150 ++++++++++++++-------
+ drivers/net/ethernet/intel/ice/ice_txrx.h          |   1 -
+ drivers/net/ethernet/intel/ice/ice_txrx_lib.h      |  43 ------
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |  35 +++--
+ drivers/net/tun.c                                  |  14 +-
+ drivers/net/vmxnet3/vmxnet3_xdp.c                  |  14 +-
+ include/linux/netdevice.h                          |   2 +-
+ include/net/sch_generic.h                          |   2 +-
+ include/trace/events/rxrpc.h                       |   1 +
+ net/core/dev.c                                     |  14 ++
+ net/ethtool/ioctl.c                                |   2 +-
+ net/ethtool/rss.c                                  |   3 +-
+ net/ipv4/udp.c                                     |   4 +-
+ net/ipv6/ioam6_iptunnel.c                          |  14 +-
+ net/ipv6/rpl_iptunnel.c                            |  15 ++-
+ net/ipv6/seg6_iptunnel.c                           |  15 ++-
+ net/ipv6/udp.c                                     |   4 +-
+ net/rose/af_rose.c                                 |  24 ++--
+ net/rxrpc/ar-internal.h                            |   2 +-
+ net/rxrpc/call_object.c                            |   6 +-
+ net/rxrpc/conn_event.c                             |  21 +--
+ net/rxrpc/conn_object.c                            |   1 +
+ net/rxrpc/input.c                                  |  12 +-
+ net/rxrpc/sendmsg.c                                |   2 +-
+ net/sched/sch_fifo.c                               |   3 +
+ net/sched/sch_netem.c                              |   2 +-
+ tools/testing/selftests/drivers/net/hw/rss_ctx.py  |   9 +-
+ tools/testing/selftests/net/mptcp/mptcp_connect.c  |   2 +-
+ tools/testing/selftests/net/udpgso.c               |  26 ++++
+ .../tc-testing/tc-tests/infra/qdiscs.json          |  34 ++++-
+ .../selftests/tc-testing/tc-tests/qdiscs/fifo.json |  23 ++++
+ 36 files changed, 446 insertions(+), 178 deletions(-)
 
