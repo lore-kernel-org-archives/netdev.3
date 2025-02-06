@@ -1,137 +1,175 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745271DF964
-	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 21:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F46D1F4179;
+	Thu,  6 Feb 2025 21:29:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738876752; cv=none; b=mCFFgs2NeGn2MbICIe+BY6XIpkaP5DvJ9hz9g/yS/WGNlj8KysDZ+hyjfJpTtGGlHuXbTNVr3+iLFpkwrCkoWlXcpYB+z5WODgMHGFau95N1fc+V7vHGhT6rWyE3qjlQkJOPRvxCOwUWWp63VAVJuwx2dDtL17QtImwTlCZhJLo=
+	t=1738877344; cv=none; b=uB5kZksNlVyqN08oJ8qDB4BgRD9jrAHQz2aJ2EjZk6EWqmFCjUl13V53phXuOO1xeAt2NYLQP44nTbTZVrpO91ta8B+Ko48j1FdeGslu1CBiRCDWPCsjEqCJIDQL11vgzz0C71F5IVKfA2c6o86Z6elP2v/hwQskwEZ3N3OUYQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738876752; c=relaxed/simple;
-	bh=BKXQ3UO6wluxh4NpMXIjxMheqgo2EwxAFcHsPwZNSNI=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PAznPlCf9O8y9o47L3nl/DhtlYM7iJJydXkbZFhXcv1I20jPa+Elayh3i+Q+8NxrFVzpdZc96pVFcyWG+kWchoML4wbG/el5JmpPKA6/978GmWKeR6IYVeuKIs3MN8t7xU7mZCIrrPNpzn93TrRV5T5O2yKsOnnkjufAN/9xeN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=h4jynQry; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	s=arc-20240116; t=1738877344; c=relaxed/simple;
+	bh=NNLc9sYYM1xBfpokXu/kvh5M5qCiFpLmAd08ymL5+Pw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lCKOcDhEF7yrwWiOMRzbnGXMB8OUkeBlrod/jt/WD+Ben6Z1Mbi7zdJQScgip47QNDzzjKefT8q680TQjvuVZH5Ma5aIesZLLKvp138jPLomsaY7GHGId9/zxyjGfH5uth8wG3KtvbT7SdqF+bx6yGM3uTYc77LQuFtb8KMt4is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UJ13jo8B; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=77pYTPSo; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="h4jynQry"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-219f8263ae0so28958405ad.0
-        for <netdev@vger.kernel.org>; Thu, 06 Feb 2025 13:19:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1738876748; x=1739481548; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7htl7Tg0M4/5PeYsotO0GAOj7s9NzufpKJezS5le81Q=;
-        b=h4jynQry3XkD2Od2toHM/mX4W4Hjwhv3wDcg7OCs8Z52PLyRHV2mT53wJ5z2JfGG2C
-         59FDF8LcMF976dKMuU2IMMD2af+TRx4aIrUF73lKZ14mtezkI9FaeODwkIJjwdg1K9jG
-         JBLkHg9zOG2c7EEV5wpsFDH6ruc8wZiS8v4Tc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738876748; x=1739481548;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7htl7Tg0M4/5PeYsotO0GAOj7s9NzufpKJezS5le81Q=;
-        b=a6DDpgyZLty4p6i5KLtyRIbx4ZbZntrbw+uEmkt6sBtrlbwElOMoUQ+TeBREQTrPzp
-         cdRE8EmmkoMyu5gkDq6ZgK0dL8MeryEjdIihh+JxxIHeoMVCV0Gvp4SIGQXgkpz7xw2u
-         Yhid1oHFGXJHXEbI/uHxwCatNon6QcOt5atxtXnSDcDkDr1912qBY2EY7ka4wMC9y3Wu
-         FosJCJmcm6gSNqN76/EPIVochVDwhcBCNvOBEP8lD02hPMLn2sd94UXnONQwEupRJUDH
-         9LzMVKWuOJPS1LFVEWqnn31Osll5TV0ZjD/pTgBs3E/LxfvlrwXDF3Mtcloilf/IjuJ7
-         Si8w==
-X-Forwarded-Encrypted: i=1; AJvYcCVqIdAdEykDoNIUivA6SO4Qws1mlHBY2+fJhYP0WIj0JpAF2NjYl5zGnqXsMozZBVYHPhfnMIs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtQHdfCsC0q6KnMlWQegdAaSD5eI6XHHd0d5dnsUbYuErEs4Lx
-	+4uNzaMatsoofq28kPXvy7EuX5FSYPgDVVFhkm/0EKmnRUCUIUTEW3rsJ5c1y1w=
-X-Gm-Gg: ASbGncvseDC1ccD/VnLwRf4hzy1IosPI9PAC537Lds5TpOTwjbGZ3Kod90taeiNXXfi
-	pD4eNoAsQ4mkhD9+Kjx3lGIyr1r98gWOKeXXlwDSXbOMxH2PUZQo2dvHt7IRWlvkNHr7xrxCcU1
-	DMInPeE0du83RnQkXK1FZjtleojhYIdPLKGy+v1I6HIQ318pIa/wSrowClgCoNMp70QNv6vHaTx
-	wBME6d97t6FI1rnCzE4QJoryOSgKtcJo8KDHyCxN80D6ukReSpSxrGVdRH33V43FG7QoALG73QA
-	zbT6EclSPFrBbeTftpRpHt8s71L40jUfJAOwcD3gKpznpiEKewkhT+LJog==
-X-Google-Smtp-Source: AGHT+IGvfIKVNNo9AkzCalC/O6yQT4K8RzYuUU35QUfGafBQJjNDRyerv7Y/Pmyt+GDEA70kSW/q4g==
-X-Received: by 2002:a17:902:ce03:b0:21a:8ce5:10dc with SMTP id d9443c01a7336-21f4e6ced1emr14135485ad.28.1738876748641;
-        Thu, 06 Feb 2025 13:19:08 -0800 (PST)
-Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3650eeffsm17517435ad.50.2025.02.06.13.19.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 13:19:08 -0800 (PST)
-Date: Thu, 6 Feb 2025 13:19:05 -0800
-From: Joe Damato <jdamato@fastly.com>
-To: Samiullah Khawaja <skhawaja@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller " <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	almasrymina@google.com, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v3 0/4] Add support to do threaded napi busy poll
-Message-ID: <Z6UnSe1CGdeNSv2q@LQ3V64L9R2>
-Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller " <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	almasrymina@google.com, netdev@vger.kernel.org
-References: <20250205001052.2590140-1-skhawaja@google.com>
- <Z6LYjHJxx0pI45WU@LQ3V64L9R2>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UJ13jo8B";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="77pYTPSo"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1738877340;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XwtTKiTRLh2dJDu6X8M8DZSQzJ03tIcOdYOJcxTLuvs=;
+	b=UJ13jo8BGpxPbQUDaCZ/zFFku4V9dUaq7fgeJJOtHgRmxy3uihujzN0/V+ksjJhplqJhcf
+	ZIwomLtVo9KwZzNy8ZFcEO5BONSmziinWf4Af4H7ZlwhDO3R7z69LaRSNCtq9A+DITL26+
+	A8MIOPzh8CwO8SuKhLkf5ic9D38MuVUNNyIEhRiSg35jmtOkz++5G5NAtKb4qnvY3EhHlB
+	sp7KBmg6ZSbwxNKldSWlfjcqlefLRPwABIaCizw1osxlj/nlPXORUH1/QUTKUuZIZeuYCo
+	yE1I/vzeWGn0NZz08CNg0bZ2CMqjdA5/5dUoZ3VbTGK4rDBKTs+4btCqzCFjBw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1738877340;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XwtTKiTRLh2dJDu6X8M8DZSQzJ03tIcOdYOJcxTLuvs=;
+	b=77pYTPSoBgfyBqKpQUS+RAjpC1/n6MfHZpl/jtlAapmV1+8ZwWOr2fJPIrn1zABdjZkioh
+	RPTjmllGXm+0FOBw==
+To: Chintan Vankar <c-vankar@ti.com>, Jason Reeder <jreeder@ti.com>,
+ vigneshr@ti.com, nm@ti.com, Chintan
+ Vankar <c-vankar@ti.com>, Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski
+ <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, srk@ti.com,
+ s-vadapalli@ti.com, danishanwar@ti.com, m-malladi@ti.com
+Subject: Re: [RFC PATCH 1/2] irqchip: ti-tsir: Add support for Timesync
+ Interrupt Router
+In-Reply-To: <20250205160119.136639-2-c-vankar@ti.com>
+References: <20250205160119.136639-1-c-vankar@ti.com>
+ <20250205160119.136639-2-c-vankar@ti.com>
+Date: Thu, 06 Feb 2025 22:28:58 +0100
+Message-ID: <87lduin4o5.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6LYjHJxx0pI45WU@LQ3V64L9R2>
+Content-Type: text/plain
 
-On Tue, Feb 04, 2025 at 07:18:36PM -0800, Joe Damato wrote:
-> On Wed, Feb 05, 2025 at 12:10:48AM +0000, Samiullah Khawaja wrote:
-> > Extend the already existing support of threaded napi poll to do continuous
-> > busy polling.
-> 
-> [...]
-> 
-> Overall, +1 to everything Martin said in his response. I think I'd
-> like to try to reproduce this myself to better understand the stated
-> numbers below.
-> 
-> IMHO: the cover letter needs more details.
-> 
-> > 
-> > Setup:
-> > 
-> > - Running on Google C3 VMs with idpf driver with following configurations.
-> > - IRQ affinity and coalascing is common for both experiments.
-> 
-> As Martin suggested, a lot more detail here would be helpful.
+On Wed, Feb 05 2025 at 21:31, Chintan Vankar wrote:
+> +++ b/drivers/irqchip/ti-timesync-intr.c
+> @@ -0,0 +1,109 @@
+> +// SPDX-License-Identifier: GPL
 
-Just to give you a sense of the questions I ran into while trying to
-reproduce this just now:
+That's not a valid license identifier
 
-- What is the base SHA? You should use --base when using git
-  format-patch. I assumed the latest net-next SHA and applied the
-  patches to that.
+> +static struct irq_chip ts_intr_irq_chip = {
+> +	.name			= "TIMESYNC_INTRTR",
+> +};
 
-- Which C3 instance type? I chose c3-highcpu-192-metal, but I could
-  have chosen c3-standard-192-metal, apparently. No idea what
-  difference this makes on the results, if any.
+How is this interrupt chip supposed to work? All it implements is a
+name.
 
-- Was "tier 1 networking" enabled? I enabled it. No idea if it
-  matters or not. I assume not, since it would be internal
-  networking within the GCP VPC of my instances and not real egress?
+> +static int ts_intr_irq_domain_alloc(struct irq_domain *domain, unsigned int virq,
+> +				    unsigned int nr_irqs, void *arg)
+> +{
+> +	unsigned int output_line, input_line, output_line_offset;
+> +	struct irq_fwspec *fwspec = (struct irq_fwspec *)arg;
+> +	int ret;
+> +
+> +	irq_domain_set_hwirq_and_chip(domain, virq, output_line,
+> +				      &ts_intr_irq_chip,
+> +				      NULL);
 
-- What version of onload was used? Which SHA or release tag?
+You set the interrupt chip and data before validating that the input
+argument is valid. That does not make any sense.
 
-- I have no idea where to put CPU affinity for the 1 TX/RX queue, I
-  assume CPU 2 based on your other message.
+> +	/* Check for two input parameters: output line and corresponding input line */
+> +	if (fwspec->param_count != 2)
+> +		return -EINVAL;
+> +
+> +	output_line = fwspec->param[0];
+> +
+> +	/* Timesync Interrupt Router's mux-controller register starts at offset 4 from base
+> +	 * address and each output line are at offset in multiple of 4s in Timesync INTR's
+> +	 * register space, calculate the register offset from provided output line.
+> +	 */
 
-- The neper commands provided seem to be the server side since there
-  is no -c mentioned. What is the neper client side command?
+Please use proper kernel comment style as documented:
 
-- What do the environment variables set for onload+neper mean?
+  https://www.kernel.org/doc/html/latest/process/maintainer-tip.html#comment-style
 
-...
+This is not networking code.
 
-Do you follow what I'm getting at here? The cover lacks a tremendous
-amount of detail that makes reproducing the setup you are using
-unnecessarily difficult.
+> +	output_line_offset = 4 * output_line + 0x4;
 
-Do you agree that I should be able to read the cover letter and, if
-so desired, go off and reproduce the setup and get similar results?
+Magic hardcoded numbers '4' and '0x4' without any explanation of the logic.
+
+> +	output_line_to_virq[output_line] = virq;
+> +	input_line = fwspec->param[1] & TIMESYNC_INTRTR_ENABLE;
+> +
+> +	/* Map output line corresponding to input line */
+> +	writel(input_line, tsr_data.tsr_base + output_line_offset);
+> +
+> +	/* When interrupt enable bit is set for Timesync Interrupt Router it maps the output
+> +	 * line with the existing input line, hence enable interrupt line after we set bits for
+> +	 * output line.
+
+I have no idea what this comment is trying to tell me.
+
+> +	 */
+> +	input_line |= TIMESYNC_INTRTR_INT_ENABLE;
+> +	writel(input_line, tsr_data.tsr_base + output_line_offset);
+> +
+> +	return 0;
+> +}
+> +
+> +static void ts_intr_irq_domain_free(struct irq_domain *domain, unsigned int virq,
+> +				    unsigned int nr_irqs)
+> +{
+> +	struct output_line_to_virq *node, *n;
+> +	unsigned int output_line_offset;
+> +	int i;
+> +
+> +	for (i = 0; i < TIMESYNC_INTRTR_MAX_OUTPUT_LINES; i++) {
+> +		if (output_line_to_virq[i] == virq) {
+> +			/* Calculate the register offset value from provided output line */
+
+Can you please implement a properly commented helper function which
+explains how this offset calculation is supposed to work?
+
+> +			output_line_offset = 4 * i + 0x4;
+> +			writel(~TIMESYNC_INTRTR_INT_ENABLE, tsr_data.tsr_base + output_line_offset);
+> +		}
+> +	}
+> +}
+> +
+> +static const struct irq_domain_ops ts_intr_irq_domain_ops = {
+> +	.alloc		= ts_intr_irq_domain_alloc,
+> +	.free		= ts_intr_irq_domain_free,
+> +};
+> +
+> +static int tsr_init(struct device_node *node)
+> +{
+> +	tsr_data.tsr_base = of_iomap(node, 0);
+> +	if (IS_ERR(tsr_data.tsr_base)) {
+> +		pr_err("Unable to get reg\n");
+> +		return PTR_ERR(tsr_data.tsr_base);
+> +	}
+> +
+> +	tsr_data.domain = irq_domain_create_tree(&node->fwnode, &ts_intr_irq_domain_ops, &tsr_data);
+
+So this instantiates a interrupt domain which is completely disconnected
+from the rest of the world.
+
+How is the output side of this supposed to handle an interrupt which is
+routed to it?
+
+Thanks,
+
+        tglx
+
+
