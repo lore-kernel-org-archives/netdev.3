@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F0D22FF5C
-	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 22:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0C9236A75
+	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 22:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738882614; cv=none; b=OCazwX7iYfxIceLax/lGaOO2N4GmUbdoVL5ny2FOde1e9fT6ZHvSid++S8e6KzAbDirWgI3pBxdzca39gideHzb/StHQPpbxVvrTVTEAC7IvbW7i4DBOmVZjn8P7eqxd9AsAzdywfefs2RtUIUyDqrEHCrnmDWTorlr+pjwj8dY=
+	t=1738882614; cv=none; b=ff06aqWKzNQhbI/Aa+V/gx18jPA/TxJJAnWtqff/4ck66sKCy0YTCx1NrqpOBE8q/MSGC/pN2XPvOkcTc/RAFZNvEG+gdYEE4KkIKY7E6OeJwEP7I2++LY5KMDLZ5aumbKxkdcDOfMlY64KIYmb2dbZMkv8RU7yv0adNoAr/RmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1738882614; c=relaxed/simple;
-	bh=nYFnn35OV+y6c7HmVeg/IqZsbDvP2fo/4hfsVxGvARA=;
+	bh=+Ef4SdvDzFGRaBV9KVjIzCrBZL4MsQlSYgAunRL+QRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWhDtZbZgczNeAFZ03Q9KWtVMqwJEL5N2oHdAUhx66tLJNPPDYGSirFtBZhJg9qC8L6toIGmlrDmN+O0XYg8dnAfgy1RxHg/c28fuMA74qDcUzAummDekCW79/ihfqvHPrlr2SHdwhbu6YNzhYjp3FrF9aAf2TRMpwKB8wrQ4VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=axr29uOb; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ON9PGp7XNlGdzjn8Zghj5J9gqerPc31Dg/vvrDvnkvfOu1WDeapXe5dtT9Yed0ZzJrljNAMQFCsU+dpcEQTDEkYRwYWC8g8c1krC65sRyjY8OO9sZEaNGhKq4nkPZC6rXxIVM0bAkFSRGaQwQPW1fGwRsU8HwwQIrIo69qH58sA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qp8S6dpK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="axr29uOb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4AB4C4CEE0;
-	Thu,  6 Feb 2025 22:56:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qp8S6dpK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A51C4CEE2;
+	Thu,  6 Feb 2025 22:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738882613;
-	bh=nYFnn35OV+y6c7HmVeg/IqZsbDvP2fo/4hfsVxGvARA=;
+	s=k20201202; t=1738882614;
+	bh=+Ef4SdvDzFGRaBV9KVjIzCrBZL4MsQlSYgAunRL+QRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=axr29uObO5S9D/0AuEHD22qoSC3T6cBXCdMNS/CXjFF7Sq1GA72frfzknbat7F0m0
-	 qScbsNLCA0IlnvK5FJLAB1BiO38Ilvpnuom/8ZtqWR+SL1p/gH/EPEH3QhM/7K2LD+
-	 ZrOWTaRRcnoLmp7ED//CGAxUK2KxLEzR6R/MUPFSQ7I/rluKeMjB8FkOzTafeAwtFN
-	 GShaRPLbHz8Lu+WXqf2ifjG6W/T22CY4ZGq/uekeX6iB9tFHi886nPL6fknUcVq8OH
-	 uSSa61xiXk8S+R0VMrVZrFR4MkN4elAYgWKNDvCZEWfwVvnTRjgGitXVh4R2JqO6dK
-	 UdKjPtGCc0h4g==
+	b=Qp8S6dpKIInoAHR9e2W6mQJ8iD64gicyua+8U/c265wwP0omNl1f2KXH7j2U/Sh+M
+	 dd/j3VuwDCCpMjkMNTF6OAd1IY816cjxGXZoqXm5jhiqBJIhxPAEfsEqP4zQdoHWdu
+	 R38/857ZGUE/tg9Ld3u4JX4/sPOgtIGjuSfzW0+5R/s/0r7rwmxmnvKzU/LIUBKMQr
+	 5HKMwqwW4HQEy14vv9aelfYk+QBgTNFxIWPrHPseB6UqD5EA24hP9Dz+G0gLDddtNr
+	 M/E1JSS/fa4Z5t7WRf6b06/iMXRP29GZImrPSw8VDGJkWMAMNjFkq4LWdC0NvCDrt2
+	 OSNKMyUR23q5w==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -35,9 +35,9 @@ Cc: netdev@vger.kernel.org,
 	horms@kernel.org,
 	almasrymina@google.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 2/4] net: devmem: don't call queue stop / start when the interface is down
-Date: Thu,  6 Feb 2025 14:56:36 -0800
-Message-ID: <20250206225638.1387810-3-kuba@kernel.org>
+Subject: [PATCH net-next v2 4/4] netdevsim: allow normal queue reset while down
+Date: Thu,  6 Feb 2025 14:56:38 -0800
+Message-ID: <20250206225638.1387810-5-kuba@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250206225638.1387810-1-kuba@kernel.org>
 References: <20250206225638.1387810-1-kuba@kernel.org>
@@ -49,65 +49,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-We seem to be missing a netif_running() check from the devmem
-installation path. Starting a queue on a stopped device makes
-no sense. We still want to be able to allocate the memory, just
-to test that the device is indeed setting up the page pools
-in a memory provider compatible way.
-
-This is not a bug fix, because existing drivers check if
-the interface is down as part of the ops. But new drivers
-shouldn't have to do this, as long as they can correctly
-alloc/free while down.
+Resetting queues while the device is down should be legal.
+Allow it, test it. Ideally we'd test this with a real device
+supporting devmem but I don't have access to such devices.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- include/net/netdev_queues.h |  4 ++++
- net/core/netdev_rx_queue.c  | 16 ++++++++++------
- 2 files changed, 14 insertions(+), 6 deletions(-)
+ drivers/net/netdevsim/netdev.c           | 10 ++++------
+ tools/testing/selftests/net/nl_netdev.py | 18 +++++++++++++++++-
+ 2 files changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/netdev_queues.h b/include/net/netdev_queues.h
-index b02bb9f109d5..73d3401261a6 100644
---- a/include/net/netdev_queues.h
-+++ b/include/net/netdev_queues.h
-@@ -117,6 +117,10 @@ struct netdev_stat_ops {
-  *
-  * @ndo_queue_stop:	Stop the RX queue at the specified index. The stopped
-  *			queue's memory is written at the specified address.
-+ *
-+ * Note that @ndo_queue_mem_alloc and @ndo_queue_mem_free may be called while
-+ * the interface is closed. @ndo_queue_start and @ndo_queue_stop will only
-+ * be called for an interface which is open.
-  */
- struct netdev_queue_mgmt_ops {
- 	size_t			ndo_queue_mem_size;
-diff --git a/net/core/netdev_rx_queue.c b/net/core/netdev_rx_queue.c
-index a5813d50e058..5352e0c1f37e 100644
---- a/net/core/netdev_rx_queue.c
-+++ b/net/core/netdev_rx_queue.c
-@@ -37,13 +37,17 @@ int netdev_rx_queue_restart(struct net_device *dev, unsigned int rxq_idx)
- 	if (err)
- 		goto err_free_new_queue_mem;
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index 42f247cbdcee..9b394ddc5206 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -645,8 +645,11 @@ nsim_queue_mem_alloc(struct net_device *dev, void *per_queue_mem, int idx)
+ 	if (ns->rq_reset_mode > 3)
+ 		return -EINVAL;
  
--	err = qops->ndo_queue_stop(dev, old_mem, rxq_idx);
--	if (err)
--		goto err_free_new_queue_mem;
-+	if (netif_running(dev)) {
-+		err = qops->ndo_queue_stop(dev, old_mem, rxq_idx);
-+		if (err)
-+			goto err_free_new_queue_mem;
- 
--	err = qops->ndo_queue_start(dev, new_mem, rxq_idx);
--	if (err)
--		goto err_start_queue;
-+		err = qops->ndo_queue_start(dev, new_mem, rxq_idx);
-+		if (err)
-+			goto err_start_queue;
-+	} else {
-+		swap(new_mem, old_mem);
+-	if (ns->rq_reset_mode == 1)
++	if (ns->rq_reset_mode == 1) {
++		if (!netif_running(ns->netdev))
++			return -ENETDOWN;
+ 		return nsim_create_page_pool(&qmem->pp, &ns->rq[idx]->napi);
 +	}
  
- 	qops->ndo_queue_mem_free(dev, old_mem);
+ 	qmem->rq = nsim_queue_alloc();
+ 	if (!qmem->rq)
+@@ -754,11 +757,6 @@ nsim_qreset_write(struct file *file, const char __user *data,
+ 		return -EINVAL;
+ 
+ 	rtnl_lock();
+-	if (!netif_running(ns->netdev)) {
+-		ret = -ENETDOWN;
+-		goto exit_unlock;
+-	}
+-
+ 	if (queue >= ns->netdev->real_num_rx_queues) {
+ 		ret = -EINVAL;
+ 		goto exit_unlock;
+diff --git a/tools/testing/selftests/net/nl_netdev.py b/tools/testing/selftests/net/nl_netdev.py
+index 93e8cb671c3d..beaee5e4e2aa 100755
+--- a/tools/testing/selftests/net/nl_netdev.py
++++ b/tools/testing/selftests/net/nl_netdev.py
+@@ -35,6 +35,21 @@ from lib.py import NetdevFamily, NetdevSimDev, ip
+                         comment=f"queue count after reset queue {q} mode {i}")
+ 
+ 
++def nsim_rxq_reset_down(nf) -> None:
++    """
++    Test that the queue API supports resetting a queue
++    while the interface is down. We should convert this
++    test to testing real HW once more devices support
++    queue API.
++    """
++    with NetdevSimDev(queue_count=4) as nsimdev:
++        nsim = nsimdev.nsims[0]
++
++        ip(f"link set dev {nsim.ifname} down")
++        for i in [0, 2, 3]:
++            nsim.dfs_write("queue_reset", f"1 {i}")
++
++
+ def page_pool_check(nf) -> None:
+     with NetdevSimDev() as nsimdev:
+         nsim = nsimdev.nsims[0]
+@@ -106,7 +121,8 @@ from lib.py import NetdevFamily, NetdevSimDev, ip
+ 
+ def main() -> None:
+     nf = NetdevFamily()
+-    ksft_run([empty_check, lo_check, page_pool_check, napi_list_check],
++    ksft_run([empty_check, lo_check, page_pool_check, napi_list_check,
++              nsim_rxq_reset_down],
+              args=(nf, ))
+     ksft_exit()
  
 -- 
 2.48.1
