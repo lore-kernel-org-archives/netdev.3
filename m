@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFB723AE65
-	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 23:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8A623AE77
+	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 23:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738886020; cv=none; b=O3hAC6qKHDOAr1gwWBU4pvFgSRufK59fwNkxR7hZXJr1V9hlCM6ha7wnyoLA8qD/ob9VrQadhE7c6YqwDYknJeRR52LPkHtxMLT9RymSbAdNRCA+UghhVltWwBaJYViDn2tqFRhhYT00CJ1pISnfoD+oU0k+ZBE7AhaK8C5N9Dk=
+	t=1738886021; cv=none; b=kCBa22LwlCoIHHs4fX6AXlHGFszhgskf/lVPFXfew6FkMHKgen0yVObSxDq4pj+mYbtl6IN6pgrK1dVWpT1rtRoWEIlGeH2myydelNy2oVc9UrAt9MSqbSZcp4knrXVzJX6Rj/t+XtuSB3HDKPRInUs3JreFcNxkTEwWNbGJr2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738886020; c=relaxed/simple;
-	bh=gatDp0gBWNfEYCbBfHMPMCnSfvhRvkvEEbYGNqOdcIc=;
+	s=arc-20240116; t=1738886021; c=relaxed/simple;
+	bh=tZ3ctjAKX6px5Y74ILxz75nvP+HKEQgBrDUAtv8Lnjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J3b5kh68dyKUpvPQy/E49XxDGoAY5IG7TrS98HlOZ70baW25mxRvv+Gq2Hi3j93oVFrCfT+W9xWDZNmi5GDrYIMeoUjSsEmIJz6whSz7MuWa92+VbreiizM1/g1cPFftmuhZM0yieMiU230yUI6GyymhMS1AhPQURdVUnAxxDIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rHAV6GJ+; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=g0q15ghL+e2gSBZcnXAAUXcPMJKwns5Y+eHQQvoVZqDhEpNIcu2DYdCTu3VZN/F1dYaXuviIUfZIz88IdF7zNbT2GAOBRnwVt/ZMS9CFi+eHyfCNbCV3YYGwDa3kpNCR8j4iN1yTkBFwN6yZen/S14os/H8osSw4SJGn2Sfee7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uSl9fHYY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rHAV6GJ+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BB6C4CEDF;
-	Thu,  6 Feb 2025 23:53:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uSl9fHYY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E628C4CEE5;
+	Thu,  6 Feb 2025 23:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738886019;
-	bh=gatDp0gBWNfEYCbBfHMPMCnSfvhRvkvEEbYGNqOdcIc=;
+	s=k20201202; t=1738886020;
+	bh=tZ3ctjAKX6px5Y74ILxz75nvP+HKEQgBrDUAtv8Lnjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rHAV6GJ+WpoIDK42AjDs8nFjfAD9kW1oxGSVF4zAf9SGCzcCuG2RIJ0Wh1ozXh8qC
-	 5JD/OCpfzXjSZn7EIGlB1Bk+uF2m3n8QpU9reIwXTLOqKofDSGJXDM8rxY2zMYFPTL
-	 R+ZvKJBwawbfKnngR0P1MCVjMB6Q/PQiwkQMyRHG4mXkoHZtw+MxPVXyWu/UJri9yv
-	 ebuT6YbKlH5U0IslWOlPeJcgu01nHxpzKCyT9xQ/6FJ/SgLN9OwBqu1BGnZu/eOsE0
-	 UWixQgCheOrZkZ7FrWxbITfMnX6H6raJ+FRHF8TMcvoJ24aQUCk8SlUd7RvByejT84
-	 KjE2mSq2Ppbeg==
+	b=uSl9fHYYgCwrUGZGaQE5gimmmCW4GwNXANgSkV4MFlx2FBKxbwP2RGv6Suy9gjxsc
+	 nhB2XRBNlA8+VqCLYrnSaOhJ1o6OJ4QAKiUnTdOKzgx6kvKaCjPy5gmi7fPrUmdkPk
+	 xeNSbF1Pod4SwYOwEHntntr+r5XGcrYjeCNN+xWN2XBigVn5kUdzRkbfNA2TovNnIK
+	 +BRHEgU6S2sqn0fQV546IsJybsccQwKqNsFjDDI4OdsuUke/4dp5rDSgYz7tCwjDjq
+	 pTkCWbvdgm9ntsbD3iVaSrZa2sx+AoMkH8qDaA97ktgLIm11pFwfm4K4uzaa/9pbig
+	 fXnAiRZikFUiA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -33,12 +33,11 @@ Cc: netdev@vger.kernel.org,
 	pabeni@redhat.com,
 	andrew+netdev@lunn.ch,
 	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	ecree.xilinx@gmail.com,
-	gal@nvidia.com
-Subject: [PATCH net-next 1/7] net: ethtool: prevent flow steering to RSS contexts which don't exist
-Date: Thu,  6 Feb 2025 15:53:28 -0800
-Message-ID: <20250206235334.1425329-2-kuba@kernel.org>
+	Daniel Zahka <daniel.zahka@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net-next 3/7] eth: fbnic: support an additional RSS context
+Date: Thu,  6 Feb 2025 15:53:30 -0800
+Message-ID: <20250206235334.1425329-4-kuba@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250206235334.1425329-1-kuba@kernel.org>
 References: <20250206235334.1425329-1-kuba@kernel.org>
@@ -50,42 +49,101 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since commit 42dc431f5d0e ("ethtool: rss: prevent rss ctx deletion
-when in use") we prevent removal of RSS contexts pointed to by
-existing flow rules. Core should also prevent creation of rules
-which point to RSS context which don't exist in the first place.
+From: Daniel Zahka <daniel.zahka@gmail.com>
 
+Add support for an extra RSS context. The device has a primary
+and a secondary context.
+
+Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
-CC: ecree.xilinx@gmail.com
-CC: gal@nvidia.com
----
- net/ethtool/ioctl.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ .../net/ethernet/meta/fbnic/fbnic_ethtool.c   | 59 +++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index 7609ce2b2c5e..98b7dcea207a 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -993,10 +993,14 @@ static noinline_for_stack int ethtool_set_rxnfc(struct net_device *dev,
- 		return rc;
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
+index 20cd9f5f89e2..4d73b405c8b9 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
+@@ -374,6 +374,61 @@ fbnic_set_rxfh(struct net_device *netdev, struct ethtool_rxfh_param *rxfh,
+ 	return 0;
+ }
  
- 	/* Nonzero ring with RSS only makes sense if NIC adds them together */
--	if (cmd == ETHTOOL_SRXCLSRLINS && info.fs.flow_type & FLOW_RSS &&
--	    !ops->cap_rss_rxnfc_adds &&
--	    ethtool_get_flow_spec_ring(info.fs.ring_cookie))
--		return -EINVAL;
-+	if (cmd == ETHTOOL_SRXCLSRLINS && info.fs.flow_type & FLOW_RSS) {
-+		if (!ops->cap_rss_rxnfc_adds &&
-+		    ethtool_get_flow_spec_ring(info.fs.ring_cookie))
-+			return -EINVAL;
++static int
++fbnic_modify_rxfh_context(struct net_device *netdev,
++			  struct ethtool_rxfh_context *ctx,
++			  const struct ethtool_rxfh_param *rxfh,
++			  struct netlink_ext_ack *extack)
++{
++	struct fbnic_net *fbn = netdev_priv(netdev);
++	const u32 *indir = rxfh->indir;
++	unsigned int changes;
 +
-+		if (!xa_load(&dev->ethtool->rss_ctx, info.rss_context))
-+			return -EINVAL;
++	if (!indir)
++		indir = ethtool_rxfh_context_indir(ctx);
++
++	changes = fbnic_set_indir(fbn, rxfh->rss_context, indir);
++	if (changes && netif_running(netdev))
++		fbnic_rss_reinit_hw(fbn->fbd, fbn);
++
++	return 0;
++}
++
++static int
++fbnic_create_rxfh_context(struct net_device *netdev,
++			  struct ethtool_rxfh_context *ctx,
++			  const struct ethtool_rxfh_param *rxfh,
++			  struct netlink_ext_ack *extack)
++{
++	struct fbnic_net *fbn = netdev_priv(netdev);
++
++	if (rxfh->hfunc && rxfh->hfunc != ETH_RSS_HASH_TOP) {
++		NL_SET_ERR_MSG_MOD(extack, "RSS hash function not supported");
++		return -EOPNOTSUPP;
 +	}
++	ctx->hfunc = ETH_RSS_HASH_TOP;
++
++	if (!rxfh->indir) {
++		u32 *indir = ethtool_rxfh_context_indir(ctx);
++		unsigned int num_rx = fbn->num_rx_queues;
++		unsigned int i;
++
++		for (i = 0; i < FBNIC_RPC_RSS_TBL_SIZE; i++)
++			indir[i] = ethtool_rxfh_indir_default(i, num_rx);
++	}
++
++	return fbnic_modify_rxfh_context(netdev, ctx, rxfh, extack);
++}
++
++static int
++fbnic_remove_rxfh_context(struct net_device *netdev,
++			  struct ethtool_rxfh_context *ctx, u32 rss_context,
++			  struct netlink_ext_ack *extack)
++{
++	/* Nothing to do, contexts are allocated statically */
++	return 0;
++}
++
+ static void fbnic_get_channels(struct net_device *netdev,
+ 			       struct ethtool_channels *ch)
+ {
+@@ -586,6 +641,7 @@ fbnic_get_eth_mac_stats(struct net_device *netdev,
+ }
  
- 	if (cmd == ETHTOOL_SRXFH && ops->get_rxfh) {
- 		struct ethtool_rxfh_param rxfh = {};
+ static const struct ethtool_ops fbnic_ethtool_ops = {
++	.rxfh_max_num_contexts	= FBNIC_RPC_RSS_TBL_COUNT,
+ 	.get_drvinfo		= fbnic_get_drvinfo,
+ 	.get_regs_len		= fbnic_get_regs_len,
+ 	.get_regs		= fbnic_get_regs,
+@@ -598,6 +654,9 @@ static const struct ethtool_ops fbnic_ethtool_ops = {
+ 	.get_rxfh_indir_size	= fbnic_get_rxfh_indir_size,
+ 	.get_rxfh		= fbnic_get_rxfh,
+ 	.set_rxfh		= fbnic_set_rxfh,
++	.create_rxfh_context	= fbnic_create_rxfh_context,
++	.modify_rxfh_context	= fbnic_modify_rxfh_context,
++	.remove_rxfh_context	= fbnic_remove_rxfh_context,
+ 	.get_channels		= fbnic_get_channels,
+ 	.set_channels		= fbnic_set_channels,
+ 	.get_ts_info		= fbnic_get_ts_info,
 -- 
 2.48.1
 
