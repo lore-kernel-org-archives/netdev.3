@@ -1,112 +1,150 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3437E1EA7C6
-	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 14:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD591EA7C6;
+	Thu,  6 Feb 2025 14:01:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738850494; cv=none; b=bCYh8xlyXpA/c2T19uOBRF0GFtTIKJoeavOEi95X0YqZR7nQDTLQQFOI658p9RwLXH9KqbGPFmL2GUjTJs5Vfy6hVTY1KTsxRIA24Egahz4gSHfipWIA0nTbf4780IgaGU6un+QeaP4L5JNEN+VzBgtknqMRli+RDnUJnYkRmXA=
+	t=1738850521; cv=none; b=cojb32m0MstFuwJWXcOaIKqPw7OBlot4yhhNXlVsWK1obZrddDH88cyFAoRwpVTWn3maTBqUFUEkV0TWORMnGx0lOpjR2BBUoqrg8FdHFST/BKuzpGwpG1IS30PlreEG2s8l2wrvpDeSaJtC/fbnfgccy0ri784GlO32dJ9Q4uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738850494; c=relaxed/simple;
-	bh=3zTlcWfoF37DhdYESayk6y+DiEbdCAjjpwW92uvqeLY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fd+YxlLLjZrwB4eExtnguIYXcKKEYk70p3+ABXT2GpVInUXd9ioPrspgrOGShqiZCTxq6zz0RWax54rhQOJNu0QM+5zTOtjN5sRDQuLz2Za6cQ1YLlbYuJxztJGiTwMxEf35IXGb63iV0TytvGfgFn9TI5W7G3dHbuaXIds5g+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=Egl7E3wA; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	s=arc-20240116; t=1738850521; c=relaxed/simple;
+	bh=gqNJYSiNsK6cpWnWjSxz9u29vlUEbxiiNXPlAKaKdaQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=NjBf443aPl4lt8VbdxPgYAniVhoqiRXarhsEfFjvfHXR8hdZsOj6E+4379I909VrW7CQ/CZdYl42kP7tMqE+inV3sQqAeR3RmTeKUGne+R63MAdk98upVTxNKLPznPmfk0T9RqFaIzGFAJjVMDLD695Jkms5GnY9GM3xVZARwB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=VWyBHEcG; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="Egl7E3wA"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-21f0444b478so13680995ad.0
-        for <netdev@vger.kernel.org>; Thu, 06 Feb 2025 06:01:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1738850492; x=1739455292; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3zTlcWfoF37DhdYESayk6y+DiEbdCAjjpwW92uvqeLY=;
-        b=Egl7E3wAod0G0GItvog6Dw+K//91uYGM35HEj0SR3YYP16NxteYciMiXu0rkg8DuJM
-         il8m9R5ftCevNh7sKbvE4p5Oao/Ef/uJY1TQvAMDhd0MIdmgP52AsFZyMI9L7VB9/VV6
-         haYh0ihzuQyAUwWnXdWYubS4a4Iul2khqLXJk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738850492; x=1739455292;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3zTlcWfoF37DhdYESayk6y+DiEbdCAjjpwW92uvqeLY=;
-        b=oT7DiuzWxgT6fUsLmw+vG68qe+Bi4atWPW+isq0ZGobAfa8lcoJSM7M0LtatM4fcnY
-         +sl5SXddh3GFCxQD+RgWS/p8NvHoF+KuKZrc/mtJJkGwMAngoMSJcAWQs2WZjeZMGsLJ
-         U77QC67/DAMNdMw0IIry385eALS4NUS79B48Y+dxhQJ8IOaxbzcYgMwbHxqhHTsPo4fm
-         B6F24GngL6auU5iWS8+IDLCJXkroi3dy+0Gg7xCE8UsvCXnp2CPA8T8ZG7I+Vr21yVMA
-         M0mTlDZGiIcBNCM8NebdsIUfvct13gBq+XjpfEbme/cGyAheu1AOO0ZCgZoEEqvHfyp/
-         fdnw==
-X-Forwarded-Encrypted: i=1; AJvYcCWrnX8BtAozVx4HCYqZJ9Y3lPUE4tVWl1evvHst7nkH1fejDI3T0GElZH0ahWKTycVGJSLv6BY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMy+OMWDbkIamp4nGwtLnKQmkn1yuoVCRNHZaLIdT28nv4upvu
-	b6s8Mn2QGRCUaHgjiq22cxrvWo5XBrNO68+Vf6bRpxSeMUjj7fv4qL/HV99mCdI=
-X-Gm-Gg: ASbGncvwAnUFW3mqK9qgfxoL9nsjdgj4yKuUi3Rp9pOtErx3kLy0k5ctTjTJ7+n4v0b
-	Nhai2oWrh7asqXxzbfamrjbegOhEHhEIYUR0KeKUiAzbc066bzFhvdDY2p8kLb2bfsmaeAIlNje
-	FHXxOtnE4jv0nOwIO2+cMc9JjKhW1qjpnTgRPR5+o5v4xXFkoRIRseeEgnES6fNT48bL2bAU9aC
-	hPAfS6tWrnQNZJ6tRLp2yjBqlCrw5j45cpZwho+TPoctZmyC0hY/h+eSwQ4Wj/cBjz8blaxrEcf
-	Kpl6OBiLFPabvR+nPxWoFbJGZlXZLREWM52UMeGI+ip75841H+TCk1c3GQ==
-X-Google-Smtp-Source: AGHT+IFQwzRf2ZVVTwGkkmxzXrR9YrWPorWCeaFDV9UOLaMtIyUJ+w+TMffFlqAyfQSuhpP8J881jQ==
-X-Received: by 2002:a17:902:f54b:b0:215:a434:b6ad with SMTP id d9443c01a7336-21f17edf124mr121154725ad.33.1738850490568;
-        Thu, 06 Feb 2025 06:01:30 -0800 (PST)
-Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3683d8a7sm12843885ad.148.2025.02.06.06.01.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 06:01:30 -0800 (PST)
-Date: Thu, 6 Feb 2025 06:01:27 -0800
-From: Joe Damato <jdamato@fastly.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Dave Taht <dave.taht@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	almasrymina@google.com, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v3 0/4] Add support to do threaded napi busy poll
-Message-ID: <Z6TAt7HIA4Sj5uep@LQ3V64L9R2>
-Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Dave Taht <dave.taht@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	almasrymina@google.com, netdev@vger.kernel.org
-References: <20250205001052.2590140-1-skhawaja@google.com>
- <CAA93jw7tVyiz6Kj8B5zXMqYKxLZSnctGiwbH5hC+4_ZTWpg3fA@mail.gmail.com>
- <CAAywjhRd-tQz3ra6uUvZf_rwTT+5a04BfeA59bcG8ziW_4FLWg@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="VWyBHEcG"
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 516E1Chb3635411
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Thu, 6 Feb 2025 08:01:12 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1738850472;
+	bh=JzgXDfs7zolLM+ECMRMomq4NQK9sGoV7mYHLd1cpZVo=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=VWyBHEcG11Mm9E81MM4ZcZVa8kxViqwaJRsrM5RFvCmQwgzNjEx6LADeoBb6YmeiH
+	 SDfLHGu8sgOq6g1h2Lp2byT6n5codLVs7aXewmoNKbUrONPJsgE7/aVyRw7BLkJVLN
+	 2nDpP/BrcLvOI8GsO2v5E51nyGo6J7X/ywvicuJw=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 516E1Cdt015489;
+	Thu, 6 Feb 2025 08:01:12 -0600
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 6
+ Feb 2025 08:01:11 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 6 Feb 2025 08:01:12 -0600
+Received: from [172.24.23.168] (lt9560gk3.dhcp.ti.com [172.24.23.168])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 516E142U027248;
+	Thu, 6 Feb 2025 08:01:04 -0600
+Message-ID: <631429d8-9da6-4333-80ce-6ff59e5ecdf6@ti.com>
+Date: Thu, 6 Feb 2025 19:31:03 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [EXTERNAL] Re: [PATCH net 1/3] net: ti: icssg-prueth: Use
+ page_pool API for RX buffer allocation
+To: Ido Schimmel <idosch@idosch.org>
+CC: <rogerq@kernel.org>, <danishanwar@ti.com>, <pabeni@redhat.com>,
+        <kuba@kernel.org>, <edumazet@google.com>, <davem@davemloft.net>,
+        <andrew+netdev@lunn.ch>, <bpf@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <robh@kernel.org>,
+        <matthias.schiffer@ew.tq-group.com>, <dan.carpenter@linaro.org>,
+        <rdunlap@infradead.org>, <diogo.ivo@siemens.com>,
+        <schnelle@linux.ibm.com>, <glaroque@baylibre.com>,
+        <john.fastabend@gmail.com>, <hawk@kernel.org>, <daniel@iogearbox.net>,
+        <ast@kernel.org>, <srk@ti.com>, Vignesh Raghavendra
+	<vigneshr@ti.com>
+References: <20250122124951.3072410-1-m-malladi@ti.com>
+ <20250122124951.3072410-2-m-malladi@ti.com> <Z5J4jjJ4_arvfF9E@shredder>
+ <9287a623-5663-4705-b61a-3ab5f5cb2424@ti.com> <Z6OirBmdSLuY5YkI@shredder>
+Content-Language: en-US
+From: "Malladi, Meghana" <m-malladi@ti.com>
+In-Reply-To: <Z6OirBmdSLuY5YkI@shredder>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAywjhRd-tQz3ra6uUvZf_rwTT+5a04BfeA59bcG8ziW_4FLWg@mail.gmail.com>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Wed, Feb 05, 2025 at 09:49:04PM -0800, Samiullah Khawaja wrote:
-> On Wed, Feb 5, 2025 at 9:36 PM Dave Taht <dave.taht@gmail.com> wrote:
-> >
-> > I have often wondered the effects of reducing napi poll weight from 64
-> > to 16 or less.
-> Yes, that is Interesting. I think higher weight would allow it to
-> fetch more descriptors doing more batching but then packets are pushed
-> up the stack late. A lower value would push packet up the stack
-> quicker, but then if the core is being shared with the application
-> processing thread then the descriptors will spend more time in the NIC
-> queue.
 
-Seems testable?
 
-> >
-> > Also your test shows an increase in max latency...
-> >
-> > latency_max=0.200182942
-> I noticed this anomaly and my guess is that it is a packet drop and
-> this is basically a retransmit timeout. Going through tcpdumps to
-> confirm.
+On 2/5/2025 11:11 PM, Ido Schimmel wrote:
+> On Tue, Feb 04, 2025 at 11: 25: 02PM +0530, Malladi, Meghana wrote: > 
+> Seems like none of the pages which have been allocated aren't getting > 
+> recycled in the rx path after being used unless its some error case. 
+> Will > try to fix this. 
+> ZjQcmQRYFpfptBannerStart
+> This message was sent from outside of Texas Instruments.
+> Do not click links or open attachments unless you recognize the source 
+> of this email and know the content is safe.
+> Report Suspicious
+> <https://us-phishalarm-ewt.proofpoint.com/EWT/v1/G3vK! 
+> v9dnXdhkXiNQgIoLtH6jcbhWBIydfvayMZ6bf68taZCHXfcLg8XIOscUa_XNxqzQWA$>
+> ZjQcmQRYFpfptBannerEnd
+> 
+> On Tue, Feb 04, 2025 at 11:25:02PM +0530, Malladi, Meghana wrote:
+>> Seems like none of the pages which have been allocated aren't getting
+>> recycled in the rx path after being used unless its some error case. Will
+>> try to fix this.
+> 
+> skb_mark_for_recycle() should help with page recycling when an skb that
+> uses them is freed.
+> 
+> Anyway, I believe that I don't see put call when tearing down the Rx
+> ring because prueth_rx_cleanup() is using page_pool_recycle_direct()
+> when it shouldn't. AFAICT, prueth_rx_cleanup() is only called from the
+> control path (upon ndo_stop()) and not in NAPI context.
+> 
 
-Can you call out anomalies like this more explicitly and explain why
-they occur?
+Ok I will use skb_mark_for_recycle()/page_pool_recycle_direct() 
+accordingly to recycle the pages.
 
-If it weren't for Dave's response, I would have missed this.
+>> Also I have noticed, in prueth_prepare_rx_chan() pages are allocated per
+>> number of descriptors for a channel, but they are not being used when a
+>> packet is being recieved (in emac_rx_packet()) and rather new page is
+>> allocated for the next upcoming packet. Is this a valid design, what are
+>> your thoughts on this ?
+> 
+> The new page is possibly a page that was recycled into the pool when a
+> previous packet was freed / dropped.
+> 
+> [...]
+> 
+>> Yes I will add PP_FLAG_DMA_SYNC_DEV as well.
+>> I believe page_pool_dma_sync_for_cpu() needs to be called sync Rx page for
+>> CPU, am I right ? If so can you tell me, in what all cases should I call
+>> this function.
+> 
+> Before accessing the packet data.
+>
+
+Ok, thanks.
+
+>> https://urldefense.com/v3/__https://lkml.iu.edu/hypermail/linux/ 
+> kernel/2312.1/06353.html__;!!G3vK!R- 
+> autrVAgf5rAbl3CYoqlN5gRE_NqPqYRg1NHkJ405Q33b6uKiHFI73PeRky46dBYBWQpmFThUyD$ <https://urldefense.com/v3/__https://lkml.iu.edu/hypermail/linux/kernel/2312.1/06353.html__;!!G3vK!R-autrVAgf5rAbl3CYoqlN5gRE_NqPqYRg1NHkJ405Q33b6uKiHFI73PeRky46dBYBWQpmFThUyD$>
+>> In the above link it is quoted - "Note that this version performs DMA sync
+>> unconditionally, even if the associated PP doesn't perform sync-for-device"
+>> for the page_pool_dma_sync_for_cpu() function. So does that mean if I am
+>> using this function I don't need explicily sync for device call?
+> 
+> It's explained in the page pool documentation:
+> 
+> "Driver is always responsible for syncing the pages for the CPU. Drivers
+> may choose to take care of syncing for the device as well or set the
+> PP_FLAG_DMA_SYNC_DEV flag to request that pages allocated from the page
+> pool are already synced for the device."
+> 
+> https://urldefense.com/v3/__https://docs.kernel.org/networking/ 
+> page_pool.html*dma-sync__;Iw!!G3vK!R- 
+> autrVAgf5rAbl3CYoqlN5gRE_NqPqYRg1NHkJ405Q33b6uKiHFI73PeRky46dBYBWQphNIm6Qm$ <https://urldefense.com/v3/__https://docs.kernel.org/networking/page_pool.html*dma-sync__;Iw!!G3vK!R-autrVAgf5rAbl3CYoqlN5gRE_NqPqYRg1NHkJ405Q33b6uKiHFI73PeRky46dBYBWQphNIm6Qm$>
+> 
+
