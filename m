@@ -1,89 +1,98 @@
-Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C07022686A
-	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 10:26:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F3E227560;
+	Thu,  6 Feb 2025 10:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738837576; cv=none; b=LOJAzhHPPnkmR50SGM0hQwI+lHPAt9sZEGbqBAHScrIqqWXtPksZdxH3W/DMoEgyWneKeV7HvHC9ADetYNLGIelujKsAQtJ++5DNI0PAOwy3VcyqizJn45fX793Yoe+D5hYYyNMzQ/inXHgTzL+gF7891CHQtnUGPWpgzKyzjww=
+	t=1738837665; cv=none; b=gVPXYDlbF+al0cPy0QVnek6ARV58PlO472OWouGXf7wTmbcESMNX1kVBEJs09hL21mUROix8ARpkI3e6XJEd4zM3b6EFxXZsSCEDXx7ZHW57BA9wW7dpG6uuPpIcdO2R9RLPI7yPxkX9r3SbSWKMhwEYJu0xtXcpA2Dsp7NFs4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738837576; c=relaxed/simple;
-	bh=Pf2se8yEan/1gp2hFEqHDKCSn4B3Ks8rDhLvWs4KA0k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PrDeFGRESLY93kuJMolxWHk7N2Z+MvWnvNGhs/WyIxdnmLJg6wleEEvdsdQa3ju7FzS4pWIWsaHG7ScygvqHv2xA/1sZ+czTWCI7om6JZXnDa9u+hNsckx/E0a0XZEfCfqPjP3m+03iAo4tVt/eteWBzvNkUCIaIFHIcXG2BrE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XGMRVZoi; arc=none smtp.client-ip=209.85.166.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738837665; c=relaxed/simple;
+	bh=B0aenSas7uI6VgQrWrZ3K7h+bbJCK1O9BDNE8yjWiV4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q9PEg/i3wZAHqfPQk/mgewHJA8B10Ta3HObhA36eTJuUteFGjQ5NciFutywNCVIvbd5xUy5LEJ8cb7Yhv8tj9cZlBjQSqY4V0Pd8CsXPgk8sCP+sNd8/XfQaf7ienJM+hAM+1aw7G/q9VBQZ99SGtOD3r4KHJ4z7Abfn9CfoX2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GaQytxVJ; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XGMRVZoi"
-Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-3d03ac846a7so2333085ab.2
-        for <netdev@vger.kernel.org>; Thu, 06 Feb 2025 02:26:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738837574; x=1739442374; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Pf2se8yEan/1gp2hFEqHDKCSn4B3Ks8rDhLvWs4KA0k=;
-        b=XGMRVZoiIi4Lu4jmq8oPztgMlmDRcsQK2hsLTMQd6NwTRHrpAnNEfoMVZM95X5Rcen
-         gqAFkHWQ7HTc++T4vDdZ6kKm+7S5wSa6HdkH9V0C9AydVKGbvYvoDIn9Ze4Pf65RRo+1
-         rG0HF3e8qyYfQ7ZXtJkkxVTNqSeI408VAGeQscZ46Ku63hZ88mTxchFNrAVbH/xiZwk6
-         6thxEOVqixWEv3iamnha2WaaA/zshwxb1HDELJot8VGwOJwsuu+h/qDaaD7WCrat7tkd
-         jXBT2kuGHbpdMenU99sy0qa261bgejpmq0b2EzGKnvGXeyHI2o55a1K28fEmAubOd9R0
-         JJ5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738837574; x=1739442374;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Pf2se8yEan/1gp2hFEqHDKCSn4B3Ks8rDhLvWs4KA0k=;
-        b=gQLGCIuZYEpEUqNG3jMlWOLYFr0ZhvqBRa+ZHhciaFqjNy3KDGwBeO682LOxFCHHv0
-         6g9/1aZCblJ0W76X92tdows28TKY+A63VxeoC4B05QRoc6LPYuLgCQCG6CS9/0cXW/gv
-         oDvBzorLg9ToYQAZMYviTal8YzCpXHXmkJ+1YfGun06bxK3LHxR9Ea2X20oJ5pw/YNRD
-         +G9jC0ae1V0yexrGiQ3XFA9HRFdsKSCtADeXmR9ku2QfBNZGgQj6JhcVh3Tz5yFUzoxa
-         K9ELLGCnOz7esdDA8lZVQ8DqMPuXUkUuwtPjcEHKzBjBlEEF4bJigDqUD4dn1A2wizbg
-         8YiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWdvKxKca1APsCGxSzxRMUpqIwTWawLXFONnCbkHsCu0r7MXAaVngFaotkmXBd+WTfLTJZKsp4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoMCF88xyLW1UTaVDbyjsd+/4I3QZ7PwPlCYSmFr2MmXOM0DSA
-	e4JEsKdbO57BLGztsYv8ab6LsqfZnGVsdtriuOy0aj1jOJi+mP8by1mpWR5RFdvZ1RB5+Mqmdgd
-	r0541aQqPpiSxn7wWH/Q3TmTgMBQ=
-X-Gm-Gg: ASbGnctwM8eOaCWh693EgYj63XAlkPzClpCA7BQ+dNg3imi3KhgFATGsxYb5Y6XkKpY
-	0REYBQjUQBQ4wCIsoT9YEVVBDBSrKOdKlCNMBfriBvdVraJ/dL1jBsttC+jH+RhyQ7/a/7ATg
-X-Google-Smtp-Source: AGHT+IEVCOdta2ugzbj6qcXOHYJfY2VSsBEcYVBA5FIX4t6+5XC2lmPdNW/nZOjyC5r0jwh65z8Lt6sSuMLjbMrgygw=
-X-Received: by 2002:a05:6e02:2688:b0:3d0:2b88:116c with SMTP id
- e9e14a558f8ab-3d04f45aff3mr55030015ab.10.1738837574364; Thu, 06 Feb 2025
- 02:26:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GaQytxVJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738837664; x=1770373664;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=B0aenSas7uI6VgQrWrZ3K7h+bbJCK1O9BDNE8yjWiV4=;
+  b=GaQytxVJEIHD9Dv4muk7bIQGI7QgHZpf4APR+Y2CVU31AtvvER/nDrfP
+   x+ouXde/m9QWxtPg+Kt7RTuEZetx0TA8VU8MsJIvJbi1EfklgEeXFtfzv
+   iZQQXSCrTZVa21SbK8ErYJ7NxRde+5ntOJA/C9uZpFiZy1F/3Hj8Fegzc
+   dJfF5/QmpE2UFsHImYTH0OlNADzvKFcIrwF988ZcY84Aw7/BGz22Y5jhL
+   3RH+/PGEbaaIeNQYeEyPbPUBz/D+quVDja7NZM/THhLgEFGR+Ami6Y5BW
+   U63QTQ9M0UJYhsqoLqYY5VU1GWNGXQHiEdLk4JgjGNFSxirZ8DSYy2tDa
+   w==;
+X-CSE-ConnectionGUID: VGB4zUVaSJOyOO2XYhanKg==
+X-CSE-MsgGUID: n3SOVOx9Rg+EDnqX3qNzkA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="64787105"
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; 
+   d="scan'208";a="64787105"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 02:27:42 -0800
+X-CSE-ConnectionGUID: XqbzmsnuTg+1aaXPoCj2Iw==
+X-CSE-MsgGUID: ETqe/vM9SHWZhA2ViQnQXg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; 
+   d="scan'208";a="110998246"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 02:27:38 -0800
+Date: Thu, 6 Feb 2025 11:24:06 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Uday Shankar <ushankar@purestorage.com>,
+	Breno Leitao <leitao@debian.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] net, treewide: define and use MAC_ADDR_STR_LEN
+Message-ID: <Z6SNxrEteMx0/0sb@mev-dev.igk.intel.com>
+References: <20250205-netconsole-v3-0-132a31f17199@purestorage.com>
+ <20250205-netconsole-v3-1-132a31f17199@purestorage.com>
+ <Z6SEeO0QFx9Y52LJ@mev-dev.igk.intel.com>
+ <a2a26c7eaf20bb972289a804ecfe0e532f0f85ae.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250206094605.2694118-1-edumazet@google.com>
-In-Reply-To: <20250206094605.2694118-1-edumazet@google.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Thu, 6 Feb 2025 18:25:37 +0800
-X-Gm-Features: AWEUYZlDP-SxNEyJo7gNUFC-WOzibgjTBQVLm5wZjUt6P1qfzXxHXmpB6i4T7tA
-Message-ID: <CAL+tcoAHcK8bRJFRZN-U6AxyUZY88oLESUEW98uzsTDdg0apkQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] tcp: rename inet_csk_{delete|reset}_keepalive_timer()
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	Kuniyuki Iwashima <kuniyu@amazon.com>, Neal Cardwell <ncardwell@google.com>, 
-	Simon Horman <horms@kernel.org>, eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a2a26c7eaf20bb972289a804ecfe0e532f0f85ae.camel@sipsolutions.net>
 
-On Thu, Feb 6, 2025 at 5:46=E2=80=AFPM Eric Dumazet <edumazet@google.com> w=
-rote:
->
-> inet_csk_delete_keepalive_timer() and inet_csk_reset_keepalive_timer()
-> are only used from core TCP, there is no need to export them.
->
-> Replace their prefix by tcp.
->
-> Move them to net/ipv4/tcp_timer.c and make tcp_delete_keepalive_timer()
-> static.
->
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+On Thu, Feb 06, 2025 at 10:50:36AM +0100, Johannes Berg wrote:
+> On Thu, 2025-02-06 at 10:44 +0100, Michal Swiatkowski wrote:
+> > 
+> > >  net/mac80211/debugfs_sta.c         | 5 +++--
+> > 
+> > What about ieee80211_sta_debugfs_add()? (net/mac80211/debugfs_sta.c)
+> 
+> What about it? It's modified accordingly, just needs a bit more +/-1
+> now.
 
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+I meant that it can be done in this patch too. 
+
+> 
+> For that:
+> Acked-by: Johannes Berg <johannes@sipsolutions.net>
+> 
+> Thanks for the rename, per the robot report that just came in it looks
+> like that also saved you from some hassle in drivers that have their own
+> MAC_ADDR_LEN for some reason :)
+> 
+> johannes
