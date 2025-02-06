@@ -1,154 +1,112 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656C81FCCE4
-	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 09:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A2E226187;
+	Thu,  6 Feb 2025 09:27:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738833931; cv=none; b=uXTtIFXkmHqLi3mJloxhyh5YRyBrpF9p18KnRLrPZ3aFzb/Bz8bXo7vtxc9T2tDeQddl0+hkgcvDowe6eXpJB4odsHEPX3agTFWy1X+dpQG4giaEfwBaG5LbwJWCG0zfgi+viC+Y2+ehdgUnhRCLLgqIa+J1gzJvCJ7ZvZXhi+E=
+	t=1738834038; cv=none; b=aZf+11vpQGRsg126Q9gWR9Z4SUIL5yjMR+P4SIhMZy2aeW2X2ok4PhnNoLOMqWYqIZan8gxdyWwtc/Zc9p58Fc5J3L+eWtOVWPp2xtfhq5H4Ojg2j6fKJKW5vQPrl5BjNhmwQfDn5Hb8PdY1NzVMwbNnp9aEKgrSx8o+qHJTPTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738833931; c=relaxed/simple;
-	bh=tE2AYB16+fgBWvhMHWaTL73rEi56eWaSNbgT1CPsE7c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V2/eZ8edLjlkI8lpgSXIV5/ocPDaMKowfW/daFhMA9yJIGHbEpOem54MiX2pqtCJlvXRA4ZUXflczrtexC7MXTfnV0Un8dYepeonIPsW5Pok7ILKt3sOft6mj8Warv6Zxm9WSpeUbfzyHvnOoJAQiEpzdr49sNaD8YBMhrZYfng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 94A9F12FC;
-	Thu,  6 Feb 2025 01:25:51 -0800 (PST)
-Received: from [10.1.30.52] (e122027.cambridge.arm.com [10.1.30.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 732CC3F63F;
-	Thu,  6 Feb 2025 01:25:25 -0800 (PST)
-Message-ID: <4ed5b1dc-4f5c-4d2a-97e2-7b1f43dccfdc@arm.com>
-Date: Thu, 6 Feb 2025 09:25:23 +0000
+	s=arc-20240116; t=1738834038; c=relaxed/simple;
+	bh=MIEBxlmM/JehrSUbCdGYuUJVphACPYc5J2/hOlFW8bs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RSVVXCORaiDMRxpcCiD6daU8ODIdm1gYM1Cv6yJbDgnXZZygb4ofSYfdzCx2LBNszBS+KnIp5SsNbXaNnrvPGGoRFLxlKQ9jDm5w9siE/9RWxGq9hsJRQlOvdXJ0r+5v0s+bLLxhLPuQsskvj5JM5X3NwAPQQeP1RdHac6+kIR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LPaSffdo; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LPaSffdo"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-38dabb11eaaso306127f8f.0;
+        Thu, 06 Feb 2025 01:27:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738834034; x=1739438834; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u1vk9Xp7oEUk84DuTuRzAw8DRnqd3iIb00KUqFXuLuQ=;
+        b=LPaSffdorUg+Qs656HxlJhdeqqar6z7WZY6Rn0dTYLxyh1W2X5AOLk/bM9rHx9TMBw
+         /CjiXP4JCEUU4aYMsdCoZBb9FuX3nJv1osRbCGH4gEm+63eZkT4nKTp/AvRekOoO3/uc
+         NUy30TrvjAbY/Yv2cuE/oDbaE6W/VF/MBleQkfhnfpRPzLXf6QYpPMJEP9FqUgyhIPpZ
+         WwQgA8m11BEXcqaHgUw9Cz+PhHFjkPjKcVq2qtxp4DEDcbywWAe8ehi2lt0nwkjH7fxu
+         VIIxzE+B8K/ZqSgqcsnXRneelU12NtUW2nEdLsGtEDX+d9yzHQYo/emSGaT1om9oToto
+         O+UQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738834034; x=1739438834;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u1vk9Xp7oEUk84DuTuRzAw8DRnqd3iIb00KUqFXuLuQ=;
+        b=iF9IbXKK9Hr4O8vXV6O/2KNRX7zdskXEodc4s2vaqlM4SIUsPZmKLDCk7gVXUe+uIc
+         sRlMVKFcmVs3sf7PpxnXIKz6qZuc1XO3hf2YXiED5QGcyFXCY82EzWt+MUT1NhleAk4B
+         w39cRXMijZqJmsvwRAtsBCS9ZPt9Wx5ABJqGKkqPbyib83vbFF7BLVqc2q+1ku9kik9x
+         k0tIB65+6upkA87JCYucxqlU76BwW3hazhK24/bZCNp/+k9WFr/c57L+msr0ZzFgrO3m
+         9NFlSA/0yjCJwz8QIl3Kw3HiMgTTzSEnX93Z3G2XuzCxnEYj9yomqS/eaMxlzRt1hm+e
+         1sDA==
+X-Forwarded-Encrypted: i=1; AJvYcCV/pEf/1HmQJyAJlEjh6w3nktCQGHb4hsZj+PkIXNMwCiCBClUE8fT7iyz8XqEiHWHO6P9bgQFmSLxlpM3kZA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6mgCTqgc1e2QJpqj5by0LGE2Euy4nkhaCczzEw6LNLsMDR2p1
+	bsvy+aFRz3xoBDr7IMmWiD1BgZdlFT533SQcPK8G0QMS0ZTWIYoZLDcB1g==
+X-Gm-Gg: ASbGncsUoTksKQOD6DSKxn0OAQ+pUzfysd+UB0YuXw/L+7h4jyGSaeir8zE+dSJKTzk
+	hcMT1WQKXIZ8Lp1/yg+yU7PmYIY67aeHFlqP/3IhhtVT5GmFUGLVRegXsTdtQb4pMQ/AkbOb4uT
+	EUWg2QL1kh2nL78OBnPjSsTEUXfPq3vfRAmSWztpUxhPrU/7sCyWLi0I7iQ2oCtlVYuNc6ka6NO
+	Jy7VWU5EcNyxsQ/yBotABW3KyeBa1cxajhNMHCVW3vURjfLdE4L5RgVGIEBtXyym9MRt3GRgJUD
+	8tlWL2V7UIDohy73zt4RB3QkHOsermj5OA==
+X-Google-Smtp-Source: AGHT+IEVnvjK7wZFL1PKzBZVNeJCKllRpJAMMNZ3nV752+filVyzoxF59KUh7RPhMwKxRwW9pM0K7Q==
+X-Received: by 2002:adf:f810:0:b0:38d:b1ea:506a with SMTP id ffacd0b85a97d-38db488dea7mr4286616f8f.28.1738834034420;
+        Thu, 06 Feb 2025 01:27:14 -0800 (PST)
+Received: from imac.lan ([2a02:8010:60a0:0:c428:5404:970c:34c7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4391dca004esm12832585e9.13.2025.02.06.01.27.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2025 01:27:13 -0800 (PST)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org
+Cc: donald.hunter@redhat.com,
+	Donald Hunter <donald.hunter@gmail.com>
+Subject: [PATCH net-next v3 02/10] tools/net/ynl: support decoding indexed arrays as enums
+Date: Thu,  6 Feb 2025 09:26:50 +0000
+Message-ID: <20250206092658.1383-3-donald.hunter@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250206092658.1383-1-donald.hunter@gmail.com>
+References: <20250206092658.1383-1-donald.hunter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] Revert "net: stmmac: Specify hardware capability
- value when FIFO size isn't specified"
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-References: <E1tfeyR-003YGJ-Gb@rmk-PC.armlinux.org.uk>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <E1tfeyR-003YGJ-Gb@rmk-PC.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 05/02/2025 12:57, Russell King (Oracle) wrote:
-> This reverts commit 8865d22656b4, which caused breakage for platforms
-> which are not using xgmac2 or gmac4. Only these two cores have the
-> capability of providing the FIFO sizes from hardware capability fields
-> (which are provided in priv->dma_cap.[tr]x_fifo_size.)
-> 
-> All other cores can not, which results in these two fields containing
-> zero. We also have platforms that do not provide a value in
-> priv->plat->[tr]x_fifo_size, resulting in these also being zero.
-> 
-> This causes the new tests introduced by the reverted commit to fail,
-> and produce e.g.:
-> 
-> 	stmmaceth f0804000.eth: Can't specify Rx FIFO size
-> 
-> An example of such a platform which fails is QEMU's npcm750-evb.
-> This uses dwmac1000 which, as noted above, does not have the capability
-> to provide the FIFO sizes from hardware.
-> 
-> Therefore, revert the commit to maintain compatibility with the way
-> the driver used to work.
-> 
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Link: https://lore.kernel.org/r/4e98f967-f636-46fb-9eca-d383b9495b86@roeck-us.net
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+When decoding an indexed-array with a scalar subtype, it is currently
+only possible to add a display-hint. Add support for decoding each value
+as an enum.
 
-Tested on my Firefly RK3288
+Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+---
+ tools/net/ynl/pyynl/lib/ynl.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Tested-by: Steven Price <steven.price@arm.com>
-
-> ---
->  .../net/ethernet/stmicro/stmmac/stmmac_main.c | 35 +++++++++----------
->  1 file changed, 17 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index d04543e5697b..b34ebb916b89 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -2424,6 +2424,11 @@ static void stmmac_dma_operation_mode(struct stmmac_priv *priv)
->  	u32 chan = 0;
->  	u8 qmode = 0;
->  
-> +	if (rxfifosz == 0)
-> +		rxfifosz = priv->dma_cap.rx_fifo_size;
-> +	if (txfifosz == 0)
-> +		txfifosz = priv->dma_cap.tx_fifo_size;
-> +
->  	/* Split up the shared Tx/Rx FIFO memory on DW QoS Eth and DW XGMAC */
->  	if (priv->plat->has_gmac4 || priv->plat->has_xgmac) {
->  		rxfifosz /= rx_channels_count;
-> @@ -2892,6 +2897,11 @@ static void stmmac_set_dma_operation_mode(struct stmmac_priv *priv, u32 txmode,
->  	int rxfifosz = priv->plat->rx_fifo_size;
->  	int txfifosz = priv->plat->tx_fifo_size;
->  
-> +	if (rxfifosz == 0)
-> +		rxfifosz = priv->dma_cap.rx_fifo_size;
-> +	if (txfifosz == 0)
-> +		txfifosz = priv->dma_cap.tx_fifo_size;
-> +
->  	/* Adjust for real per queue fifo size */
->  	rxfifosz /= rx_channels_count;
->  	txfifosz /= tx_channels_count;
-> @@ -5868,6 +5878,9 @@ static int stmmac_change_mtu(struct net_device *dev, int new_mtu)
->  	const int mtu = new_mtu;
->  	int ret;
->  
-> +	if (txfifosz == 0)
-> +		txfifosz = priv->dma_cap.tx_fifo_size;
-> +
->  	txfifosz /= priv->plat->tx_queues_to_use;
->  
->  	if (stmmac_xdp_is_enabled(priv) && new_mtu > ETH_DATA_LEN) {
-> @@ -7219,29 +7232,15 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
->  		priv->plat->tx_queues_to_use = priv->dma_cap.number_tx_queues;
->  	}
->  
-> -	if (!priv->plat->rx_fifo_size) {
-> -		if (priv->dma_cap.rx_fifo_size) {
-> -			priv->plat->rx_fifo_size = priv->dma_cap.rx_fifo_size;
-> -		} else {
-> -			dev_err(priv->device, "Can't specify Rx FIFO size\n");
-> -			return -ENODEV;
-> -		}
-> -	} else if (priv->dma_cap.rx_fifo_size &&
-> -		   priv->plat->rx_fifo_size > priv->dma_cap.rx_fifo_size) {
-> +	if (priv->dma_cap.rx_fifo_size &&
-> +	    priv->plat->rx_fifo_size > priv->dma_cap.rx_fifo_size) {
->  		dev_warn(priv->device,
->  			 "Rx FIFO size (%u) exceeds dma capability\n",
->  			 priv->plat->rx_fifo_size);
->  		priv->plat->rx_fifo_size = priv->dma_cap.rx_fifo_size;
->  	}
-> -	if (!priv->plat->tx_fifo_size) {
-> -		if (priv->dma_cap.tx_fifo_size) {
-> -			priv->plat->tx_fifo_size = priv->dma_cap.tx_fifo_size;
-> -		} else {
-> -			dev_err(priv->device, "Can't specify Tx FIFO size\n");
-> -			return -ENODEV;
-> -		}
-> -	} else if (priv->dma_cap.tx_fifo_size &&
-> -		   priv->plat->tx_fifo_size > priv->dma_cap.tx_fifo_size) {
-> +	if (priv->dma_cap.tx_fifo_size &&
-> +	    priv->plat->tx_fifo_size > priv->dma_cap.tx_fifo_size) {
->  		dev_warn(priv->device,
->  			 "Tx FIFO size (%u) exceeds dma capability\n",
->  			 priv->plat->tx_fifo_size);
+diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
+index 8b39d8b1eaa8..b73e07f1f60c 100644
+--- a/tools/net/ynl/pyynl/lib/ynl.py
++++ b/tools/net/ynl/pyynl/lib/ynl.py
+@@ -650,7 +650,9 @@ class YnlFamily(SpecFamily):
+                 decoded.append(subattr)
+             elif attr_spec["sub-type"] in NlAttr.type_formats:
+                 subattr = item.as_scalar(attr_spec['sub-type'], attr_spec.byte_order)
+-                if attr_spec.display_hint:
++                if 'enum' in attr_spec:
++                    subattr = self._decode_enum(subattr, attr_spec)
++                elif attr_spec.display_hint:
+                     subattr = self._formatted_string(subattr, attr_spec.display_hint)
+                 decoded.append(subattr)
+             else:
+-- 
+2.48.1
 
