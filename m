@@ -1,142 +1,122 @@
-Received: from mail-ej1-f100.google.com (mail-ej1-f100.google.com [209.85.218.100])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDB023537C
-	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 16:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE94923537F
+	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 16:54:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738860702; cv=none; b=OFudQjtAHbFXlh9EjuanG8Y5b7RKk7wlPut1cvfIpuINi9rq1GsQObnBjBW6IQQ6HTAiCwtX17toD27nkNZYMK7dwcuNykVi3U2le+0SoWanl2FYlq91MYHxC91LB5VAP0Ihwz6fxx2BXZ/rlEnTE4mQEYLlgJJuHQBe39hSbsU=
+	t=1738860878; cv=none; b=iZPlslEFdmEvhb/XNQYdyjXIu1bGUE2ss4N9gsxwfM+mYoqJi+BrbaYYZ1lcEbJRBFY3omFyKCpu0DZpAkm3YLhAhBGCp0O8R8+ziz1oZfF9iAnfY64li3VSnlc/PW02PrRJC7XS6YD7D2ZLPcfqGDow9kcmxAC81HaYSXg3Zo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738860702; c=relaxed/simple;
-	bh=qhfrF8rOfWi9BMPzEW1K1lhSoKZWMdMKypOVywawQxA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cWW7Gemp/5hvBJf3d2gbraK2dmTQpkY2AEGch0ON83CdKnpA2R7V9w6Cg60tKt+rfDjd6r/XJvTSjbnvL6k7pwMkf3WXVazzCpKDbwD1ihdKt1gx8bxWjXujEosTT+sdG8YG186lj32sPw/tyl0iLVos3F3+XcetOTH933RdyDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=EE4+oooB; arc=none smtp.client-ip=209.85.218.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	s=arc-20240116; t=1738860878; c=relaxed/simple;
+	bh=3ZZUQukPMQhDSn6JUeVKKpej9i1kOO3tGVWwO1oxg2Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y0UuMmd2+KqNhBS+xuQcrEGyrkys7SA8h6AXfT2ETgzqh05PEDDkgLxHnffYJteeVGK7m5p+Y7+VZvEVn07iYmjzHw3l1ofdcAtkGVE11A+XO3IOgf7Jz+8G6emqDaaf/EdRBBBVhWE2tR9YjGeNmjR15kAXczNEl8ZkEt8EKW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OZdVhJfb; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="EE4+oooB"
-Received: by mail-ej1-f100.google.com with SMTP id a640c23a62f3a-ab785b76f0aso2676166b.3
-        for <netdev@vger.kernel.org>; Thu, 06 Feb 2025 08:51:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OZdVhJfb"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-21f032484d4so37665ad.0
+        for <netdev@vger.kernel.org>; Thu, 06 Feb 2025 08:54:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1738860698; x=1739465498; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1738860876; x=1739465676; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8uTxvJx8XP29oBONkH9ilUZCu0gHXNxSpo7+j7SmAsw=;
-        b=EE4+oooBS1/xZ4kM6ROhRdy8yyl4D4A9HA7OyKwZCn98r4+ga9PCu060nbnq2IMB+P
-         oQxa3/EZN5335daf1U9sUi1weHi7ZvyLHy07FpHwMN4DwNMDXgFIYjJl2prV3/LqxXSV
-         Kj8tLFLDvbUGSUBWEVQp3HR/vgx/B22z0a1RS2A81my5PnQqBQdfeh3Eg04rSRIsgPUR
-         Tcvz2NF4JrM4pzVbxXxfy1IetFUK8llbXSFlRqfYTgD3921xpEmEm6k8A7ZXSLHHZl2b
-         04kw2LKb6fAVLg71XSW+9zbHIYGmVrOrdY/9w5nRILIopEzNLmi6exMFoW4zjonrpPIo
-         82iw==
+        bh=LTi6XQsJ5RIwztDyjcq4PDuI/5/RV6XdKp/ZtUfpYp0=;
+        b=OZdVhJfbJN4rA0Ge2vuLq0ZQPPrPBocmWtbJ3ZqjhvOvklb5o3RmVLtSkV3vSQL7qz
+         axfizU76aeAhPqrrRkWJmVToXMOAJV3bf3f+Jndeb+gi0Z7rGxHLBlIQcbyhMica23Yy
+         Bo6mRZLyX+C59j2+eUG5AD3iKhCuvn+b6efdOFRvd6ISycCBZxNpi5AUThzlImzhzmdo
+         l8akDZinu1771IrPedYR4xJqo7GHeg9wqgrOXqyUEix0d6zp6kGOmC/0mqr2Zo1De53D
+         BTGkNLWMe9BYFtTLdym0NWA+G8DU8d8GKqVgigg3V7gGAtdeeQIytzYICekR00Fn+VHL
+         67Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738860698; x=1739465498;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1738860876; x=1739465676;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8uTxvJx8XP29oBONkH9ilUZCu0gHXNxSpo7+j7SmAsw=;
-        b=SX0qdHYcEZdnFx8gl2Ox5pa8DyDrAWOM7/nXDWuQ3oqFrONo6cnGiH+U7pAuwofmdy
-         SJEcD6YwGXIx+Rye2xzSb2dp8sYDZPEph+6dZnzyVyz2LqFAjYeQX8vlTU3fYc9uzV1/
-         5JgYqghqbP+ffnNnekkLkJ0Nr5MZhikFhKeoMDBR/fGhWoyg0RP0Ji971qrbJuvxo9Wv
-         hCpZL2cLqmEJdaGbHqJt4fzAYRMA21nORAsUnZMOR0FypG4Cn7otqcHDCh84Mhz7BOcS
-         KYJJEaGJGe0qrjeLDERMH0w4fwR2pdFTHhb6vwC+ufZZS91aqsNG6K8CoNyxy42GAa/E
-         IPmQ==
-X-Gm-Message-State: AOJu0YwDAMOW+8YIMsYjHeAPLQQAJeRkLMYPPw8dvtngRciB8BgWFMhC
-	0pYSI43rlQNUxbkHpWPHgG4Kq38BerXDkU5YOghBZSqzg5n692B/EjN2cRfEmamqQ//+EDpNSVe
-	YKkp3sJsLndyt0HN/7LtMvmB0lTKc7A+j
-X-Gm-Gg: ASbGnct1vQBdiDkoCHLBni0NvVmfn/KF5npB/UmDLSHnmomUdogxjt7uF6yfikieHWE
-	AA3Znf3juwr5h9DQfXwUdmjX4x9EBfscZ0f6u8xVBwdkDMyreP+tQqNBDsY9UD5gzKEJhqyAeJH
-	O/XilA9TmNZrrvS55rx9Xjv7KxzXjfH6kn0ZSoQQmui5k+vBWyBB0ObcUSVLBVZlCL2p4khHQUL
-	wQkzSlImvGZB8kvfrdOcJnh3BNOq5QbXtfALZnEgXXvPCp4FY4TK7BGGAuAHOI0bW75AusYrfJZ
-	qHJe2/gMhcpYit0h8oVVgPmKVDja9GUUM6rxptjGCNTwHKaqMT/cysn4uN0+
-X-Google-Smtp-Source: AGHT+IGAx0Q/H2eQHoYeawfbxSgrNNhWSWM7mPVrJrWkJiQzRfOQKr8QsT0MnRmkOORHMt0dDZNv2kJwAjCq
-X-Received: by 2002:a17:907:d9f:b0:a9e:80ed:5cc6 with SMTP id a640c23a62f3a-ab75e35d3femr321004666b.13.1738860698137;
-        Thu, 06 Feb 2025 08:51:38 -0800 (PST)
-Received: from smtpservice.6wind.com ([185.13.181.2])
-        by smtp-relay.gmail.com with ESMTP id a640c23a62f3a-ab77332cb11sm5164966b.172.2025.02.06.08.51.38;
-        Thu, 06 Feb 2025 08:51:38 -0800 (PST)
-X-Relaying-Domain: 6wind.com
-Received: from bretzel (bretzel.dev.6wind.com [10.17.1.57])
-	by smtpservice.6wind.com (Postfix) with ESMTPS id D26731CD32;
-	Thu,  6 Feb 2025 17:51:37 +0100 (CET)
-Received: from dichtel by bretzel with local (Exim 4.94.2)
-	(envelope-from <nicolas.dichtel@6wind.com>)
-	id 1tg56H-00CA04-JR; Thu, 06 Feb 2025 17:51:37 +0100
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: netdev@vger.kernel.org,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net 1/2] net: advertise 'netns local' property via netlink
-Date: Thu,  6 Feb 2025 17:50:26 +0100
-Message-ID: <20250206165132.2898347-2-nicolas.dichtel@6wind.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250206165132.2898347-1-nicolas.dichtel@6wind.com>
-References: <20250206165132.2898347-1-nicolas.dichtel@6wind.com>
+        bh=LTi6XQsJ5RIwztDyjcq4PDuI/5/RV6XdKp/ZtUfpYp0=;
+        b=dj0cx20llRLhpb3OVcvsWnJrLasr1GRrL1005jLizoUaWOmFpg+4mNTeCh0+Bo+zrF
+         9YdvN+4hWz+QqFMhWHvb7QCZUayBxc+O1H3UWuziHSPnUsKAGCgtK8sNBGEc93vkUYcl
+         GMqMYrifUEVQmBlgBznU0M+wS/VVi3bAISFtA4aLlFZrghChBOVTPHVjGQF5+MYYumf/
+         JS5cnS2NkxCLY24s8Gf544Wk9bd2lNkcuaJe4M3zqSEKUs9+MMX9BNLnsHjiiWMcHRrA
+         Yy8d+oX41HL4xfqk5NfEhIVe/Pe4nf2NqKVvBZlbt6aPK+tXGhAxod0/WZFIU/z7MZ25
+         2OJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWVjuLnyCT7mJBpsKb1+aCamWRZpNp/vxcAb2J20bs5RTfKmeLi+oI4Q3B5EbKSllSlblHyR6w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3Ec4CaU4TTSdwgyrVJvhW/XiOKze1ChPo/dbaHdruyomYguJx
+	06HjlAMJ/LsPXbDV4+JQwTzyzpdya2itRnx+6R7CAW/T7GJP9jCCLN8L7T0er9GQ+oJ4gkopja4
+	6smGBROAhECDiqbIiYkF4Cd+zXB/zLTkvYXgs
+X-Gm-Gg: ASbGncu2uWx0lNQ6Kd8pd8hGAO3x2cwpVP0V5NWOIGHxLSAeTVQk+XFiKuCbZKJbdNI
+	aR97zBrMS+vE2FVc0qafAFTJYI6XyYMO8yHYOgOufov5gycK/aUR/TQQBaH1A+tIDtr2A5+81
+X-Google-Smtp-Source: AGHT+IHzryBnDyIuG4kua5nqFv0t3CUZetv5VWZDEVSBd2Q6xKHftpMfzmT/4FNKDJh9y7JmfSRCt/+KPeHBMGILBJ4=
+X-Received: by 2002:a17:902:ef4c:b0:21f:2ded:bfa0 with SMTP id
+ d9443c01a7336-21f4c50aef0mr178385ad.25.1738860875702; Thu, 06 Feb 2025
+ 08:54:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250127025734.3406167-1-linyunsheng@huawei.com>
+ <20250127025734.3406167-4-linyunsheng@huawei.com> <Z5h1OMgcHuPSMaHM@infradead.org>
+ <c4b8f494-1928-4cf6-afe2-61ab1ac7e641@gmail.com>
+In-Reply-To: <c4b8f494-1928-4cf6-afe2-61ab1ac7e641@gmail.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Thu, 6 Feb 2025 08:54:23 -0800
+X-Gm-Features: AWEUYZkAfsd2D0WA6s0xLr-HWyLjnZliAFrvM7gs-k38rOzilGMV9dLNA263rHA
+Message-ID: <CAHS8izO5_=w4x8rhnHujCWQn7nhEDzaNGgJSrcZEwOQ+dN_o3w@mail.gmail.com>
+Subject: Re: [RFC v8 3/5] page_pool: fix IOMMU crash when driver has already unbound
+To: Yunsheng Lin <yunshenglin0825@gmail.com>
+Cc: Christoph Hellwig <hch@infradead.org>, Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net, 
+	kuba@kernel.org, pabeni@redhat.com, zhangkun09@huawei.com, 
+	liuyonglong@huawei.com, fanghaiqing@huawei.com, 
+	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, 
+	IOMMU <iommu@lists.linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Since the below commit, there is no way to see if the netns_local property
-is set on a device. Let's add a netlink attribute to advertise it.
+On Tue, Feb 4, 2025 at 6:23=E2=80=AFAM Yunsheng Lin <yunshenglin0825@gmail.=
+com> wrote:
+>
+> On 1/28/2025 2:12 PM, Christoph Hellwig wrote:
+> > On Mon, Jan 27, 2025 at 10:57:32AM +0800, Yunsheng Lin wrote:
+> >> Note, the devmem patchset seems to make the bug harder to fix,
+> >> and may make backporting harder too. As there is no actual user
+> >> for the devmem and the fixing for devmem is unclear for now,
+> >> this patch does not consider fixing the case for devmem yet.
+> >
+> > Is there another outstanding patchet?  Or do you mean the existing
+> > devmem code already merged?  If that isn't actually used it should
+> > be removed, but otherwise you need to fix it.
+>
+> The last time I checked, only the code for networking stack supporting
+> the devmem had been merged.
+>
+> The first driver suppporting seems to be bnxt, which seems to be under
+> review:
+> https://lore.kernel.org/all/20241022162359.2713094-1-ap420073@gmail.com/
+>
+> As my understanding, this should work for the devmem too if the devmem
 
-CC: stable@vger.kernel.org
-Fixes: 05c1280a2bcf ("netdev_features: convert NETIF_F_NETNS_LOCAL to dev->netns_local")
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
----
- include/uapi/linux/if_link.h | 1 +
- net/core/rtnetlink.c         | 3 +++
- 2 files changed, 4 insertions(+)
+From a quick look at this patch, it looks like you're handling
+netmem/net_iovs in the implementation, so this implementation is
+indeed considering netmem. I think the paragraph in the commit message
+that Christoph is responding to should be deleted, because in recent
+iterations you're handling netmem.
 
-diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
-index bfe880fbbb24..ed4a64e1c8f1 100644
---- a/include/uapi/linux/if_link.h
-+++ b/include/uapi/linux/if_link.h
-@@ -378,6 +378,7 @@ enum {
- 	IFLA_GRO_IPV4_MAX_SIZE,
- 	IFLA_DPLL_PIN,
- 	IFLA_MAX_PACING_OFFLOAD_HORIZON,
-+	IFLA_NETNS_LOCAL,
- 	__IFLA_MAX
- };
- 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index d1e559fce918..5032e65b8faa 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -1287,6 +1287,7 @@ static noinline size_t if_nlmsg_size(const struct net_device *dev,
- 	       + nla_total_size(4) /* IFLA_TSO_MAX_SEGS */
- 	       + nla_total_size(1) /* IFLA_OPERSTATE */
- 	       + nla_total_size(1) /* IFLA_LINKMODE */
-+	       + nla_total_size(1) /* IFLA_NETNS_LOCAL */
- 	       + nla_total_size(4) /* IFLA_CARRIER_CHANGES */
- 	       + nla_total_size(4) /* IFLA_LINK_NETNSID */
- 	       + nla_total_size(4) /* IFLA_GROUP */
-@@ -2041,6 +2042,7 @@ static int rtnl_fill_ifinfo(struct sk_buff *skb,
- 		       netif_running(dev) ? READ_ONCE(dev->operstate) :
- 					    IF_OPER_DOWN) ||
- 	    nla_put_u8(skb, IFLA_LINKMODE, READ_ONCE(dev->link_mode)) ||
-+	    nla_put_u8(skb, IFLA_NETNS_LOCAL, dev->netns_local) ||
- 	    nla_put_u32(skb, IFLA_MTU, READ_ONCE(dev->mtu)) ||
- 	    nla_put_u32(skb, IFLA_MIN_MTU, READ_ONCE(dev->min_mtu)) ||
- 	    nla_put_u32(skb, IFLA_MAX_MTU, READ_ONCE(dev->max_mtu)) ||
-@@ -2229,6 +2231,7 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
- 	[IFLA_ALLMULTI]		= { .type = NLA_REJECT },
- 	[IFLA_GSO_IPV4_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
- 	[IFLA_GRO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
-+	[IFLA_NETNS_LOCAL]	= { .type = NLA_U8 },
- };
- 
- static const struct nla_policy ifla_info_policy[IFLA_INFO_MAX+1] = {
--- 
-2.47.1
+> provide a ops to do the per-netmem dma unmapping
+> It would be good that devmem people can have a look at it and see if
+> this fix works for the specific page_pool mp provider.
+>
 
+We set pool->dma_map=3D=3Dfalse for memory providers that do not need
+mapping/unmapping, which you are checking in
+__page_pool_release_page_dma.
+
+--=20
+Thanks,
+Mina
