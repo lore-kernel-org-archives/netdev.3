@@ -1,69 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A21DF60;
-	Thu,  6 Feb 2025 02:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCEA1422AB;
+	Thu,  6 Feb 2025 03:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738810607; cv=none; b=RG9Z7KJE5T3gxgPJmUIzv2JENkI9qmJBKuaxLZ867tQOj43k/B8VacL+CNCp4Sx3OuZqILisUVBzqVyUPoxXmkmh/pkhLsI5JK3nJDG07o4J5jSNH7iBKww/PqY7lw4Co5IbNHSMs//508xiGX0LgPRgTKqnvVnkCyQOEPHuD/0=
+	t=1738810804; cv=none; b=eEPy2ZYm0PeSedSnJicFdAD/XomCpVf57NRmGtB5WGvgoZH4UTGXbfi9zWkRp+9IYkNOVLOZYTBtPYyfOjUzQvsO25Cp819ak93vvuZEIcV9QkVkwo8hElvV4XhhTTs3Pz6JKQMyA+LYYxzHRcYd6cnT/wAkFHWdi5T4fgGFPFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738810607; c=relaxed/simple;
-	bh=AxTvfcbhpyggT28jMmsnd7/+ETqOiR4Qs2lCMDe15l0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aVKz/KJeVnV3FFMZK2MJfAFFqbMTv8U+GV077Su/HG7y3zL1DqiqbC0ffuYgf54fBQFb7FRaGWs8k6QmZHkHWpTHJVuCAFn/1BdLH7NM7UaszarBNSOpCOFwXEIOaNyqhHvap5nnHWLqSzMAzA1lgUViozywTpoRqnQ9LuX04i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ho/QCs5h; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738810804; c=relaxed/simple;
+	bh=sxYYt5TyBojJ4Eg5chxiScDnJA84ifoHHotwNJRh9PA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=dDphmCIqUg8hp8nySHDrvgbuYE8Hk8rNGkW1UqhWoacqDHdHLHuYpzXOURn3r2XGcxgCOUN29QFWjatcMRjmKjPLm1oRYE4WvQa8GRMOlI7VBZrvbotlznJX5cJ+VtZ/zwWaA242535qxcdAq76vES8D8JbeKwB9YeyF+xAuhgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=umAjuGB3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ho/QCs5h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7A5C4CED1;
-	Thu,  6 Feb 2025 02:56:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="umAjuGB3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE78C4CED1;
+	Thu,  6 Feb 2025 03:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738810606;
-	bh=AxTvfcbhpyggT28jMmsnd7/+ETqOiR4Qs2lCMDe15l0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ho/QCs5hELsBiIeYuSMwd5zWhfFiXJr40+JxZWR3JtFrpIUhgEXbsKiHW7T73X56J
-	 qsdehYpJyxjLjQm6VzqiL1KAXdV4TntW3Iy52IrDXMX+rL2kH/tS4kj+ckjO+o4w5k
-	 fHYOETBK8GxBPY3FcNAKLOXTrGiXTNG8K4BqqfTO00IkKis/5zeMB0Dl5P+NbivKuW
-	 PuM6n1wUbnfR5PbGRZJu6XIBYkmzity/B40yxmQbBoJc2R+IszmRimI5VtlZuOEQTW
-	 h7oN5hwVSEdjC9UKtIuoXSW2G7FYpkw7/3p1vG1KfGvsObq2H+P8ns/4k/PcbDYG9X
-	 f6jSWNEHp8CoQ==
-Date: Wed, 5 Feb 2025 18:56:45 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Eric Dumazet <edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Daniel Xu <dxu@dxuuu.xyz>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, John Fastabend
- <john.fastabend@gmail.com>, Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?=
- <toke@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, Martin KaFai
- Lau <martin.lau@linux.dev>, netdev@vger.kernel.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org, Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?=
- <toke@redhat.com>
-Subject: Re: [PATCH net-next v4 1/8] net: gro: decouple GRO from the NAPI
- layer
-Message-ID: <20250205185645.51fd5f1f@kernel.org>
-In-Reply-To: <CANn89iJjCOThDqwsK4v2O8LfcwAB55YohNZ8T2sR40uM2ZoX5w@mail.gmail.com>
-References: <20250205163609.3208829-1-aleksander.lobakin@intel.com>
-	<20250205163609.3208829-2-aleksander.lobakin@intel.com>
-	<CANn89iJjCOThDqwsK4v2O8LfcwAB55YohNZ8T2sR40uM2ZoX5w@mail.gmail.com>
+	s=k20201202; t=1738810804;
+	bh=sxYYt5TyBojJ4Eg5chxiScDnJA84ifoHHotwNJRh9PA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=umAjuGB3y0CqCpJPrEiHByo16UEUSDsq07I627KBWNhBCuToexbWuNd2SxndOuZED
+	 OE3Nk89PxxMe6WGVB3OAEkc+wMlAYtyQ155MnWwYjpKFcySxQlsWgz7Zf0ydbvexvI
+	 hMQq9emfnr9tJvtpt4a+RtapFJNfQ5m2gdd6ODOkfkG2jA0Fapu95L8/SBNpfgaXa6
+	 EybRI4qlvOSHE9MGPMUSctILT0yedgb2XTuui9nQnQ5bZ2n4Np9tYk+orDu44WXv6g
+	 lrQVXexJYWBfe8XIFnG/1iQpsZf0dpJTro7/HOmZuvtWxK0ozE3WKfAv85Ogd4mRid
+	 8pM/qZrRvSk7g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB3FE380AAD0;
+	Thu,  6 Feb 2025 03:00:32 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2 0/2] rxrpc: Call state fixes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173881083155.983395.4207821504706909846.git-patchwork-notify@kernel.org>
+Date: Thu, 06 Feb 2025 03:00:31 +0000
+References: <20250204230558.712536-1-dhowells@redhat.com>
+In-Reply-To: <20250204230558.712536-1-dhowells@redhat.com>
+To: David Howells <dhowells@redhat.com>
+Cc: netdev@vger.kernel.org, marc.dionne@auristor.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org
 
-On Wed, 5 Feb 2025 18:48:50 +0100 Eric Dumazet wrote:
-> > +       struct_group_tagged(gro_node, gro,
-> > +               unsigned long           bitmask;
-> > +               struct gro_list         hash[GRO_HASH_BUCKETS];
-> > +               struct list_head        rx_list; /* Pending GRO_NORMAL skbs */
-> > +               int                     rx_count; /* length of rx_list */
-> > +               u32                     napi_id; /* protected by netdev_lock */
-> > +  
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue,  4 Feb 2025 23:05:52 +0000 you wrote:
+> Here some call state fixes for AF_RXRPC.
 > 
-> I am old school, I would prefer a proper/standalone old C construct.
+>  (1) Fix the state of a call to not treat the challenge-response cycle as
+>      part of an incoming call's state set.  The problem is that it makes
+>      handling received of the final packet in the receive phase difficult
+>      as that wants to change the call state - but security negotiations may
+>      not yet be complete.
+> 
+> [...]
 
-+1, fwiw, I thought it was just me..
+Here is the summary with links:
+  - [net,v2,1/2] rxrpc: Fix call state set to not include the SERVER_SECURING state
+    https://git.kernel.org/netdev/net/c/41b996ce83bf
+  - [net,v2,2/2] rxrpc: Fix race in call state changing vs recvmsg()
+    https://git.kernel.org/netdev/net/c/2d7b30aef34d
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
