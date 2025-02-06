@@ -1,267 +1,374 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [20.231.56.155])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F521519B7
-	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 12:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=20.231.56.155
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865FA21CFF7
+	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 12:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738845214; cv=none; b=e+v3EJOpkGl5U55KcEgrKtXZPpeVnWsqNowl7pJcKZXuuHzE8jBgKeJIT/RmSSLNhOEBrBKN6a9WT8edwnWbfksB31mazm6YPsYPa35Xv5Q1aqCtRrr85uxHJxwUZ2chlwavSOi0j1WXIbpXEQXH54zaY1/fcgWJpWSCo/2Q8OY=
+	t=1738845954; cv=none; b=Y7grAEm0YEeULCqcr9vmtf4c6dfgscI/McEOzw7BCzSRf38Cw61twxqSRiWaZcWVZTYkb6CwTvVLXl9o4C+4+/kPomI7HYv99kNYKdipfuCRbAjlUbnRsuZesx/gq7jyG25hXH7JpT1IVZwCodsa5OJOQlNJFui7emcScQ2BXFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738845214; c=relaxed/simple;
-	bh=mLCTXbVe5N0A/eNvNPJ1bTAwsM5OO3Oyxq6oLh+rqF0=;
-	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=rOR0sd+gk1ZyV3k2/wSn4XjpfA0RBAksd9EM7POYhmrD4BMG8VVZiJu4ExTj/drkty+tDuCf5dCmVlfuKpbbIIzyNrAORrWwyF6d3fiC4zbhQLXDAqO+yt2gm/hXYJ9FLCnzxnKr9hfbUync07Ba8s1gEavLFE8BIIbKnlHjbpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=20.231.56.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [219.74.10.240])
-	by mtasvr (Coremail) with SMTP id _____wCXHYRUq6RnUWxwAA--.1473S3;
-	Thu, 06 Feb 2025 20:30:12 +0800 (CST)
-Received: from stitch$zju.edu.cn ( [219.74.10.240] ) by
- ajax-webmail-mail-app1 (Coremail) ; Thu, 6 Feb 2025 20:30:09 +0800
- (GMT+08:00)
-Date: Thu, 6 Feb 2025 20:30:09 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: "Jiacheng Xu" <stitch@zju.edu.cn>
-To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org
-Cc: wolffd@comp.nus.edu.sg
-Subject: [BUG] KASAN: slab-use-after-free in slip_open
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.2-cmXT6 build
- 20241206(f7804f05) Copyright (c) 2002-2025 www.mailtech.cn zju.edu.cn
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1738845954; c=relaxed/simple;
+	bh=kghRt7GzMORt+txKdgQ0nTzbjr8JoGelsjiQ9A3NIXc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HS4YLTLhx2ODSQCzYcUnrYyunwC438YDBSUMaCzKP2n8zlCJ5BynNP/CZ7MPjbvqEwH01DdMGr2oVzIFXp0giX7fOpz0/OfGbb8PzrmBT3oeUrW3MNHmdo0xEj4w0YHGWPpYlN7c+X9Oesc+loFS8+ts6QEBAKBPhAZAyZgVM7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tg1G5-0004Rm-RI; Thu, 06 Feb 2025 13:45:29 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tg1G5-003oDb-0r;
+	Thu, 06 Feb 2025 13:45:29 +0100
+Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id DE0DB3BB4C0;
+	Thu, 06 Feb 2025 12:45:28 +0000 (UTC)
+Date: Thu, 6 Feb 2025 13:45:27 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Stefan =?utf-8?B?TcOkdGpl?= <stefan.maetje@esd.eu>
+Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+	Frank Jungclaus <frank.jungclaus@esd.eu>, linux-can@vger.kernel.org, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 1/1] can: esd_usb: Fix not detecting version reply in
+ probe routine
+Message-ID: <20250206-wild-masked-hoatzin-b194e1-mkl@pengutronix.de>
+References: <20250203145810.1286331-1-stefan.maetje@esd.eu>
+ <20250203145810.1286331-2-stefan.maetje@esd.eu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <5ae45813.3235.194db3d35f5.Coremail.stitch@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:yy_KCgD3adpSq6RnNClQAA--.5120W
-X-CM-SenderInfo: qtrxiiaqttimo62m3hxhgxhubq/1tbiAwYJC2ejdf4U1wABsK
-X-Coremail-Antispam: 1Uk129KBj9fXoWfGFW8Aw4rCw43JF47Jw13GFX_yoW8Jry5to
-	Z2vw4rCF48Gw15Jr1rAF18GFW3Wa45ZFnrJr48CF45XF9xJr4UJr15Cw1FvFW2qF47GF13
-	Ary2qF1rXw4UGr1kl-sFpf9Il3svdjkaLaAFLSUrUUUUnb8apTn2vfkv8UJUUUU8wcxFpf
-	9Il3svdxBIdaVrn0xqx4xG64xvF2IEw4CE5I8CrVC2j2Jv73VFW2AGmfu7bjvjm3AaLaJ3
-	UjIYCTnIWjp_UUUOE7kC6x804xWl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI
-	8IcIk0rVWrJVCq3wAFIxvE14AKwVWUXVWUAwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xG
-	Y2AK021l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14
-	v26r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAF
-	wI0_GcCE3s1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
-	6r1DMcIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-	vIr41lF7xvr2IYc2Ij64vIr40E4x8a64kEw24lFcxC0VAYjxAxZF0Ew4CEw7xC0wACY4xI
-	67k04243AVC20s07MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026x
-	CaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4l
-	x2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrw
-	CI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI
-	42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z2
-	80aVCY1x0267AKxVWUJVW8JwCE64xvF2IEb7IF0Fy7YxBIdaVFxhVjvjDU0xZFpf9x07j2
-	7KsUUUUU=
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vaw6nh53tkwvlyt2"
+Content-Disposition: inline
+In-Reply-To: <20250203145810.1286331-2-stefan.maetje@esd.eu>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-SGkgZGV2ZWxvcGVyczoKCldlIGFyZSByZXBvcnRpbmcgYSBMaW51eCBpc3N1ZSB1c2luZyBhIG1v
-ZGlmaWVkIHZlcnNpb24gb2YgU3l6a2FsbGVyLgoKSEVBRCBjb21taXQ6IDRiYmY5MDIwIDYuMTMu
-MC1yYzQKZ2l0IHRyZWU6IHVwc3RyZWFtCmtlcm5lbCBjb25maWc6IGh0dHBzOi8vZ2l0aHViLmNv
-bS9nb29nbGUvc3l6a2FsbGVyL2Jsb2IvbWFzdGVyL2Rhc2hib2FyZC9jb25maWcvbGludXgvdXBz
-dHJlYW0tYXBwYXJtb3Ita2FzYW4uY29uZmlnCnN5eiByZXBybzogaHR0cHM6Ly9kcml2ZS5nb29n
-bGUuY29tL2ZpbGUvZC8xWFY5V0h3TXZLNGVaSVB1eWppV29UcHlRMEZwRGFVcFQvdmlldz91c3A9
-c2hhcmluZwpDIHJlcHJvZHVjZXI6IEFzIHRoaXMgaXMgYSByYWNlIGNvbmRpdGlvbiwgYSBzdGFi
-bGUgQyByZXByb2R1Y2VyIGlzIG5vdCBhdmFpbGFibGUgeWV0LgoKRW52aXJvbm1lbnQ6ClVidW50
-dSAyMi4wNCBvbiBMaW51eCA1LjE1ClFFTVUgZW11bGF0b3IgdmVyc2lvbiA2LjIuMApxZW11LXN5
-c3RlbS14ODZfNjQgXAotbSAyRyBcCi1zbXAgMiBcCi1rZXJuZWwgL2hvbWUvd2QvYnpJbWFnZSBc
-Ci1hcHBlbmQgImNvbnNvbGU9dHR5UzAgcm9vdD0vZGV2L3NkYSBlYXJseXByaW50az1zZXJpYWwg
-bmV0LmlmbmFtZXM9MCIgXAotZHJpdmUgZmlsZT0vaG9tZS93ZC9idWxsc2V5ZS5pbWcsZm9ybWF0
-PXJhdyBcCi1uZXQgdXNlcixob3N0PTEwLjAuMi4xMCxob3N0ZndkPXRjcDoxMjcuMC4wLjE6MTAw
-MjEtOjIyIFwKLW5ldCBuaWMsbW9kZWw9ZTEwMDAgXAotZW5hYmxlLWt2bSBcCi1ub2dyYXBoaWMg
-XAotcGlkZmlsZSB2bS5waWQgXAoyPiYxIHwgdGVlIHZtLmxvZwoKU3RlcHMgdG8gcmVwcm9kdWNl
-OgoxLiBTZXR1cCBhIHZtIG9uIGdpdmVuIGtlcm5lbC4KMi4gRXhlY3V0ZSB0aGUgc3l6IHJlcHJv
-ZHVjZXIgd2l0aCBgLi9zeXotZXhlY3Byb2cgLWV4ZWN1dG9yPS4vc3l6LWV4ZWN1dG9yIC1yZXBl
-YXQ9MjAwMDAgLXByb2NzPTggLWNvdmVyPTAgfi9yZXByby5wcm9nYAoKRGVzY3JpcHRpb246ClRo
-ZSBTTElQIGRyaXZlciBzdWZmZXJzIGZyb20gYSBVc2UtQWZ0ZXItRnJlZSBpc3N1ZSBpbiBzbF9z
-eW5jKCkgZHVlIHRvIHVuc3luY2hyb25pemVkIGFjY2VzcyB0byBuZXRfZGV2aWNlIHBvaW50ZXJz
-IHN0b3JlZCBpbiBzbGlwX2RldnNbXS4gV2hlbiBhIGRldmljZSBpcyBiZWluZyBmcmVlZCAoZm9y
-IGV4YW1wbGUsIHZpYSB0dHlfcmVsZWFzZSgpL25ldGRldl9ydW5fdG9kbygpKSwgc2xfc3luYygp
-IG1heSBhY2Nlc3MgaXQgYWZ0ZXIgaXQgaGFzIGJlZW4gZnJlZWQuCgpQYXRjaDoKV2UgdHJ5IHRv
-IHdyaXRlIGEgcGF0Y2ggZm9yIHRoZSBjcmFzaC4gQW5kIGFmdGVyIGFwcGx5aW5nIHRoZSBwYXRj
-aCwgdGhlIGNyYXNoIGNhbiBubyBsb25nZXIgYmUgdHJpZ2dlcmVkIHdpdGggdGhlIFBvQy4KCi0t
-LSBzbGlwLmMgICAgICAyMDI1LTAyLTA2IDEyOjI2OjI1LjY5MDg5MDM3OCArMDAwMAorKysgc2xp
-cC5jICAgICAgMjAyNS0wMi0wNiAxMjoyOTozMC41NTQ4MjA4OTkgKzAwMDAKQEAgLTcyMSw4ICs3
-MjEsOSBAQAogICAgICAgIHN0cnVjdCBuZXRfZGV2aWNlICpkZXY7CiAgICAgICAgc3RydWN0IHNs
-aXAgICAgICAgKnNsOwoKKyAgICAgICByY3VfcmVhZF9sb2NrKCk7CiAgICAgICAgZm9yIChpID0g
-MDsgaSA8IHNsaXBfbWF4ZGV2OyBpKyspIHsKLSAgICAgICAgICAgICAgIGRldiA9IHNsaXBfZGV2
-c1tpXTsKKyAgICAgICAgICAgICAgIGRldiA9IHJjdV9kZXJlZmVyZW5jZShzbGlwX2RldnNbaV0p
-OwogICAgICAgICAgICAgICAgaWYgKGRldiA9PSBOVUxMKQogICAgICAgICAgICAgICAgICAgICAg
-ICBicmVhazsKCkBAIC03MzIsNiArNzMzLDcgQEAKICAgICAgICAgICAgICAgIGlmIChkZXYtPmZs
-YWdzICYgSUZGX1VQKQogICAgICAgICAgICAgICAgICAgICAgICBkZXZfY2xvc2UoZGV2KTsKICAg
-ICAgICB9CisgICAgICAgcmN1X3JlYWRfdW5sb2NrKCk7CiB9CgoKSWYgeW91IGZpeCB0aGlzIGlz
-c3VlLCBwbGVhc2UgYWRkIHRoZSBmb2xsb3dpbmcgdGFnIHRvIHRoZSBjb21taXQ6ClJlcG9ydGVk
-LWJ5OiBKaWFjaGVuZyBYdSA8c3RpdGNoQHpqdS5lZHUuY24+LCBEeWxhbiBXb2xmZiA8d29sZmZk
-QGNvbXAubnVzLmVkdS5zZz4KPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09CkJVRzogS0FTQU46IHNsYWItdXNlLWFmdGVyLWZy
-ZWUgaW4gc2xfc3luYyBkcml2ZXJzL25ldC9zbGlwL3NsaXAuYzo3MzIgW2lubGluZV0KQlVHOiBL
-QVNBTjogc2xhYi11c2UtYWZ0ZXItZnJlZSBpbiBzbGlwX29wZW4rMHgyOTMvMHgxMzMwIGRyaXZl
-cnMvbmV0L3NsaXAvc2xpcC5jOjgwNgpSZWFkIG9mIHNpemUgNCBhdCBhZGRyIGZmZmY4ODgwNWNm
-Y2EwYjAgYnkgdGFzayBzeXotZXhlY3V0b3IuMi80NjY3MwoKCkNQVTogMCBVSUQ6IDAgUElEOiA0
-NjY3MyBDb21tOiBzeXotZXhlY3V0b3IuMiBOb3QgdGFpbnRlZCA2LjEzLjAtcmM0ICMyCgoKSGFy
-ZHdhcmUgbmFtZTogUUVNVSBTdGFuZGFyZCBQQyAoaTQ0MEZYICsgUElJWCwgMTk5NiksIEJJT1Mg
-MS4xNS4wLTEgMDQvMDEvMjAxNAoKU2NoZWRfZXh0OiBzZXJpYWxpc2UgKGVuYWJsZWQrYWxsKSwg
-dGFzazogcnVubmFibGVfYXQ9LTMwbXMKQ2FsbCBUcmFjZToKIDxUQVNLPgogX19kdW1wX3N0YWNr
-IGxpYi9kdW1wX3N0YWNrLmM6OTQgW2lubGluZV0KIGR1bXBfc3RhY2tfbHZsKzB4MjI5LzB4MzUw
-IGxpYi9kdW1wX3N0YWNrLmM6MTIwCiBwcmludF9hZGRyZXNzX2Rlc2NyaXB0aW9uIG1tL2thc2Fu
-L3JlcG9ydC5jOjM3OCBbaW5saW5lXQogcHJpbnRfcmVwb3J0KzB4MTY0LzB4NTMwIG1tL2thc2Fu
-L3JlcG9ydC5jOjQ4OQoga2FzYW5fcmVwb3J0KzB4MTQ3LzB4MTgwIG1tL2thc2FuL3JlcG9ydC5j
-OjYwMgogc2xfc3luYyBkcml2ZXJzL25ldC9zbGlwL3NsaXAuYzo3MzIgW2lubGluZV0KIHNsaXBf
-b3BlbisweDI5My8weDEzMzAgZHJpdmVycy9uZXQvc2xpcC9zbGlwLmM6ODA2CiB0dHlfbGRpc2Nf
-b3BlbisweGJkLzB4MTIwIGRyaXZlcnMvdHR5L3R0eV9sZGlzYy5jOjQzMgogdHR5X3NldF9sZGlz
-YysweDMyYi8weDVjMCBkcml2ZXJzL3R0eS90dHlfbGRpc2MuYzo1NjMKIHRpb2NzZXRkKzB4MTI2
-LzB4MTcwIGRyaXZlcnMvdHR5L3R0eV9pby5jOjI0MzkKIHR0eV9pb2N0bCsweGU1Yy8weDEwOTAg
-ZHJpdmVycy90dHkvdHR5X2lvLmM6MjczOQogdmZzX2lvY3RsIGZzL2lvY3RsLmM6NTEgW2lubGlu
-ZV0KIF9fZG9fc3lzX2lvY3RsIGZzL2lvY3RsLmM6OTA2IFtpbmxpbmVdCiBfX3NlX3N5c19pb2N0
-bCsweDI2Ni8weDM1MCBmcy9pb2N0bC5jOjg5MgogZG9fc3lzY2FsbF94NjQgYXJjaC94ODYvZW50
-cnkvY29tbW9uLmM6NTIgW2lubGluZV0KIGRvX3N5c2NhbGxfNjQrMHhmNi8weDIxMCBhcmNoL3g4
-Ni9lbnRyeS9jb21tb24uYzo4MwogZW50cnlfU1lTQ0FMTF82NF9hZnRlcl9od2ZyYW1lKzB4Nzcv
-MHg3ZgpSSVA6IDAwMzM6MHg3ZmVkNTZhOTAzYWQKQ29kZTogYzMgZTggYTcgMmIgMDAgMDAgMGYg
-MWYgODAgMDAgMDAgMDAgMDAgZjMgMGYgMWUgZmEgNDggODkgZjggNDggODkgZjcgNDggODkgZDYg
-NDggODkgY2EgNGQgODkgYzIgNGQgODkgYzggNGMgOGIgNGMgMjQgMDggMGYgMDUgPDQ4PiAzZCAw
-MSBmMCBmZiBmZiA3MyAwMSBjMyA0OCBjNyBjMSBiMCBmZiBmZiBmZiBmNyBkOCA2NCA4OSAwMSA0
-OApSU1A6IDAwMmI6MDAwMDdmZWQ1NzhiMjBjOCBFRkxBR1M6IDAwMDAwMjQ2IE9SSUdfUkFYOiAw
-MDAwMDAwMDAwMDAwMDEwClJBWDogZmZmZmZmZmZmZmZmZmZkYSBSQlg6IDAwMDA3ZmVkNTZiY2Jm
-ODAgUkNYOiAwMDAwN2ZlZDU2YTkwM2FkClJEWDogMDAwMDAwMDAyMDAwMDA4MCBSU0k6IDAwMDAw
-MDAwMDAwMDU0MjMgUkRJOiAwMDAwMDAwMDAwMDAwMDAzClJCUDogMDAwMDAwMDAwMDAwMDAwMCBS
-MDg6IDAwMDAwMDAwMDAwMDAwMDAgUjA5OiAwMDAwMDAwMDAwMDAwMDAwClIxMDogMDAwMDAwMDAw
-MDAwMDAwMCBSMTE6IDAwMDAwMDAwMDAwMDAyNDYgUjEyOiAwMDAwN2ZlZDU3OGIyNjQwClIxMzog
-MDAwMDAwMDAwMDAwMDAwZSBSMTQ6IDAwMDA3ZmVkNTZhNGZjOTAgUjE1OiAwMDAwN2ZlZDU3OGFh
-MDAwCiA8L1RBU0s+CgoKQWxsb2NhdGVkIGJ5IHRhc2sgNDY2ODM6CgoKIGthc2FuX3NhdmVfc3Rh
-Y2sgbW0va2FzYW4vY29tbW9uLmM6NDcgW2lubGluZV0KCiBrYXNhbl9zYXZlX3RyYWNrKzB4M2Yv
-MHg4MCBtbS9rYXNhbi9jb21tb24uYzo2OAogcG9pc29uX2ttYWxsb2NfcmVkem9uZSBtbS9rYXNh
-bi9jb21tb24uYzozNzcgW2lubGluZV0KIF9fa2FzYW5fa21hbGxvYysweDg5LzB4YTAgbW0va2Fz
-YW4vY29tbW9uLmM6Mzk0CiBrYXNhbl9rbWFsbG9jIGluY2x1ZGUvbGludXgva2FzYW4uaDoyNjAg
-W2lubGluZV0KIF9fZG9fa21hbGxvY19ub2RlIG1tL3NsdWIuYzo0Mjk4IFtpbmxpbmVdCiBfX2tt
-YWxsb2Nfbm9kZV9ub3Byb2YrMHgyOGMvMHg1MzAgbW0vc2x1Yi5jOjQzMDQKIF9fa3ZtYWxsb2Nf
-bm9kZV9ub3Byb2YrMHg3MC8weDE4MCBtbS91dGlsLmM6NjUwCiBhbGxvY19uZXRkZXZfbXFzKzB4
-YTcvMHgxODcwIG5ldC9jb3JlL2Rldi5jOjExMjA5CiBzbF9hbGxvYyBkcml2ZXJzL25ldC9zbGlw
-L3NsaXAuYzo3NTYgW2lubGluZV0KIHNsaXBfb3BlbisweDQ4My8weDEzMzAgZHJpdmVycy9uZXQv
-c2xpcC9zbGlwLmM6ODE3CiB0dHlfbGRpc2Nfb3BlbisweGJkLzB4MTIwIGRyaXZlcnMvdHR5L3R0
-eV9sZGlzYy5jOjQzMgogdHR5X3NldF9sZGlzYysweDMyYi8weDVjMCBkcml2ZXJzL3R0eS90dHlf
-bGRpc2MuYzo1NjMKIHRpb2NzZXRkKzB4MTI2LzB4MTcwIGRyaXZlcnMvdHR5L3R0eV9pby5jOjI0
-MzkKIHR0eV9pb2N0bCsweGU1Yy8weDEwOTAgZHJpdmVycy90dHkvdHR5X2lvLmM6MjczOQogdmZz
-X2lvY3RsIGZzL2lvY3RsLmM6NTEgW2lubGluZV0KIF9fZG9fc3lzX2lvY3RsIGZzL2lvY3RsLmM6
-OTA2IFtpbmxpbmVdCiBfX3NlX3N5c19pb2N0bCsweDI2Ni8weDM1MCBmcy9pb2N0bC5jOjg5Mgog
-ZG9fc3lzY2FsbF94NjQgYXJjaC94ODYvZW50cnkvY29tbW9uLmM6NTIgW2lubGluZV0KIGRvX3N5
-c2NhbGxfNjQrMHhmNi8weDIxMCBhcmNoL3g4Ni9lbnRyeS9jb21tb24uYzo4MwogZW50cnlfU1lT
-Q0FMTF82NF9hZnRlcl9od2ZyYW1lKzB4NzcvMHg3ZgoKCkZyZWVkIGJ5IHRhc2sgNDY2ODI6CgoK
-IGthc2FuX3NhdmVfc3RhY2sgbW0va2FzYW4vY29tbW9uLmM6NDcgW2lubGluZV0KCiBrYXNhbl9z
-YXZlX3RyYWNrKzB4M2YvMHg4MCBtbS9rYXNhbi9jb21tb24uYzo2OAoga2FzYW5fc2F2ZV9mcmVl
-X2luZm8rMHg0MC8weDUwIG1tL2thc2FuL2dlbmVyaWMuYzo1ODIKIHBvaXNvbl9zbGFiX29iamVj
-dCBtbS9rYXNhbi9jb21tb24uYzoyNDcgW2lubGluZV0KIF9fa2FzYW5fc2xhYl9mcmVlKzB4NWEv
-MHg3MCBtbS9rYXNhbi9jb21tb24uYzoyNjQKIGthc2FuX3NsYWJfZnJlZSBpbmNsdWRlL2xpbnV4
-L2thc2FuLmg6MjMzIFtpbmxpbmVdCiBzbGFiX2ZyZWVfaG9vayBtbS9zbHViLmM6MjM1MyBbaW5s
-aW5lXQogc2xhYl9mcmVlIG1tL3NsdWIuYzo0NjEzIFtpbmxpbmVdCiBrZnJlZSsweDE5Ni8weDQ1
-MCBtbS9zbHViLmM6NDc2MQogZGV2aWNlX3JlbGVhc2UrMHhjZC8weDI0MAoga29iamVjdF9jbGVh
-bnVwIGxpYi9rb2JqZWN0LmM6Njg5IFtpbmxpbmVdCiBrb2JqZWN0X3JlbGVhc2UgbGliL2tvYmpl
-Y3QuYzo3MjAgW2lubGluZV0KIGtyZWZfcHV0IGluY2x1ZGUvbGludXgva3JlZi5oOjY1IFtpbmxp
-bmVdCiBrb2JqZWN0X3B1dCsweDI0OC8weDQ5MCBsaWIva29iamVjdC5jOjczNwogbmV0ZGV2X3J1
-bl90b2RvKzB4MTBlMC8weDEyODAgbmV0L2NvcmUvZGV2LmM6MTA5MjQKIHR0eV9sZGlzY19raWxs
-KzB4YmYvMHgxNTAgZHJpdmVycy90dHkvdHR5X2xkaXNjLmM6NjEzCiB0dHlfbGRpc2NfcmVsZWFz
-ZSsweDFhZS8weDIxMCBkcml2ZXJzL3R0eS90dHlfbGRpc2MuYzo3ODEKIHR0eV9yZWxlYXNlX3N0
-cnVjdCsweDJhLzB4MTAwIGRyaXZlcnMvdHR5L3R0eV9pby5jOjE2OTAKIHR0eV9yZWxlYXNlKzB4
-ZTRkLzB4MTQ2MCBkcml2ZXJzL3R0eS90dHlfaW8uYzoxODYxCiBfX2ZwdXQrMHgyYmEvMHhhODAg
-ZnMvZmlsZV90YWJsZS5jOjQ1MAogX19mcHV0X3N5bmMrMHgxODAvMHgxZTAgZnMvZmlsZV90YWJs
-ZS5jOjUzNQogX19kb19zeXNfY2xvc2UgZnMvb3Blbi5jOjE1NTQgW2lubGluZV0KIF9fc2Vfc3lz
-X2Nsb3NlIGZzL29wZW4uYzoxNTM5IFtpbmxpbmVdCiBfX3g2NF9zeXNfY2xvc2UrMHg5My8weDEy
-MCBmcy9vcGVuLmM6MTUzOQogZG9fc3lzY2FsbF94NjQgYXJjaC94ODYvZW50cnkvY29tbW9uLmM6
-NTIgW2lubGluZV0KIGRvX3N5c2NhbGxfNjQrMHhmNi8weDIxMCBhcmNoL3g4Ni9lbnRyeS9jb21t
-b24uYzo4MwogZW50cnlfU1lTQ0FMTF82NF9hZnRlcl9od2ZyYW1lKzB4NzcvMHg3ZgoKClRoZSBi
-dWdneSBhZGRyZXNzIGJlbG9uZ3MgdG8gdGhlIG9iamVjdCBhdCBmZmZmODg4MDVjZmNhMDAwCgoK
-IHdoaWNoIGJlbG9uZ3MgdG8gdGhlIGNhY2hlIGttYWxsb2MtY2ctNGsgb2Ygc2l6ZSA0MDk2CgpU
-aGUgYnVnZ3kgYWRkcmVzcyBpcyBsb2NhdGVkIDE3NiBieXRlcyBpbnNpZGUgb2YKIGZyZWVkIDQw
-OTYtYnl0ZSByZWdpb24gW2ZmZmY4ODgwNWNmY2EwMDAsIGZmZmY4ODgwNWNmY2IwMDApCgoKVGhl
-IGJ1Z2d5IGFkZHJlc3MgYmVsb25ncyB0byB0aGUgcGh5c2ljYWwgcGFnZToKCgpwYWdlOiByZWZj
-b3VudDoxIG1hcGNvdW50OjAgbWFwcGluZzowMDAwMDAwMDAwMDAwMDAwIGluZGV4OjB4MCBwZm46
-MHg1Y2ZjOAoKaGVhZDogb3JkZXI6MyBtYXBjb3VudDowIGVudGlyZV9tYXBjb3VudDowIG5yX3Bh
-Z2VzX21hcHBlZDowIHBpbmNvdW50OjAKbWVtY2c6ZmZmZjg4ODA3NWM2NGEwMQpmbGFnczogMHg0
-ZmZmMDAwMDAwMDAwNDAoaGVhZHxub2RlPTF8em9uZT0xfGxhc3RjcHVwaWQ9MHg3ZmYpCnBhZ2Vf
-dHlwZTogZjUoc2xhYikKcmF3OiAwNGZmZjAwMDAwMDAwMDQwIGZmZmY4ODgwMWQ0NGY1MDAgZGVh
-ZDAwMDAwMDAwMDEwMCBkZWFkMDAwMDAwMDAwMTIyCnJhdzogMDAwMDAwMDAwMDAwMDAwMCAwMDAw
-MDAwMDAwMDQwMDA0IDAwMDAwMDAxZjUwMDAwMDAgZmZmZjg4ODA3NWM2NGEwMQpoZWFkOiAwNGZm
-ZjAwMDAwMDAwMDQwIGZmZmY4ODgwMWQ0NGY1MDAgZGVhZDAwMDAwMDAwMDEwMCBkZWFkMDAwMDAw
-MDAwMTIyCmhlYWQ6IDAwMDAwMDAwMDAwMDAwMDAgMDAwMDAwMDAwMDA0MDAwNCAwMDAwMDAwMWY1
-MDAwMDAwIGZmZmY4ODgwNzVjNjRhMDEKaGVhZDogMDRmZmYwMDAwMDAwMDAwMyBmZmZmZWEwMDAx
-NzNmMjAxIGZmZmZmZmZmZmZmZmZmZmYgMDAwMDAwMDAwMDAwMDAwMApoZWFkOiAwMDAwMDAwMDAw
-MDAwMDA4IDAwMDAwMDAwMDAwMDAwMDAgMDAwMDAwMDBmZmZmZmZmZiAwMDAwMDAwMDAwMDAwMDAw
-CnBhZ2UgZHVtcGVkIGJlY2F1c2U6IGthc2FuOiBiYWQgYWNjZXNzIGRldGVjdGVkCnBhZ2Vfb3du
-ZXIgdHJhY2tzIHRoZSBwYWdlIGFzIGFsbG9jYXRlZApwYWdlIGxhc3QgYWxsb2NhdGVkIHZpYSBv
-cmRlciAzLCBtaWdyYXRldHlwZSBVbm1vdmFibGUsIGdmcF9tYXNrIDB4ZDIwYzAoX19HRlBfSU98
-X19HRlBfRlN8X19HRlBfTk9XQVJOfF9fR0ZQX05PUkVUUll8X19HRlBfQ09NUHxfX0dGUF9OT01F
-TUFMTE9DKSwgcGlkIDk2NjAsIHRnaWQgOTY2MCAoc3l6LWV4ZWN1dG9yLjEpLCB0cyA5MzM4MzU3
-ODA4OSwgZnJlZV90cyA5MzA3NjU2NTgzNgogc2V0X3BhZ2Vfb3duZXIgaW5jbHVkZS9saW51eC9w
-YWdlX293bmVyLmg6MzIgW2lubGluZV0KIHBvc3RfYWxsb2NfaG9vaysweDFmNi8weDI0MCBtbS9w
-YWdlX2FsbG9jLmM6MTU1OAogcHJlcF9uZXdfcGFnZSBtbS9wYWdlX2FsbG9jLmM6MTU2NiBbaW5s
-aW5lXQogZ2V0X3BhZ2VfZnJvbV9mcmVlbGlzdCsweDM1ODYvMHgzNmQwIG1tL3BhZ2VfYWxsb2Mu
-YzozNDc2CiBfX2FsbG9jX3BhZ2VzX25vcHJvZisweDI2MC8weDY4MCBtbS9wYWdlX2FsbG9jLmM6
-NDc1MwogYWxsb2NfcGFnZXNfbXBvbF9ub3Byb2YrMHgzYzgvMHg2NTAgbW0vbWVtcG9saWN5LmM6
-MjI2OQogYWxsb2Nfc2xhYl9wYWdlKzB4NmEvMHgxMTAgbW0vc2x1Yi5jOjI0MjMKIGFsbG9jYXRl
-X3NsYWIrMHg1Zi8weDJiMCBtbS9zbHViLmM6MjU4OQogbmV3X3NsYWIgbW0vc2x1Yi5jOjI2NDIg
-W2lubGluZV0KIF9fX3NsYWJfYWxsb2MrMHhiZGYvMHgxNDkwIG1tL3NsdWIuYzozODMwCiBfX3Ns
-YWJfYWxsb2MgbW0vc2x1Yi5jOjM5MjAgW2lubGluZV0KIF9fc2xhYl9hbGxvY19ub2RlIG1tL3Ns
-dWIuYzozOTk1IFtpbmxpbmVdCiBzbGFiX2FsbG9jX25vZGUgbW0vc2x1Yi5jOjQxNTYgW2lubGlu
-ZV0KIF9fZG9fa21hbGxvY19ub2RlIG1tL3NsdWIuYzo0Mjk3IFtpbmxpbmVdCiBfX2ttYWxsb2Nf
-bm9kZV90cmFja19jYWxsZXJfbm9wcm9mKzB4MzBmLzB4NTIwIG1tL3NsdWIuYzo0MzE3CiBrbWVt
-ZHVwX25vcHJvZisweDJiLzB4NjAgbW0vdXRpbC5jOjEzNQogX19hZGRyY29uZl9zeXNjdGxfcmVn
-aXN0ZXIrMHhiMS8weDQzMCBuZXQvaXB2Ni9hZGRyY29uZi5jOjcyMjEKIGFkZHJjb25mX3N5c2N0
-bF9yZWdpc3RlcisweDFiZC8weDIyMCBuZXQvaXB2Ni9hZGRyY29uZi5jOjcyODcKIGlwdjZfYWRk
-X2RldisweGUxMy8weDEzZTAgbmV0L2lwdjYvYWRkcmNvbmYuYzo0NTYKIGFkZHJjb25mX25vdGlm
-eSsweDZkOC8weDExNzAgbmV0L2lwdjYvYWRkcmNvbmYuYzozNjc0CiBub3RpZmllcl9jYWxsX2No
-YWluKzB4MWM2LzB4NDEwIGtlcm5lbC9ub3RpZmllci5jOjg1CiBjYWxsX25ldGRldmljZV9ub3Rp
-ZmllcnNfZXh0YWNrIG5ldC9jb3JlL2Rldi5jOjIwMzQgW2lubGluZV0KIGNhbGxfbmV0ZGV2aWNl
-X25vdGlmaWVycysweGQzLzB4MTEwIG5ldC9jb3JlL2Rldi5jOjIwNDgKIHJlZ2lzdGVyX25ldGRl
-dmljZSsweDE5MGMvMHgxZGEwIG5ldC9jb3JlL2Rldi5jOjEwNjMyCnBhZ2UgbGFzdCBmcmVlIHBp
-ZCAxMDAgdGdpZCAxMDAgc3RhY2sgdHJhY2U6CiByZXNldF9wYWdlX293bmVyIGluY2x1ZGUvbGlu
-dXgvcGFnZV9vd25lci5oOjI1IFtpbmxpbmVdCiBmcmVlX3BhZ2VzX3ByZXBhcmUgbW0vcGFnZV9h
-bGxvYy5jOjExMjcgW2lubGluZV0KIGZyZWVfdW5yZWZfZm9saW9zKzB4ZTAzLzB4MTg2MCBtbS9w
-YWdlX2FsbG9jLmM6MjcwNgogc2hyaW5rX2ZvbGlvX2xpc3QrMHg0Njk4LzB4NWM4MCBtbS92bXNj
-YW4uYzoxNDgzCiBldmljdF9mb2xpb3MrMHgzYjEyLzB4NTYxMCBtbS92bXNjYW4uYzo0NTkzCiB0
-cnlfdG9fc2hyaW5rX2xydXZlYysweDk0MS8weGMxMCBtbS92bXNjYW4uYzo0Nzg5CiBzaHJpbmtf
-b25lKzB4MjBlLzB4ODcwIG1tL3Ztc2Nhbi5jOjQ4MzQKIHNocmlua19tYW55IG1tL3Ztc2Nhbi5j
-OjQ4OTcgW2lubGluZV0KIGxydV9nZW5fc2hyaW5rX25vZGUgbW0vdm1zY2FuLmM6NDk3NSBbaW5s
-aW5lXQogc2hyaW5rX25vZGUrMHgzODYyLzB4M2YyMCBtbS92bXNjYW4uYzo1OTU2CiBrc3dhcGRf
-c2hyaW5rX25vZGUgbW0vdm1zY2FuLmM6Njc4NSBbaW5saW5lXQogYmFsYW5jZV9wZ2RhdCBtbS92
-bXNjYW4uYzo2OTc3IFtpbmxpbmVdCiBrc3dhcGQrMHgxYzlmLzB4MzZmMCBtbS92bXNjYW4uYzo3
-MjQ2CiBrdGhyZWFkKzB4MmMzLzB4MzYwIGtlcm5lbC9rdGhyZWFkLmM6Mzg5CiByZXRfZnJvbV9m
-b3JrKzB4NGIvMHg4MCBhcmNoL3g4Ni9rZXJuZWwvcHJvY2Vzcy5jOjE0NwogcmV0X2Zyb21fZm9y
-a19hc20rMHgxYS8weDMwIGFyY2gveDg2L2VudHJ5L2VudHJ5XzY0LlM6MjQ0CgoKTWVtb3J5IHN0
-YXRlIGFyb3VuZCB0aGUgYnVnZ3kgYWRkcmVzczoKCgogZmZmZjg4ODA1Y2ZjOWY4MDogZmMgZmMg
-ZmMgZmMgZmMgZmMgZmMgZmMgZmMgZmMgZmMgZmMgZmMgZmMgZmMgZmMKCiBmZmZmODg4MDVjZmNh
-MDAwOiBmYSBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYgo+ZmZm
-Zjg4ODA1Y2ZjYTA4MDogZmIgZmIgZmIgZmIgZmIgZmIgZmIgZmIgZmIgZmIgZmIgZmIgZmIgZmIg
-ZmIgZmIKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF4KIGZmZmY4ODgwNWNm
-Y2ExMDA6IGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiCiBm
-ZmZmODg4MDVjZmNhMTgwOiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBm
-YiBmYiBmYgo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT0KCkhpIGRldmVsb3BlcnM6CgoKV2UgYXJlIHJlcG9ydGluZyBhIExp
-bnV4IGlzc3VlIHVzaW5nIGEgbW9kaWZpZWQgdmVyc2lvbiBvZiBTeXprYWxsZXIuCgoKSEVBRCBj
-b21taXQ6IDRiYmY5MDIwIDYuMTMuMC1yYzQKCmdpdCB0cmVlOiB1cHN0cmVhbQprZXJuZWwgY29u
-ZmlnOiBodHRwczovL2dpdGh1Yi5jb20vZ29vZ2xlL3N5emthbGxlci9ibG9iL21hc3Rlci9kYXNo
-Ym9hcmQvY29uZmlnL2xpbnV4L3Vwc3RyZWFtLWFwcGFybW9yLWthc2FuLmNvbmZpZwpzeXogcmVw
-cm86IGh0dHBzOi8vZHJpdmUuZ29vZ2xlLmNvbS9maWxlL2QvMVhWOVdId012SzRlWklQdXlqaVdv
-VHB5UTBGcERhVXBUL3ZpZXc/dXNwPXNoYXJpbmcKQyByZXByb2R1Y2VyOiBBcyB0aGlzIGlzIGEg
-cmFjZSBjb25kaXRpb24sIHdlIGNhbm5vdCBvYnRhaW4gYSBzdGFibGUgQyByZXByb2R1Y2VyLgoK
-CkRlc2NyaXB0aW9uOgoKVGhlIFNMSVAgZHJpdmVyIHN1ZmZlcnMgZnJvbSBhIGNvbmN1cnJlbnQg
-VXNlLUFmdGVyLUZyZWUgaXNzdWUgaW4gc2xfc3luYygpIGR1ZSB0bwp1bnN5bmNocm9uaXplZCBh
-Y2Nlc3MgdG8gbmV0X2RldmljZSBwb2ludGVycyBzdG9yZWQgaW4gc2xpcF9kZXZzW10uIFdoZW4g
-YQpkZXZpY2UgaXMgYmVpbmcgZnJlZWQgKGZvciBleGFtcGxlLCB2aWEgdHR5X3JlbGVhc2UoKS9u
-ZXRkZXZfcnVuX3RvZG8oKSksCnNsX3N5bmMoKSBtYXkgYWNjZXNzIGl0IGFmdGVyIGl0IGhhcyBi
-ZWVuIGZyZWVkLgoKU3RlcHMgdG8gcmVwcm9kdWNlcjoKCjEuIFNldHVwIGEgdm0gb24gdGhlIGdp
-dmVuIGtlcm5lbC4KMi4gVXNlIHN5emthbGxlciB0byBydW4gc3l6IHJlcHJvIHdpdGggYC4vc3l6
-LWV4ZWNwcm9nIC1leGVjdXRvcj0uL3N5ei1leGVjdXRvciAtcmVwZWF0PTIwMDAwIC1wcm9jcz04
-IC1jb3Zlcj0wIH4vcmVwcm8ucHJvZ2AuCgoKRW52aXJvbm1lbnQ6CgpVYnVudHUgMjIuMDQgb24g
-TGludXggNS4xNQpRRU1VIGVtdWxhdG9yIHZlcnNpb24gNi4yLjAKcWVtdS1zeXN0ZW0teDg2XzY0
-IFwKLW0gMkcgXAotc21wIDIgXAota2VybmVsIC9ob21lL3dkL2J6SW1hZ2UgXAotYXBwZW5kICJj
-b25zb2xlPXR0eVMwIHJvb3Q9L2Rldi9zZGEgZWFybHlwcmludGs9c2VyaWFsIG5ldC5pZm5hbWVz
-PTAiIFwKLWRyaXZlIGZpbGU9L2hvbWUvd2QvYnVsbHNleWUuaW1nLGZvcm1hdD1yYXcgXAotbmV0
-IHVzZXIsaG9zdD0xMC4wLjIuMTAsaG9zdGZ3ZD10Y3A6MTI3LjAuMC4xOjEwMDIxLToyMiBcCi1u
-ZXQgbmljLG1vZGVsPWUxMDAwIFwKLWVuYWJsZS1rdm0gXAotbm9ncmFwaGljIFwKLXBpZGZpbGUg
-dm0ucGlkIFwKMj4mMSB8IHRlZSB2bS5sb2cKCklmIHlvdSBmaXggdGhpcyBpc3N1ZSwgcGxlYXNl
-IGFkZCB0aGUgZm9sbG93aW5nIHRhZyB0byB0aGUgY29tbWl0OgoKUmVwb3J0ZWQtYnk6IEppYWNo
-ZW5nIFh1IDxzdGl0Y2hAemp1LmVkdS5jbj4KCg==
 
+--vaw6nh53tkwvlyt2
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 1/1] can: esd_usb: Fix not detecting version reply in
+ probe routine
+MIME-Version: 1.0
+
+On 03.02.2025 15:58:10, Stefan M=C3=A4tje wrote:
+> This patch fixes some problems in the esd_usb_probe routine that render
+> the CAN interface unusable.
+>=20
+> The probe routine sends a version request message to the USB device to
+> receive a version reply with the number of CAN ports and the hard-
+> & firmware versions. Then for each CAN port a CAN netdev is registered.
+>=20
+> The previous code assumed that the version reply would be received
+> immediately. But if the driver was reloaded without power cycling the
+> USB device (i. e. on a reboot) there could already be other incoming
+> messages in the USB buffers. These would be in front of the version
+> reply and need to be skipped.
+>=20
+> In the previous code these problems were present:
+> - Only one usb_bulk_msg() read was done into a buffer of
+>   sizeof(union esd_usb_msg) which is smaller than ESD_USB_RX_BUFFER_SIZE
+>   which could lead to an overflow error from the USB stack.
+> - The first bytes of the received data were taken without checking for
+>   the message type. This could lead to zero detected CAN interfaces.
+> - On kmalloc() fail for the "union esd_usb_msg msg" (i. e. msg =3D=3D NUL=
+L)
+>   kfree() would be called with this NULL pointer.
+>=20
+> To mitigate these problems:
+> - Use a transfer buffer "buf" with ESD_USB_RX_BUFFER_SIZE.
+> - Fix the error exit path taken after allocation failure for the
+>   transfer buffer.
+> - Added a function esd_usb_recv_version() that reads and skips incoming
+>   "esd_usb_msg" messages until a version reply message is found. This
+>   is evaluated to return the count of CAN ports and version information.
+>=20
+> Fixes: 80662d943075 ("can: esd_usb: Add support for esd CAN-USB/3")
+> Signed-off-by: Stefan M=C3=A4tje <stefan.maetje@esd.eu>
+> ---
+>  drivers/net/can/usb/esd_usb.c | 122 +++++++++++++++++++++++++---------
+>  1 file changed, 92 insertions(+), 30 deletions(-)
+>=20
+> diff --git a/drivers/net/can/usb/esd_usb.c b/drivers/net/can/usb/esd_usb.c
+> index 03ad10b01867..a6b3b100f8ac 100644
+> --- a/drivers/net/can/usb/esd_usb.c
+> +++ b/drivers/net/can/usb/esd_usb.c
+> @@ -625,17 +625,86 @@ static int esd_usb_send_msg(struct esd_usb *dev, un=
+ion esd_usb_msg *msg)
+>  			    1000);
+>  }
+> =20
+> -static int esd_usb_wait_msg(struct esd_usb *dev,
+> -			    union esd_usb_msg *msg)
+> +static int esd_usb_req_version(struct esd_usb *dev, void *buf)
+> +{
+> +	union esd_usb_msg *msg =3D buf;
+> +
+> +	msg->hdr.cmd =3D ESD_USB_CMD_VERSION;
+> +	msg->hdr.len =3D sizeof(struct esd_usb_version_msg) / sizeof(u32); /* #=
+ of 32bit words */
+> +	msg->version.rsvd =3D 0;
+> +	msg->version.flags =3D 0;
+> +	msg->version.drv_version =3D 0;
+> +
+> +	return esd_usb_send_msg(dev, msg);
+> +}
+> +
+> +static int esd_usb_recv_version(struct esd_usb *dev,
+> +				void *rx_buf,
+> +				u32 *version,
+> +				int *net_count)
+
+static int esd_usb_recv_version(struct esd_usb *dev, void *rx_buf,
+				u32 *version, int *net_count)
+
+>  {
+>  	int actual_length;
+> +	int cnt_other =3D 0;
+> +	int cnt_ts =3D 0;
+> +	int cnt_vs =3D 0;
+> +	int attempt;
+> +	int pos;
+> +	int err;
+
+Try to reduce the scope of the variables and move them into the for-loop.
+
+> =20
+> -	return usb_bulk_msg(dev->udev,
+> -			    usb_rcvbulkpipe(dev->udev, 1),
+> -			    msg,
+> -			    sizeof(*msg),
+> -			    &actual_length,
+> -			    1000);
+> +	for (attempt =3D 0; attempt < 8 && cnt_vs =3D=3D 0; ++attempt) {
+
+Can you create a #define for the "8" to avoid a magic number here?
+
+> +		err =3D usb_bulk_msg(dev->udev,
+> +				   usb_rcvbulkpipe(dev->udev, 1),
+> +				   rx_buf,
+> +				   ESD_USB_RX_BUFFER_SIZE,
+> +				   &actual_length,
+> +				   1000);
+> +		if (err)
+> +			break;
+
+nitpick: I would make it explicit with "goto bail", should be the same?
+
+> +
+> +		err =3D -ENOENT;
+> +		pos =3D 0;
+> +		while (pos < actual_length) {
+> +			union esd_usb_msg *p_msg;
+> +
+> +			p_msg =3D (union esd_usb_msg *)(rx_buf + pos);
+> +
+> +			switch (p_msg->hdr.cmd) {
+> +			case ESD_USB_CMD_VERSION:
+> +				++cnt_vs;
+> +				*net_count =3D (int)p_msg->version_reply.nets;
+
+Cast not needed.
+
+What happens if nets is > 2? Please sanitize input from outside against
+ESD_USB_MAX_NETS.
+
+> +				*version =3D le32_to_cpu(p_msg->version_reply.version);
+> +				err =3D 0;
+> +				dev_dbg(&dev->udev->dev, "TS 0x%08x, V 0x%08x, N %u, F 0x%02x, %.16s=
+\n",
+> +					le32_to_cpu(p_msg->version_reply.ts),
+> +					le32_to_cpu(p_msg->version_reply.version),
+> +					p_msg->version_reply.nets,
+> +					p_msg->version_reply.features,
+> +					(char *)p_msg->version_reply.name
+
+Is this cast needed?
+What about using '"%.*s", sizeof(p_msg->version_reply.name)'?
+
+> +					);
+
+Please move the closing ")" into the previous line.
+
+> +				break;
+
+Why keep parsing after you've found the version?
+
+> +			case ESD_USB_CMD_TS:
+> +				++cnt_ts;
+> +				dev_dbg(&dev->udev->dev, "TS 0x%08x\n",
+> +					le32_to_cpu(p_msg->rx.ts));
+> +				break;
+> +			default:
+> +				++cnt_other;
+> +				dev_dbg(&dev->udev->dev, "HDR %d\n", p_msg->hdr.cmd);
+> +				break;
+> +			}
+> +			pos +=3D p_msg->hdr.len * sizeof(u32); /* convert to # of bytes */
+> +
+> +			if (pos > actual_length) {
+> +				dev_err(&dev->udev->dev, "format error\n");
+> +				err =3D -EPROTO;
+> +				goto bail;
+> +			}
+> +		}
+> +	}
+> +bail:
+> +	dev_dbg(&dev->udev->dev, "%s()->%d; ATT=3D%d, TS=3D%d, VS=3D%d, O=3D%d\=
+n",
+> +		__func__, err, attempt, cnt_ts, cnt_vs, cnt_other);
+> +	return err;
+>  }
+> =20
+>  static int esd_usb_setup_rx_urbs(struct esd_usb *dev)
+> @@ -1258,7 +1327,7 @@ static int esd_usb_probe_one_net(struct usb_interfa=
+ce *intf, int index)
+>  	}
+> =20
+>  	dev->nets[index] =3D priv;
+> -	netdev_info(netdev, "device %s registered\n", netdev->name);
+> +	netdev_info(netdev, "registered\n");
+> =20
+>  done:
+>  	return err;
+> @@ -1273,13 +1342,13 @@ static int esd_usb_probe(struct usb_interface *in=
+tf,
+>  			 const struct usb_device_id *id)
+>  {
+>  	struct esd_usb *dev;
+> -	union esd_usb_msg *msg;
+> +	void *buf;
+>  	int i, err;
+> =20
+>  	dev =3D kzalloc(sizeof(*dev), GFP_KERNEL);
+>  	if (!dev) {
+>  		err =3D -ENOMEM;
+> -		goto done;
+> +		goto bail;
+>  	}
+> =20
+>  	dev->udev =3D interface_to_usbdev(intf);
+> @@ -1288,34 +1357,25 @@ static int esd_usb_probe(struct usb_interface *in=
+tf,
+> =20
+>  	usb_set_intfdata(intf, dev);
+> =20
+> -	msg =3D kmalloc(sizeof(*msg), GFP_KERNEL);
+> -	if (!msg) {
+> +	buf =3D kmalloc(ESD_USB_RX_BUFFER_SIZE, GFP_KERNEL);
+> +	if (!buf) {
+>  		err =3D -ENOMEM;
+> -		goto free_msg;
+> +		goto free_dev;
+>  	}
+> =20
+>  	/* query number of CAN interfaces (nets) */
+> -	msg->hdr.cmd =3D ESD_USB_CMD_VERSION;
+> -	msg->hdr.len =3D sizeof(struct esd_usb_version_msg) / sizeof(u32); /* #=
+ of 32bit words */
+> -	msg->version.rsvd =3D 0;
+> -	msg->version.flags =3D 0;
+> -	msg->version.drv_version =3D 0;
+> -
+> -	err =3D esd_usb_send_msg(dev, msg);
+> +	err =3D esd_usb_req_version(dev, buf);
+>  	if (err < 0) {
+>  		dev_err(&intf->dev, "sending version message failed\n");
+> -		goto free_msg;
+> +		goto free_buf;
+>  	}
+> =20
+> -	err =3D esd_usb_wait_msg(dev, msg);
+> +	err =3D esd_usb_recv_version(dev, buf, &dev->version, &dev->net_count);
+
+Why pass the "&dev->version, &dev->net_count" pointers, if you already
+pass dev?
+
+>  	if (err < 0) {
+>  		dev_err(&intf->dev, "no version message answer\n");
+> -		goto free_msg;
+> +		goto free_buf;
+>  	}
+> =20
+> -	dev->net_count =3D (int)msg->version_reply.nets;
+> -	dev->version =3D le32_to_cpu(msg->version_reply.version);
+> -
+>  	if (device_create_file(&intf->dev, &dev_attr_firmware))
+>  		dev_err(&intf->dev,
+>  			"Couldn't create device file for firmware\n");
+> @@ -1332,11 +1392,12 @@ static int esd_usb_probe(struct usb_interface *in=
+tf,
+>  	for (i =3D 0; i < dev->net_count; i++)
+>  		esd_usb_probe_one_net(intf, i);
+
+Return values are not checked here. :/
+
+> =20
+> -free_msg:
+> -	kfree(msg);
+> +free_buf:
+> +	kfree(buf);
+> +free_dev:
+>  	if (err)
+>  		kfree(dev);
+> -done:
+> +bail:
+>  	return err;
+>  }
+> =20
+> @@ -1357,6 +1418,7 @@ static void esd_usb_disconnect(struct usb_interface=
+ *intf)
+>  		for (i =3D 0; i < dev->net_count; i++) {
+>  			if (dev->nets[i]) {
+>  				netdev =3D dev->nets[i]->netdev;
+> +				netdev_info(netdev, "unregister\n");
+>  				unregister_netdev(netdev);
+>  				free_candev(netdev);
+>  			}
+> --=20
+> 2.34.1
+>=20
+>=20
+>=20
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--vaw6nh53tkwvlyt2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmekruQACgkQDHRl3/mQ
+kZybbwgAtsPIdtggyaoprycIyPs18kKX1/vpDc/uw/46gCC4Yo7U6GRG+q/owYfk
+j6sUe2VlVZG0jdK/0Cl5EpJx8eYViNzdsYEkQkBvrTA5m/7Y+BBpAqpV+OeeB2dx
+I6a7wfnnxltLyFJ3zpDQNpzmsMlUGaRAfYUvhKx7RJEjB9BVlm8dWv6UptompQ7x
+CVRN9HJDkbzjtGyg6bghWry4/eRIzxKmEzGufqsKIXg2d7lfZL4ihIHYv4U04oLC
+vGUJUEsKZNJfcaCWArUVQ8UHiiwsMAvf+wLZalxzyFRYuTzdPxd+RhekNux2GF5r
+69i7okhFP+vcWzMHcqYGdQin+Lwykg==
+=6QkE
+-----END PGP SIGNATURE-----
+
+--vaw6nh53tkwvlyt2--
