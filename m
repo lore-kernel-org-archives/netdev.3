@@ -1,132 +1,104 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106D95B211
-	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 04:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA5AA2D;
+	Thu,  6 Feb 2025 04:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738817043; cv=none; b=ePtkelpUjvWjyI00TWUq0gTcxAI+ZeGDM71aP5Zv8dorN/Ofp8IpB5uhQZuoNN7RTTXl8FFjvVpMqQPgldizeN8OAaAZfnizL6T60kp15NcgTc/nehZuc/ysgcg7Q1JoQNf5JjmXrRybTqfJzMTveZ4ZYjdHQzfIqy1dKggkZ58=
+	t=1738817269; cv=none; b=d8hwWz3uCfOVZlFrqeO6BwRhcdAdJHJDM0OafMFddNFq3SR85Z/ySp7TKQnU6EiQgOhfzn3o5Iu+9xK7292OzBeGkepzgv/IFYK3pNIk+NaupJoGI038RjPVoYef/t3Qlos1aY6cpPxgFXRp62QB4PUeRX0WF81ZGQqvLl3KA24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738817043; c=relaxed/simple;
-	bh=XajYIlq4+0ks+mg4p+aIPvD6U9mjVlXfFcjc+tEoIRg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M/eca61FSMQyp7t+wd/L2rpkgggNjXiZoaXyQQDtpk/Sn1pOOmVB5uud6qRRj/7Mzya1S5Az1DEou7c3OB9FF8KWv2pWQk9vsemanjMTFzlSezNlmjANKTd5vUxHkSfWJ7h5LX0cXbX+a8O8thhM9g28jY6F9TBX+BZ4ufB1jk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=arf/i6/t; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738817269; c=relaxed/simple;
+	bh=zTJMwEQDpyIXC+zI5jGHk1tzEApj3e4XPeD9OYd7Hbs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iP0N81v317GbNO2FNDmNi1Sg5j83wwSZylvWWqTdEVASwhhNVUFQu+brtb8HN8IA+wjrfdIDgChLWr1S2nQ6R/yIQhk7scnITZPxIOWH+wtLCisCULkKRVSiO+qUGQ1dPlJnz/S5MA6ibJjpcXdt7sc7TmxWZ/taEssC0OZ6Xh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=c/ligPbZ; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="arf/i6/t"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4361d5730caso13035e9.1
-        for <netdev@vger.kernel.org>; Wed, 05 Feb 2025 20:44:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738817040; x=1739421840; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XajYIlq4+0ks+mg4p+aIPvD6U9mjVlXfFcjc+tEoIRg=;
-        b=arf/i6/tfyLA8pYxDdJ5kMVZPbJWdzpszo6686x6lX3Df6mM9kVyc0BbhI6rWr7vnu
-         qtl64rLb1jnMgxJypp0mvknqd6VUiAVlg8nhBV/5n78NiETKTBWMbaF5Um4s10Wleeqb
-         3LzLJcSKii86SOPe+YcRc5SMx2KmbqPGUdqGDe1jxGEBF435vP1Z07RmiWamC2WBrCDa
-         F+ckCEowhMPexnsRYDuU9TPpuuw5+4LLUN8qT0lUiz+d9fE6Vpgr0hLL/UJG6u4yZ5wD
-         A1DfOvHoEXfZ9a/pbXiypN967T0cPz6GAVBuY8sFvHPFMIGyWKuJ7jXjgV4tOBFINQY8
-         J87g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738817040; x=1739421840;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XajYIlq4+0ks+mg4p+aIPvD6U9mjVlXfFcjc+tEoIRg=;
-        b=FU41SO8nmZcglTS8NxbPNZUpOiUj/4Io0dIbGeZIhxU1+TCnF2FYDfC9X64aiQQR4t
-         OcLNjiaoY6yFvi1xLNJ6JwhXEY/dKHBZApNxtd8stnEkts9XgOIggCQERjjwyFR4iiGN
-         9I1hxYRX+tR5rHq4Ej+ETbQHwrTn+hGsSnTcCPy1ZpXoIhvrk5GzNDSl0F/W5aj4HYX5
-         JU1dhyw765b5dqRDerzBl4x1jNaF21WH5e8kh+RvefCjYUqPULJskwlgIa802iqWDnCz
-         r8LVsrwFYR6lWtG0OBvLxjWziAQ9sf8LcPlqXajqmVTMhtcqGxa+NsL6ONjphP5yVuyB
-         Ac7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUXYhzegkna7LJ0UxEiOOqGdmu3zTN94MRIHFHNYrhwKMOWraIZFqXpfYtg4UU0yL5hulsTO70=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNsurxErSpEg7+BgKF+bSBbDB1BEmnyIaNKXKX9+mL0k8nJqTj
-	vF4BiU5skl6M6nhABHkK7iqCJKUYOgv6Xw6eOcPCP65QTJIpPaVO/V7BUj++fnBnZxoEhhd5lWv
-	EN7FS/vkbgeEUo1oC6L73sjOubAt8NHeyqbJI
-X-Gm-Gg: ASbGncuxnlFyZlhL6071tzqTNaw2SnY7uNIHXeAlKH0Dk+K3m/aDFeUTTCSGS+6n3Li
-	dDqcOsH1kqvzZ9syn6RjClBidHfchlMwntU4mqBaCW8HdzMZNkG8rIUB56B6MVkB7mvP+wWFwFK
-	Jg/LwrZoEP517T9H4lMUInfir5znGHtQ==
-X-Google-Smtp-Source: AGHT+IG2HIUnj/yy5PRmLtzyvKmIbb1xtWCvCZkjyStYNB4TY/LcxF+FzLEMunWkvzajMsXpBmoE6vfoJ099bBdp7Vw=
-X-Received: by 2002:a05:600c:1d14:b0:434:a0fd:95d9 with SMTP id
- 5b1f17b1804b1-4391a84fb20mr351235e9.5.1738817040102; Wed, 05 Feb 2025
- 20:44:00 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="c/ligPbZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=lRCb1p6vbOS9wVnuLjOyk+RxFhhCPf08U5liQjx+Ork=;
+	b=c/ligPbZKT3ELxH6dvS/O0XMkXlWSsAnBtfcwJn61L88hpVtujagHPm+GK0eEX
+	SDyXAwbDirrX/FCPf/YmH51a7nWVliezZm7o0N0JFji0WqwYvGrozBQ4WklgHBpm
+	8ThfZuckBNaK3xnd/68qJj2Fag+fSIZE8VI8oovwtvPwk=
+Received: from hello.company.local (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgBnr_RNOqRnkz4GGw--.7261S2;
+	Thu, 06 Feb 2025 12:27:58 +0800 (CST)
+From: Liang Jie <buaajxlj@163.com>
+To: kuniyu@amazon.com
+Cc: buaajxlj@163.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	liangjie@lixiang.com,
+	linux-kernel@vger.kernel.org,
+	mhal@rbox.co,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com
+Subject: Re: [PATCH net-next] af_unix: Refine UNIX domain sockets autobind identifier length
+Date: Thu,  6 Feb 2025 12:27:57 +0800
+Message-Id: <20250206042757.3966975-1-buaajxlj@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250206040118.77016-1-kuniyu@amazon.com>
+References: <20250206040118.77016-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250205001052.2590140-1-skhawaja@google.com> <772affea-8d44-43ab-81e6-febaf0548da1@uwaterloo.ca>
- <CAAywjhQM4BLXX55Kh0XQ_NqYv8sJVWBfPfSZMb7724_3DrsjjA@mail.gmail.com>
- <Z6Pg6Ye5ZbzMlBeP@LQ3V64L9R2> <b2c7d2dc-595f-4cae-ab00-61b89243fc9e@uwaterloo.ca>
-In-Reply-To: <b2c7d2dc-595f-4cae-ab00-61b89243fc9e@uwaterloo.ca>
-From: Samiullah Khawaja <skhawaja@google.com>
-Date: Wed, 5 Feb 2025 20:43:48 -0800
-X-Gm-Features: AWEUYZlq4EJ_siL6Tp4e9YYEoif0RsZTsfT5Flt7RJ4SpGLFgIb-zRC_IiczLDQ
-Message-ID: <CAAywjhS69zRTBM7ZLNR08kL+anYuffppzU5ZuNORxKGQgo7_TA@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 0/4] Add support to do threaded napi busy poll
-To: Martin Karsten <mkarsten@uwaterloo.ca>
-Cc: Joe Damato <jdamato@fastly.com>, Jakub Kicinski <kuba@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, almasrymina@google.com, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgBnr_RNOqRnkz4GGw--.7261S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7AFy5KFyrCry8Ww1rKr1UGFg_yoW8Zr47pa
+	y7t3W5JrWkJFnrtF4xtr17Arn0kw4fJ39xAF1DJF17Za1YgF9F9FnrKr1j93yqkr4Iqr15
+	trWYka429Fyjva7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUx-BtUUUUU=
+X-CM-SenderInfo: pexdtyx0omqiywtou0bp/1tbiNgDrIGekLSi1UQAAsf
 
-On Wed, Feb 5, 2025 at 5:15=E2=80=AFPM Martin Karsten <mkarsten@uwaterloo.c=
-a> wrote:
->
-> On 2025-02-05 17:06, Joe Damato wrote:
-> > On Wed, Feb 05, 2025 at 12:35:00PM -0800, Samiullah Khawaja wrote:
-> >> On Tue, Feb 4, 2025 at 5:32=E2=80=AFPM Martin Karsten <mkarsten@uwater=
-loo.ca> wrote:
-> >>>
-> >>> On 2025-02-04 19:10, Samiullah Khawaja wrote:
->
-> [snip]
->
-> >>> Note that I don't dismiss the approach out of hand. I just think it's
-> >>> important to properly understand the purported performance improvemen=
-ts.
-> >> I think the performance improvements are apparent with the data I
-> >> provided, I purposefully used more sockets to show the real
-> >> differences in tail latency with this revision.
-> >
-> > Respectfully, I don't agree that the improvements are "apparent." I
-> > think my comments and Martin's comments both suggest that the cover
-> > letter does not make the improvements apparent.
-> >
-> >> Also one thing that you are probably missing here is that the change
-> >> here also has an API aspect, that is it allows a user to drive napi
-> >> independent of the user API or protocol being used.
-> >
-> > I'm not missing that part; I'll let Martin speak for himself but I
-> > suspect he also follows that part.
->
-> Yes, the API aspect is quite interesting. In fact, Joe has given you
-> pointers how to split this patch into multiple incremental steps, the
-> first of which should be uncontroversial.
->
-> I also just read your subsequent response to Joe. He has captured the
-> relevant concerns very well and I don't understand why you refuse to
-> document your complete experiment setup for transparency and
-> reproducibility. This shouldn't be hard.
-I think I have provided all the setup details and pointers to
-components. I appreciate that you want to reproduce the results and If
-you really really want to set it up then start by setting up onload on
-your platform. I cannot provide a generic installer script for onload
-that _claims_ to set it up on an arbitrary platform (with arbitrary
-NIC and environment). If it works on your platform (on top of AF_XDP)
-then from that point you can certainly build neper and run it using
-the command I shared.
->
-> To be clear: I would like to reproduce the experiments and then engage
-> in a meaningful discussion about the pros and cons of this mechanism,
-> but right now I need to speculate and there's no point in arguing
-> speculation vs. assertions.
->
-> Thanks,
-> Martin
->
+From: Kuniyuki Iwashima <kuniyu@amazon.com>,
+Date: Thu, 6 Feb 2025 13:01:18 +0900
+> > The logs from 'netdev/build_allmodconfig_warn' indicate that the patch has
+> > given rise to the following warning:
+> > 
+> >  - ../net/unix/af_unix.c: In function ‘unix_autobind’:
+> >  - ../net/unix/af_unix.c:1227:48: warning: ‘sprintf’ writing a terminating nul past the end of the destination [-Wformat-overflow=]
+> >  -  1227 |         sprintf(addr->name->sun_path + 1, "%0*x", AUTOBIND_LEN - 1, ordernum);
+> >  -       |                                                ^
+> >  - ../net/unix/af_unix.c:1227:9: note: ‘sprintf’ output 6 bytes into a destination of size 5
+> >  -  1227 |         sprintf(addr->name->sun_path + 1, "%0*x", AUTOBIND_LEN - 1, ordernum);
+> >  -       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > 
+> > It appears that the 'sprintf' call attempts to write a terminating null
+> > byte past the end of the 'sun_path' array, potentially causing an overflow.
+> > 
+> > To address this issue, I am considering the following approach:
+> > 
+> > 	char orderstring[6];
+> > 
+> > 	sprintf(orderstring, "%05x", ordernum);
+> > 	memcpy(addr->name->sun_path + 1, orderstring, 5);
+> > 
+> > This would prevent the buffer overflow by using 'memcpy' to safely copy the
+> > formatted string into 'sun_path'.
+> 
+> Finally new hard-coded values are introduced..
+> 
+> I'm not sure this is worth saving just 10 bytes, which is not excessive,
+> vs extra 5 bytes memcpy(), so I'd rather not touch here.
+> 
+> > 
+> > Before proceeding with a patch submission, I wanted to consult with you to
+> > see if you have any suggestions for a better or more elegant solution to
+> > this problem.
+> 
+> An elegant option might be add a variant of snprintf without terminating
+> string by \0 ?
+
+Thank you very much for your suggestions. It's an elegant solution that
+avoids additional overhead and neatly solves the problem. I appreciate your
+insight and will incorporate your idea into the updated patch.
+
+Best regards,
+Liang Jie
+
