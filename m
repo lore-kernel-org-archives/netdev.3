@@ -1,118 +1,92 @@
-Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFA122540F;
-	Thu,  6 Feb 2025 10:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3240022540F;
+	Thu,  6 Feb 2025 10:24:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738837362; cv=none; b=cr0Bxr5yqFM35lM7Af6K/kxl0psW4iEf5NCQ0EnroZqPMuBtkXqPzbvrg7p8V+/XlE90sTQ5HsKEAmdX/Qx7/7b9vEqXrSJe98Ykidrza6cJb5vFlpTTDf6wK2RYfYkjfdh3Fk8b/EiAKF62SMvBRvH+LkIMkJDkfzN7MKe6Tek=
+	t=1738837482; cv=none; b=Qr+qL6v0zMg7XSgT88oVQKzZsw5QMUQ2Cdyg9z0ejVsQ5AEmJ0C0maUYaUI83tGvitV8/wzt5/7tKpruzDiUVpetsxHy6MZxqk8ZwZ2WdWFMzaEnRJZXm9m0r86BXwxuY+wv6dJn508ns3d1e5TYfy8xyrlLP9uA5hwyrzqleDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738837362; c=relaxed/simple;
-	bh=ITRUK2mleEF/74KTc1V9MJDwrYb1+CFbhx+ekjh6RF4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KPpbH1cgplBNfZmlCR5vaTVHMcH5dLTUZy6KueszaKgF6zYuPIRqkDlxfUUd2soPqOYrDahmzbmgIdrR+E3yc1E6+IodZDI80yMhnYCoeSGm5UbhplVDJur5BC3sJrleApH9r7jiFsADDBidyIuRyti7r1S2j0rNHp1/eC4Ukpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mn3XOFt8; arc=none smtp.client-ip=209.85.166.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738837482; c=relaxed/simple;
+	bh=V2R7f06XbvyAt5iCH3t8bRwSEWxBPWVf0fxAB9GCG/E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sQ6DAcPt5xqI+AJU9OamtkZTVT2gQ9vqrHPHFocHZDmugpIcl5NIkevXg1blrHuNu97snjoPS5bTWw9tmTYaF8esUxr2Q8mXdjeaxB1T7rJJ2FzgOsJKOX+uqtTjaM03xCRsZSWZ+PQOAfb18KU5Lrpx+4ijNTuMhDembiQ4Iuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=uPg2UyKU; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mn3XOFt8"
-Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-3d0558c61f4so3966895ab.0;
-        Thu, 06 Feb 2025 02:22:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738837359; x=1739442159; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ITRUK2mleEF/74KTc1V9MJDwrYb1+CFbhx+ekjh6RF4=;
-        b=Mn3XOFt8YO2RyEAbnu5a3n7tkACutT9bXrRcarY3bbxlrGnjxLzPas81mbNgO3gRV5
-         nbFiOm8YQH+OVTFfywMV02c5UU8/6KS/JBLLGdehjs6R3wd6G7WsfnX0G2aAjBFZjpU5
-         0VBUydFMgUcCz2vQJtmA/esrOeeBW3ax9cm3Hky2djMG0HfgdzgTFligEbX6kH1+NzbA
-         LfsE8UE5JllJ7++BMQ5saC/B1i6jbbZp3gh4LE+YhMEukU8F4t/9sKAQO/9eiJ8d0TQA
-         KrS9mFjF4HHsrAgjM7OkswHIaDS0VWjjmGiBERJdSb/pFnSa1da/6r/9fibJe6TUrGe5
-         sUrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738837359; x=1739442159;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ITRUK2mleEF/74KTc1V9MJDwrYb1+CFbhx+ekjh6RF4=;
-        b=qFmHOIQjSxJT70cutPwiEUl5hDhscdStyv3hO8uyFB6i1ReTYTYGHJztYffkJGujZ3
-         +89PbfIcSeH9F20DKjYgchZit7m2ofoxRoT4kt/9/sDElOW1NADiYWiFn6a2Q9wiykYp
-         ngGQrwS4EQQ9j4eVS0GlU0iyHXT/mBF0XG7ZsigCML0r79UHGcC3xYp7MqrM/5J9x0a2
-         sGpPOD5Q/5Lf0EHMQoA9yDucOIzKt7JSbHUQVJlo0Rg3gdzC4U9TRK0RB5EHWZfUFErp
-         pCY55zGwdtzO+IwM3SfizPxhwox/AV4PBvWJQylQZWiteXWyFCd0j8MNo/ULuc2qNy3P
-         gCKw==
-X-Forwarded-Encrypted: i=1; AJvYcCW07gHTdd+QNzUzsdVgINdS/KvS0vuimPH2maOIGna9xT1pmcFhWNZsqme/oyHx30PctmZfJIf6@vger.kernel.org, AJvYcCXSmHNDRo3ppy1V6Q7VHETU4NFLiTucC4eh2wBl/IBAoNLOoaaKcqyqcq+/h8OHJ2GxWss=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKEmFzyEH3TMS+Od0DFvh2cCD8heEd6cXhUuCBxQMPzRZs9PzO
-	t1W67eKGeFQrBfLAuzDKfaxKtWl/zpDU7rtmZk1Y7QEPHgr9aYyQREdtpFUlcnPELFpcbL3tR9p
-	BytFMJ5YPbLQk4X39CCnlLroSxEU=
-X-Gm-Gg: ASbGncsAY0PT9uKLO+wplelxOaW6nb2CPqXKmBZKjzKAx/hlSnL/0CyyK+PYvArfXYi
-	ARh6dyMtPcuxHRcM/8PS0ppS7JxEShCh8Xp036z3IBgOszIm1nHiAJFpsVL3VBj583A4MLUWi
-X-Google-Smtp-Source: AGHT+IEtPTc9uft8nwa3L0tYQXjWEa0eIxuJSderjWOqvglwujSfCkIPE1NYtRO9VTJALAgsAbH02UD4m46o1/aevAk=
-X-Received: by 2002:a05:6e02:12ce:b0:3cf:c07d:e9a with SMTP id
- e9e14a558f8ab-3d05a58d185mr19078455ab.4.1738837359688; Thu, 06 Feb 2025
- 02:22:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="uPg2UyKU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=iMI7yWLcG9Uq7pXGUKF4gIfihSrRKWMD0664Ni2nOgU=; b=uPg2UyKU8/3KU2OghvDljf5n2j
+	fSct2xXHLfauULT7TJ/1smHjAeaqT68BMIW75Gv9XBsIWkWS9H20GzASOSqCEVg/hg2tqEISYruwG
+	/Yo/l8x1v6BGRCMPTiNTaXoxtV4XYGUI986lsw0v0OJLQY3z80ZBY9y14BUQyssBEeoPLvxJPD4RL
+	aYJppKdKKpBYX8ls7YbYW7yFWh/Jpgj48u4tqvBMwRTd6eT9NtlYto9b+BifR8Ymzt7ZpYv1gmgzG
+	JesVU3E6Mj4Ry+dRF4EAf4KAqF+EwITZ3dDwKN8LvWhua7kVZiYJQi7d8liWu6SNli8gl79NGOeRK
+	28sU+naA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57546)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tfz3e-0001jE-1g;
+	Thu, 06 Feb 2025 10:24:32 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tfz3d-0003Lm-0K;
+	Thu, 06 Feb 2025 10:24:29 +0000
+Date: Thu, 6 Feb 2025 10:24:28 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Byungho An <bh74.an@samsung.com>, Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v1 1/1] net: sxgbe: rework EEE handling to use
+ PHY negotiation results
+Message-ID: <Z6SN3GSwPsh6m8UI@shell.armlinux.org.uk>
+References: <20250206075856.3266068-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250204183024.87508-1-kerneljasonxing@gmail.com>
- <20250204183024.87508-6-kerneljasonxing@gmail.com> <67a384ea2d547_14e0832942c@willemb.c.googlers.com.notmuch>
- <CAL+tcoDvCrfE+Xs3ywTA35pvR_NyFyXLihyAuFFZBA4aHmiZBg@mail.gmail.com>
-In-Reply-To: <CAL+tcoDvCrfE+Xs3ywTA35pvR_NyFyXLihyAuFFZBA4aHmiZBg@mail.gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Thu, 6 Feb 2025 18:22:03 +0800
-X-Gm-Features: AWEUYZnwB6USsLHlfud560t2tqXbwmTMNfmbEHPVYZlfcOIutFZZOfwE_OwrI1k
-Message-ID: <CAL+tcoAPpLwRt1_81yM66MpeiJvD1oZjCOzy4auKR585M24yPA@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v8 05/12] net-timestamp: prepare for isolating
- two modes of SO_TIMESTAMPING
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, dsahern@kernel.org, willemb@google.com, ast@kernel.org, 
-	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, 
-	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
-	john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me, 
-	haoluo@google.com, jolsa@kernel.org, horms@kernel.org, bpf@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250206075856.3266068-1-o.rempel@pengutronix.de>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, Feb 6, 2025 at 4:43=E2=80=AFPM Jason Xing <kerneljasonxing@gmail.co=
-m> wrote:
->
-> On Wed, Feb 5, 2025 at 11:34=E2=80=AFPM Willem de Bruijn
-> <willemdebruijn.kernel@gmail.com> wrote:
-> >
-> > Jason Xing wrote:
-> > > No functional changes here, only add skb_enable_app_tstamp() to test
-> > > if the orig_skb matches the usage of application SO_TIMESTAMPING
-> > > or its bpf extension. And it's good to support two modes in
-> > > parallel later in this series.
-> > >
-> > > Also, this patch deliberately distinguish the software and
-> > > hardware SCM_TSTAMP_SND timestamp by passing 'sw' parameter in order
-> > > to avoid such a case where hardware may go wrong and pass a NULL
-> > > hwstamps, which is even though unlikely to happen. If it really
-> > > happens, bpf prog will finally consider it as a software timestamp.
-> > > It will be hardly recognized. Let's make the timestamping part
-> > > more robust.
-> >
-> > Disagree. Don't add a crutch that has not shown to be necessary for
-> > all this time.
-> >
-> > Just infer hw from hwtstamps !=3D NULL.
->
-> I can surely modify this part as you said, but may I ask why? I cannot
-> find a good reason to absolutely trust the hardware behaviour. If that
-> corner case happens, it would be very hard to trace the root cause...
+On Thu, Feb 06, 2025 at 08:58:56AM +0100, Oleksij Rempel wrote:
+> From: Andrew Lunn <andrew@lunn.ch>
+> 
+> The enabling/disabling of EEE in the MAC should happen as a result of
+> auto negotiation. So rework sxgbe_eee_adjust() to take the result of
+> negotiation into account.
 
-No offense, just curious. I can keep the same approach as
-SO_TIMESTAMPING since you disagree. I have no strong preference
-because I found It's simpler after rewriting this part.
+PLS, at least in stmmac terminology, is "phy link status" and there it
+is used with a separate timer which prevents LPI mode being entered
+near to the link coming up. Given that the method is called
+priv->hw->mac->set_eee_pls, and what was being passed to it was the
+link status, I think this is the same thing in this driver.
 
-I will simplify this patch in v9 :)
+So, I think repurposing this bit to indicate whether EEE has been
+negotiated is not correct.
 
-Thanks,
-Jason
+> sxgbe_set_eee() now just stores LTI timer value. Everything else is
+> passed to phylib, so it can correctly setup the PHY.
+
+Not sure why you don't use phydev->eee_cfg.lpi_timer which will be
+updated correctly - if phy_ethtool_set_eee() reutrns an error, then
+priv->tx_lpi_timer will have been updated yet an error will be
+returned to userspace. Sure, have priv->tx_lpi_timer, but update
+this on link-up.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
