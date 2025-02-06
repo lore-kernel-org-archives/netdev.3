@@ -1,166 +1,86 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E63E224AE9;
-	Thu,  6 Feb 2025 06:49:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFBE2253EE;
+	Thu,  6 Feb 2025 06:49:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738824581; cv=none; b=Tqs/WfCzSh/C9QaK7phYsWxgc77cJRQsF82eTtE5Pp1Zzs20AgjPSQdC2jHjR6pYIY52Rf/nPHIO1gFy5PpfN3Vu4sGJKaZUeBKiPZlyb6WczSC9jatcbcuzTO6lbZzdrPsRfs52cNkbycU2cAr1Gz70WDoMyhZZifd4TBDK3gw=
+	t=1738824588; cv=none; b=iiQoQnosuUFyxFVpr5CHMzctlyi0XYzHbcZ2Xlb9jwLrqYTSk4569thjdZuH71p9uYgPSg2/A5cX75iyrEK3hC9NiXJbE86CNspcWI/Isu/WHBCgILM9vWvPTXmj7s+XwpDpgEG3JCa/Fo0N/uSEmMdjHqUro0gsDVUOOCZwgLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738824581; c=relaxed/simple;
-	bh=v1Uq0ArCQZi2SYzNDPugTKvvEHz/QhanShBOFyH5rdU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dlKimXpT0lvMDqm9ulSMIb+Tsfa3xMEavod/48YSuroLaL3JddW8siBfU3cfJY5fWU1DvSjEbmNx1vP2/9jjkek04TR0cGWe6ig0U/z0OqigvWQmSRz3GXG+iNUe5C19vsa4c8d5XILw5jSG/LinWCrEep5a8eRA21uL7GyseCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dT2+bh6K; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1738824588; c=relaxed/simple;
+	bh=dCM8SuxiUwy3AKxwtl1wkFOXtbVKQdH6LYAJqskM93Q=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=G6PWLEfa99tmT8ptOE2s1PItPoAK6WfJu7twkmUX1WyykzhH6/rf9sSLJCgQSooOXceb1J9dnJETH2m1xX6/L3AB9xhtoSN+KUtSYXjc8S6JvwaZdZ7RTrhayCIW8Np0KCuqp49SgOwhTF29UNx6RELShAjNKuT7a4yWOnJoDCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=d/KVp/VA; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dT2+bh6K"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738824579; x=1770360579;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=v1Uq0ArCQZi2SYzNDPugTKvvEHz/QhanShBOFyH5rdU=;
-  b=dT2+bh6KvkKr1x6ed483WVij9Y4HqCfn/3j2bJ2dl5FBbzIpZhSHUVPT
-   +0IZM6R+xxM/UHXfhprwWZOrQTk+HnglZNSvmCrap/GLL8osI7jrrWEek
-   zkOvCqrpP1HOP7eiAVttktFlAMtAT5Yh34zeZBUvl5e5G9PXG6ULcnBZJ
-   v9dTXGtCpW5N6xg9DbIjla4XkosadmQqMawtW/jg1+CB01vXHEa0gIcE4
-   4Hi2qqRIAxkZP6vURTDrTJvBC6q5EGq3VbBzdXNt/Aaju61iqCUz6YAvL
-   UCdVCRJ39scfQOSx3IGF7kXlL9RtTvxS9oKyNvVbFrST88N8YLu81Mqaj
-   Q==;
-X-CSE-ConnectionGUID: mdSALZYrTiuLi2V5qnGJng==
-X-CSE-MsgGUID: cIJFYpKjT3uJ+M8ZPCEQjQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="38615734"
-X-IronPort-AV: E=Sophos;i="6.13,263,1732608000"; 
-   d="scan'208";a="38615734"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 22:49:38 -0800
-X-CSE-ConnectionGUID: lepeyWM5QFaK99kODWG8ng==
-X-CSE-MsgGUID: Y1SfbRy9R+KI/D8ZU4zY+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="115731181"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 05 Feb 2025 22:49:36 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tfvhe-000wXP-0O;
-	Thu, 06 Feb 2025 06:49:34 +0000
-Date: Thu, 6 Feb 2025 14:49:29 +0800
-From: kernel test robot <lkp@intel.com>
-To: Liang Jie <buaajxlj@163.com>, Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	Michal Luczaj <mhal@rbox.co>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Liang Jie <liangjie@lixiang.com>
-Subject: Re: [PATCH net-next] af_unix: Refine UNIX domain sockets autobind
- identifier length
-Message-ID: <202502061416.GZjhJTOs-lkp@intel.com>
-References: <20250205060653.2221165-1-buaajxlj@163.com>
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="d/KVp/VA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1738824578;
+	bh=uSFvExJxC1WzKZYTAoDe3aA4t+X//ecUZW7qZNVhEjg=;
+	h=From:Subject:Date:To:Cc;
+	b=d/KVp/VAy4MCnOKxMtW7kF9aSmsjucyoQ2LtDumuM7aqGLHOhH5NAAWJUoayLD2rc
+	 ogLkcwbPHXkERMElhMZ8Dh7GgYO1ttG8j6F4llgiurAUsCPT8N8xXJQyy01PoIMRH1
+	 RwNIAgefJV8fRYYrTFauQsbabSBI2O+vRfMlwgGjJxdc5zbcU7cowU0HDvSZ7Q4hBd
+	 5+gO6+gNK2zfwJaZYdRNZPd/I6PggkjI9/gdYU8kX+hlttkmdv4Y45zrerDd1ffur0
+	 Yta3/NU58GXc69CLp3DEA1pUQBRWCQiLLs1KTbcdrl6E/58fPwA6/j5xnP0JOXGTMQ
+	 eE3PqB4IDoI/g==
+Received: by codeconstruct.com.au (Postfix, from userid 10000)
+	id 38E5974858; Thu,  6 Feb 2025 14:49:38 +0800 (AWST)
+From: Jeremy Kerr <jk@codeconstruct.com.au>
+Subject: [PATCH net-next 0/2] mctp: Add MCTP-over-USB hardware transport
+ binding
+Date: Thu, 06 Feb 2025 14:48:22 +0800
+Message-Id: <20250206-dev-mctp-usb-v1-0-81453fe26a61@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250205060653.2221165-1-buaajxlj@163.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADZbpGcC/x2MQQqAIBQFrxJ/3QczDOoq0aL0VX+RhVoE0d2Tl
+ sMw81BEEETqiocCLomy+wxVWZBdR7+AxWUmrbRRWjXscPFm08FnnNia1mHMqm4N5eQImOX+dz1
+ 5JPa4Ew3v+wEVKABMaAAAAA==
+X-Change-ID: 20250206-dev-mctp-usb-c59dea025395
+To: Matt Johnston <matt@codeconstruct.com.au>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, 
+ Santosh Puranik <spuranik@nvidia.com>
+X-Mailer: b4 0.14.2
 
-Hi Liang,
+Add an implementation of the DMTF standard DSP0283, providing an MCTP
+channel over high-speed USB.
 
-kernel test robot noticed the following build warnings:
+This is a fairly trivial first implementation, in that we only submit
+one tx and one rx URB at a time. We do accept multi-packet transfers,
+but do not yet generate them on transmit.
 
-[auto build test WARNING on net-next/main]
+Of course, questions and comments are most welcome, particularly on the
+USB interfaces.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Liang-Jie/af_unix-Refine-UNIX-domain-sockets-autobind-identifier-length/20250205-141123
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20250205060653.2221165-1-buaajxlj%40163.com
-patch subject: [PATCH net-next] af_unix: Refine UNIX domain sockets autobind identifier length
-config: x86_64-defconfig (https://download.01.org/0day-ci/archive/20250206/202502061416.GZjhJTOs-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250206/202502061416.GZjhJTOs-lkp@intel.com/reproduce)
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+---
+Jeremy Kerr (2):
+      usb: Add base USB MCTP definitions
+      net: mctp: Add MCTP USB transport driver
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502061416.GZjhJTOs-lkp@intel.com/
+ MAINTAINERS                  |   1 +
+ drivers/net/mctp/Kconfig     |  10 ++
+ drivers/net/mctp/Makefile    |   1 +
+ drivers/net/mctp/mctp-usb.c  | 367 +++++++++++++++++++++++++++++++++++++++++++
+ include/linux/usb/mctp-usb.h |  28 ++++
+ include/uapi/linux/usb/ch9.h |   1 +
+ 6 files changed, 408 insertions(+)
+---
+base-commit: 7ea2745766d776866cfbc981b21ed3cfdf50124e
+change-id: 20250206-dev-mctp-usb-c59dea025395
 
-All warnings (new ones prefixed by >>):
-
-   net/unix/af_unix.c: In function 'unix_autobind':
->> net/unix/af_unix.c:1227:48: warning: 'sprintf' writing a terminating nul past the end of the destination [-Wformat-overflow=]
-    1227 |         sprintf(addr->name->sun_path + 1, "%0*x", AUTOBIND_LEN - 1, ordernum);
-         |                                                ^
-   net/unix/af_unix.c:1227:9: note: 'sprintf' output 6 bytes into a destination of size 5
-    1227 |         sprintf(addr->name->sun_path + 1, "%0*x", AUTOBIND_LEN - 1, ordernum);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-vim +/sprintf +1227 net/unix/af_unix.c
-
-  1195	
-  1196	static int unix_autobind(struct sock *sk)
-  1197	{
-  1198		struct unix_sock *u = unix_sk(sk);
-  1199		unsigned int new_hash, old_hash;
-  1200		struct net *net = sock_net(sk);
-  1201		struct unix_address *addr;
-  1202		u32 lastnum, ordernum;
-  1203		int err;
-  1204	
-  1205		err = mutex_lock_interruptible(&u->bindlock);
-  1206		if (err)
-  1207			return err;
-  1208	
-  1209		if (u->addr)
-  1210			goto out;
-  1211	
-  1212		err = -ENOMEM;
-  1213		addr = kzalloc(sizeof(*addr) +
-  1214			       offsetof(struct sockaddr_un, sun_path) + AUTOBIND_LEN, GFP_KERNEL);
-  1215		if (!addr)
-  1216			goto out;
-  1217	
-  1218		addr->len = offsetof(struct sockaddr_un, sun_path) + AUTOBIND_LEN;
-  1219		addr->name->sun_family = AF_UNIX;
-  1220		refcount_set(&addr->refcnt, 1);
-  1221	
-  1222		old_hash = sk->sk_hash;
-  1223		ordernum = get_random_u32();
-  1224		lastnum = ordernum & 0xFFFFF;
-  1225	retry:
-  1226		ordernum = (ordernum + 1) & 0xFFFFF;
-> 1227		sprintf(addr->name->sun_path + 1, "%0*x", AUTOBIND_LEN - 1, ordernum);
-  1228	
-  1229		new_hash = unix_abstract_hash(addr->name, addr->len, sk->sk_type);
-  1230		unix_table_double_lock(net, old_hash, new_hash);
-  1231	
-  1232		if (__unix_find_socket_byname(net, addr->name, addr->len, new_hash)) {
-  1233			unix_table_double_unlock(net, old_hash, new_hash);
-  1234	
-  1235			/* __unix_find_socket_byname() may take long time if many names
-  1236			 * are already in use.
-  1237			 */
-  1238			cond_resched();
-  1239	
-  1240			if (ordernum == lastnum) {
-  1241				/* Give up if all names seems to be in use. */
-  1242				err = -ENOSPC;
-  1243				unix_release_addr(addr);
-  1244				goto out;
-  1245			}
-  1246	
-  1247			goto retry;
-  1248		}
-  1249	
-  1250		__unix_set_addr_hash(net, sk, addr, new_hash);
-  1251		unix_table_double_unlock(net, old_hash, new_hash);
-  1252		err = 0;
-  1253	
-
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Jeremy Kerr <jk@codeconstruct.com.au>
+
