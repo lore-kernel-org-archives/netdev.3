@@ -1,286 +1,233 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1B61F63E8
-	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 21:29:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738877387; cv=none; b=f/q+bYrkpNbfE8V7Yf8RrWRUFx3SGFVyYZB05gagomnDtgt6FEwqXC84B6cRI3BaKzRdKsu79TdwK7M6xgWhszNV8vxCvFQIt5Uo4Jt9FyxHMpZXIwey3tQiDKA+X6JkoJET0bwu08FzYwLPCnEWcvPnkuNk9YEZoJmbvla2z0w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738877387; c=relaxed/simple;
-	bh=A6TTiu3mBQ8WrU99XKbFU9nfwT1ncucUhelx3jmdnOI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JDv8GnTdx2Bmwp4PomVekGREenEbqkTBmavNxJhzDFcG7D3K6orGtfgXcpWmUTdsnMk0xPkul5VI2vLiFlJ1kZNsHAlhSB0gSmMa5yhGSYpmvxnn1YesJJpZ6FCIaD16H7YUcgMyr/3sA3JKRWYMu+AFf0k936GBjEelObevUmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PB1xB1Vj; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E104122257E
+	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 21:39:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738877996; cv=fail; b=Fjwmyb6altPlrW8cadtdjWk/me5Q83Y8PPgQDv2SXzxAaDexOkDuQGH7Z3oFzCcT1nVmz0G+TivFnfffIA7qyDiZNuwvdB/Bs2V8HSLOoThAvXlm1o8RgyqJ8qbLXYo8Z3KBK6CmbKN7XrTZA4T7Uju+eOBufHDxDHMBN6GqCj0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738877996; c=relaxed/simple;
+	bh=9qHopZRqDocoWIFDnmDQdtR4xGV2MFFTq0t/ob+vXKo=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=AQk3O1Fe3BAZ50qNuRS9mvL57vWjlpl08Nrsx9ORBIGO9hS5KClaVpqu5ZO1eauLIdv+G4T7U0er/kYbidjuqiHAxAxMkpYgdRZHqNUsBOnbJK+QPP/xxhJa1dwoNdUHzhwlwYSBsoHy8wWwaExlXmAMdTVIKwzWbXNfnz0aurY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JyRDok+z; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PB1xB1Vj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738877382;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=gke+kpGI22E8kWaQlFj2yXZXAZ9KiJB37Zh0LKiikgs=;
-	b=PB1xB1Vju0QS85iTJmsI47JLsgbHOKuoZZGGBzZ92YlpQzuXQMeQSphzKi1eZ0Z0WEY9hD
-	nZSQLgFfoM7reEDiYlDPDm2kXJ0mZO2iKb+8I/5n7WnPY1Wevq4H8gBl28xNU+0FC+ot+w
-	4zVvngvvQeQW5HTf9f+veWCCxXenejU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-njuxJtXbPQmPbyC1gXO4Xg-1; Thu,
- 06 Feb 2025 16:29:37 -0500
-X-MC-Unique: njuxJtXbPQmPbyC1gXO4Xg-1
-X-Mimecast-MFC-AGG-ID: njuxJtXbPQmPbyC1gXO4Xg
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9ABE01956094;
-	Thu,  6 Feb 2025 21:29:35 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.32.200])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2906130001AB;
-	Thu,  6 Feb 2025 21:29:31 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Alexander Duyck <alexanderduyck@fb.com>
-Subject: [PATCH net] Revert "net: skb: introduce and use a single page frag cache"
-Date: Thu,  6 Feb 2025 22:28:48 +0100
-Message-ID: <e649212fde9f0fdee23909ca0d14158d32bb7425.1738877290.git.pabeni@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JyRDok+z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738877995; x=1770413995;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=9qHopZRqDocoWIFDnmDQdtR4xGV2MFFTq0t/ob+vXKo=;
+  b=JyRDok+zbJ3+alnUJtg8z4DMnai+RsHjZb7E4xCy3MmZDoF/tuEtrrdL
+   RYImJ42txsW8cLN0aizDKRYPpxrbFzYr7sxp4VfXST9q4xe7uS9v8AlDb
+   5FnG5nkO2nBpZYolK1bvuDICEQyyVW7uKMJN3/Ofv4yiKZFM6tRqn1ap9
+   dlvGgxxfWzkgPoiA9oFVho281PRdMgkz0HwcbTY8AgPRJRv0M0xx59BEF
+   z9AmFLjNbI9VK4hGW9lT2uHITNN3Es7dxpcfFk/EspkPbJZWfj9Prgkd8
+   QSK4u3XY4AsvMP2JF3TLbwqWBGLFq0j/wh54/8OrChStqw/ZJXkkfp5Lw
+   A==;
+X-CSE-ConnectionGUID: x9QAXw+tR9ervagJV++dfQ==
+X-CSE-MsgGUID: 1s3TlxpPSiCyN3GjUBjYfA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="43431985"
+X-IronPort-AV: E=Sophos;i="6.13,265,1732608000"; 
+   d="scan'208";a="43431985"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 13:39:54 -0800
+X-CSE-ConnectionGUID: ob5+G/viQuy5j/7vjrNdlw==
+X-CSE-MsgGUID: NKtXoihMT9yaGNM5RJuyRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,265,1732608000"; 
+   d="scan'208";a="142214843"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 06 Feb 2025 13:39:54 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Thu, 6 Feb 2025 13:39:53 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Thu, 6 Feb 2025 13:39:53 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.177)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Thu, 6 Feb 2025 13:39:53 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Fha33gb+W/mywmiY3mqUHy6bw2Fp1WVQe2N/ZrjFtCOw7z9Zl5d9LmcQhZgYMri8Z74mTlLG41dlIS7DaosRYkGgDQYNK3Qd+C3GVo5ZCpnvOSVYRvLOc+gfdGRV6Qcg+/kcPfFpKPhcWT2NxNBI2zY/KmOh4GI6H1fIli2pbT3Uf+TE0aVV0Idct06G20yuL+P2v4BOyIaiXJ70DFJmiAxuP0/zir52B+EK4buQ0Z36lDvdsgl8u2gTUwBw+mx5TlWFEjTPSz3gMfCR6s0RMYcIsZtS4GF3qVGghlVaFRUPKXyJvg/+XRT+6It8wHNNtsWVoP+LfkK1GgQvJYCsQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=POIlIdPiA/QCxpRdpuU5031nmVeB2NP2oVKoJ9scuPI=;
+ b=sIX331VNequvfAIPYh1u4yhCVSvbspwso/MUeTQJiDCTnhc/6jsU9A0pATJ1HBjhKoEqmJfJQenucSGU/M4yI9nes/jdnQSEV7n7qYDSPiWr0cv4pXpWM4Gaza53QQ7E5KrCuEFm1k504zqk96xAQvoE5HBdAA2yRUvQibiYq7itwyIJbbs2JZuthBI+8nWdeBqWcV1khjURLnjdl2r+H+LH+5W4fzem1wD7rXgG94W8suuTOob+/j+xmdgIO0yqwxL+lZULM8yvMWqF6APicvFT/JK5M954U0tc61abfme3q7GWQ9OP+VH4OYI3zJuR0VyrBFcGskFWbhfQeSl9fw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL3PR11MB6435.namprd11.prod.outlook.com (2603:10b6:208:3bb::9)
+ by SJ0PR11MB4879.namprd11.prod.outlook.com (2603:10b6:a03:2da::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.11; Thu, 6 Feb
+ 2025 21:39:51 +0000
+Received: from BL3PR11MB6435.namprd11.prod.outlook.com
+ ([fe80::23a7:1661:19d4:c1ab]) by BL3PR11MB6435.namprd11.prod.outlook.com
+ ([fe80::23a7:1661:19d4:c1ab%7]) with mapi id 15.20.8398.021; Thu, 6 Feb 2025
+ 21:39:51 +0000
+Message-ID: <75ad6505-3d74-4d1a-a0ee-5d028c1bc0df@intel.com>
+Date: Thu, 6 Feb 2025 13:39:48 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-next v1 01/13] ixgbe: add initial devlink support
+To: Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	<intel-wired-lan@lists.osuosl.org>
+CC: <netdev@vger.kernel.org>, Mateusz Polchlopek
+	<mateusz.polchlopek@intel.com>
+References: <20250203150328.4095-1-jedrzej.jagielski@intel.com>
+ <20250203150328.4095-2-jedrzej.jagielski@intel.com>
+Content-Language: en-US
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+In-Reply-To: <20250203150328.4095-2-jedrzej.jagielski@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR08CA0036.namprd08.prod.outlook.com
+ (2603:10b6:a03:100::49) To BL3PR11MB6435.namprd11.prod.outlook.com
+ (2603:10b6:208:3bb::9)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR11MB6435:EE_|SJ0PR11MB4879:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5bed4ad5-31d6-4483-0022-08dd46f6c98b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?dFJySlV6Y3cvdGZMcjNCNkVDdmR2OXVvVllDT1lMdVBXYVFvRXZtQnRwSjM5?=
+ =?utf-8?B?b1Z0a1VUTTZveU9TN2Y2T1JPWmJ5blR0T3JkTnlEUCtPUWErRzA5VW40OTM2?=
+ =?utf-8?B?WTUyeXZtSndwU2NKeEtOYzVLZWJqTE1tdTlWVyt1MVhibXRvUG5DSlJKeC9L?=
+ =?utf-8?B?QlRhMklvYytOQXpCZGx1REdkcko0alJZSFJlWTNRMG9tSkxGRzlmcU42RXkr?=
+ =?utf-8?B?czVTdWNxbzVuTGNTUTZFdXhzMlcyMnpUWmFNdEdwYjhEdGxnTk9UNERERmM0?=
+ =?utf-8?B?UlMyb2hpdFRFdTJoUWgwc2pTODBpTkZmTXNnd24xeWFwcUs5TitudzZ3RWIy?=
+ =?utf-8?B?VkZKRzlJU0o3d1VTS0Nmd2ZuM0U3V1pOaWhzMGc0UFBpclp2TEN6cFdPaWRr?=
+ =?utf-8?B?Z1J0SktTa2RkK1RZdENjT0NFOWRaVFhZTnBIV3FXdTg2UXYydlMyOVk1cW9v?=
+ =?utf-8?B?UjVRNmVsQzh2YUw5L2F4NW14K2hmUFc4c0J2R3ZEbVZNRXhpcCtWeEdsblZL?=
+ =?utf-8?B?TDc0V0tCWUlxYlh6bjlLazc3clpFeHg1YWRiT2pQQzB3QmUybGltNEhFR0Vj?=
+ =?utf-8?B?NjRML1o1TEZPTmh0SmNST3hTY1paSGNPeU9kQ1dWUk8vdVBVZ3Z2bFhENlpC?=
+ =?utf-8?B?YmFSd3JZZmJaOExrS2tkZ0t0SXNqOHdaYkZPeEluSEZqNlVnNVJQcmxwNUJR?=
+ =?utf-8?B?TjVrdTJ0MW5ONzR3YkdidDdkQk5JY3JjMWNNdTM1cDF1RUE5V1d2c1A4Rng5?=
+ =?utf-8?B?NVlGOUZrTjRsNENmakRSZmVzcGM3SWJpRlN2dVJzNU1kRERhTTRHTDkwWk1O?=
+ =?utf-8?B?Um1UQi9JQTBXYjRhWFJGVGJBL2JWb3k3aU51Ykg1cUVaVitkSm9uUDIwYktC?=
+ =?utf-8?B?M2E1R1RVTmx4VHBtS2lZTzNaekQ4OVArQ2grS1RmSGEyeCtKNVA0WWY5cFpP?=
+ =?utf-8?B?NWZESVMvRHZmeWlYUEJvTTdhZ0U2Z2FUTWZsZFNMdGNyUmtMWlh4VWh3Mllx?=
+ =?utf-8?B?MTZLL3Y1ZXd4L2V4NndCNDlRNkRLNkhsL3NJUTNOZTdiQTNMM25RdjZoRjRx?=
+ =?utf-8?B?NHFvVVA1ZlNZbTZtVFVLVWtWdmozTG5QUmRCZFowZ2pDSzN0YWpSN2gvMHRv?=
+ =?utf-8?B?cTZ6Y0sxMWZ4NVJDU3JuM2hkNWFqR3NBck5wSy9NWU14dFNwVVJqZnU0WThK?=
+ =?utf-8?B?SFN5YUp4K0gxSXMyS3h4YWlWSTN2cVRZSHZQYzlFNlNBOXllTWtTRlQ5Z2pL?=
+ =?utf-8?B?Sm5vY0lVeXlIa3R6SkN4YUlqb3praURETlpEMFpudTVnRnQreFI4QXprc3Er?=
+ =?utf-8?B?WUtCRHpYTGJiVkNMZ3dPMHJ5Q3MzeWNqOU04bzZIdEJMQ3JtclBzUU44NXRl?=
+ =?utf-8?B?QlRkRkxJbjYxMmI4VWRaYUtUclhuT0ZGR21KZ0JxTmltcytkQWtBZlgrVUVT?=
+ =?utf-8?B?NTlGTjFESTVZNWUyTHJWU3B3ZVhyQUY0QWxvdS84K3BNelUwYTJPNzN3WjJX?=
+ =?utf-8?B?bU03RVFKUHg1ajdZZDY5NDhwUGlna2ZYYnFRVGJmcWp0MWQ0M2hsaFdiQVRy?=
+ =?utf-8?B?QVlTYm9hWVpUTjZLNENZcEIweWpkby9Ha0M4SXl5RDA2eWEwTkRBSEJBT2g4?=
+ =?utf-8?B?TkR0RHhVZURmL0d6TTFzRFM2bEpWQTFqaVlQWDh4dk5zdEhPbHZJWWpaTXFo?=
+ =?utf-8?B?bG5wNE0rRHo0WFdsSGE2bjRSVmQ4eURUT3FZdUM1ZUcybHNkN0g0ZHZqbmQ1?=
+ =?utf-8?B?VGxDUC9BVHN6dTg2MFF2UFFidEVjdW5iOURVOFp3TFpCWXVBMWlDdTdEMEhT?=
+ =?utf-8?B?NnNuelhFUTdYNFNTT3VtNXg2ZGszL3ZTTjFSTXcxUDRIQlZCY1g0MTdPY3V5?=
+ =?utf-8?Q?/oL3bOo5BZOBZ?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR11MB6435.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YlFrSkVVQldzN0QwcGtvT3BrbEtQeU9GSTdyM2ZCNWlnMlpaaVRPendBbXo1?=
+ =?utf-8?B?M1FvS2pxdXJ3a3JxaHNLM2k3aFB5Ty85R1VPYzEzb040U2xiTGNNRGpaVlUy?=
+ =?utf-8?B?dU0zN0dsTU1DL0JqVlRWTDNrSXR4UDNOZzk1MFN0RnNXb0RxWmlNRHlmMlBU?=
+ =?utf-8?B?T1FOZ2p0UERYakVueTBCd1lRVVR1WEdFRDV5TkVHTlBuUFM5aEhpU1g1bU9x?=
+ =?utf-8?B?K0dPUWZzcmlOUndYNDZKZWRYK3ZZSm5oUGR5aEZtNUV0clVxbVBxMGxodUVk?=
+ =?utf-8?B?Q05QNDJJbDROTUYzYi93K1dySkpqVVJxZDdhVkpzVlhxTlQ2d2k5OEFGUjlK?=
+ =?utf-8?B?WVBsYmRDNm5qRlZEVEZkL2pqeG9KWnZNM0ppZjNDVGF3UmdpZ3c4VU9OK3I2?=
+ =?utf-8?B?V3VJbysrdjNwdlV1eWRXeGtJOWg1V3E0ZFk5a1dhdmYzc01uUVNpS0NwWVlP?=
+ =?utf-8?B?QjUzWmRjd3NJNmhjL1BqTXNJbldoRjljdjdEUk9pUW80TXRKZm1sMjg5eW1q?=
+ =?utf-8?B?Q0F1QVB2TDI1S2o1VW42MEY4Z2xRUDFWME55cyszWW1GeGc3aElCZEhUTmpJ?=
+ =?utf-8?B?cFZBdzZLOUR0SHVCWkw4Q2IzRmdoZDFsNEhUYXZXckdhTlJCMFFQSyt0Znc4?=
+ =?utf-8?B?M3lGQlZBZHBDZUYrOFY4aDNFeTQxQmFiV0QzQWxwRTlpK0NWVTl2Tmg4QTU4?=
+ =?utf-8?B?V0tueldManFXdys2azdtY0o3RUtodS9xM2hvd3hCZnZKNUVMVnJQUjNMSmVF?=
+ =?utf-8?B?OEcrU0FiamVKN1JmdUpBalNpUWhvdlcwSnFWL0ZYUzFMcTc0TmkwdkFxelNp?=
+ =?utf-8?B?WHpHNXFLWUl5MDdINERFdGRXTVZkZUdsZ3pNeCs3QUcvdkRYaWJuRTlxT2lF?=
+ =?utf-8?B?SGdhQzRvWUpQcVBCc1hNT3pSbEpqakdDbVhxNjVMSXV2THVhNERCL09JUG5x?=
+ =?utf-8?B?bStGM2FXY08zWktCS01xMk04aWhtQldvZHFkVUJ1WXNsWnJZWWhPc1d0bnJ2?=
+ =?utf-8?B?TmF1Z3lSaTk0VlBTRUVTTUMzYTczQjl6dEFSQU10ZEJBU2xWQkw2eWpob3Ni?=
+ =?utf-8?B?bjlkcXlUbWJ1WVNhbitrNVdXS1N4ZnhjNHlEanEvc3FXTm13MXNDU2FxVXA5?=
+ =?utf-8?B?dG1DSHFaWExXRGlSWHpydVA4UUxtMlBSb0pYUlZpWGNQUVhPQk1iOHRNbnY1?=
+ =?utf-8?B?Ny9MbXVUVVJrV2FNdVBRb0pic1pJRFpBMVBwdUtEeVBsZUdlK0luOGJ0TnAr?=
+ =?utf-8?B?WkxSWXBQblBFY2VMVVhlRXRxT01OaUkxQVdrdHV1SHF0ZjdLSEc4MUt4aytU?=
+ =?utf-8?B?VXFjWVpXUGV6UmZNVlN6VWxlUHN3RzVqZVB0NHVZRzQzUFBLVjV4R2h3SmhI?=
+ =?utf-8?B?Nm90NXhObjkvdCtLSGUvcE42Qmh0V1EveEg5dVF5bXYrcUpqbHNWdEVpVXc1?=
+ =?utf-8?B?YWw1MWR2MG5RS0VIcW1nN2FMUFVmSWRVdWtPQUYrS0ZzUlpGa3ZEUWFOanoy?=
+ =?utf-8?B?NlpRZlJXVC9hcE9GZGVuRTY5a2NiMzdJeDBzNzVwdXJYTG1TR3NmbmpQY2ZF?=
+ =?utf-8?B?S2VhWE5LVXZtMG16YkJHN1Q4RFZ3YlZnRDRVUENKZVV2amVWTG16dVkxczho?=
+ =?utf-8?B?YUFKLzNkN1dhUVM5MElncTdwM3JIbGpLbjE1Q0JQV0kzUSs3Z1QzUkRtczU5?=
+ =?utf-8?B?WElxbHpCK0pRY0N1dStKMU8xMDN0U3BhakNBcGpmQzNaZEFBQ3ZPa01tRER5?=
+ =?utf-8?B?SXNhUUlWd1pMVjh4MldNVzh1Y3VwWnJjMG1MUktPaTFqTkh2RzdlaHRCcDQ3?=
+ =?utf-8?B?VUJDNTVjbE1pWUZjSi9IWW5hVHF1aWJoUUpYZDY0NEUyOXR2L1V1Y0YvRytu?=
+ =?utf-8?B?NmJDUlZMRXF1R0hvazZmVEZpbVoyN1kwUHRDdzZ6VHVYQklsenNoNy9JWTd1?=
+ =?utf-8?B?TmJiTEY0RzZXK1pYOXA3Mlh3RkRuOHZCNmd6VXEyaUdnV25aeGU3N3lpK09n?=
+ =?utf-8?B?MUhpR09CdDhaQ2pJN2RkbW1kRnF3YWFxOUJMY2xIYlFXemFISXhqZWlMVFR4?=
+ =?utf-8?B?dk5uZ25ud0FPcGFOVEw2STBNdWROT1ArSSs1UzJLZGNvT28zdzBJY0wrUlpp?=
+ =?utf-8?B?Tm9ONmdkdng2OTgrSjdRa3VGZVRWVWF0RnA5MUJDWEtnR25DQzJjQThOSjdO?=
+ =?utf-8?B?N2c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5bed4ad5-31d6-4483-0022-08dd46f6c98b
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6435.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2025 21:39:51.5353
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cR4yZjBc6YfI8s6Z7uV94cdpJjjTzFAyXvZhdfQGA+HvzRhzkuPgWrDX/YONgA+zZ7bR/S+0rwyzvC6pFijwhcvTi+U3rPN99hIRNQbUo0Q=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4879
+X-OriginatorOrg: intel.com
 
-This reverts commit dbae2b062824 ("net: skb: introduce and use a single
-page frag cache"). The intended goal of such change was to counter a
-performance regression introduced by commit 3226b158e67c ("net: avoid
-32 x truesize under-estimation for tiny skbs").
 
-Unfortunately, the blamed commit introduces another regression for the
-virtio_net driver. Such a driver calls napi_alloc_skb() with a tiny
-size, so that the whole head frag could fit a 512-byte block.
 
-The single page frag cache uses a 1K fragment for such allocation, and
-the additional overhead, under small UDP packets flood, makes the page
-allocator a bottleneck.
+On 2/3/2025 7:03 AM, Jedrzej Jagielski wrote:
+> Add an initial support for devlink interface to ixgbe driver.
+> 
+> Similarly to i40e driver the implementation doesn't enable
+> devlink to manage device-wide configuration. Devlink instance
+> is created for each physical function of PCIe device.
+> 
+> Create separate directory for devlink related ixgbe files
+> and use naming scheme similar to the one used in the ice driver.
+> 
+> Add a stub for Documentation, to be extended by further patches.
+> 
+> Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+> Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-Thanks to commit bf9f1baa279f ("net: add dedicated kmem_cache for
-typical/small skb->head"), this revert does not re-introduce the
-original regression. Actually, in the relevant test on top of this
-revert, I measure a small but noticeable positive delta, just above
-noise level.
+...
 
-The revert itself required some additional mangling due to the
-introduction of the SKB_HEAD_ALIGN() helper and local lock infra in the
-affected code.
+> @@ -11283,6 +11284,10 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>   		goto err_ioremap;
+>   	}
+>   
+> +	err = ixgbe_allocate_devlink(adapter);
+> +	if (err)
+> +		goto err_ioremap;
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Fixes: dbae2b062824 ("net: skb: introduce and use a single page frag cache")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
----
-@Eric: IIRC, once upon time, you reported a similar regression, which
-was root-caused to the SLOB allocator. Please let me know if you prefer
-your Reported-by tag here.
----
- include/linux/netdevice.h |   1 -
- net/core/dev.c            |  17 +++++++
- net/core/skbuff.c         | 103 ++------------------------------------
- 3 files changed, 22 insertions(+), 99 deletions(-)
+Looks like the unroll has an issue.
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 03bb584c62cf..8c91cdf06afd 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -4109,7 +4109,6 @@ void netif_receive_skb_list(struct list_head *head);
- gro_result_t napi_gro_receive(struct napi_struct *napi, struct sk_buff *skb);
- void napi_gro_flush(struct napi_struct *napi, bool flush_old);
- struct sk_buff *napi_get_frags(struct napi_struct *napi);
--void napi_get_frags_check(struct napi_struct *napi);
- gro_result_t napi_gro_frags(struct napi_struct *napi);
- 
- static inline void napi_free_frags(struct napi_struct *napi)
-diff --git a/net/core/dev.c b/net/core/dev.c
-index b91658e8aedb..55e356a68db6 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -6920,6 +6920,23 @@ netif_napi_dev_list_add(struct net_device *dev, struct napi_struct *napi)
- 	list_add_rcu(&napi->dev_list, higher); /* adds after higher */
- }
- 
-+/* Double check that napi_get_frags() allocates skbs with
-+ * skb->head being backed by slab, not a page fragment.
-+ * This is to make sure bug fixed in 3226b158e67c
-+ * ("net: avoid 32 x truesize under-estimation for tiny skbs")
-+ * does not accidentally come back.
-+ */
-+static void napi_get_frags_check(struct napi_struct *napi)
-+{
-+	struct sk_buff *skb;
-+
-+	local_bh_disable();
-+	skb = napi_get_frags(napi);
-+	WARN_ON_ONCE(skb && skb->head_frag);
-+	napi_free_frags(napi);
-+	local_bh_enable();
-+}
-+
- void netif_napi_add_weight_locked(struct net_device *dev,
- 				  struct napi_struct *napi,
- 				  int (*poll)(struct napi_struct *, int),
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index a441613a1e6c..6a99c453397f 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -220,67 +220,9 @@ static void skb_under_panic(struct sk_buff *skb, unsigned int sz, void *addr)
- #define NAPI_SKB_CACHE_BULK	16
- #define NAPI_SKB_CACHE_HALF	(NAPI_SKB_CACHE_SIZE / 2)
- 
--#if PAGE_SIZE == SZ_4K
--
--#define NAPI_HAS_SMALL_PAGE_FRAG	1
--#define NAPI_SMALL_PAGE_PFMEMALLOC(nc)	((nc).pfmemalloc)
--
--/* specialized page frag allocator using a single order 0 page
-- * and slicing it into 1K sized fragment. Constrained to systems
-- * with a very limited amount of 1K fragments fitting a single
-- * page - to avoid excessive truesize underestimation
-- */
--
--struct page_frag_1k {
--	void *va;
--	u16 offset;
--	bool pfmemalloc;
--};
--
--static void *page_frag_alloc_1k(struct page_frag_1k *nc, gfp_t gfp)
--{
--	struct page *page;
--	int offset;
--
--	offset = nc->offset - SZ_1K;
--	if (likely(offset >= 0))
--		goto use_frag;
--
--	page = alloc_pages_node(NUMA_NO_NODE, gfp, 0);
--	if (!page)
--		return NULL;
--
--	nc->va = page_address(page);
--	nc->pfmemalloc = page_is_pfmemalloc(page);
--	offset = PAGE_SIZE - SZ_1K;
--	page_ref_add(page, offset / SZ_1K);
--
--use_frag:
--	nc->offset = offset;
--	return nc->va + offset;
--}
--#else
--
--/* the small page is actually unused in this build; add dummy helpers
-- * to please the compiler and avoid later preprocessor's conditionals
-- */
--#define NAPI_HAS_SMALL_PAGE_FRAG	0
--#define NAPI_SMALL_PAGE_PFMEMALLOC(nc)	false
--
--struct page_frag_1k {
--};
--
--static void *page_frag_alloc_1k(struct page_frag_1k *nc, gfp_t gfp_mask)
--{
--	return NULL;
--}
--
--#endif
--
- struct napi_alloc_cache {
- 	local_lock_t bh_lock;
- 	struct page_frag_cache page;
--	struct page_frag_1k page_small;
- 	unsigned int skb_count;
- 	void *skb_cache[NAPI_SKB_CACHE_SIZE];
- };
-@@ -290,23 +232,6 @@ static DEFINE_PER_CPU(struct napi_alloc_cache, napi_alloc_cache) = {
- 	.bh_lock = INIT_LOCAL_LOCK(bh_lock),
- };
- 
--/* Double check that napi_get_frags() allocates skbs with
-- * skb->head being backed by slab, not a page fragment.
-- * This is to make sure bug fixed in 3226b158e67c
-- * ("net: avoid 32 x truesize under-estimation for tiny skbs")
-- * does not accidentally come back.
-- */
--void napi_get_frags_check(struct napi_struct *napi)
--{
--	struct sk_buff *skb;
--
--	local_bh_disable();
--	skb = napi_get_frags(napi);
--	WARN_ON_ONCE(!NAPI_HAS_SMALL_PAGE_FRAG && skb && skb->head_frag);
--	napi_free_frags(napi);
--	local_bh_enable();
--}
--
- void *__napi_alloc_frag_align(unsigned int fragsz, unsigned int align_mask)
- {
- 	struct napi_alloc_cache *nc = this_cpu_ptr(&napi_alloc_cache);
-@@ -813,10 +738,8 @@ struct sk_buff *napi_alloc_skb(struct napi_struct *napi, unsigned int len)
- 
- 	/* If requested length is either too small or too big,
- 	 * we use kmalloc() for skb->head allocation.
--	 * When the small frag allocator is available, prefer it over kmalloc
--	 * for small fragments
- 	 */
--	if ((!NAPI_HAS_SMALL_PAGE_FRAG && len <= SKB_WITH_OVERHEAD(1024)) ||
-+	if (len <= SKB_WITH_OVERHEAD(1024) ||
- 	    len > SKB_WITH_OVERHEAD(PAGE_SIZE) ||
- 	    (gfp_mask & (__GFP_DIRECT_RECLAIM | GFP_DMA))) {
- 		skb = __alloc_skb(len, gfp_mask, SKB_ALLOC_RX | SKB_ALLOC_NAPI,
-@@ -826,32 +749,16 @@ struct sk_buff *napi_alloc_skb(struct napi_struct *napi, unsigned int len)
- 		goto skb_success;
- 	}
- 
-+	len = SKB_HEAD_ALIGN(len);
-+
- 	if (sk_memalloc_socks())
- 		gfp_mask |= __GFP_MEMALLOC;
- 
- 	local_lock_nested_bh(&napi_alloc_cache.bh_lock);
- 	nc = this_cpu_ptr(&napi_alloc_cache);
--	if (NAPI_HAS_SMALL_PAGE_FRAG && len <= SKB_WITH_OVERHEAD(1024)) {
--		/* we are artificially inflating the allocation size, but
--		 * that is not as bad as it may look like, as:
--		 * - 'len' less than GRO_MAX_HEAD makes little sense
--		 * - On most systems, larger 'len' values lead to fragment
--		 *   size above 512 bytes
--		 * - kmalloc would use the kmalloc-1k slab for such values
--		 * - Builds with smaller GRO_MAX_HEAD will very likely do
--		 *   little networking, as that implies no WiFi and no
--		 *   tunnels support, and 32 bits arches.
--		 */
--		len = SZ_1K;
- 
--		data = page_frag_alloc_1k(&nc->page_small, gfp_mask);
--		pfmemalloc = NAPI_SMALL_PAGE_PFMEMALLOC(nc->page_small);
--	} else {
--		len = SKB_HEAD_ALIGN(len);
--
--		data = page_frag_alloc(&nc->page, len, gfp_mask);
--		pfmemalloc = page_frag_cache_is_pfmemalloc(&nc->page);
--	}
-+	data = page_frag_alloc(&nc->page, len, gfp_mask);
-+	pfmemalloc = page_frag_cache_is_pfmemalloc(&nc->page);
- 	local_unlock_nested_bh(&napi_alloc_cache.bh_lock);
- 
- 	if (unlikely(!data))
--- 
-2.48.1
+Smatch reports:
+../drivers/net/ethernet/intel/ixgbe/ixgbe_main.c:11844 ixgbe_probe() 
+warn: 'hw->hw_addr' from ioremap() not released on lines: 11844.
+
+Thanks,
+Tony
+
+> +
+>   	netdev->netdev_ops = &ixgbe_netdev_ops;
+>   	ixgbe_set_ethtool_ops(netdev);
+>   	netdev->watchdog_timeo = 5 * HZ;
+
 
