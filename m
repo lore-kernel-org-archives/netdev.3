@@ -1,117 +1,106 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008C9227594;
-	Thu,  6 Feb 2025 09:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3CD226169;
+	Thu,  6 Feb 2025 09:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738835184; cv=none; b=OzyfEWz9QdAIhSsS3PkCR6SDEYnQ/HXT/3rQFmFPCK0lI8ao29/JCcEh1+aDEyWTePVfZLIpvQ63G5+Oa6IQuRpj3QB+XeCDJUYWOyYWdUSFs6iNwNqpKFa2BFnfuW6W7OHOdptuAieiGNQGNRanjY867DdMQfnHg97k0g1cydc=
+	t=1738835293; cv=none; b=YYmxqWiKNzjQJoGpez2cUFYGKeCPcax08nXK6CXwlRmDFe7Y6Sx9OEKpA0fHBMAb4CLPIk7g62MgHfVBSgfWZpv9QPbzCaUYzDc1pTXTTBcv6hJpO5IHgOGQSBokXeR69qSik0nSbAvS1NYji+6yLUT55NzqiXw2ZHNNq43UToM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738835184; c=relaxed/simple;
-	bh=5+Hu9yPHm6Tbc8+g4GvC2gl5dfJ3gk54ZNNsQu7Jkhw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXQNAqZg9gxFo8WtjrWLQWVz1/QSE4etQzVmFFV+um6q3/cC2X0gN8lMbzdqy2k5+nK/99p4NGsHX6EZYvdPuSwpiyrZyrQFwDKJle5u/zMWyvTCuIv/xkurpmHJfycENwxXN/lOEgnk6EPtOwKrdIGEV5Le9UMKXNYmImPWh9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rp7dPDQ4; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738835293; c=relaxed/simple;
+	bh=Zcs5Snf4g8flz7TYouYgDp3W2DHK3PiGIpAbCvqR+HM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ckUfV97tuMhuYChCE+yZ7X9qq9vHk82MMkusYTWH+WkjEH5KVJ3AT2EYAWjDP9ps1Fn2EpWRRcXutkh1cnQKUH8gKrgkWCPLUuadiAa9b1HwOpCX1mM9U/p5mGkGiQ1xcAZR17xL2UUGDQzuR3HdUN+PFdZITWc6oMHrm+JFBi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hV7KPuI3; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rp7dPDQ4"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-21f44e7eae4so74405ad.2;
-        Thu, 06 Feb 2025 01:46:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738835182; x=1739439982; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5XAMY22NhtJUvygHrk6l6MtFGnFU5XIJh1OCCZVWggM=;
-        b=Rp7dPDQ4AeEFR7a9UXaeb/Q+xfVEQRtBgeNfulhWOlQ6HwtbKKdkaz6AMRhTBbCTfv
-         zU0MaTDR9XcVeFbvzDBBYkT4K6+3BsGd/YJkXM5z34Wr2PtjXKfIAPtLFGquNHlzfyZH
-         HTl+iuCJAOYEXju84vEZFKfsevotgi3ChK3T4+CJ0Hr1nx7EAEGazJYGXLrBDKdRTzSM
-         quuCJbSFKjvBSKOMcKSdTcZYEQI1XBHLPQOzjoiMoSxsf4f51f2bAl1pF0pbFu41kSly
-         Wi7XsHC/bBR63oT32qLWKo93Iak0FjW804hqqRSx8w/cd0gkY43fbEZDHpKW49/RCytZ
-         9vQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738835182; x=1739439982;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5XAMY22NhtJUvygHrk6l6MtFGnFU5XIJh1OCCZVWggM=;
-        b=byl++kOd6wUwAjQRJV5/ZEGF/KpnEzK8uR6IjZ4+itrDJ6M84sWbJ9Zh0KhbSZCrhi
-         gboyU0NuoTDpTC02rGHi4DecyGCA+VU8QObLZmckRT/qINILUuD5xO2fLB4yUcpy1ObU
-         CEtQ1BDqwbCMZHb/JCZ+raB55/orNdplYVd+1rFeIj7uVls3D6D6aHJD6bvinmZ5ETA1
-         aS17fYoKJuBcpbDDmIPQKzHecaLEJaD2SNajxy+QOcFZHK2UbRMKw2XOHvAT66ueqcw+
-         hedaZSXngOiLdXfUPCmrbYGw5kKzz5p93wgTQvTwFV0wJ1K3KtpBnDpelxfO/m3y/y72
-         V6BA==
-X-Forwarded-Encrypted: i=1; AJvYcCUHfN86C8dLdreMLCiQCRAkVA8XMxChAR5+6ecLfeEfePVJPG3jl1tWQYKwTaKX6L97SKSnMMjltqvSnGE=@vger.kernel.org, AJvYcCW9xPQHPioI4UAB54DQtXoKDqTfiGCRNEErwgkUDN8/7kdmrdeitwJlwxvMlNep8qQLh8fcX7wexmM8UUlBGepO@vger.kernel.org
-X-Gm-Message-State: AOJu0YytEn1A9u2uQSXUJdz6xkch07XOUOwPAiF2reZF2L3To2jQn8yp
-	fihgjR/CQLfMGOaVZZWBv3BomsfczIJlc9RLeqz6723hPKZQZDU8pIY7f+p8GS4=
-X-Gm-Gg: ASbGncvUIlqkq1dn9tBlPCSIBbg7P+SRoRMUQpt+PQ5KBYGzJerRMeL2ck3y2zf/sN2
-	WSaHCCB3GFnO275GjcR536m7t9/qlDO22e9jI648AbuOBNvMfSjYbiQvwpkj6mS/hGZ4L2SeiMV
-	yUD+IKpe9tnQ1vDDqXtfYq7Sq8yo1Irh+AHEXDeLR64aPSyaUkwe+aFDh/sDiV07dIp1EQ7FfuW
-	7NC9ukIEDYf3TXjQESgT6FL/nDhLcVaI7VBaYqipZukWHODgpQoW481jkkIg/uiwn+nq3NVUV33
-	BBDjhTezwWAtysJqUvcmkOykPYf7ypF+jlA=
-X-Google-Smtp-Source: AGHT+IF2PTC4qDrLZkEG/Ey4snC5KU4C4VuN+6aytoybzb7swJS3Q2Nzh9+LRfnwBVm8Sol8/kSERA==
-X-Received: by 2002:a17:902:e5c7:b0:21f:db8:262d with SMTP id d9443c01a7336-21f17f02bdcmr118633625ad.35.1738835181898;
-        Thu, 06 Feb 2025 01:46:21 -0800 (PST)
-Received: from fedora.dns.podman ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f368da60bsm8394695ad.258.2025.02.06.01.46.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 01:46:21 -0800 (PST)
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hV7KPuI3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738835292; x=1770371292;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Zcs5Snf4g8flz7TYouYgDp3W2DHK3PiGIpAbCvqR+HM=;
+  b=hV7KPuI3JymAskwy1Gtbw2ZQ9bu2OLPmq7erGJeHDgLQAsA/XttsPsKd
+   iIiAF/DYA2j5r8FjU4o65Mwrug5dnqWsc4TfXeWsRHc7pNnco43l7+YvW
+   3TkQVJR0rFDciT3KGQUFQ98tcVAhW9i1tyvf8p40yZ6d8vatI1+TliL7A
+   mm5KSnRbStSymtUQOUl1sV8XS5xpAlsXU1SMz8P4LDKB2DhxLCTgO4NCP
+   Ulria1jUSjfj7CvP+EtS3ke3b33oa5Pi3HJOB9nI0ipHLviUCM4gApl1n
+   9/py0N/8ZFaiinPToQNN4xUVnIF58+Ia8+08RpQeLwMVUkSxat77LXBta
+   A==;
+X-CSE-ConnectionGUID: bsCNwcH5TpGXsdilmzNB4w==
+X-CSE-MsgGUID: om8mz04ORu67LojgRpyOUw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="43092133"
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; 
+   d="scan'208";a="43092133"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 01:48:11 -0800
+X-CSE-ConnectionGUID: moeHN7m+QPajiFGHxiYh3Q==
+X-CSE-MsgGUID: mmIcINAIRZ+fvr1HFc8qig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; 
+   d="scan'208";a="111127724"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 01:48:07 -0800
+Date: Thu, 6 Feb 2025 10:44:34 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Uday Shankar <ushankar@purestorage.com>
+Cc: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
 	Simon Horman <horms@kernel.org>,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Boris Pismenny <borisp@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hangbin Liu <liuhangbin@gmail.com>
-Subject: [PATCHv2 net 2/2] selftests: bonding: fix incorrect mac address
-Date: Thu,  6 Feb 2025 09:46:00 +0000
-Message-ID: <20250206094600.357420-3-liuhangbin@gmail.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20250206094600.357420-1-liuhangbin@gmail.com>
-References: <20250206094600.357420-1-liuhangbin@gmail.com>
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jonathan Corbet <corbet@lwn.net>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] net, treewide: define and use MAC_ADDR_STR_LEN
+Message-ID: <Z6SEeO0QFx9Y52LJ@mev-dev.igk.intel.com>
+References: <20250205-netconsole-v3-0-132a31f17199@purestorage.com>
+ <20250205-netconsole-v3-1-132a31f17199@purestorage.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250205-netconsole-v3-1-132a31f17199@purestorage.com>
 
-The correct mac address for NS target 2001:db8::254 is 33:33:ff:00:02:54,
-not 33:33:00:00:02:54. The same with client maddress.
+On Wed, Feb 05, 2025 at 10:21:30PM -0700, Uday Shankar wrote:
+> There are a few places in the tree which compute the length of the
+> string representation of a MAC address as 3 * ETH_ALEN - 1. Define a
+> constant for this and use it where relevant. No functionality changes
+> are expected.
+> 
+> Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+> ---
+>  drivers/net/netconsole.c           | 2 +-
+>  drivers/nvmem/brcm_nvram.c         | 2 +-
+>  drivers/nvmem/layouts/u-boot-env.c | 2 +-
+>  include/linux/if_ether.h           | 3 +++
+>  lib/net_utils.c                    | 4 +---
+>  net/mac80211/debugfs_sta.c         | 5 +++--
+>  6 files changed, 10 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+> index 86ab4a42769a49eebe5dd6f01dafafc6c86ec54f..6db5af2d8d059fa5c072194545d4408eec19b4a9 100644
+> --- a/drivers/net/netconsole.c
+> +++ b/drivers/net/netconsole.c
+> @@ -675,7 +675,7 @@ static ssize_t remote_mac_store(struct config_item *item, const char *buf,
+>  
+[...]
 
-Fixes: 86fb6173d11e ("selftests: bonding: add ns multicast group testing")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
----
- tools/testing/selftests/drivers/net/bonding/bond_options.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+What about ieee80211_sta_debugfs_add()? (net/mac80211/debugfs_sta.c)
 
-diff --git a/tools/testing/selftests/drivers/net/bonding/bond_options.sh b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-index edc56e2cc606..7bc148889ca7 100755
---- a/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-+++ b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-@@ -11,8 +11,8 @@ ALL_TESTS="
- 
- lib_dir=$(dirname "$0")
- source ${lib_dir}/bond_topo_3d1c.sh
--c_maddr="33:33:00:00:00:10"
--g_maddr="33:33:00:00:02:54"
-+c_maddr="33:33:ff:00:00:10"
-+g_maddr="33:33:ff:00:02:54"
- 
- skip_prio()
- {
--- 
-2.46.0
+In gerneal looks fine, thanks:
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
+> 
+> -- 
+> 2.34.1
