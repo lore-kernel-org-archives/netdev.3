@@ -1,118 +1,112 @@
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B491EA7C6
-	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 14:00:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3437E1EA7C6
+	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 14:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738850417; cv=none; b=diru7cSjL41wrNZUKkvObuvOq75P0G03hRrPAf76aN+0xhnjnGN8oPinSu81aQMTGg05gEgSCh2owN9LqPp58vlNS+Dp9MSqYHI3yZ/tb2OIY34SKWZf1CGy80PpAhX6B2RdDWCAJ/3FMTPzX7FEr+Tk0KYsjGcW8ShdLZe1DWY=
+	t=1738850494; cv=none; b=bCYh8xlyXpA/c2T19uOBRF0GFtTIKJoeavOEi95X0YqZR7nQDTLQQFOI658p9RwLXH9KqbGPFmL2GUjTJs5Vfy6hVTY1KTsxRIA24Egahz4gSHfipWIA0nTbf4780IgaGU6un+QeaP4L5JNEN+VzBgtknqMRli+RDnUJnYkRmXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738850417; c=relaxed/simple;
-	bh=gAxWg2UWifQ+J6EkdYoUSqScq5LdOTjGP65gBBk+lYk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=d8gLywsYTdoGk9JdWPU5mwdFi+2U3EYrMvdqjXb5xQyDpFDRQn6I+blc6HTXk1m5e6wW/oWa0nbseRf15iCE3qCT9HHaP2Kn4mYhj36ieF6B5oKirHXf5E8NTm3z5VC4J/N4YACX+4M6T+QhL5aa4u9T5ju5PtbDtQk+6prqIZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HJJBn73S; arc=none smtp.client-ip=209.85.167.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738850494; c=relaxed/simple;
+	bh=3zTlcWfoF37DhdYESayk6y+DiEbdCAjjpwW92uvqeLY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fd+YxlLLjZrwB4eExtnguIYXcKKEYk70p3+ABXT2GpVInUXd9ioPrspgrOGShqiZCTxq6zz0RWax54rhQOJNu0QM+5zTOtjN5sRDQuLz2Za6cQ1YLlbYuJxztJGiTwMxEf35IXGb63iV0TytvGfgFn9TI5W7G3dHbuaXIds5g+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=Egl7E3wA; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HJJBn73S"
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3eb8bdcac2eso217793b6e.0
-        for <netdev@vger.kernel.org>; Thu, 06 Feb 2025 06:00:14 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="Egl7E3wA"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-21f0444b478so13680995ad.0
+        for <netdev@vger.kernel.org>; Thu, 06 Feb 2025 06:01:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738850414; x=1739455214; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=I4w0+tZZ/6tjdHWcFaodnjfcbvDy/U7bI66jPRKovo0=;
-        b=HJJBn73S1oHy2YQnfIBU5Wch5tDC/PhOVN3UgM/ARHZpknXyLlZky0JCFZL9N9hNUG
-         bNrOgmmz30+PCmq0v6rHTsTXfx3L+DBl4Qg9pOhwNq02CzgyHSQtJJujU6qCZYskAhOf
-         PGXhf7ao7Osg/71wDF0MU4jj42q+kijHjyhIz6tN34XF8bKdWlZtXD0bKGQHbotlH0aG
-         fwcu+1cGnC2ODchdVfooXsGiFY0ai/VFJbOyb6Id9drB8Ttwd+Rg0OiUCD2qx/Zzwq6D
-         tBXVIGrhtVD8b0NoBJIk5zj0mIRPj+t7M7fxWTX8DpfVtgeKZ5fbPeuTicvwOMlVkz3T
-         gBRw==
+        d=fastly.com; s=google; t=1738850492; x=1739455292; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3zTlcWfoF37DhdYESayk6y+DiEbdCAjjpwW92uvqeLY=;
+        b=Egl7E3wAod0G0GItvog6Dw+K//91uYGM35HEj0SR3YYP16NxteYciMiXu0rkg8DuJM
+         il8m9R5ftCevNh7sKbvE4p5Oao/Ef/uJY1TQvAMDhd0MIdmgP52AsFZyMI9L7VB9/VV6
+         haYh0ihzuQyAUwWnXdWYubS4a4Iul2khqLXJk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738850414; x=1739455214;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1738850492; x=1739455292;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=I4w0+tZZ/6tjdHWcFaodnjfcbvDy/U7bI66jPRKovo0=;
-        b=gYgbRxhb3EuXRrqc1n0h5REAIpR7L7Z1JHt9v46qOMs76v4kBBaOJ6mDJ3ZolABbHd
-         6/SmAxhoQ6qd2eofGRDgPtuK4FTMvidXBKd0HK4ZFJwuN1aak06cuFTxrlDz1YvmfN7d
-         1c4nhrxNYyB4lZvI5SDjX35pldEGJvQuMKuqd/RYDu0UXIxm83dXv5612V24MdBJ+ZG6
-         xfz1xil44kBgc+aFvCe7iJDrNh8p1iKds4XuXVfmImNCkeg3trLqbVp3xRl50U7kwDnl
-         rR+EHISL3BQX7gyJ4YsssTBktwrmoSyOltaHVecWz/4ayjp931iM0Wv8OYacGWbLyKkX
-         cq2g==
-X-Gm-Message-State: AOJu0YyhuU6m5GlGQCF+5/bB1byg0v69AIG+B8MWc5kCWyF9YlhP6Xjn
-	nqwvpyFx3neAOJWuAP34Rnxx5M7eSi3Jh+hSrwZyMB1vDrGA7e5TJ6tdH40=
-X-Gm-Gg: ASbGncuzDucLO5/caHHK+M+aCM4GqxCRtFwtaRRWCpClWdbpp77nRYRvzkD4/nrWvdm
-	yQYlYg/8lm13z8naaERdM4zkZDnAg9zRnE6SYbXkh2ScU/Ov+AZLUAzhblvZb9FL3TGlbZvZ8QX
-	coqgJYApFlc8y/9C4ItUwPag125oPoo5cpJNRajU2rlonMJ65ZR9tBaiwN9XC56lfamqDAK2GxU
-	+lH0I9WtVLzFTI3q/bV8giRFQ/Dg6dSyqKjUnhuVxP9Z7ugUf+OSuI+c+ffw/H2qxt09PfqhyNy
-	yaWmTisfqfJsAMk=
-X-Google-Smtp-Source: AGHT+IEq59hXVWRso7radTvNDDnWDabptYUgRcCTQoG3L8zBVZD5f8o9r7uZ45mAuN0D3gHnHW8wWg==
-X-Received: by 2002:a05:6808:2205:b0:3eb:5160:f859 with SMTP id 5614622812f47-3f37c10a7fbmr4486914b6e.9.1738850413694;
-        Thu, 06 Feb 2025 06:00:13 -0800 (PST)
-Received: from t-dallas.. ([2001:19f0:6401:18f2:5400:4ff:fe20:62f])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f389efeb49sm208150b6e.29.2025.02.06.06.00.13
+        bh=3zTlcWfoF37DhdYESayk6y+DiEbdCAjjpwW92uvqeLY=;
+        b=oT7DiuzWxgT6fUsLmw+vG68qe+Bi4atWPW+isq0ZGobAfa8lcoJSM7M0LtatM4fcnY
+         +sl5SXddh3GFCxQD+RgWS/p8NvHoF+KuKZrc/mtJJkGwMAngoMSJcAWQs2WZjeZMGsLJ
+         U77QC67/DAMNdMw0IIry385eALS4NUS79B48Y+dxhQJ8IOaxbzcYgMwbHxqhHTsPo4fm
+         B6F24GngL6auU5iWS8+IDLCJXkroi3dy+0Gg7xCE8UsvCXnp2CPA8T8ZG7I+Vr21yVMA
+         M0mTlDZGiIcBNCM8NebdsIUfvct13gBq+XjpfEbme/cGyAheu1AOO0ZCgZoEEqvHfyp/
+         fdnw==
+X-Forwarded-Encrypted: i=1; AJvYcCWrnX8BtAozVx4HCYqZJ9Y3lPUE4tVWl1evvHst7nkH1fejDI3T0GElZH0ahWKTycVGJSLv6BY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMy+OMWDbkIamp4nGwtLnKQmkn1yuoVCRNHZaLIdT28nv4upvu
+	b6s8Mn2QGRCUaHgjiq22cxrvWo5XBrNO68+Vf6bRpxSeMUjj7fv4qL/HV99mCdI=
+X-Gm-Gg: ASbGncvwAnUFW3mqK9qgfxoL9nsjdgj4yKuUi3Rp9pOtErx3kLy0k5ctTjTJ7+n4v0b
+	Nhai2oWrh7asqXxzbfamrjbegOhEHhEIYUR0KeKUiAzbc066bzFhvdDY2p8kLb2bfsmaeAIlNje
+	FHXxOtnE4jv0nOwIO2+cMc9JjKhW1qjpnTgRPR5+o5v4xXFkoRIRseeEgnES6fNT48bL2bAU9aC
+	hPAfS6tWrnQNZJ6tRLp2yjBqlCrw5j45cpZwho+TPoctZmyC0hY/h+eSwQ4Wj/cBjz8blaxrEcf
+	Kpl6OBiLFPabvR+nPxWoFbJGZlXZLREWM52UMeGI+ip75841H+TCk1c3GQ==
+X-Google-Smtp-Source: AGHT+IFQwzRf2ZVVTwGkkmxzXrR9YrWPorWCeaFDV9UOLaMtIyUJ+w+TMffFlqAyfQSuhpP8J881jQ==
+X-Received: by 2002:a17:902:f54b:b0:215:a434:b6ad with SMTP id d9443c01a7336-21f17edf124mr121154725ad.33.1738850490568;
+        Thu, 06 Feb 2025 06:01:30 -0800 (PST)
+Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3683d8a7sm12843885ad.148.2025.02.06.06.01.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 06:00:13 -0800 (PST)
-From: Ted Chen <znscnchen@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch
-Cc: netdev@vger.kernel.org,
-	Ted Chen <znscnchen@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@idosch.org>
-Subject: [PATCH net-next v2] vxlan: Remove unnecessary comments for vxlan_rcv() and vxlan_err_lookup()
-Date: Thu,  6 Feb 2025 22:00:02 +0800
-Message-Id: <20250206140002.116178-1-znscnchen@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Thu, 06 Feb 2025 06:01:30 -0800 (PST)
+Date: Thu, 6 Feb 2025 06:01:27 -0800
+From: Joe Damato <jdamato@fastly.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Dave Taht <dave.taht@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	almasrymina@google.com, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v3 0/4] Add support to do threaded napi busy poll
+Message-ID: <Z6TAt7HIA4Sj5uep@LQ3V64L9R2>
+Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Dave Taht <dave.taht@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	almasrymina@google.com, netdev@vger.kernel.org
+References: <20250205001052.2590140-1-skhawaja@google.com>
+ <CAA93jw7tVyiz6Kj8B5zXMqYKxLZSnctGiwbH5hC+4_ZTWpg3fA@mail.gmail.com>
+ <CAAywjhRd-tQz3ra6uUvZf_rwTT+5a04BfeA59bcG8ziW_4FLWg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAywjhRd-tQz3ra6uUvZf_rwTT+5a04BfeA59bcG8ziW_4FLWg@mail.gmail.com>
 
-Remove the two unnecessary comments around vxlan_rcv() and
-vxlan_err_lookup(), which indicate that the callers are from
-net/ipv{4,6}/udp.c. These callers are trivial to find. Additionally, the
-comment for vxlan_rcv() missed that the caller could also be from
-net/ipv6/udp.c.
+On Wed, Feb 05, 2025 at 09:49:04PM -0800, Samiullah Khawaja wrote:
+> On Wed, Feb 5, 2025 at 9:36 PM Dave Taht <dave.taht@gmail.com> wrote:
+> >
+> > I have often wondered the effects of reducing napi poll weight from 64
+> > to 16 or less.
+> Yes, that is Interesting. I think higher weight would allow it to
+> fetch more descriptors doing more batching but then packets are pushed
+> up the stack late. A lower value would push packet up the stack
+> quicker, but then if the core is being shared with the application
+> processing thread then the descriptors will spend more time in the NIC
+> queue.
 
-Suggested-by: Nikolay Aleksandrov <razor@blackwall.org>
-Suggested-by: Ido Schimmel <idosch@idosch.org>
-Signed-off-by: Ted Chen <znscnchen@gmail.com>
----
-v2: removed the comments for vxlan_rcv() and vxlan_err_lookup().
-    (Nikolay, Ido)
-v1: https://lore.kernel.org/all/20250205114448.113966-1-znscnchen@gmail.com
----
- drivers/net/vxlan/vxlan_core.c | 2 --
- 1 file changed, 2 deletions(-)
+Seems testable?
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index ece5415f9013..44eba7aa831a 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1670,7 +1670,6 @@ static bool vxlan_ecn_decapsulate(struct vxlan_sock *vs, void *oiph,
- 	return err <= 1;
- }
- 
--/* Callback from net/ipv4/udp.c to receive packets */
- static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- {
- 	struct vxlan_vni_node *vninode = NULL;
-@@ -1840,7 +1839,6 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 	return 0;
- }
- 
--/* Callback from net/ipv{4,6}/udp.c to check that we have a VNI for errors */
- static int vxlan_err_lookup(struct sock *sk, struct sk_buff *skb)
- {
- 	struct vxlan_dev *vxlan;
--- 
-2.39.2
+> >
+> > Also your test shows an increase in max latency...
+> >
+> > latency_max=0.200182942
+> I noticed this anomaly and my guess is that it is a packet drop and
+> this is basically a retransmit timeout. Going through tcpdumps to
+> confirm.
 
+Can you call out anomalies like this more explicitly and explain why
+they occur?
+
+If it weren't for Dave's response, I would have missed this.
