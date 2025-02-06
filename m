@@ -1,92 +1,107 @@
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFD4151992
-	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 12:00:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C3418B477;
+	Thu,  6 Feb 2025 12:13:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738843223; cv=none; b=EngfWdeRyEt5CDSUWm8VEifbLxdmC7z1/F6gWXFc24lBoQEw1lWCpvAW2GHWcTDY4O/bLdZCFeuW3KEc2X0udPjxXdbwepkBGKoce6IT2gUwSv3w5pRFuZSeyBIjg6uyuNiy7lu/h2LE6FzyTkXYP486df4zdOZSxPPSU9+bM2M=
+	t=1738843986; cv=none; b=sH6fU77PEY+EzzH2ON+lukr2yJBJRmBEfsTx5isvomUj7Z1KtsoODKg4y7FJLvGNgOY743nxmcL897J+KUH8JLmbWxs5RUmTZupt67OOt2xasirkmhOzoxoluKb/RrOs55xAqSbrECLPQwlKtNvMnlo5vZeIu66+amqBDshN1iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738843223; c=relaxed/simple;
-	bh=aMq8QdMtEDft/H1MqnSfu8bzUd1W2Z7V3nzCdx4RJLQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eNobhx69CvEh06ci81pm0SJ1X44vZVnA8vC/2lGIw9Z532rf2f6WkS/sa3tH3x8wtJIS+VyVN4sV2da1tj92kqjW5hOrOr4/ImbTyGR7ZAUKWyAWsxm6GZrs5S4/iE0havWSl2LrqFMGrSCCxwLkEddC4lq180DNiDzpjXURv5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DUEMmY3V; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
+	s=arc-20240116; t=1738843986; c=relaxed/simple;
+	bh=jkqKslU5iaeUw5P1JCvteA2vbVA7QmSYfQYMH6ScSks=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=GZ5xuEdDHHhDdFYb7tR0xouvHyEhc1p2jUtfp7cPG6MiK3vClr2nkmximxfYnqnKgKNmkJQ2rDd657fcrswUx/k5JbPRY47cKU2Z9Z7BpOG854Zgfq1hE67nd4ibfZBYrcIHeIjaGDIb62PSgBsvdO2iesASMgP+KK4BdqcMIZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Iik8xUsm; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DUEMmY3V"
-Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
-	by mailfout.phl.internal (Postfix) with ESMTP id ED1ED138023C;
-	Thu,  6 Feb 2025 07:00:19 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Thu, 06 Feb 2025 07:00:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1738843219; x=1738929619; bh=0HaTXLcx0wisjv2WBo8e4LQhSvrpnEiRDzb
-	/ofXw4pc=; b=DUEMmY3VP1MTnBidlPAug+jwps014YEwxmdIVtPe19DQBPYGtVt
-	/iSgw40dqv6x8bJDu87rSYkhyMuKz6iVFPtfzchsBbnfLVvevH6Z6UruJ7ikcSGL
-	TDuV7yHPSLVwBaa3csPcEe4vGxa/OxqBV5+tdIcFlMtscXuvSafQYK0AfzyyrGLg
-	0Hr3rlJeCOAb5QJDX/hWdKtH+QyrOsk9eeMTk5AAtE7yTLT9pZXzcPlE4hcn3j4x
-	2sUtCx4sapf2RsrMZ/Dp+2ylaDF/tDLu9uTsGQZ/F9ioBAF8tI7dKYo9+UVXkvKI
-	0hYMoU5ViZwNAWAMQbYy2hFlmBiIbifMGqA==
-X-ME-Sender: <xms:U6SkZweHGhUOeECliLtPhvPVlODwXt7ICPaGkB1HM7bEvUCwSXH4iQ>
-    <xme:U6SkZyPkBab7EbVrv3rHXxtzGNDyTCc0wWs5gsPYFjHt6m0pf2bX7tZSAsHuh5LpF
-    jGPL9ZL-Pay4-I>
-X-ME-Received: <xmr:U6SkZxjtHZ3PMo1AMqDrXAYHRKqkxObvct4mm0AQ5UXeQsbGWg4TbiUplHhnpjiTptuPDAdiVU9P7kerOVrO-tRE3Dg7kg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieeffecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrd
-    horhhgqeenucggtffrrghtthgvrhhnpedvudefveekheeugeeftddvveefgfduieefudei
-    fefgleekheegleegjeejgeeghfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhgpdhnsggprhgtphht
-    thhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegvughumhgriigvthesgh
-    hoohhglhgvrdgtohhmpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgv
-    thdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsg
-    gvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopegushgrhhgvrhhnsehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvrhhi
-    tgdrughumhgriigvthesghhmrghilhdrtghomh
-X-ME-Proxy: <xmx:U6SkZ1_vxG-p71gRe7LipvpF4TdiZC-brpY5wZ5KlzkzD_fXaY5-wQ>
-    <xmx:U6SkZ8sJwc_3wK4O1Lmp0-I6jA29zAnaFvEwSHJO8jWKycZLhjiVCA>
-    <xmx:U6SkZ8EpCHZFgtwa2ngfoN5dH_aucoRr7NC55J-qowgPPPXxksPJxQ>
-    <xmx:U6SkZ7O-huU-7IAl-Nkh7nkDdDvlD1Cs71jIxCvpHs0w3fXuB49Qyw>
-    <xmx:U6SkZx-9jKUtpS0uz7N7OaLB02apuZS_cXy1g5vlj1bLSCqxyHhls2EZ>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 6 Feb 2025 07:00:18 -0500 (EST)
-Date: Thu, 6 Feb 2025 14:00:16 +0200
-From: Ido Schimmel <idosch@idosch.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
-	Simon Horman <horms@kernel.org>, eric.dumazet@gmail.com
-Subject: Re: [PATCH net] net: fib_rules: annotate data-races around
- rule->[io]ifindex
-Message-ID: <Z6SkUCO1oFzoExkz@shredder>
-References: <20250206083051.2494877-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Iik8xUsm"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-38da72cc47bso619873f8f.2;
+        Thu, 06 Feb 2025 04:13:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738843983; x=1739448783; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ysJahaWLEfpuza7xgtavoHPxl1xFns3PuCkrhVGngT4=;
+        b=Iik8xUsmOOxpvVhuaOEFri42Pke9I/Db7z80D6K/C0ohc3Ffd90pcHSKRHdXh0VEuO
+         Es9B3YyH5elKEDAgxkGl4tdQTCrGJcrPgzFAx2vMeciukqbF0N+UYWdIJuhSAn5jDoFz
+         AeE7isM+Lbp3NqEP1BkBoUOiqzU7v5wCCeDuLO+dveC2cFGJd22w1WdxSEbmK+rSOZqb
+         f2c8a0t70pxsfQb0bEnN87xIsM2bXccRMBRUg9n1pvvvdX7YLtrEq9SVfdq9qzSUVbQJ
+         pmozos5sxFY3AcHrc8RAE5uO3SvkJa8iJp9s0rnpPLLmLIIVrxV08cQuKrJ+dwTolAUh
+         XGiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738843983; x=1739448783;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ysJahaWLEfpuza7xgtavoHPxl1xFns3PuCkrhVGngT4=;
+        b=lYHYelwdYxogljujkKKbDDqF2vTUVhbN0XjRZbml4mreL6rlYoXXQ5GsFG1xt91jb0
+         psLRuwqi28AlGMPkHJBqJbMzKuO0PxK7w9haafLv9fp6cheEZAiCYr43FMB4bYUoy2Sj
+         Sq+e8EzcUQLoZZuhlOin8jwWBpHaVw4jpzaEKs4Jf8JJxNhDEW7XVY9v4pzoEZh0RNiq
+         rgJ3uQkWpjxVC93JlOPsFhhnyDIn3ViYPXupOaByHTLtv/634WOyQ8kc6VZodCoeIzdI
+         tB/wZpJDmWVt6fLOoAlRoYp4Uwi+EWk4o7vuw0PBG6FAsV0GoHfG9OXGcJNz00sYmnOY
+         cR+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVYmJ5TQl//VuvdeeCH/RrEVB6D6NlnAHXJxp8og6x5U1RWX2Eml2yn+Wd83kd2/NVeIyNUODY9G/NVv+yKZg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxB1BtOGKY2q0jTPyWl6gE29G5MJnN6+gs03Aq2fQ5L/OctS+oR
+	sgv4syMPmEpM4i6oOOLRGdjEQObjzcrTGcbGugeBu0Drywf74et5
+X-Gm-Gg: ASbGncv08zvxcCvyST8iNKdxnQFVuLJMLlf5e88bU87fOqrJhK7CPfo9LMoa1dOxpUx
+	HfFG34ZRgvYFphAMAQpMXgwIpup8dE+DGjCb4B96V6TWti4NV5JbKpLTlNbha9lYqHHlUxLdPW8
+	dwJllIa1wXxeM08pUTk7jM7skxe5OnmUSAEDRptCZFbWBPTuazAxBQle7LxN93y0SwisBDfTUGR
+	ri8CnY1NbBt6pt/keCZCqm00pccgEfd0waqjI91E99mO5VyyF0brXFAtJKDnat0a/XtD+8Zhhf2
+	qp1vNDt/IRVxxycrp8s1xPyvjQnr
+X-Google-Smtp-Source: AGHT+IH4JPxboFaXR0Dbn7UK2FmPITpsmJ5wUi/0wrK01F4fk7C0AQk2RjbjIYiLWM2j0/CUoT+ivw==
+X-Received: by 2002:a05:6000:154f:b0:38d:a6a1:2edc with SMTP id ffacd0b85a97d-38db48b4637mr4859950f8f.9.1738843982937;
+        Thu, 06 Feb 2025 04:13:02 -0800 (PST)
+Received: from imac ([2a02:8010:60a0:0:c428:5404:970c:34c7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dbdd36378sm1603730f8f.31.2025.02.06.04.13.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2025 04:13:02 -0800 (PST)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: netdev@vger.kernel.org,  Jakub Kicinski <kuba@kernel.org>,  "David S.
+ Miller" <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Paolo
+ Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,
+  linux-wireless@vger.kernel.org,  donald.hunter@redhat.com
+Subject: Re: [PATCH net-next v3 10/10] netlink: specs: wireless: add a spec
+ for nl80211
+In-Reply-To: <da75ef6287d00bf5d1200118bd48d46d11d45607.camel@sipsolutions.net>
+	(Johannes Berg's message of "Thu, 06 Feb 2025 10:43:45 +0100")
+Date: Thu, 06 Feb 2025 12:12:50 +0000
+Message-ID: <m2v7tnxoe5.fsf@gmail.com>
+References: <20250206092658.1383-1-donald.hunter@gmail.com>
+	<20250206092658.1383-11-donald.hunter@gmail.com>
+	<da75ef6287d00bf5d1200118bd48d46d11d45607.camel@sipsolutions.net>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250206083051.2494877-1-edumazet@google.com>
+Content-Type: text/plain
 
-On Thu, Feb 06, 2025 at 08:30:51AM +0000, Eric Dumazet wrote:
-> rule->iifindex and rule->oifindex can be read without holding RTNL.
-> 
-> Add READ_ONCE()/WRITE_ONCE() annotations where needed.
-> 
-> Fixes: 32affa5578f0 ("fib: rules: no longer hold RTNL in fib_nl_dumprule()")
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+> On Thu, 2025-02-06 at 09:26 +0000, Donald Hunter wrote:
+>> 
+>> +    name: feature-flags
+>> +    type: flags
+>> +    entries:
+>> +      - sk-tx-status
+>> +      - ht-ibss
+>
+> Oi, I'd really hoped you auto-generated that even with a one-off sed
+> script or so, but:
+
+Yes, mostly done with editor macros.
+
+>
+>> +      - ds-param-set-ie-in-probes
+>> +      - wfa-tpc-ie-in-proves
+>
+> typo?
+
+Good catch.
+
+>
+> johannes
