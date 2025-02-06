@@ -1,62 +1,62 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1368819B5B1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D4C1A9B3E
 	for <netdev@vger.kernel.org>; Thu,  6 Feb 2025 19:35:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738870532; cv=none; b=KhKgBrGcuEFU4KDzi/VMlI7qg5j043nnfca6o3i7CvK0Pb9WRBvFhCQvHWt2YyS9W1sfLRm3aWBcw9sXlh35QHFYO3yaZQthyTBIa/EUpg7+f/4DtYS7lGjedCogKM6BlrHbsUWlP+j6iqAnACTNualaN3X+RrC6X7v370tVKvU=
+	t=1738870532; cv=none; b=OGVfxTE65u1iAvcIPUnmbFlGjcTyXRPMevWE5RKectUCjFpFo8nyOycnP1GmjlgCk/H4Gap2t+/X1HwjiYCeCU0RiBgY9tadQ8C6kHeBlsL/6TmTDJPtIdLSaw86yBj2qv/2KRGdS9Tm8MkCKPeoWyGgVkUL/xIciXl11nHVC98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1738870532; c=relaxed/simple;
-	bh=SUQ36dT7NCquYR/J3wrYi9DAuLdQ7lLdOj3bIwQ95TE=;
+	bh=SkWuNN//hqCQwzfB//aMR160tSPQ136kOB1bhGfamIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dyN8HFDDg8soN5bKS6kc0tHh7cbdEmcs6WDcWqYMGuYH0tf/Ku7vk358lUYsa1nZ1+nypGVwObqtLom4jjgHI6Ty3TpG9gi3g3HfM8VrNZSSkSystzbnXmPvrngf2kOWBEWMzkNDzfw7k/6SawlQ1cV3Win6WZCk1q4G3yjLUbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ipj0e3Hq; arc=none smtp.client-ip=209.85.160.182
+	 MIME-Version; b=K4tRAbjXt+9MwEC5wHKyV2AIXawVGorc/98sO6cZggklcjgbcjHOoPgJCHAA88xwE/8NK5d0/ir/T1xnChQjiNP856dLm2PJ1RVoWlgqoY4nsqibs/oTUJALBfiyJaoPc9Mb9scdWzmMRVG3UQW7wZk4mFyirdpl1iRGoNaCm+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mzZjyQqf; arc=none smtp.client-ip=209.85.160.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ipj0e3Hq"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-46fa764aac2so9673721cf.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mzZjyQqf"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-46fcbb96ba9so15314931cf.0
         for <netdev@vger.kernel.org>; Thu, 06 Feb 2025 11:35:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20230601; t=1738870530; x=1739475330; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jR573iXHDE6qn0yhJ5BDmPlNhijejbGjKbJBvKgVCss=;
-        b=Ipj0e3HqbfF1QOcZW7Xd5pqfmfiCxLD35kJD8eB8EgqQLbVk3489zaqqthAe/ZVrPl
-         Qy+ZxEk0nD/1cp4Q7qHgIE8UfMReq/0rIT6ZfqnLAMh5XHu6QBmu2VNKiz0N4tdqflv8
-         eh9kXJxWHMH1eUDoLzSsK1kwB/Y3z/+GSpzd0WDC2qgWKg4EPTWUoeXViVHHJzAPaCeB
-         NJ4yebFbmKfCjDObNgc3GZDltgD0Ka56iEDRVbalGZ2hMm8P/jHOScBDHStcVP84ix4k
-         JwFR+sKMwjhKTJQ8SNcb+D+3RO6M3Ts6X4CCqmLWvtPLNGpyiLBMmg/iScLitQxPshCD
-         5SUw==
+        bh=eGfnLk9Q/lPUAqX3HfpstjMkR3lqRXGKEgckMFPRZUc=;
+        b=mzZjyQqfgO9eOkGlrBtYWSstTU7YGLYF3y2vQoYMaPisw1CG7W5LiS4gnQaxs+fzgq
+         tTj7j72+NjTiGU7z15HqFsYU+u+JL1JQEdtFF9SLFNsNAfDWyn2eFRTBv1eHfST+d8sU
+         L2NHU2EEpUF5CeNUohErIZ3gqT65m/yRwO8sqW4Hx8pFxl1Rtqg2s3rwu+7b87sUcpCv
+         mubr7CSvZ/C5la02MWdQc4mEEoQwzlCdpKRX88BtAA30FW0JJWyzxb0xXRN29L0ik4UH
+         Ci+8caEs4LFkzz1C1eWf8uCAbhfBJUOOT6BnkLeEMOQOdLrtrq22gdYQNEmb5TbzI+F5
+         LqiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1738870530; x=1739475330;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jR573iXHDE6qn0yhJ5BDmPlNhijejbGjKbJBvKgVCss=;
-        b=kQhMiXmq0JpF0Hzy/YKW7rQN20iZg38fEHragNWE8lE3iIevJ6cUk/iphYhX8v7I5Q
-         oqB5y2kWO+yYV39WVv4NKmZA1dlMKOKCE6kcWHM8I6QHzQLLilDUVj2Fl6y/5BYbzGWz
-         +Z9kCCCindoTQZm5Mn9745SrVTDp7TJYsAW2jERfigo/PAPGlDgZKfizZeAte6P9elbx
-         qvoUaf/2z9aTl0wS9yU+FOaai69yeQ9a9lKV2gXMUBrepEmapC9CNFuQi4bbgG7ZO4Bw
-         8xL6VbNXX1OeZA9OassouHfW5xu7Na1aAZh/Zm2sbQTqlxcH59rkiWqMtgHc6uRzzTlF
-         +WbQ==
-X-Gm-Message-State: AOJu0Ywmxjv9I+CJoaGvOHcXlKhf8CNtRyBEwidx3PnE2xtaO9P2DiO8
-	W+WBXECE6bKxsBrjQPklmdl0UuSqQDNdzXfisOpHfQqNzXqAd8G4m8kmBQ==
-X-Gm-Gg: ASbGnctGMvXMYw25mtCoaOXW0ESXR+h+6YI2KyGTNlMa9MgET2AkfkCRshSmiRkDlQv
-	zdjk2K/r9fLLYprcCbxupmG1c3OHEWQylhbikEdADy4zUZKPAun+RpX8NhDbpUwCCJdOIXMJrM8
-	jbT3j6xTLqNepiJnrMtHeTe1EIT2cYLJIIx7jrERHxos4OsTtd87MD8om8vAX7KObTibZxv3GWP
-	wLoOoGvNl+G0ilmZ1DS7NkrhNMse1ndI9Ad/lYTJXCo3srraNiFMtcxo8Tmr1t4clWcWYnH39qT
-	2IlGlpOxNxfkLDeTQ/0vKnDYhaj5XVPuTFliIQf0f6hZ9JS2WgBlvx0JKsT9TkDSmV7N9AGu8uE
-	Y/1sTWeCceA==
-X-Google-Smtp-Source: AGHT+IFzMHfOlQvpuiy9f8FFfejDimvFL/7ofGRtfKe3FAZnB4apssz67fctDmtV6CVO28k+aTesWw==
-X-Received: by 2002:a05:622a:489a:b0:467:5910:255f with SMTP id d75a77b69052e-47167a2c642mr8628451cf.30.1738870528394;
-        Thu, 06 Feb 2025 11:35:28 -0800 (PST)
+        bh=eGfnLk9Q/lPUAqX3HfpstjMkR3lqRXGKEgckMFPRZUc=;
+        b=S7QSx2IYDGhxqPjSy6uFRhq2Z+r2kod8fmxEFaRxAZS2xRV8+6hvoGO2nAXtGAg1A5
+         nbpN0KoNwoM7U7P+MddhAmd/lgaMsLQjpIBHZvxNsvO1WdpZ2iQ+Ni6eib3Hf5jefDed
+         QBlgvFCq9xju3VkqlRLCvXO0OaLh6UNulO/XiVPT2HL2pUhPNqRV4dEDbdiyvqVyQ/jz
+         7Q9j/Ok5fhriD1fpU+AgO79PAC81JQjpnNtQyuOvCcSCvXoOQlhQ1SSPKKPT03BvbwjA
+         JU0pdUOgQLpf8BIJEURHYX4ssd5ww+ob6B2k4Bhypxzn3cK3+0EVds8eeWBlf3UOQ2nZ
+         5+Qg==
+X-Gm-Message-State: AOJu0YyILOZkzJRiacSknsWHKSUHiXORDw2GSQczbAeI4Qc5EHVqFKDS
+	e52gmmncWQmhzZ8qJmSnxvD7qB5TT737AOvp8CWBBqcOqOHcOKldyTH00w==
+X-Gm-Gg: ASbGnctTTWhWWTqw+3FF6LO3ps7K8euRGQ67AiVa6DkVde72UrH30vnUj9jGm+iWUlQ
+	SJI/dBxnKS0OCVNr92yanMNudVyRqkt7ADvVxKGnnJ4QVlixtvl1L+uQ/xWLmEoZ8TE5SZdEsVw
+	BZiSNSO3Xf+zhoGJ7NLEXqPIBkfrv+tDaBJceSThWDJeqEzHmklTsOr0MkxNsoSnalZYBHt/9Zx
+	djVIXfB5ee8QLls/MUC4Dhb07YvUmDW4ihpuHjbDoeApJkxIqO0l31nbA9mX31K7mXIhKDxDKOA
+	foG9uugUcaZKdETXjggvQLCLQtNZNdhVMZRdK5bGricihIqc9ZdImmVrDjDA68EWhjVDTO9veoy
+	R0o2sBI6yaw==
+X-Google-Smtp-Source: AGHT+IG2CK08zhNFS5SVonb47j/lurSsrXHRtw3mAbNWuPhpnQq/04zIa7Rhay6Seg/1+mC+LmCWjg==
+X-Received: by 2002:a05:622a:392:b0:466:8c53:7758 with SMTP id d75a77b69052e-471679b2fb2mr8916591cf.5.1738870529922;
+        Thu, 06 Feb 2025 11:35:29 -0800 (PST)
 Received: from willemb.c.googlers.com.com (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-471492accc2sm8349301cf.30.2025.02.06.11.35.27
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-471492accc2sm8349301cf.30.2025.02.06.11.35.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 11:35:27 -0800 (PST)
+        Thu, 06 Feb 2025 11:35:29 -0800 (PST)
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -64,9 +64,9 @@ Cc: davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next 2/7] net: initialize mark in sockcm_init
-Date: Thu,  6 Feb 2025 14:34:49 -0500
-Message-ID: <20250206193521.2285488-3-willemdebruijn.kernel@gmail.com>
+Subject: [PATCH net-next 4/7] ipv4: remove get_rttos
+Date: Thu,  6 Feb 2025 14:34:51 -0500
+Message-ID: <20250206193521.2285488-5-willemdebruijn.kernel@gmail.com>
 X-Mailer: git-send-email 2.48.1.502.g6dc24dfdaf-goog
 In-Reply-To: <20250206193521.2285488-1-willemdebruijn.kernel@gmail.com>
 References: <20250206193521.2285488-1-willemdebruijn.kernel@gmail.com>
@@ -80,84 +80,108 @@ Content-Transfer-Encoding: 8bit
 
 From: Willem de Bruijn <willemb@google.com>
 
-Avoid open coding initialization of sockcm fields.
-Avoid reading the sk_priority field twice.
+Initialize the ip cookie tos field when initializing the cookie, in
+ipcm_init_sk.
 
-This ensures all callers, existing and future, will correctly try a
-cmsg passed mark before sk_mark.
+The existing code inverts the standard pattern for initializing cookie
+fields. Default is to initialize the field from the sk, then possibly
+overwrite that when parsing cmsgs (the unlikely case).
 
-This patch extends support for cmsg mark to:
-packet_spkt and packet_tpacket and net/can/raw.c.
+This field inverts that, setting the field to an illegal value and
+after cmsg parsing checking whether the value is still illegal and
+thus should be overridden.
 
-This patch extends support for cmsg priority to:
-packet_spkt and packet_tpacket.
+Be careful to always apply mask INET_DSCP_MASK, as before.
 
 Signed-off-by: Willem de Bruijn <willemb@google.com>
 ---
- include/net/sock.h     | 1 +
- net/can/raw.c          | 2 +-
- net/packet/af_packet.c | 9 ++++-----
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ include/net/ip.h       | 11 +++--------
+ net/ipv4/ip_sockglue.c |  4 ++--
+ net/ipv4/ping.c        |  1 -
+ net/ipv4/raw.c         |  1 -
+ net/ipv4/udp.c         |  1 -
+ 5 files changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 8036b3b79cd8..767a60e80086 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1828,6 +1828,7 @@ static inline void sockcm_init(struct sockcm_cookie *sockc,
- 			       const struct sock *sk)
+diff --git a/include/net/ip.h b/include/net/ip.h
+index 6af16545b3e3..6819704e2642 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -92,7 +92,9 @@ static inline void ipcm_init(struct ipcm_cookie *ipcm)
+ static inline void ipcm_init_sk(struct ipcm_cookie *ipcm,
+ 				const struct inet_sock *inet)
  {
- 	*sockc = (struct sockcm_cookie) {
-+		.mark = READ_ONCE(sk->sk_mark),
- 		.tsflags = READ_ONCE(sk->sk_tsflags),
- 		.priority = READ_ONCE(sk->sk_priority),
- 	};
-diff --git a/net/can/raw.c b/net/can/raw.c
-index 46e8ed9d64da..9b1d5f036f57 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -963,7 +963,7 @@ static int raw_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
+-	ipcm_init(ipcm);
++	*ipcm = (struct ipcm_cookie) {
++		.tos = READ_ONCE(inet->tos) & INET_DSCP_MASK,
++	};
  
- 	skb->dev = dev;
- 	skb->priority = sockc.priority;
--	skb->mark = READ_ONCE(sk->sk_mark);
-+	skb->mark = sockc.mark;
- 	skb->tstamp = sockc.transmit_time;
+ 	sockcm_init(&ipcm->sockc, &inet->sk);
  
- 	skb_setup_tx_timestamp(skb, &sockc);
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index c131e5ceea37..3e9ddf72cd03 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2102,8 +2102,8 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
+@@ -256,13 +258,6 @@ static inline u8 ip_sendmsg_scope(const struct inet_sock *inet,
+ 	return RT_SCOPE_UNIVERSE;
+ }
  
- 	skb->protocol = proto;
- 	skb->dev = dev;
--	skb->priority = READ_ONCE(sk->sk_priority);
--	skb->mark = READ_ONCE(sk->sk_mark);
-+	skb->priority = sockc.priority;
-+	skb->mark = sockc.mark;
- 	skb_set_delivery_type_by_clockid(skb, sockc.transmit_time, sk->sk_clockid);
- 	skb_setup_tx_timestamp(skb, &sockc);
+-static inline __u8 get_rttos(struct ipcm_cookie* ipc, struct inet_sock *inet)
+-{
+-	u8 dsfield = ipc->tos != -1 ? ipc->tos : READ_ONCE(inet->tos);
+-
+-	return dsfield & INET_DSCP_MASK;
+-}
+-
+ /* datagram.c */
+ int __ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len);
+ int ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len);
+diff --git a/net/ipv4/ip_sockglue.c b/net/ipv4/ip_sockglue.c
+index 6d9c5c20b1c4..98b1e4a8b72e 100644
+--- a/net/ipv4/ip_sockglue.c
++++ b/net/ipv4/ip_sockglue.c
+@@ -314,8 +314,8 @@ int ip_cmsg_send(struct sock *sk, struct msghdr *msg, struct ipcm_cookie *ipc,
+ 				return -EINVAL;
+ 			if (val < 0 || val > 255)
+ 				return -EINVAL;
+-			ipc->tos = val;
+-			ipc->sockc.priority = rt_tos2priority(ipc->tos);
++			ipc->sockc.priority = rt_tos2priority(val);
++			ipc->tos = val & INET_DSCP_MASK;
+ 			break;
+ 		case IP_PROTOCOL:
+ 			if (cmsg->cmsg_len != CMSG_LEN(sizeof(int)))
+diff --git a/net/ipv4/ping.c b/net/ipv4/ping.c
+index 619ddc087957..0215885c6df5 100644
+--- a/net/ipv4/ping.c
++++ b/net/ipv4/ping.c
+@@ -768,7 +768,6 @@ static int ping_v4_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 		}
+ 		faddr = ipc.opt->opt.faddr;
+ 	}
+-	tos = get_rttos(&ipc, inet);
+ 	scope = ip_sendmsg_scope(inet, &ipc, msg);
  
-@@ -2634,8 +2634,8 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+ 	if (ipv4_is_multicast(daddr)) {
+diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
+index 4304a68d1db0..b1f3fe7962bf 100644
+--- a/net/ipv4/raw.c
++++ b/net/ipv4/raw.c
+@@ -581,7 +581,6 @@ static int raw_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 			daddr = ipc.opt->opt.faddr;
+ 		}
+ 	}
+-	tos = get_rttos(&ipc, inet);
+ 	scope = ip_sendmsg_scope(inet, &ipc, msg);
  
- 	skb->protocol = proto;
- 	skb->dev = dev;
--	skb->priority = READ_ONCE(po->sk.sk_priority);
--	skb->mark = READ_ONCE(po->sk.sk_mark);
-+	skb->priority = sockc->priority;
-+	skb->mark = sockc->mark;
- 	skb_set_delivery_type_by_clockid(skb, sockc->transmit_time, po->sk.sk_clockid);
- 	skb_setup_tx_timestamp(skb, sockc);
- 	skb_zcopy_set_nouarg(skb, ph.raw);
-@@ -3039,7 +3039,6 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 		goto out_unlock;
- 
- 	sockcm_init(&sockc, sk);
--	sockc.mark = READ_ONCE(sk->sk_mark);
- 	if (msg->msg_controllen) {
- 		err = sock_cmsg_send(sk, msg, &sockc);
- 		if (unlikely(err))
+ 	uc_index = READ_ONCE(inet->uc_index);
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index c472c9a57cf6..97ded5f0ae6c 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1405,7 +1405,6 @@ int udp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 		faddr = ipc.opt->opt.faddr;
+ 		connected = 0;
+ 	}
+-	tos = get_rttos(&ipc, inet);
+ 	scope = ip_sendmsg_scope(inet, &ipc, msg);
+ 	if (scope == RT_SCOPE_LINK)
+ 		connected = 0;
 -- 
 2.48.1.502.g6dc24dfdaf-goog
 
