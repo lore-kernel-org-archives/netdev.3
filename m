@@ -1,114 +1,680 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F0A7FD;
-	Fri,  7 Feb 2025 12:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC681DE8AE;
+	Fri,  7 Feb 2025 12:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738930856; cv=none; b=VBRXehH1hJyIgA4qfGn4FQBv0kl/5Pe9MC7JO42CoG68vVEzKEOw5MZLvGj6yBZUvMhgd+EadNWFfx/qh/zLARVGW1cDE44Sz0cT+UldD+xGluyTHlIP3BwAvnUL7VibGMaAlcb2N2cVUwu0aTcHpzhlMkGdmAkiPTYPjTFBvAE=
+	t=1738931017; cv=none; b=DN56SwGRq1TByTx2dMnIxw/P4Vcy1M5DqhxVgJYSWWIuJWLi5okrMkjS4aYQB8BlteaGhC6bR3Pc6G+1dFcfe0QCWm04RdHGUp5tz2pEEdwwSmVStuundmx+LSZv4z2fhtPXoPNpWFVDEXhIqQLlzTDmseWEhm5rrxTYivcwqhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738930856; c=relaxed/simple;
-	bh=a54mOet32eur3UH8ItkoAvMxfKNhEKaOIWBLSYbvLSw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VriZtkutNIlYpxBSH4PORJQtgx6UkCFQNT40WRgni8byDVfrkTJiOrxrTiQ+meT4YYO5Boyu84w6bd8UvbbLtybGFy1hRSaGu7rVZ/ikO9DiDpgdSwhNcNQd8nyYCjZts51cUO9XloQx4ZH1XL4IvhfRXrjuu2vnmq917RLeGsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cl3GFrm9; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cl3GFrm9"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-aaf3c3c104fso366499866b.1;
-        Fri, 07 Feb 2025 04:20:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738930853; x=1739535653; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a54mOet32eur3UH8ItkoAvMxfKNhEKaOIWBLSYbvLSw=;
-        b=Cl3GFrm9deRMNBDmGo/v09OGvHDpg+1wcX0MGboK+FkV4lFSu7z48MTLgoKhGOFHiM
-         dPJM5LEYg451fHwIROmRgURV8s5BIFhk2N0bGi0i8KfGqC47G/zfjygBgxHDlHnvDcIQ
-         V1BRCn9jQBku72VR1DF/eItSf8ToxhAsFpCN18PD7nv5WhmaVBcyeNBTUqdaIv/FlSBJ
-         zTb+L0PXXAlX0gHIq65/gt79snbeO9iJBYIfETi5EpSW+7O+WvIiNdZ6KWcCpBoavOJO
-         yUK8C4csVVIpNbkCCavGsuWA0Kxxeyf5CZFPTFQDRKui3Ga7118XGK6+fn8sCiDI6qX5
-         y3GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738930853; x=1739535653;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a54mOet32eur3UH8ItkoAvMxfKNhEKaOIWBLSYbvLSw=;
-        b=dK5tcmj2PLrJoR6gW8+2v/1eT5IKLLEF6zpaX6VOoP2LhWOU51B/U0z0xKs3tg3nJv
-         9gwbpaRy5EbxIDHZwqAKefwdZX+0RiXIYK0H1WenocgRs0Z5q2jj/AO6Ji5JO6ky+ppn
-         LsJKiRQrIsRliZcTCjCop3f40wSVXvAEsQL0DxZN+POxFuBOlyv1TChTVqK437YdCe3Z
-         M0eY+FSgIAV3DJhzFFRcoLx+r6+nkagNApQMHPrbEE6UQEpQbP6IzXzQmS8qDwa6wkix
-         zlazN4/4VX/IYRQa+8kRybU+RDqhrnzJjZ2XTe2QwU2Jwb/x9FL2BvsQk1D3X73duy4r
-         cA8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUUAxAfM/T15pwJ/AtNcCw3yFLEKNB1MX15B9ZNvrJ1ecjNRwF0cfr8xIcLHyXboZnGYQ/4w39/nBr2aVQ=@vger.kernel.org, AJvYcCV0v63mPYiN9dI7SfpuFgXI5SLkhYOAiSf+H4h2dlSXYq35NOfpTXF4vflzKajA3Cgw8MM7rc5uJgpo+Buu@vger.kernel.org, AJvYcCX8PL0U55AEunDGKT8Rxv+KjgcqL4WH9PI2ZrPe52KtqqhNVhQtiMNmPswBNTmA5jVrcj+gE/8w@vger.kernel.org, AJvYcCXEsBPjK98wyq2FkGAwL9sv68z0sm3YkM2MMCh5d7bxWAjAQa5wJGGnASf4kcodUrjTi13Cu0eXOGH/@vger.kernel.org, AJvYcCXIWeAaw0ZOY6EKzvfcAsWc9/YkqnpmtMT4RRZ5YzxI6c6PcRj71B4ZmJI/P/OeF66hTL7bdRGZCJtB@vger.kernel.org, AJvYcCXKKEnUnoIhQph4qXY/3ciLO3L/eOlLiGYl/QZEKlRMO17eqUxksaMnjCG89YG9TJghuVf/Ke/pVV5C@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGT1huF2220tGmR5mVX53Eu3o9YdDzVR8DkvlJZ4ly/1nyxaK5
-	2bUoTBB/pQ74lFe8TYkHhdWMojLwS+sMykQkMFnUbq5ozs65oit4ytb9dhxdH/SMQynNzX0BLgn
-	svVK5P36Yvh9rIeBk2fTANfx3JXg=
-X-Gm-Gg: ASbGncu68I7wOkxElwGb6MQFPMEA0GTJdcx8VpYc0I0ICbehOBktFba6i9uq8/w5gpG
-	Zxit48dKaEBZyHP2yzRCqvj+avyYLtPqXtz8FMuTawWhM56JS6OsHz22W8cXCC4ywCCz2ajgiNU
-	M=
-X-Google-Smtp-Source: AGHT+IGoiY/D1TiKwL5GXSoLaYBfuEuXQzNiPDbnqOiNifB0jsQGA+mFrH+WWqi6hARBZNpJM2EqqyBf+cDjmszsmSM=
-X-Received: by 2002:a17:907:c1b:b0:ab6:36fd:942a with SMTP id
- a640c23a62f3a-ab789c6cedbmr318216966b.50.1738930852678; Fri, 07 Feb 2025
- 04:20:52 -0800 (PST)
+	s=arc-20240116; t=1738931017; c=relaxed/simple;
+	bh=6Yof+os6gFXj+ulCAt/INhfoL9VP78z82WJhNwth4n4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GycuoxSNHz9F8i+3OIwsZG7vPvn2oH3+EvovSe0wYQTWTlpdcyAzAFGhWLF7FWsEWdM4hEKQqxor/bd/ZDD3RDCuMS5BzOx6g2JsZKgopTJm+yzR0Adw/iAT7TiUt99nn3fpcw4YupROG3kWd0p7MhIv62ry5mozq5BggTrnKEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=breakpoint.cc; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=breakpoint.cc
+Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
+	(envelope-from <fw@breakpoint.cc>)
+	id 1tgN6u-0000NH-IS; Fri, 07 Feb 2025 13:05:28 +0100
+From: Florian Westphal <fw@strlen.de>
+To: <netdev@vger.kernel.org>
+Cc: donald.hunter@gmail.com,
+	<netfilter-devel@vger.kernel.org>,
+	Florian Westphal <fw@strlen.de>
+Subject: [PATCH net-next] netlink: specs: add ctnetlink dump and stats dump support
+Date: Fri,  7 Feb 2025 13:05:11 +0100
+Message-ID: <20250207120516.17002-1-fw@strlen.de>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250206-gpio-set-array-helper-v2-0-1c5f048f79c3@baylibre.com>
- <CAMRc=Mf9WQjVXvea7tHx0MJG2H8Yqxw=zGqvjp7dfD7+=huDKw@mail.gmail.com> <CAPDyKFoNuXpTEm1rLPvAgib+ugqr7XyETZhfrNr6ypOOKRwjXQ@mail.gmail.com>
-In-Reply-To: <CAPDyKFoNuXpTEm1rLPvAgib+ugqr7XyETZhfrNr6ypOOKRwjXQ@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 7 Feb 2025 14:20:16 +0200
-X-Gm-Features: AWEUYZlfwIvy7LIm9pIahL5l8siSqdVektaSns5lQfpSrtnfvAL7yjcR2ciezX0
-Message-ID: <CAHp75VdmN2wqwwnea0gtTQJ+Y5twQaJp6iEL2esEMCHDi8bvVg@mail.gmail.com>
-Subject: Re: [PATCH v2 00/13] gpiolib: add gpiod_multi_set_value_cansleep
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, David Lechner <dlechner@baylibre.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Andy Shevchenko <andy@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-sound@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 7, 2025 at 11:48=E2=80=AFAM Ulf Hansson <ulf.hansson@linaro.org=
-> wrote:
-> On Fri, 7 Feb 2025 at 08:49, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> > On Thu, Feb 6, 2025 at 11:48=E2=80=AFPM David Lechner <dlechner@baylibr=
-e.com> wrote:
+This adds support to dump the connection tracking table
+("conntrack -L") and the conntrack statistics, ("conntrack -S").
 
-...
+Example conntrack dump:
+tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/ctnetlink.yaml --dump ctnetlink-get
+[{'id': 59489769,
+  'mark': 0,
+  'nfgen-family': 2,
+  'protoinfo': {'protoinfo-tcp': {'tcp-flags-original': {'flags': {'maxack',
+                                                                   'sack-perm',
+                                                                   'window-scale'},
+                                                         'mask': set()},
+                                  'tcp-flags-reply': {'flags': {'maxack',
+                                                                'sack-perm',
+                                                                'window-scale'},
+                                                      'mask': set()},
+                                  'tcp-state': 'established',
+                                  'tcp-wscale-original': 7,
+                                  'tcp-wscale-reply': 8}},
+  'res-id': 0,
+  'secctx': {'secctx-name': 'system_u:object_r:unlabeled_t:s0'},
+  'status': {'assured',
+             'confirmed',
+             'dst-nat-done',
+             'seen-reply',
+             'src-nat-done'},
+  'timeout': 431949,
+  'tuple-orig': {'tuple-ip': {'ip-v4-dst': '34.107.243.93',
+                              'ip-v4-src': '192.168.0.114'},
+                 'tuple-proto': {'proto-dst-port': 443,
+                                 'proto-num': 6,
+                                 'proto-src-port': 37104}},
+  'tuple-reply': {'tuple-ip': {'ip-v4-dst': '192.168.0.114',
+                               'ip-v4-src': '34.107.243.93'},
+                  'tuple-proto': {'proto-dst-port': 37104,
+                                  'proto-num': 6,
+                                  'proto-src-port': 443}},
+  'use': 1,
+  'version': 0},
+ {'id': 3402229480,
 
-> > > Maintainers, if you prefer to have this go through the gpio tree, ple=
-ase
-> > > give your Acked-by:, otherwise I will resend what is left after the n=
-ext
-> > > kernel release.
+Example stats dump:
+tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/ctnetlink.yaml --dump ctnetlink-stats-get
+[{'chain-toolong': 0,
+  'clash-resolve': 3,
+  'drop': 0,
+ ....
 
-> > I can provide an immutable branch for the entire series for everyone
-> > to pull or I can apply patch one, provide an immutable branch and
-> > every subsystem can take their respective patches. What do you prefer?
->
-> The changes look small and trivial to me. I wouldn't mind if you take
-> them all (at least for mmc). An immutable branch would be good, if it
-> turns out that we need to pull them.
+Signed-off-by: Florian Westphal <fw@strlen.de>
+---
+ Documentation/netlink/specs/ctnetlink.yaml | 582 +++++++++++++++++++++
+ 1 file changed, 582 insertions(+)
+ create mode 100644 Documentation/netlink/specs/ctnetlink.yaml
 
-+1 here, the potential user for immutable branch/tag is IIO.
-The rest looks trivial and unlikely to have conflicts.
+diff --git a/Documentation/netlink/specs/ctnetlink.yaml b/Documentation/netlink/specs/ctnetlink.yaml
+new file mode 100644
+index 000000000000..b477c6ddee9e
+--- /dev/null
++++ b/Documentation/netlink/specs/ctnetlink.yaml
+@@ -0,0 +1,582 @@
++# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
++
++name: conntrack
++protocol: netlink-raw
++protonum: 12
++
++doc:
++  Netfilter connection tracking subsystem over nfnetlink
++
++definitions:
++  -
++    name: nfgenmsg
++    type: struct
++    members:
++      -
++        name: nfgen-family
++        type: u8
++      -
++        name: version
++        type: u8
++      -
++        name: res-id
++        byte-order: big-endian
++        type: u16
++  -
++    name: nf-ct-tcp-flags-mask
++    type: struct
++    members:
++      -
++        name: flags
++        type: u8
++        enum: nf-ct-tcp-flags
++        enum-as-flags: true
++      -
++        name: mask
++        type: u8
++        enum: nf-ct-tcp-flags
++        enum-as-flags: true
++  -
++    name: nf-ct-tcp-flags
++    type: flags
++    entries:
++      - window-scale
++      - sack-perm
++      - close-init
++      - be-liberal
++      - unacked
++      - maxack
++      - challenge-ack
++      - simultaneous-open
++  -
++    name: nf-ct-tcp-state
++    type: enum
++    entries:
++      - none
++      - syn-sent
++      - syn-recv
++      - established
++      - fin-wait
++      - close-wait
++      - last-ack
++      - time-wait
++      - close
++      - syn-sent2
++      - max
++      - ignore
++      - retrans
++      - unack
++      - timeout-max
++  -
++    name: nf-ct-sctp-state
++    type: enum
++    entries:
++      - none
++      - cloned
++      - cookie-wait
++      - cookie-echoed
++      - established
++      - shutdown-sent
++      - shutdown-received
++      - shutdown-ack-sent
++      - shutdown-heartbeat-sent
++  -
++    name: nf-ct-status
++    type: flags
++    entries:
++      - expected
++      - seen-reply
++      - assured
++      - confirmed
++      - src-nat
++      - dst-nat
++      - seq-adj
++      - src-nat-done
++      - dst-nat-done
++      - dying
++      - fixed-timeout
++      - template
++      - nat-clash
++      - helper
++      - offload
++      - hw-offload
++
++attribute-sets:
++  -
++    name: ctnetlink-counter-attrs
++    attributes:
++      -
++        name: packets
++        type: u64
++        byte-order: big-endian
++      -
++        name: bytes
++        type: u64
++        byte-order: big-endian
++      -
++        name: packets-old
++        type: u32
++      -
++        name: bytes-old
++        type: u32
++      -
++        name: pad
++        type: pad
++  -
++    name: ctnetlink-tuple-proto-attrs
++    attributes:
++      -
++        name: proto-num
++        type: u8
++        doc: l4 protocol number
++      -
++        name: proto-src-port
++        type: u16
++        byte-order: big-endian
++        doc: l4 source port
++      -
++        name: proto-dst-port
++        type: u16
++        byte-order: big-endian
++        doc: l4 source port
++      -
++        name: proto-icmp-id
++        type: u16
++        byte-order: big-endian
++        doc: l4 icmp id
++      -
++        name: proto-icmp-type
++        type: u8
++      -
++        name: proto-icmp-code
++        type: u8
++      -
++        name: proto-icmpv6-id
++        type: u16
++        byte-order: big-endian
++        doc: l4 icmp id
++      -
++        name: proto-icmpv6-type
++        type: u8
++      -
++        name: proto-icmpv6-code
++        type: u8
++  -
++    name: ctnetlink-tuple-ip-attrs
++    attributes:
++      -
++        name: ip-v4-src
++        type: u32
++        byte-order: big-endian
++        display-hint: ipv4
++        doc: ipv4 source address
++      -
++        name: ip-v4-dst
++        type: u32
++        byte-order: big-endian
++        display-hint: ipv4
++        doc: ipv4 destination address
++      -
++        name: ip-v6-src
++        type: binary
++        checks:
++          min-len: 16
++        byte-order: big-endian
++        display-hint: ipv6
++        doc: ipv6 source address
++      -
++        name: ip-v6-dst
++        type: binary
++        checks:
++          min-len: 16
++        byte-order: big-endian
++        display-hint: ipv6
++        doc: ipv6 destination address
++  -
++    name: ctnetlink-tuple-attrs
++    attributes:
++    -
++        name: tuple-ip
++        type: nest
++        nested-attributes: ctnetlink-tuple-ip-attrs
++        doc: conntrack l3 information
++    -
++        name: tuple-proto
++        type: nest
++        nested-attributes: ctnetlink-tuple-proto-attrs
++        doc: conntrack l4 information
++    -
++        name: tuple-zone
++        type: u16
++        byte-order: big-endian
++        doc: conntrack zone id
++  -
++    name: ctnetlink-protoinfo-tcp-attrs
++    attributes:
++    -
++        name: tcp-state
++        type: u8
++        enum: nf-ct-tcp-state
++        doc: tcp connection state
++    -
++        name: tcp-wscale-original
++        type: u8
++        doc: window scaling factor in original direction
++    -
++        name: tcp-wscale-reply
++        type: u8
++        doc: window scaling factor in reply direction
++    -
++        name: tcp-flags-original
++        type: binary
++        struct: nf-ct-tcp-flags-mask
++    -
++        name: tcp-flags-reply
++        type: binary
++        struct: nf-ct-tcp-flags-mask
++  -
++    name: ctnetlink-protoinfo-dccp-attrs
++    attributes:
++    -
++        name: dccp-state
++        type: u8
++        doc: dccp connection state
++    -
++        name: dccp-role
++        type: u8
++    -
++        name: dccp-handshake-seq
++        type: u64
++        byte-order: big-endian
++    -
++        name: dccp-pad
++        type: pad
++  -
++    name: ctnetlink-protoinfo-sctp-attrs
++    attributes:
++    -
++        name: sctp-state
++        type: u8
++        doc: sctp connection state
++        enum: nf-ct-sctp-state
++    -
++        name: vtag-original
++        type: u32
++        byte-order: big-endian
++    -
++        name: vtag-reply
++        type: u32
++        byte-order: big-endian
++  -
++    name: ctnetlink-protoinfo-attrs
++    attributes:
++    -
++        name: protoinfo-tcp
++        type: nest
++        nested-attributes: ctnetlink-protoinfo-tcp-attrs
++        doc: conntrack tcp state information
++    -
++        name: protoinfo-dccp
++        type: nest
++        nested-attributes: ctnetlink-protoinfo-dccp-attrs
++        doc: conntrack dccp state information
++    -
++        name: protoinfo-sctp
++        type: nest
++        nested-attributes: ctnetlink-protoinfo-sctp-attrs
++        doc: conntrack sctp state information
++  -
++    name: ctnetlink-help-attrs
++    attributes:
++      -
++        name: help-name
++        type: string
++        doc: helper name
++  -
++    name: ctnetlink-nat-proto-attrs
++    attributes:
++      -
++        name: nat-port-min
++        type: u16
++        byte-order: big-endian
++      -
++        name: nat-port-max
++        type: u16
++        byte-order: big-endian
++  -
++    name: ctnetlink-nat-attrs
++    attributes:
++      -
++        name: nat-v4-minip
++        type: u32
++        byte-order: big-endian
++      -
++        name: nat-v4-maxip
++        type: u32
++        byte-order: big-endian
++      -
++        name: nat-v6-minip
++        type: binary
++      -
++        name: nat-v6-maxip
++        type: binary
++      -
++        name: nat-proto
++        type: nest
++        nested-attributes: ctnetlink-nat-proto-attrs
++  -
++    name: ctnetlink-seqadj-attrs
++    attributes:
++      -
++        name: correction-pos
++        type: u32
++        byte-order: big-endian
++      -
++        name: offset-before
++        type: u32
++        byte-order: big-endian
++      -
++        name: offset-after
++        type: u32
++        byte-order: big-endian
++  -
++    name: ctnetlink-secctx-attrs
++    attributes:
++      -
++        name: secctx-name
++        type: string
++  -
++    name: ctnetlink-synproxy-attrs
++    attributes:
++      -
++        name: isn
++        type: u32
++        byte-order: big-endian
++      -
++        name: its
++        type: u32
++        byte-order: big-endian
++      -
++        name: tsoff
++        type: u32
++        byte-order: big-endian
++  -
++    name: ctnetlink-attrs
++    attributes:
++      -
++        name: tuple-orig
++        type: nest
++        nested-attributes: ctnetlink-tuple-attrs
++        doc: conntrack l3+l4 protocol information, original direction
++      -
++        name: tuple-reply
++        type: nest
++        nested-attributes: ctnetlink-tuple-attrs
++        doc: conntrack l3+l4 protocol information, reply direction
++      -
++        name: status
++        type: u32
++        byte-order: big-endian
++        enum: nf-ct-status
++        enum-as-flags: true
++        doc: conntrack flag bits
++      -
++        name: protoinfo
++        type: nest
++        nested-attributes: ctnetlink-protoinfo-attrs
++      -
++        name: help
++        type: nest
++        nested-attributes: ctnetlink-help-attrs
++      -
++        name: nat-src
++        type: nest
++        nested-attributes: ctnetlink-nat-attrs
++      -
++        name: timeout
++        type: u32
++        byte-order: big-endian
++      -
++        name: mark
++        type: u32
++        byte-order: big-endian
++      -
++        name: counters-orig
++        type: nest
++        nested-attributes: ctnetlink-counter-attrs
++      -
++        name: counters-reply
++        type: nest
++        nested-attributes: ctnetlink-counter-attrs
++      -
++        name: use
++        type: u32
++        byte-order: big-endian
++      -
++        name: id
++        type: u32
++        byte-order: big-endian
++      -
++        name: nat-dst
++        type: nest
++        nested-attributes: ctnetlink-nat-attrs
++      -
++        name: tuple-master
++        type: nest
++        nested-attributes: ctnetlink-tuple-attrs
++      -
++        name: seq-adj-orig
++        type: nest
++        nested-attributes: ctnetlink-seqadj-attrs
++      -
++        name: seq-adj-reply
++        type: nest
++        nested-attributes: ctnetlink-seqadj-attrs
++      -
++        name: secmark
++        type: binary
++        doc: obsolete
++      -
++        name: zone
++        type: u16
++        byte-order: big-endian
++        doc: conntrack zone id
++      -
++        name: secctx
++        type: nest
++        nested-attributes: ctnetlink-secctx-attrs
++      -
++        name: timestamp
++        type: u64
++        byte-order: big-endian
++      -
++        name: mark-mask
++        type: u32
++        byte-order: big-endian
++      -
++        name: labels
++        type: binary
++      -
++        name: labels mask
++        type: binary
++      -
++        name: synproxy
++        type: nest
++        nested-attributes: ctnetlink-synproxy-attrs
++      -
++        name: filter
++        type: nest
++        nested-attributes: ctnetlink-tuple-attrs
++      -
++        name: status-mask
++        type: u32
++        byte-order: big-endian
++        enum: nf-ct-status
++        enum-as-flags: true
++        doc: conntrack flag bits to change
++      -
++        name: timestamp-event
++        type: u64
++        byte-order: big-endian
++  -
++    name: ctnetlink-stats-attrs
++    attributes:
++      -
++        name: searched
++        type: u32
++        byte-order: big-endian
++        doc: obsolete
++      -
++        name: found
++        type: u32
++        byte-order: big-endian
++      -
++        name: new
++        type: u32
++        byte-order: big-endian
++        doc: obsolete
++      -
++        name: invalid
++        type: u32
++        byte-order: big-endian
++        doc: obsolete
++      -
++        name: ignore
++        type: u32
++        byte-order: big-endian
++        doc: obsolete
++      -
++        name: delete
++        type: u32
++        byte-order: big-endian
++        doc: obsolete
++      -
++        name: delete-list
++        type: u32
++        byte-order: big-endian
++        doc: obsolete
++      -
++        name: insert
++        type: u32
++        byte-order: big-endian
++      -
++        name: insert-failed
++        type: u32
++        byte-order: big-endian
++      -
++        name: drop
++        type: u32
++        byte-order: big-endian
++      -
++        name: early-drop
++        type: u32
++        byte-order: big-endian
++      -
++        name: error
++        type: u32
++        byte-order: big-endian
++      -
++        name: search-restart
++        type: u32
++        byte-order: big-endian
++      -
++        name: clash-resolve
++        type: u32
++        byte-order: big-endian
++      -
++        name: chain-toolong
++        type: u32
++        byte-order: big-endian
++
++operations:
++  enum-model: directional
++  list:
++    -
++      name: ctnetlink-get
++      doc: get / dump entries
++      attribute-set: ctnetlink-attrs
++      fixed-header: nfgenmsg
++      do:
++        request:
++          value: 0x101
++          attributes:
++            - name
++        reply:
++          value: 0x100
++          attributes:
++            - name
++    -
++      name: ctnetlink-stats-get
++      doc: dump pcpu conntrack stats
++      attribute-set: ctnetlink-stats-attrs
++      fixed-header: nfgenmsg
++      do:
++        request:
++          value: 0x104
++          attributes:
++            - name
++        reply:
++          value: 0x104
++          attributes:
++            - name
++
+-- 
+2.48.1
 
---=20
-With Best Regards,
-Andy Shevchenko
