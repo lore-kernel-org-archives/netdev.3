@@ -1,50 +1,64 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FA31ABEC5;
-	Fri,  7 Feb 2025 18:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DEC1A3144;
+	Fri,  7 Feb 2025 18:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738953703; cv=none; b=bdGnRp+FW/tVq18ZN1kHCSfPTfuUh1G5tZNq67SYAfci8d/Sshp7Y2L8RTsp3/7rC1Ok1Dkto9kloz5oZREdh9DGRlcT4CV35YRqyZ5rlukpzYPP3nbl7QeLRR1lY3AcCU2KNYXVNhiBS20TJNAvY1VVQZEuQizAJVTKumlt90w=
+	t=1738953783; cv=none; b=RQyIB4jRuw45EK1IuNB3tpXM68hN9Q5ZKtAvIW7WFJPlOmlYPqWvHoUCyHXXz+q2K6gtzrLJ6SCUke52AsfESNyeKSUemfcu78EM5L3veM96MohMRPDBYkxBo2AylWR+tqt/93bKTg2HMHPEdL2hOB8qZJ5WcCalNim4K2SasTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738953703; c=relaxed/simple;
-	bh=uVEl4T3KcMSW5xOCdxbkUhNrrPWbNFo+ziho0Yt4p0g=;
+	s=arc-20240116; t=1738953783; c=relaxed/simple;
+	bh=GjBNQ6+NVFKyJGJPRf5FY78SvbrtMuBCufejpM0iu5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EEzcM1Drc4mF1q9UAl/eLtFglfRXu1WhYC2NOBizFabX2x7wVp6VHG2uZjmhmTAnwkRr3QCfuWbueHtGiyoeDgH++H+PNrxiHAdpKzQLSPApMU0zdFRh0JFKtrUeUcTwT7SIEHKQfM7AePPwdr9iQ2Gox8SZ5HoP7ATiciG3cLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ozhpCKSM; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=hD0BiJ23tBniTcYjP8fXTHFEA9ummvXe2PdaMFDv9nmWJuBnMDAdQfz5ORfJDQfHvyQJlPH15y2nkHXImdgn1p8i/IeTT822JEK6GFQWSMtjJvUEZuaP5nnTqGAuqIF0DyvIIUCJF3WY5RU6IhGTa8LmgLpu0oeYkIay02VE8IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=bcolcxjv; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ozhpCKSM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD42C4CEDF;
-	Fri,  7 Feb 2025 18:41:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738953702;
-	bh=uVEl4T3KcMSW5xOCdxbkUhNrrPWbNFo+ziho0Yt4p0g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ozhpCKSMH+lhp5bndlaWMElSJeYdKpHcO1iksgxaCadiRV9Y8sUkeQCW3thLwCYfo
-	 SWrmNrL2SIuSd1OsEobkGF18invXt4MO2rnxS304TJDyV8gW9A/PbUqjyPJL6gutmF
-	 Mhd47/Qb8u5g/cTuf8MTvos3RlXT59wiBjyxoxyI7PMhCL6E58lwxvGHQrZjk3zTgI
-	 sRrQdu/N+D3IkWe8M3yHuCL8S/Yij5ewNBaZg+/P+LN9BbfwIseEPKJvLFHm8wuRFU
-	 YPOays9w+Fgum0k7ofyzgBNx6OJNglWl37m6G3GIl16KTeDcGohZt111AiRB3QUOgI
-	 NyRNTLLJUBJGg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	shuah@kernel.org,
-	willemb@google.com,
-	petrm@nvidia.com,
-	sdf@fomichev.me,
-	linux-kselftest@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 2/2] selftests: drv-net: add helper for path resolution
-Date: Fri,  7 Feb 2025 10:41:40 -0800
-Message-ID: <20250207184140.1730466-2-kuba@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250207184140.1730466-1-kuba@kernel.org>
-References: <20250207184140.1730466-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="bcolcxjv"
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 517Hg6nC000480;
+	Fri, 7 Feb 2025 18:42:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2023-11-20; bh=Q11OU
+	aRwLsU4W0d17uY17NUHcyRRAjGZ3xTHFdH0R20=; b=bcolcxjv/jFQqbNjL8vAb
+	pOb8SY4FgxATIvAPedMXkMy0sIDPUZ3vo5vyNOcJ3VDjzykQhtSnp3IWOHGOa96/
+	sI8KU0oSGzwNVqFFKvWF386RidrU+NzlGzW0MY03qsdQ+1qv/QJ0DU7d90u+aTOt
+	bbnHvgbrxZ3+KyQFgv5RVthvH5uP1T6cE4Su0jmL+VtP5bH4OAbqhjXr40x67DnU
+	pdrKnnd+bdB+AvHrIYTCAvjzzNX4uLDD9QmtwFmYi+lB7mwgFe0CsNTOX2t+OF77
+	+LSfxmD+/Zluadu3UUqWZPwPl4r8TjQspt+4gzs9zNeQLSh2KLMzUx8AJ1KYkCzz
+	Q==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44mqk8bbgy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 07 Feb 2025 18:42:56 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 517H9omS022526;
+	Fri, 7 Feb 2025 18:42:55 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 44j8ec8677-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 07 Feb 2025 18:42:55 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 517Idx9L037660;
+	Fri, 7 Feb 2025 18:42:55 GMT
+Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 44j8ec8665-2;
+	Fri, 07 Feb 2025 18:42:55 +0000
+From: Dongli Zhang <dongli.zhang@oracle.com>
+To: virtualization@lists.linux.dev, netdev@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: mst@redhat.com, jasowang@redhat.com, eperezma@redhat.com,
+        michael.christie@oracle.com, pbonzini@redhat.com, stefanha@redhat.com,
+        joao.m.martins@oracle.com, joe.jin@oracle.com, si-wei.liu@oracle.com,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 1/9] vhost: modify vhost_log_write() for broader users
+Date: Fri,  7 Feb 2025 10:41:45 -0800
+Message-ID: <20250207184212.20831-2-dongli.zhang@oracle.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250207184212.20831-1-dongli.zhang@oracle.com>
+References: <20250207184212.20831-1-dongli.zhang@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,57 +66,113 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-07_08,2025-02-07_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=957
+ phishscore=0 adultscore=0 malwarescore=0 bulkscore=0 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2501170000 definitions=main-2502070139
+X-Proofpoint-GUID: lXJ6qRw6Q2un2jBGHSZcBIJz_aFmPpgq
+X-Proofpoint-ORIG-GUID: lXJ6qRw6Q2un2jBGHSZcBIJz_aFmPpgq
 
-Refering to C binaries from Python code is going to be a common
-need. Add a helper to convert from path in relation to the test.
-Meaning, if the test is in the same directory as the binary, the
-call would be simply: cfg.rpath("binary").
+Currently, the only user of vhost_log_write() is vhost-net. The 'len'
+argument prevents logging of pages that are not tainted by the RX path.
 
-The helper name "rpath" is not great. I can't think of a better
-name that would be accurate yet concise.
+Adjustments are needed since more drivers (i.e. vhost-scsi) begin using
+vhost_log_write(). So far vhost-net RX path may only partially use pages
+shared by the last vring descriptor. Unlike vhost-net, vhost-scsi always
+logs all pages shared via vring descriptors. To accommodate this, a new
+argument 'partial' is introduced. This argument works alongside 'len' to
+indicate whether the driver should log all pages of a vring descriptor, or
+only pages that are tainted by the driver.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+In addition, removes BUG().
+
+Suggested-by: Joao Martins <joao.m.martins@oracle.com>
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
 ---
- tools/testing/selftests/drivers/net/hw/csum.py    |  2 +-
- tools/testing/selftests/drivers/net/lib/py/env.py | 12 ++++++++++++
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ drivers/vhost/net.c   |  2 +-
+ drivers/vhost/vhost.c | 28 +++++++++++++++++-----------
+ drivers/vhost/vhost.h |  2 +-
+ 3 files changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/hw/csum.py b/tools/testing/selftests/drivers/net/hw/csum.py
-index cb40497faee4..cd477f3440ca 100755
---- a/tools/testing/selftests/drivers/net/hw/csum.py
-+++ b/tools/testing/selftests/drivers/net/hw/csum.py
-@@ -100,7 +100,7 @@ from lib.py import bkg, cmd, wait_port_listen
-     with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
-         check_nic_features(cfg)
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index b9b9e9d40951..0e5d82bfde76 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -1219,7 +1219,7 @@ static void handle_rx(struct vhost_net *net)
+ 		if (nvq->done_idx > VHOST_NET_BATCH)
+ 			vhost_net_signal_used(nvq);
+ 		if (unlikely(vq_log))
+-			vhost_log_write(vq, vq_log, log, vhost_len,
++			vhost_log_write(vq, vq_log, log, vhost_len, true,
+ 					vq->iov, in);
+ 		total_len += vhost_len;
+ 	} while (likely(!vhost_exceeds_weight(vq, ++recv_pkts, total_len)));
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 9ac25d08f473..db3b30aba940 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2304,8 +2304,14 @@ static int log_used(struct vhost_virtqueue *vq, u64 used_offset, u64 len)
+ 	return 0;
+ }
  
--        cfg.bin_local = path.abspath(path.dirname(__file__) + "/../../../net/lib/csum")
-+        cfg.bin_local = cfg.rpath("../../../net/lib/csum")
-         cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
+-int vhost_log_write(struct vhost_virtqueue *vq, struct vhost_log *log,
+-		    unsigned int log_num, u64 len, struct iovec *iov, int count)
++/*
++ * 'len' is used only when 'partial' is true, to indicate whether the
++ * entire length of each descriptor is logged.
++ */
++int vhost_log_write(struct vhost_virtqueue *vq,
++		    struct vhost_log *log, unsigned int log_num,
++		    u64 len, bool partial,
++		    struct iovec *iov, int count)
+ {
+ 	int i, r;
  
-         cases = []
-diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
-index 2f17880e411d..886b4904613c 100644
---- a/tools/testing/selftests/drivers/net/lib/py/env.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/env.py
-@@ -18,6 +18,18 @@ from .remote import Remote
-         self.src_path = src_path
-         self.env = self._load_env_file()
+@@ -2323,19 +2329,19 @@ int vhost_log_write(struct vhost_virtqueue *vq, struct vhost_log *log,
+ 	}
  
-+    def rpath(self, path):
-+        """
-+        Get an absolute path to a file based on a path relative to the directory
-+        containing the test which constructed env.
+ 	for (i = 0; i < log_num; ++i) {
+-		u64 l = min(log[i].len, len);
++		u64 l = partial ? min(log[i].len, len) : log[i].len;
 +
-+        For example, if the test.py is in the same directory as
-+        a binary (built from helper.c), the test can use env.rpath("helper")
-+        to get the absolute path to the binary
-+        """
-+        src_dir = Path(self.src_path).parent.resolve()
-+        return (src_dir / path).as_posix()
+ 		r = log_write(vq->log_base, log[i].addr, l);
+ 		if (r < 0)
+ 			return r;
+-		len -= l;
+-		if (!len) {
+-			if (vq->log_ctx)
+-				eventfd_signal(vq->log_ctx);
+-			return 0;
+-		}
 +
-     def _load_env_file(self):
-         env = os.environ.copy()
++		if (partial)
++			len -= l;
+ 	}
+-	/* Length written exceeds what we have stored. This is a bug. */
+-	BUG();
++
++	if (vq->log_ctx)
++		eventfd_signal(vq->log_ctx);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(vhost_log_write);
+diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
+index bb75a292d50c..5de5941988fe 100644
+--- a/drivers/vhost/vhost.h
++++ b/drivers/vhost/vhost.h
+@@ -224,7 +224,7 @@ bool vhost_vq_avail_empty(struct vhost_dev *, struct vhost_virtqueue *);
+ bool vhost_enable_notify(struct vhost_dev *, struct vhost_virtqueue *);
+ 
+ int vhost_log_write(struct vhost_virtqueue *vq, struct vhost_log *log,
+-		    unsigned int log_num, u64 len,
++		    unsigned int log_num, u64 len, bool partial,
+ 		    struct iovec *iov, int count);
+ int vq_meta_prefetch(struct vhost_virtqueue *vq);
  
 -- 
-2.48.1
+2.39.3
 
