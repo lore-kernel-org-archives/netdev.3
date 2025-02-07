@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FD26F31E
-	for <netdev@vger.kernel.org>; Fri,  7 Feb 2025 01:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6107DA67;
+	Fri,  7 Feb 2025 01:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738890464; cv=none; b=XfZ+YjHiKYYqjGB5A2N9xzTCFCloX1P3ognwlzCpXsJ+82r4hE+ma7PJ3fIvVRjkx8PIrsFWqSpPNmzQ59eA5SzmpXiOj0ggFUnOZ9PecsJyHbMcEmYFNDUkMmGCi/vg0rDFR40/Byzims4evDDhTmjK5aigcVxOQ9M7lHD8GaI=
+	t=1738890847; cv=none; b=G/zxwNWhOJOtbjBqL9H5AenKFQoxAWJzZrt9VTU8DGKfwNYBqar+FH8GZEVu0mnqsoGNj3LuC/WlnAkTDu/r8Dfd/vsQYj1yd5/OIp7yeIq9x9OWaaU79T86kGr2FmPSlgEpeUYqf9JlobaPMZlRx54rH3UU/RaYF3+NjwGoS1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738890464; c=relaxed/simple;
-	bh=8O5BX3MsP8r9HX6FMJDlEjF9fyjp+t37UuWCwR8bs8I=;
+	s=arc-20240116; t=1738890847; c=relaxed/simple;
+	bh=ghl/9LiZ/JA57powXLoT0RWBoOSp3+YWLndH6YAVcpw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V6xShH/a9jh79bot78Nj1DTYpw2TabX30I667gpMxHZxrdmpbbWgmZEzZhJNtyazU8UONqXhgr/lqc4gsa/SYKqm19Y03KNklnpKwUKa43bLRqpkrwQS9vCvIropxsTzV3aeVcPpGuEZ24HwD/zjNphGl04xBaOcYnjgW+Z0/uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JTBo0kPL; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=VjRtQi7j07isoudJjg3SqVpvjIW9htL6EEyHsgKjFz8CTstHGiGjV8VOCMcygO+rBLNOVd+cQpEPPHvgUqQF2x1YVa7ExMRI5h3G2kxH12DxNWkYXzs0tOHRgpjt0XANUVHhOeZF+ipr6EXKeCINMcmv4kkV+ymb2uxB+H5dQlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SP6o5WlX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JTBo0kPL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4399CC4CEDD;
-	Fri,  7 Feb 2025 01:07:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SP6o5WlX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D87AC4CEE0;
+	Fri,  7 Feb 2025 01:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738890463;
-	bh=8O5BX3MsP8r9HX6FMJDlEjF9fyjp+t37UuWCwR8bs8I=;
+	s=k20201202; t=1738890846;
+	bh=ghl/9LiZ/JA57powXLoT0RWBoOSp3+YWLndH6YAVcpw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JTBo0kPLEUSJNOVcLyxGnlx2wvROKw7e4WgdiD9CgFFV5UCQ0ii/J4VmlavyfY8Mo
-	 1w3a023YHmb1XA5HvulkUguLclXoi6j7k2to9rAKA4X5gIflEocFHWirKlK3CJtbA+
-	 kTSDyWZYAP9Ib/yr/CyhcSrDSPHuO8G5k4jby0eQ1nFUccFj20G/09dnAOHEOR1BiQ
-	 G1VxbXcpC2aym28XnlFx48yTEPWR4XtSHkEYRT/FIpjVHHPeZ8U+PM0NfaWWUDHIaK
-	 6IC2Rhk3KBP9ywIspmccROZ5Y7YuVXWzv0g0FxQ38xzAu/dmdqIIy/4R0A+pWRN9/B
-	 JWoCEtH7yrFFA==
-Date: Thu, 6 Feb 2025 17:07:42 -0800
+	b=SP6o5WlXQTZeIHZ8cF3jCJR6CkPqVBbK9flslsG2ez1AogDBcmvzOJh12VJ6GLJ7r
+	 tc3StyQ2AI1AjbyGr4o9OLjd8nYAXnj4sbxA9F577eHVI2L7BdBekjOzDxan2AhIgv
+	 toMG3uw5aH+qNNrIuSNtuAlkFzBSTI2UrPUJF1yzN1MA7jvZ1AAcEeYn+I+WsVsbWT
+	 K24jB5SHaPzpkbFIvymYuJgf9opH3eGHaE7Og0jZNAD3cxp+IohOoAiWySBc+1vnjl
+	 ZCiFAiXS70+nKhcqcwTOeMgVoEU8evXBeLWp1e9YxjumCHtzy4nJBdf4NGuFfiLnFP
+	 ERki1tifZ7nvw==
+Date: Thu, 6 Feb 2025 17:14:05 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: patchwork-bot+netdevbpf@kernel.org
-Cc: David Wei <dw@davidwei.uk>, netdev@vger.kernel.org,
- asml.silence@gmail.com, pabeni@redhat.com, davem@davemloft.net,
- edumazet@google.com, hawk@kernel.org, dsahern@kernel.org,
- almasrymina@google.com, stfomichev@gmail.com, jdamato@fastly.com,
- pctammela@mojatatu.com
-Subject: Re: [PATCH net-next v13 00/10] io_uring zero copy rx
-Message-ID: <20250206170742.044536a1@kernel.org>
-In-Reply-To: <173889003753.1718886.8005844111195907451.git-patchwork-notify@kernel.org>
-References: <20250204215622.695511-1-dw@davidwei.uk>
-	<173889003753.1718886.8005844111195907451.git-patchwork-notify@kernel.org>
+To: Joe Damato <jdamato@fastly.com>
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
+ sridhar.samudrala@intel.com, "David S. Miller" <davem@davemloft.net>, Simon
+ Horman <horms@kernel.org>, Amritha Nambiar <amritha.nambiar@intel.com>,
+ Mina Almasry <almasrymina@google.com>, linux-kernel@vger.kernel.org (open
+ list)
+Subject: Re: [PATCH net-next v4] netdev-genl: Elide napi_id when not present
+Message-ID: <20250206171405.01f1552d@kernel.org>
+In-Reply-To: <20250205193751.297211-1-jdamato@fastly.com>
+References: <20250205193751.297211-1-jdamato@fastly.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,8 +47,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 07 Feb 2025 01:00:37 +0000 patchwork-bot+netdevbpf@kernel.org
-wrote:
-> This series was applied to netdev/net-next.git
+On Wed,  5 Feb 2025 19:37:47 +0000 Joe Damato wrote:
+> There are at least two cases where napi_id may not present and the
+> napi_id should be elided:
+> 
+> 1. Queues could be created, but napi_enable may not have been called
+>    yet. In this case, there may be a NAPI but it may not have an ID and
+>    output of a napi_id should be elided.
+> 
+> 2. TX-only NAPIs currently do not have NAPI IDs. If a TX queue happens
+>    to be linked with a TX-only NAPI, elide the NAPI ID from the netlink
+>    output as a NAPI ID of 0 is not useful for users.
+> 
+> Signed-off-by: Joe Damato <jdamato@fastly.com>
 
-off of v6.14-rc1 so 71f0dd5a3293d75 should pull in cleanly
+Applied, thanks!
