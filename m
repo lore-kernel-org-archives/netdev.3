@@ -1,95 +1,78 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB845C96
-	for <netdev@vger.kernel.org>; Fri,  7 Feb 2025 00:30:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174924C83;
+	Fri,  7 Feb 2025 00:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738888229; cv=none; b=mnVcmiw719+DcgY8hBylfzVUl/5L7yJcav/HQ7U2j+QNXXNpaHh0RleePjk2AyuV0Stn3Ddkkx0LTxDx/21vTpMyk9kCRexL7VG8OxX44VMebLUr96FrBTjjdDm+IMNgtflQR9ghBZI2gx0GEeZs98TTYvR8vC+DjfDlNb/B02M=
+	t=1738888258; cv=none; b=JeUCT8CiQmapT0HSCo50I4+tyxxcXXCP2Xus8EwqKK9cLlR4mS6XW8eZiDubkeTl8g7171zyHhJuoGAg+RbJRi/D1tvHh4m9roEX8+mzPdDrXB0bJts4YTK66FolJf/pCrERCGhlJogfsgA6DjP8JDF+Yhtxs6+h0KtbfKAMZ7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738888229; c=relaxed/simple;
-	bh=8EQR0kMHpW6ip+B/5ka0Zjg6mrVYsE7gKMJmLqU4K10=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ing4Q2Z5cfKTWFOhikqoZJOWvzcwIbXesQf6RtmlPArKgVXTyaY4OQ+sl7NWGgrqmglm6isJyLMwgnvymKdyl6mTkM30pD142g4E2CX6SU0gVCqqxw4OvTnqy3ybB6Sfh2llyUjcgIkgvdulWHBUCsUrptblqndJfQoIvj2DBn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=ox92AzEq; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	s=arc-20240116; t=1738888258; c=relaxed/simple;
+	bh=f6QX11ftdCfY6kNBmj6JPctntdXs2EUjTmvX8mE2Pn4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dOqI9sglmgr4VP36OUK0Z8ZMblzcGtMF0z2z2rQnw6SPgsM2z+lj++MkS3NcXSXOTosPFTYxXbZbdN4tG6T/dZ8YvFPtvPj6JQQbAKTeU/eJDIYRLtSqEVVmn3pFrzmZ6iOuoIRrjDZlGSkRVXPYORl7G3+vbhWFuoztRIIO+OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=iiiAa4HB; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="ox92AzEq"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21f4af4f9ddso10131265ad.1
-        for <netdev@vger.kernel.org>; Thu, 06 Feb 2025 16:30:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="iiiAa4HB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1738888227; x=1739493027; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VU+BVBsazC2y8+Coh9plQBMZRLjj+33w4+3+y84wivk=;
-        b=ox92AzEqumgnfAFBXxFoOxfKw5o0nOb7BBFU6fLNut4jNmyEYw+Zy47tuJaxiFhDAj
-         ACjKaqBm6NDam1miBL0kP0n9sr0xA3yTdCUFYMXEg6XEDiSwZQYZW4PFv1gUJVfpnogX
-         itlJOT6f1nIVD8HGSG4ZVzheEiPi/bt+qXMDM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738888227; x=1739493027;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VU+BVBsazC2y8+Coh9plQBMZRLjj+33w4+3+y84wivk=;
-        b=XdCnTJXgjIiJyd9HhqtCsMEuabJHAcbxcbuYO5rMnNZp4Td90C19xmWWjqGKxXAe83
-         tjuaPatRzSUKc6PwotunSvN1ZHon31VAwbnvrWQdwsRrbox9tk4s28qIQ7OpS8ap3qY+
-         SR0tHfs2JlRdyvc4+NizHbFdkhb/tF+iKDU+8JbROtUYVfCNxvOGGm5kS1l/I52GRQx9
-         h0IxG9G3z+d6MIZMj523RnbfvZ4ZSJnm4Tuik8i54HmJF601VaAB/wLQdTcx95osVlOu
-         XdQYIJPYV0NptvkBVJTHoLxfnYEfzuWZMXiUwDPp2sT+ag1/jSgU0ITaUWVHNNmDmo79
-         BF6A==
-X-Forwarded-Encrypted: i=1; AJvYcCWLzzN7PwKJmPzMd9FRgS9paARXnEVEK6oxQkoH3YyqQ42+Kt4Xj5vZtHwtN/fRdW59N2mq5Y4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywnvu3QRHuNQTNBgQpB8GgzB5t1nA8CjyoifJbZ8cfHPn97tLxe
-	G7Xp083IjnzYxRjApIFQVUirTzpDEpWZAK74xy919CG/oLzY2X3HYJws3hJXhpQ=
-X-Gm-Gg: ASbGnctv+i9A1HY9cyrsx1SjZE5nuf2rVNmZQDL133iqlvyLnuCJfKgQU0ToFzqFTmM
-	rWh7gBIKJNLG+tbB3ta0LV8E/s3FoM4EhaJ85rOd7grU69jlSMa/9F/FEHjCB4h1xxrwjNzd3Ea
-	rne5gaTd4n9XJRhuN29Kp4XFje5tpfQE4R0YMGffACzl/N//UibY+Oy/ZZfyUJHFJY2GXHSbupu
-	ZIsaeN38PuK8J5uEXJOw5DyNuT0AcbG6iB+5myshf9GA6n2qwALHQLTcRF7+Rs35dy9JjTnLdE8
-	vGt96uprFJq1Tpo5W4eGfNC21/oK1s68fzalEMtHv9dQR6QvfeC8GCq86g==
-X-Google-Smtp-Source: AGHT+IHgJLQfaSgr8xf0M4q/0m9oc6NFlO93YPIK3SjEI2995m++1KM2YIr+t+qMt6hNQP64wpYzMQ==
-X-Received: by 2002:a05:6a20:6f09:b0:1e8:bd15:6801 with SMTP id adf61e73a8af0-1ee03b5a981mr3134725637.29.1738888226984;
-        Thu, 06 Feb 2025 16:30:26 -0800 (PST)
-Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ad51af64c1dsm1913586a12.52.2025.02.06.16.30.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 16:30:26 -0800 (PST)
-Date: Thu, 6 Feb 2025 16:30:24 -0800
-From: Joe Damato <jdamato@fastly.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Simon Horman <horms@kernel.org>, eric.dumazet@gmail.com
-Subject: Re: [PATCH net-next] tcp: do not export tcp_parse_mss_option() and
- tcp_mtup_init()
-Message-ID: <Z6VUIOXPMezmNXzh@LQ3V64L9R2>
-Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Simon Horman <horms@kernel.org>, eric.dumazet@gmail.com
-References: <20250206093436.2609008-1-edumazet@google.com>
+	d=codeconstruct.com.au; s=2022a; t=1738888253;
+	bh=f6QX11ftdCfY6kNBmj6JPctntdXs2EUjTmvX8mE2Pn4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=iiiAa4HBK3bn13H+H1kOwVh+mn5z6VWo6Ahhndd7+Wnswha9uSjavAwn9CNZCtCet
+	 AxPq32AAq3/inh+uMjY2SBaGaNLqVQibCgsubIp+V4hCV/0fLBRNk5Tg/Cx+GApr08
+	 7YotrWhz0v6O0i/y6ZmDstxGztwGtpNWZn29CjbNj4Rv9b1DicISREvkExtybfBXzY
+	 pTebmGviXJQfxUnK+imwNpYuiWlWeMPqec9n8VGR/K2XF6t2euY1Xvj4FVDsVVdWgB
+	 Q8qqtuR/hCgDbidwImTyhHNiBWb8yMN5dPKOQiHx33hHtuDq22+vasCcddLEHnfE3N
+	 uTkfQUxyp7Ltw==
+Received: from pecola.lan (unknown [159.196.93.152])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 6F446746BD;
+	Fri,  7 Feb 2025 08:30:52 +0800 (AWST)
+Message-ID: <1b38b084be4dd7167e80709d3b960ac1b4952af3.camel@codeconstruct.com.au>
+Subject: Re: [PATCH v17 1/1] mctp pcc: Implement MCTP over PCC Transport
+From: Jeremy Kerr <jk@codeconstruct.com.au>
+To: Adam Young <admiyo@amperemail.onmicrosoft.com>, 
+ admiyo@os.amperecomputing.com, Matt Johnston <matt@codeconstruct.com.au>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Sudeep Holla
+	 <sudeep.holla@arm.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	Huisong Li <lihuisong@huawei.com>
+Date: Fri, 07 Feb 2025 08:30:52 +0800
+In-Reply-To: <b2ab6aa8-c7c7-44c1-9490-178101f9d00e@amperemail.onmicrosoft.com>
+References: <20250205183244.340197-1-admiyo@os.amperecomputing.com>
+	 <20250205183244.340197-2-admiyo@os.amperecomputing.com>
+	 <99629576779509c98782464df15fa77e658089e8.camel@codeconstruct.com.au>
+	 <b2ab6aa8-c7c7-44c1-9490-178101f9d00e@amperemail.onmicrosoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250206093436.2609008-1-edumazet@google.com>
 
-On Thu, Feb 06, 2025 at 09:34:36AM +0000, Eric Dumazet wrote:
-> These two functions are not called from modules.
-> 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
->  net/ipv4/tcp_input.c  | 1 -
->  net/ipv4/tcp_output.c | 1 -
->  2 files changed, 2 deletions(-)
+Hi Adam,
 
-Reviewed-by: Joe Damato <jdamato@fastly.com>
+> Is that your only concern with this patch?
+
+Yes, hence the ack. If there are other changes that you end up doing in
+response to other reviews, then please address the spacing thing too,
+but that certainly doesn't warrant a new revision on its own.
+
+> What else would need to happen in order for this to get ACKed at this
+> point?
+
+It already has an ack from me.
+
+As for actual merging: If the netdev maintainers have further reviews,
+please address those. If not, I assume they would merge in this window.
+
+Cheers,
+
+
+Jeremy
