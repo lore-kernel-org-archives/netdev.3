@@ -1,92 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D52713BAE4;
-	Fri,  7 Feb 2025 13:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CEF13BAE4;
+	Fri,  7 Feb 2025 13:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738935969; cv=none; b=HJoZKKcQJcKS7gTXM07xg5blb1an6/xmS7gkN6tYGp3I2A8IFD+8rgfon9wKQLsRfcAyR83y3cewWz+mK1FicZ6fJAXxqu3K9LK4X2JbtLC22UmpEtcjWe9mWxFCnHiUDVrJ5TzwPcptsYtmC/ZYAO7FdwfBQPMgQ4bjtY6mX3g=
+	t=1738936208; cv=none; b=JhUpmnHmFqH6WDKpu/z+pqZg4mWdBQo9yX/qokGggHER4yZe0K8mPvgW4S1gKz0bJHMJDz9LBEt9fyGVpqQDMg0dxjL1ShNJ9gAAA6aOaAflEHdN63vuR/o5ZBQyfEjsKU5lQO95fMtXcDvs4MXO/J5Q1luTxpda/II4Vi2CysA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738935969; c=relaxed/simple;
-	bh=vki1oqGmK5esFUBsTHOMw5oPUVHzvomX1JXIFhNDcbk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hyMm3DyubFVapZ3+x+Y1NkSF1znwI2VTRBXn1l6w7jf96gp9mhR4a7Ccdq2f1iKYWhLZCcC56ku2gZWuERFBtjJFT7+s5l98Srm4u3Qe/XLrLzvAksO8P2TBQI9Gp3O5BH9oKXdp27HvPa+511pYFJ1bZnRCIamwYIR7T0gdkkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=snWNcL0D; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738936208; c=relaxed/simple;
+	bh=wTtl5yJ8SjYiIxrTRTttS85uraz4y2R/n0v+mo941ls=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=VNGTsLlga1p8RuKYnyXTAlw3tFkKcTDBpgN4OHXDzi66qBFYP58X2IAYLjACuaLFuiRjxUxr4g/XjU+5RGiOkXU20w80KYYrddbEz+bZhrkgk/w1QQaztqZYVLQg4XfMrPhdYTbOB8/2+OGcL9r1xQv6A34iOHfK3pGCfHkCiFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+vOcqO+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="snWNcL0D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9A8C4CED1;
-	Fri,  7 Feb 2025 13:46:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B+vOcqO+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E9FC4CED1;
+	Fri,  7 Feb 2025 13:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738935969;
-	bh=vki1oqGmK5esFUBsTHOMw5oPUVHzvomX1JXIFhNDcbk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=snWNcL0D+tAmQV/54UGHrSp8PE9Tw+wgdxa3XaofbaPPY8rkN/Af6Y+JJY6H0kGrB
-	 sk6DLSLCs6I+hiU9czTS8zImRaoYSkHFarALZplo90j1BXSKXnB5OPdieV4iSRlrpQ
-	 /1XL58Kyz+c8Czj3QGXAJCGRWV1OacnmxLoFhw73pJN/pbokDtAtY2CmTAkkO/ubGq
-	 mTRcZj6lLdDknwQaQOkuKrpvNFpSIDDWK8vJ0hkdvmrMmCIfujJBlZEtGgqq5L4MrJ
-	 8LlxIqPZLwuFQrwtEk3PVXoVg2lonHZjO8Xdlx46FgGBUMbdjkrewflSEuOfZvks/x
-	 AM/w7loLFWglA==
-Date: Fri, 7 Feb 2025 13:46:05 +0000
-From: Simon Horman <horms@kernel.org>
-To: alucerop@amd.com
-Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
-	dan.j.williams@intel.com, edward.cree@amd.com, davem@davemloft.net,
-	kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
-	dave.jiang@intel.com
-Subject: Re: [PATCH v10 16/26] cxl: define a driver interface for DPA
- allocation
-Message-ID: <20250207134605.GV554665@kernel.org>
-References: <20250205151950.25268-1-alucerop@amd.com>
- <20250205151950.25268-17-alucerop@amd.com>
+	s=k20201202; t=1738936208;
+	bh=wTtl5yJ8SjYiIxrTRTttS85uraz4y2R/n0v+mo941ls=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=B+vOcqO+5ZsH5kpNEe1fCWSSclq4+rOI7n4L+pVZWLuBRvAQkNBcHDjngccsWITGB
+	 xSHq/0zB7wOHAdKBGeMZm1j3wDBplMqYddIEG+j9R2JSJ6OXz4bVhlJFODvozVy2vW
+	 2iTJUXi+i4j6c4hp0UUqrHirYRllKEmdZsc4F+FtHxZx89HuFMtLDu1NMzCDcL3B0R
+	 rHw8qtyKC5bXPyFArICs3JfCVa8vXY3RueTYapxhLhJy3U39nAuS00C1+Dc3HaiZeX
+	 TywTaaeA4p8ah+t60i+QguHPmOxZ80BV3bRh6D/YZwqi8TGtc1n6Dm08oAJ9jpJ//e
+	 idS7DXhsYAbTQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E57380AAF2;
+	Fri,  7 Feb 2025 13:50:37 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250205151950.25268-17-alucerop@amd.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 0/7] Add of_get_available_child_by_name()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173893623629.2244005.12944730869712078303.git-patchwork-notify@kernel.org>
+Date: Fri, 07 Feb 2025 13:50:36 +0000
+References: <20250205124235.53285-1-biju.das.jz@bp.renesas.com>
+In-Reply-To: <20250205124235.53285-1-biju.das.jz@bp.renesas.com>
+To: Biju Das <biju.das.jz@bp.renesas.com>
+Cc: robh@kernel.org, saravanak@google.com, matthias.bgg@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ andrew@lunn.ch, angelogioacchino.delregno@collabora.com,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ netdev@vger.kernel.org, geert+renesas@glider.be,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, biju.das.au@gmail.com,
+ linux-renesas-soc@vger.kernel.org
 
-On Wed, Feb 05, 2025 at 03:19:40PM +0000, alucerop@amd.com wrote:
-> From: Alejandro Lucero <alucerop@amd.com>
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by David S. Miller <davem@davemloft.net>:
+
+On Wed,  5 Feb 2025 12:42:20 +0000 you wrote:
+> There are lot of net drivers using of_get_child_by_name() followed by
+> of_device_is_available() to find the available child node by name for a
+> given parent. Provide a helper for these users to simplify the code.
 > 
-> Region creation involves finding available DPA (device-physical-address)
-> capacity to map into HPA (host-physical-address) space. Define an API,
-> cxl_request_dpa(), that tries to allocate the DPA memory the driver
-> requires to operate. The memory requested should not be bigger than the
-> max available HPA obtained previously with cxl_get_hpa_freespace.
+> v1->v2:
+>  * Make it as a series as per [1] to cover the dependency.
+>  * Added Rb tag from Rob for patch#1 and this patch can be merged through
+>    net as it is the main user.
+>  * Updated all the patches with patch suffix net-next
+>  * Dropped _free() usage.
 > 
-> Based on https://lore.kernel.org/linux-cxl/168592158743.1948938.7622563891193802610.stgit@dwillia2-xfh.jf.intel.com/
-> 
-> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
-> ---
->  drivers/cxl/core/hdm.c | 83 ++++++++++++++++++++++++++++++++++++++++++
->  include/cxl/cxl.h      |  4 ++
->  2 files changed, 87 insertions(+)
-> 
-> diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
-> index af025da81fa2..cec2c7dcaf3a 100644
-> --- a/drivers/cxl/core/hdm.c
-> +++ b/drivers/cxl/core/hdm.c
-> @@ -3,6 +3,7 @@
->  #include <linux/seq_file.h>
->  #include <linux/device.h>
->  #include <linux/delay.h>
-> +#include <cxl/cxl.h>
+> [...]
 
-Hi Alejandro,
+Here is the summary with links:
+  - [net-next,v2,1/7] of: base: Add of_get_available_child_by_name()
+    https://git.kernel.org/netdev/net-next/c/8d3bbe4355ad
+  - [net-next,v2,2/7] net: dsa: rzn1_a5psw: Use of_get_available_child_by_name()
+    https://git.kernel.org/netdev/net-next/c/46df19a8dfdf
+  - [net-next,v2,3/7] net: dsa: sja1105: Use of_get_available_child_by_name()
+    https://git.kernel.org/netdev/net-next/c/a76568865c15
+  - [net-next,v2,4/7] net: ethernet: mtk-star-emac: Use of_get_available_child_by_name()
+    https://git.kernel.org/netdev/net-next/c/876e52b2d3f4
+  - [net-next,v2,5/7] net: ethernet: mtk_eth_soc: Use of_get_available_child_by_name()
+    https://git.kernel.org/netdev/net-next/c/1364004b5b91
+  - [net-next,v2,6/7] net: ethernet: actions: Use of_get_available_child_by_name()
+    https://git.kernel.org/netdev/net-next/c/76c82eb04332
+  - [net-next,v2,7/7] net: ibm: emac: Use of_get_available_child_by_name()
+    https://git.kernel.org/netdev/net-next/c/0584a917a209
 
-I think that linux/range.h should be included in cxl.h, or if not here.
-This is because on allmodconfigs for both arm and arm64 I see:
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-In file included from drivers/cxl/core/hdm.c:6:
-./include/cxl/cxl.h:67:16: error: field has incomplete type 'struct range'
-   67 |                 struct range range;
-      |                              ^
-./include/linux/memory_hotplug.h:247:8: note: forward declaration of 'struct range'
-  247 | struct range arch_get_mappable_range(void);
-      |        ^
-1 error generated.
 
-...
