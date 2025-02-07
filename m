@@ -1,192 +1,82 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D990A235BE6;
-	Fri,  7 Feb 2025 09:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49F41DE2CD;
+	Fri,  7 Feb 2025 09:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738921154; cv=none; b=azPwYr7+slFVFhaE6GetLTql6X6K+V6kO1XiIFDsYmROaGY6mHYnD//lA85TCO4vkCu194J10wkMp32YcU+3QWENc8+ADqNA5ZaGJTQzaXfMHckF2IlBKxK9Gz+VJESAeV/3f/Im+Xtct/yHKbgeAlSlXIRN2RK9afDRS0Fh3OQ=
+	t=1738921334; cv=none; b=BIRGhLVOeyjPGUS7iXKOfULlTWGCLKTeKA+HXshPh9dekyIQa3zZsmdOXAWYw9ksD1KBrmR79x4C3TfUxfQ13bDaECr5aZ4NHch9HG5k3NaArAcB+7EgfGv0U2FEFWkp8f1KqOYY9h0V49ELDMTNF3v3pFmFY0K3/+iu8rVdBzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738921154; c=relaxed/simple;
-	bh=PJ6dyjO0wMBUzryRHvH4B41hJgFPEjxdpjXQ/XTqvWU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fd7lrtbopy5qkNBRo5pckE5+PYa5Y8DmH1/5cnqZM9vlKHVCGlWJe3X0GNqA6zbrGnGqTNRA0G23smOoFCaIAxKLs/cRdPvTaF1J/ZisHWXSWtXnDgyuJXIKm+iRfwowDFSflEAloqfidwDgli5TfN4aCE6U9tZJPP697zZ0Qho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fx4WmK07; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=a3Yl0EH7; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1738921334; c=relaxed/simple;
+	bh=EewjN7nUhhtBPJOdfrZj64y7+JiFITVsxY5wBikw+WQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YaroOi9OJkcqxJ9pYjTXQxe+jCnMiVL5EaSqPN+qPZmqjpyqzyHTLW5qPZ2Qgg6qBgPXC+8QhWtvu+1i9KvhTRsMLH+7y/KCHmDQDp0DpIduj6eMAMiROjfeh8UZwp+VotxJumfMdG+Vopzp1DpRq6TuRtRxp24wPLu+OWvjadw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=ZXDaVjrD; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fx4WmK07";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="a3Yl0EH7"
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1738921150;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hhjHAzmbkaYnqcm3IHFcgDwG15AFP/Njjh4ZX0H9Olg=;
-	b=fx4WmK074PHazK/ChkQrvakNhx//tQce39oX2maPhu55UejGiuWX1nm6XqjxEb399pDo0a
-	TBAmqJjIA9gQ2xu1djoO7RlbYwJrh6O27lmZd6F0cKepCc0WFFYR74569Cb2dVerA673xD
-	n29SZE6SWNDsaT+68+s6ZmljxyaL8WAfo+fKaQZ7rkUZIkwf1ibjmku23OeAiK/SEYoaSh
-	12aA5d2iIwDxT4vgDYbzz7rP+DAP8ECDy63pXK2G8kDfJIktUse36edyRKTf72VZbLhVYe
-	vqNL/gDGS56oBAGtADrH2oxkF2dvFLAKBGhYwSv6ZoizfKIVvMunU0ct9TZgHQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1738921150;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hhjHAzmbkaYnqcm3IHFcgDwG15AFP/Njjh4ZX0H9Olg=;
-	b=a3Yl0EH7a5YtE5adkLh/9jkArp+3DOYNpwtKcQe6zk5Vml0Q8MLB/GkEY8qNa878zKkZeZ
-	6YqitbjFwKcGfGAw==
-Date: Fri, 07 Feb 2025 10:39:06 +0100
-Subject: [PATCH net v2 5/5] ptp: vmclock: Remove goto-based cleanup logic
+	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="ZXDaVjrD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=MhA1jDIfQ8iLGh9WfIUR3+LgFXMnqWm6EVDsj31vync=; b=ZXDaVjrDmJbS9jssNlbQ3D9Elb
+	r5Xsr+O3eH47BnThcCfwS3N8+p4zkexJmJG/747y6dDuOu7tkQkOCvKJ/GIuRunQjUD6KD25n0+X3
+	kcG1BAZ7Itvv9TbLunVGLSNIL1mtgJ3nUXgMX0L0AqAZcAaGEdBVjoDUsKQTUOzpRXN09nHvpZUNL
+	gxmLUvE2bu1GrU38+PRWbHHxCXP/OkHk9Ra1tn1ik0thv5vZatZna2CGm8jwG8HBcv9Yy+l75vUsS
+	o1ViSi5mUUyx6WHm0LR1XrsNS8UhS0DYuuJvLTJx0/gsGGdfUYRudFcqYM/d22WAdImA1rarkFFsF
+	lnfvqmgw==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1tgJwx-00FpRv-2r;
+	Fri, 07 Feb 2025 16:56:21 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 07 Feb 2025 16:56:20 +0800
+Date: Fri, 7 Feb 2025 16:56:20 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: David Howells <dhowells@redhat.com>
+Cc: netdev@vger.kernel.org, Marc Dionne <marc.dionne@auristor.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>, linux-crypto@vger.kernel.org,
+	linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 03/24] crypto: Add 'krb5enc' hash and cipher AEAD
+ algorithm
+Message-ID: <Z6XKtPKryJsRfYvK@gondor.apana.org.au>
+References: <20250203142343.248839-1-dhowells@redhat.com>
+ <20250203142343.248839-4-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250207-vmclock-probe-v2-5-bc2fce0bdf07@linutronix.de>
-References: <20250207-vmclock-probe-v2-0-bc2fce0bdf07@linutronix.de>
-In-Reply-To: <20250207-vmclock-probe-v2-0-bc2fce0bdf07@linutronix.de>
-To: David Woodhouse <dwmw2@infradead.org>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Mateusz Polchlopek <mateusz.polchlopek@intel.com>, 
- David Woodhouse <dwmw@amazon.co.uk>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738921146; l=3501;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=PJ6dyjO0wMBUzryRHvH4B41hJgFPEjxdpjXQ/XTqvWU=;
- b=4xFo8mAbUISvcDSNEowlGCBY90Hka4uuu5U+RKQz9mrzm14PjAuKipplOwuXOvw5YSvTpARM1
- 06uxENtxhvSDQzPzvMvvS07b0ufzJZxa8DSuzU40ym3K0kYPCB95/AW
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250203142343.248839-4-dhowells@redhat.com>
 
-vmclock_probe() uses an "out:" label to return from the function on
-error. This indicates that some cleanup operation is necessary.
-However the label does not do anything as all resources are managed
-through devres, making the code slightly harder to read.
+On Mon, Feb 03, 2025 at 02:23:19PM +0000, David Howells wrote:
+>
+> [!] Note that the net/sunrpc/auth_gss/ implementation gets a pair of
+> ciphers, one non-CTS and one CTS, using the former to do all the aligned
+> blocks and the latter to do the last two blocks if they aren't also
+> aligned.  It may be necessary to do this here too for performance reasons -
+> but there are considerations both ways:
 
-Remove the label and just return directly.
+The CTS template will take any hardware accelerated CBC implementation
+and turn it into CTS.
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
----
- drivers/ptp/ptp_vmclock.c | 32 +++++++++++++-------------------
- 1 file changed, 13 insertions(+), 19 deletions(-)
+So there is no reason to do the CTS/CBC thing by hand at all.
 
-diff --git a/drivers/ptp/ptp_vmclock.c b/drivers/ptp/ptp_vmclock.c
-index 09c023fb94b7e97137433bf18c3a065e26a36c6c..b3a83b03d9c14e10213c6cb94e6a42b38c59546f 100644
---- a/drivers/ptp/ptp_vmclock.c
-+++ b/drivers/ptp/ptp_vmclock.c
-@@ -506,14 +506,13 @@ static int vmclock_probe(struct platform_device *pdev)
- 
- 	if (ret) {
- 		dev_info(dev, "Failed to obtain physical address: %d\n", ret);
--		goto out;
-+		return ret;
- 	}
- 
- 	if (resource_size(&st->res) < VMCLOCK_MIN_SIZE) {
- 		dev_info(dev, "Region too small (0x%llx)\n",
- 			 resource_size(&st->res));
--		ret = -EINVAL;
--		goto out;
-+		return -EINVAL;
- 	}
- 	st->clk = devm_memremap(dev, st->res.start, resource_size(&st->res),
- 				MEMREMAP_WB | MEMREMAP_DEC);
-@@ -521,37 +520,34 @@ static int vmclock_probe(struct platform_device *pdev)
- 		ret = PTR_ERR(st->clk);
- 		dev_info(dev, "failed to map shared memory\n");
- 		st->clk = NULL;
--		goto out;
-+		return ret;
- 	}
- 
- 	if (le32_to_cpu(st->clk->magic) != VMCLOCK_MAGIC ||
- 	    le32_to_cpu(st->clk->size) > resource_size(&st->res) ||
- 	    le16_to_cpu(st->clk->version) != 1) {
- 		dev_info(dev, "vmclock magic fields invalid\n");
--		ret = -EINVAL;
--		goto out;
-+		return -EINVAL;
- 	}
- 
- 	ret = ida_alloc(&vmclock_ida, GFP_KERNEL);
- 	if (ret < 0)
--		goto out;
-+		return ret;
- 
- 	st->index = ret;
- 	ret = devm_add_action_or_reset(&pdev->dev, vmclock_put_idx, st);
- 	if (ret)
--		goto out;
-+		return ret;
- 
- 	st->name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "vmclock%d", st->index);
--	if (!st->name) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	if (!st->name)
-+		return -ENOMEM;
- 
- 	st->miscdev.minor = MISC_DYNAMIC_MINOR;
- 
- 	ret = devm_add_action_or_reset(&pdev->dev, vmclock_remove, st);
- 	if (ret)
--		goto out;
-+		return ret;
- 
- 	/*
- 	 * If the structure is big enough, it can be mapped to userspace.
-@@ -565,7 +561,7 @@ static int vmclock_probe(struct platform_device *pdev)
- 
- 		ret = misc_register(&st->miscdev);
- 		if (ret)
--			goto out;
-+			return ret;
- 	}
- 
- 	/* If there is valid clock information, register a PTP clock */
-@@ -575,15 +571,14 @@ static int vmclock_probe(struct platform_device *pdev)
- 		if (IS_ERR(st->ptp_clock)) {
- 			ret = PTR_ERR(st->ptp_clock);
- 			st->ptp_clock = NULL;
--			goto out;
-+			return ret;
- 		}
- 	}
- 
- 	if (!st->miscdev.minor && !st->ptp_clock) {
- 		/* Neither miscdev nor PTP registered */
- 		dev_info(dev, "vmclock: Neither miscdev nor PTP available; not registering\n");
--		ret = -ENODEV;
--		goto out;
-+		return -ENODEV;
- 	}
- 
- 	dev_info(dev, "%s: registered %s%s%s\n", st->name,
-@@ -591,8 +586,7 @@ static int vmclock_probe(struct platform_device *pdev)
- 		 (st->miscdev.minor && st->ptp_clock) ? ", " : "",
- 		 st->ptp_clock ? "PTP" : "");
- 
-- out:
--	return ret;
-+	return 0;
- }
- 
- static const struct acpi_device_id vmclock_acpi_ids[] = {
-
+Cheers,
 -- 
-2.48.1
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
