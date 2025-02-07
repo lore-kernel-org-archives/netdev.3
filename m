@@ -1,42 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F393E1448E0;
-	Fri,  7 Feb 2025 13:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB101A5BB1
+	for <netdev@vger.kernel.org>; Fri,  7 Feb 2025 13:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738934644; cv=none; b=dVxFSNMdvTGlbgI9g6QsZ642oruDIfj3bobl6xgh+wzLw1sfvuYA+v3SjjrmXVxyrV6PFAkQpdUF4jhH0ApohBTaQbH//FdYvrbiU6mvAOPR3IhZbyMZsvBH/Pa9d+uJU7UukkM1fXWftJLYm2I1cHMQQJxDqhC+KBi3y5hoHTo=
+	t=1738934786; cv=none; b=nowQLVDDprrLsgnOlpyg0SUZE3BVJvUYjtsxLHb6PtUmfSMCKHAelL3IzWLoBAK9EQqWgrVS0fdnArOLeLUUZqp8hUVyYKdoKTPzX+tcp5tKih7eAOB2O7sPFsHkbqErqxIjw6UJuSQ8EwEVwlVGlzxI/14QezW5uZtwHS3I61g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738934644; c=relaxed/simple;
-	bh=pvBHIzpMFGVggBJELNXPy0i5kwkvMht4y9SKOGdc3BI=;
+	s=arc-20240116; t=1738934786; c=relaxed/simple;
+	bh=a0CRtm9KIAti5E0WSV0mfJdMV2x2rgx92X7qkdMqDXg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nccBpfV4HSuu8HQgNgMhrvoMTUBi5fuLKfkfo9P3uZG10+RmayD4WQGnv5AP82hb/N71p6Ms8tr0/WLmnK9b8izBER2eAw7H3FJgrv7nW4ayxonqO+pyPCiIrBRB92VlVy4ouy9MHcGotHQuTQAjzZDsKGTGhg58Rg8xjSjTwpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rw4kTpt1; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=QM92XusbutQCP9LKuCC0q3JJsh88G64MsQQ+l3FkPb1fiEdVpV8Ao2ebYOAQi5rtwat/3D/UoDkDZq7+OJYNnCmBHsFgpjvLRJyvUBa9oMX4nmJZegMpKpiafsKmAHEIiuMm1eWGTEX2fhukBVMjY4vJ3p0U+OFSm0mnIfQXLMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=G8Rlgpde; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rw4kTpt1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B99C4CED1;
-	Fri,  7 Feb 2025 13:24:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738934643;
-	bh=pvBHIzpMFGVggBJELNXPy0i5kwkvMht4y9SKOGdc3BI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rw4kTpt1tekZ8TNkYbm5HzowTm5bOJYiJ0g6UXjHkZCR94UL3do1qXYNe1Rz23Fz/
-	 r6gxbcPsZuPa4yLfeNokkTviYfMH/prqGUtPwg0LHA8BZnyk4MbH/fB7zWw5oywapp
-	 GkD5ulGtBi9IwQ+LJ3phxKT0aZfFWasBol1JKoCRLY2Fr5QAiYtSvkeNLrwkRYQRXr
-	 Fl6YD22UMRgi8USCS/EOs7n5uJXLK+uuBuTlkQ0U8/pZkS0YaNkTusqouLa2l6DEDu
-	 E5L0eM8IK+81T5dF++QnnJhITaIg0fztLDVREHsojOgcIcnyzknEeVo/Ezafz+Gm6h
-	 PItmKql7Ec1yA==
-Date: Fri, 7 Feb 2025 13:23:59 +0000
-From: Simon Horman <horms@kernel.org>
-To: alucerop@amd.com
-Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
-	dan.j.williams@intel.com, edward.cree@amd.com, davem@davemloft.net,
-	kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
-	dave.jiang@intel.com
-Subject: Re: [PATCH v10 21/26] cxl: allow region creation by type2 drivers
-Message-ID: <20250207132359.GT554665@kernel.org>
-References: <20250205151950.25268-1-alucerop@amd.com>
- <20250205151950.25268-22-alucerop@amd.com>
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="G8Rlgpde"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-21f50895565so10208375ad.2
+        for <netdev@vger.kernel.org>; Fri, 07 Feb 2025 05:26:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fastly.com; s=google; t=1738934783; x=1739539583; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=35QjS2mTIYO+gJZIHE49mfSaBK9urZetBSEHinYZAYQ=;
+        b=G8RlgpdecQbDJ5HDX4uFNk6EdFOgd8pOux6q6OsGBpjUAWTYNoV+qizdq5qAur+yMH
+         TZGf1OTvurUZeMre5tUq4RILgrhi9laBZxhlzBw1w92zGc3uWrJIJ2Xb3Xfz8N50n/JA
+         XWOW4x3jFEglY6+4M7INbFibEZ5Eohbb2xxNs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738934783; x=1739539583;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=35QjS2mTIYO+gJZIHE49mfSaBK9urZetBSEHinYZAYQ=;
+        b=YohGO6rM829zdDHQEXVsek7almZDx/h18YvuDdYAHVD5ahPaEtcgka7bvzUGJTw66s
+         117d0wBdBkHjnWJCTZ7mRkqcJy+y1yl6Tc9hUSk3KUhD9oCA5hSEVlMJDbHJdo0odSXq
+         paRz5X8vOF+5T20Bdfon6jV4MCGAfTvRFsRvjZu4DBZtSdC2Yq4MS7T6bvVlakqeEzVp
+         +RmbuMEgwFi45/Bldeo4vNSQZzNigWU5JwUyLf/8mwddx11sZgUgcn12e1qvf1Nuu8tS
+         ZfAeiMSzD6I4IaRvIzHmAkavAjCcmEMh96Xt+43wSAAMPjBfRWE210COiK6aywz3H7DU
+         BsJw==
+X-Forwarded-Encrypted: i=1; AJvYcCWEx/YTxbIDnp14vPhUoqwkz1v49sWwVmjXiAOSGPDX3MUcxdT1iX6pge6MunyQUlb5V3jixqI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZE/o/tGoHpDOKDAhUoZOrafMXXDVwnuOCBa9DXDV6+6y45Ei7
+	CwVg959cN0iXj0g9wLE9KfiescjS9NMIZ4cN+JQcWbAKlE1F6+hTM9HDmUYj2SznNK10jtCa7t2
+	O
+X-Gm-Gg: ASbGnct+Yec5cVjbyotz2zWbr6RYgcsahMOWCaMTZL8cacUVL8ydDvnmd5K4Y25kMia
+	2N+H0KzqvnJD8vNFFk2D/mKRnq3BaGcsL/pRsSiWSKLJh907/6rS442EKcKco3k+RqyOw1wsVG/
+	6+Fq2tkMi4XBYAY9gxFiV0AMGXXHIIbPICfDrBsdRGGzqmDORrdqDSF8X2DeYA/JTUlY+nkoXS3
+	xuedqPYpgJazjgf4bdDfGhRQmxTHOzv6gMr74Eu6tw8eZPwWyIXMLA0Im5zhvwf4yxl5x9RDGJP
+	oIsbDT3AB3DSJm3c1xj5ZRiWwEw488LsUMiB5KMCo6grLTi2ex7fqA0GAQ==
+X-Google-Smtp-Source: AGHT+IGiKFyaTw/aK5AthVDYdZM7IzbZscYSuVsAYH2PMD0dc+PpHEArHTZi0M1IUfMhDs+Y9G+A/w==
+X-Received: by 2002:a17:902:f786:b0:216:410d:4c53 with SMTP id d9443c01a7336-21f4e74480emr55611145ad.41.1738934783432;
+        Fri, 07 Feb 2025 05:26:23 -0800 (PST)
+Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3683d6e5sm30154055ad.141.2025.02.07.05.26.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Feb 2025 05:26:23 -0800 (PST)
+Date: Fri, 7 Feb 2025 05:26:20 -0800
+From: Joe Damato <jdamato@fastly.com>
+To: Kurt Kanzenbach <kurt@linutronix.de>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org
+Subject: Re: igb: XDP/ZC busy polling
+Message-ID: <Z6YJ_LUD5Gpyb-at@LQ3V64L9R2>
+Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org
+References: <871pwa6tf2.fsf@kurt.kurt.home>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,47 +77,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250205151950.25268-22-alucerop@amd.com>
+In-Reply-To: <871pwa6tf2.fsf@kurt.kurt.home>
 
-On Wed, Feb 05, 2025 at 03:19:45PM +0000, alucerop@amd.com wrote:
-> From: Alejandro Lucero <alucerop@amd.com>
+On Fri, Feb 07, 2025 at 09:38:41AM +0100, Kurt Kanzenbach wrote:
+> Hello Joe,
 > 
-> Creating a CXL region requires userspace intervention through the cxl
-> sysfs files. Type2 support should allow accelerator drivers to create
-> such cxl region from kernel code.
+> I noticed that XDP/ZC busy polling does not work anymore in combination
+> with igb driver. This seems to be related to commit 5ef44b3cb43b ("xsk:
+> Bring back busy polling support") which relies on
+> netif_queue_set_napi().
 > 
-> Adding that functionality and integrating it with current support for
-> memory expanders.
-> 
-> Based on https://lore.kernel.org/linux-cxl/168592159835.1948938.1647215579839222774.stgit@dwillia2-xfh.jf.intel.com/
-> 
-> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
-> Co-developed-by: Dan Williams <dan.j.williams@intel.com>
-> Reviewed-by: Zhi Wang <zhiw@nvidia.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/cxl/core/region.c | 145 ++++++++++++++++++++++++++++++++++----
->  drivers/cxl/cxlmem.h      |   2 +
->  drivers/cxl/port.c        |   5 +-
->  include/cxl/cxl.h         |   4 ++
->  4 files changed, 141 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> I see you implemented it for e1000, igc and so on. However, igb is
+> missing. Do you have any plans to add the missing registration to igb?
+> Just asking. Otherwise, I can send a patch for it.
 
-...
+Please feel free; I don't have an igb device so I wouldn't be able
+to test it, but I'd happily review it so please CC me.
 
-> +/**
-> + * cxl_create_region - Establish a region given an endpoint decoder
-> + * @cxlrd: root decoder to allocate HPA
-> + * @cxled: endpoint decoder with reserved DPA capacity
+BTW, I wrote a small series that updates the documentation and adds
+a test for AF_XDP [1] that you may want to consider applying/running
+(if it is not merged by the time you add support to igb).
 
-nit: @ways: should be documented here too.
-
-> + *
-> + * Returns a fully formed region in the commit state and attached to the
-> + * cxl_region driver.
-> + */
-> +struct cxl_region *cxl_create_region(struct cxl_root_decoder *cxlrd,
-> +				     struct cxl_endpoint_decoder *cxled, int ways)
-
-...
+[1]: https://lore.kernel.org/lkml/20250207030916.32751-1-jdamato@fastly.com/
