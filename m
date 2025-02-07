@@ -1,129 +1,98 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D8D1474A7
-	for <netdev@vger.kernel.org>; Fri,  7 Feb 2025 01:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676484C6E;
+	Fri,  7 Feb 2025 01:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738892784; cv=none; b=J2Ga+8WlBP8wQbTwksvwuyVGqImrTJec06y3pS2bihxIRjIyAmdQkwR+14elYmKQc4WTL2493YVUc+bDqZct1FL3pBF2eV1QuwtDlpXRZXtKpiflEHMaxtfBkSHm1MOzB08gyPvfjLA+Ffld7GVRvYk5MV8mL6Ly5G3ZtoDT6Lg=
+	t=1738893022; cv=none; b=ALpEqPasKd1g6sg9ISbqtSHMXG1e8llWSiyCqgQ2Q8dwOOuLdT/g6WKSjHjNEOEFUlLsuGwP8ySmGeK20FR/F59LjYO84SPm/j6AAVeLB1HjjLoQomHzWYlg5dstDTxtj2XU1mKfl2jVheTp5Eb5KmBOA2Psf269k/oVLvHUchg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738892784; c=relaxed/simple;
-	bh=hyLeDvnLTV29+khiprOAmxfCaatpQ++A9+PmCn+j+KY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UGSJfV2P15YG4nKai5XSF0hdOZzEByKoGDXpYmx+mDzhO7eeKKKNbNppGPBRWowvVyhbka0cKvfrXGszOE5HWVvv4Uwg421Tp/I+wtOhq81SKXkKNqt4+rOiPK0JJabxXQ7vNhRYNfdcE9/bQ2nGfgolf8NvgksJOYkFYK7/96A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=Lz5cm0GD; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	s=arc-20240116; t=1738893022; c=relaxed/simple;
+	bh=XrJ7RIL75zIYHcLG17t38h9Z0vVp3gGvV+JU7Ci7P3k=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fOoEykJx2niLv5of+P3g+kAUwap5SGMZpXtJm9FSjEZXQDEFpRujOW5QoCxeVbVIfK2Ji5ICytK1ImHRFhD16uTptYKIeKPrWR1IcyXjcwO/oCiqyp4dXmuPqJE7ADdzM7S93lc/1BTyeSlz9PHXhUp18MFa0bLuRK5WrQssBF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ORQEr31p; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="Lz5cm0GD"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-21f11b0e580so31273315ad.1
-        for <netdev@vger.kernel.org>; Thu, 06 Feb 2025 17:46:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1738892782; x=1739497582; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=95W319fF0TuhfADXZYWyhM8ZPI/uC+h6x4fXlzFN76M=;
-        b=Lz5cm0GDjVY3zKssrueI3yp6yB6Dj63XoNB8OfiJexs9LQuY7zMNghBaUVtVGCF+A4
-         Q56mpqr4xUWGTHzZwvbhgNbPZx0FIbyku4wJOZLAWwfiDJNWU1fY+UntwxvWbwse4cuC
-         T5PtKm50gM/rurwBd1E8DGYQvAatzANG84d1U=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738892782; x=1739497582;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=95W319fF0TuhfADXZYWyhM8ZPI/uC+h6x4fXlzFN76M=;
-        b=s1kUkb97+sV9ue7kXEkAi7nqTvXDdgbp5ZGL4K7Ji7gadDk4610JwmVMuC5oxT9oyO
-         jfwqKNu3KfIO0qfYnOLqpfdU8WyrtWbdkaqjNVuTSvdscjUmNUcwePPNHXQ/zw2tDdth
-         XThLV1u7BuvzKKL3DHKj1zSSZdw/OGp5Pf0uwDv+5juHr9WuBdwlV7IR8s2UKZ1tIoUj
-         HRqqyGCMQOtiWJsQm45Ezxk3OVhu2VFZVOGzQugFmoXiNDqLShlhQNySGQ1IAdvHEG01
-         +iqy0UQUSYvwpukSco2M0zJlYFaRyl+FnIzgfMa/eWXVWWPdkX2z3uA4o61glzJDNDLp
-         w54g==
-X-Gm-Message-State: AOJu0YxmMXErjPjJOSXz/z04sEBEZ+g497WqNt3AjvWxDeIm+wUXJHnb
-	iC92ds8bCgJJIEimV8SlJu1egH2fA23gbrZSq0vHj3v9tWUDDz3Bev/DgpU/2uw=
-X-Gm-Gg: ASbGnctLbbN9HzldjPZKELs5nYDUr7k5GTHcS00P2rH8SdDONPT6q+iz5Q2u92ghs9T
-	aEyy7BUJfnLieFDwO5nsbbyVQaJwKAC62EwD5jBsyjZs1M40fJV64U5JwNLILONIN9G/m+RQZmB
-	Yj0wvBj/bytWPIdAbEILg6RMKhI+TaFZmLqVWaU4NpymD86+Xp7M90kEWYiDpZrwvNFq4bUpatW
-	yuZ7d7AcDx5G65af7ah7y47smrRviVVP5LRZoTkedytsGiBkera8QBoIsdbVYCC6S3BMjQjhBke
-	kkZNwmHWXwmN+svBlknryrfJKeZzTMbtUTFv99ToQDq+U3A0Xa/fRptgzg==
-X-Google-Smtp-Source: AGHT+IEb0fEGfaDmVEdZDvNICNH+t4hrQlDHBujjTzaFy892ln/2xVZtzkVxDOZrFFZTZ5x9LoppSA==
-X-Received: by 2002:a17:902:f60a:b0:215:94eb:adb6 with SMTP id d9443c01a7336-21f4e73b2c6mr26502755ad.40.1738892781880;
-        Thu, 06 Feb 2025 17:46:21 -0800 (PST)
-Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3653af3bsm19561545ad.57.2025.02.06.17.46.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 17:46:21 -0800 (PST)
-Date: Thu, 6 Feb 2025 17:46:18 -0800
-From: Joe Damato <jdamato@fastly.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Mina Almasry <almasrymina@google.com>,
-	Daniel Jurgens <danielj@nvidia.com>,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v3 1/2] netdev-genl: Add an XSK attribute to
- queues
-Message-ID: <Z6Vl6lcPpj1qBN5e@LQ3V64L9R2>
-Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	Donald Hunter <donald.hunter@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Mina Almasry <almasrymina@google.com>,
-	Daniel Jurgens <danielj@nvidia.com>,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	open list <linux-kernel@vger.kernel.org>
-References: <20250204191108.161046-1-jdamato@fastly.com>
- <20250204191108.161046-2-jdamato@fastly.com>
- <20250206165746.7cf392b6@kernel.org>
- <Z6Vig04c-a46WScr@LQ3V64L9R2>
- <20250206174138.7de4580d@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ORQEr31p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1091C4CEE0;
+	Fri,  7 Feb 2025 01:50:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738893021;
+	bh=XrJ7RIL75zIYHcLG17t38h9Z0vVp3gGvV+JU7Ci7P3k=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=ORQEr31pE9GcotB0wqSogBj/roueH/CdmAivvcwP1Oli9hRbk3YUSjQdZO3TfkwCe
+	 NAPCRZ1UFYht6pJZwzjKjfkdKSPBm7yZbrMu2BxqbDxFrsmSdCnbmfot/OHn64g4Gy
+	 Id9Of+f+IzUiRnUy9w+5G8lMIB1fyWy4vR0MEMmNcD9eInQBlORVA1i+umGz1popyt
+	 zIJNfIJMGKebcbDLpZw4XOH8TeZYpM73P6QdK8hp9mWpVMyWoTG0gjGtzIm7/vMEeS
+	 QKHv6HGbICdAiJNMDO0o4Tk8MN0Ie945M2hPG7TKqOPyQZSZPK2O385FWxIK8f/NJR
+	 ziKfoLvThVoeg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE801380AAE8;
+	Fri,  7 Feb 2025 01:50:50 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250206174138.7de4580d@kernel.org>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 1/9] ice: count combined queues using Rx/Tx count
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173889304956.1732435.16113784696324345767.git-patchwork-notify@kernel.org>
+Date: Fri, 07 Feb 2025 01:50:49 +0000
+References: <20250205185512.895887-2-anthony.l.nguyen@intel.com>
+In-Reply-To: <20250205185512.895887-2-anthony.l.nguyen@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ michal.swiatkowski@linux.intel.com, sridhar.samudrala@intel.com,
+ jacob.e.keller@intel.com, pio.raczynski@gmail.com, konrad.knitter@intel.com,
+ marcin.szycik@intel.com, nex.sw.ncis.nat.hpm.dev@intel.com,
+ przemyslaw.kitszel@intel.com, jiri@resnulli.us, horms@kernel.org,
+ David.Laight@ACULAB.COM, pmenzel@molgen.mpg.de, mschmidt@redhat.com,
+ tatyana.e.nikolova@intel.com, jgg@ziepe.ca, leon@kernel.org,
+ linux-rdma@vger.kernel.org
 
-On Thu, Feb 06, 2025 at 05:41:38PM -0800, Jakub Kicinski wrote:
-> On Thu, 6 Feb 2025 17:31:47 -0800 Joe Damato wrote:
-> > > nla_nest_start() can fail, you gotta nul-check the return value.
-> > > You could possibly add an nla_put_empty_nest() helper in netlink.h
-> > > to make this less awkward? I think the iouring guys had the same bug  
-> > 
-> > Ah, right.
-> > 
-> > I'll see what a helper looks like. Feels like maybe overkill?
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Tony Nguyen <anthony.l.nguyen@intel.com>:
+
+On Wed,  5 Feb 2025 10:55:01 -0800 you wrote:
+> From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 > 
-> Yeah, not sure either. Technically nla_nest_end() isn't required here,
-> but that's not very obvious to a casual reader. So a helper that hides
-> that fact could be useful:
+> Previous implementation assumes that there is 1:1 matching between
+> vectors and queues. It isn't always true.
 > 
-> static inline int nla_put_empty_nest(struct sk_buff *skb, int attrtype)
-> {
-> 	return nla_nest_start(skb, attrtype) ? 0 : -EMSGSIZE;
-> }
+> Get minimum value from Rx/Tx queues to determine combined queues number.
+> 
+> [...]
 
-Yea after reading the code it makes sense that nla_nest_end is not
-needed. I wrote a small thing similar to what you proposed above,
-but yours is more succinct.
+Here is the summary with links:
+  - [net-next,v2,1/9] ice: count combined queues using Rx/Tx count
+    https://git.kernel.org/netdev/net-next/c/c3a392bdd31a
+  - [net-next,v2,2/9] ice: devlink PF MSI-X max and min parameter
+    https://git.kernel.org/netdev/net-next/c/b2657259fce9
+  - [net-next,v2,3/9] ice: remove splitting MSI-X between features
+    https://git.kernel.org/netdev/net-next/c/79d97b8cf9a8
+  - [net-next,v2,4/9] ice: get rid of num_lan_msix field
+    https://git.kernel.org/netdev/net-next/c/ad61cd9c67ad
+  - [net-next,v2,5/9] ice, irdma: move interrupts code to irdma
+    https://git.kernel.org/netdev/net-next/c/3e0d3cb3fbe0
+  - [net-next,v2,6/9] ice: treat dyn_allowed only as suggestion
+    https://git.kernel.org/netdev/net-next/c/a8c2d3932c11
+  - [net-next,v2,7/9] ice: enable_rdma devlink param
+    https://git.kernel.org/netdev/net-next/c/87181cd6985f
+  - [net-next,v2,8/9] ice: simplify VF MSI-X managing
+    https://git.kernel.org/netdev/net-next/c/a203163274a4
+  - [net-next,v2,9/9] ice: init flow director before RDMA
+    https://git.kernel.org/netdev/net-next/c/d67627e7b532
 
-I'll go with that and see how it looks.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> But totally unsure whether it's worthwhile. Just don't want for someone
-> to suggest this on v4 and make you respin once again.
 
-No worries; respinning is not the end of the world.
