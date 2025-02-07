@@ -1,48 +1,35 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174F01917D0;
-	Fri,  7 Feb 2025 01:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89C614B06C;
+	Fri,  7 Feb 2025 01:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738892400; cv=none; b=hVWpcpBu4x+HrXinUPiPuhdXZsasIxZzadtlgVCdCydN/o9Rfd24o4wrVnc5vvNMEUf296S4wbIP2FlDdehIfp5TeelqbWhv9EKt1ol057axSuwhSi1m1LR/7MBOOxAJgCu6frW+7kSxAfbOHJ1g1CCK/2PT0+d481epQLxU4vU=
+	t=1738892405; cv=none; b=KcG0bhrECiNP2EwSgHVDHezajFuA4vWsVXZfgYBOebwscVx3RZH8eWZsaJoBuwWr4gqJMMLcTDttbVP3ZOutfTOJdC7trg2H7GSEL1vftml9qYYwhsZ4GXNk3XfcnEOyGlkir1cBu1lmYSOnHc9c96nKad6xeRWiXbZ5beAK030=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738892400; c=relaxed/simple;
-	bh=txYL5vHk4cRuMflmnp/SyGG+L6ZQPYHZeWaTctmwH0k=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rKsc6/xjvBnG8dhjws9ZekLgfo6i8lBJY/2eo/vFUOpzYsSCjSeJ1L7harNqL64MQQV9B1zJPHvM6WSN18rr4tLjJl8M7BxzIOvrTqcOVtjsOOr2ASYChjLmbc4Fpsew5olnHDRwQiWUVZ7NdgI2vyVL58WMLcivh+z+ab/j7s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4YpxPN4fb4z11Pg3;
-	Fri,  7 Feb 2025 09:35:36 +0800 (CST)
-Received: from kwepemf500003.china.huawei.com (unknown [7.202.181.241])
-	by mail.maildlp.com (Postfix) with ESMTPS id F249D180064;
-	Fri,  7 Feb 2025 09:39:56 +0800 (CST)
-Received: from huawei.com (10.175.112.208) by kwepemf500003.china.huawei.com
- (7.202.181.241) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 7 Feb
- 2025 09:39:54 +0800
-From: Zhang Zekun <zhangzekun11@huawei.com>
-To: <robh@kernel.org>, <saravanak@google.com>, <justin.chen@broadcom.com>,
-	<florian.fainelli@broadcom.com>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>,
-	<o.rempel@pengutronix.de>, <kory.maincent@bootlin.com>,
-	<jacopo+renesas@jmondi.org>, <kieran.bingham+renesas@ideasonboard.com>,
-	<laurent.pinchart+renesas@ideasonboard.com>, <maddy@linux.ibm.com>,
-	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <olteanv@gmail.com>,
-	<davem@davemloft.net>, <taras.chornyi@plvision.eu>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <sudeep.holla@arm.com>, <cristian.marussi@arm.com>
-CC: <arm-scmi@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-media@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <chenjun102@huawei.com>,
-	<zhangzekun11@huawei.com>
-Subject: [PATCH 9/9] regulator: scmi: Use of_find_node_by_name_balanced() to find device_node
-Date: Fri, 7 Feb 2025 09:31:17 +0800
-Message-ID: <20250207013117.104205-10-zhangzekun11@huawei.com>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20250207013117.104205-1-zhangzekun11@huawei.com>
-References: <20250207013117.104205-1-zhangzekun11@huawei.com>
+	s=arc-20240116; t=1738892405; c=relaxed/simple;
+	bh=cBFEGERzjQPgeoxZy5JQKhdwajbGR6m9YkCCCPuJKAg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=jEmhsYQQ+rGBHOCtXrem/GtKGRsvFQ+oGv1rIk9nbW+XJ7si3zkNBotMSq/LQHNTLkaKTf9a70Z/0Oa4c+19yi+4e4C2dVPo1IsjLLvN5XMkWiTTcv9ixhFMbQcs1VjCJd4agi/hXT4Bi/lTNWT4nhvlPPHG0Tdx6lCoB/bU40I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+80s+YD; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+80s+YD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415D0C4CEDD;
+	Fri,  7 Feb 2025 01:40:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738892405;
+	bh=cBFEGERzjQPgeoxZy5JQKhdwajbGR6m9YkCCCPuJKAg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=A+80s+YDRLAJPTO7v2J8qxgnRsYhho6wLSLFu9dv9knPmNwkcK/mI7WWFgOWA/aCG
+	 0W/yHzLsx8Tij9EUbqZjVi9SBbz0lZi6aAVkETzLcPxF5y9MKYtv2+D4QkdGdEyah/
+	 4UjkUCwhDfgWPMG0/v+2WY3P2LgO4bJMSLh5rF75jdS5oTuEnJ9lBY5FX1IWD0tvjJ
+	 9QNyVXlqTC5UbuCQq2rKw8up/+7UWv85lENLOejMjZod0LsWNPeXXC0XW+RYLrF8VM
+	 jzFk6fyo+ey1LTsPGSQ3r2AUfeAPb3fo0o4st4l6RNRCZ29U5FxgsZHgyTJP4xI/UW
+	 HrmiXQMHu3ywQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 36157380AAE9;
+	Fri,  7 Feb 2025 01:40:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,33 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemf500003.china.huawei.com (7.202.181.241)
+Subject: Re: [PATCH net-next] net: pcs: rzn1-miic: Convert to
+ for_each_available_child_of_node() helper
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173889243303.1729543.6341736161086801972.git-patchwork-notify@kernel.org>
+Date: Fri, 07 Feb 2025 01:40:33 +0000
+References: <3e394d4cf8204bcf17b184bfda474085aa8ed0dd.1738771631.git.geert+renesas@glider.be>
+In-Reply-To: <3e394d4cf8204bcf17b184bfda474085aa8ed0dd.1738771631.git.geert+renesas@glider.be>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: clement.leger@bootlin.com, wsa+renesas@sang-engineering.com,
+ andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org
 
-Instead of directly using of_node_get() before of_find_node_by_name()
-to balance the refcount of the device_node, using wraper function
-of_find_node_by_name_balanced() to make code logic a bit simplier.
+Hello:
 
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
----
- drivers/regulator/scmi-regulator.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/drivers/regulator/scmi-regulator.c b/drivers/regulator/scmi-regulator.c
-index 9df726f10ad1..11f75c13bdf0 100644
---- a/drivers/regulator/scmi-regulator.c
-+++ b/drivers/regulator/scmi-regulator.c
-@@ -339,8 +339,7 @@ static int scmi_regulator_probe(struct scmi_device *sdev)
- 	 * plausible SCMI Voltage Domain number, all belonging to this SCMI
- 	 * platform instance node (handle->dev->of_node).
- 	 */
--	of_node_get(handle->dev->of_node);
--	np = of_find_node_by_name(handle->dev->of_node, "regulators");
-+	np = of_find_node_by_name_balanced(handle->dev->of_node, "regulators");
- 	for_each_child_of_node_scoped(np, child) {
- 		ret = process_scmi_regulator_of_node(sdev, ph, child, rinfo);
- 		/* abort on any mem issue */
+On Wed,  5 Feb 2025 17:09:47 +0100 you wrote:
+> Simplify miic_parse_dt() by using the for_each_available_child_of_node()
+> helper instead of manually skipping unavailable child nodes.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+>  drivers/net/pcs/pcs-rzn1-miic.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+
+Here is the summary with links:
+  - [net-next] net: pcs: rzn1-miic: Convert to for_each_available_child_of_node() helper
+    https://git.kernel.org/netdev/net-next/c/ec7309525a37
+
+You are awesome, thank you!
 -- 
-2.22.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
