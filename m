@@ -1,137 +1,123 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5D11B4239;
-	Fri,  7 Feb 2025 08:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C241D5AAE
+	for <netdev@vger.kernel.org>; Fri,  7 Feb 2025 09:08:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738918661; cv=none; b=Oi3403cgmUguwTjBmE5i7vaHEeligJmCjViNDHiNf1ckF1tjxuGfQ9RzDekidqN9Th44DKjxevW6Ljo6+BhZQCuuKOPERgOF7VaE/PFzbGge2qc0HO1vpV26DexBotaVRzU+jCAoYgTBF7H2vbSfDwkjPA7RLjBEh+pgYUnvA7U=
+	t=1738919294; cv=none; b=imIF2bYsH2y3OwkuAacEALB47bW4tTE2NGuz6qpjwa8dxF7ZNlcGzp8YeKu65SIkaoTmO0dQ8lwYuPJaF/AuZkOP/mTyKtRb/CkirNVwPNlsp6+eE5YaOspgV2uHah2MX+V5oASbFSen+a8Nbd2ADr9SnK6iT4GOs99dpetfmMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738918661; c=relaxed/simple;
-	bh=+NyYaGlH/oxOkgdXONu9qIcLVQUJc5wclZd/vJNT5yE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aJkjb5fs9YQU0RaDAtElrXoftX1h9X2emjcYeZZ9mj+8EE9enfJ9RQqrWYZjkzhGxvPGngjjBSvGUSTQxLbWH62XWARrjWYtdshUsa4vnmqsP8M4SZuWVEpphHlC9ICp8hrAm0vhyd8jl+nb9tsmWQIk2L6Ilhw967gmLQtF1ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=RRGFwKpI; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1738919294; c=relaxed/simple;
+	bh=1R6HcGvORAHV7tq/cAUFDOqo8gqx3kfEsHkVWHMzkJE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qd996sk/JT6EA9bS/dDxhzPQuIBQlS9X52NhoLLOgBZsxvqNyh1KkT/hSNJosZc/0ZSCPdickr2AZsQ3HrZPAUO7jv5hDRMsuuRXxA9fJHDbj+ipSWMNlX9+/+n4Qcr0mo//IemG1GueAO3Ll8AgaD6xj0NaFNgDpMdtzKMUKVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=aIJou5B4; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="RRGFwKpI"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E4D49520;
-	Fri,  7 Feb 2025 09:56:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1738918583;
-	bh=+NyYaGlH/oxOkgdXONu9qIcLVQUJc5wclZd/vJNT5yE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RRGFwKpIrzR0Q9jTkGFBT30qEgym7M/AQ9c2FHp2wHk9HxiuqfudrqPPujD3Q5uyo
-	 qO80NHWAG6pJjsJXDReutvrpGHKNHa2sBSVImL0s/FXhPojeliRKTZcOwpgqRh4J9r
-	 Q7awltRFXbTRHS1cRUc+bSQ25T1/vJucUWCB7Oy4=
-Date: Fri, 7 Feb 2025 10:57:30 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Zhang Zekun <zhangzekun11@huawei.com>, robh@kernel.org,
-	saravanak@google.com, justin.chen@broadcom.com,
-	florian.fainelli@broadcom.com, andrew+netdev@lunn.ch,
-	kuba@kernel.org, kory.maincent@bootlin.com,
-	jacopo+renesas@jmondi.org, kieran.bingham+renesas@ideasonboard.com,
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	olteanv@gmail.com, davem@davemloft.net, taras.chornyi@plvision.eu,
-	edumazet@google.com, pabeni@redhat.com, sudeep.holla@arm.com,
-	cristian.marussi@arm.com, arm-scmi@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	chenjun102@huawei.com
-Subject: Re: [PATCH 1/9] of: Add warpper function
- of_find_node_by_name_balanced()
-Message-ID: <20250207085730.GD24886@pendragon.ideasonboard.com>
-References: <20250207013117.104205-1-zhangzekun11@huawei.com>
- <20250207013117.104205-2-zhangzekun11@huawei.com>
- <Z6XDKi_V0BZSdCeL@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="aIJou5B4"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38c62ef85daso252679f8f.3
+        for <netdev@vger.kernel.org>; Fri, 07 Feb 2025 01:08:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1738919291; x=1739524091; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:content-language
+         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=56V5bOg0EtfD8kZQ9arz5/00DzPXuSL6JOaG8De13wc=;
+        b=aIJou5B4lMRSCOhjgE52Adt0PEqvUW+ukXL+V5j2O56GcfsWnhsopIkOoQekGDUApY
+         aqgnWALgwHkHXsv49TKvdXl7dvjT5LIWjxJN9QRTzHomPInPCZQ0kg0exybu+Q7e51Nu
+         omSWm9JZ3R/VNoqaT8agrDJQ2wn+YQSbHjQzwm60tEVwd0IK5vwBwpqOin+m9Ky44FWQ
+         neBe4tIBUGlp8waEAEIkPJ18LJl4h/n02n+zglRQxk/PAFxahpkslBJade9kN3/2Spi5
+         sxehhU377CLskgd+VJ3ckolKdqEsmtX6BI5c3VpRGc2eJhVZ+nX8fhkUOLbZN3crUpnf
+         rfng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738919291; x=1739524091;
+        h=content-transfer-encoding:in-reply-to:organization:content-language
+         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=56V5bOg0EtfD8kZQ9arz5/00DzPXuSL6JOaG8De13wc=;
+        b=r+UrUIm9YH/HgGxHY6IiSRmLnOyVAtc9mFzR6FaAhxKbNkqkWNp7Qvai3c7XmoPptj
+         t0e9AIwvrm11Kg2cQI8V+MktaQy5u5jo08WPwaHRRrCTegJ1U/Jf2kMOWJGU4s3p5lGX
+         W9Eq/X4wfrU4DHw/iYiI3RvEsEzsuTpzl88TK2/zBB0mgDuhgzM9Ki6ahjbX1OphmAAp
+         khZ77pKtwWFYRXJMIYFHcXCwFBleRwcVuIrrWD3hoQ+12l1v8h+TNENcQEoA3aUVqX3e
+         i2e6EFwJFgOjO3P7QpuLQHzycOSCeyr1VFALJqtpfRvVR3DSYeXn+ZKD5Oe21SqsTLVn
+         yjfw==
+X-Forwarded-Encrypted: i=1; AJvYcCVURonWvLnxZao3aPrX2noqCynm/o2oXL1kaqibzT+3MEcIQtQO94u+yeMBYpfseVxLh663yiw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+WEvPqvCoGpLKQ1cq/782qX+hsKLpQj3QVldWDjoBInXQrzvd
+	Lt0/LY7is3v14tB8YQSBffPUzueI97DQo9fOY+wyEwLNNyOBzMoua2RxS2VDeWw=
+X-Gm-Gg: ASbGncs9qy+TF3JbqCeLikuQuEj9dPTVwAVR/c6mHHklqmzxn4NOXS0Ut3PHXyG9Oce
+	JTH3Hfjq5s7dYm+/hjEiB+VsDm3HEP8AfRJ9IGlIin7nxz6LYNsFFZH9vYpnyG0uOkPcKPOHqKx
+	Zx/bDiSs88W7PLMwpem7REJRLr7Twbgg4rQT8ljCxraV9LAL0sdyRQEksyuyxRlmHhlAPC7ImvZ
+	bP7eKm+z4h2Q8jP3FSAziAGGm3e91Ilj3Vov/6tQKKjXfVizJc6vZJXCR/pit2s6aRTY+q5RQEC
+	ZHvHke9QbIWzeAWj0fK0LA2mBdvyUtv1X2pSCh1TxhOMF5Bli3wNVCPw5O2hGuuticfa
+X-Google-Smtp-Source: AGHT+IEvWivmCvymYd98u9PIIq/4TYBzyy3lKQSdhuoLPj4g5uhiN8C/MxTA8xmu7AmngbSrWF0bOg==
+X-Received: by 2002:a5d:64e7:0:b0:38d:af8d:87e8 with SMTP id ffacd0b85a97d-38dc8dc37e2mr531550f8f.4.1738919291160;
+        Fri, 07 Feb 2025 01:08:11 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:b41:c160:b6fc:4d17:365c:3cad? ([2a01:e0a:b41:c160:b6fc:4d17:365c:3cad])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dc672b55bsm2135829f8f.79.2025.02.07.01.08.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Feb 2025 01:08:10 -0800 (PST)
+Message-ID: <0c1499c1-565c-4b11-98e7-6b12c1e04081@6wind.com>
+Date: Fri, 7 Feb 2025 10:08:09 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: [PATCH net 2/2] net: enhance error message for 'netns local'
+ iface
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Eric Dumazet <edumazet@google.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>, netdev@vger.kernel.org
+References: <20250206165132.2898347-1-nicolas.dichtel@6wind.com>
+ <20250206165132.2898347-3-nicolas.dichtel@6wind.com>
+ <e439e851-435d-430d-b7fb-7666ea496954@lunn.ch>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Content-Language: en-US
+Organization: 6WIND
+In-Reply-To: <e439e851-435d-430d-b7fb-7666ea496954@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z6XDKi_V0BZSdCeL@pengutronix.de>
 
-Hi Oleksij,
+Le 07/02/2025 à 00:02, Andrew Lunn a écrit :
+> On Thu, Feb 06, 2025 at 05:50:27PM +0100, Nicolas Dichtel wrote:
+>> The current message is "Invalid argument". Let's help the user by
+>> explaining the error.
+>>
+>> Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+>> ---
+>>  net/core/rtnetlink.c | 6 +++++-
+>>  1 file changed, 5 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+>> index 5032e65b8faa..91b358bdfe5c 100644
+>> --- a/net/core/rtnetlink.c
+>> +++ b/net/core/rtnetlink.c
+>> @@ -3024,8 +3024,12 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+>>  		new_ifindex = nla_get_s32_default(tb[IFLA_NEW_IFINDEX], 0);
+>>  
+>>  		err = __dev_change_net_namespace(dev, tgt_net, pat, new_ifindex);
+>> -		if (err)
+>> +		if (err) {
+>> +			if (dev->netns_local)
+>> +				NL_SET_ERR_MSG(extack,
+>> +					       "The interface has the 'netns local' property");
+> 
+> This seems to have the wrong order. Why even try calling
+> __dev_change_net_namespace() if you know it is going to fail?
+> 
+> Maybe this NL_SET_ERR_MSG() should be pushed into
+> __dev_change_net_namespace()? You could then return useful messages if
+> the altnames conflict, the ifindex is already in use, etc.
+Users of dev_change_net_namespace() are not netlink users, so I kept the same
+API. I will plumb the extack into __dev_change_net_namespace().
 
-On Fri, Feb 07, 2025 at 09:24:10AM +0100, Oleksij Rempel wrote:
-> On Fri, Feb 07, 2025 at 09:31:09AM +0800, Zhang Zekun wrote:
-> > There are many drivers use of_find_node_by_name() with a not-NULL
-> > device_node pointer, and a number of callers would require a call to
-> > of_node_get() before using it. There are also some drivers who forget
-> > to call of_node_get() which would cause a ref count leak[1]. So, Add a
-> > wraper function for of_find_node_by_name(), drivers may use this function
-> > to call of_find_node_by_name() with the refcount already balanced.
-> > 
-> > [1] https://lore.kernel.org/all/20241024015909.58654-1-zhangzekun11@huawei.com/
-> 
-> Hi Zhang Zekun,
-> 
-> thank you for working on this issue!
-> 
-> First of all, let's take a step back and analyze the initial problem.
-> Everything following is only my opinion...
-> 
-> The main issue I see is that the current API - of_find_node_by_name -
-> modifies the refcount of its input by calling of_node_put(from) as part
-> of its search. Typically, a "find" function is expected to treat its
-> input as read-only. That is, when you pass an object into such a
-> function, you expect its reference count to remain unchanged unless
-> ownership is explicitly transferred. In this case, lowering the refcount
-> on the input node is counterintuitive and already lead to unexpected
-> behavior and subtle bugs.
-> 
-> To address this, the workaround introduces a wrapper function,
-> of_find_node_by_name_balanced, which first increments the input’s
-> refcount (via of_node_get()) before calling the original function. While
-> this "balances" the refcount change, the naming remains problematic from
-> my perspective. The "_balanced" suffix isn’t part of our common naming
-> conventions (traditions? :)). Most drivers expect that a function
-> starting with "find" will not alter the reference count of its input.
-> The term "balanced" doesn’t clearly convey that the input's refcount is
-> being explicitly managed - it instead obscures the underlying behavior,
-> leaving many developers confused about what guarantees the API provides.
-> 
-> In my view, a more natural solution would be to redesign the API so that
-> it doesn’t modify the input object’s refcount at all. Instead, it should
-> solely increase the refcount of the returned node (if found) for safe
-> asynchronous usage. This approach would align with established
-> conventions where "find" implies no side effects on inputs or output,
-> and a "get" indicates that the output comes with an extra reference. For
-> example, a function named of_get_node_by_name would clearly signal that
-> only the returned node is subject to a refcount increase while leaving
-> the input intact.
-> 
-> Thus, while the current workaround "balances" the reference count, it
-> doesn't address the underlying design flaw. The naming still suggests a
-> "find" function that should leave the input untouched, which isn’t the
-> case here. A redesign of the API - with both the behavior and naming
-> aligned to common expectations - would be a clearer and more robust
-> solution.
-> 
-> Nevertheless, it is only my POV, and the final decision rests with the
-> OpenFirmware framework maintainers.
 
-I agree overall that the naming is not optimal. Looking at the other
-patches in the series, I think at least some of them misuse
-of_find_node_by_name(). For instance, drivers/media/i2c/max9286.c calls
-the function to find a *child* node of the device's of_node named
-"i2c-mux", while of_find_node_by_name() looks at children first but will
-then walk the *whole* DT to find a named node. I haven't checked all
-patches, but other ones seem to suffer from the same misuse.
-
-Assuming that the named node those drivers are looking for is a direct
-child of the node passed as argument to of_find_node_by_name(), the
-right fix would tbe to use of_get_child_by_name(). If it's not a direct
-child, a recursive version of of_get_child_by_name() could be useful.
-
--- 
-Regards,
-
-Laurent Pinchart
+Thanks,
+Nicolas
