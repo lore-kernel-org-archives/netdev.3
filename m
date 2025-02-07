@@ -1,64 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA62D2417E9;
-	Fri,  7 Feb 2025 01:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8606C155345;
+	Fri,  7 Feb 2025 01:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738891947; cv=none; b=txpwPdkL9eBtrSbmdDpItCLPs5mybOXvES8+6n2Ajgss3l7uQiZY+dc+OOU/wM3aLLUyeefonu8Yg1bv51GjkOeQXxiit7LgCVMcA06AN2qgffr2GcZxMoRHmthLsyIM+SIgvjGbEobBNa0EXOqS+2jGhdZBMuW4eXe7OPLTrpI=
+	t=1738892386; cv=none; b=Rnmm1GYUJIFao3Ea0jaK43jWCPFKeG41ndTBHAgEN1Sajz+GhDv1jJ8+Wsxph5O2vrnzlu+JqLqEHK1p8j7Kmeexe7KM8OObDT7ZRmrj8xpU11pKcAf+zsuJfeXqqaZMZ8WrwEy1BElL2Qj3HlJAT8MiZLnE1cT+hbj8A9gasb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738891947; c=relaxed/simple;
-	bh=T37dtycyJzG6v1jI8BCgWdahQS0XYiAjaqwLUXtcki4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RFvhtu2F5VY/JYjZ3O0pzdFHDHvYcpW76ysdT2givbUHpeuzpmP/r6043OL95k/g65IKu5EBFXFVBnoMmFMXqd+ksHMdsPe0/GLUFk3+7Z+K+VpLu/DIIPQJpNmRSFtJwKOjvIVT5KOx3anYaMEUMaNR/+OU4RLecgjKA+m8bUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LYe4qkfO; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LYe4qkfO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5D1C4CEDD;
-	Fri,  7 Feb 2025 01:32:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738891947;
-	bh=T37dtycyJzG6v1jI8BCgWdahQS0XYiAjaqwLUXtcki4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LYe4qkfO6HIvZSw2DM88W1S8PZ8t1LeJ+ozVHIwaxOnHYtOHlpLBEtb81dzZqNPEU
-	 7Ai+SD2nqQWwV9z93ZQl0j02OBV3NQp2SOASAIbQkICz23qHglfut+LKRPYhOYHrMW
-	 vgZuXRHuIhXVARkEl1XmTbEDQXaiXfakZLxJ5vYbQteCdlrERHBY9GMi0ooRItQRSw
-	 9mfNZeMALob2hn2lxy3C4F3Soxc+Ank0DPscOUq6cMQav3ysJ3QE94esYVRJ2shnJ8
-	 B+l4cZo7DZFzTvDempz9j+C078fIEWY+/FlJupliAEAtmgwfdR2vSmhnGt3+cYIafI
-	 thN97dQp81l3g==
-Date: Thu, 6 Feb 2025 17:32:25 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Gal Pressman <gal@nvidia.com>
-Cc: "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Tony Nguyen
- <anthony.l.nguyen@intel.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "Tariq
- Toukan" <tariqt@nvidia.com>, Edward Cree <ecree.xilinx@gmail.com>, Ahmed
- Zaki <ahmed.zaki@intel.com>, <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH net-next v2 0/2] Symmetric OR-XOR RSS hash
-Message-ID: <20250206173225.294954e2@kernel.org>
-In-Reply-To: <20250205135341.542720-1-gal@nvidia.com>
-References: <20250205135341.542720-1-gal@nvidia.com>
+	s=arc-20240116; t=1738892386; c=relaxed/simple;
+	bh=p8oqDDtgBzQVcYulMD+72DyGGgTem1qPlS+4hciKRvc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GPEkUkJcQ9qodV8Xbd748UUcVpJqJjzPwNfTFORdlgx1K+CAu2kS6VCPwLRIeA7hNPyS0I2Ujcmr1m1CJCRbj7MkNioeKzc+OGXRlBVLMk2Nnn14Gd1B4dOWnFkSjknrfmnr2hrQ5tDvp8ZTp6/v+bdJXeDabBfX+hVjscxP2X4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4YpxSb3dxzz1JJdX;
+	Fri,  7 Feb 2025 09:38:23 +0800 (CST)
+Received: from kwepemf500003.china.huawei.com (unknown [7.202.181.241])
+	by mail.maildlp.com (Postfix) with ESMTPS id C4B5D1400CA;
+	Fri,  7 Feb 2025 09:39:40 +0800 (CST)
+Received: from huawei.com (10.175.112.208) by kwepemf500003.china.huawei.com
+ (7.202.181.241) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 7 Feb
+ 2025 09:39:38 +0800
+From: Zhang Zekun <zhangzekun11@huawei.com>
+To: <robh@kernel.org>, <saravanak@google.com>, <justin.chen@broadcom.com>,
+	<florian.fainelli@broadcom.com>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>,
+	<o.rempel@pengutronix.de>, <kory.maincent@bootlin.com>,
+	<jacopo+renesas@jmondi.org>, <kieran.bingham+renesas@ideasonboard.com>,
+	<laurent.pinchart+renesas@ideasonboard.com>, <maddy@linux.ibm.com>,
+	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <olteanv@gmail.com>,
+	<davem@davemloft.net>, <taras.chornyi@plvision.eu>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <sudeep.holla@arm.com>, <cristian.marussi@arm.com>
+CC: <arm-scmi@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-media@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <chenjun102@huawei.com>,
+	<zhangzekun11@huawei.com>
+Subject: [PATCH 0/9] Add wrapper function of_find_node_by_name_balanced()
+Date: Fri, 7 Feb 2025 09:31:08 +0800
+Message-ID: <20250207013117.104205-1-zhangzekun11@huawei.com>
+X-Mailer: git-send-email 2.22.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemf500003.china.huawei.com (7.202.181.241)
 
-On Wed, 5 Feb 2025 15:53:39 +0200 Gal Pressman wrote:
-> Add support for a new type of input_xfrm: Symmetric OR-XOR.
-> Symmetric OR-XOR performs hash as follows:
-> (SRC_IP | DST_IP, SRC_IP ^ DST_IP, SRC_PORT | DST_PORT, SRC_PORT ^ DST_PORT)
-> 
-> Configuration is done through ethtool -x/X command.
-> For mlx5, the default is already symmetric hash, this patch now exposes
-> this to userspace and allows enabling/disabling of the feature.
+Add wrapper function of_find_node_by_name_balanced() for drivers who
+want to call of_find_node_by_name() and have to blance the ref count
+by calling of_node_get(). For drivers who forget to call of_node_get(),
+can also utilizing of_find_node_by_name_balanced() to fix a refcount
+leak.
 
-Please add a selftest (hw-only is fine, netdevsim can't do flow
-hashing).
+Zhang Zekun (9):
+  of: Add warpper function of_find_node_by_name_balanced()
+  net: bcmasp: Add missing of_node_get() before of_find_node_by_name()
+  net: pse-pd: Add missing of_node_get() before of_find_node_by_name()
+  media: max9286: Use of_find_node_by_name_balanced() to find
+    device_node
+  powerpc: Use of_find_node_by_name_balanced() to find device_node
+  net: dsa: Use of_find_node_by_name_balanced() to find device_node
+  net: dsa: hellcreek: Use of_find_node_by_name_balanced() to find
+    device_node
+  net: prestera: Use of_find_node_by_name_balanced() to find device_node
+  regulator: scmi: Use of_find_node_by_name_balanced() to find
+    device_node
+
+ arch/powerpc/platforms/powermac/pic.c                 | 4 +---
+ drivers/media/i2c/max9286.c                           | 4 +---
+ drivers/net/dsa/bcm_sf2.c                             | 4 +---
+ drivers/net/dsa/hirschmann/hellcreek_ptp.c            | 3 +--
+ drivers/net/ethernet/broadcom/asp2/bcmasp.c           | 2 +-
+ drivers/net/ethernet/marvell/prestera/prestera_main.c | 3 +--
+ drivers/net/pse-pd/tps23881.c                         | 2 +-
+ drivers/regulator/scmi-regulator.c                    | 3 +--
+ include/linux/of.h                                    | 5 +++++
+ 9 files changed, 13 insertions(+), 17 deletions(-)
+
 -- 
-pw-bot: cr
+2.22.0
+
