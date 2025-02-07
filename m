@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1DF1E1035;
-	Fri,  7 Feb 2025 20:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65ACF1B0103
+	for <netdev@vger.kernel.org>; Fri,  7 Feb 2025 20:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738959011; cv=none; b=Y+h307crVooAUKPhx8+PFs0UQVqrdOOjj28KlNk27UqNAfGkv3942FRdWSx14baX4Zhw+UtRlu5xf0f2SiDV9XOmJSw2T/OrMUfuCRDNFz58TPkpg9hXcK+owD0Hq8idm72X+8vYZcM1YhuhqIvSyCWsEkeUm2DcL4bwYZeC3AA=
+	t=1738959013; cv=none; b=tM3xClrbz4dQ4tQ3/bDrgNpEJW9Z2YOygNbwvCyCAMsR2oYRBdIWyAjLCszZGL0J5l2cYkv+Wd6VE23QiMLLfHuD2wFzbbhA8weLxA4vC4e9DTmaGoyQfMpBjwqnHqUYAmOTJk6V8IA7eltfABrh3/YtSEUmxGTtGer4Bwh3ojw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738959011; c=relaxed/simple;
-	bh=Vx/uXCZMmWHxb9qb+6fT1bzndo7Dd4+PGUax25qZniI=;
+	s=arc-20240116; t=1738959013; c=relaxed/simple;
+	bh=gLY7t7f+t80zbBJzEsLQ1uGwk7RSdTuPVwQkOIIzuww=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WXUveiFniAJj6stcE0j8KHxqwdakbPERd2nyPZ6pXN96Ejk9epKK5P/t3gs+p6LCbPf2KgEFQqzRkESrcXaFuRGNDySFACAwW2tC/Cusy316CUagbm5dCEcjaP3YW4NDNnRA2zBax25n5ARIe/u8cTNLDUg96rgKvvqWnCoMFzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jmoDmCRJ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=cY04yEADHQH8Hy1eupJhu115Xj/TI+aYHy01dqHt/ph13RoNGqEIZe5kS1A5qoHyK+w1aOMOpiR3IQe1ab6LR+8TLVCsJTgEYf5SAjYWCzCjA+CdztcBJrCt63GpXplojnqhKw42j99yxYcIVeJV3ABCmgKONyTqnrtjKolDcOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YnFzu0ke; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jmoDmCRJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E077C4CED1;
-	Fri,  7 Feb 2025 20:10:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YnFzu0ke"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD624C4CEE2;
+	Fri,  7 Feb 2025 20:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738959011;
-	bh=Vx/uXCZMmWHxb9qb+6fT1bzndo7Dd4+PGUax25qZniI=;
+	s=k20201202; t=1738959012;
+	bh=gLY7t7f+t80zbBJzEsLQ1uGwk7RSdTuPVwQkOIIzuww=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=jmoDmCRJfwLMg8t82yS+sg/UBFLhVLyoBTnUVid5NGPQA/luwvnkg/fPdB0UF2jEh
-	 c1pTos3dy01etIfxFCs4NGKoaS8E0UXaSfrbjiwQusnon0J1rzKy0ag77TGtDaQq7v
-	 1KSLhmSb4SEDyfNpF/B8HJkrfp0pTbsF9/LewReVErIbk7zg7EhEEYsuF6IoYM1ctR
-	 DYxqIPZpTeIQQJ1IlBxNOkhmSZbN8GSTUMWGAvN9/hyapVgBkmEshIY9PU4d2sDUaE
-	 iJU+Rpf2ZgBNhrlfp0haenIRhB/sXNRXpJ4A9hGgAauZ1PwrexFYYaRh5OpKLTXDM2
-	 MdLshq7XuWCkQ==
+	b=YnFzu0kejk7U4IshwqHAdZQ6sk2dgJTJwOL8sA/7DE/K5djUNqruQNe2JyKHq0+XH
+	 oxgjLt+Zx+aLeY88bDBCX6J+FUniPoTzOf+GFfbwDwIZ6DLemS6pigqtxpz2HYUHzP
+	 8LebRvnHI5RKoUvZpNK2w3ohMluP5GWI6Lw2bc+DW6hxqzQHJxFE3pw7vmfufAkDx8
+	 KPz0+2bibCvBxQ9VkOqwOoWH8blihCen5qkn5P23DDcIExHzGZBb8U6VgefpCUfo2K
+	 nna5PwUAbVxVViS2jDa4LcYUXwwTg/MP7VsyNEJoATj8/A3j/fZLN5DJxdKuF5Nj48
+	 ASt2+nL68N6BQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 716BD380AAF4;
-	Fri,  7 Feb 2025 20:10:40 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB369380AAF4;
+	Fri,  7 Feb 2025 20:10:41 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: renesas: rswitch: Convert to
- for_each_available_child_of_node()
+Subject: Re: [PATCH net-next] tcp: do not export tcp_parse_mss_option() and
+ tcp_mtup_init()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <173895903900.2367164.169889700480879767.git-patchwork-notify@kernel.org>
-Date: Fri, 07 Feb 2025 20:10:39 +0000
-References: <54f544d573a64b96e01fd00d3481b10806f4d110.1738771798.git.geert+renesas@glider.be>
-In-Reply-To: <54f544d573a64b96e01fd00d3481b10806f4d110.1738771798.git.geert+renesas@glider.be>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: yoshihiro.shimoda.uh@renesas.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- nikita.yoush@cogentembedded.com, niklas.soderlund+renesas@ragnatech.se,
- netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+ <173895904054.2367164.5209279146820710284.git-patchwork-notify@kernel.org>
+Date: Fri, 07 Feb 2025 20:10:40 +0000
+References: <20250206093436.2609008-1-edumazet@google.com>
+In-Reply-To: <20250206093436.2609008-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, kuniyu@amazon.com, ncardwell@google.com,
+ horms@kernel.org, eric.dumazet@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  5 Feb 2025 17:12:09 +0100 you wrote:
-> Simplify rswitch_get_port_node() by using the
-> for_each_available_child_of_node() helper instead of manually ignoring
-> unavailable child nodes, and leaking a reference.
+On Thu,  6 Feb 2025 09:34:36 +0000 you wrote:
+> These two functions are not called from modules.
 > 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 > ---
-> Tested on R-Car S4 Starter Kit, which has port 2 disabled.
-> 
-> [...]
+>  net/ipv4/tcp_input.c  | 1 -
+>  net/ipv4/tcp_output.c | 1 -
+>  2 files changed, 2 deletions(-)
 
 Here is the summary with links:
-  - [net-next] net: renesas: rswitch: Convert to for_each_available_child_of_node()
-    https://git.kernel.org/netdev/net-next/c/7bca2b2d5fcc
+  - [net-next] tcp: do not export tcp_parse_mss_option() and tcp_mtup_init()
+    https://git.kernel.org/netdev/net-next/c/d876ec8d3ed3
 
 You are awesome, thank you!
 -- 
