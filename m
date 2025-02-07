@@ -1,104 +1,66 @@
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32D11DE3B5;
-	Fri,  7 Feb 2025 10:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFD11D31B8
+	for <netdev@vger.kernel.org>; Fri,  7 Feb 2025 10:05:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738922714; cv=none; b=G6DlGD+c7VHrgHRGCMvZ/+WDVQaYoTmMDkI+jVVmt89FIf5v9AA6CnntkiXodMOPiLA7UKWHwILh1LXxlJECTjh9UXqznGYZyMZfcw+VPFCnfWh3g6SPRbg1mhfjQjZmhELEuaqt1mRfw/ex4W62w1DET0avfs8dWr91yl/NW1A=
+	t=1738922747; cv=none; b=i0lsyDncY/KI5syHIMmbyxi2mtGktClHKf7V4nvrUURk+hdYVPIJMg/08aCCZd3CDFyvmIhQDzMfySYeHxHEk9rLXNBmI92yrNu1fPN8Rnp0EcraQ+CyYyi//mm3L4JJpqhXPTIkQmpyQvxSKpODvLfyZtKHdP/PyQdJYv8TrnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738922714; c=relaxed/simple;
-	bh=IUiUrzbIpNsn++CeN7RJzXT5fi6NuhaBEDIhz+xV8JQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XfKu6ZB6g4mpB7a5TWpxMCkYLhZYd+nilFxo5yq6IlLIpti/i8gpvh4gpJsGwnDp74W8oXhiLICy1NlRE87wP3kcERDlyed4K/P8YzsEOodWoZuwtpncWdhVfCcBJq6HxZeZRC3cqQiONByGly/mtOqp/glR06Tr+/pu+z4ZgzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from kero.packetmixer.de (p200300c59725EfD8c202009b11B64500.dip0.t-ipconnect.de [IPv6:2003:c5:9725:efd8:c202:9b:11b6:4500])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 87E4CFA365;
-	Fri,  7 Feb 2025 10:58:32 +0100 (CET)
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: netdev@vger.kernel.org,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	Remi Pommarel <repk@triplefau.lt>,
-	stable@vger.kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 4/4] batman-adv: Fix incorrect offset in batadv_tt_tvlv_ogm_handler_v1()
-Date: Fri,  7 Feb 2025 10:58:23 +0100
-Message-Id: <20250207095823.26043-5-sw@simonwunderlich.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250207095823.26043-1-sw@simonwunderlich.de>
-References: <20250207095823.26043-1-sw@simonwunderlich.de>
+	s=arc-20240116; t=1738922747; c=relaxed/simple;
+	bh=MGNJPt+YsRpuH8tr53yUSWWSv+odu8ZuGiFak8uu0HA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I/lKd6WgZwWxKSrTMLYac3sWvSJK9TgVcE80TGefLTRDT8LxRxNO1bvPt2jkzcYd0rLDLrpKcNwWBfVi528u50PMAgd2Okq7lrC2VEVDdENtiGbyHahfRrKm0KhWRsk+kqIFJfyjHhkE5Axtm7Fn0ph+NiDXKNZCaZJeBuRnhxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uk0iWvUb; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uk0iWvUb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954B9C4CED1;
+	Fri,  7 Feb 2025 10:05:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738922746;
+	bh=MGNJPt+YsRpuH8tr53yUSWWSv+odu8ZuGiFak8uu0HA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Uk0iWvUbxtRspeWHlVFjUbt3PdzfM+MHoDAwluv4OxLV/U7eEZfZfVTxNaVARPj8l
+	 RheCDhXge1E4j+nNxHN3iYECHXYwXG5o+AcFy6of8zN3O36b9eApAhGsPje5uIl06I
+	 ZYEupTrqaOB5Q53RvHyekVHV6ez/GLLVxrP83IIhYXvskPCjgI/ODGdCmg3Q4UGPV+
+	 +dftuB000PnEQ1bmea0jfotJPgL2rKswqJYNTAqq9ODfTnYopMuykmFFZbzHNsROb3
+	 SWRQQU/XKDnAgySxsg8igPmPxo9GAf8boPrllulRLs2hy8gzZGhkPBMvsk15X5tFB+
+	 ZIlcMa7wcpskA==
+Date: Fri, 7 Feb 2025 10:05:43 +0000
+From: Simon Horman <horms@kernel.org>
+To: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+	Karol Kolacinski <karol.kolacinski@intel.com>
+Subject: Re: [PATCH iwl-next v1 2/3] ice: Refactor E825C PHY registers info
+ struct
+Message-ID: <20250207100543.GL554665@kernel.org>
+References: <20250206083655.3005151-1-grzegorz.nitka@intel.com>
+ <20250206083655.3005151-3-grzegorz.nitka@intel.com>
+ <20250207100345.GK554665@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250207100345.GK554665@kernel.org>
 
-From: Remi Pommarel <repk@triplefau.lt>
+On Fri, Feb 07, 2025 at 10:03:45AM +0000, Simon Horman wrote:
+> On Thu, Feb 06, 2025 at 09:36:54AM +0100, Grzegorz Nitka wrote:
+> > From: Karol Kolacinski <karol.kolacinski@intel.com>
+> > 
+> > Simplify ice_phy_reg_info_eth56g struct definition to include base
+> > address for the very first quad. Use base address info and 'step'
+> > value to determine address for specific PHY quad.
+> > 
+> > Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> > Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
+> > Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+> 
+> Reviewed-by: Simon Horman <horms@kernel.org>
 
-Since commit 4436df478860 ("batman-adv: Add flex array to struct
-batadv_tvlv_tt_data"), the introduction of batadv_tvlv_tt_data's flex
-array member in batadv_tt_tvlv_ogm_handler_v1() put tt_changes at
-invalid offset. Those TT changes are supposed to be filled from the end
-of batadv_tvlv_tt_data structure (including vlan_data flexible array),
-but only the flex array size is taken into account missing completely
-the size of the fixed part of the structure itself.
-
-Fix the tt_change offset computation by using struct_size() instead of
-flex_array_size() so both flex array member and its container structure
-sizes are taken into account.
-
-Cc: stable@vger.kernel.org
-Fixes: 4436df478860 ("batman-adv: Add flex array to struct batadv_tvlv_tt_data")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
----
- net/batman-adv/translation-table.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
-
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 760d51fdbdf6..7d5de4cbb814 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -3959,23 +3959,21 @@ static void batadv_tt_tvlv_ogm_handler_v1(struct batadv_priv *bat_priv,
- 	struct batadv_tvlv_tt_change *tt_change;
- 	struct batadv_tvlv_tt_data *tt_data;
- 	u16 num_entries, num_vlan;
--	size_t flex_size;
-+	size_t tt_data_sz;
- 
- 	if (tvlv_value_len < sizeof(*tt_data))
- 		return;
- 
- 	tt_data = tvlv_value;
--	tvlv_value_len -= sizeof(*tt_data);
--
- 	num_vlan = ntohs(tt_data->num_vlan);
- 
--	flex_size = flex_array_size(tt_data, vlan_data, num_vlan);
--	if (tvlv_value_len < flex_size)
-+	tt_data_sz = struct_size(tt_data, vlan_data, num_vlan);
-+	if (tvlv_value_len < tt_data_sz)
- 		return;
- 
- 	tt_change = (struct batadv_tvlv_tt_change *)((void *)tt_data
--						     + flex_size);
--	tvlv_value_len -= flex_size;
-+						     + tt_data_sz);
-+	tvlv_value_len -= tt_data_sz;
- 
- 	num_entries = batadv_tt_entries(tvlv_value_len);
- 
--- 
-2.39.5
-
+Sorry, I failed to notice that the kdoc for ice_phy_reg_info_eth56g
+needs to be updated to document base_addr instead of base.
