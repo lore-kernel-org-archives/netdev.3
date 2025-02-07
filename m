@@ -1,130 +1,105 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0E123C8AD
-	for <netdev@vger.kernel.org>; Fri,  7 Feb 2025 15:51:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2532423C8A8
+	for <netdev@vger.kernel.org>; Fri,  7 Feb 2025 15:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738943518; cv=none; b=H2J4wst9j/Y17QUfYJCHZ702yboSP5LqE8f4/cZCtz+LRAHD0Y8y+zClrLMShZNNouiDtYv5/RV17LI0iFxnwQIZNl4y3pmxRFTKVB6zrE58mKH/+RmZjgLTdGaqrVrCf3Jlswd0U/QdwUYRI0O/F3lP8lzpOryiBBC1X+neUJI=
+	t=1738943700; cv=none; b=OSVONqvRSsnec3NSk93CwzJAHv5Qeiev0WYtwb2JP5C2RG3uIeLazWfdRXqbkSYKKj0jIc9bYKPPKx9c1nIqj47U1nwbAKK1N28u3n+/Evq8uCZHxNqvaW9PLMzTIGDSpHR6iTJYt7hu0zQlXCMOlgJFF6xguyQOYUel80XA1+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738943518; c=relaxed/simple;
-	bh=FYBzQWrbc5BZbG36FmSxvb/yRkK3m4dSs/j7WyRK1LM=;
+	s=arc-20240116; t=1738943700; c=relaxed/simple;
+	bh=I2GuDhxl+08paIRrviBkUYIALNebE4rhANc6ESbwfJk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VAMEAoAoxTHIykdTJOfmCFY9rJsuHuWgX9dowaZhgSrLLN6qbYXauDdVeFXk1r7R6KxUkI1bLXi25vRWj5cx0rffNnk71PnmGGQgxXgDoleQhv8qdRpWsskaUBiO/tDe5+msAHdbzgdFgq/pVgV2ucD4sgZV+/O5ApJOl5IAWGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tgQdX-00035S-1R; Fri, 07 Feb 2025 16:51:23 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tgQdU-003zzi-0y;
-	Fri, 07 Feb 2025 16:51:20 +0100
-Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id DAB1B3BC4F8;
-	Fri, 07 Feb 2025 15:51:19 +0000 (UTC)
-Date: Fri, 7 Feb 2025 16:51:19 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Cc: Ming Yu <a0282524688@gmail.com>, tmyu0@nuvoton.com, lee@kernel.org, 
-	linus.walleij@linaro.org, brgl@bgdev.pl, andi.shyti@kernel.org, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-rtc@vger.kernel.org, 
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH v7 4/7] can: Add Nuvoton NCT6694 CANFD support
-Message-ID: <20250207-fair-active-robin-30025a-mkl@pengutronix.de>
-References: <20250207074502.1055111-1-a0282524688@gmail.com>
- <20250207074502.1055111-5-a0282524688@gmail.com>
- <20250207-savvy-beaver-of-culture-45698d-mkl@pengutronix.de>
- <9a3f1242-794e-41f1-80a5-bc6d18ff6641@wanadoo.fr>
+	 Content-Type:Content-Disposition:In-Reply-To; b=pV6Zbl6Bm1TABXeh40tA1RBdRPIUoxkh7AGGZSUFN8JnQmaclMmSCXU5L/QBRvdCBEQ892cC/9pFEERRRtUjo+bFjWF2brpfUHSjk6V3Vm3H9m0LTyckJiDN/tgEZ2/d1AHEnGwg40fU2BGGnYcSB9aSnuaFf6IzugLrKDbGwUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=HT8TUE/8; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="HT8TUE/8"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6e440e64249so18789586d6.3
+        for <netdev@vger.kernel.org>; Fri, 07 Feb 2025 07:54:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1738943698; x=1739548498; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wG4kDX3mPsVlAfvrUd487lzsY97VgTkw0/bdTrkhSGs=;
+        b=HT8TUE/8/UXvNaK5LmB/835+M8y9p+nozLAhhaRKfPQUnhy28oZ0BpcxKxygPiVK2e
+         0UgWSXIhF+xAR3eojV0+7V2VAeCMmmnNy6DICKseoiCyEvtDk8GiZWfDKWts25dDqKKF
+         8U3nA/JxGFuPvLioH7pcJO4B2CCVrAAQKFXFs5V2GdsgI7z4NtC396a4v5kWFW8mAv1q
+         QZxYjB34hpMKOJiwuhkP5OIZ7sLrmJSe8VsS7LHiogQW0bLMZX0Cn2xwbHKSx/YSbVrZ
+         OBXC5YgCBUYUpehBIhozOTD2gFyKVMa4zVgw0tccR9fS67jLAFJY7PmkGa2rQyhrEHHC
+         RRDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738943698; x=1739548498;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wG4kDX3mPsVlAfvrUd487lzsY97VgTkw0/bdTrkhSGs=;
+        b=R8RjWOFZQU/f1IKjECv7wmDQlv6UmQwbI3/eco2kpXhlC1lEXSk0Xp+YfJd6xAe4Sh
+         o+ee4p45C/aGlFPFrL+A0dws4IWe2qgoAcJzjtiNgTi+DWwvh85yImHOQYvTegEjcDIa
+         LN/e/5F/8jGkKXzUiOMQvP/N1/9lpXv1bAQNFDpjznZirz0tDwiwlWTsDTNo0XWRbA2D
+         s9FD9Hy9GDK1nxjLSzMd7cvMFFum1FCwVno3DjWpfdBIX0XagBeJjIAMCrVQ0fHeaI0M
+         +DIwr7++S9PMJgnJ7lPpBBOCVJ7zIgXJW+H/daEcLpww/YSSVUZHJNUWxXbHuGPRV4B+
+         J/Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDr2AbIHoq5QS7vDn47T+DHsj2X9IQjikzwIpQ9Hq82jnVl5PIPmbBJuJC3RiyLphJXf6Ju64=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuwvgPSAmoiRFRvMfVM2Bv9Hl5gYNSZ6JNa1yhSn/LoBpYh50v
+	Z13BL66kYHjbsR0DZ7XvGaGrFtmQpi8pCG1qo14lXN+zkwQD0zGFOwoWO9sz4Ds=
+X-Gm-Gg: ASbGncslkDL4y0w1Tl0/sSlJKuPJDOu3RUPzGPfSq8cTLwolDywe3A9TbXDQtB2eWyB
+	9sy6Mc4r50tZ++P2m4gkkrV+8tpzjktCG+3QYCo28Nz07cG6nYTt44oCTMp17dlHJ7n4tiuCmxb
+	vv0KUjZC76bvOTFjG7J+y1B8NCEs1RNTHDW04DXNeaLyu5IthHJn6Vz7iP92gDTLnKQ7r+fOPvr
+	AoUt3qLxViDRKFPZujuMMwUg6HQHSb9yxz/LniHcqfHB2JziKjCRiI26OVI4JB7IobACxhAqHSa
+	bENh2BeKRqLYreCy8U2FCNI5VIwIaCAMfTDPrtGWRKWQhRVSFP4eGyq7rZAvujVX
+X-Google-Smtp-Source: AGHT+IEq6vakQzNYiXzUmxGw05TQjdF65NCz8Qjlk4Szby4FeLGiS8FNdUCgGzZaq1/yR/BAprqyEQ==
+X-Received: by 2002:ad4:5f89:0:b0:6d8:8a7b:66a4 with SMTP id 6a1803df08f44-6e4455e8913mr53333496d6.14.1738943697961;
+        Fri, 07 Feb 2025 07:54:57 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e43ba2be69sm18281116d6.15.2025.02.07.07.54.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Feb 2025 07:54:57 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1tgQgy-0000000FNdT-38ej;
+	Fri, 07 Feb 2025 11:54:56 -0400
+Date: Fri, 7 Feb 2025 11:54:56 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Mitchell Augustin <mitchell.augustin@canonical.com>
+Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
+	andrew+netdev@lunn.ch, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Talat Batheesh <talatb@nvidia.com>,
+	Feras Daoud <ferasda@nvidia.com>
+Subject: Re: modprobe mlx5_core on OCI bare-metal instance causes
+ unrecoverable hang and I/O error
+Message-ID: <20250207155456.GA3665725@ziepe.ca>
+References: <CAHTA-uaH9w2LqQdxY4b=7q9WQsuA6ntg=QRKrsf=mPfNBmM5pw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="76ydemzthxfsfgeu"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9a3f1242-794e-41f1-80a5-bc6d18ff6641@wanadoo.fr>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+In-Reply-To: <CAHTA-uaH9w2LqQdxY4b=7q9WQsuA6ntg=QRKrsf=mPfNBmM5pw@mail.gmail.com>
 
+On Wed, Feb 05, 2025 at 05:09:13PM -0600, Mitchell Augustin wrote:
+> Hello,
+> 
+> I have identified a bug in the mlx5_core module, or some related component.
+> 
+> Doing the following on a freshly provisioned Oracle Cloud bare metal
+> node with this configuration [0] will reliably cause the entire
+> instance to become unresponsive:
+> 
+> rmmod mlx5_ib; rmmod mlx5_core; modprobe mlx5_core
+> 
+> This also produces the following output:
+> 
+> [  331.267175] I/O error, dev sda, sector 35602992 op 0x0:(READ) flags
+> 0x80700 phys_seg 33 prio class 0
 
---76ydemzthxfsfgeu
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v7 4/7] can: Add Nuvoton NCT6694 CANFD support
-MIME-Version: 1.0
+Is it using iscsi/srp/nfs/etc for any filesystems?
 
-On 08.02.2025 00:00:43, Vincent Mailhol wrote:
-> On 07/02/2025 at 21:15, Marc Kleine-Budde wrote:
-> > On 07.02.2025 15:44:59, Ming Yu wrote:
->=20
-> (...)
->=20
-> >> +static netdev_tx_t nct6694_can_start_xmit(struct sk_buff *skb,
-> >> +					  struct net_device *ndev)
-> >> +{
-> >> +	struct nct6694_can_priv *priv =3D netdev_priv(ndev);
-> >> +
-> >> +	if (can_dev_dropped_skb(ndev, skb))
-> >> +		return NETDEV_TX_OK;
-> >> +
-> >> +	netif_stop_queue(ndev);
-> >> +	can_put_echo_skb(skb, ndev, 0, 0);
-> >> +	queue_work(priv->wq, &priv->tx_work);
->=20
-> What is the reason to use a work queue here? xmit() is not a hard IRQ.
-> Also, the other USB CAN devices just directly send the USB message in
-> their xmit() without the need to rely on such worker.
->=20
-> Sorry if this was discussed in the past, I can not remember if this
-> question has already been raised.
-
-AFAICS xmit uses nct6694_write_msg(), which uses several usb_bulk_msg(),
-that can only be used from task context.
-
-You can build a chain of usb_fill_bulk_urb(), usb_submit_urb(),
-callbacks instead, but that's hard to read compared to blocking
-usb_bulk_msg()s.
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---76ydemzthxfsfgeu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmemK/QACgkQDHRl3/mQ
-kZwmeQf+K8g+Oy8vCIUI/Kice58VwDSu6EFa30wRLM0oqjCgE4LqXapNiSB1F8iJ
-sDm2IyQER6qNYSLqzeZWG/bMyJwfHNpKjfXN3RImtyTXuN4nlvraaQabsV1bEY3y
-rNGHojpZqxDXCb3Q9B5GLjNhdZldM4T+Xrs8gG+7Zv4jBxjNxn8J7Xz+1BpX3UqZ
-ql8gENFEAe9nb6O5ODNVcGTnU+SzGWvy1VsEz23VcvXWEKbyyObvG+e0yUoYEi4y
-s2MbMh1xxkTliIXn7GvqIdMj6/RSPo7xLoShAalHzurN1mey2u5PZfQapk718BEx
-Wj/o/s1vTiX+qqRfcgpDz3UvoRZEtQ==
-=0uK9
------END PGP SIGNATURE-----
-
---76ydemzthxfsfgeu--
+Jason
