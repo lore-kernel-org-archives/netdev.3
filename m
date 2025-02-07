@@ -1,94 +1,219 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484222417DB;
-	Fri,  7 Feb 2025 13:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D501F4174;
+	Fri,  7 Feb 2025 13:31:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738935061; cv=none; b=HSvEjv1ZO0HL2vnpLhiDtDQZ+RnuLZqAertHFfFtyWdoOIOKoKZpIO8ABmqInE+XXodiHt01raZ70oKPVM0+TotCeZpQTBkdtYTdLSboPf40oVrjv4mWulmPiPJuRXlCz8sxlntODJDO5M2tax7/c9ttj/16vk08+EDhcPPmS/U=
+	t=1738935088; cv=none; b=g6Ul+6svhmtFQsjTYQQm5mE2TMvf2McpI7ivcbmsP2xhRc3LnnyAG4MJmDU9YbfbRUn2VS/iOBqqqsIpVRMoHcs2JWFXmZ3YfHg7ft7iwP5OBURr5wv2UwUCXoCMhgzIzuE4SOv82HxWSZS36LJye1FsZLtiM/IlyjbevIHdpNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738935061; c=relaxed/simple;
-	bh=NsSmOwhEZRd+aVZXPOwC9ZF+E9OTzkX7OgEXWYjui74=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FbZsJ/umuUEWaJnErc4k7DDfVHP4F4HBjtW5h9FJnYifvz8Itdrsa2Al2ZnW0ch1muGDB20pgtWc2/rH5jWx76Eya7497MHubdQQ34qF3ynyy1TVx4+rUimklpNje0IboC5wMUAlkh2C91ve1CONCnTVxcl2J1i21DqdY2xNumE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ncqHG1xj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738935088; c=relaxed/simple;
+	bh=hnOTbmTrrKsnD+Y2GGxHascu/YYa/gDDdIc+hdhOy2o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IFqBav3OtRx810kzLwQY+bQnzijqIfLpfPpii+JFDGsKixg8ppS8Lq7mz416dXxa6wQZO6WsDstTUqaO6xRKOqkEfWU8sFOU1T3zO4kDmjK4F944IQ2gIs0oLS2aCpEVY2ACdxw3y7X1EqOmF1YAQeziJfLadSP89l7OjyGdSII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RjZSDRJw; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ncqHG1xj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2365C4CED1;
-	Fri,  7 Feb 2025 13:30:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738935060;
-	bh=NsSmOwhEZRd+aVZXPOwC9ZF+E9OTzkX7OgEXWYjui74=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ncqHG1xjMH3im4kyO+IV6bpRSlqPmofmKvKKNQf0rhGaq4F8ERegSG+6SnFNxSO4I
-	 HzuZ3Eg+So+TXGr2cq2X0sZPhkwIxZYEWNU7zXXGma8QsnvT3B32QX2IFJ7LEwzqeM
-	 A/WYUQ3qxXWhUTsMbdXHIojsT2Ie2/Otp/agjBCFQsYuxAVRjL7ccoi2r1hJmI4ReE
-	 OvWXd9toAFuQGnnwfqn3l6ZwW7fiueR0iduHnDhlezXX1K5rpIkBWKtjDgdoALsCYZ
-	 oukD1BeMp4rVKmdMThw9imvlhQRQyzxtvJdHz4ADL2Z01jzVh4d0wshJQMkd1ro3gC
-	 EGZDxXUriFJqw==
-Date: Fri, 7 Feb 2025 13:30:55 +0000
-From: Simon Horman <horms@kernel.org>
-To: Joe Damato <jdamato@fastly.com>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
-	sridhar.samudrala@intel.com, Jakub Kicinski <kuba@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Daniel Jurgens <danielj@nvidia.com>,
-	Amritha Nambiar <amritha.nambiar@intel.com>,
-	David Wei <dw@davidwei.uk>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v4 2/3] netdev-genl: Add an XSK attribute to
- queues
-Message-ID: <20250207133055.GU554665@kernel.org>
-References: <20250207030916.32751-1-jdamato@fastly.com>
- <20250207030916.32751-3-jdamato@fastly.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RjZSDRJw"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-21f0c4275a1so31584535ad.2;
+        Fri, 07 Feb 2025 05:31:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738935085; x=1739539885; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NK1HGIXoH8vXj+D0vllNs3ytDiD6gTjuLJ5UVxhg7uI=;
+        b=RjZSDRJwUqcZkM0PBqiLH8xj4QwCPlFnsXYVxuEDi0oR35V5IisM92L6cYdZ4AQdIb
+         2mBumNY9JWId81lnMyZQNad4ufdxfXpI/6YNqWXgKvex0oovltw+Wp0oQAAFWQ06ir9n
+         xbIPK+TiUFyjJx7F6rxq8G2YJu/N4wipQso0+eNClgS7mnURtu0B6uf5WWjCyp7BQxJV
+         htmYg+VEa2ziRsjpAlDUa5Pi7Hl+iXIrypXNnbIhFRLPKfasqRpCFlpRCT3g02M/AHH8
+         usTjtgI9XqFzrh1mzCdAfvUof7i9JZau77L6ZqzQT+Mi5cM8jhGkmDfUWDXLf0iCAl+R
+         EgAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738935085; x=1739539885;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NK1HGIXoH8vXj+D0vllNs3ytDiD6gTjuLJ5UVxhg7uI=;
+        b=UMJcPZOv/qeujoqo7ItDhAkfj3Smf6BzDmfxFa/oqAtqwigzzbon7SUHLI2FgCZjss
+         NSkEjdc5LRwyhhvonYCfvFrOccmL7UI4oFwBtoMp+JsVPsBonUPtpaGZ7VGGGkQI7/1a
+         3vBgQW0AUOYTPzyb7Y2V7PxCCTgzXh4Ime51/WBA/opGsoluidFH+UsraFonGcanIIeN
+         ObLsY7FG6uCfYkjzsF3s5tvREFDCTishBklRnLSgZAJe1IC0CHzcbmdN1dI5TVl/Jxss
+         Qk2lc+HPM9ISFGQ0K8W0QNIvxTsxWoEdckgU32t7F6PkQLEapOGo7AU6flqXbVDu5waR
+         PMrw==
+X-Forwarded-Encrypted: i=1; AJvYcCVaXtlW2hr3i8blIUqILB9O69PNqACp2NJTUIQ7s6JjeMtbyibmNWqBisU32bswCds1q61a9pc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTzw7uRCxvnyLcg/V9q/w4hQb6154k9xXp+1KXGfqztsNA0/MJ
+	Mb9Ftcen57Cq0gac5z/r/AWtFuOQYp9Sx07Qg+YIUwDCaTe182EwrNvkeDaX
+X-Gm-Gg: ASbGncvDVjQzoefj0NXZ2rpXIT6wM17NdnDEynKQswWW4aN95tFtI644SZD++EyUFIL
+	wRRWoSMKT56ayqsjWPa/s2gNvk6Qq6hDcaVLKFsBljsiPlhTLbIcVT+CDxOA8q+O0Kz3JJxxKp+
+	94nhmcIkFkVxwrf1ZenaL08pF27jp7wtVlvH/fGXGT8K88xELb8fO+ITI+Rn5lqmq7NbLl/K0RE
+	LL91XPdpZZMshlkuwrJzLaRBCMbYcWlHjwfDcrLPVLEGz8IO3VYKPvZf1Pyi5fu2dO8J7WLOYBZ
+	dU57ryQW1afjMF/apWTIhFygZuWjz/Fr6j0Yzhp5iKCN9ZAzY2y/pC/MI71Vhup8RUE=
+X-Google-Smtp-Source: AGHT+IHy+EpqgNAEumqcP7+ulrJ69USEKRJ98gpkuxrliW7woK12rfMKtqQYFSXTGB0DnlPZomwu/g==
+X-Received: by 2002:a05:6a20:c896:b0:1ed:e7cc:ee7e with SMTP id adf61e73a8af0-1ee03b10078mr7267238637.32.1738935085258;
+        Fri, 07 Feb 2025 05:31:25 -0800 (PST)
+Received: from mew.. (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ad51ea79a47sm2877843a12.76.2025.02.07.05.31.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Feb 2025 05:31:24 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: linux-kernel@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	netdev@vger.kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	tmgross@umich.edu,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	anna-maria@linutronix.de,
+	frederic@kernel.org,
+	tglx@linutronix.de,
+	arnd@arndb.de,
+	jstultz@google.com,
+	sboyd@kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	tgunders@redhat.com,
+	me@kloenk.dev
+Subject: [PATCH v10 0/8] rust: Add IO polling
+Date: Fri,  7 Feb 2025 22:26:15 +0900
+Message-ID: <20250207132623.168854-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250207030916.32751-3-jdamato@fastly.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 07, 2025 at 03:08:54AM +0000, Joe Damato wrote:
-> Expose a new per-queue nest attribute, xsk, which will be present for
-> queues that are being used for AF_XDP. If the queue is not being used for
-> AF_XDP, the nest will not be present.
-> 
-> In the future, this attribute can be extended to include more data about
-> XSK as it is needed.
-> 
-> Signed-off-by: Joe Damato <jdamato@fastly.com>
-> Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Add a helper function to poll periodically until a condition is met or
+a timeout is reached. By using the function, the 8th patch fixes
+QT2025 PHY driver to sleep until the hardware becomes ready.
 
-...
+The first patch is for sched/core, which adds
+__might_sleep_precision(), rust friendly version of __might_sleep(),
+which takes a pointer to a string with the length instead of a
+null-terminated string. Rust's core::panic::Location::file(), which
+gives the file name of a caller, doesn't provide a null-terminated
+string. __might_sleep_precision() uses a precision specifier in the
+printk format, which specifies the length of a string; a string
+doesn't need to be a null-terminated.
 
-> diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-> index 0dcd4faefd8d..75ca111aa591 100644
-> --- a/net/core/netdev-genl.c
-> +++ b/net/core/netdev-genl.c
-> @@ -380,6 +380,7 @@ netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
->  	struct netdev_rx_queue *rxq;
->  	struct netdev_queue *txq;
->  	void *hdr;
-> +	int ret;
->  
+The remaining patches are for the Rust portion and updates to the
+MAINTAINERS file.
 
-Hi Joe,
+This introduces two new types, Instant and Delta, which represent a
+specific point in time and a span of time, respectively.
 
-Perhaps this got left behind after some revisions elsewhere.
-But as it stands ret is unused in this function and should be removed.
+Unlike the old rust branch, This adds a wrapper for fsleep() instead
+of msleep(). fsleep() automatically chooses the best sleep method
+based on a duration.
 
->  	hdr = genlmsg_iput(rsp, info);
->  	if (!hdr)
+[1]: https://github.com/rust-lang/libs-team/issues/466
 
-...
+v10:
+- rebased on rust-next
+- use Option type for timeout argument for read_poll_timeout()
+- remove obsoleted comment on read_poll_timeout()
+v9: https://lore.kernel.org/lkml/20250125101854.112261-1-fujita.tomonori@gmail.com/
+- make the might_sleep() changes into as a separate patch
+- add as_millis() method to Delta for Binder driver
+- make Delta's as_*() methods const (useful in some use cases)
+- add Delta::ZERO const; used in fsleep()
+- fix typos
+- use intra-doc links
+- place the #[inline] marker before the documentation
+- remove Instant's from_raw() method
+- add Invariants to Instant type
+- improve Delta's methods documents
+- fix fsleep() SAFETY comment
+- improve fsleep() documents
+- lift T:Copy restriction in read_poll_timeout()
+- use MutFn for Cond in read_poll_timeout() instead of Fn
+- fix might_sleep() call in read_poll_timeout()
+- simplify read_poll_timeout() logic
+v8: https://lore.kernel.org/lkml/20250116044100.80679-1-fujita.tomonori@gmail.com/
+- fix compile warnings
+v7: https://lore.kernel.org/lkml/20241220061853.2782878-1-fujita.tomonori@gmail.com/
+- rebased on rust-next
+- use crate::ffi instead of core::ffi
+v6: https://lore.kernel.org/lkml/20241114070234.116329-1-fujita.tomonori@gmail.com/
+- use super::Delta in delay.rs
+- improve the comments
+- add Delta's is_negative() method
+- rename processor.rs to cpu.rs for cpu_relax()
+- add __might_sleep_precision() taking pointer to a string with the length
+- implement read_poll_timeout as normal function instead of macro
+v5: https://lore.kernel.org/lkml/20241101010121.69221-1-fujita.tomonori@gmail.com/
+- set the range of Delta for fsleep function
+- update comments
+v4: https://lore.kernel.org/lkml/20241025033118.44452-1-fujita.tomonori@gmail.com/
+- rebase on the tip tree's timers/core
+- add Instant instead of using Ktime
+- remove unused basic methods
+- add Delta as_micros_ceil method
+- use const fn for Delta from_* methods
+- add more comments based on the feedback
+- add a safe wrapper for cpu_relax()
+- add __might_sleep() macro
+v3: https://lore.kernel.org/lkml/20241016035214.2229-1-fujita.tomonori@gmail.com/
+- Update time::Delta methods (use i64 for everything)
+- Fix read_poll_timeout to show the proper debug info (file and line)
+- Move fsleep to rust/kernel/time/delay.rs
+- Round up delta for fsleep
+- Access directly ktime_t instead of using ktime APIs
+- Add Eq and Ord with PartialEq and PartialOrd
+v2: https://lore.kernel.org/lkml/20241005122531.20298-1-fujita.tomonori@gmail.com/
+- Introduce time::Delta instead of core::time::Duration
+- Add some trait to Ktime for calculating timeout
+- Use read_poll_timeout in QT2025 driver instead of using fsleep directly
+v1: https://lore.kernel.org/netdev/20241001112512.4861-1-fujita.tomonori@gmail.com/
 
+FUJITA Tomonori (8):
+  sched/core: Add __might_sleep_precision()
+  rust: time: Add PartialEq/Eq/PartialOrd/Ord trait to Ktime
+  rust: time: Introduce Delta type
+  rust: time: Introduce Instant type
+  rust: time: Add wrapper for fsleep() function
+  MAINTAINERS: rust: Add TIMEKEEPING and TIMER abstractions
+  rust: Add read_poll_timeout functions
+  net: phy: qt2025: Wait until PHY becomes ready
+
+ MAINTAINERS               |   2 +
+ drivers/net/phy/qt2025.rs |  10 ++-
+ include/linux/kernel.h    |   2 +
+ kernel/sched/core.c       |  55 ++++++++------
+ rust/helpers/helpers.c    |   2 +
+ rust/helpers/kernel.c     |  13 ++++
+ rust/helpers/time.c       |   8 ++
+ rust/kernel/cpu.rs        |  13 ++++
+ rust/kernel/error.rs      |   1 +
+ rust/kernel/io.rs         |   2 +
+ rust/kernel/io/poll.rs    |  78 +++++++++++++++++++
+ rust/kernel/lib.rs        |   1 +
+ rust/kernel/time.rs       | 155 ++++++++++++++++++++++++++++++--------
+ rust/kernel/time/delay.rs |  49 ++++++++++++
+ 14 files changed, 337 insertions(+), 54 deletions(-)
+ create mode 100644 rust/helpers/kernel.c
+ create mode 100644 rust/helpers/time.c
+ create mode 100644 rust/kernel/cpu.rs
+ create mode 100644 rust/kernel/io/poll.rs
+ create mode 100644 rust/kernel/time/delay.rs
+
+
+base-commit: beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d
 -- 
-pw-bot: changes-requested
+2.43.0
+
