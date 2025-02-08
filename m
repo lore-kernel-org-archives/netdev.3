@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7FF1624D0
-	for <netdev@vger.kernel.org>; Sat,  8 Feb 2025 11:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B002475C3
+	for <netdev@vger.kernel.org>; Sat,  8 Feb 2025 11:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739015496; cv=none; b=CEtkUNdNsUG07CSXjTRp0iylLRr/OTsA7DBEGbm48pIZ/fyzZh5eOfmbieoTWgvq10ZpS/AZLLcUvTUusDDTjfmAKeic7XRm1f8pMvbzO43DLEWR189Iw3pGP9K12BptqhoONztKC5Nk5IAekUsZtoaQ8yvBE8Bj6AN9AeEoXNM=
+	t=1739015498; cv=none; b=CCeOc8mPvsQxNpupuFTb7voVgZIJTEz7cM/uqATUv2A6qDQf5+iRdpfCKoxRpXK+8OIcbCiiDGrdtxgBlLuVoy0ELcv3xXS3vcXFP1tjGmTk+iz85y6x/dhab3B1fNwhd5TEAiASgB/jad3cjv9WxtsVXRs1GhkXukBwwwHDYNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739015496; c=relaxed/simple;
-	bh=dpzS/VME843MUUiK6GnZRk9jdInveTfG5Q6zt2pkRNA=;
+	s=arc-20240116; t=1739015498; c=relaxed/simple;
+	bh=vtliXAiHFXkEjUILnKHk3H7Y5//9aPJ75qyLWYexEGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EFjyLfnave/hbFPwZCU/aSdpSlKIttLXci6AtVEI4NWr/5X+lbvUe3hsndQPoIW8YR73FL48iZiXscqaBvzspOYqs7uuAU14t8V7YeEbZKdm+CDerbXIszrjvREwDy8E71Ju1CyFzSyDNwDABarFV8WRPXKusKP4vu2Pz8d+V8E=
+	 MIME-Version; b=Bt6/1tjETPilrluTADdDm/78UYTYIrNXcrWNKi3zBLaYKE8KkiPxx0eRgU9iyNtoQ5GJRsU6iwywe30QQ7xXdaCnzESlz3eOLHezwv/y1VcYRDOIm68i7ucaC7lBHFZZ7L59xXYdixOGef2/6mNdxP2fd1h/pyQQ0Y36mxVeQEY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,41 +18,39 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tgjMy-0006nC-HJ
-	for netdev@vger.kernel.org; Sat, 08 Feb 2025 12:51:32 +0100
+	id 1tgjN0-0006s1-Ox
+	for netdev@vger.kernel.org; Sat, 08 Feb 2025 12:51:34 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tgjMy-0048MC-12
+	id 1tgjN0-0048Nc-16
 	for netdev@vger.kernel.org;
-	Sat, 08 Feb 2025 12:51:32 +0100
+	Sat, 08 Feb 2025 12:51:34 +0100
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 05E9E3BCCDE
-	for <netdev@vger.kernel.org>; Sat, 08 Feb 2025 11:51:31 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id 0AC3F3BCCF6
+	for <netdev@vger.kernel.org>; Sat, 08 Feb 2025 11:51:33 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id EB2623BCCBE;
-	Sat, 08 Feb 2025 11:51:27 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 47BD73BCCD4;
+	Sat, 08 Feb 2025 11:51:31 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 071163ab;
-	Sat, 8 Feb 2025 11:51:21 +0000 (UTC)
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 0675521c;
+	Sat, 8 Feb 2025 11:51:22 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Robin van der Gracht <robin@protonic.nl>,
 	stable@vger.kernel.org,
-	Pavel Pisa <pisa@cmp.felk.cvut.cz>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 3/6] can: ctucanfd: handle skb allocation failure
-Date: Sat,  8 Feb 2025 12:45:16 +0100
-Message-ID: <20250208115120.237274-4-mkl@pengutronix.de>
+Subject: [PATCH net 6/6] can: rockchip: rkcanfd_handle_rx_fifo_overflow_int(): bail out if skb cannot be allocated
+Date: Sat,  8 Feb 2025 12:45:19 +0100
+Message-ID: <20250208115120.237274-7-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250208115120.237274-1-mkl@pengutronix.de>
 References: <20250208115120.237274-1-mkl@pengutronix.de>
@@ -68,49 +66,33 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Robin van der Gracht <robin@protonic.nl>
 
-If skb allocation fails, the pointer to struct can_frame is NULL. This
-is actually handled everywhere inside ctucan_err_interrupt() except for
-the only place.
+Fix NULL pointer check in rkcanfd_handle_rx_fifo_overflow_int() to
+bail out if skb cannot be allocated.
 
-Add the missed NULL check.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE static
-analysis tool.
-
-Fixes: 2dcb8e8782d8 ("can: ctucanfd: add support for CTU CAN FD open-source IP core - bus independent part.")
+Fixes: ff60bfbaf67f ("can: rockchip_canfd: add driver for Rockchip CAN-FD controller")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Pavel Pisa <pisa@cmp.felk.cvut.cz>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250114152138.139580-1-pchelkin@ispras.ru
+Signed-off-by: Robin van der Gracht <robin@protonic.nl>
+Link: https://patch.msgid.link/20250208-fix-rockchip-canfd-v1-1-ec533c8a9895@pengutronix.de
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/ctucanfd/ctucanfd_base.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/can/rockchip/rockchip_canfd-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/ctucanfd/ctucanfd_base.c b/drivers/net/can/ctucanfd/ctucanfd_base.c
-index 64c349fd4600..f65c1a1e05cc 100644
---- a/drivers/net/can/ctucanfd/ctucanfd_base.c
-+++ b/drivers/net/can/ctucanfd/ctucanfd_base.c
-@@ -867,10 +867,12 @@ static void ctucan_err_interrupt(struct net_device *ndev, u32 isr)
- 			}
- 			break;
- 		case CAN_STATE_ERROR_ACTIVE:
--			cf->can_id |= CAN_ERR_CNT;
--			cf->data[1] = CAN_ERR_CRTL_ACTIVE;
--			cf->data[6] = bec.txerr;
--			cf->data[7] = bec.rxerr;
-+			if (skb) {
-+				cf->can_id |= CAN_ERR_CNT;
-+				cf->data[1] = CAN_ERR_CRTL_ACTIVE;
-+				cf->data[6] = bec.txerr;
-+				cf->data[7] = bec.rxerr;
-+			}
- 			break;
- 		default:
- 			netdev_warn(ndev, "unhandled error state (%d:%s)!\n",
+diff --git a/drivers/net/can/rockchip/rockchip_canfd-core.c b/drivers/net/can/rockchip/rockchip_canfd-core.c
+index df18c85fc078..d9a937ba126c 100644
+--- a/drivers/net/can/rockchip/rockchip_canfd-core.c
++++ b/drivers/net/can/rockchip/rockchip_canfd-core.c
+@@ -622,7 +622,7 @@ rkcanfd_handle_rx_fifo_overflow_int(struct rkcanfd_priv *priv)
+ 	netdev_dbg(priv->ndev, "RX-FIFO overflow\n");
+ 
+ 	skb = rkcanfd_alloc_can_err_skb(priv, &cf, &timestamp);
+-	if (skb)
++	if (!skb)
+ 		return 0;
+ 
+ 	rkcanfd_get_berr_counter_corrected(priv, &bec);
 -- 
 2.47.2
 
