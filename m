@@ -1,112 +1,106 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C662475C6
-	for <netdev@vger.kernel.org>; Sat,  8 Feb 2025 11:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A092381C4
+	for <netdev@vger.kernel.org>; Sat,  8 Feb 2025 11:52:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739015498; cv=none; b=NN4b5XbZyjGgiRRC95z5XOc/prbZWhxiYt3KH23rUeGx/J0DqHQztIkGO5paCtXvLnmZ0t06h4cZ14EVZd/xCkxT9djYydJqu5Q0UdAO/kuoAxFia0JSbxYteM/e5Mff8PyuJMK2w77CpeRoYiHYuJhadE2CFfACcW6d3DkCedQ=
+	t=1739015575; cv=none; b=iZFo5vhmvPQ/wtGroYOecbvCqAETIkXAlUAqAfxcXtvpg2efi/USKFxAkuWATztJmZW89kQaoJKifwZLc0+9J5nAErKCKtcgSX600Pmjugr6bprVJsS+T/LKgp2j4IxP0/v1eqwLHAXzcCLmV+qrF+p0biLSKgGqUdJXbQ8VEqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739015498; c=relaxed/simple;
-	bh=3PZwsIstICG+p7ia3lentaJHQ07+f3BLecaZ9llzKX0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Or05FRVJIZlHnI23TPfxgAT3KnE/WQNopoeuuIX7/3nfTTaMIdyU90zxujsF/u2+D6c8zDdfQiI7wa9gzq7wWX5Xt1t7A2w0Ctar2TFYP4IzD+e5sj3jsnHFHEgIDBQnTdhAkQGJHig62db8wo28v2FMpPu2g/d/R8WVvyrI5zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tgjN0-0006s0-OC
-	for netdev@vger.kernel.org; Sat, 08 Feb 2025 12:51:34 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	s=arc-20240116; t=1739015575; c=relaxed/simple;
+	bh=l1/zt6/D+XTL/6uRy0UMAwWJTbvsihGOM4ZleM1qTj8=;
+	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
+	 Message-Id:Date; b=E4SOu3XsEXHCfMyTjvR9AW1xBVQDGDEMzV6DySP96IgbTple4Tc4O2PbqY7ITFBvxCq1qyPZQB3gAnrzp41hgULMcRhiCovrslTC0HNUHxq4oQgwdQO31R3P8N8ToFy3ZyA/+7/D+19HKnnoLC/+7ulLkxzguBU6aWz3wRayqKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=ModErCWZ; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="ModErCWZ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=sZHmgWd+Uz0pShSG6Kj0l6as+Mg9RlkAL1snO0rsw5E=; b=ModErCWZyWU7O4F92yMAmHsbKP
+	hW63Pj9KnrUPRJ+pxxXaZVZ0jgmYzmHJpX41/vy5WFbptNc2Dwi9tucg39qIYTXCfM+UH1CPhzzrQ
+	a0omIfEtaygbRhwdPYyb9GVnUAbNUQvS5E1+T7ulzf6UsVrXddYgNR1QqNGN0M9lU++YuxZYBOTwD
+	UzYjqJQ3VE6shwY1CF3rCwCSzFU48EUhLzVMhwyzEJ1ykXp95fNmqFPj8aU2vFfB+e3pAjdK39Wx1
+	vk0wgtIva9i+qJhUPoX9eA7fUTmoekYNrX9kxud4xExnxT0d4q+QuD6DZHdmNy8YYoyzUNB9zVpEB
+	/lzYnNkQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:44010 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tgjN0-0048Nb-16
-	for netdev@vger.kernel.org;
-	Sat, 08 Feb 2025 12:51:34 +0100
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 05E143BCCF5
-	for <netdev@vger.kernel.org>; Sat, 08 Feb 2025 11:51:33 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 6C5BC3BCCCD;
-	Sat, 08 Feb 2025 11:51:30 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id f9fcc3e4;
-	Sat, 8 Feb 2025 11:51:22 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	yan kang <kangyan91@outlook.com>,
-	yue sun <samsun1006219@gmail.com>,
-	stable@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 5/6] can: etas_es58x: fix potential NULL pointer dereference on udev->serial
-Date: Sat,  8 Feb 2025 12:45:18 +0100
-Message-ID: <20250208115120.237274-6-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250208115120.237274-1-mkl@pengutronix.de>
-References: <20250208115120.237274-1-mkl@pengutronix.de>
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1tgjO7-0000YJ-10;
+	Sat, 08 Feb 2025 11:52:43 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1tgjNn-003q0w-Pw; Sat, 08 Feb 2025 11:52:23 +0000
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH net] net: phylink: make configuring clock-stop dependent on
+ MAC support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1tgjNn-003q0w-Pw@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Sat, 08 Feb 2025 11:52:23 +0000
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+We should not be configuring the PHYs clock-stop settings unless the
+MAC supports phylink managed EEE. Make this dependent on MAC support.
 
-The driver assumed that es58x_dev->udev->serial could never be NULL.
-While this is true on commercially available devices, an attacker
-could spoof the device identity providing a NULL USB serial number.
-That would trigger a NULL pointer dereference.
+This was noticed in a suspicious RCU usage report from the kernel
+test robot (the suspicious RCU usage due to calling phy_detach()
+remains unaddressed, but is triggered by the error this was
+generating.)
 
-Add a check on es58x_dev->udev->serial before accessing it.
-
-Reported-by: yan kang <kangyan91@outlook.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Closes: https://lore.kernel.org/linux-can/SY8P300MB0421E0013C0EBD2AA46BA709A1F42@SY8P300MB0421.AUSP300.PROD.OUTLOOK.COM/
-Fixes: 9f06631c3f1f ("can: etas_es58x: export product information through devlink_ops::info_get()")
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250204154859.9797-2-mailhol.vincent@wanadoo.fr
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: 03abf2a7c654 ("net: phylink: add EEE management")
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/can/usb/etas_es58x/es58x_devlink.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/phy/phylink.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/can/usb/etas_es58x/es58x_devlink.c b/drivers/net/can/usb/etas_es58x/es58x_devlink.c
-index eee20839d96f..0d155eb1b9e9 100644
---- a/drivers/net/can/usb/etas_es58x/es58x_devlink.c
-+++ b/drivers/net/can/usb/etas_es58x/es58x_devlink.c
-@@ -248,7 +248,11 @@ static int es58x_devlink_info_get(struct devlink *devlink,
- 			return ret;
- 	}
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 214b62fba991..b00a315de060 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -2265,12 +2265,15 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
+ 	/* Allow the MAC to stop its clock if the PHY has the capability */
+ 	pl->mac_tx_clk_stop = phy_eee_tx_clock_stop_capable(phy) > 0;
  
--	return devlink_info_serial_number_put(req, es58x_dev->udev->serial);
-+	if (es58x_dev->udev->serial)
-+		ret = devlink_info_serial_number_put(req,
-+						     es58x_dev->udev->serial);
-+
-+	return ret;
+-	/* Explicitly configure whether the PHY is allowed to stop it's
+-	 * receive clock.
+-	 */
+-	ret = phy_eee_rx_clock_stop(phy, pl->config->eee_rx_clk_stop_enable);
+-	if (ret == -EOPNOTSUPP)
+-		ret = 0;
++	if (pl->mac_supports_eee_ops) {
++		/* Explicitly configure whether the PHY is allowed to stop it's
++		 * receive clock.
++		 */
++		ret = phy_eee_rx_clock_stop(phy,
++					    pl->config->eee_rx_clk_stop_enable);
++		if (ret == -EOPNOTSUPP)
++			ret = 0;
++	}
+ 
+ 	return ret;
  }
- 
- const struct devlink_ops es58x_dl_ops = {
 -- 
-2.47.2
-
+2.30.2
 
