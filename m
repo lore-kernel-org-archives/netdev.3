@@ -1,305 +1,246 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243CC2F5B;
-	Sat,  8 Feb 2025 19:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20C9243977;
+	Sat,  8 Feb 2025 20:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739042815; cv=none; b=Gtlfavmhay2yMnApNxVX1LRoOle44DIpUQIDfI052YqmyadaDBt1mNSBG2cf5/QehQWdIwuhSpvBKNvYMI8qoSKKT2NtAR05zG5xOWElVQoXYHYcj3Z+Ge7BBdrPJ9fVp3tX03nldexmrdRwtKvjYmX+uSGeFlex6gRSAodU4oU=
+	t=1739046566; cv=none; b=RaXoha/tv3yug+7tKVeQ9J3QZHvWu1NBSjnWingVVDk+x69kGmP1zl2E0rdRIeuYP24igD3YURxipUXoEUgWbAKdC29pANRmcK4FCQeJAhV+66lSRv6SqM82Wq97r6QnlptxmpcVypg8gPiCY0sDu+cEdJSM0+I8XKPKjwnCRw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739042815; c=relaxed/simple;
-	bh=FgRiLoUeYS/P2a34Mzi77DK32Q9dPe2je058z8o/H5Q=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EiDentDnm5Jiys6iaB7n4LpKZkBEhKwRv1bXtocIaFU36d474tSdxovwGWhIP8UU4fH4+QFvowoT0AfPQjVfLpiRBEW9q16Ak68VGZdm1eP6c1Wunsa4OMoTLWe13Sjkd1UlvwIijhD7OAgEnAHBuSZjoDjCzAZokVdWKrxXIMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cwJtyx7u; arc=none smtp.client-ip=209.85.222.180
+	s=arc-20240116; t=1739046566; c=relaxed/simple;
+	bh=BuFfrICehAmNqMElVl1sQBfRxyGCnMePVyif3AQO10A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q2MNhTGaBS34Vi/hRPgohnknmo7i5ey/5ULf5WxCO8CwTmY2n3G+izxzGNw7s3D2SP0pHmh1SpNW0jFJCMxysuYheep8PQgyadvhwUa32o57Kh2SUS3wrxdfVB4rsVf5eikkSpWkwfW2hEbWrvndoSmtHCIzrXpC9TVMiYjXVoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XWKb3g21; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cwJtyx7u"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7c05049e67aso31231985a.1;
-        Sat, 08 Feb 2025 11:26:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XWKb3g21"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43618283dedso30651915e9.3;
+        Sat, 08 Feb 2025 12:29:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739042812; x=1739647612; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ErecbTkBa9sio41ZFgWnV9foB5CsuNaP3L4bJYj5st4=;
-        b=cwJtyx7uZDrt0foIvvQWwxu4m+R+YUdFbO+8cgrE+indWlFyOr4l0puVDd8AZ6KDKg
-         OfvSlbPyVadkrfQSnoPgiSfLXiLx5Au7y5YL1F6jLaspeCNU+JInFNdEufqeZQDuPAeZ
-         ZnqldA+EboBob27+LSlKQF3qU5VLRGl+KsuT4lESTzdrJf++IvvBz04c2PKan24C+qye
-         DQz1QyfXNKi26D22uMbCxlmhUsvC9Snc5hv6NIq3sWyTcD7ovst+y0v/CqxYuQl9mW+D
-         nKWVvPTJg/Bg9MRG1FXxl3wh6gVBfkX7pdbKgDCVuQcbx5TDs0RVe0Y0didXv8SIdk22
-         zfvA==
+        d=gmail.com; s=20230601; t=1739046563; x=1739651363; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fzNGhud87Y2IUxbA6ZwO4Q5SM3UBCTZy/XSQtgk0BSY=;
+        b=XWKb3g21w+B2jVbD6cBcND1KRBYBPVlNSX3o8cvtf+3b35ZxNuc3U6VApF6CxEG54Y
+         Ka4X3c6w9LKFu3xLXM4juxdxQ/b/GssXZOoDiGLq6NWWULUP06tHVp13SalhvK9ie4bF
+         vk9yY5qRxrzVECzgySHZBlZ79H0uJi0usSVPWUqGPMBCWyBskWxpfzlE1fUxAPjW2zfK
+         pvwotCP8fUy7DrfUpzvgtn2yj4khqnEMry8eFNeldP/mF8eKdrfPS2BVLkL/g6QQ5CrH
+         2url+Hhd64S7p9V/p0BoFVEuvMzE2ff8DtyPX2czGE+Pkd0RsOz00BV7+r1/fUclx7r7
+         iRFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739042812; x=1739647612;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1739046563; x=1739651363;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ErecbTkBa9sio41ZFgWnV9foB5CsuNaP3L4bJYj5st4=;
-        b=uxA8JxCagcMVOl5WalbpaxWdPx8LPNmy8o07sd0aoYggkSzsKz9PsQgTGw+fy4XL+z
-         HP/d1zOyrYC4jOvwpRfZ1X3SmVeKwKt1JJQ8ojtXQx/YN0FAV8YZB5vHQhk37cg9hZoK
-         Xx4u2z3gYjb8NVHfu7bN+ci4fE2f1CMHMF7dyo6T54Nt428hNLENXLLIa3eo7AmqvbLF
-         jY5qnBmEHeKM7banEnNWsQWJSMPk0Kltao64KimipGNMspHHVZRbfv+a9nXEy/wkIDCa
-         MTfsgl2dTcwv4Bx4fDc+9VWTngbZHbwEy1yN1vnDLLavic7NOt4t4on079YyGRFf9lho
-         Ziaw==
-X-Forwarded-Encrypted: i=1; AJvYcCUr/YXkDFe7QwgWrqFjkykWtsrturREBlmM0xLXkhoJXlh93ywo3GQZ0C95tKmkT+NCNKuaHRX1akeINIOx3JU=@vger.kernel.org, AJvYcCVcDMmlCkprWNzoLDnM1OHrsY+M9mMga2KAgZwRwk8zkmvYnLb/hBmedc37Kzca6VhgdFavHvfq@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMZW3+KB4t6TJbu2MCRiwYkXyHt3pcrqz0sdHr4jt7d/mevJw9
-	KDeetbkZQ692GDenwA0WOV/QxfxJgqvjGeWxrVfZmO2ZAcirDCRGVy46F2vj
-X-Gm-Gg: ASbGnctREaN8rebKEi9ux/8UF9s0PnBXC3e5zlPrGu8yb3pIVUFfJXVseHP9BG4Mwh1
-	8WEhznD9BnBZ3NcwExqGD6tV6HOjGc6Q95nm0jwyyHc1i0RI3ampNcfEls4+Lx2mvHRo5zC02mR
-	MU5d3Bp9/CS2W/ZYaqN82zbh+QHeVKRSqjjyyIvI6DYWJ/3S4Qij7x1+Mm0OEnxBSC3kGjLjfNu
-	8MyHjeyV3vHD59BfeVdvNMDZXR3gX+rVlJrnVPvhd/J3p5ywzdvtbfJiNn7GwpdlAMritrfdQbs
-	erfUYhz8X9ijde5MemcnE3mYngUF3weLzqCt4Q8YQzm1Y1E=
-X-Google-Smtp-Source: AGHT+IE7KI6OrHjZVszKf5uuDQy13QYH7ConCPPve/CxaiTLiaoDIoMyAZDafHop59v2SQ4fN/BVkg==
-X-Received: by 2002:a05:620a:2844:b0:7b6:79c8:d036 with SMTP id af79cd13be357-7c047ba5549mr1004098285a.3.1739042811923;
-        Sat, 08 Feb 2025 11:26:51 -0800 (PST)
-Received: from 1.0.0.127.in-addr.arpa ([2600:4041:5be7:7c00:c58e:ed03:1b60:c56d])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c041dec31dsm334474385a.1.2025.02.08.11.26.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Feb 2025 11:26:50 -0800 (PST)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Sat, 08 Feb 2025 14:26:43 -0500
-Subject: [PATCH v2] blackhole_dev: convert self-test to KUnit
+        bh=fzNGhud87Y2IUxbA6ZwO4Q5SM3UBCTZy/XSQtgk0BSY=;
+        b=DeNaO2URRL8arwh9I8+2DvhXGV4k2OgzP9sVtqMhH4wobL8hcmhASeZJfIWKGD8gX2
+         a2NNnb0LZuQp2viHdsYV1WnA9T+aDasTxtDoQVph6ox0WXHwzr+sMVMh/AQU0OThJwvm
+         3Xvi+WIZdjD67u2eNxHW6NdZsCt1aEZ4C0BCR2ukLOHZEe8WyZK1RVKNT4T9H4MT4fna
+         eI0rX8Vx5J/vqggSvj+jsXzAMiQ+cJ19XMuUXOXU45JT8nHyNjUvlDScRctMhRH4vO3c
+         Y/7WR3jQCxriRw9Ghq/R1TdqjScrc5noAlpA5EyS5w2Gubjl7Dn0gUjxfwTX9uetzZGu
+         q+7w==
+X-Forwarded-Encrypted: i=1; AJvYcCVDQH6XA/hQ734gxyE7n6NjiOPHcMCtYSUBdOHcnR+O/TDcWMMS/kqE/XflF6UKhiYO8saTUefJHoM=@vger.kernel.org, AJvYcCWm+cYNmJdLmyX2fDzHHVQrg/qFt+noplJ4iupFqpze5ZeIGh47n+OsECqITwvFtUmDge6W8Atd@vger.kernel.org, AJvYcCX8u6ck2dGRt3WTHHEe7DhixxjdTwSDZkUFE++30WMK/M+nDfegB7BMQiGpsmZQBlkcz0O32bh2@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuwS+IHcg40d+0cc5GX8Qfuk1KKzfb1cK5Cap9Fygis+ypEL6J
+	7zzwHDC98oG1zOqVmuMzh5wkGFvEzJtMDxbYl+PywpAjNc/FeI5iq/deOpV4p5cOwbdk7vJxXxp
+	qU37AH6dqZsPNJdXd62wYJAYJtSY=
+X-Gm-Gg: ASbGnctSP+Gi7e496WmrcHu3OtP6QYaE+R1r6mUqbPZRyC/nNtQz2C2hhTqatmq66uI
+	nZl52P//7BIZTx7oIWZ2unLo1W3OyYCqd2sy15Mox/U7ZbIMvD11kVw8cg7aB0q8em2YR42bG
+X-Google-Smtp-Source: AGHT+IHbfZ/veQuDAAt6CNQEESnDTJIDuxBcmoHU15JJsQfV7sbWPF62N9+BtZdCDfINotFN+GYVEmAc67VS4G8a//E=
+X-Received: by 2002:a5d:6dae:0:b0:38d:b997:12ef with SMTP id
+ ffacd0b85a97d-38dc8db15b5mr5921081f8f.13.1739046562575; Sat, 08 Feb 2025
+ 12:29:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250208-blackholedev-kunit-convert-v2-1-182db9bd56ec@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAPKvp2cC/42NQQ7CIBBFr9LM2jGAaURX3sN0gXRoJ23BQCWah
- ruLPYH5q/cX722QKDIluDYbRMqcOPgK6tCAHY0fCLmvDEqoVihxxsds7DSGmXrKOL08r2iDzxR
- XvJhWGVknTgqq4BnJ8XuX37vKI6c1xM/eyvL3/qXNEiVqcqK30jmt5W1YDM9HGxboSilfqpTon
- sQAAAA=
-X-Change-ID: 20250207-blackholedev-kunit-convert-9a52a1a1a032
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
- Nathan Chancellor <nathan@kernel.org>, 
- Nick Desaulniers <ndesaulniers@google.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, llvm@lists.linux.dev, 
- Tamir Duberstein <tamird@gmail.com>
-X-Mailer: b4 0.15-dev
+References: <20250205171649.618162-1-fabio.porcedda@gmail.com> <20250205171649.618162-2-fabio.porcedda@gmail.com>
+In-Reply-To: <20250205171649.618162-2-fabio.porcedda@gmail.com>
+From: Daniele Palmas <dnlplm@gmail.com>
+Date: Sat, 8 Feb 2025 21:29:11 +0100
+X-Gm-Features: AWEUYZlLzmbHXb4Dl-s6G3wlGborZ5GbL9nFzxxQewxFZaH1ov7dLfGkYIAdEFc
+Message-ID: <CAGRyCJFE3Gzs+tBrKA+PjXgmFfmZ9=6eOrr4VS6JMCsAPi8F-w@mail.gmail.com>
+Subject: Re: [PATCH 1/5] USB: serial: option: add Telit Cinterion FN990B compositions
+To: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: Oliver Neukum <oliver@neukum.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, =?UTF-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>, 
+	Johan Hovold <johan@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, 
+	netdev@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Convert this very simple smoke test to a KUnit test.
+Il giorno mer 5 feb 2025 alle ore 18:16 Fabio Porcedda
+<fabio.porcedda@gmail.com> ha scritto:
+>
+> Add the following Telit Cinterion FN990B40 compositions:
+>
+> 0x10d0: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+>         tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+> T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
+> D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+> P:  Vendor=1bc7 ProdID=10d0 Rev=05.15
+> S:  Manufacturer=Telit Cinterion
+> S:  Product=FN990
+> S:  SerialNumber=43b38f19
+> C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
+> I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+> E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+> I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+> E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+> E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+> E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+> E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+> E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+>
+> 0x10d1: MBIM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+>         tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+> T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 16 Spd=480  MxCh= 0
+> D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+> P:  Vendor=1bc7 ProdID=10d1 Rev=05.15
+> S:  Manufacturer=Telit Cinterion
+> S:  Product=FN990
+> S:  SerialNumber=43b38f19
+> C:  #Ifs=10 Cfg#= 1 Atr=e0 MxPwr=500mA
+> I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+> E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+> I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+> E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+> E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+> E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+> E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 8 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+> E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+> E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+>
+> 0x10d2: RNDIS + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+>         tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+> T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 18 Spd=480  MxCh= 0
+> D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+> P:  Vendor=1bc7 ProdID=10d2 Rev=05.15
+> S:  Manufacturer=Telit Cinterion
+> S:  Product=FN990
+> S:  SerialNumber=43b38f19
+> C:  #Ifs=10 Cfg#= 1 Atr=e0 MxPwr=500mA
+> I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+> E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+> I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+> E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+> E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+> E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+> E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 8 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+> E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+> E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+>
+> 0x10d3: ECM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+>         tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+> T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 20 Spd=480  MxCh= 0
+> D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+> P:  Vendor=1bc7 ProdID=10d3 Rev=05.15
+> S:  Manufacturer=Telit Cinterion
+> S:  Product=FN990
+> S:  SerialNumber=43b38f19
+> C:  #Ifs=10 Cfg#= 1 Atr=e0 MxPwr=500mA
+> I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+> E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+> I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+> E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+> E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+> E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+> E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 8 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+> E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+> E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-Add a missing `htons` call that was spotted[0] by kernel test robot
-<lkp@intel.com> after initial conversion to KUnit.
-
-Link: https://lore.kernel.org/oe-kbuild-all/202502090223.qCYMBjWT-lkp@intel.com/ [0]
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
----
-I tested this using:
-
-$ tools/testing/kunit/kunit.py run --arch arm64 --make_options LLVM=1 --kconfig_add CONFIG_NET=y blackholedev
----
-Changes in v2:
-- Add missing `htons` call. (kernel test robot <lkp@intel.com>)
-- Link to v1: https://lore.kernel.org/r/20250207-blackholedev-kunit-convert-v1-1-8ef0dc1ff881@gmail.com
----
- lib/Kconfig.debug                                  | 20 ++++-----
- lib/Makefile                                       |  2 +-
- ...{test_blackhole_dev.c => blackhole_dev_kunit.c} | 47 ++++++++--------------
- tools/testing/selftests/net/Makefile               |  2 +-
- tools/testing/selftests/net/test_blackhole_dev.sh  | 11 -----
- 5 files changed, 29 insertions(+), 53 deletions(-)
-
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 1af972a92d06..238321830993 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2557,15 +2557,6 @@ config TEST_BPF
- 
- 	  If unsure, say N.
- 
--config TEST_BLACKHOLE_DEV
--	tristate "Test blackhole netdev functionality"
--	depends on m && NET
--	help
--	  This builds the "test_blackhole_dev" module that validates the
--	  data path through this blackhole netdev.
--
--	  If unsure, say N.
--
- config FIND_BIT_BENCHMARK
- 	tristate "Test find_bit functions"
- 	help
-@@ -2888,6 +2879,17 @@ config USERCOPY_KUNIT_TEST
- 	  on the copy_to/from_user infrastructure, making sure basic
- 	  user/kernel boundary testing is working.
- 
-+config BLACKHOLE_DEV_KUNIT_TEST
-+	tristate "Test blackhole netdev functionality" if !KUNIT_ALL_TESTS
-+	depends on NET
-+	depends on KUNIT
-+	default KUNIT_ALL_TESTS
-+	help
-+	  This builds the "blackhole_dev_kunit" module that validates the
-+	  data path through this blackhole netdev.
-+
-+	  If unsure, say N.
-+
- config TEST_UDELAY
- 	tristate "udelay test driver"
- 	help
-diff --git a/lib/Makefile b/lib/Makefile
-index d5cfc7afbbb8..19ff6993c2bc 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -102,7 +102,6 @@ obj-$(CONFIG_TEST_RUNTIME) += tests/
- obj-$(CONFIG_TEST_DEBUG_VIRTUAL) += test_debug_virtual.o
- obj-$(CONFIG_TEST_MEMCAT_P) += test_memcat_p.o
- obj-$(CONFIG_TEST_OBJAGG) += test_objagg.o
--obj-$(CONFIG_TEST_BLACKHOLE_DEV) += test_blackhole_dev.o
- obj-$(CONFIG_TEST_MEMINIT) += test_meminit.o
- obj-$(CONFIG_TEST_LOCKUP) += test_lockup.o
- obj-$(CONFIG_TEST_HMM) += test_hmm.o
-@@ -393,6 +392,7 @@ obj-$(CONFIG_FORTIFY_KUNIT_TEST) += fortify_kunit.o
- obj-$(CONFIG_CRC_KUNIT_TEST) += crc_kunit.o
- obj-$(CONFIG_SIPHASH_KUNIT_TEST) += siphash_kunit.o
- obj-$(CONFIG_USERCOPY_KUNIT_TEST) += usercopy_kunit.o
-+obj-$(CONFIG_BLACKHOLE_DEV_KUNIT_TEST) += blackhole_dev_kunit.o
- 
- obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) += devmem_is_allowed.o
- 
-diff --git a/lib/test_blackhole_dev.c b/lib/blackhole_dev_kunit.c
-similarity index 68%
-rename from lib/test_blackhole_dev.c
-rename to lib/blackhole_dev_kunit.c
-index ec290ac2a0d9..06834ab35f43 100644
---- a/lib/test_blackhole_dev.c
-+++ b/lib/blackhole_dev_kunit.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- * This module tests the blackhole_dev that is created during the
-+ * This tests the blackhole_dev that is created during the
-  * net subsystem initialization. The test this module performs is
-  * by injecting an skb into the stack with skb->dev as the
-  * blackhole_dev and expects kernel to behave in a sane manner
-@@ -9,9 +9,8 @@
-  * Copyright (c) 2018, Mahesh Bandewar <maheshb@google.com>
-  */
- 
--#include <linux/init.h>
-+#include <kunit/test.h>
- #include <linux/module.h>
--#include <linux/printk.h>
- #include <linux/skbuff.h>
- #include <linux/netdevice.h>
- #include <linux/udp.h>
-@@ -25,17 +24,15 @@
- 
- #define UDP_PORT 1234
- 
--static int __init test_blackholedev_init(void)
-+static void test_blackholedev(struct kunit *test)
- {
- 	struct ipv6hdr *ip6h;
- 	struct sk_buff *skb;
- 	struct udphdr *uh;
- 	int data_len;
--	int ret;
- 
- 	skb = alloc_skb(SKB_SIZE, GFP_KERNEL);
--	if (!skb)
--		return -ENOMEM;
-+	KUNIT_ASSERT_NOT_NULL(test, skb);
- 
- 	/* Reserve head-room for the headers */
- 	skb_reserve(skb, HEAD_SIZE);
-@@ -55,7 +52,7 @@ static int __init test_blackholedev_init(void)
- 	ip6h = (struct ipv6hdr *)skb_push(skb, sizeof(struct ipv6hdr));
- 	skb_set_network_header(skb, 0);
- 	ip6h->hop_limit = 32;
--	ip6h->payload_len = data_len + sizeof(struct udphdr);
-+	ip6h->payload_len = htons(data_len + sizeof(struct udphdr));
- 	ip6h->nexthdr = IPPROTO_UDP;
- 	ip6h->saddr = in6addr_loopback;
- 	ip6h->daddr = in6addr_loopback;
-@@ -68,32 +65,20 @@ static int __init test_blackholedev_init(void)
- 	skb->dev = blackhole_netdev;
- 
- 	/* Now attempt to send the packet */
--	ret = dev_queue_xmit(skb);
--
--	switch (ret) {
--	case NET_XMIT_SUCCESS:
--		pr_warn("dev_queue_xmit() returned NET_XMIT_SUCCESS\n");
--		break;
--	case NET_XMIT_DROP:
--		pr_warn("dev_queue_xmit() returned NET_XMIT_DROP\n");
--		break;
--	case NET_XMIT_CN:
--		pr_warn("dev_queue_xmit() returned NET_XMIT_CN\n");
--		break;
--	default:
--		pr_err("dev_queue_xmit() returned UNKNOWN(%d)\n", ret);
--	}
--
--	return 0;
-+	KUNIT_EXPECT_EQ(test, dev_queue_xmit(skb), NET_XMIT_SUCCESS);
- }
- 
--static void __exit test_blackholedev_exit(void)
--{
--	pr_warn("test_blackholedev module terminating.\n");
--}
-+static struct kunit_case blackholedev_cases[] = {
-+	KUNIT_CASE(test_blackholedev),
-+	{},
-+};
-+
-+static struct kunit_suite blackholedev_suite = {
-+	.name = "blackholedev",
-+	.test_cases = blackholedev_cases,
-+};
- 
--module_init(test_blackholedev_init);
--module_exit(test_blackholedev_exit);
-+kunit_test_suite(blackholedev_suite);
- 
- MODULE_AUTHOR("Mahesh Bandewar <maheshb@google.com>");
- MODULE_DESCRIPTION("module test of the blackhole_dev");
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 73ee88d6b043..afa4bcdc5833 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -7,7 +7,7 @@ CFLAGS += -I../../../../usr/include/ $(KHDR_INCLUDES)
- CFLAGS += -I../
- 
- TEST_PROGS := run_netsocktests run_afpackettests test_bpf.sh netdevice.sh \
--	      rtnetlink.sh xfrm_policy.sh test_blackhole_dev.sh
-+	      rtnetlink.sh xfrm_policy.sh
- TEST_PROGS += fib_tests.sh fib-onlink-tests.sh pmtu.sh udpgso.sh ip_defrag.sh
- TEST_PROGS += udpgso_bench.sh fib_rule_tests.sh msg_zerocopy.sh psock_snd.sh
- TEST_PROGS += udpgro_bench.sh udpgro.sh test_vxlan_under_vrf.sh reuseport_addr_any.sh
-diff --git a/tools/testing/selftests/net/test_blackhole_dev.sh b/tools/testing/selftests/net/test_blackhole_dev.sh
-deleted file mode 100755
-index 3119b80e711f..000000000000
---- a/tools/testing/selftests/net/test_blackhole_dev.sh
-+++ /dev/null
-@@ -1,11 +0,0 @@
--#!/bin/sh
--# SPDX-License-Identifier: GPL-2.0
--# Runs blackhole-dev test using blackhole-dev kernel module
--
--if /sbin/modprobe -q test_blackhole_dev ; then
--	/sbin/modprobe -q -r test_blackhole_dev;
--	echo "test_blackhole_dev: ok";
--else
--	echo "test_blackhole_dev: [FAIL]";
--	exit 1;
--fi
-
----
-base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
-change-id: 20250207-blackholedev-kunit-convert-9a52a1a1a032
-
-Best regards,
--- 
-Tamir Duberstein <tamird@gmail.com>
-
+Reviewed-by: Daniele Palmas <dnlplm@gmail.com>
