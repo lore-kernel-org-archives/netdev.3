@@ -1,110 +1,102 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CB39475;
-	Sat,  8 Feb 2025 00:25:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E83114830A;
+	Sat,  8 Feb 2025 00:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738974343; cv=none; b=haY2CK7ClksuA5w30QCJRk+ZFIRXh2O0n2X8DjqRzPw4gXRxw42R/I0k1TIihxWtv1Yr6iIzC9/tBbTvfFj/1gGOMhSA/uOn5PjcLCSCTyYSYLZyc0xZ0TKDilaU/6wMk4E578bA9XXUbXsNcqVB7RQpHutNlw0rJN9OQUN+ceo=
+	t=1738974440; cv=none; b=rwNtDn7kFro21Rzh85ymoijR5ig5n1tSNRbC7u6WgRleV1WbPjlS2m9zgFEQzZjq++I5wtCpN1J/ucsmqXNR5XHJ2As8B2iFYys4wJd2J/vHHUaAObvwKeWLkoKHIXecXRX6gAw+Encc219/ABFT4YdBYzvZaatMpbuVNt0lw8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738974343; c=relaxed/simple;
-	bh=KnnMJ5gA4MaTm4LyzoHVsG5QMMlcHjMBNuQdqkXXobo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d1ziimDCFgQuxOMwwKqwEjQleLSPZm20tD4PYQy4KoqTJRaVexldX6fWBQ5blBNtBw4rbHCNVjXjiNMk/9Qs0yIRukuFPWXBeKc1lEhHI95FfozlVCEozk7IlHIvCUzCRZHR7O64Ee/i0hSah65ycaYDQUycJr41roE83Oq/sjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=I060GgTz; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1738974440; c=relaxed/simple;
+	bh=umE6t0joR8G2vFmBUYWVjILv26oDiwZvq+HbzaQDyfA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ethqa9HTT4lIxV7npFcGa5tnBKUzB7nAvdPzm8WkaLrWA/ndzrFbOhwtsa8EXI/xHmGZu9iWLH0N5dx+OqYZVewmTMqrgJHs3AWiRz0g+03Cuxngpm22G31ftPkui2tBsarnZaRzWBdkSkHL271PKgODauz6ytyvcDHnV7DZEpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IMyPPTdY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="I060GgTz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1738974341; x=1770510341;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=KnnMJ5gA4MaTm4LyzoHVsG5QMMlcHjMBNuQdqkXXobo=;
-  b=I060GgTzvlqAVJHJxAG+O6oWbCwP40CNfHN/7YnFG4WoljB2rMaw5y1V
-   KxxdcHzE8YmqzyHEK/Okzk6ICtUmfITnAMmBQjVdf5bWjDB7qqllnywfz
-   MUOozQMH1siskGYqQ2ug1Rg4NHOy3vC00PPGyGweMhCWJpUdWk79OUudF
-   888aZeLANw9r+r9nfZPgic9R937v18U9CxF3PzXQlA1y4pYQSR5VVYMMg
-   WspaeQJ8Wzfc4ktX+HLaR5A7n8rusImeL+B5bwLto3wNNTWAZxNgoJCMi
-   7VKRPfpQj8mLa3P9Rf7LEMl4NEd3V2GcAMIt1Fs10GkwLmJ8sGu1KHMFS
-   w==;
-X-CSE-ConnectionGUID: gjF3bHhWQjawgqi63hdssw==
-X-CSE-MsgGUID: cfMPCns0SHaIaVWTYroJtw==
-X-IronPort-AV: E=Sophos;i="6.13,268,1732604400"; 
-   d="scan'208";a="37033620"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Feb 2025 17:25:33 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 7 Feb 2025 17:24:18 -0700
-Received: from pop-os.microchip.com (10.10.85.11) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Fri, 7 Feb 2025 17:24:18 -0700
-From: <Tristram.Ha@microchip.com>
-To: Russell King <linux@armlinux.org.uk>, Woojung Huh
-	<woojung.huh@microchip.com>, Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean
-	<olteanv@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>, "Maxime
- Chevallier" <maxime.chevallier@bootlin.com>
-CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, <UNGLinuxDriver@microchip.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Tristram Ha
-	<tristram.ha@microchip.com>
-Subject: [PATCH RFC net-next v3 1/2] net: pcs: xpcs: Activate DW_XPCS_SGMII_MODE_MAC_MANUAL for KSZ9477
-Date: Fri, 7 Feb 2025 16:24:16 -0800
-Message-ID: <20250208002417.58634-2-Tristram.Ha@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250208002417.58634-1-Tristram.Ha@microchip.com>
-References: <20250208002417.58634-1-Tristram.Ha@microchip.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IMyPPTdY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCDBC4CED1;
+	Sat,  8 Feb 2025 00:27:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738974439;
+	bh=umE6t0joR8G2vFmBUYWVjILv26oDiwZvq+HbzaQDyfA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=IMyPPTdYpqHmRZmeFFzM1Ii1zTiU1+16yBmvVkVLn8slx4VvSvQNnyd2Zzi/OvY1w
+	 UtKmXyH4BStcv2x8I63DNZuuZAyqxNZHDROrbD2MJRd7WZHXh0kQ5scaTgh/3K18uD
+	 bxMGtsfC94j9mPDhhvI+vXmDw8YourWQiQ+WZvfrOFjz4KFULJ9vK4JAkBv5fPzwAF
+	 52uyD0Z7F5LKzgFkGNJHN8+ehvecKIakWoSs0O2GTRElHY3TkWJknMREiCaNJv9a58
+	 mDz53NDRsCa423mzls8pkd0limpxlh9l/OGfYnzHMB5UVii9gw2CWsGNaLu145CYZB
+	 3oUjBaZQje/rA==
+Date: Fri, 7 Feb 2025 16:27:18 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ kernel-team@meta.com, kuniyu@amazon.com, ushankar@purestorage.com
+Subject: Re: [PATCH RFC net-next] net: Add dev_getbyhwaddr_rtnl() helper
+Message-ID: <20250207162718.4f26219e@kernel.org>
+In-Reply-To: <20250207-arm_fix_selftest-v1-1-487518d2fd1c@debian.org>
+References: <20250207-arm_fix_selftest-v1-1-487518d2fd1c@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Tristram Ha <tristram.ha@microchip.com>
+On Fri, 07 Feb 2025 04:11:34 -0800 Breno Leitao wrote:
+> +static bool dev_comp_addr(struct net_device *dev,
+> +			  unsigned short type,
+> +			  const char *ha)
 
-Microchip KSZ9477 SGMII uses old XPCS IP and requires special code to
-operate correctly.  A special value from PMA device ids will be used to
-activate DW_XPCS_SGMII_MODE_MAC_MANUL.
+Weird indentation.
 
-Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
----
- drivers/net/pcs/pcs-xpcs.c   | 2 ++
- include/linux/pcs/pcs-xpcs.h | 1 +
- 2 files changed, 3 insertions(+)
+static bool 
+dev_comp_addr(struct net_device *dev,  unsigned short type, const char *ha)
 
-diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
-index d522e4a5a138..5aad67ff4a4f 100644
---- a/drivers/net/pcs/pcs-xpcs.c
-+++ b/drivers/net/pcs/pcs-xpcs.c
-@@ -1482,6 +1482,8 @@ static struct dw_xpcs *xpcs_create(struct mdio_device *mdiodev)
- 		xpcs->sgmii_10_100_8bit = DW_XPCS_SGMII_10_100_8BIT;
- 		xpcs->sgmii_mode = DW_XPCS_SGMII_MODE_PHY_HW;
- 	} else {
-+		if (xpcs->info.pma == MICROCHIP_KSZ9477_PMA_ID)
-+			xpcs->sgmii_mode = DW_XPCS_SGMII_MODE_MAC_MANUAL;
- 		xpcs->need_reset = true;
- 	}
- 
-diff --git a/include/linux/pcs/pcs-xpcs.h b/include/linux/pcs/pcs-xpcs.h
-index 733f4ddd2ef1..637d5356a961 100644
---- a/include/linux/pcs/pcs-xpcs.h
-+++ b/include/linux/pcs/pcs-xpcs.h
-@@ -39,6 +39,7 @@ enum dw_xpcs_pma_id {
- 	DW_XPCS_PMA_GEN5_10G_ID,
- 	DW_XPCS_PMA_GEN5_12G_ID,
- 	WX_TXGBE_XPCS_PMA_10G_ID = 0x0018fc80,
-+	MICROCHIP_KSZ9477_PMA_ID = 0x00229477,
- };
- 
- struct dw_xpcs_info {
--- 
-2.34.1
+or
 
+static bool dev_comp_addr(struct net_device *dev, unsigned short type,
+			  const char *ha)
+
+> +{
+> +	if (dev->type == type && !memcmp(dev->dev_addr, ha, dev->addr_len))
+> +		return true;
+> +
+> +	return false;
+
+	return dev->type == type && !memcmp(dev->dev_addr, ha, dev->addr_len);
+
+> +}
+
+> +/**
+> + *	dev_getbyhwaddr_rtnl - find a device by its hardware address
+
+I guess Eric suggested the _rtnl() suffix, tho it's quite uncommon.
+Most function are either function() or function_rcu() in networking.
+
+> + *	@net: the applicable net namespace
+> + *	@type: media type of device
+> + *	@ha: hardware address
+> + *
+> + *	Similar to dev_getbyhwaddr_rcu(), but, the owner needs to hold
+
+unnecessary , after but
+
+> + *	RTNL.
+
+rtnl_lock. RTNL is short for RTNetLink
+
+> + *
+
+document the return value kdoc style:
+
+	Return: pointer to the net_device, or NULL if not found
+
+> + */
+> +struct net_device *dev_getbyhwaddr_rtnl(struct net *net, unsigned short type,
+> +					const char *ha)
+
+You missed adding this to a header file?
