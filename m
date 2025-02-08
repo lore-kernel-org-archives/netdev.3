@@ -1,71 +1,78 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6792475EF;
-	Sat,  8 Feb 2025 13:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F0C20328;
+	Sat,  8 Feb 2025 14:15:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739021901; cv=none; b=Ji0mVMEGvP0BnVKKBCcrk31PEAUT54tVUrmcODlfyeeH9eADb2W1O+epyTjPyhzEhE6QapjWt80tOwN4GFTneRA5yFNRIvNNs3OtLkV47I8nH0E1Pe4DqUseEDNYoYdSYSogjbNKT3CaYFvfiGkPC3ruoAgdW6TixxNpmxBBKC0=
+	t=1739024128; cv=none; b=DQXAvHOETPwxDU3fEj/z1rLxQopeMmJ7xyw6gdu59SOeZooSO6Xqn1XzmBriZcy/7gP6EtMl8LVEJvUVO5znq8PIUimpwv1DSmKM4zwfda1nfIy00B2h8+dVfAoL1QD4Rx5s9KmF6tuoMRCbM8D6fNpVP9rhEC4YzwA6LZ9wKSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739021901; c=relaxed/simple;
-	bh=gI2pA/dMXWtVaf4bIfmJEZPL3CWsf7D7LIheFkRsga4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mJXHV+ts+jHmFlN/9kd/y18aToOKU5nSiuJfqW6cN//Ag8Yj2Xs6S8f0K5upOwLDKJ9QwXMnEc9AyFTXJ2jGfdjOijO+PCt7BYtUo1OFvDP0SbhUQOBo2sklY4qYyXNZSu4sc+iJT/jVVa2q05wn3Jzt1/mU1yxIUDOt2JoJa3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MB3KvzBO; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1739024128; c=relaxed/simple;
+	bh=dRS2dFkNO1XmsBKb3lZugJeHViVFC2Ib0rAKifXwTaA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dRyTeIh8AcydYj9E6JCZSazjGJl22+tKaxV4H1hVUMA16+upaaT0sra/9v2S0pDUdQmdrXT51d/Z+MmgRA4pn4ZOpzOjLEy1kGc9Xh1zQylTMBfIvHQgx1xeEcSaL7613mjc4pNo+lUto8+FjTnsNM5557lJ+ngYMgHjo2UMGaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MPHMOGvP; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MB3KvzBO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739021900; x=1770557900;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gI2pA/dMXWtVaf4bIfmJEZPL3CWsf7D7LIheFkRsga4=;
-  b=MB3KvzBOTXpqRHKXRUH6N5KG4Us4yra+/gyoNnsD87YKg5OCYd/mVKR9
-   oJALytit/Iz4c8RDlv8296RXp5siluLkhVLx2/kwOF5BPfpyRmP1VQ/t8
-   12RnuviHocMhbLf+ixyfBgFxqVch4TW0J6M82QVIn79mfytLVdmFRIjH2
-   LF8LZ9DQC9yTM5cSPhkl70HxlhvSO/sXy1ZW9mur4hvsNvADvxWekuGXD
-   1Chk9SUDo1TJ333jrwNaW8O929OxhGCqCx3F5mfp5h0bLPYw3TIYXQRrG
-   DG/29mtaNW9gYaDprwOujxW5tgg3Yc8wBrZpnCRaNQhtxeBFjnUhbzVj6
-   Q==;
-X-CSE-ConnectionGUID: g9ai4Q5IRVmM5gOONXB+wA==
-X-CSE-MsgGUID: 5VYy/YRARs+e/g8uA7GG2Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="51084854"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="51084854"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2025 05:38:19 -0800
-X-CSE-ConnectionGUID: 0a15xgLrQniMpMTnrZUCPw==
-X-CSE-MsgGUID: pldJW8wpQ4GmBRovg/5tJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="116980886"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by orviesa005.jf.intel.com with ESMTP; 08 Feb 2025 05:38:15 -0800
-Received: from lincoln.igk.intel.com (lincoln.igk.intel.com [10.102.21.235])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id ABD7432CA4;
-	Sat,  8 Feb 2025 13:38:13 +0000 (GMT)
-From: Larysa Zaremba <larysa.zaremba@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	intel-wired-lan@lists.osuosl.org
-Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MPHMOGvP"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5dcf0de81ebso5945832a12.1;
+        Sat, 08 Feb 2025 06:15:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739024124; x=1739628924; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8+iqMrEjo+IVGfKF4iUrFvQs5I5Sd+N+2c3oSnwunnM=;
+        b=MPHMOGvPf9Sau5mSCA+QsvLVCY1zIDacpHQ7mrKH8nmBtBSgSi7MFwMp1iL6yLx6pi
+         aj9Ay7PQieWBWYvYzduoBQf+RbPAsx5QMjauEkyHr0wUjYoCr6hdvT+JKRE6h0sjaOvi
+         nDrEPiwOGi0jmTuPn2d/IOgCs80mvagEE4CuLPx4qIj0eXGdzz4HHdPbLDPMke/mrPkt
+         toF+5HIcFPwXpFPkxo1XRs1kZ1MFabYsscwoQ9t3U58MjcLqTkupdBf9heapkyKEniEe
+         Nixrd/5hZiquiuXdcEqoJJDpG7yF4AAlRwfaZPb4GF7XRVbJVA21xOzfUpuXFS6zUGKg
+         m7sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739024124; x=1739628924;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8+iqMrEjo+IVGfKF4iUrFvQs5I5Sd+N+2c3oSnwunnM=;
+        b=euJkNdMVR1inc2ZutRrK7v4anYhACwrH4eg6qDhjT452DR+4H38Y96TyLDYkc9WxBD
+         qDikuJgl06JLihR/ra1RYGCXlsoSHc0+/GpT+YJsGzjLSMLzVjQrja4+vfIBA4XUxzpP
+         4r4bnX2rMkFhyFGaXXyyE3JuXoQdbW1vleeLL032IpmWbgkmdI6Y1RWtrOwWkbVeq3sO
+         jaEnuURnQuygwkh3hVr4rmEEgUq3eX5cF+pJLfAl5Q7qrvphXGb4DSMO2UP6cn6Nn2cR
+         +Ry+GK2PiGHULmdzXF+di59hsCgMTMfpW66+rEBucEvU8tDJrPEU2RzbyycUJqeMnGjb
+         PT0w==
+X-Forwarded-Encrypted: i=1; AJvYcCXket4YHLU8AM3pNNU9VoCfLz7dxOkfhnztH9TsR1wNCTZ0yljTXc/QfLh6hSi3FyqG1HD+tb3c+uquS8E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGtrvnlLhQ31BXi5+WC0Ykvks068vNX4FxShlP163JCOgteNOl
+	ZSHCpDgrJqX4r78YdfD9XP28+FFt/OB/dcbBBUwUFP6vgSN7SI24
+X-Gm-Gg: ASbGncuYdyolwr2gT4+cNOhwHFnyfynQiUxFPZjWIF3ezzhVf7aVuWjJ6HJDvrIHFKA
+	KjKeFztncbjmvoZ9zdvvzU06KuwAIqqfV6OT/9RXC7Q7HYppwah2xpLJ61Aot9FqYmeEeYxhJ81
+	vDniigpfQk+gG6D0LJSjmP6Tq6TDOvP3Ukgoto+BIlFtpEq46ssPowDheO20ugfbR9iQ2+f3YJo
+	otpaWrBWyDgO/sii0KvYqKD0yHTajUHtf1FWEJpBJwtCs3L1pjfDBwIrNtCDsUUK+UdKvJvY63f
+	qAKmu2JaodMoAR+IaKldrFmInkNTp3Ag/RpcWPzQPLf2iHmWUM6bSy398npQzZ3A69LT7gA2T47
+	C5IWcWwLeEzee85tSKmr/1+rJyKfCwQst
+X-Google-Smtp-Source: AGHT+IHRlg6a5WHt94wQjV8YuRdQ/K6mGEvKQnnyq4TjuTRN2piQcoQkGA0KObUeZNfpEsvXdV7ggA==
+X-Received: by 2002:a05:6402:4588:b0:5dc:cc90:a384 with SMTP id 4fb4d7f45d1cf-5de450a9cadmr7346610a12.22.1739024124086;
+        Sat, 08 Feb 2025 06:15:24 -0800 (PST)
+Received: from corebook.localdomain (2001-1c00-020d-1300-1b1c-4449-176a-89ea.cable.dynamic.v6.ziggo.nl. [2001:1c00:20d:1300:1b1c:4449:176a:89ea])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dcf6c9f9a6sm4530201a12.55.2025.02.08.06.15.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Feb 2025 06:15:23 -0800 (PST)
+From: Eric Woudstra <ericwouds@gmail.com>
+To: Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>
+Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
-Subject: [PATCH iwl-next v3 6/6] ice: enable LLDP TX for VFs through tc
-Date: Sat,  8 Feb 2025 14:22:47 +0100
-Message-ID: <20250208132251.1989365-7-larysa.zaremba@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250208132251.1989365-1-larysa.zaremba@intel.com>
-References: <20250208132251.1989365-1-larysa.zaremba@intel.com>
+	Eric Woudstra <ericwouds@gmail.com>
+Subject: [RFC PATCH v1 net-next] net: mlxsw_sp: Use switchdev_handle_port_obj_add_foreign() for vxlan
+Date: Sat,  8 Feb 2025 15:15:18 +0100
+Message-ID: <20250208141518.191782-1-ericwouds@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,320 +81,241 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Only a single VSI can be in charge of sending LLDP frames, sometimes it is
-beneficial to assign this function to a VF, that is possible to do with tc
-capabilities in the switchdev mode. It requires first blocking the PF from
-sending the LLDP frames with a following command:
+Sending as RFC as I do not own this hardware. This code is not tested.
 
-tc filter add dev <ifname> egress protocol lldp flower skip_sw action drop
+Vladimir found this part of the spectrum switchdev, while looking at
+another issue here:
 
-Then it becomes possible to configure a forward rule from a VF port
-representor to uplink instead.
+https://lore.kernel.org/all/20250207220408.zipucrmm2yafj4wu@skbuf/
 
-tc filter add dev <vf_ifname> ingress protocol lldp flower skip_sw
-action mirred egress redirect dev <ifname>
+As vxlan seems a foreign port, wouldn't it be better to use
+switchdev_handle_port_obj_add_foreign() ?
 
-How LLDP exclusivity was done previously is LLDP traffic was blocked for a
-whole port by a single rule and PF was bypassing that. Now at least in the
-switchdev mode, every separate VSI has to have its own drop rule. Another
-complication is the fact that tc does not respect when the driver refuses
-to delete a rule, so returning an error results in a HW rule still present
-with no way to reference it through tc. This is addressed by allowing the
-PF rule to be deleted at any time, but making the VF forward rule "dormant"
-in such case, this means it is deleted from HW but stays in tc and driver's
-bookkeeping to be restored when drop rule is added back to the PF.
+Note that port_obj_info->handled = true is set in
+__switchdev_handle_port_obj_add() and can be removed.
 
-Implement tc configuration handling which enables the user to transmit LLDP
-packets from VF instead of PF.
-
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
 ---
- drivers/net/ethernet/intel/ice/ice_eswitch.c |   2 +
- drivers/net/ethernet/intel/ice/ice_repr.c    |   7 +
- drivers/net/ethernet/intel/ice/ice_tc_lib.c  | 159 +++++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_tc_lib.h  |   2 +
- drivers/net/ethernet/intel/ice/ice_vf_lib.h  |   4 +
- 5 files changed, 174 insertions(+)
+ .../net/ethernet/mellanox/mlxsw/spectrum.c    |  6 ++
+ .../net/ethernet/mellanox/mlxsw/spectrum.h    |  2 +
+ .../mellanox/mlxsw/spectrum_switchdev.c       | 92 ++++++++++---------
+ 3 files changed, 56 insertions(+), 44 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index 70a523e962d8..40547ff65e25 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -29,6 +29,7 @@ static int ice_eswitch_setup_env(struct ice_pf *pf)
- 			return -ENODEV;
- 
- 	ice_remove_vsi_fltr(&pf->hw, uplink_vsi->idx);
-+	ice_vsi_cfg_sw_lldp(uplink_vsi, true, false);
- 
- 	netif_addr_lock_bh(netdev);
- 	__dev_uc_unsync(netdev, NULL);
-@@ -283,6 +284,7 @@ static void ice_eswitch_release_env(struct ice_pf *pf)
- 	ice_fltr_add_mac_and_broadcast(uplink_vsi,
- 				       uplink_vsi->port_info->mac.perm_addr,
- 				       ICE_FWD_TO_VSI);
-+	ice_vsi_cfg_sw_lldp(uplink_vsi, true, true);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
+index d714311fd884..f03b489f7b99 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
+@@ -4002,6 +4002,12 @@ bool mlxsw_sp_port_dev_check(const struct net_device *dev)
+ 	return dev->netdev_ops == &mlxsw_sp_port_netdev_ops;
  }
  
- /**
-diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c b/drivers/net/ethernet/intel/ice/ice_repr.c
-index f81bf60f8365..cb08746556a6 100644
---- a/drivers/net/ethernet/intel/ice/ice_repr.c
-+++ b/drivers/net/ethernet/intel/ice/ice_repr.c
-@@ -337,6 +337,7 @@ void ice_repr_destroy(struct ice_repr *repr)
- static void ice_repr_rem_vf(struct ice_repr *repr)
++bool mlxsw_sp_foreign_dev_check(const struct net_device *dev,
++				const struct net_device *foreign_dev)
++{
++	return netif_is_vxlan(foreign_dev);
++}
++
+ static int mlxsw_sp_lower_dev_walk(struct net_device *lower_dev,
+ 				   struct netdev_nested_priv *priv)
  {
- 	ice_eswitch_decfg_vsi(repr->src_vsi, repr->parent_mac);
-+	ice_pass_vf_tx_lldp(repr->src_vsi, true);
- 	unregister_netdev(repr->netdev);
- 	ice_devlink_destroy_vf_port(repr->vf);
- 	ice_virtchnl_set_dflt_ops(repr->vf);
-@@ -418,6 +419,10 @@ static int ice_repr_add_vf(struct ice_repr *repr)
- 	if (err)
- 		goto err_netdev;
- 
-+	err = ice_drop_vf_tx_lldp(repr->src_vsi, true);
-+	if (err)
-+		goto err_drop_lldp;
-+
- 	err = ice_eswitch_cfg_vsi(repr->src_vsi, repr->parent_mac);
- 	if (err)
- 		goto err_cfg_vsi;
-@@ -430,6 +435,8 @@ static int ice_repr_add_vf(struct ice_repr *repr)
- 	return 0;
- 
- err_cfg_vsi:
-+	ice_pass_vf_tx_lldp(repr->src_vsi, true);
-+err_drop_lldp:
- 	unregister_netdev(repr->netdev);
- err_netdev:
- 	ice_devlink_destroy_vf_port(vf);
-diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-index 095c1fe51d97..963d9b78c2ea 100644
---- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-@@ -762,6 +762,153 @@ static int ice_eswitch_tc_parse_action(struct net_device *filter_dev,
- 	return 0;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.h b/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
+index b10f80fc651b..4264468c5a6f 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
+@@ -709,6 +709,8 @@ int mlxsw_sp_flow_counter_alloc(struct mlxsw_sp *mlxsw_sp,
+ void mlxsw_sp_flow_counter_free(struct mlxsw_sp *mlxsw_sp,
+ 				unsigned int counter_index);
+ bool mlxsw_sp_port_dev_check(const struct net_device *dev);
++bool mlxsw_sp_foreign_dev_check(const struct net_device *dev,
++				const struct net_device *foreign_dev);
+ struct mlxsw_sp *mlxsw_sp_lower_get(struct net_device *dev);
+ struct mlxsw_sp_port *mlxsw_sp_port_dev_lower_find(struct net_device *dev);
+ struct mlxsw_sp_port *mlxsw_sp_port_dev_lower_find_rcu(struct net_device *dev);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
+index 6397ff0dc951..0ab80cb22bc4 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
+@@ -2252,6 +2252,14 @@ mlxsw_sp_port_mrouter_update_mdb(struct mlxsw_sp_port *mlxsw_sp_port,
+ 	}
  }
  
-+static bool ice_is_fltr_lldp(struct ice_tc_flower_fltr *fltr)
-+{
-+	return fltr->outer_headers.l2_key.n_proto == htons(ETH_P_LLDP);
-+}
++static int
++mlxsw_sp_switchdev_handle_vxlan_obj_add(struct net_device *vxlan_dev,
++					const struct switchdev_obj *obj,
++					struct netlink_ext_ack *extack);
++static void
++mlxsw_sp_switchdev_handle_vxlan_obj_del(struct net_device *vxlan_dev,
++					const struct switchdev_obj *obj);
 +
-+static bool ice_is_fltr_pf_tx_lldp(struct ice_tc_flower_fltr *fltr)
-+{
-+	struct ice_vsi *vsi = fltr->src_vsi, *uplink;
+ static int mlxsw_sp_port_obj_add(struct net_device *dev, const void *ctx,
+ 				 const struct switchdev_obj *obj,
+ 				 struct netlink_ext_ack *extack)
+@@ -2262,16 +2270,20 @@ static int mlxsw_sp_port_obj_add(struct net_device *dev, const void *ctx,
+ 
+ 	switch (obj->id) {
+ 	case SWITCHDEV_OBJ_ID_PORT_VLAN:
+-		vlan = SWITCHDEV_OBJ_PORT_VLAN(obj);
+-
+-		err = mlxsw_sp_port_vlans_add(mlxsw_sp_port, vlan, extack);
+-
+-		/* The event is emitted before the changes are actually
+-		 * applied to the bridge. Therefore schedule the respin
+-		 * call for later, so that the respin logic sees the
+-		 * updated bridge state.
+-		 */
+-		mlxsw_sp_span_respin(mlxsw_sp_port->mlxsw_sp);
++		if (netif_is_vxlan(dev)) {
++			err = mlxsw_sp_switchdev_handle_vxlan_obj_add(dev, obj, extack);
++		} else {
++			vlan = SWITCHDEV_OBJ_PORT_VLAN(obj);
 +
-+	if (!ice_is_switchdev_running(vsi->back))
-+		return false;
++			err = mlxsw_sp_port_vlans_add(mlxsw_sp_port, vlan, extack);
 +
-+	uplink = vsi->back->eswitch.uplink_vsi;
-+	return vsi == uplink && fltr->action.fltr_act == ICE_DROP_PACKET &&
-+	       ice_is_fltr_lldp(fltr) &&
-+	       fltr->direction == ICE_ESWITCH_FLTR_EGRESS &&
-+	       fltr->flags == ICE_TC_FLWR_FIELD_ETH_TYPE_ID;
-+}
-+
-+static bool ice_is_fltr_vf_tx_lldp(struct ice_tc_flower_fltr *fltr)
-+{
-+	struct ice_vsi *vsi = fltr->src_vsi, *uplink;
-+
-+	uplink = vsi->back->eswitch.uplink_vsi;
-+	return fltr->src_vsi->type == ICE_VSI_VF && ice_is_fltr_lldp(fltr) &&
-+	       fltr->direction == ICE_ESWITCH_FLTR_EGRESS &&
-+	       fltr->dest_vsi == uplink;
-+}
-+
-+static struct ice_tc_flower_fltr *
-+ice_find_pf_tx_lldp_fltr(struct ice_pf *pf)
-+{
-+	struct ice_tc_flower_fltr *fltr;
-+
-+	hlist_for_each_entry(fltr, &pf->tc_flower_fltr_list, tc_flower_node)
-+		if (ice_is_fltr_pf_tx_lldp(fltr))
-+			return fltr;
-+
-+	return NULL;
-+}
-+
-+static bool ice_any_vf_lldp_tx_ena(struct ice_pf *pf)
-+{
-+	struct ice_vf *vf;
-+	unsigned int bkt;
-+
-+	ice_for_each_vf(pf, bkt, vf)
-+		if (vf->lldp_tx_ena)
-+			return true;
-+
-+	return false;
-+}
-+
-+int ice_pass_vf_tx_lldp(struct ice_vsi *vsi, bool deinit)
-+{
-+	struct ice_rule_query_data remove_entry = {
-+		.rid = vsi->vf->lldp_recipe_id,
-+		.rule_id = vsi->vf->lldp_rule_id,
-+		.vsi_handle = vsi->idx,
-+	};
-+	struct ice_pf *pf = vsi->back;
-+	int err;
-+
-+	if (vsi->vf->lldp_tx_ena)
-+		return 0;
-+
-+	if (!deinit && !ice_find_pf_tx_lldp_fltr(vsi->back))
-+		return -EINVAL;
-+
-+	if (!deinit && ice_any_vf_lldp_tx_ena(pf))
-+		return -EINVAL;
-+
-+	err = ice_rem_adv_rule_by_id(&pf->hw, &remove_entry);
-+	if (!err)
-+		vsi->vf->lldp_tx_ena = true;
-+
-+	return err;
-+}
-+
-+int ice_drop_vf_tx_lldp(struct ice_vsi *vsi, bool init)
-+{
-+	struct ice_rule_query_data rule_added;
-+	struct ice_adv_rule_info rinfo = {
-+		.priority = 7,
-+		.src_vsi = vsi->idx,
-+		.sw_act = {
-+			.src = vsi->idx,
-+			.flag = ICE_FLTR_TX,
-+			.fltr_act = ICE_DROP_PACKET,
-+			.vsi_handle = vsi->idx,
-+		},
-+		.flags_info.act_valid = true,
-+	};
-+	struct ice_adv_lkup_elem list[3];
-+	struct ice_pf *pf = vsi->back;
-+	int err;
-+
-+	if (!init && !vsi->vf->lldp_tx_ena)
-+		return 0;
-+
-+	ice_rule_add_direction_metadata(&list[0]);
-+	ice_rule_add_src_vsi_metadata(&list[1]);
-+	list[2].type = ICE_ETYPE_OL;
-+	list[2].h_u.ethertype.ethtype_id = htons(ETH_P_LLDP);
-+	list[2].m_u.ethertype.ethtype_id = htons(0xFFFF);
-+
-+	err = ice_add_adv_rule(&pf->hw, list, ARRAY_SIZE(list), &rinfo,
-+			       &rule_added);
-+	if (err) {
-+		dev_err(&pf->pdev->dev,
-+			"Failed to add an LLDP rule to VSI 0x%X: %d\n",
-+			vsi->idx, err);
-+	} else {
-+		vsi->vf->lldp_recipe_id = rule_added.rid;
-+		vsi->vf->lldp_rule_id = rule_added.rule_id;
-+		vsi->vf->lldp_tx_ena = false;
-+	}
-+
-+	return err;
-+}
-+
-+static void ice_handle_add_pf_lldp_drop_rule(struct ice_vsi *vsi)
-+{
-+	struct ice_tc_flower_fltr *fltr;
-+	struct ice_pf *pf = vsi->back;
-+
-+	hlist_for_each_entry(fltr, &pf->tc_flower_fltr_list, tc_flower_node) {
-+		if (!ice_is_fltr_vf_tx_lldp(fltr))
-+			continue;
-+		ice_pass_vf_tx_lldp(fltr->src_vsi, true);
-+		break;
-+	}
-+}
-+
-+static void ice_handle_del_pf_lldp_drop_rule(struct ice_pf *pf)
-+{
-+	int i;
-+
-+	/* Make the VF LLDP fwd to uplink rule dormant */
-+	ice_for_each_vsi(pf, i) {
-+		struct ice_vsi *vf_vsi = pf->vsi[i];
-+
-+		if (vf_vsi && vf_vsi->type == ICE_VSI_VF)
-+			ice_drop_vf_tx_lldp(vf_vsi, false);
-+	}
-+}
-+
++			/* The event is emitted before the changes are actually
++			 * applied to the bridge. Therefore schedule the respin
++			 * call for later, so that the respin logic sees the
++			 * updated bridge state.
++			 */
++			mlxsw_sp_span_respin(mlxsw_sp_port->mlxsw_sp);
++		}
+ 		break;
+ 	case SWITCHDEV_OBJ_ID_PORT_MDB:
+ 		err = mlxsw_sp_port_mdb_add(mlxsw_sp_port,
+@@ -2401,8 +2413,12 @@ static int mlxsw_sp_port_obj_del(struct net_device *dev, const void *ctx,
+ 
+ 	switch (obj->id) {
+ 	case SWITCHDEV_OBJ_ID_PORT_VLAN:
+-		err = mlxsw_sp_port_vlans_del(mlxsw_sp_port,
+-					      SWITCHDEV_OBJ_PORT_VLAN(obj));
++		if (netif_is_vxlan(dev)) {
++			mlxsw_sp_switchdev_handle_vxlan_obj_del(dev, obj);
++		} else {
++			err = mlxsw_sp_port_vlans_del(mlxsw_sp_port,
++						      SWITCHDEV_OBJ_PORT_VLAN(obj));
++		}
+ 		break;
+ 	case SWITCHDEV_OBJ_ID_PORT_MDB:
+ 		err = mlxsw_sp_port_mdb_del(mlxsw_sp_port,
+@@ -3931,19 +3947,17 @@ mlxsw_sp_switchdev_vxlan_vlan_del(struct mlxsw_sp *mlxsw_sp,
+ 
  static int
- ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
+ mlxsw_sp_switchdev_vxlan_vlans_add(struct net_device *vxlan_dev,
+-				   struct switchdev_notifier_port_obj_info *
+-				   port_obj_info)
++				   const struct switchdev_obj *obj,
++				   struct netlink_ext_ack *extack)
  {
-@@ -779,6 +926,9 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
- 		return -EOPNOTSUPP;
- 	}
+ 	struct switchdev_obj_port_vlan *vlan =
+-		SWITCHDEV_OBJ_PORT_VLAN(port_obj_info->obj);
++		SWITCHDEV_OBJ_PORT_VLAN(obj);
+ 	bool flag_untagged = vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED;
+ 	bool flag_pvid = vlan->flags & BRIDGE_VLAN_INFO_PVID;
+ 	struct mlxsw_sp_bridge_device *bridge_device;
+-	struct netlink_ext_ack *extack;
+ 	struct mlxsw_sp *mlxsw_sp;
+ 	struct net_device *br_dev;
  
-+	if (ice_is_fltr_vf_tx_lldp(fltr))
-+		return ice_pass_vf_tx_lldp(vsi, false);
-+
- 	lkups_cnt = ice_tc_count_lkups(flags, fltr);
- 	list = kcalloc(lkups_cnt, sizeof(*list), GFP_ATOMIC);
- 	if (!list)
-@@ -850,6 +1000,9 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
- 		goto exit;
- 	}
+-	extack = switchdev_notifier_info_to_extack(&port_obj_info->info);
+ 	br_dev = netdev_master_upper_dev_get(vxlan_dev);
+ 	if (!br_dev)
+ 		return 0;
+@@ -3952,8 +3966,6 @@ mlxsw_sp_switchdev_vxlan_vlans_add(struct net_device *vxlan_dev,
+ 	if (!mlxsw_sp)
+ 		return 0;
  
-+	if (ice_is_fltr_pf_tx_lldp(fltr))
-+		ice_handle_add_pf_lldp_drop_rule(vsi);
-+
- 	/* store the output params, which are needed later for removing
- 	 * advanced switch filter
- 	 */
-@@ -1965,6 +2118,12 @@ static int ice_del_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
- 	struct ice_pf *pf = vsi->back;
- 	int err;
+-	port_obj_info->handled = true;
+-
+ 	bridge_device = mlxsw_sp_bridge_device_find(mlxsw_sp->bridge, br_dev);
+ 	if (!bridge_device)
+ 		return -EINVAL;
+@@ -3969,11 +3981,10 @@ mlxsw_sp_switchdev_vxlan_vlans_add(struct net_device *vxlan_dev,
  
-+	if (ice_is_fltr_pf_tx_lldp(fltr))
-+		ice_handle_del_pf_lldp_drop_rule(pf);
-+
-+	if (ice_is_fltr_vf_tx_lldp(fltr))
-+		return ice_drop_vf_tx_lldp(vsi, false);
-+
- 	rule_rem.rid = fltr->rid;
- 	rule_rem.rule_id = fltr->rule_id;
- 	rule_rem.vsi_handle = fltr->dest_vsi_handle;
-diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.h b/drivers/net/ethernet/intel/ice/ice_tc_lib.h
-index da09fbba03ad..2e7d2ea08ee0 100644
---- a/drivers/net/ethernet/intel/ice/ice_tc_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.h
-@@ -218,6 +218,8 @@ int
- ice_del_cls_flower(struct ice_vsi *vsi, struct flow_cls_offload *cls_flower);
- void ice_replay_tc_fltrs(struct ice_pf *pf);
- bool ice_is_tunnel_supported(struct net_device *dev);
-+int ice_drop_vf_tx_lldp(struct ice_vsi *vsi, bool init);
-+int ice_pass_vf_tx_lldp(struct ice_vsi *vsi, bool deinit);
- 
- static inline bool ice_is_forward_action(enum ice_sw_fwd_act_type fltr_act)
+ static void
+ mlxsw_sp_switchdev_vxlan_vlans_del(struct net_device *vxlan_dev,
+-				   struct switchdev_notifier_port_obj_info *
+-				   port_obj_info)
++				   const struct switchdev_obj *obj)
  {
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.h b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-index f4c9ca1f51ce..482f4285fd35 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-@@ -124,6 +124,7 @@ struct ice_vf {
- 	u8 spoofchk:1;
- 	u8 link_forced:1;
- 	u8 link_up:1;			/* only valid if VF link is forced */
-+	u8 lldp_tx_ena:1;
+ 	struct switchdev_obj_port_vlan *vlan =
+-		SWITCHDEV_OBJ_PORT_VLAN(port_obj_info->obj);
++		SWITCHDEV_OBJ_PORT_VLAN(obj);
+ 	struct mlxsw_sp_bridge_device *bridge_device;
+ 	struct mlxsw_sp *mlxsw_sp;
+ 	struct net_device *br_dev;
+@@ -3986,8 +3997,6 @@ mlxsw_sp_switchdev_vxlan_vlans_del(struct net_device *vxlan_dev,
+ 	if (!mlxsw_sp)
+ 		return;
  
- 	u32 ptp_caps;
+-	port_obj_info->handled = true;
+-
+ 	bridge_device = mlxsw_sp_bridge_device_find(mlxsw_sp->bridge, br_dev);
+ 	if (!bridge_device)
+ 		return;
+@@ -4001,15 +4010,15 @@ mlxsw_sp_switchdev_vxlan_vlans_del(struct net_device *vxlan_dev,
  
-@@ -150,6 +151,9 @@ struct ice_vf {
- 	/* devlink port data */
- 	struct devlink_port devlink_port;
+ static int
+ mlxsw_sp_switchdev_handle_vxlan_obj_add(struct net_device *vxlan_dev,
+-					struct switchdev_notifier_port_obj_info *
+-					port_obj_info)
++					const struct switchdev_obj *obj,
++					struct netlink_ext_ack *extack)
+ {
+ 	int err = 0;
  
-+	u16 lldp_recipe_id;
-+	u16 lldp_rule_id;
-+
- 	u16 num_msix;			/* num of MSI-X configured on this VF */
- 	struct ice_vf_qs_bw qs_bw[ICE_MAX_RSS_QS_PER_VF];
- };
+-	switch (port_obj_info->obj->id) {
++	switch (obj->id) {
+ 	case SWITCHDEV_OBJ_ID_PORT_VLAN:
+ 		err = mlxsw_sp_switchdev_vxlan_vlans_add(vxlan_dev,
+-							 port_obj_info);
++							 obj, extack);
+ 		break;
+ 	default:
+ 		break;
+@@ -4020,12 +4029,11 @@ mlxsw_sp_switchdev_handle_vxlan_obj_add(struct net_device *vxlan_dev,
+ 
+ static void
+ mlxsw_sp_switchdev_handle_vxlan_obj_del(struct net_device *vxlan_dev,
+-					struct switchdev_notifier_port_obj_info *
+-					port_obj_info)
++					const struct switchdev_obj *obj)
+ {
+-	switch (port_obj_info->obj->id) {
++	switch (obj->id) {
+ 	case SWITCHDEV_OBJ_ID_PORT_VLAN:
+-		mlxsw_sp_switchdev_vxlan_vlans_del(vxlan_dev, port_obj_info);
++		mlxsw_sp_switchdev_vxlan_vlans_del(vxlan_dev, obj);
+ 		break;
+ 	default:
+ 		break;
+@@ -4040,20 +4048,16 @@ static int mlxsw_sp_switchdev_blocking_event(struct notifier_block *unused,
+ 
+ 	switch (event) {
+ 	case SWITCHDEV_PORT_OBJ_ADD:
+-		if (netif_is_vxlan(dev))
+-			err = mlxsw_sp_switchdev_handle_vxlan_obj_add(dev, ptr);
+-		else
+-			err = switchdev_handle_port_obj_add(dev, ptr,
+-							mlxsw_sp_port_dev_check,
+-							mlxsw_sp_port_obj_add);
++		err = switchdev_handle_port_obj_add_foreign(dev, ptr,
++							    mlxsw_sp_port_dev_check,
++							    mlxsw_sp_foreign_dev_check,
++							    mlxsw_sp_port_obj_add);
+ 		return notifier_from_errno(err);
+ 	case SWITCHDEV_PORT_OBJ_DEL:
+-		if (netif_is_vxlan(dev))
+-			mlxsw_sp_switchdev_handle_vxlan_obj_del(dev, ptr);
+-		else
+-			err = switchdev_handle_port_obj_del(dev, ptr,
+-							mlxsw_sp_port_dev_check,
+-							mlxsw_sp_port_obj_del);
++		err = switchdev_handle_port_obj_del_foreign(dev, ptr,
++							    mlxsw_sp_port_dev_check,
++							    mlxsw_sp_foreign_dev_check,
++							    mlxsw_sp_port_obj_del);
+ 		return notifier_from_errno(err);
+ 	case SWITCHDEV_PORT_ATTR_SET:
+ 		err = switchdev_handle_port_attr_set(dev, ptr,
 -- 
-2.43.0
+2.47.1
 
