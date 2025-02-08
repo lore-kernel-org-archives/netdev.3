@@ -1,91 +1,141 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BD9522F
-	for <netdev@vger.kernel.org>; Sat,  8 Feb 2025 02:18:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0AEC14F90
+	for <netdev@vger.kernel.org>; Sat,  8 Feb 2025 02:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738981132; cv=none; b=su13hLVrn9QPlTMaGRRDy6mYkN325W9gRx1gNu6oFM+T4F5nVxsL1JnMWEycpFVIl+fpAxo8nnhDh0zVSyXucNdzG4OdKAE1Ko3b5aA0fx45twcPzr3HbDrBgf+RanAw+X6suaWzbx4F8LZjej66hQpMmLJw3Hb+7fU0td3Valc=
+	t=1738982916; cv=none; b=uFCq31UIEjeq55RyNWdpFADZwXZvxi5ulaexc+c1LkCdKy66DKRBia+OzhlLL3q48xDKmN9ytqSQpkjgdisDoKcbD/EBjItnkKMfARdow7tXIu30VkBaZ8oSEka5fyX6V4n1SJwIJ99uYaz239DgXzE3eJhDZ4nH2CyO46pEtm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738981132; c=relaxed/simple;
-	bh=9nvDh+G5Dgqc5oE3152DaXeBYJ3LczX3hO8S0OatEy8=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=S0fB8w6ai+/ZMEJTdkRgRFkyMdiiId/EvyW2DdOOCDYNUcxo8+qF6DxYm3bmzAqHhOGNXrTekdApSX8mEAbSmZAcTvRYyXneGTgWabwjxRUkj7VJxuAET2c4c6y/fgdaLxwLkNqmLBK3XpQjnstKJ0tdg0c36kM8WX2X2sk9I0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g/ziB83/; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g/ziB83/"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-436ce2ab251so17841585e9.1
-        for <netdev@vger.kernel.org>; Fri, 07 Feb 2025 18:18:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738981129; x=1739585929; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9nvDh+G5Dgqc5oE3152DaXeBYJ3LczX3hO8S0OatEy8=;
-        b=g/ziB83/oGYgg2lcYB32vJLOmnnv1yYfj7fQ80UMdXfhglQIqIHk1n9uwir1/wLpmO
-         fqWVDj6KPcR4yKYq/1H+QCsREkyax8roXGDs25TgD09QAm2VKnMyozy6AQ/ovfLZV3x2
-         TatnxFstxpZ2L7C3EUEnHkjX5ctJTb1mHi3+GcutqshQI2PaUUPh4Fx/m3ToRnFRt+1r
-         wml9mqC4yDVADt/kyI1Ls3RU7VvnCQJhERpFjM/GPJ2E6nY045cFekjgIPvT8CxDywEG
-         CbXunIASEhHpZzbj/3Bg/q8NXAS8TGgInRayEi7XqXWT0K64+BirQpXe/htijlqaA36D
-         ezAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738981129; x=1739585929;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9nvDh+G5Dgqc5oE3152DaXeBYJ3LczX3hO8S0OatEy8=;
-        b=sImdUVAJWyQnjWYkyTkXC/GQjy7crtuHy1iAXq/E+BQUT6Ys/vYbr8uucByeebVmuS
-         r2UrIIW1Z4pPTKDPVyB8HLirU4Gh3m7VObzoQLUVCS5Jbr2NhDyMi+WzLPkNm4eZQHql
-         Y6jjJhnN1C6d8TfcrBfbDIIZXFUg7w0/hSGVx92HY2EVQVOLrm4Hb6GpJxnL79KoOfcz
-         zw7461C0LnHTVJfogBKFAYhyaP8PhEbmKn6ybuk/KH/jJWdfVbXFuvwLe4EWrwktNVjv
-         d2Lo9IhrNEF0IzIRZi1wTDX5X5FKlQAKH109DBmQS/5O69sDhZK6QsqOhmnXLiaisajI
-         lDEg==
-X-Forwarded-Encrypted: i=1; AJvYcCV6h4VVIC7w/7ehE0+xIHzR6BLHjj7P2TGGMB4gv1tyDuoYXrz+LzDYGlgmMPcxyjQh+kpb27w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLHt6sQVAPqFSGPM4TpWDDtroJzR1B0Mt+W/n+QKhzfgOna/T5
-	hYvUiPmVYsYppi5fPg7EXg+7+YmDAgf+tRFV6ipODS/p8ENAeahKUFgL7A==
-X-Gm-Gg: ASbGncvDwyNVmsoOyAVSxVuRZSE/m92aSjQQzp4E/ohUB0/qcCkUWa9kgLO7UKOM5GW
-	qvEYM1dYKrFlq3AotOw34Qsw0IPSl/+YPVjuXjUBcQGCPKQ1fZQvNcd3Mt2sMrINJ/t0qoyKH5/
-	fdAw4tUuWYmaMFxGL9+L5PveUuWjR+eL2uUSCIcs1dE7vEZm2ajrO3zBBuaUVCNkjVWNqDBFVoF
-	LiBaEBxPYOy7+kHVOXujj7eMCfDRCp3XkpM/+GJnSDhWaeDMPaxUE3kz3YOXtskd0jfuwKTAd8p
-	B3mVYKFVtSmzBbxajNTLuF2pCqjqEcteqAPNq0BlvEDnEX3ZSImXXXNOu9S68mZJ84mMmCmHFc1
-	sekc=
-X-Google-Smtp-Source: AGHT+IEGg8nBpbGY6sZ26Mfm0vA4MJ+3Xa3y31rQrUihjrjn3tJTV+yiYIOw6PikN3A4s/06NDYM5A==
-X-Received: by 2002:a05:600c:3485:b0:434:a7b6:10e9 with SMTP id 5b1f17b1804b1-43924994529mr43628425e9.17.1738981129003;
-        Fri, 07 Feb 2025 18:18:49 -0800 (PST)
-Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dd5e3cddasm19932f8f.22.2025.02.07.18.18.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Feb 2025 18:18:48 -0800 (PST)
-Subject: Re: [PATCH net-next 2/4] sfc: extend NVRAM MCDI handlers
-To: kernel test robot <lkp@intel.com>, edward.cree@amd.com,
- linux-net-drivers@amd.com, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- andrew+netdev@lunn.ch
-Cc: oe-kbuild-all@lists.linux.dev, habetsm.xilinx@gmail.com,
- jiri@resnulli.us, netdev@vger.kernel.org
-References: <6ad7f4af17c2566ddc53fd247a0d0a790eff02ae.1738881614.git.ecree.xilinx@gmail.com>
- <202502080054.s619TTmK-lkp@intel.com>
-From: Edward Cree <ecree.xilinx@gmail.com>
-Message-ID: <8233a271-5f16-30da-708f-0ca2746d74ac@gmail.com>
-Date: Sat, 8 Feb 2025 02:18:46 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1738982916; c=relaxed/simple;
+	bh=CuO4sMLRNu0w4gzwmF3nm1w7ffx/KnIN9Sxf30Dn6mk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tnmXdFrx59zDVTog4Qxpnm7NUTo9C8bTqQlj4ykb2yhLlVjYfHcvGF/QJUg9Snc/f4Z3yWGyZOGueSl09WT17ybTfcgXhNJSTQOUPKhqep/6Fx2CNR3qv0O96WHxqc9tkqMwqFhNSsA2K7hpIiCVcrqhjXneOqrumxHz4AK3cbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: bizesmtpsz12t1738982901t4ke91
+X-QQ-Originating-IP: Dl4imzVFAdr2bFmJcE8EfjR3gYXl7npXy+rorH4LAyg=
+Received: from wxdbg.localdomain.com ( [125.120.70.88])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sat, 08 Feb 2025 10:48:12 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 16339831384622441020
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	richardcochran@gmail.com,
+	linux@armlinux.org.uk,
+	horms@kernel.org,
+	jacob.e.keller@intel.com,
+	netdev@vger.kernel.org,
+	vadim.fedorenko@linux.dev
+Cc: mengyuanlou@net-swift.com,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v6 0/4] Support PTP clock for Wangxun NICs
+Date: Sat,  8 Feb 2025 11:13:44 +0800
+Message-Id: <20250208031348.4368-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.27.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <202502080054.s619TTmK-lkp@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: OatzRg8pHEjphw6SIo2fEHG21FzFspAZdKhIE3v03d1+gTgjFCOb4Pmy
+	xjyjbWl7mYK3qZXiK+Prf1ZEGMelQ9jUgHIg0XRjcZcImeAHhnp/dLOjqLCJQE5q+M44LNl
+	HqfMB9o5wSXbl0ttz8MDp6uDHR0W7Cnx2cWBAnB4hYK3VU2Wk5vP3ZBPQdwrpUySAes89N/
+	WWkE9o7eLYBHXqQLc+QRqpExi0yLWPSRdD94i1mvH6w+fzZsQMqYCTfLp3kuZTt2NU8ZVyv
+	+C9gO3bMf2vaSXPBFouL+QubQyFeD9lcY524aWSfr7Eqjn1MgTc5zJJQSXW6oi3Rjdeyp8N
+	KSt0BOmNmAkgpj1iVMvMIpWGgD6QMqHKvhQoYmTlrOHEVKzPA3MjoLoA1gp+8ajo9k70kZe
+	+W66SMMlrtONWG5irk8E8xLT6l3KtHbl5nTJfSiFa9Shz30DvgnZJP6tii5YXLSVIl3Ftlm
+	8LR+YEtJ6RXvEscGXMzhsNbjS8X/SWCde8990TIroxQ2tePdkp7vwS7s9LB3yM7j6QCRdVO
+	+z6NcmDeGlwgKilb/xleIobTBWN/36WMHiuGUx3Ta9L9n062iyl01f4XcLA451/uTu+FYrw
+	vjhZ3hqdOGbTyQajsFc68U5m/3EOkU3f6/c9AdRuRzR88UUizee8kSP5NbO8S7t+nxhzaNu
+	PGrFFx7DdBdwPTaU31IB4uZ6NY17Ml2u5QFPFBaN97e4gdr/yhVP8Uyrz7DEvD1yUBt4+x9
+	shai24abLzE11FRBEScByuVW2WDx458Ok5m7Ct13YL3O94QzfStyQuWp1yk5vbNQyzPTgl4
+	No1DDQ1s595j3k7HE/xZ+WvFo4cPcbpM1jD1pPiktL4hRWSt5dQImXMtxuX9BZqmrfBr/yn
+	sFy3o3mQ8OyFEv7xbWj0jk35MVXYpxOtHA0/wq+wOwMyormrJfHQSpKM4aaDGzKA/00QKc5
+	6OpVctCJsnEQhGs8EAYGQX3e0QYuMX2pLrmG8gWO6hEdrbw==
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+X-QQ-RECHKSPAM: 0
 
-On 07/02/2025 16:50, kernel test robot wrote:
->>> drivers/net/ethernet/sfc/mcdi.c:2195:12: warning: 'efx_mcdi_nvram_read' defined but not used [-Wunused-function]
+Implement support for PTP clock on Wangxun NICs.
 
-Looks like the caller of this fn is only built #ifdef CONFIG_SFC_MTD,
- so this fn should be under the same guard.
-Will fix in v2.
+Changes in v6:
+- Link to v5: https://lore.kernel.org/all/20250117062051.2257073-1-jiawenwu@trustnetic.com/
+- Add "depends on PTP_1588_CLOCK_OPTIONAL" in Kconfig to fix build
+  errors
+
+Changes in v5:
+- Link to v4: https://lore.kernel.org/all/20250114084425.2203428-1-jiawenwu@trustnetic.com/
+- Use reading template for timecounter_cyc2time()
+- Move the same piece of codes to the functions
+- Fix read sequence for time registers
+- Remove skb_shared_hwtstamps zero out
+- Pass duty cycle for the pulse width
+
+Changes in v4:
+- Link to v3: https://lore.kernel.org/all/20250110031716.2120642-1-jiawenwu@trustnetic.com/
+- Add tx_hwtstamp_errors to record errors of DMA mapping
+- Remove flag bits clear for default case in setting TS mode
+- Change to use seqlock_t hw_tc_lock
+- Add ptp_schedule_worker in wx_ptp_reset()
+- Remove perout index check
+- Refactor the same code into a function
+
+Changes in v3:
+- Link to v2: https://lore.kernel.org/all/20250106084506.2042912-1-jiawenwu@trustnetic.com/
+- Clean up messy patches
+- Return delay value in wx_ptp_do_aux_work()
+- Remove dev_warn()
+- Implement ethtool get_ts_stats
+- Support PTP_CLK_REQ_PEROUT instead of PTP_CLK_REQ_PPS
+- Change to start polling Tx timestamp once descriptor done bit is set
+
+Changes in v2:
+- Link to v1: https://lore.kernel.org/all/20250102103026.1982137-1-jiawenwu@trustnetic.com/
+- Fix build warning
+- Convert to .ndo_hwtstamp_get and .ndo_hwtstamp_set
+- Remove needless timestamp flags
+- Use .do_aux_work instead of driver service task
+- Use the better error code
+- Rename function wx_ptp_start_cyclecounter()
+- Keep the register names consistent between comments and code
+
+Jiawen Wu (4):
+  net: wangxun: Add support for PTP clock
+  net: wangxun: Support to get ts info
+  net: wangxun: Implement do_aux_work of ptp_clock_info
+  net: ngbe: Add support for 1PPS and TOD
+
+ drivers/net/ethernet/wangxun/Kconfig          |    1 +
+ drivers/net/ethernet/wangxun/libwx/Makefile   |    2 +-
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   |   53 +
+ .../net/ethernet/wangxun/libwx/wx_ethtool.h   |    4 +
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    |   19 +
+ drivers/net/ethernet/wangxun/libwx/wx_hw.h    |    1 +
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c   |   52 +-
+ drivers/net/ethernet/wangxun/libwx/wx_ptp.c   | 1021 +++++++++++++++++
+ drivers/net/ethernet/wangxun/libwx/wx_ptp.h   |   20 +
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  |  106 ++
+ .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |    2 +
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |   20 +-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c |   11 +
+ drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |    5 +
+ .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |    2 +
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   |   11 +
+ .../net/ethernet/wangxun/txgbe/txgbe_phy.c    |   10 +
+ 17 files changed, 1333 insertions(+), 7 deletions(-)
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_ptp.h
+
+-- 
+2.27.0
+
