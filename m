@@ -1,112 +1,84 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx10lb.world4you.com (mx10lb.world4you.com [81.19.149.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E989B1D90C5;
-	Sun,  9 Feb 2025 18:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C10B1DE88B
+	for <netdev@vger.kernel.org>; Sun,  9 Feb 2025 18:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739126668; cv=none; b=UprAhhrEayG/8IZs2UYEfcmWpOU8+Fh+HLyLfBl1jXEgOmFQmYYnqpXLxpjH959soK/gwYO2IuOO5q0VIiZtpswnl4D0DEo3BMBmd9f7lqsD2aPJBMlRKveyrB0B2SpLLZQK+A0Sd4L/xXQq9CWLbWDjwtfrLiFIWYHxj3GPJvU=
+	t=1739126725; cv=none; b=pu2+WkDALR8Zpx7yWZnR3kdnomPvkZJcXw4vTT9x/WB2HylTkLPAUKdU36WuI/GwiiBiqsvEchTucWVeeo/jJVPY58gazblf1hssyT5LeTgO4jiOriPidrOYKf335hstYdZVn3toNgupZEOeKBV2PHAM3xO4tc0H/nlyqAqu4vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739126668; c=relaxed/simple;
-	bh=xdJpzMwN69SX5A49+eaIxt6rJRzUQdhu2DalB1RLN98=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ms2+5l6Ca+Ca/W6GAjTCxoIJDN36gTHXtii2B5korJTCgw8U1euRIvgpRbXepDrnzxFm4AFfypRjdPWdD7zrfy7L9KAiQlZ4j1IuUW6ta6qlqqFzfQGFJe08f2rp2+JwVx2tq4XWXh92x5K8x5IcB3hxhQLccTlXIR3MD7/vrkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XFK/nxwr; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739126725; c=relaxed/simple;
+	bh=2WrSbi+Uo3ib6BNjbcYeSbgwXEfdCjTNB0zOjZTqknw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TNqE6sO+f7yomtLck4y6R3otCOloYA0SWbFRqDyE9KLVUwKD+K6fSdmKQ7JeQtyXy3ot9Me7VpOZxmGJXzfWmlJc1gyD61u5FI7wibC5LXamYQVTwSEJnr0MHiUXRVBG9PAVXeW+XQIp8bUH0+HvvSqGOuRMhfGbsTyI/cQz8FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=aOs0nG8i; arc=none smtp.client-ip=81.19.149.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XFK/nxwr"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-21f50895565so32287585ad.2;
-        Sun, 09 Feb 2025 10:44:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739126666; x=1739731466; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ajkWu1Bx6iXQcpDtMyUqwYe+QP2yL6WGw45K6q0WsQk=;
-        b=XFK/nxwr/8JITH12HuE356tlrvIYrSn8K63zhJb3TVCz0Fy5I63Cby68VZ58pnhu8q
-         NJrH4xwsHfoYa1JRopAtXSnrOBdHEwCfNqW/o3YN8HsGy75pwGbnCe2WJ6Mz+SEd7TZX
-         krxGlyRUK8rZbe06FlvEg5fdn0ljL4gZK02aFO7FHN081BYQGvr0cVnI4oQdT5SGJqcH
-         MFXoatU1mGHEgdyW/GoS+BTPIvxxwF3hzVGSugVGzjAXvacDaKToU/aH8E/9OAkGIcFd
-         fIN3LyN25QYnhNvO1jqfS/j+jsHcIK1MiSScL6QKPqLmjhpSffRFaNh9f6J+d3ZWKnWw
-         GHdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739126666; x=1739731466;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ajkWu1Bx6iXQcpDtMyUqwYe+QP2yL6WGw45K6q0WsQk=;
-        b=lidi1qdJiP72Xx+Yk4JfFf9KA+QsSyJmLt3O610B0wTNBjfmyYCsdFNKVZbI+QWLEv
-         e6AYVLzSSDyuztb1aYaENMEylxZSSRmhSI7aM/Jr+fdEtiBWdrIo2AJicVvpE7CSwq9U
-         idWWqsIZ3c8zs1zIYA8GQKZCAN6zcc/CGu7o1hWuf3w3SuZCiMB4mlSAX3iMcH1yDCiH
-         f8+RNuZ5RaTv/O8AbkiIngZh8YJNTj6bgTK5qYzfULktS5toZW8o9skrnK0DuKspAUAi
-         mDA/nn8KGqrigctqL5/+FJunC0Q6yWG0DIikz5zUyQN7PWcmf3e+JRKSdP+eN2bpaED1
-         mhXw==
-X-Forwarded-Encrypted: i=1; AJvYcCVikLZHq4Iftt4ls7O9gSJvvHCvTwMZF8UHb4sEqKIq/t9WOph9WQ8GXN6mI1tqV5OK2Rtjz+j+FoSzErk=@vger.kernel.org, AJvYcCVy0j8ZpKH7gKv4EwCgm8nTg4R2QjX+5Ny3r+Di9ZQEJTeEEORt8LwRe+tZpE09Mre5EK6hn+GW@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyow0+/xlTK6DFFwO2fXWMsEUrh67y63pqic32eteyvSMWDkbc1
-	JMgetImNk6Pw8nUJrXPBKAnWdAXtZoFPBQ1LWUBOdr4BoXcFUdg82av/oeP/
-X-Gm-Gg: ASbGncvRl/WExNwAJAFctPl7CvBn8a5IGiVph90A4wSFR3FYf5fA53ouFF4+pD8YyMB
-	JCwIGn1HikqUomyt9J8tTeH0W5u6nobi9XAxctSaexIwASGNRaD9EKQSpwJr42YMBmqQNdNJ2yl
-	CAzkIUW420BFw/+DjiHzcCrZfEjtLlOB+RqK3CG52l20xbUcDym4o1d7EL2zv81nMHA4l1XnjUq
-	sFgKvGpzbpOxK9V2CDruURRa8ge594Ia21B7llxPnsin/N/kk2ov2kOCPf4DHasWlh59M4U9X9+
-	u5CbVOE5aygjB8VkChqJSQKN61qgL9NQqSA98nEn27/FUNV0Nw==
-X-Google-Smtp-Source: AGHT+IGdXqDEsQ3wl/SgDgEu7zQuvEjgri4w7IBh2/3FdUaxqctxIhNSngJjXblcV+laA6aNXUPiwA==
-X-Received: by 2002:a17:902:d4c5:b0:21f:6be1:97c4 with SMTP id d9443c01a7336-21f6be19893mr114642315ad.26.1739126666097;
-        Sun, 09 Feb 2025 10:44:26 -0800 (PST)
-Received: from purva-IdeaPad-Gaming-3-15IHU6.. ([2409:40c0:101c:99b7:ab17:cf9d:f4e4:5a6b])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3683d55esm62982355ad.152.2025.02.09.10.44.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Feb 2025 10:44:25 -0800 (PST)
-From: Purva Yeshi <purvayeshi550@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: skhan@linuxfoundation.org,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	purvayeshi550@gmail.com
-Subject: [PATCH] net: unix: Fix undefined 'other' error
-Date: Mon, 10 Feb 2025 00:13:55 +0530
-Message-Id: <20250209184355.16257-1-purvayeshi550@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="aOs0nG8i"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=lJ0M1krCmi4eiwYD2F8NcoMHdmDqLxf3C+ZCd5NYc0s=; b=aOs0nG8iCgPhMu0X6frAFmWxgo
+	jsVXpuqyarFrlcNmBJ6SKf/ou9ZIxO7C0PifSq/w29e5FuYue0zFLiuDsGlb1kG0RZzSbWfH6798Y
+	FatCS9D7J9ysG95zHe4VmgErCeP4NPLAAxEd9yOPXj+FdJ3kx5hhQGzMOYXeVqzydv/o=;
+Received: from [88.117.60.28] (helo=[10.0.0.160])
+	by mx10lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1thC1d-000000006NR-3bxU;
+	Sun, 09 Feb 2025 19:27:26 +0100
+Message-ID: <3a94fc8d-b2de-4ccf-be41-dc9c1aed26fd@engleder-embedded.com>
+Date: Sun, 9 Feb 2025 19:27:24 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: freescale: ucc_geth: remove unused
+ PHY_INIT_TIMEOUT and PHY_CHANGE_TIME
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, David Miller <davem@davemloft.net>,
+ Simon Horman <horms@kernel.org>
+References: <62e9429b-57e0-42ec-96a5-6a89553f441d@gmail.com>
+Content-Language: en-US
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <62e9429b-57e0-42ec-96a5-6a89553f441d@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AV-Do-Run: Yes
 
-Fix issue detected by smatch tool:
-An "undefined 'other'" error occur in __releases() annotation.
+On 09.02.25 13:27, Heiner Kallweit wrote:
+> Both definitions are unused. Last users have been removed with:
+> 
+> 1577ecef7666 ("netdev: Merge UCC and gianfar MDIO bus drivers")
+> 728de4c927a3 ("ucc_geth: migrate ucc_geth to phylib")
+> 
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> ---
+>   drivers/net/ethernet/freescale/ucc_geth.h | 2 --
+>   1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/ucc_geth.h b/drivers/net/ethernet/freescale/ucc_geth.h
+> index 38789faae..84f92f638 100644
+> --- a/drivers/net/ethernet/freescale/ucc_geth.h
+> +++ b/drivers/net/ethernet/freescale/ucc_geth.h
+> @@ -890,8 +890,6 @@ struct ucc_geth_hardware_statistics {
+>   							   addresses */
+>   
+>   #define TX_TIMEOUT                              (1*HZ)
+> -#define PHY_INIT_TIMEOUT                        100000
+> -#define PHY_CHANGE_TIME                         2
+>   
+>   /* Fast Ethernet (10/100 Mbps) */
+>   #define UCC_GETH_URFS_INIT                      512	/* Rx virtual FIFO size
 
-The issue occurs because __releases(&unix_sk(other)->lock) is placed
-at the function signature level, where other is not yet in scope.
-
-Fix this by replacing it with __releases(&u->lock), using u, a local
-variable, which is properly defined inside the function.
-
-Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
----
- net/unix/af_unix.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 34945de1f..37b01605a 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -1508,7 +1508,10 @@ static int unix_dgram_connect(struct socket *sock, struct sockaddr *addr,
- }
- 
- static long unix_wait_for_peer(struct sock *other, long timeo)
--	__releases(&unix_sk(other)->lock)
-+	/*
-+	 * Use local variable instead of function parameter
-+	 */
-+	__releases(&u->lock)
- {
- 	struct unix_sock *u = unix_sk(other);
- 	int sched;
--- 
-2.34.1
-
+Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
