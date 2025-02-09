@@ -1,103 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx02lb.world4you.com (mx02lb.world4you.com [81.19.149.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D7713B7A3;
-	Sun,  9 Feb 2025 19:05:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7087A13B7A3
+	for <netdev@vger.kernel.org>; Sun,  9 Feb 2025 19:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739127928; cv=none; b=XRbPCIfAogwYxvjKAKOxnZMjh+FxYLa/GOw0sPHVOcDH0U3UKUKcsDs6hRzSz+C/mVA6bcaYBuwkdHV7jYJGJ9JA+Zxyz9p2Vt4W0RhtcfqrNaENNWiyPdL+VPvnKFl7tUQXpZOgzUXtqUFRggo4tEsRPXCaeQXBn1WVWwIy8I4=
+	t=1739128127; cv=none; b=InGcI7muGxSIVBApVtsfRopsG0DtwuXiOnrZGqIfFNzsX+KwphpYhti3Qt/sIifLtvMqvU+W4HEhq25GZlpgJKujWo817RutkQXQihCslbqWJttEFhw/SwRaw6aLGKIFkaIMXSarqtH3/ObqANIveqWfUP43v4blxmiyoWg9hyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739127928; c=relaxed/simple;
-	bh=natJcidB7q3O8woW65n2ijBytWe0W+0jkr1HKsigs5s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rKY0+sTGVzcgQZ7XwNUMxyD6zd4UUNke+ajkkAU8vDh1XmTqwFLKgazVQ68BhHJ8aOnAKiR/81UIPFm+VaF5DHYrEpEsEzrR822Onio96YRdtCHxBfOLzDO/JXN8P8/nVF9AG1AojeqA7+uwhDXK51XQLyuUCtpetYWvFjzRdro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uJVgBgpK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739128127; c=relaxed/simple;
+	bh=Vf6MgmQ+cAB6pVE6LuQE1Hci2f1mTFwxqKsctMTF6Vo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Rl4mxvE/ymXvkPSJGjfq1lv9ZrBRmX7mGQYpd97csX3SRUqQ7Bu6irN45sDB4tONV0bfyQu/VaZeRVCZZBeJ6GjjUaqsC3k1S5FVL8MfVCITHmj2IcNZ2+XYmjIC0LRAdlIEXGsVorDtmm90KMWAqVqxTwnAK1KfvWqsWJdtx4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=bgJrKJR3; arc=none smtp.client-ip=81.19.149.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uJVgBgpK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082BAC4CEDD;
-	Sun,  9 Feb 2025 19:05:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739127927;
-	bh=natJcidB7q3O8woW65n2ijBytWe0W+0jkr1HKsigs5s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uJVgBgpK/Wrib4Ot1ITnWyLr/M9lHiSwNDfQztynIRSmG/2QoUlAq3TuVHHLSNpMH
-	 17YzI74Zrp+QZm8F1qw2mzEb92pCmSPzdsegZA6Wpd2HvFm67PWAVvxSFnyKy6/++l
-	 j76BA8Y+63msoJJYEIJulprPti90jnbJ7DUhQ5q/hZR2mwSVLT9pWV8+dwMgVzcD+Y
-	 RqxYHsM207TqKSYdVd8Y/16alDEznDG2zTt8/dBFnLifjEVfvV/pKfgiSydudMC9NV
-	 qyjDtrA8NPfijmkQokMfbM7+s8GXffc4PlSVcEs3HyNnMVawIuh6EArXN5kU9BS7Xs
-	 4HBcqh+rilkJg==
-Date: Sun, 9 Feb 2025 11:05:25 -0800
-From: Eric Biggers <ebiggers@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: netdev@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Cabiddu, Giovanni" <giovanni.cabiddu@intel.com>,
-	qat-linux <qat-linux@intel.com>, linux-crypto@vger.kernel.org,
-	linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 03/24] crypto: Add 'krb5enc' hash and cipher AEAD
- algorithm
-Message-ID: <20250209190525.GA6017@sol.localdomain>
-References: <20250207200419.GA2819332@google.com>
- <20250203142343.248839-1-dhowells@redhat.com>
- <20250203142343.248839-4-dhowells@redhat.com>
- <1934772.1739126247@warthog.procyon.org.uk>
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="bgJrKJR3"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=d00kdXkxGzpJFasIUHuiHU8O5NvLGRgMg5n39bdQfn4=; b=bgJrKJR3KAyqszDEm3d8Mi762C
+	QxxhoWwVyRDJw43OOeNRzvXkyCGXeFFp1KxfnpWnhRQDb1di4MYS9g44K7k/MbtJ1Q9lb4iMyjHdO
+	YH7vWLZWJrNk+iY146JZ459pjg5jqRrj9efbnPob6mJah21Vnct1w7eTO3VpFKfcT5uo=;
+Received: from 88-117-60-28.adsl.highway.telekom.at ([88.117.60.28] helo=hornet.engleder.at)
+	by mx02lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1thCfZ-000000007TS-2lAc;
+	Sun, 09 Feb 2025 20:08:41 +0100
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: [PATCH net-next v6 6/7] net: selftests: Export net_test_phy_loopback_*
+Date: Sun,  9 Feb 2025 20:08:26 +0100
+Message-Id: <20250209190827.29128-7-gerhard@engleder-embedded.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250209190827.29128-1-gerhard@engleder-embedded.com>
+References: <20250209190827.29128-1-gerhard@engleder-embedded.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1934772.1739126247@warthog.procyon.org.uk>
+Content-Transfer-Encoding: 8bit
+X-AV-Do-Run: Yes
+X-ACL-Warn: X-W4Y-Internal
 
-On Sun, Feb 09, 2025 at 06:37:27PM +0000, David Howells wrote:
-> One of the issues I have with doing it on the CPU is that you have to do two
-> operations and, currently, they're done synchronously and serially.
-> 
-> Can you implement "auth5enc(hmac(sha256),cts(cbc(aes)))" in assembly and
-> actually make the assembly do both the AES and SHA at the same time?  It looks
-> like it *might* be possible - but that you might be an XMM register short of
-> being able to do it:-/
+net_selftests() provides a generic set of selftests for netdevs with
+PHY. Those selftests rely on an existing link to inherit the speed for
+the loopback mode.
 
-Yes, that would be the proper way to optimize that algorithm.  Someone just
-needs to do it.  (And presumably you want this one and not Camellia which you
-are also pushing for some reason?)
+net_selftests() is not designed to extend existing selftests of drivers,
+but with net_test_phy_loopback_* it contains useful test infrastructure.
 
-> > I don't see why off-CPU hardware offload support should deserve much
-> > attention here, given the extremely high speed of on-CPU crypto these days
-> > and the great difficulty of integrating off-CPU acceleration efficiently.
-> > In particular it seems weird to consider Intel QAT a reasonable thing to use
-> > over VAES.
-> 
-> Because some modern CPUs come with on-die crypto offload - and that can do
-> hash+encrypt or encrypt+hash in parallel.  Now, there are a couple of issues
-> with using the QAT here:
-> 
->  (1) It doesn't support CTS.  This means we'd have to impose the CTS from
->      above - and that may well make it unusable in doing hash + encrypt
->      simultaneously.
-> 
->  (2) It really needs batching to make it cheap enough to use.  This might
->      actually be less of a problem - at least for rxgk.  The data is split up
->      into fixed-size packets, but for a large amount of data we can end up
->      filling packets faster than we can transmit them.  This offers the
->      opportunity to batch them - up to ~8192 packets in a single batch.
-> 
-> For NFS, things are a bit different.  Because that mostly uses a streaming
-> transport these days, it wants to prepare a single huge message in one go -
-> and being able to parallellise the encrypt and the hash could be a benefit.
+Export net_test_phy_loopback_* to enable reuse in existing selftests of
+other drivers. This also enables driver specific loopback modes, which
+don't rely on an existing link.
 
-Right, the batching is always a huge issue for those types of accelerators.  A
-much more promising approach is to just fully take advantage of the CPU
-instructions that already accelerate the same algorithms very well.
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+CC: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ include/net/selftests.h | 19 +++++++++++++++++++
+ net/core/selftests.c    |  9 ++++++---
+ 2 files changed, 25 insertions(+), 3 deletions(-)
 
-- Eric
+diff --git a/include/net/selftests.h b/include/net/selftests.h
+index e65e8d230d33..a13237c33e58 100644
+--- a/include/net/selftests.h
++++ b/include/net/selftests.h
+@@ -6,6 +6,10 @@
+ 
+ #if IS_ENABLED(CONFIG_NET_SELFTESTS)
+ 
++int net_test_phy_loopback_udp(struct net_device *ndev);
++int net_test_phy_loopback_udp_mtu(struct net_device *ndev);
++int net_test_phy_loopback_tcp(struct net_device *ndev);
++
+ void net_selftest(struct net_device *ndev, struct ethtool_test *etest,
+ 		  u64 *buf);
+ int net_selftest_get_count(void);
+@@ -13,6 +17,21 @@ void net_selftest_get_strings(u8 *data);
+ 
+ #else
+ 
++static inline int net_test_phy_loopback_udp(struct net_device *ndev)
++{
++	return 0;
++}
++
++static inline int net_test_phy_loopback_udp_mtu(struct net_device *ndev)
++{
++	return 0;
++}
++
++static inline int net_test_phy_loopback_tcp(struct net_device *ndev)
++{
++	return 0;
++}
++
+ static inline void net_selftest(struct net_device *ndev, struct ethtool_test *etest,
+ 				u64 *buf)
+ {
+diff --git a/net/core/selftests.c b/net/core/selftests.c
+index e99ae983fca9..d4e0e2eff991 100644
+--- a/net/core/selftests.c
++++ b/net/core/selftests.c
+@@ -310,15 +310,16 @@ static int net_test_phy_loopback_disable(struct net_device *ndev)
+ 	return phy_loopback(ndev->phydev, false, 0);
+ }
+ 
+-static int net_test_phy_loopback_udp(struct net_device *ndev)
++int net_test_phy_loopback_udp(struct net_device *ndev)
+ {
+ 	struct net_packet_attrs attr = { };
+ 
+ 	attr.dst = ndev->dev_addr;
+ 	return __net_test_loopback(ndev, &attr);
+ }
++EXPORT_SYMBOL_GPL(net_test_phy_loopback_udp);
+ 
+-static int net_test_phy_loopback_udp_mtu(struct net_device *ndev)
++int net_test_phy_loopback_udp_mtu(struct net_device *ndev)
+ {
+ 	struct net_packet_attrs attr = { };
+ 
+@@ -326,8 +327,9 @@ static int net_test_phy_loopback_udp_mtu(struct net_device *ndev)
+ 	attr.max_size = ndev->mtu;
+ 	return __net_test_loopback(ndev, &attr);
+ }
++EXPORT_SYMBOL_GPL(net_test_phy_loopback_udp_mtu);
+ 
+-static int net_test_phy_loopback_tcp(struct net_device *ndev)
++int net_test_phy_loopback_tcp(struct net_device *ndev)
+ {
+ 	struct net_packet_attrs attr = { };
+ 
+@@ -335,6 +337,7 @@ static int net_test_phy_loopback_tcp(struct net_device *ndev)
+ 	attr.tcp = true;
+ 	return __net_test_loopback(ndev, &attr);
+ }
++EXPORT_SYMBOL_GPL(net_test_phy_loopback_tcp);
+ 
+ static const struct net_test {
+ 	char name[ETH_GSTRING_LEN];
+-- 
+2.39.5
+
