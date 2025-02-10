@@ -1,16 +1,15 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA31E1CDA14
-	for <netdev@vger.kernel.org>; Mon, 10 Feb 2025 10:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537251DC996
+	for <netdev@vger.kernel.org>; Mon, 10 Feb 2025 10:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739184491; cv=none; b=jKGeeoA336JKa5brLe4l/rL8dO8EfE7HoiyXaYQs6+tlpU/jp26dtC2vUC30SrCKu6XmWSYWIsbG3kbmM7DH66ULrSxPDnGd3Iyj0OdfylBRrO2b+VSimkzsrktoQG2U2CNywSH1ZRpIr4s3C4zejdtj+sRmgcKyHnzNfQOLmxQ=
+	t=1739184492; cv=none; b=p9WdGN9sXN6BzYdjrq+GZaI7sGpvFJPcgKxRPFRtwAr8LK4AvFBCzPZD3KeWtdCfLDpdOpQyIInkpskoR2NFKI7/039BrvtKfYfc5bsZyLmukv9WTi703s2avrOqz/I+bOw4mqe+k1VSY0K13yNzD2ccZYpJ/Pxwc6YIPUzDvFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739184491; c=relaxed/simple;
-	bh=IASJFIdwqKt2fJiXZLQPvbOmfF0RAP8JOTNg11ynshQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iZQmOd2wHHj+ODTa7umrnCmvbsD0c7Ehf1u0xDybC9uwSLOTyQtGCnwXr/9x/coFjyYn/VOipGxYkISMWQK2nHCgW9wWL3d31jiBePEl5vrDf9kaiHNfcW+4DJ90mO8z3Ok/GesoIQb2P+rG+uUwLBYXbYP6nl/Fp4NLJhZ0w2g=
+	s=arc-20240116; t=1739184492; c=relaxed/simple;
+	bh=A+r9IGGBG25pq9QT8w+tm0bS/ZjAeMW3I4gN502rFwQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PpSzKROazcvzoApqVC+utIIIH7E8yYa10czE3ur6pSsVGYLFiR+WD6Q/SVui/s7lNSpvuYjrX7iHc9Wa5uDencc1Toc/DfLLJqym1B7jn0LLW0AL34UzW6chGHr52ps637aIAy0ivagrrMH/1NK2FAgqmSQroejemBT8OhyKZkU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +17,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1thRKR-0002Bo-HM; Mon, 10 Feb 2025 11:47:51 +0100
+	id 1thRKR-0002Bm-HM; Mon, 10 Feb 2025 11:47:51 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1thRKP-000EIb-2r;
+	id 1thRKP-000EIZ-2f;
 	Mon, 10 Feb 2025 11:47:49 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1thRKP-001f8L-2b;
+	id 1thRKP-001f81-2P;
 	Mon, 10 Feb 2025 11:47:49 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Rob Herring <robh@kernel.org>,
@@ -47,12 +46,10 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v2 2/3] dt-bindings: arm: stm32: Add Plymovent AQM board
-Date: Mon, 10 Feb 2025 11:47:47 +0100
-Message-Id: <20250210104748.396399-3-o.rempel@pengutronix.de>
+Subject: [PATCH v2 0/3] Add support for Plymovent AQM board
+Date: Mon, 10 Feb 2025 11:47:45 +0100
+Message-Id: <20250210104748.396399-1-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250210104748.396399-1-o.rempel@pengutronix.de>
-References: <20250210104748.396399-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,26 +62,36 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Add support for the Plymovent AQM board based on the ST STM32MP151 SoC
-to the STM32 devicetree bindings.
+This patch series adds support for the Plymovent AQM board based on the
+STM32MP151C SoC. Additionally, the ICS-43432 device tree binding is
+converted to YAML to address a validation warning.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- Documentation/devicetree/bindings/arm/stm32/stm32.yaml | 1 +
- 1 file changed, 1 insertion(+)
+The ICS-43432 patch resolves one of the devicetree validation warnings.
+However, the false-positive warning:
 
-diff --git a/Documentation/devicetree/bindings/arm/stm32/stm32.yaml b/Documentation/devicetree/bindings/arm/stm32/stm32.yaml
-index 2cea166641c5..734c4b8ac881 100644
---- a/Documentation/devicetree/bindings/arm/stm32/stm32.yaml
-+++ b/Documentation/devicetree/bindings/arm/stm32/stm32.yaml
-@@ -65,6 +65,7 @@ properties:
-               - prt,prtt1a   # Protonic PRTT1A
-               - prt,prtt1c   # Protonic PRTT1C
-               - prt,prtt1s   # Protonic PRTT1S
-+              - ply,plyaqm   # Plymovent AQM board
-           - const: st,stm32mp151
- 
-       - description: DH STM32MP135 DHCOR SoM based Boards
--- 
+  "audio-controller@44004000: port:endpoint: Unevaluated properties are
+   not allowed ('format' was unexpected)"
+
+remains unresolved. The "format" property is required for proper
+functionality of this device.
+
+Best regards,
+
+Oleksij Rempel (3):
+  dt-bindings: sound: convert ICS-43432 binding to YAML
+  dt-bindings: arm: stm32: Add Plymovent AQM board
+  arm: dts: stm32: Add Plymovent AQM devicetree
+
+ .../devicetree/bindings/arm/stm32/stm32.yaml  |   1 +
+ .../devicetree/bindings/sound/ics43432.txt    |  19 -
+ .../bindings/sound/invensense,ics43432.yaml   |  51 ++
+ arch/arm/boot/dts/st/Makefile                 |   1 +
+ arch/arm/boot/dts/st/stm32mp151c-plyaqm.dts   | 669 ++++++++++++++++++
+ 5 files changed, 722 insertions(+), 19 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/sound/ics43432.txt
+ create mode 100644 Documentation/devicetree/bindings/sound/invensense,ics43432.yaml
+ create mode 100644 arch/arm/boot/dts/st/stm32mp151c-plyaqm.dts
+
+--
 2.39.5
 
