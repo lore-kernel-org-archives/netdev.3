@@ -1,74 +1,66 @@
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA2936C
-	for <netdev@vger.kernel.org>; Mon, 10 Feb 2025 00:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17145258
+	for <netdev@vger.kernel.org>; Mon, 10 Feb 2025 00:32:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739147448; cv=none; b=oLeH3GlC/3oDV2CoZJ3lOXJkn3LKfXeXDBKWjYb3CQHt8r+sbci3aIJevrh2FLn19n/rQ9GN0jklNXVCdugM6eEq3wDT1pNmmBVm46FsbusEdtT+hMQB2PK9Mq4Tu4M2/97IjJSe2KknQuTh77zsnEnD5DUiAHiV1/KFDnHrtNM=
+	t=1739147574; cv=none; b=IMujM/GfdiLSEG1vaOHcJoMss78k44CBoxixojAaZRrcFK8cwTmPb2rCDPgTIFRm7eT/c1JRiI+B0zoQFKVLnrjTBTQSwKJ7pKZ1tGutenSPTkKK2+DBnFTcuWY6hcw+U8TJYErR+h5R6J6XA4i5Vt0AgfEYUZu3/maSf5n9WkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739147448; c=relaxed/simple;
-	bh=N9vSd0OKz664YvY+5t/jundbtwPa2Cs2BL5HQr3rG2Q=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MPoLMJnMUipB/dXBhhVSjpu/LCe01u+v/OwBwN72iKFhkVF4Hggj+dSdPE+7W2ejfgWurDU1awoNM6PSQk494Jwj//ZmXE0oQg4UdS648Gg5JCWJSMXSy6RCJsdzM9R7Ki4PbqE4WHPzzUACZYIv33hV+Uf+p9VjcAaIl6N9lpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=DTxSfRu6; arc=none smtp.client-ip=52.95.49.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1739147574; c=relaxed/simple;
+	bh=MG/y6wumQaqPj6ectDsmzcLThbySPojKPPFgXLjBxMw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b0Vl04Nrv9Jme34G+sD1Z19QOonIiAte4uF6uh7W+R59uURrc7qmqOfKvbF7G4Gd9G0sbrCMiH+H4sdM1fOm7K3jx2e2VQtkDNhg1lMUAqymQrB8J8zYFTEoVCr5zd7A3pfxGVzxSYQjWvqmiHXpNBxMisq/njMunuxC6uIxQZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=G0XMAlA2; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="DTxSfRu6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1739147447; x=1770683447;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=qA5071tgua8JNuQTDUlcjz9LAU3GjB8IYTCm31f+RuY=;
-  b=DTxSfRu6yqJcBZTEaNTv0CHB0GKZrESHZDC4G9U8nR6P/WhINR0vpLVB
-   rsklMxwWHQ4akCv4woXT6a2WF+mt2V4MivlGQrFnPtFAAg3MBULGZ4rQF
-   SWCsH9UpHsup9w0wjUsnTTXnc3vu66t7xU9i4YSNEQbaWrl06p0wIRxP7
-   o=;
-X-IronPort-AV: E=Sophos;i="6.13,273,1732579200"; 
-   d="scan'208";a="470732973"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 00:30:44 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [10.0.21.151:50620]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.61.44:2525] with esmtp (Farcaster)
- id 0323f3ad-6c0e-4e28-96ed-7a6e1282595f; Mon, 10 Feb 2025 00:30:42 +0000 (UTC)
-X-Farcaster-Flow-ID: 0323f3ad-6c0e-4e28-96ed-7a6e1282595f
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Mon, 10 Feb 2025 00:30:42 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.37.244.8) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 10 Feb 2025 00:30:38 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <edumazet@google.com>
-CC: <davem@davemloft.net>, <eric.dumazet@gmail.com>, <horms@kernel.org>,
-	<kernelxing@tencent.com>, <kuba@kernel.org>, <kuniyu@amazon.com>,
-	<ncardwell@google.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>
-Subject: Re: [PATCH net-next 1/5] tcp: remove tcp_reset_xmit_timer() @max_when argument
-Date: Mon, 10 Feb 2025 09:30:27 +0900
-Message-ID: <20250210003027.49540-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250207152830.2527578-2-edumazet@google.com>
-References: <20250207152830.2527578-2-edumazet@google.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="G0XMAlA2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=+zrVL00Y7mH/Y/PHtnbU3jGC3BfYX+exBMvRQJY6Gmo=; b=G0XMAlA2tSUgTM8YwNdaI9bfGF
+	puXU5v7dupj6py2tUxKkUubzDaf9/mq9A2M0XGaRD/bJ4A1LGqcsLelJEywgcS0UBrd2qWU7Tc+mI
+	Y0dfHPykt4KytEM1elReD54IaHdcewDsJQyonKCnCnfWfVX3I/HYPclfWxIOjVs04hiw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1thHj8-00CYEc-6b; Mon, 10 Feb 2025 01:32:42 +0100
+Date: Mon, 10 Feb 2025 01:32:42 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH net] net: phylink: make configuring clock-stop dependent
+ on MAC support
+Message-ID: <5232a50c-3840-4c76-8b9b-cb0dcbbcc833@lunn.ch>
+References: <E1tgjNn-003q0w-Pw@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D044UWB003.ant.amazon.com (10.13.139.168) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E1tgjNn-003q0w-Pw@rmk-PC.armlinux.org.uk>
 
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri,  7 Feb 2025 15:28:26 +0000
-> All callers use TCP_RTO_MAX, we can factorize this constant,
-> becoming a variable soon.
+On Sat, Feb 08, 2025 at 11:52:23AM +0000, Russell King (Oracle) wrote:
+> We should not be configuring the PHYs clock-stop settings unless the
+> MAC supports phylink managed EEE. Make this dependent on MAC support.
 > 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> This was noticed in a suspicious RCU usage report from the kernel
+> test robot (the suspicious RCU usage due to calling phy_detach()
+> remains unaddressed, but is triggered by the error this was
+> generating.)
+> 
+> Fixes: 03abf2a7c654 ("net: phylink: add EEE management")
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+    Andrew
