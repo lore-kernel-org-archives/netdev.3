@@ -1,111 +1,145 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17286198E8C;
-	Mon, 10 Feb 2025 07:22:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B522F2A;
+	Mon, 10 Feb 2025 07:45:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739172136; cv=none; b=DIXWDRbqyLWkwdvm3c62Z2lWVB1IINfRWm5T8UmewEuSDcHkvQWvb0WYeDv6dke0kh+PnOil0tL7Y0ZfRfpPCjFU64bAz9E4hVOE8GdaRqok9L8nwb4L9gCec30XHtSQkkUI3Cc8XtOzB74ed0wzUoqCwy6hI74DanYEQyelnOY=
+	t=1739173518; cv=none; b=ZwSBK2ZxF7Z3ef+IXH+VJD7gprYNu1JAvjdZGaDQl4QrcxFHW+LgxnU5h7TPx8G1e4HiE1OunUvpgyW5bFE3bDhyB3QfeSXJtokNo8ctg3kqCGeTIVniDPTnU25VY5V9IgRjwDbXSu62owUdjQDI+CVV7Gl4B8Vmzl6tN55zqwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739172136; c=relaxed/simple;
-	bh=0F3FlD9Pfc8KQWwxXtSJ8R0axhweOBOY6Fso5tS46b0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BG4YrihgGmIrA2u5mmexYRresVSJnW3l5pbKstCCIfy14JU4YWqGsgnKdqVGLvWxTATol4bTfeXN+/Y5wKjS8ispGkBupoqsHiVDaPw51yAybNh/QDAVuJpjz+hJXM+oN5HyOt9wlWSY7etsc2lMvcO21j/YnpZ6Eybm6oCeejc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SrsHcMrW; arc=none smtp.client-ip=209.85.128.53
+	s=arc-20240116; t=1739173518; c=relaxed/simple;
+	bh=eOWONN5ZBbRv8aYl9s+6MqZgaY5tkVdbjSku/C+aepU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ILm2SBH+OPcVrItr/33JfjIkXBaNRIzNGiUVgecHC5v0uWQsLZV9YsJgbL3bKuL1qGS9N5V/jyXvQHoFWqM0FipYmBAMmIu8xQ0IArKKCSzCMPw7XFKyadcEJsiy+wCRATuSmqeJDrcUP5WfVCjpvSk7cxhdteKifzhGuHngAfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aCn3rOFW; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SrsHcMrW"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43622267b2eso40358375e9.0;
-        Sun, 09 Feb 2025 23:22:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aCn3rOFW"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-21f464b9a27so63021255ad.1;
+        Sun, 09 Feb 2025 23:45:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739172133; x=1739776933; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pWhUEOTz7NAjdQTe76b2+gajv13F37YsdelF+ND6FT0=;
-        b=SrsHcMrWAOy7ANPposC89rYRcHP0OcVoFwj636MXqGyB1ZjVz9od92qbGDb4y/3mIr
-         NBuRVz3gyv9Jv6wvABNukBAcNvkx/TAnydTRsUFUtedFKzCRbUQQaA5wjRv56r87p+hf
-         MuiBqHf9/kGplMPU/68vWyd2EyTEUex415Rw+gv7XpO4l9V6y0tMY7Q4N5ECTMZHY1X2
-         Ic77jmIdcOQ+ZRJy/wgx7GbI2VuPRzcj9eIv6qMGD0WGsQW/ESjKFZlSbZjjKXwKNFgV
-         bd9oLPP5hUQLbSWNRGnpriH2qnlgFqHpuDC6KniZDVfttN8oghuMuCWohHU2H0uk4JlS
-         Lu5g==
+        d=gmail.com; s=20230601; t=1739173516; x=1739778316; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vgDFMMK78aNqKvQlYUZbaLj/duHE/jz0+XIQsm2yUik=;
+        b=aCn3rOFWlTpo+KqTkQRkjerzvIXhji6CmQT4wqPSCyLSenTw/oJNpcTI11GT87l0YT
+         F9Tp8FpjAVBa23kAI3mUzpVR5gbi4EBqYx4nS8mTblX7/RSkT/pVZPz6T9jx+8GcRPeK
+         xwhcJFvAGCCvcnnzLLdzsQ8SuLFH79XMAk4fGJlXK3xnPpmd2OiYtM5vrC20guzrn1GM
+         9XOqmgr18Fx4UbwKATzMtbvngHjr13tkspUHqXClWMqS5g/0yT05kYQ4VIs825joy2L/
+         5tWmABJyClkeRL5CfmnAGFDelWkANion2SQbiwiFEbhr7ZR4546iRxPj4DZPB53WU4SZ
+         q6cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739172133; x=1739776933;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pWhUEOTz7NAjdQTe76b2+gajv13F37YsdelF+ND6FT0=;
-        b=AQYs5LyS5R4/4tMt8k/EmnE3khJrW4q4smkhAfX0f9Ga5uLnBmAeOPEZ7oWJ8lfccx
-         WNg8YRaYUGPSSYAnWZuk5wbX+3WpOzPDF5hvIeWPWZsGlIfXfcg+L5NBBoe2zbLSg8pe
-         kHqLQn7CVluhS3aGc5sMSOKp/LuClUdwpvSmlaKpOXjVktSOLBykq4/IqJTGNWwkby5i
-         JMZAzCKgaUZYA8+ByFJnoMUti/8Z1OwrJDKnJf32fS+wdZjTpHKtKpYuijadT2bc3M/n
-         SytWXS4ETctryhfXAeSqII6bl7+J7nwNoaAGw5i1ZCG3K0zT9DnRTI71pOZBDmBTaAc3
-         cM8w==
-X-Forwarded-Encrypted: i=1; AJvYcCV7LR+5oiw2qW3fyZE+a9qwn88m95YUU+xKm6bA40phkajMEchsNC1185ZHoVYo/+hCJdsM90qE@vger.kernel.org, AJvYcCWgskVZR2qaJJTgZ3J6V+N85bSKoFkwDm5kksm2fLVBc0MhV5+qsjasV6PaJlzsbr3sKHmC8QwKKtJaBZ4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxb9vmo7JdL5+xiD2Hyt/xNaBwHuvzCGBukXXV/wijeVMi7Ajgj
-	5fbnsToebcCYZ1wLluHdATlLEhjr+mgpSRayFwf6cG5/KeInZSdl
-X-Gm-Gg: ASbGncuWfvbLwtRiEO0aRaQ2Om6JFlNkoNDHWcpXOdqdg0o1x3Y+5+vwvrYMTmhDaAS
-	ia0abpOaFCGOlXKWguiJrKqHvURg8db2fbXumaeuJaluTpl9VXrEPYR6GEtAd4PmyjArzQUz7kr
-	B/M/mtycBdIIdvkuSqBoIS4oiAeE5msq6X6yyRCpmbBXfZsXbZL90LvsqLdIXjCpo+jgdLlkdBE
-	NnZhY1na4mA8Uv/S5TqPN71atNmcXGAmW3FYnz1dMPEv/d0kIaQXyWWCAymHTq9mZ/ISE72hyue
-	3aAcNRT/spJii64=
-X-Google-Smtp-Source: AGHT+IEA0jsVCFpxuFcvOyCb0vtOtFd0q4rm1UdtDnrMoG8c+kdWh7Uxs1o4qtTltvMbYSgqTxKA7w==
-X-Received: by 2002:a05:600c:5947:b0:439:4706:ae04 with SMTP id 5b1f17b1804b1-4394706af65mr11421595e9.16.1739172133066;
-        Sun, 09 Feb 2025 23:22:13 -0800 (PST)
-Received: from eichest-laptop ([2a02:168:af72:0:1e6d:7190:f4b8:8cea])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-439471bf782sm11085275e9.39.2025.02.09.23.22.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Feb 2025 23:22:12 -0800 (PST)
-Date: Mon, 10 Feb 2025 08:22:10 +0100
-From: Stefan Eichenberger <eichest@gmail.com>
-To: Dimitri Fedrau <dima.fedrau@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Niklas =?iso-8859-1?Q?S=F6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] net: phy: marvell-88q2xxx: Add support for
- PHY LEDs on 88q2xxx
-Message-ID: <Z6mpIpjM1l5vT49W@eichest-laptop>
-References: <20250207-marvell-88q2xxx-leds-v2-1-d0034e79e19d@gmail.com>
- <Z6eJ6qPs7ORuOrbt@eichest-laptop>
- <20250209084135.GA3453@debian>
+        d=1e100.net; s=20230601; t=1739173516; x=1739778316;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vgDFMMK78aNqKvQlYUZbaLj/duHE/jz0+XIQsm2yUik=;
+        b=sdDEcpOzTSpMMSQrTBh7HTI8o8Ji/DtKdc6pspqus8GNG+D6OoqoTB4qohk//scqw9
+         sXSPKbx9qTzbChfFR6T16irq3kXps0uum0Hu3eQx3gnIDUBwId0EPFZ2BBDhJjpNy2o1
+         7wCeZVGvA8D/qV2WaQChGeufI1qJuACQo1vY9ZZpqLn+/v+pmz/Z0Kvm4NPcU8+waRGY
+         OMkeOlyJUwL3x/1UKrS6ms7AN2svixV10fr7A5fuSSNymPUyMVv+BpRKUh4jF8Ic3qSt
+         CD1zWOQse6WnUKZarj/beutS1W21Mz+nevxbeOKKxM0cJwhLHdArpOCUv5Hyb4fGKWKJ
+         BJ5w==
+X-Forwarded-Encrypted: i=1; AJvYcCUA5TjKIKqYE3tJabtOxaylb6Xg0YdBwDbXb1GAbER67Zn+3OwsmN+MRCHClk/RuL9Xr3uUfAqjgL4bL+8=@vger.kernel.org, AJvYcCUkiDOwcGQ1eS5dBNwVcUFxq2htObw0hRl03AFHNpzfRxSXRubjmC3K9clhlDtJKuwaWnRlgnpC@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlXEGGOoiYNS+PBPzSVBpFIjgqjgPQlRmUhmOpacpew1CvOA2G
+	MNijDIP+CBrz5vUbN6B8+BTpL4ySaARv5Q4PnxzaRBLxJ1xnEbfe6EUc/EZZ
+X-Gm-Gg: ASbGncvKJ/Ihzi0sOqGB62D9W3MUhAFcYMvzDwkGY3AUjk5cPysY/MyRckW2A9AkRq4
+	TGsgEEhgLqRJlwKIXPTXeKViE5lPWruXVBfIZAUMeglCyPjEf9BRKcn1d5CUC+dwdrRyRLGgRr8
+	wyPX7XR2MrBoXzrYiTy7Y8g7updvsBB5UwJn2v5vvXRPCugSBh2L6hAbph7f3qeRb0xP1ZaiMke
+	VujDz7c2bEnoSTTR0AZvGP7XZPnoOgF4nvWVmH5GRCMbwTWVNZLXbHiSSFlENh96sClff3NFB3i
+	OXKBdUcjYnTUSimcJNlznJdaVNsuvmZDk5heCNF13D8CHiG+M2DL0qTPdkOc2ThKSOeyRg==
+X-Google-Smtp-Source: AGHT+IGManpeAPu/DIgD3ta4N4Isd+1vrKJTnUpGzpbzCRvKzOHTytyM4P1+3VcsiTd9IxYQoPkvvA==
+X-Received: by 2002:a17:903:1a24:b0:215:bc30:c952 with SMTP id d9443c01a7336-21f4e1cbb20mr150675985ad.6.1739173516105;
+        Sun, 09 Feb 2025 23:45:16 -0800 (PST)
+Received: from ?IPV6:2409:40c0:101c:99b7:34e3:b424:c392:121c? ([2409:40c0:101c:99b7:34e3:b424:c392:121c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3687e68bsm71606245ad.169.2025.02.09.23.45.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 09 Feb 2025 23:45:15 -0800 (PST)
+Message-ID: <089974d9-e9cd-4a46-889b-94dd595d8c13@gmail.com>
+Date: Mon, 10 Feb 2025 13:15:08 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250209084135.GA3453@debian>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: unix: Fix undefined 'other' error
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+ kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ pabeni@redhat.com, skhan@linuxfoundation.org
+References: <20250209184355.16257-1-purvayeshi550@gmail.com>
+ <20250210002632.48499-1-kuniyu@amazon.com>
+Content-Language: en-US
+From: Purva Yeshi <purvayeshi550@gmail.com>
+In-Reply-To: <20250210002632.48499-1-kuniyu@amazon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Dimitri,
-
-On Sun, Feb 09, 2025 at 09:41:35AM +0100, Dimitri Fedrau wrote:
-> Hi Stefan,
+On 10/02/25 05:56, Kuniyuki Iwashima wrote:
 > 
-> Am Sat, Feb 08, 2025 at 05:44:26PM +0100 schrieb Stefan Eichenberger:
-> > On Fri, Feb 07, 2025 at 05:24:20PM +0100, Dimitri Fedrau wrote:
-> > > Marvell 88Q2XXX devices support up to two configurable Light Emitting
-> > > Diode (LED). Add minimal LED controller driver supporting the most common
-> > > uses with the 'netdev' trigger.
-> > > 
-> > > Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-> > 
-> > Reviewed-by: Stefan Eichenberger <eichest@gmail.com>
-> > 
+>> [PATCH] net: unix: Fix undefined 'other' error
 > 
-> thanks for reviewing. I just noticed that led0 is enabled in
-> mv88q222x_config_init, but I think it should be enabled in
-> mv88q2xxx_config_init because LED configuration is same for all
-> mv88q2xxx devices. What do you think ?
+> Please add net-next after PATCH and start with af_unix: as with
+> other commits when you post v2.
+> 
+> [PATCH net-next v2]: af_unix: ...
+> 
+> 
+> From: Purva Yeshi <purvayeshi550@gmail.com>
+> Date: Mon, 10 Feb 2025 00:13:55 +0530
+>> Fix issue detected by smatch tool:
+>> An "undefined 'other'" error occur in __releases() annotation.
+>>
+>> The issue occurs because __releases(&unix_sk(other)->lock) is placed
+>> at the function signature level, where other is not yet in scope.
+>>
+>> Fix this by replacing it with __releases(&u->lock), using u, a local
+>> variable, which is properly defined inside the function.
+> 
+> Tweaking an annotation with a comment for a static analyzer to fix
+> a warning for yet another static analyzer is too much.
+> 
+> Please remove sparse annotation instead.
+> 
+> Here's the only place where sparse is used in AF_UNIX code, and we
+> don't use sparse even for /proc/net/unix.
 
-I think you are right. If you can move that to mv88q2xxx_config_init it
-would be great. You can add my Reviewed-by tag to the updated patch.
+Thank you for the feedback. As per your suggestion, I have removed the 
+Sparse annotation instead of modifying it. I have updated the patch 
+accordingly and will send v2 with the corrected subject line and commit 
+message.
 
-Thanks,
-Stefan
+Best regards,
+Purva Yeshi
+
+> 
+> 
+>>
+>> Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
+>> ---
+>>   net/unix/af_unix.c | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+>> index 34945de1f..37b01605a 100644
+>> --- a/net/unix/af_unix.c
+>> +++ b/net/unix/af_unix.c
+>> @@ -1508,7 +1508,10 @@ static int unix_dgram_connect(struct socket *sock, struct sockaddr *addr,
+>>   }
+>>   
+>>   static long unix_wait_for_peer(struct sock *other, long timeo)
+>> -	__releases(&unix_sk(other)->lock)
+>> +	/*
+>> +	 * Use local variable instead of function parameter
+>> +	 */
+>> +	__releases(&u->lock)
+>>   {
+>>   	struct unix_sock *u = unix_sk(other);
+>>   	int sched;
+>> -- 
+>> 2.34.1
+
