@@ -1,125 +1,139 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5514828E7
-	for <netdev@vger.kernel.org>; Mon, 10 Feb 2025 12:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3AB22068D
+	for <netdev@vger.kernel.org>; Mon, 10 Feb 2025 12:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739191029; cv=none; b=Uoj9ue5vgPbfvEr3sma0Aw5bEWbA3L9Y/jsu1ZgWfIX3BFfy5303W1Kk9Bm09XVgdkGST8wtRX3/01+J+0RiZR5o69mBoLTA2K/Tynx42m6fcpoUI861khqXRkB+RHl9ufIVjDBIlmo2fqHVLxGVgF7J3AnUJm5efWhisOG4LS0=
+	t=1739191181; cv=none; b=hmkliZDCkWmqIgmJKw1w3wtLcdHQRsMqbRJE/1XTQbGe5aBYpm/iSucuUL/1V/Arg1B7zlloVVTlQvwNWzf6qQa83C2QraGwn5TA9aYV9yTac/Lmj9TjqarMojmgAe8U316QjJZVaB4rXKRKHwfkBRPDK7AIqJ974oIaBWiEvYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739191029; c=relaxed/simple;
-	bh=K3MtQ5idC4oHoXTcpqKWeJSzAGrhCwaVTOUqmUG9xiY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dXczD9bUHW7jalY66icOaJiwIchW92zgbW41NtwpyJmoYmavKOysygxMJa+kcvU/1zXOWzLOZgxhBoVWhDdCRpCW7A/lFto1eocF3Nma/Z9Hn5SrCFHxJmR4HwKTznXd/SE/XVk5BpnCAmfPoBHblp78P1pUqvNBojOT0Yya8FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bghmlNOb; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739191181; c=relaxed/simple;
+	bh=jkugRWJoUQUlKrU43pCxmnqut5A206wldvnTWxyMGJs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=R7e68sQ/Ofv+Nyr1z4uhh80bm6kQUUc7Mk6gqMT7xynYnvmwl7E4VmPX/EBNtWkVmlnmuz+hY4ZY8pBXh/9F2dZU1egiJAG0AmgW1vj/gZ6CzZ8TIVTZ23F4dIt45UTaOM4t2OwKE7nB1AyPSanbV4tN5L+iRtCgJe139Ge68Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=Q4CVAClm; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bghmlNOb"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-434f398a171so3928965e9.2
-        for <netdev@vger.kernel.org>; Mon, 10 Feb 2025 04:37:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739191025; x=1739795825; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=K3MtQ5idC4oHoXTcpqKWeJSzAGrhCwaVTOUqmUG9xiY=;
-        b=bghmlNObN4ngLaKGYGifhki0vjqAhhBtQLPKG5Ts6GOhft0r+A0O9xOk549qy4+E7B
-         LR5rBfB6zWjfwI1C4makZRLzgkjsZBUujlXI+K9+atoZSWywuWzsV55O9i/mxv5rEv0y
-         EyDaV0jI88qaSuClu2Nj93lShYgiWsOgpny2Sio4/TR5T8fKDhubOx4SZ06i16FkdSaq
-         A5VmG/75jaDt7/07OkPm4qh2AndIopipT6fCNnpvpWF5j3pEnDJWgsc68QF4PrsK3t3w
-         dF9eXYA/5TZ2VQM/Lk+LA+dfrbDBCGIGVNCr7PdMpw7uj8aOtJrMOIE3FNptbhTpWBW/
-         vehQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739191025; x=1739795825;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K3MtQ5idC4oHoXTcpqKWeJSzAGrhCwaVTOUqmUG9xiY=;
-        b=DGYnK9JpUFCo5F6McvwbOgMWn3UJm3lyZ2QdeMVi9OQn4uHQ+kLMZpq/4EK3O7HtIu
-         jDp3cw1LLTwkDWXYFHbgC4rzI/IP0hE1ZqFyYRvGudkRAs4Z4VT5s/JYazOex/282Qu5
-         f7ZG661tsB4teVDRLp3euqLqy6JLUuspBgdfHYi/8rITX5FDhwBH/RwsysGVxa0qFDgN
-         DgA0g3aOrpLdJLixYtbFW87ahdwFta0wJe0urrMHMUMNGAFjoK17larpo7nb0q5ZQsSL
-         EMfqywZr3/LmPrsnIbx1PNo7o8piK85Wod4wEmguF15ewH4WStqMHBYEQy5LzyFdzlhu
-         tVeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVwkCSIWaLA7TmvxZxaECkIJDukdToQQ/YYD2+JI/3n9+WRJ+18a+QdwQDNHq5UW9HFRVoAqYg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcqoRFROee6w3IwJzpA8lO1fZw/YYBCkm74nfkP28+QS64E/JT
-	7oeAu25BKtJk1AhkgRQI96cFsRjvGvK/41YfbI9dIgC1FwPixdhe
-X-Gm-Gg: ASbGncv9Zrli64aqMFwrbFfVoswmmhDgthxEecdQCoDo6lkovAcUIg2GDiQaatf8zns
-	OoFpuAGkEzfgg6CeGmR3Bz9iqBcRy+mGN09r/llVaU5QSCCxZxXpGdgmzWCh5romQd+sh0WL6+M
-	IrMUXHbopDckTbsb8R3UnNYPOU9PJEk1XvCgBWGcTMCY5ua4xV6rnTUq3sM4Qx0v/ZM5PjjI/OH
-	xkL892p5Q8F1xLbr57IizzVJmM8NhAzOflbZUSkByf04SHcyIzUegem74d4K1Rqs5tzJmrptHyD
-	s08=
-X-Google-Smtp-Source: AGHT+IFp/qrMqpF0QewcGTK19D8rZ6WhmzABzEYZiO2aWnKT/+1DEN2GE0Y0xC2bvfjR6EFR1vJt5w==
-X-Received: by 2002:a05:600c:3b24:b0:434:a0fd:95d0 with SMTP id 5b1f17b1804b1-439249af823mr44302995e9.4.1739191025313;
-        Mon, 10 Feb 2025 04:37:05 -0800 (PST)
-Received: from skbuf ([86.127.124.81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dd34f2af5sm7073731f8f.78.2025.02.10.04.37.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 04:37:04 -0800 (PST)
-Date: Mon, 10 Feb 2025 14:37:01 +0200
-From: Vladimir Oltean <olteanv@gmail.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	DENG Qingfang <dqfext@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Matthias Brugger <matthias.bgg@gmail.com>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Sean Wang <sean.wang@mediatek.com>,
-	Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH net-next v2 2/3] net: dsa: allow use of phylink managed
- EEE support
-Message-ID: <20250210123701.7gdt56l5m6t5c6ge@skbuf>
-References: <Z6YF4o0ED0KLqYS9@shell.armlinux.org.uk>
- <E1tgO70-003ilF-1x@rmk-PC.armlinux.org.uk>
- <20250207151959.jab2c36oejmdhf3k@skbuf>
- <Z6Yn2jTVmbEmhPf9@shell.armlinux.org.uk>
- <20250207213823.2uofelxulqxpdtka@skbuf>
- <Z6aIGzHWdzF5Rlci@shell.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="Q4CVAClm"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1thSh2-00BOci-M1; Mon, 10 Feb 2025 13:15:16 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=s0XEXyzf1IhZ34ddP3l/xQwx44nn6AeJ5GmAr2ID/ag=; b=Q4CVAClmiQNPKMA2U2Nfj6FeOh
+	VgHzCA2ay6PDpbzroOgwWROmlFA1rWoAr7u8RJI0zwj9rCwtgztbEs+uPLSZRgwqk98CBnFlBiAeX
+	A44+O0vwfq2tV4gWdhZEYZz5WX1SMbNV2phvDtwLgyahAHGq+hV0CWnSZA6Efv2rlqgOk4JpaRsRi
+	riYCPNeSuWEseOekCbYAGaVGfaLReAe3u03mHOxDeay2kRzzHEWd5anquGyZ6jM56S2J7T4A6HkCY
+	ccQkjnq3CGOxCab6JDu3aLV5iPAjtn9Ocn9J6rEQRcmGvySd0G6dZZk0xoqDDsNWW4bhIVLp41ZGb
+	QiG3px+Q==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1thSh1-00088d-W9; Mon, 10 Feb 2025 13:15:16 +0100
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1thSgy-007tu3-1p; Mon, 10 Feb 2025 13:15:12 +0100
+From: Michal Luczaj <mhal@rbox.co>
+Date: Mon, 10 Feb 2025 13:15:01 +0100
+Subject: [PATCH net v3 2/2] vsock/test: Add test for SO_LINGER null ptr
+ deref
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6aIGzHWdzF5Rlci@shell.armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250210-vsock-linger-nullderef-v3-2-ef6244d02b54@rbox.co>
+References: <20250210-vsock-linger-nullderef-v3-0-ef6244d02b54@rbox.co>
+In-Reply-To: <20250210-vsock-linger-nullderef-v3-0-ef6244d02b54@rbox.co>
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>, 
+ Luigi Leonardi <leonardi@redhat.com>
+X-Mailer: b4 0.14.2
 
-On Fri, Feb 07, 2025 at 10:24:27PM +0000, Russell King (Oracle) wrote:
-> You may have noticed that I'm no longer putting as much effort into
-> cover messages - and this is precisely why. I honestly don't see
-> that there's any point in spending much time on cover messages anymore.
+Explicitly close() a TCP_ESTABLISHED (connectible) socket with SO_LINGER
+enabled.
 
-I have things to do and places to be, and I'm sure you do too, so
-I won't drag this out more than I need to. I'll just give you one
-self-contained example of what bothers me, from this very thread.
-I'm not even expecting you to change all of a sudden, I know it's hard
-and takes time and a deeper understanding of what is happening.
+As for now, test does not verify if close() actually lingers.
+On an unpatched machine, may trigger a null pointer dereference.
 
-First of all, if "I tend not to read cover messages" isn't sarcastic
-when you've make it pretty obvious so many times that this is important
-to you, then I don't know what sarcasm is. So, your message starts off
-from the very beginning by not acknowledging the way in which your
-reaction is perceived.
+Tested-by: Luigi Leonardi <leonardi@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ tools/testing/vsock/vsock_test.c | 41 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-Then, your message goes off to justify your reaction by essentially
-reiterating what you've publicly said elsewhere about not being noticed,
-making things sew with no Singer sewing machines required, and what not.
-Apart from the fact that you seem to build certain expectations of others'
-reactions in your mind and behave bizarrely when they react differently
-to how you expect (or not at all), my personal problem is that you've
-responded to a complaint which was really hard for me to verbalize by
-talking about you, again. Everything I've said in the previous email,
-about you expecting more respect and attention than you are willing to
-give, still stands.
+diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+index dfff8b288265f96b602cb1bfa0e6dce02f114222..d0f6d253ac72d08a957cb81a3c38fcc72bec5a53 100644
+--- a/tools/testing/vsock/vsock_test.c
++++ b/tools/testing/vsock/vsock_test.c
+@@ -1788,6 +1788,42 @@ static void test_stream_connect_retry_server(const struct test_opts *opts)
+ 	close(fd);
+ }
+ 
++static void test_stream_linger_client(const struct test_opts *opts)
++{
++	struct linger optval = {
++		.l_onoff = 1,
++		.l_linger = 1
++	};
++	int fd;
++
++	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
++	if (fd < 0) {
++		perror("connect");
++		exit(EXIT_FAILURE);
++	}
++
++	if (setsockopt(fd, SOL_SOCKET, SO_LINGER, &optval, sizeof(optval))) {
++		perror("setsockopt(SO_LINGER)");
++		exit(EXIT_FAILURE);
++	}
++
++	close(fd);
++}
++
++static void test_stream_linger_server(const struct test_opts *opts)
++{
++	int fd;
++
++	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
++	if (fd < 0) {
++		perror("accept");
++		exit(EXIT_FAILURE);
++	}
++
++	vsock_wait_remote_close(fd);
++	close(fd);
++}
++
+ static struct test_case test_cases[] = {
+ 	{
+ 		.name = "SOCK_STREAM connection reset",
+@@ -1943,6 +1979,11 @@ static struct test_case test_cases[] = {
+ 		.run_client = test_stream_connect_retry_client,
+ 		.run_server = test_stream_connect_retry_server,
+ 	},
++	{
++		.name = "SOCK_STREAM SO_LINGER null-ptr-deref",
++		.run_client = test_stream_linger_client,
++		.run_server = test_stream_linger_server,
++	},
+ 	{},
+ };
+ 
 
-You are an important and valued member of the community, but you don't
-have to be so hard on people when they don't rise to your expectations.
-Your inflexibility makes it difficult at least for me to find a place
-around you.
+-- 
+2.48.1
+
