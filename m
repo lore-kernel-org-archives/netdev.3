@@ -1,73 +1,76 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2051.outbound.protection.outlook.com [40.107.212.51])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2076.outbound.protection.outlook.com [40.107.94.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394121C1AC7
-	for <netdev@vger.kernel.org>; Mon, 10 Feb 2025 09:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9B71C5D52
+	for <netdev@vger.kernel.org>; Mon, 10 Feb 2025 09:33:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739180030; cv=fail; b=K/cy6o9uLT75zPuYLuC6ifQ1udBOmrY4WVDY3zVSNAf2eUtPf/Y56NkNuSuBG07gI/8RJWKUNpIdp7auYyo9++4liHE5qzWE+D/fps+TMSAX/aUlvP9rlHo8WtkgBe/VYcy4+cVNtR/FLWH9ztgSjD1ECw+wb2uwk5pKtrjlhgc=
+	t=1739180037; cv=fail; b=cR7hoyj7EydV6mH46YJQRukP1N4avdRLsMacoUGdG4M1NxLrzrd453ZgTJj8mhP1bQ3WBqN8sxwehHz+CCfDJTG2VShMO9fHObnpX4O0Fcrz5sAK1cEtWTLK0MnkX0JqSiZn7dPLg9buBIENpPMx+gWvukTkYulIfaVZsmgFuOA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739180030; c=relaxed/simple;
-	bh=3jiCmm8L7s/SBeol+W6DAf5fK3Cc3avaLluPDxYKQ4o=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OVcgs8PlkYM7tYz68XQwlINHJqXVXwxbHH8l75Xsl32qvV0ILVs0NuxN9RrIK37BiG3uqqSiE5ASS2VcMMWu9caTeDKTt96EBioi/mrNMMEXSRmrsLA74PrGtUHQh0lLeUrZKoNoIA/s72pnxTA+C6JWtbPNWI9RHzgG/I249yI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=o45Gn1NV; arc=fail smtp.client-ip=40.107.212.51
+	s=arc-20240116; t=1739180037; c=relaxed/simple;
+	bh=88uLZItevA9gyxjPG116f5AI7I5RlkEsEuZvGPsZSoI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PWWm6BgOB6TEOolOUkYXwVz7TPN15wVPJ52cXL18ahyokZcDSTJu71/pXIMqIem7gIduIU5EbDyK2NF5x/rSxUYPau6o0GddjF1jaECIqDPgXOaNxSDyOPLmltrBtpbK+lUtPnZhcpBJVOcoUSCeZL29Q9EPE5efbtq8Dkqxm6w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=K0KLfScC; arc=fail smtp.client-ip=40.107.94.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="o45Gn1NV"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="K0KLfScC"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x/P8LW86FNYpIRcwes+dMJcZqkIss97ikdY3bGhQSKyymjxDRoexuqmi2VD78LhjAI2+eVbNpwJHTyGuy5rADomoVBvcJV3XcLIalw0S9Ut2UoWgeTNccN1SzGnUK+jwQ8qcRYmAJpPlQx+ZSDeFCHPGch4OSASQ/ewNF4WOYZG/NCvEYh3HMe6JhvO6Ytz1APX9SMH7GeCnWw/wOuVCff4gP7rzUjK2uWwsUHMNHh4D7ng8u8Q8QgS0PplvWWQIoIQkJz9Tm8RqYiA199jldYSXqU0jGRFPT9pJ23KeVhGkq/KWBY0EprU+taxMK+dwtVz6UmX4toCLz2Jos8gU/Q==
+ b=Ga6mpiiUovNBN24p5o7qAQklCFoRBQB5iia6LGlGkRoYRFGyDXUNMwt0EuVpSOlUQQbg7OlDGCce1XBWC56HSPL8mFNs0lnYnQpaNmwf5/zRswtV+oKgk78XSFjcQ9BQta2DEnvJGXdfinqg8c/oDTfuazlk3PTTb4PTxSWdC6GGAgizHwu1ujlsoA77c+wMUuh50NXIJ0rj2Y4aIjKfBaIKfpwxswVS8o80gZQf9XfgAaeLR+aRe0TgzwJyzmmjl8jSccDZghWtqnXzOSVRCqFej3vTxQmSLJRxbmC1EEIgf6zxS00o33wFBDylc4DjM6gy7XggVnYmxS9aLUUmGw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rd404nGsjysvU9aRNl4YLF2coQ6y0vtYOLez0tsrays=;
- b=HQ3LfosA51q+lWREUzgGlfTazvohtXlhOsxmjbgrk0CorjZjm3CF4LwGNVNs6i93W2WxrJrli75WJPvm+N4y89Ux3V+r8cdlSLm51CC34xDxmT0kOqRg3fQRUX0kKtGqY6/OebzLiLL4eKON7ZCr3Fntro0oQyKt1WylBrvEv+SbztUNNNmFMHVA9NFJUZGsvKY6/G/9Zokwe6m1uHGpa41BPPXoh1gtX3iyMdbahLXGQQptTr4nOrii1Q6KaniDeEfejezF+MQPF20KjmTzzvoUFyzoums/AhsKYKFyjnoZ9qNgn4fSg5Qexgl9iBxTL+P3EBt2CVZCPN1nbkX6eA==
+ bh=xdIUgVVW+IwtZBP3MIqDcEckLD30HABukYu3BVrLEdM=;
+ b=aSAzmZVHvY9WEB6cBfCr7WGMnnkYnOF6d32RATACzalxaudoKg1Uh43r+wxNkJZJFePCtBEhdBC61ElTCrrsSA96DQOjprzXDffA+bxJeoE5nN7gUrU2vxuThLq+G86IBj487Qv/mAF5wv8qsNBdKERECPEAmWjMSPSeCp1lR+4XtlT9QNOJnnRwAiAcXYfqKl+cQljl8MWEVhgzKr+tMNuC+zPN5ag8i2FBeebSX+7FQUgWJUv0XLZGFYOWiHhrDbTTp0E+juuLfQTiEC0JJDv3fOsRL1KVZGCyeDsWW+Psa10l295KUrQ8fZqEYvsPmqpeHpR5WQGorzFT8LU62g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rd404nGsjysvU9aRNl4YLF2coQ6y0vtYOLez0tsrays=;
- b=o45Gn1NVgFIZTersIn2aQ2feOgiBsrdzeZrQZoPiUY60+0xyhbtF6kKlM5as3FYucY7QGn0Ts0/2kUqwSfCe6lTpy85dYN1MxXZAEhoVaJLbrS7SgwwodyT1DtBMH5sgE3J/7Ps9jsWjMB4nRsLDqev5Nl2al51LfZ77i9cR5jYxdBrHncDVR7gLtHHMuavks6BAHC2u0tbYsDIP7EaAO1v6aSlH0f95EoESZWn8SjQ3FYxlRCA3eiP1JMYivbAolDbvy5r6DcLun12kDwN6Y9piLT79zkJvUfjbaPuqarT0GL6HgnUjM/fhhT8QtwhVtgNc2+/cuEAnJztWv61ulg==
-Received: from MW4PR04CA0122.namprd04.prod.outlook.com (2603:10b6:303:84::7)
- by DM4PR12MB5748.namprd12.prod.outlook.com (2603:10b6:8:5f::19) with
+ bh=xdIUgVVW+IwtZBP3MIqDcEckLD30HABukYu3BVrLEdM=;
+ b=K0KLfScCcjFbMj74MJ3lLlsAI+NkkkuKrQo5OKjGQ7kritYmCbl44Tqc1HxVtVnjQC7Fk0lxmJVFlKM8jutwhPeyMZ+1ME6uOhjEz9Qux3HfjXeng8/UcrS2lhilBRN9I1B/0gzF8XRkiiY1ocs0FWpKQRL3VQXrpSaYZ4V+defcI6BP41hS4OQJnPifwKUkdxZjJWQnErQ5NVTq/7bwt5Y9lBklBPJ0+//IdzZ5qtg4tdWBklEndIzpoGc35Uzxw8mprnArWE8n3jzgRXho9l3JoVf5qnHwGzgQXE6oC7P/8kIdUJR8PS28r3vV4zYtin5gsCk8jlYgwFN1CR3mSw==
+Received: from CH0PR03CA0090.namprd03.prod.outlook.com (2603:10b6:610:cc::35)
+ by LV8PR12MB9417.namprd12.prod.outlook.com (2603:10b6:408:204::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.18; Mon, 10 Feb
- 2025 09:33:45 +0000
-Received: from SJ5PEPF000001CB.namprd05.prod.outlook.com
- (2603:10b6:303:84:cafe::96) by MW4PR04CA0122.outlook.office365.com
- (2603:10b6:303:84::7) with Microsoft SMTP Server (version=TLS1_3,
+ 2025 09:33:52 +0000
+Received: from DS2PEPF00003445.namprd04.prod.outlook.com
+ (2603:10b6:610:cc:cafe::49) by CH0PR03CA0090.outlook.office365.com
+ (2603:10b6:610:cc::35) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.31 via Frontend Transport; Mon,
- 10 Feb 2025 09:33:45 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ 10 Feb 2025 09:33:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ5PEPF000001CB.mail.protection.outlook.com (10.167.242.40) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ DS2PEPF00003445.mail.protection.outlook.com (10.167.17.72) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8445.10 via Frontend Transport; Mon, 10 Feb 2025 09:33:45 +0000
+ 15.20.8445.10 via Frontend Transport; Mon, 10 Feb 2025 09:33:51 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 10 Feb
- 2025 01:33:31 -0800
+ 2025 01:33:38 -0800
 Received: from dev-r-vrt-155.mtr.labs.mlnx (10.126.231.35) by
  rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Mon, 10 Feb 2025 01:33:29 -0800
+ 15.2.1544.14; Mon, 10 Feb 2025 01:33:36 -0800
 From: Danielle Ratson <danieller@nvidia.com>
 To: <netdev@vger.kernel.org>
 CC: <mkubecek@suse.cz>, <matt@traverse.com.au>, <daniel.zahka@gmail.com>,
 	<amcohen@nvidia.com>, <nbu-mlxsw@exchange.nvidia.com>, Danielle Ratson
 	<danieller@nvidia.com>
-Subject: [PATCH ethtool-next v5 00/16] Add JSON output to --module-info
-Date: Mon, 10 Feb 2025 11:33:00 +0200
-Message-ID: <20250210093316.1580715-1-danieller@nvidia.com>
+Subject: [PATCH ethtool-next v5 03/16] sff_common: Move sff_show_revision_compliance() to qsfp.c
+Date: Mon, 10 Feb 2025 11:33:03 +0200
+Message-ID: <20250210093316.1580715-4-danieller@nvidia.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250210093316.1580715-1-danieller@nvidia.com>
+References: <20250210093316.1580715-1-danieller@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,144 +83,182 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CB:EE_|DM4PR12MB5748:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7a5f478f-7720-4820-d2f1-08dd49b60400
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003445:EE_|LV8PR12MB9417:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0050b0e-5333-4d74-97d1-08dd49b607a0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700013|13003099007;
+	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ifXrL35iHibxMp08zQuhgHH/P/eKshutQnaPwi69p/S0uCc1x3nzmEmLaNGj?=
- =?us-ascii?Q?rMDd2tl904TUWbExQf9KF7YFT1+dsM6rvLwlxIaZ7w53cHDLkFevt+i0McF6?=
- =?us-ascii?Q?wlimzMAzEJU15XEY113h9msjW9dmyeVVvKgyfoPzmdzSccyCsmgTGXR9xQWG?=
- =?us-ascii?Q?kFxqtXNY6M4u29bohUwXYUIG9bKT0e8RrfVqIelz6ht+fKglPdNpGONzP7fK?=
- =?us-ascii?Q?859CBoCtk3bWvqrj4fmUbCOFFcpxCpj9w5FDmwX6l5gvMMvG8FEoNliJsKr+?=
- =?us-ascii?Q?PR5VGtzFdnoWsX4ECwq/sO8HnjyPWaQZfYRJSl+pGGvvHqSdILDRnnxxByE2?=
- =?us-ascii?Q?Atmckn6CZ7fMH3HcTPe0yTlVA9lMH7n1nOBq7Xq898na0pRH9piNYlHmOsJQ?=
- =?us-ascii?Q?TN+XcLMkh0pBirLBnWL/14/iCe8Hr3Pm7DQIehysW7wmarrpB5wuvl/bUEFV?=
- =?us-ascii?Q?Fv0CoMLOa0NQzC8VHxGoHWpPkOC3G92X7YMqlHWi6/XWFWm7WeEHJ2dI7TXl?=
- =?us-ascii?Q?ZKTyMs9tvpmIH2dtGZamzwvZ4obwoKnGlaaU89OsuUGGjY4cdJi30yoQRhpm?=
- =?us-ascii?Q?cxPDb8imByI2F/HEXuHoVBL3gf2SnuH2Sze7V0zgHVVyeU0qR4CDDssp/0y6?=
- =?us-ascii?Q?1aNLq/jYT5Nbe7wyMW8sMhK0CqAlc6UB0NcnK7WPkCACLnisFAdY5de5D1fD?=
- =?us-ascii?Q?0u5bOol9xRQojvWm6priUffOhQSDl8P/UG7Ss5MlDxlDoXrJuOvCVcfs6aew?=
- =?us-ascii?Q?hYheKHBUg7k+8HdzEfLM/BGYGU4cppWl/OGNQGktCEXXsc2X9BxWosxgSQxF?=
- =?us-ascii?Q?aftErH9l6incVATvSOKPVTcwyX06DsphFTGQk4KTrpkLYOUI2w2DA4rtLpgA?=
- =?us-ascii?Q?kogrnnQl3EAEJ589/dKx8FdCJ6pKfq33VTjCjNRz4cdlVHogUYYLNiW91Imq?=
- =?us-ascii?Q?alAK3ZBJqvpdFR3nmJWY+hI+leirx9a/0eo3eTTenxrRXqdnjTuMvy8fDK1N?=
- =?us-ascii?Q?IBRRSlXjhzo5Rmo/FLqsfFc+TPw+ZZfHpxjANUqinEioCszSShsajC6T41EJ?=
- =?us-ascii?Q?oVK5tusvoZc88w99b0CdvvU2hmmMOTgsOIrXGdPoE+ajMAvehFJk/qc1RA76?=
- =?us-ascii?Q?M5AvzKrkxZaPU2wMcZzKbNrELknVzMkQy2UZmJxV/PEBTwV1cfm53trafCry?=
- =?us-ascii?Q?u2z9QaZtZ5n/zSqnFOyy2XR5cU23Isr4xSj6Ue9VqJLXulR2BS2ihv4nhGuo?=
- =?us-ascii?Q?R5hJhIpupzOdvhCK12QetMmrk8Zb/H4a80F9GK7ZlTeoAnvVT7+LcBk49qez?=
- =?us-ascii?Q?rhoNA7Dq1ORnq2WDhXHNQ53OfQEravwUUdy5bSgRS0LCcttvAQpptFeBeX5Z?=
- =?us-ascii?Q?+IvUMiTNhWT6Jp2gosF3OOQZMKKUlyyraGeyh5ljJkZZsKGI/2s99wkJhFwO?=
- =?us-ascii?Q?Zi3ute0CE21DFHnBa6r7n2DsDMH7HnS3Q8wYqW4H86zFC14qvGhuz1cpifGA?=
- =?us-ascii?Q?+g2SRgXdPOPOh20=3D?=
+	=?us-ascii?Q?CSE6pmHRKDjEnnmtGNBP67pc5QFvnL+AwRQeJyYdlYmnY03sO8f1vmlel6+k?=
+ =?us-ascii?Q?MK5FrRD15X96f6mKPEZXbyMCcD0gGJZILs2xKSNWA5yjugvUovRoLrtRbbjT?=
+ =?us-ascii?Q?ME4evg6J5QOSNoSAZvPlgh9DNV8zEN9zI1B2spKG3OE/osdn25YYeFBGfulY?=
+ =?us-ascii?Q?FwaqfbnG6BsbpSq8h/q3yX+OTWkyWmOWK+rjSDFd/m1r2rTZgQT6SWKrl2Aw?=
+ =?us-ascii?Q?Aw/v5Jjuni8nodyyzqJxzBY0N4Ysdkr+2NJMFX3RaZk8YD7mNLZX/RHrzaM/?=
+ =?us-ascii?Q?YGDatbDgCL2rQrQXmTzjlPWmMH5bRT9N8Gen7hGp2hpIb5/s+7LkxYg21nnG?=
+ =?us-ascii?Q?VDuShIr5wV7o5u6n6K3nNrwvZOjrf73T3kUb6VHtQjq5Yj6W/h558Gyqfu7X?=
+ =?us-ascii?Q?Bo7dFzHpIw7mjsFM5LxtxGr25iv9ynZjx7QK43mb9B2yw0fy8rq+Ue22L9G8?=
+ =?us-ascii?Q?23NUwvOSWtuSTyfty6+wFDZKndQvn5supYsYQi3kzxaBwhH83R/wsCKEgs0g?=
+ =?us-ascii?Q?OX7XKQ9NP+m3/MDf7WE7PRZgVk4bQH3NUyxl3WpAPLnV3oey94alWN1K2isw?=
+ =?us-ascii?Q?QpyxMhTzhmwtFgCCryAzoDTctgZ6s55iFMhAGaV10UYzkHuSWd4EEsH1FR7R?=
+ =?us-ascii?Q?zPnmYlJ2eIMl5msu3ih3q0l5QMHPZQqcTlotLHHXW1Pz3XkRA1Tutt8QbFFd?=
+ =?us-ascii?Q?Hc5PWea54EAblH/w5MBb19MeXTMiHUBEN0Ap1XXYBgLPLPeMoeQmMmde2jV6?=
+ =?us-ascii?Q?0RxeP7sDRsRkO5tuuhV7xU1QIOVVl2JRcUtzhYomSKsICTeUmN3TJIlKGOgH?=
+ =?us-ascii?Q?N41QHuk/AxNQ5qSdzwZ1fEpPKlGgaab0si+qcGeOfdbv4O7vnGCRGlDjKG3e?=
+ =?us-ascii?Q?mX3Ly7/yg0k7CrbIBjoAgu31WM95dqfjFiKolfuidzmMzTBKIB4UO/e0Z7vl?=
+ =?us-ascii?Q?VJSS9eV2g/2wVlKEKDv/X4dWij/HVblxpZ7g7fsfa57HqXYeronSFaefMGpI?=
+ =?us-ascii?Q?D2CTGdFryM2pkP/Ep1QfeEqCya9uktLarCcSGy4mBzk4wYHif7rj4l0jo9ol?=
+ =?us-ascii?Q?Sw/Cwbg7gz38UzKfknLHQkQLlvmc/qoo9wGqH3s1rGho+dMGbLkmrZE4Qbc6?=
+ =?us-ascii?Q?5ve5ugJHqGwqR1apVpJh+CNpmf9HqVPLoEPuhxG1DH0zUiCRD/U2SQmcUWl5?=
+ =?us-ascii?Q?06N0AghD1AO8O8ZF6nPSrIryoWZfzKEwKTKqFpWXtpHdOpsckfR5eOVCOpdU?=
+ =?us-ascii?Q?dsSw9RWm0k4LtcOzrgVWN0EYhJaaJJZvwk3oiOOPTgTGSpDRd9RNKwILbb9h?=
+ =?us-ascii?Q?Gia4FfnZAYaEFn7UpGsdrbDc/gA0Ow8GZwUJZhDlD/mByt8krBFxoev3if/+?=
+ =?us-ascii?Q?9dqM8CDcDdO5m9YsOh7cr2wAxpoiZpFu4SVvo48Yz7QUEV6UiSNiz6VXn3y9?=
+ =?us-ascii?Q?V+GCMLlVKG3gFI9AR2ttkVirB2NvIsY3aKLa80s9JK3UOs4hzWcgP5iLtB3i?=
+ =?us-ascii?Q?5MnrmQs8a/MX3LA=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013)(13003099007);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2025 09:33:45.6360
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2025 09:33:51.5912
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a5f478f-7720-4820-d2f1-08dd49b60400
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0050b0e-5333-4d74-97d1-08dd49b607a0
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001CB.namprd05.prod.outlook.com
+	DS2PEPF00003445.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5748
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9417
 
-Add JSON output for 'ethtool -m' / --module-info, following the
-guideline below:
+The only use of the function sff_show_revision_compliance() is in qsfp.c
+file.
 
-1. Fields with description, will have a separate description field.
-2. Units will be documented in a separate module-info.json file.
-3. ASCII fields will be presented as strings.
-4. On/Off is rendered as true/false.
-5. Yes/no is rendered as true/false.
-6. Per-channel fields will be presented as array, when each element
-   represents a channel.
-7. Fields that hold version, will be split to major and minor sub
-   fields.
+Therefore, it doesn't belong to sff_common.c file but it can simply be a
+static function in qsfp.c.
 
-This patchset suppose to extend [1] to cover all types of modules.
+Move sff_show_revision_compliance() function to qsfp.c.
 
-Patchset overview:
-Patches #1-#7: Preparations.
-Patches #8-#9: Add JSON output support for CMIS compliant modules.
-Patches #10-#11: Add JSON output support for SFF8636 modules.
-Patches #12-#14: Add JSON output support for SFF8079 and SFF8472 modules.
-Patch #15: Add a new schema JSON file for units documentation.
-Patches #16: Add '-j' support to ethtool
+Signed-off-by: Danielle Ratson <danieller@nvidia.com>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+---
+ qsfp.c       | 40 ++++++++++++++++++++++++++++++++++++++--
+ sff-common.c | 36 ------------------------------------
+ sff-common.h |  1 -
+ 3 files changed, 38 insertions(+), 39 deletions(-)
 
-[1] https://lore.kernel.org/all/20220704054114.22582-2-matt@traverse.com.au/
-
-v5:
-	* Edit commit message patch #11.
-
-v4:
-	Patch #10:
-		* In extended_identifier field, use an array for all
-		  descriptions instead of 3 different descriptions.
-		* Remove duplicated definition of YESNO() and ONOFF()
-		* defines.
-
-v3:
-	* Remove unit fields from JSON output.
-	* Reword commit messages.
-	* Add patch #2 and #15.
-	* Enable properly JSON output support for SFF8079.
-	* Remove printings from fields that might be empty strings.
-	* Fix JSON output in sff8636_show_dom_mod_lvl_flags().
-
-v2:
-	* In rx_power JSON field, add a type field to let the user know
-	  what type is printed in "value".
-	* Use uint instead of hexa fields in JSON context.
-	* Simplify sff8636_show_dom().
-	* Use "false" in module_show_lane_status() instead of "None" in
-	  JSON context.
-
-Danielle Ratson (16):
-  module_common: Add a new file to all the common code for all module
-    types
-  ethtool: Standardize Link Length field names across module types
-  sff_common: Move sff_show_revision_compliance() to qsfp.c
-  cmis: Change loop order in cmis_show_dom_chan_lvl_flags()
-  qsfp: Reorder the channel-level flags list for SFF8636 module type
-  qsfp: Refactor sff8636_show_dom() by moving code into separate
-    functions
-  module_common: Add helpers to support JSON printing for common value
-    types
-  cmis: Add JSON output handling to --module-info in CMIS modules
-  cmis: Enable JSON output support in CMIS modules
-  qsfp: Add JSON output handling to --module-info in SFF8636 modules
-  qsfp: Enable JSON output support for SFF8636 modules
-  sfpid: Add JSON output handling to --module-info in SFF8079 modules
-  sfpdiag: Add JSON output handling to --module-info in SFF8472 modules
-  ethtool: Enable JSON output support for SFF8079 and SFF8472 modules
-  module_info: Add a new JSON file for units documentation
-  ethtool: Add '-j' support to ethtool
-
- Makefile.am             |   7 +-
- cmis.c                  | 493 +++++++++++-----------
- cmis.h                  |  65 ---
- ethtool.c               |  10 +-
- module-common.c         | 662 +++++++++++++++++++++++++++++
- module-common.h         | 287 +++++++++++++
- module_info.json        | 191 +++++++++
- netlink/module-eeprom.c |  26 +-
- qsfp.c                  | 894 +++++++++++++++++++++-------------------
- qsfp.h                  | 108 -----
- sff-common.c            | 348 ++++------------
- sff-common.h            | 119 ++----
- sfpdiag.c               |  52 ++-
- sfpid.c                 | 446 +++++++++++---------
- 14 files changed, 2250 insertions(+), 1458 deletions(-)
- create mode 100644 module-common.c
- create mode 100644 module-common.h
- create mode 100644 module_info.json
-
+diff --git a/qsfp.c b/qsfp.c
+index 1aa75fd..5baf3fa 100644
+--- a/qsfp.c
++++ b/qsfp.c
+@@ -514,6 +514,42 @@ sff8636_show_wavelength_or_copper_compliance(const struct sff8636_memory_map *ma
+ 	}
+ }
+ 
++static void sff8636_show_revision_compliance(const __u8 *id, int rev_offset)
++{
++	static const char *pfx =
++		"\tRevision Compliance                       :";
++
++	switch (id[rev_offset]) {
++	case SFF8636_REV_UNSPECIFIED:
++		printf("%s Revision not specified\n", pfx);
++		break;
++	case SFF8636_REV_8436_48:
++		printf("%s SFF-8436 Rev 4.8 or earlier\n", pfx);
++		break;
++	case SFF8636_REV_8436_8636:
++		printf("%s SFF-8436 Rev 4.8 or earlier\n", pfx);
++		break;
++	case SFF8636_REV_8636_13:
++		printf("%s SFF-8636 Rev 1.3 or earlier\n", pfx);
++		break;
++	case SFF8636_REV_8636_14:
++		printf("%s SFF-8636 Rev 1.4\n", pfx);
++		break;
++	case SFF8636_REV_8636_15:
++		printf("%s SFF-8636 Rev 1.5\n", pfx);
++		break;
++	case SFF8636_REV_8636_20:
++		printf("%s SFF-8636 Rev 2.0\n", pfx);
++		break;
++	case SFF8636_REV_8636_27:
++		printf("%s SFF-8636 Rev 2.5/2.6/2.7\n", pfx);
++		break;
++	default:
++		printf("%s Unallocated\n", pfx);
++		break;
++	}
++}
++
+ /*
+  * 2-byte internal temperature conversions:
+  * First byte is a signed 8-bit integer, which is the temp decimal part
+@@ -757,8 +793,8 @@ static void sff8636_show_page_zero(const struct sff8636_memory_map *map)
+ 			  SFF8636_VENDOR_SN_END_OFFSET, "Vendor SN");
+ 	module_show_ascii(map->page_00h, SFF8636_DATE_YEAR_OFFSET,
+ 			  SFF8636_DATE_VENDOR_LOT_OFFSET + 1, "Date code");
+-	sff_show_revision_compliance(map->lower_memory,
+-				     SFF8636_REV_COMPLIANCE_OFFSET);
++	sff8636_show_revision_compliance(map->lower_memory,
++					 SFF8636_REV_COMPLIANCE_OFFSET);
+ 	sff8636_show_signals(map);
+ }
+ 
+diff --git a/sff-common.c b/sff-common.c
+index 6712b3e..e2f2463 100644
+--- a/sff-common.c
++++ b/sff-common.c
+@@ -122,39 +122,3 @@ void sff_show_thresholds(struct sff_diags sd)
+ 	PRINT_xX_PWR("Laser rx power low warning threshold",
+ 		     sd.rx_power[LWARN]);
+ }
+-
+-void sff_show_revision_compliance(const __u8 *id, int rev_offset)
+-{
+-	static const char *pfx =
+-		"\tRevision Compliance                       :";
+-
+-	switch (id[rev_offset]) {
+-	case SFF8636_REV_UNSPECIFIED:
+-		printf("%s Revision not specified\n", pfx);
+-		break;
+-	case SFF8636_REV_8436_48:
+-		printf("%s SFF-8436 Rev 4.8 or earlier\n", pfx);
+-		break;
+-	case SFF8636_REV_8436_8636:
+-		printf("%s SFF-8436 Rev 4.8 or earlier\n", pfx);
+-		break;
+-	case SFF8636_REV_8636_13:
+-		printf("%s SFF-8636 Rev 1.3 or earlier\n", pfx);
+-		break;
+-	case SFF8636_REV_8636_14:
+-		printf("%s SFF-8636 Rev 1.4\n", pfx);
+-		break;
+-	case SFF8636_REV_8636_15:
+-		printf("%s SFF-8636 Rev 1.5\n", pfx);
+-		break;
+-	case SFF8636_REV_8636_20:
+-		printf("%s SFF-8636 Rev 2.0\n", pfx);
+-		break;
+-	case SFF8636_REV_8636_27:
+-		printf("%s SFF-8636 Rev 2.5/2.6/2.7\n", pfx);
+-		break;
+-	default:
+-		printf("%s Unallocated\n", pfx);
+-		break;
+-	}
+-}
+diff --git a/sff-common.h b/sff-common.h
+index 34f1275..161860c 100644
+--- a/sff-common.h
++++ b/sff-common.h
+@@ -132,6 +132,5 @@ double convert_mw_to_dbm(double mw);
+ void sff_show_thresholds(struct sff_diags sd);
+ 
+ void sff8024_show_encoding(const __u8 *id, int encoding_offset, int sff_type);
+-void sff_show_revision_compliance(const __u8 *id, int rev_offset);
+ 
+ #endif /* SFF_COMMON_H__ */
 -- 
 2.47.0
 
