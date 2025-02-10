@@ -1,172 +1,747 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2061.outbound.protection.outlook.com [40.107.212.61])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B4C1F8BAA;
-	Mon, 10 Feb 2025 15:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739200675; cv=fail; b=FuhY6CunygS2PUaPln/L3fEPk56qcnAlfhqHJ2vNcPKArdTTVf02huEWFt/z9sl371i26/3W2GDleIEW5C1IdMWO+hUt4Lcdv4fxrfQvqrrsxPvZZmJMSZafNpj+j6YJcsY49Fz6xo51n01cl2LtdMyysBwm/IeSp761GwrcmDs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739200675; c=relaxed/simple;
-	bh=26NoCE8meqVmsoXAFZrTlFkIxJg0EHca2CyL5IMOb70=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=MBSm/UwFS/heS11ICMc/L2CA1r3jh2ayQ3Ej2pmbYUgJGYcz3oolGpbXAyLSZBgYJl0zOTom94GQXa8QICqLfpqerK5hsbRmpYNybdnmXAy8BXwK0v3LQ8Y4IA1vac7W5ri24YpWsDoRFDVicMwRW8KCytdw7uxqpZus2zxAxZA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ir4vpCYb; arc=fail smtp.client-ip=40.107.212.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ir4vpCYb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=egg91ea4/Zw3KbC8AWxvlHMxOlq4ITAkI1gQLKH1s+/23BBK7iS9Da6euPT7owXDiROVnXsvY1YDK765SyxR7kCBFkumX6/PlvoGyNqWfzv64a15eA4Jm3zRV8vTb9plrXUKx6okfFjd3Av4v3mWQ17WbQnUaSs1eLjnNJeygLSVizeokj3yZHJImj4wFuzLk2z1EaTz8FffPDDiDj+caElA87NOa+2wztxsWH3gHcjKroHwmXL9DFbvN7NL7zdVmTrkFYVGn9LHy5VSHJi2bSkAlXJBNmHTP46lUKNWoTDQNKa9xxzR1/dQcjxNkE534fcUm9NSmlonM2iH5fcSpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZvZIF4IXvtdxF5mvAZQgX9s1yn2mrpzxDATLMtOLwlw=;
- b=y5YeXojBzc6nub3wMMH4l7Qevp6dzCoAkM+QOliwdOFlB76CcDjkC9nT+G7/cV4UaSkrq1Pu2I1jftoYwNVB9p3AaHZacu3xnHVWhH45DZu8aMq0d8Oz89uipn1lbh4hKlIelUaPauNcvAP1GskNx3+CtjeqmpStXl83O35DjV1MifUtGuh93bKKA/Lk/vIr/9ehv7uz7zRr8/nXgiwHaPub8fpS5A4A1o8jL7bcp7N7ZCo0+SwFYqUhBoqT43+2KCVfeJmKLRHG1cjToAL3XwFW9wgd1p947xsaePlqgWWULNb02EPYkCsjp21xwlGHy+y34izSYjsO6hR415hC8Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZvZIF4IXvtdxF5mvAZQgX9s1yn2mrpzxDATLMtOLwlw=;
- b=ir4vpCYbSqDTPx26QJ5QP6CwZGpFkJpWK69mviiTstDKZISgTaMT/qViOGa9mqhqn+k9MqU17gphTzii5pGmvzqxV8N3wRp3dmz9VazaLXTnjPsoGwaNo2RoUQpvFOJGpKcBCDBRwFYZkOV+VPCBjjkIeEl0qd4dOEq39Df+2Z82ud8GJNn045Rwgiy9bwb0z3/Q3CcqFMVt+HF2BoCaaWG+q/1NbaeiS5zB9t5+i41NYU4JnTeYi5iWnxNQ8yDkRSQUOAnmLcwiRmyfdALGJRs0Oni1L6dqsjje0rWPzWPYMK71lyk5VpuCuefAGBcSZw18zQRN3efn2OYJlY++5Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by SA0PR12MB4448.namprd12.prod.outlook.com (2603:10b6:806:94::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.19; Mon, 10 Feb
- 2025 15:17:51 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%6]) with mapi id 15.20.8422.015; Mon, 10 Feb 2025
- 15:17:51 +0000
-Date: Mon, 10 Feb 2025 11:17:49 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Aron Silverton <aron.silverton@oracle.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Dave Jiang <dave.jiang@intel.com>, David Ahern <dsahern@kernel.org>,
-	Andy Gospodarek <gospo@broadcom.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Itay Avraham <itayavr@nvidia.com>, Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>, Leonid Bloch <lbloch@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-cxl@vger.kernel.org,
-	linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	"Nelson, Shannon" <shannon.nelson@amd.com>
-Subject: Re: [PATCH v4 06/10] fwctl: Add documentation
-Message-ID: <20250210151749.GA3755183@nvidia.com>
-References: <0-v4-0cf4ec3b8143+4995-fwctl_jgg@nvidia.com>
- <6-v4-0cf4ec3b8143+4995-fwctl_jgg@nvidia.com>
- <20250207144249.00000521@huawei.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250207144249.00000521@huawei.com>
-X-ClientProxiedBy: BL1PR13CA0011.namprd13.prod.outlook.com
- (2603:10b6:208:256::16) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400322528E1;
+	Mon, 10 Feb 2025 15:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739200959; cv=none; b=S3MsIUL6/X3oAjOT01YzjS3VwJ9UNIvF88nKNxDMvppATo2bIRWrv1CBHBuConcq+L88IIfirN8+aMHQKqjKhUZTylK/LSW+svbnCahJ2/wtE8f4bB3F6ZNsXIN8bK85mVB7ErSB4x630aEiobrCd+zqrvYHaAnfgY7kn4N4DWs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739200959; c=relaxed/simple;
+	bh=7GPDD1p5x/nzF4Ei8HQZImikaglz3PbRapLaFGCOQt0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GJ2aDuunSATJv2AJehPGS5sejQFFI4ppszSGTUkmlvMyTWuyKdFN5uODTXGmamPFZsHlA6LVn77PlO8UPg4F+yO3Bh+G/wLP8sUG+YyMMnI6XoFMjhnnW5AprNIuZbCzBwZkWg2ydoBBAl0JxA6rJWijPedL9rpHMA8HEPQMJo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=breakpoint.cc; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=breakpoint.cc
+Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
+	(envelope-from <fw@breakpoint.cc>)
+	id 1thVcA-0000ID-O8; Mon, 10 Feb 2025 16:22:26 +0100
+From: Florian Westphal <fw@strlen.de>
+To: <netdev@vger.kernel.org>
+Cc: <netfilter-devel@vger.kernel.org>,
+	donald.hunter@gmail.com,
+	Florian Westphal <fw@strlen.de>
+Subject: [PATCH v2 net-next] netlink: specs: add conntrack dump and stats dump support
+Date: Mon, 10 Feb 2025 16:21:52 +0100
+Message-ID: <20250210152159.41077-1-fw@strlen.de>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SA0PR12MB4448:EE_
-X-MS-Office365-Filtering-Correlation-Id: 426672a0-8ee1-45d2-bccd-08dd49e6157a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?N6rQYV0lY+DgW5UoGEqST9eKAhrxpVShmDip4FmXqMnmHHMM1h30U5QNnYjQ?=
- =?us-ascii?Q?6nmdyvCQQncDlH9anfUSi37CsEZUshR2uB2z657hkOtoviCLJrtVfFANAHoH?=
- =?us-ascii?Q?cRGMq/nzzrBTUhj6L/dzxRkLP/D1vmxqpGZ8eP9OZcBncbY2dyLWymqavtWI?=
- =?us-ascii?Q?ZZvbP6VjSN/mIhAEsejrfcmtDTAT1Oi6XYHxW9Iksj34Gt+GJqHsMrSk62h3?=
- =?us-ascii?Q?Txs2Kn1Z8vHSw8i5GDeaM0mrm/KsCgxB8SHz1RzgGyYRc2iOSjud+pOGNKCo?=
- =?us-ascii?Q?E27FVc0/7mSjK6S/USiM4v+Zqsy1tU0/tVR8mC+qf8aTAHqDpKr9UN4qaOgM?=
- =?us-ascii?Q?psf0CwmulwLfRey65lBZ22sJiXVe7HEiHpm0kGLrj2rFB4u43VfxRKncx/Nq?=
- =?us-ascii?Q?r/Pf70og7ZEq/zkjoCMYiSfmaMLo7xeGgetGDgxgEgo3I3g9D68CUgjzWOwz?=
- =?us-ascii?Q?rg9nuz6RMfDiCQdH4gXPVfxj38fKIw9E7gAvaXb8s7UZBsah30wLjqf+xAI5?=
- =?us-ascii?Q?vPJyVvJ1RF4ZqSRe79D4xCDnQYSVOZYEu9Cj8OW5HU8q5kyvZro9BaPZiecD?=
- =?us-ascii?Q?9f2FUsIr68f7NyODrf4AOPXs38NjzCK98yQvHiKM9AsLP2fiXVx5xlwD9GBu?=
- =?us-ascii?Q?lubiAZIv7j2UqwVWkz7ZaLnqEFuHHrKIBelUUGunsr/KjTmjbUDBLosYwbVc?=
- =?us-ascii?Q?3ufEXxrmP+iVdFgtTkXBU+9EOcaoP0C3Fp0F+PgWUlhmyo+IaOzchLcjJyCv?=
- =?us-ascii?Q?Y2///LXeYSdCgkxzHZc3GWKLMczeoPZ2DGSMcQHc4Ms179PLc0DhYzJFSB0c?=
- =?us-ascii?Q?tzl6rj7gaNVo3h9FeNHG8/ELxWBLdSTBPPCAItJx/4/TEXmwlohx+XQxOj1b?=
- =?us-ascii?Q?sM/ROuQNO7V5ZeAMs07L4g857E7L4lOnKf1XKbpLzb9qKkue+19ggDSe1NqK?=
- =?us-ascii?Q?5uWWsoGsnmWLQXpqcPwsXMh3Xi1FobeWtJzCJ8TdUHw1YqJhjptuVtoWzjyj?=
- =?us-ascii?Q?cLm3wqNjYX6cM+vltYhNw3/hd66xPAiKAa+Oz2mvOiPKGRjbD+MRLWUoAU/s?=
- =?us-ascii?Q?9W+YYW3zsQqNY8pYjRBbBoMj5l7cyd2WvtwSiwFeGhJwSJFqvxbntlKW1FGr?=
- =?us-ascii?Q?hk9M1L6P90ZLBxM7OANGVHO7GECPRrFV4rMMwnGGYKVUbJa4nam7hnw7GBl8?=
- =?us-ascii?Q?+CUcYqfbDQ+Ycqn3buT672CTS7u1QJAI+n22LZCXUl93XOEON5R1QDOK04Ph?=
- =?us-ascii?Q?wekkfFBed5C9fvKXPURkgeNYgqGTV5S+0XwEnXOkSFBN5TIiOW2ck+HYx7hN?=
- =?us-ascii?Q?cSDpkS0mXklcg9xB7l2zwBMZ6Ee1RWtbDr7z0kmc/Y6L9cQ3u+hpQLvhals0?=
- =?us-ascii?Q?EvX+UWOAmtYqCcpoFPjgaKICXGzQ?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?izrwnwFqOXuKFbtPA/IOMc+kS/FJAp8/x+d2Xi4hVcSTigu2ncOGnOCHeYpm?=
- =?us-ascii?Q?EdEOVHzLwbUmZFPzyThUuiBpBJOGiWO0n0mWrJfiXzJwl/+BCKL3KwZJpyrE?=
- =?us-ascii?Q?R9ZUJem/rT8B+rXMwQiIfnw4iZk/Dtoryo67a22UfQgC9X6uVXgkbpm+SU5O?=
- =?us-ascii?Q?DG/ktEFsVbPoRsP2BWnExSZV5l0OrkGdPIuJqgC7YiumHoHrcxUCyH5W3zdX?=
- =?us-ascii?Q?t0dkr8C0jKUe9eadNykZMd2HCj7+QA19raQJr5ft5bRYEIAdnfAv/p0+tY6Z?=
- =?us-ascii?Q?3OWTdtRgGEZ645yMXtyjzuPok6lS+KxR3BazAtnVeNe2xJLBZRoeihloq6RG?=
- =?us-ascii?Q?uUDlnzPLEIYAzJmOkTgUJD8Dw+1oGeswa1ef2FE1uQRVxjIsKH6RrbbS13bn?=
- =?us-ascii?Q?5dIGqhvqCkIsde4a5uChukPBBDXL2bQxpUM2EGjP4gAER+qRsNqHNTmhM6da?=
- =?us-ascii?Q?2VrxzoDk9IviM9/Okp+wy0sRUCx9oX1zgd+l1ajKZKG0Q1LPbPGj7hs+INzC?=
- =?us-ascii?Q?ywLtptcqTvKnXWdr1Sw24NnABq/i97hxV+ELfkMnklqGm9o6Bl3NM6SYCo2j?=
- =?us-ascii?Q?eBq/NPGiadTpb9/j6kfDNEHufWyMwwVKloFeRbbKf44crrLnlF5XmuZJStnW?=
- =?us-ascii?Q?NyBeYCqhPB/HGxnCYdO+0ENylCAozW1cQoHQ896frfZL72OHqGIooVsMokUz?=
- =?us-ascii?Q?smSShgRdUS/hwdwkc+XpvTCY7VZvi2AUZPtIG5yX+fhP59TX9+pHvmeb0TBv?=
- =?us-ascii?Q?n0uo6Ad6qpovXTMzP6y7bKcxcCI9amHCTEr++vS/XA8Ra7T6wihJC7a5DhJD?=
- =?us-ascii?Q?5FU2WyThheDK6I3vnl39vWUHXW0CMBY71rPiGkw174x/hmd3/Fbbdbpsg62i?=
- =?us-ascii?Q?HfTgHVe1bPYJ/i4FaVZR1vIxtp+8ghKJaTsBHdQRMA50eF+3BNrC26Qvo63Z?=
- =?us-ascii?Q?1wjW3tiVLnQdVuCNLKnywNwyVERncasdlolk86Pe4gGphdZplw9XGEkZWWLu?=
- =?us-ascii?Q?aaiCVF8hjmenj4sV5acNPmkhGkOqVXNTYYPlJzAS3utiFdx5DE+QVskhaH4B?=
- =?us-ascii?Q?P47C+Wm9GEmKBzSGwAeFXH2RnZH4CrGHxZr1XdnDtSVDJTE670ALGGtj0MMY?=
- =?us-ascii?Q?lfuvrwte0pqZgA+m5NGO/xXwQNYD9re+eDenH0oZz84pAAVFPIwA1/pakZje?=
- =?us-ascii?Q?e8vpC8o06DRNt9pTAe2xJaZErcSraRyA226hZDLoL7b1OzV1fk0RXIeEdIRR?=
- =?us-ascii?Q?jMy6lFO7l2U4W9vRVGia8RFvjccYm5MdrgtDMIWiAuqYX6vgoR94DZuL1tfI?=
- =?us-ascii?Q?Tx64qtWwcilhYvgXA4ZM7GtuFJB7GPUGzn0ZFpwp1ydNgzlUm/msaOFj9wAY?=
- =?us-ascii?Q?uPUyoCBbPxNplqkwhI5TY9kzNvfV7dimReyMd8EwyAlUqWllntjmCA1ahcUG?=
- =?us-ascii?Q?mpbiqtIFqEKgBeagHPFwoWT/mMzLMSl265vKNwaBl1OTTAJXnirs53jAsB4j?=
- =?us-ascii?Q?Huw6iN6OItJJCjIskgbrv2AMQuno1bdxDIAEURZ621nf0g4zXhryuIS1LQz5?=
- =?us-ascii?Q?J5WwAUOyqvqfdettWQU=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 426672a0-8ee1-45d2-bccd-08dd49e6157a
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2025 15:17:51.0704
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: unC43Fb7XtRNr1lePKoR4AzKlKgQBPbwScWnovF7dq8iNLVH9VSbkBqhsJKPlmVu
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4448
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 07, 2025 at 02:42:49PM +0000, Jonathan Cameron wrote:
-> On Thu,  6 Feb 2025 20:13:28 -0400
-> Jason Gunthorpe <jgg@nvidia.com> wrote:
-> 
-> > Document the purpose and rules for the fwctl subsystem.
-> > 
-> > Link in kdocs to the doc tree.
-> > 
-> > Nacked-by: Jakub Kicinski <kuba@kernel.org>
-> > Link: https://lore.kernel.org/r/20240603114250.5325279c@kernel.org
-> > Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-> > https://lore.kernel.org/r/ZrHY2Bds7oF7KRGz@phenom.ffwll.local
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> 
-> A few tiny things inline.
+This adds support to dump the connection tracking table
+("conntrack -L") and the conntrack statistics, ("conntrack -S").
 
-Got them all, thanks
+Example conntrack dump:
+tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/conntrack.yaml --dump get
+[{'id': 59489769,
+  'mark': 0,
+  'nfgen-family': 2,
+  'protoinfo': {'protoinfo-tcp': {'tcp-flags-original': {'flags': {'maxack',
+                                                                   'sack-perm',
+                                                                   'window-scale'},
+                                                         'mask': set()},
+                                  'tcp-flags-reply': {'flags': {'maxack',
+                                                                'sack-perm',
+                                                                'window-scale'},
+                                                      'mask': set()},
+                                  'tcp-state': 'established',
+                                  'tcp-wscale-original': 7,
+                                  'tcp-wscale-reply': 8}},
+  'res-id': 0,
+  'secctx': {'secctx-name': 'system_u:object_r:unlabeled_t:s0'},
+  'status': {'assured',
+             'confirmed',
+             'dst-nat-done',
+             'seen-reply',
+             'src-nat-done'},
+  'timeout': 431949,
+  'tuple-orig': {'tuple-ip': {'ip-v4-dst': '34.107.243.93',
+                              'ip-v4-src': '192.168.0.114'},
+                 'tuple-proto': {'proto-dst-port': 443,
+                                 'proto-num': 6,
+                                 'proto-src-port': 37104}},
+  'tuple-reply': {'tuple-ip': {'ip-v4-dst': '192.168.0.114',
+                               'ip-v4-src': '34.107.243.93'},
+                  'tuple-proto': {'proto-dst-port': 37104,
+                                  'proto-num': 6,
+                                  'proto-src-port': 443}},
+  'use': 1,
+  'version': 0},
+ {'id': 3402229480,
 
-Jason
+Example stats dump:
+tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/conntrack.yaml --dump get-stats
+[{'chain-toolong': 0,
+  'clash-resolve': 3,
+  'drop': 0,
+ ....
+
+Changes since last iteration:
+ - Address comments from Donald Hunter, in particular, fixup "get" and
+   "get-stats" descriptions, the former operation supports both dump
+   and normal request (returns a single entry, if found), the latter
+   only supports dumps.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+---
+ Documentation/netlink/specs/conntrack.yaml | 643 +++++++++++++++++++++
+ 1 file changed, 643 insertions(+)
+ create mode 100644 Documentation/netlink/specs/conntrack.yaml
+
+diff --git a/Documentation/netlink/specs/conntrack.yaml b/Documentation/netlink/specs/conntrack.yaml
+new file mode 100644
+index 000000000000..840dc4504216
+--- /dev/null
++++ b/Documentation/netlink/specs/conntrack.yaml
+@@ -0,0 +1,643 @@
++# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
++
++name: conntrack
++protocol: netlink-raw
++protonum: 12
++
++doc:
++  Netfilter connection tracking subsystem over nfnetlink
++
++definitions:
++  -
++    name: nfgenmsg
++    type: struct
++    members:
++      -
++        name: nfgen-family
++        type: u8
++      -
++        name: version
++        type: u8
++      -
++        name: res-id
++        byte-order: big-endian
++        type: u16
++  -
++    name: nf-ct-tcp-flags-mask
++    type: struct
++    members:
++      -
++        name: flags
++        type: u8
++        enum: nf-ct-tcp-flags
++        enum-as-flags: true
++      -
++        name: mask
++        type: u8
++        enum: nf-ct-tcp-flags
++        enum-as-flags: true
++  -
++    name: nf-ct-tcp-flags
++    type: flags
++    entries:
++      - window-scale
++      - sack-perm
++      - close-init
++      - be-liberal
++      - unacked
++      - maxack
++      - challenge-ack
++      - simultaneous-open
++  -
++    name: nf-ct-tcp-state
++    type: enum
++    entries:
++      - none
++      - syn-sent
++      - syn-recv
++      - established
++      - fin-wait
++      - close-wait
++      - last-ack
++      - time-wait
++      - close
++      - syn-sent2
++      - max
++      - ignore
++      - retrans
++      - unack
++      - timeout-max
++  -
++    name: nf-ct-sctp-state
++    type: enum
++    entries:
++      - none
++      - cloned
++      - cookie-wait
++      - cookie-echoed
++      - established
++      - shutdown-sent
++      - shutdown-received
++      - shutdown-ack-sent
++      - shutdown-heartbeat-sent
++  -
++    name: nf-ct-status
++    type: flags
++    entries:
++      - expected
++      - seen-reply
++      - assured
++      - confirmed
++      - src-nat
++      - dst-nat
++      - seq-adj
++      - src-nat-done
++      - dst-nat-done
++      - dying
++      - fixed-timeout
++      - template
++      - nat-clash
++      - helper
++      - offload
++      - hw-offload
++
++attribute-sets:
++  -
++    name: counter-attrs
++    attributes:
++      -
++        name: packets
++        type: u64
++        byte-order: big-endian
++      -
++        name: bytes
++        type: u64
++        byte-order: big-endian
++      -
++        name: packets-old
++        type: u32
++      -
++        name: bytes-old
++        type: u32
++      -
++        name: pad
++        type: pad
++  -
++    name: tuple-proto-attrs
++    attributes:
++      -
++        name: proto-num
++        type: u8
++        doc: l4 protocol number
++      -
++        name: proto-src-port
++        type: u16
++        byte-order: big-endian
++        doc: l4 source port
++      -
++        name: proto-dst-port
++        type: u16
++        byte-order: big-endian
++        doc: l4 source port
++      -
++        name: proto-icmp-id
++        type: u16
++        byte-order: big-endian
++        doc: l4 icmp id
++      -
++        name: proto-icmp-type
++        type: u8
++      -
++        name: proto-icmp-code
++        type: u8
++      -
++        name: proto-icmpv6-id
++        type: u16
++        byte-order: big-endian
++        doc: l4 icmp id
++      -
++        name: proto-icmpv6-type
++        type: u8
++      -
++        name: proto-icmpv6-code
++        type: u8
++  -
++    name: tuple-ip-attrs
++    attributes:
++      -
++        name: ip-v4-src
++        type: u32
++        byte-order: big-endian
++        display-hint: ipv4
++        doc: ipv4 source address
++      -
++        name: ip-v4-dst
++        type: u32
++        byte-order: big-endian
++        display-hint: ipv4
++        doc: ipv4 destination address
++      -
++        name: ip-v6-src
++        type: binary
++        checks:
++          min-len: 16
++        byte-order: big-endian
++        display-hint: ipv6
++        doc: ipv6 source address
++      -
++        name: ip-v6-dst
++        type: binary
++        checks:
++          min-len: 16
++        byte-order: big-endian
++        display-hint: ipv6
++        doc: ipv6 destination address
++  -
++    name: tuple-attrs
++    attributes:
++    -
++        name: tuple-ip
++        type: nest
++        nested-attributes: tuple-ip-attrs
++        doc: conntrack l3 information
++    -
++        name: tuple-proto
++        type: nest
++        nested-attributes: tuple-proto-attrs
++        doc: conntrack l4 information
++    -
++        name: tuple-zone
++        type: u16
++        byte-order: big-endian
++        doc: conntrack zone id
++  -
++    name: protoinfo-tcp-attrs
++    attributes:
++    -
++        name: tcp-state
++        type: u8
++        enum: nf-ct-tcp-state
++        doc: tcp connection state
++    -
++        name: tcp-wscale-original
++        type: u8
++        doc: window scaling factor in original direction
++    -
++        name: tcp-wscale-reply
++        type: u8
++        doc: window scaling factor in reply direction
++    -
++        name: tcp-flags-original
++        type: binary
++        struct: nf-ct-tcp-flags-mask
++    -
++        name: tcp-flags-reply
++        type: binary
++        struct: nf-ct-tcp-flags-mask
++  -
++    name: protoinfo-dccp-attrs
++    attributes:
++    -
++        name: dccp-state
++        type: u8
++        doc: dccp connection state
++    -
++        name: dccp-role
++        type: u8
++    -
++        name: dccp-handshake-seq
++        type: u64
++        byte-order: big-endian
++    -
++        name: dccp-pad
++        type: pad
++  -
++    name: protoinfo-sctp-attrs
++    attributes:
++    -
++        name: sctp-state
++        type: u8
++        doc: sctp connection state
++        enum: nf-ct-sctp-state
++    -
++        name: vtag-original
++        type: u32
++        byte-order: big-endian
++    -
++        name: vtag-reply
++        type: u32
++        byte-order: big-endian
++  -
++    name: protoinfo-attrs
++    attributes:
++    -
++        name: protoinfo-tcp
++        type: nest
++        nested-attributes: protoinfo-tcp-attrs
++        doc: conntrack tcp state information
++    -
++        name: protoinfo-dccp
++        type: nest
++        nested-attributes: protoinfo-dccp-attrs
++        doc: conntrack dccp state information
++    -
++        name: protoinfo-sctp
++        type: nest
++        nested-attributes: protoinfo-sctp-attrs
++        doc: conntrack sctp state information
++  -
++    name: help-attrs
++    attributes:
++      -
++        name: help-name
++        type: string
++        doc: helper name
++  -
++    name: nat-proto-attrs
++    attributes:
++      -
++        name: nat-port-min
++        type: u16
++        byte-order: big-endian
++      -
++        name: nat-port-max
++        type: u16
++        byte-order: big-endian
++  -
++    name: nat-attrs
++    attributes:
++      -
++        name: nat-v4-minip
++        type: u32
++        byte-order: big-endian
++      -
++        name: nat-v4-maxip
++        type: u32
++        byte-order: big-endian
++      -
++        name: nat-v6-minip
++        type: binary
++      -
++        name: nat-v6-maxip
++        type: binary
++      -
++        name: nat-proto
++        type: nest
++        nested-attributes: nat-proto-attrs
++  -
++    name: seqadj-attrs
++    attributes:
++      -
++        name: correction-pos
++        type: u32
++        byte-order: big-endian
++      -
++        name: offset-before
++        type: u32
++        byte-order: big-endian
++      -
++        name: offset-after
++        type: u32
++        byte-order: big-endian
++  -
++    name: secctx-attrs
++    attributes:
++      -
++        name: secctx-name
++        type: string
++  -
++    name: synproxy-attrs
++    attributes:
++      -
++        name: isn
++        type: u32
++        byte-order: big-endian
++      -
++        name: its
++        type: u32
++        byte-order: big-endian
++      -
++        name: tsoff
++        type: u32
++        byte-order: big-endian
++  -
++    name: conntrack-attrs
++    attributes:
++      -
++        name: tuple-orig
++        type: nest
++        nested-attributes: tuple-attrs
++        doc: conntrack l3+l4 protocol information, original direction
++      -
++        name: tuple-reply
++        type: nest
++        nested-attributes: tuple-attrs
++        doc: conntrack l3+l4 protocol information, reply direction
++      -
++        name: status
++        type: u32
++        byte-order: big-endian
++        enum: nf-ct-status
++        enum-as-flags: true
++        doc: conntrack flag bits
++      -
++        name: protoinfo
++        type: nest
++        nested-attributes: protoinfo-attrs
++      -
++        name: help
++        type: nest
++        nested-attributes: help-attrs
++      -
++        name: nat-src
++        type: nest
++        nested-attributes: nat-attrs
++      -
++        name: timeout
++        type: u32
++        byte-order: big-endian
++      -
++        name: mark
++        type: u32
++        byte-order: big-endian
++      -
++        name: counters-orig
++        type: nest
++        nested-attributes: counter-attrs
++      -
++        name: counters-reply
++        type: nest
++        nested-attributes: counter-attrs
++      -
++        name: use
++        type: u32
++        byte-order: big-endian
++      -
++        name: id
++        type: u32
++        byte-order: big-endian
++      -
++        name: nat-dst
++        type: nest
++        nested-attributes: nat-attrs
++      -
++        name: tuple-master
++        type: nest
++        nested-attributes: tuple-attrs
++      -
++        name: seq-adj-orig
++        type: nest
++        nested-attributes: seqadj-attrs
++      -
++        name: seq-adj-reply
++        type: nest
++        nested-attributes: seqadj-attrs
++      -
++        name: secmark
++        type: binary
++        doc: obsolete
++      -
++        name: zone
++        type: u16
++        byte-order: big-endian
++        doc: conntrack zone id
++      -
++        name: secctx
++        type: nest
++        nested-attributes: secctx-attrs
++      -
++        name: timestamp
++        type: u64
++        byte-order: big-endian
++      -
++        name: mark-mask
++        type: u32
++        byte-order: big-endian
++      -
++        name: labels
++        type: binary
++      -
++        name: labels mask
++        type: binary
++      -
++        name: synproxy
++        type: nest
++        nested-attributes: synproxy-attrs
++      -
++        name: filter
++        type: nest
++        nested-attributes: tuple-attrs
++      -
++        name: status-mask
++        type: u32
++        byte-order: big-endian
++        enum: nf-ct-status
++        enum-as-flags: true
++        doc: conntrack flag bits to change
++      -
++        name: timestamp-event
++        type: u64
++        byte-order: big-endian
++  -
++    name: conntrack-stats-attrs
++    attributes:
++      -
++        name: searched
++        type: u32
++        byte-order: big-endian
++        doc: obsolete
++      -
++        name: found
++        type: u32
++        byte-order: big-endian
++      -
++        name: new
++        type: u32
++        byte-order: big-endian
++        doc: obsolete
++      -
++        name: invalid
++        type: u32
++        byte-order: big-endian
++        doc: obsolete
++      -
++        name: ignore
++        type: u32
++        byte-order: big-endian
++        doc: obsolete
++      -
++        name: delete
++        type: u32
++        byte-order: big-endian
++        doc: obsolete
++      -
++        name: delete-list
++        type: u32
++        byte-order: big-endian
++        doc: obsolete
++      -
++        name: insert
++        type: u32
++        byte-order: big-endian
++      -
++        name: insert-failed
++        type: u32
++        byte-order: big-endian
++      -
++        name: drop
++        type: u32
++        byte-order: big-endian
++      -
++        name: early-drop
++        type: u32
++        byte-order: big-endian
++      -
++        name: error
++        type: u32
++        byte-order: big-endian
++      -
++        name: search-restart
++        type: u32
++        byte-order: big-endian
++      -
++        name: clash-resolve
++        type: u32
++        byte-order: big-endian
++      -
++        name: chain-toolong
++        type: u32
++        byte-order: big-endian
++
++operations:
++  enum-model: directional
++  list:
++    -
++      name: get
++      doc: get / dump entries
++      attribute-set: conntrack-attrs
++      fixed-header: nfgenmsg
++      do:
++        request:
++          value: 0x101
++          attributes:
++            - tuple-orig
++            - tuple-reply
++            - zone
++        reply:
++          value: 0x100
++          attributes:
++            - tuple-orig
++            - tuple-reply
++            - status
++            - protoinfo
++            - help
++            - nat-src
++            - nat-dst
++            - timeout
++            - mark
++            - counter-orig
++            - counter-reply
++            - use
++            - id
++            - nat-dst
++            - tuple-master
++            - seq-adj-orig
++            - seq-adj-reply
++            - zone
++            - secctx
++            - labels
++            - synproxy
++      dump:
++        request:
++          value: 0x101
++          attributes:
++            - nfgen-family
++            - mark
++            - filter
++            - status
++            - zone
++        reply:
++          value: 0x100
++          attributes:
++            - tuple-orig
++            - tuple-reply
++            - status
++            - protoinfo
++            - help
++            - nat-src
++            - nat-dst
++            - timeout
++            - mark
++            - counter-orig
++            - counter-reply
++            - use
++            - id
++            - nat-dst
++            - tuple-master
++            - seq-adj-orig
++            - seq-adj-reply
++            - zone
++            - secctx
++            - labels
++            - synproxy
++    -
++      name: get-stats
++      doc: dump pcpu conntrack stats
++      attribute-set: conntrack-stats-attrs
++      fixed-header: nfgenmsg
++      dump:
++        request:
++          value: 0x104
++        reply:
++          value: 0x104
++          attributes:
++            - searched
++            - found
++            - insert
++            - insert-failed
++            - drop
++            - early-drop
++            - error
++            - search-restart
++            - clash-resolve
++            - chain-toolong
+-- 
+2.48.1
+
