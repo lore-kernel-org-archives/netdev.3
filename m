@@ -1,165 +1,158 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E30250C1F
-	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 17:42:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5CD17C91
+	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 17:46:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739295724; cv=none; b=UdFGjuXJknTLe2vrJC7Son8UBEQnGPZQ8fuS1ushVdHXvP4y5toDeWhtQ8IrguhQyDAaZrcOHyaqgRN4MasbiGLM+Cxz3sUJPC//JwgGZdkJoxN4DpjaLmyqIDLg+3QzX4LNm6MB6XUSznMG3n2swfXtYfzhXk7Ce5fT66EQ6To=
+	t=1739295962; cv=none; b=RABbt5aB+35LnaGgpxBs+v8Z+nRGRUFpo1EA3y5oWbkD7YQpjtDmPgyoenx0K7v6v1Qitnvy7ohLCxWY5lJ0TKXdeu9uDUw8VBf0qT3vawCx1W+j3A7iZdEeboQnGzZBcJGhGnmNgdnfpXKYBSHejkfL510mu8mEt0FqxCy8UtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739295724; c=relaxed/simple;
-	bh=/dJ4iWZvn1XrPQb3ucobZGFq3U6bK1FwH53od8so46w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u0LNW8AL9D3w5H3cJTtYbrjtPAme9v/fDnm+FCHLLs5zC/QAip0VGoPHuxHHIqJ9iNBDuRSDFy6EduUszPDxH7tsKXSS0EayOuJprlYKK4dT3vID7dzonZDRWmCFw7/8oDQowhYRb1biR1lmJ5lUO11tDGuOkUP+XgQ/8gXD4o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CZdv53lc; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1739295962; c=relaxed/simple;
+	bh=u0XrVF8iTTm5UaCKcKl+IQNCx5OX+tUX5xKCetplVyo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ktdGQE2wVNY2fQJwkXyKduFxph6T0NxNgocnFOrNHY7T6LLKi92UMzsvEDwCKcEkj/MaNgAaY3PbEf9oxTrqPHdw0D/wPl/5bWZxjiGSWpQg+aeYYq1jge1aDWnj/ky79uR2d4fQRcvCqp6B5PESHpMZCR0ObWZ/hbiqEAaEoi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=XH1xgEOh; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CZdv53lc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739295722; x=1770831722;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=/dJ4iWZvn1XrPQb3ucobZGFq3U6bK1FwH53od8so46w=;
-  b=CZdv53lcHG/+PKlL5gP23hUseuLEJM/ScthRgFjsQi0+vdBgq296H8QL
-   sYWM2KsetkJxyEhKy2Lei9h9N86DQGtYyYKkC09zaiwfkXu4vo/VtqVMO
-   i3v36ZNd6i4UTj3XRoS/4AG+MdK5bk+KwJX15B2mGiOSwp335T2Mb/doj
-   A1PPcXrpU0R6XsVCdqFR8xpkO8Gb0NlyhCcowOWkVp4rhX6w3otaETjBE
-   dY/S/1EFYck2QIuMvTpRTzBSciIUV9pCoqTCpt3Hvb0F+CArAmxvFjue5
-   eSIOzvQNlfKpnRlID5GyhOuf5Ruf3B5c0A5RQP62Pu3BenxL5C8V+//j9
-   g==;
-X-CSE-ConnectionGUID: 2OcgXXzoTp+TVyFJFGBp+A==
-X-CSE-MsgGUID: Lu80Jc0ETkO/zRjxqkpfEw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="43855617"
-X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
-   d="scan'208";a="43855617"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 09:41:57 -0800
-X-CSE-ConnectionGUID: B74FmaV7ROGjHOf0RGNfXQ==
-X-CSE-MsgGUID: Yw46Zp9RSNqJV42cvRZ5lw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
-   d="scan'208";a="112538341"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by orviesa006.jf.intel.com with ESMTP; 11 Feb 2025 09:41:55 -0800
-Received: from mystra-4.igk.intel.com (mystra-4.igk.intel.com [10.123.220.40])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 4E82932ECC;
-	Tue, 11 Feb 2025 17:41:54 +0000 (GMT)
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	michal.swiatkowski@linux.intel.com,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
-Subject: [PATCH iwl-net 1/2] ice: Fix deinitializing VF in error path
-Date: Tue, 11 Feb 2025 18:43:21 +0100
-Message-ID: <20250211174322.603652-1-marcin.szycik@linux.intel.com>
-X-Mailer: git-send-email 2.45.0
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="XH1xgEOh"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-21f5660c2fdso83372655ad.2
+        for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 09:46:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fastly.com; s=google; t=1739295960; x=1739900760; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hU0k36QB1XU8Cts/gsb6V0Pakg2qWpL/o6Sf1GbitsM=;
+        b=XH1xgEOhDENpheNQveaJb4KLCeCzJm9EjxEHmPPgRbHIlriRz0vak7hBRdxK78EmDE
+         QknjrOid6eSGRIryu48ME5qnumlV0sB/N5AE3QUuKPLmeH0IlkIe6/zUn7N15Vqa56wj
+         rPYydxek/8UkSZLtb1IWkvb1MByGX9M7ORXjE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739295960; x=1739900760;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hU0k36QB1XU8Cts/gsb6V0Pakg2qWpL/o6Sf1GbitsM=;
+        b=eZ2J5SpgTnkhFjVPS3LE3gQ5AYpYDYrOYxKiBg8He50NEK0S2O3yjV3im7DzJPcRMd
+         hieIX6rZYsMda7wcb77pxW1ZnSCvvfvj4gfu3ameod5TzmJIvCK1O7Q8attA9hmUyemY
+         pSTE0NRg8IT1xmWrVybDN/WjvT4BwlGEMcmXGYvgUZ44jIRHbxbruvyI0W2tdNds+F8K
+         TCpeoqXFpY1iTy2D6lNuMGrfnTBakQgK6d79dGWmrgsdMuDNQ/LgMtNLGvr5SBMsVYzK
+         82nzoDqz0a+9Qo51HoAFaYDM1CZDYndX250a2GlpIgJbI1PlDXqzkEzAS9SszkccOhy0
+         KNLg==
+X-Gm-Message-State: AOJu0Yyr3BBPi+YmTYasE4UCWzkF/firVGde0iiS6uES++Mb52LpGDzq
+	PWrtfx0O4s7UOtP8VwNNoKFBncc8ylk+NiKSDivg7p76GLYMmQAHtqzQ7WemHf8=
+X-Gm-Gg: ASbGncvh6au753MTaWX30kKp7tthlxL0cH83yELZGdMB+eKpOdOkhjMrcTC1YYUhXUR
+	yDhuOkB2yEBrK0wO+ei5kt7mB2O8iC3W2YZFOAoLyvLUfjWD7EWxSqaV6aZe3slBFncsm/e4rkE
+	1wVHw34ekty+eS4MX5RJMNeI/X90XClih9Gt8wpTJAQ7gjs+eXTJ3KjrjYpBK8XZ31ORxSRMXZo
+	5Ayk4BEQDKvRbfgaegtRhHriuN06VXC33IOnMVvyaewlpt5VA53+WIfZtz5EJzeSW3KcKIFQSLU
+	Akn5oGn0cvISgRFJWh8wTqMmrayqkPk467lp19nFmFmTk0eaW8TSFCRraA==
+X-Google-Smtp-Source: AGHT+IG3/CAcTS3CiCjU9yipQAdPsOj3aLbPkEZBQL3ZsInksDgw155tgyytgR1Oc/LgBs+GNy+uXQ==
+X-Received: by 2002:a17:902:e846:b0:215:9470:7e82 with SMTP id d9443c01a7336-220bbb112e9mr2596865ad.4.1739295959965;
+        Tue, 11 Feb 2025 09:45:59 -0800 (PST)
+Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ad51aecd55esm9673581a12.29.2025.02.11.09.45.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Feb 2025 09:45:59 -0800 (PST)
+Date: Tue, 11 Feb 2025 09:45:56 -0800
+From: Joe Damato <jdamato@fastly.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, stfomichev@gmail.com, horms@kernel.org,
+	kuba@kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Shuah Khan <shuah@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+	"open list:XDP (eXpress Data Path):Keyword:(?:b|_)xdp(?:b|_)" <bpf@vger.kernel.org>
+Subject: Re: [PATCH net-next v6 3/3] selftests: drv-net: Test queue xsk
+ attribute
+Message-ID: <Z6uM1IDP9JgvGvev@LQ3V64L9R2>
+Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
+	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+	stfomichev@gmail.com, horms@kernel.org, kuba@kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Shuah Khan <shuah@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+	"open list:XDP (eXpress Data Path):Keyword:(?:b|_)xdp(?:b|_)" <bpf@vger.kernel.org>
+References: <20250210193903.16235-1-jdamato@fastly.com>
+ <20250210193903.16235-4-jdamato@fastly.com>
+ <13afab27-2066-4912-b8f6-15ee4846e802@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <13afab27-2066-4912-b8f6-15ee4846e802@redhat.com>
 
-If ice_ena_vfs() fails after calling ice_create_vf_entries(), it frees
-all VFs without removing them from snapshot PF-VF mailbox list, leading
-to list corruption.
+On Tue, Feb 11, 2025 at 12:09:50PM +0100, Paolo Abeni wrote:
+> On 2/10/25 8:38 PM, Joe Damato wrote:
+> > +def check_xdp(cfg, nl, xdp_queue_id=0) -> None:
+> > +    test_dir = os.path.dirname(os.path.realpath(__file__))
+> > +    xdp = subprocess.Popen([f"{test_dir}/xdp_helper", f"{cfg.ifindex}", f"{xdp_queue_id}"],
+> > +                           stdin=subprocess.PIPE, stdout=subprocess.PIPE, bufsize=1,
+> > +                           text=True)
+> > +    defer(xdp.kill)
+> > +
+> > +    stdout, stderr = xdp.communicate(timeout=10)
+> > +    rx = tx = False
+> > +
+> > +    queues = nl.queue_get({'ifindex': cfg.ifindex}, dump=True)
+> > +    if not queues:
+> > +        raise KsftSkipEx("Netlink reports no queues")
+> > +
+> > +    for q in queues:
+> > +        if q['id'] == 0:
+> > +            if q['type'] == 'rx':
+> > +                rx = True
+> > +            if q['type'] == 'tx':
+> > +                tx = True
+> > +
+> > +            ksft_eq(q['xsk'], {})
+> > +        else:
+> > +            if 'xsk' in q:
+> > +                _fail("Check failed: xsk attribute set.")
+> > +
+> > +    ksft_eq(rx, True)
+> > +    ksft_eq(tx, True)
+> 
+> This causes self-test failures:
+> 
+> https://netdev-3.bots.linux.dev/vmksft-net-drv/results/987742/4-queues-py/stdout
+> 
+> but I really haven't done any real investigation here.
 
-Reproducer:
-  devlink dev eswitch set $PF1_PCI mode switchdev
-  ip l s $PF1 up
-  ip l s $PF1 promisc on
-  sleep 1
-  echo 1 > /sys/class/net/$PF1/device/sriov_numvfs
-  sleep 1
-  echo 1 > /sys/class/net/$PF1/device/sriov_numvfs
+I think it's because the test kernel in this case has
+CONFIG_XDP_SOCKETS undefined [1].
 
-Trace (minimized):
-  list_add corruption. next->prev should be prev (ffff8882e241c6f0), but was 0000000000000000. (next=ffff888455da1330).
-  kernel BUG at lib/list_debug.c:29!
-  RIP: 0010:__list_add_valid_or_report+0xa6/0x100
-   ice_mbx_init_vf_info+0xa7/0x180 [ice]
-   ice_initialize_vf_entry+0x1fa/0x250 [ice]
-   ice_sriov_configure+0x8d7/0x1520 [ice]
-   ? __percpu_ref_switch_mode+0x1b1/0x5d0
-   ? __pfx_ice_sriov_configure+0x10/0x10 [ice]
+The error printed in the link you mentioned:
 
-Sometimes a KASAN report can be seen instead with a similar stack trace:
-  BUG: KASAN: use-after-free in __list_add_valid_or_report+0xf1/0x100
+  socket creation failed: Address family not supported by protocol
 
-VFs are added to this list in ice_mbx_init_vf_info(), but only removed
-in ice_free_vfs(). Move the removing to ice_free_vf_entries(), which is
-also being called in other places where VFs are being removed (including
-ice_free_vfs() itself).
+is coming from the C program, which fails to create the AF_XDP
+socket.
 
-Fixes: 8cd8a6b17d27 ("ice: move VF overflow message count into struct ice_mbx_vf_info")
-Reported-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Closes: https://lore.kernel.org/intel-wired-lan/PH0PR11MB50138B635F2E5CEB7075325D961F2@PH0PR11MB5013.namprd11.prod.outlook.com
-Reviewed-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
----
- drivers/net/ethernet/intel/ice/ice_sriov.c          | 5 +----
- drivers/net/ethernet/intel/ice/ice_vf_lib.c         | 8 ++++++++
- drivers/net/ethernet/intel/ice/ice_vf_lib_private.h | 1 +
- 3 files changed, 10 insertions(+), 4 deletions(-)
+I think the immediate reaction is to add more error checking to the
+python to make sure that the subprocess succeeded and if it failed,
+skip.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index b83f99c01d91..8aabf7749aa5 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -36,6 +36,7 @@ static void ice_free_vf_entries(struct ice_pf *pf)
- 
- 	hash_for_each_safe(vfs->table, bkt, tmp, vf, entry) {
- 		hash_del_rcu(&vf->entry);
-+		ice_deinitialize_vf_entry(vf);
- 		ice_put_vf(vf);
- 	}
- }
-@@ -193,10 +194,6 @@ void ice_free_vfs(struct ice_pf *pf)
- 			wr32(hw, GLGEN_VFLRSTAT(reg_idx), BIT(bit_idx));
- 		}
- 
--		/* clear malicious info since the VF is getting released */
--		if (!ice_is_feature_supported(pf, ICE_F_MBX_LIMIT))
--			list_del(&vf->mbx_info.list_entry);
--
- 		mutex_unlock(&vf->cfg_lock);
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-index c7c0c2f50c26..815ad0bfe832 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-@@ -1036,6 +1036,14 @@ void ice_initialize_vf_entry(struct ice_vf *vf)
- 	mutex_init(&vf->cfg_lock);
- }
- 
-+void ice_deinitialize_vf_entry(struct ice_vf *vf)
-+{
-+	struct ice_pf *pf = vf->pf;
-+
-+	if (!ice_is_feature_supported(pf, ICE_F_MBX_LIMIT))
-+		list_del(&vf->mbx_info.list_entry);
-+}
-+
- /**
-  * ice_dis_vf_qs - Disable the VF queues
-  * @vf: pointer to the VF structure
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h b/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h
-index 0c7e77c0a09f..5392b0404986 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h
-@@ -24,6 +24,7 @@
- #endif
- 
- void ice_initialize_vf_entry(struct ice_vf *vf);
-+void ice_deinitialize_vf_entry(struct ice_vf *vf);
- void ice_dis_vf_qs(struct ice_vf *vf);
- int ice_check_vf_init(struct ice_vf *vf);
- enum virtchnl_status_code ice_err_to_virt_err(int err);
--- 
-2.45.0
+But, we may want it to fail for other error states instead of
+skipping? Not sure if there's general guidance on this, but my plan
+was to have the AF_XDP socket creation failure return a different
+error code (I dunno maybe -1?) and only skip the test in that case.
 
+Will that work or is there a better way? I only want to skip if
+AF_XDP doesn't exist in the test kernel.
+
+[1]: https://netdev-3.bots.linux.dev/vmksft-net-drv/results/987742/config
