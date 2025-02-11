@@ -1,119 +1,104 @@
-Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDD51E885C;
-	Tue, 11 Feb 2025 07:31:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAE11EB186;
+	Tue, 11 Feb 2025 07:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739259119; cv=none; b=OIw06Vf6jxaBof4RnMpqemE18cPie9FA1tUmMTnVomfADENVGr5CIVV7RT9KJ9uj0JfdmlsloI5mTfeSOEsbGfflzpS1aeT+l+HdKIsFOzkWxetxVbis70REnpBFz9DNSO9qRJjjmgpD73fDMBCS3nY9pFnyx9qIRMVOxAk3OTg=
+	t=1739259370; cv=none; b=UfuqLro+YyLiqu7kncg72Abz4wn1+2wJQEzE571MjKp/bsgyYQ0Oi/JJJXMoMIpYrY0MKqH+bq1ZCRm1o7sEjul/de1TcO9964UXWxNHauoPmklFR6qCkNX9YpHwa6UbYj5Kq+4g630ukf0zIhAXWjTzDHZHc8EnyKUEa+CPcBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739259119; c=relaxed/simple;
-	bh=xQNY808BB3LioFgXF/nrWmeV1f19gsbfNpqDCYchizE=;
+	s=arc-20240116; t=1739259370; c=relaxed/simple;
+	bh=ca9qHkrngL3pZjIQUsPXDFnGS5wTD5NqFcVTg825OqQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jfbbPLmb/0SYS3XGNQlXgNOXv9fP8UP0QlDC6vnHrMwRb85afC2PUOyEgOR/jroOx3qpoVjm4RQ4Sv/EotalvdI5eBH1BVbQRoTKzsBDXjS5qwdI7t2hQSM780xhVmM1TGmhAm31u5Uj8jgtQwXuNcjF7f7M+2oh813Q3QS2Umg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YuKXdiCo; arc=none smtp.client-ip=209.85.166.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	 To:Cc:Content-Type; b=ACm9WPqY4cWJoigST/Gns/UtFyxeGOcz0AQ0gyBdDQj0BTbO9zP5ynckw4YsZ6vo5+IBBixVLDOtuEnE2aN+lgbVYYGsra5TZJlE1PW+uRKLstuIGgway+rWOtS25291KbmBuBLUWlp3Mb0uY+lCP9v+KdwW+Yb0YHY9itg2964=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YuKXdiCo"
-Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-3d04d767d3aso42281115ab.2;
-        Mon, 10 Feb 2025 23:31:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739259116; x=1739863916; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xQNY808BB3LioFgXF/nrWmeV1f19gsbfNpqDCYchizE=;
-        b=YuKXdiCoHMwG6puDPd5XNplbvGOQhrRsR8u8iLCE7yPcXhEEgBHrCf1/Q9WNQsyubL
-         mcscmHH2T5GsPFAEcD2AbpPgk2cjkypkmWmqlJoemgt7UvDfObA1EOseMxfkLmlnIuua
-         xcW4E9oEcAFf297jloBcEfkIaipWmzxjJLOwPpPmriByINEl4P27BEPMQTrfWKMOL5M5
-         NS4dOfR4qpXIXeJQikXRG9ataceRBg18iHNbMh6n2NykagrlQ86yyTUoVIH2NZgDI86H
-         vIZTat7lJN40Wh/BBPhd6Bzc6QqIUyNHoVt7CQi/j6wKM3OR6B0S2ZUoXRA+9YFleWeC
-         LIzQ==
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-866f0d69843so2839387241.3;
+        Mon, 10 Feb 2025 23:36:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739259116; x=1739863916;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xQNY808BB3LioFgXF/nrWmeV1f19gsbfNpqDCYchizE=;
-        b=mjxLeDyMP13sHuyj/WLoIxwuLjp/qiRMiBoEdgSEAwkHDLx4T4tPjLqn4BXTSkBP+D
-         L9DbNVdgf0ajOaJ5l94i0RGAp+iJ8iIN5Oy/4DWG7YfgGnBoW8uYixx/JPp9DnMLX8a/
-         gYk6u/nLkPLxwWTA6OrH6X0FkhOB7b7jFXS8VIIYYHYwYVEt4WkVw5Q9udL+Ebk/2QCe
-         B8I35ERpqlNDFWHnEpazJkAGu83hu0OEhPGHej6B5gQEb0wxy3dJS0agptP2QGXe0WWn
-         37RPtGDm4US8r4yfrCI5t/DUOs2BfAUPuedPKjlQxddGZF9nvewlpCcCTHfgdcHMPZ6I
-         jGwg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0dGxTK17UguXFIrfgxZtIYKTYmBgmdvy+tGMVe/tLEsTTLOqpBUV1RTj4UTUrOsD4b2M=@vger.kernel.org, AJvYcCVz3BoWfKswumePnnJzSeC5azEIrfLiq7XCDnIiYYpf5JbKpb3Vnt8ef90Tu+YGdXH/ZOMLNkWU@vger.kernel.org
-X-Gm-Message-State: AOJu0YziiVmVmUlZC3QxkGu2eCuCQvMajHJ8d6t8uIlmO5r/ogYjKwRy
-	vdx2V3WfsKJbVKz8fPo9wDspxVHdPmJ1+M5cNdoH0Q2k56Qr6PQZ2CCEG4ZQd5LeP84FFm13l6o
-	PBR3UIXpvV6TtFO/AoreYj0NyEyH6bscqCshfGw==
-X-Gm-Gg: ASbGnct5JcyAkCxmk2eH5Ol3q86qiuncoTpVlRLpgiEGEd5ZJZxKWKId48RBaFIG5A4
-	f/5vih1GlVGnEzbPxdngM6OVBOBzfBdmSIr+pVXUFq8ldhABZgYcyap3d4lBX7yj/0YaCtgdF
-X-Google-Smtp-Source: AGHT+IFma4K9XiA0wZQyLiN2i5ZuQVHTUDBcZGUcrvor0pNeHKv7Mp7Huys2fuyKjwFNByuCwRq0WL5szjhPiWNdzCU=
-X-Received: by 2002:a05:6e02:1a41:b0:3d0:147a:b5da with SMTP id
- e9e14a558f8ab-3d13de77c41mr137462995ab.5.1739259116595; Mon, 10 Feb 2025
- 23:31:56 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739259364; x=1739864164;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v4rL6fRpPDW3WWAnvPDGJsUVffkkAT6CPBcGQAburtc=;
+        b=IjCQCuDLwRcOSFOLv2XBVUPIC7LM7UPQ2rt9+biA3Eq9/BU1SFLzTFzVWoTsJ8Auaa
+         09EfbP5mdx0BCZWT1aydakQyOmxGbOiZcNEC0yyH7KKrCUi1ZVR7WudYSAe+AVGrpd+l
+         gjSBjYkHv6MHJGQBrCE+e94DV8yRpyGM6zGvRERya34RL/9cDvSmfEJ4xrTi8yqgyMiP
+         V3/gA9Nd9078zDqLm60FC7p3r9RXu1auF4urVmiaGWfEFiJUoXdtbU0g3OHfs3vBNB8o
+         JDHi6CobSYnSQ7UjX7FHo7LD+yrXQrDy0PSlBbz+ABjCUhkx8WGlcO83IyrlD1daJS9G
+         2Teg==
+X-Forwarded-Encrypted: i=1; AJvYcCUu2s9tK68BWK66zYL+zJh0M5SsPqEdzmHn30Y7FWyI2ka8ULSBmXWDNOZlW0ydiJDCcPhCQgaF37d2wYBC@vger.kernel.org, AJvYcCV4nMmbydhW60EY8ivDbl+4MaVajgnbTVGrlTae2VWjIYbc2Q11gB2Yo3I658QBMRpyvuNkC3r/ogKj@vger.kernel.org, AJvYcCVmB7yfD0rMA7UysIiF64ma0X2nIXE5gLwd20nAQrOWinW7Y06Iw/UdinxRp3Ihba4X7o5fqusA@vger.kernel.org, AJvYcCWdwuab1uXU4rVW1R59AiqpyHjvmxa+EB0lVovXslfIe1LGt7/d2H8zJzja3PUyFN2jGblmMrq/UmXNTZs=@vger.kernel.org, AJvYcCX8NZb3kS42V6UpVR8cNg6nvYx0tRNRMZCKk6jUAO9dHtLWk9u9rAjXhfUq9tM3LTuTChvpI4wsK2fp@vger.kernel.org, AJvYcCXgx3xBK2mtkA8G6cIV/l1pIZIRT5TjsunMr8XdRp4yatTC/KhyivlcVmWE+KWhu9f75hZPvx4uyOEf@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx88uvnu4sYV79zRyfMdM3lyM/X4jJZp3UgYWc07+xMbpVYrkEx
+	rtMJv1Hr/eDffDzdwoXnxwhVSkXKTMEUBU2feHmpyAg9z3ykScQ9En06YrbE
+X-Gm-Gg: ASbGnctsyU7at4vXDHYGb0+TEGT2uguqgFm26YaTBmVSi0MVZsaCjeiOOMip2rCHHUz
+	3TutCLaHkFs8sX8kRvrepCKDmOoAqjaQS1WqVTcLdJkbfFHcNApmyLsBUC+xMwN+ANDhceX8zwP
+	2+nIdrX09N3v5rf2iHMoysDfhM2DObtuCfqMnRs+ti5aFLl4ya9olQYuRiIwYWNTxZFjKWcPsuN
+	gmJUjHSR2xEi9Uy6poJ8avXc/0eSQonHdzkgRocuOWpgL9RQy1IqxBcCw0X5oauow2W4gnUnyri
+	h6jcZ+c2r3605fWgCQIewAZCSjSe1XgWPFIvTpJGienAFZ+Kx1cJ7Y+UEA==
+X-Google-Smtp-Source: AGHT+IH64OMvNI//DHpqIhBXMfnM3nyG8byXREG186/r6xJVCGhlgNO0z9wcmRT5dF5guMFstYW10w==
+X-Received: by 2002:a05:6102:2ad2:b0:4bb:dc3c:1b71 with SMTP id ada2fe7eead31-4bbdc3c2999mr2831244137.13.1739259363945;
+        Mon, 10 Feb 2025 23:36:03 -0800 (PST)
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com. [209.85.221.169])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4bbbebc1fa0sm891895137.15.2025.02.10.23.36.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Feb 2025 23:36:02 -0800 (PST)
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5203e0d0139so1197419e0c.1;
+        Mon, 10 Feb 2025 23:36:02 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU+kKNVvHLE2TTHJH5UfWbOsVz9muNHonu5dCRZzdFKsKUyZr5FAbq7AEe9UcURNu6pveFMYGLnNZho@vger.kernel.org, AJvYcCUcwtAIrcYbnU91dowQJWRxG/47CVPCU5f9nddEkXwaIwCggJVxhL9CUQm+K4Y038GUWe/1XQQNRLA4@vger.kernel.org, AJvYcCUjf+3CsH2Z2UZr5HFghS8YMRUx1GWrjica4Rg5ddFCIPf4woAie+G7Pg6d2Lh9s88bZVh//mQdyUkjK5I=@vger.kernel.org, AJvYcCVVHf3ee+qZhIBFB/drNez6MsADke/1F+Qax3Oyb6PQ3+AfCeF9Isn7CQDKr6AL+qPxzcb6Ui6Q/Ev3@vger.kernel.org, AJvYcCWDmpd2eZQ0DV0Rq+wdnMMSw+NVxYSoRIEfC8NFz5aMgBtFwAkZ7J6gLCcZHU1lFO57KJlwDWx2@vger.kernel.org, AJvYcCX49hiBd4gA6pGNwslE80tPwtcXHY2VBRxyj6Lysa1xo9ORhQWfwHCYCJyKUjMmxHqEEl7vX+X94BoM2Hvp@vger.kernel.org
+X-Received: by 2002:a05:6122:1d44:b0:520:61ee:c7f9 with SMTP id
+ 71dfb90a1353d-52061eecb62mr56803e0c.7.1739259362582; Mon, 10 Feb 2025
+ 23:36:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250208103220.72294-1-kerneljasonxing@gmail.com>
- <20250208103220.72294-7-kerneljasonxing@gmail.com> <2d9da8b0-5246-4760-abf8-dc70d7a5e3ee@linux.dev>
-In-Reply-To: <2d9da8b0-5246-4760-abf8-dc70d7a5e3ee@linux.dev>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Tue, 11 Feb 2025 15:31:20 +0800
-X-Gm-Features: AWEUYZnGptL5-puf39XfwqHBE2J8nczMGTSGaRuuX-p4rGwZ_oHiL--jr4DXvZE
-Message-ID: <CAL+tcoBQrEn=qzak0hnX=8=wr1=JKEF+2fSF4TJu08VGTQMN_w@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v9 06/12] bpf: support SCM_TSTAMP_SCHED of SO_TIMESTAMPING
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, dsahern@kernel.org, willemdebruijn.kernel@gmail.com, 
-	willemb@google.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
-	john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me, 
-	haoluo@google.com, jolsa@kernel.org, horms@kernel.org, bpf@vger.kernel.org, 
-	netdev@vger.kernel.org
+References: <20250210-gpio-set-array-helper-v3-0-d6a673674da8@baylibre.com> <20250210-gpio-set-array-helper-v3-1-d6a673674da8@baylibre.com>
+In-Reply-To: <20250210-gpio-set-array-helper-v3-1-d6a673674da8@baylibre.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 11 Feb 2025 08:35:51 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXFXbzeus6yzeBsjOvTsD+AOLKjyRySCYo4YkjSZByZAQ@mail.gmail.com>
+X-Gm-Features: AWEUYZkcG2r9GXDExtVTd3MXygmVQFQr3aQqn2D5K57fCGs7Av6ow06VQ5r6ees
+Message-ID: <CAMuHMdXFXbzeus6yzeBsjOvTsD+AOLKjyRySCYo4YkjSZByZAQ@mail.gmail.com>
+Subject: Re: [PATCH v3 01/15] gpiolib: add gpiod_multi_set_value_cansleep()
+To: David Lechner <dlechner@baylibre.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Ulf Hansson <ulf.hansson@linaro.org>, Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-sound@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 11, 2025 at 3:12=E2=80=AFPM Martin KaFai Lau <martin.lau@linux.=
-dev> wrote:
+On Mon, 10 Feb 2025 at 23:37, David Lechner <dlechner@baylibre.com> wrote:
+> Add a new gpiod_multi_set_value_cansleep() helper function with fewer
+> parameters than gpiod_set_array_value_cansleep().
 >
-> On 2/8/25 2:32 AM, Jason Xing wrote:
-> > Support SCM_TSTAMP_SCHED case. Introduce SKBTX_BPF used as
-> > an indicator telling us whether the skb should be traced
-> > by the bpf prog.
+> Calling gpiod_set_array_value_cansleep() can get quite verbose. In many
+> cases, the first arguments all come from the same struct gpio_descs, so
+> having a separate function where we can just pass that cuts down on the
+> boilerplate.
 >
-> The BPF side does not exactly support SCM_TSTAMP_SCHED as a report value.
->
-> What this patch does is:
->
-> Add a new sock_ops callback, BPF_SOCK_OPS_TS_SCHED_OPT_CB. This callback =
-will
-> occur at the same timestamping point as the user space's SCM_TSTAMP_SCHED=
-. The
-> BPF program can use it to get the same SCM_TSTAMP_SCHED timestamp without
-> modifying the user-space application.
->
-> A new SKBTX_BPF flag is added to mark skb_shinfo(skb)->tx_flags, ensuring=
- that
-> the new BPF timestamping and the current user space's SO_TIMESTAMPING do =
-not
-> interfere with each other.
->
-> I would remove most of the SO_TIMESTAMPING comments from the commit messa=
-ges.
-> The timestamping points are the same but there is not much overlapping on=
- the
-> API side.
->
-> Subject could be:
-> bpf: Add BPF_SOCK_OPS_TS_SCHED_OPT_CB callback
->
-> [ The same probably for patch 7-9. ]
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
 
-Thanks. I will similarly adjust them as well :)
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Thanks,
-Jason
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
