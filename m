@@ -1,64 +1,65 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9DA1EF09B
-	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 00:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450671F0E58
+	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 00:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739234501; cv=none; b=RpHb71HKoPTRpwNG3e3kU/TGPp9zxvgdoHWH6EW+9HHhS3osywzxDuDbbgoozz34wGGJx7qF1A9KbNsunIXVYoDP0n6gXodx0vlRRu9viENSJidoeg++lOr4VTxT5Zzdt8eYurzc+lNLfrC6rVJCaP4MNgHXzZf2ZEMgJIxNajE=
+	t=1739234504; cv=none; b=hXH1uxqzHdnjrvcsgBYc6FxmrPgwxtvyPCO1uNm0klocN3bUhymod3lRIXIVlOnt00vHJLKcP0c/gKzfHwcSQuvrNZmqst6e2YTuderRWeeD2Xt6898H7sVflImCWflYTbqRAmBW/b35DwsXfx+Z4lWYThCkwcK2cfdvrEmHPQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739234501; c=relaxed/simple;
-	bh=t9go/X+DjRrOvyBGhvmYx8gry+RZBj9ONKGlRFoyukY=;
+	s=arc-20240116; t=1739234504; c=relaxed/simple;
+	bh=8xMoMq4/HmCsbbhmmUU+CjrB8VVYxxsj4UGn48mpUmA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HfmJX2x+js1C/z/Id4DizmPUZKhzc4iPX058nYk1H3CitVuq0+KEiRXPdF/CUyaRyocDinaeOdOK0aIXIvoDy/kajeZrTWnMHevF3Has1t26bPhbfIDvI7RbT8Tmse2R7uwsOVmBKd6Qg7RD9AfzjGcfSKbG+k7K+U/Nylj5GHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=ahGmL7j5; arc=none smtp.client-ip=209.85.221.44
+	 In-Reply-To:To:Cc; b=KBJnzDTJej8Q5aRdnVJ7p2AiZU74gLfhAbLuLp8QUCgBj7dpBh3zUDJaTmsRhhI27jv06mzzgR+mRtw6ErMYRLvnpVe2aY4zoP9WGrrIv5ABz3wMUYeOajXHE27S4k+X+EoVnLcMQOQ+pQCRsFHDhIHa2Q4ouoehmw72F4kGb9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=EAKAP+gH; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="ahGmL7j5"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38dc9f3cc80so1319766f8f.0
-        for <netdev@vger.kernel.org>; Mon, 10 Feb 2025 16:41:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="EAKAP+gH"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-436ce2ab251so34256535e9.1
+        for <netdev@vger.kernel.org>; Mon, 10 Feb 2025 16:41:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1739234496; x=1739839296; darn=vger.kernel.org;
+        d=openvpn.net; s=google; t=1739234500; x=1739839300; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=sMmL1XdpWp8bWGtfaVtGeJtwHAhwgGInZM8+xT9Fcfo=;
-        b=ahGmL7j5DBG4T4ZDnjMoY7dw1vDe683VqEQ2gk8YanuR64fe7BXihK7lt7OSKGamEN
-         Gv7eLLKbaeDstaJz0JN6OH86XFju6lIQ4RZYT/SDAFjIoZ3P5osdhx8/IdhZFaGchhHp
-         AD9rSfCi0zJiUIiPopPc9/UUP3bvl+aEKzeGfxwLjR56Li7MvcO9Z50oXFuAgiqksvSt
-         HQKBSEHX60a/a9Z7dmalXhcGUVJQA6aHYbuSy3cWeFqjNdMeYUruiN5BUaqMthXR1YIj
-         Y0V/xbNn8mzvtBQq3TNTJssbzSZSW0P4mAhZ3EjBYKJEanC5/cAjZUhP2nNzB50KsmRP
-         0rOg==
+        bh=0H4op0ePLiNdUHXM7R2dSoMw+sTN1l4LiLoSsD6CY0o=;
+        b=EAKAP+gHFnbMMSaAc4suj0odDs9wwUwRke7rSkY5idjAOB4lCgqDmWx4YEtmairfaS
+         boGJwprgoyeoygwhK/EUACs/hHMRPI284N4n5RPg3S5UUu4edNWkdogW2sZ1jxYRrUTX
+         18ufbME79A/vHkFokyaVEJYAucAlAj/04rEHc134zsAXRBfmCktLeyvI1bdLWDZ8Jy4u
+         WnRbRPBse0BhJuFeQJHWBqb2IBM09MHOLKuyzMZpyVtiDu6SvSQgfxnSOZBHbEardpbe
+         W56M7VdQlnnYwG5rfOzPp58/L3pMNPEvjOJbCgWniAowBy10I1YctVQpNA2gPEUQ/NH8
+         Lmdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739234496; x=1739839296;
+        d=1e100.net; s=20230601; t=1739234500; x=1739839300;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sMmL1XdpWp8bWGtfaVtGeJtwHAhwgGInZM8+xT9Fcfo=;
-        b=YAKDpRWM/v7QLicYg1RGEdd9coX8zgAm1xZ64IYxPlSE6nZKqrFmYsj1K+WNo1GSuA
-         tafiyIuqWPMmpt2aPoD2NabQhDOuXmvGDm/9Cc/vIUaux/6bUQAguBCsgf9uNv+akUcG
-         8akqg+zrz59gbhFiYZWwNzCi457xaYV7OngZUmjf26m9+9+TUHh8xqmZjZzMOxhRL/5p
-         K490gQmsE06uPtgoXbD0kej4f8CKRF47eA7HmmbrNBnUVAbyoFLI0NmdOFXO2x6X00KM
-         mvibl0INDIx2tojreW293NRlAAgxcl3bwVj/H5wuR742HT5Q4hxXpypB3acPrjufCZih
-         dHIA==
-X-Gm-Message-State: AOJu0Ywe63Rg2iyyKlNtEmv/r398xrLb9MJT00bdvrJv1TCwvecdrxpg
-	6/CDTdZs17hd0luK+NTMhTWo/p1cJ51DdxM4/gDjePonDLCBwrqfFgG02yNiOkM=
-X-Gm-Gg: ASbGncuX6M+xjGXE0kOYVhvdXghDHoA8uMo2NE6TAD6QpUJT5XPrnmSABe8O6h8JyPC
-	MeHgi7bg5HD3hS+0OW4sx779wd7NcWXucn78d/3ba9Ui0alfIQRPieUYMYZEEfMvhQyPwBe6LN7
-	r6I8GLwbTtrSLKMCivL+wWGeTpkodQI4Th7HGoLIlA+qs21XsmaXydqnAOfv+xWHrc3eYPqixfl
-	aDWVcX2UUbJnQAmM9QmuiCS4gLapaZRts+mvR6PWhvTgs0fh7tBKq60dDpCT0UDqg6EVhsYqX51
-	/OPPUZS7A2WTAeh55krDdnUQpig=
-X-Google-Smtp-Source: AGHT+IET0A/pQsSzvGSItJIKx9o2/+rn8QwlMyL7XBg1Isq492vibQkvsqK2ckyJJKTRztGcpI4R8A==
-X-Received: by 2002:a05:6000:18af:b0:38d:cbc2:29c3 with SMTP id ffacd0b85a97d-38dcbc2310fmr12173016f8f.33.1739234496427;
-        Mon, 10 Feb 2025 16:41:36 -0800 (PST)
+        bh=0H4op0ePLiNdUHXM7R2dSoMw+sTN1l4LiLoSsD6CY0o=;
+        b=sYeVR4xuJu+nbL87QHMbLL4Lb/1DZfA2xVYrtLgxlOIM12VSQcFO6jLUll0aLhWigu
+         L5QspsBHbySbvlgAIwvhZnnZXcEwsUyhb00ODfyt17gSLaSAm9TvWjfrfcDGqU4ADgvS
+         ZYqbGHw3NtvVgpdV4eq5mkpXUP7nEMELqw2kyzHEcG+U7sWIjEqmZUfULc4BaBOMF+De
+         4Qr832bsTFAYRwIh/LzdXSiuqhIn2crGyJJ43Zjq01Cbw2g0GXTDvhylbIj7e++cxS53
+         eLFtVgxrruwBfzxNdX4cws3i3/DK/uUmtP8agpP+ORwLbs4Vh/814Kq1q6zJ55j2UhV7
+         5yVw==
+X-Gm-Message-State: AOJu0YzD1Qv81zRW8tJKmew7p6ebv8jodfGdRoJrahUcR0zo4WeFT7Fh
+	SUBQveYYMnYfyGl0NvBaQYgNmh7U36Kg/NrirD31wj2s0MI3G07FYHsTUXLJ/g8=
+X-Gm-Gg: ASbGncvLQsMFqQbwyb3Yn+DTWLfjBhnvcPjJdY0R36S/2B6Wf9/8Y6KbZjpW5N23bEA
+	VzVol8SBADoxA0oNYXcHZ7A9yNEfN/fH3qMPQ46bjDm8CTOXjvDaai50yCGk76O7IarvYhoMZoS
+	3dmVfO9uPcy4e8uJ+CLseDE5cimp8mD+d4C05m6mxncpj/FCmVgNalR8IVibTeCDf706e7GgABz
+	LsISPbOMuiQuxQu1OlR0TAgqVh84uhAl52r1C11enHESN45L4KWhFaGLdvLiGQ3CosbMLkqqNDi
+	GhXZyQMDx+sBAweXXrrIJefo71k=
+X-Google-Smtp-Source: AGHT+IHjHENWeREsEhAJYoT3TQ2FFR8LSRFgAVO/2HRjTSK8uZkQIeJT/gCfk0HOYKp+KwyLvV3/jA==
+X-Received: by 2002:a05:600c:1549:b0:434:f0df:a14 with SMTP id 5b1f17b1804b1-4392496ec4amr124415175e9.2.1739234499835;
+        Mon, 10 Feb 2025 16:41:39 -0800 (PST)
 Received: from serenity.mandelbit.com ([2001:67c:2fbc:1:1255:949f:f81c:4f95])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4394dc1bed2sm3388435e9.0.2025.02.10.16.41.34
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4394dc1bed2sm3388435e9.0.2025.02.10.16.41.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 16:41:35 -0800 (PST)
+        Mon, 10 Feb 2025 16:41:38 -0800 (PST)
 From: Antonio Quartulli <antonio@openvpn.net>
-Date: Tue, 11 Feb 2025 01:40:17 +0100
-Subject: [PATCH net-next v19 24/26] ovpn: add basic ethtool support
+Date: Tue, 11 Feb 2025 01:40:19 +0100
+Subject: [PATCH net-next v19 26/26] mailmap: remove unwanted entry for
+ Antonio Quartulli
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,7 +68,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250211-b4-ovpn-v19-24-86d5daf2a47a@openvpn.net>
+Message-Id: <20250211-b4-ovpn-v19-26-86d5daf2a47a@openvpn.net>
 References: <20250211-b4-ovpn-v19-0-86d5daf2a47a@openvpn.net>
 In-Reply-To: <20250211-b4-ovpn-v19-0-86d5daf2a47a@openvpn.net>
 To: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
@@ -78,72 +79,42 @@ To: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
  Andrew Lunn <andrew+netdev@lunn.ch>
 Cc: Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, Xiao Liang <shaw.leon@gmail.com>, 
- Andrew Lunn <andrew@lunn.ch>
+ Andrew Morton <akpm@linux-foundation.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1701; i=antonio@openvpn.net;
- h=from:subject:message-id; bh=t9go/X+DjRrOvyBGhvmYx8gry+RZBj9ONKGlRFoyukY=;
- b=owEBbQGS/pANAwAIAQtw5TqgONWHAcsmYgBnqpyOp1Y/mEQ9QiTKsW4bmwKuJ2pKrAI7cQdPF
- mLLCHnGCViJATMEAAEIAB0WIQSZq9xs+NQS5N5fwPwLcOU6oDjVhwUCZ6qcjgAKCRALcOU6oDjV
- h12yB/9R91hNevzhBIkXLNi3Xy2XVZvGoKjRM8TvkpDV99uf7PVv4U5XtS5vy2zDxtc8FE5PZTi
- vCQqVq4LQ+Hay7o76lYahkX7uukM4J+kkCgI4mZ/aBPLtah+JM5Ll2oN1rss1HeXsY1w/TjKJt/
- EbeGSjdo4RcR9aWFylDxkc3+hBF6M5vMFGfWSwH56S4KOc6x+fyZSzAcrFX3V4tzV1w2UQOlsa/
- GoH84DcsR0rCIbD5WU0LOIhIjX03vTkHFjfZIkK2UdKY2QERNkHjGw10WiOH6a/Q8uzu8wv21+I
- RLs7SElmo0pWSQQt3xghjyyQfnNpNvXhdL/5OWLMR401C63y
+X-Developer-Signature: v=1; a=openpgp-sha256; l=985; i=antonio@openvpn.net;
+ h=from:subject:message-id; bh=8xMoMq4/HmCsbbhmmUU+CjrB8VVYxxsj4UGn48mpUmA=;
+ b=owEBbQGS/pANAwAIAQtw5TqgONWHAcsmYgBnqpyPvVsBe5Cp3g3R9CiRk7YQ+2PHwNnzZlA1Q
+ 0pnAm9TrPSJATMEAAEIAB0WIQSZq9xs+NQS5N5fwPwLcOU6oDjVhwUCZ6qcjwAKCRALcOU6oDjV
+ h0aWCAC5uaeXlErFy1AmTjZtoAcj6luKEQPtxVbrLDJsiviSBdiwut1GgVdTkBDCil4TEcwZom9
+ jOCIdcc9Ht7m3jWSRLxy5doFfUq71IVnVIRMOux/JzLd1chD3WBtZsX0ygKE03TMyM28kJjDrzX
+ fx5V9/rHYb3aNjqZI1VEfNtBDxMWOrmd7Cot92HOOtzs6B3UZOlzU2zUfK1ESIeOASPlMAYR5Al
+ h7ufHlD67uFoa1abb9kgLFHR9rdyIij8NFXiqmksKnYU+CRfUJMN73QaQg4PWJInRiFtb/tDqiK
+ eS60/cTK1Fg7hSyJDYeHXQQkwrJaQAOIYfBJ9qHv17feug3Q
 X-Developer-Key: i=antonio@openvpn.net; a=openpgp;
  fpr=CABDA1282017C267219885C748F0CCB68F59D14C
 
-Implement support for basic ethtool functionality.
+antonio@openvpn.net is still used for sending
+patches under the OpenVPN Inc. umbrella, therefore this
+address should not be re-mapped.
 
-Note that ovpn is a virtual device driver, therefore
-various ethtool APIs are just not meaningful and thus
-not implemented.
-
+Cc: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/ovpn/main.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ .mailmap | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ovpn/main.c b/drivers/net/ovpn/main.c
-index 38114c5482e3ba283937fdafce62056096ff9c2d..20625a2293ab0e55e26a4d700fb6a3d4915b466c 100644
---- a/drivers/net/ovpn/main.c
-+++ b/drivers/net/ovpn/main.c
-@@ -7,6 +7,7 @@
-  *		James Yonan <james@openvpn.net>
-  */
- 
-+#include <linux/ethtool.h>
- #include <linux/genetlink.h>
- #include <linux/module.h>
- #include <linux/netdevice.h>
-@@ -142,6 +143,19 @@ bool ovpn_dev_is_valid(const struct net_device *dev)
- 	return dev->netdev_ops == &ovpn_netdev_ops;
- }
- 
-+static void ovpn_get_drvinfo(struct net_device *dev,
-+			     struct ethtool_drvinfo *info)
-+{
-+	strscpy(info->driver, "ovpn", sizeof(info->driver));
-+	strscpy(info->bus_info, "ovpn", sizeof(info->bus_info));
-+}
-+
-+static const struct ethtool_ops ovpn_ethtool_ops = {
-+	.get_drvinfo		= ovpn_get_drvinfo,
-+	.get_link		= ethtool_op_get_link,
-+	.get_ts_info		= ethtool_op_get_ts_info,
-+};
-+
- static void ovpn_setup(struct net_device *dev)
- {
- 	netdev_features_t feat = NETIF_F_SG | NETIF_F_HW_CSUM | NETIF_F_RXCSUM |
-@@ -152,6 +166,7 @@ static void ovpn_setup(struct net_device *dev)
- 
- 	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
- 
-+	dev->ethtool_ops = &ovpn_ethtool_ops;
- 	dev->netdev_ops = &ovpn_netdev_ops;
- 
- 	dev->priv_destructor = ovpn_priv_free;
+diff --git a/.mailmap b/.mailmap
+index ae0adc499f4acba5b6220762c1beccceeb5e8ddf..9877cf1ebf5480b80bbb9df73e1096147fb256a4 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -88,7 +88,6 @@ Antonio Quartulli <antonio@mandelbit.com> <antonio@open-mesh.com>
+ Antonio Quartulli <antonio@mandelbit.com> <antonio.quartulli@open-mesh.com>
+ Antonio Quartulli <antonio@mandelbit.com> <ordex@autistici.org>
+ Antonio Quartulli <antonio@mandelbit.com> <ordex@ritirata.org>
+-Antonio Quartulli <antonio@mandelbit.com> <antonio@openvpn.net>
+ Antonio Quartulli <antonio@mandelbit.com> <a@unstable.cc>
+ Anup Patel <anup@brainfault.org> <anup.patel@wdc.com>
+ Archit Taneja <archit@ti.com>
 
 -- 
 2.45.3
