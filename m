@@ -1,243 +1,136 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698E01E5B87
-	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 11:09:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72A81F9F73
+	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 11:15:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739272200; cv=none; b=b7y234jboTQpNcgbYpMLOjm0e82vAkvOU9rg0+IQHUWggXnCWbusq1UMrQ8k1ELUj7o7hmnLH5davksjqxa3Z8JZUz6KoBemhM4MR79I3mFuwabKRQjmYYebi6D4mMo5izcsFwnVMrj8IwfYP9K+PUyaPct7IzlvElhT1YXArOA=
+	t=1739272524; cv=none; b=F0v6ARPS4PwsTXptydARIbGdTak5dbRmOqH8sDwjR7Gd0CW//+to05Gu8xyyMxCKNLot7GgmnJPN/xCGMljDbHZYzQYbP3J8TARfeQT9jFsbvOtzGaJqyl3Z4a0t7a2zaFYruYts5frdShJmpj0+h86O/H7SHOr44UaCg2Lkgwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739272200; c=relaxed/simple;
-	bh=rpSIJr2tTA1mlR4YLGpeZyR2NSRJg92WBS/isaUQecs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N9zSrYerNHWW26QI5P8o3ngVkjTwvEmDwqgzO/P/4bo16zQQmA9ez+gxI/HZjVogNTccT150buCTkm59w/v37qi14YtpZCxeUMGHfIEFfnkBQXufsHRXpSLh0/c5WlxdO7JtGGGzmRgx9jW+G05yPVvZCwC28RzOYGD7zCiDK5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Rs7GccQI; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Rs7GccQI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739272197;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y7ZAQ07RxJ7O5uwhTtT4Uoh1NwPTNjnj401gSfYgfTY=;
-	b=Rs7GccQIRojqkrVx3SlXZQ9t+5Lr8V7/UicnVgtwMsNVl8sbYsqVbcHekXEo2bsqfZcqHS
-	SOVqEFkPH/DP17YnmXDA9vqjjuFNZQDonmHVni9/6HJ8amZzNY5HwoujBTnmz9Lp4PFDLK
-	kcwHf4z2NDX4xjR2ZhgI/kedKQx4dpQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-VBL6eqkMMja9DGz0JXqRwg-1; Tue, 11 Feb 2025 06:09:54 -0500
-X-MC-Unique: VBL6eqkMMja9DGz0JXqRwg-1
-X-Mimecast-MFC-AGG-ID: VBL6eqkMMja9DGz0JXqRwg
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43943bd1409so14315765e9.3
-        for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 03:09:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739272193; x=1739876993;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y7ZAQ07RxJ7O5uwhTtT4Uoh1NwPTNjnj401gSfYgfTY=;
-        b=cUuTOX3NjvQFY4dYocmeB2h9xxumj9rP5t5MOh9gABr8n4i05474DU+nBIZ/4xrDeT
-         nAYlVPuOtjobIBH7et1QJBl883NM1BTGMU0YFs8VdjzdklfvnPIhbyHH6ilHFHFxEAeR
-         kyEmCE/88NK8VR7g3ym1Uadg61zT9rkqZctGn4+No+3OlPyIEi6WnnRKiIkrwYJLJUBy
-         oqmU3y2GU64Ohy4STlcha/MGn/iXP1Y0ez1JKaee+VVR8xylTKnloiBikmiDcwHjgcvS
-         vISKoEkU6MQx6n1Sau8cGN9KU+8XqCEnJI2RXtCiSIpCcJstOTNtH0LoAygucssq8mVF
-         bpaw==
-X-Forwarded-Encrypted: i=1; AJvYcCWjoBSCOmXv+sP+9zT1wzSdWGh7iFPWmj0l5gm3Q00U5U1yj8sxr0xznEZRP32efWu+wWNHPow=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+3HIaGneESU2LHwKXvk0kNAhJSpHStVNmscMaTZXefg4Y6unJ
-	McIz8BK/Y/Co+wZEEf4Gp/hMiZK1X/vGF9ST9CUIGT1smq+9X4/Ni1fS/lXyQJR2EYuOZHbFd78
-	lXlj/x0JxxeSFbS9mXF7St2792CQ7L+Ja4Nf8ApMs7ooyTQLcVrlYPA==
-X-Gm-Gg: ASbGncu+nYoQiEA/zBN5QEsIb7LAh7gRz8r69n2qPWhfsPREUQjxsRZ3twnnJ8/53AW
-	OVz1NZ37lD5gVPMHC76pfMJgL7BJE0g0vFlABqEH30rfV85/tM/q0SyAS331KSp6ZWPWjnYWEKt
-	IXLRWIv1sqAxiAh0Hi+fQ53u1+tl3CIX7fMk38aWKz6MsAgRjpsJu/VHfCw1STDOo0yvCIyRmD6
-	2M/hNpE6uSPfIx7RnfB8eESu9TbFX3ojx0ORsQtaE30pgQBi+T4/hJI4mxuW2dUZAkhST1x10JM
-	2bwJ9gDXlY3WYT3YicRQDXVY8S+of5ZwlZQ=
-X-Received: by 2002:a05:600c:1c92:b0:439:4589:1abc with SMTP id 5b1f17b1804b1-43945891eaemr64632735e9.14.1739272192993;
-        Tue, 11 Feb 2025 03:09:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGRBY/4tHNCW+QPAjUDCl4IZPK/+epAOWrGOIX9oOcIs3K9+fGAdS9SP2ebLTN01yGe5jkbBA==
-X-Received: by 2002:a05:600c:1c92:b0:439:4589:1abc with SMTP id 5b1f17b1804b1-43945891eaemr64632275e9.14.1739272192560;
-        Tue, 11 Feb 2025 03:09:52 -0800 (PST)
-Received: from [192.168.88.253] (146-241-31-160.dyn.eolo.it. [146.241.31.160])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dd6080926sm8461760f8f.83.2025.02.11.03.09.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Feb 2025 03:09:52 -0800 (PST)
-Message-ID: <13afab27-2066-4912-b8f6-15ee4846e802@redhat.com>
-Date: Tue, 11 Feb 2025 12:09:50 +0100
+	s=arc-20240116; t=1739272524; c=relaxed/simple;
+	bh=Q1cRnnQsuAv/C5OqIWfpYZtQB3e3qqwE/32I7GhrnTc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Bu/F2iAyqZNxpP1gpQWAZdh8N81ZfwTxOyPXDuI2//PvUHrso1FJfx+52wqb19A0iAyN/PK5SBLQgK1D8vCyS+YGq4HP78AkgI7I+LRsThLT9OO3ODzIRkpZMFMmUV7C6WgQAJmsSzMC8edCaVuGtAaeUAc08bvVShkOWxDDOB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=18.169.211.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid: bizesmtp91t1739272505t0afjvfj
+X-QQ-Originating-IP: LH6SrNBoJ3gIxz+PHFExP0I/RQUxEJ1UxzPef3Vfgm8=
+Received: from smtpclient.apple ( [183.157.104.65])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 11 Feb 2025 19:14:53 +0800 (CST)
+X-QQ-SSF: 0001000000000000000000000000000
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 6306663364721193696
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 3/3] selftests: drv-net: Test queue xsk
- attribute
-To: Joe Damato <jdamato@fastly.com>, netdev@vger.kernel.org
-Cc: stfomichev@gmail.com, horms@kernel.org, kuba@kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Shuah Khan <shuah@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- "open list:XDP (eXpress Data Path):Keyword:(?:b|_)xdp(?:b|_)"
- <bpf@vger.kernel.org>
-References: <20250210193903.16235-1-jdamato@fastly.com>
- <20250210193903.16235-4-jdamato@fastly.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250210193903.16235-4-jdamato@fastly.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: [PATCH net-next v7 5/6] net: ngbe: add sriov function support
+From: "mengyuanlou@net-swift.com" <mengyuanlou@net-swift.com>
+In-Reply-To: <20250207171940.34824424@kernel.org>
+Date: Tue, 11 Feb 2025 19:14:54 +0800
+Cc: netdev@vger.kernel.org,
+ jiawenwu@trustnetic.com,
+ duanqiangwen@net-swift.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <09EC9A07-7DA7-4D3E-85EE-F56963B54A66@net-swift.com>
+References: <20250206103750.36064-1-mengyuanlou@net-swift.com>
+ <20250206103750.36064-6-mengyuanlou@net-swift.com>
+ <20250207171940.34824424@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+X-Mailer: Apple Mail (2.3818.100.11.1.3)
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:net-swift.com:qybglogicsvrsz:qybglogicsvrsz4a-0
+X-QQ-XMAILINFO: NDTr/OXP+ntDmFBPm234AtE7QZ+rKQdW5WBbzoIuWLrgTviqcV371zzb
+	L9kVpwvwdS5fyiYZWWdiaJHyBSllTkwQrGQfRwLzLtCIBRZfrck88ndgEQIbp7PdSue1fqt
+	7AFKMED6xEPHtQt5D72ujO/o6dKERzA1TfhCOfyy4V/EKDh+0hON+G+9dknR+hbjkfkrjV7
+	9ViQE2ldy9hiQDae704Y78sS9tEnJIGilPCELMtEY9wvBA+cgLkAF5rA4zTxTSa3vw6N3iL
+	lHFgkAo921oSl1HOJSO6BwUZME+dw57iM0EZXOt1hkFzU3yJOIUr058k14ZIPflrmmuxHLY
+	VlGC6u47WQsauLkIAWEbJFUjZfs16aBClD/u8z0Jnf5lgj5div8IsAahyne7k1iyyIhTw/k
+	Jy27aPrxBpMD0/xnM58A/g/d4YA/BXgu7PnhRNFntBOqrgclCaqspb2oWP3Dcmtt7dHkNK7
+	wfE7knR6/RpfhkEuDWEkmlIJF5/ujQM2OVC9ic/WDZPr88yz33oJiD3q96UuZcUYLfJ2RvM
+	EbBdn4s7Ph3SLuqdezvJ9vmZIQbsekdPmsdJheMZD68STYyUOKa/iskY5Fw/OX7l+kR0xvP
+	MiQQ7zDIjUjtvuhL1DZzKkgDFNivlHXfXjtR0kKuLDJdLlO70eLN7XsMAtVAtXLsu29dNTZ
+	etMICD0EdP+7GfajXMv+NtKI5KNNv7vcgEf8KxZpFDq+OZpNWru+DJPtaKVoT8jSzpMluKv
+	DXv+y5qLr6o3MThWdhSMVwMMPGBxT+Mv3PFjUI/Etzr6i+/Lh4iKDnIg9Nr3w9hYQcnJlBY
+	KwYILrBH9kcGc6E5L7f6Z4Tn9CUOdanY9fdqqAv0DmheP3BRsC/t9XMCZ6jW/NYrbc6S80a
+	OZFH6J+0m5aiXJQmMvr7stIkhTex/UFCrAUPhL9RRZ9WVy8OEEjwUbdpKWXrPC5XeEqWcpt
+	g2sPKyJnfb9Ho2ZsaXadzC3uQcmz10HG6iAMbPBz18yDCSn4l4k4ED8+YCTCCILlO8ByAIC
+	13/uKGwy0yJHRYeqRlMdUCEHbFR9zqXUoTD3qkMtfz8Di/HUA0WcGurjiOdU8=
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+X-QQ-RECHKSPAM: 0
 
-On 2/10/25 8:38 PM, Joe Damato wrote:
-> +def check_xdp(cfg, nl, xdp_queue_id=0) -> None:
-> +    test_dir = os.path.dirname(os.path.realpath(__file__))
-> +    xdp = subprocess.Popen([f"{test_dir}/xdp_helper", f"{cfg.ifindex}", f"{xdp_queue_id}"],
-> +                           stdin=subprocess.PIPE, stdout=subprocess.PIPE, bufsize=1,
-> +                           text=True)
-> +    defer(xdp.kill)
-> +
-> +    stdout, stderr = xdp.communicate(timeout=10)
-> +    rx = tx = False
-> +
-> +    queues = nl.queue_get({'ifindex': cfg.ifindex}, dump=True)
-> +    if not queues:
-> +        raise KsftSkipEx("Netlink reports no queues")
-> +
-> +    for q in queues:
-> +        if q['id'] == 0:
-> +            if q['type'] == 'rx':
-> +                rx = True
-> +            if q['type'] == 'tx':
-> +                tx = True
-> +
-> +            ksft_eq(q['xsk'], {})
-> +        else:
-> +            if 'xsk' in q:
-> +                _fail("Check failed: xsk attribute set.")
-> +
-> +    ksft_eq(rx, True)
-> +    ksft_eq(tx, True)
 
-This causes self-test failures:
 
-https://netdev-3.bots.linux.dev/vmksft-net-drv/results/987742/4-queues-py/stdout
+> 2025=E5=B9=B42=E6=9C=888=E6=97=A5 09:19=EF=BC=8CJakub Kicinski =
+<kuba@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> On Thu,  6 Feb 2025 18:37:49 +0800 mengyuanlou wrote:
+>> static irqreturn_t ngbe_msix_other(int __always_unused irq, void =
+*data)
+>> {
+>> - struct wx *wx =3D data;
+>> + struct wx_q_vector *q_vector;
+>> + struct wx *wx  =3D data;
+>> + u32 eicr;
+>>=20
+>> - /* re-enable the original interrupt state, no lsc, no queues */
+>> - if (netif_running(wx->netdev))
+>> - ngbe_irq_enable(wx, false);
+>> + q_vector =3D wx->q_vector[0];
+>> +
+>> + eicr =3D wx_misc_isb(wx, WX_ISB_MISC);
+>> +
+>> + if (eicr & NGBE_PX_MISC_IC_VF_MBOX)
+>> + wx_msg_task(wx);
+>> +
+>> + if (wx->num_vfs =3D=3D 7) {
+>> + napi_schedule_irqoff(&q_vector->napi);
+>> + ngbe_irq_enable(wx, true);
+>> + } else {
+>> + /* re-enable the original interrupt state, no lsc, no queues */
+>> + if (netif_running(wx->netdev))
+>> + ngbe_irq_enable(wx, false);
+>> + }
+>>=20
+>> return IRQ_HANDLED;
+>> }
+>=20
+> You need to explain in the commit message what's happening here.
 
-but I really haven't done any real investigation here.
+>=20
+> IDK why the num_vfs =3D=3D 7 is special.
 
-/P
+Due to hardware design, when 6 vfs are assigned.=20
++------------------------------------------------------------+
+|        | pf | pf  | vf5 | vf4 | vf3 | vf2 | vf1 | vf0 | pf |
+|--------|----|-----|-----|-----|-----|-----|-----|-----|----|
+| vector | 0  | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8  |
++------------------------------------------------------------+
 
->  
->  def get_queues(cfg, nl) -> None:
->      snl = NetdevFamily(recv_size=4096)
-> @@ -81,7 +112,7 @@ def check_down(cfg, nl) -> None:
->  
->  def main() -> None:
->      with NetDrvEnv(__file__, queue_count=100) as cfg:
-> -        ksft_run([get_queues, addremove_queues, check_down], args=(cfg, NetdevFamily()))
-> +        ksft_run([get_queues, addremove_queues, check_down, check_xdp], args=(cfg, NetdevFamily()))
->      ksft_exit()
->  
->  
-> diff --git a/tools/testing/selftests/drivers/net/xdp_helper.c b/tools/testing/selftests/drivers/net/xdp_helper.c
-> new file mode 100644
-> index 000000000000..b04d4e0ea30a
-> --- /dev/null
-> +++ b/tools/testing/selftests/drivers/net/xdp_helper.c
-> @@ -0,0 +1,89 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <unistd.h>
-> +#include <sys/mman.h>
-> +#include <sys/socket.h>
-> +#include <linux/if_xdp.h>
-> +#include <linux/if_link.h>
-> +#include <net/if.h>
-> +#include <inttypes.h>
-> +
-> +#define UMEM_SZ (1U << 16)
-> +#define NUM_DESC (UMEM_SZ / 2048)
-> +
-> +/* this is a simple helper program that creates an XDP socket and does the
-> + * minimum necessary to get bind() to succeed.
-> + *
-> + * this test program is not intended to actually process packets, but could be
-> + * extended in the future if that is actually needed.
-> + *
-> + * it is used by queues.py to ensure the xsk netlinux attribute is set
-> + * correctly.
-> + */
-> +int main(int argc, char **argv)
-> +{
-> +	struct xdp_umem_reg umem_reg = { 0 };
-> +	struct sockaddr_xdp sxdp = { 0 };
-> +	int num_desc = NUM_DESC;
-> +	void *umem_area;
-> +	int ifindex;
-> +	int sock_fd;
-> +	int queue;
-> +	char byte;
-> +
-> +	if (argc != 3) {
-> +		fprintf(stderr, "Usage: %s ifindex queue_id", argv[0]);
-> +		return 1;
-> +	}
-> +
-> +	sock_fd = socket(AF_XDP, SOCK_RAW, 0);
-> +	if (sock_fd < 0) {
-> +		perror("socket creation failed");
-> +		return 1;
-> +	}
-> +
-> +	ifindex = atoi(argv[1]);
-> +	queue = atoi(argv[2]);
-> +
-> +	umem_area = mmap(NULL, UMEM_SZ, PROT_READ | PROT_WRITE, MAP_PRIVATE |
-> +			MAP_ANONYMOUS, -1, 0);
-> +	if (umem_area == MAP_FAILED)
-> +		return -1;
-> +
-> +	umem_reg.addr = (uintptr_t)umem_area;
-> +	umem_reg.len = UMEM_SZ;
-> +	umem_reg.chunk_size = 2048;
-> +	umem_reg.headroom = 0;
-> +
-> +	setsockopt(sock_fd, SOL_XDP, XDP_UMEM_REG, &umem_reg,
-> +		   sizeof(umem_reg));
-> +	setsockopt(sock_fd, SOL_XDP, XDP_UMEM_FILL_RING, &num_desc,
-> +		   sizeof(num_desc));
-> +	setsockopt(sock_fd, SOL_XDP, XDP_UMEM_COMPLETION_RING, &num_desc,
-> +		   sizeof(num_desc));
-> +	setsockopt(sock_fd, SOL_XDP, XDP_RX_RING, &num_desc, sizeof(num_desc));
-> +
-> +	sxdp.sxdp_family = AF_XDP;
-> +	sxdp.sxdp_ifindex = ifindex;
-> +	sxdp.sxdp_queue_id = queue;
-> +	sxdp.sxdp_flags = 0;
-> +
-> +	if (bind(sock_fd, (struct sockaddr *)&sxdp, sizeof(sxdp)) != 0) {
-> +		perror("bind failed");
-> +		close(sock_fd);
-> +		return 1;
-> +	}
-> +
-> +	/* give the parent program some data when the socket is ready*/
-> +	fprintf(stdout, "%d\n", sock_fd);
-> +
-> +	/* parent program will write a byte to stdin when its ready for this
-> +	 * helper to exit
-> +	 */
-> +	read(STDIN_FILENO, &byte, 1);
-> +
-> +	close(sock_fd);
-> +	return 0;
-> +}
+When 7 vfs are assigned.=20
++------------------------------------------------------------+
+|        | pf | vf6 | vf5 | vf4 | vf3 | vf2 | vf1 | vf0 | pf |
+|--------|----|-----|-----|-----|-----|-----|-----|-----|----|
+| vector | 0  | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8  |
++------------------------------------------------------------+
+
+When num_vfs < 7, pf can use 0 for misc and 1 for queue.
+But when num_vfs =3D=3D 7, vector 1 is assigned to vf6.
+1. Alloc 9 irq vectors, but only request_irq for 0 and 8.=20
+2. Reuse interrupt vector 0.
+
+
+> Also why are you now scheduling NAPI from a misc MSI-X handler?
+The code used the second. Misc and queue reuse interrupt vector 0.
+
+
+> --=20
+> pw-bot: cr
+>=20
 
