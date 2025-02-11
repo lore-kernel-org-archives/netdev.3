@@ -1,243 +1,127 @@
-Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879AE262D21
-	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 22:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A03268FE6;
+	Tue, 11 Feb 2025 22:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739312202; cv=none; b=SKGSKV2/tpw9Zhu5+xB5cFIAyF79IUsmxSTrOjWXXy25qePTiAaVl6kf2vWQhj5iHw2GvZgZErsJd/XLicXQyr0crPFM5GOywAHRkU2WpTkV5fE11vQBZN9h97qKERQaxyehEnrVQzBM6VYcH/WLt4qfGX1oJY91PqvkDsuOVws=
+	t=1739312482; cv=none; b=WNvUkUEPVeA/4b0nRZlqsE61qEzN7nLHJjKq3SDE2vDH1Ze03Wv03sZU1rgE7XexqNjClynbkNerNU0tTNF+ZvyoitgQ/8WT/I3l5+1QvKRVr/bhDUAy/D9AVDXwwJWLNHdrMgpkW3aj0oPdAeKgpZr/y/hsHOx4on+ZL6pjoj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739312202; c=relaxed/simple;
-	bh=+fKzhba+jhKNMsksa4EvYGwM+FBK74D5or5T1KAF4hw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mpq24bZc5YeQYqQizSsrkj/kMJbcYPvpDnZCkWONZ7lMl0W5UL5Pqf5vw4II4mJVD6AirQS+LkEwKP6jjezzO2tkyTaOH0W1SlYhG6uiCpUBK9DXkuphQUeF8M4lSs5PX+86XJhzLHa3ua6seDodJtffjF8HFt/FGo/5mlsrASg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=Jhgcqe2c; arc=none smtp.client-ip=139.165.32.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
+	s=arc-20240116; t=1739312482; c=relaxed/simple;
+	bh=KmQ+tXg/m4ZK8Xhj8IZwShtRHzkqTHlubFqibbJilzM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hmTBT6ATO8APNP35FcFNB7PKlbywArkpSrliFJMiESUut9DDfMMVRlPAzjHj4sc8VdZtEpXpUEZPA77tVHyLbfoMNooevdeR0E+Z99CPpl18cVSZJGi+NsTdYVMIZ98Vd5n6ttXY2JrqJZMq5lMh2ZPJylj9ruQScEg6v4YSm3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VmXuRd7M; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="Jhgcqe2c"
-Received: from localhost.localdomain (unknown [10.29.255.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id 98130200DB98;
-	Tue, 11 Feb 2025 23:16:31 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be 98130200DB98
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
-	s=ulg20190529; t=1739312192;
-	bh=EhvQZuj1jndiD6dVlTsKikQnLXdeZdL7Rl5pnp9H2f4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jhgcqe2ccp+rKxAqpT3wyDqs17GRgJI2cRilY0Or0BrD7xD+SKIBwMHcm1t9RWiXn
-	 DrlsvR9ndT1ME9c6ohGtm/6RL6qWIlQq8rCBjip7wfdm013890yVhbNXcfXzzzPoiD
-	 g9KxTZB+o28yzu6dteSyiblYKj0TMGIhUtPGxRWv4n112u2IKLGTAr3g1H5/1ZqWO7
-	 d6Pko6qLL1q5p68KYCSReAfrTNDT59qarUB1bYAE3OzaevaWns5bHVa09qslFklucT
-	 vnMTMpPawu52R2J5HlhdW5K64ICRZlrZ/7lvb52okJWIdfHqJNaJvuYC/MQ15iVRhW
-	 4oVw6j1uiRnSw==
-From: Justin Iurman <justin.iurman@uliege.be>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	justin.iurman@uliege.be,
-	Alexander Aring <alex.aring@gmail.com>,
-	David Lebrun <dlebrun@google.com>
-Subject: [PATCH net v2 2/3] net: ipv6: fix lwtunnel loops in ioam6, rpl and seg6
-Date: Tue, 11 Feb 2025 23:16:23 +0100
-Message-Id: <20250211221624.18435-3-justin.iurman@uliege.be>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250211221624.18435-1-justin.iurman@uliege.be>
-References: <20250211221624.18435-1-justin.iurman@uliege.be>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VmXuRd7M"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739312480; x=1770848480;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KmQ+tXg/m4ZK8Xhj8IZwShtRHzkqTHlubFqibbJilzM=;
+  b=VmXuRd7M+lRQwSnB/3n2J0WqOpiKZqOOi0EFt+uUMC7nDJ0ZVx+LH6uH
+   NcPZ0t0AyNQ/Av0z1m3gcLWvVPNELxzc3FY0Z1oLP+5EahDRtm7Lbq6tU
+   pNK4s4lRiu+n4rWLoF2JraRB8IR0BhJPpO7RVaCVjFE2ZD/IsIUVgZ7G9
+   XF217Q4mPXezhPHd8KZTQof5TA7kmkBnnYLWUpyffCvvDnp/vH8f9fZBS
+   VUtou+U1Wlv7eyrH22/pY9WMMZ85cROfIkHGxnrirhfWKkLRZni1vy2OM
+   SM3+TkxVNJCPOfdoTU2X+Pc6pcCB/jH/jIU1iKO5W4DeXM9kh8byojBdt
+   w==;
+X-CSE-ConnectionGUID: xeUpkHVhRROW5iMq123JDQ==
+X-CSE-MsgGUID: tRSaIwW5Tw6P9DFbnW721w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="50938308"
+X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
+   d="scan'208";a="50938308"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 14:21:19 -0800
+X-CSE-ConnectionGUID: Mnc4Nd50QAuuH5O4SxIE9A==
+X-CSE-MsgGUID: 2ZhjGQPqQMavXeVcEpA1iQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="113529562"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 11 Feb 2025 14:21:12 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1thycv-0014lb-2H;
+	Tue, 11 Feb 2025 22:21:09 +0000
+Date: Wed, 12 Feb 2025 06:20:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Meghana Malladi <m-malladi@ti.com>, rogerq@kernel.org,
+	danishanwar@ti.com, pabeni@redhat.com, kuba@kernel.org,
+	edumazet@google.com, davem@davemloft.net, andrew+netdev@lunn.ch
+Cc: oe-kbuild-all@lists.linux.dev, bpf@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, u.kleine-koenig@baylibre.com,
+	krzysztof.kozlowski@linaro.org, dan.carpenter@linaro.org,
+	m-malladi@ti.com, schnelle@linux.ibm.com, glaroque@baylibre.com,
+	rdunlap@infradead.org, diogo.ivo@siemens.com,
+	jan.kiszka@siemens.com, john.fastabend@gmail.com, hawk@kernel.org,
+	daniel@iogearbox.net, ast@kernel.org, srk@ti.com,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH net-next v2 3/3] net: ti: icssg-prueth: Add XDP support
+Message-ID: <202502120546.Y6ri4qi6-lkp@intel.com>
+References: <20250210103352.541052-4-m-malladi@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250210103352.541052-4-m-malladi@ti.com>
 
-When the destination is the same post-transformation, we enter a
-lwtunnel loop. This is true for ioam6_iptunnel, rpl_iptunnel, and
-seg6_iptunnel, in both input() and output() handlers respectively, where
-either dst_input() or dst_output() is called at the end. It happens for
-instance with the ioam6 inline mode, but can also happen for any of them
-as long as the post-transformation destination still matches the fib
-entry. Note that ioam6_iptunnel was already comparing the old and new
-destination address to prevent the loop, but it is not enough (e.g.,
-other addresses can still match the same subnet).
+Hi Meghana,
 
-Here is an example for rpl_input():
+kernel test robot noticed the following build errors:
 
-dump_stack_lvl+0x60/0x80
-rpl_input+0x9d/0x320
-lwtunnel_input+0x64/0xa0
-lwtunnel_input+0x64/0xa0
-lwtunnel_input+0x64/0xa0
-lwtunnel_input+0x64/0xa0
-lwtunnel_input+0x64/0xa0
-[...]
-lwtunnel_input+0x64/0xa0
-lwtunnel_input+0x64/0xa0
-lwtunnel_input+0x64/0xa0
-lwtunnel_input+0x64/0xa0
-lwtunnel_input+0x64/0xa0
-ip6_sublist_rcv_finish+0x85/0x90
-ip6_sublist_rcv+0x236/0x2f0
+[auto build test ERROR on acdefab0dcbc3833b5a734ab80d792bb778517a0]
 
-... until rpl_do_srh() fails, which means skb_cow_head() failed.
+url:    https://github.com/intel-lab-lkp/linux/commits/Meghana-Malladi/net-ti-icssg-prueth-Use-page_pool-API-for-RX-buffer-allocation/20250210-183805
+base:   acdefab0dcbc3833b5a734ab80d792bb778517a0
+patch link:    https://lore.kernel.org/r/20250210103352.541052-4-m-malladi%40ti.com
+patch subject: [PATCH net-next v2 3/3] net: ti: icssg-prueth: Add XDP support
+config: arm64-defconfig (https://download.01.org/0day-ci/archive/20250212/202502120546.Y6ri4qi6-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250212/202502120546.Y6ri4qi6-lkp@intel.com/reproduce)
 
-This patch prevents that kind of loop by redirecting to the origin
-input() or output() when the destination is the same
-post-transformation.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202502120546.Y6ri4qi6-lkp@intel.com/
 
-Fixes: 8cb3bf8bff3c ("ipv6: ioam: Add support for the ip6ip6 encapsulation")
-Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
-Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Cc: Alexander Aring <alex.aring@gmail.com>
-Cc: David Lebrun <dlebrun@google.com>
----
- net/ipv6/ioam6_iptunnel.c |  6 ++----
- net/ipv6/rpl_iptunnel.c   | 10 ++++++++++
- net/ipv6/seg6_iptunnel.c  | 33 +++++++++++++++++++++++++++------
- 3 files changed, 39 insertions(+), 10 deletions(-)
+All errors (new ones prefixed by >>):
 
-diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
-index 2c383c12a431..6c61b306f2e9 100644
---- a/net/ipv6/ioam6_iptunnel.c
-+++ b/net/ipv6/ioam6_iptunnel.c
-@@ -337,7 +337,6 @@ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
- static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
- 	struct dst_entry *dst = skb_dst(skb), *cache_dst = NULL;
--	struct in6_addr orig_daddr;
- 	struct ioam6_lwt *ilwt;
- 	int err = -EINVAL;
- 	u32 pkt_cnt;
-@@ -352,8 +351,6 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	if (pkt_cnt % ilwt->freq.n >= ilwt->freq.k)
- 		goto out;
- 
--	orig_daddr = ipv6_hdr(skb)->daddr;
--
- 	local_bh_disable();
- 	cache_dst = dst_cache_get(&ilwt->cache);
- 	local_bh_enable();
-@@ -422,7 +419,8 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 	}
- 
--	if (!ipv6_addr_equal(&orig_daddr, &ipv6_hdr(skb)->daddr)) {
-+	/* avoid a lwtunnel_input() loop when dst_entry is the same */
-+	if (dst->lwtstate != cache_dst->lwtstate) {
- 		skb_dst_drop(skb);
- 		skb_dst_set(skb, cache_dst);
- 		return dst_output(net, sk, skb);
-diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
-index c26bf284459f..dc004e9aa649 100644
---- a/net/ipv6/rpl_iptunnel.c
-+++ b/net/ipv6/rpl_iptunnel.c
-@@ -247,6 +247,12 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 	}
- 
-+	/* avoid a lwtunnel_output() loop when dst_entry is the same */
-+	if (orig_dst->lwtstate == dst->lwtstate) {
-+		dst_release(dst);
-+		return orig_dst->lwtstate->orig_output(net, sk, skb);
-+	}
-+
- 	skb_dst_drop(skb);
- 	skb_dst_set(skb, dst);
- 
-@@ -305,6 +311,10 @@ static int rpl_input(struct sk_buff *skb)
- 		skb_dst_set(skb, dst);
- 	}
- 
-+	/* avoid a lwtunnel_input() loop when dst_entry is the same */
-+	if (lwtst == dst->lwtstate)
-+		return dst->lwtstate->orig_input(skb);
-+
- 	return dst_input(skb);
- 
- drop:
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 6045e850b4bf..5ce662d8f334 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -467,9 +467,16 @@ static int seg6_input_finish(struct net *net, struct sock *sk,
- 	return dst_input(skb);
- }
- 
-+static int seg6_input_redirect_finish(struct net *net, struct sock *sk,
-+				      struct sk_buff *skb)
-+{
-+	return skb_dst(skb)->lwtstate->orig_input(skb);
-+}
-+
- static int seg6_input_core(struct net *net, struct sock *sk,
- 			   struct sk_buff *skb)
- {
-+	int (*in_func)(struct net *net, struct sock *sk, struct sk_buff *skb);
- 	struct dst_entry *orig_dst = skb_dst(skb);
- 	struct dst_entry *dst = NULL;
- 	struct lwtunnel_state *lwtst;
-@@ -515,12 +522,18 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 		skb_dst_set(skb, dst);
- 	}
- 
-+	/* avoid a lwtunnel_input() loop when dst_entry is the same */
-+	if (lwtst == dst->lwtstate)
-+		in_func = seg6_input_redirect_finish;
-+	else
-+		in_func = seg6_input_finish;
-+
- 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
- 		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
- 			       dev_net(skb->dev), NULL, skb, NULL,
--			       skb_dst(skb)->dev, seg6_input_finish);
-+			       skb_dst(skb)->dev, in_func);
- 
--	return seg6_input_finish(dev_net(skb->dev), NULL, skb);
-+	return in_func(dev_net(skb->dev), NULL, skb);
- drop:
- 	kfree_skb(skb);
- 	return err;
-@@ -554,6 +567,7 @@ static int seg6_input(struct sk_buff *skb)
- static int seg6_output_core(struct net *net, struct sock *sk,
- 			    struct sk_buff *skb)
- {
-+	int (*out_func)(struct net *net, struct sock *sk, struct sk_buff *skb);
- 	struct dst_entry *orig_dst = skb_dst(skb);
- 	struct dst_entry *dst = NULL;
- 	struct seg6_lwt *slwt;
-@@ -598,14 +612,21 @@ static int seg6_output_core(struct net *net, struct sock *sk,
- 			goto drop;
- 	}
- 
--	skb_dst_drop(skb);
--	skb_dst_set(skb, dst);
-+	/* avoid a lwtunnel_output() loop when dst_entry is the same */
-+	if (orig_dst->lwtstate == dst->lwtstate) {
-+		dst_release(dst);
-+		out_func = orig_dst->lwtstate->orig_output;
-+	} else {
-+		skb_dst_drop(skb);
-+		skb_dst_set(skb, dst);
-+		out_func = dst_output;
-+	}
- 
- 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
- 		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT, net, sk, skb,
--			       NULL, skb_dst(skb)->dev, dst_output);
-+			       NULL, skb_dst(skb)->dev, out_func);
- 
--	return dst_output(net, sk, skb);
-+	return out_func(net, sk, skb);
- drop:
- 	dst_release(dst);
- 	kfree_skb(skb);
+   drivers/net/ethernet/ti/icssg/icssg_prueth.c: In function 'prueth_create_xdp_rxqs':
+>> drivers/net/ethernet/ti/icssg/icssg_prueth.c:568:55: error: 'struct xdp_rxq_info' has no member named 'napi_id'
+     568 |         ret = xdp_rxq_info_reg(rxq, emac->ndev, 0, rxq->napi_id);
+         |                                                       ^~
+
+
+vim +568 drivers/net/ethernet/ti/icssg/icssg_prueth.c
+
+   561	
+   562	static int prueth_create_xdp_rxqs(struct prueth_emac *emac)
+   563	{
+   564		struct xdp_rxq_info *rxq = &emac->rx_chns.xdp_rxq;
+   565		struct page_pool *pool = emac->rx_chns.pg_pool;
+   566		int ret;
+   567	
+ > 568		ret = xdp_rxq_info_reg(rxq, emac->ndev, 0, rxq->napi_id);
+   569		if (ret)
+   570			return ret;
+   571	
+   572		ret = xdp_rxq_info_reg_mem_model(rxq, MEM_TYPE_PAGE_POOL, pool);
+   573		if (ret)
+   574			xdp_rxq_info_unreg(rxq);
+   575	
+   576		return ret;
+   577	}
+   578	
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
