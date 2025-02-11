@@ -1,137 +1,113 @@
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87931F417C
-	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 11:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B771F8921
+	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 11:15:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739272526; cv=none; b=PHJQGpX7kcca1OzGxhR+1RfCX9HLQ61DClWUS4rTdcKHo9poajGRUTdj+zDGI7trpKkBlqe5yf5bw7F13WhBJZnzHgTRfoUkICOVVvH9GS51Sf1VXkF9oY1gdN2mkX5gFd+ZRqxFKmYx8fApDRbLJxll2Mf/+rFrphUZJP6o8Vs=
+	t=1739272536; cv=none; b=dGiMzi9EXuGmc1ke+2eDVP4I1HPILfGXbvkdWQwqXCUy86QRlqtRdUdt+uFNfq3J52N8fM39JJMoXGDmY4Bt30cOh6Z5TQj5S+VTYJs7b3kHdkjNh+sNt09M1dqAtlXbnWecOPGecot++B9VxWZSqDSAnqCNzU0E4/Evnuwhoww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739272526; c=relaxed/simple;
-	bh=LHemEMoW2QqciL82UVmk2u2J2dvnJEll3D6qgiwN0YM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Mw21T29NLZaQfBiI6b0ei4KKkBF7v0rDmMNultpF2estkJV3NZuN+C6luprRk58fyAlCVVXVCNHwEwCxvEJMvkAu4P3hC0eRTUc9gnf3xWyJKJttXOiqVwvq41doHJ2NniQZWoAL3kW9IOiSJhNWcreh+qhQNcdaF83hdBnMT1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.204.34.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: bizesmtp88t1739272492tmji8oy4
-X-QQ-Originating-IP: 7wWH4VPrfkFiwqdJle54D9qhoMQ6XPRv8kiR9t4BmRY=
-Received: from smtpclient.apple ( [183.157.104.65])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 11 Feb 2025 19:14:50 +0800 (CST)
-X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 17477912342246512960
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1739272536; c=relaxed/simple;
+	bh=8l8FP7dj+1NJWawu0WDpUgtCnN886pFUV0K1G2Xj/d4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L1V2LN7XMVi77Py+o83ut3RJEhhvVLGW5QwSKkbe2ngE6d6or22/UqQ9uyLW3lLemXTKtp+bUmzECR054FBOGsXlFfzo3xFhBwNXRJin7wRbq4fndOskDKpfHLIcr7sOdCrni+mV2QzElruKaAxPSzYTR+BtSkNZKv4iHm9/voI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T3jPZYLO; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T3jPZYLO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739272533;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oTT52xz0DA74wg1Fq9YWmZolWlBYBYiMJjpLvmR40n8=;
+	b=T3jPZYLOik450CzKiVWSpb1ATI197riEyExPNJtv5TNFkeLUR/A5yEoSXDtfjzr+tZhibe
+	BYBvkGqMXwidLYiuOh7cPdyWbJUjxXp6qNtVo6BpsQGfwRcZztDabco4oUzHczOXBWzyIM
+	py1rO94Nm4xGy3Ib5tbKMuASpWXVs+Y=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-562-Ugn2AIL9NNu5ygJHZL3FzQ-1; Tue, 11 Feb 2025 06:15:31 -0500
+X-MC-Unique: Ugn2AIL9NNu5ygJHZL3FzQ-1
+X-Mimecast-MFC-AGG-ID: Ugn2AIL9NNu5ygJHZL3FzQ
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-6f6d40a61e7so65850347b3.1
+        for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 03:15:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739272530; x=1739877330;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oTT52xz0DA74wg1Fq9YWmZolWlBYBYiMJjpLvmR40n8=;
+        b=CJ5VUR0ihjSgx3UOVkbw0ih/Ffw1kzfL7SlAZXaD5QSAByzSGZU1jcD982gH56+y4N
+         DjDiIWVlmVyTmGH2l+pNmitCsaCtj39UMwuNOnt30ZAZu4VEOsN9kp/7e3xjmJ2Fji/T
+         vs8WJeubeb3XSVEp85eRoDvIeapQ7+dn0ynZ7K2pjjJLnHZUDt9+XZmhK0IDLbjBUZDK
+         p0fEhEisFU3EC/RHi/bx4sfZVpVomRIl3H34njYYAhMifTCCA70ZBCKcGURf1lI1TJ66
+         wut/i+/uCDnxivv1VZcxPV7/RB15h+O62K+kg/ejVx0qbexA287DkMm81YXYSFlQIjj/
+         aHGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVt+aiplYp3qcjuRV1OgFUZQ3lt+jV/tmPYOC7lqEcDQkmDprhdDXqFIJK7N8o0Z/f4U4ncyiw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfrxDAdcA0UGmQsUyeCXzxhZBxKN7x6/LsMC2hL1RNcgE7AgY/
+	06ggLXxe7MACdNCcWMOjK/i1UvBaq4PJLiG/g8bQKIM8gtqFGQI7Wd7bvGKNKG+OF73Ya5uvz9I
+	ibwJ373PXE9ZdOTx8ISBZEDnn6obHRam6vnrSy7CC1Ta93Gcxdt4LwQHhsOC+0MQHIh4ZsWhL45
+	hPbCxxOLc11YFL5NikvxWLAsTCHw2X
+X-Gm-Gg: ASbGnctYiDlC9zOE3S28zX6qeD0Uk2wt5mc5ao1/AVKGVO3vuhsDF6ehenjpKGMUSgt
+	+FPm3Syz1rZ3/aRlsHLhlIlEZqENp93+p5vN5TDz497r0JCqeqA38KDkkCGj3pijD5urFqSaY9L
+	OEyk8YebYChFlyptNV
+X-Received: by 2002:a05:690c:62c1:b0:6ef:5013:bfd9 with SMTP id 00721157ae682-6f9b2848b45mr165172317b3.10.1739272530407;
+        Tue, 11 Feb 2025 03:15:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHNF6T2I8g7g0eCN2cY1s9w09QLGZQ32g2apXNz7Z6C1M9fCo1UadwH6c2YV8TO6JEjik4xnO/AMPiw7BaFxTE=
+X-Received: by 2002:a05:690c:62c1:b0:6ef:5013:bfd9 with SMTP id
+ 00721157ae682-6f9b2848b45mr165172257b3.10.1739272530161; Tue, 11 Feb 2025
+ 03:15:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
-Subject: Re: [PATCH net-next v7 4/6] net: libwx: Add msg task func
-From: "mengyuanlou@net-swift.com" <mengyuanlou@net-swift.com>
-In-Reply-To: <20250207171739.7ab11585@kernel.org>
-Date: Tue, 11 Feb 2025 19:14:39 +0800
-Cc: netdev@vger.kernel.org,
- jiawenwu@trustnetic.com,
- duanqiangwen@net-swift.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <43A1F6A5-2F22-4A4B-ACAE-EEEC8A5B889A@net-swift.com>
-References: <20250206103750.36064-1-mengyuanlou@net-swift.com>
- <20250206103750.36064-5-mengyuanlou@net-swift.com>
- <20250207171739.7ab11585@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-X-Mailer: Apple Mail (2.3818.100.11.1.3)
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:net-swift.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: MP1WLfctJNZWR/Pb4RAm+AFTl0UP4KaKhAgxZdn4PEbV1D7Yn9y79wX4
-	/qj/cJAIaMjfEGuTqW38iNvFQ3GKyKdPt2D9nLRd3Tb4VUBYo6vOGPoWYu0zvCrxEQARX0/
-	oZruK8jKQKRNI9C3OfC9sWCCG+WT2Wi5dPZKBZr24pvDhzqNpffwV7JM4SCweRBnBZLQaP5
-	+uV4TcUbF7b1tota4/xfckEuniHYL2i3C3uS+tj/P6noCnXZb1ZunK5KqzF/65YsvaN3RAz
-	ljFrTVc1oFvsWN6YrEpoupRmtlRmfYm+7QKN1TH1Ca9F+7D6R8KVNpKWtGO5odDEtKEzkr9
-	3TbpBB+EajPC+7WubeCp9pGQmw6XvpVVPIewekMGTR2qBxTM64GIBOY9g14TKMLt34NTy54
-	ceUdwyazu24BUbaxPT5xlkng7Njhh7OsGPDOA4QYF60NOawQBZF/1l9kyJkKRt8G1UT9FuN
-	pGDuLhurDeBPPBCkVtHeGyqcrKkvO/UjSRi+xT5LRuFlqKGT7WhyjTv2GoSWcfTSCcxd4Tj
-	9mVnvoXEcz20PGqFg/4BlrvS7q6N982oTKqt75B/6DdbGKulqS41QTnM5EIvQTeqEmhjW5m
-	R23UWdNtjAl4/UOZTFl5RK/t+TokuV+4GzXPcSI7/8/rW36bAN993aa9+/6JdizfZOnV7vg
-	8+4MtQgHS4wmJL3H+u//czI8d3hGn9AoAjThnI6BkaaxkZZC6wkE9PLKilqzI3YFN6LM6h3
-	gIhuAQPk9aJVhIDeiSWtDBMzMSttljd9Y+MLY6xF3L4Gft/4sETCIg2D6Wh9w3ZO4qXwa3H
-	wGirdfsJ0dIue9s6pC0JKknDnWFGdpxWoptxUyMXSt1ea9qgVdcHLA+4MHKvbGayBR90npc
-	MxezzkYc91V/+GxFYf+CXxy25ZtDRyvR6TIM4+B2TnmxlHzdzS6BruCLttPIXTVP1dQSda7
-	9HRVJ5W9DoHUsROmTiulvXoV+okCl0Vl/YQKNmc2jh/E3PvtHLxUB2yO/n1+ANWWUlxWpWk
-	Z4zhGI4w==
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+References: <20250207121507.94221-1-donald.hunter@gmail.com>
+ <20250207121507.94221-11-donald.hunter@gmail.com> <599a281f-d468-4b92-8b15-6f1292888dd9@redhat.com>
+In-Reply-To: <599a281f-d468-4b92-8b15-6f1292888dd9@redhat.com>
+From: Donald Hunter <donald.hunter@redhat.com>
+Date: Tue, 11 Feb 2025 11:15:17 +0000
+X-Gm-Features: AWEUYZlorL5Ekx5ZkbVkyzU115bFfmicFvXWD4bbSdvoDWFeQqMhOAs-Co6t8ok
+Message-ID: <CAAf2ycnV42g0YHMU9Jdv47J-5p44m2bgj6rjkpxBnXUUrWROzw@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 10/10] netlink: specs: wireless: add a spec
+ for nl80211
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Donald Hunter <donald.hunter@gmail.com>, netdev@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>, 
+	Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+On Tue, 11 Feb 2025 at 10:59, Paolo Abeni <pabeni@redhat.com> wrote:
+>
+> On 2/7/25 1:15 PM, Donald Hunter wrote:
+> > +        type: binary
+> > +  -
+> > +    name: nl80211-iftype-attrs
+>
+> I'm unsure if a respin is worth, but the above yields a strange looking
+> c-struct name in generated/nl80211-user.h:
+>
+> struct nl80211_nl80211_iftype_attrs { //...
+>
+> All the cross-references looks correct, but replacing the above with:
+>
+> name: iftype-attrs
+>
+> AFAICS will also generate correct cross-reference and a more usual:
+>
+> struct nl80211_iftype_attrs { // ...
 
+Yes, well spotted. I'll spin a v5. I've been making the same comment
+on other reviews so I definitely need to heed the same advice.
 
-> 2025=E5=B9=B42=E6=9C=888=E6=97=A5 09:17=EF=BC=8CJakub Kicinski =
-<kuba@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On Thu,  6 Feb 2025 18:37:48 +0800 mengyuanlou wrote:
->> +static int wx_negotiate_vf_api(struct wx *wx, u32 *msgbuf, u32 vf)
->> +{
->> + int api =3D msgbuf[1];
->> +
->> + switch (api) {
->> + case wx_mbox_api_10 ... wx_mbox_api_13:
->> + wx->vfinfo[vf].vf_api =3D api;
->> + return 0;
->> + default:
->> + wx_err(wx, "VF %d requested invalid api version %u\n", vf, api);
->> + return -EINVAL;
->> + }
->> +}
->=20
-> How "compatible" is your device with IXGBE?
->=20
-
-The pfvf mailbox flow is similar to IXGBE.
-But compatibility with the previous api seems not to be required,
-because inbox has been refactored.=20
-
-
-> static int ixgbe_negotiate_vf_api(struct ixgbe_adapter *adapter,       =
-        =20
->                                  u32 *msgbuf, u32 vf)                  =
-       =20
-> {                                                                      =
-        =20
->        int api =3D msgbuf[1];                                          =
-         =20
->=20
->        switch (api) {                                                  =
-       =20
->        case ixgbe_mbox_api_10:                                         =
-       =20
->        case ixgbe_mbox_api_11:                                         =
-       =20
->        case ixgbe_mbox_api_12:                                         =
-       =20
->        case ixgbe_mbox_api_13:                                         =
-       =20
->        case ixgbe_mbox_api_14:                                         =
-       =20
->                adapter->vfinfo[vf].vf_api =3D api;                     =
-         =20
->                return 0;                                               =
-       =20
->        default:                                                        =
-       =20
->                break;                                                  =
-       =20
->        }                                                               =
-       =20
->=20
->        e_dbg(drv, "VF %d requested unsupported api version %u\n", vf, =
-api);   =20
->=20
->        return -1;                                                      =
-       =20
-> }                                                                      =
-        =20
->=20
->=20
+> Also waiting for some explicit ack from wireless.
+>
+> Cheers,
+>
+> Paolo
+>
 
