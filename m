@@ -1,36 +1,36 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BF8215799;
-	Tue, 11 Feb 2025 13:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF9821D00B;
+	Tue, 11 Feb 2025 13:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739279085; cv=none; b=REFVeEbU2pjsbnVy6kjtgtJxw5fAJdim1nAd6SEWeCl28Fbfvxh6opomQUenAwwZfdIYwQMBkBFYz2qFqgEJC+nDpPVZaFfqnYA+ED/s446Gdgqf9Hb2Z5vGtUhDx6BZZVnu0GQBFFVcP1WdLpWyFXO1Rk495kuBXMuVB2n83Sw=
+	t=1739279705; cv=none; b=ovYDr7OerlvBqSImepisoR1CAGJFXnBJbrLvT+rtakRxEncEWSXMX0RAVMqvFMgiGtia6XEzCiitnzBAgq2e6qynVkkWMVKCXhQL2A+pjpQhgNckWIdTD2PTLnEae8DFjq7ibVV0TWD3EtGF2lYTA91mGtGRUhvkOJCQaLt5/nY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739279085; c=relaxed/simple;
-	bh=sAdcQi1hrUdjrMl6px17gNDTR1HqFZ87LlJBFbf9JzM=;
+	s=arc-20240116; t=1739279705; c=relaxed/simple;
+	bh=9A59qM/qw0l02R/clbPT49PZoQ0cDLl+GY/1uFLeQ9c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nAvD59abDxOI5t2sQ1jvjIsJhldbG43zMkRWiBlMpCy74cOBD6taKEGsMSjefurChv8tzBZ8vIYJnkNkKHr96iXBe8Fk3zwZBOmMl5fmGJjrUNyQ4c90ut57RSOzFbbkSactV6jEP/R4JIXYbiU0x7wj0kLcsnKzro8J61texKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tm6NpqQa; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=qeoS792d8dT2LzrV+w2jLfan5druBBKTCSsIf71pxNgwmYoH57SrWLhsiJvIqszjUnd4vl7an/pO4x7NZw77XNbLkZmpopoNhGGuQoKl9KsRZun+d5+cfp9jc4CfoQyLB3CSMaksdPgjqDr5lphqFhVMiQSQ/13l0dl5vegt8T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ecphhuHC; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tm6NpqQa"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ecphhuHC"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=MbjM39msWvOuziAcuJFCWwbKhzNklQkM6TVt4zMre/4=; b=tm6NpqQa797j2ElKfgrG1fjoL/
-	vuihCSCb+2lLV2HndDijV062w53OF1JSQzT6rXKwukiGEJQ99iOK3TvWx9mqwtOsaouBM/oarXAmD
-	ymPtbZqaRqcMABRn0axZtfZ/kdOzKpWKoi/xO/yeZ8XqZnrQuXxoMVuYN/YhP5eIhVoQ=;
+	bh=r9ceLtlRJhS6F2F2NWLhZNuEBw0qSXHcZnna8TM1i58=; b=ecphhuHCYVnh2jgdAqTnarz0qn
+	MoiZ/LfXKYKy6M8WNWpqpRelLktMDLTRsbErd+YIGi/32nZlOZe/37nMm+G7FiH4JRUbnW19WRANV
+	V+VRYeRvehrtc50M3XTGUf91C4wzS0bVfqxtcC2WQHZBC1HlX8JixDHCSTJIeR8ioZPo=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1thpwC-00D3q3-DR; Tue, 11 Feb 2025 14:04:28 +0100
-Date: Tue, 11 Feb 2025 14:04:28 +0100
+	id 1thq6J-00D41o-CR; Tue, 11 Feb 2025 14:14:55 +0100
+Date: Tue, 11 Feb 2025 14:14:55 +0100
 From: Andrew Lunn <andrew@lunn.ch>
-To: Jie Gan <jie.gan@oss.qualcomm.com>
-Cc: Luo Jie <quic_luoj@quicinc.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+To: Luo Jie <quic_luoj@quicinc.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
@@ -50,12 +50,11 @@ Cc: Luo Jie <quic_luoj@quicinc.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com,
 	srinivas.kandagatla@linaro.org, bartosz.golaszewski@linaro.org,
 	john@phrozen.org
-Subject: Re: [PATCH net-next v3 03/14] net: ethernet: qualcomm: Add PPE
- driver for IPQ9574 SoC
-Message-ID: <d0b608ef-bb22-43d5-b9fc-6739964e1bd5@lunn.ch>
+Subject: Re: [PATCH net-next v3 04/14] net: ethernet: qualcomm: Initialize
+ PPE buffer management for IPQ9574
+Message-ID: <17d9f02c-3eb3-4bae-8a2c-0504747de6f2@lunn.ch>
 References: <20250209-qcom_ipq_ppe-v3-0-453ea18d3271@quicinc.com>
- <20250209-qcom_ipq_ppe-v3-3-453ea18d3271@quicinc.com>
- <58e05149-abc2-4cf4-a6e8-35380823d94a@oss.qualcomm.com>
+ <20250209-qcom_ipq_ppe-v3-4-453ea18d3271@quicinc.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,24 +63,12 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <58e05149-abc2-4cf4-a6e8-35380823d94a@oss.qualcomm.com>
+In-Reply-To: <20250209-qcom_ipq_ppe-v3-4-453ea18d3271@quicinc.com>
 
-> > +#ifndef __PPE_H__
-> > +#define __PPE_H__
-> > +
-> > +#include <linux/compiler.h>
-> > +#include <linux/interconnect.h>
-> > +
-> > +struct device;
-> #include <linux/device.h> ?
-> 
-> > +struct regmap;
-> Same with previous one, include it's header file?
-> 
+> +/* Assign the share buffer number 1550 to group 0 by default. */
+> +static const int ipq9574_ppe_bm_group_config = 1550;
 
-If the structure is opaque at this level, it is fine to not include
-the header. There is nothing in the header actually needed. By not
-including it, the build it faster. A large part of the kernel build
-time is spent processing headers, so less headers are better.
+To a large extent, the comment is useless. What should be in the
+comment is why, not what.
 
-     Andrew
+	Andrew
