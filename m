@@ -1,47 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2543E267700
-	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 21:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E7C263F3F;
+	Tue, 11 Feb 2025 21:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739310234; cv=none; b=UzYifpHreGpvkYNitG14lba280Yue3n7aQdMHsRX0F37mI97rvOCDnrKB/Bbq5hN8k2vCa7svPtIOX6gbZOCew4w59Uf8GRzKWnfz1H0JZtA3apHqxhmUP+TGBmIUpTNRuHtxyewk5D5EBJ/9arF4z6jp5ocQHqbZRbNmApkYa0=
+	t=1739310235; cv=none; b=daqoCDGfr1m1O/cDwVtszo06GFZBvTie1aBNy+j8sQnj5frs4y5hj5Nqa6KOcjyEN8AQFhaT2UT6ltPIpnQ3pPp+8DJXH+qLh4FQvUBJdNGUQuEZmZtIUXtgYyq/8TV7t0MxpcVKHMQ9Ep3W+BbtiHxdsepgYs3pz2FRlB7tJvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739310234; c=relaxed/simple;
-	bh=5bgUIaANeAsVQbT+PBP46N7bT8Xctv6xnY00/25RiwQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EFtQHFqkaNRhYxej57YrGg+NNEqN2r+4FqWKNsUPK1fvlkQSwyNPZ8Dqjr+QfsXv6KA6Sot604VHftNis14QE2AWF4T4IRXwEETCyEaYozAkn+tmJAS3jWjaiC0yflQpXy9RwuSE+ktJ+APlCyZwAl8BaoBzuBA8iNYUpUBvya4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WChAeFWU; arc=none smtp.client-ip=192.198.163.18
+	s=arc-20240116; t=1739310235; c=relaxed/simple;
+	bh=U/UHenFl0UILNVEOoSUdTTH1ha9BJCNFmKk+4XYtxW4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KDB3CPxlf1tReRKW0jD/a1O9HYJHN2BVs3UrLVVDI63GCN43+y8M96e70GmQrXwuR2xoIFCtmmC7IJ+F553hWn3OdRoQDzvz/AS6wclfOCnt8TMNh8cc3PG8FkpTC8TpuZ+Oen9jH/qP5PiX0Aepv2ciV/f4hxHMXTUN0j3QbUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bBO1IAZV; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WChAeFWU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bBO1IAZV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739310229; x=1770846229;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=5bgUIaANeAsVQbT+PBP46N7bT8Xctv6xnY00/25RiwQ=;
-  b=WChAeFWUvLnk8cuJmW1w+RHvBLDH6cwVf+YYDN89U4ld+jrmAAIutIQU
-   1S9t+/V+U+I3Lw2rjudc7L71Cl2bbU6MVYAvFpI727iZ3G5OzoPK78RKb
-   R1TPKWpWlJRhcr27+dqTg1tMLf2F5o2weWvcYh5TqcpKcUS4GwhayYbAo
-   V78mKghyGhX/eLaMei8vrDSxQkb0v9iihPpBIiSlJZDB0+8ixZs4e5Wev
-   J/kQQcPvQH2I6PUtiL++srYh+P4z8dKUMKjRnoZ9uRlX9cDOqx0MwfpTo
-   ix/N3jdWigWiblT5YwLAXKZMUiqTU2Jwqkiurq+vbD5C/Hr1VZTyYm6+M
-   Q==;
-X-CSE-ConnectionGUID: 6FZhou62RTCD0lrqr0m6gA==
-X-CSE-MsgGUID: XWyCdRwwQ7+THq0R6j7NlA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39185221"
+  t=1739310233; x=1770846233;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=U/UHenFl0UILNVEOoSUdTTH1ha9BJCNFmKk+4XYtxW4=;
+  b=bBO1IAZVTqdC7GgGduo7C6wiRJJvPBFsFLEulWjsQWrQ5xilLA5bHVAo
+   PXXXByTqXCYUMUOYO2+/ejKdz8ZN4f9Tbag3JKd5m1fhTjz+UPt/uS+cN
+   U0zY/+K12rZRCGbiPaibHuokVIT/qnDnKYrCsM0xZtfA5tAA8vzWEDpfO
+   KFqCht7NgWP1K8/0b6A4ktH2xb1Q8w9hXU2Q+x8cGFbe8QIrPXKN62Khm
+   pUbO0tJDZHPv+23y9MiZ1Jceb0qQ4w6C5k0OdoGO7bXup+ffycFx9vfnb
+   5bPsNb7xQR/gjxxrhLKSspP4BkgMfBYC4/SmvxJSJQ8DXOyjrmHMgrne9
+   A==;
+X-CSE-ConnectionGUID: bkLdVgK2Q7GkwQREa4SzrQ==
+X-CSE-MsgGUID: L93tV3LdTTG1nbu/dnMgqw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39185243"
 X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
-   d="scan'208";a="39185221"
+   d="scan'208";a="39185243"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 13:43:48 -0800
-X-CSE-ConnectionGUID: PeDgJluOQWCKG3bCfeNbdA==
-X-CSE-MsgGUID: e8VrnI6NTg2hksv385f0Lw==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 13:43:49 -0800
+X-CSE-ConnectionGUID: u7ez2ZUqRYmugVfQGi6bQg==
+X-CSE-MsgGUID: OP/XXeu4RcORaUJdENUXCw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
-   d="scan'208";a="143478665"
+   d="scan'208";a="143478678"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa002.jf.intel.com with ESMTP; 11 Feb 2025 13:43:48 -0800
+  by orviesa002.jf.intel.com with ESMTP; 11 Feb 2025 13:43:49 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -49,11 +50,26 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH net 0/6][pull request] Intel Wired LAN Driver Updates 2025-02-11 (idpf, ixgbe, igc)
-Date: Tue, 11 Feb 2025 13:43:31 -0800
-Message-ID: <20250211214343.4092496-1-anthony.l.nguyen@intel.com>
+Cc: Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	maciej.fijalkowski@intel.com,
+	magnus.karlsson@intel.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	bpf@vger.kernel.org,
+	horms@kernel.org,
+	yuehaibing@huawei.com,
+	dan.carpenter@linaro.org,
+	Saritha Sanigani <sarithax.sanigani@intel.com>
+Subject: [PATCH net 4/6] ixgbe: Fix possible skb NULL pointer dereference
+Date: Tue, 11 Feb 2025 13:43:35 -0800
+Message-ID: <20250211214343.4092496-5-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250211214343.4092496-1-anthony.l.nguyen@intel.com>
+References: <20250211214343.4092496-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,49 +78,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-For idpf:
+From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
 
-Sridhar fixes a couple issues in handling of RSC packets.
+The commit c824125cbb18 ("ixgbe: Fix passing 0 to ERR_PTR in
+ixgbe_run_xdp()") stopped utilizing the ERR-like macros for xdp status
+encoding. Propagate this logic to the ixgbe_put_rx_buffer().
 
-Josh adds a call to set_real_num_queues() to keep queue count in sync.
+The commit also relaxed the skb NULL pointer check - caught by Smatch.
+Restore this check.
 
-For ixgbe:
+Fixes: c824125cbb18 ("ixgbe: Fix passing 0 to ERR_PTR in ixgbe_run_xdp()")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/intel-wired-lan/2c7d6c31-192a-4047-bd90-9566d0e14cc0@stanley.mountain/
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Saritha Sanigani <sarithax.sanigani@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Piotr removes missed IS_ERR() removal when ERR_PTR usage was removed.
-
-For igc:
-
-Zdenek Bouska fixes reporting of Rx timestamp with AF_XDP.
-
-Siang sets buffer type on empty frame to ensure proper handling.
-
-The following are changes since commit 44ce3511c21c6ba87a719a0b9f140822cc1cc00b:
-  Merge tag 'batadv-net-pullrequest-20250207' of git://git.open-mesh.org/linux-merge
-and are available in the git repository at:
-  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue 200GbE
-
-Joshua Hay (1):
-  idpf: call set_real_num_queues in idpf_open
-
-Piotr Kwapulinski (1):
-  ixgbe: Fix possible skb NULL pointer dereference
-
-Song Yoong Siang (1):
-  igc: Set buffer type for empty frames in igc_init_empty_frame
-
-Sridhar Samudrala (2):
-  idpf: fix handling rsc packet with a single segment
-  idpf: record rx queue in skb for RSC packets
-
-Zdenek Bouska (1):
-  igc: Fix HW RX timestamp when passed by ZC XDP
-
- drivers/net/ethernet/intel/idpf/idpf_lib.c    |  5 +++++
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  5 +----
- drivers/net/ethernet/intel/igc/igc_main.c     | 22 +++++++++++--------
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c |  2 +-
- 4 files changed, 20 insertions(+), 14 deletions(-)
-
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index 7236f20c9a30..467f81239e12 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -2105,7 +2105,7 @@ static void ixgbe_put_rx_buffer(struct ixgbe_ring *rx_ring,
+ 		/* hand second half of page back to the ring */
+ 		ixgbe_reuse_rx_page(rx_ring, rx_buffer);
+ 	} else {
+-		if (!IS_ERR(skb) && IXGBE_CB(skb)->dma == rx_buffer->dma) {
++		if (skb && IXGBE_CB(skb)->dma == rx_buffer->dma) {
+ 			/* the page has been released from the ring */
+ 			IXGBE_CB(skb)->page_released = true;
+ 		} else {
 -- 
 2.47.1
 
