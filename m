@@ -1,56 +1,64 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406E12505A8
-	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 17:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB35261571
+	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 17:41:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739294266; cv=none; b=iXU7z7bXGg2WFxz9e1tSVYS3C6DiFHr75URZn/J99kQYzCtaW+x7Vp7HaXYHn2kAFh3aGv1AcAx5okhtXTGhfFzADhDAbkrpax/71EKMfmTR8nFcUBWXoVCS7X9LXUyhOVTlqmqJIye389HOQT+f9IQOM1gkJvaO2WTVKIxP63E=
+	t=1739295721; cv=none; b=Ymsah/ZxX+TrN0ZRfpyc4ucK36X5oAtIf8qOjdPypIDiCt/0jTCKDWtgnSbS9TweMp4aV8/pF4qzFpeSV9laN0vfP/RjquyQdXPC7zaZFF4OyPDz1qFh+zKcH4Ww3sleodnHbheV4UY2Doi0tm9B/Pooq6bXAcZOlj9RqUqtMw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739294266; c=relaxed/simple;
-	bh=GPUBYess/ADr8yS7WfA+9yKN4czd57QhYm2khJ/KPJo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RZkWNYmFUpQffacbz97HokzUjXkvymIu5UNoJhcMt1Y5CMqSrllMTVILL/Oj+7dJhwVSiCF28kQ2/ptU+vzx5iKq/uuDBall/UkJdTWTRIHhgiwZ1neGFhYU3hr8o57GeSYuzZrTrNWcx939Ts3XhfRSwzpODQnsKiPjYcq8KbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MHMub65e; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1739295721; c=relaxed/simple;
+	bh=GgftlG2/oea9KOpUGCKxqmmj2Ugal+b2G6hJrr6GoOw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ihp2xyBESoHZtIWfh1qwD8JhNLgIauCPVsR1ylCWZELsc9hE6tU9QOJMm1t0L4REijpkvmlL7jHRU2BQNSKNFdsPK9fDf5/dyvjjpAyKY0V8nDapHP3B9amiZnybo28/37qIyaRlWf70haBlqdh6qhJjlW5IzEuoM7kwb4tFIqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WBrgZrfD; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MHMub65e"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739294264;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=6muESH3q8Mi9wJHH40vU4b7FtZv0wal2Ba7btMta4GI=;
-	b=MHMub65eOGOBY0ob5/FApvSgRKXRh5r6iV63CKhfr27l5zrz1YOVpUwOXpjZ8TihJqbGrD
-	e/a0+qY1nA3bTThERT4zAgi1GZNMrh8ejX2AGXwPkZvn7AsmKooCPSqjuW5PETkJQeNAUu
-	audbe9l7tG+Tihlyc0xWO8vlw/oz5Tw=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-mPGAhkYgOGqrfW802UqF1w-1; Tue,
- 11 Feb 2025 12:17:42 -0500
-X-MC-Unique: mPGAhkYgOGqrfW802UqF1w-1
-X-Mimecast-MFC-AGG-ID: mPGAhkYgOGqrfW802UqF1w
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8C82D1801A10;
-	Tue, 11 Feb 2025 17:17:40 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.45.226.167])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 01D0D19560A3;
-	Tue, 11 Feb 2025 17:17:37 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next] net: avoid unconditionally touching sk_tsflags on RX
-Date: Tue, 11 Feb 2025 18:17:31 +0100
-Message-ID: <dbd18c8a1171549f8249ac5a8b30b1b5ec88a425.1739294057.git.pabeni@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WBrgZrfD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739295719; x=1770831719;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=GgftlG2/oea9KOpUGCKxqmmj2Ugal+b2G6hJrr6GoOw=;
+  b=WBrgZrfDwRUnYH5mGM2Ls10KYpJgKUhwgogJu6+n4Uphvmhq58oA/m9w
+   cwkBwpqowzyey9B/6MNBmhwbxc5nck8Q3eW5BDNFQupbGIpwBM1/uNKrI
+   w4RVqfv3w3W5S+lEERKqm1/9e4dPI9O9Ij5B5buxZkj1zQetrtxwz2DtV
+   3ytOLQrOIpLfmLt+J0/x23JHpe5UsBQ1y4vDF6zupbEzyT5opfg9iIgFP
+   1A4JXUIyOdSM5ApZLpJcIQ1EvDnjXkkeTBJomZIPI2eRqqkK005SswE93
+   TS1DPvRkiV3xG+89cKfTU6jHeSdC5sfuah1LLpRuuynX43VjLfDbeGL70
+   Q==;
+X-CSE-ConnectionGUID: s2zrM3++RfSQ02yLs0sCAw==
+X-CSE-MsgGUID: fIjaif4ySci25k/x8EPQuw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="43855618"
+X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
+   d="scan'208";a="43855618"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 09:41:57 -0800
+X-CSE-ConnectionGUID: eVIm/HmsTeWiaFOnoajx+Q==
+X-CSE-MsgGUID: 4ON84f3IRxmaU5Z8H1GMwg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
+   d="scan'208";a="112538344"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by orviesa006.jf.intel.com with ESMTP; 11 Feb 2025 09:41:56 -0800
+Received: from mystra-4.igk.intel.com (mystra-4.igk.intel.com [10.123.220.40])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id D48BD32ECE;
+	Tue, 11 Feb 2025 17:41:54 +0000 (GMT)
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	michal.swiatkowski@linux.intel.com,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+Subject: [PATCH iwl-net 2/2] ice: Avoid setting default Rx VSI twice in switchdev setup
+Date: Tue, 11 Feb 2025 18:43:22 +0100
+Message-ID: <20250211174322.603652-2-marcin.szycik@linux.intel.com>
+X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20250211174322.603652-1-marcin.szycik@linux.intel.com>
+References: <20250211174322.603652-1-marcin.szycik@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,78 +66,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-After commit 5d4cc87414c5 ("net: reorganize "struct sock" fields"),
-the sk_tsflags field shares the same cacheline with sk_forward_alloc.
+As part of switchdev environment setup, uplink VSI is configured as
+default for both Tx and Rx. Default Rx VSI is also used by promiscuous
+mode. If promisc mode is enabled and an attempt to enter switchdev mode
+is made, the setup will fail because Rx VSI is already configured as
+default (rule exists).
 
-The UDP protocol does not acquire the sock lock in the RX path;
-forward allocations are protected via the receive queue spinlock;
-additionally udp_recvmsg() calls sock_recv_cmsgs() unconditionally
-touching sk_tsflags on each packet reception.
+Reproducer:
+  devlink dev eswitch set $PF1_PCI mode switchdev
+  ip l s $PF1 up
+  ip l s $PF1 promisc on
+  echo 1 > /sys/class/net/$PF1/device/sriov_numvfs
 
-Due to the above, under high packet rate traffic, when the BH and the
-user-space process run on different CPUs, UDP packet reception
-experiences a cache miss while accessing sk_tsflags.
+In switchdev setup, use ice_set_dflt_vsi() instead of plain
+ice_cfg_dflt_vsi(), which avoids repeating setting default VSI for Rx if
+it's already configured.
 
-The receive path doesn't strictly need to access the problematic field;
-change sock_set_timestamping() to maintain the relevant information
-in a newly allocated sk_flags bit, so that sock_recv_cmsgs() can
-take decisions accessing the latter field only.
-
-With this patch applied, on an AMD epic server with i40e NICs, I
-measured a 10% performance improvement for small packets UDP flood
-performance tests - possibly a larger delta could be observed with more
-recent H/W.
-
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 50d62022f455 ("ice: default Tx rule instead of to queue")
+Reported-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Closes: https://lore.kernel.org/intel-wired-lan/PH0PR11MB50138B635F2E5CEB7075325D961F2@PH0PR11MB5013.namprd11.prod.outlook.com
+Reviewed-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
 ---
- include/net/sock.h | 9 +++++----
- net/core/sock.c    | 1 +
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_eswitch.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 8036b3b79cd8..60ebf3c7b229 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -954,6 +954,7 @@ enum sock_flags {
- 	SOCK_TSTAMP_NEW, /* Indicates 64 bit timestamps always */
- 	SOCK_RCVMARK, /* Receive SO_MARK  ancillary data with packet */
- 	SOCK_RCVPRIORITY, /* Receive SO_PRIORITY ancillary data with packet */
-+	SOCK_TIMESTAMPING_ANY, /* Copy of sk_tsflags & TSFLAGS_ANY */
- };
+diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
+index b44a375e6365..ed21d7f55ac1 100644
+--- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
++++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
+@@ -38,8 +38,7 @@ static int ice_eswitch_setup_env(struct ice_pf *pf)
+ 	if (ice_vsi_add_vlan_zero(uplink_vsi))
+ 		goto err_vlan_zero;
  
- #define SK_FLAGS_TIMESTAMP ((1UL << SOCK_TIMESTAMP) | (1UL << SOCK_TIMESTAMPING_RX_SOFTWARE))
-@@ -2664,13 +2665,13 @@ static inline void sock_recv_cmsgs(struct msghdr *msg, struct sock *sk,
- {
- #define FLAGS_RECV_CMSGS ((1UL << SOCK_RXQ_OVFL)			| \
- 			   (1UL << SOCK_RCVTSTAMP)			| \
--			   (1UL << SOCK_RCVMARK)			|\
--			   (1UL << SOCK_RCVPRIORITY))
-+			   (1UL << SOCK_RCVMARK)			| \
-+			   (1UL << SOCK_RCVPRIORITY)			| \
-+			   (1UL << SOCK_TIMESTAMPING_ANY))
- #define TSFLAGS_ANY	  (SOF_TIMESTAMPING_SOFTWARE			| \
- 			   SOF_TIMESTAMPING_RAW_HARDWARE)
+-	if (ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, true,
+-			     ICE_FLTR_RX))
++	if (ice_set_dflt_vsi(uplink_vsi))
+ 		goto err_def_rx;
  
--	if (sk->sk_flags & FLAGS_RECV_CMSGS ||
--	    READ_ONCE(sk->sk_tsflags) & TSFLAGS_ANY)
-+	if (READ_ONCE(sk->sk_flags) & FLAGS_RECV_CMSGS)
- 		__sock_recv_cmsgs(msg, sk, skb);
- 	else if (unlikely(sock_flag(sk, SOCK_TIMESTAMP)))
- 		sock_write_timestamp(sk, skb->tstamp);
-diff --git a/net/core/sock.c b/net/core/sock.c
-index eae2ae70a2e0..a197f0a0b878 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -938,6 +938,7 @@ int sock_set_timestamping(struct sock *sk, int optname,
- 
- 	WRITE_ONCE(sk->sk_tsflags, val);
- 	sock_valbool_flag(sk, SOCK_TSTAMP_NEW, optname == SO_TIMESTAMPING_NEW);
-+	sock_valbool_flag(sk, SOCK_TIMESTAMPING_ANY, !!(val & TSFLAGS_ANY));
- 
- 	if (val & SOF_TIMESTAMPING_RX_SOFTWARE)
- 		sock_enable_timestamp(sk,
+ 	if (ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, true,
 -- 
-2.48.1
+2.45.0
 
