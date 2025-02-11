@@ -1,86 +1,184 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF601F03E2;
-	Tue, 11 Feb 2025 13:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138CB1E98FF;
+	Tue, 11 Feb 2025 13:42:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739280738; cv=none; b=Upc2cLAs0GBOydDk/bD2rGesWWR7FpR4bz9o1LHA2bX1Yci3Mbhh8Cii5Z4mreiwZuklGzNizTL+PRHBCRb0vDr6t1qCDe0RLmN8Ld8VLWFfTh4RezcxsbGnrRzWZRITX6CsC6usf4kiOL2WQ9sxgIqNLt4Vj9YqDL4klfGOT1M=
+	t=1739281370; cv=none; b=U1E9iMeY7r4WXiGO2qtb1WLUPJgKjgG2R0ABACoAKBhnCk+A0/YHhymSQwatRiXiSwEy/vAmXUFIEUSsyESyLUh9zxo7MDMNdeelgHotsQTCLDrqmcOf/0ZQFUUc/37tevSB1Dezu21P+n9izXUQzogOmoxc/fCcy/nSjPIHV/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739280738; c=relaxed/simple;
-	bh=iblFUqfFN7d6iW/DvwtRFMBHAXoJS+rlnKGUZSuP+eo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LnTKVHjG8l42l5l6K2ISD3o+91XbXlhbkl33OsQYpp+WiiE6DUArqrGa53gEXr4VJQ89xQtZS1QbN0GQY8zziumvSgvagupC3KNAR9+/8p3IJLAeYw4yRph92e6u/83GRaxDjh/gpa7iNFnkhNp1kRLzaC1zpMesZcOpxWUuKww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=U4zvpwon; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1739281370; c=relaxed/simple;
+	bh=oHuDO3N4q9UjuMcLC43ArFeLt76GZz0x5DN1qES+05g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZSGv53TD8Q7ZVmV0GNIEi3fN4o4vf3xTTZ1sCl3RBoMeJI3jDsNZKmIY5Xuf53LlDQ5xo7Sqm2ZtGoUC7A63DPmJF/Tr49pu27ZZZ/Oh2ZwzWlUsZXLwwF7M3jolb9aTFzmPMLzrZF5V/huAp6rZV3NBtRVjeqU+Ppptl78gjz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ECCqwy/D; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="U4zvpwon"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=ov1w7hbGSo+7ZZmwYvIYEyViiZM3fh+QAdoSLNmScKo=; b=U4zvpwonp0ObNX9gO169W88LHC
-	SfAud6VbkHOQd8nm6OmV1sEvAPL31fYu0fIMpJURooNlxkVaLmB104doUfo2Suhs/VfFmyiXtjtqn
-	GDjPTL6fGzTFeaHUeFL9n0ZA42vT51LGMTusgtl6qxfMF6KDL2Y8ORN9o53kaqfrGKfM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1thqMx-00D4M7-3L; Tue, 11 Feb 2025 14:32:07 +0100
-Date: Tue, 11 Feb 2025 14:32:07 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Luo Jie <quic_luoj@quicinc.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lei Wei <quic_leiwei@quicinc.com>,
-	Suruchi Agarwal <quic_suruchia@quicinc.com>,
-	Pavithra R <quic_pavir@quicinc.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-hardening@vger.kernel.org,
-	quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com,
-	srinivas.kandagatla@linaro.org, bartosz.golaszewski@linaro.org,
-	john@phrozen.org
-Subject: Re: [PATCH net-next v3 06/14] net: ethernet: qualcomm: Initialize
- the PPE scheduler settings
-Message-ID: <f8d30195-1ee9-42f2-be82-819c7f7bd219@lunn.ch>
-References: <20250209-qcom_ipq_ppe-v3-0-453ea18d3271@quicinc.com>
- <20250209-qcom_ipq_ppe-v3-6-453ea18d3271@quicinc.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ECCqwy/D"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 822C24440A;
+	Tue, 11 Feb 2025 13:42:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739281366;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hrHnzHJAMdU5BZfDvmzt4qs+iwkv60fAwvb2ZrcJS+c=;
+	b=ECCqwy/DNUw3wcnf/Ivjx9007nU9yaQ0WJZuo/r4u9qXasAmhpDTVk8FWK4ekbY3ZFeko8
+	1F0I+za35DHHF6XKtEypOL++WIhG6inzSPILNeBZE9JI07WNd22zMQkj/Uw2IGfApKBUxa
+	OPgBV1bA6ArIdtkVLjOxI0segWvn+UzdsMvH2XN0CgnLjogzbFNsj33K63CeqU5C9K0chv
+	3Y1uVBZrCg//xsO43mjMcuG5cfEx2bgB3bIMYISm2fZwrBb+qUrEDeNZ5QKzGzkquDzeX9
+	Hgp+DbzFCsjlKcRT1uIe5Q7FhF+cZfNLIxLSDQhvfcl1Jp1WPI7aCUJszsYOrQ==
+Date: Tue, 11 Feb 2025 14:42:43 +0100
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski
+ <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, Heiner Kallweit
+ <hkallweit1@gmail.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Marek
+ =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>, Oleksij Rempel
+ <o.rempel@pengutronix.de>, =?UTF-8?B?Tmljb2zDsg==?= Veronese
+ <nicveronese@gmail.com>, Simon Horman <horms@kernel.org>,
+ mwojtas@chromium.org, Antoine Tenart <atenart@kernel.org>,
+ devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>, Romain
+ Gantois <romain.gantois@bootlin.com>
+Subject: Re: [PATCH net-next 03/13] net: phy: Introduce PHY ports
+ representation
+Message-ID: <20250211144243.6190005a@fedora.home>
+In-Reply-To: <20250211143209.74f84a10@kmaincent-XPS-13-7390>
+References: <20250207223634.600218-1-maxime.chevallier@bootlin.com>
+	<20250207223634.600218-4-maxime.chevallier@bootlin.com>
+	<20250211143209.74f84a10@kmaincent-XPS-13-7390>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250209-qcom_ipq_ppe-v3-6-453ea18d3271@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegudduhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthhqredtredtjeenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeuhfefgffgtdfhgffhvdfhhffhteeutdektefghfetveehheejjefgudeiudehudenucfkphepvdgrtddumegtsgduleemkegugegtmeelfhdttdemsggtvddumeekkeelleemheegtdgtmegvheelvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegtgemlehftddtmegstgdvudemkeekleelmeehgedttgemvgehlegvpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvkedprhgtphhtthhopehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrn
+ hgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhmshhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrgh
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-> +/* Scheduler configuration for the assigning and releasing buffers for the
-> + * packet passing through PPE, which is different per SoC.
-> + */
-> +static const struct ppe_scheduler_bm_config ipq9574_ppe_sch_bm_config[] = {
-> +	{1, 0, 0, 0, 0},
-> +	{1, 1, 0, 0, 0},
-> +	{1, 0, 5, 0, 0},
-> +	{1, 1, 5, 0, 0},
-> +	{1, 0, 6, 0, 0},
-> +	{1, 1, 6, 0, 0},
-> +	{1, 0, 1, 0, 0},
-> +	{1, 1, 1, 0, 0},
+Hi K=C3=B6ry,
 
-Rather than add a comment what it is, add a comment what it means.
+On Tue, 11 Feb 2025 14:32:09 +0100
+Kory Maincent <kory.maincent@bootlin.com> wrote:
 
-It also looks like the first, 3 and 4 value are fixed, so do they even
-need to be in the table? And the second value flip-flops?
+> On Fri,  7 Feb 2025 23:36:22 +0100
+> Maxime Chevallier <maxime.chevallier@bootlin.com> wrote:
+>=20
+> > Ethernet provides a wide variety of layer 1 protocols and standards for
+> > data transmission. The front-facing ports of an interface have their own
+> > complexity and configurability.
+> >=20
+> > Introduce a representation of these front-facing ports. The current code
+> > is minimalistic and only support ports controlled by PHY devices, but
+> > the plan is to extend that to SFP as well as raw Ethernet MACs that
+> > don't use PHY devices.
+> >=20
+> > This minimal port representation allows describing the media and number
+> > of lanes of a port. From that information, we can derive the linkmodes
+> > usable on the port, which can be used to limit the capabilities of an
+> > interface.
+> >=20
+> > For now, the port lanes and medium is derived from devicetree, defined
+> > by the PHY driver, or populated with default values (as we assume that
+> > all PHYs expose at least one port).
+> >=20
+> > The typical example is 100M ethernet. 100BaseT can work using only 2
+> > lanes on a Cat 5 cables. However, in the situation where a 10/100/1000
+> > capable PHY is wired to its RJ45 port through 2 lanes only, we have no
+> > way of detecting that. The "max-speed" DT property can be used, but a
+> > more accurate representation can be used :
+> >=20
+> > mdi {
+> > 	port@0 {
+> > 		media =3D "BaseT";
+> > 		lanes =3D <2>;
+> > 	};
+> > };
+> >=20
+> > From that information, we can derive the max speed reachable on the
+> > port.
+> >=20
+> > Another benefit of having that is to avoid vendor-specific DT properties
+> > (micrel,fiber-mode or ti,fiber-mode).
+> >=20
+> > This basic representation is meant to be expanded, by the introduction
+> > of port ops, userspace listing of ports, and support for multi-port
+> > devices. =20
+>=20
+> This patch is tackling the support of ports only for the PHY API. Keeping=
+ in
+> mind that this port abstraction support will also be of interest to the N=
+ICs.
+> Isn't it preferable to handle port in a standalone API?
 
-	Andrew
+The way I see it, nothing prevents from using the port definition in
+ethernet-port.yml in DSA/raw nics.
+
+> With net drivers having PHY managed by the firmware or DSA, there is no l=
+inux
+> description of their PHYs. On that case, if we want to use port abstracti=
+on,
+> what is the best? Register a virtual phy_device to use the abstraction po=
+rt or
+> use the port abstraction API directly which meant that it is not related =
+to any
+> PHY?
+
+I think the next steps will be to have net_device have a list of ports
+(maintained in the phy_link_topology) that aggregates ports from all
+its PHYs/SFPs/raw interfaces. in that case net_device will be the
+direct parent. I haven't worked on the bindings for that though,
+especially for DSA :'(
+
+I don't think the virtual phydev is going to be helpful. I'm hitting
+the 15 patches limit, but a possible extension is to make so that
+phylink also creates a port when it finds an SFP (hence, when upstream
+is a MAC).
+
+This is why phy_port has these fields :
+
+
+enum phy_port_parent {
+	PHY_PORT_PHY,
+};
+
+struct phy_port {
+	...
+	enum phy_port_parent parent_type;
+	union {
+		struct phy_device *phy;
+	};
+
+};
+
+The parent type may (will) be extended with PORT_PHY_MAC, and that's
+also why the parent pointer is in a union :)
+
+I'm trying hard to make so that phy_port doesn't depend on phylib
+(altough, phylib depends on phy_port). There's a dependency on some
+core stuff (converting from medium =3D> linkmodes) and phylink
+(converting the interfaces list to linkmodes), but we can extract these
+fairly easily.
+
+You're correct in that for now, the integration is with phylib only
+though, but let's make sure this will also work for phy-less devices.
+
+Thanks a lot for your input,
+
+Maxime
