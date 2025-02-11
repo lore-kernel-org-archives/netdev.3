@@ -1,180 +1,105 @@
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493E91EB9F4
-	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 07:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D48128819;
+	Tue, 11 Feb 2025 07:31:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739258610; cv=none; b=jMOstHwDLOG9YHDlWCBVqkfLIgo3sZZPaQj8MOmeJ3JGRGdci6zzgsWEHOV1ysI0rGm+qanWMQXQBD4/IdGI4eVX7HMcqpJ45mIDG0zGbwViLh7gZWRg6DKwhhAiJEBGiRkYLm0fmTecSfDU6yHm95yYlrC/VlLlRjh+600qNTA=
+	t=1739259094; cv=none; b=AKfhVBG+iEER95zwnTGy2oFPtYZ/JNDf0e3WkLJOm2AO7AN071kiDGOnM8JI1StvxkwpTCRdwu8vt4HsDHyuBWAVUnQCMsrVN/iNsBbOPo5JKlu5z2kqGBnnPBn84fLkNwBQp2RQQzFYxqs7YuFXmO4RFO4ung76kzz7UEvFeJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739258610; c=relaxed/simple;
-	bh=92f3+0RBOUMWYn5GM2mPefl+n3IpS+jV8ykj5futLfo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
-	 Content-Type:References; b=lVExG4MwAqve/N2gJZpzQVhVW1N2HK4f+cfJ1eBN9umbx7z0a6Ot35JZQ5ypSWo3Tvjgu1Fmq9kRRYtEinziukmgECeEKIoTbAw5EVO1VrVGXify8t5d96WPhFX/NFJjXkYYj+I30fgchdEir9FE2+7HbrXr8quTOSyA4ocNgi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=utN2ObWg; arc=none smtp.client-ip=203.254.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1739259094; c=relaxed/simple;
+	bh=fNXHZD0w81zVXb5WMwE53i1fejXnfLGbij1wF8RDOLY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wttk61aKgwNvgpElNfy2n130mvgmkfmDeDx+ILKRvjf+jGPOgETdulLUGa3sWFe1Nl4E89cqA+01UmdDcdqQbKuCnv4OXK26kw2L97DY7L+ahyTcDnpRPB55M7daf1kL3nXkW7heSlMf6VYpfc1PLbXaUizI0f8E8EkhgrJ3JZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eqomc+Ec; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="utN2ObWg"
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250211072321epoutp0431ad26a9a3cec3e3c0f786dfe27ecf2d~jFnuOcNxm0892408924epoutp04B
-	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 07:23:21 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250211072321epoutp0431ad26a9a3cec3e3c0f786dfe27ecf2d~jFnuOcNxm0892408924epoutp04B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1739258601;
-	bh=cqWyoyjcojczVymuxqFKCi8tbnQu4vhX9fzr84A8Q98=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=utN2ObWgVgdp9qtI9MNhpO+81PNVt/if4nWYq3Ukz60xMNHSwdYRsY5dcvMycXk2O
-	 iRjSD2Ql/jmmtqeWnJgN7QjiougfGdmTtfjLFx/3ktA44FKUU2If9dciJmyuxmtten
-	 UKfAIf1a0KBRR7LvyL+4TkWtv7LXfEYgA1rLridY=
-Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTP id
-	20250211072320epcas5p1db2e22adb0ac79aaf423a1aad1a69edc~jFntu0T_y0209902099epcas5p1s;
-	Tue, 11 Feb 2025 07:23:20 +0000 (GMT)
-Received: from epsmges5p1new.samsung.com (unknown [182.195.38.178]) by
-	epsnrtp2.localdomain (Postfix) with ESMTP id 4YsXwk1x2hz4x9Q9; Tue, 11 Feb
-	2025 07:23:18 +0000 (GMT)
-Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
-	epsmges5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	12.D9.20052.6EAFAA76; Tue, 11 Feb 2025 16:23:18 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-	20250211071941epcas5p308a13898102cf851bc9988c0e2766c5e~jFkiB3tyK2383023830epcas5p3_;
-	Tue, 11 Feb 2025 07:19:41 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20250211071941epsmtrp23491956d55b1bb2cbddf4dccbbd7c004~jFkiAxTf20103201032epsmtrp2_;
-	Tue, 11 Feb 2025 07:19:41 +0000 (GMT)
-X-AuditID: b6c32a49-3d20270000004e54-54-67aafae64171
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-	epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	56.DE.18729.D0AFAA76; Tue, 11 Feb 2025 16:19:41 +0900 (KST)
-Received: from asg29.. (unknown [109.105.129.29]) by epsmtip1.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20250211071938epsmtip1d1635c3ad7f2a04d629821b117d3b7a4~jFke9gp1p1180211802epsmtip1Q;
-	Tue, 11 Feb 2025 07:19:38 +0000 (GMT)
-From: Junnan Wu <junnan01.wu@samsung.com>
-To: stefanha@redhat.com, sgarzare@redhat.com, mst@redhat.com,
-	jasowang@redhat.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com
-Cc: xuanzhuo@linux.alibaba.com, eperezma@redhat.com, horms@kernel.org,
-	kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, q1.huang@samsung.com, ying01.gao@samsung.com,
-	ying123.xu@samsung.com, lei19.wang@samsung.com, Junnan Wu
-	<junnan01.wu@samsung.com>
-Subject: [Patch net 1/2] vsock/virtio: initialize rx_buf_nr and
- rx_buf_max_nr when resuming
-Date: Tue, 11 Feb 2025 15:19:21 +0800
-Message-Id: <20250211071922.2311873-2-junnan01.wu@samsung.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250211071922.2311873-1-junnan01.wu@samsung.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eqomc+Ec"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-21f6a47d617so45973025ad.2;
+        Mon, 10 Feb 2025 23:31:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739259092; x=1739863892; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hTH7Pm5uOLfD5YPyyOM3Aj+5Tf2V89zBjuGRtkm1M5Q=;
+        b=Eqomc+Ec4f8HzCKQSOY8u4l+px0Wwu4fov2gr5J5FyXOpZjdV1hcurW9gRxYcn6i+U
+         Y7gT/rX4RdIjEPbZUX+OZ++tGN6BotVN33ljT/mSXxL9VUFAKtSEFJUu33dATCdLSdzl
+         /fQuYVqAw6ro7tvbz/CtilCn5k8PA4czy4QiaE08UMKQluxaCVW6zZLV0QLjOm9zVcau
+         ECw44SZmFvdcLA+W6CG4lTlTeQKvsQP6zzIx43YjIiW79CSvvlyli+hSzAeqRN8Rkd83
+         t2ypM7HQT8WSyXww4ysdSefCOEtWO1uSp/3adXwl23wPZc++kv4fvveM/Gua+BsULS5s
+         EkRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739259092; x=1739863892;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hTH7Pm5uOLfD5YPyyOM3Aj+5Tf2V89zBjuGRtkm1M5Q=;
+        b=EJfMfM0eBYB98D53Ncx0/+sR1Bt66k53STmuvRl5hKaIB0LIw510TgYaHDz4Ae2wOd
+         0gUpVKvm7d2BdrPQca30Y2n6JwF+N6vjGsi6Di0FDRfgb2AY6AAMJfUmgdOfnybbcjPY
+         1lzYxZoo+2KjzH1rQzA0LdWzPeR1bb8YmVn5X6RW98xKIMdg6ts5i0R2MOj87v9bpkvV
+         m6TeQ0RLyYu+QXwtO65xNptlw9dTq0O0CcMpTEs6PTSprJRpV1CkTBEyAgG3Ud4QSryh
+         dhG9Jdtr5l8ImUGQJVjEs5EjcyXDkbr+doOF8C37q4NbWhDskMHgbMyLK5todE72RIiU
+         lTtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU9xa/k+gaKGa6DNkFAfSfRM04lTlgCrKJopkl0Ped2GSgj/WtgQWSkpkACwNuNWPctwN2CwZoJBHaM2/WFfdBB@vger.kernel.org, AJvYcCX+l3XX/3/uJs3SO4xxIacAbJRp+VELcgv8n7rniPxNu1Y+dtTFQBVUrP/I9tv4NarPRWyXLq4U/GgJg6c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEsAXhBDooK6ywbeLqRVy6bV/K2NRHWMUa+CWXoiaj6N3Kh+l0
+	E05VM310/AJPsTFDREhxm50KsEP2QO4YWh3XwKPWkRlg8eDdNoEzzaZE/oWff14=
+X-Gm-Gg: ASbGncs1vDO56IGWigpPbEcHRMuCYDp7vG+QnuPE0VO/AHMP3geG9MhVckl+6oMuY+Y
+	l6PbFrzQk6dmKmriKFD/2otzPbZX2vkZYRr3Rx3zSDS0C9jUs6hvOTjUJyPjjyB8ch4Mf4TWM3h
+	D1gnPsh5tVMjkNMonv4YiA9GtrYEqlxwSdBdsFlXQjYTTYwdrWSncIbYCH71T0anvAPOcyXjzxW
+	wsb1EpP1XrOesU/1ZDblXuXSTy56K6uvrewedADmaL8s4yjo9zd4Q87FlcMCyFq0uHMOPZ8Lm/d
+	4QbgfIBytuvGcgG4odKI
+X-Google-Smtp-Source: AGHT+IGs30M56X5gAKQnZAxB9fHIUoYBdvgrpgSZIn7PFxqdfYyq2SNPZej4vAjy56zlwVX1mmBcEw==
+X-Received: by 2002:a17:902:c94c:b0:21f:4c65:6290 with SMTP id d9443c01a7336-21f4e6a0641mr305340305ad.1.1739259092134;
+        Mon, 10 Feb 2025 23:31:32 -0800 (PST)
+Received: from fedora ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3687e68bsm89975435ad.169.2025.02.10.23.31.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Feb 2025 23:31:30 -0800 (PST)
+Date: Tue, 11 Feb 2025 07:31:23 +0000
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: Jay Vosburgh <jv@jvosburgh.net>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Simon Horman <horms@kernel.org>, Jianbo Liu <jianbol@nvidia.com>,
+	Boris Pismenny <borisp@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>, Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv3 net 0/2] bonding: fix incorrect mac address setting
+Message-ID: <Z6r8y1U4C_s1-3jV@fedora>
+References: <20250207092920.543458-1-liuhangbin@gmail.com>
+ <Z6b67YBbERi5v9gt@fedora>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrCJsWRmVeSWpSXmKPExsWy7bCmhu6zX6vSDab1cFjMOd/CYvH02CN2
-	i8dzV7JbPOo/wWax7NJnJou719wtLmzrY7WYM7XQom3HZVaLy7vmsFlcWdLDbvH/1ytWi2ML
-	xCy+nX7DaLH07Vlmi7MTPrBanJ/zn9ni9aT/rBZHt69ktbjWZGFx4QjQ1P2PZrI6iHlsWXmT
-	yWPBplKPTas62Tx2PrT0eLF5JqPH+31X2Tz6tqxi9Pi8SS6AIyrbJiM1MSW1SCE1Lzk/JTMv
-	3VbJOzjeOd7UzMBQ19DSwlxJIS8xN9VWycUnQNctMwfoNSWFssScUqBQQGJxsZK+nU1RfmlJ
-	qkJGfnGJrVJqQUpOgUmBXnFibnFpXrpeXmqJlaGBgZEpUGFCdsb/9uOsBUf5K+bd2MfcwDiB
-	t4uRk0NCwETiyI03jF2MXBxCArsZJWZ032GGcD4xStyasooJwvkG5HR+ZYdpmdzfBGYLCexl
-	lLhxKg6i6BmjxNO3D5lAEmwCmhIn9qxgA0mICCxmlDi/4isriMMssJtJYuGtz4wgVcICsRLn
-	vq8Hs1kEVCVO3F7PCmLzCthJPDz9ixVinbzE/oNnmUFsTgF7iSsztrFD1AhKnJz5hAXEZgaq
-	ad46G+xwCYEHHBLLF26DutVFYuHxO1CDhCVeHd8CFZeS+PxuLxuEnS3Re/QXlF0i0f3uElS9
-	tcT5de1AQzmAFmhKrN+lDxGWlZh6ah0TxF4+id7fT5gg4rwSO+aB2BxAtqrE+wk1EGFpiZWb
-	NrFDhD0kZky0gwTWJEaJt0vfME5gVJiF5JtZSL6ZhbB4ASPzKkbJ1ILi3PTUYtMCw7zUcngs
-	J+fnbmIEJ3ctzx2Mdx980DvEyMTBeIhRgoNZSYTXZOGKdCHelMTKqtSi/Pii0pzU4kOMpsDg
-	nsgsJZqcD8wveSXxhiaWBiZmZmYmlsZmhkrivM07W9KFBNITS1KzU1MLUotg+pg4OKUamNTq
-	n1kcV53oVtUYvmBrdEZu+/TJuvnOKy77TqvpNeZNzYzVnx9xxdyITeqnlY+DyZ/JsupcP3tC
-	tc5NOGpVHl6dPk/wqm9tydsd4r8XycRs4NrCtvn6oun7/1bv/qa+re14p9fK/9Hij5h1svps
-	zPtqA7516t7ezeqVtsJZWSFNymll6sfn08492TRHR8HZe8bJJUwyvIeD91htmmUVsmF64LW7
-	03dqbJC7Ps/jcSBnf09/glfyzr+n6qqYVgn76/hzlUTbSZZv+ZRfOIc5YEb+moh5hXPaz/xe
-	fPvv8m6uxcubNii7yTlLeTIsXnLmlpTzNwO2yG52gXaB6x2pktPffVsluWfZU4UOlT9/lFiK
-	MxINtZiLihMB/yiRoHcEAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprDIsWRmVeSWpSXmKPExsWy7bCSnC7vr1XpBjc+qlvMOd/CYvH02CN2
-	i8dzV7JbPOo/wWax7NJnJou719wtLmzrY7WYM7XQom3HZVaLy7vmsFlcWdLDbvH/1ytWi2ML
-	xCy+nX7DaLH07Vlmi7MTPrBanJ/zn9ni9aT/rBZHt69ktbjWZGFx4QjQ1P2PZrI6iHlsWXmT
-	yWPBplKPTas62Tx2PrT0eLF5JqPH+31X2Tz6tqxi9Pi8SS6AI4rLJiU1J7MstUjfLoEr43/7
-	cdaCo/wV827sY25gnMDbxcjJISFgIjG5v4m9i5GLQ0hgN6PEmzkPWCAS0hJdv9uYIWxhiZX/
-	nkMVPWGUmLh2BStIgk1AU+LEnhVsILaIwFpGiU37DEGKmAVOMkncmjEBrFtYIFri7fMzYDaL
-	gKrEidvrwZp5BewkHp7+xQqxQV5i/8GzYDWcAvYSV2ZsYwexhYBqds1fxgJRLyhxcuYTMJsZ
-	qL5562zmCYwCs5CkZiFJLWBkWsUomVpQnJueW2xYYJiXWq5XnJhbXJqXrpecn7uJERyBWpo7
-	GLev+qB3iJGJg/EQowQHs5IIr8nCFelCvCmJlVWpRfnxRaU5qcWHGKU5WJTEecVf9KYICaQn
-	lqRmp6YWpBbBZJk4OKUamNKO3NyV1Xy1MSHwdU6w8UqFnTeP9vgc0F272zasU/SF5tnazw8X
-	7P1xQfHUm63GIXPudHYuPnh61j4juXk1rGLvv+cFzNXJj9E7O3PdxHtT79joGiVH7eL0OTv9
-	bej3Lx/+Ljz/Oe8g6w6f/3e9CwueR1c23rrxrDpgdtlTPZFQvXcykw6pLrWK+fNg8f+vlr7B
-	d9iZztS2Ln4qIXhc6Y5e4/qo1X2zhJqTN11I2v56RWhcuHJurwdLT2ep1YakLK6w7bFC5RK3
-	hSPc/h1Uayqom1zwwjkzQ+PqxsqXR+saI7gDE84z/67QWpRZ3BfmNOt8/q1ijoD5u2sE1Y3O
-	tPtM1c5JEDvgv+TrGsG4OiWW4oxEQy3mouJEAJdyMKMvAwAA
-X-CMS-MailID: 20250211071941epcas5p308a13898102cf851bc9988c0e2766c5e
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250211071941epcas5p308a13898102cf851bc9988c0e2766c5e
-References: <20250211071922.2311873-1-junnan01.wu@samsung.com>
-	<CGME20250211071941epcas5p308a13898102cf851bc9988c0e2766c5e@epcas5p3.samsung.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z6b67YBbERi5v9gt@fedora>
 
-When executing suspend to ram twice in a row,
-the `rx_buf_nr` and `rx_buf_max_nr` increase to three times vq->num_free.
-Then after virtqueue_get_buf and `rx_buf_nr` decreased
-in function virtio_transport_rx_work,
-the condition to fill rx buffer
-(rx_buf_nr < rx_buf_max_nr / 2) will never be met.
+Hi Jay,
+On Sat, Feb 08, 2025 at 06:34:21AM +0000, Hangbin Liu wrote:
+> Please hold on this patch. Our QE reported that with bare NIC, the
+> backup NIC can't receive the NS messages even after joining the multicast
+> MAC group. But after remove the backup NIC from bond, the NIC interface
+> could receive the NS message.
+> 
+> This is weird, it looks the backup NIC dropped the NS message somewhere,
+> even using tcpdump (the NIC will be in promisc mode) I can't capture the
+> NS message on backup slave.
+> 
+> I need to debug more.
 
-It is because that `rx_buf_nr` and `rx_buf_max_nr`
-are initialized only in virtio_vsock_probe(),
-but they should be reset whenever virtqueues are recreated,
-like after a suspend/resume.
+After debug, I find it's a driver issue. The issue exists with ice dirver NIC.
+I tried with a mlx5 NIC and the patch works good for me.
 
-Move the `rx_buf_nr` and `rx_buf_max_nr` initialization in
-virtio_vsock_vqs_init(), so we are sure that they are properly
-initialized, every time we initialize the virtqueues, either when we
-load the driver or after a suspend/resume.
-At the same time, also move `queued_replies`.
+So I think you can start review this patch when you have time. I will debug
+the ice driver later.
 
-Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume")
-Co-developed-by: Ying Gao <ying01.gao@samsung.com>
-Signed-off-by: Ying Gao <ying01.gao@samsung.com>
-Signed-off-by: Junnan Wu <junnan01.wu@samsung.com>
----
- net/vmw_vsock/virtio_transport.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index b58c3818f284..f0e48e6911fc 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -670,6 +670,13 @@ static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
- 	};
- 	int ret;
- 
-+	mutex_lock(&vsock->rx_lock);
-+	vsock->rx_buf_nr = 0;
-+	vsock->rx_buf_max_nr = 0;
-+	mutex_unlock(&vsock->rx_lock);
-+
-+	atomic_set(&vsock->queued_replies, 0);
-+
- 	ret = virtio_find_vqs(vdev, VSOCK_VQ_MAX, vsock->vqs, vqs_info, NULL);
- 	if (ret < 0)
- 		return ret;
-@@ -779,9 +786,6 @@ static int virtio_vsock_probe(struct virtio_device *vdev)
- 
- 	vsock->vdev = vdev;
- 
--	vsock->rx_buf_nr = 0;
--	vsock->rx_buf_max_nr = 0;
--	atomic_set(&vsock->queued_replies, 0);
- 
- 	mutex_init(&vsock->tx_lock);
- 	mutex_init(&vsock->rx_lock);
--- 
-2.34.1
-
+Thanks
+Hangbin
