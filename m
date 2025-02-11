@@ -1,87 +1,136 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4695D1F192E
-	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 13:30:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69721B85FD;
+	Tue, 11 Feb 2025 13:32:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739280622; cv=none; b=s5KDyA9pXy26SenYlGL9O/im0Kl+HcKKaYqfRaMXtg5ysmWXVwbfYirGwytG2XQnfShziwQEUwGS3JybJCkZ3oXD6AeSLRRor6K02nibiU6d6X0jdMHIgfZJoKIv7+WxmFjyo3H0NzqbQAtKyQ0/34kfDZmGLm0xIxqTTP0CFkQ=
+	t=1739280737; cv=none; b=t0DvVBMVfH6pDcVe0X2dTZ1mHBQDbpwgZdvpXZPC7Q5bBgzjmBS34TvM3BUXr4KoEIL5Sh9I60A5xT20p9s66hUNgRLHeNd7E8Ax5JTNOrZs62OD/eH5ri0zFTA0J03qOhsE9TZ2uCUPe5I+7SFf+WXFMxw9RKhzZR/XK530lWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739280622; c=relaxed/simple;
-	bh=82BW2TgiZ+59w8ny9S4IM4TvfBXPG/VmPuNOynqtCtU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Be2Y7ST953jQYDdDKs7HOdP3mUK+8CiGy58Oa3T6HPRhWsuSTpxD1Rtm1JgzmtaB3SbxreUWEtvsrvbNxnBvhI9JcQaRq+ir+HFWeLr6rVwfgTSUVct5beGkiVCwJGl7BkfhYCN4w4TCF+pIQxo0MsfvyxKhLsVJ5PgmEClTOlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wyagR4XU; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1739280737; c=relaxed/simple;
+	bh=pYTicEKav+wFq62fntSHoX3BaH1+s625FcTaodjBKDU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fX7oJkf5rWqG5mOrGr6oXkAgNYMta7TCHqeT7aPQZD/ZjejD0rYi5XXGI2EYPv7FzTcxKuvtYc8TctGwaSf2vT9PMBNd30fSs3Pm38aySKM/OTdIVwpGwJD7kc9Uxy6VHozfy9e6iHvhS3VAbMsxvplNDon+SaKS5ewyEBrMbT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JeCc7Nq7; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wyagR4XU"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ab7c07e8b9bso368852666b.1
-        for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 05:30:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739280619; x=1739885419; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=82BW2TgiZ+59w8ny9S4IM4TvfBXPG/VmPuNOynqtCtU=;
-        b=wyagR4XU5bCPH1CSj+D2QWHkOm68rGf5ud8JNExDz93oc7qdjp1S8ndPRk76b/rZgW
-         tldkRS9Q9fA5qGrjKpkhLQQ5E5EAKxus3Tl9upZJYaaD0SLCWt+e675oEv4rtWPENO+Y
-         URlq6VhnlcBXKBLj8r6/BYqNHk88TZZvuOkWce2oaFmtC/HgKUOU9OUPYwCOiQ+TzGyi
-         gh45yF/T+CwFFaDrzSTyVcSbZb6uCsbvZltZCugaqPC41jViymXYF6g+JLYGjhEVmyAo
-         7ymtwYdq/bP67Wmq5zVHdVvhJuxEoHQy87zFbv9c0gzZPO7BCRSvzPxvLxAKokMvEj4e
-         uKNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739280619; x=1739885419;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=82BW2TgiZ+59w8ny9S4IM4TvfBXPG/VmPuNOynqtCtU=;
-        b=YlOPYKckZuoRc+OQiROxsUDxSIsf8M8QDN+c+tlawBGUFCpz7mLfFEdoYhSTLG7FQo
-         jow042jlIbJOdckiQBvv2I1xA6dcfuuRyhbiX1nIOsqSD+I9P9fxET1oWCsRjHfhQwgk
-         Q/t84sRX4VQyf9/hD9eKc/v24EbZxhOcCyL/iwrMx+4rk3op/SScWAoKFw3MwdhWK61A
-         2almoW+ffeIabFcvMg62Bm2PSw21vghXcFtGnDjiA3iDGusDcwyjBKfgwbTNge+Qfm05
-         Ro8UQib20cdzpFRMmAxxICaI3bRleNVDaENLBPFmLOhyZGF/seqfMiUj4W9IJAlEFdrI
-         rxQw==
-X-Forwarded-Encrypted: i=1; AJvYcCXUokWtawR3zgVgaVXLI3u8WwBg4iwxy9bM0paBsLkBmM5HfqfYIh7UMrUhP0Kh+3vb65WFd+A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjB7wPDW0GNdvanLkBw5feoXLSQhB4PfdXO/mmjDMiAzdkzlRI
-	SRAbRGJrVWVdbSs8XXNZJ3VK2bb8KVup1Mj5bwyq6G2otpCR1v2XilnKIBkp4O9snvSdz+pLfpJ
-	8C0Abk1vNtkE5uyr4ILJlt1jXM5LPnCWAJMk1
-X-Gm-Gg: ASbGncujI24J7AYOXC/i3UGSz+hVtkb5ErVrtXtPz+Lx6uYSJZevdK/Pv4o2JWVs+Nm
-	D9ye8eDC330T73dDSDUWDfZpz5OwY4SaC9Rf8bv9twWt+D7osEL5gwfNYzeFucIliv66CN7DW2g
-	==
-X-Google-Smtp-Source: AGHT+IF+c4dpr3+3jjyexFWSIic+MCyCj2EsuAMKw7FHGG57pO61F0kbL5b3iJvVDgdPCATBskBApuRNIlEGArVa6ME=
-X-Received: by 2002:a17:907:daa:b0:ab7:c1d5:14f9 with SMTP id
- a640c23a62f3a-ab7c1d51fe4mr912374766b.10.1739280619537; Tue, 11 Feb 2025
- 05:30:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JeCc7Nq7"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 41D31440EE;
+	Tue, 11 Feb 2025 13:32:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739280732;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AAvjdSvXA4nQGDvB1wQA7K1O0Rt2MZsbOsi/M4ix9QA=;
+	b=JeCc7Nq7QuZVANkyQtlKreTbbPTgWPvh3d2L7WcR3zrTNO8AFNoaw8YTSkIvHtfle0JW3s
+	AfmIQ0YizrhVqkDC+DIFvzKGxvfVPItYcmNtMEgTQgeZE0tUNf02nZ3DE8BLD7ewzh2wnK
+	DuY4HokoyCWirbuc7CNi1tK8m8OB4yrwoJgGTO+hz+3W8IRBPLPwgSLiuBd8HRQ4j0erbt
+	4n+482ULdQ09OUx6V7OTPvU/x6sSN+8OJ2fAwoArgVf/JJamnZMd5mffkN+v7kFUowk0fH
+	TWDjxARD8fqceclDh5MQFpXd8zV8tC+rjRyel8DdOjZmwhyRl4G0k0Vsn89eqQ==
+Date: Tue, 11 Feb 2025 14:32:09 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski
+ <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, Heiner Kallweit
+ <hkallweit1@gmail.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Marek
+ =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>, Oleksij Rempel
+ <o.rempel@pengutronix.de>, =?UTF-8?B?Tmljb2zDsg==?= Veronese
+ <nicveronese@gmail.com>, Simon Horman <horms@kernel.org>,
+ mwojtas@chromium.org, Antoine Tenart <atenart@kernel.org>,
+ devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>, Romain
+ Gantois <romain.gantois@bootlin.com>
+Subject: Re: [PATCH net-next 03/13] net: phy: Introduce PHY ports
+ representation
+Message-ID: <20250211143209.74f84a10@kmaincent-XPS-13-7390>
+In-Reply-To: <20250207223634.600218-4-maxime.chevallier@bootlin.com>
+References: <20250207223634.600218-1-maxime.chevallier@bootlin.com>
+ <20250207223634.600218-4-maxime.chevallier@bootlin.com>
+Organization: bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250211045057.10419-1-kuniyu@amazon.com>
-In-Reply-To: <20250211045057.10419-1-kuniyu@amazon.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 11 Feb 2025 14:30:06 +0100
-X-Gm-Features: AWEUYZmdaVpaxSjKB1DU-BcxmRIsM5AhynrWmG8C5BTk_8hbQ0r07QcViIve8VI
-Message-ID: <CANn89iJTQmF7_AMUP_QBV3YkrU9KDRTuumTQEJT8_JcmK3O3Sw@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next] arp: Convert SIOCDARP and SIOCSARP to
- per-netns RTNL.
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeguddufecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthhqredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefguddtfeevtddugeevgfevtdfgvdfhtdeuleetffefffffhffgteekvdefudeiieenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghlohepkhhmrghinhgtvghnthdqigfrufdqudefqdejfeeltddpmhgrihhlfhhrohhmpehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvkedprhgtphhtthhopehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgv
+ ghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhmshhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrgh
+X-GND-Sasl: kory.maincent@bootlin.com
 
-On Tue, Feb 11, 2025 at 5:51=E2=80=AFAM Kuniyuki Iwashima <kuniyu@amazon.co=
-m> wrote:
->
-> ioctl(SIOCDARP/SIOCSARP) operates on a single netns fetched from
-> an AF_INET socket in inet_ioctl().
->
-> Let's hold rtnl_net_lock() for SIOCDARP and SIOCSARP.
->
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+On Fri,  7 Feb 2025 23:36:22 +0100
+Maxime Chevallier <maxime.chevallier@bootlin.com> wrote:
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+> Ethernet provides a wide variety of layer 1 protocols and standards for
+> data transmission. The front-facing ports of an interface have their own
+> complexity and configurability.
+>=20
+> Introduce a representation of these front-facing ports. The current code
+> is minimalistic and only support ports controlled by PHY devices, but
+> the plan is to extend that to SFP as well as raw Ethernet MACs that
+> don't use PHY devices.
+>=20
+> This minimal port representation allows describing the media and number
+> of lanes of a port. From that information, we can derive the linkmodes
+> usable on the port, which can be used to limit the capabilities of an
+> interface.
+>=20
+> For now, the port lanes and medium is derived from devicetree, defined
+> by the PHY driver, or populated with default values (as we assume that
+> all PHYs expose at least one port).
+>=20
+> The typical example is 100M ethernet. 100BaseT can work using only 2
+> lanes on a Cat 5 cables. However, in the situation where a 10/100/1000
+> capable PHY is wired to its RJ45 port through 2 lanes only, we have no
+> way of detecting that. The "max-speed" DT property can be used, but a
+> more accurate representation can be used :
+>=20
+> mdi {
+> 	port@0 {
+> 		media =3D "BaseT";
+> 		lanes =3D <2>;
+> 	};
+> };
+>=20
+> From that information, we can derive the max speed reachable on the
+> port.
+>=20
+> Another benefit of having that is to avoid vendor-specific DT properties
+> (micrel,fiber-mode or ti,fiber-mode).
+>=20
+> This basic representation is meant to be expanded, by the introduction
+> of port ops, userspace listing of ports, and support for multi-port
+> devices.
+
+This patch is tackling the support of ports only for the PHY API. Keeping in
+mind that this port abstraction support will also be of interest to the NIC=
+s.
+Isn't it preferable to handle port in a standalone API?
+
+With net drivers having PHY managed by the firmware or DSA, there is no lin=
+ux
+description of their PHYs. On that case, if we want to use port abstraction,
+what is the best? Register a virtual phy_device to use the abstraction port=
+ or
+use the port abstraction API directly which meant that it is not related to=
+ any
+PHY?
+
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
