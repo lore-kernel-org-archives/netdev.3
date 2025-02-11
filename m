@@ -1,37 +1,37 @@
 Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A1B262D33
-	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 22:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B264E1E47AE
+	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 22:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739312201; cv=none; b=hGaBRSao2kzS8q7BRZCUbXRBVfntZdB2abZrECOjrnXL6xRePmtrGpu+pH4WuMYWrzGCCdyV7crK12e+XlslkaaMdloLVeREOaIsy3q+pvYDLGn+CP6pARppjSb9DyLfuAQjpTnAaggCE+Ln8veTXgSadhqhIFVgfn59G6HoEY8=
+	t=1739312201; cv=none; b=bWEs6c9S1AOBBUhCSfIcElmW23ViHOyeK612ocsFUyInFIMuC7AR6dZSaYrylTYxCdxf9QUovz5ULo3vk9XalBSwt+IAXB+Nhuk+yRxSVX7/aOQaQLz7wRCm2chRRUH5eAGEpkEQQOWzhx5G0rT8pA2fhX5YFp0n8Z+0KvJkosw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739312201; c=relaxed/simple;
-	bh=UdVsu3mrtgi1GRZ8/KNToR9K4OYzp7rRJad2qovDibU=;
+	bh=9JHJaIdsXAdDxWQtmKJRn9kL61j/0LuF/kezCwF1byU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aTtN429B3/mUTymjM/QfnJ9YD1qGtq3dNzZVJ9c+Jh6I8cONjhWniYsyUCYWz71pX4g3smlpeS9SIBmxi/iJ6Jqa1aXf2n5ouTTLcVbhc3YYzzrH2ldd+ueEyrQ0NxCtPIadVG+iZEQl9+Il9jcDtn806+HVPnh4SEBHMdJzyNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=cevvMr+b; arc=none smtp.client-ip=139.165.32.111
+	 MIME-Version; b=eJmoRIxzxVvLcVmYZ0vESAssC4eOqHNWuGfpCbmtLBTTu67Qff3Ubg6gdhkToBRRhyIeQ3oGrT447m1Gi8CpWe9LMm90m27Vph5GEB+ubw5D5a6r4z4hG7NbsYEA+vHNWtN8mLnfTfKcv4ZTzLoDpeGDdIrF088DJwnzjeV1Bvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=H5ZZ8lEI; arc=none smtp.client-ip=139.165.32.111
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="cevvMr+b"
+	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="H5ZZ8lEI"
 Received: from localhost.localdomain (unknown [10.29.255.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id 365CD200DB9A;
-	Tue, 11 Feb 2025 23:16:32 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be 365CD200DB9A
+	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id 04114200DB96;
+	Tue, 11 Feb 2025 23:16:30 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be 04114200DB96
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
-	s=ulg20190529; t=1739312192;
-	bh=RHzIYsOrUNhMomVXoaZrFPBYkrAl2jJ7ocffOr6lJBU=;
+	s=ulg20190529; t=1739312191;
+	bh=8kLBLlSSPt2RoH3VnD8FbHRK4BZNw7glNyWgi3zOQ7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cevvMr+bBgwDLiEYXc9NEjF/fbzoMqUn0N5XqtLgm8cDHNkBBGvbMLco/ZfXkWbI1
-	 K7vbVeMvYG9227jc7o97bnokhUeOdNbZPoBpYbZNs3CjfpSkfpArNj/+hZ+nx/YMtN
-	 gckd0wpb6bo7fdJ30+wYyiLXsm94lqhUY73MvNkXYEbPkENUeaJ5G13695RxAghUPW
-	 ygMPC+tcmi6LF/XajF7DJq6ZSMaGNlt/BJIuQl6O2AVibqG5Vi+3nIb1+wKscvgyeC
-	 pZq7QRSBvRShqHzG9vrRm6b9/TZzw3HfMKcDW/4FZDW5WkhowJG1SM6qlivmfPOz4L
-	 Ud7bM8N7dc3fA==
+	b=H5ZZ8lEIzL7jUaOt9hlMjNAXo3tY6gCWbofUG5jP/2hwoNrvbMRaw40kkrvDsK8hs
+	 e32mBjFlcKaYdTMtRIBnNFowcbq/P03XcaHVmjeXXYhhTErj2ILFcYnm3zTA2LGkJU
+	 mW8W24DUuCVXAUe2wMzroAfJM4I8JnwJ8YXz6j/YjKncZgQ807CdxtSwfJeBUaoYM6
+	 rNS4zDGets5HaH+TQ3Ikdpqd1BByTPDT4ovxPBlUT4951RMrrUZgj5t0YJvc4LMAmg
+	 bCz7EVFuE5zN1ikdp2kd1MOwn0x0Gmn5L7SzaJzaFs3kLIjbYwVPY/6Mm22hVgUSX6
+	 1B8AvaG7EMklg==
 From: Justin Iurman <justin.iurman@uliege.be>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -40,10 +40,12 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
-	justin.iurman@uliege.be
-Subject: [PATCH net v2 3/3] net: ipv6: fix consecutive input and output transformation in lwtunnels
-Date: Tue, 11 Feb 2025 23:16:24 +0100
-Message-Id: <20250211221624.18435-4-justin.iurman@uliege.be>
+	justin.iurman@uliege.be,
+	Alexander Aring <alex.aring@gmail.com>,
+	David Lebrun <dlebrun@google.com>
+Subject: [PATCH net v2 1/3] net: ipv6: fix dst ref loops on input in rpl and seg6 lwtunnels
+Date: Tue, 11 Feb 2025 23:16:22 +0100
+Message-Id: <20250211221624.18435-2-justin.iurman@uliege.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250211221624.18435-1-justin.iurman@uliege.be>
 References: <20250211221624.18435-1-justin.iurman@uliege.be>
@@ -55,100 +57,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Some lwtunnel users implement both lwt input and output handlers. If the
-post-transformation destination on input is the same, the output handler
-is also called and the same transformation is applied (again). Here are
-the users: ila, bpf, rpl, seg6. The first one (ila) does not need this
-fix, since it already implements a check to avoid such a duplicate. The
-second (bpf) may need this fix, but I'm not familiar with that code path
-and will keep it out of this patch. The two others (rpl and seg6) do
-need this patch.
-
-Due to the ila implementation (as an example), we cannot fix the issue
-in lwtunnel_input() and lwtunnel_output() directly. Instead, we need to
-do it on a case-by-case basis. This patch fixes both rpl_iptunnel and
-seg6_iptunnel users. The fix re-uses skb->redirected in input handlers
-to notify corresponding output handlers that the transformation was
-already applied and to skip it. The "redirected" field seems safe to be
-used here.
+As a follow up to commit 92191dd10730 ("net: ipv6: fix dst ref loops in
+rpl, seg6 and ioam6 lwtunnels"), we also need a conditional dst cache on
+input for seg6_iptunnel and rpl_iptunnel to prevent dst ref loops (i.e.,
+if the packet destination did not change, we may end up recording a
+reference to the lwtunnel in its own cache, and the lwtunnel state will
+never be freed).
 
 Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
-Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
+Fixes: af4a2209b134 ("ipv6: sr: use dst_cache in seg6_input")
 Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Cc: Alexander Aring <alex.aring@gmail.com>
+Cc: David Lebrun <dlebrun@google.com>
 ---
  net/ipv6/rpl_iptunnel.c  | 14 ++++++++++++--
- net/ipv6/seg6_iptunnel.c | 16 +++++++++++++---
- 2 files changed, 25 insertions(+), 5 deletions(-)
+ net/ipv6/seg6_iptunnel.c | 14 ++++++++++++--
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
 diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
-index dc004e9aa649..2dc1f2297e39 100644
+index 0ac4283acdf2..c26bf284459f 100644
 --- a/net/ipv6/rpl_iptunnel.c
 +++ b/net/ipv6/rpl_iptunnel.c
-@@ -208,6 +208,12 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+@@ -262,10 +262,18 @@ static int rpl_input(struct sk_buff *skb)
+ {
+ 	struct dst_entry *orig_dst = skb_dst(skb);
+ 	struct dst_entry *dst = NULL;
++	struct lwtunnel_state *lwtst;
  	struct rpl_lwt *rlwt;
  	int err;
  
-+	/* Don't re-apply the transformation when rpl_input() already did it */
-+	if (skb_is_redirected(skb)) {
-+		skb_reset_redirect(skb);
-+		return orig_dst->lwtstate->orig_output(net, sk, skb);
-+	}
+-	rlwt = rpl_lwt_lwtunnel(orig_dst->lwtstate);
++	/* Get the address of lwtstate now, because "orig_dst" may not be there
++	 * anymore after a call to skb_dst_drop(). Note that ip6_route_input()
++	 * also calls skb_dst_drop(). Below, we compare the address of lwtstate
++	 * to detect loops.
++	 */
++	lwtst = orig_dst->lwtstate;
 +
- 	rlwt = rpl_lwt_lwtunnel(orig_dst->lwtstate);
++	rlwt = rpl_lwt_lwtunnel(lwtst);
  
  	local_bh_disable();
-@@ -311,9 +317,13 @@ static int rpl_input(struct sk_buff *skb)
- 		skb_dst_set(skb, dst);
- 	}
- 
--	/* avoid a lwtunnel_input() loop when dst_entry is the same */
--	if (lwtst == dst->lwtstate)
-+	/* avoid a lwtunnel_input() loop when dst_entry is the same, and make
-+	 * sure rpl_output() does not apply the transformation one more time
-+	 */
-+	if (lwtst == dst->lwtstate) {
-+		skb_set_redirected_noclear(skb, true);
- 		return dst->lwtstate->orig_input(skb);
-+	}
- 
- 	return dst_input(skb);
- 
+ 	dst = dst_cache_get(&rlwt->cache);
+@@ -280,7 +288,9 @@ static int rpl_input(struct sk_buff *skb)
+ 	if (!dst) {
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+-		if (!dst->error) {
++
++		/* cache only if we don't create a dst reference loop */
++		if (!dst->error && lwtst != dst->lwtstate) {
+ 			local_bh_disable();
+ 			dst_cache_set_ip6(&rlwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
 diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 5ce662d8f334..69233c2ed658 100644
+index 33833b2064c0..6045e850b4bf 100644
 --- a/net/ipv6/seg6_iptunnel.c
 +++ b/net/ipv6/seg6_iptunnel.c
-@@ -522,11 +522,15 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 		skb_dst_set(skb, dst);
- 	}
- 
--	/* avoid a lwtunnel_input() loop when dst_entry is the same */
--	if (lwtst == dst->lwtstate)
-+	/* avoid a lwtunnel_input() loop when dst_entry is the same, and make
-+	 * sure seg6_output() does not apply the transformation one more time
-+	 */
-+	if (lwtst == dst->lwtstate) {
-+		skb_set_redirected_noclear(skb, true);
- 		in_func = seg6_input_redirect_finish;
--	else
-+	} else {
- 		in_func = seg6_input_finish;
-+	}
- 
- 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
- 		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
-@@ -573,6 +577,12 @@ static int seg6_output_core(struct net *net, struct sock *sk,
+@@ -472,10 +472,18 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ {
+ 	struct dst_entry *orig_dst = skb_dst(skb);
+ 	struct dst_entry *dst = NULL;
++	struct lwtunnel_state *lwtst;
  	struct seg6_lwt *slwt;
  	int err;
  
-+	/* Don't re-apply the transformation when seg6_input() already did it */
-+	if (skb_is_redirected(skb)) {
-+		skb_reset_redirect(skb);
-+		return orig_dst->lwtstate->orig_output(net, sk, skb);
-+	}
+-	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
++	/* Get the address of lwtstate now, because "orig_dst" may not be there
++	 * anymore after a call to skb_dst_drop(). Note that ip6_route_input()
++	 * also calls skb_dst_drop(). Below, we compare the address of lwtstate
++	 * to detect loops.
++	 */
++	lwtst = orig_dst->lwtstate;
 +
- 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
++	slwt = seg6_lwt_lwtunnel(lwtst);
  
  	local_bh_disable();
+ 	dst = dst_cache_get(&slwt->cache);
+@@ -490,7 +498,9 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 	if (!dst) {
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+-		if (!dst->error) {
++
++		/* cache only if we don't create a dst reference loop */
++		if (!dst->error && lwtst != dst->lwtstate) {
+ 			local_bh_disable();
+ 			dst_cache_set_ip6(&slwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
 -- 
 2.34.1
 
