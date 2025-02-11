@@ -1,45 +1,66 @@
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59D51F4285
-	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 10:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801171F4606;
+	Tue, 11 Feb 2025 10:35:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739269299; cv=none; b=KGYMUcXVvS5NDKq22KuGEi3XrQBYoqdSmq8ryxxUHp8+suTW9sk3CxNqXjNsDlusdiN+Yi2g90JDBsZZqwbvW8DKFhxjNxHNS0yqAq8ToaaD7bFbmmcXq43i4gYcezeukAKVdqe4kiSFuXLSefgtA+OVfXzHx1tjG5culPLDTcU=
+	t=1739270159; cv=none; b=psp5iFOi6VT2ZXYB7ps6Yn1/HbR5DR1CnCJfEE04wzLukN0kV6TUaw/KkFmVzapD6z7U0KMQQw59R3/Apk7MQgLLIyvp+rjFhXdLsbS59pce3a/1czqHISLgLE9MC6Fwmg83Rp5DIELk5UOjfhIRVtLOHKOtNuihPSHy6ZG5DPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739269299; c=relaxed/simple;
-	bh=NHnejRiD4F+bD2f1fFm4I4nrdOgw35XCjt6JvGxyuYo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q6IKL0rIr52tWOj73LXfez7PuJAHsm/AHTs6Oi1Zlb+SI4aZ/4P7jfPDOlwRMlhPEj/yj4J9RwwxOWXWV4l9C6kNJgpaHrBMzztqbaIadOHhGnSccvybbUiyYQtEgwBiNYFy7u7Vb1uXkh8PL54qFpFXUhkE+QM2+Z7JMsF/7a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rE/utMIO; arc=none smtp.client-ip=95.215.58.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1739270159; c=relaxed/simple;
+	bh=F7oePnjp0rTRzbYTuycC62/RICyK4cvliRszVxrHPho=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cqPybr40fKYsf7bgphFo6Bk5ERxEtdbdhpQcqgGl4ql9XE4+5aGqG4CR9/0ebKz2dpYAI4v07iaUIBv9fgnfRLHi0O05HxDrDBoIJ3Z4WvSZJsqK6L3xKrV8lRFsIoQs/UwVzfmbdndTTNbNdpxtVHOu+re5O8FFdXqd+5LPwqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=JvOb0D9f; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rE/utMIO"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1739269285;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=qIkHZdlJgBI8XSQLEeTxcPGCocchQWHaTTHt7yTbJBA=;
-	b=rE/utMIO7b9owZb9QOZwh7pufDBBrE3qOSRPfoEosHyZhr0IDm4F8Qunl7KZs/GalQOOYl
-	scLJyj099CN+VtLjjrPdbmRM/CusfJPfYAxfpbPFNBh5y66N57I0xulmBsjN6qYCzVLx8g
-	EGwKAcqgPONLzq7diegTlGua3ehpAAE=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] sctp: Remove commented out code
-Date: Tue, 11 Feb 2025 11:20:56 +0100
-Message-ID: <20250211102057.587182-1-thorsten.blum@linux.dev>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="JvOb0D9f"
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 51BAZeQv221764
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 11 Feb 2025 04:35:40 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1739270140;
+	bh=qhOLmYyJ5+lgD6xPbr8mNCHcKbKcYvh98b6nuOnctSQ=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=JvOb0D9fTs0O6d94ui7tOrPRJOK0FSE7ynoaWI07C7lo1WjdpfWEWi41aDsGp7SIs
+	 DmPReodOiUb/Cdb00Hfvwnplluvn45xlGioKHOjyZnf6moFP8m3tpVBgm/hp5n6BxT
+	 77+6ftuJBloq4pi8i9D6u1df+iPkMCFqy67u5IpU=
+Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 51BAZeYa003763
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 11 Feb 2025 04:35:40 -0600
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 11
+ Feb 2025 04:35:40 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 11 Feb 2025 04:35:40 -0600
+Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51BAZewn123707;
+	Tue, 11 Feb 2025 04:35:40 -0600
+Received: from localhost (meghana-pc.dhcp.ti.com [10.24.69.13] (may be forged))
+	by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 51BAZdms014197;
+	Tue, 11 Feb 2025 04:35:39 -0600
+From: Meghana Malladi <m-malladi@ti.com>
+To: <javier.carrasco.cruz@gmail.com>, <diogo.ivo@siemens.com>,
+        <m-malladi@ti.com>, <horms@kernel.org>, <pabeni@redhat.com>,
+        <kuba@kernel.org>, <edumazet@google.com>, <davem@davemloft.net>,
+        <andrew+netdev@lunn.ch>
+CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
+        Vignesh Raghavendra
+	<vigneshr@ti.com>,
+        Roger Quadros <rogerq@kernel.org>, <danishanwar@ti.com>
+Subject: [PATCH net 2/2] net: ti: icss-iep: Fix phase offset configuration for perout signal
+Date: Tue, 11 Feb 2025 16:05:27 +0530
+Message-ID: <20250211103527.923849-3-m-malladi@ti.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250211103527.923849-1-m-malladi@ti.com>
+References: <20250211103527.923849-1-m-malladi@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,27 +68,90 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Remove commented out code.
+icss_iep_perout_enable_hw() is a common function for generating
+both pps and perout signals. When enabling pps, the application needs
+to only pass enable/disable argument, whereas for perout it supports
+different flags to configure the signal.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+In case the app passes a valid phase offset value, the signal should
+start toggling after that phase offset, else start immediately or
+as soon as possible. ICSS_IEP_SYNC_START_REG register take number of
+clock cycles to wait before starting the signal after activation time.
+Set appropriate value to this register to support phase offset.
+
+Fixes: c1e0230eeaab2 ("net: ti: icss-iep: Add IEP driver")
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
 ---
- include/linux/sctp.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/ti/icssg/icss_iep.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sctp.h b/include/linux/sctp.h
-index 836a7e200f39..812011d8b67e 100644
---- a/include/linux/sctp.h
-+++ b/include/linux/sctp.h
-@@ -222,7 +222,6 @@ struct sctp_datahdr {
- 	__be16 stream;
- 	__be16 ssn;
- 	__u32 ppid;
--	/* __u8  payload[]; */
- };
+diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
+index 789516683ca9..69bb619db31a 100644
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -407,6 +407,7 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 				     struct ptp_perout_request *req, int on)
+ {
+ 	struct timespec64 ts;
++	u64 ns_start;
+ 	u64 ns_width;
+ 	int ret;
+ 	u64 cmp;
+@@ -416,6 +417,14 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 	ts.tv_nsec = req->on.nsec;
+ 	ns_width = timespec64_to_ns(&ts);
  
- struct sctp_data_chunk {
++	if (req->flags & PTP_PEROUT_PHASE) {
++		ts.tv_sec = req->phase.sec;
++		ts.tv_nsec = req->phase.nsec;
++		ns_start = timespec64_to_ns(&ts);
++	} else {
++		ns_start = 0;
++	}
++
+ 	if (iep->ops && iep->ops->perout_enable) {
+ 		ret = iep->ops->perout_enable(iep->clockops_data, req, on, &cmp);
+ 		if (ret)
+@@ -430,7 +439,8 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
+ 				     (u32)(ns_width / iep->def_inc));
+ 			regmap_write(iep->map, ICSS_IEP_SYNC0_PERIOD_REG, 0);
+-			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG, 0);
++			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
++				     (u32)(ns_start / iep->def_inc));
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0); /* one-shot mode */
+ 			/* Enable CMP 1 */
+ 			regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
+@@ -457,6 +467,8 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
+ 				     (u32)(ns_width / iep->def_inc));
++			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
++				     (u32)(ns_start / iep->def_inc));
+ 			/* Enable Sync in single shot mode  */
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG,
+ 				     IEP_SYNC_CTRL_SYNC_N_EN(0) | IEP_SYNC_CTRL_SYNC_EN);
+@@ -489,7 +501,8 @@ static int icss_iep_perout_enable(struct icss_iep *iep,
+ 	mutex_lock(&iep->ptp_clk_mutex);
+ 
+ 	/* Reject requests with unsupported flags */
+-	if (req->flags & ~PTP_PEROUT_DUTY_CYCLE) {
++	if (req->flags & ~(PTP_PEROUT_DUTY_CYCLE |
++			  PTP_PEROUT_PHASE)) {
+ 		ret = -EOPNOTSUPP;
+ 		goto exit;
+ 	}
+@@ -590,6 +603,7 @@ static int icss_iep_pps_enable(struct icss_iep *iep, int on)
+ 	if (on) {
+ 		ns = icss_iep_gettime(iep, NULL);
+ 		ts = ns_to_timespec64(ns);
++		rq.perout.flags = 0;
+ 		rq.perout.period.sec = 1;
+ 		rq.perout.period.nsec = 0;
+ 		rq.perout.start.sec = ts.tv_sec + 2;
 -- 
-2.48.1
+2.43.0
 
