@@ -1,75 +1,105 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33344264A68
-	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 21:41:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367F2267705
+	for <netdev@vger.kernel.org>; Tue, 11 Feb 2025 21:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739310115; cv=none; b=YiynoAc93mvKLgFiDIBDmuROq7ELmXq7sT2j7mKEDfU1YuSfcYv4l64A0zrsOedQMmgp3lKW8vU70672jwzb21KzR29tYLMQX7UcYuafTIWZWUddFqtkkJTuJZCBzeZgghsZN0HfZWEM7nQgmdtPnIaIQmq1NMbbssECxw0NXks=
+	t=1739310231; cv=none; b=oZ+aKMCLoDF/oKHxGTOsVySRA9PUBMdj/iUh9bLfsBEwxIu19aJutCPpwkhIzBQXtiHYbZgedEhBA85HS5Zpapmj/Zg9MrcJhClACIEn/tciXOcGNLNbPN3UjJ1g/bE08BIyx8i6Ac1EnrNKLAfsAXWS0V/+4uuqNTxbgD5Vrzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739310115; c=relaxed/simple;
-	bh=snmeUmEq0sBEt4lGjJaOCLKkfJa7ykd9Ko5sIooocOI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ion54Nn6moFOIPy088/5ZPFrKcIQItfGcfc8GzBl7xw4yKI36Dflmupuj7DqreYpWtKgoCLyzkvO40viQX1bJyDBj5W43NI0CgBJZqKRXpK7tEaeD6pQPIU4YhB6SLdZ95sDtD6us4pL3tCsWztJ+NrU5GGklnLvVTjbimTSuiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2etIAmS7; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1739310231; c=relaxed/simple;
+	bh=/Yjv78vpFgTBFjx27sm8wPgmoHwg6vcE3jDcIZDRgV0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=c5ouSfFLG9vqoDisb5uQn7Y2Xh53jQ+yFCUYWB25FJXQp41zJkZIo6I0CYVljhA/kNiQhZGKufuNsaw4mBxO9NQWp3KknyJnXQmMwbM/abzG4tdU3U3IV0kxqt4TySHFBKqJDR05R0kYFsbG4NNs9+6nX5ZGYKeyTCduM8dq/OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SVXBmWYH; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2etIAmS7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=LnCxQ91jkpvGcDJ/ibowdTbFmJx0QvEiSvlyH6ryOfk=; b=2etIAmS77EasQVZry0j996cmOm
-	JpEqYBc0rfMhh+YGWJdsG3Bx1cplZ4tSWLvYqr8hQwmGJ7LfIveP2Z4gKSMGlyxIh60UX6Bzoi77E
-	rGGIWu69yer+prK8Pb4QNKQmIKOAjqJXhnao3zjZ/p7cAVGux2T26Q+GPTEymL1MxVlo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1thxkJ-00DBcg-8B; Tue, 11 Feb 2025 22:24:43 +0100
-Date: Tue, 11 Feb 2025 22:24:43 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	David Miller <davem@davemloft.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH net-next] ixgene-v2: prepare for phylib stop exporting
- phy_10_100_features_array
-Message-ID: <92040ddc-bd6c-40f0-807f-b17b7d0e6b39@lunn.ch>
-References: <ad4b5c29-abbc-450c-bada-5f671c287325@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SVXBmWYH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739310230; x=1770846230;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=/Yjv78vpFgTBFjx27sm8wPgmoHwg6vcE3jDcIZDRgV0=;
+  b=SVXBmWYHH1ZeZ8g1zxi0UGPQOo7UUSPJNghpx/P7sTkgAe1zBMICXNGe
+   YSRgD+2eHArFki1uC3zGJk7K5jUFmb7+0hDxK9Hm9F41L4BG67ZXtSlcA
+   FlZSFKTTJtslwE/R+1kHXIyGAlTovmV2opbJbBpnQG0az2lp2UXBsJKIl
+   5Lc2JWcOkXCx5CgYN/IKhGeTFFySNtoEYfYy57gFDOKYaDAfj4n27L5wV
+   GuMUx67lkoBo+Q/YSHWXmPrwSbgTNDphWgPn/kUS86UmcDhEN3/gciXgi
+   Ml6A1w0XZoSZd/7U8TNOviKAMjQfQuW6hncHnPjXYwL4Sgnj20g2ohmgr
+   w==;
+X-CSE-ConnectionGUID: FhetdRjVRqqcXi1wEcSd3A==
+X-CSE-MsgGUID: MyznHP/VTXCDf1TBUJwH7w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39185225"
+X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
+   d="scan'208";a="39185225"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 13:43:48 -0800
+X-CSE-ConnectionGUID: BWIp6exQS5OE9cn8YiTeEw==
+X-CSE-MsgGUID: SH5QtbybRzauyTAmKa/ToA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
+   d="scan'208";a="143478668"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by orviesa002.jf.intel.com with ESMTP; 11 Feb 2025 13:43:48 -0800
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	anthony.l.nguyen@intel.com,
+	willemb@google.com,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>
+Subject: [PATCH net 1/6] idpf: fix handling rsc packet with a single segment
+Date: Tue, 11 Feb 2025 13:43:32 -0800
+Message-ID: <20250211214343.4092496-2-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250211214343.4092496-1-anthony.l.nguyen@intel.com>
+References: <20250211214343.4092496-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ad4b5c29-abbc-450c-bada-5f671c287325@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-> +	linkmode_clear_bit(ETHTOOL_LINK_MODE_10baseT_Full_BIT,
-> +			   phydev->supported);
-> +	linkmode_clear_bit(ETHTOOL_LINK_MODE_10baseT_Half_BIT,
-> +			   phydev->supported);
-> +	linkmode_clear_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT,
-> +			   phydev->supported);
-> +	linkmode_clear_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT,
-> +			   phydev->supported);
-> +	linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseT_Half_BIT,
-> +			   phydev->supported);
-> +
-> +	phy_advertise_supported(phydev);
+From: Sridhar Samudrala <sridhar.samudrala@intel.com>
 
-phy_remove_link_mode() would be better. The MAC driver then does not
-need to know about the insides of the phydev structure, and it
-implicitly handles this last part.
+Handle rsc packet with a single segment same as a multi
+segment rsc packet so that CHECKSUM_PARTIAL is set in the
+skb->ip_summed field. The current code is passing CHECKSUM_NONE
+resulting in TCP GRO layer doing checksum in SW and hiding the
+issue. This will fail when using dmabufs as payload buffers as
+skb frag would be unreadable.
 
-    Andrew
-
+Fixes: 3a8845af66ed ("idpf: add RX splitq napi poll support")
+Signed-off-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
-pw-bot: cr
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 2fa9c36e33c9..c9fcf8f4d736 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -3008,8 +3008,6 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ 		return -EINVAL;
+ 
+ 	rsc_segments = DIV_ROUND_UP(skb->data_len, rsc_seg_len);
+-	if (unlikely(rsc_segments == 1))
+-		return 0;
+ 
+ 	NAPI_GRO_CB(skb)->count = rsc_segments;
+ 	skb_shinfo(skb)->gso_size = rsc_seg_len;
+-- 
+2.47.1
+
