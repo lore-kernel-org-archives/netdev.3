@@ -1,393 +1,173 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7B92101BE
-	for <netdev@vger.kernel.org>; Wed, 12 Feb 2025 15:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30212211276
+	for <netdev@vger.kernel.org>; Wed, 12 Feb 2025 15:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739372966; cv=none; b=cOvagV4kRjODQPrXvnBJ76ukq81W928BytizdUT2h6sLqMofy4f90YA+VYcY/oQTe7n5pZWI6vt0Jq6PDIFxqgoFQjwyuyRSbVq4vg3lfLa5QaI/hm8RYEaqH4n9JgauiPEu6sLof+RbgJZ6cNwzkfoKfCycizP31oAMveC3VoU=
+	t=1739373074; cv=none; b=WDbFCujbaiAoGrtZr5cUCguNiaXt0h0nyA0SCCV7C7Dl7DuVyzFDcsjjOOP0t87h8LnZUvrUFh2qEbznet69yIQ4H+LBmuGVzgrMX8ACN/DrNv+vPDv4c9+ObixrNoeC7lOa1KV1NInoOYqTRniL9qnUjbTFZqeUzSDCossvMYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739372966; c=relaxed/simple;
-	bh=prM8Rb7GKhuPzPoAk8Inm5H8aGGrbNGHzWE5rHHymiM=;
+	s=arc-20240116; t=1739373074; c=relaxed/simple;
+	bh=82qqi7EhBcHhvR+S/WkfkXa0RYZNI9DIYY5fDYXpCNw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y8qWUMH5RTHulVK/iZtSn7W+MyvOnwhO82WrJ77gYVpyOKJxMfs3ELM3tqFCp0+3CxBReLNxGZSN3kFrEuLMGyJIWLFO7xQdxiVTi7tjhwivjNpmOJN7XWfQI4qjSQr4hlvgPYYcYV1iiPjZeVXQuO7SjTaTaRDdZ3cD0+OaLC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=ECdu5PlG; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	 Content-Type:Content-Disposition:In-Reply-To; b=rahT+7NziBCXSTX8GlWDxJeYO2ob/Xz9RzT9V+qPGmnhg4xcruugWpls1jeGtNyXWgs5e756zYcJBQSOhviijs2j8fDyiVp8FHGxzImNuWJ53eRv2gJhTFK6fq90f3GfmWbpS9hO7TyJp8/TauQWVhbTVFuA+HdPzQge76ums2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bwC5rewM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=o/HgXyp8; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="ECdu5PlG"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-38dc1dfd9f2so4672502f8f.3
-        for <netdev@vger.kernel.org>; Wed, 12 Feb 2025 07:09:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1739372962; x=1739977762; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YuuXeCZqGKKqy3wYcb60X8FTK9fgYMfx8AgwL2f6mtw=;
-        b=ECdu5PlGyJhitPuZFKpwr1So4rPK+n2pFkHdno11mVLjWbtrkmC3A9mPItzlCTNlmO
-         4FUwAsgSdjiP0tXv7v7m0JVRo0jbyYxUzkheZpz1fJnfrWcmqdaASs1j6xqwm5TUhfTB
-         YN28eK3PGv1/DOr5H+AfbZ/RTnVRcrt/WNtK9lbe2wYDiMjucpBwksLBnF1AI9KwYCPt
-         4J1G0nWaxUNSqaI3xWhBDUuQ3egiO/ufCsXlwhwvkCEBYBArgMmR5XMrFnWF4qBNa7AQ
-         UZCwVLCjWueZ9zWuRo0ZzybgsXB0FykcHSOhPc0nQvNskeMg7VbEkOnLwA0k9471pV7p
-         Pk1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739372962; x=1739977762;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YuuXeCZqGKKqy3wYcb60X8FTK9fgYMfx8AgwL2f6mtw=;
-        b=aRzVtSOu1w18cVvrmu01d/aI0jpE8OgwZU3XRAEXNbVc4x7DWkDqnbnM7g4l7XPBZX
-         4uqqZD58DdXm85s6eI5MPin6ixzKi8WBTzCSktx7Po6vZeir5TrS7p/h74JzIYOBHNYQ
-         oHCjZX2Zaf9EWvR3lY5uoB7WyS+0eX2a4EhZaOyBvPd2J6NzyUswaYFq+pKJCYzjek3d
-         8uIfu5GvxziB3IUY2SRSceskWngpWY/SRIyF8/eCX68RNjOTA0tmVmvk6XPzzOOd20BQ
-         tGrVBtv2mgUgO+aBHr645l6ZnRTvJt9HXfhp+vJdWEUvEyYrLAKr9iqnTvlbsAYPeR8d
-         clpw==
-X-Forwarded-Encrypted: i=1; AJvYcCUF+cLdo6WSEOE1QQx3yNgeC5oarFRLFgoRlqw6M9Yjy0nMy/vTz3D2ByO2iI5k1KnceGgRYao=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywg+G0yXRBCOUCIv9uKDgpteMSEi/FZcLx8TGNTw0OkcCF62jlH
-	P0BXs4GDniveP2oU4zevtE6QpHcXceJbwWOS873W7/HX9zrzGQ+jwcDWQyIs8EY=
-X-Gm-Gg: ASbGncu2y4AusOJsVCBz7s9qEHCD/foz07oihbLD++4XdT2KnrSY/Y4kjM+1JPhUTg8
-	xK+IfJ8x/HgYMQb0ex375Q7TlAiC4uYG/yDgPZ5cWiLeGz8COrO2IktKitGaCQc0ZPU27Lo+0B3
-	UYG4Ejlyq4IBTW4DA6oUrZ6G9n0GGgdxfJ9icBrXzyb8ZtfJtGQ1cLidSGxi6KPHJor1u+NAknC
-	Ckc3AkzLSzt+XsovOION+VK1yH0/2GNt8HZrtUVVbShiKD0J1gFrhp7tnwCWLMufBobvnPI7jz3
-	ntCeYQ38WwrN9ty9H553Fq/B7A==
-X-Google-Smtp-Source: AGHT+IHEs7cbkyhoyUtfu7LQjjDbsnmIeLRrr4v+Uh+LRvNX0FEpoY+Il0Jgg8M+pYleUbFhB7ZY9g==
-X-Received: by 2002:a5d:5f94:0:b0:38e:65d8:b677 with SMTP id ffacd0b85a97d-38e65d8b981mr2878490f8f.33.1739372962150;
-        Wed, 12 Feb 2025 07:09:22 -0800 (PST)
-Received: from jiri-mlt ([194.212.255.194])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4395a1aa7e8sm22551005e9.26.2025.02.12.07.09.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Feb 2025 07:09:21 -0800 (PST)
-Date: Wed, 12 Feb 2025 16:09:19 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com, 
-	netdev@vger.kernel.org, horms@kernel.org, 
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Subject: Re: [PATCH iwl-next v3 02/14] ixgbe: add initial devlink support
-Message-ID: <cmywoei5shisdjbt7ipv6rmfxx6jgafu2ccb4xr3phq3ealx3n@kxsdwd6u5bgk>
-References: <20250212131413.91787-1-jedrzej.jagielski@intel.com>
- <20250212131413.91787-3-jedrzej.jagielski@intel.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bwC5rewM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="o/HgXyp8"
+Date: Wed, 12 Feb 2025 16:11:08 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1739373070;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9SrfOWDCT3XuVLyeucGyiCbsN3LAsppGk75lAUq/SMs=;
+	b=bwC5rewMj4IiTKRVeoaFCl3ZEAWop6emxipwa6BMA4/fCHtzKaYn+EI4P+DGRI3kozJMDc
+	x2JIUDdg9OMpF2Vqchi7IIHryBwaqvssgk/NpeuE5p9Ty73Zii7A6sZ8JbLak87/DVvzLR
+	e+tV+PtROlAaitsiGhgEfA2IGr50N+GjOT1141DgpaOwUTqbSzqwIBrIWAkEcKR28r0XVn
+	jD1RoGV6y7UeIQlB4OMCfD5T20FHdAnyyuPSrPQTIHU8YM4wetZCIgaNPATEZUFhpU6viw
+	D2TLMt6dMaFbi5xlgkKZFrEY3y35+CNpjVh9RdOjESXfE2N1yl5XTLbBQpXezQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1739373070;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9SrfOWDCT3XuVLyeucGyiCbsN3LAsppGk75lAUq/SMs=;
+	b=o/HgXyp8ZAFpI+kXnPtVxC36730434MotVM6XITNddzybVCSipIvUNpBOGw7Hk2ufBW1v4
+	If0ijLensOdwkJCQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Wander Lairson Costa <wander@redhat.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, davem@davemloft.net,
+	kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
+	andrew+netdev@lunn.ch, netdev@vger.kernel.org, rostedt@goodmis.org,
+	clrkwllms@kernel.org, jgarzik@redhat.com, yuma@redhat.com,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH net 0/4][pull request] igb: fix igb_msix_other() handling
+ for PREEMPT_RT
+Message-ID: <20250212151108.jI8qODdD@linutronix.de>
+References: <20250204175243.810189-1-anthony.l.nguyen@intel.com>
+ <20250205094818.I-Jl44AK@linutronix.de>
+ <mrw3tpwsravsaibkcpptdkko3ff6qtk6w6ernqvjisk4l7owok@q6hmxkzcdkey>
+ <20250206115914.VfzGTwD8@linutronix.de>
+ <zy3irjybyc32hnow3ckhkfsrtfm5nev44aeovinlkkfc6tyyjv@gcblibp5ng3o>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250212131413.91787-3-jedrzej.jagielski@intel.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <zy3irjybyc32hnow3ckhkfsrtfm5nev44aeovinlkkfc6tyyjv@gcblibp5ng3o>
 
-Wed, Feb 12, 2025 at 02:14:01PM +0100, jedrzej.jagielski@intel.com wrote:
->Add an initial support for devlink interface to ixgbe driver.
->
->Similarly to i40e driver the implementation doesn't enable
->devlink to manage device-wide configuration. Devlink instance
->is created for each physical function of PCIe device.
->
->Create separate directory for devlink related ixgbe files
->and use naming scheme similar to the one used in the ice driver.
->
->Add a stub for Documentation, to be extended by further patches.
->
->Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
->Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
->---
->v2: fix error patch in probe; minor tweaks
->---
-> Documentation/networking/devlink/index.rst    |  1 +
-> Documentation/networking/devlink/ixgbe.rst    |  8 ++
-> drivers/net/ethernet/intel/Kconfig            |  1 +
-> drivers/net/ethernet/intel/ixgbe/Makefile     |  3 +-
-> .../ethernet/intel/ixgbe/devlink/devlink.c    | 80 +++++++++++++++++++
-> .../ethernet/intel/ixgbe/devlink/devlink.h    | 10 +++
-> drivers/net/ethernet/intel/ixgbe/ixgbe.h      |  8 ++
-> drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 22 +++++
-> 8 files changed, 132 insertions(+), 1 deletion(-)
-> create mode 100644 Documentation/networking/devlink/ixgbe.rst
-> create mode 100644 drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-> create mode 100644 drivers/net/ethernet/intel/ixgbe/devlink/devlink.h
->
->diff --git a/Documentation/networking/devlink/index.rst b/Documentation/networking/devlink/index.rst
->index 948c8c44e233..8319f43b5933 100644
->--- a/Documentation/networking/devlink/index.rst
->+++ b/Documentation/networking/devlink/index.rst
->@@ -84,6 +84,7 @@ parameters, info versions, and other features it supports.
->    i40e
->    ionic
->    ice
->+   ixgbe
->    mlx4
->    mlx5
->    mlxsw
->diff --git a/Documentation/networking/devlink/ixgbe.rst b/Documentation/networking/devlink/ixgbe.rst
->new file mode 100644
->index 000000000000..c04ac51c6d85
->--- /dev/null
->+++ b/Documentation/networking/devlink/ixgbe.rst
->@@ -0,0 +1,8 @@
->+.. SPDX-License-Identifier: GPL-2.0
->+
->+=====================
->+ixgbe devlink support
->+=====================
->+
->+This document describes the devlink features implemented by the ``ixgbe``
->+device driver.
->diff --git a/drivers/net/ethernet/intel/Kconfig b/drivers/net/ethernet/intel/Kconfig
->index 1640d2f27833..56ee58c9df21 100644
->--- a/drivers/net/ethernet/intel/Kconfig
->+++ b/drivers/net/ethernet/intel/Kconfig
->@@ -147,6 +147,7 @@ config IXGBE
-> 	depends on PCI
-> 	depends on PTP_1588_CLOCK_OPTIONAL
-> 	select MDIO
->+	select NET_DEVLINK
-> 	select PHYLIB
-> 	help
-> 	  This driver supports Intel(R) 10GbE PCI Express family of
->diff --git a/drivers/net/ethernet/intel/ixgbe/Makefile b/drivers/net/ethernet/intel/ixgbe/Makefile
->index b456d102655a..11f37140c0a3 100644
->--- a/drivers/net/ethernet/intel/ixgbe/Makefile
->+++ b/drivers/net/ethernet/intel/ixgbe/Makefile
->@@ -4,12 +4,13 @@
-> # Makefile for the Intel(R) 10GbE PCI Express ethernet driver
-> #
-> 
->+subdir-ccflags-y += -I$(src)
-> obj-$(CONFIG_IXGBE) += ixgbe.o
-> 
-> ixgbe-y := ixgbe_main.o ixgbe_common.o ixgbe_ethtool.o \
->            ixgbe_82599.o ixgbe_82598.o ixgbe_phy.o ixgbe_sriov.o \
->            ixgbe_mbx.o ixgbe_x540.o ixgbe_x550.o ixgbe_lib.o ixgbe_ptp.o \
->-           ixgbe_xsk.o ixgbe_e610.o
->+           ixgbe_xsk.o ixgbe_e610.o devlink/devlink.o
-> 
-> ixgbe-$(CONFIG_IXGBE_DCB) +=  ixgbe_dcb.o ixgbe_dcb_82598.o \
->                               ixgbe_dcb_82599.o ixgbe_dcb_nl.o
->diff --git a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
->new file mode 100644
->index 000000000000..c052e95c9496
->--- /dev/null
->+++ b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
->@@ -0,0 +1,80 @@
->+// SPDX-License-Identifier: GPL-2.0
->+/* Copyright (c) 2025, Intel Corporation. */
->+
->+#include "ixgbe.h"
->+#include "devlink.h"
->+
->+static const struct devlink_ops ixgbe_devlink_ops = {
->+};
->+
->+/**
->+ * ixgbe_allocate_devlink - Allocate devlink instance
->+ * @adapter: pointer to the device adapter structure
->+ *
->+ * Allocate a devlink instance for this physical function.
->+ *
->+ * Return: 0 on success, -ENOMEM when allocation failed.
->+ */
->+int ixgbe_allocate_devlink(struct ixgbe_adapter *adapter)
->+{
->+	struct ixgbe_devlink_priv *devlink_private;
->+	struct device *dev = &adapter->pdev->dev;
->+	struct devlink *devlink;
->+
->+	devlink = devlink_alloc(&ixgbe_devlink_ops,
->+				sizeof(*devlink_private), dev);
->+	if (!devlink)
->+		return -ENOMEM;
->+
->+	devlink_private = devlink_priv(devlink);
->+	devlink_private->adapter = adapter;
+On 2025-02-12 08:56:47 [-0300], Wander Lairson Costa wrote:
+> > What disables preemption? On PREEMPT_RT the spin_lock() does not disable
+> > preemption. You shouldn't spin that long. When was interrupt scheduled.
+> > _Why_ is the interrupt delayed that long.
+> >=20
+> When I was using trace-cmd report -l, it omitted some fields, one of
+> them is preempt-lazy-depth (which was something new to me), and it seems
+> this is what affects interrupts. It comes from here [1]. I had the logs,
+> but the machine went under maintenance  before I could save them. Once
+> it comes back, I can grab them and post here.
+>=20
+> [1] https://elixir.bootlin.com/linux/v6.13.2/source/drivers/net/ethernet/=
+intel/igbvf/netdev.c#L1522
 
-struct ixgbe_adapter * should be returned by devlink_priv(), that is the
-idea, to let devlink allocate the driver private for you.
+If you do send patches against mainline please test against mainline. As
+of today we have preempt-disable and migrate-disable depth. We don't
+do lazy-depth anymore, we just have a bit now (which is [lLbB]).
+The referenced line will only disable migration, not preemption.
 
+It is important to understand what exactly is going on.
 
+> > diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/et=
+hernet/intel/igb/igb_main.c
+> > index d368b753a4675..6fe37b8001c36 100644
+> > --- a/drivers/net/ethernet/intel/igb/igb_main.c
+> > +++ b/drivers/net/ethernet/intel/igb/igb_main.c
+> > @@ -912,7 +912,7 @@ static int igb_request_msix(struct igb_adapter *ada=
+pter)
+> >  	struct net_device *netdev =3D adapter->netdev;
+> >  	int i, err =3D 0, vector =3D 0, free_vector =3D 0;
+> > =20
+> > -	err =3D request_irq(adapter->msix_entries[vector].vector,
+> > +	err =3D request_threaded_irq(adapter->msix_entries[vector].vector, NU=
+LL,
+> >  			  igb_msix_other, 0, netdev->name, adapter);
+> >  	if (err)
+> >  		goto err_out;
+> >=20
+> > just to see if it solves the problem?
+> >=20
+> I have two test cases:
+>=20
+> 1) Boot the machine with nr_cpus=3D1. The driver reports "PF still
+> resetting" message continuously. This issue is gone.
 
->+
->+	adapter->devlink = devlink;
->+
->+	return 0;
->+}
->+
->+/**
->+ * ixgbe_devlink_set_switch_id - Set unique switch ID based on PCI DSN
->+ * @adapter: pointer to the device adapter structure
->+ * @ppid: struct with switch id information
->+ */
->+static void ixgbe_devlink_set_switch_id(struct ixgbe_adapter *adapter,
->+					struct netdev_phys_item_id *ppid)
->+{
->+	u64 id = pci_get_dsn(adapter->pdev);
->+
->+	ppid->id_len = sizeof(id);
->+	put_unaligned_be64(id, &ppid->id);
->+}
->+
->+/**
->+ * ixgbe_devlink_register_port - Register devlink port
->+ * @adapter: pointer to the device adapter structure
->+ *
->+ * Create and register a devlink_port for this physical function.
->+ *
->+ * Return: 0 on success, error code on failure.
->+ */
->+int ixgbe_devlink_register_port(struct ixgbe_adapter *adapter)
->+{
->+	struct devlink_port *devlink_port = &adapter->devlink_port;
->+	struct devlink *devlink = adapter->devlink;
->+	struct device *dev = &adapter->pdev->dev;
->+	struct devlink_port_attrs attrs = {};
->+	int err;
->+
->+	attrs.flavour = DEVLINK_PORT_FLAVOUR_PHYSICAL;
->+	attrs.phys.port_number = adapter->hw.bus.func;
->+	ixgbe_devlink_set_switch_id(adapter, &attrs.switch_id);
->+
->+	devlink_port_attrs_set(devlink_port, &attrs);
->+
->+	err = devl_port_register(devlink, devlink_port, 0);
->+	if (err) {
->+		dev_err(dev,
->+			"devlink port registration failed, err %d\n", err);
->+	}
+good.
 
-Don't use "{}" for single statement.
+> 2) Run the following script:
+>=20
+>     ipaddr_vlan=3D3
+>     nic_test=3Dens14f0
+>     vf=3D${nic_test}v0 # The main testing steps:
+>     while true; do
+>         ip link set ${nic_test} mtu 1500
+>         ip link set ${vf} mtu 1500
+>         ip link set $vf up
+>         # 3. set vlan and ip for VF
+>         ip link set ${nic_test} vf 0 vlan ${ipaddr_vlan}
+>         ip addr add 172.30.${ipaddr_vlan}.1/24 dev ${vf}
+>         ip addr add 2021:db8:${ipaddr_vlan}::1/64 dev ${vf}
+>         # 4. check the link state for VF and PF
+>         ip link show ${nic_test}
+>         if ! ip link show $vf | grep 'state UP'; then
+>             echo 'Error found'
+>             break
+>         fi
+>         ip link set $vf down
+>     done
+>=20
+> This one eventually fails. It is the first time that one works and the
+> other fails. So far, it has been all or nothing. I didn't have time yet to
+> investigate why this happens.
 
+"eventually fails". Does this mean it passes the first few iterations
+but then it times out? In that case it might be something else
 
->+
->+	return err;
->+}
->diff --git a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.h b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.h
->new file mode 100644
->index 000000000000..d73c57164aef
->--- /dev/null
->+++ b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.h
->@@ -0,0 +1,10 @@
->+/* SPDX-License-Identifier: GPL-2.0 */
->+/* Copyright (c) 2025, Intel Corporation. */
->+
->+#ifndef _IXGBE_DEVLINK_H_
->+#define _IXGBE_DEVLINK_H_
->+
->+int ixgbe_allocate_devlink(struct ixgbe_adapter *adapter);
->+int ixgbe_devlink_register_port(struct ixgbe_adapter *adapter);
->+
->+#endif /* _IXGBE_DEVLINK_H_ */
->diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
->index e6a380d4929b..37d761f8c409 100644
->--- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
->+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
->@@ -17,6 +17,8 @@
-> #include <linux/net_tstamp.h>
-> #include <linux/ptp_clock_kernel.h>
-> 
->+#include <net/devlink.h>
->+
-> #include "ixgbe_type.h"
-> #include "ixgbe_common.h"
-> #include "ixgbe_dcb.h"
->@@ -612,6 +614,8 @@ struct ixgbe_adapter {
-> 	struct bpf_prog *xdp_prog;
-> 	struct pci_dev *pdev;
-> 	struct mii_bus *mii_bus;
->+	struct devlink *devlink;
->+	struct devlink_port devlink_port;
-> 
-> 	unsigned long state;
-> 
->@@ -830,6 +834,10 @@ struct ixgbe_adapter {
-> 	spinlock_t vfs_lock;
-> };
-> 
->+struct ixgbe_devlink_priv {
->+	struct ixgbe_adapter *adapter;
->+};
->+
-> static inline int ixgbe_determine_xdp_q_idx(int cpu)
-> {
-> 	if (static_key_enabled(&ixgbe_xdp_locking_key))
->diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
->index 7236f20c9a30..1617ece95f1f 100644
->--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
->+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
->@@ -49,6 +49,7 @@
-> #include "ixgbe_sriov.h"
-> #include "ixgbe_model.h"
-> #include "ixgbe_txrx_common.h"
->+#include "devlink/devlink.h"
-> 
-> char ixgbe_driver_name[] = "ixgbe";
-> static const char ixgbe_driver_string[] =
->@@ -11275,6 +11276,10 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-> 	hw->back = adapter;
-> 	adapter->msg_enable = netif_msg_init(debug, DEFAULT_MSG_ENABLE);
-> 
->+	err = ixgbe_allocate_devlink(adapter);
->+	if (err)
->+		goto err_devlink;
->+
-> 	hw->hw_addr = ioremap(pci_resource_start(pdev, 0),
-> 			      pci_resource_len(pdev, 0));
-> 	adapter->io_addr = hw->hw_addr;
->@@ -11613,6 +11618,11 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-> 	}
-> 	strcpy(netdev->name, "eth%d");
-> 	pci_set_drvdata(pdev, adapter);
->+
->+	devl_lock(adapter->devlink);
->+	ixgbe_devlink_register_port(adapter);
->+	SET_NETDEV_DEVLINK_PORT(adapter->netdev, &adapter->devlink_port);
->+
-> 	err = register_netdev(netdev);
-> 	if (err)
-> 		goto err_register;
->@@ -11667,11 +11677,15 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-> 	if (err)
-> 		goto err_netdev;
-> 
->+	devl_register(adapter->devlink);
->+	devl_unlock(adapter->devlink);
-> 	return 0;
-> 
-> err_netdev:
-> 	unregister_netdev(netdev);
-> err_register:
->+	devl_port_unregister(&adapter->devlink_port);
->+	devl_unlock(adapter->devlink);
-> 	ixgbe_release_hw_control(adapter);
-> 	ixgbe_clear_interrupt_scheme(adapter);
-> 	if (hw->mac.type == ixgbe_mac_e610)
->@@ -11685,6 +11699,8 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-> 	kfree(adapter->rss_key);
-> 	bitmap_free(adapter->af_xdp_zc_qps);
-> err_ioremap:
->+	devlink_free(adapter->devlink);
->+err_devlink:
-> 	disable_dev = !test_and_set_bit(__IXGBE_DISABLED, &adapter->state);
-> 	free_netdev(netdev);
-> err_alloc_etherdev:
->@@ -11717,6 +11733,8 @@ static void ixgbe_remove(struct pci_dev *pdev)
-> 		return;
-> 
-> 	netdev  = adapter->netdev;
->+	devl_lock(adapter->devlink);
->+	devl_unregister(adapter->devlink);
-> 	ixgbe_dbg_adapter_exit(adapter);
-> 
-> 	set_bit(__IXGBE_REMOVING, &adapter->state);
->@@ -11752,6 +11770,10 @@ static void ixgbe_remove(struct pci_dev *pdev)
-> 	if (netdev->reg_state == NETREG_REGISTERED)
-> 		unregister_netdev(netdev);
-> 
->+	devl_port_unregister(&adapter->devlink_port);
->+	devl_unlock(adapter->devlink);
->+	devlink_free(adapter->devlink);
->+
-> 	ixgbe_stop_ipsec_offload(adapter);
-> 	ixgbe_clear_interrupt_scheme(adapter);
-> 
->-- 
->2.31.1
->
+I managed to find a "Intel Corporation I350 Gigabit Network Connection
+(rev 01)" and I end up in a warning if I start the script (without the
+while true):
+
+|8021q: adding VLAN 0 to HW filter on device eno0v0
+|igbvf 0000:08:10.0: Vlan id 0 is not added
+|igb 0000:07:00.0: Setting VLAN 3, QOS 0x0 on VF 0
+|igb 0000:07:00.0: VF 0 attempted to set invalid MAC filter
+|------------[ cut here ]------------
+|WARNING: CPU: 25 PID: 3013 at drivers/net/ethernet/intel/igbvf/netdev.c:17=
+77 igbvf_close+0x111/0x120
+=E2=80=A6
+|CPU: 25 UID: 0 PID: 3013 Comm: ip Not tainted 6.14.0-rc1-rt1+ #186 PREEMPT=
+_RT+LAZY 39474a76e7562bb76173f4b98cf194301d39bf7f
+|igbvf 0000:08:10.0: Link is Up 1000 Mbps Full Duplex
+|---[ end trace 0000000000000000 ]---
+|igb 0000:07:00.0: VF 0 attempted to set invalid MAC filter
+|igb 0000:07:00.0: VF 0 attempted to set invalid MAC filter
+|igb 0000:07:00.0: VF 0 attempted to set invalid MAC filter
+|8021q: adding VLAN 0 to HW filter on device eno0v0
+|igb 0000:07:00.0: VF 0 attempted to override administratively set VLAN tag
+|Reload the VF driver to resume operations
+|igbvf 0000:08:10.0: Link is Up 1000 Mbps Full Duplex
+|igb 0000:07:00.0: VF 0 attempted to set invalid MAC filter
+
+and the state is down ('Error found' is printed). But if I do it
+manually, line by line, then it all passes without the warning and the
+state of the VF device is up.
+
+Sebastian
