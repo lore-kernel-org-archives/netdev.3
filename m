@@ -1,100 +1,201 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D78262151;
-	Wed, 12 Feb 2025 15:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782D625A354;
+	Wed, 12 Feb 2025 15:52:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739375285; cv=none; b=E0/FHMWe2iP1OlQHy5rzfQss/UeXWjz6F5hd08ewyx87MntF34eq9xptZPW0FVnK2KP3ARqrZFqojSRm++DOZn1gQvK3xqu3ARN5ib/7nowGI8OH3kdVF70Rbt/de1ygqYmyTlKXa6UZJ+zDFZ57DQ9rfzWknctaz7kuStfGcVE=
+	t=1739375547; cv=none; b=VMHzuF+UjhM5Y1WIEB0SJJ7ojoCKQpqVROnw4tM4yqPmrEXNQeAgypTViE72rOyeDR8N9O0KK82/j9cgF5/IKw0ErVrAX0oPHW/Z45dSj4B0AlpXzz/psjqM0UC8pMiwgiQtIHWfWHbjzxM2+GByPRjKCPH6PUjwAWSisOzGds4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739375285; c=relaxed/simple;
-	bh=osZmc1DPVoTq245gL1CMMReUC2xc6UC5A8bH+WgUWnc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qcxsns8x82jdNw5bJCUjjDzFLNXMbPL68wwDflEXh5AXz0kCDDZczttCZ8iyfyAP4XheWMEFYJ7xMShsYNO3mNcJ0Nu9cwMucxYK/nYq/Hr98x4sCyUT+ObhCJ3I1ftobM7SU4RxslAzq22Zch9KDsuoUQJyeWM2GgET9kxsetU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mXvv70m2; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1739375547; c=relaxed/simple;
+	bh=jrXhWYnImskFko9wBtv2JPSJVKz9x+wgYx6uQ0eFWZk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bN73G3vBx2WUxXzEXmPlJS22Qaa2I/4tpoXJzZTleFmsFAbGGJEd5nhOSS8/syCqWaqWZsVw/s7uI3huIGuDsLYSe8bu4ItZ8ysD+1/51qWdq22EFtHHNBT4zkOTF7J0/iJF2gappwQMTG30dmPt0u1ynDrTaw1RsG2L2U5w/No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G6VymOBh; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mXvv70m2"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 364144416E;
-	Wed, 12 Feb 2025 15:47:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739375280;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P0G+yYadJWDhMsM9S6K3wOyG/oWy+c8825+nanSQpks=;
-	b=mXvv70m2Am4yO9Kvh96qPNwuxJRncLele/NuEh6/2t4WDnmi3Z/YfV9XJ2Sc+NNlAW0FgG
-	7hxEycTIR8B7mq2rLD3m96VSZMlRCDVvtNR9IBwJNWyRy4Pn7VQaOeOhgeNU/N/dFdaHVl
-	s+/443rY8H5dyrNEHa/6aNADLCq0wzn7oTBUF1MwUAdluXbD+hW2ESqaNHFvMtwvDuSLDg
-	MYi+Ord8vFvRNsqeodt+svNBmSq85ft2DTI3BGiwtT0pIUpdrIoqKUTKpraxtbIn+5K08P
-	hfH5ZQyps+2ZiKs537yNF+taQyBpbRY6dPth7dbiUyFT0Bhs7BFXZdYO6rVQtg==
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Date: Wed, 12 Feb 2025 16:46:31 +0100
-Subject: [PATCH 12/12] MAINTAINERS: add entry for new wilc3000 bluetooth
- driver
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G6VymOBh"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-38dd011ff8bso4197151f8f.0;
+        Wed, 12 Feb 2025 07:52:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739375544; x=1739980344; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zy76W96ncGtjcIE/1RFX9zT9Pr7PxW1QtkdC0k/xF7g=;
+        b=G6VymOBhgDwpbDuyoMazrUbYpQA1hTntdHRYV8udjB+/YX39Jyow/mkBf9q8Ixhlsm
+         e5/WAJ++wRXMIc6wgVDzlwotBh7bit3Tz2009rjRm+0vkrTWZ9s+qM3NLVLICknLGJ9s
+         TDfILeiDXZ9Hqj8wtmxa6wkMXjgYhANBRsPNTg+TzKXreqHzXSglGhZ9rzsO0WHL7RSb
+         uSjTanDr8JBmEuxXT2894gJBEoVNC1IwTwHRpWwLiGpfe4vvFUsDl4uEroWw0ki9jt6O
+         G9Np5FZzCDVix5/Xd5r8l+rBrAGinJ5q276GReQ8xRZ4qY3+V3CqAoZIbNx17SWtiX1F
+         tuTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739375544; x=1739980344;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zy76W96ncGtjcIE/1RFX9zT9Pr7PxW1QtkdC0k/xF7g=;
+        b=K1t2mony+93uNOUBe2OeMaBnZK53aZX2e06bkVnMm6IsW7H9CrZTy2VK4yHg21eyP2
+         FsLZV+xSbAeWBONGkTA+UWKzO8JWGEHlCU75p7OBRs+o7HSG84lEhv+q1NIV7BGR1Dfw
+         8p0n4XUSx2h06Qsn8/8aqsliiB2tWjoMqoEgFbd48CE8nu1s35FzyDqb8PSAkxbWg0Gn
+         1PKwbJcFJ8MgNOHBvc1FQmbl/5SXQpVvLsbaXIVQpQwq7pDjvTrSbIJndMDw3uGgeykJ
+         arxd8Qgvm8fybksXjQpdz7IUX3hVIRb7Pn2L5CE/I7u9kmtpAJbQ1cYj5Twk+0zhcnU2
+         90KQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUojgXkHg/X5fKScukYx0kqlGZ6sV7YrMSZ8irgdkuS6ylW20P6LCyBwIBG5mBJD71VhktI66hKsTdE@vger.kernel.org, AJvYcCVcXpwq22D9ieFDb/A/UFwCQploM88/0+SHC4q+CvaSZz1rUIv+cV0akL6EHauomrQQ5YSwCSyhx8/wlZa1@vger.kernel.org, AJvYcCXqPva3JfLbkPCGeThY+HbX4f3591hBig4Og5Ox24CkcKc33U9rnbLOUbH4+Gs9qp8K3Z1nejvUFpdX4RehaJb+@vger.kernel.org, AJvYcCXw3ewdCD5CpWMwFynXXYQGkGygYz/pE6Hl34mL1W6rS2YiPBlsDf/5TncXnjAdKL1j/Eo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUBxLzRXpkDL7j2KWsPZ7uAdvgzkIeHgvWeL5dc+7wddWmRsam
+	5s6jcASjd427GsK+wY85U5reHA7a9qzmbB4HZC0U2kBAgHPTfk1k
+X-Gm-Gg: ASbGnctLi4wEw195lN3JkPNtq01Vm7ICHrEWA/U4X2hmmK8ctCjnyJoHbUYQEY+vv/J
+	6QPG8A5bVuVkgJ6b3Cdm9VnZHIiQmb/5zHwIItMjTHzcou5xhuM4Qac+cnJzrQzozTEu+GaeN1L
+	dIfXEYrv0b/dA11S8oVkFb/DwywMat+5Q6swtcKQYmt163JCG+8aHGSgs0kQY+nE8t3cRUQ1xEk
+	+Aw9DLML/U6nEBfaYNG99H7yK5lbqLpNcS1jsrWvUMasPlAsITScAWVVtT9ny9tn/v44O/9XcbD
+	jCh6OWNPHVGKFmlZM0+c54/p
+X-Google-Smtp-Source: AGHT+IGpD+27wLo/4uLAUDA60FDap/eR74/Ue8vD3BXCKcQh+GD2m9lFZwxy9qa3lhW3DrbvJ0WWIw==
+X-Received: by 2002:a5d:6da5:0:b0:38d:eb33:79c2 with SMTP id ffacd0b85a97d-38deb337a6cmr2961051f8f.32.1739375543490;
+        Wed, 12 Feb 2025 07:52:23 -0800 (PST)
+Received: from [192.168.8.100] ([148.252.128.10])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4395a04ee2fsm23278465e9.4.2025.02.12.07.52.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Feb 2025 07:52:22 -0800 (PST)
+Message-ID: <28343e83-6d93-4002-a691-f8273d4d24a8@gmail.com>
+Date: Wed, 12 Feb 2025 15:53:23 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 5/6] net: devmem: Implement TX path
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-kselftest@vger.kernel.org,
+ Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Neal Cardwell <ncardwell@google.com>, David Ahern <dsahern@kernel.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>,
+ sdf@fomichev.me, dw@davidwei.uk, Jamal Hadi Salim <jhs@mojatatu.com>,
+ Victor Nogueira <victor@mojatatu.com>, Pedro Tammela
+ <pctammela@mojatatu.com>, Samiullah Khawaja <skhawaja@google.com>,
+ Kaiyuan Zhang <kaiyuanz@google.com>
+References: <20250203223916.1064540-1-almasrymina@google.com>
+ <20250203223916.1064540-6-almasrymina@google.com>
+ <abc22620-d509-4b12-80ac-0c36b08b36d9@gmail.com>
+ <CAHS8izNOqaFe_40gFh09vdBz6-deWdeGu9Aky-e7E+Wu2qtfdw@mail.gmail.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <CAHS8izNOqaFe_40gFh09vdBz6-deWdeGu9Aky-e7E+Wu2qtfdw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250212-wilc3000_bt-v1-12-9609b784874e@bootlin.com>
-References: <20250212-wilc3000_bt-v1-0-9609b784874e@bootlin.com>
-In-Reply-To: <20250212-wilc3000_bt-v1-0-9609b784874e@bootlin.com>
-To: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, 
- Marcel Holtmann <marcel@holtmann.org>, 
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Ajay Singh <ajay.kathat@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Marek Vasut <marex@denx.de>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- linux-bluetooth@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.14.2
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeggedvkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtkeertdertdejnecuhfhrohhmpeetlhgvgihishcunfhothhhohhrrocuoegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeevgefhteffuefhheekkeelffffvdeugffgveejffdtvdffudehtedtieevteetnecukfhppedvrgdtvdemkeegvdekmehfleegtgemvgdttdemmehfkeehnecuvehluhhsthgvrhfuihiivgepkeenucfrrghrrghmpehinhgvthepvdgrtddvmeekgedvkeemfhelgegtmegvtddtmeemfhekhedphhgvlhhopegludelvddrudeikedruddrudeljegnpdhmrghilhhfrhhomheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvgedprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeguvghvihgtvghtrhgvvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdpr
- hgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhuihiirdguvghnthiisehgmhgrihhlrdgtohhm
-X-GND-Sasl: alexis.lothore@bootlin.com
 
-Add MAINTAINERS entry for the new bluetooth driver in
-drivers/bluetooth/hci_wilc.c
+On 2/10/25 21:09, Mina Almasry wrote:
+> On Wed, Feb 5, 2025 at 4:20 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
+>>
+>> On 2/3/25 22:39, Mina Almasry wrote:
+>> ...
+>>> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+>>> index bb2b751d274a..3ff8f568c382 100644
+>>> --- a/include/linux/skbuff.h
+>>> +++ b/include/linux/skbuff.h
+>>> @@ -1711,9 +1711,12 @@ struct ubuf_info *msg_zerocopy_realloc(struct sock *sk, size_t size,
+>> ...
+>>>    int zerocopy_fill_skb_from_iter(struct sk_buff *skb,
+>>>                                struct iov_iter *from, size_t length);
+>>> @@ -1721,12 +1724,14 @@ int zerocopy_fill_skb_from_iter(struct sk_buff *skb,
+>>>    static inline int skb_zerocopy_iter_dgram(struct sk_buff *skb,
+>>>                                          struct msghdr *msg, int len)
+>>>    {
+>>> -     return __zerocopy_sg_from_iter(msg, skb->sk, skb, &msg->msg_iter, len);
+>>> +     return __zerocopy_sg_from_iter(msg, skb->sk, skb, &msg->msg_iter, len,
+>>> +                                    NULL);
+>>
+>> Instead of propagating it all the way down and carving a new path, why
+>> not reuse the existing infra? You already hook into where ubuf is
+>> allocated, you can stash the binding in there. And
+> 
+> It looks like it's not possible to increase the side of ubuf_info at
+> all, otherwise the BUILD_BUG_ON in msg_zerocopy_alloc() fires.
+> 
+> It's asserting that sizeof(ubuf_info_msgzc) <= sizeof(skb->cb), and
+> I'm guessing increasing skb->cb size is not really the way to go.
+> 
+> What I may be able to do here is stash the binding somewhere in
+> ubuf_info_msgzc via union with fields we don't need for devmem, and/or
 
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+It doesn't need to account the memory against the user, and you
+actually don't want that because dmabuf should take care of that.
+So, it should be fine to reuse ->mmp.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 82b227c3939a49996498f4e829541eb5380ab2b3..2f02aecc21e96a2f9e6ff2de3864bb2d2b964127 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15526,6 +15526,13 @@ L:	linux-wireless@vger.kernel.org
- S:	Supported
- F:	drivers/net/wireless/microchip/wilc1000/
- 
-+MICROCHIP WILC3000 BLUETOOTH DRIVER
-+M:	Alexis Lothoré <alexis.lothore@bootlin.com>
-+L:	linux-bluetooth@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/net/bluetooth/microchip,wilc3000-bt.yaml
-+F:	drivers/bluetooth/hci_wilc.c
-+
- MICROSEMI MIPS SOCS
- M:	Alexandre Belloni <alexandre.belloni@bootlin.com>
- M:	UNGLinuxDriver@microchip.com
+It's also not a real sk_buff, so maybe maintainers wouldn't mind
+reusing some more space out of it, if that would even be needed.
+
+> stashing the binding in ubuf_info_ops (very hacky). Neither approach
+> seems ideal, but the former may work and may be cleaner.
+> 
+> I'll take a deeper look here. I had looked before and concluded that
+> we're piggybacking devmem TX on MSG_ZEROCOPY path, because we need
+> almost all of the functionality there (no copying, send complete
+> notifications, etc), with one minor change in the skb filling. I had
+> concluded that if MSG_ZEROCOPY was never updated to use the existing
+> infra, then it's appropriate for devmem TX piggybacking on top of it
+
+MSG_ZEROCOPY does use the common infra, i.e. passing ubuf_info,
+but doesn't need ->sg_from_iter as zerocopy_fill_skb_from_iter()
+and it's what was there first.
+
+> to follow that. I would not want to get into a refactor of
+> MSG_ZEROCOPY for no real reason.
+> 
+> But I'll take a deeper look here and see if I can make something
+> slightly cleaner work.
+> 
+>> zerocopy_fill_skb_from_devmem can implement ->sg_from_iter,
+>> see __zerocopy_sg_from_iter().
+>>
+>> ...
+>>> diff --git a/net/core/datagram.c b/net/core/datagram.c
+>>> index f0693707aece..c989606ff58d 100644
+>>> --- a/net/core/datagram.c
+>>> +++ b/net/core/datagram.c
+>>> @@ -63,6 +63,8 @@
+>>> +static int
+>>> +zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *from,
+>>> +                           int length,
+>>> +                           struct net_devmem_dmabuf_binding *binding)
+>>> +{
+>>> +     int i = skb_shinfo(skb)->nr_frags;
+>>> +     size_t virt_addr, size, off;
+>>> +     struct net_iov *niov;
+>>> +
+>>> +     while (length && iov_iter_count(from)) {
+>>> +             if (i == MAX_SKB_FRAGS)
+>>> +                     return -EMSGSIZE;
+>>> +
+>>> +             virt_addr = (size_t)iter_iov_addr(from);
+>>
+>> Unless I missed it somewhere it needs to check that the iter
+>> is iovec based.
+>>
+> 
+> How do we end up here with an iterator that is not iovec based? Is the
+> user able to trigger that somehow and I missed it?
+
+Hopefully not, but for example io_uring passes bvecs for a number of
+requests that can end up in tcp_sendmsg_locked(). Those probably
+would work with the current patch, but check the order of some of the
+checks it will break. And once io_uring starts passing bvecs for
+normal send[msg] requests, it'd definitely be possible. And there
+are other in kernel users apart from send(2) path, so who knows.
+
+The api allows it and therefore should be checked, it's better to
+avoid quite possible latent bugs.
 
 -- 
-2.48.0
+Pavel Begunkov
 
