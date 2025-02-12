@@ -1,645 +1,226 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E4D263C61
-	for <netdev@vger.kernel.org>; Wed, 12 Feb 2025 18:59:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DB2260A31
+	for <netdev@vger.kernel.org>; Wed, 12 Feb 2025 19:19:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739386759; cv=none; b=aumInGUqBAQxzvcNrZpfsxEIMp18bgPGS5WGx5j4s+Oh3tKJV5nl3axzxiVOajP9HHgyTIytpakjJt7FGx+uKfCApXJLp21yS60BvpiLJdNQYLJI41/CqxTXorNTTEAthRBryi8l1SmaKipNmy86DaWlm9dTGinReZSScp7LSAc=
+	t=1739387945; cv=none; b=BJpGfTPMefNaCTTXf7w20m4EGQ63/RbZGzW4AVskWHcEG7RF5OMCAzI9ACu9ofF/IeWmGLHj9B/8xY0CnOKIpmNyJHvn2frna44tD5+SLrVGWRyB32g09Pba30EKxV6YYPurXHD2LM6063Uw+nOqnduBQC7HNlKnaKrbC86JaOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739386759; c=relaxed/simple;
-	bh=zwEaT1fzCA6pZ/DniFaCt9D40j2W53weGLCTLMkrfvE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5/C2KM6mR1Y5H0liisHiMOVhbzxjNWfy1rzWdRPu60clJK3QIGFW+WVzupxHKtf8KpcCG9F85PEeZZk+Wqz/HAuZIM5nCrnxFjwsEK4lJfj6Ao2UqhSW3RC+rwDTmJ5mD4PJhdeCblJQbyL619pnMSTT508vRCWEKqKqqqtCvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=ceH6qeKs; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
+	s=arc-20240116; t=1739387945; c=relaxed/simple;
+	bh=11Hy8cODuSDFHaJcx2Ju8aoOiOQIkeBngDRvi40dN6A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Hcis9rBDZFHJMmYpGYkGjbAlxI1fZT9BM2qmp2pwFMd2khV4xVhlzUfliMWvUbj0clgW+HeinjDooiff/JZPLcvq/0+G9/7AfSPAU2qvytMqtuCmMy62c6y8wfugn+Tug2FNFsMtapNaStjmXrvtxBj3BiltJ88H0HQZi6sbPY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2MkxcnLA; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="ceH6qeKs"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-220c665ef4cso12954465ad.3
-        for <netdev@vger.kernel.org>; Wed, 12 Feb 2025 10:59:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2MkxcnLA"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-219f6ca9a81so166725ad.1
+        for <netdev@vger.kernel.org>; Wed, 12 Feb 2025 11:19:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1739386757; x=1739991557; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1739387943; x=1739992743; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mHHS+FPDLO3skgLo3fHZNTV70X52xj2EYXoCt0zXgCA=;
-        b=ceH6qeKskOMG4ns6Rs/JRfahbhwifQL46Jvks893yp59faFsEx9PoNPpkkzngEB7vM
-         GC7ZrHJXR8Hylp6ShaRLY14lCIxeOmJbEc3vSb/bLsVx3sMTlta+X0iT4SPrb224UVuu
-         bKCWNySUcsU8RpTb1NBmMed/a6uGw/Hfo6TsrIFzW1EKP6A0FpGjCKo4rSNzJYagVNs+
-         Ro8UGgl2qTXOifuBBqt44rrm0wnR9ak/7ieFlgYhoXGbUPzEdCnRPcZUXNeyCWpVlKV4
-         DBA1tLIkBw68eRJ0RIeMEkg3i9TBdNM8jEPBBzINCvTptbhqYGPEtjH9GqYZcZLxSC9N
-         7P+A==
+        bh=TlrqapFW6dtOfJ+Ygfgx6q2yFRXVAGv+WlcsEV5abYE=;
+        b=2MkxcnLAUPXAmn6iVq6G7LjRpB2DVfCpBkoGsv1oQLuv0V10UKsX9AqwEPrAiyMZvk
+         u6WPrTaRh2gGUDrAiINczu56xBOX1k+dldrJx7HOHhUdDBphRcbojmIADe/tw4xLNVUI
+         IExvhTnzh2cebFC3pk+MU+HN2BeJKY2qefsYQG2upMMcCGkjptiqA7FtF1hbkY0F3O/5
+         JGdnEzS8zmkSINyS80JpYbMvjI93gDJxz+8SiexlpcGKoFNZpUWkC5YUFZriSM39/Ddm
+         ABlZ0ykyH6IwgFu1psVd8jR5DadisFg/MD30Ye4nSRSZCs6Y2aPEl3oq2xB6g4Cdoa51
+         TfkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739386757; x=1739991557;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1739387943; x=1739992743;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mHHS+FPDLO3skgLo3fHZNTV70X52xj2EYXoCt0zXgCA=;
-        b=D5KImJHVDxK1f76vpJSE017uzJeIyDIHk5A7D2Ul38dqhHatAY0G/D0eVG0COxecWU
-         fFlBxwxqKJdiEwDOS9EIB2/pmlWHxv7jfoRiT6y+XDljrL+W0++vcgsGEjITMPmOuSWh
-         5KqM399j3Wl0aSMeeRnM/j5uMzDS8t4/w3rIPMFCMfcn7p++ddxSzk/oRhbxYI5atLH4
-         o3n4SG12HXH7QX4KvUV2bNdIYc26SaUZESTrUflXvuQqNxt6OLUtsZtm+Sco5Bsb41W3
-         b37+LUax8akBTI75VHe0uX+iKjAYFsV0Z28FQwD7ygxLSQoExFtU9A4mWYZbZ0kLVQ4v
-         xG2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUMKP1EiMNiOvURmcDcjglGyhVuYGXrHOZjQduo41wBXQc7uG4I91EH9w+gf9TQ7PptFEXU8ws=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcmWohZqRksu27WJnLa6BOpDzA8KEe4oHHSVrpBPkqDR8UF0fA
-	c/T6D36284N+qzk0X+STtSfgNtB4kriQnKH81kkTtyTZ/yHtwsmXNE5h0Ecb2S4=
-X-Gm-Gg: ASbGnctTpnk5SZ3lACr48VuPJQPsomiogbp6cMXLbwou+7xhekmvsj2wDlnqjLoMmyg
-	OqE50XEyH9ysNUZEdXdbZybFnxlGeNPIpNfrXkh7Dcexrb8TblQhlP9rAFAOf4j0yY2sBu1HC2S
-	4egtuhHMDVqEg2kH6FZwkAKuq7g/dCiAyiknFai4CVOx91qO7ZSqyi4Mx4oTQbqP8lioNXT73Gk
-	VsdRRTJdLwzb28IKQpoL0VzXPxMXyQmjoMDEM7V1JxUWWaEOoINkJGfLCqblra9mvNteU+j6guU
-X-Google-Smtp-Source: AGHT+IEu2sFpRUu/vz72LicjAXvdeF+AOE/7q4V9lBD5XoIVDQa4eOH26VNDxF33jXM9Dvn7GNm/Cg==
-X-Received: by 2002:a17:903:230c:b0:216:7ee9:2227 with SMTP id d9443c01a7336-220bdfee0c7mr64830895ad.36.1739386756756;
-        Wed, 12 Feb 2025 10:59:16 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:43::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3655164bsm116851585ad.85.2025.02.12.10.59.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Feb 2025 10:59:16 -0800 (PST)
-From: David Wei <dw@davidwei.uk>
-To: io-uring@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Mina Almasry <almasrymina@google.com>,
-	Stanislav Fomichev <stfomichev@gmail.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Pedro Tammela <pctammela@mojatatu.com>
-Subject: [PATCH net-next v13 11/11] io_uring/zcrx: add selftest
-Date: Wed, 12 Feb 2025 10:58:01 -0800
-Message-ID: <20250212185859.3509616-12-dw@davidwei.uk>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250212185859.3509616-1-dw@davidwei.uk>
-References: <20250212185859.3509616-1-dw@davidwei.uk>
+        bh=TlrqapFW6dtOfJ+Ygfgx6q2yFRXVAGv+WlcsEV5abYE=;
+        b=u/DrlwkRDZXySdTzMFnlEpsx1vxrv4IS6JIFMPlOP2BwT5JCZiK54BmFJNUqHEQd5B
+         va1VKT5g7NESc4Xwuai06oYtXYfU+KhnjpWw/SwD46kKrxcvzEu8YhAT0UbDG2lCEkco
+         7C594BctgkcLpBeasU1ldBD5h31cOVO413MofuQMtZcGQh4TbHBoySLH4vWngsGU+rCA
+         TiJ1Llocls/hz2MfLwi2w7zLPqRWz0XBrsnuqhGBZG+JQ6aSPcPg2kQ6iAJLMylpjcVe
+         cvO/2A61HGkPTSZx88PxL0nVSsQCNhxpVydzVbrd8zYZg7QVuYem6eQRaGaiEyexBFSO
+         LPbQ==
+X-Gm-Message-State: AOJu0Yw7+kqzHsJ39//PVcfriE69p4dOZuki+NNgUbWMQOOjOEftVjfF
+	fMQIxNhgkd5upBi9xQmAsOIY2pvxfv5oeW/50YgiT6FIKDSbPTKesCVJaNK2mGCLX4K5d3KTQPC
+	FxPfED4jNjClwccx9S7808u64+jMB9leRaG2W
+X-Gm-Gg: ASbGncsTQkLU47fXoJnd222gwGWAqy2EI8H31YU2b1Nw4nYpA3F3DZUSPItayehIAKP
+	iI0pLNtzTOveMdsxCNyZ8405SsdGsTlFtzOsEUaSNaQMjs02q1rGoOLvjHkZ7nT101kp1A5pk
+X-Google-Smtp-Source: AGHT+IGNugfx084SHply3CA0xWFW/29cP7ySkyiWEViy+SHvFCJOsIGeBkPN0hXf2z66fZ8oH82mGcxNE9IZpDD7YNc=
+X-Received: by 2002:a17:902:f708:b0:215:7ced:9d66 with SMTP id
+ d9443c01a7336-220d33f6b21mr172265ad.10.1739387942876; Wed, 12 Feb 2025
+ 11:19:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250203223916.1064540-1-almasrymina@google.com>
+ <20250203223916.1064540-6-almasrymina@google.com> <abc22620-d509-4b12-80ac-0c36b08b36d9@gmail.com>
+ <CAHS8izNOqaFe_40gFh09vdBz6-deWdeGu9Aky-e7E+Wu2qtfdw@mail.gmail.com> <28343e83-6d93-4002-a691-f8273d4d24a8@gmail.com>
+In-Reply-To: <28343e83-6d93-4002-a691-f8273d4d24a8@gmail.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Wed, 12 Feb 2025 11:18:50 -0800
+X-Gm-Features: AWEUYZmMxO-D8gV-SzbNdeRwFeAQ7660IIm2vAphoidLeu_O5bDpvj8HGIH7jIY
+Message-ID: <CAHS8izOE-JzMszieHEXtYBs7_6D-ngVx2kJyMwp8eCWLK-c0cQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 5/6] net: devmem: Implement TX path
+To: Pavel Begunkov <asml.silence@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Neal Cardwell <ncardwell@google.com>, 
+	David Ahern <dsahern@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	sdf@fomichev.me, dw@davidwei.uk, Jamal Hadi Salim <jhs@mojatatu.com>, 
+	Victor Nogueira <victor@mojatatu.com>, Pedro Tammela <pctammela@mojatatu.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a selftest for io_uring zero copy Rx. This test cannot run locally
-and requires a remote host to be configured in net.config. The remote
-host must have hardware support for zero copy Rx as listed in the
-documentation page. The test will restore the NIC config back to before
-the test and is idempotent.
+On Wed, Feb 12, 2025 at 7:52=E2=80=AFAM Pavel Begunkov <asml.silence@gmail.=
+com> wrote:
+>
+> On 2/10/25 21:09, Mina Almasry wrote:
+> > On Wed, Feb 5, 2025 at 4:20=E2=80=AFAM Pavel Begunkov <asml.silence@gma=
+il.com> wrote:
+> >>
+> >> On 2/3/25 22:39, Mina Almasry wrote:
+> >> ...
+> >>> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+> >>> index bb2b751d274a..3ff8f568c382 100644
+> >>> --- a/include/linux/skbuff.h
+> >>> +++ b/include/linux/skbuff.h
+> >>> @@ -1711,9 +1711,12 @@ struct ubuf_info *msg_zerocopy_realloc(struct =
+sock *sk, size_t size,
+> >> ...
+> >>>    int zerocopy_fill_skb_from_iter(struct sk_buff *skb,
+> >>>                                struct iov_iter *from, size_t length);
+> >>> @@ -1721,12 +1724,14 @@ int zerocopy_fill_skb_from_iter(struct sk_buf=
+f *skb,
+> >>>    static inline int skb_zerocopy_iter_dgram(struct sk_buff *skb,
+> >>>                                          struct msghdr *msg, int len)
+> >>>    {
+> >>> -     return __zerocopy_sg_from_iter(msg, skb->sk, skb, &msg->msg_ite=
+r, len);
+> >>> +     return __zerocopy_sg_from_iter(msg, skb->sk, skb, &msg->msg_ite=
+r, len,
+> >>> +                                    NULL);
+> >>
+> >> Instead of propagating it all the way down and carving a new path, why
+> >> not reuse the existing infra? You already hook into where ubuf is
+> >> allocated, you can stash the binding in there. And
+> >
+> > It looks like it's not possible to increase the side of ubuf_info at
+> > all, otherwise the BUILD_BUG_ON in msg_zerocopy_alloc() fires.
+> >
+> > It's asserting that sizeof(ubuf_info_msgzc) <=3D sizeof(skb->cb), and
+> > I'm guessing increasing skb->cb size is not really the way to go.
+> >
+> > What I may be able to do here is stash the binding somewhere in
+> > ubuf_info_msgzc via union with fields we don't need for devmem, and/or
+>
+> It doesn't need to account the memory against the user, and you
+> actually don't want that because dmabuf should take care of that.
+> So, it should be fine to reuse ->mmp.
+>
+> It's also not a real sk_buff, so maybe maintainers wouldn't mind
+> reusing some more space out of it, if that would even be needed.
+>
 
-liburing is required to compile the test and be installed on the remote
-host running the test.
+netmem skb are real sk_buff, with the modification that frags are not
+readable, only in the case that the netmem is unreadable. I would not
+approve of considering netmem/devmem skbs "not real skbs", and start
+messing with the semantics of skb fields for devmem skbs, and having
+to start adding skb_is_devmem() checks through all code in the skb
+handlers that touch the fields being overwritten in the devmem case.
+No, I don't think we can re-use random fields in the skb for devmem.
 
-Signed-off-by: David Wei <dw@davidwei.uk>
----
- .../selftests/drivers/net/hw/.gitignore       |   2 +
- .../testing/selftests/drivers/net/hw/Makefile |   5 +
- .../selftests/drivers/net/hw/iou-zcrx.c       | 426 ++++++++++++++++++
- .../selftests/drivers/net/hw/iou-zcrx.py      |  64 +++
- 4 files changed, 497 insertions(+)
- create mode 100644 tools/testing/selftests/drivers/net/hw/iou-zcrx.c
- create mode 100755 tools/testing/selftests/drivers/net/hw/iou-zcrx.py
+> > stashing the binding in ubuf_info_ops (very hacky). Neither approach
+> > seems ideal, but the former may work and may be cleaner.
+> >
+> > I'll take a deeper look here. I had looked before and concluded that
+> > we're piggybacking devmem TX on MSG_ZEROCOPY path, because we need
+> > almost all of the functionality there (no copying, send complete
+> > notifications, etc), with one minor change in the skb filling. I had
+> > concluded that if MSG_ZEROCOPY was never updated to use the existing
+> > infra, then it's appropriate for devmem TX piggybacking on top of it
+>
+> MSG_ZEROCOPY does use the common infra, i.e. passing ubuf_info,
+> but doesn't need ->sg_from_iter as zerocopy_fill_skb_from_iter()
+> and it's what was there first.
+>
 
-diff --git a/tools/testing/selftests/drivers/net/hw/.gitignore b/tools/testing/selftests/drivers/net/hw/.gitignore
-index e9fe6ede681a..6942bf575497 100644
---- a/tools/testing/selftests/drivers/net/hw/.gitignore
-+++ b/tools/testing/selftests/drivers/net/hw/.gitignore
-@@ -1 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+iou-zcrx
- ncdevmem
-diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-index 21ba64ce1e34..7efc47c89463 100644
---- a/tools/testing/selftests/drivers/net/hw/Makefile
-+++ b/tools/testing/selftests/drivers/net/hw/Makefile
-@@ -1,5 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0+ OR MIT
- 
-+TEST_GEN_FILES = iou-zcrx
-+
- TEST_PROGS = \
- 	csum.py \
- 	devlink_port_split.py \
-@@ -10,6 +12,7 @@ TEST_PROGS = \
- 	ethtool_rmon.sh \
- 	hw_stats_l3.sh \
- 	hw_stats_l3_gre.sh \
-+	iou-zcrx.py \
- 	loopback.sh \
- 	nic_link_layer.py \
- 	nic_performance.py \
-@@ -38,3 +41,5 @@ include ../../../lib.mk
- # YNL build
- YNL_GENS := ethtool netdev
- include ../../../net/ynl.mk
-+
-+$(OUTPUT)/iou-zcrx: LDLIBS += -luring
-diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
-new file mode 100644
-index 000000000000..010c261d2132
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
-@@ -0,0 +1,426 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <assert.h>
-+#include <errno.h>
-+#include <error.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <stdbool.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+
-+#include <arpa/inet.h>
-+#include <linux/errqueue.h>
-+#include <linux/if_packet.h>
-+#include <linux/ipv6.h>
-+#include <linux/socket.h>
-+#include <linux/sockios.h>
-+#include <net/ethernet.h>
-+#include <net/if.h>
-+#include <netinet/in.h>
-+#include <netinet/ip.h>
-+#include <netinet/ip6.h>
-+#include <netinet/tcp.h>
-+#include <netinet/udp.h>
-+#include <sys/epoll.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/resource.h>
-+#include <sys/socket.h>
-+#include <sys/stat.h>
-+#include <sys/time.h>
-+#include <sys/types.h>
-+#include <sys/un.h>
-+#include <sys/wait.h>
-+
-+#include <liburing.h>
-+
-+#define PAGE_SIZE (4096)
-+#define AREA_SIZE (8192 * PAGE_SIZE)
-+#define SEND_SIZE (512 * 4096)
-+#define min(a, b) \
-+	({ \
-+		typeof(a) _a = (a); \
-+		typeof(b) _b = (b); \
-+		_a < _b ? _a : _b; \
-+	})
-+#define min_t(t, a, b) \
-+	({ \
-+		t _ta = (a); \
-+		t _tb = (b); \
-+		min(_ta, _tb); \
-+	})
-+
-+#define ALIGN_UP(v, align) (((v) + (align) - 1) & ~((align) - 1))
-+
-+static int cfg_server;
-+static int cfg_client;
-+static int cfg_port = 8000;
-+static int cfg_payload_len;
-+static const char *cfg_ifname;
-+static int cfg_queue_id = -1;
-+static struct sockaddr_in6 cfg_addr;
-+
-+static char payload[SEND_SIZE] __attribute__((aligned(PAGE_SIZE)));
-+static void *area_ptr;
-+static void *ring_ptr;
-+static size_t ring_size;
-+static struct io_uring_zcrx_rq rq_ring;
-+static unsigned long area_token;
-+static int connfd;
-+static bool stop;
-+static size_t received;
-+
-+static unsigned long gettimeofday_ms(void)
-+{
-+	struct timeval tv;
-+
-+	gettimeofday(&tv, NULL);
-+	return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-+}
-+
-+static int parse_address(const char *str, int port, struct sockaddr_in6 *sin6)
-+{
-+	int ret;
-+
-+	sin6->sin6_family = AF_INET6;
-+	sin6->sin6_port = htons(port);
-+
-+	ret = inet_pton(sin6->sin6_family, str, &sin6->sin6_addr);
-+	if (ret != 1) {
-+		/* fallback to plain IPv4 */
-+		ret = inet_pton(AF_INET, str, &sin6->sin6_addr.s6_addr32[3]);
-+		if (ret != 1)
-+			return -1;
-+
-+		/* add ::ffff prefix */
-+		sin6->sin6_addr.s6_addr32[0] = 0;
-+		sin6->sin6_addr.s6_addr32[1] = 0;
-+		sin6->sin6_addr.s6_addr16[4] = 0;
-+		sin6->sin6_addr.s6_addr16[5] = 0xffff;
-+	}
-+
-+	return 0;
-+}
-+
-+static inline size_t get_refill_ring_size(unsigned int rq_entries)
-+{
-+	size_t size;
-+
-+	ring_size = rq_entries * sizeof(struct io_uring_zcrx_rqe);
-+	/* add space for the header (head/tail/etc.) */
-+	ring_size += PAGE_SIZE;
-+	return ALIGN_UP(ring_size, 4096);
-+}
-+
-+static void setup_zcrx(struct io_uring *ring)
-+{
-+	unsigned int ifindex;
-+	unsigned int rq_entries = 4096;
-+	int ret;
-+
-+	ifindex = if_nametoindex(cfg_ifname);
-+	if (!ifindex)
-+		error(1, 0, "bad interface name: %s", cfg_ifname);
-+
-+	area_ptr = mmap(NULL,
-+			AREA_SIZE,
-+			PROT_READ | PROT_WRITE,
-+			MAP_ANONYMOUS | MAP_PRIVATE,
-+			0,
-+			0);
-+	if (area_ptr == MAP_FAILED)
-+		error(1, 0, "mmap(): zero copy area");
-+
-+	ring_size = get_refill_ring_size(rq_entries);
-+	ring_ptr = mmap(NULL,
-+			ring_size,
-+			PROT_READ | PROT_WRITE,
-+			MAP_ANONYMOUS | MAP_PRIVATE,
-+			0,
-+			0);
-+
-+	struct io_uring_region_desc region_reg = {
-+		.size = ring_size,
-+		.user_addr = (__u64)(unsigned long)ring_ptr,
-+		.flags = IORING_MEM_REGION_TYPE_USER,
-+	};
-+
-+	struct io_uring_zcrx_area_reg area_reg = {
-+		.addr = (__u64)(unsigned long)area_ptr,
-+		.len = AREA_SIZE,
-+		.flags = 0,
-+	};
-+
-+	struct io_uring_zcrx_ifq_reg reg = {
-+		.if_idx = ifindex,
-+		.if_rxq = cfg_queue_id,
-+		.rq_entries = rq_entries,
-+		.area_ptr = (__u64)(unsigned long)&area_reg,
-+		.region_ptr = (__u64)(unsigned long)&region_reg,
-+	};
-+
-+	ret = io_uring_register_ifq(ring, &reg);
-+	if (ret)
-+		error(1, 0, "io_uring_register_ifq(): %d", ret);
-+
-+	rq_ring.khead = (unsigned int *)((char *)ring_ptr + reg.offsets.head);
-+	rq_ring.ktail = (unsigned int *)((char *)ring_ptr + reg.offsets.tail);
-+	rq_ring.rqes = (struct io_uring_zcrx_rqe *)((char *)ring_ptr + reg.offsets.rqes);
-+	rq_ring.rq_tail = 0;
-+	rq_ring.ring_entries = reg.rq_entries;
-+
-+	area_token = area_reg.rq_area_token;
-+}
-+
-+static void add_accept(struct io_uring *ring, int sockfd)
-+{
-+	struct io_uring_sqe *sqe;
-+
-+	sqe = io_uring_get_sqe(ring);
-+
-+	io_uring_prep_accept(sqe, sockfd, NULL, NULL, 0);
-+	sqe->user_data = 1;
-+}
-+
-+static void add_recvzc(struct io_uring *ring, int sockfd)
-+{
-+	struct io_uring_sqe *sqe;
-+
-+	sqe = io_uring_get_sqe(ring);
-+
-+	io_uring_prep_rw(IORING_OP_RECV_ZC, sqe, sockfd, NULL, 0, 0);
-+	sqe->ioprio |= IORING_RECV_MULTISHOT;
-+	sqe->user_data = 2;
-+}
-+
-+static void process_accept(struct io_uring *ring, struct io_uring_cqe *cqe)
-+{
-+	if (cqe->res < 0)
-+		error(1, 0, "accept()");
-+	if (connfd)
-+		error(1, 0, "Unexpected second connection");
-+
-+	connfd = cqe->res;
-+	add_recvzc(ring, connfd);
-+}
-+
-+static void process_recvzc(struct io_uring *ring, struct io_uring_cqe *cqe)
-+{
-+	unsigned rq_mask = rq_ring.ring_entries - 1;
-+	struct io_uring_zcrx_cqe *rcqe;
-+	struct io_uring_zcrx_rqe *rqe;
-+	struct io_uring_sqe *sqe;
-+	uint64_t mask;
-+	char *data;
-+	ssize_t n;
-+	int i;
-+
-+	if (cqe->res == 0 && cqe->flags == 0) {
-+		stop = true;
-+		return;
-+	}
-+
-+	if (cqe->res < 0)
-+		error(1, 0, "recvzc(): %d", cqe->res);
-+
-+	if (!(cqe->flags & IORING_CQE_F_MORE))
-+		add_recvzc(ring, connfd);
-+
-+	rcqe = (struct io_uring_zcrx_cqe *)(cqe + 1);
-+
-+	n = cqe->res;
-+	mask = (1ULL << IORING_ZCRX_AREA_SHIFT) - 1;
-+	data = (char *)area_ptr + (rcqe->off & mask);
-+
-+	for (i = 0; i < n; i++) {
-+		if (*(data + i) != payload[(received + i)])
-+			error(1, 0, "payload mismatch");
-+	}
-+	received += n;
-+
-+	rqe = &rq_ring.rqes[(rq_ring.rq_tail & rq_mask)];
-+	rqe->off = (rcqe->off & ~IORING_ZCRX_AREA_MASK) | area_token;
-+	rqe->len = cqe->res;
-+	io_uring_smp_store_release(rq_ring.ktail, ++rq_ring.rq_tail);
-+}
-+
-+static void server_loop(struct io_uring *ring)
-+{
-+	struct io_uring_cqe *cqe;
-+	unsigned int count = 0;
-+	unsigned int head;
-+	int i, ret;
-+
-+	io_uring_submit_and_wait(ring, 1);
-+
-+	io_uring_for_each_cqe(ring, head, cqe) {
-+		if (cqe->user_data == 1)
-+			process_accept(ring, cqe);
-+		else if (cqe->user_data == 2)
-+			process_recvzc(ring, cqe);
-+		else
-+			error(1, 0, "unknown cqe");
-+		count++;
-+	}
-+	io_uring_cq_advance(ring, count);
-+}
-+
-+static void run_server(void)
-+{
-+	unsigned int flags = 0;
-+	struct io_uring ring;
-+	int fd, enable, ret;
-+	uint64_t tstop;
-+
-+	fd = socket(AF_INET6, SOCK_STREAM, 0);
-+	if (fd == -1)
-+		error(1, 0, "socket()");
-+
-+	enable = 1;
-+	ret = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int));
-+	if (ret < 0)
-+		error(1, 0, "setsockopt(SO_REUSEADDR)");
-+
-+	ret = bind(fd, &cfg_addr, sizeof(cfg_addr));
-+	if (ret < 0)
-+		error(1, 0, "bind()");
-+
-+	if (listen(fd, 1024) < 0)
-+		error(1, 0, "listen()");
-+
-+	flags |= IORING_SETUP_COOP_TASKRUN;
-+	flags |= IORING_SETUP_SINGLE_ISSUER;
-+	flags |= IORING_SETUP_DEFER_TASKRUN;
-+	flags |= IORING_SETUP_SUBMIT_ALL;
-+	flags |= IORING_SETUP_CQE32;
-+
-+	io_uring_queue_init(512, &ring, flags);
-+
-+	setup_zcrx(&ring);
-+
-+	add_accept(&ring, fd);
-+
-+	tstop = gettimeofday_ms() + 5000;
-+	while (!stop && gettimeofday_ms() < tstop)
-+		server_loop(&ring);
-+
-+	if (!stop)
-+		error(1, 0, "test failed\n");
-+}
-+
-+static void run_client(void)
-+{
-+	ssize_t to_send = SEND_SIZE;
-+	ssize_t sent = 0;
-+	ssize_t chunk, res;
-+	int fd;
-+
-+	fd = socket(AF_INET6, SOCK_STREAM, 0);
-+	if (fd == -1)
-+		error(1, 0, "socket()");
-+
-+	if (connect(fd, &cfg_addr, sizeof(cfg_addr)))
-+		error(1, 0, "connect()");
-+
-+	while (to_send) {
-+		void *src = &payload[sent];
-+
-+		chunk = min_t(ssize_t, cfg_payload_len, to_send);
-+		res = send(fd, src, chunk, 0);
-+		if (res < 0)
-+			error(1, 0, "send(): %d", sent);
-+		sent += res;
-+		to_send -= res;
-+	}
-+
-+	close(fd);
-+}
-+
-+static void usage(const char *filepath)
-+{
-+	error(1, 0, "Usage: %s (-4|-6) (-s|-c) -h<server_ip> -p<port> "
-+		    "-l<payload_size> -i<ifname> -q<rxq_id>", filepath);
-+}
-+
-+static void parse_opts(int argc, char **argv)
-+{
-+	const int max_payload_len = sizeof(payload) -
-+				    sizeof(struct ipv6hdr) -
-+				    sizeof(struct tcphdr) -
-+				    40 /* max tcp options */;
-+	struct sockaddr_in6 *addr6 = (void *) &cfg_addr;
-+	char *addr = NULL;
-+	int ret;
-+	int c;
-+
-+	if (argc <= 1)
-+		usage(argv[0]);
-+	cfg_payload_len = max_payload_len;
-+
-+	while ((c = getopt(argc, argv, "46sch:p:l:i:q:")) != -1) {
-+		switch (c) {
-+		case 's':
-+			if (cfg_client)
-+				error(1, 0, "Pass one of -s or -c");
-+			cfg_server = 1;
-+			break;
-+		case 'c':
-+			if (cfg_server)
-+				error(1, 0, "Pass one of -s or -c");
-+			cfg_client = 1;
-+			break;
-+		case 'h':
-+			addr = optarg;
-+			break;
-+		case 'p':
-+			cfg_port = strtoul(optarg, NULL, 0);
-+			break;
-+		case 'l':
-+			cfg_payload_len = strtoul(optarg, NULL, 0);
-+			break;
-+		case 'i':
-+			cfg_ifname = optarg;
-+			break;
-+		case 'q':
-+			cfg_queue_id = strtoul(optarg, NULL, 0);
-+			break;
-+		}
-+	}
-+
-+	if (cfg_server && addr)
-+		error(1, 0, "Receiver cannot have -h specified");
-+
-+	memset(addr6, 0, sizeof(*addr6));
-+	addr6->sin6_family = AF_INET6;
-+	addr6->sin6_port = htons(cfg_port);
-+	addr6->sin6_addr = in6addr_any;
-+	if (addr) {
-+		ret = parse_address(addr, cfg_port, addr6);
-+		if (ret)
-+			error(1, 0, "receiver address parse error: %s", addr);
-+	}
-+
-+	if (cfg_payload_len > max_payload_len)
-+		error(1, 0, "-l: payload exceeds max (%d)", max_payload_len);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	const char *cfg_test = argv[argc - 1];
-+	int i;
-+
-+	parse_opts(argc, argv);
-+
-+	for (i = 0; i < SEND_SIZE; i++)
-+		payload[i] = 'a' + (i % 26);
-+
-+	if (cfg_server)
-+		run_server();
-+	else if (cfg_client)
-+		run_client();
-+
-+	return 0;
-+}
-diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.py b/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
-new file mode 100755
-index 000000000000..ea0a346c3eff
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
-@@ -0,0 +1,64 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+
-+import re
-+from os import path
-+from lib.py import ksft_run, ksft_exit
-+from lib.py import NetDrvEpEnv
-+from lib.py import bkg, cmd, ethtool, wait_port_listen
-+
-+
-+def _get_rx_ring_entries(cfg):
-+    output = ethtool(f"-g {cfg.ifname}", host=cfg.remote).stdout
-+    values = re.findall(r'RX:\s+(\d+)', output)
-+    return int(values[1])
-+
-+
-+def _get_combined_channels(cfg):
-+    output = ethtool(f"-l {cfg.ifname}", host=cfg.remote).stdout
-+    values = re.findall(r'Combined:\s+(\d+)', output)
-+    return int(values[1])
-+
-+
-+def _set_flow_rule(cfg, chan):
-+    output = ethtool(f"-N {cfg.ifname} flow-type tcp6 dst-port 9999 action {chan}", host=cfg.remote).stdout
-+    values = re.search(r'ID (\d+)', output).group(1)
-+    return int(values)
-+
-+
-+def test_zcrx(cfg) -> None:
-+    cfg.require_v6()
-+
-+    combined_chans = _get_combined_channels(cfg)
-+    if combined_chans < 2:
-+        raise KsftSkipEx('at least 2 combined channels required')
-+    rx_ring = _get_rx_ring_entries(cfg)
-+
-+    rx_cmd = f"{cfg.bin_remote} -s -p 9999 -i {cfg.ifname} -q {combined_chans - 1}"
-+    tx_cmd = f"{cfg.bin_local} -c -h {cfg.remote_v6} -p 9999 -l 12840"
-+
-+    try:
-+        ethtool(f"-G {cfg.ifname} rx 64", host=cfg.remote)
-+        ethtool(f"-X {cfg.ifname} equal {combined_chans - 1}", host=cfg.remote)
-+        flow_rule_id = _set_flow_rule(cfg, combined_chans - 1)
-+
-+        with bkg(rx_cmd, host=cfg.remote, exit_wait=True):
-+            wait_port_listen(9999, proto="tcp", host=cfg.remote)
-+            cmd(tx_cmd)
-+    finally:
-+        ethtool(f"-N {cfg.ifname} delete {flow_rule_id}", host=cfg.remote)
-+        ethtool(f"-X {cfg.ifname} default", host=cfg.remote)
-+        ethtool(f"-G {cfg.ifname} rx {rx_ring}", host=cfg.remote)
-+
-+
-+def main() -> None:
-+    with NetDrvEpEnv(__file__) as cfg:
-+        cfg.bin_local = path.abspath(path.dirname(__file__) + "/../../../drivers/net/hw/iou-zcrx")
-+        cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
-+
-+        ksft_run(globs=globals(), case_pfx={"test_"}, args=(cfg, ))
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
--- 
-2.43.5
+But MSG_ZEROCOPY doesn't set msg->msg_ubuf. And not setting
+msg->msg_ubuf fails to trigger msg->sg_from_iter altogether.
 
+And also currently sg_from_iter isn't set up to take in a ubuf_info.
+We'd need that if we stash the binding in the ubuf_info.
+
+All in all I think I wanna prototype an msg->sg_from_iter approach and
+make a judgement call on whether it's cleaner than just passing the
+binding through a couple of helpers just as I'm doing here. My feeling
+is that the implementation in this patch may be cleaner than
+refactoring the entire msg_ubuf/sg_from_iter flows so we can sort of
+use it for MSG_ZEROCOPY with devmem when it currently doesn't use it.
+
+> > to follow that. I would not want to get into a refactor of
+> > MSG_ZEROCOPY for no real reason.
+> >
+> > But I'll take a deeper look here and see if I can make something
+> > slightly cleaner work.
+> >
+> >> zerocopy_fill_skb_from_devmem can implement ->sg_from_iter,
+> >> see __zerocopy_sg_from_iter().
+> >>
+> >> ...
+> >>> diff --git a/net/core/datagram.c b/net/core/datagram.c
+> >>> index f0693707aece..c989606ff58d 100644
+> >>> --- a/net/core/datagram.c
+> >>> +++ b/net/core/datagram.c
+> >>> @@ -63,6 +63,8 @@
+> >>> +static int
+> >>> +zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *=
+from,
+> >>> +                           int length,
+> >>> +                           struct net_devmem_dmabuf_binding *binding=
+)
+> >>> +{
+> >>> +     int i =3D skb_shinfo(skb)->nr_frags;
+> >>> +     size_t virt_addr, size, off;
+> >>> +     struct net_iov *niov;
+> >>> +
+> >>> +     while (length && iov_iter_count(from)) {
+> >>> +             if (i =3D=3D MAX_SKB_FRAGS)
+> >>> +                     return -EMSGSIZE;
+> >>> +
+> >>> +             virt_addr =3D (size_t)iter_iov_addr(from);
+> >>
+> >> Unless I missed it somewhere it needs to check that the iter
+> >> is iovec based.
+> >>
+> >
+> > How do we end up here with an iterator that is not iovec based? Is the
+> > user able to trigger that somehow and I missed it?
+>
+> Hopefully not, but for example io_uring passes bvecs for a number of
+> requests that can end up in tcp_sendmsg_locked(). Those probably
+> would work with the current patch, but check the order of some of the
+> checks it will break. And once io_uring starts passing bvecs for
+> normal send[msg] requests, it'd definitely be possible. And there
+> are other in kernel users apart from send(2) path, so who knows.
+>
+> The api allows it and therefore should be checked, it's better to
+> avoid quite possible latent bugs.
+>
+
+Sounds good.
+
+--=20
+Thanks,
+Mina
