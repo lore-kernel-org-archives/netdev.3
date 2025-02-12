@@ -1,118 +1,77 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A9825EFA6
-	for <netdev@vger.kernel.org>; Wed, 12 Feb 2025 18:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FBE25EFA6;
+	Wed, 12 Feb 2025 18:58:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739386549; cv=none; b=hXZNxMa//nY8hVEbj38eSTYl9efuv1LMR1QXNg84Dxe20BgnS7PksxEMYj5f4H0IjE/hppRKc8A1oIftcOTmWG79u+yQAXPnu3qr2E8kVhbYfuhriZBCiextBKW+bWYPkMLsHKcBIL9bkEzcSkiMLQ0JN8O2Sr4AeHkKYA9YvD4=
+	t=1739386723; cv=none; b=nGl+xnD7ed7zhA9p/H0b3TEHfmibmZN+gjbcRyWlLNm0xnr3x7Y1inWlHAW51jMPj00Up6JGE/xH8MOOiKmm1dGQ9PfP4nekr8xqSwdcL6DkUAP9VCwXPE5+ihQRTZ6mZ5RF+f8Qfyc4n9dyuMLj0Lbv1OtRyE0fc9Kf99zhjDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739386549; c=relaxed/simple;
-	bh=CVMGdoYDL8T1fr+KrjJAoYlnGkxM8XNvTPZrejVoMJM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R11pmYSgkeUdfF8Z5X0//Tp3KmR5QHlMApH51jM3rcBpImzNWlLaRbRWcpSExCOQnBh/ekwX/pWagM3fwPOkI5C0BFQbCoH+HBD9OxoyjJVsYR/LJpv5J3b4aYQPjJHIgWGlyLHEhXGox/XKp1u+fmHFIbOjsCNcm8g0LIK0ynw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mojI/bFq; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1739386723; c=relaxed/simple;
+	bh=34pcncqpehd+xfAkfY0n5sggGhkjxjqooXKhpQiKVts=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Gb8La3w3OTptNtcttVoPCcT+q6PtOmFCYLAIBXkCuHKmPJxhGxlKZSrvPy4xY6MkKs03tHFsk7xtFlwv1KlQhufPbzHKhf0IipzkpRHsJSA2d420jD9ORXEidUhYIckzzHjmFTMh/KXYNuOAKSAmtIay2VWi+/ggyGS6rXuO8ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UkPx6c5u; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mojI/bFq"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5de64873d18so8215129a12.2
-        for <netdev@vger.kernel.org>; Wed, 12 Feb 2025 10:55:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739386545; x=1739991345; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zx+Z2zXkUwVDnPf100xV5wq4Riv7VP7gTaMh3dudvK8=;
-        b=mojI/bFq64VDLGVn4okoRdSh1uOirl93u3OgiJu2w/yPT9Sdo+70AwCom7n519LHPY
-         Z0P5if1rCC++SzpOWaKjswutjKgD+ZZ0a98JuyVLC6DWC/3bo5RS18kg1U4eVCnasrh7
-         R5faWFOj1U3gIzlVDMfAfOAnTy9piqC3MApX6ZfndQd8PuA71d/8i32ILePJ0R+Wnxzc
-         Pe21mE1TPgKnFm9UNehLL94eCpZEAM3shNPdDTrhPvI4wnQ2ig61EsWOTz2kBWo5MCBl
-         UtV8BT8DzIozU41MBcOv8hrklTQ2ooLuR3psH+d8oiFzAnsFhHXjU2Pew0GcolBViwEt
-         lKSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739386545; x=1739991345;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Zx+Z2zXkUwVDnPf100xV5wq4Riv7VP7gTaMh3dudvK8=;
-        b=SN8AVfkZHy8YgG5givXoqqpOzGR3/c9P3lQ5g5F/tzljzGRajyQVInMpRcZIxE931o
-         R0L+XxAFYpl0FSqUobjgzljdCBp1R6HDNSs1Ljq8GxvsA69pwKgD/JY+hQYQlRUIxOmC
-         ug3gP8rSawz1pkqtwZ9KopvHh/IqBVAoDsp2slU/y8m60eKVgwj6LENPn45KpLweb4G0
-         WMiQbaxTeaDN0EV3KhVA7IaAP6opSOHvNrBRMeFzZ4+zul25Cg5nkNRj+7C/2aGUZAgc
-         f9P2TZn8JFoBdI04+CkotblNwENRXqJuoc7a2XyMHHPbJNx7TcLMHe7GdJvCuLv4bb+p
-         n0xA==
-X-Forwarded-Encrypted: i=1; AJvYcCWiIF2fFL/vAbCeASOCPcY6w01SWuEn10x1f0hNMqqC0CrScHoV6TsGQeOaZPCfxhpNWVPyqoM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgJEXVQ31FDCNNRot8TZQWKdTpVWdLNLpI2pqTXhkhULRFZua8
-	R5JnZNK3XX4rJx2VnMHXIslKF8NFxYj6YviG4kKKXesDGciKPCEt5YYn5gFNTxzz7Xk0SDjta+w
-	zLjZ0xPlD+/iHyKHVf9wKrwhpX5i89zMmO3jT
-X-Gm-Gg: ASbGnctxjbCyxbjvPm5EIL+LdXdGGSdygzBVTz/yx2YPsR3jPHaYz5VHqbbXqGeDplr
-	9D2+R95a4POwTZROYhiC/4D+PSwtRdezyNHHd1jGLis/5zKMp1Cr9QEdrAEEn3/XQcicl9OIyDg
-	==
-X-Google-Smtp-Source: AGHT+IG55X34wS789mMJieuUREdopLjA3B44FyJjV3/cSlysBfK2oTbNjkWAOTqEn89wiamATCHt8vdoRDXvCYynFHo=
-X-Received: by 2002:a05:6402:913:b0:5db:d9ac:b302 with SMTP id
- 4fb4d7f45d1cf-5deca0122e2mr249031a12.32.1739386544998; Wed, 12 Feb 2025
- 10:55:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UkPx6c5u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F4AC4CEDF;
+	Wed, 12 Feb 2025 18:58:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739386722;
+	bh=34pcncqpehd+xfAkfY0n5sggGhkjxjqooXKhpQiKVts=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=UkPx6c5upoOQH2yoiHapIlQqbBa4bDssSNu99hHmiw/JrS/nyFya8tBHFWlVgJn3J
+	 S1jWmmtyGf19x00u5nlsKA37OXKgcRvCiujbDUGNTt4KDtFX1rz3SELh/NpVndB3Vz
+	 vkSuI+sz24fzW0yiIIdBWZ6lYjUy6Xh7wupQY3NhtXNmB/u2yi/ylWXj+TRUiXrKPg
+	 z8+CcVBt2h36Ml3BRbt9u1M1kD/u/hJVHemAZFz9H6HO8dG4XGmIcmg9StzTKlpxzS
+	 sIuTOPX3wcJ84wehuX7d+4Zs2V17Whj/ZZ7p5kWaPBUOZ8fITyH29CgvKKkGJ4/sFc
+	 F+fiM9P993Snw==
+Date: Wed, 12 Feb 2025 10:58:41 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Simon Horman <horms@kernel.org>
+Cc: Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
+ netfilter-devel@vger.kernel.org, donald.hunter@gmail.com
+Subject: Re: [PATCH v2 net-next] netlink: specs: add conntrack dump and
+ stats dump support
+Message-ID: <20250212105841.03ccd91c@kernel.org>
+In-Reply-To: <20250212182007.GG1615191@kernel.org>
+References: <20250210152159.41077-1-fw@strlen.de>
+	<20250210103926.3ec4e377@kernel.org>
+	<20250210202703.GA12476@breakpoint.cc>
+	<20250210125438.48560003@kernel.org>
+	<20250212182007.GG1615191@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250212-netdevsim-v1-1-20ece94daae8@debian.org>
-In-Reply-To: <20250212-netdevsim-v1-1-20ece94daae8@debian.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 12 Feb 2025 19:55:32 +0100
-X-Gm-Features: AWEUYZleq88KnF_kE4nPNRYzraS7tQ5dHAAtHxK4ii3MnHWveDWf1gwFIVTqsms
-Message-ID: <CANn89iKnqeDCrEsa4=vf1XV4N6+FUbfB8S6tXG6n8V+LKGfBEg@mail.gmail.com>
-Subject: Re: [PATCH net] netdevsim: disable local BH when scheduling NAPI
-To: Breno Leitao <leitao@debian.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, David Wei <dw@davidwei.uk>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, paulmck@kernel.org, 
-	kernel-team@meta.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 12, 2025 at 7:34=E2=80=AFPM Breno Leitao <leitao@debian.org> wr=
-ote:
->
-> The netdevsim driver was getting NOHZ tick-stop errors during packet
-> transmission due to pending softirq work when calling napi_schedule().
->
-> This is showing the following message when running netconsole selftest.
->
->         NOHZ tick-stop error: local softirq work is pending, handler #08!=
-!!
->
-> Add local_bh_disable()/enable() around the napi_schedule() call to
-> prevent softirqs from being handled during this xmit.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 3762ec05a9fb ("netdevsim: add NAPI support")
-> Suggested-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->  drivers/net/netdevsim/netdev.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netde=
-v.c
-> index 42f247cbdceecbadf27f7090c030aa5bd240c18a..6aeb081b06da226ab91c49f53=
-d08f465570877ae 100644
-> --- a/drivers/net/netdevsim/netdev.c
-> +++ b/drivers/net/netdevsim/netdev.c
-> @@ -87,7 +87,9 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb,=
- struct net_device *dev)
->         if (unlikely(nsim_forward_skb(peer_dev, skb, rq) =3D=3D NET_RX_DR=
-OP))
->                 goto out_drop_cnt;
->
-> +       local_bh_disable();
->         napi_schedule(&rq->napi);
-> +       local_bh_enable();
->
+On Wed, 12 Feb 2025 18:20:07 +0000 Simon Horman wrote:
+> > > Looks like the tree has both v1 and v2 appliedto it.
+> > >=20
+> > > v1 added 'ctnetlink.yaml', I renamed it to 'conntrack.yaml' in v2 as
+> > > thats what Donald requested. =20
+> >=20
+> > I see. We need to clean the HTML output more thoroughly in the CI =F0=
+=9F=A4=94=EF=B8=8F
+> > I brought the patch back, let's see what happens on next run. =20
+>=20
+> It seems happy now.
+>=20
+> Should I work on a fix for NIPA?
 
-I thought all ndo_start_xmit() were done under local_bh_disable()
+I'm not gonna say no :)
 
-Could you give more details ?
+The problem is a bit broader than just this exact instance.
+In general we don't clean up build artifacts to take advantage=20
+of incremental builds. So when files move or get renamed the old
+artifacts are left in place occasionally causing issues.
+
+I wonder what the best fix is. Feels like wiping the tree clean
+periodically (once a day or two?) could be best? Something like=20
+creating a local file, once that file is more than 2 days old
+wipe the tree pristine clean by all means possible, and then
+create the file again?
