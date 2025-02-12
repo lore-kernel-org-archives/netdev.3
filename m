@@ -1,97 +1,134 @@
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF31F20E714;
-	Wed, 12 Feb 2025 14:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88C120AF62
+	for <netdev@vger.kernel.org>; Wed, 12 Feb 2025 14:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739369278; cv=none; b=drFPav8JGA7YSSnnpqI+tWZ4xZVpphojW6vjYLgys7DcDvbhybl/PoJUvFoR6lUMp6/MjrcYi0SAbIUxI3SbNgofTMsL813OXTbiTXQE/CzmGeX5Goj45eNilTpAdPj31Pod8w/CstONoDUA2HOXSdiF34aeF0QHIe0MT53qnr8=
+	t=1739369426; cv=none; b=V+m9BZZ/tj8bZIi/AAd6EiMKUfkaif9AyB4iUJBAyKOe1+wKWHKF9JETi0oKuzM9yqoIea0vgMG2mECWOYfTJzfIDWo/N1Vu+Z1jku2A8EzDrJyPRSsLUaF38onhG2mhTPwFsWe4iY0RF+1Remlm4kJ7NyMFY8j6t4X9BVvndu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739369278; c=relaxed/simple;
-	bh=KW6EoMcTxAn8bpbomq95y0xiTqFHJk2QJNNPeo6PjAg=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=njl9hT29lj5qOh9wVSRF/EJGa1paaQZtjXXowywcl+UBf6K8RTjPERdT4zCj++IsjgBRpx9O1rcieTlXN3nLDSkpAHEu/Cngr3VPBqJ7VrCX6rOvlfSW3ZYhWDLu/PtVTP2+Ape5rMtzm5KFACmyXjbB3gVqt03KJZeavXCO0MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=hjO6sgQv; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1739369426; c=relaxed/simple;
+	bh=HL7LpkbKDvIkcum9ljbFJjK2xYzy+z8aD/iy6Z7FnOI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Xui38BvhIKZ5CbyLryghHZ/WHdRR8C3iXrgzdKIO7QMa1ua5EJwfFXBiAUEglCkpTUR9UjOKn08kaUemKDq/sOasMJJd2x7TFZGDvuDPc7dy4mxRMuH9ueZfVeSXlYFmH17aAfFxy15WLJmeomgf4Bki7HIbzK1nQSV4ATjg4d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XkZEdlpd; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="hjO6sgQv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1739369246; x=1739974046; i=markus.elfring@web.de;
-	bh=KW6EoMcTxAn8bpbomq95y0xiTqFHJk2QJNNPeo6PjAg=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=hjO6sgQvHT1s1mwxQ5wRc9loVCtkqy46bKfiNbAZ/X26rZwY51HqZ6mGFqqGpojt
-	 nXVfnvslqemdkoE07RjwKVaj0Jnjb/zjh5Zg8R54q13N23MPcLspIC8br8kA5nBji
-	 5va4Eu008iZZee+FZ4z0KDa7fG2EvavXJn6hPqvOrDGKsHKwViDJT11wrNHESp8Eg
-	 4Ko3AA/tx7k9/xHUbFnezfwedoz9Pmpu9UfLzb371NMezxD/JhwDW5K7MSzSdC0Ae
-	 D/YFKCxWe6UW0AIP3e/ZTqGEKKIJnq43GuMnfiENJnbvbLR58ociewBRaY9yMNSGU
-	 Alxds+7cAb4Z/617yA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.93.11]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MidHP-1tD1VR2yqV-00ZeSO; Wed, 12
- Feb 2025 15:07:26 +0100
-Message-ID: <a5e45ae1-2c87-46c6-8a30-3186e304aea3@web.de>
-Date: Wed, 12 Feb 2025 15:07:23 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XkZEdlpd"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6f2bc451902so94766907b3.3
+        for <netdev@vger.kernel.org>; Wed, 12 Feb 2025 06:10:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1739369423; x=1739974223; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Gpr4Nf7zswjRBvH8oGdMxFzM+ts0X0UPWMpiHEIDZAM=;
+        b=XkZEdlpdHi0DOrjyjfCuJoQfqsd4wNXJ2xP/HeGODIlYfGYnRFX0hyZ+zUmxLHRlvd
+         WT3Qce8cOOusmSd6GZaB+sqZ4oj/iat+4tyTr8AbM6sKUEfqX3mc0VbqEjIKlPKI6tTp
+         NT83XWBQEaYlO8XP2XICilMk1H+wnjSkbQv0kR1TcORQvgeI7xhyVcTCrlCB4HL4VNcl
+         tlJdmcSMmIWIDY7psrN0ebAkN1fi9iqVX+M9LyDc7RK7q3cxjVofaaycYN5ID/Ba7XEk
+         AW1ikg9mCmgxs0YT8XNV2d15N+WUxT+v//WOQmCVk6mRxU9ssNzXkkzxlUrnGxzH0KQc
+         BqAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739369423; x=1739974223;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Gpr4Nf7zswjRBvH8oGdMxFzM+ts0X0UPWMpiHEIDZAM=;
+        b=ckqj+j5E46SiiY9gBgEivrMLMTh2bwwf7KX0XRH4qnPkWo53sydQAoKbP9yC8N+bPH
+         aAz9lXjhTVhWDmt3P7nYaXUbqjz7TaFRhuxizbcfQaHYXtNHL7ukwPb3ppQb/Gyp7pHy
+         LuoPAMv3owN3zkby0DFd2kdlwXVPJIF5HusornoB+VRT1HOV0MMVV050g9zppdqOZfGI
+         umnya77ua7AO5qsAXEBQrJn+I/UEJm6G15xm/cBHKr6Izj0+HjpH/HeZ95JHneMacHS7
+         sEvkFYJYnM4OnqWgOuJg6dMbah0Rtucw/HzSO7SdwwlTZNIrDpVtcl5UnZOFoyObypV5
+         jJow==
+X-Gm-Message-State: AOJu0Yww9onUymXy5oKmXTQ9kOXSAP6LoSdBHLQLbgnMxo/UCXae6SR7
+	46LAyihxU41YKwGwcQRhru1R/yJou1PDcPXRDXrd+kMgEWnxD4oXc04hurgdIcwhMe3PA6/qriI
+	X9NMVmpGoAQ==
+X-Google-Smtp-Source: AGHT+IFgltHUnIWQRFNnAdczYPMh7GyRAPiaW/umEKoTquavUYmy0LpvV4jpJ/GORFn42kE9qDA7l1aR4A838A==
+X-Received: from ywbfl16.prod.google.com ([2002:a05:690c:3390:b0:6f9:52c8:b79e])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:690c:6386:b0:6f4:4280:2433 with SMTP id 00721157ae682-6fb1f5a5f34mr30507037b3.9.1739369423686;
+ Wed, 12 Feb 2025 06:10:23 -0800 (PST)
+Date: Wed, 12 Feb 2025 14:10:21 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: vulab@iscas.ac.cn, netdev@vger.kernel.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Boris Pismenny <borisp@nvidia.com>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-References: <20250212025351.380-1-vulab@iscas.ac.cn>
-Subject: Re: [PATCH] tls: Check return value of get_cipher_desc in fill_sg_out
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250212025351.380-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:OyRS4JtDglS3wh7qHezxVJJ8DeVA4HoAipLGoKUHTjBsfCNJ38A
- FLJpAwgYgb2v8mWJUOdNdFg/pCOtNKcCa/kY4iwHVKihiDY7/C/K+r8g5egLF9PD+M55Cby
- +N/VOd9sWjxDWvAorvdfjlblGGAhYNJFFwrwoNMCv0QQNPdOBt0CD9BM+GnJ1kF7ca+KxUw
- mAtuiJ5A+jXowkVFf7wLg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Rp2tZqP2nWg=;juVcFpIADULyBfYC+BrOBDJknvW
- fpqwVziY02Bzrj9bvxoL0rpXy0rnXFT+S3AK82PHyUvhYpYPbShxIKYtSrVYrrNbBBQ/mOufw
- YdB3yIlwsIV1MAMA45iSFX3Clm7zlxur8mdWrjsq2pnScLsNiv/ZZjtfOnzw7S2Rvyp4g3g/s
- V4MWP/J0XHYWWbxpnI1DlE4xqUlL53t+dpGxdMW1rSzGZ/qibucWrLTQGKU3G/a9PEX4ImzDT
- pJ8TFzYHWHVM1okX05K48iUGymBz8Tb1aCrzfbSrvoQL/anRLH17b2wy5AyJXnjawDPmvgdpx
- 95IxYPb7MjMdVNRQIi78ZA2A9VABk7FAafHbxnMM+HR5A75/uvIdUf+YOS09WHJMGkVRmM+wX
- N5PTURcgCDsZ1lAgczhdEolun+4SWx9Dnu717dcH+ruBrUK5cY8EroPkosSLq8Pd9FHoHti4b
- 1ismg+R2ytzPC6Z9ke2PpxYkHTTZryY4Rm594+qGIcgik/3g0SMEfUBaiQWYBGDsKfnz9BVKK
- vT5YYvwkQ4kZ6uOtPC4Ky1ZTHvwCIOg1OCrSvw5I1TdjlcHoiT4rW007eOkty7xUTGj/S0TAt
- 2KPHbJVpclAtpigQHJ2zTFzvFP6HqUqLpMpBFz+pix63xYTr65l5HxsYa6fhJoNjDM3fP6ogF
- 8RuS/rWMbUiSOPTxgjdI6h5GsIo9xrUeLiXEKdjDG4q6QrNHCbFTPW6osYVPbiyVrft4A8w6V
- QYZlqi3LM+52sMnBhL0s6UNfNeqm8lPVEudhOtDEFnuR4CjTHRstS7On41NQdLZLlhokZeBxv
- 5ear/sQyMe105MlOCWuS8T+CoUTEPAcIIdrd9T+O5lv0IEfFMujmLQXnx0CgKq8pYD7RV7GaY
- m5DRN4R4NcBaADUm3yE3+37/gD4hMQDILA1d1M8H1pMA+cZ8TG0TH2x7IlHmfGUoKdawXEzGA
- 2AOh0oLoQsfzK6c5wOvC6RsDozh8eTN3kprSifUB2qn/nAnqKXPJc2GXgkjDk+7OunQxyftEE
- RU/BHAaDzd7RflCyOlpxl47NEo7hLLDSjTj7HLy1Rv8AMa/vKcqzuwhEPJSmS+npFHzwHM4y5
- /0CM8AYX7J+KPy/40f2lpR3XHwcscgB+g62ar9lyI7Ce/Lcrweopk6mvA//HLHp93sQhdg5A1
- /4StARMEnUU8p9Kxh2oL6oOT8CZFpBmUC5LrfSskyRHHNrzC8Lr8zkcMHcXVfuPgm1FHDlqm4
- G0er7/SqPbcY0qsbb5nh6JaPeypUFh5l8nmpxLq1TX2TUOmTotc3ol3Bd/TQcuiz4yJIIwq9w
- +/ynyeTjTTRkIeU/UrOLifTanfvQ7njX262kYfbPtrpi6ZCxwmr8PSWTsa7+hSshP2O+y2G/2
- VsFjSv1WCWrhySbZ6zfX9fxbvjgqeIP6H1anmxsNuraIF4SK5HJe5wSxOw3xU6BsTRJ5IgLj1
- JmspxBP1UrOL66pd///eiziO4v9c=
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.502.g6dc24dfdaf-goog
+Message-ID: <20250212141021.1663666-1-edumazet@google.com>
+Subject: [PATCH net] ipv6: mcast: add RCU protection to mld_newpack()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, 
+	Simon Horman <horms@kernel.org>, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-=E2=80=A6
-> This patch adds a DEBUG_NET_WARN_ON_ONCE check =E2=80=A6
+mld_newpack() can be called without RTNL or RCU being held.
 
-See also:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.14-rc2#n94
+Note that we no longer can use sock_alloc_send_skb() because
+ipv6.igmp_sk uses GFP_KERNEL allocations which can sleep.
 
+Instead use alloc_skb() and charge the net->ipv6.igmp_sk
+socket under RCU protection.
 
-Would you like to append parentheses to any function names?
+Fixes: b8ad0cbc58f7 ("[NETNS][IPV6] mcast - handle several network namespace")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/ipv6/mcast.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-Regards,
-Markus
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index 81a739ebf7094694a6f5de5020cd4c4d1c9642d1..65831b4fee1fda1be110cf3f7d5abebaf076694d 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -1773,21 +1773,19 @@ static struct sk_buff *mld_newpack(struct inet6_dev *idev, unsigned int mtu)
+ 	struct net_device *dev = idev->dev;
+ 	int hlen = LL_RESERVED_SPACE(dev);
+ 	int tlen = dev->needed_tailroom;
+-	struct net *net = dev_net(dev);
+ 	const struct in6_addr *saddr;
+ 	struct in6_addr addr_buf;
+ 	struct mld2_report *pmr;
+ 	struct sk_buff *skb;
+ 	unsigned int size;
+ 	struct sock *sk;
+-	int err;
++	struct net *net;
+ 
+-	sk = net->ipv6.igmp_sk;
+ 	/* we assume size > sizeof(ra) here
+ 	 * Also try to not allocate high-order pages for big MTU
+ 	 */
+ 	size = min_t(int, mtu, PAGE_SIZE / 2) + hlen + tlen;
+-	skb = sock_alloc_send_skb(sk, size, 1, &err);
++	skb = alloc_skb(size, GFP_KERNEL);
+ 	if (!skb)
+ 		return NULL;
+ 
+@@ -1795,6 +1793,12 @@ static struct sk_buff *mld_newpack(struct inet6_dev *idev, unsigned int mtu)
+ 	skb_reserve(skb, hlen);
+ 	skb_tailroom_reserve(skb, mtu, tlen);
+ 
++	rcu_read_lock();
++
++	net = dev_net_rcu(dev);
++	sk = net->ipv6.igmp_sk;
++	skb_set_owner_w(skb, sk);
++
+ 	if (ipv6_get_lladdr(dev, &addr_buf, IFA_F_TENTATIVE)) {
+ 		/* <draft-ietf-magma-mld-source-05.txt>:
+ 		 * use unspecified address as the source address
+@@ -1806,6 +1810,8 @@ static struct sk_buff *mld_newpack(struct inet6_dev *idev, unsigned int mtu)
+ 
+ 	ip6_mc_hdr(sk, skb, dev, saddr, &mld2_all_mcr, NEXTHDR_HOP, 0);
+ 
++	rcu_read_unlock();
++
+ 	skb_put_data(skb, ra, sizeof(ra));
+ 
+ 	skb_set_transport_header(skb, skb_tail_pointer(skb) - skb->data);
+-- 
+2.48.1.502.g6dc24dfdaf-goog
+
