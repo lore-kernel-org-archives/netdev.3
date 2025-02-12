@@ -1,146 +1,81 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+Received: from wp175.webpack.hosteurope.de (wp175.webpack.hosteurope.de [80.237.132.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E1E205AD9
-	for <netdev@vger.kernel.org>; Wed, 12 Feb 2025 15:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EE1205AD9
+	for <netdev@vger.kernel.org>; Wed, 12 Feb 2025 15:14:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.132.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739373124; cv=none; b=EAxb/ZuraABM42cjOOF18bA26bfCASpUEoN7hEPvP3Q8B9i0S6Ns4jBALS+FqI2iN5QmHehVhUJXj7hjSmsgPB1cJr4Xr6DIP22xD3/9jlstOZccpnVIUd+51sT4mnOU5TxoibOrf2KuKS04DpXQ/guBCREUhCsw7k5cTrmjPX8=
+	t=1739373247; cv=none; b=kATaNUtqMixii6lUrMrlUh6MopJMckBip2QiaR2347cQKItHH48IV+AwbiYW596osMHYXS13cJjYgwgbUfUZomCrP3Cj/C4QL9BXSPwrvBbg5+6alqEHrid8lgNtpdBNTlnHirfY1CTddy9+7P5N4f0uigOyXwKLWreYbAPye/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739373124; c=relaxed/simple;
-	bh=iYYgOVh/wMPRfKLMkmfkwGvXX3aTI7asNbgiuPtLu7E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PWW9Q22yDtJ/RGdq00QJZPThYGDU4/XuWAMiTVMFHWUNaaeoIH8WnliXRW7FkiTXTMCWY+6jLw/ZWstM3xeayBU17Nbeoj7TtwNwEDOh2Q+x77sc9byuxfQl5Dt/fDZZqbi0X5Y82v0GIYtQRlyoTpHSAX7CJ/5i06u8CTI4T2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=online.de; spf=pass smtp.mailfrom=online.de; dkim=pass (2048-bit key) header.d=online.de header.i=max.schulze@online.de header.b=kz9BXHLv; arc=none smtp.client-ip=212.227.126.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=online.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=online.de
+	s=arc-20240116; t=1739373247; c=relaxed/simple;
+	bh=wRs7RL/nb1La/mS0JQLX/mQ7LIOOGiK+r3WF+JHtNJ4=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=FK+xhM1pWJ54k9zVpFD1sX/oBdy/qzbyKkOI9xxer0EQXlTsKvzlz83fY+2Whm/JVOHxTLG3K1Vb2dqE1InT/AZLdBzy8vG3Du73aS8WoecdsEnrgA/tU5IaG1C5RhgFTc7CNLAmCXOFCx/SFFA3KV/cLccf6MBxb9K7r01CWgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=pgVy6JJd; arc=none smtp.client-ip=80.237.132.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=online.de header.i=max.schulze@online.de header.b="kz9BXHLv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=online.de;
-	s=s42582890; t=1739373110; x=1739977910; i=max.schulze@online.de;
-	bh=69iOg/ICZX5QDn2FKF/ks/dYJcXUBDzwvR/qt3V+nNg=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=kz9BXHLvd7Flo9CkJD/itQxMUI9zh9C0HwNKPCxH48bxpPSplMdO+rGSxtnxz4Sy
-	 j+P6ymb6SZr8TKxBjFLOkT+IPbVFpbencFTtiTueNIYw58/7e9gdTYTWteLwPktvd
-	 4JCNFqdLW63nCL/z8nOF0mOg64MNgJcVa24xAI/OSLrn+m7puChLcJikc4c16gvsj
-	 mWsbJgmlhOtiWKFtbX+gGipFwZFN4I9mOuCEtSXjwRuQ3BJ21zRS6nuhJstS4zhxm
-	 +MuftuHQMa40Bon0qvh1ajnEGoFSFqfwbKqxOfRkx1HN1tbyZdrbr6xnr8y7NVCCu
-	 hLcnPZm3a6peN0egYw==
-X-UI-Sender-Class: 6003b46c-3fee-4677-9b8b-2b628d989298
-Received: from ubu24desk.fritz.box ([84.160.55.49]) by
- mrelayeu.kundenserver.de (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1N7Qkv-1tJ5Kd0WIX-00w0Qq; Wed, 12 Feb 2025 16:11:50 +0100
-From: Max Schulze <max.schulze@online.de>
-To: netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch
-Cc: Max Schulze <max.schulze@online.de>,
-	David Hollis <dhollis@davehollis.com>,
-	Sven Kreiensen <s.kreiensen@lyconsys.com>
-Subject: [PATCH net v3] net: usb: asix_devices: add FiberGecko DeviceID
-Date: Wed, 12 Feb 2025 16:09:51 +0100
-Message-ID: <20250212150957.43900-2-max.schulze@online.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250126114203.12940-1-max.schulze@online.de>
-References: <20250126114203.12940-1-max.schulze@online.de>
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="pgVy6JJd"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=birger-koblitz.de; s=he134867; h=Content-Transfer-Encoding:Content-Type:Cc:
+	To:Subject:From:MIME-Version:Date:Message-ID:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=rxrIhiZoQCId+KfYQ4i6LZzBBQcjZh8whrj8c58uS7k=; t=1739373246; x=1739805246; 
+	b=pgVy6JJdB+OTIhAd8VYQ74zwhAV9Yh5R05z4vhhEmq1ucUDHvSSdgyhET1Y0C/I3JiXw7dQNuQW
+	mZltnsSH8pLAF+xAxXen0FKC6PmorKCsv+8YiQGSmmHneZzs+PWfS0wOT//vLGMklpvuJ2tdchU4X
+	WpCdq6vDHydJpAqmCi7zZq4IeSeUIg19w81bQE6lN3qazZhsNMcsUsCfCrnjoDm+ftT5X71PAStIQ
+	S6q6WAkVvMfv3lFpUxK6zghC0JBlIduXkUHFkfkuzJYGS234NcF34zKhuTDy24vqjs4xMJwY19rbX
+	ux+QvgAqrqWGdY7Wz750Ri5SOhlQ+/Osdp3Q==;
+Received: from [2a00:6020:47a3:e800:53bc:9d06:1c16:3a4f]; authenticated
+	by wp175.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
+	id 1tiER2-004rlC-0s;
+	Wed, 12 Feb 2025 16:13:56 +0100
+Message-ID: <ec28ce6c-24fc-42f5-be68-4968bc78196b@birger-koblitz.de>
+Date: Wed, 12 Feb 2025 16:13:44 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:FpQOv4c81lDl0TY7hu4HmoYJXfhtj5eMm0a+IF0S/wTTHXdqqdO
- H68pxB94g7xeiaEKbOn+3RgaYDx4k7rS9rxAGwzoQg0Aqe3owoN9CHrmdBZKdad34gv6Qjy
- di4MDdKWYI2I+G+bM5ea2EuTqAUnr/BJRrPLOvUt2XrWjAKNDOaPabLq+H/hzZrMIsiXQc5
- RSNB8N46LfAnGdRxImzag==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:AxDoK1LWJpM=;tV7ojFVKSpd3BJCmVkPZnYb/Wuv
- tGmwzKkC3YzuHoLTR624M3q9dNnZIb9RGfkTuJlqSy9SAOCaGFmhkPryO4oBuWx1k8ZTt/kWc
- 9Oc9PQ9QziyFGc1+27g4BFH1sj0RzVJCCwyeW5f2nJQptNQ/EZujHDkn3slFS53YD9X7npBZj
- OW5Cny5essFtNW+hGo4ZNY4biPpEj+SPoWtNQwW1YWEMGc5+aeVeTpVp2Qkb2NUINSuXlTqPP
- uDTDjABPLqL2oHtyE5BHq9zc0xPP9uKf0uRc6Ikkd9vO6D9OcQJj2+lO1tq//eTVpl/ql9RHU
- nTgo96yMETsBTZK69xWqgcB74PRNdwyCosgbKQZr4o+KnW2AHmAaclO6BMYuDzMfSYmfZn1rm
- c1Vpo73GpR4/8svvvUiZ+W/EuY71e76YiHHJBnSgdDCQl3AzJpOX5APPBO4Heec3PkiuNRO8v
- 3+0VaJVE/xtnFWKMo2OjVhTiSqg1XUW5ltNfIylASNaVETy8ZR7WJLstNbLcWxPawISqbOgcD
- Tb8SQcz3YvWYJPdugDuHebyb93B/O/i6zkLyj6y2VbQtSTangbzAw6asMgpB7Upg8BUCwarHq
- qqm38TljLHiKok1c5VnIUsk6RHM0MO88YKtxlfxDamJxQxRcx8IaQJcpf9/gVl+VTYi8/mu4u
- B2vO7HgayisXg81uMKs3q8zbVV+TOvpekdt2dJqb9EtXw5+njnv2yNlba5RAt1itwrtBkrwx1
- ypLmhsVwj4Fo89F0XMcarMA9yReG4fQgGKb11HQVBG1/JXD2ZZaWM+8tNpE00dZZlfVolgc1M
- SY3mG6EzEhl08d0m18ZTBwT9Rlw/ohCZLt3MArRkyeJc4T18RU8raX7qidezipjqKu0Y2GK8o
- ihVQm0t3yZkwBmgcGKNhanFrSOJoNV9eDT7SUk5mMYuK9Hf4gHk0ijJWR6ll9cD92OL+lauAO
- HEmDSA8GGPlhRfeVLIyJ5FCKSVXaUDgcuXJvc0jdZ2kUapJrPsabhKo1Ad5ROqGAsQ0wfoLNo
- F7hwnX3Z7w63unsDDCwTLS9jbXo5/Q0z7QiZmiOFlnWdyJo1AnF3onMcX/yGoYbOg55zrMX9a
- /X11jHpnMrwQgmyE2kOhi3WbuoBWfOnIujG/JuVfVyKC7KtH6n2KAFaBpKxheTKW/+uNqJe2/
- K/a0DIKVwdGmBRjdXBAdxkNSgSihZEVUCVc3gg24HPy/KPMM5muK7WkvEdDdzhir0cZJPMcUA
- pUx9/bOeI4hr3rlKRmlf5COBHBSFoQo25R7wIasB2WhbWezHd18XnpXQ9+oNjv90jLWJ8TSzi
- d7gGaGOcPMQe97KC7CLCMUf4hSiI9rlukCGV+4KqzSB27IY4e6znsPFpA1R3FfauAl9
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Birger Koblitz <mail@birger-koblitz.de>
+Subject: [PATCH net-next] net: sfp: add quirk for 2.5G OEM BX SFP
+To: netdev@vger.kernel.org
+Cc: Daniel Golle <daniel@makrotopia.org>, Jakub Kicinski <kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;mail@birger-koblitz.de;1739373246;76c6b2f4;
+X-HE-SMSGID: 1tiER2-004rlC-0s
 
-The FiberGecko is a small USB module that connects a 100 Mbit/s SFP
+The OEM SFP-2.5G-BX10-D/U SFP module pair is meant to operate with
+2500Base-X. However, in their EEPROM they incorrectly specify:
+Transceiver codes   : 0x00 0x12 0x00 0x00 0x12 0x00 0x01 0x05 0x00
+BR, Nominal         : 2500MBd
 
-Signed-off-by: Max Schulze <max.schulze@online.de>
-Tested-by: Max Schulze <max.schulze@online.de>
-Suggested-by: David Hollis <dhollis@davehollis.com>
-Reported-by: Sven Kreiensen <s.kreiensen@lyconsys.com>
+Use sfp_quirk_2500basex for this module to allow 2500Base-X mode anyway.
+Run-tested on BananaPi R3.
 
-=2D--
+Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+Reviewed-by: Daniel Golle <daniel@makrotopia.org>
+---
+  drivers/net/phy/sfp.c | 2 ++
+  1 file changed, 2 insertions(+)
 
-v3: resend out of merge-window, with commit message
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 7dbcbf0a4ee2..9369f5297769 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -515,6 +515,8 @@ static const struct sfp_quirk sfp_quirks[] = {
 
-v2: change Spacing on Initializer, change Mailing List link
-This patch had previously been suggested at
-https://lore.kernel.org/netdev/1407426826-11335-2-git-send-email-dhollis@d=
-avehollis.com/
-
-However, I found that the flag quirk is not necessary and I suspect
-it has never worked (because it references ".flag" whereas the
-identifying value is in ".data")
-
-I have compiled this and tested successfully with two devices.
-As it now only adds the USB Id it generates no extra maintenance
-burden that's why I suggest it for inclusion.
-
- drivers/net/usb/asix_devices.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
-
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices=
-.c
-index 57d6e5abc30e..ef7aae8f3594 100644
-=2D-- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -1421,6 +1421,19 @@ static const struct driver_info hg20f9_info =3D {
- 	.data =3D FLAG_EEPROM_MAC,
- };
-
-+static const struct driver_info lyconsys_fibergecko100_info =3D {
-+	.description =3D "LyconSys FiberGecko 100 USB 2.0 to SFP Adapter",
-+	.bind =3D ax88178_bind,
-+	.status =3D asix_status,
-+	.link_reset =3D ax88178_link_reset,
-+	.reset =3D ax88178_link_reset,
-+	.flags =3D FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
-+		 FLAG_MULTI_PACKET,
-+	.rx_fixup =3D asix_rx_fixup_common,
-+	.tx_fixup =3D asix_tx_fixup,
-+	.data =3D 0x20061201,
-+};
-+
- static const struct usb_device_id	products [] =3D {
- {
- 	// Linksys USB200M
-@@ -1578,6 +1591,10 @@ static const struct usb_device_id	products [] =3D {
- 	// Linux Automation GmbH USB 10Base-T1L
- 	USB_DEVICE(0x33f7, 0x0004),
- 	.driver_info =3D (unsigned long) &lxausb_t1l_info,
-+}, {
-+	/* LyconSys FiberGecko 100 */
-+	USB_DEVICE(0x1d2a, 0x0801),
-+	.driver_info =3D (unsigned long) &lyconsys_fibergecko100_info,
- },
- 	{ },		// END
- };
-=2D-
-2.43.0
+  	SFP_QUIRK_F("OEM", "SFP-10G-T", sfp_fixup_rollball_cc),
+  	SFP_QUIRK_M("OEM", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
++	SFP_QUIRK_M("OEM", "SFP-2.5G-BX10-D", sfp_quirk_2500basex),
++	SFP_QUIRK_M("OEM", "SFP-2.5G-BX10-U", sfp_quirk_2500basex),
+  	SFP_QUIRK_F("OEM", "RTSFP-10", sfp_fixup_rollball_cc),
+  	SFP_QUIRK_F("OEM", "RTSFP-10G", sfp_fixup_rollball_cc),
+  	SFP_QUIRK_F("Turris", "RTSFP-2.5G", sfp_fixup_rollball),
+-- 
+2.39.5
 
