@@ -1,124 +1,77 @@
-Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7B9190477
-	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 10:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D8020E717
+	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 10:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739443762; cv=none; b=sW3uCh1QGkgp3F3kqbYq2fMoP3DfRV7RaB2ra4xe8fgFxhIcTJG9OxESibyss/WTur1KgfL4NfMHyrlejdEOpf8j4u4GQW6WYrAhZbjeWnjjuhLCW7A0R5GYWcwq0+WwPmjkT8uQ+v/gj4PPIjNX5lcHhhw+OTwU3Il8buFDhQk=
+	t=1739443802; cv=none; b=LPT0tcmV/z27EweUWVvm3bsSgrb3nLjI3KiLOxJE3DJlVJzIMR4j/LL+9NV2PmdJP3OcQhvAnVKH2g2Q9nPWb4L53XjtFKsj5nu0k0uef//rFsjTwNXq/qvoDoJnpS5t9AOkxbtXtxhRvLPGr7WQSp+50DrmWDM2KIxpObHU3eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739443762; c=relaxed/simple;
-	bh=fniy0gSpta8uFDhYaUh3n8EiToC9KfmQTepX/voxJsw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rBeRL7+Cs+F/h97/47LIVnlHUBGxrcXXpQggxLtzuALvEXY6XkLztXlYwgo+aP9i0r2uoA7pRHM6EjAMc7Qc567tHEapRcQzmgiKf1EbJj+bmzmxAMItcHZWdCfQQYPTHA7NeXwhMpZQ8SKhL5u1GASqJb2duOy5Ki2lVrHaDkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QzzpDagJ; arc=none smtp.client-ip=209.85.166.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739443802; c=relaxed/simple;
+	bh=EmgFZclLpQ6mkv0XEm01W/8nKRvFjm/b2ZRsTuA1oBc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=tVupPRsm6uogVTfQhG0qJOvSFFEAEBhzoVBiWqyw+AGGcBP71217FDjOswdiqwsvX5ptSOFcFnEQEHUSYpsSC8biZ9Ih0SWnzAjnx9rTr97pb1rYq/AHVz9I2mDRyIbG1zNsqU7Q0xrqzdbzoXlmPFrHKFoHivehcuxzyi3JZrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SNU7TkkE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QzzpDagJ"
-Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-3cfeff44d94so2210795ab.0
-        for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 02:49:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739443759; x=1740048559; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=udkZpp0hNqYiNrq0Nf13yAi6zz4/hgOh8hNsAzh7hww=;
-        b=QzzpDagJ5vBRl+V3wCdFNGHrKEpDImTMaVvQJuLkRGSu3DzxD+i8d0i+np2RdbnV0/
-         4cFgSnjYJWNDIuEnbiODj2oH5PEXfX6VL3MKlpOhWIIy7F3+gefqWZ8EfBXICfKrKdf3
-         4c6ANAGIal0cLq78cxCeolWxuYaT8nWxXJM4tMXOHGfSd7X3GWoJmEnKul5WJCVpZxDx
-         EksuGBo4LmzlseWKo+9nmN2iaBpSIpFyONJKZJnAG/eZEZTN6f88T+F6rKi7n1ZEMdqU
-         LBqYV7oahSA3btDWR6i+naLuMijuDNfZlapJ8EXU4rfsO6g5x/TecuKKin777PgCqIni
-         opaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739443759; x=1740048559;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=udkZpp0hNqYiNrq0Nf13yAi6zz4/hgOh8hNsAzh7hww=;
-        b=kjoyTHNepZmVAR/6ai3cD9W+wXQ2cJMOyQJSix0+7Txvdj5D22aNcxzwtSVjCAw4at
-         v9QrgeoEAWsygoBahUPf/gRg87BG13Ubjmyd3+mcg/znpEZL/XD2EpH13AwDIYubSVu9
-         y4Rbw1Uwkf+TMgKfgPGo8+bzP8wrznkUYVat4PWL3iHLGaZ0n/Em7YxPFe4jSjKrTcpl
-         QSyjJYIL728eSf/uq1JSuWcdJ/IVIju0mciaCrcKuUn5OvdHe6BFcPK4wi0/vIF8MuxG
-         65muaNJ/JsiRcSV1VK8Srw+5qV50EU9KKTAJ1n1UyoJWYUJZSeBL6h7uDBiET0kEw9f9
-         yirQ==
-X-Gm-Message-State: AOJu0YyTI7CgnyWBGJdt8taWBjIRMwUY605Ll92Wt8OJGQOyH9SPpaaX
-	EcOTl4SZKJ6PhxE5azmFlKkkD6oukhkoKybmgNxrx6bds0bDkDphfjP6+cl2Wh3mV/pd99PNrdw
-	GDhs1hUMiKY/g7yEYKHAzZZqmcPc=
-X-Gm-Gg: ASbGncuyIkiaDxpOfh9iFO5oh8ZOt1dpL6/5B01isJOtC2oqbOY4SkF8HirtJBG2oRb
-	Tvd+nEEHz/CVG+VReO4fZz9nypmuH2eclTFImQ4aDWECwlBbQJfaMqbzw3rY8DGc7yRw3xS0J
-X-Google-Smtp-Source: AGHT+IESZYfsOuR0P0dvH6R8sqMZ/5QVBH6pgrJ9RqtdY+64IYQ6RlEGEhc/d24yDLy1Q53v1Bgx3ZMiVwemj2dJINs=
-X-Received: by 2002:a05:6e02:2168:b0:3d0:255e:fdc with SMTP id
- e9e14a558f8ab-3d17bfde1f2mr65596455ab.15.1739443759123; Thu, 13 Feb 2025
- 02:49:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SNU7TkkE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E030CC4CED1;
+	Thu, 13 Feb 2025 10:50:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739443801;
+	bh=EmgFZclLpQ6mkv0XEm01W/8nKRvFjm/b2ZRsTuA1oBc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=SNU7TkkE9+Pq83nxYt3ieBKPuPcfCcvDqf22n2dsiXU6/KQjYP2Vs3Y9FbMQjefac
+	 tBU4rSpbOi74RXCTPx6Wwnb++uJ+V8ld9gONM4mpjnOF2VkCtNmuwt3svVR7oaWVBt
+	 JIimvlYdA0fwr5FzQFasU7j6hsEEWoOSochaiffSKKcScYw5K+7IQDeE0F9onCQTsJ
+	 uxGcS9lK6UfL9tfYbWk4lSSVmWHPduMTUlmfkIXVqHjgBCLQCYqliyeq0GKVDtJW++
+	 bxP6F/Sd5RVkpw79Zwabhjp84fLVZ4vhBRqYfl1sFBsAxfjHgdLFKPkEC9OdLqJbhz
+	 AZhSrSBU+Dvgw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33FD1380CEEF;
+	Thu, 13 Feb 2025 10:50:32 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250213052150.18392-1-kerneljasonxing@gmail.com> <94376281-1922-40ee-bfd6-80ff88b9eed7@redhat.com>
-In-Reply-To: <94376281-1922-40ee-bfd6-80ff88b9eed7@redhat.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Thu, 13 Feb 2025 18:48:42 +0800
-X-Gm-Features: AWEUYZlAqRBe6AutibjGK-7FCQKNDKvLtcw8V-5_ZddPYageClaDNHD7J57jYkg
-Message-ID: <CAL+tcoC6r=ow4nfjDvv6tDEKgPVOf-c3aHD56_AXmqUrQMyCMg@mail.gmail.com>
-Subject: Re: [PATCH v2 net-next] page_pool: avoid infinite loop to schedule
- delayed worker
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, ilias.apalodimas@linaro.org, 
-	edumazet@google.com, kuba@kernel.org, horms@kernel.org, hawk@kernel.org, 
-	almasrymina@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v1 net-next] arp: Convert SIOCDARP and SIOCSARP to per-netns
+ RTNL.
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173944383101.1182479.12815558202490033852.git-patchwork-notify@kernel.org>
+Date: Thu, 13 Feb 2025 10:50:31 +0000
+References: <20250211045057.10419-1-kuniyu@amazon.com>
+In-Reply-To: <20250211045057.10419-1-kuniyu@amazon.com>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kuni1840@gmail.com,
+ netdev@vger.kernel.org
 
-On Thu, Feb 13, 2025 at 4:32=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wro=
-te:
->
-> On 2/13/25 6:21 AM, Jason Xing wrote:
-> > diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> > index 1c6fec08bc43..e1f89a19a6b6 100644
-> > --- a/net/core/page_pool.c
-> > +++ b/net/core/page_pool.c
-> > @@ -1112,13 +1112,12 @@ static void page_pool_release_retry(struct work=
-_struct *wq)
-> >       int inflight;
-> >
-> >       inflight =3D page_pool_release(pool);
-> > -     if (!inflight)
-> > -             return;
-> >
-> >       /* Periodic warning for page pools the user can't see */
-> >       netdev =3D READ_ONCE(pool->slow.netdev);
->
-> This causes UaF, as catched by the CI:
->
-> https://netdev-3.bots.linux.dev/vmksft-net-dbg/results/990441/34-udpgro-b=
-ench-sh/stderr
->
-> at this point 'inflight' could be 0 and 'pool' already freed.
+Hello:
 
-Oh, right, thanks for catching that.
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-I'm going to use the previous approach (one-liner with a few comments):
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 1c6fec08bc43..209b5028abd7 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -1112,7 +1112,13 @@ static void page_pool_release_retry(struct
-work_struct *wq)
-        int inflight;
+On Tue, 11 Feb 2025 13:50:57 +0900 you wrote:
+> ioctl(SIOCDARP/SIOCSARP) operates on a single netns fetched from
+> an AF_INET socket in inet_ioctl().
+> 
+> Let's hold rtnl_net_lock() for SIOCDARP and SIOCSARP.
+> 
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+> 
+> [...]
 
-        inflight =3D page_pool_release(pool);
--       if (!inflight)
-+       /* In rare cases, a driver bug may cause inflight to go negative.
-+        * Don't reschedule release if inflight is 0 or negative.
-+        * - If 0, the page_pool has been destroyed
-+        * - if negative, we will never recover
-+        *   in both cases no reschedule is necessary.
-+        */
-+       if (inflight <=3D 0)
-                return;
+Here is the summary with links:
+  - [v1,net-next] arp: Convert SIOCDARP and SIOCSARP to per-netns RTNL.
+    https://git.kernel.org/netdev/net-next/c/7aca0d8a727d
 
-Thanks,
-Jason
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
