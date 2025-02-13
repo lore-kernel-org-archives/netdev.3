@@ -1,188 +1,234 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2064.outbound.protection.outlook.com [40.107.20.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04F344C7C;
-	Thu, 13 Feb 2025 22:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739485311; cv=fail; b=tM3rgtShoa3KWD0fM2uL6GEQC1uW/cWEjx667vdgKF4dT/tIkSOKwYrm+eO6lD8JR711ow8KqGfYaetnJGuYR2MO7n6nSiLQcy5C+OE7dWtGo+Geg3UG5aLTXZBMkX/fvTxv5RUntnZHrvUKltcS3xUbLzzot1gO+joCjyFZTTA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739485311; c=relaxed/simple;
-	bh=weBZD7HggOSG/XcqioEVn93JALml1YF+uloIGKQy9rk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=skTDCv6uCQAEbU81Xp62ChBFN+W44hTqD7cebjKuqDu4jdOrujErYpkziSjtMdo5fBqm2NRNM/yFVKyAhpbdiZ7EjesGVlvTI6SPXZA++Y/hyy2Q13x3R/6M+r5hP3Gd1ZaTInE4LWwR3JsUhyHbeEAeaxA4egyNEYD7tZHEaM0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=j3stnxGQ; arc=fail smtp.client-ip=40.107.20.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F9428A2BF;
+	Thu, 13 Feb 2025 22:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739486170; cv=none; b=EN1gdCu4Gb+Cj8DO/h5N+Yi26gGRtyTSw/6EVQ1EzJA4YiOAN5xeOgXzbwu5ufR6KarhzIEiuJVRKt7LK04n+NhWQp7BxTO5I68K5hKd9Yms3YHDovu49QXl569V3TbrkSL6LtzJYzDrzZb1OUUszSm1MTBlaW0La4/d7VyAgoM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739486170; c=relaxed/simple;
+	bh=b8YXK+PAQe7iLpKqfH4Zqyd1LiYtiuaDceGuhl4FWow=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e2LJ6AsSiDRcP3tUn5I0gpOXrmhlhIFJP0++PleCzzn1PRk0zntiuUMX6RN+DgXXOAtvjO9noDXflLYGCF3DJYSwsBJj1c1EwmE5oytb6TMXz5C9PhAzTM3p6zI9c4ycEl+y+oBaMeACE/HjyKm+CEOI+GLJlQvugyp6GtORT60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WaEr6+/0; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="j3stnxGQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rF4TZYL1zxXBcJq0mQyGFvP49tajmTdy7J0PqUnFhNkR3JNS7ZxsuORHZuSlJE3gdfF4Nn/Duna4KENoyShVBjFzDaZtYumhGtcjyXPZreILiJnE0faOpghOcReIRkslK6jlr+DJN2C9kn9wmVm07WIRT0R1P6cOwtxdYYgi/hp4QccF6yo9XF8zd2MfrUswXWQBAQkO9EluZh8g+3B9z4WdbmKnhRVVr1QNbYfwqKoL1cipowPmZP/IM88dySZHYTl2788QeJ+D/HhCPLbQbqU1zTh/0F96SVUmtcLYNgBR9Nicgdi5RZ0KW5I/zQGu/V538OljNR6i9Ti2lFwkNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KOIpDpQJuZuV7Xofv/9gPiadg7UTs8MfDmAQMewJtgk=;
- b=uoPdpbd/DAgMB9IoSVKNJ8Q6DHIuCMNjXrJO3dMWwKUBHhYPr2XDWgrw59mg/0HOOJMHub9HJm1keR1ynTq3f4tcyav97rIsP6erNjoTzYtlQWD/PsQfCrcM16gZVCrlrvmhu+6SaiRL08s26ccNcWuZKRyDh31l555DJecliQLw5HE0eegswKRZ3B5QUXK46h5v7uiLVHmcNfJq0vkOu+PPDQpoqGxQ/jY8CymdH+ZRzAV+4nOBgNWG2TxGWiB9itwNBv3ThCNCuw06qB+fseu+VDe3z2N9vVrMQBtEjp+h6sUKieflJUhKWe6hzw+wte2/V2FohonIv7UE3e5EBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KOIpDpQJuZuV7Xofv/9gPiadg7UTs8MfDmAQMewJtgk=;
- b=j3stnxGQhhKLg9MXDvaFH7HgdURPI/dC8k6ZMU1JbWUvv2GbuYJrjBTBRtG+kFiQg1YBdmOwfpXPmm859P4l4Aymsn8aeXFXi/WO36veTmi3ooGpq7hjZtH1+uNAEcE7X0OCW77ujDkNCkxFYTHc72MiMRMfKxUASPqpiz/kP9z+n1ogByNlj4sDgFQBnOHptF5/D0dhizhtiQFCKQq42yv3t217Pa00GU7U3TEZH8BmkoC6UOV1nISOqMuN7vWkzTK+MF9hr5bb5zJ3EZ0kXy4gdcy5nlWp0jVMriCkj4bqonHIEgMutMr+W/K0oHnHhrCC4S/oFEFIczoOG6u8MA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by VE1PR04MB7423.eurprd04.prod.outlook.com (2603:10a6:800:1a0::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.13; Thu, 13 Feb
- 2025 22:21:45 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%6]) with mapi id 15.20.8445.013; Thu, 13 Feb 2025
- 22:21:45 +0000
-Date: Fri, 14 Feb 2025 00:21:42 +0200
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: claudiu.manoil@nxp.com, alexandre.belloni@bootlin.com,
-	UNGLinuxDriver@microchip.com, andrew@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: dsa: felix:  Add NULL check for outer_tagging_rule()
-Message-ID: <20250213222142.pqqinnlg5qir5xdo@skbuf>
-References: <20250213040754.1473-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250213040754.1473-1-vulab@iscas.ac.cn>
-X-ClientProxiedBy: VI1P195CA0059.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:802:5a::48) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WaEr6+/0"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-38f29a1a93bso661932f8f.1;
+        Thu, 13 Feb 2025 14:36:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739486166; x=1740090966; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8QgkM4CKIrOB7zZnNdSusnVoGaIEEu2025XfAbdmEc8=;
+        b=WaEr6+/0GilMOzM5COv+DopFsI+bOR2ZAN7ha11trDxSY9AU9NomCwCFvyRYLPwGk9
+         AnLakyPxcvb9hVNNwS878Oaj5JAzPCM0mdxZPAvJjii9ksGReVrJjV+d8V5G+o9aPH7n
+         JiVLep56eF3l7ItrRAEbx2IaTpoxH70aVGY+jQG0bXDKCjocqRcqmRvf7iewabjiU5DK
+         +HVuSPoQsaqO+86aQSMBL52EDV+wNDgHmlzWfH2xUoyN9ASQCUTleat07YtZEoXqsApo
+         54PgYm6HGxMWG3J2NE8HdWMkA75hLHmSvr1tnlIH5v05CieowDlL2J5eyz6Z7DF9OBjU
+         Smog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739486166; x=1740090966;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8QgkM4CKIrOB7zZnNdSusnVoGaIEEu2025XfAbdmEc8=;
+        b=ubHxiWZKOIApp337+c04sSCmKhVgSq+RaJYA5WFOv3USrkrvT4h2MnOORVKtHMHjAJ
+         Eu8XWvyU5xH33b9IFuVrSLGp0sC0lejCqasJHEO6qNTXUtLeTmrz43aY1IotKvWHpf3O
+         wj4uJb18u6iGDogWfL578cvH5/RcNu7dh2e+4Ju8BeLPY77riVVvcHfz4dyGjB1t32pG
+         C4OWN7vwA+s1CUOaVObw2U2dpCSEw1MsgdrEbLxXPV1d4NjWUzKFgdw774PnyoA9y3kE
+         7AKtni4eysk+qVv1fPBcp6d2OGWWZ0oCinOYxF8CYNdptzG2b4Jq9lrgs4iizlk6KwX/
+         aR1g==
+X-Forwarded-Encrypted: i=1; AJvYcCU1DhcdqRk78JtrANdJManrJr9+jXc0gOEfWg6T5FKIK2GvpqrYPVSEawLYyaN5tYSGHqpgDOI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtSksYNXfGO6kZ29oyEqa+2RYnSTWvSHkTYRedLqbQQ8gj4oGb
+	Rq/A5xYS1RkhSb3vjtnaXpcXqoOiJjQfVU9M+5G6F20tSkLl11r0
+X-Gm-Gg: ASbGnctjnInGn8/Ln8PH1ZSNernd8JMaKVmbymIcacd/UmLD2Rz2YfadkEqRH2nbYBu
+	bIclNr8ydAhtDmfhJzGR32c33INpDEUbM2YlGy/19iqmXKgi/x5ZRUeYZyTGtcmb6TQthvn50hz
+	TLKdAs/ZlEWqCnGDLXFqWD+Gf7KosKTs+RHxXEGJLmhnIce912XUxbNsU7nLi0hMEeq0nmK37wU
+	6VAFm4UjUBjDg6MqYT0CiT/0fsFOsxxr3v/9tUfpT9lyF53jTSk1mqD/VECFTAhq3jauntSMI1M
+	ERlASr1l0YQMrMuv8XmIS77hyw==
+X-Google-Smtp-Source: AGHT+IHK4mKvpdv5/hBcIIA/dl942KqPFgWt6hy/D76b3kdYk+8L7a0BtsljIet6ofJenfgHf7RgCg==
+X-Received: by 2002:a5d:6dae:0:b0:38d:dc57:855d with SMTP id ffacd0b85a97d-38dea2eadd8mr11646275f8f.35.1739486166259;
+        Thu, 13 Feb 2025 14:36:06 -0800 (PST)
+Received: from [192.168.8.100] ([148.252.146.210])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f259f7df2sm2971447f8f.84.2025.02.13.14.36.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Feb 2025 14:36:04 -0800 (PST)
+Message-ID: <7565219f-cdbc-4ea4-9122-fe81b5363375@gmail.com>
+Date: Thu, 13 Feb 2025 22:37:07 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|VE1PR04MB7423:EE_
-X-MS-Office365-Filtering-Correlation-Id: b736ae60-09c5-4af2-a6cc-08dd4c7ccc96
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ElTa0KCiutwzVqulWXdrgLSOXxcATolsmCZpL3brI5KpZprFHrtnT1zw9TFR?=
- =?us-ascii?Q?31w/p0ntacM+pxymlInICDRfXM4RFS12+A30qfVL65NTLnjzyqmfPwnzCJSu?=
- =?us-ascii?Q?Tr/6uHAxEpRpWe0Lt97Ao7DsAB9hfqTLF99fBDw6YSL2AUkOthM4DLyEOLx/?=
- =?us-ascii?Q?5Nz8EnEmCh5rSQvQ/ZxuHh/yTcF2i5RebdLaSeQpk/BoXeWrDaKHPDue+Www?=
- =?us-ascii?Q?G4lj5j5JIK7w36wSlWC/q/M6F6ZNdlHTrxQoItXCwgbcg8ewrzLqgZORScmx?=
- =?us-ascii?Q?q2FBCsX1n14sSIUkEqsz4O5Fxvt7pZBSHME80+kp3qxEsf0UjwXTXKTH2W+5?=
- =?us-ascii?Q?gNPDUEUNavEC31vUAlZhVs/DcalkqF07WVmUO4PLDzD40LOgKLJdripcLqfy?=
- =?us-ascii?Q?7lFvs9sin+U9hRI/HyEWxXSCmPvLTBU3dJyzrA/DD/jVF4JiS7JAkrwQHFF3?=
- =?us-ascii?Q?qYLgYf4B++T1VASXa9sJqlvDLX8DTy8uXUmVNa8jRkqAFKVOZLSrL+58Kirn?=
- =?us-ascii?Q?litEifOFwTQpflAwtwAdPIX4sQ+Pc/ScwiSKjJTz6SszJcBnNyO+JK79cAvq?=
- =?us-ascii?Q?wXHzhbGjHDpYhK5dg20nonVxlpDcYbvoZRrPZtn+vGlT7y51O86RSkI4cdiQ?=
- =?us-ascii?Q?8uaZtJb0ZaPv+fsgqNYZnPZYxs/KCQcu/x0EZ/Vlf93VeDfZ3TF9RDYkkmia?=
- =?us-ascii?Q?53s9vqC086hCt5NlRLKYK+lqEweSscIY+YcQDBIfxdCMrYO1l+zTA+2MWZ/d?=
- =?us-ascii?Q?M/0diocEuRUiUPOyzdg1kzowrH6yQsQe+ZgRdAnWmu8VHbzD0jUskTBkBvM+?=
- =?us-ascii?Q?oljapUnR5RwsrL0dsbmpcKHjkNHwoOogTbI1ZURRGgD8RD9jWHc0zj82F7tv?=
- =?us-ascii?Q?/td0rKHLB846LGFgqhkHsH2nhcQd1kZsSYYUtqggrA4Vrx9hvkCN3ZCTIdiB?=
- =?us-ascii?Q?YDxCVLMP4hIJlzMdXOwkWIvnMUM04pA8aIn6F+YHgon/4rGzFsVnTLw1nJPM?=
- =?us-ascii?Q?ZGqW/z9s9TuPKB9vEX47U/tdAmVZZVzPry/4n2SHM3giz8AEuIsOpy7RCD/v?=
- =?us-ascii?Q?7ZpMHnFHLsDNJNHq2cdx5jE5ZvESrM9ClWxaFBMovYAdnQ5HrSADlMz0Qw5D?=
- =?us-ascii?Q?EqHyduvUT4RwTEgFiabQ4dpn6QfExHXFlWn/tCJIw7f3iFvPh4N/ObMBq+CV?=
- =?us-ascii?Q?/MWcFGhaHyuHF34zmQYfU0F33Oa7eqaIUokfHI83DaA/pIu6kJv3lexhD2vT?=
- =?us-ascii?Q?cVQe5wPUWcDc5FCF9wJ3UZw2GliSvAY0EJBDr9VE7asahRn1Ekcrbr/yJFoS?=
- =?us-ascii?Q?YYmI8TtEI+/r2p4/nV6E6RM3iCbRnxJLvf2hmNxXkCkzaxhv7Ei51TnqfZcW?=
- =?us-ascii?Q?m/d+pEltd1CFzh7ODBrA8JfIeyxr?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Iztip3kFYzy/Ycqsqk8sR5fujIadGoDtDWEiWAfOjXBsc0XkinctepDQ+QSf?=
- =?us-ascii?Q?m7OaFu4EZxxsqR9hkAs5k2MKwpoagnOyQ/fK2Sntobv08IoN/ZJQJOEFcrzE?=
- =?us-ascii?Q?bu9jaM2R5uYdFNCU2+5sbGFjvrwbMJv3ojoa5R6UwV/wl8ZGGHmBl92R6BX4?=
- =?us-ascii?Q?0Uc1I+tVVKPLQKsZ0qSrCNR9I0NHUocFzgbjGhuFSz/kvkdONTqchV3UMQCl?=
- =?us-ascii?Q?2GW0T0D55IaVL+K7A7metmDLXaTe+A4efIwMPxLWEfjGA8h2C3mjNRT8zG+Q?=
- =?us-ascii?Q?hsF+UKqsGZOybgVU7sxS3FLUpTV+fMTszUyMh8BA5W0yqHiB0bFTgo5tHL1b?=
- =?us-ascii?Q?IEEIk9WoEKYOtmgWjTC9qGzlmlWTXC4Rem+7mUjkuk+qaG7dTAxQtQHiDbo7?=
- =?us-ascii?Q?lBcxVB+QCK4h+SixjZ32FJv12D/Kp5QuPIpTSvNmagH95FkUhKzv2dw6C5ha?=
- =?us-ascii?Q?GUgsDTsYa+FugXmIBUdeNbGHTtG2JLmSf5/GErg3T6f2vIYF+8CR2E4dSeyZ?=
- =?us-ascii?Q?yuB20JHpjTgsCtTObxys4peVP+rtZVehbGDdJRuFJmnDwHR4cpG15j63ndIT?=
- =?us-ascii?Q?J/LNzozTkpEY4mIMUxFsiimEnH6bFnPY2Chokn5ggOC3HNLymmfzeomfF/Qf?=
- =?us-ascii?Q?AvKOltgAMG07esqAHrNgrvzaEaRLTazSfvmQMys+RT7DQC6pDv1LwHfs6IaJ?=
- =?us-ascii?Q?yUr83ctWP6p6eVZV2l3disE1gHT4s7WnLPTEf9QWU9cTSTCMxS97LVCXwhS4?=
- =?us-ascii?Q?ZZVG2BZ0vnzTMp+bOo6qdLAfovrxvl6hOyVE3tbRs6gz54lqsbT0+LQiipqU?=
- =?us-ascii?Q?fDQtOuplfghw9T+KEkA1r8PI//apkMNGuLd3SQe2nP7z3TnH+P2lZMK4+P+g?=
- =?us-ascii?Q?z6pZXBPGat6SyaaLpIaOs+y/tjdU9p2ndgDD+scqX9zZTr3iKTXs25ZMd7ZC?=
- =?us-ascii?Q?bn4XV1z8XVqn3jeqrd17qdP06EnJm1dZTZBPiJ4ENn2IV63+NNv2mtFdY86U?=
- =?us-ascii?Q?j2lttPsYSNgv+GE+4iXXOthEqCTxS2HrQDo7n9ao6HcfGU8LWhGjvrkC5/aS?=
- =?us-ascii?Q?6d03GghwkkNWdVtM+OBcxVX81uoNVL2YIPpGdAsP6egZNkJ2f6nqML4zJPrW?=
- =?us-ascii?Q?43Xh+WEDjidlJs+5nBG84qcu6FeYZYJDkDkNqPtkQrkJBTA/OdAdbXWJ6DWs?=
- =?us-ascii?Q?fQvC/Jv98EKWpSYkwPrhHCJCxR530+fsNDanO/LCZZbsbp2Nz6qJ/fadw9aT?=
- =?us-ascii?Q?5AeOh/ItXPIrKaDRwhiNmC0qoit99r7oyDm5iGh7OzXyZJ+FojJoQQap7s+X?=
- =?us-ascii?Q?aPHelt/4i2o3bsBG5EMLIGDrOubP/JHvOZOS/x9cfxwKeydUmT5jXZg3UHeP?=
- =?us-ascii?Q?n+dyeGLsfunlzjMAPoJed3Zp/Uzs8laT63u+Umd9CFojJJaIeKc9FGxhuBfs?=
- =?us-ascii?Q?CUYya06XeMhrIFk43bw070PT9SyxcxQgK8RvOUJMVr4eQtIRpkJpygQp9PYZ?=
- =?us-ascii?Q?qgaWOMP7qIUV99YKpE0sgA8NUaML3a80Vt3+878Ysif5oEKSytAJ0bPcn4IE?=
- =?us-ascii?Q?5xgtoH7v0ivO+J9O1tW748bPUTLCZ40Jjws4zUmsA4VkFF/2WBGRoqamQa1E?=
- =?us-ascii?Q?DA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b736ae60-09c5-4af2-a6cc-08dd4c7ccc96
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2025 22:21:45.0511
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: v4IjXkvoJxGn3rV6C/lp8Ia19sV1feEZin1818sDeGOZOcs8pWGJ1AAV3KtvLnAEkmVwYcx+gYw1ynhz5Va9Gg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7423
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v13 04/11] io_uring/zcrx: implement zerocopy
+ receive pp memory provider
+To: Mina Almasry <almasrymina@google.com>, David Wei <dw@davidwei.uk>
+Cc: io-uring@vger.kernel.org, netdev@vger.kernel.org,
+ Jens Axboe <axboe@kernel.dk>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jesper Dangaard Brouer
+ <hawk@kernel.org>, David Ahern <dsahern@kernel.org>,
+ Stanislav Fomichev <stfomichev@gmail.com>, Joe Damato <jdamato@fastly.com>,
+ Pedro Tammela <pctammela@mojatatu.com>
+References: <20250212185859.3509616-1-dw@davidwei.uk>
+ <20250212185859.3509616-5-dw@davidwei.uk>
+ <CAHS8izMOrPWx5X_i+xxjJ8XJyP0Kn-WEcgvK096-WEw1afQ75w@mail.gmail.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <CAHS8izMOrPWx5X_i+xxjJ8XJyP0Kn-WEcgvK096-WEw1afQ75w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 13, 2025 at 12:07:54PM +0800, Wentao Liang wrote:
-> In felix_update_tag_8021q_rx_rules(), the return value of
-> ocelot_vcap_block_find_filter_by_id() is not checked, which could
-> lead to a NULL pointer dereference if the filter is not found.
+On 2/13/25 20:57, Mina Almasry wrote:
+...
+>> +static void io_zcrx_scrub(struct io_zcrx_ifq *ifq)
+>> +{
+>> +       struct io_zcrx_area *area = ifq->area;
+>> +       int i;
+>> +
+>> +       if (!area)
+>> +               return;
+>> +
+>> +       /* Reclaim back all buffers given to the user space. */
+>> +       for (i = 0; i < area->nia.num_niovs; i++) {
+>> +               struct net_iov *niov = &area->nia.niovs[i];
+>> +               int nr;
+>> +
+>> +               if (!atomic_read(io_get_user_counter(niov)))
+>> +                       continue;
+>> +               nr = atomic_xchg(io_get_user_counter(niov), 0);
+>> +               if (nr && !page_pool_unref_netmem(net_iov_to_netmem(niov), nr))
+>> +                       io_zcrx_return_niov(niov);
 > 
-> Add the necessary check and use `continue` to skip the current CPU
-> port if the filter is not found, ensuring that all CPU ports are
-> processed.
+> I assume nr can be > 1? 
+
+Right
+
+If it's always 1, then page_pool_put_netmem()
+> does the page_pool_unref_netmem() + page_pool_put_unrefed_netmem() a
+> bit more succinctly.
+...
+>> +       entries = io_zcrx_rqring_entries(ifq);
+>> +       entries = min_t(unsigned, entries, PP_ALLOC_CACHE_REFILL - pp->alloc.count);
+>> +       if (unlikely(!entries)) {
+>> +               spin_unlock_bh(&ifq->rq_lock);
+>> +               return;
+>> +       }
+>> +
+>> +       do {
+>> +               struct io_uring_zcrx_rqe *rqe = io_zcrx_get_rqe(ifq, mask);
+>> +               struct io_zcrx_area *area;
+>> +               struct net_iov *niov;
+>> +               unsigned niov_idx, area_idx;
+>> +
+>> +               area_idx = rqe->off >> IORING_ZCRX_AREA_SHIFT;
+>> +               niov_idx = (rqe->off & ~IORING_ZCRX_AREA_MASK) >> PAGE_SHIFT;
+>> +
+>> +               if (unlikely(rqe->__pad || area_idx))
+>> +                       continue;
 > 
-> Fixes: f1288fd7293b ("net: dsa: felix: fix VLAN tag loss on CPU reception with ocelot-8021q")
-> Cc: stable@vger.kernel.org # 6.11+
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->  drivers/net/dsa/ocelot/felix.c | 2 ++
->  1 file changed, 2 insertions(+)
+> nit: I believe a lot of the unlikely in the file are redundant. AFAIU
+> the compiler always treats the condition inside the if as unlikely by
+> default if there is no else statement.
+
+That'd be too presumptious of the compiler. Sections can be reshuffled,
+but even without that, the code generation often looks different. The
+annotation is in the right place.
+
+...
+>> +static netmem_ref io_pp_zc_alloc_netmems(struct page_pool *pp, gfp_t gfp)
+>> +{
+>> +       struct io_zcrx_ifq *ifq = pp->mp_priv;
+>> +
+>> +       /* pp should already be ensuring that */
+>> +       if (unlikely(pp->alloc.count))
+>> +               goto out_return;
+>> +
 > 
-> diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
-> index 3aa9c997018a..10ad43108b88 100644
-> --- a/drivers/net/dsa/ocelot/felix.c
-> +++ b/drivers/net/dsa/ocelot/felix.c
-> @@ -348,6 +348,8 @@ static int felix_update_tag_8021q_rx_rules(struct dsa_switch *ds, int port,
->  
->  		outer_tagging_rule = ocelot_vcap_block_find_filter_by_id(block_vcap_es0,
->  									 cookie, false);
-> +		if (!outer_tagging_rule)
-> +			continue;
->  
->  		felix_update_tag_8021q_rx_rule(outer_tagging_rule, vlan_filtering);
->  
-> -- 
-> 2.42.0.windows.2
->
+> As the comment notes, this is a very defensive check that can be
+> removed. We pp should never invoke alloc_netmems if it has items in
+> the cache.
 
-Is this patch a result of static analysis or has a real problem been
-noticed? Could you make a more detailed analysis for me of the code path
-in which the filter cannot be found? because I'm not seeing it.
+Maybe I'll kill it in the future, but it might be a good idea to
+leave it be as even page_pool.c itself doesn't trust it too much,
+see __page_pool_alloc_pages_slow().
 
-Hint: follow felix_change_tag_protocol(), and see which things are
-guaranteed to have succeeded if felix->tag_proto == DSA_TAG_PROTO_OCELOT_8021Q.
+>> +       io_zcrx_ring_refill(pp, ifq);
+>> +       if (likely(pp->alloc.count))
+>> +               goto out_return;
+>> +
+>> +       io_zcrx_refill_slow(pp, ifq);
+>> +       if (!pp->alloc.count)
+>> +               return 0;
+>> +out_return:
+>> +       return pp->alloc.cache[--pp->alloc.count];
+>> +}
+>> +
+>> +static bool io_pp_zc_release_netmem(struct page_pool *pp, netmem_ref netmem)
+>> +{
+>> +       struct net_iov *niov;
+>> +
+>> +       if (WARN_ON_ONCE(!netmem_is_net_iov(netmem)))
+>> +               return false;
+>> +
+> 
+> Also a very defensive check that can be removed. There should be no
+> way for the pp to release a netmem to the provider that didn't come
 
-felix_tag_8021q_vlan_add() is called from dsa_tag_8021q_register(), and
-felix_tag_8021q_vlan_del() from dsa_tag_8021q_unregister().
+Agree, but it's a warning and I don't care about performance
+of this chunk to that extent. Maybe we'll remove it later.
 
-felix_vlan_filtering() runs under rtnl_lock(), and so does felix_change_tag_protocol().
-So felix_vlan_filtering() is always executed either entirely before, or
-entirely after felix_change_tag_protocol(), never concurrently.
+> from this provider. netmem should be guaranteed to be a net_iov, and
+
+Not like it matters for now, but I wouldn't say it should be
+net_iov, those callback were initially proposed for huge pages.
+
+> also an io_uring net_iov (not dma-buf one), and specifically be a
+> net_iov from this particular memory provider.
+> 
+>> +       niov = netmem_to_net_iov(netmem);
+>> +       net_mp_niov_clear_page_pool(niov);
+>> +       io_zcrx_return_niov_freelist(niov);
+>> +       return false;
+>> +}
+>> +
+>> +static int io_pp_zc_init(struct page_pool *pp)
+>> +{
+>> +       struct io_zcrx_ifq *ifq = pp->mp_priv;
+>> +
+>> +       if (WARN_ON_ONCE(!ifq))
+>> +               return -EINVAL;
+>> +       if (pp->dma_map)
+>> +               return -EOPNOTSUPP;
+> 
+> This condition should be flipped actually. pp->dma_map should be true,
+> otherwise the provider isn't supported.
+
+It's not implemented in this patch, which is why rejected.
+You can think of it as an unconditional failure, even though
+io_pp_zc_init is not reachable just yet.
+
+>  From the netmem.rst docs we require that netmem page_pools are
+> configured with PP_FLAG_DMA_MAP.
+> 
+> And we actually check that pp->dma_map == true before invoking
+> mp_ops->init(). This code shouldn't be working unless I missed
+> something.
+> 
+> Also arguably this check is defensive. The pp should confirm that
+
+Sure, and I have nothing against defensive checks in cold paths
+
+> pp->dma_map is true before invoking any memory provider, you should
+> assume it is true here (and the devmem provider doesn't check it
+> IIRU).
+
+-- 
+Pavel Begunkov
+
