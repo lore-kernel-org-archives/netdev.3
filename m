@@ -1,144 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91678145A11;
-	Thu, 13 Feb 2025 15:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D2E14F9FB
+	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 15:39:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739461163; cv=none; b=El12uo/VmffOXB8V318Gy35CKnQDTwd5KjfbVTnzw/Ajvte+3on4WefOTx0O7pKAx3ZJfbh7EUQePNHyr/23uzYWESI3tRImY3HEpvILiLNyBmQ/MdqSvquX8FysTyzTyNWuRO36A0UXtIgy0atoGVML5B9Nv8AHjLrk0I8/K0o=
+	t=1739461173; cv=none; b=l4JTe9nSbth+pzCE9sxy02Siq5GhpqSio1CR+OZ8DDgeZaj5ol7mVPdAMHugqdJAyithns/1zaibMYOtF4VSJ7vofEcFwpLcykMHqdaCoEidIJJAKjy/xgkYbN4OSTKXbj3nrzvZCX+HHlRfq2bSVG8BpEFXOQZ5TKeD81Icy9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739461163; c=relaxed/simple;
-	bh=6q/QewPzbnUsX7jiMLeE2mjex5cyWOE6tyicxoA6Dog=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VCza6QyG4Fs4goIQVTPmUlPfdLJ2bqxPvzODx+vn35jAkasY881rRtm2biTmaObUBV/NSaeDTrtneeQYdjN5JN7tAc5gNdHMlnnTKwEnq3P5dH90L1J74CmlrZozccntUD72OH6tJSyi5XjWw7Io65F6hTKv4lt6zEnJMcJETR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yKtY76j5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739461173; c=relaxed/simple;
+	bh=uLQ+6gBnByKOpSjHFYmMnrrzCusoPXYgBQtXLa3OKL0=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=tJV6MVCh96MMxi5lF5Ynka/aGLpEqCatb0+VdYsO6KSBhKfUniXCxUD+De2emilIYpcNXrm4KWPenoXS1fgavan8NFOAxmQLm+BvRxuDRSxSWrO65BAVUYpUXJkB4+t26gHMR+NwrHzFHsYuJfwFrcTI7G3fLd15C6PenPrKQWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fxCtGmVm; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKtY76j5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FD7C4CED1;
-	Thu, 13 Feb 2025 15:39:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739461163;
-	bh=6q/QewPzbnUsX7jiMLeE2mjex5cyWOE6tyicxoA6Dog=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=yKtY76j52li0sEk5y5KPMU6muU6YekOq4KWdWkuzQRyQUaU6VWQp/uBAqzQ5ctSTy
-	 s0AbUnLkrGyTjPyPDtNcI38J2dZuq3C0P2N37SQ0mX+MsCcy9gMS9kRJ0VFRQ5AO+P
-	 O9OUyCgR3u9oJQTN7RffyfCc3+zp3+3/NLUR10fk=
-Date: Thu, 13 Feb 2025 15:35:45 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Hsin-chen Chuang <chharry@google.com>, linux-bluetooth@vger.kernel.org,
-	chromeos-bluetooth-upstreaming@chromium.org,
-	Hsin-chen Chuang <chharry@chromium.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	Ying Hsu <yinghsu@chromium.org>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] Bluetooth: Fix possible race with userspace of
- sysfs isoc_alt
-Message-ID: <2025021347-exalted-calculate-b313@gregkh>
-References: <20250213114400.v4.1.If6f14aa2512336173a53fc3552756cd8a332b0a3@changeid>
- <2025021352-dairy-whomever-f8bd@gregkh>
- <CADg1FFdez0OdNDPRFPFxNHL_JcKmHE6KNxnYvt4sK7i+Uw6opA@mail.gmail.com>
- <2025021347-washboard-slashed-5d08@gregkh>
- <CADg1FFdbKx3z+SPWFmY4+xZmewh0MnnZp_gmYEdY0z-mxutmEw@mail.gmail.com>
- <2025021318-regretful-factsheet-79a1@gregkh>
- <CABBYNZL4tEBTT3Hrf3JUGNuseLg1SNLmazo88EitmMfhUWUQxw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fxCtGmVm"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7be8f281714so96526985a.1
+        for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 07:39:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739461171; x=1740065971; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=udxSQnsofsOOLvjBUrcTda8O+2WRk+wnl9ns6irPrRw=;
+        b=fxCtGmVmRESUHqJcqtua/ceGfssc3Yw8DK4WRQBYBJrILdw6AYs9oaEorKiTobMXcR
+         JWHsurYJ0Ajh2qPaprrDORktqyIO8oztLyLfWHzOUFu0L7X5w438C+pz0w3nvKvtBDlJ
+         5RMm1bro4Hsr6ZBDewefkvMQRxyAgRCeKfhxcCelldry1CFAdOHBZ80PN7iE3Ljrj0I7
+         EN1/j0AGshZLmHhNDgfNag6j0KVNXXFh/Vnp1IlvODgMgYM8LsS3TSh1gA7AxWqXA2t8
+         bW8QVibxo+A8cWyeNxrxdgnWyA8k5g8iCT+fq5TeYzXQLxioXFJf9s/A2a/QIa51lUsd
+         tCwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739461171; x=1740065971;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=udxSQnsofsOOLvjBUrcTda8O+2WRk+wnl9ns6irPrRw=;
+        b=H3Mv1TjY4br11lk9onQOrRcm8sHKjtfOENofrgtD3zZP3VnN1G9//5DxnKDVuDyRiT
+         ygccSLr1BvNdKFW1lxoomwHdfHNu8pVoDrkTlN/Q/j5thZNNCkhYT8rrEKyBUyvmhd8u
+         fO9TpE0ezNiei8Zeq62l298Nk/8lxDzEchnsnbJIUJa7mXInKUDQQV2L/gCFmpZDPLgA
+         H18vx5sK1m0QBcBlIipcUV+bKQ4Tx/LXYqzxMNP2WyJeCij6EMcqUyJG50p//AFg+D4P
+         J4zO+0MKtECEeHi63YoP0HfOjrgspLhBfUKdBQhNZq5qZBXKeUTC/LSQiEoNKM4ayLyN
+         OOBQ==
+X-Gm-Message-State: AOJu0Yz2NTkUGRUG7PwhTW8aSTX0B9ywAkFLFDWCIrUO6mcTWKnLrHk8
+	K2grhAEkvLCfi92GLwCz8z+qXhFoDhDuNIjEXJABK/3jfqHp9Ky9
+X-Gm-Gg: ASbGncsPiLg45xMG88uPy0O1BRliQU8aixdtqQA3ppclBbkDtD5Zb9krIZz/CeFushH
+	kVQAMRZNoJT+8Q8CBQ+M1ZZyj0obmmx3UYRm6G40zkPddgYREXbtkKmGoMoonjogAXZQj/EA/IF
+	Ohj9ysuT6SSTasAaigQ3Y+VvR4mYzYEJY+1HiENIvv8KPj6JwcZoK3l77cNZ+GwJZHresYUl93D
+	V+2byY6eW0zjyjbYCls8kHx2CxKIgLAa9BMRrnx149g3SLM8Oet4XmZYh4Q7geySYIs16TkQt6L
+	iPnF7KXgqLORSCbJWMbiwknVFIOwotr/xIk7Okmk3PpHZ501mDbb+RN4hSrVhJQ=
+X-Google-Smtp-Source: AGHT+IG7ET35I051nGXBw8muZ+jT1VxdlURg0SdujsQCFC+b6ZMARenkQHiu11fmmnu4FosYeNW8Jw==
+X-Received: by 2002:a05:620a:628e:b0:7c0:6188:9023 with SMTP id af79cd13be357-7c07a12a8e5mr459489985a.19.1739461170859;
+        Thu, 13 Feb 2025 07:39:30 -0800 (PST)
+Received: from localhost (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c07c87412fsm101210985a.101.2025.02.13.07.39.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Feb 2025 07:39:30 -0800 (PST)
+Date: Thu, 13 Feb 2025 10:39:30 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>, 
+ davem@davemloft.net
+Cc: netdev@vger.kernel.org, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ andrew+netdev@lunn.ch, 
+ horms@kernel.org, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ willemb@google.com, 
+ ecree.xilinx@gmail.com, 
+ neescoba@cisco.com
+Message-ID: <67ae123210650_24be45294bc@willemb.c.googlers.com.notmuch>
+In-Reply-To: <20250213010457.1351376-1-kuba@kernel.org>
+References: <20250213010457.1351376-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next] netdev: clarify GSO vs csum in qstats
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABBYNZL4tEBTT3Hrf3JUGNuseLg1SNLmazo88EitmMfhUWUQxw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 13, 2025 at 09:22:28AM -0500, Luiz Augusto von Dentz wrote:
-> Hi Greg,
+Jakub Kicinski wrote:
+> Could be just me, but I had to pause and double check that the Tx csum
+> counter in qstat should include GSO'd packets. GSO pretty much implies
+> csum so one could possibly interpret the csum counter as pure csum offload.
 > 
-> On Thu, Feb 13, 2025 at 8:45 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Thu, Feb 13, 2025 at 09:33:34PM +0800, Hsin-chen Chuang wrote:
-> > > On Thu, Feb 13, 2025 at 8:10 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > A: http://en.wikipedia.org/wiki/Top_post
-> > > > Q: Were do I find info about this thing called top-posting?
-> > > > A: Because it messes up the order in which people normally read text.
-> > > > Q: Why is top-posting such a bad thing?
-> > > > A: Top-posting.
-> > > > Q: What is the most annoying thing in e-mail?
-> > > >
-> > > > A: No.
-> > > > Q: Should I include quotations after my reply?
-> > > >
-> > > > http://daringfireball.net/2007/07/on_top
-> > > >
-> > > > On Thu, Feb 13, 2025 at 07:57:15PM +0800, Hsin-chen Chuang wrote:
-> > > > > The btusb driver data is allocated by devm_kzalloc and is
-> > > > > automatically freed on driver detach, so I guess we don't have
-> > > > > anything to do here.
-> > > >
-> > > > What?  A struct device should NEVER be allocated with devm_kzalloc.
-> > > > That's just not going to work at all.
-> > >
-> > > Noted. Perhaps that needs to be refactored together.
-> > >
-> > > >
-> > > > > Or perhaps we should move btusb_disconnect's content here? Luiz, what
-> > > > > do you think?
-> > > >
-> > > > I think something is really wrong here.  Why are you adding a new struct
-> > > > device to the system?  What requires that?  What is this new device
-> > > > going to be used for?
-> > >
-> > > The new device is only for exposing a new sysfs attribute.
-> >
-> > That feels crazy.
-> >
-> > > So originally we had a device called hci_dev, indicating the
-> > > implementation of the Bluetooth HCI layer. hci_dev is directly the
-> > > child of the usb_interface (the Bluetooth chip connected through USB).
-> > > Now I would like to add an attribute for something that's not defined
-> > > in the HCI layer, but lower layer only in Bluetooth USB.
-> > > Thus we want to rephrase the structure: usb_interface -> btusb (new
-> > > device) -> hci_dev, and then we could place the new attribute in the
-> > > new device.
-> > >
-> > > Basically I kept the memory management in btusb unchanged in this
-> > > patch, as the new device is only used for a new attribute.
-> > > Would you suggest we revise the memory management since we added a
-> > > device in this module?
-> >
-> > If you add a new device in the tree, it HAS to work properly with the
-> > driver core (i.e. life cycles are unique, you can't have empty release
-> > functions, etc.)  Put it on the proper bus it belongs to, bind the
-> > needed drivers to it, and have it work that way, don't make a "fake"
-> > device for no good reason.
+> But the counters are based on virtio:
 > 
-> Well we could just introduce it to USB device, since alternate setting
-> is a concept that is coming from there, but apparently the likes of
-> /sys/bus/usb/devices/usbX/bAlternateSetting is read-only, some
-> Bluetooth profiles (HFP) requires switching the alternate setting and
-> because Google is switching to handle this via userspace thus why
-> there was this request to add a new sysfs to control it.
+>   [tx_needs_csum]
+>       The number of packets which require checksum calculation by the device.
+> 
+>   [rx_needs_csum]
+>       The number of packets with VIRTIO_NET_HDR_F_NEEDS_CSUM.
+> 
+> and VIRTIO_NET_HDR_F_NEEDS_CSUM gets set on GSO packets virtio sends.
+> 
+> Clarify this in the spec to avoid any confusion.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: willemb@google.com
+> CC: ecree.xilinx@gmail.com
+> CC: neescoba@cisco.com
+> ---
+>  Documentation/netlink/specs/netdev.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
+> index 288923e965ae..0b311dc49691 100644
+> --- a/Documentation/netlink/specs/netdev.yaml
+> +++ b/Documentation/netlink/specs/netdev.yaml
+> @@ -457,6 +457,8 @@ name: netdev
+>          name: tx-needs-csum
+>          doc: |
+>            Number of packets that required the device to calculate the checksum.
+> +          This counter includes the number of GSO wire packets for which device
 
-That's fine, just don't add devices where there shouldn't be devices, or
-if you do, make them actually work properly (i.e. do NOT have empty
-release callbacks...)
+Good to call out wire packets, as opposed to the GSO packet itself. That is
+sometimes left ambiguous in GSO counting.
 
-If you want to switch alternate settings in a USB device, do it the
-normal way from userspace that has been there for decades!  Don't make
-up some other random sysfs file for this please, that would be crazy,
-and wrong.
+> +          calculated the L4 checksum (which means pretty much all of them).
 
-So what's wrong with the current api we have today that doesn't work for
-bluetooth devices?
+Can we clarify what pretty much here means?
 
-thanks,
+TSO requires checksum offload. USO with zero checksum is the only exception that
+I can think of right now.
 
-greg k-h
+>          type: uint
+>        -
+>          name: tx-hw-gso-packets
+> -- 
+> 2.48.1
+> 
+
+
