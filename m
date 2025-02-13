@@ -1,44 +1,64 @@
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C45204C1E
-	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 08:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1703204C1E;
+	Thu, 13 Feb 2025 08:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739433959; cv=none; b=B8qVB7W4C5a1Th+QAnioXJ2Q6L+W7wimejdoYluf51KR/Y5hpb9lqeSo5uMxKpKEbPKzXCHIF8Bnk+ohDvIvJ3wZm0j+F/PBv3bjcH1obGe+7NGZCw+XZIcgMJuZJWkFmijUR8/52XIDwd/Q7D9KqNXjWrBQ7sYdx4WqcoNZedw=
+	t=1739433963; cv=none; b=F/efLAQn1XjdIcypFyqVVb0zRid4m6YXXfiGfoKu0Mtr/WB818qAt6rp5lGrSQhJ6S7coAfmpONmAFLxaxvKYGymTrILEHmc1n2uFkVnYWJE41O/mGxsKL03doAtpcAnurclaSTxaZjaPGJsyyFM9Sj8jYOW1KW/n6gAEhM6mOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739433959; c=relaxed/simple;
-	bh=OATSO7eHoJILP+GQWU/a/eBJyObmrM/vmlJA1K+5wRI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Qcd9GIhexsuGFJ34ee82l2g1KQLbmNEfZnb3QGvpd2uHko1nJi2QkVwWAyr9Z9T7eTgzrc3wt6eTMojNdYdjzmPZwSo4CZGh+AygPKhVHx6Xc2vuoImtAzHqRcAe+NIdPya/oopJLEhKSPaloUTM+YeGidknEBYZqYf0UzQOoiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.243.244.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: bizesmtpsz2t1739433938tobom9k
-X-QQ-Originating-IP: e/q9oWX2QE/9T+2nK816yX6fbqZIEG6WLqgZGMbgli0=
-Received: from wxdbg.localdomain.com ( [218.72.127.28])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 13 Feb 2025 16:05:25 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 10265486340148631416
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	linux@armlinux.org.uk,
-	horms@kernel.org,
-	jacob.e.keller@intel.com,
-	netdev@vger.kernel.org,
-	vadim.fedorenko@linux.dev
-Cc: mengyuanlou@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v7 0/4] Support PTP clock for Wangxun NICs
-Date: Thu, 13 Feb 2025 16:30:37 +0800
-Message-Id: <20250213083041.78917-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.27.0
+	s=arc-20240116; t=1739433963; c=relaxed/simple;
+	bh=1qIISGiDU7YmvZo2knZ0BXhvTL7eD74tAQXTEnPD3tE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=F67rNO+pD+21QMx+TKpqUOFAKRgIuDH3piTifvkcpTx4GBacESQJ6YR5MVB5+SlUmNiXYRgiJxswZ9sCUI/p9ri0Dgfdz62lfAAGqZORpgNKRIzqtjli4oRdVqOCUKJNWKqujDAZx53F4KEcpbZ2vYJGkUWxMdtFJ9WBDyM2e6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=q7v9Q4TR; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="q7v9Q4TR"
+X-UUID: 5ac43d46e9e111efb8f9918b5fc74e19-20250213
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=ZmAkLzA0ppT9ciqOn3hKY6nSAB9ytOhlS9TDTri4luo=;
+	b=q7v9Q4TRLKWsP3E1FIi0jxskqwJFgAYiqbyZt9H0nj9mW/RJEWnDrIutIBQNOwSBWxIKUNXf30GN95enk/m0s79EPCzw4IDBugFLhsG08Fy8ETqGUhM7WAYXorpNay/VwLgDBz2YkIcdUwRgQPUTH44kSRf7M7o8lEoXRe6dzvQ=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.46,REQID:73d3ad06-2c53-485d-a036-3151b4cc4947,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:60aa074,CLOUDID:392c8227-6332-4494-ac76-ecdca2a41930,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-UUID: 5ac43d46e9e111efb8f9918b5fc74e19-20250213
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
+	(envelope-from <skylake.huang@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1315383023; Thu, 13 Feb 2025 16:05:57 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Thu, 13 Feb 2025 16:05:55 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.28 via Frontend Transport; Thu, 13 Feb 2025 16:05:55 +0800
+From: Sky Huang <SkyLake.Huang@mediatek.com>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Daniel Golle
+	<daniel@makrotopia.org>, Qingfang Deng <dqfext@gmail.com>, SkyLake Huang
+	<SkyLake.Huang@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Simon
+ Horman <horms@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>
+CC: Steven Liu <Steven.Liu@mediatek.com>, Sky Huang
+	<skylake.huang@mediatek.com>
+Subject: [PATCH net-next v2 0/5] net: phy: mediatek: Add token-ring helper functions
+Date: Thu, 13 Feb 2025 16:05:48 +0800
+Message-ID: <20250213080553.921434-1-SkyLake.Huang@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,102 +66,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: NG7xP+P+sy64dTKFJ1lcYnx1O9cwXm6x1pF7Hr/SnYtcAJx6HuB+f+PK
-	BLRP8QMkMGJ19zeirysvVCFoMZDJks4O/X9yP6m3SkDss3qERzZb/a88VBs8AJFtTEscGa5
-	vvunLdx59izlKLOiCgUGoPNlbkQ5/+Yzt2a89GsG8UAj52fU5hrC9aFSA+IU1qQw8oCscVi
-	T2KUh9YZl+Z3Xb2FepEIu7aZFB9mZa+ykfFLhSYPfqgI5L0Q8jOx17tZ0E4D+cAmjrrH+42
-	O1XC+ButMiQzJ9JxDKdGz+Rwtql5FJSX64l3G4ZKyLLTV2ZgSeE/7ea4plWe0Fn2G39Gl1X
-	uQFDCS2d2DaXGGIFsQu16PevueiR8c1YFHZ/76Sl2gDDmi9VUvzDKTWbsnjzRhUmkxbahAd
-	4hzQggofalEhDzIhib6GUDB8u11ZW0vegKdXHmTjht71W83krze/nZo4IljFK+h0tgkV/Al
-	3vBY/mpFBstNqMBP05XzVGo52CSE2U+pzdYLZji5b1aSDb+OlONEqR/eJ0TRE86FHkdMFFq
-	GUzlW91zQ9O0MlaMCw1vxSV+K1f0gcquu01RZudxAx4gf+37JTXiw3jzIAGs/duM9Q7v6h5
-	LYUFEGG3dZkTwmBSTFXIwfFPZJyxs1LJ+yJilVcM+90FSipvNbUtgwoxVRDXgkYkpShYSPx
-	17WxTiodDOsEZhYs3hs/KBZ7gg86VKqrq2xrs2OPcPqUqIXOnKaHqyz9nzjGBZ5BAHzTtml
-	Grk5U8uwgxBb/+p676cJaHklZoTiCnwtCQaQZtJcsGFIkfNjWX7a84kKB6LwENSx1QQpg8H
-	c70/OdpaRmI+BG8GaLeWvrq6MFwFo4qNmWtnWOcuOV97l9MKZu20bYXK+7dEsmetV3GSn/w
-	LjWnKXeifgyNK8FR14fDewwM+E/kGb4VSO0eL5EqIDZ5XZo22FOGGEQWnfET5ha9wyLZY01
-	jupvTvsHo3xEfnLDlPtH55XNLjyfCvhrp8ybp7iMZQ7ISmXCrgS/5vJecq3SBv//C328430
-	8iivv+A9RGOm3EgTOBa0TIiZXclOGk9rQohRXvAw==
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain
+X-MTK: N
 
-Implement support for PTP clock on Wangxun NICs.
+From: Sky Huang <skylake.huang@mediatek.com>
 
-Changes in v7:
-- Link to v6: https://lore.kernel.org/all/20250208031348.4368-1-jiawenwu@trustnetic.com/
-- Merge the task for checking TX timestamp into do_aux_work
-- Add Intel copyright in wx_ptp.c
+This patchset add token-ring helper functions and moves some macros from
+mtk-ge.c into mtk-phy-lib.c.
 
-Changes in v6:
-- Link to v5: https://lore.kernel.org/all/20250117062051.2257073-1-jiawenwu@trustnetic.com/
-- Add "depends on PTP_1588_CLOCK_OPTIONAL" in Kconfig to fix build
-  errors
+Signed-off-by: Sky Huang <skylake.huang@mediatek.com>
+---
+Change in v2:
+- Split the patch:
+https://patchwork.kernel.org/project/linux-mediatek/patch/
+20250116012159.3816135-2-SkyLake.Huang@mediatek.com/
+into 4 patches
+- Get rid of mtk-2p5ge.c patch temporarily so that this patchset can be
+reviewed individually.
+---
+Sky Huang (5):
+  net: phy: mediatek: Change to more meaningful macros
+  net: phy: mediatek: Add token ring access helper functions in
+    mtk-phy-lib
+  net: phy: mediatek: Add token ring set bit operation support
+  net: phy: mediatek: Add token ring clear bit operation support
+  net: phy: mediatek: Move some macros to phy-lib for later use
 
-Changes in v5:
-- Link to v4: https://lore.kernel.org/all/20250114084425.2203428-1-jiawenwu@trustnetic.com/
-- Use reading template for timecounter_cyc2time()
-- Move the same piece of codes to the functions
-- Fix read sequence for time registers
-- Remove skb_shared_hwtstamps zero out
-- Pass duty cycle for the pulse width
-
-Changes in v4:
-- Link to v3: https://lore.kernel.org/all/20250110031716.2120642-1-jiawenwu@trustnetic.com/
-- Add tx_hwtstamp_errors to record errors of DMA mapping
-- Remove flag bits clear for default case in setting TS mode
-- Change to use seqlock_t hw_tc_lock
-- Add ptp_schedule_worker in wx_ptp_reset()
-- Remove perout index check
-- Refactor the same code into a function
-
-Changes in v3:
-- Link to v2: https://lore.kernel.org/all/20250106084506.2042912-1-jiawenwu@trustnetic.com/
-- Clean up messy patches
-- Return delay value in wx_ptp_do_aux_work()
-- Remove dev_warn()
-- Implement ethtool get_ts_stats
-- Support PTP_CLK_REQ_PEROUT instead of PTP_CLK_REQ_PPS
-- Change to start polling Tx timestamp once descriptor done bit is set
-
-Changes in v2:
-- Link to v1: https://lore.kernel.org/all/20250102103026.1982137-1-jiawenwu@trustnetic.com/
-- Fix build warning
-- Convert to .ndo_hwtstamp_get and .ndo_hwtstamp_set
-- Remove needless timestamp flags
-- Use .do_aux_work instead of driver service task
-- Use the better error code
-- Rename function wx_ptp_start_cyclecounter()
-- Keep the register names consistent between comments and code
-
-Jiawen Wu (4):
-  net: wangxun: Add support for PTP clock
-  net: wangxun: Support to get ts info
-  net: wangxun: Add periodic checks for overflow and errors
-  net: ngbe: Add support for 1PPS and TOD
-
- drivers/net/ethernet/wangxun/Kconfig          |    1 +
- drivers/net/ethernet/wangxun/libwx/Makefile   |    2 +-
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   |   53 +
- .../net/ethernet/wangxun/libwx/wx_ethtool.h   |    4 +
- drivers/net/ethernet/wangxun/libwx/wx_hw.c    |   19 +
- drivers/net/ethernet/wangxun/libwx/wx_hw.h    |    1 +
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |   52 +-
- drivers/net/ethernet/wangxun/libwx/wx_ptp.c   | 1011 +++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_ptp.h   |   20 +
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  105 ++
- .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |    2 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |   20 +-
- drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c |   11 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |    5 +
- .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |    2 +
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |   11 +
- .../net/ethernet/wangxun/txgbe/txgbe_phy.c    |   10 +
- 17 files changed, 1322 insertions(+), 7 deletions(-)
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_ptp.c
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_ptp.h
+ drivers/net/phy/mediatek/mtk-ge-soc.c  | 296 ++++++++++++++++---------
+ drivers/net/phy/mediatek/mtk-ge.c      |  78 +++++--
+ drivers/net/phy/mediatek/mtk-phy-lib.c |  77 +++++++
+ drivers/net/phy/mediatek/mtk.h         |  15 ++
+ 4 files changed, 341 insertions(+), 125 deletions(-)
 
 -- 
-2.27.0
+2.18.0
 
