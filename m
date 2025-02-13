@@ -1,45 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A32153828
-	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 17:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE66920371A
+	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 17:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739466085; cv=none; b=giwBwMcZvTNUf5TkL26M+KEglCpm1OkxIR15qI89X3sKX+rIpo3yc5Meiiwzr3S5LmSWpBHm9+KtfoM1empCCgA0fkcnaorDNHEtnMSb2ulTMNPlpkMsMPUEsNzMPiIi2M2oKbkyyZWVGPVuYKJ2hUwN4vnwcxNsC4UHEiWY97o=
+	t=1739466466; cv=none; b=eXQlBgXYOLFcqLcpUrv98JPMb+3+s3+TVe1XZCTqOzC3lWZNbI7zYP9ACeoDWalWNFD+Z6zfnI783TfBfgDxn1lnCtMRZvpL92+zL/Au/f83Zwr9TEL5o0XNkaU3FfUoEP8upxPhqsTD5zBJxa2kawCh6n+CWpjmYVEf7hY++/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739466085; c=relaxed/simple;
-	bh=7yOP9o/hePJlrJSW3zXV0+3UPTEu7pqguLe5lgjM2+o=;
+	s=arc-20240116; t=1739466466; c=relaxed/simple;
+	bh=d74L2YCH3HCnhbn3y3zBQu1YVCwqrGXd6/+PS2bir3E=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fm7QH7L0+rGREoGzSiw0p+6AnI+Dn4IyKx2UERzXrhAn1+HohPmEJsn82Y6r+kWdnkoKsu17AL6BmNFpjCvs9OCsJ4HSAPRqbCIq9E2tVyzmuhB/NmeFzvZPMTv/1Z6pKfBNBjQ3T/88BGFZ5VbtMyqrT6Z8RLzGUAG4zD/4SKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=opA1onax; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=jLVj6lmqUyxlJfrIA3ZMokcsswG1V2Zo7Qs2FTAiOnQm9+KWAxGoFDuuKJ5AXtBhGn1u8pssv1wmFtG2nUuowtEYiNKEzyRF4bhVIbOgMktptHvB3BoS5JmET2IiYR1aI3QJiWmvehrgwYXt68w6XXOpfaCBkKK0aBm7aDhQMgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5tGcbkY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="opA1onax"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5236EC4CEE8;
-	Thu, 13 Feb 2025 17:01:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5tGcbkY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F230DC4CEE7;
+	Thu, 13 Feb 2025 17:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739466084;
-	bh=7yOP9o/hePJlrJSW3zXV0+3UPTEu7pqguLe5lgjM2+o=;
+	s=k20201202; t=1739466466;
+	bh=d74L2YCH3HCnhbn3y3zBQu1YVCwqrGXd6/+PS2bir3E=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=opA1onaxDSYjzy4orSZGuw+RJ6VHlWwiRicWrdpa4jy8/6GuZHyBz/h5Fw0fkHR74
-	 +CfpJfW0qv6vwxx3vbgFziBVAFEQlcJZL5AnIEAJVOEd3Vy//21fYfQE38TPjsDFBj
-	 i0t4N5DQ0YIgHC8s5EX2pNUObQvGA7U3mnEhymtQGvtXtdkvZek8eG+tXsdpgig8JG
-	 e/Md6mWDPCJSVBo+Hxt6+d6/sXcsKdK7e3iiKXoKRBkyvimjUn1jDZ4PfV2FDndbHH
-	 UQnEs1ybYJgs5CxCxAeAxnzbXt0rGzzW1XQdirW5V1xpOlw5XmQ5PwVYS3BKo27mOW
-	 y6srK2jKukDug==
-Date: Thu, 13 Feb 2025 09:01:23 -0800
+	b=S5tGcbkYViUhx5yIefgzEbxVv2MA8E1XPgNJaEtvuHJNpdzipCF4CRmQxHVDkiKGP
+	 ITvg+C122oSJTZAmi1aPhMUzSJsQjOFjD2NBY0tPIA6HVksRB2yLTgIp/qNMvkHRoZ
+	 4kAjrbf6C8GdN3tpiKx/PlSrpia9az7dvn8uF7S+lXgTpJLZonX9zvBUk9o34fNVfB
+	 bdDALjkovwJKGMy+kGtyhaXLo5l9BVnR5a9NhA5fh1PFT6v5LF0XCp/ZIihJ5iwIpt
+	 7ijqf6e4Wq7XjjwrEU2gRrxwjAvyF7LCFANoy9bKrzwUOPmevdhA9n4lgvY/8yI1EB
+	 5h5BtNI8gLNsw==
+Date: Thu, 13 Feb 2025 09:07:45 -0800
 From: Jakub Kicinski <kuba@kernel.org>
 To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Stanislav Fomichev <stfomichev@gmail.com>, davem@davemloft.net,
- netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, willemb@google.com,
- shuah@kernel.org, petrm@nvidia.com
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ willemb@google.com, shuah@kernel.org, petrm@nvidia.com
 Subject: Re: [PATCH net-next 3/3] selftests: drv-net: add a simple TSO test
-Message-ID: <20250213090123.0ca3220f@kernel.org>
-In-Reply-To: <67ae17abc8d98_24be452942f@willemb.c.googlers.com.notmuch>
+Message-ID: <20250213090745.09033f27@kernel.org>
+In-Reply-To: <67ae175d7a7fc_24be45294be@willemb.c.googlers.com.notmuch>
 References: <20250213003454.1333711-1-kuba@kernel.org>
 	<20250213003454.1333711-4-kuba@kernel.org>
-	<Z61dwqIp7PD_-m0B@mini-arch>
-	<67ae17abc8d98_24be452942f@willemb.c.googlers.com.notmuch>
+	<67ae175d7a7fc_24be45294be@willemb.c.googlers.com.notmuch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,14 +47,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 13 Feb 2025 11:02:51 -0500 Willem de Bruijn wrote:
-> > > +        # Check that at least 90% of the data was sent as LSO packets.
-> > > +        # System noise may cause false negatives, it is what it is.
-> > > +        total_lso_wire  = len(buf) * 0.90 // cfg.dev["mtu"]
-> > > +        total_lso_super = len(buf) * 0.90 // cfg.dev["tso_max_size"]  
+On Thu, 13 Feb 2025 11:01:33 -0500 Willem de Bruijn wrote:
+> Is the special handling of GSO partial needed?
 > 
-> Besides noise this also includes the payload to wire length with headers
-> fudge factor, right?
+> This test is not trying to test that feature.
 
-Ah, fair point, up to 5% of header overhead here. I'll add that 
-to the comment.
+If I leave partial enabled and disable tx-udp_tnl-segmentation 
+I still get TSO packets in the driver in the vxlan tests.
+Not entirely unreasonable since these are the HW features,
+and with partial enabled the HW does not do UDP tunnel-aware
+segmentation?
+
+> > +def main() -> None:
+> > +    with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
+> > +        cfg.ethnl = EthtoolFamily()
+> > +        cfg.netnl = NetdevFamily()
+> > +
+> > +        query_nic_features(cfg)
+> > +
+> > +        tun_info = (
+> > +            # name,         ethtool_feature              tun:(type,    args   4/6 only)
+> > +            ("",            "tx-tcp6-segmentation",          None),  
+> 
+> tx-tcp6-segmentation implies v6 only? The catch-all is tcp-segmentation-offload.
+
+oops, if only I had an ipv4 network to test on :)
