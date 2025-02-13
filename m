@@ -1,179 +1,144 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8484323A9A4
-	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 13:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33F624BC0D;
+	Thu, 13 Feb 2025 13:54:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739454348; cv=none; b=gcrkovEQQCE7zpgII4/sN3qv0/GSzeN21RSr4aEQj22ec5/WuA8gIfA2HroTr45JLbCcjQq/PETRL79ZvPVwMEK5/2p2ce8HRW74OY9oBzU9i3UH1DSfodVTbqq5uXT3A1ZB0BuMDRwH5UPS7a4mVr4JsWtnjjtNWy1EWvMcfYo=
+	t=1739454854; cv=none; b=p3KnCbB3m/5u5GrgrztFmt81gnRtvIpLq/aU9BLKf+YhCgPtaUhFClYDdLeTmq86Fnx7sKZNVJHCw/NVtMAL25yhqKQ/vzlZAIYQq8jUVpoREyo44Zom/y+FHzLGsrI56qrotQqoUpIYu6EZmLU+7v4gV0TDo2kna9sJ8n2TSlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739454348; c=relaxed/simple;
-	bh=HOfco/xdCYia5pNHZITyjejL4RpeMLYBGAKJzbbPo+w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=huLpnTl4yPHrvXHrV9u2FTBcQII0NI7P3WwR9DosCS4n2VDdcAs5D13pnyOxJdvkOP6MxyDVDrAE7izgYrFyG1RJe+hUeBBIuP4ThYWe4CMvTw57tAO6lpJuxOxTzwilLjy1M+Tw0hr242EZQ/UohTyE8IO4HrDv1q/0Sy6qekU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fM3DNAfv; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1739454854; c=relaxed/simple;
+	bh=g5HGHBuqAjMQOceJtIfxFmXU57w01hrdcPk8EKvjSzU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r/T9Ce0DQCsXxZcpJW6AVT9MgJkkN6d+zlTle5IpY3QhDaS5fQ+7JFih57KDUl5IsC/HSn9PQy0GuPfuL/hmpk11f9Ruato7BZX+KtV7cRGvkz+6hbWitTU9yqiOCshoRRceRCB4fawrAL5zVBRgCP7+4RdeOqEnDp/3GJQivHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dsR7wsI/; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fM3DNAfv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739454344;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=zGkN3kWzRsqdFvrTMP8CHR54/ajUPf3F7octssbtusQ=;
-	b=fM3DNAfvHm04Pzf8B3h1NjhwuddWfoD6awHzdKXhZJ4eXYegxlq25Mpr4LyREr5DFNTYjw
-	Yvm+j7cUFQOSo5RCP1ApS/HBUB8R0I6UW0pbn1ltz7njqcGz3kKDQ6WWnCx3DyeTxXGNtl
-	xNpIb8Xa16DrILhS0bO4DGB81PJ7HQA=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-529-pgYPw0-0P2y23ZiA9HC2VA-1; Thu, 13 Feb 2025 08:45:43 -0500
-X-MC-Unique: pgYPw0-0P2y23ZiA9HC2VA-1
-X-Mimecast-MFC-AGG-ID: pgYPw0-0P2y23ZiA9HC2VA
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5450c2f98b5so478145e87.1
-        for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 05:45:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739454341; x=1740059141;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zGkN3kWzRsqdFvrTMP8CHR54/ajUPf3F7octssbtusQ=;
-        b=YG+CBYwipLyuOd/hcJhCJSwMbWVipHq5rwYdprSSec7NrtaAyVZSVoAliOMQK57Zpr
-         WGooQKKexewqcjZJw6tJOqWE0EbvV3yJ9xDmtxu0t+iA62AS6soSl+pSSkGOpHPeFnfc
-         lDapgShppLH6Y7Sq84m1jazozGVaAsLkBc7m49Y5Z393Rd2dAERTL3XRuwUB7pTPIS+s
-         ELK0PS7QC9je6mnAvk9TusdA85QbYnGfF4UiwaGx7mhuEW4uIlr765y6XEtTFHKqAedV
-         4WobXC2n6uTk8YksAedWtYhdyBTSyH5BKcNj48hDvtZhIY0fInMHlBuHRWfVf8r8WOVz
-         4Yog==
-X-Gm-Message-State: AOJu0YxMQeZQY3xmX9Qpj5RgiZUqiYPF0zabimvKoRC+K/Mrj2uG+Rje
-	Zsos2vdclVnLfRE2LPX4jsHocl2q7mL62cbRMuF0r4bfRfWr6GzrnctunXAxw6CDVT//TBkH4FO
-	zcbBwHWVaevznTIrRjfKF4t9sQtLAb+PcfsM70k8u0KzA2cLH2Y3nPw==
-X-Gm-Gg: ASbGncvuy4d93LebewZ9o+QpoJn2JjoVJvfnAaoEJVejcK9nKESCO23nYIwfBFrk+9Z
-	5FozBoeLtGJl/j1ddEzMDh5fs6zGSqPccvxjfFIbztD/JBDvhQgDs4MeoUobebh+kvnqdV5XSFi
-	XyYoz69rmH/s3zPtATIcSl0sbefleboBYfY/ELoR+UBd1ULqrTze0x0Y345tr+Lcw+OjGiaUlNx
-	6CaFm3sLqrZJiVABlh+ubInwVvcubv21Knfndl09+a+ATE/OZe2uqnD0KqtEEDQ57BkhzYrYHrN
-	gw==
-X-Received: by 2002:a05:6512:3988:b0:545:aa5:d455 with SMTP id 2adb3069b0e04-5451810917dmr2459801e87.15.1739454341408;
-        Thu, 13 Feb 2025 05:45:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGAxReg1UL5YJhcCIG9CAFhB+U9nMViKVRFENgX39i/PqCoRvwnMTCNFlcXul2pyMgio72PqQ==
-X-Received: by 2002:a05:6512:3988:b0:545:aa5:d455 with SMTP id 2adb3069b0e04-5451810917dmr2459791e87.15.1739454340962;
-        Thu, 13 Feb 2025 05:45:40 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5451f09b31bsm176760e87.91.2025.02.13.05.45.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Feb 2025 05:45:39 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 03210184FF36; Thu, 13 Feb 2025 14:45:37 +0100 (CET)
-From: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Date: Thu, 13 Feb 2025 14:45:22 +0100
-Subject: [PATCH net-next] rtnetlink: Allow setting IFLA_PERM_ADDRESS at
- device creation time
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dsR7wsI/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739454853; x=1770990853;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=g5HGHBuqAjMQOceJtIfxFmXU57w01hrdcPk8EKvjSzU=;
+  b=dsR7wsI/gJFB++j7xyA3eg2TFuAPg61NMoHq3uUMi5HremhdxCfkVzDb
+   mq1BOJ0GdlwVPmUYFnpJe9cFkeBuC+0LHZWKLcNzyI25YZk9g9/3BYa9K
+   dSr8V3DywSt1Jy9DLoi7hWwTpDSnXzL4TA6PjUeVuuwwCX7znMWnTON+4
+   4b9V+7NDpfJCQlc95ztHi07c+UDbU3no1oisQWfIOXAl806JhNlmmsdHp
+   QSDJqTP3uJ29RxtU5UDNQEahA9hZKl8mMd5kS+9aDR2p76rqslsjwK36g
+   mF5c2liwiGvN1x3rQ0l5bsZE7R5Jx+YOU11mdBciIlnDGlq9OxdXiYi3b
+   w==;
+X-CSE-ConnectionGUID: WUtiAvDuSzyTpVB3Vbvs5A==
+X-CSE-MsgGUID: o5M64SCRTZONPQcJtMK42Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="40019842"
+X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
+   d="scan'208";a="40019842"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 05:54:12 -0800
+X-CSE-ConnectionGUID: Va5fv8RuSjiYMn+k3238nA==
+X-CSE-MsgGUID: 1CjFB4TaT2qSpWMyGvwtMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="118080787"
+Received: from mohdfai2-mobl.gar.corp.intel.com (HELO [10.247.42.34]) ([10.247.42.34])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 05:54:04 -0800
+Message-ID: <1c981aa1-e796-4c53-9853-3eae517f2f6d@linux.intel.com>
+Date: Thu, 13 Feb 2025 21:54:00 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-next v4 0/9] igc: Add support for Frame Preemption
+ feature in IGC
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Kurt Kanzenbach <kurt@linutronix.de>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, Furong Xu <0x1207@gmail.com>,
+ Russell King <rmk+kernel@armlinux.org.uk>,
+ Serge Semin <fancer.lancer@gmail.com>,
+ Xiaolei Wang <xiaolei.wang@windriver.com>,
+ Suraj Jaiswal <quic_jsuraj@quicinc.com>,
+ Kory Maincent <kory.maincent@bootlin.com>, Gal Pressman <gal@nvidia.com>,
+ Jesper Nilsson <jesper.nilsson@axis.com>,
+ Andrew Halaney <ahalaney@redhat.com>,
+ Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+ intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+References: <20250210070207.2615418-1-faizal.abdul.rahim@linux.intel.com>
+ <20250210070207.2615418-1-faizal.abdul.rahim@linux.intel.com>
+ <20250212220121.ici3qll66pfoov62@skbuf>
+ <b19357dc-590d-458c-9646-ee5993916044@linux.intel.com>
+ <87cyfmnjdh.fsf@kurt.kurt.home>
+ <5902cc28-a649-4ae9-a5ba-83aa265abaf8@linux.intel.com>
+ <20250213130003.nxt2ev47a6ppqzrq@skbuf>
+Content-Language: en-US
+From: "Abdul Rahim, Faizal" <faizal.abdul.rahim@linux.intel.com>
+In-Reply-To: <20250213130003.nxt2ev47a6ppqzrq@skbuf>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250213-virt-dev-permaddr-v1-1-9a616b3de44b@redhat.com>
-X-B4-Tracking: v=1; b=H4sIAHH3rWcC/x3MQQqDMBBG4avIrB3QSA30KsVFmvnVWTSVSQiCe
- PeGLr/FexdlmCLTs7vIUDXrNzWMfUdxD2kDqzSTG9xjcOPEVa2woPIB+wQRYy9eYvBxju+JWnc
- YVj3/zxclFE44Cy33/QN+ak8ZbQAAAA==
-X-Change-ID: 20250213-virt-dev-permaddr-7d7dca7c6cb3
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, 
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-X-Mailer: b4 0.14.2
 
-Eric suggested[0] allowing user-settable values for dev->perm_addr at
-device creation time, instead of mucking about with netdevsim to get a
-virtual device with a permanent address set.
 
-The original use case for this was easing testing for network management
-daemons that use the permanent address to match against. However, having
-the ability to set a permanent identifier for a virtual device at
-creation time seems generally useful, so decided to go for this approach
-instead.
 
-[0] https://lore.kernel.org/r/CANn89iK8YpzNhJv4R+x80hcq794bh_ykS-O-2UHziBXixNhzyA@mail.gmail.com
+On 13/2/2025 9:00 pm, Vladimir Oltean wrote:
+> On Thu, Feb 13, 2025 at 08:54:18PM +0800, Abdul Rahim, Faizal wrote:
+>>> Well, my idea was to move the current mqprio offload implementation from
+>>> legacy TSN Tx mode to the normal TSN Tx mode. Then, taprio and mqprio
+>>> can share the same code (with or without fpe). I have a draft patch
+>>> ready for that. What do you think about it?
+>>
+>> Hi Kurt,
+>>
+>> I’m okay with including it in this series and testing fpe + mqprio, but I’m
+>> not sure if others might be concerned about adding different functional
+>> changes in this fpe series.
+>>
+>> Hi Vladimir,
+>> Any thoughts on this ?
+> 
+> Well, what do you think of my split proposal from here, essentially
+> drawing the line for the first patch set at just ethtool mm?
+> https://lore.kernel.org/netdev/20250213110653.iqy5magn27jyfnwh@skbuf/
+> 
 
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
----
- net/core/rtnetlink.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+Honestly, after reconsidering, I’d prefer to keep the current series as is 
+(without Kurt’s patch), assuming you’re okay with enabling mqprio + fpe 
+later rather than at the same time as taprio + fpe. There likely won’t be 
+any additional work needed for mqprio + fpe after Kurt’s patch is accepted, 
+since it will mostly reuse the taprio code flow.
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index cb7fad8d1f95ff287810229c341de6a6d20a9c07..38dec2ae1a19f91daf9200744c7497088ecc037e 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -2224,7 +2224,7 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
- 	[IFLA_PROP_LIST]	= { .type = NLA_NESTED },
- 	[IFLA_ALT_IFNAME]	= { .type = NLA_STRING,
- 				    .len = ALTIFNAMSIZ - 1 },
--	[IFLA_PERM_ADDRESS]	= { .type = NLA_REJECT },
-+	[IFLA_PERM_ADDRESS]	= { .type = NLA_BINARY, .len = MAX_ADDR_LEN },
- 	[IFLA_PROTO_DOWN_REASON] = { .type = NLA_NESTED },
- 	[IFLA_NEW_IFINDEX]	= NLA_POLICY_MIN(NLA_S32, 1),
- 	[IFLA_PARENT_DEV_NAME]	= { .type = NLA_NUL_STRING },
-@@ -2647,7 +2647,7 @@ static	int rtnl_set_vf_rate(struct net_device *dev, int vf, int min_tx_rate,
- }
- 
- static int validate_linkmsg(struct net_device *dev, struct nlattr *tb[],
--			    struct netlink_ext_ack *extack)
-+			    struct netlink_ext_ack *extack, bool create)
- {
- 	if (tb[IFLA_ADDRESS] &&
- 	    nla_len(tb[IFLA_ADDRESS]) < dev->addr_len)
-@@ -2657,6 +2657,17 @@ static int validate_linkmsg(struct net_device *dev, struct nlattr *tb[],
- 	    nla_len(tb[IFLA_BROADCAST]) < dev->addr_len)
- 		return -EINVAL;
- 
-+	if (tb[IFLA_PERM_ADDRESS]) {
-+		if (!create) {
-+			NL_SET_ERR_MSG(extack,
-+				       "can't change permanent address");
-+			return -EINVAL;
-+		}
-+
-+		if (nla_len(tb[IFLA_PERM_ADDRESS]) < dev->addr_len)
-+			return -EINVAL;
-+	}
-+
- 	if (tb[IFLA_GSO_MAX_SIZE] &&
- 	    nla_get_u32(tb[IFLA_GSO_MAX_SIZE]) > dev->tso_max_size) {
- 		NL_SET_ERR_MSG(extack, "too big gso_max_size");
-@@ -3010,7 +3021,7 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
- 	char ifname[IFNAMSIZ];
- 	int err;
- 
--	err = validate_linkmsg(dev, tb, extack);
-+	err = validate_linkmsg(dev, tb, extack, false);
- 	if (err < 0)
- 		goto errout;
- 
-@@ -3614,7 +3625,7 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
- 	if (!dev)
- 		return ERR_PTR(-ENOMEM);
- 
--	err = validate_linkmsg(dev, tb, extack);
-+	err = validate_linkmsg(dev, tb, extack, true);
- 	if (err < 0) {
- 		free_netdev(dev);
- 		return ERR_PTR(err);
-@@ -3642,6 +3653,9 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
- 	if (tb[IFLA_BROADCAST])
- 		memcpy(dev->broadcast, nla_data(tb[IFLA_BROADCAST]),
- 				nla_len(tb[IFLA_BROADCAST]));
-+	if (tb[IFLA_PERM_ADDRESS])
-+		memcpy(dev->perm_addr, nla_data(tb[IFLA_PERM_ADDRESS]),
-+		       nla_len(tb[IFLA_PERM_ADDRESS]));
- 	if (tb[IFLA_TXQLEN])
- 		dev->tx_queue_len = nla_get_u32(tb[IFLA_TXQLEN]);
- 	if (tb[IFLA_OPERSTATE])
+If I were to split it, the structure would look something like this:
+First part of fpe series:
+igc: Add support to get frame preemption statistics via ethtool
+igc: Add support to get MAC Merge data via ethtool
+igc: Add support to set tx-min-frag-size
+igc: Add support for frame preemption verification
+igc: Set the RX packet buffer size for TSN mode
+igc: Optimize the TX packet buffer utilization
+igc: Rename xdp_get_tx_ring() for non-XDP usage
+net: ethtool: mm: Extract stmmac verification logic into a common library
 
----
-base-commit: 7aca0d8a727da503a8adeb6866a136ded5bea4b1
-change-id: 20250213-virt-dev-permaddr-7d7dca7c6cb3
+Second part of fpe:
+igc: Add support for preemptible traffic class in taprio
+
+I don’t think Kurt’s patch should be included in my second part of fpe, as 
+it’s not logically related. Another approach would be to wait for Kurt’s 
+patch to be accepted first, then submit the second part and verify both 
+taprio + mqprio. However, that would delay i226 from having a basic fpe 
+feature working as a whole, which I'd really like to avoid.
 
