@@ -1,113 +1,83 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9950326E17C
+	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 22:37:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739486254; cv=none; b=WbxDiOq50PuDUtwk8K0SP7zjgeN8YDA4LWWMTW6MVzUvIdrfng1uzFQZmnakB3uU4cQXeEOmaO/o0bDwUQT4LZfFifVtF7g9wLMcL6QqfDmGZIvqGIh37SCuBZQb6QCIn48zskxWfFCqxzB3vl+FClyC5cPnvrGGGD8y/RMfOgM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739486254; c=relaxed/simple;
+	bh=qAoeKkhQSdbWDIWjjaPi9KjYrCuuqVM9YsLH+hvOVJA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MXPIsUFGNJhFifsA8B7mGjjH2KN3Xf61tWQgEfFMoh+jSa7cEveKGnLjhzBUNIM22gdQ5HTxlxcsqT7kF06x1BmWI4px6C5t8pI7BWpzf59P+iiglZks6GIuV3OB6DrR/8YgzpuMoPeNYtlam9e3JKhwxGPIjxEKGQfqW/3mN5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=rprNtDmp; arc=none smtp.client-ip=139.165.32.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="rprNtDmp"
+Received: from [10.136.6.34] (unknown [213.221.151.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9EA28A2BF
-	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 22:37:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739486250; cv=none; b=M5+NOWQw4U2InNnEClFH5gqY0fV4R8aGocSypqNNbgZplabJhpsbaPEEMCiZtKwJSCI8SOuLDGfrSG4aDCQZwlmeOt1qE7KNhVom/ynf+8HPM9WwQELKCOjo/7Ek3/ULde39oLpWRBbobdO2hZxiLZCI7KItJLE5AYnwCGfsdTA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739486250; c=relaxed/simple;
-	bh=N/GtVIKbrNKHp7u3+KNILK8UBLBvStnUFI+L8StGAaI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AL360OHlAiouuOZWvRKNNsGx4CVABZnuo6hbX2sAcudIbA/Y9+jOENEum4/iLYfBeBul3uTFyE8boWH7x0Se9KbAIzKKaeMJ9MUN2sp9X8NvLaLEZ7imQzkYZRYd2HyYIgNcP4O8c0Fl1hp+O0uns6ERAqxQNgbTZFnmnrN6nKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stackhpc.com; spf=pass smtp.mailfrom=stackhpc.com; dkim=pass (2048-bit key) header.d=stackhpc-com.20230601.gappssmtp.com header.i=@stackhpc-com.20230601.gappssmtp.com header.b=A2u7Y/t2; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stackhpc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stackhpc.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=stackhpc-com.20230601.gappssmtp.com header.i=@stackhpc-com.20230601.gappssmtp.com header.b="A2u7Y/t2"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ab7fa1bc957so269394566b.2
-        for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 14:37:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=stackhpc-com.20230601.gappssmtp.com; s=20230601; t=1739486246; x=1740091046; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ti/+VOCIocKPttQDHr6Em+kigGLsq9eSkNytFJLAUac=;
-        b=A2u7Y/t2ehz7os7HGBH+Q6nQGAit08DAsKKfKJfPvjvjZkghmGfap/8zxANq/bwQVf
-         Ifgz1Vv5ERg7feko7Tl5UoZbFmy1A42MHQtl6zGfrBYNAsRNqB5gjkLR/AzSRebDQhny
-         eEIDgMfkCoyxid3I3+cfJqRB6HcF94JAckewZ2C6y7mi3i7PKdKG6YVtnJpUkaJZlpS7
-         wmczJQME7I938POjwRDk5Rc0TF9ZxikN5sS319/v8JfQZ99OL6OdrmwdBb/DRfH+NMXO
-         ANFWeoPjRuO8ec9ja/44t+JPFQo34hoALh4ySgci98qCJHCjt1iiheQ+/pGscqBUWZOs
-         PnTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739486246; x=1740091046;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ti/+VOCIocKPttQDHr6Em+kigGLsq9eSkNytFJLAUac=;
-        b=chmDJ/0k6stdYATuf3aZAqPuBQURWp0j1B0CDVX9YdkaiGEqSNvB7gGbK8nE9LV6DN
-         0yGxLW38rjHWsyHX9jA5+QZ29V56nW5BPrcFhM1NoDLxr6EUixyx5rG23+ioU/nKmWG0
-         5RA0roiI+fFtWXYvuDyOt/hg8uCDhqoumd9O31TtnHz/yr3CWheq2fZ3LIeSV5s03jHA
-         G20ucMwD9BcMg32/iYhcRusyCOvMRN4E3+J0OtUyh9pnLK7iBgSq/3IU5NXki8HhMvGA
-         0SzdIR/rBxtVqUIrfiXBbHTDkznfecOEawGtSATWqehggmJdmWuzyvWLwFBAhpZjY2MD
-         pb7Q==
-X-Gm-Message-State: AOJu0YxsP0gBvILmlgAjFiXaEkxPOLiotL7MHZrzKQilHnMuYKKpX0xE
-	tR9Rm+4o32KohSvyBDdS6HhWu36SZzuXw3aXYb494XA9dUUPFWGWq7qp5YkNOQ5D3UgY+QtbrUv
-	56q4=
-X-Gm-Gg: ASbGncvJu4kcVoibQwYod/xWbk64HAzdDsMRD5J7iYUry2YHxOcWbNBh2N4eRaCtsAW
-	pFEvN221ga2Ha/SMOIupJuIb0uTI+uPIYRkjn22df2HHQtE+GEcB+3A76mOm+/IHugmUPibZHBr
-	MH55539uyw4wubjTScarryQ8Rz1c5Kx2fQXnS631Umijv+3t8koQtTIc7skpuqISwM4vEcgYD7M
-	/lPfEFwIzER50dVZIiE+v1q8fKu3GlniFKSjetnkNW/eQYUWfWXf/b/8wl4xCFGG6oV4ZzJb6Qe
-	nb7dC49n2OChBLEBuEqUEnPqEOFPUAyk9PNSn6u6Vw==
-X-Google-Smtp-Source: AGHT+IFuBSfVPFLF33nT61zGbV5yd7riktQvhGMwBwbDz01AUO1aLz2R/gLee3Suw5FJfRGW6bPCmA==
-X-Received: by 2002:a17:906:c111:b0:ab7:a679:4b00 with SMTP id a640c23a62f3a-aba5017ed23mr494191366b.40.1739486245814;
-        Thu, 13 Feb 2025 14:37:25 -0800 (PST)
-Received: from pierre-rl9.compute.sms-lab.cloud ([185.45.78.154])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba533c146asm211756866b.178.2025.02.13.14.37.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Feb 2025 14:37:25 -0800 (PST)
-From: Pierre Riteau <pierre@stackhpc.com>
-To: netdev@vger.kernel.org
-Cc: Pierre Riteau <pierre@stackhpc.com>
-Subject: [PATCH net] net/sched: cls_api: fix error handling causing NULL dereference
-Date: Thu, 13 Feb 2025 23:36:10 +0100
-Message-ID: <20250213223610.320278-1-pierre@stackhpc.com>
-X-Mailer: git-send-email 2.43.5
+	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id 4E50A200DFB0;
+	Thu, 13 Feb 2025 23:37:24 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be 4E50A200DFB0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
+	s=ulg20190529; t=1739486244;
+	bh=iyM/1pSthidrZcSneEnlJNKpNrcKnRvY0kbzUvhcQBI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rprNtDmpy0K+nGHTLwxtcFK0CSqwTV6lJznVWoLcxiWVboTsCYhfdC0w2WDCNCndT
+	 VzFOXHJYiAjSiC7afTHIRRRhvXgPUzexCtxL6A5cq/epeP+b2EZCrjkgUOLLoKmFiz
+	 6CQ0mE3uINkLrkdUDHytTfTIrT+nK89R/9uKwH1gbJcbDKzVXI7+M6adcwG2RmQLmR
+	 dL1W532fJAUShlvcX7ItDzl6JI/omGm+ZYx1X0dNx0gmsScmYqvJeEUt5fR2r7wBhk
+	 oPv+SumAAXuwmScWfKlyQ+/o/oP9XiNNXP+gi5fS/DquDclD6iBCKXZqc7GCURaXJ/
+	 edcTowYSBjjLA==
+Message-ID: <a03f54be-b558-4964-8e40-b5f2bb8e7158@uliege.be>
+Date: Thu, 13 Feb 2025 23:37:22 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/3] net: ipv6: fix dst ref loops on input in rpl
+ and seg6 lwtunnels
+To: Ido Schimmel <idosch@idosch.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ Alexander Aring <alex.aring@gmail.com>, David Lebrun <dlebrun@google.com>
+References: <20250211221624.18435-1-justin.iurman@uliege.be>
+ <20250211221624.18435-2-justin.iurman@uliege.be> <Z63lQiyiNoQkgJFk@shredder>
+Content-Language: en-US
+From: Justin Iurman <justin.iurman@uliege.be>
+In-Reply-To: <Z63lQiyiNoQkgJFk@shredder>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-tcf_exts_miss_cookie_base_alloc() calls xa_alloc_cyclic() which can
-return 1 if the allocation succeeded after wrapping. This was treated as
-an error, with value 1 returned to caller tcf_exts_init_ex() which sets
-exts->actions to NULL and returns 1 to caller fl_change().
+On 2/13/25 13:27, Ido Schimmel wrote:
+> On Tue, Feb 11, 2025 at 11:16:22PM +0100, Justin Iurman wrote:
+>> As a follow up to commit 92191dd10730 ("net: ipv6: fix dst ref loops in
+>> rpl, seg6 and ioam6 lwtunnels"), we also need a conditional dst cache on
+>> input for seg6_iptunnel and rpl_iptunnel to prevent dst ref loops (i.e.,
+>> if the packet destination did not change, we may end up recording a
+>> reference to the lwtunnel in its own cache, and the lwtunnel state will
+>> never be freed).
+>>
+>> Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
+>> Fixes: af4a2209b134 ("ipv6: sr: use dst_cache in seg6_input")
+>> Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+>> Cc: Alexander Aring <alex.aring@gmail.com>
+>> Cc: David Lebrun <dlebrun@google.com>
+> 
+> Not an expert but was asked to take a look. Seems consistent with the
+> output path and comparing the state address seems safe as it is only
+> compared and never dereferenced after dropping the dst in the input
+> path.
+> 
+> I would have probably split it into two patches to make it a bit easier
+> to backport. 5.4.y needs the seg6 fix, but not the rpl one.
+> 
+> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 
-fl_change() treats err == 1 as success, calling tcf_exts_validate_ex()
-which calls tcf_action_init() with exts->actions as argument, where it
-is dereferenced.
-
-Example trace:
-
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-CPU: 114 PID: 16151 Comm: handler114 Kdump: loaded Not tainted 5.14.0-503.16.1.el9_5.x86_64 #1
-RIP: 0010:tcf_action_init+0x1f8/0x2c0
-Call Trace:
- tcf_action_init+0x1f8/0x2c0
- tcf_exts_validate_ex+0x175/0x190
- fl_change+0x537/0x1120 [cls_flower]
-
-Fixes: 80cd22c35c90 ("net/sched: cls_api: Support hardware miss to tc action")
-Signed-off-by: Pierre Riteau <pierre@stackhpc.com>
----
- net/sched/cls_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index 8e47e5355be6..4f648af8cfaa 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -97,7 +97,7 @@ tcf_exts_miss_cookie_base_alloc(struct tcf_exts *exts, struct tcf_proto *tp,
- 
- 	err = xa_alloc_cyclic(&tcf_exts_miss_cookies_xa, &n->miss_cookie_base,
- 			      n, xa_limit_32b, &next, GFP_KERNEL);
--	if (err)
-+	if (err < 0)
- 		goto err_xa_alloc;
- 
- 	exts->miss_cookie_node = n;
--- 
-2.43.5
-
+Thanks Ido. I'll split it in two for v3.
