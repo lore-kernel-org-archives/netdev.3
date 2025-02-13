@@ -1,139 +1,97 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D2E14F9FB
-	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 15:39:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E27E194080;
+	Thu, 13 Feb 2025 15:39:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739461173; cv=none; b=l4JTe9nSbth+pzCE9sxy02Siq5GhpqSio1CR+OZ8DDgeZaj5ol7mVPdAMHugqdJAyithns/1zaibMYOtF4VSJ7vofEcFwpLcykMHqdaCoEidIJJAKjy/xgkYbN4OSTKXbj3nrzvZCX+HHlRfq2bSVG8BpEFXOQZ5TKeD81Icy9Y=
+	t=1739461182; cv=none; b=AzLSE2wz1QqcjbApWNIJrL3wFYaXxkNDBHW7ysNfHrTGJ1SVg8y7rhgu2t887qQ6j/J/1T+rd8nV1PAKXxSkmwLxnRhnei5AE19bFO4MOTKCIdzEXpUM7ZK6C5FHF0Za+Cqqw4gurSawoX7v0mGY8Oam9t5tTTZ8Zdur+Tf2Hdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739461173; c=relaxed/simple;
-	bh=uLQ+6gBnByKOpSjHFYmMnrrzCusoPXYgBQtXLa3OKL0=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=tJV6MVCh96MMxi5lF5Ynka/aGLpEqCatb0+VdYsO6KSBhKfUniXCxUD+De2emilIYpcNXrm4KWPenoXS1fgavan8NFOAxmQLm+BvRxuDRSxSWrO65BAVUYpUXJkB4+t26gHMR+NwrHzFHsYuJfwFrcTI7G3fLd15C6PenPrKQWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fxCtGmVm; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739461182; c=relaxed/simple;
+	bh=N7VgWC9txPrYH43ZJC6BIPtNVK/FbLcCcfiWGu1tJw8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OaPlRW1uLqSIyXGJFQXrQa0aUHsLIYTstiqqeD/MMlSCH4JpyXivBHYwzPLf86IZD7gjWFTpStAaFAjKGdGkgjxX7KPMfqGxrw8s9XX3eCXOXhnuQ/YLm39eWohmcVzKg/ey7W/lOtn1TrSRNvAn5063tr2S+y3DQ7/rUilBZ4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbwYrvMV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fxCtGmVm"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7be8f281714so96526985a.1
-        for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 07:39:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739461171; x=1740065971; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=udxSQnsofsOOLvjBUrcTda8O+2WRk+wnl9ns6irPrRw=;
-        b=fxCtGmVmRESUHqJcqtua/ceGfssc3Yw8DK4WRQBYBJrILdw6AYs9oaEorKiTobMXcR
-         JWHsurYJ0Ajh2qPaprrDORktqyIO8oztLyLfWHzOUFu0L7X5w438C+pz0w3nvKvtBDlJ
-         5RMm1bro4Hsr6ZBDewefkvMQRxyAgRCeKfhxcCelldry1CFAdOHBZ80PN7iE3Ljrj0I7
-         EN1/j0AGshZLmHhNDgfNag6j0KVNXXFh/Vnp1IlvODgMgYM8LsS3TSh1gA7AxWqXA2t8
-         bW8QVibxo+A8cWyeNxrxdgnWyA8k5g8iCT+fq5TeYzXQLxioXFJf9s/A2a/QIa51lUsd
-         tCwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739461171; x=1740065971;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=udxSQnsofsOOLvjBUrcTda8O+2WRk+wnl9ns6irPrRw=;
-        b=H3Mv1TjY4br11lk9onQOrRcm8sHKjtfOENofrgtD3zZP3VnN1G9//5DxnKDVuDyRiT
-         ygccSLr1BvNdKFW1lxoomwHdfHNu8pVoDrkTlN/Q/j5thZNNCkhYT8rrEKyBUyvmhd8u
-         fO9TpE0ezNiei8Zeq62l298Nk/8lxDzEchnsnbJIUJa7mXInKUDQQV2L/gCFmpZDPLgA
-         H18vx5sK1m0QBcBlIipcUV+bKQ4Tx/LXYqzxMNP2WyJeCij6EMcqUyJG50p//AFg+D4P
-         J4zO+0MKtECEeHi63YoP0HfOjrgspLhBfUKdBQhNZq5qZBXKeUTC/LSQiEoNKM4ayLyN
-         OOBQ==
-X-Gm-Message-State: AOJu0Yz2NTkUGRUG7PwhTW8aSTX0B9ywAkFLFDWCIrUO6mcTWKnLrHk8
-	K2grhAEkvLCfi92GLwCz8z+qXhFoDhDuNIjEXJABK/3jfqHp9Ky9
-X-Gm-Gg: ASbGncsPiLg45xMG88uPy0O1BRliQU8aixdtqQA3ppclBbkDtD5Zb9krIZz/CeFushH
-	kVQAMRZNoJT+8Q8CBQ+M1ZZyj0obmmx3UYRm6G40zkPddgYREXbtkKmGoMoonjogAXZQj/EA/IF
-	Ohj9ysuT6SSTasAaigQ3Y+VvR4mYzYEJY+1HiENIvv8KPj6JwcZoK3l77cNZ+GwJZHresYUl93D
-	V+2byY6eW0zjyjbYCls8kHx2CxKIgLAa9BMRrnx149g3SLM8Oet4XmZYh4Q7geySYIs16TkQt6L
-	iPnF7KXgqLORSCbJWMbiwknVFIOwotr/xIk7Okmk3PpHZ501mDbb+RN4hSrVhJQ=
-X-Google-Smtp-Source: AGHT+IG7ET35I051nGXBw8muZ+jT1VxdlURg0SdujsQCFC+b6ZMARenkQHiu11fmmnu4FosYeNW8Jw==
-X-Received: by 2002:a05:620a:628e:b0:7c0:6188:9023 with SMTP id af79cd13be357-7c07a12a8e5mr459489985a.19.1739461170859;
-        Thu, 13 Feb 2025 07:39:30 -0800 (PST)
-Received: from localhost (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c07c87412fsm101210985a.101.2025.02.13.07.39.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Feb 2025 07:39:30 -0800 (PST)
-Date: Thu, 13 Feb 2025 10:39:30 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>, 
- davem@davemloft.net
-Cc: netdev@vger.kernel.org, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- andrew+netdev@lunn.ch, 
- horms@kernel.org, 
- Jakub Kicinski <kuba@kernel.org>, 
- willemb@google.com, 
- ecree.xilinx@gmail.com, 
- neescoba@cisco.com
-Message-ID: <67ae123210650_24be45294bc@willemb.c.googlers.com.notmuch>
-In-Reply-To: <20250213010457.1351376-1-kuba@kernel.org>
-References: <20250213010457.1351376-1-kuba@kernel.org>
-Subject: Re: [PATCH net-next] netdev: clarify GSO vs csum in qstats
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbwYrvMV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40256C4CEE5;
+	Thu, 13 Feb 2025 15:39:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739461180;
+	bh=N7VgWC9txPrYH43ZJC6BIPtNVK/FbLcCcfiWGu1tJw8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CbwYrvMVYyU8YexgFtVOz1C5FBWtZIBB9RmDRka1ijjeiyeMSQRsgGn1XPNFLRgIQ
+	 Zy9pkNgsUeYdqUvRQCjILJdIw/ov0aYbFN8lQO2NJlQeglQ6SxJw9bGzb9x0DULzzb
+	 V+a5YeOfOCr+U0LUByT0TmUkg/1FeVGcEk3odCS4=
+Date: Thu, 13 Feb 2025 15:51:09 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+	davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+	jiri@resnulli.us, liuhangbin@gmail.com, kuba@kernel.org,
+	netdev@vger.kernel.org, stfomichev@gmail.com,
+	shannon.nelson@amd.com, darren.kenny@oracle.com
+Subject: Re: [PATCH 6.12.y 0/2] Fix rtnetlink.sh kselftest failures in stable
+Message-ID: <2025021346-lankiness-vagabond-60d5@gregkh>
+References: <20250208185521.2998155-1-harshit.m.mogalapalli@oracle.com>
+ <a33f888c-2121-46c0-8fcb-7ba469309a8b@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a33f888c-2121-46c0-8fcb-7ba469309a8b@oracle.com>
 
-Jakub Kicinski wrote:
-> Could be just me, but I had to pause and double check that the Tx csum
-> counter in qstat should include GSO'd packets. GSO pretty much implies
-> csum so one could possibly interpret the csum counter as pure csum offload.
+On Thu, Feb 13, 2025 at 08:14:25PM +0530, Harshit Mogalapalli wrote:
+> Hi Greg,
 > 
-> But the counters are based on virtio:
+> On 09/02/25 00:25, Harshit Mogalapalli wrote:
+> > This is reproducible on on stable kernels after the backport of commit:
+> > 2cf567f421db ("netdevsim: copy addresses for both in and out paths") to
+> > stable kernels.
+> > 
+> > Using a single cover letter for all stable kernels but will send
+> ...
+> > Solution:
+> > ========
+> > 
+> > Backport both the commits commit: c71bc6da6198 ("netdevsim: print human
+> > readable IP address") and script fixup commit: 3ec920bb978c ("selftests:
+> > rtnetlink: update netdevsim ipsec output format") to all stable kernels
+> > which have commit: 2cf567f421db ("netdevsim: copy addresses for both in
+> > and out paths") in them.
+> > 
+> > Another clue to say this is right way to do this is that these above
+> > three patches did go as patchset into net/ [1].
+> > 
+> > I am sending patches for all stable trees differently, however I am
+> > using same cover letter.
+> > 
+> > Tested all stable kernels after patching. This failure is no more
+> > reproducible.
+> > 
 > 
->   [tx_needs_csum]
->       The number of packets which require checksum calculation by the device.
+> Ping on this series:
 > 
->   [rx_needs_csum]
->       The number of packets with VIRTIO_NET_HDR_F_NEEDS_CSUM.
+> 6.12.y: https://lore.kernel.org/all/20250208185521.2998155-1-harshit.m.mogalapalli@oracle.com/
 > 
-> and VIRTIO_NET_HDR_F_NEEDS_CSUM gets set on GSO packets virtio sends.
+> 6.6.y: https://lore.kernel.org/all/20250208185711.2998210-1-harshit.m.mogalapalli@oracle.com/
 > 
-> Clarify this in the spec to avoid any confusion.
+> 6.1.y: https://lore.kernel.org/all/20250208185756.2998240-1-harshit.m.mogalapalli@oracle.com/
 > 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: willemb@google.com
-> CC: ecree.xilinx@gmail.com
-> CC: neescoba@cisco.com
-> ---
->  Documentation/netlink/specs/netdev.yaml | 2 ++
->  1 file changed, 2 insertions(+)
+> 5.15.y: https://lore.kernel.org/all/20250208185909.2998264-1-harshit.m.mogalapalli@oracle.com/
 > 
-> diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
-> index 288923e965ae..0b311dc49691 100644
-> --- a/Documentation/netlink/specs/netdev.yaml
-> +++ b/Documentation/netlink/specs/netdev.yaml
-> @@ -457,6 +457,8 @@ name: netdev
->          name: tx-needs-csum
->          doc: |
->            Number of packets that required the device to calculate the checksum.
-> +          This counter includes the number of GSO wire packets for which device
+> 5.10.y: https://lore.kernel.org/all/20250208190215.2998554-1-harshit.m.mogalapalli@oracle.com/
+> 
+> I noticed new stable rc tags being released, so pinging. Sorry if I pinged
+> before you got to these.
 
-Good to call out wire packets, as opposed to the GSO packet itself. That is
-sometimes left ambiguous in GSO counting.
+No, thanks for the ping, these fell through the cracks, I'll queue them
+up for the next round after these.
 
-> +          calculated the L4 checksum (which means pretty much all of them).
+thanks,
 
-Can we clarify what pretty much here means?
-
-TSO requires checksum offload. USO with zero checksum is the only exception that
-I can think of right now.
-
->          type: uint
->        -
->          name: tx-hw-gso-packets
-> -- 
-> 2.48.1
-> 
-
-
+greg k-h
