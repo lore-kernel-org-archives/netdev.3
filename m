@@ -1,351 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB7A1946C7;
-	Thu, 13 Feb 2025 15:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EFC1E9917
+	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 15:35:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460930; cv=none; b=lEthUR4+Om03AHrmUSN6MtOS6hoCyhIpHYjQ3npABO7+aNqK0SNkYsBEAhJTWUNP98X5YuET2eyqAJXMz3QEqo9tYdZ7svAY2Lmpxg4KH5ry1rcG2IBQSd6/1dM4ItvU8uoqttfE2b/0fROXdJ7B9Yx7jnLg55FX6uhiccJIa7I=
+	t=1739460934; cv=none; b=YDktDOjSpwqb5kRsrm/oHyXiCv0qJzS9jKzQ33NFd/DmXc2Lv6EIBDIfbhEQFT9dQfHq8jjmpDa9dx8JaU93j+3n5m+c2BlzWi/MLmySX/pD7zgehKSDYRqImPfuepzY9axlA/Ur6ZPw20Gq8L4J6W4PfdbKz+ZKM2VNY0e6tpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739460930; c=relaxed/simple;
-	bh=1Rb+4jmHgXEuS60iJKLLggv5HEm6LdCrBtgbYBGoEos=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cnRYnRKheECpO/hogjg4WpedX+36Jxm0bpU8dIHSJ9WFl05c6syEP4SX2SXAHbcWECA4Bks6D05w1Z2PofQnGPwc+nDuUax5KGOhej2OaQo8vtmAZks5JAf/c0HucxWq/5rMdjuno+dDxE8SQCA+Jfyi3RKrvvgq9R92EASGQ2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rlTmOBSF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739460934; c=relaxed/simple;
+	bh=Lll1CCPLwkfgIlRh1IaWBjMMzOUz9sjekrX1WzIWZkg=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=LsD3Y+vLCWkOHcSToRFiES2GJSuqbhaL+p3FuQoU4ARkt1jIktfgodBd+sTmxZJu5T89hWhGbNHMqHPndfNAE4QPdPLrQiPQ48keHmJqxksWHI5i7OUp6xBZ24rm/igU81S+hRexxJ9JiVT4HgUf/YL06JV5jLdDIauafCuTQ5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OnVoDBTA; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rlTmOBSF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FAF9C4CED1;
-	Thu, 13 Feb 2025 15:35:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739460929;
-	bh=1Rb+4jmHgXEuS60iJKLLggv5HEm6LdCrBtgbYBGoEos=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=rlTmOBSFo+RcrfcO8/EmCHfzZBHverrEfQsyN06895sn8vNq1ESdLEar9wl6ALNMa
-	 WCLJbzIuOrrVP/QY/7sJ+nBoUv4LTA0AClk6BFxKU80hsL2KO85UAzK8FeFQCa3BVX
-	 TNSDwiFbiqpC8feFfSy087Yyt9yAkQk1Z2lD96tulJWD9vJvmkPA0bQUnbxoUfRi8L
-	 JQu1hCbfiyzSL/mtwgvEryIa7Yxk7a0/lAD8VNwZixijgPta+K14y89bv/BIB6GapT
-	 W0sSwtfYuDPSaNTLmEwl/HKyqlnsAZ3HfoKuYEwmOJwCGPwpX0ZnIN5eFPLLG1Sbos
-	 /uk9x633BJLtA==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Thu, 13 Feb 2025 16:34:35 +0100
-Subject: [PATCH net-next v4 16/16] net: airoha: Introduce PPE debugfs
- support
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OnVoDBTA"
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6e436c59113so10526856d6.3
+        for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 07:35:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739460932; x=1740065732; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nUuM0AG+RQPU70pb4GEVhPpvGfRZfs7AVxCRMkCj6eE=;
+        b=OnVoDBTAGAmGFSi7WH5Sk8j4U2Z+nu6zsiwKx8nx9PnaRCa2Z4mUIfWvb4zvEH9yJk
+         XxsCG5h3YZI3dvF4VaDutn72fpPEVi0daqNvRJWy5t3jyJNSbCjBp4s6uY2J5rDgj+fE
+         h3nJw3kzDCZg6NbZE2BBPVBb62V6xiqunbtbaf6nzyS5Ufg7c3ytl79rr/LZfKDsQlcE
+         oZmHVdVR1ZNZ/26ZfGQ+kbzJIR+7Q71ntSy3I70ymL1IH29YO0JRACW//krKXN/ltrlg
+         SiLlG3Nbebnfpirc0o1g+jxOnSlMfxLSz+sOZTaHPZ5zVcP0t6zG+M0dJ/VI89CruSvN
+         2qrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739460932; x=1740065732;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=nUuM0AG+RQPU70pb4GEVhPpvGfRZfs7AVxCRMkCj6eE=;
+        b=hJNSQssexMDFKUs2gjLgxo51pVEh/NHJ3Wwl6k5Js2Zijk1XNf1/J24wgTtSkqgqPB
+         Nd+Dvb1/MYk18sC8K156D9qhpaiWMklYgPFBK83BHpQL+gzx4GMgdzFdYEbVcxrWbQwr
+         ikRXBDB+VQJE+cQ6HyP2m5ohOsrkTUcMuwqqu5H+B1afcG80Gxz3NbBKLaQgv8a+ykrv
+         wJLc8NzFs66tHjAiWGrkx3BijzTf+EbTWVU9tE0aatQ0QeCrQobtL1HTgIs/MVnt/uhX
+         4izmKCkLzzLIvUx2wiXd05HaF++FvhJkfbnCIOXxXtGqO+HrjgNR1bCm7Yqz7JVMeKfA
+         9yOA==
+X-Forwarded-Encrypted: i=1; AJvYcCUuuKTaWBb59R9WBvcoryBUJxIMUY213mqbb+Syuypdzosct6pdP78d1ptBQDmdWo7Iw9otwt0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHrU1UHGG0jxfIc5JUCRdsBwOd66h1fwGEme1/HNsIuS67NL7E
+	eCsBl2UeWm/ndy20AWMD1APw4AWyIuT9hyXky/U4ALGX4R3jFK4C
+X-Gm-Gg: ASbGnctboEWjoYEKBQiUY6inzSps6HX3ibNSVIvIVZ+B+xmSO/63OC+vNHxXx5c6so4
+	WRCGwzDslLbCJ+K3q80zykAeiYYk8pZCxtnfjewSydBh0+2W918pd+9xYHtpNPFlhS25enkZ8cL
+	WDmiNFyshZpytXnk0ey0zQEN6s76omOxv6J7SR/DOQV43TNbJIgx6ZzsNWLHc8O1esrSuJ77ETD
+	Juz5wIDLynpUfQdv2DQlbHWAIaMnUFlLbL+qNdwYJdQHOwISpWBgE+LSQwlYPCP0RRdmthcvWPb
+	A/hkzn4lJbAezSEJoL2T9u2Q9MHrRiPBDW7oxUwUzBnOiBh/XoC+Gu/3qGY5qNs=
+X-Google-Smtp-Source: AGHT+IGePoksf5y5sn8PBP3RBeB0IqJsndqaFyChV6pEg3ldPvVOA+ghPNAodrlhm24b6RzjT/1lVQ==
+X-Received: by 2002:a05:6214:2488:b0:6d8:6a74:ae68 with SMTP id 6a1803df08f44-6e46f8c85bemr92931586d6.29.1739460931729;
+        Thu, 13 Feb 2025 07:35:31 -0800 (PST)
+Received: from localhost (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e65dcf869asm10453776d6.120.2025.02.13.07.35.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Feb 2025 07:35:31 -0800 (PST)
+Date: Thu, 13 Feb 2025 10:35:30 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: davem@davemloft.net, 
+ kuba@kernel.org, 
+ edumazet@google.com, 
+ dsahern@kernel.org, 
+ horms@kernel.org, 
+ Willem de Bruijn <willemb@google.com>
+Message-ID: <67ae1142e9bdd_24be452947e@willemb.c.googlers.com.notmuch>
+In-Reply-To: <d5ff9165-a221-4ab2-ad9a-3f5b025f09a3@redhat.com>
+References: <20250212021142.1497449-1-willemdebruijn.kernel@gmail.com>
+ <20250212021142.1497449-3-willemdebruijn.kernel@gmail.com>
+ <d5ff9165-a221-4ab2-ad9a-3f5b025f09a3@redhat.com>
+Subject: Re: [PATCH net-next v2 2/7] net: initialize mark in sockcm_init
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250213-airoha-en7581-flowtable-offload-v4-16-b69ca16d74db@kernel.org>
-References: <20250213-airoha-en7581-flowtable-offload-v4-0-b69ca16d74db@kernel.org>
-In-Reply-To: <20250213-airoha-en7581-flowtable-offload-v4-0-b69ca16d74db@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
- "Chester A. Unal" <chester.a.unal@arinc9.com>, 
- Daniel Golle <daniel@makrotopia.org>, DENG Qingfang <dqfext@gmail.com>, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org, 
- upstream@airoha.com
-X-Mailer: b4 0.14.2
 
-Similar to PPE support for Mediatek devices, introduce PPE debugfs
-in order to dump binded and unbinded flows.
+Paolo Abeni wrote:
+> On 2/12/25 3:09 AM, Willem de Bruijn wrote:
+> > From: Willem de Bruijn <willemb@google.com>
+> > 
+> > Avoid open coding initialization of sockcm fields.
+> > Avoid reading the sk_priority field twice.
+> > 
+> > This ensures all callers, existing and future, will correctly try a
+> > cmsg passed mark before sk_mark.
+> > 
+> > This patch extends support for cmsg mark to:
+> > packet_spkt and packet_tpacket and net/can/raw.c.
+> > 
+> > This patch extends support for cmsg priority to:
+> > packet_spkt and packet_tpacket.
+> 
+> I admit I'm a little bit concerned vs possibly impacting existing
+> applications doing weird thing like passing the relevant cmsg and
+> expecting it to be ignored.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/ethernet/airoha/Makefile             |   1 +
- drivers/net/ethernet/airoha/airoha_eth.h         |  14 ++
- drivers/net/ethernet/airoha/airoha_ppe.c         |  17 ++-
- drivers/net/ethernet/airoha/airoha_ppe_debugfs.c | 175 +++++++++++++++++++++++
- 4 files changed, 203 insertions(+), 4 deletions(-)
+We have a history of expanding support for passing variables by cmsg.
 
-diff --git a/drivers/net/ethernet/airoha/Makefile b/drivers/net/ethernet/airoha/Makefile
-index 6deff2f16229a7638be0737caa06282ba63183a4..94468053e34bef8fd155760e13745a8663592f4a 100644
---- a/drivers/net/ethernet/airoha/Makefile
-+++ b/drivers/net/ethernet/airoha/Makefile
-@@ -5,4 +5,5 @@
- 
- obj-$(CONFIG_NET_AIROHA) += airoha-eth.o
- airoha-eth-y := airoha_eth.o airoha_ppe.o
-+airoha-eth-$(CONFIG_DEBUG_FS) += airoha_ppe_debugfs.o
- obj-$(CONFIG_NET_AIROHA_NPU) += airoha_npu.o
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index 064941348bd91f1115082bf5e7734f34007953f8..18b5fed7ff286b813b260fae121892f44eb1cf8c 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -7,6 +7,7 @@
- #ifndef AIROHA_ETH_H
- #define AIROHA_ETH_H
- 
-+#include <linux/debugfs.h>
- #include <linux/etherdevice.h>
- #include <linux/iopoll.h>
- #include <linux/kernel.h>
-@@ -482,6 +483,8 @@ struct airoha_ppe {
- 
- 	struct hlist_head *foe_flow;
- 	u16 foe_check_time[PPE_NUM_ENTRIES];
-+
-+	struct dentry *debugfs_dir;
- };
- 
- struct airoha_eth {
-@@ -535,5 +538,16 @@ int airoha_ppe_setup_tc_block_cb(enum tc_setup_type type, void *type_data,
- 				 void *cb_priv);
- int airoha_ppe_init(struct airoha_eth *eth);
- void airoha_ppe_deinit(struct airoha_eth *eth);
-+struct airoha_foe_entry *airoha_ppe_foe_get_entry(struct airoha_ppe *ppe,
-+						  u32 hash);
-+
-+#if CONFIG_DEBUG_FS
-+int airoha_ppe_debugfs_init(struct airoha_ppe *ppe);
-+#else
-+static inline int airoha_ppe_debugfs_init(struct airoha_ppe *ppe)
-+{
-+	return 0;
-+}
-+#endif
- 
- #endif /* AIROHA_ETH_H */
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index 71761a0a4b0e93587151e2eae55c090992ce85a2..f28ae8735639959a97b99358cfc7e44c1bcac11d 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -377,8 +377,8 @@ static u32 airoha_ppe_foe_get_entry_hash(struct airoha_foe_entry *hwe)
- 	return hash;
- }
- 
--static struct airoha_foe_entry *
--airoha_ppe_foe_get_entry(struct airoha_ppe *ppe, u32 hash)
-+struct airoha_foe_entry *airoha_ppe_foe_get_entry(struct airoha_ppe *ppe,
-+						  u32 hash)
- {
- 	if (hash < PPE_SRAM_NUM_ENTRIES) {
- 		u32 *hwe = ppe->foe + hash * sizeof(struct airoha_foe_entry);
-@@ -845,7 +845,7 @@ void airoha_ppe_check_skb(struct airoha_ppe *ppe, u16 hash)
- int airoha_ppe_init(struct airoha_eth *eth)
- {
- 	struct airoha_ppe *ppe;
--	int foe_size;
-+	int foe_size, err;
- 
- 	ppe = devm_kzalloc(eth->dev, sizeof(*ppe), GFP_KERNEL);
- 	if (!ppe)
-@@ -866,7 +866,15 @@ int airoha_ppe_init(struct airoha_eth *eth)
- 	if (!ppe->foe_flow)
- 		return -ENOMEM;
- 
--	return rhashtable_init(&eth->flow_table, &airoha_flow_table_params);
-+	err = rhashtable_init(&eth->flow_table, &airoha_flow_table_params);
-+	if (err)
-+		return err;
-+
-+	err = airoha_ppe_debugfs_init(ppe);
-+	if (err)
-+		rhashtable_destroy(&eth->flow_table);
-+
-+	return err;
- }
- 
- void airoha_ppe_deinit(struct airoha_eth *eth)
-@@ -882,4 +890,5 @@ void airoha_ppe_deinit(struct airoha_eth *eth)
- 	rcu_read_unlock();
- 
- 	rhashtable_destroy(&eth->flow_table);
-+	debugfs_remove(eth->ppe->debugfs_dir);
- }
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c b/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..f79788458903c93ca73d774edaca97f1e08f92a7
---- /dev/null
-+++ b/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
-@@ -0,0 +1,175 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (c) 2025 AIROHA Inc
-+ * Author: Lorenzo Bianconi <lorenzo@kernel.org>
-+ */
-+
-+#include "airoha_eth.h"
-+
-+static void airoha_debugfs_ppe_print_tuple(struct seq_file *m,
-+					   void *src_addr, void *dest_addr,
-+					   u16 *src_port, u16 *dest_port,
-+					   bool ipv6)
-+{
-+	__be32 n_addr[IPV6_ADDR_WORDS];
-+
-+	if (ipv6) {
-+		ipv6_addr_cpu_to_be32(n_addr, src_addr);
-+		seq_printf(m, "%pI6", n_addr);
-+	} else {
-+		seq_printf(m, "%pI4h", src_addr);
-+	}
-+	if (src_port)
-+		seq_printf(m, ":%d", *src_port);
-+
-+	seq_puts(m, "->");
-+
-+	if (ipv6) {
-+		ipv6_addr_cpu_to_be32(n_addr, dest_addr);
-+		seq_printf(m, "%pI6", n_addr);
-+	} else {
-+		seq_printf(m, "%pI4h", dest_addr);
-+	}
-+	if (dest_port)
-+		seq_printf(m, ":%d", *dest_port);
-+}
-+
-+static int airoha_ppe_debugfs_foe_show(struct seq_file *m, void *private,
-+				       bool bind)
-+{
-+	static const char *const ppe_type_str[] = {
-+		[PPE_PKT_TYPE_IPV4_HNAPT] = "IPv4 5T",
-+		[PPE_PKT_TYPE_IPV4_ROUTE] = "IPv4 3T",
-+		[PPE_PKT_TYPE_BRIDGE] = "L2B",
-+		[PPE_PKT_TYPE_IPV4_DSLITE] = "DS-LITE",
-+		[PPE_PKT_TYPE_IPV6_ROUTE_3T] = "IPv6 3T",
-+		[PPE_PKT_TYPE_IPV6_ROUTE_5T] = "IPv6 5T",
-+		[PPE_PKT_TYPE_IPV6_6RD] = "6RD",
-+	};
-+	static const char *const ppe_state_str[] = {
-+		[AIROHA_FOE_STATE_INVALID] = "INV",
-+		[AIROHA_FOE_STATE_UNBIND] = "UNB",
-+		[AIROHA_FOE_STATE_BIND] = "BND",
-+		[AIROHA_FOE_STATE_FIN] = "FIN",
-+	};
-+	struct airoha_ppe *ppe = m->private;
-+	int i;
-+
-+	for (i = 0; i < PPE_NUM_ENTRIES; i++) {
-+		const char *state_str, *type_str = "UNKNOWN";
-+		u16 *src_port = NULL, *dest_port = NULL;
-+		struct airoha_foe_mac_info_common *l2;
-+		unsigned char h_source[ETH_ALEN] = {};
-+		unsigned char h_dest[ETH_ALEN];
-+		struct airoha_foe_entry *hwe;
-+		u32 type, state, ib2, data;
-+		void *src_addr, *dest_addr;
-+		bool ipv6 = false;
-+
-+		hwe = airoha_ppe_foe_get_entry(ppe, i);
-+		if (!hwe)
-+			continue;
-+
-+		state = FIELD_GET(AIROHA_FOE_IB1_STATE, hwe->ib1);
-+		if (!state)
-+			continue;
-+
-+		if (bind && state != AIROHA_FOE_STATE_BIND)
-+			continue;
-+
-+		state_str = ppe_state_str[state % ARRAY_SIZE(ppe_state_str)];
-+		type = FIELD_GET(AIROHA_FOE_IB1_PACKET_TYPE, hwe->ib1);
-+		if (type < ARRAY_SIZE(ppe_type_str) && ppe_type_str[type])
-+			type_str = ppe_type_str[type];
-+
-+		seq_printf(m, "%05x %s %7s", i, state_str, type_str);
-+
-+		switch (type) {
-+		case PPE_PKT_TYPE_IPV4_HNAPT:
-+		case PPE_PKT_TYPE_IPV4_DSLITE:
-+			src_port = &hwe->ipv4.orig_tuple.src_port;
-+			dest_port = &hwe->ipv4.orig_tuple.dest_port;
-+			fallthrough;
-+		case PPE_PKT_TYPE_IPV4_ROUTE:
-+			src_addr = &hwe->ipv4.orig_tuple.src_ip;
-+			dest_addr = &hwe->ipv4.orig_tuple.dest_ip;
-+			break;
-+		case PPE_PKT_TYPE_IPV6_ROUTE_5T:
-+			src_port = &hwe->ipv6.src_port;
-+			dest_port = &hwe->ipv6.dest_port;
-+			fallthrough;
-+		case PPE_PKT_TYPE_IPV6_ROUTE_3T:
-+		case PPE_PKT_TYPE_IPV6_6RD:
-+			src_addr = &hwe->ipv6.src_ip;
-+			dest_addr = &hwe->ipv6.dest_ip;
-+			ipv6 = true;
-+			break;
-+		}
-+
-+		seq_puts(m, " orig=");
-+		airoha_debugfs_ppe_print_tuple(m, src_addr, dest_addr,
-+					       src_port, dest_port, ipv6);
-+
-+		switch (type) {
-+		case PPE_PKT_TYPE_IPV4_HNAPT:
-+		case PPE_PKT_TYPE_IPV4_DSLITE:
-+			src_port = &hwe->ipv4.new_tuple.src_port;
-+			dest_port = &hwe->ipv4.new_tuple.dest_port;
-+			fallthrough;
-+		case PPE_PKT_TYPE_IPV4_ROUTE:
-+			src_addr = &hwe->ipv4.new_tuple.src_ip;
-+			dest_addr = &hwe->ipv4.new_tuple.dest_ip;
-+			seq_puts(m, " new=");
-+			airoha_debugfs_ppe_print_tuple(m, src_addr, dest_addr,
-+						       src_port, dest_port,
-+						       ipv6);
-+			break;
-+		}
-+
-+		if (type >= PPE_PKT_TYPE_IPV6_ROUTE_3T) {
-+			data = hwe->ipv6.data;
-+			ib2 = hwe->ipv6.ib2;
-+			l2 = &hwe->ipv6.l2;
-+		} else {
-+			data = hwe->ipv4.data;
-+			ib2 = hwe->ipv4.ib2;
-+			l2 = &hwe->ipv4.l2.common;
-+			*((__be16 *)&h_source[4]) =
-+				cpu_to_be16(hwe->ipv4.l2.src_mac_lo);
-+		}
-+
-+		*((__be32 *)h_dest) = cpu_to_be32(l2->dest_mac_hi);
-+		*((__be16 *)&h_dest[4]) = cpu_to_be16(l2->dest_mac_lo);
-+		*((__be32 *)h_source) = cpu_to_be32(l2->src_mac_hi);
-+
-+		seq_printf(m, " eth=%pM->%pM etype=%04x data=%08x"
-+			      " vlan=%d,%d ib1=%08x ib2=%08x\n",
-+			   h_source, h_dest, l2->etype, data,
-+			   l2->vlan1, l2->vlan2, hwe->ib1, ib2);
-+	}
-+
-+	return 0;
-+}
-+
-+static int airoha_ppe_debugfs_foe_all_show(struct seq_file *m, void *private)
-+{
-+	return airoha_ppe_debugfs_foe_show(m, private, false);
-+}
-+DEFINE_SHOW_ATTRIBUTE(airoha_ppe_debugfs_foe_all);
-+
-+static int airoha_ppe_debugfs_foe_bind_show(struct seq_file *m, void *private)
-+{
-+	return airoha_ppe_debugfs_foe_show(m, private, true);
-+}
-+DEFINE_SHOW_ATTRIBUTE(airoha_ppe_debugfs_foe_bind);
-+
-+int airoha_ppe_debugfs_init(struct airoha_ppe *ppe)
-+{
-+	ppe->debugfs_dir = debugfs_create_dir("ppe", NULL);
-+	debugfs_create_file("entries", 0444, ppe->debugfs_dir, ppe,
-+			    &airoha_ppe_debugfs_foe_all_fops);
-+	debugfs_create_file("bind", 0444, ppe->debugfs_dir, ppe,
-+			    &airoha_ppe_debugfs_foe_bind_fops);
-+
-+	return 0;
-+}
+These APIs are intended to be uniform across protocols, at least
+across all datagram cases. Existing behavior is arbitrary and
+unintentional, where a new feature was added only to the protocol
+most on the developer's mind.
 
--- 
-2.48.1
+The goal of deduplicating is exactly to avoid more such arbitrary
+limitations as new fields are added.
 
+> Too paranoid on my side?
+
+Not at all!
+
+For correctness, besides code inspection for this series I also
+relied on existing kselftests including cmsg_ipv6.sh and
+cmsg_so_priority.sh. I added a cmsg_ipv4.sh to verify the subtle
+routing point in patch 4. But that is not ready to submit yet.
