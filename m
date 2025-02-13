@@ -1,131 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9BC20A5CE;
-	Thu, 13 Feb 2025 07:54:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FAB20AF68
+	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 07:58:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739433253; cv=none; b=eM9pJOQPifsdzbS+d9/0MPz8hQQZbYOxo6NEpYwlq38mznekautfx5x8KarDHpS+IG1z1vVpGLFD3JdAmqhRcwJ9MO/lKhqXn6ASl8o/KrMBs7Ci2CsvNJ6W1r2QarXqBOi/RQ311zGyCAHr/7t6u7bIUh5PP4H7xB32p9TmdAo=
+	t=1739433515; cv=none; b=hPvqBYvjyFxUqX37RNFOHeLJI+D/ro7pEnrlxyN1bT6AVB4aiiROIzG0DKnwB2tCAsm3jTbxj9Lgf3lhH625DSuKpTkhx1SPZGkltTfcMB4YpiutVQNdNAENfqIZsd9ihzLVKcrK9GxNcRNn5G1pTMDxgPyVsQbUeMy3Sv5AFRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739433253; c=relaxed/simple;
-	bh=56Ta27lSOpZW6WT1dfipytAfcqD14QNHO7m6Mo7UhBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QkR8O0OD+T6WjWf8ryu9hFVWN7ZyTd1r4aZh5dRWB+dT+qXotBqmugEITdSX6aswjRfEjSvZsuXTsoDFvEfN/wuliG5qaF7tTgB94SPBnrGhSsi5FwPkTlcYZ14WdW49nnaAVLvdK7l92i+1pRAbiibeAp/QquO1MzF4qnJr3Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GkKfm+0z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739433515; c=relaxed/simple;
+	bh=eO714YUOwB1fsBw+kHksu5IyTkPx0gHPMJKL78qm9/8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KpW1sT6i8DVZzWnI/gPydNfSCjBk0Bl9VkC2rZczITNAas/4QlMCmSCP9X1gPSwH8fgLl6XSOgsQZDiW/33MY6obVYhf5jHaR/Ekk/ZtJLkd4PosoUGaXoSH0NHpa+5vMZ8E2Jh+HuAiDh+esFh8xGZ6rkXavMN+7AIVf8LA+F4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I+jeldV0; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GkKfm+0z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B991C4CED1;
-	Thu, 13 Feb 2025 07:54:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739433252;
-	bh=56Ta27lSOpZW6WT1dfipytAfcqD14QNHO7m6Mo7UhBY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GkKfm+0z1/NQtvj5DekG7tlgJXv7KvTYjV7uBiZCErsGUfI88dj0z4vErZav2EL04
-	 H9SIpabXaoUXbWxWg/s9f/pJaJW/ux2aWLSHp/Ud3SkJGU5QW91S2oY052y1q57ohM
-	 TFw0DXIBakxQmtCdF4c/xrs3SGT0kHWTIl5NT1CaV9ycuzmTyO+WZVuHFD6BDLDHF7
-	 DWnCV9GdRsg13axmldqBa1yZ5sx0bTnDw5syFgZYGB4/k71TZChpkQc2ieAJfaBfBZ
-	 T5APTSqFiLrYNV4UFPgdPGmN8utVYIWp++nRPuYHcmeH1iTwpZn/E/YOFXWguOcKUj
-	 RGy9TQHVMsG2Q==
-Date: Thu, 13 Feb 2025 08:54:09 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Swathi K S <swathi.ks@samsung.com>
-Cc: krzk+dt@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, 
-	conor+dt@kernel.org, richardcochran@gmail.com, mcoquelin.stm32@gmail.com, 
-	alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 1/2] dt-bindings: net: Add FSD EQoS device tree
- bindings
-Message-ID: <20250213-adorable-arboreal-degu-6bdcb8@krzk-bin>
-References: <20250213044624.37334-1-swathi.ks@samsung.com>
- <CGME20250213044955epcas5p110d1e582c8ee02579ead73f9686819ff@epcas5p1.samsung.com>
- <20250213044624.37334-2-swathi.ks@samsung.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I+jeldV0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739433514; x=1770969514;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eO714YUOwB1fsBw+kHksu5IyTkPx0gHPMJKL78qm9/8=;
+  b=I+jeldV0Cib+2Wu4m+X58hn2ZrO5HL8o5aZC9uFaqqi3t3tYan5Rev2/
+   OpgjFLlYo8U5CxmL52JBvgnUg+np+G9BJAT3O4sz3jNwdsZJViv6Dk3h+
+   WIVFD99Iz4UF+nuYNuu4jdq4XNMDHDpcwtAU8jOyB3lvYxVsm5qXwPhur
+   GcqrtkR872hV3ixWM03h/8a35UjcLCOwZ/b6F1KROaIjocOzH/BZpFEP7
+   kx8fNlkCwaTDlktadPYzMi4geXzpiG+zEmojyi33TJfVl/42j6M7zFOAP
+   cJuX3QPUbBp461GoAHtTEJJUWRmNAjWaqS0RkLh4gKxsyht37T2cdSfSm
+   w==;
+X-CSE-ConnectionGUID: QvmTbEUSSoe78mmmFdfDow==
+X-CSE-MsgGUID: nAxgM2FUR42f6uNnIVLH6A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="39986405"
+X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
+   d="scan'208";a="39986405"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 23:58:34 -0800
+X-CSE-ConnectionGUID: iBRmOTwyQCGy6LYpbhKGuQ==
+X-CSE-MsgGUID: VcGsciHLQsmNiuOLlqf80w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
+   d="scan'208";a="118068872"
+Received: from os-delivery.igk.intel.com ([10.102.18.218])
+  by orviesa004.jf.intel.com with ESMTP; 12 Feb 2025 23:58:32 -0800
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: anthony.l.nguyen@intel.com,
+	andrew@lunn.ch,
+	pmenzel@molgen.mpg.de,
+	netdev@vger.kernel.org,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [PATCH iwl-next v4] ixgbe: add support for thermal sensor event reception
+Date: Thu, 13 Feb 2025 08:44:52 +0100
+Message-Id: <20250213074452.95862-1-jedrzej.jagielski@intel.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250213044624.37334-2-swathi.ks@samsung.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 13, 2025 at 10:16:23AM +0530, Swathi K S wrote:
-> +  clock-names:
-> +    minItems: 5
-> +    maxItems: 10
-> +    contains:
-> +      enum:
-> +        - ptp_ref
-> +        - master_bus
-> +        - slave_bus
-> +        - tx
-> +        - rx
-> +        - master2_bus
-> +        - slave2_bus
-> +        - eqos_rxclk_mux
-> +        - eqos_phyrxclk
-> +        - dout_peric_rgmii_clk
+E610 NICs unlike the previous devices utilizing ixgbe driver
+are notified in the case of overheating by the FW ACI event.
 
-This does not match the previous entry. It should be strictly ordered
-with minItems: 5.
+In event of overheat when threshold is exceeded, FW suspends all
+traffic and sends overtemp event to the driver. Then driver
+logs appropriate message and closes the adapter instance.
+The card remains in that state until the platform is rebooted.
 
+This approach is a solution to the fact current version of the
+E610 FW doesn't support reading thermal sensor data by the
+SW. So give to user at least any info that overtemp event
+has occurred, without interface disappearing from the OS
+without any note.
 
-> +
-> +  iommus:
-> +    maxItems: 1
-> +
-> +  phy-mode:
-> +    enum:
-> +      - rgmii-id
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - clocks
-> +  - clock-names
-> +  - iommus
-> +  - phy-mode
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/fsd-clk.h>
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    soc {
-> +        #address-cells = <2>;
-> +        #size-cells = <2>;
-> +        ethernet1: ethernet@14300000 {
-> +            compatible = "tesla,fsd-ethqos";
-> +            reg = <0x0 0x14300000 0x0 0x10000>;
-> +            interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
-> +            interrupt-names = "macirq";
-> +            clocks = <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_CLK_PTP_REF_I>,
-> +                     <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_ACLK_I>,
-> +                     <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_HCLK_I>,
-> +                     <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_RGMII_CLK_I>,
-> +                     <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_CLK_RX_I>,
-> +                     <&clock_peric PERIC_BUS_D_PERIC_IPCLKPORT_EQOSCLK>,
-> +                     <&clock_peric PERIC_BUS_P_PERIC_IPCLKPORT_EQOSCLK>,
-> +                     <&clock_peric PERIC_EQOS_PHYRXCLK_MUX>,
-> +                     <&clock_peric PERIC_EQOS_PHYRXCLK>,
-> +                     <&clock_peric PERIC_DOUT_RGMII_CLK>;
-> +            clock-names = "ptp_ref", "master_bus", "slave_bus","tx",
-> +                          "rx", "master2_bus", "slave2_bus", "eqos_rxclk_mux",
-> +                          "eqos_phyrxclk","dout_peric_rgmii_clk";
-> +            pinctrl-names = "default";
-> +            pinctrl-0 = <&eth1_tx_clk>, <&eth1_tx_data>, <&eth1_tx_ctrl>,
-> +                        <&eth1_phy_intr>, <&eth1_rx_clk>, <&eth1_rx_data>,
-> +                        <&eth1_rx_ctrl>, <&eth1_mdio>;
-> +            iommus = <&smmu_peric 0x0 0x1>;
-> +            phy-mode = "rgmii-id";
-> +       };
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+---
+v2,3,4 : commit msg tweaks
+---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c      | 5 +++++
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h | 3 +++
+ 2 files changed, 8 insertions(+)
 
-Misaligned/misindented.
-
-Best regards,
-Krzysztof
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index 7236f20c9a30..5c804948dd1f 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -3165,6 +3165,7 @@ static void ixgbe_aci_event_cleanup(struct ixgbe_aci_event *event)
+ static void ixgbe_handle_fw_event(struct ixgbe_adapter *adapter)
+ {
+ 	struct ixgbe_aci_event event __cleanup(ixgbe_aci_event_cleanup);
++	struct net_device *netdev = adapter->netdev;
+ 	struct ixgbe_hw *hw = &adapter->hw;
+ 	bool pending = false;
+ 	int err;
+@@ -3185,6 +3186,10 @@ static void ixgbe_handle_fw_event(struct ixgbe_adapter *adapter)
+ 		case ixgbe_aci_opc_get_link_status:
+ 			ixgbe_handle_link_status_event(adapter, &event);
+ 			break;
++		case ixgbe_aci_opc_temp_tca_event:
++			e_crit(drv, "%s\n", ixgbe_overheat_msg);
++			ixgbe_close(netdev);
++			break;
+ 		default:
+ 			e_warn(hw, "unknown FW async event captured\n");
+ 			break;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
+index 8d06ade3c7cd..617e07878e4f 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
+@@ -171,6 +171,9 @@ enum ixgbe_aci_opc {
+ 	ixgbe_aci_opc_done_alt_write			= 0x0904,
+ 	ixgbe_aci_opc_clear_port_alt_write		= 0x0906,
+ 
++	/* TCA Events */
++	ixgbe_aci_opc_temp_tca_event                    = 0x0C94,
++
+ 	/* debug commands */
+ 	ixgbe_aci_opc_debug_dump_internals		= 0xFF08,
+ 
+-- 
+2.31.1
 
