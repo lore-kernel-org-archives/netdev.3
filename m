@@ -1,156 +1,153 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6669E281346;
-	Thu, 13 Feb 2025 14:22:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61256281345;
+	Thu, 13 Feb 2025 14:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739456565; cv=none; b=eBE11aZVQWYTwPkLiXHxBUdUzpOAafC3+XH1UShMaEydnm7n/PVgdlaSHUNXvApRoKpwpI7goO6o5ZMiGWdvCF2nTxnYY9oLLG5mIVKj9Pv7re81ckvK/TwA3fjn+A/Qr1f8erjRVtDspTYXc+XZwOi10oQOWtKJT++XBhzurV8=
+	t=1739456721; cv=none; b=WNSO2/sa1vpP0BJnarIjuRURpqO4azENC4MtGAE7CWk9nGV0jgxJObuwuke6dEItBHRvAtvPMgVwM6Uu2VPy9ffsaFa9EQ3uYwcSccEMvzdJ+GjW8geuFLvPHFIrTAjn3O7G48V4cTnjLOR2skngjoAET/9IUKPHv2YS6Ny+R0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739456565; c=relaxed/simple;
-	bh=gp/dO/Ps7kKSFA+bpO1ArTJtw3cZrvtuU4i1UR7bb88=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NKYGu99q9iPIMOFVtmJslJ25f9D4zAIZuGrAzsPmfXrphwgLhjGhkUr+KGUJdjep1/5riTSKRoECVS1NNxix/KJe52LqNeUMz0B/FvVR2sV8icB2ppZEz42d9pHzneFpg2SmzaRswQuko2o9+0IykiY9jJ4lIdAjMg2tyXirgLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jj3dfVsd; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739456721; c=relaxed/simple;
+	bh=6E5SX+fs6O60hhZe8Qygi+YphymUSg0AYRAGUisCLi0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Krx7YxibmvMVJAyLvDIoBfKu/RK2Vgt8Vxg5+ejFU/hXtywg+EFE+cDEU96IB8ajhGV0wAlqiVkppEfJh2Lpo22T2w47/UMpi3Lozc/pXC94ILMQSYDSABrJ3X7f3sTyj/6POAzWJ61bimtiFonfw/RDnjD+tLAsrOFrh0VNk4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lFhExKZI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jj3dfVsd"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-308e9ff235bso8366371fa.2;
-        Thu, 13 Feb 2025 06:22:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739456561; x=1740061361; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wZmWSiUWpnRK0ksjdmL98E8SgC5cSifduv2jJAfiEPY=;
-        b=Jj3dfVsd4tqZmupytHtEHUVB/6pmOt+DNsrKxewTBR5DYXQ1QWEKswTaT9Hsb3145o
-         rJhBFkOnLK/wfk75i7u6XkmyDLIM20UdhOSIVz6VBwtWP0FPdnBBWVlwUsGp7sJfrwsO
-         Tu9CGh9uVgX6BGhXlUcrLgYZ4EAdYERbcgPcq+8+p2uQDyfaR2X4wGhrvhRkypMQYEAv
-         yrqhOrSceRQTGdxAkilC5ybDMVoCti1fw0sQ9TInyogWHtTMMHQdy4MSN7mJruBJLjBx
-         z1rNa2nqu+nwXd/uLARTIvX9B8GaYWCeChfW56oiiw3EMnDEYxz0RxBACmPAAVjHnGQN
-         TJmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739456561; x=1740061361;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wZmWSiUWpnRK0ksjdmL98E8SgC5cSifduv2jJAfiEPY=;
-        b=D7gyJhArTtDgSg33wSzuXR+XAxKdL/ejsttTIJ6/9h9f3r3ra4bSuXNKyHaHmSP5xu
-         6/CvLULbiZGby2Bw/65d0lRQGLf93IAWkmjrIHxasrIv79Xumcta3EvOz5qcodZWpuML
-         41MDVCs29m+8C3FVKbnQ+2HYU/IZfqUoTbwnXPIDRShwcysVRDaH6Ww7HQdw17LpQD4N
-         eVvdq0Qjr3A/Vge1xTplSZGiG5M3CdA8/vo3SfuxKSsKXJWbtMk8n1/E+d47yzHfKuwI
-         fPgroUd2ZJBf6uN980D2pgOoM1ANxr5H/0+T9n1Ky66GTXsZGkmuBLyOVSuLPbTaBWB3
-         n+sw==
-X-Forwarded-Encrypted: i=1; AJvYcCVlPHAil7KEznDtKCEntwMLhtcGlG4c55S9nX/wKSGB2YpLrg8Pas+xnD0JJnRTfVYV2fFkS3fjrn474hKg@vger.kernel.org, AJvYcCXKEL0hDlqDFUQMWOteU194aRT1AVnU56a5jB6HBrYpPnvI8Crso1+jZrGaguMNbJXt0DEKURVVk763kHpQ/40=@vger.kernel.org, AJvYcCXdW5vLrPeU8G/AIq35MJskk0evhC55qmmO/iOmGTksBbImCbQOKh7KdS9g+9pkWT+hw9lKypa7@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZx6/33/gJ/vEMb6cM0qsYb/R7E93jOEInXxaFecnSUIaeDi1K
-	hOjeMFXGHQFA8aAJrsnNLMvmO5R8Huw878Hz2wQTK0xh6DPXdWQ/gbkRoPR+PZhyt7rQLPQZcN5
-	oyoqqewpA4f8UluXaUOxWD4ztq3E=
-X-Gm-Gg: ASbGncuu2LpY3ihRTHGpm7IZkXq2c/9XI9ylwFul2eTmQBxnjgps1UZHfFyUPsEXIzu
-	FURhALoV4l55ZdKRgNdBv7XpXZEPHuf0eeEdvaB8umKeXP2yft4/pLOcwYD7lNVeDlfZvyMA=
-X-Google-Smtp-Source: AGHT+IE1Ui4s9arYtwU9tac297UTOfK+baxbi60/IuRWMEIkYSnWEjH6X0OJlTlu0WS7f8Bynj5q63KuRkpdg8b3Lsw=
-X-Received: by 2002:a05:651c:1507:b0:307:5879:e7d8 with SMTP id
- 38308e7fff4ca-309036d7adcmr28642701fa.30.1739456560967; Thu, 13 Feb 2025
- 06:22:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lFhExKZI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF21AC4CED1;
+	Thu, 13 Feb 2025 14:25:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739456720;
+	bh=6E5SX+fs6O60hhZe8Qygi+YphymUSg0AYRAGUisCLi0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lFhExKZIhZbBJVwAlMefC/LreHiyt9BVV3SZnS/xtDnc3z2nJHlVRJoPxAUwwBhkG
+	 2S/p191EG+mv/BKb3a88miTfVwyr2WAo6nFICJekdDxwEvIIJauUu749YRNP88f1lH
+	 GVlOKy8eEy0PMLdk644kzFOdiIVDT1gf5thE1zih8G6LhaSpPDvvJoK1aIPoHGZZnB
+	 I3LeyMXF4EkoZj+E3TbhJPECkBlkF0CeRAiqeQRyvoF7oYNhUfWwgUkStK56/ufZGn
+	 jsxHGKTz2IxVhrFJpVf/5RzMcHT4xGYmWvbVYbf+4pievC4dqR8arJ28Af4HolIT7q
+	 dTtLq0c9D4rrQ==
+Date: Thu, 13 Feb 2025 16:25:16 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Aron Silverton <aron.silverton@oracle.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Dave Jiang <dave.jiang@intel.com>, David Ahern <dsahern@kernel.org>,
+	Andy Gospodarek <gospo@broadcom.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Itay Avraham <itayavr@nvidia.com>, Jiri Pirko <jiri@nvidia.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>, Leonid Bloch <lbloch@nvidia.com>,
+	linux-cxl@vger.kernel.org, linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	"Nelson, Shannon" <shannon.nelson@amd.com>
+Subject: Re: [PATCH v4 07/10] fwctl/mlx5: Support for communicating with mlx5
+ fw
+Message-ID: <20250213142516.GM17863@unreal>
+References: <7-v4-0cf4ec3b8143+4995-fwctl_jgg@nvidia.com>
+ <daca71bd-547d-406c-83d8-05f8508703b2@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250213114400.v4.1.If6f14aa2512336173a53fc3552756cd8a332b0a3@changeid>
- <2025021352-dairy-whomever-f8bd@gregkh> <CADg1FFdez0OdNDPRFPFxNHL_JcKmHE6KNxnYvt4sK7i+Uw6opA@mail.gmail.com>
- <2025021347-washboard-slashed-5d08@gregkh> <CADg1FFdbKx3z+SPWFmY4+xZmewh0MnnZp_gmYEdY0z-mxutmEw@mail.gmail.com>
- <2025021318-regretful-factsheet-79a1@gregkh>
-In-Reply-To: <2025021318-regretful-factsheet-79a1@gregkh>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Thu, 13 Feb 2025 09:22:28 -0500
-X-Gm-Features: AWEUYZnlhlrfRU7G4FrgTrcb9H-dsDkPENLIZdLh14jFn2kgy6dsYsfxDnsDfjg
-Message-ID: <CABBYNZL4tEBTT3Hrf3JUGNuseLg1SNLmazo88EitmMfhUWUQxw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] Bluetooth: Fix possible race with userspace of
- sysfs isoc_alt
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Hsin-chen Chuang <chharry@google.com>, linux-bluetooth@vger.kernel.org, 
-	chromeos-bluetooth-upstreaming@chromium.org, 
-	Hsin-chen Chuang <chharry@chromium.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Johan Hedberg <johan.hedberg@gmail.com>, Marcel Holtmann <marcel@holtmann.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ying Hsu <yinghsu@chromium.org>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <daca71bd-547d-406c-83d8-05f8508703b2@intel.com>
 
-Hi Greg,
+On Thu, Feb 13, 2025 at 02:19:38PM +0100, Przemek Kitszel wrote:
+> On 2/7/25 01:13, Jason Gunthorpe wrote:
+> > From: Saeed Mahameed <saeedm@nvidia.com>
+> 
+> In part this is a general feedback for the subsystem too.
+> 
+> > +FWCTL MLX5 DRIVER
+> 
+> I don't like this design.
+> That way each and every real driver would need to make another one to
+> just use fwctl.
+> 
+> Why not just require the real driver to call fwctl_register(opsstruct),
+> with the required .validate, .do_cmd, etc commands backed there?
+> There will be much less scaffolding.
 
-On Thu, Feb 13, 2025 at 8:45=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Thu, Feb 13, 2025 at 09:33:34PM +0800, Hsin-chen Chuang wrote:
-> > On Thu, Feb 13, 2025 at 8:10=E2=80=AFPM Greg KH <gregkh@linuxfoundation=
-.org> wrote:
-> > >
-> > > A: http://en.wikipedia.org/wiki/Top_post
-> > > Q: Were do I find info about this thing called top-posting?
-> > > A: Because it messes up the order in which people normally read text.
-> > > Q: Why is top-posting such a bad thing?
-> > > A: Top-posting.
-> > > Q: What is the most annoying thing in e-mail?
-> > >
-> > > A: No.
-> > > Q: Should I include quotations after my reply?
-> > >
-> > > http://daringfireball.net/2007/07/on_top
-> > >
-> > > On Thu, Feb 13, 2025 at 07:57:15PM +0800, Hsin-chen Chuang wrote:
-> > > > The btusb driver data is allocated by devm_kzalloc and is
-> > > > automatically freed on driver detach, so I guess we don't have
-> > > > anything to do here.
-> > >
-> > > What?  A struct device should NEVER be allocated with devm_kzalloc.
-> > > That's just not going to work at all.
-> >
-> > Noted. Perhaps that needs to be refactored together.
-> >
-> > >
-> > > > Or perhaps we should move btusb_disconnect's content here? Luiz, wh=
-at
-> > > > do you think?
-> > >
-> > > I think something is really wrong here.  Why are you adding a new str=
-uct
-> > > device to the system?  What requires that?  What is this new device
-> > > going to be used for?
-> >
-> > The new device is only for exposing a new sysfs attribute.
->
-> That feels crazy.
->
-> > So originally we had a device called hci_dev, indicating the
-> > implementation of the Bluetooth HCI layer. hci_dev is directly the
-> > child of the usb_interface (the Bluetooth chip connected through USB).
-> > Now I would like to add an attribute for something that's not defined
-> > in the HCI layer, but lower layer only in Bluetooth USB.
-> > Thus we want to rephrase the structure: usb_interface -> btusb (new
-> > device) -> hci_dev, and then we could place the new attribute in the
-> > new device.
-> >
-> > Basically I kept the memory management in btusb unchanged in this
-> > patch, as the new device is only used for a new attribute.
-> > Would you suggest we revise the memory management since we added a
-> > device in this module?
->
-> If you add a new device in the tree, it HAS to work properly with the
-> driver core (i.e. life cycles are unique, you can't have empty release
-> functions, etc.)  Put it on the proper bus it belongs to, bind the
-> needed drivers to it, and have it work that way, don't make a "fake"
-> device for no good reason.
+We invented auxiliary_bus to actually reduce scaffolding. The auxiliary
+devices allow split of complex, multi-subsystem devices without need
+to create hard binding of their drivers.
 
-Well we could just introduce it to USB device, since alternate setting
-is a concept that is coming from there, but apparently the likes of
-/sys/bus/usb/devices/usbX/bAlternateSetting is read-only, some
-Bluetooth profiles (HFP) requires switching the alternate setting and
-because Google is switching to handle this via userspace thus why
-there was this request to add a new sysfs to control it.
+It allows for every subsystem to have its own independent driver, which
+can be loaded separately, something that is not possible with your idea.
 
---=20
-Luiz Augusto von Dentz
+> 
+> Or the intention is to have this little driver replaced by OOT one,
+> but keep the real (say networking) driver as-is from intree?
+
+No, please read the purpose here drivers/base/auxiliary.c:
+
+....
+   23  * In some subsystems, the functionality of the core device (PCI/ACPI/other) is
+   24  * too complex for a single device to be managed by a monolithic driver (e.g.
+   25  * Sound Open Firmware), multiple devices might implement a common intersection
+   26  * of functionality (e.g. NICs + RDMA), or a driver may want to export an
+   27  * interface for another subsystem to drive (e.g. SIOV Physical Function export
+   28  * Virtual Function management).  A split of the functionality into child-
+   29  * devices representing sub-domains of functionality makes it possible to
+   30  * compartmentalize, layer, and distribute domain-specific concerns via a Linux
+   31  * device-driver model.
+....
+
+> 
+> > +++ b/drivers/fwctl/mlx5/main.c
+> > @@ -0,0 +1,340 @@
+> > +// SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
+> > +/*
+> > + * Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES
+> 
+> -2025
+> 
+> > + */
+> > +#include <linux/fwctl.h>
+> > +#include <linux/auxiliary_bus.h>
+> > +#include <linux/mlx5/device.h>
+> > +#include <linux/mlx5/driver.h>
+> 
+> this breaks abstraction (at least your headers are in nice place, but
+> this is rather uncommon, typical solution is to have them backed inside
+> the driver directory) - the two drivers will be tightly coupled
+
+FWCTL driver is connected to auxiliary device which is managed by some
+other driver core (in our case mlx5_core). It is coupled by design.
+
+> 
+> > +module_auxiliary_driver(mlx5ctl_driver);
+> > +
+> > +MODULE_IMPORT_NS("FWCTL");
+> > +MODULE_DESCRIPTION("mlx5 ConnectX fwctl driver");
+> > +MODULE_AUTHOR("Saeed Mahameed <saeedm@nvidia.com>");
+> > +MODULE_LICENSE("Dual BSD/GPL");
+> > diff --git a/include/uapi/fwctl/fwctl.h b/include/uapi/fwctl/fwctl.h
+> > index 7a21f2f011917a..0790b8291ee1bd 100644
+> > --- a/include/uapi/fwctl/fwctl.h
+> > +++ b/include/uapi/fwctl/fwctl.h
+> > @@ -42,6 +42,7 @@ enum {
+> >   enum fwctl_device_type {
+> >   	FWCTL_DEVICE_TYPE_ERROR = 0,
+> > +	FWCTL_DEVICE_TYPE_MLX5 = 1,
+> 
+> is that for fwctl info to be able to properly report what device user
+> has asked ioctl on? Would be great to embed 32byte long cstring of
+> DRIVER_NAME, to don't need each and every device to come to you and
+> ask for inclusion, that would also resolve problem of conflicting IDs
+> (my-driver-id prior-to and after upstreaming)
+
+Yes, we do want to make sure that FWCTL is used for upstream code and
+don't want to open it for any out-of-tree drivers, which wants to use
+this interface but didn't send it to upstream.
+
+Thanks
+
+> 
+> 
