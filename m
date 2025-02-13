@@ -1,168 +1,110 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31927250EC;
-	Thu, 13 Feb 2025 08:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085831EF08E
+	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 08:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739435281; cv=none; b=QeflDjJfJ4c92g0Qna6g7+XiEBr/6rUvFVbJpZDa2TVNohTvFFrxYJ2DbLS11oXXQIvamlNytOODg9VO2PzPOwvuVRLOkzEX8allXG0AFVF4bckap5TxQQNp9usZudHbd5FcX2DVkxcKL9m00jdx0d3K6hiAebmQ2EKr8O6/5Ec=
+	t=1739435540; cv=none; b=NvNtTN/XVDbhTo2AuXiSAeO+Kg/7UuVqKvTnW+0DAYTgdaYphvNelR8CPGjS+hMvZYxxyJ4RnGDud+5iE9S06AlhhuD2Opaf8sMCb5PZpjvBk0fxVkFfh/PlCQdjQHKUtsfN+5GZQeMB2yyso5JVGL4qo5ggEXmDYiNAIa5+FTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739435281; c=relaxed/simple;
-	bh=SyjaIWe3i0tkwC2EB8hBIa5rxw02yA5yYTi3aTzBhxo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nFJ9PxK9Ocrl2InyN32M57ftpwC5DqcePItvU3hPL+AZUvpE3GXkurpWEVJJGwazzmq8bqKzil/6zvl7X6N8gA2NPmunkOaBW7gtG1fK6wtjmqYgGSjqnIL1H3MG6V0NuQ0Opar/+PtTnUBfM6HX1LQnWey3obHjpYLpp1f8YfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A3ye2SOJ; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739435540; c=relaxed/simple;
+	bh=YlefXjGTL0eSQvBmi2CslFXUiC166yKtYDiMoY6oWFc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D08mkfPfvGorln/lVo+wjFaE56tx4v7LZXrp/WKyHRFN6nYEJl0+cxUErTyqZ1e4B4qRXPoFqOh9x0qwdSO9+zB1hI5vriRKQQuVFWsoBE8HxotFKx14w+cP1Scy+8CzV/m4e94gM+FutuWQyoRl52f5tYHewS5BTHBQAKYVn/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SW6MgKex; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A3ye2SOJ"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38f265c6cb0so149057f8f.2;
-        Thu, 13 Feb 2025 00:27:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739435278; x=1740040078; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CYDCewrdvYreNRJlqbHeSMs4C/POtyIRcHlnfcP0ZCY=;
-        b=A3ye2SOJB44xTi+FmdYUXU7HtQzXaYbSeqMu+kxZi4F2BA/6a0Lmcfv+nb1CGGpKBe
-         xfzLLY06okJS1eTY5Hyut98obh2g7Z3ZIpwtLON0kwljBMBWMulLPwNFeOMi0qF1a7qT
-         WGz2wg3LleMPTdrcYLLOx9v29VzMQ0E5/dDJoEmF4zWK8K82QrXiNBp6p1rux1pbc6o6
-         AUVuMqPWJw7DfUjPymrQWXvfdhuMnkS0H+F0kb4ODXxnMv8jAML96KcyhAqmfteEyoB2
-         mRsCaRzl/eS1vj7SpJe4QAC6bCZVaUfILNKoih2Ou8pJQVPKKbe7S2EwOWD+COarANi0
-         uQ2g==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SW6MgKex"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739435538;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ENuQ32gYhMX1EzHPxj9FF4Xz7hJZvyYYLV1/58R+loo=;
+	b=SW6MgKextFI8/LoK6yOG4B0xCH/jPSQ0Mhp62VV4+NDnnTJS/Yt9aLPqM7f4xY3YM+pgPQ
+	t60fuMq17B6y1+vaSgb5HkovTqrtMaFXI665NwK997cw40RE0kJlI+cpIbHyzcLR/yWxt+
+	h25cPt6SJf+41HuGjWtI+vARA++ICFU=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-396-1uILxxOvP_iPvA8JEuJVYQ-1; Thu, 13 Feb 2025 03:32:14 -0500
+X-MC-Unique: 1uILxxOvP_iPvA8JEuJVYQ-1
+X-Mimecast-MFC-AGG-ID: 1uILxxOvP_iPvA8JEuJVYQ
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-38dd533dad0so408503f8f.0
+        for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 00:32:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739435278; x=1740040078;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CYDCewrdvYreNRJlqbHeSMs4C/POtyIRcHlnfcP0ZCY=;
-        b=TkK8rDTEgNYcIYiTfpZWCKTSJspC6YxVeCXn3gFMbeF1hhD81/8JiRj+i7xwlgTR8z
-         5svd8ODmlUSu08hysmg0A/kpJt+wtKPULsku346t1881cOqNGC2fNwmkNvSTyTetH49m
-         PDZvn9EQYaTR57soBU0NxdZ+SESDJ+VC8/gya09ld26mwio4mLtOK+uwW1G4jznXND5i
-         h2ZC7d0wVsbyLke+AShcAc21HTrK+tSy7RGnTrIeTPPNcz3M1C3XSfy1ov7fr5S2Akyq
-         hoFXPhF2uxcsWSspTWHoeYtic5c6W6E+dZfZKtJ2mFaqB1zLeq+XR5frW1xSN5FQKizI
-         Xvpg==
-X-Forwarded-Encrypted: i=1; AJvYcCURKmCOO33QVWYjDCRw9XrVAi+Yz67YG58sRnsSbqtI8VMJw98uI6PzPcpvdY3uYRE4rEzRiGqc2cf/mQ==@vger.kernel.org, AJvYcCW/3MkdA5kSdZ0P3fdvMPB+PENbIBCPWi5LfvdT671T16SVVoEBuCunOOO8WWMpuI0PNUWdWA1GpFl8lg==@vger.kernel.org, AJvYcCW6S9HEEr7V78lSla0SUASyt8k1ped+v1sYNgPzSAmHCxaALwI9WXhUl87/qFvPKiunEJjAxOCSvCpZ+tZM@vger.kernel.org, AJvYcCWFtatVQE0OdXevi5Te66/kAwwf5dXoq4d3frTEBQgnbbihbJ4nYYYjbKNvuQVZUHnsNmXcen6vs5vr9CWFI8k=@vger.kernel.org, AJvYcCWSUUq6XjoUdMwDSuU2u1P4W+/zziOoYextG5fSDQiM9OnTzi5sWyghU9pfou/u+jOea7hLWdW2AWri@vger.kernel.org, AJvYcCWcX1CXa6ZjPtNhx1FXprtT3nJu68xkewofyinr5bsNI8M5afIR3KOm50OrOfT/ikHoAJcYX54u@vger.kernel.org, AJvYcCX7YFJAyeqY7iWQbrqhOeHItqLS8YD0GDx+wvm5inTaYD83ztALZxGPaCBco+AkdktOn40=@vger.kernel.org, AJvYcCXP3DsdUvsqtqgWviWOHgZyg703DmoeR9Q6cnKEupV3OX3O211OnwCqlXa7PKAWISTz0EzE04YXh8IVYGONVVdk@vger.kernel.org, AJvYcCXbbPT7HIxUzdB+HOZ5LBhtIfFcQweTtqxbCD6b3nE1lkDZNJip10I2M6uMUS4O51ZE6OiwM5B/JbHQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYNFoepgV9sRBdYjILHID0O7pMIzyX1GpSB9nkxqmt4uPHN2cL
-	beQOVM3PHoCAomihREN/SFhKZwJK0SGctQjrqgBXadu4qO/H402Rx4pzYHXDmENnnKeSs2mKI58
-	iO+tgX0D6tmQx0GyPGO0VsuKMsv8=
-X-Gm-Gg: ASbGnctZ07FUMQ9rF2P0TzdYcDfFQU6aRqxIkGR07zQu5FdmsPqmB2KAu01lqzhBpej
-	nRDucgefzTnaONNGNA7bsD5Mxod+SN6JvB6rSMpICkul8asLrXqGZioS3nhR2XBU68t66/QQ=
-X-Google-Smtp-Source: AGHT+IGZE6zJIuhM6pmlASWXo0USdC2hFnASTias2WRNOVzNleb2xd7k0p6fviBFvki3FKkZ15YNMXus/cLozeOxCp8=
-X-Received: by 2002:a5d:598e:0:b0:38f:21ce:aa28 with SMTP id
- ffacd0b85a97d-38f21ceb0famr3670345f8f.36.1739435278200; Thu, 13 Feb 2025
- 00:27:58 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739435533; x=1740040333;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ENuQ32gYhMX1EzHPxj9FF4Xz7hJZvyYYLV1/58R+loo=;
+        b=lIIQWqVSpqgBOIYfl7zcgDprbKEM/7R5C+Hi1uMaZtg+3TInmfaY55Z1W18TTmaE6n
+         Nhrju3Fm20PlloFKlzvbMdCmlZvlwVM38MFG+1/MJIgQ4OSFe6fLIxxXQ2GB6LSAXrdw
+         aerLYsQ9FVQjG/d6uHsXqTpzORHd3dgwW1no9YTLZWlq9JULMlQ32XtIi9zOX6Dq5zxC
+         rKAJ/vepBYc7QH4OhIhcmwjM+sr2wk9JrAO51BoZLt37/gsg6Flx9NelB6XrKH2P4AS3
+         DlhPtrIjYHvwISUfsRTKglTm2NHRHXm2rpF7ho4ss8RozakaQtbXXxieUnoSaPP94Vnf
+         iubw==
+X-Gm-Message-State: AOJu0Yz3JyG/WgASdOC/WXHy+0lyGFp5zh/HaBuhjRI+KY+PXSGGcCks
+	cz8O3NevyquqE583JFcw+xLeNp5ZHEc8Pu4dCSJPsL/UgpzshPZ8hG3lPBXdl6SLWQ98kP1aRU1
+	4/YHqaraiyutH3cd6FBfEjKoJJf5LDyRY62TkrWmRspIP/1izgynfTA==
+X-Gm-Gg: ASbGncs1003e4w8R5Gj2OZiCMPOqhyk82cyRIxScoRlFeBZ07mXXhRZUEXxEi334hCH
+	IBQVCfGFTloK8BWEBDzMJAulG1zYoHLpReGyrfcWa4Mmwo5tgSJVrnuWxcq3UY7LJQo0Pf9PdFT
+	s6RRHZ336yzWI9jTk7YPtp7DSZ8+KiSn8zhUu7PhrP0Cai3hJlqQ0xv2zUO0+C4ptC0qWbCDGx5
+	slwkAkYNRrGQsxnEHC/O7Z34sc2zjA3bsLHWWYS5E906kg1EXlAIX8Ikv4q6KDWyhPRPP5zfrDg
+	QhbizIehzUt1Tqc0dzGvblAN1bc1hZD8MKo=
+X-Received: by 2002:a05:6000:1863:b0:38b:d9a3:6cff with SMTP id ffacd0b85a97d-38dea26e512mr6609021f8f.16.1739435533447;
+        Thu, 13 Feb 2025 00:32:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFiFu/jSTpXC/+T3CTqn5p3U9vYIZMeiFX1UGb8dak8XGP707d4uTzj0+ewO+aRimLoPXa5Jg==
+X-Received: by 2002:a05:6000:1863:b0:38b:d9a3:6cff with SMTP id ffacd0b85a97d-38dea26e512mr6608990f8f.16.1739435533113;
+        Thu, 13 Feb 2025 00:32:13 -0800 (PST)
+Received: from [192.168.88.253] (146-241-31-160.dyn.eolo.it. [146.241.31.160])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f259d5c29sm1188049f8f.72.2025.02.13.00.32.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Feb 2025 00:32:12 -0800 (PST)
+Message-ID: <94376281-1922-40ee-bfd6-80ff88b9eed7@redhat.com>
+Date: Thu, 13 Feb 2025 09:32:11 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250210133002.883422-6-shaw.leon@gmail.com> <20250213062031.4547-1-kuniyu@amazon.com>
-In-Reply-To: <20250213062031.4547-1-kuniyu@amazon.com>
-From: Xiao Liang <shaw.leon@gmail.com>
-Date: Thu, 13 Feb 2025 16:27:21 +0800
-X-Gm-Features: AWEUYZkYMDLgFWGQwQihDPwSk4qrLNJu_sLyRJOyUa3GWsERW-M3HJO2WaC6w5g
-Message-ID: <CABAhCOSqruMoMTg_=6Apo=gvnfe1j2fptADzoi=Gb8cdJqhgVw@mail.gmail.com>
-Subject: Re: [PATCH net-next v9 05/11] net: ip_tunnel: Use link netns in
- newlink() of rtnl_link_ops
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: alex.aring@gmail.com, andrew+netdev@lunn.ch, 
-	b.a.t.m.a.n@lists.open-mesh.org, bpf@vger.kernel.org, bridge@lists.linux.dev, 
-	davem@davemloft.net, donald.hunter@gmail.com, dsahern@kernel.org, 
-	edumazet@google.com, herbert@gondor.apana.org.au, horms@kernel.org, 
-	kuba@kernel.org, linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-ppp@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-wpan@vger.kernel.org, miquel.raynal@bootlin.com, netdev@vger.kernel.org, 
-	osmocom-net-gprs@lists.osmocom.org, pabeni@redhat.com, shuah@kernel.org, 
-	stefan@datenfreihafen.org, steffen.klassert@secunet.com, 
-	wireguard@lists.zx2c4.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net-next] page_pool: avoid infinite loop to schedule
+ delayed worker
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, ilias.apalodimas@linaro.org,
+ edumazet@google.com, kuba@kernel.org, horms@kernel.org, hawk@kernel.org,
+ almasrymina@google.com
+References: <20250213052150.18392-1-kerneljasonxing@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250213052150.18392-1-kerneljasonxing@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 13, 2025 at 2:20=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon.co=
-m> wrote:
->
-> From: Xiao Liang <shaw.leon@gmail.com>
-> Date: Mon, 10 Feb 2025 21:29:56 +0800
-> > When link_net is set, use it as link netns instead of dev_net(). This
-> > prepares for rtnetlink core to create device in target netns directly,
-> > in which case the two namespaces may be different.
-> >
-> > Convert common ip_tunnel_newlink() to accept an extra link netns
-> > argument. Don't overwrite ip_tunnel.net in ip_tunnel_init().
->
-> Why... ?  see a comment below.
->
->
-> [...]
-> > diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-> > index 1fe9b13d351c..26d15f907551 100644
-> > --- a/net/ipv4/ip_gre.c
-> > +++ b/net/ipv4/ip_gre.c
-> > @@ -1413,7 +1413,8 @@ static int ipgre_newlink(struct net_device *dev,
-> >       err =3D ipgre_netlink_parms(dev, data, tb, &p, &fwmark);
-> >       if (err < 0)
-> >               return err;
-> > -     return ip_tunnel_newlink(dev, tb, &p, fwmark);
-> > +     return ip_tunnel_newlink(params->link_net ? : dev_net(dev), dev, =
-tb, &p,
->
-> This is duplicate at all call sites, let's move it into
-> ip_tunnel_newlink() by passing params.
->
+On 2/13/25 6:21 AM, Jason Xing wrote:
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index 1c6fec08bc43..e1f89a19a6b6 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+> @@ -1112,13 +1112,12 @@ static void page_pool_release_retry(struct work_struct *wq)
+>  	int inflight;
+>  
+>  	inflight = page_pool_release(pool);
+> -	if (!inflight)
+> -		return;
+>  
+>  	/* Periodic warning for page pools the user can't see */
+>  	netdev = READ_ONCE(pool->slow.netdev);
 
-Existing tunnels use `params->link_net ? : dev_net(dev)` for
-backward compatibility. But I think we can leave the choice of netns
-to future tunnel drivers because rtnl_newlink_link_net() is preferred
-in general.
+This causes UaF, as catched by the CI:
 
->
-> > +                              fwmark);
-> >  }
-> >
-> >  static int erspan_newlink(struct net_device *dev,
-> >
-> >
-> > diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-> > index 09b73acf037a..618a50d5c0c2 100644
-> > --- a/net/ipv4/ip_tunnel.c
-> > +++ b/net/ipv4/ip_tunnel.c
-> > @@ -1213,11 +1213,11 @@ void ip_tunnel_delete_nets(struct list_head *ne=
-t_list, unsigned int id,
-> >  }
-> >  EXPORT_SYMBOL_GPL(ip_tunnel_delete_nets);
-> >
-> > -int ip_tunnel_newlink(struct net_device *dev, struct nlattr *tb[],
-> > -                   struct ip_tunnel_parm_kern *p, __u32 fwmark)
-> > +int ip_tunnel_newlink(struct net *net, struct net_device *dev,
-> > +                   struct nlattr *tb[], struct ip_tunnel_parm_kern *p,
-> > +                   __u32 fwmark)
-> >  {
-> >       struct ip_tunnel *nt;
-> > -     struct net *net =3D dev_net(dev);
-> >       struct ip_tunnel_net *itn;
-> >       int mtu;
-> >       int err;
-> > @@ -1326,7 +1326,9 @@ int ip_tunnel_init(struct net_device *dev)
-> >       }
-> >
-> >       tunnel->dev =3D dev;
-> > -     tunnel->net =3D dev_net(dev);
-> > +     if (!tunnel->net)
-> > +             tunnel->net =3D dev_net(dev);
->
-> Isn't tunnel->net always non-NULL ?
->
-> ip_tunnel_newlink
-> -> netdev_priv(dev)->net =3D net
-> -> register_netdevice(dev)
->   -> dev->netdev_ops->ndo_init(dev)
->     -> ip_tunnel_init(dev)
->       -> netdev_priv(dev)->net =3D dev_net(dev)
+https://netdev-3.bots.linux.dev/vmksft-net-dbg/results/990441/34-udpgro-bench-sh/stderr
 
-Didn't find a path that can leave tunnel->net to NULL either.
-I think we can remove this.
+at this point 'inflight' could be 0 and 'pool' already freed.
 
-Thanks.
+/P
+
