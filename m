@@ -1,100 +1,107 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E841494DF;
-	Mon, 17 Feb 2025 15:29:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79E021CA0C
+	for <netdev@vger.kernel.org>; Mon, 17 Feb 2025 15:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739806182; cv=none; b=bV0S0tf7T7chUsoMAODY0ONXh6EjULs3qiiq/JHH/KpakodyCGg5QW4+kpn8xyFG+GzMEEBvGqGblk35uhWwOCxU5xLJjnGzlwuVrfTL6RvmHTwSf/vpV/eAG804qQYL9F00G2edEty854QatQThfaduosDaB9UTbJUVl8+qZ7w=
+	t=1739806281; cv=none; b=a8FWIqjPEoHfcx9VG8OAyN02n7P0EvBAQrrDXUr17eG1VFOf9CEs3g56ZY1FKrHJ5aVTPeNi7chSJegiLfTFukywg46Az4/iqX9jjGEGqn7dOpCAKyzF9g3Qle+E8gaBz0IiMETMrsNqFVKzdRnmGw6bNhXLwCY0BtugO6KI9IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739806182; c=relaxed/simple;
-	bh=d+GskYFB5OX9ASZUN7hD4NLWJWM9+7vGlcErfaEnuJ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DwALFBp77M4pNNFMTEGdjRv9HMKOdhS3tc5Xon6FYNoxx+GGv9K1dwMLCl+bfZa90E3UZUBl9uYa7YOgQbNzHdZ7biKrycFKxVLQjAi/lqjkvkoFru0FOa0m+xOCm6AIM0fW8Znswgsx/qNqcdmMVk+kkwScNtQi1YlNKmQshGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=1k1STfMO; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1739806281; c=relaxed/simple;
+	bh=f04I9HBasGoSyh4nJW1EP7PLwDyy9D4RJYTK1HfUhp8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=DB61LV5Y59RjM73hNht6hJXVGaltHmlpMn0Ta2NKCqqdOTvXv3D3sGkjumlxw5y7GM9ZY0gE38zxouCbiyavl8AAKxGkYs3Gv929tklorazm4fUQw2Zcex9roqGCCwk5ai0MKeB8Yd43HL/bwqxHIkZSetYxbp6MQoNwgWBjH4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D3UhSWL3; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="1k1STfMO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=+P4Mpectj/6/0am8dXU2KXP02bvuc53X5h8fNZ10rK8=; b=1k1STfMOkQti3uds9OuyjOMNA5
-	vq99x42ZtFDRa8xdYiiTYeKEXC8WrkNr9VbMpkjX7UqcIDds4lMLXGbBkYYbVtRxUGGADqsx69ofd
-	f84ONF4ybMwA6zY4xseRfP1BY80QuxP58m1YwddMn6npp+0cF4wFoKssyyhv+h4aeRQc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tk33p-00F0Wh-7S; Mon, 17 Feb 2025 16:29:29 +0100
-Date: Mon, 17 Feb 2025 16:29:29 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, davem@davemloft.net,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, thomas.petazzoni@bootlin.com,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
-	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	=?iso-8859-1?Q?Nicol=F2?= Veronese <nicveronese@gmail.com>,
-	Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
-	Antoine Tenart <atenart@kernel.org>, devicetree@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
-	Sean Anderson <seanga2@gmail.com>
-Subject: Re: [PATCH net-next v4 05/15] net: phy: Create a phy_port for
- PHY-driven SFPs
-Message-ID: <f88c0ed5-c50b-4bea-81e5-41a1c8c50de7@lunn.ch>
-References: <20250213101606.1154014-1-maxime.chevallier@bootlin.com>
- <20250213101606.1154014-6-maxime.chevallier@bootlin.com>
- <Z7DjfRwd3dbcEXTY@shell.armlinux.org.uk>
- <20250217092911.772da5d0@fedora.home>
- <5d618829-a9bc-4dd4-8a2e-6ce3a4acd51e@lunn.ch>
- <20250217152216.5b206284@fedora.home>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D3UhSWL3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739806278;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=f04I9HBasGoSyh4nJW1EP7PLwDyy9D4RJYTK1HfUhp8=;
+	b=D3UhSWL3Nbo0TdsO013v3PGwnMWTTQnjPdhoMsTogythdpeZlJ6v/rqpGdu0CUHpQ8fmub
+	Pca2ps2wjgvUdRAJYeZw3xWLedQnkUQMMuO4YAO2xA+gmsGMRzeY/ThIRTE0qbl+V9sXdS
+	Ley89JaSGC6yHsnXbD/4W+m029E18oU=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-640-Rx3IMbiJOkisXXddwMocUw-1; Mon, 17 Feb 2025 10:31:17 -0500
+X-MC-Unique: Rx3IMbiJOkisXXddwMocUw-1
+X-Mimecast-MFC-AGG-ID: Rx3IMbiJOkisXXddwMocUw_1739806276
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-abbae81829fso36475166b.3
+        for <netdev@vger.kernel.org>; Mon, 17 Feb 2025 07:31:16 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739806276; x=1740411076;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=f04I9HBasGoSyh4nJW1EP7PLwDyy9D4RJYTK1HfUhp8=;
+        b=qq9XXRO2llf7PjxE8eH4QVY6RjL4IjjSYT27z8d8eJfeU0VQ7gzsrJkqWJNuWsma/9
+         TDp+vpVfiequq6j2pDfgMT8ScxB8uLlTzxhI76juvwdx+hRaiJJI8X3OAf335ku3Gd5T
+         0M6PNw1ghN5oChhd+dA07NcL/r8qDgmB+GWR30rG9fC5ae0JAVbRUIJ8P+km/U81FW3a
+         iQbZpyXK89VoVKEp4edAj3KZJ4Cw0+n6FvD9Nmgx9PA5RJ4R2kIfmn2aWo8e5VS7lvIa
+         FLAX8WNkA9WPhVoVnJas9X7+FtNrQlZ5/UO88vn850uJX5zSa3dpf1YrxaYEZgQMMwtf
+         bpiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUj6jWWjr6rkhs7MNHzPQmUP1SbnO1D92+L5O89+a/6rhXx9lvmHZKgem1rNdX9MVEbzFk8nUU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxbm2Hdq9K46iElk+F3vIbzahRGdeGFeEk+1jGDVjggI4gctoXO
+	jSWm4qkb5i1g2JmRdIMTNrNC3KLZ/XaoXgr3+uaway9jEsLr/GlENUlEYOnTgGCkS/F0ztSun2B
+	cDB3T2VT9biMMBG/hVd2TPtUcas+OJtxa1SHR27Hq6ACdC2clVSNKeA==
+X-Gm-Gg: ASbGncuz2R/T2jzkwqwnROKqr5mYESooKgge6PQA38ry2P8PBy+8bHpDTxqZrgmTIbW
+	PK8hKcwM8PcRtYFiM6yceFMgBKbVpZJymIz+fStTYslUE6YjmzVdy8aSEKPYeVXOegcQokIvnzg
+	+PIyJfuGCE3iLnFBoS7+at414iFdqany+NlbjZDOgzpYt1y2qQ6zi591KzcKP7DshgPjH9Y7Rsl
+	97KRRNy4mKr9opRqrorBnJ/lDE0+lX3gJ3puve7FD8eHAS2pGUrEN/YwoodWBmcCGsoRcsW4cn5
+	wl9FYQsivBDQPh4YegL7R759ZomW3Q==
+X-Received: by 2002:a17:907:9802:b0:ab7:e451:4834 with SMTP id a640c23a62f3a-abb70d2f6dbmr1041922866b.19.1739806275866;
+        Mon, 17 Feb 2025 07:31:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGVI7anGwY35O6+nhHD/POIshX4aePhIRa8bL12OVt1xG42i9g1TzakDfGCs2xMNjbSyUdjaQ==
+X-Received: by 2002:a17:907:9802:b0:ab7:e451:4834 with SMTP id a640c23a62f3a-abb70d2f6dbmr1041919766b.19.1739806275489;
+        Mon, 17 Feb 2025 07:31:15 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abbabfe1d9dsm79497966b.101.2025.02.17.07.31.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Feb 2025 07:31:13 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 23AAA184FF54; Thu, 13 Feb 2025 17:13:53 +0100 (CET)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] rtnetlink: Allow setting IFLA_PERM_ADDRESS at
+ device creation time
+In-Reply-To: <20250213074039.23200080@kernel.org>
+References: <20250213-virt-dev-permaddr-v1-1-9a616b3de44b@redhat.com>
+ <20250213074039.23200080@kernel.org>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Thu, 13 Feb 2025 17:13:53 +0100
+Message-ID: <87zfipom9q.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250217152216.5b206284@fedora.home>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> > Please be careful with the scope of these. Heiner is going through
-> > phylib and trying to reduce the scope of some of the functions we
-> > exporting in include/linux/phy.h to just being available in
-> > drivers/net/phy. That will help stop MAC drivers abuse them. We should
-> > do the same here, limit what can actually use these helpers to stop
-> > abuse.
-> 
-> Can we consider having an header file sitting in drivers/net/phy
-> directly for this kind of things ?
+Jakub Kicinski <kuba@kernel.org> writes:
 
-Yes, we then only need to worry about phy drivers, not MAC
-drivers. PHY driver writers tend to abuse things less.
+> On Thu, 13 Feb 2025 14:45:22 +0100 Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> Eric suggested[0] allowing user-settable values for dev->perm_addr at
+>> device creation time, instead of mucking about with netdevsim to get a
+>> virtual device with a permanent address set.
+>
+> I vote no. Complicating the core so that its easier for someone=20
+> to write a unit test is the wrong engineering trade off.
+> Use a VM or netdevsim, that's what they are for.
 
-	Andrew
+Hmm, and you don't see any value in being able to specify a permanent
+identifier for virtual devices? That bit was not just motivated
+reasoning on my part... :)
 
-
-
-
-
-
-
-
-
-
+-Toke
 
