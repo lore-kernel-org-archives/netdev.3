@@ -1,103 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4963418A6A7;
-	Thu, 13 Feb 2025 15:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07857202F93;
+	Thu, 13 Feb 2025 15:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739460919; cv=none; b=VdhXbKmLpHDdtjEQVX/wawEWd0vkln2qVW3PuXDlse1ZlYwrKzxgfxTcgjhnyDd3G6cC7LrBZrx54VER8x+ObWWQpM9dDlteReNJikm5la21ERIvCOMw6uXILQNOHZvV0idB15uLpSwKj0QwVFN6OfqaEzi0F1XeeyZ80fXgL1k=
+	t=1739460919; cv=none; b=LcbUdO8N1HPq9suLEJo86gN602nP2YRaQsvzQZAYvNFlAzHOfBrLg5LR7nm64Vutb/TGZb5xVsRhXQYQCLhyAnjbBIPmhUQwXeru2H2/NSPTFxCAo27HTFrrvC46ZCeBfeidZAf5tloaSmOp2FA7wRx+MpSHntP4vvKOA7rDX5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739460919; c=relaxed/simple;
-	bh=JZDiAKKeX0eSnGFkmKTsrRKkLXrlYR1V8xaHJKtSw9k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=H/MVSruMB4URNMJ1S/lMuQ9nJX+eGsjEYaYfJ1mg67wDNxi8kJYOjWeOfY7gWXPIkKT2Z0Bsmo+iOAbOn8pVx7hutomB8Cem6x8jRYZU3cZwkLHhoXbquvHo3BfwKKjVsvLnDffZWOTyUldlTkDc/5KPsWKQc5bWMoWju7wDTAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qESmeCOl; arc=none smtp.client-ip=10.30.226.201
+	bh=KIzQ6vooyU6QmwLx00RHWtl6/ppL9caxsWCQFHdtPas=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rfKo5SRMujYwUhWZT4hq+5YURs3NeMPLvVjOqL+NJg0iEO0foz9/vUGIV6H+XwLzuhI5UiHl8pVLbjl9cDsMEzTYkL4dP0L93Z01+tLocMypFO3Eueg8awelB5NmjANeiveCZJJnrzEGeVwE5gUnHS4ZQiHbviptEaV72J6Bjyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=htRqOzQH; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qESmeCOl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA915C4CED1;
-	Thu, 13 Feb 2025 15:35:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739460919;
-	bh=JZDiAKKeX0eSnGFkmKTsrRKkLXrlYR1V8xaHJKtSw9k=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=qESmeCOllYKWRPA+/oqxPEs2FmUntuKCOUixsgtpvs7kBVlUR7Gi/ZdcefSC9BhM1
-	 rSXsz3RZgah9glsDfW6fiQMXzE7nHn2GfjjKcX4lfxS8IIvd/i/ruxGhmMYq6KNdVK
-	 9EvLVE85tgtjJJ3R9QonUe/n1KrT2znYZfG+Cn6kwuuXassuDr8bUpu8io7DPIx4uZ
-	 kONORwUEUP9eKG08ROPcdnyp3knfUgEHVfD3sJ07ClK+GKjhBgJ6TxGxpcMmWYOv6H
-	 vb6o5/lNSF0f8kAU5dEeCLlOGhRHs90t2Dsm+pbXBeAFdJGZLwKyqlJ5hTgF70d9Dr
-	 Idue/I/44Plgg==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Thu, 13 Feb 2025 16:34:31 +0100
-Subject: [PATCH net-next v4 12/16] dt-bindings: net: airoha: Add airoha,npu
- phandle property
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="htRqOzQH"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=P9KCq207AYFiKquz58kkroM53MgkDG0PAHpKTjgiJoU=; b=htRqOzQHvtSCd7OSdJjBfJQwM+
+	kU1/R0KuL0nmL6BhJ6EOWiRmsFxRZ8Ptt13b8iomO4q7VywBTYXh1goom0LH5I9UZLuBTCOb4gtFd
+	NyC2+5mreJmgWNVU+YsR5uX/SRIrKj3bm2pD19BHnjVw1YykjnOhLtML/wAq5i+GUANM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tibEv-00DmDc-Mc; Thu, 13 Feb 2025 16:34:57 +0100
+Date: Thu, 13 Feb 2025 16:34:57 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: SkyLake Huang =?utf-8?B?KOm7g+WVn+a+pCk=?= <SkyLake.Huang@mediatek.com>,
+	"dqfext@gmail.com" <dqfext@gmail.com>,
+	Steven Liu =?utf-8?B?KOWKieS6uuixqik=?= <steven.liu@mediatek.com>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"horms@kernel.org" <horms@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>
+Subject: Re: [PATCH net-next 1/3] net: phy: mediatek: Add token ring access
+ helper functions in mtk-phy-lib
+Message-ID: <81234e04-f37c-4b10-81e6-d8508c9fb487@lunn.ch>
+References: <20250116012159.3816135-1-SkyLake.Huang@mediatek.com>
+ <20250116012159.3816135-2-SkyLake.Huang@mediatek.com>
+ <5546788b-606e-489b-bb1a-2a965e8b2874@lunn.ch>
+ <385ba7224bbcc5ad9549b1dfb60ace63e80f2691.camel@mediatek.com>
+ <64b70b2d-b9b6-4925-b3f6-f570ddb70e95@lunn.ch>
+ <Z633GUUhyxinwWiP@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250213-airoha-en7581-flowtable-offload-v4-12-b69ca16d74db@kernel.org>
-References: <20250213-airoha-en7581-flowtable-offload-v4-0-b69ca16d74db@kernel.org>
-In-Reply-To: <20250213-airoha-en7581-flowtable-offload-v4-0-b69ca16d74db@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
- "Chester A. Unal" <chester.a.unal@arinc9.com>, 
- Daniel Golle <daniel@makrotopia.org>, DENG Qingfang <dqfext@gmail.com>, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org, 
- upstream@airoha.com, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z633GUUhyxinwWiP@makrotopia.org>
 
-Introduce the airoha,npu property for the NPU node available on
-EN7581 SoC. The airoha Network Processor Unit (NPU) is used to
-offload network traffic forwarded between Packet Switch Engine
-(PSE) ports.
+> > > Those registers with Mrvl* prefix were originally designed for
+> > > connection with certain Marvell devices. It's our DSP parameters.
+> > 
+> > Will this code work with real Marvell devices? Is this PHY actually
+> > licensed from Marvell?
+> 
+> >From what I understood the tuning of those parameters is required
+> to connect to a Marvell PHY link partner on the other end.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+If so, the naming is bad. I assume you need the same settings for
+Microchip, Atheros, Broadcom, etc. These settings just tune the
+hardware to be standards conforming?
 
-diff --git a/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml b/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml
-index c578637c5826db4bf470a4d01ac6f3133976ae1a..0fdd1126541774acacc783d98e4c089b2d2b85e2 100644
---- a/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml
-+++ b/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml
-@@ -63,6 +63,14 @@ properties:
-   "#size-cells":
-     const: 0
- 
-+  airoha,npu:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description:
-+      Phandle to the node used to configure the NPU module.
-+      The Airoha Network Processor Unit (NPU) provides a configuration
-+      interface to implement hardware flow offloading programming Packet
-+      Processor Engine (PPE) flow table.
-+
- patternProperties:
-   "^ethernet@[1-4]$":
-     type: object
-@@ -132,6 +140,8 @@ examples:
-                      <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>,
-                      <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>;
- 
-+        airoha,npu = <&npu>;
-+
-         #address-cells = <1>;
-         #size-cells = <0>;
- 
-
--- 
-2.48.1
+	Andrew
 
