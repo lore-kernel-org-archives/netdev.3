@@ -1,80 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE181FECCA;
-	Thu, 13 Feb 2025 16:14:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50B6202F90
+	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 16:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739463260; cv=none; b=A2H3oO275pb30gaQPibECnLMPw2rFllDj6P6fLhLPqceop37a7HqUj+WAI+EzDw7hAamypX87cDjOu8aBKPY1ZAFnhSQcc7ar1VBADutSWTvWSZsBL1EGrFdnBcbul0q5sTuvHJpwQ2rokNCE2f/oacO6LcN1JqHqarGAGcZbxo=
+	t=1739463807; cv=none; b=U73XUEutbrzYUpbuV0UnjVJbjbJIqZmh6f3WfsZ/aB09/heWSbIqUSc5rRlP+vVnXmG8bAmsIycK9RCpYN0G0kvnDu5FuBh6KOD7vDMaqcIU3Hej116mjGkEVUm7PVXvN09zoRd5WcbYT5yTci/PEaFKZVtneJTOaEUNG+K7enk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739463260; c=relaxed/simple;
-	bh=G6cjVJpboDfJPKkTHx0NgdsYqd0fONgDYXmdRT7GVCQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f2kU946AlLAPI8OslAS42my7e9MwhMIB/ET8Jj8xsTBtWwCUWLTR4Lakg+2VzxYdYNYk+gFqj2yRIHI0B21BBEEmPJVkgYngkpNfoDG3AqHCeO6tDOjWls68H0vi/vm7QkxQLXtFLoHowqm0aA3Y06K5FfLa8ATN/ngw0tLr/JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CVbkAzt5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739463807; c=relaxed/simple;
+	bh=yLcN42q4pkyuqQ5iYzlgKfolZR4H1YW/RIvfxoJi048=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=OO/CsLKOzFmHuUl+nCW+KhCKL5jdzjbgR+zVN5r0YkPeLQSH9ZLDf1H+eFz0AlKzPjkTScGHacG94ujz5cCuUO0g4IhIb6tIzTmUJowg4jsfkCH6SlpLKO1nHWfOphlrtcVmZICSo++bA0krEExUI2lKmCfBa5cnlxl7JX2vnqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dw5MxLuk; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CVbkAzt5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3FCC4CED1;
-	Thu, 13 Feb 2025 16:14:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739463259;
-	bh=G6cjVJpboDfJPKkTHx0NgdsYqd0fONgDYXmdRT7GVCQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CVbkAzt5yvYnfw2Sq0Qi7BWnhuC23Fmz8tv6H7yaGpJxnOUVdBaVUMlaH2H212m8J
-	 p920+c30/ZKkMWC03uL/pdiXmTzYByFwNWxfJNH9ItS2PVNiZbOUTqmOhoOyO015I0
-	 vOAO9qT0c8R6N9DRz+9GOEUsHLEJUzH2BMmdn7RXixOEJolPgqRLjkBbDflgtmPqoH
-	 XPA3jsCTSFvAYzDdXdeWLkNKg81UdymE66B2zRTFsHuTMD65Cnewogru1zA8md57b8
-	 UGic4HHNukPG3Dds5YUb5spQfwMJRFZ6Gf7pi3h9et7PhlhQlBKp3TSU0B7imhQf4T
-	 Em9Rm1KnHxGEA==
-Date: Thu, 13 Feb 2025 08:14:18 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Joe Damato <jdamato@fastly.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- rdunlap@infradead.org, bagasdotme@gmail.com, ahmed.zaki@intel.com, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Simon
- Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, "open
- list:DOCUMENTATION" <linux-doc@vger.kernel.org>, open list
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v2] documentation: networking: Add NAPI config
-Message-ID: <20250213081418.6d3966af@kernel.org>
-In-Reply-To: <Z633ggyM-F2pfAkG@LQ3V64L9R2>
-References: <CALALjgz_jtONSFLAhOTYFcfL2-UwDct9AxhaT4BFGOnnt2UF8A@mail.gmail.com>
-	<013921c8-1fd0-410d-9034-278fc56ff8f5@redhat.com>
-	<Z633ggyM-F2pfAkG@LQ3V64L9R2>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dw5MxLuk"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7c07351d2feso162097885a.3
+        for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 08:23:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739463804; x=1740068604; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O6rD5ReSOWqy/AIbVioWxtKpJEV8IF16sEtSVUaNYzo=;
+        b=Dw5MxLukQuVbl62w1duBAWgstRedOf+eHYaKOEWLr18ca3LJtuZlOt0xHQm0varPQu
+         F+V0Cm4ZqzmubIwUR7J2lM9OSPa3a2wxdBVU8k3h1SxE0udL9IVFF8cvVB9Nfzvxy1Nf
+         iSy2yRkVHrbxyPUMIOEVfl7gH0BScoxQO1q1qUaHLHXHRadmrxqdGCwWw5ogLPCb+DNh
+         6Y8mZtMHDv+aB2ZF8G/BbV1NluEAByV8R64hxc61m6Wbwt0MfIqC3hfpD/dDvJEYInOr
+         RmrZnuelwWMlHbASi3oI2maaZpuwBROH2Zxa3paVLDU4bqYdhtuNkERhuuWc7zKgT7G1
+         iCAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739463804; x=1740068604;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=O6rD5ReSOWqy/AIbVioWxtKpJEV8IF16sEtSVUaNYzo=;
+        b=L+yop68t0X5/Li6BZZ/DVtorNPtO3fUJFACvGYlFALUZtqRVpFiSrEYOLhiIsWAloE
+         u8Q7BgWdtv22odldxi6FXsjbkZ8Pak86uoI8fv56IBm3kLp9jMx3X9A5fw1qBe4sRsun
+         oEplTCS6cBEmGjHvUc9nZqCfH0yfAf5M40AcN6vH+whkMBBlkEIFY79cod+dt6oA3t+O
+         ls1YhKt/DUPJht7G22pUda5QLpXYXfjF0fkDSHs+trwZ7+BQX5YxCF3+ugb9pBXbLpYf
+         9dsThEg8MWIt40N3kx7MxjSVb5bc9PGdG2Py8tIQGzJHyOA1Ense4I1SHMGHiuSo5DaP
+         mOMg==
+X-Forwarded-Encrypted: i=1; AJvYcCVgz9spms0HnV9wXDrs1yu6M7Ibs7u/Ea0EjvIqTOg6BQbi2+Sne2KtnFz4HIYAidzQ+JO80Y8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjS06zkSI8OMTKyZdtF6VPo1+zh25cpFQYXK9cHKR61gDkQ2Tf
+	qWBQKUB1VyGQ91+UYnvNa6JJODeMPgiytORldRUkNYyKCW+X/EdkdWcZ5g==
+X-Gm-Gg: ASbGncvX1FhMyhY7seHYDpkode05BxJfeqzVl/7VVHG4gcfZxSXuumxKKFYzh3W3U5c
+	e7fhYmmWYhmPNADCOA8rmsFWOfh/dsuCW3J36pY8srIOB+LFa0/Ow1kjz5HXddxPVgeLjyGFaz8
+	B9RRsecl3qmAN2dCtPbTTS/YSONqz/VUxhKZMHiapHMBEIp4PeuBwMi3r+Cw3FJsWC4TTPYUmhz
+	VcmhYrqgaLStPePTnzkyTDkBkAGESvwPSXOJJT4Ts/GrYy2j051Q+2+RpaEDtrghuRDl4mCdH4H
+	SR5Ye7vVMnxIc2uABM/QT8IrUD0Mq/UEX3YI4Jb6pMFnbC71LfiPz379pyPw7fs=
+X-Google-Smtp-Source: AGHT+IGztfnu2DdxT9pwBP9REN1/9G1OWfIFaL3oMWEfwG4nH1KllVJ3rFvES7y7LQy3GxGmIuq5Mg==
+X-Received: by 2002:a05:620a:198f:b0:79f:67b:4fdc with SMTP id af79cd13be357-7c07a112530mr445989685a.2.1739463804579;
+        Thu, 13 Feb 2025 08:23:24 -0800 (PST)
+Received: from localhost (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c07c616d13sm106853385a.54.2025.02.13.08.23.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Feb 2025 08:23:24 -0800 (PST)
+Date: Thu, 13 Feb 2025 11:23:23 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: davem@davemloft.net, 
+ kuba@kernel.org, 
+ edumazet@google.com, 
+ dsahern@kernel.org, 
+ horms@kernel.org, 
+ Willem de Bruijn <willemb@google.com>
+Message-ID: <67ae1c7ba11bf_25279029419@willemb.c.googlers.com.notmuch>
+In-Reply-To: <10ef7595-a74c-4915-b1f7-6635318410f7@redhat.com>
+References: <20250212021142.1497449-1-willemdebruijn.kernel@gmail.com>
+ <20250212021142.1497449-5-willemdebruijn.kernel@gmail.com>
+ <10ef7595-a74c-4915-b1f7-6635318410f7@redhat.com>
+Subject: Re: [PATCH net-next v2 4/7] ipv4: remove get_rttos
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-On Thu, 13 Feb 2025 05:45:38 -0800 Joe Damato wrote:
-> On Thu, Feb 13, 2025 at 12:45:01PM +0100, Paolo Abeni wrote:
-> > On 2/11/25 9:06 PM, Joe Damato wrote:  
-> > > +++ b/Documentation/networking/napi.rst
-> > > @@ -171,12 +171,43 @@ a channel as an IRQ/NAPI which services queues
-> > > of a given type. For example,  
+Paolo Abeni wrote:
+> On 2/12/25 3:09 AM, Willem de Bruijn wrote:
+> > From: Willem de Bruijn <willemb@google.com>
 > > 
-> > It looks like your client mangled the patch; the above lines are
-> > corrupted (there should be no line split)
+> > Initialize the ip cookie tos field when initializing the cookie, in
+> > ipcm_init_sk.
 > > 
-> > Please respin  
+> > The existing code inverts the standard pattern for initializing cookie
+> > fields. Default is to initialize the field from the sk, then possibly
+> > overwrite that when parsing cmsgs (the unlikely case).
+> > 
+> > This field inverts that, setting the field to an illegal value and
+> > after cmsg parsing checking whether the value is still illegal and
+> > thus should be overridden.
+> > 
+> > Be careful to always apply mask INET_DSCP_MASK, as before.
 > 
-> I must be missing something: I don't see the line split when looking
-> at the original email and I just tried applying the patch directly
-> from my email and it applied just fine.
-> 
-> Are you sure its not something with your client?
-> 
-> See the message on lore:
-> 
-> https://lore.kernel.org/netdev/20250211151543.645d1c57@kernel.org/T/
+> I have a similar doubt here. I'm unsure we can change an established
+> behavior.
 
-It's also broken on lore.
+This patch does not change behavior.
 
-The first diff block starting with the @@ line overflows and gets
-broken into the next line. All lines within a diff block must start
-with a space, + or -. The "of a given type. For example," line breaks
-that.
+Does not intend to, at least.
+
+> > v1->v2
+> >   - limit INET_DSCP_MASK to routing
+> 
+> Minor nit, this should come after the '---' separator. Yep, it used to
+> be the other way around, but we have less uAPI constraints here ;)
+
+Okay. I have no preference. I thought the latest guidance was to have
+it recorded. Is this something to clarify in maintainer-netdev.rst?
+
