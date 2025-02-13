@@ -1,144 +1,162 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF318221552
-	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 14:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7869A2222A9;
+	Thu, 13 Feb 2025 14:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739457427; cv=none; b=nQuGVQEsci1dDHTdSO4BMsE7vvNmjyf3408TYHay+PSSBevEZk0I+sNC1/Iz1HKyfx8gWeBOmuxBWeucmx6JVreqjyWFFvE9ff6bRJ/a8T3c4ZL7Hxm5KuOIKCF7lREU04r9ZdzA398vblpyQBxIGm+pcdnxmyVoCXeEZjuTEkg=
+	t=1739457454; cv=none; b=OpIBLuE8Y+LGADkDyFL0fzYY9YBhdW4CDO11EKDi7pv8MGcY9gW7BGrw6csDtpbgJOby0lzu2DrdTPIBG75ZWS+w14GAV3KAv1I+BoUDr/dcY1Moq/y/tO4WG+nNo3p1V15tts1gB2s12/2HBjpdF+JQ/ldUTmJhZJ+5occ+tJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739457427; c=relaxed/simple;
-	bh=oO3CHfKpW6Oi/rSTeSXd/Q0m2FqUXJ3mReCxg8gF8fM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HXCVFLHgDMwpgNgOkJFFI7FNaAJuLK4lUmTqGYycUTpd3D+Iq2NXV5A5U5tXvzAoXqDOkedEYRK9LX0o3PwsXnAct+cvJNcF/9s8XW8Bdp7dQ07HdF/X5xfwah+Hyi8F974rDuQMJ+FsJ0pWuco33NsbD+Wg/5HNjZEZb5evncc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H1fT0tNS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739457454; c=relaxed/simple;
+	bh=LgY6LwObS4dwKuRSajIOO2lIueqwd/ZiS+v80vlL/LY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QBzs0vRmUqplRXeoE8NGWXqtiOS7e466PCxwyP1TdwN9QRCHJodTy3RLcCusfyDLzAwo0Ws9w7THCi2mlY7dYDxwZnyLLqQQevEWLyRBQonPG0s0eyLtxtWExo2X6TKHMRh1sJ9PJZqMNltZSBIuGNLqXPdfBiMK2I3K7jQr0tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUxq5L5e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H1fT0tNS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC02C4CED1;
-	Thu, 13 Feb 2025 14:37:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739457426;
-	bh=oO3CHfKpW6Oi/rSTeSXd/Q0m2FqUXJ3mReCxg8gF8fM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H1fT0tNSkJfPIVvU9jzR93pDaEkJ0cV5acn9O+OrD4HdWXfcNJC/Y4AK9tgT3yfN3
-	 GZ/+ocVjmFEQhcQLl6RVpLQGPNXGowXHCPAWz1zkN6vLxEUxeDTeaikW9/GKoU4ROY
-	 SS8hSWSHgvEY00zmawje2/n+WFDKDt7O5W1gtB+uxPEshpckOzJ06Zozy1aXP8IY+G
-	 57XyOLkDxF7EibOsIDj7m9MgtFaPqRDkXT2p2LCAeTj8mqn+NKbG4Z4T4ihjcxmpWI
-	 cUBETUHTu2HErL0iRpjJGfHqGU1wjkN+bYNueLRvYe2WFps75HXVvTSeQvB8JM0VhZ
-	 0uEYvTJl1QExw==
-Date: Thu, 13 Feb 2025 16:37:02 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Xin Tian <tianx@yunsilicon.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, kuba@kernel.org,
-	pabeni@redhat.com, edumazet@google.com, davem@davemloft.net,
-	jeff.johnson@oss.qualcomm.com, przemyslaw.kitszel@intel.com,
-	weihg@yunsilicon.com, wanry@yunsilicon.com, horms@kernel.org,
-	parthiban.veerasooran@microchip.com, masahiroy@kernel.org
-Subject: Re: [PATCH v4 07/14] net-next/yunsilicon: Init auxiliary device
-Message-ID: <20250213143702.GN17863@unreal>
-References: <20250213091402.2067626-1-tianx@yunsilicon.com>
- <20250213091418.2067626-8-tianx@yunsilicon.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUxq5L5e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2211C4CED1;
+	Thu, 13 Feb 2025 14:37:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739457454;
+	bh=LgY6LwObS4dwKuRSajIOO2lIueqwd/ZiS+v80vlL/LY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WUxq5L5ez7YbCMVZTBsi45OaB71SrC8IcPkxjK8eoF5qWsTgNBRNZjnAk6SXbPM8e
+	 Q0nG6hly/iNRaMGe4QSPVZzZDq2mXtAqDqSLukMIsDGWsJN1cmdv64PAehkCHvXQFK
+	 cbz4B9Nk9TUMJ2j3qOAehPMw3tsBFtPVD7yPqhhU=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 115/422] rxrpc: Fix the rxrpc_connection attend queue handling
+Date: Thu, 13 Feb 2025 15:24:24 +0100
+Message-ID: <20250213142440.990396528@linuxfoundation.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250213091418.2067626-8-tianx@yunsilicon.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 13, 2025 at 05:14:19PM +0800, Xin Tian wrote:
-> Initialize eth auxiliary device when pci probing
-> 
-> Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
-> Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
-> Co-developed-by: Lei Yan <jacky@yunsilicon.com>
-> Signed-off-by: Lei Yan <jacky@yunsilicon.com>
-> Signed-off-by: Xin Tian <tianx@yunsilicon.com>
-> ---
->  .../ethernet/yunsilicon/xsc/common/xsc_core.h |  12 ++
->  .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   3 +-
->  .../net/ethernet/yunsilicon/xsc/pci/adev.c    | 110 ++++++++++++++++++
->  .../net/ethernet/yunsilicon/xsc/pci/adev.h    |  14 +++
->  .../net/ethernet/yunsilicon/xsc/pci/main.c    |  10 ++
->  5 files changed, 148 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/adev.c
->  create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/adev.h
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
-<...>
+------------------
 
-> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/adev.c b/drivers/net/ethernet/yunsilicon/xsc/pci/adev.c
-> new file mode 100644
-> index 000000000..1f8f27d72
-> --- /dev/null
-> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/adev.c
-> @@ -0,0 +1,110 @@
-> +// SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
-> +/*
-> + * Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-> + * All rights reserved.
-> + */
-> +
-> +#include <linux/auxiliary_bus.h>
-> +#include <linux/idr.h>
-> +
-> +#include "adev.h"
-> +
-> +static DEFINE_IDA(xsc_adev_ida);
-> +
-> +enum xsc_adev_idx {
-> +	XSC_ADEV_IDX_ETH,
-> +	XSC_ADEV_IDX_MAX
-> +};
-> +
-> +static const char * const xsc_adev_name[] = {
-> +	[XSC_ADEV_IDX_ETH] = XSC_ETH_ADEV_NAME,
-> +};
-> +
-> +static void xsc_release_adev(struct device *dev)
-> +{
-> +	/* Doing nothing, but auxiliary bus requires a release function */
-> +}
+From: David Howells <dhowells@redhat.com>
 
-It is unlikely to be true in driver lifetime model. At least you should
-free xsc_adev here.
+[ Upstream commit 4241a702e0d0c2ca9364cfac08dbf134264962de ]
 
-Thanks
+The rxrpc_connection attend queue is never used because conn::attend_link
+is never initialised and so is always NULL'd out and thus always appears to
+be busy.  This requires the following fix:
 
-> +
-> +static int xsc_reg_adev(struct xsc_core_device *xdev, int idx)
-> +{
-> +	struct auxiliary_device	*adev;
-> +	struct xsc_adev *xsc_adev;
-> +	int ret;
-> +
-> +	xsc_adev = kzalloc(sizeof(*xsc_adev), GFP_KERNEL);
-> +	if (!xsc_adev)
-> +		return -ENOMEM;
-> +
-> +	adev = &xsc_adev->adev;
-> +	adev->name = xsc_adev_name[idx];
-> +	adev->id = xdev->adev_id;
-> +	adev->dev.parent = &xdev->pdev->dev;
-> +	adev->dev.release = xsc_release_adev;
-> +	xsc_adev->xdev = xdev;
-> +
-> +	ret = auxiliary_device_init(adev);
-> +	if (ret)
-> +		goto err_free_adev;
-> +
-> +	ret = auxiliary_device_add(adev);
-> +	if (ret)
-> +		goto err_uninit_adev;
-> +
-> +	xdev->xsc_adev_list[idx] = xsc_adev;
-> +
-> +	return 0;
-> +err_uninit_adev:
-> +	auxiliary_device_uninit(adev);
-> +err_free_adev:
-> +	kfree(xsc_adev);
-> +
-> +	return ret;
-> +}
+ (1) Fix this the attend queue problem by initialising conn::attend_link.
+
+And, consequently, two further fixes for things masked by the above bug:
+
+ (2) Fix rxrpc_input_conn_event() to handle being invoked with a NULL
+     sk_buff pointer - something that can now happen with the above change.
+
+ (3) Fix the RXRPC_SKB_MARK_SERVICE_CONN_SECURED message to carry a pointer
+     to the connection and a ref on it.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
+Fixes: f2cce89a074e ("rxrpc: Implement a mechanism to send an event notification to a connection")
+Link: https://patch.msgid.link/20250203110307.7265-3-dhowells@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/trace/events/rxrpc.h |  1 +
+ net/rxrpc/conn_event.c       | 17 ++++++++++-------
+ net/rxrpc/conn_object.c      |  1 +
+ 3 files changed, 12 insertions(+), 7 deletions(-)
+
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index 666fe1779ccc6..e1a37e9c2d42d 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -218,6 +218,7 @@
+ 	EM(rxrpc_conn_get_conn_input,		"GET inp-conn") \
+ 	EM(rxrpc_conn_get_idle,			"GET idle    ") \
+ 	EM(rxrpc_conn_get_poke_abort,		"GET pk-abort") \
++	EM(rxrpc_conn_get_poke_secured,		"GET secured ") \
+ 	EM(rxrpc_conn_get_poke_timer,		"GET poke    ") \
+ 	EM(rxrpc_conn_get_service_conn,		"GET svc-conn") \
+ 	EM(rxrpc_conn_new_client,		"NEW client  ") \
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index 2a1396cd892f3..ca5e694ab858b 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -266,6 +266,7 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
+ 			 * we've already received the packet, put it on the
+ 			 * front of the queue.
+ 			 */
++			sp->conn = rxrpc_get_connection(conn, rxrpc_conn_get_poke_secured);
+ 			skb->mark = RXRPC_SKB_MARK_SERVICE_CONN_SECURED;
+ 			rxrpc_get_skb(skb, rxrpc_skb_get_conn_secured);
+ 			skb_queue_head(&conn->local->rx_queue, skb);
+@@ -431,14 +432,16 @@ void rxrpc_input_conn_event(struct rxrpc_connection *conn, struct sk_buff *skb)
+ 	if (test_and_clear_bit(RXRPC_CONN_EV_ABORT_CALLS, &conn->events))
+ 		rxrpc_abort_calls(conn);
+ 
+-	switch (skb->mark) {
+-	case RXRPC_SKB_MARK_SERVICE_CONN_SECURED:
+-		if (conn->state != RXRPC_CONN_SERVICE)
+-			break;
++	if (skb) {
++		switch (skb->mark) {
++		case RXRPC_SKB_MARK_SERVICE_CONN_SECURED:
++			if (conn->state != RXRPC_CONN_SERVICE)
++				break;
+ 
+-		for (loop = 0; loop < RXRPC_MAXCALLS; loop++)
+-			rxrpc_call_is_secure(conn->channels[loop].call);
+-		break;
++			for (loop = 0; loop < RXRPC_MAXCALLS; loop++)
++				rxrpc_call_is_secure(conn->channels[loop].call);
++			break;
++		}
+ 	}
+ 
+ 	/* Process delayed ACKs whose time has come. */
+diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
+index 1539d315afe74..7bc68135966e2 100644
+--- a/net/rxrpc/conn_object.c
++++ b/net/rxrpc/conn_object.c
+@@ -67,6 +67,7 @@ struct rxrpc_connection *rxrpc_alloc_connection(struct rxrpc_net *rxnet,
+ 		INIT_WORK(&conn->destructor, rxrpc_clean_up_connection);
+ 		INIT_LIST_HEAD(&conn->proc_link);
+ 		INIT_LIST_HEAD(&conn->link);
++		INIT_LIST_HEAD(&conn->attend_link);
+ 		mutex_init(&conn->security_lock);
+ 		mutex_init(&conn->tx_data_alloc_lock);
+ 		skb_queue_head_init(&conn->rx_queue);
+-- 
+2.39.5
+
+
+
