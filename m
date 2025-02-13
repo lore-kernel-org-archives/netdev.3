@@ -1,65 +1,47 @@
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+Received: from forward202a.mail.yandex.net (forward202a.mail.yandex.net [178.154.239.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAB3212B35;
-	Thu, 13 Feb 2025 10:22:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD6C211A2B
+	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 10:25:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739442141; cv=none; b=a6e/wi0X233YjQMGttVm3rJWQGwAu9mCpUbmyga3Bov1ZimGa1xqcNO4LX4+PcHR7xjQWXL6DOLskBV8ehNEhWC7rIKHvBSdxeCuV0EyseDpIea1MI3s6Tb678yyAW1yfcBMyYExt3AgwjxEapT2pGe1NfbI4+Ue+BIu4Ybynm0=
+	t=1739442309; cv=none; b=YqNNI0M/a82suAFN3QQBRNHZDxVUpl6F1zSmXxo7Bd6stTrfKJcR0rYrSm4nv+ic7VUGHyujteQALevjcpe2QF/JV971bW5vrz/gb+j/2x/Gnh79L+hDD4vxLejFw6dyFoO6muZwljlO8ZZzNJlHTt1wJY7HbXO2vVXH8k88tRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739442141; c=relaxed/simple;
-	bh=E8K7OdmM5TDtx1MdCwoTg1FK1STUogCMX2UO9Gzh+1Q=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UZlnIxVVzSwpkaVnB+54Z7/J3OTAEBfM9DeDmooqpzl0KXkDuVTLWEcamUoj2ZZd78qYgIzRb8N0ICk8zX/5DlNUbcx0TveNreVvFqnbW/navBGgxhxK9x+5uZDYQuIyNPNRsrRlLxxaY6/jba59MCmi58L7nhiB9k8OifxWXRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=CTWWnjQi; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1739442309; c=relaxed/simple;
+	bh=sLmXcgWQPjdZ8YiDrrkRYYh/14fsaciQH9W4NMZijBs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f8u/ct8D/4B+HiNzocY0TyBe+liv1dTnLbUXg/KrV+J23W9BV74znFr56mzzPjAVerJ6piC1QGFsoH6xyxlFGwJmoHHvAODfZ1BSXq3nR24X9u/90uDCyxmaUy/IQIdUG5wyiCmnPukQd9Hw95nOdp7wqnExJRORnatVuDnmNuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=nMTfaWoQ; arc=none smtp.client-ip=178.154.239.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="CTWWnjQi"
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 51DALqDA3988680
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Feb 2025 04:21:52 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1739442112;
-	bh=gq7ND6kmYg+T1S0KrCZyvliNRe+2JR8aZgE6LYBivnI=;
-	h=From:To:CC:Subject:Date;
-	b=CTWWnjQigDlXoqighn2ZaQgQOLwJUB+Og4DOsg93qv1gboYxQx/dFzW14jTZkx8vC
-	 /48qtGiEH/ByGsKuCmcYdcob4cE/0lZaac7zgf7wgeeljNouvWz7gGDOxvBA8PsA9C
-	 ch9VUk4AQEe53QQIYhJYYT2RDY1IcRiDGEOM13LQ=
-Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 51DALqVX011050
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 13 Feb 2025 04:21:52 -0600
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 13
- Feb 2025 04:21:52 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 13 Feb 2025 04:21:52 -0600
-Received: from localhost (chintan-thinkstation-p360-tower.dhcp.ti.com [172.24.227.220])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51DALpnC077706;
-	Thu, 13 Feb 2025 04:21:51 -0600
-From: Chintan Vankar <c-vankar@ti.com>
-To: Rosen Penev <rosenp@gmail.com>,
-        Christophe JAILLET
-	<christophe.jaillet@wanadoo.fr>,
-        Chintan Vankar <c-vankar@ti.com>, Paolo
- Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>, Eric Dumazet
-	<edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Russell King
-	<linux@armlinux.org.uk>,
-        Heiner Kallweit <hkallweit1@gmail.com>, Andrew Lunn
-	<andrew@lunn.ch>
-CC: <s-vadapalli@ti.com>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-Subject: [PATCH] net: phy: mscc: Add auto-negotiation feature to VSC8514
-Date: Thu, 13 Feb 2025 15:51:50 +0530
-Message-ID: <20250213102150.2400429-1-c-vankar@ti.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="nMTfaWoQ"
+Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d102])
+	by forward202a.mail.yandex.net (Yandex) with ESMTPS id 1970F68E15
+	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 13:17:40 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0d:9:0:640:2d51:0])
+	by forward102a.mail.yandex.net (Yandex) with ESMTPS id 7F0EC60C80;
+	Thu, 13 Feb 2025 13:17:32 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id UHN94v0OpKo0-SiMejDLf;
+	Thu, 13 Feb 2025 13:17:32 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1739441852; bh=okt5lvHNOAV/TQNY6M7BsY4Wv3YTcQzaa2a50WvPPnk=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=nMTfaWoQq7a0IKXyePlc3ORr9I3LFGBpMt5iMqC0MRSIsLGi5pqQwAZ62Ft0KtvHr
+	 hXdMztsOB0Ki4AQbBXiAMXNved9N3OR9soyy1QF0GdovDCr4a7YOUeOonQPv1roR9/
+	 WlTOqX0HwP8PVJgfaGSfcFNAob2zFOoEOII7Zc60=
+Authentication-Results: mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH net-next] net: skb: do not assume that ktime_t is equal to s64
+Date: Thu, 13 Feb 2025 13:16:58 +0300
+Message-ID: <20250213101658.1349753-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,82 +49,31 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Add function vsc85xx_config_inband_aneg() in mscc_main.c to enable
-auto-negotiation. The function enables auto-negotiation by configuring
-the MAC SerDes PCS Control register of VSC8514.
+In 'skb_get_timestamp()', do not assume that 'tstamp' of 'struct
+sk_buff' (which is 'ktime_t') may be implicitly converted to 's64'
+(which is expected by 'ns_to_kernel_old_timeval()') but use
+the convenient 'ktime_to_ns()' instead. Compile tested only.
 
-Invoke the vsc85xx_config_inband_aneg() function from the
-vsc8514_config_init() function present in mscc_main.c to start the
-auto-negotiation process. This is required to get Ethernet working with
-the Quad port Ethernet Add-On card connected to J7 common processor board.
-
-Signed-off-by: Chintan Vankar <c-vankar@ti.com>
+Fixes: 13c6ee2a9216 ("socket: Use old_timeval types for socket timestamps")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
+ include/linux/skbuff.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This patch is based on commit '7b7a883c7f4d' of linux-next branch of
-Mainline Linux.
-
-Regards,
-Chintan.
-
- drivers/net/phy/mscc/mscc.h      |  2 ++
- drivers/net/phy/mscc/mscc_main.c | 20 ++++++++++++++++++++
- 2 files changed, 22 insertions(+)
-
-diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
-index 6a3d8a754eb8..3baa0a418bae 100644
---- a/drivers/net/phy/mscc/mscc.h
-+++ b/drivers/net/phy/mscc/mscc.h
-@@ -196,6 +196,8 @@ enum rgmii_clock_delay {
- #define MSCC_PHY_EXTENDED_INT_MS_EGR	  BIT(9)
- 
- /* Extended Page 3 Registers */
-+#define MSCC_PHY_SERDES_PCS_CTRL          16
-+#define MSCC_PHY_SERDES_ANEG              BIT(7)
- #define MSCC_PHY_SERDES_TX_VALID_CNT	  21
- #define MSCC_PHY_SERDES_TX_CRC_ERR_CNT	  22
- #define MSCC_PHY_SERDES_RX_VALID_CNT	  28
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index 19cf12ee8990..f1f36ee1cc59 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -1699,6 +1699,21 @@ static int vsc8574_config_host_serdes(struct phy_device *phydev)
- 			   PROC_CMD_RST_CONF_PORT | PROC_CMD_FIBER_1000BASE_X);
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index bb2b751d274a..200b1dc48b27 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -4307,7 +4307,7 @@ static inline ktime_t skb_get_ktime(const struct sk_buff *skb)
+ static inline void skb_get_timestamp(const struct sk_buff *skb,
+ 				     struct __kernel_old_timeval *stamp)
+ {
+-	*stamp = ns_to_kernel_old_timeval(skb->tstamp);
++	*stamp = ns_to_kernel_old_timeval(ktime_to_ns(skb->tstamp));
  }
  
-+static int vsc85xx_config_inband_aneg(struct phy_device *phydev, bool enabled)
-+{
-+	u16 reg_val = 0;
-+	int rc;
-+
-+	if (enabled)
-+		reg_val = MSCC_PHY_SERDES_ANEG;
-+
-+	rc = phy_modify_paged(phydev, MSCC_PHY_PAGE_EXTENDED_3,
-+			      MSCC_PHY_SERDES_PCS_CTRL, MSCC_PHY_SERDES_ANEG,
-+			      reg_val);
-+
-+	return rc;
-+}
-+
- static int vsc8584_config_init(struct phy_device *phydev)
- {
- 	struct vsc8531_private *vsc8531 = phydev->priv;
-@@ -2107,6 +2122,11 @@ static int vsc8514_config_init(struct phy_device *phydev)
- 
- 	ret = genphy_soft_reset(phydev);
- 
-+	if (ret)
-+		return ret;
-+
-+	ret = vsc85xx_config_inband_aneg(phydev, true);
-+
- 	if (ret)
- 		return ret;
- 
+ static inline void skb_get_new_timestamp(const struct sk_buff *skb,
 -- 
-2.34.1
+2.48.1
 
