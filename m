@@ -1,227 +1,400 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2041.outbound.protection.outlook.com [40.107.223.41])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB6B207DF5;
-	Thu, 13 Feb 2025 19:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739474340; cv=fail; b=BYtRfymRdXEaHo7IJ+EkHatka4WxkHtJAssp22bqr+7BqUOoWx4av5IB5+dxZM4oTUCCr4y4M4Dc4AP4AUERxpnfMajEkwlwAGc7jhAsbYxng0Yr43i/YNxQ0G1gMkqEFESBlJP5v66lrmWmDd76BE5H8LaMvfP62+PcVzZeIFc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739474340; c=relaxed/simple;
-	bh=G4E44Ex1Y5ANWhAOqxMonGXwK5XCd7TUYKdiI2ZGPIc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Xzo16v4a7+d9JYqtQ+IAbT9QEXwYdEm2HoYkv0C4FQ8+FX1IVicJE38RZFG0talyG0X+zUiEsZbNsiFDSYrq8t1ZIFU1avfRaOS+CD7fuqiy59fpVJh8uaP37fHOowAF1qSrsysA5uu08trjwU0cnnMQ5QdYGnqX/xO/LwgN+C8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=G7TPx8se; arc=fail smtp.client-ip=40.107.223.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D125D241686
+	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 19:20:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739474441; cv=none; b=p+YxbpYUDIb8vJv4EC28RAU3KLKbBbmhyWdgNKO5GkxSLdy1+uxNWP6VmTBlLE8KXRpXtf2/+lK5rTTEvurp5f8mBL5bCjd6CcCfuWH5CYPiUThBI8BvlzB/CIXDQwSJnIMKaAO4I+orapP0XbVP4pNCK4LYQ/ZFD6W5/xVb7EU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739474441; c=relaxed/simple;
+	bh=MJvGzEAVvXDo67jLs3QBQsFAm8wqFuqKtzvY+7kPN2o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QZPDL2qnKiRcqtVbvYoGkmNPyDoiU/FnY3Y7QwjGf0BKbKh/le/pOJJuDsF3+MVOnxQsjEUOtVCZEPqI7crLB3NPFXwyb5Pdm1BVLeAsUZMmwZSD/GJxDnc4kDEdqucKZz19gKN8nNGBeuYidxhryKuDJ0uwV/J5F4F7JA5b5PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M2kII6b6; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="G7TPx8se"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n5w/MZTWwPJh8h7N0gYTThu37wR4NrJfBpKWDxehTT8VpwmImsK6aHQDQw/RHA7aqB9yoqNuHSOoidxgVF3w2PzKC926Gwej8VooS2jaLhrNQrnpBTL5zGD9ZXkx090HMDcgCh2YJFoYimM5jABahJYnXD/nmndcTbBSfswj6Doy3CMHVD5kzWAEuRM9zjhyZP3io1CsonB422Jihi0RFQtjKZd4jZHwZafajcNvSPUkZhsZIG+6ESUde6dTR0HxrSoJbzNkPDMowub6TNm1sm8ob8aS+O9hhEI33Lr4jMdtKHAU8t2+kf0C176ot9Gl/Bk48GT0U14brL2+knO4CQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JW7wJs7daKw/kj6HEXWqLmI0nmG0mVEF0fwDf0/Iqrc=;
- b=PM3NBqCjndqWai/Pvp1o0CpZrUFje265WmSO5w/PtfhOzW9Aw3XlPuIk0uQup8V1eiBGAGoPzt9dNmJ0hqy556BUiWaL7M1TJm0dtngwEeP4AvYX0phJoiGRr/LVP3yqE/5y5v419MDhTGirfn9g9/WI+n8W15IfDS2aZzR2rHaJ/AEUBaG3IWh7+e1o45IemDguM3YqOlIh4HNHGDKkFoi5Nm5QKEW34fdNC9ccTI5J2D9pGVJ0oaZCnzch9mq16V87vtY5xWMb80hmxUS2StKqHJACzG78NKWkVrnTMD8pwfPQB8NuDJVgAa9Pjyc0BuY+99HzjLF2+QIDkzklCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JW7wJs7daKw/kj6HEXWqLmI0nmG0mVEF0fwDf0/Iqrc=;
- b=G7TPx8selZoNQqYEnIVGkMNH/cAroqYIrbp+McbyIrLpwisMN9tGMn7wpRqcFcKfZbInT1yc+KkWDKKXCkav/ICwrKSQkPZgefm1lEdcP0DLD+IV7ET4cuBHlmFEnkxoujYkZzQefp6Hk6qTzy7u2Ez71aAaTc9o1Vbn9XRSgIm3Piw3ULYBDtAhcYBINKRVgZNaiLd4625OFCZGYFn0nM8bbuyLBowDcXjQwi4XjzXDk31Esms4/dAxQJVButxEvhiAqMnkJbZopfAp01EmYtx66PHenUYJXexfE7rgZOiHzuhw5Daq/QkTwiF50/dL1coeQdpcbdQ7oGikC77hxw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by DS7PR12MB8201.namprd12.prod.outlook.com (2603:10b6:8:ef::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.16; Thu, 13 Feb
- 2025 19:18:54 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%6]) with mapi id 15.20.8445.013; Thu, 13 Feb 2025
- 19:18:54 +0000
-Date: Thu, 13 Feb 2025 15:18:53 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Aron Silverton <aron.silverton@oracle.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Dave Jiang <dave.jiang@intel.com>, David Ahern <dsahern@kernel.org>,
-	Andy Gospodarek <gospo@broadcom.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Itay Avraham <itayavr@nvidia.com>, Jiri Pirko <jiri@nvidia.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>, Leonid Bloch <lbloch@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-cxl@vger.kernel.org,
-	linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	"Nelson, Shannon" <shannon.nelson@amd.com>
-Subject: Re: [PATCH v4 07/10] fwctl/mlx5: Support for communicating with mlx5
- fw
-Message-ID: <20250213191853.GH3885104@nvidia.com>
-References: <7-v4-0cf4ec3b8143+4995-fwctl_jgg@nvidia.com>
- <daca71bd-547d-406c-83d8-05f8508703b2@intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <daca71bd-547d-406c-83d8-05f8508703b2@intel.com>
-X-ClientProxiedBy: BL1PR13CA0146.namprd13.prod.outlook.com
- (2603:10b6:208:2bb::31) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M2kII6b6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739474440; x=1771010440;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=MJvGzEAVvXDo67jLs3QBQsFAm8wqFuqKtzvY+7kPN2o=;
+  b=M2kII6b66cO7IhihQQNwg3VcdxwpEfbEkbUaXBLAzj+oIhSx4qdxv9nV
+   t1SDkT0WL7iXgwq24acAMMspMivd+1gIPst7IkT8C2kOVXzS4y1B2qXzz
+   fgHM8Lj1tvz3765D9yLNbudx0oxIsJEdN7Ug1NRt33a2NWYqKDHfZPqOf
+   Fl7fEQhFIn+JDFWHKUN4MO0apQiqPRxrkSlL/4+ewKvbh8znAmwfA5/0q
+   PFRFLmPyWJ2vvZknMLrxiqrQpMBC7L4TA/eV8fFiobj7B5z+AdVVUAZQr
+   4JIISr2ALib8K1KjABpAJbgST6+nz/nxYMswh0FYGfRtpIacnq/pQ5qn9
+   g==;
+X-CSE-ConnectionGUID: g3eXdtvDQSyBko+vqPm6eg==
+X-CSE-MsgGUID: EkOGq8CTQFSd3COK3lfAQw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="50845879"
+X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
+   d="scan'208";a="50845879"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 11:20:39 -0800
+X-CSE-ConnectionGUID: Iwa5s9FDQlqLXEXxew6+4A==
+X-CSE-MsgGUID: lc36L7AOSAatuC3jZicEXw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="118158570"
+Received: from mszycik-mobl1.ger.corp.intel.com (HELO [10.246.21.71]) ([10.246.21.71])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 11:20:35 -0800
+Message-ID: <8e533834-4564-472f-b29b-4f1cb7730053@linux.intel.com>
+Date: Thu, 13 Feb 2025 20:20:31 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DS7PR12MB8201:EE_
-X-MS-Office365-Filtering-Correlation-Id: c8f48f16-2a9d-49ff-8cc0-08dd4c634199
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?i1oPsDfuYQBjNWzc+McRWwnna/4PSGArr4aLn1gl4hrkGEXLvyHewe8RrwpO?=
- =?us-ascii?Q?PNcfPF4/fcjt83YVULNFMmRe3SNVAl1rVfzu+/chgNVdzUSeQ11TwcVwxwN1?=
- =?us-ascii?Q?YO4RwSOjiE7KFKP+UjKZZKjolp2rppU1iBTUptJ5X6PoaELCSwpvQYySVKeD?=
- =?us-ascii?Q?+8Nk243Es31JdEwvqcu/3aP24p0cWnE1b+3yjLbHKbfBLVRFQag22FANbjW7?=
- =?us-ascii?Q?IUMmRk8leQ+MVgQoNmtCGGgXg06Kj5wcjtRSCqpJv5H9lRNph3Ecn1FNRxiI?=
- =?us-ascii?Q?U+5aPDbmNZZp/PrGVQzhL/RE6xDXe7V4kxfOO1qBsq1HtL4gqOTAuttyDRf9?=
- =?us-ascii?Q?Yq4e3auZgXYkQhDrLT9xMDfkDNOl1UAqsbzIoocI4jNM4KB8MTKmtik80y1z?=
- =?us-ascii?Q?b4IhTVPfAmbLGfxJFFpFMCJ7QX/2I1+pXX9CAJV7gFXkZz0/4wGOvBN31cCQ?=
- =?us-ascii?Q?KXpb0H8qoHa8WH0mZTTIGV+DtQctQjbgCD2WLo6SX6cmXus+ZzEZ7PtNUm5h?=
- =?us-ascii?Q?OWsD8O4NZj6ml9BQ/QojizezYbA8SKdLSh/W69yguhAxCTOEByDY3U8t+4ht?=
- =?us-ascii?Q?LYLu0ldWoDHn28vL+60s+nGMjCDIyY/Z81QHvuOC7Zc0JFaKgzRcwKhwJJck?=
- =?us-ascii?Q?9tquwcAcX/pNOAAa5itIa6NvpWWTz4G+Zl+sbno9uhPHHb28mau2bXOparlE?=
- =?us-ascii?Q?kSKdWqJ/nMgZ67haXiUUk5euHDGDcMZOX9AOlJVq3KXzKTy7iOoiEHqx4i+h?=
- =?us-ascii?Q?eW6tFTUENNcspciirHS2NLuvtpPv/g2rse2fzAkifOtaBYW2Z8oFj8lofijR?=
- =?us-ascii?Q?00wV3sk9KT7/+R7aYT4q/pIXjHFsU3cQO+Q80P/aL2RGvDpbrbMMdeklfam/?=
- =?us-ascii?Q?nUXpQWFakvPUFvxApluXf1U+G1qERSe6sGLZxdnSAzHO7ugLVszUM2vtUSLx?=
- =?us-ascii?Q?WiXkvCVySrQRAUVZLGsV+07w6W2gzyXHahsli8iU3Pt8o4pTWk9W/+L7addh?=
- =?us-ascii?Q?pVeChqtAfFUvQPNPLZi/IHd/B2VIK+qWspWSfGgp8sZFWrYqVi3aDSufYTex?=
- =?us-ascii?Q?PwCLpL14JXljWnubqctLYzDPpkNaiwD1iNrfJkRfZTrz8cKF/D4rsIZps6Hy?=
- =?us-ascii?Q?0ZPdiDc9SKlCA7y6kCh6nbQ482qYEe7ELN8q56MJ53dtjHmVjYSNppwJAMnI?=
- =?us-ascii?Q?uz0x5TjnK5FmE+c6lGqYYBrJHumlt6pV8JuX9+PbY6sd69BdDKoeARqfkqj0?=
- =?us-ascii?Q?HQJ8r9lRvtHQmkamfYzSQvKTPjmjrZM3N/QYlRzzb+OiOQHD1YmATv8eVazw?=
- =?us-ascii?Q?6yPifvzk7/UrKcc/FW3vgNTVxOLZ33wVnu6EB6Fav3qqUvYr3R66BFlAweEI?=
- =?us-ascii?Q?wscPS/urEtk493Yh9gbpxBIkNK2S?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GbODgbLxKRHswY3vPsfsygOgJGzde3vKVzxpdayV4otZ6GGBkN5ALax7UhD0?=
- =?us-ascii?Q?SRa/7ScH09Or8sweWuF6UtKXqwJ8tP+GK3RHg6qGFYFIBdXgSFh6KItywkC4?=
- =?us-ascii?Q?D4Xt02J07S8bowW+UNW0CQWGyvZVeg4Gi7p9bm57Ydzyqyq8oagfooNN+0Qx?=
- =?us-ascii?Q?w+woQvbmfta0crA0jvo+BgyyPmy3c/VDC7BJY312X803mGSo5m9iE32kHMph?=
- =?us-ascii?Q?mxmFzEzBjD2pHRO480XWB7nSGSU/HGcYxNIE99EOg9+e7fBGcGfEHcjN8efI?=
- =?us-ascii?Q?vy3qUSwi/O+hllWTwyrWaoBGeh2hgeaItsXyA0LEAcxp15VPD6SA/fBKjRSJ?=
- =?us-ascii?Q?U33TTDeh6wO6Xef2W/vs+1H0mS3cNEQ6n9nzanzgAxA6P21DpaE/0C1NbWKx?=
- =?us-ascii?Q?P1FcDG21BuafwfnG9f2GrvfAy25EcrAcbvR+aN3FEPXnBa+gH01nZ3KA36Q3?=
- =?us-ascii?Q?hYiRcc+p+uive1j6nwLAVkL8nwZHxGCGyBGC6N46O8jKIRbTSxBW8ls4rr+y?=
- =?us-ascii?Q?qcsdgfqWGPcbvmWWmHEQ0xbGBDxArDtHU7eG3A17azO2uraJf9T1W8F6T0YN?=
- =?us-ascii?Q?/bqDVAtKFR33kDom6HAk8MnK3zTm0lI2lrjef1Icyn3NDHMIGMpply5YGkxM?=
- =?us-ascii?Q?vK7Mb7sYpu/+MWSbMJnLukUGkiRV0VX4900eHkNTr5mK1mLCbotK+xtAGmko?=
- =?us-ascii?Q?gD0sqm/U1LSc+sVVGKfUZ7usPS0xXPiGWzZoql+/sGEiw+vS9+CfDkx+NGmf?=
- =?us-ascii?Q?O9Uin4CuhYklPx5mYdogFLKTZduEwNvTcsArM1GQPyCLx3sad3Ky1qrDK+vR?=
- =?us-ascii?Q?HXokBMtVD2lqQNRVPDho8xYn6o3Yw7rEVQK4sAAq07cdoF7VyIWA8ytI+bMy?=
- =?us-ascii?Q?SL68Y7UzviECxA9GxXMD5HULGzKewLly7QMbVlZ12i2I/Z7UiQNInsv58Gzo?=
- =?us-ascii?Q?vT4cOmNAm+5y4UIUkNR+6qrEkQfNzBAny7XwTzwVeanHFWfnZ1JtZWHfs/UY?=
- =?us-ascii?Q?JssMD9ZwieZRi1GZQqjDMlKTudcy5CnhCjBQS64PvbloBHZu0zUL9i6pyhO6?=
- =?us-ascii?Q?JUIiquHMIer9kXjdZKUZtJ+C2FZzUlE9YpNsc7W/jNDpAk15Opo7QjhsmM9c?=
- =?us-ascii?Q?Mb8RFwULA+GZ3yYCbqK9IX4cZWKMi6cL1JF4F62rG/cJe5A/VHUDGN5afpaD?=
- =?us-ascii?Q?pcSDolpepp1Gg4kzU9I1fnLYxKX3Pcsc5HKYjvp5ruTt1mU1hO7VqpTsK6n4?=
- =?us-ascii?Q?/Xx3FgvNtbpb0qTIj0vDFkSUK/2ivVpjpcbxDqks/b8Mn7RbJFg110e3knYd?=
- =?us-ascii?Q?ShE8/kKEM2aiIy8OvGEShPSyLF+GZbjEsydyv1ujKjZ7PEJXdlZAHjcJ+CJn?=
- =?us-ascii?Q?t84s4bsaEmsQms9l1Ibv4DBoHowzWqFh3y272eTjDV7/MXu9BpOFKVG53Dl6?=
- =?us-ascii?Q?GT2+j5VfsrX5tDbo8wWMnhJpaUnR3l6LSdjY6NP7UtMOy/35tFM6JeZBFW9S?=
- =?us-ascii?Q?FfwxGtPOv5U3PbR/JMY10s8Saa1HvtS6V4rDq/JxVOlBnFPIspdCnbYNkJKr?=
- =?us-ascii?Q?fbEM8uYmX5DiWSpSsT5h2mAMgv0ViL0aH18puWMu?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8f48f16-2a9d-49ff-8cc0-08dd4c634199
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2025 19:18:54.5055
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eFfkQEtYpqyYO2gRQyMd7aqdWsfdHzKjU+SLOB0SpWQVamyVmjQrXq8k0qsBxR0D
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8201
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [iwl-next v9 5/9] ice, irdma: move interrupts
+ code to irdma
+To: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+ intel-wired-lan@lists.osuosl.org
+Cc: himasekharx.reddy.pucha@intel.com, pmenzel@molgen.mpg.de,
+ marcin.szycik@intel.com, netdev@vger.kernel.org, rafal.romanowski@intel.com,
+ konrad.knitter@intel.com, pawel.chmielewski@intel.com, horms@kernel.org,
+ David.Laight@ACULAB.COM, nex.sw.ncis.nat.hpm.dev@intel.com,
+ pio.raczynski@gmail.com, sridhar.samudrala@intel.com,
+ jacob.e.keller@intel.com, jiri@resnulli.us, przemyslaw.kitszel@intel.com,
+ Tony Nguyen <anthony.l.nguyen@intel.com>
+References: <20241203065817.13475-1-michal.swiatkowski@linux.intel.com>
+ <20241203065817.13475-6-michal.swiatkowski@linux.intel.com>
+Content-Language: en-US
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
+In-Reply-To: <20241203065817.13475-6-michal.swiatkowski@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 13, 2025 at 02:19:38PM +0100, Przemek Kitszel wrote:
-> On 2/7/25 01:13, Jason Gunthorpe wrote:
-> > From: Saeed Mahameed <saeedm@nvidia.com>
+
+
+On 03.12.2024 07:58, Michal Swiatkowski wrote:
+> Move responsibility of MSI-X requesting for RDMA feature from ice driver
+> to irdma driver. It is done to allow simple fallback when there is not
+> enough MSI-X available.
 > 
-> In part this is a general feedback for the subsystem too.
+> Change amount of MSI-X used for control from 4 to 1, as it isn't needed
+> to have more than one MSI-X for this purpose.
+
+Hi, I'm observing KASAN reports or kernel panic when attempting to remove irdma
+with this patchset, most probably this patch being the culprit, since it touches
+functions from splat.
+
+Reproducer:
+  sudo rmmod irdma
+
+Minified splat(s):
+  BUG: KASAN: use-after-free in irdma_remove+0x257/0x2d0 [irdma]
+  Call Trace:
+   <TASK>
+   ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+   ? kfree+0x253/0x450
+   ? irdma_remove+0x257/0x2d0 [irdma]
+   kasan_report+0xed/0x120
+   ? irdma_remove+0x257/0x2d0 [irdma]
+   irdma_remove+0x257/0x2d0 [irdma]
+   auxiliary_bus_remove+0x56/0x80
+   device_release_driver_internal+0x371/0x530
+   ? kernfs_put.part.0+0x147/0x310
+   driver_detach+0xbf/0x180
+   bus_remove_driver+0x11b/0x2a0
+   auxiliary_driver_unregister+0x1a/0x50
+   irdma_exit_module+0x40/0x4c [irdma]
+  
+  Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
+  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+  RIP: 0010:ice_free_rdma_qvector+0x2a/0xa0 [ice]
+  Call Trace:
+   ? ice_free_rdma_qvector+0x2a/0xa0 [ice]
+   irdma_remove+0x179/0x2d0 [irdma]
+   auxiliary_bus_remove+0x56/0x80
+   device_release_driver_internal+0x371/0x530
+   ? kobject_put+0x61/0x4b0
+   driver_detach+0xbf/0x180
+   bus_remove_driver+0x11b/0x2a0
+   auxiliary_driver_unregister+0x1a/0x50
+   irdma_exit_module+0x40/0x4c [irdma]
+
+> Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+> Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> ---
+>  drivers/infiniband/hw/irdma/main.h       |  3 ++
+>  drivers/net/ethernet/intel/ice/ice.h     |  1 -
+>  include/linux/net/intel/iidc.h           |  2 +
+>  drivers/infiniband/hw/irdma/hw.c         |  2 -
+>  drivers/infiniband/hw/irdma/main.c       | 46 ++++++++++++++++-
+>  drivers/net/ethernet/intel/ice/ice_idc.c | 64 ++++++------------------
+>  drivers/net/ethernet/intel/ice/ice_irq.c |  3 +-
+>  7 files changed, 65 insertions(+), 56 deletions(-)
 > 
-> > +FWCTL MLX5 DRIVER
-> 
-> I don't like this design.
-> That way each and every real driver would need to make another one to
-> just use fwctl.
+> diff --git a/drivers/infiniband/hw/irdma/main.h b/drivers/infiniband/hw/irdma/main.h
+> index 9f0ed6e84471..ef9a9b79d711 100644
+> --- a/drivers/infiniband/hw/irdma/main.h
+> +++ b/drivers/infiniband/hw/irdma/main.h
+> @@ -117,6 +117,9 @@ extern struct auxiliary_driver i40iw_auxiliary_drv;
+>  
+>  #define IRDMA_IRQ_NAME_STR_LEN (64)
+>  
+> +#define IRDMA_NUM_AEQ_MSIX	1
+> +#define IRDMA_MIN_MSIX		2
+> +
+>  enum init_completion_state {
+>  	INVALID_STATE = 0,
+>  	INITIAL_STATE,
+> diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+> index f497f7d6eb71..14a90c916d43 100644
+> --- a/drivers/net/ethernet/intel/ice/ice.h
+> +++ b/drivers/net/ethernet/intel/ice/ice.h
+> @@ -97,7 +97,6 @@
+>  #define ICE_MIN_LAN_OICR_MSIX	1
+>  #define ICE_MIN_MSIX		(ICE_MIN_LAN_TXRX_MSIX + ICE_MIN_LAN_OICR_MSIX)
+>  #define ICE_FDIR_MSIX		2
+> -#define ICE_RDMA_NUM_AEQ_MSIX	4
+>  #define ICE_NO_VSI		0xffff
+>  #define ICE_VSI_MAP_CONTIG	0
+>  #define ICE_VSI_MAP_SCATTER	1
+> diff --git a/include/linux/net/intel/iidc.h b/include/linux/net/intel/iidc.h
+> index 1c1332e4df26..13274c3def66 100644
+> --- a/include/linux/net/intel/iidc.h
+> +++ b/include/linux/net/intel/iidc.h
+> @@ -78,6 +78,8 @@ int ice_del_rdma_qset(struct ice_pf *pf, struct iidc_rdma_qset_params *qset);
+>  int ice_rdma_request_reset(struct ice_pf *pf, enum iidc_reset_type reset_type);
+>  int ice_rdma_update_vsi_filter(struct ice_pf *pf, u16 vsi_id, bool enable);
+>  void ice_get_qos_params(struct ice_pf *pf, struct iidc_qos_params *qos);
+> +int ice_alloc_rdma_qvector(struct ice_pf *pf, struct msix_entry *entry);
+> +void ice_free_rdma_qvector(struct ice_pf *pf, struct msix_entry *entry);
+>  
+>  /* Structure representing auxiliary driver tailored information about the core
+>   * PCI dev, each auxiliary driver using the IIDC interface will have an
+> diff --git a/drivers/infiniband/hw/irdma/hw.c b/drivers/infiniband/hw/irdma/hw.c
+> index ad50b77282f8..69ce1862eabe 100644
+> --- a/drivers/infiniband/hw/irdma/hw.c
+> +++ b/drivers/infiniband/hw/irdma/hw.c
+> @@ -498,8 +498,6 @@ static int irdma_save_msix_info(struct irdma_pci_f *rf)
+>  	iw_qvlist->num_vectors = rf->msix_count;
+>  	if (rf->msix_count <= num_online_cpus())
+>  		rf->msix_shared = true;
+> -	else if (rf->msix_count > num_online_cpus() + 1)
+> -		rf->msix_count = num_online_cpus() + 1;
+>  
+>  	pmsix = rf->msix_entries;
+>  	for (i = 0, ceq_idx = 0; i < rf->msix_count; i++, iw_qvinfo++) {
+> diff --git a/drivers/infiniband/hw/irdma/main.c b/drivers/infiniband/hw/irdma/main.c
+> index 3f13200ff71b..1ee8969595d3 100644
+> --- a/drivers/infiniband/hw/irdma/main.c
+> +++ b/drivers/infiniband/hw/irdma/main.c
+> @@ -206,6 +206,43 @@ static void irdma_lan_unregister_qset(struct irdma_sc_vsi *vsi,
+>  		ibdev_dbg(&iwdev->ibdev, "WS: LAN free_res for rdma qset failed.\n");
+>  }
+>  
+> +static int irdma_init_interrupts(struct irdma_pci_f *rf, struct ice_pf *pf)
+> +{
+> +	int i;
+> +
+> +	rf->msix_count = num_online_cpus() + IRDMA_NUM_AEQ_MSIX;
+> +	rf->msix_entries = kcalloc(rf->msix_count, sizeof(*rf->msix_entries),
+> +				   GFP_KERNEL);
+> +	if (!rf->msix_entries)
+> +		return -ENOMEM;
+> +
+> +	for (i = 0; i < rf->msix_count; i++)
+> +		if (ice_alloc_rdma_qvector(pf, &rf->msix_entries[i]))
+> +			break;
+> +
+> +	if (i < IRDMA_MIN_MSIX) {
+> +		for (; i > 0; i--)
+> +			ice_free_rdma_qvector(pf, &rf->msix_entries[i]);
+> +
+> +		kfree(rf->msix_entries);
+> +		return -ENOMEM;
+> +	}
+> +
+> +	rf->msix_count = i;
+> +
+> +	return 0;
+> +}
+> +
+> +static void irdma_deinit_interrupts(struct irdma_pci_f *rf, struct ice_pf *pf)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < rf->msix_count; i++)
+> +		ice_free_rdma_qvector(pf, &rf->msix_entries[i]);
+> +
+> +	kfree(rf->msix_entries);
+> +}
+> +
+>  static void irdma_remove(struct auxiliary_device *aux_dev)
+>  {
+>  	struct iidc_auxiliary_dev *iidc_adev = container_of(aux_dev,
+> @@ -216,6 +253,7 @@ static void irdma_remove(struct auxiliary_device *aux_dev)
+>  
+>  	irdma_ib_unregister_device(iwdev);
+>  	ice_rdma_update_vsi_filter(pf, iwdev->vsi_num, false);
+> +	irdma_deinit_interrupts(iwdev->rf, pf);
+>  
+>  	pr_debug("INIT: Gen2 PF[%d] device remove success\n", PCI_FUNC(pf->pdev->devfn));
+>  }
+> @@ -230,9 +268,7 @@ static void irdma_fill_device_info(struct irdma_device *iwdev, struct ice_pf *pf
+>  	rf->gen_ops.unregister_qset = irdma_lan_unregister_qset;
+>  	rf->hw.hw_addr = pf->hw.hw_addr;
+>  	rf->pcidev = pf->pdev;
+> -	rf->msix_count =  pf->num_rdma_msix;
+>  	rf->pf_id = pf->hw.pf_id;
+> -	rf->msix_entries = &pf->msix_entries[pf->rdma_base_vector];
+>  	rf->default_vsi.vsi_idx = vsi->vsi_num;
+>  	rf->protocol_used = pf->rdma_mode & IIDC_RDMA_PROTOCOL_ROCEV2 ?
+>  			    IRDMA_ROCE_PROTOCOL_ONLY : IRDMA_IWARP_PROTOCOL_ONLY;
+> @@ -281,6 +317,10 @@ static int irdma_probe(struct auxiliary_device *aux_dev, const struct auxiliary_
+>  	irdma_fill_device_info(iwdev, pf, vsi);
+>  	rf = iwdev->rf;
+>  
+> +	err = irdma_init_interrupts(rf, pf);
+> +	if (err)
+> +		goto err_init_interrupts;
+> +
+>  	err = irdma_ctrl_init_hw(rf);
+>  	if (err)
+>  		goto err_ctrl_init;
+> @@ -311,6 +351,8 @@ static int irdma_probe(struct auxiliary_device *aux_dev, const struct auxiliary_
+>  err_rt_init:
+>  	irdma_ctrl_deinit_hw(rf);
+>  err_ctrl_init:
+> +	irdma_deinit_interrupts(rf, pf);
+> +err_init_interrupts:
+>  	kfree(iwdev->rf);
+>  	ib_dealloc_device(&iwdev->ibdev);
+>  
+> diff --git a/drivers/net/ethernet/intel/ice/ice_idc.c b/drivers/net/ethernet/intel/ice/ice_idc.c
+> index 145b27f2a4ce..bab3e81cad5d 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_idc.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_idc.c
+> @@ -228,61 +228,34 @@ void ice_get_qos_params(struct ice_pf *pf, struct iidc_qos_params *qos)
+>  }
+>  EXPORT_SYMBOL_GPL(ice_get_qos_params);
+>  
+> -/**
+> - * ice_alloc_rdma_qvectors - Allocate vector resources for RDMA driver
+> - * @pf: board private structure to initialize
+> - */
+> -static int ice_alloc_rdma_qvectors(struct ice_pf *pf)
+> +int ice_alloc_rdma_qvector(struct ice_pf *pf, struct msix_entry *entry)
+>  {
+> -	if (ice_is_rdma_ena(pf)) {
+> -		int i;
+> -
+> -		pf->msix_entries = kcalloc(pf->num_rdma_msix,
+> -					   sizeof(*pf->msix_entries),
+> -						  GFP_KERNEL);
+> -		if (!pf->msix_entries)
+> -			return -ENOMEM;
+> +	struct msi_map map = ice_alloc_irq(pf, true);
+>  
+> -		/* RDMA is the only user of pf->msix_entries array */
+> -		pf->rdma_base_vector = 0;
+> -
+> -		for (i = 0; i < pf->num_rdma_msix; i++) {
+> -			struct msix_entry *entry = &pf->msix_entries[i];
+> -			struct msi_map map;
+> +	if (map.index < 0)
+> +		return -ENOMEM;
+>  
+> -			map = ice_alloc_irq(pf, false);
+> -			if (map.index < 0)
+> -				break;
+> +	entry->entry = map.index;
+> +	entry->vector = map.virq;
+>  
+> -			entry->entry = map.index;
+> -			entry->vector = map.virq;
+> -		}
+> -	}
+>  	return 0;
+>  }
+> +EXPORT_SYMBOL_GPL(ice_alloc_rdma_qvector);
+>  
+>  /**
+>   * ice_free_rdma_qvector - free vector resources reserved for RDMA driver
+>   * @pf: board private structure to initialize
+> + * @entry: MSI-X entry to be removed
+>   */
+> -static void ice_free_rdma_qvector(struct ice_pf *pf)
+> +void ice_free_rdma_qvector(struct ice_pf *pf, struct msix_entry *entry)
+>  {
+> -	int i;
+> -
+> -	if (!pf->msix_entries)
+> -		return;
+> -
+> -	for (i = 0; i < pf->num_rdma_msix; i++) {
+> -		struct msi_map map;
+> +	struct msi_map map;
+>  
+> -		map.index = pf->msix_entries[i].entry;
+> -		map.virq = pf->msix_entries[i].vector;
+> -		ice_free_irq(pf, map);
+> -	}
+> -
+> -	kfree(pf->msix_entries);
+> -	pf->msix_entries = NULL;
+> +	map.index = entry->entry;
+> +	map.virq = entry->vector;
+> +	ice_free_irq(pf, map);
+>  }
+> +EXPORT_SYMBOL_GPL(ice_free_rdma_qvector);
+>  
+>  /**
+>   * ice_adev_release - function to be mapped to AUX dev's release op
+> @@ -382,12 +355,6 @@ int ice_init_rdma(struct ice_pf *pf)
+>  		return -ENOMEM;
+>  	}
+>  
+> -	/* Reserve vector resources */
+> -	ret = ice_alloc_rdma_qvectors(pf);
+> -	if (ret < 0) {
+> -		dev_err(dev, "failed to reserve vectors for RDMA\n");
+> -		goto err_reserve_rdma_qvector;
+> -	}
+>  	pf->rdma_mode |= IIDC_RDMA_PROTOCOL_ROCEV2;
+>  	ret = ice_plug_aux_dev(pf);
+>  	if (ret)
+> @@ -395,8 +362,6 @@ int ice_init_rdma(struct ice_pf *pf)
+>  	return 0;
+>  
+>  err_plug_aux_dev:
+> -	ice_free_rdma_qvector(pf);
+> -err_reserve_rdma_qvector:
+>  	pf->adev = NULL;
+>  	xa_erase(&ice_aux_id, pf->aux_idx);
+>  	return ret;
+> @@ -412,6 +377,5 @@ void ice_deinit_rdma(struct ice_pf *pf)
+>  		return;
+>  
+>  	ice_unplug_aux_dev(pf);
+> -	ice_free_rdma_qvector(pf);
+>  	xa_erase(&ice_aux_id, pf->aux_idx);
+>  }
+> diff --git a/drivers/net/ethernet/intel/ice/ice_irq.c b/drivers/net/ethernet/intel/ice/ice_irq.c
+> index 1a7d446ab5f1..80c9ee2e64c1 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_irq.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_irq.c
+> @@ -84,11 +84,12 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
+>  	return entry;
+>  }
+>  
+> +#define ICE_RDMA_AEQ_MSIX 1
+>  static int ice_get_default_msix_amount(struct ice_pf *pf)
+>  {
+>  	return ICE_MIN_LAN_OICR_MSIX + num_online_cpus() +
+>  	       (test_bit(ICE_FLAG_FD_ENA, pf->flags) ? ICE_FDIR_MSIX : 0) +
+> -	       (ice_is_rdma_ena(pf) ? num_online_cpus() + ICE_RDMA_NUM_AEQ_MSIX : 0);
+> +	       (ice_is_rdma_ena(pf) ? num_online_cpus() + ICE_RDMA_AEQ_MSIX : 0);
+>  }
+>  
+>  /**
 
-It is not mandatory, drivers could call fwctl_register() directly from
-a pci probe function. That is just very undesirable for a secondary
-subsystem like fwctl for reasons Leon explained. We want loose
-coupling controled by modules and driver binding, not strong coupling
-where if you load, say, mlx5_core, you get a million other modules
-automatically pulled in as well. Users should have control over this.
-
-> Or the intention is to have this little driver replaced by OOT one,
-> but keep the real (say networking) driver as-is from intree?
-
-The design of the FW interface would have to be really off to motivate
-an OOT one. IMHO you are more likely to see an intree fwctl driver and
-maybe an OOT netdev or something.
- 
-> > +++ b/drivers/fwctl/mlx5/main.c
-> > @@ -0,0 +1,340 @@
-> > +// SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
-> > +/*
-> > + * Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES
-> 
-> -2025
-
-Time flies, thanks
-
-> 
-> > + */
-> > +#include <linux/fwctl.h>
-> > +#include <linux/auxiliary_bus.h>
-> > +#include <linux/mlx5/device.h>
-> > +#include <linux/mlx5/driver.h>
-> 
-> this breaks abstraction (at least your headers are in nice place, but
-> this is rather uncommon, typical solution is to have them backed inside
-> the driver directory) - the two drivers will be tightly coupled
-
-It is part of the auxdev methodology. These headers pre-exist for all
-the other mlx5 family aux devices to use.
-
-> >   enum fwctl_device_type {
-> >   	FWCTL_DEVICE_TYPE_ERROR = 0,
-> > +	FWCTL_DEVICE_TYPE_MLX5 = 1,
-> 
-> is that for fwctl info to be able to properly report what device user
-> has asked ioctl on?
-
-Yes.
-
-> Would be great to embed 32byte long cstring of
-> DRIVER_NAME, to don't need each and every device to come to you and
-> ask for inclusion, 
-
-I think we want people to have to ask though, don't we? We don't want
-to make it easy to write OOT drivers.
-
-> that would also resolve problem of conflicting IDs (my-driver-id
-> prior-to and after upstreaming)
-
-Yes it would, but I suggest people get their driver posted before they
-start shipping it :)
-
-Jonathan had suggested using a uuid IIRC for the same reason.
-
-Jason
