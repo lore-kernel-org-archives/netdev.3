@@ -1,162 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C815B189BAF;
-	Thu, 13 Feb 2025 15:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39BA626B080;
+	Thu, 13 Feb 2025 15:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739458960; cv=none; b=Dx8eQ7ImfbrS2No1suJ/47JnhZxKJ0As+UqoalQ2qn4ms/81fidMkPik+4IR9YVcSLOeSYhQYceLoOrYJIOymP0YUEMl8BAa1uZ/w+UPbdGgxAcNF1joD1ysFpGZfBUqrRT79TvMTxUoxHX07LuX6nishhiQ+auVwQVdUQu8Krg=
+	t=1739459203; cv=none; b=cVCtZvSy/mx5KMMkfiW/HTUL70L1zykdzdxoVlU0L654WRb0JFkHfSksPhHl9yatUJbZ5zyH33KG7R53aL0zd4nLe+BOGFbp8XOTz9jiYISJvtXFQFMD4pcA+/jq2NQFNpoMrWKP+901ykD7e6NWZrATfYzT5w81q5+5dzRFuvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739458960; c=relaxed/simple;
-	bh=EmxVxIPGz4HOpbWHwjiZIVlEniWaE2rYqEUYvmaCOgw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RMEP/Bc7j5Y4jmUKqSF3rdZ/aHz5hwPqgiM7RZxT4/lkt6w8wt9yLG2LW8MuHuD+MrnM85BjwreUAaM01fAVeKa/XntSgZeeObfHL+gNDVKc0V++DgPp3zxCRqGWycrEqeptu8zv0NzrRmd5BSigdZXZ1AhGNbJQbuZPhpn0WzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ybw808XE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739459203; c=relaxed/simple;
+	bh=QRu6YNCJ6CAdbfZVzys1lbmIOv16QxmAy6aoY/mj5ws=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=F0a1+YJR5mTSTE/ez+qTRo37dJpOL2+XtY1eHKcKZgKw2ynZt9tllMWowB9/DPwmSkipKcRkiPvB3kbtagu9rfY72GwfTo/MFCmxgqLoZomzsp5Ko02xW2bvJWQvi9bKPf6yuufIFqqBoV7KFgeHt7l8TrnvN8cmWJtsNEio2OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nnsAAn+N; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ybw808XE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6D7C4CED1;
-	Thu, 13 Feb 2025 15:02:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739458960;
-	bh=EmxVxIPGz4HOpbWHwjiZIVlEniWaE2rYqEUYvmaCOgw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ybw808XEkyVkLkR6GqjkQ1YN8JI0oL+9XJz+SjESHXiIATMBwBosoH43bNRAQ2hPL
-	 AjyHa0SmK9n2LKdR2pvzZRSjxCT56Q56wWiyBaP6wNvlOeipY89dX8Xz3JHzlnY8ce
-	 Z3DjDdTDesyMoWDmytwmEEmQtmnRVuOrH1/E8mNo=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 127/443] rxrpc: Fix the rxrpc_connection attend queue handling
-Date: Thu, 13 Feb 2025 15:24:52 +0100
-Message-ID: <20250213142445.510181582@linuxfoundation.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250213142440.609878115@linuxfoundation.org>
-References: <20250213142440.609878115@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nnsAAn+N"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-471c8bdabcfso3939881cf.2;
+        Thu, 13 Feb 2025 07:06:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739459201; x=1740064001; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QRu6YNCJ6CAdbfZVzys1lbmIOv16QxmAy6aoY/mj5ws=;
+        b=nnsAAn+NfSG5ljWRaPYbbYH6BZdtnyN7E7QXqZzAkBISyCsleLB/2j0uyBYegRtI9i
+         8huBYDNXTyOJsfCIJUBQIhz0vWxaeQsz5sbyadWe8kcPeYNDwAyHa0qVx4uGI6v+M455
+         ff8IKw9rfmQc0WegPMcmV+c+KYJpwSZiEIm0gTdL+TnUBAJvXvb4WQlh7qMQx6ywnhQh
+         0C0ppjnqMs88uX1K636b+VDasEt/6UekQwjjdcuFoy/3Anen04TeA7KSZ7ivWqvnP+6b
+         jWHISnNMeFLiwfIGytdCyDauzaVgP3ivc14A+izHTmns4908afOLoJymL8W2qZ0nbJfC
+         MOAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739459201; x=1740064001;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=QRu6YNCJ6CAdbfZVzys1lbmIOv16QxmAy6aoY/mj5ws=;
+        b=b3Kt9a0rQZfQ2W1eDd6tWZBgci2nc2/G49hfZ2R0ciCSS3II5JAX/F84VHOJsWaB/M
+         SgL3scsUUQkNGEnyQ1h/rVOIVCCFlFexKc7nt46hvyGZgFMJ1yFLMbFnjmgDGldZ9QTK
+         tldJxDKhlKq7UzPGMjthawcz6RwipWk83NBwVU84lGF5cr8j6LbeZwMJPCCOOZXmFTEa
+         gin39x1DQTpDDkWzCSiel9E9pVikWADY1dvnLWapY3SjVNamBfnMF2S1GFOmGHDdXkYO
+         m63McVzNs3GSGqxXgMoixHg42/Cnao+A4QreSOTNgpAMwmgGPgs/amsA9tyjT05kvaUY
+         dEhA==
+X-Forwarded-Encrypted: i=1; AJvYcCWWD6ltDeFW47hERCSrzROl10gXUrZpN/7DJK6F/KggIsaooqpyyAOCte+A2RTbzjmVmdwuXLsARBn9kB8BkLM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yydccs4JcAg8J9GiGDS2NYIb9+QZ1o74NUgRJkQ0dm1zISkFJTJ
+	tjgveM97mBnUF2gB/bNidBnmIRrvW741LlvoX6+JTXLJaznLYFwa
+X-Gm-Gg: ASbGncs7e5XUdPqt5Gx0SI5jgXjw1+GkVfCQY9p9gi+Tmb9MIVtOYVBY7sAGIsQs0m9
+	c9DVs4GaG5Hj4q4LEwI1vgAP/s1db8piz2pjJwTwN0hon26lhkeW5GRBNe0uAEX889RscLzdwMk
+	0+bxTuEX4qyQ9GSa8KtWbtEC02pu7ZGddROygrMEuqpWHrPPxGe5TxWJNku2d7hzujyrljw1gAX
+	cPA/Om9TeoDgy8JlM0le4rwMOZU6hXm+tFzDGj2tE4myoUSiuX90IlvFodCSjz8F8zbVIDISAHm
+	yuZy0nfUO1YbuJEuM2wZeAWPhHl6mRVZWP+5GtsFbuVBivdLEng+CP7s0hJBfds=
+X-Google-Smtp-Source: AGHT+IE6bwqcfU1yJ3EL4ucljVAN/H74late+gSRNOZLXFyhy2eyNgcBcdloyAJPE9jkyWHrOjvYPg==
+X-Received: by 2002:a05:622a:189a:b0:471:a693:591b with SMTP id d75a77b69052e-471bedbc6b9mr51581381cf.51.1739459200843;
+        Thu, 13 Feb 2025 07:06:40 -0800 (PST)
+Received: from localhost (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-471c2af37d2sm8594831cf.63.2025.02.13.07.06.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Feb 2025 07:06:39 -0800 (PST)
+Date: Thu, 13 Feb 2025 10:06:38 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Anna Nyiri <annaemesenyiri@gmail.com>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, 
+ fejes@inf.elte.hu, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ willemb@google.com, 
+ idosch@idosch.org, 
+ horms@kernel.org, 
+ davem@davemloft.net, 
+ shuah@kernel.org, 
+ linux-kselftest@vger.kernel.org
+Message-ID: <67ae0a7e9b5f6_24be4529453@willemb.c.googlers.com.notmuch>
+In-Reply-To: <CAKm6_Rv4LCpy6KaV84gOi7wW7OKdasbx2zqfFwFG26=L6rkhgA@mail.gmail.com>
+References: <20250210192216.37756-1-annaemesenyiri@gmail.com>
+ <72634e76-7bb2-48d5-ab21-9d5e86adee9c@redhat.com>
+ <CAKm6_Rv4LCpy6KaV84gOi7wW7OKdasbx2zqfFwFG26=L6rkhgA@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] selftests: net: Add support for testing
+ SO_RCVMARK and SO_RCVPRIORITY
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+Anna Nyiri wrote:
+> Paolo Abeni <pabeni@redhat.com> ezt =C3=ADrta (id=C5=91pont: 2025. febr=
+. 11., K, 12:19):
+> >
+> > On 2/10/25 8:22 PM, Anna Emese Nyiri wrote:
+> > > Introduce tests to verify the correct functionality of the SO_RCVMA=
+RK and
+> > > SO_RCVPRIORITY socket options.
+> > >
+> > > Key changes include:
+> > >
+> > > - so_rcv_listener.c: Implements a receiver application to test the =
+correct
+> > > behavior of the SO_RCVMARK and SO_RCVPRIORITY options.
+> > > - test_so_rcv.sh: Provides a shell script to automate testing for t=
+hese options.
+> > > - Makefile: Integrates test_so_rcv.sh into the kernel selftests.
+> > >
+> > > v2:
+> > >
+> > > - Add the C part to TEST_GEN_PROGS and .gitignore.
+> > > - Modify buffer space and add IPv6 testing option
+> > > in so_rcv_listener.c.
+> > > - Add IPv6 testing, remove unnecessary comment,
+> > > add kselftest exit codes, run both binaries in a namespace,
+> > > and add sleep in test_so_rcv.sh.
+> > > The sleep was added to ensure that the listener process has
+> > > enough time to start before the sender attempts to connect.
+> > > - Rebased on net-next.
+> > >
+> > > v1:
+> > >
+> > > https://lore.kernel.org/netdev/20250129143601.16035-2-annaemesenyir=
+i@gmail.com/
+> >
+> > Unfortunately the added self-test does not run successfully in the CI=
+:
+> =
 
-------------------
+> I think the test is not running because it is added to TEST_GEN_PROGS.
+> However, after reconsidering, I'm not sure it should be there, since
+> this test does not run on its own but is executed by the
+> test_so_rcv.sh shell script.
+> Wouldn't it be more appropriate to add so_rcv_listener to
+> TEST_GEN_FILES instead?
 
-From: David Howells <dhowells@redhat.com>
+Yes,
 
-[ Upstream commit 4241a702e0d0c2ca9364cfac08dbf134264962de ]
++TEST_PROGS +=3D test_so_rcv.sh
 
-The rxrpc_connection attend queue is never used because conn::attend_link
-is never initialised and so is always NULL'd out and thus always appears to
-be busy.  This requires the following fix:
+is correct, as this needs to be called from kselftest.
 
- (1) Fix this the attend queue problem by initialising conn::attend_link.
++TEST_GEN_PROGS +=3D so_rcv_listener
 
-And, consequently, two further fixes for things masked by the above bug:
+needs to be TEST_GEN_FILES as it is not intended to be called directly.
 
- (2) Fix rxrpc_input_conn_event() to handle being invoked with a NULL
-     sk_buff pointer - something that can now happen with the above change.
-
- (3) Fix the RXRPC_SKB_MARK_SERVICE_CONN_SECURED message to carry a pointer
-     to the connection and a ref on it.
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-Fixes: f2cce89a074e ("rxrpc: Implement a mechanism to send an event notification to a connection")
-Link: https://patch.msgid.link/20250203110307.7265-3-dhowells@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/trace/events/rxrpc.h |  1 +
- net/rxrpc/conn_event.c       | 17 ++++++++++-------
- net/rxrpc/conn_object.c      |  1 +
- 3 files changed, 12 insertions(+), 7 deletions(-)
-
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 27c23873c8811..ee4030f2e99da 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -218,6 +218,7 @@
- 	EM(rxrpc_conn_get_conn_input,		"GET inp-conn") \
- 	EM(rxrpc_conn_get_idle,			"GET idle    ") \
- 	EM(rxrpc_conn_get_poke_abort,		"GET pk-abort") \
-+	EM(rxrpc_conn_get_poke_secured,		"GET secured ") \
- 	EM(rxrpc_conn_get_poke_timer,		"GET poke    ") \
- 	EM(rxrpc_conn_get_service_conn,		"GET svc-conn") \
- 	EM(rxrpc_conn_new_client,		"NEW client  ") \
-diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index 2a1396cd892f3..ca5e694ab858b 100644
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -266,6 +266,7 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
- 			 * we've already received the packet, put it on the
- 			 * front of the queue.
- 			 */
-+			sp->conn = rxrpc_get_connection(conn, rxrpc_conn_get_poke_secured);
- 			skb->mark = RXRPC_SKB_MARK_SERVICE_CONN_SECURED;
- 			rxrpc_get_skb(skb, rxrpc_skb_get_conn_secured);
- 			skb_queue_head(&conn->local->rx_queue, skb);
-@@ -431,14 +432,16 @@ void rxrpc_input_conn_event(struct rxrpc_connection *conn, struct sk_buff *skb)
- 	if (test_and_clear_bit(RXRPC_CONN_EV_ABORT_CALLS, &conn->events))
- 		rxrpc_abort_calls(conn);
- 
--	switch (skb->mark) {
--	case RXRPC_SKB_MARK_SERVICE_CONN_SECURED:
--		if (conn->state != RXRPC_CONN_SERVICE)
--			break;
-+	if (skb) {
-+		switch (skb->mark) {
-+		case RXRPC_SKB_MARK_SERVICE_CONN_SECURED:
-+			if (conn->state != RXRPC_CONN_SERVICE)
-+				break;
- 
--		for (loop = 0; loop < RXRPC_MAXCALLS; loop++)
--			rxrpc_call_is_secure(conn->channels[loop].call);
--		break;
-+			for (loop = 0; loop < RXRPC_MAXCALLS; loop++)
-+				rxrpc_call_is_secure(conn->channels[loop].call);
-+			break;
-+		}
- 	}
- 
- 	/* Process delayed ACKs whose time has come. */
-diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
-index 694c4df7a1a31..88b4aab5a0913 100644
---- a/net/rxrpc/conn_object.c
-+++ b/net/rxrpc/conn_object.c
-@@ -67,6 +67,7 @@ struct rxrpc_connection *rxrpc_alloc_connection(struct rxrpc_net *rxnet,
- 		INIT_WORK(&conn->destructor, rxrpc_clean_up_connection);
- 		INIT_LIST_HEAD(&conn->proc_link);
- 		INIT_LIST_HEAD(&conn->link);
-+		INIT_LIST_HEAD(&conn->attend_link);
- 		mutex_init(&conn->security_lock);
- 		mutex_init(&conn->tx_data_alloc_lock);
- 		skb_queue_head_init(&conn->rx_queue);
--- 
-2.39.5
-
-
-
+Documentation/dev-tools/kselftest.rst for details.=
