@@ -1,251 +1,117 @@
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B142E20AF98
-	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 11:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E3A227EAE
+	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 11:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739445716; cv=none; b=mkP8Rk1chWZatgT/pkDZy0l2tT+GVbwDo6Oc576mGvPZsbj+VjmIDp9cqKxl6GMQyvQCgmMRC1ZCKnzx+HjpgfEZb9lMynti4nqP+/hAD+6eQRFwPZ0dLFyPymHo4VVJL2C0TkBf2lgP1yD4gWZyrlBgEJfSgcHtNqb8Rli0Bck=
+	t=1739445837; cv=none; b=se5HHIFNIG2L0LHKjzqyhxjZPetePnaoyQFisplJrxrEarfAvyN4UBpGDhlJTjeTZHX6WL6vb3Mqd7Os9w9Tu+Z7o7Q5oQAjN5tCwoaI37Goyhjl2MribnMFTay2/wctJOSRxqKpr61hPrv5ue+gm3Xsz4JZyC0W07fUohAFuC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739445716; c=relaxed/simple;
-	bh=Pi4eMn80Vkv3stDJ2Ryeq1gBOrxrcjdgjXuoH7Kh8vw=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
-	 Content-Type:References; b=hGvw2a5FuxjSt6yiVRkISBTDwIBEUj9LzLjFbmb6P93iGxcW1E8jC2RYAfaURyFvxD6POY7NFJMewx1SmMSxaEn+hKuUOfNu7dGjLwo6BUdhvIzrVrryIV7Pw24xh5xrmZbolXsoleivx76Pv5uSyR35Gllw2bZ3vZK/le9Nu28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=qj29tY/i; arc=none smtp.client-ip=203.254.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1739445837; c=relaxed/simple;
+	bh=YY6DOrCUpQsyNOYx6VdO/TtggXIJ9ECRrzNJKzUoTuQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YQCwOc9OtkWuehd9fzsRRPu+sXQdB++jtE8vQONZrw981eC4LQ+MY6LRxPjIc5cmoYrnLKBlVqUl8k2gj1NZFTktRgqlVulZbQGWHQnHUdHDzgmOe1Hmy6jEeJyj6CtOBk+IYDcbvGPa//Ve3dPexRlfjuBglL/hrRzBvxYkQ/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PWWocGaJ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="qj29tY/i"
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250213112151epoutp046da4d44b55edc5ad455c78d06d57129c~jwKikNIMN0871908719epoutp04h
-	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 11:21:51 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250213112151epoutp046da4d44b55edc5ad455c78d06d57129c~jwKikNIMN0871908719epoutp04h
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1739445711;
-	bh=FYeA0egZv4FF41HWS+5lY5RJ3ar8Pphs0FsmtbhyRSE=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-	b=qj29tY/iSIOX/IKeNwEWLUhYSOojk/p0yq39MyLUD5o9EhMrlTrfigvInh/f3eecq
-	 84a7nGp1x9AltRNUKXaTRFq1GhRgM7M05Jp+LqCej7VEd5vtVEEIO+C/IeAU42+Yjt
-	 9eaRUYaXidA013VMkA3nAAG5lk5HvpMbpBwigtMw=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTP id
-	20250213112150epcas5p432ded18de14682cc3b9c16d15c3a6f1b~jwKh9cVoO2775827758epcas5p4Q;
-	Thu, 13 Feb 2025 11:21:50 +0000 (GMT)
-Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.176]) by
-	epsnrtp1.localdomain (Postfix) with ESMTP id 4Ytt710fwvz4x9Pr; Thu, 13 Feb
-	2025 11:21:49 +0000 (GMT)
-Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
-	epsmgec5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	AF.8A.19710.CC5DDA76; Thu, 13 Feb 2025 20:21:48 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
-	20250213110439epcas5p4363f12d24845f86de9f5e0d1c15bcaf9~jv7hQbNb63061630616epcas5p4_;
-	Thu, 13 Feb 2025 11:04:39 +0000 (GMT)
-Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
-	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20250213110439epsmtrp1713a253bece086c0e65de979af9e8830~jv7hPeule2200722007epsmtrp1E;
-	Thu, 13 Feb 2025 11:04:39 +0000 (GMT)
-X-AuditID: b6c32a44-363dc70000004cfe-d8-67add5cc2674
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	CF.18.23488.7C1DDA76; Thu, 13 Feb 2025 20:04:39 +0900 (KST)
-Received: from FDSFTE596 (unknown [107.122.82.131]) by epsmtip2.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20250213110436epsmtip2c8a8209a8c3b9ff20b96d86af3fac0e3~jv7ezI9zW2340823408epsmtip2R;
-	Thu, 13 Feb 2025 11:04:36 +0000 (GMT)
-From: "Swathi K S" <swathi.ks@samsung.com>
-To: "'Krzysztof Kozlowski'" <krzk@kernel.org>
-Cc: <krzk+dt@kernel.org>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<robh@kernel.org>, <conor+dt@kernel.org>, <richardcochran@gmail.com>,
-	<mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
-	<rmk+kernel@armlinux.org.uk>, <netdev@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-In-Reply-To: <20250213-adorable-arboreal-degu-6bdcb8@krzk-bin>
-Subject: RE: [PATCH v6 1/2] dt-bindings: net: Add FSD EQoS device tree
- bindings
-Date: Thu, 13 Feb 2025 16:34:29 +0530
-Message-ID: <009a01db7e07$132feb60$398fc220$@samsung.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PWWocGaJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739445834;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LL+aPdnFR/fkXCURRzOeY8yP7Oiq1xCa5VfoFeYynkw=;
+	b=PWWocGaJQeqQ9XReEqrMr/xzXklMCxsqk0osUHMfX5VSHpeSNzlis7pmLy7YZV/JOpzZUp
+	4QWYwtIS4CzXQxPlqlkjECCSnEEpthJuaTpVROPcg3kgls22kN3yHCvgcgBLO1TeUPrmX6
+	KLLDdiTwvBWTOf8Nkm1UXCnN3ehHYN8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-550-L2e0x3HVP2i3yNfRE0Zsxg-1; Thu, 13 Feb 2025 06:23:52 -0500
+X-MC-Unique: L2e0x3HVP2i3yNfRE0Zsxg-1
+X-Mimecast-MFC-AGG-ID: L2e0x3HVP2i3yNfRE0Zsxg
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4394c0a58e7so5672785e9.0
+        for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 03:23:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739445831; x=1740050631;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LL+aPdnFR/fkXCURRzOeY8yP7Oiq1xCa5VfoFeYynkw=;
+        b=YbiqP+qqVfQSMiSGEuVAmk7fychJ0dWGf+5+lNATAXZwCLQ7ml/Cn30dwYaRBxFA3n
+         FyJ76IBioyChD+zxz574UmQR4zY2et6CVLzD9HHZtfrmN8q7q8/hv3tCv52blzT+RPha
+         ulCg+Y8+Eni3e0nInnTujVdlLJJXuahST6z/L4mA8ePwGG46MCK+DFGQTsCPe7PE9Vph
+         IzEtVQEx0KLP6+4DKv+Lz8s2TCKpnIDk6MteOULJKMnhpWF++xZAKuYskEeYMRTBwZja
+         JSb+HbjWWKBFYVqwmiF4z0fRt44mjcgnIWDDvdZWcv0V/lAa3fx6A5M01iE+bJrqpA27
+         TMtw==
+X-Forwarded-Encrypted: i=1; AJvYcCWK+3+8MX91UDZ/EBmi8EpIST94IcWRaTS3x0sk/rYye3OnpiPsQlkHQAEeZ8rk+B8E+YjZkkk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyi1vW96MSk+Z35PhsTW3yTqr72HuM3KeM356w5IOROLx5t5+FH
+	90hHlltr3iGIvAUBVjr0GvDAHhq3MKF0S0jz+xZV8xpMSQlhZDD+ic6kkZxUtbPIQJXRPuzDGUE
+	Y18f7XpyCksxwYOGnPRKaqAKBflJdvg+BKX780BJS5uzaj9JT37lyXA==
+X-Gm-Gg: ASbGncsOPVjOhB8fXNa1D2Cx1xrmUgKT1cemy76m435OMy5G9mBalruHM3UlvBUpLI9
+	/aU989IxM33V8sn4eq2Ltv8VwbCZg6wnW+vRbgbgh7Eqz2vnSFzfx6LLl2M6S7+G79coQrwwFkV
+	XkV3hG5/UAHPrbuX9NB97bRpKCU6G0IABg+2qjRmeRzOGAHxpWh0o9uvmnsqLJhTgjEq4JbQb6E
+	69euh7G/M/fzqo7Cp62UFl/se3eHfMOSOoq7Rt3UcFPoQ0e2/Cm/EPx9bKGQZVsCCkFEnxdcWbU
+	FBWTopW4tstusgmRYuL/JZ0Nw6b9gZBjbxA=
+X-Received: by 2002:a05:600c:870d:b0:439:34d3:63cd with SMTP id 5b1f17b1804b1-4395816f381mr65177135e9.9.1739445831376;
+        Thu, 13 Feb 2025 03:23:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHFtFyqrjbkfQQqT9IE89MU7ZaXBN7z5Cz0szfxnDWNjv1Rol7DbNd/LzOv6OpYD5KnA0J+fw==
+X-Received: by 2002:a05:600c:870d:b0:439:34d3:63cd with SMTP id 5b1f17b1804b1-4395816f381mr65176865e9.9.1739445831072;
+        Thu, 13 Feb 2025 03:23:51 -0800 (PST)
+Received: from [192.168.88.253] (146-241-31-160.dyn.eolo.it. [146.241.31.160])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4394dc48d9dsm41234445e9.0.2025.02.13.03.23.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Feb 2025 03:23:50 -0800 (PST)
+Message-ID: <3a979b56-e9d6-41c9-910b-63b5371b9631@redhat.com>
+Date: Thu, 13 Feb 2025 12:23:48 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQFMfZy5LnHh86L+CikZ+hKlrx3PbgHP/Q5uAh59lGQBgzSo3LQ3hOaA
-Content-Language: en-in
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Ta1BUZRjuO2cvB2mZ44LywUSuJ7twWdjFZT3bLFhKzhZWFD9yGJWOcGYX
-	2dvsLlJNTRZGiALSJLELrgsjFw1IF12X6wQhjkKAFzYoKBJIbjOMohgY0C4Hin/P9z7P+z3v
-	810wlD/NCcRStSbaoKXUBGcDy/FT8CvCrr4apWjotpycnygEZOWwk01WN3cjZEnPMRZ5tr2b
-	TY513OOSE5bfOWRPz0Uu2evIY5P2ERebvNNQwiFzXKNs0rpYwyY7bJvJuc5pQLZ3jaPk7fwC
-	hFxucnJf4yvuuG6hisvnBxDFWP4VrqLeMsRV2OzpCvuF4xxF3bnPFfXOWUQx09LHUbS2iBWz
-	9ufjvRPT5CqaSqENAlqbrEtJ1SqjibiEpN1JUVKRWCiWkTsIgZbS0NFE7N544Z5UtTsXIThC
-	qdPdpXjKaCQiYuQGXbqJFqh0RlM0QetT1HqJPtxIaYzpWmW4lja9KhaJIqPcwg/TVHXmZkTf
-	L/joQeEQ6yho9M8BXhjEJXDw7/sgB2zA+HgjgOaqRZaH4OMPAcy5F8YQcwDen/6StdZR9bAI
-	YYhmAK2OBpRZjAP4XfYj4FFx8BBYltfC9WA/XAjr+iu5HhGKD6PwZFHJylZeeAzMnc10Exjm
-	i78Hs675eMos/EVYUDLH8WAeLoNtrTdZDN4Ib5hHVzCKh8KK0imUmUgA58cq2IzXHvi0eAkw
-	Gn94bf7kynAQP+EFKx1ONtMQCwfrMjkM9oWT1y9zGRwIJ/KzVnES/D6vbzWyCg4tFKzqd8If
-	73rmx9wGwfCHhgimHARP36xFGF8fmPt0FGHqPOi0ruEX4OKUa3XLAOgon+GeAoRlXTTLumiW
-	dREs/7vZAOsCCKD1Ro2STo7Si7V0xn8XnqzT2MHKsw+JdYL+s0vhbQDBQBuAGEr48WBhtZLP
-	S6E+/oQ26JIM6Wra2Aai3OddgAZuSta5/43WlCSWyEQSqVQqkW2Xigl/Xmb9MSUfV1ImOo2m
-	9bRhrQ/BvAKPIgc6R20J2dih0IMR7KyNGO9464I690zYvi/eBI7HTwJcj4sOTVyJ9HZs23vu
-	ZdOmxbjSwb4y76L9w16/1XduaSWoLuuutPlk+tKIf6LQ/M6ULYgM3Uw0Fl/tiKm6WP3rQfR9
-	LeIzvlQxkLaj3CqMvH7a71NNwfmF7N3tQfWnmpb/GbYkbGFDyaQm8sHXR3wzUrfJ5Rr71pqr
-	5jFZ8K7Kv575Y1jfe2BfapP88I0Pen+Je/Qz/nbG5FuijlvWmbvdxW9cop6bebf3z5eeTYzM
-	bnrdpAz7Ft0pFwwcXlbXfmOuLaXPTA9FDQpkrv6ZphNSqq56ZHvtmKUs74ntM5+Y8v21X6ki
-	CJZRRYlDUIOR+hfqY4fEfwQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrGIsWRmVeSWpSXmKPExsWy7bCSvO7xi2vTDTY+EbD4+XIao8XyBztY
-	LdbsPcdkMed8C4vF/CPnWC2eHnvEbvFy1j02i/PnN7BbXNjWx2qx6fE1VovLu+awWXRde8Jq
-	Me/vWlaLYwvELL6dfsNoceTMC2aLS/0TmSz+79nB7iDkcfnaRWaPLStvMnk87d/K7rFz1l12
-	jwWbSj02repk89i8pN5j547PTB7v911l8zi4z9Dj8ya5AO4oLpuU1JzMstQifbsErowFGyaw
-	FjyXr9jY3svcwHhCrIuRk0NCwERixacZTF2MXBxCArsZJWadX84MkZCU+NQ8lRXCFpZY+e85
-	O0TRM0aJvnUbGEESbAJaEov69rGD2CICuhKbbywHK2IW+MIsMfv+ZKixbxklrjYdYAGp4hSw
-	k+j93AzWISzgL/G+9ySYzSKgKjFxzjc2EJtXwFLi0MFTLBC2oMTJmU/AbGYBbYmnN5/C2csW
-	voY6VUHi59NlrBBXuEn8nv2PEaJGXOLozx7mCYzCs5CMmoVk1Cwko2YhaVnAyLKKUTK1oDg3
-	PTfZsMAwL7Vcrzgxt7g0L10vOT93EyM46rU0djC++9akf4iRiYPxEKMEB7OSCK/EtDXpQrwp
-	iZVVqUX58UWlOanFhxilOViUxHlXGkakCwmkJ5akZqemFqQWwWSZODilGpi6QvQf7P8iaav1
-	4mzOiq3nQy7PXRN8est2l/dRqXdY64ofqt09IMTynvtnrWVB0NezPutdg3yCGjhmeX06veyJ
-	mPB2izvXC/zU0vPPBuYdCJZJiBD1TEvhWnKrn4275uh649r6jXwL/GWz/M9+/uP2oNm//yfr
-	7xOvJ5eu8IrUd8zhV6n4/nTXuzuxFv95hZ6xG01qcFPiCTh5polz6oZ4Sx7Zd/mzN93f2Fcr
-	pl/w9u2cubtnyGiesm9R/Nebe/lY5nTBmqcPZvned5C0/6gmK1sWzrAs19Rk2tGGDcGzJOS2
-	dZX3TpvcO+POet7aXA6vFwGPUueLrJvacYm7b2NiNkuc7ZZNVlJThGt+7FBiKc5INNRiLipO
-	BACb1ffZaQMAAA==
-X-CMS-MailID: 20250213110439epcas5p4363f12d24845f86de9f5e0d1c15bcaf9
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250213044955epcas5p110d1e582c8ee02579ead73f9686819ff
-References: <20250213044624.37334-1-swathi.ks@samsung.com>
-	<CGME20250213044955epcas5p110d1e582c8ee02579ead73f9686819ff@epcas5p1.samsung.com>
-	<20250213044624.37334-2-swathi.ks@samsung.com>
-	<20250213-adorable-arboreal-degu-6bdcb8@krzk-bin>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/2] net: ti: icss-iep: Fix pwidth configuration for
+ perout signal
+To: Meghana Malladi <m-malladi@ti.com>, javier.carrasco.cruz@gmail.com,
+ diogo.ivo@siemens.com, horms@kernel.org, kuba@kernel.org,
+ edumazet@google.com, davem@davemloft.net, andrew+netdev@lunn.ch
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, srk@ti.com,
+ Vignesh Raghavendra <vigneshr@ti.com>, Roger Quadros <rogerq@kernel.org>,
+ danishanwar@ti.com
+References: <20250211103527.923849-1-m-malladi@ti.com>
+ <20250211103527.923849-2-m-malladi@ti.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250211103527.923849-2-m-malladi@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 2/11/25 11:35 AM, Meghana Malladi wrote:
+> @@ -419,8 +426,9 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+>  			regmap_write(iep->map, ICSS_IEP_CMP1_REG0, lower_32_bits(cmp));
+>  			if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
+>  				regmap_write(iep->map, ICSS_IEP_CMP1_REG1, upper_32_bits(cmp));
+> -			/* Configure SYNC, 1ms pulse width */
+> -			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG, 1000000);
+> +			/* Configure SYNC, based on req on width */
+> +			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
+> +				     (u32)(ns_width / iep->def_inc));
 
+This causes build errors on 32bits:
 
-> -----Original Message-----
-> From: Krzysztof Kozlowski <krzk=40kernel.org>
-> Sent: 13 February 2025 13:24
-> To: Swathi K S <swathi.ks=40samsung.com>
-> Cc: krzk+dt=40kernel.org; andrew+netdev=40lunn.ch; davem=40davemloft.net;
-> edumazet=40google.com; kuba=40kernel.org; pabeni=40redhat.com;
-> robh=40kernel.org; conor+dt=40kernel.org; richardcochran=40gmail.com;
-> mcoquelin.stm32=40gmail.com; alexandre.torgue=40foss.st.com;
-> rmk+kernel=40armlinux.org.uk; netdev=40vger.kernel.org;
-> devicetree=40vger.kernel.org; linux-stm32=40st-md-mailman.stormreply.com;
-> linux-arm-kernel=40lists.infradead.org; linux-kernel=40vger.kernel.org
-> Subject: Re: =5BPATCH v6 1/2=5D dt-bindings: net: Add FSD EQoS device tre=
-e
-> bindings
->=20
-> On Thu, Feb 13, 2025 at 10:16:23AM +0530, Swathi K S wrote:
-> > +  clock-names:
-> > +    minItems: 5
-> > +    maxItems: 10
-> > +    contains:
-> > +      enum:
-> > +        - ptp_ref
-> > +        - master_bus
-> > +        - slave_bus
-> > +        - tx
-> > +        - rx
-> > +        - master2_bus
-> > +        - slave2_bus
-> > +        - eqos_rxclk_mux
-> > +        - eqos_phyrxclk
-> > +        - dout_peric_rgmii_clk
->=20
-> This does not match the previous entry. It should be strictly ordered wit=
-h
-> minItems: 5.
+ERROR: modpost: "__udivdi3" [drivers/net/ethernet/ti/icssg/icss_iep.ko]
+undefined!
+make[3]: *** [../scripts/Makefile.modpost:147: Module.symvers] Error 1
+make[2]: *** [/home/nipa/net/wt-0/Makefile:1944: modpost] Error 2
+make[1]: *** [/home/nipa/net/wt-0/Makefile:251: __sub-make] Error 2
+make: *** [Makefile:251: __sub-make] Error 2
+ERROR: modpost: "__udivdi3" [drivers/net/ethernet/ti/icssg/icss_iep.ko]
 
-Hi Krzysztof,
-Thanks for reviewing.
-In FSD SoC, we have 2 instances of ethernet in two blocks.
-One instance needs 5 clocks and the other needs 10 clocks.
+You should use div_u64()
 
-I tried to understand this by looking at some other dt-binding files as giv=
-en below, but looks like they follow similar approach
-Documentation/devicetree/bindings/net/stm32-dwmac.yaml
-Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-
-Could you please guide me on how to implement this?
-Also, please help me understand what is meant by 'strictly ordered'
-
->=20
->=20
-> > +
-> > +  iommus:
-> > +    maxItems: 1
-> > +
-> > +  phy-mode:
-> > +    enum:
-> > +      - rgmii-id
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - interrupts
-> > +  - clocks
-> > +  - clock-names
-> > +  - iommus
-> > +  - phy-mode
-> > +
-> > +unevaluatedProperties: false
-> > +
-> > +examples:
-> > +  - =7C
-> > +    =23include <dt-bindings/clock/fsd-clk.h>
-> > +    =23include <dt-bindings/interrupt-controller/arm-gic.h>
-> > +    soc =7B
-> > +        =23address-cells =3D <2>;
-> > +        =23size-cells =3D <2>;
-> > +        ethernet1: ethernet=4014300000 =7B
-> > +            compatible =3D =22tesla,fsd-ethqos=22;
-> > +            reg =3D <0x0 0x14300000 0x0 0x10000>;
-> > +            interrupts =3D <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
-> > +            interrupt-names =3D =22macirq=22;
-> > +            clocks =3D <&clock_peric
-> PERIC_EQOS_TOP_IPCLKPORT_CLK_PTP_REF_I>,
-> > +                     <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_ACLK_I>,
-> > +                     <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_HCLK_I>,
-> > +                     <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_RGMII_CLK_=
-I>,
-> > +                     <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_CLK_RX_I>,
-> > +                     <&clock_peric PERIC_BUS_D_PERIC_IPCLKPORT_EQOSCLK=
->,
-> > +                     <&clock_peric PERIC_BUS_P_PERIC_IPCLKPORT_EQOSCLK=
->,
-> > +                     <&clock_peric PERIC_EQOS_PHYRXCLK_MUX>,
-> > +                     <&clock_peric PERIC_EQOS_PHYRXCLK>,
-> > +                     <&clock_peric PERIC_DOUT_RGMII_CLK>;
-> > +            clock-names =3D =22ptp_ref=22, =22master_bus=22, =22slave_=
-bus=22,=22tx=22,
-> > +                          =22rx=22, =22master2_bus=22, =22slave2_bus=
-=22, =22eqos_rxclk_mux=22,
-> > +                          =22eqos_phyrxclk=22,=22dout_peric_rgmii_clk=
-=22;
-> > +            pinctrl-names =3D =22default=22;
-> > +            pinctrl-0 =3D <&eth1_tx_clk>, <&eth1_tx_data>, <&eth1_tx_c=
-trl>,
-> > +                        <&eth1_phy_intr>, <&eth1_rx_clk>, <&eth1_rx_da=
-ta>,
-> > +                        <&eth1_rx_ctrl>, <&eth1_mdio>;
-> > +            iommus =3D <&smmu_peric 0x0 0x1>;
-> > +            phy-mode =3D =22rgmii-id=22;
-> > +       =7D;
->=20
-> Misaligned/misindented.
-
-Ack
-
->=20
-> Best regards,
-> Krzysztof
-
+/P
 
