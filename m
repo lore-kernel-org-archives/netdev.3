@@ -1,91 +1,234 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-2-55.ptr.blmpb.com (va-2-55.ptr.blmpb.com [209.127.231.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36A820C490;
-	Thu, 13 Feb 2025 09:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC96211494
+	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 09:14:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739437867; cv=none; b=CsIvDdIN4mUAaVQQNc74/IdycF9+eK4nTKJlOAqYQ/z8+cTE6O8w3IQlnPiKEFNIlmtnLbwKEcD2/Uwn9YewluYWMEV8dysDnGCRD4Xa2tNPA2jLkxwQPa3L8KRrGwK4w+annoMKRsmX9GZrj41ZVJbD4sgfClOILPOgfhOAmnc=
+	t=1739438071; cv=none; b=SZLOb0hOmsM5RrItmDimYElrhx6JxbH4uTsm4gPDFiOTxKq1Y5I2TjJpjcGpehFl/NAO+RywKPDeulNW8CGI9Sm+GC94Rz19AghxlL1aGp5T2jJ0Ihlcu/oD16RIk8ElRL681w1XqhB6mAMZMLzfHzyMvEtnKi5IkhF0I5Yf9mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739437867; c=relaxed/simple;
-	bh=UBgSTAr18iVKE29oD70Y3P8gPekBiga3WnTrcv0GM6k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GTDY506EWV639W7s37FhVygBQbIYasV+pWDXiJYl5bQQkMs0RCwt+L8Fzdh/KosogDLXFpFLYrRIyuGoNHDx1KPK1yPW48LmDgLV3xTpbTjfG9F2P5nYGCIiJ0Z6umKgmeSWjFKpJJxWqvPks66aGRH+YVYb/+ZNlilmjEAJyaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=FHKPeciZ; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1739438071; c=relaxed/simple;
+	bh=/gbLnmxQaUrsIBg/rg/O9ar/ywBrGOY97qYOzHNDu1M=;
+	h=From:Mime-Version:Content-Type:To:In-Reply-To:Subject:Date:
+	 Message-Id:References:Cc; b=QiDUZ9CRcDG15wNaZtomzBvIVa8ZZYeemr70l/77u+GCrHN7GxtV/6mz9ILxY4QgIOuA8minRiOfZCsfuOL5dfVj6yfxPH8fSuCNamy+LNd+mFVIvCDGSoyC5d7G3bz8rphQQv+iQcNUG8IoLw1Y1Y6X96qQcMUdQHS6WNYCiIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=Yb+yVFSB; arc=none smtp.client-ip=209.127.231.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="FHKPeciZ"
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="Yb+yVFSB"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=KV5C98I/LRqywPZKUBEyHWkSBV5mfoVaexgU2HkSRYY=; b=FHKPeciZuEcM5wkuV85GDTvkeB
-	de68VNbqN90ENT8s2DIP+ji5goQOWCDVknZRxBG15appf1F0LAR/UzARWezSkdzyEOLAN9GWjAX9a
-	AozPbDPm4XZ2UnoEG/uEIiwQVt4+wHYevtV9wAU9hEnhGYXKKEI9lUvXfWzyYFb0SYNQ9OWFwmyAv
-	HJVJty0Ea/yyFw7+VvapEmG0Y1ML5mSHNPlB0e85RGmhC8U0V24500NtlGzE1+4neViZVoSHhwd8D
-	If330fBza54lqvfUfxO/rAwGfipdI0WFzBjZOtzOQxMem9mQVt6OxuVPeiIB4O64hBtH3wba4w0LA
-	Z7mckHBw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:60554)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tiVFF-0000VT-0J;
-	Thu, 13 Feb 2025 09:10:54 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tiVFB-00021H-16;
-	Thu, 13 Feb 2025 09:10:49 +0000
-Date: Thu, 13 Feb 2025 09:10:49 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, Qingfang Deng <dqfext@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>
-Subject: Re: [PATCH net-next v2] net: ethernet: mediatek: add EEE support
-Message-ID: <Z623GQHI_FHyDyjE@shell.armlinux.org.uk>
-References: <20250210125246.1950142-1-dqfext@gmail.com>
- <a42ec2d4-2e4f-4d1d-b204-b637c1106690@redhat.com>
+ s=feishu2403070942; d=yunsilicon.com; t=1739438064; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=WDhPEYeGIbyKiDw2S7MH7Kdc3eLk7n65hEaQBJnIHx4=;
+ b=Yb+yVFSBHFavovx1kRV3pOfVObLRXjZ4Lbltb/tsbMJn+oQGZa5b3nPnLdeGYoLBdgKxv2
+ 6hh718LsMIlYrUM8YHTC+HtM1W1SzMW9Fm/jcL6mEdyXXzq1I9/c5auQJOP0oK9YLea8Pf
+ cGBO/ba7FWaYp8A7u3P9Fh3VafDlntuEs6EcfPvGi3vsTV7gNrolt3j6iC/VWI2v/48BFN
+ N7Lneni1nApJyNG7uGzOpe/jeqa/0vdpgHkLC9WYPMLTk6Kg3aRJb/EGDeIcrv2+q1lfvX
+ OwNRh9Xd+qop3ujbuH3XBd3HJteXIKK4zlwizH9KHpB/MHlsJ0zIu3YsGbgAfQ==
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Thu, 13 Feb 2025 17:14:22 +0800
+From: "Xin Tian" <tianx@yunsilicon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a42ec2d4-2e4f-4d1d-b204-b637c1106690@redhat.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+To: <netdev@vger.kernel.org>
+X-Lms-Return-Path: <lba+267adb7ef+482159+vger.kernel.org+tianx@yunsilicon.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250213091402.2067626-1-tianx@yunsilicon.com>
+Subject: [PATCH v4 08/14] net-next/yunsilicon: Add ethernet interface
+Date: Thu, 13 Feb 2025 17:14:22 +0800
+Message-Id: <20250213091420.2067626-9-tianx@yunsilicon.com>
+References: <20250213091402.2067626-1-tianx@yunsilicon.com>
+Content-Transfer-Encoding: 7bit
+Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
+	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
+	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
+	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <horms@kernel.org>, 
+	<parthiban.veerasooran@microchip.com>, <masahiroy@kernel.org>
 
-On Thu, Feb 13, 2025 at 10:04:50AM +0100, Paolo Abeni wrote:
-> On 2/10/25 1:52 PM, Qingfang Deng wrote:
-> > Add EEE support to MediaTek SoC Ethernet. The register fields are
-> > similar to the ones in MT7531, except that the LPI threshold is in
-> > milliseconds.
-> > 
-> > Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-> 
-> @Felix, @Sean, @Lorenzo: could you please have a look?
+Implement an auxiliary driver for ethernet and initialize the
+netdevice simply.
 
-That would be a waste of time, because it's implementing the "old way"
-including using phy_init_eee() which Andrew wants to get rid of. It
-should be using phylink's EEE management.
+Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
+Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
+Co-developed-by: Lei Yan <jacky@yunsilicon.com>
+Signed-off-by: Lei Yan <jacky@yunsilicon.com>
+Signed-off-by: Xin Tian <tianx@yunsilicon.com>
+---
+ drivers/net/ethernet/yunsilicon/Makefile      |   2 +-
+ .../net/ethernet/yunsilicon/xsc/net/main.c    | 100 ++++++++++++++++++
+ .../net/ethernet/yunsilicon/xsc/net/xsc_eth.h |  16 +++
+ .../yunsilicon/xsc/net/xsc_eth_common.h       |  15 +++
+ 4 files changed, 132 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/main.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
 
-The patches for the mt753x driver converting that over have now been
-apparently merged last night according to patchwork into net-next, but
-something's gone wrong because there's no updates to the git trees
-on korg,
-
+diff --git a/drivers/net/ethernet/yunsilicon/Makefile b/drivers/net/ethernet/yunsilicon/Makefile
+index 6fc8259a7..65b9a6265 100644
+--- a/drivers/net/ethernet/yunsilicon/Makefile
++++ b/drivers/net/ethernet/yunsilicon/Makefile
+@@ -4,5 +4,5 @@
+ # Makefile for the Yunsilicon device drivers.
+ #
+ 
+-# obj-$(CONFIG_YUNSILICON_XSC_ETH) += xsc/net/
++obj-$(CONFIG_YUNSILICON_XSC_ETH) += xsc/net/
+ obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc/pci/
+\ No newline at end of file
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/main.c b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
+new file mode 100644
+index 000000000..da309dc63
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
+@@ -0,0 +1,100 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#include <linux/netdevice.h>
++#include <linux/etherdevice.h>
++#include <linux/auxiliary_bus.h>
++
++#include "common/xsc_core.h"
++#include "xsc_eth_common.h"
++#include "xsc_eth.h"
++
++static int xsc_get_max_num_channels(struct xsc_core_device *xdev)
++{
++	return min_t(int, xdev->dev_res->eq_table.num_comp_vectors,
++		     XSC_ETH_MAX_NUM_CHANNELS);
++}
++
++static int xsc_eth_probe(struct auxiliary_device *adev,
++			 const struct auxiliary_device_id *adev_id)
++{
++	struct xsc_adev *xsc_adev = container_of(adev, struct xsc_adev, adev);
++	struct xsc_core_device *xdev = xsc_adev->xdev;
++	struct xsc_adapter *adapter;
++	struct net_device *netdev;
++	int num_chl, num_tc;
++	int err;
++
++	num_chl = xsc_get_max_num_channels(xdev);
++	num_tc = xdev->caps.max_tc;
++
++	netdev = alloc_etherdev_mqs(sizeof(struct xsc_adapter),
++				    num_chl * num_tc, num_chl);
++	if (!netdev) {
++		pr_err("alloc_etherdev_mqs failed, txq=%d, rxq=%d\n",
++		       (num_chl * num_tc), num_chl);
++		return -ENOMEM;
++	}
++
++	netdev->dev.parent = &xdev->pdev->dev;
++	adapter = netdev_priv(netdev);
++	adapter->netdev = netdev;
++	adapter->pdev = xdev->pdev;
++	adapter->dev = &adapter->pdev->dev;
++	adapter->xdev = xdev;
++	xdev->eth_priv = adapter;
++
++	err = register_netdev(netdev);
++	if (err) {
++		netdev_err(netdev, "register_netdev failed, err=%d\n", err);
++		goto err_free_netdev;
++	}
++
++	return 0;
++
++err_free_netdev:
++	free_netdev(netdev);
++
++	return err;
++}
++
++static void xsc_eth_remove(struct auxiliary_device *adev)
++{
++	struct xsc_adev *xsc_adev = container_of(adev, struct xsc_adev, adev);
++	struct xsc_core_device *xdev = xsc_adev->xdev;
++	struct xsc_adapter *adapter;
++
++	if (!xdev)
++		return;
++
++	adapter = xdev->eth_priv;
++	if (!adapter) {
++		netdev_err(adapter->netdev, "failed! adapter is null\n");
++		return;
++	}
++
++	unregister_netdev(adapter->netdev);
++
++	free_netdev(adapter->netdev);
++
++	xdev->eth_priv = NULL;
++}
++
++static const struct auxiliary_device_id xsc_eth_id_table[] = {
++	{ .name = XSC_PCI_DRV_NAME "." XSC_ETH_ADEV_NAME },
++	{},
++};
++MODULE_DEVICE_TABLE(auxiliary, xsc_eth_id_table);
++
++static struct auxiliary_driver xsc_eth_driver = {
++	.name = "eth",
++	.probe = xsc_eth_probe,
++	.remove = xsc_eth_remove,
++	.id_table = xsc_eth_id_table,
++};
++module_auxiliary_driver(xsc_eth_driver);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Yunsilicon XSC ethernet driver");
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
+new file mode 100644
+index 000000000..0c70c0d59
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#ifndef __XSC_ETH_H
++#define __XSC_ETH_H
++
++struct xsc_adapter {
++	struct net_device	*netdev;
++	struct pci_dev		*pdev;
++	struct device		*dev;
++	struct xsc_core_device	*xdev;
++};
++
++#endif /* __XSC_ETH_H */
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
+new file mode 100644
+index 000000000..b5640f05d
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#ifndef __XSC_ETH_COMMON_H
++#define __XSC_ETH_COMMON_H
++
++#define XSC_LOG_INDIR_RQT_SIZE		0x8
++
++#define XSC_INDIR_RQT_SIZE		BIT(XSC_LOG_INDIR_RQT_SIZE)
++#define XSC_ETH_MIN_NUM_CHANNELS	2
++#define XSC_ETH_MAX_NUM_CHANNELS	XSC_INDIR_RQT_SIZE
++
++#endif
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.43.0
