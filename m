@@ -1,102 +1,129 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCDE1E376E;
-	Thu, 13 Feb 2025 06:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378A24A01;
+	Thu, 13 Feb 2025 06:12:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739426604; cv=none; b=N4TbGcALhYtPTPehy5Z97iukh3rqtSHEeCXnE9TJ1Cx/DA7U3UabparY3xb5Ph+cDj7XaUkeLrCy5V6GhFDjn7Me4vQhg4yGRM6ilOvynKupigqgK3DVQ93dIIM9x5VcjOgelvJRfyT8QfqmVhLTZE8BwhBgiIsTWmrn6BLs494=
+	t=1739427180; cv=none; b=Vax6Fs07RbM41tJKBTUbpqQu3rELlB7bwTKTL6jJcayf0SzMGqstoy+2vsjPKH6rb63YWw5/JhltosQmTDf0CuJIXSExx6PRoZK8JVGr5DZswDPXu3aSIwss3K3Or2Rj5QPS+6V6Tm3YHKyqKyeDVNlnKsGtF4QT0NFTrtwDFzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739426604; c=relaxed/simple;
-	bh=A1KejvtxR9/JSfGOFPXMqvUIQBaZlAHvh1/62NOg5Y8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M21KyCEqHTk5Vk/pC61GLDVzhrjl19UAUVih2pboDIL1CdndhNTh/3pjY79RSYGVBuB82K+gISlaIMWaxXyNlshTL5CCWToH1EtpJsmME+/OFWuy4pXeMkj3f7aXr80wg7+aYVKplG7eJ2/reu8BJX2Uf6rvA5nNnLuJAMDwIjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LB8+CRIZ; arc=none smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1739427180; c=relaxed/simple;
+	bh=GEJZwnWqsIMq3HKET1mdxf8SV5zMREPN381jd4cLlhM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jn4RZAfOJVx1Z/nn+STINzCxIH/ROxnSXN3DctvPzulWG0dQ6PgoZus0nYbKf5JUenms/zq7dYQnJN9yLk4wR5jQQJQC2HODjrb7PegFoaHG63a8ubY+TCUrKRUmN1W6x3oqYKbXiF0F0qS1ZQ49WqbOvBRDb/ZHsIBxkm+btgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y3B6dGVa; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LB8+CRIZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y3B6dGVa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739426603; x=1770962603;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=A1KejvtxR9/JSfGOFPXMqvUIQBaZlAHvh1/62NOg5Y8=;
-  b=LB8+CRIZyDsFotBQH8KFunpfma2smt4yYX8cVeSpr66fjhTryEUP+D57
-   4dpw6owdPhAgpj39TNqZyUCJrmbsRZ0W/Vcu9SoSSgJIj+xrPQFUchl1o
-   eBE4+i293mXkPy3xsvAoCBHbq4lmLYV+KKcOdkrN2pbv0mfFCmRKxZm1+
-   gB0Qj0x/NILSjv874rvaxz8WGsUjsIj0R+969lSkE3OfKz4WbKETz05uu
-   I62aCMWqGspb+My5o3xgI3Ox/OoKxXyX23fXzWaj2gR2UQOkgkIJfienu
-   JMFPKZsZ5O0vDUFRfy5hP7MXXi0KmF3OScpC0HSK6IYiJ1p0aXIesp+OL
-   g==;
-X-CSE-ConnectionGUID: yfyih/YkQoOYa7ODLPVcQQ==
-X-CSE-MsgGUID: MRws48Y+THm/FAdCMXmQKg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="57644332"
+  t=1739427178; x=1770963178;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=GEJZwnWqsIMq3HKET1mdxf8SV5zMREPN381jd4cLlhM=;
+  b=Y3B6dGVaf4XgFtsnu/SpHcDfNJF19sAkVqkorop83pyJdV0+xMg2Tu1E
+   obdbhTVAHJtorV2VsusW2Jfblde7oZpQamVkmiEEnQu5sW5PfjmepNVVG
+   mhgQZ9+EC89hQemYNtLl8H2/hjv5I2Z4zdu6rNzYlT3Ag3JIMspKPlO8I
+   sZLgaIYBpSwGWdHMJdzmponi27jrRGLrMdet5eAV+w4SSoQnhk0RYsB81
+   N1tSPmrdF1vsHlllWh3uL/JoWufAErP0AP33N/WCTrme5f4RX9yY9T2Ll
+   F/yvo+s1GT779sHSZ2y1t/fq0wzL9UW+EFN0TLHfIuqT9E0TvSySAd5B9
+   A==;
+X-CSE-ConnectionGUID: Un/3OUz1QB2/kYlJ4JVB3w==
+X-CSE-MsgGUID: LPmm1REwTSuOj3+C7ySsqg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="44046217"
 X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
-   d="scan'208";a="57644332"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 22:03:22 -0800
-X-CSE-ConnectionGUID: AvIoVobbT6+oTVNraSds5w==
-X-CSE-MsgGUID: kvlLfINJR0uni5uKSjASzw==
+   d="scan'208";a="44046217"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 22:12:57 -0800
+X-CSE-ConnectionGUID: bkfrU6y2QB2L4ycTkHh9VA==
+X-CSE-MsgGUID: VzfZiVD2SRO52yQ6ry9WDg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
-   d="scan'208";a="112900246"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 22:03:18 -0800
-Date: Thu, 13 Feb 2025 06:59:43 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: vladimir.oltean@nxp.com, claudiu.manoil@nxp.com,
-	alexandre.belloni@bootlin.com, UNGLinuxDriver@microchip.com,
-	andrew@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net: dsa: felix:  Add NULL check for outer_tagging_rule()
-Message-ID: <Z62KTwRLHAQDyIGb@mev-dev.igk.intel.com>
-References: <20250213040754.1473-1-vulab@iscas.ac.cn>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="117156622"
+Received: from mohdfai2-mobl.gar.corp.intel.com (HELO [10.247.42.34]) ([10.247.42.34])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 22:12:50 -0800
+Message-ID: <b19357dc-590d-458c-9646-ee5993916044@linux.intel.com>
+Date: Thu, 13 Feb 2025 14:12:47 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250213040754.1473-1-vulab@iscas.ac.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-next v4 0/9] igc: Add support for Frame Preemption
+ feature in IGC
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, Furong Xu <0x1207@gmail.com>,
+ Russell King <rmk+kernel@armlinux.org.uk>,
+ Serge Semin <fancer.lancer@gmail.com>,
+ Xiaolei Wang <xiaolei.wang@windriver.com>,
+ Suraj Jaiswal <quic_jsuraj@quicinc.com>,
+ Kory Maincent <kory.maincent@bootlin.com>, Gal Pressman <gal@nvidia.com>,
+ Jesper Nilsson <jesper.nilsson@axis.com>,
+ Andrew Halaney <ahalaney@redhat.com>,
+ Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+ intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+References: <20250210070207.2615418-1-faizal.abdul.rahim@linux.intel.com>
+ <20250210070207.2615418-1-faizal.abdul.rahim@linux.intel.com>
+ <20250212220121.ici3qll66pfoov62@skbuf>
+Content-Language: en-US
+From: "Abdul Rahim, Faizal" <faizal.abdul.rahim@linux.intel.com>
+In-Reply-To: <20250212220121.ici3qll66pfoov62@skbuf>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 13, 2025 at 12:07:54PM +0800, Wentao Liang wrote:
-> In felix_update_tag_8021q_rx_rules(), the return value of
-> ocelot_vcap_block_find_filter_by_id() is not checked, which could
-> lead to a NULL pointer dereference if the filter is not found.
-> 
-> Add the necessary check and use `continue` to skip the current CPU
-> port if the filter is not found, ensuring that all CPU ports are
-> processed.
-> 
-> Fixes: f1288fd7293b ("net: dsa: felix: fix VLAN tag loss on CPU reception with ocelot-8021q")
-> Cc: stable@vger.kernel.org # 6.11+
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->  drivers/net/dsa/ocelot/felix.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
-> index 3aa9c997018a..10ad43108b88 100644
-> --- a/drivers/net/dsa/ocelot/felix.c
-> +++ b/drivers/net/dsa/ocelot/felix.c
-> @@ -348,6 +348,8 @@ static int felix_update_tag_8021q_rx_rules(struct dsa_switch *ds, int port,
->  
->  		outer_tagging_rule = ocelot_vcap_block_find_filter_by_id(block_vcap_es0,
->  									 cookie, false);
-> +		if (!outer_tagging_rule)
-> +			continue;
->  
->  		felix_update_tag_8021q_rx_rule(outer_tagging_rule, vlan_filtering);
->  
 
-All other calls to ocelot_vcap_block_find_filter_by_id() are checked, so
-looks correct, thanks.
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-> -- 
-> 2.42.0.windows.2
+On 13/2/2025 6:01 am, Vladimir Oltean wrote:
+> On Mon, Feb 10, 2025 at 02:01:58AM -0500, Faizal Rahim wrote:
+>> Introduces support for the FPE feature in the IGC driver.
+>>
+>> The patches aligns with the upstream FPE API:
+>> https://patchwork.kernel.org/project/netdevbpf/cover/20230220122343.1156614-1-vladimir.oltean@nxp.com/
+>> https://patchwork.kernel.org/project/netdevbpf/cover/20230119122705.73054-1-vladimir.oltean@nxp.com/
+>>
+>> It builds upon earlier work:
+>> https://patchwork.kernel.org/project/netdevbpf/cover/20220520011538.1098888-1-vinicius.gomes@intel.com/
+>>
+>> The patch series adds the following functionalities to the IGC driver:
+>> a) Configure FPE using `ethtool --set-mm`.
+>> b) Display FPE settings via `ethtool --show-mm`.
+>> c) View FPE statistics using `ethtool --include-statistics --show-mm'.
+>> e) Enable preemptible/express queue with `fp`:
+>>     tc qdisc add ... root taprio \
+>>     fp E E P P
+> 
+> Any reason why you are only enabling the preemptible traffic classes
+> with taprio, and not with mqprio as well? I see there will have to be
+> some work harmonizing igc's existing understanding of ring priorities
+> with what Kurt did in 9f3297511dae ("igc: Add MQPRIO offload support"),
+> and I was kind of expecting to see a proposal for that as part of this.
+> 
+
+I was planning to enable fpe + mqprio separately since it requires extra 
+effort to explore mqprio with preemptible rings, ring priorities, and 
+testing to ensure it works properly and there are no regressions.
+
+I’m really hoping that fpe + mqprio doesn’t have to be enabled together in 
+this series to keep things simple. It could be added later—adding it now 
+would introduce additional complexity and delay this series further, which 
+is focused on enabling basic, working fpe on i226.
+
+Would that be okay with you?
+
