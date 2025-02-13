@@ -1,115 +1,122 @@
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37A9190477
-	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 10:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE992054E4;
+	Thu, 13 Feb 2025 10:51:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739443813; cv=none; b=imy53fo3+iJX2wgpxSnCLgwCjlFTWDLAm2QFwSl9TTipqbc/7fTSqfI83R+lMl7OHwaTzHkqBG1jygMmwy/1bQr9nkF2mdChsdDnvjnJY14aYnFjHeww/APl24D4mzREpi9SuBOp19HaSCWTRz8AVjaO/jfkNUr/EXhMBO/w95A=
+	t=1739443886; cv=none; b=UHSCkJogeNweSZk9KsLCK8QTqDsdfZiIzh4Qgr6ZqXhOcLQgfNPQrVo15z9sT388XoJIoJLxj1vd8x0EcQeBu5qxap+KC8Q3BmyaFC1j6WA/SyZ8COkQHpyqScNVkX5S65T5IknKb88BcxT8wbKBeyz1eETptVIFgztmslVhF2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739443813; c=relaxed/simple;
-	bh=PZldEN6Abj+iXjTpspjBtDYDXPhcFFE2GIltlBfsO/w=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=tsXNyAz4SafbFpr/qcsJpsnNJtBKfeEO8+TRM3KrNOd4uxByCbfQgULB5OQLJl8VscN7XPMO2R6p+8B1AY1acjpipyVstltDRHnXIl7zutOzRb/BVWmanKOdkM/tTWcImvOvwFNBQFGrFs0gUPKe2IyOOtNEFAMoCZg7D6PVyGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mjzdBwKX; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1739443886; c=relaxed/simple;
+	bh=IF3pV7l7zOjvvG/0UDfuSxAlR8BVTLZ4GNjgKKSCkmo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LAe3ifnqdYgIZS1BKZPgN1EKQj8mq2AbzqBokUoyTvPQMdunBg9nWK5CZ11MhaXQWU7cBtqE0jDyNHLpShXnlzCTYw9WZjxfP11hNxCiximpY4+sh7C4pa0nVTueslx2uyOZPbnyEk1LybEmz0HukgIJVtvWzj7WQsBMLHGhbrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=X/XnKPTb; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="mjzdBwKX"
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1739443798;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PZldEN6Abj+iXjTpspjBtDYDXPhcFFE2GIltlBfsO/w=;
-	b=mjzdBwKXjH97PHuJxlrFYl9NA4VqpM+GHmQl0XhlHLn82l4KtFXVZNKx1YkSpjao357yJN
-	BdSs+mQcmyFRYpt7nyH5nlemg51obctsp+ED9ANbZo4kwWdVv/MMA1YTXmA/4OXjkAciDz
-	bE7d2qjq+medOvjwao3I0MqwQNKws0A=
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="X/XnKPTb"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=t+Sa1rIopsE4vpBI1kqaD2rohwmI2qAey/4fz9993mc=; b=X/XnKPTb2dokpBdeEwNhew0L1F
+	B+I44FJ50CE/Xs7CxZGHDwJ3TH4O8+W6KA/hZvX1JiGnZrJ98HujZJ5ChNpcp5D8mGcow579YLpVz
+	YG+kAlsPjl6AJmGrAu3vcY5995Z1q7UPL3liVu8qGcYnFAADjtNKz9jqMpC5tmJa1uMwvDV1w8nDT
+	CH5VY8Wl05Nr88D/uNFQlJexL6u9uGZZsCMac8HELUEAAPkKifa8NhD3s2d4iVfZI4GlJQyWVI7W1
+	bMONE0q26ZCGVLQC9RHn3HwC7rZsrzvWGClclXPZfh9NfEwlZ+xAlqLotpNyctkV3/K26wKepODna
+	NV43mtww==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51268)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tiWoK-0000pL-2u;
+	Thu, 13 Feb 2025 10:51:12 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tiWoH-00024b-0u;
+	Thu, 13 Feb 2025 10:51:09 +0000
+Date: Thu, 13 Feb 2025 10:51:09 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Chintan Vankar <c-vankar@ti.com>
+Cc: Rosen Penev <rosenp@gmail.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>, s-vadapalli@ti.com,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH] net: phy: mscc: Add auto-negotiation feature to VSC8514
+Message-ID: <Z63OnZTBMeAbzxrB@shell.armlinux.org.uk>
+References: <20250213102150.2400429-1-c-vankar@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
-Subject: Re: [PATCH net-next] sctp: Remove commented out code
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Thorsten Blum <thorsten.blum@linux.dev>
-In-Reply-To: <20250212195747.198419a3@kernel.org>
-Date: Thu, 13 Feb 2025 11:49:45 +0100
-Cc: Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
- Xin Long <lucien.xin@gmail.com>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- linux-sctp@vger.kernel.org,
- netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F83DD790-9085-4670-9694-2668DACFB4C1@linux.dev>
-References: <20250211102057.587182-1-thorsten.blum@linux.dev>
- <b85e552d-5525-4179-a9c4-6553b711d949@intel.com>
- <6F08E5F2-761F-4593-9FEB-173ECF18CC71@linux.dev>
- <2c8985fa-4378-4aa2-a56d-c3ca04e8c74c@intel.com>
- <20250212195747.198419a3@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250213102150.2400429-1-c-vankar@ti.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi Jakub,
+On Thu, Feb 13, 2025 at 03:51:50PM +0530, Chintan Vankar wrote:
+> Add function vsc85xx_config_inband_aneg() in mscc_main.c to enable
+> auto-negotiation. The function enables auto-negotiation by configuring
+> the MAC SerDes PCS Control register of VSC8514.
+> 
+> Invoke the vsc85xx_config_inband_aneg() function from the
+> vsc8514_config_init() function present in mscc_main.c to start the
+> auto-negotiation process. This is required to get Ethernet working with
+> the Quad port Ethernet Add-On card connected to J7 common processor board.
 
-> On 13. Feb 2025, at 04:57, Jakub Kicinski wrote:
-> On Tue, 11 Feb 2025 12:33:57 +0100 Mateusz Polchlopek wrote:
->>>> I don't think we want to remove that piece of code, please refer
->>>> to the discussion under the link:
->>>>=20
->>>> =
-https://lore.kernel.org/netdev/cover.1681917361.git.lucien.xin@gmail.com/ =
-=20
->>>=20
->>> Hm, the commit message (dbda0fba7a14) says payload was deleted =
-because
->>> "the member is not even used anywhere," but it was just commented =
-out.
->>> In the cover letter it then explains that "deleted" actually means
->>> "commented out."
->>>=20
->>> However, I can't follow the reasoning in the cover letter either:
->>>=20
->>> "Note that instead of completely deleting it, we just leave it as a
->>> comment in the struct, signalling to the reader that we do expect
->>> such variable parameters over there, as Marcelo suggested."
->>>=20
->>> Where do I find Marcelo's suggestion and the "variable parameters =
-over
->>> there?"
->>>=20
->>=20
->> That's good question, I can't find the Marcelo suggestion that author
->> mention. It's hard to find without links to previous series or
->> discussion :/
->>=20
->> I guess it should be also commented by maintainers, I see that in the
->> Xin's thread Kuba also commented change with commenting out instead
->> of removing code. Let's wait
->=20
-> In the linked thread the point was to document what struct will be =
-next
-> in memory. Here we'd be leaving an array of u8s which isn't very
-> informative. I see there's precedent in this file, but I vote we just
-> delete the line.
+A few points:
 
-This patch deletes the line and I'm wondering why the "cr"?
+1. please read the netdev FAQ:
+   https://www.kernel.org/doc/html/v5.6/networking/netdev-FAQ.html
+   specifically the first question. Please also note the delay
+   requirement for resending patches.
 
-Were you referring to this patch maybe?
-=
-https://lore.kernel.org/r/20250114215439.916207-3-thorsten.blum@linux.dev/=
+2. Is this a fix? Does something not work at the moment?
 
+3. Will always forcing the inband signalling to be enabled result in
+   another existing user that doesn't provide the inband signalling
+   now failing? Do you know for sure that this won't disrupt any other
+   users of this PHY?
 
-Should both payload fields just be deleted since they're not used?
+4. Maybe consider using phylink in the ethernet driver and populating
+   the .inband_caps() and .config_inband() methods which will allow
+   the inband signalling properties to be negotiated between the MAC's
+   PCS and the PHY.
 
-Thanks,
-Thorsten=
+Other points inline below:
+
+> +static int vsc85xx_config_inband_aneg(struct phy_device *phydev, bool enabled)
+> +{
+> +	u16 reg_val = 0;
+> +	int rc;
+> +
+> +	if (enabled)
+> +		reg_val = MSCC_PHY_SERDES_ANEG;
+> +
+> +	rc = phy_modify_paged(phydev, MSCC_PHY_PAGE_EXTENDED_3,
+> +			      MSCC_PHY_SERDES_PCS_CTRL, MSCC_PHY_SERDES_ANEG,
+> +			      reg_val);
+> +
+> +	return rc;
+
+Why not simply:
+
+	return phy_modify_paged(phydev, MSCC_PHY_PAGE_EXTENDED_3,
+				MSCC_PHY_SERDES_PCS_CTRL,
+				MSCC_PHY_SERDES_ANEG,
+				reg_val);
+
+?
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
