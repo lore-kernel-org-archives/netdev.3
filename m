@@ -1,64 +1,66 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C831D15252D
-	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 19:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE15207DF5
+	for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 19:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739474019; cv=none; b=b/5APcBaKM3+GIPKb8j9ObFSeTZDUsZXY17lANkh8rnDN1n9tNm/qTVpIToWW1EoR7gGbCVh4YZzdZd4YCFQt5zbeb4UUV58UE+kBqNFp6z6fe5UpLWFkF47eWbVJ9xtoKH8Q0mD6e/RQKVQLzLnA/cAfrvSo6Ct6RAt3h5b+Qo=
+	t=1739474113; cv=none; b=BhhSrdrsQJzULa4anYa5dnZJsxMr+mDybiZFQM/AOCVwEmj0uYiX6Uq0AZRPbHq0Mz9fu1kwWimasF92XlveLfth2Je4XEYaoTzd+j7f8iPsl2toYVypj1pPrzNBSLCN9rjhqDSAiORrh40DitVDXEu02gS8ixALlHcNx/XgcYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739474019; c=relaxed/simple;
-	bh=myqxPbT7l07+gyMYR8nvxo4kPwy5QkEG9BIQJweMRCs=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=EybdoEw6NjMDfbspIdKdPgIOQYNFbKoAQa7PnL6OOndSvvdb1BYlwqKORTKFHnSllteXTc8Kr4urStSMgKUxOzEX2JEB7FTXIS3sufbIGgblMDwXNUux5sWbRt/AeZlH8IW5Lk2xbA/dRGvyDxX7ARABBmAq0bIfwIJL+ZNQvo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NuOTqbwB; arc=none smtp.client-ip=209.85.218.43
+	s=arc-20240116; t=1739474113; c=relaxed/simple;
+	bh=YHwj2vgw0edAtD+zWlq8pSERpoEpDr7QktM9pnOs8ss=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Cm+ZQjlDFf8OCl9fJirE/pGMwik7VfI2ED/lmvg70KWgYxRkYah8DpgcAwttwyFrwHMvzbesxC3EevApnrLwlra6C3aWPHkwZF5KQ7a90cvO3LChRZCpE/v+d8drmW6K438sw9OIIsKWL7IHe9eavPCYW3i/8sOiCfcPY7diz90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mG53qLNC; arc=none smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NuOTqbwB"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ab7e1286126so229147866b.0
-        for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 11:13:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mG53qLNC"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5dec817f453so1895475a12.2
+        for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 11:15:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739474016; x=1740078816; darn=vger.kernel.org;
-        h=content-transfer-encoding:autocrypt:content-language:cc:to:subject
-         :from:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=nwrl6QSVn5BcC1WG50dlm1v6vha1Ybi+hemQFsqdun0=;
-        b=NuOTqbwBULY3fFBfk8i1ygDdUItOz1tdgfRtpWv8/dI09vvgYaBXJrkcAktHdGYqIg
-         tfTufnVFJoYSO22PDOz7kMAJv+6e8dVUoW6bWCfoWT5ZBWbga/Rcmx1v6Omi+g9eB3H3
-         gP+/snk/BOhtGJohXdMs8XCwDo6DIpzqJu+vDd/SRICVBOOliZZWwUvb4UXEvGlkY9Dq
-         yIXdYl5h3hrBTzhDMMAEdmVNkO78a/+G08QS9BUrEHduNdV1YW03wTlhHcPmvcn+iuSe
-         jZEYqTcaLUMkkh60JH128DiNtzSTS6DkXoG63an0ER59WmigEgy4Ncyw5hvzQqcD0xj/
-         RuHw==
+        d=gmail.com; s=20230601; t=1739474109; x=1740078909; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=kLy/VUh3iLQXwGRX+b2tFLjcAPop6DDCMG2HFbW2lX0=;
+        b=mG53qLNCzDpcOKNfgELAU3IdpKAOJT5GEHbW03Jv0Bv/7rsLa3q9LwRs90mDc2r5vo
+         HcLhUGlIahvvQEu5iliYqQ95nHLahIW63FovcgmKxuNWbI0+gdJAjuS5l24VPsjq1ORs
+         e5MrGj4206KkE5JrKtCC4VflpML3SmE4g7i0vtBkiNLkNVem9puoKAwgJcedSGiICodf
+         fMuzK0PRwRHG8R/dyrsOQM22O94ZCkqJsLz0d7Z+AwIrZfoI+pzfikQQNQhdojYyUN5r
+         XjKy4eQYLmO/u4hoyk4qaH/OzeDtJJrp7BPWZIx1sZSoMPRUsqCxjxBIIjVa6muWMouo
+         NiSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739474016; x=1740078816;
-        h=content-transfer-encoding:autocrypt:content-language:cc:to:subject
-         :from:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nwrl6QSVn5BcC1WG50dlm1v6vha1Ybi+hemQFsqdun0=;
-        b=NWltS5xyxXCRhTqZ8DbEMNWv4Jo+JzYu8o/8WcQYnopIUtPLbptwjQ+N4lGpzCN2Pa
-         k9Kx1sGVTlJyblY1rqsRfxfCPrUK/S48qRNfV4P8HyQ7W7NSOLob1PMr1vxC3NbNysxs
-         +mFCFXO4BHb3LajrK0gB/nYBYR16AvDCOgLmCxSHPCIjrht7nlhlbQYFgWIR5EctpFLu
-         YK7M9xfJBWQxS1yoqFIbunL1Lr5L27WbTXi1WCalTRMLJG+txuMvfw0du9DbVE7vtQAt
-         u3yUi2qyXm70g7VD8PZpB2LWbTm/sFemWTEdo5JSTz9S/IoypN2rb2vqeU2cWwhlrVfW
-         hryQ==
-X-Gm-Message-State: AOJu0Yy4U1zPoqNZic4Mi+BOR1wtIxmtMYXvBeLaEWayc6U08TXENYGO
-	C2BDU2vnNlrH0JlZ77NdpQDIDpa+ZfINesQ1EvCMCijcrj23IIeZ
-X-Gm-Gg: ASbGncv/tBz2FJZyrbfAXl2jg8AtD6jzjOKLgLP41j4DaRsNBnnn+D1nKvDO45hLwUW
-	GwJnOK5eQgzgh50s1R1CN+nbSOSKdHPMMLsWrW8JqbOmdPIhw1HSaViyBbA7J53m/d3456/gGe8
-	29qlqruulTgvG6c4/o4uwVhSn7RZ3Fc871Ps19Z2O3Vh4IQ4kQVrNUqO/ZzPoGASg92Zaw9qZKO
-	u6TBwqMzVEgwA340i/EVvaJ9UgX3/tdLjk4fJr/wNaLfGDn75EUDFFRqfBrf9p2+GkuhO5hLAWN
-	F+vjFHhGMoauIH0dx9umSUX6RO/KkftW7u9P0HBpcFGVXUxX0h5rycgoShaaPpJW83W9U0x0Q2L
-	X4hLx/ds4gF2EHMr1VhdecogyTIN3mMLXLiL595OWh9THAGOMwzgs0tLsA+kO2+wxgSZWMABY2T
-	uHtqNG
-X-Google-Smtp-Source: AGHT+IGiWj/pjTnEfHLSfUmTapKcNYPtWyxw2vzblrHCYjkGtsicHhvyPoKaC99UeMmRggNgfOZBlQ==
-X-Received: by 2002:a17:907:608d:b0:ab7:eff8:f92e with SMTP id a640c23a62f3a-ab7f3380d9bmr832833166b.21.1739474015843;
-        Thu, 13 Feb 2025 11:13:35 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739474109; x=1740078909;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kLy/VUh3iLQXwGRX+b2tFLjcAPop6DDCMG2HFbW2lX0=;
+        b=swsmGSFQUphYq+ohEUr0L63q7buXiOoPRlXLjW88WNZdgbjhXBsngSEM+JpP9LrOgp
+         VivxXXLham+iIsCRL/W9PJbQ0aI6TbtAUi0HU1ozWbhwQ0hWBfhM4hkUWb7tYR+GxUhE
+         GDmA3c/xbjvjMT23FULsec8C4+ZpLOyB8iTHyxACOun64fQEeFlRFP0d+zFje2fKFt1Y
+         P6ZPJxcF2epUL9qNpB2F81gxprzLRUz6GLVBwbmE5uSmznKTlqvYj3IJdmiqcHqIfEO1
+         Yi+Pkq+wphuLn9sq6fNDQBXv1FGTBvwi1KELs12WiQZxqrwvjaYweEaskWu7bab2XJx8
+         H7Fg==
+X-Gm-Message-State: AOJu0YxqNT9hFh9c3ycoSuVrDd/WzxiJPteYF35na9qdWu8ryME4nOXo
+	HFVDXtJTX7Pxe2UYQGn38fPsOCHTXueFNjRGuI8nQHND3bhyu/6e
+X-Gm-Gg: ASbGncu1HpmfU+0j3VO7K5eNRrJcu2kWHhPWK9+UOmQu21VBZufkCOevRY2/2GRVTrI
+	NdcBPi3fiN/KEMHe+k5VSUv28KW/m30j//PxElsns1+yiJCynXwJ2rjOYboBps7p7Kv8Jd2rSoh
+	VDEbGuC4zS2ucf2wfsHASG8bz+XBL8aL1wHJYXyFbdswUHb4SSLBpFGyyBTg/TpnjPcAPCEltw5
+	oyWc41Qc1K9Hv/ArmQEC8LeU10PtgNhsvHsFBIq3XmAe1pW1tx4LWYo72cN67qX0LEFMkykbkOc
+	4CniVYcmtzI2RBLPKvQDZe0AT3N/q8JdV9pJEQ2odqVDQg4FbczRIw8YCxN+rNk2MLiLiUds2T6
+	fAgpUQOnM596XjtmHJLYoF753dzeZNBpofN5H3WMEBEOLZv0+ciPXDE9G17ayW1ft81TVbXuS1q
+	SNUT5u
+X-Google-Smtp-Source: AGHT+IFk3ripNihVXRilgD+8AazXf/lze6Q7Jjx508qpNS2gzDi44HgfgBCYTdZ0gDhBo6kr5wYn/Q==
+X-Received: by 2002:a05:6402:2382:b0:5dc:73fc:2693 with SMTP id 4fb4d7f45d1cf-5deaddb60bfmr6893018a12.18.1739474109186;
+        Thu, 13 Feb 2025 11:15:09 -0800 (PST)
 Received: from ?IPV6:2a02:3100:9dea:b00:8140:d035:b1a4:911d? (dynamic-2a02-3100-9dea-0b00-8140-d035-b1a4-911d.310.pool.telefonica.de. [2a02:3100:9dea:b00:8140:d035:b1a4:911d])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-aba532581cesm182761766b.45.2025.02.13.11.13.34
+        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5dece287d13sm1623783a12.68.2025.02.13.11.15.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Feb 2025 11:13:34 -0800 (PST)
-Message-ID: <c6a969ef-fd7f-48d6-8c48-4bc548831a8d@gmail.com>
-Date: Thu, 13 Feb 2025 20:14:09 +0100
+        Thu, 13 Feb 2025 11:15:08 -0800 (PST)
+Message-ID: <d6f97eaa-0f13-468f-89cb-75a41087bc4a@gmail.com>
+Date: Thu, 13 Feb 2025 20:15:42 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,9 +68,9 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: [PATCH v2 net-next 1/3] r8169: add PHY c45 ops for MDIO_MMD_VENDOR2
+ registers
 From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH v2 net-next 0/3] net: phy: realtek: improve MMD register
- access for internal PHY's
 To: Realtek linux nic maintainers <nic_swsd@realtek.com>,
  Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
  Jakub Kicinski <kuba@kernel.org>, David Miller <davem@davemloft.net>,
@@ -76,6 +78,7 @@ To: Realtek linux nic maintainers <nic_swsd@realtek.com>,
  Andrew Lunn <andrew@lunn.ch>,
  Russell King - ARM Linux <linux@armlinux.org.uk>
 Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <c6a969ef-fd7f-48d6-8c48-4bc548831a8d@gmail.com>
 Content-Language: en-US
 Autocrypt: addr=hkallweit1@gmail.com; keydata=
  xsFNBF/0ZFUBEAC0eZyktSE7ZNO1SFXL6cQ4i4g6Ah3mOUIXSB4pCY5kQ6OLKHh0FlOD5/5/
@@ -120,6 +123,7 @@ Autocrypt: addr=hkallweit1@gmail.com; keydata=
  H/0Z53okMykVs3a8tECPHIxnre2UxKdTbCEkjkR4V6JyplTS47oWMw3zyI7zkaadfzVFBxk2
  lo/Tny+FX1Azea3Ce7oOnRUEZtWSsUidtIjmL8YUQFZYm+JUIgfRmSpMFq8JP4VH43GXpB/S
  OCrl+/xujzvoUBFV/cHKjEQYBxo+MaiQa1U54ykM2W4DnHb1UiEf5xDkFd4=
+In-Reply-To: <c6a969ef-fd7f-48d6-8c48-4bc548831a8d@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -129,19 +133,66 @@ MDIO_MMD_VEND2 registers. So far the paging mechanism is used to
 address PHY registers. Add support for c45 ops to address MDIO_MMD_VEND2
 registers directly, w/o the paging.
 
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+---
 v2:
-- remove superfluous space in patch 1
+- remove superfluous space
 - make check in r8169_mdio_write_reg_c45 more strict
+---
+ drivers/net/ethernet/realtek/r8169_main.c | 32 +++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-Heiner Kallweit (3):
-  r8169: add PHY c45 ops for MII_MMD_VENDOR2 registers
-  net: phy: realtek: improve mmd register access for internal PHY's
-  net: phy: realtek: switch from paged to mmd ops in rtl822x functions
-
- drivers/net/ethernet/realtek/r8169_main.c | 32 ++++++++
- drivers/net/phy/realtek/realtek_main.c    | 90 ++++++++++-------------
- 2 files changed, 70 insertions(+), 52 deletions(-)
-
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 9fe53322d..fa339bd8c 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -5200,6 +5200,33 @@ static int r8169_mdio_write_reg(struct mii_bus *mii_bus, int phyaddr,
+ 	return 0;
+ }
+ 
++static int r8169_mdio_read_reg_c45(struct mii_bus *mii_bus, int addr,
++				   int devnum, int regnum)
++{
++	struct rtl8169_private *tp = mii_bus->priv;
++
++	if (addr > 0)
++		return -ENODEV;
++
++	if (devnum == MDIO_MMD_VEND2 && regnum > MDIO_STAT2)
++		return r8168_phy_ocp_read(tp, regnum);
++
++	return 0;
++}
++
++static int r8169_mdio_write_reg_c45(struct mii_bus *mii_bus, int addr,
++				    int devnum, int regnum, u16 val)
++{
++	struct rtl8169_private *tp = mii_bus->priv;
++
++	if (addr > 0 || devnum != MDIO_MMD_VEND2 || regnum <= MDIO_STAT2)
++		return -ENODEV;
++
++	r8168_phy_ocp_write(tp, regnum, val);
++
++	return 0;
++}
++
+ static int r8169_mdio_register(struct rtl8169_private *tp)
+ {
+ 	struct pci_dev *pdev = tp->pci_dev;
+@@ -5230,6 +5257,11 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
+ 	new_bus->read = r8169_mdio_read_reg;
+ 	new_bus->write = r8169_mdio_write_reg;
+ 
++	if (tp->mac_version >= RTL_GIGA_MAC_VER_40) {
++		new_bus->read_c45 = r8169_mdio_read_reg_c45;
++		new_bus->write_c45 = r8169_mdio_write_reg_c45;
++	}
++
+ 	ret = devm_mdiobus_register(&pdev->dev, new_bus);
+ 	if (ret)
+ 		return ret;
 -- 
 2.48.1
+
 
