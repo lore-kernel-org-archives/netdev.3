@@ -1,44 +1,35 @@
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36361FC0FC
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 21:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503CC1DC9AB
+	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 21:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739568443; cv=none; b=uYR69cXpoNRePoRoN92KkrGPnhkhIgiJ3jIthCVOcM1MzRr9sugzylqWIN16pTdFt3gOMu216RtGzS77Dh+2koRwDJsRSB5dIdPPyKQKFK/bvFqhHq1pCzu+3h1q5UkVEFYpz6m4t+o7YOYZ2smNfUqbUfSs79nFBJ4tPC9o2h8=
+	t=1739568607; cv=none; b=rM0aGqcFl+Ipkl/f7jpcmC60EguKMBtu9jMBSmwm6CA2pRSNon+MJCTD8IaWbJ2OwWmmctdFyIYhh+QAoVENNGPiOXA5MlQI7Ta0vWspXUFezVUCfQnuXPrRxmWI9HrrwmVNt+693mtUvwejkWqzYzsVmRcw0AF5xA2vbLMZ9SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739568443; c=relaxed/simple;
-	bh=LxTLhoBJdoXXGNY+yZ5eiK4g2XkgRoKuBiTWWjJhl8w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g9KNDh0zRJiMDRzoUl1obwP8BSjPV8y1vKm7JawZmzUh6YKTpcWB8dibKn/T8G8iR5mSuWxBESNqlHh9NbwbuUJdE4gEa4z0SIT0jt4196IxhzIRao4lv8/G2uwWxLspm9EHSgMwYxX2tUvxUsOSma8cQIiN/MQ1f1IZ6k7EUIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tYClZI4n; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1739568607; c=relaxed/simple;
+	bh=zsatcmmjVtuJLdqbmVIni/VC6fLq0DtiTgHxQbkTqjo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=qeOHbJBRVxELYW7wT2lQkLQ7Q8ds06UJv+NUkuq1dWkyM3bi3UA+H9aoCXeRM2MpsFz1GMyTPN6uk23e4+uSRbiu07e0h1eI+tvFPaSM7iSJylaMkGKIKxL8ur0u4c2jhSd2hexCK7OuGM3grD9oxwko40FBijtsKRPgL4DUDOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aBTDagEP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tYClZI4n"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1739568429;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2HvK3KACg1xo76IcMN6cxcxvRYECoBQVtmolGvFTK1Y=;
-	b=tYClZI4nrW6qzqwOUtHUbrpRwlUlqGd1xbU8QJUnu2VYx4QTEQqZU2ybGzaDuysOGPWdSY
-	ZL88KRHTlveVifmWbCD0g+dx9nx81rMlHWMn/oHwPt7YZMzM0F6SwLExjYBgzakh1jXF9h
-	hAHc5Jb8psp1CVjpQbOVRTrFn9Ohdek=
-From: Sean Anderson <sean.anderson@linux.dev>
-To: Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Sean Anderson <sean.anderson@linux.dev>
-Subject: [PATCH net-next 0/2] net: cadence: macb: Modernize statistics reporting
-Date: Fri, 14 Feb 2025 16:27:01 -0500
-Message-Id: <20250214212703.2618652-1-sean.anderson@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aBTDagEP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C046BC4CED1;
+	Fri, 14 Feb 2025 21:30:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739568606;
+	bh=zsatcmmjVtuJLdqbmVIni/VC6fLq0DtiTgHxQbkTqjo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=aBTDagEPbI0rYArNiNUQn5NS+chpdNND5O5aMJ7VzoixSYTcZaolyeeKlvVXYsikp
+	 4sa+3pe9dAU/wNtKH6hEx+bit/k5loOya0Rwhqw1izywz1PmLKqrN23hVITHhiySGH
+	 /XppsxPGj/7+qtmSHbwzwxyjOZ2LJMFH55l3dT46GRikRzgqeXpoDo/JaedXh0lMJF
+	 idCMcmXfjTKGH85aN2pXsBVxInHC5QoLQ8uGQMu/FI7cOcZUrdCxxULc5PNgorn/0j
+	 NYG/pJpbm2jbBE3u0ad1g3xoslH+KPVSr8NTG+Wea/RT225SDySDHs/j1xugLBXv4l
+	 YgallM9Z1Hp3Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 710D0380CEE8;
+	Fri, 14 Feb 2025 21:30:37 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,19 +37,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Subject: Re: [PATCH v2 net-next 0/4] net: add EXPORT_IPV6_MOD()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173956863628.2110293.421662337450973550.git-patchwork-notify@kernel.org>
+Date: Fri, 14 Feb 2025 21:30:36 +0000
+References: <20250212132418.1524422-1-edumazet@google.com>
+In-Reply-To: <20250212132418.1524422-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, horms@kernel.org, willemb@google.com,
+ sd@queasysnail.net, ncardwell@google.com, kuniyu@amazon.com,
+ mateusz.polchlopek@intel.com, eric.dumazet@gmail.com
 
-Implement the modern interfaces for statistics reporting.
+Hello:
 
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Sean Anderson (2):
-  net: cadence: macb: Convert to get_stats64
-  net: cadence: macb: Report standard stats
+On Wed, 12 Feb 2025 13:24:14 +0000 you wrote:
+> In this series I am adding EXPORT_IPV6_MOD and EXPORT_IPV6_MOD_GPL()
+> so that we can replace some EXPORT_SYMBOL() when IPV6 is
+> not modular.
+> 
+> This is making all the selected symbols internal to core
+> linux networking.
+> 
+> [...]
 
- drivers/net/ethernet/cadence/macb.h      | 130 ++++++++--------
- drivers/net/ethernet/cadence/macb_main.c | 190 ++++++++++++++++++++---
- 2 files changed, 235 insertions(+), 85 deletions(-)
+Here is the summary with links:
+  - [v2,net-next,1/4] net: introduce EXPORT_IPV6_MOD() and EXPORT_IPV6_MOD_GPL()
+    https://git.kernel.org/netdev/net-next/c/54568a84c95b
+  - [v2,net-next,2/4] inetpeer: use EXPORT_IPV6_MOD[_GPL]()
+    https://git.kernel.org/netdev/net-next/c/95a3c96c7460
+  - [v2,net-next,3/4] tcp: use EXPORT_IPV6_MOD[_GPL]()
+    https://git.kernel.org/netdev/net-next/c/6dc4c2526f6d
+  - [v2,net-next,4/4] udp: use EXPORT_IPV6_MOD[_GPL]()
+    https://git.kernel.org/netdev/net-next/c/2f8f4f22452a
 
+You are awesome, thank you!
 -- 
-2.35.1.1320.gc452695387.dirty
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
