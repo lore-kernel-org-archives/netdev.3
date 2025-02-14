@@ -1,157 +1,98 @@
-Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97C51DDC08
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 06:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4941149C64;
+	Fri, 14 Feb 2025 06:16:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739513664; cv=none; b=ZXw3U5YoG7DLj8hgu03UdGZ1DBj98rWh9gJcNtOvMb5vJrotnjITpZDjeTjrVYrdoElNpvJBp5i/VkO+BXuQfNF3PyJ4yaX0iH2krEW4A16jroVqCoovSKW8LnTl1H3ZLQn1IVBqxMAH857KzASs0vI06XXCvyD+HNMhlVY1VxI=
+	t=1739513779; cv=none; b=WEhcmGfhUfCFOk6Q3pJXngKHpa02Ix48TyHTIyKeS5GR2jaPKJGWcq61vH8Q2Zdiu3luWeopPDINhQPhUOjvuxBqpsQqJBWpTXpKMjlMOayjHdTk5KQIK8ecAbGP7YV8x8/p32aKnbhe/6KRH8HlOUtd18xvDCfWKWRL2RpLpxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739513664; c=relaxed/simple;
-	bh=x/quGArRa+1auH8j9YUMM4ASyFC7q28b7AB6P7DYOUo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ByaP1jCUfDondQVMCLiJAcyBG1N1L4cAfvHexRCEPXvx5cqZ61H0+wDmdCly+DrkVGXeyiWGjyOTRtsFjPTn1NZY2BOmtiIli9Ken49VoQeYb3XxDNfm2Sk/YcBcRX0NqBGgFYsrS8dEny8oF3NsCXvxZHtjqUAvHJI9hvzeDcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fahOXsf0; arc=none smtp.client-ip=209.85.166.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739513779; c=relaxed/simple;
+	bh=x2Z55WN/bolhypsMCgfZrcr9/UcmIPhudFFRNZuvWEg=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=nkgBYhkDNRgOmMw/EoXqtZ82UEkuLER7obcBG11htgiaznNEyXI/7ctqIBHdkgdhskLrI7qIqKDm19ykrzFsKbQ/s4Kkfjw4qC3gh7IpfHgYXI9f2knnFzEfv63epcr6MDc22F3fIn1pHuxMRBC2S9O1MhrCB5ZlPL69g+vpIqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=w/KpCZy0; arc=none smtp.client-ip=162.62.57.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fahOXsf0"
-Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-3d03d2bd7d2so14185595ab.0
-        for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 22:14:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739513662; x=1740118462; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NhfZiixBvgNUg9xyhXaKUMMIbFMmcepQKy7S9fJZTmQ=;
-        b=fahOXsf0FMqjFAbggMBrbDvEDJrHK+BbV6Pdsz3im1HTktTOTfd8xWfhlKLS4vnoSs
-         IW31XecvTdbT5pa4HUPeLLlqq5qaHrpc/anCs6iv0D6S2AE8Gk4R3OM7tkuIQMyWy58l
-         Jfgi+K/djSTvUo+MwWgKqS5l6vCuclLw4sixgtUFN7WRHcYolbNpRmSVXuyM4XYCBywR
-         7SF51exMWhp+MM/xLk5MXD671XtIjJ9MClDPCSV+uF1MB6qQXFfU1hCnfitUrm7bsYhT
-         MMQVQXMgN/zCzZfkGY2cUekin4zXuo62Rl4RC8zB4l7mIeQembiLc/O9BzSA+xrlWXI5
-         verg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739513662; x=1740118462;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NhfZiixBvgNUg9xyhXaKUMMIbFMmcepQKy7S9fJZTmQ=;
-        b=rk6tHjzyEp6Uv1PzIipCnTgjYQrrUBPjKzhmMJpjuD5SshP4x0aZLwQ7Vaxu2WxpEq
-         cVUklFl6BuXqQyDlGCvNarQR3CX2P/h1uZyUVrmffLx8Evo/lRbZPfP58Htql4Ra1sp8
-         tho6wce5+EM4x+Djpbyr8Idv55TRU5jCYMrXB9LYyzwvW8hGH/TtJLoi8UwbSg4zCZzb
-         Odr3Ss0kHOlQfAI9hmFwnzJG0LkNxXTLhgoozL4jWwrtd/lhINZDfmgWk9McIaKiRhlc
-         RpnwOz7zl4+3a+XbLgMobdLIxM664eemjw1yts7fFCW5nXpMMRQQjjI6bobMm1dVeikP
-         mQzA==
-X-Forwarded-Encrypted: i=1; AJvYcCX3u3PnwbnxRrFg4vU2yZM6Jvf5N5GzsJDlyM1qTMJmEJYL4AYrXXkZVbtsZWlsmE0q8bjRPc4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfJDWY911mCV6Q1CCMThLuOIzdsEEAPelFony0V3a/PZdxTaAz
-	9wy+X/HlTfnIWIQwrH59yXWJmpAQLDAMr2rJTPRNfKSI+d2AQyL0Yuoo64M+RdHNeQxq/3o1jfG
-	Ry4Q74TZoUcihRuA0/bH9hq7I/Gk=
-X-Gm-Gg: ASbGncvcRGtU9Nk4rySzH83P8eRv2/+JR+N5L43ENgf7Xx01zPbJjWFmw+mLJDMrWNJ
-	CpQPJd+upMOKasZTSxZL8t8NGooxyrMEQYACrYBu9Ey4RL3TEXeKdZUw0WTBX5A9Ac75/Ry7M
-X-Google-Smtp-Source: AGHT+IFc5S2ybjUvvoWghMonGUBspkJTovehVA68D5K73i4JTpaouM6XOlHLh6jZYdwsJRhViRMoi47xkyaPcDWMGjw=
-X-Received: by 2002:a05:6e02:1d07:b0:3cf:ceac:37e1 with SMTP id
- e9e14a558f8ab-3d18c239ce6mr47862305ab.11.1739513661849; Thu, 13 Feb 2025
- 22:14:21 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="w/KpCZy0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1739513470;
+	bh=I9tMxA0b35Ehfj2sW9QpEMSfeMBVVc4pqXPgNUSyFJI=;
+	h=From:To:Cc:Subject:Date;
+	b=w/KpCZy0aWUOFHdBAkYlMqQCljvDhY7b92Qz+comKXMpNf/G89XWHheUEXMH5t+0X
+	 x06sv6SAJ4dadI56gqfYVW6x9+fEq6sZRfQQlhh/ACOEwJIFVz8urL5sXRx/KxgLBw
+	 RI/5uQRBS7+NhkvcaeRIJjB3bn5/Khn/nL7cS/38=
+Received: from localhost.localdomain ([116.128.244.169])
+	by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
+	id 2C88A6BB; Fri, 14 Feb 2025 14:11:08 +0800
+X-QQ-mid: xmsmtpt1739513468tg3oqmv9r
+Message-ID: <tencent_832FF5138D392257AC081FEE322A03C84907@qq.com>
+X-QQ-XMAILINFO: MR/iVh5QLeiehVxo+faJzMBrZMJ7TGsCOUlN4TBw/pxiWd3JxEndMuo3xdDyMB
+	 hw5nZTeA8kHAXi7hoIcWIWLCkCMSXVA1V0O/T5Y3RuToIEUY0hTdcgQb08vo3LhJXKsfC/JAvHfI
+	 dFlAWCttNdr0V4trtFUMRcXnyH964UhkOzb51/bZfoor6r0FE2f9UE5YpxX23Di25YQaAxO92CP8
+	 Iooke+oYAazomDNH/ofk9CYXzM7PWpS3LueiFgK2e4sYNBJwAD1p0ggeJ0w7cBQI5nTRJ3/FDl+p
+	 qXpgEjcHKK2keiab4mSAS8b42zMoQoPLh5J7lpAOR19p0C6Y571Ut1RFfO8Omf9nvA+1xTe6f50z
+	 aPB1LPh2k8dFdMKfrKyseGDSs9y8rruJGtcYvHKLtjdmFtirUK5ERtB3UlnFYv2JnXesFYeBqcg6
+	 BxOtiLc1Dx5wUCEWorxZxyLEzC/LBHrjr8RzA7jcElNt1TwfAcb6Ot7QEVnb38LH6O/xuJT2fNG9
+	 629mM3h7fo7+BL5hS164+RWu94Qk3xXaNtzcRQAuc9f0BCg6HlS8QrIjTUDG234gtklE/UKr/WhP
+	 te6CenuNctvR3b+WXNAmV3Tj6s1Xd63QDpNhtNd0uFf0we42I9EabA9cvuHqWxGLjmUiDinwhStd
+	 QCLf5Kk/h+n+p5AhXFoQ0xui7AhcQwkap7EAJIR6ml9cu/gelcHTcS9st2JiNamIIwMhx7GOm7Nd
+	 vPv/Gd5+/xMlLsx+zX75NAXtr/M9vb6eulH7KVYwuscVqFFqpnATGfv0X6ewFENr35Sk4CmAalXH
+	 tdvlO66UxWeQbpTOqoG5v5la1zDSixvPfW101WnC8fQgKxSgha6LOEj6Eda7axYH+zT9+V+hmbvm
+	 zDVyI7Q5g6Cd0LKk3uL36EOhC+x59LzSAecuUmSLPTAFF0p1ZEwsFo7ZHJSFBDjBMKLF2Ef1NaE3
+	 AfAvZ+qmc=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+From: xiaopeitux@foxmail.com
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Cc: Pei Xiao <xiaopei01@kylinos.cn>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH] net: freescale: ucc_geth: make ugeth_mac_ops be static
+Date: Fri, 14 Feb 2025 14:11:07 +0800
+X-OQ-MSGID: <e940237592fae0d6e8e32d6b61b4ff18724dc918.1739513279.git.xiaopei01@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250213052150.18392-1-kerneljasonxing@gmail.com>
- <94376281-1922-40ee-bfd6-80ff88b9eed7@redhat.com> <CAL+tcoC6r=ow4nfjDvv6tDEKgPVOf-c3aHD56_AXmqUrQMyCMg@mail.gmail.com>
- <CAHS8izO0CdzNti7L3ktg4ynkJSptO96VtrzvtUEkzUiR7h38dg@mail.gmail.com>
- <CAL+tcoAmYayRmZ=GFpzwczudT4pTwRpH+AMv4TkwSP39q3snDQ@mail.gmail.com> <CAHS8izMu+N7S0EDhAMhgPazW=ghVpYjTNa18axqjrk2XTwrhFg@mail.gmail.com>
-In-Reply-To: <CAHS8izMu+N7S0EDhAMhgPazW=ghVpYjTNa18axqjrk2XTwrhFg@mail.gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Fri, 14 Feb 2025 14:13:45 +0800
-X-Gm-Features: AWEUYZkhSso-FlE9fi9Icf9eTsbEQTTFAYjziCADhc_J5KQ2ltUifXyKEQM98TQ
-Message-ID: <CAL+tcoDcUKZygnSmVEuCsECrKY=obHH6K3B2ztHrL+K9kMSPPw@mail.gmail.com>
-Subject: Re: [PATCH v2 net-next] page_pool: avoid infinite loop to schedule
- delayed worker
-To: Mina Almasry <almasrymina@google.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, davem@davemloft.net, 
-	ilias.apalodimas@linaro.org, edumazet@google.com, kuba@kernel.org, 
-	horms@kernel.org, hawk@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 14, 2025 at 12:10=E2=80=AFPM Mina Almasry <almasrymina@google.c=
-om> wrote:
->
-> On Thu, Feb 13, 2025 at 3:43=E2=80=AFPM Jason Xing <kerneljasonxing@gmail=
-.com> wrote:
-> >
-> > On Fri, Feb 14, 2025 at 4:14=E2=80=AFAM Mina Almasry <almasrymina@googl=
-e.com> wrote:
-> > >
-> > > On Thu, Feb 13, 2025 at 2:49=E2=80=AFAM Jason Xing <kerneljasonxing@g=
-mail.com> wrote:
-> > > >
-> > > > On Thu, Feb 13, 2025 at 4:32=E2=80=AFPM Paolo Abeni <pabeni@redhat.=
-com> wrote:
-> > > > >
-> > > > > On 2/13/25 6:21 AM, Jason Xing wrote:
-> > > > > > diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> > > > > > index 1c6fec08bc43..e1f89a19a6b6 100644
-> > > > > > --- a/net/core/page_pool.c
-> > > > > > +++ b/net/core/page_pool.c
-> > > > > > @@ -1112,13 +1112,12 @@ static void page_pool_release_retry(str=
-uct work_struct *wq)
-> > > > > >       int inflight;
-> > > > > >
-> > > > > >       inflight =3D page_pool_release(pool);
-> > > > > > -     if (!inflight)
-> > > > > > -             return;
-> > > > > >
-> > > > > >       /* Periodic warning for page pools the user can't see */
-> > > > > >       netdev =3D READ_ONCE(pool->slow.netdev);
-> > > > >
-> > > > > This causes UaF, as catched by the CI:
-> > > > >
-> > > > > https://netdev-3.bots.linux.dev/vmksft-net-dbg/results/990441/34-=
-udpgro-bench-sh/stderr
-> > > > >
-> > > > > at this point 'inflight' could be 0 and 'pool' already freed.
-> > > >
-> > > > Oh, right, thanks for catching that.
-> > > >
-> > > > I'm going to use the previous approach (one-liner with a few commen=
-ts):
-> > > > diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> > > > index 1c6fec08bc43..209b5028abd7 100644
-> > > > --- a/net/core/page_pool.c
-> > > > +++ b/net/core/page_pool.c
-> > > > @@ -1112,7 +1112,13 @@ static void page_pool_release_retry(struct
-> > > > work_struct *wq)
-> > > >         int inflight;
-> > > >
-> > > >         inflight =3D page_pool_release(pool);
-> > > > -       if (!inflight)
-> > > > +       /* In rare cases, a driver bug may cause inflight to go neg=
-ative.
-> > > > +        * Don't reschedule release if inflight is 0 or negative.
-> > > > +        * - If 0, the page_pool has been destroyed
-> > > > +        * - if negative, we will never recover
-> > > > +        *   in both cases no reschedule is necessary.
-> > > > +        */
-> > > > +       if (inflight <=3D 0)
-> > > >                 return;
-> > > >
-> > >
-> > > I think it could still be good to have us warn once so that this bug
-> > > is not silent.
-> >
-> > Allow me to double-check what you meant here. Applying the above
-> > patch, we do at least see the warning once in
-> > page_pool_release_retry()->page_pool_release()->page_pool_inflight()->W=
-ARN()
-> > before stopping the reschedule.
-> >
->
-> Ah, I see. I had missed indeed that we warn in page_pool_inflight() if
-> we see anything negative there anyway. Nevermind then. Thanks!
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-Okay, then a one-liner patch is enough :)
+sparse warning:
+    sparse: symbol 'ugeth_mac_ops' was not declared. Should it be
+static.
 
-Thanks for the review.
+Add static to fix sparse warnings.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502141128.9HfxcdIE-lkp@intel.com/
+Fixes: 53036aa8d031 ("net: freescale: ucc_geth: phylink conversion")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+---
+ drivers/net/ethernet/freescale/ucc_geth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
+index f47f8177a93b..c24b2f75435f 100644
+--- a/drivers/net/ethernet/freescale/ucc_geth.c
++++ b/drivers/net/ethernet/freescale/ucc_geth.c
+@@ -3408,7 +3408,7 @@ static int ucc_geth_parse_clock(struct device_node *np, const char *which,
+ 	return 0;
+ }
+ 
+-struct phylink_mac_ops ugeth_mac_ops = {
++static struct phylink_mac_ops ugeth_mac_ops = {
+ 	.mac_link_up = ugeth_mac_link_up,
+ 	.mac_link_down = ugeth_mac_link_down,
+ 	.mac_config = ugeth_mac_config,
+-- 
+2.25.1
+
