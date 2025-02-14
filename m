@@ -1,87 +1,101 @@
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C228A21B182;
-	Fri, 14 Feb 2025 09:22:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D1C1E502
+	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 09:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739524938; cv=none; b=J6/Ci0jHb5h7gbDvJKTl/1jDtbpOiD+cA/HZ870tSlmpSGletXSxac5ID1GKu4J/C63SCKCYqd6n2voEq9z3q9Nh8C2VVIEcFh/1e5xa3eIOfEKswSEaRzBZ5Qy11ZNc4aW90a5IBnvAqpjH/ZpdDqA4yxzoZZ1akA0BC09E/Vk=
+	t=1739524967; cv=none; b=Anvy8e1vSVVMc+X112gzbLNujEZYm+agc4uxKrv4btJMUogffb0huqPNBOiNHB+7pF7kaE+gQdYLCNt/ILOaMd6XjjK0ubodunG62gOrl4zePhGGBOK/r8giwyzqVEtAa2YJSBuBLjMNg9eENOcHUAJ+jRaMIbWickrXyXKpUDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739524938; c=relaxed/simple;
-	bh=pQjK/iwCJO75ufgOTvx8cDDg/C9fbt+wixPYVCFqHfU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S450BJE/MMDCRqmSeqdiyFVqlo/cI5YLzH/zFDHikUwKv40YfsOr8umNwLdwAv3Q/ljLExCFiqidzFknrIMBe8zCdb+zBSVRxJRo8VUYVmeCNO7+qE/2fqKvDrGIMQ5Cwx9RWw7XOTH6N8VNxnR3J1E42Ybk24rZruVnGk08ogI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=nXvwb20R; arc=none smtp.client-ip=115.124.30.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1739524967; c=relaxed/simple;
+	bh=oxMUts7eWUQNpSiCjwqXyusGkP80n8S1cBGWOAZkDbI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fxcOawziJ/m75j+B62j6fWQWX+QaqHJ0FOtOS5h0bMTBmefbCAIWFIGIUhRSCXYXbLDNxLUIK+KY03x5D0ujYT5FqzrsL6bBezjH+gK2TpMCIP75D8XGfN0E+WeDWlLYC2WyNY29spxtLvbddk4OttZFPPH+e4k3nAuZXRHJtFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sxLoVUKX; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="nXvwb20R"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1739524931; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=+D9V3WWQDBd/ZszSS/N9OZirb9lKepZNme5vqrAR1sQ=;
-	b=nXvwb20RU9oNju8SMnPYRFheTB/8zBCFsKKq2yFEhpV8H8EOrpVtT2FkvDhEogd18ikpKNiHOhFgv71Z5xTwUTH/gMaqPOxI2FOvBO1iK/JpimA3gKJqAvpBIpUdXJh6naB28EV3fyHckDrILbH/HF0SAP7G0nDMu0wrzv7zOmg=
-Received: from localhost(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0WPQIbTz_1739524929 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 14 Feb 2025 17:22:09 +0800
-Date: Fri, 14 Feb 2025 17:22:09 +0800
-From: "D. Wythe" <alibuda@linux.alibaba.com    >
-To: "D. Wythe" <alibuda@linux.alibaba.com>, wenjia@linux.ibm.com,
-	jaka@linux.ibm.com
-Cc: kgraul@linux.ibm.com, wenjia@linux.ibm.com, jaka@linux.ibm.com,
-	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-	martin.lau@linux.dev, pabeni@redhat.com, song@kernel.org,
-	sdf@google.com, haoluo@google.com, yhs@fb.com, edumazet@google.com,
-	john.fastabend@gmail.com, kpsingh@kernel.org, jolsa@kernel.org,
-	guwen@linux.alibaba.com, kuba@kernel.org, davem@davemloft.net,
-	netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH bpf-next v7 0/6] net/smc: Introduce smc_ops
-Message-ID: <20250214092209.GA88970@j66a10360.sqa.eu95>
-References: <20250123015942.94810-1-alibuda@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sxLoVUKX"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5450f2959f7so1810439e87.2
+        for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 01:22:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1739524964; x=1740129764; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oxMUts7eWUQNpSiCjwqXyusGkP80n8S1cBGWOAZkDbI=;
+        b=sxLoVUKXY3c9adxLBukNyoU8KOeprTw/VgAZfAUNhRUEovcbN6eRmMWti80c++buGs
+         8rJEgUTWjQ0qY7N+qW2ddYzlThcXQ17FCv58hHDtgtjiP7iM/ASj1Y8L8KnHr2x0Sk++
+         yx/EvvweXcgD+SP+daaEUIXAvGoymPrcgszaF+qcoaqEspVLtNsrDIEVUe+8f22mqM7Y
+         HzP8AInZXEcunT+OX9UTtn40R1jgmlz+RhyXvyT14nGpttrw5ILZ/DieEXYHmbL1ra96
+         R0IpGhJMsKgik8AES1m31K8ylU5CNce9Z+Atmc2pZbsfZwDAC9s5xDU2IKtcIJwQGdTX
+         iz8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739524964; x=1740129764;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oxMUts7eWUQNpSiCjwqXyusGkP80n8S1cBGWOAZkDbI=;
+        b=p0Z+62G5+BvRxesE4EqyMAh2RpGt0FRnDREfoxHUexZerFsrxFuEdt1gHruJ+JBHpU
+         SuPaQ8qsor0uhUF8aqn3FtvUSYKdAehMIHiHOVrhq8vSdq01PqEGR1HbLS7jtnMPSbPX
+         mr5fXdaUBIJpo+aTH+3AA61ubCmMsw4wDxkCDQHuh/VkZNG8hPeemK1e9OA+j1sLIE6E
+         tyrE6Pj5rxhgrneyjsExMgv3zAN4Yqo9nAlyshSRo8gFxFGbu5r1Mhprt7qzLiV4oEXL
+         n91uZ7dXzoILZTosAQhIUksJhpUS7/qynEZIhJ232qZwD6rK7flPpH2eufkcZ0rPo+ja
+         NXaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVxoT1U5YSUS1kI0H9dXEcCLRZ4iJRoL5q5FqNXtXODENYpyFfrv0LwPjIjrhpd+tVUCRNlVW4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTKXltX1bLLTAlNbRvrGafwT+W0T+4mVBOtdU1d50EYZ81N+iv
+	ibuQgN2I1RO2ptcqMqKaVH3SpiQ2P3+E78yodazu5zIO1vV/RqQ6pN3v7+scRi5yLqmk7zFLXxe
+	QaYAkGYltGKUUz7HbedlO0THn6XIFJFP6LcVtSw==
+X-Gm-Gg: ASbGncsoceZvBKXQDA7Y+XWjbCS1u/QS9Icg23lWI5SRRm/OMIZ5HuCDhaAjLrZ6gn7
+	gmzWPzI2HjGodP8IXw5tCJCGs7p0zHKgEeJvrr8fViMsPdAq9Qj1kmO8fDq1yRuT0h3P7HEC5
+X-Google-Smtp-Source: AGHT+IGhgPoczR2D2T/lX4ZwT5MXW34OlqN0/zugo7LmPWwgdRCMXTLpmWVB2HL50zhjB2U06JaZCumERKR34vwpUjQ=
+X-Received: by 2002:a05:6512:a90:b0:545:d72:95e5 with SMTP id
+ 2adb3069b0e04-5451dd8c4aemr2339063e87.7.1739524963708; Fri, 14 Feb 2025
+ 01:22:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250123015942.94810-1-alibuda@linux.alibaba.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+References: <20250210-gpio-set-array-helper-v3-0-d6a673674da8@baylibre.com> <20250210-gpio-set-array-helper-v3-1-d6a673674da8@baylibre.com>
+In-Reply-To: <20250210-gpio-set-array-helper-v3-1-d6a673674da8@baylibre.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Fri, 14 Feb 2025 10:22:32 +0100
+X-Gm-Features: AWEUYZlSujurAxnS1uFvnjJLAGMoYJmFWbRh7MCeJl2DAGBRy4U6U-3ZBycEwbU
+Message-ID: <CACRpkdY2PtRhmTKJUFmkTViQOLfMBbqR1bD94SzasoGAoHUQcQ@mail.gmail.com>
+Subject: Re: [PATCH v3 01/15] gpiolib: add gpiod_multi_set_value_cansleep()
+To: David Lechner <dlechner@baylibre.com>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Ulf Hansson <ulf.hansson@linaro.org>, Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 23, 2025 at 09:59:36AM +0800, D. Wythe wrote:
-> This patch aims to introduce BPF injection capabilities for SMC and
-> includes a self-test to ensure code stability.
-> 
-> Since the SMC protocol isn't ideal for every situation, especially
-> short-lived ones, most applications can't guarantee the absence of
-> such scenarios. Consequently, applications may need specific strategies
-> to decide whether to use SMC. For example, an application might limit SMC
-> usage to certain IP addresses or ports.
-> 
-> To maintain the principle of transparent replacement, we want applications
-> to remain unaffected even if they need specific SMC strategies. In other
-> words, they should not require recompilation of their code.
-> 
-> Additionally, we need to ensure the scalability of strategy implementation.
-> While using socket options or sysctl might be straightforward, it could
-> complicate future expansions.
-> 
-> Fortunately, BPF addresses these concerns effectively. Users can write
-> their own strategies in eBPF to determine whether to use SMC, and they can
-> easily modify those strategies in the future.
+On Mon, Feb 10, 2025 at 11:37=E2=80=AFPM David Lechner <dlechner@baylibre.c=
+om> wrote:
 
-Hi smc folks, @Wenjia @Ian
+> Add a new gpiod_multi_set_value_cansleep() helper function with fewer
+> parameters than gpiod_set_array_value_cansleep().
+>
+> Calling gpiod_set_array_value_cansleep() can get quite verbose. In many
+> cases, the first arguments all come from the same struct gpio_descs, so
+> having a separate function where we can just pass that cuts down on the
+> boilerplate.
+>
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
 
-Is there any feedback regarding this patches ? This series of code has
-gone through multiple rounds of community reviews. However, the parts
-related to SMC, including the new sysctl and ops name, really needs
-your input and acknowledgment.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Additionally, this series includes a bug fix for SMC, which is easily
-reproducible in the BPF CI tests.
-
-Thanks,
-D. Wythe
-
+Yours,
+Linus Walleij
