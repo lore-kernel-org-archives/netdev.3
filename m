@@ -1,127 +1,351 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24D4155743
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 05:45:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479262753E8;
+	Fri, 14 Feb 2025 05:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739511919; cv=none; b=ciEuzf4EW1r5WY9ipK6p5rmE4VPmW122oP/KJJxD483SbvqIKGgpN+yxbXnwrireqz/iW1KjShpCf56w3LY5pksMX0KPSzI0DQWUoC36FZQhfAE38LQuo9LWkk3tFqGYJM/nRYiSZMLoQK1oK2tRtnv8gDnhiDUVRaGRtM2C/IM=
+	t=1739512076; cv=none; b=BNRwiWGyJadGy3LgSlq4Mx5TroWwghPp9y57XeQvNXeszTpQ/cqnH42qol7iCbd2nKlKk4ItN+Rt/1ryvJZsi5ailB/rZx6d+WJZtUyYxRUNk2xZVBemFLEH9TgqvPB8GAVtVRN/wzdi1cDLCI+3KgM0U66GmbXM0Z4C1n2SnTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739511919; c=relaxed/simple;
-	bh=WkDTYJr0mQ8LaGzM86s/k8BZhKOQcrJIJdVs6kspsYA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QcDjvvqDqC3vzIxmAMH5gq/UxG65d5YS/BTU9v6gyX2TtsZ04knM2Qmd9RevfzELJ8diLwG8hxr3JmR5UVqo2SN01t0Nw4bcHbo2QEXcehpJ1bsBJct0+UzSnQvKibqQwNI+yah4QiDS3iPxcl/kFu7bM7Vy7K3x9+BP4fVsdc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OeVaPbT9; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1739512076; c=relaxed/simple;
+	bh=/wt7563NHGlAqJu3t0FV3iCXdeO4tCgxC0RVWecRFiU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=IX6NTcw3d83Br6e/GHi1E3O0VqQKQF2duhwk2zuas7Ngob8WVNTQIiX6JuJLQ7/tuMIWVdHlbjbtf1I6AxAcbpbFkGBsSvf6zvU72meC8pBa8omjnDWN7aDGuRMgByVWlZxmb9UWSrQi0qbiglALKT0g4fWBW8m/mhrKOKpR7lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=c5eAHezR; arc=none smtp.client-ip=162.240.238.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OeVaPbT9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739511918; x=1771047918;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WkDTYJr0mQ8LaGzM86s/k8BZhKOQcrJIJdVs6kspsYA=;
-  b=OeVaPbT9uak7J2+duIDsuY1easuelkOuwdcIu/VsyjkQejcjWovMrQbt
-   9n0bIaYV9o/1yfbTjEiBE3l4HUFGXXIemfAHW1vUpqzFBNPAYUwdv7OwX
-   KJmGVVIb+Ia0qCXkOjfw5SDBqh5VVx0s7lo++QgcGYMOgO/p9HDqOxB2l
-   wfojezoALAfhGwxapUY38UE9JUtOg13U76WHw+qgeXAgAPq88PZNjmJsE
-   RGgFJ7TVBDZQbgT/6gUHG/thtuNJiWemMlB0t/+h1okpg7OVInUtBdD0l
-   C03js4rUwUCxuVgZ4dVYNuXBT1FcaaNihdmiZp4FKD5z7F+Y5AYnrspob
-   w==;
-X-CSE-ConnectionGUID: e4GLbs9NTFugyoUxwa8lRw==
-X-CSE-MsgGUID: g2sZaYTkSDydMQBWqdScXQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="39955443"
-X-IronPort-AV: E=Sophos;i="6.13,284,1732608000"; 
-   d="scan'208";a="39955443"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 21:45:16 -0800
-X-CSE-ConnectionGUID: X3ElYp6mRuamoI8ErGA/tQ==
-X-CSE-MsgGUID: WPA/9lNuTzGl0YLZ3L8yDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="113226630"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 21:45:12 -0800
-Date: Fri, 14 Feb 2025 06:41:35 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Marcin Szycik <marcin.szycik@linux.intel.com>
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	intel-wired-lan@lists.osuosl.org, himasekharx.reddy.pucha@intel.com,
-	pmenzel@molgen.mpg.de, marcin.szycik@intel.com,
-	netdev@vger.kernel.org, rafal.romanowski@intel.com,
-	konrad.knitter@intel.com, pawel.chmielewski@intel.com,
-	horms@kernel.org, David.Laight@aculab.com,
-	nex.sw.ncis.nat.hpm.dev@intel.com, pio.raczynski@gmail.com,
-	sridhar.samudrala@intel.com, jacob.e.keller@intel.com,
-	jiri@resnulli.us, przemyslaw.kitszel@intel.com,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: Re: [Intel-wired-lan] [iwl-next v9 5/9] ice, irdma: move interrupts
- code to irdma
-Message-ID: <Z67XjwByeVSuLooq@mev-dev.igk.intel.com>
-References: <20241203065817.13475-1-michal.swiatkowski@linux.intel.com>
- <20241203065817.13475-6-michal.swiatkowski@linux.intel.com>
- <8e533834-4564-472f-b29b-4f1cb7730053@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="c5eAHezR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=uKXVvU+SLU1gf3c8hZ0tw5H4qyBC2U+/dASmSrylnWE=; b=c5eAHezRGpF9PoznWjw7ndEZ5y
+	LG4tZ397a1GGuQn+RwBqL4z38aoykMwpkMT6HadUnKmdl941y6AYQztS6CNiee0CD4367YEkQtOkI
+	J9k2B3huL6ae6bVwYcmgN7KbKe7W5fHzPGDR59ZOYmardTsiUd2VfUJgyaaibyX5iJI6/BrHRrt+Y
+	HzHa6hQLkKy2W8yjk3eg3wAGo0sV4f9+XOf6tGpS8N1OVFAIjN4LZ1HdzCOljhb3ad7RSyFcfIqQg
+	Qm+5j2o8cU82ULd2BD7NF2kBFLRCTivLBapAyh2FjMtIjh+v8OwvDCoSq0ZAmOsY7VK5IYCiKc9N1
+	5Tlsx9dw==;
+Received: from [122.175.9.182] (port=5380 helo=cypher.couthit.local)
+	by server.wki.vra.mybluehostin.me with esmtpa (Exim 4.96.2)
+	(envelope-from <parvathi@couthit.com>)
+	id 1tioYH-0001hH-1Z;
+	Fri, 14 Feb 2025 11:17:49 +0530
+From: parvathi <parvathi@couthit.com>
+To: danishanwar@ti.com,
+	rogerq@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	nm@ti.com,
+	ssantosh@kernel.org,
+	richardcochran@gmail.com,
+	parvathi@couthit.com,
+	basharath@couthit.com,
+	schnelle@linux.ibm.com,
+	diogo.ivo@siemens.com,
+	m-karicheri2@ti.com,
+	horms@kernel.org,
+	jacob.e.keller@intel.com,
+	m-malladi@ti.com,
+	javier.carrasco.cruz@gmail.com,
+	afd@ti.com,
+	s-anna@ti.com
+Cc: linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	pratheesh@ti.com,
+	prajith@ti.com,
+	vigneshr@ti.com,
+	praneeth@ti.com,
+	srk@ti.com,
+	rogerq@ti.com,
+	krishna@couthit.com,
+	pmohan@couthit.com,
+	mohan@couthit.com
+Subject: [PATCH net-next v3 01/10] dt-bindings: net: ti: Adds DUAL-EMAC mode support on PRU-ICSS2 for AM57xx SOCs
+Date: Fri, 14 Feb 2025 11:16:53 +0530
+Message-Id: <20250214054702.1073139-2-parvathi@couthit.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250214054702.1073139-1-parvathi@couthit.com>
+References: <20250214054702.1073139-1-parvathi@couthit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8e533834-4564-472f-b29b-4f1cb7730053@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.wki.vra.mybluehostin.me
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.wki.vra.mybluehostin.me: authenticated_id: parvathi@couthit.com
+X-Authenticated-Sender: server.wki.vra.mybluehostin.me: parvathi@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Thu, Feb 13, 2025 at 08:20:31PM +0100, Marcin Szycik wrote:
-> 
-> 
-> On 03.12.2024 07:58, Michal Swiatkowski wrote:
-> > Move responsibility of MSI-X requesting for RDMA feature from ice driver
-> > to irdma driver. It is done to allow simple fallback when there is not
-> > enough MSI-X available.
-> > 
-> > Change amount of MSI-X used for control from 4 to 1, as it isn't needed
-> > to have more than one MSI-X for this purpose.
-> 
-> Hi, I'm observing KASAN reports or kernel panic when attempting to remove irdma
-> with this patchset, most probably this patch being the culprit, since it touches
-> functions from splat.
-> 
-> Reproducer:
->   sudo rmmod irdma
-> 
-> Minified splat(s):
->   BUG: KASAN: use-after-free in irdma_remove+0x257/0x2d0 [irdma]
->   Call Trace:
->    <TASK>
->    ? __pfx__raw_spin_lock_irqsave+0x10/0x10
->    ? kfree+0x253/0x450
->    ? irdma_remove+0x257/0x2d0 [irdma]
->    kasan_report+0xed/0x120
->    ? irdma_remove+0x257/0x2d0 [irdma]
->    irdma_remove+0x257/0x2d0 [irdma]
->    auxiliary_bus_remove+0x56/0x80
->    device_release_driver_internal+0x371/0x530
->    ? kernfs_put.part.0+0x147/0x310
->    driver_detach+0xbf/0x180
->    bus_remove_driver+0x11b/0x2a0
->    auxiliary_driver_unregister+0x1a/0x50
->    irdma_exit_module+0x40/0x4c [irdma]
->   
->   Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
->   KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
->   RIP: 0010:ice_free_rdma_qvector+0x2a/0xa0 [ice]
->   Call Trace:
->    ? ice_free_rdma_qvector+0x2a/0xa0 [ice]
->    irdma_remove+0x179/0x2d0 [irdma]
->    auxiliary_bus_remove+0x56/0x80
->    device_release_driver_internal+0x371/0x530
->    ? kobject_put+0x61/0x4b0
->    driver_detach+0xbf/0x180
->    bus_remove_driver+0x11b/0x2a0
->    auxiliary_driver_unregister+0x1a/0x50
->    irdma_exit_module+0x40/0x4c [irdma]
+From: Parvathi Pudi <parvathi@couthit.com>
 
-Thanks, I will work on it.
+Documentation update for the newly added "pruss2_eth" device tree
+node and its dependencies along with compatibility for PRU-ICSS
+Industrial Ethernet Peripheral (IEP), PRU-ICSS Enhanced Capture
+(eCAP) peripheral and using YAML binding document for AM57xx SoCs.
 
-> 
+Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
+Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
+---
+ .../devicetree/bindings/net/ti,icss-iep.yaml  |   4 +-
+ .../bindings/net/ti,icssm-prueth.yaml         | 147 ++++++++++++++++++
+ .../bindings/net/ti,pruss-ecap.yaml           |  32 ++++
+ .../devicetree/bindings/soc/ti/ti,pruss.yaml  |   9 ++
+ 4 files changed, 191 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
+ create mode 100644 Documentation/devicetree/bindings/net/ti,pruss-ecap.yaml
+
+diff --git a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+index e36e3a622904..858d74638167 100644
+--- a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
++++ b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+@@ -8,6 +8,8 @@ title: Texas Instruments ICSS Industrial Ethernet Peripheral (IEP) module
+ 
+ maintainers:
+   - Md Danish Anwar <danishanwar@ti.com>
++  - Parvathi Pudi <parvathi@couthit.com>
++  - Basharath Hussain Khaja <basharath@couthit.com>
+ 
+ properties:
+   compatible:
+@@ -19,7 +21,7 @@ properties:
+           - const: ti,am654-icss-iep
+ 
+       - const: ti,am654-icss-iep
+-
++      - const: ti,am5728-icss-iep
+ 
+   reg:
+     maxItems: 1
+diff --git a/Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml b/Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
+new file mode 100644
+index 000000000000..1dffa6bd7a88
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
+@@ -0,0 +1,147 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/ti,icssm-prueth.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Texas Instruments ICSSM PRUSS Ethernet
++
++maintainers:
++  - Roger Quadros <rogerq@ti.com>
++  - Andrew F. Davis <afd@ti.com>
++  - Parvathi Pudi <parvathi@couthit.com>
++  - Basharath Hussain Khaja <basharath@couthit.com>
++
++description:
++  Ethernet based on the Programmable Real-Time Unit and Industrial
++  Communication Subsystem.
++
++properties:
++  compatible:
++    enum:
++      - ti,am57-prueth     # for AM57x SoC family
++
++  sram:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      phandle to OCMC SRAM node
++
++  ti,mii-rt:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      phandle to MII_RT module's syscon regmap
++
++  ti,iep:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      phandle to IEP (Industrial Ethernet Peripheral) for ICSS
++
++  ti,ecap:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      phandle to Enhanced Capture (eCAP) event for ICSS
++
++  interrupts:
++    items:
++      - description: High priority Rx Interrupt specifier.
++      - description: Low priority Rx Interrupt specifier.
++
++  interrupt-names:
++    items:
++      - const: rx_hp
++      - const: rx_lp
++
++  ethernet-ports:
++    type: object
++    additionalProperties: false
++
++    properties:
++      '#address-cells':
++        const: 1
++      '#size-cells':
++        const: 0
++
++    patternProperties:
++      ^ethernet-port@[0-1]$:
++        type: object
++        description: ICSSM PRUETH external ports
++        $ref: ethernet-controller.yaml#
++        unevaluatedProperties: false
++
++        properties:
++          reg:
++            items:
++              - enum: [0, 1]
++            description: ICSSM PRUETH port number
++
++          interrupts:
++            maxItems: 3
++
++          interrupt-names:
++            items:
++              - const: rx
++              - const: emac_ptp_tx
++              - const: hsr_ptp_tx
++
++        required:
++          - reg
++
++    anyOf:
++      - required:
++          - ethernet-port@0
++      - required:
++          - ethernet-port@1
++
++required:
++  - compatible
++  - sram
++  - ti,mii-rt
++  - ti,iep
++  - ti,ecap
++  - ethernet-ports
++  - interrupts
++  - interrupt-names
++
++allOf:
++  - $ref: /schemas/remoteproc/ti,pru-consumer.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    /* Dual-MAC Ethernet application node on PRU-ICSS2 */
++    pruss2_eth: pruss2-eth {
++      compatible = "ti,am57-prueth";
++      ti,prus = <&pru2_0>, <&pru2_1>;
++      sram = <&ocmcram1>;
++      ti,mii-rt = <&pruss2_mii_rt>;
++      ti,iep = <&pruss2_iep>;
++      ti,ecap = <&pruss2_ecap>;
++      interrupts = <20 2 2>, <21 3 3>;
++      interrupt-names = "rx_hp", "rx_lp";
++      interrupt-parent = <&pruss2_intc>;
++
++      ethernet-ports {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        pruss2_emac0: ethernet-port@0 {
++          reg = <0>;
++          phy-handle = <&pruss2_eth0_phy>;
++          phy-mode = "mii";
++          interrupts = <20 2 2>, <26 6 6>, <23 6 6>;
++          interrupt-names = "rx", "emac_ptp_tx", "hsr_ptp_tx";
++          /* Filled in by bootloader */
++          local-mac-address = [00 00 00 00 00 00];
++        };
++
++        pruss2_emac1: ethernet-port@1 {
++          reg = <1>;
++          phy-handle = <&pruss2_eth1_phy>;
++          phy-mode = "mii";
++          interrupts = <21 3 3>, <27 9 7>, <24 9 7>;
++          interrupt-names = "rx", "emac_ptp_tx", "hsr_ptp_tx";
++          /* Filled in by bootloader */
++          local-mac-address = [00 00 00 00 00 00];
++        };
++      };
++    };
+diff --git a/Documentation/devicetree/bindings/net/ti,pruss-ecap.yaml b/Documentation/devicetree/bindings/net/ti,pruss-ecap.yaml
+new file mode 100644
+index 000000000000..42f217099b2e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/ti,pruss-ecap.yaml
+@@ -0,0 +1,32 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/ti,pruss-ecap.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Texas Instruments PRU-ICSS Enhanced Capture (eCAP) event module
++
++maintainers:
++  - Murali Karicheri <m-karicheri2@ti.com>
++  - Parvathi Pudi <parvathi@couthit.com>
++  - Basharath Hussain Khaja <basharath@couthit.com>
++
++properties:
++  compatible:
++    const: ti,pruss-ecap
++
++  reg:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    pruss2_ecap: ecap@30000 {
++        compatible = "ti,pruss-ecap";
++        reg = <0x30000 0x60>;
++    };
+diff --git a/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml b/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
+index 927b3200e29e..594f54264a8c 100644
+--- a/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
++++ b/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
+@@ -251,6 +251,15 @@ patternProperties:
+ 
+     type: object
+ 
++  ecap@[a-f0-9]+$:
++    description:
++      PRU-ICSS has a Enhanced Capture (eCAP) event module which can generate
++      and capture periodic timer based events which will be used for features
++      like RX Pacing to rise interrupt when the timer event has occurred.
++      Each PRU-ICSS instance has one eCAP modeule irrespective of SOCs.
++
++    type: object
++
+   mii-rt@[a-f0-9]+$:
+     description: |
+       Real-Time Ethernet to support multiple industrial communication protocols.
+-- 
+2.34.1
+
