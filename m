@@ -1,122 +1,160 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54675155756;
-	Fri, 14 Feb 2025 09:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1D922D793;
+	Fri, 14 Feb 2025 09:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739523645; cv=none; b=EIsEGkoUI5qRq4JwGqeoomWvC9dq3rfq0SWn2ihgU4Z+nGMaYGBUVbJt9JTzSiHtADrd/fkRAUs7l66b2kzV2/VG4688GBdgoZJ4OCAF4kWZBSxF9hj9mFWOIY/kMleH+FW/XaHyCTHMq0zioGNVLNbLdoTQYP3h+zPl35jzY6w=
+	t=1739524134; cv=none; b=cxuWRLr4lbhrle0yhGMCcQBL/2h3q56uxteksCprs/V4otcITKc089U5b8bsVv92l7EU/243MQ8F7p1JEZm7GhX9pM6bYdmf+p2+ooKa0xd3IV7p6dpBeNByJP1H3Ib/r6sXvKFDWXM6Zg4Alx7dItP1TkWxExEFMhXN6Hyv/50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739523645; c=relaxed/simple;
-	bh=7lX+xYMFJh9I+bPXe+Txvhf9q+36wzQ9yi/jo6PJCcc=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Luwy6FSIuKS8vVFmhtwivj/ESJftYptkW9nFNI+epsI8V++eHidXVTMvGq+JxzutVsI5SPgDD9mP5XdTdOPImAWj21v7rIbFHn3oWAidtWs7a8EdxLhcQJcgm3+30oYhjccpxmaPEpdtX7AleGivpbUwX7I7ZRP6fPgJ/h1QxkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RExNhrZs; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739524134; c=relaxed/simple;
+	bh=Eo5DuTvQ0qKs2Jp3vi/N35mfegrhtFBJq5aOGSjyD2I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sPAB2g4kCcJcEZLq82ivO9y4pXCoJmT/QANp9ZrCkfxs5wZBAQ6aB+V8jXd8fYfA4s4rkq1eT2mYPXj55vKx5eoNREzeQ32NotvwQ3FZf2ghUm8nMzoAeVAStXW8wpKIh2yxJybOM/IMlwprl6lOcjE846x1TykOv06ARvzDTnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZE+Z5v5O; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RExNhrZs"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-438a39e659cso12654365e9.2;
-        Fri, 14 Feb 2025 01:00:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739523642; x=1740128442; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BCeQRqKC2mbRi4qoCT2t+rHnwR2WSeqQ1KRGbRtrTlk=;
-        b=RExNhrZsQIGdBfIgMpokqT4WWHxJjlIxnvr/B1J4+qUR1wz0UanV3n4FmS4TRzl10S
-         yHI7azLUbqIVrsLoAakFXfV6AnbJxmt9gKg+L6p4c6WSTMttyaZ6zeDiL7DyViqd6ktD
-         eAMO+Wgmkl+clzp/EHnmsMBTDVWRGj/R8wKINybmQuTMtZJ5BH/N8s+G7mPWaGMjImtE
-         duHIfRB2QRYDyK3unAsNzzbfB8WwIwDfu2ybw/qGG36lojzPK37423NRgd5cc1WU/zLf
-         aMJ4vcrINs9Nzj8UWGtmW9COryyExxH2mdJe6Tq++FMhJPwfPQCZHTCmc4Qw4ROBMzoN
-         44nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739523642; x=1740128442;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BCeQRqKC2mbRi4qoCT2t+rHnwR2WSeqQ1KRGbRtrTlk=;
-        b=ee1lOirNCzMI08dxBHC3Odwx4FwLBpSQYh3hHKPDy6oEwpO7/3MHR37Uw0YNEltDrG
-         vOt0V48vizgfxPp0DW+fNBYeNtkFyr8PUVA1J9gxzarrwlnRONOGwopNaeGdyvvR+ErY
-         7hvYVrmquQb6hbfKk9zbXnkCZZjRI0vd0iA/Yl0e0D4SK+Wew/wpUE37mSpSkS6foSP7
-         xsOwL5ansvoh20iWW42HR+F0vJZ+bU9Nx5Jq4ElNPnSuN7aCZMnf5C6BOWHVwZg/lG42
-         3yVtbrQVYOL/5shWA2lEfD6O71FL4TEG7dSl8oaX27JgYWpFFstYLl54QzI8UkKGkeHR
-         6rdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVdloWJ2XYbbvY0sF+ARYqhPo1xWpBCCobWZaAUahVorSZ/puI69sH0ZXnsyZ0Q3v6Q7l9IV10=@vger.kernel.org, AJvYcCXpxUAmAXnJun3fYXYd3ABQSJRf3qMJrrW+Qmo7aVv7BQmYNWsra0pk6mf0dWn5UpZuo3e9jYSu@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmyWjrXUfew29x48J7jtF1HsMwv31oTvgc8a8wfZuNU4Sn5Zq6
-	Lo5Fv4rW8hyy0rhTVsV7iBLd9fXor/Rj79a5GgZXVrUJcsiKjT3FsM1+Qks6wwqCIHvtNYZnd7i
-	sCpzSGwnf3McqoedDm75Phj08Ma9DJTyX
-X-Gm-Gg: ASbGncvI8YKtqE0W+qzP2XihQ8sdiJo/i+4ZYbOxP4kjCSNxBHipWvaXzdx4+Q/C03z
-	CzBpfYt1hG6o/r3tXOtw/e2YTkAoBLSzaDUXnCVlvkV8CjydggZo4O6v/K21qK6CcGV1NO7+d6q
-	k=
-X-Google-Smtp-Source: AGHT+IF15SfeQj3HA1ZMD+2sa81H/Bp7K68HgV09burIDohLpGXFpzE9CUzH85s9o55mFKj7h/Av1qPuDFotyK/ZIoA=
-X-Received: by 2002:a05:600c:4e4f:b0:439:6332:275d with SMTP id
- 5b1f17b1804b1-43963322a53mr64091465e9.2.1739523642375; Fri, 14 Feb 2025
- 01:00:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZE+Z5v5O"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739524133; x=1771060133;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Eo5DuTvQ0qKs2Jp3vi/N35mfegrhtFBJq5aOGSjyD2I=;
+  b=ZE+Z5v5O6jYf5J3H/abx0p6pnhQoVSHc3wxN9M/D4Mmn0oUp5tzLLEuC
+   Mz7NfGvnhMedgKy7xY5l1HZ+ZYdQ/9k9hKG8d0j9jS/GJ8QRYNeaxpaaR
+   ViqX3xUxxQyN6RP1e9npinRq+vTIRuFV9IPfd1/HdBVagdTXKOXp0DRRy
+   ooos4cQyCqM3rJApCl9WQGh+w/I8yB9vUcrp9ToyP29i8ODglvWt+gTqn
+   N9ZsCxBazXJsvzHIeHYUwfC2E8ydA22ci8qjtDGV9BXw4Qq3004yKZkZX
+   kn3xRacPSL3MXYY6oKfXbo9Pz51MpdgbgfCXi+Rt95baYJN7IKgyWQ3+f
+   Q==;
+X-CSE-ConnectionGUID: 92jHz167SmWlbQZ06OMJUg==
+X-CSE-MsgGUID: bzCd5kikQvebxo4kg+FalQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="65617699"
+X-IronPort-AV: E=Sophos;i="6.13,285,1732608000"; 
+   d="scan'208";a="65617699"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 01:08:52 -0800
+X-CSE-ConnectionGUID: ob2CyOKURkuqgQey6bTE+A==
+X-CSE-MsgGUID: l9XtpCizQ6iCBPA9lcT5XA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,285,1732608000"; 
+   d="scan'208";a="113145423"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by orviesa009.jf.intel.com with ESMTP; 14 Feb 2025 01:08:49 -0800
+Received: from lincoln.igk.intel.com (lincoln.igk.intel.com [10.102.21.235])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 6789F37B80;
+	Fri, 14 Feb 2025 09:08:47 +0000 (GMT)
+From: Larysa Zaremba <larysa.zaremba@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	intel-wired-lan@lists.osuosl.org
+Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
+Subject: [PATCH iwl-next v4 0/6] ice: LLDP support for VFs
+Date: Fri, 14 Feb 2025 09:50:34 +0100
+Message-ID: <20250214085215.2846063-1-larysa.zaremba@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Qiang Zhang <dtzq01@gmail.com>
-Date: Fri, 14 Feb 2025 17:00:30 +0800
-X-Gm-Features: AWEUYZnMyRVuMUo18B9Q4Cpr5cORWRavjMOpn-JsG2wYZUOafE0PZqTGJKToTB0
-Message-ID: <CAPx+-5uvFxkhkz4=j_Xuwkezjn9U6kzKTD5jz4tZ9msSJ0fOJA@mail.gmail.com>
-Subject: [RESEND]tc-flower not worked when configured dst_port and src_port
- range in one rule.
-To: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, 
-	Jiri Pirko <jiri@resnulli.us>, stable@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
-	regressions@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi, all.
+Allow to:
+* receive LLDP packets on a VF in legacy mode
+* receive LLDP packets on a VF in switchdev mode
+* transmit LLDP from a VF in switchdev mode
 
-recently met an issue: tc-flower not worked when configured dst_port
-and src_port range in one rule.
+Many VSIs can receive LLDP packets, but only one VSI
+per port can transmit LLDP, therefore LLDP TX from VF
+requires adding an egress drop rule to the PF, this is
+implemented in these series too.
 
-detailed like this:
-$ tc qdisc add dev ens38 ingress
-$ tc filter add dev ens38 ingress protocol ip flower ip_proto udp \
-  dst_port 5000 src_port 2000-3000 action drop
+There are no patches that explicitly address LLDP RX in
+switchdev mode, because it just works after adding support
+in legacy mode.
 
-I try to find the root cause in kernel source code:
-1. FLOW_DISSECTOR_KEY_PORTS and FLOW_DISSECTOR_KEY_PORTS_RANGE flag of
-mask->dissector were set
-in fl_classify from flow_dissector.c.
-2. then skb_flow_dissect -> __skb_flow_dissect -> __skb_flow_dissect_ports.
-3. FLOW_DISSECTOR_KEY_PORTS handled and FLOW_DISSECTOR_KEY_PORTS_RANGE
-not handled
-in __skb_flow_dissect_ports, so tp_range.tp.src was 0 here expected
-the actual skb source port.
+Usage
 
-By the way, __skb_flow_bpf_to_target function may has the same issue.
+To receive LLDP packets on VF in legacy mode:
+On host:
+ip link set dev <pf_ifname> vf <n> trust on
+On VM:
+service lldpd restart
 
-Please help confirm and fix it, thank you.
+To receive LLDP packets on VF in switchdev mode (host config):
+tc qdisc add dev <pf_ifname> clsact
+tc filter add dev <pf_ifname> protocol lldp ingress \\
+   flower skip_sw action mirred egress mirror dev <repr_ifname>
 
-source code of __skb_flow_dissect_ports in flow_dissector.c as below:
+To transmit LLDP packets from VF (host config):
+tc qdisc add dev <pf_ifname> clsact
+tc qdisc add dev <repr_ifname> clsact
+tc filter add dev <pf_ifname> egress protocol lldp \\
+   flower skip_sw action drop
+tc filter add dev <repr_ifname> ingress protocol lldp \\
+   flower skip_sw action mirred egress redirect dev <pf_ifname>
 
-static void
-__skb_flow_dissect_ports(const struct sk_buff *skb,
-struct flow_dissector *flow_dissector,
-void *target_container, const void *data,
-int nhoff, u8 ip_proto, int hlen)
-{
-enum flow_dissector_key_id dissector_ports = FLOW_DISSECTOR_KEY_MAX;
-struct flow_dissector_key_ports *key_ports;
+For all abovementioned functionalities to work, private flag
+fw-lldp-agent must be off.
 
-if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS))
-dissector_ports = FLOW_DISSECTOR_KEY_PORTS;
-else if (dissector_uses_key(flow_dissector,
-   FLOW_DISSECTOR_KEY_PORTS_RANGE))
-dissector_ports = FLOW_DISSECTOR_KEY_PORTS_RANGE;
+v3->v4:
+* add "Return: " to the touched kernel-doc
+* reunite return type and declaration for ice_add_cls_flower()
+  and ice_del_cls_flower()
 
-if (dissector_ports == FLOW_DISSECTOR_KEY_MAX)
-return;
+v2->v3:
+* fix sparse warning caused by part of .sw_act members being initialized
+  inside the curly braces and others being initialized directly
+* reorder members inside the rinfo initializer according to struct
+  definition in ice_drop_vf_tx_lldp(), while fixing the warning above
 
-key_ports = skb_flow_dissector_target(flow_dissector,
-     dissector_ports,
-     target_container);
-key_ports->ports = __skb_flow_get_ports(skb, nhoff, ip_proto,
-data, hlen);
-}
+v1->v2:
+* get rid of sysfs control
+* require switchdev for VF LLDP Tx
+* in legacy mode, for VF LLDP Rx rely on configured MAC addresses
 
-Best regards.
+Larysa Zaremba (4):
+  ice: do not add LLDP-specific filter if not necessary
+  ice: remove headers argument from ice_tc_count_lkups
+  ice: support egress drop rules on PF
+  ice: enable LLDP TX for VFs through tc
+
+Mateusz Pacuszka (2):
+  ice: fix check for existing switch rule
+  ice: receive LLDP on trusted VFs
+
+ drivers/net/ethernet/intel/ice/ice.h          |   1 +
+ drivers/net/ethernet/intel/ice/ice_common.c   |  14 +-
+ drivers/net/ethernet/intel/ice/ice_common.h   |   3 +-
+ drivers/net/ethernet/intel/ice/ice_dcb_lib.c  |   2 +-
+ drivers/net/ethernet/intel/ice/ice_eswitch.c  |   6 +
+ drivers/net/ethernet/intel/ice/ice_ethtool.c  |   2 +-
+ drivers/net/ethernet/intel/ice/ice_lib.c      |  71 ++++-
+ drivers/net/ethernet/intel/ice/ice_lib.h      |   3 +-
+ drivers/net/ethernet/intel/ice/ice_main.c     |  63 ++++-
+ drivers/net/ethernet/intel/ice/ice_repr.c     |  10 +-
+ drivers/net/ethernet/intel/ice/ice_sriov.c    |   4 +
+ drivers/net/ethernet/intel/ice/ice_switch.c   |   4 +-
+ drivers/net/ethernet/intel/ice/ice_tc_lib.c   | 258 +++++++++++++++---
+ drivers/net/ethernet/intel/ice/ice_tc_lib.h   |  11 +-
+ drivers/net/ethernet/intel/ice/ice_txrx.c     |  17 +-
+ drivers/net/ethernet/intel/ice/ice_vf_lib.c   |  26 ++
+ drivers/net/ethernet/intel/ice/ice_vf_lib.h   |  12 +
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c |  53 +++-
+ 18 files changed, 480 insertions(+), 80 deletions(-)
+
+-- 
+2.43.0
+
