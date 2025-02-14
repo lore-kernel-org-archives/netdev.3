@@ -1,62 +1,45 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFCB7081C;
-	Fri, 14 Feb 2025 14:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40508264A7B
+	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 14:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739541788; cv=none; b=KgGtfIvjxbMY+wDKDRIGL5i+rTEJlBCOJKViCGu9J+UENMFdw6FkZhDXMol9Ayr6kDkZbojZvfAnG6y2TU1A3de8iErP+B1ndw7igps6vo7rxgIn3EHiqtjFaIKtIw7zQwqqlU5WlfkebRrWoNwaX7vJF+Nt6TX/pkBzEkvXyK8=
+	t=1739541989; cv=none; b=iDJNv3i0OuuIpt1vP8xw6dHhSwb0V0AL66wGD5PIce9eonfECJO6Vu7K5hnVhbjRtRAahNboQ73XnQ5Myy88K9SWJdJCA5Qt8q3MLki6Z0BHWswhJbu/n6LUSsPMEgoaCFQlE5ap/GrKwtBuPGehsNfe0YUZp02qDG9kiX5fN7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739541788; c=relaxed/simple;
-	bh=HPjrAGuqBs30Xqla0S08E7D+Vsk8nak+FoJqatHVKqs=;
+	s=arc-20240116; t=1739541989; c=relaxed/simple;
+	bh=W3iI0MRWaCsaAZecc6J0jrd5mHHI5U7tbCfWFrBQCL4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GEbxC9LFJZAeVC2jywQgScFjENM+hOLdOT7QtFvgA6UapXlLwv8TvxYwVew1rSx1P9AF9MwxveQDWAVP0RCO3ym4PzT0J7s0iK8tb4z3F+ycq0p+IYI6Ckizug9Nlrz+87v1I5GHa1vwq5Fez6GISeCQ/O2ALfiPmMQzUS7VcXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ffutnsRo; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=IT64Hk0FbO0eX0uJDISat5FtmIlRaBcv5x7BtFzePz8w/ho+2fQoHM/9yqXRUYAJHA7cyj0vsk8zTVeqVZTb8Uy/9aVRqEvBJntz5gtW2G5lL1i5ayMJbbZ0nv82lmMSkFyYptgAcEv3fO9yeBQDeQQcaLxnEAJGFnzy5Rt9Gjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2la5VeRj; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ffutnsRo"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2la5VeRj"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=YPfqLp9fbZ/8JOO2RhhN9couacnmyf0ld4MXnUIvALM=; b=ffutnsRoSZY8FyHYndFd/8kLiJ
-	I4KHxo35/Ek9TxhoUWtM8unvMnPGhWSEmkPTEcDT3jYClEQEnUPZhUgdZ2ziMHH55Gx8f8Cqx5dY+
-	TMUNkVQeXvIecwSFy4vJcLw7LskEMPFSJgDfs890xo04TQ/QG3ANEnPgdKm5ofEn2wRI=;
+	bh=Qo9hqDQo8vot9tXQwxYxqWMMmyH+geXyxmWvgqNKPJU=; b=2la5VeRjHrZQG0cjjAvfSfEu5L
+	+kEE9miaPZHcyxuQNSCWVNp4B95pbxf5RZ9c9yOcPWjA7yEi3LCaLDOlFWXUqOXdPWUqGeQ39csX3
+	+RW7ES9rN87tEZXcDocN4tkw2yGVkXD//38EQSV2L0ePnmKFoPUUoEvdprdw13+msfSk=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1tiwHO-00E5L7-4X; Fri, 14 Feb 2025 15:02:54 +0100
-Date: Fri, 14 Feb 2025 15:02:54 +0100
+	id 1tiwKe-00E5P9-1p; Fri, 14 Feb 2025 15:06:16 +0100
+Date: Fri, 14 Feb 2025 15:06:16 +0100
 From: Andrew Lunn <andrew@lunn.ch>
-To: Jie Luo <quic_luoj@quicinc.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+	Vladimir Oltean <olteanv@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lei Wei <quic_leiwei@quicinc.com>,
-	Suruchi Agarwal <quic_suruchia@quicinc.com>,
-	Pavithra R <quic_pavir@quicinc.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-hardening@vger.kernel.org,
-	quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com,
-	srinivas.kandagatla@linaro.org, bartosz.golaszewski@linaro.org,
-	john@phrozen.org
-Subject: Re: [PATCH net-next v3 13/14] net: ethernet: qualcomm: Add PPE
- debugfs support for PPE counters
-Message-ID: <72171304-9a98-4734-85a3-d1302d053602@lunn.ch>
-References: <20250209-qcom_ipq_ppe-v3-0-453ea18d3271@quicinc.com>
- <20250209-qcom_ipq_ppe-v3-13-453ea18d3271@quicinc.com>
- <5a53333b-e94c-4fb7-b23d-e1d38d2dad8e@lunn.ch>
- <a455a2f6-ca0b-43e0-b18c-53f73344981f@quicinc.com>
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	netdev@vger.kernel.org, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] net: dsa: rtl8366rb: Fix compilation problem
+Message-ID: <ca426cd1-124a-483e-9426-4a59ed7d7ba4@lunn.ch>
+References: <20250214-rtl8366rb-leds-compile-issue-v1-1-c4a82ee68588@linaro.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,40 +48,24 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a455a2f6-ca0b-43e0-b18c-53f73344981f@quicinc.com>
+In-Reply-To: <20250214-rtl8366rb-leds-compile-issue-v1-1-c4a82ee68588@linaro.org>
 
-> > > +/* The number of packets dropped because of no buffer available, no PPE
-> > > + * buffer assigned to these packets.
-> > > + */
-> > > +static void ppe_port_rx_drop_counter_get(struct ppe_device *ppe_dev,
-> > > +					 struct seq_file *seq)
-> > > +{
-> > > +	u32 reg, drop_cnt = 0;
-> > > +	int ret, i, tag = 0;
-> > > +
-> > > +	PRINT_COUNTER_PREFIX("PRX_DROP_CNT", "SILENT_DROP:");
-> > > +	for (i = 0; i < PPE_DROP_CNT_TBL_ENTRIES; i++) {
-> > > +		reg = PPE_DROP_CNT_TBL_ADDR + i * PPE_DROP_CNT_TBL_INC;
-> > > +		ret = ppe_pkt_cnt_get(ppe_dev, reg, PPE_PKT_CNT_SIZE_1WORD,
-> > > +				      &drop_cnt, NULL);
-> > > +		if (ret) {
-> > > +			seq_printf(seq, "ERROR %d\n", ret);
-> > > +			return;
-> > > +		}
-> > 
-> > This is an error getting the value from the hardware? You should not
-> > put that into the debugfs itself, you want the read() call to return
-> > it.
-> > 
+On Fri, Feb 14, 2025 at 09:59:57AM +0100, Linus Walleij wrote:
+> When the kernel is compiled without LED framework support the
+> rtl8366rb fails to build like this:
 > 
-> Yes, this error code is returned by regmap read functions in
-> ppe_pkt_cnt_get() when the hardware counter read fails. I will
-> remove it from debugfs file and instead log the error to the
-> console (dev_info).
+> rtl8366rb.o: in function `rtl8366rb_setup_led':
+> rtl8366rb.c:953:(.text.unlikely.rtl8366rb_setup_led+0xe8):
+>   undefined reference to `led_init_default_state_get'
+> rtl8366rb.c:980:(.text.unlikely.rtl8366rb_setup_led+0x240):
+>   undefined reference to `devm_led_classdev_register_ext'
+> 
+> As this is constantly coming up in different randconfig builds,
+> bite the bullet and add some nasty ifdefs to rid this issue.
 
-and return it to user space via the read() call. These functions
-normally return the number of bytes put into the buffer. But you can
-also return a negative error code which gets passed back to user space
-instead.
+At least for DSA drivers, it is more normal to put the LED code into a
+separate compilation unit and provide stubs for when it is not
+used. That avoids a lot of nasty #ifdefs. Could you do the same here?
 
+Thanks
 	Andrew
