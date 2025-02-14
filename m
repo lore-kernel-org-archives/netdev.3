@@ -1,83 +1,199 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6DD25A35E
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 14:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AD125A35E;
+	Fri, 14 Feb 2025 14:14:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739542463; cv=none; b=Ilo8c/oLbzR7i4qCsIxgas5k+jOwZqgIe4UcA4TUelRCdpvDbmWbrzTftAI26Ka3r7KbREWg5l/6MRXyxKczQVjY8vh4uD2/IY75dna2Vf4MCefNjxpu9POQYzXhwFi7xf3TVWT3m/POqbpoCe5JzFgIrmOROZMITqBBIBGpqVY=
+	t=1739542466; cv=none; b=u2RKX2RYgF52MaGuaTyb3Ez3qIXS8f4h/ss9PeDPTi31ErqyBZlRRMx1MMu0AomqUzEz1tyVIDm8O47JbskjaNb2QLLzkEOhZyZ57jJLiknmLk37Zw/4QM2PA7es3xb44zkQ28C0TOhMHELaTDzzeWRqE1v8HSdgjmExaRWZ3IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739542463; c=relaxed/simple;
-	bh=XoOP2Rl4B9P2ec3pKEVrjBv0YWzev9pY5vEbs+9JzSQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IV3KEmnxkjgcLqJsZFDMvs8UexrfFrYzEKFI6L+53ARNnC3UalUjvlDQkrCljbYoNpm3E34gIfEeyZl9w6kIF8WBIN1jE0qc6sa7LSUbVv3aqArJQYDbNVzTwl0DuVpoaGjokUGnVA2tgb6SEs1LT6zYSNtQA+9V9+VY26JbCGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=hTLSSzS6; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1739542466; c=relaxed/simple;
+	bh=4hda1p+a5q+D3wxkdOPEhpRLy2WV8wre68Pgg03Lmzk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=DARxSS27gqxi4wReIUi4d5iy/k0HJSDNayUj47uq3aTXjdAUdWfNagnyaWGpW4MBbQaX829hQQVVlHVvmjhC+O2CbxBhE54df9wdhQ2MdsBxWDhM0gCd+fXZiUapzUgmmdRq2tkviu7AfG6KdTnkbcF4fKd+31TSEzgBXvejKLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=adb5Ho2Y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="hTLSSzS6"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=cwTNYMSB6L78IK+gymK2J/YOKlkj4xNihqKiXhxKYjM=; b=hTLSSzS61rz4N/pRvrURgPeRdf
-	ffYS3YHCRZQzdbpzaCLp1TKxCih4kQO55h4zDL059ojKY9ySI+Z3kCcsSVuBoE9toAyax9yBBCgUU
-	6oQ2r7e/Y2mundk0LnjdiqiMtysROLNPqMgVDtIFFjc8eUqlOT3Y/Yberb/atLadFEs4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tiwSP-00E5Wo-AA; Fri, 14 Feb 2025 15:14:17 +0100
-Date: Fri, 14 Feb 2025 15:14:17 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, pierre@stackhpc.com,
-	Dan Carpenter <error27@gmail.com>
-Subject: Re: [net v1] devlink: fix xa_alloc_cyclic error handling
-Message-ID: <10e27c4b-84d8-4c63-9aea-d6d6197510d9@lunn.ch>
-References: <20250214132453.4108-1-michal.swiatkowski@linux.intel.com>
- <2fcd3d16-c259-4356-82b7-2f1a3ad45dfa@lunn.ch>
- <Z69MESaQ4cUvIy4z@mev-dev.igk.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="adb5Ho2Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 66DBEC4CEDF;
+	Fri, 14 Feb 2025 14:14:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739542466;
+	bh=4hda1p+a5q+D3wxkdOPEhpRLy2WV8wre68Pgg03Lmzk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=adb5Ho2YMrFyefbykaKTUNuDL4tohprIlgC5svMStCZSPIdEC8YN0BpshqRGjohlA
+	 LWcDafU6GvWJNl1S2CBas6uoURB2N+vTWWDJr+LPviiMtF2KMm2Vw3wvvfqs5cUWZH
+	 p8oJNF07/ev2WMdmMci/5yecQMg9UL9pM3gngTzgHeF7QYvnrPHIW7NcLxHaWa83IW
+	 WoCfsdO7ed2JFJiniyhOhgd99za6kh6PL2NLILjXbh0ysoZq7Ac/DAccOK9enSC7dZ
+	 +6OrjzTS+glP2TuKH6mCdzcNgWPq0sADf5lVN5zj3rybgz5P+uDoo2oKfcYUmX87Xd
+	 eaoN9Po1YtXDw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53D84C021A7;
+	Fri, 14 Feb 2025 14:14:26 +0000 (UTC)
+From: Dimitri Fedrau via B4 Relay <devnull+dimitri.fedrau.liebherr.com@kernel.org>
+Date: Fri, 14 Feb 2025 15:14:10 +0100
+Subject: [PATCH net-next v5 2/3] net: phy: Add helper for getting tx
+ amplitude gain
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z69MESaQ4cUvIy4z@mev-dev.igk.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250214-dp83822-tx-swing-v5-2-02ca72620599@liebherr.com>
+References: <20250214-dp83822-tx-swing-v5-0-02ca72620599@liebherr.com>
+In-Reply-To: <20250214-dp83822-tx-swing-v5-0-02ca72620599@liebherr.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>, 
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Florian Fainelli <f.fainelli@gmail.com>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Dimitri Fedrau <dimitri.fedrau@liebherr.com>, 
+ Dimitri Fedrau <dima.fedrau@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739542465; l=4484;
+ i=dimitri.fedrau@liebherr.com; s=20241202; h=from:subject:message-id;
+ bh=dj7XjLsD1vcv58mbznpKHLLZxlHxYB7Mj8UF6IH59YQ=;
+ b=Aejaq9OY2Odwpc2y8jo8Bh7r8uRC4Z4WNGMWvnnFLn2N7YGbSvNaZMntwtqhsN3Gwa52ckmIq
+ wjNFtQaTu9uDJUQL4DQ+87NYB1DPVM7rf1x6TKgp9mCEzSPHyZ1/ZrF
+X-Developer-Key: i=dimitri.fedrau@liebherr.com; a=ed25519;
+ pk=rT653x09JSQvotxIqQl4/XiI4AOiBZrdOGvxDUbb5m8=
+X-Endpoint-Received: by B4 Relay for dimitri.fedrau@liebherr.com/20241202
+ with auth_id=290
+X-Original-From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Reply-To: dimitri.fedrau@liebherr.com
 
-On Fri, Feb 14, 2025 at 02:58:41PM +0100, Michal Swiatkowski wrote:
-> On Fri, Feb 14, 2025 at 02:44:49PM +0100, Andrew Lunn wrote:
-> > On Fri, Feb 14, 2025 at 02:24:53PM +0100, Michal Swiatkowski wrote:
-> > > Pierre Riteau <pierre@stackhpc.com> found suspicious handling an error
-> > > from xa_alloc_cyclic() in scheduler code [1]. The same is done in
-> > > devlink_rel_alloc().
-> > 
-> > If the same bug exists twice it might exist more times. Did you find
-> > this instance by searching the whole tree? Or just networking?
-> > 
-> > This is also something which would be good to have the static
-> > analysers check for. I wounder if smatch can check this?
-> > 
-> > 	Andrew
-> > 
-> 
-> You are right, I checked only net folder and there are two usage like
-> that in drivers. I will send v2 with wider fixing, thanks.
-> 
-> It can be not so easy to check. What if someone want to treat wrapping
-> as an error (don't know if it is valid)? If one of the caller is
-> checking err < 0 it will be fine.
+From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 
-I put Dan in Cc:, lets see what he thinks.
+Add helper which returns the tx amplitude gain defined in device tree.
+Modifying it can be necessary to compensate losses on the PCB and
+connector, so the voltages measured on the RJ45 pins are conforming.
 
-There is at least one other functions i can think of which has similar
-behaviour, < 0 on error, 0 or 1 are both different sorts of
-success. If there are two, there are probably more. Having tooling to
-find this sort of problem would be nice, even if it has a high false
-positive rate and needs combining with manual inspection.
+Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+---
+ drivers/net/phy/phy_device.c | 53 +++++++++++++++++++++++++++++---------------
+ include/linux/phy.h          |  4 ++++
+ 2 files changed, 39 insertions(+), 18 deletions(-)
 
-	Andrew
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 9b06ba92f2ed207ec1e254ad3d1c8111933f4181..4223742e3b0c16d782f790c2fcf9e7dbdd32ba2d 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -3096,19 +3096,12 @@ void phy_get_pause(struct phy_device *phydev, bool *tx_pause, bool *rx_pause)
+ EXPORT_SYMBOL(phy_get_pause);
+ 
+ #if IS_ENABLED(CONFIG_OF_MDIO)
+-static int phy_get_int_delay_property(struct device *dev, const char *name)
++static int phy_get_u32_property(struct device *dev, const char *name, u32 *val)
+ {
+-	s32 int_delay;
+-	int ret;
+-
+-	ret = device_property_read_u32(dev, name, &int_delay);
+-	if (ret)
+-		return ret;
+-
+-	return int_delay;
++	return device_property_read_u32(dev, name, val);
+ }
+ #else
+-static int phy_get_int_delay_property(struct device *dev, const char *name)
++static int phy_get_u32_property(struct device *dev, const char *name, u32 *val)
+ {
+ 	return -EINVAL;
+ }
+@@ -3133,12 +3126,12 @@ static int phy_get_int_delay_property(struct device *dev, const char *name)
+ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
+ 			   const int *delay_values, int size, bool is_rx)
+ {
+-	s32 delay;
+-	int i;
++	int i, ret;
++	u32 delay;
+ 
+ 	if (is_rx) {
+-		delay = phy_get_int_delay_property(dev, "rx-internal-delay-ps");
+-		if (delay < 0 && size == 0) {
++		ret = phy_get_u32_property(dev, "rx-internal-delay-ps", &delay);
++		if (ret < 0 && size == 0) {
+ 			if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID ||
+ 			    phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID)
+ 				return 1;
+@@ -3147,8 +3140,8 @@ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
+ 		}
+ 
+ 	} else {
+-		delay = phy_get_int_delay_property(dev, "tx-internal-delay-ps");
+-		if (delay < 0 && size == 0) {
++		ret = phy_get_u32_property(dev, "tx-internal-delay-ps", &delay);
++		if (ret < 0 && size == 0) {
+ 			if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID ||
+ 			    phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID)
+ 				return 1;
+@@ -3157,8 +3150,8 @@ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
+ 		}
+ 	}
+ 
+-	if (delay < 0)
+-		return delay;
++	if (ret < 0)
++		return ret;
+ 
+ 	if (size == 0)
+ 		return delay;
+@@ -3193,6 +3186,30 @@ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
+ }
+ EXPORT_SYMBOL(phy_get_internal_delay);
+ 
++/**
++ * phy_get_tx_amplitude_gain - stores tx amplitude gain in @val
++ * @phydev: phy_device struct
++ * @dev: pointer to the devices device struct
++ * @linkmode: linkmode for which the tx amplitude gain should be retrieved
++ * @val: tx amplitude gain
++ *
++ * Returns: 0 on success, < 0 on failure
++ */
++int phy_get_tx_amplitude_gain(struct phy_device *phydev, struct device *dev,
++			      enum ethtool_link_mode_bit_indices linkmode,
++			      u32 *val)
++{
++	switch (linkmode) {
++	case ETHTOOL_LINK_MODE_100baseT_Full_BIT:
++		return phy_get_u32_property(dev,
++					    "tx-amplitude-100base-tx-percent",
++					    val);
++	default:
++		return -EINVAL;
++	}
++}
++EXPORT_SYMBOL_GPL(phy_get_tx_amplitude_gain);
++
+ static int phy_led_set_brightness(struct led_classdev *led_cdev,
+ 				  enum led_brightness value)
+ {
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 64982eba71d1eab504307cc83b9c5bbe6886ed29..ffd0eb7f7425ba3dfebbeb966c1fd83783586e08 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2124,6 +2124,10 @@ void phy_get_pause(struct phy_device *phydev, bool *tx_pause, bool *rx_pause);
+ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
+ 			   const int *delay_values, int size, bool is_rx);
+ 
++int phy_get_tx_amplitude_gain(struct phy_device *phydev, struct device *dev,
++			      enum ethtool_link_mode_bit_indices linkmode,
++			      u32 *val);
++
+ void phy_resolve_pause(unsigned long *local_adv, unsigned long *partner_adv,
+ 		       bool *tx_pause, bool *rx_pause);
+ 
+
+-- 
+2.39.5
+
+
