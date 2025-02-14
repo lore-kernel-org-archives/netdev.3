@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E60B1B3F3D
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 19:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F291C84B6
+	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 19:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739561276; cv=none; b=Kb6G3BQyb7pPzb1FOzn9JEzKkXWwQNrnkyOkRcTtj/nDgpLU/EJSerYLak3ZykdGy5kjRAOMF0ReXpwe+4prXf/wtfeBHc5/E0Wjc2QHVxzwVumEqyqMVCSDlMlJTdE3R5z0KMHE0Z6h8G/9DbUgiF88PYcjYHTnikcnUWtOcpA=
+	t=1739561277; cv=none; b=FmR4qL5zhaHLlpv3iCHuFfv/ulMoQkFucHJDlaHnpQyJD5/TRIEvTg9p+YioynynQiy9Noyr7AmM1bu/lIXH8zNgUQoA8mSljs4ROBDXbGV2Q+c3uXeCux6rxX8SnJ18S4C3P2KNW7rILTXsPasaCgy7Vdm0wWcZSyWx3DgWS1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739561276; c=relaxed/simple;
-	bh=6R4u72AFYD8ANA0eBJuqN1nyUsP43Hi5WuJtxCYZ2Ik=;
+	s=arc-20240116; t=1739561277; c=relaxed/simple;
+	bh=/+DA6SaOu7ZsgmN3wWoMUjWThD9oCpVt24DJYrj/ni4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPtJp315jSn9gn76dbpVpLZhaRsiaI1srovx9Yz+KmAsilG3erYxf9W7lR6CJsKfAG9zoz2V3XOgOtvmaAMpZRBnmMol4r3BHVFiOENEToQDnGyiTiGLuTezF7w6CqH9czJEC1fY+36oh2ZT7HcI0VYjpZW7Lf9iMXt3AW3zKVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jb3FWs/h; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=TrUU2DtK+1Evdailz8Ra8TXrkX5qdHfp3EImoEkdtGzxT4kWvPFwTLf58Qo/Ek3t5cgmF6b92g5EHEa/Vp0q4G9DgogqVj/FWX7hi0gKdivJNnzG66D2gtK9CgZdhyqq433N0LvgJbxrO6cZn6L+Kzls5jzeLVcfOlVm3P+/cc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j1+TrQj0; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jb3FWs/h"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j1+TrQj0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739561274; x=1771097274;
+  t=1739561275; x=1771097275;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6R4u72AFYD8ANA0eBJuqN1nyUsP43Hi5WuJtxCYZ2Ik=;
-  b=jb3FWs/ho00NTwv11OjSjYPteSRs4ZFEL3K42nSS76dM4R8dO5ad9C2V
-   806rzK6miGWnnnwH7JrpiZl0P4j+n3EE0hjvEdddeBKcmNVyAzouzm/N/
-   Aedj8Us9zkv/9QSJ0YnJ9Iu7cReqRys74JHpHGC9qZh26kvzFN/T7GZF8
-   h/tF4tRECzRiDzvX4fZO1Ifm9VWqfZoRbK0CSbDEvkXUR/Vemi1tvZLNJ
-   kef3vxiAw0eUnSQPHJs5rVK8KYjQDq/gH0h/z6e2rAhNKmjRoN4FdqX35
-   a2vjYY5fJZ8kypPV/1rC9TiNWdEchdUZWFN1WPHoLkG24lD9tRKukGJvN
-   w==;
-X-CSE-ConnectionGUID: CYtvd6vQQfeHS8rPyoktbA==
-X-CSE-MsgGUID: yz9p/8upSV6djWQ0CJ7Rzw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="40244086"
+  bh=/+DA6SaOu7ZsgmN3wWoMUjWThD9oCpVt24DJYrj/ni4=;
+  b=j1+TrQj0FmTQFDKe+V3b7KbW5rm2pcn8sqzlEQaFSgWGbC50MWdWDefc
+   aykB+fyNQ/gvhqWiY88PF0vCX7qqVYsT8I0vcjEFLvGMz1UB1Q9R+ZoWK
+   N8093JzBsil5HGV27hbVxmsSIy6xab9tuQxnNeB5zbmgC896o9BN9+Hy/
+   W8HXwhoImvAE5XC38xKAmtxtyov14vg2uZZl2iWqmEQvqaYLR1pZcBjGv
+   f0CuAeNKzyQ7L9dCS/EGLvyqcwnrKKWCn+OFW7PKYja4Dd0j4ZSstaFSY
+   9wtk3LpMyxczmrjpDzREmgClYj6IFB7ZLlaJ1C1GkebywfCB3p0cf6XHu
+   Q==;
+X-CSE-ConnectionGUID: SfW+8+1uQfupNTNDLBrLEQ==
+X-CSE-MsgGUID: Z+4tD4FRT96E33VxMCTw9A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="40244101"
 X-IronPort-AV: E=Sophos;i="6.13,286,1732608000"; 
-   d="scan'208";a="40244086"
+   d="scan'208";a="40244101"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
   by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 11:27:53 -0800
-X-CSE-ConnectionGUID: rJPlEkzWT5aJPvVjRq+bgQ==
-X-CSE-MsgGUID: bsr42Ka9T/mjVs80nT8Obg==
+X-CSE-ConnectionGUID: /56sPnuwQxyN/RXCPtVUrw==
+X-CSE-MsgGUID: iAWgEks0TJKkC0txH7Wweg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,286,1732608000"; 
-   d="scan'208";a="144393978"
+   d="scan'208";a="144393984"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa002.jf.intel.com with ESMTP; 14 Feb 2025 11:27:53 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -58,9 +58,9 @@ Cc: Jacob Keller <jacob.e.keller@intel.com>,
 	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
 	Alexander Lobakin <aleksander.lobakin@intel.com>,
 	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net-next 01/14] virtchnl: add support for enabling PTP on iAVF
-Date: Fri, 14 Feb 2025 11:27:22 -0800
-Message-ID: <20250214192739.1175740-2-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next 03/14] virtchnl: add enumeration for the rxdid format
+Date: Fri, 14 Feb 2025 11:27:24 -0800
+Message-ID: <20250214192739.1175740-4-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250214192739.1175740-1-anthony.l.nguyen@intel.com>
 References: <20250214192739.1175740-1-anthony.l.nguyen@intel.com>
@@ -74,26 +74,20 @@ Content-Transfer-Encoding: 8bit
 
 From: Jacob Keller <jacob.e.keller@intel.com>
 
-Add support for allowing a VF to enable PTP feature - Rx timestamps
+Support for allowing VF to negotiate the descriptor format requires that
+the VF specify which descriptor format to use when requesting Rx queues.
+The VF is supposed to request the set of supported formats via the new
+VIRTCHNL_OP_GET_SUPPORTED_RXDIDS, and then set one of the supported
+formats in the rxdid field of the virtchnl_rxq_info structure.
 
-The new capability is gated by VIRTCHNL_VF_CAP_PTP, which must be
-set by the VF to request access to the new operations. In addition, the
-VIRTCHNL_OP_1588_PTP_CAPS command is used to determine the specific
-capabilities available to the VF.
+The virtchnl.h header does not provide an enumeration of the format
+values. The existing implementations in the PF directly use the values
+from the DDP package.
 
-This support includes the following additional capabilities:
-
-* Rx timestamps enabled in the Rx queues (when using flexible advanced
-  descriptors)
-* Read access to PHC time over virtchnl using
-  VIRTCHNL_OP_1588_PTP_GET_TIME
-
-Extra space is reserved in most structures to allow for future
-extension (like set clock, Tx timestamps).  Additional opcode numbers
-are reserved and space in the virtchnl_ptp_caps structure is
-specifically set aside for this.
-Additionally, each structure has some space reserved for future
-extensions to allow some flexibility.
+Make the formats explicit by defining an enumeration of the RXDIDs.
+Provide an enumeration for the values as well as the bit positions as
+returned by the supported_rxdids data from the
+VIRTCHNL_OP_GET_SUPPORTED_RXDIDS.
 
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
@@ -103,108 +97,84 @@ Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- include/linux/avf/virtchnl.h | 67 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 66 insertions(+), 1 deletion(-)
+ include/linux/avf/virtchnl.h | 50 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 1 deletion(-)
 
 diff --git a/include/linux/avf/virtchnl.h b/include/linux/avf/virtchnl.h
-index 13a11f3c09b8..92866e449b21 100644
+index 56baf97c44d0..bc10e6ffa50b 100644
 --- a/include/linux/avf/virtchnl.h
 +++ b/include/linux/avf/virtchnl.h
-@@ -154,7 +154,10 @@ enum virtchnl_ops {
- 	VIRTCHNL_OP_DISABLE_VLAN_STRIPPING_V2 = 55,
- 	VIRTCHNL_OP_ENABLE_VLAN_INSERTION_V2 = 56,
- 	VIRTCHNL_OP_DISABLE_VLAN_INSERTION_V2 = 57,
--	/* opcode 57 - 65 are reserved */
-+	/* opcode 58 and 59 are reserved */
-+	VIRTCHNL_OP_1588_PTP_GET_CAPS = 60,
-+	VIRTCHNL_OP_1588_PTP_GET_TIME = 61,
-+	/* opcode 62 - 65 are reserved */
- 	VIRTCHNL_OP_GET_QOS_CAPS = 66,
- 	/* opcode 68 through 111 are reserved */
- 	VIRTCHNL_OP_CONFIG_QUEUE_BW = 112,
-@@ -270,6 +273,7 @@ VIRTCHNL_CHECK_STRUCT_LEN(16, virtchnl_vsi_resource);
- #define VIRTCHNL_VF_OFFLOAD_ADV_RSS_PF		BIT(27)
- #define VIRTCHNL_VF_OFFLOAD_FDIR_PF		BIT(28)
- #define VIRTCHNL_VF_OFFLOAD_QOS			BIT(29)
-+#define VIRTCHNL_VF_CAP_PTP			BIT(31)
+@@ -313,6 +313,48 @@ struct virtchnl_txq_info {
  
- #define VF_BASE_MODE_OFFLOADS (VIRTCHNL_VF_OFFLOAD_L2 | \
- 			       VIRTCHNL_VF_OFFLOAD_VLAN | \
-@@ -1425,6 +1429,61 @@ struct virtchnl_fdir_del {
+ VIRTCHNL_CHECK_STRUCT_LEN(24, virtchnl_txq_info);
  
- VIRTCHNL_CHECK_STRUCT_LEN(12, virtchnl_fdir_del);
- 
-+#define VIRTCHNL_1588_PTP_CAP_RX_TSTAMP		BIT(1)
-+#define VIRTCHNL_1588_PTP_CAP_READ_PHC		BIT(2)
-+
-+/**
-+ * struct virtchnl_ptp_caps - Defines the PTP caps available to the VF.
-+ * @caps: On send, VF sets what capabilities it requests. On reply, PF
-+ *        indicates what has been enabled for this VF. The PF shall not set
-+ *        bits which were not requested by the VF.
-+ * @rsvd: Reserved bits for future extension.
-+ *
-+ * Structure that defines the PTP capabilities available to the VF. The VF
-+ * sends VIRTCHNL_OP_1588_PTP_GET_CAPS, and must fill in the ptp_caps field
-+ * indicating what capabilities it is requesting. The PF will respond with the
-+ * same message with the virtchnl_ptp_caps structure indicating what is
-+ * enabled for the VF.
-+ *
-+ * VIRTCHNL_1588_PTP_CAP_RX_TSTAMP indicates that the VF receive queues have
-+ * receive timestamps enabled in the flexible descriptors. Note that this
-+ * requires a VF to also negotiate to enable advanced flexible descriptors in
-+ * the receive path instead of the default legacy descriptor format.
-+ *
-+ * VIRTCHNL_1588_PTP_CAP_READ_PHC indicates that the VF may read the PHC time
-+ * via the VIRTCHNL_OP_1588_PTP_GET_TIME command.
-+ *
-+ * Note that in the future, additional capability flags may be added which
-+ * indicate additional extended support. All fields marked as reserved by this
-+ * header will be set to zero. VF implementations should verify this to ensure
-+ * that future extensions do not break compatibility.
-+ */
-+struct virtchnl_ptp_caps {
-+	u32 caps;
-+	u8 rsvd[44];
++/* RX descriptor IDs (range from 0 to 63) */
++enum virtchnl_rx_desc_ids {
++	VIRTCHNL_RXDID_0_16B_BASE		= 0,
++	VIRTCHNL_RXDID_1_32B_BASE		= 1,
++	VIRTCHNL_RXDID_2_FLEX_SQ_NIC		= 2,
++	VIRTCHNL_RXDID_3_FLEX_SQ_SW		= 3,
++	VIRTCHNL_RXDID_4_FLEX_SQ_NIC_VEB	= 4,
++	VIRTCHNL_RXDID_5_FLEX_SQ_NIC_ACL	= 5,
++	VIRTCHNL_RXDID_6_FLEX_SQ_NIC_2		= 6,
++	VIRTCHNL_RXDID_7_HW_RSVD		= 7,
++	/* 8 through 15 are reserved */
++	VIRTCHNL_RXDID_16_COMMS_GENERIC		= 16,
++	VIRTCHNL_RXDID_17_COMMS_AUX_VLAN	= 17,
++	VIRTCHNL_RXDID_18_COMMS_AUX_IPV4	= 18,
++	VIRTCHNL_RXDID_19_COMMS_AUX_IPV6	= 19,
++	VIRTCHNL_RXDID_20_COMMS_AUX_FLOW	= 20,
++	VIRTCHNL_RXDID_21_COMMS_AUX_TCP		= 21,
++	/* 22 through 63 are reserved */
 +};
 +
-+VIRTCHNL_CHECK_STRUCT_LEN(48, virtchnl_ptp_caps);
++#define VIRTCHNL_RXDID_BIT(x)			BIT_ULL(VIRTCHNL_RXDID_##x)
 +
-+/**
-+ * struct virtchnl_phc_time - Contains the 64bits of PHC clock time in ns.
-+ * @time: PHC time in nanoseconds
-+ * @rsvd: Reserved for future extension
-+ *
-+ * Structure received with VIRTCHNL_OP_1588_PTP_GET_TIME. Contains the 64bits
-+ * of PHC clock time in nanoseconds.
-+ *
-+ * VIRTCHNL_OP_1588_PTP_GET_TIME may be sent to request the current time of
-+ * the PHC. This op is available in case direct access via the PHC registers
-+ * is not available.
-+ */
-+struct virtchnl_phc_time {
-+	u64 time;
-+	u8 rsvd[8];
++/* RX descriptor ID bitmasks */
++enum virtchnl_rx_desc_id_bitmasks {
++	VIRTCHNL_RXDID_0_16B_BASE_M		= VIRTCHNL_RXDID_BIT(0_16B_BASE),
++	VIRTCHNL_RXDID_1_32B_BASE_M		= VIRTCHNL_RXDID_BIT(1_32B_BASE),
++	VIRTCHNL_RXDID_2_FLEX_SQ_NIC_M		= VIRTCHNL_RXDID_BIT(2_FLEX_SQ_NIC),
++	VIRTCHNL_RXDID_3_FLEX_SQ_SW_M		= VIRTCHNL_RXDID_BIT(3_FLEX_SQ_SW),
++	VIRTCHNL_RXDID_4_FLEX_SQ_NIC_VEB_M	= VIRTCHNL_RXDID_BIT(4_FLEX_SQ_NIC_VEB),
++	VIRTCHNL_RXDID_5_FLEX_SQ_NIC_ACL_M	= VIRTCHNL_RXDID_BIT(5_FLEX_SQ_NIC_ACL),
++	VIRTCHNL_RXDID_6_FLEX_SQ_NIC_2_M	= VIRTCHNL_RXDID_BIT(6_FLEX_SQ_NIC_2),
++	VIRTCHNL_RXDID_7_HW_RSVD_M		= VIRTCHNL_RXDID_BIT(7_HW_RSVD),
++	/* 8 through 15 are reserved */
++	VIRTCHNL_RXDID_16_COMMS_GENERIC_M	= VIRTCHNL_RXDID_BIT(16_COMMS_GENERIC),
++	VIRTCHNL_RXDID_17_COMMS_AUX_VLAN_M	= VIRTCHNL_RXDID_BIT(17_COMMS_AUX_VLAN),
++	VIRTCHNL_RXDID_18_COMMS_AUX_IPV4_M	= VIRTCHNL_RXDID_BIT(18_COMMS_AUX_IPV4),
++	VIRTCHNL_RXDID_19_COMMS_AUX_IPV6_M	= VIRTCHNL_RXDID_BIT(19_COMMS_AUX_IPV6),
++	VIRTCHNL_RXDID_20_COMMS_AUX_FLOW_M	= VIRTCHNL_RXDID_BIT(20_COMMS_AUX_FLOW),
++	VIRTCHNL_RXDID_21_COMMS_AUX_TCP_M	= VIRTCHNL_RXDID_BIT(21_COMMS_AUX_TCP),
++	/* 22 through 63 are reserved */
 +};
 +
-+VIRTCHNL_CHECK_STRUCT_LEN(16, virtchnl_phc_time);
-+
- struct virtchnl_shaper_bw {
- 	/* Unit is Kbps */
- 	u32 committed;
-@@ -1757,6 +1816,12 @@ virtchnl_vc_validate_vf_msg(struct virtchnl_version_info *ver, u32 v_opcode,
- 			}
- 		}
- 		break;
-+	case VIRTCHNL_OP_1588_PTP_GET_CAPS:
-+		valid_len = sizeof(struct virtchnl_ptp_caps);
-+		break;
-+	case VIRTCHNL_OP_1588_PTP_GET_TIME:
-+		valid_len = sizeof(struct virtchnl_phc_time);
-+		break;
- 	/* These are always errors coming from the VF. */
- 	case VIRTCHNL_OP_EVENT:
- 	case VIRTCHNL_OP_UNKNOWN:
+ /* virtchnl_rxq_info_flags - definition of bits in the flags field of the
+  *			     virtchnl_rxq_info structure.
+  *
+@@ -347,7 +389,12 @@ struct virtchnl_rxq_info {
+ 	u32 databuffer_size;
+ 	u32 max_pkt_size;
+ 	u8 crc_disable;
+-	u8 rxdid;
++	/* see enum virtchnl_rx_desc_ids;
++	 * only used when VIRTCHNL_VF_OFFLOAD_RX_FLEX_DESC is supported. Note
++	 * that when the offload is not supported, the descriptor format aligns
++	 * with VIRTCHNL_RXDID_1_32B_BASE.
++	 */
++	enum virtchnl_rx_desc_ids rxdid:8;
+ 	enum virtchnl_rxq_info_flags flags:8; /* see virtchnl_rxq_info_flags */
+ 	u8 pad1;
+ 	u64 dma_ring_addr;
+@@ -1050,6 +1097,7 @@ struct virtchnl_filter {
+ VIRTCHNL_CHECK_STRUCT_LEN(272, virtchnl_filter);
+ 
+ struct virtchnl_supported_rxdids {
++	/* see enum virtchnl_rx_desc_id_bitmasks */
+ 	u64 supported_rxdids;
+ };
+ 
 -- 
 2.47.1
 
