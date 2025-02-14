@@ -1,122 +1,83 @@
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E33261376
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 14:09:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6DD25A35E
+	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 14:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739542184; cv=none; b=o4FaVQW/2kMXToARvitiwpgNDhAjDUTOFLzBLSBZDcBQtQx/EbxpJS9n8ggE6CdxxWjpxzevq+Kgbp9M/4bOoTKZiBsn2mB0tefYVQUrruc74xWXLiItAz+1WMTILQCe4kTLH9OGXRK/dyeT08ZDwokhh6uJln6TtvRB5G16ekM=
+	t=1739542463; cv=none; b=Ilo8c/oLbzR7i4qCsIxgas5k+jOwZqgIe4UcA4TUelRCdpvDbmWbrzTftAI26Ka3r7KbREWg5l/6MRXyxKczQVjY8vh4uD2/IY75dna2Vf4MCefNjxpu9POQYzXhwFi7xf3TVWT3m/POqbpoCe5JzFgIrmOROZMITqBBIBGpqVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739542184; c=relaxed/simple;
-	bh=c8aTG/Ae42z7StuITPOfTKTRfJ7z/SJOWehc1SBqnag=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=r9yUpYcv+eecpDhvgouB9yRynCO4SqIdkMmDt6Qn1sJFB0IY/7lc1/NhJFrQrWhTOxA5bYMfCP5hbh85Xnug7RycyfSsqbb9bi6ZDIATiicg5A0BlqdaX5tbF0Wk04hGzlWbw7M/KehrX6ad4G63i5pmHfZVLaHAu50M+NNvzNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
-Received: from omf20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8CB6EB033C;
-	Fri, 14 Feb 2025 14:00:21 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf20.hostedemail.com (Postfix) with ESMTPA id 6C72F2002E;
-	Fri, 14 Feb 2025 14:00:18 +0000 (UTC)
-Message-ID: <06ba971191eeb80cea711653b737b16221899cf9.camel@perches.com>
-Subject: Re: [PATCH v2 net-next] checkpatch: Discourage a new use of
- rtnl_lock() variants.
-From: Joe Perches <joe@perches.com>
-To: Mateusz Polchlopek <mateusz.polchlopek@intel.com>, Kuniyuki Iwashima
-	 <kuniyu@amazon.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	 <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: Andy Whitcroft <apw@canonical.com>, Dwaipayan Ray
- <dwaipayanray1@gmail.com>,  Lukas Bulwahn <lukas.bulwahn@gmail.com>,
- Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Date: Fri, 14 Feb 2025 06:00:17 -0800
-In-Reply-To: <c25c5efe-6835-44fb-9937-87bf25368a97@intel.com>
-References: <20250214045414.56291-1-kuniyu@amazon.com>
-	 <c25c5efe-6835-44fb-9937-87bf25368a97@intel.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1739542463; c=relaxed/simple;
+	bh=XoOP2Rl4B9P2ec3pKEVrjBv0YWzev9pY5vEbs+9JzSQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IV3KEmnxkjgcLqJsZFDMvs8UexrfFrYzEKFI6L+53ARNnC3UalUjvlDQkrCljbYoNpm3E34gIfEeyZl9w6kIF8WBIN1jE0qc6sa7LSUbVv3aqArJQYDbNVzTwl0DuVpoaGjokUGnVA2tgb6SEs1LT6zYSNtQA+9V9+VY26JbCGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=hTLSSzS6; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="hTLSSzS6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=cwTNYMSB6L78IK+gymK2J/YOKlkj4xNihqKiXhxKYjM=; b=hTLSSzS61rz4N/pRvrURgPeRdf
+	ffYS3YHCRZQzdbpzaCLp1TKxCih4kQO55h4zDL059ojKY9ySI+Z3kCcsSVuBoE9toAyax9yBBCgUU
+	6oQ2r7e/Y2mundk0LnjdiqiMtysROLNPqMgVDtIFFjc8eUqlOT3Y/Yberb/atLadFEs4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tiwSP-00E5Wo-AA; Fri, 14 Feb 2025 15:14:17 +0100
+Date: Fri, 14 Feb 2025 15:14:17 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, pierre@stackhpc.com,
+	Dan Carpenter <error27@gmail.com>
+Subject: Re: [net v1] devlink: fix xa_alloc_cyclic error handling
+Message-ID: <10e27c4b-84d8-4c63-9aea-d6d6197510d9@lunn.ch>
+References: <20250214132453.4108-1-michal.swiatkowski@linux.intel.com>
+ <2fcd3d16-c259-4356-82b7-2f1a3ad45dfa@lunn.ch>
+ <Z69MESaQ4cUvIy4z@mev-dev.igk.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 6C72F2002E
-X-Rspamd-Server: rspamout04
-X-Stat-Signature: a9z6mkdskhga6kxp1objeaik63w6rq81
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX18JOd/SfB9yPb5AiLmlIXaTGe4d9bd0GSs=
-X-HE-Tag: 1739541618-817973
-X-HE-Meta: U2FsdGVkX1/Im1Tt+AxiLjpqgOL3UcQ2w6LBwe1wmD2d/e8IuZiZK9m83shiC6nm02+7PlevFhs+8RyHC2jah87FOTqnXT2LbKkX+QQcVoU3CNW5I09eOQGbcItzbcEFZj5pZbEoO0C5N7eim5f5nwPbWvUnXgbTkhZ5NYxCCkKGzMKmSEORFwpAbmWfCPgEmKuDAGUDOZ0UP3qcAXdNvNhK1IL5GE633mDg/kjYSeK71ilBcORZyTDRU9ngTjNe31/5QUBhjHT8pRNy05NmyHjV/a1kqBC+plP0VI/O4XSSIe2R0CfH7llm2LNQEnaQFtODHF47PQTgIAVIlm3isQ/9l+iBMrgl9zgVSTXD7c1pfFK7XUW2XA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z69MESaQ4cUvIy4z@mev-dev.igk.intel.com>
 
-On Fri, 2025-02-14 at 10:24 +0100, Mateusz Polchlopek wrote:
->=20
-> On 2/14/2025 5:54 AM, Kuniyuki Iwashima wrote:
-> > rtnl_lock() is a "Big Kernel Lock" in the networking slow path
-> > and still serialises most of RTM_(NEW|DEL|SET)* rtnetlink requests.
-> >=20
-> > Commit 76aed95319da ("rtnetlink: Add per-netns RTNL.") started a
-> > very large, in-progress, effort to make the RTNL lock scope per
-> > network namespace.
-> >=20
-> > However, there are still some patches that newly use rtnl_lock(),
-> > which is now discouraged, and we need to revisit it later.
-> >=20
-> > Let's warn about the case by checkpatch.
-> >=20
-> > The target functions are as follows:
-> >=20
-> >    * rtnl_lock()
-> >    * rtnl_trylock()
-> >    * rtnl_lock_interruptible()
-> >    * rtnl_lock_killable()
-> >=20
-> > and the warning will be like:
-> >=20
-> >    WARNING: A new use of rtnl_lock() variants is discouraged, try to us=
-e rtnl_net_lock(net) variants
-> >    #18: FILE: net/core/rtnetlink.c:79:
-> >    +	rtnl_lock();
-> >=20
-> > Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-> > Reviewed-by: Simon Horman <horms@kernel.org>
-> > ---
-> > v2:
-> >    * Remove unnecessary "^\+.*"
-> >    * Match "rtnl_lock	 ()"
-> >=20
-> > v1: https://lore.kernel.org/netdev/20250211070447.25001-1-kuniyu@amazon=
-.com/
-> > ---
-> >   scripts/checkpatch.pl | 6 ++++++
-> >   1 file changed, 6 insertions(+)
-> >=20
-> > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-[]
-> > @@ -6995,6 +6995,12 @@ sub process {
-> >   #			}
-> >   #		}
-> >  =20
-> > +# A new use of rtnl_lock() is discouraged as it's being converted to r=
-tnl_net_lock(net).
-> > +		if ($line =3D~ /\brtnl_(try)?lock(_interruptible|_killable)?\s*\(\)/=
-) {
-> > +			WARN("rtnl_lock()",
-> > +			     "A new use of rtnl_lock() variants is discouraged, try to use =
-rtnl_net_lock(net) variants\n" . $herecurr);
+On Fri, Feb 14, 2025 at 02:58:41PM +0100, Michal Swiatkowski wrote:
+> On Fri, Feb 14, 2025 at 02:44:49PM +0100, Andrew Lunn wrote:
+> > On Fri, Feb 14, 2025 at 02:24:53PM +0100, Michal Swiatkowski wrote:
+> > > Pierre Riteau <pierre@stackhpc.com> found suspicious handling an error
+> > > from xa_alloc_cyclic() in scheduler code [1]. The same is done in
+> > > devlink_rel_alloc().
+> > 
+> > If the same bug exists twice it might exist more times. Did you find
+> > this instance by searching the whole tree? Or just networking?
+> > 
+> > This is also something which would be good to have the static
+> > analysers check for. I wounder if smatch can check this?
+> > 
+> > 	Andrew
+> > 
+> 
+> You are right, I checked only net folder and there are two usage like
+> that in drivers. I will send v2 with wider fixing, thanks.
+> 
+> It can be not so easy to check. What if someone want to treat wrapping
+> as an error (don't know if it is valid)? If one of the caller is
+> checking err < 0 it will be fine.
 
-UPPER_CASE ALPHANUMERIC only for the key value please
-and there could be whitespace between the parentheses
+I put Dan in Cc:, lets see what he thinks.
 
-Perhaps:
-		if ($line =3D~ /\brtnl_((?:try)?lock(?:_interruptible|_killable)?)\s*\(\s=
-*\)/) {
-			WARN("RTNL_LOCK",
-			     "New use of rtnl_$1, prefer rtnl_net_$1(net)\n" . $herecurr);
-		}
+There is at least one other functions i can think of which has similar
+behaviour, < 0 on error, 0 or 1 are both different sorts of
+success. If there are two, there are probably more. Having tooling to
+find this sort of problem would be nice, even if it has a high false
+positive rate and needs combining with manual inspection.
 
-though there doesn't seem to be any uses of interruptible variants
-in the tree I looked at.
-
+	Andrew
