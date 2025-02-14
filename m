@@ -1,65 +1,65 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBF2263C82
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 13:54:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100A120FA9E
+	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 14:00:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739541265; cv=none; b=k+IzDnt6ay9xsaTPbBK0A6K8loR6pkN3Kzl/5Y1Kn6fl+msfFCcK7utj1alo+AxjxqEha1t1gAWOoqW1BKLX8BjQi05OxiE3JNhlUk9jKuI9u+eTrJPJ18BqDUJDjBMjQSZz6ysHY2wLC3Nv984g60figsbkxcosEeMFGXSQvqQ=
+	t=1739541637; cv=none; b=nzZTtpD4qsxm/dsTMXQNDJvwZ/eDFZDv/K+ZLqiujQlYOiUi+A6tVxBDkHljrglrfnHtYBWdSff1Ubb2f4lNxpLX/GDCXGtLcFly5UkGx9Vg66rtLjxqnZimHuBdwYUJpu9An6pcdkkPj4qiBWaX0UWRFyta1fgJvlrA/nmfbQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739541265; c=relaxed/simple;
-	bh=QskIIUY3abCHEQqr+ZBO02qBkdcjQaMWhVVTfD1ktoI=;
+	s=arc-20240116; t=1739541637; c=relaxed/simple;
+	bh=aT52DCyCkE/FOAU5A4XxNdM0hSVkOX9rETPz1btkjJ8=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Jzr0EP4p+DhFiZsUy53GwvPIExzhDaUlbnzwA4nXOmrqCJOuvTgaKfTzGeaY5lO+26Y07hvy5aNYK17B+3yEHd6vA7skMxM90oA2lJPeqtIbEiQgG4A0PDqt/VOFs/WsXVWscCc4iIuSC1LQI7cQv1FG6xCztrtHlYZUBLqRFf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=dYMmzSj+; arc=none smtp.client-ip=209.85.221.54
+	 In-Reply-To:Content-Type; b=mQ6xBGBlFUX0bdD30zcnYbURgkEdDWunS9xX9/Oz9nsg7SzEYN/MhpJOSpiuw1CkgjC6BJbKIqnFpG8e1RRws2LNRkFNpGD8eqQtwd4XbVFewCggfUjUm6wrSKicWtFJ2suSs7ZPhPduUtqUwSyEODscacjjUFBt+CQR/L5I5eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=Pf8MBZ+Y; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="dYMmzSj+"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-38dc6d55ebaso2080687f8f.1
-        for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 05:54:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="Pf8MBZ+Y"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-38dc9f3cc80so868674f8f.0
+        for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 06:00:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1739541262; x=1740146062; darn=vger.kernel.org;
+        d=openvpn.net; s=google; t=1739541633; x=1740146433; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:from:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=toWHVNWxJVyn5ES/h46Z050KFfTtE9z+8q/ixpftoXQ=;
-        b=dYMmzSj+uyk5TL/dl5EwvUHVdCQ3S1OYsC7xJWoGCKQH5fcB+PD8TSB7Y2dXgCHvhl
-         a4udnkfu5GdPw1RDpspVYz9z7JVhO+/H6IFijdlvpseBJrVguqLtOP2csCwevO9LrZ8i
-         4+cxKf2Xqx1LSl3BvPUiLPu5eErCfLfFYblzLXTKbxVXydvgkctp5/M/VxImW84lZ4g8
-         Ljc+Qjgx8D4MFynab5V6tRtalKvbNaT6Z1SOfs1mFTRFiiZFr9Cgrg7Q1OsGwCdSEwYv
-         0T3e21TWsKtHbhyk7xzKTxgBj7DU/uYhkPZ8YkMR1o4BfcynOSIu3OsJfJubAQFsqCfh
-         lRhA==
+        bh=QIKJXROgZdnHdVfnlvw9H3L9hbWVM4xWzC/FdoHev/E=;
+        b=Pf8MBZ+YG5nO7DTT6JrytEgcQIOq+1Q6yPXgN/2LM2H/E/yBZSZuAiQLWlvYFmOTWT
+         YsNgGcus6q56K/LrzogRdBbuUR1/IHGVuH7NBAtNVXyoTs6k6nGsjLlA9+JLQJ/AkSEG
+         gVaTQqhcaxIeZGrr9ICJZnMVeSeDo0/JYTV90WUE9bpxo76QeznUovViDPreIUpmOmVW
+         NOD77Q2d7lGG5BmAJZSdL3QPO8u4SCPOAurpjcKo5EeLO2v2+ixdt2iuDWWNlePYN84C
+         6ghjGxINUH/4MLCRlGCP6FhfpvsI1cFtIXZ5407Qn6L/SXSP0fV0w5u+RkA5a0RjYhO9
+         RMvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739541262; x=1740146062;
+        d=1e100.net; s=20230601; t=1739541633; x=1740146433;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:from:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=toWHVNWxJVyn5ES/h46Z050KFfTtE9z+8q/ixpftoXQ=;
-        b=sMfV8+yhaVFJ7Ip4rKfygCebWuOAnmwvrtqfrsS/utqz/3ZdWAZ4D5l6pppfnFM0LQ
-         dlCeCUSyWXmBQpGte1/ZST76G7wQcrdYpQ8JqNgNgc7lGqXo9aiwag5Vvemk2Nvh0hQE
-         ZmzWASyWgA7LejdmqtLVnMan3Y0noqFym05+6WgjTRg726YrAy1arJ1bTVzX0+CXL9S3
-         IStcPmT8LgHQtpLE8zDGTKqjmo0Vo/xhCzzK8/tmvyfYqn3zWXMbf0Zf3dREu0WUSvyQ
-         jUorR3TPfziDSs+4KS1z8iaoCvZKs5fPZELhzSLLHk2SAsylcbkt0YUmLD5ldES1siE9
-         oXTg==
-X-Gm-Message-State: AOJu0Yw4tRtjx9uQmS6Wcb7lJg6RJ3YdvY0S7eL7b/bSVvpOv2s7E4cP
-	X8Wp6Q5G+tJQRQa2SyzhOnBK9TpUdxSOFyy6GTJPPDT8ejkdbPTmOzgzvUB2hj8=
-X-Gm-Gg: ASbGnctYo5BLFIEhMAqGuy48FVqQ7XWeZtO6LihppthGMppAPUjZeeWJXKja6bFhCaF
-	3vjUDjKBrjoCgFYU+xdaQALKlOYqoNOJrseODPvHWAjF0T1wd/rQNFbAP32rduQkIDslMmHnK/m
-	7e2kfqV5bEC90dU3scfH5IMqEgENfN0ZjZ9Kcj8Wi/9IxJsEU7BWsLAD5oPxWhTjlsF45cv92hw
-	FhktVvsOo8QrMyanaSjsAv+rI71xBla8+XzQ4+fVRVkjsc8cAjUieHti+2QR+a5kXJkfTYRC+FY
-	py56YXaBxqD1eajoElemYbCXemtBDHifH3PGYWVlJBMDn8Ix8qGeLA==
-X-Google-Smtp-Source: AGHT+IGkDAoesNnj7fFlL42H4EVhyCcHo9D7iDEiKI1TAQsgS558sccl4nN3f3aKaXXhWN9NPT7ZkA==
-X-Received: by 2002:a5d:6d0a:0:b0:38d:e363:494b with SMTP id ffacd0b85a97d-38f24cfa3f1mr9673966f8f.8.1739541261655;
-        Fri, 14 Feb 2025 05:54:21 -0800 (PST)
+        bh=QIKJXROgZdnHdVfnlvw9H3L9hbWVM4xWzC/FdoHev/E=;
+        b=rWXvzBzm26QciswNaUoy10uY53m27stxhEkAYR8hOdRlxGgRijmdxThYn/0SiLDsjO
+         P1c+fNbrBey95Ky2gjwuR6wemsQoi6C+XySQWaODN61onfwKgC1pRHBgyjKwPfx7Ble/
+         g5RY+qmCbC2i6JPx+Q9gr0xnnVjsyeh4dKefGozMXAUYUWdHKP/aziOExnL5txDVAGep
+         O3erZzyfLKby30VaK4FZabEP9bIJ0EJG2iK3wN9ssL6JcdFZDc7gECLDXfhoHSlOd63Z
+         CtZxYefXVl2DLQbD/DQQiQqObhLW6K6sjBu0JOJ/wXNb16hn4t1Jmkw2hzG3ihmezU81
+         n1lg==
+X-Gm-Message-State: AOJu0YxYdoWXxFsUv00OYNvAZKD8dffzr7fbNaVOdwa7LbW6qtoXWVGk
+	mcjKjBQRP2AsWaUaNwrXc8KwU9NgSBdi6OYPEROfQoMW+TW+ukXF04VtbzhPMOk=
+X-Gm-Gg: ASbGnctXV9OJkhxh9PeESt3xYK5Wdial7SSW7S6yBnRMBGdiT869ZaMj1u4w0ZnUzCb
+	wncDkPVrmNszm1an19JZJpHZFAD97JWX/1aA/UyJe18FETP17nkDrvLNS84ZPzvrF5ID//JJimh
+	eFIFbiyrWe3qKtoMxB5CA+R36j94SBb7NcJ228V9ozHGWBHmldWs8MWgGv0YHXDJyr18DBTSExU
+	CIn0NPPhL+iU87SB338gEsDLEPXMrlk+E3/yl8a6vncg8deHfrOJTpRr/ic6lmftN4GHeP5MmK7
+	lXFPehzFKeipIIDJHlgB4cYAkBhY9PwQni/ngcOAnfkDxPmiWryPkg==
+X-Google-Smtp-Source: AGHT+IEPmiJ1bSo/864Z7aQ6et3I2XrazbxrUsk5ja1G6ShAPdhRXrrX/2IxOM6UBpVAET50cPOD0g==
+X-Received: by 2002:adf:e74c:0:b0:38f:31fe:6d08 with SMTP id ffacd0b85a97d-38f31fe7410mr849213f8f.46.1739541632914;
+        Fri, 14 Feb 2025 06:00:32 -0800 (PST)
 Received: from ?IPV6:2001:67c:2fbc:1:cd14:b9de:fda8:dc6d? ([2001:67c:2fbc:1:cd14:b9de:fda8:dc6d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f2580fe7dsm4733240f8f.0.2025.02.14.05.54.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258f5efdsm4635615f8f.43.2025.02.14.06.00.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Feb 2025 05:54:21 -0800 (PST)
-Message-ID: <507c0388-8ce4-47fa-90b3-b46ae170045a@openvpn.net>
-Date: Fri, 14 Feb 2025 14:54:20 +0100
+        Fri, 14 Feb 2025 06:00:32 -0800 (PST)
+Message-ID: <ccd4c233-e065-456d-8275-ffcca402583d@openvpn.net>
+Date: Fri, 14 Feb 2025 15:00:31 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,6 +84,7 @@ Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
 References: <20250211-b4-ovpn-v19-0-86d5daf2a47a@openvpn.net>
  <Z60wIRjw5Id1VTal@hog> <090524ac-724d-4915-8699-fe2ae736ab8c@openvpn.net>
  <Z64Tw02PO433bob8@hog> <0c0de58a-4dac-4b3b-9fc5-2a58a145d5ab@openvpn.net>
+ <507c0388-8ce4-47fa-90b3-b46ae170045a@openvpn.net>
 Content-Language: en-US
 Autocrypt: addr=antonio@openvpn.net; keydata=
  xsFNBFN3k+ABEADEvXdJZVUfqxGOKByfkExNpKzFzAwHYjhOb3MTlzSLlVKLRIHxe/Etj13I
@@ -125,90 +126,27 @@ Autocrypt: addr=antonio@openvpn.net; keydata=
  BnRX9nFx9kPSO42TkFK55Dr5EDeBO3v33recscuB8VVN5xvh0GV57Qre+9sJrEq7Es9W609a
  +M0yRJWJEjFnMa/jsGZ+QyLD5QTL6SGuZ9gKI3W1SfFZOzV7hHsxPTZ6
 Organization: OpenVPN Inc.
-In-Reply-To: <0c0de58a-4dac-4b3b-9fc5-2a58a145d5ab@openvpn.net>
+In-Reply-To: <507c0388-8ce4-47fa-90b3-b46ae170045a@openvpn.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 13/02/2025 20:40, Antonio Quartulli wrote:
-> On 13/02/2025 16:46, Sabrina Dubroca wrote:
->> 2025-02-13, 12:46:34 +0100, Antonio Quartulli wrote:
->>> On 13/02/2025 00:34, Sabrina Dubroca wrote:
->>>> Hello,
->>>>
->>>> 2025-02-11, 01:39:53 +0100, Antonio Quartulli wrote:
->>>>> All minor and major reported problems have been finally addressed.
->>>>> Big thanks to Sabrina, who took the time to guide me through
->>>>> converting the peer socket to an RCU pointer.
->>>>
->>>> Something is off (not sure if it's new to this version): if I use
->>>> test-tcp.sh to setup a set of interfaces and peers (I stop the test
->>>> just after setup to keep the environment alive), then remove all netns
->>>> with "ip -all netns delete", I expect all devices to go away, but they
->>>> don't. With debug messages enabled I'm seeing some activity from the
->>>> module ("tun0: sending keepalive to peer 3" and so on), and
->>>> ovpn_net_uninit/ovpn_priv_free never got called.
->>>
->>> I can reproduce it. If later I rmmod ovpn I then get all the 
->>> "Deleting peer"
->>> messages.
->>> So instances are not being purged on netns exit.
->>>
->>> Will dive into it.
->>
->> I think the socket holds a ref on the netns, so it's not getting
->> destroyed, simply "removed" from iproute's point of view. And the
->> socket isn't going away as long as it's used by a peer.
+On 14/02/2025 14:54, Antonio Quartulli wrote:
+> For example in wireguard/device.c the socket is released in 
+> pernet_operations.pre_exit().
 > 
-> After a deep dive I was getting to the same conclusion:
-> cleanup_net() is never invoked because we lack an invocation of put_net().
-> sk_alloc() invokes get_net(), so this is the ref that is not being 
-> released.
+> But pre_exit() is invoked in cleanup_net(), which is invoked ONLY if the 
+> net refcount has reached 0...but how can it be zero before the sockets 
+> have been released?
 > 
->>
->> If I delete the peer(s) for the ovpn device and then the netns it was
->> in, the netns is fully removed, and the ovpn device is gone. Also no
->> issue if I delete the ovpn device before its netns, then everything is
->> destroyed as expected.
->>
->> I'm not sure that can be solved, as least under the current refcount
->> scheme.
-> 
-> I went back to v12 of the patchset (which is pre-refcount-restructuring) 
-> and indeed the problem there doesn't exist.
-> 
-> However, it's unclear to me how in v12 the socket release was happening 
-> upon netns delete. Who was triggering that? ovpn still needed to call 
-> sockfd_put() in order to let it go.
-> 
-> Will investigate some more and think about a solution.
-> 
+> I must be missing something, because this seems to be a reference loop.
 
-I may have done something wrong, but today I tried again and I am 
-reproducing this issue also on v8 + 6.11.
+FTR, the answer is that sockets created in-kernel (like for wireguard) 
+have sk->sk_ref_cnt set to 0, which implies that no reference to the 
+netns is taken.
 
-I am indeed wondering how it could have ever worked: if we don't delete 
-the peer, we don't detach the socket, hence the following chain:
-
-sockfd_put() -> sk_destructor() -> put_net()
-
-does not happen.
-
-Shouldn't we be notified somehow that the netns is going away?
-
-For example in wireguard/device.c the socket is released in 
-pernet_operations.pre_exit().
-
-But pre_exit() is invoked in cleanup_net(), which is invoked ONLY if the 
-net refcount has reached 0...but how can it be zero before the sockets 
-have been released?
-
-I must be missing something, because this seems to be a reference loop.
-
-
-I'll keep digging..
+So ovpn has this issue because our sockets are coming from userspace.
 
 Regards,
-
 
 -- 
 Antonio Quartulli
