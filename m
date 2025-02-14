@@ -1,28 +1,28 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2052.outbound.protection.outlook.com [40.107.212.52])
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2084.outbound.protection.outlook.com [40.107.96.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3D62753FD
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 16:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABF62676CD;
+	Fri, 14 Feb 2025 16:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.84
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739549960; cv=fail; b=AtUoBzpFIA19/AQ6TK5no/aDZGhZGNcWgvgLgMGC+uyKMDiC6W9/5Tz6pX2t0mBg+uPM+Gk9HpZzdRAG8G4wnuvmyPcTYS/dM2+fU55HGuzrlGiOUqGOlBU0tsqGTq37fR78CnNwX9DbpBcpRjBt9G1CxsCLu/pci/7+j7T6EGQ=
+	t=1739549967; cv=fail; b=Mz3afn0MQvc89eyFmK19W02qA1ZVXPTAyNtMhgiHeW1UcaI+RVrSSghlP05BeAEFyulYF8G7InWpuUB9aP6ooWVcA7TskVUFeidRD0txUPXfR+UfKshhPJp01sgSI4MRWa8IB1vaO10v92fyiPctASFyDQzfZ3GE+JIH28LmE4A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739549960; c=relaxed/simple;
-	bh=wSymqzz7rxwOlVJ/pbjKx++OCr227vtTEVuyoxDP2Ek=;
+	s=arc-20240116; t=1739549967; c=relaxed/simple;
+	bh=KDlBNGscFqhHj5Akip6PuuUtcr2xGUYlnTdwl5CJJsU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qnpqx9/hZpdhYsmUL5qqsRMqZiw6gd7XTlaIgGMXPIJPAZP0+C+CRjlu0YtFZfGIVyWmkqId3xAGcurITOXpMA6AgGv6HdORVlyEevAYVZRkXUDaaHPOww0BUeH89z2NVUWa2CtGXWoRj3tSSQ/3tx2FrkiyS2CzsIfMZXoZHNQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=aWB4bzcS; arc=fail smtp.client-ip=40.107.212.52
+	 MIME-Version:Content-Type; b=t0nhbl3UFHaEH6mdDpgPwanqQU/W6p1fhu08/A71qCaFKACmkVUSb4lHq9VYKXwmIGUY6Vs7Esjs+fsMnxDbBcQeTe+KUn/qiXL9B8XI7qNTEhhzzq96EfD8Nxlc5xzypm9AXcicAVsp+FvG51Tjz9NQp7fcfhuTIPZ0srq7bo4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UBltOYl9; arc=fail smtp.client-ip=40.107.96.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="aWB4bzcS"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UBltOYl9"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fiq26Zse6T6HLc5DW+uhhTqrDy51MLYnSC8OI4CCINjtofvMni69uKvUSZAbTSCeUnkTAPim3AjoDn4U8+0mx3o6kl6yZo2VGtumuc0WOVVYyXv29ph5c3cLzYA0S8yoAwXM85wkQCqIZsPxvkkkuykyoB37xb7cGith3983LcFOsInXh6eGCce+qd9HvvGD5a2/dDvHNauPi90FJJBof5pJIjIFs5N1eUaMvYxnYRRaDCAqFv1UjzQzzCyVCJDcPGNDnjyM0YbEibZWNnXHyF2eA3gvFeKDK6SrYwIrpPiaX6tpYi2iFcrdfKIDRIHPK3LOlMReuJA9XeUU4nA+Pg==
+ b=SPBXYL8l/S1oEYeTnLiupqVjFJhjTEO8RUJ5VmkQMV4BCDUhP+j2e8DOpiR1mnvkG+HGIqP7zPMpApe2S7fy+H12jtH8hfJevSH9G7gvbEsmKCck5dk3bKF69PhxiyT/2bCmavf7uYvYhDwCUK2M09CfC2phSCSsej0Nq00bCatQc98qW/bVohiWl2mTA9CWitesdEFwBdSmr9cjQpr/Uim+BhAI4gkxAIwhb5qSdYAXzgjZeDm1itZ1hYS3J3KIPKamIqPO+anDeBMyFB1tCc6BkfGsLY/ZcvIUElMcUcUPOaoMHvIWxOUtExvrl2qZ1YjHlMZbkl6AP+TS/A3dSg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dx31xe6hJ7OkeovnABQgl2ODAJmzdf3zz+eTNYke4k4=;
- b=dMgwtEFj9EthAoJG3XYRCbV1lxMEvXc6DcHXnbBubzEQ+hvJv6YJmkTg5LpeHDJW1VG+7sS6Jl+on6mLSg7/jSDA5WUOjRRZe2jYpzvycbBcTpVuXr4f3LoBp8Xg4w2xryaqMIvD54gaa7Txjkpl9pt49yFHMocGpJEqFO83i2Sp4HWOctpoFB7E3vGN5ycCEtCAKK39s2gY2is241Fa+6Q0Ry9uX5QJC/Pboyl/VWGKJkiOXd1hXRwrmZV0suiMy93qvrVAi1DOS/1Lhd9AtL8SwwrvjAVuAzSSpawIivi9RYXcGv4tBRmC8oNGcKcs/x3j2dXPq5p7bh08ruqm7g==
+ bh=LlkE5zVQk6F2H1Rkl177/CHBtGiLSSvmAtSSyKAnwh8=;
+ b=VbkU+s5fwTn80m/lvMEhkk2iqv5+CrnQMD2XpPqiezYpe9DtV5yk0AoqcPGNdweIWh9DcbpCxLtcZ4vdgP+WcYv+vqROVvO7irzdX8xhjUXQcDNtJXuHIcfU+UZrHFe+yvvat4pOoBxGlaPMJE7f9tXKbbMHNoizX2m1B81s952btXE156CdISRJGsVIeqobNzmOIVUcCn9c0AYGOQ2p9xdDi9enFlkcX2RACFzOOHrPW0+ga1SPSEDp1zdHxY6WDbH0d5U6Ak8AuJgiSBJVk2OyjFODAlUrXm5y0I6od6auj2wdKFHbcaYhF1ETTxosIc1vi8eAp+x5F1R+VQBc/A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -30,18 +30,17 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dx31xe6hJ7OkeovnABQgl2ODAJmzdf3zz+eTNYke4k4=;
- b=aWB4bzcSxI9PfsHLF0u3njZAvoIFtcGM0bt4A3/EORdP9RTadjEpkyDuF8D1MnTPbVl41VjCidxlls3frXXSi54swgHmLHaWbVk8orTLktKlny9hNWQgnmzo5+y15JmCBQmcRnQa3+LeruzfqFWbiDpJEPkIPdXxv9uOHhjGbo51Vqhi2y+RQH99l3m6YopRj3+F2QoZs2uS7nXu0CMrRXZAW5AKAdrzQIJ/E69EMvAm0lTTeKZvdIw9vYGhwkgqpOvlOEe3qpYHH63Jkx4Xt6/PZWs9MC8VH9b4aBAPBY4YPW5ylXJX9YG1jJebdB3BwU+rlYdIddTGuUCVjG2k9w==
-Received: from CH0PR04CA0033.namprd04.prod.outlook.com (2603:10b6:610:77::8)
- by MN0PR12MB5713.namprd12.prod.outlook.com (2603:10b6:208:370::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.16; Fri, 14 Feb
- 2025 16:19:14 +0000
-Received: from DS3PEPF000099E2.namprd04.prod.outlook.com
- (2603:10b6:610:77:cafe::dc) by CH0PR04CA0033.outlook.office365.com
- (2603:10b6:610:77::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8445.17 via Frontend Transport; Fri,
- 14 Feb 2025 16:19:14 +0000
+ bh=LlkE5zVQk6F2H1Rkl177/CHBtGiLSSvmAtSSyKAnwh8=;
+ b=UBltOYl9WlooMr2Wv2pbjowgvEk+6rYJToMn05UgxpM8z/LTrwCOyLIb3R5/8DYlgf8MQ8xG/owVtJqXlDcr+FkiHCRIZbvUJdYhLgq+9Badw7dbYbdYYoq42MarkMGLPUsZdXcSPLj2IiOI/XVyuhxexdW8J88IhHyIW6Is+Vm1zWeOX0HuqWu+7kcMlwfF3Uj80CcSJ6+/jTWRpgBm3R+KaAsEUqhQcCNS4UQg5p+q7G3Wlb0iblMEZuN8Es84wB7ST2fsEvdwGhCI0prWVzbdsHya1b2GrvUiuzml/lKyLmWkfQg+jsv6yKqMA+jStkViC0hcPFqDPixedNndoQ==
+Received: from DS7P222CA0027.NAMP222.PROD.OUTLOOK.COM (2603:10b6:8:2e::35) by
+ CY5PR12MB6226.namprd12.prod.outlook.com (2603:10b6:930:22::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8445.14; Fri, 14 Feb 2025 16:19:20 +0000
+Received: from DS3PEPF000099DF.namprd04.prod.outlook.com
+ (2603:10b6:8:2e:cafe::63) by DS7P222CA0027.outlook.office365.com
+ (2603:10b6:8:2e::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8445.16 via Frontend Transport; Fri,
+ 14 Feb 2025 16:19:20 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -49,29 +48,28 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.160 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.160) by
- DS3PEPF000099E2.mail.protection.outlook.com (10.167.17.201) with Microsoft
+ DS3PEPF000099DF.mail.protection.outlook.com (10.167.17.202) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8445.10 via Frontend Transport; Fri, 14 Feb 2025 16:19:13 +0000
+ 15.20.8445.10 via Frontend Transport; Fri, 14 Feb 2025 16:19:20 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 14 Feb
- 2025 08:18:59 -0800
+ 2025 08:19:10 -0800
 Received: from fedora.mtl.com (10.126.230.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Fri, 14 Feb
- 2025 08:18:53 -0800
+ 2025 08:19:05 -0800
 From: Petr Machata <petrm@nvidia.com>
 To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
 	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
 	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
 	<netdev@vger.kernel.org>
 CC: Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
-	<mlxsw@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Nikolay Aleksandrov
-	<razor@blackwall.org>, Roopa Prabhu <roopa@nvidia.com>, Menglong Dong
-	<menglong8.dong@gmail.com>, Guillaume Nault <gnault@redhat.com>
-Subject: [PATCH net-next v2 1/5] vxlan: Drop 'changelink' parameter from vxlan_dev_configure()
-Date: Fri, 14 Feb 2025 17:18:20 +0100
-Message-ID: <a3a3ceb6e4ef0952a3339a5a613f333f92958292.1739548836.git.petrm@nvidia.com>
+	<mlxsw@nvidia.com>, Nikolay Aleksandrov <razor@blackwall.org>, Shuah Khan
+	<shuah@kernel.org>, <linux-kselftest@vger.kernel.org>
+Subject: [PATCH net-next v2 3/5] selftests: forwarding: lib: Move require_command to net, generalize
+Date: Fri, 14 Feb 2025 17:18:22 +0100
+Message-ID: <fa7860318b5150b705f2d42b08d3fe17b28a85a9.1739548836.git.petrm@nvidia.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1739548836.git.petrm@nvidia.com>
 References: <cover.1739548836.git.petrm@nvidia.com>
@@ -87,106 +85,127 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099E2:EE_|MN0PR12MB5713:EE_
-X-MS-Office365-Filtering-Correlation-Id: f43a08de-33b3-4b4e-f077-08dd4d13523e
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099DF:EE_|CY5PR12MB6226:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2763c842-535c-4030-008a-08dd4d13567d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|82310400026|36860700013|1800799024;
+	BCL:0;ARA:13230040|1800799024|376014|36860700013|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?RzBJJK4u6D79huWBeCC8M9FQq96FzPbzJniwCOH2LGy0YlQc1R4qftJrbpks?=
- =?us-ascii?Q?rUw8vsgDtAkxrMdlDV6RBjJojhMO5dxtNtslq+ZXICRIDNirruAmWGXVjPRE?=
- =?us-ascii?Q?ZtEBMid0XRmDmpO8LwrGnd7h6kspcMSfiwEn06s2TVTwZLqGE9CSKHtufVs5?=
- =?us-ascii?Q?nDfZeAHlB2aUYO9KIRMK+XDI6tS8OjyT190M9Ol5mCRLC74mm2uZ06ZOkoPD?=
- =?us-ascii?Q?/0kX4NhGpiUoCn/V5nWlb6kezXmrah2ReniHpA6B9GmxR4dcD8irMQodzqDV?=
- =?us-ascii?Q?4Sum59rVw6n9kNwwrVavThSrJ23lnTcgNNj9B7Gqne/hViNGzj1nwvEmyZm6?=
- =?us-ascii?Q?ffscKOtiA1no7das2OaoKT8aIyohlSfB/ioaPXSJyY5tKfAH03YkFoD0ce3T?=
- =?us-ascii?Q?pZrXmEOtHm65yrLl3MBk7cUIScEM6YAZu8RsRWi2yXpBmDiLwTmXwRu/cj2x?=
- =?us-ascii?Q?6ftEDLDnqpUajFMF2pVnWRq1BwbF5JikIONedQTX4qxc1aHc9Y8j7Fz0o6eI?=
- =?us-ascii?Q?6GqiKMPHzpBWBwogumThuhyErS0nfgiW/LKFDXtOle+FVxQLzSVebfcWwtS9?=
- =?us-ascii?Q?ZhlAxM9JIhvzwBhKquJaH3eZzEglqcZV0qUafcD+sLloE1TM9rG2t0Yhwi6i?=
- =?us-ascii?Q?7Ewn44+Vp0rfN2SU52zFEjxrT/XQ7VJe8H1z4HOuOr2pLmHatOAFMzEsj/4/?=
- =?us-ascii?Q?6MEapy94FkpWlehbZyXo4rOjiFa8JKyPpkUiMbNWtmA6ixYMymyBl2yQZbOU?=
- =?us-ascii?Q?1t0sBa7+sTjeloZNfxSClUGmQZqb+0qspEFgzVxyk8G6Sv9LfpaVI3etwl69?=
- =?us-ascii?Q?/IL1mcEUQ0KDan4no37sCNzIQoUkeYHCGusW9NBE+C7YzlZz7BQiPvddAqPu?=
- =?us-ascii?Q?l79BXlxsnGFAmEIx4oai1JbU+qBM1qmGfU0lTIRVPlDA6oBZLker9H2/hemp?=
- =?us-ascii?Q?sQ3giJ9HHdg5r8WxX42jbRWWjsRAGnVr5p/pCRC8tw/UV30MbNYQz+TGDpSb?=
- =?us-ascii?Q?4p7OkO5KbIH+GguqUWTaRDsYIp3U8W4o27lKzMFc2kL+lJzOlDS7pE3pb93V?=
- =?us-ascii?Q?ynSA2cyKBNdpoohWKUmr/dWZ4YcV1VT0U0eLKfRz5I6t5O2Qlh5Q4xQvNM5L?=
- =?us-ascii?Q?ASBTu2CwDlmfzLvrrDbAJVzAaCI/sGpyQBFExjK/0w/TE5uzjQzzBtZzSCTn?=
- =?us-ascii?Q?bBlme/kssnekFhtQLov+Weqnx88RceGZa54Wt+4c/u29QpdsHIFFfAVaj9yt?=
- =?us-ascii?Q?Eb4nXulsDbaIEQoewXm3Jac7JxhIUECv/RVU7SV+K+rQEhr7D8Vyx7MFaZnQ?=
- =?us-ascii?Q?Sh/KAB4FyOMd9imaTwn70DzxqoGtr/780nicjEIVxpVJI2HWjsoMhhzu9X6g?=
- =?us-ascii?Q?ZARttFEwiPMflz870csSRjfI4zlkq8hr+xqqhypfZh1fcd+MnCFMIgzXYOWV?=
- =?us-ascii?Q?VZ+OjYcoKUcGfrPGcpwquIUwWgwIirWrD1Z6Y3wZlhHW2WB6SdjR0v6Tmvuq?=
- =?us-ascii?Q?7RHTHywrAUjT6YI=3D?=
+	=?us-ascii?Q?Gi6IkTX6vXUeWBeq5DiEZ2EBIv2OV6m+hNAj5NCmDCfbcvI+F19v3Y8oZIyo?=
+ =?us-ascii?Q?yKvjnCMerdaYlobWRff6/rVplGpO5/1qmnJ3QZm04AMxYAtqZ1c8YQr2cNY7?=
+ =?us-ascii?Q?bvnmvExZ4vzDZJYdo9mYxF6EOG1hhPKCSA+ix2B9GlrAIUOQoMu9oXwnxeK0?=
+ =?us-ascii?Q?18qAO1k25C8wOPrHGilwUzotMH9ZJ6JcD4iQCKeWnkm1pEwocS12p4S39Waj?=
+ =?us-ascii?Q?kqTVnPJZrpTpnqrTGyuPum24Z5IzxydAXN6D5pNsl7hXqTPYPSKTfDzzfatZ?=
+ =?us-ascii?Q?5kRVc7WJWUzOkblL55KGYxcIH7cGMlo/DdbAoufncQ4iV0NC1hfLyndeoqHI?=
+ =?us-ascii?Q?KlOBnzXGlK11ERgjYEI3K0Xxdsvazy6rTl6vPWhRPeUcb1W2RvrFJjDA9VtO?=
+ =?us-ascii?Q?eAZSCeyx5FuWPuHOVfpZGUnbXgltB+2R9rOaF56Ts0vSap2uAzuVI3VxBc+G?=
+ =?us-ascii?Q?kWbSEbnS8MVPS4qH1tFWTIUX4nkiE4y4mBt0N0QvUITH1j8n96PsOf0Ly/vF?=
+ =?us-ascii?Q?mxGPPRoJHXhjQTv60iIIu63ur4JqKs/UDSm4ZzFf6yCeaHCYNMNhtPon6mdC?=
+ =?us-ascii?Q?NMJtWvVFdgohQ6aZN3ogkS9Ezjw5hWGJ7BdsjOiROF0vJfM8yaoKm7PZiOx0?=
+ =?us-ascii?Q?UySUV9rhjCJK2sgrDuWjlQLboTuOYiQgS/ZIYucYyl9+eAeU80rhbEKFbfTG?=
+ =?us-ascii?Q?yK+6gsPyYgw/8TqjBvsTqcklBD9D3GaWoCap+1tN6YJK2pVkFbJL1wdktdDN?=
+ =?us-ascii?Q?JSS8pXOon5GcEvloIN5EfaED2qeeYsYInW7VIYNX69rr3V6t9DQiRAg9HU0f?=
+ =?us-ascii?Q?aB6e8qvdtmhWyUk7U3XIwnztQ6n0E79ENc5exPzHIA5gtbTZwygPmDBCd/6L?=
+ =?us-ascii?Q?JBFvq4BTgB3bR3OVfYrs2H0SMM4ynsIHPd1IMR2r/ftIT7VfHlNA6R4gHOK/?=
+ =?us-ascii?Q?zM1+C1byepWlnRojh4OCmCwKijS1lVZhsTgwSJaqvAdXWmVm2sSofPWxD+e9?=
+ =?us-ascii?Q?UKXdHUOkDCqrHmjvaaUNga5ZK0MIfRvOP50GwLru73yTECi3SxuQvPLIq7tH?=
+ =?us-ascii?Q?KznipliAFJScCqG37yhLJRR9o60QJuYg7aU+tqBo8U800zzlHY6wo3hmHBlz?=
+ =?us-ascii?Q?MxQkr09LvYbNks/lXQviQWTwlt50AcLGxLT5oz8yN+qoFbxMKJqriZqzgkiH?=
+ =?us-ascii?Q?AJdzlF9oa9DpMmceIPLws0w2U+7+sKj/IFUdyWDDgUDn9n3iAqr86NxvPWBt?=
+ =?us-ascii?Q?WUAqv3PMNC6oD+xkvRz7Tt8JQhLRXL5KSgp9GnLl3nqlXL/xQ2iEpnVmYBNF?=
+ =?us-ascii?Q?iOo5Sa505WHFewPysvMkBQ//lf10AOfHoOcddoJJ3ha55fGbEOc3Cut67l40?=
+ =?us-ascii?Q?7stmzfEXS0XTjukYIAk38d1z69i+ISMYyC5eckvajfkny0a/O4cxmCj9mDCt?=
+ =?us-ascii?Q?FvHZQNjdbVi4DaRSTmUZY45f719CS/IMlP0AAO0BpICSpyhp9+PiMBkEsvEe?=
+ =?us-ascii?Q?LzBVcc1ZbjojN4g=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2025 16:19:13.4333
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2025 16:19:20.5666
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f43a08de-33b3-4b4e-f077-08dd4d13523e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2763c842-535c-4030-008a-08dd4d13567d
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DS3PEPF000099E2.namprd04.prod.outlook.com
+	DS3PEPF000099DF.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5713
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6226
 
-vxlan_dev_configure() only has a single caller that passes false
-for the changelink parameter. Drop the parameter and inline the
-sole value.
+This helper could be useful to more than just forwarding tests.
+Move it upstairs and port over to log_test_skip().
+
+Split the function into two parts: the bit that actually checks and
+reports skip, which is in a new function check_command(). And a bit
+that exits the test script if the check fails. This allows users
+consistent checking behavior while giving an option to bail out from
+a single test without bailing out of the whole script.
 
 Signed-off-by: Petr Machata <petrm@nvidia.com>
 Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 ---
 
 Notes:
-    v2:
-    - New patch.
-    
----
-CC: Andrew Lunn <andrew+netdev@lunn.ch>
-CC: Nikolay Aleksandrov <razor@blackwall.org>
-CC: Roopa Prabhu <roopa@nvidia.com>
-CC: Menglong Dong <menglong8.dong@gmail.com>
-CC: Guillaume Nault <gnault@redhat.com>
+CC: Simon Horman <horms@kernel.org>
+CC: Shuah Khan <shuah@kernel.org>
+CC: linux-kselftest@vger.kernel.org
 
- drivers/net/vxlan/vxlan_core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/forwarding/lib.sh | 10 ----------
+ tools/testing/selftests/net/lib.sh            | 19 +++++++++++++++++++
+ 2 files changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index b1158a1bb855..ec0aee1d5b91 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -3936,7 +3936,7 @@ static void vxlan_config_apply(struct net_device *dev,
- }
+diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
+index 8de80acf249e..508f3c700d71 100644
+--- a/tools/testing/selftests/net/forwarding/lib.sh
++++ b/tools/testing/selftests/net/forwarding/lib.sh
+@@ -291,16 +291,6 @@ if [[ "$CHECK_TC" = "yes" ]]; then
+ 	check_tc_version
+ fi
  
- static int vxlan_dev_configure(struct net *src_net, struct net_device *dev,
--			       struct vxlan_config *conf, bool changelink,
-+			       struct vxlan_config *conf,
- 			       struct netlink_ext_ack *extack)
+-require_command()
+-{
+-	local cmd=$1; shift
+-
+-	if [[ ! -x "$(command -v "$cmd")" ]]; then
+-		echo "SKIP: $cmd not installed"
+-		exit $ksft_skip
+-	fi
+-}
+-
+ # IPv6 support was added in v3.0
+ check_mtools_version()
  {
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
-@@ -3947,7 +3947,7 @@ static int vxlan_dev_configure(struct net *src_net, struct net_device *dev,
- 	if (ret)
- 		return ret;
- 
--	vxlan_config_apply(dev, conf, lowerdev, src_net, changelink);
-+	vxlan_config_apply(dev, conf, lowerdev, src_net, false);
- 
- 	return 0;
+diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+index 0bd9a038a1f0..975be4fdbcdb 100644
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -450,6 +450,25 @@ kill_process()
+ 	{ kill $pid && wait $pid; } 2>/dev/null
  }
-@@ -3965,7 +3965,7 @@ static int __vxlan_dev_create(struct net *net, struct net_device *dev,
- 	int err;
  
- 	dst = &vxlan->default_dst;
--	err = vxlan_dev_configure(net, dev, conf, false, extack);
-+	err = vxlan_dev_configure(net, dev, conf, extack);
- 	if (err)
- 		return err;
- 
++check_command()
++{
++	local cmd=$1; shift
++
++	if [[ ! -x "$(command -v "$cmd")" ]]; then
++		log_test_skip "$cmd not installed"
++		return $EXIT_STATUS
++	fi
++}
++
++require_command()
++{
++	local cmd=$1; shift
++
++	if ! check_command "$cmd"; then
++		exit $EXIT_STATUS
++	fi
++}
++
+ ip_link_add()
+ {
+ 	local name=$1; shift
 -- 
 2.47.0
 
