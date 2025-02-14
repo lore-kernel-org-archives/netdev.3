@@ -1,74 +1,169 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B395224291F
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 17:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94006267706;
+	Fri, 14 Feb 2025 17:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739552613; cv=none; b=YUFSmGxSxYs1LR9nw9VRQ2rG/XVuJ4I+0W3r6C/xZA+5DwVTp6c5H0/Q8GUrUA/SCWkxEouf0bqP7fW1yiAHiuVs79DGfhalw4dHyv1rErS7wNkcK4RHCB6ltyG44L7ZvxZ4iZLvh33WtYJuRU1qsxsDHZ+WWrMBUmwFOLJ04DY=
+	t=1739552850; cv=none; b=N9yZam+DfXUM2IgXFcQ1kdnFno72kwbK+Yi1T208WuFiF0iC6yV5sKHrbppeT2/39m5j9LgmmEEsolTcZGYQTbDQ0k5tShpSY3CDPezlfuO0tWFE+RTHdn6gBLAI6HFKjYpUBHCqEh7yap+Ure3hle4c+jUpQocBtLXBtBZKunY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739552613; c=relaxed/simple;
-	bh=BlJTXi4YrMYiFwdW0nq8J2qfnIvEmq5Q7QNxw1zC3dM=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=jlYsuAoD3BXDk8xMSM5GjyU5CIYWqN7TPSut4OBTxFSHZWAKG4k+5wtt6pB5P6N2tufanQCTc7dSRGT5WuXd16xeeM7u2jNLeGWZp9qy76UyEBmlMV5MSXykjcanPg0kzIaeezXb73lJAsYTPLEV5GmSDHtTZXUhmKLCtCr/MWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FeLxhHaa; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1739552850; c=relaxed/simple;
+	bh=4lxofitPsYrHNm7bi3LfUMF9ZD1wJq6AEPk0sbeQ7X4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=kur+5DEtF9KisLTfdtjkalsAi6v9Ks/Fz5Tkr6huueT61s2/QXJ6Uln5ZWRKHl9++yeHlCNZJ5k9d+5E/o8L0MeI+af/VTDq5yxNSGc0B5d/7b053kDnxoGRBq5A/J6mgG4X4ZCGdyWgHZRJJNCi0kduDOnASflBzzmV/nL1M4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FeLxhHaa"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-545097ff67cso2275077e87.2
-        for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 09:03:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739552610; x=1740157410; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BlJTXi4YrMYiFwdW0nq8J2qfnIvEmq5Q7QNxw1zC3dM=;
-        b=FeLxhHaa36GCN8Ha9nfJ8eM61W+d8Bul0uFe/FqWoVECVAnL7VHQAmdNbOhhnsWiJh
-         S8ff4LnrBcvepYnzZuVWqIg+7wpKhcVM/mI1MdDJHPi11azP1ol+e1LGoNY70RgOopIR
-         SLWWiwYSLfl+7OrUKMbdEEEz2c2T8+4TL2skQMJWY4oIWV44uH0IttnY3beWMfbJ8Nd1
-         vluRrUjIyFs9xr93NAh3o2f7se2bdODcwTRUMEvJQuV/OKAxhPzDDqbJRABXkpymbSue
-         uE/Hx2wixdend42yHRMkGGowhEFrg/92Mlz6w4z2Wm/pn6vt0Pah4YpAucUwv2/iHhg4
-         Gl3w==
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ab7c501bbecso341665966b.2;
+        Fri, 14 Feb 2025 09:07:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739552610; x=1740157410;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BlJTXi4YrMYiFwdW0nq8J2qfnIvEmq5Q7QNxw1zC3dM=;
-        b=em826zopUhtTex+y4OFBoKQsIyI6bjRoa+ApLjkMPCFX8BgfGDtDovErJSiC8SGNAv
-         Zr1ijVK1xA+7a5fbpq9bBSl1mqBEWzAeSUtyz/7CPkcAw+KuEthEG94f5BkWKiwUN275
-         qx3dD0kLSdkb4sA6bNUZPNzQpA+Z9CJtYfdZJSsuI7n+SaM0awg1oNa3V9+amW5O84F+
-         YAouCfEK4QTpUHZFD8l2DLN4SSV9YhxSjh1W0ENTEnUlXO41IxEDE2OiQZo7QryBTgj4
-         AiywT37sn9/eZRD9kB0YqgyOwq14R46AUcYRSYMFxM5nWaTx+zVMQw29uUlJRLE77Kqo
-         7NZA==
-X-Gm-Message-State: AOJu0YwZsvfcwNdei6waLvuTXQD+eBBPBGOAvXHhTBSlMCS68Z/JpeGi
-	oSJd9DiPdQKmxN2rYHW93ioWEGS3Si4aYnZNrOllEdt5e5ZvMXyJ2ugfacjCmTXHHNM2z4LqNrj
-	J1Z9K9pgoJGXNsIm/OyAqfG+0DqwwoRPS
-X-Gm-Gg: ASbGncsFCOyZehdxb9glSj8nR82NMqJzD/FSDknHGIJ4IFVWtieiERlBOyx/nYBUfrD
-	KJA2WAewvdrYT5jPocc4Lw7YKkkr2xL0gQUA8mQATZ468S0XQmT8hkCghAd9Pbc/ZkAuWC8FDKU
-	/NkuK97e0oKX/1dJZUatiPF9ccNDlJEbc=
-X-Google-Smtp-Source: AGHT+IHW8UFQ7l28FKJM0BlUoAwBJqhvAquivamjc7bnV1r7OJ58TPcDBeuphXT8uXGYUumK81xa+AQLKO7JHMWBMuQ=
-X-Received: by 2002:a05:6512:3051:b0:545:ae6:d740 with SMTP id
- 2adb3069b0e04-5452fe8bf35mr20643e87.41.1739552609372; Fri, 14 Feb 2025
- 09:03:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739552847; x=1740157647;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BIrO4AUyyPAuiO56g6/OhKbTYoxtm/sXhUq9qEndj9g=;
+        b=s2ivOP/SfA9XBnP/VYe7uSO+lY7EK0fh1TLPeKU70ltE8ecWOTqcAjLBO8pExoUjXn
+         /vRnYH47Ttyv+Fs098CzYj4rDbHfnMJj25Qb8kK9DV975xRGxubtA5+kdBG8K9AjAnSq
+         hH2QpZla/iPB0MZDyd4BG0neWc6wtun6uGTqqfv3owZ0zVsEgoueacxqcuwHKB47Fkkj
+         Zk99bLSeHJbQ22L0h7wGOtEeoAT7gab4uptwqL+ImmTvCCZTaPsBZ9yhhsz1R24YlYVu
+         4V2HkmTSxcZw68t0eSHoaBNUoNcoboyjuFvOPTfa/ifqwNIgI6wXYx+1gbLlDnT799rq
+         xXfw==
+X-Forwarded-Encrypted: i=1; AJvYcCUpV8mkIsSZ/2TEwx38vJdZNwCiIYTCw4FlPGG+dQF4L+oZTXTsGmqq3zvJTyucP9zYtz6yftdVEVtAN8U=@vger.kernel.org, AJvYcCWmVN6C6d3tQiUvC48TunXhWGOS9ZVPP+VhS3ONoK84k00bnY5FK+rfZ/SUtF4GFt9Nm9ssOgTw7n0gh6nRN/Dw4qsp@vger.kernel.org
+X-Gm-Message-State: AOJu0YxM0eWGrzc9zB27XU1Yl7tGKn9f8EDcsjvEDaPEO1YvpXHFhSNg
+	0SKj2rLpNmheWyJ81BlJsfu8yoLJQxVI/iP3Z3a4Jp0XagigFFxd
+X-Gm-Gg: ASbGncv6hJlMnEZ0eEDz02f6KWL1xfKC45ibeARiY1X78tIvcvuzLB7Kb3eUNFUwj8V
+	T2gfO58zF1ecKZT0ezXy14uoM5Xb+ZvCc7ir7qpCoUZTC3h6S5dtPgFUNKDEYmqflBc3CmBOaSp
+	jJXH6NJofe6KyEIcdf1uuj1XclRH81NS8cA12npYBrO3gTykE6/nJwjcpAQLfVdM2ectwRiP7mH
+	tCZAMElKvJ1Grg7FOR1i8L8Bvh9KoNUjkOdV8q7ACczZ6mDCytRAHRajYaDJ36XhKmAQV1xZ6dM
+	EETvuA==
+X-Google-Smtp-Source: AGHT+IGcx6b4t8RM4Fx7WnQoAc1OzmsxgOSJ23g5olNhu1HxNmi6drUByzGPykqu5+gR/vAUTGrLyg==
+X-Received: by 2002:a17:907:608e:b0:ab7:e8d6:3b12 with SMTP id a640c23a62f3a-ab7f334500dmr1277008866b.1.1739552846600;
+        Fri, 14 Feb 2025 09:07:26 -0800 (PST)
+Received: from localhost ([2a03:2880:30ff:6::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba53231f36sm373755266b.33.2025.02.14.09.07.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Feb 2025 09:07:25 -0800 (PST)
+From: Breno Leitao <leitao@debian.org>
+Date: Fri, 14 Feb 2025 09:07:11 -0800
+Subject: [PATCH net-next v2] trace: tcp: Add tracepoint for
+ tcp_cwnd_reduction()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: =?UTF-8?B?7KCc7J6E7Iqk?= <jaymaacton@gmail.com>
-Date: Fri, 14 Feb 2025 12:03:17 -0500
-X-Gm-Features: AWEUYZnfF_Tk7dG2cnSv-o3zuYAmdel0Fogpae7pu6Amq-U3IJNjVIal0poNKkI
-Message-ID: <CAPpvP8+0KftCR7WOFTf2DEOc1q_hszCHHb6pE2R-bhXMOub6Rw@mail.gmail.com>
-Subject: Question about TCP delayed-ack and PUSH flag behavior
-To: netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250214-cwnd_tracepoint-v2-1-ef8d15162d95@debian.org>
+X-B4-Tracking: v=1; b=H4sIAD94r2cC/3WNSw7CIBQAr0Leuhg+FkNX3sM0hsJr+zbUAKk1T
+ e9uZOVC15OZ2SFjIszQsR0SrpRpidAx1TDws4sTcgrQMVBCtUIqwf0zhntJzuNjoVi4Qim9tcZ
+ ZP0DD4JFwpK0WbxCx8Ihbgb5hMFMuS3rV1Sor/1tdJZdcm0GgCOasR3cNOJCLpyVNn0sVlbj8F
+ qU2rRi1d9aEb7E/juMNAtsfbPIAAAA=
+X-Change-ID: 20250120-cwnd_tracepoint-2e11c996a9cb
+To: Eric Dumazet <edumazet@google.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2815; i=leitao@debian.org;
+ h=from:subject:message-id; bh=4lxofitPsYrHNm7bi3LfUMF9ZD1wJq6AEPk0sbeQ7X4=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBnr3hMt7hBwgflH6VNNshkd/HsByY3dQgcaq6W8
+ Ybx3tzUfLyJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCZ694TAAKCRA1o5Of/Hh3
+ bVtXD/914iEFx6I/drSRqpQtHjhCkmfeynnlbBsXv0iOya/zzKL1lr9y7KSzQkuNaWmyhI1WfhC
+ jfSCTXqAetgIcg3C3iBcN9jfyXleABjsQ0czTkd85Ab6JtPTyGFdP2dT5+t6E24hHVxA2Y2CAIc
+ GqxXCxiqKEOeLlIOHuvaNNo3HhnZ6gwwwBFGFZhEBS6UF1xWslIDzEmWbmcvqiPTeksmP23MZbr
+ 6FFrFjcalHRDqoyhghjJnRC2Wcy3ToI8xX3YIMCni3gTCQprkeqc6a6VCGoK8Zz5wsz3+oW8idn
+ hd64jNIfHvDQpU3eRQ19DW/w7hWS9dO03l393PvJHWwDH8MJk6ETRRB+dc9FhAgifXKvriVrsxq
+ +7mHkiyxzoExm8riELtd3EyTrFBlJwCOE2uGXD/h7svW2Fj/a1/uxt90FHyf8rMsDoxrdkP16gc
+ 139je7c3YgM0hi2nt/Cizx0G7JOQjFVbGJ2CyvN0bYtANLv5cGHeNhuN3TT+/M90lD2/q4Kq34M
+ 2wBuMxzxPaxm6BNBc1Gz3GLumF0bQRWeB37thxPkDoMEB3OJGOUOpBI/quWc5YazP7/cnTFC+Es
+ N7Mrkhc3CXJKHOArGHGm460fbOEj8lxvyBDLszx9YP8vbLDQAC0fp5nGxYkn8aZf+G0VLKmBiLg
+ AOzz1t1iax5X1kQ==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-Hi netdev,
+Add a lightweight tracepoint to monitor TCP congestion window
+adjustments via tcp_cwnd_reduction(). This tracepoint enables tracking
+of:
+- TCP window size fluctuations
+- Active socket behavior
+- Congestion window reduction events
 
-When tcp stack receives a segment with PUSH flag set, does the stack
-immediately send out for the corresponding ACK with ignoring delay-ack
-timer?
-Or regardless of the PUSH flag, delay-ack is always enforced?
+Meta has been using BPF programs to monitor this function for years.
+Adding a proper tracepoint provides a stable API for all users who need
+to monitor TCP congestion window behavior.
 
-Thanks,
-JY
+Use DECLARE_TRACE instead of TRACE_EVENT to avoid creating trace event
+infrastructure and exporting to tracefs, keeping the implementation
+minimal. (Thanks Steven Rostedt)
+
+Given that this patch creates a rawtracepoint, you could hook into it
+using regular tooling, like bpftrace, using regular rawtracepoint
+infrastructure, such as:
+
+	rawtracepoint:tcp_cwnd_reduction_tp {
+		....
+	}
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+---
+Changes in v2:
+- Close the parenthesis in a new line to honor the tcp.h format (Jakub).
+- Add the bpftrace example in the commit message (Jakub)
+- Link to v1: https://lore.kernel.org/r/20250207-cwnd_tracepoint-v1-1-13650f3ca96d@debian.org
+
+Changes since RFC:
+- Change from a full tracepoint to DECLARE_TRACE() as suggested by
+  Steven
+- Link to RFC: https://lore.kernel.org/r/20250120-cwnd_tracepoint-v1-1-36b0e0d643fa@debian.org
+---
+ include/trace/events/tcp.h | 6 ++++++
+ net/ipv4/tcp_input.c       | 2 ++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/include/trace/events/tcp.h b/include/trace/events/tcp.h
+index a27c4b619dffd7dcc72fffa71bf0fd5e34fe6681..1a40c41ff8c30a31b5c7002a4109de1cd8ef389e 100644
+--- a/include/trace/events/tcp.h
++++ b/include/trace/events/tcp.h
+@@ -259,6 +259,12 @@ TRACE_EVENT(tcp_retransmit_synack,
+ 		  __entry->saddr_v6, __entry->daddr_v6)
+ );
+ 
++DECLARE_TRACE(tcp_cwnd_reduction_tp,
++	TP_PROTO(const struct sock *sk, int newly_acked_sacked,
++		 int newly_lost, int flag),
++	TP_ARGS(sk, newly_acked_sacked, newly_lost, flag)
++);
++
+ #include <trace/events/net_probe_common.h>
+ 
+ TRACE_EVENT(tcp_probe,
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 4686783b70defe0457571efd72d41ac88c528f7b..3f79718fdb1ec7a4352dc691147da527448c1f46 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2709,6 +2709,8 @@ void tcp_cwnd_reduction(struct sock *sk, int newly_acked_sacked, int newly_lost,
+ 	if (newly_acked_sacked <= 0 || WARN_ON_ONCE(!tp->prior_cwnd))
+ 		return;
+ 
++	trace_tcp_cwnd_reduction_tp(sk, newly_acked_sacked, newly_lost, flag);
++
+ 	tp->prr_delivered += newly_acked_sacked;
+ 	if (delta < 0) {
+ 		u64 dividend = (u64)tp->snd_ssthresh * tp->prr_delivered +
+
+---
+base-commit: 7a7e0197133d18cfd9931e7d3a842d0f5730223f
+change-id: 20250120-cwnd_tracepoint-2e11c996a9cb
+
+Best regards,
+-- 
+Breno Leitao <leitao@debian.org>
+
