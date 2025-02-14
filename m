@@ -1,151 +1,128 @@
-Received: from lf-1-19.ptr.blmpb.com (lf-1-19.ptr.blmpb.com [103.149.242.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BF92F24
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 03:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.149.242.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE1978F34;
+	Fri, 14 Feb 2025 03:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739503110; cv=none; b=jaEpRUv9hxGp0raCdQWbydkk39+zdAMj2nME5S1s7ypxWMTwtuP/O0W4SpElH+uF8kbYqzcmfluae8Na/KiITdWX+guwK2YAG4krvOr1KyeqXdltuPhnlZojU0AZ6ZYLH5rZMYrQWQ9CDyKftYVk2MsASXowpeuOeDP/yku8ihc=
+	t=1739504121; cv=none; b=B1PO/MLHefGNyx58z0KLtWMEUl2gdS8+sNFAZ3tlTYnZrB43gmGuH14QcTiHNFAUaapEjuvH4obminY20ea2/Xu3F2Tk3TAmqTU1DZjjSWw786vedhoEKrpdslHdJnIpFzdkx7S8Sfkn5LBvkSMvtyrwWQfRQWy/saskrsmheK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739503110; c=relaxed/simple;
-	bh=qGODg8jGyA23k+4nMcy9P9ClWkhf9vxdjPv8R0mieuE=;
-	h=Cc:Message-Id:Mime-Version:References:To:From:Date:Content-Type:
-	 Subject:In-Reply-To; b=uqwu9GVnJrc256NAHyoeR+lsBo7+2KvHs4WYS2Y8NSg1JhPdWBp9bMWXThBN1Huds0CRM1MGRyq3VLr/6z/tkJe1DIrn0+2UbVvx3N0Bu3SsQZnAII1jUhpW2n6tDY/RMqKXbLm97A27Zz496DmB4CvSoUFIGpr4XGxy075bb30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=io0RN+xs; arc=none smtp.client-ip=103.149.242.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
+	s=arc-20240116; t=1739504121; c=relaxed/simple;
+	bh=GHXJGGSXmO3XdJUVBTnqgXpdPTGoAWBnUJGaHHmw8is=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dGbvkMi+ecXBfpNTbMflui6HGppxOzs3joThOJdtMq88hWr/B1yXwyw1YANNSJtDkUJrXsDsTgU5z7mVOVcLxZP2FwUy1xzxNCWnDoB+HmlrqPlCviJtIk3zz+jkYEGZBbFpeoayFucVuawxOZh8HMqpqe32m9Ib5+5sQZytrCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mGyDKVt7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="io0RN+xs"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1739502890; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=M72yQnSpGEJg1NFY+l1/WlfXPlkL683KCsCQh285I70=;
- b=io0RN+xs9OkrMvmMcr3XVFC4hXyH7OUeyesXJ94YMGi+/HLQq+j6uf5La1NRX/WdrVhod2
- R3BU5M86Q0HpSfKbupXe+cXd+hxXxslzkkrxNW0p/pOB8MZbyWiF2+WTfwG+ITNNy+CGEV
- rxcKlS3IcbliIA6e3UMQofNTl7Cy3u+ksHR3+N1h11ZDuf2wnB/cTlX92CyXBWXGsdE6ru
- fQQKfTLa/A3M2oJKHu5NyBpt9NX5rpPMwk/Pd1xKEkFEpKdu+N34P0jrw7aCXukIHdXqef
- PH9clPtlkb1mbz1LIeFkMej0L27tnFHTQ7Uk5rdVZq+ClLvY/7mf1BglWxV4dw==
-Cc: <netdev@vger.kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
-	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
-	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
-	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <horms@kernel.org>, 
-	<parthiban.veerasooran@microchip.com>, <masahiroy@kernel.org>
-X-Original-From: tianx <tianx@yunsilicon.com>
-Message-Id: <0e83c125-b69e-46a0-a760-fe090b53bc70@yunsilicon.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mGyDKVt7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED176C4CED1;
+	Fri, 14 Feb 2025 03:35:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739504120;
+	bh=GHXJGGSXmO3XdJUVBTnqgXpdPTGoAWBnUJGaHHmw8is=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mGyDKVt7O7hWki5SZw8ElAlXetpN0kOsRzduxYor4iWe1QnJQ85VsefWpe44PiY4M
+	 P47TB51v1WwrqxRGhQg2d/uBRc50Fouh0MY6djzFipYz6npZxpbc08LMijaZsGpL4P
+	 rQNSWB2jMm0h6sRZrv/MdxqCgqJSThsyH/bCy5O0dGfk5rKLwnKvUPAAX0+vra9uzr
+	 aj+xzi04tOoYx3OrRL4gWF/HI4AXcbV9BSGWRBqwuIhHk4tGlzLjOhI5RmM1/9dr8i
+	 pq9I2YOjlYE6fzyDEK79ukA5F5qcLCaWcZ+P34aQhdLFqCj1bjJpzL/d2QpKskawNE
+	 S/KnXdysA74bA==
+Date: Thu, 13 Feb 2025 19:35:18 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: fsverity@lists.linux.dev, linux-crypto@vger.kernel.org,
+	dm-devel@lists.linux.dev, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	David Howells <dhowells@redhat.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v8 0/7] Optimize dm-verity and fsverity using multibuffer
+ hashing
+Message-ID: <20250214033518.GA2771@sol.localdomain>
+References: <20250212154718.44255-1-ebiggers@kernel.org>
+ <Z61yZjslWKmDGE_t@gondor.apana.org.au>
+ <20250213063304.GA11664@sol.localdomain>
+ <Z66uH_aeKc7ubONg@gondor.apana.org.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250213091402.2067626-1-tianx@yunsilicon.com> <20250213091418.2067626-8-tianx@yunsilicon.com> <20250213143702.GN17863@unreal>
-To: "Leon Romanovsky" <leon@kernel.org>
-From: "tianx" <tianx@yunsilicon.com>
-Date: Fri, 14 Feb 2025 11:14:45 +0800
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received: from [127.0.0.1] ([218.1.186.193]) by smtp.feishu.cn with ESMTPS; Fri, 14 Feb 2025 11:14:47 +0800
-Subject: Re: [PATCH v4 07/14] net-next/yunsilicon: Init auxiliary device
-User-Agent: Mozilla Thunderbird
-X-Lms-Return-Path: <lba+267aeb528+5039d0+vger.kernel.org+tianx@yunsilicon.com>
-In-Reply-To: <20250213143702.GN17863@unreal>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z66uH_aeKc7ubONg@gondor.apana.org.au>
 
-On 2025/2/13 22:37, Leon Romanovsky wrote:
-> On Thu, Feb 13, 2025 at 05:14:19PM +0800, Xin Tian wrote:
->> Initialize eth auxiliary device when pci probing
->>
->> Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
->> Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
->> Co-developed-by: Lei Yan <jacky@yunsilicon.com>
->> Signed-off-by: Lei Yan <jacky@yunsilicon.com>
->> Signed-off-by: Xin Tian <tianx@yunsilicon.com>
->> ---
->>   .../ethernet/yunsilicon/xsc/common/xsc_core.h |  12 ++
->>   .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   3 +-
->>   .../net/ethernet/yunsilicon/xsc/pci/adev.c    | 110 ++++++++++++++++++
->>   .../net/ethernet/yunsilicon/xsc/pci/adev.h    |  14 +++
->>   .../net/ethernet/yunsilicon/xsc/pci/main.c    |  10 ++
->>   5 files changed, 148 insertions(+), 1 deletion(-)
->>   create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/adev.c
->>   create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/adev.h
-> <...>
->
->> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/adev.c b/drivers/net/ethernet/yunsilicon/xsc/pci/adev.c
->> new file mode 100644
->> index 000000000..1f8f27d72
->> --- /dev/null
->> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/adev.c
->> @@ -0,0 +1,110 @@
->> +// SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
->> +/*
->> + * Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
->> + * All rights reserved.
->> + */
->> +
->> +#include <linux/auxiliary_bus.h>
->> +#include <linux/idr.h>
->> +
->> +#include "adev.h"
->> +
->> +static DEFINE_IDA(xsc_adev_ida);
->> +
->> +enum xsc_adev_idx {
->> +	XSC_ADEV_IDX_ETH,
->> +	XSC_ADEV_IDX_MAX
->> +};
->> +
->> +static const char * const xsc_adev_name[] = {
->> +	[XSC_ADEV_IDX_ETH] = XSC_ETH_ADEV_NAME,
->> +};
->> +
->> +static void xsc_release_adev(struct device *dev)
->> +{
->> +	/* Doing nothing, but auxiliary bus requires a release function */
->> +}
-> It is unlikely to be true in driver lifetime model. At least you should
-> free xsc_adev here.
->
-> Thanks
+On Fri, Feb 14, 2025 at 10:44:47AM +0800, Herbert Xu wrote:
+> On Wed, Feb 12, 2025 at 10:33:04PM -0800, Eric Biggers wrote:
+> > 
+> > I've already covered this extensively, but here we go again.  First there are
+> > more users of shash than ahash in the kernel, since shash is much easier to use
+> > and also a bit faster.  There is nothing storage specific about it.  You've
+> > claimed that shash is deprecated, but that reflects a misunderstanding of what
+> > users actually want and need.  Users want simple, fast, easy-to-use APIs.  Not
+> > APIs that are optimized for an obsolete form of hardware offload and have
+> > CPU-based crypto support bolted on as an afterthought.
+> 
+> The ahash interface was not designed for hardware offload, it's
+> exactly the same as the skcipher interface which caters for all
+> users.  The shash interface was a mistake, one which I've only
+> come to realise after adding the corresponding lskcipher interface.
 
-Hi Leon, xsc_adev has already been freed after calling 
-auxiliary_device_uninit. If I free it again in the release callback, it 
-will cause a double free.
+It absolutely is designed for an obsolete form of hardware offload.  Have you
+ever tried actually using it?  Here's how to hash a buffer of data with shash:
 
->> +
->> +static int xsc_reg_adev(struct xsc_core_device *xdev, int idx)
->> +{
->> +	struct auxiliary_device	*adev;
->> +	struct xsc_adev *xsc_adev;
->> +	int ret;
->> +
->> +	xsc_adev = kzalloc(sizeof(*xsc_adev), GFP_KERNEL);
->> +	if (!xsc_adev)
->> +		return -ENOMEM;
->> +
->> +	adev = &xsc_adev->adev;
->> +	adev->name = xsc_adev_name[idx];
->> +	adev->id = xdev->adev_id;
->> +	adev->dev.parent = &xdev->pdev->dev;
->> +	adev->dev.release = xsc_release_adev;
->> +	xsc_adev->xdev = xdev;
->> +
->> +	ret = auxiliary_device_init(adev);
->> +	if (ret)
->> +		goto err_free_adev;
->> +
->> +	ret = auxiliary_device_add(adev);
->> +	if (ret)
->> +		goto err_uninit_adev;
->> +
->> +	xdev->xsc_adev_list[idx] = xsc_adev;
->> +
->> +	return 0;
->> +err_uninit_adev:
->> +	auxiliary_device_uninit(adev);
->> +err_free_adev:
->> +	kfree(xsc_adev);
->> +
+	return crypto_shash_tfm_digest(tfm, data, size, out)
 
->> +	return ret;
->> +}
+... and here's how to do it with the SHA-256 library, for what it's worth:
+
+	sha256(data, size, out)
+
+and here's how to do it with ahash:
+
+	struct ahash_request *req;
+	struct scatterlist sg;
+	DECLARE_CRYPTO_WAIT(wait);
+	int err;
+
+	req = ahash_request_alloc(alg, GFP_KERNEL);
+	if (!req)
+		return -ENOMEM;
+
+	sg_init_one(&sg, data, size);
+	ahash_request_set_callback(req, CRYPTO_TFM_REQ_MAY_SLEEP |
+					CRYPTO_TFM_REQ_MAY_BACKLOG,
+				   crypto_req_done, &wait);
+	ahash_request_set_crypt(req, &sg, out, size);
+
+	err = crypto_wait_req(crypto_ahash_digest(req), &wait);
+
+	ahash_request_free(req);
+	return err;
+
+Hmm, I wonder which API users would rather use?
+
+The extra complexity is from supporting an obsolete form of hardware offload.
+
+Yes, skcipher and aead have the same problem, but that doesn't mean it is right.
+
+> > Second, these days TLS and IPsec usually use AES-GCM, which is inherently
+> > parallelizable so does not benefit from multibuffer crypto.  This is a major
+> > difference between the AEADs and message digest algorithms in common use.  And
+> > it happens that I recently did a lot of work to optimize AES-GCM on x86_64; see
+> > my commits in v6.11 that made AES-GCM 2-3x as fast on VAES-capable CPUs.
+> 
+> Bravo to your efforts on improving GCM.  But that does not mean that
+> GCM is not amenable to parallel processing.  While CTR itself is
+> obviously already parallel, the GHASH algorithm can indeed benefit
+> from parallel processing like any other hashing algorithm.
+
+What?  GHASH is a polynomial hash function, so it is easily parallelizable.  If
+you precompute N powers of the hash key then you can process N blocks in
+parallel.  Check how the AES-GCM assembly code works; that's exactly what it
+does.  This is fundamentally different from message digests like SHA-* where the
+blocks have to be processed serially.
+
+- Eric
