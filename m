@@ -1,105 +1,82 @@
-Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4A321D596
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 08:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A112222D1;
+	Fri, 14 Feb 2025 08:27:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739521209; cv=none; b=PheDzjp3ese1CN01NUhBs/o0SlBU47gDMNjvfFtoziIBvD3Z56IbJFFK1PsHerNenarEW4J1werABtM+wlePjXIG+KvJGQRPCh4wSSa/phHqeFyp25QbhXFCk26tS6JDVaJV9+tLG3BSHamdJVsjGTvrLhMQfP4ZnHWeUQjDrL8=
+	t=1739521649; cv=none; b=N7mJ/1+PfkyVZKkzTu7VlH6Ju5Zv6o/Lr9HRtoTwWaG1V04c2TYmUpzrjizNE7hsoE9cHiIBpDH5/+ZT277czcNREiBaZNfdNxAY0tAD4r1JsgG0A7VDxj7BlDI9YNiQ8XlAkCPvPYCOj7urbqkOrxNnw/Bm4SVfJLslmw1QmCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739521209; c=relaxed/simple;
-	bh=9bFCaE8eScKI2/xsZ5wdjcHaDxdtJl8IXFst8prmZqw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZUktGiNznPzhMr7V2ZgBYl711BjeoB4ObEaQb8U+vm0GoJKlGzfpJYJfdRe4dnZ3umjJsHucEQQlsS5dSskDa7gwpi1qgvyD10pytvdLJVwTXU8xTOnOhueKSspZZjKPR8NTmgyJnezaQW0ezhvZGJ7p0+mX5g9j4NbF/CthEoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=v9XIPkLY; arc=none smtp.client-ip=52.119.213.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1739521649; c=relaxed/simple;
+	bh=a8bg8TYNJ0zD/riSdpk/IyGPixwchzk6VHth/WlqQ1g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kAGN3nZ8uaRrmbcYa/oYZiGyTM5q7QMw6TTwyR1Cos/LjUrbnhbJL1UPoKKMvJWoYSSmgiX2ebll6+J5FOFEeoRKeld2GYk2nfWDIYnz3ouSzHD4PwMOmmfR1iKZV/BwxrAIdyT6bI+YwCCWwcibGWS28qB+4kvIyv+gxWopjwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pERS73CN; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="v9XIPkLY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1739521207; x=1771057207;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=YyCfsp8prorlfSI+QgOrST+6tDqiuOlyGQla/LQw/RI=;
-  b=v9XIPkLYMcZGwJSkBnExFkS3eNMSkn9PiWTWRmjFEL4tfGZzRaABGC7t
-   NRh06a5VwiylSJVS7pcJApRVs0K5laZ/E/YO1zyRc1miVnqL7ZdcoZnzb
-   ELSOv1NOaJ4T/C6UD9eWC6VX8UMA/DCumtyodxU7toRvbNnwHG4aOq8fS
-   o=;
-X-IronPort-AV: E=Sophos;i="6.13,285,1732579200"; 
-   d="scan'208";a="697061564"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 08:19:57 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.7.35:63692]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.73:2525] with esmtp (Farcaster)
- id 6cfd46ff-bf64-42d4-bd4b-5eae50c7395d; Fri, 14 Feb 2025 08:19:54 +0000 (UTC)
-X-Farcaster-Flow-ID: 6cfd46ff-bf64-42d4-bd4b-5eae50c7395d
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Fri, 14 Feb 2025 08:19:54 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.118.254.117) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Fri, 14 Feb 2025 08:19:50 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>
-CC: Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
-	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v1 net-next 3/3] bareudp: Call bareudp_dellink() in bareudp_destroy_tunnels().
-Date: Fri, 14 Feb 2025 17:18:18 +0900
-Message-ID: <20250214081818.81658-4-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250214081818.81658-1-kuniyu@amazon.com>
-References: <20250214081818.81658-1-kuniyu@amazon.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pERS73CN"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0DED244331;
+	Fri, 14 Feb 2025 08:27:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739521644;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MNvBJa4Q9PSMsPDhj3s1+Vt+BAwOGndJFZntHwfg/ow=;
+	b=pERS73CNJU60vhPF1OVm1TWS8RcM43zlfRPZ1EppD0bEghrGemomkYR8FoCeoLwPRfiLrq
+	SkF5/1g9soVLzzc03QJyHQGZFS2h9GfXkUcTignasl++h1B1XQtzihzXoZwIpaEbXH/SyN
+	Ch+Ga5kkfrrlZIwOuybPkZc5d2/+dgxwObuSRubmqduiiN/z0wjrFnp3qimQn1t2lBDC+n
+	MHUraA0WmTgpfxjazyRDjhs/C2JCg2rmWqlT6TqpUJ+sOIDXqHX0oGMopYifbs+hJUHfNA
+	7d5d1mmgpiSbCTT19SsqnwQHtz1FZH5AdYScflZ1uuqQ1gpJuqU30VA8rCCVHw==
+Date: Fri, 14 Feb 2025 09:27:21 +0100
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: xiaopeitux@foxmail.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Pei Xiao <xiaopei01@kylinos.cn>, kernel test
+ robot <lkp@intel.com>
+Subject: Re: [PATCH] net: freescale: ucc_geth: make ugeth_mac_ops be static
+Message-ID: <20250214092721.6fadd49f@fedora.home>
+In-Reply-To: <tencent_832FF5138D392257AC081FEE322A03C84907@qq.com>
+References: <tencent_832FF5138D392257AC081FEE322A03C84907@qq.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D041UWA003.ant.amazon.com (10.13.139.105) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegleduiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedugfelledvtdffvdekudeijeduueevvdevffehudehvdeuudetheekheeigfetheenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvrgdtudemtggsudelmeekugegtgemlehftddtmegstgdvudemkeekleelmeehgedttgemvgehlegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugegtmeelfhdttdemsggtvddumeekkeelleemheegtdgtmegvheelvgdphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddtpdhrtghpthhtohepgihirghophgvihhtuhigsehfohigmhgrihhlrdgtohhmpdhrtghpthhtoheprghnughrvgifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtt
+ hhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-bareudp devices are destroyed in two places during netns dismantle:
-bareudp_exit_batch_rtnl() and default_device_exit_batch().
+Hi,
 
-bareudp_exit_batch_rtnl() unregisters devices whose backend UDP
-socket is in the dying netns.
+On Fri, 14 Feb 2025 14:11:07 +0800
+xiaopeitux@foxmail.com wrote:
 
-default_device_exit_batch() unregisters devices in the dying netns.
+> From: Pei Xiao <xiaopei01@kylinos.cn>
+> 
+> sparse warning:
+>     sparse: symbol 'ugeth_mac_ops' was not declared. Should it be
+> static.
+> 
+> Add static to fix sparse warnings.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202502141128.9HfxcdIE-lkp@intel.com/
+> Fixes: 53036aa8d031 ("net: freescale: ucc_geth: phylink conversion")
+> Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 
-The latter calls ->dellink(), but the former calls
-unregister_netdevice_queue() only.  In the former case, the device
-remains in net_generic(net, bareudp_net_id)->bareudp_list.
+Thanks for fixing this,
 
-There is no real bug, but let's call ->dellink() to avoid a potential
-issue like the one recently found in geneve. [0]
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-Link: https://lore.kernel.org/netdev/20250213043354.91368-1-kuniyu@amazon.com/ [0]
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
----
- drivers/net/bareudp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index 70814303aab8..396a8b28cf0c 100644
---- a/drivers/net/bareudp.c
-+++ b/drivers/net/bareudp.c
-@@ -780,7 +780,7 @@ static void bareudp_destroy_tunnels(struct net *net, struct list_head *head)
- 	struct bareudp_dev *bareudp, *next;
- 
- 	list_for_each_entry_safe(bareudp, next, &bn->bareudp_list, next)
--		unregister_netdevice_queue(bareudp->dev, head);
-+		bareudp_dellink(bareudp->dev, head);
- }
- 
- static void __net_exit bareudp_exit_batch_rtnl(struct list_head *net_list,
--- 
-2.39.5 (Apple Git-154)
-
+Maxime
