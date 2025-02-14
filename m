@@ -1,60 +1,62 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9C720FA9E
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 14:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFCB7081C;
+	Fri, 14 Feb 2025 14:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739541744; cv=none; b=WT0lfvDdDOdPwRQ6KriRhetvyc0SjrKcGOFnhMqlOIfq9bJKuWyiR9Xm5FdP6gXHqxKBEXonPpgF4a0kJaWGg9YoZydtWAk6gGRA1K11e6w/lrjZm/EtgQYPmLbiD0b17O9t7dvJcwmW26oy9+wq6/PBupxMrf2a5pDdqRSHeNA=
+	t=1739541788; cv=none; b=KgGtfIvjxbMY+wDKDRIGL5i+rTEJlBCOJKViCGu9J+UENMFdw6FkZhDXMol9Ayr6kDkZbojZvfAnG6y2TU1A3de8iErP+B1ndw7igps6vo7rxgIn3EHiqtjFaIKtIw7zQwqqlU5WlfkebRrWoNwaX7vJF+Nt6TX/pkBzEkvXyK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739541744; c=relaxed/simple;
-	bh=+XOvsBPEExIFFP1osKY+2SXJ8otMNgD4O/BXm2G1Ohk=;
+	s=arc-20240116; t=1739541788; c=relaxed/simple;
+	bh=HPjrAGuqBs30Xqla0S08E7D+Vsk8nak+FoJqatHVKqs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ww2UDa9nekOOdFjERtH8MEK9CftnTq9aEZ+OjcvJkk7KQWrZG4ERUCjov0okXjyFITO7kCL7u1GRv4d690P8IkZCAhvFc+7vr151qMYPmfBJ7ieo2+xOnmdj9Aji6pmoIch1Dan+BNLvN3I3rKfrpMTZeIe6WiDFoC/gFM+sfkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JZaRIbiO; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=GEbxC9LFJZAeVC2jywQgScFjENM+hOLdOT7QtFvgA6UapXlLwv8TvxYwVew1rSx1P9AF9MwxveQDWAVP0RCO3ym4PzT0J7s0iK8tb4z3F+ycq0p+IYI6Ckizug9Nlrz+87v1I5GHa1vwq5Fez6GISeCQ/O2ALfiPmMQzUS7VcXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ffutnsRo; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JZaRIbiO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739541743; x=1771077743;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+XOvsBPEExIFFP1osKY+2SXJ8otMNgD4O/BXm2G1Ohk=;
-  b=JZaRIbiOSF8lg1mVk9VhLIhCfebAze7u0HgWWuM2TM4gErC+kX5OA1Ho
-   3Ro/2ze6sjugWyj4kT24Z17QFRP+HJFV/76yE5xqMDMol8vSpCkq1RvQv
-   rQHhdanbv1+oII5G2SLBqKLzawOlZB6bQ4q2ubm94A4LHcU3+TvKLETmM
-   s1qGh/skRdsluSM1BsDJ/jFsJLnHOuthe/vPDdOaSeZ/WPDkHShIPXPmX
-   k+w3aWRPbY3fbjGaw4ZLHxtvk+Pa3Fvdjvu9rQU8VRDPqHTV5A8Lr5W/t
-   4YbIzbcOkLlgAAqLT5IuWQgPLT/CZyGEN3R25521OS0yJuvGkNET+Lp8Z
-   Q==;
-X-CSE-ConnectionGUID: HtbvPTYqRiOG8k4zOT0PhA==
-X-CSE-MsgGUID: THfX2S9WR0Ov5fcId7Bfuw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="39520925"
-X-IronPort-AV: E=Sophos;i="6.13,286,1732608000"; 
-   d="scan'208";a="39520925"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 06:02:22 -0800
-X-CSE-ConnectionGUID: q3y0rG5JTLKUsHcOl514NQ==
-X-CSE-MsgGUID: 9TnUw5xUQ7+mE43XiUoD+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,286,1732608000"; 
-   d="scan'208";a="144321800"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 06:02:19 -0800
-Date: Fri, 14 Feb 2025 14:58:41 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, pierre@stackhpc.com,
-	Dan Carpenter <error27@gmail.com>
-Subject: Re: [net v1] devlink: fix xa_alloc_cyclic error handling
-Message-ID: <Z69MESaQ4cUvIy4z@mev-dev.igk.intel.com>
-References: <20250214132453.4108-1-michal.swiatkowski@linux.intel.com>
- <2fcd3d16-c259-4356-82b7-2f1a3ad45dfa@lunn.ch>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ffutnsRo"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=YPfqLp9fbZ/8JOO2RhhN9couacnmyf0ld4MXnUIvALM=; b=ffutnsRoSZY8FyHYndFd/8kLiJ
+	I4KHxo35/Ek9TxhoUWtM8unvMnPGhWSEmkPTEcDT3jYClEQEnUPZhUgdZ2ziMHH55Gx8f8Cqx5dY+
+	TMUNkVQeXvIecwSFy4vJcLw7LskEMPFSJgDfs890xo04TQ/QG3ANEnPgdKm5ofEn2wRI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tiwHO-00E5L7-4X; Fri, 14 Feb 2025 15:02:54 +0100
+Date: Fri, 14 Feb 2025 15:02:54 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jie Luo <quic_luoj@quicinc.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lei Wei <quic_leiwei@quicinc.com>,
+	Suruchi Agarwal <quic_suruchia@quicinc.com>,
+	Pavithra R <quic_pavir@quicinc.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-hardening@vger.kernel.org,
+	quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com,
+	srinivas.kandagatla@linaro.org, bartosz.golaszewski@linaro.org,
+	john@phrozen.org
+Subject: Re: [PATCH net-next v3 13/14] net: ethernet: qualcomm: Add PPE
+ debugfs support for PPE counters
+Message-ID: <72171304-9a98-4734-85a3-d1302d053602@lunn.ch>
+References: <20250209-qcom_ipq_ppe-v3-0-453ea18d3271@quicinc.com>
+ <20250209-qcom_ipq_ppe-v3-13-453ea18d3271@quicinc.com>
+ <5a53333b-e94c-4fb7-b23d-e1d38d2dad8e@lunn.ch>
+ <a455a2f6-ca0b-43e0-b18c-53f73344981f@quicinc.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,61 +65,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2fcd3d16-c259-4356-82b7-2f1a3ad45dfa@lunn.ch>
+In-Reply-To: <a455a2f6-ca0b-43e0-b18c-53f73344981f@quicinc.com>
 
-On Fri, Feb 14, 2025 at 02:44:49PM +0100, Andrew Lunn wrote:
-> On Fri, Feb 14, 2025 at 02:24:53PM +0100, Michal Swiatkowski wrote:
-> > Pierre Riteau <pierre@stackhpc.com> found suspicious handling an error
-> > from xa_alloc_cyclic() in scheduler code [1]. The same is done in
-> > devlink_rel_alloc().
+> > > +/* The number of packets dropped because of no buffer available, no PPE
+> > > + * buffer assigned to these packets.
+> > > + */
+> > > +static void ppe_port_rx_drop_counter_get(struct ppe_device *ppe_dev,
+> > > +					 struct seq_file *seq)
+> > > +{
+> > > +	u32 reg, drop_cnt = 0;
+> > > +	int ret, i, tag = 0;
+> > > +
+> > > +	PRINT_COUNTER_PREFIX("PRX_DROP_CNT", "SILENT_DROP:");
+> > > +	for (i = 0; i < PPE_DROP_CNT_TBL_ENTRIES; i++) {
+> > > +		reg = PPE_DROP_CNT_TBL_ADDR + i * PPE_DROP_CNT_TBL_INC;
+> > > +		ret = ppe_pkt_cnt_get(ppe_dev, reg, PPE_PKT_CNT_SIZE_1WORD,
+> > > +				      &drop_cnt, NULL);
+> > > +		if (ret) {
+> > > +			seq_printf(seq, "ERROR %d\n", ret);
+> > > +			return;
+> > > +		}
+> > 
+> > This is an error getting the value from the hardware? You should not
+> > put that into the debugfs itself, you want the read() call to return
+> > it.
+> > 
 > 
-> If the same bug exists twice it might exist more times. Did you find
-> this instance by searching the whole tree? Or just networking?
-> 
-> This is also something which would be good to have the static
-> analysers check for. I wounder if smatch can check this?
-> 
-> 	Andrew
-> 
+> Yes, this error code is returned by regmap read functions in
+> ppe_pkt_cnt_get() when the hardware counter read fails. I will
+> remove it from debugfs file and instead log the error to the
+> console (dev_info).
 
-You are right, I checked only net folder and there are two usage like
-that in drivers. I will send v2 with wider fixing, thanks.
+and return it to user space via the read() call. These functions
+normally return the number of bytes put into the buffer. But you can
+also return a negative error code which gets passed back to user space
+instead.
 
-It can be not so easy to check. What if someone want to treat wrapping
-as an error (don't know if it is valid)? If one of the caller is
-checking err < 0 it will be fine.
-
-Thanks,
-Michal
-
-> > 
-> > In case of returning 1 from xa_alloc_cyclic() (wrapping) ERR_PTR(1) will
-> > be returned, which will cause IS_ERR() to be false. Which can lead to
-> > dereference not allocated pointer (rel).
-> > 
-> > Fix it by checking if err is lower than zero.
-> > 
-> > This wasn't found in real usecase, only noticed. Credit to Pierre.
-> > 
-> > Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> > ---
-> >  net/devlink/core.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/net/devlink/core.c b/net/devlink/core.c
-> > index f49cd83f1955..7203c39532fc 100644
-> > --- a/net/devlink/core.c
-> > +++ b/net/devlink/core.c
-> > @@ -117,7 +117,7 @@ static struct devlink_rel *devlink_rel_alloc(void)
-> >  
-> >  	err = xa_alloc_cyclic(&devlink_rels, &rel->index, rel,
-> >  			      xa_limit_32b, &next, GFP_KERNEL);
-> > -	if (err) {
-> > +	if (err < 0) {
-> >  		kfree(rel);
-> >  		return ERR_PTR(err);
-> >  	}
-> > -- 
-> > 2.42.0
-> > 
-> > 
+	Andrew
