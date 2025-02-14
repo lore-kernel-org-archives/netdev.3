@@ -1,127 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFC4265CBA;
-	Fri, 14 Feb 2025 14:14:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDEA25A645
+	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 14:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739542466; cv=none; b=M2NO73RCel0AvVb39AsVTDR3rAK2pLzSvonHn0Coq98JSyTyfyx7UDG7fiDf9WHGUreIsUVRU8In7t87jp94+46kVMxi8vliRGr23qr5qKB4BfMdBQeH0EPn1yHdvAwggDhc5WMPVTUHeMUWtIXmEbE3zuXUEkqo5spWk2ldzqw=
+	t=1739542563; cv=none; b=ogwi8k6IzHdL4KCPbhD9tqghxkUKVZhk25UZX6tv/+13wnqE0DiR97XPUbspxJqXcv03rQ6qrhgcb7K+RZ9+qjuRVWl2aQl/jeHj8BYVO/HPVwrZiaK0ehGk9P47c9Uk2LciUlgH//jw9vOrUo7nQ84Ar+lJ7aJBvaygETpSQyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739542466; c=relaxed/simple;
-	bh=mKExfhVU1mGueFObQGf6TrT/sXrlbwhC802VWY3/t6I=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qEh6gFM7uiyAi81XSwrZ2qaCHXmQeP25LctzQhNQF4W+E/voR1vbxA8JMKhlHV+qfg+Aq8O4PqlPt3RIEh/9eeiIN+225HJClblj24mwfHcR+qNBUei+sADH56mGEkhGDtWkFH+SKVP3jckO9bclVNTDuf8HTcN/UcTlQGifjrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WilpZguW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739542563; c=relaxed/simple;
+	bh=bdWpZ7zeICeJwSZs7Sq+iETodmYOR/0+PZr+SrMWFCY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dRY6w0w+9j5S6OIF7rCES8lECo0wPyyDJEjFew/rXPzN2dTX/iQ5djm+U/daxkN5NyvIFgbmDl0G9FiZMs/nZu7j2UBBhPvAWH2mbfOUw9mLYie3iM0Lh+zFJqeZ5pLKNE35FJAqvOYyDj7iAA1bQBMu/+ewD/jeuB5bqB1F7is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RfldtZ9Q; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WilpZguW"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 46D5AC4CED1;
-	Fri, 14 Feb 2025 14:14:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739542466;
-	bh=mKExfhVU1mGueFObQGf6TrT/sXrlbwhC802VWY3/t6I=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=WilpZguWESeKYgo1V11N4k8Pbk024J4qZlV43SMzRtHKCPRpVeDH94w7GP3N9dAib
-	 ItIQHDE+akKhxcGB2V2h4vrmKUBAH051BgiqLxPpCjaD2feSrBvaz4BcevU7OKBh/X
-	 I+ljZyKk8WVMda0HtjYp5cQfzgxqcxJn6rnMFYtdeBvKeHU/p1jI0kgXOvkqnZdjdp
-	 cVYUcN7vHsdbxsilgU+aQIOz5kCvHrs1IKybYsso3qPtLYMyW/UyxXdz2/6PigPAdQ
-	 zv9pQOfqnldyd2QS99YFqmrAcwVSIlZelEBjRPu/nEfOCmR34lCr3LvnYF+occs2bS
-	 S29HCRsQsD/pA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 316E2C02198;
-	Fri, 14 Feb 2025 14:14:26 +0000 (UTC)
-From: Dimitri Fedrau via B4 Relay <devnull+dimitri.fedrau.liebherr.com@kernel.org>
-Subject: [PATCH net-next v5 0/3] net: phy: dp83822: Add support for
- changing the transmit amplitude voltage
-Date: Fri, 14 Feb 2025 15:14:08 +0100
-Message-Id: <20250214-dp83822-tx-swing-v5-0-02ca72620599@liebherr.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RfldtZ9Q"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5dee1626093so1238303a12.1
+        for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 06:16:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1739542560; x=1740147360; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DLRVCWrxOw3czTbnoXrUYVv+b49FI3ouuyEQgHZTyVw=;
+        b=RfldtZ9QBUOdtPVDsMGrIzj+bcIl5/4lVsBQ6gmSiMp11vG/YtoCvOkClic6fJYRNh
+         gmy19gzvjAoDx2NDj+rvZ2Gpljm/VcrjNqVYutZGffojo9V/mmTbD+QPnXwOziEOddm4
+         g1/UE2Q9xKZv8GGcZiFqVvdB7acswXQjc2kvNsLy4S/8BjiUa2s6TfV9COzdP93Vptwv
+         BlheHihU/QlrwCO92/YCqFOIuyTPYtPwecqDDFseR2Hr6y36xTUtx8smpLvnGtv7LKgV
+         hG//Ec3G4pN1d7VvHe1GN5fBYucV1XYRr+92TgfY8aepUmMQfLdwJpjKwhtUQtRSvs43
+         94oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739542560; x=1740147360;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DLRVCWrxOw3czTbnoXrUYVv+b49FI3ouuyEQgHZTyVw=;
+        b=PiVj9gjh18nugTYvc36sgMpJ/pbnX4E/QJ5pIRuQZ1LWuLsN5q42uwGEdEHpmweKcz
+         98YN+wdT9wcq5/JGXz+qf0WlxzLy/DoeYqvHLAsNRRQJtk8ymHclwnCERJWHjgkGa2SY
+         Q2zBFSNys1kVqh+tczF4QnuwRL8UQIjSrHSIeYBGXTNFp5XawOeF6l6qlyB0sIee/mAQ
+         sS76EDt+EGrPU1xAbNi/eGLMY2dXrt8H3P4ZvmCw6nNkv1ejeAl3pQzduCdEq511QRao
+         3vZGDtm2ZgDCv3eI949ND9MaHaUOfxngsKqlrp/jhZLxg/+STwONLfcxqddWEJpp0NaF
+         ii1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXbU3vWKgD81DfRQE8OX5wkjLf+h3LKK25qCrUromyS7DFRq4B40AIdCX/nNu8RPk0SzhTUsLE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFhN9T++iIWtnf3UT/sEtK7YJ102bryu4EYJBMDYKd7nTjNRnV
+	Y8UD8jio31yArrP0TmZEXATXk/c/gYNuDTbFltoM9KxKzjlsTL0zxDTURrLDdTuHvnkM9etxG/W
+	/+n2o7jkbMdio1DHtsRUiaXY8WLOi0Wef6YPb
+X-Gm-Gg: ASbGnctahplJ3bTG7BJDx12vNLk5+wLltHYQE0CaSGeufToQ3th3+cgm2qduwf8dEGA
+	CUXR/wsQcM05/rViAQxYgq9qdvl8Z/sS6pN9crLwny5yHCUE5Bt8sIsIOzOH/Gxqz4DDMl1Vcog
+	==
+X-Google-Smtp-Source: AGHT+IH2av6U3WuBZtAedsZeDY7Dw2iatqoTQl9zAS50lisPIi8WTBSTTmIGKVaS52CXHmgvS0YLQK5hZR0e/SNe+NA=
+X-Received: by 2002:a05:6402:3589:b0:5de:5cb3:e82a with SMTP id
+ 4fb4d7f45d1cf-5deca86c698mr8067441a12.0.1739542560068; Fri, 14 Feb 2025
+ 06:16:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALBPr2cC/23NwW7DIBAE0F+JOIdqdw0Gcsp/VD3YsI2RGhyB5
- bqK/O9FvjSqOI5G8+YpCufIRVxOT5F5jSXOqQZ9Pgk/DenGMoaaBQEpJOxkeNjOEsllk+U7ppv
- U49B7ZDdCr0WdPTJ/xu0g30XiRSbeFvFRmymWZc4/x9eKR19ZDdhiV5QgDQc9uGABEK5fkceJc
- 37z8/3wVnoxCBoGVQOMdy54RT2ZhtH9GQSqYXTVcMZZdr0GCK5hqBcDsWGoaiBbHoPBIWj1z9j
- 3/RdtI8CKiQEAAA==
-X-Change-ID: 20241213-dp83822-tx-swing-5ba6c1e9b065
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- Florian Fainelli <f.fainelli@gmail.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Dimitri Fedrau <dimitri.fedrau@liebherr.com>, 
- Dimitri Fedrau <dima.fedrau@gmail.com>, 
- Conor Dooley <conor.dooley@microchip.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1739542465; l=2248;
- i=dimitri.fedrau@liebherr.com; s=20241202; h=from:subject:message-id;
- bh=mKExfhVU1mGueFObQGf6TrT/sXrlbwhC802VWY3/t6I=;
- b=RNdzwZ9/nf1p22uBC/NIXeObi2rcn6NMKekvnCJosWzod7J2BRJGVHOmrPnX4CgqVnI1J7SiD
- qFLVEzBtyNtAGRDWAcX0lxlW2p0sK9iiMqUYP+1aOOve2i4nOVhciIX
-X-Developer-Key: i=dimitri.fedrau@liebherr.com; a=ed25519;
- pk=rT653x09JSQvotxIqQl4/XiI4AOiBZrdOGvxDUbb5m8=
-X-Endpoint-Received: by B4 Relay for dimitri.fedrau@liebherr.com/20241202
- with auth_id=290
-X-Original-From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Reply-To: dimitri.fedrau@liebherr.com
+References: <20250214045414.56291-1-kuniyu@amazon.com>
+In-Reply-To: <20250214045414.56291-1-kuniyu@amazon.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 14 Feb 2025 15:15:48 +0100
+X-Gm-Features: AWEUYZkfFVgdNONaP42Z8vshZmXhHhP55I8n3Uovu07QQrg80_--5duvdd0-hvE
+Message-ID: <CANn89iKY8V7jj=JkZpC2YuKtiUMr9-mDoJ7g7+0G9ppdOXo8ZQ@mail.gmail.com>
+Subject: Re: [PATCH v2 net-next] checkpatch: Discourage a new use of
+ rtnl_lock() variants.
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andy Whitcroft <apw@canonical.com>, 
+	Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, 
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add support for changing the transmit amplitude voltage in 100BASE-TX mode.
-Add support for configuration via DT.
+On Fri, Feb 14, 2025 at 5:54=E2=80=AFAM Kuniyuki Iwashima <kuniyu@amazon.co=
+m> wrote:
+>
+> rtnl_lock() is a "Big Kernel Lock" in the networking slow path
+> and still serialises most of RTM_(NEW|DEL|SET)* rtnetlink requests.
+>
+> Commit 76aed95319da ("rtnetlink: Add per-netns RTNL.") started a
+> very large, in-progress, effort to make the RTNL lock scope per
+> network namespace.
+>
+> However, there are still some patches that newly use rtnl_lock(),
+> which is now discouraged, and we need to revisit it later.
+>
+> Let's warn about the case by checkpatch.
+>
+> The target functions are as follows:
+>
+>   * rtnl_lock()
+>   * rtnl_trylock()
+>   * rtnl_lock_interruptible()
+>   * rtnl_lock_killable()
+>
+> and the warning will be like:
+>
+>   WARNING: A new use of rtnl_lock() variants is discouraged, try to use r=
+tnl_net_lock(net) variants
+>   #18: FILE: net/core/rtnetlink.c:79:
+>   +     rtnl_lock();
 
-Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
----
-Changes in v5:
-- Remove default from binding
-- Fix description in binding by defining what 100% gain means
-- Switch to reverse christmas tree in phy_get_internal_delay
-- Add kernel doc for phy_get_tx_amplitude_gain
-- EXPORT_SYMBOL_GPL for phy_get_tx_amplitude_gain
-- Link to v4: https://lore.kernel.org/r/20250211-dp83822-tx-swing-v4-0-1e8ebd71ad54@liebherr.com
+I do wonder if this is not premature.
 
-Changes in v4:
-- Remove type $ref from binding
-- Remove '|' from description in binding
-- Change helper function from:
-    static int phy_get_int_delay_property(struct device *dev, const char *name)
-  to:
-    static int phy_get_u32_property(struct device *dev, const char *name, u32 *val)
-- Apply helper function to phy_get_internal_delay
-- Link to v3: https://lore.kernel.org/r/20250204-dp83822-tx-swing-v3-0-9798e96500d9@liebherr.com
-
-Changes in v3:
-- Switch to tx-amplitude-100base-tx-percent in bindings
-- Link to v2: https://lore.kernel.org/r/20250120-dp83822-tx-swing-v2-0-07c99dc42627@liebherr.com
-
-Changes in v2:
-- Remove binding ti,tx-amplitude-100base-tx-millivolt from ti,dp83822.yaml
-- Add binding tx-amplitude-100base-tx-gain-milli to ethernet-phy.yaml
-- Add helper to get tx amplitude gain from DT
-- Link to v1: https://lore.kernel.org/r/20250113-dp83822-tx-swing-v1-0-7ed5a9d80010@liebherr.com
-
----
-Dimitri Fedrau (3):
-      dt-bindings: net: ethernet-phy: add property tx-amplitude-100base-tx-percent
-      net: phy: Add helper for getting tx amplitude gain
-      net: phy: dp83822: Add support for changing the transmit amplitude voltage
-
- .../devicetree/bindings/net/ethernet-phy.yaml      |  6 +++
- drivers/net/phy/dp83822.c                          | 38 ++++++++++++++++
- drivers/net/phy/phy_device.c                       | 53 ++++++++++++++--------
- include/linux/phy.h                                |  4 ++
- 4 files changed, 83 insertions(+), 18 deletions(-)
----
-base-commit: 7a7e0197133d18cfd9931e7d3a842d0f5730223f
-change-id: 20241213-dp83822-tx-swing-5ba6c1e9b065
-
-Best regards,
--- 
-Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-
-
+After all, we have nothing in Documentation/ yet about this.
