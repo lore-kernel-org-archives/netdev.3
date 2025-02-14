@@ -1,231 +1,370 @@
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AFF78F34;
-	Fri, 14 Feb 2025 03:35:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=210.61.82.184
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739504128; cv=fail; b=Dp5P0R0J64PtCZLLoR0dZ8NzZf57toku2Yq+V48eB5FS7A86vOcytmT95BBigmOeJzIODmrntpDu+KlZh0yCQFc96QfmPilTJFhkfpMKf3pXzehUq+95sJYxMl/XTV7S8lPWn5fE+02xcL/DuGnNUC0TP9oWbxhPLnlapH7Az18=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739504128; c=relaxed/simple;
-	bh=1vMaN4MwbAlKTEG4bfp1wQ8f8VXAdwAQ5IChGDakrcY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=R0rscFNhrjFrM72TOkWbavTCloZiQOEsIYQ2ISiW+9NAM7mBxa3MV7DytngCRrTVkmHqCFBUwoVhPisw51L9U8GLzfFuHbyks5riNvMPSMtlLX65yY9tOY2VUS8oXQkQivvJE6qPzy6b5s+fPDBDiWVzZjMpw8D9TtL4sQaXkOU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=nyGyJICQ; dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b=VfTlJIBc; arc=fail smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF0914B088
+	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 03:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739505058; cv=none; b=oou9ehDi2IzIOpVf4V3T7F0TAHzl/nG3XyWsez2/ms9cBYvWXAUOl/nHwZXP7o/1yjbv0wgDJo6fYoB/DJPv+9V1cLmwZVNGY6Xz95+tcbGLW3ygckKeIj/CzYjKBCTFAjYhgP5A+I8EOP4qQR34aX2dgMatvjh85MeYDGoR54o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739505058; c=relaxed/simple;
+	bh=ETI5iVzJdZ+sW92+V7IDBAKcozuSKrnx0jgbGX/wpxs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vd89CK4PY0CdTtVtjEeU6fektzWua0aUYw1bFBIUHV1NoB6a+EeWi4sEWQ84puEqS3fEGqKXAnwEcqYMf+NmluhRY37RBotciQfZrOv4o7pzrhJEXAOzsFuNzoRQOWy+XnIpnXrFEfap/LEYtAQzzVMJvMxCsoHnhjW96wpOraY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eiIFi22B; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="nyGyJICQ";
-	dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b="VfTlJIBc"
-X-UUID: b412de04ea8411efbd192953cf12861f-20250214
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=1vMaN4MwbAlKTEG4bfp1wQ8f8VXAdwAQ5IChGDakrcY=;
-	b=nyGyJICQ/ifgBTWKrY85uAo3oIukOMOjLCCVrI1dmZJivAKz3+QaHXNCHeQNJFxI+v8YNc9+2qhUu1iKCzyTCnt0BfL1DgMJZBLQdbZnArqFH+t8SDkhVph7xiRk78CIidCdHTC6JkREFKNHbK+rMTkEBG9GoE8CWWO1NA4tJEg=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.46,REQID:6800df8e-049a-4eca-b135-5448a286a6fa,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:60aa074,CLOUDID:1d545a8f-637d-4112-88e4-c7792fee6ae2,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|50,
-	EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
-	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: b412de04ea8411efbd192953cf12861f-20250214
-Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw02.mediatek.com
-	(envelope-from <skylake.huang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 832097907; Fri, 14 Feb 2025 11:35:14 +0800
-Received: from mtkmbs10n1.mediatek.inc (172.21.101.34) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Fri, 14 Feb 2025 11:35:13 +0800
-Received: from APC01-TYZ-obe.outbound.protection.outlook.com (172.21.101.237)
- by mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server id
- 15.2.1258.28 via Frontend Transport; Fri, 14 Feb 2025 11:35:13 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Fi9amiaaxkB6ApsgGg56k6eCk55LTZ17OCOdb35reu5lJGDkgVj+Y5Jl7tjGFdiYxivAIHRhJmgAuIwxxDBCZVxvU/MPOETepOTN6bPRJmp3XkMEXZr8u8QhJIaxhUBbQvs2/BMB+q18ZGD1xdCANwgb7EFMMJOtJ55asWoQyeCdT78993A+bFYqxv0qSsVoAqrAHUdQ2IGCetv79tf1/+Wu9WQJB7Ar0orA0/aB7N1Y0C/qxWoOaMOSQfzuLxiRBwlKwQD54dQvQE8NjrlVLF26VieaIbZZZnk7DB6RflCBLVS2U+a5egpd/G6YLJNpzQDZOsdAHwnJAxcGyPAV/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1vMaN4MwbAlKTEG4bfp1wQ8f8VXAdwAQ5IChGDakrcY=;
- b=hziUe/HXqrNd7jDUJcjCMH/dj3M7fkbPuHAYA9QjniYMWks585EspsGnFMkY/uEA0NNFGnhsf8L6W1Nlj8XQ7W57iALBMuE8Ub3m4j9fLFFw6vqHR9ImGCWnbILidReR18z0CytTDIiROeckdZDiv+ZLqltzmodUoyyrj5xKdqF+yfrcYwvT9MBPSDz8sYLanPMW/3vOEdjcrx4+U6G+P8OlV04ysCOYao85GLTRoS6otliWaJTSV/4ZmoXwZlhIEuUa1Uw1q4XQ+66wRRx6xHAfXlm180t3ifQB4f3bQMgBkk9p1mSDv29Y9UhseD1j21/vlk3VJTm5A5lgWdQY3Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
- dkim=pass header.d=mediatek.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eiIFi22B"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5deb1b8e1bcso2997518a12.0
+        for <netdev@vger.kernel.org>; Thu, 13 Feb 2025 19:50:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1vMaN4MwbAlKTEG4bfp1wQ8f8VXAdwAQ5IChGDakrcY=;
- b=VfTlJIBcX9JiN/qGqFuOe8JjqwpBHkeygVcIhZAa9bM9TIweaewS7PxSw86cfe9NNCPElMDnZHIpQ9XuYW2azvCnAoCEYlmuDT9XqaK+tHVB25o0hmwrXAvzMbP/RHh93L7elkgrMZX50tCVuETRHh02MYrp6k41bjwheGvy0OQ=
-Received: from KL1PR03MB6226.apcprd03.prod.outlook.com (2603:1096:820:8c::14)
- by KL1PR03MB7456.apcprd03.prod.outlook.com (2603:1096:820:ed::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.13; Fri, 14 Feb
- 2025 03:35:11 +0000
-Received: from KL1PR03MB6226.apcprd03.prod.outlook.com
- ([fe80::f3:c11:8422:7ce3]) by KL1PR03MB6226.apcprd03.prod.outlook.com
- ([fe80::f3:c11:8422:7ce3%5]) with mapi id 15.20.8445.013; Fri, 14 Feb 2025
- 03:35:11 +0000
-From: =?utf-8?B?U2t5TGFrZSBIdWFuZyAo6buD5ZWf5r6kKQ==?=
-	<SkyLake.Huang@mediatek.com>
-To: "daniel@makrotopia.org" <daniel@makrotopia.org>, "andrew@lunn.ch"
-	<andrew@lunn.ch>
-CC: "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>, "davem@davemloft.net"
-	<davem@davemloft.net>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	=?utf-8?B?U3RldmVuIExpdSAo5YqJ5Lq66LGqKQ==?= <steven.liu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"hkallweit1@gmail.com" <hkallweit1@gmail.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "pabeni@redhat.com"
-	<pabeni@redhat.com>, "horms@kernel.org" <horms@kernel.org>,
-	"dqfext@gmail.com" <dqfext@gmail.com>, "linux-mediatek@lists.infradead.org"
-	<linux-mediatek@lists.infradead.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>
-Subject: Re: [PATCH net-next 1/3] net: phy: mediatek: Add token ring access
- helper functions in mtk-phy-lib
-Thread-Topic: [PATCH net-next 1/3] net: phy: mediatek: Add token ring access
- helper functions in mtk-phy-lib
-Thread-Index: AQHbZ7U2F8dh2u3i60iVYqHZPuCCULMeWziAgCaqOoCAAGHIgIAAA/+AgAAfCICAAMk5gA==
-Date: Fri, 14 Feb 2025 03:35:10 +0000
-Message-ID: <ea348d0a4b30c4926ba16a6e79cb52196aebcf47.camel@mediatek.com>
-References: <20250116012159.3816135-1-SkyLake.Huang@mediatek.com>
-	 <20250116012159.3816135-2-SkyLake.Huang@mediatek.com>
-	 <5546788b-606e-489b-bb1a-2a965e8b2874@lunn.ch>
-	 <385ba7224bbcc5ad9549b1dfb60ace63e80f2691.camel@mediatek.com>
-	 <64b70b2d-b9b6-4925-b3f6-f570ddb70e95@lunn.ch>
-	 <Z633GUUhyxinwWiP@makrotopia.org>
-	 <81234e04-f37c-4b10-81e6-d8508c9fb487@lunn.ch>
-In-Reply-To: <81234e04-f37c-4b10-81e6-d8508c9fb487@lunn.ch>
-Accept-Language: zh-TW, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mediatek.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: KL1PR03MB6226:EE_|KL1PR03MB7456:EE_
-x-ms-office365-filtering-correlation-id: d3ed5fbb-6332-4f92-6901-08dd4ca895e1
-x-ld-processed: a7687ede-7a6b-4ef6-bace-642f677fbe31,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?M05hcHl2WG1nRUplRDV4dFhRbFZGbk1LOVIzTlJmR3hzZkJ6eENUODU5KzBu?=
- =?utf-8?B?ZUN6M1YvT0FScUoyU2JBQ29SVFBnTm5tWUxnU0wrdmdxTDRFNkFXVVpjcWw5?=
- =?utf-8?B?aEo5WWtvRFo3VDFJV2wycGtzOExTQnQ3NFNMT0ZhNml0aHIrd21zSERRbHpI?=
- =?utf-8?B?OXh5R3pNbW1kMlNJcWlWaTZGeU4zd3VSUExJeGFKMmFON0xPcE9DZU1jZlQv?=
- =?utf-8?B?eFV2ZHduY1VWekh6TDlzOWh4L0l3dW50a2JTTnd6aVdJaU5naTc2MXlVZ3hp?=
- =?utf-8?B?OFJ2SXRxcmNXaXBlTGlFdzY5UDc2TXdFa2k4eWVMTFI4dSszRkpaV1FwbUFC?=
- =?utf-8?B?aUdkQ2F1Q1RYaFdpb2t6MGhvYndlc1pUdVI0ZDZaeTFDakNqTlJPK2JXY0pj?=
- =?utf-8?B?eVZqcnV2TGcvU2hGKzkyNHhkRlhmL0tid3Bmb3VpWVlDZkNuQ3ZNUzJOVnFD?=
- =?utf-8?B?NldXL2JuZXBXbEZDSi9pTWcrcGdRWndjMTI3N0VnbkxxZ2RCUjZ1eGVjb3A4?=
- =?utf-8?B?Z0tmTDNrbzNacUcyWmpQVUtsTVgzV0VYVUFWbGpWVGdTTFZZb0x6RUVQcEpu?=
- =?utf-8?B?bEFtcFViUk1rejREUVlDMUIxd2JmS1B4SmJwK0pxek5PTkhPSzJaK0oxSE83?=
- =?utf-8?B?R25VODNiNFMxTXpjOEpQK2VXdkM1dFhDbmRscVplQWwzdVZBNjF1QnIxekx3?=
- =?utf-8?B?cmZVcXZYOWQ0K0JsWU9hU2FZVEdnMGJoMjJTM2doMnJBWVRMY3hpVW1hSHR0?=
- =?utf-8?B?SmYzUVRxNE1WdGZIUGEvWWZzWVpFZUpOeWs1OEZWbUc3ZXdBNFloY01VZ2tR?=
- =?utf-8?B?VlduOElzT0pZL3lLNXZrdUZWMnNuTWJiVzR2Z0FaVytQb3YzblNFTWxJVGEx?=
- =?utf-8?B?SzhmUzFDZ1hMYkxtYlpUUXFDbEY3MFpwbVFyeXgvWGIyY3ZHcE5JZmpWcjVa?=
- =?utf-8?B?ZUxNaWhTRlRCRlRwdVIwREFVNlFtTzNBd24yRnU5aG9YKzNnSjdYcU8vcnR1?=
- =?utf-8?B?QVEyTksvQkR4NHpTakVqNDZLSTVCZHZwU2JSbVNVWFV0bGsvSFpYNTdLVXIx?=
- =?utf-8?B?eHVwTCtBVlJicHJUZHFKOENVZysyTFJZVHZYNzFycjhQUXZOYzVyRHVFQmxn?=
- =?utf-8?B?bEh3T0lkRnc2TTV0cEtGOWp2ZWJ3T3NlMFlmSk9UZXE2N1oxQ2Q0c1VEVmEz?=
- =?utf-8?B?ZDJUZ2dRWmFaSHgrdXVIc21hclZ5YWQxTzFCN2JlanBLdXI3OFNnRFljbWRU?=
- =?utf-8?B?Z1UyMEdYRWkvdWhNQVM0b2hqOG02WUNkOHRvMVlkTHNjaThhUkJRSU1QM09u?=
- =?utf-8?B?d0xVbEhrUmIvTE41ZThqckFsUm1neTRjb0RxYnUrUGszRlIwTjFtYTNpMGpy?=
- =?utf-8?B?OWJlT3lROXRrSzdtWDhQV0FuNnpiNjBueTBhQkFRc0Z2Mm9OM2UrRXg0Y2tW?=
- =?utf-8?B?Sm9Sa3R6S2tVQllUaUJQdGk1ZnFkOVRZY0xtWUhqYlBoV1VXSUoyL1B3eGlT?=
- =?utf-8?B?akV2QTBIenZVZUc1ZFhjc0xKdVNzV09BZWdlbndXZG1QSGgxR1c1ZFdxejFZ?=
- =?utf-8?B?MU5vUXRXdys5TCtXTThhT1ppeDlJM0dhTFAwZEdlTVAvMGtTOXRoM2JLU0dQ?=
- =?utf-8?B?a3ZENnRuaEJSQTAxWTcvSXpnZ0dkczZ6NXVLYjYxT3p4cDUyRmMzeFBxUGlM?=
- =?utf-8?B?TGNrSVNQdzQzeXlYOTE5dEJubkFlUGUvR1QzNHZMRlJFZlRBS1JRVXkxMWVG?=
- =?utf-8?B?cW05Z1hKRnRqVzlydEJuc012ZHd1blNGT0xJOHlWVnc3dllSVDVac0phZXBt?=
- =?utf-8?B?RUE0U212cjNmV0h0OWk3Zm1nNGJVNjJlRFV0NTkvYkFLN0YwaEtjNFdZb2FG?=
- =?utf-8?B?ZGM3TE1EdHhtSzB4MXcyRjBSVDNwNjkvOWVZQnlINE5PYW8zSjhHMGQwalc4?=
- =?utf-8?Q?OyRoIelSckerHmuJxza2agnk6791kCoz?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KL1PR03MB6226.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dUJIK1c1bzZ6dVVOLzR2a3YwckVMdEc1REgwc2dETFBUa2NwRjh2M2UvV1F1?=
- =?utf-8?B?RlFqUzdhOXhUcmkvKzhvalFkY0pCa09BRGVPdnAyK1RyaTBxZ2c5Mkk3c0VX?=
- =?utf-8?B?R2dtWG0wT0pDK2JJQ0JKSG5VQTJiNWpDWTdudnQyTEcwL1M2bXhRMDlRaEJR?=
- =?utf-8?B?Ym9OcVpQM1gyQmYwbUc4V2ZtM21RNkwxblBvRDRZNU5HSEF6K0NrZDZTTlZl?=
- =?utf-8?B?a1RJOUlWUmcwY2QzT3F6RlBaU01vcVBXRU1iMlZFM1lRRXhZdU5ubXQzb0pL?=
- =?utf-8?B?aS92UEh4U0d1eXhKYWFaSkdJVmJaMVVKUUxYWnZMSjdIaHBoTzFvb3Vhczdq?=
- =?utf-8?B?R3VSeWVDQlBJN3A1NTdXd2pZR0xsVzVQMEIyODBYZEkycDNHV1gwWDFMZGFE?=
- =?utf-8?B?MWpPZmVHOGoyWjd2K2RPUjREL2JrSUY4ejl3TVFDbVBZbm1XTTdCTzZxRk9W?=
- =?utf-8?B?TkFXQWd1VDRFSlhDVE83ck8vd3d1RnFoWURWTFhRQjkxNjJzbTVVWEYvR0Jy?=
- =?utf-8?B?VVhDMVhxT3FLdVJMcmpjK2VveTYrUnZxekdYZW5Vck5GeUIyRlJLRk5NMTdR?=
- =?utf-8?B?MG9Sb21wcUpjb2N4Z1V4cG9keDFZQm9UaE5xVXdzVVRqWnJqK0cvY1B5MzRp?=
- =?utf-8?B?b29BZTRqVHNLeDR2WnRBSHRWblpaOEVxcHdhOEcxcXNKK21Eb3poRFNGenUy?=
- =?utf-8?B?bk11a1dqc28vY25lQTNvYWdNN1RmSDBhZTJwMmFXSmQwNXdPblhqSndVd1I1?=
- =?utf-8?B?aHNVSldFakFoRktJcTVaN2cvQnZWODZ5M3lkWlNXUWVNRXJVRnFXU1l5QVBJ?=
- =?utf-8?B?RW9HbEpaVFMwc3dTQnZyV21kTGVINDBCeEczc2VJc1l1MkNGS0RPMDNISXZE?=
- =?utf-8?B?cnpaWkxQSkRoUDFZZ2Y1b2lPRzE3c0ovTk1MalhCOFQzZFBWMVN5bHZyend4?=
- =?utf-8?B?WFZmSExlMGRYTWZLUVdxOGtjSHMzTXZHY09pU0N6Rk1TQ1I4UUVPY3N5WGdG?=
- =?utf-8?B?QVRSd0hoR2dQTEdQSHZrbCtOR3lKVi9LbEFPTkZZOHJMdkZITVBaYW1kb2dy?=
- =?utf-8?B?NkVGS1JRQmFyUEs5aTBocm1kMFk5ejRGU2xBdXhITW0wVTRDRmdJWEFGNkN2?=
- =?utf-8?B?TlIvZHhYTzQxbHBlUXhxQlVxWndSVm43anVMUEFHREpybzdhZnh3SXVob1Jz?=
- =?utf-8?B?bkVSckNvajcraUJXd3RYOHdyS0J1Tit5RC9qcHdzdlhWcUNzT203Y3hmdG9n?=
- =?utf-8?B?MmpiTGNsY0dWc0Y1UmFyekxETkltOVVUVWRVbjcxM21CVGRFMHZvT1hTSDY1?=
- =?utf-8?B?NVhRaitJTGc1ZHdwRERTSlRuWmF0ZnZmQ2VzZWdKemU4eEFVeXA0bDRDSXR0?=
- =?utf-8?B?UUFvSTlsZXBicWowNE5tNlJxeXNQbDdSQk8rQUdLcUs5Sjc0cXRKUnUvQUVo?=
- =?utf-8?B?WUlUU3d1RXgxTWpPZHdTbVFUL1VVclRGZ0RCSElLTTJKMVN2b2JRR3pDbTI3?=
- =?utf-8?B?MlRDSzQvMFZqQTNRemdVU1g3Tis0VENJUTJUZ0dLQ2JmWnQ4OThMdmpUaS9h?=
- =?utf-8?B?WUJmN293WVoveTh5OHFxNXEwTzIvOHA5cUFOWFBDTTBZSFdUV2tqOURqZUoy?=
- =?utf-8?B?clhMR3RvQW5pcXNjYVlKQm1PWmtGN3RsRkNDaHBUNlp2TWdmSnZFcm1ZZkRO?=
- =?utf-8?B?SjdxdTZwVmp1VE12a1VEOURPYUlmdkNmck5qbmRtbVhxVXFYbmFMZ3FmK3A0?=
- =?utf-8?B?eDJORzJac0VsMXppQkJoZUNZV2hMbGpkSVV0VnYrYXl4UFdGQW1LVU1CWEsx?=
- =?utf-8?B?SHhPajlrZm5nYWFidXVuRjZEM3hldWkrcWZTOUVGQzVUdUdGbVdHUTFZVm0r?=
- =?utf-8?B?cEc3VDRZNWdlUWhvWVpnN2xkNlpGVzJ5MkNRRDRRTGRxN1luL1ExeTVvYmhC?=
- =?utf-8?B?OVhCRWVIZTBYOGE4RDRaWmMwY0RFK3FQS1FqZGRKdU5TcHBrR0Z3UmJCNFJE?=
- =?utf-8?B?Ym5RTDhrTEFuL29ldm5aSGUvUGZnSk10S29pak5kVWxjWjFxNGc0Y3ZKZmlt?=
- =?utf-8?B?WS9iVG94NDB3SW5MUG5pUW5HK0FGQStZTllwK3dpc3h1c09QVExsSlJuYXZL?=
- =?utf-8?B?ZksvUmFKdG4yTWJQb1V0R2RrZGprS1J4dGRScHdzN0RXUDBtS0VOcFZjMkRF?=
- =?utf-8?B?TGc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <51787A4DE86D364FB7EB4C1D447FB39C@apcprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20230601; t=1739505055; x=1740109855; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ON0AI5LIKRY01veX2Y8fur1qAsOo/9rhbvdVRBGvOTA=;
+        b=eiIFi22BxuzcdW5PjWsag+Wl6FoTlhUp0RYB4D+sCTbm1liKhJXekPAVVSygFBxrMI
+         sM6YQ7ldRULunLkbFRAIvWOPRYVdW4k5GFWXZshoyFXolmggM4NpF97vcbRzxYpF2PoJ
+         KkOJ7UhaaYJgTNSr1KgOYypYQ4scmHNOpRNQKuwir23Dlf38Ifuy/VvGz0UYLdzTSYMe
+         txi9V2Uwu4ORiflZXrbdvDcRAMGT0tERoWMBoeBNI/krw0BDGFrvugABsw6wuJn5zWxu
+         pPmPHTAXx3JtDAFlNFfMX3mGTm84IyopR50fo7jvZttxpOUhmm4yrjZdMNAfQUQq1asd
+         scog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739505055; x=1740109855;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ON0AI5LIKRY01veX2Y8fur1qAsOo/9rhbvdVRBGvOTA=;
+        b=Ez8yrsaJ9ZJ44GBL3zuqlgo7oPLpdkqYzRg7Y3e6OMlDuLLlZ6iKd1fztKdoaF3t37
+         SEjMdcKeC44UU7p9UFDABxSrQEy5ZYf8O4Tf7tzD+ueVdwxIWmBZyhciiz0uQZzZDngb
+         mSj8vzsK0eeXFCXdm08MaQPi0IvVmpH+AjK+p2gdScNkmgYOKMTgsjyfOnpQLG+pk7o9
+         MM8mo76hcp2sxHPMpohdoSL5kFdExzBcrO/wnXhcfLnbNY97yvXnMTz7nNQfYTKse2ty
+         YS+QyEPNz7UjMI34+kGAlnpV6IVLxIBbmSsGxSdkeKBdeVcdEQQS8kWA1elStVnFO+ws
+         IqVQ==
+X-Gm-Message-State: AOJu0Yye1ID3L1F5fIv3qMVyeUuG6hf68ysD0OiT1Kb2uu5QBhr1SiCn
+	lSg2BMbiWV0BgmFqKp7QmXNMxB2HN5bbwK9obtn5arVSRyhp3c1/7QtYT7py
+X-Gm-Gg: ASbGncsazBre17sVyWif+4ixxN5/+UHpM8ESHk8GRB+5tDeCSdb36NQKLjCWMaoziC/
+	KvRh9TWSifIRcWEseksiwPoY/z/pRHo88nfR6vgkVIFh+ZjuQHEL9MQwG/i19JGteV5J4B37zJI
+	7/Sohvse1iMff9SAk7cD++AOOnzS2JVWfsJbQ8kmF4i776joF22XzQMxz8BtXu4GsYaXx8t0tM5
+	TgLlsx2p5QXCHUa43iujJP11U3y7qkzcdjtqe9a0uqYNQ8nBvXcUVG0JUeDYmxpTFm2t/9vX8T6
+	bH9tdzwS9wMo
+X-Google-Smtp-Source: AGHT+IGowXKNjHXox/mqh6oenJ5mH7U1pf9gjzmF1TmQ0yGuhICYYf1taDYHGHc9mRqZGqYcElZOLQ==
+X-Received: by 2002:a17:906:730f:b0:aae:fd36:f511 with SMTP id a640c23a62f3a-aba501a9d85mr569938066b.47.1739505054459;
+        Thu, 13 Feb 2025 19:50:54 -0800 (PST)
+Received: from localhost ([2a03:2880:31ff:1::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba533bdcf9sm249923166b.163.2025.02.13.19.50.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Feb 2025 19:50:52 -0800 (PST)
+From: Mohsin Bashir <mohsin.bashr@gmail.com>
+To: netdev@vger.kernel.org
+Cc: alexanderduyck@fb.com,
+	kuba@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	sanman.p211993@gmail.com,
+	vadim.fedorenko@linux.dev,
+	suhui@nfschina.com,
+	horms@kernel.org,
+	sdf@fomichev.me,
+	jdamato@fastly.com,
+	brett.creeley@amd.com,
+	przemyslaw.kitszel@intel.com,
+	colin.i.king@gmail.com,
+	kernel-team@meta.com,
+	mohsin.bashr@gmail.com
+Subject: [PATCH net-next V2] eth: fbnic: Add ethtool support for IRQ coalescing
+Date: Thu, 13 Feb 2025 19:50:37 -0800
+Message-ID: <20250214035037.650291-1-mohsin.bashr@gmail.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: KL1PR03MB6226.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3ed5fbb-6332-4f92-6901-08dd4ca895e1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Feb 2025 03:35:10.8718
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: iIn+DEIGN6mkt0nxD6X+mZd4k/r5qI/K8jrA/nDTZY2zedKRclAiS459DQdRItFS7qMXWlzSS4CTBLzgM2VDSd/BZ3hRMqTw0Kxyoe24nWo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR03MB7456
+Content-Transfer-Encoding: 8bit
 
-T24gVGh1LCAyMDI1LTAyLTEzIGF0IDE2OjM0ICswMTAwLCBBbmRyZXcgTHVubiB3cm90ZToNCj4g
-DQo+IEV4dGVybmFsIGVtYWlsIDogUGxlYXNlIGRvIG5vdCBjbGljayBsaW5rcyBvciBvcGVuIGF0
-dGFjaG1lbnRzIHVudGlsDQo+IHlvdSBoYXZlIHZlcmlmaWVkIHRoZSBzZW5kZXIgb3IgdGhlIGNv
-bnRlbnQuDQo+IA0KPiANCj4gPiA+ID4gVGhvc2UgcmVnaXN0ZXJzIHdpdGggTXJ2bCogcHJlZml4
-IHdlcmUgb3JpZ2luYWxseSBkZXNpZ25lZCBmb3INCj4gPiA+ID4gY29ubmVjdGlvbiB3aXRoIGNl
-cnRhaW4gTWFydmVsbCBkZXZpY2VzLiBJdCdzIG91ciBEU1ANCj4gPiA+ID4gcGFyYW1ldGVycy4N
-Cj4gPiA+IA0KPiA+ID4gV2lsbCB0aGlzIGNvZGUgd29yayB3aXRoIHJlYWwgTWFydmVsbCBkZXZp
-Y2VzPyBJcyB0aGlzIFBIWQ0KPiA+ID4gYWN0dWFsbHkNCj4gPiA+IGxpY2Vuc2VkIGZyb20gTWFy
-dmVsbD8NCj4gPiANCj4gPiA+IEZyb20gd2hhdCBJIHVuZGVyc3Rvb2QgdGhlIHR1bmluZyBvZiB0
-aG9zZSBwYXJhbWV0ZXJzIGlzIHJlcXVpcmVkDQo+ID4gdG8gY29ubmVjdCB0byBhIE1hcnZlbGwg
-UEhZIGxpbmsgcGFydG5lciBvbiB0aGUgb3RoZXIgZW5kLg0KPiANCj4gSWYgc28sIHRoZSBuYW1p
-bmcgaXMgYmFkLiBJIGFzc3VtZSB5b3UgbmVlZCB0aGUgc2FtZSBzZXR0aW5ncyBmb3INCj4gTWlj
-cm9jaGlwLCBBdGhlcm9zLCBCcm9hZGNvbSwgZXRjLiBUaGVzZSBzZXR0aW5ncyBqdXN0IHR1bmUg
-dGhlDQo+IGhhcmR3YXJlIHRvIGJlIHN0YW5kYXJkcyBjb25mb3JtaW5nPw0KPiANCj4gwqDCoMKg
-wqDCoMKgwqAgQW5kcmV3DQo+IA0KVGhpcyBwYXJ0IGlzIHByZXR0eSBvbGQgb2xkIG9sZCBkZXNp
-Z24uIFNvbWUgY29tcGF0aWJpbGl0eSBpc3N1ZXMgd2VyZQ0KZmlyc3RseSBmb3VuZCBvbiBNYXJ2
-ZWxsIGxpbmsgcGFydG5lcnMsIHNvIHRoZSByZWdpc3RlcnMgYXJlIG5hbWVkDQphY2NvcmRpbmds
-eS4gQW5kIHllcywgbm93LCB0aG9zZSBLZi9LcCBzZXR0aW5ncyB3aWxsIGJlIHVzZWQgZm9yDQpj
-b25uZWN0aW9uIHdpdGggb3RoZXIgbGluayBwYXJ0bmVycy4gSG93ZXZlciwgaWYgSSBjaGFuZ2Ug
-dGhlIHJlZ2lzdGVyDQpuYW1lcywgaXQgdmlvbGF0ZXMgb3VyIGhhcmR3YXJlIHJlZ2lzdGVyIG1h
-cCBhcHBsaWNhdGlvbiBub3RlLiBJZiB0aGlzDQpkb2VzIGJvdGhlciwgSSBjYW4gYWRkIHNvbWUg
-Y29tbWVudHMgYmVmb3JlIHRoZXNlIG1hY3JvcyBsaWtlOg0KDQovKiBNcnZsKiBwcmVmaXggb25s
-eSBtZWFucyB0aGF0IGluIHRoZSB2ZXJ5IGJlZ2lubmluZyB3ZSB0dW5lIHRoZQ0KICogcGFyYW1l
-dGVycyB3aXRoIE1hcnZlbGwgbGluayBwYXJ0bmVycy4gVGhlc2Ugc2V0dGluZ3Mgd2lsbCBiZSB1
-c2VkDQrCoCogZm9yIGFsbCBsaW5rIHBhcnRuZXJzIG5vdy4NCiAqLw0KDQpCUnMsDQpTa3kNCg==
+Add ethtool support to configure the IRQ coalescing behavior. Support
+separate timers for Rx and Tx for time based coalescing. For frame based
+configuration, currently we only support the Rx side.
+
+The hardware allows configuration of descriptor count instead of frame
+count requiring conversion between the two. We assume 2 descriptors
+per frame, one for the metadata and one for the data segment.
+
+When rx-frames are not configured, we set the RX descriptor count to
+half the ring size as a fail safe.
+
+Default configuration:
+ethtool -c eth0 | grep -E "rx-usecs:|tx-usecs:|rx-frames:"
+rx-usecs:       30
+rx-frames:      0
+tx-usecs:       35
+
+IRQ rate test:
+With single iperf flow we monitor IRQ rate while changing the tx-usesc and
+rx-usecs to high and low values.
+
+ethtool -C eth0 rx-frames 8192 rx-usecs 150 tx-usecs 150
+irq/sec   13k
+irq/sec   14k
+irq/sec   14k
+
+ethtool -C eth0 rx-frames 8192 rx-usecs 10 tx-usecs 10
+irq/sec  27k
+irq/sec  28k
+irq/sec  28k
+
+Validating the use of extack:
+ethtool -C eth0 rx-frames 16384
+netlink error: fbnic: rx_frames is above device max
+netlink error: Invalid argument
+
+Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
+---
+V2:
+- Update fbnic_set_coalesce() to use extack to highlight incorrect config
+- Simplify fbnic_config_rx_frames()
+V1: https://lore.kernel.org/netdev/20250212234946.2536116-1-mohsin.bashr@gmail.com
+---
+ drivers/net/ethernet/meta/fbnic/fbnic.h       |  3 +
+ .../net/ethernet/meta/fbnic/fbnic_ethtool.c   | 59 +++++++++++++++++++
+ .../net/ethernet/meta/fbnic/fbnic_netdev.c    |  4 ++
+ .../net/ethernet/meta/fbnic/fbnic_netdev.h    |  6 ++
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c  | 53 ++++++++++++++---
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.h  |  3 +
+ 6 files changed, 120 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic.h b/drivers/net/ethernet/meta/fbnic/fbnic.h
+index 14751f16e125..548e882381ce 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic.h
+@@ -180,6 +180,9 @@ void fbnic_dbg_exit(void);
+ void fbnic_csr_get_regs(struct fbnic_dev *fbd, u32 *data, u32 *regs_version);
+ int fbnic_csr_regs_len(struct fbnic_dev *fbd);
+ 
++void fbnic_config_txrx_usecs(struct fbnic_napi_vector *nv, u32 arm);
++void fbnic_config_rx_frames(struct fbnic_napi_vector *nv);
++
+ enum fbnic_boards {
+ 	fbnic_board_asic
+ };
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
+index 20cd9f5f89e2..54c216148d12 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
+@@ -135,6 +135,61 @@ static void fbnic_clone_free(struct fbnic_net *clone)
+ 	kfree(clone);
+ }
+ 
++static int fbnic_get_coalesce(struct net_device *netdev,
++			      struct ethtool_coalesce *ec,
++			      struct kernel_ethtool_coalesce *kernel_coal,
++			      struct netlink_ext_ack *extack)
++{
++	struct fbnic_net *fbn = netdev_priv(netdev);
++
++	ec->tx_coalesce_usecs = fbn->tx_usecs;
++	ec->rx_coalesce_usecs = fbn->rx_usecs;
++	ec->rx_max_coalesced_frames = fbn->rx_max_frames;
++
++	return 0;
++}
++
++static int fbnic_set_coalesce(struct net_device *netdev,
++			      struct ethtool_coalesce *ec,
++			      struct kernel_ethtool_coalesce *kernel_coal,
++			      struct netlink_ext_ack *extack)
++{
++	struct fbnic_net *fbn = netdev_priv(netdev);
++
++	/* Verify against hardware limits */
++	if (ec->rx_coalesce_usecs > FIELD_MAX(FBNIC_INTR_CQ_REARM_RCQ_TIMEOUT)) {
++		NL_SET_ERR_MSG_MOD(extack, "rx_usecs is above device max");
++		return -EINVAL;
++	}
++	if (ec->tx_coalesce_usecs > FIELD_MAX(FBNIC_INTR_CQ_REARM_TCQ_TIMEOUT)) {
++		NL_SET_ERR_MSG_MOD(extack, "tx_usecs is above device max");
++		return -EINVAL;
++	}
++	if (ec->rx_max_coalesced_frames >
++	    FIELD_MAX(FBNIC_QUEUE_RIM_THRESHOLD_RCD_MASK) /
++	    FBNIC_MIN_RXD_PER_FRAME) {
++		NL_SET_ERR_MSG_MOD(extack, "rx_frames is above device max");
++		return -EINVAL;
++	}
++
++	fbn->tx_usecs = ec->tx_coalesce_usecs;
++	fbn->rx_usecs = ec->rx_coalesce_usecs;
++	fbn->rx_max_frames = ec->rx_max_coalesced_frames;
++
++	if (netif_running(netdev)) {
++		int i;
++
++		for (i = 0; i < fbn->num_napi; i++) {
++			struct fbnic_napi_vector *nv = fbn->napi[i];
++
++			fbnic_config_txrx_usecs(nv, 0);
++			fbnic_config_rx_frames(nv);
++		}
++	}
++
++	return 0;
++}
++
+ static void fbnic_get_strings(struct net_device *dev, u32 sset, u8 *data)
+ {
+ 	int i;
+@@ -586,9 +641,13 @@ fbnic_get_eth_mac_stats(struct net_device *netdev,
+ }
+ 
+ static const struct ethtool_ops fbnic_ethtool_ops = {
++	.supported_coalesce_params	= ETHTOOL_COALESCE_USECS |
++					  ETHTOOL_COALESCE_RX_MAX_FRAMES,
+ 	.get_drvinfo		= fbnic_get_drvinfo,
+ 	.get_regs_len		= fbnic_get_regs_len,
+ 	.get_regs		= fbnic_get_regs,
++	.get_coalesce		= fbnic_get_coalesce,
++	.set_coalesce		= fbnic_set_coalesce,
+ 	.get_strings		= fbnic_get_strings,
+ 	.get_ethtool_stats	= fbnic_get_ethtool_stats,
+ 	.get_sset_count		= fbnic_get_sset_count,
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+index 1db57c42333e..8b6be6b60945 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+@@ -618,6 +618,10 @@ struct net_device *fbnic_netdev_alloc(struct fbnic_dev *fbd)
+ 	fbn->ppq_size = FBNIC_PPQ_SIZE_DEFAULT;
+ 	fbn->rcq_size = FBNIC_RCQ_SIZE_DEFAULT;
+ 
++	fbn->tx_usecs = FBNIC_TX_USECS_DEFAULT;
++	fbn->rx_usecs = FBNIC_RX_USECS_DEFAULT;
++	fbn->rx_max_frames = FBNIC_RX_FRAMES_DEFAULT;
++
+ 	default_queues = netif_get_num_default_rss_queues();
+ 	if (default_queues > fbd->max_num_queues)
+ 		default_queues = fbd->max_num_queues;
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
+index a392ac1cc4f2..46af92a8f781 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
+@@ -12,6 +12,7 @@
+ #include "fbnic_txrx.h"
+ 
+ #define FBNIC_MAX_NAPI_VECTORS		128u
++#define FBNIC_MIN_RXD_PER_FRAME		2
+ 
+ struct fbnic_net {
+ 	struct fbnic_ring *tx[FBNIC_MAX_TXQS];
+@@ -27,6 +28,11 @@ struct fbnic_net {
+ 	u32 ppq_size;
+ 	u32 rcq_size;
+ 
++	u16 rx_usecs;
++	u16 tx_usecs;
++
++	u32 rx_max_frames;
++
+ 	u16 num_napi;
+ 
+ 	struct phylink *phylink;
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+index d4d7027df9a0..7e0bd11f05d2 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+@@ -2010,9 +2010,51 @@ static void fbnic_config_drop_mode_rcq(struct fbnic_napi_vector *nv,
+ 	fbnic_ring_wr32(rcq, FBNIC_QUEUE_RDE_CTL0, rcq_ctl);
+ }
+ 
++static void fbnic_config_rim_threshold(struct fbnic_ring *rcq, u16 nv_idx, u32 rx_desc)
++{
++	u32 threshold;
++
++	/* Set the threhsold to half the ring size if rx_frames
++	 * is not configured
++	 */
++	threshold = rx_desc ? : rcq->size_mask / 2;
++
++	fbnic_ring_wr32(rcq, FBNIC_QUEUE_RIM_CTL, nv_idx);
++	fbnic_ring_wr32(rcq, FBNIC_QUEUE_RIM_THRESHOLD, threshold);
++}
++
++void fbnic_config_txrx_usecs(struct fbnic_napi_vector *nv, u32 arm)
++{
++	struct fbnic_net *fbn = netdev_priv(nv->napi.dev);
++	struct fbnic_dev *fbd = nv->fbd;
++	u32 val = arm;
++
++	val |= FIELD_PREP(FBNIC_INTR_CQ_REARM_RCQ_TIMEOUT, fbn->rx_usecs) |
++	       FBNIC_INTR_CQ_REARM_RCQ_TIMEOUT_UPD_EN;
++	val |= FIELD_PREP(FBNIC_INTR_CQ_REARM_TCQ_TIMEOUT, fbn->tx_usecs) |
++	       FBNIC_INTR_CQ_REARM_TCQ_TIMEOUT_UPD_EN;
++
++	fbnic_wr32(fbd, FBNIC_INTR_CQ_REARM(nv->v_idx), val);
++}
++
++void fbnic_config_rx_frames(struct fbnic_napi_vector *nv)
++{
++	struct fbnic_net *fbn = netdev_priv(nv->napi.dev);
++	int i;
++
++	for (i = nv->txt_count; i < nv->rxt_count + nv->txt_count; i++) {
++		struct fbnic_q_triad *qt = &nv->qt[i];
++
++		fbnic_config_rim_threshold(&qt->cmpl, nv->v_idx,
++					   fbn->rx_max_frames *
++					   FBNIC_MIN_RXD_PER_FRAME);
++	}
++}
++
+ static void fbnic_enable_rcq(struct fbnic_napi_vector *nv,
+ 			     struct fbnic_ring *rcq)
+ {
++	struct fbnic_net *fbn = netdev_priv(nv->napi.dev);
+ 	u32 log_size = fls(rcq->size_mask);
+ 	u32 rcq_ctl;
+ 
+@@ -2040,8 +2082,8 @@ static void fbnic_enable_rcq(struct fbnic_napi_vector *nv,
+ 	fbnic_ring_wr32(rcq, FBNIC_QUEUE_RCQ_SIZE, log_size & 0xf);
+ 
+ 	/* Store interrupt information for the completion queue */
+-	fbnic_ring_wr32(rcq, FBNIC_QUEUE_RIM_CTL, nv->v_idx);
+-	fbnic_ring_wr32(rcq, FBNIC_QUEUE_RIM_THRESHOLD, rcq->size_mask / 2);
++	fbnic_config_rim_threshold(rcq, nv->v_idx, fbn->rx_max_frames *
++						   FBNIC_MIN_RXD_PER_FRAME);
+ 	fbnic_ring_wr32(rcq, FBNIC_QUEUE_RIM_MASK, 0);
+ 
+ 	/* Enable queue */
+@@ -2080,12 +2122,7 @@ void fbnic_enable(struct fbnic_net *fbn)
+ 
+ static void fbnic_nv_irq_enable(struct fbnic_napi_vector *nv)
+ {
+-	struct fbnic_dev *fbd = nv->fbd;
+-	u32 val;
+-
+-	val = FBNIC_INTR_CQ_REARM_INTR_UNMASK;
+-
+-	fbnic_wr32(fbd, FBNIC_INTR_CQ_REARM(nv->v_idx), val);
++	fbnic_config_txrx_usecs(nv, FBNIC_INTR_CQ_REARM_INTR_UNMASK);
+ }
+ 
+ void fbnic_napi_enable(struct fbnic_net *fbn)
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
+index c2a94f31f71b..483e11e8bf39 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
+@@ -31,6 +31,9 @@ struct fbnic_net;
+ #define FBNIC_HPQ_SIZE_DEFAULT		256
+ #define FBNIC_PPQ_SIZE_DEFAULT		256
+ #define FBNIC_RCQ_SIZE_DEFAULT		1024
++#define FBNIC_TX_USECS_DEFAULT		35
++#define FBNIC_RX_USECS_DEFAULT		30
++#define FBNIC_RX_FRAMES_DEFAULT		0
+ 
+ #define FBNIC_RX_TROOM \
+ 	SKB_DATA_ALIGN(sizeof(struct skb_shared_info))
+-- 
+2.43.5
+
