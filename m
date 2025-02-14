@@ -1,154 +1,115 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E5A264A71;
-	Fri, 14 Feb 2025 14:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D51264A71
+	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 14:07:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739541990; cv=none; b=COawP0m58HjXY7Xk6yXyBQdmWWsNWx/lINbnBahHMOHMIszD6M3wGIzrnNBWZL597hQZppiNxaO0flQx53XnhvtTxLnyP/FcbfSnP014fLtRAqYwzSjqwOfYdFXq/TnOKbStjl74da/nGL0hr3E+gixL79+N5lLuqyqGie8aLcY=
+	t=1739542029; cv=none; b=k8NArNPSSeNTpmAvjYoYL3Od/xGNlDvhmX+rOkvfO5aszwjeySjB8kAPMCl24RI+j2ev23p2uhgxk5jh9yWCTpbxAZkFqcA7NnznfkArJetgjiAZOSiMmngkAU58PIGD5KUY8VEjTbY4VrBYRPGiWBoV04iG0btuzj+NGZV8jG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739541990; c=relaxed/simple;
-	bh=9cBFlk2elfhIUBovJUgc2pj982hQ8Go+77xQ1AoDVOk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pmoxsa0OA03OlB89yL0QpWI5fZaiE69NO9ZlY7PLq+AzklWibh31j7+Nfu9yMbn1F//PH8DB36xXjFZtlf/U+43Pgf6WVOp/7EdteKBTmujabM0UggXzKpqqlTTVBC24kmKHyHSOzp5Iq4/OmpkmAvRxNNq685Lexy1UlC3/N7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CCrWJsCr; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1739542029; c=relaxed/simple;
+	bh=ktEoy+KXx9BFRbEPZYCQvhuIBQN8txNCPAlE+1d9QOU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=cPLXHDkS0Ym6xHjixctelDiR9atLhShlUb7YLGydSvGngy7GcNiT4a7Qpo/RinQJpH57pUAcPXA+D3ssFVqbFONCrV2V7bySt/pU834Bv17JIKg8XxYLc/HGWVfqce8PDVbXwSv1SBEvrG2VJJBuxuAtEd7kSYo8r1T4FDQ33Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=alElYHhg; arc=none smtp.client-ip=209.85.160.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CCrWJsCr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739541987; x=1771077987;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9cBFlk2elfhIUBovJUgc2pj982hQ8Go+77xQ1AoDVOk=;
-  b=CCrWJsCruHl4hK68obUB2qrJNgX96WuWIl0gz62cmUKUCge3e7tUjKEP
-   D7e7kDRKJbEZ6NvwA9DcZ9WGioeXz13GJfTqO0gVXCfCIuv82dnFtIJBO
-   c7PcL4hlsj514wbfmzIyFbD+GhxEDyt/+jXw4N0Hor4u247XEYwFeQLKz
-   k6hkxf3OFbNAg9dI3HSuK8JZgUbRtSfPyvgPtGj6zRwoB1XvqWfP6EWKt
-   rxOotn4sVQhImIcGjWmAAlSXNjR6Sn22ncuMpi1hQBSpd3HJPzAkFeJt5
-   BzsJF4is7FXDq6jneZbOFWybr3FQ0OJG4VcYRU57Udfu47V4Gqe0urQuW
-   g==;
-X-CSE-ConnectionGUID: DfCo0bqJT/Wb6v0vNvQH9g==
-X-CSE-MsgGUID: IE228LZhQJ+8w0UpPc5AZQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="51690475"
-X-IronPort-AV: E=Sophos;i="6.13,286,1732608000"; 
-   d="scan'208";a="51690475"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 06:06:26 -0800
-X-CSE-ConnectionGUID: GAM0Tt/hQbO7u9VXlp1RNg==
-X-CSE-MsgGUID: OeYg75QKQSWqKE5danBI+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="118399870"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 14 Feb 2025 06:06:22 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tiwKg-0019df-34;
-	Fri, 14 Feb 2025 14:06:18 +0000
-Date: Fri, 14 Feb 2025 22:06:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	DENG Qingfang <dqfext@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
-	upstream@airoha.com
-Subject: Re: [PATCH net-next v4 14/16] net: airoha: Introduce flowtable
- offload support
-Message-ID: <202502142131.na71FjkW-lkp@intel.com>
-References: <20250213-airoha-en7581-flowtable-offload-v4-14-b69ca16d74db@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="alElYHhg"
+Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-471bd14a944so22146531cf.0
+        for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 06:07:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1739542026; x=1740146826; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=r7Tmu5o9btXDUbqdBjx2LEc7deiCxNCnqNor3oY9wMg=;
+        b=alElYHhgUP4DYpQRcYj79OTk7mI9j4/Iyj16yP0HZONe8eylifIe0SUZI9XxP63WIF
+         7L46CvXhU12YQI05pxQKWIHVVDWGmuglx7wBmsEMLgUUOTf/KGisi0PnQnK0VEGjhwhN
+         Vown8QGDYpS/gSAq3/1oXxxJu2YTu2WaXHPRrUVIg8OzBgpNwXHPS+2oiASFQZO9lG9F
+         TTqmUD1716l7TGRC9RURtFWQh6H82E0vAtHgb2p216f0YtFm/BpttqIFFvGKTf956UCD
+         pT8qSkhnilZbRZ5K1cnHShxjsAalLG+pBHthwZQTI8uv/GCrvPNFyNW70533Co/iyJbP
+         3mwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739542026; x=1740146826;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=r7Tmu5o9btXDUbqdBjx2LEc7deiCxNCnqNor3oY9wMg=;
+        b=UvBbHVgwMEX2OKTQo9cUCAO0Zoaqp8Y6AllqZ31y1fBlyjIfh4HGeLc0ah5zlxS6eV
+         aI/Is99hxcxInuSHd1CnL6zyeICgELCQth6sS/SSNHwwROyBt6LFJSH1hUYS2IRBOEGp
+         4sexRQGWz9DT6zAq6vEv7KO+oQJs1zip83awxPkEbTO6NVhhQT0OlF23hEJg08wUR90x
+         0ZE1+JoTYnwJvRe+tLEbMmdrFcd9poXMxPKFR+zROoAsNQIWKpIoY0pT+C9Q5VZleodZ
+         9JbjUAmuhih6lZRQV91kvSx8Ig8u4Fh46LY+aSf0E1h5QVOXqLCxMSwDOYk724sAIv0Q
+         lQdQ==
+X-Gm-Message-State: AOJu0Yzrx7GknHqc4CbzL1g2+Dg1WT3z9doMbRKplX2CuImeffRTet3H
+	eE9FRT6sXQWxEjWzkA44BqTefYTNzVoGP8x8GdaYyscl8K/o3ElgGt3vTmETq6HNpNeVrOzUK/U
+	tbD+dlCY/tA==
+X-Google-Smtp-Source: AGHT+IGIKZEoCsXXr1LKbq1kHXRn5peF+HzjyyKQj5TNUXuBCL5BW1CYZSUTV7Hz5Fl/+/jNJj+bqbzKGOJZmA==
+X-Received: from qtbfj21.prod.google.com ([2002:a05:622a:5515:b0:471:bff4:313f])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:4a0e:b0:471:c0e6:d4bf with SMTP id d75a77b69052e-471c0e6d5c8mr101186521cf.0.1739542026743;
+ Fri, 14 Feb 2025 06:07:06 -0800 (PST)
+Date: Fri, 14 Feb 2025 14:07:05 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250213-airoha-en7581-flowtable-offload-v4-14-b69ca16d74db@kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
+Message-ID: <20250214140705.2105890-1-edumazet@google.com>
+Subject: [PATCH net-next] ndisc: ndisc_send_redirect() cleanup
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, 
+	Simon Horman <horms@kernel.org>, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Lorenzo,
+ndisc_send_redirect() is always called under rcu_read_lock().
 
-kernel test robot noticed the following build warnings:
+It can use dev_net_rcu() and avoid one redundant
+rcu_read_lock()/rcu_read_unlock() pair.
 
-[auto build test WARNING on c3a97ccaed80986fc3c0581661bf9170847d23ba]
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/ipv6/ndisc.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lorenzo-Bianconi/net-airoha-Fix-TSO-support-for-header-cloned-skbs/20250213-234737
-base:   c3a97ccaed80986fc3c0581661bf9170847d23ba
-patch link:    https://lore.kernel.org/r/20250213-airoha-en7581-flowtable-offload-v4-14-b69ca16d74db%40kernel.org
-patch subject: [PATCH net-next v4 14/16] net: airoha: Introduce flowtable offload support
-config: hexagon-allyesconfig (https://download.01.org/0day-ci/archive/20250214/202502142131.na71FjkW-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250214/202502142131.na71FjkW-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502142131.na71FjkW-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/net/ethernet/airoha/airoha_ppe.c:818:6: warning: variable 'err' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-     818 |         if (!eth->npu)
-         |             ^~~~~~~~~
-   drivers/net/ethernet/airoha/airoha_ppe.c:820:7: note: uninitialized use occurs here
-     820 |         if (!err)
-         |              ^~~
-   drivers/net/ethernet/airoha/airoha_ppe.c:818:2: note: remove the 'if' if its condition is always true
-     818 |         if (!eth->npu)
-         |         ^~~~~~~~~~~~~~
-     819 |                 err = airoha_ppe_offload_setup(eth);
-   drivers/net/ethernet/airoha/airoha_ppe.c:811:9: note: initialize the variable 'err' to silence this warning
-     811 |         int err;
-         |                ^
-         |                 = 0
-   1 warning generated.
-
-
-vim +818 drivers/net/ethernet/airoha/airoha_ppe.c
-
-   803	
-   804	int airoha_ppe_setup_tc_block_cb(enum tc_setup_type type, void *type_data,
-   805					 void *cb_priv)
-   806	{
-   807		struct flow_cls_offload *cls = type_data;
-   808		struct net_device *dev = cb_priv;
-   809		struct airoha_gdm_port *port = netdev_priv(dev);
-   810		struct airoha_eth *eth = port->qdma->eth;
-   811		int err;
-   812	
-   813		if (!tc_can_offload(dev) || type != TC_SETUP_CLSFLOWER)
-   814			return -EOPNOTSUPP;
-   815	
-   816		mutex_lock(&flow_offload_mutex);
-   817	
- > 818		if (!eth->npu)
-   819			err = airoha_ppe_offload_setup(eth);
-   820		if (!err)
-   821			err = airoha_ppe_flow_offload_cmd(port, cls);
-   822	
-   823		mutex_unlock(&flow_offload_mutex);
-   824	
-   825		return err;
-   826	}
-   827	
-
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index 8699d1a188dc4a15ac0b65229c4dd19240c9c054..ecb5c4b8518fdd72d0e89640641ec917743e9c72 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -1680,7 +1680,7 @@ static void ndisc_fill_redirect_hdr_option(struct sk_buff *skb,
+ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
+ {
+ 	struct net_device *dev = skb->dev;
+-	struct net *net = dev_net(dev);
++	struct net *net = dev_net_rcu(dev);
+ 	struct sock *sk = net->ipv6.ndisc_sk;
+ 	int optlen = 0;
+ 	struct inet_peer *peer;
+@@ -1695,8 +1695,8 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
+ 	   ops_data_buf[NDISC_OPS_REDIRECT_DATA_SPACE], *ops_data = NULL;
+ 	bool ret;
+ 
+-	if (netif_is_l3_master(skb->dev)) {
+-		dev = dev_get_by_index_rcu(dev_net(skb->dev), IPCB(skb)->iif);
++	if (netif_is_l3_master(dev)) {
++		dev = dev_get_by_index_rcu(net, IPCB(skb)->iif);
+ 		if (!dev)
+ 			return;
+ 	}
+@@ -1734,10 +1734,8 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
+ 		goto release;
+ 	}
+ 
+-	rcu_read_lock();
+ 	peer = inet_getpeer_v6(net->ipv6.peers, &ipv6_hdr(skb)->saddr);
+ 	ret = inet_peer_xrlim_allow(peer, 1*HZ);
+-	rcu_read_unlock();
+ 
+ 	if (!ret)
+ 		goto release;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.48.1.601.g30ceb7b040-goog
+
