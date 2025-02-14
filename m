@@ -1,276 +1,205 @@
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645BA1FFC47
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 09:47:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C2925A625
+	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 09:58:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739526474; cv=none; b=Zv89q6wkZQeangFnU/H9vREfylrMabAnqFXfc50YyPkLZlrLT4zpEDkV1l3JU/nhDtRuvUTaJ2XHPEoqu07bXkF0Qv8u3rYE+b7iBc0JJ9cChzRB3+WXFGezfWf5q9CAWU930St3umroTy9UU7DsyDPjCbemfAcROza8sDEdWQw=
+	t=1739527088; cv=none; b=oELdekK8dTH+p6SiBPsmWB0Wlr9sT/rAfn8qObFSmiVR8hYWQGo7UZzaDmDtUyMZZsda6qMbFUleFJc5C7/rvpbkdcRvrspJXkiFIPxx5kJz/XQ1NWwQvASJtDkQ3t6cVcYxbcPbGxL4cNJ5simAXhYjKA1Eylg18MgV5IGG/3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739526474; c=relaxed/simple;
-	bh=B204w+oW1OvxJVTTwQwlv3Wo/ImEDCQ4Ci69l8gqu4Y=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
-	 Content-Type:References; b=c7FSaA6QdX2oECKMz07H1mmgnIXbRIyhxxTNfZPIGUvw365ov+oxtwXNdD+TTVPT0iKHTfdmIMzeYv3u8gxhBX6gh6gTHpGza/RzObjNHeeqea7Kn/RlAhwSIizx0ZdYubgU6b5+RaiHMJMvjclXs1T3Tsc9K2N2bpjscJpU2pM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=EM4HbyTQ; arc=none smtp.client-ip=203.254.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1739527088; c=relaxed/simple;
+	bh=+bHauV9g2ZBKiR2AdzfJdEwUd1TVkc7Bvb+R7wAAs7Q=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JYbdaSFPOMvIwHgSFxRXbVixqQXXRxjgZiWNU69qE+Ovbdb1rUe5VsaoTY+lzsC+QQEVLkU/0QTNs8BE5AEyVz5Jv64K8IKuMXHEpcGqKPIxBsTzvIAAKBl9lt05ajITSQ4nURU44mpbcdmklwJGpxQ5z2G0WXex1gR+6nGvDqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=QB2YmXfk; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="EM4HbyTQ"
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250214094750epoutp04d67566f2b9f711a132ea35dbd75b9b17~kChvClw290250402504epoutp04N
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 09:47:50 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250214094750epoutp04d67566f2b9f711a132ea35dbd75b9b17~kChvClw290250402504epoutp04N
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1739526470;
-	bh=1KPxF4Nw7vEPDGlJw17L3iwsGbaEnoaLPgVLab6d4Tw=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-	b=EM4HbyTQebG6jPrmcAxo8EXhbjBA8XaOkwYHOTkghe082cT8j6FUTj2wlAWHiHW1i
-	 wHtNW69MKl6/skZ4wB7EU2oekaVELPL7G7iaaKe3yxci663nrraWy0zd2AVYd/mS9f
-	 V3i/4bWGHgxu8j6vnmxkTuJzuVi0cc+EiqW4CH9g=
-Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTP id
-	20250214094749epcas5p443bd5f798d0035f7f20f05e525014acf~kChugsb2n3165931659epcas5p4l;
-	Fri, 14 Feb 2025 09:47:49 +0000 (GMT)
-Received: from epsmges5p3new.samsung.com (unknown [182.195.38.182]) by
-	epsnrtp2.localdomain (Postfix) with ESMTP id 4YvS036CqHz4x9Px; Fri, 14 Feb
-	2025 09:47:47 +0000 (GMT)
-Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
-	epsmges5p3new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	ED.0E.19956.3411FA76; Fri, 14 Feb 2025 18:47:47 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
-	20250214093326epcas5p4f53cf59ec2592203d8465e04fa9b6c76~kCVKt75SB2301023010epcas5p4D;
-	Fri, 14 Feb 2025 09:33:26 +0000 (GMT)
-Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20250214093326epsmtrp2761241611125c39e6b2e61523e974e61~kCVKs60lp2248822488epsmtrp2W;
-	Fri, 14 Feb 2025 09:33:26 +0000 (GMT)
-X-AuditID: b6c32a4b-8408b24000004df4-12-67af1143d138
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-	epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	7A.19.18949.6ED0FA76; Fri, 14 Feb 2025 18:33:26 +0900 (KST)
-Received: from FDSFTE596 (unknown [107.122.82.131]) by epsmtip1.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20250214093324epsmtip17a62cf7e37c2409e00b59e359fb6b124~kCVIKWFhd2759327593epsmtip1T;
-	Fri, 14 Feb 2025 09:33:23 +0000 (GMT)
-From: "Swathi K S" <swathi.ks@samsung.com>
-To: "'Krzysztof Kozlowski'" <krzk@kernel.org>
-Cc: <krzk+dt@kernel.org>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<robh@kernel.org>, <conor+dt@kernel.org>, <richardcochran@gmail.com>,
-	<mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
-	<rmk+kernel@armlinux.org.uk>, <netdev@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	"'Pankaj Dubey'" <pankaj.dubey@samsung.com>
-In-Reply-To: <7d50f55d-d0cd-4741-ab55-2f54dc45d6ab@kernel.org>
-Subject: RE: [PATCH v6 1/2] dt-bindings: net: Add FSD EQoS device tree
- bindings
-Date: Fri, 14 Feb 2025 15:03:15 +0530
-Message-ID: <00ce01db7ec3$7f9ab750$7ed025f0$@samsung.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="QB2YmXfk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=+bHauV9g2ZBKiR2AdzfJdEwUd1TVkc7Bvb+R7wAAs7Q=; b=QB2YmXfkZnPb6FbXT8Hcy3nDTO
+	IZhQpKkdjHei3kHDZPIxI+h37B77OMcT/RtUKhpzYi1P7To04X1T6mKnkiNi0i3Lz17cupjD6iIx9
+	MwsQpWEOCHR/XB5TFEkSCpVMTOwiDdNlIzWvC6WzJMUg7z399HjR0oZ7xeK3+yrugSij5eUbguMn4
+	Vix6xwjnId1MpWFk0Ac7Tit7VvTkO4t5BrGFErgnI5cOD7Hmsdg48ALcLEET5cVxQUCaTBRDnL4vi
+	hMHl70V6UaECmvVI4mAOYNcZA4i71Liw6qLsvMYkFQi0w1Mgsm5kwekKjwNNs8CaBhmfp7dH3O1h2
+	JtKpbTdw==;
+Received: from 54-240-197-232.amazon.com ([54.240.197.232] helo=freeip.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tisSL-0000000AvkB-0Gvq;
+	Fri, 14 Feb 2025 09:57:57 +0000
+Message-ID: <61bfea4254bfa9a3a64e71ec39c3a1084195856c.camel@infradead.org>
+Subject: Re: [EXTERNAL] [PATCH v6 net-next 0/4] PHC support in ENA driver
+From: David Woodhouse <dwmw2@infradead.org>
+To: Maciek Machnikowski <maciek@machnikowski.net>, Jakub Kicinski
+	 <kuba@kernel.org>, Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: David Arinzon <darinzon@amazon.com>, David Miller <davem@davemloft.net>,
+  netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Richard Cochran
+ <richardcochran@gmail.com>, "Woodhouse, David" <dwmw@amazon.com>, Rahul
+ Rameshbabu <rrameshbabu@nvidia.com>, Gal Pressman <gal@nvidia.com>
+Date: Fri, 14 Feb 2025 09:57:56 +0000
+In-Reply-To: <72458ccc-9c18-4c95-8506-de4951851af7@machnikowski.net>
+References: <20250206141538.549-1-darinzon@amazon.com>
+	 <20250207165846.53e52bf7@kernel.org>
+	 <7bc5e34e-8be6-46a2-8262-7129fff5e2f3@linux.dev>
+	 <20250210164626.178efa58@kernel.org>
+	 <72458ccc-9c18-4c95-8506-de4951851af7@machnikowski.net>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-Z8NKNnD/Zo6zMn3GObUV"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-Z8NKNnD/Zo6zMn3GObUV
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQFMfZy5LnHh86L+CikZ+hKlrx3PbgHP/Q5uAh59lGQBgzSo3AGBIR3uAawmoOABkF4oKQJdFV+JtAAkiQA=
-Content-Language: en-in
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Ta0xbZRjO6Tk9bYfg4TL4YNmsZzoFgbVSutMFmLvEncgSu7Co0R/sSI8t
-	Am3tab2ghombhstgLGNIV0vBAgHGIB1gy1Y27hsjdBepbBm7QBEQgQnKBEO0pUX597yX533e
-	5/vycuGgp2gEN12ppTVKKhNHNyFt3ZEvxewPbJILhlYExPL0WYiofWRlE+ftQyzC4DiOEBU9
-	Q2xiom+MQ0zrH6CEw9HMIW62FbEJy7iTTdxpN6BEvtPFJoyrjWyizxRKLN34DSKqWv/gED2D
-	UzBxu7iERfxz2cp5LZi847wFky11d1nkRHErh7TpRzmkyaIjLfV5KHnRnEParIsscr5jGCWL
-	WuohsrNDSC5atkmfeTcjQUFTMlrDp5VpKlm6Up6IJ6ek7k+NFwuEMUIJsQvnK6ksOhE/cEga
-	83p6ptshzv+YytS5U1KKYfCdSQkalU5L8xUqRpuI02pZplqkjmWoLEanlMcqae1uoUDwary7
-	8WiGouf3e4h65eVPyytz4WPQBD8f4nEBJgIF9ztY+dAmbhB2CQKXy1wcb7AAAetTJ9sbLEHA
-	fNLMWacYq2Z8BTsEWmvv+yhTEHCVmdieLhSLAlVFHWuMECwGXBypXWuCsWIE/DJ1AvUUeFgS
-	aLllcmMuNxg7DL7pDfCkEexFMN2aC3uwPyYBpgsLqBcHguvlLsSDYewVUFM5A3s34oPliRq2
-	V+t98NdAPeTtCQO9y4WwRxdg53jg3lc/s72EA6DR7nHtwcHg1/4Wn7UIsDhnR704FTQUDSNe
-	rACjKyW+/B5w9ScD4tkZxiJBU/tOb3orKB24wPLqBoCTf7t84/2B1biOt4PVGadvZDhoq57n
-	nIJw/QZr+g3W9Bss6P9XM0FIPRROq5ksOc3Eq+OU9Cf//XiaKssCrV1AVLIVGnv0JLYLYnGh
-	LghwYTzEH5w9Lw/yl1GfZdMaVapGl0kzXVC8+71L4IjNaSr3CSm1qUKRRCASi8UiSZxYiIf5
-	f207Lg/C5JSWzqBpNa1Z57G4vIhjrIa7l75/tiln5s3VJqhz8ofJ6oQjZXXvOTHDeKPNdlig
-	MIZcCez7InSvfTEgbPBahXjxgzMFBTtOxwVHN8tz81wL0bndGWk1IuHtI1+aHUzFsmXWsDmv
-	c370x2wir7RaGNc8Uji8VHiUuTYpReNlS7xIB/HGw849/CV6Tir9lsUbmTVHnppP2qF8sNXY
-	HT09+NwV+fho6OPndQfBR9ld0X7tOY3a634NWE3dd09uyPbGHZwtuhowYp47h+3uTx89HRZU
-	F5D8wpnPK/tTZrYYwrdtf4eq+/DExEPrYz94S+lbb48F8mzRrt6kmypJ9ord4NhXLykfTomo
-	GPiz95BxEInZhSOMghJGwRqG+hem42BbigQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrPIsWRmVeSWpSXmKPExsWy7bCSnO4z3vXpBp8+q1v8fDmN0WL5gx2s
-	Fmv2nmOymHO+hcVi/pFzrBZPjz1it3g56x6bxfnzG9gtLmzrY7XY9Pgaq8XlXXPYLLquPWG1
-	mPd3LavFsQViFt9Ov2G0WLT1C7vFkTMvmC0u9U9ksvi/Zwe7g7DH5WsXmT22rLzJ5PG0fyu7
-	x85Zd9k9Fmwq9di0qpPNY/OSeo+dOz4zebzfd5XNo2/LKkaPg/sMPT5vkgvgieKySUnNySxL
-	LdK3S+DKWNB/kLWgSaOibU9qA+NL+S5GTg4JAROJeYtes3YxcnEICexmlLjX8ooRIiEp8al5
-	KiuELSyx8t9zdoiiZ4wS09p2gBWxCWhJLOrbxw5iiwjoSmy+sRysiFlgMYvE1EOdTBAda5kl
-	3r5fCjaKU8BOYsvFBWwgtrCAv8T73pNg3SwCqhIvtzYxg9i8ApYSC9Z9YoOwBSVOznzCAmIz
-	C2hLPL35FM5etvA1M8R5ChI/ny5jhbgiSeLHqVWMEDXiEkd/9jBPYBSehWTULCSjZiEZNQtJ
-	ywJGllWMkqkFxbnpucWGBUZ5qeV6xYm5xaV56XrJ+bmbGMFpQEtrB+OeVR/0DjEycTAeYpTg
-	YFYS4ZWYtiZdiDclsbIqtSg/vqg0J7X4EKM0B4uSOO+3170pQgLpiSWp2ampBalFMFkmDk6p
-	BqaQG7MqSmuPzRTymaTWeH6Lw8zgy1qW9XHNqbsOBu6YsunysURrK9/NAge8Q9IE9RclH/hr
-	X/BXgXtCzp8sT5ckrTOnr9hE//z1IIa//SSr6J0umesafjw7Szh0vwqaPb4keX3T7AoR7wgO
-	dllntUTJtytemVnJHg5IvP0iJ+PQ06Mc/02u39gjmPy3PULIwehgmOrPu+Iva89Ov7lluZbK
-	m66pAis3/ToUYV//dmeuucOr00kpe+zmP9CQjL3aMntmxerKe46rJ5i81Ln491H8N1aVvfLe
-	k/7bZO7k7OJZZevmfumw9v58rf75rbVeH/qYavcZmTCes9t/8z9fQatb0TXJY4ffCqleuCL9
-	PUuJpTgj0VCLuag4EQCpME5UcgMAAA==
-X-CMS-MailID: 20250214093326epcas5p4f53cf59ec2592203d8465e04fa9b6c76
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250213044955epcas5p110d1e582c8ee02579ead73f9686819ff
-References: <20250213044624.37334-1-swathi.ks@samsung.com>
-	<CGME20250213044955epcas5p110d1e582c8ee02579ead73f9686819ff@epcas5p1.samsung.com>
-	<20250213044624.37334-2-swathi.ks@samsung.com>
-	<20250213-adorable-arboreal-degu-6bdcb8@krzk-bin>
-	<009a01db7e07$132feb60$398fc220$@samsung.com>
-	<27b0f5c5-ae51-4192-8847-20e471c55be7@kernel.org>
-	<00ad01db7e9c$76c288a0$644799e0$@samsung.com>
-	<7d50f55d-d0cd-4741-ab55-2f54dc45d6ab@kernel.org>
 
-
-
-> -----Original Message-----
-> From: Krzysztof Kozlowski <krzk=40kernel.org>
-> Sent: 14 February 2025 13:02
-> To: Swathi K S <swathi.ks=40samsung.com>
-> Cc: krzk+dt=40kernel.org; andrew+netdev=40lunn.ch; davem=40davemloft.net;
-> edumazet=40google.com; kuba=40kernel.org; pabeni=40redhat.com;
-> robh=40kernel.org; conor+dt=40kernel.org; richardcochran=40gmail.com;
-> mcoquelin.stm32=40gmail.com; alexandre.torgue=40foss.st.com;
-> rmk+kernel=40armlinux.org.uk; netdev=40vger.kernel.org;
-> devicetree=40vger.kernel.org; linux-stm32=40st-md-mailman.stormreply.com;
-> linux-arm-kernel=40lists.infradead.org; linux-kernel=40vger.kernel.org
-> Subject: Re: =5BPATCH v6 1/2=5D dt-bindings: net: Add FSD EQoS device tre=
-e
-> bindings
+On Tue, 2025-02-11 at 08:58 +0100, Maciek Machnikowski wrote:
+> On 2/11/2025 1:46 AM, Jakub Kicinski wrote:
+> > On Sun, 9 Feb 2025 12:33:24 +0000 Vadim Fedorenko wrote:
+> > > Yes, we have seen this patchset, and we were thinking of how to
+> > > generalize error_bound property, which was removed from the latest
+> > > version unfortunately. But it's a good point to look at it once
+> > > again in terms of our prototype, thanks!
+> >=20
+> > I was wondering whether they have a user space "time extrapolation
+> > component" which we should try to be compatible with. Perhaps they
+> > just expect that the user will sync system time.
 >=20
-> On 14/02/2025 05:53, Swathi K S wrote:
-> >
-> >
-> >> -----Original Message-----
-> >> From: Krzysztof Kozlowski <krzk=40kernel.org>
-> >> Sent: 13 February 2025 17:31
-> >> To: Swathi K S <swathi.ks=40samsung.com>
-> >> Cc: krzk+dt=40kernel.org; andrew+netdev=40lunn.ch;
-> davem=40davemloft.net;
-> >> edumazet=40google.com; kuba=40kernel.org; pabeni=40redhat.com;
-> >> robh=40kernel.org; conor+dt=40kernel.org; richardcochran=40gmail.com;
-> >> mcoquelin.stm32=40gmail.com; alexandre.torgue=40foss.st.com;
-> >> rmk+kernel=40armlinux.org.uk; netdev=40vger.kernel.org;
-> >> devicetree=40vger.kernel.org; linux-stm32=40st-md-
-> mailman.stormreply.com;
-> >> linux-arm-kernel=40lists.infradead.org; linux-kernel=40vger.kernel.org
-> >> Subject: Re: =5BPATCH v6 1/2=5D dt-bindings: net: Add FSD EQoS device
-> >> tree bindings
-> >>
-> >> On 13/02/2025 12:04, Swathi K S wrote:
-> >>>
-> >>>
-> >>>> -----Original Message-----
-> >>>> From: Krzysztof Kozlowski <krzk=40kernel.org>
-> >>>> Sent: 13 February 2025 13:24
-> >>>> To: Swathi K S <swathi.ks=40samsung.com>
-> >>>> Cc: krzk+dt=40kernel.org; andrew+netdev=40lunn.ch;
-> >> davem=40davemloft.net;
-> >>>> edumazet=40google.com; kuba=40kernel.org; pabeni=40redhat.com;
-> >>>> robh=40kernel.org; conor+dt=40kernel.org; richardcochran=40gmail.com=
-;
-> >>>> mcoquelin.stm32=40gmail.com; alexandre.torgue=40foss.st.com;
-> >>>> rmk+kernel=40armlinux.org.uk; netdev=40vger.kernel.org;
-> >>>> devicetree=40vger.kernel.org; linux-stm32=40st-md-
-> >> mailman.stormreply.com;
-> >>>> linux-arm-kernel=40lists.infradead.org; linux-kernel=40vger.kernel.o=
-rg
-> >>>> Subject: Re: =5BPATCH v6 1/2=5D dt-bindings: net: Add FSD EQoS devic=
-e
-> >>>> tree bindings
-> >>>>
-> >>>> On Thu, Feb 13, 2025 at 10:16:23AM +0530, Swathi K S wrote:
-> >>>>> +  clock-names:
-> >>>>> +    minItems: 5
-> >>>>> +    maxItems: 10
-> >>>>> +    contains:
-> >>>>> +      enum:
-> >>>>> +        - ptp_ref
-> >>>>> +        - master_bus
-> >>>>> +        - slave_bus
-> >>>>> +        - tx
-> >>>>> +        - rx
-> >>>>> +        - master2_bus
-> >>>>> +        - slave2_bus
-> >>>>> +        - eqos_rxclk_mux
-> >>>>> +        - eqos_phyrxclk
-> >>>>> +        - dout_peric_rgmii_clk
-> >>>>
-> >>>> This does not match the previous entry. It should be strictly
-> >>>> ordered with
-> >>>> minItems: 5.
-> >>>
-> >>> Hi Krzysztof,
-> >>> Thanks for reviewing.
-> >>> In FSD SoC, we have 2 instances of ethernet in two blocks.
-> >>> One instance needs 5 clocks and the other needs 10 clocks.
-> >>
-> >> I understand and I do not think this is contradictory to what I asked.
-> >> If it is, then why/how?
-> >>
-> >>>
-> >>> I tried to understand this by looking at some other dt-binding files
-> >>> as given below, but looks like they follow similar approach
-> >>> Documentation/devicetree/bindings/net/stm32-dwmac.yaml
-> >>> Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-> >>>
-> >>> Could you please guide me on how to implement this?
-> >>> Also, please help me understand what is meant by 'strictly ordered'
-> >>
-> >> Every other 99% of bindings. Just like your clocks property.
-> >
-> > Hi Krzysztof,
-> > Thanks for your feedback.
-> > I want to make sure I fully understand your comment.
-> > I can see we have added clocks and clock names in the same order.
+> error_bound has a different purpose - it tries to get the "baseline"
+> clock accuracy from the HW. The number returned here is needed to
+> calculate the uncertainty, not to extrapolate.
 >=20
-> No, you did not. You can see syntax is very different - one uses items, o=
-ther
-> uses contains-enum. And now test it, change the order in DTS and see if y=
-ou
-> see any warning.
+> And yes - AFIK AWS suggests system time sync for EC2 instances [1]
 >=20
-> > Could you please help in detail what specifically needs to be modified
-> regarding the ordering and minItems/maxItems usage?
-> You did not try hard enough.
->=20
-> Open other bindings and look how they list clocks. For example any Samsun=
-g
-> clock controller bindings. Or any qcom bindings.
+> [1]
+> https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configure-ec2-ntp.htm=
+l
 
-Thanks for your insight. I tried understanding the dt-binding implementatio=
-ns from Samsung/ qcom as you suggested.
-I am thinking of making the following modification in clock-names:
 
-clock-names:
-     minItems: 5
-     items:
-         - const: ptp_ref
-         - const: master_bus
-         - const: slave_bus
-         - const: tx
-         - const: rx
-         - const: master2_bus
-         - const: slave2_bus
-         - const: eqos_rxclk_mux
-         - const: eqos_phyrxclk
-         - const: dout_peric_rgmii_clk
-		=20
-Does this align with your feedback or do you suggest any further changes?
+Right, error bound gives you a min/max for what the time can possibly
+be, and that allows you to know whether certain transactions/timestamps
+could *possibly* overlap, or if there is a known ordering between them.
 
--Swathi
+There are libraries in userspace which handle this, to be used by
+things like distributed databases. https://github.com/aws/clock-bound
 
->=20
-> Best regards,
-> Krzysztof
+The error bound is also exposed by the vmclock device which is now
+supported in Linux (https://git.kernel.org/torvalds/c/205032724226) and
+QEMU (https://gitlab.com/qemu-project/qemu/-/commit/3634039b93cc5),
+although QEMU doesn't actually expose time through it yet, only the
+fact that time has been *disrupted* e.g. through live migration).
 
+(The PHC discussed here allows each guest on the system to do the same
+work of carefully calibrating the *same* underlying hardware
+oscillator; with vmclock the host does it once and then just tells the
+guests the result through a shared memory structure. With the added
+bonus of still being accurate immediately after live migration to a new
+host.)
+
+--=-Z8NKNnD/Zo6zMn3GObUV
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDIxNDA5NTc1
+NlowLwYJKoZIhvcNAQkEMSIEIPN7+c2PkqsGT279Nrp7sqKgIWcQO3yGXbGKGMM+A2wYMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAzFNG0VELahxc
+8jzxVLQUlznt6l99QaWd5LGqCSlzspn+eSYzv1DUB9A+SgKVJnx4GVqW4s2cFtoaQLQn5pmcH+xH
+yUA4d7Uju94cRWMpRhQPZ+VM0C0ffEwtTccQDS+HeEv09Dq2H6tenQJ2xasfKSNuFOSiBdUEekYT
+jC4p13pow/4gGzvnFjs4ykRf3dvW0nYg7ufdzKMO+TzZvmlWQXzG3WPpskPRX8zvwNaH0V/XGhG5
+L2ANoZhcz5ScBNgk2Q4aHXea8hUpRPhWJ7rNhiz7hn0pJhbXi9BrkaYCaDO8XfriGcjI0ry7rTsi
+RMjF7lLj9s0DGTa4P3LoC9RtokVuNZbQZHdpZDXfS1dxrMRBcF0ZUp7b0FY2hEryddYG0Fq9hWmT
+/sEujLsnQWAIIH9WRmi1euP4aUbhcIG46kpR7gt9oTYVbWuz9J41l+uj2/iXKMbnQhw+iwQ7Dnk6
+VxftZ1tE+MFSvqyPaKHScy04RsZcoI6XM1MzBoIqLl2ioze/1zsON20BWP6oYDNbYG6ozsWjEMZT
+dOlNCK6mv0Q/s7/NcoPwwVCTgCUW1vLyHD640AJRD/cfIn3m3s7um5lNiGH51wl1D8jrA/G4hcAs
+uNTlnHEjgj5y0ABdXwzYI6OJ8ZzMC1dvkMxwaInMfG0VUQCFlCgX8MCsqracBi0AAAAAAAA=
+
+
+--=-Z8NKNnD/Zo6zMn3GObUV--
