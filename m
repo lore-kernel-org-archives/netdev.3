@@ -1,71 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55B413AA2F
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 02:10:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47448634A
+	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 02:14:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739499028; cv=none; b=s9FTw9ELZqNiLYnB4F7Tp/ZQB7C4gSIC/1+YBi86qBh0WONKOR8yqkLaRFCtHvK8Ki/qh773QuUld/dOpz30njL4Qayc7JJgMV9luOFEBjteoHjdrZ51gd24csAqvn+U40S1jCRZxCfYWLNNU4crro5EtwptPweaerGE+kAGuFo=
+	t=1739499261; cv=none; b=VFSF5WK7RSNZQOPXbRVnOdJj3l+d7ZgqYojVoLJ/4PzKxPxSpmZGlmuyMVHz2IgLpOO+aKeJb4hCtv2cD5hQ8zaMkhcDmVRzsPZLsZRf6UBpp6YC90/YEdtMldLH7t3QolvM6xyCsh2I1vxPPT4Jk/0SvaT8NihZ+v2ypUvm6BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739499028; c=relaxed/simple;
-	bh=MTYZrL0RaCjcQBDp8gBP3U2FP0LlOaqMflmRqWowgtE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q5fZQPN1ukeAY8U39v58ku7QF0HqOpl2YN/w3j2JLXsGJogm9odEJkf/LSSiJ6qm41VogCbQ1eBa2RS8AyVLHulIHgHhhKHhtt/RHGHtVLi7BLIQXHMm4TGO2SZmpyomi4p8ygnWspt7z3dqXgJebVK00WSI2uxVGYjqOIMOVF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZ6JBZmr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739499261; c=relaxed/simple;
+	bh=87pZ5rFe8MHrMwq7rkNVMdR/BnR+HLoPdg3Wde6NOSs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=crXy+Fw67y6tfW7gJ8qh7KbKObiMvDBcQuQ+5ALqQaORvWTQceE93p6SqBjYAPvOLzOZl8QIyP3MloVGRvX/s0kKSnb8rEiJLJwIbkYLLq2dDo1Hk4hLfclFgSAFkWtWFRTWxkGO55J50BdF6XQ/SKBWOkKi5+JMKffqux/w8GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EjtcrC+L; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZ6JBZmr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77628C4CED1;
-	Fri, 14 Feb 2025 02:10:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739499028;
-	bh=MTYZrL0RaCjcQBDp8gBP3U2FP0LlOaqMflmRqWowgtE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YZ6JBZmrCdfEO6hjQP2U7ga9mw9jlfIgCMyvCjfy1Inxh1A+VM3dWZulLxZlunOKm
-	 Nt+0FsGyEJutwRY6beGiSUZ/Cvyvh46o8qZty6VPP9zyA4y/+Eq+fiw3glca3hP4q6
-	 hH+1K3bITXzg06+ckybIqkAt1boRFwft/uZcJmonEXTBoPuEGqVDonQa4H47efIdU3
-	 2p/EHOoeDy1Gn0BMNyS6jpJwkBvj4Thzj3WwZ+Dnsu723PSQZ6KT4WTzwtelwz00C0
-	 cWMJDorfHoNdN0Wm2R4jR6MIg8L0ADoodbnOudgfPHEt5x7UFRaKWlr2Q3H4ME0aKu
-	 97b540qol7vtA==
-Date: Thu, 13 Feb 2025 18:10:27 -0800
-From: Saeed Mahameed <saeed@kernel.org>
-To: Stanislav Fomichev <sdf@fomichev.me>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com
-Subject: Re: [RFC net-next 0/4] net: Hold netdev instance lock during ndo
- operations
-Message-ID: <Z66mEzg1YU02mr43@x130>
-References: <20250204230057.1270362-1-sdf@fomichev.me>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EjtcrC+L"
+Message-ID: <039bfa0d-3d61-488e-9205-bef39499db6e@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1739499254;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kUI9Bv66f7rqMNMsUao4OmvHx74KK1NJdkGJyf1O3zQ=;
+	b=EjtcrC+LxW+broS+TEqETetEfgnwuNcmZWVIaBbf+Ixj7eXqpY0SpAYO1cXn/K4vSVL2i2
+	VE5nzB6CmemwC3oGsyxv/qLXrk6jVv2iNowjcdEQ2/g0mf+gzUXRB1WTErxKcFezxVCfYG
+	fdzKKvlvtTi7kXLL/Qs8F7tLEv2zqag=
+Date: Thu, 13 Feb 2025 18:14:06 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250204230057.1270362-1-sdf@fomichev.me>
+Subject: Re: [PATCH net-next 2/3] bpf: add TCP_BPF_RTO_MAX for bpf_setsockopt
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: Stanislav Fomichev <stfomichev@gmail.com>, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org,
+ ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
+ song@kernel.org, yonghong.song@linux.dev, john.fastabend@gmail.com,
+ kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+ horms@kernel.org, ncardwell@google.com, kuniyu@amazon.com,
+ bpf@vger.kernel.org, netdev@vger.kernel.org
+References: <20250213004355.38918-1-kerneljasonxing@gmail.com>
+ <20250213004355.38918-3-kerneljasonxing@gmail.com>
+ <Z66DL7uda3fwNQfH@mini-arch>
+ <CAL+tcoATv6HX5G6wOrquGyyj8C7bFgRZNnWBwnPTKD1gb4ZD=g@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+In-Reply-To: <CAL+tcoATv6HX5G6wOrquGyyj8C7bFgRZNnWBwnPTKD1gb4ZD=g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 04 Feb 15:00, Stanislav Fomichev wrote:
->As the gradual purging of rtnl continues, start grabbing netdev
->instance lock in more places so we can get to the state where
->most paths are working without rtnl. Start with requiring the
->drivers that use shaper api (and later queue mgmt api) to work
->with both rtnl and netdev instance lock. Eventually we might
->attempt to drop rtnl. This mostly affects iavf, gve, bnxt and
->netdev sim (as the drivers that implement shaper/queue mgmt)
->so those drivers are converted in the process.
->
->This is part one of the process, the next step is to do similar locking
->for the rest of ndo handlers that are being called from sysfs/ethtool/netlink.
+On 2/13/25 3:57 PM, Jason Xing wrote:
+> On Fri, Feb 14, 2025 at 7:41 AM Stanislav Fomichev<stfomichev@gmail.com> wrote:
+>> On 02/13, Jason Xing wrote:
+>>> Support bpf_setsockopt() to set the maximum value of RTO for
+>>> BPF program.
+>>>
+>>> Signed-off-by: Jason Xing<kerneljasonxing@gmail.com>
+>>> ---
+>>>   Documentation/networking/ip-sysctl.rst | 3 ++-
+>>>   include/uapi/linux/bpf.h               | 2 ++
+>>>   net/core/filter.c                      | 6 ++++++
+>>>   tools/include/uapi/linux/bpf.h         | 2 ++
+>>>   4 files changed, 12 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
+>>> index 054561f8dcae..78eb0959438a 100644
+>>> --- a/Documentation/networking/ip-sysctl.rst
+>>> +++ b/Documentation/networking/ip-sysctl.rst
+>>> @@ -1241,7 +1241,8 @@ tcp_rto_min_us - INTEGER
+>>>
+>>>   tcp_rto_max_ms - INTEGER
+>>>        Maximal TCP retransmission timeout (in ms).
+>>> -     Note that TCP_RTO_MAX_MS socket option has higher precedence.
+>>> +     Note that TCP_BPF_RTO_MAX and TCP_RTO_MAX_MS socket option have the
+>>> +     higher precedence for configuring this setting.
+>> The cover letter needs more explanation about the motivation.
 
-Hi Stan, thanks for the patch, sorry I didn't have the time that week to
-look at it and it fill between the cracks, I've glanced through the patches
-quickly and they seem reasonable. but obviously we need much more, 
-so what's the plan? currently I am not able to personally work on
-this. 
++1
 
-Also the locking scheme is still not well define with this opt-in idea the
-locking shceme is actually still not clear to me?  for me it should be as easy
-as netdev_lock protects all paths including, ndos/ioctl/netlinks/etc .. paths
-that will access the netdev's underlying driver queues.
+I haven't looked at the patches. The cover letter has no word on the use case. 
+Using test_tcp_hdr_options.c as the test is unnecessarily complicated just for 
+adding a new optname support. setget_sockopt.c is the right test to reuse.
 
+
+> I am targeting the net-next tree because of recent changes[1] made by
+> Eric. It probably hasn't merged into the bpf-next tree.
+
+There is the bpf-next/net tree. It should have the needed changes.
+
+pw-bot: cr
