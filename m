@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9173265CB8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA930265CB9;
 	Fri, 14 Feb 2025 14:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739542466; cv=none; b=aQZta+HEkcX9F5dC3NlCdpK9RxxOwB3jGRB6EJ8H0Yk6k02ZQEiPpiJdNGdNILfGUX9/mZUBWX2Kp2/38GOvj3mhFjUuJZr5sPKOzoHJAurT/IWH9TePfggIvOS67JjhoYvTLRFXUpVSj9kG+DXwcwkt+1JufBMJFLEvzbvHcM8=
+	t=1739542466; cv=none; b=aV6pWrsPYHdsj/YXWcuG5yHzoPIG+EN027D4SHPr/iIOGKYNdAQEHyPQQSBUBChUbn+TJXyneqYk+0Brs6cTmw8+SiVR+spCO/kqjL2qZ6ve8ThnkfqRZf7ZOul36zyUoZAF8ZJSta0ghZ/imgXiA8yEe/bsqhexgs4wOwhQTNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739542466; c=relaxed/simple;
-	bh=OoAMzDnzmRmO0ZesIeeusKyjpaxqRVifD0eRg6O/C+c=;
+	bh=X0hXmpZOayOUfTOXaHNHsHvruiKJo+c4qZv/9LPz9tg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=edPFYNZU34Q8JICrlVapOm5oGNk1U1k7Nty6t0myCTacMCx6HcwFq8DI166ZwUYplrr5O4oJX75ijiCFU9/UTd8YYUD8KcaXoh0uAVsmJOMzORJnC+zQr1k8rzuw6MmnEyNK4X0vwbsbRRvPArrWZQfLtcb25OQ9nDJNfIrs+/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D8Rji59G; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=DAzKqBgWzZ1etLFayPQKbCsLvKqdYrKna+lO96ZGKFt0We2leoqMAN4YvVjyD2WQH9AzGN7JtZ0HnC8fF9uO3zy8VxAxTq8jvN3FtBF37RhnZ3I/+GqfSVwlJ8scvCcm1O7L5FoqmJbzr1/r9Nzqr2thAbD3Vp9792LsxtPLkeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l19t5JgT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D8Rji59G"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6DDCFC4AF0B;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l19t5JgT"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 565A9C4CEE6;
 	Fri, 14 Feb 2025 14:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1739542466;
-	bh=OoAMzDnzmRmO0ZesIeeusKyjpaxqRVifD0eRg6O/C+c=;
+	bh=X0hXmpZOayOUfTOXaHNHsHvruiKJo+c4qZv/9LPz9tg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=D8Rji59GwdedTpdUmGp6He/h286f64F3hQqtpN8Tr7rowSLJm9cFSzyQNjl+g1y8I
-	 2NH6wVSbnbi/66htdR5vROdEYB17JAapQ3RutH+c+hysbRNJtomnT74+W4YbKtziIZ
-	 wuDmFaYhf5z5yQ0y0Qpl+HDPp2oV9kxqe0ph9nexJv0DU69zufANnyQtJ/uyvnz0Cd
-	 F24lM7JEoxxoTV73yILd3+6emiz13umCF6yycSDcWOr4jZ1LMXAp3PHBeVSUwOv8Kf
-	 /vyZH/xZUz51T3I2JgT58bGT1sgwIdST4afzhKy0ruMQyUCogDxvsedH39DUpvOSSu
-	 w1lKJpdseG7XQ==
+	b=l19t5JgTo04RKrFFInAWGzTddfs4OmVAU9GfGDYgok4jtW052pN6Ve86XEEDcL2Fe
+	 NTpnT8wgMtI4XKnIhbMR596GOPQ3I9xevQZPIXxaTZEkFXyM8sjMnbvmFoD4xe2qeu
+	 xjQE7M1W0mU9kFHzBeQ0CkN3BjKTnq7NCSo2lyl7TQ6ttaQp0CuygvnOrURQcWZh9m
+	 eQrxXTadBDPHn6TnK4/v8ZQG1u3WUYmnYpzS+o94Kvx8s231WgRhTcM8EAfIvc7//a
+	 m9+PH3FiJfiNLptClDD0C6/grj5E76+dMhnRrw5yFByvKoiVlQpsHTNrAuAn/MtahN
+	 SEl+nmg6EP2aw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 63B97C021A9;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42E33C021A4;
 	Fri, 14 Feb 2025 14:14:26 +0000 (UTC)
 From: Dimitri Fedrau via B4 Relay <devnull+dimitri.fedrau.liebherr.com@kernel.org>
-Date: Fri, 14 Feb 2025 15:14:11 +0100
-Subject: [PATCH net-next v5 3/3] net: phy: dp83822: Add support for
- changing the transmit amplitude voltage
+Date: Fri, 14 Feb 2025 15:14:09 +0100
+Subject: [PATCH net-next v5 1/3] dt-bindings: net: ethernet-phy: add
+ property tx-amplitude-100base-tx-percent
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250214-dp83822-tx-swing-v5-3-02ca72620599@liebherr.com>
+Message-Id: <20250214-dp83822-tx-swing-v5-1-02ca72620599@liebherr.com>
 References: <20250214-dp83822-tx-swing-v5-0-02ca72620599@liebherr.com>
 In-Reply-To: <20250214-dp83822-tx-swing-v5-0-02ca72620599@liebherr.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -54,13 +54,14 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
  Florian Fainelli <f.fainelli@gmail.com>
 Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Dimitri Fedrau <dimitri.fedrau@liebherr.com>, 
- Dimitri Fedrau <dima.fedrau@gmail.com>
+ Dimitri Fedrau <dima.fedrau@gmail.com>, 
+ Conor Dooley <conor.dooley@microchip.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1739542465; l=3488;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739542465; l=1291;
  i=dimitri.fedrau@liebherr.com; s=20241202; h=from:subject:message-id;
- bh=Or6PDXKPMq4kk1AHxpqPQpxSNSkTyzooFMkd9jkPUKk=;
- b=WVZP1AGB+0WKyM2keetZIyKR2MJ5QQffba06je+G7obuCNMafoggYpuEJfP6BkMf7viovLvSl
- Bz2qj6R74dWBe3FDQ3ZIy6c5+QDQRXv06FQkJPJYoGrIzEU7BT6jGGV
+ bh=gyZm/1v6xiCoF5uqR707anExlbQRcIOzUUiGOITwpxE=;
+ b=SBuwnrqzF6QTwF9+w/3C5Swl95+cSy18Hddgj0XLt3YUL+Xezz/oAjTOX3UE/6LO4LWycnCv7
+ okgKIiFFh9OCNpQfWZxy7RBfGjBzqiq/orDoP9Kf6e3AZGDT81egVQr
 X-Developer-Key: i=dimitri.fedrau@liebherr.com; a=ed25519;
  pk=rT653x09JSQvotxIqQl4/XiI4AOiBZrdOGvxDUbb5m8=
 X-Endpoint-Received: by B4 Relay for dimitri.fedrau@liebherr.com/20241202
@@ -70,105 +71,33 @@ Reply-To: dimitri.fedrau@liebherr.com
 
 From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 
-Add support for changing the transmit amplitude voltage in 100BASE-TX mode.
-Modifying it can be necessary to compensate losses on the PCB and
-connector, so the voltages measured on the RJ45 pins are conforming.
+Add property tx-amplitude-100base-tx-percent in the device tree bindings
+for configuring the tx amplitude of 100BASE-TX PHYs. Modifying it can be
+necessary to compensate losses on the PCB and connector, so the voltages
+measured on the RJ45 pins are conforming.
 
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 ---
- drivers/net/phy/dp83822.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ Documentation/devicetree/bindings/net/ethernet-phy.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/phy/dp83822.c b/drivers/net/phy/dp83822.c
-index 6599feca1967d705331d6e354205a2485ea962f2..3662f3905d5ade8ad933608fcaeabb714a588418 100644
---- a/drivers/net/phy/dp83822.c
-+++ b/drivers/net/phy/dp83822.c
-@@ -31,6 +31,7 @@
- #define MII_DP83822_RCSR	0x17
- #define MII_DP83822_RESET_CTRL	0x1f
- #define MII_DP83822_MLEDCR	0x25
-+#define MII_DP83822_LDCTRL	0x403
- #define MII_DP83822_LEDCFG1	0x460
- #define MII_DP83822_IOCTRL1	0x462
- #define MII_DP83822_IOCTRL2	0x463
-@@ -123,6 +124,9 @@
- #define DP83822_IOCTRL1_GPIO1_CTRL		GENMASK(2, 0)
- #define DP83822_IOCTRL1_GPIO1_CTRL_LED_1	BIT(0)
+diff --git a/Documentation/devicetree/bindings/net/ethernet-phy.yaml b/Documentation/devicetree/bindings/net/ethernet-phy.yaml
+index 2c71454ae8e362e7032e44712949e12da6826070..824bbe4333b7ed95cc39737d3c334a20aa890f01 100644
+--- a/Documentation/devicetree/bindings/net/ethernet-phy.yaml
++++ b/Documentation/devicetree/bindings/net/ethernet-phy.yaml
+@@ -232,6 +232,12 @@ properties:
+       PHY's that have configurable TX internal delays. If this property is
+       present then the PHY applies the TX delay.
  
-+/* LDCTRL bits */
-+#define DP83822_100BASE_TX_LINE_DRIVER_SWING	GENMASK(7, 4)
++  tx-amplitude-100base-tx-percent:
++    description:
++      Transmit amplitude gain applied for 100BASE-TX. 100% matches 2V
++      peak-to-peak specified in ANSI X3.263. When omitted, the PHYs default
++      will be left as is.
 +
- /* IOCTRL2 bits */
- #define DP83822_IOCTRL2_GPIO2_CLK_SRC		GENMASK(6, 4)
- #define DP83822_IOCTRL2_GPIO2_CTRL		GENMASK(2, 0)
-@@ -197,6 +201,7 @@ struct dp83822_private {
- 	bool set_gpio2_clk_out;
- 	u32 gpio2_clk_out;
- 	bool led_pin_enable[DP83822_MAX_LED_PINS];
-+	int tx_amplitude_100base_tx_index;
- };
- 
- static int dp83822_config_wol(struct phy_device *phydev,
-@@ -522,6 +527,12 @@ static int dp83822_config_init(struct phy_device *phydev)
- 			       FIELD_PREP(DP83822_IOCTRL2_GPIO2_CLK_SRC,
- 					  dp83822->gpio2_clk_out));
- 
-+	if (dp83822->tx_amplitude_100base_tx_index >= 0)
-+		phy_modify_mmd(phydev, MDIO_MMD_VEND2, MII_DP83822_LDCTRL,
-+			       DP83822_100BASE_TX_LINE_DRIVER_SWING,
-+			       FIELD_PREP(DP83822_100BASE_TX_LINE_DRIVER_SWING,
-+					  dp83822->tx_amplitude_100base_tx_index));
-+
- 	err = dp83822_config_init_leds(phydev);
- 	if (err)
- 		return err;
-@@ -720,6 +731,11 @@ static int dp83822_phy_reset(struct phy_device *phydev)
- }
- 
- #ifdef CONFIG_OF_MDIO
-+static const u32 tx_amplitude_100base_tx_gain[] = {
-+	80, 82, 83, 85, 87, 88, 90, 92,
-+	93, 95, 97, 98, 100, 102, 103, 105,
-+};
-+
- static int dp83822_of_init_leds(struct phy_device *phydev)
- {
- 	struct device_node *node = phydev->mdio.dev.of_node;
-@@ -780,6 +796,8 @@ static int dp83822_of_init(struct phy_device *phydev)
- 	struct dp83822_private *dp83822 = phydev->priv;
- 	struct device *dev = &phydev->mdio.dev;
- 	const char *of_val;
-+	int i, ret;
-+	u32 val;
- 
- 	/* Signal detection for the PHY is only enabled if the FX_EN and the
- 	 * SD_EN pins are strapped. Signal detection can only enabled if FX_EN
-@@ -815,6 +833,26 @@ static int dp83822_of_init(struct phy_device *phydev)
- 		dp83822->set_gpio2_clk_out = true;
- 	}
- 
-+	dp83822->tx_amplitude_100base_tx_index = -1;
-+	ret = phy_get_tx_amplitude_gain(phydev, dev,
-+					ETHTOOL_LINK_MODE_100baseT_Full_BIT,
-+					&val);
-+	if (!ret) {
-+		for (i = 0; i < ARRAY_SIZE(tx_amplitude_100base_tx_gain); i++) {
-+			if (tx_amplitude_100base_tx_gain[i] == val) {
-+				dp83822->tx_amplitude_100base_tx_index = i;
-+				break;
-+			}
-+		}
-+
-+		if (dp83822->tx_amplitude_100base_tx_index < 0) {
-+			phydev_err(phydev,
-+				   "Invalid value for tx-amplitude-100base-tx-percent property (%u)\n",
-+				   val);
-+			return -EINVAL;
-+		}
-+	}
-+
- 	return dp83822_of_init_leds(phydev);
- }
+   leds:
+     type: object
  
 
 -- 
