@@ -1,122 +1,105 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083DA14D28C;
-	Fri, 14 Feb 2025 16:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564F87E0ED;
+	Fri, 14 Feb 2025 16:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739550308; cv=none; b=TIKCnD/aEX7E7622/ERh3YMahNLmuREpROk2oQSfZdvDDH2pTU531vnxQhLeivm1mngmXqv8bxNZDPTJzf3Li1ArNu3k6gOn1/6r0y113YtXEYGEctXkO+bASJhUonny8+E6QltWtHRuHlxleZg+HcISueoGF6uPzupw1edfO/A=
+	t=1739550747; cv=none; b=uEAi9oiYi0dfwtj7q5Z8lcc3TsKoxF1XvYCwa+RWFiHPS0n9mTwR+dRPVR1MEIMDgJnaDBQ7DuLXMce26t/Bkz7PYenXcT3t426hNwvAFZ82qUSdavtmO+rEhlpaaDWKKAX8BVpuYHFnEYBAJWug4YRzlREXdRPK/yOO/WGdppY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739550308; c=relaxed/simple;
-	bh=MvxERc194WQJx36vLWPBEF+DLPnFAKH0/YV6FuaNUNw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GWntc0rYq0HW6tx77mV+/JNenGyush0Gc81wkjklsWfTEKxzSyhKvzTktx5/sqa9IRS+emahu56Wit0OKopBH/KnOsyvA3/qANuxlRfy7UNuD6BeHsQeCqbh9uN81NfcYZY447o100+jUfa357qb9jTAObNlXo4As59VtWOL57E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=R59gBZ+4; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1739550747; c=relaxed/simple;
+	bh=drCTzU1zvQdeA9D5nZxD1+elUhAkSOezcDF4EV4gtUc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GMhwBH3PfN8woSoyK/fsV2qzZwYksfR7l3Nl9woc+DXvwInYSAHOqaCQWB6KzVZ+Yp+z1wwnz4WOxl6T6o0MPT8RGaDqqhYqYuqmOLCYTkU411sYy73aAJ7gSeT5PpbKWo2yfBar/foIHKrAjbh2muNH0bkaTs7gU4VP16HVDhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=alp97icn; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="R59gBZ+4"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51EFdcek032481;
-	Fri, 14 Feb 2025 16:24:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=yG70bgF4eF0LbCZrC
-	bJjOyXn2pmOX1dHX5jvropnH6A=; b=R59gBZ+4392p79qX19Ph8tJ7FR3iI2W7o
-	J/Ninepujgqw6UHYoorf3Bj6yTIEdBUgdPRhsF2ZJOxlgCnMLsNw+4P2gyUYhJoD
-	O05v4xyRqKB1LYRJdssgwocmKwCOwgQOhqluGowhZxAhp7k0iNurR7WPOFR3TsEg
-	qoWnQ56aUqVGv2Ido9dDCj55/oGz9kgmjgSPtBv/tWiAa9xZt8g8fakzAtpEoqdi
-	kwsN7y2rDuuZFyvpM0ltcvKN9CP7tWb+bzq0EuH/l8KECbVjLWWHN3ZM+n3ciJaF
-	PGvw9jVDrAeXS7PEzIIPCsPjnbrCBSV7lrPFjiYRQ8qq7xNnkpBoQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44t8nug6qh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Feb 2025 16:24:55 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51EEbawB028197;
-	Fri, 14 Feb 2025 16:24:54 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44phyyvked-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Feb 2025 16:24:54 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51EGOpoa27329046
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Feb 2025 16:24:52 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D83E55803F;
-	Fri, 14 Feb 2025 16:24:51 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A1AA658061;
-	Fri, 14 Feb 2025 16:24:51 +0000 (GMT)
-Received: from li-4c4c4544-0047-5210-804b-b8c04f323634.lan (unknown [9.61.91.157])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 14 Feb 2025 16:24:51 +0000 (GMT)
-From: Nick Child <nnac123@linux.ibm.com>
-To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: haren@linux.ibm.com, ricklind@us.ibm.com, nick.child@ibm.com,
-        jacob.e.keller@intel.com, horms@kernel.org,
-        Nick Child <nnac123@linux.ibm.com>
-Subject: [PATCH v2 2/3] hexdump: Use for_each macro in print_hex_dump
-Date: Fri, 14 Feb 2025 10:24:35 -0600
-Message-ID: <20250214162436.241359-3-nnac123@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250214162436.241359-1-nnac123@linux.ibm.com>
-References: <20250214162436.241359-1-nnac123@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="alp97icn"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ab7ca64da5dso417260866b.0;
+        Fri, 14 Feb 2025 08:32:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739550743; x=1740155543; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2jv4ywDFx5P+Ul/SmDQMfb9n5TaX/3v/GZEibCjq9vQ=;
+        b=alp97icnjYzD4xspd2SRA5yqeC6AXIW1qr7+YLGoxURU5PgHjlKXNMURsnkezGxgrF
+         QqmQXdffDcNp9n1mBYHlrgr0DgGJBp0/KlRO/zNG8TM8IW5Tcwr90hS5+TC6xhYJODJ5
+         7B1aw8pLfnKP4+thnRd+k4gPIHoCp5OQ/2cfKcwdqYxCfjAyCMQ0F1G/DBDSrs6N5LUo
+         3/k7fcr5qpIKma5UJkHFNPLXUPpBkuvLYUqF9yEz2esTlXynlLK4ytwOWiHDrBOLR++y
+         ZrlJXhwVOgmztpZiQtBDlOQt6LbE4V7biWy8wOKF6hgMl4wG7oPiaQJ3D4OfJuy5FJoh
+         mRwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739550743; x=1740155543;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2jv4ywDFx5P+Ul/SmDQMfb9n5TaX/3v/GZEibCjq9vQ=;
+        b=SXA6+ywtJrpfedcPjc9Ky83ld2TczxKbSIoRxvTROzr97YTZ2vTzKM00Blh4Hs6+76
+         MMSGFHKRFHMp87n+b8ck0J9Ai4CO625VFGKcJZFvi06sWrHUiiBExGZeaMaVO7YVAUok
+         bVgqFjTdLx/su0ECtllpljuKkYV0usGek7Wvz3wpYt0eGt8grXAHDICusODLC0T0mRgT
+         Cqtg3HYu4EvryXdoSqb+D/sQsu7qSoIpcJG9VO++naVTQq6XnHoctIv34vYYvbCxto5l
+         hAyHxkx67N6WiKb39ohCIzMR6S5ByHz3OD8Zi0Qi8ozXX1FGNAYTM42r75kPAQD2No2N
+         9KkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXBafT3uo9mLtpcyZ6pdcUIE5D5U9betDtXBs2yUoW/1SLGWCmU8PzZLbUwAeW49XbvUqL9mUEPTeVVcgI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7YRnCLNJ1fc04JwsfXVi+Y8632RIi/ckPI24I1zpAJk1xgzXM
+	345s7cRGx9zfmTY8uAgm1g927ei7pVQLr4M+7SzsThQV9R38aWL6
+X-Gm-Gg: ASbGncvjMuzFxc632XfDOrPfjI8U0aCcz1P7Iw3d4Ha4g7MwuajW6AkqgU3wE1B1ChV
+	XO/zU+4NYop0l2y7y/hVdUT7URgozKsd1gABtRsw8+3YGc87Q6yESKBR+cy/0PV33CM2NXmnmeg
+	LIpfRAsza8Pi7USJbgz3RlqdCcCIl781nOsXxorCIVS/b8RUIaPMk4Ca4VaevEcQqizhZ1QfIZY
+	KScCTgLCE+QM4eZmd4EaI0gZ7hEB+eT1NKartf4f6cHpZ4+Oiu6vuKxBk7Bp1oliI55n4mqRwVI
+	0VVi2SO5Jzyr0jbUwFE=
+X-Google-Smtp-Source: AGHT+IETGMdbtCy/UJeOfDePQ6WfGtYqMnw/UcbG+CjOxqVWScars1aSmQbqPSohpxyzuXqLGKi9eQ==
+X-Received: by 2002:a17:907:2d21:b0:ab7:d34a:8f83 with SMTP id a640c23a62f3a-aba5149c80amr819711766b.17.1739550743178;
+        Fri, 14 Feb 2025 08:32:23 -0800 (PST)
+Received: from [127.0.1.1] ([2a00:79c0:653:f300:45fb:7d1a:5e4d:9727])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba5323202dsm370716266b.6.2025.02.14.08.32.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Feb 2025 08:32:22 -0800 (PST)
+From: Dimitri Fedrau <dima.fedrau@gmail.com>
+Subject: [PATCH net-next 0/3] net: phy: marvell-88q2xxx: cleanup
+Date: Fri, 14 Feb 2025 17:32:02 +0100
+Message-Id: <20250214-marvell-88q2xxx-cleanup-v1-0-71d67c20f308@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9LXfp6siklWuK3QkpAUTEsSjRVu61PQb
-X-Proofpoint-ORIG-GUID: 9LXfp6siklWuK3QkpAUTEsSjRVu61PQb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-14_07,2025-02-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 impostorscore=0 mlxscore=0 mlxlogscore=885
- malwarescore=0 bulkscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015
- suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2501170000 definitions=main-2502140114
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAJwr2cC/x3MQQrCMBBG4auUWTvQDBaDVxEXsf3VgTjWpJaB0
+ rsbXH6L9zaqKIpK526jglWrvq0hHDoan8keYJ2aSXoZeglHfqWyImeO8SPuzmNGsu/MUSDxNsg
+ pTKBWzwV39f/5QoaFDb7Qdd9//1sCu3MAAAA=
+X-Change-ID: 20250214-marvell-88q2xxx-cleanup-82e28b5271de
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ =?utf-8?q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>, 
+ Gregor Herburger <gregor.herburger@ew.tq-group.com>, 
+ Stefan Eichenberger <eichest@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dimitri Fedrau <dima.fedrau@gmail.com>
+X-Mailer: b4 0.14.2
 
-The looping logic in print_hex_dump can be handled by the macro
-for_each_line_in_hex_dump.
+- align defines
+- order includes alphabetically
+- enable temperature sensor in mv88q2xxx_config_init
 
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
 ---
- lib/hexdump.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+Dimitri Fedrau (3):
+      net: phy: marvell-88q2xxx: align defines
+      net: phy: marvell-88q2xxx: order includes alphabetically
+      net: phy: marvell-88q2xxx: enable temperature sensor in mv88q2xxx_config_init
 
-diff --git a/lib/hexdump.c b/lib/hexdump.c
-index c3db7c3a7643..181b82dfe40d 100644
---- a/lib/hexdump.c
-+++ b/lib/hexdump.c
-@@ -263,19 +263,14 @@ void print_hex_dump(const char *level, const char *prefix_str, int prefix_type,
- 		    const void *buf, size_t len, bool ascii)
- {
- 	const u8 *ptr = buf;
--	int i, linelen, remaining = len;
-+	int i;
- 	unsigned char linebuf[32 * 3 + 2 + 32 + 1];
- 
- 	if (rowsize != 16 && rowsize != 32)
- 		rowsize = 16;
- 
--	for (i = 0; i < len; i += rowsize) {
--		linelen = min(remaining, rowsize);
--		remaining -= rowsize;
--
--		hex_dump_to_buffer(ptr + i, linelen, rowsize, groupsize,
--				   linebuf, sizeof(linebuf), ascii);
--
-+	for_each_line_in_hex_dump(i, rowsize, linebuf, sizeof(linebuf),
-+				  groupsize, buf, len) {
- 		switch (prefix_type) {
- 		case DUMP_PREFIX_ADDRESS:
- 			printk("%s%s%p: %s\n",
+ drivers/net/phy/marvell-88q2xxx.c | 77 +++++++++++++++++++--------------------
+ 1 file changed, 37 insertions(+), 40 deletions(-)
+---
+base-commit: 7a7e0197133d18cfd9931e7d3a842d0f5730223f
+change-id: 20250214-marvell-88q2xxx-cleanup-82e28b5271de
+
+Best regards,
 -- 
-2.48.0
+Dimitri Fedrau <dima.fedrau@gmail.com>
 
