@@ -1,132 +1,150 @@
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF5E1A83F2
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 23:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3ACB191493
+	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 23:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739574894; cv=none; b=cynG3IkIfmTO71/Qi9BFKL/hNuRc2E9v10B+/yE49dQ2H4xxc1LAi+fdPUMA3f5VjthattyfhMqTHKjGAsGvUta1bQ1I+GQz8RTGN8FU9Zk9E0zu+3o6goj9247agAoLubbcnbsY6h453M8QkJ5T2LFscqhyBmH4F6q5MwTw75c=
+	t=1739574938; cv=none; b=bhShQUSpYXZU280PQvYBtpnxEvZJHcZ98uIGRZqpzyr68yVXKn6iWogzfwebGNC0w+WR0ViP9FewY1vBjOB+Z0fvXGKDOB11bhduCrOiEZxrizdKSddokITJNrSRj9MITVSIgbIiW0wfpm0zV388Yf0Pnt5iFvGbWHA+v1KC7mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739574894; c=relaxed/simple;
-	bh=2BfXSQtd4Eun6gFm8oWjAvDAj7pumA5WVvsN6iOp/6s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SjNClPD3lbJkv+yiWWwWAczoNd9M8RWPCb3fCF0/573etY4OV5sIyK9qsm9mn0S0Izxr+Cgtp6UMyakrTLJZ1PFjEg3bwGB+sx1jWfiMaR3ODbgPm8Dp9IRZDOXlP7akqLsgnfcxvAYIkKiahe3P7hbOthrUb5j18dxiZcSNm9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YRYJ9Z5U; arc=none smtp.client-ip=209.85.166.41
+	s=arc-20240116; t=1739574938; c=relaxed/simple;
+	bh=dCQEUPW3bF6z/PIA0W72z1Sx/yTML9yZcgJSLS94BvM=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=ChzKMkD5ePYfTVK3GZTFTNhuchBf3P2GDyuNKJObXZIwzzuRH5R8VJQqW+0kLjxIegRmfYZVOK4p48dpZtcgtwHo/t9kFbxoDqA0ejAXW3lsoEZFdtMsird2ECVjRPv+ItAq91es17JUMbrWJZZnOuI+aci0wLIwzv1DlFsd58M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cKqYFPrD; arc=none smtp.client-ip=209.85.222.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YRYJ9Z5U"
-Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-855370e0de6so59761539f.3
-        for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 15:14:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cKqYFPrD"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7c079026860so295699785a.3
+        for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 15:15:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739574892; x=1740179692; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1739574936; x=1740179736; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gtOJ9LPima7r43wL22QYAj2INdZ/xjZ5OPT4uZHWc7k=;
-        b=YRYJ9Z5UnVmf/zaObbt/Zi7McV5xNTN/OVm+sRulh9Oi2+fKd00Vm8OepYz48e9566
-         JWxeX0DmvlLKbHRExWai51bRiDblFvjdvHv2iyuqMiHok++tFqPLcaNXrKNFcu5xTN3Z
-         yybThDuiohemHPW/FqVqT9XKBGNeXRFWpRnrt/y2bvhXyUd0nsGkHaMS4eOkyw9ly2AU
-         AE1GoM2Oi/dkGpeTCgmmSveMrMFggHQsC9/O6g60nAiu9ONiRybHVan462bhkUX7J/+2
-         vDZx4h3BW9Qyav6jhpY+sTBr0Sw7ghx+gh7IhHfsGSlbwjdFgxidkmOpnaQ48ip4I6g0
-         XRPw==
+        bh=EDZBVvqGC948KUxzy/pTYFzuUP94o3HP5o4MoUQdhUc=;
+        b=cKqYFPrDz359c7Tx2yqFENX0GcBmrt/ct8IHGOpmGRsN/HbPV9tHYfZWdySf1vS9Fp
+         WvVq7R9DuFjW2mELD7wwcEQ4GZUtTdB0gSuS/hsAGw12cSWq+h7Qj6NzZHZDBAenlpY7
+         p4/enM/pRhrD8AEfLRRyiL9A+EG7wApsPYO1G/tg5gxy16vbXLSB890MdOt0qhEbdjIV
+         Yw+gxNE6AdtRe+KhK/XmF1ymgBqHD1JWMCTe+QTAD00JRMxNYIBAodx9bfhiuu/E/q2A
+         nw+9AlclmJs/qRKuHB8DbEhWdLW0VldC63lnllIdxD35wB4hvexLol+zHWpZ+/JgjRkj
+         xzuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739574892; x=1740179692;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gtOJ9LPima7r43wL22QYAj2INdZ/xjZ5OPT4uZHWc7k=;
-        b=tkSdV5bAoCd3A9rNP40p0tgmA/BDDXeYLWbgv9q04eTtfbBg2cKwEFw5Nq1EnQIQSW
-         6nBWXUMN1ryMd7Jkhc8oalRWlgR6mL2oo5YsTH0ePF2awvC5yZL6szvY6qE04j2wpZCJ
-         6nzyr5+MWFyrp1CTJYsF3FZLjanwvRP//opuejo+TryTW+dxyRX1Z6mhmherRwfR4gpd
-         aWTMMw13AWlffo/ZfJBhhci4fIwzecRSM4X0jnb52xt+Fn0k4n2PGa7K2JHm2Z1baTTw
-         hgofuiedbiVvPbqx425JT/9XXTOBnHuD8e6DWxQVj77IF6bRniNW1NfyS0fAfxsPRP3x
-         izqg==
-X-Forwarded-Encrypted: i=1; AJvYcCUDZdzvS02SWJLFNZozkmd/0T55Cmz4giWk6IVt1SKZ9xdnxxgFcj2h8GhlGYFbohC5wFRrliE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/2xU8H4NfiTre1KVl50zPuFjpLTQJrsNh3jaoQ//kULtpenMd
-	0Fd9FWp6HC6x8rzyqV+pqjYg7zfuQ0R/sJEdAo7bBTCtAKunwvK3SI48sBFXw7Th++G0yOfeisM
-	v6d4Xpu90ScgAjZ5ctEqIy5htyuM=
-X-Gm-Gg: ASbGncuFsi8lPasgW0mZc2GlcNqfbh5uiRg0+Jf05xLA23vmoQCWLfKkJRfWJtCqnUi
-	dcs+Qrq2hV0RbOXvJZsKW0+stcp6rku12GUOmCzqVx92dljs29DmotCM7GyfNqmbfQidisxu0
-X-Google-Smtp-Source: AGHT+IHp99sLA0gk8PCDebatFpUw9/qo/q2gZVMf7CkzVjw2xIW4HViGjWi924zOYOVMH9ardZfHGbWf49Y4AK6M160=
-X-Received: by 2002:a05:6e02:3487:b0:3cf:b365:dcf0 with SMTP id
- e9e14a558f8ab-3d280970b44mr9538145ab.19.1739574892262; Fri, 14 Feb 2025
- 15:14:52 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739574936; x=1740179736;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=EDZBVvqGC948KUxzy/pTYFzuUP94o3HP5o4MoUQdhUc=;
+        b=ZtgxWvIA86t1+kzysQMhGohCi17U1bOhN252aCxMm25R1MTLqoubvR7i+fIWKpDzgz
+         yf2KH/lXyiX4TPGbVxdmYPADf7Zl0aqpLlGDPVALnQbGze/eNVrQCmqE0GfI3MqsE8og
+         TPyakbAgPxiIQrRyPaD5aIXp2MA6oh9QZWLuYgHNQIw/kYUuIrhAqqaSsLeXabf8iPNj
+         hM99GAqXXg1aQrMSiZx6fGeyfJRXI9bNruzYXTfs3JFC3iGAR0X4dLiUZxC3l40Nf4DV
+         dQqbdtAZzU3CMBpnYrwqCb8FKPFyVi0O1/RpXOuNN39NXLWAm9veD9oSl2jbefkh5zzn
+         JPLg==
+X-Gm-Message-State: AOJu0YyhRiBuZOnl29rWF7skabRWr4Io+GETXtYQaCZFOvpDIJksqadD
+	axZJJW8aBp8XvAN1xlgp5bNMePsfE9kEqRmZcaeD98p8qQeFCbWeGwLl8w==
+X-Gm-Gg: ASbGnctG6wrJ/E5Dolz9s2Xfd4zdFDVYnjVYx1x2ATvDCP6Z8R3Pspx1MrZGCcWze0Y
+	OBvoepNs1Y0jmE2sORJmoSMIH+/F/Xqs6qIktTRKvf7aFrWUl7S6Kov2ZAWlABizoZR/0Wsa2Uk
+	WpzRqKAGw8LaNaMXNawABCcN9a5qbT22cYBIKH5IX6F6NvckCvWTow9fxLBFOxr237/rGgFtUEc
+	UWJ8UKB+tCnzt6+iThULeqoVYkTOcZwktP2gtw6ShNx+24fUuD1bEXhT7NtoHh8m7tfv6qgcxKq
+	o2+uZoyqX78g7lb3ni1TG18vBi1W37Ppl4jI5UuZ+7aP2sE8HwtvfanAI7v4nKg=
+X-Google-Smtp-Source: AGHT+IEI8zCXo9RMN0pP596HD3wOGUnpo8abQD2TQ/c/zbmWiatis4SkmdgllciB+TcbpDEweezKsg==
+X-Received: by 2002:a05:620a:1a8c:b0:7a9:c129:5da7 with SMTP id af79cd13be357-7c08a9db45amr187534985a.29.1739574935793;
+        Fri, 14 Feb 2025 15:15:35 -0800 (PST)
+Received: from localhost (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c07c861221sm257569985a.85.2025.02.14.15.15.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Feb 2025 15:15:35 -0800 (PST)
+Date: Fri, 14 Feb 2025 18:15:34 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>, 
+ davem@davemloft.net
+Cc: netdev@vger.kernel.org, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ andrew+netdev@lunn.ch, 
+ horms@kernel.org, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ willemb@google.com, 
+ ecree.xilinx@gmail.com, 
+ neescoba@cisco.com
+Message-ID: <67afce96ccece_312c64294fa@willemb.c.googlers.com.notmuch>
+In-Reply-To: <20250214224601.2271201-1-kuba@kernel.org>
+References: <20250214224601.2271201-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v2] netdev: clarify GSO vs csum in qstats
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250214064250.85987-1-kerneljasonxing@gmail.com> <CAHS8izOcLnt3SXzfbSA_vqno0R1SaBbXq-U8_LtRv64Bj7tUSQ@mail.gmail.com>
-In-Reply-To: <CAHS8izOcLnt3SXzfbSA_vqno0R1SaBbXq-U8_LtRv64Bj7tUSQ@mail.gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Sat, 15 Feb 2025 07:14:15 +0800
-X-Gm-Features: AWEUYZminbneqB-LDGegsev3o8w5xyPWcWkk2VbEMqdQN-MspqjP9AL26lCb7Ns
-Message-ID: <CAL+tcoAn3Je1P-c5=tAB9DNPQyYPEknk98WOZpC0jaPMuDqgnA@mail.gmail.com>
-Subject: Re: [PATCH net-next v3] page_pool: avoid infinite loop to schedule
- delayed worker
-To: Mina Almasry <almasrymina@google.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, hawk@kernel.org, 
-	ilias.apalodimas@linaro.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Feb 15, 2025 at 4:27=E2=80=AFAM Mina Almasry <almasrymina@google.co=
-m> wrote:
->
-> On Thu, Feb 13, 2025 at 10:43=E2=80=AFPM Jason Xing <kerneljasonxing@gmai=
-l.com> wrote:
-> >
-> > We noticed the kworker in page_pool_release_retry() was waken
-> > up repeatedly and infinitely in production because of the
-> > buggy driver causing the inflight less than 0 and warning
-> > us in page_pool_inflight()[1].
-> >
-> > Since the inflight value goes negative, it means we should
-> > not expect the whole page_pool to get back to work normally.
-> >
-> > This patch mitigates the adverse effect by not rescheduling
-> > the kworker when detecting the inflight negative in
-> > page_pool_release_retry().
-> >
-> > [1]
-> > [Mon Feb 10 20:36:11 2025] ------------[ cut here ]------------
-> > [Mon Feb 10 20:36:11 2025] Negative(-51446) inflight packet-pages
-> > ...
-> > [Mon Feb 10 20:36:11 2025] Call Trace:
-> > [Mon Feb 10 20:36:11 2025]  page_pool_release_retry+0x23/0x70
-> > [Mon Feb 10 20:36:11 2025]  process_one_work+0x1b1/0x370
-> > [Mon Feb 10 20:36:11 2025]  worker_thread+0x37/0x3a0
-> > [Mon Feb 10 20:36:11 2025]  kthread+0x11a/0x140
-> > [Mon Feb 10 20:36:11 2025]  ? process_one_work+0x370/0x370
-> > [Mon Feb 10 20:36:11 2025]  ? __kthread_cancel_work+0x40/0x40
-> > [Mon Feb 10 20:36:11 2025]  ret_from_fork+0x35/0x40
-> > [Mon Feb 10 20:36:11 2025] ---[ end trace ebffe800f33e7e34 ]---
-> > Note: before this patch, the above calltrace would flood the
-> > dmesg due to repeated reschedule of release_dw kworker.
-> >
-> > Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
->
-> Thanks Jason,
->
-> Reviewed-by: Mina Almasry <almasrymina@google.com>
+Jakub Kicinski wrote:
+> Could be just me, but I had to pause and double check that the Tx csum
+> counter in qstat should include GSO'd packets. GSO pretty much implies
+> csum
 
-Thanks for the review.
+Unfortunately specifically to virtio_net, this sensible limitation was
+not enforced from the start. Which is why virtio_net_hdr_to_skb has a
+branch for !VIRTIO_NET_HDR_F_NEEDS_CSUM && gso_type. Mainly "used" by
+syzkaller afaik.
 
->
-> When you find the root cause of the driver bug, if you can think of
-> ways to catch it sooner in the page_pool or prevent drivers from
-> triggering it, please do consider sending improvements upstream.
-> Thanks!
+With the addition of USO besides TSO that could also eschew L4 checksum
+offload. But the local stack does not generate those (udp_send_skb),
+nor does UDP GRO (first branch in udp_gro_receive_segment).
 
-Sure, it's exactly what I want to do :)
+In any case, the new comment clearly mentions this limitation on L4
+checksum.
 
-Thanks,
-Jason
+> so one could possibly interpret the csum counter as pure csum offload.
+> 
+> But the counters are based on virtio:
+> 
+>   [tx_needs_csum]
+>       The number of packets which require checksum calculation by the device.
+> 
+>   [rx_needs_csum]
+>       The number of packets with VIRTIO_NET_HDR_F_NEEDS_CSUM.
+> 
+> and VIRTIO_NET_HDR_F_NEEDS_CSUM gets set on GSO packets virtio sends.
+> 
+> Clarify this in the spec to avoid any confusion.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
->
-> --
-> Thanks,
-> Mina
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+
+> ---
+> v2:
+>  - remove the note that almost all GSO types need L4 csum
+> v1: https://lore.kernel.org/20250213010457.1351376-1-kuba@kernel.org
+> 
+> CC: willemb@google.com
+> CC: ecree.xilinx@gmail.com
+> CC: neescoba@cisco.com
+> ---
+>  Documentation/netlink/specs/netdev.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
+> index 288923e965ae..48159eb116a4 100644
+> --- a/Documentation/netlink/specs/netdev.yaml
+> +++ b/Documentation/netlink/specs/netdev.yaml
+> @@ -457,6 +457,8 @@ name: netdev
+>          name: tx-needs-csum
+>          doc: |
+>            Number of packets that required the device to calculate the checksum.
+> +          This counter includes the number of GSO wire packets for which device
+> +          calculated the L4 checksum.
+>          type: uint
+>        -
+>          name: tx-hw-gso-packets
+> -- 
+> 2.48.1
+> 
+
+
