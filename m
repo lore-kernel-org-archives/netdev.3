@@ -1,168 +1,123 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6972142AAF;
-	Fri, 14 Feb 2025 04:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB9C172BB9
+	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 04:54:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739508619; cv=none; b=gMmbRtVXkfuS41WCQpjm8ZXUBaLMZxiOaUICtHW5+IlHiubpOORZaW3z+i5nxlcv+7u1S/skgp1yat91Ge17tx/FuJ7QqvkOMC/dSztTaxRA7h3WqyjDMT0vV+gnCL7ytfC7gK9wMoIgA2zrGOMqOHVwNCSWKitC4w3dyix1GC0=
+	t=1739508881; cv=none; b=TekdOTMyxMg5cUVCwCfQo5rk7Aikfyrtb/Z0CxPHJgiREExHVBUHP89/7YeFPAE2LK1cqVBR91yJSUcqOrINIQ1RYDmbt7zD8bmEudJUBnqLzzZVqEfV/0kpxcwKs9Nkawu0yOddfeRiqGjSc5lYn7gS5shvEdQXr+VNYmRNQHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739508619; c=relaxed/simple;
-	bh=gPVj4mO6xQJrCt3sZYWJNbH9C8SimtbKXR7wY1fjf90=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=SfltRmKOiw5sz1HQg9km8aSfBgAe1dSK7bCqmvFVg+2PxTYBA+eJNZF0pUSrQmArkxneJ7jZpcSdZhU3z18eEevM2GUWkgujQcs2Yx5fCqpsx7j1lTyS1KxtoI1+j3KXEZa4H4inpHSpDWCGwdKWvbZ2TltB+b+OboBZt5KuLyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JorwI9bI; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1739508881; c=relaxed/simple;
+	bh=SivAQXvyEJDUy05F1KlehL5YLn8i/AmSKgo3e3WwYqc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tKSVcXN1dS2d/BfE/zbn3ZICgpqNalkzMUDaCGgJZZTY9rxmTnV6MCHeSd2CZEJWZ2kPmGsaqVh5yTJk/ZRCqdqMDRo/hBd43ynFpqGVTYVcwvkThpDBGcBmSbe2NwKh54XxdZQSkZt7kBNv5aZpUHjn86B7DG8di4zq9LK8S4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=kFj9OtWt; arc=none smtp.client-ip=72.21.196.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JorwI9bI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739508618; x=1771044618;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=gPVj4mO6xQJrCt3sZYWJNbH9C8SimtbKXR7wY1fjf90=;
-  b=JorwI9bIUscB+rO2CNT6mhd6Aej2x39pdqMJ4kV/Svc0iULJQFsnsrRa
-   Mj51M5DpENNxBU3lHUXBBEOTQDiaBBY0GnS1wl2kvrx9akq1jeyV0UlM8
-   o+VRAtN/moCQTNt+Bi/pvCoN3JTKnPyYrBqiSQrkJgpfmbPb6OEPk6PB4
-   kF7g8s057LUA3Kw+vXNJP1mys2Y+DJXn4FjVndzs5wMKYerNqTKN6IMkI
-   5QbzxYSHBbpQMIntK2H3rL+SKs91L7JQ1xLbanLAgeXDCGvqchEKPGQ6x
-   B2ED/Ii7sTOcmx6yRdck7j6ukRXknGaXIVtDTEoQT4bMMwwPc+FUZK+Yo
-   w==;
-X-CSE-ConnectionGUID: u7AS2e6uShGQvvfrlgPHgA==
-X-CSE-MsgGUID: 65PyX/SOR6CSShPK05QAYQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="40361826"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="40361826"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 20:50:15 -0800
-X-CSE-ConnectionGUID: 2b+fgtn9Q7+FDC4KwavSPQ==
-X-CSE-MsgGUID: wezvzmt3Tm6HcUS0QIfqlQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,284,1732608000"; 
-   d="scan'208";a="113096903"
-Received: from mohdfai2-mobl.gar.corp.intel.com (HELO [10.247.123.6]) ([10.247.123.6])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 20:50:07 -0800
-Message-ID: <e5c5d7ed-9f47-4af1-aee4-4632099bd546@linux.intel.com>
-Date: Fri, 14 Feb 2025 12:50:04 +0800
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="kFj9OtWt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1739508880; x=1771044880;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1j43PY77UHCzr3MgVU0slx/WqTV1fKlIBSRbwR+gH84=;
+  b=kFj9OtWt+gQC/ykOCbVWDejoG/jCq65yg2xYYr37IQ3CuotgOGdWRK5v
+   cIgXwJXOJ6bH/McMgkgVX/XASQcUtI4VupBdxXPoAR4JRaauHha/xzdaW
+   KN8A/MjVaaPIKzevSiFVYrPuFOYVcv89x5BYHPIduCe4CBwdoV750ecFo
+   w=;
+X-IronPort-AV: E=Sophos;i="6.13,284,1732579200"; 
+   d="scan'208";a="466762139"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 04:54:36 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.38.20:31682]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.73:2525] with esmtp (Farcaster)
+ id 572d323f-54f5-44a2-a735-47f59be413e8; Fri, 14 Feb 2025 04:54:36 +0000 (UTC)
+X-Farcaster-Flow-ID: 572d323f-54f5-44a2-a735-47f59be413e8
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Fri, 14 Feb 2025 04:54:35 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.118.254.117) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Fri, 14 Feb 2025 04:54:31 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+CC: Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
+	Dwaipayan Ray <dwaipayanray1@gmail.com>, Lukas Bulwahn
+	<lukas.bulwahn@gmail.com>, Kuniyuki Iwashima <kuniyu@amazon.com>, "Kuniyuki
+ Iwashima" <kuni1840@gmail.com>, <netdev@vger.kernel.org>
+Subject: [PATCH v2 net-next] checkpatch: Discourage a new use of rtnl_lock() variants.
+Date: Fri, 14 Feb 2025 13:54:14 +0900
+Message-ID: <20250214045414.56291-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-next v4 0/9] igc: Add support for Frame Preemption
- feature in IGC
-From: "Abdul Rahim, Faizal" <faizal.abdul.rahim@linux.intel.com>
-To: Kurt Kanzenbach <kurt@linutronix.de>,
- Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Furong Xu <0x1207@gmail.com>,
- Russell King <rmk+kernel@armlinux.org.uk>,
- Serge Semin <fancer.lancer@gmail.com>,
- Xiaolei Wang <xiaolei.wang@windriver.com>,
- Suraj Jaiswal <quic_jsuraj@quicinc.com>,
- Kory Maincent <kory.maincent@bootlin.com>, Gal Pressman <gal@nvidia.com>,
- Jesper Nilsson <jesper.nilsson@axis.com>,
- Andrew Halaney <ahalaney@redhat.com>,
- Choong Yong Liang <yong.liang.choong@linux.intel.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Vinicius Costa Gomes <vinicius.gomes@intel.com>,
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-References: <20250210070207.2615418-1-faizal.abdul.rahim@linux.intel.com>
- <20250210070207.2615418-1-faizal.abdul.rahim@linux.intel.com>
- <20250212220121.ici3qll66pfoov62@skbuf>
- <b19357dc-590d-458c-9646-ee5993916044@linux.intel.com>
- <87cyfmnjdh.fsf@kurt.kurt.home>
- <5902cc28-a649-4ae9-a5ba-83aa265abaf8@linux.intel.com>
- <20250213130003.nxt2ev47a6ppqzrq@skbuf>
- <1c981aa1-e796-4c53-9853-3eae517f2f6d@linux.intel.com>
- <877c5undbg.fsf@kurt.kurt.home> <20250213184613.cqc2zhj2wkaf5hn7@skbuf>
- <87v7td3bi1.fsf@kurt.kurt.home>
- <b7740709-6b4a-4f44-b4d7-e265bb823aca@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <b7740709-6b4a-4f44-b4d7-e265bb823aca@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D042UWA002.ant.amazon.com (10.13.139.17) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
+rtnl_lock() is a "Big Kernel Lock" in the networking slow path
+and still serialises most of RTM_(NEW|DEL|SET)* rtnetlink requests.
 
+Commit 76aed95319da ("rtnetlink: Add per-netns RTNL.") started a
+very large, in-progress, effort to make the RTNL lock scope per
+network namespace.
 
-On 14/2/2025 12:20 pm, Abdul Rahim, Faizal wrote:
-> 
-> 
-> On 14/2/2025 3:12 am, Kurt Kanzenbach wrote:
->> On Thu Feb 13 2025, Vladimir Oltean wrote:
->>> So, confusingly to me, it seems like one operating mode is fundamentally
->>> different from the other, and something will have to change if both will
->>> be made to behave the same. What will change? You say mqprio will behave
->>> like taprio, but I think if anything, mqprio is the one which does the
->>> right thing, in igc_tsn_tx_arb(), and taprio seems to use the default Tx
->>> arbitration scheme?
->>
->> Correct. taprio is using the default scheme. mqprio configures it to
->> what ever the user provided (in igc_tsn_tx_arb()).
->>
->>> I don't think I'm on the same page as you guys, because to me, it is
->>> just odd that the P traffic classes would be the first ones with
->>> mqprio, but the last ones with taprio.
->>
->> I think we are on the same page here. At the end both have to behave the
->> same. Either by using igc_tsn_tx_arb() for taprio too or only using the
->> default scheme for both (and thereby keeping broken_mqprio). Whatever
->> Faizal implements I'll match the behavior with mqprio.
->>
-> 
-> Hi Kurt & Vladimir,
-> 
-> After reading Vladimir's reply on tc, hw queue, and socket priority mapping 
-> for both taprio and mqprio, I agree they should follow the same priority 
-> scheme for consistency—both in code and command usage (i.e., taprio, 
-> mqprio, and fpe in both configurations). Since igc_tsn_tx_arb() ensures a 
-> standard mapping of tc, socket priority, and hardware queue priority, I'll 
-> enable taprio to use igc_tsn_tx_arb() in a separate patch submission.
-> 
-> I'll split the changes based on Vladimir's suggestion.
-> 
-> First part - ethtool-mm related:
-> igc: Add support to get frame preemption statistics via ethtool
-> igc: Add support to get MAC Merge data via ethtool
-> igc: Add support to set tx-min-frag-size
-> igc: Add support for frame preemption verification
-> igc: Set the RX packet buffer size for TSN mode
-> igc: Optimize TX packet buffer utilization
-> igc: Rename xdp_get_tx_ring() for non-XDP usage
-> net: ethtool: mm: Extract stmmac verification logic into a common library
-> 
-> Second part:
-> igc: Add support for preemptible traffic class in taprio and mqprio
-> igc: Use igc_tsn_tx_arb() for taprio queue priority scheme
-> igc: Kurt's patch on mqprio to use normal TSN Tx mode
-> 
-> Kurt can keep igc_tsn_tx_arb() for his mqprio patch, so preemptible tc 
-> should work the same for both taprio and mqprio.
-> 
-> I'm suggesting to include Kurt's patch in the second part since there's 
-> some dependency and potential code conflict, even though it mixes different 
-> functional changes in the same series.
+However, there are still some patches that newly use rtnl_lock(),
+which is now discouraged, and we need to revisit it later.
 
-I forgot that the second part patch:
-igc: Add support for preemptible traffic class in taprio and mqprio
+Let's warn about the case by checkpatch.
 
-depends on the first part ethtool-mm, which would delay Kurt's patch.
+The target functions are as follows:
 
-So Kurt, if you'd prefer to submit yours first, that's okay too.
+  * rtnl_lock()
+  * rtnl_trylock()
+  * rtnl_lock_interruptible()
+  * rtnl_lock_killable()
 
+and the warning will be like:
 
+  WARNING: A new use of rtnl_lock() variants is discouraged, try to use rtnl_net_lock(net) variants
+  #18: FILE: net/core/rtnetlink.c:79:
+  +	rtnl_lock();
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+---
+v2:
+  * Remove unnecessary "^\+.*"
+  * Match "rtnl_lock	 ()"
+
+v1: https://lore.kernel.org/netdev/20250211070447.25001-1-kuniyu@amazon.com/
+---
+ scripts/checkpatch.pl | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 7b28ad331742..eca4f082ac3f 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -6995,6 +6995,12 @@ sub process {
+ #			}
+ #		}
+ 
++# A new use of rtnl_lock() is discouraged as it's being converted to rtnl_net_lock(net).
++		if ($line =~ /\brtnl_(try)?lock(_interruptible|_killable)?\s*\(\)/) {
++			WARN("rtnl_lock()",
++			     "A new use of rtnl_lock() variants is discouraged, try to use rtnl_net_lock(net) variants\n" . $herecurr);
++		}
++
+ # strcpy uses that should likely be strscpy
+ 		if ($line =~ /\bstrcpy\s*\(/) {
+ 			WARN("STRCPY",
+-- 
+2.39.5 (Apple Git-154)
 
