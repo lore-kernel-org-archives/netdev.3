@@ -1,163 +1,220 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D6D268C42
-	for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 17:47:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF25267AEF;
+	Fri, 14 Feb 2025 17:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739555261; cv=none; b=hcv67HkRhYY8JoVXgrfhtx3goa2nzl492vOWOyiVXOS1FhKRdL6jILLj3z15rv351TP34MxYZTqbU47CmO0SKOwxjHMU9/7TGHDjf3zWzW0A+pFvEAuCauHX33Oz1c7SokVVdqo4lO6DemRKpV837IuhlHiCehm0BTSclE13UVE=
+	t=1739555366; cv=none; b=XFRYbjxj9dAvo009axHIIuJGIOq30I7Ni9TRQMck2WJX/MCqXWmX+y5TQuk6/YAKCCmH/C3/yxw8RVSCNiFHC7NMzMWhCuxFMgZ21toaJbvdm66eFbsrqPKAz+HBy6zCT5yGGE20SsstHA+VffFAc9BvrwJ2KatkXW1uN24svpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739555261; c=relaxed/simple;
-	bh=fNZOrpKhvpKOSY1KR/W+6D12K8STByQKHK+koAAXgDQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TYFW0pWRI+WQN9Ar1TJDODDLE11AntgNhCNGv5KP04t+4cTHQ/G3AF5l3O9USMR5S7lUd+zfogh5ysm4Sb8gcW4CMVhiqG5T5fkLrBayfNA6IO8ESPCIDUs1tA8UXZGO9C4vhFtPENipZ5OA++dJ1EFsnqFxZ5UlKSJJkEMzTKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PFj4RW1A; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739555366; c=relaxed/simple;
+	bh=Pf72miJ/dfjyj0t5j+gDGQX/wP+dRD2UHUYGdVnh1Ak=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Dd6w02Qcj4qM8/SaKROG0WePYEYkRr4kXNIYbu1L/IPQlnX15g456bwMFPbCunJGEDMFZ/JY0ITVhHGQvWbymWFaNTRY+u8rWkO5bWE3sahC4X+9W+H2NJiSAku6sEz0+C1toHhy1ujNu20u/hzJDB97uNzVrGKg2cxghxxqT3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=JUyu6auA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=W/xVz4MX; arc=none smtp.client-ip=202.12.124.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PFj4RW1A"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ab7e3d0921bso415178166b.3
-        for <netdev@vger.kernel.org>; Fri, 14 Feb 2025 09:47:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739555258; x=1740160058; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=3kwJ7uTHssPMwS5yt8vGAy4X5UQb4O8MgmEBY3g5dZU=;
-        b=PFj4RW1A9HzPCuWXJsfGdhrPJlaX2X9ofpObrZcrRuZuGWwhyjNLMLSANIOM+dsLsm
-         bx18bP8RXFz7dLo9ud5rSqF/SG37SxkTMi+ELvYxFvDVOxYjwV2iq+UDrxqoI5MZc6LO
-         kOEFHSRjptQ+IeIlCrhsuTiCx8UFJbj0FA5/szb42ma1yFY/t1CyzHHx+LNRiekE+MNU
-         Eq73tdDB5yxrUDnJa1AFTUdOpRlsE1x3Qr/qIW8wtCKqgntBJ1siwZgi+1XcY7Cbc56H
-         3MaJPMnt4QutuSY4Hm+R/5V8hMkVAtGsh65MbkxG7Mb9eBEK6r/qPWVEOf9MDkh4ginh
-         BYLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739555258; x=1740160058;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3kwJ7uTHssPMwS5yt8vGAy4X5UQb4O8MgmEBY3g5dZU=;
-        b=Pls9ZR81bzK4o9f1F/jTS9Os43J5NgR5BEFx0GzEVFeHLvn8/V0uDtI/TtO/Nbxdq0
-         1lrbwjpde/IZJXq7Y7B8sL8US5U+zg++lSdbBSjUlzaJoBvZzKCMNzU94vkLHlZbyuSk
-         UNZ1TzwXOj8hkDXYEvYlhx2oRyAGA+w7bqvQ61uGhubM+VvX1ZWKp1S8H6DD4VdyYBSU
-         DfAJdivTBLrs6W0yXGAaOKteUdIiJ3WTTGdUKQNUgmhK5FmIvDNJ9r3NsNcl7ODxEV98
-         cK/WiIXZ0+Rudz0FQRil6/y6WC2h0QiAHdAWkYhQ28tLQGnS5dGcrSSHlMRt27h43okt
-         W+eQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUMTk621CPPo4ssFFmNNkRMz/o+bvgRqMXYIMeoKrXKMi3lDhmtkuwtaiRqSDs8z0v/HovRpPM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx33phfLtlqiOBLkdg1m6oAgFYMscYv8pNLKYoC1U7LtdEI64m2
-	PmXR9JwMaCXpEdWDP5KkB4b7HAkxi3LAYgNEVVyX9cQ0SKC9uT9k
-X-Gm-Gg: ASbGncsyyJVLsM4IHZp/3ETMppxxCeBZr2FNoukpfrImN9SExfV/MXCv41vL4IDRQZD
-	OG/Ic3RyD4d0CQmIPgNpgU4G9BnxnUzTdxcOHoftsScRqySD+gtU+Y1scJ8JQ9vKkhz/Koin/eK
-	Ma7XbD19BhA2OazYk8HHH6s8+AQCmQexLJrZqgePAw8nlxIlr4jt5QEplHbb/aYUNAYyualkjFc
-	sYlaAAYB47B3HZtA1jRl3bY9L070VD2/SWKugf43+lSlZ/efQY1AOoNtw296TzTnppaHnQjOieE
-	NbqDAkQnmy5KZ/Th4W38hPTa2OE86dw7Hx2JpxKimZjvCKjHlTJdR5/X9yCSVwBSUj8fntIvGMd
-	gGt1ZUKX1xTGnJD8qjJccE6x0yLgOqP7YzC48pQm7vT7eZ++2lIvQy6jqUqH2wg2fM+Uu4gynVp
-	rTjNaby74=
-X-Google-Smtp-Source: AGHT+IHJo3hnYxRrjIbxoZHUdLtXXgtE5TGMsAYfQTtXJj6Fp6MAloCxoaEf0Y9jvu7uZ/rwwP9ZcQ==
-X-Received: by 2002:a17:907:940c:b0:ab7:e47c:b54a with SMTP id a640c23a62f3a-aba5017e74amr930228666b.37.1739555256264;
-        Fri, 14 Feb 2025 09:47:36 -0800 (PST)
-Received: from ?IPV6:2a02:3100:afb0:6800:f0cd:edaf:35fa:656a? (dynamic-2a02-3100-afb0-6800-f0cd-edaf-35fa-656a.310.pool.telefonica.de. [2a02:3100:afb0:6800:f0cd:edaf:35fa:656a])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-aba533bf4bfsm385535566b.179.2025.02.14.09.47.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Feb 2025 09:47:35 -0800 (PST)
-Message-ID: <30ea33cf-36b8-4c24-a28e-55ab365a6606@gmail.com>
-Date: Fri, 14 Feb 2025 18:48:10 +0100
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="JUyu6auA";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="W/xVz4MX"
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfout.stl.internal (Postfix) with ESMTP id 1542C114012C;
+	Fri, 14 Feb 2025 12:49:22 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Fri, 14 Feb 2025 12:49:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm2; t=1739555361; x=1739641761; bh=nC
+	fENLOrYad9VE9K3of+L0hMV0XrOsQQeatjsve3BPI=; b=JUyu6auA36ICkPHr6P
+	ICwVB84J0khoR5n3J0w5fIOguZ2poE34pX4m51d7fooKIBSTf6B9AwEE7Zht5PJ/
+	LdbgHufL6UQJi/v+Xh9vyEUSMAs7VeKGffj79LG05mXKc6fScNcg1q7x3j0cUqOD
+	lqeRBlquCeHLT4gbFO5ArkkiZ6pBn7MgX7jtCbgxgEDezOVOQynLwZnCrBvqhZee
+	TqGYfV0GmvDLZjyuRZ2IY3l0p+gnRBxJesVNst+y4+lFgoTJjtt0Vkp0/E2cXiZP
+	radbJXzxVE/CZ40x4rte/e6HTXE9V68fDY2Z+1T6teKR/5OuP856aL6QknmxNj1/
+	ZCfA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1739555361; x=1739641761; bh=nCfENLOrYad9VE9K3of+L0hMV0Xr
+	OsQQeatjsve3BPI=; b=W/xVz4MXeRelWDrIQWdtXkg0W37jMXSmkl0usXp/N8A9
+	7N8v913hFX7eKaVVkKq0NyxT8IK4B6Hk3gYPh7WVd8lvsW4WSPMo1BJQSV30ViKg
+	Vty9dv3ZR2lJz5hAqmYqUq9m/Iyb6v52LnvyEhs6gd6HXazW/B07hFyJilCK4I+t
+	Db9GIUfPWm7zPsBdK53hfgnfpaxCu01HCvBAhLrLr1Ook21khKNOci0DPma6SQyW
+	eRSRX8cFOteVChQbkzwYQgvpsfIJPaIYVBScpJrCtKqEIrsjvwdet4oeBUAvQ/+a
+	rdqDMpXPdCRXswtT/b/sJCOXZMWpApGCT/ywx29qMg==
+X-ME-Sender: <xms:IIKvZ1Ly1OWUaf5XCVgKD-HVSpTegH7iuy1PC5WeU2GJppwOOqro9g>
+    <xme:IIKvZxL17vTOx2rwNQ8Q0fvi9OEGdaIwRgpe1Oxe1XP28rO-Z0bA7RsvXThd5Ru2W
+    xI6bau5r1C-IH0i7j4>
+X-ME-Received: <xmr:IIKvZ9vc5HmbHozXNETPBplXqeUiBfnb0WdvtegcJIVP0YXxuLz75XSNyV2ZBeQLHyONBxIHCklMyB9NNlH29OryKA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdehtddvlecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffogggtgfesthekredtredtjeen
+    ucfhrhhomheppfhikhhlrghsucfunpguvghrlhhunhguuceonhhikhhlrghsrdhsohguvg
+    hrlhhunhguodhrvghnvghsrghssehrrghgnhgrthgvtghhrdhsvgeqnecuggftrfgrthht
+    vghrnhepheduleetteekgffffedufeeuvdejiedvkefhveeifeegffehledtvdevhfefte
+    egnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhhi
+    khhlrghsrdhsohguvghrlhhunhgusehrrghgnhgrthgvtghhrdhsvgdpnhgspghrtghpth
+    htohepuddvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrnhgurhgvfieslhhu
+    nhhnrdgthhdprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprh
+    gtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtohep
+    uggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvth
+    esghhoohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepvghitg
+    hhvghsthesghhmrghilhdrtghomhdprhgtphhtthhopeguihhmrgdrfhgvughrrghusehg
+    mhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:IIKvZ2Y3pk1dN-0TjKc90XZBGfM_Q7dVmJ0a_UxeuETfIV6iXaYrZQ>
+    <xmx:IIKvZ8b-1ieeYIc_QAvXvg8UXwMcw6mjXwYbcl2_tWBi24Koyqx1rw>
+    <xmx:IIKvZ6D63jL7PE-c2ff8IPc5ekrtnBVLa5a3lu2dzV8s05tS6Mte2A>
+    <xmx:IIKvZ6YHOjyRCeYEMBkNk0dEea9UREnMgb4uJ4BUBocwHwC7YMXciQ>
+    <xmx:IYKvZ4Q9rxyhkjzMqWmtywDa0Y0tUM8GuhMlsvPQJEPly-VN6BRM74SA>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 14 Feb 2025 12:49:20 -0500 (EST)
+From: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Stefan Eichenberger <eichest@gmail.com>,
+	Dimitri Fedrau <dima.fedrau@gmail.com>,
+	netdev@vger.kernel.org
+Cc: linux-renesas-soc@vger.kernel.org,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+Subject: [net-next] net: phy: marvell-88q2xxx: Init PHY private structure for mv88q211x
+Date: Fri, 14 Feb 2025 18:46:50 +0100
+Message-ID: <20250214174650.2056949-1-niklas.soderlund+renesas@ragnatech.se>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net-next 3/3] net: phy: realtek: switch from paged to
- MMD ops in rtl822x functions
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Realtek linux nic maintainers <nic_swsd@realtek.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
- Jakub Kicinski <kuba@kernel.org>, David Miller <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-References: <c6a969ef-fd7f-48d6-8c48-4bc548831a8d@gmail.com>
- <81416f95-0fac-4225-87b4-828e3738b8ed@gmail.com>
- <51d0f59d-2e2c-4384-9a2a-4597ba9b7a03@lunn.ch>
-Content-Language: en-US
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Autocrypt: addr=hkallweit1@gmail.com; keydata=
- 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
-In-Reply-To: <51d0f59d-2e2c-4384-9a2a-4597ba9b7a03@lunn.ch>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 14.02.2025 16:46, Andrew Lunn wrote:
-> On Thu, Feb 13, 2025 at 08:19:14PM +0100, Heiner Kallweit wrote:
->> The MDIO bus provided by r8169 for the internal PHY's now supports
->> c45 ops for the MDIO_MMD_VEND2 device. So we can switch to standard
->> MMD ops here.
->>
->> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> 
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
->>  {
->>  	int val;
->>  
->> -	val = phy_read_paged(phydev, 0xa61, 0x13);
->> +	val = phy_read_mmd(phydev, MDIO_MMD_VEND2, 0xa616);
-> 
-> It is nice to see some magic numbers gone. Maybe as a followup add
-> #defines for these registers? Are they standard registers, just in odd
-> places? So you could base there name on the standard register name,
-> but with a vendor prefix?
-> 
+When adding LED support for mv88q222x devices the PHY private data
+structure was added to the mv88q211x code path, the data structure is
+however only allocated during mv88q222x probe. This results in a nullptr
+deference for mv88q2110 devices.
 
-Most of the registers are standard registers which are shadowed in
-VEND2 device. E.g. 0xa616 is 45.2.1.4 (PMA/PMD speed ability).
-So yes, it would make sense to add defines based on the standard
-register name.
+	Unable to handle kernel NULL pointer dereference at virtual address 0000000000000001
+	Mem abort info:
+	  ESR = 0x0000000096000004
+	  EC = 0x25: DABT (current EL), IL = 32 bits
+	  SET = 0, FnV = 0
+	  EA = 0, S1PTW = 0
+	  FSC = 0x04: level 0 translation fault
+	Data abort info:
+	  ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+	  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+	  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+	[0000000000000001] user address but active_mm is swapper
+	Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+	CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.14.0-rc1-arm64-renesas-00342-ga3783dbf2574 #7
+	Hardware name: Renesas White Hawk Single board based on r8a779g2 (DT)
+	pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+	pc : mv88q2xxx_config_init+0x28/0x84
+	lr : mv88q2110_config_init+0x98/0xb0
+	sp : ffff8000823eb9d0
+	x29: ffff8000823eb9d0 x28: ffff000440942000 x27: ffff80008144e400
+	x26: 0000000000001002 x25: 0000000000000000 x24: 0000000000000000
+	x23: 0000000000000009 x22: ffff8000810534f0 x21: ffff800081053550
+	x20: 0000000000000000 x19: ffff0004437d6800 x18: 0000000000000018
+	x17: 00000000000961c8 x16: ffff0006bef75ec0 x15: 0000000000000001
+	x14: 0000000000000001 x13: ffff000440218080 x12: 071c71c71c71c71c
+	x11: ffff000440218080 x10: 0000000000001420 x9 : ffff8000823eb770
+	x8 : ffff8000823eb650 x7 : ffff8000823eb750 x6 : ffff8000823eb710
+	x5 : 0000000000000000 x4 : 0000000000000800 x3 : 0000000000000001
+	x2 : 0000000000000000 x1 : 00000000ffffffff x0 : ffff0004437d6800
+	Call trace:
+	 mv88q2xxx_config_init+0x28/0x84 (P)
+	 mv88q2110_config_init+0x98/0xb0
+	 phy_init_hw+0x64/0x9c
+	 phy_attach_direct+0x118/0x320
+	 phy_connect_direct+0x24/0x80
+	 of_phy_connect+0x5c/0xa0
+	 rtsn_open+0x5bc/0x78c
+	 __dev_open+0xf8/0x1fc
+	 __dev_change_flags+0x198/0x220
+	 dev_change_flags+0x20/0x64
+	 ip_auto_config+0x270/0xefc
+	 do_one_initcall+0xe4/0x22c
+	 kernel_init_freeable+0x2a8/0x308
+	 kernel_init+0x20/0x130
+	 ret_from_fork+0x10/0x20
+	Code: b907e404 f9432814 3100083f 540000e3 (39400680)
+	---[ end trace 0000000000000000 ]---
+	Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+	SMP: stopping secondary CPUs
+	Kernel Offset: disabled
+	CPU features: 0x000,00000070,00801250,8200700b
+	Memory Limit: none
+	---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b ]---
 
+Fix this by using a generic probe function for both mv88q211x and
+mv88q222x devices that allocates the PHY private data structure, while
+only the mv88q222x probes for LED support.
 
-> Thanks
-> 	Andrew
-> 
-Heiner
+Fixes: a3783dbf2574 ("net: phy: marvell-88q2xxx: Add support for PHY LEDs on 88q2xxx")
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+---
+ drivers/net/phy/marvell-88q2xxx.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/phy/marvell-88q2xxx.c b/drivers/net/phy/marvell-88q2xxx.c
+index bad5e7b2357d..4fca9ffc90fe 100644
+--- a/drivers/net/phy/marvell-88q2xxx.c
++++ b/drivers/net/phy/marvell-88q2xxx.c
+@@ -825,13 +825,24 @@ static int mv88q2xxx_leds_probe(struct phy_device *phydev)
+ static int mv88q2xxx_probe(struct phy_device *phydev)
+ {
+ 	struct mv88q2xxx_priv *priv;
+-	int ret;
+ 
+ 	priv = devm_kzalloc(&phydev->mdio.dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
+ 	phydev->priv = priv;
++
++	return 0;
++}
++
++static int mv88q222x_probe(struct phy_device *phydev)
++{
++	int ret;
++
++	ret = mv88q2xxx_probe(phydev);
++	if (ret)
++		return ret;
++
+ 	ret = mv88q2xxx_leds_probe(phydev);
+ 	if (ret)
+ 		return ret;
+@@ -1101,6 +1112,7 @@ static struct phy_driver mv88q2xxx_driver[] = {
+ 		.phy_id			= MARVELL_PHY_ID_88Q2110,
+ 		.phy_id_mask		= MARVELL_PHY_ID_MASK,
+ 		.name			= "mv88q2110",
++		.probe			= mv88q2xxx_probe,
+ 		.get_features		= mv88q2xxx_get_features,
+ 		.config_aneg		= mv88q2xxx_config_aneg,
+ 		.config_init		= mv88q2110_config_init,
+@@ -1115,7 +1127,7 @@ static struct phy_driver mv88q2xxx_driver[] = {
+ 		.phy_id_mask		= MARVELL_PHY_ID_MASK,
+ 		.name			= "mv88q2220",
+ 		.flags			= PHY_POLL_CABLE_TEST,
+-		.probe			= mv88q2xxx_probe,
++		.probe			= mv88q222x_probe,
+ 		.get_features		= mv88q2xxx_get_features,
+ 		.config_aneg		= mv88q2xxx_config_aneg,
+ 		.aneg_done		= genphy_c45_aneg_done,
+-- 
+2.48.1
+
