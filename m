@@ -1,75 +1,48 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6ED1EDA36;
-	Sat, 15 Feb 2025 19:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A861A9B58;
+	Sat, 15 Feb 2025 19:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739646303; cv=none; b=jdWzo/2ciWCeIkPiz4sxGnDllAeoLFihk1reUIy3iXMKVNy+Rmk07iE/2J5bSc5eU+XOOdDIWB6DjLbAi03nhoIp58ya7pa83pkIG5ATu2UT4gVYaHbrAGM8PAEGvRVxIWgSnUXLgbV8G16ONq7Vd5V1pa3GF7lDfJY+KoBlEnI=
+	t=1739647780; cv=none; b=Q8gX2zyuYP//F017zYnC2Z9sBK2zPL47/IUgJQHgenr/hRL7ZM2zEX7gBqPjORHSzjusTRpEWbNIgswkdeyEq2OKNgiw+hxpy31ADsFFwAvPVloFBzkAW4+7mKdeiZqksEwBdj0xRzPLMITrV6coowUSvrtnLfoCxtbji8fmHrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739646303; c=relaxed/simple;
-	bh=R1vwAjSHqRQZG+Gr5qGl6CNoxLsPMBo/Oh1dwtSW7BA=;
+	s=arc-20240116; t=1739647780; c=relaxed/simple;
+	bh=ehjLwgwM1t69iI6E6+1h4fWJ2pSx2/m/NQW5hQlky4Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tYFSV/J4d/9xEQYj5xM2l1Fnbv4juXr7HoV02Q4NG1a8fNq0+0ZcHjLtrLbsH5tMN58+iu7WAQ2Nf/4nrjFE/mooHVAb6xVCt05AZiAbi26jkSS45WAthYZvRn61Vsae3DDVpIUrKSznJ+SBzPbLVltuPFR/U6UaC93jTEurdn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=zuaE5qWf; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=sZTzXEOuhie0ynRr2zkPIWAZmstlOad3oyLOJg7brU4cTAmIEUthWrN7it5eqnA4vfeD5+i+vLzZg+niNew3oAn7I/ehkW6uBEqwfNTnz9j0yfKbBClezQUlWmKpcFyLqnB5Xa37jyVlossJ04UcPQ+hkks2EY+7brLdipjsCXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SOqyZZj/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="zuaE5qWf"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=q4LqKRCXJnPDKHuRcvP8uYDa5EhADrSmcCiECY0GjxM=; b=zuaE5qWfzmZLlfybUdO4Ful9fX
-	Xvpz0iKNb62xJZJcS9AjOF7w1g90YGN2BSDUF3gQ6MKPPwaPNIy4o0tnJtLPN9Y7dxT8N4Xg43aYX
-	KKI++HSMbNUP3hmELC/qFIkBpIAMmYfBkjRaWWK+ntwwQwgRUeB0mOc6hKHo+buP2QjHzC+iR9JI6
-	Otw+CJYdDPe+67oPxzbd9/lqY7BsiBUcP46MIyZbuvro3TtJuvq/KI3ubrWaA2r/KXO2aCo7OWwKq
-	6fHn/UNAPS2QYADk3YVBADdeQOHb+7BZ8UF1DF9dp3lYUSlNMXuQBf+sYAL7+yipIdYNoLw4jr1CO
-	lER37mjQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50940)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tjNLk-00010g-2o;
-	Sat, 15 Feb 2025 18:57:13 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tjNLZ-0004Pp-2G;
-	Sat, 15 Feb 2025 18:57:01 +0000
-Date: Sat, 15 Feb 2025 18:57:01 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	thomas.petazzoni@bootlin.com, Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
-	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	=?iso-8859-1?Q?Nicol=F2?= Veronese <nicveronese@gmail.com>,
-	Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
-	Antoine Tenart <atenart@kernel.org>, devicetree@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
-	Sean Anderson <seanga2@gmail.com>
-Subject: Re: [PATCH net-next v4 05/15] net: phy: Create a phy_port for
- PHY-driven SFPs
-Message-ID: <Z7DjfRwd3dbcEXTY@shell.armlinux.org.uk>
-References: <20250213101606.1154014-1-maxime.chevallier@bootlin.com>
- <20250213101606.1154014-6-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SOqyZZj/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0CFC4CEDF;
+	Sat, 15 Feb 2025 19:29:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739647780;
+	bh=ehjLwgwM1t69iI6E6+1h4fWJ2pSx2/m/NQW5hQlky4Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SOqyZZj/6kaTgkoyRaSBLMkEf8t/HOsFy5n/BwQu/S8iSLlwwxv6GIW6enPOFSspd
+	 tjulUo7ckzOFqTrhC2L6V8oTuOPa7/d2QraO3FXiIuUcXroVIO7m19mY3QTti2d1r1
+	 Per0q5mHQyJ+o8VM+kuHJcgxZTnbjRrBDSii4fyxBR6QY963nCQN33VpGaXWaX4unX
+	 5wZXByBs1xS6PpXwMg740spgBWodKwE2fZ6/jWFxDFw+t4SCx5UCYpqfLwDGt6vLQl
+	 AXR5lN1Ry5NAW2bRNiBUmMfTRYa50AOOsw8xWD2SaxTCF7MpbVVwTx6h+CILnXSO7e
+	 lAIvsFK8A3taA==
+Date: Sat, 15 Feb 2025 19:29:35 +0000
+From: Simon Horman <horms@kernel.org>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Carolina Jubran <cjubran@nvidia.com>
+Subject: Re: [PATCH net-next 4/4] net/mlx5: Add sensor name to temperature
+ event message
+Message-ID: <20250215192935.GU1615191@kernel.org>
+References: <20250213094641.226501-1-tariqt@nvidia.com>
+ <20250213094641.226501-5-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,33 +51,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250213101606.1154014-6-maxime.chevallier@bootlin.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20250213094641.226501-5-tariqt@nvidia.com>
 
-On Thu, Feb 13, 2025 at 11:15:53AM +0100, Maxime Chevallier wrote:
-> Some PHY devices may be used as media-converters to drive SFP ports (for
-> example, to allow using SFP when the SoC can only output RGMII). This is
-> already supported to some extend by allowing PHY drivers to registers
-> themselves as being SFP upstream.
+On Thu, Feb 13, 2025 at 11:46:41AM +0200, Tariq Toukan wrote:
+> From: Shahar Shitrit <shshitrit@nvidia.com>
 > 
-> However, the logic to drive the SFP can actually be split to a per-port
-> control logic, allowing support for multi-port PHYs, or PHYs that can
-> either drive SFPs or Copper.
+> Previously, a temperature event message included a bitmap indicating
+> which sensors detect high temperatures.
 > 
-> To that extent, create a phy_port when registering an SFP bus onto a
-> PHY. This port is considered a "serdes" port, in that it can feed data
-> to anther entity on the link. The PHY driver needs to specify the
-> various PHY_INTERFACE_MODE_XXX that this port supports.
+> To enhance clarity, we modify the message format to explicitly list
+> the names of the overheating sensors, alongside the sensors bitmap.
+> If HWMON is not configured, the event message remains unchanged.
 > 
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+> Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 
-With this change, using phy_port requires phylink to also be built in
-an appropriate manner. Currently, phylink depends on phylib. phy_port
-becomes part of phylib. This patch makes phylib depend on phylink,
-thereby creating a circular dependency when modular.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-I think a different approach is needed here.
+...
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+> +#if IS_ENABLED(CONFIG_HWMON)
+> +static void print_sensor_names_in_bit_set(struct mlx5_core_dev *dev, struct mlx5_hwmon *hwmon,
+> +					  u64 bit_set, int bit_set_offset)
+> +{
+> +	unsigned long *bit_set_ptr = (unsigned long *)&bit_set;
+> +	int num_bits = sizeof(bit_set) * BITS_PER_BYTE;
+> +	int i;
+> +
+> +	for_each_set_bit(i, bit_set_ptr, num_bits) {
+> +		const char *sensor_name = hwmon_get_sensor_name(hwmon, i + bit_set_offset);
+> +
+> +		mlx5_core_warn(dev, "Sensor name[%d]: %s\n", i + bit_set_offset, sensor_name);
+> +	}
+> +}
+
+nit:
+
+If you have to respin for some other reason, please consider limiting lines
+to 80 columns wide or less here and elsewhere in this patch where it
+doesn't reduce readability (subjective I know).
+
+e.g.:
+
+static void print_sensor_names_in_bit_set(struct mlx5_core_dev *dev,
+                                          struct mlx5_hwmon *hwmon,
+                                          u64 bit_set, int bit_set_offset)
+{
+        unsigned long *bit_set_ptr = (unsigned long *)&bit_set;
+        int num_bits = sizeof(bit_set) * BITS_PER_BYTE;
+        int i;
+
+        for_each_set_bit(i, bit_set_ptr, num_bits) {
+                const char *sensor_name;
+
+                sensor_name = hwmon_get_sensor_name(hwmon, i + bit_set_offset);
+
+                mlx5_core_warn(dev, "Sensor name[%d]: %s\n",
+                               i + bit_set_offset, sensor_name);
+        }
+}
+
+...
