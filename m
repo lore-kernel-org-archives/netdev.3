@@ -1,83 +1,59 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2040.outbound.protection.outlook.com [40.107.237.40])
+Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D712919E833;
-	Sun, 16 Feb 2025 18:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739730339; cv=fail; b=Gb2wTL0wqcvQ/k+zxVll6TBpN1uVJy/j9ic5QSCkMZ+l+qavSRQGH6w/kWwXFQF6SV/kcF7m5MjkZpHUFueN1NAu4IBDQQaMVh7eTsfSPnncbfbyZl+E838kduh8VBfno4L1IyiF0MwDVrdntAd/IC/ABlfjK2qofwevS9TOYQQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739730339; c=relaxed/simple;
-	bh=NLkYE5HOT7xJwAeeFKTm4J+gC1LcB3xmVMoNtrE9KJM=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45A419ABC2;
+	Sun, 16 Feb 2025 19:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739732835; cv=none; b=dL0FKMnELNPBepIV9mRKVHwQBi3s1l3DxzhXFMGNWwZOHY2LOZWV8oMAHoYQIxnzAzgEhy0rZw1Xffzu8lhnHXinyjXhTNa2bQPyWyll359eK6ECZBFZvIfdEhm7AqKE+OeFBTizMBFwjdgjhMwHl1spyj8sSZWH+wZsHVLjlHM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739732835; c=relaxed/simple;
+	bh=WdUtfn83UKbZ9F3tMqRb3yyPvHLmUxE1jmeVFo4QYvs=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hy+LdoMGrYI6QVeZEpIb2wX6C9hPdPtR/gQVDcoH6tySH2UGg5jktkCF5L3yDkha1deQC5RU8rePowB+RCn2JLQReFMES8AcfSqyIgIQ+SZkegQSwJhDIGKQOl4K/XBpbcpZAvuRZesn/vicppYMcdh2AWfJgMKurEteqsycRiE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=n0/v/lkx; arc=fail smtp.client-ip=40.107.237.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	 MIME-Version:Content-Type; b=KU0xlJOzZHXZ7NNFFOtWpxJP6Ade1M0D0UdA4ffuCBlg5tvpqf9S8pRcA5GZDgJFJ6lu30f5gWYvLpHVoBhA33Ja2tQtKAylQzHdHO2lIAGJrf7T/1n/UI5xnL/zuBddApcBLItf8gEnCVQZzlja594P7QDYrg+OURknDEfGzqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=v1SRTl9Q; arc=none smtp.client-ip=52.95.48.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="n0/v/lkx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aE09sJc785FWYhIr0VvlQ/EDeal/WkBLn+2f+kGowKAP+2ti1fxEcTisccXVVnKm9mCSFfuByVdOgt3PPyKt19zDCHLYCjQ0XTgJ+Z1VxYDo5CJ+0qOai3zCttWhIMC/AhsCkfocF5BSZrlhHFZQIVyyFAUsqfWED4/vChMwg5KtExX5pR2+jDOQnmDxyZ0IMihCWDFyYL8YROLgkWB0lCCKRGFMNCj2JHtYIYtAmjuCW0HMEVuN9QwIZWzY7kOj5iDRJ3k0zK0vZBTpaVk6nba5fl1AQNgYWqwPjhvy7zGvuWqi2+t2iv4y4R33/lz0+NDCM9yp4XCOjiynzvAX8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zs2x7GsY+Q8mv45wh/hP8xsKfiBJPgQpO0a3QQd5LRY=;
- b=IW9EOPTAa4ErERuy+eKhVuM6xiIxiq+5hhhYNjASJ5zl9bE6u4+1NSotBFBQRzad2oeK9Nj5eagNr/PsKU7egiPbvw5stEtTO3TTsPsTmD+Fo/BqlLjrW1doYxywTEFlUrILDKfnEa84FlosrGKQCs+/zOJk5EwiS9vjS/8RtTqw/ufDyN8b7ZUqEN/U74ZSrz14Mk6uPQMDlCbxQuFGiqH9MmsH6yeZbYS8MPQzIPAFxvJnIAumIYww7z2rkTpqLpza8/5yIfKWk4e2aUdnCAG9Z1N218//7qDFDdmKOyETPnjVyUXNkP9+/NK+uSS4kl5rR+HDcCERPxrRdIPYuA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zs2x7GsY+Q8mv45wh/hP8xsKfiBJPgQpO0a3QQd5LRY=;
- b=n0/v/lkxNDtffCqMGuaSxwz90BhsFJal0I0wxnB6+wsKRpj4zJAwhhZYnYbAKe7uRyJDEQKbNH9KOdjsx7QNe3UXHuqS6EHG6nzOcEVPLm5dGApWPi93XFvkW97kntSAMmbqZ3YtThAsepRj4d3C+lRhAahu9aXNl4WHVN6jR8DOg9arxrXjvA+QZL1PaujhZZ2RqRQ+lYyHKq0rPAB/otPaaJnza4K19OxVdE9BTl7DrumFElQX2sk08yni84fT9SF9FYqPKnUlqQsM0QjbxpGjMC+cIHStdxlYZZmhHwwXk90iFLrfk9Lrle8Wn5JbMW5FCKUmTqxKZ07xBdx/EA==
-Received: from BN9PR03CA0988.namprd03.prod.outlook.com (2603:10b6:408:109::33)
- by IA1PR12MB6308.namprd12.prod.outlook.com (2603:10b6:208:3e4::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Sun, 16 Feb
- 2025 18:25:31 +0000
-Received: from BL02EPF00021F68.namprd02.prod.outlook.com
- (2603:10b6:408:109:cafe::69) by BN9PR03CA0988.outlook.office365.com
- (2603:10b6:408:109::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8445.17 via Frontend Transport; Sun,
- 16 Feb 2025 18:25:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BL02EPF00021F68.mail.protection.outlook.com (10.167.249.4) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8466.11 via Frontend Transport; Sun, 16 Feb 2025 18:25:31 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Sun, 16 Feb
- 2025 10:25:20 -0800
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Sun, 16 Feb
- 2025 10:25:20 -0800
-Received: from vdi.nvidia.com (10.127.8.12) by mail.nvidia.com (10.129.68.9)
- with Microsoft SMTP Server id 15.2.1544.14 via Frontend Transport; Sun, 16
- Feb 2025 10:25:16 -0800
-From: Gal Pressman <gal@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-CC: <netdev@vger.kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>, Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
-	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "Tariq
- Toukan" <tariqt@nvidia.com>, Edward Cree <ecree.xilinx@gmail.com>, Ahmed Zaki
-	<ahmed.zaki@intel.com>, <linux-doc@vger.kernel.org>, Gal Pressman
-	<gal@nvidia.com>, Nimrod Oren <noren@nvidia.com>
-Subject: [PATCH net-next v3 4/5] selftests: drv-net: Introduce a function that checks whether a port is available on remote host
-Date: Sun, 16 Feb 2025 20:24:52 +0200
-Message-ID: <20250216182453.226325-5-gal@nvidia.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20250216182453.226325-1-gal@nvidia.com>
-References: <20250216182453.226325-1-gal@nvidia.com>
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="v1SRTl9Q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1739732834; x=1771268834;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Ot3sZW9m1KrcwT8em5+cF0/58aAY/1r9ugZxy8yla4I=;
+  b=v1SRTl9QMiJx/2xYox3TG1048MIPxt3ZUiqL2yB89H3o8MxaU7lDQIqj
+   QY04l5OrIwDTlKa4YBPOxNp/b2N/hWj80RES2FcamR4WeExIGG1LvxFKj
+   cbhzJvaXuwaknGktGMcLE23r8c1/Ln0JiDZ3A+a6hYAP1nLKSac7XbTrn
+   w=;
+X-IronPort-AV: E=Sophos;i="6.13,291,1732579200"; 
+   d="scan'208";a="463041476"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
+  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 19:07:09 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.7.35:60624]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.73:2525] with esmtp (Farcaster)
+ id 57c8e7c4-aa7c-48b3-b74c-a9a298df9c11; Sun, 16 Feb 2025 19:07:09 +0000 (UTC)
+X-Farcaster-Flow-ID: 57c8e7c4-aa7c-48b3-b74c-a9a298df9c11
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Sun, 16 Feb 2025 19:07:01 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.119.10.131) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Sun, 16 Feb 2025 19:06:53 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <enjuk@amazon.com>
+CC: <davem@davemloft.net>, <edumazet@google.com>, <gnaaman@drivenets.com>,
+	<horms@kernel.org>, <joel.granados@kernel.org>, <kohei.enju@gmail.com>,
+	<kuba@kernel.org>, <kuniyu@amazon.com>, <linux-kernel@vger.kernel.org>,
+	<lizetao1@huawei.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>
+Subject: Re: [PATCH net-next v1] neighbour: Replace kvzalloc() with kzalloc() when GFP_ATOMIC is specified
+Date: Sun, 16 Feb 2025 11:06:42 -0800
+Message-ID: <20250216190642.31169-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250216163016.57444-1-enjuk@amazon.com>
+References: <20250216163016.57444-1-enjuk@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,84 +62,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF00021F68:EE_|IA1PR12MB6308:EE_
-X-MS-Office365-Filtering-Correlation-Id: c6ce8b42-1779-4038-b304-08dd4eb74bd7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|7416014|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/YW26nv5gm3425hhEvfKfkcBjg8pAz/GKGlA4b3FRj3ATUzQcvWSaMgYV89f?=
- =?us-ascii?Q?+EpFBsazCvNjAs10XHc+0mMqt/KfW8j68zcm+ZRGJA6C2OygtzMvpxq3rf1I?=
- =?us-ascii?Q?7W9A/RHbOMF5bEVAM6oW9ExpUJnX1/L1XeQPSdo/3mVt+dpmrGsvvZRZn9CS?=
- =?us-ascii?Q?LE2GHCYyxW+mOsIu8AinwtZxm9f41nLUnhHZZgMh1ZZOsV2v78aVhEF3h/s3?=
- =?us-ascii?Q?8oIYqK1r635L2wGhivQM9e8jIJ5hJML8pygwfp4Rvp6uJeQCJVsn103GCOKZ?=
- =?us-ascii?Q?7MhwDJQkpryHqd+N3cyrpLAnm3JTl6jAXZMAS9w4+cYAeEhLy7AY0W+T9JxD?=
- =?us-ascii?Q?juamh4yyS1ixIIvtnVfJnK1+l1FAWRRxMSAYWpwdDNN1tq3URYyHR6ZRebVF?=
- =?us-ascii?Q?r1mYfOTXqmLWHlCvoHJy+PZxYY6NflX5vaYm2nI63UywaG6/4LJAQmiD4sTV?=
- =?us-ascii?Q?Vgutav3DmlPXIaqcpSPeTzCLmVOOD+8ASP3MI5kG7at+CcYGiLUQzRmQgQGi?=
- =?us-ascii?Q?1xXetETBZP1TDepu3T/zw45Q4OMcI0a8FRapQ9ORLG2xmyGSd+I2zMRsArGu?=
- =?us-ascii?Q?NU19pQgU3567xCESfbDYHwwB5TWRuUshAIGOBhYCx1d64aOy+hKuNlts09M9?=
- =?us-ascii?Q?tRCMYz77J4VvFYtsxnKKa+cF5T9crb7Y2ZJgzsnTGqdp44ahj544e+YKVxm5?=
- =?us-ascii?Q?YhQ1K44cTYnab5+LiNkqloriAq8nUnnFgWUH05YZibWioiHwU2ireLjr6SmO?=
- =?us-ascii?Q?oR2/uYVKeW9YLaCt0i/abBWuWY10wbMb2pczgYXSzckcLnhFjUpbbwxAVosQ?=
- =?us-ascii?Q?BwV1iqGWZcKPlXigkTm6dZQI5GKT/ROsQ/hUf6BReYRDQy4FLe7wuKHE241F?=
- =?us-ascii?Q?kmopFG/wsulpMMn5oKLYhC2TNeFQAvyT9K187OzTcm9VHXTkPauRnVjKRd9g?=
- =?us-ascii?Q?fzJ3y/KQWxjSw6Rw4u4o31818oSxdU7wTty90yunVDSJ5LcK/72BZd+mrIqH?=
- =?us-ascii?Q?Bkmf2fpJxzwW/8KIZKnmQqp2xCG4RvE8YgMZ3oDcUeVig1/rolJMRxXd6Esp?=
- =?us-ascii?Q?WXI2Fgh8d98Kdn0avV4PcUzCb4NqQmuqdQ5bLvlkX3EP40TU8W26NhCSfp7y?=
- =?us-ascii?Q?5pJxE4VNPf9E8uvXKbkwR+C9HsjWMgUMjKMOJEWYV3Vdo5ZyFMEOo107INVz?=
- =?us-ascii?Q?RPavHEVlDOp4w+70BKw9NJZCcky9LCMo0pTilNp0e1e0GQ6L587Hy0FVkfCY?=
- =?us-ascii?Q?xHQY0bSr7S9ccCGy8Sfh89+67dbY1EwEUgVslro2u6eIZ3SYKkwICHvsUUpd?=
- =?us-ascii?Q?o6X8Y/lGpPEwfw0O/bctNaVcgSF1xJVkM1k1n7FXXUQnrYQDXBcqROpw4UNZ?=
- =?us-ascii?Q?pmlKv0+2VjRQkVOpel0Oj1R/yyX79vw89FyEDWXHdcyjhfRVW3gDjSXnME3/?=
- =?us-ascii?Q?EGFwIQNj7hgMtYgWPeNkE5koCvEZIEnoFmuCM1KMqgw0X9Gj9Z6mnJuQUXvF?=
- =?us-ascii?Q?p5lXZW8PP3eZa/4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(7416014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2025 18:25:31.2856
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6ce8b42-1779-4038-b304-08dd4eb74bd7
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF00021F68.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6308
+X-ClientProxiedBy: EX19D043UWA003.ant.amazon.com (10.13.139.31) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-Add a function that checks whether a port is available on the remote
-host, this will be used downstream to verify that ports that were
-allocated locally are also available on the remote side.
+From: Kohei Enju <enjuk@amazon.com>
+Date: Mon, 17 Feb 2025 01:30:16 +0900
+> Replace kvzalloc()/kvfree() with kzalloc()/kfree() when GFP_ATOMIC is
+> specified, since kvzalloc() doesn't support non-sleeping allocations such
+> as GFP_ATOMIC.
+> 
+> With incompatible gfp flags, kvzalloc() never falls back to the vmalloc
+> path and returns immediately after the kmalloc path fails.
+> Therefore, using kzalloc() is sufficient in this case.
+> 
+> Fixes: 41b3caa7c076 ("neighbour: Add hlist_node to struct neighbour")
 
-Reviewed-by: Nimrod Oren <noren@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
----
- tools/testing/selftests/net/lib/py/utils.py | 7 +++++++
- 1 file changed, 7 insertions(+)
+This commit followed the old hash_buckets allocation, so I'd add
 
-diff --git a/tools/testing/selftests/net/lib/py/utils.py b/tools/testing/selftests/net/lib/py/utils.py
-index 5a13f4fd3784..903cc042ed0e 100644
---- a/tools/testing/selftests/net/lib/py/utils.py
-+++ b/tools/testing/selftests/net/lib/py/utils.py
-@@ -123,6 +123,13 @@ def ethtool(args, json=None, ns=None, host=None):
-     return tool('ethtool', args, json=json, ns=ns, host=host)
- 
- 
-+def check_port_available_remote(port, host):
-+    """
-+    Check if a port is available on remote host.
-+    Raise exception if not available.
-+    """
-+    cmd(f"python3 -c 'import socket; s=socket.socket(socket.AF_INET6, socket.SOCK_STREAM); s.bind((\"\", {port}))'", host=host)
-+
- def rand_port():
-     """
-     Get a random unprivileged port.
--- 
-2.40.1
+  Fixes: ab101c553bc1 ("neighbour: use kvzalloc()/kvfree()")
 
+too.
+
+Both commits were introduced in v6.13, so there's no difference in terms
+of backporting though.
+
+Also, it would be nice to CC mm maintainers in case they have some
+comments.
+
+
+> Signed-off-by: Kohei Enju <enjuk@amazon.com>
+> ---
+>  net/core/neighbour.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+> index d8dd686b5287..344c9cd168ec 100644
+> --- a/net/core/neighbour.c
+> +++ b/net/core/neighbour.c
+> @@ -518,7 +518,7 @@ static struct neigh_hash_table *neigh_hash_alloc(unsigned int shift)
+>  	if (!ret)
+>  		return NULL;
+>  
+> -	hash_heads = kvzalloc(size, GFP_ATOMIC);
+> +	hash_heads = kzalloc(size, GFP_ATOMIC);
+>  	if (!hash_heads) {
+>  		kfree(ret);
+>  		return NULL;
+> @@ -536,7 +536,7 @@ static void neigh_hash_free_rcu(struct rcu_head *head)
+>  						    struct neigh_hash_table,
+>  						    rcu);
+>  
+> -	kvfree(nht->hash_heads);
+> +	kfree(nht->hash_heads);
+>  	kfree(nht);
+>  }
+>  
+> -- 
+> 2.39.5 (Apple Git-154)
