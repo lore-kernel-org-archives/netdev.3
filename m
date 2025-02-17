@@ -1,204 +1,113 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2061.outbound.protection.outlook.com [40.107.244.61])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34D821C192;
-	Mon, 17 Feb 2025 13:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739798018; cv=fail; b=cZVyyD05XDf/qZzUlIBDmMCROeTpC6AYjlr7Xwr3SPsEowhJKGZvapH7+22D49ICH+JnrCBmvuwPvVhoCtr0iwLsv9cWR/ayVAllMlbXr1RkcsXUWfUSyRT2Meoau6XpZZ59ngs0ZtxzEahIPuA1arEvwY2w5Uv5hSxtVhWv4Js=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739798018; c=relaxed/simple;
-	bh=TxOey53YpckyS0J9LYvQ0B3d4cr7YEacQx1Rh72slKI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=XZz6PSZLAGpr4va9n2strW2uupwhBkzvtySFaiUXmd3Y4wHe0LE5+5AJEoi+XIwpXXeSI66+0IbKsJ8TBCJyMSt1NmFlxT25mAv7wZgzln+e01w+kCsqUSqKOJIGumpDmLlVkMPAFksQsZHBSEhidgNT557FwBnpK3yJWAM0djU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=F6ut/MTt; arc=fail smtp.client-ip=40.107.244.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFFD21C197;
+	Mon, 17 Feb 2025 13:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739798118; cv=none; b=jAppIedOYtCHiIlAm6pDgQzaxeOTv2UbH+MAPrK7ynz7MtwUP9bfu5kX96rgJlQ32XICF6n7WXdBwzUxyYVgv6St120eK88JRlY6X6UY3KwuvhD38AzvCry9u9veNdRmITs6jJgPO01wTLPTOc+VPpvfSj4qqWbDZpZQf5SC3Zk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739798118; c=relaxed/simple;
+	bh=RXP5X417yTlCiBf+xrfyXIDd3TLnHV3EUYKREgUrLKU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RH5JNqad42h027Ksx/ALbpEG9RaJwe8rc8EWa7o92BmTOI5JTOUDxaCmVmlc1z6P3Bg+M3Ar+23KIYYkRr7Rra6t13bT/OXokL80pzp5eyetOinQ2x7VtN76h7Z5DEd78c2Iz2oGRGSBHmHAnalSdLIxRUxwutqHFxZYzP8pVtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e4rMo0xK; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="F6ut/MTt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BNGHoig6KCISkHqpAXHIACnj5klEEukIXZcpk3ABCipDBmmEgtfUE47iJJyvWGKT2O5eFnlbjS3yokUbATjs9Gv010Dvkaoze1dpNk40TEt6WZ3FmtgQGtKpuldU9lA9Qz52DMmDybUij99qohdBSLMMD0qiCLsA+RIcD7gtBa53bKHi8fCyomtBKAxy235L4XmFAgrCADzycebE+qBA2NuaBzzDscrgKW94dXB8KN+C8afS7p6AH/JvqCP+q9HDFswGDsA2psVB9sp7Elcg9Htru02Ly1XEVRb00TvZftvig+0/4ucNmSrfxm3TBNwfJoDOusVPZXghme+IBWbKmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Qf4F92tBu3sbK7zXAszxxl4Etj0AWMeUZ8UAS4hUYD4=;
- b=Dq2rbWQMFvgEIpca66Y5ipdrQt+qWGbSm0ZaWHDCek5JG+Yx0vPi/ZJ7hALob9WXda2bRxTd8fV0Tyu8oxknC8mEHqFRpuSj0Z1C8zX+MW9QhPagAp8E1jgE3QWAzCq41CyGDFkeo6iRETJLLYYhvrMJiHWRihvag/njoLfwgZOzw35iyYAApYiKkG8TwCCLIez6xEN6eaVxG7s+N1VWDD82E59bexCIdbhegUXCf5Z364XUEYpelI5X9jmkGcJfCQEJZGvNHS85ttMpj7HG6GbVW1CiXJ1eCoLk24jGPy4nzd1bCoQY6inldr/MtVGbf1Dyz4Ip0RqTJeimQDvkQQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Qf4F92tBu3sbK7zXAszxxl4Etj0AWMeUZ8UAS4hUYD4=;
- b=F6ut/MTtCZujl6bSV1JWObCLA8DUbCN+ctHxFbEmYXph84OjFhwssMZ3UnVjApa08tYaN8Qi7L8vAmNvP/Dl86POkZHku44aEsC+7b9TQH0H2DmgdJDIooL0naCSOvRsU2yIQQn7KKf04BFMbvUt18SFzYTn0o3iPK5DmXBN0S0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM6PR12MB4202.namprd12.prod.outlook.com (2603:10b6:5:219::22)
- by DM4PR12MB6112.namprd12.prod.outlook.com (2603:10b6:8:aa::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8445.16; Mon, 17 Feb 2025 13:13:34 +0000
-Received: from DM6PR12MB4202.namprd12.prod.outlook.com
- ([fe80::f943:600c:2558:af79]) by DM6PR12MB4202.namprd12.prod.outlook.com
- ([fe80::f943:600c:2558:af79%7]) with mapi id 15.20.8445.017; Mon, 17 Feb 2025
- 13:13:34 +0000
-Message-ID: <93647dfe-0318-4b9a-9abf-3d082a623124@amd.com>
-Date: Mon, 17 Feb 2025 13:13:29 +0000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 03/26] cxl: move pci generic code
-Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Ira Weiny <ira.weiny@intel.com>, linux-cxl@vger.kernel.org,
- netdev@vger.kernel.org, dan.j.williams@intel.com, edward.cree@amd.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, dave.jiang@intel.com
-References: <20250205151950.25268-1-alucerop@amd.com>
- <20250205151950.25268-4-alucerop@amd.com>
- <67a3d931816f_2ee27529462@iweiny-mobl.notmuch>
- <16f4a5de-2f54-4367-9e14-b7a617468353@amd.com>
- <20250214171147.00007e5f@huawei.com>
-From: Alejandro Lucero Palau <alucerop@amd.com>
-In-Reply-To: <20250214171147.00007e5f@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0040.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ac::9) To DM6PR12MB4202.namprd12.prod.outlook.com
- (2603:10b6:5:219::22)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e4rMo0xK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739798117; x=1771334117;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=RXP5X417yTlCiBf+xrfyXIDd3TLnHV3EUYKREgUrLKU=;
+  b=e4rMo0xKSOuDWVDHEwTsGHm1UkEhJsDWxpGj7alFPnpduashFErkdCW3
+   gR9RZPtRFMQc7uYfef6QjS0kvXSKsQDoHN/HsYFnE/q/nuyfNEBWcOR31
+   EDm9U2EYDZDhJdFY1R95elaRlRYxUZmeJyKR4YPN5T/AoqrmtubnjiFW8
+   ckqGc0QBcld9ujDiHFW+9id4/X1mx+T3Fee02cCbc15fcNYqpUir4fIRq
+   JKbFlLXQnx2Yy3YMsKZCcIgOMGCrTORG3ghwCavUTYwLBck1doM7nIDLm
+   GdJzA0yXj3TqIzknJCRSYP++fh05gvgmtM1zSPpOOJeHAI1XDSo2N0ydV
+   Q==;
+X-CSE-ConnectionGUID: 6NRj06+tR0Cyoe2wD+EI0A==
+X-CSE-MsgGUID: SIOyrkrLQzqs9QGcbFnUCg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40344735"
+X-IronPort-AV: E=Sophos;i="6.13,292,1732608000"; 
+   d="scan'208";a="40344735"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 05:15:16 -0800
+X-CSE-ConnectionGUID: qYKS6OdJS+2s7cDaSWruOg==
+X-CSE-MsgGUID: vOK7AQiKSFimzZKPW3N2kw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,292,1732608000"; 
+   d="scan'208";a="114041454"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 05:15:13 -0800
+Date: Mon, 17 Feb 2025 14:11:33 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, ioana.ciornei@nxp.com,
+	yangbo.lu@nxp.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net 1/8] net: enetc: fix the off-by-one issue in
+ enetc_map_tx_buffs()
+Message-ID: <Z7M1hQIYZGWAZsOT@mev-dev.igk.intel.com>
+References: <20250217093906.506214-1-wei.fang@nxp.com>
+ <20250217093906.506214-2-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB4202:EE_|DM4PR12MB6112:EE_
-X-MS-Office365-Filtering-Correlation-Id: 718c45b4-eb39-48b9-410c-08dd4f54e1e2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Y0ViQmhkMHpNbEV0RVZTMHFFa1p2NWwwOHBTeVVuNzRRZUdoYXhMM05nS3I4?=
- =?utf-8?B?Tmc3c0NTU2c3dVE4MGN6VDd1MWZFVnk4NUFWS21pT3AxUUNYaGc3ZkxoYnQ2?=
- =?utf-8?B?OXA2UHNET2I4bktaMEdmY29mNXNURkFFS0d1ZUk3WmlYTGg5eDdZMFo1OEgw?=
- =?utf-8?B?N3FxVmQ3Qk5ac0RLZVdyWlFENVZFNjM3c1JtNzQxRFMvdTZtR1JMUFFZUTJ3?=
- =?utf-8?B?Sm9aYmoxeHZJY1QycWVQdXVGQkN0SDJweC9jNlJJSXhwSldFb05zYk16QW5W?=
- =?utf-8?B?NXY2SHlSRDU3eFRPTUdvSTdrdEtrQlltemNQWjNLMHZxUFJmdW96c243aHRV?=
- =?utf-8?B?Z3k2OC9jV1VzYVE3a3pzR2l5NFdKOGs2c2F6VkpTc1RzS3N6YytLd0s4SUU4?=
- =?utf-8?B?S1dxRnNIalZISG9pcFY2Z2RLMFRiNEpWUzE2WWNpeWQ5OEM5ekxJbkNkM21N?=
- =?utf-8?B?bkwrc1JtK2VncnVpVGs3WTlnTm15NklnUnN2TkhKbHhFRWJOdFArQ2ZNeHpB?=
- =?utf-8?B?dlZaSGN6ZE9mb1U5V25LVnE4U09SQ1Q0NnRCdHZEclZkYnBHQXpJMGx4YkJM?=
- =?utf-8?B?am1yZ1VhaklwNit3bm1ud1V0TlR4UGxFQ2RxNUx0TVVVZ1dQQjlxdGJZN1B5?=
- =?utf-8?B?TG5lWVlvLzh5SWFmemdscjk5NnVFaHc3R3R1SUs1dFdyLytSejM0aG9za2hl?=
- =?utf-8?B?MWQvK3p3bE5zZVZOWnVDRzRTbjMwQnpydFZRV1d0bjFyQnlBbjRUbndZdU5z?=
- =?utf-8?B?T3A3bU5Xc2Z4OVN1R3pPRkxwTDBCQmdFbmxhMThYR2tYczZQaWt3QmNhN2tS?=
- =?utf-8?B?VFdwSUVuRGhPTEJZWU4zaGkvbGVralVTYWNtWndRWWltQnB6OVJqRHJxdWx4?=
- =?utf-8?B?SkNtNk5CQ0lSejFZYjVWdEEwNjk2TWI3a09pSE05RXNzV0QwNExiN1JzM3Za?=
- =?utf-8?B?R1B6Wi9CdXllODFGT1FrUEVYWDltcWw4dm5iaVFrMnIxd0tQeVBVN0NJbmFi?=
- =?utf-8?B?WlhGNm9YVkI1RHYvbmR2blU3TW82V1loR1JDYzNFcVJPTityL0VoNHZPelln?=
- =?utf-8?B?RkVXTG5BR0tKb0w1WFN6ZlJ6QTFvMVIrSmZEdEJTaHJqR1hoMWdQZ3pTdjBR?=
- =?utf-8?B?bC9ZeWhPYU9laDlLbTlLdm16QTdrdWExM0ZzbXlqUmo2d1hadW0xSnJkZ0Rj?=
- =?utf-8?B?ME9HdEFkSGV4bnV2ZVNUc1BYRkg5bDVZZjlaV1hOSEpRWU80ZGEyTnpoWThL?=
- =?utf-8?B?MGJNTWZQYnpOd3Zhd2UveEsyN3lnT0dwN0RWQkU2djBtaDhDM0p0SjRJTjNa?=
- =?utf-8?B?c1JEZzlPNFVYQklGUW0zd0NnRE5tRDY4ekVQUjRQZGhSU0JnSm9UWkRMMTVr?=
- =?utf-8?B?M1NzclhsTHVFc1FyK3Vmbk9OaHptZ2NJVGZlaEs5WlZoRGRRTGkzT01FVWdB?=
- =?utf-8?B?dFdXY1NQSnlWRVM0WkFza1pOdDY0bmlTbkV4Z2hVeWsxaW5OZ0ZwSXgwN0Rn?=
- =?utf-8?B?ekVyTHBKS0h2SEpHOW1tbnNtS0ZoVzRPYlBZQ3o4Y1h2SXVOYzkyczUvbUdH?=
- =?utf-8?B?dzF2aWF4OXFCMTZHS2p4TlE4bE5hRzJ5ZEZzOTlSbkttd3ZHYTJIcElGVmRI?=
- =?utf-8?B?L2hrRHFuSG5SckZxSjFmVkorMlBFRDhUN1lVZHY3bDZmKzRrNE9tWmpsVWsr?=
- =?utf-8?B?OVRSN25MV1JNT2tRMndZczRZMCs5RG1OWTh5ZDBwTXowUENtT20rWGtkR3l0?=
- =?utf-8?B?TVhWY3AwZ1doV2dBUDRZaWVhRU9uZFgxZ1ZOalZxVVRUUjI3OEtSV1BQQytF?=
- =?utf-8?B?eHYxUjlyK0p5RDNmV01rUEZ5M3BNcmd2NUtOK2NuRk9IRmtUanNZSDFNVXND?=
- =?utf-8?Q?Sf+LXl4cJjlZ2?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4202.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MWNKSVFYMXZHakFaMmVCbGw0a1FuM2IvZjhyUFE2WGNKTE52VXd3Tmh5ekJK?=
- =?utf-8?B?M2N3d1JoVHZoMitEQ3dKMlVjcWZOVll1M2REaFZLSXlqVlV4ZmcxdUljUGY2?=
- =?utf-8?B?SUpsS2xlbzJjaUx3R0pPanhRTFBLOGlCZnJ6NVJwaUYrUDZDNGszT1huN1kz?=
- =?utf-8?B?OWlDeTUxc1RtNWZBY3k2TmNxNUUxYW1Rd1RKTnpzVXlJOWpXd1JtRWJMWW1Y?=
- =?utf-8?B?a3RWbkJjZWlkc3lkN3dOVVNGRHVjeE1SeGhFeXJPTDdkdjZBTW1FY0NCUVJE?=
- =?utf-8?B?ckdjTkZNS0ZoNHAyckQ3YUVJVkVONFQ3Ym9SYU9KcXErRWRvckxuNkpEUWtS?=
- =?utf-8?B?dEdHQlNyUVN3ejBHbHR3OHFkdGZ2T1hub3RPRDY3S2FXMjVVcis3VDdDcVAy?=
- =?utf-8?B?em1qajdwOWhOV2hLWVVDM1BPSm9BNzRnL0JWdFVMRGZBampkS1BDUm42T1lW?=
- =?utf-8?B?Q2dmUkI4b1FvVmhsNVB6VVg2OVZScWxxbFZoUm1OSi8xbG9XekZsSzZkMkMy?=
- =?utf-8?B?d1pkdjhvYUoxbUtUMjdOVkJlNFJrb3BxQThzeVRONWlyUkJzTTdVRlFLcmsz?=
- =?utf-8?B?RWdrdzdGVnFOam9abW81SnhYbi81dGFDdTVIZXM0ODduWmVMREk0TGk1OW1r?=
- =?utf-8?B?dk00THZJQWJCcG1EVzIrYTRRSEMxTWIxcFpzSkM5c2I4OVRkL05OUExqeGpN?=
- =?utf-8?B?M296amV1czRVSmNqRFRraUdXUzYrUDNOZmlybzlST3orb0poT2VDbHBheFY1?=
- =?utf-8?B?SWpkTW52TzFGTUt1VTFkZ3loVThTTG1ndjdGakE5M3E4UkxKYUtkenQwSlh2?=
- =?utf-8?B?ODV1Y1VqdGxYQzdWN0phWTI5eHNvUXcvcUhka1RzQmh0RmwyWmlRMmVySTBn?=
- =?utf-8?B?Z0N3YktLeXJkd2hqZDZjWmxMQWVtUGJGZHFYdWdMS0h5Ry81VlZSMWE1bTlw?=
- =?utf-8?B?dUdabysySEhhNnNLbjdqS2tRbFM2dzBKUkFkd1AzVU1lOXRxMi8zNXJaQWJR?=
- =?utf-8?B?ZGJMWlpSeVh2QXJ3ZU92RGc4QjZPWUFEaVpGQkNjZU1wdjF6Y3J2ZGlmd3hr?=
- =?utf-8?B?MGdWc2NwZDFnMmJkTGdNU3pYQjNIUThaUlEwTDZzaERuY3FINFQvQklqcVdr?=
- =?utf-8?B?R0o4NWpHRzBwZktmaTJIK1RMYjFVOElUSzNsWU9NdkRTWWJkY1pXRURZOEUv?=
- =?utf-8?B?VWxQRzNhdWcrRzlXeTRSYzZyMUtRb1RFaWZaUEx2U0xURmp6SWc1THVMMFhP?=
- =?utf-8?B?T1gyYjQvd1pKMG1Jbngyc09sSlZQdUZsNGpQVW83ZUd0dlExb0Q0c3gxaUpR?=
- =?utf-8?B?WkZPS2t2VlJONFRPajFCV0M3Sk0yWHFZTGtVS1ZDRm5ZbG1iNEd3K1dJdVJD?=
- =?utf-8?B?K2FrSzl6YS9zbEJuTUl3cnJsSVl2SVFKcEJrNU1FUGdUcHphdXFSN2VYRjgv?=
- =?utf-8?B?RDVCQkNRdU9WTkV6SnplaXdnYXlvQUFoSlcwRnJMUStFTGU5bkJPdDZRZVAv?=
- =?utf-8?B?WXZSZW1GeTJOR3RVU3FRM3VaN1pEWFVMZzlRSyt5YStDclEvRVZkei9lL0JQ?=
- =?utf-8?B?QlMvaU1OMTU1WkNMOUFkWGFjekNFTm9zbUNtRHJKV0tJQWVoZmVsZnR0S3Fl?=
- =?utf-8?B?TzUrTmRnRG52d3g5SEZBaEg2VktvSHB2RmxvYlk2TitoZitzSmlEWWZ1d3JP?=
- =?utf-8?B?QjVxUUdFTVV5U05ZdlljUjFvZUMwZUtDd1l5dUhlMStHQndIbjdhWW1uaUFR?=
- =?utf-8?B?RGlyS1c0YkFaNG1TTE1uMVVuR0RtMkhRRllBTzQ0bTJsandSQlNWc0tDTVc2?=
- =?utf-8?B?U1VnN2pMZ1dBV0cwalJ3eDI1SXI2STNBWVBHbDR6L3VoNStodEZyc3ZyN3lP?=
- =?utf-8?B?L2FuS2toa2RWQUZ1RmZ1eGNXRkU4b1JHbGl3bzN4ODR5dEs3NXNHQ1FHWWE3?=
- =?utf-8?B?Q0FkcXgwT2RLRlF6OW5ZelpRV1o1RlBCVUkwYWg1aTlpQ2FCeHdPLzdtbjFs?=
- =?utf-8?B?Zm1LTlRjUGF0TDVuK3lUMDFwRXg1WU42bURyaEpGMi9pN2Qxay9GZjAyUG8v?=
- =?utf-8?B?OENpN0lFVnBVY1p1T2hvWGNYekx1ME5EdzZjKzdiTjRKVm5QeE5WOUYvV3lK?=
- =?utf-8?Q?TIj5pVuUbRmYNkLgCiSOlCpan?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 718c45b4-eb39-48b9-410c-08dd4f54e1e2
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4202.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2025 13:13:34.5588
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uXW0mXf8ENTfYCSffLiJpVhzI1Uo/HS6d8lS0fr/iaGvU4ReRdMeAJhcjxXh7iqigyyeKk+hO+ZrQPUN9mvyjA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6112
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250217093906.506214-2-wei.fang@nxp.com>
 
+On Mon, Feb 17, 2025 at 05:38:59PM +0800, Wei Fang wrote:
+> When the DMA mapping error occurs, it will attempt to free 'count + 1'
+> tx_swbd instead of 'count', so fix this off-by-one issue.
+> 
+> Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>  drivers/net/ethernet/freescale/enetc/enetc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+> index 6a6fc819dfde..f7bc2fc33a76 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -372,13 +372,13 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+>  dma_err:
+>  	dev_err(tx_ring->dev, "DMA map error");
+>  
+> -	do {
+> +	while (count--) {
+>  		tx_swbd = &tx_ring->tx_swbd[i];
+>  		enetc_free_tx_frame(tx_ring, tx_swbd);
+>  		if (i == 0)
+>  			i = tx_ring->bd_count;
+>  		i--;
+> -	} while (count--);
+> +	};
 
-On 2/14/25 17:11, Jonathan Cameron wrote:
-> On Thu, 6 Feb 2025 17:49:00 +0000
-> Alejandro Lucero Palau <alucerop@amd.com> wrote:
->
->> On 2/5/25 21:33, Ira Weiny wrote:
->>> alucerop@ wrote:
->>>> From: Alejandro Lucero <alucerop@amd.com>
->>> [snip]
->>>   
->>>> diff --git a/include/cxl/pci.h b/include/cxl/pci.h
->>>> index ad63560caa2c..e6178aa341b2 100644
->>>> --- a/include/cxl/pci.h
->>>> +++ b/include/cxl/pci.h
->>>> @@ -1,8 +1,21 @@
->>>>    /* SPDX-License-Identifier: GPL-2.0-only */
->>>>    /* Copyright(c) 2020 Intel Corporation. All rights reserved. */
->>>>    
->>>> -#ifndef __CXL_ACCEL_PCI_H
->>>> -#define __CXL_ACCEL_PCI_H
->>>> +#ifndef __LINUX_CXL_PCI_H
->>>> +#define __LINUX_CXL_PCI_H
->>> Nit: I'd just use __LINUX_CXL_PCI_H in the previous patch.
->>
->> Dan suggested this change.
-> Would be odd if he meant in this patch....
->
-> Definitely no benefit in doing it here rather that when you
-> create the file in patch 1 that I can see.
+In enetc_lso_hw_offload() this is fixed by --count instead of changing
+to while and count--, maybe follow this scheme, or event better call
+helper function to fix in one place.
 
-
-Right. I'll fix it.
+The same problem is probably in enetc_map_tx_tso_buffs().
 
 Thanks
+Michal
 
-
-> J
->
->>
->>> Ira
->>>
->>> [snip]
->>
+>  
+>  	return 0;
+>  }
+> -- 
+> 2.34.1
+> 
