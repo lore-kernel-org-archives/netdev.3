@@ -1,138 +1,293 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-pl1-f228.google.com (mail-pl1-f228.google.com [209.85.214.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B8218DB1F
-	for <netdev@vger.kernel.org>; Mon, 17 Feb 2025 06:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230C318C33B
+	for <netdev@vger.kernel.org>; Mon, 17 Feb 2025 07:18:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739775449; cv=none; b=cAuNCLUOX8ZukklQspLj0M7nAe4F5wUY3Gmq504greZNYftgwQHxIrSnzMELxWBaz0PcjAdgAaQ+ZSwBe7PAu5HClCOOjmlK1YZtKIJwmKljfpbZCi+OvTMLJ43bPfl8mvbM8fCngo8G0f9+ssWivQ5Yr9OoVBQmoJ8GnhIAcQk=
+	t=1739776739; cv=none; b=jSLFVREzcfM96yo1ZcxDkkSWvt/HhuzJnYpGquxNojQMH29u2xQjd7zbSdGSFsAFDUxll9rgBXcKi4v71KJiBVqC2NKajcfnWbde7TEBm7TUWAvWf1fJ+BjmPmZfD98oL+xxxjEesz9sOY1DKFuIlFiJRq3LwUtX4i895UUwpj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739775449; c=relaxed/simple;
-	bh=fIDKHUBuqNQIcsfh74WwNDzJmSsMJZ3311IIVHmijwM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hxsd591uRvGN9zSELUJt150UugKgfFj3madj+gmtdFNBIrcesBg0BTXs1GjdyBqKDHC1oa4VLcc3IMoN7cPD1YVAj6Xr+ttrEZB/eNB17YdKMic6KVdAKCQK3YnNeAroRt48hg3qhoedaQDJJNsZ83cu1G3RShr0/VCcGY4UTn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JLIyZ4ku; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1739776739; c=relaxed/simple;
+	bh=ndXTYWnD0dGmJ/CTps1hj3PgFz/Squ4fkXCPkynjP7Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=QCILoEZ+D5aolGTaFCbEhB/N8F1lF02CUYS7gtwvl9UJ/ol8sOsPrnO03a3Lb6Ri4lBCphDG2HkWr5QX2Kp0WS/UuhzOdjcPS5wCELbEtVCVNhrn183DcllNJMXLy1+z1K/1TXMflCgN8pE3cj4xJKG+AMBhQbakbyAOtcCSstQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=cXkZ6oMP; arc=none smtp.client-ip=209.85.214.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JLIyZ4ku"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ab744d5e567so747423866b.1
-        for <netdev@vger.kernel.org>; Sun, 16 Feb 2025 22:57:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="cXkZ6oMP"
+Received: by mail-pl1-f228.google.com with SMTP id d9443c01a7336-220d132f16dso57694495ad.0
+        for <netdev@vger.kernel.org>; Sun, 16 Feb 2025 23:18:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739775446; x=1740380246; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yWaCogYs/KhJPjsvCGHqur4uBo9p0cCXXx7YAfBkX3c=;
-        b=JLIyZ4kucJA7rKOVS/tZpDvzIPdawj3RwvcVp48WKwwB0gvuMXJAhmlnV6t0CS5FcT
-         zv26OnIKKrT2sUHoBQk8aeGAuynblaYYSkHnN4l4iNj6UVi7Q9TQQ79/w7a0DB5zDllN
-         ugCgz8lmEoRp1eOvjAxB8v/VXSqzbpwusTZTHSlEaXHL1npS2e2AdEymY77RpAkgDm4r
-         InDCxPQJ3649Eh03LgNz7ImYPpbbSw+kzjEgZk34WT+ZCb3LgPQxTAQe2XXrWH3p9iT/
-         hrctS8pjPnP350NBnQ/u7B9WSBOivQr4bFgEAADdH8/x+AFC4b+Igxgl8x7DsiYVFeTq
-         GJWA==
+        d=purestorage.com; s=google2022; t=1739776736; x=1740381536; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HkZ3MuwsfFvPuUcCGF9IbI3/TlNqWSAvIHqD4D2Ewrs=;
+        b=cXkZ6oMPQ+SpaEweayNzDI+ZwwBfjHCPkuyhb5xcKhqJJA7FBI83b9h+9VfkJihcPd
+         17upt3j4O7t9ee8W73IkxcJLgLhK+phbXiRtPi44ntRbDTD/mrH/9hQMCFCYIi+fC+9F
+         ayNiVCqXRK/xhFZ6tNJwEGVtY5yrNvU8hQHmOwC6y7KVvLsl89tqgmlrSGr80Scdk/ha
+         JgnT/5y01tr9RfPOL2U/l4rco4Cr18Kcki+IXl0JrYGektIXrno0ESf202qUeKcq9R7r
+         oe20/tVhsrsuudfKfPRHMoglQYpm0elkGe1OiawTfnsBp8+q1hlMNQ7jz7JvdJg6SmX7
+         D9+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739775446; x=1740380246;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yWaCogYs/KhJPjsvCGHqur4uBo9p0cCXXx7YAfBkX3c=;
-        b=cXBRVA9pPVtS2+2J+PNXu9/BT7CAcU2MxwRA69QkXI+WXVoCx+RQgnfTVG/ITA9ofu
-         IzZj6EgdtK9N4SCDIfkm8msCmBgPHM5fG4paDfkIZjpVmi6OcIgbFSlT9LVk27ntLJYX
-         k0mLEQ67gL9CcP2vBcDrV4vayJYuOn6AtXp2RPwYK3blQi4uuWuItasoG/nhpPHgcJEa
-         Ga23yrkaNLgojM2mX5NfY6ERDmiIVBx3OJ9vXOyIfXnQF1lTt+oPt19jRS9SL9La3Rn1
-         pamAu4U/KGizSQNhV8TsaUFnN7S5f7w2/f/y5K1uWH9NLgZeR2ZIneh3MapKq8msoZ1H
-         gDBw==
-X-Forwarded-Encrypted: i=1; AJvYcCUcLq+mYCAFe3n+3yHo1dB62chpp9qAhObaI8jC1PB9tG3fZ1TAs1+DUPCtloRmIwAXJdGwMDM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDfcVuJHM5wj/busjUXwzKdjbc+4AsZiPwWRQ8291sN2jWpso6
-	AlRCS97QsM8DX99PtbFPmn+fOgwsTipf8gRhx20pQxc7vNjqzbX7+cRZtCo3mk4=
-X-Gm-Gg: ASbGncuzmDHFCzO9PhtAL0AU/vCUrtTjhzNobAEeb1y3Sn0J/YQjBlbL+LXYdfRGbGF
-	cBCj/H4ni2se/r2/lg4clbPKk9yMnUb5cQGesV71rE6vf6wrPOSQ+iz7tIPw7ZdWHGAFBN1mPlg
-	N01p8VQxxXRr9T0P8dc/TpHMBasmOi2L+5Axqhx5mcF4woLgN2WUxQBf4lfwiI/utqRdJ9HVG0q
-	hSkOY8hZOxx6kH6AYZdco7j3IAV6t6glYZ3JBa/4Gkegq0c8bxNBgOD3a2I/2zvoMT0J7Sj1pCQ
-	Rhtp0vtf/L7o7PmDz4H1
-X-Google-Smtp-Source: AGHT+IGIuaVlGpB6VdQAkuJ8DUCk9lW3FI/5v0aSAYWX8XO1pohyiVDoKQvMA3rT2tbS8GCpM3WpMg==
-X-Received: by 2002:a17:907:d0f:b0:ab6:c726:2843 with SMTP id a640c23a62f3a-aba510aece5mr1557229566b.22.1739775446050;
-        Sun, 16 Feb 2025 22:57:26 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-abb9553fbd0sm205055966b.84.2025.02.16.22.57.24
+        d=1e100.net; s=20230601; t=1739776736; x=1740381536;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HkZ3MuwsfFvPuUcCGF9IbI3/TlNqWSAvIHqD4D2Ewrs=;
+        b=BHx2rMM0RgXrlvPvugDYpsuo3D1U4vmZKp5vL9JXNm3Ly26VJ3WE4lVD60N22Qe9L3
+         4grZ16LUOAfcrYNRx8KxYC+Lz6DFcsoBaterq/zLlf4Ll1jFGUi7ou7EZERVe41Js/t7
+         Ub4cZZlvcnvbaXWahc2Sr/q3cltsQlDSZcEWggWPs2ajw0CF2vcSDDpl8562yiJr5apy
+         m5dFLt+ZR/gdVXZiZcLYKW7eaW3FjMJPmKsigwXb6u3Jc2kKdDj8Vt4lfQosi65ubxzR
+         XkePE+djvvElk1v25xjXEwIxwVDTXb694mkvwC9JTCHTpvlU2oR8UHLkPmq3Kbb2MIdl
+         w9eA==
+X-Gm-Message-State: AOJu0YzVb8uoooQksxQuL7yvXfcwWj29q9JwrfQXsaJ6Qh1NI4g4qsEp
+	PkMmn26nnciX/hAvyk2lW6opweAUJkl8TRGjK92gC4R5FFSOxQbr69PcE/clR4VRBqomQST6kYC
+	48QGm6XkIgQgIjZEYwCKRO3cxVkdMe6b8BsNp3NMg4Zqcz2Dq
+X-Gm-Gg: ASbGncuyi5spUGtfEvd0c3eWoO+h9Ar2Qzc7I9dtzIlhJ40IGvtIXDkFuBL6a84KOvQ
+	XVP9xyY3cVYzxiSLTAIZpqjaG37y8Iwrp4LpokICisT8yVnUWrRaxmCEtlxy7sXpQCU6KDC/Fk4
+	l71sr7bCMf5rmCM2keHd7edfbG+4NOFP5iRUxgsiWVpbO+70N57RdIAmyRSPS1H9jz5DACjt8LA
+	aOY5Ld4IpjeCMlLc9fHjO4baV/4KPe7KyhSnEp5x6klWAuvnhmhXf1vSzeev6q8HTBAOJDQNc7n
+	nDlmsjCgwVDuROtsZbjs8k+S
+X-Google-Smtp-Source: AGHT+IH96NV5yBtPS25vId79PqydhpDNQgmuOjjt2XC/Hk1zsR9+IC6loQzK3G+yPc2QpSiwVLYpjqreq5wq
+X-Received: by 2002:a17:902:e802:b0:220:ff3f:6ccb with SMTP id d9443c01a7336-221040ac211mr119503775ad.42.1739776736316;
+        Sun, 16 Feb 2025 23:18:56 -0800 (PST)
+Received: from c7-smtp-2023.dev.purestorage.com ([2620:125:9017:12:36:3:5:0])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-220d5201ce8sm4332605ad.18.2025.02.16.23.18.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Feb 2025 22:57:25 -0800 (PST)
-Date: Mon, 17 Feb 2025 09:57:21 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, pierre@stackhpc.com,
-	Dan Carpenter <error27@gmail.com>
-Subject: Re: [net v1] devlink: fix xa_alloc_cyclic error handling
-Message-ID: <52a19d60-009d-4564-bedc-56c6425c5275@stanley.mountain>
-References: <20250214132453.4108-1-michal.swiatkowski@linux.intel.com>
- <2fcd3d16-c259-4356-82b7-2f1a3ad45dfa@lunn.ch>
- <64053332-cee0-49d8-a3ae-9ec0809882c0@stanley.mountain>
+        Sun, 16 Feb 2025 23:18:56 -0800 (PST)
+X-Relaying-Domain: purestorage.com
+Received: from dev-ushankar.dev.purestorage.com (dev-ushankar.dev.purestorage.com [IPv6:2620:125:9007:640:7:70:36:0])
+	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id 90A893407B1;
+	Mon, 17 Feb 2025 00:18:55 -0700 (MST)
+Received: by dev-ushankar.dev.purestorage.com (Postfix, from userid 1557716368)
+	id 8BD3FE56BB5; Mon, 17 Feb 2025 00:18:55 -0700 (MST)
+From: Uday Shankar <ushankar@purestorage.com>
+Date: Mon, 17 Feb 2025 00:18:46 -0700
+Subject: [PATCH net-next v4 3/3] netconsole: allow selection of egress
+ interface via MAC address
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <64053332-cee0-49d8-a3ae-9ec0809882c0@stanley.mountain>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250217-netconsole-v4-3-0c681cef71f1@purestorage.com>
+References: <20250217-netconsole-v4-0-0c681cef71f1@purestorage.com>
+In-Reply-To: <20250217-netconsole-v4-0-0c681cef71f1@purestorage.com>
+To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+ =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>, 
+ Simon Horman <horms@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ Johannes Berg <johannes@sipsolutions.net>, Jonathan Corbet <corbet@lwn.net>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-wireless@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Uday Shankar <ushankar@purestorage.com>
+X-Mailer: b4 0.14.2
 
-Both versions find 97 warning but they're slightly different so I should
-create some kind of combined check.
+Currently, netconsole has two methods of configuration - module
+parameter and configfs. The former interface allows for netconsole
+activation earlier during boot (by specifying the module parameter on
+the kernel command line), so it is preferred for debugging issues which
+arise before userspace is up/the configfs interface can be used. The
+module parameter syntax requires specifying the egress interface name.
+This requirement makes it hard to use for a couple reasons:
+- The egress interface name can be hard or impossible to predict. For
+  example, installing a new network card in a system can change the
+  interface names assigned by the kernel.
+- When constructing the module parameter, one may have trouble
+  determining the original (kernel-assigned) name of the interface
+  (which is the name that should be given to netconsole) if some stable
+  interface naming scheme is in effect. A human can usually look at
+  kernel logs to determine the original name, but this is very painful
+  if automation is constructing the parameter.
 
-drivers/input/touchscreen/cyttsp_core.c:658 cyttsp_probe() warn: passing non-max range 's32min-(-1),1' to 'ERR_PTR'
-drivers/gpu/drm/mediatek/mtk_dp.c:2736 mtk_dp_probe() warn: passing non-max range 's32min-(-1),1' to 'dev_err_probe'
-drivers/clk/clk-gpio.c:371 clk_gated_fixed_probe() warn: passing non-max range 's32min-(-1),1' to 'dev_err_probe'
-drivers/net/ethernet/socionext/netsec.c:1902 netsec_acpi_probe() warn: passing non-max range 's32min-(-1),1' to 'dev_err_probe'
-drivers/net/ethernet/socionext/netsec.c:1909 netsec_acpi_probe() warn: passing non-max range 's32min-(-1),1' to 'dev_err_probe'
-drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c:2050 mcp251xfd_probe() warn: passing non-max range 's32min-(-1),1' to 'dev_err_probe'
-drivers/net/can/spi/hi311x.c:857 hi3110_can_probe() warn: passing non-max range 's32min-(-1),1' to 'dev_err_probe'
-drivers/net/can/dev/dev.c:496 can_get_termination() warn: passing non-max range 's32min-(-1),1' to 'ERR_PTR'
-drivers/pwm/pwm-sl28cpld.c:228 sl28cpld_pwm_probe() warn: passing non-max range 's32min-(-1),1' to 'ERR_PTR'
-drivers/leds/leds-is31fl319x.c:423 is31fl319x_parse_fw() warn: passing non-max range 's32min-(-1),1' to 'dev_err_probe'
-drivers/leds/rgb/leds-mt6370-rgb.c:738 mt6370_assign_multicolor_info() warn: passing non-max range 's32min-(-1),1' to 'dev_err_probe'
-drivers/leds/rgb/leds-mt6370-rgb.c:945 mt6370_leds_probe() warn: passing non-max range 's32min-(-1),1' to 'dev_err_probe'
-drivers/leds/rgb/leds-mt6370-rgb.c:952 mt6370_leds_probe() warn: passing non-max range 's32min-(-1),1' to 'dev_err_probe'
+For these reasons, allow selection of the egress interface via MAC
+address when configuring netconsole using the module parameter. Update
+the netconsole documentation with an example of the new syntax.
+Selection of egress interface by MAC address via configfs is far less
+interesting (since when this interface can be used, one should be able
+to easily convert between MAC address and interface name), so it is left
+unimplemented.
 
-The first return from acpi_data_prop_read() could be 1.  I'll report
-this.
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Tested-by: Breno Leitao <leitao@debian.org>
+---
+ Documentation/networking/netconsole.rst |  6 +++-
+ include/linux/netpoll.h                 |  6 ++++
+ net/core/netpoll.c                      | 51 +++++++++++++++++++++++++--------
+ 3 files changed, 50 insertions(+), 13 deletions(-)
 
-drivers/gpu/drm/msm/msm_gem_submit.c:537 msm_parse_deps() warn: passing non-max range '(-4095)-(-1),22' to 'ERR_PTR'
+diff --git a/Documentation/networking/netconsole.rst b/Documentation/networking/netconsole.rst
+index 84803c59968a3237012fab821f432eb531aba45c..4b0f32ed5c635dbce594bc09e5d25c7654350779 100644
+--- a/Documentation/networking/netconsole.rst
++++ b/Documentation/networking/netconsole.rst
+@@ -47,7 +47,7 @@ following format::
+ 	r             if present, prepend kernel version (release) to the message
+ 	src-port      source for UDP packets (defaults to 6665)
+ 	src-ip        source IP to use (interface address)
+-	dev           network interface (eth0)
++	dev           network interface name (eth0) or MAC address
+ 	tgt-port      port for logging agent (6666)
+ 	tgt-ip        IP address for logging agent
+ 	tgt-macaddr   ethernet MAC address for logging agent (broadcast)
+@@ -64,6 +64,10 @@ or using IPv6::
+ 
+  insmod netconsole netconsole=@/,@fd00:1:2:3::1/
+ 
++or using a MAC address to select the egress interface::
++
++   linux netconsole=4444@10.0.0.1/22:33:44:55:66:77,9353@10.0.0.2/12:34:56:78:9a:bc
++
+ It also supports logging to multiple remote agents by specifying
+ parameters for the multiple agents separated by semicolons and the
+ complete string enclosed in "quotes", thusly::
+diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
+index f91e50a76efd4b016381c632456397eea1ea877f..1ade65b59be49cfdcf86ed6e938287b949aa9f58 100644
+--- a/include/linux/netpoll.h
++++ b/include/linux/netpoll.h
+@@ -25,7 +25,13 @@ union inet_addr {
+ struct netpoll {
+ 	struct net_device *dev;
+ 	netdevice_tracker dev_tracker;
++	/*
++	 * Either dev_name or dev_mac can be used to specify the local
++	 * interface - dev_name is used if it is a nonempty string, else
++	 * dev_mac is used.
++	 */
+ 	char dev_name[IFNAMSIZ];
++	u8 dev_mac[ETH_ALEN];
+ 	const char *name;
+ 
+ 	union inet_addr local_ip, remote_ip;
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 62b4041aae1ae8c7dc47c89fb40b14bbd4ad0e0e..64c08b845c92bb2a2165de6dfba95dede2b581db 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -501,7 +501,8 @@ void netpoll_print_options(struct netpoll *np)
+ 		np_info(np, "local IPv6 address %pI6c\n", &np->local_ip.in6);
+ 	else
+ 		np_info(np, "local IPv4 address %pI4\n", &np->local_ip.ip);
+-	np_info(np, "interface '%s'\n", np->dev_name);
++	np_info(np, "interface name '%s'\n", np->dev_name);
++	np_info(np, "local ethernet address '%pM'\n", np->dev_mac);
+ 	np_info(np, "remote port %d\n", np->remote_port);
+ 	if (np->ipv6)
+ 		np_info(np, "remote IPv6 address %pI6c\n", &np->remote_ip.in6);
+@@ -570,11 +571,18 @@ int netpoll_parse_options(struct netpoll *np, char *opt)
+ 	cur++;
+ 
+ 	if (*cur != ',') {
+-		/* parse out dev name */
++		/* parse out dev_name or dev_mac */
+ 		if ((delim = strchr(cur, ',')) == NULL)
+ 			goto parse_failed;
+ 		*delim = 0;
+-		strscpy(np->dev_name, cur, sizeof(np->dev_name));
++
++		np->dev_name[0] = '\0';
++		eth_broadcast_addr(np->dev_mac);
++		if (!strchr(cur, ':'))
++			strscpy(np->dev_name, cur, sizeof(np->dev_name));
++		else if (!mac_pton(cur, np->dev_mac))
++			goto parse_failed;
++
+ 		cur = delim;
+ 	}
+ 	cur++;
+@@ -679,27 +687,45 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
+ }
+ EXPORT_SYMBOL_GPL(__netpoll_setup);
+ 
++/*
++ * Returns a pointer to a string representation of the identifier used
++ * to select the egress interface for the given netpoll instance. buf
++ * must be a buffer of length at least MAC_ADDR_STR_LEN + 1.
++ */
++static char *egress_dev(struct netpoll *np, char *buf)
++{
++	if (np->dev_name[0])
++		return np->dev_name;
++
++	snprintf(buf, MAC_ADDR_STR_LEN, "%pM", np->dev_mac);
++	return buf;
++}
++
+ int netpoll_setup(struct netpoll *np)
+ {
++	struct net *net = current->nsproxy->net_ns;
++	char buf[MAC_ADDR_STR_LEN + 1];
+ 	struct net_device *ndev = NULL;
+ 	bool ip_overwritten = false;
+ 	struct in_device *in_dev;
+ 	int err;
+ 
+ 	rtnl_lock();
+-	if (np->dev_name[0]) {
+-		struct net *net = current->nsproxy->net_ns;
++	if (np->dev_name[0])
+ 		ndev = __dev_get_by_name(net, np->dev_name);
+-	}
++	else if (is_valid_ether_addr(np->dev_mac))
++		ndev = dev_getbyhwaddr(net, ARPHRD_ETHER, np->dev_mac);
++
+ 	if (!ndev) {
+-		np_err(np, "%s doesn't exist, aborting\n", np->dev_name);
++		np_err(np, "%s doesn't exist, aborting\n", egress_dev(np, buf));
+ 		err = -ENODEV;
+ 		goto unlock;
+ 	}
+ 	netdev_hold(ndev, &np->dev_tracker, GFP_KERNEL);
+ 
+ 	if (netdev_master_upper_dev_get(ndev)) {
+-		np_err(np, "%s is a slave device, aborting\n", np->dev_name);
++		np_err(np, "%s is a slave device, aborting\n",
++		       egress_dev(np, buf));
+ 		err = -EBUSY;
+ 		goto put;
+ 	}
+@@ -707,7 +733,8 @@ int netpoll_setup(struct netpoll *np)
+ 	if (!netif_running(ndev)) {
+ 		unsigned long atmost;
+ 
+-		np_info(np, "device %s not up yet, forcing it\n", np->dev_name);
++		np_info(np, "device %s not up yet, forcing it\n",
++			egress_dev(np, buf));
+ 
+ 		err = dev_open(ndev, NULL);
+ 
+@@ -741,7 +768,7 @@ int netpoll_setup(struct netpoll *np)
+ 			if (!ifa) {
+ put_noaddr:
+ 				np_err(np, "no IP address for %s, aborting\n",
+-				       np->dev_name);
++				       egress_dev(np, buf));
+ 				err = -EDESTADDRREQ;
+ 				goto put;
+ 			}
+@@ -772,13 +799,13 @@ int netpoll_setup(struct netpoll *np)
+ 			}
+ 			if (err) {
+ 				np_err(np, "no IPv6 address for %s, aborting\n",
+-				       np->dev_name);
++				       egress_dev(np, buf));
+ 				goto put;
+ 			} else
+ 				np_info(np, "local IPv6 %pI6c\n", &np->local_ip.in6);
+ #else
+ 			np_err(np, "IPv6 is not supported %s, aborting\n",
+-			       np->dev_name);
++			       egress_dev(np, buf));
+ 			err = -EINVAL;
+ 			goto put;
+ #endif
 
-Clear bug.  Double negative -(-EINVAL).  I'll send a patch.
-
-drivers/gpu/drm/xe/xe_guc.c:1241 xe_guc_suspend() warn: passing non-max range '(-110),(-71),(-6),1-268435455' to 'ERR_PTR'
-drivers/gpu/drm/i915/gt/uc/intel_guc.c:698 intel_guc_suspend() warn: passing non-max range '1-268435455' to 'ERR_PTR'
-
-Smatch gets confused by the return FIELD_GET(GUC_HXG_RESPONSE_MSG_0_DATA0, header);
-in xe_guc_mmio_send_recv().
-
-drivers/spi/spi-pxa2xx-platform.c:101 pxa2xx_spi_init_pdata() warn: passing non-max range 's32min-(-1),1' to 'ERR_PTR'
-drivers/spi/spi-cs42l43.c:396 cs42l43_spi_probe() warn: passing non-max range 's32min-(-23),(-21)-(-1),1' to 'dev_err_probe'
-drivers/spi/spi-rockchip-sfc.c:654 rockchip_sfc_probe() warn: passing non-max range 's32min-(-1),1' to 'dev_err_probe'
-drivers/net/dsa/mv88e6xxx/pcs-6352.c:250 marvell_c22_pcs_link_up() warn: passing non-max range '(-110),(-95),(-16),1' to 'ERR_PTR'
-
-False positive.  marvell_c22_pcs_restore_page() is complicated.
-
-drivers/net/phy/phy_device.c:1150 phy_connect() warn: passing non-max range 's32min-(-1),1' to 'ERR_PTR'
-drivers/net/phy/phy_device.c:1651 phy_attach() warn: passing non-max range 's32min-(-1),1' to 'ERR_PTR'
-drivers/net/ethernet/ethoc.c:719 ethoc_mdio_probe() warn: passing non-max range 's32min-(-1),1' to 'dev_err_probe'
-drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c:178 hbg_phy_connect() warn: passing non-max range 's32min-(-1),1' to 'dev_err_probe'
-
-xa_alloc_cyclic() returns 1 if the allocation succeeded after wrapping.
-I'll report this.
-
-drivers/net/ethernet/aquantia/atlantic/aq_ring.c:481 aq_xdp_run_prog() warn: passing non-max range '(-16),0,5-6' to 'ERR_PTR'
-
-Bug.  Mixing error codes from aq_hw_err_from_flags() and NETDEV_TX_BUSY.
-
-drivers/media/i2c/ds90ub913.c:856 ub913_probe() warn: passing non-max range 's32min-(-1),1' to 'dev_err_probe'
-
-This is a transient bug that went away after a database rebuild.  I'll
-debug the rest over time.
-
-regards,
-dan carpenter
+-- 
+2.34.1
 
