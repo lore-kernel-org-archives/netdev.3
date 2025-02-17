@@ -1,333 +1,596 @@
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2042.outbound.protection.outlook.com [40.107.102.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5073227706
-	for <netdev@vger.kernel.org>; Mon, 17 Feb 2025 18:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739817200; cv=fail; b=aHO6n3o7gwhkQ5pilWNDZ5gLwmACe3yNUFqwtd70B0cQQUVk1m9r7sLvg0c+LUwowLD5fl/074mUk9eSQo0Lx62qjHZuErz497s3k2FQsdYYfUTzYDfG793IDvrUjtlsL7NFRQL9xkTAPIG12jyegtzHhZKgzTRy7EiEEIFO8pI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739817200; c=relaxed/simple;
-	bh=68cpnrPcgHbXLeVPn3ayFMhbG4e/ad6kYmoRgzkEKTM=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Cy+g4JFaAvuF5B1gtlt4WGkuMjW4TqHiHXNbsnbwGOmj17yVQqSnfwJhWCjGA5Wd8UvxIeqChjjSgHKpt0Mifc4szwls0RqjIgJAEjHwkth/zgEAaNtiPM0HyBidjWDWJT1fSR04fZ9DyMOZTX9p2Pb+DTedl3w5t9lINyEo9aU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gRk1ExRZ; arc=fail smtp.client-ip=40.107.102.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68262253BA;
+	Mon, 17 Feb 2025 18:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739817542; cv=none; b=VBmTIPPxCd9AynSeE89GxW1J9Bbb9U8QcblL0u6TExXpqhhuYOW2SWP0Mwd+PCEvD9NC8tHI1fn9tYuJ/sSGspzH90fzr1YqK6YabWAeYVq1gYi8SzlJcYZyTqyRmhKONL4iB530Ka25gscDW6+/gKqu7d0wD6xfOg+mOetSveg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739817542; c=relaxed/simple;
+	bh=dZsC/3h/MKO8YfPS5c8QTfQjs6ZTCKMOtcNcVvSS5+8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SU905kRoK7hrGrHJoPjkinPyQ0s2xP4jbZsOe2TnwfS9M7RoJpWD1UV3yl6ctyZ74UHzL5WpkV6A1WUCRX3R9e5RJI9J7XQTN8v+iuL651j+OyijRAiOrAvFGXZDfd6LpSVqJJGTFK1TSlOn6vr+IIImKUarOecOJguAxzLhKAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TputmEFh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gRk1ExRZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wGynErp1Yku7Qz9cHu0ByEjXqv+v5/H0cD0WsfuxoOZHQYK4paZ8xUO8jZypnbNatEFIrGqB3rEiQsljbdLsPWJIV7Jd2IMhE0FCuzTgmnkU9KQHA+9GsKdj3JAoxfg8FXq5AgTa9rGkCahZI85iWV0W8MxLSpxhKiYOVYTWGRy/nntdPaqTqgoafD8uC9Vfe3mZNzVvTvPxRCIgXlPOqbax8ubbGo8Qyoc1pfKm7bZ6qx7kar7IFzJcO3EI64GZWmt0vQQgC8CwpYBNqrvyQDRmKM2J4wmEVWPS6F+5lctJQSPOPjbYbH6R1Eur9XrDexnB6XpATOq72XZimRM5tQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FMY53Dgl9NHik6j0BYVB8Na5Xb7NBiHChRTu9jidtOU=;
- b=BR0AOoYgR/bMcjVj3QPeYv1HaLU6TxCvixKHn9QamgZSC2iYO4D0XczQ/Okeg0/r7Ag7Lp8NQyxX4zU9P5bZz1IQX4yWUmoGPqhCa+wJd472MwXOfPtDrbFUUzh3rgTym8rNVW1PsnnFkmA6zMAgzTVcLOXQp2QcGuTztgcBqFzxnFWgSUimPbMywd+bH/V+8xtnP3qzMYCqL4BJUtRB7HX7TlXZv6PCtXVdu0ECTQqyAIYRwROqDpZRIjLsGh1El5C50eVk6fTWObSMN4kn4BtuJLCilLt6OPdvzPpDv3AWOdHwfu/zhtKN9COiMm96IV6hJZL+XDo42Yr65p0SKA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FMY53Dgl9NHik6j0BYVB8Na5Xb7NBiHChRTu9jidtOU=;
- b=gRk1ExRZRRwijzGAh8CJAs6wISpfkdYZEeWRUBZY6eOZMHiTX6AbRP7KazsXPw0EyBjkHzAVLYbTDL5/4pOObLnF+yVMO4AnTj5qAy2Kr4oOD1nDBORtWaqGqyH1eBfn/iPbNSEzN4Sswsb4Aex+b1F3QLoHLAxJCCsnBt+EEK+++dS8330p0xdn13EpmOmipMLrCwrGhyHpRcfqHIrLW01uyCG3Q5HtCOtkjB5dHfrS2asmrDvDGsDllbXb8CiwNtuktLKP44HJgVFtuaTPAWjJGb5Vkpld5Nc6xykJ/Z79Ggw2aXUuKuVHfQ02WyV3iAvFBKlg8Ltd9TAKwX6KVA==
-Received: from BYAPR11CA0078.namprd11.prod.outlook.com (2603:10b6:a03:f4::19)
- by DS7PR12MB5910.namprd12.prod.outlook.com (2603:10b6:8:7b::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8445.19; Mon, 17 Feb 2025 18:33:10 +0000
-Received: from SJ1PEPF00002317.namprd03.prod.outlook.com
- (2603:10b6:a03:f4:cafe::d) by BYAPR11CA0078.outlook.office365.com
- (2603:10b6:a03:f4::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8445.16 via Frontend Transport; Mon,
- 17 Feb 2025 18:33:10 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF00002317.mail.protection.outlook.com (10.167.242.171) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8466.11 via Frontend Transport; Mon, 17 Feb 2025 18:33:10 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 17 Feb
- 2025 10:33:02 -0800
-Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 17 Feb
- 2025 10:32:59 -0800
-References: <b800a71479a24a4142542051636e980c3b547434.1739794830.git.pablmart@redhat.com>
-User-agent: mu4e 1.8.14; emacs 29.4
-From: Petr Machata <petrm@nvidia.com>
-To: Pablo Martin Medrano <pablmart@redhat.com>
-CC: <netdev@vger.kernel.org>, "David S . Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan
-	<shuah@kernel.org>
-Subject: Re: [PATCH net] selftests/net: big_tcp: longer netperf session on
- slow machines
-Date: Mon, 17 Feb 2025 18:50:08 +0100
-In-Reply-To: <b800a71479a24a4142542051636e980c3b547434.1739794830.git.pablmart@redhat.com>
-Message-ID: <87tt8sfmlk.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TputmEFh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180BFC4CED1;
+	Mon, 17 Feb 2025 18:38:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739817541;
+	bh=dZsC/3h/MKO8YfPS5c8QTfQjs6ZTCKMOtcNcVvSS5+8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TputmEFhGLuDkSadMvjCrBnrYPBQ981+8f1P+q7EctybtfBgbapK54U1ua6Jwbf8H
+	 sQIyuXwklpqkaCj34MiFpl+l1MwvKeZ3Wj79VH6dYgSD/tiH/3GWC1gpF1/E3SPXyr
+	 p3jF/uKHfxummcjwZ6VO6WpB6x2XTYJ+eJvuGWkI7ij596Zqo4oSsQDNItcPXeWiF8
+	 PoAMj6ibTObC0E79gj0EkVjVCCjDCMAoYHnbbdXJbxjyi31m2D3FderirberBolW4/
+	 SRF8Jc3e27ZgbluuIKIsl05nRiuFu8RjTq04Ty0QH0ogXBVMePTPFIY3ZyE/yB+eRD
+	 M6uQkH1dDnqKA==
+Date: Mon, 17 Feb 2025 18:38:54 +0000
+From: Simon Horman <horms@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	DENG Qingfang <dqfext@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
+	upstream@airoha.com
+Subject: Re: [PATCH net-next v4 13/16] net: airoha: Introduce Airoha NPU
+ support
+Message-ID: <20250217183854.GP1615191@kernel.org>
+References: <20250213-airoha-en7581-flowtable-offload-v4-0-b69ca16d74db@kernel.org>
+ <20250213-airoha-en7581-flowtable-offload-v4-13-b69ca16d74db@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002317:EE_|DS7PR12MB5910:EE_
-X-MS-Office365-Filtering-Correlation-Id: c97ad517-6754-4a5a-03ba-08dd4f8187cd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?U0tmTDByU1M4QzF5ZkxaQTZhYzMzS0YzQ1VESGUyUTR6SURPNEVnOU5BaGRw?=
- =?utf-8?B?TFp3eVpCa1FNbGtWNGdpVlprNko0UVRaR1NRblVzSllJdU9Jc3E5QUlMVDdY?=
- =?utf-8?B?L2RRMGxkWkhDeG5Sc01UWlZKd2ZoUEFhbWt5dDFkSzBZMnhZMWxHVEJoQ2lX?=
- =?utf-8?B?WVl3a2hVM2dFeFI0ejZFb1RTWWh5RHcxU1R5dGRVYm1pNlNNMjhWQnZQWHpr?=
- =?utf-8?B?RFlHS1dCbWV1QUJVNm1uRG1TL2hpR3ExOWZWa01sOXBiUjREUHVaa3E4OWlC?=
- =?utf-8?B?Szh0Qm1mZWEreFVVZFNlcGRLNVhaSHIzYVNsbUYrV2Z3YmxVNG4weTNjL1lr?=
- =?utf-8?B?eERGYjM1V09mL2x0UHNYRklmajlPUGg3aC9VMTZSOVEwZ3JtcXZqU2RYTUE1?=
- =?utf-8?B?Vk5ZbHQ3V2sya2UxNFpPdnRtWmtwVzVJUS85ZVd2dzBJNXNRdzBFdUVoRTRk?=
- =?utf-8?B?UXpiMVVrRTJMYm5rNktRTXNYd1NGcE85Q0FoRDFRRVFRelQzTXM0VnFzbzNJ?=
- =?utf-8?B?VU80TkJYT2hVL29lTHROeE9KRWd0QUI0Vi9DRWgzRTUyWEZnL3FPcHVRdjd0?=
- =?utf-8?B?bElra3hzWXlpb3RjcHk4NzExTERrVDRDbVV0aVNTWExhV1Rqc3M2ZWI0d1kv?=
- =?utf-8?B?MTVqUGlRYmdyTWkwSVdFQ2YvUC8zR0w0WE1id2t6SW5KdEdiQStPeEF2bmhh?=
- =?utf-8?B?QTFTc1ptS3BrS0FCZnY3QjZ2aGFzczhRZUkrL216N3B2Tjdjek4reFVzZGh4?=
- =?utf-8?B?eXV1T2hTbGM3QzMvZ2RwNlZkdEpBWnVERmtvQm94US8zekZEYTZCT0hWeUVP?=
- =?utf-8?B?TWhydFNaZjRicTA0TkVUMDE1RUJyVW9rMDF2cWNrVElqS1g4bEppTFVSTlpi?=
- =?utf-8?B?Znp0RUhTeHRJNVVlZzJydjcwOW9TeXBNRC95SXlrMXpFWTRCVmNQU2dmT1Qy?=
- =?utf-8?B?b1lvdXQrdXEwZ2VlbHRoaEM0Vit0UGFJQkhDN3M5Q0l6YnBJYngwejBVWlpl?=
- =?utf-8?B?emFwUWJ3bFo5MnFVU2EvNTFCaktZQ1FsODByaVd1Ty9mR3ovdVdIZm1IOEho?=
- =?utf-8?B?MktXZFJnNmlJalZJTC9xZ1FpbzZaU3d5WkQwdUtrNmgrRFQ3blJ1MFRzNzlJ?=
- =?utf-8?B?MU8wTC84MExWSmJneTI1Rmt4Vng0TWhNeGpTaTBwNTN4ZG1ZSlZ0REsrUUlu?=
- =?utf-8?B?aGtvK3pmSUYvdGJrc3VTdVQ4WGppNitldXM4cFJaeXgzM2RjRUxLU01EUDNm?=
- =?utf-8?B?dG1nUjQ3RUE0T2p1WkNpeFhTR2lSSDBHRkY1dFhydVRtc0x3eUYvM1pndDhC?=
- =?utf-8?B?ZTl2ZFBRZk1CSzFZK24zTXhnbG1Mdy8vSmtNaG9iUDJjdkhybE1Oajl0WFBP?=
- =?utf-8?B?ZGR0YnppZ0YwVSt4ZDlUVmw5SUpZalJkb21qSkhkekRoMTc0WDZaTXc2Um9j?=
- =?utf-8?B?aUc4TTVnWEZRMG9ycTR4VGo4MnovcENjRzVaTmRaQVQ0Y0FvU3lIbzd5VUpr?=
- =?utf-8?B?bU1hWk41OVBpTlJiYVpLcVlvZkozT1VhbW9rejBQS0JEazBKc09vSzREbXFw?=
- =?utf-8?B?c1ZQNGRxTEZYcVFZMUxya2d0K2lwNXV4T1V2UjdzYjY5clhYMkhhdk1EQjlF?=
- =?utf-8?B?T04xK2Z2aUFJYklTQ3BTUDZmNUNGcllVMVNaRFFiQkdjdlNOc09GcGdrZjNO?=
- =?utf-8?B?TFlheUNtWTM1cDI2RzhVaEgzYmlNSkNKR01PRVZtbEV6WERTUVY1OVdNTXJu?=
- =?utf-8?B?NUJBeUJNRTI5aGJWT2xJTituUXJPQTE1UXdNdzNHWDdzb3g5a2N5aDM2Q3FM?=
- =?utf-8?B?eDdWSTNTdWxoMjc5VG9JWU5pOTRJbUV1c1VHQUUvYitYajFPUFpOVitSaDFm?=
- =?utf-8?B?RVc5QnljMklCZU9Fa2RQakdneEZ4eG0yR29HZDVtWGV1czRWSCtQVGxZRFRv?=
- =?utf-8?B?TnJ0TmlKalVmdEo4TXVzNkdrb0ltdyswaUZLdXBJM1lnZ1JkUEs0YzRrWFJz?=
- =?utf-8?Q?e7GrHQe9XMwKBeQzcxDjmQgv/HMcmo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2025 18:33:10.3432
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c97ad517-6754-4a5a-03ba-08dd4f8187cd
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002317.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5910
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250213-airoha-en7581-flowtable-offload-v4-13-b69ca16d74db@kernel.org>
 
+On Thu, Feb 13, 2025 at 04:34:32PM +0100, Lorenzo Bianconi wrote:
+> Packet Processor Engine (PPE) module available on EN7581 SoC populates
+> the PPE table with 5-tuples flower rules learned from traffic forwarded
+> between the GDM ports connected to the Packet Switch Engine (PSE) module.
+> The airoha_eth driver can enable hw acceleration of learned 5-tuples
+> rules if the user configure them in netfilter flowtable (netfilter
+> flowtable support will be added with subsequent patches).
+> airoha_eth driver configures and collects data from the PPE module via a
+> Network Processor Unit (NPU) RISC-V module available on the EN7581 SoC.
+> Introduce basic support for Airoha NPU moudle.
 
-Pablo Martin Medrano <pablmart@redhat.com> writes:
+nit: module
 
-> After debugging the following output for big_tcp.sh on a board:
->
-> CLI GSO | GW GRO | GW GSO | SER GRO
-> on        on       on       on      : [PASS]
-> on        off      on       off     : [PASS]
-> off       on       on       on      : [FAIL_on_link1]
-> on        on       off      on      : [FAIL_on_link1]
->
-> Davide Caratti found that by default the test duration 1s is too short
-> in slow systems to reach the correct cwd size necessary for tcp/ip to
-> generate at least one packet bigger than 65536 to hit the iptables match
-> on length rule the test uses.
->
-> This skips (with xfail) the aforementioned failing combinations when
-> KSFT_MACHINE_SLOW is set.
-> ---
->  tools/testing/selftests/net/big_tcp.sh | 23 +++++++++++++++--------
->  1 file changed, 15 insertions(+), 8 deletions(-)
->
-> diff --git a/tools/testing/selftests/net/big_tcp.sh b/tools/testing/selft=
-ests/net/big_tcp.sh
-> index 2db9d15cd45f..e613dc3d84ad 100755
-> --- a/tools/testing/selftests/net/big_tcp.sh
-> +++ b/tools/testing/selftests/net/big_tcp.sh
-> @@ -21,8 +21,7 @@ CLIENT_GW6=3D"2001:db8:1::2"
->  MAX_SIZE=3D128000
->  CHK_SIZE=3D65535
->=20=20
-> -# Kselftest framework requirement - SKIP code is 4.
-> -ksft_skip=3D4
-> +source lib.sh
->=20=20
->  setup() {
->  	ip netns add $CLIENT_NS
-> @@ -157,12 +156,20 @@ do_test() {
->  }
->=20=20
->  testup() {
-> -	echo "CLI GSO | GW GRO | GW GSO | SER GRO" && \
-> -	do_test "on"  "on"  "on"  "on"  && \
-> -	do_test "on"  "off" "on"  "off" && \
-> -	do_test "off" "on"  "on"  "on"  && \
-> -	do_test "on"  "on"  "off" "on"  && \
-> -	do_test "off" "on"  "off" "on"
-> +	echo "CLI GSO | GW GRO | GW GSO | SER GRO"
-> +	input_by_test=3D(
-> +	" on  on  on  on"
-> +	" on off  on off"
-> +	"off  on  on  on"
-> +	" on  on off  on"
-> +	"off  on off  on"
-> +	)
-> +	for test_values in "${input_by_test[@]}"; do
-> +		do_test ${test_values[0]}
-> +		xfail_on_slow check_err $? "test failed"
-> +		# check_err sets $RET with $ksft_xfail or $ksft_fail (or 0)
-> +		test $RET =3D 0 || return $RET
+> 
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-This bails out on first failure though, whereas previously it would run
-all the tests. Is that intentional?
+...
 
-Looking at the test, it looks like do_test itself could be converted to
-lib.sh as follows (sorry, this is a cut-n-paste from the terminal, so
-tabs are gone):
+> diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
 
-@@ -134,3 +133,4 @@ do_test() {
-         local ser_gro=3D$4
--        local ret=3D"PASS"
-+
-+        RET=3D0
+...
 
-@@ -145,7 +145,8 @@ do_test() {
+> +static int airoha_npu_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct reserved_mem *rmem;
+> +	struct airoha_npu *npu;
+> +	struct device_node *np;
+> +	void __iomem *base;
+> +	int i, irq, err;
+> +
+> +	base = devm_platform_ioremap_resource(pdev, 0);
+> +	if (IS_ERR(base))
+> +		return PTR_ERR(base);
+> +
+> +	npu = devm_kzalloc(dev, sizeof(*npu), GFP_KERNEL);
+> +	if (!npu)
+> +		return -ENOMEM;
+> +
+> +	npu->dev = dev;
+> +	npu->regmap = devm_regmap_init_mmio(dev, base, &regmap_config);
+> +	if (IS_ERR(npu->regmap))
+> +		return PTR_ERR(npu->regmap);
+> +
+> +	np = of_parse_phandle(dev->of_node, "memory-region", 0);
+> +	if (!np)
+> +		return -ENODEV;
+> +
+> +	rmem = of_reserved_mem_lookup(np);
+> +	of_node_put(np);
+> +
+> +	if (!rmem)
+> +		return -ENODEV;
+> +
+> +	irq = platform_get_irq(pdev, 0);
+> +	if (irq < 0)
+> +		return irq;
+> +
+> +	err = devm_request_irq(dev, irq, airoha_npu_mbox_handler,
+> +			       IRQF_SHARED, "airoha-npu-mbox", npu);
+> +	if (err)
+> +		return err;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(npu->cores); i++) {
+> +		struct airoha_npu_core *core = &npu->cores[i];
+> +
+> +		spin_lock_init(&core->lock);
+> +		core->npu = npu;
+> +
+> +		irq = platform_get_irq(pdev, i + 1);
+> +		if (irq < 0)
+> +			return err;
 
--        if check_counter link1 $ROUTER_NS; then
--                check_counter link3 $SERVER_NS || ret=3D"FAIL_on_link3"
--        else
--                ret=3D"FAIL_on_link1"
--        fi
-+        check_counter link1 $ROUTER_NS
-+        false
-+        check_err $? "fail on link1"
-+
-+        check_counter link3 $SERVER_NS
-+        check_err $? "fail on link3"
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..3620f4e771e659de4c91b40575e18d689199fb4c
+> --- /dev/null
+> +++ b/drivers/net/ethernet/airoha/airoha_npu.c
+> @@ -0,0 +1,521 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (c) 2025 AIROHA Inc
+> + * Author: Lorenzo Bianconi <lorenzo@kernel.org>
+> + */
+> +
+> +#include <linux/devcoredump.h>
+> +#include <linux/firmware.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/of_net.h>
+> +#include <linux/of_platform.h>
+> +#include <linux/of_reserved_mem.h>
+> +#include <linux/regmap.h>
+> +
+> +#include "airoha_npu.h"
+> +
+> +#define NPU_EN7581_FIRMWARE_DATA		"airoha/en7581_npu_data.bin"
+> +#define NPU_EN7581_FIRMWARE_RV32		"airoha/en7581_npu_rv32.bin"
+> +#define NPU_EN7581_FIRMWARE_RV32_MAX_SIZE	0x200000
+> +#define NPU_EN7581_FIRMWARE_DATA_MAX_SIZE	0x10000
+> +#define NPU_DUMP_SIZE				512
+> +
+> +#define REG_NPU_LOCAL_SRAM		0x0
+> +
+> +#define NPU_PC_BASE_ADDR		0x305000
+> +#define REG_PC_DBG(_n)			(0x305000 + ((_n) * 0x100))
+> +
+> +#define NPU_CLUSTER_BASE_ADDR		0x306000
+> +
+> +#define REG_CR_BOOT_TRIGGER		(NPU_CLUSTER_BASE_ADDR + 0x000)
+> +#define REG_CR_BOOT_CONFIG		(NPU_CLUSTER_BASE_ADDR + 0x004)
+> +#define REG_CR_BOOT_BASE(_n)		(NPU_CLUSTER_BASE_ADDR + 0x020 + ((_n) << 2))
+> +
+> +#define NPU_MBOX_BASE_ADDR		0x30c000
+> +
+> +#define REG_CR_MBOX_INT_STATUS		(NPU_MBOX_BASE_ADDR + 0x000)
+> +#define MBOX_INT_STATUS_MASK		BIT(8)
+> +
+> +#define REG_CR_MBOX_INT_MASK(_n)	(NPU_MBOX_BASE_ADDR + 0x004 + ((_n) << 2))
+> +#define REG_CR_MBQ0_CTRL(_n)		(NPU_MBOX_BASE_ADDR + 0x030 + ((_n) << 2))
+> +#define REG_CR_MBQ8_CTRL(_n)		(NPU_MBOX_BASE_ADDR + 0x0b0 + ((_n) << 2))
+> +#define REG_CR_NPU_MIB(_n)		(NPU_MBOX_BASE_ADDR + 0x140 + ((_n) << 2))
+> +
+> +#define NPU_TIMER_BASE_ADDR		0x310100
+> +#define REG_WDT_TIMER_CTRL(_n)		(NPU_TIMER_BASE_ADDR + ((_n) * 0x100))
+> +#define WDT_EN_MASK			BIT(25)
+> +#define WDT_INTR_MASK			BIT(21)
+> +
+> +enum {
+> +	NPU_OP_SET = 1,
+> +	NPU_OP_SET_NO_WAIT,
+> +	NPU_OP_GET,
+> +	NPU_OP_GET_NO_WAIT,
+> +};
+> +
+> +enum {
+> +	NPU_FUNC_WIFI,
+> +	NPU_FUNC_TUNNEL,
+> +	NPU_FUNC_NOTIFY,
+> +	NPU_FUNC_DBA,
+> +	NPU_FUNC_TR471,
+> +	NPU_FUNC_PPE,
+> +};
+> +
+> +enum {
+> +	NPU_MBOX_ERROR,
+> +	NPU_MBOX_SUCCESS,
+> +};
+> +
+> +enum {
+> +	PPE_FUNC_SET_WAIT,
+> +	PPE_FUNC_SET_WAIT_HWNAT_INIT,
+> +	PPE_FUNC_SET_WAIT_HWNAT_DEINIT,
+> +	PPE_FUNC_SET_WAIT_API,
+> +};
+> +
+> +enum {
+> +	PPE2_SRAM_SET_ENTRY,
+> +	PPE_SRAM_SET_ENTRY,
+> +	PPE_SRAM_SET_VAL,
+> +	PPE_SRAM_RESET_VAL,
+> +};
+> +
+> +enum {
+> +	QDMA_WAN_ETHER = 1,
+> +	QDMA_WAN_PON_XDSL,
+> +};
+> +
+> +#define MBOX_MSG_FUNC_ID	GENMASK(14, 11)
+> +#define MBOX_MSG_STATIC_BUF	BIT(5)
+> +#define MBOX_MSG_STATUS		GENMASK(4, 2)
+> +#define MBOX_MSG_DONE		BIT(1)
+> +#define MBOX_MSG_WAIT_RSP	BIT(0)
+> +
+> +#define PPE_TYPE_L2B_IPV4	2
+> +#define PPE_TYPE_L2B_IPV4_IPV6	3
+> +
+> +struct ppe_mbox_data {
+> +	u32 func_type;
+> +	u32 func_id;
+> +	union {
+> +		struct {
+> +			u8 cds;
+> +			u8 xpon_hal_api;
+> +			u8 wan_xsi;
+> +			u8 ct_joyme4;
+> +			int ppe_type;
+> +			int wan_mode;
+> +			int wan_sel;
+> +		} init_info;
+> +		struct {
+> +			int func_id;
+> +			u32 size;
+> +			u32 data;
+> +		} set_info;
+> +	};
+> +};
+> +
+> +static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
+> +			       void *p, int size)
+> +{
+> +	u16 core = 0; /* FIXME */
+> +	u32 val, offset = core << 4;
+> +	dma_addr_t dma_addr;
+> +	void *addr;
+> +	int ret;
+> +
+> +	addr = kzalloc(size, GFP_ATOMIC | GFP_DMA);
+> +	if (!addr)
+> +		return -ENOMEM;
+> +
+> +	memcpy(addr, p, size);
+> +	dma_addr = dma_map_single(npu->dev, addr, size, DMA_TO_DEVICE);
+> +	ret = dma_mapping_error(npu->dev, dma_addr);
+> +	if (ret)
+> +		goto out;
+> +
+> +	spin_lock_bh(&npu->cores[core].lock);
+> +
+> +	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(0) + offset, dma_addr);
+> +	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(1) + offset, size);
+> +	regmap_read(npu->regmap, REG_CR_MBQ0_CTRL(2) + offset, &val);
+> +	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(2) + offset, val + 1);
+> +	val = FIELD_PREP(MBOX_MSG_FUNC_ID, func_id) | MBOX_MSG_WAIT_RSP;
+> +	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(3) + offset, val);
+> +
+> +	ret = regmap_read_poll_timeout_atomic(npu->regmap,
+> +					      REG_CR_MBQ0_CTRL(3) + offset,
+> +					      val, (val & MBOX_MSG_DONE),
+> +					      100, 100 * MSEC_PER_SEC);
+> +	if (!ret && FIELD_GET(MBOX_MSG_STATUS, val) != NPU_MBOX_SUCCESS)
+> +		ret = -EINVAL;
+> +
+> +	spin_unlock_bh(&npu->cores[core].lock);
+> +
+> +	dma_unmap_single(npu->dev, dma_addr, size, DMA_TO_DEVICE);
+> +out:
+> +	kfree(addr);
+> +
+> +	return ret;
+> +}
+> +
+> +static int airoha_npu_run_firmware(struct device *dev, void __iomem *base,
+> +				   struct reserved_mem *rmem)
+> +{
+> +	const struct firmware *fw;
+> +	void __iomem *addr;
+> +	int ret;
+> +
+> +	ret = request_firmware(&fw, NPU_EN7581_FIRMWARE_RV32, dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (fw->size > NPU_EN7581_FIRMWARE_RV32_MAX_SIZE) {
+> +		dev_err(dev, "%s: fw size too overlimit (%zu)\n",
+> +			NPU_EN7581_FIRMWARE_RV32, fw->size);
+> +		ret = -E2BIG;
+> +		goto out;
+> +	}
+> +
+> +	addr = devm_ioremap(dev, rmem->base, rmem->size);
+> +	if (!addr) {
+> +		ret = -ENOMEM;
+> +		goto out;
+> +	}
+> +
+> +	memcpy_toio(addr, fw->data, fw->size);
+> +	release_firmware(fw);
+> +
+> +	ret = request_firmware(&fw, NPU_EN7581_FIRMWARE_DATA, dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (fw->size > NPU_EN7581_FIRMWARE_DATA_MAX_SIZE) {
+> +		dev_err(dev, "%s: fw size too overlimit (%zu)\n",
+> +			NPU_EN7581_FIRMWARE_DATA, fw->size);
+> +		ret = -E2BIG;
+> +		goto out;
+> +	}
+> +
+> +	memcpy_toio(base + REG_NPU_LOCAL_SRAM, fw->data, fw->size);
+> +out:
+> +	release_firmware(fw);
+> +
+> +	return ret;
+> +}
+> +
+> +static irqreturn_t airoha_npu_mbox_handler(int irq, void *npu_instance)
+> +{
+> +	struct airoha_npu *npu = npu_instance;
+> +
+> +	/* clear mbox interrupt status */
+> +	regmap_write(npu->regmap, REG_CR_MBOX_INT_STATUS,
+> +		     MBOX_INT_STATUS_MASK);
+> +
+> +	/* acknowledge npu */
+> +	regmap_update_bits(npu->regmap, REG_CR_MBQ8_CTRL(3),
+> +			   MBOX_MSG_STATUS | MBOX_MSG_DONE, MBOX_MSG_DONE);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static void airoha_npu_wdt_work(struct work_struct *work)
+> +{
+> +	struct airoha_npu_core *core;
+> +	struct airoha_npu *npu;
+> +	void *dump;
+> +	u32 val[3];
+> +	int c;
+> +
+> +	core = container_of(work, struct airoha_npu_core, wdt_work);
+> +	npu = core->npu;
+> +
+> +	dump = vzalloc(NPU_DUMP_SIZE);
+> +	if (!dump)
+> +		return;
+> +
+> +	c = core - &npu->cores[0];
+> +	regmap_bulk_read(npu->regmap, REG_PC_DBG(c), val, ARRAY_SIZE(val));
+> +	snprintf(dump, NPU_DUMP_SIZE, "PC: %08x SP: %08x LR: %08x\n",
+> +		 val[0], val[1], val[2]);
+> +
+> +	dev_coredumpv(npu->dev, dump, NPU_DUMP_SIZE, GFP_KERNEL);
+> +}
+> +
+> +static irqreturn_t airoha_npu_wdt_handler(int irq, void *core_instance)
+> +{
+> +	struct airoha_npu_core *core = core_instance;
+> +	struct airoha_npu *npu = core->npu;
+> +	int c = core - &npu->cores[0];
+> +	u32 val;
+> +
+> +	regmap_set_bits(npu->regmap, REG_WDT_TIMER_CTRL(c), WDT_INTR_MASK);
+> +	if (!regmap_read(npu->regmap, REG_WDT_TIMER_CTRL(c), &val) &&
+> +	    FIELD_GET(WDT_EN_MASK, val))
+> +		schedule_work(&core->wdt_work);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static int airoha_npu_ppe_init(struct airoha_npu *npu)
+> +{
+> +	struct ppe_mbox_data ppe_data = {
+> +		.func_type = NPU_OP_SET,
+> +		.func_id = PPE_FUNC_SET_WAIT_HWNAT_INIT,
+> +		.init_info = {
+> +			.ppe_type = PPE_TYPE_L2B_IPV4_IPV6,
+> +			.wan_mode = QDMA_WAN_ETHER,
+> +		},
+> +	};
+> +
+> +	return airoha_npu_send_msg(npu, NPU_FUNC_PPE, &ppe_data,
+> +				   sizeof(struct ppe_mbox_data));
+> +}
+> +
+> +int airoha_npu_ppe_deinit(struct airoha_npu *npu)
+> +{
+> +	struct ppe_mbox_data ppe_data = {
+> +		.func_type = NPU_OP_SET,
+> +		.func_id = PPE_FUNC_SET_WAIT_HWNAT_DEINIT,
+> +	};
+> +
+> +	return airoha_npu_send_msg(npu, NPU_FUNC_PPE, &ppe_data,
+> +				   sizeof(struct ppe_mbox_data));
+> +}
+> +EXPORT_SYMBOL_GPL(airoha_npu_ppe_deinit);
+> +
+> +int airoha_npu_ppe_flush_sram_entries(struct airoha_npu *npu,
+> +				      dma_addr_t foe_addr,
+> +				      int sram_num_entries)
+> +{
+> +	struct ppe_mbox_data ppe_data = {
+> +		.func_type = NPU_OP_SET,
+> +		.func_id = PPE_FUNC_SET_WAIT_API,
+> +		.set_info = {
+> +			.func_id = PPE_SRAM_RESET_VAL,
+> +			.data = foe_addr,
+> +			.size = sram_num_entries,
+> +		},
+> +	};
+> +
+> +	return airoha_npu_send_msg(npu, NPU_FUNC_PPE, &ppe_data,
+> +				   sizeof(struct ppe_mbox_data));
+> +}
+> +EXPORT_SYMBOL_GPL(airoha_npu_ppe_flush_sram_entries);
+> +
+> +int airoha_npu_foe_commit_entry(struct airoha_npu *npu, dma_addr_t foe_addr,
+> +				u32 entry_size, u32 hash, bool ppe2)
+> +{
+> +	struct ppe_mbox_data ppe_data = {
+> +		.func_type = NPU_OP_SET,
+> +		.func_id = PPE_FUNC_SET_WAIT_API,
+> +		.set_info = {
+> +			.data = foe_addr,
+> +			.size = entry_size,
+> +		},
+> +	};
+> +	int err;
+> +
+> +	ppe_data.set_info.func_id = ppe2 ? PPE2_SRAM_SET_ENTRY
+> +					 : PPE_SRAM_SET_ENTRY;
+> +
+> +	err = airoha_npu_send_msg(npu, NPU_FUNC_PPE, &ppe_data,
+> +				  sizeof(struct ppe_mbox_data));
+> +	if (err)
+> +		return err;
+> +
+> +	ppe_data.set_info.func_id = PPE_SRAM_SET_VAL;
+> +	ppe_data.set_info.data = hash;
+> +	ppe_data.set_info.size = sizeof(u32);
+> +
+> +	return airoha_npu_send_msg(npu, NPU_FUNC_PPE, &ppe_data,
+> +				   sizeof(struct ppe_mbox_data));
+> +}
+> +EXPORT_SYMBOL_GPL(airoha_npu_foe_commit_entry);
+> +
+> +struct airoha_npu *airoha_npu_get(struct device *dev)
+> +{
+> +	struct platform_device *pdev;
+> +	struct device_node *np;
+> +	struct airoha_npu *npu;
+> +
+> +	np = of_parse_phandle(dev->of_node, "airoha,npu", 0);
+> +	if (!np)
+> +		return ERR_PTR(-ENODEV);
+> +
+> +	pdev = of_find_device_by_node(np);
+> +	of_node_put(np);
+> +
+> +	if (!pdev) {
+> +		dev_err(dev, "cannot find device node %s\n", np->name);
+> +		return ERR_PTR(-ENODEV);
+> +	}
+> +
+> +	if (!try_module_get(THIS_MODULE)) {
+> +		dev_err(dev, "failed to get the device driver module\n");
+> +		npu = ERR_PTR(-ENODEV);
+> +		goto error_pdev_put;
+> +	}
+> +
+> +	npu = platform_get_drvdata(pdev);
+> +	if (!npu) {
+> +		npu = ERR_PTR(-ENODEV);
+> +		goto error_module_put;
+> +	}
+> +
+> +	if (!device_link_add(dev, &pdev->dev, DL_FLAG_AUTOREMOVE_SUPPLIER)) {
+> +		dev_err(&pdev->dev,
+> +			"failed to create device link to consumer %s\n",
+> +			dev_name(dev));
+> +		npu = ERR_PTR(-EINVAL);
+> +		goto error_module_put;
+> +	}
+> +
+> +	return npu;
+> +
+> +error_module_put:
+> +	module_put(THIS_MODULE);
+> +error_pdev_put:
+> +	platform_device_put(pdev);
+> +
+> +	return npu;
+> +}
+> +EXPORT_SYMBOL_GPL(airoha_npu_get);
+> +
+> +void airoha_npu_put(struct airoha_npu *npu)
+> +{
+> +	module_put(THIS_MODULE);
+> +	put_device(npu->dev);
+> +}
+> +EXPORT_SYMBOL_GPL(airoha_npu_put);
+> +
+> +static const struct of_device_id of_airoha_npu_match[] = {
+> +	{ .compatible = "airoha,en7581-npu" },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, of_airoha_npu_match);
+> +
+> +static const struct regmap_config regmap_config = {
+> +	.name			= "npu",
+> +	.reg_bits		= 32,
+> +	.val_bits		= 32,
+> +	.reg_stride		= 4,
+> +	.disable_locking	= true,
+> +};
 
-@@ -153,5 +154,6 @@ do_test() {
-         stop_counter link3 $SERVER_NS
--        printf "%-9s %-8s %-8s %-8s: [%s]\n" \
--                $cli_tso $gw_gro $gw_tso $ser_gro $ret
--        test $ret =3D "PASS"
-+
-+        log_test "$(printf "%-9s %-8s %-8s %-8s" \
-+                            $cli_tso $gw_gro $gw_tso $ser_gro)"
-+        :
- }
-@@ -159,3 +161,3 @@ do_test() {
- testup() {
--        echo "CLI GSO | GW GRO | GW GSO | SER GRO" && \
-+        echo "      CLI GSO | GW GRO | GW GSO | SER GRO" && \
-         do_test "on"  "on"  "on"  "on"  && \
-@@ -178,2 +177,3 @@ fi
- trap cleanup EXIT
-+xfail_on_slow
- setup && echo "Testing for BIG TCP:" && \
-@@ -181,2 +181,2 @@ NF=3D4 testup && echo "***v4 Tests Done***" && \
- NF=3D6 testup && echo "***v6 Tests Done***"
--exit $?
-+exit $EXIT_STATUS
+Should this return irq rather than err?
 
-That way you only really touch the bits that do the actual checks to
-port them over to the log_test framework. xfail_on_slow() is usually
-called on a per-check basis, but if anything in the test can fail, I
-think it's fair to just call it like I show so that it toggles the
-condition globally.
+Flagged by Smatch.
 
-Then I'm getting this for slow machine with an injected failure:
+> +
+> +		err = devm_request_irq(dev, irq, airoha_npu_wdt_handler,
+> +				       IRQF_SHARED, "airoha-npu-wdt", core);
+> +		if (err)
+> +			return err;
+> +
+> +		INIT_WORK(&core->wdt_work, airoha_npu_wdt_work);
+> +	}
+> +
+> +	if (dma_set_coherent_mask(dev, 0xbfffffff))
+> +		dev_warn(dev, "failed coherent DMA configuration\n");
+> +
+> +	err = airoha_npu_run_firmware(dev, base, rmem);
+> +	if (err)
+> +		return err;
+> +
+> +	regmap_write(npu->regmap, REG_CR_NPU_MIB(10),
+> +		     rmem->base + NPU_EN7581_FIRMWARE_RV32_MAX_SIZE);
+> +	regmap_write(npu->regmap, REG_CR_NPU_MIB(11), 0x40000); /* SRAM 256K */
+> +	regmap_write(npu->regmap, REG_CR_NPU_MIB(12), 0);
+> +	regmap_write(npu->regmap, REG_CR_NPU_MIB(21), 1);
+> +	msleep(100);
+> +
+> +	/* setting booting address */
+> +	for (i = 0; i < NPU_NUM_CORES; i++)
+> +		regmap_write(npu->regmap, REG_CR_BOOT_BASE(i), rmem->base);
+> +	usleep_range(1000, 2000);
+> +
+> +	/* enable NPU cores */
+> +	/* do not start core3 since it is used for WiFi offloading */
+> +	regmap_write(npu->regmap, REG_CR_BOOT_CONFIG, 0xf7);
+> +	regmap_write(npu->regmap, REG_CR_BOOT_TRIGGER, 0x1);
+> +	msleep(100);
+> +
+> +	err = airoha_npu_ppe_init(npu);
+> +	if (err)
+> +		return err;
+> +
+> +	platform_set_drvdata(pdev, npu);
+> +
+> +	return 0;
+> +}
 
-bash-5.2# KSFT_MACHINE_SLOW=3Dyes ./big_tcp.sh                             =
-                           =E2=94=82
-Error: Failed to load TC action module.                                    =
-                         =E2=94=82
-We have an error talking to the kernel                                     =
-                         =E2=94=82
-Error: Failed to load TC action module.                                    =
-                         =E2=94=82
-We have an error talking to the kernel                                     =
-                         =E2=94=82
-Testing for BIG TCP:                                                       =
-                         =E2=94=82
-      CLI GSO | GW GRO | GW GSO | SER GRO                                  =
-                         =E2=94=82
-TEST: on        on       on       on                                [XFAIL]=
-                         =E2=94=82
-        fail on link1                                                      =
-                         =E2=94=82
-TEST: on        off      on       off                               [XFAIL]=
-                         =E2=94=82
-        fail on link1                                                      =
-                         =E2=94=82
-TEST: off       on       on       on                                [XFAIL]=
-                         =E2=94=82
-        fail on link1                                                      =
-                         =E2=94=82
-TEST: on        on       off      on                                [XFAIL]=
-                         =E2=94=82
-        fail on link1                                                      =
-                         =E2=94=82
-TEST: off       on       off      on                                [XFAIL]=
-                         =E2=94=82
-        fail on link1                                                      =
-                         =E2=94=82
-***v4 Tests Done***                                                        =
-                         =E2=94=82
-      CLI GSO | GW GRO | GW GSO | SER GRO                                  =
-                         =E2=94=82
-TEST: on        on       on       on                                [XFAIL]=
-                         =E2=94=82
-        fail on link1                                                      =
-                         =E2=94=82
-TEST: on        off      on       off                               [XFAIL]=
-                         =E2=94=82
-        fail on link1                                                      =
-                         =E2=94=82
-TEST: off       on       on       on                                [XFAIL]=
-                         =E2=94=82
-        fail on link1                                                      =
-                         =E2=94=82
-TEST: on        on       off      on                                [XFAIL]=
-                         =E2=94=82
-        fail on link1                                                      =
-                         =E2=94=82
-TEST: off       on       off      on                                [XFAIL]=
-                         =E2=94=82
-        fail on link1                                                      =
-                         =E2=94=82
-***v6 Tests Done***                                                        =
-                         =E2=94=82
-bash-5.2# echo $?                                                          =
-                         =E2=94=82
-0                                                                          =
-                         =E2=94=82
-
-... and for non-KSFT_MACHINE_SLOW, I get FAILs with $? of 1, i.e. what
-we are after.
-
-> +	done
->  }
->=20=20
->  if ! netperf -V &> /dev/null; then
+...
