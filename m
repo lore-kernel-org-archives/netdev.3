@@ -1,43 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBA3227EB5
-	for <netdev@vger.kernel.org>; Mon, 17 Feb 2025 17:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CA922838F;
+	Mon, 17 Feb 2025 17:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739812099; cv=none; b=HFDaDh3THSKJP+1BK6rF4nZWHFnh86hAH41WSUSm6xq5HAqDSzIw9927qtF+pJ9LF+NR6H1Gs8DQrHpHSBpf47xKLVX1wk4EHUPafgySGT/6nA+KYJZfZE9g2/cwGf71KclaRst2WQKZBDLqbxUubBvAOi8bFCy3V+Y+dy4o7OQ=
+	t=1739812219; cv=none; b=lV27HHxapPfkCcVsTk/fM+iuL9AFg+lyKPzinr45dtNfxr+5LKfnn557kwHRQ+/SjfCpk/9DCZYZZgz3Xvn+2CBLecwczlo0oSBu6k0LqLKoz0oohtK65fOrWtVxxGBjGC5YhoxxlY7+/GxhPDbYifLqnjuuqx8sjJqaYudrc9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739812099; c=relaxed/simple;
-	bh=h9h5a9Wcg66A6AqsayVK1eGpYFikic7eCBSbxNPOXbM=;
+	s=arc-20240116; t=1739812219; c=relaxed/simple;
+	bh=S3qwZURE807WhbedRsfGnHG1TDtv+0elSP//hvhcmqU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EbONSqmWbSjHKETaU6VgEwmks+DtE0tfPFUQujyl7F6U/PA8f75wuvjkVmcUHxOEAccV4DB4d5W8UEzDelTm/2HOLfuogcIdTtIi5GTB4ymXBk3P19qW6hxTpuqB5Eb0dkAp1doLZTG+4NNWmPb0XxNPtibQGdei1Ud9fAXX29A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h24XgEsk; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=SvBucihjx58tAgVLZUeRQrPWSdgTFcNw7nEUwcj34N+YrSqAJBPdwhMYiqpmzMrJ8WjM06FHY5ZwgadepxfR0H1u2Z941aHDJK1ieNdSLYMngO70FkOGaApWH55E7XodNSEo1mvRFtGwIk3/6RIKCT1igk3/0pL2oZq6J6VT+MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kw4oWzjP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h24XgEsk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E368C4CED1;
-	Mon, 17 Feb 2025 17:08:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kw4oWzjP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B1AC4CEE4;
+	Mon, 17 Feb 2025 17:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739812099;
-	bh=h9h5a9Wcg66A6AqsayVK1eGpYFikic7eCBSbxNPOXbM=;
+	s=k20201202; t=1739812218;
+	bh=S3qwZURE807WhbedRsfGnHG1TDtv+0elSP//hvhcmqU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=h24XgEskUKrqAC9+rkIA7iDkoDT2Mr9tS8XcXFrEPxVFBQ632YH1qOB5KFrkxsrdK
-	 IkqJZlxW+ccWuADCGH81W9GRjm60oz/HV8vehD0axHY/V11VmmeP4OY8jrhq0Ce1u9
-	 6Sdy6TymuPkLyP1LSXMX1Semff0ZAlR7zdeuDLK+VNL0au3APpeJXtuaWBPPNJTQqz
-	 r/D8dR4pr+qNSIdN+cVBtZYStSqCSdCGIla473OkWlsrPjH5lLvNK5mYo5XSigt/R2
-	 hoO14NYbEMzBXWUN5fINZSDoSsYC5cTLbprLsiRBPLWMT1CxqSkwl99OVOq1yCBk30
-	 XA7i7TzgRFZHA==
-Date: Mon, 17 Feb 2025 09:08:18 -0800
+	b=Kw4oWzjPYMIxoMeq2VF5x3eyJA5Tx1tDLDBCO18Q6WvyTLaMrhhs7BESiqk+4wGTW
+	 wGl4oaKiV9mBMRary8cuaF3RfSpscrTkKJEZM0ypwPHQNTsYUS181g8o2ZUpdcK1Y1
+	 UDDKhklp/FTUlczekGqoV3lfBzGg3oFUKp1eEGwJoe7/45Drv8SrYUaj87WcGDwa7w
+	 mZELfSI0bL7hHc5W9vzCFUrFpFA/YZGUsfBIQ+vPKqlw7uox44RJ/ko3Rvc7FIaS4b
+	 ixMv+iUX4toURTJClKDLMBiMToSjQJ5sNF01bD5bY5S9zIz1RBkJd1VLxqOAtJkhh0
+	 PIyKY70qdgc+Q==
+Date: Mon, 17 Feb 2025 09:10:17 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Stanislav Fomichev <stfomichev@gmail.com>
-Cc: Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, Saeed Mahameed
- <saeed@kernel.org>
-Subject: Re: [PATCH net-next v3 00/12] net: Hold netdev instance lock during
- ndo operations
-Message-ID: <20250217090818.390e4efa@kernel.org>
-In-Reply-To: <Z7NTE1DlI0nQjjwy@mini-arch>
-References: <20250216233245.3122700-1-sdf@fomichev.me>
-	<Z7NTE1DlI0nQjjwy@mini-arch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, ioana.ciornei@nxp.com, yangbo.lu@nxp.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net 1/8] net: enetc: fix the off-by-one issue in
+ enetc_map_tx_buffs()
+Message-ID: <20250217091017.3779eaf5@kernel.org>
+In-Reply-To: <20250217093906.506214-2-wei.fang@nxp.com>
+References: <20250217093906.506214-1-wei.fang@nxp.com>
+	<20250217093906.506214-2-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,9 +49,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 17 Feb 2025 07:17:39 -0800 Stanislav Fomichev wrote:
-> Teaming lock ordering is still not correct :-(
+On Mon, 17 Feb 2025 17:38:59 +0800 Wei Fang wrote:
+> +	while (count--) {
+>  		tx_swbd = &tx_ring->tx_swbd[i];
+>  		enetc_free_tx_frame(tx_ring, tx_swbd);
+>  		if (i == 0)
+>  			i = tx_ring->bd_count;
+>  		i--;
+> -	} while (count--);
+> +	};
 
-Mm, yeah, looks like patch 9. We need to tell lockdep team's netdev
-lock is not the same one as the lower netdev lock. Probably gotta
-add the instance lock to netdev_lockdep_set_classes() after all?
+I think this gives us:
+
+drivers/net/ethernet/freescale/enetc/enetc.c:408:2-3: Unneeded semicolon
+-- 
+pw-bot: cr
