@@ -1,43 +1,44 @@
 Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0915B1EB5C9
-	for <netdev@vger.kernel.org>; Tue, 18 Feb 2025 19:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842F91EFF93
+	for <netdev@vger.kernel.org>; Tue, 18 Feb 2025 19:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739908349; cv=none; b=dTEoa1cWctGzyFLm2CFF3GXiEr0dwWH2r1Ia+SgcANxgtUPG4c1N1YLZY6oCdxnmsWhn/eVE6xvBENWalZe7J1l5JrCUuj8nL+mwCIQtonajjXgFnIyiwnflW4TQVvl/Yozwbi8s04KlZFOYnVDRNicfFkwd7sKxqqyk0H6LP6U=
+	t=1739908351; cv=none; b=IG37Gi0Q92p0YTJHvHSZD9toNfOMYDROqb+tZq4C62ewRScESzumdW8b0KyF/UnrEISKEWpFA9J+sLsQwL2f4Kj2tyMAGcEhbp63FdEnrWleSvWy38PqqnEfCP+jSRcOF45bAD2Q40DsFshX2fN9PP36hEWDlNQyR6BykfESl90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739908349; c=relaxed/simple;
-	bh=ODv3GGqKUR1bqT73hWp63rcmoOA+B/mTIKwThvKgDEU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RJZhqbVk6hrZyUK/o79Q09lLsXQM1OmE0FstP+fmoHYIznGPBC485cNFlDwPYL9wklIvSRlvjYaeYy4u6F1/ZXIkf6p4m5yt5k6ZRGZcy4fbMJw6pRr+9W3i2Rmi3dWoY78kSO5Qww6XA4fVfMDQ1AY/jcS4hB9K9qLhoIK+qPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=LtcGqAxA; arc=none smtp.client-ip=202.36.163.20
+	s=arc-20240116; t=1739908351; c=relaxed/simple;
+	bh=RHuOaB7d+UjSjoFMhnWKkDFLOPSIwKQCOC9zA/g1HOs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gVfBYW2dBkcVp5TOQNJ72onSPVZGid2qf4lnq83giR5Ur2O7LkuAqwJ15uLTSokU1CKnHtgfo7lUP1eKTT2rag1+l8u7PCvuqwj6X/7DWHy0hUTgkwy+bmu1Q6o9jMXBbHsJOw021t9gT0exYqkzCeYgxduDVNR0fFWwLH6+Cs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=ANwvycTN; arc=none smtp.client-ip=202.36.163.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="LtcGqAxA"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="ANwvycTN"
 Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 509FD2C00BE;
-	Wed, 19 Feb 2025 08:52:20 +1300 (NZDT)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 0EB182C044A;
+	Wed, 19 Feb 2025 08:52:28 +1300 (NZDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1739908340;
-	bh=9BTR+ZuvH19w1jZujSlCK9rC3nkRI5vZ5l365E/HXFI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=LtcGqAxALBCKBrHCaz9paTJxXDmd5wuqRW/6rNN0VQQcU58QksFlkUEgfkF+b2soB
-	 9JGIXeAFU9FSVZ8ul+kwyXDTMH87lLWI9oCqkrAnaw9kvANslKWWGH6ppj2TMILTOJ
-	 JXkTZl6soQ/Vjn3M4Lv/K2eVtPgYWKTpdwI/1EpzKWrnxIu5Ohs8EZBgwz7Vg+bc+S
-	 ciyuSH9uwGUx+5H7Zfw1Umek8vR5+DVmf5PQz+Pv6yC9BcPH1LuniJXaaqvG2eRJTs
-	 IKWlt0nz+8b2pp4FFG6VP7qofMS0aT2EeiOkaFHYZwXtBmlB8c3TNW7LYp9T+IHcJg
-	 xRHXijQ+ggeEw==
+	s=mail181024; t=1739908348;
+	bh=jZNBKo8BJn+Cpmm+/0ORd6aDcui99DR/5RTy8qbveT4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ANwvycTNGFsVzV8BngrzJ0WSjMq9jfat/xE6yQuWh3jV9oJoUfh/Ke5H9R7z3YGbA
+	 zz19x1+SzCVCRXuNzSu+VzoNKtKIhBIXNsVMgAtcl8FDYXmXyLXMrfwJLDZw10dGf3
+	 WSHZXpVz51VstWbBQtwu4BRwV/99IkyRzM5BC3dNKKpbmhyrS1yGhljQWNFOQiEbjJ
+	 IZBGT7Sxsg1jHOQWY/zvLBcYUoXpgPKHsqu51jcSWrc90zwuwlxjRIZghiJIriFaa2
+	 NEAj6hU51TG2cnWoKQv1t2pts2E3yrPQLjt7LZCukfQ0xbmFNvLGN0pyY6QRqIj8Rf
+	 L08PRpLXfwJLw==
 Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B67b4e4f30000>; Wed, 19 Feb 2025 08:52:19 +1300
+	id <B67b4e4fb0000>; Wed, 19 Feb 2025 08:52:27 +1300
 Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
-	by pat.atlnz.lc (Postfix) with ESMTP id EB67A13EE36;
-	Wed, 19 Feb 2025 08:52:19 +1300 (NZDT)
+	by pat.atlnz.lc (Postfix) with ESMTP id A063713EE36;
+	Wed, 19 Feb 2025 08:52:27 +1300 (NZDT)
 Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-	id E6E8F2804FB; Wed, 19 Feb 2025 08:52:19 +1300 (NZDT)
+	id 9D10F2804FB; Wed, 19 Feb 2025 08:52:27 +1300 (NZDT)
 From: Chris Packham <chris.packham@alliedtelesis.co.nz>
 To: lee@kernel.org,
 	robh@kernel.org,
@@ -54,10 +55,12 @@ Cc: devicetree@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-mips@vger.kernel.org,
 	Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [RESEND PATCH net-next 0/5] dt-bindings: net: realtek,rtl9301-switch
-Date: Wed, 19 Feb 2025 08:52:11 +1300
-Message-ID: <20250218195216.1034220-1-chris.packham@alliedtelesis.co.nz>
+Subject: [RESEND PATCH net-next 2/5] dt-bindings: net: Add switch ports and interrupts to RTL9300
+Date: Wed, 19 Feb 2025 08:52:13 +1300
+Message-ID: <20250218195216.1034220-3-chris.packham@alliedtelesis.co.nz>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250218195216.1034220-1-chris.packham@alliedtelesis.co.nz>
+References: <20250218195216.1034220-1-chris.packham@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,50 +68,104 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=ccpxrWDM c=1 sm=1 tr=0 ts=67b4e4f3 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=T2h4t0Lz3GQA:10 a=VwQbUJbxAAAA:8 a=lchjjVjLDbdZh1ZHapMA:9 a=3ZKOabzyN94A:10
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=ccpxrWDM c=1 sm=1 tr=0 ts=67b4e4fb a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=T2h4t0Lz3GQA:10 a=VwQbUJbxAAAA:8 a=ONnuDqgNxj6Q2WPecnAA:9 a=3ZKOabzyN94A:10 a=o4McRIDJWpQDfD5EwD6I:22
 X-SEG-SpamProfiler-Score: 0
 x-atlnz-ls: pat
 
-This is my attempt at trying to sort out the mess I've created with the R=
-TL9300
-switch dt-bindings. Some context is available on [1] and [2].
+Add bindings for the ethernet-switch and interrupt properties for the
+RTL9300.
 
-The first patch just moves the binding from mfd/ to net/ (with an adjustm=
-ent of
-the internal path name). The next two patches are successors to patches a=
-lready
-sent as part of the series [3]. Finally the last two patches are needed t=
-o
-update the in-tree dts to pass `make dtbs_check`, I couldn't figure out a=
- clean
-way of decoupling these `make dtbs_check` will either complain that the d=
-ts has
-unexpected properties or that it is missing required properties.
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+---
 
-[1] - https://lore.kernel.org/lkml/20250204-eccentric-deer-of-felicity-02=
-b7ee@krzk-bin/
-[2] - https://lore.kernel.org/lkml/4e3c5d83-d215-4eff-bf02-6d420592df8f@a=
-lliedtelesis.co.nz/
-[3] - https://lore.kernel.org/lkml/20250204030249.1965444-1-chris.packham=
-@alliedtelesis.co.nz/
+Notes:
+    This is tecnically v7 of [1] changes from that are:
+    - Use ethernet-switch.yaml#/$defs/ethernet-ports
+    - Enforce "ethernet-ports" be used instead of just "ports"
+    - Add interrupts for the switch block
+   =20
+    [1] - https://lore.kernel.org/lkml/20250204030249.1965444-2-chris.pac=
+kham@alliedtelesis.co.nz/
 
-Chris Packham (5):
-  dt-bindings: net: Move realtek,rtl9301-switch to net
-  dt-bindings: net: Add switch ports and interrupts to RTL9300
-  dt-bindings: net: Add Realtek MDIO controller
-  mips: dts: realtek: Add switch interrupts
-  mips: dts: cameo-rtl9302c: Add switch block
+ .../bindings/net/realtek,rtl9301-switch.yaml  | 30 +++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
- .../bindings/net/realtek,rtl9301-mdio.yaml    | 86 +++++++++++++++++++
- .../{mfd =3D> net}/realtek,rtl9301-switch.yaml  | 63 +++++++++++++-
- .../cameo-rtl9302c-2x-rtl8224-2xge.dts        | 48 +++++++++++
- arch/mips/boot/dts/realtek/rtl930x.dtsi       |  3 +
- 4 files changed, 199 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/devicetree/bindings/net/realtek,rtl9301=
--mdio.yaml
- rename Documentation/devicetree/bindings/{mfd =3D> net}/realtek,rtl9301-=
-switch.yaml (66%)
-
+diff --git a/Documentation/devicetree/bindings/net/realtek,rtl9301-switch=
+.yaml b/Documentation/devicetree/bindings/net/realtek,rtl9301-switch.yaml
+index d0a93d5f03aa..5d29647bea2d 100644
+--- a/Documentation/devicetree/bindings/net/realtek,rtl9301-switch.yaml
++++ b/Documentation/devicetree/bindings/net/realtek,rtl9301-switch.yaml
+@@ -14,6 +14,8 @@ description:
+   number of different peripherals are accessed through a common register=
+ block,
+   represented here as a syscon node.
+=20
++$ref: ethernet-switch.yaml#/$defs/ethernet-ports
++
+ properties:
+   compatible:
+     items:
+@@ -28,12 +30,23 @@ properties:
+   reg:
+     maxItems: 1
+=20
++  interrupts:
++    maxItems: 2
++
++  interrupt-names:
++    items:
++      - const: switch
++      - const: nic
++
+   '#address-cells':
+     const: 1
+=20
+   '#size-cells':
+     const: 1
+=20
++  ethernet-ports:
++    type: object
++
+ patternProperties:
+   'reboot@[0-9a-f]+$':
+     $ref: /schemas/power/reset/syscon-reboot.yaml#
+@@ -44,6 +57,8 @@ patternProperties:
+ required:
+   - compatible
+   - reg
++  - interrupts
++  - interrupt-names
+=20
+ additionalProperties: false
+=20
+@@ -52,6 +67,9 @@ examples:
+     ethernet-switch@1b000000 {
+       compatible =3D "realtek,rtl9301-switch", "syscon", "simple-mfd";
+       reg =3D <0x1b000000 0x10000>;
++      interrupt-parent =3D <&intc>;
++      interrupts =3D <23>, <24>;
++      interrupt-names =3D "switch", "nic";
+       #address-cells =3D <1>;
+       #size-cells =3D <1>;
+=20
+@@ -110,5 +128,17 @@ examples:
+           };
+         };
+       };
++
++      ethernet-ports {
++        #address-cells =3D <1>;
++        #size-cells =3D <0>;
++
++        port@0 {
++          reg =3D <0>;
++        };
++        port@1 {
++          reg =3D <1>;
++        };
++      };
+     };
+=20
 --=20
 2.48.1
 
