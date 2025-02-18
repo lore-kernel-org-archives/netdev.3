@@ -1,47 +1,57 @@
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43DE54670
-	for <netdev@vger.kernel.org>; Tue, 18 Feb 2025 02:09:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2077D49659
+	for <netdev@vger.kernel.org>; Tue, 18 Feb 2025 02:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739844591; cv=none; b=QJZoYANL+uq0Ls0uFy+JjMtOSq2CH3PBKPJIuN0rU0mddISLW7Oxsmd9kI0UC2/4U7MHiXY9IOnUDYxoIFm+eU4ooCtcx61+Q9D2OK/le3BL7xr5oujysGgIUyzvwwqqjRJkLXECEZH6e3qyHpbzP1M8Fa6YWgKVsGfctdFApm8=
+	t=1739844592; cv=none; b=cL0CBsV3IvocFoY4pZwq6Hm7+v1CdrQyuwKwiOTxpsEYaERPtSGnxrMsz3tjny6A3jxdC/pRVXbCMp3IFrkBpr0oBISwiUlwcTcnNTHLDBggv8BwHIeOGOd5Al8uXly8smRepuMwi1HZckXdKOqf0iqkyhtn2N158Qy9ZXqX6ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739844591; c=relaxed/simple;
-	bh=Qq8SSureU8S3Ou0zbBou6Got6asQczN5/bB2E+jm894=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pN81Ek8h5tl9vn9CnaUXFrFv+TuJI2/+vyZU74qRS9cSSGmApBh4Uo98++BeGJ/bmQek9Rkq7oYJVC5iJ6hbuNPj+Tg5wQEnsyeFE/xje1N6zi9oRYmBzOUoiRg8uxXM5tfWQPLjmnZa357Cl5Me/W/ZyYzonBq/yM1aoLr9gP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: bizesmtpsz5t1739844575t8619cc
-X-QQ-Originating-IP: m+bwn7IFjKCLF+x58hcstYQ+9rxROWTBKvn/aLWJsXU=
-Received: from wxdbg.localdomain.com ( [36.24.205.26])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 18 Feb 2025 10:09:33 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 11202924122806695270
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
+	s=arc-20240116; t=1739844592; c=relaxed/simple;
+	bh=vlAZBZ2e9vIXTlZJFh+zXali1B9fUQbOpG0yXZg9DTs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W6+nCXbNslDS/iQEB+/zYctunf1NUf7xAJSYMSjW32Q1Aua8zV4m0zjjrhdbxU3G5/jshh57hgNKIioWh3fUerct84VTkoFEjmvPAkntEEikVSMXCKofnUfOPi0c8Vymd/bTZ203jPMg7WeYBJk6VD82gFegKsvTUIAVP/miQ/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-220f048c038so59627605ad.2
+        for <netdev@vger.kernel.org>; Mon, 17 Feb 2025 18:09:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739844590; x=1740449390;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kKHYb4JrkcduaARQ2618o16zbnk4dSbsfvMS11fcVcY=;
+        b=IMh6bi0poaILADW6JGq3rRpit/JSUsmmwLFIgTaT+OFxxhSSOZlrQSwUPx8CiL3qe+
+         k4FbHUn4/bcFACjjRqkL6RXwwdgcBKKASScgnU4WIbhsca4gQoEbpsx209hmkRSPLq/l
+         BseGo/ZQPQYLZ1KGOK0Ls7SRIcD9kS02Zwof65++BiOeyiuCeKTXN/yjwwdBrpIFnpKp
+         tdEeQDkSV+l2QHzggLfa/HO5Sul6WudUhBdTMyVUUu22Sl2b+r8cJvQvbW65GxSi5kYu
+         t91i30NFh8UBYLbqBUuiq8XtgLR0LTlcsieAnmLNAzQ+AVbHhBqLg3doNmagq4jTznCm
+         nwYA==
+X-Gm-Message-State: AOJu0Ywx+VmZKS9fqKtv2OVSWwX+HZuDASxc5AjcwPpNdB2FAJDrQfo0
+	262h6fwC4k913uGylS1MBB2GPjfqQFvCIsj8360Wdvgi1lpqvP6PmbhY
+X-Gm-Gg: ASbGncsRIsupCJ1B7+LfHz79VogUJHsshADXLMkWUm9pBCRHXdrB7i4wgRp7LK79X2g
+	Hk/VBJcF5/BXtcn/XjsJwcMRdrsSBY4LGHiyclz4uhCGLObSzjvwlTiCAAw5J3ZX0g1MUUptKEG
+	5bJXag2X3yfK4NxkKKV7GJVJn0ZlfY5vXAeKpZeZJVx8WBJpq1gESEhiHwszrYkMi8gNNjbXZ6h
+	clCjBSpMVKi+47llXj5Uk3SbeprJRzj3cY0+UgkfR+ol3teLuj3uv16zBS+UIRnAittBOiwjE5h
+	u/i+7EdWWDo81ig=
+X-Google-Smtp-Source: AGHT+IHm0mqfxYUR8IgSDFEXOMeLjx/HPnOTAi6kEia7fM5zgTf9HMRaAWWW5MwGh4ruhpqF/YxuDg==
+X-Received: by 2002:a17:902:ccd1:b0:220:c813:dfb2 with SMTP id d9443c01a7336-221040bd34cmr181767005ad.44.1739844589757;
+        Mon, 17 Feb 2025 18:09:49 -0800 (PST)
+Received: from localhost ([2601:646:9e00:f56e:2844:3d8f:bf3e:12cc])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-220d5349394sm77916285ad.49.2025.02.17.18.09.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Feb 2025 18:09:48 -0800 (PST)
+From: Stanislav Fomichev <sdf@fomichev.me>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	linux@armlinux.org.uk,
-	horms@kernel.org,
-	jacob.e.keller@intel.com,
-	netdev@vger.kernel.org,
-	vadim.fedorenko@linux.dev
-Cc: mengyuanlou@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v8 2/4] net: wangxun: Support to get ts info
-Date: Tue, 18 Feb 2025 10:34:30 +0800
-Message-Id: <20250218023432.146536-3-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20250218023432.146536-1-jiawenwu@trustnetic.com>
-References: <20250218023432.146536-1-jiawenwu@trustnetic.com>
+	Saeed Mahameed <saeed@kernel.org>
+Subject: [PATCH net-next v4 00/12] net: Hold netdev instance lock during ndo operations
+Date: Mon, 17 Feb 2025 18:09:36 -0800
+Message-ID: <20250218020948.160643-1-sdf@fomichev.me>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,135 +59,125 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MfQnJH+7WKv6Q0fwmbVWRa3SsYe1Vld3T064jtKGNOZz6gXQCFEW2KnQ
-	6UYKoZ0mVqgIX0NjUHCM52qB6SLJn1r3msrEJerMUI8IehiBj1j6u4dOY8YEfyla27KJXnO
-	7IhFg4/lR5MCEko1oXrMygOIiO6ZGVjN5xrAcxgqI/IKIB36u8yV5sU4Z5UaPPMT0QBqqRi
-	zDJvDUypb/+GlZKl/sOzvbgLY3LAriUxS/vWFGkOmP4lV+fb0lytOHw5Auvm8IwR1tl3EK+
-	fMouEsj7emgZ3dvpbG8FkcS+WeBd2SDe+7vTgmgN8nAoApf1GuGexPnR4mXG3qM1cDLNO1H
-	jS+wvbqE0Ka6lnDxOJgT2L0/Oir0G6LG3EFJanEFiPAZRoqWC4crwtaYnu1eFsbbMk9z42z
-	FLthTVC1aMwlkid43RyKiOg/MJx2Lm+i1Ftvmvwm6Xqq2bFfCvppjTxwEvk4wXtAwU4w90q
-	+CRa3tccLsXq9YOM/e7P6rQ7l9dDiQH2NsQYsAwn0HOXlFdUvzTxHUEd1DOFxVKFiKXlTrw
-	fPt0gr6NRdhsq3jBPwU38KvJ4E/93Ut9PCVtau0srnUhVvhXIpewfys2GdxBVQ9Ux+fF+dV
-	/za2lTvsYyp05u2Op8ZuPTnqbN5wz9TByWv5QHb38vI8Q2yRryOICYUKhx+KmYoIDEFCy2F
-	iIsZy2yYokair3f+yktrrGDt9cQcQyTQyjbCD1jPQoNLA6t9uDYfOKlHVml859H3I3nq7Zx
-	5tAmJFIHSEg4bDD6MGiYEvfWUVuhstp4gXsJdQ22CFFgAGdMvQM8ogxmnnveWrUpcT4iTMi
-	GiGaowUQTiJU/MgBv7qjdKs5dPR/sDDaXCJiQPbdwM6k/Kzz2EOlFrbngjKYZCBwkQlbhsu
-	v3Pe0ZjwogQRSubJeX2vvU8qw2gpx/7LccfuGIkKl+KphsMN4+zQbeGUaxsfOBSsL2gnNqn
-	eQq7gAgIWIjYuk29oLpSeSQyYWqNDN88f2J9pCwa/HxOhGKk3uwo21qKD
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-X-QQ-RECHKSPAM: 0
 
-Implement the function get_ts_info and get_ts_stats in ethtool_ops to
-get the HW capabilities and statistics for timestamping.
+As the gradual purging of rtnl continues, start grabbing netdev
+instance lock in more places so we can get to the state where
+most paths are working without rtnl. Start with requiring the
+drivers that use shaper api (and later queue mgmt api) to work
+with both rtnl and netdev instance lock. Eventually we might
+attempt to drop rtnl. This mostly affects iavf, gve, bnxt and
+netdev sim (as the drivers that implement shaper/queue mgmt)
+so those drivers are converted in the process.
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
----
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   | 50 +++++++++++++++++++
- .../net/ethernet/wangxun/libwx/wx_ethtool.h   |  4 ++
- .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |  2 +
- .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |  2 +
- 4 files changed, 58 insertions(+)
+call_netdevice_notifiers locking is very inconsistent and might need
+a separate follow up. Some notified events are covered by the
+instance lock, some are not, which might complicate the driver
+expectations.
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index c4b3b00b0926..28f982fbc64c 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -455,3 +455,53 @@ void wx_set_msglevel(struct net_device *netdev, u32 data)
- 	wx->msg_enable = data;
- }
- EXPORT_SYMBOL(wx_set_msglevel);
-+
-+int wx_get_ts_info(struct net_device *dev,
-+		   struct kernel_ethtool_ts_info *info)
-+{
-+	struct wx *wx = netdev_priv(dev);
-+
-+	info->rx_filters = BIT(HWTSTAMP_FILTER_NONE) |
-+			   BIT(HWTSTAMP_FILTER_PTP_V1_L4_SYNC) |
-+			   BIT(HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ) |
-+			   BIT(HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
-+			   BIT(HWTSTAMP_FILTER_PTP_V2_L4_EVENT) |
-+			   BIT(HWTSTAMP_FILTER_PTP_V2_SYNC) |
-+			   BIT(HWTSTAMP_FILTER_PTP_V2_L2_SYNC) |
-+			   BIT(HWTSTAMP_FILTER_PTP_V2_L4_SYNC) |
-+			   BIT(HWTSTAMP_FILTER_PTP_V2_DELAY_REQ) |
-+			   BIT(HWTSTAMP_FILTER_PTP_V2_L2_DELAY_REQ) |
-+			   BIT(HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ) |
-+			   BIT(HWTSTAMP_FILTER_PTP_V2_EVENT);
-+
-+	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
-+				SOF_TIMESTAMPING_TX_HARDWARE |
-+				SOF_TIMESTAMPING_RX_HARDWARE |
-+				SOF_TIMESTAMPING_RAW_HARDWARE;
-+
-+	if (wx->ptp_clock)
-+		info->phc_index = ptp_clock_index(wx->ptp_clock);
-+	else
-+		info->phc_index = -1;
-+
-+	info->tx_types = BIT(HWTSTAMP_TX_OFF) |
-+			 BIT(HWTSTAMP_TX_ON);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(wx_get_ts_info);
-+
-+void wx_get_ptp_stats(struct net_device *dev,
-+		      struct ethtool_ts_stats *ts_stats)
-+{
-+	struct wx *wx = netdev_priv(dev);
-+
-+	if (wx->ptp_clock) {
-+		ts_stats->pkts = wx->tx_hwtstamp_pkts;
-+		ts_stats->lost = wx->tx_hwtstamp_timeouts +
-+				 wx->tx_hwtstamp_skipped +
-+				 wx->rx_hwtstamp_cleared;
-+		ts_stats->err = wx->tx_hwtstamp_errors;
-+	}
-+}
-+EXPORT_SYMBOL(wx_get_ptp_stats);
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.h b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.h
-index 600c3b597d1a..9e002e699eca 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.h
-@@ -40,4 +40,8 @@ int wx_set_channels(struct net_device *dev,
- 		    struct ethtool_channels *ch);
- u32 wx_get_msglevel(struct net_device *netdev);
- void wx_set_msglevel(struct net_device *netdev, u32 data);
-+int wx_get_ts_info(struct net_device *dev,
-+		   struct kernel_ethtool_ts_info *info);
-+void wx_get_ptp_stats(struct net_device *dev,
-+		      struct ethtool_ts_stats *ts_stats);
- #endif /* _WX_ETHTOOL_H_ */
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
-index e868f7ef4920..7e2d9ec38a30 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
-@@ -138,6 +138,8 @@ static const struct ethtool_ops ngbe_ethtool_ops = {
- 	.set_channels		= ngbe_set_channels,
- 	.get_msglevel		= wx_get_msglevel,
- 	.set_msglevel		= wx_set_msglevel,
-+	.get_ts_info		= wx_get_ts_info,
-+	.get_ts_stats		= wx_get_ptp_stats,
- };
- 
- void ngbe_set_ethtool_ops(struct net_device *netdev)
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-index d98314b26c19..78999d484f18 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-@@ -529,6 +529,8 @@ static const struct ethtool_ops txgbe_ethtool_ops = {
- 	.set_rxnfc		= txgbe_set_rxnfc,
- 	.get_msglevel		= wx_get_msglevel,
- 	.set_msglevel		= wx_set_msglevel,
-+	.get_ts_info		= wx_get_ts_info,
-+	.get_ts_stats		= wx_get_ptp_stats,
- };
- 
- void txgbe_set_ethtool_ops(struct net_device *netdev)
+Changes since v3:
+- add instance lock to netdev_lockdep_set_classes,
+  move lock_set_cmp_fn to happen after set_class (NIPA)
+
+Changes since v2:
+- new patch to replace dev_addr_sem with instance lock (forwarding tests)
+- CONFIG_LOCKDEP around netdev_lock_cmp_fn (Jakub)
+- remove netif_device_present check from dev_setup_tc (bpf_offload.py)
+- reorder bpf_devs_locks and instance lock ordering in bpf map
+  offload (bpf_offload.py)
+
+Changes since v1:
+- fix netdev_set_mtu_ext_locked in the wrong place (lkp@intel.com)
+- add missing depend on CONFIG_NET_SHAPER for dummy device
+  (lkp@intel.com)
+  - not sure we need to apply dummy device patch..
+- need_netdev_ops_lock -> netdev_need_ops_lock (Jakub)
+- remove netdev_assert_locked near napi_xxx_locked calls (Jakub)
+- fix netdev_lock_cmp_fn comment and line length (Jakub)
+- fix kdoc style of dev_api.c routines (Jakub)
+- reflow dev_setup_tc to avoid indent (Jakub)
+- keep tc_can_offload checks outside of dev_setup_tc (Jakub)
+
+Changes since RFC:
+- other control paths are protected
+- bntx has been converted to mostly depend on netdev instance lock
+
+Cc: Saeed Mahameed <saeed@kernel.org>
+
+Jakub Kicinski (1):
+  net: ethtool: try to protect all callback with netdev instance lock
+
+Stanislav Fomichev (11):
+  net: hold netdev instance lock during ndo_open/ndo_stop
+  net: hold netdev instance lock during ndo_setup_tc
+  net: hold netdev instance lock during queue operations
+  net: hold netdev instance lock during rtnetlink operations
+  net: hold netdev instance lock during ioctl operations
+  net: hold netdev instance lock during sysfs operations
+  net: hold netdev instance lock during ndo_bpf
+  net: replace dev_addr_sem with netdev instance lock
+  net: dummy: add dummy shaper API
+  docs: net: document new locking reality
+  eth: bnxt: remove most dependencies on RTNL
+
+ Documentation/networking/netdevices.rst       |  57 +++-
+ drivers/net/Kconfig                           |   1 +
+ drivers/net/bonding/bond_main.c               |  16 +-
+ drivers/net/dummy.c                           |  37 ++
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 132 ++++----
+ .../net/ethernet/broadcom/bnxt/bnxt_devlink.c |   9 +
+ .../net/ethernet/broadcom/bnxt/bnxt_sriov.c   |   6 +
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c |  16 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_vfr.c |  18 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |   3 +-
+ drivers/net/ethernet/google/gve/gve_main.c    |   8 +-
+ drivers/net/ethernet/google/gve/gve_utils.c   |   6 +-
+ drivers/net/ethernet/intel/iavf/iavf_main.c   |  16 +-
+ drivers/net/netdevsim/ethtool.c               |   2 -
+ drivers/net/netdevsim/netdev.c                |  36 +-
+ drivers/net/tap.c                             |   2 +-
+ drivers/net/tun.c                             |   2 +-
+ include/linux/netdevice.h                     |  82 ++++-
+ kernel/bpf/offload.c                          |   6 +-
+ net/8021q/vlan_dev.c                          |   4 +-
+ net/core/Makefile                             |   2 +-
+ net/core/dev.c                                | 284 ++++++----------
+ net/core/dev.h                                |  22 +-
+ net/core/dev_api.c                            | 318 ++++++++++++++++++
+ net/core/dev_ioctl.c                          |  69 ++--
+ net/core/net-sysfs.c                          |   9 +-
+ net/core/netdev_rx_queue.c                    |   5 +
+ net/core/rtnetlink.c                          |  51 ++-
+ net/dsa/conduit.c                             |  16 +-
+ net/dsa/user.c                                |   5 +-
+ net/ethtool/cabletest.c                       |  20 +-
+ net/ethtool/features.c                        |   6 +-
+ net/ethtool/ioctl.c                           |   6 +
+ net/ethtool/module.c                          |   8 +-
+ net/ethtool/netlink.c                         |  12 +
+ net/ethtool/phy.c                             |  20 +-
+ net/ethtool/rss.c                             |   2 +
+ net/ethtool/tsinfo.c                          |   9 +-
+ net/netfilter/nf_flow_table_offload.c         |   2 +-
+ net/netfilter/nf_tables_offload.c             |   2 +-
+ net/sched/cls_api.c                           |   2 +-
+ net/sched/sch_api.c                           |   8 +-
+ net/sched/sch_cbs.c                           |   8 +-
+ net/sched/sch_etf.c                           |   8 +-
+ net/sched/sch_ets.c                           |   4 +-
+ net/sched/sch_fifo.c                          |   4 +-
+ net/sched/sch_gred.c                          |   2 +-
+ net/sched/sch_htb.c                           |   2 +-
+ net/sched/sch_mq.c                            |   2 +-
+ net/sched/sch_mqprio.c                        |   6 +-
+ net/sched/sch_prio.c                          |   2 +-
+ net/sched/sch_red.c                           |   5 +-
+ net/sched/sch_taprio.c                        |  17 +-
+ net/sched/sch_tbf.c                           |   4 +-
+ net/xdp/xsk.c                                 |   3 +
+ net/xdp/xsk_buff_pool.c                       |   2 +
+ 56 files changed, 942 insertions(+), 464 deletions(-)
+ create mode 100644 net/core/dev_api.c
+
 -- 
-2.27.0
+2.48.1
 
