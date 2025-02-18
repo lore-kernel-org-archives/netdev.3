@@ -1,57 +1,47 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2077D49659
-	for <netdev@vger.kernel.org>; Tue, 18 Feb 2025 02:09:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7595F14F117
+	for <netdev@vger.kernel.org>; Tue, 18 Feb 2025 02:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739844592; cv=none; b=cL0CBsV3IvocFoY4pZwq6Hm7+v1CdrQyuwKwiOTxpsEYaERPtSGnxrMsz3tjny6A3jxdC/pRVXbCMp3IFrkBpr0oBISwiUlwcTcnNTHLDBggv8BwHIeOGOd5Al8uXly8smRepuMwi1HZckXdKOqf0iqkyhtn2N158Qy9ZXqX6ro=
+	t=1739844594; cv=none; b=p9pIuOuRiS/egk/yNtO7KSG6dvs8O0tE0zQMBJQLWfZBT8CdbN3g2rKHyThy1AqFIMKLoMJUPDZF1V2TmOZoiDkP9h+b5AjQsIbq+GmCL8bOxZO9dwVrm5/WvlCkrKgk3ps1qOnR1HzQBDzAVXzWZ4GWhk3jWfBi92c/dHh6ylg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739844592; c=relaxed/simple;
-	bh=vlAZBZ2e9vIXTlZJFh+zXali1B9fUQbOpG0yXZg9DTs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W6+nCXbNslDS/iQEB+/zYctunf1NUf7xAJSYMSjW32Q1Aua8zV4m0zjjrhdbxU3G5/jshh57hgNKIioWh3fUerct84VTkoFEjmvPAkntEEikVSMXCKofnUfOPi0c8Vymd/bTZ203jPMg7WeYBJk6VD82gFegKsvTUIAVP/miQ/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-220f048c038so59627605ad.2
-        for <netdev@vger.kernel.org>; Mon, 17 Feb 2025 18:09:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739844590; x=1740449390;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kKHYb4JrkcduaARQ2618o16zbnk4dSbsfvMS11fcVcY=;
-        b=IMh6bi0poaILADW6JGq3rRpit/JSUsmmwLFIgTaT+OFxxhSSOZlrQSwUPx8CiL3qe+
-         k4FbHUn4/bcFACjjRqkL6RXwwdgcBKKASScgnU4WIbhsca4gQoEbpsx209hmkRSPLq/l
-         BseGo/ZQPQYLZ1KGOK0Ls7SRIcD9kS02Zwof65++BiOeyiuCeKTXN/yjwwdBrpIFnpKp
-         tdEeQDkSV+l2QHzggLfa/HO5Sul6WudUhBdTMyVUUu22Sl2b+r8cJvQvbW65GxSi5kYu
-         t91i30NFh8UBYLbqBUuiq8XtgLR0LTlcsieAnmLNAzQ+AVbHhBqLg3doNmagq4jTznCm
-         nwYA==
-X-Gm-Message-State: AOJu0Ywx+VmZKS9fqKtv2OVSWwX+HZuDASxc5AjcwPpNdB2FAJDrQfo0
-	262h6fwC4k913uGylS1MBB2GPjfqQFvCIsj8360Wdvgi1lpqvP6PmbhY
-X-Gm-Gg: ASbGncsRIsupCJ1B7+LfHz79VogUJHsshADXLMkWUm9pBCRHXdrB7i4wgRp7LK79X2g
-	Hk/VBJcF5/BXtcn/XjsJwcMRdrsSBY4LGHiyclz4uhCGLObSzjvwlTiCAAw5J3ZX0g1MUUptKEG
-	5bJXag2X3yfK4NxkKKV7GJVJn0ZlfY5vXAeKpZeZJVx8WBJpq1gESEhiHwszrYkMi8gNNjbXZ6h
-	clCjBSpMVKi+47llXj5Uk3SbeprJRzj3cY0+UgkfR+ol3teLuj3uv16zBS+UIRnAittBOiwjE5h
-	u/i+7EdWWDo81ig=
-X-Google-Smtp-Source: AGHT+IHm0mqfxYUR8IgSDFEXOMeLjx/HPnOTAi6kEia7fM5zgTf9HMRaAWWW5MwGh4ruhpqF/YxuDg==
-X-Received: by 2002:a17:902:ccd1:b0:220:c813:dfb2 with SMTP id d9443c01a7336-221040bd34cmr181767005ad.44.1739844589757;
-        Mon, 17 Feb 2025 18:09:49 -0800 (PST)
-Received: from localhost ([2601:646:9e00:f56e:2844:3d8f:bf3e:12cc])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-220d5349394sm77916285ad.49.2025.02.17.18.09.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Feb 2025 18:09:48 -0800 (PST)
-From: Stanislav Fomichev <sdf@fomichev.me>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
+	s=arc-20240116; t=1739844594; c=relaxed/simple;
+	bh=WGlWRgm/1Ltz7fkVY1FkkIPPYOgNjs0/FqXf45/6Rls=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Zw1w/Q0mX3gB7+xQu3J72Aaqezktx4m/xHoqquxhSmbGuCLv/Zz3kqjC7TxNkFVcMptbGvms7GO7rYjwZ3ElTJWj1RxP0uRBg/ULkYm/tGkPqaHkgSRN8inM0AsiT46hyMOi2X8Wum2R+tl7ivHPRcli5jiKdlCU9WpAj4CSBwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.194.254.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: bizesmtpsz5t1739844580tpl15kv
+X-QQ-Originating-IP: qf9Q/njeBIZ/ZQyOyOB3A5MHp5AgWQRoUDXrILaVnnk=
+Received: from wxdbg.localdomain.com ( [36.24.205.26])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 18 Feb 2025 10:09:38 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 2338889483868943175
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	Saeed Mahameed <saeed@kernel.org>
-Subject: [PATCH net-next v4 00/12] net: Hold netdev instance lock during ndo operations
-Date: Mon, 17 Feb 2025 18:09:36 -0800
-Message-ID: <20250218020948.160643-1-sdf@fomichev.me>
-X-Mailer: git-send-email 2.48.1
+	richardcochran@gmail.com,
+	linux@armlinux.org.uk,
+	horms@kernel.org,
+	jacob.e.keller@intel.com,
+	netdev@vger.kernel.org,
+	vadim.fedorenko@linux.dev
+Cc: mengyuanlou@net-swift.com,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v8 4/4] net: ngbe: Add support for 1PPS and TOD
+Date: Tue, 18 Feb 2025 10:34:32 +0800
+Message-Id: <20250218023432.146536-5-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20250218023432.146536-1-jiawenwu@trustnetic.com>
+References: <20250218023432.146536-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,125 +49,467 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: ODO7gCA19e1N4vI8z6miD3bEgnFuiZgyW+15JR/tthTf3BvzxsMsYKXa
+	aRR2Ck24K/PN5fG5oxa0H5iiOQHNRN+QSDjyVtPo58kccmz2ENkKqjivePOkp/IVjt4otM7
+	Jir9mSM811o41HH2atkN8QQb+DQEPsJuYzfI+sLMAniM4EzEswSgcYQ5pkOimOSTA2Y61bK
+	kNWKurAwAim2cizPi2qYZRPX9syc2LzY/hwDraCY5a+LyjpKE3j+LnWWsScCIt8BN40u7uN
+	DoaMl++BKTJwqxcLPr0q79XeoMRaK1l7BqWFFA91WETgAB6ycniX04uYU70opefOMNFEhV+
+	LfTHWCjHHZ2/hxOUmE1VsdwPaE1/qJi68xDz1ppYG3CpV3OZLSF3RBSWPxNkQ+LjGS+SnTn
+	wjBqT7jMDp78VECCDpSogjXwujmkP/c7Nh4vG3Nh9D1ldNufDtFm1u6c9Y+bSymMshPaumQ
+	EYLJnfbm12vUnJtpZEBU3Adhq/XQiggAp8dnM4x793TU0Y4QhkUwAXgUDdSgFrNJU9P/ldJ
+	XtX4DLxOul5XRKnf4x33AMd9IUKBq+oDrnNce+UK2y+FEvswam4xEzooOUSYDg4RpVJzP8J
+	su84jiYlpaGVwyXxWp/QL56QR2u9OW86eGegheL2+4l3AB7e5kvpF+jL4+XRWZSI8i5o0Qm
+	Qea24Gv41NQYC4ADlACs1bO6+iG8efnbDtnJQrYjHedsRyjNRHoswcSUH2qDcBXi+0Mgcs0
+	DHKhJgqH6VdtrKQZFGUfvg497JNzyq2J4euAHRxMcK7DrDJXrB1uA9vWtOEAsF1Ck4xHuMf
+	5OhVwBsCv1r2wJlCeOJtG8AlqC/12FReb7TVhNcxh1y2NPK5bVw+vWalHbEaoH0Kjc7Zkc3
+	j7S97Cz8vQ6+v5BJKJ4+YctilnJlMS9jhn4UGeYn3IOjwKBge1WaIdjFHFORCX/8UB2uAsi
+	IcyHr2z0IjUbufkz9uWoCpdkaLDa5RGM44oPSF0zItfkYygQgqOHbgmtV2D+c0EdkLDv/ld
+	0oglVGjhI7+R/i2z95
+X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
+X-QQ-RECHKSPAM: 0
 
-As the gradual purging of rtnl continues, start grabbing netdev
-instance lock in more places so we can get to the state where
-most paths are working without rtnl. Start with requiring the
-drivers that use shaper api (and later queue mgmt api) to work
-with both rtnl and netdev instance lock. Eventually we might
-attempt to drop rtnl. This mostly affects iavf, gve, bnxt and
-netdev sim (as the drivers that implement shaper/queue mgmt)
-so those drivers are converted in the process.
+Implement support for generating a 1pps output signal on SDP0.
+And support custom firmware to output TOD.
 
-call_netdevice_notifiers locking is very inconsistent and might need
-a separate follow up. Some notified events are covered by the
-instance lock, some are not, which might complicate the driver
-expectations.
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  19 ++
+ drivers/net/ethernet/wangxun/libwx/wx_hw.h    |   1 +
+ drivers/net/ethernet/wangxun/libwx/wx_ptp.c   | 181 +++++++++++++++++-
+ drivers/net/ethernet/wangxun/libwx/wx_ptp.h   |   1 +
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  |  35 ++++
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  12 +-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |   5 +
+ 7 files changed, 250 insertions(+), 4 deletions(-)
 
-Changes since v3:
-- add instance lock to netdev_lockdep_set_classes,
-  move lock_set_cmp_fn to happen after set_class (NIPA)
-
-Changes since v2:
-- new patch to replace dev_addr_sem with instance lock (forwarding tests)
-- CONFIG_LOCKDEP around netdev_lock_cmp_fn (Jakub)
-- remove netif_device_present check from dev_setup_tc (bpf_offload.py)
-- reorder bpf_devs_locks and instance lock ordering in bpf map
-  offload (bpf_offload.py)
-
-Changes since v1:
-- fix netdev_set_mtu_ext_locked in the wrong place (lkp@intel.com)
-- add missing depend on CONFIG_NET_SHAPER for dummy device
-  (lkp@intel.com)
-  - not sure we need to apply dummy device patch..
-- need_netdev_ops_lock -> netdev_need_ops_lock (Jakub)
-- remove netdev_assert_locked near napi_xxx_locked calls (Jakub)
-- fix netdev_lock_cmp_fn comment and line length (Jakub)
-- fix kdoc style of dev_api.c routines (Jakub)
-- reflow dev_setup_tc to avoid indent (Jakub)
-- keep tc_can_offload checks outside of dev_setup_tc (Jakub)
-
-Changes since RFC:
-- other control paths are protected
-- bntx has been converted to mostly depend on netdev instance lock
-
-Cc: Saeed Mahameed <saeed@kernel.org>
-
-Jakub Kicinski (1):
-  net: ethtool: try to protect all callback with netdev instance lock
-
-Stanislav Fomichev (11):
-  net: hold netdev instance lock during ndo_open/ndo_stop
-  net: hold netdev instance lock during ndo_setup_tc
-  net: hold netdev instance lock during queue operations
-  net: hold netdev instance lock during rtnetlink operations
-  net: hold netdev instance lock during ioctl operations
-  net: hold netdev instance lock during sysfs operations
-  net: hold netdev instance lock during ndo_bpf
-  net: replace dev_addr_sem with netdev instance lock
-  net: dummy: add dummy shaper API
-  docs: net: document new locking reality
-  eth: bnxt: remove most dependencies on RTNL
-
- Documentation/networking/netdevices.rst       |  57 +++-
- drivers/net/Kconfig                           |   1 +
- drivers/net/bonding/bond_main.c               |  16 +-
- drivers/net/dummy.c                           |  37 ++
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 132 ++++----
- .../net/ethernet/broadcom/bnxt/bnxt_devlink.c |   9 +
- .../net/ethernet/broadcom/bnxt/bnxt_sriov.c   |   6 +
- drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c |  16 +-
- drivers/net/ethernet/broadcom/bnxt/bnxt_vfr.c |  18 +-
- drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |   3 +-
- drivers/net/ethernet/google/gve/gve_main.c    |   8 +-
- drivers/net/ethernet/google/gve/gve_utils.c   |   6 +-
- drivers/net/ethernet/intel/iavf/iavf_main.c   |  16 +-
- drivers/net/netdevsim/ethtool.c               |   2 -
- drivers/net/netdevsim/netdev.c                |  36 +-
- drivers/net/tap.c                             |   2 +-
- drivers/net/tun.c                             |   2 +-
- include/linux/netdevice.h                     |  82 ++++-
- kernel/bpf/offload.c                          |   6 +-
- net/8021q/vlan_dev.c                          |   4 +-
- net/core/Makefile                             |   2 +-
- net/core/dev.c                                | 284 ++++++----------
- net/core/dev.h                                |  22 +-
- net/core/dev_api.c                            | 318 ++++++++++++++++++
- net/core/dev_ioctl.c                          |  69 ++--
- net/core/net-sysfs.c                          |   9 +-
- net/core/netdev_rx_queue.c                    |   5 +
- net/core/rtnetlink.c                          |  51 ++-
- net/dsa/conduit.c                             |  16 +-
- net/dsa/user.c                                |   5 +-
- net/ethtool/cabletest.c                       |  20 +-
- net/ethtool/features.c                        |   6 +-
- net/ethtool/ioctl.c                           |   6 +
- net/ethtool/module.c                          |   8 +-
- net/ethtool/netlink.c                         |  12 +
- net/ethtool/phy.c                             |  20 +-
- net/ethtool/rss.c                             |   2 +
- net/ethtool/tsinfo.c                          |   9 +-
- net/netfilter/nf_flow_table_offload.c         |   2 +-
- net/netfilter/nf_tables_offload.c             |   2 +-
- net/sched/cls_api.c                           |   2 +-
- net/sched/sch_api.c                           |   8 +-
- net/sched/sch_cbs.c                           |   8 +-
- net/sched/sch_etf.c                           |   8 +-
- net/sched/sch_ets.c                           |   4 +-
- net/sched/sch_fifo.c                          |   4 +-
- net/sched/sch_gred.c                          |   2 +-
- net/sched/sch_htb.c                           |   2 +-
- net/sched/sch_mq.c                            |   2 +-
- net/sched/sch_mqprio.c                        |   6 +-
- net/sched/sch_prio.c                          |   2 +-
- net/sched/sch_red.c                           |   5 +-
- net/sched/sch_taprio.c                        |  17 +-
- net/sched/sch_tbf.c                           |   4 +-
- net/xdp/xsk.c                                 |   3 +
- net/xdp/xsk_buff_pool.c                       |   2 +
- 56 files changed, 942 insertions(+), 464 deletions(-)
- create mode 100644 net/core/dev_api.c
-
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index deaf670c160e..907d13ade404 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -393,6 +393,25 @@ int wx_host_interface_command(struct wx *wx, u32 *buffer,
+ }
+ EXPORT_SYMBOL(wx_host_interface_command);
+ 
++int wx_set_pps(struct wx *wx, bool enable, u64 nsec, u64 cycles)
++{
++	struct wx_hic_set_pps pps_cmd;
++
++	pps_cmd.hdr.cmd = FW_PPS_SET_CMD;
++	pps_cmd.hdr.buf_len = FW_PPS_SET_LEN;
++	pps_cmd.hdr.cmd_or_resp.cmd_resv = FW_CEM_CMD_RESERVED;
++	pps_cmd.lan_id = wx->bus.func;
++	pps_cmd.enable = (u8)enable;
++	pps_cmd.nsec = nsec;
++	pps_cmd.cycles = cycles;
++	pps_cmd.hdr.checksum = FW_DEFAULT_CHECKSUM;
++
++	return wx_host_interface_command(wx, (u32 *)&pps_cmd,
++					 sizeof(pps_cmd),
++					 WX_HI_COMMAND_TIMEOUT,
++					 false);
++}
++
+ /**
+  *  wx_read_ee_hostif_data - Read EEPROM word using a host interface cmd
+  *  assuming that the semaphore is already obtained.
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.h b/drivers/net/ethernet/wangxun/libwx/wx_hw.h
+index 11fb33349482..b883342bb576 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.h
+@@ -18,6 +18,7 @@ void wx_control_hw(struct wx *wx, bool drv);
+ int wx_mng_present(struct wx *wx);
+ int wx_host_interface_command(struct wx *wx, u32 *buffer,
+ 			      u32 length, u32 timeout, bool return_data);
++int wx_set_pps(struct wx *wx, bool enable, u64 nsec, u64 cycles);
+ int wx_read_ee_hostif(struct wx *wx, u16 offset, u16 *data);
+ int wx_read_ee_hostif_buffer(struct wx *wx,
+ 			     u16 offset, u16 words, u16 *data);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+index 76986e41afe0..07c015ba338f 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+@@ -88,6 +88,9 @@ static int wx_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
+ 	timecounter_adjtime(&wx->hw_tc, delta);
+ 	write_sequnlock_irqrestore(&wx->hw_tc_lock, flags);
+ 
++	if (wx->ptp_setup_sdp)
++		wx->ptp_setup_sdp(wx);
++
+ 	return 0;
+ }
+ 
+@@ -118,6 +121,9 @@ static int wx_ptp_settime64(struct ptp_clock_info *ptp,
+ 	timecounter_init(&wx->hw_tc, &wx->hw_cc, ns);
+ 	write_sequnlock_irqrestore(&wx->hw_tc_lock, flags);
+ 
++	if (wx->ptp_setup_sdp)
++		wx->ptp_setup_sdp(wx);
++
+ 	return 0;
+ }
+ 
+@@ -324,6 +330,160 @@ static long wx_ptp_do_aux_work(struct ptp_clock_info *ptp)
+ 	return ts_done ? 1 : HZ;
+ }
+ 
++static u64 wx_ptp_trigger_calc(struct wx *wx)
++{
++	struct cyclecounter *cc = &wx->hw_cc;
++	unsigned long flags;
++	u64 ns = 0;
++	u32 rem;
++
++	/* Read the current clock time, and save the cycle counter value */
++	write_seqlock_irqsave(&wx->hw_tc_lock, flags);
++	ns = timecounter_read(&wx->hw_tc);
++	wx->pps_edge_start = wx->hw_tc.cycle_last;
++	write_sequnlock_irqrestore(&wx->hw_tc_lock, flags);
++	wx->pps_edge_end = wx->pps_edge_start;
++
++	/* Figure out how far past the next second we are */
++	div_u64_rem(ns, WX_NS_PER_SEC, &rem);
++
++	/* Figure out how many nanoseconds to add to round the clock edge up
++	 * to the next full second
++	 */
++	rem = (WX_NS_PER_SEC - rem);
++
++	/* Adjust the clock edge to align with the next full second. */
++	wx->pps_edge_start += div_u64(((u64)rem << cc->shift), cc->mult);
++	wx->pps_edge_end += div_u64(((u64)(rem + wx->pps_width) <<
++				     cc->shift), cc->mult);
++
++	return (ns + rem);
++}
++
++static int wx_ptp_setup_sdp(struct wx *wx)
++{
++	struct cyclecounter *cc = &wx->hw_cc;
++	u32 tsauxc;
++	u64 nsec;
++
++	if (wx->pps_width >= WX_NS_PER_SEC) {
++		wx_err(wx, "PTP pps width cannot be longer than 1s!\n");
++		return -EINVAL;
++	}
++
++	/* disable the pin first */
++	wr32ptp(wx, WX_TSC_1588_AUX_CTL, 0);
++	WX_WRITE_FLUSH(wx);
++
++	if (!test_bit(WX_FLAG_PTP_PPS_ENABLED, wx->flags)) {
++		if (wx->pps_enabled) {
++			wx->pps_enabled = false;
++			wx_set_pps(wx, false, 0, 0);
++		}
++		return 0;
++	}
++
++	wx->pps_enabled = true;
++	nsec = wx_ptp_trigger_calc(wx);
++	wx_set_pps(wx, wx->pps_enabled, nsec, wx->pps_edge_start);
++
++	tsauxc = WX_TSC_1588_AUX_CTL_PLSG | WX_TSC_1588_AUX_CTL_EN_TT0 |
++		WX_TSC_1588_AUX_CTL_EN_TT1 | WX_TSC_1588_AUX_CTL_EN_TS0;
++	wr32ptp(wx, WX_TSC_1588_TRGT_L(0), (u32)wx->pps_edge_start);
++	wr32ptp(wx, WX_TSC_1588_TRGT_H(0), (u32)(wx->pps_edge_start >> 32));
++	wr32ptp(wx, WX_TSC_1588_TRGT_L(1), (u32)wx->pps_edge_end);
++	wr32ptp(wx, WX_TSC_1588_TRGT_H(1), (u32)(wx->pps_edge_end >> 32));
++	wr32ptp(wx, WX_TSC_1588_SDP(0),
++		WX_TSC_1588_SDP_FUN_SEL_TT0 | WX_TSC_1588_SDP_OUT_LEVEL_H);
++	wr32ptp(wx, WX_TSC_1588_SDP(1), WX_TSC_1588_SDP_FUN_SEL_TS0);
++	wr32ptp(wx, WX_TSC_1588_AUX_CTL, tsauxc);
++	wr32ptp(wx, WX_TSC_1588_INT_EN, WX_TSC_1588_INT_EN_TT1);
++	WX_WRITE_FLUSH(wx);
++
++	/* Adjust the clock edge to align with the next full second. */
++	wx->sec_to_cc = div_u64(((u64)WX_NS_PER_SEC << cc->shift), cc->mult);
++
++	return 0;
++}
++
++static int wx_ptp_feature_enable(struct ptp_clock_info *ptp,
++				 struct ptp_clock_request *rq, int on)
++{
++	struct wx *wx = container_of(ptp, struct wx, ptp_caps);
++
++	/**
++	 * When PPS is enabled, unmask the interrupt for the ClockOut
++	 * feature, so that the interrupt handler can send the PPS
++	 * event when the clock SDP triggers. Clear mask when PPS is
++	 * disabled
++	 */
++	if (rq->type != PTP_CLK_REQ_PEROUT || !wx->ptp_setup_sdp)
++		return -EOPNOTSUPP;
++
++	/* Reject requests with unsupported flags */
++	if (rq->perout.flags & ~(PTP_PEROUT_DUTY_CYCLE |
++				 PTP_PEROUT_PHASE))
++		return -EOPNOTSUPP;
++
++	if (rq->perout.phase.sec || rq->perout.phase.nsec) {
++		wx_err(wx, "Absolute start time not supported.\n");
++		return -EINVAL;
++	}
++
++	if (rq->perout.period.sec != 1 || rq->perout.period.nsec) {
++		wx_err(wx, "Only 1pps is supported.\n");
++		return -EINVAL;
++	}
++
++	if (rq->perout.flags & PTP_PEROUT_DUTY_CYCLE) {
++		struct timespec64 ts_on;
++
++		ts_on.tv_sec = rq->perout.on.sec;
++		ts_on.tv_nsec = rq->perout.on.nsec;
++		wx->pps_width = timespec64_to_ns(&ts_on);
++	} else {
++		wx->pps_width = 120000000;
++	}
++
++	if (on)
++		set_bit(WX_FLAG_PTP_PPS_ENABLED, wx->flags);
++	else
++		clear_bit(WX_FLAG_PTP_PPS_ENABLED, wx->flags);
++
++	return wx->ptp_setup_sdp(wx);
++}
++
++void wx_ptp_check_pps_event(struct wx *wx)
++{
++	u32 tsauxc, int_status;
++
++	/* this check is necessary in case the interrupt was enabled via some
++	 * alternative means (ex. debug_fs). Better to check here than
++	 * everywhere that calls this function.
++	 */
++	if (!wx->ptp_clock)
++		return;
++
++	int_status = rd32ptp(wx, WX_TSC_1588_INT_ST);
++	if (int_status & WX_TSC_1588_INT_ST_TT1) {
++		/* disable the pin first */
++		wr32ptp(wx, WX_TSC_1588_AUX_CTL, 0);
++		WX_WRITE_FLUSH(wx);
++
++		wx_ptp_trigger_calc(wx);
++
++		tsauxc = WX_TSC_1588_AUX_CTL_PLSG | WX_TSC_1588_AUX_CTL_EN_TT0 |
++			 WX_TSC_1588_AUX_CTL_EN_TT1 | WX_TSC_1588_AUX_CTL_EN_TS0;
++		wr32ptp(wx, WX_TSC_1588_TRGT_L(0), (u32)wx->pps_edge_start);
++		wr32ptp(wx, WX_TSC_1588_TRGT_H(0), (u32)(wx->pps_edge_start >> 32));
++		wr32ptp(wx, WX_TSC_1588_TRGT_L(1), (u32)wx->pps_edge_end);
++		wr32ptp(wx, WX_TSC_1588_TRGT_H(1), (u32)(wx->pps_edge_end >> 32));
++		wr32ptp(wx, WX_TSC_1588_AUX_CTL, tsauxc);
++		WX_WRITE_FLUSH(wx);
++	}
++}
++EXPORT_SYMBOL(wx_ptp_check_pps_event);
++
+ static long wx_ptp_create_clock(struct wx *wx)
+ {
+ 	struct net_device *netdev = wx->netdev;
+@@ -338,17 +498,22 @@ static long wx_ptp_create_clock(struct wx *wx)
+ 	wx->ptp_caps.owner = THIS_MODULE;
+ 	wx->ptp_caps.n_alarm = 0;
+ 	wx->ptp_caps.n_ext_ts = 0;
+-	wx->ptp_caps.n_per_out = 0;
+ 	wx->ptp_caps.pps = 0;
+ 	wx->ptp_caps.adjfine = wx_ptp_adjfine;
+ 	wx->ptp_caps.adjtime = wx_ptp_adjtime;
+ 	wx->ptp_caps.gettimex64 = wx_ptp_gettimex64;
+ 	wx->ptp_caps.settime64 = wx_ptp_settime64;
+ 	wx->ptp_caps.do_aux_work = wx_ptp_do_aux_work;
+-	if (wx->mac.type == wx_mac_em)
++	if (wx->mac.type == wx_mac_em) {
+ 		wx->ptp_caps.max_adj = 500000000;
+-	else
++		wx->ptp_caps.n_per_out = 1;
++		wx->ptp_setup_sdp = wx_ptp_setup_sdp;
++		wx->ptp_caps.enable = wx_ptp_feature_enable;
++	} else {
+ 		wx->ptp_caps.max_adj = 250000000;
++		wx->ptp_caps.n_per_out = 0;
++		wx->ptp_setup_sdp = NULL;
++	}
+ 
+ 	wx->ptp_clock = ptp_clock_register(&wx->ptp_caps, &wx->pdev->dev);
+ 	if (IS_ERR(wx->ptp_clock)) {
+@@ -580,6 +745,12 @@ void wx_ptp_reset(struct wx *wx)
+ 
+ 	wx->last_overflow_check = jiffies;
+ 	ptp_schedule_worker(wx->ptp_clock, HZ);
++
++	/* Now that the shift has been calculated and the systime
++	 * registers reset, (re-)enable the Clock out feature
++	 */
++	if (wx->ptp_setup_sdp)
++		wx->ptp_setup_sdp(wx);
+ }
+ EXPORT_SYMBOL(wx_ptp_reset);
+ 
+@@ -620,6 +791,10 @@ void wx_ptp_suspend(struct wx *wx)
+ 	if (!test_and_clear_bit(WX_STATE_PTP_RUNNING, wx->state))
+ 		return;
+ 
++	clear_bit(WX_FLAG_PTP_PPS_ENABLED, wx->flags);
++	if (wx->ptp_setup_sdp)
++		wx->ptp_setup_sdp(wx);
++
+ 	wx_ptp_clear_tx_timestamp(wx);
+ }
+ EXPORT_SYMBOL(wx_ptp_suspend);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.h b/drivers/net/ethernet/wangxun/libwx/wx_ptp.h
+index 8742d2797363..50db90a6e3ee 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.h
+@@ -4,6 +4,7 @@
+ #ifndef _WX_PTP_H_
+ #define _WX_PTP_H_
+ 
++void wx_ptp_check_pps_event(struct wx *wx);
+ void wx_ptp_reset_cyclecounter(struct wx *wx);
+ void wx_ptp_reset(struct wx *wx);
+ void wx_ptp_init(struct wx *wx);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index 0fabfa90d4e7..db446e690dc7 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -281,6 +281,23 @@
+ #define WX_TSC_1588_SYSTIML          0x11F0C
+ #define WX_TSC_1588_SYSTIMH          0x11F10
+ #define WX_TSC_1588_INC              0x11F14
++#define WX_TSC_1588_INT_ST           0x11F20
++#define WX_TSC_1588_INT_ST_TT1       BIT(5)
++#define WX_TSC_1588_INT_EN           0x11F24
++#define WX_TSC_1588_INT_EN_TT1       BIT(5)
++#define WX_TSC_1588_AUX_CTL          0x11F28
++#define WX_TSC_1588_AUX_CTL_EN_TS0   BIT(8)
++#define WX_TSC_1588_AUX_CTL_EN_TT1   BIT(2)
++#define WX_TSC_1588_AUX_CTL_PLSG     BIT(1)
++#define WX_TSC_1588_AUX_CTL_EN_TT0   BIT(0)
++#define WX_TSC_1588_TRGT_L(i)        (0x11F2C + ((i) * 8)) /* [0,1] */
++#define WX_TSC_1588_TRGT_H(i)        (0x11F30 + ((i) * 8)) /* [0,1] */
++#define WX_TSC_1588_SDP(i)           (0x11F5C + ((i) * 4)) /* [0,3] */
++#define WX_TSC_1588_SDP_OUT_LEVEL_H  FIELD_PREP(BIT(4), 0)
++#define WX_TSC_1588_SDP_OUT_LEVEL_L  FIELD_PREP(BIT(4), 1)
++#define WX_TSC_1588_SDP_FUN_SEL_MASK GENMASK(2, 0)
++#define WX_TSC_1588_SDP_FUN_SEL_TT0  FIELD_PREP(WX_TSC_1588_SDP_FUN_SEL_MASK, 1)
++#define WX_TSC_1588_SDP_FUN_SEL_TS0  FIELD_PREP(WX_TSC_1588_SDP_FUN_SEL_MASK, 5)
+ 
+ /************************************** MNG ********************************/
+ #define WX_MNG_SWFW_SYNC             0x1E008
+@@ -410,6 +427,8 @@ enum WX_MSCA_CMD_value {
+ #define FW_CEM_CMD_RESERVED          0X0
+ #define FW_CEM_MAX_RETRIES           3
+ #define FW_CEM_RESP_STATUS_SUCCESS   0x1
++#define FW_PPS_SET_CMD               0xF6
++#define FW_PPS_SET_LEN               0x14
+ 
+ #define WX_SW_REGION_PTR             0x1C
+ 
+@@ -730,6 +749,15 @@ struct wx_hic_reset {
+ 	u16 reset_type;
+ };
+ 
++struct wx_hic_set_pps {
++	struct wx_hic_hdr hdr;
++	u8 lan_id;
++	u8 enable;
++	u16 pad2;
++	u64 nsec;
++	u64 cycles;
++};
++
+ /* Bus parameters */
+ struct wx_bus_info {
+ 	u8 func;
+@@ -1068,6 +1096,7 @@ enum wx_pf_flags {
+ 	WX_FLAG_FDIR_PERFECT,
+ 	WX_FLAG_RX_HWTSTAMP_ENABLED,
+ 	WX_FLAG_RX_HWTSTAMP_IN_REGISTER,
++	WX_FLAG_PTP_PPS_ENABLED,
+ 	WX_PF_FLAGS_NBITS               /* must be last */
+ };
+ 
+@@ -1168,7 +1197,13 @@ struct wx {
+ 	void (*atr)(struct wx_ring *ring, struct wx_tx_buffer *first, u8 ptype);
+ 	void (*configure_fdir)(struct wx *wx);
+ 	void (*do_reset)(struct net_device *netdev);
++	int (*ptp_setup_sdp)(struct wx *wx);
+ 
++	bool pps_enabled;
++	u64 pps_width;
++	u64 pps_edge_start;
++	u64 pps_edge_end;
++	u64 sec_to_cc;
+ 	u32 base_incval;
+ 	u32 tx_hwtstamp_pkts;
+ 	u32 tx_hwtstamp_timeouts;
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index c60a96cc3508..a6159214ec0a 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -168,7 +168,7 @@ static irqreturn_t ngbe_intr(int __always_unused irq, void *data)
+ 	struct wx_q_vector *q_vector;
+ 	struct wx *wx  = data;
+ 	struct pci_dev *pdev;
+-	u32 eicr;
++	u32 eicr, eicr_misc;
+ 
+ 	q_vector = wx->q_vector[0];
+ 	pdev = wx->pdev;
+@@ -186,6 +186,10 @@ static irqreturn_t ngbe_intr(int __always_unused irq, void *data)
+ 	if (!(pdev->msi_enabled))
+ 		wr32(wx, WX_PX_INTA, 1);
+ 
++	eicr_misc = wx_misc_isb(wx, WX_ISB_MISC);
++	if (unlikely(eicr_misc & NGBE_PX_MISC_IC_TIMESYNC))
++		wx_ptp_check_pps_event(wx);
++
+ 	wx->isb_mem[WX_ISB_MISC] = 0;
+ 	/* would disable interrupts here but it is auto disabled */
+ 	napi_schedule_irqoff(&q_vector->napi);
+@@ -199,6 +203,12 @@ static irqreturn_t ngbe_intr(int __always_unused irq, void *data)
+ static irqreturn_t ngbe_msix_other(int __always_unused irq, void *data)
+ {
+ 	struct wx *wx = data;
++	u32 eicr;
++
++	eicr = wx_misc_isb(wx, WX_ISB_MISC);
++
++	if (unlikely(eicr & NGBE_PX_MISC_IC_TIMESYNC))
++		wx_ptp_check_pps_event(wx);
+ 
+ 	/* re-enable the original interrupt state, no lsc, no queues */
+ 	if (netif_running(wx->netdev))
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+index f48ed7fc1805..992adbb98c7d 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+@@ -70,15 +70,20 @@
+ 
+ /* Extended Interrupt Enable Set */
+ #define NGBE_PX_MISC_IEN_DEV_RST		BIT(10)
++#define NGBE_PX_MISC_IEN_TIMESYNC		BIT(11)
+ #define NGBE_PX_MISC_IEN_ETH_LK			BIT(18)
+ #define NGBE_PX_MISC_IEN_INT_ERR		BIT(20)
+ #define NGBE_PX_MISC_IEN_GPIO			BIT(26)
+ #define NGBE_PX_MISC_IEN_MASK ( \
+ 				NGBE_PX_MISC_IEN_DEV_RST | \
++				NGBE_PX_MISC_IEN_TIMESYNC | \
+ 				NGBE_PX_MISC_IEN_ETH_LK | \
+ 				NGBE_PX_MISC_IEN_INT_ERR | \
+ 				NGBE_PX_MISC_IEN_GPIO)
+ 
++/* Extended Interrupt Cause Read */
++#define NGBE_PX_MISC_IC_TIMESYNC		BIT(11) /* time sync */
++
+ #define NGBE_INTR_ALL				0x1FF
+ #define NGBE_INTR_MISC				BIT(0)
+ 
 -- 
-2.48.1
+2.27.0
 
