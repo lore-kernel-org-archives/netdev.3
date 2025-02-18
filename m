@@ -1,78 +1,73 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.nic.cz (mail.nic.cz [217.31.204.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBCD2417EA
-	for <netdev@vger.kernel.org>; Tue, 18 Feb 2025 12:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EC022CBFA;
+	Tue, 18 Feb 2025 12:01:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.31.204.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739880004; cv=none; b=YB3R/maSPlyLpqfZvQ3vovpjCzqwX6UCOwBJ/Md3dSBBLcei1UNVJCXidpbyfsASbea7rKJyVhopoll6uCVW8XTwcmYphzFx925cVD4CJ7rsCJfBrg03D2zqWDUvTsFCrfEy2Li9JlbBGXADm70k73TYv+4BcLZINVsRkveE28A=
+	t=1739880104; cv=none; b=RlpwaaM0nW8N8yrYU067/7hGfxfEXn4cARcXxisxhkn4NK3+2c7emMDziiha4aCnlujlfIpV5sIb1E4taGTZWz8hcVv4sg/B2muq2tZCv+8qobQAWOOOXobKeQIxPIksUH/1s2/Jw5twtMfJaxhMR/GpCUd8ZjVPd1X9QoVR4Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739880004; c=relaxed/simple;
-	bh=FYpmzwhW6eS3TLiHqzuXK709wP7NNOETBleFZ14cFNk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BpS3Hh1ZlYKJSUPm1+rmEHjVQchnuvB3dDxusSdrroWM7QaBAtbZQYKVopWlXs7AVgPHZgP6GadS+lnY5x9HXVGtA7R/GiFH2kR/UWDdlVQ+ghBVWjo4gUQxe+ECbTcfgERRUvpwsiMcJc2aPWqQcaK8O9raGiYNQpwRabb04OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BzFtN0KG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739880104; c=relaxed/simple;
+	bh=hKlrLxA+CguCamDBIz14d2zPrVm7fMm2y9yXrp8LrAA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ejx5tGwwpt3POgP9fGxQHLrpPGKTEEbBIAZpDFAr4HlWp2FC0L/5EiyxmWVikrE7CvxHilUo4SaGP22c56s4283AlTUen2rDlVkpC+0KqEuge2Yr1joT2VgbCiJ/VShFzr6EhELwJv+Ii5ixx1HY+XHVg9SbQNIcXK4l0m19mSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nic.cz; spf=pass smtp.mailfrom=nic.cz; dkim=pass (1024-bit key) header.d=nic.cz header.i=@nic.cz header.b=iqftALd6; arc=none smtp.client-ip=217.31.204.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nic.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nic.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BzFtN0KG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5FBC4CEE2;
-	Tue, 18 Feb 2025 12:00:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739880003;
-	bh=FYpmzwhW6eS3TLiHqzuXK709wP7NNOETBleFZ14cFNk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=BzFtN0KGuGcLaZToRm6ttCM27PXRiO2LSZovmRYghyKsmBr/D89UX5QMxV3tiwJr7
-	 LUNdMSYtZL8Ya2QYt3AsSRwabYGy565hr1Y3Dx2CDn2aghdPVETLdIueByFdP3u66U
-	 6cy6TxtZIfwkb1kGhwEAX2X9FxAnCRlnx8kIgRXsOubYuxISViNhvn/DVxxOyLgLRz
-	 puNg0HvC/bbIhWxW2lHNZ84DsFEgquz35Mb0vP37T/3vXbcWQEfW9ccj52wljTtIli
-	 ZT4+OrnsiRg7HeO1KMNEDCeN++tzVLi14Qw//1NAgGipgWDhkFwn7rHJ4+Gke1YOht
-	 pRyOmQjJkxL5Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3529B380AA7E;
-	Tue, 18 Feb 2025 12:00:35 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=nic.cz header.i=@nic.cz header.b="iqftALd6"
+Received: from solitude (unknown [172.20.6.77])
+	by mail.nic.cz (Postfix) with ESMTPS id 404551C05D1;
+	Tue, 18 Feb 2025 12:54:29 +0100 (CET)
+Authentication-Results: mail.nic.cz;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nic.cz; s=default;
+	t=1739879669; bh=hKlrLxA+CguCamDBIz14d2zPrVm7fMm2y9yXrp8LrAA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From:Reply-To:
+	 Subject:To:Cc;
+	b=iqftALd6mdGOePNYj/Riu+fiSTIQd2zVfVBSg1KFHkr9ttJrhv6494kIX4QTBSIjs
+	 bsKCgPqM7EMMRkpkI3Bw0h6gR1153NCjcp9HSVKIgZFAPlnskIGwpPhj+v6SkKHW2L
+	 biJ9Fme7iR5P2giQrWghMIdCxJ1ss+SGL5SXoEIU=
+Date: Tue, 18 Feb 2025 12:54:29 +0100
+From: Marek =?utf-8?B?QmVow7pu?= <marek.behun@nic.cz>
+To: Dimitri Fedrau <dima.fedrau@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, 
+	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>, Gregor Herburger <gregor.herburger@ew.tq-group.com>, 
+	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 1/3] net: phy: marvell-88q2xxx: align defines
+Message-ID: <rfcr7sva7vs5vzfncbtrxcaa7ddosnabxu5xhuqsdspbdxwfrg@scl4wgu3m32n>
+References: <20250214-marvell-88q2xxx-cleanup-v1-0-71d67c20f308@gmail.com>
+ <20250214-marvell-88q2xxx-cleanup-v1-1-71d67c20f308@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3] page_pool: avoid infinite loop to schedule
- delayed worker
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173988003404.4060768.8778974121302997728.git-patchwork-notify@kernel.org>
-Date: Tue, 18 Feb 2025 12:00:34 +0000
-References: <20250214064250.85987-1-kerneljasonxing@gmail.com>
-In-Reply-To: <20250214064250.85987-1-kerneljasonxing@gmail.com>
-To: Jason Xing <kerneljasonxing@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, hawk@kernel.org,
- ilias.apalodimas@linaro.org, almasrymina@google.com, netdev@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250214-marvell-88q2xxx-cleanup-v1-1-71d67c20f308@gmail.com>
+X-Spamd-Bar: /
+X-Rspamd-Queue-Id: 404551C05D1
+X-Spamd-Result: default: False [-0.10 / 16.00];
+	MIME_GOOD(-0.10)[text/plain];
+	WHITELISTED_IP(0.00)[172.20.6.77];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	ARC_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TAGGED_RCPT(0.00)[renesas];
+	FREEMAIL_TO(0.00)[gmail.com]
+X-Rspamd-Action: no action
+X-Rspamd-Pre-Result: action=no action;
+	module=multimap;
+	Matched map: WHITELISTED_IP
+X-Rspamd-Server: mail
 
-Hello:
+> +#define MDIO_MMD_AN_MV_STAT				32769
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri, 14 Feb 2025 14:42:50 +0800 you wrote:
-> We noticed the kworker in page_pool_release_retry() was waken
-> up repeatedly and infinitely in production because of the
-> buggy driver causing the inflight less than 0 and warning
-> us in page_pool_inflight()[1].
-> 
-> Since the inflight value goes negative, it means we should
-> not expect the whole page_pool to get back to work normally.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v3] page_pool: avoid infinite loop to schedule delayed worker
-    https://git.kernel.org/netdev/net-next/c/43130d02baa1
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Why the hell are register addresses in this driver in decimal?
