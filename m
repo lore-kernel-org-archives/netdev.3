@@ -1,193 +1,150 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2042.outbound.protection.outlook.com [40.107.249.42])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB342C2EF;
-	Tue, 18 Feb 2025 02:02:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739844172; cv=fail; b=gazQZQwiAsVhWgkQ/SboN16Tm6+hDkolwUJpUcKG4ilt+Sd0MCnujNVXf+ieJJS3r7Gp/Iqb/+xIhajQf8uPIG2RSojUkVSFinD7DZ+n4qBmICk/83PS5gGzXFwt2dLivHCg6i1x6qHvdk3jO8UQrY8mdyLujuzBRi5OFE4ZA3A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739844172; c=relaxed/simple;
-	bh=okYipYZteUNSREsw/PVygNECAcf/ULUb+H5fefIoteg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=BlCh4BhpAdN/GNzzRPsSrmaa/sfExKEW7fnl6fvliIFGC6nKrwgvXHCYneaVbv5QwFOWI/sC+zTI5pImSyw45I4XMOfK0sVocGNECtipvQoqwIe3d22JvXYCEY0XwfM6eWXORdzuvMn8jsH/ymcDsu0dQoOWxqXEOzwYQ2qGvbI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Gim2CLL1; arc=fail smtp.client-ip=40.107.249.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Gim2CLL1"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FZ1gDhnV/4jZxtw2ONwDuuhX/OLyKcdloPoaDig7M3t6DLeNEmzDjKhR4/KxMBk9UcqC6AcAeP1i+flPJMMteEZACqQ2SaNGVmbuWZK4frYAFLOt3KjgWQbSHlH+/gVVY40IIleYRwL09n4/ZyJN4DFtDxM6ZYT1mjxKzjhbuqWXE6eMLyJs+j8Sb6JbM9eGN9TSZpXw5jngVGBsTMJOY2Lr9ctI9X5chA4TBjW0NV1lPZ/L0bJ5a0PZsDsq7XUuRh6vkm+Ros3gzmvsF2lxqJyeUZNBTiYiNdjeD9ASP8MVBwy434OnP/KP5MLjqXp0xcN5FtSE+JVSiHnUn75fSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n/wP3tvF0muLQbruXobgPg26okswnEkNgPuHZkVmmls=;
- b=fQXTrUnuHME2Jizrf7SFD2b1FupPvH4vPH4J4h9A2x5mIW99B/f4PjYcBRpInR9TdDUUEtT35LiSWhLrZU2Q/fM3/C31XYCs4GnKxDJ38MCAN7owwn/oQ6oFCXhH3bJQ/osfH820VtA0PAgXOmxj68CWC/LS1gadsMfXior2rvUDY/6DiX8RGBlkCVoFfBn+X+RPqfF3Rq5VBejg6e6HjrQMihBMY5WG8h+19cQR0t16gne/N165qKoOH1xG27EizystLOZuvcOkQePaQONCfCbgrMr5KOv8QtRH2IyOXMkJJNI7eMtm62K0taMQkvaEDY2s5xCIoYRBMyB0NsaaHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n/wP3tvF0muLQbruXobgPg26okswnEkNgPuHZkVmmls=;
- b=Gim2CLL1Q2qMt22Av+10hmkU655nGEMyHMNDGP+xnVwnqAi6QcFYVtLBCml9eSX/7/Ww7BpTa7b1Q9ei03hCXmqMDniLrmgsWTpBiwbMH62Cu0pzmtnzMbgghfYTehJQ6e86/Cfhq8fl8bh6W+8tqwbCr3osiFOTqX1cP2agn884OKB+IWMM6AtN0uLIeNBnFNEUIk1mmV29eD2lO+qCrIbH7U/wV1OCjRFDMIZm1bRjVgf7HeDiISVmxQk9Oy9o5scDdd8+y9PGPp2YD6Dpy0LWZ9MA7/qJgZSBVjWb+Qgcw8qAFZk87+5CLgCDRzSwOvE3uCL1vZLc6UrPyL5uWw==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by AS8PR04MB8118.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Tue, 18 Feb
- 2025 02:02:46 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8445.011; Tue, 18 Feb 2025
- 02:02:46 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
-CC: Ioana Ciornei <ioana.ciornei@nxp.com>, "Y.B. Lu" <yangbo.lu@nxp.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH net 1/8] net: enetc: fix the off-by-one issue in
- enetc_map_tx_buffs()
-Thread-Topic: [PATCH net 1/8] net: enetc: fix the off-by-one issue in
- enetc_map_tx_buffs()
-Thread-Index: AQHbgSIxXCrhXQUTvUaf5YMAXyCn+7NL+pCAgABPbpA=
-Date: Tue, 18 Feb 2025 02:02:46 +0000
-Message-ID:
- <PAXPR04MB85105B5C71672A828E8D6F6988FA2@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250217093906.506214-1-wei.fang@nxp.com>
- <20250217093906.506214-2-wei.fang@nxp.com>
- <AS8PR04MB8849FB282339EB6D5DC2637396FB2@AS8PR04MB8849.eurprd04.prod.outlook.com>
-In-Reply-To:
- <AS8PR04MB8849FB282339EB6D5DC2637396FB2@AS8PR04MB8849.eurprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS8PR04MB8118:EE_
-x-ms-office365-filtering-correlation-id: 8d7e29eb-8305-4150-e85f-08dd4fc05708
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?4g4Zm71z8Gyxd5GPe5MV+m3W1LqSQ7JOro3JjyY4c774nndNs0JW2SUZD7S6?=
- =?us-ascii?Q?bOU6qRsOhTONRwA7X0lGNCJsmOLDK/54B5Qix0fpRjHJbRUTKeXIuUttVQ0S?=
- =?us-ascii?Q?oMWKTSkh2tiiyPPimDF0NOzQkzXZGPX8sG+OKJvbBot4w4dWZPxfn/A1uyt3?=
- =?us-ascii?Q?cQ0697gqX+1QMQaqR0OZJcgnQzASnunDnXFz78woiat+pXnnzZTHZ1016mrO?=
- =?us-ascii?Q?OjXa13ZSqNaK0wMm/02LLdIPurKsh38bY9ZEWFsTB0w6zET1Hwq9Antk5R/m?=
- =?us-ascii?Q?1kYK0dAbJMnOdV8ToehOExCwsUeruM+EHSky9SmKCKpI2PdRe+zIlXIFJXZ8?=
- =?us-ascii?Q?NO5KMSzHC7aNb9xzncm5P19DozpX+BHDUeuR0zS00F6nCTvS1oGhOZTrW2+y?=
- =?us-ascii?Q?/B9njW3CVIdqiL4BcG1xYfmLhQOUkZXNmNW0I9VMbcUHl4x8Ar7GH71ROyww?=
- =?us-ascii?Q?+exGMAD2dzR/M2VtmpzW8lEjjMSOeYRPsOafNmJI2PCSUA9GJ7TYsKT4KSc5?=
- =?us-ascii?Q?UU1GbVabXwxe8uFHuTaet0hIpOsfgrD+zCFZOEwEmyWI6bHI0qlAHNQJxerV?=
- =?us-ascii?Q?pFlPEYl6aGVXosdVig/O0xhljFafvs1HpHBzDGsg3b5nlkmO6D9/91q8y8PZ?=
- =?us-ascii?Q?iLwwW1sJwpe2d1kDSIXzNrPi+wmcoWgs0nfNnnoMGrkA1Rg8eWoz7l47A11E?=
- =?us-ascii?Q?gZvg5aUksmhmZhMEtrvnZohQH64FZmrZEW5UBOCN/rWfbMWt317CAHOk6Gls?=
- =?us-ascii?Q?1E+O3Om5C5pIdwrTSCMncp4wR+pQ4wKsz1/RcQJ3kbcmEHTLrNfa9DTpo/Hc?=
- =?us-ascii?Q?FgpBZntGJwIBLscmpzE0o4UT0ZoAv7G/fFCjCbxsYC6yIz/HIacJD9djCHvL?=
- =?us-ascii?Q?uiSccsMsJRlUuM1hbkwHAIewkieaxB/LGaaYWj2001NTnvBsrDzsX7Ut8uI8?=
- =?us-ascii?Q?rvYJm5NsasNcKEtInBPIxhtXOf1DM8avIGcnil1QzToUxcEVxueDfEk7kPhl?=
- =?us-ascii?Q?76X+T208xa3TnYj3W7t+jbKZ6Wbb5vGVH1EE69hFgH6nlosuN/TkNLZChCOD?=
- =?us-ascii?Q?VFThWP+4uX2BzQGNWljRiou8jJwJUQxmBIZq2EQyqLRr66D5vXfPxvRfHg82?=
- =?us-ascii?Q?F6x2UTH6X81LLU2ouKA4e+gb30USksUsOdD3VnX8a21cTy68qm3UJD/gfk4C?=
- =?us-ascii?Q?Ji8Ch84Q8kqGBnF3Kh5YJEkA41CY0lBvD8rONN5pGg7cwMNMqU432Ie6E1kd?=
- =?us-ascii?Q?8XTRFjaiufwYVQQDa7i1aD3JpYEGhMXxLOk5wW1BVc6QQwZsVEXXZMPO4qr1?=
- =?us-ascii?Q?V+3CZCqptmcQFzdOu7RFPZnNIDFPhnbhmOlAfJHhVvnPO/767d4jsH+UVoh9?=
- =?us-ascii?Q?9ce7wKOzuL+egSBhSeMBVwqjOnUjZPayNHoqu3WasRfJWOxlw8ZJ+vufk6Y5?=
- =?us-ascii?Q?XpLY0ZBghXFJVM0BYxm+WodPNwTxh2yx?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?p8pLp0f9ey9l0rzIze9ygEsjo16K8HTTIDZALK7xbNBMGsUQ5D8myAQZtrC8?=
- =?us-ascii?Q?2GVqRF5vGL1XX4w68thG8snE5xvV0M7d4X4z6o4YEa3q2/jtqQonIWnFuNdf?=
- =?us-ascii?Q?AO8gkQyrVpHdeOfIQyDunXyoaUAPnkrQTmJS9TvmWIfPBFgLc4Feky2lPiD2?=
- =?us-ascii?Q?agtesCCtiHjAkzrU08NcdzFJAclpSmO8gJHGrFhER4QN7Nt01g0bEF3WtBo2?=
- =?us-ascii?Q?1dHF5/qrXnDJ6wKVHmnkzyPgfJ128KdJZNX49/xs+BHcIl9oVGsGjaOiPCxw?=
- =?us-ascii?Q?SwvBLrowv1cP/TXgY2I8E3UCHI2zjIskDz91QG1+Br+lQG/cjDnV9zbINPSo?=
- =?us-ascii?Q?Em+qv545nvqkHo1PZpc7M6E65v1sVmSdtWnZvaItDr5cF6wuriyLDdq29PH1?=
- =?us-ascii?Q?VOob8CRyNO/CS0nGgc4/UQzo4dm+rxtRsvmMja5F0ESINhftY1EaGwMU20dw?=
- =?us-ascii?Q?SMhhRqek9k37b3acriYKqg0n5CIcpA0OptS86yvOfD6jyIWACIX2Euv6pJkK?=
- =?us-ascii?Q?DUIs5AYhZkEEbFHSVtnxVLk6eWxNwKQaaGxm1GDaM3YLgqyR8Ddxm3eP1vr+?=
- =?us-ascii?Q?y7AU2OL1VjtzShLJ9mYDuijgQzoUm3SrjTS9Q0bzqxyYfOA6pL85mwTKf9h4?=
- =?us-ascii?Q?QISIAeavzhYKA6xqFbNhBT7zgLgsJIG0cjFmO32XsaW++fRmnkDiopEh21WH?=
- =?us-ascii?Q?MySBXPD/DF8QOrW0LTbNxmQWjzNRx6Bv2nTca/ES0iMkt7qDYAvmfRzawGn5?=
- =?us-ascii?Q?kbq+cNfBM0RyX8Vd6aF95Br8LmeleV7AjYmOKaepjquj1+SXf1RaMqDCIeiG?=
- =?us-ascii?Q?eGmEgJ680D9ybOXBYWQ2/NqkrsnUVd0KmG+duCRxoRniuYfc0JXljsriDZax?=
- =?us-ascii?Q?OqaZf31tIKd4ug2JJVze+zOTGVUySzZNTd+7cLcwSarv+SGxRVnBJ1/qz4I/?=
- =?us-ascii?Q?6xICzrNkx2zD6jXeEqLCMftHThmVo3KeGyysW2+kZH7cGQDvMciOmqXXk782?=
- =?us-ascii?Q?ZiOvTveDeRiyVTPdZbYfdpmwlTMdAYYT9PKeyqk8H6nhox5GPIqyWWcxjaJY?=
- =?us-ascii?Q?I8WMxT0wbYBNO0x5mhPCC17FOs+mt5ca/5MBSRWllwcy6beSAQ5FhfQUPYlb?=
- =?us-ascii?Q?iN3zmnAowVunqZq2lyXRmZz4kLa2bXem+0QmrE1SUjs2Ao7ScE4TRzTXaj/O?=
- =?us-ascii?Q?6WuXqCCx75Yx1b3QGnPpDLyQjfm0JiZydEC8JT6nqhePRU1sUOPujobInprs?=
- =?us-ascii?Q?a+ShO/hdR/aA+ROqo0W1pi6P1f9qCI40nQ8eBz+MU+1351BfrsXGBQQS83Rk?=
- =?us-ascii?Q?9YnefmWgNjoQ3UgXSgP1w0GH6JL2ich1chR1mkm02ngtiH9RF/hWBrf6NSyX?=
- =?us-ascii?Q?KcKrfjVqI2K2BzaOUDukRv3fImRxnXXztggFNC1LSGMZ7vRX8invrktaXIUf?=
- =?us-ascii?Q?pCN9IVx2xtCGz0CmW17yRnCDoEUERm7zEYSefCXCNYN5bC+TGeg8YXiIpEn2?=
- =?us-ascii?Q?t2O8W3Vo5NPhc1GgZNlUkzCCbMkF+CzRZmfMSn0cpKNae+R8XGW+yIoZZhKz?=
- =?us-ascii?Q?aVXkqaQ2hJvxxlvFxBk=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602B61BC41
+	for <netdev@vger.kernel.org>; Tue, 18 Feb 2025 02:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739844587; cv=none; b=KqmslnKnmEqEbilxtDhGqV+a4GRB6Nn7Cb+qIwyHzfQ2P6qr//eA+c4d4gvEn0nUNjNDNx2RZgQjWTBZmVc1x0mrp151yyguwAHLhQzzyaEUsWSA4wqdpBZ6E3HqBlQ1t43qkNwu5d/RyvhyZa3IOuIE8ibKydkcXTZadmvaJqM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739844587; c=relaxed/simple;
+	bh=PwR26CIlZ/6RD0uMlR85PboCWoJshfw7sRsWZpbt9a4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bDJIoNWjo4jrJ30VYMPtGCCs2+DJBNKmRyHVOo2TSE9QuuQwRyKcUHr8hLSIhTbVqcQozxGYlB934aWuBUKCMvzxLggWyyBbunAKwMcbFNLZdXo21Meu5OsyTj3KpEL8xwTEWarfcm9tGLVcReBX7iqhla8tZftlgeoTxr4KPGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: bizesmtpsz5t1739844568t3gpk44
+X-QQ-Originating-IP: K00LyHCpd6faOZWutc+rPx1VryhQGGKTqByQwdEFmbk=
+Received: from wxdbg.localdomain.com ( [36.24.205.26])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 18 Feb 2025 10:09:19 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 4946844343877922781
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	richardcochran@gmail.com,
+	linux@armlinux.org.uk,
+	horms@kernel.org,
+	jacob.e.keller@intel.com,
+	netdev@vger.kernel.org,
+	vadim.fedorenko@linux.dev
+Cc: mengyuanlou@net-swift.com,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v8 0/4] Support PTP clock for Wangxun NICs
+Date: Tue, 18 Feb 2025 10:34:28 +0800
+Message-Id: <20250218023432.146536-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.27.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8d7e29eb-8305-4150-e85f-08dd4fc05708
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Feb 2025 02:02:46.8836
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: mdZR9ukAypIYE+dMv7BZWVJSpdczh9Ldu5Yk1smyGe2Irv/bpVfv0T2WEEkUgp9A1JgUcTjuxkQfwaDeG/HUkQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8118
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: OKhYnE1LzMsBy0oN1tOQOMlU1J4JPRNH/7kd/u45azG1nspKhbmUoMM5
+	k2IEZNCinhx9Vx9PEzYOVdNDIID8nyDO2HRWSeBPCxJB5DsBmfa7jqqLkmaBVqmNemk850m
+	FdomQgPWdXmXG3Nck9SlvCUlp9ONndh70UEzoZmNZyTJFvzqlwzr81BcQ91VgS5O/IMNFFy
+	XGfhFXHPpK7Jqz2IMwkHLtoOqVA6aOb3Oqt9oYMrrI/0trIYV3+hmLaACeOp68QHBXVfrLv
+	pSZCN4YMzZARATOk+xylT2ZMu1ZLSMdsrXWxnyJJ1xUzy3KnEecInZ4Yy8jEZqEGEqYm/4N
+	ugmBVvZ0QYJBE/PVDquDUwMIrol5twBMqOTTOje31eU8GeoS3h/fY/jtjUTz1J4xZ7RiI3S
+	Kw4qiIR9Wl0iUaNSrg/RKZs6jCaJX7Ufj9EpD0+64ooUQiQJfYkk+GoTDgGp8GD/tRsS55H
+	HOGO2CYRthFqugFFHlOHWIth6A/WmXbmX1A/pB4D+ej64qOTJ8V6JW1I8CT0mLf4tPcgZus
+	nIeRiLm7mQpMHDFtjLv0bPh9DCfBtHHdrJTgmqPSA9yutQ4XckCepuQx69ukn3iRsAcjVlM
+	hzIhxWswDLe18gjL1XgjBf976QKvqfQE6pXXJOtGt4Y53t4BHQN6wa67kJPlTphIo2DucbD
+	nooYXyITJD3KY5xOS0jYFbyU5nMqL7rXTDozMSTs/iPTL0kuKfaq1wlri+hs8N6EcYBccU+
+	Ml6FatgdkKe0nf20OI09uW/JvtnqGD9wDy6ktg741j4RZhjtwgXcYoUZAZ2jQmBRPmcZ2af
+	jckLp8+vuhUXCzRu5bk2Ls+Kqo5DU0MurZPqyFYuOvd4P7+sLq+wAKcKdqrdtdDkuShsSSy
+	/wVq4G9bAS76sdldYT+DOTyiMB6+YJthpxbPIf5qiwMTXrwRO2gorBHT/cQL44WxT01N/aY
+	Ih0ItFetKuEVduVs1mXvE3HxaaP82YVpQ/e/7UD6c78ehFdnDKNAsbHfq9MKakbOYVNY=
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+X-QQ-RECHKSPAM: 0
 
-> > -----Original Message-----
-> > From: Wei Fang <wei.fang@nxp.com>
-> > Sent: Monday, February 17, 2025 11:39 AM
-> [...]
-> > Subject: [PATCH net 1/8] net: enetc: fix the off-by-one issue in
-> > enetc_map_tx_buffs()
-> >
-> > When the DMA mapping error occurs, it will attempt to free 'count + 1'
->=20
-> Hi Wei,
-> Are you sure?
->=20
-> dma_err occurs before count is incremented, at least that's the design.
->=20
-> First step already contradicts your claim:
-> ```
-> static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *=
-skb)
-> { [...]
-> 	int i, count =3D 0;
-> [...]
-> 	dma =3D dma_map_single(tx_ring->dev, skb->data, len, DMA_TO_DEVICE);
-> 	if (unlikely(dma_mapping_error(tx_ring->dev, dma)))
-> 		goto dma_err;
->=20
-> =3D=3D=3D> count is 0 on goto path!
-> [...]
-> 	count++;
-> ```
->=20
+Implement support for PTP clock on Wangxun NICs.
 
-Hi Claudiu,
+Changes in v8:
+- Link to v7: https://lore.kernel.org/all/20250213083041.78917-1-jiawenwu@trustnetic.com/
+- Fix warnings for kernel-doc check
 
-I think it's fine in your case, the count is 0, and the tx_swbd is not set,
-so it's unnecessary to call enetc_free_tx_frame() in the dma_err path.
+Changes in v7:
+- Link to v6: https://lore.kernel.org/all/20250208031348.4368-1-jiawenwu@trustnetic.com/
+- Merge the task for checking TX timestamp into do_aux_work
+- Add Intel copyright in wx_ptp.c
 
-But if the count is not zero, then that is the problem, for example, count
-is 1, and then goto dma_err path, the it will attempt to free 2 tx_swbd.
+Changes in v6:
+- Link to v5: https://lore.kernel.org/all/20250117062051.2257073-1-jiawenwu@trustnetic.com/
+- Add "depends on PTP_1588_CLOCK_OPTIONAL" in Kconfig to fix build
+  errors
+
+Changes in v5:
+- Link to v4: https://lore.kernel.org/all/20250114084425.2203428-1-jiawenwu@trustnetic.com/
+- Use reading template for timecounter_cyc2time()
+- Move the same piece of codes to the functions
+- Fix read sequence for time registers
+- Remove skb_shared_hwtstamps zero out
+- Pass duty cycle for the pulse width
+
+Changes in v4:
+- Link to v3: https://lore.kernel.org/all/20250110031716.2120642-1-jiawenwu@trustnetic.com/
+- Add tx_hwtstamp_errors to record errors of DMA mapping
+- Remove flag bits clear for default case in setting TS mode
+- Change to use seqlock_t hw_tc_lock
+- Add ptp_schedule_worker in wx_ptp_reset()
+- Remove perout index check
+- Refactor the same code into a function
+
+Changes in v3:
+- Link to v2: https://lore.kernel.org/all/20250106084506.2042912-1-jiawenwu@trustnetic.com/
+- Clean up messy patches
+- Return delay value in wx_ptp_do_aux_work()
+- Remove dev_warn()
+- Implement ethtool get_ts_stats
+- Support PTP_CLK_REQ_PEROUT instead of PTP_CLK_REQ_PPS
+- Change to start polling Tx timestamp once descriptor done bit is set
+
+Changes in v2:
+- Link to v1: https://lore.kernel.org/all/20250102103026.1982137-1-jiawenwu@trustnetic.com/
+- Fix build warning
+- Convert to .ndo_hwtstamp_get and .ndo_hwtstamp_set
+- Remove needless timestamp flags
+- Use .do_aux_work instead of driver service task
+- Use the better error code
+- Rename function wx_ptp_start_cyclecounter()
+- Keep the register names consistent between comments and code
+
+Jiawen Wu (4):
+  net: wangxun: Add support for PTP clock
+  net: wangxun: Support to get ts info
+  net: wangxun: Add periodic checks for overflow and errors
+  net: ngbe: Add support for 1PPS and TOD
+
+ drivers/net/ethernet/wangxun/Kconfig          |   1 +
+ drivers/net/ethernet/wangxun/libwx/Makefile   |   2 +-
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   |  53 ++
+ .../net/ethernet/wangxun/libwx/wx_ethtool.h   |   4 +
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  19 +
+ drivers/net/ethernet/wangxun/libwx/wx_hw.h    |   1 +
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  52 +-
+ drivers/net/ethernet/wangxun/libwx/wx_ptp.c   | 883 ++++++++++++++++++
+ drivers/net/ethernet/wangxun/libwx/wx_ptp.h   |  20 +
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  | 105 +++
+ .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |   2 +
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  20 +-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c |  11 +
+ drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |   5 +
+ .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |   2 +
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  11 +
+ .../net/ethernet/wangxun/txgbe/txgbe_phy.c    |  10 +
+ 17 files changed, 1194 insertions(+), 7 deletions(-)
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_ptp.h
+
+-- 
+2.27.0
 
