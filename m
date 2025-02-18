@@ -1,155 +1,148 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95949272932;
-	Tue, 18 Feb 2025 16:19:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79295272916
+	for <netdev@vger.kernel.org>; Tue, 18 Feb 2025 16:19:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739895580; cv=none; b=AvSGN9Q22SbOXjF6p0ZjS4imgyLiBhvObokDag6G/h5Ie153mJc2IFbroB8CwOZ1xzZSYzDnVdXVPdRw6i2+ti1hPaVTmwhiWSuufnm/icGk8NikRxjLF5hQ7QlZpKbHSaqb32gvEPMEoWlWJN0N3hiSoO+F2SjKJ8oeoViP4GU=
+	t=1739895581; cv=none; b=KCOZt5WwLeiWAgnNzZakwENa4fPDPPgrmshioe/+peWXeBMxwTOmciEK/wqHULj0b+uY64Glv9MQpCUyvSnQwSysbJJNd37SS2XGyzY0AH/fOTrsHNoEZyCbdU+JP4lB4iNwBhtWvqQQQsTEVGtlBWhStmdpk+29kZdet1AVyac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739895580; c=relaxed/simple;
-	bh=t1nJNnpVAbVuCugSGl71cMjZ0PL0FJgx4xql2/Bv3u0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QEt6OLH+Je/ofBNme2QvNUa8mM5JyWRBqqlXMGW/Dw9JUa1VyDvBdOuFjbAMMIuFSmuKVWY9BlnlLxSVGx90tvf3xL4vwrL6HLYyeDfovH2b+ij978EUvERb+4Y5qi2wPx2OY7K1L0VcHERi1+h0ym+breuLTAi3KesJSETXu08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FDNxyL2t; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1739895581; c=relaxed/simple;
+	bh=apT+0irN3TsIgxIQMcJljfIxUkxMr58gKChrZiqB86g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uwQwyOA7zd3rzYWgUZNEMNbk8KWgyW8t7SlxD9C1SwQZq4pWtigJkLeLfk2pVrMLMtpZTkCTpsXDZjz8XlpC56fF98/jtCFaAJtriVcgjS0RpJgm1zAfulyiVMaxeBhr0YYeuTvUCllaUuSlPpZnVShNFrZvdZRwQcUhlbIMGh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qrb22sWS; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FDNxyL2t"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D682B44324;
-	Tue, 18 Feb 2025 16:19:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739895577;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qrb22sWS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739895578;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M6TrfIOC7ZKBjqzWaZmxxl+SaNJZisJJ/+EVN8flZjw=;
-	b=FDNxyL2tncfwJhXJP+NSn/VlHnm3wcJpFBwyKN5KZP47ctVhpi+c4gcepZo2/wfP/fgD7D
-	dqgfEgHlgbC/kIY1ES/h+JHUkMBZHYU3OAOcyKrGro4G5ACurZNgjaOrFtmqRYoWoZLOEQ
-	tTq4bkDq1BB+x3bHR5pK2e3+3fXdh+UJVb23BZX3Es78a1qeymo1ZBV1tjUK+7NyG6oR5Y
-	XQB/eUgA7GoxP5Fcl5cP13iRe4fCRMDzbbf0TQseQlLXiojpxJwyoe1VSXcMueUH03knoT
-	zQN6zwTZ22t2GSotjlM8Lz199KnReZWRqlw6IF68Y5EJj5+48oFnhbIkB5ecYQ==
-From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Tue, 18 Feb 2025 17:19:14 +0100
-Subject: [PATCH net-next v5 10/12] dt-bindings: net: pse-pd:
- microchip,pd692x0: Add manager regulator supply
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=iYudxug1slNvWYSf0LzmoZmtIzYss75vPDgfeFjT9aA=;
+	b=Qrb22sWS8ce13YZ2Ik527dhDEWn03Ij9LeSZ6zxx1DMT9HzBo+u6WFnrYb8fyuyrvJfLaz
+	8f86XrMQUv7epXXEgpOaHCgx4KXe7gdxxK9bY6tMsnZaZqpsLFc+1Pt22DyxXtwp0CeL/f
+	tWqdZeuphWFY0Fbgo+cgv54EMnW9Sao=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-IwsqAGP-PfuWmNaH5Xnbeg-1; Tue,
+ 18 Feb 2025 11:19:36 -0500
+X-MC-Unique: IwsqAGP-PfuWmNaH5Xnbeg-1
+X-Mimecast-MFC-AGG-ID: IwsqAGP-PfuWmNaH5Xnbeg_1739895575
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7E13518E6952;
+	Tue, 18 Feb 2025 16:19:35 +0000 (UTC)
+Received: from pablmart-thinkpadt14gen4.rmtes.csb (unknown [10.44.32.29])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 12AE1300018D;
+	Tue, 18 Feb 2025 16:19:31 +0000 (UTC)
+From: Pablo Martin Medrano <pablmart@redhat.com>
+To: netdev@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Pablo Martin Medrano <pablmart@redhat.com>
+Subject: [PATCH net] selftests/net: big_tcp: longer netperf session on slow machines
+Date: Tue, 18 Feb 2025 17:19:28 +0100
+Message-ID: <bd55c0d5a90b35f7eeee6d132e950ca338ea1d67.1739895412.git.pablmart@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250218-feature_poe_port_prio-v5-10-3da486e5fd64@bootlin.com>
-References: <20250218-feature_poe_port_prio-v5-0-3da486e5fd64@bootlin.com>
-In-Reply-To: <20250218-feature_poe_port_prio-v5-0-3da486e5fd64@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Jonathan Corbet <corbet@lwn.net>, Donald Hunter <donald.hunter@gmail.com>, 
- Rob Herring <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
- linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, 
- Dent Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Kory Maincent (Dent Project)" <kory.maincent@bootlin.com>
-X-Mailer: b4 0.15-dev-8cb71
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeiudejjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvefgvdfgkeetgfefgfegkedugffghfdtffeftdeuteehjedtvdelvddvleehtdevnecukfhppedvrgdtudemtggstddumeeftdehfeemrgdvieeimeelvgeivgemleeisgdumegvsgguleemfhdtrgegnecuvehluhhsthgvrhfuihiivgepjeenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdtudemfedtheefmegrvdeiieemlegviegvmeeliegsudemvggsugelmehftdgrgedphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvdehpdhrtghpthhtoheprghnughrvgifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopeguvghnthhprhhojhgvtghtsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhuk
- hdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepuggvvhhitggvthhrvggvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggv
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
+After debugging the following output for big_tcp.sh on a board:
 
-This patch adds the regulator supply parameter of the managers.
-It updates also the example as the regulator supply of the PSE PIs
-should be the managers itself and not an external regulator.
+CLI GSO | GW GRO | GW GSO | SER GRO
+on        on       on       on      : [PASS]
+on        off      on       off     : [PASS]
+off       on       on       on      : [FAIL_on_link1]
+on        on       off      on      : [FAIL_on_link1]
 
-Signed-off-by: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
+Davide Caratti found that by default the test duration 1s is too short
+in slow systems to reach the correct cwd size necessary for tcp/ip to
+generate at least one packet bigger than 65536 (matching the iptables
+match on length rule the test evaluates)
+
+This skips (with xfail) the aforementioned failing combinations when
+KSFT_MACHINE_SLOW is set. For that the test has been modified to use
+facilities from net/lib.sh.
+
+The new output for the test will look like this (example with a forced
+XFAIL)
+
+Testing for BIG TCP:
+      CLI GSO | GW GRO | GW GSO | SER GRO
+TEST: on        on       on       on                    [ OK ]
+TEST: on        off      on       off                   [ OK ]
+TEST: off       on       on       on                    [XFAIL]
 ---
+ tools/testing/selftests/net/big_tcp.sh | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-Changes in v5:
-- Add description of others power supplies.
-
-Changes in v3:
-- New patch
----
- .../bindings/net/pse-pd/microchip,pd692x0.yaml     | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/net/pse-pd/microchip,pd692x0.yaml b/Documentation/devicetree/bindings/net/pse-pd/microchip,pd692x0.yaml
-index fd4244fceced..ca61cc37a790 100644
---- a/Documentation/devicetree/bindings/net/pse-pd/microchip,pd692x0.yaml
-+++ b/Documentation/devicetree/bindings/net/pse-pd/microchip,pd692x0.yaml
-@@ -22,6 +22,12 @@ properties:
-   reg:
-     maxItems: 1
+diff --git a/tools/testing/selftests/net/big_tcp.sh b/tools/testing/selftests/net/big_tcp.sh
+index 2db9d15cd45f..dc2ecfd58961 100755
+--- a/tools/testing/selftests/net/big_tcp.sh
++++ b/tools/testing/selftests/net/big_tcp.sh
+@@ -21,8 +21,7 @@ CLIENT_GW6="2001:db8:1::2"
+ MAX_SIZE=128000
+ CHK_SIZE=65535
  
-+  vdd-supply:
-+    description: Regulator that provides 3.3V VDD power supply.
-+
-+  vdda-supply:
-+    description: Regulator that provides 3.3V VDDA power supply.
-+
-   managers:
-     type: object
-     additionalProperties: false
-@@ -68,6 +74,15 @@ properties:
-           "#size-cells":
-             const: 0
+-# Kselftest framework requirement - SKIP code is 4.
+-ksft_skip=4
++source lib.sh
  
-+          vmain-supply:
-+            description: Regulator that provides 44-57V VMAIN power supply.
-+
-+          vaux5-supply:
-+            description: Regulator that provides 5V VAUX5 power supply.
-+
-+          vaux3p3-supply:
-+            description: Regulator that provides 3.3V VAUX3P3 power supply.
-+
-         patternProperties:
-           '^port@[0-7]$':
-             type: object
-@@ -106,10 +121,11 @@ examples:
-           #address-cells = <1>;
-           #size-cells = <0>;
+ setup() {
+ 	ip netns add $CLIENT_NS
+@@ -143,21 +142,20 @@ do_test() {
+ 	start_counter link3 $SERVER_NS
+ 	do_netperf $CLIENT_NS
  
--          manager@0 {
-+          manager0: manager@0 {
-             reg = <0>;
-             #address-cells = <1>;
-             #size-cells = <0>;
-+            vmain-supply = <&pse1_supply>;
+-	if check_counter link1 $ROUTER_NS; then
+-		check_counter link3 $SERVER_NS || ret="FAIL_on_link3"
+-	else
+-		ret="FAIL_on_link1"
+-	fi
++	check_counter link1 $ROUTER_NS
++	check_err $? "fail on link1"
++	check_counter link3 $SERVER_NS
++	check_err $? "fail on link3"
  
-             phys0: port@0 {
-               reg = <0>;
-@@ -161,7 +177,7 @@ examples:
-             pairset-names = "alternative-a", "alternative-b";
-             pairsets = <&phys0>, <&phys1>;
-             polarity-supported = "MDI", "S";
--            vpwr-supply = <&vpwr1>;
-+            vpwr-supply = <&manager0>;
-           };
-           pse_pi1: pse-pi@1 {
-             reg = <1>;
-@@ -169,7 +185,7 @@ examples:
-             pairset-names = "alternative-a";
-             pairsets = <&phys2>;
-             polarity-supported = "MDI";
--            vpwr-supply = <&vpwr2>;
-+            vpwr-supply = <&manager0>;
-           };
-         };
-       };
-
+ 	stop_counter link1 $ROUTER_NS
+ 	stop_counter link3 $SERVER_NS
+-	printf "%-9s %-8s %-8s %-8s: [%s]\n" \
+-		$cli_tso $gw_gro $gw_tso $ser_gro $ret
++	log_test "$(printf "%-9s %-8s %-8s %-8s" \
++			$cli_tso $gw_gro $gw_tso $ser_gro)"
+ 	test $ret = "PASS"
+ }
+ 
+ testup() {
+-	echo "CLI GSO | GW GRO | GW GSO | SER GRO" && \
++	echo "      CLI GSO | GW GRO | GW GSO | SER GRO" && \
+ 	do_test "on"  "on"  "on"  "on"  && \
+ 	do_test "on"  "off" "on"  "off" && \
+ 	do_test "off" "on"  "on"  "on"  && \
+@@ -176,7 +174,8 @@ if ! ip link help 2>&1 | grep gso_ipv4_max_size &> /dev/null; then
+ fi
+ 
+ trap cleanup EXIT
++xfail_on_slow
+ setup && echo "Testing for BIG TCP:" && \
+ NF=4 testup && echo "***v4 Tests Done***" && \
+ NF=6 testup && echo "***v6 Tests Done***"
+-exit $?
++exit $EXIT_STATUS
 -- 
-2.34.1
+2.48.1
 
