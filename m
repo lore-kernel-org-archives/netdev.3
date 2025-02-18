@@ -1,58 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D493621B9C7
-	for <netdev@vger.kernel.org>; Tue, 18 Feb 2025 19:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from bout3.ijzerbout.nl (bout3.ijzerbout.nl [136.144.140.114])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A747D21B9EA;
+	Tue, 18 Feb 2025 19:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.144.140.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739907858; cv=none; b=GKo4q4x0lyc4v40CPbaF1mGFCF9dO+e1pnPvcdD850/T2E75riJ6GoMchT9nEWgnFPJSYaEXJp9MbOeFyifxrFDOYuL+bSXFLAYfSgDVmenHbtR3t8RVXwur1Vohw4XyZC+hkkazgFyhu5eyZ+Sir4V//WmQzg33Z4qSK6QXL34=
+	t=1739908042; cv=none; b=Gd4NnW72gDcR50m4O/Om4cenX8zkj9amIKQ1dSjVIiOHmHJH1PA16+RZwOj+5jVeIwT3HQrdPRtWoeN5I36Zp0Dec6PN/3TDQR1mmJ3OpbFYkca2GDCdoMOXYT4aJx/+iiQWpf4kP9DIXxzdVprevU16xMdSTH2SOArNgPEX1K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739907858; c=relaxed/simple;
-	bh=yfBdMa35IlSvleFq6g2qm9/i3iJnx+wl9Zmp0L3NA0g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gJaKbfQdNT0RUEr1FkJUn2RZMrilSF2xP0kYb31cwBrTNdrrAZfdxuc3vO3P7EQ/8h41m96OUc3dg92xzdzm4h8vozjgou0bDTD5g/Vsk6eKnxUgp1hdqOhZbhZ1NkljCDe8osuxocBdvqVsWgRLp9cZW8bHMboqr+CenTgCAE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sOUNg1mS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739908042; c=relaxed/simple;
+	bh=KEeAPqwdWAl+/oPSkdxO2/o1p3K53MqPyinGxQV+SCc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ppnf3HU8oz445ebp/ZMN9aSV9hiTWJG39WDSE/UwljAfNiu6q7CZsRk7MV0sNt2LFprRHAJLy8hSBp3pZU9mBQBqe938R/t7spOpibQ5jj8L4aAxUQs/plTx3rbsPFcMAN19GSWDsfxEQloJvEBX9NwDwDXJ2TnJuo87G4M4310=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl; spf=pass smtp.mailfrom=ijzerbout.nl; dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b=nsRDHHiF; arc=none smtp.client-ip=136.144.140.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ijzerbout.nl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOUNg1mS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EAC9C4CEE2;
-	Tue, 18 Feb 2025 19:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739907858;
-	bh=yfBdMa35IlSvleFq6g2qm9/i3iJnx+wl9Zmp0L3NA0g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sOUNg1mS2+ePoB/va/94jEyM8uXG3oGoylobTT9qrOxbh8bosEj5q27D143uxrVL/
-	 0hYpZC27IGVKDhBr71U/EMLKfpbzDNrmndz5VHmc8qq1+8v0+CTSMGSz491C3EqcsF
-	 Z7SoyIqlQ53pb4uSjDiVt6hGwGm6gy8EzX84s3bNdy8w1SEm4xbS2u00Dz8iJqvsHz
-	 9auyipr035MthzSfjDr8izQfB3SNVb9knXPRtdomluOSWFUm/PfqePZ9r2Y+wVDGFk
-	 YEDEeCB6iLVoaShdGsMMRnghfoLrwBL0NYXAfjaB68q7s5qNagFBPv2XSSXd5sMyjj
-	 R4ZAUKNNSPy/w==
-Date: Tue, 18 Feb 2025 19:44:15 +0000
-From: Simon Horman <horms@kernel.org>
-To: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-Subject: Re: [iwl-net 0/4] ice: improve validation of virtchnl parameters
-Message-ID: <20250218194415.GL1615191@kernel.org>
-References: <20250217102744.300357-2-martyna.szapar-mudlaw@linux.intel.com>
+	dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b="nsRDHHiF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ijzerbout.nl; s=key;
+	t=1739907661; bh=KEeAPqwdWAl+/oPSkdxO2/o1p3K53MqPyinGxQV+SCc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nsRDHHiFwywQtXgRDqOg7hjVJsQ0/sF2W7aCUa+/Ad7ruWuhbmpjm4C2LoIVDIiOi
+	 TJT/tnwg1gpZUXUpR+Dgp0vpCap9Xz5JitoJ1ALe3v2y6qt1Ilxs+D6VDeURMB9MGB
+	 85nrbbgQUDZYPxZsG/gJgcCv4UEG30ZUqoonLv6dJXwQdC8BpxfkAc7uXVoprpNsAL
+	 pOQ6Pi1E1OhDqM9SyjgiPiX79y67eEa/ix8uB4XvrbYjgNM9uYbnsLVgS4kIJ6rplr
+	 I0qAPRcTNNXV4T0mV6FtK9ez1tLV6HmJOVdJR9tyQVda0qceQeLkZBMiho5qjri30n
+	 I2GFY+YMwru43a6I8qSPtU5X9Km4zBexDfNW2sDf1cUbON2c1U5U05HhFuy9osCaJJ
+	 qSdr/vqIqZ1+NXPkHByrACB6TdAm4rcsl9BWrubDbOoU4mL61Xl2D6VirfWBndqgaW
+	 gFklSNwK25MDnoO6KrnrHEq+q064+mefWJvQ4nXeUe2lopbn3Ha0IVwZP2m7uVRkrf
+	 otkeUCFbUTNVE1gqawN9cVCywsxSIlrkzJz3K1l5Ihhm2o0qch05nqYz8MFf2lrK7y
+	 cOwdfa2MkuAoW/JwYHn2AdyQ0JRfS9MafLgpMu0TlAYnB7bw2C6uED3x8N1AO6m1cs
+	 XmPfzleEbPJgqicX6UMn9Gwk=
+Received: from [IPV6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a] (racer.ijzerbout.nl [IPv6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a])
+	by bout3.ijzerbout.nl (Postfix) with ESMTPSA id 540CF160133;
+	Tue, 18 Feb 2025 20:41:00 +0100 (CET)
+Message-ID: <cc1b81b3-f02c-46d0-b4be-34bba23d20c7@ijzerbout.nl>
+Date: Tue, 18 Feb 2025 20:40:57 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250217102744.300357-2-martyna.szapar-mudlaw@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 07/11] io_uring/zcrx: set pp memory provider for an rx
+ queue
+To: David Wei <dw@davidwei.uk>, io-uring@vger.kernel.org,
+ netdev@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>, Pavel Begunkov <asml.silence@gmail.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, David Ahern <dsahern@kernel.org>,
+ Mina Almasry <almasrymina@google.com>,
+ Stanislav Fomichev <stfomichev@gmail.com>, Joe Damato <jdamato@fastly.com>,
+ Pedro Tammela <pctammela@mojatatu.com>, lizetao <lizetao1@huawei.com>
+References: <20250215000947.789731-1-dw@davidwei.uk>
+ <20250215000947.789731-8-dw@davidwei.uk>
+Content-Language: en-US
+From: Kees Bakker <kees@ijzerbout.nl>
+In-Reply-To: <20250215000947.789731-8-dw@davidwei.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 17, 2025 at 11:27:41AM +0100, Martyna Szapar-Mudlaw wrote:
-> This patch series introduces improvements to the `ice` driver and `virtchnl`
-> interface by adding stricter validation checks and preventing potential
-> out-of-bounds scenarios.
+Op 15-02-2025 om 01:09 schreef David Wei:
+> Set the page pool memory provider for the rx queue configured for zero
+> copy to io_uring. Then the rx queue is reset using
+> netdev_rx_queue_restart() and netdev core + page pool will take care of
+> filling the rx queue from the io_uring zero copy memory provider.
+>
+> For now, there is only one ifq so its destruction happens implicitly
+> during io_uring cleanup.
+>
+> Reviewed-by: Jens Axboe <axboe@kernel.dk>
+> Signed-off-by: David Wei <dw@davidwei.uk>
+> ---
+>   io_uring/zcrx.c | 49 +++++++++++++++++++++++++++++++++++++++++--------
+>   1 file changed, 41 insertions(+), 8 deletions(-)
+>
+> diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+> index 8833879d94ba..7d24fc98b306 100644
+> --- a/io_uring/zcrx.c
+> +++ b/io_uring/zcrx.c
+> [...]
+> @@ -444,6 +475,8 @@ void io_shutdown_zcrx_ifqs(struct io_ring_ctx *ctx)
+>   
+>   	if (ctx->ifq)
+>   		io_zcrx_scrub(ctx->ifq);
+> +
+> +	io_close_queue(ctx->ifq);
+If ctx->ifq is NULL (which seems to be not unlikely given the if 
+statement above)
+then you'll get a NULL pointer dereference in io_close_queue().
+>   }
+>   
+>   static inline u32 io_zcrx_rqring_entries(struct io_zcrx_ifq *ifq)
 
-Hi Martyna,
-
-The above talks about this patchset in terms of improvements rather than
-bug fixes (that manifest). If so, I think this should be targeted at
-iwl-next (i.e. net-next) rather than iwl-net (net). And the Fixes tags
-should be dropped.
-
-...
