@@ -1,89 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C58B26FA44;
-	Tue, 18 Feb 2025 13:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814EC26AA81
+	for <netdev@vger.kernel.org>; Tue, 18 Feb 2025 13:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739885350; cv=none; b=uXz95558ODBy5MR1dGEjGLI453Y7yLFFilS22g6PRcwvC0XF7Q8QmZzDpSBZpcmtMtu4qGG5lqQfgefDCkyLgfmZ6diqpR9ZPYUd5YxCmns9a/s98WdkUvEQfhm6tq8C1CEdNqyV9yhbIUOSzEE3bNrEl1OP4bHtERQBVNdeWQM=
+	t=1739885539; cv=none; b=W8L2ttrTEKMEumjYoqB1Py/2zFTO1MCBqkbS1H7y/6t7pxkKEAj2lj2mkJYJaL5gCN4UoLJqmaZPWrtq86or8Ea529lBVn2mGjWZALgs9417Gk6qusj+K2WDbtgbNEkTDscJBt3puwXgc5aH7mQNRFLJB7njQii9INQQm1uGm2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739885350; c=relaxed/simple;
-	bh=D+giwnx2fldVt2NPCnwByiTTAhof1N0hesdxo6LjBJA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cQsQ2hI/fUD5LIOEdezEzyGf/nT6xaIcaraYh1xSL9OoYQk7fxno6bN827V4wGk7dwYCcmSMYNUkyc6TTzYtpG09fv8KxsHcbiFh0O01uIFckjrS1KyGgmOUpHfY8ijVupU3cUCmaj9N0Kdk3+msdXwURIi5QT1W4LFzos65t8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d4hpbTSP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739885539; c=relaxed/simple;
+	bh=Y4bb2gMg2fhQX3UumMqYLIY1mVeZXXRdQb69m4+STL4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TAnAMfoeGeyBIgFf7PA8s95VgH4FX80Yy8QyWp0lKzi5082RXwl5N80YX33Yaiwkx2ASslrDptjELTCg3fDtP0DqEThAMXOII7mrT1no/+1LM/7A26nPh6fThNIZmDKqOCD00R81VGPlfGqttTnxWUOksMnKgdCCrUxNYpbET/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nYWcyrtA; arc=none smtp.client-ip=91.218.175.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d4hpbTSP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD522C4CEE6;
-	Tue, 18 Feb 2025 13:29:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739885350;
-	bh=D+giwnx2fldVt2NPCnwByiTTAhof1N0hesdxo6LjBJA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d4hpbTSPtTh3MMtyZt88Vf46BaWKT+sSyPtxQJOZqD89A4ZQO8FsNVncvcAR0Lhz5
-	 /nFUVxvSTo1BXCTN23SgZDvUOE33B2Li0fZsPelUexQlviKxP/aM8oaeY5FcY/Y2FM
-	 lf8s495WAAbSt7lBcgTW2XhIfbFQtbSyWMu9yveB1RQvJboxBzdfYNFArpytp079Cn
-	 DP8Z1sJSYTZnrqRbuUn9DPsNn+HxZhx4abMPO+6QvN689nHDFsuS56VcmBVokRu55C
-	 s/PMGVlT6YzQkJKAsNQ9l5+2ZEDWFnLSjwoVV2MQBw15SaHVzcZuP2+X6TFXOj2Qu8
-	 GCs/vV5uSsDvg==
-Date: Tue, 18 Feb 2025 13:29:05 +0000
-From: Simon Horman <horms@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Peter Seiderer <ps.report@gmx.net>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
-	Nam Cao <namcao@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>
-Subject: Re: [PATCH net-next v5 8/8] net: pktgen: use defines for the various
- dec/hex number parsing digits lengths
-Message-ID: <20250218132905.GV1615191@kernel.org>
-References: <20250213110025.1436160-1-ps.report@gmx.net>
- <20250213110025.1436160-9-ps.report@gmx.net>
- <20250214201145.2f824428@kernel.org>
- <20250216091739.GW1615191@kernel.org>
- <20250217094740.76a25671@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nYWcyrtA"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1739885535;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HYjio39CMFV+Mh6EEVWTUj22Y7RBm4Gi+VVLarh3BvE=;
+	b=nYWcyrtAK2xqFBLaFB3HRZ2IxF6NVcxEUBcKDh3zyZQWxiykNSn8cdkIATx4O8gqFXFcFO
+	zQKPogA0Fqj2JT0l8VZq+u17y2o8/NEq4uWXQJ9xvnpmCf5lliRWyiM+q2CHGn2pLml/s7
+	zOpGSd8FzsLEdoNwn75vLxGoPb6NK8Q=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.ne,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	ricardo@marliere.net,
+	jiayuan.chen@linux.dev,
+	viro@zeniv.linux.org.uk,
+	dmantipov@yandex.ru,
+	aleksander.lobakin@intel.com,
+	linux-ppp@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mrpre@163.com,
+	syzbot+853242d9c9917165d791@syzkaller.appspotmail.com
+Subject: [PATCH net-next v1 1/1] ppp: Fix KMSAN warning by initializing 2-byte header
+Date: Tue, 18 Feb 2025 21:31:44 +0800
+Message-ID: <20250218133145.265313-2-jiayuan.chen@linux.dev>
+In-Reply-To: <20250218133145.265313-1-jiayuan.chen@linux.dev>
+References: <20250218133145.265313-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250217094740.76a25671@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, Feb 17, 2025 at 09:47:40AM -0800, Jakub Kicinski wrote:
-> On Sun, 16 Feb 2025 09:17:39 +0000 Simon Horman wrote:
-> > On Fri, Feb 14, 2025 at 08:11:45PM -0800, Jakub Kicinski wrote:
-> > > On Thu, 13 Feb 2025 12:00:25 +0100 Peter Seiderer wrote:  
-> > > > Use defines for the various dec/hex number parsing digits lengths
-> > > > (hex32_arg/num_arg calls).  
-> > > 
-> > > I don't understand the value of this patch, TBH.
-> > > 
-> > > Example:
-> > > 
-> > > +#define HEX_2_DIGITS 2
-> > > 
-> > > -		len = hex32_arg(&user_buffer[i], 2, &tmp_value);
-> > > +		len = hex32_arg(&user_buffer[i], HEX_2_DIGITS, &tmp_value);
-> > > 
-> > > The word hex is already there.
-> > > There is still a two.
-> > > I don't think the new define has any explanatory power?
-> > > 
-> > > Previous 7 patches look ready indeed.  
-> > 
-> > This one is on me. I felt the magic number 2 and so on
-> > was unclear. But if you prefer the code as-is that is fine by me too.
-> 
-> I agree that it's a bit hard to guess what the call does and what 
-> the arguments are. To me at least, the constants as named don't help. 
-> We can get a third opinion, or if none is provided skip the patch for
-> now?
+The ppp program adds a 2-byte pseudo-header for socket filters, which is
+normally skipped by regular BPF programs, causing no issues.
 
-Yes, I see your point.
-No objections from me to skipping this patch.
+However, for abnormal BPF programs that use these uninitialized 2 bytes,
+a KMSAN warning is triggered.
+
+Reported-by: syzbot+853242d9c9917165d791@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/000000000000dea025060d6bc3bc@google.com/
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+ drivers/net/ppp/ppp_generic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index 4583e15ad03a..a913403d5847 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -1765,7 +1765,7 @@ ppp_send_frame(struct ppp *ppp, struct sk_buff *skb)
+ 		/* check if we should pass this packet */
+ 		/* the filter instructions are constructed assuming
+ 		   a four-byte PPP header on each packet */
+-		*(u8 *)skb_push(skb, 2) = 1;
++		*(u16 *)skb_push(skb, 2) = 1;
+ 		if (ppp->pass_filter &&
+ 		    bpf_prog_run(ppp->pass_filter, skb) == 0) {
+ 			if (ppp->debug & 1)
+@@ -2489,7 +2489,7 @@ ppp_receive_nonmp_frame(struct ppp *ppp, struct sk_buff *skb)
+ 			if (skb_unclone(skb, GFP_ATOMIC))
+ 				goto err;
+ 
+-			*(u8 *)skb_push(skb, 2) = 0;
++			*(u16 *)skb_push(skb, 2) = 0;
+ 			if (ppp->pass_filter &&
+ 			    bpf_prog_run(ppp->pass_filter, skb) == 0) {
+ 				if (ppp->debug & 1)
+-- 
+2.47.1
+
