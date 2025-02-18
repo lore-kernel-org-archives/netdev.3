@@ -1,122 +1,85 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mta-65-225.siemens.flowmailer.net (mta-65-225.siemens.flowmailer.net [185.136.65.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307BC10F4;
-	Tue, 18 Feb 2025 12:20:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DAB2417F5
+	for <netdev@vger.kernel.org>; Tue, 18 Feb 2025 12:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739881203; cv=none; b=n0CcKBEh6XB5wPEoWtFgAENDJwmOUemv3276nnlD1l42DC6ygoZF68la6N3tbcdskJH1XvphYkTVX8AnJqQpXpTQTOiGHQ+dZFtiZkG5VhUL3arfoBh+kxLg3HZI+OfBzNhcwhO/60ISKLKZahLLMGpKTfu1EkgMWfswvLpXgGA=
+	t=1739881513; cv=none; b=knwU+WBNFTmzqW+UzOio1PEEoQ0DeqaI3FwrRbLl8XNwf9tIP2TsDpTE9fWHZY+B4coKSr8amZ50C0QSKDKBrqnqKtJbBOl9UwGr79JbLDbJqyYDFTpo0ClzV3dsskNPagTSTD1v+CoCNdzjEWObijURJE8cRfO/KCU/3niswa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739881203; c=relaxed/simple;
-	bh=4tj/uKB2dgnjPTdijnM3vXriuzb+4MfuEX2Q/7/ORiI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=e/TWMeFaG7OHv/rTuwD3QArI7J2LJt+eo3GpX6SEa01zfFDxv6iyVgBNQjr479QKKgj4E5yF2pVP3VQpVEWkdt0LzR2hAJAvzwFPoizGhFZg1Q+7hKWOGejVE6e/nhUGTMU0JgorbXtqwbZ/I4yMyXRWsCetbBb2jGQJRrwiDUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SR+loHcv; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739881513; c=relaxed/simple;
+	bh=YhCOzDgUX6Ndgo3HStvHEdN3KMsN1P0sllHKIUBhUIg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K4c8aiGdXtcDwan3eG7at1S06aPltOrLVsYqCJ79VprvcG6lzzwgVdJPomM8g8j1iQkT1JDhUdFjVmwXprfuREtCH8ha1UmjjUyWuT+Yk+PZzyzAHiq266eGknQk5R7IGxvbIx8t4zMQnJEPIjjS2Rh8F0v8rNVg6VbKbTZl1U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=diogo.ivo@siemens.com header.b=LYnOnoVz; arc=none smtp.client-ip=185.136.65.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SR+loHcv"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-38f3ee8a119so1311275f8f.0;
-        Tue, 18 Feb 2025 04:20:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739881200; x=1740486000; darn=vger.kernel.org;
-        h=content-disposition:mime-version:reply-to:message-id:subject:cc:to
-         :from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YI0Ifn7vvsd2ZeXns6IUX10UekanaA4DCvpGAYoOivQ=;
-        b=SR+loHcvlKFpnepbLbGmd2S9Vm9u00KFX0I7CJMT45tmiZ1YY5yGFJaxKbDN14xx4c
-         fQ4mTgGUQU4dKYxIkxryg1Z7c/BmaKz9rp5JQVe8GRiTUNrPkED76kHfWPSaZo3liV19
-         KsD86tBvBjFfyi3+64WY83rZoAGyFQZLPwC13qHGSw0LExUUH7Nd3LAqbOaOipRpBU1z
-         hWKT+D253xLaUGGhpHwysipkCRrHyY1KRpnnBP5PZvyu6i/ZC1gADAeOlI160hoJ8jQx
-         nG2pTnXDYbw6LsDXZt5AY5ut5SiZNnf8CM8o2g6qxOToPXfqnwe9Dt45RgNStMC7eI6F
-         lvPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739881200; x=1740486000;
-        h=content-disposition:mime-version:reply-to:message-id:subject:cc:to
-         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YI0Ifn7vvsd2ZeXns6IUX10UekanaA4DCvpGAYoOivQ=;
-        b=Mm48DdxXubhwvHMSz8Tw2zLT6GxCwBEnt19l3bW0fVESusoGXLWkEaGSA8AHgd2yE6
-         48V+bZ1iTa4ZXNc30+6AzvH21v0ZHQgCX7KuaEQZuqOKCSP6P9xi25USJW5knMrvFeCu
-         IjlxR6GcH/GldQtCRLtJLWuSxOJYmrndmhrHhNh8z74sIqNsH9KTEsP9SndYzcPHOd7x
-         it786cB6ICydtfRIe1yfITxMTe6MrYUkMgjv7YJsM46CQhzYAUzQ7bhsBnaRQzIJ1Mrn
-         6KzfHk3fDwd0XOwnmexfwyw6JWbzvL7QRw8bf0wAmJjiGz2F224k0+W9nxUJFg+hZ5xF
-         mouQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVhNQwPbe/pIx0SMbzGoqeQrD3dk35UDgihcyNpXMDRVzutViHOERvoCte4aZHkDiBqX7gr7A6j7OIo/MY=@vger.kernel.org, AJvYcCW3AX+AUmu4WHRITi9R16uYY6Gu3KyFfMPxMG86fXEVx4MOjkTfJcIawGbpB1Go+eMlxdROydbk@vger.kernel.org, AJvYcCWVpWaDK1GvOu925P7pppsAXBUqcaafgqWkuv97O3850tZSAhhuXUuzD+VXgiDWUkIHj27ASp2F@vger.kernel.org, AJvYcCX24h4qQvCg7W5nCueP3nwD93F6WURaTbOIupLc9vIOCONZc/+sMwdK8go5xMLU4i4sSVOPwbaYPVg5@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoKoD9A1oPdVOP4b5oLDKh4fuAkXA5u+kMLlQbmyFbqX4+shBY
-	4G9wUT8vUog5SegOmTQKAKiGViERb0H+C4SjjPKDs6DqOK73z0kB
-X-Gm-Gg: ASbGncs7Z38Ip8ZwIAxOPjSocOBuxYfEyd4oXEKpU9jNr8fnsO4IHnvquO30dLM1oZX
-	ZuCD550HIM3GltEEf20ITUiVJg+hKwP6xBBojI602qzN0GXWRleNo9/QQ/2HyhPGnm1ri3bZje6
-	cSMT0xDe2WbZFo96Q75vCy4T0xnCBbeDFWubSkmbq+aQx1zop+0TdTJchY7Legd2wb9bT3Qusqk
-	4IU+g9IUgWyijGukR2BNKap1JPCBeWT+i2FWCsG4X6+qaN4hNTADDneGYjNplcniZqsYFN/gKOq
-	uUNtU+AsZd+g9goSLy8=
-X-Google-Smtp-Source: AGHT+IHlT4BxvNGeiNIO+gy5eC2ESBpBIhLS2/P0chI7LitN4FV9GGXXLs586hiKwDjI9OiT413wcA==
-X-Received: by 2002:a5d:6c66:0:b0:38d:c2d7:b5a1 with SMTP id ffacd0b85a97d-38f33f28cb8mr11802160f8f.19.1739881200078;
-        Tue, 18 Feb 2025 04:20:00 -0800 (PST)
-Received: from qasdev.system ([2a02:c7c:6696:8300:5092:6ded:7935:11b8])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f259d5ee2sm14652183f8f.80.2025.02.18.04.19.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Feb 2025 04:19:59 -0800 (PST)
-Date: Tue, 18 Feb 2025 12:19:57 +0000
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: fix uninitialised access in mii_nway_restart()
-Message-ID: <Z7R6uet1dJ1UJsJ1@qasdev.system>
-Reply-To: cf0d2929-d854-48ce-97eb-69747f0833f2@lunn.ch
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=diogo.ivo@siemens.com header.b="LYnOnoVz"
+Received: by mta-65-225.siemens.flowmailer.net with ESMTPSA id 202502181225034c22b9853c063b3d94
+        for <netdev@vger.kernel.org>;
+        Tue, 18 Feb 2025 13:25:03 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
+ d=siemens.com; i=diogo.ivo@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
+ bh=G2Mmqb1Mk7iE4u/cA5jv4vjZ4vx0m26FAwwSyjZdlAQ=;
+ b=LYnOnoVzgyvt12BzEBe4VCAtllZyzgApaONlStzl87LQ29SrPPal3so2Kv7HmCgq4Ld9S7
+ 4JEn/o4WmOcWz+1JMdwklNEOfmMGoLAEo0dAXatefHPXGhGsjnkKkJwuGIsgGd55oQKOGXRC
+ RQm6nZI5WWfQBog8RYiB8xQ8xaXWnR1aNkCA/4UKRLB7xWOVrYVerS8q3NSW93NU2X97sB9+
+ mcf1JZorJoE2dRh9W2+YgEea0iz23kjFC4C/IuOyhvRyKzjQxNQ8UBlqQDSaSBuVP+umSias
+ BDTLqrMQfDqhz26QVFYf9tFU4sJqmeozUU5VMjiYWgCqPol3D0wtN8Kg==;
+Message-ID: <c8bdd93d-5690-4b8a-819f-853756b57a71@siemens.com>
+Date: Tue, 18 Feb 2025 12:24:59 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Subject: Re: [PATCH net-next v2 1/3] net: ti: icssg-prueth: Use page_pool API
+ for RX buffer allocation
+To: "Malladi, Meghana" <m-malladi@ti.com>, Roger Quadros <rogerq@kernel.org>,
+ danishanwar@ti.com, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
+ davem@davemloft.net, andrew+netdev@lunn.ch
+Cc: bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ u.kleine-koenig@baylibre.com, krzysztof.kozlowski@linaro.org,
+ dan.carpenter@linaro.org, schnelle@linux.ibm.com, glaroque@baylibre.com,
+ rdunlap@infradead.org, jan.kiszka@siemens.com, john.fastabend@gmail.com,
+ hawk@kernel.org, daniel@iogearbox.net, ast@kernel.org, srk@ti.com,
+ Vignesh Raghavendra <vigneshr@ti.com>, diogo.ivo@siemens.com
+References: <20250210103352.541052-1-m-malladi@ti.com>
+ <20250210103352.541052-2-m-malladi@ti.com>
+ <152b032e-fcd9-4d49-8154-92a475c0670c@kernel.org>
+ <615a2e1f-5ee5-4d80-a499-8ff06596a2fc@ti.com>
+Content-Language: en-US
+From: Diogo Ivo <diogo.ivo@siemens.com>
+In-Reply-To: <615a2e1f-5ee5-4d80-a499-8ff06596a2fc@ti.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-1328357:519-21489:flowmailer
 
-On Tue, Feb 18, 2025 at 02:10:08AM +0100, Andrew Lunn wrote:
-> On Tue, Feb 18, 2025 at 12:24:43AM +0000, Qasim Ijaz wrote:
-> > In mii_nway_restart() during the line:
-> > 
-> > 	bmcr = mii->mdio_read(mii->dev, mii->phy_id, MII_BMCR);
-> > 
-> > The code attempts to call mii->mdio_read which is ch9200_mdio_read().
-> > 
-> > ch9200_mdio_read() utilises a local buffer, which is initialised 
-> > with control_read():
-> > 
-> > 	unsigned char buff[2];
-> > 	
-> > However buff is conditionally initialised inside control_read():
-> > 
-> > 	if (err == size) {
-> > 		memcpy(data, buf, size);
-> > 	}
-> > 
-> > If the condition of "err == size" is not met, then buff remains 
-> > uninitialised. Once this happens the uninitialised buff is accessed 
-> > and returned during ch9200_mdio_read():
-> > 
-> > 	return (buff[0] | buff[1] << 8);
-> > 	
-> > The problem stems from the fact that ch9200_mdio_read() ignores the
-> > return value of control_read(), leading to uinit-access of buff.
-> > 
-> > To fix this we should check the return value of control_read()
-> > and return early on error.
-> 
-> What about get_mac_address()?
-> 
-> If you find a bug, it is a good idea to look around and see if there
-> are any more instances of the same bug. I could be wrong, but it seems
-> like get_mac_address() suffers from the same problem?
+Hi Meghana,
 
-Thank you for the feedback Andrew. I checked get_mac_address() before
-sending this patch and to me it looks like it does check the return value of
-control_read(). It accumulates the return value of each control_read() call into 
-rd_mac_len and then checks if it not equal to what is expected (ETH_ALEN which is 6),
-I believe each call should return 2.
-
+On 2/18/25 10:10 AM, Malladi, Meghana wrote:
+> On 2/12/2025 7:26 PM, Roger Quadros wrote:
+>> Can we get rid of SKB entirely from the management channel code?
+>> The packet received on this channel is never passed to user space so
+>> I don't see why SKB is required.
+>>
 > 
-> 	Andrew
+> Yes I do agree with you on the fact the SKB here is not passed to the 
+> network stack, hence this is redundant. But honestly I am not sure how 
+> that can be done, because the callers of this function access skb->data
+> from the skb which is returned and the same can't be done with page (how 
+> to pass the same data using page?)
+> Also as you are aware we are not currently supporting SR1 devices 
+> anymore, hence I don't have any SR1 devices handy to test these changes 
+> and ensure nothing is broken if I remove SKB entirely.
+
+I have some SR1 devices available and would be happy to test these
+proposed changes in case they are feasible.
+
+Best regards,
+Diogo
