@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B696B1DC98A
-	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 11:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558A21DFE00
+	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 11:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739964846; cv=none; b=JUIxFM7FJLWW0nj8fZQLZgMpScDNYF82hgwHZbApNUzPl7vEBpeDeKvwoViQbOmIDzrjbTIqcX7PX3AitJCy4jpPl4NGQY1zDbteYI9IoMrvuDx+fbiUFi1fX5KKz2qlqPnyMH1LSpgQixnylusABBDRFb5R7ZsAEdzzhxLK1bw=
+	t=1739964847; cv=none; b=dWW+YLICr0UbE15d7FEabjOjHY84jMhvzqU60wh7PO3KBxcyy3wJbVytOLxExwgL3SFCRGcUWYKH3Cv9AU2j0kmNHSXSfrrxlB77jGXQzE6tjoFXwwgFIp/Cyn8DxSYBSBlU7QDSPgJNnhrLBrshNL2TG7YYC8D7o8AENHN+CZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739964846; c=relaxed/simple;
-	bh=HT6CsS8luzjPnt1nhjiuXGHfhXcg6eq3KYVgkI9K0pE=;
+	s=arc-20240116; t=1739964847; c=relaxed/simple;
+	bh=E5JG4Djtn+vkP4X2K2++KgtWExulRo1bEJk7lVevN5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DYhfKLOlIQcBBCMDa9h6w2ZpLn851rI9nj7ugaZTdiZRa4ncpX+umzMv++WtIsKllQD4AFBYDGU8FGoBGnwn2QT/XH4VErh+AL9kkH80YF+y/pCy5MbXvf7CylkkzjcuNUvqzyKH4qU4jNHpW7qqKBvufm8B5y/FcH6PGP+tKUY=
+	 MIME-Version; b=d0ph+Y24MJ9XiEp6Y1EneicpW8LffniipTWipFFnAvPtvTdhfOZtMy/IEP3Y+NDWTND7g4ykjxb5Z6RSRmKot8MAYlErCILYMLACp+zoEKSkl2XV92UDqeYfvs0aFtJ6c/Nn7C1NhS2J4MaXOmJvE34naN1xXs4Qj13vdsvEinY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,26 +18,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tkiL4-0001Zt-Rf
-	for netdev@vger.kernel.org; Wed, 19 Feb 2025 12:34:02 +0100
+	id 1tkiL5-0001ay-Jm
+	for netdev@vger.kernel.org; Wed, 19 Feb 2025 12:34:03 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tkiL2-001l1d-2j
+	id 1tkiL3-001l2S-1f
 	for netdev@vger.kernel.org;
-	Wed, 19 Feb 2025 12:34:00 +0100
+	Wed, 19 Feb 2025 12:34:01 +0100
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 82D293C6932
+	by bjornoya.blackshift.org (Postfix) with SMTP id 06E983C693F
 	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 11:34:00 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 5CA723C68DD;
-	Wed, 19 Feb 2025 11:33:57 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 042A83C68EC;
+	Wed, 19 Feb 2025 11:33:58 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 1c916773;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id f419a61c;
 	Wed, 19 Feb 2025 11:33:56 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -45,12 +45,11 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 05/12] dt-bindings: can: fsl,flexcan: add S32G2/S32G3 SoC support
-Date: Wed, 19 Feb 2025 12:21:10 +0100
-Message-ID: <20250219113354.529611-6-mkl@pengutronix.de>
+Subject: [PATCH net-next 10/12] can: canxl: support Remote Request Substitution bit access
+Date: Wed, 19 Feb 2025 12:21:15 +0100
+Message-ID: <20250219113354.529611-11-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250219113354.529611-1-mkl@pengutronix.de>
 References: <20250219113354.529611-1-mkl@pengutronix.de>
@@ -66,108 +65,40 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-Add S32G2/S32G3 SoCs compatible strings.
+The Remote Request Substitution bit is a dominant bit ("0") in the CAN
+XL frame. As some CAN XL controllers support to access this bit a new
+CANXL_RRS value has been defined for the canxl_frame.flags element.
 
-A particularity for these SoCs is the presence of separate interrupts for
-state change, bus errors, MBs 0-7 and MBs 8-127 respectively.
-
-Increase maxItems of 'interrupts' to 4 for S32G based SoCs and keep the
-same restriction for other SoCs.
-
-Also, as part of this commit, move the 'allOf' after the required
-properties to make the documentation easier to read.
-
-Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20250113120704.522307-2-ciprianmarian.costea@oss.nxp.com
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20250124142347.7444-1-socketcan@hartkopp.net
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- .../bindings/net/can/fsl,flexcan.yaml         | 44 +++++++++++++++++--
- 1 file changed, 40 insertions(+), 4 deletions(-)
+ include/uapi/linux/can.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml b/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
-index 97dd1a7c5ed2..73252fe56fe6 100644
---- a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
-+++ b/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
-@@ -10,9 +10,6 @@ title:
- maintainers:
-   - Marc Kleine-Budde <mkl@pengutronix.de>
+diff --git a/include/uapi/linux/can.h b/include/uapi/linux/can.h
+index e78cbd85ce7c..42abf0679fb4 100644
+--- a/include/uapi/linux/can.h
++++ b/include/uapi/linux/can.h
+@@ -182,7 +182,7 @@ struct canfd_frame {
+ /*
+  * defined bits for canxl_frame.flags
+  *
+- * The canxl_frame.flags element contains two bits CANXL_XLF and CANXL_SEC
++ * The canxl_frame.flags element contains three bits CANXL_[XLF|SEC|RRS]
+  * and shares the relative position of the struct can[fd]_frame.len element.
+  * The CANXL_XLF bit ALWAYS needs to be set to indicate a valid CAN XL frame.
+  * As a side effect setting this bit intentionally breaks the length checks
+@@ -192,6 +192,7 @@ struct canfd_frame {
+  */
+ #define CANXL_XLF 0x80 /* mandatory CAN XL frame flag (must always be set!) */
+ #define CANXL_SEC 0x01 /* Simple Extended Content (security/segmentation) */
++#define CANXL_RRS 0x02 /* Remote Request Substitution */
  
--allOf:
--  - $ref: can-controller.yaml#
--
- properties:
-   compatible:
-     oneOf:
-@@ -28,6 +25,7 @@ properties:
-           - fsl,vf610-flexcan
-           - fsl,ls1021ar2-flexcan
-           - fsl,lx2160ar1-flexcan
-+          - nxp,s32g2-flexcan
-       - items:
-           - enum:
-               - fsl,imx53-flexcan
-@@ -43,12 +41,21 @@ properties:
-           - enum:
-               - fsl,ls1028ar1-flexcan
-           - const: fsl,lx2160ar1-flexcan
-+      - items:
-+          - enum:
-+              - nxp,s32g3-flexcan
-+          - const: nxp,s32g2-flexcan
- 
-   reg:
-     maxItems: 1
- 
-   interrupts:
--    maxItems: 1
-+    minItems: 1
-+    maxItems: 4
-+
-+  interrupt-names:
-+    minItems: 1
-+    maxItems: 4
- 
-   clocks:
-     maxItems: 2
-@@ -136,6 +143,35 @@ required:
-   - reg
-   - interrupts
- 
-+allOf:
-+  - $ref: can-controller.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: nxp,s32g2-flexcan
-+    then:
-+      properties:
-+        interrupts:
-+          items:
-+            - description: Message Buffer interrupt for mailboxes 0-7 and Enhanced RX FIFO
-+            - description: Device state change
-+            - description: Bus Error detection
-+            - description: Message Buffer interrupt for mailboxes 8-127
-+        interrupt-names:
-+          items:
-+            - const: mb-0
-+            - const: state
-+            - const: berr
-+            - const: mb-1
-+      required:
-+        - interrupt-names
-+    else:
-+      properties:
-+        interrupts:
-+          maxItems: 1
-+        interrupt-names: false
-+
- additionalProperties: false
- 
- examples:
+ /* the 8-bit VCID is optionally placed in the canxl_frame.prio element */
+ #define CANXL_VCID_OFFSET 16 /* bit offset of VCID in prio element */
 -- 
 2.47.2
 
