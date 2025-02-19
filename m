@@ -1,50 +1,44 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685681DFE36;
-	Wed, 19 Feb 2025 13:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665691D90A5
+	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 13:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739971300; cv=none; b=H+vQrr4Oe7R3ESTaE7I1aYTR3ZolJtwOP+t/mE/CpEWo8FbGojW1W17MfSebOWLmYy1+V8sLhiVpUhf9ChuKaXsZd8WqB7zb1EyLyeR7pGGKXwX04MY4CXXWorD3K7xvGQJSwrxrc0M/NSjCkqG9fOsfjbA+Vnx+orATXenpbCs=
+	t=1739972166; cv=none; b=Q4fkmvmz27n0xQQztQ779szMv5QuHQIvAensZvGqRQRg0ZH2aJdD2Rp+sbUoazfQoelKXCE6Uz+3pyYHvzZIQvrzaJMyDnpN90O0ucd6eerbmvqdbVpM5OM90xOLCsWGVuQPXuHOjdoumBtWF8qqXK7Gz885pthLzWLgN86++EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739971300; c=relaxed/simple;
-	bh=ibkqAzOOTpcKMN7n+mjZ+14f3KWphjHsh/YjVuefvqI=;
+	s=arc-20240116; t=1739972166; c=relaxed/simple;
+	bh=vMeSW1zvRepqzCiNEFCGVnhpQI0xBPH9NM90uBz6wYY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SM+rlpo3GNVCbkFZHW4Qa3g8evng4zcfl5GkVkIh7T+o4u/0jnJTcvuBetci/AqgWzrfyPoXmT8bh1DjcbvtIZZElRYVdHjvapJ6Ql8ZrDSBPN4oxIZADGJMyOZxDNjXM/UhYKo2lBwDsrxIS7mUSPvUXRu0oGhzD5WjOko3h0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3oaR00oT; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=elsKRaA3iki7ifULtDrbxLW4LEV4UTYZBct98tFPkK7TdbBZ0Yp/VMp2KWEsbhK9qO3g0BtCXHdPdR9R0Ic7ZJFRT+8D0w2Iqxyzw2A4dYJCGCrTzjwmEy0+WrQpa7pUare6vWuyd8Ax+jqOqFG1RZPgsJbp1ckwA5ir3jOnshY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=OboORU5z; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3oaR00oT"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="OboORU5z"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=DMyxvn+GQc/UyfWq8B+kAUMHY5C1ZEtJDA2H85+czpM=; b=3oaR00oTwj135TbO69imlcG5uT
-	hhjS3aq2tDRRGK+8kUm+YZe0MiEvqrgrI31hxY01IQS8eBHyC3eAl4Vda8dvQ1T9dMg3ITpN25FoH
-	tnXd9ImfDu5sjWTaKsA7itCfEw/lMfzNE5Ney9cTysCc4geC8XJELBy4fFu3Tomcy+LE=;
+	bh=5RKXL7Pr+B0O9seaerq9LcKhvhCxKtfn2XfpbvP95Q8=; b=OboORU5zk7+Pa+nHwzajTMX0mp
+	W2SORrqhipef9dQU19UTt4jY8nKvz/mW86dB1pnQdGMI6iuN8OWU6zM9dy14KKdheT6JBqhr4uPpe
+	sPVVp529i+BTqTmiwlCa9Js70pYhcDfLoR4Msd3Ct+boTNlSdPp1Pm5wGWP1IQDX2NXQ=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1tkk0x-00Fdb6-4V; Wed, 19 Feb 2025 14:21:23 +0100
-Date: Wed, 19 Feb 2025 14:21:23 +0100
+	id 1tkkF3-00FdoT-90; Wed, 19 Feb 2025 14:35:57 +0100
+Date: Wed, 19 Feb 2025 14:35:57 +0100
 From: Andrew Lunn <andrew@lunn.ch>
-To: Dimitri Fedrau <dima.fedrau@gmail.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Russell King - ARM Linux <linux@armlinux.org.uk>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Niklas =?iso-8859-1?Q?S=F6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
-	Stefan Eichenberger <eichest@gmail.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] net: phy: marvell-88q2xxx: Prevent reading
- temperature with asserted reset
-Message-ID: <48c4cd14-be56-438e-9561-c85b0245178c@lunn.ch>
-References: <20250218-marvell-88q2xxx-hwmon-enable-at-probe-v1-0-999a304c8a11@gmail.com>
- <20250218-marvell-88q2xxx-hwmon-enable-at-probe-v1-2-999a304c8a11@gmail.com>
+	Eric Dumazet <edumazet@google.com>,
+	David Miller <davem@davemloft.net>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH net-next] net: phy: add phylib-internal.h
+Message-ID: <4b2ebf2e-28b3-4b6a-9772-e5495c18b1d6@lunn.ch>
+References: <290db2fb-01f3-46af-8612-26d30b98d8b3@gmail.com>
+ <8f7cf3ac-14f4-4120-a8ed-01b83737e6b8@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,44 +47,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250218-marvell-88q2xxx-hwmon-enable-at-probe-v1-2-999a304c8a11@gmail.com>
+In-Reply-To: <8f7cf3ac-14f4-4120-a8ed-01b83737e6b8@gmail.com>
 
-On Tue, Feb 18, 2025 at 07:33:10PM +0100, Dimitri Fedrau wrote:
-> If the PHYs reset is asserted it returns 0xffff for any read operation.
-> Prevent reading the temperature in this case and return with an I/O error.
-> Write operations are ignored by the device.
+On Wed, Feb 19, 2025 at 07:37:52AM +0100, Heiner Kallweit wrote:
+> On 18.02.2025 23:43, Heiner Kallweit wrote:
+> > This patch is a starting point for moving phylib-internal
+> > declarations to a private header file.
+> > 
+> > Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> > ---
+> >  drivers/net/phy/phy-c45.c          |  1 +
+> >  drivers/net/phy/phy-core.c         |  3 ++-
+> >  drivers/net/phy/phy.c              |  2 ++
+> >  drivers/net/phy/phy_device.c       |  2 ++
+> >  drivers/net/phy/phy_led_triggers.c |  2 ++
+> >  drivers/net/phy/phylib-internal.h  | 25 +++++++++++++++++++++++++
+> >  include/linux/phy.h                | 13 -------------
+> >  7 files changed, 34 insertions(+), 14 deletions(-)
+> >  create mode 100644 drivers/net/phy/phylib-internal.h
 
-I think the commit message could be improved. Explain why the PHY
-reset would be asserted. You are saying it is because the interface is
-admin down. That is a concept the user is more likely to understand.
+Maybe we should discuss a little where we are going with this...
 
-> Fixes: a197004cf3c2 ("net: phy: marvell-88q2xxx: Fix temperature measurement with reset-gpios")
+I like the idea, we want to limit the scope of some functions so they
+don't get abused. MAC drivers are the main abusers here, they should
+have a small set of methods they can use.
 
-Is this really a fix? My personal reason for this change was
-architecture, it seemed odd to probe the hwmon device in one spot and
-then enable it later. But is it really broken? Stable rules say:
+If you look at some other subsystems they have a header for consumers,
+and a header for providers. include/linux/gpio/{consumer|driver}.h,
+clk-provider.h and clk.h, etc.
 
-  It must either fix a real bug that bothers people or just add a device ID
+Do we want include/linux/phy.h to contain the upper API for phylib,
+which MAC drivers can use? Should phylib-internal.h be just the
+internal API between parts of the core? There will be another header
+which has everything a PHY driver needs for the lower interface of
+phylib?
 
-> Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-> ---
->  drivers/net/phy/marvell-88q2xxx.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/net/phy/marvell-88q2xxx.c b/drivers/net/phy/marvell-88q2xxx.c
-> index 30d71bfc365597d77c34c48f05390db9d63c4af4..c1ae27057ee34feacb31c2e3c40b2b1769596408 100644
-> --- a/drivers/net/phy/marvell-88q2xxx.c
-> +++ b/drivers/net/phy/marvell-88q2xxx.c
-> @@ -647,6 +647,12 @@ static int mv88q2xxx_hwmon_read(struct device *dev,
->  	struct phy_device *phydev = dev_get_drvdata(dev);
->  	int ret;
->  
-> +	/* If the PHYs reset is asserted it returns 0xffff for any read
-> +	 * operation. Return with an I/O error in this case.
-> +	 */
-> +	if (phydev->mdio.reset_state == 1)
-> +		return -EIO;
-
-Maybe ENETDOWN is better?
+Is this what you are thinking?
 
 	Andrew
