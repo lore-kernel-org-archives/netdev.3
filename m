@@ -1,31 +1,67 @@
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76931A2C29;
-	Wed, 19 Feb 2025 11:20:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB231B4F0C;
+	Wed, 19 Feb 2025 11:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739964017; cv=none; b=SjRp+tjus/YljY2w3us9Z+beFFPokMLgjLJHXAJla2T/6Hszcmw7oTIOQM1KAkIoZ5ZR5C2ZvyrC5PdSR/VzBiIwarhA+5T/zSwlsaJY8iR6S94pErd0mvLYpwQWTSE3ukyefAiWN3H1+ZN06+ZmdZIvh29BPviJgaOdglWP1rk=
+	t=1739964378; cv=none; b=TMqT7ImHYmC5iJeVBQshj77X/iIbNtw9m9rdJQrgsbYRPxKwaTtcqRrfmZNwxNQe2a8dFoeLqpLrqcxltJjOKZH+e0XmpgAJpZcWbhw/gScl7wE5trwsJ34nAecE6jG//scT9ttaO0VOgY4ISRCCzyQoZDJY5Ez9MieXDBUMJtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739964017; c=relaxed/simple;
-	bh=21iMGn5nmMgxSUhNifIphPXQHgu7d4Uv/JM64va/VIs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=h03P3jDI85tkEjeyDEeMH4ti1+gir/Xp45EUV1LFayAIk9vwxTpwfr/R8XAoxPzElLjImwvq/rKY7XELruu3NQ3aLkKSp7KPCylqVntHjkOHggbRRRv1XSq1KefjWntls3WZj4V6c5TpAOYDca7GPTwnGk9jmmz4WzQRnanU31Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4YyYpr37n2z22kst;
-	Wed, 19 Feb 2025 19:20:36 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9333E140360;
-	Wed, 19 Feb 2025 19:20:05 +0800 (CST)
-Received: from [10.67.120.129] (10.67.120.129) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 19 Feb 2025 19:20:05 +0800
-Message-ID: <c9950a79-7bcb-41c2-a59e-af315dc6d7ff@huawei.com>
-Date: Wed, 19 Feb 2025 19:20:04 +0800
+	s=arc-20240116; t=1739964378; c=relaxed/simple;
+	bh=YxfScXZAlJ6bOse6O0wASagS5LXMwyJ8yNmAVj2UFKY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kFTrwc5/usM5mP6w+xKSuYIP2mCBjpniu97lmoXyXIWYSoc2EWqzZPUHM1SJ3dOHE4d0+22UeEyKprRcQ9a36ynE04qVlyLLe6U5z41SY4lJudcW7jMm7f9PjkAjgvuyPk2PUdG6kuXGwraa7Hlf1ckp2YRW+haYJ8GmRbANp68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TqBr3xcs; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TqBr3xcs"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51J75Fne020382;
+	Wed, 19 Feb 2025 11:26:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=uRm/ZX
+	rrmZDiHxzq1OpsDmafdpexez7z1eulcwkB2xU=; b=TqBr3xcsbANOPNt8qJqpBP
+	1TErLTVxuyU+8GRHeWEEJbgFwQ544PnpnCX6p2aQbQWKA2k76AtnQEWFKpTw0rfC
+	Vp+/peyl6C351879zCLpjf1vP4vAbFhxjbbH4IhBZ4mRo5+an7VkCc/Ktxcp9AIR
+	agW7znlZ5B5ccRcFuRSzpdKLgs8/mQ2uiJqtKzL2lD4CM9/54M8AtHFINoWWIour
+	C1L89OSmKGlOvXs323G2hZcQvV7dou5G1BnbR0TIjdQJumcVZQVHeoFgv1EEt/j1
+	YOVpfiRBEPWInpM1Lb/tby+fAUpMDj0rSUG5OHZ6UV5SXxm0j2GMh1lam1YOQWjg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44vyyq3ktb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Feb 2025 11:26:05 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51JBN6SN019645;
+	Wed, 19 Feb 2025 11:26:05 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44vyyq3kt6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Feb 2025 11:26:04 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51JAMHin009686;
+	Wed, 19 Feb 2025 11:26:04 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44w03y3qgy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Feb 2025 11:26:04 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51JBQ0jb35782966
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 19 Feb 2025 11:26:00 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8877620043;
+	Wed, 19 Feb 2025 11:26:00 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 32C1620040;
+	Wed, 19 Feb 2025 11:26:00 +0000 (GMT)
+Received: from [9.152.224.153] (unknown [9.152.224.153])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 19 Feb 2025 11:26:00 +0000 (GMT)
+Message-ID: <88bfde57-a653-472a-936b-40e68c349ac1@linux.ibm.com>
+Date: Wed, 19 Feb 2025 12:25:59 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -33,203 +69,195 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] mm: alloc_pages_bulk: remove assumption of populating only
- NULL elements
-To: Dave Chinner <david@fromorbit.com>
-CC: Yishai Hadas <yishaih@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Shameer
- Kolothum <shameerali.kolothum.thodi@huawei.com>, Kevin Tian
-	<kevin.tian@intel.com>, Alex Williamson <alex.williamson@redhat.com>, Chris
- Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, David Sterba
-	<dsterba@suse.com>, Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
-	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep
- Dhavale <dhavale@google.com>, Carlos Maiolino <cem@kernel.org>, "Darrick J.
- Wong" <djwong@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Jesper
- Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
-	<ilias.apalodimas@linaro.org>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Trond Myklebust
-	<trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Chuck Lever
-	<chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, Neil Brown
-	<neilb@suse.de>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo
-	<Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Luiz Capitulino
-	<luizcap@redhat.com>, Mel Gorman <mgorman@techsingularity.net>,
-	<kvm@vger.kernel.org>, <virtualization@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-btrfs@vger.kernel.org>,
-	<linux-erofs@lists.ozlabs.org>, <linux-xfs@vger.kernel.org>,
-	<linux-mm@kvack.org>, <netdev@vger.kernel.org>, <linux-nfs@vger.kernel.org>
-References: <20250217123127.3674033-1-linyunsheng@huawei.com>
- <Z7Oqy2j4xew7FW9Z@dread.disaster.area>
- <cf270a65-c9fa-453a-b7a0-01708063f73e@huawei.com>
- <Z7T4NZAn4wD_DLTl@dread.disaster.area>
+Subject: Re: [RFC net-next 0/7] Provide an ism layer - naming
+To: Wen Gu <guwen@linux.alibaba.com>, dust.li@linux.alibaba.com,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Julian Ruess <julianr@linux.ibm.com>,
+        Wenjia Zhang <wenjia@linux.ibm.com>, Jan Karcher <jaka@linux.ibm.com>,
+        Gerd Bayer <gbayer@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+        "D. Wythe" <alibuda@linux.alibaba.com>,
+        Tony Lu <tonylu@linux.alibaba.com>,
+        Peter Oberparleiter <oberpar@linux.ibm.com>,
+        David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Thorsten Winkler <twinkler@linux.ibm.com>, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>
+References: <20250115195527.2094320-1-wintera@linux.ibm.com>
+ <20250116093231.GD89233@linux.alibaba.com>
+ <D73H7Q080GUQ.3BDOH23P4WDOL@linux.ibm.com>
+ <0f96574a-567e-495a-b815-6aef336f12e6@linux.ibm.com>
+ <20250117021353.GF89233@linux.alibaba.com>
+ <dc2ff4c83ce8f7884872068570454f285510bda2.camel@linux.ibm.com>
+ <20250118153154.GI89233@linux.alibaba.com>
+ <d1927140-443b-401c-92ff-f467c12d3e75@linux.ibm.com>
+ <20250210050851.GS89233@linux.alibaba.com>
+ <1e96806f-0a4e-4292-9483-928b1913d311@linux.ibm.com>
+ <59d386fb-0612-4c2e-a4e7-ca26b474917f@linux.alibaba.com>
 Content-Language: en-US
-From: Yunsheng Lin <linyunsheng@huawei.com>
-In-Reply-To: <Z7T4NZAn4wD_DLTl@dread.disaster.area>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <59d386fb-0612-4c2e-a4e7-ca26b474917f@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5aq85u8LBeoxTgVsRwpOeL32X8S58FTI
+X-Proofpoint-ORIG-GUID: VjMTp0R9jhtiSUku56tMoMHBot6hh-XR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-19_04,2025-02-19_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 adultscore=0 bulkscore=0 mlxscore=0 clxscore=1015
+ spamscore=0 suspectscore=0 phishscore=0 mlxlogscore=797 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502190088
 
-On 2025/2/19 5:14, Dave Chinner wrote:
-> On Tue, Feb 18, 2025 at 05:21:27PM +0800, Yunsheng Lin wrote:
->> On 2025/2/18 5:31, Dave Chinner wrote:
+
+
+On 16.02.25 16:40, Wen Gu wrote:
+> 
+> 
+> On 2025/2/10 17:38, Alexandra Winter wrote:
 >>
->> ...
 >>
->>> .....
+>> On 10.02.25 06:08, Dust Li wrote:
+>>> On 2025-01-28 17:04:53, Alexandra Winter wrote:
+>>>>
+>>>>
+>>>> On 18.01.25 16:31, Dust Li wrote:
+>>>>> On 2025-01-17 11:38:39, Niklas Schnelle wrote:
+>>>>>> On Fri, 2025-01-17 at 10:13 +0800, Dust Li wrote:
+>>>>>>>>
+>>>>>> ---8<---
+>>>>>>>> Here are some of my thoughts on the matter:
+>>>>>>>>>>
+>>>>>>>>>> Naming and Structure: I suggest we refer to it as SHD (Shared Memory
+>>>>>>>>>> Device) instead of ISM (Internal Shared Memory).
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> So where does the 'H' come from? If you want to call it Shared Memory _D_evice?
+>>>>>>>
+>>>>>>> Oh, I was trying to refer to SHM(Share memory file in the userspace, see man
+>>>>>>> shm_open(3)). SMD is also OK.
+>>>>>>>
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> To my knowledge, a
+>>>>>>>>>> "Shared Memory Device" better encapsulates the functionality we're
+>>>>>>>>>> aiming to implement.
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> Could you explain why that would be better?
+>>>>>>>> 'Internal Shared Memory' is supposed to be a bit of a counterpart to the
+>>>>>>>> Remote 'R' in RoCE. Not the greatest name, but it is used already by our ISM
+>>>>>>>> devices and by ism_loopback. So what is the benefit in changing it?
+>>>>>>>
+>>>>>>> I believe that if we are going to separate and refine the code, and add
+>>>>>>> a common subsystem, we should choose the most appropriate name.
+>>>>>>>
+>>>>>>> In my opinion, "ISM" doesn’t quite capture what the device provides.
+>>>>>>> Since we’re adding a "Device" that enables different entities (such as
+>>>>>>> processes or VMs) to perform shared memory communication, I think a more
+>>>>>>> fitting name would be better. If you have any alternative suggestions,
+>>>>>>> I’m open to them.
+>>>>>>
+>>>>>> I kept thinking about this a bit and I'd like to propose yet another
+>>>>>> name for this group of devices: Memory Communication Devices (MCD)
+>>>>>>
+>>>>>> One important point I see is that there is a bit of a misnomer in the
+>>>>>> existing ISM name in that our ISM device does in fact *not* share
+>>>>>> memory in the common sense of the "shared memory" wording. Instead it
+>>>>>> copies data between partitions of memory that share a common
+>>>>>> cache/memory hierarchy while not sharing the memory itself. loopback-
+>>>>>> ism and a possibly future virtio-ism on the other hand would share
+>>>>>> memory in the "shared memory" sense. Though I'd very much hope they
+>>>>>> will retain a copy mode to allow use in partition scenarios.
+>>>>>>
+>>>>>> With that background I think the common denominator between them and
+>>>>>> the main idea behind ISM is that they facilitate communication via
+>>>>>> memory buffers and very simple and reliable copy/share operations. I
+>>>>>> think this would also capture our planned use-case of devices (TTYs,
+>>>>>> block devices, framebuffers + HID etc) provided by a peer on top of
+>>>>>> such a memory communication device.
+>>>>>
+>>>>> Make sense, I agree with MCD.
+>>>>>
+>>>>> Best regard,
+>>>>> Dust
+>>>>>
+>>>>
+>>>>
 >>>
->>>> diff --git a/fs/xfs/xfs_buf.c b/fs/xfs/xfs_buf.c
->>>> index 15bb790359f8..9e1ce0ab9c35 100644
->>>> --- a/fs/xfs/xfs_buf.c
->>>> +++ b/fs/xfs/xfs_buf.c
->>>> @@ -377,16 +377,17 @@ xfs_buf_alloc_pages(
->>>>  	 * least one extra page.
->>>>  	 */
->>>>  	for (;;) {
->>>> -		long	last = filled;
->>>> +		long	alloc;
->>>>  
->>>> -		filled = alloc_pages_bulk(gfp_mask, bp->b_page_count,
->>>> -					  bp->b_pages);
->>>> +		alloc = alloc_pages_bulk(gfp_mask, bp->b_page_count - refill,
->>>> +					 bp->b_pages + refill);
->>>> +		refill += alloc;
->>>>  		if (filled == bp->b_page_count) {
->>>>  			XFS_STATS_INC(bp->b_mount, xb_page_found);
->>>>  			break;
->>>>  		}
->>>>  
->>>> -		if (filled != last)
->>>> +		if (alloc)
->>>>  			continue;
+>>> Hi Winter,
 >>>
->>> You didn't even compile this code - refill is not defined
->>> anywhere.
+>>> Sorry for the late reply; we were on break for the Chinese Spring
+>>> Festival.
 >>>
->>> Even if it did complile, you clearly didn't test it. The logic is
->>> broken (what updates filled?) and will result in the first
->>> allocation attempt succeeding and then falling into an endless retry
->>> loop.
->>
->> Ah, the 'refill' is a typo, it should be 'filled' instead of 'refill'.
->> The below should fix the compile error:
->> --- a/fs/xfs/xfs_buf.c
->> +++ b/fs/xfs/xfs_buf.c
->> @@ -379,9 +379,9 @@ xfs_buf_alloc_pages(
->>         for (;;) {
->>                 long    alloc;
->>
->> -               alloc = alloc_pages_bulk(gfp_mask, bp->b_page_count - refill,
->> -                                        bp->b_pages + refill);
->> -               refill += alloc;
->> +               alloc = alloc_pages_bulk(gfp_mask, bp->b_page_count - filled,
->> +                                        bp->b_pages + filled);
->> +               filled += alloc;
->>                 if (filled == bp->b_page_count) {
->>                         XFS_STATS_INC(bp->b_mount, xb_page_found);
->>                         break;
->>
+>>>>
+>>>> In the discussion with Andrew Lunn, it showed that
+>>>> a) we need an abstract description of 'ISM' devices (noted)
+>>>> b) DMBs (Direct Memory Buffers) are a critical differentiator.
+>>>>
+>>>> So what do your think of Direct Memory Communication (DMC) as class name for these devices?
+>>>>
+>>>> I don't have a strong preference (we could also stay with ISM). But DMC may be a bit more
+>>>> concrete than MCD or ISM.
 >>>
->>> i.e. you stepped on the API landmine of your own creation where
->>> it is impossible to tell the difference between alloc_pages_bulk()
->>> returning "memory allocation failed, you need to retry" and
->>> it returning "array is full, nothing more to allocate". Both these
->>> cases now return 0.
+>>> I personally prefer MCD over Direct Memory Communication (DMC).
+>>>
+>>> For loopback or Virtio-ISM, DMC seems like a good choice. However, for
+>>> IBM ISM, since there's a DMA copy involved, it doesn’t seem truly "Direct,"
+>>> does it?
+>>>
+>>> Additionally, since we are providing a device, MCD feels like a more
+>>> fitting choice, as it aligns better with the concept of a "device."
+>>>
+>>> Best regards,
+>>> Dust
 >>
->> As my understanding, alloc_pages_bulk() will not be called when
->> "array is full" as the above 'filled == bp->b_page_count' checking
->> has ensured that if the array is not passed in with holes in the
->> middle for xfs.
-> 
-> You miss the point entirely. Previously, alloc_pages_bulk() would
-> return a value that would tell us the array is full, even if we
-> call it with a full array to begin with.
-> 
-> Now it fails to tell us that the array is full, and we have to track
-> that precisely ourselves - it is impossible to tell the difference
-> between "array is full" and "allocation failed". Not being able to
-> determine from the allocation return value whether the array is
-> ready for use or whether another go-around to fill it is needed is a
-> very poor API choice, regardless of anything else.
-> 
-> You've already demonstrated this: tracking array usage in every
-> caller is error-prone and much harder to get right than just having
-> alloc_pages_bulk() do everything for us.
-
-While I am agreed that it might be hard to track array usage in every
-caller to see if removing assumption of populating only NULL elements
-cause problem for them, I still think the page bulk alloc API before
-this patch have some space for improvement from performance and
-easy-to-use perspective as the most existing calllers of page bulk
-alloc API are trying to bulk allocate the page for the whole array
-sequentially.
-
-> 
->>> The existing code returns nr_populated in both cases, so it doesn't
->>> matter why alloc_pages_bulk() returns with nr_populated != full, it
->>> is very clear that we still need to allocate more memory to fill it.
+>> Thank you for your thoughts, Dust.
+>> For me the 'D as 'direct' is not so much about the number of copies, but more about the
+>> aspect, that you can directly write at any offset into the buffer. I.e. no queues.
+>> More like the D in DMA or RDMA.
 >>
->> I am not sure if the array will be passed in with holes in the
->> middle for the xfs fs as mentioned above, if not, it seems to be
->> a typical use case like the one in mempolicy.c as below:
+> 
+> IMHO the 'D' means that the CPU copy does not need to be involved, and memory access
+> only involves between memory and IO devices. So under this semantics, I think 'DMC'
+> also applies to s390 ism device, since IIUC the s390 ism directly access to the memory
+> which is passed down by move_data(). The exception is lo-ism, where the device
+> actually doesn't need to access the memory(DMB), since the data has been put into the
+> shared memory once the sendmsg() is called and no copy or move is needed. But this
+> is not a violation of name, just a special kind of short-cut. So DMC makes sense
+> to me.
+> 
+>> I am preparing a talk for netdev in March about this subject, and the more I work on it,
+>> it seems to me that the buffers ('B'), that are
+>> a) only authorized for a single remote device and
+>> b) can be accessed at any offset
+>> are the important differentiator compared other virtual devices.
+>> So maybe 'D' for Dedicated?
 >>
->> https://elixir.bootlin.com/linux/v6.14-rc1/source/mm/mempolicy.c#L2525
-> 
-> That's not "typical" usage. That is implementing "try alloc" fast
-> path that avoids memory reclaim with a slow path fallback to fill
-> the rest of the array when the fast path fails.
-> 
-> No other users of alloc_pages_bulk() is trying to do this.
-
-What I meant by "typical" usage is the 'page_array + nr_allocated'
-trick that avoids the NULL checking when page bulk allocation API
-is used in mm/mempolicy.c, most of existing callers for page bulk
-allocation in other places seems likely to be changed to do the
-similar trick as this patch does.
-
-> 
-> Indeed, it looks somewhat pointless to do this here (i.e. premature
-> optimisation!), because the only caller of
-> alloc_pages_bulk_mempolicy_noprof() has it's own fallback slowpath
-> for when alloc_pages_bulk() can't fill the entire request.
-> 
->>> IOWs, you just demonstrated why the existing API is more desirable
->>> than a highly constrained, slightly faster API that requires callers
->>> to get every detail right. i.e. it's hard to get it wrong with the
->>> existing API, yet it's so easy to make mistakes with the proposed
->>> API that the patch proposing the change has serious bugs in it.
+>> I even came up with
+>> dibs - Dedicated Internal Buffer Sharing or
+>> dibc - Dedicated Internal Buffer Communication
+>> (ok, I like the sound and look of the 'I'. But being on the same hardware as opposed
+>> to RDMA is also an important aspect.)
 >>
->> IMHO, if the API is about refilling pages for the only NULL elements,
->> it seems better to add a API like refill_pages_bulk() for that, as
->> the current API seems to be prone to error of not initializing the
->> array to zero before calling alloc_pages_bulk().
-> 
-> How is requiring a well defined initial state for API parameters
-> "error prone"?  What code is failing to do the well known, defined
-> initialisation before calling alloc_pages_bulk()?
-> 
-> Allowing uninitialised structures in an API (i.e. unknown initial
-> conditions) means we cannot make assumptions about the structure
-> contents within the API implementation.  We cannot assume that all
-> variables are zero on the first use, nor can we assume that anything
-> that is zero has a valid state.
+>>
+>> MCD - 'memory communication device' sounds rather vague to me. But if it is the
+>> smallest common denominator, i.e. the only thing we can all agree on, I could live with it.
+>>
 
-It seems the above is the main differenece we see from the API perspective,
-as I see the array as output parameter and you seems to treat the array as
-both input and output parameter?
 
-The kmem_cache_alloc_bulk() API related API seems to treat the array as
-output parameter too as this patch does, the difference from this patch
-is that if there is no enough memory, it will free the allocated memory
-and return 0 to the caller while this patch returns already allocated
-memory to its caller even when there is no enough memory.
+Could you guys accept
+'DIBS - Dedicated Internal Buffer Sharing'
+as well?
+-> dibs_layer, /class/dibs/, dibs_dev
 
-> 
-> Again, this is poor API design - structures passed to interfaces
-> -should- have a well defined initial state, either set by a *_init()
-> function or by defining the initial state to be all zeros (i.e. via
-> memset, kzalloc, etc).
-> 
-> Performance and speed is not an excuse for writing fragile, easy to
-> break code and APIs.
-> 
-> -Dave.
+That is currently my favourite.
+
+
