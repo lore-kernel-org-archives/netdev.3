@@ -1,148 +1,138 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx09lb.world4you.com (mx09lb.world4you.com [81.19.149.119])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809A722DFA9
-	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 20:14:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED66622E015
+	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 20:14:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739996065; cv=none; b=nksXyFfoYDegPT/Hd3powfdJFjU71k2c94KbV7ws6OBbya0goXL8hMMXAO3YJJ58D+rYBYXTAX+xTh139rcDQsEwxCkN8+g8nvG+Piiib3p1N5SU4AwiNO79u8+DUIA2V88G5TYaW0FPl1acSKEyn/Oo8T/9n5YPYPyDGZCa+mI=
+	t=1739996066; cv=none; b=aOu07LVR6Z4ouQjPOAB2nDrfo1ZOhp2TFqCbgFPt/gBxKE7M5+6cXL/Q6Pp9QINtwgXEYwCJyzhUxUO+4SHFIczOiqpbtzevPrwB/blinK/ttux5EtIXnd8a5cYCiguAR0NVZyiGvEcZxy5KkfU1t9k73cc9P/FzT8l/oeyOnCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739996065; c=relaxed/simple;
-	bh=ZnGfQUzoMcbiAcHdPIPzi6bV4RsX5hBV8RczItUUqwA=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=VLTXHk4Nz1L7ogyIzsE/iE4DpAMgvX9nbxMz9rSHj8k6MssaT6qDKhW5y1eqBOLYTH0S+kmcFopDXkRqdx9txS4IbW4yKwyi+gIIFjYo+16p2yJ9GTGVgZhWKYSzhwg6zkkVCdU19aOXwdJJ+v8vHAMy3ovav08wYz8SpWVS9Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N0ayeQlp; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739996066; c=relaxed/simple;
+	bh=3WE1ZvPfBLEKPnj4J9TN8SI0v/5i+n8bjFCfzYqFzwQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bt6/kKyrpeDC+ToIw1DXwpSJv5KQ5Zbu4mjqGzhUxX0Rm8pgcx34WYZcl424EEiDr/+dDtN94LoT1hnzsxSgCK1bKUfiujniYbL5eoDxSu90ftfnX1b0+o8oD0G2a5tfqZhSg4cCnbvzP5NYYbp4tf61IzGOmPGTEmmNO1gmJoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=FHt/xAyL; arc=none smtp.client-ip=81.19.149.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N0ayeQlp"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5dedae49c63so293982a12.0
-        for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 12:14:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739996062; x=1740600862; darn=vger.kernel.org;
-        h=content-transfer-encoding:autocrypt:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SsvkVzLYUFY5jTm4MOjOBTjmTMwPJ+Zb+G7fTXQ4L8c=;
-        b=N0ayeQlp0nAmBT9AhWUHBsf4GakoVb+AbPZUjSttzinqNci1DvTPVpaFSQewnqStrk
-         MaFQRK2iMBKwJ+xbRjuOqQQZ5neq7Yaog2ohBEw9hVc4SIqR6q6/K4LAIKz1NNqhMSUf
-         qLu2a8qdCmy2qbK1R6nMr6zYEypZl/PlS/9hq/d5RY9gCR5FCO4867jvgB8qJfjTDKzD
-         4hv+CTaukoZvcEx/Kavk+dS7GC41oLgKm2Sc1Q7UC7PNEFse+eBaMjgoKzI4Bgadlrvh
-         2NXGL/wcs6E2B++7Z4DPxcuCHPU6qCJRXKLJA2BSRJS5SyXspog/9f5EzvpK8+6yqv4w
-         HQ5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739996062; x=1740600862;
-        h=content-transfer-encoding:autocrypt:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SsvkVzLYUFY5jTm4MOjOBTjmTMwPJ+Zb+G7fTXQ4L8c=;
-        b=VVJgtqDZgPE+AgL41EFHJwELquJiF1Y8LEfK7o9siCA8gGR6tFppnIGYn0QOlHunnO
-         vgZwGDxBrbTY7Lh6kDV/Z7AJuVJTqTYOBjKss2z77dwqIUox4KtTyxCZVx3gOUP6Yylk
-         IqcBESRlBU1xfURwScQFx04BUGDyF1Qkbfh1SG2NLD9+EDwkxciWO4iTyzC4uJlqp3ZM
-         nyJpR28dvUq55o9BwyAaesFer9zmYVaC1hwRR9tOSwz+Agv4aMxC7KuP3DWEsLiImSc0
-         AIXkByLRkfPJtBHtpB4DXhmCsaUTkRujVhYIBWfmjOR8WJdbI0FwUjcw2JTrrVBtk1fT
-         gb+g==
-X-Gm-Message-State: AOJu0YwR4iO96uQZBK0lgWOA3jVyIc9GQw/25XzrFF/q9I6q39P0gJmQ
-	PodihCi5SV7wW42PDHe4PLYBWmgLBi0HeMASWYAVOSLn6nA0NCHui3YdckaI
-X-Gm-Gg: ASbGnct/sWRXgYtGPBwIWlUpkzjzMzIMY84nJCAD4EEDHUR7lSE7egwDaXqJEp7nFEu
-	jMFJ3q884pcX2i9mlWfsm50LQ7RUH6T8gNSZOgCw9QgNWhc0gzoMOrp3FTb2nVutaL98PcRl/rq
-	aNFCgj3jg/AsK9zqYOKpRB7I1EFN80qWWYHay6MbeWqs9+2JkEOOya/RNRoy+avi9y1WQw/SWQE
-	/Z6pp6T4vMfUj2DqBRO5OWOwz/k1Av18KQQGU3JGI90DzXIKPZtwtenRSxQ3h8tkbpv0lUSvNCH
-	M48DxWQe3m3Xe91F9jPqng+wEyixp07Ok/7cbhwnIVZ3+FgQUeTyIkBNAm5vrNA3eeYcip7jOlt
-	qCFD2fh5pJhRYpNbvmXABK6KjwBbXkXCXTqnwATeVW5ZRBg/Nkk+DXfcbQsSjicMXjW4IZkplNP
-	gtY+HLujU=
-X-Google-Smtp-Source: AGHT+IE8m/mEzI3mrRlCDouYTal6GIlLPBKIU5YgOP2fs+nzrd90AZgnpYI5SdK5AQCiPMenyWGCJA==
-X-Received: by 2002:a17:906:9d2:b0:ab6:511d:8908 with SMTP id a640c23a62f3a-abb70d699f5mr1695658366b.40.1739996061564;
-        Wed, 19 Feb 2025 12:14:21 -0800 (PST)
-Received: from ?IPV6:2a02:3100:a982:e400:6dd0:628c:981b:2783? (dynamic-2a02-3100-a982-e400-6dd0-628c-981b-2783.310.pool.telefonica.de. [2a02:3100:a982:e400:6dd0:628c:981b:2783])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-abb9d19feaesm630566866b.48.2025.02.19.12.14.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Feb 2025 12:14:20 -0800 (PST)
-Message-ID: <b2883c75-4108-48f2-ab73-e81647262bc2@gmail.com>
-Date: Wed, 19 Feb 2025 21:15:05 +0100
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="FHt/xAyL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=iISeBzEPi0zKP8qLt64aw/4DhortalWH/7KBjTZP9s0=; b=FHt/xAyL4veP6b/+uNPrJ/PoNc
+	Rz2HZsozTLdqxm1L/ZeAZG4r3MdvtQCfCDO+0qRVgVdvUYfrCGV+A064lsnmCMdu8gWusOmf1u9Bi
+	MGvrIpeJpixa2bPW8XIEZB1vGEGvBalGMy9yv9PcPfiYQAGiQE+fxqYouv55PRxQnfQU=;
+Received: from [88.117.55.1] (helo=hornet.engleder.at)
+	by mx09lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tkpxY-000000003mi-42Sa;
+	Wed, 19 Feb 2025 20:42:17 +0100
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	Gerhard Engleder <gerhard@engleder-embedded.com>
+Subject: [PATCH net-next v7 0/8] Support loopback mode speed selection
+Date: Wed, 19 Feb 2025 20:42:05 +0100
+Message-Id: <20250219194213.10448-1-gerhard@engleder-embedded.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Andrew Lunn <andrew@lunn.ch>,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- David Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH net-next] net: phy: remove unused feature array declarations
-Autocrypt: addr=hkallweit1@gmail.com; keydata=
- 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
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-AV-Do-Run: Yes
+X-ACL-Warn: X-W4Y-Internal
 
-After 12d5151be010 ("net: phy: remove leftovers from switch to linkmode
-bitmaps") the following declarations are unused and can be removed too.
+Previously to commit 6ff3cddc365b ("net: phylib: do not disable autoneg
+for fixed speeds >= 1G") it was possible to select the speed of the
+loopback mode by configuring a fixed speed before enabling the loopback
+mode. Now autoneg is always enabled for >= 1G and a fixed speed of >= 1G
+requires successful autoneg. Thus, the speed of the loopback mode depends
+on the link partner for >= 1G. There is no technical reason to depend on
+the link partner for loopback mode. With this behavior the loopback mode
+is less useful for testing.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
----
- include/linux/phy.h | 3 ---
- 1 file changed, 3 deletions(-)
+Allow PHYs to support optional speed selection for the loopback mode.
+This support is implemented for the generic loopback support and for PHY
+drivers, which obviously support speed selection for loopback mode.
+Additionally, loopback support according to the data sheet is added to
+the KSZ9031 PHY.
 
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 3076b4caa..e36eb247c 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -37,10 +37,7 @@ extern __ETHTOOL_DECLARE_LINK_MODE_MASK(phy_basic_t1_features) __ro_after_init;
- extern __ETHTOOL_DECLARE_LINK_MODE_MASK(phy_basic_t1s_p2mp_features) __ro_after_init;
- extern __ETHTOOL_DECLARE_LINK_MODE_MASK(phy_gbit_features) __ro_after_init;
- extern __ETHTOOL_DECLARE_LINK_MODE_MASK(phy_gbit_fibre_features) __ro_after_init;
--extern __ETHTOOL_DECLARE_LINK_MODE_MASK(phy_gbit_all_ports_features) __ro_after_init;
- extern __ETHTOOL_DECLARE_LINK_MODE_MASK(phy_10gbit_features) __ro_after_init;
--extern __ETHTOOL_DECLARE_LINK_MODE_MASK(phy_10gbit_fec_features) __ro_after_init;
--extern __ETHTOOL_DECLARE_LINK_MODE_MASK(phy_10gbit_full_features) __ro_after_init;
- extern __ETHTOOL_DECLARE_LINK_MODE_MASK(phy_eee_cap1_features) __ro_after_init;
- extern __ETHTOOL_DECLARE_LINK_MODE_MASK(phy_eee_cap2_features) __ro_after_init;
- 
+Extend phy_loopback() to signal link up and down if speed changes,
+because a new link speed requires link up signalling.
+
+Use this loopback speed selection in the tsnep driver to select the
+loopback mode speed depending the previously active speed. User space
+tests with 100 Mbps and 1 Gbps loopback are possible again.
+
+Add selftests with fixed speed to tsnep driver. Add them in a way which
+makes easy reuse possible.
+
+v7:
+- simplify ksz9031_set_loopback() (Andrew Lunn)
+- try to restore link if loopback enable fails (Andrew Lunn)
+- extend generic selftests to enable reuse (Andrew Lunn)
+
+v6:
+- add return value documentation to phy_loopback() (Jakub Kicinski)
+
+v5:
+- use phy_write() instead of phy_modify() (Russel King)
+- add missing inline for export dummies (kernel test robot)
+
+v4:
+- resend without changed to RFC v3
+
+RFC v3:
+- align set_loopback() of Marvell to Micrel (Andrew Lunn)
+- transmit packets in loopback selftests (Andrew Lunn)
+- don't flush PHY statemachine in phy_loopback()
+- remove setting of carrier on and link mode after phy_loopback() in tsnep
+
+v2:
+- signal link up to keep MAC and PHY in sync about speed (Andrew Lunn)
+
+Gerhard Engleder (8):
+  net: phy: Allow loopback speed selection for PHY drivers
+  net: phy: Support speed selection for PHY loopback
+  net: phy: micrel: Add loopback support
+  net: phy: marvell: Align set_loopback() implementation
+  tsnep: Select speed for loopback
+  net: selftests: Support selftest sets
+  net: selftests: Add selftests sets with fixed speed
+  tsnep: Add loopback selftests
+
+ drivers/net/ethernet/engleder/tsnep_main.c    |  21 +-
+ .../net/ethernet/engleder/tsnep_selftests.c   |  28 ++-
+ .../net/ethernet/hisilicon/hns/hns_ethtool.c  |   4 +-
+ .../hisilicon/hns3/hns3pf/hclge_main.c        |   4 +-
+ .../hisilicon/hns3/hns3pf/hclge_mdio.c        |   2 +-
+ .../stmicro/stmmac/stmmac_selftests.c         |   8 +-
+ drivers/net/phy/adin1100.c                    |   5 +-
+ drivers/net/phy/dp83867.c                     |   5 +-
+ drivers/net/phy/marvell.c                     |  68 +++----
+ drivers/net/phy/micrel.c                      |  24 +++
+ drivers/net/phy/mxl-gpy.c                     |  11 +-
+ drivers/net/phy/phy-c45.c                     |   5 +-
+ drivers/net/phy/phy.c                         |  87 ++++++++
+ drivers/net/phy/phy_device.c                  |  43 +---
+ drivers/net/phy/xilinx_gmii2rgmii.c           |   7 +-
+ include/linux/phy.h                           |  18 +-
+ include/net/selftests.h                       |  31 +++
+ net/core/selftests.c                          | 188 +++++++++++++-----
+ 18 files changed, 400 insertions(+), 159 deletions(-)
+
 -- 
-2.48.1
+2.39.5
 
