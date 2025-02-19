@@ -1,139 +1,324 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E241AF0B8
-	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 22:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121A725B677;
+	Wed, 19 Feb 2025 22:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740005326; cv=none; b=KSNyOQpS43PkUGo/0WMJp/nn6i3l+JPAar7y5FphrG5uPyM8+puXcsp3c1lhIT9p/wo4Y1InKpgIMRvDXmJaw+hWsJm9Bl4N/5fnJs3w/EmAjIZxLQV/T1hm0RGw3PFLPvbZmd61m8rt+qp/ueeWjzAW/EtvQ5JnJRgRRRR+1oI=
+	t=1740005492; cv=none; b=oSGurg4jZX1DjnFHZ8QjWFsOg+SQr9fdODoKGqVMfuMRr+5KLFVr0ThFlRRomAoVRC1tn/evSYUrgjyNl0MPV78hs2okzMq08fyo8pY9jIK3b/oew9Ub+hoIEYxP0APUc47BEvPwTxRyQyWzcT5pEZqlARI2nX3Wh57NQWGvz50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740005326; c=relaxed/simple;
-	bh=l8XAw9mzoQ+2egywoDGWQjzJIqYaa0O5ZzYdk7/RfK4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hNDufLxEaqfboggw8xw79pevC9VfOjnmN7OBEdi73lPfzHHGXk7wPk4yDfqGCQud+WF9wkXDKg/3WPBxn150Cz1RPqgZmaSIqU4EQY4Xp/TAqnK7lFxBv9mFOUYljj1K2+l7wl1fmdAKJKbxae6aTeGRMD3IsicCwNjQn9SnGZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gcgLxX7N; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740005492; c=relaxed/simple;
+	bh=Zap5Q8U3NvRKtb3BaBHfuppCFF0CLTTHqKU72qwaZsg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ogUOD4Bzsye1lvRiJnNQrUXlA7XTn0/JMqECL2j1fr+Xw8wZbSlpnD1lxKh86L4BHDKAi/9PHzoQduCD7EalaInB/7D+vJZhxWM1zWs0Usa6Ul2PklqcwXFJm0nWEQ2NluXwGEEC8ZU/SG4yUj00Wshaxs6OBpNWt1rUyOJ+B0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IvbsmTmn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gcgLxX7N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFE5C4CED1;
-	Wed, 19 Feb 2025 22:48:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IvbsmTmn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB46C4CEE0;
+	Wed, 19 Feb 2025 22:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740005325;
-	bh=l8XAw9mzoQ+2egywoDGWQjzJIqYaa0O5ZzYdk7/RfK4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gcgLxX7NEjrAsZlpToKbL0dCUZhJbHVT27JH6EvpBhREDjqIImH+d+IGC46FmZTjg
-	 R7YvpPTPxV2jaLzIva9nKapyBd6ebMNZ65JgdxC52pbKPymgPr272qsgJkkYJhqeO9
-	 tyfrbCslmnFHqEyTSmag2S2LawjyFusA601H9UN79u4S3Y94cSlLEI/XSeAgnEPlsT
-	 LbT9Bx6dIZ5LoXhjzA3amhp2H5fZuJJFn1oNMZyM3Lqx6zZFsfleYtkg2eDoAIYnVV
-	 eYq7UJCfnvUnZ3RlViibI/51VkFZsbemrUKz7ivb5uHQAcSf5yABFRbPF3ZaKKy8HJ
-	 yPZw13pB4V2Qg==
-Date: Wed, 19 Feb 2025 14:48:44 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Joe Damato <jdamato@fastly.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- shuah@kernel.org, hawk@kernel.org, petrm@nvidia.com,
- willemdebruijn.kernel@gmail.com
-Subject: Re: [PATCH net-next 2/4] selftests: drv-net: add a way to wait for
- a local process
-Message-ID: <20250219144844.1206b1fc@kernel.org>
-In-Reply-To: <Z7Yld21sv_Ip3gQx@LQ3V64L9R2>
-References: <20250218195048.74692-1-kuba@kernel.org>
-	<20250218195048.74692-3-kuba@kernel.org>
-	<Z7UBJ_CIrvsSdmnt@LQ3V64L9R2>
-	<20250218150512.282c94eb@kernel.org>
-	<Z7Yld21sv_Ip3gQx@LQ3V64L9R2>
+	s=k20201202; t=1740005491;
+	bh=Zap5Q8U3NvRKtb3BaBHfuppCFF0CLTTHqKU72qwaZsg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IvbsmTmnxNCQXIi1inbOFUgaaN81cUz6TwXcxsWnkeDgCOs0z4Y9oAU2/Cdrfagps
+	 EerMR9+63F0qq0vWB6DuHa9VKDLb5rnyDBiNUZV39NWqbpovjicoc1/Gzs/riaF8l2
+	 ivGBNGVjePqpsifZ5Jo/bwl//G2Ivh0TA0vgmDLFcgs4xO88LJIXM3K2/Ko9ODsf3J
+	 GsHeQD2rrJkKfWW4IevWWgenNnsgwUHQEEn5yS80DWicP9oksB1CghzFR/lMkZQmFv
+	 p2QAEyKjMrRQ+vpe2Du6Ws+DtSjs89Vic/9YS7PuGlyo1cShX79ADtV5T56lybk6pz
+	 CFnpN2seZuhKg==
+Date: Wed, 19 Feb 2025 16:51:30 -0600
+From: Rob Herring <robh@kernel.org>
+To: parvathi <parvathi@couthit.com>
+Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, krzk+dt@kernel.org, conor+dt@kernel.org,
+	nm@ti.com, ssantosh@kernel.org, richardcochran@gmail.com,
+	basharath@couthit.com, schnelle@linux.ibm.com,
+	diogo.ivo@siemens.com, m-karicheri2@ti.com, horms@kernel.org,
+	jacob.e.keller@intel.com, m-malladi@ti.com,
+	javier.carrasco.cruz@gmail.com, afd@ti.com, s-anna@ti.com,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	pratheesh@ti.com, prajith@ti.com, vigneshr@ti.com, praneeth@ti.com,
+	srk@ti.com, rogerq@ti.com, krishna@couthit.com, pmohan@couthit.com,
+	mohan@couthit.com
+Subject: Re: [PATCH net-next v3 01/10] dt-bindings: net: ti: Adds DUAL-EMAC
+ mode support on PRU-ICSS2 for AM57xx SOCs
+Message-ID: <20250219225130.GA3107198-robh@kernel.org>
+References: <20250214054702.1073139-1-parvathi@couthit.com>
+ <20250214054702.1073139-2-parvathi@couthit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250214054702.1073139-2-parvathi@couthit.com>
 
-On Wed, 19 Feb 2025 13:39:51 -0500 Joe Damato wrote:
-> On Tue, Feb 18, 2025 at 03:05:12PM -0800, Jakub Kicinski wrote:
-> > On Tue, 18 Feb 2025 16:52:39 -0500 Joe Damato wrote:  
-> > Then we can run the helper with no arguments, just to check if af_xdp
-> > is supported. If that returns 0 we go on, otherwise we print your nice
-> > error.
-> > 
-> > LMK if that sounds good, assuming a respin is needed I can add that :)  
+On Fri, Feb 14, 2025 at 11:16:53AM +0530, parvathi wrote:
+> From: Parvathi Pudi <parvathi@couthit.com>
 > 
-> That seems to fine; if you do decide to go this route in a re-spin,
-> would you mind also adding a "\n" in the fprintf after "ifindex
-> queue_id" ? Sorry I missed that on my initial implementation.
+> Documentation update for the newly added "pruss2_eth" device tree
+> node and its dependencies along with compatibility for PRU-ICSS
+> Industrial Ethernet Peripheral (IEP), PRU-ICSS Enhanced Capture
+> (eCAP) peripheral and using YAML binding document for AM57xx SoCs.
 > 
-> That missing \n was mentioned by Kurt in another thread:
+> Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
+> Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
 
-Will do!
+The sender of the patch S-o-b goes last. And maybe you want a 
+Co-developed-by tag here too?
 
-> > > Separately: I retested this on a machine with XDP enabled, both with
-> > > and without NETIF set and the test seems to hang because the helper
-> > > is blocked on:
-> > > 
-> > > read(STDIN_FILENO, &byte, 1);
-> > > 
-> > > according to strace:
-> > > 
-> > > strace: Process 14198 attached
-> > > 21:50:02 read(0,
-> > > 
-> > > So, I think this patch needs to be tweaked to write a byte to the
-> > > helper so it exits (I assume before the defer was killing it?) or
-> > > the helper needs to be modified in way?  
-> > 
-> > What Python version do you have?   
+> ---
+>  .../devicetree/bindings/net/ti,icss-iep.yaml  |   4 +-
+>  .../bindings/net/ti,icssm-prueth.yaml         | 147 ++++++++++++++++++
+>  .../bindings/net/ti,pruss-ecap.yaml           |  32 ++++
+>  .../devicetree/bindings/soc/ti/ti,pruss.yaml  |   9 ++
+>  4 files changed, 191 insertions(+), 1 deletion(-)
+>  create mode 100644 Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
+>  create mode 100644 Documentation/devicetree/bindings/net/ti,pruss-ecap.yaml
 > 
-> Python 3.12.3 (via Ubuntu 24.04.1 LTS).
+> diff --git a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+> index e36e3a622904..858d74638167 100644
+> --- a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+> +++ b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+> @@ -8,6 +8,8 @@ title: Texas Instruments ICSS Industrial Ethernet Peripheral (IEP) module
+>  
+>  maintainers:
+>    - Md Danish Anwar <danishanwar@ti.com>
+> +  - Parvathi Pudi <parvathi@couthit.com>
+> +  - Basharath Hussain Khaja <basharath@couthit.com>
+>  
+>  properties:
+>    compatible:
+> @@ -19,7 +21,7 @@ properties:
+>            - const: ti,am654-icss-iep
+>  
+>        - const: ti,am654-icss-iep
+> -
+> +      - const: ti,am5728-icss-iep
+
+Use enum adding to the prior entry.
+
+>  
+>    reg:
+>      maxItems: 1
+> diff --git a/Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml b/Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
+> new file mode 100644
+> index 000000000000..1dffa6bd7a88
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
+> @@ -0,0 +1,147 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/ti,icssm-prueth.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments ICSSM PRUSS Ethernet
+> +
+> +maintainers:
+> +  - Roger Quadros <rogerq@ti.com>
+> +  - Andrew F. Davis <afd@ti.com>
+> +  - Parvathi Pudi <parvathi@couthit.com>
+> +  - Basharath Hussain Khaja <basharath@couthit.com>
+> +
+> +description:
+> +  Ethernet based on the Programmable Real-Time Unit and Industrial
+> +  Communication Subsystem.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,am57-prueth     # for AM57x SoC family
+> +
+> +  sram:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description:
+> +      phandle to OCMC SRAM node
+> +
+> +  ti,mii-rt:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description:
+> +      phandle to MII_RT module's syscon regmap
+> +
+> +  ti,iep:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description:
+> +      phandle to IEP (Industrial Ethernet Peripheral) for ICSS
+> +
+> +  ti,ecap:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description:
+> +      phandle to Enhanced Capture (eCAP) event for ICSS
+> +
+> +  interrupts:
+> +    items:
+> +      - description: High priority Rx Interrupt specifier.
+> +      - description: Low priority Rx Interrupt specifier.
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: rx_hp
+> +      - const: rx_lp
+> +
+> +  ethernet-ports:
+> +    type: object
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      '#address-cells':
+> +        const: 1
+> +      '#size-cells':
+> +        const: 0
+> +
+> +    patternProperties:
+> +      ^ethernet-port@[0-1]$:
+> +        type: object
+> +        description: ICSSM PRUETH external ports
+> +        $ref: ethernet-controller.yaml#
+> +        unevaluatedProperties: false
+> +
+> +        properties:
+> +          reg:
+> +            items:
+> +              - enum: [0, 1]
+> +            description: ICSSM PRUETH port number
+> +
+> +          interrupts:
+> +            maxItems: 3
+> +
+> +          interrupt-names:
+> +            items:
+> +              - const: rx
+> +              - const: emac_ptp_tx
+> +              - const: hsr_ptp_tx
+> +
+> +        required:
+> +          - reg
+> +
+> +    anyOf:
+> +      - required:
+> +          - ethernet-port@0
+> +      - required:
+> +          - ethernet-port@1
+> +
+> +required:
+> +  - compatible
+> +  - sram
+> +  - ti,mii-rt
+> +  - ti,iep
+> +  - ti,ecap
+> +  - ethernet-ports
+> +  - interrupts
+> +  - interrupt-names
+> +
+> +allOf:
+> +  - $ref: /schemas/remoteproc/ti,pru-consumer.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    /* Dual-MAC Ethernet application node on PRU-ICSS2 */
+> +    pruss2_eth: pruss2-eth {
+
+Drop unused labels.
+
+> +      compatible = "ti,am57-prueth";
+> +      ti,prus = <&pru2_0>, <&pru2_1>;
+> +      sram = <&ocmcram1>;
+> +      ti,mii-rt = <&pruss2_mii_rt>;
+> +      ti,iep = <&pruss2_iep>;
+> +      ti,ecap = <&pruss2_ecap>;
+> +      interrupts = <20 2 2>, <21 3 3>;
+> +      interrupt-names = "rx_hp", "rx_lp";
+> +      interrupt-parent = <&pruss2_intc>;
+> +
+> +      ethernet-ports {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +        pruss2_emac0: ethernet-port@0 {
+> +          reg = <0>;
+> +          phy-handle = <&pruss2_eth0_phy>;
+> +          phy-mode = "mii";
+> +          interrupts = <20 2 2>, <26 6 6>, <23 6 6>;
+> +          interrupt-names = "rx", "emac_ptp_tx", "hsr_ptp_tx";
+> +          /* Filled in by bootloader */
+> +          local-mac-address = [00 00 00 00 00 00];
+> +        };
+> +
+> +        pruss2_emac1: ethernet-port@1 {
+> +          reg = <1>;
+> +          phy-handle = <&pruss2_eth1_phy>;
+> +          phy-mode = "mii";
+> +          interrupts = <21 3 3>, <27 9 7>, <24 9 7>;
+> +          interrupt-names = "rx", "emac_ptp_tx", "hsr_ptp_tx";
+> +          /* Filled in by bootloader */
+> +          local-mac-address = [00 00 00 00 00 00];
+> +        };
+> +      };
+> +    };
+> diff --git a/Documentation/devicetree/bindings/net/ti,pruss-ecap.yaml b/Documentation/devicetree/bindings/net/ti,pruss-ecap.yaml
+> new file mode 100644
+> index 000000000000..42f217099b2e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/ti,pruss-ecap.yaml
+> @@ -0,0 +1,32 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/ti,pruss-ecap.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments PRU-ICSS Enhanced Capture (eCAP) event module
+> +
+> +maintainers:
+> +  - Murali Karicheri <m-karicheri2@ti.com>
+> +  - Parvathi Pudi <parvathi@couthit.com>
+> +  - Basharath Hussain Khaja <basharath@couthit.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: ti,pruss-ecap
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    pruss2_ecap: ecap@30000 {
+> +        compatible = "ti,pruss-ecap";
+> +        reg = <0x30000 0x60>;
+> +    };
+> diff --git a/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml b/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
+> index 927b3200e29e..594f54264a8c 100644
+> --- a/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
+> +++ b/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
+> @@ -251,6 +251,15 @@ patternProperties:
+>  
+>      type: object
+>  
+> +  ecap@[a-f0-9]+$:
+> +    description:
+> +      PRU-ICSS has a Enhanced Capture (eCAP) event module which can generate
+> +      and capture periodic timer based events which will be used for features
+> +      like RX Pacing to rise interrupt when the timer event has occurred.
+> +      Each PRU-ICSS instance has one eCAP modeule irrespective of SOCs.
+> +
+> +    type: object
+> +
+>    mii-rt@[a-f0-9]+$:
+>      description: |
+>        Real-Time Ethernet to support multiple industrial communication protocols.
+> -- 
+> 2.34.1
 > 
-> I can re-test with a different version using pyenv if you'd like?
-> 
-> Are there docs which mention which python version tests should be
-> compatible with? If so, could you pass along a link? Sorry if I
-> missed that.
-
-You're good, sorry, tests are supposed to run on any non-EOL
-version of python.
-
-<snip>
-> [pid 448278] 18:27:15 kill(448303, SIGTERM) = 0
-> [...]
-> [pid 448303] 18:27:15 +++ killed by SIGTERM +++
-> 
-> But pid 448304 is xdp_helper, which is still running and should be
-> the one to get the TERM.
-
-Very interesting. I dug deeper into this, and it turns out its shell
-dependent. I'm guessing you're using one of the cool shells, I use
-bash. bash does a direct exec for "sh -c X", other shells fork first.
-
-I'll add a warning in bkg() for combining shell=True and terminate=True.
-
-> I have no idea why this would be different on your system vs mine.
-> Maybe something changed with Python between Python versions?
-
-More digging still necessary here, as NIPA also runs on bash.
-So your problem is different than NIPA's.
-NIPA runs:
-
-  make -C tools/testing/selftests TARGETS="drivers/net" \
-	  TEST_PROGS=queues.py TEST_GEN_PROGS="" run_tests
-
-which runs thru a layer of perl for output prefixing:
-
-	tools/testing/selftests/kselftest/prefix.pl
-
-which in turn send a SIGTTIN when we call read(), and hangs the helper.
-
-> > We shall find out if NIPA agrees with my local system at 4p.  
-> 
-> Sorry for the noob question, but is there a NIPA url or something I
-> can look at to see if this worked / if future tests I submit work?
-
-https://netdev.bots.linux.dev/status.html
-
-With the disclaimer that we discourage people from looking at it. 
-It tests everything on  the list combined, we can't support the
-corporate "try until CI is green" development model. Not that 
-I'd accuse you of such practices :)
