@@ -1,96 +1,102 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D00A944
-	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 17:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AF1286284;
+	Wed, 19 Feb 2025 17:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739987060; cv=none; b=hTuTJ1PXRbNSpCYaLmrWex/pF6avCDk/VVf6x0eyFPMHsENdFNSjAvScsvY69PYquck7SxybRpiX54cJhq2I6FXJ3B/TxIl55pL9wN6Ddt/7w4uKwPOmG5goHxD4FzjnO7P3Nr9V9MtgrQ8jLIvZ42y9u19q7fwgVQavkceDVao=
+	t=1739987174; cv=none; b=HZWMBTTduEMFahaLlu6yBNy4MrFr3g1aablNSta8ULAuAmHO7n7pAUOJS3jfZWSQypO9EMagKH+xO9RRYM72FT6UITqumdljAiFcSWo0A4QCluqcU2b0EZHpMa+d3JX0pJP3H2w8iLn8gYx8NK9OKgUci8kHtYgmQy4aC0s8dJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739987060; c=relaxed/simple;
-	bh=b5Fx0mzQ9BDMtWWWOE2f93pG+nMzXeMAFX2CJaAPvXU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bAYT3y5tz0do29/jkHZrnJLdOqzMcu6KowlsRq/tdA/8PYz4ZE9aO0CB8NSfMchjiOIH0BRs2MMtRDxPRJbzcnsT578LQbdmhBLhZNCiBogTD8WBj+ViXcHphrc5NYWhr9nv7mwtSa8SUzvMkLGH5cx8QDBTwxXDPJ8/sVrQUWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DjIjNQ9Z; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1739987174; c=relaxed/simple;
+	bh=OqS1vKlIpdTVaIkmp8i1OWbEscx84902VNdjPoE0Guk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EhaDrq8E3BIeEqT3pjYdbPGWH+3ep6trBUAr4+4+K0R2p5VUqed/Pe23Y0qWdDCimSAjqEvPjOKB4B6iGd8zIK5IzBbfF8zR/qUY/t1W5+EmdCVfjomhan0CLyvRNgVHfdsDvooWIWOlX8PAJvBv+6gr8BwUfmYiA2QDpDefLJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GtOWIqMo; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DjIjNQ9Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739987057;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6XRaxkta7kHsFevlky8/IQt1YZHb/G6iBZ9KGm+uX00=;
-	b=DjIjNQ9ZULmzAXsX7Ghqs0qXpPOIONAQ1wQ5akKq3JNwBLdbHyz/gXZSk7W6xV+lJ7oHem
-	mzPb9vzWws5dtY0mz48ibjBCu0S5dxyXxzgel21AA40zgcJGfk9E9394wabnv60PONzmWW
-	jjdUQiSQPkJUR4rGtLGEv+uaTdnM/UE=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-411-FPqa3MohMGyibrj2VkX4-g-1; Wed, 19 Feb 2025 12:44:16 -0500
-X-MC-Unique: FPqa3MohMGyibrj2VkX4-g-1
-X-Mimecast-MFC-AGG-ID: FPqa3MohMGyibrj2VkX4-g_1739987055
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-38f39352f1dso22283f8f.0
-        for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 09:44:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739987055; x=1740591855;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6XRaxkta7kHsFevlky8/IQt1YZHb/G6iBZ9KGm+uX00=;
-        b=YzcfuBXpyNZ0ppPFutQD8ClUNljZeGGaF+8P4XNvSrmTDHBKk57c3ghmudXiOGvjpo
-         WaJC1p6xKMYO/R6s7jHYy8KsPgMgn3mO7Xusb68TrL8y8vMNewtXOLVSHgJEEzbL2bnY
-         +P50gYpeUkaKkqdUdoLymUdbFQPgSbOzxEqIAkhkB73KGATA1CCYJgAoxJz0OTLSPK/V
-         kXg9o0lgIqaLjJP0RU8xTRnxMqmdW1y12enuEsducBbLSc9D97+0LAqEyhfL9bA/gA5K
-         3fgTQ6nOiuJ3TZNXfiO0MGgCg9m8dxQd2yzxCs3RQSd58b589ztuG6aoZLONAgdyZda9
-         frCQ==
-X-Gm-Message-State: AOJu0Yx0+g85yy63mgHt1TPS0+8iFFGhnzOzV5Pzp5Wm3gizEVZtttep
-	U3zUqebFFTZ8ZNm5XlEwUKS0HQRgTWwSW0B3mRO0S/Huud4Qfmhpv0Nptl7zI45VFbtZPPDGrYD
-	5PtG/2jXRVA4mpcqG2qA31chdluRiGkXZZ/wgRIr1JS/uc2Fp8NzK1A==
-X-Gm-Gg: ASbGncuS/gtn5EpyJ+Ge3nCMHfDQzU/AkUOxlD7JyjUlx6B8e/0Ig9PVY7qgekSFyYA
-	I+DzlXGMcT2N+XxQ3dnE/NVMQHy0V8mUP8m2mhXCz+fP+TF/xwdlQR5brGUO3Q39Gl37ArFdcfJ
-	VTUQz9MkFZWrRPPVB8yTb3a5VLv2Dr200LMdHTF+waDUGCR4PxHgjUyuBjNABR49ZZgC4VJte7L
-	RVGDcH+jH6WXOclVSgNGWKUoVU0JU3Eubl/97mK5tS6cDwuk48RJZ0sOwf8dVu5DD5Y
-X-Received: by 2002:a5d:64a7:0:b0:38f:28a1:501e with SMTP id ffacd0b85a97d-38f33f1155fmr17181660f8f.8.1739987055340;
-        Wed, 19 Feb 2025 09:44:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEoiyjmmyOmuM1ferw0PvAcW4O1qPMT7i/GrblsTLnQKOn5ykHFXhT39Y1T4Ud8OGNxd+IixQ==
-X-Received: by 2002:a5d:64a7:0:b0:38f:28a1:501e with SMTP id ffacd0b85a97d-38f33f1155fmr17181637f8f.8.1739987054942;
-        Wed, 19 Feb 2025 09:44:14 -0800 (PST)
-Received: from debian ([2001:4649:f075:0:a45e:6b9:73fc:f9aa])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4399c41022csm23248835e9.40.2025.02.19.09.44.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2025 09:44:14 -0800 (PST)
-Date: Wed, 19 Feb 2025 18:44:12 +0100
-From: Guillaume Nault <gnault@redhat.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Antonio Quartulli <antonio@mandelbit.com>
-Subject: Re: [PATCH net 2/2] selftests: Add IPv6 link-local address
- generation tests for GRE devices.
-Message-ID: <Z7YYbBvu1/QOBTSP@debian>
-References: <cover.1739981312.git.gnault@redhat.com>
- <d257c7ac320aa41ac5ff867f3bed5b5a6d1ca875.1739981312.git.gnault@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GtOWIqMo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739987173; x=1771523173;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OqS1vKlIpdTVaIkmp8i1OWbEscx84902VNdjPoE0Guk=;
+  b=GtOWIqMoAmbpt68jLr2q5YBoshbmsOAfliAokHEEYE4E1xiTsQFO4jR1
+   cCI+sdvvomx0UhL35D3fchjra7RnKdQhK2AY2L+1TutCKjPz2H2/1yZRk
+   zjbf4WlDH7ozkDd5QxY8p0OCTyfO2Mk6Cbrz9WSSwQu0usJ4X2hS5JO9b
+   5zCSWSm09ffMFv28IvlECOxylrOHXtFbpeWvSMY7vyMrGPOIZEFMgur7P
+   gAbeoR4La28I6JXHcr50+eIpxIr6dUusRtq3AZnSNmOVn73MSd1OH5qQm
+   y+2bKBW+8d2fMgNy2dEMoPKg69P2iu8mwRAs7zELnfmkfFRzodfdNEQIq
+   Q==;
+X-CSE-ConnectionGUID: CYLpdAS9QjSenVm8uBckkg==
+X-CSE-MsgGUID: ZAI+qLHTQQe53vuxTOTi9g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="50952999"
+X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
+   d="scan'208";a="50952999"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 09:46:12 -0800
+X-CSE-ConnectionGUID: JfsQ4rI5SmOgRwqeVyN97g==
+X-CSE-MsgGUID: WUiLLwANSHyTznJPs8d55Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="119427318"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by fmviesa005.fm.intel.com with ESMTP; 19 Feb 2025 08:44:32 -0800
+Received: from pkitszel-desk.intel.com (unknown [10.245.246.109])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id C85EE33E9A;
+	Wed, 19 Feb 2025 16:44:16 +0000 (GMT)
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+To: intel-wired-lan@lists.osuosl.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>
+Cc: netdev@vger.kernel.org,
+	Konrad Knitter <konrad.knitter@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	linux-kernel@vger.kernel.org,
+	ITP Upstream <nxne.cnse.osdt.itp.upstreaming@intel.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [RFC net-next v2 0/2] devlink: whole-device, resource .occ_set()
+Date: Wed, 19 Feb 2025 17:32:53 +0100
+Message-ID: <20250219164410.35665-1-przemyslaw.kitszel@intel.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d257c7ac320aa41ac5ff867f3bed5b5a6d1ca875.1739981312.git.gnault@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 19, 2025 at 05:30:15PM +0100, Guillaume Nault wrote:
-> GRE devices have their special code for IPv6 link-local address
-> generation that has been the source of several regressions in the past.
-> 
-> Add selftest to check that all gre, ip6gre, gretap and ip6gretap get an
-> IPv6 link-link local address in accordance with the
-> net.ipv6.conf.<dev>.addr_gen_mode sysctl.
 
-Forgot the Makefile update.
-Will resubmit tomorrow.
+I'm working on ice+iavf changes that utilize the two devlink patches
+of this RFC series. The two are related in that I will group them anyway
+for my actual submission.
+
+Patch 1: add an option for drivers like ice (devlink instance per PF)
+	to add a whole-device devlink instance, that wraps them together.
+
+Patch 2: add resource occupation setter and a (better) mode of resource
+	control for users
+
+Przemek Kitszel (2):
+  devlink: add whole device devlink instance
+  devlink: give user option to allocate resources
+
+ net/devlink/devl_internal.h | 14 +++---
+ net/devlink/core.c          | 58 ++++++++++++++++++-----
+ net/devlink/netlink.c       |  4 +-
+ net/devlink/port.c          |  4 +-
+ net/devlink/resource.c      | 94 +++++++++++++++++++++++++++++--------
+ 5 files changed, 132 insertions(+), 42 deletions(-)
+
+-- 
+2.46.0
 
