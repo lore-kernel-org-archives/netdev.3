@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3940E1DFDB3
-	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 11:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79501E0086
+	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 11:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739964848; cv=none; b=M3VHjAam+nSvvL5rjvk8ztMnE6EuvbfBSf7MctAqQhAdx1KvcRv6BmdT2ytiIxaiM+CuTVVm5oEVIXKwF0YSULMrAytKkQH+Ae8kTlb2MMelHev6QYmzZh7glEqFLuTqkm8tsqKybhPhKX3yFnfs2j5wMogNuDGLbcuEIVw1RjI=
+	t=1739964848; cv=none; b=GVl8RueXiSIVsyWYCYpeOCK+gisBoE8bAKH5/I0ygBm3ZTbK5q4L9qCKaaDpfJN95ATj4fHUv3pi+OLroFvuNI5sXxWHr2mKzxxoQtJZmyoD3pJ/SUxU8NrNPdlb8eFVPT1ajfjCB0W2BOA5uxli6vDPajiwJjJRTVBpd3SV4Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739964848; c=relaxed/simple;
-	bh=0f0DtBoJCWC9xdHMwxnnzB3cTOOtfYdSqcZKe6PDN20=;
+	bh=Ev1sOu42cLM5jkWChK+VnNjHOcGc/P+KMG1k3VTaxh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y9dxyNyVfs7yECTnt4LYNyoWbTKIMK2r5+vsTfi5Vy60pf5h6yDSxGgB44dO2Y0r2F0c9HxE8FRliWagDOfst+z2mlziD6Vgz38iaGNme2FdZCea74x3nzvZ/j6wIGEU1xfRHk1MlYalc0KwLG+BruVj89+Xbw6hl7By9fPqveY=
+	 MIME-Version; b=dtNyg1tugXvYllAUcwjbYg7misVEypbR9fiQBPLV7ssTK+JuEbWlL1H29wETC7T2INjNy5//82ho4vafC1ogugqrdTi6AIoqAC3vdgFVIf96BI0UsM+g2Pa9leMpHiMg1v4mUv+dTOvfxu7NLvZwix0NtlLROkzDuzBOpO1Nc40=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,39 +18,38 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tkiL5-0001b2-9E
+	id 1tkiL5-0001bY-N1
 	for netdev@vger.kernel.org; Wed, 19 Feb 2025 12:34:03 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tkiL3-001l2P-1f
+	id 1tkiL3-001l2d-2e
 	for netdev@vger.kernel.org;
 	Wed, 19 Feb 2025 12:34:01 +0100
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id DBDA83C693C
-	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 11:34:00 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id 61A033C6940
+	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 11:34:01 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id A8C133C68E5;
-	Wed, 19 Feb 2025 11:33:57 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 283003C68F3;
+	Wed, 19 Feb 2025 11:33:58 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 8403235e;
-	Wed, 19 Feb 2025 11:33:56 +0000 (UTC)
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id f43059fb;
+	Wed, 19 Feb 2025 11:33:57 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Ruffalo Lavoisier <ruffalolavoisier@gmail.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Robin van der Gracht <robin@protonic.nl>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 08/12] dt-binding: can: mcp251xfd: remove duplicate word
-Date: Wed, 19 Feb 2025 12:21:13 +0100
-Message-ID: <20250219113354.529611-9-mkl@pengutronix.de>
+Subject: [PATCH net-next 12/12] can: rockchip_canfd: rkcanfd_chip_fifo_setup(): remove duplicated setup of RX FIFO
+Date: Wed, 19 Feb 2025 12:21:17 +0100
+Message-ID: <20250219113354.529611-13-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250219113354.529611-1-mkl@pengutronix.de>
 References: <20250219113354.529611-1-mkl@pengutronix.de>
@@ -66,32 +65,39 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Ruffalo Lavoisier <ruffalolavoisier@gmail.com>
+From: Robin van der Gracht <robin@protonic.nl>
 
-Remove duplicate word 'to' from microchip,rx-int-gpios description.
+The rockchip_canfd driver doesn't make use of the TXE FIFO.
 
-Signed-off-by: Ruffalo Lavoisier <ruffalolavoisier@gmail.com>
-Acked-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20241120044014.92375-1-RuffaloLavoisier@gmail.com
-[mkl: rephrase subject and patch description]
+Although the comment states that the TXE FIFO is setup, it's actually
+a setup of the RX FIFO. The regular setup of the RX FIFO follows.
+
+Remove the duplicated setup of the RX FIFO.
+
+Fixes: ff60bfbaf67f ("can: rockchip_canfd: add driver for Rockchip CAN-FD controller")
+Signed-off-by: Robin van der Gracht <robin@protonic.nl>
+Link: https://patch.msgid.link/20250219-rk3568-canfd-v1-1-453869358c72@pengutronix.de
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- .../devicetree/bindings/net/can/microchip,mcp251xfd.yaml        | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/rockchip/rockchip_canfd-core.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml b/Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml
-index 2a98b26630cb..c155c9c6db39 100644
---- a/Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml
-+++ b/Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml
-@@ -40,7 +40,7 @@ properties:
+diff --git a/drivers/net/can/rockchip/rockchip_canfd-core.c b/drivers/net/can/rockchip/rockchip_canfd-core.c
+index d9a937ba126c..46201c126703 100644
+--- a/drivers/net/can/rockchip/rockchip_canfd-core.c
++++ b/drivers/net/can/rockchip/rockchip_canfd-core.c
+@@ -236,11 +236,6 @@ static void rkcanfd_chip_fifo_setup(struct rkcanfd_priv *priv)
+ {
+ 	u32 reg;
  
-   microchip,rx-int-gpios:
-     description:
--      GPIO phandle of GPIO connected to to INT1 pin of the MCP251XFD, which
-+      GPIO phandle of GPIO connected to INT1 pin of the MCP251XFD, which
-       signals a pending RX interrupt.
-     maxItems: 1
- 
+-	/* TXE FIFO */
+-	reg = rkcanfd_read(priv, RKCANFD_REG_RX_FIFO_CTRL);
+-	reg |= RKCANFD_REG_RX_FIFO_CTRL_RX_FIFO_ENABLE;
+-	rkcanfd_write(priv, RKCANFD_REG_RX_FIFO_CTRL, reg);
+-
+ 	/* RX FIFO */
+ 	reg = rkcanfd_read(priv, RKCANFD_REG_RX_FIFO_CTRL);
+ 	reg |= RKCANFD_REG_RX_FIFO_CTRL_RX_FIFO_ENABLE;
 -- 
 2.47.2
 
