@@ -1,98 +1,67 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822981EA7FB
-	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 13:51:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12881E7C25;
+	Wed, 19 Feb 2025 13:56:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739973098; cv=none; b=tjOoHK70l5dtDJRv82nqzmiy/cqwXqPodsaM1KkMnrzJ1e65D/dB6XKjYS0PUFpy+AtI9qT4rVNrt8r883E03Takx8rt2VVPV2UV5XQLGiPxvZBWtwNTNCpC9S1Wud+Q/FuwX0JIRENKNiPSQxbQq+yhR7wNdmDrHmI+t1+v+LE=
+	t=1739973392; cv=none; b=MTkkq3wZei9jTB0Bc6aKusmd5rWFlwn+Vq0FGhJIDucNlGqyrwwx3Yvc41udqsBfK4I+R6IDVl7IhnMzvqh6DIZFtvfjjtqkBCJd7gVoK+iPkZOgxgTDr8yEp6LuvEP/nfCpfVfywkGcJdbEU21SnA5EGPIYMfMtAmkhHXn2UZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739973098; c=relaxed/simple;
-	bh=7ayQVDbeE3K7HJHF9knbzquixudKqy5ny3N3He+cUJ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eW5ky+pNvRue1Y+/ZNQPFxN4phACsKwvNMJUxyVACc02Vm5N6RFNlJhKIqEYLpS2gwn27QzMrtUqkayDk24V44FzC8IrE6w4XBcSl3OQL1KlyihS8AoRG5RcjiYlJtGjKoTE8+BCMYVxDWXU+rhJDbZDUa6tXzQ5p05NXo8jwus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lXyMXy8N; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739973392; c=relaxed/simple;
+	bh=ot8GgkLyzCkE9gV1gX3O8wm6e8Ok+KnDVvkcfBXptq4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iygdjXQpg8bz6ZIE/nF/7ve5oM/n/lNSKvQLuVvvhT7s/3mEy83zMJMlwEClN0vDnpmvsd35SScQwQe7WL67gFTIsew8BR6ul9SYmIYF6s966PnAJmhI2RXAHJfSh/xHta2347+XQlP9NB2f8of1BtCTHVTM6xHPpXJWOb/RGHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=t1ido8M+; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lXyMXy8N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DD1C4CED1;
-	Wed, 19 Feb 2025 13:51:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739973098;
-	bh=7ayQVDbeE3K7HJHF9knbzquixudKqy5ny3N3He+cUJ4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lXyMXy8NJVlWnczofcNLAXy0LWY4iNP9mefHvoHapC4uqcmh3z09CKoPq8prNK4L8
-	 G1TTxW0xkU1P3Hd/OnRNDPq/hMckbWY0Ob0VwmrVyPVc39I+VHhJ9v2iqdD/CpncFT
-	 7ow4PwbRWge7OnOgLkCHoMCEYqQZck54S0BjvUjzrw3/r2eMzfsIfs3Cfl+248Y60n
-	 dSL32dwLZiP1bgAvKhHWt2PyAW8tIYdRKQ/nKVD6vO8ljVOKSKEt4oWYRKrloZtx9i
-	 F2S6fzvSZDCPkq9tfx/fN0qbVTN7LN9eFLpZrHqYLIOWej7KfPgVBOU2VAl1R+weua
-	 MkTaXqPBsd4Uw==
-From: Leon Romanovsky <leon@kernel.org>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="t1ido8M+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=uc23WWc/UZMSXW1WlLBjBply3DEitxnwU2hL2lfpwFk=; b=t1ido8M+pdbcQX1NZUeudBofN0
+	dmEXdi064iyem4MfY0K9sAKl1gPYMX3m/aM7MBDT8nOw+7B4dVz3vPGF1WlRds1F62oil0h1JLUsK
+	NIGu9RRZC0NMXsLe5jUdJAXho88FtZ3MO1F4QG+Kz4txCSfDIq+6XGPIlxPwUHnDCJhg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tkkYf-00Fe8g-Qc; Wed, 19 Feb 2025 14:56:13 +0100
+Date: Wed, 19 Feb 2025 14:56:13 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Charalampos Mitrodimas <charmitro@posteo.net>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: [PATCH ipsec-next v1 3/5] xfrm: rely on XFRM offload
-Date: Wed, 19 Feb 2025 15:50:59 +0200
-Message-ID: <332ca3fbc24b1c79ade38204646760090aaab4da.1739972570.git.leon@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1739972570.git.leon@kernel.org>
-References: <cover.1739972570.git.leon@kernel.org>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net: phy: qt2025: Fix hardware revision check
+ comment
+Message-ID: <4bf73cd3-6504-4ead-9405-0e28b2666088@lunn.ch>
+References: <20250219-qt2025-comment-fix-v2-1-029f67696516@posteo.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250219-qt2025-comment-fix-v2-1-029f67696516@posteo.net>
 
-From: Leon Romanovsky <leonro@nvidia.com>
+On Wed, Feb 19, 2025 at 12:41:55PM +0000, Charalampos Mitrodimas wrote:
+> Correct the hardware revision check comment in the QT2025 driver. The
+> revision value was documented as 0x3b instead of the correct 0xb3,
+> which matches the actual comparison logic in the code.
+> 
+> Fixes: fd3eaad826da ("net: phy: add Applied Micro QT2025 PHY driver")
+> Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
 
-After change of initialization of x->type_offload pointer to be valid
-only for offloaded SAs. There is no need to rely on both x->type_offload
-and x->xso.type to determine if SA is offloaded or not.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
- net/xfrm/xfrm_device.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index 97c8030cc417..8d24f4743107 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -419,13 +419,11 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
- 	struct xfrm_dst *xdst = (struct xfrm_dst *)dst;
- 	struct net_device *dev = x->xso.dev;
- 
--	if (!x->type_offload ||
--	    (x->xso.type == XFRM_DEV_OFFLOAD_UNSPECIFIED && x->encap))
-+	if (x->xso.type == XFRM_DEV_OFFLOAD_UNSPECIFIED)
- 		return false;
- 
- 	if (x->xso.type == XFRM_DEV_OFFLOAD_PACKET ||
--	    ((!dev || (dev == xfrm_dst_path(dst)->dev)) &&
--	     !xdst->child->xfrm)) {
-+	    ((dev == xfrm_dst_path(dst)->dev) && !xdst->child->xfrm)) {
- 		mtu = xfrm_state_mtu(x, xdst->child_mtu_cached);
- 		if (skb->len <= mtu)
- 			goto ok;
-@@ -437,8 +435,8 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
- 	return false;
- 
- ok:
--	if (dev && dev->xfrmdev_ops && dev->xfrmdev_ops->xdo_dev_offload_ok)
--		return x->xso.dev->xfrmdev_ops->xdo_dev_offload_ok(skb, x);
-+	if (dev->xfrmdev_ops->xdo_dev_offload_ok)
-+		return dev->xfrmdev_ops->xdo_dev_offload_ok(skb, x);
- 
- 	return true;
- }
--- 
-2.48.1
-
+    Andrew
