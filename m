@@ -1,126 +1,112 @@
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from mx09lb.world4you.com (mx09lb.world4you.com [81.19.149.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC5A214A93
-	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 19:48:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6EB1ADC86
+	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 19:52:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739994530; cv=none; b=Yu3fmYC33RnIjVIb4zRNzimmYXk9qrdYGnM4wnidYFpg7TJdp1qge5gXFztR9E3RsvrxYRzLKtnsohXqCtHMHDBUjo6kdQWyQJeRhqs1AV6iftj4JHIPvNzBBy3i3d9XcgvVvSDjsXceQbDMYG0hb5Y02PUsNa7B+ef0LzWkEsw=
+	t=1739994756; cv=none; b=ltHE1haJ2HxbpA5moajLsXEbQGc/yBJLv7nspTUuh+3ZVhye6yVuEKlrhO7fkVF2q2gtFPikp7iq+9/wcMexIAKq3pCpwmPSYWqbJtX/ylMU/rQamGGUgLHyovJ8ZhhQwV/XkU/LreitQHBaIwg9fNEtSaCJqGvyIK4A12FPWbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739994530; c=relaxed/simple;
-	bh=Lj7KdcPd6bLkS8WEPYoRsz5Dl6D3PELzLOWtb5qgaUU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MlVu9XWbmHG0rBXi7C7Z8EYnPP0fbo/Y473MlsJwp1nHp07sZLdQSCbWLMzVTWlm6pAmZ0LtTiPtouFG0C6/DTu2/XfVxP5xE7sEFVZj5/VC1qnQEqAjx5S4lDjXQfIr866EPRcn22IOXBg82CE8/S5ffSeJgk4fQxF9vMeJZ2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DPOfOgFF; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1739994756; c=relaxed/simple;
+	bh=QEKHIQ5ErvkvJyId9qVE83R+XW0uQ2qd9xh/n86cAXk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=u1Rd+l0gSUlrf32ngXWag1xlY7WviL/IJGosxp8rzA5tMRZjp7/PJ+GaWgiFNRWoArlP9pP8hA/6dysUCrxoMSDsRfjdLb+FwENe7K0E07m7LSIniytpDkAmKOqNvNCvPfBqkFjPdsYFatshZTEFY7lPFl5iL1Ao6bo4hFYueBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=s425i+Dj; arc=none smtp.client-ip=81.19.149.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DPOfOgFF"
-Message-ID: <24e9b1d8-ed6c-4053-8d27-185bcb840f87@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1739994516;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B+huegDAgeAjnHPYOCmkiySPht+ZQ9CEZsRjXjVE7Nk=;
-	b=DPOfOgFFQkoQ3s7jW+M9zBELORr+H3SKNLJr7oiaQEehEQ/vyMeTnnEWn3dD4NggkzFBvC
-	Z/mWqql7lpRnwg9WsQ9okM5ijAelO3yUTQ1bqJ4MVvuB/9JpbD+1T5Iqe15gS1KG2dmTyq
-	PyWYK1QW4MtHxbHTepRjPEyxp5Zh7FU=
-Date: Wed, 19 Feb 2025 11:48:28 -0800
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="s425i+Dj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=RaQrNGqtJlx0rIA/HDsTPrByyWliWNtnWVUHMoJu1t8=; b=s425i+DjfWlknCmTOg8J9ZhYHS
+	VexmBs4B4kPXhW9uSbdKx1el6NJW0wa0iQfi4R/ihVaODT1OUMqE59BkUSA6Dzeb04Xw8H9c9hrYb
+	O1WX8jXXcpV6nbpOyjMPCLkqXJjBxAOEjchoD+abwgMuve3QnWbwO3EpFFod+8P5dXKU=;
+Received: from 88-117-55-1.adsl.highway.telekom.at ([88.117.55.1] helo=hornet.engleder.at)
+	by mx09lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tkpxd-000000003mi-25Ob;
+	Wed, 19 Feb 2025 20:42:21 +0100
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	Gerhard Engleder <gerhard@engleder-embedded.com>
+Subject: [PATCH net-next v7 3/8] net: phy: micrel: Add loopback support
+Date: Wed, 19 Feb 2025 20:42:08 +0100
+Message-Id: <20250219194213.10448-4-gerhard@engleder-embedded.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250219194213.10448-1-gerhard@engleder-embedded.com>
+References: <20250219194213.10448-1-gerhard@engleder-embedded.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf-next v12 01/12] bpf: add networking timestamping
- support to bpf_get/setsockopt()
-To: Jason Xing <kerneljasonxing@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, dsahern@kernel.org, willemdebruijn.kernel@gmail.com,
- willemb@google.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
- john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
- haoluo@google.com, jolsa@kernel.org, shuah@kernel.org, ykolal@fb.com,
- bpf@vger.kernel.org, netdev@vger.kernel.org
-References: <20250218050125.73676-1-kerneljasonxing@gmail.com>
- <20250218050125.73676-2-kerneljasonxing@gmail.com>
- <CAL+tcoBtd1V-dP_ShDNOVKTyfPvcaLy9ZHz2aEDZr5vOpgwdjA@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <CAL+tcoBtd1V-dP_ShDNOVKTyfPvcaLy9ZHz2aEDZr5vOpgwdjA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-AV-Do-Run: Yes
+X-ACL-Warn: X-W4Y-Internal
 
-On 2/18/25 11:03 PM, Jason Xing wrote:
-> On Tue, Feb 18, 2025 at 1:02 PM Jason Xing <kerneljasonxing@gmail.com> wrote:
->>
->> The new SK_BPF_CB_FLAGS and new SK_BPF_CB_TX_TIMESTAMPING are
->> added to bpf_get/setsockopt. The later patches will implement the
->> BPF networking timestamping. The BPF program will use
->> bpf_setsockopt(SK_BPF_CB_FLAGS, SK_BPF_CB_TX_TIMESTAMPING) to
->> enable the BPF networking timestamping on a socket.
->>
->> Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
->> ---
->>   include/net/sock.h             |  3 +++
->>   include/uapi/linux/bpf.h       |  8 ++++++++
->>   net/core/filter.c              | 23 +++++++++++++++++++++++
->>   tools/include/uapi/linux/bpf.h |  1 +
->>   4 files changed, 35 insertions(+)
->>
->> diff --git a/include/net/sock.h b/include/net/sock.h
->> index 8036b3b79cd8..7916982343c6 100644
->> --- a/include/net/sock.h
->> +++ b/include/net/sock.h
->> @@ -303,6 +303,7 @@ struct sk_filter;
->>     *    @sk_stamp: time stamp of last packet received
->>     *    @sk_stamp_seq: lock for accessing sk_stamp on 32 bit architectures only
->>     *    @sk_tsflags: SO_TIMESTAMPING flags
->> +  *    @sk_bpf_cb_flags: used in bpf_setsockopt()
->>     *    @sk_use_task_frag: allow sk_page_frag() to use current->task_frag.
->>     *                       Sockets that can be used under memory reclaim should
->>     *                       set this to false.
->> @@ -445,6 +446,8 @@ struct sock {
->>          u32                     sk_reserved_mem;
->>          int                     sk_forward_alloc;
->>          u32                     sk_tsflags;
->> +#define SK_BPF_CB_FLAG_TEST(SK, FLAG) ((SK)->sk_bpf_cb_flags & (FLAG))
->> +       u32                     sk_bpf_cb_flags;
->>          __cacheline_group_end(sock_write_rxtx);
->>
->>          __cacheline_group_begin(sock_write_tx);
->> diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
->> index fff6cdb8d11a..fa666d51dffe 100644
->> --- a/include/uapi/linux/bpf.h
->> +++ b/include/uapi/linux/bpf.h
->> @@ -6916,6 +6916,13 @@ enum {
->>          BPF_SOCK_OPS_ALL_CB_FLAGS       = 0x7F,
->>   };
->>
->> +/* Definitions for bpf_sk_cb_flags */
-> 
-> nit: s/bpf_sk_cb_flags/sk_bpf_cb_flags
-> 
-> I will correct it.
-> 
->> +enum {
->> +       SK_BPF_CB_TX_TIMESTAMPING       = 1<<0,
->> +       SK_BPF_CB_MASK                  = (SK_BPF_CB_TX_TIMESTAMPING - 1) |
->> +                                          SK_BPF_CB_TX_TIMESTAMPING
->> +};
-> 
-> Martin, I would like to know if it's necessary to update the above new
-> enum in tools/include/uapi/linux/bpf.h as well?
+The KSZ9031 PHYs requires full duplex for loopback mode. Add PHY
+specific set_loopback() to ensure this.
 
-Yes, the tools/include/uapi/linux/bpf.h should be updated. If you diff them, two 
-of them should be exactly the same. This patch should do the same to keep the 
-tools bpf.h up-to-date.
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+---
+ drivers/net/phy/micrel.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-For other headers in tools/include/uapi, I guess it depends. e.g. the tcp.h in 
-your another RTO patch, the two tcp.h files are very different already and the 
-selftest does not need the new macro either.
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 9c0b1c229af6..f375832e3987 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -1030,6 +1030,29 @@ static int ksz9021_config_init(struct phy_device *phydev)
+ #define MII_KSZ9031RN_EDPD		0x23
+ #define MII_KSZ9031RN_EDPD_ENABLE	BIT(0)
+ 
++static int ksz9031_set_loopback(struct phy_device *phydev, bool enable,
++				int speed)
++{
++	u16 ctl = BMCR_LOOPBACK;
++	int val;
++
++	if (!enable)
++		return genphy_loopback(phydev, enable, 0);
++
++	if (speed == SPEED_10 || speed == SPEED_100 || speed == SPEED_1000)
++		phydev->speed = speed;
++	else if (speed)
++		return -EINVAL;
++	phydev->duplex = DUPLEX_FULL;
++
++	ctl |= mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
++
++	phy_write(phydev, MII_BMCR, ctl);
++
++	return phy_read_poll_timeout(phydev, MII_BMSR, val, val & BMSR_LSTATUS,
++				     5000, 500000, true);
++}
++
+ static int ksz9031_of_load_skew_values(struct phy_device *phydev,
+ 				       const struct device_node *of_node,
+ 				       u16 reg, size_t field_sz,
+@@ -5564,6 +5587,7 @@ static struct phy_driver ksphy_driver[] = {
+ 	.resume		= kszphy_resume,
+ 	.cable_test_start	= ksz9x31_cable_test_start,
+ 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
++	.set_loopback	= ksz9031_set_loopback,
+ }, {
+ 	.phy_id		= PHY_ID_LAN8814,
+ 	.phy_id_mask	= MICREL_PHY_ID_MASK,
+-- 
+2.39.5
 
