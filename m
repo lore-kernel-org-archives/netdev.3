@@ -1,47 +1,47 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE6E233140
-	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 20:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0CC230991
+	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 20:27:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739996851; cv=none; b=B4Z3cyXJNi9DwuEhDqtzsFUeDDBVjJZp5wSKpjIMZnaWmsFnunwk9n6U/qvVUe4RtTWq1N5LmyajbAJxjd94cfklRm/26qX11/jW7F+O9ehQ3tba+07ypt+e+xsZ9rCbfPBRKq7SRy4MdfzceFa1OyflIAfkJUHvRIflBBc4wy4=
+	t=1739996852; cv=none; b=d0gUyt732K2MCU85L4XFb151MWhsrIZF1L0Zg1bQcDZjeFMs1bM4aIGXyWhcCx0csdu1tL7ADllEN6TL5FOj78+oT/LrS6a64jjoxE9YSfpRAp3fW4jTRbtFXCvORKrD27IWDS+mjFUc33Cp/eNrVLrVHhDS7aJr9pyACQ2XnGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739996851; c=relaxed/simple;
-	bh=AIGrtSctj0mPWdU5qMsIGDJ2GxY3Xarzk7bfVX/lN1A=;
+	s=arc-20240116; t=1739996852; c=relaxed/simple;
+	bh=RxKHWLO+aaUtihwS54vVouCSPFKBGrL7H1v64n8anTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5xeuYoKGcQhQvvfyA9+0xr9npFSx815rsqBZ5GnjHu8QWujbBQByc23ZhuQKoEukTKirEvsgEu5+nof4iAuWC/4D9wnYhIyScoCCFDJ2AHErq9CYZluQvgGIOVa6j03BaM2WBcFHkMlDlY7TJ3N00fUNYtPMQYM+GR650m9LuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.170
+	 MIME-Version; b=oZ8YhdaswcU24ZkYR1K5hv19AO+dhyexwJxS5+wXc66QVtttm9Y3wqKwXrZ2blh37uCRXLWiDVVp8e14+eHFw9XFEzJcKD7jSyp+TM94NmLc5kjN/L+44Rz9KDw8fasKDwW0JtjEkcoyCqv9O67VWM1UpuPMaxu/8ekrsg83FbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-220ca204d04so2297095ad.0
-        for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 12:27:29 -0800 (PST)
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2f83a8afcbbso414712a91.1
+        for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 12:27:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739996848; x=1740601648;
+        d=1e100.net; s=20230601; t=1739996850; x=1740601650;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xwNoSRDffO+xddl3RoJ1zSDOcFAeRaleW1sp7I/p1V8=;
-        b=lDNcnOvIJS/iIjBS3EORzPnwqBzaUbLuTx2nUOsqFYRjRVlcWX+DFC4CO/53lIPtgA
-         t1QYPVsAs7oB84IrxJe6xngz20K1hQYSkL9frffpwSn3p9Cbd6FBUP1NgmTW3SjZSVvW
-         S1rUzJdmFeOsuDZ+zDXMHzUZU4567ED0edRWaCKiZvb7GzGpyvthDzOTgdYqz+cX1Dm5
-         VUBg4Op/gLJ2BQENBhnYqxaD0cz4zsZNu7C5Osj313dN4VfiCEnNNM5OhdUnCPIipTES
-         LxkenDVugjDHcLPzCuICGCEFYYRrBEzPFNyjnrzc9Oi3ew1BArR+tJS1k5A3DVWUhPhu
-         4ohw==
-X-Gm-Message-State: AOJu0Yz8vizLDR+1nrmRzr5jyi0PqHPYyJhQD3XDqZWGZE+AsP/Syzb4
-	Di9I3jciKh0n2n4jp3ubjqf7WmL4I+xD5pagwzLtY11IWM+UkRDaJeTS
-X-Gm-Gg: ASbGnctemM85i5NCUYfbbUlC93kl4FRaWeCFeOi89GAMm0dY4LRyCkJle1DjvWmZsDo
-	f5I2AGnLZ5eq9BffbbnDEVjkIC2nahLLQjB4yJErK+e73y5qzr6IJbab4V2Agnzftm2GGKlXDtC
-	XzFQh8l6SzXF2dmKCAxY/UoKswXrRPnfaXu8GNgKaqbjBFdEHcu0v6fLKMf+iGOY69ji8/quTGz
-	WIhaiKff4H7lb9oatXeVwF12bQZmMqQP3GnBLaT1VCP58ORrlBc4HqnF18GwH1mXvZHvvCsNCua
-	PIrCtmWapct7QoY=
-X-Google-Smtp-Source: AGHT+IEYWxNFZCwt4sZoiSF0LK95TpPYrEe0nhNdrsLrQOPuRGkEuxy2aBtcFLQVB3qqPd50triX/A==
-X-Received: by 2002:a05:6a00:1828:b0:732:6248:8f5f with SMTP id d2e1a72fcca58-7329de495f2mr7089189b3a.5.1739996846945;
-        Wed, 19 Feb 2025 12:27:26 -0800 (PST)
+        bh=wnX45BtPrcA1r80hmFVlirmfNlcc3+tknfGGVzHqrkg=;
+        b=iRtwrfGapKhI6PRc179ZlsQUmd/yTnaRydGM/+6E4xLVAcPs0dcDWFZbrpWoegGyTL
+         JTLs8ayKN1ghh1Wk1JOPH58Ubea/xF4ormtxY7SpM7kw0hMAxBz7tRwhYJf+MWwBcWS5
+         wNNe4F3EuKURRmpmNUxvOcTzxKWHQiWP09y3c9Cw9WjjoUDw0EbztUykHkiyM7NSlHwZ
+         WQPTbYLlQ0ssd+w/Mn8KOSJ+wOIPnkDTWgHU96ARM3ybz19rfuc6yGmUzmRLH/PkBMoO
+         reYKmWLIsUDPnOEi2WVYnjNLZdxZaE1JU4+X+q0Bt9S25DijlrEj80uRE5d6CEVvec8j
+         6pCw==
+X-Gm-Message-State: AOJu0YwgP7xs4/kWYsIAY1o16G68+7fEWRkiRvCAsGDlXidsM+G6aY8x
+	eg3ZDr2x1WnpaR7mk5I0dwD1aaL5FP/k50P9UWXFOu70CEk9R5A4YQTV
+X-Gm-Gg: ASbGncuRsif56cJlcNtH0gmMxSP3d7aeNuaCde38Lh/sPm6eW01S1dKibqTukh7EG9/
+	RImeM/nyjeRD99LpMLDAc4A5HJVYp/ISD/F+x3FeLfz3+Cyjdi0U5JYzX0zgs3kxuo8xKw3IoLH
+	38SUrI6jhrqC57xE+5sqw6YFlH6FlK4+XWMsjiXz8/bvlBS66ER/LTa3gHz3lgwUqqyGTNrEqP+
+	YofacolXY9JzRYX2Tso70mTOyiYAiOQ5dPpcr2sWVcHVFTB8XeLwllUez4x7mLJ5O+UhUtX27bE
+	oe+yRAiIKziTchY=
+X-Google-Smtp-Source: AGHT+IGf1u6KW5ymsUKpWKUZ5N5VgzrE5HtznbTRE4ZrpjWDzr+quvuPg2u6SFw60azTbiXnMEStrg==
+X-Received: by 2002:a17:90b:4a50:b0:2ea:8aac:6ac1 with SMTP id 98e67ed59e1d1-2fccc363d83mr985819a91.15.1739996849640;
+        Wed, 19 Feb 2025 12:27:29 -0800 (PST)
 Received: from localhost ([2601:646:9e00:f56e:2844:3d8f:bf3e:12cc])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7327fa51eb9sm5947109b3a.166.2025.02.19.12.27.26
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-2fbf98d3b80sm14336157a91.17.2025.02.19.12.27.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2025 12:27:26 -0800 (PST)
+        Wed, 19 Feb 2025 12:27:29 -0800 (PST)
 From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -49,9 +49,9 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	Saeed Mahameed <saeed@kernel.org>
-Subject: [PATCH net-next v5 05/12] net: hold netdev instance lock during ioctl operations
-Date: Wed, 19 Feb 2025 12:27:12 -0800
-Message-ID: <20250219202719.957100-6-sdf@fomichev.me>
+Subject: [PATCH net-next v5 07/12] net: hold netdev instance lock during ndo_bpf
+Date: Wed, 19 Feb 2025 12:27:14 -0800
+Message-ID: <20250219202719.957100-8-sdf@fomichev.me>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219202719.957100-1-sdf@fomichev.me>
 References: <20250219202719.957100-1-sdf@fomichev.me>
@@ -63,308 +63,196 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert all ndo_eth_ioctl invocations to dev_eth_ioctl which does the
-locking. Reflow some of the dev_siocxxx to drop else clause.
+Cover the paths that come via bpf system call and XSK bind.
 
 Cc: Saeed Mahameed <saeed@kernel.org>
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- drivers/net/bonding/bond_main.c |  9 ++---
- include/linux/netdevice.h       |  3 ++
- net/8021q/vlan_dev.c            |  4 +-
- net/core/dev.c                  |  4 +-
- net/core/dev_api.c              | 30 +++++++++++++++
- net/core/dev_ioctl.c            | 67 ++++++++++++++++++++-------------
- 6 files changed, 80 insertions(+), 37 deletions(-)
+ include/linux/netdevice.h |  1 +
+ kernel/bpf/offload.c      |  6 ++++--
+ net/core/dev.c            | 13 +++++++++++--
+ net/core/dev_api.c        | 12 ++++++++++++
+ net/xdp/xsk.c             |  3 +++
+ net/xdp/xsk_buff_pool.c   |  2 ++
+ 6 files changed, 33 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index f6d0628a36d9..19775e9d7341 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -855,7 +855,6 @@ static int bond_check_dev_link(struct bonding *bond,
- 			       struct net_device *slave_dev, int reporting)
- {
- 	const struct net_device_ops *slave_ops = slave_dev->netdev_ops;
--	int (*ioctl)(struct net_device *, struct ifreq *, int);
- 	struct ifreq ifr;
- 	struct mii_ioctl_data *mii;
- 
-@@ -871,8 +870,7 @@ static int bond_check_dev_link(struct bonding *bond,
- 			BMSR_LSTATUS : 0;
- 
- 	/* Ethtool can't be used, fallback to MII ioctls. */
--	ioctl = slave_ops->ndo_eth_ioctl;
--	if (ioctl) {
-+	if (slave_ops->ndo_eth_ioctl) {
- 		/* TODO: set pointer to correct ioctl on a per team member
- 		 *       bases to make this more efficient. that is, once
- 		 *       we determine the correct ioctl, we will always
-@@ -888,9 +886,10 @@ static int bond_check_dev_link(struct bonding *bond,
- 		/* Yes, the mii is overlaid on the ifreq.ifr_ifru */
- 		strscpy_pad(ifr.ifr_name, slave_dev->name, IFNAMSIZ);
- 		mii = if_mii(&ifr);
--		if (ioctl(slave_dev, &ifr, SIOCGMIIPHY) == 0) {
-+
-+		if (dev_eth_ioctl(slave_dev, &ifr, SIOCGMIIPHY) == 0) {
- 			mii->reg_num = MII_BMSR;
--			if (ioctl(slave_dev, &ifr, SIOCGMIIREG) == 0)
-+			if (dev_eth_ioctl(slave_dev, &ifr, SIOCGMIIREG) == 0)
- 				return mii->val_out & BMSR_LSTATUS;
- 		}
- 	}
 diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 5500eafc1704..c350c89cb447 100644
+index 44882c91d484..e1abaf3904f4 100644
 --- a/include/linux/netdevice.h
 +++ b/include/linux/netdevice.h
-@@ -4191,6 +4191,8 @@ int put_user_ifreq(struct ifreq *ifr, void __user *arg);
- int dev_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr,
- 		void __user *data, bool *need_copyout);
- int dev_ifconf(struct net *net, struct ifconf __user *ifc);
-+int dev_eth_ioctl(struct net_device *dev,
-+		  struct ifreq *ifr, unsigned int cmd);
- int generic_hwtstamp_get_lower(struct net_device *dev,
- 			       struct kernel_hwtstamp_config *kernel_cfg);
- int generic_hwtstamp_set_lower(struct net_device *dev,
-@@ -4212,6 +4214,7 @@ int netif_change_net_namespace(struct net_device *dev, struct net *net,
- int dev_change_net_namespace(struct net_device *dev, struct net *net,
- 			     const char *pat);
- int __dev_set_mtu(struct net_device *, int);
-+int netif_set_mtu(struct net_device *dev, int new_mtu);
- int dev_set_mtu(struct net_device *, int);
- int dev_pre_changeaddr_notify(struct net_device *dev, const char *addr,
- 			      struct netlink_ext_ack *extack);
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index 91d134961357..ee3283400716 100644
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -377,7 +377,6 @@ static int vlan_hwtstamp_set(struct net_device *dev,
- static int vlan_dev_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
- {
- 	struct net_device *real_dev = vlan_dev_priv(dev)->real_dev;
--	const struct net_device_ops *ops = real_dev->netdev_ops;
- 	struct ifreq ifrr;
- 	int err = -EOPNOTSUPP;
+@@ -4238,6 +4238,7 @@ struct sk_buff *dev_hard_start_xmit(struct sk_buff *skb, struct net_device *dev,
  
-@@ -388,8 +387,7 @@ static int vlan_dev_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
- 	case SIOCGMIIPHY:
- 	case SIOCGMIIREG:
- 	case SIOCSMIIREG:
--		if (netif_device_present(real_dev) && ops->ndo_eth_ioctl)
--			err = ops->ndo_eth_ioctl(real_dev, &ifrr, cmd);
-+		err = dev_eth_ioctl(real_dev, &ifrr, cmd);
- 		break;
- 	}
+ int bpf_xdp_link_attach(const union bpf_attr *attr, struct bpf_prog *prog);
+ u8 dev_xdp_prog_count(struct net_device *dev);
++int netif_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf);
+ int dev_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf);
+ u8 dev_xdp_sb_prog_count(struct net_device *dev);
+ u32 dev_xdp_prog_id(struct net_device *dev, enum bpf_xdp_mode mode);
+diff --git a/kernel/bpf/offload.c b/kernel/bpf/offload.c
+index 1a4fec330eaa..a10153c3be2d 100644
+--- a/kernel/bpf/offload.c
++++ b/kernel/bpf/offload.c
+@@ -528,10 +528,10 @@ struct bpf_map *bpf_map_offload_map_alloc(union bpf_attr *attr)
+ 		return ERR_PTR(-ENOMEM);
  
+ 	bpf_map_init_from_attr(&offmap->map, attr);
+-
+ 	rtnl_lock();
+-	down_write(&bpf_devs_lock);
+ 	offmap->netdev = __dev_get_by_index(net, attr->map_ifindex);
++	netdev_lock_ops(offmap->netdev);
++	down_write(&bpf_devs_lock);
+ 	err = bpf_dev_offload_check(offmap->netdev);
+ 	if (err)
+ 		goto err_unlock;
+@@ -548,12 +548,14 @@ struct bpf_map *bpf_map_offload_map_alloc(union bpf_attr *attr)
+ 
+ 	list_add_tail(&offmap->offloads, &ondev->maps);
+ 	up_write(&bpf_devs_lock);
++	netdev_unlock_ops(offmap->netdev);
+ 	rtnl_unlock();
+ 
+ 	return &offmap->map;
+ 
+ err_unlock:
+ 	up_write(&bpf_devs_lock);
++	netdev_unlock_ops(offmap->netdev);
+ 	rtnl_unlock();
+ 	bpf_map_area_free(offmap);
+ 	return ERR_PTR(err);
 diff --git a/net/core/dev.c b/net/core/dev.c
-index 3e19d9548cec..12b268b3274a 100644
+index c40cb752a419..3ed4f231a974 100644
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -9307,7 +9307,7 @@ int netif_set_mtu_ext(struct net_device *dev, int new_mtu,
- 	return err;
+@@ -9637,7 +9637,7 @@ u8 dev_xdp_sb_prog_count(struct net_device *dev)
+ 	return count;
  }
  
--int dev_set_mtu(struct net_device *dev, int new_mtu)
-+int netif_set_mtu(struct net_device *dev, int new_mtu)
+-int dev_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf)
++int netif_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf)
  {
- 	struct netlink_ext_ack extack;
+ 	if (!dev->netdev_ops->ndo_bpf)
+ 		return -EOPNOTSUPP;
+@@ -9657,7 +9657,6 @@ int dev_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf)
+ 
+ 	return dev->netdev_ops->ndo_bpf(dev, bpf);
+ }
+-EXPORT_SYMBOL_GPL(dev_xdp_propagate);
+ 
+ u32 dev_xdp_prog_id(struct net_device *dev, enum bpf_xdp_mode mode)
+ {
+@@ -9687,6 +9686,8 @@ static int dev_xdp_install(struct net_device *dev, enum bpf_xdp_mode mode,
+ 	struct netdev_bpf xdp;
  	int err;
-@@ -9318,7 +9318,7 @@ int dev_set_mtu(struct net_device *dev, int new_mtu)
- 		net_err_ratelimited("%s: %s\n", dev->name, extack._msg);
- 	return err;
- }
--EXPORT_SYMBOL(dev_set_mtu);
-+EXPORT_SYMBOL(netif_set_mtu);
  
- int netif_change_tx_queue_len(struct net_device *dev, unsigned long new_len)
- {
++	netdev_ops_assert_locked(dev);
++
+ 	if (dev->cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
+ 	    prog && !prog->aux->xdp_has_frags) {
+ 		NL_SET_ERR_MSG(extack, "unable to install XDP to device using tcp-data-split");
+@@ -9919,7 +9920,9 @@ static void bpf_xdp_link_release(struct bpf_link *link)
+ 	 * already NULL, in which case link was already auto-detached
+ 	 */
+ 	if (xdp_link->dev) {
++		netdev_lock_ops(xdp_link->dev);
+ 		WARN_ON(dev_xdp_detach_link(xdp_link->dev, NULL, xdp_link));
++		netdev_unlock_ops(xdp_link->dev);
+ 		xdp_link->dev = NULL;
+ 	}
+ 
+@@ -10001,10 +10004,12 @@ static int bpf_xdp_link_update(struct bpf_link *link, struct bpf_prog *new_prog,
+ 		goto out_unlock;
+ 	}
+ 
++	netdev_lock_ops(xdp_link->dev);
+ 	mode = dev_xdp_mode(xdp_link->dev, xdp_link->flags);
+ 	bpf_op = dev_xdp_bpf_op(xdp_link->dev, mode);
+ 	err = dev_xdp_install(xdp_link->dev, mode, bpf_op, NULL,
+ 			      xdp_link->flags, new_prog);
++	netdev_unlock_ops(xdp_link->dev);
+ 	if (err)
+ 		goto out_unlock;
+ 
+@@ -10790,7 +10795,9 @@ int register_netdevice(struct net_device *dev)
+ 	if (ret)
+ 		goto err_uninit_notify;
+ 
++	netdev_lock_ops(dev);
+ 	__netdev_update_features(dev);
++	netdev_unlock_ops(dev);
+ 
+ 	/*
+ 	 *	Default initial state at registry is that the
+@@ -11729,7 +11736,9 @@ void unregister_netdevice_many_notify(struct list_head *head,
+ 		/* Shutdown queueing discipline. */
+ 		dev_shutdown(dev);
+ 		dev_tcx_uninstall(dev);
++		netdev_lock_ops(dev);
+ 		dev_xdp_uninstall(dev);
++		netdev_unlock_ops(dev);
+ 		bpf_dev_bound_netdev_unregister(dev);
+ 		dev_memory_provider_uninstall(dev);
+ 
 diff --git a/net/core/dev_api.c b/net/core/dev_api.c
-index ce3a38c8e326..7dae30781411 100644
+index 87a62022ef1c..0db20ed086d3 100644
 --- a/net/core/dev_api.c
 +++ b/net/core/dev_api.c
-@@ -222,3 +222,33 @@ void dev_close(struct net_device *dev)
- 	netdev_unlock_ops(dev);
+@@ -317,3 +317,15 @@ int dev_set_mac_address(struct net_device *dev, struct sockaddr *sa,
+ 	return ret;
  }
- EXPORT_SYMBOL(dev_close);
+ EXPORT_SYMBOL(dev_set_mac_address);
 +
-+int dev_eth_ioctl(struct net_device *dev,
-+		  struct ifreq *ifr, unsigned int cmd)
-+{
-+	const struct net_device_ops *ops = dev->netdev_ops;
-+	int ret = -ENODEV;
-+
-+	if (!ops->ndo_eth_ioctl)
-+		return -EOPNOTSUPP;
-+
-+	netdev_lock_ops(dev);
-+	if (netif_device_present(dev))
-+		ret = ops->ndo_eth_ioctl(dev, ifr, cmd);
-+	netdev_unlock_ops(dev);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(dev_eth_ioctl);
-+
-+int dev_set_mtu(struct net_device *dev, int new_mtu)
++int dev_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf)
 +{
 +	int ret;
 +
 +	netdev_lock_ops(dev);
-+	ret = netif_set_mtu(dev, new_mtu);
++	ret = netif_xdp_propagate(dev, bpf);
 +	netdev_unlock_ops(dev);
 +
 +	return ret;
 +}
-+EXPORT_SYMBOL(dev_set_mtu);
-diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
-index 4c2098ac9d72..d9f350593121 100644
---- a/net/core/dev_ioctl.c
-+++ b/net/core/dev_ioctl.c
-@@ -110,7 +110,7 @@ static int dev_getifmap(struct net_device *dev, struct ifreq *ifr)
- 	return 0;
- }
- 
--static int dev_setifmap(struct net_device *dev, struct ifreq *ifr)
-+static int netif_setifmap(struct net_device *dev, struct ifreq *ifr)
- {
- 	struct compat_ifmap *cifmap = (struct compat_ifmap *)&ifr->ifr_map;
- 
-@@ -240,20 +240,6 @@ int net_hwtstamp_validate(const struct kernel_hwtstamp_config *cfg)
- 	return 0;
- }
- 
--static int dev_eth_ioctl(struct net_device *dev,
--			 struct ifreq *ifr, unsigned int cmd)
--{
--	const struct net_device_ops *ops = dev->netdev_ops;
--
--	if (!ops->ndo_eth_ioctl)
--		return -EOPNOTSUPP;
--
--	if (!netif_device_present(dev))
--		return -ENODEV;
--
--	return ops->ndo_eth_ioctl(dev, ifr, cmd);
--}
--
- /**
-  * dev_get_hwtstamp_phylib() - Get hardware timestamping settings of NIC
-  *	or of attached phylib PHY
-@@ -305,7 +291,9 @@ static int dev_get_hwtstamp(struct net_device *dev, struct ifreq *ifr)
- 		return -ENODEV;
- 
- 	kernel_cfg.ifr = ifr;
-+	netdev_lock_ops(dev);
- 	err = dev_get_hwtstamp_phylib(dev, &kernel_cfg);
-+	netdev_unlock_ops(dev);
- 	if (err)
- 		return err;
- 
-@@ -429,7 +417,9 @@ static int dev_set_hwtstamp(struct net_device *dev, struct ifreq *ifr)
- 	if (!netif_device_present(dev))
- 		return -ENODEV;
++EXPORT_SYMBOL_GPL(dev_xdp_propagate);
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 0edf25973072..297a1b3ccc68 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -1178,6 +1178,8 @@ static int xsk_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
+ 		goto out_release;
+ 	}
  
 +	netdev_lock_ops(dev);
- 	err = dev_set_hwtstamp_phylib(dev, &kernel_cfg, &extack);
++
+ 	if (!xs->rx && !xs->tx) {
+ 		err = -EINVAL;
+ 		goto out_unlock;
+@@ -1312,6 +1314,7 @@ static int xsk_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
+ 		smp_wmb();
+ 		WRITE_ONCE(xs->state, XSK_BOUND);
+ 	}
 +	netdev_unlock_ops(dev);
+ out_release:
+ 	mutex_unlock(&xs->mutex);
+ 	rtnl_unlock();
+diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+index c263fb7a68dc..0e6ca568fdee 100644
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
++#include <linux/netdevice.h>
+ #include <net/xsk_buff_pool.h>
+ #include <net/xdp_sock.h>
+ #include <net/xdp_sock_drv.h>
+@@ -219,6 +220,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 	bpf.xsk.pool = pool;
+ 	bpf.xsk.queue_id = queue_id;
+ 
++	netdev_ops_assert_locked(netdev);
+ 	err = netdev->netdev_ops->ndo_bpf(netdev, &bpf);
  	if (err)
- 		return err;
- 
-@@ -504,10 +494,14 @@ static int dev_siocbond(struct net_device *dev,
- 	const struct net_device_ops *ops = dev->netdev_ops;
- 
- 	if (ops->ndo_siocbond) {
-+		int ret = -ENODEV;
-+
-+		netdev_lock_ops(dev);
- 		if (netif_device_present(dev))
--			return ops->ndo_siocbond(dev, ifr, cmd);
--		else
--			return -ENODEV;
-+			ret = ops->ndo_siocbond(dev, ifr, cmd);
-+		netdev_unlock_ops(dev);
-+
-+		return ret;
- 	}
- 
- 	return -EOPNOTSUPP;
-@@ -519,10 +513,14 @@ static int dev_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
- 	const struct net_device_ops *ops = dev->netdev_ops;
- 
- 	if (ops->ndo_siocdevprivate) {
-+		int ret = -ENODEV;
-+
-+		netdev_lock_ops(dev);
- 		if (netif_device_present(dev))
--			return ops->ndo_siocdevprivate(dev, ifr, data, cmd);
--		else
--			return -ENODEV;
-+			ret = ops->ndo_siocdevprivate(dev, ifr, data, cmd);
-+		netdev_unlock_ops(dev);
-+
-+		return ret;
- 	}
- 
- 	return -EOPNOTSUPP;
-@@ -533,10 +531,14 @@ static int dev_siocwandev(struct net_device *dev, struct if_settings *ifs)
- 	const struct net_device_ops *ops = dev->netdev_ops;
- 
- 	if (ops->ndo_siocwandev) {
-+		int ret = -ENODEV;
-+
-+		netdev_lock_ops(dev);
- 		if (netif_device_present(dev))
--			return ops->ndo_siocwandev(dev, ifs);
--		else
--			return -ENODEV;
-+			ret = ops->ndo_siocwandev(dev, ifs);
-+		netdev_unlock_ops(dev);
-+
-+		return ret;
- 	}
- 
- 	return -EOPNOTSUPP;
-@@ -580,11 +582,16 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
- 		memcpy(dev->broadcast, ifr->ifr_hwaddr.sa_data,
- 		       min(sizeof(ifr->ifr_hwaddr.sa_data_min),
- 			   (size_t)dev->addr_len));
-+		netdev_lock_ops(dev);
- 		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
-+		netdev_unlock_ops(dev);
- 		return 0;
- 
- 	case SIOCSIFMAP:
--		return dev_setifmap(dev, ifr);
-+		netdev_lock_ops(dev);
-+		err = netif_setifmap(dev, ifr);
-+		netdev_unlock_ops(dev);
-+		return err;
- 
- 	case SIOCADDMULTI:
- 		if (!ops->ndo_set_rx_mode ||
-@@ -592,7 +599,10 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
- 			return -EINVAL;
- 		if (!netif_device_present(dev))
- 			return -ENODEV;
--		return dev_mc_add_global(dev, ifr->ifr_hwaddr.sa_data);
-+		netdev_lock_ops(dev);
-+		err = dev_mc_add_global(dev, ifr->ifr_hwaddr.sa_data);
-+		netdev_unlock_ops(dev);
-+		return err;
- 
- 	case SIOCDELMULTI:
- 		if (!ops->ndo_set_rx_mode ||
-@@ -600,7 +610,10 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
- 			return -EINVAL;
- 		if (!netif_device_present(dev))
- 			return -ENODEV;
--		return dev_mc_del_global(dev, ifr->ifr_hwaddr.sa_data);
-+		netdev_lock_ops(dev);
-+		err = dev_mc_del_global(dev, ifr->ifr_hwaddr.sa_data);
-+		netdev_unlock_ops(dev);
-+		return err;
- 
- 	case SIOCSIFTXQLEN:
- 		if (ifr->ifr_qlen < 0)
+ 		goto err_unreg_pool;
 -- 
 2.48.1
 
