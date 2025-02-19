@@ -1,77 +1,67 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B3D25B674;
-	Wed, 19 Feb 2025 22:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BC52417C3;
+	Wed, 19 Feb 2025 23:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740005493; cv=none; b=G2+M/vBiB9k6jwOpRmg58qGclq0gqWPs9GTJopargfpfkjEYqk44OsoKKgwQkLUeaWa3NLm/KJUWCofFwO/RACkw29jsMPvw6KA/l8mIGw9wqK6hVUxqemE6/VXPj2/uNo7ybsx7Xe/RnvFYw8ymqR/ts1lDIlz1IO6ec3HT6zQ=
+	t=1740006880; cv=none; b=AQX08YUY8O+zSsOrv8NDWOgQ1eK3FG3szowdbYzHkv+WHm9cGk0KYKbuHZiBCEJ7qpeQipcZ387loFcytdxA2ufUsR0cKALA/lwzRbLyRGl5Vrc3sVCGiOw/0a9IS4CGBEC8Vu9CPWDpkH0s6Q8b11tDP8Sae6zvqAAETumFCGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740005493; c=relaxed/simple;
-	bh=kVIF8THjMUn5VVKQI5GfRlpOup0bprbVYvJKg4Gv5tU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oqFVEDwt3foy/+0Cirt7XEFAymmDF3IEY447gjCJh+eHZBv/ofH1GGUsiqFm19sjxtYOUieQJekMNq2l4XKvTbrgj2Pm0rZDzlz47xuI5/VwEAEthpaTjRzWbtd1/u9avSsFkfLjHR8YCTON5ashd3GB52lr98Lhv4WqbEluOEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=SF13xRRF; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1740006880; c=relaxed/simple;
+	bh=VmordyIhW2jsBJrIyaa7b8c8pt16sf7W9iv8wIfp9E8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AI8aUOaC8MrWcRsCEahITuYuQwZl+oihYBKeddwvkK1DfEarlrRf1VvgdIUaa3wg0n6t1W3Ghusv+HmRMOXbulzMrcABz/ejwDjrIAqoeQC0KC9rRpRiIxdzJsvWDoutWd2ridzW2M+zsVWgQNnKmEaXrKzf0S5kTBcZFpXShTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nY2CMqq2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="SF13xRRF"
-Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id F40002043DEF;
-	Wed, 19 Feb 2025 14:51:30 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com F40002043DEF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1740005491;
-	bh=2DsnK7hNItSeSllFiYAP/M6VSa6q+8lcbw+HDHEsdqY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=SF13xRRFRtH7qnTvrO5A0O3X3Pj6uRAsloPgfZb8ngTSWG29i19O95q7viFi/qPpT
-	 p9DhmJKbSRnDt70ZSbf9EChE6OIXU3rQPanGR+S+C8iKHbRmiumgfG/KjF7RbHtv+Z
-	 djBAZgbA0vps9Y3zUZnp8SRaHQi17lxLr8ea5BuA=
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Date: Wed, 19 Feb 2025 22:51:31 +0000
-Subject: [PATCH 3/4] Bluetooth: SMP: convert timeouts to secs_to_jiffies()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nY2CMqq2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7EFC4CED1;
+	Wed, 19 Feb 2025 23:14:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740006879;
+	bh=VmordyIhW2jsBJrIyaa7b8c8pt16sf7W9iv8wIfp9E8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nY2CMqq2OZGY70thcRvYniLFFxRx9A0uBmD63qmvu+SrQ9O79w9JLgMD/OnuNZqyF
+	 wMtWdlABL24Jfq33zG8i7FaCY5cnuGZr0M1ymmxG8WPmXSmiEruNAWduLSA6UcyZnL
+	 jnPUpuaIIpuADlHuKLRfvo9oWWwcn72jUKY3EacgqvT7OFgfwQSr2LOSF8Bqys4YZp
+	 vPm7cSeMuggaLIPvHtyhIthMQDM00pT+kGE6DXzHWzecLRBP+FemVTU3JhwMyCvi1z
+	 9Eq1ngna8nwuDNGXMel7wjvTe5Y50SBLaRMNQCP3I+soDo1iH/pLSwYeMcdEauKDA8
+	 hqZNrVQy9+RhA==
+Date: Wed, 19 Feb 2025 17:14:38 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Claus Stovgaard <claus.stovgaard@gmail.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <olteanv@gmail.com>, claus.stovgaard@prevas.dk,
+	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: Re: [PATCH 2/2] dt-bindings: net: dsa: b53: add BCM53101 support
+Message-ID: <174000687793.3153374.474074963070616968.robh@kernel.org>
+References: <20250217080503.1390282-1-claus.stovgaard@gmail.com>
+ <20250217080503.1390282-2-claus.stovgaard@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250219-bluetooth-converge-secs-to-jiffies-v1-3-6ab896f5fdd4@linux.microsoft.com>
-References: <20250219-bluetooth-converge-secs-to-jiffies-v1-0-6ab896f5fdd4@linux.microsoft.com>
-In-Reply-To: <20250219-bluetooth-converge-secs-to-jiffies-v1-0-6ab896f5fdd4@linux.microsoft.com>
-To: Marcel Holtmann <marcel@holtmann.org>, 
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
- Johan Hedberg <johan.hedberg@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, Easwar Hariharan <eahariha@linux.microsoft.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250217080503.1390282-2-claus.stovgaard@gmail.com>
 
-Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
-secs_to_jiffies().  As the value here is a multiple of 1000, use
-secs_to_jiffies() instead of msecs_to_jiffies() for readability.
 
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
----
- net/bluetooth/smp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, 17 Feb 2025 09:05:02 +0100, Claus Stovgaard wrote:
+> From: Claus Stovgaard <claus.stovgaard@prevas.dk>
+> 
+> BCM53101 is a ethernet switch, very similar to the BCM53115.
+> 
+> Signed-off-by: Claus Stovgaard <claus.stovgaard@prevas.dk>
+> ---
+>  Documentation/devicetree/bindings/net/dsa/brcm,b53.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
 
-diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index 8b9724fd752a1a713d55630fb19fc7ffc2ac0079..a31c6acf1df2bbdc512d1406663ad06069c1f184 100644
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -55,7 +55,7 @@
- /* Keys which are not distributed with Secure Connections */
- #define SMP_SC_NO_DIST (SMP_DIST_ENC_KEY | SMP_DIST_LINK_KEY)
- 
--#define SMP_TIMEOUT	msecs_to_jiffies(30000)
-+#define SMP_TIMEOUT	secs_to_jiffies(30)
- 
- #define ID_ADDR_TIMEOUT	msecs_to_jiffies(200)
- 
-
--- 
-2.43.0
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
