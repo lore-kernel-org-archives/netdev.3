@@ -1,200 +1,166 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BCE1CAA65;
-	Wed, 19 Feb 2025 22:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4F91DED6F
+	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 22:45:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740004824; cv=none; b=ryl92xBNjNLQvn+M1BCJkf8lpvzrBNAHv6Ys6CEtvm8qUM2ASrOyo3Xoj7SGNpxKgjTeMGdL496xdgC2yq/OOcwinG68g4hKsdlWz/7kaB3iXl2mpJQKtgAOnXcZEHCAS5cgT3Qs23cXDo7mH3b0FUxKaon0iTkqp6fz2AYmW8U=
+	t=1740005133; cv=none; b=Z4nk1YlOH6rppq9QeMKTMtPafIhGQtzy/LCz4PrRgY/r+v7BHMOQ/ua+r/9pPVnMSFmRl+Bcu8vjFhYS//fB6pUcpQM+qQNRKANRWXExpAfuNzk/qpJllVK1OXQ1qvzHaxjcIqL3vZ6+Vp0VNkNnThWyhezA6EC0TCjK+6OP6Pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740004824; c=relaxed/simple;
-	bh=8Mg75jClpkM1YDf5jhDaw+K4gMVsBWTTRKTduk5CQ0g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZxwUNesSq2UlLOUp4HQP6wI3CyURdgB9qbmrvX4eGBoPMVTC6mT7PosnKTrswOKOmkwgstszFLK2iYWJ48YkPK4KwMgWdqsCL+syw++Y6DSX7LCflXpK4SFYk/4UtrpCh3XGuWU1FpL9o8shbS1mUB4Sd/E2+ktCjGCkNBnhImg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q6TzPoW1; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740005133; c=relaxed/simple;
+	bh=zmbVvXQXALcaFIiXJdEdlIiZUkm9FRxIcycBFuJuzy0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Dcgcb990b4A21Bf8rQ2vcJKsRm3kKPRorWg97hXtVi60iYpxWattuwBT6g2dJX+0DU7uZ4mbzL0Eizjo4+Ul2pMQgQtB9id8BDe/0/zrQnP1XbEOqlcn/WQSFOATj1MU/6DdspPCS6mQwtgri1kMOoSd9pdRAS0f2JusvbaPT/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MRQPzlCQ; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q6TzPoW1"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43690d4605dso1706385e9.0;
-        Wed, 19 Feb 2025 14:40:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740004819; x=1740609619; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Vrp/fBKUqrg/kv/ORpAWE3DQJG3A8sYFw9zN0z92NYg=;
-        b=Q6TzPoW1qI6ujyeH+iEvVIg9bDfD6i8mHmR237RKULCI8fYs28tD46YWtgnk3Mar7R
-         +e43tmUa23Vc1j8Ohl8rRUdYM8M7w7qw3wImjjvF3nFC5RYZfzNQpp0ls6zLvv3Niydl
-         3xtppNSGtQaHGK30FjpN4GPhCQhNroItdRCbJB962GS0OyCBQJOo24h8jBAWpNmUoSGj
-         MLWcIZS8k0Ocqof0kt+bzfU6zlnsmPtgVM0gseL8nqD0reON88mpcOODfCUZKpFoOAef
-         HjILNW4MsIQu1xqIBQ0yWYcjdyNnHgSDc1Gr/oatoydPTE9mQBWeUFG0YzVbHtBcI7Ev
-         y0RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740004819; x=1740609619;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vrp/fBKUqrg/kv/ORpAWE3DQJG3A8sYFw9zN0z92NYg=;
-        b=J91ke25T1vT94+RrDyS95ZlY4WoEAWJKVdMkIyEo75+gwPyt5E4+IP9JeKGB3Njnsf
-         me8p9JSvOWH90XgXSGlJZtUCmEOmLtlXOAgDHoot1Y3IVHUDA0zyYVc1PkNttwSCUN43
-         sTm/Z+9cF5K6nnk1yRjqhZq/Kyegs6xVNLmfWyJGQm38FUtohNxfU1m2Dt7LsCTzsDkf
-         xS5GQoCHtB4qG0nSfuwPWVlpaPrcx+Hh7M1gjBqy2OZnJm7iECXfx5xXaTCYz90Genil
-         otgByfHL+49QPEeRvdr8v9tigkJOMRwWVo4R71nQxWwtsq2WKVM3EPNTzNpTvgUrikdG
-         gf/g==
-X-Forwarded-Encrypted: i=1; AJvYcCU6zbMKmzHLa+NjQEtjxdg/pywcC7oMjXaLuC0D0/DUmxLW2kUVyqp21pbKkc8xEMMsf+XtcKKws6eIDuN4rhrp@vger.kernel.org, AJvYcCUPJExUNyXjOJrrnVfOHICL3mBdwpoQsuG1uXL51lCzLXjGrXnEHPJkULM2ej0t3KjYWCq9gJwGA7oZ+lEO@vger.kernel.org, AJvYcCUSbHs3tAyODEzuOROPR9RMUy+kv1kc/g5vpCeFAYnDclSVs7JdBltmxBzusxi8AadbVZs=@vger.kernel.org, AJvYcCVfBk6rSIJoaPPAaY7bct/TmrVeBIoQdPU+q1DUTzzg7eHIglgllKV/XwnbvELNTj9myTqA2NAGnJaz@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwBdJj1M7PZwNO17sMQ3/b9Nkd9LCn1ytyUqKLncpd/HHdV6Zt
-	5E7glC+oBxgj/y3C7klFdvBmTL91fB9zux12xhhvcFk3Uh6zu9VH
-X-Gm-Gg: ASbGncuvTvCaOTJB84AeXpU/rhDRaPN459mVS5yUVM8FDNt7zQRAOmZl4D4Q58xI+cg
-	OAn8obWjwWErLRwbv+i2ZhVlJkl+drH2n6Yct0Ii133NeDlqDXyeUUN0Gfxhdtlew1fS0oUq9R9
-	+3gqIt1OgPcPqSU53tuUQj7NnF7a6AR1Yi7JHMQdC1kVkdH83pO/p29U0axUjHHuErUY00AZXh4
-	k80Ly3utt3xfbjuZ6e3QpLHfdYIowd/3CKYng5v1wJgZpj8tL+guoXK93mwo2oMxKVvw3KuQl88
-	7K5XcuiReKFL6O6lwi1pomvQ
-X-Google-Smtp-Source: AGHT+IHdEPtErxH8tweBsaBsHHLXYXev0UX3+JoIgfASCAjj1RolZY34QS5v5Mk2MKGpYvQ0fbmuAA==
-X-Received: by 2002:a05:600c:458f:b0:439:8a8c:d3e1 with SMTP id 5b1f17b1804b1-4398a8cd6b3mr103365215e9.22.1740004819062;
-        Wed, 19 Feb 2025 14:40:19 -0800 (PST)
-Received: from [192.168.8.100] ([148.252.145.15])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43994f0c10csm58014075e9.26.2025.02.19.14.40.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Feb 2025 14:40:17 -0800 (PST)
-Message-ID: <4cdfaff8-0623-4d3a-9204-5165ccbb84db@gmail.com>
-Date: Wed, 19 Feb 2025 22:41:17 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MRQPzlCQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740005131; x=1771541131;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=zmbVvXQXALcaFIiXJdEdlIiZUkm9FRxIcycBFuJuzy0=;
+  b=MRQPzlCQU9bh2CIdiWt7JqAuwQLnHVjeXCyi/mm/51uQT3RZjOmzftEy
+   /4zrsAZHMsArQ4VTGCYQXswXdUQbXem29IAAJxyoU3ah2Revq+u/QrxnP
+   MaMMjpDOQ3RLmrEH4RVzK/w9RSzuZuFr8KEaEWcleYpK1NP4aUTzyTazq
+   Jx0GHB/ByN8SQM2u2ioc7Y+0aewZAu46iIzNldMBG4sx5QtOQJLAJLNlI
+   CEcq9dsA4XXv0bZ8l0BrxHqlYsvQGJGZ3uhPwX1DYa89Gagtf/AL3jnlF
+   7gDOWPM8gL3fUXZn8f2g1fWIqK5iO/T/MQZvHNCg6haRrBs3bNpAeZqtt
+   Q==;
+X-CSE-ConnectionGUID: eWP2eFEERsuRxVNAt6SurQ==
+X-CSE-MsgGUID: 6zUN6FmdTAmNqYU+TZKGOA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="63241794"
+X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
+   d="scan'208";a="63241794"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 14:45:31 -0800
+X-CSE-ConnectionGUID: hCIkB3pyRFGWcV3Xl0hu4g==
+X-CSE-MsgGUID: IPLp/uVDTbysc7Pqctkqsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
+   d="scan'208";a="119795238"
+Received: from jekeller-desk.jf.intel.com ([10.166.241.15])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 14:15:40 -0800
+From: Jacob Keller <jacob.e.keller@intel.com>
+Date: Wed, 19 Feb 2025 14:13:27 -0800
+Subject: [PATCH iwl-net] ice: ensure periodic output start time is in the
+ future
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 5/6] net: devmem: Implement TX path
-To: Mina Almasry <almasrymina@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, linux-kselftest@vger.kernel.org,
- Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Neal Cardwell <ncardwell@google.com>, David Ahern <dsahern@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>,
- sdf@fomichev.me, dw@davidwei.uk, Jamal Hadi Salim <jhs@mojatatu.com>,
- Victor Nogueira <victor@mojatatu.com>, Pedro Tammela
- <pctammela@mojatatu.com>, Samiullah Khawaja <skhawaja@google.com>,
- Kaiyuan Zhang <kaiyuanz@google.com>
-References: <20250203223916.1064540-1-almasrymina@google.com>
- <20250203223916.1064540-6-almasrymina@google.com>
- <abc22620-d509-4b12-80ac-0c36b08b36d9@gmail.com>
- <CAHS8izNOqaFe_40gFh09vdBz6-deWdeGu9Aky-e7E+Wu2qtfdw@mail.gmail.com>
- <28343e83-6d93-4002-a691-f8273d4d24a8@gmail.com>
- <CAHS8izOE-JzMszieHEXtYBs7_6D-ngVx2kJyMwp8eCWLK-c0cQ@mail.gmail.com>
- <9210a12c-9adb-46ba-b92c-90fd07e1980f@gmail.com>
- <CAHS8izPHtk5x-W05_svxU53X-V4+++PiYErCgfr-3iDGgEaUig@mail.gmail.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <CAHS8izPHtk5x-W05_svxU53X-V4+++PiYErCgfr-3iDGgEaUig@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250219-jk-gnrd-ptp-pin-patches-v1-1-9cb3efaf9eea@intel.com>
+X-B4-Tracking: v=1; b=H4sIAIZXtmcC/x2NywoCMQxFf2XI2sA0TF34K+KitHEalUxoiw+G/
+ rvV5eFy7tmhchGucJp2KPyUKpsOcIcJYg66MkoaDDSTn8kR3u64aklozdBE0UKLmSsu5I8uhcV
+ zdDBsK3yV9//5DPJ6oHKDyxiy1LaVz6/Ye/8CBNCywYEAAAA=
+X-Change-ID: 20250212-jk-gnrd-ptp-pin-patches-42561da45ec1
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, 
+ Karol Kolacinski <karol.kolacinski@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+ Jacob Keller <jacob.e.keller@intel.com>
+X-Mailer: b4 0.14.2
 
-On 2/17/25 23:26, Mina Almasry wrote:
-> On Thu, Feb 13, 2025 at 5:17 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
-...
->>>>> It's asserting that sizeof(ubuf_info_msgzc) <= sizeof(skb->cb), and
->>>>> I'm guessing increasing skb->cb size is not really the way to go.
->>>>>
->>>>> What I may be able to do here is stash the binding somewhere in
->>>>> ubuf_info_msgzc via union with fields we don't need for devmem, and/or
->>>>
->>>> It doesn't need to account the memory against the user, and you
->>>> actually don't want that because dmabuf should take care of that.
->>>> So, it should be fine to reuse ->mmp.
->>>>
->>>> It's also not a real sk_buff, so maybe maintainers wouldn't mind
->>>> reusing some more space out of it, if that would even be needed.
->>>>
->>>
->>> netmem skb are real sk_buff, with the modification that frags are not
->>
->> We were discussing ubuf_info allocation, take a look at
->> msg_zerocopy_alloc(), it has nothing to do with netmems and all that.
->>
-> 
-> Yes. My response was regarding the suggestion that we can use space in
-> devmem skbs however we want though.
+From: Karol Kolacinski <karol.kolacinski@intel.com>
 
-Well, at least I didn't suggest that, assuming "devmem skbs" are skbs
-filled with devmem frags. I think the confusion here is thinking
-that skb->cb you mentioned above is about "devmem skbs", while it's
-special skbs without data used only to piggy back ubuf allocation.
-Functionally speaking, it'd be perfectly fine to get rid of the
-warning and allocate it with kmalloc().
+On E800 series hardware, if the start time for a periodic output signal is
+programmed into GLTSYN_TGT_H and GLTSYN_TGT_L registers, the hardware logic
+locks up and the periodic output signal never starts. Any future attempt to
+reprogram the clock function is futile as the hardware will not reset until
+a power on.
 
-...
->>> But MSG_ZEROCOPY doesn't set msg->msg_ubuf. And not setting
->>> msg->msg_ubuf fails to trigger msg->sg_from_iter altogether.
->>>
->>> And also currently sg_from_iter isn't set up to take in a ubuf_info.
->>> We'd need that if we stash the binding in the ubuf_info.
->>
->> https://github.com/isilence/linux.git sg-iter-ops
->>
->> I have old patches for all of that, they even rebased cleanly. That
->> should do it for you, and I need to send then regardless of devmem.
->>
->>
-> 
-> These patches help a bit, but do not make any meaningful dent in
-> addressing the concern I have in the earlier emails.
-> 
-> The concern is that we're piggybacking devmem TX on MSG_ZEROCOPY, and
-> currently the MSG_ZEROCOPY code carefully avoids any code paths
-> setting msg->[sg_from_iter|msg_ubuf].
+The ice_ptp_cfg_perout function has logic to prevent this, as it checks if
+the requested start time is in the past. If so, a new start time is
+calculated by rounding up.
 
-Fwiw, with that branch you don't need ->msg_ubuf at all, just pass
-it as an argument from tcp_sendmsg_locked() as usual, and
-->sg_from_iter is gone from there as well.
+Since commit d755a7e129a5 ("ice: Cache perout/extts requests and check
+flags"), the rounding is done to the nearest multiple of the clock period,
+rather than to a full second. This is more accurate, since it ensures the
+signal matches the user request precisely.
 
-> If we want devmem to reuse both the MSG_ZEROCOPY mechanisms and the
-> msg->[sg_from_iter|ubuf_info] mechanism, I have to dissect the
-> MSG_ZEROCOPY code carefully so that it works with and without
-> setting msg->[ubuf_info|msg->sg_from_iter]. Having gone through this
-> rabbit hole so far I see that it complicates the implementation and
-> adds more checks to the fast MSG_ZEROCOPY paths.
+Unfortunately, there is a race condition with this rounding logic. If the
+current time is close to the multiple of the period, we could calculate a
+target time that is extremely soon. It takes time for the software to
+program the registers, during which time this requested start time could
+become a start time in the past. If that happens, the periodic output
+signal will lock up.
 
-If you've already done, maybe you can post it as a draft? At least
-it'll be obvious why you say it's more complicated.
+For large enough periods, or for the logic prior to the mentioned commit,
+this is unlikely. However, with the new logic rounding to the period and
+with a small enough period, this becomes inevitable.
 
-> The complication could be worth it if there was some upside, but I
-> don't see one tbh. Passing the binding down to
-> zerocopy_fill_skb_from_devmem seems like a better approach to my eye
-> so far
+For example, attempting to enable a 10MHz signal requires a period of 100
+nanoseconds. This means in the *best* case, we have 99 nanoseconds to
+program the clock output. This is essentially impossible, and thus such a
+small period practically guarantees that the clock output function will
+lock up.
 
-The upside is that 1) you currently you add overhead to common
-path (incl copy), 2) passing it down through all the function also
-have overhead to the zerocopy and MSG_ZEROCOPY path, which I'd
-assume is comparable to those extra checks you have. 3) tcp would
-need to know about devmem tcp and its bindings, while it all could
-be in one spot under the MSG_ZEROCOPY check. 4) When you'd want
-another protocol to support that, instead of a simple
+To fix this, add some slop to the clock time used to check if the start
+time is in the past. Because it is not critical that output signals start
+immediately, but it *is* critical that we do not brick the function, 0.5
+seconds is selected. This does mean that any requested output will be
+delayed by at least 0.5 seconds.
 
-ubuf = get_devmem_ubuf();
+This slop is applied before rounding, so that we always round up to the
+nearest multiple of the period that is at least 0.5 seconds in the future,
+ensuring a minimum of 0.5 seconds to program the clock output registers.
 
-You'd need to plumb binding passing through the stack there as
-well.
+Finally, to ensure that the hardware registers programming the clock output
+complete in a timely manner, add a write flush to the end of
+ice_ptp_write_perout. This ensures we don't risk any issue with PCIe
+transaction batching.
 
-5) And keeping it in one place makes it easier to keep around.
+Strictly speaking, this fixes a race condition all the way back at the
+initial implementation of periodic output programming, as it is
+theoretically possible to trigger this bug even on the old logic when
+always rounding to a full second. However, the window is narrow, and the
+code has been refactored heavily since then, making a direct backport not
+apply cleanly.
 
-I just don't see why it'd be complicated, but maybe I miss
-something, which is why a draft prototype would explain it
-better than any words.
+Fixes: d755a7e129a5 ("ice: Cache perout/extts requests and check flags")
+Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice_ptp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-> I'm afraid I'm going to table this for now. If there is overwhelming
-> consensus that msg->sg_from_iter is the right approach here I will
-> revisit, but it seems to me to complicate code without a significant
-> upside.
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+index e26320ce52ca17b30a9538b11b754c7cf57c9af9..a99e0fbd0b8b55ad72a2bc7d13851562a6f2f5bd 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -1783,6 +1783,7 @@ static int ice_ptp_write_perout(struct ice_hw *hw, unsigned int chan,
+ 				  8 + chan + (tmr_idx * 4));
+ 
+ 	wr32(hw, GLGEN_GPIO_CTL(gpio_pin), val);
++	ice_flush(hw);
+ 
+ 	return 0;
+ }
+@@ -1843,9 +1844,10 @@ static int ice_ptp_cfg_perout(struct ice_pf *pf, struct ptp_perout_request *rq,
+ 		div64_u64_rem(start, period, &phase);
+ 
+ 	/* If we have only phase or start time is in the past, start the timer
+-	 * at the next multiple of period, maintaining phase.
++	 * at the next multiple of period, maintaining phase at least 0.5 second
++	 * from now, so we have time to write it to HW.
+ 	 */
+-	clk = ice_ptp_read_src_clk_reg(pf, NULL);
++	clk = ice_ptp_read_src_clk_reg(pf, NULL) + NSEC_PER_MSEC * 500;
+ 	if (rq->flags & PTP_PEROUT_PHASE || start <= clk - prop_delay_ns)
+ 		start = div64_u64(clk + period - 1, period) * period + phase;
+ 
 
+---
+base-commit: a92c3228766429fe175ecc815f895043ea505587
+change-id: 20250212-jk-gnrd-ptp-pin-patches-42561da45ec1
+
+Best regards,
 -- 
-Pavel Begunkov
+Jacob Keller <jacob.e.keller@intel.com>
 
