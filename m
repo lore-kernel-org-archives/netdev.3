@@ -1,122 +1,172 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9B217BB21;
-	Wed, 19 Feb 2025 06:26:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686391AE01B;
+	Wed, 19 Feb 2025 06:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739946374; cv=none; b=hvD2vcuJDd/pD0EYrJBjlpS8AGdNniAvpBuHedIbr/3iiVOUvC/1xVnzJtEO1IR0JKg+mjyZQhVym/xKYVoQeHACBYTO5sk7EZRHVwD3bnOhUvIPtLqgZz8EpJi87Ze2rVNGz79bMlvIh6YcqWxKMsXCSUteDT3nTqvrJUX0gUs=
+	t=1739946450; cv=none; b=GYoiwHyW9+aHn5MU/pFd0JRWsP6S6pl7ycLehQZ9RLu3o0It8msBGXTSNOYWHtFjGvQz09ZDr+rjAdr3ze0rjlGA1RTlXdRIGRuUyG5BvAUiYqaejQyzTNcpBGbHjeN0hkFXnfPrjMtKATxm+UUwgRLr+DbQyfRQ2uDhNdBCgQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739946374; c=relaxed/simple;
-	bh=YLRfZjNmZEwt2J4sS1CuWL+Dyi6Eo3SE1Lf0l46ZiwY=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=nJ7qeKUtcohGR1zhTKSB6x+ivxLVq3drcZwfPuQZ5VXq7t8W00X8Kmoa2FFxS6vDQYDZsoTfXxC0rPrRMQAeFttc99Y5V0CcZuPKUZjhH9AeSM5EBI6gUaVxfXPQ63tQ9RDWy3uEbo0hTsy/olwRC2ECRVrhJBcVdTW/LAif7ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eHvSeb2f; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739946450; c=relaxed/simple;
+	bh=r+iedKeiScb1dqX8mW7k4+xymZTfeRwsvVEqpB7LYZM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=o4y0tBiS5JmNH+rgOL0MhW5OGjIKWo7yDCnoGmoBPTvkjgaajDWj4sN/dRSB3NbU/KbBQou6bTD+wB8fBsGZz6i1vti8G2tZ7FsC7dffIlC9F7MWPlEfpjyaPutLR86iHbS80JZ0O96KNdiYfaae5yDi2Gkkbn54M6j8XxEa70s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=vpt1RadO; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eHvSeb2f"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2f44353649aso8921499a91.0;
-        Tue, 18 Feb 2025 22:26:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739946372; x=1740551172; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3kZElKND3kCKGrS1g7RYXmXU6YgLKTvquyxfdR0pRBg=;
-        b=eHvSeb2fT4bXIWF3jfazaay8rfw/7JBEp19VWt1Ap0ba98MYZJUQ/2OtTHq1BSs5JS
-         XMQfz5KTb57AfMToe/GOAbFfuYdhabg/hnHdKSQGWoTsembCD14weUcFstxwPzKPBapy
-         CV9C4ZbwhdoUzWcnrN3lt4jdNqYRqRQwuX3AF9xt/k0HqXHnOBfwbH6zSb8Mr0IJvZNZ
-         +V5jzxgGiY9JMVLcIQF5k19hErd7F6rq2YRN8R8SBJNSd54twQf37eRwsZqvKbsL+H2U
-         7UJCDqBeBtwGYANpk1EtrL7B5JFVuwdOKXUI1Mm/Q2ljvpze3p4aHuvfhjfBKl0qBz5D
-         eOXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739946372; x=1740551172;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=3kZElKND3kCKGrS1g7RYXmXU6YgLKTvquyxfdR0pRBg=;
-        b=ZEMWFW9mcolkL49S2PflFR99RJuoPdTuShTpn7bqY+VuYZhSwMEDgOxP2Y7eUyolsm
-         A4BSGpqkr6D60u9ji6w/7mOxPreJsZrCeIiun83Q3FSoSNAUa8wTiyZMiSfWYfSbATby
-         SFXTYUneS4olUsniSA/M0SMGoI9vXIUMiKaaQeOYp1FWQGv9eTpXp4e7J6SHTFdHlCTE
-         GcZY3hHK8QjJCQ6xVPU0OznEyPYPD/VZLUtUINhDGd+dYG3MMx07PiN0Yx2hd9P+d0gh
-         7Fl3GiBMlNajMYiJ3T9HxjF3Rn3jKKDAhEIxrkRA7Ntry7OPCBNWrHGzzYPQqchHMv+7
-         IwNg==
-X-Forwarded-Encrypted: i=1; AJvYcCVHOtdtsmEH7RoRAyE/Fa5Ly4wgIbGFAgLFX5jGYapcnWJ0Hiq6d+2f/qGXH0IyjpPQB3NfQjZ0@vger.kernel.org, AJvYcCVlt4EUaiItHco1yW8IRCR3Nd56AQAPqKMyTUHhBIxZptD7TAnCngCWoWYj3R5Aam27hj3qUUwP2sNW72Ax5Rc=@vger.kernel.org, AJvYcCVpVGZQTIyxpEJ3dqzvJvLj50KxqkNonT28EqIPsETIXZ0i/mjjfO9RlHRuA9wKi61DcILuyv7SJCTQqDk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFs8dLpDGZ73ennXJqwhOsuOh3dI7ERX9rxqpjgTTP1poUTQBp
-	5sxZ0tytzLwLp6HS9lZUGH3GLQ9BqcpLQ7GbHg+vWySwhmRHYCpQ
-X-Gm-Gg: ASbGncu9+ojZEQRCFiT4Alu5CXoTuVkdhE1uyVjwAhV3LUOpBWEuDFm4wvxN2dzo+F8
-	m9JURbsq6j2FA0XQ8g6t2jInAvO11hU1/fnK2Akc7gVZeZCz0mCwZZBi9hZnFYcE4W6wtf1VnS7
-	V+xdaLqApaPtCaDz57i5ksKWb9QDhIw6qxGV+9NH3+DoyZsVu7i/H65RcvwNX0jQDacmnK9HY39
-	WVHpX/gptfmeCQ+ZJVHLNwhsqVJFLmtMi2DRR5JutevXZuTivKWRr9PJ2CLpcWBswMsKpWC5aIg
-	8Eeq+gBsrDMIvrr9y1c2t4n0bbHP7og4afAHse10i0Va+S4P1k8ns9DzLTQJX84Dq+RO5ZRN
-X-Google-Smtp-Source: AGHT+IE7Ce4LdfDebhYA+Q4CG7Lr1YqDWI7NHJxGkePySSwowWVZA/9C6wEyMSCkX4JxZx62eXof3Q==
-X-Received: by 2002:aa7:88d5:0:b0:725:e4b9:a600 with SMTP id d2e1a72fcca58-732618e50d1mr25994703b3a.16.1739946372290;
-        Tue, 18 Feb 2025 22:26:12 -0800 (PST)
-Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73274a11a0bsm5866711b3a.123.2025.02.18.22.26.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Feb 2025 22:26:11 -0800 (PST)
-Date: Wed, 19 Feb 2025 15:26:02 +0900 (JST)
-Message-Id: <20250219.152602.1131699707200242344.fujita.tomonori@gmail.com>
-To: frederic@kernel.org
-Cc: fujita.tomonori@gmail.com, anna-maria@linutronix.de,
- tglx@linutronix.de, jstultz@google.com, sboyd@kernel.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, aliceryhl@google.com, arnd@arndb.de,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
- tgunders@redhat.com, me@kloenk.dev
-Subject: Re: [PATCH v10 6/8] MAINTAINERS: rust: Add TIMEKEEPING and TIMER
- abstractions
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <Z7M8IDI_caXqBvMp@localhost.localdomain>
-References: <20250207132623.168854-7-fujita.tomonori@gmail.com>
-	<20250217.091008.1729482605084144345.fujita.tomonori@gmail.com>
-	<Z7M8IDI_caXqBvMp@localhost.localdomain>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="vpt1RadO"
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 51J6RCdh1884773
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 19 Feb 2025 00:27:12 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1739946432;
+	bh=VlVNFZBgMTyta3Sdh9B7e+RlAhPD+wCm7u6IJUX4tKw=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=vpt1RadOOI4UXChW99+KmrwJg1Vu0Rv7W6apbG70QUAtIPbQbbOrl5Jpu1CdNhnPt
+	 AjTXIuMWwLGg2R6gPlWLvhnwVlCvDCxROHR1oU4OWviYlheUKwEc/tB7RETPKKTgZo
+	 pu41hULr7V9iREBaoo3imXJTrVOLVoRKbLZis/rk=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 51J6RC2s002407
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 19 Feb 2025 00:27:12 -0600
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 19
+ Feb 2025 00:27:11 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 19 Feb 2025 00:27:11 -0600
+Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51J6RBUp080308;
+	Wed, 19 Feb 2025 00:27:11 -0600
+Received: from localhost (meghana-pc.dhcp.ti.com [10.24.69.13] (may be forged))
+	by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 51J6RBWG009531;
+	Wed, 19 Feb 2025 00:27:11 -0600
+From: Meghana Malladi <m-malladi@ti.com>
+To: <lokeshvutla@ti.com>, <vigneshr@ti.com>, <javier.carrasco.cruz@gmail.com>,
+        <diogo.ivo@siemens.com>, <m-malladi@ti.com>, <horms@kernel.org>,
+        <pabeni@redhat.com>, <kuba@kernel.org>, <edumazet@google.com>,
+        <davem@davemloft.net>, <andrew+netdev@lunn.ch>
+CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
+        Roger Quadros
+	<rogerq@kernel.org>, <danishanwar@ti.com>
+Subject: [PATCH net v2 1/2] net: ti: icss-iep: Fix pwidth configuration for perout signal
+Date: Wed, 19 Feb 2025 11:57:00 +0530
+Message-ID: <20250219062701.995955-2-m-malladi@ti.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250219062701.995955-1-m-malladi@ti.com>
+References: <20250219062701.995955-1-m-malladi@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Mon, 17 Feb 2025 14:39:44 +0100
-Frederic Weisbecker <frederic@kernel.org> wrote:
+icss_iep_perout_enable_hw() is a common function for generating
+both pps and perout signals. When enabling pps, the application needs
+to only pass enable/disable argument, whereas for perout it supports
+different flags to configure the signal.
 
->> > diff --git a/MAINTAINERS b/MAINTAINERS
->> > index c8d9e8187eb0..987a25550853 100644
->> > --- a/MAINTAINERS
->> > +++ b/MAINTAINERS
->> > @@ -10353,6 +10353,7 @@ F:	kernel/time/sleep_timeout.c
->> >  F:	kernel/time/timer.c
->> >  F:	kernel/time/timer_list.c
->> >  F:	kernel/time/timer_migration.*
->> > +F:	rust/kernel/time/delay.rs
->> >  F:	tools/testing/selftests/timers/
->> >  
->> >  HIGH-SPEED SCC DRIVER FOR AX.25
->> > @@ -23852,6 +23853,7 @@ F:	kernel/time/timeconv.c
->> >  F:	kernel/time/timecounter.c
->> >  F:	kernel/time/timekeeping*
->> >  F:	kernel/time/time_test.c
->> > +F:	rust/kernel/time.rs
->> >  F:	tools/testing/selftests/timers/
->> 
->> TIMERS and TIMEKEEPING maintainers,
->> 
->> You would prefer to add rust files to a separate entry for Rust? Or
->> you prefer a different option?
-> 
-> It's probably a better idea to keep those rust entries to their own sections.
-> This code will be better handled into your more capable hands.
+But icss_iep_perout_enable_hw() function is missing to hook the
+configuration params passed by the app, causing perout to behave
+same a pps (except being able to configure the period). As duty cycle
+is also one feature which can configured for perout, incorporate this
+in the function to get the expected signal.
 
-Got it. I'll create new sections for Rust's TIMERS and TIMEKEEPING.
+Fixes: c1e0230eeaab2 ("net: ti: icss-iep: Add IEP driver")
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+---
+Changes from v1 (v2-v1):
+- replace u32 typecast with div_u64()
 
-Thanks!
+ drivers/net/ethernet/ti/icssg/icss_iep.c | 28 ++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
+index 768578c0d958..0411438a3b5d 100644
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -406,9 +406,16 @@ static void icss_iep_update_to_next_boundary(struct icss_iep *iep, u64 start_ns)
+ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 				     struct ptp_perout_request *req, int on)
+ {
++	struct timespec64 ts;
++	u64 ns_width;
+ 	int ret;
+ 	u64 cmp;
+ 
++	/* Calculate width of the signal for PPS/PEROUT handling */
++	ts.tv_sec = req->on.sec;
++	ts.tv_nsec = req->on.nsec;
++	ns_width = timespec64_to_ns(&ts);
++
+ 	if (iep->ops && iep->ops->perout_enable) {
+ 		ret = iep->ops->perout_enable(iep->clockops_data, req, on, &cmp);
+ 		if (ret)
+@@ -419,8 +426,9 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 			regmap_write(iep->map, ICSS_IEP_CMP1_REG0, lower_32_bits(cmp));
+ 			if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
+ 				regmap_write(iep->map, ICSS_IEP_CMP1_REG1, upper_32_bits(cmp));
+-			/* Configure SYNC, 1ms pulse width */
+-			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG, 1000000);
++			/* Configure SYNC, based on req on width */
++			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
++				     div_u64(ns_width, iep->def_inc));
+ 			regmap_write(iep->map, ICSS_IEP_SYNC0_PERIOD_REG, 0);
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG, 0);
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0); /* one-shot mode */
+@@ -447,6 +455,8 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 				   + req->period.nsec;
+ 			icss_iep_update_to_next_boundary(iep, start_ns);
+ 
++			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
++				     div_u64(ns_width, iep->def_inc));
+ 			/* Enable Sync in single shot mode  */
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG,
+ 				     IEP_SYNC_CTRL_SYNC_N_EN(0) | IEP_SYNC_CTRL_SYNC_EN);
+@@ -478,6 +488,12 @@ static int icss_iep_perout_enable(struct icss_iep *iep,
+ 
+ 	mutex_lock(&iep->ptp_clk_mutex);
+ 
++	/* Reject requests with unsupported flags */
++	if (req->flags & ~PTP_PEROUT_DUTY_CYCLE) {
++		ret = -EOPNOTSUPP;
++		goto exit;
++	}
++
+ 	if (iep->pps_enabled) {
+ 		ret = -EBUSY;
+ 		goto exit;
+@@ -486,6 +502,12 @@ static int icss_iep_perout_enable(struct icss_iep *iep,
+ 	if (iep->perout_enabled == !!on)
+ 		goto exit;
+ 
++	/* Set default "on" time (1ms) for the signal if not passed by the app */
++	if (!(req->flags & PTP_PEROUT_DUTY_CYCLE)) {
++		req->on.sec = 0;
++		req->on.nsec = NSEC_PER_MSEC;
++	}
++
+ 	ret = icss_iep_perout_enable_hw(iep, req, on);
+ 	if (!ret)
+ 		iep->perout_enabled = !!on;
+@@ -572,6 +594,8 @@ static int icss_iep_pps_enable(struct icss_iep *iep, int on)
+ 		rq.perout.period.nsec = 0;
+ 		rq.perout.start.sec = ts.tv_sec + 2;
+ 		rq.perout.start.nsec = 0;
++		rq.perout.on.sec = 0;
++		rq.perout.on.nsec = NSEC_PER_MSEC;
+ 		ret = icss_iep_perout_enable_hw(iep, &rq.perout, on);
+ 	} else {
+ 		ret = icss_iep_perout_enable_hw(iep, &rq.perout, on);
+-- 
+2.43.0
+
