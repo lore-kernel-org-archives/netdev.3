@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A58F1C82F4
-	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 23:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE90625E479
+	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 23:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740009007; cv=none; b=l5jYf4FiAZwGq+96pq49inql/qPw67LW4vjCZ2407z2QBpA5LNN1BIQ4ni9/9T8V5CSOOd3uNaDh5Ee5ssNj5cpHKuVEc+nvroFuSmB+75OA2UZaGxw3gFKrHHLHqsn/sSzsTHrUb7dxhewXBayPmndD7TjM68dx22aPSQmRfoM=
+	t=1740009007; cv=none; b=fRAzo2kdD15sUKrbJK0fq8C198iJ8YOmc+ewp9gsioH+ygAc8x4S9vAwoWw1Xj6gmMdOvcVQzysJvQ2x2yyQWeVy3SZXC/tJ3zpPqKJlTiN2pOdD2M3xA3nVWK73Vy3K2MoG1p71sy392uAjwLGlVosjGdZoeW9H/PKZEqoZDic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740009007; c=relaxed/simple;
-	bh=pJXYrZOSs+XUBJY304j7wzhw2pI9MnqXm9MF9047qN0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lsxhN3nSOAerS3zchabYkV/VpZBlaxa5a7231uhEvfDuyb9hzAYP8Cv3GTsPjvWUSWdjQboAGOQ+LAZFiImbgmx4roW3QOmSiKbCGlbnqfnhC92a9GttIT1TNst1YbE5lQm1/rR1LCM9ItQbXKv7x87aFgLTOH3Njm3lfWQ3jCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UK+xFTPb; arc=none smtp.client-ip=10.30.226.201
+	bh=xEF9eVoNLJJNZj4PWeSjK79kfLFLXYFafxa5opxCOYQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mSvQvDRJkbBczaYaTDA/MKxzMkKK/3JtB9YtszehRT6dlK9NVXk9o03RbbJ/Nj6ju/5yQX8DZvAsqsAHBP1jKkRoeOTuGeBmhiGEnjhQKOHvd4cSOyfXEzOMI3FQFuZkJ8kHvHu5hXhOqp1Rho1AbwX8xuRsxPzziDHWAkEO0uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mn7FhBCv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UK+xFTPb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F33C4CED1;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mn7FhBCv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 030A7C4CED6;
 	Wed, 19 Feb 2025 23:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740009006;
-	bh=pJXYrZOSs+XUBJY304j7wzhw2pI9MnqXm9MF9047qN0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=UK+xFTPbMIv5cjTPh5+Vqjuj3P7D2X92WWl6+xt0Vpwb8UKAB36AMBmMGIemYqum0
-	 Zotb7aNHN3xWYmqQpyLjrSw3KcuLwDOdVee70ZJ9KraijFZZeBQDpaSj2+z6o2d7or
-	 2QKCxqc//arYmmBjDRPlxhlEkVgmnCmbi4ll068vm8RZ4/UYWl3fbl+P3nkfqhc+ZP
-	 gH5J4NKtmiDesbPWBeSWQ735nrOKO1fIFSHvl0Gn9x1JF4vFg6RPTxojRhdQX0O6jM
-	 DsQAmkIvTs+k5p3ODkrWcGdlodWJoubwERF8Uh26pcMKGyoRtWyCvoU0f8StQ8+Ldz
-	 M7vT8NuPNC8BQ==
+	s=k20201202; t=1740009007;
+	bh=xEF9eVoNLJJNZj4PWeSjK79kfLFLXYFafxa5opxCOYQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Mn7FhBCvzHK448m7QSPiEVQW8vqeLLDoBCUhkpQ1DFZFC68VpUmba1smK2PHkVNya
+	 bisnxHa20J0EWbSyTtaYPi1oWkDfpcGNlQbWjoxCwkc10pIA9WrhQkWD7sFtmP1J6C
+	 bPNoBvVDyIjTUczyZCKzi5btB6a5HFSEbo1c/PgBOJi1v50TERip/knOl2SseQn/Ts
+	 nK5g5eZJ1oZAuW1sLvbqAg+o4sGeWteKi61HuTf2a6aa9/wyUgxIFDIIGumgyG0VuH
+	 THg8v3ydPvva4ZC4ER4HXG3eeKv5EeBPNIL03oI+9hIGBdrXxlsDBx/XW8KHw9zpFX
+	 Y1fKampqQd4DQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -35,11 +36,14 @@ Cc: netdev@vger.kernel.org,
 	jdamato@fastly.com,
 	stfomichev@gmail.com,
 	petrm@nvidia.com,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 0/7] selftests: drv-net: improve the queue test for XSK
-Date: Wed, 19 Feb 2025 15:49:49 -0800
-Message-ID: <20250219234956.520599-1-kuba@kernel.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>
+Subject: [PATCH net-next v2 2/7] selftests: drv-net: use cfg.rpath() in netlink xsk attr test
+Date: Wed, 19 Feb 2025 15:49:51 -0800
+Message-ID: <20250219234956.520599-3-kuba@kernel.org>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250219234956.520599-1-kuba@kernel.org>
+References: <20250219234956.520599-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,39 +52,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-We see some flakes in the the XSK test:
+The cfg.rpath() helper was been recently added to make formatting
+paths for helper binaries easier.
 
-   Exception| Traceback (most recent call last):
-   Exception|   File "/home/virtme/testing-18/tools/testing/selftests/net/lib/py/ksft.py", line 218, in ksft_run
-   Exception|     case(*args)
-   Exception|   File "/home/virtme/testing-18/tools/testing/selftests/drivers/net/./queues.py", line 53, in check_xdp
-   Exception|     ksft_eq(q['xsk'], {})
-   Exception| KeyError: 'xsk'
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ tools/testing/selftests/drivers/net/queues.py | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-I think it's because the method or running the helper in the background
-is racy. Add more solid infra for waiting for a background helper to be
-initialized.
-
-v2:
- - add patch 1, 3 and 4
- - redo patch 5
-v1: https://lore.kernel.org/20250218195048.74692-1-kuba@kernel.org
-
-Jakub Kicinski (7):
-  selftests: drv-net: add a warning for bkg + shell + terminate
-  selftests: drv-net: use cfg.rpath() in netlink xsk attr test
-  selftests: drv-net: add missing new line in xdp_helper
-  selftests: drv-net: probe for AF_XDP sockets more explicitly
-  selftests: drv-net: add a way to wait for a local process
-  selftests: drv-net: improve the use of ksft helpers in XSK queue test
-  selftests: drv-net: rename queues check_xdp to check_xsk
-
- .../selftests/drivers/net/xdp_helper.c        | 63 ++++++++++++++--
- tools/testing/selftests/drivers/net/queues.py | 61 ++++++++--------
- tools/testing/selftests/net/lib/py/ksft.py    |  5 ++
- tools/testing/selftests/net/lib/py/utils.py   | 72 +++++++++++++++++--
- 4 files changed, 161 insertions(+), 40 deletions(-)
-
+diff --git a/tools/testing/selftests/drivers/net/queues.py b/tools/testing/selftests/drivers/net/queues.py
+index 5fdfebc6415f..b6896a57a5fd 100755
+--- a/tools/testing/selftests/drivers/net/queues.py
++++ b/tools/testing/selftests/drivers/net/queues.py
+@@ -25,8 +25,7 @@ import subprocess
+     return None
+ 
+ def check_xdp(cfg, nl, xdp_queue_id=0) -> None:
+-    test_dir = os.path.dirname(os.path.realpath(__file__))
+-    xdp = subprocess.Popen([f"{test_dir}/xdp_helper", f"{cfg.ifindex}", f"{xdp_queue_id}"],
++    xdp = subprocess.Popen([cfg.rpath("xdp_helper"), f"{cfg.ifindex}", f"{xdp_queue_id}"],
+                            stdin=subprocess.PIPE, stdout=subprocess.PIPE, bufsize=1,
+                            text=True)
+     defer(xdp.kill)
 -- 
 2.48.1
 
