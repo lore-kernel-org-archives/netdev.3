@@ -1,166 +1,164 @@
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from mx09lb.world4you.com (mx09lb.world4you.com [81.19.149.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF89B1FECAE;
-	Wed, 19 Feb 2025 19:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBFA21C9E5
+	for <netdev@vger.kernel.org>; Wed, 19 Feb 2025 19:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739993790; cv=none; b=js2r78i+d62NBNC1+pYvEPI146m6+B/IyotjWEBWesRqoZz3EwKDOImUynPB/QY9zPtM2Uj5rfjU3QCTDdAz+7pxNi8WSQkuXES0fhgZ6NjAJUx+BFJmMla3CgUsHQwD+TbyhlcswQLkIqwz6L6A8IG8fJEZIanUUUYtMrFxwls=
+	t=1739994152; cv=none; b=qPc3LIO7WvvQeDVcagV28Q+yY9WJCjxccwra9DpBsHkyXyVcZQ6A/+H1WQa6Iwq3M8z0EHgn2iQAl3veEDaWbKOqxLTPJ718lrbEs5oTLaucgygJVUGDKMFID0xALBE7KUbfQN6eXJWG4X3hkKO/MUWS/HuLtY9yBlsCDizk2R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739993790; c=relaxed/simple;
-	bh=YUZVKPNnWqfMc6DHELioLciuEgVLDK11YWAFpFQIrpU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oY0NKppHyuOx2SAc6XYX5VDlUt13HSshk26Wjkth6D8MrZuT8NVwF5hygiBm8m88Zh6M8QC347ZG6dYeq8dQ8ZbXELbg7HxGF/TAKS3W/xDJZWkjjrAmGMbBTCMcMh7DMkmbviGzYx0B2zTvj4a15YMfGVnl01l/tJaqE4fIw+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=BVC9iWak; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1739994152; c=relaxed/simple;
+	bh=+pvgzGgR29YlwgpcA1b3/w29dCZWpHGbhvKDb9QYVOI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=A4RlHbgD1psZmRXCmbqWdfEnVl8RIc0b0vAAtqei5X/VmRYkg/+93ZbLKhxGgpGnqzcCzQzz6HipJjO/x0WUdqsBXFqbWj8LYTM1hDFvb+SVKaMhtX2LhsFfXbXeIukDQPlbI3S8yKBBUuLlJm/GPuOdoi1KufZNRU0slI8CZ8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=s1WyTNsh; arc=none smtp.client-ip=81.19.149.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="BVC9iWak"
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 51JJa5pU2063500
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Feb 2025 13:36:05 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1739993765;
-	bh=8EvVce+jqD12k32qwF7nR1NxOePu4ZKlcn0n3l2IJUI=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=BVC9iWakCbU6AvMW2RylcRWtY2vSIlU6vNlIuUCnK4Ng+AAdwW87md1tFYmgpYkk/
-	 Pb5Nyoyd8ZQnvICjNZ6BHJdopuWS48+T21BvEh/rHfrkOHc0xHsy4Y9dxmXeGXFSkz
-	 rBsTTX0wCN+Adn9YZBnt/0voh4n+z6FkXUzC4qmg=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 51JJa5me014675
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 19 Feb 2025 13:36:05 -0600
-Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 19
- Feb 2025 13:36:04 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 19 Feb 2025 13:36:04 -0600
-Received: from [10.249.135.49] ([10.249.135.49])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51JJZxUp074733;
-	Wed, 19 Feb 2025 13:36:00 -0600
-Message-ID: <b399c73b-359a-4dde-acc3-0bf4aea900e9@ti.com>
-Date: Thu, 20 Feb 2025 01:05:58 +0530
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="s1WyTNsh"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=SppyZ9N4iBYEdqDLftkZGDqyE3Ludi9Aj2kWbyOUpBw=; b=s1WyTNshRj1Ay0oowX/U4pCCCW
+	xL0sLr2Ped+9JrlxVtn8gYWWyzOoHYyNpUqHHEaDvYb6xiZ1IuQLZrKxpjzrqEt6i8CvTl+GCAqJv
+	6rIuUmPCv5koJ3a1Oye77CSCREydUXJyWSazDWyOC1RXlmRslwX+PxW2YpROnBlcfBnI=;
+Received: from 88-117-55-1.adsl.highway.telekom.at ([88.117.55.1] helo=hornet.engleder.at)
+	by mx09lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tkpxj-000000003mi-1WUX;
+	Wed, 19 Feb 2025 20:42:27 +0100
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	Gerhard Engleder <gerhard@engleder-embedded.com>
+Subject: [PATCH net-next v7 7/8] net: selftests: Add selftests sets with fixed speed
+Date: Wed, 19 Feb 2025 20:42:12 +0100
+Message-Id: <20250219194213.10448-8-gerhard@engleder-embedded.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250219194213.10448-1-gerhard@engleder-embedded.com>
+References: <20250219194213.10448-1-gerhard@engleder-embedded.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] irqchip: ti-tsir: Add support for Timesync
- Interrupt Router
-To: Thomas Gleixner <tglx@linutronix.de>, Jason Reeder <jreeder@ti.com>,
-        <vigneshr@ti.com>, <nm@ti.com>, Paolo Abeni <pabeni@redhat.com>,
-        "Jakub
- Kicinski" <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S.
- Miller" <davem@davemloft.net>,
-        Andrew Lunn <andrew+netdev@lunn.ch>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <srk@ti.com>,
-        <s-vadapalli@ti.com>, <danishanwar@ti.com>, <m-malladi@ti.com>,
-        "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>
-References: <20250205160119.136639-1-c-vankar@ti.com>
- <20250205160119.136639-2-c-vankar@ti.com> <87lduin4o5.ffs@tglx>
- <09880b14-cef1-44cd-9fa4-8840fb673c0a@ti.com> <87cyfplg8s.ffs@tglx>
- <dda464e2-d442-4e20-bc6d-cea854c5f17f@ti.com> <87jz9tjwjk.ffs@tglx>
- <4238ddcc-d6ab-41a3-8725-b948f013a5b9@ti.com> <87ikp8jph9.ffs@tglx>
-Content-Language: en-US
-From: "Vankar, Chintan" <c-vankar@ti.com>
-In-Reply-To: <87ikp8jph9.ffs@tglx>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Transfer-Encoding: 8bit
+X-AV-Do-Run: Yes
+X-ACL-Warn: X-W4Y-Internal
 
-Hello Thomas/Greg,
+Add PHY loopback selftest sets with fixed 100 Mbps and 1000 Mbps speed.
 
-On 2/18/2025 1:47 AM, Thomas Gleixner wrote:
-> Chintan!
-> 
-> On Sat, Feb 15 2025 at 17:19, Chintan Vankar wrote:
->> On 14/02/25 04:13, Thomas Gleixner wrote:
->>> Two questions:
->>>
->>>    1) For the case where no interrupt is involved, how is the routing
->>>       configured?
->>>
->>>    2) For the case where it routes an input line to an interupt, then how
->>>       is this interrupt going to be handled by this interrupt domain which
->>>       is not connected to anything and implements an empty disfunctional
->>>       interrupt chip?
->>>
->>
->> For both the cases above the job of Timesync INTR is to map the output
->> register with the corresponding input.
->>
->> As described in section 11.3.2.1 in the TRM at:
->> https://www.ti.com/lit/ug/spruiu1d/spruiu1d.pdf,
->> the job of the Timesync INTR is to provide a configuration of the
->> "output registers which controls the selection". Hence we just have to
->> provide configuration APIs in the Timesync INTR which programs output
->> registers of the Timesync INTR. About the handling of the interrupts,
->> the device which receives an interrupt needs to handle the interrupt.
->>
->> Could you please explain why we consider these two cases to be
->> different?
-> 
-> They are different as
-> 
->    #1 Routes the signal from one IP block to another IP block
-> 
->       So there is no notion of an actual interrupt, but still you use the
->       interrupt domain mechanism, which requires to allocate a Linux
->       interrupt number just to configure that router.
-> 
->       What's the purpose of this interrupt number and the allocated
->       resources behind it?
-> 
->    #2 Routes the signal from an IP block to an actual interrupt "input"
-> 
->       Again, this requires to allocate a Linux interrupt number which is
->       disfunctional as it is not connected in the interrupt domain
->       hierarchy and just provides an interrupt chip with a name and no
->       actual functionality behind it.
-> 
->       So the resulting real interrupt needs yet another interrupt number
->       which then maps to something which actually can handle interrupts.
-> 
-> So in some aspect they are not that different because both have nothing
-> to do with the actual concept of interrupt management in the Linux
-> kernel.
-> 
->  From the kernel's interrupt handling POV this is a completely
-> transparent piece of hardware, which is not associated to any interrupt
-> handling mechanism. Just because the manual mentions INTR in the name of
-> the IP block does not make it part of the actual kernel interrupt
-> handling.
-> 
-> I have no idea into which subsystem such a SoC configuration belongs to,
-> but Greg might have an idea.
-> 
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+---
+ include/net/selftests.h |  4 ++++
+ net/core/selftests.c    | 46 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 50 insertions(+)
 
-Thanks for the reviewing the patch. Since you suggest to implement it
-with a different subsystem, I want your and Greg's suggestion for that.
+diff --git a/include/net/selftests.h b/include/net/selftests.h
+index a3e9bb959e3d..ba781fa6249a 100644
+--- a/include/net/selftests.h
++++ b/include/net/selftests.h
+@@ -7,9 +7,13 @@
+ /**
+  * enum net_selftest_set - selftest set ID
+  * @NET_SELFTEST_CARRIER: Loopback tests based on carrier speed
++ * @NET_SELFTEST_100: Loopback tests with 100 Mbps
++ * @NET_SELFTEST_1000: Loopback tests with 1000 Mbps
+  */
+ enum net_selftest_set {
+ 	NET_TEST_LOOPBACK_CARRIER = 0,
++	NET_TEST_LOOPBACK_100,
++	NET_TEST_LOOPBACK_1000,
+ };
+ 
+ #if IS_ENABLED(CONFIG_NET_SELFTESTS)
+diff --git a/net/core/selftests.c b/net/core/selftests.c
+index 3a597a38566e..3149bd1f15d3 100644
+--- a/net/core/selftests.c
++++ b/net/core/selftests.c
+@@ -324,6 +324,26 @@ static int net_test_phy_loopback_enable_fn(struct net_device *ndev)
+ 
+ static const NET_TEST(phy_loopback_enable, "PHY loopback enable");
+ 
++static int net_test_phy_loopback_100_enable_fn(struct net_device *ndev)
++{
++	if (!ndev->phydev)
++		return -EOPNOTSUPP;
++
++	return phy_loopback(ndev->phydev, true, 100);
++}
++
++static const NET_TEST(phy_loopback_100_enable, "PHY loopback 100 Mbps");
++
++static int net_test_phy_loopback_1000_enable_fn(struct net_device *ndev)
++{
++	if (!ndev->phydev)
++		return -EOPNOTSUPP;
++
++	return phy_loopback(ndev->phydev, true, 1000);
++}
++
++static const NET_TEST(phy_loopback_1000_enable, "PHY loopback 1000 Mbps");
++
+ static int net_test_phy_loopback_disable_fn(struct net_device *ndev)
+ {
+ 	if (!ndev->phydev)
+@@ -376,11 +396,33 @@ static const struct net_test *net_selftests_carrier[] = {
+ 	&net_test_phy_loopback_disable,
+ };
+ 
++static const struct net_test *net_selftests_100[] = {
++	&net_test_phy_phydev,
++	&net_test_phy_loopback_100_enable,
++	&net_test_phy_loopback_udp,
++	&net_test_phy_loopback_udp_mtu,
++	&net_test_phy_loopback_tcp,
++	&net_test_phy_loopback_disable,
++};
++
++static const struct net_test *net_selftests_1000[] = {
++	&net_test_phy_phydev,
++	&net_test_phy_loopback_1000_enable,
++	&net_test_phy_loopback_udp,
++	&net_test_phy_loopback_udp_mtu,
++	&net_test_phy_loopback_tcp,
++	&net_test_phy_loopback_disable,
++};
++
+ static const struct net_test **net_selftests_set_get(int set)
+ {
+ 	switch (set) {
+ 	case NET_TEST_LOOPBACK_CARRIER:
+ 		return net_selftests_carrier;
++	case NET_TEST_LOOPBACK_100:
++		return net_selftests_100;
++	case NET_TEST_LOOPBACK_1000:
++		return net_selftests_1000;
+ 	}
+ 
+ 	return NULL;
+@@ -415,6 +457,10 @@ int net_selftest_set_get_count(int set)
+ 	switch (set) {
+ 	case NET_TEST_LOOPBACK_CARRIER:
+ 		return ARRAY_SIZE(net_selftests_carrier);
++	case NET_TEST_LOOPBACK_100:
++		return ARRAY_SIZE(net_selftests_100);
++	case NET_TEST_LOOPBACK_1000:
++		return ARRAY_SIZE(net_selftests_1000);
+ 	default:
+ 		return -EINVAL;
+ 	}
+-- 
+2.39.5
 
-As we discussed and also from the documentation, Timesync INTR should be
-configured by programming it's output registers to control the selection
-corresponding to the input. Mux-controller subsystem also works on the
-similar kind of principle, to program the output by selectively choosing
-from multiple input sources, I am trying to relate Timesync INTR with
-that subsystem.
-
-Could you please suggest if the implementation can be achieved using the
-mux-subsystem ?
-
-
-Regards,
-Chintan.
-
-> Thanks,
-> 
->          tglx
