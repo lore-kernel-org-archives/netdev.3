@@ -1,180 +1,141 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2DC1EB1B9;
-	Thu, 20 Feb 2025 23:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B1F1F4E3B
+	for <netdev@vger.kernel.org>; Thu, 20 Feb 2025 23:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740093107; cv=none; b=A5jL8sKeIp4QWEFqPGNVmDuzdVDBbj4whxdwrB5MTeKPtYfZ7uyM/d36h4GJYtLs5yX5ATftpyw5iKgaJEUF/k4YSQDRL0Wq2ntgwxovnjyDHLRU7ypqerf3jWF9m228A4a3U+6cfJEDKdj/dMVlzfA/G6p77LT/pBkvFNhNVEY=
+	t=1740093343; cv=none; b=NHNXkaNIWh5wnut9kJbGV4Ch22v5FdRjrncO6oWwN+zEHvHna57mo9Tm1TOESwaquC/3/mHqJhFn4fIcL97yQPqxPU6TAGaD2IuIV/wTYaGl2ma4iRU8mJO9D2rY8qyE+fk5wbOSpsrU5SWKxMuPHn0fXO7Qgt6/jh9UOFv1YoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740093107; c=relaxed/simple;
-	bh=R0Fj56QDGOJyhVVHZjrG1Af8PrPuFhmH/B5G0gjo4Y8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hyuFsD/kK35lFGaQNt71SDvKmJ30NvW4/hNBPSoY0HY8gQfcf2CYXfOWNB+G7uuvCBCxlCYvckG1AY7uAcB1dbOUjGLRTt4D6oCZES5xjraHsHDCtIkws0rfIA0xfWWnjmlEumLYUyIIaSZjRg8JfKPZT0mTLE9aN1fGLd4x6oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=Lj45DVaq; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1740093343; c=relaxed/simple;
+	bh=xiF91DRXq61q4vpXvNa8LutOEIEBtwUAL8JN8LXZTXk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SpREHMZQck1YLsGmEn8XDlm2fbbT5HitGiLaWeR6Cv3dORCvM9EwFgnYF95nV8fcrXxyAdfumCn+naQXo1cGcv0PYnZISQQcQ2L0KkNdVeSKL+f7k8YTjGRMOhvqI3jU1YUQPpAiAK6/fRoIsCQmYur99ooHLyDfiyh/nsd0jDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LBBc8wm7; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="Lj45DVaq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=JYy9jYhd6Up0RBcecZv1pGyDC9oApGZN2T90sAZAV0A=; b=Lj45DVaq5dFkoib6vMaBPlT969
-	dGF6QZnqPgz4jklW4WIxoiHU68jAliEwKutCpf+lhq+jMIi66OtB4Um/HAkkDMmgaZooPIbRgQJzt
-	8kv0rlq6EDmhWckG5BkCEtDGXjgi4fvmQUGLFcjEgqVxfhR32yrLph6O97XV66Ookucd+ql7RsUqk
-	3A8gKhz0nIRbx5DhDuuInhIg/QWrK6a9tONGY8ycAcmaH6L6loKgRhyCnspxDCNIuswTUsvBkEKDW
-	EJO8JMwZe3RG2RvJHOD7dhF8v5p4ap6ACk+njV86VDvrckzHbxNTkSLzklrYQbTEziK4InitECHgg
-	Agfe4evA==;
-Received: from 50.249.197.178.dynamic.cust.swisscom.net ([178.197.249.50] helo=localhost)
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1tlFQC-0001UG-0F;
-	Thu, 20 Feb 2025 23:53:32 +0100
-From: Daniel Borkmann <daniel@iogearbox.net>
-To: torvalds@linux-foundation.org
-Cc: bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	alexei.starovoitov@gmail.com,
-	andrii@kernel.org,
-	daniel@iogearbox.net,
-	martin.lau@kernel.org
-Subject: [GIT PULL] bpf for v6.14-rc4
-Date: Thu, 20 Feb 2025 23:53:31 +0100
-Message-ID: <20250220225331.46335-1-daniel@iogearbox.net>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LBBc8wm7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740093342; x=1771629342;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=xiF91DRXq61q4vpXvNa8LutOEIEBtwUAL8JN8LXZTXk=;
+  b=LBBc8wm7czwHNbj9jTuIICH42hkIvePYRL3Qal8SZj8Mjau2QFDqXXok
+   dBgTSN+Th0RDS+KyC8Kh64MsqeROJOIUTqHHio2k6HAfkL8VCCB9We5L9
+   CXBZvzmh+sBJxezJLnj3ooI7d0awXxefne1i2fWES4aXobWNbXIu9Z587
+   Ith4Cs+4ILFyjmqteZqNbSO0oGK41p+rJ/ZGa9IWvJzH06c+DWikDW6gg
+   et1+pK2zcwHCe+SJs0/oU2vS0nHsjl0pVCqF+FuH1uPVskkaj/WaMxcX9
+   AQYtsY3EOPNJp65Ei6MvWLcSVun1fpLZJlihiWMT3OSLoWz4A2+E8W06C
+   Q==;
+X-CSE-ConnectionGUID: sHM2ZDRwQ9Wbo2bvu6+fOw==
+X-CSE-MsgGUID: g/erfG2hTLSdVjCkCSmwvw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="40085530"
+X-IronPort-AV: E=Sophos;i="6.13,302,1732608000"; 
+   d="scan'208";a="40085530"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 15:15:41 -0800
+X-CSE-ConnectionGUID: /c0sQfnlRbm3QgPZGJ8AZg==
+X-CSE-MsgGUID: DgwZGjsuQzS88LsfEB+oFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,302,1732608000"; 
+   d="scan'208";a="120306173"
+Received: from jekeller-desk.jf.intel.com ([10.166.241.15])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 15:15:41 -0800
+From: Jacob Keller <jacob.e.keller@intel.com>
+Date: Thu, 20 Feb 2025 15:15:24 -0800
+Subject: [PATCH iwl-net v2] ice: fix Get Tx Topology AQ command error on
+ E830
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27555/Thu Feb 20 10:43:53 2025)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250220-jk-e830-ddp-loading-fix-v2-1-7c9663a442c1@intel.com>
+X-B4-Tracking: v=1; b=H4sIAIu3t2cC/4WNQQ6CMBBFr2Jm7ZhSIVRX3sOwKJ0BRrElLUEN4
+ e42XMDl/y///RUSR+EE18MKkRdJEnwO+ngAN1jfMwrlDFrpSunC4OOJbM4KiSYcgyXxPXbywQt
+ 31FLndK0s5PUUOde7+Q7yHtHzDE0Gg6Q5xO/+uBQ7/itfCiywrMkZNlTatrqJn3k8ufCCZtu2H
+ 7kZeV3HAAAA
+X-Change-ID: 20250218-jk-e830-ddp-loading-fix-9efdbdfc270a
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+ Paul Greenwalt <paul.greenwalt@intel.com>, 
+ Jacob Keller <jacob.e.keller@intel.com>
+X-Mailer: b4 0.14.2
 
-Hi Linus,
+From: Paul Greenwalt <paul.greenwalt@intel.com>
 
-The following changes since commit 05dbaf8dd8bf537d4b4eb3115ab42a5fb40ff1f5:
+The Get Tx Topology AQ command (opcode 0x0418) has different read flag
+requriements depending on the hardware/firmware. For E810, E822, and E823
+firmware the read flag must be set, and for newer hardware (E825 and E830)
+it must not be set.
 
-  Merge tag 'x86-urgent-2025-01-28' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip (2025-01-28 14:32:03 -0800)
+This results in failure to configure Tx topology and the following warning
+message during probe:
 
-are available in the Git repository at:
+  DDP package does not support Tx scheduling layers switching feature -
+  please update to the latest DDP package and try again
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf.git tags/bpf-fixes
+The current implementation only handles E825-C but not E830. It is
+confusing as we first check ice_is_e825c() and then set the flag in the set
+case. Finally, we check ice_is_e825c() again and set the flag for all other
+hardware in both the set and get case.
 
-for you to fetch changes up to dbf7cc560007c8624ba42bbda369eca2973fc2da:
+Instead, notice that we always need the read flag for set, but only need
+the read flag for get on E810, E822, and E823 firmware. Fix the logic to
+check the MAC type and set the read flag in get only on the older devices
+which require it.
 
-  Merge branch 'bpf-skip-non-exist-keys-in-generic_map_lookup_batch' (2025-02-18 17:27:38 -0800)
+Fixes: ba1124f58afd ("ice: Add E830 device IDs, MAC type and registers")
+Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+---
+Changes in v2:
+- Update commit message to include the warning users see
+- Rework code to set the flag for E810 and E822 instead of to *not* set it
+  for E825-C and E830. We anticipate that future hardware and firmware
+  versions will behave like E830.
+- Link to v1: https://lore.kernel.org/r/20250218-jk-e830-ddp-loading-fix-v1-1-47dc8e8d4ab5@intel.com
+---
+ drivers/net/ethernet/intel/ice/ice_ddp.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-----------------------------------------------------------------
-BPF fixes:
+diff --git a/drivers/net/ethernet/intel/ice/ice_ddp.c b/drivers/net/ethernet/intel/ice/ice_ddp.c
+index 03988be03729b76e96188864896527060c8c4d5b..59323c019544fc1f75dcb8a5d31e0b0c82932fe1 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ddp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ddp.c
+@@ -2345,15 +2345,15 @@ ice_get_set_tx_topo(struct ice_hw *hw, u8 *buf, u16 buf_size,
+ 			cmd->set_flags |= ICE_AQC_TX_TOPO_FLAGS_SRC_RAM |
+ 					  ICE_AQC_TX_TOPO_FLAGS_LOAD_NEW;
+ 
+-		if (ice_is_e825c(hw))
+-			desc.flags |= cpu_to_le16(ICE_AQ_FLAG_RD);
++		desc.flags |= cpu_to_le16(ICE_AQ_FLAG_RD);
+ 	} else {
+ 		ice_fill_dflt_direct_cmd_desc(&desc, ice_aqc_opc_get_tx_topo);
+ 		cmd->get_flags = ICE_AQC_TX_TOPO_GET_RAM;
+-	}
+ 
+-	if (!ice_is_e825c(hw))
+-		desc.flags |= cpu_to_le16(ICE_AQ_FLAG_RD);
++		if (hw->mac_type == ICE_MAC_E810 ||
++		    hw->mac_type == ICE_MAC_GENERIC)
++			desc.flags |= cpu_to_le16(ICE_AQ_FLAG_RD);
++	}
+ 
+ 	status = ice_aq_send_cmd(hw, &desc, buf, buf_size, cd);
+ 	if (status)
 
-- Fix a soft-lockup in BPF arena_map_free on 64k page size
-  kernels (Alan Maguire)
+---
+base-commit: 992ee3ed6e9fdd0be83a7daa5ff738e3cf86047f
+change-id: 20250218-jk-e830-ddp-loading-fix-9efdbdfc270a
 
-- Fix a missing allocation failure check in BPF verifier's
-  acquire_lock_state (Kumar Kartikeya Dwivedi)
+Best regards,
+-- 
+Jacob Keller <jacob.e.keller@intel.com>
 
-- Fix a NULL-pointer dereference in trace_kfree_skb by adding
-  kfree_skb to the raw_tp_null_args set (Kuniyuki Iwashima)
-
-- Fix a deadlock when freeing BPF cgroup storage (Abel Wu)
-
-- Fix a syzbot-reported deadlock when holding BPF map's
-  freeze_mutex (Andrii Nakryiko)
-
-- Fix a use-after-free issue in bpf_test_init when
-  eth_skb_pkt_type is accessing skb data not containing an
-  Ethernet header (Shigeru Yoshida)
-
-- Fix skipping non-existing keys in generic_map_lookup_batch
-  (Yan Zhai)
-
-- Several BPF sockmap fixes to address incorrect TCP copied_seq
-  calculations, which prevented correct data reads from recv(2)
-  in user space (Jiayuan Chen)
-
-- Two fixes for BPF map lookup nullness elision (Daniel Xu)
-
-- Fix a NULL-pointer dereference from vmlinux BTF lookup in
-  bpf_sk_storage_tracing_allowed (Jared Kangas)
-
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-
-----------------------------------------------------------------
-Abel Wu (1):
-      bpf: Fix deadlock when freeing cgroup storage
-
-Alan Maguire (1):
-      bpf: Fix softlockup in arena_map_free on 64k page kernel
-
-Alexei Starovoitov (2):
-      Merge branch 'bpf-some-fixes-for-nullness-elision'
-      Merge branch 'bpf-skip-non-exist-keys-in-generic_map_lookup_batch'
-
-Andrii Nakryiko (2):
-      bpf: unify VM_WRITE vs VM_MAYWRITE use in BPF map mmaping logic
-      bpf: avoid holding freeze_mutex during mmap operation
-
-Daniel Xu (3):
-      bpf: verifier: Do not extract constant map keys for irrelevant maps
-      bpf: selftests: Test constant key extraction on irrelevant maps
-      bpf: verifier: Disambiguate get_constant_map_key() errors
-
-Jared Kangas (1):
-      bpf: Remove unnecessary BTF lookups in bpf_sk_storage_tracing_allowed
-
-Jiayuan Chen (5):
-      strparser: Add read_sock callback
-      bpf: Fix wrong copied_seq calculation
-      bpf: Disable non stream socket for strparser
-      selftests/bpf: Fix invalid flag of recv()
-      selftests/bpf: Add strparser test for bpf
-
-Kumar Kartikeya Dwivedi (1):
-      bpf: Handle allocation failure in acquire_lock_state
-
-Kuniyuki Iwashima (1):
-      net: Add rx_skb of kfree_skb to raw_tp_null_args[].
-
-Martin KaFai Lau (1):
-      Merge branch 'bpf-fix-wrong-copied_seq-calculation-and-add-tests'
-
-Shigeru Yoshida (2):
-      bpf, test_run: Fix use-after-free issue in eth_skb_pkt_type()
-      selftests/bpf: Adjust data size to have ETH_HLEN
-
-Yan Zhai (2):
-      bpf: skip non exist keys in generic_map_lookup_batch
-      selftests: bpf: test batch lookup on array of maps with holes
-
- Documentation/networking/strparser.rst             |   9 +-
- include/linux/skmsg.h                              |   2 +
- include/net/strparser.h                            |   2 +
- include/net/tcp.h                                  |   8 +
- kernel/bpf/arena.c                                 |   2 +-
- kernel/bpf/bpf_cgrp_storage.c                      |   2 +-
- kernel/bpf/btf.c                                   |   2 +
- kernel/bpf/ringbuf.c                               |   4 -
- kernel/bpf/syscall.c                               |  43 +-
- kernel/bpf/verifier.c                              |  31 +-
- net/bpf/test_run.c                                 |   5 +-
- net/core/bpf_sk_storage.c                          |  13 +-
- net/core/skmsg.c                                   |   7 +
- net/core/sock_map.c                                |   5 +-
- net/ipv4/tcp.c                                     |  29 +-
- net/ipv4/tcp_bpf.c                                 |  36 ++
- net/strparser/strparser.c                          |  11 +-
- .../selftests/bpf/map_tests/map_in_map_batch_ops.c |  62 ++-
- .../selftests/bpf/prog_tests/sockmap_basic.c       |  59 +--
- .../selftests/bpf/prog_tests/sockmap_strp.c        | 454 +++++++++++++++++++++
- .../selftests/bpf/prog_tests/xdp_cpumap_attach.c   |   4 +-
- .../selftests/bpf/prog_tests/xdp_devmap_attach.c   |   8 +-
- .../selftests/bpf/progs/test_sockmap_strp.c        |  53 +++
- .../selftests/bpf/progs/verifier_array_access.c    |  15 +
- 24 files changed, 726 insertions(+), 140 deletions(-)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/sockmap_strp.c
- create mode 100644 tools/testing/selftests/bpf/progs/test_sockmap_strp.c
