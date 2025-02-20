@@ -1,343 +1,214 @@
-Received: from lf-2-14.ptr.blmpb.com (lf-2-14.ptr.blmpb.com [101.36.218.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9262A1D63F8
-	for <netdev@vger.kernel.org>; Thu, 20 Feb 2025 15:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.36.218.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740065954; cv=none; b=akx7dSS4wZij5Bz/CHZfUVwgghWZP7r0DkrLNKTVYj8tvROwqgqsM06mAqmmo+X4KhCr/0q7hJ+uwUJP1c52QsuWKZI1xMEgVKHM6ISw27pViudtqzbyqkwo0UxGUzqS4ewG3OJvr602FhLABSFWuAyHlDbUeF3nLX1wSebqvm4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740065954; c=relaxed/simple;
-	bh=he4hTAhgWTx+ZA/FodsXqZ4aec2FmWw1LRB1Ynk+NN0=;
-	h=To:Subject:Date:Content-Type:Cc:References:From:Message-Id:
-	 Mime-Version:In-Reply-To; b=Ibu5UAJ7DB9tLeboy7mGBbRWVX+ALumz4wyqsmRou5zRBqyzTuUJErMGiQtuJRZGr093vKAM4obIcRsn8kLzenJ8UTfXs9e51ByvHZnt8756NAWPnBOnp7gugjqU+n4AwVk8n1B8RjUDyh0v57BllHet8XdPVWdN4gr3lvPAiwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=L+MOj3l2; arc=none smtp.client-ip=101.36.218.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33F01DE3D9
+	for <netdev@vger.kernel.org>; Thu, 20 Feb 2025 15:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740066033; cv=fail; b=oZP2pRWTmKfHc6Pb1NBK3AjpuO6+8Idwh12fS9dvQmNzZ0hcaw30kUlLxJIOnCykhdgNX0ZywyX6tRebpM5+z5cIsmVYHernCzN/0S91k3vozaALT0jevyW6KEG+jFAiWzTlqhTh7wlOyzSxvM9gmFkIdMINuza9er3pyEz2Lj8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740066033; c=relaxed/simple;
+	bh=oV1odx6P7UJpy8jeQXi8nkHO9Mt+0EjjGtG4yX6d6+8=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=VO5EV67A1mP6+S+aEtRXpgKL0SCzLxfcI4+Ep49+kb/xbqXbDFRFxY53H5lrEDBYFe/dZIHfOODNZJEYwZSuD2hvKQcXY3NnkVlZxiUXtMH1zqsoVDpm/0rkcH+W8l/OJ/W7qygw3OVSkcppHblAEA3u6PcRVgKqUfqS95H1ts4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LiwHSfwd; arc=fail smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="L+MOj3l2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1740065732; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=NpGrn8aOytrn4CUUrmEk7SJeydb2UnWKWO7oO73J2f0=;
- b=L+MOj3l28bVsAFlkQt2xPwBLd8Nk05hw549bYC/JBG65T+Z7ZR8OOCn2CCWirBlxJ3VUMp
- YXLJsxGT735eeKM8dviSaDgif7jujPGl24ZCeJv51y2FPha+BVFAhCumFhivWex95gNBfD
- aDt9XlNuXNasiVO/TWvQxbYA2BtQ06ePcu0MeA1qepn2xy1RlN+i0vyRD0BE3L0tedwgk3
- 2BIhJ7KnRSQYww48xl8+dHvDDWWUuew5KmKNTN39mizkBJj0vxDsfNPGFb7Cj/AoXJpTOV
- u+8Ng4ymHLihH3CZWjGiRzQanzqxf0hEV4fySa0H3A+P+GFo4Gdr1nSD69/Hvw==
-To: "Simon Horman" <horms@kernel.org>
-Subject: Re: [PATCH v4 05/14] net-next/yunsilicon: Add eq and alloc
-Date: Thu, 20 Feb 2025 23:35:26 +0800
-Content-Type: text/plain; charset=UTF-8
-Cc: <netdev@vger.kernel.org>, <leon@kernel.org>, <andrew+netdev@lunn.ch>, 
-	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>, 
-	<davem@davemloft.net>, <jeff.johnson@oss.qualcomm.com>, 
-	<przemyslaw.kitszel@intel.com>, <weihg@yunsilicon.com>, 
-	<wanry@yunsilicon.com>, <parthiban.veerasooran@microchip.com>, 
-	<masahiroy@kernel.org>
-X-Lms-Return-Path: <lba+267b74bc2+0b1e84+vger.kernel.org+tianx@yunsilicon.com>
-References: <20250213091402.2067626-1-tianx@yunsilicon.com> <20250213091412.2067626-6-tianx@yunsilicon.com> <20250218171036.GB1615191@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LiwHSfwd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740066031; x=1771602031;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=oV1odx6P7UJpy8jeQXi8nkHO9Mt+0EjjGtG4yX6d6+8=;
+  b=LiwHSfwdbo33FBQd9oik0SQiOuQkEENx3IkA2lptBN8bxddUE8fpYnXA
+   l0rsRwNfQT/j05QQxZRhsY6rgKYD+zjhv74FoBzyUOmLHeAniO6r6T27T
+   asfgYMLb7b22U3taeQ0ydWD1N0LILCRTQ0sg9srKyn4nIGqE8GRd2Qnun
+   c8WLhOQ57HgBub6Psl9gbzjZazLMcyrXbHHvOkoIwFxy2vPTgHnPK1K1j
+   7GTdcvpsyHBYTE9u8QrflOb/oV9H6CmZQ+UWBSaczO587DSAu52kRff8N
+   r4w8faqs4vAzS38jy655OkQ4i6qK4ik9z81MSyxM8XmAxCI+xBgfiP4hB
+   Q==;
+X-CSE-ConnectionGUID: YOP1UKAgRWaYH4V13y4INA==
+X-CSE-MsgGUID: aRmuEiJ8TXGBHL8iqsm2OA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="40566370"
+X-IronPort-AV: E=Sophos;i="6.13,302,1732608000"; 
+   d="scan'208";a="40566370"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 07:40:31 -0800
+X-CSE-ConnectionGUID: ocgUVUjvSWKFzjSMGE3UVQ==
+X-CSE-MsgGUID: axgofLSzTzuM4S4Bw/mxPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,302,1732608000"; 
+   d="scan'208";a="115013384"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 20 Feb 2025 07:40:31 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Thu, 20 Feb 2025 07:40:30 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Thu, 20 Feb 2025 07:40:30 -0800
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Thu, 20 Feb 2025 07:40:29 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xKWCaBpTNPY8GXPH7i/k5H6iN2/GZ6aVXtwzQxPfoQJkLORDW3EETui1RNLfmrzDL5h7ljKUSAQxS80HukKqVvCmbGc/85xnAPL8cA/Nixw3LxcmoPsZEsJmiBuK/ZEbxpMbttW48OjeACq9yC5b1TkzkSmiijAn103lnolMAr/kVVuHAg7at0jQNN0rsYvWKEXaCjLftXRv/7O2mIlcTS1HGm9DKpbjskQdy36NWbHAlwSyXQYM7auOcRUuwnzr0+UFzw8JvvL3eSLXmFik/xygPjnq45f+GpzAJIRMZnhcmD6SCvnBqjXOnEUF17Vj0y6LD/tibLzOGAZ9h58bdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fTepLkQSITvpfEOYX9dTTEaGlqv4l5/BoFy4T14asRY=;
+ b=n8GiI/jxBzeZB2X/uliae/EjF6Zx7GqHdfzGYXxgK5oMiOza68UGIRhDOew3sUurilhq68OqVkYh4lI7X6vUVLgMXajyNxGaivFzhXU6KK1dCVeZnVSXfGL3MKapeX6wEqRrJYxWluTYQo82nWl4GNosXvijFY2cKZXx09jQsL6VIillWN0QHyTR2wo663t9Cqu22dBycznDC7OCX4S12N5SNeKU4UmmVbNO3Zfoa9kuTBKnOQT9fdw+lUblUgueFGLyzmmkArvHd5RDZkJ8Nv+cak0nlRuEAdvdfGh7vcRZWFUB0Nc3dciF5IHoMPG/0noJyNsZ4qCrJXAZ914Ceg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
+ by SA2PR11MB4907.namprd11.prod.outlook.com (2603:10b6:806:111::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.14; Thu, 20 Feb
+ 2025 15:40:14 +0000
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::4b3b:9dbe:f68c:d808]) by DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::4b3b:9dbe:f68c:d808%5]) with mapi id 15.20.8466.015; Thu, 20 Feb 2025
+ 15:40:14 +0000
+Message-ID: <300eefd4-2813-429a-b853-601518e20d98@intel.com>
+Date: Thu, 20 Feb 2025 16:34:59 +0100
 User-Agent: Mozilla Thunderbird
-From: "tianx" <tianx@yunsilicon.com>
-Message-Id: <b0adf539-8104-452d-ba34-14a120602bd5@yunsilicon.com>
+Subject: Re: [PATCH net-next v3 1/2] net: advertise 'netns local' property via
+ netlink
+To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+CC: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
+	<edumazet@google.com>, Ido Schimmel <idosch@idosch.org>, Andrew Lunn
+	<andrew@lunn.ch>, <netdev@vger.kernel.org>
+References: <20250220130334.3583331-1-nicolas.dichtel@6wind.com>
+ <20250220130334.3583331-2-nicolas.dichtel@6wind.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+Content-Language: en-US
+In-Reply-To: <20250220130334.3583331-2-nicolas.dichtel@6wind.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: ZR0P278CA0111.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:20::8) To DS0PR11MB8718.namprd11.prod.outlook.com
+ (2603:10b6:8:1b9::20)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-In-Reply-To: <20250218171036.GB1615191@kernel.org>
-X-Original-From: tianx <tianx@yunsilicon.com>
-Received: from [127.0.0.1] ([183.193.164.49]) by smtp.feishu.cn with ESMTPS; Thu, 20 Feb 2025 23:35:29 +0800
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|SA2PR11MB4907:EE_
+X-MS-Office365-Filtering-Correlation-Id: f7c66af5-5d6d-4171-45d2-08dd51c4de2b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?U3hNVWJvdGFtY0ZOaFhLSlR1cTA1dHVjODlzOGdNMmJ1elVKUXRFcjVyeVZF?=
+ =?utf-8?B?MjA1eUR0U2N5V3k5MVo5STZWRERkMkkwaGVzNWpqTmxoSmdudER0a3pRWXpW?=
+ =?utf-8?B?QkRRN0I1a29QbXlQRnAxcCs0WHk0Y2RqVHNDMzZRaE5xeWtlYTdTMzN4WnIx?=
+ =?utf-8?B?Y2t2SzF6cnNnejZaK2MxYW1DSGVmMWFuV2RWbnVIZnA1a01Fa1BmdGpuWDYr?=
+ =?utf-8?B?bnpGZXRYL09mYmYyNTZWMEVlbllsV0FPWTBqczJNZEJPN1NOcjNRTXIvVlZD?=
+ =?utf-8?B?S0VCRUkyOWt3NU0veVVWbVpodDk0ZkVOV0hLWlhyc2pIWVNzQlk2dkFqUkNl?=
+ =?utf-8?B?L1F2RUtka0dENlQ5SzN4VlBvUTZRdnhxVXUvclJaZzQ5YTNUaldxUUNNdmc5?=
+ =?utf-8?B?eUV2WDZucVprb0RpWFplRkUxYzFLNndZLzlHTzNDTU44Y2E4Z252eHM0QkNC?=
+ =?utf-8?B?N3NBN3dFbUxhZmNqdHdGRVp5eEFJOXVVM1VEN0xBeWhiR29ZTjFaOWt5YWlV?=
+ =?utf-8?B?S0FtUjJyY1d4QmU0Sjh2eXBSU0c2YVFUTDc2OS9ZZFNzckJOTVRkUG1zc3By?=
+ =?utf-8?B?eDBJbHYrblVDY3VFTEJiaTVralBBZEp5WTVWY1hhYU5SUEFpcFZwVmp1enpO?=
+ =?utf-8?B?RTRCMU9acklCSTFYeUE4dGlaMHk5WGU4WUV6VjVRL3lYelJ5VGtyb01jVGNw?=
+ =?utf-8?B?UzNFdmEzcGh1QUZCbDl3WFBNYVlIbFk5aEE0ZnozQ2k4WVNPc3RDeENWOFcv?=
+ =?utf-8?B?cXJUdTFHVHc1aHZ0UnZXY3ZmbXFCTm1uWmFHV3pYSWxVUWdMNW01azdMc1Y3?=
+ =?utf-8?B?a05ydURGc21SQnhaWWRLemdpayszS2U2S1pGSEs2dFhvd2ZYbU9xSzA4REUz?=
+ =?utf-8?B?RDg1SW90OUtUVG5aNXE1U3ZabGFlSDRFSDk3dFNEMU5sVTYyOVVmdnEzNTFN?=
+ =?utf-8?B?aTcyMm56aDJXS1ZNdGd6a3ZIQ21lakc1cnUvREI0Y1NnUFZzU0U4T0tqR2cv?=
+ =?utf-8?B?RFFZT1E1QVZGOUJNTm0raHI2R0YxZnNDNFM1S09paE5MS3ZNVmlIcHUzM2RK?=
+ =?utf-8?B?OFhXT0VuSFAvTFhSMVJ4eFhibmY3YlVmb242ZzkvSmVKY3dUM0hzWHphQVYx?=
+ =?utf-8?B?ckRhdmJ2NVJ2ckRUaUFhVktKalVvU3psZjFDOHNFM0pud3c1aXJPdElLbkxP?=
+ =?utf-8?B?WkV2LzJLZFZHTDdLc0pOdnAydE1uWUd6anl5bHFLc0VHR013TWgvTnE0S3Mz?=
+ =?utf-8?B?MWVITkJhajZzUW5xamlUV0toZStaOU0vZm9vVHo5bGFYNmZpbHJqbUczamRk?=
+ =?utf-8?B?WWY3MmxWME5Ydm05WUFJSUpES3U2b2dkcmhJL2NjcFJ0b2o2dTdQY1dnV3Z6?=
+ =?utf-8?B?cVVIbW1udVdMSjI1OElPbzNYY3FYUXJXcGNMeVc1TzV2WFZQT0pvM1d3cUg0?=
+ =?utf-8?B?WTBqbEpSU1dXNi9GdDcxMk5PVXpOekkyS0p0dHRCWjh3RUdmdVoxNTcvY04r?=
+ =?utf-8?B?TjJpR0dpWDJTMnlYN0d5VnAyazhEclMvY3QyekE4OG5CckpRK2xDZ3VVNGtm?=
+ =?utf-8?B?d3l4RTNwVWRyY3VNTjlvdy9VR0hhUmtLUDN3ZnBjL3FtVTlXRU1VajRPb2pk?=
+ =?utf-8?B?cE9NQWVsTmxZQm9iSm5YVUx0dFNpaGZIcnduZTVPL3gyU3RHUGlpeXdIVC9H?=
+ =?utf-8?B?Q0JOMXZrSytrVTdheDljUll0OUlubGVuQ3NKRzYxaUNxM1lQMXRNMkhSZUVE?=
+ =?utf-8?B?S1JLVDJZR3RLNGN0eFhjUUxwVWZYM3FlalZnM09oYVhHanZod29aZk9ISWxN?=
+ =?utf-8?B?Tzd1MzZvS0ZBZ3U4eTJOQTExZXJ5cndPMGVXcmJuRzJrK0E2QTVBNERyaXZV?=
+ =?utf-8?Q?XrM6CMVzFamUN?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TmZ1YlJRZUNSUHlBWUZIZUhkZlVGU1BQMDdsdmtsc3RqaHVFazFkV0dKbjQ2?=
+ =?utf-8?B?VzMvR3J2K0x2YWYvSFNZWEpmKzNHMGM2bFR5bmJITFNQYVd1dEJYQ3VGU0cw?=
+ =?utf-8?B?WU11TTJjajdqaFFCNXR0ZURuMjVwUk9nRWdMZGxFajV6MktiUnRwZ3JTVzV5?=
+ =?utf-8?B?UXNjeFJSam9SYWFuVDZGdFY0WmRSMkM3Wnd5dzR3dnRLQ1g4clk0U0EzSWFM?=
+ =?utf-8?B?NHFYU0VsMzJVdjRGTEg4Tko3ejFmaWxVOG5KejI3L0poamxBMVdHQ0YrSExB?=
+ =?utf-8?B?YVUvTUt5cHIxWldJbDFES0k1ZEhNeWhUTGlGZnR3Mlo4TFZhemkwQlBSWWxh?=
+ =?utf-8?B?NkJlTnJwU2kzL3lobEdWU1pLMFBpYVppTWgvRFNhTmIvM0xYYnFBRlIrcXZM?=
+ =?utf-8?B?RnBhOFNMb3FqTU1Pa1JIN3JSSnFRL1RlZGt3ZCttaGZweWlPVE42ZTFET3h1?=
+ =?utf-8?B?dDlIcjNZdklsVzM1RjdCUHNFRDhCQ2tsK3I5U0xTU3B3NE1IQXNocFZOdEpq?=
+ =?utf-8?B?elRKOCsydTNZQ1NGRE9oNzQvSnNxS3lXVTQwWkt2T3VSZ3FDRE5DZlZhMHdu?=
+ =?utf-8?B?bjlJOC9XZHI2cEowTnhGZ1I1VEFyTlM0UkZaS05nUVY3T25mMGJCeVVSdlVu?=
+ =?utf-8?B?dDdWRnZwSHBxc24zb3Z5b1hmY09peGZWSHBKZ1ByMFNId3ZDY3N5a0VLNVpk?=
+ =?utf-8?B?U00yaFUxczkwSEFhUlVXWnRIR091ekVldjZVMU9EUytEWTU3SHlINTh0cTZy?=
+ =?utf-8?B?bHBhY0NKdmNGYjFjZTRZbk9vYVZtdUFmV3VFdVhUTFhKZjcyL3YvYkRCYjdl?=
+ =?utf-8?B?UEpqcFBZK2ZmVGk1dE5FdjlqeW9JQmw3SXJuR3E5NHdaazdXSHdOMGpNMnc1?=
+ =?utf-8?B?Ky9kWjdqb2phUmtNMjJRZE9HemxGd3pybHl1TEVwTUF6bGppZGhXR1M0OXVt?=
+ =?utf-8?B?VUQ2eHg1bVFqaWFGWVlZZ1lTSjdvYmIvUjI0L3l5Z3dBL3BOYjA3NzFpMi9q?=
+ =?utf-8?B?ZkFhbXpCUGRzOTRPNzUzNHdmMlJvNkFwZmN2TXhCSzRsZWN1ME5YdGF6Y0Yz?=
+ =?utf-8?B?YjdkcUhMbHh4Ly9qZUNFSHVqWGV0cnBURTk0ZkN0a0hVaVJ5QlJSRHdOby93?=
+ =?utf-8?B?QTBqOE8zNE43R2daVXdzWGx5VWh2RGl3YkhYaSsvYUF5MzJQcW9jSnQ0aFI4?=
+ =?utf-8?B?ZFhCdzcwN2UvYVdJdGRObEsyQ1JEV1ZENktzNVJpcDRJMlRBTzJsSkhKbE9a?=
+ =?utf-8?B?UXh4OTJtVjNpejR3ZXQyZUFOclZzMG92ZjNRMytSMy9MSkxoVGpWa0FSTVVa?=
+ =?utf-8?B?VTdxQ1FWd3Z5QmYyN3MxUTdWL3grOExkM0NaMkhQajM2SDBkVGVMQlNXdkl1?=
+ =?utf-8?B?Mi9UTTUwQWFMNHc3OW02bS90Lzlib1hWdE51L2Y0dWo2NkpueEZxY2hWc3No?=
+ =?utf-8?B?b0xxaEt0dWtuSjI1Zmovd0tKWDY2eGhpMlg3amxONnd0dnQ4NUFibDFLMUN4?=
+ =?utf-8?B?NU91NC95alpZQjNsdXNzck5vS1R0U1lvdnhQSHBocXBsRWM5YWpMbXhaMGRa?=
+ =?utf-8?B?ZlZyU09TMXl4QTl2MzdKTzRMZTZ2ZU9HWXRjQ2tJOWkxV0FWaVNRelNtVzN1?=
+ =?utf-8?B?OXJ3bzBQeFJZMnFrRHFUQ29TMEEvb0QxSFpNNnBQem0yeXZ2emJJRVFWWVha?=
+ =?utf-8?B?SjYvUXpyd0w4Z05FK0R3WU9NNEZFSG80d1FVd3JNOVpCRFJJbEJFbUFuVFQr?=
+ =?utf-8?B?M0JpeXlFeUQwcXhKakJRS0dpTFFteHNTWm5iaTdnMU9QS3gvckJGVGxUclhk?=
+ =?utf-8?B?Z1A5aG9KcUp5clBPT2ZSVFpQVEpTUWlTWEtRS1A2bnF1b2d3YmdHREVyditG?=
+ =?utf-8?B?eU5meGp4eXR6UDFDMkFEQnpMYlh3Z2pNY003OXRGTjYzMkhoRUs2b25PeXZK?=
+ =?utf-8?B?N2hralRZYlBWc1N6WTRiNXdUaDdyaGFrRFMvaTlXU1UwRkJKTXFKK3N0RTRi?=
+ =?utf-8?B?Ym9peVlpUkNYYlRrZUNUdml6cERKR1J4c3I3QXMybXZHbU1ZenduZEFiVlZQ?=
+ =?utf-8?B?OVpXTVpZTzdtczcyNUhZWXpsWVZUMmo3SkEvdzNyQWtBS0dWTkxMWGlxbTJw?=
+ =?utf-8?B?NUNSQ2drNXhmb0tlNjZEK3VSNEN3b1BaUjg1ZysvRGdjdUtTRUdITk9IdnZK?=
+ =?utf-8?B?WkE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7c66af5-5d6d-4171-45d2-08dd51c4de2b
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2025 15:40:14.1964
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CCqIyMHh4Ycg0jU8tkF9QTbdl54k7Hpo+RJJUdO9+H9kfro+MxSlayhl8hoYhztaiDYvb/1sRshddhtXTnGX3rcLEqhCHuPmPluphm4fPyM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4907
+X-OriginatorOrg: intel.com
 
-On 2025/2/19 1:10, Simon Horman wrote:
-> On Thu, Feb 13, 2025 at 05:14:14PM +0800, Xin Tian wrote:
->> Add eq management and buffer alloc apis
->>
->> Signed-off-by: Xin Tian<tianx@yunsilicon.com>
->> Signed-off-by: Honggang Wei<weihg@yunsilicon.com>
-> ...
->
->> diff --git a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-> ...
->
->> +struct xsc_eq_table {
->> +	void __iomem	       *update_ci;
->> +	void __iomem	       *update_arm_ci;
->> +	struct list_head       comp_eqs_list;
-> nit: The indentation of the member names above seems inconsistent
->       with what is below.
-got it
->> +	struct xsc_eq		pages_eq;
->> +	struct xsc_eq		async_eq;
->> +	struct xsc_eq		cmd_eq;
->> +	int			num_comp_vectors;
->> +	int			eq_vec_comp_base;
->> +	/* protect EQs list
->> +	 */
->> +	spinlock_t		lock;
->> +};
-> ...
->
->> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.c b/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.c
-> ...
->
->> +/* Handling for queue buffers -- we allocate a bunch of memory and
->> + * register it in a memory region at HCA virtual address 0.  If the
->> + * requested size is > max_direct, we split the allocation into
->> + * multiple pages, so we don't require too much contiguous memory.
->> + */
-> I can't help but think there is an existing API to handle this.
-failed to find one
->> +int xsc_buf_alloc(struct xsc_core_device *xdev, int size, int max_direct,
-> I think unsigned long would be slightly better types for size and max_direct.
-yes, will modify
->> +		  struct xsc_buf *buf)
->> +{
->> +	dma_addr_t t;
->> +
->> +	buf->size = size;
->> +	if (size <= max_direct) {
->> +		buf->nbufs        = 1;
->> +		buf->npages       = 1;
->> +		buf->page_shift   = get_order(size) + PAGE_SHIFT;
->> +		buf->direct.buf   = dma_alloc_coherent(&xdev->pdev->dev,
->> +						       size,
->> +						       &t,
->> +						       GFP_KERNEL | __GFP_ZERO);
->> +		if (!buf->direct.buf)
->> +			return -ENOMEM;
->> +
->> +		buf->direct.map = t;
->> +
->> +		while (t & ((1 << buf->page_shift) - 1)) {
-> I think GENMASK() can be used here.
-ok
->> +			--buf->page_shift;
->> +			buf->npages *= 2;
->> +		}
->> +	} else {
->> +		int i;
->> +
->> +		buf->direct.buf  = NULL;
->> +		buf->nbufs       = (size + PAGE_SIZE - 1) / PAGE_SIZE;
-> I think this is open-coding DIV_ROUND_UP
-right, I'll change
->> +		buf->npages      = buf->nbufs;
->> +		buf->page_shift  = PAGE_SHIFT;
->> +		buf->page_list   = kcalloc(buf->nbufs, sizeof(*buf->page_list),
->> +					   GFP_KERNEL);
->> +		if (!buf->page_list)
->> +			return -ENOMEM;
->> +
->> +		for (i = 0; i < buf->nbufs; i++) {
->> +			buf->page_list[i].buf =
->> +				dma_alloc_coherent(&xdev->pdev->dev, PAGE_SIZE,
->> +						   &t, GFP_KERNEL | __GFP_ZERO);
->> +			if (!buf->page_list[i].buf)
->> +				goto err_free;
->> +
->> +			buf->page_list[i].map = t;
->> +		}
->> +
->> +		if (BITS_PER_LONG == 64) {
->> +			struct page **pages;
->> +
->> +			pages = kmalloc_array(buf->nbufs, sizeof(*pages),
->> +					      GFP_KERNEL);
->> +			if (!pages)
->> +				goto err_free;
->> +			for (i = 0; i < buf->nbufs; i++) {
->> +				void *addr = buf->page_list[i].buf;
->> +
->> +				if (is_vmalloc_addr(addr))
->> +					pages[i] = vmalloc_to_page(addr);
->> +				else
->> +					pages[i] = virt_to_page(addr);
->> +			}
->> +			buf->direct.buf = vmap(pages, buf->nbufs,
->> +					       VM_MAP, PAGE_KERNEL);
->> +			kfree(pages);
->> +			if (!buf->direct.buf)
->> +				goto err_free;
->> +		}
-> I think some explanation is warranted of why the above is relevant
-> only when BITS_PER_LONG == 64.
-Some strange historical reasons, and no need for the check now. I'll 
-clean this up
->> +	}
->> +
->> +	return 0;
->> +
->> +err_free:
->> +	xsc_buf_free(xdev, buf);
->> +
->> +	return -ENOMEM;
->> +}
-> ...
->
->> +void xsc_fill_page_array(struct xsc_buf *buf, __be64 *pas, int npages)
-> As per my comment on unsigned long in my response to another patch,
-> I think npages can be unsigned long.
-ok
->> +{
->> +	int shift = PAGE_SHIFT - PAGE_SHIFT_4K;
->> +	int mask = (1 << shift) - 1;
-> Likewise, I think that mask should be an unsigned long.
-> Or, both shift and mask could be #defines, as they are compile-time
-> constants.
->
-> Also, mask can be generated using GENMASK, e.g.
->
-> #define XSC_PAGE_ARRAY_MASK GENMASK(PAGE_SHIFT, PAGE_SHIFT_4K)
-> #define XSC_PAGE_ARRAY_SHIFT (PAGE_SHIFT - PAGE_SHIFT_4K)
->
-> And I note, in the (common) case of 4k pages, that both shift and mask are 0.
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Date: Thu, 20 Feb 2025 14:02:35 +0100
 
-Thank you for the suggestion, but that's not quite the case here. The 
-|shift| and |mask| are not used to extract fields from data. Instead, 
-they are part of a calculation. In |xsc_buf_alloc|, we allocate the 
-buffer based on the system's page size. However, in this function, we 
-need to break each page in the |buflist| into 4KB chunks, populate the 
-|pas| array with the corresponding DMA addresses, and then map them to 
-hardware.
+> Since commit 05c1280a2bcf ("netdev_features: convert NETIF_F_NETNS_LOCAL to
+> dev->netns_local"), there is no way to see if the netns_local property is
+> set on a device. Let's add a netlink attribute to advertise it.
+> 
+> Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-The |shift| is calculated as |PAGE_SHIFT - PAGE_SHIFT_4K|, allowing us 
-to convert the 4KB chunk index (|i|) to the corresponding page index in 
-|buflist| with |i >> shift|. The |i & mask| gives us the offset of the 
-current 4KB chunk within the page, and by applying |((i & mask) << 
-PAGE_SHIFT_4K)|, we can compute the offset of that chunk within the page.
+Meh, I was sure nobody looks at those read-only Ethtool "features"...
 
-I hope this makes things clearer!
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 
->> +	u64 addr;
->> +	int i;
->> +
->> +	for (i = 0; i < npages; i++) {
->> +		if (buf->nbufs == 1)
->> +			addr = buf->direct.map + (i << PAGE_SHIFT_4K);
->> +		else
->> +			addr = buf->page_list[i >> shift].map
->> +			       + ((i & mask) << PAGE_SHIFT_4K);
-> The like above is open-coding FIELD_PREP().
-> However, I don't think it can be used here as
-> the compiler complains very loudly because the mask is 0.
+> ---
+>  Documentation/netlink/specs/rt_link.yaml | 3 +++
+>  include/uapi/linux/if_link.h             | 1 +
+>  net/core/rtnetlink.c                     | 3 +++
+>  3 files changed, 7 insertions(+)
 
->> +
->> +		pas[i] = cpu_to_be64(addr);
->> +	}
->> +}
->> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h b/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h
-> ...
->
->> +static void eq_update_ci(struct xsc_eq *eq, int arm)
->> +{
->> +	struct xsc_eq_doorbell db = {0};
->> +
->> +	db.data0 = XSC_SET_FIELD(cpu_to_le32(eq->cons_index),
->> +				 XSC_EQ_DB_NEXT_CID) |
->> +		   XSC_SET_FIELD(cpu_to_le32(eq->eqn), XSC_EQ_DB_EQ_ID);
-> Each of the two uses of XSC_SET_FIELD() are passed a little-endian value
-> and a host-byte order mask. This does not seem correct as it seems
-> they byte order should be consistent.
->> +	if (arm)
->> +		db.data0 |= XSC_EQ_DB_ARM;
-> Likewise, here data0 is little-endian while XSC_EQ_DB_ARM is host
-> byte-order.
->
->> +	writel(db.data0, XSC_REG_ADDR(eq->dev, eq->doorbell));
-> And here, db.data0 is little-endian, but writel expects a host-byte order
-> value (which it converts to little-endian).
->
-> I didn't dig deeper but it seems to me that it would be easier to change
-> the type of data0 to host byte-order and drop the use of cpu_to_le32()
-> above.
->
-> Issues flagged by Sparse.
->
->> +	/* We still want ordering, just not swabbing, so add a barrier */
->> +	mb();
->> +}
-> ...
->
->> +static int xsc_eq_int(struct xsc_core_device *xdev, struct xsc_eq *eq)
->> +{
->> +	u32 cqn, qpn, queue_id;
->> +	struct xsc_eqe *eqe;
->> +	int eqes_found = 0;
->> +	int set_ci = 0;
->> +
->> +	while ((eqe = next_eqe_sw(eq))) {
->> +		/* Make sure we read EQ entry contents after we've
->> +		 * checked the ownership bit.
->> +		 */
->> +		rmb();
->> +		switch (eqe->type) {
->> +		case XSC_EVENT_TYPE_COMP:
->> +		case XSC_EVENT_TYPE_INTERNAL_ERROR:
->> +			/* eqe is changing */
->> +			queue_id = le16_to_cpu(XSC_GET_FIELD(eqe->queue_id_data,
->> +							     XSC_EQE_QUEUE_ID));
-> Similarly, here XSC_GET_FIELD() is passed a little-endian value and a host
-> byte-order mask, which is inconsistent.
->
-> Perhaps this should be (completely untested!):
->
-> 			queue_id = XSC_GET_FIELD(le16_to_cpu(eqe->queue_id_data),
-> 						 XSC_EQE_QUEUE_ID);
->
-> Likewise for the two uses of XSC_GET_FIELD below.
-
-I have noticed the sparse check warnings on Patchwork, and I will 
-address all the related issues in the next version.
-
-> And perhaps queue_id could be renamed, say to q_id, to make things a bit
-> more succinct.
->
->> +			cqn = queue_id;
-> I'm unsure why both cqn and queue_id are needed.
-The |queue_id| is indeed a bit redundant, and I will remove it.
->> +			xsc_cq_completion(xdev, cqn);
->> +			break;
->> +
->> +		case XSC_EVENT_TYPE_CQ_ERROR:
->> +			queue_id = le16_to_cpu(XSC_GET_FIELD(eqe->queue_id_data,
->> +							     XSC_EQE_QUEUE_ID));
->> +			cqn = queue_id;
->> +			xsc_eq_cq_event(xdev, cqn, eqe->type);
->> +			break;
->> +		case XSC_EVENT_TYPE_WQ_CATAS_ERROR:
->> +		case XSC_EVENT_TYPE_WQ_INVAL_REQ_ERROR:
->> +		case XSC_EVENT_TYPE_WQ_ACCESS_ERROR:
->> +			queue_id = le16_to_cpu(XSC_GET_FIELD(eqe->queue_id_data,
->> +							     XSC_EQE_QUEUE_ID));
->> +			qpn = queue_id;
->> +			xsc_qp_event(xdev, qpn, eqe->type);
->> +			break;
->> +		default:
->> +			break;
->> +		}
->> +
->> +		++eq->cons_index;
->> +		eqes_found = 1;
->> +		++set_ci;
->> +
->> +		/* The HCA will think the queue has overflowed if we
->> +		 * don't tell it we've been processing events.  We
->> +		 * create our EQs with XSC_NUM_SPARE_EQE extra
->> +		 * entries, so we must update our consumer index at
->> +		 * least that often.
->> +		 */
->> +		if (unlikely(set_ci >= XSC_NUM_SPARE_EQE)) {
->> +			eq_update_ci(eq, 0);
->> +			set_ci = 0;
->> +		}
->> +	}
->> +
->> +	eq_update_ci(eq, 1);
->> +
->> +	return eqes_found;
->> +}
-> ...
+Thanks,
+Olek
