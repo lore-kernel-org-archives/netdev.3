@@ -1,256 +1,199 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3BB1FBC89;
-	Thu, 20 Feb 2025 13:45:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC191BC4E;
+	Thu, 20 Feb 2025 14:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740059129; cv=none; b=Wdi5Mx5zJKjwXFPBfAjYGfLDwyNy4/pHLFtrLKKRXA10hjMIAj/A/qM+Z7lQ54F9OP8nBhexrZ3LurFGGviUsWN3zwwAzHUaWb2fI+9+ydOnQ22Z+L8Wd02n0KPboI6T4I7aY464pIFIE2GmMZLbsQ44nZGLnyTM6OuLBleUpjs=
+	t=1740060197; cv=none; b=G3frQjcCEBxNQ8ma9D7kSCD9InF4sYT3Q4ljqvsVpzg+mLOOo1rIJeBf+g/JTwnoe7/hYXCZNzEXvaTx6TQ5KqYq9ZlfPzYfV0pONEANV4ozD8wx3lDSK7TsjcehtNxXsv9MHI6M48lrzoP6kwBzIDT9qul+RO7jXPWcmNsnfH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740059129; c=relaxed/simple;
-	bh=5fj7mFPrfSNstxUkY6VTZHCkWduWWJVFcL0TwY04dWQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TrOKK8h91vS/SzyCE1HiTyo8AhO6d0wy1Fg9ukm85YI2u9N1nPSruO9Q6lukX2bO2XA8uXiLUNHq3zI4Y8idD1JgB10dwF4piunQTwtsRRaoMTsRKa1mMiD4GZatuXZUQ8hyLi9WLkXWbqzEltwg03W8oLJXKBzIJKHvrzqrLsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FBUR3bPa; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FBUR3bPa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740059128; x=1771595128;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=5fj7mFPrfSNstxUkY6VTZHCkWduWWJVFcL0TwY04dWQ=;
-  b=FBUR3bPagA0WuWDDEW4bUhuq9UtA5JsZqaTpHEE1LTyDCxI1RjoKLAni
-   9zrAGgX/lumdsMAepD0z1ujPj4cXllAkePGCgZpTyRx3RzDTMPtNZDl7F
-   ffngAzrRxh2FYJuyXC/FZvWvXiLgcXW/CQIAGZRv6DulhONdwVep0+DC8
-   O1mbcsfEA/bDKH4+ujFeh7NGcvqwCohCM1llxGA384N71Tp9HGe7X1VjO
-   IOGDTgQ7LliLvzDw457GdPpK1LcRSRAE/2ykXm9zEbiJSwZ1zStmmdji2
-   9zEex0ep+UEAet0hARG/4RfTwC/1ywWYPPfoeYS0JqwBdnMy/ehzd2tne
-   Q==;
-X-CSE-ConnectionGUID: uTZmziaLTwKO2+IgRZxrHQ==
-X-CSE-MsgGUID: vPjVxNRnTR2uRgvQht3ItA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="51479231"
-X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
-   d="scan'208";a="51479231"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 05:45:27 -0800
-X-CSE-ConnectionGUID: zRbntPTvT+2KVa7fQY7hXQ==
-X-CSE-MsgGUID: SFDwJGMrRx2dGwkvxBahVg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="119146274"
-Received: from boxer.igk.intel.com ([10.102.20.173])
-  by fmviesa003.fm.intel.com with ESMTP; 20 Feb 2025 05:45:25 -0800
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: bpf@vger.kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org
-Cc: netdev@vger.kernel.org,
-	magnus.karlsson@intel.com,
-	martin.lau@linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Subject: [PATCH bpf-next 3/3] selftests: bpf: implement test case for skb kptr map storage
-Date: Thu, 20 Feb 2025 14:45:03 +0100
-Message-Id: <20250220134503.835224-4-maciej.fijalkowski@intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20250220134503.835224-1-maciej.fijalkowski@intel.com>
-References: <20250220134503.835224-1-maciej.fijalkowski@intel.com>
+	s=arc-20240116; t=1740060197; c=relaxed/simple;
+	bh=O20IELQPiI+34MOiysPEaE7ghKnd+vs/0kkneEOGD9k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=oOysOP2antGd1T9qHF9ZC2u41/xYfldTkJGOjIsCoLNYvZwHUJyIBMKIsq4Mp3zgL1ltUumteqdxzd+//hWh5uaIIz70z2iy2eTfOGDUXb8IMGvxbp++JZ2Ns5uLiyvmHoOed/Y4UfD84J0wfG9mifW9uSeKR5k4mfd4OcylLo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4YzFLB45L4zWn3G;
+	Thu, 20 Feb 2025 22:01:38 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id BE75A1800DB;
+	Thu, 20 Feb 2025 22:03:11 +0800 (CST)
+Received: from kwepemn100006.china.huawei.com (7.202.194.109) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 20 Feb 2025 22:03:11 +0800
+Received: from [10.174.176.245] (10.174.176.245) by
+ kwepemn100006.china.huawei.com (7.202.194.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 20 Feb 2025 22:03:10 +0800
+Message-ID: <c52f3ef0-0ae0-4913-a3f0-19d55147874d@huawei.com>
+Date: Thu, 20 Feb 2025 22:03:09 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] tcp: Fix error ts_recent time during three-way
+ handshake
+To: Jason Xing <kerneljasonxing@gmail.com>
+CC: Eric Dumazet <edumazet@google.com>, <ncardwell@google.com>,
+	<kuniyu@amazon.com>, <davem@davemloft.net>, <dsahern@kernel.org>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20250218105824.34511-1-wanghai38@huawei.com>
+ <CANn89iKF+LC_isruAAd+nyxgytr4LPeFTe9=ey0j=Xy5URMvkg@mail.gmail.com>
+ <f3b279ea-92c3-457f-915a-2f4963746838@huawei.com>
+ <CAL+tcoByx13C1Bk1E33C_TqhpXydNNMe=PF93-5daRQeUC=V7A@mail.gmail.com>
+ <5fa8fc14-b67b-4da1-ac8e-339fd3e536c2@huawei.com>
+ <CAL+tcoC3TuZPTwnHTDvXC+JPoJbgW2UywZ2=xv=E=utokb3pCQ@mail.gmail.com>
+Content-Language: en-US
+From: Wang Hai <wanghai38@huawei.com>
+In-Reply-To: <CAL+tcoC3TuZPTwnHTDvXC+JPoJbgW2UywZ2=xv=E=utokb3pCQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemn100006.china.huawei.com (7.202.194.109)
 
-Add a test case to exercise kptrs behavior against sk_buff structs
-stored in eBPF map.
 
-Let us have two programs, one for store and other for retrieving
-sk_buffs from pinned map. Load first prog and run as many times as size
-of map so that second program will see the map full and will be able to
-retrieve each of sk_buff that bpf_prog_test_run_skb() created for us.
 
-Reason for running the progs MAX_ENTRIES times from user space instead
-of utilizing @repeat argument of is that we would like to have unique
-skbs handled in map. With @repeat usage it would result in storing the
-same skb.
+On 2025/2/20 11:04, Jason Xing wrote:
+> On Wed, Feb 19, 2025 at 9:11 PM Wang Hai <wanghai38@huawei.com> wrote:
+>>
+>>
+>>
+>> On 2025/2/19 11:31, Jason Xing wrote:
+>>> On Wed, Feb 19, 2025 at 10:16 AM Wang Hai <wanghai38@huawei.com> wrote:
+>>>>
+>>>>
+>>>>
+>>>> On 2025/2/18 21:35, Eric Dumazet wrote:
+>>>>> On Tue, Feb 18, 2025 at 12:00 PM Wang Hai <wanghai38@huawei.com> wrote:
+>>>>>>
+>>>>>> If two ack packets from a connection enter tcp_check_req at the same time
+>>>>>> through different cpu, it may happen that req->ts_recent is updated with
+>>>>>> with a more recent time and the skb with an older time creates a new sock,
+>>>>>> which will cause the tcp_validate_incoming check to fail.
+>>>>>>
+>>>>>> cpu1                                cpu2
+>>>>>> tcp_check_req
+>>>>>>                                        tcp_check_req
+>>>>>> req->ts_recent = tmp_opt.rcv_tsval = t1
+>>>>>>                                        req->ts_recent = tmp_opt.rcv_tsval = t2
+>>>>>>
+>>>>>> newsk->ts_recent = req->ts_recent = t2 // t1 < t2
+>>>>>> tcp_child_process
+>>>>>> tcp_rcv_state_process
+>>>>>> tcp_validate_incoming
+>>>>>> tcp_paws_check
+>>>>>> if ((s32)(rx_opt->ts_recent - rx_opt->rcv_tsval) <= paws_win) // failed
+>>>>>>
+>>>>>> In tcp_check_req, restore ts_recent to this skb's to fix this bug.
+>>>>>>
+>>>>>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>>>>>> Signed-off-by: Wang Hai <wanghai38@huawei.com>
+>>>>>> ---
+>>>>>>     net/ipv4/tcp_minisocks.c | 4 ++++
+>>>>>>     1 file changed, 4 insertions(+)
+>>>>>>
+>>>>>> diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+>>>>>> index b089b08e9617..0208455f9eb8 100644
+>>>>>> --- a/net/ipv4/tcp_minisocks.c
+>>>>>> +++ b/net/ipv4/tcp_minisocks.c
+>>>>>> @@ -878,6 +878,10 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
+>>>>>>            sock_rps_save_rxhash(child, skb);
+>>>>>>            tcp_synack_rtt_meas(child, req);
+>>>>>>            *req_stolen = !own_req;
+>>>>>> +       if (own_req && tcp_sk(child)->rx_opt.tstamp_ok &&
+>>>>>> +           unlikely(tcp_sk(child)->rx_opt.ts_recent != tmp_opt.rcv_tsval))
+>>>>>> +               tcp_sk(child)->rx_opt.ts_recent = tmp_opt.rcv_tsval;
+>>>>>> +
+>>>>>>            return inet_csk_complete_hashdance(sk, child, req, own_req);
+>>>>>
+>>>>> Have you seen the comment at line 818 ?
+>>>>>
+>>>>> /* TODO: We probably should defer ts_recent change once
+>>>>>     * we take ownership of @req.
+>>>>>     */
+>>>>>
+>>>>> Plan was clear and explained. Why implement something else (and buggy) ?
+>>>>>
+>>>> Hi Eric,
+>>>>
+>>>> Currently we have a real problem, so we want to solve it. This bug
+>>>> causes the upper layers to be unable to be notified to call accept after
+>>>> the successful three-way handshake.
+>>>>
+>>>> Skb from cpu1 that fails at tcp_paws_check (which it could have
+>>>> succeeded) will not be able to enter the TCP_ESTABLISHED state, and
+>>>> therefore parent->sk_data_ready(parent) will not be triggered, and skb
+>>>> from cpu2 can complete the three-way handshake, but there is also no way
+>>>> to call parent->sk_data_ready(parent) to notify the upper layer, which
+>>>> will result
+>>>> in the upper layer not being able to sense and call accept to obtain the
+>>>> nsk.
+>>>>
+>>>> cpu1                                cpu2
+>>>> tcp_check_req
+>>>>                                        tcp_check_req
+>>>> req->ts_recent = tmp_opt.rcv_tsval = t1
+>>>>                                        req->ts_recent=tmp_opt.rcv_tsval= t2
+>>>>
+>>>> newsk->ts_recent = req->ts_recent = t2 // t1 < t2
+>>>> tcp_child_process
+>>>>     tcp_rcv_state_process
+>>>>      tcp_validate_incoming
+>>>>       tcp_paws_check // failed
+>>>>     parent->sk_data_ready(parent); // will not be called
+>>>>                                        tcp_v4_do_rcv
+>>>>                                        tcp_rcv_state_process // Complete the three-way handshake
+>>>>                                                                                                           // missing parent->sk_data_ready(parent);
+>>>
+>>> IIUC, the ack received from cpu1 triggered calling
+>>> inet_csk_complete_hashdance() so its state transited from
+>>> TCP_NEW_SYN_RECV to TCP_SYN_RECV, right? If so, the reason why not
+>>> call sk_data_ready() if the skb entered into tcp_child_process() is
+>>> that its state failed to transit to TCP_ESTABLISHED?
+>>>
+>> Yes, because it didn't switch to TCP_ESTABLISHED
+>>> Here is another question. How did the skb on the right side enter into
+>>> tcp_v4_do_rcv() after entering tcp_check_req() if the state of sk
+>>> which the skb belongs to is TCP_NEW_SYN_RECV? Could you elaborate more
+>>> on this point?
+>> Since cpu1 successfully created the child sock, cpu2 will return
+>> null in tcp_check_req and req_stolen is set to true, so that it will
+>> subsequently go to 'goto lookup' to re-process the packet, and at
+>> this point, sk->sk_state is already in TCP_SYN_RECV state, and then
+>> then tcp_v4_do_rcv is called.
+> 
+> Now I can see what happened there. Perhaps it would be good to update
+> the commit message
+> in the next iteration.
+Hi Jason,
 
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
----
- .../selftests/bpf/prog_tests/skb_map_kptrs.c  | 75 ++++++++++++++++++
- .../selftests/bpf/progs/skb_map_kptrs.c       | 77 +++++++++++++++++++
- 2 files changed, 152 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/skb_map_kptrs.c
- create mode 100644 tools/testing/selftests/bpf/progs/skb_map_kptrs.c
+Thanks for the suggestion, I'll test it out and improve the commit 
+message to send v2.
+> 
+> Another key information I notice is that the second lookup process
+> loses the chance to call sk_data_ready() for its parent socket. It's
+> the one of the main reasons that cause your application to be unable
+> to get notified. Taking a rough look at tcp_rcv_state_process(), I
+> think it's not easy to acquire the parent socket there and then call
+> sk_data_ready() without modifying more codes compared to the current
+> solution. It's a different solution in theory.
+Yes, I have considered this fix before, but the complexity of the fix 
+would be higher.
+> 
+> If your new approach (like your previous reply) works, the following
+> commit[1] will be reverted/overwritten.
+I'm sorry, I may not have understood what you meant. Applying my fix, 
+commit[1] is still necessary because it doesn't solve the bug that 
+commit[1] fixes. can you explain in detail, why commit[1] will be 
+reverted/overwritten.
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/skb_map_kptrs.c b/tools/testing/selftests/bpf/prog_tests/skb_map_kptrs.c
-new file mode 100644
-index 000000000000..993beac6c344
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/skb_map_kptrs.c
-@@ -0,0 +1,75 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <test_progs.h>
-+
-+#define SKB_KPTR_MAP_PATH "/sys/fs/bpf/skb_kptr_map"
-+
-+static void skb_map_kptrs(void)
-+{
-+	int err, prog_fd, store_fd, get_fd, map_fd;
-+	struct bpf_program *prog;
-+	struct bpf_object *obj;
-+	char buff[128] = {};
-+	struct bpf_map *map;
-+	int i;
-+	LIBBPF_OPTS(bpf_test_run_opts, topts,
-+		.data_in = buff,
-+		.data_size_in = sizeof(buff),
-+		.repeat = 1,
-+	);
-+
-+	err = bpf_prog_test_load("skb_map_kptrs.bpf.o", BPF_PROG_TYPE_SCHED_CLS, &obj,
-+				 &prog_fd);
-+	if (CHECK_FAIL(err))
-+		return;
-+
-+	map = bpf_object__find_map_by_name(obj, "skb_map");
-+	if (CHECK_FAIL(!map))
-+		goto map_err;
-+
-+	map_fd = bpf_map__fd(map);
-+	if (map_fd < 0)
-+		goto map_err;
-+
-+	err = bpf_obj_pin(map_fd, SKB_KPTR_MAP_PATH);
-+	if (err < 0)
-+		goto map_err;
-+
-+	prog = bpf_object__find_program_by_name(obj, "tc_skb_map_store");
-+	if (CHECK_FAIL(!prog))
-+		goto out;
-+
-+	store_fd = bpf_program__fd(prog);
-+	if (CHECK_FAIL(store_fd < 0))
-+		goto out;
-+
-+	// store skbs
-+	for (i = 0; i < bpf_map__max_entries(map); i++) {
-+		err = bpf_prog_test_run_opts(store_fd, &topts);
-+		ASSERT_OK(err, "skb kptr store");
-+	}
-+
-+	prog = bpf_object__find_program_by_name(obj, "tc_skb_map_get");
-+	if (CHECK_FAIL(!prog))
-+		goto out;
-+
-+	get_fd = bpf_program__fd(prog);
-+	if (CHECK_FAIL(get_fd < 0))
-+		goto out;
-+
-+	// get skbs
-+	for (i = 0; i < bpf_map__max_entries(map); i++) {
-+		err = bpf_prog_test_run_opts(get_fd, &topts);
-+		ASSERT_OK(err, "skb kptr get");
-+	}
-+
-+out:
-+	unlink(SKB_KPTR_MAP_PATH);
-+map_err:
-+	bpf_object__close(obj);
-+}
-+
-+void test_skb_map_kptrs(void)
-+{
-+	skb_map_kptrs();
-+}
-+
-diff --git a/tools/testing/selftests/bpf/progs/skb_map_kptrs.c b/tools/testing/selftests/bpf/progs/skb_map_kptrs.c
-new file mode 100644
-index 000000000000..f4972978cb04
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/skb_map_kptrs.c
-@@ -0,0 +1,77 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+
-+void *bpf_cast_to_kern_ctx(void *) __ksym;
-+struct sk_buff *bpf_skb_acquire(struct sk_buff *skb) __ksym;
-+void bpf_skb_release(struct sk_buff *skb) __ksym;
-+
-+struct skb_map_val {
-+	struct sk_buff __kptr * skb;
-+};
-+
-+static __u32 get_idx;
-+static __u32 store_idx;
-+
-+#define MAX_ENTRIES 100
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_ARRAY);
-+	__type(key, __u32);
-+	__type(value, struct skb_map_val);
-+	__uint(max_entries, MAX_ENTRIES);
-+} skb_map SEC(".maps");
-+
-+static __always_inline __u32 idx_bump(__u32 idx)
-+{
-+	return idx >= MAX_ENTRIES ? 0 : idx + 1;
-+}
-+
-+SEC("tc") int tc_skb_map_store(struct __sk_buff *ctx)
-+{
-+	struct sk_buff *skbk = bpf_cast_to_kern_ctx(ctx);
-+	struct skb_map_val *map_entry, tmp_entry;
-+	struct sk_buff *tmp;
-+
-+	tmp_entry.skb = NULL;
-+	bpf_map_update_elem(&skb_map, &store_idx, &tmp_entry, BPF_ANY);
-+	map_entry = bpf_map_lookup_elem(&skb_map, &store_idx);
-+	if (!map_entry)
-+		return -1;
-+
-+	skbk = bpf_skb_acquire(skbk);
-+	if (!skbk)
-+		return -2;
-+
-+	tmp = bpf_kptr_xchg(&map_entry->skb, skbk);
-+	if (tmp)
-+		bpf_skb_release(tmp);
-+
-+	store_idx = idx_bump(store_idx);
-+
-+	return 0;
-+}
-+
-+SEC("tc") int tc_skb_map_get(struct __sk_buff *ctx)
-+{
-+	struct sk_buff *stored_skb = NULL;
-+	struct skb_map_val *map_entry;
-+	struct sk_buff *tmp = NULL;
-+
-+	(void)ctx;
-+
-+	map_entry = bpf_map_lookup_elem(&skb_map, &get_idx);
-+	if (!map_entry)
-+		return -1;
-+
-+	stored_skb = bpf_kptr_xchg(&map_entry->skb, tmp);
-+	if (!stored_skb)
-+		return -2;
-+
-+	bpf_skb_release(stored_skb);
-+	get_idx = idx_bump(get_idx);
-+
-+	return 0;
-+}
-+
-+char _license[] SEC("license") = "GPL";
--- 
-2.43.0
+Thanks,
+Wang
 
