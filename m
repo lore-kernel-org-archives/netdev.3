@@ -1,89 +1,83 @@
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5543179A7
-	for <netdev@vger.kernel.org>; Thu, 20 Feb 2025 23:03:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F16264616;
+	Thu, 20 Feb 2025 23:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740092582; cv=none; b=hlZPfmEpglrR6LJ7o0c6RfBungm86xcsPmrDzXwpDvWEz2Gb5yYcT1ChS5KggWMjohRaPJfMygq31dUA3eJ0p/xIvnvO5C3OexLSZKSzJ1u79Nl8xTu2gtkRNHT38tPSBHnZIeui7XDshCe345WRw5jYZandkLHeDcuujBDwdG0=
+	t=1740093014; cv=none; b=E/6z7E8Ildjp5y1sIMn4ak2q2iIyVl1ph65dSQMlpcVCrcDdHPbteBCiJ8VeNKBrdxO9g2/O249RdfRzAMGQejolXhGwP9OtfqGln1ZUQfZhFyJRvPgz8kVZV8JGWKcZJ+oEGPuAR7O8Lky2VuWNb7HJAGJyn1z5B1k8y52y7hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740092582; c=relaxed/simple;
-	bh=uIaVptdvr0a2z/TZwEzCoqF9O1XeyQPSwljljV4KEUo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PDZwBysIi45lJ3QObUrxn70fLud2+fq2SNWFxHx92RUw+zINm52HhkozAqycMhzIkuULDGe0ecKtCdXUpP0KTJsa0xG38x55LzCWIrHPdbtsyZF1z68rq4lPVyNB28K1Q6piuqtBi9TNnmsm4P1NFUa+4XFN3gqyOcvecEnQgd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vS1t529t; arc=none smtp.client-ip=95.215.58.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1740093014; c=relaxed/simple;
+	bh=SCGVRp6GOl4cx1eigu66mZ6vlzczca2P/5/u8Zt6Saw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=OTX4reBusjVwontsQLbBcnZYEi0Aqu///xANSY54Qtujg4KINIOUN64hZfVpGraMPKHPJWlCYGJ4a1O4rrnFAvfekqbq8wzkPXqZ8rtTAAceDIDSz00Qa6rY8crtXIg/qFYlI8PWXhs3a8iZonRNdcPlAoNNPhOjMgRe4Cw8K4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lR+8eBm2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vS1t529t"
-Message-ID: <04bfac2e-e28d-45eb-a715-59ac4b58aca8@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740092568;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/Eu8pMeDIWiKwVDhxOuwqXCLJhjCur03nD0DkknqcV4=;
-	b=vS1t529tZKZ0RVfPV34OM2ab9Z/C/GYc2cnXMDl7QjatidUR/luDmlrGsM3LBgbbV9nsdj
-	McIk/Erc3cnT8z+jLTzYBe65foflrxUu9F/lC4SC0rUnEKGae4ypjvztifKaBZyqxrfju/
-	a67HouTb1fGHwe1rCfJ6cf+bpiW03cE=
-Date: Thu, 20 Feb 2025 15:02:41 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lR+8eBm2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B4CC4CED1;
+	Thu, 20 Feb 2025 23:10:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740093014;
+	bh=SCGVRp6GOl4cx1eigu66mZ6vlzczca2P/5/u8Zt6Saw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=lR+8eBm29pOim34f7Oc1islIwbMTNcL/VK6wvCInGDpyHebUAvrUtNaW0CxdWlySv
+	 GH0NNEGbTa3RsyZiUpBJQ4wMbhe+5TwQI0Jbbu4O8dlZKPnolzwzw/tbGDyhkxMgQY
+	 TSrdjKlWFwY7aXVPOqheBkDwpVlVIX2qdyz5FN4TpDofGyCV4vbqdWn1cZ+q9l/Qj2
+	 kNS6PjfhOdXuPmeu5TxiwDiVScKvyV6/mQneRZ5inM845N7EqnRGcbtRP4nQ0/Uf0h
+	 RXtz97nL83s5c5rGn0y7Qev3tlI/59E/ivxS5L+wztP1QZUEx6btWuIQ/FCvzRfTFa
+	 goKzHBvrlrgXw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EE54B380CEE2;
+	Thu, 20 Feb 2025 23:10:45 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf-next v13 00/12] net-timestamp: bpf extension to equip
- applications transparently
-To: Jason Xing <kerneljasonxing@gmail.com>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, dsahern@kernel.org, willemb@google.com, ast@kernel.org,
- daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, shuah@kernel.org,
- ykolal@fb.com, bpf@vger.kernel.org, netdev@vger.kernel.org
-References: <20250220072940.99994-1-kerneljasonxing@gmail.com>
- <67b74b0ca099e_261ab62945f@willemb.c.googlers.com.notmuch>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <67b74b0ca099e_261ab62945f@willemb.c.googlers.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2] tun: Pad virtio headers
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174009304478.1506397.8001698369516362752.git-patchwork-notify@kernel.org>
+Date: Thu, 20 Feb 2025 23:10:44 +0000
+References: <20250215-buffers-v2-1-1fbc6aaf8ad6@daynix.com>
+In-Reply-To: <20250215-buffers-v2-1-1fbc6aaf8ad6@daynix.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: corbet@lwn.net, willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mst@redhat.com, xuanzhuo@linux.alibaba.com, shuah@kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, kvm@vger.kernel.org,
+ virtualization@lists.linux-foundation.org, linux-kselftest@vger.kernel.org,
+ yuri.benditovich@daynix.com, andrew@daynix.com, stephen@networkplumber.org,
+ gur.stavi@huawei.com, devel@daynix.com
 
-On 2/20/25 7:32 AM, Willem de Bruijn wrote:
-> Jason Xing wrote:
->> "Timestamping is key to debugging network stack latency. With
->> SO_TIMESTAMPING, bugs that are otherwise incorrectly assumed to be
->> network issues can be attributed to the kernel." This is extracted
->> from the talk "SO_TIMESTAMPING: Powering Fleetwide RPC Monitoring"
->> addressed by Willem de Bruijn at netdevconf 0x17).
->>
->> There are a few areas that need optimization with the consideration of
->> easier use and less performance impact, which I highlighted and mainly
->> discussed at netconf 2024 with Willem de Bruijn and John Fastabend:
->> uAPI compatibility, extra system call overhead, and the need for
->> application modification. I initially managed to solve these issues
->> by writing a kernel module that hooks various key functions. However,
->> this approach is not suitable for the next kernel release. Therefore,
->> a BPF extension was proposed. During recent period, Martin KaFai Lau
->> provides invaluable suggestions about BPF along the way. Many thanks
->> here!
->>
->> This series adds the BPF networking timestamping infrastructure through
->> reusing most of the tx timestamping callback that is currently enabled
->> by the SO_TIMESTAMPING.. This series also adds TX timestamping support
->> for TCP. The RX timestamping and UDP support will be added in the future.
+Hello:
 
-Thanks for working on this BPF feature. Applied.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> This series addresses all my feedback.
+On Sat, 15 Feb 2025 15:04:50 +0900 you wrote:
+> tun simply advances iov_iter when it needs to pad virtio header,
+> which leaves the garbage in the buffer as is. This will become
+> especially problematic when tun starts to allow enabling the hash
+> reporting feature; even if the feature is enabled, the packet may lack a
+> hash value and may contain a hole in the virtio header because the
+> packet arrived before the feature gets enabled or does not contain the
+> header fields to be hashed. If the hole is not filled with zero, it is
+> impossible to tell if the packet lacks a hash value.
 > 
-> The timestamping patches all have my Reviewed-by.
+> [...]
 
-Thanks to Willem and other reviewers for their input in this long thread across 
-many revisions.
+Here is the summary with links:
+  - [net-next,v2] tun: Pad virtio headers
+    https://git.kernel.org/netdev/net-next/c/4adf74971018
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
