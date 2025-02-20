@@ -1,88 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61FE1EBA1E;
-	Thu, 20 Feb 2025 08:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB731EE002;
+	Thu, 20 Feb 2025 08:57:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740041683; cv=none; b=VIAH0V/Ag9q/7+eoMtPwgrXLR4UH/1S9KKngpxkzVJtoICiWXU1iAKgFsmeiEhAIETnbM1PxxJxGPNZliHsHy/dXqUtAFWJFyOKzyGtCPBuSAbH0BovBL7WAFXhg8l5COI7sHdmK1GWaZrZ9EfWUvgGCybQu/DBFz3C3bDYlGHo=
+	t=1740041867; cv=none; b=i4ulbjCisvhZbqX3dZnKj5aMqWdDYOUwC143WpSMwZrB3b6v6tDJTYrFyEzVQ2xqblyy62NSBZ5J/6UsgYV/702XX/k1J7/jrG/rEMTPz0yqdOMNRGrtH+XvwzLANi7T6EJCll1T/96CEP32kWQTXNP1xCMRCCG5W1J73PD/Y0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740041683; c=relaxed/simple;
-	bh=dqQ0SKzivqhys/digMbmEeqWgEakp5WM9xDxA2nBruI=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=rDIsZ4x9nyFXJiKFfDb7ziyFbVw8GrSkW6jORDP19ET4ksDzOfsXfGm5zoFrGS/tSsOlbsOtzUHYxvmirB8NOZhs7ST2Nrewv7ernKmi8MRZS/bpxSNoIoShAsYGTqGlnAHXSRtfwlDSfpAaA9W75j3l6mXn8gyCpcZCInUbbhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AhusA3n6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740041867; c=relaxed/simple;
+	bh=Xe3KW08CtnTWxDsfXEunDUYKjhgHZTGBlTQTiSWGgco=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b/qJLrwosoTKnu0hTIU9k+SvPGOYkm9n7is+8sFbVNq1ko3ICv8/l+PY5ySsSHiJKlzIbOIOMcdUdj13zvzDBZTsIBV8xrpvT59X0FxvjI5EOgYmnCCvE7pG3VeTY9dCCqbVAJ+QWJtCMqUMFRbWT9GdyLQEHfsGtcha2ZPn7qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KGlSnrkM; arc=none smtp.client-ip=209.85.166.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AhusA3n6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02976C4CED1;
-	Thu, 20 Feb 2025 08:54:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740041682;
-	bh=dqQ0SKzivqhys/digMbmEeqWgEakp5WM9xDxA2nBruI=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=AhusA3n6ogCPeJqwzTIc7zCEpBx9gtTPjhqFynV6rpziPNetpO3duWtTdc57/82Ef
-	 TSE22uU8nonEekQNXvox2yHOCF8mZQhsV4c6VFJ5FYXmM/g8jI3zLTF/F2+oqsOnYt
-	 RpD6joKq1boATFnQfokKRWrlephU5XQfJVx0ZaxZziOX+nEe5G4dTAPWjX2NCt8nfU
-	 xn4XZhIdOVKE05XnjP71qzQ7tlUXl6+42VaR+sXc3G+E1wiCOEt4jJMMenc7dRMffG
-	 Nj13tJzfMQpgVF4cpr675uj4brbSg+EZfM/Ca9+XTUBgcHqF1KgQKh+ue1VQN+5Bqk
-	 Zsn4tbSNIA3iA==
-Date: Thu, 20 Feb 2025 00:54:38 -0800
-From: Kees Cook <kees@kernel.org>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-CC: Allison Henderson <allison.henderson@oracle.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, linux-hardening@vger.kernel.org,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
- linux-kernel@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next=5D_net/rds=3A_Replace_?=
- =?US-ASCII?Q?deprecated_strncpy=28=29_with_strscpy=5Fpad=28=29?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <08A0C3AE-A255-467F-A007-5584E8E44517@linux.dev>
-References: <20250219224730.73093-2-thorsten.blum@linux.dev> <202502191855.C9B9A7AA@keescook> <08A0C3AE-A255-467F-A007-5584E8E44517@linux.dev>
-Message-ID: <CCF15545-8AF8-40A8-917C-E44B6373D9AE@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KGlSnrkM"
+Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-3d285a447a7so2038685ab.0;
+        Thu, 20 Feb 2025 00:57:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740041865; x=1740646665; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZJ1ukTj9LoDYtqtD5ecMxI2UxUwlSfIH76RTECIiysM=;
+        b=KGlSnrkMxcQlK6ipV3DNJueHJgW1I8NrDefK66Coo4IuMVvKN/sdo2g69ce/GyVq6I
+         rQRTaJWlBdfRLqeN6rmStBjswY1t6JH2NR0sWKb2HmazLbnWXyCOItTh8wkilFOrOTxB
+         9Lxw1OtJF9WGIOtCfNIypTxqg+I3oXoSUadojAGkktHn0fGOKa6eoRbUrV4cS5WG7yDf
+         Uz1T3F6p27eW1CeZqEt8yQYzBdL2mcdcK8We+6vjcWIxE+rFRKhkqPmNAe7yySZDi59r
+         fRRfDlXW4Xp97um9XxzW3PuMusO6rHT5Oo0Gxt/kGN9D8LVwHYRX/C1xdgnPIkJ7IOqk
+         KVrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740041865; x=1740646665;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZJ1ukTj9LoDYtqtD5ecMxI2UxUwlSfIH76RTECIiysM=;
+        b=KmokUI2XvTAbxW0UYABKxgoO1rJwwWLpMNpj0DdsLCJY/UcQnZMvdAi6mSAZPQfazb
+         mNHZ/kTnzIodzy6GxYvZr55a1IIDH7e0pyF07piLGSPjwrZrgSzT/DbKa7Lw8feLGeKa
+         5m6YfjSGHaWXlxZixkoU97m9krLJyHsb1+jyzVP8PGLv2B8gA2VnKNrdC5ZJ9LpTsOfy
+         TFugdxYE44hmEZ2SGFj9Dz4SxYedZqF8esBDIEbahUCVx4Ka85JTK5zBR6MyQ/62T9Sg
+         0iptXwKGR4yAf6y4WScomCJvPjSP6oGDqHB1SYmHXdKWcDFQxX55JEJIHsi6P4kJ2OyS
+         qYWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUsjRmee00VC58Bb4OxUU685+5agVpxljgX+Q6/gz8wdjpYtaTmLMIAF9VmxGZUpKUn3QfZXHDQ@vger.kernel.org, AJvYcCUwaNcHv/VhdlJS2/aBdiYGK/uwz/dLjmGBhScmdUN+sb83rQHkFM7+0pc8EdaUEAqIn+U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyimTLxgbDqxZb6ClZEX3FPeKk7arHaaxnFmES/XXmppcshq/V
+	XTiOJ9eOpos6s7hd7Qd5ZEY/hLT/kR03swxiLYAbQJSJJqhxEXTQLovUyJntP7anRIxOTlXxaED
+	rphbFBz9g9gsdnbvZMxJPcWRNRG7AyrlZw0AdSQ==
+X-Gm-Gg: ASbGnctUaR6R18eB5PE6Rk56LS6icix6dQRi/2GP8gEcKCPLY9NF/9pKEc1NXtDO0UY
+	S16KqDkj5CcR8c4vhvCHcL8uNftFT19LrvthU6NEyQN34weDfPMo8LLauo6qXTlQaoRMdpDQq
+X-Google-Smtp-Source: AGHT+IFqzNFKSbcp0m+sVNShsOIjZnefnBiSt3e7dTYZO4FvWSEE9vIyYmmpnmKMzyBwF8FIEZfT3i4wI6Q0Vt6JVKE=
+X-Received: by 2002:a05:6e02:2686:b0:3d0:3fa2:ccfd with SMTP id
+ e9e14a558f8ab-3d280771e1amr219813525ab.5.1740041864809; Thu, 20 Feb 2025
+ 00:57:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20250219081333.56378-2-kerneljasonxing@gmail.com> <202502201843.xA1qZbKX-lkp@intel.com>
+In-Reply-To: <202502201843.xA1qZbKX-lkp@intel.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Thu, 20 Feb 2025 16:57:08 +0800
+X-Gm-Features: AWEUYZkZEa_RTXX9eGIodABGhTE06_-yx8MFYAYIY0b_nk5Ib5cNvbHdq_7paqg
+Message-ID: <CAL+tcoC9nboQ9UNeP1-g4nQKqXg+fLDu68RHjwKRx97f_iuCZQ@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v3 1/2] bpf: support TCP_RTO_MAX_MS for bpf_setsockopt
+To: kernel test robot <lkp@intel.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, dsahern@kernel.org, kuniyu@amazon.com, ast@kernel.org, 
+	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, 
+	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
+	john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me, 
+	haoluo@google.com, jolsa@kernel.org, shuah@kernel.org, ykolal@fb.com, 
+	oe-kbuild-all@lists.linux.dev, bpf@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-
-
-On February 19, 2025 11:04:18 PM PST, Thorsten Blum <thorsten=2Eblum@linux=
-=2Edev> wrote:
->On 20=2E Feb 2025, at 03:57, Kees Cook wrote:
->> On Wed, Feb 19, 2025 at 11:47:31PM +0100, Thorsten Blum wrote:
->>> strncpy() is deprecated for NUL-terminated destination buffers=2E Use
->>> strscpy_pad() instead and remove the manual NUL-termination=2E
->>=20
->> When doing these conversions, please describe two aspects of
->> conversions:
->>=20
->> - Why is it safe to be NUL terminated
->> - Why is it safe to be/not-be NUL-padded
->>=20
->> In this case, the latter needs examination=2E Looking at how ctr is use=
-d,
->> it is memcpy()ed later, which means this string MUST be NUL padded or i=
-t
->> will leak stack memory contents=2E
->>=20
->> So, please use strscpy_pad() here=2E :)
+On Thu, Feb 20, 2025 at 4:52=E2=80=AFPM kernel test robot <lkp@intel.com> w=
+rote:
 >
->I am using strscpy_pad() here already because of the NUL-padding=2E
+> Hi Jason,
 >
->Did you just miss that?
+> kernel test robot noticed the following build errors:
+>
+> [auto build test ERROR on bpf-next/master]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Xing/bpf-sup=
+port-TCP_RTO_MAX_MS-for-bpf_setsockopt/20250219-161637
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git =
+master
+> patch link:    https://lore.kernel.org/r/20250219081333.56378-2-kerneljas=
+onxing%40gmail.com
+> patch subject: [PATCH bpf-next v3 1/2] bpf: support TCP_RTO_MAX_MS for bp=
+f_setsockopt
+> config: x86_64-buildonly-randconfig-002-20250220 (https://download.01.org=
+/0day-ci/archive/20250220/202502201843.xA1qZbKX-lkp@intel.com/config)
+> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
+ve/20250220/202502201843.xA1qZbKX-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202502201843.xA1qZbKX-lkp=
+@intel.com/
+>
+> All errors (new ones prefixed by >>):
+>
+>    net/core/filter.c: In function 'sol_tcp_sockopt':
+> >> net/core/filter.c:5385:14: error: 'TCP_RTO_MAX_MS' undeclared (first u=
+se in this function); did you mean 'TCP_RTO_MAX'?
+>     5385 |         case TCP_RTO_MAX_MS:
+>          |              ^~~~~~~~~~~~~~
+>          |              TCP_RTO_MAX
+>    net/core/filter.c:5385:14: note: each undeclared identifier is reporte=
+d only once for each function it appears in
 
-Well that's embarrassing=2E Yes, I must need stronger glasses=2E *sigh* Ap=
-ologies for the noise!
+We've discussed this a few hours ago. It turned out to be the wrong
+branch which this series applied to. Please try bpf-next net branch
+instead :)
 
-Reviewed-by: Kees Cook <kees@kernel=2Eorg>
-
-
---=20
-Kees Cook
+Thanks,
+Jason
