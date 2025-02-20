@@ -1,134 +1,83 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E318C20485B
-	for <netdev@vger.kernel.org>; Thu, 20 Feb 2025 18:08:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F8921481A;
+	Thu, 20 Feb 2025 18:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740074901; cv=none; b=QtZjaTJtl31IuWCzJ1qyPtKlDf6uvYugaFSbwFOQV95WvF6bnKR3SUM66buizkMY/XaXNo5kY3Sk7xMT8v9Pa7RnlbjUi9i47/2jozZDjUr20ZHPBRtVf5PDXljZln5P6ZycGEKJy4M8OALk47rQsKUDFMp+CGbgQkh48vt5e5w=
+	t=1740075006; cv=none; b=XYfxe9kYTR+aRNzkN0FxzSwtcqi8y85Ducsc7yO2wBNtbL37aOGzDMFyckKStgGA3lZY0OwTOh3dNLF5j6NppW4366FUrGPOPfNnmrVC02+nOKQO0wMMER9DnMVua387mujkOovBmI5w9wH9O+r8v18MYrHrbAGMyNJbn6OKrkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740074901; c=relaxed/simple;
-	bh=CF3Vchk4lfIr8SfSsGrRnxSzchuHZc4UIsRbFbZeAI8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S/CbljrAVbbIRp1Ssx8wbAsoSo7ZcwlAEavoyyGujNJXPsDmtG5lD3x77q0WTUGJKLfERM6TVKaNxRDZI9fBOVdgBXpskuXQrUbUGgcvMUYz6/JabnXdd479iuCEXutl7SYYaR/hGP/MwAeVkWkwXY4R8QNuPDOSZQS30rRHAzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FXIfAQti; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740075006; c=relaxed/simple;
+	bh=PXo9iI3CNi+iDC5Lutu4qdjJgJZ+JmddgfrV+YOpQk0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=GRk0Dqdc6Qt88VcjFL9+PoHho+sU1E7EkAxdlOYofL3xFlweozZ8b5JISBaS1Wm6+xycxWcJlY7uAZta6CATQcPcWxxedG2o4rr3r7loA62yvbfvqaMw13QdLMCBW8feD34WP+Ox7S+eUB5Z4lQ+Eazw+JItTy85X2H/ELsk4IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZAmqE7H; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FXIfAQti"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ab7ee6f5535so20919166b.1
-        for <netdev@vger.kernel.org>; Thu, 20 Feb 2025 10:08:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740074898; x=1740679698; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fIY9lIKGXMgHeeoPQhLBsxkcbvuY42lMs6uiHPyjpAk=;
-        b=FXIfAQti2+umWulJMtWhfmde6cf0s92NJxDs/wXyQA0cJ6IwZeEYwpkgq7KTO6hhSB
-         7uk35mMitjoWMIBltjTXQFS41LbKD7BfT41GDk7T3fBBpnQy1j3Ibp0aqxz9NV1B73J8
-         4/0UZEkpmcJ6p+gPMpiBz+DLG6kTUgQF8z53rg0IC1hNprrUHS8mRPpqpFsMXrcPzRND
-         oS01gHh+77S8uaxiv1lCcbxynB/0BTlMUhm+2bcf/qZTl+mJSkkj1pbAHFL7rQqgBFyd
-         CoYFNoLZ5H+r1DHNbkNTi8ZxmGojxoPgfR4omAPYBo07Ewq1uHFDgP0AO2S6L3Z9mA6Q
-         TRaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740074898; x=1740679698;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fIY9lIKGXMgHeeoPQhLBsxkcbvuY42lMs6uiHPyjpAk=;
-        b=T66dFLjZDgs3q9Zg/3lAdIaFJigF3g5APviQdGBbYjG0tpy3oMlXwlikVcxh/HV3Ge
-         HVYocfmX9WXMOhdIM0mDMO8a9eYZ6JP8zsdJXq52WqZ58/s46NGmS12qBzwn/i4hXENf
-         OFEPyn4uylWunzSaUP7nT9Wn7ud9A51DHTuJTB62/N8+Wf3Nj1lsPbKB0tizdMjcxhoP
-         HeyT0gUACk6e/7kgtNya37EviajQz8xpI0a5OrQFnC9pkJQJSM8fcsdhDntMKmUtNk5O
-         NKxsxOmwMSqWxtQLcJaVyuSeXApyJW1QMdh2BhiZXbYrt2N/+FwG4SX9jaVJxkMYJz7U
-         f7DQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV8H11HiRKNuEPWS0dRFxUfGrOoP5FY9HOjiUhxrzbMDxh+HeVGRQg03f6JscUBEPc/lRXlikE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzw2ZZwkHryUyEmKCfKZ44CaaEt8xJVNwU3ptQ2/b5+WCo57qcu
-	diKjluHPFCK02lI83jfqtRNldvwbfH53abeyv8JiBfZGpjOGJW8N
-X-Gm-Gg: ASbGncuQ0Dgm5Jql5XxLPoLRG3dr7BeztqxPGK2jZpi6haQuDE8Zr3NOw9//f4z3JAD
-	YSI3BVsqQxDKcJIg7/+JbeXLkz3cg8JJexAKNSelHpsfcmnRTR54i0MBgL+qcj99V1M8usL/8Bv
-	qS8Pzenu8Y/2oUslF4SnUg3mVewhiZTbH/xMj5/w9zCoihLN6DtS0nLFIYgmE2pQX+TSDBzx/Oy
-	19KV1f8m1ncb5Fk7RTK/XfZxDU62GQtt/6/8FIuTyfE+V+pGmdD0xD+e0mM01BTQQG0eRQ9q7S7
-	7WI=
-X-Google-Smtp-Source: AGHT+IGddrZuHtLLjvZ2brldT2Xai8DBF2RWdA9vsJk+3J8GGMFbPpQ2wyKlGY17kg6YyG7YWc7UVg==
-X-Received: by 2002:a17:907:7286:b0:aa6:9c29:86d1 with SMTP id a640c23a62f3a-abc099b8837mr12868466b.3.1740074897854;
-        Thu, 20 Feb 2025 10:08:17 -0800 (PST)
-Received: from skbuf ([86.127.124.81])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abba9657249sm702131466b.38.2025.02.20.10.08.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 10:08:16 -0800 (PST)
-Date: Thu, 20 Feb 2025 20:08:14 +0200
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	netdev@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v2] net: dsa: rtl8366rb: Fix compilation problem
-Message-ID: <20250220180814.efeavobwf4oy5pvy@skbuf>
-References: <20250220-rtl8366rb-leds-compile-issue-v2-1-8f8ef5a3f022@linaro.org>
- <20250220-rtl8366rb-leds-compile-issue-v2-1-8f8ef5a3f022@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZAmqE7H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF5AAC4CEE2;
+	Thu, 20 Feb 2025 18:10:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740075005;
+	bh=PXo9iI3CNi+iDC5Lutu4qdjJgJZ+JmddgfrV+YOpQk0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=VZAmqE7Hvo0fPmM/eXxYK8ZSbTOfZ9bjSjw6nY7lrPdin7gH2NKlySDv7raaaaKY+
+	 GXB7KyIf8ddTqzsWDhsWjTokHdZiH/inPApJZIKkXIpyUjTSophY8dfR9KcS7sFsMD
+	 nGDyQoQvVYEwvQ883QgU72D30BzvnewjdXi7H0Fci+e5VZJWnd2BI2Sq6a05vpAY0v
+	 p666+E4Mi66GJYEm37JB07fuNiICbx2Zzq8i87Cl6qfXLxwvDpf4l4Qn/a2t5gtcu7
+	 0koMtwoVh1f6X9f+BAIjLPZQlQ6fp51iFm+eXn4nCUM1ic/K5OQQKDxptbDf3ScLKE
+	 jdJQIfhK8N1qQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AF73D380CEE2;
+	Thu, 20 Feb 2025 18:10:37 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250220-rtl8366rb-leds-compile-issue-v2-1-8f8ef5a3f022@linaro.org>
- <20250220-rtl8366rb-leds-compile-issue-v2-1-8f8ef5a3f022@linaro.org>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 0/4] Bluetooth: Converge on using secs_to_jiffies()
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <174007503650.1411319.5848218735916176196.git-patchwork-notify@kernel.org>
+Date: Thu, 20 Feb 2025 18:10:36 +0000
+References: <20250219-bluetooth-converge-secs-to-jiffies-v1-0-6ab896f5fdd4@linux.microsoft.com>
+In-Reply-To: <20250219-bluetooth-converge-secs-to-jiffies-v1-0-6ab896f5fdd4@linux.microsoft.com>
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: marcel@holtmann.org, luiz.dentz@gmail.com, johan.hedberg@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, linux-bluetooth@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
 
-On Thu, Feb 20, 2025 at 05:02:21PM +0100, Linus Walleij wrote:
-> diff --git a/drivers/net/dsa/realtek/Makefile b/drivers/net/dsa/realtek/Makefile
-> index 35491dc20d6d6ed54855cbf62a0107b13b2a8fda..2fb362bbbc183584317b4bc7792ee638c40fa6a1 100644
-> --- a/drivers/net/dsa/realtek/Makefile
-> +++ b/drivers/net/dsa/realtek/Makefile
-> @@ -12,4 +12,7 @@ endif
->  
->  obj-$(CONFIG_NET_DSA_REALTEK_RTL8366RB) += rtl8366.o
->  rtl8366-objs 				:= rtl8366-core.o rtl8366rb.o
-> +ifdef CONFIG_LEDS_CLASS
-> +rtl8366-objs 				+= rtl8366rb-leds.o
-> +endif
->  obj-$(CONFIG_NET_DSA_REALTEK_RTL8365MB) += rtl8365mb.o
+Hello:
 
-I was expecting to see even more than this. What happens if CONFIG_LEDS_CLASS
-is a module but CONFIG_NET_DSA_REALTEK_RTL8366RB is built-in? Built-in
-code can't call symbols exported by modules, but I don't see that
-restriction imposed, that CONFIG_NET_DSA_REALTEK_RTL8366RB should also
-be a module.
+This series was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
 
-> +	init_data.devicename = kasprintf(GFP_KERNEL, "Realtek-%d:0%d:%d",
-> +					 dp->ds->index, dp->index, led_group);
-> +	if (!init_data.devicename)
-> +		return -ENOMEM;
-> +
-> +	ret = devm_led_classdev_register_ext(priv->dev, &led->cdev, &init_data);
-> +	if (ret) {
-> +		dev_warn(priv->dev, "Failed to init LED %d for port %d",
-> +			 led_group, dp->index);
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
+On Wed, 19 Feb 2025 22:51:28 +0000 you wrote:
+> This series converts users of msecs_to_jiffies() that either use the
+> multiply pattern of either of:
+> - msecs_to_jiffies(N*1000) or
+> - msecs_to_jiffies(N*MSEC_PER_SEC)
+> 
+> where N is a constant or an expression, to avoid the multiplication.
+> 
+> [...]
 
-I know this is just moving the code around, but I was looking at it anyway.
+Here is the summary with links:
+  - [1/4] Bluetooth: hci_vhci: convert timeouts to secs_to_jiffies()
+    https://git.kernel.org/bluetooth/bluetooth-next/c/44174b3bb552
+  - [2/4] Bluetooth: MGMT: convert timeouts to secs_to_jiffies()
+    https://git.kernel.org/bluetooth/bluetooth-next/c/b0ade3137c2a
+  - [3/4] Bluetooth: SMP: convert timeouts to secs_to_jiffies()
+    https://git.kernel.org/bluetooth/bluetooth-next/c/a6228ba15de0
+  - [4/4] Bluetooth: L2CAP: convert timeouts to secs_to_jiffies()
+    https://git.kernel.org/bluetooth/bluetooth-next/c/12159413e3fa
 
-Doesn't init_data.devicename need to be kfree()d after devm_led_classdev_register_ext(),
-regardless of whether it succeeds or fails?
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-IMHO, the code could use further simplification if "realtek,disable-leds" were
-honored only with the LED subsystem enabled. I understand the property exists
-prior to that, but it can be ignored if convenient. It seems reasonable to
-leave LEDs as they are if CONFIG_LEDS_CLASS is disabled. But let me know
-if you disagree, it's not a strong opinion.
 
-Also, I'm not sure there's any reason to set RTL8366RB_LED_BLINKRATE_56MS from
-within the common code instead of from rtl8366rb-leds.c, since the only
-thing that the common code does is disable the LEDs anyway (so why would
-the blink rate matter). But that's again unrelated to this specific change,
-and something which can be handled later in net-next.
