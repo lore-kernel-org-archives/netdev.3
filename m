@@ -1,252 +1,343 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2089.outbound.protection.outlook.com [40.107.244.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from lf-2-14.ptr.blmpb.com (lf-2-14.ptr.blmpb.com [101.36.218.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732611C4A24
-	for <netdev@vger.kernel.org>; Thu, 20 Feb 2025 15:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740065935; cv=fail; b=B65grct0GjJZHZ48jOdflyoe2xmAFgYi+jykvLw5MElU9B7F+8fKikBCmddZxK8zLvkoWgEBPlJAX/CZ1AphgI4fzTErcp87zO2q3jaHAyBBbQQKsr5Jcoxos6jgECUvIMMPlp8uggd44crm9ci/4mvfxYAIqms9oEoLlZJWvYk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740065935; c=relaxed/simple;
-	bh=LHJ6mFOzekjuAVpg0LN8JfVv9X9WJMUF5oA3UekQ1cg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sStAtBkRWALGm/xFNJZjFW5ldRWH4rthIP/fXSRA+2JzQz5XC7NSjgfa9/1VLXjYlISkp51IG0VRdzlJnP+zZuBhiN8957xchzbrF+LXSIZJMP5+rIrD1qJj6t6PzGbVlEhKOXEpKBiay2wGwJThHS871W+l9KKeJMjEHCkUdbo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hjMK10Yu; arc=fail smtp.client-ip=40.107.244.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9262A1D63F8
+	for <netdev@vger.kernel.org>; Thu, 20 Feb 2025 15:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.36.218.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740065954; cv=none; b=akx7dSS4wZij5Bz/CHZfUVwgghWZP7r0DkrLNKTVYj8tvROwqgqsM06mAqmmo+X4KhCr/0q7hJ+uwUJP1c52QsuWKZI1xMEgVKHM6ISw27pViudtqzbyqkwo0UxGUzqS4ewG3OJvr602FhLABSFWuAyHlDbUeF3nLX1wSebqvm4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740065954; c=relaxed/simple;
+	bh=he4hTAhgWTx+ZA/FodsXqZ4aec2FmWw1LRB1Ynk+NN0=;
+	h=To:Subject:Date:Content-Type:Cc:References:From:Message-Id:
+	 Mime-Version:In-Reply-To; b=Ibu5UAJ7DB9tLeboy7mGBbRWVX+ALumz4wyqsmRou5zRBqyzTuUJErMGiQtuJRZGr093vKAM4obIcRsn8kLzenJ8UTfXs9e51ByvHZnt8756NAWPnBOnp7gugjqU+n4AwVk8n1B8RjUDyh0v57BllHet8XdPVWdN4gr3lvPAiwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=L+MOj3l2; arc=none smtp.client-ip=101.36.218.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hjMK10Yu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rvulT9RdljJZchScmdntNKKiwHkp8hXXdOcEy/axJ1EQD+xc7xlwAHkuK0VW0Nip69lFytHD8w4tidQW/HAml2UOx45n5bo7PcsfdAi2vPkv7oib6gyyzB4lTABeixiSlzqSTeV2bg1779xOh6JXH974ZKcg3XxGXrJ8Pc7308wFfYMtPWMvO+ym3B9A94Lmajvk5LLFk8PcY4xpBvt3jbzq3AZ/UT6tbfA5ApIYFOQ2A/OLaMMxftvPUrjwk9w3nd2xJJRNcKTXfDvu4rizhbPi9WoE9fcVL+hR0t346fplk+G3DnHbRsI+R1NaMX+wO8ugxx60KbDDNN8OKGxIcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c+C+ly+2aigiNMVnYd6h2NwvZ/fQ4MV8Tg3Dj6WwMY0=;
- b=Tq+2Zdje/X+xJxpLX8PHxnxfiSspnfCMQxWkuOQZgJwLBMeVV8WtPhg4JLIgvvqs1ZP5TRMvDUthUPij7a/wW2mdiH4paF+zcoDYw8oVrT9QuBNQMxozr6QRZMkjAD7ApfXwt857XxK0TlFgd7Ae+5/czG62Y1w42W4bNr1jdEp/WM8w6qcnnU8tr04ZlHzq+GtRC9atvx0eVBK3BU8ZVuF8L3FCJ5z7YMAdgwEZYTMIEsvS/j+Pk8cmJ1ATk+02wWus2UG6WsW94LMfrdoniWJSmD+Ef9dk6ykR4Ra9LWeXFSDPWEXqCIfBitMtqElqi2NfQOjZxY8SJqPFf1xXLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c+C+ly+2aigiNMVnYd6h2NwvZ/fQ4MV8Tg3Dj6WwMY0=;
- b=hjMK10YutrN0+MJd5VW3owdf9hUATA7Gs+p3yWVDb7ahwIhUe8Pv+ACvasM8C+s2OrW55Uo0AqlHIGiRRwbwBGWnYMjZfV3gsmyU153/0bQsOu7Jn+7YpEGQf97cTMW4KCKp/GyvJOiAydxZ5rnc7x5EHDADziTbZB5eH6fQcpaIgecqTRfJw+paMW/4W4DUF/w7IumpmnN8CXso2IfSkPxNIlSHlEMAYIAvHXOGx9LFAwFcPtcxvzKIUcefFPngwIsFTFDNYFLvc2eKAw2x0yKdw9SQzu5TtXIiLdHMG/4IQm8DpNor3koFXCqlB+lrVdoJjDQxMN/wzkcPAcCtKQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by DM4PR12MB7718.namprd12.prod.outlook.com (2603:10b6:8:102::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.16; Thu, 20 Feb
- 2025 15:38:50 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::66fc:f8a2:1bfb:6de8]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::66fc:f8a2:1bfb:6de8%7]) with mapi id 15.20.8466.015; Thu, 20 Feb 2025
- 15:38:50 +0000
-Date: Thu, 20 Feb 2025 17:38:41 +0200
-From: Ido Schimmel <idosch@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, maheshb@google.com,
-	lucien.xin@gmail.com, fmei@sfs.com
-Subject: Re: [PATCH net] net: loopback: Avoid sending IP packets without an
- Ethernet header
-Message-ID: <Z7dMgRwCaJi3aG5b@shredder>
-References: <20250220072559.782296-1-idosch@nvidia.com>
- <CANn89iKnRBQipCOLtFq-rVPOoaZ7M6tYVo+Fm1aYgCZnyqW=eg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANn89iKnRBQipCOLtFq-rVPOoaZ7M6tYVo+Fm1aYgCZnyqW=eg@mail.gmail.com>
-X-ClientProxiedBy: MR1P264CA0151.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:501:54::8) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="L+MOj3l2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2403070942; d=yunsilicon.com; t=1740065732; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=NpGrn8aOytrn4CUUrmEk7SJeydb2UnWKWO7oO73J2f0=;
+ b=L+MOj3l28bVsAFlkQt2xPwBLd8Nk05hw549bYC/JBG65T+Z7ZR8OOCn2CCWirBlxJ3VUMp
+ YXLJsxGT735eeKM8dviSaDgif7jujPGl24ZCeJv51y2FPha+BVFAhCumFhivWex95gNBfD
+ aDt9XlNuXNasiVO/TWvQxbYA2BtQ06ePcu0MeA1qepn2xy1RlN+i0vyRD0BE3L0tedwgk3
+ 2BIhJ7KnRSQYww48xl8+dHvDDWWUuew5KmKNTN39mizkBJj0vxDsfNPGFb7Cj/AoXJpTOV
+ u+8Ng4ymHLihH3CZWjGiRzQanzqxf0hEV4fySa0H3A+P+GFo4Gdr1nSD69/Hvw==
+To: "Simon Horman" <horms@kernel.org>
+Subject: Re: [PATCH v4 05/14] net-next/yunsilicon: Add eq and alloc
+Date: Thu, 20 Feb 2025 23:35:26 +0800
+Content-Type: text/plain; charset=UTF-8
+Cc: <netdev@vger.kernel.org>, <leon@kernel.org>, <andrew+netdev@lunn.ch>, 
+	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>, 
+	<davem@davemloft.net>, <jeff.johnson@oss.qualcomm.com>, 
+	<przemyslaw.kitszel@intel.com>, <weihg@yunsilicon.com>, 
+	<wanry@yunsilicon.com>, <parthiban.veerasooran@microchip.com>, 
+	<masahiroy@kernel.org>
+X-Lms-Return-Path: <lba+267b74bc2+0b1e84+vger.kernel.org+tianx@yunsilicon.com>
+References: <20250213091402.2067626-1-tianx@yunsilicon.com> <20250213091412.2067626-6-tianx@yunsilicon.com> <20250218171036.GB1615191@kernel.org>
+User-Agent: Mozilla Thunderbird
+From: "tianx" <tianx@yunsilicon.com>
+Message-Id: <b0adf539-8104-452d-ba34-14a120602bd5@yunsilicon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|DM4PR12MB7718:EE_
-X-MS-Office365-Filtering-Correlation-Id: ad23534d-ca44-4530-bb41-08dd51c4ac7b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dFZJR1U4WnhYbm5VR2c4TTZQUVpreTBIYWRYZ3gxZjVVenI0UlVtKzUvV0Yx?=
- =?utf-8?B?T2xCUVplellacEJJQWpnQkhEZmFScTVYNkxZTUU1Znhyd3ZVRXREWXB2Mm5O?=
- =?utf-8?B?c0p0VnRNZXV5MVZJT0J2Y1hKRnV4ZEt5K2c1N2RyenNvV0hySEJERzJDZ0l5?=
- =?utf-8?B?Z1hodGtiNmFpOWk1WjJSdFpGb3V3WnpSK3pwWFUxMXFmLzRteVMvYzlIYlJo?=
- =?utf-8?B?NG5lVzFwSHhzZlNsak1WRytiaXhHbFk5TENGelJVeGtDRzU1WmdwS3JSWGk4?=
- =?utf-8?B?bXhjUXBHN1VmZVY2dHB6eWZYcGRwTDl3aGs3eDBKTUhBcUVhMTArYmRoNEtr?=
- =?utf-8?B?aHJ5YlJGNHYwSWgrRzdwOHpyZ3AxR0w2TEdSL3d2S0c0eHkydC8waUl5b1dj?=
- =?utf-8?B?OXVNdjV5Q0JUazErNW92RUlmNU9rWkwwVm5aYlNFVnhwQkN1bnNFdlZXYjhY?=
- =?utf-8?B?aG9uNmEvS3AvSStuRGVweG1GbVlOSjQ4eXBrbTZHS1kyMkEyTURzRWJLL3dH?=
- =?utf-8?B?K3BpNzA0eU40aHcxV2tkWFF4dUpZMWcrc3RYNmhTcHZNbnd0M21PcGVnelBy?=
- =?utf-8?B?RDFRcU5ubk1qbEdqZTZnRHVXTlBGUjVUMUEzMVRlMXJFanIrNWt0WFNPYlUw?=
- =?utf-8?B?Mi9yV0t0cEJCS2xsNWdXcmxOeE12dTVkUjRnTVpHc080OTh6aEhaUW9udDQy?=
- =?utf-8?B?MXE4Y3hLNVlYcEN4VU82a0hWNDBRRmMvN2JhY2s5bUpRUnNiY2FPQ1FPNEty?=
- =?utf-8?B?VmtQa3p6dkI1OS9GQk1YaGlZUzYwR1Jxek13TGg2Z2VqVGZRT0o4eTVaazBy?=
- =?utf-8?B?UVh6d0lwTE5vSVNpUmV5UW56ODNldERJOG1rVjQxOGFPV0hzV3hKeE1IOU5P?=
- =?utf-8?B?a0p4RGV0SWYvcWQzV0x6UG45bnRmaDdxZGREeTJYWUdRN3JXcjQrdVpiR2Nx?=
- =?utf-8?B?NFJHU29KVWc2RHIrNVNyekxmbkhVRllkSWlUQk1JZXYyZjJmNSs1SlA5dWdG?=
- =?utf-8?B?S2dROTlIOXhaS3lNRlFFT0pkbEFCandNWWw3bjFlS0dGb2NESTFhN05yYmI3?=
- =?utf-8?B?d29BV3FvS1hXVmJ5WUZpZmJhVE1XQ3lHZmRBU2lFZWlBSEVFNEFlczU2L00x?=
- =?utf-8?B?OVhqMEE0aTFsNkhwWXoydStka1BMb2J1Ui92d0FoeHp6K0NMaGNUOE95UnBJ?=
- =?utf-8?B?Tm01QUpjbDVTVTZ2cWl0R2xjRHpYWThubkZuZHRXaUREZW53ZUZwSG5vd2JT?=
- =?utf-8?B?b3BCSnExNnYwOFhtYVpSSmhIa1lvREIwdU91QXcxVVYrcmFUU24xQXdpTXBu?=
- =?utf-8?B?bGo2aGRueVlBMzdEMHM3UFV5anJ1U2YzRGQ1Z210WG0rbGR0UjNTNzRDL041?=
- =?utf-8?B?bEU4RS9GcHp1Y3ZLRWxKYXF0am1BZlRWcDlIRXhwNzJXaW9IOFYwMVV4M1JS?=
- =?utf-8?B?WVc2a2JzNXV4VU1CL0dPUDBzUnpad2RVWitZVnU0YjVrQkd5ajdWNjYvTlUx?=
- =?utf-8?B?RUpqRGN0dkFRUnZrSHZDc2MzWG93Z1ZWYjErL290RFYwRk5rM1NXTDBYVlBX?=
- =?utf-8?B?cjhvdU5SdjVJRDRpMDY4RE9TdzFIYjBBSzFnZUwrMkY0VnRoMHN6UElpWlh5?=
- =?utf-8?B?VFVGM2xXZGZmMHBTNVBadEp5RVREaXYyRGJFZ3E5c0licG5yZGcwSlRUQUZC?=
- =?utf-8?B?Rithd3ZZcU5rQ3JCeUtsbkVTQUNUV25uSXlMTGNJUUxmTnlEWDl6Y0VOS3R6?=
- =?utf-8?B?WCt6UjF4bDBualFPdy9nS1J1Y2JBN29wVzIwUHRrSWFNYTVJZ2I5cnNOVUtK?=
- =?utf-8?B?V0pzZXIvM2NURk01ODN5MDBlbDJIZ0h1NFErT3ZOK3RKcGFEVTNEcXdHRzdq?=
- =?utf-8?Q?IEqBHiq09gaxQ?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?N2FRWXBEa3pYZ1BFQjNoQ1pKbnJqR2pUUGZkK2NlWWJQMEY0MVRvSXpwRGRL?=
- =?utf-8?B?RnBsNXd6NUk0eUFhWEJQelljaHFweGdQbVNIZHp0ZGkwSy9pQVdiVmx0MElB?=
- =?utf-8?B?Y2RWWlpNOWNleGdkVnRYUFIrTjhMcEpWdjlKcWx6TDZBMmFUQ1J1S0pPemhu?=
- =?utf-8?B?M2VDWlRMNHBDQkEreXBUTjhTOFBCUDZHR1NKYXpEZUpXWC9CMk9DUnh4d1Nk?=
- =?utf-8?B?YVA1eDQ1ZGdyVm5YYnk0UXRvTnI0Z3JSV1Z5WVUzZnhEd2xuT2FiWWd5eVVP?=
- =?utf-8?B?eWw1dVpsLzFHN2pkZkovS0xMN2k5WFI0MnRQdG5mRGZ4QURVYi92N3NvWTZ3?=
- =?utf-8?B?RVdhL2dIQkdoa1R0RXg1YitBdklobVB6QTg5ZVliZ1cvc3dQZWM2emdPUHdE?=
- =?utf-8?B?V2VvdXlPVUtqN2xMR00yM0xKc2MrMVN1MStlQzYycW5DRFNWTkF6VVZlS2wr?=
- =?utf-8?B?SmZEUk1wMU5YekwyZVpwUDFMT1I2NXJnM1RiYWZ6d2xIL3dvcWxPZEZ3SVVk?=
- =?utf-8?B?eTBvdEhFMU00eFhHbEJ0eGtGTEJ1WXRKaGdFWmhFdVdybFNxV25NZ3NkWnNM?=
- =?utf-8?B?TnhLalk4YS9IRitDWDlDUk9wN1N2SnR3b3MzQnlCNzRBRGRwbnFSUTNxYmpp?=
- =?utf-8?B?aGlrTVhJZTZFL3QrZUdXWFgyYm1hUEJTWE1TQ0NNc200WnQrcFFzUFdNVmNj?=
- =?utf-8?B?eUF1RTdYc25nTHExUXJJZml5eGcxU0tyb3NGR0lWRUtvQWU2dVFrUURQbXFT?=
- =?utf-8?B?SHFaNzhNblZNQllNcEg5LzdHQ1k0aTlycEp1akJZUFluRnBhYUxCY2g1TFhh?=
- =?utf-8?B?UStRYTFiTmV5UEgwa2dCc3ZPVnF5aUJnS2hVOGtJRnI0N2IrcmxBZDFxRUk2?=
- =?utf-8?B?d0Q4WmYxTzhuZjlleGpET0VsNDI0U0ZsR3VoZFZDNXZ5WFZ2Nm8vZWNRS2FX?=
- =?utf-8?B?Y2s3SXEzR1REaFdaWFR0M3QwSE9EOFNlKzN5WlZXazdIbGVBSXJJR0JRZWFE?=
- =?utf-8?B?VGR1RjQ0dUhvZE5DK0hNYmJzTWdDdEJRS0ErSW1mdzc5cnZwODEzMGowc2hO?=
- =?utf-8?B?Y3pMSFFkM09OZUlsQmFjMXZDbWxvSUF4eHM4aFAzNjU1bkRrZmo0bUxvMXNz?=
- =?utf-8?B?NS9BVDZmZnhQVStYakdBWTdCUXNnclZ6MmFncnlHeXE5S0ExREZwa0x6TEla?=
- =?utf-8?B?dVlKV2prNGEzM1pwbHhTa0RoVkRGckpTSGZNblFqTjJBTXhnNXVmdmpkRXZ1?=
- =?utf-8?B?MDhzSVFvRzBFYTFPZVo1YVZlTm4waEZDeE1MSjQzOVNLT1Z3dVE0VWM3aUNQ?=
- =?utf-8?B?a2lCbUpoeTMvOUNKNGtnZ0JjVWJHSU1jU3A0TFZIUjNka0V5dlhZS1AxaDU5?=
- =?utf-8?B?NVNOWDVXTUgxVHpBUGo5UytUV3FkeHkvbnRQakVSL2YrVjFaNHluTllzTFhL?=
- =?utf-8?B?UWc1VUVkYkt2cXIrOEY3QWgzdm80MkJlaUlDdU5qYmlOQnRFZDZSMlk1OVUr?=
- =?utf-8?B?bDhaYkJxVmlhY0M5eVk2MDVqSUVPcnlsSVRXQ1Z4WVpndVUzaVJSU2tqUkhG?=
- =?utf-8?B?YmdGMERzVG80N3NUVmgrMC9tWFg0TU91YjBYazZtUHJzVVVZMVhJRkhNRStV?=
- =?utf-8?B?bUtPaWVSQkE4emhOU3crUWtweDdRMWwwYUxodVpEbjl2UThqUlFnV0FwdzFh?=
- =?utf-8?B?VTZjVHk2QkorQWFUdUdRQXZpNWdQWmUwK0xFcUJXMk55WThMd0pORTd3VEp5?=
- =?utf-8?B?c2IxcEdxQXhrcHIxWnJBQnIvYVNoWm1hTnMra3FVNDhlYU1vZmxJdWVMU2NC?=
- =?utf-8?B?RjhBN1dYbjZWeXBDeWdXN1lCTUtYS0RLc1l0emFYL0k0dmlLTG82NTB1enBQ?=
- =?utf-8?B?ek92VkY2elY0VjA4Y3F5V2tPTkhxZWtJKzRHRFJoV0VxYk1YeEdJVzRIYTlO?=
- =?utf-8?B?eTZSSWlIUmNob1RNdldlcWordGt6UHpJZDBqYytEY0ZPSjN6VEtMUVZIcm5n?=
- =?utf-8?B?MC9EZ0Z0MDQ3TVp3bnRoNzJKVE5LcFZneE1zUE5tYitJanRxb1ZvUG1rN3dX?=
- =?utf-8?B?N3g0blk2R2x3YmZpSlk2SVVQRGhyWjE1clA2U3lQUUF5K2lpd05JSHNZdzV4?=
- =?utf-8?Q?bw59KAqN7ivYTMzWBUIjtkNYJ?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad23534d-ca44-4530-bb41-08dd51c4ac7b
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2025 15:38:50.7851
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uSRvrQYzNlah0UZLv0uFTM6Yd5URsqRe/FJ3vOHYQnb50r4lTm20HrlSzqn3Z9/kjYpzB7BLxiQMYgPv/nyMlw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7718
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <20250218171036.GB1615191@kernel.org>
+X-Original-From: tianx <tianx@yunsilicon.com>
+Received: from [127.0.0.1] ([183.193.164.49]) by smtp.feishu.cn with ESMTPS; Thu, 20 Feb 2025 23:35:29 +0800
 
-On Thu, Feb 20, 2025 at 11:40:07AM +0100, Eric Dumazet wrote:
-> On Thu, Feb 20, 2025 at 8:26 AM Ido Schimmel <idosch@nvidia.com> wrote:
-> > diff --git a/drivers/net/loopback.c b/drivers/net/loopback.c
-> > index c8840c3b9a1b..f1d68153987e 100644
-> > --- a/drivers/net/loopback.c
-> > +++ b/drivers/net/loopback.c
-> > @@ -244,8 +244,22 @@ static netdev_tx_t blackhole_netdev_xmit(struct sk_buff *skb,
-> >         return NETDEV_TX_OK;
-> >  }
-> >
-> > +static int blackhole_neigh_output(struct neighbour *n, struct sk_buff *skb)
-> > +{
-> > +       kfree_skb(skb);
-> 
-> If there is any risk of this being hit often, I would probably use the
-> recent SKB_DROP_REASON_BLACKHOLE
+On 2025/2/19 1:10, Simon Horman wrote:
+> On Thu, Feb 13, 2025 at 05:14:14PM +0800, Xin Tian wrote:
+>> Add eq management and buffer alloc apis
+>>
+>> Signed-off-by: Xin Tian<tianx@yunsilicon.com>
+>> Signed-off-by: Honggang Wei<weihg@yunsilicon.com>
+> ...
+>
+>> diff --git a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
+> ...
+>
+>> +struct xsc_eq_table {
+>> +	void __iomem	       *update_ci;
+>> +	void __iomem	       *update_arm_ci;
+>> +	struct list_head       comp_eqs_list;
+> nit: The indentation of the member names above seems inconsistent
+>       with what is below.
+got it
+>> +	struct xsc_eq		pages_eq;
+>> +	struct xsc_eq		async_eq;
+>> +	struct xsc_eq		cmd_eq;
+>> +	int			num_comp_vectors;
+>> +	int			eq_vec_comp_base;
+>> +	/* protect EQs list
+>> +	 */
+>> +	spinlock_t		lock;
+>> +};
+> ...
+>
+>> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.c b/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.c
+> ...
+>
+>> +/* Handling for queue buffers -- we allocate a bunch of memory and
+>> + * register it in a memory region at HCA virtual address 0.  If the
+>> + * requested size is > max_direct, we split the allocation into
+>> + * multiple pages, so we don't require too much contiguous memory.
+>> + */
+> I can't help but think there is an existing API to handle this.
+failed to find one
+>> +int xsc_buf_alloc(struct xsc_core_device *xdev, int size, int max_direct,
+> I think unsigned long would be slightly better types for size and max_direct.
+yes, will modify
+>> +		  struct xsc_buf *buf)
+>> +{
+>> +	dma_addr_t t;
+>> +
+>> +	buf->size = size;
+>> +	if (size <= max_direct) {
+>> +		buf->nbufs        = 1;
+>> +		buf->npages       = 1;
+>> +		buf->page_shift   = get_order(size) + PAGE_SHIFT;
+>> +		buf->direct.buf   = dma_alloc_coherent(&xdev->pdev->dev,
+>> +						       size,
+>> +						       &t,
+>> +						       GFP_KERNEL | __GFP_ZERO);
+>> +		if (!buf->direct.buf)
+>> +			return -ENOMEM;
+>> +
+>> +		buf->direct.map = t;
+>> +
+>> +		while (t & ((1 << buf->page_shift) - 1)) {
+> I think GENMASK() can be used here.
+ok
+>> +			--buf->page_shift;
+>> +			buf->npages *= 2;
+>> +		}
+>> +	} else {
+>> +		int i;
+>> +
+>> +		buf->direct.buf  = NULL;
+>> +		buf->nbufs       = (size + PAGE_SIZE - 1) / PAGE_SIZE;
+> I think this is open-coding DIV_ROUND_UP
+right, I'll change
+>> +		buf->npages      = buf->nbufs;
+>> +		buf->page_shift  = PAGE_SHIFT;
+>> +		buf->page_list   = kcalloc(buf->nbufs, sizeof(*buf->page_list),
+>> +					   GFP_KERNEL);
+>> +		if (!buf->page_list)
+>> +			return -ENOMEM;
+>> +
+>> +		for (i = 0; i < buf->nbufs; i++) {
+>> +			buf->page_list[i].buf =
+>> +				dma_alloc_coherent(&xdev->pdev->dev, PAGE_SIZE,
+>> +						   &t, GFP_KERNEL | __GFP_ZERO);
+>> +			if (!buf->page_list[i].buf)
+>> +				goto err_free;
+>> +
+>> +			buf->page_list[i].map = t;
+>> +		}
+>> +
+>> +		if (BITS_PER_LONG == 64) {
+>> +			struct page **pages;
+>> +
+>> +			pages = kmalloc_array(buf->nbufs, sizeof(*pages),
+>> +					      GFP_KERNEL);
+>> +			if (!pages)
+>> +				goto err_free;
+>> +			for (i = 0; i < buf->nbufs; i++) {
+>> +				void *addr = buf->page_list[i].buf;
+>> +
+>> +				if (is_vmalloc_addr(addr))
+>> +					pages[i] = vmalloc_to_page(addr);
+>> +				else
+>> +					pages[i] = virt_to_page(addr);
+>> +			}
+>> +			buf->direct.buf = vmap(pages, buf->nbufs,
+>> +					       VM_MAP, PAGE_KERNEL);
+>> +			kfree(pages);
+>> +			if (!buf->direct.buf)
+>> +				goto err_free;
+>> +		}
+> I think some explanation is warranted of why the above is relevant
+> only when BITS_PER_LONG == 64.
+Some strange historical reasons, and no need for the check now. I'll 
+clean this up
+>> +	}
+>> +
+>> +	return 0;
+>> +
+>> +err_free:
+>> +	xsc_buf_free(xdev, buf);
+>> +
+>> +	return -ENOMEM;
+>> +}
+> ...
+>
+>> +void xsc_fill_page_array(struct xsc_buf *buf, __be64 *pas, int npages)
+> As per my comment on unsigned long in my response to another patch,
+> I think npages can be unsigned long.
+ok
+>> +{
+>> +	int shift = PAGE_SHIFT - PAGE_SHIFT_4K;
+>> +	int mask = (1 << shift) - 1;
+> Likewise, I think that mask should be an unsigned long.
+> Or, both shift and mask could be #defines, as they are compile-time
+> constants.
+>
+> Also, mask can be generated using GENMASK, e.g.
+>
+> #define XSC_PAGE_ARRAY_MASK GENMASK(PAGE_SHIFT, PAGE_SHIFT_4K)
+> #define XSC_PAGE_ARRAY_SHIFT (PAGE_SHIFT - PAGE_SHIFT_4K)
+>
+> And I note, in the (common) case of 4k pages, that both shift and mask are 0.
 
-Not very often. About 10 times while running the reproducer I shared
-here:
-https://lore.kernel.org/netdev/Z7D9cR22BDPN7WSJ@shredder/
+Thank you for the suggestion, but that's not quite the case here. The 
+|shift| and |mask| are not used to extract fields from data. Instead, 
+they are part of a calculation. In |xsc_buf_alloc|, we allocate the 
+buffer based on the system's page size. However, in this function, we 
+need to break each page in the |buflist| into 4KB chunks, populate the 
+|pas| array with the corresponding DMA addresses, and then map them to 
+hardware.
 
-In line with the original report:
-https://github.com/siderolabs/talos/issues/9837#issuecomment-2642116378
+The |shift| is calculated as |PAGE_SHIFT - PAGE_SHIFT_4K|, allowing us 
+to convert the 4KB chunk index (|i|) to the corresponding page index in 
+|buflist| with |i >> shift|. The |i & mask| gives us the offset of the 
+current 4KB chunk within the page, and by applying |((i & mask) << 
+PAGE_SHIFT_4K)|, we can compute the offset of that chunk within the page.
 
-> (feel free to resubmit
-> https://lore.kernel.org/netdev/20250212164323.2183023-1-edumazet@google.com/T/#mbb8d4b0779cb8f0654a382772c943af5389606ea
-> ?)
+I hope this makes things clearer!
 
-Can we do it in net-next?
+>> +	u64 addr;
+>> +	int i;
+>> +
+>> +	for (i = 0; i < npages; i++) {
+>> +		if (buf->nbufs == 1)
+>> +			addr = buf->direct.map + (i << PAGE_SHIFT_4K);
+>> +		else
+>> +			addr = buf->page_list[i >> shift].map
+>> +			       + ((i & mask) << PAGE_SHIFT_4K);
+> The like above is open-coding FIELD_PREP().
+> However, I don't think it can be used here as
+> the compiler complains very loudly because the mask is 0.
 
-A few questions / suggestions regarding the patch:
+>> +
+>> +		pas[i] = cpu_to_be64(addr);
+>> +	}
+>> +}
+>> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h b/drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h
+> ...
+>
+>> +static void eq_update_ci(struct xsc_eq *eq, int arm)
+>> +{
+>> +	struct xsc_eq_doorbell db = {0};
+>> +
+>> +	db.data0 = XSC_SET_FIELD(cpu_to_le32(eq->cons_index),
+>> +				 XSC_EQ_DB_NEXT_CID) |
+>> +		   XSC_SET_FIELD(cpu_to_le32(eq->eqn), XSC_EQ_DB_EQ_ID);
+> Each of the two uses of XSC_SET_FIELD() are passed a little-endian value
+> and a host-byte order mask. This does not seem correct as it seems
+> they byte order should be consistent.
+>> +	if (arm)
+>> +		db.data0 |= XSC_EQ_DB_ARM;
+> Likewise, here data0 is little-endian while XSC_EQ_DB_ARM is host
+> byte-order.
+>
+>> +	writel(db.data0, XSC_REG_ADDR(eq->dev, eq->doorbell));
+> And here, db.data0 is little-endian, but writel expects a host-byte order
+> value (which it converts to little-endian).
+>
+> I didn't dig deeper but it seems to me that it would be easier to change
+> the type of data0 to host byte-order and drop the use of cpu_to_le32()
+> above.
+>
+> Issues flagged by Sparse.
+>
+>> +	/* We still want ordering, just not swabbing, so add a barrier */
+>> +	mb();
+>> +}
+> ...
+>
+>> +static int xsc_eq_int(struct xsc_core_device *xdev, struct xsc_eq *eq)
+>> +{
+>> +	u32 cqn, qpn, queue_id;
+>> +	struct xsc_eqe *eqe;
+>> +	int eqes_found = 0;
+>> +	int set_ci = 0;
+>> +
+>> +	while ((eqe = next_eqe_sw(eq))) {
+>> +		/* Make sure we read EQ entry contents after we've
+>> +		 * checked the ownership bit.
+>> +		 */
+>> +		rmb();
+>> +		switch (eqe->type) {
+>> +		case XSC_EVENT_TYPE_COMP:
+>> +		case XSC_EVENT_TYPE_INTERNAL_ERROR:
+>> +			/* eqe is changing */
+>> +			queue_id = le16_to_cpu(XSC_GET_FIELD(eqe->queue_id_data,
+>> +							     XSC_EQE_QUEUE_ID));
+> Similarly, here XSC_GET_FIELD() is passed a little-endian value and a host
+> byte-order mask, which is inconsistent.
+>
+> Perhaps this should be (completely untested!):
+>
+> 			queue_id = XSC_GET_FIELD(le16_to_cpu(eqe->queue_id_data),
+> 						 XSC_EQE_QUEUE_ID);
+>
+> Likewise for the two uses of XSC_GET_FIELD below.
 
-1. Can we use it for IPv4 as well? I tested the following:
+I have noticed the sparse check warnings on Patchwork, and I will 
+address all the related issues in the next version.
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 753704f75b2c..2aeab70c1cb5 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -966,6 +966,7 @@ static int ip_error(struct sk_buff *skb)
- 
- 	switch (rt->dst.error) {
- 	case EINVAL:
-+		SKB_DR_SET(reason, BLACKHOLE);
- 	default:
- 		goto out;
- 	case EHOSTUNREACH:
-
-2. Given that this reason is going to be triggered both for
-user-installed blackhole routes and dst entries being destroyed how
-about adjusting the comment? Otherwise I think it will be confusing for
-users who didn't install a blackhole route. Something like:
-
-diff --git a/drivers/net/loopback.c b/drivers/net/loopback.c
-index f1d68153987e..cb269b3251d4 100644
---- a/drivers/net/loopback.c
-+++ b/drivers/net/loopback.c
-@@ -239,14 +239,13 @@ struct pernet_operations __net_initdata loopback_net_ops = {
- static netdev_tx_t blackhole_netdev_xmit(struct sk_buff *skb,
- 					 struct net_device *dev)
- {
--	kfree_skb(skb);
--	net_warn_ratelimited("%s(): Dropping skb.\n", __func__);
-+	kfree_skb_reason(skb, SKB_DROP_REASON_BLACKHOLE);
- 	return NETDEV_TX_OK;
- }
- 
- static int blackhole_neigh_output(struct neighbour *n, struct sk_buff *skb)
- {
--	kfree_skb(skb);
-+	kfree_skb_reason(skb, SKB_DROP_REASON_BLACKHOLE);
- 	return 0;
- }
- 
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index de42577f16dd..0ef6869dbd1b 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -556,7 +556,8 @@ enum skb_drop_reason {
- 	 */
- 	SKB_DROP_REASON_BRIDGE_INGRESS_STP_STATE,
- 	/**
--	 * @SKB_DROP_REASON_BLACKHOLE: blackhole route.
-+	 * @SKB_DROP_REASON_BLACKHOLE: blackhole route or dst entry being
-+	 * destroyed.
- 	 */
- 	SKB_DROP_REASON_BLACKHOLE,
- 	/**
-
-> Otherwise, this looks good to me, thanks !
-> 
-> Reviewed-by: Eric Dumazet <edumazet@google.com>
-
-Thanks!
+> And perhaps queue_id could be renamed, say to q_id, to make things a bit
+> more succinct.
+>
+>> +			cqn = queue_id;
+> I'm unsure why both cqn and queue_id are needed.
+The |queue_id| is indeed a bit redundant, and I will remove it.
+>> +			xsc_cq_completion(xdev, cqn);
+>> +			break;
+>> +
+>> +		case XSC_EVENT_TYPE_CQ_ERROR:
+>> +			queue_id = le16_to_cpu(XSC_GET_FIELD(eqe->queue_id_data,
+>> +							     XSC_EQE_QUEUE_ID));
+>> +			cqn = queue_id;
+>> +			xsc_eq_cq_event(xdev, cqn, eqe->type);
+>> +			break;
+>> +		case XSC_EVENT_TYPE_WQ_CATAS_ERROR:
+>> +		case XSC_EVENT_TYPE_WQ_INVAL_REQ_ERROR:
+>> +		case XSC_EVENT_TYPE_WQ_ACCESS_ERROR:
+>> +			queue_id = le16_to_cpu(XSC_GET_FIELD(eqe->queue_id_data,
+>> +							     XSC_EQE_QUEUE_ID));
+>> +			qpn = queue_id;
+>> +			xsc_qp_event(xdev, qpn, eqe->type);
+>> +			break;
+>> +		default:
+>> +			break;
+>> +		}
+>> +
+>> +		++eq->cons_index;
+>> +		eqes_found = 1;
+>> +		++set_ci;
+>> +
+>> +		/* The HCA will think the queue has overflowed if we
+>> +		 * don't tell it we've been processing events.  We
+>> +		 * create our EQs with XSC_NUM_SPARE_EQE extra
+>> +		 * entries, so we must update our consumer index at
+>> +		 * least that often.
+>> +		 */
+>> +		if (unlikely(set_ci >= XSC_NUM_SPARE_EQE)) {
+>> +			eq_update_ci(eq, 0);
+>> +			set_ci = 0;
+>> +		}
+>> +	}
+>> +
+>> +	eq_update_ci(eq, 1);
+>> +
+>> +	return eqes_found;
+>> +}
+> ...
