@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AC21EC01E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428FA1EDA20
 	for <netdev@vger.kernel.org>; Thu, 20 Feb 2025 09:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740042133; cv=none; b=iA8jhl4AkkIfvoYvSfYE2IMSqABvAJIZ+XF08LMhOa77KFRwd0OxQ7kKE0iK+ZfSPBHV+BC1exKCVbumO240wiXsBDI+LSyzEt41D1rPLZPkWW/vqvlVcA54Uaa//dyS3R+x598e5uB1ZLWW9ESrw1kjVxkIYvGNUIREfKHcgTM=
+	t=1740042133; cv=none; b=oKnIU9XlAlgA0lhmQVmLNXJf55HF0Ec0zEv7lbgnKbMCY+1R5JU2OsFSKsW8Fq+cL/KAjHS1srce3EzUSSKdPg9tz9NGqYeybkLpR9ilB32sAbrAO0ONDvjC+w7KOHYCJaVz1LNJEXUixhD8C1YXpQ/VC0MKjL84vGxX5qxsD10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740042133; c=relaxed/simple;
-	bh=A+r9IGGBG25pq9QT8w+tm0bS/ZjAeMW3I4gN502rFwQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DXiQ+SbN6zw8q4n0qNXdDTi5jqMVBjKcTA5bzlUgvSZgpz5cvW3LQ2x8iFNGuTdyHwv5lkbfywjbwZMVr6MzdJP2FkQlag9U0rV2ZkHn95gJq6ewaOGOK6wbbnvC0gdyvUWL3JpwOanCmJ/iUiKPMkl0CaxXFxvpYDCZyJEktFs=
+	bh=kKRwnS9riO6TOm2jt8o0D2S+vQy3OXvSA39Zd4PiTH4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=f8Yu42A+3/NPxSiwwRUp0tZLd/nD/m8zQV9CuIq0rDi+xtvzfsR4ExtnsgpELmy34vEM9LU1yN4TRx/uUY1jfOb7cUjJpEyJA7hNyArMMdt2ZohbDQQJJpWqtIrPcrp/hf0OIlt79i9WxCCTo57elmdF0EKP1rJ+Upn8GwKs+4A=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,17 +18,17 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tl2RR-0007Bo-7I; Thu, 20 Feb 2025 10:01:57 +0100
+	id 1tl2RR-0007Br-7T; Thu, 20 Feb 2025 10:01:57 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tl2RQ-001uIF-0G;
+	id 1tl2RQ-001uIH-0Q;
 	Thu, 20 Feb 2025 10:01:56 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tl2RP-00CKDN-3C;
-	Thu, 20 Feb 2025 10:01:55 +0100
+	id 1tl2RQ-00CKDh-09;
+	Thu, 20 Feb 2025 10:01:56 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -46,10 +47,12 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v3 0/3] Add support for Plymovent AQM board
-Date: Thu, 20 Feb 2025 10:01:52 +0100
-Message-Id: <20250220090155.2937620-1-o.rempel@pengutronix.de>
+Subject: [PATCH v3 2/3] dt-bindings: arm: stm32: Add Plymovent AQM board
+Date: Thu, 20 Feb 2025 10:01:54 +0100
+Message-Id: <20250220090155.2937620-3-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250220090155.2937620-1-o.rempel@pengutronix.de>
+References: <20250220090155.2937620-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,36 +65,29 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-This patch series adds support for the Plymovent AQM board based on the
-STM32MP151C SoC. Additionally, the ICS-43432 device tree binding is
-converted to YAML to address a validation warning.
+Add support for the Plymovent AQM board based on the ST STM32MP151 SoC
+to the STM32 devicetree bindings.
 
-The ICS-43432 patch resolves one of the devicetree validation warnings.
-However, the false-positive warning:
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+changes v3:
+- fix alphabetical order
+---
+ Documentation/devicetree/bindings/arm/stm32/stm32.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-  "audio-controller@44004000: port:endpoint: Unevaluated properties are
-   not allowed ('format' was unexpected)"
-
-remains unresolved. The "format" property is required for proper
-functionality of this device.
-
-Best regards,
-
-Oleksij Rempel (3):
-  dt-bindings: sound: convert ICS-43432 binding to YAML
-  dt-bindings: arm: stm32: Add Plymovent AQM board
-  arm: dts: stm32: Add Plymovent AQM devicetree
-
- .../devicetree/bindings/arm/stm32/stm32.yaml  |   1 +
- .../devicetree/bindings/sound/ics43432.txt    |  19 -
- .../bindings/sound/invensense,ics43432.yaml   |  51 ++
- arch/arm/boot/dts/st/Makefile                 |   1 +
- arch/arm/boot/dts/st/stm32mp151c-plyaqm.dts   | 669 ++++++++++++++++++
- 5 files changed, 722 insertions(+), 19 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/sound/ics43432.txt
- create mode 100644 Documentation/devicetree/bindings/sound/invensense,ics43432.yaml
- create mode 100644 arch/arm/boot/dts/st/stm32mp151c-plyaqm.dts
-
+diff --git a/Documentation/devicetree/bindings/arm/stm32/stm32.yaml b/Documentation/devicetree/bindings/arm/stm32/stm32.yaml
+index 2cea166641c5..544010683b06 100644
+--- a/Documentation/devicetree/bindings/arm/stm32/stm32.yaml
++++ b/Documentation/devicetree/bindings/arm/stm32/stm32.yaml
+@@ -60,6 +60,7 @@ properties:
+       - description: ST STM32MP151 based Boards
+         items:
+           - enum:
++              - ply,plyaqm   # Plymovent AQM board
+               - prt,mecio1r0 # Protonic MECIO1r0
+               - prt,mect1s   # Protonic MECT1S
+               - prt,prtt1a   # Protonic PRTT1A
 --
 2.39.5
 
