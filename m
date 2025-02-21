@@ -1,136 +1,120 @@
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D363A1FC7C7
-	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 06:12:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837531FBEA6
+	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 06:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740118371; cv=none; b=Z2+m4rgCNCendGj4iEhK9jp6JqLIyq8EFDsOGW4uyUDWrH8JWh8nEDdzFj2PyBJmt9XJJfinROwIliz+alAP1Mm7IcoAQUEEf54hocF8dw6PMFJUD9IL+90FDnkW2J0cF6KxmRUvJrwPUsgHpEzvnsZZDXCSSL6rp2yLNx5z8Mo=
+	t=1740118383; cv=none; b=hsxKA7PMOMEsKRLbJTRDkmdA8z8XiIj61BQsOT5dJQKCFeSbNfR+978/GMCxIKIgMlsR8949W//R960oVPwDTecwfx594RgtbkiWz9v46SH7DCBL53C+KHI9zQkc/9LQKm/kfUrlGXNOZzGIolqtJIP6lM2x2ODb/rO/qvFVuE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740118371; c=relaxed/simple;
-	bh=bzrzImRT1cLXd6rUjwdir4NV1+ubNBxYh/Xfpr4IbTw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QXgH4KCRcsi20x1VHSMAQesKC//fG63AKCo0I710bGUlokYmQFruL3EaxWmDnWMPWbvdDfGWG/PGuTmxjf8uyTebtoL47SGhiB/cZFE1FzDdhVBJTUsNC2N72M2w5spIWhUW1kITY2ilEU0Ejyv3EWth69R/oJuVXJioUHJ3u+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZVxd5yL1; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1740118383; c=relaxed/simple;
+	bh=/SnOrdsImDGYuVbBgE7r2rrLBRe/+t8p2SY0klArvlI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oz5Io9joUPvhQVDXtNYJoWHKHBjD/c0vAB6sh/Wn819n3GjyHboWpsQl5eUbc9qzakPfav4yVfAXyPRV7ZqTg/Sd45vKCbTKfybpILUn/V16tSNXMhFqr5M7eLTzRG48pWS/aCHiofEhCcM4s3DLsMEtcWJb3GgAUK7ZD0dFVLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TWzAMWcN; arc=none smtp.client-ip=209.85.166.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZVxd5yL1"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740118357;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2vESoKIWHNLR1B3AsYlrqRlcm+s858eCEYgNmXDd9xQ=;
-	b=ZVxd5yL151wkGVXkYIyoEL7sLJgrvw6NEOjdsvB15B3mm7B1nOhlC2mTzWnn0xpNyEhIMD
-	M46p+jQ0AfW89IiyeT8ttf19UUqro0/4EeKmIq1TBI/WmaPNh+SKLcLWS+PSPjvKJYlaKD
-	RHvePJOSFHEHMSSTLVeXvnWeHnDddkU=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ricardo@marliere.net,
-	jiayuan.chen@linux.dev,
-	viro@zeniv.linux.org.uk,
-	dmantipov@yandex.ru,
-	aleksander.lobakin@intel.com,
-	linux-ppp@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	mrpre@163.com
-Subject: [PATCH net-next v2 0/1] ppp: Fix KMSAN uninit-value warning with bpf
-Date: Fri, 21 Feb 2025 14:12:18 +0800
-Message-ID: <20250221061219.295590-1-jiayuan.chen@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TWzAMWcN"
+Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-3d18bf1c8faso4839245ab.1
+        for <netdev@vger.kernel.org>; Thu, 20 Feb 2025 22:13:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740118380; x=1740723180; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dGZ3mV6VOeeNrAqQkhXfcAOvmcA5MAbcI3IGk7WyYZM=;
+        b=TWzAMWcNnXdXduXu1zslCkXPiYoj59sAX/oUNzamb2Tb0pPtDO8SKpVgySq/PAqqk7
+         eDv+zbnTQgE65EF8zsGa9RPChTLz/tZID9aDtONQfPdnd5Yetdonxk1sdHKVXbzedoLA
+         m4ykkCWfv5VBL+vJuK+KxNpc9MtpFDJHION4lN6sBkaWxjeT1H76bd6jXwcStTWWRQo7
+         4g2rUM6LNEcIpA/IvcIzjFd2dFtQFtLgL4+NcGvSgmatWpyYYGbrLu0q8Hark/Pv75hU
+         t1Niju4ZSXaeC70Yw4W/UFNM7wGbN9xFQ5oz7r7oPMniRNrHU4jcfr7iEwwaYmwFpE/Z
+         PS8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740118380; x=1740723180;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dGZ3mV6VOeeNrAqQkhXfcAOvmcA5MAbcI3IGk7WyYZM=;
+        b=INSsGp71P8DZ95/l9b3DTElRT5SUxF3IUD6u0GYm0Oo6n2B6U1sUCK3Kjuv67zm3at
+         eMIGTTooE2SM42+y9GbZXiUFMwgqQWqxXOnIs68fEq6PmWQjZgkLYCofmCpfDw3B79rZ
+         JaXdQ0MIeik1STkJ/eGzNnaWe1OQl0J0IVtNZJBA9UyG7N1x1Pew+EfXJtZf1Nr4sXWN
+         u9oCkMsV1qkNIHorS1YWIKHc6VgHxtBYkNc1GHNw6gifz/w9NSvVl+Dwp7o/9kkmehoK
+         OsiA99pjnp12ATxMNoQvQU33sGsfSH6CIpihpj72shnQ2/ir/nzBB3OGFXpjiXISX50Q
+         HXPg==
+X-Gm-Message-State: AOJu0Yzq4HgJtw67meh2FOb68pi8gNNCaTwrMe+KffztCyNQ1jSpmuot
+	3solft7/7tqXN4uQ0CuHa9CbewIUQasEBcKYC1moiCh3MmOk3Z77flurCTXiASRAaNfy6edIv5f
+	uUvuB6Ku3HF9KBdTuKsGKVj9hnRM=
+X-Gm-Gg: ASbGncuDhhH/Eg0kGyU+bWXHIWmL3ZwB+QposWz9956FcHoSKESFqgNXi/wZm+hxmx5
+	5nmpIFPxzEQsjQUSxBD1uKCTpxTBmCOVA8pQ3AhyIAUCA6bP88qcEEkyjLm/awziLtmW55xJC8R
+	AU4Q7BFKc=
+X-Google-Smtp-Source: AGHT+IHPsb12vvAQIRYEZuAzp2j7JHt2TK5sFWerRz3yr+3P1RczX/WnI7CF9btuVa9hPfZeHI1aUSxi4Clyol/hCcs=
+X-Received: by 2002:a05:6e02:170e:b0:3a7:87f2:b010 with SMTP id
+ e9e14a558f8ab-3d2cae46bbcmr21151415ab.5.1740118380497; Thu, 20 Feb 2025
+ 22:13:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20250221035938.2891898-1-willemdebruijn.kernel@gmail.com>
+In-Reply-To: <20250221035938.2891898-1-willemdebruijn.kernel@gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Fri, 21 Feb 2025 14:12:23 +0800
+X-Gm-Features: AWEUYZlWwpJF38rLvNM50zHSefnEe_iW8aIYXqySO6vKShYoEQzX8FoaYFRg-a0
+Message-ID: <CAL+tcoD4Y2XEZfSk2KNu_MXo-T4gRxBwveLqFc=mNV7utyDQaQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: skb: free up one bit in tx_flags
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	edumazet@google.com, pabeni@redhat.com, pav@iki.fi, 
+	gerhard@engleder-embedded.com, vinicius.gomes@intel.com, 
+	anthony.l.nguyen@intel.com, Willem de Bruijn <willemb@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Syzbot caught an "KMSAN: uninit-value" warning [1], which is caused by the
-ppp driver not initializing a 2-byte header when using socket filters.
+On Fri, Feb 21, 2025 at 11:59=E2=80=AFAM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
+>
+> From: Willem de Bruijn <willemb@google.com>
+>
+> The linked series wants to add skb tx completion timestamps.
+> That needs a bit in skb_shared_info.tx_flags, but all are in use.
+>
+> A per-skb bit is only needed for features that are configured on a
+> per packet basis. Per socket features can be read from sk->sk_tsflags.
+>
+> Per packet tsflags can be set in sendmsg using cmsg, but only those in
+> SOF_TIMESTAMPING_TX_RECORD_MASK.
+>
+> Per packet tsflags can also be set without cmsg by sandwiching a
+> send inbetween two setsockopts:
+>
+>     val |=3D SOF_TIMESTAMPING_$FEATURE;
+>     setsockopt(fd, SOL_SOCKET, SO_TIMESTAMPING, &val, sizeof(val));
+>     write(fd, buf, sz);
+>     val &=3D ~SOF_TIMESTAMPING_$FEATURE;
+>     setsockopt(fd, SOL_SOCKET, SO_TIMESTAMPING, &val, sizeof(val));
+>
+> Changing a datapath test from skb_shinfo(skb)->tx_flags to
+> skb->sk->sk_tsflags can change behavior in that case, as the tx_flags
+> is written before the second setsockopt updates sk_tsflags.
+>
+> Therefore, only bits can be reclaimed that cannot be set by cmsg and
+> are also highly unlikely to be used to target individual packets
+> otherwise.
 
-Here's a detailed explanation:
+Agreed.
 
-1. PPP protocol format
-The PPP protocol format looks like this:
+>
+> Free up the bit currently used for SKBTX_HW_TSTAMP_USE_CYCLES. This
+> selects between clock and free running counter source for HW TX
+> timestamps. It is probable that all packets of the same socket will
+> always use the same source.
+>
+> Link: https://lore.kernel.org/netdev/cover.1739988644.git.pav@iki.fi/
+> Signed-off-by: Willem de Bruijn <willemb@google.com>
 
-|<--------------------------      7 - 1508 bytes      --------------------------->|
-+---0x7E---+---0xFF---+---0x03---+----------+---------------+----------+---0x7E----
-|   Flag   | Address  | Control  | Protocol | Information   |   FCS    |   Flag   |
-| 01111110 | 11111111 | 00000011 | 8/16bits |      *        | 16 bits  | 01111110 |
-+----------+----------+----------+----------+---------------+----------+-----------
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
 
-
-2. Normal BPF program
-For example, when filtering IP over PPP, libpcap generates BPF
-instructions like this:
-'''
-tcpdump -d ip -y PPP
-(000) ldh      [2]
-(001) jeq      #0x21            jt 2	jf 3
-(002) ret      #262144
-(003) ret
-'''
-
-2 bytes data are skipped by bpf program and then bpf program reads the
-'Protocol' field to determine if it's an IP packet. Clearly, libpcap
-assumes the packet starts from the Address field, just like the comment in
-'drivers/net/ppp/ppp_generic.c':
-
-/* the filter instructions are constructed assuming
-   a four-byte PPP header on each packet */
-
-Corresponding libpcap code is here:
-https://github.com/the-tcpdump-group/libpcap/blob/master/gencode.c#L1421
-
-
-3. Current problem
-The problem is that the skb->data generated by ppp_write() starts from the
-'Protocol' field.
-
-In the current implementation, to correctly use the BPF filter program,
-a 2-byte header is added to simulate the presence of Address and Control
-fields. And then, after running the socket filter, it's restored:
-
-1768 *(u8 *)skb_push(skb, 2) = 1;
-1770 bpf_prog_run()
-1782 skb_pull(skb, 2);
-
-The thing is, only one byte of the new 2-byte header is initialized. For
-normal BPF programs generated by libpcap, uninitialized data won't be
-used, so it's not a problem.
-
-However, for carefully crafted BPF programs, such as those generated by
-syzkaller [2], which start reading from offset 0, the uninitialized data
-will be used and caught by KMSAN.
-
-4. Fix
-The fix is simple: initialize the entire 2-byte header.
-
-[1] https://syzkaller.appspot.com/bug?extid=853242d9c9917165d791
-[2] https://syzkaller.appspot.com/text?tag=ReproC&x=11994913980000
-
----
-v1 -> v2:
-https://lore.kernel.org/linux-ppp/20250218133145.265313-1-jiayuan.chen@linux.dev/T/#t
-Add more comments.
-Correctly initialize on big-endian and little-endian systems.
----
-
-Jiayuan Chen (1):
-  ppp: Fix KMSAN warning by initializing 2-byte header
-
- drivers/net/ppp/ppp_generic.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
--- 
-2.47.1
-
+Thanks, Willem!
