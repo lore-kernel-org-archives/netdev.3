@@ -1,179 +1,112 @@
-Received: from mx05lb.world4you.com (mx05lb.world4you.com [81.19.149.115])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B62620126A
-	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 21:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287CC20127C;
+	Fri, 21 Feb 2025 21:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740173897; cv=none; b=RyfpSTgPazD8NXhaYCAGugx3rgi3cIcQ2Efyo3R7HQhmrATEUPSNxCH8fvnEWr8l1M9tEOsef7rrrt4p/aDk4eM+Kw+AnAj/o4VQMa+ZiH5NhEmDCFw3l3HFJBiCVuUAVXnQ9Vs9JEhoURfLd+ugN8/Vm7msh2QtuIV1WQ+91ts=
+	t=1740174778; cv=none; b=YX62EmeFaj7CnHLe/AM50lpexdp9GdHAXZtcy0j9iTL67tEid3ofkSqTmd0Qrj4X/N9/1ud/wgRYcmRbp2S0mMGG2HtdDoRexrXIiqajcduMPermRnGNnQOY5SRndOIwyNdrFlY810b9zwovRF9hRrcM5UCE/QWQVZavemskFxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740173897; c=relaxed/simple;
-	bh=wvqqBv509HUVFGKSrh7GrXTgsDZFkiTG/jGpuhkg8RU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qXq0lqvM0AAJ7qT3/1l3n0/goLSC/J/Mc7izXayFhnV3weocYI6UKPDeEBtjbl95HW/NeoRdGHehnFyJAVSfq4MKvKBHzqP1t9xwcvH0hFHCIQkacWNYcq+qtJYCAc4FJ9ngVkoFWQwHDYWzy06lIgR47bt+kJzARb/3SqSC3bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=nt0T5aVr; arc=none smtp.client-ip=81.19.149.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1740174778; c=relaxed/simple;
+	bh=VODrfIAOe07267joIm9z549kGH46LS57jdE0el030yM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qFluI0tdYgR7PekyIULPJawmfhoby0j+9kNqMiDgt5YdXqsmbBS91053hS7M5UUknCHHacj5w+x13Gt8ptB2rfYTyIfzNTcVw5MfQp3Tdh29VMQrHbyOr1rNlz7FdEKKyTuRSSbmfS+RuYmYUQuMQjnOzAOWfNjXL23/gPWp1Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=ps.report@gmx.net header.b=B2VqTNCG; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="nt0T5aVr"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=WdGqhkPLGeXyzSF+S9zMNj28hQnPuTzhWHkYI+NlaBs=; b=nt0T5aVriYwQV3L7s/ko7Jka5b
-	LkEVN+y2Mnb04D7EgH82bdVsNqQXtG/luJROC0pPW70yO6qJ/oVx7dus2Ny7eWNjllIYGHRliB6Ok
-	I+/Ihz514ypExXwcOVpnX3mjzDFl5OyWX7v663/bzK79nzq4lYqJ8nw0xxCBC/CYDWrI=;
-Received: from [88.117.55.1] (helo=[10.0.0.160])
-	by mx05lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1tlaJT-000000003KM-14pK;
-	Fri, 21 Feb 2025 22:11:59 +0100
-Message-ID: <daab23b7-7841-407b-8c93-b801d6182cc1@engleder-embedded.com>
-Date: Fri, 21 Feb 2025 22:11:57 +0100
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=ps.report@gmx.net header.b="B2VqTNCG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1740174771; x=1740779571; i=ps.report@gmx.net;
+	bh=VODrfIAOe07267joIm9z549kGH46LS57jdE0el030yM=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=B2VqTNCGTQD4bGHV90qrAB7ChrPkCg938rp8I39+vNH8jhUK2AxKVWhBx1v3m216
+	 Z5EU9Eh9QP5c6w7pD5VqPfQoFiXK/2eAlWa/LfTubDvGbUEhjM6FNLfklGxKtMRfF
+	 csxcDaqwHK870luciDqBhnRxrSnk1ydF70N5O7WNDfDjie/BUNULJB3fIXm79nTiZ
+	 SbUt4yNM3CfwWRfRBi/XlGQ+mTKP07wiJmGgljUIoGoqPkbWVH8BNvIPJvjapfttd
+	 j5jpVQuOAJvvSmz41pHg4Gi0bVRaRBG4CmVhL6IB6Xtwvde37Sq4bxvyRCcK8hmei
+	 ygvLSm67ZtFLiLlDqg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost.fritz.box ([82.135.81.92]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M72sP-1tguNw1Gj1-002sHT; Fri, 21
+ Feb 2025 22:52:51 +0100
+From: Peter Seiderer <ps.report@gmx.net>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Peter Seiderer <ps.report@gmx.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+	Nam Cao <namcao@linutronix.de>
+Subject: [PATCH net-next v6 3/8] net: pktgen: remove some superfluous variable initializing
+Date: Fri, 21 Feb 2025 22:52:41 +0100
+Message-ID: <20250221215246.383373-4-ps.report@gmx.net>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250221215246.383373-1-ps.report@gmx.net>
+References: <20250221215246.383373-1-ps.report@gmx.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: skb: free up one bit in tx_flags
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
- pabeni@redhat.com, kerneljasonxing@gmail.com, pav@iki.fi,
- vinicius.gomes@intel.com, anthony.l.nguyen@intel.com,
- Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org
-References: <20250221035938.2891898-1-willemdebruijn.kernel@gmail.com>
-Content-Language: en-US
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-In-Reply-To: <20250221035938.2891898-1-willemdebruijn.kernel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AV-Do-Run: Yes
+Content-Transfer-Encoding: base64
+X-Provags-ID: V03:K1:cKdqq80VN0HruqbYuSuJuljjOjhZaO5bS1SIDecYB+H4dcr9zfY
+ 7s7bVt4IyRFItM0kUGFyuAHx1BUbXmal5+/q/peJWi/Y7fworxfqT2f6/5ZMHyFoxme3xRw
+ kq6pOp8+FInDChwnZcM/58kCiBN4/BQ7t6zdX03X/tSIzW53qMituBK9YBm44eWQQ3Hqu5S
+ tdwpIZpUasjkl+8sF+gAQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:IKXuZLgkGEc=;oO6WgifjZQ1WDL55Gn6iVu+vTB0
+ 3/IS3juyO1soXKD5v9oWJwkZb8kiCagLEoQNzepp2lvKAY32fTfiVhA5Ggo7BSYGPwOg2YUWC
+ piAarp7eriUi8iq5pt9I3R2xrc4HfW5LEilGUXuI0LyldYfDaiqZxmMSXauvad6YOonJyO3dV
+ GvuoAdOEZWDO4hpVeWK134ae7DpZfIfiSaU5WLuNwwW68YreozZTW7qplyPQUlvmRe+EwC4JV
+ uynIv7PFPeTjDMSNY3N61DTKpN1h8RM/IBDDe6lv3LtH4kq++RqI3DtZqLe2RNv+CMqHKJDrt
+ Sa+hh+dXrWFjsi7Pn2Uj/xtTckfXau7UBrVqAKLt21VoK0849rwfcHW1aiCBc5GQbMl4WzRer
+ s8ex25avl4TbG+jgnWoF88+fGnawMd5mESMY9ysNj6gzd38U8oV+ZNaUATCiVY6GMxuupilVd
+ 4YXlMd2O/SdYMhq9PQz+9LOpqleaqbzKfYeEhunnPrfPNNScpCzsiFGgvVwFgnnYsdE7IhkwT
+ 3gtBP7L/rlKOPnL5+PlhbVKkGvmq3TQbfwBqC7rrNxtcWsV4ZSSxG24N0ZTnPzTvbF1wzVZGP
+ hRySJxvYQxmi1ryOFxis264X7xR9dhkD+hIz2zxcYrov7e8ZJb9ribH3uPPGMvhuLDyQ7Vo3l
+ aThpH4SOG/MrisRU8bshWWPQGxgCbCzJmGgJi4vEzjshs+NxUgT9BgRubW/41dpTQT+WnXCzH
+ +FatsR4qX24XUbUtOdLqsh9SKSIyAWaAFh2MkqIrjoRGsA4ehs5kIXeuyKiW13fKocHtJ6EFu
+ BXLNc6gQTU7k3/S+dIKZid4k9KgvPoZrPIAsB/ifiABU4/R3DmtSTXtSWPxAZ33/pi7Dj7J18
+ 6kO5FIHQeJrIms95QX2p9FdHllN29GYNIlMAhcyqihYCp+myZXV35EaTwSoa/ivLeZVBS4Y9J
+ cLrYaGW8qLuDzm958hIFtS1SekdjG0Ji7IpgNWrulfn5Vd1Gcgc64waFX9nG9X6l8d/iKvjR6
+ GE3E2baMRqv1wTE6AirLayLQZAJsc4u2tbIDaGkvuQGxQ16BE9UXdYr6TYEv17Ld9b2k2spcY
+ h9JkTmjHLGfBaMBU+ezpuEP+sq4Cov5nlYpvK1dHJhoG8LwtWVD5T1H9qnR16A+i4HqAKCzdA
+ 6BgsCIrY7nNy6KgA55AGSjjRmDa3p5UAcg81lvyM6GJ+GG/CAX8XaZz0nx5DDRfMmBmun9xj4
+ Lv6B3w8wySaB21zQ50z34jHWpyLPXOfsvn6tjvKbFhNX/zw6ai+4g1dPNwAkXRTlQMRiY2J7K
+ 8rZO9aA0wQSz7EJjzcMXMrT0H/jMJJNeKJVcAFw8n5OvJn6vq98YLX0dqLlIC7pOjtTpZ9EUy
+ S9PeFT12hUcTtMDig4En7Nk61xxuOSeAg5VbXwlk1n6J7FRCgvGGt7oDeH
 
-On 21.02.25 04:58, Willem de Bruijn wrote:
-> From: Willem de Bruijn <willemb@google.com>
-> 
-> The linked series wants to add skb tx completion timestamps.
-> That needs a bit in skb_shared_info.tx_flags, but all are in use.
-> 
-> A per-skb bit is only needed for features that are configured on a
-> per packet basis. Per socket features can be read from sk->sk_tsflags.
-> 
-> Per packet tsflags can be set in sendmsg using cmsg, but only those in
-> SOF_TIMESTAMPING_TX_RECORD_MASK.
-> 
-> Per packet tsflags can also be set without cmsg by sandwiching a
-> send inbetween two setsockopts:
-> 
->      val |= SOF_TIMESTAMPING_$FEATURE;
->      setsockopt(fd, SOL_SOCKET, SO_TIMESTAMPING, &val, sizeof(val));
->      write(fd, buf, sz);
->      val &= ~SOF_TIMESTAMPING_$FEATURE;
->      setsockopt(fd, SOL_SOCKET, SO_TIMESTAMPING, &val, sizeof(val));
-> 
-> Changing a datapath test from skb_shinfo(skb)->tx_flags to
-> skb->sk->sk_tsflags can change behavior in that case, as the tx_flags
-> is written before the second setsockopt updates sk_tsflags.
-> 
-> Therefore, only bits can be reclaimed that cannot be set by cmsg and
-> are also highly unlikely to be used to target individual packets
-> otherwise.
-> 
-> Free up the bit currently used for SKBTX_HW_TSTAMP_USE_CYCLES. This
-> selects between clock and free running counter source for HW TX
-> timestamps. It is probable that all packets of the same socket will
-> always use the same source.
-
-For separate ptp4l instances with separate clocks this should be true.
-
-> Link: https://lore.kernel.org/netdev/cover.1739988644.git.pav@iki.fi/
-> Signed-off-by: Willem de Bruijn <willemb@google.com>
-> ---
->   drivers/net/ethernet/engleder/tsnep_main.c |  4 ++--
->   drivers/net/ethernet/intel/igc/igc_main.c  |  3 ++-
->   include/linux/skbuff.h                     |  5 ++---
->   net/socket.c                               | 11 +----------
->   4 files changed, 7 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
-> index 0d030cb0b21c..3de4cb06e266 100644
-> --- a/drivers/net/ethernet/engleder/tsnep_main.c
-> +++ b/drivers/net/ethernet/engleder/tsnep_main.c
-> @@ -852,8 +852,8 @@ static bool tsnep_tx_poll(struct tsnep_tx *tx, int napi_budget)
->   			struct skb_shared_hwtstamps hwtstamps;
->   			u64 timestamp;
->   
-> -			if (skb_shinfo(entry->skb)->tx_flags &
-> -			    SKBTX_HW_TSTAMP_USE_CYCLES)
-> +			if (entry->skb->sk &&
-> +			    READ_ONCE(entry->skb->sk->sk_tsflags) & SOF_TIMESTAMPING_BIND_PHC)
->   				timestamp =
->   					__le64_to_cpu(entry->desc_wb->counter);
->   			else
-> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-> index 84307bb7313e..0c4216a4552b 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_main.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
-> @@ -1650,7 +1650,8 @@ static netdev_tx_t igc_xmit_frame_ring(struct sk_buff *skb,
->   		if (igc_request_tx_tstamp(adapter, skb, &tstamp_flags)) {
->   			skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
->   			tx_flags |= IGC_TX_FLAGS_TSTAMP | tstamp_flags;
-> -			if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP_USE_CYCLES)
-> +			if (skb->sk &&
-> +			    READ_ONCE(skb->sk->sk_tsflags) & SOF_TIMESTAMPING_BIND_PHC)
->   				tx_flags |= IGC_TX_FLAGS_TSTAMP_TIMER_1;
->   		} else {
->   			adapter->tx_hwtstamp_skipped++;
-> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-> index bb2b751d274a..a65b2b08f994 100644
-> --- a/include/linux/skbuff.h
-> +++ b/include/linux/skbuff.h
-> @@ -478,8 +478,8 @@ enum {
->   	/* device driver is going to provide hardware time stamp */
->   	SKBTX_IN_PROGRESS = 1 << 2,
->   
-> -	/* generate hardware time stamp based on cycles if supported */
-> -	SKBTX_HW_TSTAMP_USE_CYCLES = 1 << 3,
-> +	/* reserved */
-> +	SKBTX_RESERVED = 1 << 3,
->   
->   	/* generate wifi status information (where possible) */
->   	SKBTX_WIFI_STATUS = 1 << 4,
-> @@ -494,7 +494,6 @@ enum {
->   #define SKBTX_ANY_SW_TSTAMP	(SKBTX_SW_TSTAMP    | \
->   				 SKBTX_SCHED_TSTAMP)
->   #define SKBTX_ANY_TSTAMP	(SKBTX_HW_TSTAMP | \
-> -				 SKBTX_HW_TSTAMP_USE_CYCLES | \
->   				 SKBTX_ANY_SW_TSTAMP)
->   
->   /* Definitions for flags in struct skb_shared_info */
-> diff --git a/net/socket.c b/net/socket.c
-> index 28bae5a94234..2e3e69710ea4 100644
-> --- a/net/socket.c
-> +++ b/net/socket.c
-> @@ -680,18 +680,9 @@ void __sock_tx_timestamp(__u32 tsflags, __u8 *tx_flags)
->   {
->   	u8 flags = *tx_flags;
->   
-> -	if (tsflags & SOF_TIMESTAMPING_TX_HARDWARE) {
-> +	if (tsflags & SOF_TIMESTAMPING_TX_HARDWARE)
->   		flags |= SKBTX_HW_TSTAMP;
->   
-> -		/* PTP hardware clocks can provide a free running cycle counter
-> -		 * as a time base for virtual clocks. Tell driver to use the
-> -		 * free running cycle counter for timestamp if socket is bound
-> -		 * to virtual clock.
-> -		 */
-> -		if (tsflags & SOF_TIMESTAMPING_BIND_PHC)
-> -			flags |= SKBTX_HW_TSTAMP_USE_CYCLES;
-> -	}
-> -
->   	if (tsflags & SOF_TIMESTAMPING_TX_SOFTWARE)
->   		flags |= SKBTX_SW_TSTAMP;
->   
-
-Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+UmVtb3ZlIHNvbWUgc3VwZXJmbHVvdXMgdmFyaWFibGUgaW5pdGlhbGl6aW5nIGJlZm9yZSBoZXgz
+Ml9hcmcgY2FsbCAoYXMgdGhlCnNhbWUgaW5pdCBpcyBkb25lIGhlcmUgYWxyZWFkeSkuCgpTaWdu
+ZWQtb2ZmLWJ5OiBQZXRlciBTZWlkZXJlciA8cHMucmVwb3J0QGdteC5uZXQ+ClJldmlld2VkLWJ5
+OiBTaW1vbiBIb3JtYW4gPGhvcm1zQGtlcm5lbC5vcmc+Ci0tLQpDaGFuZ2VzIHY1IC0+IHY2CiAg
+LSBhZGp1c3QgdG8gZHJvcHBlZCBwYXRjaCAnJ25ldDogcGt0Z2VuOiB1c2UgZGVmaW5lcyBmb3Ig
+dGhlIHZhcmlvdXMKICAgIGRlYy9oZXggbnVtYmVyIHBhcnNpbmcgZGlnaXRzIGxlbmd0aHMnCgpD
+aGFuZ2VzIHY0IC0+IHY1CiAgLSBzcGxpdCB1cCBwYXRjaHNldCBpbnRvIHBhcnQgaS9paSAoc3Vn
+Z2VzdGVkIGJ5IFNpbW9uIEhvcm1hbikKICAtIGFkZCByZXYtYnkgU2ltb24gSG9ybWFuCgpDaGFu
+Z2VzIHYzIC0+IHY0CiAgLSBuZXcgcGF0Y2ggKGZhY3RvcmVkIG91dCBvZiBwYXRjaCAnbmV0OiBw
+a3RnZW46IGZpeCBhY2Nlc3Mgb3V0c2lkZSBvZiB1c2VyCiAgICBnaXZlbiBidWZmZXIgaW4gcGt0
+Z2VuX2lmX3dyaXRlKCknKQotLS0KIG5ldC9jb3JlL3BrdGdlbi5jIHwgNCArKy0tCiAxIGZpbGUg
+Y2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL25l
+dC9jb3JlL3BrdGdlbi5jIGIvbmV0L2NvcmUvcGt0Z2VuLmMKaW5kZXggYjk3YTk0Y2I4NWFjLi4y
+MDRmOTNkZTAzYWEgMTAwNjQ0Ci0tLSBhL25ldC9jb3JlL3BrdGdlbi5jCisrKyBiL25ldC9jb3Jl
+L3BrdGdlbi5jCkBAIC0xNzg3LDcgKzE3ODcsNyBAQCBzdGF0aWMgc3NpemVfdCBwa3RnZW5faWZf
+d3JpdGUoc3RydWN0IGZpbGUgKmZpbGUsCiAJfQogCiAJaWYgKCFzdHJjbXAobmFtZSwgInRvcyIp
+KSB7Ci0JCV9fdTMyIHRtcF92YWx1ZSA9IDA7CisJCV9fdTMyIHRtcF92YWx1ZTsKIAkJbGVuID0g
+aGV4MzJfYXJnKCZ1c2VyX2J1ZmZlcltpXSwgMiwgJnRtcF92YWx1ZSk7CiAJCWlmIChsZW4gPCAw
+KQogCQkJcmV0dXJuIGxlbjsKQEAgLTE4MDMsNyArMTgwMyw3IEBAIHN0YXRpYyBzc2l6ZV90IHBr
+dGdlbl9pZl93cml0ZShzdHJ1Y3QgZmlsZSAqZmlsZSwKIAl9CiAKIAlpZiAoIXN0cmNtcChuYW1l
+LCAidHJhZmZpY19jbGFzcyIpKSB7Ci0JCV9fdTMyIHRtcF92YWx1ZSA9IDA7CisJCV9fdTMyIHRt
+cF92YWx1ZTsKIAkJbGVuID0gaGV4MzJfYXJnKCZ1c2VyX2J1ZmZlcltpXSwgMiwgJnRtcF92YWx1
+ZSk7CiAJCWlmIChsZW4gPCAwKQogCQkJcmV0dXJuIGxlbjsKLS0gCjIuNDguMQoK
