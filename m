@@ -1,83 +1,94 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F8E1E9B01
-	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 11:51:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B71209681;
+	Fri, 21 Feb 2025 11:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740138720; cv=none; b=G1cWK8ue2ziYr3seNoS+mEWXDNxTa1Crk2Q4tlfn9eOetkN24n0D0LK5kgq5PyjTlSWzI7aAc70hwdWcq8WWtC53JKjYCClgtUXji/eduis4Gpyjf8CaIujP9ncDoIoD+r7YEFp9Snr2NWnKYFkDiqpUrrsgiGvakH3FAuM67j4=
+	t=1740138746; cv=none; b=qL16i77KzyR7m8Lcl6P1LcMXr/E43rtKe7uUSOfgFuLN2rEcCiNLA14Nuixn5e/2nwcGd3hagPcI/+ip8XZHyk1epTgWg87rzt14uit/+VXlf9Q6Kxbpif4GS1V0GqZtlTpyDzAkHRAy6YrMCuOIkuQGq2he13q0Kazo4uYZPJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740138720; c=relaxed/simple;
-	bh=ftAXw2Ry7mVAUfkkuPPQpE14IB3NBUi0JOYI3SboxEY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YmObmNUhKfEnrvcytkYxOqYIMcZXKgQehJA09YmRGGlqEEQ7ga4bvn1T6KA1/kc5EPNIU+KWsm2XoPBNHS1BJMWr5DfsNX9ZYEyL2jiQmPj6jciwOkIbJvHd1cIYkzQ7aBX8BbRzgIZXZVu0sxlKj6dSVR6+IbVPaY7aZUca2dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=gBxMYbO5; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1740138746; c=relaxed/simple;
+	bh=skTq8v46i33/n7jiSOO6gDliigjNOXLxMEJHCcPRx+g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P5ybjLwKjScV0nXR3HLgIgI/immWY9huN1dMHVHmWBomGIKaaHE23VivOPeSgkMnTRYZFRHe7gVYM/rjobF/GUfZFGLCCzsX/OzKH/OSAMctJQMs8f+xrRqT2U2D4vv6xY8HoFVbTMpdYj4c6IrdYFp9NuAsQAEI/SJlXCzxdro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cp5zPfN1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0JsdDxVr; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="gBxMYbO5"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 4380C240027
-	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 12:51:57 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1740138717; bh=ftAXw2Ry7mVAUfkkuPPQpE14IB3NBUi0JOYI3SboxEY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=gBxMYbO5hswpKWKgeK+xkTcNlGAku5CvF1jJBb2xtTVVYFzjbodV4wPxi048foYuB
-	 m2MX8DDeWoTYsVfO+eh8jqO55eh1/L8Up0sPMUyHYORw1KjMJti0+8JgyA3CAUh4Tf
-	 vgYW981qBUxGvEc+bPReyHhDwC+QDXXrMAEzioMbc+9xoCjfk30y6e+KR8ZvQ85csM
-	 refkjEajwYqEPZxisZIL/4LmoZBVwQOmrdV0dU6vjSVuG/6CqVcBebvLQa0zRmCYwb
-	 O45+Zr4n5HlZN3dvegKviPT01152KvY7FB8hjWIBrGjZLfPSYfw21Fh41jI74m/hul
-	 qjXTnNnmimKaQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4YzpQ24fycz6tw5;
-	Fri, 21 Feb 2025 12:51:54 +0100 (CET)
-Date: Fri, 21 Feb 2025 11:51:54 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: j.ne@posteo.net, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cp5zPfN1";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0JsdDxVr"
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1740138743;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FnyOGTGILqtoyxYF47Rnj+ZtDSyzv0taY1OiVXpZQ/c=;
+	b=cp5zPfN1l4+/22KuDevrLwmKAiSApYTsP7IoGEeaNW24Ws+J21/eTCpTIERoc+vH0fN4bp
+	+5kBpo6GIcl30Mo3xBwZ2AxCOgT5ybBaYFAM3816by635m6H51zIHy2VXxRv7rusnPNRK8
+	HxwxSNigngM3JAotqARDG3qMf88weq5B3SXQnqfsl8qxkBlGZAA5o/qO/wIcwpn3kM1D6W
+	aoPHyLNPZG9/V+02fnlza298u8Ea8IE0aMfd0/pNXyXl3cAzxpygUnQLS6o4tWBjLZRLIY
+	Z3xXavKGOYflcqC/IEmDQXv3axhBDPg/4Ab8QjhHMbFY8qJZN3kyyPr4HG9MRA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1740138743;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FnyOGTGILqtoyxYF47Rnj+ZtDSyzv0taY1OiVXpZQ/c=;
+	b=0JsdDxVrRO4NXURl/jBEdu1ov5yDgiur/dbDSm2qLPhmGP9biERnG1U4Epx6+tXRigxSBg
+	KdUIAtqrAp+13bBw==
+To: linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] dt-bindings: net: Convert fsl,gianfar to YAML
-Message-ID: <Z7ho2u6vi22sYMeU@probook>
-References: <20250220-gianfar-yaml-v1-0-0ba97fd1ef92@posteo.net>
- <20250220-gianfar-yaml-v1-3-0ba97fd1ef92@posteo.net>
- <771e89d6-60e7-4fc6-a501-b6349837cfe7@lunn.ch>
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Yunsheng Lin <linyunsheng@huawei.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH net-next 0/2] page_pool: Convert stats to u64_stats_t.
+Date: Fri, 21 Feb 2025 12:52:19 +0100
+Message-ID: <20250221115221.291006-1-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <771e89d6-60e7-4fc6-a501-b6349837cfe7@lunn.ch>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 20, 2025 at 07:02:11PM +0100, Andrew Lunn wrote:
-> > +examples:
-> > +  - |
-> > +    ethernet@24000 {
-> > +        device_type = "network";
-> > +        model = "TSEC";
-> > +        compatible = "gianfar";
-> > +        reg = <0x24000 0x1000>;
-> > +        local-mac-address = [ 00 E0 0C 00 73 00 ];
-> 
-> That is a valid Motorola MAC address. It is probably not a good idea
-> to use it in an example, somebody might copy it into a real .dts file.
-> Typically you use 00 00 00 00 00 00 so there is an empty property the
-> bootloader can fill in with a unique MAC address.
-> 
-> 	Andrew
+This is a follow-up on
+	https://lore.kernel.org/all/20250213093925.x_ggH1aj@linutronix.de/
 
-Good point, I'll change it to all-zero.
+to convert the page_pool statistics to u64_stats_t to avoid u64 related
+problems on 32bit architectures.
+While looking over it, the comment for recycle_stat_inc() says that it
+is safe to use in preemptible context. The 32bit update is split into
+two 32bit writes and if we get preempted in the middle and another one
+makes an update then the value gets inconsistent and the previous update
+can overwrite the following. (Rare but still).
+I don't know if it is ensured that only *one* update can happen because
+the stats are per-CPU and per NAPI device. But there will be now a
+warning on 32bit if this is really attempted in preemptible context.
 
+Sebastian Andrzej Siewior (2):
+  page_pool: Convert page_pool_recycle_stats to u64_stats_t.
+  page_pool: Convert page_pool_alloc_stats to u64_stats_t.
 
-J. Neuschäfer
+ Documentation/networking/page_pool.rst        |  4 +-
+ .../ethernet/mellanox/mlx5/core/en_stats.c    | 24 ++---
+ include/linux/u64_stats_sync.h                |  5 +
+ include/net/page_pool/types.h                 | 27 +++---
+ net/core/page_pool.c                          | 95 +++++++++++++------
+ net/core/page_pool_user.c                     | 22 ++---
+ 6 files changed, 113 insertions(+), 64 deletions(-)
+
+--=20
+2.47.2
+
