@@ -1,124 +1,81 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from s.wfbtzhsq.outbound-mail.sendgrid.net (s.wfbtzhsq.outbound-mail.sendgrid.net [159.183.224.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62D31420DD
-	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 14:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F4A2D05E
+	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 14:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.183.224.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740147348; cv=none; b=PW4srYpj5SaEJnjgusYoJSNaA7Js9dxiyeCmqFpt36u6c/jDCWbPpAKmtHIJCqAdUlQWPVY0Cm5tj+PwcZZ3MTXLNzhWXehnR0/LVidsKb5CMT9FwfWZ2OGjilUa3Q37zfHakIxJAWjg7YiT++/34Yam5VmJG2PrS+AADVxHAMI=
+	t=1740147547; cv=none; b=KP1Wz5BF3wj+3TvWTMTlaLoV6k6kRsvZ3q/QjXIi3ESVtf5mwhmJfZ/iIP9QCv5uAK+BY3AZeKcxyJ/3I2/j50O6u75MOAudWCRHxp/gOugKfYGJz00HHDPy4YgJwVQdZF4AaxuwfU+X6yh5tS1VYRTf5irZ8HOp/+Oh+7nHypQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740147348; c=relaxed/simple;
-	bh=YemvC5bOPnL6ooIpDML9rolxQ3QUmWjyxqSB3deoy6o=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=uC1uxE3tF3cKjkYnKVwM0vIbIC8XmHTp9b+A7/7jtQGm/x1bOVYDGnsyJGbJqlQDlscnW3A6JjaNnXMTYud2X4OAgM6Yqc78GLIqSM5PX3LpsPw1EKiiEzXuSGKqWo3QUzhITc2x+xt5t2QJGnmCmuaUGizhykhjGqmfQb1S9Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=i7UoQF2b; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1740147547; c=relaxed/simple;
+	bh=vo5OGOU/tQLy0Bo0Gst7hQMZLCB0zEw0P/i7va1o6AY=;
+	h=Content-Type:From:Subject:Message-ID:Date:MIME-Version:To; b=GtFECA9zchSOHeP+0GPpiQilMosEH6pjIP2XYPGDd3/1cqUMf8FojPrE/wqbqFV0tIucHnN3s5SVioy2LDeSW91ft7Ff6KIODyXzHVEA28OpsSv6Avyo1B2Pu2J2Gsmg7rfS7ooMsLOg9G2qvIkm6Qwm0r7FL8PaEiXvRpwAwcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=seytrax.com; spf=pass smtp.mailfrom=em200.seytrax.com; dkim=pass (2048-bit key) header.d=seytrax.com header.i=@seytrax.com header.b=oVWEke8X; arc=none smtp.client-ip=159.183.224.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=seytrax.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em200.seytrax.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="i7UoQF2b"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=YmtTGwJJXhwMoenv9f1jJWRnRB0B2anyfjKqb6F0t6g=; b=i7UoQF2blTPs6VW1UGIaXkZX+k
-	IJh5rrOMM3jtyTYE0yyIPfqvAgr5J7kr8tlhOag8TsD7uog8dTn/hrI9Zonguyry25QPpZ6Macig8
-	Hnfw5IrCLzLsHbISCogcINMGXG0py/E+l9QG6MhzVO2xlW5UhzyKnu3PEP0H0JRM4QI1524TREqMO
-	tV9vQsuHBH7ZBNmMBz9SoBHIM1/vgqeF6ghyFxiJBucJK2OlbNDI03ABq7My+5Y2QHYmErA/5CQsd
-	UBZEl6/LX14f1p5R6sq5zrh3OTMqFZRvRu8MJh3bAJVUpaeM9S93akICrUQNRteaalKd0QlFOXt0x
-	Gp6cO1Pw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:50498 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1tlToX-0004o0-1B;
-	Fri, 21 Feb 2025 14:15:37 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1tlToD-004W3g-HB; Fri, 21 Feb 2025 14:15:17 +0000
-In-Reply-To: <Z7iKdaCp4hLWWgJ2@shell.armlinux.org.uk>
-References: <Z7iKdaCp4hLWWgJ2@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Drew Fustini <drew@pdp7.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Fu Wei <wefu@redhat.com>,
-	Guo Ren <guoren@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 2/2] net: stmmac: thead: ensure divisor gives proper
- rate
+	dkim=pass (2048-bit key) header.d=seytrax.com header.i=@seytrax.com header.b="oVWEke8X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seytrax.com;
+	h=content-type:from:subject:content-transfer-encoding:mime-version:
+	reply-to:to:cc:content-type:from:subject:to;
+	s=s1; bh=vo5OGOU/tQLy0Bo0Gst7hQMZLCB0zEw0P/i7va1o6AY=;
+	b=oVWEke8XUf4fPGgjxhv+sVaIgWFTF+0hhJPlMOETu2sTgEY9tAG4iUngqDNv4o7W6nwN
+	LHBwHxLxkrF49tHcC2zIkGXW8ad8c5/sIyrIchntyhxDSRdwmBmr/U7xRHnOJrvRQbtqFE
+	iGDYCEWoKphKzltcN/FYdQId974JuA96VbVnkaOFAGBWJzHI1Oj1Jbo/ZHLJk/sLfKLxGi
+	DX+NGmQEP15e/eTAjj/Q+6WjhmE3t38NFqhwpJ0h+ReRVwRgYBT5Dc9bpZ/dIHD4lwlJm4
+	0PpazikVVxXl6f7ruY/Pl/jfjhKrkmz9lAovvVDnroF0sd0CK0eAN2Jy4nolTveA==
+Received: by recvd-85768567ff-f4p9l with SMTP id recvd-85768567ff-f4p9l-1-67B88B57-5B
+	2025-02-21 14:19:03.776285787 +0000 UTC m=+8528105.131012219
+Received: from [127.0.0.1] (unknown)
+	by geopod-ismtpd-4 (SG) with ESMTP
+	id RtH-fhv1QTmLfiagBvwMEw
+	for <netdev@vger.kernel.org>;
+	Fri, 21 Feb 2025 14:19:03.684 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+From: Emily <sales@seytrax.com>
+Subject: -Preparation Services for 2024 Tax Year
+Message-ID: <29a4d9db-1523-55f9-4e90-f8625b26ceab@seytrax.com>
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 21 Feb 2025 14:19:03 +0000 (UTC)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1tlToD-004W3g-HB@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Fri, 21 Feb 2025 14:15:17 +0000
+Reply-To: emily@oceanicvessels774.onmicrosoft.com
+X-SG-EID: 
+ =?us-ascii?Q?u001=2EPudgTrHKvV+QMoT99zH9wLtzo0b5=2FJpxqrPcLrsRWDRDmu4jfWXa6wGoI?=
+ =?us-ascii?Q?N=2FAJ0VSnmFvbeBX9UnHx+RHBVrHG86uYPSFQmzW?=
+ =?us-ascii?Q?VfE2prdXKfD6g4plwiYfmEN+xyvJIW=2FMivwvbzD?=
+ =?us-ascii?Q?ezT2zyTNK5smOCy0oHKVe6RpFG5KWtUlVqkSR4L?=
+ =?us-ascii?Q?5beNvUThrAez5vw5GIgJynfAJQc1Ye+bao=2FLFzI?=
+ =?us-ascii?Q?oXaks47MgGq6Xr+qOC3yfA=3D?=
+To: netdev@vger.kernel.org
+X-Entity-ID: u001.OHwfc4nOvBQp2DzmxLSeww==
 
-thead was checking that the stmmac_clk rate was a multiple of the
-RGMII rates for 1G and 100M, but didn't check for 10M. Rather than
-use this with hard-coded speeds, check that the calculated divisor
-gives the required rate by multplying the transmit clock rate back
-up to the stmmac clock rate and checking that it agrees.
+Hello,
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+I hope this message finds you well.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
-index f16fa341aadb..f9f2bd65959f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
-@@ -45,9 +45,6 @@
- #define  TXCLK_DIR_OUTPUT		FIELD_PREP(TXCLK_DIR_MASK, 0)
- #define  TXCLK_DIR_INPUT		FIELD_PREP(TXCLK_DIR_MASK, 1)
- 
--#define GMAC_GMII_RGMII_RATE	125000000
--#define GMAC_MII_RATE		25000000
--
- struct thead_dwmac {
- 	struct plat_stmmacenet_data *plat;
- 	void __iomem *apb_base;
-@@ -124,11 +121,6 @@ static void thead_dwmac_fix_speed(void *priv, int speed, unsigned int mode)
- 	case PHY_INTERFACE_MODE_RGMII_RXID:
- 	case PHY_INTERFACE_MODE_RGMII_TXID:
- 		rate = clk_get_rate(plat->stmmac_clk);
--		if (!rate || rate % GMAC_GMII_RGMII_RATE != 0 ||
--		    rate % GMAC_MII_RATE != 0) {
--			dev_err(dwmac->dev, "invalid gmac rate %ld\n", rate);
--			return;
--		}
- 
- 		writel(0, dwmac->apb_base + GMAC_PLLCLK_DIV);
- 
-@@ -139,6 +131,10 @@ static void thead_dwmac_fix_speed(void *priv, int speed, unsigned int mode)
- 		}
- 
- 		div = rate / tx_rate;
-+		if (rate != tx_rate * div) {
-+			dev_err(dwmac->dev, "invalid gmac rate %lu\n", rate);
-+			return;
-+		}
- 
- 		reg = FIELD_PREP(GMAC_PLLCLK_DIV_EN, 1) |
- 		      FIELD_PREP(GMAC_PLLCLK_DIV_NUM, div);
--- 
-2.30.2
 
+My name is Emily, and I=E2=80=99m interested in working with you on the pre=
+paration of my individual taxes for the 2024 tax year. As a new client, I w=
+ould greatly appreciate the opportunity to discuss how your services can he=
+lp me file my taxes accurately and efficiently.
+
+
+Could you please let me know if you are currently accepting new clients for=
+ the upcoming tax season? I would also appreciate guidance on the necessary=
+ documents and next steps for getting started.
+
+
+Additionally, I can provide a copy of my 2023 tax filing for your reference=
+ to ensure a smooth process.
+
+
+I look forward to hearing from you and the possibility of working together.
+
+
+Best regards,
+Emily
