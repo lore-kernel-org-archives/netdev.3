@@ -1,85 +1,106 @@
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0C9202F65;
-	Fri, 21 Feb 2025 11:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289D3F50F;
+	Fri, 21 Feb 2025 12:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740138937; cv=none; b=gn2qvIvX2WJQ7DSYSVICbR9EfCsfG+5a5gQS+nD03asjC7kzKVqXMgjii8pIoAJuZfwnAhyqHCyYLHmcP5RQhChXeURUHTW275W34Z9HVqOm1jXXOH8i6pmfYF378fOixYItV6Bk+NyiBIoWJcOGsgK29dKNNEBGMY+0J8D3BRs=
+	t=1740139400; cv=none; b=arheOiGh2bMbAI8RcCwL6qQhKHXubrlIWTjsePi+e0kBktpxA5GGKOYnC8ltdgDsWl/iuj7s20VdyYtHw2WOOqQTKavehhdEQ1RMZ3LKfg9EJZf4hcKpEj/m1D+Ih2VOR1jHLepXpo0zIWEk23CxkghGq2PJVuBQHY66nObMkdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740138937; c=relaxed/simple;
-	bh=JC8ogyqOI8xN8zaQhdtMlNxpZBkM46jcluP/sZz9IUk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TpGRO7rHeBtUEfBpjazBMxrFpT6HErFXe9rchhOCygk1PAIivuO/s8GIJ9vW5riZlbi/iY6hG8o1fUdJMf0RuE7rQVB8q20sHROStVM2QvKBmwvlWi0Mx5WUcUH06k1mZYTdLL29SLfyAMcGHXItTSTpbH7Eg68yVwP8QRiv4+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=J4o+ey0M; arc=none smtp.client-ip=115.124.30.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="J4o+ey0M"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1740138929; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=rhCWKZ300d1LYGozeyZzfCVOrsA+uIHUJ8oJ+AoQ8Fw=;
-	b=J4o+ey0MdqpYv+khiciAaqTqGoIShlNMfrBa7/8RXZ1N5Q/50PTC96y1nSQjDqFeI6GKpQ0eW7fGmYOZQOM+FKiPAZKG6Nh9GkjllH/hAT/okO2rmlKk4cf3zuc5dXW45HJd+DINg73C8Y5Tm0iQGqvMYg0tWWcLtIW0h+izYZI=
-Received: from 30.221.144.133(mailfrom:lulie@linux.alibaba.com fp:SMTPD_---0WPwJ1x1_1740138927 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 21 Feb 2025 19:55:28 +0800
-Message-ID: <365859bd-1457-4f83-91f4-34a7f21e1d8f@linux.alibaba.com>
-Date: Fri, 21 Feb 2025 19:55:27 +0800
+	s=arc-20240116; t=1740139400; c=relaxed/simple;
+	bh=VDs75fxQ1ceBzoUfdczYidGoMRE/lUva5DBMS7ynSYg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nLeiOlaNzMez3oh7CaU2xSV7aTclIdPHdmrH53HyPOfbUaiEAHrtGLX1pY1aF2JFA1Ftdm+3OkrwnKb/QErvQXFr1qXCnvj7N+D8F6GI45YqyBeubDFo1dziBD62ZwvaTLpf0xJCAkU+KJApoqzQTfDIq/v3YN8OVdcc5rWrER0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4YzpZX5xClz1ltXs;
+	Fri, 21 Feb 2025 19:59:16 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 120DF18001B;
+	Fri, 21 Feb 2025 20:03:14 +0800 (CST)
+Received: from localhost.localdomain (10.90.30.45) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 21 Feb 2025 20:03:13 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
+	<liuyonglong@huawei.com>, <chenhao418@huawei.com>, <sudongming1@huawei.com>,
+	<xujunsheng@huawei.com>, <shiyongbang@huawei.com>, <libaihan@huawei.com>,
+	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
+	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <kalesh-anakkur.purayil@broadcom.com>,
+	<shaojijie@huawei.com>
+Subject: [PATCH v3 net-next 0/6] Support some enhances features for the HIBMCGE driver
+Date: Fri, 21 Feb 2025 19:55:20 +0800
+Message-ID: <20250221115526.1082660-1-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] ipvs: Always clear ipvs_property flag in
- skb_scrub_packet()
-To: Julian Anastasov <ja@ssi.bg>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- asml.silence@gmail.com, willemb@google.com, almasrymina@google.com,
- chopps@labn.net, aleksander.lobakin@intel.com, nicolas.dichtel@6wind.com,
- dust.li@linux.alibaba.com, hustcat@gmail.com, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250221013648.35716-1-lulie@linux.alibaba.com>
- <610b255c-51e4-0460-05a2-ab9cd8c43295@ssi.bg>
-From: Philo Lu <lulie@linux.alibaba.com>
-In-Reply-To: <610b255c-51e4-0460-05a2-ab9cd8c43295@ssi.bg>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
+In this patch set, we mainly implement some enhanced features.
+It mainly includes the statistics, diagnosis, and ioctl to
+improve fault locating efficiency,
+abnormal irq and MAC link exception handling feature
+to enhance driver robustness,
+and rx checksum offload feature to improve performance 
+(tx checksum feature has been implemented).
 
+---
+ChangeLog:
+v2 -> v3:
+  - Remove "in this module" from all patch titles,
+    suggested by Kalesh Anakkur Purayil, Simon Horman and Jakub Kicinski.
+  - Remove .ndo_fix_features() suggested by Jakub Kicinski.
+  v2: https://lore.kernel.org/all/20250218085829.3172126-1-shaojijie@huawei.com/ 
+v1 -> v2:
+  - Remove self_test patch from this series, suggested by Andrew.
+  - Use phy_do_ioctl() to simplify ioctl code, suggested by Andrew.
+  - Replace phy_reset() with phy_stop() and phy_start(), suggested by Andrew.
+  - Recalculate the interval for the scheduled task to update statistics,
+    suggested by Andrew.
+  - Use !! to convert integer to boolean, suggested by Simon Horman.
+  v1: https://lore.kernel.org/all/20250213035529.2402283-1-shaojijie@huawei.com/
+---
 
-On 2025/2/21 19:42, Julian Anastasov wrote:
-> 
-> 	Hello,
-> 
-> On Fri, 21 Feb 2025, Philo Lu wrote:
-> 
->> We found an issue when using bpf_redirect with ipvs NAT mode after
->> commit ff70202b2d1a ("dev_forward_skb: do not scrub skb mark within
->> the same name space"). Particularly, we use bpf_redirect to return
->> the skb directly back to the netif it comes from, i.e., xnet is
->> false in skb_scrub_packet(), and then ipvs_property is preserved
->> and SNAT is skipped in the rx path.
->>
->> ipvs_property has been already cleared when netns is changed in
->> commit 2b5ec1a5f973 ("netfilter/ipvs: clear ipvs_property flag when
->> SKB net namespace changed"). This patch just clears it in spite of
->> netns.
->>
->> Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
->> ---
->> This is in fact a fix patch, and the issue was found after commit
->> ff70202b2d1a ("dev_forward_skb: do not scrub skb mark within
->> the same name space"). But I'm not sure if a "Fixes" tag should be
->> added to that commit.
-> 
-> 	You can add 2b5ec1a5f973 as a Fixes tag in v2 and I'll ack it.
+Jijie Shao (6):
+  net: hibmcge: Add support for dump statistics
+  net: hibmcge: Add support for rx checksum offload
+  net: hibmcge: Add support for abnormal irq handling feature
+  net: hibmcge: Add support for mac link exception handling feature
+  net: hibmcge: Add support for BMC diagnose feature
+  net: hibmcge: Add support for ioctl
 
-Thank you, Julian. You also solve my worries. I'll post v2 soon.
+ .../net/ethernet/hisilicon/hibmcge/Makefile   |   2 +-
+ .../ethernet/hisilicon/hibmcge/hbg_common.h   | 122 ++++++
+ .../ethernet/hisilicon/hibmcge/hbg_debugfs.c  |   7 +-
+ .../ethernet/hisilicon/hibmcge/hbg_diagnose.c | 348 ++++++++++++++++++
+ .../ethernet/hisilicon/hibmcge/hbg_diagnose.h |  11 +
+ .../net/ethernet/hisilicon/hibmcge/hbg_err.c  |  58 +++
+ .../net/ethernet/hisilicon/hibmcge/hbg_err.h  |   1 +
+ .../ethernet/hisilicon/hibmcge/hbg_ethtool.c  | 298 +++++++++++++++
+ .../ethernet/hisilicon/hibmcge/hbg_ethtool.h  |   5 +
+ .../net/ethernet/hisilicon/hibmcge/hbg_hw.c   |  20 +
+ .../net/ethernet/hisilicon/hibmcge/hbg_irq.c  |  55 +--
+ .../net/ethernet/hisilicon/hibmcge/hbg_main.c | 103 ++++++
+ .../net/ethernet/hisilicon/hibmcge/hbg_mdio.c |  20 +
+ .../net/ethernet/hisilicon/hibmcge/hbg_mdio.h |   2 +
+ .../net/ethernet/hisilicon/hibmcge/hbg_reg.h  | 105 ++++++
+ .../net/ethernet/hisilicon/hibmcge/hbg_txrx.c | 176 ++++++++-
+ 16 files changed, 1307 insertions(+), 26 deletions(-)
+ create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.c
+ create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.h
 
 -- 
-Philo
+2.33.0
 
