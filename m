@@ -1,101 +1,135 @@
-Received: from mail-lj1-f226.google.com (mail-lj1-f226.google.com [209.85.208.226])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C56208965
-	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 11:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4F420767D;
+	Fri, 21 Feb 2025 11:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740136188; cv=none; b=rSynKpSH5/IBcNGX+PVb7V72Rmiiz5k6YiTit/xSQlHuUCguotMdyd173uO0+cbkCCVjU7MqDTtsNe75Ws0SkLA7+/jdMIU/IeeiW7ItApHSze6rjGvTdJvKDjXyt/2Zh5roxwXMeYf0xkhp7NdnvEWXqPBv4Xlzf802R7b1eO4=
+	t=1740136823; cv=none; b=Gj7qZbFVMVVQEt8eSzWshzRHwHF42eTjMlJWlKDwPVDlXnI1AFV1tzEkyyY3HkgDEnrDV4OBHIlheHBPv0l6Qt0cKBwsDf+OXmL+ZoH6z6UjXSGHqGyXcVbiHHn08Ueo8jNyK9Nm0TQlGbF/28vq1RqOf78vAVedsh695ulP2RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740136188; c=relaxed/simple;
-	bh=VuRk2rQ6jS0rYMJXepBxzZx3vmpYk3RK/PxGURB5X74=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UCTUy3424ir1R/2ue0IRFnL1RtAbTlYuWhYJ+bVw8yy6DoDvxyhXwip1y8RLEbIyBYzLu33QGuSJRg1drKZRp+lWGegAzrl5bR+FdV0lrhzhYtGfk4ke1L0lZBlgwj8nLzGFiaHqpo05SnxIhjA1C68oMa8fAUczBiWOVe6eLEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=UIb1ns6G; arc=none smtp.client-ip=209.85.208.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	s=arc-20240116; t=1740136823; c=relaxed/simple;
+	bh=WXdkwW007G1m6bXm6oWmOyrzWJ4nJAdxR87vpm3yhA8=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=tVDNQ/4XXrQAXqO946I5CIWHV5JNBnH0xt29wjBPpt0iekxy5FocOGX+RQMDIwonxFLwICVmCxbThBKy5q9odIyqtipzZxFwOAzNLwDFqD3pRPNOy+Zc5zAUUrxLoKnhVdhJMrDjN2I7v1+o7dvFSW2TpbFMvUwTaogMWwVM9+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j0fi/GNW; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="UIb1ns6G"
-Received: by mail-lj1-f226.google.com with SMTP id 38308e7fff4ca-307d4eaab17so1699361fa.1
-        for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 03:09:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j0fi/GNW"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-220c8cf98bbso42477895ad.1;
+        Fri, 21 Feb 2025 03:20:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1740136183; x=1740740983; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lN4584voZoALNYMNOO4DGl8MJ0k1uaDKF69K9TzX/9c=;
-        b=UIb1ns6GLLyf15tCxnZjaIN2Nr6ApphDq9ORiPGY4+WP0pPMCRJiQSjuuWzLAfQEFm
-         WEkQO6ZjVM2mhJVzCIvV0O7tB8nGrcaEh4wbIHN708fEoJa8v332thUamdO6gG190dSO
-         5W7mlpmuEFBBcbOXq8vj/zdXos9yxeRz5u45Uxal11pEG10FKHTre8YRqUWcHRN7aJRS
-         gK/ewwANPb+F52BMR1hGgcsU7laGdLjA/Z68DA9up4zCz1DR53qRNiQ3VCNwTvn0TQzb
-         u1VYxsBXXYXrC+LvDoj+kuHIfly0xwYENSFvmH5E6kBAD8XkX+dz3xtCTBCMHMr0VHzM
-         8nUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740136183; x=1740740983;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1740136821; x=1740741621; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=lN4584voZoALNYMNOO4DGl8MJ0k1uaDKF69K9TzX/9c=;
-        b=EGYeVjeSeXJy6N6PWqyi1aghrAn575Me9CXp5HUpBXasaEgHxi7HSclT+ytK5fMiIr
-         XBMMgGbqa9ujeWxdbi9s2ldGUPlFv6zCZpUbxzszJqcAtt+B5V+5QnMX2/QVdlNATOmz
-         KuYPYRjYrg625DpHG6JBlwc+Oc4Hn/UnfIF/PjpjOUlPXjjkktnQjbWGPiwpwhDdr3Jh
-         ZBWQfOv4jB5U8Op1eUL3SweebM0tMmJfHKq0xtUEn1un2fiEikJunaX1bM+vQr15tiUn
-         xYiVfmNu/BZlRoaoFOWXoM2o6d4Nw3++8Uj+YpYUez2e8F35OZSnxCBtldx6Iyfk5Pxj
-         QkXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJpy69ZXzt1AGCO8A8+qukNdBh8SUNxy75/UQdqATwvt1ayXl0nrHGqBHedmVIQrEcqayUy7A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxW0VK8epMdvsj5K5Um+WGSJz6DY8oRC/pfz+aELEXKl8OxseC
-	TClRdy0YpY4JTFQAbc6GgKP8oj4HUBOJUW21mShoY7ZfcY2nTn287c9KYGolMzLTuPGuKc2ubdy
-	dWDYt8R8DNjbG7BnIUDSpK5K1LCUZszX+
-X-Gm-Gg: ASbGncsRq6krSiCZnFHqA6F0ObYO6Ujol602kgALAu3mcUKB3ZhDdGZeBKw8rW5kGsm
-	cZWBlEenwUHldYScMYepsqGzaL3HW06Nzj0p7PnINqQZDQBrDvmkwMJlqD8bQtptJTC+h42Jc9V
-	D5mG83Lo8XSxSdC6E1liHjfCdrgVcHKHYNe5EKSidt7bKbkdbrS44RDyvHxc/7Q6+qKaYKozJtk
-	i28JvZiqu0l46mXjqjmgMRTIsKJQVBx9ciV1xGqkWNQG3wQxie6sOVsZbRCp01jsJ/TYTAaBRN1
-	o9prpC/VA2P+Ttb7NbOAnOErmjYztkYAYjmwzbGmkE29Fj5NRBgQXnQQVHiZY8BepCUtnsU=
-X-Google-Smtp-Source: AGHT+IENrd4JOt32L9C4nheK9HOt9/X6P7LLjli0+Aau3OLyan282XrQBQb78fpx1glfFvRaB8wpsDGLIGO5
-X-Received: by 2002:a2e:a904:0:b0:308:e7f3:af0 with SMTP id 38308e7fff4ca-30a5996b226mr3149961fa.5.1740136183023;
-        Fri, 21 Feb 2025 03:09:43 -0800 (PST)
-Received: from smtpservice.6wind.com ([185.13.181.2])
-        by smtp-relay.gmail.com with ESMTP id 38308e7fff4ca-30a39458e10sm2061991fa.9.2025.02.21.03.09.42;
-        Fri, 21 Feb 2025 03:09:43 -0800 (PST)
-X-Relaying-Domain: 6wind.com
-Received: from bretzel (bretzel.dev.6wind.com [10.17.1.57])
-	by smtpservice.6wind.com (Postfix) with ESMTPS id C121213DBE;
-	Fri, 21 Feb 2025 12:09:42 +0100 (CET)
-Received: from dichtel by bretzel with local (Exim 4.94.2)
-	(envelope-from <nicolas.dichtel@6wind.com>)
-	id 1tlQuc-008ZCm-HK; Fri, 21 Feb 2025 12:09:42 +0100
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v2 0/2] net: remove skb_flow_get_ports()
-Date: Fri, 21 Feb 2025 12:07:27 +0100
-Message-ID: <20250221110941.2041629-1-nicolas.dichtel@6wind.com>
-X-Mailer: git-send-email 2.47.1
+        bh=GxYnX2yXJwlCWmyGjuQOEIXaM/3gJvdyhgH8qf3cr0s=;
+        b=j0fi/GNWo0qIugZzNEAMYv4Dec5DAC54MIdgCNcOEMyQTlnA5OU8s/8CA7+soUCnZl
+         NACtVKC2TUgYQ4wVfipHQc1MvhAHLjLp+bJ+qeQK+QOb+N5UZlYCdh5MwcdNBUBAnFHx
+         qHDNE1YG/2y8Auc7oy9MTbSBq+uX9mqJIUA1B8CJoH7xc98N0RrlmMkXzjPMqhliHe9/
+         dxTSd6IFlH2WDp2xEKfzoLRNlZCe35bzteFFMPfbY2hHABBGyOjGRjo7p1ST13Qw5T2E
+         gQxFommhPi3rpHK04RnRdzX4YHsv+gLQp88cYh7EZFei+1TeFg5oxVaaMH/dSCcahdh0
+         gx7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740136821; x=1740741621;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GxYnX2yXJwlCWmyGjuQOEIXaM/3gJvdyhgH8qf3cr0s=;
+        b=sUvGpdYUKV/VzlmZKQIy+HH94uSr8clLeCdbGawMCDIYR6SZQMs8+uMS2ipi4RR/He
+         peSyuJS/eDccSxK6L5A28qIHsr9ibvB0ZSFSxxEzI6Z70Kb2a7Jz9fdEc4bO7IFvf/yD
+         0furyX9GQ44WIWtCUIdGmKppVDJZqrpOPQbmGmqHQ9w37LAjXTwCqviarZ+AF/irIrGV
+         7kwP3Kcwv/BtcLgL6E/IBPk192kc0cEy/lOHXB2efZ3+XetPFsFJhp/cBy4FfnbXe3pd
+         Tw95t9zjyjPaa/dn4smj+v3p5Bo3J4xPpeCerGnuJtCO4C3BudjaYz1yhfz5dgMXA2Ow
+         qCEA==
+X-Forwarded-Encrypted: i=1; AJvYcCUlmNCWGrKAmG3vqQHaG4h71hVsF0jbb6gr1Pm1ftKVrgjteoAclrgn5s1SEKXbHokVv5ryzwgUAbCGt78TpG0=@vger.kernel.org, AJvYcCVGRLtqBaqTp9H93sz+tYHovSW5zJFp/Xr1dMyI/j3DvFTtcygMzgpHxQWOfBWPGkquAWPPEYDsW2SgVDs=@vger.kernel.org, AJvYcCXl0AzyDe1KugBL1Z8qwjhVP2OHUAIkv1dsefyXVA9abDbw1aQHxnkMTXloLG/n00cexLthmfJQ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzavc2QsUqjLQR67abLO/fl3ZqpVUoE2Bdse7pyrY9IMkCr2/VZ
+	rcHrOuOzO5PptFYXGJyQpv++94oEW0UEv2t8DE87zP3bwCNV6g+V9oGyxVVy
+X-Gm-Gg: ASbGnctL2fA8pefcO1fAEcJW0J158HLlhTqyVNXghtY/v7blaNcWW9rcQIWBeo3Vojr
+	181mjKlR5QV9e37CAOMZT1KahnUG1zuaHYzfnU0DPNe6IxbLQL6FIim9pvYNOEtuXQMSfWUsF99
+	/ZdgQUJsvO2TcWJK2A0qIy2TidtOLDoyYHHMlCd1rHT+iGeFphMa7MiZodW+RIpQKMbhDJNeAnB
+	KuiNwdVUh7ywh9dXQBGH0LWtnezCSjIjjNjNezSKRgYb4IVR+YDLsMCqlW8xPA3TdcVQEujDPtJ
+	ea7lZBkooTVZDf+Ud31NsGs5Kmz4/wkA/IwGw/bVnnQJc5N+rQ/R8SlYmPnchTpck1NAcrPAARV
+	OeNUrOZQ=
+X-Google-Smtp-Source: AGHT+IH/wICrOV8ksf5vgqn6VZpXkj00d1t4t3svm8K3W+EkQEizLgzbwSaFrJqlyDj9UeKS6DKytw==
+X-Received: by 2002:a17:903:32c9:b0:216:4cc0:aa4e with SMTP id d9443c01a7336-221a118c6famr40048875ad.47.1740136820741;
+        Fri, 21 Feb 2025 03:20:20 -0800 (PST)
+Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d559614dsm135518745ad.256.2025.02.21.03.20.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Feb 2025 03:20:20 -0800 (PST)
+Date: Fri, 21 Feb 2025 20:20:10 +0900 (JST)
+Message-Id: <20250221.202010.155344232451640447.fujita.tomonori@gmail.com>
+To: me@kloenk.dev
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+ jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com,
+ david.laight.linux@gmail.com
+Subject: Re: [PATCH v11 7/8] rust: Add read_poll_timeout functions
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <878qq064j1.fsf@kloenk.dev>
+References: <20250220070611.214262-1-fujita.tomonori@gmail.com>
+	<20250220070611.214262-8-fujita.tomonori@gmail.com>
+	<878qq064j1.fsf@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+On Thu, 20 Feb 2025 16:04:50 +0100
+Fiona Behrens <me@kloenk.dev> wrote:
+
+>> Add read_poll_timeout functions which poll periodically until a
+>> condition is met or a timeout is reached.
+>>
+>> The C's read_poll_timeout (include/linux/iopoll.h) is a complicated
+>> macro and a simple wrapper for Rust doesn't work. So this implements
+>> the same functionality in Rust.
+>>
+>> The C version uses usleep_range() while the Rust version uses
+>> fsleep(), which uses the best sleep method so it works with spans that
+>> usleep_range() doesn't work nicely with.
+>>
+>> The sleep_before_read argument isn't supported since there is no user
+>> for now. It's rarely used in the C version.
+>>
+>> read_poll_timeout() can only be used in a nonatomic context. This
+>> requirement is not checked by these abstractions, but it is intended
+>> that klint [1] or a similar tool will be used to check it in the
+>> future.
+>>
+>> Link: https://rust-for-linux.com/klint [1]
+>> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> 
+> Reviewed-by: Fiona Behrens <me@kloenk.dev>
+
+Thanks!
 
 
-Remove skb_flow_get_ports() and rename __skb_flow_get_ports() to
-skb_flow_get_ports().
+>> +#[track_caller]
+>> +pub fn read_poll_timeout<Op, Cond, T>(
+>> +    mut op: Op,
+>> +    mut cond: Cond,
+>> +    sleep_delta: Delta,
+>> +    timeout_delta: Option<Delta>,
+> 
+> Fun idea I just had, though not sure it is of actuall use (probably not).
+> Instead of `Option<Delta> we could use `impl Into<Option<Delta>>`,
+> that enables to use both, so not having to write Some if we have a value.
 
-v1 -> v2:
- - remove the 'Fixes' tag from the patch #1
- - add patch #2
-
- drivers/net/bonding/bond_main.c |  2 +-
- include/linux/skbuff.h          | 10 ++--------
- net/core/flow_dissector.c       | 10 +++++-----
- 3 files changed, 8 insertions(+), 14 deletions(-)
-
-Comments are welcome.
-
-Regards,
-Nicolas
+Either is fine by me. I couldn't find any functions under the
+rust/kernel that use impl Into<Option<T>> as an argument. Any
+rules regarding this?
