@@ -1,73 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0EE253336;
-	Fri, 21 Feb 2025 21:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D640254B18
+	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 21:16:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740171988; cv=none; b=p5T1rc2J88RgdclZoLZ6dPbuxrCIc/NI3DPbP3OQgjd5FTCwab8DDNg4xSeUdlKnCfEmma+LiFTEhdgvTLDe9HwTaEeWdNhiQBmRpGXo9KNe0NMDmBaVHbhBnlNR8scwsbsBclFCH8LDF6uOoI+nww/nbohjozeH6eazjLEHuBY=
+	t=1740172595; cv=none; b=oR1NBT9YUUy65ijTKwrsH8HZZZib5u7FuJoauAtWYH/boY8d+g1NkPhYtSRbfEjTtywwvUgsiwRj4wu9WvfJoJdHRnHe2i/mOfILyH43sFr8ThrMc+9/lvqQLPrAGVQtxFOlwaqJKPEQwmRg5fDDYnUVdhbgs3Nrg0bI/2bbj1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740171988; c=relaxed/simple;
-	bh=qmjNEUFgu/ZxCPLIcQrJ7jiCisWI5FZVUdmhNrXSM5s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hG06Ez03niDhp6w2d10Fb0uqlMV0a05PiRDq3b1W4Qwda9lhh1ikOFSwScsRhQhO0imoynsMeItbxRPqeY6i8GDXyENKLGv5slDrSuZ5zyh3/MpEUmouqWvn1VTKgCyJzgR6goHETvG70Za10aGPxlAL1voQpQuavdm1WQA3qkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dp60rGrq; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dp60rGrq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FC4C4CED6;
-	Fri, 21 Feb 2025 21:06:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740171988;
-	bh=qmjNEUFgu/ZxCPLIcQrJ7jiCisWI5FZVUdmhNrXSM5s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Dp60rGrq6U1l67hpl/CYzbZ3zyyZo6W5wWv3Y/1JEPznaiaiORw56TUo+qaqoP5gu
-	 5RYvlC/SQ7V7N3uh7aTiqHWlUFV6OhPwWoUZFsDPIUtpJWU2eigIr67Zbj1CwBtY3Q
-	 rskyK8M8V18bs8XHHhKRYVcwoAHhufOLrOLN6y+esIrLAyCe9wN8yn5rHnmceSCvNL
-	 /uOZ92pylNx/daZvi33/rEi/TiPYiJUy4bZlAvx5DNCXdbegksVwb/tB2t9+EwdlS7
-	 VD187nIanJ50eG0aZwqOt0c3N3NuEactEAX68WDySsJYrTWi0BJlk16KCINZ5P2X1a
-	 PkXYbEYOTfT/A==
-Date: Fri, 21 Feb 2025 15:06:26 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Cc: conor+dt@kernel.org, tsbogend@alpha.franken.de, davem@davemloft.net,
-	pabeni@redhat.com, netdev@vger.kernel.org, kuba@kernel.org,
-	andrew+netdev@lunn.ch, devicetree@vger.kernel.org, lee@kernel.org,
-	linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-	krzk+dt@kernel.org, edumazet@google.com
-Subject: Re: [RESEND PATCH net-next 2/5] dt-bindings: net: Add switch ports
- and interrupts to RTL9300
-Message-ID: <174017197206.81138.17349230717480144240.robh@kernel.org>
-References: <20250218195216.1034220-1-chris.packham@alliedtelesis.co.nz>
- <20250218195216.1034220-3-chris.packham@alliedtelesis.co.nz>
+	s=arc-20240116; t=1740172595; c=relaxed/simple;
+	bh=01PPfr8pTmK9HLef/82tm4Z12bBRSoNBzfHTLxmst0s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cJNrvbOXtCmPSZsKf+Q1K6umWjf74/tIkCm8ZSu7anCL7V7w0afha+oi763tq37b9pSk3YfU6b0reGQ70+M9Ex/KluYUyQ551RI7anEgjjEcvkpuF/AmRv1D8DK7NUdfvIVZU6goNUlxYvepbC7l10x7p+giBj7a82bo+0Ffjmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [192.168.0.2] (ip5f5af2a2.dynamic.kabel-deutschland.de [95.90.242.162])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id C596B61E64783;
+	Fri, 21 Feb 2025 22:16:09 +0100 (CET)
+Message-ID: <aecd919b-fbb8-4790-af1f-69b50cc78438@molgen.mpg.de>
+Date: Fri, 21 Feb 2025 22:16:09 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250218195216.1034220-3-chris.packham@alliedtelesis.co.nz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-next v1 1/3] ice: remove SW side
+ band access workaround for E825
+To: Grzegorz Nitka <grzegorz.nitka@intel.com>,
+ Karol Kolacinski <karol.kolacinski@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+References: <20250221123123.2833395-1-grzegorz.nitka@intel.com>
+ <20250221123123.2833395-2-grzegorz.nitka@intel.com>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20250221123123.2833395-2-grzegorz.nitka@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Dear Grzegorz, dear Karol,
 
 
-On Wed, 19 Feb 2025 08:52:13 +1300, Chris Packham wrote:
-> Add bindings for the ethernet-switch and interrupt properties for the
-> RTL9300.
+Thank you for your patch.
+
+Am 21.02.25 um 13:31 schrieb Grzegorz Nitka:
+> From: Karol Kolacinski <karol.kolacinski@intel.com>
 > 
-> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+> Due to the bug in FW/NVM autoload mechanism (wrong default
+> SB_REM_DEV_CTL register settings), the access to peer PHY and CGU
+> clients was disabled by default.
+
+I’d add a blank line between the paragraphs.
+
+> As the workaround solution, the register value was overwritten by the
+> driver at the probe or reset handling.
+> Remove workaround as it's not needed anymore. The fix in autoload
+> procedure has been provided with NVM 3.80 version.
+
+Is this compatible with Linux’ no regression policy? People might only 
+update the Linux kernel and not the firmware.
+
+How did you test this, and how can others test this?
+
+> Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
+> Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
 > ---
-> 
-> Notes:
->     This is tecnically v7 of [1] changes from that are:
->     - Use ethernet-switch.yaml#/$defs/ethernet-ports
->     - Enforce "ethernet-ports" be used instead of just "ports"
->     - Add interrupts for the switch block
-> 
->     [1] - https://lore.kernel.org/lkml/20250204030249.1965444-2-chris.packham@alliedtelesis.co.nz/
-> 
->  .../bindings/net/realtek,rtl9301-switch.yaml  | 30 +++++++++++++++++++
->  1 file changed, 30 insertions(+)
-> 
+>   drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 23 ---------------------
+>   1 file changed, 23 deletions(-)
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
+Kind regards,
+
+Paul
+
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> index 89bb8461284a..a5df081ffc19 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> @@ -2630,25 +2630,6 @@ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port)
+>   	return 0;
+>   }
+>   
+> -/**
+> - * ice_sb_access_ena_eth56g - Enable SB devices (PHY and others) access
+> - * @hw: pointer to HW struct
+> - * @enable: Enable or disable access
+> - *
+> - * Enable sideband devices (PHY and others) access.
+> - */
+> -static void ice_sb_access_ena_eth56g(struct ice_hw *hw, bool enable)
+> -{
+> -	u32 val = rd32(hw, PF_SB_REM_DEV_CTL);
+> -
+> -	if (enable)
+> -		val |= BIT(eth56g_phy_0) | BIT(cgu) | BIT(eth56g_phy_1);
+> -	else
+> -		val &= ~(BIT(eth56g_phy_0) | BIT(cgu) | BIT(eth56g_phy_1));
+> -
+> -	wr32(hw, PF_SB_REM_DEV_CTL, val);
+> -}
+> -
+>   /**
+>    * ice_ptp_init_phc_e825 - Perform E825 specific PHC initialization
+>    * @hw: pointer to HW struct
+> @@ -2659,8 +2640,6 @@ static void ice_sb_access_ena_eth56g(struct ice_hw *hw, bool enable)
+>    */
+>   static int ice_ptp_init_phc_e825(struct ice_hw *hw)
+>   {
+> -	ice_sb_access_ena_eth56g(hw, true);
+> -
+>   	/* Initialize the Clock Generation Unit */
+>   	return ice_init_cgu_e82x(hw);
+>   }
+> @@ -2747,8 +2726,6 @@ static void ice_ptp_init_phy_e825(struct ice_hw *hw)
+>   	params->num_phys = 2;
+>   	ptp->ports_per_phy = 4;
+>   	ptp->num_lports = params->num_phys * ptp->ports_per_phy;
+> -
+> -	ice_sb_access_ena_eth56g(hw, true);
+>   }
+>   
+>   /* E822 family functions
