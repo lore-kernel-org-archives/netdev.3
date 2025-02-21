@@ -1,102 +1,82 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0458320A5D8
-	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 14:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA9F7080D
+	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 14:15:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740146975; cv=none; b=d7nX2F6HIsUi1N04SR9goJwoUXHmnl0oIc+IsMiXfuheI4X91g68lyfC78AAERnNWlh5jDwiKAr+/PaKfDw1+Ed9maRHlLsen/Z4rx4EFoB55VXivN2CJf5rf/qmQooAcwRsKmAIT7Pmk4GIZGIVeWqZJH21rC4K1txjjyt/Bck=
+	t=1740147336; cv=none; b=pYBifoxgjV6DPf9IJc8vIJ+e8Rn9IfrNuIlelyMTj/ANZUQO4GJeNO/Xx07W6H5FxEYRow7MTp5RQDkY4Kn4/jZChwwV1tYRmikSpQQEcAX36EjA/Q+KKcGRhVhghCI2IatvmFCebqq0YqNnO0h3HCOd5THl9O/z49K+vbP8TwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740146975; c=relaxed/simple;
-	bh=A5JN38YOejtDvZRLlVe5bqdYWZY4tPVqAyIGRCh1wZc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GOJ6wX0WEkLh4ddCtZFC64ipMbkIHOrQlkeabU2HNRHUECd7LXzq/B6gILR2nO3b9CtAj/Ds2+YJa8F0WO87fVlBOysiVeODcw8/MFx0TUI0eGbaO46s9kAkkiDCt3I70SUyfQ/ulxjkxDZn6yDOuDtdF13XXkIdcSA0DKCiiVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.0.2] (ip5f5af27c.dynamic.kabel-deutschland.de [95.90.242.124])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 643E161E646F9;
-	Fri, 21 Feb 2025 15:09:02 +0100 (CET)
-Message-ID: <7d8cfd3b-1e2e-48e3-b9b7-6f8aab8a83d7@molgen.mpg.de>
-Date: Fri, 21 Feb 2025 15:09:01 +0100
+	s=arc-20240116; t=1740147336; c=relaxed/simple;
+	bh=H5yh3XlqfVet82WCCkr5ue7OJLEw93JfvwdwqcALVHA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=fqbHc4NCKzVCk/dBQ/Begd/4FMRv2CMYrqzN7AmIyUiohlzd6nekB1nwWX7goDu3EVZR24KyLFe/CqX9GJ44J37Yhcx3hRSyHXLp0LrIyyaaQEd3Q0wdjK8a2w5OhI/njKmfuNQkv2zTAjVTA+1rqkDEXqDt+2HQVh2jjJWGpvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=0/Sbe6zB; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="0/Sbe6zB"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ZN090mxAPz84RAmjDf1ffqgTe4ng9t/Mi1/ZHq++UpE=; b=0/Sbe6zBOF5wWfA8ZGcllkkHOu
+	tAQPGfV0LWLk2aLeX2iOW3NchjXJWQjzLAX652zVJ8XRPNZc6RRylLZVEzVtOfzgC9GgS5bxFd0WC
+	TyG0hSJXiSZSnId8QQCxJVWSdnr1ccNyBUxwUx0Wsbxx/C06VxWuEhNFProVooYVF1ShrIV7i1MK8
+	An9WxG+DHPwaJGy8aCFnKRKK0unAJjNtjvSfjl1/AKDj+Ie8ttmp2B+12n5mUEaV0gG5nJ5hFmGEM
+	ln+zk/UrQfwec/G+KuVUJakLk7zIqlAG/lv3zM2UoOrSb/ooFhNywzerlCXYNVMnb2+tfUS8S9WuJ
+	ZhqypXRQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33718)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tlToH-0004nV-1b;
+	Fri, 21 Feb 2025 14:15:21 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tlToD-00023s-0v;
+	Fri, 21 Feb 2025 14:15:17 +0000
+Date: Fri, 21 Feb 2025 14:15:17 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Drew Fustini <drew@pdp7.com>, Eric Dumazet <edumazet@google.com>,
+	Fu Wei <wefu@redhat.com>, Guo Ren <guoren@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next 0/2] net: stmmac: thead: clean up clock rate setting
+Message-ID: <Z7iKdaCp4hLWWgJ2@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net v2] ixgbe: fix media type
- detection for E610 device
-To: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, andrew@lunn.ch,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>
-References: <20250221135315.5105-1-piotr.kwapulinski@intel.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20250221135315.5105-1-piotr.kwapulinski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Dear Piotr,
+Hi,
 
+This series cleans up the thead clock rate setting to use the
+rgmii_clock() helper function added to phylib.
 
-Thank you for the improved version. Two minor nits should you resend.
+The first patch switches over to using the rgmii_clock() helper,
+and the second patch cleans up the verification that the desired
+clock rate is achievable, allowing the private clock rate
+definitions to be removed.
 
+ drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c | 28 ++++++++---------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
 
-Am 21.02.25 um 14:53 schrieb Piotr Kwapulinski:
-> The commit 23c0e5a16bcc ("ixgbe: Add link management support for E610
-> device") introduced incorrect media type detection for E610 device. It
-> reproduces when advertised speed is modified after driver reload. Clear
-> the previous outdated PHY type high value.
-> 
-> Reproduction steps:
-> modprobe ixgbe
-> ethtool -s eth0 advertise 0x1000000000000
-> rmmod ixgbe
-
-As you use modprobe over insmod, you could also used modprobe -r.
-
-> modprobe ixgbe
-> ethtool -s eth0 advertise 0x1000000000000
-
-Is now an error printed?
-
-> Fixes: 23c0e5a16bcc ("ixgbe: Add link management support for E610 device")
-> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-> ---
-> v1 -> v2
->    More commit message details and reproduction steps added
-> ---
->   drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-> index 683c668..0dfefd2 100644
-> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-> @@ -1453,9 +1453,11 @@ enum ixgbe_media_type ixgbe_get_media_type_e610(struct ixgbe_hw *hw)
->   			hw->link.link_info.phy_type_low = 0;
->   		} else {
->   			highest_bit = fls64(le64_to_cpu(pcaps.phy_type_low));
-> -			if (highest_bit)
-> +			if (highest_bit) {
->   				hw->link.link_info.phy_type_low =
->   					BIT_ULL(highest_bit - 1);
-> +				hw->link.link_info.phy_type_high = 0;
-> +			}
->   		}
->   	}
->   
-
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-
-
-Kind regards,
-
-Paul
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
