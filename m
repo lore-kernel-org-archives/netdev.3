@@ -1,246 +1,293 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB8720F068
-	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 12:05:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD0E1FFC5E;
+	Fri, 21 Feb 2025 12:32:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740139548; cv=none; b=qfQxDjr+tHqVDl8Tby6MR4wQiRNqyn9hLQgPVtSEvMSNpp7q6riaHZkZZedEbO98L3wW//sHzlMLKemZLQM6Oa1JS150L65oC7LpK2j+gQtIVcgSSKQMuOtZlN0gYh33vhBB/SQFbq8t8djIGbuRJYSO3hJhYo6N35tUfOGFUFM=
+	t=1740141175; cv=none; b=gG4CmYOO8eyYZffnoh/srr+vDLlB0FvLgOLBsBLQc0+ys0q94qlcbHYZDTxnOyVGERch3TOscD78lvwLE2vWAdgnhRT2YVlhuOAzdL1+0xNag9j6+uD2xVnZ6PlR8sqXO1vZwDPieHUTvYmoROWe/wtSCKdRCfPTGH+qL/5bvJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740139548; c=relaxed/simple;
-	bh=fbm0CoUs0GeSxWsflTnNc7SV/5ZDZMF+KxKmCmj/SlM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jy9qis7ylDW8GIGTFV9b0O3bjHUaMcY/k28r4qZ6doMUUwVyEw6avwxUs5/7JuztSAwkmIdKe7JRD+CKMs8ttr07oLhqcvfP/4yH9FqfdIzFdUnj/Wv/+fvxhJS565A8JgD4eozy47qaWMuJC++/5k1jjm8Ac9rz7rA60eYQkJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bX7xo+7V; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1740141175; c=relaxed/simple;
+	bh=UvuNzrjWzUCNXqNxslrELogG9BuyJy742ODapOuk9M8=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=srN9LOuptak/3jKtHNQJ7wGWLOcArmJE0nyykua/gnCJeVqk1G/E4N2bO6P8tMA3Bzs+h7KIN6y0m4XOXgY1y6c4/Nxb6gHqfj+1u0UqdhOa1Ak2PJu/WEHSSLVqm2ZDlDNFN+rA7gnyo1hFLkxJ3IbbivQvZIk2qD6c4ZKgxNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=q8Fu59eo; arc=none smtp.client-ip=162.240.238.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bX7xo+7V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740139547; x=1771675547;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=fbm0CoUs0GeSxWsflTnNc7SV/5ZDZMF+KxKmCmj/SlM=;
-  b=bX7xo+7VKld9AvzlKkFnFVaAtoHD6vo2u7e1Bm7xd1ENWSziM4mWpkn/
-   T8fpRPLr7w83TLAK0lJQE4ZeDWp9KT8emaG2XMoMAWBBXQ44+kHi0L4YE
-   4ZxtEMfQiWv1U14uVOc0Fv+DcPsb+3lHyvNMBhAlZzLaD7rNQzZ2Ociw/
-   xjNJLMVedwvNJOW4KHJ/a0OUnIFRvfQcqKFzMXinTXp85qO7Z/waY2BPj
-   /eOLDYGGaQxOL+NmABmxpMWKY04Og5u6KeZ7MSTOtqwCpLibzIjqkm/ib
-   jR7tQnyTa9FIVhq5HEtEr0VI7aYd/BF9EuJVLnREqWKAWQdQGYo/fS5tf
-   w==;
-X-CSE-ConnectionGUID: KA5uqNhTTdKEB3ubS6UK/Q==
-X-CSE-MsgGUID: r/E6K6AdQV2TiVvIoXmFLg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="51599048"
-X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; 
-   d="scan'208";a="51599048"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2025 04:05:46 -0800
-X-CSE-ConnectionGUID: eA5VOEl5T5+G9EVamUltRQ==
-X-CSE-MsgGUID: TUj2vkBaT3msO5HjhLCDxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="116260343"
-Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by orviesa008.jf.intel.com with ESMTP; 21 Feb 2025 04:05:44 -0800
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	horms@kernel.org,
-	jiri@nvidia.com,
-	Andrii Staikov <andrii.staikov@intel.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Subject: [PATCH iwl-next v5 15/15] ixgbe: add support for FW rollback mode
-Date: Fri, 21 Feb 2025 12:51:16 +0100
-Message-Id: <20250221115116.169158-16-jedrzej.jagielski@intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20250221115116.169158-1-jedrzej.jagielski@intel.com>
-References: <20250221115116.169158-1-jedrzej.jagielski@intel.com>
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="q8Fu59eo"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
+	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=EePyCqMIhGKqIC1G3UvKUVRy6wdzao/mm6Xcy0Z4PeM=; b=q8Fu59eoITJ4uwVAHCv+k4jSk+
+	2uQj7IaWVfvVk5alcCSqyuvyE1eXqZifmZKnMomhSIMwj0w0jUeNztLwllN2z8mxbPSMeaQeisSNG
+	DnSYr3hqgQaRw1xSilPXAxPXZKSalyO7zeb3O71lzfZN0UjStGCp9vdhCPera5rF11P1zIDfuzwfR
+	qTYKMIRPJTIA5TtNXT2jXD4nXmmkRdqOtjCTE7BX+3YHchuMm1XGzVoFUu0N57YIrjXHEhS8t/Zao
+	9e7NG7xRF3YIZhNpJEVwgxvxhWgD4v1MwjKTPrFa7bdRDm5kCSUkoA80WloMkplmvjkzSRMTLXGvl
+	gtGqpCyg==;
+Received: from [122.175.9.182] (port=49585 helo=zimbra.couthit.local)
+	by server.wki.vra.mybluehostin.me with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <parvathi@couthit.com>)
+	id 1tlSCu-0002Su-1z;
+	Fri, 21 Feb 2025 18:02:41 +0530
+Received: from zimbra.couthit.local (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTPS id 2EA9B178215A;
+	Fri, 21 Feb 2025 18:02:33 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id 0A48A178247D;
+	Fri, 21 Feb 2025 18:02:33 +0530 (IST)
+Received: from zimbra.couthit.local ([127.0.0.1])
+	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id M0wu_t15pFmA; Fri, 21 Feb 2025 18:02:32 +0530 (IST)
+Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
+	by zimbra.couthit.local (Postfix) with ESMTP id C198D178215A;
+	Fri, 21 Feb 2025 18:02:32 +0530 (IST)
+Date: Fri, 21 Feb 2025 18:02:32 +0530 (IST)
+From: Parvathi Pudi <parvathi@couthit.com>
+To: robh <robh@kernel.org>
+Cc: parvathi <parvathi@couthit.com>, danishanwar <danishanwar@ti.com>, 
+	rogerq <rogerq@kernel.org>, andrew+netdev <andrew+netdev@lunn.ch>, 
+	davem <davem@davemloft.net>, edumazet <edumazet@google.com>, 
+	kuba <kuba@kernel.org>, pabeni <pabeni@redhat.com>, 
+	krzk+dt <krzk+dt@kernel.org>, conor+dt <conor+dt@kernel.org>, 
+	nm <nm@ti.com>, ssantosh <ssantosh@kernel.org>, 
+	richardcochran <richardcochran@gmail.com>, 
+	basharath <basharath@couthit.com>, schnelle <schnelle@linux.ibm.com>, 
+	diogo ivo <diogo.ivo@siemens.com>, 
+	m-karicheri2 <m-karicheri2@ti.com>, horms <horms@kernel.org>, 
+	jacob e keller <jacob.e.keller@intel.com>, 
+	m-malladi <m-malladi@ti.com>, 
+	javier carrasco cruz <javier.carrasco.cruz@gmail.com>, 
+	afd <afd@ti.com>, s-anna <s-anna@ti.com>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	netdev <netdev@vger.kernel.org>, 
+	devicetree <devicetree@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	pratheesh <pratheesh@ti.com>, Prajith Jayarajan <prajith@ti.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
+	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
+	krishna <krishna@couthit.com>, pmohan <pmohan@couthit.com>, 
+	mohan <mohan@couthit.com>
+Message-ID: <1240320242.634119.1740141152414.JavaMail.zimbra@couthit.local>
+In-Reply-To: <20250219225130.GA3107198-robh@kernel.org>
+References: <20250214054702.1073139-1-parvathi@couthit.com> <20250214054702.1073139-2-parvathi@couthit.com> <20250219225130.GA3107198-robh@kernel.org>
+Subject: Re: [PATCH net-next v3 01/10] dt-bindings: net: ti: Adds DUAL-EMAC
+ mode support on PRU-ICSS2 for AM57xx SOCs
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - FF113 (Linux)/8.8.15_GA_3968)
+Thread-Topic: dt-bindings: net: ti: Adds DUAL-EMAC mode support on PRU-ICSS2 for AM57xx SOCs
+Thread-Index: /oo/U1rbh8omFI7E9oVZggUetPMfQw==
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.wki.vra.mybluehostin.me
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.wki.vra.mybluehostin.me: authenticated_id: smtp@couthit.com
+X-Authenticated-Sender: server.wki.vra.mybluehostin.me: smtp@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-From: Andrii Staikov <andrii.staikov@intel.com>
 
-The driver should detect whether the device entered FW rollback
-mode and then notify user with the dedicated message including
-FW and NVM versions.
+Hi,
 
-Even if the driver detected rollback mode, this should not result
-in an probe error and the normal flow proceeds.
+> On Fri, Feb 14, 2025 at 11:16:53AM +0530, parvathi wrote:
+>> From: Parvathi Pudi <parvathi@couthit.com>
+>> 
+>> Documentation update for the newly added "pruss2_eth" device tree
+>> node and its dependencies along with compatibility for PRU-ICSS
+>> Industrial Ethernet Peripheral (IEP), PRU-ICSS Enhanced Capture
+>> (eCAP) peripheral and using YAML binding document for AM57xx SoCs.
+>> 
+>> Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
+>> Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
+> 
+> The sender of the patch S-o-b goes last. And maybe you want a
+> Co-developed-by tag here too?
+> 
 
-FW tries to rollback to “old” operational FW located in the
-inactive NVM bank in cases when newly loaded FW exhibits faulty
-behavior. If something goes wrong during boot the FW may switch
-into rollback mode in an attempt to avoid recovery mode and stay
-operational. After rollback is successful, the banks are swapped,
-and the “rollback” bank becomes the active bank for the next reset.
+Yes, you are correct. We will address this in the next version.
 
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
----
- .../ethernet/intel/ixgbe/devlink/devlink.c    |  3 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe.h      |  1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 33 +++++++++++++++++++
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 26 +++++++++++++++
- drivers/net/ethernet/intel/ixgbe/ixgbe_type.h |  2 ++
- .../ethernet/intel/ixgbe/ixgbe_type_e610.h    |  1 +
- 6 files changed, 65 insertions(+), 1 deletion(-)
+>> ---
+>>  .../devicetree/bindings/net/ti,icss-iep.yaml  |   4 +-
+>>  .../bindings/net/ti,icssm-prueth.yaml         | 147 ++++++++++++++++++
+>>  .../bindings/net/ti,pruss-ecap.yaml           |  32 ++++
+>>  .../devicetree/bindings/soc/ti/ti,pruss.yaml  |   9 ++
+>>  4 files changed, 191 insertions(+), 1 deletion(-)
+>>  create mode 100644 Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/net/ti,pruss-ecap.yaml
+>> 
+>> diff --git a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>> b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>> index e36e3a622904..858d74638167 100644
+>> --- a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>> +++ b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
+>> @@ -8,6 +8,8 @@ title: Texas Instruments ICSS Industrial Ethernet Peripheral
+>> (IEP) module
+>>  
+>>  maintainers:
+>>    - Md Danish Anwar <danishanwar@ti.com>
+>> +  - Parvathi Pudi <parvathi@couthit.com>
+>> +  - Basharath Hussain Khaja <basharath@couthit.com>
+>>  
+>>  properties:
+>>    compatible:
+>> @@ -19,7 +21,7 @@ properties:
+>>            - const: ti,am654-icss-iep
+>>  
+>>        - const: ti,am654-icss-iep
+>> -
+>> +      - const: ti,am5728-icss-iep
+> 
+> Use enum adding to the prior entry.
+> 
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-index 88d9e17aecea..3f5bb861bb5f 100644
---- a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-+++ b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-@@ -499,7 +499,8 @@ static int ixgbe_devlink_reload_empr_finish(struct devlink *devlink,
- 
- 	*actions_performed = BIT(DEVLINK_RELOAD_ACTION_FW_ACTIVATE);
- 
--	adapter->flags2 &= ~IXGBE_FLAG2_API_MISMATCH;
-+	adapter->flags2 &= ~(IXGBE_FLAG2_API_MISMATCH |
-+			     IXGBE_FLAG2_FW_ROLLBACK);
- 
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-index 2246997bc9fb..23c2e2c2649c 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-@@ -672,6 +672,7 @@ struct ixgbe_adapter {
- #define IXGBE_FLAG2_NO_MEDIA			BIT(21)
- #define IXGBE_FLAG2_MOD_POWER_UNSUPPORTED	BIT(22)
- #define IXGBE_FLAG2_API_MISMATCH		BIT(23)
-+#define IXGBE_FLAG2_FW_ROLLBACK			BIT(24)
- 
- 	/* Tx fast path data */
- 	int num_tx_queues;
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index e029257f1ccb..fb803af60dc5 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -1831,6 +1831,22 @@ static bool ixgbe_fw_recovery_mode_e610(struct ixgbe_hw *hw)
- 	return !!(fwsm & IXGBE_GL_MNG_FWSM_RECOVERY_M);
- }
- 
-+/**
-+ * ixgbe_fw_rollback_mode_e610 - Check FW NVM rollback mode
-+ * @hw: pointer to hardware structure
-+ *
-+ * Check FW NVM rollback mode by reading the value of
-+ * the dedicated register.
-+ *
-+ * Return: true if FW is in rollback mode, otherwise false.
-+ */
-+static bool ixgbe_fw_rollback_mode_e610(struct ixgbe_hw *hw)
-+{
-+	u32 fwsm = IXGBE_READ_REG(hw, IXGBE_GL_MNG_FWSM);
-+
-+	return !!(fwsm & IXGBE_GL_MNG_FWSM_ROLLBACK_M);
-+}
-+
- /**
-  * ixgbe_init_phy_ops_e610 - PHY specific init
-  * @hw: pointer to hardware structure
-@@ -3163,6 +3179,21 @@ int ixgbe_get_inactive_nvm_ver(struct ixgbe_hw *hw, struct ixgbe_nvm_info *nvm)
- 	return ixgbe_get_nvm_ver_info(hw, IXGBE_INACTIVE_FLASH_BANK, nvm);
- }
- 
-+/**
-+ * ixgbe_get_active_nvm_ver - Read Option ROM version from the active bank
-+ * @hw: pointer to the HW structure
-+ * @nvm: storage for Option ROM version information
-+ *
-+ * Reads the NVM EETRACK ID, Map version, and security revision of the
-+ * active NVM bank.
-+ *
-+ * Return: the exit code of the operation.
-+ */
-+static int ixgbe_get_active_nvm_ver(struct ixgbe_hw *hw, struct ixgbe_nvm_info *nvm)
-+{
-+	return ixgbe_get_nvm_ver_info(hw, IXGBE_ACTIVE_FLASH_BANK, nvm);
-+}
-+
- /**
-  * ixgbe_get_netlist_info - Read the netlist version information
-  * @hw: pointer to the HW struct
-@@ -3895,6 +3926,8 @@ static const struct ixgbe_mac_operations mac_ops_e610 = {
- 	.get_media_type			= ixgbe_get_media_type_e610,
- 	.setup_link			= ixgbe_setup_link_e610,
- 	.fw_recovery_mode		= ixgbe_fw_recovery_mode_e610,
-+	.fw_rollback_mode		= ixgbe_fw_rollback_mode_e610,
-+	.get_nvm_ver			= ixgbe_get_active_nvm_ver,
- 	.get_link_capabilities		= ixgbe_get_link_capabilities_e610,
- 	.get_bus_info			= ixgbe_get_bus_info_generic,
- 	.acquire_swfw_sync		= ixgbe_acquire_swfw_sync_X540,
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 0667e4e85f10..3013ca7ae7e3 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -8420,6 +8420,32 @@ static bool ixgbe_check_fw_error(struct ixgbe_adapter *adapter)
- 			return true;
- 	}
- 
-+	/* return here if FW rollback mode has been already detected */
-+	if (adapter->flags2 & IXGBE_FLAG2_FW_ROLLBACK)
-+		return false;
-+
-+	if (hw->mac.ops.fw_rollback_mode && hw->mac.ops.fw_rollback_mode(hw)) {
-+		struct ixgbe_nvm_info *nvm_info = &adapter->hw.flash.nvm;
-+		char ver_buff[64] = "";
-+
-+		if (hw->mac.ops.get_fw_ver && hw->mac.ops.get_fw_ver(hw))
-+			goto no_version;
-+
-+		if (hw->mac.ops.get_nvm_ver &&
-+		    hw->mac.ops.get_nvm_ver(hw, nvm_info))
-+			goto no_version;
-+
-+		snprintf(ver_buff, sizeof(ver_buff),
-+			 "Current version is NVM:%x.%x.%x, FW:%d.%d. ",
-+			 nvm_info->major, nvm_info->minor, nvm_info->eetrack,
-+			 hw->fw_maj_ver, hw->fw_maj_ver);
-+no_version:
-+		e_dev_warn("Firmware rollback mode detected. %sDevice may exhibit limited functionality. Refer to the Intel(R) Ethernet Adapters and Devices User Guide for details on firmware rollback mode.",
-+			   ver_buff);
-+
-+		adapter->flags2 |= IXGBE_FLAG2_FW_ROLLBACK;
-+	}
-+
- 	return false;
- }
- 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-index 6bf6ba7dcdcc..892fa6c1f879 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-@@ -3525,6 +3525,8 @@ struct ixgbe_mac_operations {
- 	int (*get_thermal_sensor_data)(struct ixgbe_hw *);
- 	int (*init_thermal_sensor_thresh)(struct ixgbe_hw *hw);
- 	bool (*fw_recovery_mode)(struct ixgbe_hw *hw);
-+	bool (*fw_rollback_mode)(struct ixgbe_hw *hw);
-+	int (*get_nvm_ver)(struct ixgbe_hw *hw, struct ixgbe_nvm_info *nvm);
- 	void (*disable_rx)(struct ixgbe_hw *hw);
- 	void (*enable_rx)(struct ixgbe_hw *hw);
- 	void (*set_source_address_pruning)(struct ixgbe_hw *, bool,
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-index 1df5ac2e1fc5..c5cf153a19e9 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-@@ -90,6 +90,7 @@
- 
- #define IXGBE_GL_MNG_FWSM		0x000B6134 /* Reset Source: POR */
- #define IXGBE_GL_MNG_FWSM_RECOVERY_M	BIT(1)
-+#define IXGBE_GL_MNG_FWSM_ROLLBACK_M    BIT(2)
- 
- /* Flash Access Register */
- #define IXGBE_GLNVM_FLA			0x000B6108 /* Reset Source: POR */
--- 
-2.31.1
+We will check whether we can use "enum" for 2 consts and address
+this in the next version.
+
+>>  
+>>    reg:
+>>      maxItems: 1
+>> diff --git a/Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
+>> b/Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
+>> new file mode 100644
+>> index 000000000000..1dffa6bd7a88
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
+>> @@ -0,0 +1,147 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/net/ti,icssm-prueth.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Texas Instruments ICSSM PRUSS Ethernet
+>> +
+>> +maintainers:
+>> +  - Roger Quadros <rogerq@ti.com>
+>> +  - Andrew F. Davis <afd@ti.com>
+>> +  - Parvathi Pudi <parvathi@couthit.com>
+>> +  - Basharath Hussain Khaja <basharath@couthit.com>
+>> +
+>> +description:
+>> +  Ethernet based on the Programmable Real-Time Unit and Industrial
+>> +  Communication Subsystem.
+>> +
+>> +properties:
+>> +  compatible:
+>> +    enum:
+>> +      - ti,am57-prueth     # for AM57x SoC family
+>> +
+>> +  sram:
+>> +    $ref: /schemas/types.yaml#/definitions/phandle
+>> +    description:
+>> +      phandle to OCMC SRAM node
+>> +
+>> +  ti,mii-rt:
+>> +    $ref: /schemas/types.yaml#/definitions/phandle
+>> +    description:
+>> +      phandle to MII_RT module's syscon regmap
+>> +
+>> +  ti,iep:
+>> +    $ref: /schemas/types.yaml#/definitions/phandle
+>> +    description:
+>> +      phandle to IEP (Industrial Ethernet Peripheral) for ICSS
+>> +
+>> +  ti,ecap:
+>> +    $ref: /schemas/types.yaml#/definitions/phandle
+>> +    description:
+>> +      phandle to Enhanced Capture (eCAP) event for ICSS
+>> +
+>> +  interrupts:
+>> +    items:
+>> +      - description: High priority Rx Interrupt specifier.
+>> +      - description: Low priority Rx Interrupt specifier.
+>> +
+>> +  interrupt-names:
+>> +    items:
+>> +      - const: rx_hp
+>> +      - const: rx_lp
+>> +
+>> +  ethernet-ports:
+>> +    type: object
+>> +    additionalProperties: false
+>> +
+>> +    properties:
+>> +      '#address-cells':
+>> +        const: 1
+>> +      '#size-cells':
+>> +        const: 0
+>> +
+>> +    patternProperties:
+>> +      ^ethernet-port@[0-1]$:
+>> +        type: object
+>> +        description: ICSSM PRUETH external ports
+>> +        $ref: ethernet-controller.yaml#
+>> +        unevaluatedProperties: false
+>> +
+>> +        properties:
+>> +          reg:
+>> +            items:
+>> +              - enum: [0, 1]
+>> +            description: ICSSM PRUETH port number
+>> +
+>> +          interrupts:
+>> +            maxItems: 3
+>> +
+>> +          interrupt-names:
+>> +            items:
+>> +              - const: rx
+>> +              - const: emac_ptp_tx
+>> +              - const: hsr_ptp_tx
+>> +
+>> +        required:
+>> +          - reg
+>> +
+>> +    anyOf:
+>> +      - required:
+>> +          - ethernet-port@0
+>> +      - required:
+>> +          - ethernet-port@1
+>> +
+>> +required:
+>> +  - compatible
+>> +  - sram
+>> +  - ti,mii-rt
+>> +  - ti,iep
+>> +  - ti,ecap
+>> +  - ethernet-ports
+>> +  - interrupts
+>> +  - interrupt-names
+>> +
+>> +allOf:
+>> +  - $ref: /schemas/remoteproc/ti,pru-consumer.yaml#
+>> +
+>> +unevaluatedProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    /* Dual-MAC Ethernet application node on PRU-ICSS2 */
+>> +    pruss2_eth: pruss2-eth {
+> 
+> Drop unused labels.
+> 
+
+We did verified and all the labels were appropriately used,
+could you point us to the exact label you are referring to.
+
+
+Thanks and Regards,
+Parvathi.
+
 
