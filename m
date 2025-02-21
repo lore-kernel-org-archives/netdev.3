@@ -1,45 +1,60 @@
-Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D23B1FBCB0
-	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 06:34:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2B41FE443;
+	Fri, 21 Feb 2025 07:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740119663; cv=none; b=YGNV60ZFfd4Vq6wPDFQgUSWsv+H0Oo24+9/+lBJS2MVrPx5rczcUr3XVFcx59uDFheTQYJgvJZmuZaEqofqy029+qfYozmacV1pVMV4amyPNMPQcuaH+pAMcxbAHi4+ccw+ggjEaMDqaSEV+rQ5LnJi5V3N3DHdbkMcFDuwrZ4Y=
+	t=1740122364; cv=none; b=P/f1H04coL5mI9IMyDPFpz5VHiluq8lRoTIj+BtjLT4ebR4L95ZlUxur6EkgG7+2AkWSzBquRyBdcvX/5KIjLFdeZCyKxEXDYSG9PPAT1CCj60PUvAZPw2HtomfWSd+juvIr55gM3Za+EdgDEtIdVCTX2nT5vYN88UNqV/ULfx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740119663; c=relaxed/simple;
-	bh=dio5TachoH3MW0I26xOcVFNSNGPQxE7vSbMfdl+jg80=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=f7mbfEqnOWoX0HgDnj/LR84xB6t13HKKHp6DyoEZJEvWQlKGKcorOnRcIIXpnf0nKJb3kriwyNixVI64qAtDYqtI2Zgdjng//XGWRl3hTjsrjWWRIr7EXUWuxe9zPOJaU6uV+wKfTP5MYZTN3l6ucqbwcrKNvMT3suziLStiR5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.34.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: bizesmtp78t1740119540tzxbkgx4
-X-QQ-Originating-IP: J5upqMvBDXo6ppZqInMHP2zfBA7ttgJZA5GMmqP2i/M=
-Received: from wxdbg.localdomain.com ( [115.204.250.88])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 21 Feb 2025 14:32:18 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 15338892124135661940
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	vadim.fedorenko@linux.dev,
-	horms@kernel.org,
-	netdev@vger.kernel.org
-Cc: mengyuanlou@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v4 2/2] net: wangxun: Replace the judgement of MAC type with flags
-Date: Fri, 21 Feb 2025 14:57:18 +0800
-Message-Id: <20250221065718.197544-2-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20250221065718.197544-1-jiawenwu@trustnetic.com>
-References: <20250221065718.197544-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1740122364; c=relaxed/simple;
+	bh=PztQzWtJ2SLBJTPpC8NuKA2Zrl1gqV/FzrKY5msalnY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aYq357aBIgyC7yqTYoRT0cVhrQEzRLmZ5t7+3mWq8+Ezab90S5hdhOxGMx2qqhhKYkHIE51gAu9hK7PY3KpBVYSFAXtU5NvIhqesvSqM3CPoB0MnMrtnM9TW3hP5QNW7ZeBInVKkTT9GCysLzvwA1RsBGr/7CLiGVYgWXWQZGx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ef1DVhpa; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ef1DVhpa"
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51L7IejyE1489827, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1740122320; bh=PztQzWtJ2SLBJTPpC8NuKA2Zrl1gqV/FzrKY5msalnY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=ef1DVhpa+tzCWpLe6Qteda0fhx5lzXJtxOz9KNvsASnvwVMKfNGxnrogW/9J91Xer
+	 XWO6mK8HS7thRvpkLttFJXAj/5xlY2D5izQJrPEuATNWzeZqhdyh28XJknkk9Dy2p4
+	 WHkpQJHTSvuOA64DYcjs8A2AMX12qCoaAkmAixsTgF+l2qdW/86Wfl8ginke1+tqKu
+	 YwbmeYCWgr7aPYfg/NcQrEhSltSJBekzpeX0wL1fFLIn/QKrm5XsQej2BwQ8ACgTPi
+	 /Dofu6jDCCy1/t+IE+3130XD1a9xP0U0cswIGOb6pRJzhJhoU3Hq0IoSVcHvpSO8aQ
+	 5MtvhWftKeeZA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51L7IejyE1489827
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 21 Feb 2025 15:18:40 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 21 Feb 2025 15:18:40 +0800
+Received: from RTEXH36505.realtek.com.tw (172.21.6.25) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 21 Feb 2025 15:18:37 +0800
+Received: from fc40.realtek.com.tw (172.22.241.7) by RTEXH36505.realtek.com.tw
+ (172.21.6.25) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Fri, 21 Feb 2025 15:18:37 +0800
+From: ChunHao Lin <hau@realtek.com>
+To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        ChunHao Lin
+	<hau@realtek.com>
+Subject: [PATCH net-next 1/3] r8169: enable RTL8168H/RTL8168EP/RTL8168FP ASPM support
+Date: Fri, 21 Feb 2025 15:18:26 +0800
+Message-ID: <20250221071828.12323-440-nic_swsd@realtek.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250221071828.12323-439-nic_swsd@realtek.com>
+References: <20250221071828.12323-439-nic_swsd@realtek.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,126 +62,33 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MXHIEC8P0R7hxSclS+hP8MgwLAtriOE2HqYJayd4q5QuBd/ig2fWLVBO
-	sL8Em1KJ8kvndrlaFeUflFoiKJoEJ9zwwHfFzDBQFQ4jzal4nZxk4WCTGJxg4VpqIngxg75
-	22/h4Wa/CVQUmjuCbwFurcsV8/EXd0F9UAoYFlhxNB4/sDMXGSBeOmEvrXJ4nsfc+bUjs2V
-	1geZ10TzQIZpas8VcHQhpy2hLQPL1pPVbLQO/o8z+YJKRECOPdur+zGWhzaFIw4ggBKwayN
-	wa9H6IOqXF2fqM0+M0S3e0vCk4fkPoFxBB/vukp1gyrfgF8tlGVTbMCJQ/6czFLfJ14iZz5
-	FZTNMIlcWmYg4i79UofADOCcsq71hrF8c+EvLzMekRexrHG5UO/NIUvOwpNkH9+L0WezyrE
-	LsLAgompaN5FnnJ7jUCkttQwE2d1VfLD+qkJrb6Mgg20Hx8SuA0Hi/coRLJZ6Y9BUr8RMGr
-	0Os/CFHFzxv+x+RvLfGjC2tHcHJBDQI6vUBw97VCJMVBV4kQlMKllu4mgT7Iwa6Z446D78A
-	oZkSal+NAGirC7SWRtyC7nRon6OAKia3j1bAwfBGjJOtC2T5s5tOi+NNMAb+jxewOT/Arh2
-	pAPUWtmzg0vBI3Mxuv+RhUh/JfRjEZQ85+0TPC3U6AJba6INUiqhRZCaDH92lx1NNJoU1Ow
-	ZbCcG26vG0wy/WgnIQKQ8yjYrvzZbUvPCWyiEHd67m6WY5qrjZFRnkLtOhV2amNUvuIPiyU
-	2z3zpzs7xL4vtdd+r7RSch0yNy4z/vQgL7aY62XSWs4GNRsGm/8RzdpEpaSnoTWHimHYYYU
-	dMAQvaQOHOMpBRNN31oST5Gvz2Xf7rbSdpY20X/hlauP+JyCYMMhrmYE23loyZlKhavzAt3
-	d5qfTM8dxiX3t6yqNlf/s/DxEw2F+IaEdJbcay+BGDNngEhbhjOTXbkBDnG6092VNF+GT0n
-	jUI7XgsFnwOcAqofvPiNt2+Ekg6Es52XNrXHwu97QKR45+Ye8J2yNJcMBr0d3mI/goJmyf3
-	KtOZmqoooFcCCp+zzIRC71uD8VG0oxxD3ZGZSoXQ7S/eVoe3gh
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain
+X-KSE-ServerInfo: RTEXMBS03.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Since device MAC types are constantly being added, the judgments of
-wx->mac.type are complex. Try to convert the types to flags depending
-on functions.
+This patch will enable RTL8168H/RTL8168EP/RTL8168FP ASPM support on
+the platforms that have tested with ASPM enabled.
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Signed-off-by: ChunHao Lin <hau@realtek.com>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_ethtool.c | 8 ++++----
- drivers/net/ethernet/wangxun/libwx/wx_hw.c      | 4 ++--
- drivers/net/ethernet/wangxun/libwx/wx_type.h    | 1 +
- drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 2 ++
- 4 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index 6d3b57233a39..43019ec9329c 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -72,7 +72,7 @@ int wx_get_sset_count(struct net_device *netdev, int sset)
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index fa339bd8c775..731302361989 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -5394,7 +5394,7 @@ static void rtl_init_mac_address(struct rtl8169_private *tp)
+ /* register is set if system vendor successfully tested ASPM 1.2 */
+ static bool rtl_aspm_is_safe(struct rtl8169_private *tp)
+ {
+-	if (tp->mac_version >= RTL_GIGA_MAC_VER_61 &&
++	if (tp->mac_version >= RTL_GIGA_MAC_VER_46 &&
+ 	    r8168_mac_ocp_read(tp, 0xc0b2) & 0xf)
+ 		return true;
  
- 	switch (sset) {
- 	case ETH_SS_STATS:
--		return (wx->mac.type == wx_mac_sp) ?
-+		return (test_bit(WX_FLAG_FDIR_CAPABLE, wx->flags)) ?
- 			WX_STATS_LEN + WX_FDIR_STATS_LEN : WX_STATS_LEN;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -90,7 +90,7 @@ void wx_get_strings(struct net_device *netdev, u32 stringset, u8 *data)
- 	case ETH_SS_STATS:
- 		for (i = 0; i < WX_GLOBAL_STATS_LEN; i++)
- 			ethtool_puts(&p, wx_gstrings_stats[i].stat_string);
--		if (wx->mac.type == wx_mac_sp) {
-+		if (test_bit(WX_FLAG_FDIR_CAPABLE, wx->flags)) {
- 			for (i = 0; i < WX_FDIR_STATS_LEN; i++)
- 				ethtool_puts(&p, wx_gstrings_fdir_stats[i].stat_string);
- 		}
-@@ -124,7 +124,7 @@ void wx_get_ethtool_stats(struct net_device *netdev,
- 			   sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
- 	}
- 
--	if (wx->mac.type == wx_mac_sp) {
-+	if (test_bit(WX_FLAG_FDIR_CAPABLE, wx->flags)) {
- 		for (k = 0; k < WX_FDIR_STATS_LEN; k++) {
- 			p = (char *)wx + wx_gstrings_fdir_stats[k].stat_offset;
- 			data[i++] = *(u64 *)p;
-@@ -199,7 +199,7 @@ void wx_get_drvinfo(struct net_device *netdev, struct ethtool_drvinfo *info)
- 	unsigned int stats_len = WX_STATS_LEN;
- 	struct wx *wx = netdev_priv(netdev);
- 
--	if (wx->mac.type == wx_mac_sp)
-+	if (test_bit(WX_FLAG_FDIR_CAPABLE, wx->flags))
- 		stats_len += WX_FDIR_STATS_LEN;
- 
- 	strscpy(info->driver, wx->driver_name, sizeof(info->driver));
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index b5f35b187077..aed45abafb1b 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -1861,7 +1861,7 @@ void wx_configure_rx(struct wx *wx)
- 	/* enable hw crc stripping */
- 	wr32m(wx, WX_RSC_CTL, WX_RSC_CTL_CRC_STRIP, WX_RSC_CTL_CRC_STRIP);
- 
--	if (wx->mac.type == wx_mac_sp) {
-+	if (test_bit(WX_FLAG_RSC_CAPABLE, wx->flags)) {
- 		u32 psrctl;
- 
- 		/* RSC Setup */
-@@ -2513,7 +2513,7 @@ void wx_update_stats(struct wx *wx)
- 	hwstats->b2ogprc += rd32(wx, WX_RDM_BMC2OS_CNT);
- 	hwstats->rdmdrop += rd32(wx, WX_RDM_DRP_PKT);
- 
--	if (wx->mac.type == wx_mac_sp) {
-+	if (test_bit(WX_FLAG_FDIR_CAPABLE, wx->flags)) {
- 		hwstats->fdirmatch += rd32(wx, WX_RDB_FDIR_MATCH);
- 		hwstats->fdirmiss += rd32(wx, WX_RDB_FDIR_MISS);
- 	}
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index f79746ac6aca..5b230ecbbabb 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1112,6 +1112,7 @@ enum wx_pf_flags {
- 	WX_FLAG_FDIR_CAPABLE,
- 	WX_FLAG_FDIR_HASH,
- 	WX_FLAG_FDIR_PERFECT,
-+	WX_FLAG_RSC_CAPABLE,
- 	WX_FLAG_RX_HWTSTAMP_ENABLED,
- 	WX_FLAG_RX_HWTSTAMP_IN_REGISTER,
- 	WX_FLAG_PTP_PPS_ENABLED,
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index ce83811a45e2..a2e245e3b016 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -298,6 +298,8 @@ static int txgbe_sw_init(struct wx *wx)
- 	wx->atr = txgbe_atr;
- 	wx->configure_fdir = txgbe_configure_fdir;
- 
-+	set_bit(WX_FLAG_RSC_CAPABLE, wx->flags);
-+
- 	/* enable itr by default in dynamic mode */
- 	wx->rx_itr_setting = 1;
- 	wx->tx_itr_setting = 1;
 -- 
-2.27.0
+2.43.0
 
