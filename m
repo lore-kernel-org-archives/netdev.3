@@ -1,28 +1,38 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from mx12lb.world4you.com (mx12lb.world4you.com [81.19.149.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D640254B18
-	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 21:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6BE253F0E
+	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 21:24:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740172595; cv=none; b=oR1NBT9YUUy65ijTKwrsH8HZZZib5u7FuJoauAtWYH/boY8d+g1NkPhYtSRbfEjTtywwvUgsiwRj4wu9WvfJoJdHRnHe2i/mOfILyH43sFr8ThrMc+9/lvqQLPrAGVQtxFOlwaqJKPEQwmRg5fDDYnUVdhbgs3Nrg0bI/2bbj1c=
+	t=1740173079; cv=none; b=FwzYIf3vHjB6d5fzPPSV1pMUYRiWmlXDnJj7Ifys8GE0R0+hkWTl3lEE2TTejDGecP+ja4h9u2NzppYItueq4aJtuBKMKOUgbbIWcrdMfTQo2sjhAoSl3mJN/ltYS/fM/BIWyMV47p4dZJz3iZCMeztzR7zO3V/oKr9MJH0sRIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740172595; c=relaxed/simple;
-	bh=01PPfr8pTmK9HLef/82tm4Z12bBRSoNBzfHTLxmst0s=;
+	s=arc-20240116; t=1740173079; c=relaxed/simple;
+	bh=NqsMXbYlaesKRuzTxDpMQUhbx1hL2nMbYU36SZARM64=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cJNrvbOXtCmPSZsKf+Q1K6umWjf74/tIkCm8ZSu7anCL7V7w0afha+oi763tq37b9pSk3YfU6b0reGQ70+M9Ex/KluYUyQ551RI7anEgjjEcvkpuF/AmRv1D8DK7NUdfvIVZU6goNUlxYvepbC7l10x7p+giBj7a82bo+0Ffjmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.0.2] (ip5f5af2a2.dynamic.kabel-deutschland.de [95.90.242.162])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id C596B61E64783;
-	Fri, 21 Feb 2025 22:16:09 +0100 (CET)
-Message-ID: <aecd919b-fbb8-4790-af1f-69b50cc78438@molgen.mpg.de>
-Date: Fri, 21 Feb 2025 22:16:09 +0100
+	 In-Reply-To:Content-Type; b=LHyZ3encyWNwbjYFWgA6xiMBuvqVUtn5eMc2ctkPAgjpUYQgOdFBPnqseK5+zToc+SrCHTDl0hF+b4+fR6ZU96QWgOVn8UtgtkDZIpCvLDIx0egXePmlGp57e9DglMxISSKO927aQdhrlxxOFrSkVbR8FDLR/7nXFDscoI/Oz28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=bIXj/gp0; arc=none smtp.client-ip=81.19.149.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="bIXj/gp0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=YK0Emar82nUxaVPtA2wf05uRvf2pJ1iTf4fDEh4cn/8=; b=bIXj/gp0TcHVVd+n7Y/tqYlOYD
+	bSDfKiKwL4xOggnSeAPDzeTaI0QH8OEfhpBlYusc1spk1VWjGJUMobrPspCYMQJTY3+SSrtZWeL3M
+	pQncHAEMBtFkZig1EtsSq8wSxcLnmvYTyE8rsSjLHMd5bsMJIur/aL0i2caxGfKjlPJ0=;
+Received: from [88.117.55.1] (helo=[10.0.0.160])
+	by mx12lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tlZtZ-000000001MY-1cTG;
+	Fri, 21 Feb 2025 21:45:13 +0100
+Message-ID: <ed721a10-d804-4c9b-86b1-a1fb77b77c4f@engleder-embedded.com>
+Date: Fri, 21 Feb 2025 21:45:12 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -30,104 +40,32 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next v1 1/3] ice: remove SW side
- band access workaround for E825
-To: Grzegorz Nitka <grzegorz.nitka@intel.com>,
- Karol Kolacinski <karol.kolacinski@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-References: <20250221123123.2833395-1-grzegorz.nitka@intel.com>
- <20250221123123.2833395-2-grzegorz.nitka@intel.com>
+Subject: Re: [PATCH net-next v7 6/8] net: selftests: Support selftest sets
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ netdev@vger.kernel.org, Oleksij Rempel <o.rempel@pengutronix.de>
+References: <20250219194213.10448-1-gerhard@engleder-embedded.com>
+ <20250219194213.10448-7-gerhard@engleder-embedded.com>
+ <20250220181042.0abe4ea0@kernel.org>
 Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20250221123123.2833395-2-grzegorz.nitka@intel.com>
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <20250220181042.0abe4ea0@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-AV-Do-Run: Yes
 
-Dear Grzegorz, dear Karol,
 
 
-Thank you for your patch.
-
-Am 21.02.25 um 13:31 schrieb Grzegorz Nitka:
-> From: Karol Kolacinski <karol.kolacinski@intel.com>
+On 21.02.25 03:10, Jakub Kicinski wrote:
+> On Wed, 19 Feb 2025 20:42:11 +0100 Gerhard Engleder wrote:
+>> + * @NET_SELFTEST_CARRIER: Loopback tests based on carrier speed
+>> + */
+>> +enum net_selftest_set {
+>> +	NET_TEST_LOOPBACK_CARRIER = 0,
 > 
-> Due to the bug in FW/NVM autoload mechanism (wrong default
-> SB_REM_DEV_CTL register settings), the access to peer PHY and CGU
-> clients was disabled by default.
+> names doesn't match
 
-I’d add a blank line between the paragraphs.
+I will align the naming.
 
-> As the workaround solution, the register value was overwritten by the
-> driver at the probe or reset handling.
-> Remove workaround as it's not needed anymore. The fix in autoload
-> procedure has been provided with NVM 3.80 version.
-
-Is this compatible with Linux’ no regression policy? People might only 
-update the Linux kernel and not the firmware.
-
-How did you test this, and how can others test this?
-
-> Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
-> Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-> ---
->   drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 23 ---------------------
->   1 file changed, 23 deletions(-)
-
-
-Kind regards,
-
-Paul
-
-
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-> index 89bb8461284a..a5df081ffc19 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-> @@ -2630,25 +2630,6 @@ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port)
->   	return 0;
->   }
->   
-> -/**
-> - * ice_sb_access_ena_eth56g - Enable SB devices (PHY and others) access
-> - * @hw: pointer to HW struct
-> - * @enable: Enable or disable access
-> - *
-> - * Enable sideband devices (PHY and others) access.
-> - */
-> -static void ice_sb_access_ena_eth56g(struct ice_hw *hw, bool enable)
-> -{
-> -	u32 val = rd32(hw, PF_SB_REM_DEV_CTL);
-> -
-> -	if (enable)
-> -		val |= BIT(eth56g_phy_0) | BIT(cgu) | BIT(eth56g_phy_1);
-> -	else
-> -		val &= ~(BIT(eth56g_phy_0) | BIT(cgu) | BIT(eth56g_phy_1));
-> -
-> -	wr32(hw, PF_SB_REM_DEV_CTL, val);
-> -}
-> -
->   /**
->    * ice_ptp_init_phc_e825 - Perform E825 specific PHC initialization
->    * @hw: pointer to HW struct
-> @@ -2659,8 +2640,6 @@ static void ice_sb_access_ena_eth56g(struct ice_hw *hw, bool enable)
->    */
->   static int ice_ptp_init_phc_e825(struct ice_hw *hw)
->   {
-> -	ice_sb_access_ena_eth56g(hw, true);
-> -
->   	/* Initialize the Clock Generation Unit */
->   	return ice_init_cgu_e82x(hw);
->   }
-> @@ -2747,8 +2726,6 @@ static void ice_ptp_init_phy_e825(struct ice_hw *hw)
->   	params->num_phys = 2;
->   	ptp->ports_per_phy = 4;
->   	ptp->num_lports = params->num_phys * ptp->ports_per_phy;
-> -
-> -	ice_sb_access_ena_eth56g(hw, true);
->   }
->   
->   /* E822 family functions
+Gerhard
