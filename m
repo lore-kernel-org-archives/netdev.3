@@ -1,210 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f99.google.com (mail-ed1-f99.google.com [209.85.208.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1548D204F87
-	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 11:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121542080F8
+	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 11:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740135819; cv=none; b=eyjlfsbTRNjJj+zqEWx/sxwJruSASx5F72it41C/t84fKvcxyB86qBIi9KU1MmB3EIN6ZNQ1dJYgZhc6OGQJjFvr5jOWn/B9KqLhTNtG6rbKY7sUACCp6ElmsYMDsLfc245A0S9zOf1lTCa6yRvZvaMcei8/1RmjoYdnCL/ocS0=
+	t=1740136186; cv=none; b=u0f4eLcEe9kDLXz9oOMrPIwRPeEq5CeASJALhCy71KAWLqDzRv3YdlYewKIbEiMQtaAr8BJJgBel55rU9Ho8kAcmede8NiAHctuS5YwxyvKH084q043+UFWOJozsOGz+YR1jAMe5bUrDN1m/HTc/Q8x3DHnKzO02ODS4v1g9Mz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740135819; c=relaxed/simple;
-	bh=snnEVPABr213rxG2cZJJ4jzivrBdGZfw43MRyOP2wIg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MKOsEPN/VByNF2y83MGPszVVn52XNa3uh34cU5Ov1IQHcTB0IUfJLcu+VTtGXdbXy9pisif3C7Jqg2JDFN0E12ljnKPsYtkQbUiHfPq6+uk9p8482Tz5FTPgvk8vlR/I1SzfKIFwHlGUIC6Rmdb3aHJ4K2BXfOjiDHq2RazCQME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VsuFwFTr; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1740136186; c=relaxed/simple;
+	bh=C9EOMJrheqjmd7KXDpEY28vb0N0LeMWZ0i45997zY4M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o7MP3Z+lPd+23/DFyTSmIGoDjo8gXzxx/ndcG1vMOB8nZWACM+NquMjlnTrICOxNSKq/lYk0HMRFmpcnVmf8VMAO4pL0IrZ8rQ+xORFeUBSLIJxIrdLJnYbVswD1BBJnC/0VX2KYUVD1iSyRVfssFhFLL0RCNPHdNEGG+wwxB/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=S8RRs5R2; arc=none smtp.client-ip=209.85.208.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VsuFwFTr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740135818; x=1771671818;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=snnEVPABr213rxG2cZJJ4jzivrBdGZfw43MRyOP2wIg=;
-  b=VsuFwFTrCHMdT2lwgZmqYtpPwWBL5KFvm97BGg1PlH01DfyvgihA6bjN
-   xwql24YYo5qCyb/ZPhhfM87irr6IZVA4eQ9SK7FCjGbmiuvW9K+bjTFqf
-   4kL+ROsRPqqm/QQmTqKPEJov3yIVaWZL3YnE7zNxRBlPXVo9lPwVT+nJZ
-   9/2690SUc/2VYEVC+ssEAx+KcyM4cKY1RPpRBbCe+sVzqeaJGb/0B6NY3
-   s9AoMIkUzcv1nL9oatI0fd+KrEdS8kdjsDQZJJvrLt3gSi6RZsJQPU+Sf
-   eQ7ZPZCd1FzI7c6tz5qTmjfVRjmKlLHoF01UDPPe5OSfbBDQO+tg5FhVB
-   A==;
-X-CSE-ConnectionGUID: 393buS+pRiKMMGSyirnj3g==
-X-CSE-MsgGUID: PGQ3t9q5Sta0GActtI3u+g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="40142646"
-X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; 
-   d="scan'208";a="40142646"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2025 03:03:37 -0800
-X-CSE-ConnectionGUID: fz8xbawGRyyLu3xx341crQ==
-X-CSE-MsgGUID: d8+RGgAOQXCmONOaRA+BXw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="115839992"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by orviesa007.jf.intel.com with ESMTP; 21 Feb 2025 03:03:35 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tlQoe-0005QJ-1d;
-	Fri, 21 Feb 2025 11:03:32 +0000
-Date: Fri, 21 Feb 2025 19:02:44 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chiachang Wang <chiachangwang@google.com>
-Cc: oe-kbuild-all@lists.linux.dev, leonro@nvidia.com,
-	netdev@vger.kernel.org, stanleyjhu@google.com,
-	steffen.klassert@secunet.com, yumike@google.com
-Subject: Re: [PATCH ipsec v2 1/1] xfrm: Migrate offload configuration
-Message-ID: <202502211807.52eely9f-lkp@intel.com>
-References: <20250220073515.3177296-2-chiachangwang@google.com>
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="S8RRs5R2"
+Received: by mail-ed1-f99.google.com with SMTP id 4fb4d7f45d1cf-5debb4aef2eso289158a12.3
+        for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 03:09:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1740136183; x=1740740983; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q4jNY+2C7dDYPNT5/Y8+BaTO6KPD0WXSQAUegz+06is=;
+        b=S8RRs5R2B/5/4mKHt+c7wBX1g9RjPN3S2lUoY2GrhgvxoTfo8PW2d7cEizRN4Y2Z7L
+         0/HpyVPMNIA9Ldp3jB86P9fBuzDjTOYfMWtFzNKFO1IzqX+ug8bIN0sTIsZFuhSBoJos
+         H7MrZdo5RDJ/l62LYDKgd7DCMmnjRy2vidLDs+Js7ASI+rcgUxS93Z8RwRDWjesDhyYy
+         WCiiDP8B1Qikd+axAtd5pHlZatMMc/bAk0GSCXH3gJRVxUdPS6pOdS7G7sE7ly3eGKnh
+         o1MPRCJi6equ5gyFgguhhV3PhVISW+LJfVxGzgALxbqt2dg0vedWRP/OoddkBPFYOfqr
+         IusA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740136183; x=1740740983;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Q4jNY+2C7dDYPNT5/Y8+BaTO6KPD0WXSQAUegz+06is=;
+        b=Hiyekux/xNXj5A86Q+aNtHVeNFMKVvuwGzkJCVjQ/8BOs4X3+FhWbL/87wThs1reOV
+         s6w5VPH+gQjwgtJucEMshu8uEsNnk6bkHO15EwP87JG5oEKMVlwhgjf05C5wIVlKzz+P
+         NcLD6dhNyeYFSWVl4ZJP6P1hqdXX/gF7FLDN2OZlHqeBeB78bgbZ8hLCe+KMVGjWoZDy
+         sO8feCvxd7gYN0lOcNHAr1FU3PUakH7zX2BXDFmbqyDpK4/SqqAGMi+f1wTjYtS/kG4O
+         Kqfh3GuFhTQ0W7TFLlZMPjyt4yLeM9+mG4bWFdVOKKBff3DXLGmfsGFi5O1xe7iA1UU6
+         0ORQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVWx9J6de2dNVN0kAx+iVm42WgH8OsozUltWLoeW/Zxvi5Swb8PcjviX9mS+DwAocS9sx8c7DQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0nCFG/EHSoRFmr4SyzgufqV4oH23FPIygs+Sp4VsX21lnczxp
+	AWn3qXypvG5FwWefs9fpL5rKWh5MKoRpmyNTiO6wQA++zdGSVzVJCXf+Txec+5hbWEEg3l6Qm5G
+	KhnLXYXfISbeJZG14exzqTDkC4ysjFvio
+X-Gm-Gg: ASbGnct54tE+oo0i7kQc5cbTRvSBbLAGjTGqUg/VnxMbQPrL/RO142wY2HDLi6HgV32
+	7iAwMPDaYAGN0vEmjQpcy6U2HjG/idRGza8CbDp0hU0DdkeXKcD+PCiBdkDorU8CDWoKWg6PHo1
+	JQnaDATg4brfNVSsFq1f+qYQvboP73IVbaV0TrM1RE3NoRdeqx+Z9yL96RkjCUy8t0tlKS9uvrz
+	9mrTVZFux68tcVrXt5sJnofU2h9AB/fVmV2TeKmLzvF1WSIFQOryXTUSNClCWt1MRMc4UHPKUyF
+	j49bR9rjrKUo2iW/kEo6SQjuAIRZ4Ef6baPGZ1Q9BIgWYqSDi7NUJqsKTuOwl+7p+2Dwaog=
+X-Google-Smtp-Source: AGHT+IGim6OS1yGIyQ5zBSguuzekLdV2UPrVzVdzgfBgV4f2Ibx748ToVcUSR8VO2VV5ICghwlS11COcR1pW
+X-Received: by 2002:a17:907:7f28:b0:abb:eec3:3937 with SMTP id a640c23a62f3a-abc09c0a42bmr87599066b.10.1740136183071;
+        Fri, 21 Feb 2025 03:09:43 -0800 (PST)
+Received: from smtpservice.6wind.com ([185.13.181.2])
+        by smtp-relay.gmail.com with ESMTP id a640c23a62f3a-abb8d3d2502sm85282566b.24.2025.02.21.03.09.42;
+        Fri, 21 Feb 2025 03:09:43 -0800 (PST)
+X-Relaying-Domain: 6wind.com
+Received: from bretzel (bretzel.dev.6wind.com [10.17.1.57])
+	by smtpservice.6wind.com (Postfix) with ESMTPS id D397C13DC0;
+	Fri, 21 Feb 2025 12:09:42 +0100 (CET)
+Received: from dichtel by bretzel with local (Exim 4.94.2)
+	(envelope-from <nicolas.dichtel@6wind.com>)
+	id 1tlQuc-008ZCo-I4; Fri, 21 Feb 2025 12:09:42 +0100
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	netdev@vger.kernel.org,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Subject: [PATCH net-next v2 1/2] skbuff: kill skb_flow_get_ports()
+Date: Fri, 21 Feb 2025 12:07:28 +0100
+Message-ID: <20250221110941.2041629-2-nicolas.dichtel@6wind.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250221110941.2041629-1-nicolas.dichtel@6wind.com>
+References: <20250221110941.2041629-1-nicolas.dichtel@6wind.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250220073515.3177296-2-chiachangwang@google.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Chiachang,
+Since commit a815bde56b15 ("net, bonding: Refactor bond_xmit_hash for use
+with xdp_buff"), this function is not used anymore.
 
-kernel test robot noticed the following build errors:
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+---
+ include/linux/skbuff.h | 6 ------
+ 1 file changed, 6 deletions(-)
 
-[auto build test ERROR on klassert-ipsec-next/master]
-[also build test ERROR on linus/master v6.14-rc3 next-20250221]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Chiachang-Wang/xfrm-Migrate-offload-configuration/20250220-153752
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next.git master
-patch link:    https://lore.kernel.org/r/20250220073515.3177296-2-chiachangwang%40google.com
-patch subject: [PATCH ipsec v2 1/1] xfrm: Migrate offload configuration
-config: i386-buildonly-randconfig-004-20250221 (https://download.01.org/0day-ci/archive/20250221/202502211807.52eely9f-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250221/202502211807.52eely9f-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502211807.52eely9f-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   net/key/af_key.c: In function 'pfkey_migrate':
->> net/key/af_key.c:2632:16: error: too few arguments to function 'xfrm_migrate'
-    2632 |         return xfrm_migrate(&sel, dir, XFRM_POLICY_TYPE_MAIN, m, i,
-         |                ^~~~~~~~~~~~
-   In file included from net/key/af_key.c:28:
-   include/net/xfrm.h:1883:5: note: declared here
-    1883 | int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
-         |     ^~~~~~~~~~~~
-
-
-vim +/xfrm_migrate +2632 net/key/af_key.c
-
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2546  
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2547  static int pfkey_migrate(struct sock *sk, struct sk_buff *skb,
-4c93fbb0626080d David S. Miller   2011-02-25  2548  			 const struct sadb_msg *hdr, void * const *ext_hdrs)
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2549  {
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2550  	int i, len, ret, err = -EINVAL;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2551  	u8 dir;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2552  	struct sadb_address *sa;
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05  2553  	struct sadb_x_kmaddress *kma;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2554  	struct sadb_x_policy *pol;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2555  	struct sadb_x_ipsecrequest *rq;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2556  	struct xfrm_selector sel;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2557  	struct xfrm_migrate m[XFRM_MAX_DEPTH];
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05  2558  	struct xfrm_kmaddress k;
-8d549c4f5d92d80 Fan Du            2013-11-07  2559  	struct net *net = sock_net(sk);
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2560  
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2561  	if (!present_and_same_family(ext_hdrs[SADB_EXT_ADDRESS_SRC - 1],
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2562  				     ext_hdrs[SADB_EXT_ADDRESS_DST - 1]) ||
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2563  	    !ext_hdrs[SADB_X_EXT_POLICY - 1]) {
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2564  		err = -EINVAL;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2565  		goto out;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2566  	}
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2567  
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05  2568  	kma = ext_hdrs[SADB_X_EXT_KMADDRESS - 1];
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2569  	pol = ext_hdrs[SADB_X_EXT_POLICY - 1];
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05  2570  
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05  2571  	if (pol->sadb_x_policy_dir >= IPSEC_DIR_MAX) {
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2572  		err = -EINVAL;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2573  		goto out;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2574  	}
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2575  
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05  2576  	if (kma) {
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05  2577  		/* convert sadb_x_kmaddress to xfrm_kmaddress */
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05  2578  		k.reserved = kma->sadb_x_kmaddress_reserved;
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05  2579  		ret = parse_sockaddr_pair((struct sockaddr *)(kma + 1),
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05  2580  					  8*(kma->sadb_x_kmaddress_len) - sizeof(*kma),
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05  2581  					  &k.local, &k.remote, &k.family);
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05  2582  		if (ret < 0) {
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05  2583  			err = ret;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2584  			goto out;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2585  		}
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05  2586  	}
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2587  
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2588  	dir = pol->sadb_x_policy_dir - 1;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2589  	memset(&sel, 0, sizeof(sel));
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2590  
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2591  	/* set source address info of selector */
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2592  	sa = ext_hdrs[SADB_EXT_ADDRESS_SRC - 1];
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2593  	sel.family = pfkey_sadb_addr2xfrm_addr(sa, &sel.saddr);
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2594  	sel.prefixlen_s = sa->sadb_address_prefixlen;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2595  	sel.proto = pfkey_proto_to_xfrm(sa->sadb_address_proto);
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2596  	sel.sport = ((struct sockaddr_in *)(sa + 1))->sin_port;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2597  	if (sel.sport)
-582ee43dad8e411 Al Viro           2007-07-26  2598  		sel.sport_mask = htons(0xffff);
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2599  
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2600  	/* set destination address info of selector */
-47162c0b7e26ef2 Himangi Saraogi   2014-05-30  2601  	sa = ext_hdrs[SADB_EXT_ADDRESS_DST - 1];
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2602  	pfkey_sadb_addr2xfrm_addr(sa, &sel.daddr);
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2603  	sel.prefixlen_d = sa->sadb_address_prefixlen;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2604  	sel.proto = pfkey_proto_to_xfrm(sa->sadb_address_proto);
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2605  	sel.dport = ((struct sockaddr_in *)(sa + 1))->sin_port;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2606  	if (sel.dport)
-582ee43dad8e411 Al Viro           2007-07-26  2607  		sel.dport_mask = htons(0xffff);
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2608  
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2609  	rq = (struct sadb_x_ipsecrequest *)(pol + 1);
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2610  
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2611  	/* extract ipsecrequests */
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2612  	i = 0;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2613  	len = pol->sadb_x_policy_len * 8 - sizeof(struct sadb_x_policy);
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2614  
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2615  	while (len > 0 && i < XFRM_MAX_DEPTH) {
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2616  		ret = ipsecrequests_to_migrate(rq, len, &m[i]);
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2617  		if (ret < 0) {
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2618  			err = ret;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2619  			goto out;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2620  		} else {
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2621  			rq = (struct sadb_x_ipsecrequest *)((u8 *)rq + ret);
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2622  			len -= ret;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2623  			i++;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2624  		}
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2625  	}
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2626  
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2627  	if (!i || len > 0) {
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2628  		err = -EINVAL;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2629  		goto out;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2630  	}
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2631  
-13c1d18931ebb5c Arnaud Ebalard    2008-10-05 @2632  	return xfrm_migrate(&sel, dir, XFRM_POLICY_TYPE_MAIN, m, i,
-bd12240337f4352 Sabrina Dubroca   2022-11-24  2633  			    kma ? &k : NULL, net, NULL, 0, NULL);
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2634  
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2635   out:
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2636  	return err;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2637  }
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2638  #else
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2639  static int pfkey_migrate(struct sock *sk, struct sk_buff *skb,
-7f6daa635c28ed6 Stephen Hemminger 2011-03-01  2640  			 const struct sadb_msg *hdr, void * const *ext_hdrs)
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2641  {
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2642  	return -ENOPROTOOPT;
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2643  }
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2644  #endif
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2645  
-08de61beab8a21c Shinta Sugimoto   2007-02-08  2646  
-
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index bb2b751d274a..f403d43064a5 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -1530,12 +1530,6 @@ u32 __skb_get_poff(const struct sk_buff *skb, const void *data,
+ __be32 __skb_flow_get_ports(const struct sk_buff *skb, int thoff, u8 ip_proto,
+ 			    const void *data, int hlen_proto);
+ 
+-static inline __be32 skb_flow_get_ports(const struct sk_buff *skb,
+-					int thoff, u8 ip_proto)
+-{
+-	return __skb_flow_get_ports(skb, thoff, ip_proto, NULL, 0);
+-}
+-
+ void skb_flow_dissector_init(struct flow_dissector *flow_dissector,
+ 			     const struct flow_dissector_key *key,
+ 			     unsigned int key_count);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.47.1
+
