@@ -1,139 +1,147 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5EBF192D96;
-	Fri, 21 Feb 2025 00:57:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B25C7080D;
+	Fri, 21 Feb 2025 01:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740099431; cv=none; b=GsUfSEOmK5Q8n9XwmTkE+zKLp3bN+rFuOeOMKGWu5VOXAb/7cqrzbpYHoH8eS5/yZ/9ifJgoukisKOwHR4yI8Ak2nX19MqCtA1tk8cMCode7lh+HyXzhdO5BJlS6y7SNMHM6eH4b6ph2dv+9X4rrwlmStQbjLwyGwfpXOjaiQsQ=
+	t=1740099851; cv=none; b=YMCpn3K5fqw+mUET+PHD6KEzvZRhH8v41Vj3FWEynhTP1l5lO+A6HE3VOZyx3Bfn6HoaPYfduaIxpwrIEqTtye3klilnfJIKmMQ3vklG3AKLaC+SrX45VXHtvr1gM3Fj/NQYX2PIJx01igquqjyWKg8G+223gvkeEZXbxAMtwv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740099431; c=relaxed/simple;
-	bh=Mhst66kmKrIm+sg1YPCExZpth9I5Pw0L0khRNjmjk3w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jZqnBXXbc46ksQqcNzev9Lz0+ki6PoVUcumMwGx3HU1GZnZOsmeB2xAU1K05IwLQaPyNLB0NrJ8ypnOpaVkfeyrVm706VJ4ahMfiZDGN+I4TBFBThf/wB7uasUjgiTQ/V0+Act2Co2m1m2OoSFjplVc6uHGbqyz4dh2zZQwK1wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=bIAZFRGl; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1740099851; c=relaxed/simple;
+	bh=XDOcSSu0rDcbE3pPzb8t2eP2JuFEMVZB5io3X9ORrmE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=adixGZaSfFSSfODsNzEusqMylpu4Gs81xzicGTx/0eNGXSty32X7O+3brbVr1eLlH8REXggQGSSgKdbNKQjkDe4eLCBBOXjOvDFribgbALXHRjXDtNDVLL7+tgzo2bKvbfhlV89LJSGi/kl0D378umDZvsVeFCMOIKX/mIamGR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uyc25Qeo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="bIAZFRGl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1740099426;
-	bh=j7P+g+DfPE1ixwT6fo+dp4YcW+7/Cg7z3OsGUGHtROI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=bIAZFRGlcE1EhzdtYn0u/kgc09CwnkPDUh5eCjDDfD+a0K2JF5vwetNpkH9tddYsg
-	 4hMidSfiobwH/9+1YlgNdTAGbkfbzpZhwFzLqbS2hneEycOPr1IzUokfD/HYZAXgiz
-	 3j3t1S+VHIdh3H/Wjjrw/9x2g/isFSVozETacVBmijNswhZjmGgX4YWdVfEHhVZppN
-	 9sTi2ojDXH25vdmn7djme8bGc/JcfFeKkc6SvO7nwczjDuAPBgJUiBIG+acbzxXYwa
-	 siLbG2lYCnWmVVFZmDCPyIC8uuLZFOZdkgVlttPGxHQgQEBwKIf4n67DlOt0ZBXZnr
-	 GtdVP16yKn4hA==
-Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id A486276C0A; Fri, 21 Feb 2025 08:57:06 +0800 (AWST)
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Fri, 21 Feb 2025 08:56:57 +0800
-Subject: [PATCH net-next v3 1/2] usb: Add base USB MCTP definitions
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uyc25Qeo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6033CC4CED1;
+	Fri, 21 Feb 2025 01:04:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740099850;
+	bh=XDOcSSu0rDcbE3pPzb8t2eP2JuFEMVZB5io3X9ORrmE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uyc25QeobqYnzKDgAhcZ9cLZwGYw/jAYJpZBhYLRSFQeAGzVa6tuuqlHMtvJt2NWc
+	 u8hJPnbQkE2bkB5l0vE9t2vQ/Canbq6h3d2haPKU6LbrAnhiCDXuO31z7GDrSrsN0n
+	 fQBeTaCUmQGIajV80zqhSA3G52FSksAHegUimUDEy0hgxwLQEZ0vy5EnHIFIV8/O2x
+	 MmSfGckrhP7SFZhzxQeuP66+bSEU69oJJgO9tB+e9hPQtOcdTanG1hZ+5PVfCLSFlL
+	 rIBT2+JcKr6f4VuDVDAKjkvfEUCg0SPb7Ng5tCGHqPdn2PLV0JkMIq7JYqjgPxAWVr
+	 1yMN2K8NuMQpw==
+Date: Thu, 20 Feb 2025 17:04:09 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Kevin Krakauer <krakauer@google.com>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan
+ <shuah@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/net: deflake GRO tests and fix return value
+ and output
+Message-ID: <20250220170409.42cce424@kernel.org>
+In-Reply-To: <20250218164555.1955400-1-krakauer@google.com>
+References: <20250218164555.1955400-1-krakauer@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250221-dev-mctp-usb-v3-1-3353030fe9cc@codeconstruct.com.au>
-References: <20250221-dev-mctp-usb-v3-0-3353030fe9cc@codeconstruct.com.au>
-In-Reply-To: <20250221-dev-mctp-usb-v3-0-3353030fe9cc@codeconstruct.com.au>
-To: Matt Johnston <matt@codeconstruct.com.au>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, 
- Santosh Puranik <spuranik@nvidia.com>
-X-Mailer: b4 0.14.0
 
-Upcoming changes will add a USB host (and later gadget) driver for the
-MCTP-over-USB protocol. Add a header that provides common definitions
-for protocol support: the packet header format and a few framing
-definitions. Add a define for the MCTP class code, as per
-https://usb.org/defined-class-codes.
+On Tue, 18 Feb 2025 08:45:55 -0800 Kevin Krakauer wrote:
+> GRO tests are timing dependent and can easily flake. This is partially
+> mitigated in gro.sh by giving each subtest 3 chances to pass. However,
+> this still flakes on some machines.
 
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To be clear - are you running this over veth or a real device?
 
----
-v3:
- - __u8 -> u8
- - GPL-2 rather than 2+
-v2:
- - add reference & URL to DSP0283
- - update copyright year
----
- MAINTAINERS                  |  1 +
- include/linux/usb/mctp-usb.h | 30 ++++++++++++++++++++++++++++++
- include/uapi/linux/usb/ch9.h |  1 +
- 3 files changed, 32 insertions(+)
+> Set the device's napi_defer_hard_irqs to 50 so that GRO is less likely
+> to immediately flush. This already happened in setup_loopback.sh, but
+> wasn't added to setup_veth.sh. This accounts for most of the reduction
+> in flakiness.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 67665d9dd536..e7b326dba9a9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13903,6 +13903,7 @@ L:	netdev@vger.kernel.org
- S:	Maintained
- F:	Documentation/networking/mctp.rst
- F:	drivers/net/mctp/
-+F:	include/linux/usb/mctp-usb.h
- F:	include/net/mctp.h
- F:	include/net/mctpdevice.h
- F:	include/net/netns/mctp.h
-diff --git a/include/linux/usb/mctp-usb.h b/include/linux/usb/mctp-usb.h
-new file mode 100644
-index 000000000000..a2f6f1e04efb
---- /dev/null
-+++ b/include/linux/usb/mctp-usb.h
-@@ -0,0 +1,30 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * mctp-usb.h - MCTP USB transport binding: common definitions,
-+ * based on DMTF0283 specification:
-+ * https://www.dmtf.org/sites/default/files/standards/documents/DSP0283_1.0.1.pdf
-+ *
-+ * These are protocol-level definitions, that may be shared between host
-+ * and gadget drivers.
-+ *
-+ * Copyright (C) 2024-2025 Code Construct Pty Ltd
-+ */
-+
-+#ifndef __LINUX_USB_MCTP_USB_H
-+#define __LINUX_USB_MCTP_USB_H
-+
-+#include <linux/types.h>
-+
-+struct mctp_usb_hdr {
-+	__be16	id;
-+	u8	rsvd;
-+	u8	len;
-+} __packed;
-+
-+#define MCTP_USB_XFER_SIZE	512
-+#define MCTP_USB_BTU		68
-+#define MCTP_USB_MTU_MIN	MCTP_USB_BTU
-+#define MCTP_USB_MTU_MAX	(U8_MAX - sizeof(struct mctp_usb_hdr))
-+#define MCTP_USB_DMTF_ID	0x1ab4
-+
-+#endif /*  __LINUX_USB_MCTP_USB_H */
-diff --git a/include/uapi/linux/usb/ch9.h b/include/uapi/linux/usb/ch9.h
-index 91f0f7e214a5..052290652046 100644
---- a/include/uapi/linux/usb/ch9.h
-+++ b/include/uapi/linux/usb/ch9.h
-@@ -330,6 +330,7 @@ struct usb_device_descriptor {
- #define USB_CLASS_AUDIO_VIDEO		0x10
- #define USB_CLASS_BILLBOARD		0x11
- #define USB_CLASS_USB_TYPE_C_BRIDGE	0x12
-+#define USB_CLASS_MCTP			0x14
- #define USB_CLASS_MISC			0xef
- #define USB_CLASS_APP_SPEC		0xfe
- #define USB_SUBCLASS_DFU			0x01
+That doesn't make intuitive sense to me. If we already defer flushes
+why do we need to also defer IRQs?
 
+> We also increase the number of chances for success from 3 to 6.
+> 
+> `gro.sh -t <test>` now returns a passing/failing exit code as expected.
+> 
+> gro.c:main no longer erroneously claims a test passes when running as a
+> server.
+> 
+> Tested: Ran `gro.sh -t large` 100 times with and without this change.
+> Passed 100/100 with and 64/100 without. Ran inside strace to increase
+> flakiness.
+> 
+> Signed-off-by: Kevin Krakauer <krakauer@google.com>
+> ---
+>  tools/testing/selftests/net/gro.c         | 8 +++++---
+>  tools/testing/selftests/net/gro.sh        | 5 +++--
+>  tools/testing/selftests/net/setup_veth.sh | 1 +
+>  3 files changed, 9 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
+> index b2184847e388..d5824eadea10 100644
+> --- a/tools/testing/selftests/net/gro.c
+> +++ b/tools/testing/selftests/net/gro.c
+> @@ -1318,11 +1318,13 @@ int main(int argc, char **argv)
+>  	read_MAC(src_mac, smac);
+>  	read_MAC(dst_mac, dmac);
+>  
+> -	if (tx_socket)
+> +	if (tx_socket) {
+>  		gro_sender();
+> -	else
+> +	} else {
+> +		/* Only the receiver exit status determines test success. */
+>  		gro_receiver();
+> +		fprintf(stderr, "Gro::%s test passed.\n", testname);
+> +	}
+>  
+> -	fprintf(stderr, "Gro::%s test passed.\n", testname);
+
+
+That seems quite separate to the stability fix?
+
+>  	return 0;
+>  }
+> diff --git a/tools/testing/selftests/net/gro.sh b/tools/testing/selftests/net/gro.sh
+> index 02c21ff4ca81..703173f8c8a9 100755
+> --- a/tools/testing/selftests/net/gro.sh
+> +++ b/tools/testing/selftests/net/gro.sh
+> @@ -21,7 +21,7 @@ run_test() {
+>    # Each test is run 3 times to deflake, because given the receive timing,
+>    # not all packets that should coalesce will be considered in the same flow
+>    # on every try.
+> -  for tries in {1..3}; do
+> +  for tries in {1..6}; do
+>      # Actual test starts here
+>      ip netns exec $server_ns ./gro "${ARGS[@]}" "--rx" "--iface" "server" \
+>        1>>log.txt &  
+> @@ -100,5 +100,6 @@ trap cleanup EXIT
+>  if [[ "${test}" == "all" ]]; then
+>    run_all_tests
+>  else
+> -  run_test "${proto}" "${test}"
+> +  exit_code=$(run_test "${proto}" "${test}")
+> +  exit $exit_code
+
+Also separate from stability?
+
+Let's split the patch up into logically separate changes.
+
+>  fi;
+> diff --git a/tools/testing/selftests/net/setup_veth.sh b/tools/testing/selftests/net/setup_veth.sh
+> index 1f78a87f6f37..9882ad730c24 100644
+> --- a/tools/testing/selftests/net/setup_veth.sh
+> +++ b/tools/testing/selftests/net/setup_veth.sh
+> @@ -12,6 +12,7 @@ setup_veth_ns() {
+>  
+>  	[[ -e /var/run/netns/"${ns_name}" ]] || ip netns add "${ns_name}"
+>  	echo 1000000 > "/sys/class/net/${ns_dev}/gro_flush_timeout"
+> +	echo 50 > "/sys/class/net/${ns_dev}/napi_defer_hard_irqs"
+>  	ip link set dev "${ns_dev}" netns "${ns_name}" mtu 65535
+>  	ip -netns "${ns_name}" link set dev "${ns_dev}" up
+>  
 -- 
-2.39.5
-
+pw-bot: cr
