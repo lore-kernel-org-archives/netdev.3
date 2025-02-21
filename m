@@ -1,67 +1,69 @@
-Received: from mail-lj1-f227.google.com (mail-lj1-f227.google.com [209.85.208.227])
+Received: from mail-lf1-f100.google.com (mail-lf1-f100.google.com [209.85.167.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF86220C49F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A970520AF86
 	for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 13:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.227
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740144707; cv=none; b=OOf1ZRH0csaGhKp8FIJLzL+8eTemjvUnf2FP2cFDS2BLPiIRYWAJWP9R+dvBCLgDZyDepoJaG+/PjD0rSgarAuMWPfBlhjF6L4mCH38Qb2Vb9ArPzqAkdvYTi3E0+z8zeBXtI0P48JK6Egl5YJ1QLXNmDG9qVoTVw0O5uzRGIxg=
+	t=1740144707; cv=none; b=AUOOdysdKLMyqIsuzzSOcg1uWKDt9JPdSULvJDRBo+n3vWR1hW9moDurh4u4+cgN05NWzXZ6BMzZrABbXS0hZgTeYtZUWTz1gdB2iwyiGcplNmEJvNbONvEpYdrsH6EWzGi3YU4qSifxj3LV+Vv3IWOG5vVWgc5PteiKDIAY9DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740144707; c=relaxed/simple;
-	bh=EndM1Sefxs2C8nwasd7sg3A2POhZrpENZDIQmJJjdic=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iawGv6o7GWEQHSTzu8mGLxBmS2f3Jmt2NoUaKYt4KLrYMzOYcrxl6P2lhmg3On8Vs8pmty+fV7Cl6Dx6bdq2enJXd33tfRHZypMRrATrIUA8vSIEOSY3FG01tbxBsw3KsS9ZIMPIl4nNy5H422o/fR5AhLCQxwSrVesCyT7eYRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=JZuKjmo6; arc=none smtp.client-ip=209.85.208.227
+	bh=Lrwg3dqiChUw2jCOTYm4KIye/W7dlhttaIbNpRzChLg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=L/HJZgmpvWEr8g8d7g1ussHaOwOOhRKxNh+NYf2Jom/JWv2u37l+s+Kr9vcZFgM7ntVXLAITTEWAJydmN4AxpyIB7cb3GTNDml9sj83KI5q35okq71aPpI7H74jwKLAWZJTUCefdj5im8APPEXeCjSBGeUVG1CC+VgcWG/zfMKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=EpITq16N; arc=none smtp.client-ip=209.85.167.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="JZuKjmo6"
-Received: by mail-lj1-f227.google.com with SMTP id 38308e7fff4ca-30a3a13a712so1915561fa.2
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="EpITq16N"
+Received: by mail-lf1-f100.google.com with SMTP id 2adb3069b0e04-54692061fc0so253678e87.0
         for <netdev@vger.kernel.org>; Fri, 21 Feb 2025 05:31:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=6wind.com; s=google; t=1740144704; x=1740749504; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lo5WVHAvtZExylTbklzRA6G2Fe8wYaZaimyOHHUtG0E=;
-        b=JZuKjmo6AcTllCWc7pYwyE6M3VFqhk2P8xjDuFRkBw9TfrSLc3t7Rrp9bACddzlnKG
-         t7Mllh+8qqlq2kqtRkLRJn+KPqqbHYY3IiJyKOeZXD4XQvtvoN/I6rpR9s4H0XwruT2O
-         LDbJNBNnoHVetxCXVQNoAOCkaTWK+IRujXsZnHfk0EBsMf+1UfJlWoVZERpW5/0YsJ7m
-         2kQrxuSgdhfSngyN8P57IO/HP85Tscf5P8OeXUeiAuvPrTJyfut5/GdAIn/zF/ZUcjSc
-         mnXveMbmpoIQt5gyTKggU36FHTdrXpcmMVkcJLpbUubUhY1YU5K5oUbs9ekFi1ZEGnrJ
-         NKgQ==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dqaokd5Ov8Mlde9/JfrdceLq0+Q85Ciz/R3Zdo2flDk=;
+        b=EpITq16NsRI3DPDnt5pv3HvWhS1zERfBy8Fg2iSY5zUfiC22x7iusHXmxuSoWWBNqw
+         0wryOBs8wDTGmK0EWw1guDbZjYfKUF0tMnQelAqBWyxLyN3IkRS8Mn3H38Zpg0w+ZpJ9
+         yR8EOU/C5KZk9NktUpnfvowsOVnNPKECTorXYCxPijFEtGAE+4YnPFXMTNjx2p2qtteT
+         Y3tSufru5L5Y6M/WapOmi1TngjfgIm77HZ7uCvpGzpayjPIzanaHUU3HZa96fPEdQlP3
+         /iFpAToISdZI3m2nyMm6L/Bpsji4Du9AaLw0qrKUEWocmbBLoBpOJGdBymMT4Xj6sX9O
+         rhUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1740144704; x=1740749504;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Lo5WVHAvtZExylTbklzRA6G2Fe8wYaZaimyOHHUtG0E=;
-        b=amWWLgAZFup+mhKTlONx1p7tM7tkqiFAdbiwoBJrdJpQxwUlqYftYiOwq4J0E1dgd+
-         QdLuNG0gZGWSUMYvpsXxNZ4O3bWN2WB0InNYtp5zkScgbIJwPtTlVjAyQVHn2OMkpysU
-         qVeQqHEEeQEpwr65ENNfZSfJ2YqAZSNHTjxZMKYhqYza1P0NHelFPJH4Xf/FTPoS4IFO
-         sMZVF+bsFXk6TJ43m9fRTnR4N0lZmgts3dvextJxP550Hw83+IrWaHqyyK5Fa/dCHxcu
-         JRQClAWAF7x/uyknHXMeDef1b+zKKNK6McYjYzRxqul+ElisW6lkSpfGxRbpQKHP/wsQ
-         xi4w==
-X-Forwarded-Encrypted: i=1; AJvYcCWNxjr1sq25E8t8CrbuLzXSqAZBwnV+lgnFq7+QKo0QhtgGfz96m8WTZQykdS3heilinzjz51s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6qVu71GzNwEuIn13S37hpHfkAI23SQ6zO7m5i9X7szBBwKrRM
-	yZxfLNGSC8Qq/JxLPU6TyaUl9u0BawMGH7Wpb8xPk2jbsnVOG4G7SP1WGgfxsflYMjxglDVV1NF
-	VYzUQ2/P6HNisvpLhMCDLKEFs9A73V+HN
-X-Gm-Gg: ASbGnctXuGqoWvNm5g3OPFKG7mZbBnG0TJFqnY1EqwXV7RK02OwXf2l6bxPJAIWCKYA
-	OOozy6yFH34a8hA6rDw1ag1W7kNZXe3EK+5+wzdzA11kJGkDb+7sEWP/gm3S37ElcNwqom8ct5o
-	sXc6qq8e1D8zcFf4UleQDMqm119/W19EtQMpNTPifIdQnsy0HIL2CJ/sc5CN8KnONB1Fz3iHEWC
-	Q9qgGYS2G5FGIpsHH7w1B0nqXyPae5rwsVJqEFoIFBjWsdvjEceJxpzKwW0TXzZRJSmBOe97cQN
-	LqFuS7skvM5kTHCdwf6mLd62gbeNHEiT8Ll/uZoC0AtZ6kcm8+3plwEe2YjGcUMmhUa108E=
-X-Google-Smtp-Source: AGHT+IFEHHbNSAjVyR/P1lkS+Ds2/A4BHCXBMGr2qSZ3ybPu3NbIU3qhqTE9oKJ6E/llgxGTWG9r4nr37YBx
-X-Received: by 2002:a2e:bd09:0:b0:308:e46e:e62c with SMTP id 38308e7fff4ca-30a59962366mr5104261fa.7.1740144703604;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dqaokd5Ov8Mlde9/JfrdceLq0+Q85Ciz/R3Zdo2flDk=;
+        b=VrsW5X4gWRDvk9byaLCEENrfexgrVkR2W1FW+mLEuptL0eOyJ6rQxjGNumRb27rUgt
+         /QKkgyEZSOtY9LbHy7s4/EnO+FOC6AnM+4D7fzR1MgRpOwTG9PejgttsWAxScWYhRsxL
+         LDsOyjZvHEQ1cIA5v7c9DOeyaWU/d6OxNiH5QujAFGHjIOOhduTwe6MCaHFoYQMl6QPy
+         2E9fiAsn2AlFLWvm3ZO3OBZlABE+XIKYcvIKHEnp92rLwtbX2AzhTf741BJjuhp+LeVz
+         lMgSnkz8kG7FVn/nEDSdZ0DSCapQlV4iP1Mx/C1L/6/nXSL5vRgXH9tzi7pCaqeEKQg/
+         QNjw==
+X-Forwarded-Encrypted: i=1; AJvYcCXneT/YIPBJpMdeyTkgexGwS6ZfEY9RNk5VsZVc/VcAMynaKZnFyKV7jnShwzAVZLRcbmHWhFQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIbgPhQFa3U7Cnl8CzKGpjOjsFTju8nIAd8glgvW2/ak0jZElz
+	JgkZPoplsYvBYQWwJIslRRC1hsT4NdMlyW6wgrS5Fkh9+BAq8hTUgizVBCNXgxyUytdKQVP3+sI
+	eB4YCKq+2Y0U2PAwoz1t5q8Adigdcf6Q3
+X-Gm-Gg: ASbGnctrQJid5AuixZxiI6uPZQD4qT2cs2EhcJ53x909whC0VIz3Ssn+no+y67TgUqL
+	l3jCwti2kxKqKpoEwf61075gv9zYCOWOn5Qea3wPlwtp9IEgZ0O/BvzuvXf7bUdkwLeBRtdyUA5
+	uxhsWcso8tFP8+yS+MItMTgktQ8/q27VHCLLh5HCKRa26lkr5XyC3WJSRuThKsRsxYT/nGHQW5X
+	dDuZn+JChlBYbHew3IdYOQn+UTGzt1QObQAEAksAVe73pMarDNwvIEhYH6NYadJ7F9AprFND1Nf
+	j/ll9zHFjcoKVez5c/CKKCVT10JHfE50b5LIlivqYEEUlXR3H0iTR3Fh4Sa6VEsg9YuZ9NM=
+X-Google-Smtp-Source: AGHT+IHQGxZ0fmt+W/zgN5uNEXAqhlW4r4i6rMqrCCC3hJRiadAGnnkxr9wVbjZE6drxj5qi2UEVvj7wGzdo
+X-Received: by 2002:a05:6512:138b:b0:545:3033:4373 with SMTP id 2adb3069b0e04-54838ee9327mr437163e87.6.1740144703675;
         Fri, 21 Feb 2025 05:31:43 -0800 (PST)
 Received: from smtpservice.6wind.com ([185.13.181.2])
-        by smtp-relay.gmail.com with ESMTP id 2adb3069b0e04-546214dd214sm399683e87.93.2025.02.21.05.31.43;
+        by smtp-relay.gmail.com with ESMTP id 2adb3069b0e04-5452efc766asm566289e87.122.2025.02.21.05.31.43;
         Fri, 21 Feb 2025 05:31:43 -0800 (PST)
 X-Relaying-Domain: 6wind.com
 Received: from bretzel (bretzel.dev.6wind.com [10.17.1.57])
-	by smtpservice.6wind.com (Postfix) with ESMTPS id 3597113E98;
+	by smtpservice.6wind.com (Postfix) with ESMTPS id 45DB413E9A;
 	Fri, 21 Feb 2025 14:31:43 +0100 (CET)
 Received: from dichtel by bretzel with local (Exim 4.94.2)
 	(envelope-from <nicolas.dichtel@6wind.com>)
-	id 1tlT82-008b6Z-V6; Fri, 21 Feb 2025 14:31:42 +0100
+	id 1tlT83-008b6g-17; Fri, 21 Feb 2025 14:31:43 +0100
 From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 To: "David S . Miller" <davem@davemloft.net>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -71,11 +73,14 @@ To: "David S . Miller" <davem@davemloft.net>,
 Cc: Ido Schimmel <idosch@idosch.org>,
 	Andrew Lunn <andrew@lunn.ch>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v4 0/3] net: notify users when an iface cannot change its netns
-Date: Fri, 21 Feb 2025 14:30:25 +0100
-Message-ID: <20250221133136.2049165-1-nicolas.dichtel@6wind.com>
+	netdev@vger.kernel.org,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Subject: [PATCH net-next v4 2/3] net: advertise netns_immutable property via netlink
+Date: Fri, 21 Feb 2025 14:30:27 +0100
+Message-ID: <20250221133136.2049165-3-nicolas.dichtel@6wind.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250221133136.2049165-1-nicolas.dichtel@6wind.com>
+References: <20250221133136.2049165-1-nicolas.dichtel@6wind.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,60 +89,74 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series adds a way to see if an interface cannot be moved to another netns.
+Since commit 05c1280a2bcf ("netdev_features: convert NETIF_F_NETNS_LOCAL to
+dev->netns_local"), there is no way to see if the netns_immutable property
+s set on a device. Let's add a netlink attribute to advertise it.
 
-v3 -> v4:
- - add patch #1 to the series
- - update following patches accordingly
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+---
+ Documentation/netlink/specs/rt_link.yaml | 3 +++
+ include/uapi/linux/if_link.h             | 1 +
+ net/core/rtnetlink.c                     | 3 +++
+ 3 files changed, 7 insertions(+)
 
-v2 -> v3:
- - don't copy patch #1 to stable@vger.kernel.org
- - remove the 'Fixes:' tag
+diff --git a/Documentation/netlink/specs/rt_link.yaml b/Documentation/netlink/specs/rt_link.yaml
+index 0d492500c7e5..d13b14c6b9d7 100644
+--- a/Documentation/netlink/specs/rt_link.yaml
++++ b/Documentation/netlink/specs/rt_link.yaml
+@@ -1148,6 +1148,9 @@ attribute-sets:
+         name: max-pacing-offload-horizon
+         type: uint
+         doc: EDT offload horizon supported by the device (in nsec).
++      -
++        name: netns-immutable
++        type: u8
+   -
+     name: af-spec-attrs
+     attributes:
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index bfe880fbbb24..a2b6cfde7162 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -378,6 +378,7 @@ enum {
+ 	IFLA_GRO_IPV4_MAX_SIZE,
+ 	IFLA_DPLL_PIN,
+ 	IFLA_MAX_PACING_OFFLOAD_HORIZON,
++	IFLA_NETNS_IMMUTABLE,
+ 	__IFLA_MAX
+ };
+ 
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index abe1a461ea67..a76f63b926df 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -1292,6 +1292,7 @@ static noinline size_t if_nlmsg_size(const struct net_device *dev,
+ 	       + nla_total_size(4) /* IFLA_TSO_MAX_SEGS */
+ 	       + nla_total_size(1) /* IFLA_OPERSTATE */
+ 	       + nla_total_size(1) /* IFLA_LINKMODE */
++	       + nla_total_size(1) /* IFLA_NETNS_IMMUTABLE */
+ 	       + nla_total_size(4) /* IFLA_CARRIER_CHANGES */
+ 	       + nla_total_size(4) /* IFLA_LINK_NETNSID */
+ 	       + nla_total_size(4) /* IFLA_GROUP */
+@@ -2046,6 +2047,7 @@ static int rtnl_fill_ifinfo(struct sk_buff *skb,
+ 		       netif_running(dev) ? READ_ONCE(dev->operstate) :
+ 					    IF_OPER_DOWN) ||
+ 	    nla_put_u8(skb, IFLA_LINKMODE, READ_ONCE(dev->link_mode)) ||
++	    nla_put_u8(skb, IFLA_NETNS_IMMUTABLE, dev->netns_immutable) ||
+ 	    nla_put_u32(skb, IFLA_MTU, READ_ONCE(dev->mtu)) ||
+ 	    nla_put_u32(skb, IFLA_MIN_MTU, READ_ONCE(dev->min_mtu)) ||
+ 	    nla_put_u32(skb, IFLA_MAX_MTU, READ_ONCE(dev->max_mtu)) ||
+@@ -2234,6 +2236,7 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
+ 	[IFLA_ALLMULTI]		= { .type = NLA_REJECT },
+ 	[IFLA_GSO_IPV4_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
+ 	[IFLA_GRO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
++	[IFLA_NETNS_IMMUTABLE]	= { .type = NLA_REJECT },
+ };
+ 
+ static const struct nla_policy ifla_info_policy[IFLA_INFO_MAX+1] = {
+-- 
+2.47.1
 
-v1 -> v2:
- - target the series to net-next
- - patch #1:
-   + use NLA_REJECT for the nl policy
-   + update the rt link spec
- - patch #2: plumb extack in __dev_change_net_namespace()
-
- Documentation/netlink/specs/rt_link.yaml           |  3 ++
- .../networking/net_cachelines/net_device.rst       |  2 +-
- Documentation/networking/switchdev.rst             |  2 +-
- drivers/net/amt.c                                  |  2 +-
- drivers/net/bonding/bond_main.c                    |  2 +-
- drivers/net/ethernet/adi/adin1110.c                |  2 +-
- .../net/ethernet/marvell/prestera/prestera_main.c  |  2 +-
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c  |  4 +--
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c   |  2 +-
- drivers/net/ethernet/mellanox/mlxsw/spectrum.c     |  2 +-
- drivers/net/ethernet/rocker/rocker_main.c          |  2 +-
- drivers/net/ethernet/ti/cpsw_new.c                 |  2 +-
- drivers/net/loopback.c                             |  2 +-
- drivers/net/net_failover.c                         |  2 +-
- drivers/net/team/team_core.c                       |  2 +-
- drivers/net/vrf.c                                  |  2 +-
- include/linux/netdevice.h                          |  9 ++---
- include/uapi/linux/if_link.h                       |  1 +
- net/batman-adv/soft-interface.c                    |  2 +-
- net/bridge/br_device.c                             |  2 +-
- net/core/dev.c                                     | 42 +++++++++++++++++-----
- net/core/rtnetlink.c                               |  5 ++-
- net/hsr/hsr_device.c                               |  2 +-
- net/ieee802154/6lowpan/core.c                      |  2 +-
- net/ieee802154/core.c                              | 10 +++---
- net/ipv4/ip_tunnel.c                               |  2 +-
- net/ipv4/ipmr.c                                    |  2 +-
- net/ipv6/ip6_gre.c                                 |  2 +-
- net/ipv6/ip6_tunnel.c                              |  2 +-
- net/ipv6/ip6mr.c                                   |  2 +-
- net/ipv6/sit.c                                     |  2 +-
- net/openvswitch/vport-internal_dev.c               |  2 +-
- net/wireless/core.c                                | 10 +++---
- tools/testing/selftests/net/forwarding/README      |  2 +-
- 34 files changed, 84 insertions(+), 52 deletions(-)
-
-Comments are welcome.
-
-Regards,
-Nicolas
