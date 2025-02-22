@@ -1,55 +1,55 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1071212FB5
-	for <netdev@vger.kernel.org>; Sat, 22 Feb 2025 19:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267E8214214
+	for <netdev@vger.kernel.org>; Sat, 22 Feb 2025 19:15:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740251728; cv=none; b=SzVUpWjgmSdOGAp8bKwXdSH97m7Bw6fL9IWW3M0c17WOhxG2QwgUgvyaonaRb2K3I2SctUNU605ZWU9Ho9nuB+ESjii2sh2FCVj84j0WOIBr8hrsCD3Ap/lVgWYjrh9sMZP7AIjeizNyCP2p5BhrQFsOA2xUYdx+w/eNQLocAHU=
+	t=1740251730; cv=none; b=aAVtUznmjoiaeZowtxeYqN2z2Id3W49PnWeJBnLeqW3IOzF5WMQ56xFxyuA0PF00HmQvGWGqC6ncpVXKQxlvMzHyZjsceqcpHlNEdgdRDGk7g2t8mZYBQjhQgfA8dMdTX0l+uRgvG3sTqlKz86TILfmE54GIW/wF4vL83jlhi9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740251728; c=relaxed/simple;
-	bh=gkFfOfu9WKr9FRA5K4klVB4y4vYEdazePHQP6t2RXWM=;
+	s=arc-20240116; t=1740251730; c=relaxed/simple;
+	bh=E/P7rPxR4Kk1M6YTaZjfUiSuLdbUI4t3yFFBc5WKH3g=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LYxDca9vUwWkPoXLL7Hugtm2gSLF+3F92X0X8ACgHSppV6vYhfxvdoQspewegsg4DmMwgIKQ7lGhlQmQ8Ac/WegpgMwoPrhccNhVriCgHgB2Oui2saCOrqN/VJbs8z7B+1nTkvmvbNfiY9s2Mbnkno/zNKU0eHAtes+BzOmh7SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LqAQzxyG; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=DdU364pVkzJ5hR7yTpv3GxRjug8jDYc5Mzi1TzSl/EkmkwnveTL+ehWsGdJ/X88SA9bZHpxPDJppt9gMMOQowvueCGOhnw0BDHBqjz5ze7yfQmoQ73RZD2wBeMovDjvlhOLlPvESRMaiEJfb6wdRRPjixZPBPceY+2dHoRqvIPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WpXbPI1h; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LqAQzxyG"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2fc1a4c150bso6218605a91.2
-        for <netdev@vger.kernel.org>; Sat, 22 Feb 2025 11:15:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WpXbPI1h"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-220e1593b85so62065935ad.3
+        for <netdev@vger.kernel.org>; Sat, 22 Feb 2025 11:15:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740251724; x=1740856524; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1740251727; x=1740856527; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4+uD/U2vycUjudt2AEI4HSs62q3AICmDnc2uCCI12W0=;
-        b=LqAQzxyGwm5SjWDF81M00K/cJXpfi7LwUtCzJTP+a10RfqjPFzBsn2hi6d6xwkDJue
-         +YKXsIibN9OndviUodyZX08og3vbrRI3+EC42MUxcvo6XHozu12Kla2UrnLm+6fwnrwk
-         yZTuTOkNGDbI0FwcUd8QPo3fpJ2armYzJIbpzfGTMuvJcbsnedFK0tbKfvo9V6Ti0Gl6
-         agcaYKS2vytfhNQQKwtwdjWyJRI7dF0gIcP2mBS5CjoBtkW7Z9C/59dq+MmlpO+2pdho
-         6JMksIj4+rp8AOEUL2HBZtSATzuRwFiXKbhVSK7gGKYFEwM89EvZZ7LWdNVWrtMyrwdV
-         74cQ==
+        bh=FUeVNgWGUp7ktC/YEhqD+3gJ3Ib6eWIiGMQ6DKQeydo=;
+        b=WpXbPI1hbKKhh0erQ7K3reSfQpu66tfQVQP654f7TDA9449mO1eXA32Xl0yNKI4cOu
+         E34xIHcurZ0KALJN7XRYiGwsdzwOmeaega/r/reE/JWZPFGM8wvPa4jaHg8DBCHUcnNP
+         46RoPAFT0aDWhar/v4FpllrrYIy6VpI+tzq2G8MfJnVeKSzjYjHo4oEWHclBH1zDd+15
+         EfRlcVhEhhPE/kGcSu1TE3w73+LqdYqHQiMpedA+M2CbPyI2QNSbsFzZg1Xov6YR+Agn
+         NAjjgfLUwDxNyuiasPBE0vGAEKuxMz/7Xq2KVirmlGmoaGRvlqFPZh8Jn47R2KyKj6fY
+         eYAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740251724; x=1740856524;
+        d=1e100.net; s=20230601; t=1740251727; x=1740856527;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4+uD/U2vycUjudt2AEI4HSs62q3AICmDnc2uCCI12W0=;
-        b=hEQT9L2Bcoxj9veUT1E4YtyndQeqzJY8hdNMprey+uHG7fqAhLgX7rhFcHRjTNlyeG
-         SAml7vsXm0QWIQWzNsKex9XKptBd47kBtKI1fRVCuOHYkyrzPaYTJvfoE1xYZVwga6gm
-         NBh79xrbAJga0tDeZQnYNzsK0LiWZ+su6del03oppbHvWFTZFMrZ1TroJavfA7lJk+F/
-         KC9tM/0lqpJnYH1uNSKmTajSHpPsSegnlO8UmkHwVi7IZAq9A+JkkQ7lhjPKDkMzZqcU
-         Wir33OzPc/R9joqS9kWnhQkP+aftC3RrdBXVZ6Owy64LV7/kdlfEwU5ztZdnBpdfUpZQ
-         Yz8A==
-X-Gm-Message-State: AOJu0YzGXmZn3ROKmZ7NKikaNeBeLOmIxomHKiDLriAP+9JiZKb2okOJ
-	l80WL1FoSkcZyF3S5t4zHX8OfcvGWbcoMnLLanrrj1+zeE7OlmeQMogb7oFqyr5KlyHM/SSixym
-	oDxXaDsDc9AnpA9kaQh9EPZ0/n+NKsMHi/A9Jub+Ja392xnMUbX8U1e5HHFyI9TLn2GkLwn+S2s
-	LfZcgjBoad4ROKi7iI2Oua2DFU2HPtsOnDgIYuSAA81cQllt8GiIEVJAEdWwk=
-X-Google-Smtp-Source: AGHT+IE7XiVmXUXukuSBBLpyvBO/788RzbPT/XMlnfm7Hb5OdS2UTsI8RXz5o7RCEpNhWS4Hqe/8fBalyM3FmRuqgw==
-X-Received: from pgmr22.prod.google.com ([2002:a63:2056:0:b0:ad5:4a28:559a])
+        bh=FUeVNgWGUp7ktC/YEhqD+3gJ3Ib6eWIiGMQ6DKQeydo=;
+        b=Ea3vgimbD4o8qgoEBZoGhQYmW5ZXN6b0fAJ+CyHMpK/37kOsAwVbUOiCAl3bIq/xbJ
+         XIrRRXHAnPVLcks0qgr68mFwtw089083/Nl9Lex/6He6fEEI5hycpl0rSqTSsHFGWTOp
+         5H0MmYkyoJHfKGW2Dj1SkskYuMNKtijFXw80FHpnsCS78pr6GY0A4Kw+h7jvri/g9EWj
+         Zm/b1P4pux+ANox6uEOnd2d094wb7Tx/7mBf7ZM87qGEbbLAo2Z5O9y9unhHWAglTUSN
+         Ac/igBsOCQwER7xKCDP/KKRNnAAGzSUWPGPIqR2Ch/x9/PWWU6c4BxEaC1olMp4bEAtM
+         8z0Q==
+X-Gm-Message-State: AOJu0YwlqRuiThyOpzLleqb/c3PIn2dR21DQoCrJHyOmEOpFWmTMu/lZ
+	ioa6Ad/ZRrHrMKizu5rzHS4Ee35WfIv0emJr3ZtpTjTcyzBkvHy/xQQrpdeDl97rezcKbRKg8aw
+	lm0p1xIXYL8TCaAb1VTxKnr1Vadd7A+VcxRnqLHNSkqJ+JgMs4uTRw1KHEYZkhOkPElq3IdUt6Q
+	iJIVjVgi4RKlNEAuY3SROOxBERuTTbchR/rsXxbVfDuRWjxpgQd1vrNZ/HNqo=
+X-Google-Smtp-Source: AGHT+IEk/SyxiiKUwYqu42o8ilQTEtdwmxUvqDOqkfVjhLyldlpx8hpol9aqi8Y0N2cdPnmHqxqGFy4YpekVtRbslQ==
+X-Received: from pfbfc26.prod.google.com ([2002:a05:6a00:2e1a:b0:730:7d23:bc34])
  (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:7011:b0:1ee:d7fa:5d8f with SMTP id adf61e73a8af0-1eef3d5a9dfmr14749939637.27.1740251723639;
- Sat, 22 Feb 2025 11:15:23 -0800 (PST)
-Date: Sat, 22 Feb 2025 19:15:10 +0000
+ 2002:a05:6a00:2e87:b0:730:91fc:f9c4 with SMTP id d2e1a72fcca58-73426d8fa7dmr12105412b3a.24.1740251727269;
+ Sat, 22 Feb 2025 11:15:27 -0800 (PST)
+Date: Sat, 22 Feb 2025 19:15:12 +0000
 In-Reply-To: <20250222191517.743530-1-almasrymina@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250222191517.743530-1-almasrymina@google.com>
 X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
-Message-ID: <20250222191517.743530-3-almasrymina@google.com>
-Subject: [PATCH net-next v5 2/9] net: devmem: TCP tx netlink api
+Message-ID: <20250222191517.743530-5-almasrymina@google.com>
+Subject: [PATCH net-next v5 4/9] net: devmem: make dmabuf unbinding scheduled work
 From: Mina Almasry <almasrymina@google.com>
 To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, virtualization@lists.linux.dev, 
@@ -80,135 +80,136 @@ Cc: Mina Almasry <almasrymina@google.com>, Donald Hunter <donald.hunter@gmail.co
 	Samiullah Khawaja <skhawaja@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Stanislav Fomichev <sdf@fomichev.me>
+The TX path may release the dmabuf in a context where we cannot wait.
+This happens when the user unbinds a TX dmabuf while there are still
+references to its netmems in the TX path. In that case, the netmems will
+be put_netmem'd from a context where we can't unmap the dmabuf,
+resulting in a BUG like seen by Stan:
 
-Add bind-tx netlink call to attach dmabuf for TX; queue is not
-required, only ifindex and dmabuf fd for attachment.
+[    1.548495] BUG: sleeping function called from invalid context at drivers/dma-buf/dma-buf.c:1255
+[    1.548741] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 149, name: ncdevmem
+[    1.548926] preempt_count: 201, expected: 0
+[    1.549026] RCU nest depth: 0, expected: 0
+[    1.549197]
+[    1.549237] =============================
+[    1.549331] [ BUG: Invalid wait context ]
+[    1.549425] 6.13.0-rc3-00770-gbc9ef9606dc9-dirty #15 Tainted: G        W
+[    1.549609] -----------------------------
+[    1.549704] ncdevmem/149 is trying to lock:
+[    1.549801] ffff8880066701c0 (reservation_ww_class_mutex){+.+.}-{4:4}, at: dma_buf_unmap_attachment_unlocked+0x4b/0x90
+[    1.550051] other info that might help us debug this:
+[    1.550167] context-{5:5}
+[    1.550229] 3 locks held by ncdevmem/149:
+[    1.550322]  #0: ffff888005730208 (&sb->s_type->i_mutex_key#11){+.+.}-{4:4}, at: sock_close+0x40/0xf0
+[    1.550530]  #1: ffff88800b148f98 (sk_lock-AF_INET6){+.+.}-{0:0}, at: tcp_close+0x19/0x80
+[    1.550731]  #2: ffff88800b148f18 (slock-AF_INET6){+.-.}-{3:3}, at: __tcp_close+0x185/0x4b0
+[    1.550921] stack backtrace:
+[    1.550990] CPU: 0 UID: 0 PID: 149 Comm: ncdevmem Tainted: G        W          6.13.0-rc3-00770-gbc9ef9606dc9-dirty #15
+[    1.551233] Tainted: [W]=WARN
+[    1.551304] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
+[    1.551518] Call Trace:
+[    1.551584]  <TASK>
+[    1.551636]  dump_stack_lvl+0x86/0xc0
+[    1.551723]  __lock_acquire+0xb0f/0xc30
+[    1.551814]  ? dma_buf_unmap_attachment_unlocked+0x4b/0x90
+[    1.551941]  lock_acquire+0xf1/0x2a0
+[    1.552026]  ? dma_buf_unmap_attachment_unlocked+0x4b/0x90
+[    1.552152]  ? dma_buf_unmap_attachment_unlocked+0x4b/0x90
+[    1.552281]  ? dma_buf_unmap_attachment_unlocked+0x4b/0x90
+[    1.552408]  __ww_mutex_lock+0x121/0x1060
+[    1.552503]  ? dma_buf_unmap_attachment_unlocked+0x4b/0x90
+[    1.552648]  ww_mutex_lock+0x3d/0xa0
+[    1.552733]  dma_buf_unmap_attachment_unlocked+0x4b/0x90
+[    1.552857]  __net_devmem_dmabuf_binding_free+0x56/0xb0
+[    1.552979]  skb_release_data+0x120/0x1f0
+[    1.553074]  __kfree_skb+0x29/0xa0
+[    1.553156]  tcp_write_queue_purge+0x41/0x310
+[    1.553259]  tcp_v4_destroy_sock+0x127/0x320
+[    1.553363]  ? __tcp_close+0x169/0x4b0
+[    1.553452]  inet_csk_destroy_sock+0x53/0x130
+[    1.553560]  __tcp_close+0x421/0x4b0
+[    1.553646]  tcp_close+0x24/0x80
+[    1.553724]  inet_release+0x5d/0x90
+[    1.553806]  sock_close+0x4a/0xf0
+[    1.553886]  __fput+0x9c/0x2b0
+[    1.553960]  task_work_run+0x89/0xc0
+[    1.554046]  do_exit+0x27f/0x980
+[    1.554125]  do_group_exit+0xa4/0xb0
+[    1.554211]  __x64_sys_exit_group+0x17/0x20
+[    1.554309]  x64_sys_call+0x21a0/0x21a0
+[    1.554400]  do_syscall_64+0xec/0x1d0
+[    1.554487]  ? exc_page_fault+0x8a/0xf0
+[    1.554585]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[    1.554703] RIP: 0033:0x7f2f8a27abcd
 
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Resolve this by making __net_devmem_dmabuf_binding_free schedule_work'd.
+
+Suggested-by: Stanislav Fomichev <sdf@fomichev.me>
 Signed-off-by: Mina Almasry <almasrymina@google.com>
-
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
+ net/core/devmem.c |  4 +++-
+ net/core/devmem.h | 10 ++++++----
+ 2 files changed, 9 insertions(+), 5 deletions(-)
 
-v3:
-- Fix ynl-regen.sh error (Simon).
-
----
- Documentation/netlink/specs/netdev.yaml | 12 ++++++++++++
- include/uapi/linux/netdev.h             |  1 +
- net/core/netdev-genl-gen.c              | 13 +++++++++++++
- net/core/netdev-genl-gen.h              |  1 +
- net/core/netdev-genl.c                  |  6 ++++++
- tools/include/uapi/linux/netdev.h       |  1 +
- 6 files changed, 34 insertions(+)
-
-diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
-index 36f1152bfac3..e560b05eb528 100644
---- a/Documentation/netlink/specs/netdev.yaml
-+++ b/Documentation/netlink/specs/netdev.yaml
-@@ -743,6 +743,18 @@ operations:
-             - defer-hard-irqs
-             - gro-flush-timeout
-             - irq-suspend-timeout
-+    -
-+      name: bind-tx
-+      doc: Bind dmabuf to netdev for TX
-+      attribute-set: dmabuf
-+      do:
-+        request:
-+          attributes:
-+            - ifindex
-+            - fd
-+        reply:
-+          attributes:
-+            - id
- 
- kernel-family:
-   headers: [ "linux/list.h"]
-diff --git a/include/uapi/linux/netdev.h b/include/uapi/linux/netdev.h
-index 7600bf62dbdf..7eb9571786b8 100644
---- a/include/uapi/linux/netdev.h
-+++ b/include/uapi/linux/netdev.h
-@@ -219,6 +219,7 @@ enum {
- 	NETDEV_CMD_QSTATS_GET,
- 	NETDEV_CMD_BIND_RX,
- 	NETDEV_CMD_NAPI_SET,
-+	NETDEV_CMD_BIND_TX,
- 
- 	__NETDEV_CMD_MAX,
- 	NETDEV_CMD_MAX = (__NETDEV_CMD_MAX - 1)
-diff --git a/net/core/netdev-genl-gen.c b/net/core/netdev-genl-gen.c
-index 996ac6a449eb..f27608d6301c 100644
---- a/net/core/netdev-genl-gen.c
-+++ b/net/core/netdev-genl-gen.c
-@@ -99,6 +99,12 @@ static const struct nla_policy netdev_napi_set_nl_policy[NETDEV_A_NAPI_IRQ_SUSPE
- 	[NETDEV_A_NAPI_IRQ_SUSPEND_TIMEOUT] = { .type = NLA_UINT, },
- };
- 
-+/* NETDEV_CMD_BIND_TX - do */
-+static const struct nla_policy netdev_bind_tx_nl_policy[NETDEV_A_DMABUF_FD + 1] = {
-+	[NETDEV_A_DMABUF_IFINDEX] = NLA_POLICY_MIN(NLA_U32, 1),
-+	[NETDEV_A_DMABUF_FD] = { .type = NLA_U32, },
-+};
-+
- /* Ops table for netdev */
- static const struct genl_split_ops netdev_nl_ops[] = {
- 	{
-@@ -190,6 +196,13 @@ static const struct genl_split_ops netdev_nl_ops[] = {
- 		.maxattr	= NETDEV_A_NAPI_IRQ_SUSPEND_TIMEOUT,
- 		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
- 	},
-+	{
-+		.cmd		= NETDEV_CMD_BIND_TX,
-+		.doit		= netdev_nl_bind_tx_doit,
-+		.policy		= netdev_bind_tx_nl_policy,
-+		.maxattr	= NETDEV_A_DMABUF_FD,
-+		.flags		= GENL_CMD_CAP_DO,
-+	},
- };
- 
- static const struct genl_multicast_group netdev_nl_mcgrps[] = {
-diff --git a/net/core/netdev-genl-gen.h b/net/core/netdev-genl-gen.h
-index e09dd7539ff2..c1fed66e92b9 100644
---- a/net/core/netdev-genl-gen.h
-+++ b/net/core/netdev-genl-gen.h
-@@ -34,6 +34,7 @@ int netdev_nl_qstats_get_dumpit(struct sk_buff *skb,
- 				struct netlink_callback *cb);
- int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info);
- int netdev_nl_napi_set_doit(struct sk_buff *skb, struct genl_info *info);
-+int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info);
- 
- enum {
- 	NETDEV_NLGRP_MGMT,
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index 2b774183d31c..6e5f2de4d947 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -931,6 +931,12 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
- 	return err;
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index e5941f8e29df..7a0ce705a703 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -55,8 +55,10 @@ static dma_addr_t net_devmem_get_dma_addr(const struct net_iov *niov)
+ 	       ((dma_addr_t)net_iov_idx(niov) << PAGE_SHIFT);
  }
  
-+/* stub */
-+int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info)
-+{
-+	return 0;
-+}
-+
- void netdev_nl_sock_priv_init(struct list_head *priv)
+-void __net_devmem_dmabuf_binding_free(struct net_devmem_dmabuf_binding *binding)
++void __net_devmem_dmabuf_binding_free(struct work_struct *wq)
  {
- 	INIT_LIST_HEAD(priv);
-diff --git a/tools/include/uapi/linux/netdev.h b/tools/include/uapi/linux/netdev.h
-index 7600bf62dbdf..7eb9571786b8 100644
---- a/tools/include/uapi/linux/netdev.h
-+++ b/tools/include/uapi/linux/netdev.h
-@@ -219,6 +219,7 @@ enum {
- 	NETDEV_CMD_QSTATS_GET,
- 	NETDEV_CMD_BIND_RX,
- 	NETDEV_CMD_NAPI_SET,
-+	NETDEV_CMD_BIND_TX,
++	struct net_devmem_dmabuf_binding *binding = container_of(wq, typeof(*binding), unbind_w);
++
+ 	size_t size, avail;
  
- 	__NETDEV_CMD_MAX,
- 	NETDEV_CMD_MAX = (__NETDEV_CMD_MAX - 1)
+ 	gen_pool_for_each_chunk(binding->chunk_pool,
+diff --git a/net/core/devmem.h b/net/core/devmem.h
+index a8b79c0e01b3..861150349825 100644
+--- a/net/core/devmem.h
++++ b/net/core/devmem.h
+@@ -54,6 +54,8 @@ struct net_devmem_dmabuf_binding {
+ 	 * net_iovs in the TX path.
+ 	 */
+ 	struct net_iov **tx_vec;
++
++	struct work_struct unbind_w;
+ };
+ 
+ #if defined(CONFIG_NET_DEVMEM)
+@@ -70,7 +72,7 @@ struct dmabuf_genpool_chunk_owner {
+ 	dma_addr_t base_dma_addr;
+ };
+ 
+-void __net_devmem_dmabuf_binding_free(struct net_devmem_dmabuf_binding *binding);
++void __net_devmem_dmabuf_binding_free(struct work_struct *wq);
+ struct net_devmem_dmabuf_binding *
+ net_devmem_bind_dmabuf(struct net_device *dev,
+ 		       enum dma_data_direction direction,
+@@ -121,7 +123,8 @@ net_devmem_dmabuf_binding_put(struct net_devmem_dmabuf_binding *binding)
+ 	if (!refcount_dec_and_test(&binding->ref))
+ 		return;
+ 
+-	__net_devmem_dmabuf_binding_free(binding);
++	INIT_WORK(&binding->unbind_w, __net_devmem_dmabuf_binding_free);
++	schedule_work(&binding->unbind_w);
+ }
+ 
+ void net_devmem_get_net_iov(struct net_iov *niov);
+@@ -154,8 +157,7 @@ static inline void net_devmem_put_net_iov(struct net_iov *niov)
+ {
+ }
+ 
+-static inline void
+-__net_devmem_dmabuf_binding_free(struct net_devmem_dmabuf_binding *binding)
++static inline void __net_devmem_dmabuf_binding_free(struct work_struct *wq)
+ {
+ }
+ 
 -- 
 2.48.1.601.g30ceb7b040-goog
 
