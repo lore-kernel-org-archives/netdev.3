@@ -1,131 +1,122 @@
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D45207677
-	for <netdev@vger.kernel.org>; Sat, 22 Feb 2025 09:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D929207657;
+	Sat, 22 Feb 2025 09:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740216392; cv=none; b=L/YGC14NcjxnHyUzm0Z1lhy2bi21amP0WJYI9HpGy2ya1UILQ5n1h1+u6tVN3Q9fiO4HMiI5hJe0xtwQiQuC9e3ru8TsxhtK8QThEakWnJa19DI5LYgMh95XaOZcvR4k/xaQlrGYaCkraYHX3JSrBm3+9Pp3RNLxzpMldZSshWs=
+	t=1740217802; cv=none; b=Bejjj3hVswxetxT2SJ8//HC16TbxuXRgTZM9nGOnCSEl4tEcv+xVRqKDgvWg0fOcZQEgENN14+rDIuoSC6mkjUmWmq6oZM/GL1AGha4rEE31W5UKUD962tDgER/EbbfmpFr+h+SOgyHdFdc+grJ4Z/VsbDydtfiqDMLZFDqSHOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740216392; c=relaxed/simple;
-	bh=8BKLAvfUEeiNwQLGr02luoIsZmn9btFVCQQ73Q+s9hU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QGcB+5PnydgDGrwMbodYmntRumCmCpkznbma4KkoMW+91JA8Y/esJbsCPg20//iuUO5DQl4r7pU0C45Jq/zZL02yUdoHy5DyVdyJmd8lzxMdjBUToynROlGUOJAWkWwFZHNu4O+WaSmTxFXVzdoDieREtqmFMqUaeOzA6/Ixtls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=b5mqtsqW; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1740217802; c=relaxed/simple;
+	bh=z15Ls+N2f4qhQa8zHLA/8pAS/OD9DivM6Ks6EyIuxMQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=soAhIqua6brDJliGz0yD0xcYQ73NypY8UV/kJxLfYUOkghpPiW2GXZBjF1IPd7+il/TFiNr11f71JtehP3JrgdQTRq5VQAhFz2yRdALO9ECYPAsa9IPjeO92cY4eakqINMALr8ThkDKC61lCavZtJCfvFBNXZYzIY9ev7uJU45s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mt3uUksU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="b5mqtsqW"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740216378;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=EYBm0Ekxvt3l/iDJUii0Y8cGNo2O2CjlIZcmsVgVA+4=;
-	b=b5mqtsqWAY54Q+Hi0GLOq7C3uco1qFRUdbpmE1rFuEA+rV1n83LdifoSM2VmtfmnFr+/H2
-	QMWuZp8FJAf0erWK0MTCMQO/E6JDD5wsmr98I0b6dhQkqb7KmDPKRntCuti3XE8Ult2riN
-	9QuGH8OJ/4KIdOnt8cwkSZzlsvZBiMw=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ricardo@marliere.net,
-	jiayuan.chen@linux.dev,
-	viro@zeniv.linux.org.uk,
-	dmantipov@yandex.ru,
-	aleksander.lobakin@intel.com,
-	linux-ppp@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	mrpre@163.com,
-	Paul Mackerras <paulus@samba.org>
-Subject: [PATCH net-next v3 0/1] ppp: Fix KMSAN uninit-value warning with bpf
-Date: Sat, 22 Feb 2025 17:25:55 +0800
-Message-ID: <20250222092556.274267-1-jiayuan.chen@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mt3uUksU"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E59B1C4CEE6;
+	Sat, 22 Feb 2025 09:50:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740217802;
+	bh=z15Ls+N2f4qhQa8zHLA/8pAS/OD9DivM6Ks6EyIuxMQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Mt3uUksUeKBOfSIAGNS91FWyk0j08UZfqLigUC/CWp7aPF31ZrQ9TBrMby68LvQYC
+	 r6SKl5PvHqF/QJHHP4A4ZsANE8Ys4ZkJB8JrYspN7z8Qao4ks3phtNnN8UXtWbnsbI
+	 oS+uGMV1K2coZ+oW+rY6EmD3UafxLKSKB/DJRB5AwaT4KwDP/7lRP4koHJBlxpUJ/w
+	 SnwasQ8wUMvjsLUnQ+tsKmqM3UBjfzo1Qd3U5m60P4PgbYPrDfJEIQbGVfc4dHnl5+
+	 fXkc0dtivZ0PNzFy2Z8uNS8Sfb2Atc7nSkS9HQg7t/jLpMuL04aixBGa2FMdNvSdsx
+	 Esz6pR5PPf6rw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CF037C021B5;
+	Sat, 22 Feb 2025 09:50:01 +0000 (UTC)
+From: Hans-Frieder Vogt via B4 Relay <devnull+hfdevel.gmx.net@kernel.org>
+Date: Sat, 22 Feb 2025 10:49:28 +0100
+Subject: [PATCH net-next v5 1/7] net: phy: Add swnode support to
+ mdiobus_scan
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250222-tn9510-v3a-v5-1-99365047e309@gmx.net>
+References: <20250222-tn9510-v3a-v5-0-99365047e309@gmx.net>
+In-Reply-To: <20250222-tn9510-v3a-v5-0-99365047e309@gmx.net>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Hans-Frieder Vogt <hfdevel@gmx.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1740217800; l=1936;
+ i=hfdevel@gmx.net; s=20240915; h=from:subject:message-id;
+ bh=eboV90jxD+Bku0BOXjDGCNU60DTUE9kSyEbR0D3C8dU=;
+ b=Nogcd+1D21291CGyGc6d46o9MFdESh6MrwVLG7OWMOqvmTxM2yIuQjEeOOQ7TJhfP9xBJ1QqX
+ Segj+wdlu7qCwB+ZKnvurPEYNx1a7R4RW95HAzlPqxpbuVNENZp3F46
+X-Developer-Key: i=hfdevel@gmx.net; a=ed25519;
+ pk=s3DJ3DFe6BJDRAcnd7VGvvwPXcLgV8mrfbpt8B9coRc=
+X-Endpoint-Received: by B4 Relay for hfdevel@gmx.net/20240915 with
+ auth_id=209
+X-Original-From: Hans-Frieder Vogt <hfdevel@gmx.net>
+Reply-To: hfdevel@gmx.net
 
-Syzbot caught an "KMSAN: uninit-value" warning [1], which is caused by the
-ppp driver not initializing a 2-byte header when using socket filters.
+From: Hans-Frieder Vogt <hfdevel@gmx.net>
 
-Here's a detailed explanation:
+This patch will allow to use a swnode/fwnode defined for a phy_device. The
+MDIO bus (mii_bus) needs to contain nodes for the PHY devices, named
+"ethernet-phy@i", with i being the MDIO address (0 .. PHY_MAX_ADDR - 1).
 
-The following code can generate a PPP filter BPF program:
-'''
-struct bpf_program fp;
-pcap_t *handle;
-handle = pcap_open_dead(DLT_PPP_PPPD, 65535);
-pcap_compile(handle, &fp, "ip and outbound", 0, 0);
-bpf_dump(&fp, 1);
-'''
-Its output is:
-'''
-(000) ldh [2]
-(001) jeq #0x21 jt 2 jf 5
-(002) ldb [0]
-(003) jeq #0x1 jt 4 jf 5
-(004) ret #65535
-(005) ret #0
-'''
+The fwnode is only attached to the phy_device if there isn't already an
+fwnode attached.
 
-You can find similar code at the following link:
-https://github.com/ppp-project/ppp/blob/master/pppd/options.c#L1680
-The maintainer of this code repository is also the original maintainer
-of the ppp driver.
+fwnode_get_named_child_node will increase the usage counter of the fwnode.
+However, no new code is needed to decrease the counter again, since this is
+already implemented in the phy_device_release function.
 
+Signed-off-by: Hans-Frieder Vogt <hfdevel@gmx.net>
+---
+ drivers/net/phy/mdio_bus.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-3. Current problem
-The problem is that the skb->data generated by ppp_write() starts from the
-'Protocol' field.
-
-But the BPF program skips 2 bytes of data and then reads the 'Protocol'
-field to determine if it's an IP packet just like the comment in
-'drivers/net/ppp/ppp_generic.c':
-/* the filter instructions are constructed assuming
-   a four-byte PPP header on each packet */
-
-In the current PPP driver implementation, to correctly use the BPF filter
-program, a 2-byte header is added, after running the socket filter, it's
-restored:
-'''
-1768 *(u8 *)skb_push(skb, 2) = 1;
-1770 bpf_prog_run()
-1782 skb_pull(skb, 2);
-'''
-
-The issue is that only the first byte indicating direction is initialized,
-while the second byte is not initialized. For normal BPF programs
-generated by libpcap, uninitialized data won't be used, so it's not a
-problem.
-
-However, for carefully crafted BPF programs, such as those generated by
-syzkaller [2], which start reading from offset 0, the uninitialized data
-will be used and caught by KMSAN.
-
-4. Fix
-The fix is simple: initialize the entire 2-byte header.
-
-Cc: Paul Mackerras <paulus@samba.org>
-
-[1] https://syzkaller.appspot.com/bug?extid=853242d9c9917165d791
-[2] https://syzkaller.appspot.com/text?tag=ReproC&x=11994913980000
-
-Jiayuan Chen (1):
-  ppp: Fix KMSAN warning by initializing 2-byte header
-
- drivers/net/ppp/ppp_generic.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 7e2f10182c0cf37bef4cea1820863f047b5cb466..ede596c1a69d1b2b986e9eef51c3beb4a5fbc805 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -551,6 +551,8 @@ static int mdiobus_create_device(struct mii_bus *bus,
+ static struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr, bool c45)
+ {
+ 	struct phy_device *phydev = ERR_PTR(-ENODEV);
++	struct fwnode_handle *fwnode;
++	char node_name[16];
+ 	int err;
+ 
+ 	phydev = get_phy_device(bus, addr, c45);
+@@ -562,6 +564,18 @@ static struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr, bool c45)
+ 	 */
+ 	of_mdiobus_link_mdiodev(bus, &phydev->mdio);
+ 
++	/* Search for a swnode for the phy in the swnode hierarchy of the bus.
++	 * If there is no swnode for the phy provided, just ignore it.
++	 */
++	if (dev_fwnode(&bus->dev) && !dev_fwnode(&phydev->mdio.dev)) {
++		snprintf(node_name, sizeof(node_name), "ethernet-phy@%d",
++			 addr);
++		fwnode = fwnode_get_named_child_node(dev_fwnode(&bus->dev),
++						     node_name);
++		if (fwnode)
++			device_set_node(&phydev->mdio.dev, fwnode);
++	}
++
+ 	err = phy_device_register(phydev);
+ 	if (err) {
+ 		phy_device_free(phydev);
 
 -- 
-2.47.1
+2.47.2
+
 
