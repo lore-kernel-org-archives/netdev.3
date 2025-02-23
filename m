@@ -1,139 +1,222 @@
-Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8162F1FC7DA
-	for <netdev@vger.kernel.org>; Sun, 23 Feb 2025 11:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79029201270
+	for <netdev@vger.kernel.org>; Sun, 23 Feb 2025 12:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740311353; cv=none; b=DJGVkQdeX6RtCWI67DddZTFR5IitUUoqLI9HLLD3JP7KVpRC35HF3MT3h2IYUoLQUQ+IoyyzjUH/z3YkLqNY5A4SaVavtsBDz/xDPMvkE3MwGPXnJa9ie1tx45i8D/LUlLzgBNAYhNA/y4FBvOtnteDmaC7AwN3UL8Frxwnms28=
+	t=1740313596; cv=none; b=HNe1wlwv0nZWQ/BA0hvHi2oa+CVEN8JNuePSzyqNTsJ7DNtgnHqGuQaZUxlSuyj59boVQ0w/UxXNM9e1c//ckJVqSzMhs1BiXcrdhX261VLgkYjfxHKQ5JjJCqEvat16H+BiFLb9aDG5yjICcTadDxGb34xafAS348Sti2wvlyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740311353; c=relaxed/simple;
-	bh=12/3eubhDFm4sLNlZh3gp0omW2qRBKiQ+TpFOHKn8i8=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=A2RUREye0ceNCDkwGGIMs9uggWvnwYEsBm3VEMeot1lnnQ2hDaMvggjH/5dmaGqlKcwYuhcmOw9SoWK7gYplFRaCt+97k0JJIJ+Xsyw3Q5TDVPUA19UwIwknylK4PLown17MV0uc7deJNdCLEDZhq11neTzonnIW/X8IJEWl5Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=h45+iB0H; arc=none smtp.client-ip=65.108.154.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
+	s=arc-20240116; t=1740313596; c=relaxed/simple;
+	bh=s8AOoNrCqWdyhcW9O7mdZ80AfyEeIKBxPexW2Cxz3cI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U9Y7K7Qtq9HhfEFhqi4eZdrvptzk1QU6qNh9RqIvPSAsaq5Bku0DY/eziHU1yoUI2jczdUQLi9Zyy0h0JwL0A9oS3wVDiFhye3Lyy73VTK2OBEi9KOaHI36AHw6WOmUxnjUNQFsiAziK4qET6gUQwzyTNtONy31akZEWUhUAjzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TAaJfAie; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="h45+iB0H"
-Authentication-Results: dilbert.mork.no;
-	dkim=pass (1024-bit key; secure) header.d=mork.no header.i=@mork.no header.a=rsa-sha256 header.s=b header.b=h45+iB0H;
-	dkim-atps=neutral
-Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10de:2e00:0:0:0:1])
-	(authenticated bits=0)
-	by dilbert.mork.no (8.18.1/8.18.1) with ESMTPSA id 51NBY5n1913617
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
-	for <netdev@vger.kernel.org>; Sun, 23 Feb 2025 11:34:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-	t=1740310444; bh=yG+72XPi+ZhAmV+0LiZ7iiClG9t9cXwxWcaWLrxHyGA=;
-	h=From:To:Subject:Date:Message-ID:From;
-	b=h45+iB0HCIIqoHNnGOzGNWZV4GqlxjWDCD8oK5p0J1ZE/AOGYq7v10xix07DkXYbC
-	 PbZV/hTJ5jLTHueRA0Ld/gvKQPSMBZkhltCjhu0NVRllatSZPPpLItud3YmgiagKZy
-	 eLdduhQ16s48JuFAx//fagJEgy2JWVCxiOu9nimQ=
-Received: from miraculix.mork.no ([IPv6:2a01:799:10de:2e0a:149a:2079:3a3a:3457])
-	(authenticated bits=0)
-	by canardo.dyn.mork.no (8.18.1/8.18.1) with ESMTPSA id 51NBY45v2201663
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
-	for <netdev@vger.kernel.org>; Sun, 23 Feb 2025 12:34:04 +0100
-Received: (nullmailer pid 927749 invoked by uid 1000);
-	Sun, 23 Feb 2025 11:34:04 -0000
-From: =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-To: netdev@vger.kernel.org
-Subject: Phy access methods for copper SFP+ disguised as SR
-Organization: m
-Date: Sun, 23 Feb 2025 12:34:04 +0100
-Message-ID: <874j0kvqs3.fsf@miraculix.mork.no>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TAaJfAie"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e0373c7f55so5391440a12.0
+        for <netdev@vger.kernel.org>; Sun, 23 Feb 2025 04:26:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740313593; x=1740918393; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KKD74bouquq/FLvIeXibzGClzn59CJ5pTvjsEW3LoBI=;
+        b=TAaJfAieaLqWQtebgwJK/Dvrr6/7sYwksVSNXgjVN2VBn285m7/oCIegQs1pbHXJ0z
+         QBys4KnfjwXh6vr24b6LXgaCnVQF+NwjNA9xRce0oej0igsUHBeHOR9PjSLxJBD+6giJ
+         HUoxZn4uHybj62exvY0Vy36LYYeyE3fnLWKJbLRHb0W5J4xFzrQqjwkKIGHD4LfzxyjM
+         0ZttYV20Ts1R89xFGHIGjy9etfafJdMjwMz/th+2ZkpOrST5scAd1+x9eVNVifCV4l1c
+         5kWD7muW2mBvZHCxoL0Pbb92horzhVjv0FVNNw2u3si40CzlYM71GhRfJewex2NlRONi
+         objw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740313593; x=1740918393;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KKD74bouquq/FLvIeXibzGClzn59CJ5pTvjsEW3LoBI=;
+        b=hOnQZCux6xGRDjGtb2YpZU1S7IGt5EQDoUxc11NU60GzQGTVc8vTH4k287M7MFI+Xu
+         xTydFQ3KR6imlnPVq2hTqPLONk77aPIDqtKfuUI3F1drDR4xn8bQ42nfgUwKVhseHJVp
+         J+b2U6SAbVOpE6fYQp06LUjkOvn5rqRU2riQbnZfJPCiPvIrUm8A6rVIEJpwsmd+OAeF
+         cw+ZePxrjJbZsZH96QdpcDuR42EVcUybv9CanGeiXWjyie956ziBaK8EnfX8iPaFxD3j
+         SO6HYM6eNOxxEUgcQYWv39AYWdAOrTi2ZBN31uqaEWsMn2JGY6dKuPLwrONH6wQB6C8j
+         eFIg==
+X-Forwarded-Encrypted: i=1; AJvYcCW79Ph2gO2wwM21uyq9xcj7O9B6Mck3SvkBUu5egBr1AgG1ZuW2LZJpoGj3BF4g78JUSmPDoKM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5tPtggy3XOKGeQk2LB5xQe83YLr128emIMhvai8+F2nYibht0
+	NtjLBQi2gD8QQHQ8OCdbPpr5Jp3f8sX24neGNhk8Fo5vUIfUcLhFeHmvVHSxe8Ml3SRq7tZWonC
+	YIu/Fzdtd/sGF6HdWGwxUvR1v/tw=
+X-Gm-Gg: ASbGncs9Y/V8J34shPvmv7XYMmkGqaJD+BukumRTjhBHyBLxtWaRER+0jqgLoKfW3Pt
+	lyFb2mj5OGCLJ7VNlROwYAWEMAVY3JBzwRXmR0Flku/Y9/j0oLTLYnOLTtE4SvsGw0yZ2sOLEUV
+	pRT4rxNyJ/
+X-Google-Smtp-Source: AGHT+IGtKfbRyVWTaZYEppZgEtyG7/j96Wr867oKx57G+OBc4N3YDhtYzi4M3PINK9tFsNVuBxa4Adh16kW/eTidNgo=
+X-Received: by 2002:a05:6402:13cd:b0:5d4:1ac2:277f with SMTP id
+ 4fb4d7f45d1cf-5e0b70e96f1mr9514502a12.9.1740313592376; Sun, 23 Feb 2025
+ 04:26:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250221025141.1132944-1-kuba@kernel.org>
+In-Reply-To: <20250221025141.1132944-1-kuba@kernel.org>
+From: Taehee Yoo <ap420073@gmail.com>
+Date: Sun, 23 Feb 2025 21:26:20 +0900
+X-Gm-Features: AWEUYZnZ7vBQoq_-QaWVZy5lEbbzOlAuVh4uAorR6NVXCkJEtq6nuIwIeXuhEa4
+Message-ID: <CAMArcTWRb6uxQcgCg4=v1BkTjTGuOy-x_N8uyFt4m4TXzfQV3w@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/2] net: ethtool: fix ioctl confusing drivers
+ about desired HDS user config
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, dxu@dxuuu.xyz, 
+	michael.chan@broadcom.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 1.0.7 at canardo.mork.no
-X-Virus-Status: Clean
 
-Got myself a couple of cheap 10GBase-T SFP+s and am struggling to figure
-out how to talk to the phy.  The phy does not appear to be directly
-accessible on 0x56, and it does not respond using the Rollball protocol
-either.
+On Fri, Feb 21, 2025 at 11:51=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
+rote:
+>
+> The legacy ioctl path does not have support for extended attributes.
+> So we issue a GET to fetch the current settings from the driver,
+> in an attempt to keep them unchanged. HDS is a bit "special" as
+> the GET only returns on/off while the SET takes a "ternary" argument
+> (on/off/default). If the driver was in the "default" setting -
+> executing the ioctl path binds it to on or off, even tho the user
+> did not intend to change HDS config.
+>
+> Factor the relevant logic out of the netlink code and reuse it.
+>
+> Fixes: 87c8f8496a05 ("bnxt_en: add support for tcp-data-split ethtool com=
+mand")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
 
-Are there any other well known methods out there, or am I stuck with
-whatever SR emulation the SFP vendor implemented?
+Tested-by: Taehee Yoo <ap420073@gmail.com>
 
-This is all it shows, and 0x56 just reads zeroes no matter what I do:
-
-root@s508cl:~# i2cdetect -y 8
-     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
-00:                         -- -- -- -- -- -- -- --=20
-10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --=20
-20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --=20
-30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --=20
-40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --=20
-50: 50 51 -- -- -- -- 56 -- -- -- -- -- -- -- -- --=20
-60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --=20
-70: -- -- -- -- -- -- -- --=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20
-root@s508cl:~# i2cdump -y 8 0x50
-No size specified (using byte-data access)
-     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
-00: 03 04 07 10 00 00 00 00 00 00 00 06 67 00 00 00    ????.......?g...
-10: 08 02 00 1e 4f 45 4d 20 20 20 20 20 20 20 20 20    ??.?OEM=20=20=20=20=
-=20=20=20=20=20
-20: 20 20 20 20 00 00 00 00 53 46 50 2d 31 30 47 2d        ....SFP-10G-
-30: 54 38 20 20 20 20 20 20 41 20 20 20 00 00 00 0c    T8      A   ...?
-40: 00 1a 00 00 46 32 35 30 31 31 34 54 30 30 31 30    .?..F250114T0010
-50: 20 20 20 20 32 35 30 31 31 35 20 20 68 f0 03 eb        250115  h???
-60: 00 00 11 6b e0 e7 c2 e1 ff ff 18 79 21 c8 24 ed    ..?k????..?y!?$?
-70: d8 45 85 00 00 00 00 00 00 00 00 00 1c 24 98 22    ?E?.........?$?"
-80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-root@s508cl:~# i2cdump -y 8 0x51
-No size specified (using byte-data access)
-     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
-00: 50 00 f6 00 4b 00 fb 00 8c 9f 71 48 88 b8 75 30    P.?.K.?.??qH??u0
-10: 1d 4c 01 f4 19 64 03 e8 2b d4 07 46 27 10 09 28    ?L???d??+??F'??(
-20: 2b d4 02 85 27 10 03 2c 00 00 00 00 00 00 00 00    +???'??,........
-30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-40: 00 00 00 00 3f 80 00 00 00 00 00 00 01 00 00 00    ....??......?...
-50: 01 00 00 00 01 00 00 00 01 00 00 00 00 00 00 7e    ?...?...?......~
-60: 42 33 7f ca 0b b8 13 92 13 92 00 00 00 00 00 00    B3????????......
-70: 00 00 00 00 00 00 00 00 00 00 40 00 00 00 00 00    ..........@.....
-80: 43 4f 55 49 41 38 4e 43 41 41 31 30 2d 32 34 31    COUIA8NCAA10-241
-90: 35 2d 30 33 56 30 33 20 01 00 46 00 00 00 00 c6    5-03V03 ?.F....?
-a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 aa aa    ..............??
-c0: 53 46 50 2d 31 30 47 2d 53 52 20 20 20 20 20 20    SFP-10G-SR=20=20=20=
-=20=20=20
-d0: 20 20 20 20 33 32 00 00 00 00 00 00 00 00 00 35        32.........5
-e0: 1e 28 2e 2e 31 34 29 36 00 00 00 00 00 00 00 00    ?(..14)6........
-f0: 00 00 00 00 00 66 00 00 ff ff ff ff ff ff 29 e3    .....f........)?
-root@s508cl:~# i2cdump -y 8 0x56
-No size specified (using byte-data access)
-     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
-00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-10: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-20: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-40: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-90: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-
-
-Bj=C3=B8rn
+> v2:
+>  - fix the core rather than the driver
+> v1: https://lore.kernel.org/20250220005318.560733-1-kuba@kernel.org
+>
+> CC: michael.chan@broadcom.com
+> CC: ap420073@gmail.com
+> ---
+>  net/ethtool/common.h |  6 ++++++
+>  net/ethtool/common.c | 16 ++++++++++++++++
+>  net/ethtool/ioctl.c  |  4 ++--
+>  net/ethtool/rings.c  |  9 ++++-----
+>  4 files changed, 28 insertions(+), 7 deletions(-)
+>
+> diff --git a/net/ethtool/common.h b/net/ethtool/common.h
+> index 58e9e7db06f9..a1088c2441d0 100644
+> --- a/net/ethtool/common.h
+> +++ b/net/ethtool/common.h
+> @@ -51,6 +51,12 @@ int ethtool_check_max_channel(struct net_device *dev,
+>                               struct ethtool_channels channels,
+>                               struct genl_info *info);
+>  int ethtool_check_rss_ctx_busy(struct net_device *dev, u32 rss_context);
+> +
+> +void ethtool_ringparam_get_cfg(struct net_device *dev,
+> +                              struct ethtool_ringparam *param,
+> +                              struct kernel_ethtool_ringparam *kparam,
+> +                              struct netlink_ext_ack *extack);
+> +
+>  int __ethtool_get_ts_info(struct net_device *dev, struct kernel_ethtool_=
+ts_info *info);
+>  int ethtool_get_ts_info_by_phc(struct net_device *dev,
+>                                struct kernel_ethtool_ts_info *info,
+> diff --git a/net/ethtool/common.c b/net/ethtool/common.c
+> index d88e9080643b..b97374b508f6 100644
+> --- a/net/ethtool/common.c
+> +++ b/net/ethtool/common.c
+> @@ -6,6 +6,7 @@
+>  #include <linux/rtnetlink.h>
+>  #include <linux/ptp_clock_kernel.h>
+>  #include <linux/phy_link_topology.h>
+> +#include <net/netdev_queues.h>
+>
+>  #include "netlink.h"
+>  #include "common.h"
+> @@ -771,6 +772,21 @@ int ethtool_check_ops(const struct ethtool_ops *ops)
+>         return 0;
+>  }
+>
+> +void ethtool_ringparam_get_cfg(struct net_device *dev,
+> +                              struct ethtool_ringparam *param,
+> +                              struct kernel_ethtool_ringparam *kparam,
+> +                              struct netlink_ext_ack *extack)
+> +{
+> +       memset(param, 0, sizeof(*param));
+> +       memset(kparam, 0, sizeof(*kparam));
+> +
+> +       param->cmd =3D ETHTOOL_GRINGPARAM;
+> +       dev->ethtool_ops->get_ringparam(dev, param, kparam, extack);
+> +
+> +       /* Driver gives us current state, we want to return current confi=
+g */
+> +       kparam->tcp_data_split =3D dev->cfg->hds_config;
+> +}
+> +
+>  static void ethtool_init_tsinfo(struct kernel_ethtool_ts_info *info)
+>  {
+>         memset(info, 0, sizeof(*info));
+> diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+> index 7609ce2b2c5e..1c3ba2247776 100644
+> --- a/net/ethtool/ioctl.c
+> +++ b/net/ethtool/ioctl.c
+> @@ -2059,8 +2059,8 @@ static int ethtool_get_ringparam(struct net_device =
+*dev, void __user *useraddr)
+>
+>  static int ethtool_set_ringparam(struct net_device *dev, void __user *us=
+eraddr)
+>  {
+> -       struct ethtool_ringparam ringparam, max =3D { .cmd =3D ETHTOOL_GR=
+INGPARAM };
+>         struct kernel_ethtool_ringparam kernel_ringparam;
+> +       struct ethtool_ringparam ringparam, max;
+>         int ret;
+>
+>         if (!dev->ethtool_ops->set_ringparam || !dev->ethtool_ops->get_ri=
+ngparam)
+> @@ -2069,7 +2069,7 @@ static int ethtool_set_ringparam(struct net_device =
+*dev, void __user *useraddr)
+>         if (copy_from_user(&ringparam, useraddr, sizeof(ringparam)))
+>                 return -EFAULT;
+>
+> -       dev->ethtool_ops->get_ringparam(dev, &max, &kernel_ringparam, NUL=
+L);
+> +       ethtool_ringparam_get_cfg(dev, &max, &kernel_ringparam, NULL);
+>
+>         /* ensure new ring parameters are within the maximums */
+>         if (ringparam.rx_pending > max.rx_max_pending ||
+> diff --git a/net/ethtool/rings.c b/net/ethtool/rings.c
+> index 7839bfd1ac6a..aeedd5ec6b8c 100644
+> --- a/net/ethtool/rings.c
+> +++ b/net/ethtool/rings.c
+> @@ -215,17 +215,16 @@ ethnl_set_rings_validate(struct ethnl_req_info *req=
+_info,
+>  static int
+>  ethnl_set_rings(struct ethnl_req_info *req_info, struct genl_info *info)
+>  {
+> -       struct kernel_ethtool_ringparam kernel_ringparam =3D {};
+> -       struct ethtool_ringparam ringparam =3D {};
+> +       struct kernel_ethtool_ringparam kernel_ringparam;
+>         struct net_device *dev =3D req_info->dev;
+> +       struct ethtool_ringparam ringparam;
+>         struct nlattr **tb =3D info->attrs;
+>         const struct nlattr *err_attr;
+>         bool mod =3D false;
+>         int ret;
+>
+> -       dev->ethtool_ops->get_ringparam(dev, &ringparam,
+> -                                       &kernel_ringparam, info->extack);
+> -       kernel_ringparam.tcp_data_split =3D dev->cfg->hds_config;
+> +       ethtool_ringparam_get_cfg(dev, &ringparam, &kernel_ringparam,
+> +                                 info->extack);
+>
+>         ethnl_update_u32(&ringparam.rx_pending, tb[ETHTOOL_A_RINGS_RX], &=
+mod);
+>         ethnl_update_u32(&ringparam.rx_mini_pending,
+> --
+> 2.48.1
+>
