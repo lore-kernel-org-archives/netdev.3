@@ -1,203 +1,156 @@
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D75265CBF
-	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 18:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DDECA64;
+	Mon, 24 Feb 2025 18:22:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740421281; cv=none; b=DMuZh33+7hQDD9B8+4qkpTPLq5+MEnWxpyCYBlqVvB5XZidKJ4Eq5EcvNyjqThnU1CB2LLRbSgu1PrgpT6U+hiOiIeTDit4rxRa0D+uz8DDifVf7dwWw3CFy7CowsO2K9GrmAO4VdFsMvHDUKj51Ecp/il5LjTvlr19xsuekHc4=
+	t=1740421353; cv=none; b=JVC8xAitD7zCQy/VeDEY5Sp3WsI0CZff1NGwYLK9DR1MrDuyy2BQXXoB402eKXOeCjlzcpiVxoab7LywyxwyAVuQqziyOOJ/28eGJo2NcpZrEyNEThVVqweVNoG1bLwZeaaTtBOP6w4kEuADNInpl3YoXcuOvAfynrH8C7TvAYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740421281; c=relaxed/simple;
-	bh=eQuGQvGBKRnzPnEPH9gOcy5jafPipiDOVtu1gALRPMQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QCq3OER8SaszQvFSn7EEUTBurAI7Jzh5MYhJiAk2LyLAcASv/ZdLF62/IN3Xs1ilhkHcPByp+9iNFqjnRkRUXEVIeTgIlCbvn3mWimrXGKVaISKHceXcqF0TwE0M6wZL5KQkjAXGntQGHoRUG68H852hUU1j78DX7p2NZ9Ak9A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TPMJ2zV5; arc=none smtp.client-ip=202.12.124.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
+	s=arc-20240116; t=1740421353; c=relaxed/simple;
+	bh=lHMlBKWdkJyWJ/ZNdPbig2n/AkyDPvY7GCSxBIUEiPU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BSJCIG/+9/PyCdMoliysBIQNg0D5mk1OQBzKPlj7Ywjvaao4VQmei0h3I1peKNH0NY+Qgx8HkeX9d1FkoZ4Xp5tgTDWCkZgEl+u9kE/ABTqklJQ4EimFrr3oHNyThfpOmtPUHT9A01bIcVFv8yexOe+ig3enko98IybIwPsFSU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=hfdevel@gmx.net header.b=P4xwMRZx; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TPMJ2zV5"
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfout.stl.internal (Postfix) with ESMTP id 1879D11400BC;
-	Mon, 24 Feb 2025 13:21:18 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Mon, 24 Feb 2025 13:21:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1740421277; x=1740507677; bh=2OylwEuidSow0gGM7o36hwqEIuguDe3J19l
-	fQdb1FXA=; b=TPMJ2zV5+ebAlLY8gmiQ1VyUb4r0YYtWie7kV9Jl+FYN4wOk6J8
-	n4B2isNKD18lHvnRYg5Wfyi+Qb9f4qnRodoP1nMZMrWXzonLB4eA4XUXw0K4ZlK0
-	o2uYHMbMIn42NgDvaGWW4gf39AWwYtGhSHOa3FCT8cpc1D1ogSrtIMgKRYUi9IFm
-	O3tWAHsCEy6K6CA4YcNPWr3hHfr3nxSQIoHUyOkY3/smTlSUFVBzJpQm3rVCs7Gi
-	27w05AfxG+QwZD1810dQ9DD1CDNW2V+l8XcNNgxdgTiglMqKxAZeyWiRm0SBViBm
-	XIj62VRSrh6a1SVvZAXDDz1T0zy/V5GrWYA==
-X-ME-Sender: <xms:nbi8Zw-T2mBC2brHT58-HI4gsi2fNOuE6iDgpdh6noIN-M1YVyZU_w>
-    <xme:nbi8Z4sz-niyxSTAtyLqSq6HNdvIfAt0ztsPMPHduk1h0G6rW8p03N8NsTCkSM1Kv
-    bDxuDYxO9NI3N0>
-X-ME-Received: <xmr:nbi8Z2AsW1KapQmwWLaNivq9oKki2XD3qdJLEJQwGdoQbGVoKCyPKJ0Kc3qm>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdejleegkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrd
-    horhhgqeenucggtffrrghtthgvrhhnpedvudefveekheeugeeftddvveefgfduieefudei
-    fefgleekheegleegjeejgeeghfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhgpdhnsggprhgtphht
-    thhopeelpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehgnhgruhhlthesrhgvug
-    hhrghtrdgtohhmpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdp
-    rhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggvnh
-    hisehrvgguhhgrthdrtghomhdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgv
-    rdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepughsrghh
-    vghrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnthhonhhiohesmhgrnhguvg
-    hlsghithdrtghomh
-X-ME-Proxy: <xmx:nbi8ZweRE2iumRJCTXSGTpDe4rz3f63kX_hCeu5S1U5pwtprhb-2DQ>
-    <xmx:nbi8Z1POWOX2bZ5fqI8Yp5pwOnHRp3TykS8znOqsWOaZMrRk0QgSMQ>
-    <xmx:nbi8Z6kHmR-CZoMJUWn4c_u11XYzyJ-prw0iGLw-mFhyQO9qxSVxSQ>
-    <xmx:nbi8Z3uqcwFsYn7Qe88J5Kj4fUCMA8LnW5V5Rec-OjZYDjUA25029w>
-    <xmx:nbi8Z-jsrfK2Sb6HQcZT7dsWuv6zbvncVQZq-HOq1z3qAnoGaAqn1FrK>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Feb 2025 13:21:16 -0500 (EST)
-Date: Mon, 24 Feb 2025 20:21:14 +0200
-From: Ido Schimmel <idosch@idosch.org>
-To: Guillaume Nault <gnault@redhat.com>
-Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Antonio Quartulli <antonio@mandelbit.com>
-Subject: Re: [PATCH net v2 1/2] gre: Fix IPv6 link-local address generation.
-Message-ID: <Z7y4mpW3vNiy7eMw@shredder>
-References: <cover.1740129498.git.gnault@redhat.com>
- <942aa62423e0d7721abd99a5ca1069f4e4901a6d.1740129498.git.gnault@redhat.com>
- <Z7sfmLG4V_kHKRfy@shredder>
- <Z7ysHMi4NociwDgR@debian>
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=hfdevel@gmx.net header.b="P4xwMRZx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1740421348; x=1741026148; i=hfdevel@gmx.net;
+	bh=s56f0o7oXiJ7g53XxI4zCe4QREjxnu0AzfGzWl/KBy8=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=P4xwMRZxFl/i0cfVxDKoCDDYMEBSQofRCpiditFUo/nnI9qDGqroC+sAkb60cBOl
+	 Aspf+LQ/s5l0vraKpipxWWalUQDL9YeJiZnuN1wk7m237wihfMmNhZ7IhpkdHHzJ3
+	 P47grf9ObO6c7XmnFPufH0+idE6eBBau+YP2wE/0NAiYdCs1hVBZ8lYoKAcxOmyWd
+	 r3OjjN2qRLpwcy5rwC5ruFZHgwFG2gll7qpL+pse5IsUzkvTE3+Z5mTpTXB7+ge5u
+	 M1BO9NziQ3oeLbl9Au3Iz4st0EJCdWqhZZhc/01nsEAIS9QkdmfF9s/yBNrsZr9L6
+	 DaKDIhyQnVYnpQNZ9A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [10.0.0.23] ([77.33.175.99]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N3bWr-1tMwwf2kwl-015nKq; Mon, 24
+ Feb 2025 19:11:42 +0100
+Message-ID: <355d0805-61df-4834-a266-e74117e21302@gmx.net>
+Date: Mon, 24 Feb 2025 19:11:39 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z7ysHMi4NociwDgR@debian>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 5/7] net: tn40xx: create swnode for mdio and
+ aqr105 phy and add to mdiobus
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250222-tn9510-v3a-v5-0-99365047e309@gmx.net>
+ <20250222-tn9510-v3a-v5-5-99365047e309@gmx.net>
+ <20250224040838.GA1655046@maili.marvell.com>
+Content-Language: en-US
+From: Hans-Frieder Vogt <hfdevel@gmx.net>
+In-Reply-To: <20250224040838.GA1655046@maili.marvell.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ee78AkA0+pD13CQ5EnSHbst9pHFtKJ3LOD+UBaP/M/x+o/fOqo5
+ 99jPSvi0WOR8WuZaL9U800rDZ2fGwwIizbfrnsUUahUpy/ZP8oMJpWu5BZJM3SacBGC+2xI
+ /n4trkxwTjHMSAxeCMT5Ls/UPIQJygTVGij4a/lvQdrB1TZyDmoSZBeH0eDwmxF21xxk3M4
+ 2vFqcL2h7eKbJhJQ2oOyA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Z6qiYfGX9J8=;2e/eCYPQzvtB2PATz+zm4749US3
+ JIArM80/lUKmmqyuNqC5skhqDJXS2LcO5LLsAi5+ZOA/7V8ASkY2mPh9hN2qzA9o720z0M+g4
+ F40xm9A14jpLluZQF7HgtxDXY/Jr+BJ8e+nVmAnUf4pX8s7V2LZM88g4khXp7SU6hCVMzesrl
+ qj/IIiXzPNt+J1Vc1nKCbogEBv1mvH9jbkHnAsQWiyjmBm/ZH+4V4b0uphwaHV0dNVi/KNFFR
+ rDWVW5VQ/gseGrgTquyND7dvvkGZlarCWBitzofEw7vFknlNRlcoCKcQmquE0rogfQxziLaUi
+ V8Kmfqf+RbiOZb7Nl3paG6uVpw/iRzx+O42Z/qKvuR4shIG/TuCrf66AKdUR8X4ks5DahkWwo
+ stIEwNBIuowwwo3/G/dELTkyGhhbjcGUNhhH4woEIqAFSv5skVni0rYWtPjACN47PgMdVbJXG
+ Z5jZ4BCzuJJQEZW8cVufKuko8PZY4MVTssLjFzE8x8LnbzxzpWR40FjG8P6B0/kR+zyol4lUk
+ y7vkDL7XYSTWSqK6oBzYxbURIjE+jkVdol+TJwfYBH043cYqAT1eDxYaE70Yw1o/O4XL0AtIF
+ 9z1en9+Wl1pEYK9lj4PbrwHkOIIS6gU0n2h0y8GGvJcHcHsYLK0Lz7puosGqR8NPNcuaY2z0J
+ OJF/AXGReB4W8RG2dwCJrdl3CY6Az+i8McIAmDbrJ+w7jhYDCEHQW3rvZhYpcGFZ6VdKhl6it
+ LanHRBWimMZpsPlzTcAeU2rsDQeJnE/fcATTdN2b7ahKrGIEtx7xMJfTH4OuNgybt/7z0O6UC
+ b+rPbx6eUEzfeW9DSUALyU8befnmOCfBEUKQXXT80KC9AQ0ZAtfzs6FeVgFl51V0bZS7bzesy
+ zhuJxADlVsb3c7XL2IABPvPIuB/2dbkAxZRMR5eqgH/BQ5gAJTqzTASJVqf2I4YwD72MPSVRn
+ RzNZalNMDaMHvGpF3FpoeMsxiHpNad3GocEnP/FKj1x+wqPtvCeNafDOJF/CP7qx3kOjPJShf
+ T1MOjLl/orHyjGd5GILBIoTWz1PqWMa4V6Rks0jkdULnECYWiLFH7r+Ie2YMAUC2oTLfT1Ppy
+ 9Ddti/wXP93FrWTebdDnQA6kDXhz31ITmxpaVQ4TYDgokTx+H3wYqt70zUtgC2o9MwvAhStvt
+ jJsrohKzUaLeCxbe6KdLXOCg1F3/7eBI301jd+1AF6+N+U5QxT7u2OWc0Cwoc/HYGH8oF3x5q
+ 9hOSWoz6jlW4VBuzwvQHQhkHJpQc0GU9kFTaXn8O8nFt/Bqrfor7t7JJ9FCqVmuEuvZS5rAzQ
+ NHfa3xk1w87k4bVhFjqbGmfNWfgMlIBJX/BOeID9llkgf3H2idnmwDSOwQIVVY6xpWwYuMeBu
+ 7YdOQn8Gnyl47jI0j7aUXz56S+9DbUqT3qfxo=
 
-On Mon, Feb 24, 2025 at 06:27:56PM +0100, Guillaume Nault wrote:
-> On Sun, Feb 23, 2025 at 03:16:08PM +0200, Ido Schimmel wrote:
-> > On Fri, Feb 21, 2025 at 10:24:04AM +0100, Guillaume Nault wrote:
-> > > Use addrconf_addr_gen() to generate IPv6 link-local addresses on GRE
-> > > devices in most cases and fall back to using add_v4_addrs() only in
-> > > case the GRE configuration is incompatible with addrconf_addr_gen().
-> > > 
-> > > GRE used to use addrconf_addr_gen() until commit e5dd729460ca
-> > > ("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL
-> > > address") restricted this use to gretap devices and created
-> > 
-> > It's not always clear throughout the commit message to which devices you
-> > are referring to.
-> 
-> Yes, that's a problem I had when writing the commit message: I couldn't
-> find a proper way to name the different GRE device types unambiguously.
-> 
-> By reusing the device types of "ip link" we don't know if "gre" refers
-> to all GRE types or if it's only for IPv4 encapsulation. But using the
-> ARPHRD_* types wouldn't help, as that wouldn't allow to distinguish
-> between gretap and ip6gretap.
+Hi Kannoth,
 
-Right.
-
-> 
-> Maybe the following terms would be clearer:
-> 'ip4gre', 'ip4gretap', 'ip6gre', 'ip6gretap' (and potentially 'ipXgre'
-> and 'ipXgretap' when considering both the IPv4 and IPv6 tunnel
-> versions). Would you find these terms clearer?
-
-I'm fine with the above, but I also think that as long as "ip link"
-types (e.g., 'gre', 'ip6gre') are consistently used throughout the
-commit message, it should be clear which devices the commit message
-refers to. Whatever you prefer.
-
-> 
-> > For example, here, by "gretap" you mean both "gretap"
-> > and "ip6gretap", no?
-> 
-> Yes.
-> 
-> > BTW, I believe the check against 'ARPHRD_ETHER' in addrconf_gre_config()
-> > is dead code. addrconf_gre_config() is only called for ARPHRD_IP{,6}GRE
-> > devices.
-> 
-> Yes, that was dead code. But I'm reusing that condition to minimise
-> code changes so to make the fix simpler. Do you mean I should write
-> explicitely, somewhere, that it was dead code but isn't anymore?
-
-No, it's fine as-is. I made the comment while reading the commit message
-and looking at the unpatched code and only later when I checked the
-patch I noticed that you already took care of it :)
-
-> 
-> > > add_v4_addrs() (borrowed from SIT) for non-Ethernet GRE ones.
-> > > 
-> > > The original problem came when commit 9af28511be10 ("addrconf: refuse
-> > > isatap eui64 for INADDR_ANY") made __ipv6_isatap_ifid() fail when its
-> > > addr parameter was 0. The commit says that this would create an invalid
-> > > address, however, I couldn't find any RFC saying that the generated
-> > > interface identifier would be wrong. Anyway, since plain gre devices
-> > > pass their local tunnel address to __ipv6_isatap_ifid(), that commit
-> > > broke their IPv6 link-local address generation when the local address
-> > > was unspecified.
-> > 
-> > By "plain gre devices" you mean "ipgre"? Because addrconf_ifid_ip6tnl()
-> > is called for "ip6gre" and it doesn't fail, unlike __ipv6_isatap_ifid().
-> 
-> Exactly. I tried to use the "plain" adjective to say that's the kind of
-> device you get with the "gre" keyword in "ip link".
-> 
-> > > Then commit e5dd729460ca ("ip/ip6_gre: use the same logic as SIT
-> > > interfaces when computing v6LL address") tried to fix that case by
-> > > defining add_v4_addrs() and calling it to generated the IPv6 link-local
-> > 
-> > s/generated/generate/
-> > 
-> > > address instead of using addrconf_addr_gen() (appart for gretap devices
-> > 
-> > s/appart/apart/
-> 
-> Will fix both.
-> 
-> > > which would still use the regular addrconf_addr_gen(), since they have
-> > > a MAC address).
-> > 
-> > Assuming what I wrote is correct, I'm not sure why e5dd729460ca didn't
-> > restrict the fix to "ipgre" and applied it to "ip6gre" as well.
-> 
-> I asked myself the same question. Antonio might have an answer to this.
-> But in my understanding the changes brought by e5dd729460ca were much too
-> broad.
-
-I agree.
-
-> 
-> > > -	if (dev->type == ARPHRD_ETHER) {
-> > > +	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
-> > > +	 * unless we have an IPv4 GRE device not bound to an IP address and
-> > > +	 * which is in EUI64 mode (as __ipv6_isatap_ifid() would fail in this
-> > > +	 * case). Such devices fall back to add_v4_addrs() instead.
-> > > +	 */
-> > > +	if (!(dev->type == ARPHRD_IPGRE && *(__be32 *)dev->dev_addr == 0 &&
-> > 
-> > Doesn't this mean that the 'ARPHRD_IP6GRE' case (and the
-> > 'CONFIG_IPV6_GRE' checks) can be removed from
-> > addrconf_init_auto_addrs()? That is, only call addrconf_gre_config() for
-> > "ipgre", but not for "ip6gre".
-> 
-> Yes. But I didn't want to do that here, to keep the fix as simple as
-> possible. Because that'd mean we'd also have to add a
-> "(dev->type != ARPHRD_IP6GRE)" condition in the test at the beginning
-> of addrconf_dev_config(), and I feel that'd be a distraction from the
-> core of the patch. So I prefer to do that in net-next.
-
-Fine by me. Thanks!
+On 24.02.2025 05.08, Ratheesh Kannoth wrote:
+> On 2025-02-22 at 15:19:32, Hans-Frieder Vogt via B4 Relay (devnull+hfdev=
+el.gmx.net@kernel.org) wrote:
+>> From: Hans-Frieder Vogt <hfdevel@gmx.net>
+>>   int tn40_mdiobus_init(struct tn40_priv *priv)
+>>   {
+>>   	struct pci_dev *pdev =3D priv->pdev;
+>> @@ -129,14 +181,36 @@ int tn40_mdiobus_init(struct tn40_priv *priv)
+>>
+>>   	bus->read_c45 =3D tn40_mdio_read_c45;
+>>   	bus->write_c45 =3D tn40_mdio_write_c45;
+>> +	priv->mdio =3D bus;
+>> +
+>> +	/* provide swnodes for AQR105-based cards only */
+>> +	if (pdev->device =3D=3D 0x4025) {
+>> +		ret =3D tn40_swnodes_register(priv);
+>> +		if (ret) {
+>> +			pr_err("swnodes failed\n");
+>> +			return ret;
+>> +		}
+>> +
+>> +		ret =3D device_add_software_node(&bus->dev,
+>> +					       priv->nodes.group[SWNODE_MDIO]);
+>> +		if (ret) {
+>> +			dev_err(&pdev->dev,
+>> +				"device_add_software_node failed: %d\n", ret);
+> No need to return on this error ?
+Good catch. Yes, indeed, all TN4010-based cards that I know of need to
+load the firmware from
+the filesystem. And this will only work if the software node is
+available to provide a file
+name.
+I'll add a
+return ret;
+in the next version.
+>> +		}
+>> +	}
+>>
+>>   	ret =3D devm_mdiobus_register(&pdev->dev, bus);
+>>   	if (ret) {
+>>   		dev_err(&pdev->dev, "failed to register mdiobus %d %u %u\n",
+>>   			ret, bus->state, MDIOBUS_UNREGISTERED);
+>> -		return ret;
+>> +		goto err_swnodes_cleanup;
+>>   	}
+>>   	tn40_mdio_set_speed(priv, TN40_MDIO_SPEED_6MHZ);
+>> -	priv->mdio =3D bus;
+>>   	return 0;
+>> +
+>> +err_swnodes_cleanup:
+> No need to call device_remove_software_node() ?
+It is called from tn40_swnodes_cleanup.
+>> +	tn40_swnodes_cleanup(priv);
+>> +	return ret;
+>>   }
+>> +
+>> +MODULE_FIRMWARE(AQR105_FIRMWARE);
+>>
+>> --
+>> 2.47.2
+>>
+>>
+Thanks,
+Hans-Frieder
