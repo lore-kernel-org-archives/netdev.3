@@ -1,278 +1,260 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757591EDA0F;
-	Mon, 24 Feb 2025 19:27:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA67070838
+	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 19:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740425229; cv=none; b=cclm2t5G++aynQHLJLWuhmPXQudPRbQpYBMYlxI0aCcMwSypjiVM5YLCv0A/LAdvoRuMuMXa9eSjl19OsZYifb+dtZS33lJMeGf3C8R2+c9hyw21JEl1KxmbLNpCm8smqWlhZaRpagbX/VH6qJtEo8lOP4qos79BmMQCFiRjJvs=
+	t=1740426933; cv=none; b=L3wHWc0R2UvwMczZNWxAgvwCKs18ZwE14HfHPRJRSJAfgHnwIBS/2GNU5ZSXyl083aJOqm7l8EYWS1Hd2ImOU4yn7I4jY0gsqxDBINHF/gfv4yeY6i25Sq9MhkSO5DOH1D78Lx85QSmZ7/6Goemtrz3r12b9RRgQpL973Oywfp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740425229; c=relaxed/simple;
-	bh=zms8AwfScWDNRnCzKtbTRceK4ozgPM3XizahJfE+6tI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p7GhyiyUVnT1yRTNL9fMSdPDqtmE9zMWFrlg0KRKnm9PPQpJZhIHWjqiiX++MNWCV3jyhJ7jYg+G7UYOxbFpFrKrbHuj95Fbu+UW+mAa7vxz19h1b1JcVs0m9kSi1DXYKuTympQXLNUqXnr1Y/KeBZBQapdbt+ypynVFUv93Eag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j4q+SHA7; arc=none smtp.client-ip=209.85.216.51
+	s=arc-20240116; t=1740426933; c=relaxed/simple;
+	bh=Y1AT8CyDGUWq3lLcUHZ61IOAZ/gH8bQqeC5K2lCFi1s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ga6posNk5BRJ8ts5vHJB6b1Wxwcp50smCSxLOKzeiyBBZ+QyEGAPzxGRpj1i0GecY5d3kzvjag+FBsKw0FbcdVNPe7t/1dMkoOqJod/HAdTo2WPJpHGJOjRkvRnBBEHx6YzWjrqlkJtXp+r1/GYQFFbGGcS0dcUr691LsLA/4rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R6tJF22H; arc=none smtp.client-ip=209.85.166.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j4q+SHA7"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2fbfa8c73a6so9616717a91.2;
-        Mon, 24 Feb 2025 11:27:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R6tJF22H"
+Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-3d191bfeafbso16290345ab.0
+        for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 11:55:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740425227; x=1741030027; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fNLdUwijT6W41ZsoblnFA+2AFZPup2ylwdIktRpNhS8=;
-        b=j4q+SHA7EXf0knh8DM6GL/5Og6eZo6oZM6cSRjq4gqADlhgYT4gukZ1QGPtCsBihtH
-         BLVVI/DwEe7J2F1a6rAtV5SfbhncGYtNJAlYgBx9h13EUPh1uJzqn5Dmffa80o/2fLBI
-         1tUd26LAmdyunCp4Eh1Oj5Yg8Tv8YfsmGn8HfqITk1P0UfX4NApKA4uo0q0m6FJBDPlN
-         3Rfzmw4XyjCFV1NkjafHGKrrjAVgbLOXxGNEOZZEXCTtFi2DUty88sIq7BWcT1xHmzmo
-         y5DirFpC3T4gSE3b4Q5z14px4GdYPctnLMkWXL0nuLeGmiUx+dzOamueqQC/UkyIM3ss
-         oKsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740425227; x=1741030027;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1740426931; x=1741031731; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fNLdUwijT6W41ZsoblnFA+2AFZPup2ylwdIktRpNhS8=;
-        b=kgp8QZIxb98RP24ZmcHLLgN0vAPgBaP4qfG63wyVJ04U41fDbvOZ4K4KNEyCoIEMqp
-         nCmsjsc7/dOSzHPhuTl6CVXxea/2WMqYkozT4SgRYe/IG6s50IZ8muaARJrM38722MJD
-         +DBl+mQwfpndVY9fBFmqesHJ7LKaqRksWMUzm2Dr2EJeyvEquhXvZAdXzmKEkrn1qn33
-         lQVgcFUdL6Oku3Sd9oLyzQwHrO/bCx1Fhs3+Zvh5Kn4ba9FYOsgcoGkGfzFqn7pwc/n7
-         CJtAE1en4JL+sI0gGV8+gmJvZ5XI2ft0n/WLFPcbgswOvWK1JG4e3PvfIuc1pu6r0hkU
-         Fusg==
-X-Forwarded-Encrypted: i=1; AJvYcCVo+24H2n6s1NmNizHYw1Q3Q4YtGmWl4l8Eg1wlxo+WSR8Ri69zUjh7zvBViKkVG+7dmchvCwgQak0vZa0=@vger.kernel.org, AJvYcCVo6wzUwuk1Sa5Ghlc6klClWEcsEuJsj0ayuXvLaHwEd24vlVNswETrj9Gf7WcxtZv4usE=@vger.kernel.org, AJvYcCW/8tFvT2PEFpPLVjI8A1G7IVa0aFk5EUmUJ+Ynrx5jpC635ZpY3kg77SoZWa07zs/0E76WsIe5NJ7Iay3Ni30=@vger.kernel.org, AJvYcCW9uELGb6sfcagREh6YWsJyYOvlTb+/MXqU5B7X0vCyLda0XtPyR6+/t6mIU/+Ao44iO3/6a7NnPjDaHc4E@vger.kernel.org, AJvYcCWAJPTxxwInFlBgAS/ehVMhO2fT6Y07TpxBz4Twa09BsdwE16eXYY30kM5MD8fBNO/6hr7Xn0sllnf92eY=@vger.kernel.org, AJvYcCWlo1rtLxuGqu62bLDODjtj8ItqOTX2tn2CnGFwjGtGNAWi1O7yWcWR5fE4iwikr61j56i8UonCx7nshIew@vger.kernel.org, AJvYcCWpr2XrYzwJq/kf4Zu2ElH1yxXfaGA5jYPJrwCHT/CEe56zweEu1SHE4/h3nFq8xch/ybAAQZ53@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1z2cWOtNzHmZC1FeZL25CsRi53MqFEN7IfGOX7XQR0OLFvu9x
-	wBnDqX14OHOuyqqQQ6+HlHb87viLHqHQ1n5D/yYMeUDlbRj0zO2S
-X-Gm-Gg: ASbGncsGuZ7wjRMB2Gjp/GNDozuepRqQFwiZ2aYesZi0E9cJi931jagv+n+W71ZYH4l
-	7Dkkzi//rwVlwxEP5dDXt+yxLX4wVxrftANsfBqsOQIU6ZixJRh2AdOvhfNMSAP3Nf9wyAof58r
-	Uza6656YWI6MKHMV1uNwieo18izVgj/ZyL537+uEPwY6H0/Uo+DwH3p64cEDwdHRoFCnbpGMwUV
-	6/S3olmjAthWDxq9kZ7Ta6pqRZz3hIixcBKTsjd0UBBUMjx5Ghj0u5FMtn4S0i8BUu9hOf/KUf6
-	aUZaiZYgZ0UbxBaHPtkr64O/4Q6BouUOm6jIxZHdny/4brC+jA==
-X-Google-Smtp-Source: AGHT+IH68TTuhENvYMBVibjVTmGrUAIBmwlMSF4lzlrMkZQD90CN6i4oKdfqdXSCYQRlTI+LIK96VA==
-X-Received: by 2002:a17:90b:38ca:b0:2ee:e945:5355 with SMTP id 98e67ed59e1d1-2fce86cf118mr21465186a91.19.1740425226496;
-        Mon, 24 Feb 2025 11:27:06 -0800 (PST)
-Received: from localhost (maglev-oncall.nvidia.com. [216.228.125.128])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fe6a3da759sm31947a91.13.2025.02.24.11.27.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 11:27:05 -0800 (PST)
-Date: Mon, 24 Feb 2025 14:27:03 -0500
-From: Yury Norov <yury.norov@gmail.com>
-To: Kuan-Wei Chiu <visitorckw@gmail.com>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, jk@ozlabs.org,
-	joel@jms.id.au, eajames@linux.ibm.com, andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org, rfoss@kernel.org,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-	dmitry.torokhov@gmail.com, mchehab@kernel.org,
-	awalls@md.metrocast.net, hverkuil@xs4all.nl,
-	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-	louis.peens@corigine.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
-	johannes@sipsolutions.net, gregkh@linuxfoundation.org,
-	jirislaby@kernel.org, akpm@linux-foundation.org, hpa@zytor.com,
-	alistair@popple.id.au, linux@rasmusvillemoes.dk,
-	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
-	jernej.skrabec@gmail.com, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
-	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-	oss-drivers@corigine.com, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
-	bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
-	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: Re: [PATCH 02/17] bitops: Add generic parity calculation for u64
-Message-ID: <Z7zIBwH4aUA7G9MY@thinkpad>
-References: <20250223164217.2139331-1-visitorckw@gmail.com>
- <20250223164217.2139331-3-visitorckw@gmail.com>
+        bh=dOGGEUzxww5rnJiDQOyI+Y9aqTaCCC3x+i0poXIr4Wc=;
+        b=R6tJF22H/Q/QerlB96+8df3F03lYhH3ZIYJNlM8/SWW/5OedACtfGujq3Gdn4jGETL
+         g34iEHEiFMZOEJfO881+wv2EtY3z5Dv7NimPWvj/PEZ68CnZgND2XAJq+KFCaM0C8QHr
+         Rj2UyQ87G55MVVcjweNt7BB23JXeXw+mnaCkwQrSKcCDnvE5XhuK++v5foNKA2z8xsOI
+         LoV904+VT09duXWJg4otXC2YnE5qBJ/fgdppR+o2X0o3puFNYV7vcnHjXlH3sTpOKwBB
+         RHaaIeaRoQEIu3LJaIeYw7k97jFhjBP4/MNpniN0TA78eTg4fT0Fq+CcAHoRcJkDsNAi
+         VgSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740426931; x=1741031731;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dOGGEUzxww5rnJiDQOyI+Y9aqTaCCC3x+i0poXIr4Wc=;
+        b=V+VlEklaug2y0PlmAtnSSHQUApd5wOrMkqxgk5dMf3Bilt7nnSmLMnwAjVVrZd5Dfy
+         +e79xZL6o19xZihNOKFBfM7jm1cSRYkJnEX1EHLT58WhPV7plPEAcYzHa6N0uLeW91/n
+         AlOnP+WrngHrHe1vp8rHSIFrMweoUqNMKKGMuLR23tst7EgABx1+9eBrX6BZp9AfmLC6
+         KXpOFxFsViKXRWsNxBYt9JVeB/bRjI4kCS5SZiD/1uSVRWFMYsHgp0dAgWyU1LQ4CB8i
+         Mdlnya7w0tqv3Ow8Ru5LB0q8xZW/qvwnyq3drGgkaBHNDheC3tMeS4mk1nwJ9IkRt0cD
+         egHw==
+X-Gm-Message-State: AOJu0YwMdWIiYDrH+eJY/4bsq0c4ryVumSqOmPuLmh6zQfNu07z5LOaH
+	WNwpNpKfZ7r+riXJGUdyB8sJbtOjVVvHU6LgZy7HxTApJDLGqfeWXMbtuNZ0zAL0shrws3xeI+9
+	yUAbbuF376eRRqaOlEWLIN1M6LFc=
+X-Gm-Gg: ASbGncvZo/IWlazZk8ZMeff2c+onn6sJJsKd6jMcJBhCprrccEuFMIA+3CD6IUozxPL
+	86xrlw2tKIaaiYDw1/EPCxh+vmEtqQzZiRWyszSqmiTFQJM4BAHfKO2Uc2CVTDiAdOYKY7ooUb5
+	G5jE3vIc8=
+X-Google-Smtp-Source: AGHT+IG6j3GftY1IQYa9O8aRf9XYMEOg0Z3VS+62VyTqqVCtQcLRX2fpy/7hGQb/IIxLVLKeMjSXEj7eyIIkEvLla3w=
+X-Received: by 2002:a05:6e02:16cf:b0:3d2:bac3:b45f with SMTP id
+ e9e14a558f8ab-3d2fc0d9638mr7891125ab.4.1740426930845; Mon, 24 Feb 2025
+ 11:55:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250223164217.2139331-3-visitorckw@gmail.com>
+References: <6b9347d5c1a0b364e88d900b29a616c3f8e5b1ca.1723483073.git.lucien.xin@gmail.com>
+ <2ee4d016-5e57-4d86-9dca-e4685cb183bb@nvidia.com>
+In-Reply-To: <2ee4d016-5e57-4d86-9dca-e4685cb183bb@nvidia.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Mon, 24 Feb 2025 14:55:20 -0500
+X-Gm-Features: AWEUYZmA6R4-mIPQgSltdfrpRsSKNdPagxxj05dGCM4wTGaEjTD3tMSNb48A0Cw
+Message-ID: <CADvbK_ft=B310a9dcwgnwDrPKsxhicKJ4v9wAdgPSHhG+gPjLw@mail.gmail.com>
+Subject: Re: [PATCHv2 net-next] openvswitch: switch to per-action label
+ counting in conntrack
+To: Jianbo Liu <jianbol@nvidia.com>
+Cc: network dev <netdev@vger.kernel.org>, dev@openvswitch.org, ovs-dev@openvswitch.org, 
+	davem@davemloft.net, kuba@kernel.org, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Pravin B Shelar <pshelar@ovn.org>, Ilya Maximets <i.maximets@ovn.org>, 
+	Aaron Conole <aconole@redhat.com>, Florian Westphal <fw@strlen.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 24, 2025 at 12:42:02AM +0800, Kuan-Wei Chiu wrote:
-> Several parts of the kernel open-code parity calculations using
-> different methods. Add a generic parity64() helper implemented with the
-> same efficient approach as parity8().
+On Mon, Feb 24, 2025 at 4:01=E2=80=AFAM Jianbo Liu <jianbol@nvidia.com> wro=
+te:
+>
+>
+>
+> On 8/13/2024 1:17 AM, Xin Long wrote:
+> > Similar to commit 70f06c115bcc ("sched: act_ct: switch to per-action
+> > label counting"), we should also switch to per-action label counting
+> > in openvswitch conntrack, as Florian suggested.
+> >
+> > The difference is that nf_connlabels_get() is called unconditionally
+> > when creating an ct action in ovs_ct_copy_action(). As with these
+> > flows:
+> >
+> >    table=3D0,ip,actions=3Dct(commit,table=3D1)
+> >    table=3D1,ip,actions=3Dct(commit,exec(set_field:0xac->ct_label),tabl=
+e=3D2)
+> >
+> > it needs to make sure the label ext is created in the 1st flow before
+> > the ct is committed in ovs_ct_commit(). Otherwise, the warning in
+> > nf_ct_ext_add() when creating the label ext in the 2nd flow will
+> > be triggered:
+> >
+> >     WARN_ON(nf_ct_is_confirmed(ct));
+> >
+>
+> Hi Xin Long,
+>
+> The ct can be committed before openvswitch handles packets with CT
+> actions. And we can trigger the warning by creating VF and running ping
+> over it with the following configurations:
+>
+> ovs-vsctl add-br br
+> ovs-vsctl add-port br eth2
+> ovs-vsctl add-port br eth4
+> ovs-ofctl add-flow br "table=3D0, in_port=3Deth4,ip,ct_state=3D-trk
+> actions=3Dct(table=3D1)"
+> ovs-ofctl add-flow br "table=3D1, in_port=3Deth4,ip,ct_state=3D+trk+new
+> actions=3Dct(exec(set_field:0xef7d->ct_label), commit), output:eth2"
+> ovs-ofctl add-flow br "table=3D1, in_port=3Deth4,ip,ct_label=3D0xef7d,
+> ct_state=3D+trk+est actions=3Doutput:eth2"
+>
+> The eth2 is PF, and eth4 is VF's representor.
+> Would you like to fix it?
+Hi, Jianbo,
 
-No reason to add parity32() and parity64() in separate patches
- 
-> Co-developed-by: Yu-Chun Lin <eleanor15x@gmail.com>
-> Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-> Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-> ---
->  include/linux/bitops.h | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
-> 
-> diff --git a/include/linux/bitops.h b/include/linux/bitops.h
-> index fb13dedad7aa..67677057f5e2 100644
-> --- a/include/linux/bitops.h
-> +++ b/include/linux/bitops.h
-> @@ -281,6 +281,28 @@ static inline int parity32(u32 val)
->  	return (0x6996 >> (val & 0xf)) & 1;
->  }
->  
-> +/**
-> + * parity64 - get the parity of an u64 value
-> + * @value: the value to be examined
-> + *
-> + * Determine the parity of the u64 argument.
-> + *
-> + * Returns:
-> + * 0 for even parity, 1 for odd parity
-> + */
-> +static inline int parity64(u64 val)
-> +{
-> +	/*
-> +	 * One explanation of this algorithm:
-> +	 * https://funloop.org/codex/problem/parity/README.html
+Sure, we have to attach a new ct to the skb in __ovs_ct_lookup() for
+this case, and even delete the one created before ovs_ct.
 
-This is already referenced in sources. No need to spread it for more.
+Can you check if this works on your env?
 
-> +	 */
-> +	val ^= val >> 32;
-> +	val ^= val >> 16;
-> +	val ^= val >> 8;
-> +	val ^= val >> 4;
-> +	return (0x6996 >> (val & 0xf)) & 1;
+diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+index 3bb4810234aa..c599ee013dfe 100644
+--- a/net/openvswitch/conntrack.c
++++ b/net/openvswitch/conntrack.c
+@@ -595,6 +595,11 @@ static bool skb_nfct_cached(struct net *net,
+             rcu_dereference(timeout_ext->timeout))
+             return false;
+     }
++    if (IS_ENABLED(CONFIG_NF_CONNTRACK_LABELS) && !nf_ct_labels_find(ct)) =
+{
++        if (nf_ct_is_confirmed(ct))
++            nf_ct_delete(ct, 0, 0);
++        return false;
++    }
 
-It's better to avoid duplicating the same logic again and again.
+Thanks.
 
-> +}
-> +
-
-So maybe make it a macro?
-
-
-From f17a28ae3429f49825d65ebc0f7717c6a191a3e2 Mon Sep 17 00:00:00 2001
-From: Yury Norov <yury.norov@gmail.com>
-Date: Mon, 24 Feb 2025 14:14:27 -0500
-Subject: [PATCH] bitops: generalize parity8()
-
-The generic parity calculation approach may be easily generalized for
-other standard types. Do that and drop sub-optimal implementation of
-parity calculation in x86 code.
-
-Signed-off-by: Yury Norov [NVIDIA] <yury.norov@gmail.com>
----
- arch/x86/kernel/bootflag.c | 14 +-----------
- include/linux/bitops.h     | 47 +++++++++++++++++++++++++++-----------
- 2 files changed, 35 insertions(+), 26 deletions(-)
-
-diff --git a/arch/x86/kernel/bootflag.c b/arch/x86/kernel/bootflag.c
-index 3fed7ae58b60..4a85c69a28f8 100644
---- a/arch/x86/kernel/bootflag.c
-+++ b/arch/x86/kernel/bootflag.c
-@@ -2,6 +2,7 @@
- /*
-  *	Implement 'Simple Boot Flag Specification 2.0'
-  */
-+#include <linux/bitops.h>
- #include <linux/types.h>
- #include <linux/kernel.h>
- #include <linux/init.h>
-@@ -20,19 +21,6 @@
- 
- int sbf_port __initdata = -1;	/* set via acpi_boot_init() */
- 
--static int __init parity(u8 v)
--{
--	int x = 0;
--	int i;
--
--	for (i = 0; i < 8; i++) {
--		x ^= (v & 1);
--		v >>= 1;
--	}
--
--	return x;
--}
--
- static void __init sbf_write(u8 v)
- {
- 	unsigned long flags;
-diff --git a/include/linux/bitops.h b/include/linux/bitops.h
-index c1cb53cf2f0f..29601434f5f4 100644
---- a/include/linux/bitops.h
-+++ b/include/linux/bitops.h
-@@ -230,10 +230,10 @@ static inline int get_count_order_long(unsigned long l)
- }
- 
- /**
-- * parity8 - get the parity of an u8 value
-+ * parity - get the parity of a value
-  * @value: the value to be examined
-  *
-- * Determine the parity of the u8 argument.
-+ * Determine parity of the argument.
-  *
-  * Returns:
-  * 0 for even parity, 1 for odd parity
-@@ -241,24 +241,45 @@ static inline int get_count_order_long(unsigned long l)
-  * Note: This function informs you about the current parity. Example to bail
-  * out when parity is odd:
-  *
-- *	if (parity8(val) == 1)
-+ *	if (parity(val) == 1)
-  *		return -EBADMSG;
-  *
-  * If you need to calculate a parity bit, you need to draw the conclusion from
-  * this result yourself. Example to enforce odd parity, parity bit is bit 7:
-  *
-- *	if (parity8(val) == 0)
-+ *	if (parity(val) == 0)
-  *		val ^= BIT(7);
-+ *
-+ * One explanation of this algorithm:
-+ * https://funloop.org/codex/problem/parity/README.html
-  */
--static inline int parity8(u8 val)
--{
--	/*
--	 * One explanation of this algorithm:
--	 * https://funloop.org/codex/problem/parity/README.html
--	 */
--	val ^= val >> 4;
--	return (0x6996 >> (val & 0xf)) & 1;
--}
-+#define parity(val)					\
-+({							\
-+	u64 __v = (val);				\
-+	int __ret;					\
-+	switch (BITS_PER_TYPE(val)) {			\
-+	case 64:					\
-+		__v ^= __v >> 32;			\
-+		fallthrough;				\
-+	case 32:					\
-+		__v ^= __v >> 16;			\
-+		fallthrough;				\
-+	case 16:					\
-+		__v ^= __v >> 8;			\
-+		fallthrough;				\
-+	case 8:						\
-+		__v ^= __v >> 4;			\
-+		__ret =  (0x6996 >> (__v & 0xf)) & 1;	\
-+		break;					\
-+	default:					\
-+		BUILD_BUG();				\
-+	}						\
-+	__ret;						\
-+})
-+
-+#define parity8(val)	parity((u8)(val))
-+#define parity32(val)	parity((u32)(val))
-+#define parity64(val)	parity((u64)(val))
- 
- /**
-  * __ffs64 - find first set bit in a 64 bit word
--- 
-2.43.0
-
+>
+> Thanks!
+> Jianbo
+>
+> > Signed-off-by: Xin Long <lucien.xin@gmail.com>
+> > ---
+> > v2: move ovs_net into #if in ovs_ct_exit() as Jakub noticed.
+> > ---
+> >   net/openvswitch/conntrack.c | 30 ++++++++++++------------------
+> >   net/openvswitch/datapath.h  |  3 ---
+> >   2 files changed, 12 insertions(+), 21 deletions(-)
+> >
+> > diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+> > index 8eb1d644b741..a3da5ee34f92 100644
+> > --- a/net/openvswitch/conntrack.c
+> > +++ b/net/openvswitch/conntrack.c
+> > @@ -1368,11 +1368,8 @@ bool ovs_ct_verify(struct net *net, enum ovs_key=
+_attr attr)
+> >           attr =3D=3D OVS_KEY_ATTR_CT_MARK)
+> >               return true;
+> >       if (IS_ENABLED(CONFIG_NF_CONNTRACK_LABELS) &&
+> > -         attr =3D=3D OVS_KEY_ATTR_CT_LABELS) {
+> > -             struct ovs_net *ovs_net =3D net_generic(net, ovs_net_id);
+> > -
+> > -             return ovs_net->xt_label;
+> > -     }
+> > +         attr =3D=3D OVS_KEY_ATTR_CT_LABELS)
+> > +             return true;
+> >
+> >       return false;
+> >   }
+> > @@ -1381,6 +1378,7 @@ int ovs_ct_copy_action(struct net *net, const str=
+uct nlattr *attr,
+> >                      const struct sw_flow_key *key,
+> >                      struct sw_flow_actions **sfa,  bool log)
+> >   {
+> > +     unsigned int n_bits =3D sizeof(struct ovs_key_ct_labels) * BITS_P=
+ER_BYTE;
+> >       struct ovs_conntrack_info ct_info;
+> >       const char *helper =3D NULL;
+> >       u16 family;
+> > @@ -1409,6 +1407,12 @@ int ovs_ct_copy_action(struct net *net, const st=
+ruct nlattr *attr,
+> >               return -ENOMEM;
+> >       }
+> >
+> > +     if (nf_connlabels_get(net, n_bits - 1)) {
+> > +             nf_ct_tmpl_free(ct_info.ct);
+> > +             OVS_NLERR(log, "Failed to set connlabel length");
+> > +             return -EOPNOTSUPP;
+> > +     }
+> > +
+> >       if (ct_info.timeout[0]) {
+> >               if (nf_ct_set_timeout(net, ct_info.ct, family, key->ip.pr=
+oto,
+> >                                     ct_info.timeout))
+> > @@ -1577,6 +1581,7 @@ static void __ovs_ct_free_action(struct ovs_connt=
+rack_info *ct_info)
+> >       if (ct_info->ct) {
+> >               if (ct_info->timeout[0])
+> >                       nf_ct_destroy_timeout(ct_info->ct);
+> > +             nf_connlabels_put(nf_ct_net(ct_info->ct));
+> >               nf_ct_tmpl_free(ct_info->ct);
+> >       }
+> >   }
+> > @@ -2002,17 +2007,9 @@ struct genl_family dp_ct_limit_genl_family __ro_=
+after_init =3D {
+> >
+> >   int ovs_ct_init(struct net *net)
+> >   {
+> > -     unsigned int n_bits =3D sizeof(struct ovs_key_ct_labels) * BITS_P=
+ER_BYTE;
+> > +#if  IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+> >       struct ovs_net *ovs_net =3D net_generic(net, ovs_net_id);
+> >
+> > -     if (nf_connlabels_get(net, n_bits - 1)) {
+> > -             ovs_net->xt_label =3D false;
+> > -             OVS_NLERR(true, "Failed to set connlabel length");
+> > -     } else {
+> > -             ovs_net->xt_label =3D true;
+> > -     }
+> > -
+> > -#if  IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+> >       return ovs_ct_limit_init(net, ovs_net);
+> >   #else
+> >       return 0;
+> > @@ -2021,12 +2018,9 @@ int ovs_ct_init(struct net *net)
+> >
+> >   void ovs_ct_exit(struct net *net)
+> >   {
+> > +#if  IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+> >       struct ovs_net *ovs_net =3D net_generic(net, ovs_net_id);
+> >
+> > -#if  IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+> >       ovs_ct_limit_exit(net, ovs_net);
+> >   #endif
+> > -
+> > -     if (ovs_net->xt_label)
+> > -             nf_connlabels_put(net);
+> >   }
+> > diff --git a/net/openvswitch/datapath.h b/net/openvswitch/datapath.h
+> > index 9ca6231ea647..365b9bb7f546 100644
+> > --- a/net/openvswitch/datapath.h
+> > +++ b/net/openvswitch/datapath.h
+> > @@ -160,9 +160,6 @@ struct ovs_net {
+> >   #if IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+> >       struct ovs_ct_limit_info *ct_limit_info;
+> >   #endif
+> > -
+> > -     /* Module reference for configuring conntrack. */
+> > -     bool xt_label;
+> >   };
+> >
+> >   /**
+>
