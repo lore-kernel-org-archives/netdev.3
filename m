@@ -1,173 +1,234 @@
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2072.outbound.protection.outlook.com [40.107.241.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-2-37.ptr.blmpb.com (va-2-37.ptr.blmpb.com [209.127.231.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0129D261370;
-	Mon, 24 Feb 2025 17:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740417864; cv=fail; b=exzLdRTuaCMQH3nrFMUW8dyyhIVHbhc5qFChPvRDrRAlLp51WfX+9BZ+AXBryTWgBbiFvWN0sb9w6+DwzLb4gTOs5L/mJj07f7G8sEsHpC0DHTqBWSzr9Dr2EWClY/HJUEabSsBeGqfwD4H4gfoBRM8xsS3EjL11IRiFbkajyII=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740417864; c=relaxed/simple;
-	bh=qD45OOt/Jg7yPzXS5s0cB+mli+xNi3XXECi5yd7QQE8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=fwFdi3sPjld1JfEoNGfIsCrYhMkNc8jvoEW8qCwih48DMTSw7zvJn6aVbf1w1MID4wrT4Rw/lT0B3eMWtMFcBb/CXlJwWFbQ97ZjSNjoNOumkBSzn8BY1rocS6enS7xGr/ra868XYQSfjzy2kVsFX4+cHjnw7CL+HY+bSykb94k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=I2g8g2Hj; arc=fail smtp.client-ip=40.107.241.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA5F265609
+	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 17:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.37
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740417888; cv=none; b=vBE7Fu9pCMhphElBFAphKDH0VTTCzNKAL5qPTREwVy6dqrZLG65aXaLMswV59FDCDHMy7uMo/KXX6KuuqZ4Bm6At+KlaDI/qfzhLddRdIUB2qDkAfO3Vpqicl3Tr2M2IjBWKUH9AJDRSCU4AkhmtIo3QpTDbOTjV0tSkMR75hRc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740417888; c=relaxed/simple;
+	bh=5uY+kvIT85UGVh6ElEeO1LULy+xaAUawOsTNJDAIoqA=;
+	h=To:Subject:From:Date:Message-Id:Mime-Version:In-Reply-To:Cc:
+	 Content-Type:References; b=o1z/qjUHOyUHudUnCQ/w6YWNnF42wMh5cGdaWsj5dUnSWTXyK6y4uIHG+0u5intOEGJmctlxKxYfSdq/qG2K7bIbseG5mQ9i/nfZrUAwiZxzTPTCdyWLpblsY1oG6dQjGvgZkdf/FmyoxP9yyBja2tM4PwLkCxBQQvhbaMCUT3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=J4bi1/if; arc=none smtp.client-ip=209.127.231.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="I2g8g2Hj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b4bLy3xUOXRPlktj+rG2RLk8XrggpR6akrmYLruGITPyPNeSKwMHGyI7pj+imxVD9ToOs/o7m57z9+8J6UFzL9XgIdOpYTo1tTE1WKI5iL50+GAzRNr7Ul/9/VA0VWxlJF1XSJwLQFkWdPxMkRqDx//cu1SzsjHxqmcg03YlNe1OKojIh5UUmCVtsZkq9r48rfEGMcAy1XmH0q6bMnZHFDPZV/lExhEutnTT7up0LUM6xH+rZJpc1gBEddlA7c/V7ijPk13+ajE8+HiTo6tokqY48ob++dzqnHHcmKm8rEXKgN0Lu7Uvpo8PdV/ZO2tK9hIA95xKhy8LOatPH7IOzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qD45OOt/Jg7yPzXS5s0cB+mli+xNi3XXECi5yd7QQE8=;
- b=kKLWDDz8JDzEoLx/vLX2CopWq5teOPMukxj7X6WSvc4gWyCLojD4G+VWGHcnzLb+7L238nnhR8JwaAu3mE+3+bI8DTiezQ4OaBJQJ900zMzA9Y+myMH3xHk+VZHM7+4+61VqOg79g1bympXWz76Pj98tAYE+s5HAj0rozJ8WBY3oKXwlMx3boZ9zdrNjm8yZUT71xB1ypBqDvisVuBQhHpvYsqzx6AK0ny6J7IQDFK/9mM5mFV+haqKNDvogeiCLeWfoJGjvdFQ813z7crLJKAYGx9k/f/VZGmYZfMeBzzHkFk/jCRDRT1Mgmnsbbj49BKpe0lZri2aZJrwExOAMjQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qD45OOt/Jg7yPzXS5s0cB+mli+xNi3XXECi5yd7QQE8=;
- b=I2g8g2Hjz0iicPbaHhgQUUJKejTI71Vzbv7qpyk2y/KHX7e1BEVu7htXM3Cdhyle33nMYyhIQ/+wgboB30kbjopP8rSXruko6Xk8h6uNEjSNdZLE46JnJeux0QA/uUJpffcHHYpu4pMXFKfXN5USBDB1ytKg8A/GrNTkqLodksOY9/m2PQsQSDkAdHaIj3oIFC1j5T81Ravfv3CGv0ostr64ebZI4tD/mPOa+pr3XY9pDYbe/8Dx+CVzV9XX2qAP5rYdJ8Y+tu5DEs6QmgrSU7j8MyIbWqHn0SoZI62kGAvPKMnhpqEJy2m0jLGJ3XYiwN75fVf+c5Bz8RBemfXrRA==
-Received: from AS8PR04MB8849.eurprd04.prod.outlook.com (2603:10a6:20b:42c::17)
- by AS8PR04MB9512.eurprd04.prod.outlook.com (2603:10a6:20b:40f::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Mon, 24 Feb
- 2025 17:24:18 +0000
-Received: from AS8PR04MB8849.eurprd04.prod.outlook.com
- ([fe80::d8e2:1fd7:2395:b684]) by AS8PR04MB8849.eurprd04.prod.outlook.com
- ([fe80::d8e2:1fd7:2395:b684%7]) with mapi id 15.20.8445.013; Mon, 24 Feb 2025
- 17:24:18 +0000
-From: Claudiu Manoil <claudiu.manoil@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
-CC: Ioana Ciornei <ioana.ciornei@nxp.com>, "Y.B. Lu" <yangbo.lu@nxp.com>,
-	"michal.swiatkowski@linux.intel.com" <michal.swiatkowski@linux.intel.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v3 net 1/8] net: enetc: fix the off-by-one issue in
- enetc_map_tx_buffs()
-Thread-Topic: [PATCH v3 net 1/8] net: enetc: fix the off-by-one issue in
- enetc_map_tx_buffs()
-Thread-Index: AQHbhq9wx4lMgg5hf0+pOQpl/n0mn7NWtBkA
-Date: Mon, 24 Feb 2025 17:24:18 +0000
-Message-ID:
- <AS8PR04MB88490516A23201E2696E752B96C02@AS8PR04MB8849.eurprd04.prod.outlook.com>
-References: <20250224111251.1061098-1-wei.fang@nxp.com>
- <20250224111251.1061098-2-wei.fang@nxp.com>
-In-Reply-To: <20250224111251.1061098-2-wei.fang@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR04MB8849:EE_|AS8PR04MB9512:EE_
-x-ms-office365-filtering-correlation-id: b1f664a0-a1d1-4aa2-ea8b-08dd54f811b8
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?SWagDCpXffybOfg7l1+w9zEqMqCDI3hT2EkYAgVgtWrIlFrxK9IuO4tqVVN0?=
- =?us-ascii?Q?vMnCugU+DAOqab+YRniB6OyVr5FBrFW7lOTbLBuiHaO8mxDXTznBFHh7mjhz?=
- =?us-ascii?Q?GpofJRxmX36jmSEXpxtsTQ62H7797ZP778bElprvjxx2FjRwapw41JOgjeHb?=
- =?us-ascii?Q?8hOcHqRDOTmnzbNYtEBX1ioV3ayZW7nkYDJ2D5DSB5dlf+GXikxbH9qQhmRA?=
- =?us-ascii?Q?7LaQQfMD8wyjc9kn9/taevbfrkdsxNvTM2B/4tIKoFHVylseTkHyjTRAqYC3?=
- =?us-ascii?Q?fZgHkQU/xmosej4OMAhJcx+WOuzja1mISNvCWCydz6tQVOcD3lgDnVxkJRMG?=
- =?us-ascii?Q?vyRxTpaKxEjvajj/G4rovm2vqI532z+XPRop55+jdMNAG4kOhsfgg4xfDbm5?=
- =?us-ascii?Q?b5Tpd9t7Rrqs8lsf3jDUZxeK3z4POe69cEHxru1lxchyWzfKSSHv9C/rvFXN?=
- =?us-ascii?Q?VpA0S+as+cpcWnzSWNKzudUL1NJdaoa1HJT2W1TKh7MiVmzRq7hQBwYvUb+x?=
- =?us-ascii?Q?boLrEApZyTnjRRwJStT79Qi4ZVQNFIjLwUQIt0uM3RrKbkp398f/pv9xnp4J?=
- =?us-ascii?Q?f+Vaawb5rEpWpirwTQzpTXFm7XMR/6zVFwP9WXzdbIXneX4D3Ql5wbGRcw/J?=
- =?us-ascii?Q?5wfukqMoIgr+B7X7WKoZXiMO6LV0O8ltLLk5FVX+0kDMR4JdqUhoC972n8uU?=
- =?us-ascii?Q?9ATldGHqL44Hb37apJrWJbdWfHVg5N3fuhET1EinG8tFmXQrwU4ym3+FFktS?=
- =?us-ascii?Q?9VPzNAcrPobpqwkgZlCMQpJqqTMxq4njKPHTIbFkwjf3AwOz//ZOogjP8iAR?=
- =?us-ascii?Q?wl4xgTaD6bvh28U2I4HS1nO3RAK4r53JiYsUkHW4zyirG+vjNpcQ22C/ljBL?=
- =?us-ascii?Q?wIXxCJajtfv3ydZwRRjUv/9fxAOprmkf+23n2aMkjVACXMUCXyVHtxtpWYLJ?=
- =?us-ascii?Q?8OIsLcGsFq02SrwmXajfYekGV+nApF9YS/Gq15Z7qPLRrPquDeQnYHdNRKDs?=
- =?us-ascii?Q?OCxKMctEkeqxEd9Ui3anSmRBPVpmtsXEGXVre36E5V/eN6T4pLVkqYZI2dBe?=
- =?us-ascii?Q?Rd+mgTXHK/dre1sw+VWMX0QGiUGp5A+q+FMkjnBbESld8HmBBVU5fUwvV8Qk?=
- =?us-ascii?Q?4AiTQOUJmSl7BbKTdShaZ/Sn+3+CkFCVHbsB5mkz3HtftvT67m36jWNsuefw?=
- =?us-ascii?Q?0XKi97Judqy2EkghMKsWwr/cX77L8fo5YpVBy6ZkQnwF9UpNj8P9/iEpqu43?=
- =?us-ascii?Q?IRzOW7WOb1ZGky7IEbTVSc4ztroB0DuMf9OIpbJ13uk38yF+9byGe2V0214A?=
- =?us-ascii?Q?IVrNxniiNUR5iGw1fEjohBk5z14q5FwwqnFygU759yuWXikusaSWNgtMGhfz?=
- =?us-ascii?Q?q0A86B5ePFJKr48lzRel1f+VnjkxXtMvxH6cJ8iA/hEp75x5kKkyke9AyjRf?=
- =?us-ascii?Q?q/aDHSn4ILMoreaaWk5T5DeS8EpAgXoT?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8849.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?llonv02E4MfvqxqmQgg3Ss6T+SyZYmNt3sjXpOXeV/KgcPeFKnHhl9yyP6uH?=
- =?us-ascii?Q?mp3KI6WWoQYl9o+vyS/DrSSX0Dj1Vh/FvGBpFWXOXqwoFsADHrgF3n37zEh1?=
- =?us-ascii?Q?u4xLxuNaxJcgNSogphBJCGGdaH62nOzI0dzQ8N9egGMrNjZ9h3AVWELfba79?=
- =?us-ascii?Q?ENJYv2cIxsSbx1odSfZtFiWbvu6plXNyMIxDX6zu9dixz32lJOz4/IsXenHC?=
- =?us-ascii?Q?MuPwQ8j2Eh1MiCzMH0rHY/Q4UC14vK1JnkHiEgHIbDULYXchjdgSXBshz71J?=
- =?us-ascii?Q?aydcVZrSxhNnMmtxBW2CoPB0JaoffCbT17qkYt62GVdTcPkpmfUs6b3lmfyD?=
- =?us-ascii?Q?biRizvdMfX5c4pp5gwXoPtDX59w4cegdikT+PmnycvzGkyrGflw64NGypWoW?=
- =?us-ascii?Q?BbJGZlyfRFxR1rgYGf+5IY1fUKpTd0Q5l/YmnAFEISkS9Rrwk//dBUbfbfSN?=
- =?us-ascii?Q?qKWFtshtzTzuoMddQAanq8/AA1g6Lf8wheP+etJGtAGLk5Y0u0YV1EgP/T3z?=
- =?us-ascii?Q?Sk4ih6KWoCH5sTwx+83dveyehP1BcTB7ANrlvHBFeJ0LJzGF+35AxeVVXbSD?=
- =?us-ascii?Q?hFQ+VESpGk1yRiIvNwGpooY9F8zGsnssZjyzCdP1ONtOSElnwTpxy4ToYn+J?=
- =?us-ascii?Q?pPmu3u9nBBOY0BxxhZQ8nB9rJHjsgnLu5Zd142WIEL8ZrbY4FQe4+NfxyJz8?=
- =?us-ascii?Q?1zWQ4EKAhiPSWOAl1KFf9pn/obqk7V4ngqxPm3RSA+tUZUCawfNQ3NPQq3aE?=
- =?us-ascii?Q?0MsnoxZ5q6qWQNkJrhapiObQ36EGpx112WYSM3iyQLMBSe+24686tWsUsvnn?=
- =?us-ascii?Q?sUFYBCB0sV0OzarT8ahNJJUvsDNxfVknTA8+WmYTXmBozYxZxT05jNAj6IYL?=
- =?us-ascii?Q?Eq9ROVob1u3pt/scT/vrHCogbjyiJJCINApjOjhpbf3hqFpvt2ictEFKY+zr?=
- =?us-ascii?Q?w0GGgymfkr1i8RHcjSDnKywGb827KIRVLSNrNDEko9ssiqt3/Y80n3yr6cU7?=
- =?us-ascii?Q?omIub4GobS48gQ2CJrXZA1hTQwrjO12030TCRicam1IwYxw5ju93mY3ZJuf4?=
- =?us-ascii?Q?+Tlf4mwBpYNtZORpkUUeHWaWzIlsFc9us1w1DddRnxJ1IdzaULxn4foJ9Cdy?=
- =?us-ascii?Q?8IFbv5ThX0oSjIRqvcf6r74Iqb/w4SwtRJNdPQC9bMuUxuh0Yb8zX3PyPl66?=
- =?us-ascii?Q?5gOsPvuTY94QBP80Dmv6t2KBqXUHWjVckbiJ5T9EgDIHz4f3w9yFd6rvUzqz?=
- =?us-ascii?Q?4szQi1gNDBQ+LZu28j4zRHzHAoyaZnc4xn04t7Xd61SqcwItE+BAGDjKdTta?=
- =?us-ascii?Q?kgmb9z3HJHd60zkHCa7AnZymdQySHpy1mhCxFZMEESAYm8tLSig8M8Im+hVU?=
- =?us-ascii?Q?4Y5BtnMU7HEctNlML4Uvqj3cZVBPeLGa2cFgWJ2NgyIey+1NXaHJGXooMXXs?=
- =?us-ascii?Q?muQ4lMX2D5BpmN5SFhO4N5Y0by8YdDNv5hurvdVhcTLkMW6v9CEok6KXyjxC?=
- =?us-ascii?Q?c53DTwkTie+h55qp5tvh4bp6MF+lZYaMRGp9s4jmR4zwVxO859dyIVWW/KnU?=
- =?us-ascii?Q?Mzy9iQE8bvCoHpc8Tl5mR6VnUyIFfyz6I0DgUfAI?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="J4bi1/if"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2403070942; d=yunsilicon.com; t=1740417875; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=m39T5dA573KDvecKGhEC+Ej38N1ikwbRr1YncP+Z/zg=;
+ b=J4bi1/ifmFfO4M9IpC5xHuifeCOAKTz5clehnJkK9GspMfoiqskc5Y9wq0ngCNYCah5Pa4
+ kVfIGlfAohlxSTDJXjWVi77gSUHsGQjhcno1OUnrZU8aVQTruptNu/6BPxmlG1E1xgSANy
+ 1cisOcZ0zMNEbbsqTr8K7Dy1mjAdODIeXxvCUH5myiezs6fwTmoEukibsGshnev+azgYsd
+ U9qNGF6YoovuT7ZxgzCMAysBurihjnhEFPRV2SAQK/1xY+o3G086oULovqEnTbH1ZxlCAk
+ HFDdQUWp+RVEfHUo10XpDzsr4TvVDE3I1KWGGlTOCz8YP3B/4RClPmFZvdgbsQ==
+To: <netdev@vger.kernel.org>
+Subject: [PATCH net-next v5 08/14] xsc: Add ethernet interface
+Content-Transfer-Encoding: 7bit
+X-Mailer: git-send-email 2.25.1
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+From: "Xin Tian" <tianx@yunsilicon.com>
+Date: Tue, 25 Feb 2025 01:24:33 +0800
+Message-Id: <20250224172432.2455751-9-tianx@yunsilicon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8849.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1f664a0-a1d1-4aa2-ea8b-08dd54f811b8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2025 17:24:18.2070
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: wvFL1zzr5G1mya95oXBwgau6hBxl8gBDXYgKJTo4oFEHhWq85qXw99g6mRepVFrh+3H8RF4r2K9hq0zPiz2wpw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9512
+Mime-Version: 1.0
+In-Reply-To: <20250224172416.2455751-1-tianx@yunsilicon.com>
+Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
+	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
+	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
+	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <horms@kernel.org>, 
+	<parthiban.veerasooran@microchip.com>, <masahiroy@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+References: <20250224172416.2455751-1-tianx@yunsilicon.com>
+X-Lms-Return-Path: <lba+267bcab52+75d4b2+vger.kernel.org+tianx@yunsilicon.com>
+Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Tue, 25 Feb 2025 01:24:33 +0800
 
-> -----Original Message-----
-> From: Wei Fang <wei.fang@nxp.com>
-> Sent: Monday, February 24, 2025 1:13 PM
-[...]
-> Subject: [PATCH v3 net 1/8] net: enetc: fix the off-by-one issue in
-> enetc_map_tx_buffs()
->=20
-> When a DMA mapping error occurs while processing skb frags, it will free
-> one more tx_swbd than expected, so fix this off-by-one issue.
->=20
-> Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet
-> drivers")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Suggested-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
+Implement an auxiliary driver for ethernet and initialize the
+netdevice simply.
 
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
+Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
+Co-developed-by: Lei Yan <jacky@yunsilicon.com>
+Signed-off-by: Lei Yan <jacky@yunsilicon.com>
+Signed-off-by: Xin Tian <tianx@yunsilicon.com>
+---
+ drivers/net/ethernet/yunsilicon/Makefile      |   2 +-
+ .../net/ethernet/yunsilicon/xsc/net/main.c    | 100 ++++++++++++++++++
+ .../net/ethernet/yunsilicon/xsc/net/xsc_eth.h |  16 +++
+ .../yunsilicon/xsc/net/xsc_eth_common.h       |  15 +++
+ 4 files changed, 132 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/main.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
+
+diff --git a/drivers/net/ethernet/yunsilicon/Makefile b/drivers/net/ethernet/yunsilicon/Makefile
+index 6fc8259a7..65b9a6265 100644
+--- a/drivers/net/ethernet/yunsilicon/Makefile
++++ b/drivers/net/ethernet/yunsilicon/Makefile
+@@ -4,5 +4,5 @@
+ # Makefile for the Yunsilicon device drivers.
+ #
+ 
+-# obj-$(CONFIG_YUNSILICON_XSC_ETH) += xsc/net/
++obj-$(CONFIG_YUNSILICON_XSC_ETH) += xsc/net/
+ obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc/pci/
+\ No newline at end of file
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/main.c b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
+new file mode 100644
+index 000000000..da309dc63
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
+@@ -0,0 +1,100 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#include <linux/netdevice.h>
++#include <linux/etherdevice.h>
++#include <linux/auxiliary_bus.h>
++
++#include "common/xsc_core.h"
++#include "xsc_eth_common.h"
++#include "xsc_eth.h"
++
++static int xsc_get_max_num_channels(struct xsc_core_device *xdev)
++{
++	return min_t(int, xdev->dev_res->eq_table.num_comp_vectors,
++		     XSC_ETH_MAX_NUM_CHANNELS);
++}
++
++static int xsc_eth_probe(struct auxiliary_device *adev,
++			 const struct auxiliary_device_id *adev_id)
++{
++	struct xsc_adev *xsc_adev = container_of(adev, struct xsc_adev, adev);
++	struct xsc_core_device *xdev = xsc_adev->xdev;
++	struct xsc_adapter *adapter;
++	struct net_device *netdev;
++	int num_chl, num_tc;
++	int err;
++
++	num_chl = xsc_get_max_num_channels(xdev);
++	num_tc = xdev->caps.max_tc;
++
++	netdev = alloc_etherdev_mqs(sizeof(struct xsc_adapter),
++				    num_chl * num_tc, num_chl);
++	if (!netdev) {
++		pr_err("alloc_etherdev_mqs failed, txq=%d, rxq=%d\n",
++		       (num_chl * num_tc), num_chl);
++		return -ENOMEM;
++	}
++
++	netdev->dev.parent = &xdev->pdev->dev;
++	adapter = netdev_priv(netdev);
++	adapter->netdev = netdev;
++	adapter->pdev = xdev->pdev;
++	adapter->dev = &adapter->pdev->dev;
++	adapter->xdev = xdev;
++	xdev->eth_priv = adapter;
++
++	err = register_netdev(netdev);
++	if (err) {
++		netdev_err(netdev, "register_netdev failed, err=%d\n", err);
++		goto err_free_netdev;
++	}
++
++	return 0;
++
++err_free_netdev:
++	free_netdev(netdev);
++
++	return err;
++}
++
++static void xsc_eth_remove(struct auxiliary_device *adev)
++{
++	struct xsc_adev *xsc_adev = container_of(adev, struct xsc_adev, adev);
++	struct xsc_core_device *xdev = xsc_adev->xdev;
++	struct xsc_adapter *adapter;
++
++	if (!xdev)
++		return;
++
++	adapter = xdev->eth_priv;
++	if (!adapter) {
++		netdev_err(adapter->netdev, "failed! adapter is null\n");
++		return;
++	}
++
++	unregister_netdev(adapter->netdev);
++
++	free_netdev(adapter->netdev);
++
++	xdev->eth_priv = NULL;
++}
++
++static const struct auxiliary_device_id xsc_eth_id_table[] = {
++	{ .name = XSC_PCI_DRV_NAME "." XSC_ETH_ADEV_NAME },
++	{},
++};
++MODULE_DEVICE_TABLE(auxiliary, xsc_eth_id_table);
++
++static struct auxiliary_driver xsc_eth_driver = {
++	.name = "eth",
++	.probe = xsc_eth_probe,
++	.remove = xsc_eth_remove,
++	.id_table = xsc_eth_id_table,
++};
++module_auxiliary_driver(xsc_eth_driver);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Yunsilicon XSC ethernet driver");
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
+new file mode 100644
+index 000000000..0c70c0d59
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#ifndef __XSC_ETH_H
++#define __XSC_ETH_H
++
++struct xsc_adapter {
++	struct net_device	*netdev;
++	struct pci_dev		*pdev;
++	struct device		*dev;
++	struct xsc_core_device	*xdev;
++};
++
++#endif /* __XSC_ETH_H */
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
+new file mode 100644
+index 000000000..b5640f05d
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#ifndef __XSC_ETH_COMMON_H
++#define __XSC_ETH_COMMON_H
++
++#define XSC_LOG_INDIR_RQT_SIZE		0x8
++
++#define XSC_INDIR_RQT_SIZE		BIT(XSC_LOG_INDIR_RQT_SIZE)
++#define XSC_ETH_MIN_NUM_CHANNELS	2
++#define XSC_ETH_MAX_NUM_CHANNELS	XSC_INDIR_RQT_SIZE
++
++#endif
+-- 
+2.18.4
