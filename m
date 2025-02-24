@@ -1,70 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx01lb.world4you.com (mx01lb.world4you.com [81.19.149.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E60204687;
-	Mon, 24 Feb 2025 22:26:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258741F1312
+	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 22:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740436006; cv=none; b=rVChCcV9xq7NvYnFcn7USHS+b4N7SAoNtq8R3DQm/tz213y7IBudTUM6PHcN/2vAmbvrJ8Pv6g137uSzvCoZLnLfLddCLfujN7eE7qst7jjzFGDDzDaqC7e4OtyVciyPj6RUMV41JQvjgUobtTxuu7FWA/YNe4JVGXnUmlGyxSY=
+	t=1740436051; cv=none; b=XA0uc0iUbghNO9yO9sEtVInW/8yHVuOdTdt6yrNGTBL/zNOZDqCUGXNG6nexwH8J3b4mWf869T0hTtMM/1FepvV+Xi9iHnBHQ04aMNorfbr+cexztLBkxUEKpPex78WQ/VQkL4BgD0d4NeEReSj8jAphiz3ypX/sw7qwhXCP930=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740436006; c=relaxed/simple;
-	bh=QcYkjBOdJxVH7cTUR2mujk8yFO9GgvzVk3JPMLEdJYY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JNiHsMfTi80muNX6i8CYai+jbDLymlRXgB0DI/d/+ZHqt7hmm/QBRk8Za4YW5HR+z45C7wcVW/lopP7RQ72Bg51z2VKcfLEu5LtRpFFf8SFRmox56ctfxFCuWZ6vEqut7aQ5Pq9fknMQR4dIa1ZUYJ9UKf9BQ6DknitjkXKsoGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oDkB0OAs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740436051; c=relaxed/simple;
+	bh=Q+bHxqB67kYqMMhboLBd8Aon2lRk4KNr6LrCqaueGRw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NvqW4rtLeZAz+d2nF9BxcAuHYSljdOEW9bEFZUMkuYYH1UPstxjzAD5Gehp/7eqF/SwZO9PeJMNvhJb29WOn61j+yoRT0rd0fhmJMfYsoX7S0s2r+STPKEALwh1kN/V+ZRQhZ/BqNp7ane5oCQ8YOxjLIe9WDBxlLD/KbqmKATM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=CtTTWIvE; arc=none smtp.client-ip=81.19.149.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oDkB0OAs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E195AC4CED6;
-	Mon, 24 Feb 2025 22:26:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740436005;
-	bh=QcYkjBOdJxVH7cTUR2mujk8yFO9GgvzVk3JPMLEdJYY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oDkB0OAs0nKzmO2rtq1kGyfMOb3Qqw6+x5fFKJhmM5XXmzHb3U09awJj5hIIJ6/6L
-	 dWzeZ4yx3oQJmfv3VN4VxX6tPZFJGyvCgoHFnLx6EQeuhAAw13S8qCivfOf6LkQ+F0
-	 u9isopyZEYfXbejwBRpkLmB4V19EIQxhyndApNOCUtgrrLnk8Tc9LWasW+Q88a9rZC
-	 C6fiBbsvoj3NPOZo7FWodAk/Z2hC1Hiqz1VyGMi4r4f+ZIEwbVSkGYgAv2R/Wg9Qqf
-	 1PJlMpX+MBuXmyThuyOJoSCLezYc16xLq8ibWm/4t1ELDcj1e7iOp4q3ki5CQyzwxx
-	 qB7B3m8sUFOfQ==
-Date: Mon, 24 Feb 2025 14:26:44 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, ricardo@marliere.net, viro@zeniv.linux.org.uk,
- dmantipov@yandex.ru, aleksander.lobakin@intel.com,
- linux-ppp@vger.kernel.org, linux-kernel@vger.kernel.org, mrpre@163.com,
- syzbot+853242d9c9917165d791@syzkaller.appspotmail.com
-Subject: Re: [PATCH net-next v2 1/1] ppp: Fix KMSAN warning by initializing
- 2-byte header
-Message-ID: <20250224142644.7c084e9e@kernel.org>
-In-Reply-To: <20250221061219.295590-2-jiayuan.chen@linux.dev>
-References: <20250221061219.295590-1-jiayuan.chen@linux.dev>
-	<20250221061219.295590-2-jiayuan.chen@linux.dev>
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="CtTTWIvE"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=UwHmqgwVdt2K/L3CPJTeic2/urMaIsMWeM7KmwhUiQ8=; b=CtTTWIvEQqdPNSogMjJc+oTI9r
+	mX66EstYWvUPx3wQlVWeTfO94NQQsffXRpn1NoPQm3uU+WVLxw3Tjy2ntlMXaj0t+VcJH7A4mTEPC
+	X6A+/6Uwz/xlDhvY76M2BCu7EHDNPo55fOaftc0GVktWLLW5H/e7p3yMd9NezrTY7xms=;
+Received: from [88.117.55.1] (helo=hornet.engleder.at)
+	by mx01lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tmfnf-000000000wu-3HEU;
+	Mon, 24 Feb 2025 22:15:40 +0100
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	Gerhard Engleder <gerhard@engleder-embedded.com>
+Subject: [PATCH net-next v8 0/8] Support loopback mode speed selection
+Date: Mon, 24 Feb 2025 22:15:23 +0100
+Message-Id: <20250224211531.115980-1-gerhard@engleder-embedded.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-AV-Do-Run: Yes
+X-ACL-Warn: X-W4Y-Internal
 
-On Fri, 21 Feb 2025 14:12:19 +0800 Jiayuan Chen wrote:
-> +		/* Check if we should pass this packet.
-> +		 * BPF filter instructions assume each PPP packet has a 4-byte
-> +		 * header (e.g., those generated by libpcap), and then default
-> +		 * to skipping the first 2 bytes at the beginning of the
-> +		 * instruction. However, we still need to initialize these
-> +		 * 2-byte new headers to prevent crafted BPF programs from
-> +		 * reading them which would cause reading of uninitialized
-> +		 * data. Here, we set the headers according to the RFC 1662.
-> +		 */
-> +		*(u16 *)skb_push(skb, 2) = htons(0xff03);
+Previously to commit 6ff3cddc365b ("net: phylib: do not disable autoneg
+for fixed speeds >= 1G") it was possible to select the speed of the
+loopback mode by configuring a fixed speed before enabling the loopback
+mode. Now autoneg is always enabled for >= 1G and a fixed speed of >= 1G
+requires successful autoneg. Thus, the speed of the loopback mode depends
+on the link partner for >= 1G. There is no technical reason to depend on
+the link partner for loopback mode. With this behavior the loopback mode
+is less useful for testing.
 
-The constant from the RFC deserves a #define or enum.
-Looks like we may already need it in one other place:
+Allow PHYs to support optional speed selection for the loopback mode.
+This support is implemented for the generic loopback support and for PHY
+drivers, which obviously support speed selection for loopback mode.
+Additionally, loopback support according to the data sheet is added to
+the KSZ9031 PHY.
 
-drivers/net/wan/fsl_ucc_hdlc.h:#define DEFAULT_PPP_HEAD    0xff03
+Extend phy_loopback() to signal link up and down if speed changes,
+because a new link speed requires link up signalling.
+
+Use this loopback speed selection in the tsnep driver to select the
+loopback mode speed depending the previously active speed. User space
+tests with 100 Mbps and 1 Gbps loopback are possible again.
+
+v8:
+- align naming and kdoc of selftest set enum (Jakub Kicinski)
+- add support for all link speeds (Jakub Kicinski)
+
+v7:
+- simplify ksz9031_set_loopback() (Andrew Lunn)
+- try to restore link if loopback enable fails (Andrew Lunn)
+- extend generic selftests to enable reuse (Andrew Lunn)
+
+v6:
+- add return value documentation to phy_loopback() (Jakub Kicinski)
+
+v5:
+- use phy_write() instead of phy_modify() (Russel King)
+- add missing inline for export dummies (kernel test robot)
+
+v4:
+- resend without changed to RFC v3
+
+RFC v3:
+- align set_loopback() of Marvell to Micrel (Andrew Lunn)
+- transmit packets in loopback selftests (Andrew Lunn)
+- don't flush PHY statemachine in phy_loopback()
+- remove setting of carrier on and link mode after phy_loopback() in tsnep
+
+v2:
+- signal link up to keep MAC and PHY in sync about speed (Andrew Lunn)
+
+Gerhard Engleder (8):
+  net: phy: Allow loopback speed selection for PHY drivers
+  net: phy: Support speed selection for PHY loopback
+  net: phy: micrel: Add loopback support
+  net: phy: marvell: Align set_loopback() implementation
+  tsnep: Select speed for loopback
+  net: selftests: Support selftest sets
+  net: selftests: Add selftests sets with fixed speed
+  tsnep: Add loopback selftests
+
+ drivers/net/ethernet/engleder/tsnep_main.c    |  21 +-
+ .../net/ethernet/engleder/tsnep_selftests.c   |  30 ++-
+ .../net/ethernet/hisilicon/hns/hns_ethtool.c  |   4 +-
+ .../hisilicon/hns3/hns3pf/hclge_main.c        |   4 +-
+ .../hisilicon/hns3/hns3pf/hclge_mdio.c        |   2 +-
+ .../stmicro/stmmac/stmmac_selftests.c         |   8 +-
+ drivers/net/phy/adin1100.c                    |   5 +-
+ drivers/net/phy/dp83867.c                     |   5 +-
+ drivers/net/phy/marvell.c                     |  68 +++---
+ drivers/net/phy/micrel.c                      |  24 ++
+ drivers/net/phy/mxl-gpy.c                     |  11 +-
+ drivers/net/phy/phy-c45.c                     |   5 +-
+ drivers/net/phy/phy.c                         |  87 +++++++
+ drivers/net/phy/phy_device.c                  |  43 +---
+ drivers/net/phy/xilinx_gmii2rgmii.c           |   7 +-
+ include/linux/phy.h                           |  18 +-
+ include/net/selftests.h                       |  29 +++
+ net/core/selftests.c                          | 216 +++++++++++++-----
+ 18 files changed, 417 insertions(+), 170 deletions(-)
+
 -- 
-pw-bot: cr
+2.39.5
+
