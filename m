@@ -1,202 +1,291 @@
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2050.outbound.protection.outlook.com [40.107.95.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF3723CF08
-	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 09:00:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740387619; cv=none; b=MRoqIBwG6sCkeYkOZavd7JCtFctWQVJ+lePBu9cV3hNu5hQHNV3LwnQxzvJmsN7RZGtspniCBShzDGnybVtU6KwxXX4Dmd7lEt9nDkA2jinpBaaPSEgQ2eRVp8FusuB4wij4Ex5nnbo1SOz7xZ4thE9Pv1W3fZe1NC9F7Jg0BNU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740387619; c=relaxed/simple;
-	bh=PixDCnEeAQ3D7Efu+RAjO/ulrL8/4igNruqwXDK7djw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LE6YEFJGxmwbayvBX2Gv8xE2ipluKuq+Bv92385i7wQ+Xyazkk7l+lwTiNohJHmT9ne06JO/XtYKm92o2kJ+DlhHMeaQHIYPaIs5WQ60WSI42KEsSApyUaIFfniKVR5bD4wOPJaC4efOcnLcXMu2dP0e6PNKfj0kvYiMxrK5zNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=QKn7u7lE; arc=none smtp.client-ip=209.85.161.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC7FEEB5
+	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 09:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740387710; cv=fail; b=mEd3RvsNrUSLP59MZ98/GJzwyXae4+yO3pckWB43pXAZwUWvPGSbowHeCRDyoxF+nyRO3hOtj1DkLcAQO7vuK8SPpjSgqWERVFNBLRuK8CVjidAzLKo496rE3s5BjMdB3alfjxsi1JD0cLlMxlRmo1vxyhXiG+iXJHEfaK+orsQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740387710; c=relaxed/simple;
+	bh=tjHdXygWR4nZWa/t0lt3BUSLc48qarmpUdD3k69mCWo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=V/xuOlE2B7P66Y5QH3AlVOGYsn+1ZBLUFPrasIdHRgU3YkjrcrgLGsS1/c7Ryn7bxts73jvdLsKsPCofcw0IeqT5n8pAt5Yb3pr0Et5W0/dNGVqYjZv9teKRx1mMltmYopTJuARRhXGUE/npjjcfvUF0IBlPSEpRctB3kFgcCdU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qglvDVLm; arc=fail smtp.client-ip=40.107.95.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="QKn7u7lE"
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5fd0c7be155so1878123eaf.1
-        for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 01:00:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1740387617; x=1740992417; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=PixDCnEeAQ3D7Efu+RAjO/ulrL8/4igNruqwXDK7djw=;
-        b=QKn7u7lECDe07DTiZZ9WkD4bx1nqzoK3UK1+Yz3qjJdwTxUAn941Ad1I+u89bfzZtn
-         Pxb8rPrI1dWKiyzyFQ1xVgX3uBZuBZ/f9eloyI87DOQ53j2C7WW8TzVTmtYtAUrgYxWN
-         MS6DCa859Ti0tdIa1RGmWW3HxsLlCCQhZMLew=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740387617; x=1740992417;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PixDCnEeAQ3D7Efu+RAjO/ulrL8/4igNruqwXDK7djw=;
-        b=ksqvwAGtrI/wOAM77htnvQ5VBNRlGP44WbmUzUHDTR0C3AF8uH2NOqY+i27UGDxoEU
-         KlWuXXxnS539rykOsiNrsKRjKR5o+6Ptkmvk46rv8DCGA52SbtPKdIToFC2Pn1+KLGE7
-         zSkgST2Z3kA8qgsslOFC+pS+FqX9AUw6Kch6P9ubCy73l7hwS4cR13nb4ucu5BD/iC4w
-         2dxxkxpKB+nQhqrOdnDlUV+kSGkwyFTeuaAY0M5YrkRDkw5mflnJFxKZ7sxo7lVzNIlY
-         nXmbCkpah6fwNT5oSZVZuzaaap6EexC4dioGfQ0ihgXjS8Xu8K+t3a2KFzymdDoXFgtO
-         NdbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWK4qKb1RGBxoBV1In0Nz00h1JLZaV7vqiAMoglrvPfjweNKHuHR7GKnSKe76Zq/z9hQr5PlH8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+U68Lj7C22/6xsG5GTakG2B4Eu0ybWrvLEfKw12qNIC4Od07O
-	pBslAfwLDLTavgEHn+S4M8SZT4Bp0HxubVBF/ELW0A5m5SA4rrwvzn3AlMoj9tBgVHtr7tnDxhF
-	sD2Ll6PVg9P/+nsO9iV5JEaZxLniKV2v8G04x
-X-Gm-Gg: ASbGncsLzZbek0Mg1Hy3HWfAhRFUn0mFgwDFV+/9WeveHwsfAT5b8NXdPEcY5cBcCkE
-	gXoJ3kWnFDTRlU7TLulmy447uT/sILEpuQxTX6o1pjk7m4jseNuAXKzhphcb/jm2GaUi/N2ksWk
-	WhBT6kCJBv
-X-Google-Smtp-Source: AGHT+IF+E4//s2y4VgMubTDSl5iSy1aAs3L+0lHZFTZgV1cC3NriWLyMlC+IWWQGCmst2T9kOdY8tUBjOECNMM0OXiE=
-X-Received: by 2002:a05:6820:4901:b0:5fc:f2b7:9853 with SMTP id
- 006d021491bc7-5fd0ad6257emr11420798eaf.0.1740387616784; Mon, 24 Feb 2025
- 01:00:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qglvDVLm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GHLjbufS4VzkKKi9BEuvEylxM3gPu+SoueRBLuccE4EYPTsVlbNF6GpQ2uZqmL+X2hXFTYvGxYDys/oHnglMnpasbsg7FXLRioYvEHgzfUDSGgUGff+omskMcWm6KIFl97uI63ehwgawAJmDm8LaUl1+ry4dw9IIl6FxNv7LkngCV8C1KpdxXVk33WxutyggAc3/glVAk3jYY5RYocFstwzelB2JpaawIpqkKJd0XJ4zDKrdROxgYdX6cYdnl2HnJ9J9RI+nY9OKOP4rifwLOGFoa5os2OEJ4X/bpwSGJJ/z/J0K3HxGbmBvDZV1UkYxywr9oMFR3fCufEB9Mhf5jg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xGfHrqaOOpnIJ6TQSVAL2yW3JxDWPUoSFLzxWu1Wk7E=;
+ b=s1Khp/zFdxyelq3YLylgA2S2ooqy9e2x9QapFdJ8JhrQCqjUSf65hRjrDxroPRuzmRNq8iptUd0RTEdGi8v8gOHeqO4KDL3VTnQ7u/q7/So6NPpne1qEQMyehIQGX6r3ebkDoLZhRGq9ZSpayKgy8kkVMi/YF2w011AsVqVDdo8xBvaPjARIaOSkkJqtOgJtcGuUmd0bZf+TkWakvFTBJeFqnvtNLWjwbL2SMaF6waWLLG4Z6KCK3OdixAEauKjMCnCYFMD5BteSw8KrpeJFGKse63x6+z02pGtkFhpMTP6B0DPJsrmc1oTftNu1r0h0rjuFctowP7OBW5RytelbzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xGfHrqaOOpnIJ6TQSVAL2yW3JxDWPUoSFLzxWu1Wk7E=;
+ b=qglvDVLmNykFtjPR72t6Ce/U9mjeZZFSG/rqFLr/1OvZODisvSZ6TXxj5oLzRH3TBCP9/ejVgiBLAq3nXk3d5QcpmP+N8FT6dStHGdaW7g+0IRr9P2PAdDxtK8zMnEoX+VsXTI35D7cLom9RuydFIkaSEPtjgA1Ax0sTKUoSnsBrlYBUkb+wgXpDGR6ArFesaDMFcIL/waAXPPNLGca2Dv5hzwKCH157DpexFjsWC/5V+sljFmmdg1bvBIv1v6PFwpRd2eFMja5NdmGSzYiaazwabAqp0xoCTQcYMudVoKRODRX+hgUZ60Q1LH/GQ+JhNWIOvZn7kHJHONaa/Y2oYA==
+Received: from BY5PR17CA0071.namprd17.prod.outlook.com (2603:10b6:a03:167::48)
+ by IA0PR12MB7750.namprd12.prod.outlook.com (2603:10b6:208:431::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Mon, 24 Feb
+ 2025 09:01:44 +0000
+Received: from SJ5PEPF00000203.namprd05.prod.outlook.com
+ (2603:10b6:a03:167:cafe::69) by BY5PR17CA0071.outlook.office365.com
+ (2603:10b6:a03:167::48) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8466.17 via Frontend Transport; Mon,
+ 24 Feb 2025 09:01:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ5PEPF00000203.mail.protection.outlook.com (10.167.244.36) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8489.16 via Frontend Transport; Mon, 24 Feb 2025 09:01:44 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 24 Feb
+ 2025 01:01:31 -0800
+Received: from [10.19.165.164] (10.126.230.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 24 Feb
+ 2025 01:01:28 -0800
+Message-ID: <2ee4d016-5e57-4d86-9dca-e4685cb183bb@nvidia.com>
+Date: Mon, 24 Feb 2025 17:01:25 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1740076496-14227-1-git-send-email-selvin.xavier@broadcom.com> <20250223133456.GA53094@unreal>
-In-Reply-To: <20250223133456.GA53094@unreal>
-From: Selvin Xavier <selvin.xavier@broadcom.com>
-Date: Mon, 24 Feb 2025 14:30:04 +0530
-X-Gm-Features: AWEUYZnVIziCUIInlPq1jE68iiIIVs8MBnThc1DKUedrT8PjVStL1hXI_uoFip4
-Message-ID: <CA+sbYW3VdewdCrU+PtvAksXXyi=zgGm6Yk=BHNNfbp1DDjRKcQ@mail.gmail.com>
-Subject: Re: [PATCH rdma-next 0/9] RDMA/bnxt_re: Driver Debug Enhancements
-To: Leon Romanovsky <leon@kernel.org>
-Cc: jgg@ziepe.ca, linux-rdma@vger.kernel.org, andrew.gospodarek@broadcom.com, 
-	kalesh-anakkur.purayil@broadcom.com, netdev@vger.kernel.org, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, abeni@redhat.com, 
-	horms@kernel.org, michael.chan@broadcom.com
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000b0f8d1062edf9161"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv2 net-next] openvswitch: switch to per-action label
+ counting in conntrack
+To: Xin Long <lucien.xin@gmail.com>, network dev <netdev@vger.kernel.org>,
+	<dev@openvswitch.org>, <ovs-dev@openvswitch.org>
+CC: <davem@davemloft.net>, <kuba@kernel.org>, Eric Dumazet
+	<edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Pravin B Shelar
+	<pshelar@ovn.org>, Ilya Maximets <i.maximets@ovn.org>, Aaron Conole
+	<aconole@redhat.com>, Florian Westphal <fw@strlen.de>
+References: <6b9347d5c1a0b364e88d900b29a616c3f8e5b1ca.1723483073.git.lucien.xin@gmail.com>
+Content-Language: en-US
+From: Jianbo Liu <jianbol@nvidia.com>
+In-Reply-To: <6b9347d5c1a0b364e88d900b29a616c3f8e5b1ca.1723483073.git.lucien.xin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF00000203:EE_|IA0PR12MB7750:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8ceb61ac-ff8a-4a91-6648-08dd54b1dc84
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Z3l4VmlIK3g2OHRrTUdaTnBtNU85V3NIblQvRzJBQjU1K3VVNkV0cmxpVGh6?=
+ =?utf-8?B?eUo5OExmWTBYMDBiZjBraUt1VWtZL2hLSVVDYUdsL3MxVHdFbEc5SFFEdmF1?=
+ =?utf-8?B?S1ExTzNKcXlNWi92QzhyVG0rMkVjYVJDQTQ3NFpCMTVidFZweThxK0swQ3li?=
+ =?utf-8?B?THB0a2JpRFdlUm5rbC9IOUZneDJlWit0QWpVZFQvVXc4V3pubFZYano5ZTha?=
+ =?utf-8?B?dE9XSGJjLzYrOUtXd0plOW1YcTF1NzVvZGxHbzliWGMwQ2o3Q3JoYVpkbjBP?=
+ =?utf-8?B?Z3AvU0oxRXBJNkxqTEpSU2hZUmNyVTBJNUszMDRPMzRzNFkvTDlXcFhCeTVC?=
+ =?utf-8?B?WEx0MGdyN0s1aks2aktxVHRiTGxaVXdvTkswaDJIWjl5Z0J1RGVEVWFhWEdV?=
+ =?utf-8?B?RzhlSkJoVDkraUFYNGFGbkdGUTRuZlBseWordXdXaEJVbjFEekxuQm5VcENZ?=
+ =?utf-8?B?MEFTYmlUUkpwR0Y1YjFuaGpRQnBkL0xJUVdVUGwrOXdpQTUzcmN0cG5vb2JP?=
+ =?utf-8?B?a0hEamRTdHhVUWRIZ1RzK3BDMnF4cG9UZ3pCQlRwOG45OVZGYmhkaDJZZE5R?=
+ =?utf-8?B?aGR0TEU1Ykw3S2VaMS9VSmxybWo4WUtoNGc5VE56NGZibGtCRnZhcmVaL2lN?=
+ =?utf-8?B?UGtLZGp3TWZZNGZGWjJOa0hEUVdYRkRYb1lrRFJuYkhTK1UyNlFycGZIdnMx?=
+ =?utf-8?B?a0lld0h4ZGZvKy9uMnFsRGlQNmdTWWdWdG9aSmtudkVTZGlGeG5lRVdPSzJn?=
+ =?utf-8?B?SmFpSGFYNkhFRktsZmxISkNLQWIrZ1g2MzV1YlBrNFZVb1F3dXdISWEwWHBq?=
+ =?utf-8?B?WWlpYXVwMFpZcEFXeHFjblRsNnJEa21GUWpRb3Y2TGRHL0VOaUdmK2puNEVN?=
+ =?utf-8?B?akYwYk94clZta3g3a3dISEl0a0ljZHlFbWtBTlQ1VzdITmt1ZnhlNGVueHJ3?=
+ =?utf-8?B?VTJwYnQ0WVN5em9hV2dIdGRYL1puTXQreGtoOUNXb3RDUktMZSt5M3EzcHdD?=
+ =?utf-8?B?Wk9QdzhhTUFtUVppVW5nMm9XM0JmcVBXaE1SOFlRb1JLcUVZcDFvYURHK2kw?=
+ =?utf-8?B?UnQ0elRnUXRNNGppMGY5blh2OVh4aTBFYmlLTlNzK0NkVW54dk03c0QvaFJO?=
+ =?utf-8?B?VXRUTGtYaUVrV3RZVjBKYzE2cmRUZTVuUHBkTHF0NjUxYkRJM29GV0pvN1RG?=
+ =?utf-8?B?UWtMODVLeFZQaDQ1S1dlVHlWU2JjZUtYUGd1azZQV2tXZ1hhN1k3SW1lWE80?=
+ =?utf-8?B?TDgzdUgvKzJGZmw2akpEdXJ1andnNTh3OXFNOS9UdHlCUFl4Mk5BTWg1YkpY?=
+ =?utf-8?B?RWVyMHNMOTg1SEhscEwyRzNNY2k4alpKeDR1R0hNUkpENXVBQnJVcGpNMDh2?=
+ =?utf-8?B?WWc0cGpoNHNXMi9CdEorR1FNb3hlbHhXbExSOTM4R1R3RWNJdElVa2ZmT0RT?=
+ =?utf-8?B?MGN4Qm5RRW5xbFM4dzdqR2lHS2xTZDZsRjhUYzJkS3d3RUNzQkkxUHJRMFFa?=
+ =?utf-8?B?ejJLQlM1Vk5sMUpoaHhBRVE5b0U2WG9wc0l0VWJjSWwzaFJDNWVCMHl1U0Vi?=
+ =?utf-8?B?Nng3OGRNTUhXMkk1QWVWcXRBM3o5RDRiMUR5dDhudUlhZGZvM3dWZlIxVjB0?=
+ =?utf-8?B?T0F6ZmxpdGxCRWY2RUZQQ291dUJRQXVVdVVyZjY3b2tCWSsyZXdIV09DVm54?=
+ =?utf-8?B?OXFMT2lIa2t2UG0zUXdjWEY5NFNhOThKdTBPdVEvcGZrUFZ1S3ZCV00waU9p?=
+ =?utf-8?B?R1g0c3VZdmdIVHNjYldKVGVGUzhIL2taUGdlM0g3aWx4NmppeVE5dFk0Vk5y?=
+ =?utf-8?B?eWdKb1ExdlBpNzgwdm1wNTNoSitiNThudWpOSnh5UmxXWTE3VTZEYXowWTZs?=
+ =?utf-8?B?bXJBWlRyazJRSVBZVlhBQWQvK2lEOXEwMm44aHQ5VE9rQ2lKT3REdXN3REdj?=
+ =?utf-8?B?L0t5SWszanEzT3RWVThnWm1vbEl6OEtQQXJHaGlnMlhkVTZSamlBRC8yUlIr?=
+ =?utf-8?Q?xtKQHlGPu+VyachA65N1raJHn+EWFk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 09:01:44.1775
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8ceb61ac-ff8a-4a91-6648-08dd54b1dc84
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF00000203.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7750
 
---000000000000b0f8d1062edf9161
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 23, 2025 at 7:05=E2=80=AFPM Leon Romanovsky <leon@kernel.org> w=
-rote:
->
-> On Thu, Feb 20, 2025 at 10:34:47AM -0800, Selvin Xavier wrote:
-> > For debugging issues in the field, we need to track some of
-> > the resources destroyed in the past. This is primarily required
-> > for tracking certain QPs that encountered errors, leading to
-> > application exits. A framework has been implemented to
-> > save this information and retrieve it during coredump collection.
-> >
-> > The Broadcom bnxt L2 driver supports collecting driver dumps
-> > using the ethtool -w option. This feature now also supports
-> > collecting coredump information from the bnxt_re auxiliary driver.
-> > Two new callbacks have been implemented to exchange dump
-> > information supported by the auxbus bnxt_re driver.
-> >
-> > The bnxt_re driver caches certain hardware information before
-> > resources are destroyed in the HW.
->
-> Unfortunately, no. The idea that you will cache kernel objects and they
-> live beyond their HW counterpart doesn't fit RDMA object model.
-Since the scale of the resources are in thousands usually, we can not dump
-the debug information to the system logs. So we are not having much context=
- of
-the failure and this is the reason for having this new mechanism.
->
-> I'm aware that you are not keeping objects itself, but their shadow
-> copy. So if you want, your FW can store these failed objects and you
-> will retrieve them through existing netdev side (ethtool -w ...).
-FW doesn't have enough memory to backup this info. It needs to
-be backed up in the host memory and FW has to write it to host memory
-when an error happens. This is possible in some newer FW versions.
-But itt is not just the HW context that we are caching here. We need to bac=
-kup
-some host side driver/lib info also to correlate with the HW context.
-We have been debugging issues like this using our Out of box driver
-and we find it useful to get the context
-of failure. Some of the internal tools can decode this information and
-we want to
-have the same behavior between inbox and Out of Box driver.
 
->
-> Thanks
+On 8/13/2024 1:17 AM, Xin Long wrote:
+> Similar to commit 70f06c115bcc ("sched: act_ct: switch to per-action
+> label counting"), we should also switch to per-action label counting
+> in openvswitch conntrack, as Florian suggested.
+> 
+> The difference is that nf_connlabels_get() is called unconditionally
+> when creating an ct action in ovs_ct_copy_action(). As with these
+> flows:
+> 
+>    table=0,ip,actions=ct(commit,table=1)
+>    table=1,ip,actions=ct(commit,exec(set_field:0xac->ct_label),table=2)
+> 
+> it needs to make sure the label ext is created in the 1st flow before
+> the ct is committed in ovs_ct_commit(). Otherwise, the warning in
+> nf_ct_ext_add() when creating the label ext in the 2nd flow will
+> be triggered:
+> 
+>     WARN_ON(nf_ct_is_confirmed(ct));
+> 
 
---000000000000b0f8d1062edf9161
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+Hi Xin Long,
 
-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
-FYMZp2DojLAq9f4Oi2OBetbnWxo0WGycXpmq/jC4PUx2u9mazQ79i80VLagGRshWniESXuf+SYG8
-+zBimjld9ZZnwm7itHAZdtme4YYFxx+EHa4PUxPV8t+hPHhsiIjirPa1pVXPbQIDAQABo4IB2zCC
-AdcwDgYDVR0PAQH/BAQDAgWgMIGjBggrBgEFBQcBAQSBljCBkzBOBggrBgEFBQcwAoZCaHR0cDov
-L3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAu
-Y3J0MEEGCCsGAQUFBzABhjVodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29u
-YWxzaWduMmNhMjAyMDBNBgNVHSAERjBEMEIGCisGAQQBoDIBKAowNDAyBggrBgEFBQcCARYmaHR0
-cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBJBgNVHR8EQjBA
-MD6gPKA6hjhodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24yY2Ey
-MDIwLmNybDAlBgNVHREEHjAcgRpzZWx2aW4ueGF2aWVyQGJyb2FkY29tLmNvbTATBgNVHSUEDDAK
-BggrBgEFBQcDBDAfBgNVHSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQU3TaH
-dsgUhTW3LwObmZ20fj+8Xj8wDQYJKoZIhvcNAQELBQADggEBAAbt6Sptp6ZlTnhM2FDhkVXks68/
-iqvfL/e8wSPVdBxOuiP+8EXGLV3E72KfTTJXMbkcmFpK2K11poBDQJhz0xyOGTESjXNnN6Eqq+iX
-hQtF8xG2lzPq8MijKI4qXk5Vy5DYfwsVfcF0qJw5AhC32nU9uuIPJq8/mQbZfqmoanV/yadootGr
-j1Ze9ndr+YDXPpCymOsynmmw0ErHZGGW1OmMpAEt0A+613glWCURLDlP8HONi1wnINV6aDiEf0ad
-9NMGxDsp+YWiRXD3txfo2OMQbpIxM90QfhKKacX8t1J1oAAWxDrLVTJBXBNvz5tr+D1sYwuye93r
-hImmkM1unboxggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWdu
-IG52LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIw
-Agxy+Cu4x/7lM0zxY7cwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIGjmyldl/iRU
-Euy5akIF3qOStDIAWAeCJciWrcl+SglYMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZI
-hvcNAQkFMQ8XDTI1MDIyNDA5MDAxN1owaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJ
-YIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcN
-AQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQCa49m4gB6O3M0DwS8j08HSZyErcU2I
-hq+SUctFvpegpCUo8dudSl1HGjoDEr21sE/AaumE+3YaS8r95+8ZHEgYzCnGYON5OX3yGr3NeKul
-GMW/Q2+/31v8lTO38pUh051dcR++BNShJfmUJs3DdBZhxbgYp+Y7eisf4nP6gTOGrmapSukvuBKH
-wGN5cldUIJwQuZiNS0FrL8rzNvMYj2nVx8652/eutGnWZHmz48rSyQruXlLDLmYtMmrN5SgIQhTP
-KWaAvn/XPkPttshw/MAa3VvBD5CNlYyeH10AM2MAiNCsdjjZ1AHhhPU4M33UCRBiE60Fcfr24GsR
-FZpU+T7d
---000000000000b0f8d1062edf9161--
+The ct can be committed before openvswitch handles packets with CT 
+actions. And we can trigger the warning by creating VF and running ping 
+over it with the following configurations:
+
+ovs-vsctl add-br br
+ovs-vsctl add-port br eth2
+ovs-vsctl add-port br eth4
+ovs-ofctl add-flow br "table=0, in_port=eth4,ip,ct_state=-trk 
+actions=ct(table=1)"
+ovs-ofctl add-flow br "table=1, in_port=eth4,ip,ct_state=+trk+new 
+actions=ct(exec(set_field:0xef7d->ct_label), commit), output:eth2"
+ovs-ofctl add-flow br "table=1, in_port=eth4,ip,ct_label=0xef7d, 
+ct_state=+trk+est actions=output:eth2"
+
+The eth2 is PF, and eth4 is VF's representor.
+Would you like to fix it?
+
+Thanks!
+Jianbo
+
+> Signed-off-by: Xin Long <lucien.xin@gmail.com>
+> ---
+> v2: move ovs_net into #if in ovs_ct_exit() as Jakub noticed.
+> ---
+>   net/openvswitch/conntrack.c | 30 ++++++++++++------------------
+>   net/openvswitch/datapath.h  |  3 ---
+>   2 files changed, 12 insertions(+), 21 deletions(-)
+> 
+> diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+> index 8eb1d644b741..a3da5ee34f92 100644
+> --- a/net/openvswitch/conntrack.c
+> +++ b/net/openvswitch/conntrack.c
+> @@ -1368,11 +1368,8 @@ bool ovs_ct_verify(struct net *net, enum ovs_key_attr attr)
+>   	    attr == OVS_KEY_ATTR_CT_MARK)
+>   		return true;
+>   	if (IS_ENABLED(CONFIG_NF_CONNTRACK_LABELS) &&
+> -	    attr == OVS_KEY_ATTR_CT_LABELS) {
+> -		struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
+> -
+> -		return ovs_net->xt_label;
+> -	}
+> +	    attr == OVS_KEY_ATTR_CT_LABELS)
+> +		return true;
+>   
+>   	return false;
+>   }
+> @@ -1381,6 +1378,7 @@ int ovs_ct_copy_action(struct net *net, const struct nlattr *attr,
+>   		       const struct sw_flow_key *key,
+>   		       struct sw_flow_actions **sfa,  bool log)
+>   {
+> +	unsigned int n_bits = sizeof(struct ovs_key_ct_labels) * BITS_PER_BYTE;
+>   	struct ovs_conntrack_info ct_info;
+>   	const char *helper = NULL;
+>   	u16 family;
+> @@ -1409,6 +1407,12 @@ int ovs_ct_copy_action(struct net *net, const struct nlattr *attr,
+>   		return -ENOMEM;
+>   	}
+>   
+> +	if (nf_connlabels_get(net, n_bits - 1)) {
+> +		nf_ct_tmpl_free(ct_info.ct);
+> +		OVS_NLERR(log, "Failed to set connlabel length");
+> +		return -EOPNOTSUPP;
+> +	}
+> +
+>   	if (ct_info.timeout[0]) {
+>   		if (nf_ct_set_timeout(net, ct_info.ct, family, key->ip.proto,
+>   				      ct_info.timeout))
+> @@ -1577,6 +1581,7 @@ static void __ovs_ct_free_action(struct ovs_conntrack_info *ct_info)
+>   	if (ct_info->ct) {
+>   		if (ct_info->timeout[0])
+>   			nf_ct_destroy_timeout(ct_info->ct);
+> +		nf_connlabels_put(nf_ct_net(ct_info->ct));
+>   		nf_ct_tmpl_free(ct_info->ct);
+>   	}
+>   }
+> @@ -2002,17 +2007,9 @@ struct genl_family dp_ct_limit_genl_family __ro_after_init = {
+>   
+>   int ovs_ct_init(struct net *net)
+>   {
+> -	unsigned int n_bits = sizeof(struct ovs_key_ct_labels) * BITS_PER_BYTE;
+> +#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+>   	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
+>   
+> -	if (nf_connlabels_get(net, n_bits - 1)) {
+> -		ovs_net->xt_label = false;
+> -		OVS_NLERR(true, "Failed to set connlabel length");
+> -	} else {
+> -		ovs_net->xt_label = true;
+> -	}
+> -
+> -#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+>   	return ovs_ct_limit_init(net, ovs_net);
+>   #else
+>   	return 0;
+> @@ -2021,12 +2018,9 @@ int ovs_ct_init(struct net *net)
+>   
+>   void ovs_ct_exit(struct net *net)
+>   {
+> +#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+>   	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
+>   
+> -#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+>   	ovs_ct_limit_exit(net, ovs_net);
+>   #endif
+> -
+> -	if (ovs_net->xt_label)
+> -		nf_connlabels_put(net);
+>   }
+> diff --git a/net/openvswitch/datapath.h b/net/openvswitch/datapath.h
+> index 9ca6231ea647..365b9bb7f546 100644
+> --- a/net/openvswitch/datapath.h
+> +++ b/net/openvswitch/datapath.h
+> @@ -160,9 +160,6 @@ struct ovs_net {
+>   #if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+>   	struct ovs_ct_limit_info *ct_limit_info;
+>   #endif
+> -
+> -	/* Module reference for configuring conntrack. */
+> -	bool xt_label;
+>   };
+>   
+>   /**
+
