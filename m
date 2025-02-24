@@ -1,174 +1,629 @@
-Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2043.outbound.protection.outlook.com [40.107.103.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from lf-2-53.ptr.blmpb.com (lf-2-53.ptr.blmpb.com [101.36.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B17262D37;
-	Mon, 24 Feb 2025 17:27:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740418041; cv=fail; b=ugdIqcT4JHkwixYj4EcisuzWUOArgVhPQw+Yg3eW7i/u6RFh71UTpu2z/NNOSIDwp0o0BZ3E8TpsPzu6hgnpc1x0F+ZyXWSoSk1f7PYPvjZzfPnkZ47oFDiVID5D4FKQbBUvewptGGNX1UOfgfYT1ZKnkKGu3+ypKx4VLluOBs8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740418041; c=relaxed/simple;
-	bh=5KCBV0ux8UGCD1/wmChbl/z+nPJjN19hatRf9RBQxM8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Rupkq9CJzo9oaptiuCduATy1A7PL50rLHRKTZGiv5NZYxYLFoGgz2+oi3Gdll62eYMTAYzOUhTGGn+5QHOQgEtDtchng6HHroGZAPRA1MxiEvjRSzMQ2WtZ0wRihmIrULFjMkc1hCnccnGZZ4FPIBeOL50VyuQMXZZBo8ztDPsQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oG5JBKWt; arc=fail smtp.client-ip=40.107.103.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4840A1537C8
+	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 17:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.36.218.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740418076; cv=none; b=BS85McKjYs/vOJETUk3+/V5pOZmvuIOOph68ENn7E2eAJZ0wcd3umz7TaGtCZ/Q0FfuweXjfV9a9uA8PrfcI2YyR/9NjjNl3Sx5TBvah3TQvcx3hEkLfqepYuanBzoWYsvoMpyHuZxI9uwubKIjbBiZEfteSPRKFcyiiXuzgJU0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740418076; c=relaxed/simple;
+	bh=dWejgaXnhS5wItOPaffNzM3hvLquicYCS1ymWjxhBG4=;
+	h=Message-Id:Mime-Version:References:In-Reply-To:To:Date:Cc:From:
+	 Content-Type:Subject; b=RbZv0+D+dkKx8eSOBIBKrJuzgRCdje77zGvvjpH3ussoYzF14gpk+hnu9SBOUg6J/lFa5vplizp5AfyWsJIPJYaYGj/HAmrRt60Lri8c5VxpRPrAk8+Xkk2j7dByWqtiA9ifVQxe6almorPSs4d5rO4ttR4jvzA6ffM8HwUMzkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=N8Uh6wx6; arc=none smtp.client-ip=101.36.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oG5JBKWt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uBsaPIxfMOTv72ZbWcYLM2dZ/MTjsfC/Fa2edRUXnnTjsJJ9FfRZRTy0cDdh5y3UZCyXHRldmHrz+Mq7XnVYLky6rKoFBKcQ4ye2vPr6/UHWyrjdqP4OI0zD6+ijODXp+LtXa/UVOeW6MGLt1PYLSTp+rFPd8IYuxkm860NgjXm4+WLGjo/A6/jcgIXmGipzOEW0xc11P3Dpur+JASGK0QANfKgyAMWBOEnUbt/04mgnNrtkYRW/RMl4njaAtQJ0kMLOYoEDBIi9DJOtWoaaVC+UsPMEJIo3WD5g66cJXhsmYXfiG92rR+vxcNP/DpDA+WQsBfTnip99f2eanuj2qg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5KCBV0ux8UGCD1/wmChbl/z+nPJjN19hatRf9RBQxM8=;
- b=wGgmgaE+aPNcT5uFfUeYLHnO21VffGnf6mPzEFeUqHl7UVkCwgWHtW8XfXyEIHA44RVWu0UjmuYN1hQy3i7+UKVa5NKaSR+BBq5v7C5gTt1hg4th2jT0OUetFjj3WV0LSidS0rLLLbMvAuZ9EvdMuwdZSjDbODj2FvlZaMMEwMJ/kb0Wmm/Rqm2F1o6QvhBmoaf9qMgpDjFP/DFk8dYjtgI8/SgmEXL03tqBGlCZu8uIPLQnY98fLQdxAWAnA/G0Ubk6cKoAWpTFGfNz5LH6ILlnwjDfEeWX6ls/y6m7Xn1jWKLzkYaTirKWM1un0xHmd5FXa8rhz6gr6eCGDzSTAg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5KCBV0ux8UGCD1/wmChbl/z+nPJjN19hatRf9RBQxM8=;
- b=oG5JBKWtqp3axCbxgepowTu81vxInrO3NJNGhn0ySfZF/akRW70rudZpHAM3U6G7ki4TUJtIQt7Ee+RFICvgecBYxQUW6MqzXbyECjXdJM4I12AVGEPrP3fp/evUz/MMlphV/MuSIWaoORoJ9t1zl3fBqHH67N3cVvpoT3ExwujmcCgZLicteirx05c9VPJls77JdqIGW5cI8w/044RVijTaxOBlp9xC5jWnTy8TX29Awpw6S8vfUlRikNANV1pChGwjIvZDfxmmtmp0lLjYSMrTuX2aDsbShyqC+R7qnyj8W4pZ0ifkDNVqMAFpHD8fr8nOiTQyxBBkJjpAAYMEZg==
-Received: from AS8PR04MB8849.eurprd04.prod.outlook.com (2603:10a6:20b:42c::17)
- by VI2PR04MB11169.eurprd04.prod.outlook.com (2603:10a6:800:299::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.26; Mon, 24 Feb
- 2025 17:27:13 +0000
-Received: from AS8PR04MB8849.eurprd04.prod.outlook.com
- ([fe80::d8e2:1fd7:2395:b684]) by AS8PR04MB8849.eurprd04.prod.outlook.com
- ([fe80::d8e2:1fd7:2395:b684%7]) with mapi id 15.20.8445.013; Mon, 24 Feb 2025
- 17:27:13 +0000
-From: Claudiu Manoil <claudiu.manoil@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
-CC: Ioana Ciornei <ioana.ciornei@nxp.com>, "Y.B. Lu" <yangbo.lu@nxp.com>,
-	"michal.swiatkowski@linux.intel.com" <michal.swiatkowski@linux.intel.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v3 net 2/8] net: enetc: keep track of correct Tx BD count
- in enetc_map_tx_tso_buffs()
-Thread-Topic: [PATCH v3 net 2/8] net: enetc: keep track of correct Tx BD count
- in enetc_map_tx_tso_buffs()
-Thread-Index: AQHbhq9y+DDo2BO/uUaRTnlkOTNY5bNWtP4g
-Date: Mon, 24 Feb 2025 17:27:13 +0000
-Message-ID:
- <AS8PR04MB88498F1FED4B4BD367D4B9E996C02@AS8PR04MB8849.eurprd04.prod.outlook.com>
-References: <20250224111251.1061098-1-wei.fang@nxp.com>
- <20250224111251.1061098-3-wei.fang@nxp.com>
-In-Reply-To: <20250224111251.1061098-3-wei.fang@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR04MB8849:EE_|VI2PR04MB11169:EE_
-x-ms-office365-filtering-correlation-id: c84e7b31-9fa6-48fa-00fb-08dd54f87a18
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?hVDTsSsyk6KNwrGWHUgHQDbWF6l6HBinnmwR99r8TbBNq/w8u2QtiBVZxAIA?=
- =?us-ascii?Q?Y0F/xnQwqUrPAaSvjuxaS7pRHOCy5Su8oRQnHvFfDDqjaxETcd03ghevSZu/?=
- =?us-ascii?Q?5Z83RuThgzef3C3TPUx+ARNdRuH5P00Di0C1bxq+O7i9bRVd29ppbu0bMEos?=
- =?us-ascii?Q?BxLbd48Rj+nwFG32kGmv7IdtNrhPzf4hm0ZzHMt3/631MvlZfHJohzKeJH/0?=
- =?us-ascii?Q?PrgakwVmxD42Q8f9/hV4LJm4AOqjlwkpAeC20Pxu3Mr0N6BvPWvUUA7YUPrd?=
- =?us-ascii?Q?uJywDS/HT5O4vGaaPUcWL4HgmEIgjXaQOx1jd+ukkJpJk30y+AMBvFh+91B9?=
- =?us-ascii?Q?APFF5yYhgyDgJ5ytnzobzyGWSxZJ+uptLyAcsdlEpubDzLRaHPGma4xU5vB1?=
- =?us-ascii?Q?utNSj/e4ub3YwlzYYvMflB1tBFwd3kBaYN1gpWZeYEoCxb02jRnHEnA9Gn2V?=
- =?us-ascii?Q?N6jLeYce0h418hIw81enRXBhFfAcdoiOlAjM8j6wNWjAyQPjt7xix0blHsSq?=
- =?us-ascii?Q?XatPYp1Zn24Qz8bQo+Mtzsnw3TSZik6lPViJ2T4VrxVY1Y80q/YzoJITZJHZ?=
- =?us-ascii?Q?SdfjbkVquUN55a6xUK7GwqNxP0yF5cuVfp1+GTmGrb65PNgIHSjpWifkM/99?=
- =?us-ascii?Q?Uts1GtTrfCT5cgRBd4mTHGP34XyjMbq7ELErmhLdKzgOQvTPjj0Re+hfknej?=
- =?us-ascii?Q?keSx2vj1p398dI/Z9c2eBS68Kk7zjzFEQHFXDCAea7R+Cz4OSFt8/vMW97r+?=
- =?us-ascii?Q?rgcdQ1MG1fd0icOXi+ftmLYE0boYmoB/zB4L2IHSB1/KFkCrGlqVC+J++MlU?=
- =?us-ascii?Q?PR3GLRYgBr9VWxmj8ttYlQhEVub2njbrKAIB1Q3TUbQ1+FjjKYJO2Og8kJBI?=
- =?us-ascii?Q?Lht1eWJhbk0LKJdPQCWW6vytLdNtiadqcYHdLQTFEIO8tqf1Q0PYwj7TfUTt?=
- =?us-ascii?Q?ERVBk9eRWtENPTWFE1vDHDu2O/0uYChBsEJoKx237UWD8ne8U215Wn891w5X?=
- =?us-ascii?Q?yy9nJq3BurLIKRgvzC7j6EATm4+3Z3FgTZNbaPH6vaFWuLQ7vrvwB18aD6cc?=
- =?us-ascii?Q?f3KAIsoUExRAfaza6O1sFhQdwgSNGu40f/GxfsR2Ohq+kRiFZlrX8cDBV9AF?=
- =?us-ascii?Q?tjq7fPMyMBz0RSgLc4qH63eKZze6dixgorjlJ08F8aActqnappq0nbuJ6Tm7?=
- =?us-ascii?Q?4eIu58CdNLMcLYtNQPrNLm4qIfwxGo/E7aussrF37YmyOM2nSoVu1hC0tpAG?=
- =?us-ascii?Q?U25HmemrQAQpnfYkxFgUh4gNSR/wbDPIzy9GLiM2hFeaJ5GVypxbIKAfH/9L?=
- =?us-ascii?Q?KTigLr95zShGlVwDD2xGjtSDzXaz1x4S9QuH00JPPQBLQi/Cgv0moFO2Oh/1?=
- =?us-ascii?Q?U+9STbbC0VxlQgNpDkzOjKzu0MAaEdrOP67btzB2Itdsxp9jl2NRC+Ekb3wO?=
- =?us-ascii?Q?bqQDP0tW6C8gq4I5LVLiqaL4gV05ci1J?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8849.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?Iy4HqYjrCYQ+NAUGHnoHZszPtqrnl3IuDfF0gA+HkGZeu5+bgNczKHPohZpu?=
- =?us-ascii?Q?S/92g8I+11Zu2zQW5/NGhcHbJf7EITYKSCEmcX1sGCol44JHU3A0saglLLyd?=
- =?us-ascii?Q?7aCIjDKAD5PxGGjkXoGhg56TLFTDcZUCXtX+qu8F/sIlDdRjGd1ojY2qmwul?=
- =?us-ascii?Q?HUdWLX8GyoOpc4n8gBs5fI2m3LQ2lFO2kdRhtjq2+jRnpS+sVVkqKhmR39hB?=
- =?us-ascii?Q?yUlQyllWwkqYlRl6mVPzEuBjw+ClK8ld/DgZe0j9gMlf7n6ex5L7wRFgm4rh?=
- =?us-ascii?Q?YZwiwHavoJ0vmw2WM041mhNub0iNOSPNeQsftxkhU0uJ3nLWtqaKSnRnZ3Y/?=
- =?us-ascii?Q?jBrRKfatdS1pL2E6XIvkfdr5XHNCYpodUJB7rqYrut6O+5b1jTKYp8MJlyFG?=
- =?us-ascii?Q?mWBOg/9/vLeqcshcnmTY6nGnbyAt5YT7SEWNbr0IXK6GlZJUlEju3j83RDp9?=
- =?us-ascii?Q?nSjEQXxt/Q27Yfm297WG/Jr0dic58V8U4AIyj3DQGT2Is25hjZaDYenDeURZ?=
- =?us-ascii?Q?CLzWbyLn0I1Pf7hzwpeucbNMhZ+3bUZ09XlbzOpDx/Fo850acEh0zbh48Bcj?=
- =?us-ascii?Q?fcCaXMiTnG8ngxXR98VeOZCucCybWfrKSkIZTBMq09v9eLThKtIM+KJIzqsE?=
- =?us-ascii?Q?bRrh3KVI0NRwraAz0v3q/NOHED2vBpzwxD07SipNnzm1s6fc/4i2ERtTn5ki?=
- =?us-ascii?Q?Heilci935Aa/mabW62h9Ydfq9BM7Z1iOQBz6nerG6veU6z1Ysqhvfy9h5C5q?=
- =?us-ascii?Q?/eZPRWYa1UCyPNTayeBYSet4/qEKhjin6cpBOAL2G+/fkQBd2g8kIfSDagxR?=
- =?us-ascii?Q?Km3VpRX+gfo++dHXCETAZiaiTyrM0W1u3EwdnS7YlvDwEIeTrhhd4V2rxH+R?=
- =?us-ascii?Q?jpNUeAIsUUsDJwTJeMgw2v1tNr9/0mnuSpO218o0F3xPiOs2evbqUMsE9CER?=
- =?us-ascii?Q?G7tru6lfqtXw7X2sMs7kLPH/29atpYllf3VZUgGhQSel7vCb155Pl/MpkEKY?=
- =?us-ascii?Q?bSJ03oqz8xHtuoLmKukclskqL8+vm+LycpU1tBGO8p4zz9xQqpYPSFdYioAT?=
- =?us-ascii?Q?k80NAcpJ8xtkT3rhgz/cnzEEG8R9qxR+B/S4gQ/xdMbCmA0icz0m6RWE7GCd?=
- =?us-ascii?Q?d8MMWucRV8L9Q02nPuSPXKtkZy/ij7/r5H74+6N+HLGW+4p6BdTjPob3JYAz?=
- =?us-ascii?Q?zkr5tlSNf/R5HoJWgr9nzMTbe3QxtKaseWTxX9rJLYjrdPB+JeORVmkoDL5S?=
- =?us-ascii?Q?KIVHSBdrQRNZvbBm0RHXWEHFiKiAkTrE6Ycy/wY7ZSxcvYlULmQ+XwMokk+D?=
- =?us-ascii?Q?T2gjs0qzJARLhZQrmPI4v+NHQ5gkVYKzJD5FyGszDKN776JEwU15sTHxie1/?=
- =?us-ascii?Q?0hpGXUAHFcOFS0AN/RKeNQwK3vLUwNAjaWN8U4H8kr17OCLQRWuywG7Z053V?=
- =?us-ascii?Q?9Fo87hm7SsxQo117ZNFlVcc1pE8QT/DF8amwUGrnq4QXOLNsTOQhLDBCra46?=
- =?us-ascii?Q?KHPEHjJO4UzB8rDR7boWoeBZP/Ag1xjyQx46XZrFje9ALvUi4V3tpy5mglnV?=
- =?us-ascii?Q?21/wksfKM0ArzJsTcgEvBk1xKLrXBW9FPwK4aFxK?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="N8Uh6wx6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2403070942; d=yunsilicon.com; t=1740417864; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=rHZbJi2I8YH9fy586Krb3MMrp1t3R9d6UkZfUaeh5Ec=;
+ b=N8Uh6wx6WduaGBOHB5mFwPtJwftsfzqk6AZPETG9umwQ8sI9B/XKXLTDIMs4TVGi3k271A
+ iJsAwPQldzw2hpsGqSjGwLGgIJKlWdOyKMechdQBma92ZAk0mLL39lARA/GQL4iUbEB4K9
+ N6Fk5urJqfAWT2hEF3LRbQAY3ZzHouaTIFeEtmd+UimqAOehvnVgu92l8htLeaMrSZZgR8
+ /W5sXWWwlcWxkpZ0ihjJ6XedWrISkVLZ4rApo5APam9VSxTN9R7Ns+Pi/8TquSXV+ajPJY
+ E06F0PnL+5WH9I4VjK8Zjl9sqCc9PjGb5Wy7BnCU9zaEPgY0B0vnvdAToP5SEA==
+Message-Id: <20250224172421.2455751-4-tianx@yunsilicon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8849.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c84e7b31-9fa6-48fa-00fb-08dd54f87a18
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2025 17:27:13.3234
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hk4UjGoMcB9RO9K59DXInwQrQIpGNk4UbIKgIb+tGaWuUaGDuGjJOS5v0j2uv3Gt7d+UU5249QEn7JbADOv41w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB11169
+Mime-Version: 1.0
+Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Tue, 25 Feb 2025 01:24:22 +0800
+References: <20250224172416.2455751-1-tianx@yunsilicon.com>
+In-Reply-To: <20250224172416.2455751-1-tianx@yunsilicon.com>
+To: <netdev@vger.kernel.org>
+Date: Tue, 25 Feb 2025 01:24:22 +0800
+X-Mailer: git-send-email 2.25.1
+Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
+	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
+	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
+	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <horms@kernel.org>, 
+	<parthiban.veerasooran@microchip.com>, <masahiroy@kernel.org>
+From: "Xin Tian" <tianx@yunsilicon.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Subject: [PATCH net-next v5 03/14] xsc: Add hardware setup APIs
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+X-Lms-Return-Path: <lba+267bcab46+690f69+vger.kernel.org+tianx@yunsilicon.com>
 
-> -----Original Message-----
-> From: Wei Fang <wei.fang@nxp.com>
-> Sent: Monday, February 24, 2025 1:13 PM
-[...]
-> Subject: [PATCH v3 net 2/8] net: enetc: keep track of correct Tx BD count=
- in
-> enetc_map_tx_tso_buffs()
->=20
-> When creating a TSO header, if the skb is VLAN tagged, the extended BD
-> will be used and the 'count' should be increased by 2 instead of 1.
-> Otherwise, when an error occurs, less tx_swbd will be freed than the
-> actual number.
->=20
-> Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
+After CMDQ is initialized, the driver can retrieve hardware
+information from the firmware. This patch provides APIs to
+obtain the Hardware Component Adapter (HCA) capabilities,
+the Globally Unique Identifier (GUID) of the board, activate
+the hardware configuration, and reset function-specific
+resources.
 
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
+Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
+Co-developed-by: Lei Yan <jacky@yunsilicon.com>
+Signed-off-by: Lei Yan <jacky@yunsilicon.com>
+Signed-off-by: Xin Tian <tianx@yunsilicon.com>
+---
+ .../ethernet/yunsilicon/xsc/common/xsc_core.h | 158 ++++++++++
+ .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   2 +-
+ drivers/net/ethernet/yunsilicon/xsc/pci/hw.c  | 277 ++++++++++++++++++
+ drivers/net/ethernet/yunsilicon/xsc/pci/hw.h  |  18 ++
+ .../net/ethernet/yunsilicon/xsc/pci/main.c    |  27 ++
+ 5 files changed, 481 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hw.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hw.h
+
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
+index 1f8e4eb77..4c8b26660 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
++++ b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
+@@ -30,6 +30,145 @@
+ #define XSC_REG_ADDR(dev, offset)	\
+ 	(((dev)->bar) + ((offset) - 0xA0000000))
+ 
++enum {
++	XSC_MAX_PORTS	= 2,
++};
++
++enum {
++	XSC_MAX_FW_PORTS	= 1,
++};
++
++enum {
++	XSC_BF_REGS_PER_PAGE	= 4,
++	XSC_MAX_UAR_PAGES	= 1 << 8,
++	XSC_MAX_UUARS		= XSC_MAX_UAR_PAGES * XSC_BF_REGS_PER_PAGE,
++};
++
++// hw
++struct xsc_reg_addr {
++	u64	tx_db;
++	u64	rx_db;
++	u64	complete_db;
++	u64	complete_reg;
++	u64	event_db;
++	u64	cpm_get_lock;
++	u64	cpm_put_lock;
++	u64	cpm_lock_avail;
++	u64	cpm_data_mem;
++	u64	cpm_cmd;
++	u64	cpm_addr;
++	u64	cpm_busy;
++};
++
++struct xsc_board_info {
++	u32			board_id;
++	char			board_sn[XSC_BOARD_SN_LEN];
++	__be64			guid;
++	u8			guid_valid;
++	u8			hw_config_activated;
++};
++
++struct xsc_port_caps {
++	int		gid_table_len;
++	int		pkey_table_len;
++};
++
++struct xsc_caps {
++	u8		log_max_eq;
++	u8		log_max_cq;
++	u8		log_max_qp;
++	u8		log_max_mkey;
++	u8		log_max_pd;
++	u8		log_max_srq;
++	u8		log_max_msix;
++	u32		max_cqes;
++	u32		max_wqes;
++	u32		max_sq_desc_sz;
++	u32		max_rq_desc_sz;
++	u64		flags;
++	u16		stat_rate_support;
++	u32		log_max_msg;
++	u32		num_ports;
++	u32		max_ra_res_qp;
++	u32		max_ra_req_qp;
++	u32		max_srq_wqes;
++	u32		bf_reg_size;
++	u32		bf_regs_per_page;
++	struct xsc_port_caps	port[XSC_MAX_PORTS];
++	u8		ext_port_cap[XSC_MAX_PORTS];
++	u32		reserved_lkey;
++	u8		local_ca_ack_delay;
++	u8		log_max_mcg;
++	u16		max_qp_mcg;
++	u32		min_page_sz;
++	u32		send_ds_num;
++	u32		send_wqe_shift;
++	u32		recv_ds_num;
++	u32		recv_wqe_shift;
++	u32		rx_pkt_len_max;
++
++	u32		msix_enable:1;
++	u32		port_type:1;
++	u32		embedded_cpu:1;
++	u32		eswitch_manager:1;
++	u32		ecpf_vport_exists:1;
++	u32		vport_group_manager:1;
++	u32		sf:1;
++	u32		wqe_inline_mode:3;
++	u32		raweth_qp_id_base:15;
++	u32		rsvd0:7;
++
++	u16		max_vfs;
++	u8		log_max_qp_depth;
++	u8		log_max_current_uc_list;
++	u8		log_max_current_mc_list;
++	u16		log_max_vlan_list;
++	u8		fdb_multi_path_to_table;
++	u8		log_esw_max_sched_depth;
++
++	u8		max_num_sf_partitions;
++	u8		log_max_esw_sf;
++	u16		sf_base_id;
++
++	u32		max_tc:8;
++	u32		ets:1;
++	u32		dcbx:1;
++	u32		dscp:1;
++	u32		sbcam_reg:1;
++	u32		qos:1;
++	u32		port_buf:1;
++	u32		rsvd1:2;
++	u32		raw_tpe_qp_num:16;
++	u32		max_num_eqs:8;
++	u32		mac_port:8;
++	u32		raweth_rss_qp_id_base:16;
++	u16		msix_base;
++	u16		msix_num;
++	u8		log_max_mtt;
++	u8		log_max_tso;
++	u32		hca_core_clock;
++	u32		max_rwq_indirection_tables;/*rss_caps*/
++	u32		max_rwq_indirection_table_size;/*rss_caps*/
++	u16		raweth_qp_id_end;
++	u32		qp_rate_limit_min;
++	u32		qp_rate_limit_max;
++	u32		hw_feature_flag;
++	u16		pf0_vf_funcid_base;
++	u16		pf0_vf_funcid_top;
++	u16		pf1_vf_funcid_base;
++	u16		pf1_vf_funcid_top;
++	u16		pcie0_pf_funcid_base;
++	u16		pcie0_pf_funcid_top;
++	u16		pcie1_pf_funcid_base;
++	u16		pcie1_pf_funcid_top;
++	u8		nif_port_num;
++	u8		pcie_host;
++	u8		mac_bit;
++	u16		funcid_to_logic_port;
++	u8		lag_logic_port_ofst;
++};
++
++// xsc_core
+ struct xsc_dev_resource {
+ 	/* protect buffer allocation according to numa node */
+ 	struct mutex		alloc_mutex;
+@@ -53,6 +192,9 @@ struct xsc_core_device {
+ 	void __iomem		*bar;
+ 	int			bar_num;
+ 
++	u8			mac_port;
++	u16			glb_func_id;
++
+ 	struct xsc_cmd		cmd;
+ 	u16			cmdq_ver;
+ 
+@@ -60,6 +202,22 @@ struct xsc_core_device {
+ 	enum xsc_pci_state	pci_state;
+ 	struct mutex		intf_state_mutex;	/* protect intf_state */
+ 	unsigned long		intf_state;
++
++	struct xsc_caps		caps;
++	struct xsc_board_info	*board_info;
++
++	struct xsc_reg_addr	regs;
++	u32			chip_ver_h;
++	u32			chip_ver_m;
++	u32			chip_ver_l;
++	u32			hotfix_num;
++	u32			feature_flag;
++
++	u8			fw_version_major;
++	u8			fw_version_minor;
++	u16			fw_version_patch;
++	u32			fw_version_tweak;
++	u8			fw_version_extra_flag;
+ };
+ 
+ #endif
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+index 5e0f0a205..fea625d54 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+@@ -6,4 +6,4 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
+ 
+ obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc_pci.o
+ 
+-xsc_pci-y := main.o cmdq.o
++xsc_pci-y := main.o cmdq.o hw.o
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/hw.c b/drivers/net/ethernet/yunsilicon/xsc/pci/hw.c
+new file mode 100644
+index 000000000..898b80216
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/hw.c
+@@ -0,0 +1,277 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#include <linux/module.h>
++#include <linux/vmalloc.h>
++#include "common/xsc_driver.h"
++#include "hw.h"
++
++#define MAX_BOARD_NUM	32
++
++static struct xsc_board_info *board_info[MAX_BOARD_NUM];
++
++static struct xsc_board_info *xsc_get_board_info(char *board_sn)
++{
++	int i;
++
++	for (i = 0; i < MAX_BOARD_NUM; i++) {
++		if (!board_info[i])
++			continue;
++		if (!strncmp(board_info[i]->board_sn, board_sn,
++			     XSC_BOARD_SN_LEN))
++			return board_info[i];
++	}
++	return NULL;
++}
++
++static struct xsc_board_info *xsc_alloc_board_info(void)
++{
++	int i;
++
++	for (i = 0; i < MAX_BOARD_NUM; i++) {
++		if (!board_info[i])
++			break;
++	}
++	if (i == MAX_BOARD_NUM)
++		return NULL;
++	board_info[i] = vmalloc(sizeof(*board_info[i]));
++	if (!board_info[i])
++		return NULL;
++	memset(board_info[i], 0, sizeof(*board_info[i]));
++	board_info[i]->board_id = i;
++	return board_info[i];
++}
++
++void xsc_free_board_info(void)
++{
++	int i;
++
++	for (i = 0; i < MAX_BOARD_NUM; i++)
++		vfree(board_info[i]);
++}
++
++int xsc_cmd_query_hca_cap(struct xsc_core_device *xdev,
++			  struct xsc_caps *caps)
++{
++	struct xsc_cmd_query_hca_cap_mbox_out *out;
++	struct xsc_cmd_query_hca_cap_mbox_in in;
++	struct xsc_board_info *board_info;
++	int err;
++	u16 t16;
++
++	out = kzalloc(sizeof(*out), GFP_KERNEL);
++	if (!out)
++		return -ENOMEM;
++
++	memset(&in, 0, sizeof(in));
++	in.hdr.opcode = cpu_to_be16(XSC_CMD_OP_QUERY_HCA_CAP);
++	in.cpu_num = cpu_to_be16(num_online_cpus());
++
++	err = xsc_cmd_exec(xdev, &in, sizeof(in), out, sizeof(*out));
++	if (err)
++		goto out_out;
++
++	if (out->hdr.status) {
++		err = xsc_cmd_status_to_err(&out->hdr);
++		goto out_out;
++	}
++
++	xdev->glb_func_id = be32_to_cpu(out->hca_cap.glb_func_id);
++	caps->pcie0_pf_funcid_base =
++		be16_to_cpu(out->hca_cap.pcie0_pf_funcid_base);
++	caps->pcie0_pf_funcid_top =
++		be16_to_cpu(out->hca_cap.pcie0_pf_funcid_top);
++	caps->pcie1_pf_funcid_base =
++		be16_to_cpu(out->hca_cap.pcie1_pf_funcid_base);
++	caps->pcie1_pf_funcid_top =
++		be16_to_cpu(out->hca_cap.pcie1_pf_funcid_top);
++	caps->funcid_to_logic_port =
++		be16_to_cpu(out->hca_cap.funcid_to_logic_port);
++
++	caps->pcie_host = out->hca_cap.pcie_host;
++	caps->nif_port_num = out->hca_cap.nif_port_num;
++	caps->hw_feature_flag = be32_to_cpu(out->hca_cap.hw_feature_flag);
++
++	caps->raweth_qp_id_base = be16_to_cpu(out->hca_cap.raweth_qp_id_base);
++	caps->raweth_qp_id_end = be16_to_cpu(out->hca_cap.raweth_qp_id_end);
++	caps->raweth_rss_qp_id_base =
++		be16_to_cpu(out->hca_cap.raweth_rss_qp_id_base);
++	caps->raw_tpe_qp_num = be16_to_cpu(out->hca_cap.raw_tpe_qp_num);
++	caps->max_cqes = 1 << out->hca_cap.log_max_cq_sz;
++	caps->max_wqes = 1 << out->hca_cap.log_max_qp_sz;
++	caps->max_sq_desc_sz = be16_to_cpu(out->hca_cap.max_desc_sz_sq);
++	caps->max_rq_desc_sz = be16_to_cpu(out->hca_cap.max_desc_sz_rq);
++	caps->flags = be64_to_cpu(out->hca_cap.flags);
++	caps->stat_rate_support = be16_to_cpu(out->hca_cap.stat_rate_support);
++	caps->log_max_msg = out->hca_cap.log_max_msg & 0x1f;
++	caps->num_ports = out->hca_cap.num_ports & 0xf;
++	caps->log_max_cq = out->hca_cap.log_max_cq & 0x1f;
++	caps->log_max_eq = out->hca_cap.log_max_eq & 0xf;
++	caps->log_max_msix = out->hca_cap.log_max_msix & 0xf;
++	caps->mac_port = out->hca_cap.mac_port & 0xff;
++	xdev->mac_port = caps->mac_port;
++	if (caps->num_ports > XSC_MAX_FW_PORTS) {
++		pci_err(xdev->pdev, "device has %d ports while the driver supports max %d ports\n",
++			caps->num_ports, XSC_MAX_FW_PORTS);
++		err = -EINVAL;
++		goto out_out;
++	}
++	caps->send_ds_num = out->hca_cap.send_seg_num;
++	caps->send_wqe_shift = out->hca_cap.send_wqe_shift;
++	caps->recv_ds_num = out->hca_cap.recv_seg_num;
++	caps->recv_wqe_shift = out->hca_cap.recv_wqe_shift;
++
++	caps->embedded_cpu = 0;
++	caps->ecpf_vport_exists = 0;
++	caps->log_max_current_uc_list = 0;
++	caps->log_max_current_mc_list = 0;
++	caps->log_max_vlan_list = 8;
++	caps->log_max_qp = out->hca_cap.log_max_qp & 0x1f;
++	caps->log_max_mkey = out->hca_cap.log_max_mkey & 0x3f;
++	caps->log_max_pd = out->hca_cap.log_max_pd & 0x1f;
++	caps->log_max_srq = out->hca_cap.log_max_srqs & 0x1f;
++	caps->local_ca_ack_delay = out->hca_cap.local_ca_ack_delay & 0x1f;
++	caps->log_max_mcg = out->hca_cap.log_max_mcg;
++	caps->log_max_mtt = out->hca_cap.log_max_mtt;
++	caps->log_max_tso = out->hca_cap.log_max_tso;
++	caps->hca_core_clock = be32_to_cpu(out->hca_cap.hca_core_clock);
++	caps->max_rwq_indirection_tables =
++		be32_to_cpu(out->hca_cap.max_rwq_indirection_tables);
++	caps->max_rwq_indirection_table_size =
++		be32_to_cpu(out->hca_cap.max_rwq_indirection_table_size);
++	caps->max_qp_mcg = be16_to_cpu(out->hca_cap.max_qp_mcg);
++	caps->max_ra_res_qp = 1 << (out->hca_cap.log_max_ra_res_qp & 0x3f);
++	caps->max_ra_req_qp = 1 << (out->hca_cap.log_max_ra_req_qp & 0x3f);
++	caps->max_srq_wqes = 1 << out->hca_cap.log_max_srq_sz;
++	caps->rx_pkt_len_max = be32_to_cpu(out->hca_cap.rx_pkt_len_max);
++	caps->max_vfs = be16_to_cpu(out->hca_cap.max_vfs);
++	caps->qp_rate_limit_min = be32_to_cpu(out->hca_cap.qp_rate_limit_min);
++	caps->qp_rate_limit_max = be32_to_cpu(out->hca_cap.qp_rate_limit_max);
++
++	caps->msix_enable = 1;
++	caps->msix_base = be16_to_cpu(out->hca_cap.msix_base);
++	caps->msix_num = be16_to_cpu(out->hca_cap.msix_num);
++
++	t16 = be16_to_cpu(out->hca_cap.bf_log_bf_reg_size);
++	if (t16 & 0x8000) {
++		caps->bf_reg_size = 1 << (t16 & 0x1f);
++		caps->bf_regs_per_page = XSC_BF_REGS_PER_PAGE;
++	} else {
++		caps->bf_reg_size = 0;
++		caps->bf_regs_per_page = 0;
++	}
++	caps->min_page_sz = ~(u32)((1 << PAGE_SHIFT) - 1);
++
++	caps->dcbx = 1;
++	caps->qos = 1;
++	caps->ets = 1;
++	caps->dscp = 1;
++	caps->max_tc = out->hca_cap.max_tc;
++	caps->log_max_qp_depth = out->hca_cap.log_max_qp_depth & 0xff;
++	caps->mac_bit = out->hca_cap.mac_bit;
++	caps->lag_logic_port_ofst = out->hca_cap.lag_logic_port_ofst;
++
++	xdev->chip_ver_h = be32_to_cpu(out->hca_cap.chip_ver_h);
++	xdev->chip_ver_m = be32_to_cpu(out->hca_cap.chip_ver_m);
++	xdev->chip_ver_l = be32_to_cpu(out->hca_cap.chip_ver_l);
++	xdev->hotfix_num = be32_to_cpu(out->hca_cap.hotfix_num);
++	xdev->feature_flag = be32_to_cpu(out->hca_cap.feature_flag);
++
++	board_info = xsc_get_board_info(out->hca_cap.board_sn);
++	if (!board_info) {
++		board_info = xsc_alloc_board_info();
++		if (!board_info)
++			return -ENOMEM;
++
++		memcpy(board_info->board_sn,
++		       out->hca_cap.board_sn,
++		       sizeof(out->hca_cap.board_sn));
++	}
++	xdev->board_info = board_info;
++
++	xdev->regs.tx_db = be64_to_cpu(out->hca_cap.tx_db);
++	xdev->regs.rx_db = be64_to_cpu(out->hca_cap.rx_db);
++	xdev->regs.complete_db = be64_to_cpu(out->hca_cap.complete_db);
++	xdev->regs.complete_reg = be64_to_cpu(out->hca_cap.complete_reg);
++	xdev->regs.event_db = be64_to_cpu(out->hca_cap.event_db);
++
++	xdev->fw_version_major = out->hca_cap.fw_ver.fw_version_major;
++	xdev->fw_version_minor = out->hca_cap.fw_ver.fw_version_minor;
++	xdev->fw_version_patch =
++		be16_to_cpu(out->hca_cap.fw_ver.fw_version_patch);
++	xdev->fw_version_tweak =
++		be32_to_cpu(out->hca_cap.fw_ver.fw_version_tweak);
++	xdev->fw_version_extra_flag = out->hca_cap.fw_ver.fw_version_extra_flag;
++out_out:
++	kfree(out);
++
++	return err;
++}
++
++static int xsc_cmd_query_guid(struct xsc_core_device *xdev)
++{
++	struct xsc_cmd_query_guid_mbox_out out;
++	struct xsc_cmd_query_guid_mbox_in in;
++	int err;
++
++	in.hdr.opcode = cpu_to_be16(XSC_CMD_OP_QUERY_GUID);
++	err = xsc_cmd_exec(xdev, &in, sizeof(in), &out, sizeof(out));
++	if (err)
++		return err;
++
++	if (out.hdr.status)
++		return xsc_cmd_status_to_err(&out.hdr);
++	xdev->board_info->guid = out.guid;
++	xdev->board_info->guid_valid = 1;
++	return 0;
++}
++
++int xsc_query_guid(struct xsc_core_device *xdev)
++{
++	if (xdev->board_info->guid_valid)
++		return 0;
++
++	return xsc_cmd_query_guid(xdev);
++}
++
++static int xsc_cmd_activate_hw_config(struct xsc_core_device *xdev)
++{
++	struct xsc_cmd_activate_hw_config_mbox_out out;
++	struct xsc_cmd_activate_hw_config_mbox_in in;
++	int err = 0;
++
++	in.hdr.opcode = cpu_to_be16(XSC_CMD_OP_ACTIVATE_HW_CONFIG);
++	err = xsc_cmd_exec(xdev, &in, sizeof(in), &out, sizeof(out));
++	if (err)
++		return err;
++	if (out.hdr.status)
++		return xsc_cmd_status_to_err(&out.hdr);
++	xdev->board_info->hw_config_activated = 1;
++	return 0;
++}
++
++int xsc_activate_hw_config(struct xsc_core_device *xdev)
++{
++	if (xdev->board_info->hw_config_activated)
++		return 0;
++
++	return xsc_cmd_activate_hw_config(xdev);
++}
++
++int xsc_reset_function_resource(struct xsc_core_device *xdev)
++{
++	struct xsc_function_reset_mbox_out out;
++	struct xsc_function_reset_mbox_in in;
++	int err;
++
++	memset(&in, 0, sizeof(in));
++	in.hdr.opcode = cpu_to_be16(XSC_CMD_OP_FUNCTION_RESET);
++	in.glb_func_id = cpu_to_be16(xdev->glb_func_id);
++	err = xsc_cmd_exec(xdev, &in, sizeof(in), &out, sizeof(out));
++	if (err || out.hdr.status)
++		return -EINVAL;
++
++	return 0;
++}
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/hw.h b/drivers/net/ethernet/yunsilicon/xsc/pci/hw.h
+new file mode 100644
+index 000000000..d1030bfde
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/hw.h
+@@ -0,0 +1,18 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#ifndef __HW_H
++#define __HW_H
++
++#include "common/xsc_core.h"
++
++void xsc_free_board_info(void);
++int xsc_cmd_query_hca_cap(struct xsc_core_device *xdev,
++			  struct xsc_caps *caps);
++int xsc_query_guid(struct xsc_core_device *xdev);
++int xsc_activate_hw_config(struct xsc_core_device *xdev);
++int xsc_reset_function_resource(struct xsc_core_device *xdev);
++
++#endif
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
+index ead26a57a..4b505fd9a 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
+@@ -5,6 +5,7 @@
+ 
+ #include "common/xsc_core.h"
+ #include "common/xsc_driver.h"
++#include "hw.h"
+ 
+ static const struct pci_device_id xsc_pci_id_table[] = {
+ 	{ PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MC_PF_DEV_ID) },
+@@ -192,6 +193,31 @@ static int xsc_hw_setup(struct xsc_core_device *xdev)
+ 		goto err_cmd_cleanup;
+ 	}
+ 
++	err = xsc_cmd_query_hca_cap(xdev, &xdev->caps);
++	if (err) {
++		pci_err(xdev->pdev, "Failed to query hca, err=%d\n", err);
++		goto err_cmd_cleanup;
++	}
++
++	err = xsc_query_guid(xdev);
++	if (err) {
++		pci_err(xdev->pdev, "failed to query guid, err=%d\n", err);
++		goto err_cmd_cleanup;
++	}
++
++	err = xsc_activate_hw_config(xdev);
++	if (err) {
++		pci_err(xdev->pdev, "failed to activate hw config, err=%d\n",
++			err);
++		goto err_cmd_cleanup;
++	}
++
++	err = xsc_reset_function_resource(xdev);
++	if (err) {
++		pci_err(xdev->pdev, "Failed to reset function resource\n");
++		goto err_cmd_cleanup;
++	}
++
+ 	return 0;
+ err_cmd_cleanup:
+ 	xsc_cmd_cleanup(xdev);
+@@ -327,6 +353,7 @@ static int __init xsc_init(void)
+ static void __exit xsc_fini(void)
+ {
+ 	pci_unregister_driver(&xsc_pci_driver);
++	xsc_free_board_info();
+ }
+ 
+ module_init(xsc_init);
+-- 
+2.18.4
