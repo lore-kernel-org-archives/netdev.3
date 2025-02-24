@@ -1,139 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1687E802;
-	Mon, 24 Feb 2025 11:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6D625A2C8
+	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 11:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395802; cv=none; b=KTosUJZ2cAAsccfJK/CLoNAJ5d6qWTCvQDtChlqFraI6xwbD8gnw+yweY+oPxttJd5G8xA0AuZYV6SCq7pHSikwb9Ax607bEoavp8RC73FsmB+m411V7btlbuk6H83G61JLMEI3IwRP9MOM7eZecPtyKJfNvLIpdHxGmgsZVV3g=
+	t=1740395809; cv=none; b=cQdqz5FvZd1xABqh+124VvUIEokAvHIe8msjv08QDwOfWnPVZWjFiRu3winVqKQRAGRaVZYcs1PORuqymtwO93CMyDmVhZk9WaJYJPLovmS6U6hy9ztl7+6voixSeNChEM3m4xqkMjnUITHiiBEJKGZ3Ocw5N8y3J1EzZbaZtZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395802; c=relaxed/simple;
-	bh=snZu7pL4BcHs/H3bClvaolJQqBjKqx8IvUNhokoLJz4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=de+/IHaS9o1euyAwnQViny8qZI8Ljn4ZnsyFMJeaNPSCe6shTgeAsglJddhObkPaXHf2tSzknYsYBJR9nMr6TjheBEdzjlI5vFkpVdTNLFGCnRTyQhQUCvdcMVGtLd6q0TblFBpZrSUN/WNQn3QKxT8Cjmc9xdu+3nghjcph7t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jw8IrwSa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740395809; c=relaxed/simple;
+	bh=xo1iB6h0IrJbcbhX7m0G0N7TTNZqPjZKr7nxchijw34=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JnAr4zN4SYCUbOAA5oTGyIByQplGMr/qX6yQOd8Tr6xJCFjud/fDFizxZcY7Q4RjrXhdg6W/ypR37QT50sPbj7oOAy1SR4ZTHDPzSIXCSr3Qe7/YoRQYWKcYfxFlO8sqngbx+WprKL685jTgrtV0rjYB16Y/aCFfJR6Gj3Fo3gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BsX8k4iP; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jw8IrwSa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192F3C4CED6;
-	Mon, 24 Feb 2025 11:16:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740395801;
-	bh=snZu7pL4BcHs/H3bClvaolJQqBjKqx8IvUNhokoLJz4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=jw8IrwSaKWeGIPfpQhyp+dPmmFivRly2UKmQzKTMy7IoxX9ELcIb0uA6/gPv+WpHV
-	 VsHJczbCMFx7YjRm0NQ2xjxVo4Ne4CGeFA8bVYgMl8/N1eucjINXARYZTSywQExGzf
-	 ABS0tH94oKRIcXPAZ6TQg1Kf20WsHx+sX2pfh7TCeWPEdcHXZh+OrvxpZLJwy9h73Y
-	 /kj1wh1X7narHrN3oVFt4M1pvP2MTEU8i4nCnAlFlQZinbqfrzQvaHTwcI2ofVVCME
-	 QjDO6cS8PLvNkZ8h1bK+D4YJhKdlEpJa4KX8DHAs5DFX52ayd8bIQgHD7ds+oWrSri
-	 eSsDteTvEFqQw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Shigeru Yoshida <syoshida@redhat.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	shuah@kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 01/32] selftests/bpf: Adjust data size to have ETH_HLEN
-Date: Mon, 24 Feb 2025 06:16:07 -0500
-Message-Id: <20250224111638.2212832-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BsX8k4iP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740395806;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xo1iB6h0IrJbcbhX7m0G0N7TTNZqPjZKr7nxchijw34=;
+	b=BsX8k4iPO1fmk3ecdQDt9hnsHFIStkKUNqQMP1cKfRY+3EdQ7qQxX3fVLlIdfmpwI4msKB
+	4lBWRMajpmOTyZ30Q8MsTyaqj4duMFD5xU1Gw0ps3BlCF0wrAmDcLJaRrNcm0gezK62vNX
+	fEjflX2Fh6DGHTNwsgmzN3omXDQGtFI=
+Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com
+ [209.85.160.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-303-V1wHGRlWPq2MSGj1mD-Paw-1; Mon, 24 Feb 2025 06:16:44 -0500
+X-MC-Unique: V1wHGRlWPq2MSGj1mD-Paw-1
+X-Mimecast-MFC-AGG-ID: V1wHGRlWPq2MSGj1mD-Paw_1740395804
+Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-2ba47dda647so628126fac.0
+        for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 03:16:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740395804; x=1741000604;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xo1iB6h0IrJbcbhX7m0G0N7TTNZqPjZKr7nxchijw34=;
+        b=X5XKhUiujR8HOTGhukd3tzQM2kFHFzy4+Ytt6URzkN0k3taAoYGW2kZH2Wj46kDjxa
+         gnWZ0D46igC49/QujXvO8hIsDVKR8KuCx39T3BxY+QBmV3zne/7e1vKG5GcsSaVQy7+T
+         sQlV768ITwm9YkIHgfHEuej8U73h9mD8lnkxcrlaJU5E5TxnardRczUQOp5JjSo3eZ7L
+         2Hcu81Mpe2W1Dg4fznoed39us7WnzYeDGOWPx1iZFvlQoFIcpZRSmusIbo9pcAKfLiFD
+         t2QxoXRNLXlAEzkspFNiA+qMonIq/nXOpftnWMLKwI8jroP1wHn+rViAZnqvm5bMV/uz
+         TFYg==
+X-Gm-Message-State: AOJu0YzXPDEO3SuBAD1/St4WYzWP3zjPtV1zaxHKmzlfINrLnZsPEUSL
+	hHYw1WiW3WQ73GzIV4HfwgrWDEYiighqRK/HWAVqyR/toJyIw9KOtSdgsnd9DwHxJ1PeEMkVPDo
+	sZOef++E/sOe9rRWpJu5neDg45uHnmCnljYjIEvdvpnR6kr8Bs3qnfkL+3sAP8yTdmWedberHCQ
+	8cFpgGAxmGZP/e/5wnOKRGE6kAsMaY
+X-Gm-Gg: ASbGncvQTZntNdTnhq8RlpHx9CrTO4Xi11D7UJonz51t69pkMWM3rnDDZSt2F6Hc9do
+	Gt8JG05F9euhF2ULM0/k+sQlJZho30QYK2tIDT5DFPf80w4oQ3oAgyLnUEOPIO0Dzdht91M9B
+X-Received: by 2002:a05:6808:218d:b0:3f3:fe33:9ede with SMTP id 5614622812f47-3f4247d625bmr3411253b6e.9.1740395804176;
+        Mon, 24 Feb 2025 03:16:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH2GDWgaNTl8CuJ8q3iYUbb5Av5zB97J8p35QIiyckhPpbSG3bpmt9vnf7CvTNBaCxfEpZ1gIPS5MQGrUBOGhI=
+X-Received: by 2002:a05:6808:218d:b0:3f3:fe33:9ede with SMTP id
+ 5614622812f47-3f4247d625bmr3411244b6e.9.1740395803944; Mon, 24 Feb 2025
+ 03:16:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.13.4
-Content-Transfer-Encoding: 8bit
+References: <20250223214203.2159676-1-mheib@redhat.com>
+In-Reply-To: <20250223214203.2159676-1-mheib@redhat.com>
+From: Michal Schmidt <mschmidt@redhat.com>
+Date: Mon, 24 Feb 2025 12:16:32 +0100
+X-Gm-Features: AWEUYZlHN2na4UxHJsdlSUpeglLBeuo_KSFhHFn9_P96VhNSdfe1eDB2GGWnNB8
+Message-ID: <CADEbmW3NXWMPBiTtX-v2XBLMTVgPifF9YW9qxJ=AkVYppfwiOw@mail.gmail.com>
+Subject: Re: [PATCH net] enic: Avoid removing IPv6 address when updating rings size.
+To: Mohammad Heib <mheib@redhat.com>
+Cc: netdev@vger.kernel.org, benve@cisco.com, satishkh@cisco.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+On Sun, Feb 23, 2025 at 10:42=E2=80=AFPM Mohammad Heib <mheib@redhat.com> w=
+rote:
+> Currently, the enic driver calls the dev_close function to temporarily
+> shut down the device before updating the device rings. This call
+> triggers a NETDEV_DOWN event, which is sent to the network stack via the
+> network notifier.
+>
+> When the IPv6 stack receives such an event, it removes the IPv6
+> addresses from the affected device, keeping only the permanent
+> addresses. This behavior is inconsistent with other network drivers and
+> can lead to traffic loss, requiring reconfiguration of IPv6 addresses
+> after every ring update.
+>
+> To avoid this behavior, this patch temporarily sets the interface config
+> `keep_addr_on_down` to 1 before closing the device during the rings
+> update, and restores the original value of `keep_addr_on_down` after
+> updating the device rings, this will prevent the ipv6 stack from
+> removing the current ipv6 addresses during the rings update.
 
-[ Upstream commit c7f2188d68c114095660a950b7e880a1e5a71c8f ]
-
-The function bpf_test_init() now returns an error if user_size
-(.data_size_in) is less than ETH_HLEN, causing the tests to
-fail. Adjust the data size to ensure it meets the requirement of
-ETH_HLEN.
-
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250121150643.671650-2-syoshida@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- .../testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c  | 4 ++--
- .../testing/selftests/bpf/prog_tests/xdp_devmap_attach.c  | 8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c b/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
-index c7f74f068e788..df27535995af8 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
-@@ -52,10 +52,10 @@ static void test_xdp_with_cpumap_helpers(void)
- 	ASSERT_EQ(info.id, val.bpf_prog.id, "Match program id to cpumap entry prog_id");
- 
- 	/* send a packet to trigger any potential bugs in there */
--	char data[10] = {};
-+	char data[ETH_HLEN] = {};
- 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
- 			    .data_in = &data,
--			    .data_size_in = 10,
-+			    .data_size_in = sizeof(data),
- 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
- 			    .repeat = 1,
- 		);
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c b/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c
-index 27ffed17d4be3..461ab18705d5c 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c
-@@ -23,7 +23,7 @@ static void test_xdp_with_devmap_helpers(void)
- 	__u32 len = sizeof(info);
- 	int err, dm_fd, dm_fd_redir, map_fd;
- 	struct nstoken *nstoken = NULL;
--	char data[10] = {};
-+	char data[ETH_HLEN] = {};
- 	__u32 idx = 0;
- 
- 	SYS(out_close, "ip netns add %s", TEST_NS);
-@@ -58,7 +58,7 @@ static void test_xdp_with_devmap_helpers(void)
- 	/* send a packet to trigger any potential bugs in there */
- 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
- 			    .data_in = &data,
--			    .data_size_in = 10,
-+			    .data_size_in = sizeof(data),
- 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
- 			    .repeat = 1,
- 		);
-@@ -158,7 +158,7 @@ static void test_xdp_with_devmap_helpers_veth(void)
- 	struct nstoken *nstoken = NULL;
- 	__u32 len = sizeof(info);
- 	int err, dm_fd, dm_fd_redir, map_fd, ifindex_dst;
--	char data[10] = {};
-+	char data[ETH_HLEN] = {};
- 	__u32 idx = 0;
- 
- 	SYS(out_close, "ip netns add %s", TEST_NS);
-@@ -208,7 +208,7 @@ static void test_xdp_with_devmap_helpers_veth(void)
- 	/* send a packet to trigger any potential bugs in there */
- 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
- 			    .data_in = &data,
--			    .data_size_in = 10,
-+			    .data_size_in = sizeof(data),
- 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
- 			    .repeat = 1,
- 		);
--- 
-2.39.5
+That's icky. Can you instead avoid using the dev_close()/dev_open()?
+Michal
 
