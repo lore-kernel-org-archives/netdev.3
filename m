@@ -1,47 +1,47 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19D0265CBF
-	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 18:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB32265CBF
+	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 18:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740420496; cv=none; b=FacoBZ2WFMynEAJz1jAS1cXLM89wq2JHO6apyYSH96U6wN2wrsgzfLU6kzL21rQNYvDrtXjZwL8Ohf9vmEVREZBiVHkjix30ROv1fBuazrnzAXPxFSx/pYkvrcSByrDPFwQvV8g99KDrwUSbPTXBwrZW1x0rNVtQC4iwtydmzoI=
+	t=1740420499; cv=none; b=Yv7McrNkoVftpefMImgNoJPY1fatg0rEg0LD1dyaIeledmdGZX+aOhcngt2edD+BoCQDw7yp8X1OQPkHUkJDqe1Y5nfkKcT6lGvyI0FPY+XisypO+v4qeOzO3Ui8FagnyfzOeLc/gcHBY6Z6lp6lrt8yeLq/GomSnpRVbjVqCf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740420496; c=relaxed/simple;
-	bh=V4jx2ozW1zy+FbKxF/UWHIzxGvuZFEB6z+U+TephUyk=;
+	s=arc-20240116; t=1740420499; c=relaxed/simple;
+	bh=4xCrYRPQ+itltKxdiAiUU7evQRhz8GVF7n44ivlLgH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MC7eKgDCD34cYPqiM6b/M3Ci0sI3cEnnWhJpoIwWktVlk8MndcR+eTsI77eDwnT++d/FI6rl9rW0C3WPAbRXCnlV8TeOi80QcXmQ8/Yo6YXj0bP6HuPMDckML/S3EbWq2BINv1UCIlTUT0ul1x6nwP5xfTOIxQF+A2sqMmV8+cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.174
+	 MIME-Version; b=KQwIHuc9YsYb64Mb0EvGh+Vg8gkYIZJXcVB2lW3UOnNOVQ5B7vfmK5FdjasSKo0VzWVlVDS9lThygfQ2LNOte8CA9QoVnG+P9WS4K/8QuUCTUr6K8m9ad+ccQfHZyKw0InogrKaxfoJtSEdRG3RVgvRQEI5LMpZqAHxVTBS3wng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-220d39a5627so72495245ad.1
-        for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 10:08:14 -0800 (PST)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2211acda7f6so105895675ad.3
+        for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 10:08:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740420494; x=1741025294;
+        d=1e100.net; s=20230601; t=1740420497; x=1741025297;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iWwK0rU042lmTJ4WUetLrLnuntYbP2dhYbvR5NUDPe0=;
-        b=dT+oe2w+n7epvWTUWJ85F2sn+QEHUnqVZD76gBZBTR8cFFSvXvB06OSBO3pqHvEIor
-         8JywiVLzUlUwXI4GMCGEymXH3JKjXqs6lru/LPx2WgZlg/D2DK8dpHvEW7cXbroV3ijD
-         7v9MVW4Dn67/Eu2gJrABNjJxZl7vQ0NClnOplNFkRKeP9ir/+gNcIlCXIIAX5TY/7GPG
-         Rf51FhOKciJJIMP7lyoC/jlfVw6ZPSwQqUfQ1sEKVxpcdbYd8PPEMTG2MGUOt3V26xOb
-         Mr6dDyxLRxdC0v5df/lx6OGbF2VxFvrJcaWI9P1ps3cWlsflPNU+gT6YiOVIwKbe7VXk
-         NWmw==
-X-Gm-Message-State: AOJu0Yx69iBmweyahhhfa8dW9tJx70KwYEUE5XRJj+pNGECLq1PeTzPy
-	u7JB9T9zWhZEmkteZp45vuUFsB2uxNQ9oKZb1XHRZTXsnKdpJglKVuuL
-X-Gm-Gg: ASbGncvlZW8EgsKnlFv8vSGMxny7bACJ79w2xZxhpB6IDofC/EJwtBkJOf/ArqhAeR5
-	M5EOcR9icpd9QTk4NHyshqy1gUQfMToou9w3A05HTnC4EqfLW3g+qMZB+0i6Fej/9YJzXFhDgSf
-	RKpMrQfa6++v+Kbd0k1eKEc7fUYJ0y7I0eabtspSVbxz2odPP9dh1gtEHrMY1nTauQ3bQGEIxgE
-	Yeq6SWfrYwq8EGTwowS5pnoPPgyMNXK8GqZKztqoq7p8079wqkZrKXTGBytSe6DNgEchHvxz6kW
-	10yIcVzUxmz1hxFLjRhox+tavw==
-X-Google-Smtp-Source: AGHT+IEMLqMv8hb/M07BjE/zgr9Wmd9bnEh+NNxztMTEGI60lQ2vR8rNw9Mv3pqrAHRuUB8ev/AtbA==
-X-Received: by 2002:a17:903:41c8:b0:215:ac55:fd72 with SMTP id d9443c01a7336-221a001576cmr213419965ad.37.1740420494020;
-        Mon, 24 Feb 2025 10:08:14 -0800 (PST)
+        bh=j6D3ny68JTj8nDIrehVmQ1xEwyPlD2anmdHmDOC+X3A=;
+        b=nYykOR1Ng/9Fv4psADeAkiv3se3/Vt5ia6fPDZ6ZUB5wkviW9SdlweJUrwSxI8fI16
+         lA8PB7z5ON3YatCRp1b15l3Z0mETgEqKYnO0/yJ6FyYh0NraT7OVbO/abohQqynFjXMr
+         zS5eEN9iwEx/JMa1nZ8NLgAzZK4iqYzH9DvY14/OT1o+np83ILpbcATV+C6lutwU29TT
+         xkw2Hds67w9EKIhEbEqX7PZ8dhNPpap3iF7HAji6qP6cX4VkmHa3cOvhPbsFUeilD9TR
+         T3SVcUFMEXZqd4xxO1BGeIgHQJiAHmEr+G/4KyupBt7NMAAgLAAGM5ijgihS1YnS0Evn
+         b7KQ==
+X-Gm-Message-State: AOJu0YylubT1z8mOjHQ+CfGTT6w1ciIawXEb6pCusfAYXvNSd7CMbwa6
+	UpmDY3LZIa/S/2KUYGTEAddKt1VpyDHhFE85nOuyI+uGi4e3nhieI5i8
+X-Gm-Gg: ASbGncunsiDDCe/TXo3zGMWvXP8EnVdrstuYqjS2OTkCSstW1u1Vg8UsDBc/ikaMGWW
+	Q8Ay5cQ7DeU1TA8yLFW9/fs2fddpsmhBBZNRxaogMh8MYtOW8VLHiDX0+5tGOWozrhkRxv6zD18
+	pAQzppJ+tXk6LiAHGaNtfj78uKStuTP7nFNASNkckH2VrvJcsLE5DWq94EQVAUI0gfgJwccfq5u
+	oA/ABM2KfLJAErff6vDGjMXgiQzABYozBMplUp9uwwbLrBdE8QbFZ3GNS9Nb/0cxl601VER2TI7
+	BHAlSDGNwYQ11IqUiCGYyLP+Cg==
+X-Google-Smtp-Source: AGHT+IFyga7m7oMFOmZEoLNirph65TFeXZco15O0dHebMuuWs4fr9IEtu4FhCEoMbnY89RjgaCp+yA==
+X-Received: by 2002:a05:6a21:150d:b0:1ee:7fa1:9156 with SMTP id adf61e73a8af0-1eef3c48fe5mr24822652637.3.1740420496517;
+        Mon, 24 Feb 2025 10:08:16 -0800 (PST)
 Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
-        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-addee79a984sm15865202a12.32.2025.02.24.10.08.13
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-add0e439774sm17319363a12.0.2025.02.24.10.08.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 10:08:13 -0800 (PST)
+        Mon, 24 Feb 2025 10:08:16 -0800 (PST)
 From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -49,9 +49,9 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	Saeed Mahameed <saeed@kernel.org>
-Subject: [PATCH net-next v7 03/12] net: hold netdev instance lock during queue operations
-Date: Mon, 24 Feb 2025 10:07:59 -0800
-Message-ID: <20250224180809.3653802-4-sdf@fomichev.me>
+Subject: [PATCH net-next v7 05/12] net: hold netdev instance lock during ioctl operations
+Date: Mon, 24 Feb 2025 10:08:01 -0800
+Message-ID: <20250224180809.3653802-6-sdf@fomichev.me>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224180809.3653802-1-sdf@fomichev.me>
 References: <20250224180809.3653802-1-sdf@fomichev.me>
@@ -63,287 +63,308 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-For the drivers that use queue management API, switch to the mode where
-core stack holds the netdev instance lock. This affects the following
-drivers:
-- bnxt
-- gve
-- netdevsim
-
-Originally I locked only start/stop, but switched to holding the
-lock over all iterations to make them look atomic to the device
-(feels like it should be easier to reason about).
+Convert all ndo_eth_ioctl invocations to dev_eth_ioctl which does the
+locking. Reflow some of the dev_siocxxx to drop else clause.
 
 Cc: Saeed Mahameed <saeed@kernel.org>
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c   | 16 ++++++-------
- drivers/net/ethernet/google/gve/gve_main.c  | 12 ++++++----
- drivers/net/ethernet/google/gve/gve_utils.c |  6 ++---
- drivers/net/netdevsim/netdev.c              | 25 +++++++++++++--------
- include/linux/netdevice.h                   |  2 +-
- net/core/netdev_rx_queue.c                  |  5 +++++
- 6 files changed, 41 insertions(+), 25 deletions(-)
+ drivers/net/bonding/bond_main.c |  9 ++---
+ include/linux/netdevice.h       |  3 ++
+ net/8021q/vlan_dev.c            |  4 +-
+ net/core/dev.c                  |  4 +-
+ net/core/dev_api.c              | 30 +++++++++++++++
+ net/core/dev_ioctl.c            | 67 ++++++++++++++++++++-------------
+ 6 files changed, 80 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 15c57a06ecaf..ead9fcaad6bd 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -11508,7 +11508,7 @@ static int bnxt_request_irq(struct bnxt *bp)
- 		if (rc)
- 			break;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index f6d0628a36d9..19775e9d7341 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -855,7 +855,6 @@ static int bond_check_dev_link(struct bonding *bond,
+ 			       struct net_device *slave_dev, int reporting)
+ {
+ 	const struct net_device_ops *slave_ops = slave_dev->netdev_ops;
+-	int (*ioctl)(struct net_device *, struct ifreq *, int);
+ 	struct ifreq ifr;
+ 	struct mii_ioctl_data *mii;
  
--		netif_napi_set_irq(&bp->bnapi[i]->napi, irq->vector);
-+		netif_napi_set_irq_locked(&bp->bnapi[i]->napi, irq->vector);
- 		irq->requested = 1;
+@@ -871,8 +870,7 @@ static int bond_check_dev_link(struct bonding *bond,
+ 			BMSR_LSTATUS : 0;
  
- 		if (zalloc_cpumask_var(&irq->cpu_mask, GFP_KERNEL)) {
-@@ -11557,9 +11557,9 @@ static void bnxt_del_napi(struct bnxt *bp)
- 	for (i = 0; i < bp->cp_nr_rings; i++) {
- 		struct bnxt_napi *bnapi = bp->bnapi[i];
- 
--		__netif_napi_del(&bnapi->napi);
-+		__netif_napi_del_locked(&bnapi->napi);
- 	}
--	/* We called __netif_napi_del(), we need
-+	/* We called __netif_napi_del_locked(), we need
- 	 * to respect an RCU grace period before freeing napi structures.
- 	 */
- 	synchronize_net();
-@@ -11578,12 +11578,12 @@ static void bnxt_init_napi(struct bnxt *bp)
- 		cp_nr_rings--;
- 	for (i = 0; i < cp_nr_rings; i++) {
- 		bnapi = bp->bnapi[i];
--		netif_napi_add_config(bp->dev, &bnapi->napi, poll_fn,
--				      bnapi->index);
-+		netif_napi_add_config_locked(bp->dev, &bnapi->napi, poll_fn,
-+					     bnapi->index);
- 	}
- 	if (BNXT_CHIP_TYPE_NITRO_A0(bp)) {
- 		bnapi = bp->bnapi[cp_nr_rings];
--		netif_napi_add(bp->dev, &bnapi->napi, bnxt_poll_nitroa0);
-+		netif_napi_add_locked(bp->dev, &bnapi->napi, bnxt_poll_nitroa0);
- 	}
- }
- 
-@@ -11604,7 +11604,7 @@ static void bnxt_disable_napi(struct bnxt *bp)
- 			cpr->sw_stats->tx.tx_resets++;
- 		if (bnapi->in_reset)
- 			cpr->sw_stats->rx.rx_resets++;
--		napi_disable(&bnapi->napi);
-+		napi_disable_locked(&bnapi->napi);
- 	}
- }
- 
-@@ -11626,7 +11626,7 @@ static void bnxt_enable_napi(struct bnxt *bp)
- 			INIT_WORK(&cpr->dim.work, bnxt_dim_work);
- 			cpr->dim.mode = DIM_CQ_PERIOD_MODE_START_FROM_EQE;
+ 	/* Ethtool can't be used, fallback to MII ioctls. */
+-	ioctl = slave_ops->ndo_eth_ioctl;
+-	if (ioctl) {
++	if (slave_ops->ndo_eth_ioctl) {
+ 		/* TODO: set pointer to correct ioctl on a per team member
+ 		 *       bases to make this more efficient. that is, once
+ 		 *       we determine the correct ioctl, we will always
+@@ -888,9 +886,10 @@ static int bond_check_dev_link(struct bonding *bond,
+ 		/* Yes, the mii is overlaid on the ifreq.ifr_ifru */
+ 		strscpy_pad(ifr.ifr_name, slave_dev->name, IFNAMSIZ);
+ 		mii = if_mii(&ifr);
+-		if (ioctl(slave_dev, &ifr, SIOCGMIIPHY) == 0) {
++
++		if (dev_eth_ioctl(slave_dev, &ifr, SIOCGMIIPHY) == 0) {
+ 			mii->reg_num = MII_BMSR;
+-			if (ioctl(slave_dev, &ifr, SIOCGMIIREG) == 0)
++			if (dev_eth_ioctl(slave_dev, &ifr, SIOCGMIIREG) == 0)
+ 				return mii->val_out & BMSR_LSTATUS;
  		}
--		napi_enable(&bnapi->napi);
-+		napi_enable_locked(&bnapi->napi);
  	}
- }
- 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 029be8342b7b..6dcdcaf518f4 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1968,7 +1968,7 @@ static void gve_turndown(struct gve_priv *priv)
- 			netif_queue_set_napi(priv->dev, idx,
- 					     NETDEV_QUEUE_TYPE_TX, NULL);
- 
--		napi_disable(&block->napi);
-+		napi_disable_locked(&block->napi);
- 	}
- 	for (idx = 0; idx < priv->rx_cfg.num_queues; idx++) {
- 		int ntfy_idx = gve_rx_idx_to_ntfy(priv, idx);
-@@ -1979,7 +1979,7 @@ static void gve_turndown(struct gve_priv *priv)
- 
- 		netif_queue_set_napi(priv->dev, idx, NETDEV_QUEUE_TYPE_RX,
- 				     NULL);
--		napi_disable(&block->napi);
-+		napi_disable_locked(&block->napi);
- 	}
- 
- 	/* Stop tx queues */
-@@ -2009,7 +2009,7 @@ static void gve_turnup(struct gve_priv *priv)
- 		if (!gve_tx_was_added_to_block(priv, idx))
- 			continue;
- 
--		napi_enable(&block->napi);
-+		napi_enable_locked(&block->napi);
- 
- 		if (idx < priv->tx_cfg.num_queues)
- 			netif_queue_set_napi(priv->dev, idx,
-@@ -2037,7 +2037,7 @@ static void gve_turnup(struct gve_priv *priv)
- 		if (!gve_rx_was_added_to_block(priv, idx))
- 			continue;
- 
--		napi_enable(&block->napi);
-+		napi_enable_locked(&block->napi);
- 		netif_queue_set_napi(priv->dev, idx, NETDEV_QUEUE_TYPE_RX,
- 				     &block->napi);
- 
-@@ -2887,6 +2887,7 @@ static int gve_suspend(struct pci_dev *pdev, pm_message_t state)
- 
- 	priv->suspend_cnt++;
- 	rtnl_lock();
-+	netdev_lock(netdev);
- 	if (was_up && gve_close(priv->dev)) {
- 		/* If the dev was up, attempt to close, if close fails, reset */
- 		gve_reset_and_teardown(priv, was_up);
-@@ -2895,6 +2896,7 @@ static int gve_suspend(struct pci_dev *pdev, pm_message_t state)
- 		gve_teardown_priv_resources(priv);
- 	}
- 	priv->up_before_suspend = was_up;
-+	netdev_unlock(netdev);
- 	rtnl_unlock();
- 	return 0;
- }
-@@ -2907,7 +2909,9 @@ static int gve_resume(struct pci_dev *pdev)
- 
- 	priv->resume_cnt++;
- 	rtnl_lock();
-+	netdev_lock(netdev);
- 	err = gve_reset_recovery(priv, priv->up_before_suspend);
-+	netdev_unlock(netdev);
- 	rtnl_unlock();
- 	return err;
- }
-diff --git a/drivers/net/ethernet/google/gve/gve_utils.c b/drivers/net/ethernet/google/gve/gve_utils.c
-index 30fef100257e..ace9b8698021 100644
---- a/drivers/net/ethernet/google/gve/gve_utils.c
-+++ b/drivers/net/ethernet/google/gve/gve_utils.c
-@@ -110,13 +110,13 @@ void gve_add_napi(struct gve_priv *priv, int ntfy_idx,
- {
- 	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
- 
--	netif_napi_add(priv->dev, &block->napi, gve_poll);
--	netif_napi_set_irq(&block->napi, block->irq);
-+	netif_napi_add_locked(priv->dev, &block->napi, gve_poll);
-+	netif_napi_set_irq_locked(&block->napi, block->irq);
- }
- 
- void gve_remove_napi(struct gve_priv *priv, int ntfy_idx)
- {
- 	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
- 
--	netif_napi_del(&block->napi);
-+	netif_napi_del_locked(&block->napi);
- }
-diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-index aaa3b58e2e3e..54d03b0628d2 100644
---- a/drivers/net/netdevsim/netdev.c
-+++ b/drivers/net/netdevsim/netdev.c
-@@ -683,7 +683,8 @@ nsim_queue_mem_alloc(struct net_device *dev, void *per_queue_mem, int idx)
- 		goto err_free;
- 
- 	if (!ns->rq_reset_mode)
--		netif_napi_add_config(dev, &qmem->rq->napi, nsim_poll, idx);
-+		netif_napi_add_config_locked(dev, &qmem->rq->napi, nsim_poll,
-+					     idx);
- 
- 	return 0;
- 
-@@ -700,7 +701,7 @@ static void nsim_queue_mem_free(struct net_device *dev, void *per_queue_mem)
- 	page_pool_destroy(qmem->pp);
- 	if (qmem->rq) {
- 		if (!ns->rq_reset_mode)
--			netif_napi_del(&qmem->rq->napi);
-+			netif_napi_del_locked(&qmem->rq->napi);
- 		page_pool_destroy(qmem->rq->page_pool);
- 		nsim_queue_free(qmem->rq);
- 	}
-@@ -712,9 +713,11 @@ nsim_queue_start(struct net_device *dev, void *per_queue_mem, int idx)
- 	struct nsim_queue_mem *qmem = per_queue_mem;
- 	struct netdevsim *ns = netdev_priv(dev);
- 
-+	netdev_assert_locked(dev);
-+
- 	if (ns->rq_reset_mode == 1) {
- 		ns->rq[idx]->page_pool = qmem->pp;
--		napi_enable(&ns->rq[idx]->napi);
-+		napi_enable_locked(&ns->rq[idx]->napi);
- 		return 0;
- 	}
- 
-@@ -722,15 +725,17 @@ nsim_queue_start(struct net_device *dev, void *per_queue_mem, int idx)
- 	 * here we want to test various call orders.
- 	 */
- 	if (ns->rq_reset_mode == 2) {
--		netif_napi_del(&ns->rq[idx]->napi);
--		netif_napi_add_config(dev, &qmem->rq->napi, nsim_poll, idx);
-+		netif_napi_del_locked(&ns->rq[idx]->napi);
-+		netif_napi_add_config_locked(dev, &qmem->rq->napi, nsim_poll,
-+					     idx);
- 	} else if (ns->rq_reset_mode == 3) {
--		netif_napi_add_config(dev, &qmem->rq->napi, nsim_poll, idx);
--		netif_napi_del(&ns->rq[idx]->napi);
-+		netif_napi_add_config_locked(dev, &qmem->rq->napi, nsim_poll,
-+					     idx);
-+		netif_napi_del_locked(&ns->rq[idx]->napi);
- 	}
- 
- 	ns->rq[idx] = qmem->rq;
--	napi_enable(&ns->rq[idx]->napi);
-+	napi_enable_locked(&ns->rq[idx]->napi);
- 
- 	return 0;
- }
-@@ -740,7 +745,9 @@ static int nsim_queue_stop(struct net_device *dev, void *per_queue_mem, int idx)
- 	struct nsim_queue_mem *qmem = per_queue_mem;
- 	struct netdevsim *ns = netdev_priv(dev);
- 
--	napi_disable(&ns->rq[idx]->napi);
-+	netdev_assert_locked(dev);
-+
-+	napi_disable_locked(&ns->rq[idx]->napi);
- 
- 	if (ns->rq_reset_mode == 1) {
- 		qmem->pp = ns->rq[idx]->page_pool;
 diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 6b9dfdfb6c3b..12cc3cee5970 100644
+index 7f0cad05bc5f..e55ec50f0220 100644
 --- a/include/linux/netdevice.h
 +++ b/include/linux/netdevice.h
-@@ -2726,7 +2726,7 @@ static inline void netdev_assert_locked_or_invisible(struct net_device *dev)
- 
- static inline bool netdev_need_ops_lock(struct net_device *dev)
+@@ -4192,6 +4192,8 @@ int put_user_ifreq(struct ifreq *ifr, void __user *arg);
+ int dev_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr,
+ 		void __user *data, bool *need_copyout);
+ int dev_ifconf(struct net *net, struct ifconf __user *ifc);
++int dev_eth_ioctl(struct net_device *dev,
++		  struct ifreq *ifr, unsigned int cmd);
+ int generic_hwtstamp_get_lower(struct net_device *dev,
+ 			       struct kernel_hwtstamp_config *kernel_cfg);
+ int generic_hwtstamp_set_lower(struct net_device *dev,
+@@ -4213,6 +4215,7 @@ int netif_change_net_namespace(struct net_device *dev, struct net *net,
+ int dev_change_net_namespace(struct net_device *dev, struct net *net,
+ 			     const char *pat);
+ int __dev_set_mtu(struct net_device *, int);
++int netif_set_mtu(struct net_device *dev, int new_mtu);
+ int dev_set_mtu(struct net_device *, int);
+ int dev_pre_changeaddr_notify(struct net_device *dev, const char *addr,
+ 			      struct netlink_ext_ack *extack);
+diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+index 91d134961357..ee3283400716 100644
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -377,7 +377,6 @@ static int vlan_hwtstamp_set(struct net_device *dev,
+ static int vlan_dev_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
  {
--	bool ret = false;
-+	bool ret = !!dev->queue_mgmt_ops;
+ 	struct net_device *real_dev = vlan_dev_priv(dev)->real_dev;
+-	const struct net_device_ops *ops = real_dev->netdev_ops;
+ 	struct ifreq ifrr;
+ 	int err = -EOPNOTSUPP;
  
- #if IS_ENABLED(CONFIG_NET_SHAPER)
- 	ret |= !!dev->netdev_ops->net_shaper_ops;
-diff --git a/net/core/netdev_rx_queue.c b/net/core/netdev_rx_queue.c
-index ddd54e1e7289..7419c41fd3cb 100644
---- a/net/core/netdev_rx_queue.c
-+++ b/net/core/netdev_rx_queue.c
-@@ -30,6 +30,8 @@ int netdev_rx_queue_restart(struct net_device *dev, unsigned int rxq_idx)
- 		goto err_free_new_mem;
+@@ -388,8 +387,7 @@ static int vlan_dev_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
+ 	case SIOCGMIIPHY:
+ 	case SIOCGMIIREG:
+ 	case SIOCSMIIREG:
+-		if (netif_device_present(real_dev) && ops->ndo_eth_ioctl)
+-			err = ops->ndo_eth_ioctl(real_dev, &ifrr, cmd);
++		err = dev_eth_ioctl(real_dev, &ifrr, cmd);
+ 		break;
  	}
  
-+	netdev_lock(dev);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 2aac0c470222..5a37073e20b0 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -9396,7 +9396,7 @@ int netif_set_mtu_ext(struct net_device *dev, int new_mtu,
+ 	return err;
+ }
+ 
+-int dev_set_mtu(struct net_device *dev, int new_mtu)
++int netif_set_mtu(struct net_device *dev, int new_mtu)
+ {
+ 	struct netlink_ext_ack extack;
+ 	int err;
+@@ -9407,7 +9407,7 @@ int dev_set_mtu(struct net_device *dev, int new_mtu)
+ 		net_err_ratelimited("%s: %s\n", dev->name, extack._msg);
+ 	return err;
+ }
+-EXPORT_SYMBOL(dev_set_mtu);
++EXPORT_SYMBOL(netif_set_mtu);
+ 
+ int netif_change_tx_queue_len(struct net_device *dev, unsigned long new_len)
+ {
+diff --git a/net/core/dev_api.c b/net/core/dev_api.c
+index ce3a38c8e326..7dae30781411 100644
+--- a/net/core/dev_api.c
++++ b/net/core/dev_api.c
+@@ -222,3 +222,33 @@ void dev_close(struct net_device *dev)
+ 	netdev_unlock_ops(dev);
+ }
+ EXPORT_SYMBOL(dev_close);
 +
- 	err = qops->ndo_queue_mem_alloc(dev, new_mem, rxq_idx);
++int dev_eth_ioctl(struct net_device *dev,
++		  struct ifreq *ifr, unsigned int cmd)
++{
++	const struct net_device_ops *ops = dev->netdev_ops;
++	int ret = -ENODEV;
++
++	if (!ops->ndo_eth_ioctl)
++		return -EOPNOTSUPP;
++
++	netdev_lock_ops(dev);
++	if (netif_device_present(dev))
++		ret = ops->ndo_eth_ioctl(dev, ifr, cmd);
++	netdev_unlock_ops(dev);
++
++	return ret;
++}
++EXPORT_SYMBOL(dev_eth_ioctl);
++
++int dev_set_mtu(struct net_device *dev, int new_mtu)
++{
++	int ret;
++
++	netdev_lock_ops(dev);
++	ret = netif_set_mtu(dev, new_mtu);
++	netdev_unlock_ops(dev);
++
++	return ret;
++}
++EXPORT_SYMBOL(dev_set_mtu);
+diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+index 4c2098ac9d72..d9f350593121 100644
+--- a/net/core/dev_ioctl.c
++++ b/net/core/dev_ioctl.c
+@@ -110,7 +110,7 @@ static int dev_getifmap(struct net_device *dev, struct ifreq *ifr)
+ 	return 0;
+ }
+ 
+-static int dev_setifmap(struct net_device *dev, struct ifreq *ifr)
++static int netif_setifmap(struct net_device *dev, struct ifreq *ifr)
+ {
+ 	struct compat_ifmap *cifmap = (struct compat_ifmap *)&ifr->ifr_map;
+ 
+@@ -240,20 +240,6 @@ int net_hwtstamp_validate(const struct kernel_hwtstamp_config *cfg)
+ 	return 0;
+ }
+ 
+-static int dev_eth_ioctl(struct net_device *dev,
+-			 struct ifreq *ifr, unsigned int cmd)
+-{
+-	const struct net_device_ops *ops = dev->netdev_ops;
+-
+-	if (!ops->ndo_eth_ioctl)
+-		return -EOPNOTSUPP;
+-
+-	if (!netif_device_present(dev))
+-		return -ENODEV;
+-
+-	return ops->ndo_eth_ioctl(dev, ifr, cmd);
+-}
+-
+ /**
+  * dev_get_hwtstamp_phylib() - Get hardware timestamping settings of NIC
+  *	or of attached phylib PHY
+@@ -305,7 +291,9 @@ static int dev_get_hwtstamp(struct net_device *dev, struct ifreq *ifr)
+ 		return -ENODEV;
+ 
+ 	kernel_cfg.ifr = ifr;
++	netdev_lock_ops(dev);
+ 	err = dev_get_hwtstamp_phylib(dev, &kernel_cfg);
++	netdev_unlock_ops(dev);
  	if (err)
- 		goto err_free_old_mem;
-@@ -52,6 +54,8 @@ int netdev_rx_queue_restart(struct net_device *dev, unsigned int rxq_idx)
+ 		return err;
  
- 	qops->ndo_queue_mem_free(dev, old_mem);
+@@ -429,7 +417,9 @@ static int dev_set_hwtstamp(struct net_device *dev, struct ifreq *ifr)
+ 	if (!netif_device_present(dev))
+ 		return -ENODEV;
  
-+	netdev_unlock(dev);
++	netdev_lock_ops(dev);
+ 	err = dev_set_hwtstamp_phylib(dev, &kernel_cfg, &extack);
++	netdev_unlock_ops(dev);
+ 	if (err)
+ 		return err;
+ 
+@@ -504,10 +494,14 @@ static int dev_siocbond(struct net_device *dev,
+ 	const struct net_device_ops *ops = dev->netdev_ops;
+ 
+ 	if (ops->ndo_siocbond) {
++		int ret = -ENODEV;
 +
- 	kvfree(old_mem);
- 	kvfree(new_mem);
++		netdev_lock_ops(dev);
+ 		if (netif_device_present(dev))
+-			return ops->ndo_siocbond(dev, ifr, cmd);
+-		else
+-			return -ENODEV;
++			ret = ops->ndo_siocbond(dev, ifr, cmd);
++		netdev_unlock_ops(dev);
++
++		return ret;
+ 	}
  
-@@ -76,6 +80,7 @@ int netdev_rx_queue_restart(struct net_device *dev, unsigned int rxq_idx)
- 	qops->ndo_queue_mem_free(dev, new_mem);
+ 	return -EOPNOTSUPP;
+@@ -519,10 +513,14 @@ static int dev_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
+ 	const struct net_device_ops *ops = dev->netdev_ops;
  
- err_free_old_mem:
-+	netdev_unlock(dev);
- 	kvfree(old_mem);
+ 	if (ops->ndo_siocdevprivate) {
++		int ret = -ENODEV;
++
++		netdev_lock_ops(dev);
+ 		if (netif_device_present(dev))
+-			return ops->ndo_siocdevprivate(dev, ifr, data, cmd);
+-		else
+-			return -ENODEV;
++			ret = ops->ndo_siocdevprivate(dev, ifr, data, cmd);
++		netdev_unlock_ops(dev);
++
++		return ret;
+ 	}
  
- err_free_new_mem:
+ 	return -EOPNOTSUPP;
+@@ -533,10 +531,14 @@ static int dev_siocwandev(struct net_device *dev, struct if_settings *ifs)
+ 	const struct net_device_ops *ops = dev->netdev_ops;
+ 
+ 	if (ops->ndo_siocwandev) {
++		int ret = -ENODEV;
++
++		netdev_lock_ops(dev);
+ 		if (netif_device_present(dev))
+-			return ops->ndo_siocwandev(dev, ifs);
+-		else
+-			return -ENODEV;
++			ret = ops->ndo_siocwandev(dev, ifs);
++		netdev_unlock_ops(dev);
++
++		return ret;
+ 	}
+ 
+ 	return -EOPNOTSUPP;
+@@ -580,11 +582,16 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
+ 		memcpy(dev->broadcast, ifr->ifr_hwaddr.sa_data,
+ 		       min(sizeof(ifr->ifr_hwaddr.sa_data_min),
+ 			   (size_t)dev->addr_len));
++		netdev_lock_ops(dev);
+ 		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
++		netdev_unlock_ops(dev);
+ 		return 0;
+ 
+ 	case SIOCSIFMAP:
+-		return dev_setifmap(dev, ifr);
++		netdev_lock_ops(dev);
++		err = netif_setifmap(dev, ifr);
++		netdev_unlock_ops(dev);
++		return err;
+ 
+ 	case SIOCADDMULTI:
+ 		if (!ops->ndo_set_rx_mode ||
+@@ -592,7 +599,10 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
+ 			return -EINVAL;
+ 		if (!netif_device_present(dev))
+ 			return -ENODEV;
+-		return dev_mc_add_global(dev, ifr->ifr_hwaddr.sa_data);
++		netdev_lock_ops(dev);
++		err = dev_mc_add_global(dev, ifr->ifr_hwaddr.sa_data);
++		netdev_unlock_ops(dev);
++		return err;
+ 
+ 	case SIOCDELMULTI:
+ 		if (!ops->ndo_set_rx_mode ||
+@@ -600,7 +610,10 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
+ 			return -EINVAL;
+ 		if (!netif_device_present(dev))
+ 			return -ENODEV;
+-		return dev_mc_del_global(dev, ifr->ifr_hwaddr.sa_data);
++		netdev_lock_ops(dev);
++		err = dev_mc_del_global(dev, ifr->ifr_hwaddr.sa_data);
++		netdev_unlock_ops(dev);
++		return err;
+ 
+ 	case SIOCSIFTXQLEN:
+ 		if (ifr->ifr_qlen < 0)
 -- 
 2.48.1
 
