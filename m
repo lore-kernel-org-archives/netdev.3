@@ -1,116 +1,170 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx01lb.world4you.com (mx01lb.world4you.com [81.19.149.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E62519B586
-	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 21:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBF71DBB03
+	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 21:15:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740431663; cv=none; b=TdYisStokFoQRtMJKLctfdOS9N1e2fwL0Ur63VZ611Rzb8g5dRHpltygWBmkHacYYr4tJ/Yk83sVpiEbHcyZXwfYNZIw7Yp1tOk2PPhAeebQ1dXdNidmK+8ThFsdYgy+21ov7Ncz2Iz6ne5jGcncX83uZpBS+8jAjcFOnIfShkw=
+	t=1740431756; cv=none; b=gCTUBSqH/YJNRzMcVOZVYdxLuqxSRGFwSmpr6peK9DKUR69+SWkfQ0Wmy4ZaBNkxY6eWkvJywJs1n5+JazdzpnQ9c9Wsg/5d9NCA8Fwehjqsza5I0GvaXnu3m1jzxeirC60GNNhC2U8pjTPWQqaXF6pWYVzMv/dRIl3TV/VMcYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740431663; c=relaxed/simple;
-	bh=BFFfgUq7Iuzi/xZzLJfSNY8vEGPzaXwotWPI2+nnkzc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vwv7tuz8Eqo2rEQxnUqSB+8qIXuj5ObmNfNdWuyJPLKJyHzjAb38mt3iJ8pL2lucLK7XTF4S5LidODoNP1JdsQ6mZH4CWRAAgWx0jPbYiW1NN10m05HoiZIS3IIeyzZMUX7i+rR2WyMYzSUhYf7sroIqRJUOUJpNxnyp6Em2Vpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ya8XO8ec; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1740431756; c=relaxed/simple;
+	bh=S2dE/z0aGsnbY8NdaLYNkmZW9KztXUsXLqLz6hIA4B8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=syJ4uRSD9Yssgev1mm/ma4WKvWXpAZUOhNMzZEjXA8nqqabU+Z1C3y6PW1q26HSifpFmhfokBDZeF55nPnCjrwf33EMJSZxqulPCMdxg8LqJSDNh1wraNll+4Sz2YFgHgMlx6LPzXHGpAodpvsmt8OqXm6fcSOEdyDmqdVR7HUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=LMApmUC+; arc=none smtp.client-ip=81.19.149.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ya8XO8ec"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740431660;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3LxYlZbO69MM2I+1jfzNgkosEahmAX1SEjMmy1nVJo4=;
-	b=Ya8XO8ecxVGOvU3a4a/GbIqIpEhLvNx/q87wf/Rown5l8WV0jOMt9eGgM8BgD3cuo41BpF
-	4Me/Ze3UWMntVjWtHgKca9Pet0oLQIHxT/MB0YdQseYxBCi1Kkd1sEkRdOvZmSa54a54rx
-	xcHbvokBszpuXWz1wgxFQUF5UoXsQLo=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-675-hN5xMkBKMsa-1NyiZyPkTg-1; Mon, 24 Feb 2025 16:14:18 -0500
-X-MC-Unique: hN5xMkBKMsa-1NyiZyPkTg-1
-X-Mimecast-MFC-AGG-ID: hN5xMkBKMsa-1NyiZyPkTg_1740431658
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-abbaa560224so464941466b.3
-        for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 13:14:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740431658; x=1741036458;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3LxYlZbO69MM2I+1jfzNgkosEahmAX1SEjMmy1nVJo4=;
-        b=Pff5H9j7k3x0FpG7hitewMYU5ZlDfw5UyAtXvQ1DhbXA2XlChKgZx5kJ5KyNa8GMJh
-         25MkEqALVop5DAmu/BJI/bGCz0uXQX84GvDnyR8SEkSIhDq4/bWSToRWhmGohdQMEk1x
-         7ISomiwMZlBvCPVWyxwNgHcSDw3ija6+N+Tx4zYZS1ppvzLjTASLcmQUOOJLI6iDFvi1
-         e72AJqhBW9gNOb6ku/zrL8Uqf99e1YC/oT260C+PpS4Qa7ePqwLXaCib8kdyhEINHRKK
-         ustpjemJyDIVchhBFqIUC1zWhWn0rHTGdpKG24uxFwiix75DHjvGwq7/1YaNueq+3YK/
-         yp7w==
-X-Forwarded-Encrypted: i=1; AJvYcCW9Crrseq/RFbcrmagHYmi8wRyxmHaGYLGcJlSyMwjRDvyGm0AjD94d07wsdya0RaFkwhrJbEk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKwMYh8RbYo2k86iCB69g9yiv66qpANCGKiO8XwF/3jABIn/C5
-	lamsWTLJwQzWr0Ni0yJx9IpHZfPdmC54J5Ml67tSxsz67PKMdsZbMio7vKZv5mCyfr7tq0wnelq
-	xKgE4+aIn8LUmj+ANQjTtJNFSBNqgnctr0a7zymD+uy48EBHfTxKBlg==
-X-Gm-Gg: ASbGnctKn0inFZuDydlNk/GdL2opj9JWz9V+7Jo32PvnP9HHTdWTosfPsCB2BLhfSvM
-	fFRBXew/Db1iA5Nd0Fe2/lhKe7s8u1LEsXURfytbvatJETNdc1DeXReKch4PAylyr+UZKTCZYrN
-	eUZvavGN6Z4yuytAmnUekkKeyvQtwrKkecY29gCkDE5NnbfOYBBXCQbgKx1bkyS4CUDyF3UG+db
-	JU3NJkiAtqqB6uAWBCsgI/yrATBEwySlvRLans0DXdInLj/XtwM1y8wX0N5z4slZt4YRMqE7J78
-	CS8BoUYvsw==
-X-Received: by 2002:a17:907:7e96:b0:abc:ad5:c with SMTP id a640c23a62f3a-abc0d9956d4mr1429601566b.3.1740431657751;
-        Mon, 24 Feb 2025 13:14:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE+dg/b+h9Fxu9CEspNCx5tLRGK/k3UMDi1/P2vbRcKxfOCsdjbzH2czU/m3b+8Voz5NZMuZQ==
-X-Received: by 2002:a17:907:7e96:b0:abc:ad5:c with SMTP id a640c23a62f3a-abc0d9956d4mr1429599466b.3.1740431657431;
-        Mon, 24 Feb 2025 13:14:17 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc7:441:1929:22c5:4595:d9bc:489e])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed204647fsm22118466b.124.2025.02.24.13.14.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 13:14:16 -0800 (PST)
-Date: Mon, 24 Feb 2025 16:14:13 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com
-Subject: Re: [PATCH net 0/2] vsock: null-ptr-deref when SO_LINGER enabled
-Message-ID: <20250224161404-mutt-send-email-mst@kernel.org>
-References: <20250204-vsock-linger-nullderef-v1-0-6eb1760fa93e@rbox.co>
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="LMApmUC+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ZiPc592vzeYKTRjw+Zr7BdQk9/pym+uW6W6CjjQX6Oc=; b=LMApmUC+B9JwYPVcBgpp8VFqar
+	qckRcnn4DfF7OhvvuYmcU7wx4H2xZz4acd99LUsvSi/o7MN0FvDfvrO6oEkMFvLzj1WNcAswNqWSG
+	3YPlnrs2iVcLc8WrWy/rPtS1UPcQpZECHyxyXum3fxa+lOpHNAh50WZTIo/jkkcYDXaI=;
+Received: from 88-117-55-1.adsl.highway.telekom.at ([88.117.55.1] helo=hornet.engleder.at)
+	by mx01lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tmfnp-000000000wu-46rm;
+	Mon, 24 Feb 2025 22:15:50 +0100
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	Gerhard Engleder <gerhard@engleder-embedded.com>
+Subject: [PATCH net-next v8 4/8] net: phy: marvell: Align set_loopback() implementation
+Date: Mon, 24 Feb 2025 22:15:27 +0100
+Message-Id: <20250224211531.115980-5-gerhard@engleder-embedded.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250224211531.115980-1-gerhard@engleder-embedded.com>
+References: <20250224211531.115980-1-gerhard@engleder-embedded.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250204-vsock-linger-nullderef-v1-0-6eb1760fa93e@rbox.co>
+Content-Transfer-Encoding: 8bit
+X-AV-Do-Run: Yes
+X-ACL-Warn: X-W4Y-Internal
 
-On Tue, Feb 04, 2025 at 01:29:51AM +0100, Michal Luczaj wrote:
-> syzbot pointed out that a recent patching of a use-after-free introduced a
-> null-ptr-deref. This series fixes the problem and adds a test.
-> 
-> Fixes fcdd2242c023 ("vsock: Keep the binding until socket destruction").
-> 
-> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Use genphy_loopback() to disable loopback like ksz9031_set_loopback().
+This way disable loopback is implemented only once within
+genphy_loopback() and the set_loopback() implementations look similar.
 
+Also fix comment about msleep() in the out-of loopback case which is not
+executed in the out-of loopback case.
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+---
+ drivers/net/phy/marvell.c | 72 ++++++++++++++++++---------------------
+ 1 file changed, 33 insertions(+), 39 deletions(-)
 
-
-> ---
-> Michal Luczaj (2):
->       vsock: Orphan socket after transport release
->       vsock/test: Add test for SO_LINGER null ptr deref
-> 
->  net/vmw_vsock/af_vsock.c         |  3 ++-
->  tools/testing/vsock/vsock_test.c | 41 ++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 43 insertions(+), 1 deletion(-)
-> ---
-> base-commit: 0e6dc66b5c5fa186a9f96c66421af74212ebcf66
-> change-id: 20250203-vsock-linger-nullderef-cbe4402ad306
-> 
-> Best regards,
-> -- 
-> Michal Luczaj <mhal@rbox.co>
-> 
+diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+index f2ad675537d1..623292948fa7 100644
+--- a/drivers/net/phy/marvell.c
++++ b/drivers/net/phy/marvell.c
+@@ -2133,56 +2133,50 @@ static void marvell_get_stats_simple(struct phy_device *phydev,
+ 
+ static int m88e1510_loopback(struct phy_device *phydev, bool enable, int speed)
+ {
++	u16 bmcr_ctl, mscr2_ctl = 0;
+ 	int err;
+ 
+-	if (enable) {
+-		u16 bmcr_ctl, mscr2_ctl = 0;
++	if (!enable)
++		return genphy_loopback(phydev, enable, 0);
+ 
+-		if (speed == SPEED_10 || speed == SPEED_100 ||
+-		    speed == SPEED_1000)
+-			phydev->speed = speed;
+-		else if (speed)
+-			return -EINVAL;
+-
+-		bmcr_ctl = mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
+-
+-		err = phy_write(phydev, MII_BMCR, bmcr_ctl);
+-		if (err < 0)
+-			return err;
++	if (speed == SPEED_10 || speed == SPEED_100 || speed == SPEED_1000)
++		phydev->speed = speed;
++	else if (speed)
++		return -EINVAL;
+ 
+-		if (phydev->speed == SPEED_1000)
+-			mscr2_ctl = BMCR_SPEED1000;
+-		else if (phydev->speed == SPEED_100)
+-			mscr2_ctl = BMCR_SPEED100;
++	bmcr_ctl = mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
+ 
+-		err = phy_modify_paged(phydev, MII_MARVELL_MSCR_PAGE,
+-				       MII_88E1510_MSCR_2, BMCR_SPEED1000 |
+-				       BMCR_SPEED100, mscr2_ctl);
+-		if (err < 0)
+-			return err;
++	err = phy_write(phydev, MII_BMCR, bmcr_ctl);
++	if (err < 0)
++		return err;
+ 
+-		/* Need soft reset to have speed configuration takes effect */
+-		err = genphy_soft_reset(phydev);
+-		if (err < 0)
+-			return err;
++	if (phydev->speed == SPEED_1000)
++		mscr2_ctl = BMCR_SPEED1000;
++	else if (phydev->speed == SPEED_100)
++		mscr2_ctl = BMCR_SPEED100;
+ 
+-		err = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
+-				 BMCR_LOOPBACK);
++	err = phy_modify_paged(phydev, MII_MARVELL_MSCR_PAGE,
++			       MII_88E1510_MSCR_2, BMCR_SPEED1000 |
++			       BMCR_SPEED100, mscr2_ctl);
++	if (err < 0)
++		return err;
+ 
+-		if (!err) {
+-			/* It takes some time for PHY device to switch
+-			 * into/out-of loopback mode.
+-			 */
+-			msleep(1000);
+-		}
++	/* Need soft reset to have speed configuration takes effect */
++	err = genphy_soft_reset(phydev);
++	if (err < 0)
+ 		return err;
+-	} else {
+-		err = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK, 0);
+-		if (err < 0)
+-			return err;
+ 
+-		return phy_config_aneg(phydev);
++	err = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
++			 BMCR_LOOPBACK);
++
++	if (!err) {
++		/*
++		 * It takes some time for PHY device to switch into loopback
++		 * mode.
++		 */
++		msleep(1000);
+ 	}
++	return err;
+ }
+ 
+ static int marvell_vct5_wait_complete(struct phy_device *phydev)
+-- 
+2.39.5
 
