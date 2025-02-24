@@ -1,47 +1,47 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B5B264F88
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFDE265CD0
 	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 18:08:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740420500; cv=none; b=qxZnxMXGlF6ChuexMzaEawaWKRe2JKDpqYBYhjjLHlbNW0oP1ij30WLlukMLoS9vGwiFkD3iKuzzYo0HEATE8rJEg9sB+FBkWfxmYvMfojVLsXEAv11VhLkMHZxyJ9NfF86B67F3nigmjwSmvGqhRmaA/Zo3fs8ZfyYLDARNLDE=
+	t=1740420500; cv=none; b=neB5bY9ZpTpiOVzCV77Ro7bmT5clZ/fUDfXeRyzXj5OFEb8eT9579cxRGabGw5ncHbsO7jsiga20euAjGW7stMZ4tmGOigPVsf92eaLD9uIdcJxOL2juT8NfLbUI+XY75nd7wUfULMUXZ/x1SgRAV8RAqmyvWXT4nZGMlAFz8YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740420500; c=relaxed/simple;
-	bh=nPbkBTM8zbrdLOQrqabMRsYn3je8lMJXxTl+19gnnnA=;
+	bh=qdXuofa7PQzZZFXHNCUAESQRumy/3O4OhLLlFULHkkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s1ClPVwR7j8NKmS2u+lDU6sn8Qoi87tnmcJ2uxXq9vUPaRBJuqmzc8795w+PMi6m1s3kLeGNnvpUGeZwkrt6UuORMsfl8k6QcDGn7sYRV2SA3bWpiZ6r4jP54zAQo90g66N2rQlqIIA2fEqiuKO6R701A/hjgT06DwQ1e/RBaWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.179
+	 MIME-Version; b=Bom6kvlkBkyixaRwZKs7/x7xL6mTBWGasE/Pu4fnOqODmzlE61MOJ9ttvQXCTWmqkoMwCKtrzLAHCfLfWuqQdsU31DLoS6j3gRDT57RBuVqsa6ad0hTWfOm3tuAwL5NrTbGgDeYs+Al6nV6oQ9H56+gV5wSOl0I5nXmj/afNIUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-220c665ef4cso82271635ad.3
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-21c2f1b610dso139051895ad.0
         for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 10:08:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740420498; x=1741025298;
+        d=1e100.net; s=20230601; t=1740420497; x=1741025297;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yelHHB+G+1imQYRaM14eZv6mlM1mPBRPdWY/TumzbE4=;
-        b=PjcB5k5WUfLsgtbzRkMQ/0zSh6qLrpSWGtwyKKgAUs4TamDqNg5HRPI7jM7ysLYF3k
-         LQ6QeZaD3vRiL7Dnbp6/egV4jfqq/62S+DWZcU1Zey9g5PAcjgPQ4CEtprtVByyiE/Pd
-         gC4/kbv68pnH4FiJ3UPc42jotuC2Sm8YQM0WrXjItcCSZ2G1F/u/Tuz2w8h7FXI+2nfe
-         XiFhPksyrLzfFKoGDKp2Oyu96oBy8Mr/Z6lByACyqUGCidskw/6vu9zLqepifrRPkLu/
-         pMzviJZWoa6GFAKgUKeLUlaRxh0gJo2zbHDX+T+ZIxaEfkUHE+qz2SsvgdjglZWxDDdB
-         Yx2w==
-X-Gm-Message-State: AOJu0Yz+Wq+ftsy6+N0jxU4RKJil+gx4x4NuxHs8CYjJMGWfsR7kgz72
-	/7vP2zL7rxunmuA/Lb7Z/Iqgo03roxxEGfXqXgB1O1ZVg83DlcYMI7NG
-X-Gm-Gg: ASbGncuJ/ol2DYfxSt+XFwi3GVd5GG1aoCUa56AK+L8qMase6mShdpgL2NdwYvZYNH+
-	cPwUuuh6X7PqVPwc4zMes2wwWdHC1HghAuTpbYiu8mX3eSSCIUN4g6Kr0sEngjj6M/AOIfUACTn
-	DMXuxpEZmL0uFmHXNZweGKvsQQ+JBFkzl4CfQtGqiQhtOkVWrAe1MiA+dOS6VJpLKLwhnLs0BGE
-	93ahNkBoLLLlCLnRU3i5vXa+H4PHSZl5xmkMFMzUeRDvkZiJOdMX7/f3eOv9P9zQZkA/vk6lemB
-	rGp6T3yJ9LQatrdf8pNUGQXdzg==
-X-Google-Smtp-Source: AGHT+IHtqpHVrI3q+RNenu7xziEwfGDqjKz51xReQ4JPrGbc0usqnfqCTcl17bw45jzxQSn+OyFWZw==
-X-Received: by 2002:a17:902:e546:b0:221:7b4a:474b with SMTP id d9443c01a7336-2219ffb857dmr278400185ad.24.1740420497739;
-        Mon, 24 Feb 2025 10:08:17 -0800 (PST)
+        bh=ZsdL/6IS2+kXfYe3K1fgbJ1/T3sz+uG1vUUT7vSokIg=;
+        b=oM8F2rn+AW0ZCOTFOLU1g5OwTJmQIaGJJ1o6i9JUtEvKcds9BYrCDjWLcxPIsb6wnJ
+         gVPHc3Cq/t6nsQdI/DtL4g/+aIQlC5HWGKwAqwVJ43J0p1PUy1qr/kvk1evHU0dKvxV0
+         eWEvJYG7BGudiyOSlY+Aob/f/MTONlShbwWC58AwPm3tJA+Yuvec8gFswDHZJ12K1TCs
+         Xs7f8HO5WTdku6cajoRZdpsJwgS1iBsQ5mfUlxmW2qNZrXun/kKj+YLTtl1rBNHDiiGj
+         bR5E8VK4snEpetdTahOsmCWUgUNV+BKyZ8MhKjf19EIEOvpYBYyKXQcmEYzs6PbM81Fd
+         wMlA==
+X-Gm-Message-State: AOJu0YyUyhUsKJeEAC1jTIgS7tUxkBerJeS23sebDc2gvvTQ4MVXZtTz
+	QdCzdF0m9AFNX+Ku07CuUpfAgBkjz7Q2eG9fey2dWuCZIAM8VFthgR4C
+X-Gm-Gg: ASbGncsZWB/meI/38W58ws+xclaDLhvu3h0L09j5h99bv36u36lxZN7SbtZbDXeLyJE
+	HYSdiwUvb6JwqxyZxOY+G98oZoWMXoeCRyOzYzlSox4eGbXxa992eRkRwDtvxtKIDM7l56i2Rsx
+	VGVp7ThF/C+QfRxwWdZvGtQtqSD+mrHws219mbDpz6gUWhreSRVYUxmbpGCU3BTf4LnbE/IA72w
+	d5a7mC+SUNyWtUqs6Vy901UHjDr4tXNbupfwUuwY6kFJ9C6gI+2yUNgCQUVBRrxDJF6LVcji1eF
+	lowfhRh45nyPRE4+aM+luCctyg==
+X-Google-Smtp-Source: AGHT+IGaOy8Li7mDFY9P1lN+/pcpkKJDVsDzS69lJQQ+g/pqzTvEaLJ3YmJDb58v6bb4Ekoq1CfAzg==
+X-Received: by 2002:a17:902:c950:b0:21f:7a8b:d675 with SMTP id d9443c01a7336-22307b32c86mr2976195ad.4.1740420495284;
+        Mon, 24 Feb 2025 10:08:15 -0800 (PST)
 Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7324256896csm20877678b3a.40.2025.02.24.10.08.17
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-220d537d10esm184428845ad.103.2025.02.24.10.08.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 10:08:17 -0800 (PST)
+        Mon, 24 Feb 2025 10:08:14 -0800 (PST)
 From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -49,9 +49,9 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	Saeed Mahameed <saeed@kernel.org>
-Subject: [PATCH net-next v7 06/12] net: hold netdev instance lock during sysfs operations
-Date: Mon, 24 Feb 2025 10:08:02 -0800
-Message-ID: <20250224180809.3653802-7-sdf@fomichev.me>
+Subject: [PATCH net-next v7 04/12] net: hold netdev instance lock during rtnetlink operations
+Date: Mon, 24 Feb 2025 10:08:00 -0800
+Message-ID: <20250224180809.3653802-5-sdf@fomichev.me>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224180809.3653802-1-sdf@fomichev.me>
 References: <20250224180809.3653802-1-sdf@fomichev.me>
@@ -63,282 +63,961 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Most of them are already covered by the converted dev_xxx APIs.
-Add the locking wrappers for the remaining ones.
+To preserve the atomicity, hold the lock while applying multiple
+attributes. The major issue with a full conversion to the instance
+lock are software nesting devices (bonding/team/vrf/etc). Those
+devices call into the core stack for their lower (potentially
+real hw) devices. To avoid explicitly wrapping all those places
+into instance lock/unlock, introduce new API boundaries:
+
+- (some) existing dev_xxx calls are now considered "external"
+  (to drivers) APIs and they transparently grab the instance
+  lock if needed (dev_api.c)
+- new netif_xxx calls are internal core stack API (naming is
+  sketchy, I've tried netdev_xxx_locked per Jakub's suggestion,
+  but it feels a bit verbose; but happy to get back to this
+  naming scheme if this is the preference)
+
+This avoids touching most of the existing ioctl/sysfs/drivers paths.
+
+Note the special handling of ndo_xxx_slave operations: I exploit
+the fact that none of the drivers that call these functions
+need/use instance lock. At the same time, they use dev_xxx
+APIs, so the lower device has to be unlocked.
+
+Changes in unregister_netdevice_many_notify (to protect dev->state
+with instance lock) trigger lockdep - the loop over close_list
+(mostly from cleanup_net) introduces spurious ordering issues.
+netdev_lock_cmp_fn has a justification on why it's ok to suppress
+for now.
 
 Cc: Saeed Mahameed <saeed@kernel.org>
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- drivers/net/bonding/bond_main.c |  7 +++-
- include/linux/netdevice.h       |  4 ++
- net/core/dev.c                  | 58 ++++++-----------------------
- net/core/dev_api.c              | 65 +++++++++++++++++++++++++++++++++
- net/core/net-sysfs.c            |  2 +
- 5 files changed, 88 insertions(+), 48 deletions(-)
+ include/linux/netdevice.h |  38 ++++++-
+ net/core/Makefile         |   2 +-
+ net/core/dev.c            | 153 +++++---------------------
+ net/core/dev.h            |  13 ++-
+ net/core/dev_api.c        | 224 ++++++++++++++++++++++++++++++++++++++
+ net/core/rtnetlink.c      |  46 +++++---
+ 6 files changed, 327 insertions(+), 149 deletions(-)
+ create mode 100644 net/core/dev_api.c
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 19775e9d7341..05afda23829f 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2644,10 +2644,13 @@ static int __bond_release_one(struct net_device *bond_dev,
- 		dev_set_mac_address(slave_dev, (struct sockaddr *)&ss, NULL);
- 	}
- 
--	if (unregister)
-+	if (unregister) {
-+		netdev_lock_ops(slave_dev);
- 		__dev_set_mtu(slave_dev, slave->original_mtu);
--	else
-+		netdev_unlock_ops(slave_dev);
-+	} else {
- 		dev_set_mtu(slave_dev, slave->original_mtu);
-+	}
- 
- 	if (!netif_is_bond_master(slave_dev))
- 		slave_dev->priv_flags &= ~IFF_BONDING;
 diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index e55ec50f0220..7bf64fd29532 100644
+index 12cc3cee5970..7f0cad05bc5f 100644
 --- a/include/linux/netdevice.h
 +++ b/include/linux/netdevice.h
-@@ -3351,6 +3351,7 @@ void dev_close(struct net_device *dev);
+@@ -2591,16 +2591,33 @@ static inline void netdev_for_each_tx_queue(struct net_device *dev,
+ 		f(dev, &dev->_tx[i], arg);
+ }
+ 
++static inline int netdev_lock_cmp_fn(const struct lockdep_map *a,
++				     const struct lockdep_map *b)
++{
++	/* Only lower devices currently grab the instance lock, so no
++	 * real ordering issues can occur. In the near future, only
++	 * hardware devices will grab instance lock which also does not
++	 * involve any ordering. Suppress lockdep ordering warnings
++	 * until (if) we start grabbing instance lock on pure SW
++	 * devices (bond/team/veth/etc).
++	 */
++	return -1;
++}
++
+ #define netdev_lockdep_set_classes(dev)				\
+ {								\
+ 	static struct lock_class_key qdisc_tx_busylock_key;	\
+ 	static struct lock_class_key qdisc_xmit_lock_key;	\
+ 	static struct lock_class_key dev_addr_list_lock_key;	\
++	static struct lock_class_key dev_instance_lock_key;	\
+ 	unsigned int i;						\
+ 								\
+ 	(dev)->qdisc_tx_busylock = &qdisc_tx_busylock_key;	\
+ 	lockdep_set_class(&(dev)->addr_list_lock,		\
+ 			  &dev_addr_list_lock_key);		\
++	lockdep_set_class(&(dev)->lock,				\
++			  &dev_instance_lock_key);		\
++	lock_set_cmp_fn(&dev->lock, netdev_lock_cmp_fn, NULL);	\
+ 	for (i = 0; i < (dev)->num_tx_queues; i++)		\
+ 		lockdep_set_class(&(dev)->_tx[i]._xmit_lock,	\
+ 				  &qdisc_xmit_lock_key);	\
+@@ -2747,6 +2764,12 @@ static inline void netdev_unlock_ops(struct net_device *dev)
+ 		netdev_unlock(dev);
+ }
+ 
++static inline void netdev_ops_assert_locked(struct net_device *dev)
++{
++	if (netdev_need_ops_lock(dev))
++		lockdep_assert_held(&dev->lock);
++}
++
+ static inline void netif_napi_set_irq_locked(struct napi_struct *napi, int irq)
+ {
+ 	napi->irq = irq;
+@@ -3321,7 +3344,9 @@ struct net_device *dev_get_by_name_rcu(struct net *net, const char *name);
+ struct net_device *__dev_get_by_name(struct net *net, const char *name);
+ bool netdev_name_in_use(struct net *net, const char *name);
+ int dev_alloc_name(struct net_device *dev, const char *name);
++int netif_open(struct net_device *dev, struct netlink_ext_ack *extack);
+ int dev_open(struct net_device *dev, struct netlink_ext_ack *extack);
++void netif_close(struct net_device *dev);
+ void dev_close(struct net_device *dev);
  void dev_close_many(struct list_head *head, bool unlink);
  int dev_setup_tc(struct net_device *dev, enum tc_setup_type type,
- 		 void *type_data);
-+void netif_disable_lro(struct net_device *dev);
- void dev_disable_lro(struct net_device *dev);
- int dev_loopback_xmit(struct net *net, struct sock *sk, struct sk_buff *newskb);
- u16 dev_pick_tx_zero(struct net_device *dev, struct sk_buff *skb,
-@@ -4219,6 +4220,8 @@ int netif_set_mtu(struct net_device *dev, int new_mtu);
+@@ -4176,24 +4201,25 @@ int dev_ethtool(struct net *net, struct ifreq *ifr, void __user *userdata);
+ unsigned int dev_get_flags(const struct net_device *);
+ int __dev_change_flags(struct net_device *dev, unsigned int flags,
+ 		       struct netlink_ext_ack *extack);
++int netif_change_flags(struct net_device *dev, unsigned int flags,
++		       struct netlink_ext_ack *extack);
+ int dev_change_flags(struct net_device *dev, unsigned int flags,
+ 		     struct netlink_ext_ack *extack);
++int netif_set_alias(struct net_device *dev, const char *alias, size_t len);
+ int dev_set_alias(struct net_device *, const char *, size_t);
+ int dev_get_alias(const struct net_device *, char *, size_t);
+-int __dev_change_net_namespace(struct net_device *dev, struct net *net,
++int netif_change_net_namespace(struct net_device *dev, struct net *net,
+ 			       const char *pat, int new_ifindex);
+-static inline
+ int dev_change_net_namespace(struct net_device *dev, struct net *net,
+-			     const char *pat)
+-{
+-	return __dev_change_net_namespace(dev, net, pat, 0);
+-}
++			     const char *pat);
+ int __dev_set_mtu(struct net_device *, int);
  int dev_set_mtu(struct net_device *, int);
  int dev_pre_changeaddr_notify(struct net_device *dev, const char *addr,
  			      struct netlink_ext_ack *extack);
-+int netif_set_mac_address(struct net_device *dev, struct sockaddr *sa,
-+			  struct netlink_ext_ack *extack);
  int dev_set_mac_address(struct net_device *dev, struct sockaddr *sa,
  			struct netlink_ext_ack *extack);
- int netif_set_mac_address_user(struct net_device *dev, struct sockaddr *sa,
-@@ -4978,6 +4981,7 @@ static inline void __dev_mc_unsync(struct net_device *dev,
- /* Functions used for secondary unicast and multicast support */
- void dev_set_rx_mode(struct net_device *dev);
- int dev_set_promiscuity(struct net_device *dev, int inc);
-+int netif_set_allmulti(struct net_device *dev, int inc, bool notify);
- int dev_set_allmulti(struct net_device *dev, int inc);
- void netdev_state_change(struct net_device *dev);
- void __netdev_notify_peers(struct net_device *dev);
++int netif_set_mac_address_user(struct net_device *dev, struct sockaddr *sa,
++			       struct netlink_ext_ack *extack);
+ int dev_set_mac_address_user(struct net_device *dev, struct sockaddr *sa,
+ 			     struct netlink_ext_ack *extack);
+ int dev_get_mac_address(struct sockaddr *sa, struct net *net, char *dev_name);
+diff --git a/net/core/Makefile b/net/core/Makefile
+index d9326600e289..a10c3bd96798 100644
+--- a/net/core/Makefile
++++ b/net/core/Makefile
+@@ -9,7 +9,7 @@ obj-y := sock.o request_sock.o skbuff.o datagram.o stream.o scm.o \
+ 
+ obj-$(CONFIG_SYSCTL) += sysctl_net_core.o
+ 
+-obj-y		     += dev.o dev_addr_lists.o dst.o netevent.o \
++obj-y		     += dev.o dev_api.o dev_addr_lists.o dst.o netevent.o \
+ 			neighbour.o rtnetlink.o utils.o link_watch.o filter.o \
+ 			sock_diag.o dev_ioctl.o tso.o sock_reuseport.o \
+ 			fib_notifier.o xdp.o flow_offload.o gro.o \
 diff --git a/net/core/dev.c b/net/core/dev.c
-index 5a37073e20b0..3d7e361134b4 100644
+index 77535d70afad..2aac0c470222 100644
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -1757,15 +1757,7 @@ int dev_setup_tc(struct net_device *dev, enum tc_setup_type type,
+@@ -1371,15 +1371,7 @@ static int dev_get_valid_name(struct net *net, struct net_device *dev,
+ 	return ret < 0 ? ret : 0;
  }
- EXPORT_SYMBOL(dev_setup_tc);
  
 -/**
-- *	dev_disable_lro - disable Large Receive Offload on a device
+- *	dev_change_name - change name of a device
 - *	@dev: device
+- *	@newname: name (or format string) must be at least IFNAMSIZ
 - *
-- *	Disable Large Receive Offload (LRO) on a net device.  Must be
-- *	called under RTNL.  This is needed if received packets may be
-- *	forwarded to another interface.
+- *	Change name of a device, can pass format strings "eth%d".
+- *	for wildcarding.
 - */
--void dev_disable_lro(struct net_device *dev)
-+void netif_disable_lro(struct net_device *dev)
+-int dev_change_name(struct net_device *dev, const char *newname)
++int netif_change_name(struct net_device *dev, const char *newname)
  {
- 	struct net_device *lower_dev;
- 	struct list_head *iter;
-@@ -1776,10 +1768,12 @@ void dev_disable_lro(struct net_device *dev)
- 	if (unlikely(dev->features & NETIF_F_LRO))
- 		netdev_WARN(dev, "failed to disable LRO!\n");
- 
--	netdev_for_each_lower_dev(dev, lower_dev, iter)
--		dev_disable_lro(lower_dev);
-+	netdev_for_each_lower_dev(dev, lower_dev, iter) {
-+		netdev_lock_ops(lower_dev);
-+		netif_disable_lro(lower_dev);
-+		netdev_unlock_ops(lower_dev);
-+	}
+ 	struct net *net = dev_net(dev);
+ 	unsigned char old_assign_type;
+@@ -1449,15 +1441,7 @@ int dev_change_name(struct net_device *dev, const char *newname)
+ 	return err;
  }
--EXPORT_SYMBOL(dev_disable_lro);
+ 
+-/**
+- *	dev_set_alias - change ifalias of a device
+- *	@dev: device
+- *	@alias: name up to IFALIASZ
+- *	@len: limit of bytes to copy from info
+- *
+- *	Set ifalias for a device,
+- */
+-int dev_set_alias(struct net_device *dev, const char *alias, size_t len)
++int netif_set_alias(struct net_device *dev, const char *alias, size_t len)
+ {
+ 	struct dev_ifalias *new_alias = NULL;
+ 
+@@ -1483,7 +1467,6 @@ int dev_set_alias(struct net_device *dev, const char *alias, size_t len)
+ 
+ 	return len;
+ }
+-EXPORT_SYMBOL(dev_set_alias);
  
  /**
-  *	dev_disable_gro_hw - disable HW Generic Receive Offload on a device
-@@ -6044,7 +6038,7 @@ static int generic_xdp_install(struct net_device *dev, struct netdev_bpf *xdp)
- 			static_branch_dec(&generic_xdp_needed_key);
- 		} else if (new && !old) {
- 			static_branch_inc(&generic_xdp_needed_key);
--			dev_disable_lro(dev);
-+			netif_disable_lro(dev);
- 			dev_disable_gro_hw(dev);
- 		}
- 		break;
-@@ -9084,7 +9078,7 @@ int dev_set_promiscuity(struct net_device *dev, int inc)
- }
- EXPORT_SYMBOL(dev_set_promiscuity);
+  *	dev_get_alias - get ifalias of a device
+@@ -1627,10 +1610,10 @@ static int __dev_open(struct net_device *dev, struct netlink_ext_ack *extack)
+ 	if (ret)
+ 		return ret;
  
--static int __dev_set_allmulti(struct net_device *dev, int inc, bool notify)
-+int netif_set_allmulti(struct net_device *dev, int inc, bool notify)
- {
- 	unsigned int old_flags = dev->flags, old_gflags = dev->gflags;
- 	unsigned int allmulti, flags;
-@@ -9119,25 +9113,6 @@ static int __dev_set_allmulti(struct net_device *dev, int inc, bool notify)
- 	return 0;
- }
- 
--/**
-- *	dev_set_allmulti	- update allmulti count on a device
-- *	@dev: device
-- *	@inc: modifier
-- *
-- *	Add or remove reception of all multicast frames to a device. While the
-- *	count in the device remains above zero the interface remains listening
-- *	to all interfaces. Once it hits zero the device reverts back to normal
-- *	filtering operation. A negative @inc value is used to drop the counter
-- *	when releasing a resource needing all multicasts.
-- *	Return 0 if successful or a negative errno code on error.
-- */
+-	netdev_lock_ops(dev);
 -
--int dev_set_allmulti(struct net_device *dev, int inc)
--{
--	return __dev_set_allmulti(dev, inc, true);
--}
--EXPORT_SYMBOL(dev_set_allmulti);
--
- /*
-  *	Upload unicast and multicast address lists to device and
-  *	configure RX filtering. When the device doesn't support unicast
-@@ -9270,7 +9245,7 @@ int __dev_change_flags(struct net_device *dev, unsigned int flags,
- 		int inc = (flags & IFF_ALLMULTI) ? 1 : -1;
+ 	set_bit(__LINK_STATE_START, &dev->state);
  
- 		dev->gflags ^= IFF_ALLMULTI;
--		__dev_set_allmulti(dev, inc, false);
-+		netif_set_allmulti(dev, inc, false);
++	netdev_ops_assert_locked(dev);
++
+ 	if (ops->ndo_validate_addr)
+ 		ret = ops->ndo_validate_addr(dev);
+ 
+@@ -1648,25 +1631,10 @@ static int __dev_open(struct net_device *dev, struct netlink_ext_ack *extack)
+ 		add_device_randomness(dev->dev_addr, dev->addr_len);
  	}
  
+-	netdev_unlock_ops(dev);
+-
  	return ret;
-@@ -9462,16 +9437,8 @@ int dev_pre_changeaddr_notify(struct net_device *dev, const char *addr,
  }
- EXPORT_SYMBOL(dev_pre_changeaddr_notify);
  
 -/**
-- *	dev_set_mac_address - Change Media Access Control Address
-- *	@dev: device
-- *	@sa: new address
+- *	dev_open	- prepare an interface for use.
+- *	@dev: device to open
 - *	@extack: netlink extended ack
 - *
-- *	Change the hardware (MAC) address of the device
+- *	Takes a device from down to up state. The device's private open
+- *	function is invoked and then the multicast lists are loaded. Finally
+- *	the device is moved into the up state and a %NETDEV_UP message is
+- *	sent to the netdev notifier chain.
+- *
+- *	Calling this function on an active interface is a nop. On a failure
+- *	a negative errno code is returned.
 - */
--int dev_set_mac_address(struct net_device *dev, struct sockaddr *sa,
--			struct netlink_ext_ack *extack)
-+int netif_set_mac_address(struct net_device *dev, struct sockaddr *sa,
-+			  struct netlink_ext_ack *extack)
+-int dev_open(struct net_device *dev, struct netlink_ext_ack *extack)
++int netif_open(struct net_device *dev, struct netlink_ext_ack *extack)
  {
- 	const struct net_device_ops *ops = dev->netdev_ops;
- 	int err;
-@@ -9495,7 +9462,6 @@ int dev_set_mac_address(struct net_device *dev, struct sockaddr *sa,
- 	add_device_randomness(dev->dev_addr, dev->addr_len);
- 	return 0;
+ 	int ret;
+ 
+@@ -1682,7 +1650,6 @@ int dev_open(struct net_device *dev, struct netlink_ext_ack *extack)
+ 
+ 	return ret;
  }
--EXPORT_SYMBOL(dev_set_mac_address);
+-EXPORT_SYMBOL(dev_open);
+ 
+ static void __dev_close_many(struct list_head *head)
+ {
+@@ -1721,18 +1688,13 @@ static void __dev_close_many(struct list_head *head)
+ 		 *	event.
+ 		 */
+ 
+-		/* TODO: move the lock up before clearing __LINK_STATE_START.
+-		 * Generates spurious lockdep warning.
+-		 */
+-		netdev_lock_ops(dev);
++		netdev_ops_assert_locked(dev);
+ 
+ 		if (ops->ndo_stop)
+ 			ops->ndo_stop(dev);
+ 
+ 		netif_set_up(dev, false);
+ 		netpoll_poll_enable(dev);
+-
+-		netdev_unlock_ops(dev);
+ 	}
+ }
+ 
+@@ -1765,16 +1727,7 @@ void dev_close_many(struct list_head *head, bool unlink)
+ }
+ EXPORT_SYMBOL(dev_close_many);
+ 
+-/**
+- *	dev_close - shutdown an interface.
+- *	@dev: device to shutdown
+- *
+- *	This function moves an active device into down state. A
+- *	%NETDEV_GOING_DOWN is sent to the netdev notifier chain. The device
+- *	is then deactivated and finally a %NETDEV_DOWN is sent to the notifier
+- *	chain.
+- */
+-void dev_close(struct net_device *dev)
++void netif_close(struct net_device *dev)
+ {
+ 	if (dev->flags & IFF_UP) {
+ 		LIST_HEAD(single);
+@@ -1784,7 +1737,6 @@ void dev_close(struct net_device *dev)
+ 		list_del(&single);
+ 	}
+ }
+-EXPORT_SYMBOL(dev_close);
+ 
+ int dev_setup_tc(struct net_device *dev, enum tc_setup_type type,
+ 		 void *type_data)
+@@ -9353,17 +9305,8 @@ void __dev_notify_flags(struct net_device *dev, unsigned int old_flags,
+ 	}
+ }
+ 
+-/**
+- *	dev_change_flags - change device settings
+- *	@dev: device
+- *	@flags: device state flags
+- *	@extack: netlink extended ack
+- *
+- *	Change settings on device based state flags. The flags are
+- *	in the userspace exported format.
+- */
+-int dev_change_flags(struct net_device *dev, unsigned int flags,
+-		     struct netlink_ext_ack *extack)
++int netif_change_flags(struct net_device *dev, unsigned int flags,
++		       struct netlink_ext_ack *extack)
+ {
+ 	int ret;
+ 	unsigned int changes, old_flags = dev->flags, old_gflags = dev->gflags;
+@@ -9376,7 +9319,6 @@ int dev_change_flags(struct net_device *dev, unsigned int flags,
+ 	__dev_notify_flags(dev, old_flags, changes, 0, NULL);
+ 	return ret;
+ }
+-EXPORT_SYMBOL(dev_change_flags);
+ 
+ int __dev_set_mtu(struct net_device *dev, int new_mtu)
+ {
+@@ -9408,15 +9350,15 @@ int dev_validate_mtu(struct net_device *dev, int new_mtu,
+ }
+ 
+ /**
+- *	dev_set_mtu_ext - Change maximum transfer unit
++ *	netif_set_mtu_ext - Change maximum transfer unit
+  *	@dev: device
+  *	@new_mtu: new transfer unit
+  *	@extack: netlink extended ack
+  *
+  *	Change the maximum transfer size of the network device.
+  */
+-int dev_set_mtu_ext(struct net_device *dev, int new_mtu,
+-		    struct netlink_ext_ack *extack)
++int netif_set_mtu_ext(struct net_device *dev, int new_mtu,
++		      struct netlink_ext_ack *extack)
+ {
+ 	int err, orig_mtu;
+ 
+@@ -9460,19 +9402,14 @@ int dev_set_mtu(struct net_device *dev, int new_mtu)
+ 	int err;
+ 
+ 	memset(&extack, 0, sizeof(extack));
+-	err = dev_set_mtu_ext(dev, new_mtu, &extack);
++	err = netif_set_mtu_ext(dev, new_mtu, &extack);
+ 	if (err && extack._msg)
+ 		net_err_ratelimited("%s: %s\n", dev->name, extack._msg);
+ 	return err;
+ }
+ EXPORT_SYMBOL(dev_set_mtu);
+ 
+-/**
+- *	dev_change_tx_queue_len - Change TX queue length of a netdevice
+- *	@dev: device
+- *	@new_len: new tx queue length
+- */
+-int dev_change_tx_queue_len(struct net_device *dev, unsigned long new_len)
++int netif_change_tx_queue_len(struct net_device *dev, unsigned long new_len)
+ {
+ 	unsigned int orig_len = dev->tx_queue_len;
+ 	int res;
+@@ -9499,12 +9436,7 @@ int dev_change_tx_queue_len(struct net_device *dev, unsigned long new_len)
+ 	return res;
+ }
+ 
+-/**
+- *	dev_set_group - Change group this device belongs to
+- *	@dev: device
+- *	@new_group: group this device should belong to
+- */
+-void dev_set_group(struct net_device *dev, int new_group)
++void netif_set_group(struct net_device *dev, int new_group)
+ {
+ 	dev->group = new_group;
+ }
+@@ -9567,8 +9499,8 @@ EXPORT_SYMBOL(dev_set_mac_address);
  
  DECLARE_RWSEM(dev_addr_sem);
  
-@@ -9505,7 +9471,7 @@ int netif_set_mac_address_user(struct net_device *dev, struct sockaddr *sa,
+-int dev_set_mac_address_user(struct net_device *dev, struct sockaddr *sa,
+-			     struct netlink_ext_ack *extack)
++int netif_set_mac_address_user(struct net_device *dev, struct sockaddr *sa,
++			       struct netlink_ext_ack *extack)
+ {
  	int ret;
  
- 	down_write(&dev_addr_sem);
--	ret = dev_set_mac_address(dev, sa, extack);
-+	ret = netif_set_mac_address(dev, sa, extack);
+@@ -9577,7 +9509,6 @@ int dev_set_mac_address_user(struct net_device *dev, struct sockaddr *sa,
  	up_write(&dev_addr_sem);
  	return ret;
  }
-diff --git a/net/core/dev_api.c b/net/core/dev_api.c
-index 7dae30781411..87a62022ef1c 100644
---- a/net/core/dev_api.c
-+++ b/net/core/dev_api.c
-@@ -252,3 +252,68 @@ int dev_set_mtu(struct net_device *dev, int new_mtu)
- 	return ret;
+-EXPORT_SYMBOL(dev_set_mac_address_user);
+ 
+ int dev_get_mac_address(struct sockaddr *sa, struct net *net, char *dev_name)
+ {
+@@ -9607,14 +9538,7 @@ int dev_get_mac_address(struct sockaddr *sa, struct net *net, char *dev_name)
  }
- EXPORT_SYMBOL(dev_set_mtu);
+ EXPORT_SYMBOL(dev_get_mac_address);
+ 
+-/**
+- *	dev_change_carrier - Change device carrier
+- *	@dev: device
+- *	@new_carrier: new value
+- *
+- *	Change device carrier
+- */
+-int dev_change_carrier(struct net_device *dev, bool new_carrier)
++int netif_change_carrier(struct net_device *dev, bool new_carrier)
+ {
+ 	const struct net_device_ops *ops = dev->netdev_ops;
+ 
+@@ -9725,13 +9649,7 @@ bool netdev_port_same_parent_id(struct net_device *a, struct net_device *b)
+ }
+ EXPORT_SYMBOL(netdev_port_same_parent_id);
+ 
+-/**
+- *	dev_change_proto_down - set carrier according to proto_down.
+- *
+- *	@dev: device
+- *	@proto_down: new value
+- */
+-int dev_change_proto_down(struct net_device *dev, bool proto_down)
++int netif_change_proto_down(struct net_device *dev, bool proto_down)
+ {
+ 	if (!dev->change_proto_down)
+ 		return -EOPNOTSUPP;
+@@ -9746,14 +9664,14 @@ int dev_change_proto_down(struct net_device *dev, bool proto_down)
+ }
+ 
+ /**
+- *	dev_change_proto_down_reason - proto down reason
++ *	netdev_change_proto_down_reason_locked - proto down reason
+  *
+  *	@dev: device
+  *	@mask: proto down mask
+  *	@value: proto down value
+  */
+-void dev_change_proto_down_reason(struct net_device *dev, unsigned long mask,
+-				  u32 value)
++void netdev_change_proto_down_reason_locked(struct net_device *dev,
++					    unsigned long mask, u32 value)
+ {
+ 	u32 proto_down_reason;
+ 	int b;
+@@ -10561,6 +10479,7 @@ int __netdev_update_features(struct net_device *dev)
+ 	int err = -1;
+ 
+ 	ASSERT_RTNL();
++	netdev_ops_assert_locked(dev);
+ 
+ 	features = netdev_get_wanted_features(dev);
+ 
+@@ -11909,11 +11828,14 @@ void unregister_netdevice_many_notify(struct list_head *head,
+ 	}
+ 
+ 	/* If device is running, close it first. */
+-	list_for_each_entry(dev, head, unreg_list)
++	list_for_each_entry(dev, head, unreg_list) {
+ 		list_add_tail(&dev->close_list, &close_head);
++		netdev_lock_ops(dev);
++	}
+ 	dev_close_many(&close_head, true);
+ 
+ 	list_for_each_entry(dev, head, unreg_list) {
++		netdev_unlock_ops(dev);
+ 		/* And unlink it from device chain. */
+ 		unlist_netdevice(dev);
+ 		netdev_lock(dev);
+@@ -12026,23 +11948,7 @@ void unregister_netdev(struct net_device *dev)
+ }
+ EXPORT_SYMBOL(unregister_netdev);
+ 
+-/**
+- *	__dev_change_net_namespace - move device to different nethost namespace
+- *	@dev: device
+- *	@net: network namespace
+- *	@pat: If not NULL name pattern to try if the current device name
+- *	      is already taken in the destination network namespace.
+- *	@new_ifindex: If not zero, specifies device index in the target
+- *	              namespace.
+- *
+- *	This function shuts down a device interface and moves it
+- *	to a new network namespace. On success 0 is returned, on
+- *	a failure a netagive errno code is returned.
+- *
+- *	Callers must hold the rtnl semaphore.
+- */
+-
+-int __dev_change_net_namespace(struct net_device *dev, struct net *net,
++int netif_change_net_namespace(struct net_device *dev, struct net *net,
+ 			       const char *pat, int new_ifindex)
+ {
+ 	struct netdev_name_node *name_node;
+@@ -12104,7 +12010,7 @@ int __dev_change_net_namespace(struct net_device *dev, struct net *net,
+ 	 */
+ 
+ 	/* If device is running close it first. */
+-	dev_close(dev);
++	netif_close(dev);
+ 
+ 	/* And unlink it from device chain */
+ 	unlist_netdevice(dev);
+@@ -12186,7 +12092,6 @@ int __dev_change_net_namespace(struct net_device *dev, struct net *net,
+ out:
+ 	return err;
+ }
+-EXPORT_SYMBOL_GPL(__dev_change_net_namespace);
+ 
+ static int dev_cpu_dead(unsigned int oldcpu)
+ {
+diff --git a/net/core/dev.h b/net/core/dev.h
+index 25bb9d6afbce..41b0831aba60 100644
+--- a/net/core/dev.h
++++ b/net/core/dev.h
+@@ -85,6 +85,7 @@ struct netdev_name_node {
+ };
+ 
+ int netdev_get_name(struct net *net, char *name, int ifindex);
++int netif_change_name(struct net_device *dev, const char *newname);
+ int dev_change_name(struct net_device *dev, const char *newname);
+ 
+ #define netdev_for_each_altname(dev, namenode)				\
+@@ -98,24 +99,28 @@ int netdev_name_node_alt_destroy(struct net_device *dev, const char *name);
+ 
+ int dev_validate_mtu(struct net_device *dev, int mtu,
+ 		     struct netlink_ext_ack *extack);
+-int dev_set_mtu_ext(struct net_device *dev, int mtu,
+-		    struct netlink_ext_ack *extack);
++int netif_set_mtu_ext(struct net_device *dev, int new_mtu,
++		      struct netlink_ext_ack *extack);
+ 
+ int dev_get_phys_port_id(struct net_device *dev,
+ 			 struct netdev_phys_item_id *ppid);
+ int dev_get_phys_port_name(struct net_device *dev,
+ 			   char *name, size_t len);
+ 
++int netif_change_proto_down(struct net_device *dev, bool proto_down);
+ int dev_change_proto_down(struct net_device *dev, bool proto_down);
+-void dev_change_proto_down_reason(struct net_device *dev, unsigned long mask,
+-				  u32 value);
++void netdev_change_proto_down_reason_locked(struct net_device *dev,
++					    unsigned long mask, u32 value);
+ 
+ typedef int (*bpf_op_t)(struct net_device *dev, struct netdev_bpf *bpf);
+ int dev_change_xdp_fd(struct net_device *dev, struct netlink_ext_ack *extack,
+ 		      int fd, int expected_fd, u32 flags);
+ 
++int netif_change_tx_queue_len(struct net_device *dev, unsigned long new_len);
+ int dev_change_tx_queue_len(struct net_device *dev, unsigned long new_len);
++void netif_set_group(struct net_device *dev, int new_group);
+ void dev_set_group(struct net_device *dev, int new_group);
++int netif_change_carrier(struct net_device *dev, bool new_carrier);
+ int dev_change_carrier(struct net_device *dev, bool new_carrier);
+ 
+ void __dev_set_rx_mode(struct net_device *dev);
+diff --git a/net/core/dev_api.c b/net/core/dev_api.c
+new file mode 100644
+index 000000000000..ce3a38c8e326
+--- /dev/null
++++ b/net/core/dev_api.c
+@@ -0,0 +1,224 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++#include <linux/netdevice.h>
++
++#include "dev.h"
 +
 +/**
-+ * dev_disable_lro() - disable Large Receive Offload on a device
++ * dev_change_name() - change name of a device
 + * @dev: device
++ * @newname: name (or format string) must be at least IFNAMSIZ
 + *
-+ * Disable Large Receive Offload (LRO) on a net device.  Must be
-+ * called under RTNL.  This is needed if received packets may be
-+ * forwarded to another interface.
-+ */
-+void dev_disable_lro(struct net_device *dev)
-+{
-+	netdev_lock_ops(dev);
-+	netif_disable_lro(dev);
-+	netdev_unlock_ops(dev);
-+}
-+EXPORT_SYMBOL(dev_disable_lro);
-+
-+/**
-+ * dev_set_allmulti() - update allmulti count on a device
-+ * @dev: device
-+ * @inc: modifier
-+ *
-+ * Add or remove reception of all multicast frames to a device. While the
-+ * count in the device remains above zero the interface remains listening
-+ * to all interfaces. Once it hits zero the device reverts back to normal
-+ * filtering operation. A negative @inc value is used to drop the counter
-+ * when releasing a resource needing all multicasts.
++ * Change name of a device, can pass format strings "eth%d".
++ * for wildcarding.
 + *
 + * Return: 0 on success, -errno on failure.
 + */
-+
-+int dev_set_allmulti(struct net_device *dev, int inc)
++int dev_change_name(struct net_device *dev, const char *newname)
 +{
 +	int ret;
 +
 +	netdev_lock_ops(dev);
-+	ret = netif_set_allmulti(dev, inc, true);
++	ret = netif_change_name(dev, newname);
 +	netdev_unlock_ops(dev);
 +
 +	return ret;
 +}
-+EXPORT_SYMBOL(dev_set_allmulti);
 +
 +/**
-+ * dev_set_mac_address() - change Media Access Control Address
++ * dev_set_alias() - change ifalias of a device
 + * @dev: device
-+ * @sa: new address
++ * @alias: name up to IFALIASZ
++ * @len: limit of bytes to copy from info
++ *
++ * Set ifalias for a device.
++ *
++ * Return: 0 on success, -errno on failure.
++ */
++int dev_set_alias(struct net_device *dev, const char *alias, size_t len)
++{
++	int ret;
++
++	netdev_lock_ops(dev);
++	ret = netif_set_alias(dev, alias, len);
++	netdev_unlock_ops(dev);
++
++	return ret;
++}
++EXPORT_SYMBOL(dev_set_alias);
++
++/**
++ * dev_change_flags() - change device settings
++ * @dev: device
++ * @flags: device state flags
 + * @extack: netlink extended ack
 + *
-+ * Change the hardware (MAC) address of the device
++ * Change settings on device based state flags. The flags are
++ * in the userspace exported format.
 + *
 + * Return: 0 on success, -errno on failure.
 + */
-+int dev_set_mac_address(struct net_device *dev, struct sockaddr *sa,
-+			struct netlink_ext_ack *extack)
++int dev_change_flags(struct net_device *dev, unsigned int flags,
++		     struct netlink_ext_ack *extack)
 +{
 +	int ret;
 +
 +	netdev_lock_ops(dev);
-+	ret = netif_set_mac_address(dev, sa, extack);
++	ret = netif_change_flags(dev, flags, extack);
 +	netdev_unlock_ops(dev);
 +
 +	return ret;
 +}
-+EXPORT_SYMBOL(dev_set_mac_address);
-diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-index 3fe2c521e574..35f79a308d7b 100644
---- a/net/core/net-sysfs.c
-+++ b/net/core/net-sysfs.c
-@@ -1480,8 +1480,10 @@ static ssize_t tx_maxrate_store(struct kobject *kobj, struct attribute *attr,
- 		return err;
- 
- 	err = -EOPNOTSUPP;
++EXPORT_SYMBOL(dev_change_flags);
++
++/**
++ * dev_set_group() - change group this device belongs to
++ * @dev: device
++ * @new_group: group this device should belong to
++ */
++void dev_set_group(struct net_device *dev, int new_group)
++{
 +	netdev_lock_ops(dev);
- 	if (dev->netdev_ops->ndo_set_tx_maxrate)
- 		err = dev->netdev_ops->ndo_set_tx_maxrate(dev, index, rate);
++	netif_set_group(dev, new_group);
 +	netdev_unlock_ops(dev);
++}
++
++int dev_set_mac_address_user(struct net_device *dev, struct sockaddr *sa,
++			     struct netlink_ext_ack *extack)
++{
++	int ret;
++
++	netdev_lock_ops(dev);
++	ret = netif_set_mac_address_user(dev, sa, extack);
++	netdev_unlock_ops(dev);
++
++	return ret;
++}
++EXPORT_SYMBOL(dev_set_mac_address_user);
++
++/**
++ * dev_change_net_namespace() - move device to different nethost namespace
++ * @dev: device
++ * @net: network namespace
++ * @pat: If not NULL name pattern to try if the current device name
++ *       is already taken in the destination network namespace.
++ *
++ * This function shuts down a device interface and moves it
++ * to a new network namespace. On success 0 is returned, on
++ * a failure a netagive errno code is returned.
++ *
++ * Callers must hold the rtnl semaphore.
++ *
++ * Return: 0 on success, -errno on failure.
++ */
++int dev_change_net_namespace(struct net_device *dev, struct net *net,
++			     const char *pat)
++{
++	int ret;
++
++	netdev_lock_ops(dev);
++	ret = netif_change_net_namespace(dev, net, pat, 0);
++	netdev_unlock_ops(dev);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(dev_change_net_namespace);
++
++/**
++ * dev_change_carrier() - change device carrier
++ * @dev: device
++ * @new_carrier: new value
++ *
++ * Change device carrier
++ *
++ * Return: 0 on success, -errno on failure.
++ */
++int dev_change_carrier(struct net_device *dev, bool new_carrier)
++{
++	int ret;
++
++	netdev_lock_ops(dev);
++	ret = netif_change_carrier(dev, new_carrier);
++	netdev_unlock_ops(dev);
++
++	return ret;
++}
++
++/**
++ * dev_change_tx_queue_len() - change TX queue length of a netdevice
++ * @dev: device
++ * @new_len: new tx queue length
++ *
++ * Return: 0 on success, -errno on failure.
++ */
++int dev_change_tx_queue_len(struct net_device *dev, unsigned long new_len)
++{
++	int ret;
++
++	netdev_lock_ops(dev);
++	ret = netif_change_tx_queue_len(dev, new_len);
++	netdev_unlock_ops(dev);
++
++	return ret;
++}
++
++/**
++ * dev_change_proto_down() - set carrier according to proto_down
++ * @dev: device
++ * @proto_down: new value
++ *
++ * Return: 0 on success, -errno on failure.
++ */
++int dev_change_proto_down(struct net_device *dev, bool proto_down)
++{
++	int ret;
++
++	netdev_lock_ops(dev);
++	ret = netif_change_proto_down(dev, proto_down);
++	netdev_unlock_ops(dev);
++
++	return ret;
++}
++
++/**
++ * dev_open() - prepare an interface for use
++ * @dev: device to open
++ * @extack: netlink extended ack
++ *
++ * Takes a device from down to up state. The device's private open
++ * function is invoked and then the multicast lists are loaded. Finally
++ * the device is moved into the up state and a %NETDEV_UP message is
++ * sent to the netdev notifier chain.
++ *
++ * Calling this function on an active interface is a nop. On a failure
++ * a negative errno code is returned.
++ *
++ * Return: 0 on success, -errno on failure.
++ */
++int dev_open(struct net_device *dev, struct netlink_ext_ack *extack)
++{
++	int ret;
++
++	netdev_lock_ops(dev);
++	ret = netif_open(dev, extack);
++	netdev_unlock_ops(dev);
++
++	return ret;
++}
++EXPORT_SYMBOL(dev_open);
++
++/**
++ * dev_close() - shutdown an interface
++ * @dev: device to shutdown
++ *
++ * This function moves an active device into down state. A
++ * %NETDEV_GOING_DOWN is sent to the netdev notifier chain. The device
++ * is then deactivated and finally a %NETDEV_DOWN is sent to the notifier
++ * chain.
++ */
++void dev_close(struct net_device *dev)
++{
++	netdev_lock_ops(dev);
++	netif_close(dev);
++	netdev_unlock_ops(dev);
++}
++EXPORT_SYMBOL(dev_close);
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index b52e610e157e..7828584a6791 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -2909,12 +2909,19 @@ static int do_set_master(struct net_device *dev, int ifindex,
+ 	const struct net_device_ops *ops;
+ 	int err;
  
- 	if (!err) {
- 		queue->tx_maxrate = rate;
++	/* Release the lower lock, the upper is responsible for locking
++	 * the lower if needed. None of the existing upper devices
++	 * use netdev instance lock, so don't grab it.
++	 */
++
+ 	if (upper_dev) {
+ 		if (upper_dev->ifindex == ifindex)
+ 			return 0;
+ 		ops = upper_dev->netdev_ops;
+ 		if (ops->ndo_del_slave) {
++			netdev_unlock_ops(dev);
+ 			err = ops->ndo_del_slave(upper_dev, dev);
++			netdev_lock_ops(dev);
+ 			if (err)
+ 				return err;
+ 		} else {
+@@ -2928,7 +2935,9 @@ static int do_set_master(struct net_device *dev, int ifindex,
+ 			return -EINVAL;
+ 		ops = upper_dev->netdev_ops;
+ 		if (ops->ndo_add_slave) {
++			netdev_unlock_ops(dev);
+ 			err = ops->ndo_add_slave(upper_dev, dev, extack);
++			netdev_lock_ops(dev);
+ 			if (err)
+ 				return err;
+ 		} else {
+@@ -2978,7 +2987,7 @@ static int do_set_proto_down(struct net_device *dev,
+ 		if (pdreason[IFLA_PROTO_DOWN_REASON_MASK])
+ 			mask = nla_get_u32(pdreason[IFLA_PROTO_DOWN_REASON_MASK]);
+ 
+-		dev_change_proto_down_reason(dev, mask, value);
++		netdev_change_proto_down_reason_locked(dev, mask, value);
+ 	}
+ 
+ 	if (nl_proto_down) {
+@@ -2989,8 +2998,7 @@ static int do_set_proto_down(struct net_device *dev,
+ 			NL_SET_ERR_MSG(extack, "Cannot clear protodown, active reasons");
+ 			return -EBUSY;
+ 		}
+-		err = dev_change_proto_down(dev,
+-					    proto_down);
++		err = netif_change_proto_down(dev, proto_down);
+ 		if (err)
+ 			return err;
+ 	}
+@@ -3010,6 +3018,8 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+ 	char ifname[IFNAMSIZ];
+ 	int err;
+ 
++	netdev_lock_ops(dev);
++
+ 	err = validate_linkmsg(dev, tb, extack);
+ 	if (err < 0)
+ 		goto errout;
+@@ -3025,7 +3035,8 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+ 
+ 		new_ifindex = nla_get_s32_default(tb[IFLA_NEW_IFINDEX], 0);
+ 
+-		err = __dev_change_net_namespace(dev, tgt_net, pat, new_ifindex);
++		err = netif_change_net_namespace(dev, tgt_net, pat,
++						 new_ifindex);
+ 		if (err)
+ 			goto errout;
+ 
+@@ -3075,7 +3086,7 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+ 		sa->sa_family = dev->type;
+ 		memcpy(sa->sa_data, nla_data(tb[IFLA_ADDRESS]),
+ 		       dev->addr_len);
+-		err = dev_set_mac_address_user(dev, sa, extack);
++		err = netif_set_mac_address_user(dev, sa, extack);
+ 		kfree(sa);
+ 		if (err)
+ 			goto errout;
+@@ -3083,14 +3094,14 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+ 	}
+ 
+ 	if (tb[IFLA_MTU]) {
+-		err = dev_set_mtu_ext(dev, nla_get_u32(tb[IFLA_MTU]), extack);
++		err = netif_set_mtu_ext(dev, nla_get_u32(tb[IFLA_MTU]), extack);
+ 		if (err < 0)
+ 			goto errout;
+ 		status |= DO_SETLINK_MODIFIED;
+ 	}
+ 
+ 	if (tb[IFLA_GROUP]) {
+-		dev_set_group(dev, nla_get_u32(tb[IFLA_GROUP]));
++		netif_set_group(dev, nla_get_u32(tb[IFLA_GROUP]));
+ 		status |= DO_SETLINK_NOTIFY;
+ 	}
+ 
+@@ -3100,15 +3111,15 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+ 	 * requested.
+ 	 */
+ 	if (ifm->ifi_index > 0 && ifname[0]) {
+-		err = dev_change_name(dev, ifname);
++		err = netif_change_name(dev, ifname);
+ 		if (err < 0)
+ 			goto errout;
+ 		status |= DO_SETLINK_MODIFIED;
+ 	}
+ 
+ 	if (tb[IFLA_IFALIAS]) {
+-		err = dev_set_alias(dev, nla_data(tb[IFLA_IFALIAS]),
+-				    nla_len(tb[IFLA_IFALIAS]));
++		err = netif_set_alias(dev, nla_data(tb[IFLA_IFALIAS]),
++				      nla_len(tb[IFLA_IFALIAS]));
+ 		if (err < 0)
+ 			goto errout;
+ 		status |= DO_SETLINK_NOTIFY;
+@@ -3120,8 +3131,8 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+ 	}
+ 
+ 	if (ifm->ifi_flags || ifm->ifi_change) {
+-		err = dev_change_flags(dev, rtnl_dev_combine_flags(dev, ifm),
+-				       extack);
++		err = netif_change_flags(dev, rtnl_dev_combine_flags(dev, ifm),
++					 extack);
+ 		if (err < 0)
+ 			goto errout;
+ 	}
+@@ -3134,7 +3145,7 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+ 	}
+ 
+ 	if (tb[IFLA_CARRIER]) {
+-		err = dev_change_carrier(dev, nla_get_u8(tb[IFLA_CARRIER]));
++		err = netif_change_carrier(dev, nla_get_u8(tb[IFLA_CARRIER]));
+ 		if (err)
+ 			goto errout;
+ 		status |= DO_SETLINK_MODIFIED;
+@@ -3143,7 +3154,7 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+ 	if (tb[IFLA_TXQLEN]) {
+ 		unsigned int value = nla_get_u32(tb[IFLA_TXQLEN]);
+ 
+-		err = dev_change_tx_queue_len(dev, value);
++		err = netif_change_tx_queue_len(dev, value);
+ 		if (err)
+ 			goto errout;
+ 		status |= DO_SETLINK_MODIFIED;
+@@ -3374,6 +3385,8 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+ 					     dev->name);
+ 	}
+ 
++	netdev_unlock_ops(dev);
++
+ 	return err;
+ }
+ 
+@@ -3807,6 +3820,8 @@ static int rtnl_newlink_create(struct sk_buff *skb, struct ifinfomsg *ifm,
+ 		goto out;
+ 	}
+ 
++	netdev_lock_ops(dev);
++
+ 	err = rtnl_configure_link(dev, ifm, portid, nlh);
+ 	if (err < 0)
+ 		goto out_unregister;
+@@ -3815,9 +3830,12 @@ static int rtnl_newlink_create(struct sk_buff *skb, struct ifinfomsg *ifm,
+ 		if (err)
+ 			goto out_unregister;
+ 	}
++
++	netdev_unlock_ops(dev);
+ out:
+ 	return err;
+ out_unregister:
++	netdev_unlock_ops(dev);
+ 	if (ops->newlink) {
+ 		LIST_HEAD(list_kill);
+ 
 -- 
 2.48.1
 
