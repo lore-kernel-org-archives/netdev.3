@@ -1,483 +1,197 @@
-Received: from lf-1-37.ptr.blmpb.com (lf-1-37.ptr.blmpb.com [103.149.242.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122A0264FA3
-	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 17:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.149.242.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FE1264613
+	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 17:28:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740418078; cv=none; b=Gm3PkNy4mQuMcbn5Hm9m7NtJRsTv9Sybb6LIRjUHVyFPsQgiRgRojnjQ3vepaGfrlFDFnItzScyjyiVf7UAr8w38/vLyeR/gkgSAAg8TDOmV56f/hfE67oGuiYlR3tiY5b1Wuh3gaWy9TEkrluBSdm0gWzJDLLBwelYEgq59SGw=
+	t=1740418085; cv=none; b=cTA89looRL1GcZC//eyOc3G4ln1RkfOhYjPCRZ0cbzZmuw7A68UG/raatHlYY3vgxOw9jVcoKCFXqUOAxdvxmlSWOhmCfbu0w2LUVXHvWr2Nw/F2mvTXlLhmKkoWvuyDqdbKAs6lHvtvO+dL7J2OY985NdPNi5J7H7e5x0Mbc6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740418078; c=relaxed/simple;
-	bh=SLIK3GbTWoDDJNTFGET0aSuhu0B7NbFgjVC9A6Rq6hs=;
-	h=Content-Type:From:Cc:Date:Mime-Version:In-Reply-To:To:Message-Id:
-	 References:Subject; b=WzwEjMm4Tkfqxi58OjRvWf/XC0nBEorhj5C7K9/6TIR5n8qtOU8v6/hvJWcUxsk7E8WJli1omvBZ8+oG3ikWNtRd09MJbXGegcViO0LX/DK5ZTIPIU0r7YyP0dWqH9FI79qRRbZc9/VR9ULmukCDCuGR6MIwrGTtnPuEq6/ND+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=iZUUYv0A; arc=none smtp.client-ip=103.149.242.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
+	s=arc-20240116; t=1740418085; c=relaxed/simple;
+	bh=RCQ9NA0K8F4QBrplAQzVHFLsVqL7FvrrFe0zodxcmns=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XhDP6zUogkdS/pP7mhjAiaQJ6sIFfz8p2QjhK7UzIZQrsC346PgMW3Meg6kNXeO3pAZRRVb3HzPaS8wW3//w+u3invF/wYGjItonDSH++kFb+3DdUAUv+47jes6o1rsafcYMRY3hOrBZT7I5KGYqYtQEDpmvWle8BNm77N1M85I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GWlJOvps; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="iZUUYv0A"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1740417866; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=DJkzxV1LfORUJ07gUx3c3K+PExeUFTCJzoDxXNaZfHI=;
- b=iZUUYv0AJeDZPbGFKhEC6vJSswyFWSnv05jtXXiwR9XVAyX5Yy5QXZoZP5uA7GaH6So2cG
- WNfqgfUk91jAH3AjIpix9yLXdX3a3JQCfxXBrBVeYxM/fduy+S8oKasWFY9SUeq+bRr4Uh
- sgFOQz72ou9sw10FZF6Kzo2nyTwYraMBE15Duheegjw7OlLzUUUXlKXdSB96ZacZtHLZWx
- on82AODJh/Dauc7Vyj89uWrYI1SaBgN0e4wl7OPai90IOjT4g/+EPTJtroMhOch1jVYK6l
- vhDQ9hNj1zjduB5Q6dpplEFnx3rDFZ3o26A7CLZBbLCgmlLD8ONqSod3Hzpvtw==
-Content-Type: text/plain; charset=UTF-8
-X-Lms-Return-Path: <lba+267bcab49+cb9649+vger.kernel.org+tianx@yunsilicon.com>
-From: "Xin Tian" <tianx@yunsilicon.com>
-Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
-	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
-	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
-	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <horms@kernel.org>, 
-	<parthiban.veerasooran@microchip.com>, <masahiroy@kernel.org>
-Date: Tue, 25 Feb 2025 01:24:24 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GWlJOvps"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740418082;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6HxVWH4sT/O5UUwrwlG8z94/6x2ivxPf/BjQ/uICxxM=;
+	b=GWlJOvps+o8T03xgFDf6Y1mWhk6Sc9T0E0coOsYjd2nuHykpt1nc6y48ASfAzTEU1jRKdT
+	/PKlcgHuxkHMcE5MHPJcVg+5fHGoddIvZSxbrOzmbGD7np42JC8vLBHYov5otOC/+bGP9A
+	kKHdNIkKbR7XFnImxnZ9rmqergWyIUg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-388-cUKKvoQQNSesIOaQytEqVQ-1; Mon, 24 Feb 2025 12:28:01 -0500
+X-MC-Unique: cUKKvoQQNSesIOaQytEqVQ-1
+X-Mimecast-MFC-AGG-ID: cUKKvoQQNSesIOaQytEqVQ_1740418080
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4394c489babso25830535e9.1
+        for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 09:28:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740418080; x=1741022880;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6HxVWH4sT/O5UUwrwlG8z94/6x2ivxPf/BjQ/uICxxM=;
+        b=U3gNDQT6oECBfqsr7BCxsGFHlnvY9AOfi+MxzfnBOJVC3KxMMX7o11F2HXJe/A4U/G
+         UfTSQNlCwoc6PkQoteemcM39riioYILeyNUAEMnDoqRC2q/mugXQ+hM8LCnDQ5ATgPaL
+         O/xKlSm6rlwceUnOBqR5xKTqu9XBy3hB/98ax0Mp7ARTlgdVvN49PJFRuR4yvc5Zqadl
+         BhBooE7e0S7HNOEogmJKCjoJCXqxEmkZIcgc8y7/IMKWVbz0QEyQzlmKsSCIzntFG6Is
+         hP4vl62Uq3Ksxz08T9Tw2TG7kUh06UscoPvx4myUSNYXQUY+33IUqTF1Jinx5YfD0RMc
+         Oelg==
+X-Forwarded-Encrypted: i=1; AJvYcCUvBAfQjoNpVup0+fJbxdPXIlsVFTuUU1fvOcl74IFuAmVtgw/nAFKk0ZTk7XHccZaeUXZTI2o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywp9LapEbPpENa1ldcdMROKRK2L2hnv6h7hDH/Znxl461anZFox
+	rV8snS9vXG62BYYlo99yH6cug2OaR5R713B/GxijeSH+dUbbfOHOZpVnM71BiyTJUBT/XygoRGG
+	Qb++1NpW6tHG+3GFBVlzWYkCmNKiwI3rAre4H459Zgdf4IEnpkhlyTA==
+X-Gm-Gg: ASbGncv8C8HPv8ihub/9UKn631TOFuZgte6aFQKo9ymvAYMb8EWLtRVTLHPcVy5gnmJ
+	4B84MEZX9tojyJm8cCKtUOonv2TFdaBjXFbIGY/DlVvn4pVtkLs/H5pUTtr45YkYxIfieaRd1xP
+	IdH/6uz/AUm+Lf2L/li0gAwhyBR/IWI9fHt80WEXsyGXsMMzMhJEnmoFEl697nbha84DqWkGfbM
+	nI2r8XxwiuTOn6tJ4pkIQ83LiX442qn+EUxVhhZmWZLL/2uDKRzOLtJUvuvhec6qewLiO5xD1g7
+	ZBs=
+X-Received: by 2002:a05:600c:468e:b0:439:9828:c44b with SMTP id 5b1f17b1804b1-43ab0f3ccddmr1505725e9.14.1740418080061;
+        Mon, 24 Feb 2025 09:28:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHRmQ8RM+y+/J+KDbrVfaH0j+iu/NZY1piRY61UaE4/1JgE02nhnCocoZohhxlX6dSptlrHEw==
+X-Received: by 2002:a05:600c:468e:b0:439:9828:c44b with SMTP id 5b1f17b1804b1-43ab0f3ccddmr1505485e9.14.1740418079714;
+        Mon, 24 Feb 2025 09:27:59 -0800 (PST)
+Received: from debian ([2001:4649:f075:0:a45e:6b9:73fc:f9aa])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-439b02ce65dsm112835695e9.1.2025.02.24.09.27.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2025 09:27:59 -0800 (PST)
+Date: Mon, 24 Feb 2025 18:27:56 +0100
+From: Guillaume Nault <gnault@redhat.com>
+To: Ido Schimmel <idosch@idosch.org>
+Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Antonio Quartulli <antonio@mandelbit.com>
+Subject: Re: [PATCH net v2 1/2] gre: Fix IPv6 link-local address generation.
+Message-ID: <Z7ysHMi4NociwDgR@debian>
+References: <cover.1740129498.git.gnault@redhat.com>
+ <942aa62423e0d7721abd99a5ca1069f4e4901a6d.1740129498.git.gnault@redhat.com>
+ <Z7sfmLG4V_kHKRfy@shredder>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250224172416.2455751-1-tianx@yunsilicon.com>
-To: <netdev@vger.kernel.org>
-Message-Id: <20250224172423.2455751-5-tianx@yunsilicon.com>
-References: <20250224172416.2455751-1-tianx@yunsilicon.com>
-Content-Transfer-Encoding: 7bit
-Subject: [PATCH net-next v5 04/14] xsc: Add qp and cq management
-X-Original-From: Xin Tian <tianx@yunsilicon.com>
-Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Tue, 25 Feb 2025 01:24:24 +0800
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z7sfmLG4V_kHKRfy@shredder>
 
-Our hardware uses queue pairs (QP) and completion queues (CQ)
-for packet transmission and reception. In the PCI driver, all
-QP and CQ resources used by all xsc drivers(ethernet and rdma)
-are recorded witch radix tree.
-This patch defines the QP and CQ structures and initializes
-the QP and CQ resource management during PCI initialization.
+On Sun, Feb 23, 2025 at 03:16:08PM +0200, Ido Schimmel wrote:
+> On Fri, Feb 21, 2025 at 10:24:04AM +0100, Guillaume Nault wrote:
+> > Use addrconf_addr_gen() to generate IPv6 link-local addresses on GRE
+> > devices in most cases and fall back to using add_v4_addrs() only in
+> > case the GRE configuration is incompatible with addrconf_addr_gen().
+> > 
+> > GRE used to use addrconf_addr_gen() until commit e5dd729460ca
+> > ("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL
+> > address") restricted this use to gretap devices and created
+> 
+> It's not always clear throughout the commit message to which devices you
+> are referring to.
 
-Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
-Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
-Co-developed-by: Lei Yan <jacky@yunsilicon.com>
-Signed-off-by: Lei Yan <jacky@yunsilicon.com>
-Signed-off-by: Xin Tian <tianx@yunsilicon.com>
----
- .../ethernet/yunsilicon/xsc/common/xsc_core.h | 153 ++++++++++++++++++
- .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   3 +-
- drivers/net/ethernet/yunsilicon/xsc/pci/cq.c  |  39 +++++
- drivers/net/ethernet/yunsilicon/xsc/pci/cq.h  |  14 ++
- drivers/net/ethernet/yunsilicon/xsc/pci/hw.c  |   1 +
- .../net/ethernet/yunsilicon/xsc/pci/main.c    |   5 +
- drivers/net/ethernet/yunsilicon/xsc/pci/qp.c  |  80 +++++++++
- drivers/net/ethernet/yunsilicon/xsc/pci/qp.h  |  15 ++
- 8 files changed, 309 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cq.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/qp.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/qp.h
+Yes, that's a problem I had when writing the commit message: I couldn't
+find a proper way to name the different GRE device types unambiguously.
 
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-index 4c8b26660..910f0f9fb 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-+++ b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-@@ -30,6 +30,10 @@
- #define XSC_REG_ADDR(dev, offset)	\
- 	(((dev)->bar) + ((offset) - 0xA0000000))
- 
-+enum {
-+	XSC_MAX_EQ_NAME	= 20
-+};
-+
- enum {
- 	XSC_MAX_PORTS	= 2,
- };
-@@ -44,6 +48,139 @@ enum {
- 	XSC_MAX_UUARS		= XSC_MAX_UAR_PAGES * XSC_BF_REGS_PER_PAGE,
- };
- 
-+// alloc
-+struct xsc_buf_list {
-+	void			*buf;
-+	dma_addr_t		map;
-+};
-+
-+struct xsc_buf {
-+	struct xsc_buf_list	direct;
-+	struct xsc_buf_list	*page_list;
-+	unsigned long		nbufs;
-+	unsigned long		npages;
-+	unsigned long		page_shift;
-+	unsigned long		size;
-+};
-+
-+struct xsc_frag_buf {
-+	struct xsc_buf_list	*frags;
-+	unsigned long		npages;
-+	unsigned long		size;
-+	u8			page_shift;
-+};
-+
-+struct xsc_frag_buf_ctrl {
-+	struct xsc_buf_list	*frags;
-+	u32			sz_m1;
-+	u16			frag_sz_m1;
-+	u16			strides_offset;
-+	u8			log_sz;
-+	u8			log_stride;
-+	u8			log_frag_strides;
-+};
-+
-+// qp
-+struct xsc_send_wqe_ctrl_seg {
-+	__le32		data0;
-+#define XSC_WQE_CTRL_SEG_MSG_OPCODE_MASK	GENMASK(7, 0)
-+#define XSC_WQE_CTRL_SEG_WITH_IMM		BIT(8)
-+#define XSC_WQE_CTRL_SEG_CSUM_EN_MASK		GENMASK(10, 9)
-+#define XSC_WQE_CTRL_SEG_DS_DATA_NUM_MASK	GENMASK(15, 11)
-+#define XSC_WQE_CTRL_SEG_WQE_ID_MASK		GENMASK(31, 16)
-+
-+	__le32		msg_len;
-+	__le32		data2;
-+#define XSC_WQE_CTRL_SEG_HAS_PPH		BIT(0)
-+#define XSC_WQE_CTRL_SEG_SO_TYPE		BIT(1)
-+#define XSC_WQE_CTRL_SEG_SO_DATA_SIZE_MASK	GENMASK(15, 2)
-+#define XSC_WQE_CTRL_SEG_SO_HDR_LEN_MASK	GENMASK(31, 24)
-+
-+	__le32		data3;
-+#define XSC_WQE_CTRL_SEG_SE			BIT(0)
-+#define XSC_WQE_CTRL_SEG_CE			BIT(1)
-+};
-+
-+struct xsc_wqe_data_seg {
-+	__le32		data0;
-+#define XSC_WQE_DATA_SEG_SEG_LEN_MASK		GENMASK(31, 1)
-+
-+	__le32		mkey;
-+	__le64		va;
-+};
-+
-+struct xsc_core_qp {
-+	void			(*event)(struct xsc_core_qp *qp, int type);
-+	u32			qpn;
-+	atomic_t		refcount;
-+	struct completion	free;
-+	int			pid;
-+	u16			qp_type;
-+	u16			eth_queue_type;
-+	u16			qp_type_internal;
-+	u16			grp_id;
-+	u8			mac_id;
-+};
-+
-+struct xsc_qp_table {
-+	spinlock_t		lock; /* protect radix tree */
-+	struct radix_tree_root	tree;
-+};
-+
-+// cq
-+enum xsc_event {
-+	XSC_EVENT_TYPE_COMP			= 0x0,
-+	XSC_EVENT_TYPE_COMM_EST			= 0x02,//mad
-+	XSC_EVENT_TYPE_CQ_ERROR			= 0x04,
-+	XSC_EVENT_TYPE_WQ_CATAS_ERROR		= 0x05,
-+	XSC_EVENT_TYPE_INTERNAL_ERROR		= 0x08,
-+	XSC_EVENT_TYPE_WQ_INVAL_REQ_ERROR	= 0x10,//IBV_EVENT_QP_REQ_ERR
-+	XSC_EVENT_TYPE_WQ_ACCESS_ERROR		= 0x11,//IBV_EVENT_QP_ACCESS_ERR
-+};
-+
-+struct xsc_core_cq {
-+	u32			cqn;
-+	u32			cqe_sz;
-+	u64			arm_db;
-+	u64			ci_db;
-+	struct xsc_core_device	*xdev;
-+	atomic_t		refcount;
-+	struct completion	free;
-+	unsigned int		vector;
-+	unsigned int		irqn;
-+	u16			dim_us;
-+	u16			dim_pkts;
-+	void			(*comp)(struct xsc_core_cq *cq);
-+	void			(*event)(struct xsc_core_cq *cq,
-+					 enum xsc_event);
-+	u32			cons_index;
-+	unsigned int		arm_sn;
-+	int			pid;
-+	u32			reg_next_cid;
-+	u32			reg_done_pid;
-+	struct xsc_eq		*eq;
-+};
-+
-+struct xsc_cq_table {
-+	spinlock_t		lock; /* protect radix tree */
-+	struct radix_tree_root	tree;
-+};
-+
-+struct xsc_eq {
-+	struct xsc_core_device	*dev;
-+	struct xsc_cq_table	cq_table;
-+	u32			doorbell;//offset from bar0/2 space start
-+	u32			cons_index;
-+	struct xsc_buf		buf;
-+	unsigned int		irqn;
-+	u32			eqn;
-+	u32			nent;
-+	cpumask_var_t		mask;
-+	char			name[XSC_MAX_EQ_NAME];
-+	struct list_head	list;
-+	u16			index;
-+};
-+
- // hw
- struct xsc_reg_addr {
- 	u64	tx_db;
-@@ -170,6 +307,8 @@ struct xsc_caps {
- 
- // xsc_core
- struct xsc_dev_resource {
-+	struct xsc_qp_table	qp_table;
-+	struct xsc_cq_table	cq_table;
- 	/* protect buffer allocation according to numa node */
- 	struct mutex		alloc_mutex;
- };
-@@ -220,4 +359,18 @@ struct xsc_core_device {
- 	u8			fw_version_extra_flag;
- };
- 
-+int xsc_core_create_resource_common(struct xsc_core_device *xdev,
-+				    struct xsc_core_qp *qp);
-+void xsc_core_destroy_resource_common(struct xsc_core_device *xdev,
-+				      struct xsc_core_qp *qp);
-+
-+static inline void *xsc_buf_offset(struct xsc_buf *buf, unsigned long offset)
-+{
-+	if (likely(buf->nbufs == 1))
-+		return buf->direct.buf + offset;
-+	else
-+		return buf->page_list[offset >> PAGE_SHIFT].buf +
-+			(offset & (PAGE_SIZE - 1));
-+}
-+
- #endif
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
-index fea625d54..9a4a6e02d 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
-@@ -6,4 +6,5 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
- 
- obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc_pci.o
- 
--xsc_pci-y := main.o cmdq.o hw.o
-+xsc_pci-y := main.o cmdq.o hw.o qp.o cq.o
-+
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/cq.c b/drivers/net/ethernet/yunsilicon/xsc/pci/cq.c
-new file mode 100644
-index 000000000..5cff9025c
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/cq.c
-@@ -0,0 +1,39 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#include "common/xsc_core.h"
-+#include "cq.h"
-+
-+void xsc_cq_event(struct xsc_core_device *xdev, u32 cqn, int event_type)
-+{
-+	struct xsc_cq_table *table = &xdev->dev_res->cq_table;
-+	struct xsc_core_cq *cq;
-+
-+	spin_lock(&table->lock);
-+
-+	cq = radix_tree_lookup(&table->tree, cqn);
-+	if (cq)
-+		atomic_inc(&cq->refcount);
-+
-+	spin_unlock(&table->lock);
-+
-+	if (!cq) {
-+		pci_err(xdev->pdev, "Async event for bogus CQ 0x%x\n", cqn);
-+		return;
-+	}
-+
-+	cq->event(cq, event_type);
-+
-+	if (atomic_dec_and_test(&cq->refcount))
-+		complete(&cq->free);
-+}
-+
-+void xsc_init_cq_table(struct xsc_core_device *xdev)
-+{
-+	struct xsc_cq_table *table = &xdev->dev_res->cq_table;
-+
-+	spin_lock_init(&table->lock);
-+	INIT_RADIX_TREE(&table->tree, GFP_ATOMIC);
-+}
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/cq.h b/drivers/net/ethernet/yunsilicon/xsc/pci/cq.h
-new file mode 100644
-index 000000000..902a7f1f2
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/cq.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#ifndef __CQ_H
-+#define __CQ_H
-+
-+#include "common/xsc_core.h"
-+
-+void xsc_cq_event(struct xsc_core_device *xdev, u32 cqn, int event_type);
-+void xsc_init_cq_table(struct xsc_core_device *xdev);
-+
-+#endif /* __CQ_H */
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/hw.c b/drivers/net/ethernet/yunsilicon/xsc/pci/hw.c
-index 898b80216..6fb2440ab 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/pci/hw.c
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/hw.c
-@@ -5,6 +5,7 @@
- 
- #include <linux/module.h>
- #include <linux/vmalloc.h>
-+
- #include "common/xsc_driver.h"
- #include "hw.h"
- 
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
-index 4b505fd9a..68ae2fe93 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
-@@ -6,6 +6,8 @@
- #include "common/xsc_core.h"
- #include "common/xsc_driver.h"
- #include "hw.h"
-+#include "qp.h"
-+#include "cq.h"
- 
- static const struct pci_device_id xsc_pci_id_table[] = {
- 	{ PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MC_PF_DEV_ID) },
-@@ -218,6 +220,9 @@ static int xsc_hw_setup(struct xsc_core_device *xdev)
- 		goto err_cmd_cleanup;
- 	}
- 
-+	xsc_init_cq_table(xdev);
-+	xsc_init_qp_table(xdev);
-+
- 	return 0;
- err_cmd_cleanup:
- 	xsc_cmd_cleanup(xdev);
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/qp.c b/drivers/net/ethernet/yunsilicon/xsc/pci/qp.c
-new file mode 100644
-index 000000000..cc79eaf92
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/qp.c
-@@ -0,0 +1,80 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#include <linux/gfp.h>
-+#include <linux/time.h>
-+#include <linux/export.h>
-+#include <linux/kthread.h>
-+
-+#include "common/xsc_core.h"
-+#include "qp.h"
-+
-+int xsc_core_create_resource_common(struct xsc_core_device *xdev,
-+				    struct xsc_core_qp *qp)
-+{
-+	struct xsc_qp_table *table = &xdev->dev_res->qp_table;
-+	int err;
-+
-+	spin_lock_irq(&table->lock);
-+	err = radix_tree_insert(&table->tree, qp->qpn, qp);
-+	spin_unlock_irq(&table->lock);
-+	if (err)
-+		return err;
-+
-+	atomic_set(&qp->refcount, 1);
-+	init_completion(&qp->free);
-+	qp->pid = current->pid;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(xsc_core_create_resource_common);
-+
-+void xsc_core_destroy_resource_common(struct xsc_core_device *xdev,
-+				      struct xsc_core_qp *qp)
-+{
-+	struct xsc_qp_table *table = &xdev->dev_res->qp_table;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&table->lock, flags);
-+	radix_tree_delete(&table->tree, qp->qpn);
-+	spin_unlock_irqrestore(&table->lock, flags);
-+
-+	if (atomic_dec_and_test(&qp->refcount))
-+		complete(&qp->free);
-+	wait_for_completion(&qp->free);
-+}
-+EXPORT_SYMBOL(xsc_core_destroy_resource_common);
-+
-+void xsc_qp_event(struct xsc_core_device *xdev, u32 qpn, int event_type)
-+{
-+	struct xsc_qp_table *table = &xdev->dev_res->qp_table;
-+	struct xsc_core_qp *qp;
-+
-+	spin_lock(&table->lock);
-+
-+	qp = radix_tree_lookup(&table->tree, qpn);
-+	if (qp)
-+		atomic_inc(&qp->refcount);
-+
-+	spin_unlock(&table->lock);
-+
-+	if (!qp) {
-+		pci_err(xdev->pdev, "Async event for bogus QP 0x%x\n", qpn);
-+		return;
-+	}
-+
-+	qp->event(qp, event_type);
-+
-+	if (atomic_dec_and_test(&qp->refcount))
-+		complete(&qp->free);
-+}
-+
-+void xsc_init_qp_table(struct xsc_core_device *xdev)
-+{
-+	struct xsc_qp_table *table = &xdev->dev_res->qp_table;
-+
-+	spin_lock_init(&table->lock);
-+	INIT_RADIX_TREE(&table->tree, GFP_ATOMIC);
-+}
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/qp.h b/drivers/net/ethernet/yunsilicon/xsc/pci/qp.h
-new file mode 100644
-index 000000000..52af8db7c
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/qp.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#ifndef __QP_H
-+#define __QP_H
-+
-+#include "common/xsc_core.h"
-+
-+void xsc_init_qp_table(struct xsc_core_device *xdev);
-+void xsc_cleanup_qp_table(struct xsc_core_device *xdev);
-+void xsc_qp_event(struct xsc_core_device *xdev, u32 qpn, int event_type);
-+
-+#endif /* __QP_H */
--- 
-2.18.4
+By reusing the device types of "ip link" we don't know if "gre" refers
+to all GRE types or if it's only for IPv4 encapsulation. But using the
+ARPHRD_* types wouldn't help, as that wouldn't allow to distinguish
+between gretap and ip6gretap.
+
+Maybe the following terms would be clearer:
+'ip4gre', 'ip4gretap', 'ip6gre', 'ip6gretap' (and potentially 'ipXgre'
+and 'ipXgretap' when considering both the IPv4 and IPv6 tunnel
+versions). Would you find these terms clearer?
+
+> For example, here, by "gretap" you mean both "gretap"
+> and "ip6gretap", no?
+
+Yes.
+
+> BTW, I believe the check against 'ARPHRD_ETHER' in addrconf_gre_config()
+> is dead code. addrconf_gre_config() is only called for ARPHRD_IP{,6}GRE
+> devices.
+
+Yes, that was dead code. But I'm reusing that condition to minimise
+code changes so to make the fix simpler. Do you mean I should write
+explicitely, somewhere, that it was dead code but isn't anymore?
+
+> > add_v4_addrs() (borrowed from SIT) for non-Ethernet GRE ones.
+> > 
+> > The original problem came when commit 9af28511be10 ("addrconf: refuse
+> > isatap eui64 for INADDR_ANY") made __ipv6_isatap_ifid() fail when its
+> > addr parameter was 0. The commit says that this would create an invalid
+> > address, however, I couldn't find any RFC saying that the generated
+> > interface identifier would be wrong. Anyway, since plain gre devices
+> > pass their local tunnel address to __ipv6_isatap_ifid(), that commit
+> > broke their IPv6 link-local address generation when the local address
+> > was unspecified.
+> 
+> By "plain gre devices" you mean "ipgre"? Because addrconf_ifid_ip6tnl()
+> is called for "ip6gre" and it doesn't fail, unlike __ipv6_isatap_ifid().
+
+Exactly. I tried to use the "plain" adjective to say that's the kind of
+device you get with the "gre" keyword in "ip link".
+
+> > Then commit e5dd729460ca ("ip/ip6_gre: use the same logic as SIT
+> > interfaces when computing v6LL address") tried to fix that case by
+> > defining add_v4_addrs() and calling it to generated the IPv6 link-local
+> 
+> s/generated/generate/
+> 
+> > address instead of using addrconf_addr_gen() (appart for gretap devices
+> 
+> s/appart/apart/
+
+Will fix both.
+
+> > which would still use the regular addrconf_addr_gen(), since they have
+> > a MAC address).
+> 
+> Assuming what I wrote is correct, I'm not sure why e5dd729460ca didn't
+> restrict the fix to "ipgre" and applied it to "ip6gre" as well.
+
+I asked myself the same question. Antonio might have an answer to this.
+But in my understanding the changes brought by e5dd729460ca were much too
+broad.
+
+> > -	if (dev->type == ARPHRD_ETHER) {
+> > +	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
+> > +	 * unless we have an IPv4 GRE device not bound to an IP address and
+> > +	 * which is in EUI64 mode (as __ipv6_isatap_ifid() would fail in this
+> > +	 * case). Such devices fall back to add_v4_addrs() instead.
+> > +	 */
+> > +	if (!(dev->type == ARPHRD_IPGRE && *(__be32 *)dev->dev_addr == 0 &&
+> 
+> Doesn't this mean that the 'ARPHRD_IP6GRE' case (and the
+> 'CONFIG_IPV6_GRE' checks) can be removed from
+> addrconf_init_auto_addrs()? That is, only call addrconf_gre_config() for
+> "ipgre", but not for "ip6gre".
+
+Yes. But I didn't want to do that here, to keep the fix as simple as
+possible. Because that'd mean we'd also have to add a
+"(dev->type != ARPHRD_IP6GRE)" condition in the test at the beginning
+of addrconf_dev_config(), and I feel that'd be a distraction from the
+core of the patch. So I prefer to do that in net-next.
+
+> > +	      idev->cnf.addr_gen_mode == IN6_ADDR_GEN_MODE_EUI64)) {
+> >  		addrconf_addr_gen(idev, true);
+> >  		return;
+> >  	}
+> > -- 
+> > 2.39.2
+> > 
+> > 
+> 
+
+Thanks a lot for your review.
+
