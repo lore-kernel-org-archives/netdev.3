@@ -1,135 +1,112 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76CD14A627;
-	Mon, 24 Feb 2025 15:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84E615E90;
+	Mon, 24 Feb 2025 15:36:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740411041; cv=none; b=ZM8Elg8nAyX7sjW4tIF8KWszuooH5cttQ32+SiKLgS0C+Oh5ETidgz2RY9/YdGaYweYxpticYuZJLguqcU0UMCGWTISwXJlrWt2u14TpjLWyyDfHpPRx0S4oQ9BE5ePa3QIAb7m7NV5n+e5R7UoKhhXXdUTWchhIiJvaNBrvVYU=
+	t=1740411362; cv=none; b=IFuS2J5ulD8S7afYs2pJjS7QCr5kd8cv154XnhkX+mBCa+tKpRRD8RK/1h3iTRvkZEvW00iHn26jBTI1dDmLt66bcJ0MNyp4R4v1djS8sgdGAhEPatA6ZV39NPg8iUDW7isc1rSO6khI+Tu2LKvIf9KxcwwXNHpJCONzl4gDeiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740411041; c=relaxed/simple;
-	bh=9GsHZ0uWFGERQSLMdeBUy4lnnkfD5bg12vUs6N4mbcA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sjglHfaSH/MLYEX/E8fS8aNNLNH0lDKAOHnv8BcOhpif57XYirHEux0ho+JCYNzJNaEiMaIlqtet7zyDoiuJ30uiY7IFUshJGOP6kTy5MJ5dV+244w8dyxdhvxosD9qMEg01lHIeU0kO/0AoU1oHV+/8GDBIiqWF+uGRbL3c2PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q5E9qslO; arc=none smtp.client-ip=209.85.216.51
+	s=arc-20240116; t=1740411362; c=relaxed/simple;
+	bh=f8eRj/AuYAHUZhC8jvYuxxDYnuW5TL83F7ZoXDKXJ9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LfRo7rTec28h2SeL1u5kTkk34df6P9yKPNm44BEULT4PieIaI1K4+Wu7NGi25Y+YGMzBiXC1dELQ3LqrtpssTsNa+agw4rPwtmw+kRfG1FUZEZODX6K2GYtt6bGO7cQR16P2z6Sgoatiphk2VK+4kWtQr6wrhxz3b8IqLb596q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CTSbhAxR; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q5E9qslO"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2fc0d44a876so7307302a91.3;
-        Mon, 24 Feb 2025 07:30:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CTSbhAxR"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-220ec47991aso61789775ad.1;
+        Mon, 24 Feb 2025 07:36:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740411039; x=1741015839; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WhmASDOQInyvXr70wajSDlxu87HIS0H9xeXcz6t5iMo=;
-        b=Q5E9qslO+OTDnNCE+L7o9Ca9QqBDO59URGGhjKHjq48rFlHL6zhZ/ip3EM5BNyiXiW
-         W7MDxysRmIga1NgImilEi5vJq8ItDQyKIycH/d5ywrATMTukFAsnWE+F35jmanCtJZpu
-         dLpgbpRIJPG4cX8wVWmOcrhxT/LNMnOTtzkXsjSXpeTxBQ1svTN+fN2MKYabLESwcsS2
-         eyW9ApHvnH8gGOIUgMuv4u0tsDq4RAuzUkVngMsVEpPRVY2jluwiKJGXZRoJhtqZNgRG
-         o0fnAqwMn/uIDpR/PFL5P//vIi6FwCkW2GsS4iV2nN7Z2kJqg2V3Vq2jC7gVT/fzeKLs
-         EF4Q==
+        d=gmail.com; s=20230601; t=1740411360; x=1741016160; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TvUBzAQsQhizjRbALhklVYcHMIlUUFNb0lUUZGXIVX0=;
+        b=CTSbhAxR00BOGQqfN4/XJySA6tKQwjjV+i2Gn+giHm7lfAJO1JHiWGTBhh/H46SkSW
+         nPQBS1yyzUxdlDjUW1NIzhrApizN8AARhqbWflNizp1QdvR1IOshLZ0kaa/pI+tMGoKM
+         Q3kD4s7CYZldwTAIRWc1VS7vz33Xw+hVQrZDlWpRR51NiZ1z4r7cqs6IjXyHnTfycmTS
+         3NGrwHHktUVi4NrSE3JsKR8k2aDF5AtGtFfD4VZzJaSNGtWTl7QbOQxhudFflPo3aDLw
+         3Q+vT1/ipJ9+bNhErVoMWAyHCOd/NuXwPdkXqh2KZKALjZsDJqDh6JfpdKfgVw0a+CGk
+         ZyZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740411039; x=1741015839;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WhmASDOQInyvXr70wajSDlxu87HIS0H9xeXcz6t5iMo=;
-        b=jHRpfB4Kqz/4Skg17nYM3Oad0dQMJG+idMoXrg+kJezcRw6gFmMu7M02Bgsg1Zekhh
-         IYVDFhAdTaayHJ0eZ5UPaFRA3h5eRH+gX74prE4Fg7qBWdrrhOEhzpk5K9bFLbaJpyh7
-         s8eRvoBB2Xd3XHxy5+7ecg9vufvdI0TuxJ3rlQKzquoNb7bSRCz0cAJf9SxVlGBBSOww
-         SE23VxQo6IhXcnz7SzIpE5Q97LZCQsItBSY3ephywuH989XSW05F+g6+JHGx4BZBrQP/
-         vKM9E7a+JDxAZaO4RM1r561FzKC84AXDEIjuGZP8FPOyHd+MYC2TmzNJMauXUBVjVqE3
-         5tCg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7wqvxOuo79vLniQ0datzjCBWEwGJ1CdGjncN0MgC7kJGiNs8OdeXpa3q6BCFGzQXImQ7Qwo1Z@vger.kernel.org, AJvYcCWH6XXyeFX9ys6YH5UuCPtF6rWb48L/WEdV9EIXFMgs3XTUVizsB9xAMJ+CkmNHIQxGGd+nh3JHltOV5mM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKERNmpWacUUww7LQwQRieEHQ8zhv/AOisD4XMZCxYUrbMCsxa
-	rXlnH0V9kPnjndGptXgNpV/om17Se+LKnru+wYrmOkvp3+l4fhwNRpIY7X2v
-X-Gm-Gg: ASbGnct6PXsJUwhwlXVj+qBryqZ8w3wHWPFODMY02mr2P+GqgnOk0cs1xOMvFXEY0mX
-	nR68AjEDf6OhzG9c+Pt5xppjWblBRoEp/3iuCJ42AdSmQTXci7bbhJc63a/4WKwhbti31bhyz0c
-	NXA+z4BL24Hgy9eem8z++9kdkl+TtSzOS4+zabi6DW4jMyVefmyBdXT3eGqDXiVIKx3e4kxRZUt
-	+oUQEx+4bODNp9vmJ7Yq+9PHrKK/wvsIPYS8XII9N6fQ3RtVr9DQ/xoKGP5X9T4xkFRVBKYBgYO
-	SVbwHcylrv0qKGZTCtTyxL/ImWyagYJR/XZTO0nDisG+SlSIxt9mpu0iZ4aiIUZ06bMG6VobPOi
-	tVgSNOXYL
-X-Google-Smtp-Source: AGHT+IHDtb5JrFiaPGMhffUhvx3dhN8y94hLjdsSH4uZOiIHwdMeD6rXeQmlcXEAz/gxx1PdC1W2cw==
-X-Received: by 2002:a17:90b:48cb:b0:2ee:e961:303d with SMTP id 98e67ed59e1d1-2fce7b4b904mr22754862a91.35.1740411037786;
-        Mon, 24 Feb 2025 07:30:37 -0800 (PST)
-Received: from AHUANG12-3ZHH9X.lenovo.com (220-143-194-76.dynamic-ip.hinet.net. [220.143.194.76])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fceb04e525sm6592432a91.20.2025.02.24.07.30.34
+        d=1e100.net; s=20230601; t=1740411360; x=1741016160;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TvUBzAQsQhizjRbALhklVYcHMIlUUFNb0lUUZGXIVX0=;
+        b=aZWSiaqTwcfqwNsddP0SPOBecRzFJy+26sMjKyhQ4lTB8fZ0KcKcgbKHZ6gDUpNzKK
+         OQ3VfzzcWEVitn8ER+ZpVH+v5CIQetBhhz04ieoAqtS0T6PfvLyA9CrOERYUkBEOYJyl
+         Q+MhCRDSRXVGvJA4RT4Tp32FNCV4tkI4ClE0Ag7faqjWvDFyq7O4ZdsmvTa2sIowveut
+         2Wae7/Do3eu2T+GqaMKqelZthDH9S53lUKa2gN7jKQFA76cvUiu4/Zuk77gtkN3Rl+Pk
+         72Y6Fl/Bkhw9DIt41hFulZSiw5sWC9Vzl2gJMrXGT1PrBq8mus+P9bAN1AcQ7lQT6eqb
+         tDJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU88iHQ1AROnpOQh0y1vD6H3KlufijjX48TIh/gbVQKv2fJCoC2MEgXQxvcb5Rt1cy1pA0TwJtu@vger.kernel.org, AJvYcCUgpAQanoVvBxBweNkIZB3kvlwgR2EYfZA94Ch3msGpdhQ/Y4AoOmzFpjGYQu6wUXFTqJ+RA+X394s4md8=@vger.kernel.org, AJvYcCVJlouplWNbSR2DNuxCSYD2Js0mAxDg6UEYVTV1P/am+oVBXWMKYkVO/kS0pib8b1UADXU+5kbsXsEH21jtTpU=@vger.kernel.org, AJvYcCVPle4znU+I/ALLrhH7xQcGJGbFy/4E9YMN4no/doE4SyI/2xMaMEbArmnvpN+AUV20ZkIVj0zZdmO6xZA=@vger.kernel.org, AJvYcCW79pyE9jv6BnMMTbt7sSIMwd7sPKK73lAR0VEaNm83eBISdUaM8uyzhkncB/6uO4SGdEdYhPJp8s9uSgQI@vger.kernel.org, AJvYcCWqQQPj4G+DVuDQDZoreWROvhcMAz+wcR9E5i68obka7i99SJZDgW6kApVodIJ2Tr3A59RrLmFVpE+ruSqY@vger.kernel.org, AJvYcCXuaRXJZX3GvfljtLKoXFTR+mhARZTc3TC8MHV7qyzaUW6PcEihYiuWrnshGJaf888By3w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaKFwHo3cOdTBICifcMgserbxve+fqFkBp6WtAACxUuXDOZSgq
+	tlR1W+wDTIAqGB2rmzrmoZWcCBuqlU4xZ6nbIlScQ7tFB0EkOsHn
+X-Gm-Gg: ASbGncvQ03OVf/mkX9PQOy9eyW8VDO9p0pjRtt08Ccv+F+cc2AIJUvwaI4HWHZ+0VDJ
+	h877HJAG/sclgHzHhLovgxbJrfQBQF28SYklcHBT4ullzmi5XJ+Z91DDve6tdfTMdYs1rGLRrfe
+	+mL7/+oJ4XyRLkmmogsYJMN7s3oqGXxm80RVRGR8Ub+2RyNdXrDix/SbPBkBfZN31KobhnTauTX
+	htMU0C5O/2VEBPrfNu2QUCQX7OqLTOmH74eYJKMeXJ/Gw57ZbZ0mXCHETKacCUfoaGCc8kdIQIp
+	TTjioiqKIdRc3YYSsGYP/LfDfoya
+X-Google-Smtp-Source: AGHT+IHd2msCEkxFy+eTP0g8bXm0gN1PJPrXpracR00S9KkpiQvppU+iNHJWil/lk2n6JQBTakl5Tg==
+X-Received: by 2002:a17:902:f706:b0:220:faa2:c917 with SMTP id d9443c01a7336-2219ffa74demr245408665ad.34.1740411359935;
+        Mon, 24 Feb 2025 07:35:59 -0800 (PST)
+Received: from eleanor-wkdl ([140.116.96.203])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d5348f29sm181794265ad.37.2025.02.24.07.35.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 07:30:37 -0800 (PST)
-From: Adrian Huang <adrianhuang0701@gmail.com>
-X-Google-Original-From: Adrian Huang <ahuang12@lenovo.com>
-To: Kuniyuki Iwashima <kuniyu@amazon.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Adrian Huang <ahuang12@lenovo.com>
-Subject: [PATCH 1/1] af_unix: Fix memory leak in unix_dgram_sendmsg()
-Date: Mon, 24 Feb 2025 23:28:46 +0800
-Message-Id: <20250224152846.13650-1-ahuang12@lenovo.com>
-X-Mailer: git-send-email 2.25.1
+        Mon, 24 Feb 2025 07:35:59 -0800 (PST)
+Date: Mon, 24 Feb 2025 23:35:48 +0800
+From: Yu-Chun Lin <eleanor15x@gmail.com>
+To: Jeremy Kerr <jk@ozlabs.org>
+Cc: Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, joel@jms.id.au, eajames@linux.ibm.com,
+	andrzej.hajda@intel.com, neil.armstrong@linaro.org,
+	rfoss@kernel.org, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+	simona@ffwll.ch, dmitry.torokhov@gmail.com, mchehab@kernel.org,
+	awalls@md.metrocast.net, hverkuil@xs4all.nl,
+	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+	louis.peens@corigine.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
+	johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+	jirislaby@kernel.org, yury.norov@gmail.com,
+	akpm@linux-foundation.org, hpa@zytor.com, alistair@popple.id.au,
+	linux@rasmusvillemoes.dk, Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se, jernej.skrabec@gmail.com, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
+	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
+	oss-drivers@corigine.com, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
+	bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw
+Subject: Re: [PATCH 00/17] Introduce and use generic parity32/64 helper
+Message-ID: <Z7yR1C4nC1UTrX5e@eleanor-wkdl>
+References: <20250223164217.2139331-1-visitorckw@gmail.com>
+ <1cebfebb9c205a1ebc5722ca7e3b87339ceb3c79.camel@ozlabs.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1cebfebb9c205a1ebc5722ca7e3b87339ceb3c79.camel@ozlabs.org>
 
-From: Adrian Huang <ahuang12@lenovo.com>
+On Mon, Feb 24, 2025 at 03:58:49PM +0800, Jeremy Kerr wrote:
+> More so than __builtin_parity() ?
+> 
+> I'm all for reducing the duplication, but the compiler may well have a
+> better parity approach than the xor-folding implementation here. Looks
+> like we can get this to two instructions on powerpc64, for example.
 
-After running the 'sendmsg02' program of Linux Test Project (LTP),
-kmemleak reports the following memory leak:
+Hi Jeremy,
 
-  # cat /sys/kernel/debug/kmemleak
-  unreferenced object 0xffff888243866800 (size 2048):
-    comm "sendmsg02", pid 67, jiffies 4294903166
-    hex dump (first 32 bytes):
-      00 00 00 00 00 00 00 00 5e 00 00 00 00 00 00 00  ........^.......
-      01 00 07 40 00 00 00 00 00 00 00 00 00 00 00 00  ...@............
-    backtrace (crc 7e96a3f2):
-      kmemleak_alloc+0x56/0x90
-      kmem_cache_alloc_noprof+0x209/0x450
-      sk_prot_alloc.constprop.0+0x60/0x160
-      sk_alloc+0x32/0xc0
-      unix_create1+0x67/0x2b0
-      unix_create+0x47/0xa0
-      __sock_create+0x12e/0x200
-      __sys_socket+0x6d/0x100
-      __x64_sys_socket+0x1b/0x30
-      x64_sys_call+0x7e1/0x2140
-      do_syscall_64+0x54/0x110
-      entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Thank for your input. We will do that in V2.
 
-Commit 689c398885cc ("af_unix: Defer sock_put() to clean up path in
-unix_dgram_sendmsg().") defers sock_put() in the error handling path.
-However, it fails to account for the condition 'msg->msg_namelen != 0',
-resulting in a memory leak when the code jumps to the 'lookup' label.
-
-Fix issue by calling sock_put() if 'msg->msg_namelen != 0' is met.
-
-Fixes: 689c398885cc ("af_unix: Defer sock_put() to clean up path in unix_dgram_sendmsg().")
-Signed-off-by: Adrian Huang <ahuang12@lenovo.com>
----
- net/unix/af_unix.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 34945de1fb1f..cf37a1f92831 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2100,6 +2100,8 @@ static int unix_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
- 		if (!msg->msg_namelen) {
- 			err = -ECONNRESET;
- 			goto out_sock_put;
-+		} else {
-+			sock_put(other);
- 		}
- 
- 		goto lookup;
--- 
-2.34.1
-
+Best regards,
+Yu-Chun Lin
