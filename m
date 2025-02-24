@@ -1,44 +1,44 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1C3261593
-	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 16:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D446C1917F1
+	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 16:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740415806; cv=none; b=NGmnGwD1iSx7BSCHRrQt71Y61tPKDXejs2luwl+qoHWnDFKUaW8+SgxIgAt2FpYDi2W1oWbs4tgeeq2mJiYR2rnt1kflrBipnn0F4SAmGhxAf8jxIJuyoC8XBi2wtAKVCHA71KJ/OPReJy2msiaMA39hqBbCael8ansMcuC+fAk=
+	t=1740416006; cv=none; b=DOVezUlkkur/NI2IvOG/m3Ft2rV0c/VblXsiU4abAS6VK4HvMYk3IwL5CuLN5JOeK+fOZTU8BVgwZntUaQBVlqECj0I4w73ZCW1+by3h/jaQPi177b9v28hk7NsIrH2mIyjW9XuGH/01ovz+jj3oVWlN6QKGQ807J2sny/IzeoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740415806; c=relaxed/simple;
-	bh=ILU8bWKcokWDvIEhMlgHkISsvtiYy9HbZ016Gnz7fdY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZBhWYQxrGoA7Tz5J5VZwvaOtyLOKi08mA53dp6dTMDxjqPSdVAyI143jJtaU164nAT+slaH7QtayedgAT2PyVvpmHkbbzmARa48eslFkprPqKbrRUgCu2MI8oPw7Yt3XvAeZGgpAAXMsDLWq+w9celIEtfQFN9PjH8vsZj5q+L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=hSOMAMi9; arc=none smtp.client-ip=78.32.30.218
+	s=arc-20240116; t=1740416006; c=relaxed/simple;
+	bh=JyRi0WrXrLWHH+T2DLwHD3alUdQ8E+jBpfq4ueFYQnk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=qgYjX9pIlJSdkiMN4e+/zsD9YNEHhKfXgTZ/SqT4DXwAmEqmdowYt/SwPjK+h026pRlgoCs7RyWmVURgLNHQrpEZz2nb4ZGii50DpQVgRVy1tD0txn0mrjVZftw5SWdqAkLG5ayNcWCm30jvO9ZfuXu4S2jqg2ZvAYDizwLSauI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Yp52K2+K; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="hSOMAMi9"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Yp52K2+K"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=prs4XZf+LQU37XZYihXYMGUtI4UK9gIDbyzuWPk6b1E=; b=hSOMAMi9NWkbX+qi46VgOYrtHj
-	0FIRcy3jMwJHS5h0X7nTJhRshYOj7P1iQ9S3NN14gjB10MDLPMt20tG5OxmlFWEv+Ir8EtI+PXKSO
-	0BrL4bPpgcFnwWXHgDoynSFy8DbAzrJkf1LxfkcwmlahEqMs0b5UmkqL/n7iIOHGdWXEKcQuoUFsl
-	EGDOfS9FzdbLp6nX8flr5mj4XDI2H1PBi3Po4MMXjsZLldXe30ESJeADGlsmy9cix9S0riSdY1Mr5
-	YdX9Mezq+Bj8KU9f+tjMhYaWB7DGJxAugpfVyP8lFSXtbAABEERdGvPGxHf4ljz3Zd4IAt0dOv4tr
-	mwilkKsw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41954)
+	bh=eVrvblwUeOHaT5XpR0ycq1832zl1k0eQKG1nFxW4qwE=; b=Yp52K2+Km6Tx58ZqpIMJpAICc8
+	vRynoJccGOIhZxobrV9L7bkz71SCBR6olbWMFrYAC9XgkNwC9sDqFkfoqzh7erW3CCMVL5AAu5qYc
+	zvJPwhslbILb1/qJXP1GHZ7OYDvr0ykAbeFUuuFPntjqiLojRVHKbiEjVNlMa6nHnjIJigc3+dA8d
+	a9xG0h+9IZhTD6Um2Zp2BqgHHehIttG2ARvosni5xx4cvqBUWlGwMENrzVHhFFmb4eKfae10ZiPxk
+	erznh5aLAeOaKmA+nY+Pjj6uNesvLx45sKmYBU3wB4S9dv3LE3J2skGAgRhvsmZ0pPr/CPIMKZf43
+	sGp1lnqA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58268)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <linux@armlinux.org.uk>)
-	id 1tmbeU-0006zA-1n;
-	Mon, 24 Feb 2025 16:49:54 +0000
+	id 1tmbhm-000702-1P;
+	Mon, 24 Feb 2025 16:53:18 +0000
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
 	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tmbeR-0005AB-0I;
-	Mon, 24 Feb 2025 16:49:51 +0000
-Date: Mon, 24 Feb 2025 16:49:50 +0000
+	id 1tmbhk-0005AN-1g;
+	Mon, 24 Feb 2025 16:53:16 +0000
+Date: Mon, 24 Feb 2025 16:53:16 +0000
 From: "Russell King (Oracle)" <linux@armlinux.org.uk>
 To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
 Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
@@ -50,11 +50,9 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next 2/2] net: stmmac: dwc-qos: clean up clock
+Subject: [PATCH net-next v3 0/2] net: stmmac: dwc-qos: clean up clock
  initialisation
-Message-ID: <Z7yjLjfNq89vPnOd@shell.armlinux.org.uk>
-References: <Z7yGdNuX2mYph8X8@shell.armlinux.org.uk>
- <E1tmZjr-004uJP-82@rmk-PC.armlinux.org.uk>
+Message-ID: <Z7yj_BZa6yG02KcI@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,22 +61,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1tmZjr-004uJP-82@rmk-PC.armlinux.org.uk>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Mon, Feb 24, 2025 at 02:47:19PM +0000, Russell King (Oracle) wrote:
-> Clean up the clock initialisation by providing a helper to find a
-> named clock in the bulk clocks, and provide the name of the stmmac
-> clock in match data so we can locate the stmmac clock in generic
-> code.
-> 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Hi,
 
-Yet more warnings and errors from NIPA, yet this patch passes my local
-build tests.
+My single v1 patch has become two patches as a result of the build
+error, as it appears this code uses "data" differently from others.
+v2 still produced build warnings despite local builds being clean,
+so v3 addresses those.
 
-As no one looked at v1, I don't see the point of waiting 24h before
-posting v3... no one is probably looking at v2.
+The first patch brings some consistency with other drivers, naming
+local variables that refer to struct plat_stmmacenet_data as
+"plat_dat", as is used elsewhere in this driver.
+
+ .../ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c    | 53 ++++++++++++----------
+ 1 file changed, 29 insertions(+), 24 deletions(-)
 
 -- 
 RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
