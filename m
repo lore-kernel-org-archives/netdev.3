@@ -1,117 +1,83 @@
-Received: from pv50p00im-ztdg10021801.me.com (pv50p00im-ztdg10021801.me.com [17.58.6.56])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715C81519B9
-	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 14:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5C62571CE
+	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 14:47:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408372; cv=none; b=Hn+PfC9nhYKGrSGVfRv37UWTOWTDIzNVEzTegYbSudI621okHry2dw5wiKngHmqshjKQFzF51o6gKXrQvnXVeRETZpxY2ed4G5TsEfw07hDAEu1cEGFk6+VVQpBaEUsuKWu7ACAu7OpQ0jZ2+ZEWjtcxrC2oQztg9c8Q9p9dehc=
+	t=1740408448; cv=none; b=dBdCMCVvvjZWG9MvVjYgeYn8OxaxDae5pzsweXaJwd92SASbC/+0eCRCLnojxw2bOWrskJjYJHRKSrq9OjXjSmptTE3I4vHCZ10AC/uT4uen56HFm3XBBOZxHLG2oUb2rSYXgXXmLAE0sTDx9jmxyWyhm7U86vNhqpDSfCpiWe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408372; c=relaxed/simple;
-	bh=fxHn5PpLrOvrhy3T9+DU0/Qq00yPM+Mp8t95xmMWsSI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ppREOxntXM4gV6nKSftPh4K3ywf56l/61J0pDsgXD9QSUDRp0WKVO6uh7NQfuVkJXLCLuc400wfwEvzJJj4ZtAqIYX1r8XWpEhKoHkEGKb5E1r9WsIAKmGmoFZ1GwL9dnOYj6/5wmEqfrn0QFOVyJ/aw13ZBCF4jseOwLvaI7Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=QlrLaWEd; arc=none smtp.client-ip=17.58.6.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+	s=arc-20240116; t=1740408448; c=relaxed/simple;
+	bh=uvva7VVgcYQdPwehDEq5K7SEH/IFmwJPm2IdZ7+Q0Yo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=hOCjYxp55Yx8dXRB1NjyF22g/mYqIYQty1V6Zb1gV2+XD9JxM9h0FpqP7zuVxhGfpXnCzhdw9hDKiA6wh6olnVRC9ZS0xyIAZHYI8PRQ6xJsBEpHecUwLbJvIdnndoyWtYXajINE9obO7T8PkunXC+NxVfSWps1Hx0rdIwfWHfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=WSlwxJPC; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="QlrLaWEd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; bh=SxARc5+mPnL0BjR2iW5rWJ4TF8233iOHpKnJbbHiSqw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
-	b=QlrLaWEdYFkfsu8fuz6nbUdcj79Q8tJSmKk2HA1yeaCmsuHQSOTGqxvHL7yUmSH26
-	 akU6WkcZrQNFnHq+BJaLeGPq0iB3wrn9quZ3+XX7TL6W2416KdFvIkp5eq2vQ9b1mC
-	 1W3KDPpIj0DisqfGR5RfGhPUGajT30GJk6SpSRctraMh5Bn8xJKesYr+HLgu8FHVrW
-	 5Dfwx7CMvdnY4JwcEN6gg2auvHgazI6WEAwJkihz3N6RwdjmSunhSudO5G6dDlNdEp
-	 B1QbwPUm6oUVtf0ONAKjCUdMnGgia+x/d6OTzrZdtjaV4ethm0Xnv3yRyjfFnT2Mpt
-	 tk5oRw9q9GBwg==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-ztdg10021801.me.com (Postfix) with ESMTPSA id 01FF82010282;
-	Mon, 24 Feb 2025 14:45:49 +0000 (UTC)
-Message-ID: <a28f04e5-ccde-4a08-b8fa-a9fa685240b1@icloud.com>
-Date: Mon, 24 Feb 2025 22:45:44 +0800
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="WSlwxJPC"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=w2VjUmcUhwo45yKsnIYQyEKNRQ2c98rmF9aT5Omixdg=; b=WSlwxJPCmcu4xnkbsWzbiG3zY8
+	tpIG3DO/dieoFK3cV1Ezwd1BJzFNXU/QeefmhPr49N0cBr39Lz4tS7d7318pOjagRGZcPXKUqzsRh
+	zkhvuYecu6EVNhPDBbDyd+ThG2zoFW9dluANMurm7yi2tq5stBJegn1KqMPWdl/UFA+tBL6u773Rl
+	quUupuZLXIoK3GKSK4XqiEcARcQ50fp379TJSf0zrUD7IVaUB6LjTpLzTmkxLagsx2EaQta59Dd9e
+	QketBhXljhkl3AP0rubZ6EmuYKBZvHAxMhdEXJ5+I2vOPN1/6LJSXvuy8obXirPQIe1clAsh8zthE
+	ecoLa1tg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47930)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tmZjr-0006fT-39;
+	Mon, 24 Feb 2025 14:47:20 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tmZjo-00055d-35;
+	Mon, 24 Feb 2025 14:47:16 +0000
+Date: Mon, 24 Feb 2025 14:47:16 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next v2 0/2] net: stmmac: dwc-qos: clean up clock
+ initialisation
+Message-ID: <Z7yGdNuX2mYph8X8@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH *-next 01/18] mm/mmu_gather: Remove needless return in
- void API tlb_remove_page()
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
- Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Johannes Berg <johannes@sipsolutions.net>,
- Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>,
- Jiri Pirko <jiri@resnulli.us>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>,
- Thomas Graf <tgraf@suug.ch>, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
- netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-pm@vger.kernel.org, iommu@lists.linux.dev,
- linux-mtd@lists.infradead.org
-References: <20250221-rmv_return-v1-0-cc8dff275827@quicinc.com>
- <20250221-rmv_return-v1-1-cc8dff275827@quicinc.com>
- <20250221200137.GH7373@noisy.programming.kicks-ass.net>
- <8f36be7c-6052-4c5d-85ff-0eed27cf1456@icloud.com>
- <20250224132354.GC11590@noisy.programming.kicks-ass.net>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <20250224132354.GC11590@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: rwcKYw_iCScrLPUxt294xX4BCs8xvrO1
-X-Proofpoint-GUID: rwcKYw_iCScrLPUxt294xX4BCs8xvrO1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-24_06,2025-02-24_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=911 mlxscore=0 bulkscore=0
- adultscore=0 spamscore=0 malwarescore=0 phishscore=0 suspectscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2502240105
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 2025/2/24 21:23, Peter Zijlstra wrote:
-> On Sat, Feb 22, 2025 at 07:00:28PM +0800, Zijun Hu wrote:
->> On 2025/2/22 04:01, Peter Zijlstra wrote:
->>>>   */
->>>>  static inline void tlb_remove_page(struct mmu_gather *tlb, struct page *page)
->>>>  {
->>>> -	return tlb_remove_page_size(tlb, page, PAGE_SIZE);
->>>> +	tlb_remove_page_size(tlb, page, PAGE_SIZE);
->>>>  }
->>> So I don't mind removing it, but note that that return enforces
->>> tlb_remove_page_size() has void return type.
->>>
->>
->> tlb_remove_page_size() is void function already. (^^)
-> 
-> Yes, but if you were to change that, the above return would complain.
-> 
->>> It might not be your preferred coding style, but it is not completely
->>> pointless.
->>
->> based on below C spec such as C17 description. i guess language C does
->> not like this usage "return void function in void function";
-> 
-> This is GNU extension IIRC. Note kernel uses GNU11, not C11
+Hi,
 
-any link to share about GNU11's description for this aspect ? (^^)
+My single v1 patch has become two patches as a result of the build
+error, as it appears this code uses "data" differently from others.
 
+The first patch brings some consistency with other drivers, naming
+local variables that refer to struct plat_stmmacenet_data as
+"plat_dat", as is used elsewhere in this driver.
 
+The second patch is the v1 patch updated for this with the build error
+fixed.
 
+ .../ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c    | 52 ++++++++++++----------
+ 1 file changed, 28 insertions(+), 24 deletions(-)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
