@@ -1,366 +1,154 @@
-Received: from mx01lb.world4you.com (mx01lb.world4you.com [81.19.149.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A598A8C11
-	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 22:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6521DE3AD;
+	Mon, 24 Feb 2025 22:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740434516; cv=none; b=EaJQxwXFGwRXl4zneBIpm4pGclgwXAEueAd9FilEecey+Fs5H5yUma4SRSkQHgql4A+cUF+FYj5hsebbK13waqjcWz0BhfzZ+J5wSMiDaJDV9sQYKbqqt2EVPuxacbpE3KlI6hFj/tg/WdEnWQ5Ai7vERAP8qoxldZg3kymhzhA=
+	t=1740434902; cv=none; b=Dw3Ji3sO0OxsLS5IMOO3EMZFUWGLCvhsNZZPMoUlXWAAnkTYhonv6A/kRXzILL69QjnorzCKjOLMo7UyAwCocHg2461tbkQhJ4ftFDuDfESucCIkK++eGavl14bT61DT9gETDGoNFtCszzoHXlfAecWEarhzoURWNUKXE1/q2Mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740434516; c=relaxed/simple;
-	bh=DiyfeZznG3Y/3tYbp1JNq7xJmytB3do4e9ioGJmbv+w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=s37hqLYdTXtWjYue/rh+fRbmzUVcaSSosv1r3OV4lop4eDlVwU1lQKdvb/yJfIWRhG1PnB+/yq8vWldN+ls4geZwuNj/blfrLTdClMK0/J239NKCQWfoWTbMpVeYJMHwbluhY119fh+kTpywPBmr1Mg4X3BcV/5TgB6/2PtiQW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=Y4xdoEw2; arc=none smtp.client-ip=81.19.149.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1740434902; c=relaxed/simple;
+	bh=BiUGPgW/xQuplz2NzaQAzErLtEmTxPAlsm7wIiONLQI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ltv0KHHdk8w9PPAl9sf2DCzG/DRscxNhpPooxUKsm+YnhCgZpPfmKXDvqjlKZSjfbxQD3lwchq0bvhtvXX2wQtgff2F/va1EpBegk8GTHySb9a9w+L3uOLzfQi4qwcnwTh9GsMohFI7mb2PinOVHPNQZBMAOlM1PGnSrlha4fO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HyNOwPKj; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="Y4xdoEw2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=vhXDZTLqdu7IJW4noakGN2b7sjwsAcQ4Qd/URI3PMF0=; b=Y4xdoEw2v8+XkV1Fa/apPDbTrF
-	Xp3QYOSSx+BwPdCEGid/lAZHbLaBxvjr9krc5qT4O4TeJkXarZW5yS+eEVdULbw+Xrd7zaw5WKwK7
-	NzEREjQhfpTp8Y/+slqC7qr0zIA+8TNkz5QjZDYJlZRPAY0fSkc4KGMQAW5KDo27eMTk=;
-Received: from 88-117-55-1.adsl.highway.telekom.at ([88.117.55.1] helo=hornet.engleder.at)
-	by mx01lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1tmfnl-000000000wu-3Uix;
-	Mon, 24 Feb 2025 22:15:46 +0100
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	Gerhard Engleder <gerhard@engleder-embedded.com>
-Subject: [PATCH net-next v8 2/8] net: phy: Support speed selection for PHY loopback
-Date: Mon, 24 Feb 2025 22:15:25 +0100
-Message-Id: <20250224211531.115980-3-gerhard@engleder-embedded.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250224211531.115980-1-gerhard@engleder-embedded.com>
-References: <20250224211531.115980-1-gerhard@engleder-embedded.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HyNOwPKj"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-30a317e4c27so42488281fa.2;
+        Mon, 24 Feb 2025 14:08:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740434898; x=1741039698; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4oaFYm3uznORB4542Rq36b3rymmLdKUYeu8YPMsf53M=;
+        b=HyNOwPKjondew7yb1bHN43m8MGuOSI8Ghf+xP+dBnwxFz0+zDzPSJC5fDp/jPeNtk6
+         IVzunnA9M0EpyNE2laj6zOI790wSPUMEnZCBFW/lf1kXMd3ETKGixWXDE+86qR8W3m6u
+         woePfrPkJKvVuw7dJAPPE1tuNPigDr537F19WqV5ZXMcymcWbRv5LKK1d0pcW86djhk0
+         oA6USIYsZXU1CUtIZNOMCvZuHpJqmafGlQQUs5AiQ5E+2E9ejtvvP8liQKykBs8nAzxI
+         f5EVzzhLwJ31Q6Hd4X881uszj4n6WQQ7MpRjrVwKjEO9zxMaiGL+oxL0u1YsnuAbIJ4M
+         MS6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740434898; x=1741039698;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4oaFYm3uznORB4542Rq36b3rymmLdKUYeu8YPMsf53M=;
+        b=W0SeLVJrjNCH5m5WAw48o6q53gamXiHfY4k7n0y3g9YDu4tetRIqBMH65iGhKOdGMc
+         GXOXMD9ewiOSA2grSJtPwQYuB3gY0JESZshkEnPJghVGSaph+55Ja8sRUtstlU2hJjka
+         kTKvPwTv/ZyQrhv5ghk0V4WZtYlzt1lZ1/sQR4SIo9dxO9eO3CXOYz2fh4TMu6/r7TYi
+         fOSPA/FO2tS0PH8/wzW6UorKPf04sQVdOF2YnHad9q/ZWrHEgpidu6+OoTqau4RIMW5O
+         e3wd7TF2PstOabKYWv+yIvbMQx2KbXyQtJ1YWjPFs0N7aHk1IgiyeYuoyvNNDB9N8qxV
+         xPxw==
+X-Forwarded-Encrypted: i=1; AJvYcCUaDZT1OM0jz4w3bTUXhegyrD5SBJuVbYMIxdHt651vJxVxNaQ1T7r6X9KgXd6wXA/T0u0=@vger.kernel.org, AJvYcCUb9xE4fj4k8C9XeX6XqL4gGNs6EI5kO4Z5MAxO38fPx7VzjbrBKnNU78nolxm4b03bA2dWdSFgbVVuJIg=@vger.kernel.org, AJvYcCUuncLO8qzaKriuBy1l/S0XLmyKGWPWJ9g1Hsqvx5O7q7zeFQ1oXcexhVEJ8eYmpGN8c32ZGEhWLB+TwxDy@vger.kernel.org, AJvYcCVDAYLrClcJJuyMXoTjWSwYTo3i3Bky0lcE7lP9Y5/p4incvn7amGIVR1OzIzShyn9XLYY95RJE3cEvbjCU@vger.kernel.org, AJvYcCX58taI/5cDPvgZupGCLoX8dzOkTALjd0d8wqKBzFWeY2FTDSqcM9S1pjpx9+OoTW/tVaO8AMxv@vger.kernel.org, AJvYcCXBpcKvGoTaAhxU0uN9zxE4wLU5IelmcPCFkRZmO0oBxheujqIcxiDe7EUu9d9Z+l48OuKBmozVGtfpGH3f80s=@vger.kernel.org, AJvYcCXFmMri7qdpl8Bu1sbtR/qFg+quJl4Q/e6aSO5eeWlPEXeXJ9pdkpFWrUYSVlvYt7Wwaod14x5K9BkbmNU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzul/j4uceZYbriBnG7SlVH2UoPOuLaKehlHrrbX+9ce92KnyPH
+	HkZo5fFzgdv15inH5n5CY3Q1FEkJHy0dp6FRYDrwixFIoxB/J64Z91AcpUD/B7/5X6XHNm4X9yN
+	aBSWBQ4mY9cRLg8eGesJghLW2PKA=
+X-Gm-Gg: ASbGnct2Ek9S+nOp7XpvmZOQMp3FBLYI49/U4OWKX3S1of8I4QIsQfyX2VsTNluv86Y
+	mhIai0O8Q+BXc1tPSab9W/Uf5IrfrsiOvV287LU6r9AQOGcp+DQQXXNDoyj16n3hgM0hJPQXFVG
+	oWE44dwTY=
+X-Google-Smtp-Source: AGHT+IHVkIuUFpCDrTU0uvA7Fgx58+MbAWd4iAmh/s9u5Z4OX/tBnfLt5fF/OB0IUp1t1TAS/xkQrlAynJ4vLhos6iA=
+X-Received: by 2002:a2e:8713:0:b0:300:1ea5:1655 with SMTP id
+ 38308e7fff4ca-30a80c2525dmr3121091fa.15.1740434897401; Mon, 24 Feb 2025
+ 14:08:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AV-Do-Run: Yes
-X-ACL-Warn: X-W4Y-Internal
+References: <20250223164217.2139331-1-visitorckw@gmail.com>
+ <20250223164217.2139331-4-visitorckw@gmail.com> <d080a2d6-9ec7-1c86-4cf4-536400221f68@gmail.com>
+ <e0b1c299-7f19-4453-a1ce-676068601213@zytor.com>
+In-Reply-To: <e0b1c299-7f19-4453-a1ce-676068601213@zytor.com>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Mon, 24 Feb 2025 23:08:05 +0100
+X-Gm-Features: AWEUYZk0kdMcSa1NJ7f-FEs-56xLQUiW9T9ljXTGABrJPIypOLr5b30gUzs5pw0
+Message-ID: <CAFULd4a_AnP4iqgQs7a6xAsnUFL8oZXxFcAWLmZFMm6MPF_zDQ@mail.gmail.com>
+Subject: Re: [PATCH 03/17] x86: Replace open-coded parity calculation with parity8()
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de, 
+	Ingo Molnar <mingo@redhat.com>, bp@alien8.de, dave.hansen@linux.intel.com, 
+	x86@kernel.org, jk@ozlabs.org, joel@jms.id.au, eajames@linux.ibm.com, 
+	andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
+	airlied@gmail.com, simona@ffwll.ch, dmitry.torokhov@gmail.com, 
+	mchehab@kernel.org, awalls@md.metrocast.net, hverkuil@xs4all.nl, 
+	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com, 
+	louis.peens@corigine.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, pabeni@redhat.com, parthiban.veerasooran@microchip.com, 
+	arend.vanspriel@broadcom.com, johannes@sipsolutions.net, 
+	gregkh@linuxfoundation.org, jirislaby@kernel.org, yury.norov@gmail.com, 
+	akpm@linux-foundation.org, mingo@kernel.org, alistair@popple.id.au, 
+	linux@rasmusvillemoes.dk, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, 
+	jernej.skrabec@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsi@lists.ozlabs.org, dri-devel@lists.freedesktop.org, 
+	linux-input@vger.kernel.org, linux-media@vger.kernel.org, 
+	linux-mtd@lists.infradead.org, oss-drivers@corigine.com, 
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
+	linux-serial@vger.kernel.org, bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw, 
+	Yu-Chun Lin <eleanor15x@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-phy_loopback() leaves it to the PHY driver to select the speed of the
-loopback mode. Thus, the speed of the loopback mode depends on the PHY
-driver in use.
+On Mon, Feb 24, 2025 at 10:56=E2=80=AFPM H. Peter Anvin <hpa@zytor.com> wro=
+te:
+>
+> On 2/24/25 07:24, Uros Bizjak wrote:
+> >
+> >
+> > On 23. 02. 25 17:42, Kuan-Wei Chiu wrote:
+> >> Refactor parity calculations to use the standard parity8() helper. Thi=
+s
+> >> change eliminates redundant implementations and improves code
+> >> efficiency.
+> >
+> > The patch improves parity assembly code in bootflag.o from:
+> >
+> >    58:    89 de                    mov    %ebx,%esi
+> >    5a:    b9 08 00 00 00           mov    $0x8,%ecx
+> >    5f:    31 d2                    xor    %edx,%edx
+> >    61:    89 f0                    mov    %esi,%eax
+> >    63:    89 d7                    mov    %edx,%edi
+> >    65:    40 d0 ee                 shr    %sil
+> >    68:    83 e0 01                 and    $0x1,%eax
+> >    6b:    31 c2                    xor    %eax,%edx
+> >    6d:    83 e9 01                 sub    $0x1,%ecx
+> >    70:    75 ef                    jne    61 <sbf_init+0x51>
+> >    72:    39 c7                    cmp    %eax,%edi
+> >    74:    74 7f                    je     f5 <sbf_init+0xe5>
+> >    76:
+> >
+> > to:
+> >
+> >    54:    89 d8                    mov    %ebx,%eax
+> >    56:    ba 96 69 00 00           mov    $0x6996,%edx
+> >    5b:    c0 e8 04                 shr    $0x4,%al
+> >    5e:    31 d8                    xor    %ebx,%eax
+> >    60:    83 e0 0f                 and    $0xf,%eax
+> >    63:    0f a3 c2                 bt     %eax,%edx
+> >    66:    73 64                    jae    cc <sbf_init+0xbc>
+> >    68:
+> >
+> > which is faster and smaller (-10 bytes) code.
+> >
+>
+> Of course, on x86, parity8() and parity16() can be implemented very simpl=
+y:
+>
+> (Also, the parity functions really ought to return bool, and be flagged
+> __attribute_const__.)
+>
+> static inline __attribute_const__ bool _arch_parity8(u8 val)
+> {
+>         bool parity;
+>         asm("and %0,%0" : "=3D@ccnp" (parity) : "q" (val));
 
-Add support for speed selection to phy_loopback() to enable loopback
-with defined speeds. Ensure that link up is signaled if speed changes
-as speed is not allowed to change during link up. Link down and up is
-necessary for a new speed.
+asm("test %0,%0" : "=3D@ccnp" (parity) : "q" (val));
 
-Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
----
- drivers/net/ethernet/engleder/tsnep_main.c    |  2 +-
- .../net/ethernet/hisilicon/hns/hns_ethtool.c  |  4 +-
- .../hisilicon/hns3/hns3pf/hclge_main.c        |  4 +-
- .../hisilicon/hns3/hns3pf/hclge_mdio.c        |  2 +-
- .../stmicro/stmmac/stmmac_selftests.c         |  8 +-
- drivers/net/phy/phy.c                         | 87 +++++++++++++++++++
- drivers/net/phy/phy_device.c                  | 35 --------
- include/linux/phy.h                           |  2 +-
- net/core/selftests.c                          |  4 +-
- 9 files changed, 100 insertions(+), 48 deletions(-)
+because we are interested only in flags.
 
-diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
-index 18df6a5cbfc6..a16b12137edb 100644
---- a/drivers/net/ethernet/engleder/tsnep_main.c
-+++ b/drivers/net/ethernet/engleder/tsnep_main.c
-@@ -230,7 +230,7 @@ static int tsnep_phy_loopback(struct tsnep_adapter *adapter, bool enable)
- {
- 	int retval;
- 
--	retval = phy_loopback(adapter->phydev, enable);
-+	retval = phy_loopback(adapter->phydev, enable, 0);
- 
- 	/* PHY link state change is not signaled if loopback is enabled, it
- 	 * would delay a working loopback anyway, let's ensure that loopback
-diff --git a/drivers/net/ethernet/hisilicon/hns/hns_ethtool.c b/drivers/net/ethernet/hisilicon/hns/hns_ethtool.c
-index 6c458f037262..60a586a951a0 100644
---- a/drivers/net/ethernet/hisilicon/hns/hns_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hns/hns_ethtool.c
-@@ -266,9 +266,9 @@ static int hns_nic_config_phy_loopback(struct phy_device *phy_dev, u8 en)
- 		if (err)
- 			goto out;
- 
--		err = phy_loopback(phy_dev, true);
-+		err = phy_loopback(phy_dev, true, 0);
- 	} else {
--		err = phy_loopback(phy_dev, false);
-+		err = phy_loopback(phy_dev, false, 0);
- 		if (err)
- 			goto out;
- 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 3f17b3073e50..f8161d6eb152 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -7875,7 +7875,7 @@ static int hclge_enable_phy_loopback(struct hclge_dev *hdev,
- 	if (ret)
- 		return ret;
- 
--	return phy_loopback(phydev, true);
-+	return phy_loopback(phydev, true, 0);
- }
- 
- static int hclge_disable_phy_loopback(struct hclge_dev *hdev,
-@@ -7883,7 +7883,7 @@ static int hclge_disable_phy_loopback(struct hclge_dev *hdev,
- {
- 	int ret;
- 
--	ret = phy_loopback(phydev, false);
-+	ret = phy_loopback(phydev, false, 0);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-index 80079657afeb..9a456ebf9b7c 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-@@ -258,7 +258,7 @@ void hclge_mac_start_phy(struct hclge_dev *hdev)
- 	if (!phydev)
- 		return;
- 
--	phy_loopback(phydev, false);
-+	phy_loopback(phydev, false, 0);
- 
- 	phy_start(phydev);
- }
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-index 3ca1c2a816ff..a01bc394d1ac 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-@@ -382,14 +382,14 @@ static int stmmac_test_phy_loopback(struct stmmac_priv *priv)
- 	if (!priv->dev->phydev)
- 		return -EOPNOTSUPP;
- 
--	ret = phy_loopback(priv->dev->phydev, true);
-+	ret = phy_loopback(priv->dev->phydev, true, 0);
- 	if (ret)
- 		return ret;
- 
- 	attr.dst = priv->dev->dev_addr;
- 	ret = __stmmac_test_loopback(priv, &attr);
- 
--	phy_loopback(priv->dev->phydev, false);
-+	phy_loopback(priv->dev->phydev, false, 0);
- 	return ret;
- }
- 
-@@ -1985,7 +1985,7 @@ void stmmac_selftest_run(struct net_device *dev,
- 		case STMMAC_LOOPBACK_PHY:
- 			ret = -EOPNOTSUPP;
- 			if (dev->phydev)
--				ret = phy_loopback(dev->phydev, true);
-+				ret = phy_loopback(dev->phydev, true, 0);
- 			if (!ret)
- 				break;
- 			fallthrough;
-@@ -2018,7 +2018,7 @@ void stmmac_selftest_run(struct net_device *dev,
- 		case STMMAC_LOOPBACK_PHY:
- 			ret = -EOPNOTSUPP;
- 			if (dev->phydev)
--				ret = phy_loopback(dev->phydev, false);
-+				ret = phy_loopback(dev->phydev, false, 0);
- 			if (!ret)
- 				break;
- 			fallthrough;
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 831b36839627..f1ff5542de1d 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -1722,6 +1722,93 @@ void phy_mac_interrupt(struct phy_device *phydev)
- }
- EXPORT_SYMBOL(phy_mac_interrupt);
- 
-+/**
-+ * phy_loopback - Configure loopback mode of PHY
-+ * @phydev: target phy_device struct
-+ * @enable: enable or disable loopback mode
-+ * @speed: enable loopback mode with speed
-+ *
-+ * Configure loopback mode of PHY and signal link down and link up if speed is
-+ * changing.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int phy_loopback(struct phy_device *phydev, bool enable, int speed)
-+{
-+	bool link_up = false;
-+	int ret = 0;
-+
-+	if (!phydev->drv)
-+		return -EIO;
-+
-+	mutex_lock(&phydev->lock);
-+
-+	if (enable && phydev->loopback_enabled) {
-+		ret = -EBUSY;
-+		goto out;
-+	}
-+
-+	if (!enable && !phydev->loopback_enabled) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	if (enable) {
-+		/*
-+		 * Link up is signaled with a defined speed. If speed changes,
-+		 * then first link down and after that link up needs to be
-+		 * signaled.
-+		 */
-+		if (phydev->link && phydev->state == PHY_RUNNING) {
-+			/* link is up and signaled */
-+			if (speed && phydev->speed != speed) {
-+				/* signal link down and up for new speed */
-+				phydev->link = false;
-+				phydev->state = PHY_NOLINK;
-+				phy_link_down(phydev);
-+
-+				link_up = true;
-+			}
-+		} else {
-+			/* link is not signaled */
-+			if (speed) {
-+				/* signal link up for new speed */
-+				link_up = true;
-+			}
-+		}
-+	}
-+
-+	if (phydev->drv->set_loopback)
-+		ret = phydev->drv->set_loopback(phydev, enable, speed);
-+	else
-+		ret = genphy_loopback(phydev, enable, speed);
-+
-+	if (ret) {
-+		if (enable) {
-+			/* try to restore link if enabling loopback fails */
-+			if (phydev->drv->set_loopback)
-+				phydev->drv->set_loopback(phydev, false, 0);
-+			else
-+				genphy_loopback(phydev, false, 0);
-+		}
-+
-+		goto out;
-+	}
-+
-+	if (link_up) {
-+		phydev->link = true;
-+		phydev->state = PHY_RUNNING;
-+		phy_link_up(phydev);
-+	}
-+
-+	phydev->loopback_enabled = enable;
-+
-+out:
-+	mutex_unlock(&phydev->lock);
-+	return ret;
-+}
-+EXPORT_SYMBOL(phy_loopback);
-+
- /**
-  * phy_eee_tx_clock_stop_capable() - indicate whether the MAC can stop tx clock
-  * @phydev: target phy_device struct
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 6487b19970b4..5130d0f3f4c3 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -2052,41 +2052,6 @@ int phy_resume(struct phy_device *phydev)
- }
- EXPORT_SYMBOL(phy_resume);
- 
--int phy_loopback(struct phy_device *phydev, bool enable)
--{
--	int ret = 0;
--
--	if (!phydev->drv)
--		return -EIO;
--
--	mutex_lock(&phydev->lock);
--
--	if (enable && phydev->loopback_enabled) {
--		ret = -EBUSY;
--		goto out;
--	}
--
--	if (!enable && !phydev->loopback_enabled) {
--		ret = -EINVAL;
--		goto out;
--	}
--
--	if (phydev->drv->set_loopback)
--		ret = phydev->drv->set_loopback(phydev, enable, 0);
--	else
--		ret = genphy_loopback(phydev, enable, 0);
--
--	if (ret)
--		goto out;
--
--	phydev->loopback_enabled = enable;
--
--out:
--	mutex_unlock(&phydev->lock);
--	return ret;
--}
--EXPORT_SYMBOL(phy_loopback);
--
- /**
-  * phy_reset_after_clk_enable - perform a PHY reset if needed
-  * @phydev: target phy_device struct
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 73d81cc9e5e1..dcd96e623e31 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -1870,7 +1870,7 @@ int phy_init_hw(struct phy_device *phydev);
- int phy_suspend(struct phy_device *phydev);
- int phy_resume(struct phy_device *phydev);
- int __phy_resume(struct phy_device *phydev);
--int phy_loopback(struct phy_device *phydev, bool enable);
-+int phy_loopback(struct phy_device *phydev, bool enable, int speed);
- int phy_sfp_connect_phy(void *upstream, struct phy_device *phy);
- void phy_sfp_disconnect_phy(void *upstream, struct phy_device *phy);
- void phy_sfp_attach(void *upstream, struct sfp_bus *bus);
-diff --git a/net/core/selftests.c b/net/core/selftests.c
-index 8f801e6e3b91..e99ae983fca9 100644
---- a/net/core/selftests.c
-+++ b/net/core/selftests.c
-@@ -299,7 +299,7 @@ static int net_test_phy_loopback_enable(struct net_device *ndev)
- 	if (!ndev->phydev)
- 		return -EOPNOTSUPP;
- 
--	return phy_loopback(ndev->phydev, true);
-+	return phy_loopback(ndev->phydev, true, 0);
- }
- 
- static int net_test_phy_loopback_disable(struct net_device *ndev)
-@@ -307,7 +307,7 @@ static int net_test_phy_loopback_disable(struct net_device *ndev)
- 	if (!ndev->phydev)
- 		return -EOPNOTSUPP;
- 
--	return phy_loopback(ndev->phydev, false);
-+	return phy_loopback(ndev->phydev, false, 0);
- }
- 
- static int net_test_phy_loopback_udp(struct net_device *ndev)
--- 
-2.39.5
-
+Uros.
