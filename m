@@ -1,82 +1,213 @@
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91A220550B
-	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 23:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B528520C488
+	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 23:22:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740439234; cv=none; b=emXF8CDB8Se+Ge9/2wHVbZ1CVYatMbGn71rY/U9t4uIeoy9h1sITUyz3oGFA30C45NMVt3HBiCLjvioyNqT5NZC9oc1X7Guu4g5O1jFtjMsJUn4ZSZjo8zdgOL4TtCkg3mEP98PoguqabvuuZxBDHW8d4SX74VpXsd+2U9Af2/U=
+	t=1740439362; cv=none; b=QxAQb9/mBW9Z6kmo/aRPxJ+fEuodCQ8wycZclbxgdECmJ4GqS2kNccCD8pdwObi2jmz5HOvBRTF2ogqGSLbIknVo48ZTcqv3dL4oBKRVbP2RHHhap6T1bVzGNkkuvCKOVXyyigTiK0zCjv4t6OAVY+dhFb5Gy+QITn8OuWjJbxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740439234; c=relaxed/simple;
-	bh=uGUg9O93vy9Ev9YHxD1ZTf3zu1QyYOnOMCtepVXiXAI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ACjHdczV93kE7LwvMADvxYFsVAnJgnBWYS+zjExUez1gHF6Td+T+pEgvMSIEZOXVV6oSpLCEiHlivYhRGP/TDBbz4D6vd8pQyLLftJLReG9b5rLRE5ovtCleFOBJVEYOOKgoMiooidEC56j9okEuylH8NKDRISAZcvXosH2hXjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cPmG9K5U; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1740439362; c=relaxed/simple;
+	bh=6w+UArCyON/1seBfb1skkQg/fUan9OUwJT9DM7ke5Qo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X/FeOjQF25SXUD/9H8S7GfsmJbarf1Xgw1Ewym+h+eVpUst/uuDkZ+uLaZKtLOqVvX9Qn9GBwZgRX+JiP2yqfga9aJXaHTjtcGCakWqqpCLK385L1ehOTetKztLOVqELwZjIh0J3LEy8BkSt16HB7JCgEMBdi5IDGjiPzaw6uZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=idoiG1OZ; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cPmG9K5U"
-Date: Tue, 25 Feb 2025 07:20:08 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740439219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oP6m+hZBnp4KsKQ8t0+lMNt2yjlcdxRzvfcGy4QPDpM=;
-	b=cPmG9K5UMJxjtkuR2qk0Dr4TXTOPwwesMnc33S7MaofFPb2KUWwCSIp7jTAvimriAFQko0
-	GjrW6uij3lDOKmUQ5UfEDS3VFxO4gdmlJdf142KZTgD1IB8V0BFrKunKKz6BXRJ4xv8i+3
-	rssCnKMRVANQsNil1iEleQwTjqQHPBU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
-	ricardo@marliere.net, viro@zeniv.linux.org.uk, dmantipov@yandex.ru, 
-	aleksander.lobakin@intel.com, linux-ppp@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	mrpre@163.com, syzbot+853242d9c9917165d791@syzkaller.appspotmail.com
-Subject: Re: [PATCH net-next v2 1/1] ppp: Fix KMSAN warning by initializing
- 2-byte header
-Message-ID: <fm6hvchejtwpqp55te7rbiwt6y2pmjywikfdpnfv5ao5otxzm3@yxfem4zhdqkp>
-References: <20250221061219.295590-1-jiayuan.chen@linux.dev>
- <20250221061219.295590-2-jiayuan.chen@linux.dev>
- <20250224142644.7c084e9e@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="idoiG1OZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740439361; x=1771975361;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6w+UArCyON/1seBfb1skkQg/fUan9OUwJT9DM7ke5Qo=;
+  b=idoiG1OZwcdr8diuKeOce6JPA/E+uiiZtM8JgioDtk4gu63R4BWDnuEA
+   I0e5EebSwnys0rm9fQOBAykOM9sv/nJ0Eh8GXZj58rnqGlbPo2Gw1TIdq
+   o4mD6hC0MRNoHZaaWWtMml7guiio2gPIIs6r/yoeEJufVYrf9ymeW6d4T
+   cM19bps1txszP49ObZ2bFIugFsnZG+CVvvu2xnQUc7GgCSQM8aOtd5hs8
+   seUu+lzog5MDj9KvPUSEjwJjmUd7EF4rFKZCDtoloYfBqUUdzJuOtBZCp
+   W3+CXPyz+GsWWMowoVJ2CpsXasWEbXyn86RVryxEi5nSI15T0XKe/uFEU
+   g==;
+X-CSE-ConnectionGUID: uMZBjHhLQjSS7RToZEuYmw==
+X-CSE-MsgGUID: c0TwlbHeTFehv6AVsciqzA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="40406596"
+X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; 
+   d="scan'208";a="40406596"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 15:22:40 -0800
+X-CSE-ConnectionGUID: U3J2lRS1QZayrRBspD0s4g==
+X-CSE-MsgGUID: CuyWXZYER6m5X/tbWHtehA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,312,1732608000"; 
+   d="scan'208";a="115997747"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO azaki-desk1.intel.com) ([10.245.244.43])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 15:22:34 -0800
+From: Ahmed Zaki <ahmed.zaki@intel.com>
+To: netdev@vger.kernel.org
+Cc: intel-wired-lan@lists.osuosl.org,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	kuba@kernel.org,
+	horms@kernel.org,
+	pabeni@redhat.com,
+	davem@davemloft.net,
+	michael.chan@broadcom.com,
+	tariqt@nvidia.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	jdamato@fastly.com,
+	shayd@nvidia.com,
+	akpm@linux-foundation.org,
+	shayagr@amazon.com,
+	Ahmed Zaki <ahmed.zaki@intel.com>
+Subject: [PATCH net-next v9 0/6] net: napi: add CPU affinity to napi->config 
+Date: Mon, 24 Feb 2025 16:22:21 -0700
+Message-ID: <20250224232228.990783-1-ahmed.zaki@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250224142644.7c084e9e@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 24, 2025 at 02:26:44PM -0800, Jakub Kicinski wrote:
-> On Fri, 21 Feb 2025 14:12:19 +0800 Jiayuan Chen wrote:
-> > +		/* Check if we should pass this packet.
-> > +		 * BPF filter instructions assume each PPP packet has a 4-byte
-> > +		 * header (e.g., those generated by libpcap), and then default
-> > +		 * to skipping the first 2 bytes at the beginning of the
-> > +		 * instruction. However, we still need to initialize these
-> > +		 * 2-byte new headers to prevent crafted BPF programs from
-> > +		 * reading them which would cause reading of uninitialized
-> > +		 * data. Here, we set the headers according to the RFC 1662.
-> > +		 */
-> > +		*(u16 *)skb_push(skb, 2) = htons(0xff03);
-> 
-> The constant from the RFC deserves a #define or enum.
-> Looks like we may already need it in one other place:
-> 
-> drivers/net/wan/fsl_ucc_hdlc.h:#define DEFAULT_PPP_HEAD    0xff03
-> -- 
-> pw-bot: cr
-Hi Jakub,
+Drivers usually need to re-apply the user-set IRQ affinity to their IRQs
+after reset. However, since there can be only one IRQ affinity notifier
+for each IRQ, registering IRQ notifiers conflicts with the ARFS rmap
+management in the core (which also registers separate IRQ affinity
+notifiers).   
 
-I apologize for the mistake, I've investigated the original maintainer's
-user-space PPP implementation and libpcap's behavior, and found that
-initializing the first byte to 0 or 1 is necessary, it indicates
-direction, which is used in libpcap to distinguish between inbound and
-outbound traffic.
-For more details, please refer to the cover letter of my v3 patch.
+Move the IRQ affinity management to the napi struct. This way we can have
+a unified IRQ notifier to re-apply the user-set affinity and also manage
+the ARFS rmaps.
 
-https://lore.kernel.org/linux-ppp/20250222092556.274267-1-jiayuan.chen@linux.dev/T/#t
+The first patch moves the aRFS rmap management to CORE. It also adds the
+IRQ affinity mask to napi_config and re-applies the mask after reset.
+Patches 2, 4 and 5 use the new API for ena, ice and idpf drivers.
+
+ICE does not always delete the NAPIs before releasing the IRQs. The third
+patch makes sure the driver removes the IRQ number along with the queue
+when the NAPIs are disabled. Without this, the next patches in this series
+would free the IRQ before releasing the IRQ notifier (which generates
+warnings).
+
+Tested on ice and idpf.
+
+V9:
+    - Merge all core changes in the first patch, then followed by drivers
+      changes. (Jakub)
+    - Refactor netif_napi_set_irq_locked() to show differences between
+      irq_affinity_auto only vs rx_cpu_rmap_auto = true. (Jakub)
+    - Move default affinity setting to netif_set_affinity_auto (Jakub).
+    - Add a py selftest for IRQ affinity. (Jakub)
+    - Remove bnxt changes since it recently added TPH (commit c214410c47d6
+      "bnxt_en: Add TPH support in BNXT driver"). This required the driver
+      to have custom IRQ affinity function. For the core to support this,
+      we may need to extend the API in this series to allow drivers to
+      provide their own callbacks when calling netif_napi_set_irq().
+
+V8:
+    - https://lore.kernel.org/netdev/20250211210657.428439-1-ahmed.zaki@intel.com/
+    - Add a new patch in "ice" that releases the IRQs and their notifiers
+      when clearing the NAPI queues (pls read 3rd paragraph above).
+    - Add a new NAPI flag "NAPI_STATE_HAS_NOTIFIER" that simplifies the
+      code for IRQ notifier detection (Patch 2).
+    - Move the IRQ notifier auto-removal to napi_delete() instead of
+      napi_disable(). This is the reason for the new ice patch. (Jakub)
+    - Add a WARN_ON_ONCE(!napi->config) in netif_napi_set_irq_locked().
+      This would detect drivers that asked for irq_affinity_auto but did
+      not use napi_add_config(). (Patch 3) (Joe)
+    - Rename netif_enable_irq_affinity() to netif_set_affinity_auto()
+      (Patch 3) (Jakub).
+V7:
+    - https://lore.kernel.org/netdev/20250204220622.156061-1-ahmed.zaki@intel.com/
+    - P1: add documentation for netif_enable_cpu_rmap()
+    - P1: move a couple of "if (rx_cpu_rmap_auto)" from patch 1 to patch 2
+      where they are really needed.
+    - P1: remove a defensive "if (!rmap)"
+    - p1: In netif_disable_cpu_rmap(), remove the for loop that frees
+          notifiers since this is already done in napi_disable_locked().
+          Also rename it to netif_del_cpu_rmap().
+    - P1 and P2: simplify the if conditions in netif_napi_set_irq_locked()
+    - Other nits
+
+V6:
+    - https://lore.kernel.org/netdev/20250118003335.155379-1-ahmed.zaki@intel.com/
+    - Modifications to have less #ifdef CONFIG_RF_ACCL guards
+    - Remove rmap entry in napi_disable
+    - Rebase on rc7 and use netif_napi_set_irq_locked()
+    - Assume IRQ can be -1 and free resources if an old valid IRQ was
+      associated with the napi. For this, I had to merge the first 2
+      patches to use the new rmap API.
+
+V5:
+    - https://lore.kernel.org/netdev/20250113171042.158123-1-ahmed.zaki@intel.com/
+    - Add kernel doc for new netdev flags (Simon).
+    - Remove defensive (if !napi) check in napi_irq_cpu_rmap_add()
+      (patch 2) since caller is already dereferencing the pointer (Simon).
+    - Fix build error when CONFIG_ARFS_ACCEL is not defined (patch 3).
+
+v4:
+    - https://lore.kernel.org/netdev/20250109233107.17519-1-ahmed.zaki@intel.com/
+    - Better introduction in the cover letter.
+    - Fix Kernel build errors in ena_init_rx_cpu_rmap() (Patch 1)
+    - Fix kernel test robot warnings reported by Dan Carpenter:
+      https://lore.kernel.org/all/202501050625.nY1c97EX-lkp@intel.com/
+    - Remove unrelated empty line in patch 4 (Kalesh Anakkur Purayil)
+    - Fix a memleak (rmap was not freed) by calling cpu_rmap_put() in
+      netif_napi_affinity_release() (patch 2).
+
+v3:
+    - https://lore.kernel.org/netdev/20250104004314.208259-1-ahmed.zaki@intel.com/
+    - Assign one cpu per mask starting from local NUMA node (Shay Drori).
+    - Keep the new ARFS and Affinity flags per nedev (Jakub).
+
+v2:
+    - https://lore.kernel.org/netdev/202412190454.nwvp3hU2-lkp@intel.com/T/
+    - Also move the ARFS IRQ affinity management from drivers to core. Via
+      netif_napi_set_irq(), drivers can ask the core to add the IRQ to the
+      ARFS rmap (already allocated by the driver).
+
+RFC -> v1:
+    - https://lore.kernel.org/netdev/20241210002626.366878-1-ahmed.zaki@intel.com/
+    - move static inline affinity functions to net/dev/core.c
+    - add the new napi->irq_flags (patch 1)
+    - add code changes to bnxt, mlx4 and ice.
+
+Ahmed Zaki (5):
+  net: move aRFS rmap management and CPU affinity to core
+  net: ena: use napi's aRFS rmap notifers
+  ice: clear NAPI's IRQ numbers in ice_vsi_clear_napi_queues()
+  ice: use napi's irq affinity and rmap IRQ notifiers
+  idpf: use napi's irq affinity
+
+Jakub Kicinski (1):
+  selftests: drv-net: add tests for napi IRQ affinity notifiers
+
+ Documentation/networking/scaling.rst          |   6 +-
+ drivers/net/ethernet/amazon/ena/ena_netdev.c  |  43 +----
+ drivers/net/ethernet/intel/ice/ice.h          |   3 -
+ drivers/net/ethernet/intel/ice/ice_arfs.c     |  33 +---
+ drivers/net/ethernet/intel/ice/ice_arfs.h     |   2 -
+ drivers/net/ethernet/intel/ice/ice_base.c     |   7 +-
+ drivers/net/ethernet/intel/ice/ice_lib.c      |  16 +-
+ drivers/net/ethernet/intel/ice/ice_main.c     |  47 +----
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    |   1 +
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  22 +--
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |   6 +-
+ include/linux/cpu_rmap.h                      |   1 +
+ include/linux/netdevice.h                     |  24 ++-
+ lib/cpu_rmap.c                                |   2 +-
+ net/core/dev.c                                | 169 ++++++++++++++++++
+ .../testing/selftests/drivers/net/hw/Makefile |   4 +
+ tools/testing/selftests/drivers/net/hw/irq.py |  99 ++++++++++
+ .../selftests/drivers/net/hw/xdp_dummy.bpf.c  |  13 ++
+ .../selftests/drivers/net/lib/py/env.py       |   8 +-
+ 19 files changed, 343 insertions(+), 163 deletions(-)
+ create mode 100755 tools/testing/selftests/drivers/net/hw/irq.py
+ create mode 100644 tools/testing/selftests/drivers/net/hw/xdp_dummy.bpf.c
+
+-- 
+2.43.0
+
