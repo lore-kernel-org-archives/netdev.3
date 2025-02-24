@@ -1,110 +1,100 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEE423CEF8;
-	Mon, 24 Feb 2025 09:40:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2595B244195
+	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 09:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740390027; cv=none; b=BDDzq6PEd0NhF/5CQkDuD5hhPK5Q1YBrk4oUH2bIo2XivwXwzcyBwRccY2Qr4xiFHyKbEXVORD7Nyw3+9Y8AhNNFwIOkkJ+9OX8mhO2rI26sqfG9n6SFWpF2xP62cNcJqo7Nn2HB2sH/CG1GMH7L4bepwMpi8l17iPZs0CoVWZg=
+	t=1740390055; cv=none; b=XTS2pKvgVA25gN5hpJK+AVjG3aDQyNpauBMQdmysnQZNGoQIwPK7OdIfW5h3KHuYidlVSSTmaJT/vSFe/MfY2TrNeIp2Bs1D9+fCtUksIc1l7JBhl/7Xuj1wf3ZZFmJmd2ZNZ2YTlU+6wv5kwUiJayFtVjklaVM257/L2H8V3Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740390027; c=relaxed/simple;
-	bh=ilXjny4q/Us+KcVpV3D4oZwsNv29nwKsDXaZzHNSPi4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W2khzHeCj0arvq/affW79oFJkMOOYLpyEfZH47u7mz6768x/rOft70HGFge+sMaQOp4WPTLj73SuFkX9VyXY3XTmyusQwmJd6uxJST/263LgR7y+JRSnXTzwtcjIMZlEPK0oGdYSCOcoUWqAyYUC4JxMyr4tK+Zl+5GU99dqeyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gsVlEx5H; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gsVlEx5H"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-220e83d65e5so75348405ad.1;
-        Mon, 24 Feb 2025 01:40:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740390024; x=1740994824; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bevg+LVVnCsvNGhct+JIEKUyr6Ml9IDUZSl7fki44E8=;
-        b=gsVlEx5HAMX9irJOPUUvm4yIKrpcM8NGNgqZRCjZ58bCvKn9Sy8cLKDo2zNXP37F4D
-         LoD0muVP44HqnowqDT+bLDbbjNIdPUIFbR5nFf9crqZYlG/Fb1WzTf61GhZpw2CMPp7w
-         6OMkASWX67LUvXOi6mTKxd73NDJACROMJ+V0dWEjwongg9ar+UxipGh+W5N30P+QgNy/
-         Dmy2RROvMXyoTzrKvo33bWK7t3F/O2p1F7VZOrn3S81XTwPniHmmxHH8hYxtGtpjWzYo
-         icQFrcsNrQ4LJRe9si/Gna4tCGsear9nf30KsX+ceLODPlip5SZKiOAJp0js2zQZYUoe
-         snBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740390024; x=1740994824;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bevg+LVVnCsvNGhct+JIEKUyr6Ml9IDUZSl7fki44E8=;
-        b=HIMyF9Xpr/w1BUxcSITlHyl0fHtddsEDDzWV1r+qw2mY7SH8SXKLuIHqe0HAePiDKF
-         UI64OeArn8ZbOVRYAcYFhqj5KbUW34vLF+PW3I1rwoHfHF6axhkVzZeR7yF7g+8Yjd26
-         38DHkd0wjtaCvNma9k8hkvOlwIULwW0nNt+pN5O8rfoNcRscPc81vDIDTaRtkVLw5RgQ
-         CUZa7M7wJPU+cHcyCM8dxlzBa6ufneBrt5tqmnqIWuUALhmmQVL03GznPDMRMoD+8yMV
-         xpQ0Diig1t+BadGN2s+/gvcvqMQNVTlsXU//Ek9WFQGnATwy1omDOh+/lY7o/58KiL4X
-         0kfw==
-X-Forwarded-Encrypted: i=1; AJvYcCUstS2ThEf9KssIcMHI8zLlOpf6KXpmi1jCdUD+LofeZibfWYZMVrWtQC/l7o7aZrK0q4OJv9utwA1b8/g=@vger.kernel.org, AJvYcCXrm8amlij6id1uwUwqIWDBU2UW5yD6sJdi3MeOLIdOjbmGfKkKvULwqUHMA9CjtaPsTBHPA6WlJo+RSDoKzKPj@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/7mqINpX4VG0UiMbkDjNIxFzG0nNbKbK9Bz5N3O3xBEGMxEOm
-	ajod6piEa1dmUeOQyN1orhvOGFgnJilT+ZLSAG4skCl6g9sJtfKh6Dfv6gIa0qCEKg==
-X-Gm-Gg: ASbGncvaI0Gw/qSqS9hioS5ZGS9Qjb4tD3J1IpR0mG5uw8TxUsb9yp5Zi8nqkCpNtVT
-	mryBXQ8Vjy6kmZ1tS8uguOH/4G0BVQvBIGA9guW3urYFIIhd5SDrQb3kTSQGnP5ip1P8fZUYFM6
-	Nzo5G7NFxJlCl8WuXzTOJIiBZhYEKsI5+cL+n2gbKGBQjbJkUUNWnvpTZv6ianBZxtDQq4OO9ol
-	jJSmPNf8VBv/Ff+3W5STovFElY93BCifnSUaelLb/AfUPYOIYwXiZ5PfyJuuLSpIAKzAphWhYgH
-	oQXbOH7RajZCs1IrTYDkl/hnhdAd8pF+HP5Pc/kJ3eDd6g==
-X-Google-Smtp-Source: AGHT+IGrYjhnd1mtJatruaBZmgzR0U8jgZlGpbLb6oKcHDPmebw2maz/URmQwGWhntaF6zbsrDic9w==
-X-Received: by 2002:a17:902:e88d:b0:220:f91a:4650 with SMTP id d9443c01a7336-2219ff55febmr182062595ad.19.1740390024315;
-        Mon, 24 Feb 2025 01:40:24 -0800 (PST)
-Received: from fedora.dns.podman ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d545d453sm173056105ad.115.2025.02.24.01.40.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 01:40:22 -0800 (PST)
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Davide Caratti <dcaratti@redhat.com>
-Subject: [PATCH net-next] selftests/net: ensure mptcp is enabled in netns
-Date: Mon, 24 Feb 2025 09:40:13 +0000
-Message-ID: <20250224094013.13159-1-liuhangbin@gmail.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1740390055; c=relaxed/simple;
+	bh=77EzYoZUF43HBB8Dl3uLZFOSIXC97HG5NNlM1an3LAE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=eOsuFqIH3nHD9kYUPvy/kzrMXqsMt6Gm1aP02jTvOVMeHpyVz0OzpVK1N2G6ReicfSC+rLW/BanBoD5lwgu34F3GvxDosrvwxX/NuGDkT4utqUWUj6SGUzn4cTOweSBnkNU+9omNZfmomSo21p7AAeHB3XwKobTMBINuAyP5oSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
+Received: from omf18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E501508AE;
+	Mon, 24 Feb 2025 09:34:41 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf18.hostedemail.com (Postfix) with ESMTPA id 2B4DF2F;
+	Mon, 24 Feb 2025 09:34:37 +0000 (UTC)
+Message-ID: <26d2832ce7aba1c919e8dcb4aeb8fa2abacedb01.camel@perches.com>
+Subject: Re: [PATCH net-next 0/2] net: stmmac: thead: clean up clock rate
+ setting
+From: Joe Perches <joe@perches.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Jakub Kicinski	 <kuba@kernel.org>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Andrew Lunn	 <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Drew Fustini	 <drew@pdp7.com>,
+ Eric Dumazet <edumazet@google.com>, Fu Wei <wefu@redhat.com>,  Guo Ren
+ <guoren@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org, Paolo
+ Abeni <pabeni@redhat.com>
+Date: Mon, 24 Feb 2025 01:34:36 -0800
+In-Reply-To: <Z7w3QhcYhrzQk_5K@shell.armlinux.org.uk>
+References: <Z7iKdaCp4hLWWgJ2@shell.armlinux.org.uk>
+	 <Z7sJHuiqbr4GU05c@shell.armlinux.org.uk>
+	 <7bf9577f4b6dcb818785be73c175bcd19b3b4f0c.camel@perches.com>
+	 <Z7w3QhcYhrzQk_5K@shell.armlinux.org.uk>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2B4DF2F
+X-Rspamd-Server: rspamout07
+X-Stat-Signature: dzm4ebumxtwbyyqoo1qbgsybk7dqegac
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX19mBx6pJ7hyud4Lf2EQyjPbmTA3e2vOugg=
+X-HE-Tag: 1740389677-133558
+X-HE-Meta: U2FsdGVkX1+5N1cDj+qw+umh28c+txKOgSUaaH0dqayci6ieB+Ae13yavbq9POxom5oeQHC4HdNuhPPmPXsSLd6Kpm9LqlFkdNzx1GkHImNhRB13sgX3E9525FyqznfvneP4+hF++evJu6CNqffpmVg1w5vIQJ+eSmDnBRBIPwqGHQV6wa9+r8Hijv8uD4Dfo1v9G5WQdMJJm96RAmQlvhjafuvnyZ1wBKpVJ4TTz8WQv82S2MqdXywz7IMMkS6J6OyG/v4gKkMIIPJ5J5Bnzf00AFODjrS82yb8FceibNoD+TOsaVTYKq/b47q0Xaxbrvvw8gvOLc/eYvRxvrTBydl20Rd4LDryFoqCticI/znHw9PE2ecmGNR9vjhgtjLr
 
-Some distributions may not enable MPTCP by default. All other MPTCP tests
-source mptcp_lib.sh to ensure MPTCP is enabled before testing. However,
-the ip_local_port_range test is the only one that does not include this
-step.
+On Mon, 2025-02-24 at 09:09 +0000, Russell King (Oracle) wrote:
+> On Sun, Feb 23, 2025 at 06:33:44AM -0800, Joe Perches wrote:
+> > On Sun, 2025-02-23 at 11:40 +0000, Russell King (Oracle) wrote:
+> > > Adding Joe Perches.
+> > >=20
+> > > On Fri, Feb 21, 2025 at 02:15:17PM +0000, Russell King (Oracle) wrote=
+:
+> > []
+> > > I've been investigating why the NIPA bot complains about maintainers
+> > > not being Cc'd, such as for patch 1 of this series:
+> > >=20
+> > > https://netdev.bots.linux.dev/static/nipa/936447/13985595/cc_maintain=
+ers/stdout
+> >=20
+> > Additional maintainers added or missing?
+>=20
+> Let me be clear - NIPA is not something under my control. It is a bot
+> run by Jakub on netdev patches that are received by patchwork - so
+> patches that have been emailed out, and thus contain at least the
+> To:, Cc: and Subject: header lines, possibly all header lines that
+> have been added such as Received: etc. I don't know what it actually
+> does.
+>=20
+> Now let me restate the problem, because the answer to your question
+> is in the problem description. Here's the short version:
+>=20
+> 	K: entries match email headers.
+>=20
+> Here's the long version:
+>=20
+> If one runs get_maintainers.pl on a patch produced from git, it
+> comes out with a list of maintainers. In the case of dwmac-thead.c,
+> this includes an email address that contains "riscv".
 
-Let's also ensure MPTCP is enabled in netns for ip_local_port_range so
-that it passes on all distributions.
+Yeah, I got all that from your first cc, thanks.
 
-Suggested-by: Davide Caratti <dcaratti@redhat.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
----
- tools/testing/selftests/net/ip_local_port_range.sh | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Which is why I suggested that the nipa bot use
+get_maintainer.pl's --nokeywords option somewhere.
 
-diff --git a/tools/testing/selftests/net/ip_local_port_range.sh b/tools/testing/selftests/net/ip_local_port_range.sh
-index 6c6ad346eaa0..4ff746db1256 100755
---- a/tools/testing/selftests/net/ip_local_port_range.sh
-+++ b/tools/testing/selftests/net/ip_local_port_range.sh
-@@ -2,4 +2,6 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- ./in_netns.sh \
--  sh -c 'sysctl -q -w net.ipv4.ip_local_port_range="40000 49999" && ./ip_local_port_range'
-+  sh -c 'sysctl -q -w net.mptcp.enabled=1 && \
-+         sysctl -q -w net.ipv4.ip_local_port_range="40000 49999" && \
-+         ./ip_local_port_range'
--- 
-2.46.0
+I don't use/control/read/write/care_about the nipa bot either.
 
+cheers, Joe
