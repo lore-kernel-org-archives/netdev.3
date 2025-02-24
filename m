@@ -1,297 +1,123 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06290260A5E
-	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 17:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E023263C72;
+	Mon, 24 Feb 2025 17:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740417188; cv=none; b=h1KffSU1oBsW+ISwn/7jcUd4uqY1P4JnXj3wECwVwlxGFFARjDsSJVVMeaTUq5MPDYn3ldMbXiXt3lEwMCVgESjtgw3Y5Yx5OxdQdP7+yRd1VKQOFV9VZXxTtCSlwW7VIq2M3dgF4uxpNfUKbV5soLANAfXuRxRub1bwc2LAJiQ=
+	t=1740417249; cv=none; b=ogegyzvW3epTI1MjnEJ5EZdsJdloN9smFdeuSqNjAzymRLAXi/ogPJH9kW1/J5RMAFfmLjz6I7z8Lb3Iw+zMtJzDu/LVuajM/omIZDTJiU6s/uKrN4+Af334O4q6ABOienvlJY/S5GQMDBsV3Ir8gPtK3JOd8+WHs8oiNmuY+TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740417188; c=relaxed/simple;
-	bh=gPTfwriVQjSGeFtBMlTIYFvUySMeG5zETRqC4lnfHrI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gEOnpywe5S32V9+vu69nrTLxEZAhMGrjzXw8yjYLTOYLOrZ18P7AkwSOu01pTB37v63EMdF1J+8RDopoWlZsiiaWn0ZiNicdYk/PtBe3dVImWrml0LCZBP6IXMkqHt4WDNm/o6BjT6UqmD8v6GLoTZxtabS5MbPj8K0vObZTOGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=breakpoint.cc; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=breakpoint.cc
-Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
-	(envelope-from <fw@breakpoint.cc>)
-	id 1tmc0s-00040l-Cv; Mon, 24 Feb 2025 18:13:02 +0100
-From: Florian Westphal <fw@strlen.de>
-To: <netdev@vger.kernel.org>
-Cc: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	Florian Westphal <fw@strlen.de>
-Subject: [PATCH ipsec-next] xfrm: remove hash table alloc/free helpers
-Date: Mon, 24 Feb 2025 18:10:50 +0100
-Message-ID: <20250224171055.15951-1-fw@strlen.de>
-X-Mailer: git-send-email 2.45.3
+	s=arc-20240116; t=1740417249; c=relaxed/simple;
+	bh=vgv2L1XM0VItTqS2y29EnL1yRFDsRL1SRD8nHEhksHA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cE7CyV/VdgJKYNe2vQOK76wMuTUNgVT4uMeqtY+BpHJpYrpDyPlnlcZ+7DkYUn8t5786RIxTwUKGCvYGf498nRLTRFwf8iB2D63IMlzerVlqdeQn3YIVAGIIgc2mGMj7D/uNB5Cgnp8Ar2AnDrnjz6Z4D9R5m6Bz8wLKpxxxtV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X40eBgM0; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X40eBgM0"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-220d28c215eso72104285ad.1;
+        Mon, 24 Feb 2025 09:14:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740417247; x=1741022047; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NzHQZGUN2fiNxujdzGVV5v8tk/eLdGbSbAneE7HkW1s=;
+        b=X40eBgM0HJym2XKcjN6EVJ+k9B6/+B8wTt/GUvNjIXAEog85nm5460s8PLFw358sYd
+         bAD1ZmSWmfEP/puQW0O1G7aW4Oc3nQqX3YAmYa2kQp65G0D6wIjYnM8wMnjaJbShVq1Q
+         TeYHbMWKXUXQ6jR/beNTuQA0OGjyBM3sqd1oAF3jlwDysOdx23rP030Ypi5wilLW4Qks
+         EAFqPusPGrULnHe6SF4/7HnjIvQo/VIeBk8d7HTFskA4xGbctBb/ZLLtb2r82izr/Y4W
+         3Mi28JRdV06iPVJI1yLjDlzQWczwBuwhDVBsAF3jTGmRAW/8LAstMJN82u47DEXWXYPY
+         S3Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740417247; x=1741022047;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NzHQZGUN2fiNxujdzGVV5v8tk/eLdGbSbAneE7HkW1s=;
+        b=WExzHYPDYyLecp75qbE2d7yqfnmR+xRN3dotpqvXzNArNPHDpESMFkS9wb6x4dzJX5
+         AGeprPSchTcX54LgoN7B/M6EBM/PiiZvHAn1lWfIEKFXT6G+rmpJWASJUJIz/Q7gDT5D
+         UmzmWD8vFJaMpNkaZ/AJ5hUOKQGUNVyZUZZqMTuziH/OgDTvbF+77HIb6o0dBarRfexK
+         Cp60TtK7Yv26lnjX2Xp0TWugicAwUy3U2OoFNsLGMSSnLdsq0KMjgOixpUEAvsxT0dki
+         xd4tb+eJ7x3HBh5n+EGML2bmOmnHETTibFghWVDGyqXoXpI7VV3vwOCx6EccySX9dLCX
+         j5Ag==
+X-Forwarded-Encrypted: i=1; AJvYcCUyJncXL2m1+nbq57Y7OC/uXu7yzzGeviYU/fcOACTXd8XeBaQ+67Eku57N/1UwP0KrQdszyfANZXwOIIW0P4bX@vger.kernel.org, AJvYcCVyook9Gw7TAe0PW4bKUnzbh2UOWcK7u+MSklcxEGP8k+8ONfwFwlN54WChlm9rG/QtLIc=@vger.kernel.org, AJvYcCXm6j9CIcDnX7RIgZOndiaKcGnsy23+xObSWcHmhdHFmxIqfoCrULD5bLuTiEuu02EjSHBCxo9yDpgk1Qlp@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJ4nNNPEOTIxrmE7DBWlA13fx8RieuBVwEPjZYXYRh9CD38ILs
+	WWvPkJuhGSNbTvZaZEWkBaN8MiM7msaKak/HF2CsjsXeQ3RcQq4=
+X-Gm-Gg: ASbGnctyZrYyzuLn4NmD2n8GmhQkA6obtaBI5k/oLgLGb63WcGsEgdh1R5Qj7fMwjKy
+	X9lHXoc9lxiYecpt1m6Hp6kU8sA1Wo/v7RdLh583lPe45aLyAmQ20VIdIYl8YU4w8Hjvnz7VULB
+	EvZOkMTU9nGb5w0RFSkJZ40ZfE7dXBGnZsMpq3sCfjnBMSI/KGDz4CIqwa2gCRyUQnSr/9lxhID
+	UNcFtM9A+SvwdDVw2cOzB2w7hLIBSoISj6antzER51afE0F7KvDV7qR0hVyNr44/OzQw7dW+NdE
+	hM9HKYyf5dPImmtW+MeeR/V7xg==
+X-Google-Smtp-Source: AGHT+IGdVW9Fy1iMbTYlSp8BZQCLFel4XTMelcidD8YM5VWNEbAMfbnpTrSJwlcjAULZeJNJTuiTeQ==
+X-Received: by 2002:a05:6a00:228c:b0:730:8ad5:90c1 with SMTP id d2e1a72fcca58-73479101286mr6595b3a.14.1740417246712;
+        Mon, 24 Feb 2025 09:14:06 -0800 (PST)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73242568146sm20955384b3a.47.2025.02.24.09.14.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2025 09:14:06 -0800 (PST)
+Date: Mon, 24 Feb 2025 09:14:05 -0800
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, andrii@kernel.org,
+	eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+	daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+	yonghong.song@linux.dev, john.fastabend@gmail.com,
+	kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com,
+	jolsa@kernel.org, shuah@kernel.org, hawk@kernel.org
+Subject: Re: [PATCH bpf-next v3 5/6] selftests/bpf: add test for XDP metadata
+ support in tun driver
+Message-ID: <Z7yo3VfHofK-W7EY@mini-arch>
+References: <20250224152909.3911544-1-marcus.wichelmann@hetzner-cloud.de>
+ <20250224152909.3911544-6-marcus.wichelmann@hetzner-cloud.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250224152909.3911544-6-marcus.wichelmann@hetzner-cloud.de>
 
-These functions predate kvmalloc, update xfrm to use that instead.
-This also allows to drop the 'size' argument passed to xfrm_hash_free().
+On 02/24, Marcus Wichelmann wrote:
+> Add a selftest that creates a tap device, attaches XDP and TC programs,
+> writes a packet with a test payload into the tap device and checks the
+> test result. This test ensures that the XDP metadata support in the tun
+> driver is enabled and that the metadata size is correctly passed to the
+> skb.
+> 
+> See the previous commit ("selftests/bpf: refactor xdp_context_functional
+> test and bpf program") for details about the test design.
+> 
+> Signed-off-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
+> ---
+>  .../bpf/prog_tests/xdp_context_test_run.c     | 64 +++++++++++++++++++
+>  1 file changed, 64 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
+> index 4043f220d7c0..60aad6bd8882 100644
+> --- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
+> +++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
+> @@ -8,6 +8,7 @@
+>  #define TX_NAME "veth1"
+>  #define TX_NETNS "xdp_context_tx"
+>  #define RX_NETNS "xdp_context_rx"
+> +#define TAP_NAME "tap0"
+>  
+>  #define TEST_PAYLOAD_LEN 32
+>  static const __u8 test_payload[TEST_PAYLOAD_LEN] = {
+> @@ -251,3 +252,66 @@ void test_xdp_context_veth(void)
+>  	netns_free(tx_ns);
+>  }
+>  
+> +void test_xdp_context_tuntap(void)
 
-xfrm_hash_free() is kept around because of 'struct hlist_head *' arg type
-instead of 'void *'.
-
-Signed-off-by: Florian Westphal <fw@strlen.de>
----
- net/xfrm/Makefile      |  2 +-
- net/xfrm/xfrm_hash.c   | 40 ---------------------------------------
- net/xfrm/xfrm_hash.h   | 10 ++++++++--
- net/xfrm/xfrm_policy.c | 15 ++++++---------
- net/xfrm/xfrm_state.c  | 43 +++++++++++++++++++-----------------------
- 5 files changed, 34 insertions(+), 76 deletions(-)
- delete mode 100644 net/xfrm/xfrm_hash.c
-
-diff --git a/net/xfrm/Makefile b/net/xfrm/Makefile
-index 5a1787587cb3..38a710684848 100644
---- a/net/xfrm/Makefile
-+++ b/net/xfrm/Makefile
-@@ -11,7 +11,7 @@ else ifeq ($(CONFIG_XFRM_INTERFACE),y)
- xfrm_interface-$(CONFIG_DEBUG_INFO_BTF) += xfrm_interface_bpf.o
- endif
- 
--obj-$(CONFIG_XFRM) := xfrm_policy.o xfrm_state.o xfrm_hash.o \
-+obj-$(CONFIG_XFRM) := xfrm_policy.o xfrm_state.o \
- 		      xfrm_input.o xfrm_output.o \
- 		      xfrm_sysctl.o xfrm_replay.o xfrm_device.o \
- 		      xfrm_nat_keepalive.o
-diff --git a/net/xfrm/xfrm_hash.c b/net/xfrm/xfrm_hash.c
-deleted file mode 100644
-index eca8d84d99bf..000000000000
---- a/net/xfrm/xfrm_hash.c
-+++ /dev/null
-@@ -1,40 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/* xfrm_hash.c: Common hash table code.
-- *
-- * Copyright (C) 2006 David S. Miller (davem@davemloft.net)
-- */
--
--#include <linux/kernel.h>
--#include <linux/mm.h>
--#include <linux/memblock.h>
--#include <linux/vmalloc.h>
--#include <linux/slab.h>
--#include <linux/xfrm.h>
--
--#include "xfrm_hash.h"
--
--struct hlist_head *xfrm_hash_alloc(unsigned int sz)
--{
--	struct hlist_head *n;
--
--	if (sz <= PAGE_SIZE)
--		n = kzalloc(sz, GFP_KERNEL);
--	else if (hashdist)
--		n = vzalloc(sz);
--	else
--		n = (struct hlist_head *)
--			__get_free_pages(GFP_KERNEL | __GFP_NOWARN | __GFP_ZERO,
--					 get_order(sz));
--
--	return n;
--}
--
--void xfrm_hash_free(struct hlist_head *n, unsigned int sz)
--{
--	if (sz <= PAGE_SIZE)
--		kfree(n);
--	else if (hashdist)
--		vfree(n);
--	else
--		free_pages((unsigned long)n, get_order(sz));
--}
-diff --git a/net/xfrm/xfrm_hash.h b/net/xfrm/xfrm_hash.h
-index d12bb906c9c9..0a91b4d84fda 100644
---- a/net/xfrm/xfrm_hash.h
-+++ b/net/xfrm/xfrm_hash.h
-@@ -193,7 +193,13 @@ static inline unsigned int __addr_hash(const xfrm_address_t *daddr,
- 	return h & hmask;
- }
- 
--struct hlist_head *xfrm_hash_alloc(unsigned int sz);
--void xfrm_hash_free(struct hlist_head *n, unsigned int sz);
-+static inline struct hlist_head *xfrm_hash_alloc(unsigned int sz)
-+{
-+	return kvzalloc(sz, GFP_KERNEL);
-+}
- 
-+static inline void xfrm_hash_free(struct hlist_head *n)
-+{
-+	kvfree(n);
-+}
- #endif /* _XFRM_HASH_H */
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 6551e588fe52..e75be29865ff 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -655,7 +655,7 @@ static void xfrm_bydst_resize(struct net *net, int dir)
- 
- 	synchronize_rcu();
- 
--	xfrm_hash_free(odst, (hmask + 1) * sizeof(struct hlist_head));
-+	xfrm_hash_free(odst);
- }
- 
- static void xfrm_byidx_resize(struct net *net)
-@@ -680,7 +680,7 @@ static void xfrm_byidx_resize(struct net *net)
- 
- 	spin_unlock_bh(&net->xfrm.xfrm_policy_lock);
- 
--	xfrm_hash_free(oidx, (hmask + 1) * sizeof(struct hlist_head));
-+	xfrm_hash_free(oidx);
- }
- 
- static inline int xfrm_bydst_should_resize(struct net *net, int dir, int *total)
-@@ -4253,9 +4253,9 @@ static int __net_init xfrm_policy_init(struct net *net)
- 		struct xfrm_policy_hash *htab;
- 
- 		htab = &net->xfrm.policy_bydst[dir];
--		xfrm_hash_free(htab->table, sz);
-+		xfrm_hash_free(htab->table);
- 	}
--	xfrm_hash_free(net->xfrm.policy_byidx, sz);
-+	xfrm_hash_free(net->xfrm.policy_byidx);
- out_byidx:
- 	return -ENOMEM;
- }
-@@ -4263,7 +4263,6 @@ static int __net_init xfrm_policy_init(struct net *net)
- static void xfrm_policy_fini(struct net *net)
- {
- 	struct xfrm_pol_inexact_bin *b, *t;
--	unsigned int sz;
- 	int dir;
- 
- 	flush_work(&net->xfrm.policy_hash_work);
-@@ -4278,14 +4277,12 @@ static void xfrm_policy_fini(struct net *net)
- 		struct xfrm_policy_hash *htab;
- 
- 		htab = &net->xfrm.policy_bydst[dir];
--		sz = (htab->hmask + 1) * sizeof(struct hlist_head);
- 		WARN_ON(!hlist_empty(htab->table));
--		xfrm_hash_free(htab->table, sz);
-+		xfrm_hash_free(htab->table);
- 	}
- 
--	sz = (net->xfrm.policy_idx_hmask + 1) * sizeof(struct hlist_head);
- 	WARN_ON(!hlist_empty(net->xfrm.policy_byidx));
--	xfrm_hash_free(net->xfrm.policy_byidx, sz);
-+	xfrm_hash_free(net->xfrm.policy_byidx);
- 
- 	spin_lock_bh(&net->xfrm.xfrm_policy_lock);
- 	list_for_each_entry_safe(b, t, &net->xfrm.inexact_bins, inexact_bins)
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index ad2202fa82f3..5efe7af68f1a 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -162,8 +162,8 @@ static void xfrm_hash_resize(struct work_struct *work)
- {
- 	struct net *net = container_of(work, struct net, xfrm.state_hash_work);
- 	struct hlist_head *ndst, *nsrc, *nspi, *nseq, *odst, *osrc, *ospi, *oseq;
--	unsigned long nsize, osize;
- 	unsigned int nhashmask, ohashmask;
-+	unsigned long nsize;
- 	int i;
- 
- 	nsize = xfrm_hash_new_size(net->xfrm.state_hmask);
-@@ -172,20 +172,20 @@ static void xfrm_hash_resize(struct work_struct *work)
- 		return;
- 	nsrc = xfrm_hash_alloc(nsize);
- 	if (!nsrc) {
--		xfrm_hash_free(ndst, nsize);
-+		xfrm_hash_free(ndst);
- 		return;
- 	}
- 	nspi = xfrm_hash_alloc(nsize);
- 	if (!nspi) {
--		xfrm_hash_free(ndst, nsize);
--		xfrm_hash_free(nsrc, nsize);
-+		xfrm_hash_free(ndst);
-+		xfrm_hash_free(nsrc);
- 		return;
- 	}
- 	nseq = xfrm_hash_alloc(nsize);
- 	if (!nseq) {
--		xfrm_hash_free(ndst, nsize);
--		xfrm_hash_free(nsrc, nsize);
--		xfrm_hash_free(nspi, nsize);
-+		xfrm_hash_free(ndst);
-+		xfrm_hash_free(nsrc);
-+		xfrm_hash_free(nspi);
- 		return;
- 	}
- 
-@@ -211,14 +211,12 @@ static void xfrm_hash_resize(struct work_struct *work)
- 	write_seqcount_end(&net->xfrm.xfrm_state_hash_generation);
- 	spin_unlock_bh(&net->xfrm.xfrm_state_lock);
- 
--	osize = (ohashmask + 1) * sizeof(struct hlist_head);
--
- 	synchronize_rcu();
- 
--	xfrm_hash_free(odst, osize);
--	xfrm_hash_free(osrc, osize);
--	xfrm_hash_free(ospi, osize);
--	xfrm_hash_free(oseq, osize);
-+	xfrm_hash_free(odst);
-+	xfrm_hash_free(osrc);
-+	xfrm_hash_free(ospi);
-+	xfrm_hash_free(oseq);
- }
- 
- static DEFINE_SPINLOCK(xfrm_state_afinfo_lock);
-@@ -3277,36 +3275,33 @@ int __net_init xfrm_state_init(struct net *net)
- 	return 0;
- 
- out_state_cache_input:
--	xfrm_hash_free(net->xfrm.state_byseq, sz);
-+	xfrm_hash_free(net->xfrm.state_byseq);
- out_byseq:
--	xfrm_hash_free(net->xfrm.state_byspi, sz);
-+	xfrm_hash_free(net->xfrm.state_byspi);
- out_byspi:
--	xfrm_hash_free(net->xfrm.state_bysrc, sz);
-+	xfrm_hash_free(net->xfrm.state_bysrc);
- out_bysrc:
--	xfrm_hash_free(net->xfrm.state_bydst, sz);
-+	xfrm_hash_free(net->xfrm.state_bydst);
- out_bydst:
- 	return -ENOMEM;
- }
- 
- void xfrm_state_fini(struct net *net)
- {
--	unsigned int sz;
--
- 	flush_work(&net->xfrm.state_hash_work);
- 	flush_work(&xfrm_state_gc_work);
- 	xfrm_state_flush(net, 0, false, true);
- 
- 	WARN_ON(!list_empty(&net->xfrm.state_all));
- 
--	sz = (net->xfrm.state_hmask + 1) * sizeof(struct hlist_head);
- 	WARN_ON(!hlist_empty(net->xfrm.state_byseq));
--	xfrm_hash_free(net->xfrm.state_byseq, sz);
-+	xfrm_hash_free(net->xfrm.state_byseq);
- 	WARN_ON(!hlist_empty(net->xfrm.state_byspi));
--	xfrm_hash_free(net->xfrm.state_byspi, sz);
-+	xfrm_hash_free(net->xfrm.state_byspi);
- 	WARN_ON(!hlist_empty(net->xfrm.state_bysrc));
--	xfrm_hash_free(net->xfrm.state_bysrc, sz);
-+	xfrm_hash_free(net->xfrm.state_bysrc);
- 	WARN_ON(!hlist_empty(net->xfrm.state_bydst));
--	xfrm_hash_free(net->xfrm.state_bydst, sz);
-+	xfrm_hash_free(net->xfrm.state_bydst);
- 	free_percpu(net->xfrm.state_cache_input);
- }
- 
--- 
-2.45.3
-
+tap0 is already used by lwt tests, so there is a chance this new test
+will clash with it? Should we run your new test in a net namespace
+to be safe? Bastien recently added a change where you can make
+your test run in a net ns by naming the function test_ns_xxx.
