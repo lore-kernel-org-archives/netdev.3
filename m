@@ -1,357 +1,190 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2063.outbound.protection.outlook.com [40.107.247.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2016325C702;
-	Mon, 24 Feb 2025 11:26:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740396388; cv=none; b=ZZwQrQ0BJugwmp8y048E6HCKJsm8nKLTeE8taC+2J2Iiqmpn3D5yM024ugVmQNdO40AAi0dFDE5YLCHHBL2qpMfocMnTTOwKSCEwX7w5lu0mTIj4zJ9iEhOKNkmSPm9lYWb1+FNFAsiT7jSFuTVEacD+B/t6xE54z73ETaxhaf4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740396388; c=relaxed/simple;
-	bh=9Ovgg2hK7O67kf313UGjPJJvkXdwSOKC5ryQAmMCvdc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qwSjDKAASMP3H2GLdpWB1EMkJ/n9MBFNSlQLiyIte2Ph3S1ZV8Bl31uxOQkB9aRP4hiL+dRe0Y5c47P6MfkQ5T7BY/8GrqVPZJwRivYgwGqyIO5Gc7FQCLrAnR5S/4t4hxIcRj6BPsR4kmov7vPbO43rqrETHW5UtBzS9LB7ri0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VxxYCgAI; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E820825D543;
+	Mon, 24 Feb 2025 11:29:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740396598; cv=fail; b=fH43HTjyohPD1olF0a90+9xyls0RUq/5FXHXYd8kEwDNp7tzeluUi3g+t85/zD5ob0NeaXFiLEayu8W9Vl6aKevloUgOd2x0jtL6HGv0ej0UWa8t55Wqp+d5uO/XVYacTVRvK7p69C1mLhgfKgsfzHIG17qf6RwluAynJkpmlCQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740396598; c=relaxed/simple;
+	bh=4Oc9XOSATfJsapvDRUvROEn1kBs8X7lQebHwanmUA8Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=RIIaffhjxXCBckmxALIiTCCyC77Xi7cU7FpYKihFLZwGtVDLx0/SeScWClbWG9BLy6OudEvFLMpPZ4/7MzhFPSMuS6ESBaMTJNF9LdBMZN+Zp3sU2mZTtEe+0O0YwImoV7jkywIwIfWQHzo8+6WH7luf+zNKSA2hiSq80IWBhdM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XogxnH4T; arc=fail smtp.client-ip=40.107.247.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VxxYCgAI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11BEC4CED6;
-	Mon, 24 Feb 2025 11:26:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740396388;
-	bh=9Ovgg2hK7O67kf313UGjPJJvkXdwSOKC5ryQAmMCvdc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=VxxYCgAICWvmKMEVvDVXOiaZ9ACB/FwErxemA+3rV/eb5a9KDwLYnz0+o4hl8mW1b
-	 xtCtFS22rSvJNpWsBlNnoShh1hCHYAYc+v8GekCrzbgi6/mTww0Fw2rYJlZ3/xxuC0
-	 iYdUe995nkLFZIb8oa2+Wwy7JHv8/0oSnWE0GPK/l0QG6Yp8u//nyqzUoe9q/0xnl5
-	 4eSVKUH57SSjlqnLHiE9Zp6zPSpA/ZNfQl9+kFxI6GiZLdF+Sfi/2mZZ3GJ3Khfqs7
-	 Aj05v9V6EFzOuv+wpm7Q0yBMop9jKEzX/lXgD+g04nolALEPv2K8sY1JLVr9ZeVsKQ
-	 ctNdENx5nHncQ==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Mon, 24 Feb 2025 12:25:35 +0100
-Subject: [PATCH net-next v7 15/15] net: airoha: Introduce PPE debugfs
- support
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XogxnH4T"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CqY/aV4zlt00DzfM3Pu3ygtf56o/UeuQXxu7lDUcba4zF0BYMDxDJACBCcKm6T7hAQdmLlr8/6T1W6/bqY9CY7iCODbukM2ZjcS+wk9VVk0C72hN6r9kmrDuVpqnBtZnS5UlhXXGdPSZrrmTEHcJrT4J+dOv5JM31luhuUKwB516qZ26JvwoW8tJGinugQQ4pTCM8vnuWp8HvwK+AVfhJOFFAm5HzGBPDS2Br2r07Xkaphq7ZIHXvY4vqIkhWke57V3R3GsZXQ7e0i/D/wd0LpMbLn+6X58ANsyz2h4pDKOTH3AfVx/fWMIwfUCPjzmr+8p+gPcLSTu1wJzmKtev8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zx6hBq7S3AXUvoSAgylFqU+jsWID7DRtjoYE126zu5E=;
+ b=A0m5oNSihczlUDV19e8lSL9OhiNDylHM7h5PMGVwfJj1PJ8tlRFk/oTsfsvKvMkhRcEUhUCeRzlshyBRUOP66wQD4QlYkRSGpiNhbclTxm9fVTKK1WTy7cvanqVRvXiVUW0gPW84K4ZpWYg1u8/cc7zGGcBWtvMo9+wgxRz0W00ebwyycLzu6+uE9Qx/j3sPPGFbDxbCo61Nt5E+bWrmDE8IYH+VGyDZyu8/GptjbMKkUtLScDACUQtYgFd29l+SJbSYwwRTGqKwk8Yos7mUCml2ddfVQ2bWmmbbxgxERSULonFyQ6wfnWr90P5ge6uQrggQbfiI3AlXK0Xqdj+gIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zx6hBq7S3AXUvoSAgylFqU+jsWID7DRtjoYE126zu5E=;
+ b=XogxnH4TFA4KAa3u6fdi2ON09DQcX0IJ3d9siIPB1K0vimdI1Q8N7uOtcHLBAdXlUKjhD+7Mv8hlnzrL/2Yl/St/NPmLWWafaL8TJLnXrFx9hGxQq8ZoYLZhF7AYx63qkqBzvz1mENMNM603AUN08d04beeYsp0ULOZPygQ2Yqtb41ZVasFhpputNRjAudNu/rEg5PEALpvL7CZS6I2QrHXYpKodf2RICEZw830XzPbwtJu0PnHmu1oDqvBbFrCbstcXHcZIFlEon5I30E2npolqnoCOaMrsw2PkUL0ENyBHj4/1Ih0u9yVXebRb8Hz93LtosH+apG+F2FtRImkO6A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DBAPR04MB7253.eurprd04.prod.outlook.com (2603:10a6:10:1a2::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Mon, 24 Feb
+ 2025 11:29:53 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8466.020; Mon, 24 Feb 2025
+ 11:29:53 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: ioana.ciornei@nxp.com,
+	yangbo.lu@nxp.com,
+	michal.swiatkowski@linux.intel.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH v3 net 0/8] net: enetc: fix some known issues
+Date: Mon, 24 Feb 2025 19:12:43 +0800
+Message-Id: <20250224111251.1061098-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0005.apcprd02.prod.outlook.com
+ (2603:1096:4:194::6) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250224-airoha-en7581-flowtable-offload-v7-15-b4a22ad8364e@kernel.org>
-References: <20250224-airoha-en7581-flowtable-offload-v7-0-b4a22ad8364e@kernel.org>
-In-Reply-To: <20250224-airoha-en7581-flowtable-offload-v7-0-b4a22ad8364e@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
- "Chester A. Unal" <chester.a.unal@arinc9.com>, 
- Daniel Golle <daniel@makrotopia.org>, DENG Qingfang <dqfext@gmail.com>, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org, 
- upstream@airoha.com
-X-Mailer: b4 0.14.2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DBAPR04MB7253:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0442c023-aacf-453a-cfb4-08dd54c68e92
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?SkNxenD/uD5P1MEtjW1E4rQMdC6dbHJ9N9jnhcXDV5x0KE11kn2WI2FviyPB?=
+ =?us-ascii?Q?MY5qNNHVlfNvFR+f9m9GMTGhrNRxfuB58mx2RVx8peJsMMoIkmGA/Tq9pT38?=
+ =?us-ascii?Q?5SCEN7WbWYhQA3EEbpxEqwLTgeVbXVr8zQAyZ/O68RvM+2FaTfyKn2q8SrKo?=
+ =?us-ascii?Q?MsSjpytNyGgCR/+kYQEDg6v4eIpIsysVbbMqOyAum2sNvHKvfUfyZBDcoURT?=
+ =?us-ascii?Q?3eJNW8/D7QJ0rCeH5x0zG/4p6i7PZhzCC1XsEUTqDpASllv1vSDFHHZgP4uI?=
+ =?us-ascii?Q?Z6wFmjX7lBMhBSMR9vdB+Z8cWJPsUqMEbdKZ1+6z0uq+qt3DUceGubuk41Hv?=
+ =?us-ascii?Q?mFA1I4JshwUVHC+3LadeSD8pZfvOOuPl3lZH1D0pEbcMUxGq+UYxmFF06rqG?=
+ =?us-ascii?Q?TdQv7t/2IKdAqCzx+IUgs2aCdSQGUVkZkp2Hsd2weAAxaabFMTMoXl2E0FzP?=
+ =?us-ascii?Q?n/d41J7vV3D2sXMtXkc3W2iQZ8mpCs14OWZrCiomJF4z+8qiYojUa4xKq5uQ?=
+ =?us-ascii?Q?jtzDrvyMIT+xT+lpR/P6Pvf7RTJOKrutxfSHBCLwzRV1Qtpk0iOb75GBd9cA?=
+ =?us-ascii?Q?RrLOQTRd8S5qYPMFrPoojP5X1+pWCv/AnUV8y/9eajAg4+h2z9NtUIqjs8Cy?=
+ =?us-ascii?Q?b9kuSQf+sDq4dKDmaZgaIHC2WfbF7smuAe6YjhRnuMSL2xl9BURimYSqNc1S?=
+ =?us-ascii?Q?t/NwYwNoagsKLq/KHaCVzliM4BWBCPzLA8goYs9ftKzJBa0LIEdEskNP2Pl1?=
+ =?us-ascii?Q?ZCefyyDUzacurUWuLa9mRAvBgNMfj9f3AeQsNFpcLA1ZMB6Xq5VQTyMkcFua?=
+ =?us-ascii?Q?+e/8r5NPqWfVc81s50mZefgt8JVaY+N169M1DgbDJBT6U4PGmosbXOflI6UR?=
+ =?us-ascii?Q?y9Ll42eqAv9m4Yof3EL71e9MP4VxbRW4TjEOAJV81CeSnfleWRDZIDz7XviM?=
+ =?us-ascii?Q?1yTTJnp9xB2UMbSHHM4jRMGu44+g1X+nwHxhIXDmEprYR0bU2niRE36bdyC0?=
+ =?us-ascii?Q?GmZanmyczc5y7w6hKNJ4vIpfKSd7uXLwgR1+ScJspXVu60IY/3kGbJG2SgUp?=
+ =?us-ascii?Q?JYAGbvboHUKjszSWzUoe8s/EZbFl4JA5wcIsG48+jH8Jj14oig7tIkw2HVV0?=
+ =?us-ascii?Q?9iE1ZzBMKYaMxTElDvOVTW7Hc4z8DfHJUiB23/pqmPTLDcNs4Xc4U5+ZHL4J?=
+ =?us-ascii?Q?bA1RdNJDIcesYPk5Ofc2PxLRJCt6jAbUUQ+IB4/spFRroeVYAz7lTow0ttq4?=
+ =?us-ascii?Q?KCSmQn/9gLaFpPQ50W/oUlPKKHVyqLPOqiGEhocC48eyn0q+hOvOdhENvKv5?=
+ =?us-ascii?Q?t1CWam5hMBbqhM9xYKh89wcqDQW/HNvCAHYZcuCRWZpNL6q7l/YTy2VGNn1+?=
+ =?us-ascii?Q?UC4pXVy4iRwNN4ezQ1Xiz0HkUeTgrNetLPepOTXsD4FdVfjvWcXfy3rC9yGQ?=
+ =?us-ascii?Q?Y4dlbOucEfE+L3r7iGjxIKEN7o5cK9orv+uOl8CvC8+37Bv5OM1KxA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?w3JGJSzB628DmDQNrU4jdgPi1mpMciU1lDtN+sq0MOwc7q6LSjy2AJgwco5q?=
+ =?us-ascii?Q?JxolkHf+9hYwQV2Fnh/3qLA3TrBejSWXyYmwIzMwassiP8Pwn1N50Qe3g4cw?=
+ =?us-ascii?Q?jl5eqHz+RmVm7vEVRjnWX5Za8ezM/Ili8t/gFOs7sCpgIt7nunorO4CEejgi?=
+ =?us-ascii?Q?fUHLegKRj/QnOjALsosiLxSU10XE4XJJUGkCpmvPLwEZhEI7nRsntwdofy2P?=
+ =?us-ascii?Q?bv0s/NOHZVgRRvRDHPKkv0Y+ywO9/2MTEvwju9c//pBm/6h37Gv/AISYeuOx?=
+ =?us-ascii?Q?2jntmCgZ3zSTXzFGbGlO6eQEg6G0YEOe+0zelSRAXedcl7cgMqd+bYktf/Rt?=
+ =?us-ascii?Q?hHJrgcgI16dI+fkaJr+CUsYaMLa4epNRSKGWSVWMCu4nTZJK2GPoYvqDrX+M?=
+ =?us-ascii?Q?6skPXKGktrhDsWg6e+ZjgB8AkZhIwXxazwzAQRtAzaI+KcXvu/IDLSLZy7RQ?=
+ =?us-ascii?Q?rg0iVRqGgDTCgBVO9PApQv6xA/qaiDsGrRsnatfOcrkcOgnfGzlzWefNASJq?=
+ =?us-ascii?Q?mWrM85uECDZfM6Ood1lrdd+Vq4SSd/O/PP5zK8uKFizUrtM1ibPUvPIle836?=
+ =?us-ascii?Q?Z84Cwk+r5pFTKgKd9d9LPhn11l+7MFaMe1FE4YbfapabttRRKFaxkjNsDhrP?=
+ =?us-ascii?Q?K368aQS0G+0cud5ibmtDT+mfqhri6Mc/6eGoIj5pIMc4HgXL5J1csECNTlfY?=
+ =?us-ascii?Q?HclqUZABv7ExRnMUY4ZSE8KY1BPraTIN+rffpNN2+MAcSbM35vS3iJmTSNQU?=
+ =?us-ascii?Q?XQZmFMmuyZJJsSl/ir5zC7Rkq1gT4pyYD0/3zzktnf5XXRdzmpKZbfj2rz1F?=
+ =?us-ascii?Q?8TUVylGP4LGPaFGlNI7EKqGa2VQY9MPtVJp9R69JChDPiI9nFbyYnA8iItcn?=
+ =?us-ascii?Q?BdkhRoT3/4a0Pb/SwdoKQUPy+eMmC9CHCF1d85rXnZS5zSJwyubyYeAP19M4?=
+ =?us-ascii?Q?aL7/+hgICwnvscwVcmdgGrgms9m9SHVmbYWx7UqrYP2FbQEbQ0eC58L4Y2c7?=
+ =?us-ascii?Q?aIVgAeqegqRk1PIdHnnnLxbyf4V5ErwexDPUvMFC0Nr61uYJKTFpFYXrPvk3?=
+ =?us-ascii?Q?9LlLK8QS7ka6PJ11e3v9AyOwbGdkGgi4D+0Th726GIte8/ZXLFK+RAzex1+H?=
+ =?us-ascii?Q?FBVAkrhcKLpYu8bjGIwU3jQZlAecVFyoeavLI8eeaotlk7wb8j0dZEvy3iGR?=
+ =?us-ascii?Q?OWxxxs4Fw/iNj4oMMAZo69V1LUPBT6tYo+JlcyKF0T6xUNDWFc8RHUFGhUXo?=
+ =?us-ascii?Q?OAh72cD4l1Rg2FC/6leEHo67qiITf4J7AxTVdasI1BNPm9mpkGXaHb8wNPD4?=
+ =?us-ascii?Q?aQBG5pHRIkfC2qYLKBVAxB+7V7Ven3Iogr1B8CJBw5KJrDSOE5mjS05AVHxm?=
+ =?us-ascii?Q?bm/j3xUmg6y/c6Z2KCz9FPPBc020qO/M/PdMNKjtBhvT7ePa40cb/14PlwyM?=
+ =?us-ascii?Q?cCFXBl/gMUjX1kT/eCrmP8+awRjcT1in7AbL5rGGn3MWmAUWPhjBeX/J66+T?=
+ =?us-ascii?Q?bb5kjj4oRhuFRP+Xbn/HUPuArAN0w03lCodnbeOP5XmjLvRul78tSojhK6TD?=
+ =?us-ascii?Q?664EUz8LeEiDGK6op5YM5v2jWag/A4hAgJE192gw?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0442c023-aacf-453a-cfb4-08dd54c68e92
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 11:29:53.0965
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: F+a5qjMUVGH212g82Fsr//DdPTAyopS9IqRaWVEhMG/jbcGa76FBEjCPvvwJp8zfAm/CHG5MgBBh5psjGtkrbA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7253
 
-Similar to PPE support for Mediatek devices, introduce PPE debugfs
-in order to dump binded and unbinded flows.
+There are some issues with the enetc driver, some of which are specific
+to the LS1028A platform, and some of which were introduced recently when
+i.MX95 ENETC support was added, so this patch set aims to clean up those
+issues.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/ethernet/airoha/Makefile             |   1 +
- drivers/net/ethernet/airoha/airoha_eth.h         |  14 ++
- drivers/net/ethernet/airoha/airoha_ppe.c         |  17 ++-
- drivers/net/ethernet/airoha/airoha_ppe_debugfs.c | 181 +++++++++++++++++++++++
- 4 files changed, 209 insertions(+), 4 deletions(-)
+v1 link: https://lore.kernel.org/imx/20250217093906.506214-1-wei.fang@nxp.com/
+v2 changes:
+1. Remove the unneeded semicolon from patch 1
+2. Modify the commit message of patch 1
+3. Add new patch 9 to fix another off-by-one issue
 
-diff --git a/drivers/net/ethernet/airoha/Makefile b/drivers/net/ethernet/airoha/Makefile
-index 6deff2f16229a7638be0737caa06282ba63183a4..94468053e34bef8fd155760e13745a8663592f4a 100644
---- a/drivers/net/ethernet/airoha/Makefile
-+++ b/drivers/net/ethernet/airoha/Makefile
-@@ -5,4 +5,5 @@
- 
- obj-$(CONFIG_NET_AIROHA) += airoha-eth.o
- airoha-eth-y := airoha_eth.o airoha_ppe.o
-+airoha-eth-$(CONFIG_DEBUG_FS) += airoha_ppe_debugfs.o
- obj-$(CONFIG_NET_AIROHA_NPU) += airoha_npu.o
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index 064941348bd91f1115082bf5e7734f34007953f8..18b5fed7ff286b813b260fae121892f44eb1cf8c 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -7,6 +7,7 @@
- #ifndef AIROHA_ETH_H
- #define AIROHA_ETH_H
- 
-+#include <linux/debugfs.h>
- #include <linux/etherdevice.h>
- #include <linux/iopoll.h>
- #include <linux/kernel.h>
-@@ -482,6 +483,8 @@ struct airoha_ppe {
- 
- 	struct hlist_head *foe_flow;
- 	u16 foe_check_time[PPE_NUM_ENTRIES];
-+
-+	struct dentry *debugfs_dir;
- };
- 
- struct airoha_eth {
-@@ -535,5 +538,16 @@ int airoha_ppe_setup_tc_block_cb(enum tc_setup_type type, void *type_data,
- 				 void *cb_priv);
- int airoha_ppe_init(struct airoha_eth *eth);
- void airoha_ppe_deinit(struct airoha_eth *eth);
-+struct airoha_foe_entry *airoha_ppe_foe_get_entry(struct airoha_ppe *ppe,
-+						  u32 hash);
-+
-+#if CONFIG_DEBUG_FS
-+int airoha_ppe_debugfs_init(struct airoha_ppe *ppe);
-+#else
-+static inline int airoha_ppe_debugfs_init(struct airoha_ppe *ppe)
-+{
-+	return 0;
-+}
-+#endif
- 
- #endif /* AIROHA_ETH_H */
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index 846abd2b497141a47171f7a3b7e0f520dc6499ed..3beae83ec56fe6fa35ded53d8a1cf7c13a770ede 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -377,8 +377,8 @@ static u32 airoha_ppe_foe_get_entry_hash(struct airoha_foe_entry *hwe)
- 	return hash;
- }
- 
--static struct airoha_foe_entry *
--airoha_ppe_foe_get_entry(struct airoha_ppe *ppe, u32 hash)
-+struct airoha_foe_entry *airoha_ppe_foe_get_entry(struct airoha_ppe *ppe,
-+						  u32 hash)
- {
- 	if (hash < PPE_SRAM_NUM_ENTRIES) {
- 		u32 *hwe = ppe->foe + hash * sizeof(struct airoha_foe_entry);
-@@ -861,7 +861,7 @@ void airoha_ppe_check_skb(struct airoha_ppe *ppe, u16 hash)
- int airoha_ppe_init(struct airoha_eth *eth)
- {
- 	struct airoha_ppe *ppe;
--	int foe_size;
-+	int foe_size, err;
- 
- 	ppe = devm_kzalloc(eth->dev, sizeof(*ppe), GFP_KERNEL);
- 	if (!ppe)
-@@ -882,7 +882,15 @@ int airoha_ppe_init(struct airoha_eth *eth)
- 	if (!ppe->foe_flow)
- 		return -ENOMEM;
- 
--	return rhashtable_init(&eth->flow_table, &airoha_flow_table_params);
-+	err = rhashtable_init(&eth->flow_table, &airoha_flow_table_params);
-+	if (err)
-+		return err;
-+
-+	err = airoha_ppe_debugfs_init(ppe);
-+	if (err)
-+		rhashtable_destroy(&eth->flow_table);
-+
-+	return err;
- }
- 
- void airoha_ppe_deinit(struct airoha_eth *eth)
-@@ -898,4 +906,5 @@ void airoha_ppe_deinit(struct airoha_eth *eth)
- 	rcu_read_unlock();
- 
- 	rhashtable_destroy(&eth->flow_table);
-+	debugfs_remove(eth->ppe->debugfs_dir);
- }
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c b/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..0216d0d5e52b995f9ac956892a3cc105aa896c19
---- /dev/null
-+++ b/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
-@@ -0,0 +1,181 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (c) 2025 AIROHA Inc
-+ * Author: Lorenzo Bianconi <lorenzo@kernel.org>
-+ */
-+
-+#include "airoha_eth.h"
-+
-+static void airoha_debugfs_ppe_print_tuple(struct seq_file *m,
-+					   void *src_addr, void *dest_addr,
-+					   u16 *src_port, u16 *dest_port,
-+					   bool ipv6)
-+{
-+	__be32 n_addr[IPV6_ADDR_WORDS];
-+
-+	if (ipv6) {
-+		ipv6_addr_cpu_to_be32(n_addr, src_addr);
-+		seq_printf(m, "%pI6", n_addr);
-+	} else {
-+		seq_printf(m, "%pI4h", src_addr);
-+	}
-+	if (src_port)
-+		seq_printf(m, ":%d", *src_port);
-+
-+	seq_puts(m, "->");
-+
-+	if (ipv6) {
-+		ipv6_addr_cpu_to_be32(n_addr, dest_addr);
-+		seq_printf(m, "%pI6", n_addr);
-+	} else {
-+		seq_printf(m, "%pI4h", dest_addr);
-+	}
-+	if (dest_port)
-+		seq_printf(m, ":%d", *dest_port);
-+}
-+
-+static int airoha_ppe_debugfs_foe_show(struct seq_file *m, void *private,
-+				       bool bind)
-+{
-+	static const char *const ppe_type_str[] = {
-+		[PPE_PKT_TYPE_IPV4_HNAPT] = "IPv4 5T",
-+		[PPE_PKT_TYPE_IPV4_ROUTE] = "IPv4 3T",
-+		[PPE_PKT_TYPE_BRIDGE] = "L2B",
-+		[PPE_PKT_TYPE_IPV4_DSLITE] = "DS-LITE",
-+		[PPE_PKT_TYPE_IPV6_ROUTE_3T] = "IPv6 3T",
-+		[PPE_PKT_TYPE_IPV6_ROUTE_5T] = "IPv6 5T",
-+		[PPE_PKT_TYPE_IPV6_6RD] = "6RD",
-+	};
-+	static const char *const ppe_state_str[] = {
-+		[AIROHA_FOE_STATE_INVALID] = "INV",
-+		[AIROHA_FOE_STATE_UNBIND] = "UNB",
-+		[AIROHA_FOE_STATE_BIND] = "BND",
-+		[AIROHA_FOE_STATE_FIN] = "FIN",
-+	};
-+	struct airoha_ppe *ppe = m->private;
-+	int i;
-+
-+	for (i = 0; i < PPE_NUM_ENTRIES; i++) {
-+		const char *state_str, *type_str = "UNKNOWN";
-+		void *src_addr = NULL, *dest_addr = NULL;
-+		u16 *src_port = NULL, *dest_port = NULL;
-+		struct airoha_foe_mac_info_common *l2;
-+		unsigned char h_source[ETH_ALEN] = {};
-+		unsigned char h_dest[ETH_ALEN];
-+		struct airoha_foe_entry *hwe;
-+		u32 type, state, ib2, data;
-+		bool ipv6 = false;
-+
-+		hwe = airoha_ppe_foe_get_entry(ppe, i);
-+		if (!hwe)
-+			continue;
-+
-+		state = FIELD_GET(AIROHA_FOE_IB1_STATE, hwe->ib1);
-+		if (!state)
-+			continue;
-+
-+		if (bind && state != AIROHA_FOE_STATE_BIND)
-+			continue;
-+
-+		state_str = ppe_state_str[state % ARRAY_SIZE(ppe_state_str)];
-+		type = FIELD_GET(AIROHA_FOE_IB1_PACKET_TYPE, hwe->ib1);
-+		if (type < ARRAY_SIZE(ppe_type_str) && ppe_type_str[type])
-+			type_str = ppe_type_str[type];
-+
-+		seq_printf(m, "%05x %s %7s", i, state_str, type_str);
-+
-+		switch (type) {
-+		case PPE_PKT_TYPE_IPV4_HNAPT:
-+		case PPE_PKT_TYPE_IPV4_DSLITE:
-+			src_port = &hwe->ipv4.orig_tuple.src_port;
-+			dest_port = &hwe->ipv4.orig_tuple.dest_port;
-+			fallthrough;
-+		case PPE_PKT_TYPE_IPV4_ROUTE:
-+			src_addr = &hwe->ipv4.orig_tuple.src_ip;
-+			dest_addr = &hwe->ipv4.orig_tuple.dest_ip;
-+			break;
-+		case PPE_PKT_TYPE_IPV6_ROUTE_5T:
-+			src_port = &hwe->ipv6.src_port;
-+			dest_port = &hwe->ipv6.dest_port;
-+			fallthrough;
-+		case PPE_PKT_TYPE_IPV6_ROUTE_3T:
-+		case PPE_PKT_TYPE_IPV6_6RD:
-+			src_addr = &hwe->ipv6.src_ip;
-+			dest_addr = &hwe->ipv6.dest_ip;
-+			ipv6 = true;
-+			break;
-+		default:
-+			break;
-+		}
-+
-+		if (src_addr && dest_addr) {
-+			seq_puts(m, " orig=");
-+			airoha_debugfs_ppe_print_tuple(m, src_addr, dest_addr,
-+						       src_port, dest_port, ipv6);
-+		}
-+
-+		switch (type) {
-+		case PPE_PKT_TYPE_IPV4_HNAPT:
-+		case PPE_PKT_TYPE_IPV4_DSLITE:
-+			src_port = &hwe->ipv4.new_tuple.src_port;
-+			dest_port = &hwe->ipv4.new_tuple.dest_port;
-+			fallthrough;
-+		case PPE_PKT_TYPE_IPV4_ROUTE:
-+			src_addr = &hwe->ipv4.new_tuple.src_ip;
-+			dest_addr = &hwe->ipv4.new_tuple.dest_ip;
-+			seq_puts(m, " new=");
-+			airoha_debugfs_ppe_print_tuple(m, src_addr, dest_addr,
-+						       src_port, dest_port,
-+						       ipv6);
-+			break;
-+		default:
-+			break;
-+		}
-+
-+		if (type >= PPE_PKT_TYPE_IPV6_ROUTE_3T) {
-+			data = hwe->ipv6.data;
-+			ib2 = hwe->ipv6.ib2;
-+			l2 = &hwe->ipv6.l2;
-+		} else {
-+			data = hwe->ipv4.data;
-+			ib2 = hwe->ipv4.ib2;
-+			l2 = &hwe->ipv4.l2.common;
-+			*((__be16 *)&h_source[4]) =
-+				cpu_to_be16(hwe->ipv4.l2.src_mac_lo);
-+		}
-+
-+		*((__be32 *)h_dest) = cpu_to_be32(l2->dest_mac_hi);
-+		*((__be16 *)&h_dest[4]) = cpu_to_be16(l2->dest_mac_lo);
-+		*((__be32 *)h_source) = cpu_to_be32(l2->src_mac_hi);
-+
-+		seq_printf(m, " eth=%pM->%pM etype=%04x data=%08x"
-+			      " vlan=%d,%d ib1=%08x ib2=%08x\n",
-+			   h_source, h_dest, l2->etype, data,
-+			   l2->vlan1, l2->vlan2, hwe->ib1, ib2);
-+	}
-+
-+	return 0;
-+}
-+
-+static int airoha_ppe_debugfs_foe_all_show(struct seq_file *m, void *private)
-+{
-+	return airoha_ppe_debugfs_foe_show(m, private, false);
-+}
-+DEFINE_SHOW_ATTRIBUTE(airoha_ppe_debugfs_foe_all);
-+
-+static int airoha_ppe_debugfs_foe_bind_show(struct seq_file *m, void *private)
-+{
-+	return airoha_ppe_debugfs_foe_show(m, private, true);
-+}
-+DEFINE_SHOW_ATTRIBUTE(airoha_ppe_debugfs_foe_bind);
-+
-+int airoha_ppe_debugfs_init(struct airoha_ppe *ppe)
-+{
-+	ppe->debugfs_dir = debugfs_create_dir("ppe", NULL);
-+	debugfs_create_file("entries", 0444, ppe->debugfs_dir, ppe,
-+			    &airoha_ppe_debugfs_foe_all_fops);
-+	debugfs_create_file("bind", 0444, ppe->debugfs_dir, ppe,
-+			    &airoha_ppe_debugfs_foe_bind_fops);
-+
-+	return 0;
-+}
+v2 link: https://lore.kernel.org/imx/20250219054247.733243-1-wei.fang@nxp.com/
+v3 changes:
+1. remove the patch "net: enetc: correct the EMDIO base offset for ENETC v4"
+2. Add a helper function enetc_unwind_tx_frame()
+3. Change the subject of patch 2, and refactor the implementation.
+4. Use enetc_unwind_tx_frame() in patch 8, and roll back 'i' when
+   enetc_map_tx_tso_data() returns an error
+5. Collect Reviewed-by and Tested-by tags
+---
+
+Wei Fang (8):
+  net: enetc: fix the off-by-one issue in enetc_map_tx_buffs()
+  net: enetc: keep track of correct Tx BD count in
+    enetc_map_tx_tso_buffs()
+  net: enetc: correct the xdp_tx statistics
+  net: enetc: VFs do not support HWTSTAMP_TX_ONESTEP_SYNC
+  net: enetc: update UDP checksum when updating originTimestamp field
+  net: enetc: add missing enetc4_link_deinit()
+  net: enetc: remove the mm_lock from the ENETC v4 driver
+  net: enetc: fix the off-by-one issue in enetc_map_tx_tso_buffs()
+
+ drivers/net/ethernet/freescale/enetc/enetc.c  | 103 +++++++++++++-----
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  |   2 +-
+ .../ethernet/freescale/enetc/enetc_ethtool.c  |   7 +-
+ 3 files changed, 80 insertions(+), 32 deletions(-)
 
 -- 
-2.48.1
+2.34.1
 
