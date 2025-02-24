@@ -1,255 +1,116 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEAF248867
-	for <netdev@vger.kernel.org>; Mon, 24 Feb 2025 15:39:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22468261392;
+	Mon, 24 Feb 2025 16:00:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740411579; cv=none; b=a2jKVzmR3oAuF4FcjCr3/TkQzH3kH8I8GfnSLLUvAcWIiYD0GbwPmMBB6Z6z67mjRAwHHFyCVcLfYF82eLjnORvR+cOjBF0cKygJu0oIXVfOj7trf8RhGwcBeRX6FVH7Ex5XRy24fiQ4eLiQABy3R5Xr90dqrzTmtUT5yKw3CUs=
+	t=1740412809; cv=none; b=eTOO+rajlfwpTYexoIduexXDSBHHyxnjCaW1fvgf5US4BsSRBJ2kufiyIGmJU7pJ8fVB/LvGtPEYfiyZTXQSTiYYKPz3ABQzJz+5RuXbAmkiu5SgMBXmQx+IqNv2Ey/FDEtwlhTR6zxTLNMpH2JYeFj91M6v24/BqHwR0ULR8x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740411579; c=relaxed/simple;
-	bh=KU++YC07+B2tDT/Vlf+dTCNE9eOFEVC3PGPiw9XPb/M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nal2DvNTdTUG6w0c9PavoeTKSbpA79nXJwYz+ODfhDwsQ6A90BjqEoClIn2IBAfeCsbU2Qc+n38jK/QlKMqA/8EcjV6i+ocptw5ofy6PDTC1wfIPUrQ3TebTQWMJgMK8Hy/Vc0wKSBOWWG2ctQ5Z3HtoECC6pdb80ZvtSY24plw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=Q1M85mhx; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1740412809; c=relaxed/simple;
+	bh=ppEdmYP18PRG+dGtFmSiXSQicDUWD6N3dqE1/BkXmyg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EuKVckYi2w+yDI9Hc/k61YsNkewm5i2JtCypbJPl35qsAJlVOCnqW1P1kS9Ep/wtxRdQOnj2dFvm6Yt+J3gbgCx6IBuV5zm9g8wGMDQUtsxOONgx+z5Xqbv8rB5RSTb1lsnE1tHErT5UfbAM5wU8oAnydCWxNkPUmdDlXf5TIBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JgpVRP+J; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="Q1M85mhx"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=NY24DEF1QkKPej70hOArRUVlf9tbikBWjPXrNnf2h6o=; b=Q1M85mhxIM+VlcxLG5UMwwveTa
-	gQtN5TVIdQEMzGDYF1a1Fi5bMPFKa1ePhy/Pp8hA1JEwi2Qn1o59rUNbWe3onkF76OzbUcaLuxm8Z
-	r53Sl8IY0ZlLFLIxqcScuSzeaXxob+P0TZVxu830ejPln/huM2aL9uzzb+wGg1calHDXHVmYvCaIK
-	Nosgx+iMVFkAfsyg+IBBC1mzehG52gCJgIQEwWw4wh4tEflrH28LvDDJVoc2fZAVG6X1hmPJrlYWA
-	FvxzjhASxBVhP87Sl0pQ9xfQYwW19Rx8tdSdB469/WuAO9a7X3VGSPQB5+I9AstC07FrpNj0uS2E5
-	WcFPvACw==;
-Received: from 44.249.197.178.dynamic.cust.swisscom.net ([178.197.249.44] helo=localhost)
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1tmaYK-000PKo-0R;
-	Mon, 24 Feb 2025 16:39:28 +0100
-From: Daniel Borkmann <daniel@iogearbox.net>
-To: kuba@kernel.org
-Cc: pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next 1/2] geneve: Allow users to specify source port range
-Date: Mon, 24 Feb 2025 16:39:26 +0100
-Message-ID: <20250224153927.50684-1-daniel@iogearbox.net>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JgpVRP+J"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-22128b7d587so88260485ad.3;
+        Mon, 24 Feb 2025 08:00:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740412807; x=1741017607; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WJSyJJHLWe5L0dnjVOukO5eRCR7RyAx2z7yzwd10tbE=;
+        b=JgpVRP+JGb8hhomczVBoR7pFQb0PzSswgPRWJHx+mYiZ9Ijd5ywtiB8dqIZS0XN2yc
+         Zowo+ZEqoAIOoNaPvE0PQ7SwNvZLycAoRxAgLR2lwHjiDFAB1AwQIrK7H+yVvL88mLYH
+         A/0OUklkLBdzY3ytCwqL7T+UR/t506WMUR1p6gXZ4Oe0DL/kXTcyuWRI7uPFg4vk/QGs
+         CAv6yTBmC+KMz2beiWTfjuzoqqJTkgjzSHdCUbfc/uu0QzwhTA1MzruNZL0aEER8SoPR
+         +zG8luyR9POsyix4dpjAybaS6FbjVPh1PSjoR4TwEHdCeeAN0leRveTwy2um3Qe/ahzE
+         tBdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740412807; x=1741017607;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WJSyJJHLWe5L0dnjVOukO5eRCR7RyAx2z7yzwd10tbE=;
+        b=ZjO1V2TKPnNALa3d1P18stN0u2WbYIT4rk6ysmGxf76Fkf4yMJWCWyDD4auO37aBKC
+         qMnzdzl2q6ObivPMo+lWMaMOJt3djXgYIpdCHA7+2Ca2l2CuVg+Q0FNDJpJGsg5kwMTf
+         xlTFahg+VYm68cp6xcC5RxxU92b0lssoJHuJSis+w6lQzQBh5fUC62QlIH+TYYZCIIx8
+         n1GlTV/5OA68VXl/mb0wMVJx8quJOfUKaj7JPGWZlPJHpmvQsvXsSQC2TC6ywTOgbK+Y
+         EDRQBK4o44SLwBJzyZ0tweCWseeau1eZBtQVVRoDKGjd8MVmdrfIJCNrRdEPBnUlK0hh
+         3rMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVq3oun6JgwYxMlCPRUrTv0vQnkjPA5T1yXJM9JNJbRgIC+77oH/8JQANK5kpnhW4qznrM=@vger.kernel.org, AJvYcCWqQaZWx2ukEBGCHw5y2yzuCLi6ndiB5KujCWnV8fX5YoJNdSHNA3kTWgRCC2kyHdHEIeAp1EiA@vger.kernel.org, AJvYcCX6zQsySyRFYP6gAen2qqL+jUq3xjDRdpu5ZNHjOhHpe2pa1gMLjcZXskAVnvzJaMIGP2O1YZRaZqhoAQ0Z@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaQHI+vL8C1avFt/OvvR//LZa4GQ0VzL8mMRfLH7NrRhfJ5wnF
+	+lF/igyO88UQZUTjdeKqhTmXkuJXrjkvkk+T7YvjuMG29uilr6ocFVT9
+X-Gm-Gg: ASbGncuuKSKfQcH6jbPc7FPIrmqLYDTZuF8xXQ2lkhuPmeEp/PyVcSce0hHK/B6/mUO
+	He5nJPONJRH7J9xwpLAwB2SIcom4FF/Mlvc5oyxGPzG6nPDrUgpy3AoYOD39cmVezUbwmgeQDti
+	i9RV0Y33JnUZKZfMtnU5y4mhVwX+Ff0RDcM5GzPujSK6eLVNc+icNzQkOpawruNMpgtXsUmr1V6
+	XX2Ji4eb6Blc4yQ6ZAegEJyZCK1DDNe7MeBMiekg9AZEiYQ9sjVNMqAQf6AuEFH81KJ+HI8MOPd
+	dbtUaD7K1fp8sDKVDUg7g+txqQ==
+X-Google-Smtp-Source: AGHT+IGOcR/OrIIpcSGp09qJ+wMTXvY1EEIfwdy+SXIugvE/nOGnXjJstK2HBNEnI0W6I/4mejx+6A==
+X-Received: by 2002:a17:903:191:b0:220:c2a8:6fbc with SMTP id d9443c01a7336-2219ffd21afmr253042135ad.34.1740412805689;
+        Mon, 24 Feb 2025 08:00:05 -0800 (PST)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-220d545d016sm179712775ad.146.2025.02.24.08.00.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2025 08:00:05 -0800 (PST)
+Date: Mon, 24 Feb 2025 08:00:04 -0800
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Magnus Karlsson <magnus.karlsson@gmail.com>
+Cc: Wang Liang <wangliang74@huawei.com>, bjorn@kernel.org,
+	magnus.karlsson@intel.com, maciej.fijalkowski@intel.com,
+	jonathan.lemon@gmail.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+	john.fastabend@gmail.com, yuehaibing@huawei.com,
+	zhangchangzhong@huawei.com, netdev@vger.kernel.org,
+	bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] xsk: fix __xsk_generic_xmit() error code when cq is
+ full
+Message-ID: <Z7yXhHezJTgYh76T@mini-arch>
+References: <20250222093007.3607691-1-wangliang74@huawei.com>
+ <CAJ8uoz1fZ3zYVKergPn-QYRQEpPfC_jNgtY3wzoxxJWFF22LKA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27559/Mon Feb 24 10:44:14 2025)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAJ8uoz1fZ3zYVKergPn-QYRQEpPfC_jNgtY3wzoxxJWFF22LKA@mail.gmail.com>
 
-Recently, in case of Cilium, we run into users on Azure who require to use
-tunneling for east/west traffic due to hitting IPAM API limits for Kubernetes
-Pods if they would have gone with publicly routable IPs for Pods. In case
-of tunneling, Cilium supports the option of vxlan or geneve. In order to
-RSS spread flows among remote CPUs both derive a source port hash via
-udp_flow_src_port() which takes the inner packet's skb->hash into account.
-For clusters with many nodes, this can then hit a new limitation [0]: Today,
-the Azure networking stack supports 1M total flows (500k inbound and 500k
-outbound) for a VM. [...] Once this limit is hit, other connections are
-dropped. [...] Each flow is distinguished by a 5-tuple (protocol, local IP
-address, remote IP address, local port, and remote port) information. [...]
+On 02/24, Magnus Karlsson wrote:
+> On Sat, 22 Feb 2025 at 10:18, Wang Liang <wangliang74@huawei.com> wrote:
+> >
+> > When the cq reservation is failed, the error code is not set which is
+> > initialized to zero in __xsk_generic_xmit(). That means the packet is not
+> > send successfully but sendto() return ok.
+> >
+> > Set the error code and make xskq_prod_reserve_addr()/xskq_prod_reserve()
+> > return values more meaningful when the queue is full.
+> 
+> Hi Wang,
+> 
+> I agree that this would have been a really good idea if it was
+> implemented from day one, but now I do not dare to change this since
+> it would be changing the uapi. Let us say you have the following quite
+> common code snippet for sending a packet with AF_XDP in skb mode:
+> 
+> err = sendmsg();
+> if (err && err != -EAGAIN && err != -EBUSY)
+>     goto die_due_to_error;
+> continue with code
+> 
+> This code would with your change go and die suddenly when the
+> completion ring is full instead of working. Maybe there is a piece of
+> code that cleans the completion ring after these lines of code and
+> next time sendmsg() is called, the packet will get sent, so the
+> application used to work.
+> 
+> So I say: let us not do this. But if anyone has another opinion, please share.
 
-For vxlan and geneve, this can create a massive amount of UDP flows which
-then run into the limits if stale flows are not evicted fast enough. One
-option to mitigate this for vxlan is to narrow the source port range via
-IFLA_VXLAN_PORT_RANGE while still being able to benefit from RSS. However,
-geneve currently does not have this option and it spreads traffic across
-the full source port range of [1, USHRT_MAX]. To overcome this limitation
-also for geneve, add an equivalent IFLA_GENEVE_PORT_RANGE setting for users.
-Note that struct geneve_config before/after still remains at 2 cachelines
-on x86-64.
-
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://learn.microsoft.com/en-us/azure/virtual-network/virtual-machine-network-throughput [0]
----
- drivers/net/geneve.c         | 52 +++++++++++++++++++++++++++++++-----
- include/uapi/linux/if_link.h |  6 +++++
- 2 files changed, 52 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index dbb3960126ee..9a3ea0042900 100644
---- a/drivers/net/geneve.c
-+++ b/drivers/net/geneve.c
-@@ -57,6 +57,8 @@ struct geneve_config {
- 	bool			ttl_inherit;
- 	enum ifla_geneve_df	df;
- 	bool			inner_proto_inherit;
-+	u16			port_min;
-+	u16			port_max;
- };
- 
- /* Pseudo network device */
-@@ -835,7 +837,8 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 
- 	use_cache = ip_tunnel_dst_cache_usable(skb, info);
- 	tos = geneve_get_dsfield(skb, dev, info, &use_cache);
--	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
-+	sport = udp_flow_src_port(geneve->net, skb, geneve->cfg.port_min,
-+				  geneve->cfg.port_max, true);
- 
- 	rt = udp_tunnel_dst_lookup(skb, dev, geneve->net, 0, &saddr,
- 				   &info->key,
-@@ -945,7 +948,8 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 
- 	use_cache = ip_tunnel_dst_cache_usable(skb, info);
- 	prio = geneve_get_dsfield(skb, dev, info, &use_cache);
--	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
-+	sport = udp_flow_src_port(geneve->net, skb, geneve->cfg.port_min,
-+				  geneve->cfg.port_max, true);
- 
- 	dst = udp_tunnel6_dst_lookup(skb, dev, geneve->net, gs6->sock, 0,
- 				     &saddr, key, sport,
-@@ -1083,8 +1087,8 @@ static int geneve_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb)
- 
- 		use_cache = ip_tunnel_dst_cache_usable(skb, info);
- 		tos = geneve_get_dsfield(skb, dev, info, &use_cache);
--		sport = udp_flow_src_port(geneve->net, skb,
--					  1, USHRT_MAX, true);
-+		sport = udp_flow_src_port(geneve->net, skb, geneve->cfg.port_min,
-+					  geneve->cfg.port_max, true);
- 
- 		rt = udp_tunnel_dst_lookup(skb, dev, geneve->net, 0, &saddr,
- 					   &info->key,
-@@ -1109,8 +1113,8 @@ static int geneve_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb)
- 
- 		use_cache = ip_tunnel_dst_cache_usable(skb, info);
- 		prio = geneve_get_dsfield(skb, dev, info, &use_cache);
--		sport = udp_flow_src_port(geneve->net, skb,
--					  1, USHRT_MAX, true);
-+		sport = udp_flow_src_port(geneve->net, skb, geneve->cfg.port_min,
-+					  geneve->cfg.port_max, true);
- 
- 		dst = udp_tunnel6_dst_lookup(skb, dev, geneve->net, gs6->sock, 0,
- 					     &saddr, &info->key, sport,
-@@ -1234,6 +1238,7 @@ static const struct nla_policy geneve_policy[IFLA_GENEVE_MAX + 1] = {
- 	[IFLA_GENEVE_TTL_INHERIT]	= { .type = NLA_U8 },
- 	[IFLA_GENEVE_DF]		= { .type = NLA_U8 },
- 	[IFLA_GENEVE_INNER_PROTO_INHERIT]	= { .type = NLA_FLAG },
-+	[IFLA_GENEVE_PORT_RANGE]	= NLA_POLICY_EXACT_LEN(sizeof(struct ifla_geneve_port_range)),
- };
- 
- static int geneve_validate(struct nlattr *tb[], struct nlattr *data[],
-@@ -1279,6 +1284,17 @@ static int geneve_validate(struct nlattr *tb[], struct nlattr *data[],
- 		}
- 	}
- 
-+	if (data[IFLA_GENEVE_PORT_RANGE]) {
-+		const struct ifla_geneve_port_range *p =
-+			nla_data(data[IFLA_GENEVE_PORT_RANGE]);
-+
-+		if (p->high < p->low) {
-+			NL_SET_ERR_MSG_ATTR(extack, data[IFLA_GENEVE_PORT_RANGE],
-+					    "Invalid source port range");
-+			return -EINVAL;
-+		}
-+	}
-+
- 	return 0;
- }
- 
-@@ -1506,6 +1522,18 @@ static int geneve_nl2info(struct nlattr *tb[], struct nlattr *data[],
- 		info->key.tp_dst = nla_get_be16(data[IFLA_GENEVE_PORT]);
- 	}
- 
-+	if (data[IFLA_GENEVE_PORT_RANGE]) {
-+		const struct ifla_geneve_port_range *p =
-+			nla_data(data[IFLA_GENEVE_PORT_RANGE]);
-+
-+		if (changelink) {
-+			attrtype = IFLA_GENEVE_PORT_RANGE;
-+			goto change_notsup;
-+		}
-+		cfg->port_min = p->low;
-+		cfg->port_max = p->high;
-+	}
-+
- 	if (data[IFLA_GENEVE_COLLECT_METADATA]) {
- 		if (changelink) {
- 			attrtype = IFLA_GENEVE_COLLECT_METADATA;
-@@ -1623,6 +1651,8 @@ static int geneve_newlink(struct net *net, struct net_device *dev,
- 		.use_udp6_rx_checksums = false,
- 		.ttl_inherit = false,
- 		.collect_md = false,
-+		.port_min = 1,
-+		.port_max = USHRT_MAX,
- 	};
- 	int err;
- 
-@@ -1741,6 +1771,7 @@ static size_t geneve_get_size(const struct net_device *dev)
- 		nla_total_size(sizeof(__u8)) + /* IFLA_GENEVE_UDP_ZERO_CSUM6_RX */
- 		nla_total_size(sizeof(__u8)) + /* IFLA_GENEVE_TTL_INHERIT */
- 		nla_total_size(0) +	 /* IFLA_GENEVE_INNER_PROTO_INHERIT */
-+		nla_total_size(sizeof(struct ifla_geneve_port_range)) + /* IFLA_GENEVE_PORT_RANGE */
- 		0;
- }
- 
-@@ -1750,6 +1781,10 @@ static int geneve_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 	struct ip_tunnel_info *info = &geneve->cfg.info;
- 	bool ttl_inherit = geneve->cfg.ttl_inherit;
- 	bool metadata = geneve->cfg.collect_md;
-+	struct ifla_geneve_port_range ports = {
-+		.low	= geneve->cfg.port_min,
-+		.high	= geneve->cfg.port_max,
-+	};
- 	__u8 tmp_vni[3];
- 	__u32 vni;
- 
-@@ -1806,6 +1841,9 @@ static int geneve_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 	    nla_put_flag(skb, IFLA_GENEVE_INNER_PROTO_INHERIT))
- 		goto nla_put_failure;
- 
-+	if (nla_put(skb, IFLA_GENEVE_PORT_RANGE, sizeof(ports), &ports))
-+		goto nla_put_failure;
-+
- 	return 0;
- 
- nla_put_failure:
-@@ -1838,6 +1876,8 @@ struct net_device *geneve_dev_create_fb(struct net *net, const char *name,
- 		.use_udp6_rx_checksums = true,
- 		.ttl_inherit = false,
- 		.collect_md = true,
-+		.port_min = 1,
-+		.port_max = USHRT_MAX,
- 	};
- 
- 	memset(tb, 0, sizeof(tb));
-diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
-index bfe880fbbb24..730fecdb51a5 100644
---- a/include/uapi/linux/if_link.h
-+++ b/include/uapi/linux/if_link.h
-@@ -1438,6 +1438,7 @@ enum {
- 	IFLA_GENEVE_TTL_INHERIT,
- 	IFLA_GENEVE_DF,
- 	IFLA_GENEVE_INNER_PROTO_INHERIT,
-+	IFLA_GENEVE_PORT_RANGE,
- 	__IFLA_GENEVE_MAX
- };
- #define IFLA_GENEVE_MAX	(__IFLA_GENEVE_MAX - 1)
-@@ -1450,6 +1451,11 @@ enum ifla_geneve_df {
- 	GENEVE_DF_MAX = __GENEVE_DF_END - 1,
- };
- 
-+struct ifla_geneve_port_range {
-+	__u16 low;
-+	__u16 high;
-+};
-+
- /* Bareudp section  */
- enum {
- 	IFLA_BAREUDP_UNSPEC,
--- 
-2.43.0
-
+Can we return -EBUSY from this 'if (xsk_cq_reserve_addr_locked())' case as
+well?
