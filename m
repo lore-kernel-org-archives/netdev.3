@@ -1,46 +1,61 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DDA257459;
-	Mon, 24 Feb 2025 14:32:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110FD245006;
+	Mon, 24 Feb 2025 14:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407570; cv=none; b=OcyxVvYD/nraECfuOfrycgZ12eo/KqQzJ+5Jv2P6+2xLPIwnQcplQuqGdQBFax+yAX8WxkoeG1Bk+JO8IE2Dhz9emRBjjWUgAWPo0zbybMEMwSdEhN9lvIbeNE3j/FabGxpJyeWD0/99AqPUdZKq5ZOynn39bc6Jq1quxZHRMjA=
+	t=1740407949; cv=none; b=pODkmrW/hAQLsXZ1SNU/oomeg0VWQ3iKlxB3ywjRFffS0hr7G7ZwtIC6i/Mfe4VaynNKtSbdsCUBy59vE5db+hVgpnf/6o5baMu9BszaX/6v0q8ABgIwy2AvthIkMt4UTofpcsafpJiQgaV0QHZH6i48he/1gx3qPUfbEw/GqTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407570; c=relaxed/simple;
-	bh=loUIEO2AC7Kh+BeI5l4HVh2nj8MVsKVBozbddWhyxsM=;
+	s=arc-20240116; t=1740407949; c=relaxed/simple;
+	bh=fMonh/pKAVHu07dY8Vw+0UdrpHd7C1ki/HDFFIv2F+U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MLnQ6CEJj1mppfV5XAqZu9EIxfrr7XnZUGGZwuzEIHbSxB9aYTMaaAiPlzKCZoa898oy/QhA1kyT7QBM15sgU1mkCV5LYd2i1AkQovV4O068duKFuHb+n6PpBbfYkTVptYnW2IgP427nK/ZOdBhGhQ1gQ4iYNtO/D3XMVEyjPpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IT5k6XKC; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=AZYFQyKWhW/4HvFgHB5iNYsbylRH2uWP0QLlHKWY6ePs/baFcLCeKwCds6dNF+4QgGnmgSy09kEeYemTbeSg80aPfA6EEwsO9kUSz1jE6vOoqdpxczR9I81XUduqhkkF+jvgyZVEopMLEvv62Db4Ze4J4F671b/hrEsd+ZmQuFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=WzZfFuix; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IT5k6XKC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A837C4CED6;
-	Mon, 24 Feb 2025 14:32:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740407569;
-	bh=loUIEO2AC7Kh+BeI5l4HVh2nj8MVsKVBozbddWhyxsM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IT5k6XKCTKrb/qaWvhvZOi56fzZdXweZQi5AY8FEpjtPbCJTddi9Hnl/seaYS7qpP
-	 6ffqH+L3sOnuVSLZYUlM3nobFHTWWWzDf30je3tCUlRCIeUJRauOIyxdLWzvI7tyap
-	 EYR5xIZa3x9WuwcEGdO8/luMfQIcNauxgjuZBlDxjGI1udIN1HKyvDYa0Uf3bTCZ7Y
-	 tzptPy3GyHxFUdcpgmzP1J29ejgd9w7tL1fxSzSoAF5dsaIijbgUZfuUceJUANN9jC
-	 yXul2g/7y/9oS0fziew8VAZQsf77f53fU4aCuCJEuhmXzULXDdRA3xqFfTfv/2vPlI
-	 Gd7eyn84Pk8UQ==
-Date: Mon, 24 Feb 2025 15:32:43 +0100
-From: Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, 
-	=?utf-8?B?QmrDuHJu?= Mork <bjorn@mork.no>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-	davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	thomas.petazzoni@bootlin.com, Florian Fainelli <f.fainelli@gmail.com>, 
-	=?utf-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>, Simon Horman <horms@kernel.org>, 
-	Romain Gantois <romain.gantois@bootlin.com>, Antoine Tenart <atenart@kernel.org>, 
-	Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="WzZfFuix"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=oZBH+BBvL/hgtaMob59TY/eIeJhL38EKvFH99ZsXxXM=; b=WzZfFuixs4bggs/CuH1/ino7Aq
+	kP5Ug2KPxPDM+7ABlB53uXRnElwtHPfiscmCflcSs8jBFu2/xx0YBSYR4QxgzgXqDkGkDTfpmJzdx
+	EWdrBl9RkuIAFyPw3p/MKcWazcymxG1zaa88y+kNqeBpeSjn4s/JTC/rx89AKUptrb7qmtrdmxh+2
+	6Fk68d72cl+rQxN9Qz+yowEPnXW2l/Di61nbL3AWdUZSFTHvSyDPJTcWP2E8WoI5uuhBzl4KYF9Wi
+	Vy27njJqV9t6KPeDjMbFosJdHdF7W3x02uXi+RnelsTQ33Gx//mBkKx/+XnhrGGIvOAJaGxAq17sh
+	v3Gcpy3w==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:52904)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tmZbm-0006da-26;
+	Mon, 24 Feb 2025 14:38:58 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tmZbk-00054V-1k;
+	Mon, 24 Feb 2025 14:38:56 +0000
+Date: Mon, 24 Feb 2025 14:38:56 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	=?iso-8859-1?Q?Bj=F8rn?= Mork <bjorn@mork.no>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	=?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Antoine Tenart <atenart@kernel.org>
 Subject: Re: [PATCH net-next 0/2] net: phy: sfp: Add single-byte SMBus SFP
  access
-Message-ID: <kqur446k5sryspwh4zzndytfqhpupfybimhgbtq5m7fm7vom7s@hhqlh3llrsxl>
+Message-ID: <Z7yEgFR9scO2aRYh@shell.armlinux.org.uk>
 References: <20250223172848.1098621-1-maxime.chevallier@bootlin.com>
  <87r03otsmm.fsf@miraculix.mork.no>
  <Z7uFhc1EiPpWHGfa@shell.armlinux.org.uk>
@@ -48,23 +63,38 @@ References: <20250223172848.1098621-1-maxime.chevallier@bootlin.com>
  <87ikozu86l.fsf@miraculix.mork.no>
  <7c456101-6643-44d1-812a-2eae3bce9068@lunn.ch>
  <Z7x4oxR5_KtyvSYg@shell.armlinux.org.uk>
+ <kqur446k5sryspwh4zzndytfqhpupfybimhgbtq5m7fm7vom7s@hhqlh3llrsxl>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <Z7x4oxR5_KtyvSYg@shell.armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <kqur446k5sryspwh4zzndytfqhpupfybimhgbtq5m7fm7vom7s@hhqlh3llrsxl>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Mon, Feb 24, 2025 at 01:48:19PM +0000, Russell King (Oracle) wrote:
+On Mon, Feb 24, 2025 at 03:32:43PM +0100, Marek Behún wrote:
+> On Mon, Feb 24, 2025 at 01:48:19PM +0000, Russell King (Oracle) wrote:
+> 
+> ...
+> 
+> > "Please note:
+> > This hardware is broken by design. There is nothing that the kernel or
+> 
+> Doesn't "broken by design" mean "broken intentionally" ?
 
-...
+The point of this part of the discussion is to find a form of words
+that folk are happy with, so please feel free to suggest an
+alternative.
 
-> "Please note:
-> This hardware is broken by design. There is nothing that the kernel or
+To put it bluntly, it does come down to "broken by the hardware
+engineer not having full knowledge of the requirements of SFP modules
+as documented in the SNIA documentation and selecting hardware that
+violates some of the requirements."
 
-Doesn't "broken by design" mean "broken intentionally" ?
-
-Marek
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
