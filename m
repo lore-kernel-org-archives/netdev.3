@@ -1,114 +1,164 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809CA26772D
-	for <netdev@vger.kernel.org>; Tue, 25 Feb 2025 09:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5EEB263C77
+	for <netdev@vger.kernel.org>; Tue, 25 Feb 2025 09:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740474735; cv=none; b=smKBzQ/3UJGcfxsv2m/xLRkMzxCJ8W3drCvo29xQHOic9qDhCkbajbO0IfwYSUPtbpn9UbDPBXHNPbP2b5zfZnKExa7uCcxJpPoWhrQWLWRZ/clRB9glS9c9mclS/udqMC7i/yM0Cc4Y3UNe39P2FGBX9uDQZmTqMGTgcMaNjls=
+	t=1740474911; cv=none; b=bQZ2WOmEoh+DPu8E/zXIboQ/zsA8KppUns0SWebYQ3fgT2eZxzW3MPN8oYu4x9N36rY7UXGMAtHajkkfAMaWkW8KK1uouJl1eWCE5AogAUsoT9fbM/NJFAJ/XXjys0JSavAxRnCOzjAyLnC/y78GKm54YoDVeDxcv42Ng7Sv4TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740474735; c=relaxed/simple;
-	bh=I/ncJfEJtEiSeoSCR2blElAGuBHz/yWCQD1ugBNnzD8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L5ijr/Ml67tjHO/F6/bb3iQhwnLdIuMEvazJK/9LFYxXB4YwxfiKKlyiqs97l0lJVtk3kw7M4cvQSQ8XRmMVKrjZK3OAGWuZ62K3IHlsz8Z9SYYKySeJ/MeqtNL5s6kR2P8x0tCQfMy5RQsb6GTr4FwlFejGA6lmSitStrCeyNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MbtKSI2x; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1740474911; c=relaxed/simple;
+	bh=fHGpW80fYUJHEoegs7hdiagul4opbNfZJrlcvH16f+k=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=muPmt4Zl6912Uo8Be0Z/H+sISJ4n/hZvNSsAjiA0ac4Qn1xNz2RXZFvBqPOQPwkwXgGw+R0DXxpQBgZT6EBxxa9kE3PhsO4WNIBpMoHOQO7KJk2d9ZByx4iyQGuL8eMJvLIp6rGDGyh7Tegui1aQpi/hCBbJqPouz20xwdKG6zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MsCAJDir; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MbtKSI2x"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MsCAJDir"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740474732;
+	s=mimecast20190719; t=1740474908;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dlIg0iX5rLeI1/17Pjh/O9LHmXIOARF0OAc7AU9Migc=;
-	b=MbtKSI2xQNk/V1HxCMrVWJ9W7oqf4wvFgsYbF8OazDcVU6pyNMi/2jqPPNz0/SsREasNM5
-	2CQzIeZeU4+JqekhMKe9HZY7fCY0H76HShxF6FEHyao3CktoE7HxmC1GE4twD0Dhmojre6
-	x3aQju7X6k6E0V1mI3l93z5gTLdyiL4=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=5mY0Y8NDtCq9U6kZXa7z7cTNd5hZ8Jf2lYO6g2P04nc=;
+	b=MsCAJDira7fBdWqqIboShoJUxzfqpXAG7ElCMPF/xP2oRROfTeO3MrdvKzSEmcNVB576LF
+	znW5PjWuLu9gBINYkw8KiNGv/0zkOqEl6ed+oS8hCBN1duR3R9mR6ygeaGIGYHQTScPi3n
+	NgVP9SpcFNZ0m7n8YBAyhKdNYP0idQc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-240-B9op4tKOPYC05GXGaqtyXA-1; Tue, 25 Feb 2025 04:12:10 -0500
-X-MC-Unique: B9op4tKOPYC05GXGaqtyXA-1
-X-Mimecast-MFC-AGG-ID: B9op4tKOPYC05GXGaqtyXA_1740474729
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-38f455a8e43so2014112f8f.0
-        for <netdev@vger.kernel.org>; Tue, 25 Feb 2025 01:12:10 -0800 (PST)
+ us-mta-56-AKSD8451PT2MzGxO4odTjA-1; Tue, 25 Feb 2025 04:15:07 -0500
+X-MC-Unique: AKSD8451PT2MzGxO4odTjA-1
+X-Mimecast-MFC-AGG-ID: AKSD8451PT2MzGxO4odTjA_1740474906
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4398a60b61fso26978425e9.0
+        for <netdev@vger.kernel.org>; Tue, 25 Feb 2025 01:15:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740474729; x=1741079529;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dlIg0iX5rLeI1/17Pjh/O9LHmXIOARF0OAc7AU9Migc=;
-        b=iOGl8WKid9o9HbaLu3zfz6SF0gTSJ4JIuUBWfONFcuC8PsTMbPYXbGRJRHanpukhR0
-         YigbI/xkPxc6XIatuNe29Rk1YRN6kYLQy7VDRrpOqJ/Ob170u5LMDftVLPsKtR10M6ly
-         EL/jlP+8IakAT8Ol8t/2BFEm1VIHdhHDA9lOB9hj6rxV8kVIs8ZNux97iz9zGHBUrOfw
-         iHDx8WZtnfxJ6E3VtJjyqSCjL+xaFRD1IILhcTsgy6XMI8gpkfGKI6b5EqWgbaBZMEB9
-         oMe08ZJNPqNhPEhwPk8VAx0htZlLRhEeQFSS7L5l5VLNoHEIsnPrKojGUIoqdz+yVXLh
-         5CXg==
-X-Forwarded-Encrypted: i=1; AJvYcCU47lMK7cNGO+BkqQW1sTQ4NLhZkRsQ1i098zpRJYNIIyGLwSvl33JZV6ADBVwL/3DjobbkETs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyllrbAEnWiUDDIhxclrmiCK32eG6Cdh7Dd4JtxMB4cBIkn0RM4
-	ANkQTEnSCjvLoQLqx8xqLlAj9EuDjJEL50KJM98Fg2hbw40Dpq3v7PwZntZDw5pn6Ar8//5+Qzt
-	jSEmwwduJ8qmrt4HM4VfeTOnqVdNw/23FCkSx6hSVnbOHH1nEcq+zzg==
-X-Gm-Gg: ASbGncugFrdbrNFatrhDHlJoGX6ajIe4QWIuxP1x3jpd8FnfU5NXC2Wa0XOLRYXxLO6
-	q404DcjqSnNavYvDQE2RVKpQBaMAwcF6GNHzOtZ84W+KGOmVX0F9d6i9VMbFwPQQovnKa+46wMQ
-	icZ/+gagvhhlvlfyGImIGlyzun5/HlwFuYABKwOzrzWps/yEwZcri3mI6nnDwvADy3Wg7RHdX1l
-	uIeVE9lpaS8w1cC5x20MO3MZz2DQQk4NVMWs8PrSG4v8uvI7ZCiVZXSmVNYXCCr67+i0kbeqQLs
-	lNBkhXE7u169E/TgSN3DpJ8zvcLfwS2K/y9vKPnxF9M=
-X-Received: by 2002:a05:6000:1548:b0:38d:daf3:be60 with SMTP id ffacd0b85a97d-390cc63ccf0mr2071739f8f.48.1740474729252;
-        Tue, 25 Feb 2025 01:12:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEolJkbGKjJj6h9uEQW/S7a4oRbKctMUQh95C2XKh9ehqDL16AcT96CB9ug5umxMfHDYCtt4w==
-X-Received: by 2002:a05:6000:1548:b0:38d:daf3:be60 with SMTP id ffacd0b85a97d-390cc63ccf0mr2071706f8f.48.1740474728801;
-        Tue, 25 Feb 2025 01:12:08 -0800 (PST)
-Received: from [192.168.88.253] (146-241-59-53.dyn.eolo.it. [146.241.59.53])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390cd866dc4sm1624406f8f.11.2025.02.25.01.12.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Feb 2025 01:12:08 -0800 (PST)
-Message-ID: <910cae0c-3d45-4cd3-b38a-49ab805a231e@redhat.com>
-Date: Tue, 25 Feb 2025 10:12:07 +0100
+        d=1e100.net; s=20230601; t=1740474906; x=1741079706;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5mY0Y8NDtCq9U6kZXa7z7cTNd5hZ8Jf2lYO6g2P04nc=;
+        b=OQ0ag+nw6ch4o1RPhj70ncA0oDPguM0Wli7Wqfc8LZ5xPNgQkYeaWHDwlaxrI/Y7fi
+         Gt1KIFX82yBdTXGG5HvkNVAbiDHzoiZWpFMCe7+LNJoZzrCB3yglISqcovIIaA9UrhGk
+         R3i0cFW0V5RDGNvnBERz//QpemvEOOTix84zf/XQZlFOfZhEZ8mP4F0MZi9kZ3qz4XSX
+         Pke45y0m0nC+Emq4bgh5+GSv/kBwldjoQiYWmx797OJh6mHZZjlP5dVraSk4FOSC2OZL
+         tWeXHcbFSivgG2nW4fM67fjrKcOkt7J49J+O3pa8VTIQyMFrTjDyTV8k5Gc9wWB1VFO4
+         XYgQ==
+X-Gm-Message-State: AOJu0YwOD9yjoB7DyPwGtL3cFPhRjt8bsmGzjI0Qk04GvRZZbclyW1EQ
+	u6m7DjUS1ZGwqsQKFHRS9bqjzXe3/RfQouIkPYZE0JT8X0PHDKK2fd86e4LRLc8VuQuZ14czse2
+	z7QaAXGhGxRnGrb0no9KI4SRzJ4l56TQH5j+bQr/CawUeoY9/o4JAlPy5GAJVjQ==
+X-Gm-Gg: ASbGncvBnMpUjm6+FJ74C+eD5yq4gA1YlSosFdc99v8Dhp7/qYzBdeOSK859sesk1Z/
+	fyUVa1S3aS2oUvCaTcUQLglaDjJeU5o5lXSstqSWQ0IJ4GpxtlrNamM/9HUU+xTDUTrvx4LzocZ
+	nI2KINy1BIUwmsU1HxZe0gmFpjJQjiKMGLIx/EDnQgD/6cGi/jPZi1pbpd5r/dOsqiA4sgSSO4K
+	vNTvfOJM2h2YBEgSeNcBd2XyPB3Hus4vgfwsNXPLwC04KDQko4AcTzVBlIBXj9q67uwDkDU8oGU
+	psJ7r3J9SemLbhiy7/xx6PNZoXaEaaG1+w3WA/WsPQ==
+X-Received: by 2002:a05:600c:1546:b0:439:9946:af60 with SMTP id 5b1f17b1804b1-43ab0f72b03mr17377045e9.25.1740474905740;
+        Tue, 25 Feb 2025 01:15:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFv74YgG8Iolf174w9Y9ybHGXlvSToIfrToEGjP2c4/7Rl0aROxWh/UMKakDjj4UqxbgXB2bQ==
+X-Received: by 2002:a05:600c:1546:b0:439:9946:af60 with SMTP id 5b1f17b1804b1-43ab0f72b03mr17376785e9.25.1740474905347;
+        Tue, 25 Feb 2025 01:15:05 -0800 (PST)
+Received: from [10.32.64.164] (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ab1532f0asm18718845e9.4.2025.02.25.01.15.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2025 01:15:04 -0800 (PST)
+Message-ID: <7df6e1846ed6932c789a913c6a10aa8df5e26519.camel@redhat.com>
+Subject: Re: [PATCH net-next v3 2/4] stmmac: loongson: Remove surplus loop
+From: Philipp Stanner <pstanner@redhat.com>
+To: Yanteng Si <si.yanteng@linux.dev>, Philipp Stanner <phasta@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Yinggang Gu <guyinggang@loongson.cn>, Feiyang Chen
+ <chenfeiyang@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>, Qing
+ Zhang <zhangqing@loongson.cn>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Tue, 25 Feb 2025 10:15:03 +0100
+In-Reply-To: <437d4fad-6cd4-4f90-a1bb-07193d015cad@linux.dev>
+References: <20250224135321.36603-2-phasta@kernel.org>
+	 <20250224135321.36603-4-phasta@kernel.org>
+	 <437d4fad-6cd4-4f90-a1bb-07193d015cad@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/8] net: phy: add getters for public members of
- struct phy_package_shared
-To: Jakub Kicinski <kuba@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
- Andrew Lunn <andrew@lunn.ch>,
- Russell King - ARM Linux <linux@armlinux.org.uk>
-Cc: Eric Dumazet <edumazet@google.com>, David Miller <davem@davemloft.net>,
- Daniel Golle <daniel@makrotopia.org>, Qingfang Deng <dqfext@gmail.com>,
- SkyLake Huang <SkyLake.Huang@mediatek.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Richard Cochran <richardcochran@gmail.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, linux-mediatek@lists.infradead.org,
- linux-arm-msm@vger.kernel.org
-References: <c02c50ab-da01-4cfa-af72-4bed109fa8e2@gmail.com>
- <b505ed6a-533d-42ad-82d0-93315ce27e7f@gmail.com>
- <20250224180152.6e0d3a8b@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250224180152.6e0d3a8b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 2/25/25 3:01 AM, Jakub Kicinski wrote:
-> On Wed, 19 Feb 2025 22:04:47 +0100 Heiner Kallweit wrote:
->> +struct device_node *phy_package_shared_get_node(struct phy_device *phydev);
->> +void *phy_package_shared_get_priv(struct phy_device *phydev);
-> 
-> A bit sad that none of the users can fit in a line with this naming.
-> Isn't "shared" implied by "package" here ?
-> How would you feel about phy_package_get_priv() ?
+On Tue, 2025-02-25 at 17:06 +0800, Yanteng Si wrote:
+>=20
+> =E5=9C=A8 2/24/25 9:53 PM, Philipp Stanner =E5=86=99=E9=81=93:
+> > loongson_dwmac_probe() contains a loop which doesn't have an
+> > effect,
+> > because it tries to call pcim_iomap_regions() with the same
+> > parameters
+> > several times. The break statement at the loop's end furthermore
+> > ensures
+> > that the loop only runs once anyways.
+> >=20
+> > Remove the surplus loop.
+> >=20
+> > Signed-off-by: Philipp Stanner <phasta@kernel.org>
+>=20
+> It seems that the fix-tag has been forgotten, next two patches as
+> well.
 
-FWIW I personally agree the latter would be a better name.
+Not forgotten, I just think that patches 2-4 are code improvements, not
+bug fixes.
 
-@Heiner: could you please give that naming schema a shot here?
+The issue in patch 1 would cause actual misbehavior (a useless debug
+information print in case of a resource collision), whereas 2-4 are
+just ugly code, but not actual bugs: the loop always just runs once;
+and unmapping the PCI resources manually is valid, but obviously
+unnecessary.
 
-/P
+Agreed?
+
+P.
+
+>=20
+>=20
+> Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+>=20
+> Thanks,
+> Yanteng
+>=20
+> > ---
+> > =C2=A0 drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 11 +++---=
+-
+> > ----
+> > =C2=A0 1 file changed, 3 insertions(+), 8 deletions(-)
+> >=20
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> > b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> > index 73a6715a93e6..e3cacd085b3f 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> > @@ -554,14 +554,9 @@ static int loongson_dwmac_probe(struct pci_dev
+> > *pdev, const struct pci_device_id
+> > =C2=A0=C2=A0	pci_set_master(pdev);
+> > =C2=A0=20
+> > =C2=A0=C2=A0	/* Get the base address of device */
+> > -	for (i =3D 0; i < PCI_STD_NUM_BARS; i++) {
+> > -		if (pci_resource_len(pdev, i) =3D=3D 0)
+> > -			continue;
+> > -		ret =3D pcim_iomap_regions(pdev, BIT(0),
+> > DRIVER_NAME);
+> > -		if (ret)
+> > -			goto err_disable_device;
+> > -		break;
+> > -	}
+> > +	ret =3D pcim_iomap_regions(pdev, BIT(0), DRIVER_NAME);
+> > +	if (ret)
+> > +		goto err_disable_device;
+> > =C2=A0=20
+> > =C2=A0=C2=A0	memset(&res, 0, sizeof(res));
+> > =C2=A0=C2=A0	res.addr =3D pcim_iomap_table(pdev)[0];
 
