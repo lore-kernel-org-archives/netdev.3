@@ -1,78 +1,50 @@
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C807918DB09
-	for <netdev@vger.kernel.org>; Tue, 25 Feb 2025 16:05:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E7F17E015;
+	Tue, 25 Feb 2025 16:12:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740499548; cv=none; b=mz9MhzfFE5JKNuSlVsxblrSmKwhtSR68QdVpEc8mIuw6IiO6kOAb/Jkjy2ygTZkc7vYQkWx54SBa/BXRQdILPDaPtXJv6jb8CKx0KFIuBqEjBS48UTpLTIScP9DObP8KzxiT27UyuR9iRwj4+bQKXGoTIakCRFegx3kNJRsptFE=
+	t=1740499940; cv=none; b=D01MrrJqucRiRhfE4XPEVRviPPB2C2mXYEqNyUEEmZBfXiGprN6OeqPRHprWFMOSs7A63anbVp03UPIJNfLGCgSF+HbJW2NKTkAaGLZ34iOaHOV2Pb4bDxFZK6CIJIl7YLzByCREUOD437f02cfdAM61OvJHfJ07JRbi6vat9yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740499548; c=relaxed/simple;
-	bh=f1gB/U017DI3+yOGGw3YzckoQCKCbGxHsePswjmt4UE=;
+	s=arc-20240116; t=1740499940; c=relaxed/simple;
+	bh=6TPSx9DDdcDsDZc4Z3MH/7GdfIzQc59GGd56ID/Sx5g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FXTKBbm9TKqq6/myOWLANnh5NtDk9qHQrklqP3Ks2xDPaEv+quyfIovf86Ik1mbpQN2GXFiSlcfqa5bhyjfVZKODLtjShGSqZO1px/c/LYklYH7BwW/nA4eAeR86dGsxxD4mAQZZVfKmI7xrUfV3LbGnTwRME2VaAmoiq3ESGbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=zHh4LHk9; arc=none smtp.client-ip=103.168.172.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=LOWCQUtXF3Ze3KVqjFuY4n7z/mjJ34pSg6wP8Vh4BZ6ES3qy9Z0K055TB/WGr/R6KjgbJUk9IEhdgS05Yy6rxAa1g+43hyzDDhyczuwkszgSUHd8d5oeZF3Q8uoizeUnv10mwkrbMr5DLuzAeLHBGyu3S6YYSDmQb3TtYgOOh1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NU2EeJ8F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="zHh4LHk9"
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id BCF2213801A6;
-	Tue, 25 Feb 2025 11:05:44 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 25 Feb 2025 11:05:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1740499544; x=1740585944; bh=HSzbiwKLkoSh2DwEr9eobg0mlFMzZpLYpuK
-	OmkOpl3c=; b=zHh4LHk91KF+f3gHIiPZ8Fc0Ngu8uhB6Le7n8laPXXJ9CTzJLkx
-	8vWLJOGNNL7jv4I2+XNmAoQxWylsrhRlHOqpFx2WGwkcGEneFmjO5MC6V4rjPsr+
-	UsLOEqhI3mQmQbeZwr4sU1Y1lQRWQsNmye57NvtjQOo2I2jHqwnU75iT/HEM5x4i
-	129El2jWmWO3VH6+EwqPGOyWjDpS460xE4oTQsEzUTbC29rCR5UnGjMTcy+rDhSO
-	nbPHgN2TdbGrlazPmWxkBs+/AwKDip6WtbPH7Pn6mdCfx+KWER3/93X2XwAYXwDl
-	No+YXn2+TktRiCSWkBd0/8ixzKqWneRsdMg==
-X-ME-Sender: <xms:WOq9Z8S_xKEPksVLv6Thdyg032jol6R_vH0gfhwv2N2tMJHCJT2VBg>
-    <xme:WOq9Z5zata3apSXNtvDo0hK7_SKSuNUEgmv6J7-VvVtuXBUz8bSxOMaiW9DG118vk
-    Nvym-2YkNMEBwU>
-X-ME-Received: <xmr:WOq9Z52UBiDk9NpkGFt4sp8LNP9mnB0sDxXz5xjx8X22rNoHnCQwY-ACywIFr0Ch3y1HfmF973jcPN_Llsa0AzW_N9bJag>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekvddugecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrd
-    horhhgqeenucggtffrrghtthgvrhhnpedvudefveekheeugeeftddvveefgfduieefudei
-    fefgleekheegleegjeejgeeghfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhgpdhnsggprhgtphht
-    thhopeelpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehgnhgruhhlthesrhgvug
-    hhrghtrdgtohhmpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdp
-    rhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggvnh
-    hisehrvgguhhgrthdrtghomhdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgv
-    rdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepughsrghh
-    vghrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnthhonhhiohesmhgrnhguvg
-    hlsghithdrtghomh
-X-ME-Proxy: <xmx:WOq9ZwDB8fdusgDKC7bZYciKK4Z_AZtusrYfpYhnQsuqf0Z5L8o-RA>
-    <xmx:WOq9Z1jxmO1xlXufiHf9NlrOIK9hIORi93p8Fnw3S6qnIHw2tBYfdQ>
-    <xmx:WOq9Z8pu-uDAQvLdBIyFqAW8t9deRzHhDzyUAVKK1MgTeJMvR3cXFA>
-    <xmx:WOq9Z4g5AIvVQ9_AG1b56mZv_WQQ1ycpOy1p5MEUyxQJkq_IFmRYPA>
-    <xmx:WOq9Z2Xep53WXeyBLl3cZ4oAlB_1heB1To0Xym3FEDx594u-rMmHNW_Z>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 25 Feb 2025 11:05:43 -0500 (EST)
-Date: Tue, 25 Feb 2025 18:05:40 +0200
-From: Ido Schimmel <idosch@idosch.org>
-To: Guillaume Nault <gnault@redhat.com>
-Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Antonio Quartulli <antonio@mandelbit.com>
-Subject: Re: [PATCH net v3 1/2] gre: Fix IPv6 link-local address generation.
-Message-ID: <Z73qVCxg8r34i_Pg@shredder>
-References: <cover.1740493813.git.gnault@redhat.com>
- <dd92b7f4b6bb81ce64e304381bedaf0d15ff5613.1740493813.git.gnault@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NU2EeJ8F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7572C4CEDD;
+	Tue, 25 Feb 2025 16:12:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740499940;
+	bh=6TPSx9DDdcDsDZc4Z3MH/7GdfIzQc59GGd56ID/Sx5g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NU2EeJ8FyzWf7HI2/8kGM+qhJabN/O1VJNuarGCTaaTAf7SR0p+tXbOv0rNLPxQ1P
+	 GkqL3qVSbuxuVt9WmUtYt4eLECgRNhSgxMT0XJ/QUI9wAN5TWpY3nPWU8jNdGjfQJ1
+	 LEUk04YN6vDTgqNHfkNpZ21fN8T0YcAAhr04EjLYBM4jAXdRaS7W4XTBxCiIxrqv4P
+	 57Y+JoPZ9jyr40AvmvoOKNnT4zak99uCOcC7BXyI5g+RhLFg7ZZKkroT5cbSGKYFZx
+	 /ZFM9Ce6EOdxSFVina9oQWVocBhDIDX72LveN6lPTQLAoVJoBBHIB2h6yRFVQvtex7
+	 lT6g4Vkayq9QA==
+Date: Tue, 25 Feb 2025 10:12:18 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Will Deacon <will@kernel.org>, netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Christophe Roullier <christophe.roullier@foss.st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH v2 04/10] dt-bindings: stm32: add STM32MP21 and STM32MP23
+ compatibles for syscon
+Message-ID: <174049993788.2634473.18262936778020471573.robh@kernel.org>
+References: <20250225-b4-stm32mp2_new_dts-v2-0-1a628c1580c7@foss.st.com>
+ <20250225-b4-stm32mp2_new_dts-v2-4-1a628c1580c7@foss.st.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,60 +53,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dd92b7f4b6bb81ce64e304381bedaf0d15ff5613.1740493813.git.gnault@redhat.com>
+In-Reply-To: <20250225-b4-stm32mp2_new_dts-v2-4-1a628c1580c7@foss.st.com>
 
-On Tue, Feb 25, 2025 at 03:43:20PM +0100, Guillaume Nault wrote:
-> Use addrconf_addr_gen() to generate IPv6 link-local addresses on GRE
-> devices in most cases and fall back to using add_v4_addrs() only in
-> case the GRE configuration is incompatible with addrconf_addr_gen().
-> 
-> GRE used to use addrconf_addr_gen() until commit e5dd729460ca
-> ("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL
-> address") restricted this use to gretap and ip6gretap devices, and
-> created add_v4_addrs() (borrowed from SIT) for non-Ethernet GRE ones.
-> 
-> The original problem came when commit 9af28511be10 ("addrconf: refuse
-> isatap eui64 for INADDR_ANY") made __ipv6_isatap_ifid() fail when its
-> addr parameter was 0. The commit says that this would create an invalid
-> address, however, I couldn't find any RFC saying that the generated
-> interface identifier would be wrong. Anyway, since gre over IPv4
-> devices pass their local tunnel address to __ipv6_isatap_ifid(), that
-> commit broke their IPv6 link-local address generation when the local
-> address was unspecified.
-> 
-> Then commit e5dd729460ca ("ip/ip6_gre: use the same logic as SIT
-> interfaces when computing v6LL address") tried to fix that case by
-> defining add_v4_addrs() and calling it to generate the IPv6 link-local
-> address instead of using addrconf_addr_gen() (apart for gretap and
-> ip6gretap devices, which would still use the regular
-> addrconf_addr_gen(), since they have a MAC address).
-> 
-> That broke several use cases because add_v4_addrs() isn't properly
-> integrated into the rest of IPv6 Neighbor Discovery code. Several of
-> these shortcomings have been fixed over time, but add_v4_addrs()
-> remains broken on several aspects. In particular, it doesn't send any
-> Router Sollicitations, so the SLAAC process doesn't start until the
-> interface receives a Router Advertisement. Also, add_v4_addrs() mostly
-> ignores the address generation mode of the interface
-> (/proc/sys/net/ipv6/conf/*/addr_gen_mode), thus breaking the
-> IN6_ADDR_GEN_MODE_RANDOM and IN6_ADDR_GEN_MODE_STABLE_PRIVACY cases.
-> 
-> Fix the situation by using add_v4_addrs() only in the specific scenario
-> where the normal method would fail. That is, for interfaces that have
-> all of the following characteristics:
-> 
->   * run over IPv4,
->   * transport IP packets directly, not Ethernet (that is, not gretap
->     interfaces),
->   * tunnel endpoint is INADDR_ANY (that is, 0),
->   * device address generation mode is EUI64.
-> 
-> In all other cases, revert back to the regular addrconf_addr_gen().
-> 
-> Also, remove the special case for ip6gre interfaces in add_v4_addrs(),
-> since ip6gre devices now always use addrconf_addr_gen() instead.
-> 
-> Fixes: e5dd729460ca ("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL address")
-> Signed-off-by: Guillaume Nault <gnault@redhat.com>
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+On Tue, 25 Feb 2025 09:54:07 +0100, Amelie Delaunay wrote:
+> Add the new syscon compatibles for STM32MP21 syscfg = "st,stm32mp21-syscfg"
+> and for STM32MP23 syscfg = "st,stm32mp23-syscfg".
+> 
+> Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+> ---
+>  Documentation/devicetree/bindings/arm/stm32/st,stm32-syscon.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+
