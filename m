@@ -1,136 +1,210 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04471FBEAE;
-	Tue, 25 Feb 2025 18:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFD01547F8
+	for <netdev@vger.kernel.org>; Tue, 25 Feb 2025 18:24:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740507848; cv=none; b=KZ++s+AENm/9Ui4qR4Ckuuh3TMMhWG7KjWhbVp7m9xbkpQ26dvPN+ls0B/2mDPGNLH9p1zJuNittSFzeb4cx98tUIKTC7x4JmmOsfvhBqQ44uwUWwlIm8zlKFoRqlle8U9ZSf4VahBjYFrzz5nbLS6Uazd6oe6YvRGo9TsR9EEA=
+	t=1740507868; cv=none; b=NrgNZXEYyk8ZFTm85cB5t4fN2MLbWXwh9GwzGiES0Z9UmzwT0BmvbCI++d1yaj/DcwND+vVn8wldN/UYhCpP+a47BOsuJ3PI0yjbouFN9eQ0/RMR723f4EwYR7JWcJFtHERUSVC7rqkKzOikwKMamVCCGe6DzNgVP1CoJfsDYXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740507848; c=relaxed/simple;
-	bh=gkURQyDBFIIXVu+lUbjZG9GDidubVbJnt/AHKi//iwA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c/qxl7X0vt1GANZyXN28R4tfiyhhh0uA2wANAdSdMqgxTvRfVFPaWL72i+W7jBweKMS3WXIdKwH3JGg+/4e/ZkuonZYjewFmF2dzik0/frnUvLjMTKhkQOWdkuMQwSBCj0DF2/diXz50fMlRVLOE5L8VaqYPv+A3SVjIJdA+mTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=ync+WzAA; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1740507868; c=relaxed/simple;
+	bh=pTrS50UrAKy1J93trNooj9xNLJKGQrH88v3pxNpIlJw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LzLPFwdMo2QjoNVX03gVWWsvYcUhI8gKBfycUWhDzTNgCS1QbKXMqHqoxP614MQE8wdTcSECsfylZS1ot5oAFLdfQC/6/J9zp5q43t+BkMo4cCABdz5u+mi0/HXYJxXbbnaimJgNL9/nUPAi2HddQOCdevmKAmnElWBgM9hK6dU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Zdvf7OzL; arc=none smtp.client-ip=52.119.213.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="ync+WzAA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=HbEd1ycjERioNwQFESLBBImaWldcivxrxVLgLZpicQI=; b=ync+WzAAgbJ+vRdCqf9cvcOqmr
-	SZ1EskLrr7w1ZbMgwqat6LgAavMv4wwUOdWW/bWdwI4yyw+lyp0wlmaku8MKYklpDIyxuP9CpGgKN
-	dYyXhTlzGupfJZHM9+XgBSNXWyXpJaFj31RGLzwCj2JcP8BqfL7vz6Cwk10JHj1PaxEP9LmThQ90+
-	SBi8F7cG/cyvM/v4IOuV4unRaG4w0f+mUtdZslUROkhuT2O6+YstgXPfjmxPFzoMwH4D7qJi654iL
-	USgAZdQqcDP4LVUhou7/Ce1UbYxfnyxs52sQl10rM6oeqn8IIGwpnUEbcTHpXI2NxrQqk/lCPZpFC
-	rzuMKzog==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41384)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tmzb4-0002Dt-2S;
-	Tue, 25 Feb 2025 18:23:58 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tmzb2-0006EN-01;
-	Tue, 25 Feb 2025 18:23:56 +0000
-Date: Tue, 25 Feb 2025 18:23:55 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, davem@davemloft.net,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	=?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	=?iso-8859-1?Q?Bj=F8rn?= Mork <bjorn@mork.no>
-Subject: Re: [PATCH net-next v2 1/2] net: phy: sfp: Add support for SMBus
- module access
-Message-ID: <Z74Kuzb6kPJOZRQw@shell.armlinux.org.uk>
-References: <20250225112043.419189-1-maxime.chevallier@bootlin.com>
- <20250225112043.419189-2-maxime.chevallier@bootlin.com>
- <6ff4a225-07c0-40f6-9509-c4fa79966266@lunn.ch>
- <20250225145617.1ed1833d@fedora.home>
- <caa65ad9-9489-4d22-9e87-dd30e4e16cca@lunn.ch>
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Zdvf7OzL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1740507867; x=1772043867;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=j+QarZnAxWbwS+OcBvn5AvEnnndu8SzFmsMMexD2NMY=;
+  b=Zdvf7OzLH/aBPtFXf/49Ex7zy+kwToXD8PcGJV4qcwBarWsfknwncElj
+   iGxyb/0Om/bMGrSEiVHA4plcCrdAgcvGrhu61+IyGQaPHOaOl5UeBgjHi
+   YgYOmUFZLIfXMQVhgavoHMCpLlajhxas9ECfmvKS8fmscEPNtaTRvCdZw
+   c=;
+X-IronPort-AV: E=Sophos;i="6.13,314,1732579200"; 
+   d="scan'208";a="69147468"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 18:24:24 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [10.0.38.20:58041]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.6.186:2525] with esmtp (Farcaster)
+ id 334b2faf-c54e-4ac5-9f40-efe0e2cad126; Tue, 25 Feb 2025 18:24:23 +0000 (UTC)
+X-Farcaster-Flow-ID: 334b2faf-c54e-4ac5-9f40-efe0e2cad126
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 25 Feb 2025 18:24:19 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.106.100.5) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 25 Feb 2025 18:24:17 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+CC: Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
+	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
+Subject: [PATCH v1 net-next 03/12] ipv4: fib: Allocate fib_info_hash[] during netns initialisation.
+Date: Tue, 25 Feb 2025 10:22:41 -0800
+Message-ID: <20250225182250.74650-4-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250225182250.74650-1-kuniyu@amazon.com>
+References: <20250225182250.74650-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <caa65ad9-9489-4d22-9e87-dd30e4e16cca@lunn.ch>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D046UWA001.ant.amazon.com (10.13.139.112) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On Tue, Feb 25, 2025 at 03:58:31PM +0100, Andrew Lunn wrote:
-> > You might be correct. As I have been running that code out-of-tree for
-> > a while, I was thinking that surely I'd have noticed if this was
-> > wrong, however there are only a few cases where we actually write to
-> > SFP :
-> > 
-> >  - sfp_modify_u8(...) => one-byte write
-> >  - in sfp_cotsworks_fixup_check(...) there are 2 writes : one 1-byte
-> > write and a 3-bytes write.
-> > 
-> > As I don't have any cotsworks SFP, then it looks like having the writes
-> > mis-ordered would have stayed un-noticed on my side as I only
-> > stressed the 1 byte write path...
-> > 
-> > So, good catch :) Let me triple-check and see if I can find any
-> > conceivable way of testing that...
-> 
-> Read might be more important than write. This is particularly
-> important for the second page containing the diagnostics, and dumped
-> by ethtool -m. It could be the sensor values latch when you read the
-> higher byte, so you can read the lower byte without worrying about it
-> changing. This is why we don't want HWMON, if you can only do byte
-> access. You might be able to test this with the temperature
-> sensor. The value is in 1/256 degrees. So if you can get is going from
-> 21 255/256C to 22 0/256C and see if you ever read 21 0/256 or 22
-> 255/256C.
+We will allocate fib_info_hash[] and fib_info_laddrhash[] for each netns.
 
-<frustrated>
+Currently, fib_info_hash[] is allocated when the first route is added.
 
-Why don't we read SFF-8472 instead of testing module specific behaviour?
-Section 9.1 (Diagnostics overview) paragraphs 4 and 5 cover this.
+Let's move the first allocation to a new __net_init function.
 
-No, it's not latched when you read the high byte. Paragraph 4 states
-that multi-byte fields must be read using "a single two-byte read
-sequence across the 2-wire interface".
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+---
+ include/net/ip_fib.h     |  2 ++
+ net/ipv4/fib_frontend.c  |  9 ++++++++
+ net/ipv4/fib_semantics.c | 45 ++++++++++++++++++++++++++++------------
+ 3 files changed, 43 insertions(+), 13 deletions(-)
 
-Paragraph 5 states that "the transceiver shall not update a multi-byte
-field within the structure during the transfer of that multi-byte field
-to the host, such that partially updated data would be transferred to
-the host."
-
-In other words, while reading the the individual bytes of a multi-byte
-field, the value will remain stable _while the bus transaction which
-is required to be a multi-byte read is in progress_.
-
-So, when the STOP condition is signalled on the bus, the transceiver
-is then free to change the values. So accessing the high byte and
-low byte seperately does not guarantee to be coherent.
-
-It *might* work with some modules. It may not work with others. It
-might crash or lock the I2C bus with other modules. (I already know
-that at least one GPON module locks the bus with byte reads of
-0xA0 EEPROM offset 0x51.)
-
-We've had this before. We have a byte-mode fallback in the SFP code,
-and we've had to be *very* careful when enabling this only for
-modules that need it.
-
+diff --git a/include/net/ip_fib.h b/include/net/ip_fib.h
+index a113c11ab56b..e3864b74e92a 100644
+--- a/include/net/ip_fib.h
++++ b/include/net/ip_fib.h
+@@ -162,6 +162,8 @@ struct fib_info {
+ 	struct fib_nh		fib_nh[] __counted_by(fib_nhs);
+ };
+ 
++int __net_init fib4_semantics_init(struct net *net);
++void __net_exit fib4_semantics_exit(struct net *net);
+ 
+ #ifdef CONFIG_IP_MULTIPLE_TABLES
+ struct fib_rule;
+diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
+index 6730e2034cf8..dbf84c23ca09 100644
+--- a/net/ipv4/fib_frontend.c
++++ b/net/ipv4/fib_frontend.c
+@@ -1615,9 +1615,15 @@ static int __net_init fib_net_init(struct net *net)
+ 	error = ip_fib_net_init(net);
+ 	if (error < 0)
+ 		goto out;
++
++	error = fib4_semantics_init(net);
++	if (error)
++		goto out_semantics;
++
+ 	error = nl_fib_lookup_init(net);
+ 	if (error < 0)
+ 		goto out_nlfl;
++
+ 	error = fib_proc_init(net);
+ 	if (error < 0)
+ 		goto out_proc;
+@@ -1627,6 +1633,8 @@ static int __net_init fib_net_init(struct net *net)
+ out_proc:
+ 	nl_fib_lookup_exit(net);
+ out_nlfl:
++	fib4_semantics_init(net);
++out_semantics:
+ 	rtnl_lock();
+ 	ip_fib_net_exit(net);
+ 	rtnl_unlock();
+@@ -1637,6 +1645,7 @@ static void __net_exit fib_net_exit(struct net *net)
+ {
+ 	fib_proc_exit(net);
+ 	nl_fib_lookup_exit(net);
++	fib4_semantics_init(net);
+ }
+ 
+ static void __net_exit fib_net_exit_batch(struct list_head *net_list)
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index a68a4eb5e0d1..f00ac983861a 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -1421,28 +1421,21 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
+ 	}
+ #endif
+ 
+-	err = -ENOBUFS;
+-
+ 	if (fib_info_cnt >= fib_info_hash_size) {
++		unsigned int new_hash_bits = fib_info_hash_bits + 1;
+ 		struct hlist_head *new_info_hash;
+-		unsigned int new_hash_bits;
+-
+-		if (!fib_info_hash_bits)
+-			new_hash_bits = 4;
+-		else
+-			new_hash_bits = fib_info_hash_bits + 1;
+ 
+ 		new_info_hash = fib_info_hash_alloc(new_hash_bits);
+ 		if (new_info_hash)
+ 			fib_info_hash_move(new_info_hash, 1 << new_hash_bits);
+-
+-		if (!fib_info_hash_size)
+-			goto failure;
+ 	}
+ 
+ 	fi = kzalloc(struct_size(fi, fib_nh, nhs), GFP_KERNEL);
+-	if (!fi)
++	if (!fi) {
++		err = -ENOBUFS;
+ 		goto failure;
++	}
++
+ 	fi->fib_metrics = ip_fib_metrics_init(cfg->fc_mx, cfg->fc_mx_len, extack);
+ 	if (IS_ERR(fi->fib_metrics)) {
+ 		err = PTR_ERR(fi->fib_metrics);
+@@ -1863,7 +1856,7 @@ int fib_sync_down_addr(struct net_device *dev, __be32 local)
+ 	struct fib_info *fi;
+ 	int ret = 0;
+ 
+-	if (!fib_info_laddrhash || local == 0)
++	if (!local)
+ 		return 0;
+ 
+ 	head = fib_info_laddrhash_bucket(net, local);
+@@ -2265,3 +2258,29 @@ void fib_select_path(struct net *net, struct fib_result *res,
+ 			fl4->saddr = inet_select_addr(l3mdev, 0, RT_SCOPE_LINK);
+ 	}
+ }
++
++int __net_init fib4_semantics_init(struct net *net)
++{
++	unsigned int hash_bits = 4;
++
++	if (!net_eq(net, &init_net))
++		return 0;
++
++	fib_info_hash = fib_info_hash_alloc(hash_bits);
++	if (!fib_info_hash)
++		return -ENOMEM;
++
++	fib_info_hash_bits = hash_bits;
++	fib_info_hash_size = 1 << hash_bits;
++	fib_info_laddrhash = fib_info_hash + fib_info_hash_size;
++
++	return 0;
++}
++
++void __net_exit fib4_semantics_exit(struct net *net)
++{
++	if (!net_eq(net, &init_net))
++		return;
++
++	fib_info_hash_free(fib_info_hash);
++}
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.39.5 (Apple Git-154)
+
