@@ -1,193 +1,230 @@
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2053.outbound.protection.outlook.com [40.107.101.53])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0096E1A073F
-	for <netdev@vger.kernel.org>; Tue, 25 Feb 2025 17:16:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740503769; cv=fail; b=LTB5gqx1GLZSo4agEKgg73SwVOgWNqSl476KNh+mRdSnVCRr3cVO+r+wWCjxJVU6Mbo5Knj6U4I/repJQdVwbPW8cI0sdMM1n1CDrP+vNYLvS6hVVpFdIHUVPfZlwfdaCH4eqRRM+BCEC2nZA0UPNIPNewoe6x2/WGNSSqCA+b0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740503769; c=relaxed/simple;
-	bh=nuemk7EeOeML260u8A29vpkzXGcgIVp4dEN11cymZzo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 Content-Type:MIME-Version; b=KmA+ThTeN21CeTsiDlygzje/sBCf+GQMtHsApbFcpNTsgVta5onHatyCjW6oLj3DYG/EUG1yyMSOpnemsgpks3b0Gn/azOr+rCB/qPj04fsUYFccK/R5MN7iO19lz7rYhuUCYPijcnRDQ9pFGZYuU5e8j8q5IgeuCNDA8OxpvsM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XYeN1Pop; arc=fail smtp.client-ip=40.107.101.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF6B14A60A
+	for <netdev@vger.kernel.org>; Tue, 25 Feb 2025 17:18:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740503925; cv=none; b=IHu1NdEeEeACtRTLfirAJIcqgjyU+5K8M61FsalHeKKvNsQDL8ECMzyKU8elFXC0zsd81ZB/+LK1shPPoZShnVzo6fEFyMDm8h6IWZCeTqmNDuKI6ZO5AtEaZmZ1ebwdB2NhLJsMnRpzgog2pYrC6UAjJrFs98T4Lou4mOEI/u4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740503925; c=relaxed/simple;
+	bh=cS3wVg6LUjFtV+qB2te3Q6/t8UomdZ2zGsL912FwBkQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VRheUgrmF7Pes2C7Ih4BbOYguuTOl+rdNbRFBAJzOPE733hwqXuxJhshBcv+YLguvKOfs+bv2LodQSCXRrHzqi0LCSWcy88ee0buV7iOLPIXl7nmwzWuqJtTQWzHYhjb0A2veHD0miy7Ms9xz27GUTIfcD2yoWl9qZt2Aeyv1wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dIER00XO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XYeN1Pop"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XE4jGgUSKNzsNhM1DFgT/LMVLWTkbjYLDOEMb7J9gxV+5JlGBukdCWF7/j9P7bZQasSdH9QcmDCLImqwBIBJ5n2PRShIKqBncZgecfGJ83gxf3qgPdleg5RGyBArmRvoh+8UA6tGl6JufIzhI1bUR/HfcTYJsR9yasy1PWozMV23bixGjtWA6PLQhTTt/HTXtN7KQnOipjAvmFNzKQNGVAhgS/2zU8vBfysgZTtwcpT/BRJP/HP8Cz0DPqHoqAkqFRNsSA6HezGsRLuwxPgYgkkSpAYjAlm1vgmehIMwzT67Gq1iJ9/1OphJ2flLrOq2lbY+zpYSiF8xkcTCZeB8KQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6uAgRQHXELFfAcoEGsGtPAesMuChlY6SYbJDZjKoq8g=;
- b=H+npxeJZwm1GCyVEXEmnmiBX0l8AzT7mz4AvF/Caa2lduVjXjVh9t61aFvPRbmnsT8FHY0RWPB2F37nlNBMOAwtkCxxMPcgJZ7u0twa4FhXF1jVwUoKJBDfzNp9iMiW43n67bU5Oi225ggeGEjWh/KrK/24TY+4E+CI6RUwQtxf+Mbq5idzio3iMh7XLg8Hf60+D26y9U8HQOU/02/dOa+wiyzuum9wAPdzV2A27ipOpmdGFEdtvGDSZIKSv8t1USr89F1NHQQH5AHaxv7TXWG0pXMGpMqGS661+aJ0Pik9qVPJzmzGWusdtMCCCT06xJ1aGohZsZ43FJZOZ8heqRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6uAgRQHXELFfAcoEGsGtPAesMuChlY6SYbJDZjKoq8g=;
- b=XYeN1PopTZZgDSmeWD97PRNeJKE6xOYCge9HA/0B/5VYhFjASdooA/Ie/r9L+JPn+XaJsttHxAjOiDi6nVuam8795+UDSSmKFt4eoDpxzzqKxS0P//u9IyoWVRt2H7QjrpK8tFOxYGnL6Wi8tTNeNKTalEmn7xnOiV5Wr0lnzRWdaXpQAu1xa8QtQJJlEL8CSZ3Jev9fkUOuIlrc4lWdOysr0ePr8wwVZNCcIyxGql0t0jcyHs7oTFveyUionVjS1K4C44ER2D8GWu71MHYbry/74qttQaTPeUan7QMHKYQUOSQIuoyEFRO80WdjtmtLYAmYiVYmW2lGdqHeJcU7MA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SJ2PR12MB8943.namprd12.prod.outlook.com (2603:10b6:a03:547::17)
- by PH8PR12MB6674.namprd12.prod.outlook.com (2603:10b6:510:1c1::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.18; Tue, 25 Feb
- 2025 17:16:01 +0000
-Received: from SJ2PR12MB8943.namprd12.prod.outlook.com
- ([fe80::7577:f32f:798c:87cc]) by SJ2PR12MB8943.namprd12.prod.outlook.com
- ([fe80::7577:f32f:798c:87cc%5]) with mapi id 15.20.8466.016; Tue, 25 Feb 2025
- 17:16:01 +0000
-From: Aurelien Aptel <aaptel@nvidia.com>
-To: Paolo Abeni <pabeni@redhat.com>, linux-nvme@lists.infradead.org,
- netdev@vger.kernel.org, sagi@grimberg.me, hch@lst.de, kbusch@kernel.org,
- axboe@fb.com, chaitanyak@nvidia.com, davem@davemloft.net, kuba@kernel.org,
- apw@canonical.com, joe@perches.com, dwaipayanray1@gmail.com,
- lukas.bulwahn@gmail.com
-Cc: Boris Pismenny <borisp@nvidia.com>, aurelien.aptel@gmail.com,
- smalin@nvidia.com, malin1024@gmail.com, ogerlitz@nvidia.com,
- yorayz@nvidia.com, galshalom@nvidia.com, mgurtovoy@nvidia.com,
- edumazet@google.com, dsahern@kernel.org, ast@kernel.org,
- jacob.e.keller@intel.com
-Subject: Re: [PATCH v26 01/20] net: Introduce direct data placement tcp offload
-In-Reply-To: <253seo2ywq6.fsf@nvidia.com>
-References: <20250221095225.2159-1-aaptel@nvidia.com>
- <20250221095225.2159-2-aaptel@nvidia.com>
- <9d381da6-cef7-431e-be82-fd2888fc480a@redhat.com>
- <253seo2ywq6.fsf@nvidia.com>
-Date: Tue, 25 Feb 2025 19:15:57 +0200
-Message-ID: <253mseaymgi.fsf@nvidia.com>
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0434.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a9::7) To SJ2PR12MB8943.namprd12.prod.outlook.com
- (2603:10b6:a03:547::17)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dIER00XO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAC0C4CEDD;
+	Tue, 25 Feb 2025 17:18:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740503924;
+	bh=cS3wVg6LUjFtV+qB2te3Q6/t8UomdZ2zGsL912FwBkQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dIER00XOuKCbgEDtj9/s6wohSZTAK7Nz4i2h9oPchLr5L7odTPTyHaix5OgeXTkke
+	 Fp/DcuWUj9RIOUlbOmuqFqHDZNq6HrwiFL6B3KI4Gl3kHbbqSUPY0lOrtEPBmid4Z4
+	 EI2rgV/AoNGKumRbBWvMQY1ODuOvZ4Gfld+dV164t7YYPSetGmyJh2Z3WiSMkyrfcJ
+	 ZDG37TTC/w05+RbJaQyxw4y/MXA+LQiwMhgifhLQpvoh14i3bUgVwmgGvf2sHrV5zd
+	 XI9apywrp2Rsvzw3RznvkA0ThCs9Ws4o08mzDbpbYDE/1rFZ1dbYV+4ofL7ZBzWab6
+	 pFM1zrmBze2dA==
+Message-ID: <d7510d93-7469-4dee-8a09-f80c0f1df3b3@kernel.org>
+Date: Tue, 25 Feb 2025 18:18:39 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8943:EE_|PH8PR12MB6674:EE_
-X-MS-Office365-Filtering-Correlation-Id: 369d7930-6292-4e31-2a99-08dd55c013fd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|921020|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Jo9MQ9CYye97hDf/XKN35m/UfwYUP67pRGoVnJHI4CzPLLEglNbICNWp9uKB?=
- =?us-ascii?Q?vLMK4oD375L8fhjs+DeW365+uvp1err1nRYznt4Es9e1LdZ3v1UUESmeXTHY?=
- =?us-ascii?Q?Hmbu4Q7cDvbUW9zAReQk6uOhryS3/JKeRZYt1MMm37kSZR9vTPLgQiq81CVI?=
- =?us-ascii?Q?B8Avxh9VPXiCf4BBuWVH9CnO6Nw1XOeYI0ZjuCPPiRcjNzCz4NFc6LpR8w2D?=
- =?us-ascii?Q?c0SZqc8UcYruQnUvdDfQvsErp3Ezsgtz9ooStQnWbjYwUuSILb+BRKf2707g?=
- =?us-ascii?Q?oE1CctJM6BNpIlqQDae5xt7Eib1BqYLtSEGNHr5Fja+DyYKGZnMWHpv9Ayza?=
- =?us-ascii?Q?hUXiTL0zZMjIs0L5dXg8hI4K62T6NiC7DSW/pvRbwi5SKgWbLYptkEGYzzOm?=
- =?us-ascii?Q?NKtvYyPYplpu83wMbLVPg2GS2kD/uFG7Zy9mZhU5hTtXKKBpaPsLh49IO2rb?=
- =?us-ascii?Q?l3cIZhd9Fc0jRz3CQHPTUeTPDaR/MYuB+Y5K0Ik5G68whr1a4oly6/jFKakM?=
- =?us-ascii?Q?42YHHXvBCHwXBH04eETE83ndnMnhCQlE18OYVMprTr+r58IGGx1jk5hFXjLW?=
- =?us-ascii?Q?38whr23Oa11D8XiouJsOoOpBupxBMcRpjgZpJDy90pU6kftxUfQ5LOhSfBb8?=
- =?us-ascii?Q?SujHIlkqnE7mx8Cj0eIzDNhyldxG6+O/pzuhKPcKhXQQofY9Ec0s84PeqY86?=
- =?us-ascii?Q?N/EearQONyrcfY+cnF3ObsiZjVMTErCuctdFI41uP2YgEiYMIQBjfUZlA59O?=
- =?us-ascii?Q?KK57he0vXFo5LX5yFQElCYMZrk+j1xTQKLe+3rkVJS5Mkh+kZ/vuc2ci/D1c?=
- =?us-ascii?Q?yPCIP6I599ImnNkpdO0zZ+Jd96D3csmA1FAPS1pucQHPSjZs0N3TbHmR2g9Y?=
- =?us-ascii?Q?7qUoKJRn0I3/3oJ/USxHsC5mNPc2h3hAGyN79MhHrAQZxQ567T5+udSC//gt?=
- =?us-ascii?Q?Y6jTVy3F5HyAlCO45FL092fdjZUsn/Cdj/1gU4xR/Wdwmg95klQc9pSK2Ibk?=
- =?us-ascii?Q?tXmXqNfQNWYM7MW4eHq3BN1pX432uyX9nD2zLR4BeLJZ4DyDwTO2TPJp1wmo?=
- =?us-ascii?Q?30l41ZFEPBiUZNqAyqIfQZwGjHgWYwNJAJ1+k2i0AMBw+Bj+vOCxy7xGKPO3?=
- =?us-ascii?Q?KCAwjS546/g7QNz9B01t9/sjSFTkWxYyThoOwTjVUPrrl/SQiqGn03D9H0XL?=
- =?us-ascii?Q?Zx3QWJGwmsG7lmxj53U8k4rhePVl94ZZf332Ymnmdb9j6mSiGNrLait8INGm?=
- =?us-ascii?Q?cHSXp5HvBF9XBgsMyY0SWmeZ30fF3y1IsVHgy2J3FEJqw5xk9K6wrQxgwiVd?=
- =?us-ascii?Q?LnruaYKmDU5qHKSrXq44b4pJjusTamOYn8exCEXHB3XG3LqjzY/FDNvsKO3g?=
- =?us-ascii?Q?JP1LwlJU1inh5quWR3bVxSaX37EYHt/9qgkp5Pnnok8KZOHbKEIQz3ZChlpI?=
- =?us-ascii?Q?GzAyPhuZyZ4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8943.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(921020)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?CzSsSRPHPhJjoBZz5htbuiDj8xiDuv1ro44wuZgUT/oZ7m80WVuowpzwcj3N?=
- =?us-ascii?Q?33UjtUKNlLTAkHuUjBj8AN814zjPYrW+X6BHl/jLsmn+LPACi3dz1l/tpM49?=
- =?us-ascii?Q?xXYiAhBbwgH6GlPL07fXFRoqhUAJm4o9C9SFFSHqGNxYltEJ/n4ZLDelc/h8?=
- =?us-ascii?Q?s1tgdaehcMDKjJ0UV0eT2yIMifwy5A9cgqpEYy/sY+7b+WPP4sG45opSZJrP?=
- =?us-ascii?Q?Wu3p87L5mJmrVI/icrD6RoVxoOHbhYJPLmIZuSD26WwVR65oGH+CKqUsFnEE?=
- =?us-ascii?Q?zOwIUKOpeHXM8jYO7tTlB3KhhVSeWRaZgvvKBak5ImTHIaC+xWPysByF+rXw?=
- =?us-ascii?Q?mv+I8bxVxxMG9NgXCdAssYpM9C5MmD0JlnunmpuGHsuTlVtTy9nVoA97Vq24?=
- =?us-ascii?Q?MLk35Si5dMyox/QPl4AJwuyPZjZ2HIwWeQkP0Y0IMsOV1ar8k87JUSkHlGfQ?=
- =?us-ascii?Q?QjFYZqy8SblgdwZvsJZdkoheuVM/kHQexvFD7LAl1nRRWd6CblX1rbb8iVxu?=
- =?us-ascii?Q?mXkLWgdpyQN3Dt88iiUPeA6Ebq+ecayW9FlQanHGL5l17qYSLzIdhXLURoln?=
- =?us-ascii?Q?GwQ74Kj1KiEPNG8cgEUaBgO1Otc8DmJaCRjE3gLoboxaRn9orrZq1WRa9pjw?=
- =?us-ascii?Q?hGv0C4HR3bVdWIsGvRJ9yETV1lsydobT9Sru0hh7FvUpr6nmRJp9rEfokUoT?=
- =?us-ascii?Q?Pac6EPNpvA7jMANIYBmTgBxktRrB7RA8WBFu0obZvE9EJon/0XXAPt+aKzak?=
- =?us-ascii?Q?HeRiIdH14HW51rym8elfQ91/orG+IAh3bDAY0YnEhgqcduNj8Ab5qww6cTwF?=
- =?us-ascii?Q?XO3XxSdX5rv/p02czdZmKO5peIkL8OM2Peyk5j+NVH3lvfkWaAJ7HZ/ZTgJw?=
- =?us-ascii?Q?ilBChyYrdcHbEx8E3I9QK3SdxGdqxqXN9SlOTcRumqUcnxDAcsSYXQhUyeh5?=
- =?us-ascii?Q?I8mK4dtzAwLeafadNG8pvJre7JtXaVZGU5ag9NYBarR+cSQxaPImZjtCiYC1?=
- =?us-ascii?Q?wnNgD4/q1/43fK6DM/QrVDOKqmwV6NlDpxVaK5UzWvLwPOlh6Hezv0T/vWr5?=
- =?us-ascii?Q?NAjM0qzx7oQpi0qaif3t8AkqTh0JcDwjrXxC7yt8YvEYl7rmbJe0rYcaA1rU?=
- =?us-ascii?Q?4O6lsMk826EPtoFdHQFE/R/NevAaypGKZJ09NocfnzgWwO++Mz1mwnevgdJL?=
- =?us-ascii?Q?MUi/ntVZk7VL3UvQSK+bcTHREsMceoSmy45TIZfmVSYBntN3oAyh8i1apGHb?=
- =?us-ascii?Q?xt8oeMv06LEYGcl8KnnuZF9PuORAwtQ4suusKLNn8LxmpaoTQ41zO1BcNtvR?=
- =?us-ascii?Q?jRN72LuaA6U8TmLbzbBIj/gba2cDJo3Aun58dACHMS3tFaJi5vQTovieRDTU?=
- =?us-ascii?Q?b58BbH3QN3X+FnUgw+lOHtVYPFTr0iyDh61vucXuWaFzvuOiyuMGwKVgiQOH?=
- =?us-ascii?Q?vtL149dwleDdbZS7uDoWCVoxPQKbpr0zxxiLoD55KvEj2a/rbjaEQP5FkQX5?=
- =?us-ascii?Q?3qanSNiOR1ciOvt+k3s11nE2shQ8k512HHCu9TxCFTXS1trTx3xLFemsceye?=
- =?us-ascii?Q?ZQK9zYB1AjloGjYzKThayoUX0pKlpQ4Lma4CdJPS?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 369d7930-6292-4e31-2a99-08dd55c013fd
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8943.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 17:16:01.7224
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CnPwtVlkhR4c8qznLNCT+NGUEj59mP8KC+BKs7cCn3b6Mt1ioHYnpHGjtDR4HtuV9lLVEwOiLlaw07Ed8RBrGw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6674
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net-next] tcp: be less liberal in tsecr received while in
+ SYN_RECV state
+Content-Language: en-GB
+To: Eric Dumazet <edumazet@google.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@amazon.com>,
+ Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ Jakub Kicinski <kuba@kernel.org>, Yong-Hao Zou <yonghaoz1994@gmail.com>,
+ "David S . Miller" <davem@davemloft.net>,
+ Neal Cardwell <ncardwell@google.com>
+References: <20250224110654.707639-1-edumazet@google.com>
+ <4f37d18c-6152-42cf-9d25-98abb5cd9584@redhat.com>
+ <af310ccd-3b5f-4046-b8d7-ab38b76d4bde@kernel.org>
+ <CANn89iJfXJi7CL2ekBo9Zn9KtVTRxwMCZiSxdC21uNfkdNU1Jg@mail.gmail.com>
+ <927c8b04-5944-4577-b6bd-3fc50ef55e7e@kernel.org>
+ <CANn89iJu5dPMF3BFN7bbNZR-zZF_xjxGqstHucmBc3EvcKZXJw@mail.gmail.com>
+ <40fcf43d-b9c2-439a-9375-d2ff78be203f@kernel.org>
+ <CANn89iLH_SgpWgAXvDjRbpFtVjWS-yLSiX0FbCweWjAJgzaASg@mail.gmail.com>
+ <CANn89i+Zs2bLC7h2N5v15Xh=aTWdoa3v2d_A-EvRirsnFEPgwQ@mail.gmail.com>
+ <CANn89iLf5hOnT=T+a9+msJ7=atWMMZQ+3syG75-8Nih8_MwHmw@mail.gmail.com>
+ <8beaf62e-6257-452d-904a-fec6b21c891e@kernel.org>
+ <CANn89i+3M1bJf=gXMH1zK3LiR-=XMRPe+qR8HNu94o2Xzm4vQQ@mail.gmail.com>
+ <f970e46e-7153-4000-beef-f2d621998a8e@kernel.org>
+ <CANn89iLZSO+Swf78jV0mc9jLUFLiqOtcjbTWsoYmdr=jn0SUxg@mail.gmail.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <CANn89iLZSO+Swf78jV0mc9jLUFLiqOtcjbTWsoYmdr=jn0SUxg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+Hi Eric,
 
-Aurelien Aptel <aaptel@nvidia.com> writes:
-> Paolo Abeni <pabeni@redhat.com> writes:
->>> +     /* put in ulp_ddp_sk_del() */
->>> +     dev_hold(netdev);
+On 25/02/2025 18:11, Eric Dumazet wrote:
+> On Tue, Feb 25, 2025 at 5:56 PM Matthieu Baerts <matttbe@kernel.org> wrote:
 >>
->> You should use netdev_hold()/netdev_put() instead, with a paired reftracker.
->
-> Ok, we will pass the tracker as argument.
+>> Hi Eric,
+>>
+>> On 25/02/2025 11:51, Eric Dumazet wrote:
+>>> On Tue, Feb 25, 2025 at 11:48 AM Matthieu Baerts <matttbe@kernel.org> wrote:
+>>>>
+>>>> On 25/02/2025 11:42, Eric Dumazet wrote:
+>>>>> On Tue, Feb 25, 2025 at 11:39 AM Eric Dumazet <edumazet@google.com> wrote:
+>>>>>>
+>>>>>
+>>>>>>
+>>>>>> Yes, this would be it :
+>>>>>>
+>>>>>> diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+>>>>>> index 728bce01ccd3ddb1f374fa96b86434a415dbe2cb..3555567ba4fb1ccd5c5921e39d11ff08f1d0cafd
+>>>>>> 100644
+>>>>>> --- a/net/ipv4/tcp_timer.c
+>>>>>> +++ b/net/ipv4/tcp_timer.c
+>>>>>> @@ -477,8 +477,8 @@ static void tcp_fastopen_synack_timer(struct sock
+>>>>>> *sk, struct request_sock *req)
+>>>>>>          * regular retransmit because if the child socket has been accepted
+>>>>>>          * it's not good to give up too easily.
+>>>>>>          */
+>>>>>> -       inet_rtx_syn_ack(sk, req);
+>>>>>>         req->num_timeout++;
+>>>>>> +       inet_rtx_syn_ack(sk, req);
+>>>>>>         tcp_update_rto_stats(sk);
+>>>>>>         if (!tp->retrans_stamp)
+>>>>>>                 tp->retrans_stamp = tcp_time_stamp_ts(tp);
+>>>>>
+>>>>> Obviously, I need to refine the patch and send a V2 later.
+>>>>
+>>>> Sorry, I still have the issue with this modification. I also checked
+>>>> with the previous patch, just to be sure, but the problem is still there
+>>>> as well.
+>>>
+>>> I said "req->num_timeout" is not updated where I thought it was.
+>>
+>> I think that in case of SYN+ACK retransmission, req->num_timeout is
+>> incremented after tcp_synack_options():
+>>
+>>   reqsk_timer_handler()
+>>   --> inet_rtx_syn_ack()
+>>     --> tcp_rtx_synack()
+>>       --> tcp_v6_send_synack()
+>>         --> tcp_make_synack()
+>>           --> tcp_synack_options()
+>>   then: req->num_timeout++
+>>
+>>> Look at all the places were req->num_timeout or req->num_retrans are
+>>> set/changed.... this will give you some indications.
+>>
+>> I'm probably missing something obvious, but if the goal is to set
+>> snt_tsval_first only the first time, why can we not simply set
+>>
+>>   tcp_rsk(req)->snt_tsval_first = 0;
+>>
+>> in tcp_conn_request(), and only set it to tsval in tcp_synack_options()
+>> when it is 0? Something like that:
+>>
+>>
+>>> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+>>> index 217a8747a79b..26b3daa5efd2 100644
+>>> --- a/net/ipv4/tcp_input.c
+>>> +++ b/net/ipv4/tcp_input.c
+>>> @@ -7249,6 +7249,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
+>>>         tcp_rsk(req)->af_specific = af_ops;
+>>>         tcp_rsk(req)->ts_off = 0;
+>>>         tcp_rsk(req)->req_usec_ts = false;
+>>> +       tcp_rsk(req)->snt_tsval_first = 0;
+>>>  #if IS_ENABLED(CONFIG_MPTCP)
+>>>         tcp_rsk(req)->is_mptcp = 0;
+>>>  #endif
+>>> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+>>> index 485ca131091e..020c624532d7 100644
+>>> --- a/net/ipv4/tcp_output.c
+>>> +++ b/net/ipv4/tcp_output.c
+>>> @@ -943,7 +943,7 @@ static unsigned int tcp_synack_options(const struct sock *sk,
+>>>                 opts->options |= OPTION_TS;
+>>>                 opts->tsval = tcp_skb_timestamp_ts(tcp_rsk(req)->req_usec_ts, skb) +
+>>>                               tcp_rsk(req)->ts_off;
+>>> -               if (!req->num_timeout)
+>>> +               if (!tcp_rsk(req)->snt_tsval_first)
+>>>                         tcp_rsk(req)->snt_tsval_first = opts->tsval;
+>>>                 WRITE_ONCE(tcp_rsk(req)->snt_tsval_last, opts->tsval);
+>>>                 opts->tsecr = READ_ONCE(req->ts_recent)
+>>
+>>
+>> Or is the goal to update this field as long as the timeout didn't fire?
+>> In this case maybe req->num_timeout should be updated before calling
+>> inet_rtx_syn_ack() in reqsk_timer_handler(), no?
+>>
+>>> Do not worry, I will make sure V2 is fine.
+>>
+>> I don't doubt about that, thank you! :)
+> 
+> I can see you are super excited to see this patch landing ;)
 
-There is currently a bug in checkpatch, it seems it cannot deal with kernel
-typedefs when they are inside a ifdef:
+Oh no, sorry, when I read your previous email, I understood you wanted
+me to look at it. That's why I took a bit of time this afternoon looking
+at all the places where req->num_timeout is incremented, and sent this
+email :)
 
-    $ cat > test.h
-    /* SPDX-License-Identifier: MIT */
-    #if x
-    int a(netdevice_tracker *p);
-    #endif
-    ^D
+So no hurry for me to have this patch landed. All I wanted was it not to
+break MPTCP selftests, and help to understand why it was causing issues
+in the first place (not due to MPTCP apparently, for once :) )
 
-    $ ./scripts/checkpatch.pl -f test.h
-    ERROR: need consistent spacing around '*' (ctx:WxV)
-    #3: FILE: test.h:3:
-    +int a(netdevice_tracker *p);
-                             ^
-    
-    total: 1 errors, 0 warnings, 4 lines checked
-    
-    NOTE: For some of the reported defects, checkpatch may be able to
-          mechanically convert to the typical style using --fix or --fix-inplace.
-    
-    test.h has style problems, please review.
-    
-    NOTE: If any of the errors are false positives, please report
-          them to the maintainer, see CHECKPATCH in MAINTAINERS.
+> I sent the V2, after running all my tests.
 
+Thank you!
 
-If you remove the #if/#endif it is quiet.
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
-I'm reporting this since NIPA is so strict on checkpatch errors.
-I've added checkpatch.pl maintainers in the loop.
-In the meantime maybe let's ignore this warning in NIPA?
-
-Thanks
