@@ -1,124 +1,124 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2881A267B0E
-	for <netdev@vger.kernel.org>; Tue, 25 Feb 2025 11:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6033FB3B;
+	Tue, 25 Feb 2025 11:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740482952; cv=none; b=FFFEooWm/DtfICzx0TYeWpX6qNvnxiaLIBrZk+ws3EJ7nZhJKcUWbKBgX5WEfYIPAVriYnFAgROhBmjUSb9JT/Selx1KngoFzwLG2oDePxtwA7+j2Dqy7T36Eyvc4Q+YC1CbNmgriqYhD+74GuDPGT7+vhfng5pR9PQcz8t29DQ=
+	t=1740483031; cv=none; b=B0/FV5odRSIwhRtJ/q+QgadQh8Bt2B5IVVG6V97G5ry/pLPX3jV3fv72qgBeGHXCdmBONh5lFQmkXpeEW8gZInbXnoRBE0tNE0hURQGQW4WXJh1t6J20ziOVM9zLIU+fdwVLWUYp7fynz6culRexjQRjPT29ff7kUvlnmUv2btU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740482952; c=relaxed/simple;
-	bh=4hG45/YxxUDAGf1kCmq/7SOok8aeW8YFCR9rk9+hyOQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hcVK42gmd/vldssyMVQkkoX/t4JLDsEcLqKpJmsmIdoiD75sqLYA4lHXd96s8PIAZ9eFJZmP5Mb5UDKW0nDEtbNVbwphu4XsJFQo2AnYS7NuJtd6V6NDhwJE/5oOpd6zCUTXitCvTvTmrnR3ckl6bA1j6wectv5rqULS8YK7Xgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OXPSG3Rm; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1740483031; c=relaxed/simple;
+	bh=5JkI6I/KKcUKr71+ZMQ71+9ZZhUCqVTU9Aa6nTChzK4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OF7HwwanPiDgYquDTcqa6MzP92215GmLVv4WAQr/ToyE5pYcovICjqdm/C1P4D5MnVXtJuZ0YZYTIfGgj9SCvScU7rQDZmPe552hpABM/UFwIKgz6jK6yD9UKqU7cTTQwRZLlgnFzFUwYP6FH+iHkKuR+I4Xi3FGWtX41He2O8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=YKOpJNmO; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OXPSG3Rm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740482950;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=NSVvrnw9YXxB4JrmUbbeQ/j7AZVx0OggkSEwg3u9xAw=;
-	b=OXPSG3RmVcon+QTGR/gnbvnNik3Rd0kP3dT2U9sLk//NjRk2/i0atOdCR0GcxH7lTld3PF
-	EABC2mEAMMD8pTePwM/w/0ISAg2crt7qjWYMoeC2n+gqcGjKABl69pcfNwJ9ue8Mbu4TaH
-	bEtN+0oCSlSnRlfmFH8alaN54Mc5Xtc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-dfUVcbLPO0ikpkhw1n8hug-1; Tue,
- 25 Feb 2025 06:29:04 -0500
-X-MC-Unique: dfUVcbLPO0ikpkhw1n8hug-1
-X-Mimecast-MFC-AGG-ID: dfUVcbLPO0ikpkhw1n8hug_1740482943
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="YKOpJNmO"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id DE94D20758;
+	Tue, 25 Feb 2025 12:30:26 +0100 (CET)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id cuqB9zGpxzzd; Tue, 25 Feb 2025 12:30:26 +0100 (CET)
+Received: from cas-essen-01.secunet.de (rl1.secunet.de [10.53.40.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3BADB1801A39;
-	Tue, 25 Feb 2025 11:29:03 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.47.238.150])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4E8DF300018D;
-	Tue, 25 Feb 2025 11:29:00 +0000 (UTC)
-From: Mohammad Heib <mheib@redhat.com>
-To: netdev@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: Mohammad Heib <mheib@redhat.com>
-Subject: [PATCH net v3] net: Clear old fragment checksum value in napi_reuse_skb
-Date: Tue, 25 Feb 2025 13:28:52 +0200
-Message-ID: <20250225112852.2507709-1-mheib@redhat.com>
+	by mx1.secunet.com (Postfix) with ESMTPS id 2EFB020538;
+	Tue, 25 Feb 2025 12:30:26 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 2EFB020538
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1740483026;
+	bh=avFfv++348AjyeuAhp90vldguj68XpkUO6jKgW4t87c=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=YKOpJNmOh/laYuYlCmiLRjfJ1ybVjYbXFZJc7SMq6nHUtER9fktSWKhFez9ycHkfK
+	 c4JYpvqov5B2ESpljJB+KApZ3tq9B7hAin8ANQarKBxSg55J223p3oFkOfdUTvhNPN
+	 FPV5mPLFMP0ACLPUkzrQ3Wn2qpfQaqFasYJC6PtSHw650XjkscKUbJRE2UZUSs9T8f
+	 7LvrcbVZaScLTmd1jeSvy/G/49E/ARC5liHrXUBNDBFu3+lDzaV92JGmTKL8a5JGs2
+	 THCUP4u3PNlAIFRxHL9uCnM6wHgyU60wZ4vItRCNw8E4Vmy7VU6ebGpgNhfvlBtxl+
+	 G98AWvIGBtzJg==
+Received: from mbx-essen-02.secunet.de (10.53.40.198) by
+ cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 25 Feb 2025 12:30:25 +0100
+Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
+ (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 25 Feb
+ 2025 12:30:25 +0100
+Received: by gauss2.secunet.de (Postfix, from userid 1000)
+	id 0CCFE3183EA6; Tue, 25 Feb 2025 12:30:25 +0100 (CET)
+Date: Tue, 25 Feb 2025 12:30:24 +0100
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Cosmin Ratiu <cratiu@nvidia.com>
+CC: <netdev@vger.kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, "Paolo
+ Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Eric Dumazet
+	<edumazet@google.com>, "David S . Miller" <davem@davemloft.net>, "Jakub
+ Kicinski" <kuba@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	<linux-kselftest@vger.kernel.org>, Dragos Tatulea <dtatulea@nvidia.com>,
+	"Yael Chemla" <ychemla@nvidia.com>
+Subject: Re: [PATCH net] xfrm_output: Force software GSO only in tunnel mode
+Message-ID: <Z72p0GAD8eSweiz7@gauss3.secunet.de>
+References: <20250219105248.226962-1-cratiu@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20250219105248.226962-1-cratiu@nvidia.com>
+X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
+ mbx-essen-02.secunet.de (10.53.40.198)
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-In certain cases, napi_get_frags() returns an skb that points to an old
-received fragment, This skb may have its skb->ip_summed, csum, and other
-fields set from previous fragment handling.
+On Wed, Feb 19, 2025 at 12:52:48PM +0200, Cosmin Ratiu wrote:
+> The cited commit fixed a software GSO bug with VXLAN + IPSec in tunnel
+> mode. Unfortunately, it is slightly broader than necessary, as it also
+> severely affects performance for Geneve + IPSec transport mode over a
+> device capable of both HW GSO and IPSec crypto offload. In this case,
+> xfrm_output unnecessarily triggers software GSO instead of letting the
+> HW do it. In simple iperf3 tests over Geneve + IPSec transport mode over
+> a back-2-back pair of NICs with MTU 1500, the performance was observed
+> to be up to 6x worse when doing software GSO compared to leaving it to
+> the hardware.
+> 
+> This commit makes xfrm_output only trigger software GSO in crypto
+> offload cases for already encapsulated packets in tunnel mode, as not
+> doing so would then cause the inner tunnel skb->inner_networking_header
+> to be overwritten and break software GSO for that packet later if the
+> device turns out to not be capable of HW GSO.
+> 
+> Taking a closer look at the conditions for the original bug, to better
+> understand the reasons for this change:
+> - vxlan_build_skb -> iptunnel_handle_offloads sets inner_protocol and
+>   inner network header.
+> - then, udp_tunnel_xmit_skb -> ip_tunnel_xmit adds outer transport and
+>   network headers.
+> - later in the xmit path, xfrm_output -> xfrm_outer_mode_output ->
+>   xfrm4_prepare_output -> xfrm4_tunnel_encap_add overwrites the inner
+>   network header with the one set in ip_tunnel_xmit before adding the
+>   second outer header.
+> - __dev_queue_xmit -> validate_xmit_skb checks whether GSO segmentation
+>   needs to happen based on dev features. In the original bug, the hw
+>   couldn't segment the packets, so skb_gso_segment was invoked.
+> - deep in the .gso_segment callback machinery, __skb_udp_tunnel_segment
+>   tries to use the wrong inner network header, expecting the one set in
+>   iptunnel_handle_offloads but getting the one set by xfrm instead.
+> - a bit later, ipv6_gso_segment accesses the wrong memory based on that
+>   wrong inner network header.
+> 
+> With the new change, the original bug (or similar ones) cannot happen
+> again, as xfrm will now trigger software GSO before applying a tunnel.
+> This concern doesn't exist in packet offload mode, when the HW adds
+> encapsulation headers. For the non-offloaded packets (crypto in SW),
+> software GSO is still done unconditionally in the else branch.
+> 
+> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Reviewed-by: Yael Chemla <ychemla@nvidia.com>
+> Fixes: a204aef9fd77 ("xfrm: call xfrm_output_gso when inner_protocol is set in xfrm_output")
+> Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
 
-Some network drivers set skb->ip_summed to either CHECKSUM_COMPLETE or
-CHECKSUM_UNNECESSARY when getting skb from napi_get_frags(), while
-others only set skb->ip_summed when RX checksum offload is enabled on
-the device, and do not set any value for skb->ip_summed when hardware
-checksum offload is disabled, assuming that the skb->ip_summed
-initiated to zero by napi_reuse_skb, ionic driver for example will
-ignore/unset any value for the ip_summed filed if HW checksum offload is
-disabled, and if we have a situation where the user disables the
-checksum offload during a traffic that could lead to the following
-errors shown in the kernel logs:
-<IRQ>
-dump_stack_lvl+0x34/0x48
- __skb_gro_checksum_complete+0x7e/0x90
-tcp6_gro_receive+0xc6/0x190
-ipv6_gro_receive+0x1ec/0x430
-dev_gro_receive+0x188/0x360
-? ionic_rx_clean+0x25a/0x460 [ionic]
-napi_gro_frags+0x13c/0x300
-? __pfx_ionic_rx_service+0x10/0x10 [ionic]
-ionic_rx_service+0x67/0x80 [ionic]
-ionic_cq_service+0x58/0x90 [ionic]
-ionic_txrx_napi+0x64/0x1b0 [ionic]
- __napi_poll+0x27/0x170
-net_rx_action+0x29c/0x370
-handle_softirqs+0xce/0x270
-__irq_exit_rcu+0xa3/0xc0
-common_interrupt+0x80/0xa0
-</IRQ>
-
-This inconsistency sometimes leads to checksum validation issues in the
-upper layers of the network stack.
-
-To resolve this, this patch clears the skb->ip_summed value for each
-reused skb in by napi_reuse_skb(), ensuring that the caller is responsible
-for setting the correct checksum status. This eliminates potential
-checksum validation issues caused by improper handling of
-skb->ip_summed.
-
-Fixes: 76620aafd66f ("gro: New frags interface to avoid copying shinfo")
-Signed-off-by: Mohammad Heib <mheib@redhat.com>
----
- net/core/gro.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/net/core/gro.c b/net/core/gro.c
-index 78b320b63174..0ad549b07e03 100644
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -653,6 +653,7 @@ static void napi_reuse_skb(struct napi_struct *napi, struct sk_buff *skb)
- 	skb->pkt_type = PACKET_HOST;
- 
- 	skb->encapsulation = 0;
-+	skb->ip_summed = CHECKSUM_NONE;
- 	skb_shinfo(skb)->gso_type = 0;
- 	skb_shinfo(skb)->gso_size = 0;
- 	if (unlikely(skb->slow_gro)) {
--- 
-2.48.1
-
+Applied, thanks Cosmin!
