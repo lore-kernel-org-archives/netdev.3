@@ -1,103 +1,52 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DEE15C14B
-	for <netdev@vger.kernel.org>; Tue, 25 Feb 2025 16:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C98215DBB3;
+	Tue, 25 Feb 2025 16:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740499256; cv=none; b=sb90PEjCLUxgGnyv3lO2TYFMTTUrpmJxIxMjOn3fqaH05B+R+gKOCyNWIo54udSrHsxsNMM+Cs6He9hGEVWwLK3MeVBDAJXbxgxLSFc+1vENZaNrZNp6f+rQthxMjhflxT1NW1f6h6YbM4cZXuCTqvrSFM8Ss6vgPZpLMpRV2Eg=
+	t=1740499545; cv=none; b=DVpyWO7rWtN+g59jbjkWmKCs8bgGOq0eI+L7085hDkOTk+vP/0wmHhO0QtjVa9k7ZjqlLepDeRCpVUQGObNRsWeYL34/v+LcXeYoWBX3N1y7tL47IzsAV+HFBK1u5vY4baLbIGVJXHlHwfSv2HsldJiMnj5TeENz18xpYWUEhV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740499256; c=relaxed/simple;
-	bh=4/6WNfOFt0tBeL4b4ZFXpp6KrBRycH/p/0PSMwuLqJE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OAQMR6fzn/zL/IZtrnmK2l5V4GBNngzXtEpnluh7xDOWmacKKgJw3ddwSxCO1/DbPhJ0W7FiWxWxOqzu40FDM2d6fZrkjQlOQBiOqtQznHarqBY2blzSUvGp3iO9k56j00IMROcwpYbAxlINwAtj7Gsq+fqRCn58V1Lp+K2adcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=ZflnUnB+; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	s=arc-20240116; t=1740499545; c=relaxed/simple;
+	bh=tlTvOMZwj97UVNjSaaTvJei+ugzd5xJk1GS03Pt4Yhc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Uved1QGIGLDbIpktCio4NF+dmA65hTCqRjo6NnDQVGftpvMLQdrqQTCegLKGTpRjPKmS9m6xbrd1py1bM3gk0UPZ2emMaTHIhnnsPACyEni+XXbqLKE9DVqXpIukxk/TrqmWWbwvzL0ZkryC/dgCiqHLf4vtFH+F30CWj36lZ6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g+A2GzTS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="ZflnUnB+"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6e65e0a3f7eso26190106d6.0
-        for <netdev@vger.kernel.org>; Tue, 25 Feb 2025 08:00:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1740499253; x=1741104053; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qfo6+lok37Xv4JW+s09KuDgrT6+5xL1zebJ3c/AEumA=;
-        b=ZflnUnB+PeZMI4/b70E6a2cU58jPeq62/pEaWrYrSHi9ULd94fG0+uXeSktADpAa9I
-         1OJik1HxEM5/2LHJ5ykJEKPhL6GN0qY+l6JkpHnTO0nnNnkIoYwpTl7BKG9Eet3Pnt2R
-         U1a1mLyAlbVoTu3p1lnQI7D7LZnoWYKd+GmpM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740499253; x=1741104053;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qfo6+lok37Xv4JW+s09KuDgrT6+5xL1zebJ3c/AEumA=;
-        b=I5LMTxiWdLUZEFLed5wcbzGRKi0iCKt3E6hXyz8RL18nbn/+gK0gm/CSXp9+7jW9aS
-         DMqWgf5t3Fz1RFsJ7pkcA0OWQTDyKFW0V0WGrAy6PpVaSlWx4pxpm3+6GrCVKqdSdL72
-         b/9Vo311dUEXtYz77twI2eswlvmRroBiDwBd+n+HM7Fl5mi3HPrvU4s1Pr7Qyn8OkQxw
-         Kmly/yEhiWpXrviwwavu8QlGY/WFxWLxRFrls8fltuPa6D4CT19yPrqRr/qeLXNEfNXv
-         o/7HqO15tsWkh48r6PUG0OIC0d8F5BuTEhdT8Zo8HTitK6zD8VgfgwMYSDuderDWlBy/
-         YP5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWcQYg770xarNng0utNeiTCm/wpQ4sEVlDvHZ1XJrS/P3c+wQRbhPsWQiZaHy2q72mvGaKS0x4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBITcR9O31yQSeeq47m4wPBTc2gSkw2wdSWRDbPFcAuZl45i8z
-	vpN50eEHxjPbg4l/bhwuvtn9zNQQYH7wAinFlG2F6fMtx+XYEBJeizL7jgLk4CDSTE0ZPmUce6z
-	8
-X-Gm-Gg: ASbGncsCZpL12GNo6ywVc9WwZgvnTZzseSOfmX3L07yqqPAA+jvo7p+OE16AI0aFyN9
-	shiBa055uRMqLc648Pv7k9xt4h4ClxsPVSVxLncjSZ6haxDAD/E4UsypJBAyJmZnpdy+yLfd2t/
-	oGfPcbIwx6yjzjzqBNBbbaRDHN5xZuC1OESHTtJPgjLHsxj3gpEhdT77XhxRKPltwVmPE2E0Qjq
-	BV7MM930s4vGDLHaylu0fMjs0DcBq2o8CGAhClsoi9lyYuy2UqR7mUoQBq56coeDZiLWvAeZMYf
-	3SPPUQA9HMWX185in9/vLtGrTn7X7MGQKRX6SoAhl7cg2dDXYjlaWVI+OBkSPohx
-X-Google-Smtp-Source: AGHT+IFy8cr87IYs/ikvSPfJnNOc6xW3Y53Ei4eNhSOWrUVVAE6ouMuggS+w7Eme1vNlh671mSTUjA==
-X-Received: by 2002:ad4:5bea:0:b0:6e6:4969:f005 with SMTP id 6a1803df08f44-6e6ae994f63mr168782136d6.30.1740499252509;
-        Tue, 25 Feb 2025 08:00:52 -0800 (PST)
-Received: from LQ3V64L9R2 (ool-44c5a22e.dyn.optonline.net. [68.197.162.46])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e87b176c02sm10540366d6.110.2025.02.25.08.00.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 08:00:51 -0800 (PST)
-Date: Tue, 25 Feb 2025 11:00:49 -0500
-From: Joe Damato <jdamato@fastly.com>
-To: Gur Stavi <gur.stavi@huawei.com>
-Cc: Fan Gong <gongfan1@huawei.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, linux-doc@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Cai Huoqing <cai.huoqing@linux.dev>, luosifu <luosifu@huawei.com>,
-	Xin Guo <guoxin09@huawei.com>,
-	Shen Chenyang <shenchenyang1@hisilicon.com>,
-	Zhou Shuai <zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>,
-	Shi Jing <shijing34@huawei.com>,
-	Meny Yossefi <meny.yossefi@huawei.com>,
-	Suman Ghosh <sumang@marvell.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: Re: [PATCH net-next v06 1/1] hinic3: module initialization and tx/rx
- logic
-Message-ID: <Z73pMXNsYprCcbmk@LQ3V64L9R2>
-Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
-	Gur Stavi <gur.stavi@huawei.com>, Fan Gong <gongfan1@huawei.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, linux-doc@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Cai Huoqing <cai.huoqing@linux.dev>, luosifu <luosifu@huawei.com>,
-	Xin Guo <guoxin09@huawei.com>,
-	Shen Chenyang <shenchenyang1@hisilicon.com>,
-	Zhou Shuai <zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>,
-	Shi Jing <shijing34@huawei.com>,
-	Meny Yossefi <meny.yossefi@huawei.com>,
-	Suman Ghosh <sumang@marvell.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-References: <cover.1740487707.git.gur.stavi@huawei.com>
- <0e13370a2a444eb4e906e49276b2d5c4b8862616.1740487707.git.gur.stavi@huawei.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g+A2GzTS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5615C4CEDD;
+	Tue, 25 Feb 2025 16:05:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740499543;
+	bh=tlTvOMZwj97UVNjSaaTvJei+ugzd5xJk1GS03Pt4Yhc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=g+A2GzTSFFbK4mzi4EkihsKJcLfvmGL2MOcrFjgSVZwq+NsA1SqgBighAyr48AEYv
+	 u/2dpAxXLjx2gV+hujvr5fA6iCxr7DCPRYBYwN+Nw0wCrb1skECCvYy5FJVvc4phck
+	 JzkHj6J5yooVncOgCMlLffNHBJADthz/UQ97vD16srnbnh5q58AtCiH+uo/mCHFH8V
+	 Aa4BFZf7Bw8Kswb4R3lBa1RPZQWn4/LcNiRFUA0IQGyTGYA9SRnXDI/y0Fc4jMZckw
+	 /Sm76hNf593+fBfpLQPGzASwx5sD+zBP/CHJ79MbDbBgdN/qkM2gikgF1mXKXe8dfG
+	 Lqy7IjqZba8qg==
+Date: Tue, 25 Feb 2025 10:05:42 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Leon Romanovsky <leonro@nvidia.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	linux-pci@vger.kernel.org, Ariel Almog <ariela@nvidia.com>,
+	Aditya Prabhune <aprabhune@nvidia.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Arun Easi <aeasi@marvell.com>, Jonathan Chocron <jonnyc@amazon.com>,
+	Bert Kenward <bkenward@solarflare.com>,
+	Matt Carlson <mcarlson@broadcom.com>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	Jean Delvare <jdelvare@suse.de>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Stephen Hemminger <stephen@networkplumber.org>
+Subject: Re: [PATCH v4] PCI/sysfs: Change read permissions for VPD attributes
+Message-ID: <20250225160542.GA507421@bhelgaas>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -106,267 +55,100 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0e13370a2a444eb4e906e49276b2d5c4b8862616.1740487707.git.gur.stavi@huawei.com>
+In-Reply-To: <c93a253b24701513dbeeb307cb2b9e3afd4c74b5.1737271118.git.leon@kernel.org>
 
-On Tue, Feb 25, 2025 at 04:53:30PM +0200, Gur Stavi wrote:
-> From: Fan Gong <gongfan1@huawei.com>
+On Sun, Jan 19, 2025 at 09:27:54AM +0200, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
 > 
-> This is [1/3] part of hinic3 Ethernet driver initial submission.
-> With this patch hinic3 is a valid kernel module but non-functional
-> driver.
+> The Vital Product Data (VPD) attribute is not readable by regular
+> user without root permissions. Such restriction is not needed at
+> all for Mellanox devices, as data presented in that VPD is not
+> sensitive and access to the HW is safe and well tested.
+> 
+> This change changes the permissions of the VPD attribute to be accessible
+> for read by all users for Mellanox devices, while write continue to be
+> restricted to root only.
+> 
+> The main use case is to remove need to have root/setuid permissions
+> while using monitoring library [1].
 
-IMHO, there's a huge amount of code so it makes reviewing pretty
-difficult.
+As far as I can tell, this is basically a device identification
+problem, which would be better handled by the Vendor, Device, and
+Revision IDs.  If that would solve the problem, it would also make
+standard unprivileged lspci output more specific.
 
-Is there no way to split this into multiple smaller patches? I am
-sure his was asked and answered in a previous thread that I missed.
+VPD has never been user readable, so I assume you have some existing
+method for device identification?
 
-I took a quick pass over the code, but probably missed many things
-due to the large amount of code in a single patch.
+Other concerns raised in previous threads include:
 
-[...]
+  - Potential for sensitive information in VPD, similar to dmesg and
+    dmidecode
 
-> +static void init_intr_coal_param(struct net_device *netdev)
-> +{
-> +	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-> +	struct hinic3_intr_coal_info *info;
-> +	u16 i;
-> +
-> +	for (i = 0; i < nic_dev->max_qps; i++) {
-> +		info = &nic_dev->intr_coalesce[i];
-> +		info->pending_limt = HINIC3_DEAULT_TXRX_MSIX_PENDING_LIMIT;
-> +		info->coalesce_timer_cfg = HINIC3_DEAULT_TXRX_MSIX_COALESC_TIMER_CFG;
-> +		info->resend_timer_cfg = HINIC3_DEAULT_TXRX_MSIX_RESEND_TIMER_CFG;
-> +	}
-> +}
-> +
-> +static int hinic3_init_intr_coalesce(struct net_device *netdev)
-> +{
-> +	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-> +	struct hinic3_hwdev *hwdev = nic_dev->hwdev;
-> +	u64 size;
-> +
-> +	size = sizeof(*nic_dev->intr_coalesce) * nic_dev->max_qps;
-> +	if (!size) {
-> +		dev_err(hwdev->dev, "Cannot allocate zero size intr coalesce\n");
-> +		return -EINVAL;
-> +	}
-> +	nic_dev->intr_coalesce = kzalloc(size, GFP_KERNEL);
-> +	if (!nic_dev->intr_coalesce)
-> +		return -ENOMEM;
-> +
-> +	init_intr_coal_param(netdev);
-> +	return 0;
-> +}
-> +
-> +static void hinic3_free_intr_coalesce(struct net_device *netdev)
-> +{
-> +	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-> +
-> +	kfree(nic_dev->intr_coalesce);
-> +}
+  - Kernel complexity of reading VPD (mutex, address/data registers)
 
-Do you need the IRQ coalescing code in this version of the patch? It
-looks like hinic3_alloc_rxqs is unimplemented... so it's a bit
-confusing to see code for IRQ coalescing but none for queue
-allocation ?
+  - Performance and potential denial of service as a consequence of
+    mutex and hardware interaction
 
-> diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rss.c b/drivers/net/ethernet/huawei/hinic3/hinic3_rss.c
-> new file mode 100644
-> index 000000000000..4a166c13eb38
-> --- /dev/null
-> +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rss.c
-> @@ -0,0 +1,24 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +// Copyright (c) Huawei Technologies Co., Ltd. 2025. All rights reserved.
-> +
-> +#include "hinic3_hwdev.h"
-> +#include "hinic3_hwif.h"
-> +#include "hinic3_nic_cfg.h"
-> +#include "hinic3_nic_dev.h"
-> +#include "hinic3_rss.h"
-> +
-> +void hinic3_clear_rss_config(struct net_device *netdev)
-> +{
-> +	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-> +
-> +	kfree(nic_dev->rss_hkey);
-> +	nic_dev->rss_hkey = NULL;
-> +
-> +	kfree(nic_dev->rss_indir);
-> +	nic_dev->rss_indir = NULL;
-> +}
+  - Missing EEPROMs or defective or incompletely-installed firmware
+    breaking VPD read
 
-Do you need the above code in hinic3_clear_rss_config?
+  - Broken devices that crash when VPD is read
 
-I probably missed it but hinic3_try_to_enable_rss is empty, so I'm
-not sure why you'd need to implement the de-allocaion of the
-rss_hkey and rss_indir in this patch ?
+  - Potential for issues with future Mellanox devices, even though all
+    current ones work fine
 
-> +static void hinic3_reuse_rx_page(struct hinic3_rxq *rxq,
-> +				 struct hinic3_rx_info *old_rx_info)
-> +{
-> +	struct hinic3_rx_info *new_rx_info;
-> +	u16 nta = rxq->next_to_alloc;
-> +
-> +	new_rx_info = &rxq->rx_info[nta];
-> +
-> +	/* update, and store next to alloc */
-> +	nta++;
-> +	rxq->next_to_alloc = (nta < rxq->q_depth) ? nta : 0;
-> +
-> +	new_rx_info->page = old_rx_info->page;
-> +	new_rx_info->page_offset = old_rx_info->page_offset;
-> +	new_rx_info->buf_dma_addr = old_rx_info->buf_dma_addr;
-> +
-> +	/* sync the buffer for use by the device */
-> +	dma_sync_single_range_for_device(rxq->dev, new_rx_info->buf_dma_addr,
-> +					 new_rx_info->page_offset,
-> +					 rxq->buf_len,
-> +					 DMA_FROM_DEVICE);
-> +}
+This is basically similar to mmapping a device BAR, for which we also
+require root.
 
-Are you planning to use the page pool in future revisions to
-simplify the code ?
-
-> +static void hinic3_add_rx_frag(struct hinic3_rxq *rxq,
-> +			       struct hinic3_rx_info *rx_info,
-> +			       struct sk_buff *skb, u32 size)
-> +{
-> +	struct page *page;
-> +	u8 *va;
+> [leonro@vm ~]$ lspci |grep nox
+> 00:09.0 Ethernet controller: Mellanox Technologies MT2910 Family [ConnectX-7]
+> 
+> Before:
+> [leonro@vm ~]$ ls -al /sys/bus/pci/devices/0000:00:09.0/vpd
+> -rw------- 1 root root 0 Nov 13 12:30 /sys/bus/pci/devices/0000:00:09.0/vpd
+> After:
+> [leonro@vm ~]$ ls -al /sys/bus/pci/devices/0000:00:09.0/vpd
+> -rw-r--r-- 1 root root 0 Nov 13 12:30 /sys/bus/pci/devices/0000:00:09.0/vpd
+> 
+> [1] https://developer.nvidia.com/management-library-nvml
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> ---
+> Changelog:
+> v4:
+>  * Change comment to the variant suggested by Stephen
+> v3: https://lore.kernel.org/all/18f36b3cbe2b7e67eed876337f8ba85afbc12e73.1733227737.git.leon@kernel.org
+>  * Used | to change file attributes
+>  * Remove WARN_ON
+> v2: https://lore.kernel.org/all/61a0fa74461c15edfae76222522fa445c28bec34.1731502431.git.leon@kernel.org
+>  * Another implementation to make sure that user is presented with
+>    correct permissions without need for driver intervention.
+> v1: https://lore.kernel.org/all/cover.1731005223.git.leonro@nvidia.com
+>  * Changed implementation from open-read-to-everyone to be opt-in
+>  * Removed stable and Fixes tags, as it seems like feature now.
+> v0: https://lore.kernel.org/all/65791906154e3e5ea12ea49127cf7c707325ca56.1730102428.git.leonro@nvidia.com/
+> ---
+>  drivers/pci/vpd.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/pci/vpd.c b/drivers/pci/vpd.c
+> index a469bcbc0da7..c873ab47526b 100644
+> --- a/drivers/pci/vpd.c
+> +++ b/drivers/pci/vpd.c
+> @@ -332,6 +332,13 @@ static umode_t vpd_attr_is_visible(struct kobject *kobj,
+>  	if (!pdev->vpd.cap)
+>  		return 0;
+>  
+> +	/*
+> +	 * On Mellanox devices reading VPD is safe for unprivileged users,
+> +	 * so just add needed bits to allow read.
+> +	 */
+> +	if (unlikely(pdev->vendor == PCI_VENDOR_ID_MELLANOX))
+> +		return a->attr.mode | 0044;
 > +
-> +	page = rx_info->page;
-> +	va = (u8 *)page_address(page) + rx_info->page_offset;
-> +	prefetch(va);
-
-net_prefetch ?
-
-> +
-> +	dma_sync_single_range_for_cpu(rxq->dev,
-> +				      rx_info->buf_dma_addr,
-> +				      rx_info->page_offset,
-> +				      rxq->buf_len,
-> +				      DMA_FROM_DEVICE);
-> +
-> +	if (size <= HINIC3_RX_HDR_SIZE && !skb_is_nonlinear(skb)) {
-> +		memcpy(__skb_put(skb, size), va,
-> +		       ALIGN(size, sizeof(long)));
-> +
-> +		/* page is not reserved, we can reuse buffer as-is */
-> +		if (likely(page_to_nid(page) == numa_node_id()))
-> +			goto reuse_rx_page;
-> +
-> +		/* this page cannot be reused so discard it */
-> +		put_page(page);
-> +		goto err_reuse_buffer;
-> +	}
-> +
-> +	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, page,
-> +			rx_info->page_offset, size, rxq->buf_len);
-> +
-> +	/* avoid re-using remote pages */
-> +	if (unlikely(page_to_nid(page) != numa_node_id()))
-> +		goto err_reuse_buffer;
-> +
-> +	/* if we are the only owner of the page we can reuse it */
-> +	if (unlikely(page_count(page) != 1))
-> +		goto err_reuse_buffer;
-
-Are you planning to use the page pool in future revisions to
-simplify the code ?
-
-> +static struct sk_buff *hinic3_fetch_rx_buffer(struct hinic3_rxq *rxq,
-> +					      u32 pkt_len)
-> +{
-> +	struct net_device *netdev = rxq->netdev;
-> +	struct sk_buff *skb;
-> +	u32 sge_num;
-> +
-> +	skb = netdev_alloc_skb_ip_align(netdev, HINIC3_RX_HDR_SIZE);
-> +	if (unlikely(!skb))
-> +		return NULL;
-> +
-> +	sge_num = hinic3_get_sge_num(rxq, pkt_len);
-> +
-> +	prefetchw(skb->data);
-
-net_prefetchw ?
-
-> +int hinic3_rx_poll(struct hinic3_rxq *rxq, int budget)
-> +{
-> +	struct hinic3_nic_dev *nic_dev = netdev_priv(rxq->netdev);
-> +	u32 sw_ci, status, pkt_len, vlan_len;
-> +	struct hinic3_rq_cqe *rx_cqe;
-> +	u32 num_wqe = 0;
-> +	int nr_pkts = 0;
-> +	u16 num_lro;
-> +
-> +	while (likely(nr_pkts < budget)) {
-> +		sw_ci = rxq->cons_idx & rxq->q_mask;
-> +		rx_cqe = rxq->cqe_arr + sw_ci;
-> +		status = rx_cqe->status;
-> +		if (!RQ_CQE_STATUS_GET(status, RXDONE))
-> +			break;
-> +
-> +		/* make sure we read rx_done before packet length */
-> +		rmb();
-> +
-> +		vlan_len = rx_cqe->vlan_len;
-> +		pkt_len = RQ_CQE_SGE_GET(vlan_len, LEN);
-> +		if (recv_one_pkt(rxq, rx_cqe, pkt_len, vlan_len, status))
-> +			break;
-> +
-> +		nr_pkts++;
-> +		num_lro = RQ_CQE_STATUS_GET(status, NUM_LRO);
-> +		if (num_lro)
-> +			num_wqe += hinic3_get_sge_num(rxq, pkt_len);
-> +
-> +		rx_cqe->status = 0;
-> +
-> +		if (num_wqe >= nic_dev->lro_replenish_thld)
-> +			break;
-> +	}
-> +
-> +	if (rxq->delta >= HINIC3_RX_BUFFER_WRITE)
-> +		hinic3_rx_fill_buffers(rxq);
-
-Doesn't this function need to re-enable hw IRQs? Maybe it does
-somewhere in one of the helpers and I missed it?
-
-Even so, it should probably be checking napi_complete_done before
-re-enabling IRQs and I don't see a call to that anywhere, but maybe
-I missed it?
-
-I also don't see any calls to netif_napi_add, so I'm not sure if
-this code needs to be included in this patch ?
-
-> +#define HINIC3_BDS_PER_SQ_WQEBB \
-> +	(HINIC3_SQ_WQEBB_SIZE / sizeof(struct hinic3_sq_bufdesc))
-> +
-> +int hinic3_tx_poll(struct hinic3_txq *txq, int budget)
-> +{
-> +	struct net_device *netdev = txq->netdev;
-> +	u16 hw_ci, sw_ci, q_id = txq->sq->q_id;
-> +	struct hinic3_nic_dev *nic_dev;
-> +	struct hinic3_tx_info *tx_info;
-> +	u16 wqebb_cnt = 0;
-> +	int pkts = 0;
-> +
-> +	nic_dev = netdev_priv(netdev);
-> +	hw_ci = hinic3_get_sq_hw_ci(txq->sq);
-> +	dma_rmb();
-> +	sw_ci = hinic3_get_sq_local_ci(txq->sq);
-> +
-> +	do {
-> +		tx_info = &txq->tx_info[sw_ci];
-> +
-> +		/* Did all wqebb of this wqe complete? */
-> +		if (hw_ci == sw_ci ||
-> +		    ((hw_ci - sw_ci) & txq->q_mask) < tx_info->wqebb_cnt)
-> +			break;
-> +
-> +		sw_ci = (sw_ci + tx_info->wqebb_cnt) & (u16)txq->q_mask;
-> +		prefetch(&txq->tx_info[sw_ci]);
-
-net_prefetch ?
+>  	return a->attr.mode;
+>  }
+>  
+> -- 
+> 2.47.1
+> 
