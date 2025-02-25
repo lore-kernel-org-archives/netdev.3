@@ -1,123 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333EB21ABC6;
-	Tue, 25 Feb 2025 14:52:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC1F2686B3;
+	Tue, 25 Feb 2025 14:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740495169; cv=none; b=iVEz4zml19PtHqsd8o+2dNFnOcpEacp+8HaCOBdB6TdS7kAqEBZFHTfUeiqLoo3Qgre7+FEfWz0GdmfRgWHtiJ959E+1HIC6Lk9JBLCQkMe4fOfwD/SuMQUxOnMTjgBfkvGd+jqL9a0NYl9T3+UsSWXmqUJNwd3BIEWjP88JA5M=
+	t=1740495332; cv=none; b=HGOOvyfmiW4UD98DKy7dg7R2yXswmpE2PboULqQgCIIhVs0uLH8e9tUQnElZpjPDutTmGzjGAid3zYSmkm0UnDams01mHar20UNG9mlWe9asr3Vx4RDKdm7QDRebqw97l3J7dkXYzZQYcTVEHkXUxmReKqBXBDs6iYA2KjpvD5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740495169; c=relaxed/simple;
-	bh=GGaYiwaYa4N9Fv/e4cYbdBiELgwBwoSdz0V5iPN1NwU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BM0Hgs9ARM1ny23bU624vcxrh0gfLpZ++96jwf1IvYatqEa8Meu4azabjcsCKx+eEuwpUoY+gCQa82HRkoKgH2qH3ehyJjruA/i26+YKPwOpJe80Z93hlUA/W1y40U2mVOL7Is/ocNQr+E3giEHyE5ZPd9bQWyhKFZxKL91TUR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nEAE3Qve; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740495332; c=relaxed/simple;
+	bh=r/ZZoZr2ULO+NtzPA4njXHi/b/AtJLxzrOEJzxEhTEk=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=S+fbNZd/r8RWGCqhPZh1g+1P/2MFb8g1y7OutIdboJ6YbOFr1gdhfXH9xIFrj5M6imHSYoWgJzIMXx9drv8NrO1pNGuCeGJ00fX1HjSD8+QpjSqRfiihoqrgDNE3C6lQjEQriMpSpFzs5hQ8OPx+ILqsNVwqGOmF+NHLBpWXRc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OcpfU73g; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nEAE3Qve"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40553C4CEDD;
-	Tue, 25 Feb 2025 14:52:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740495168;
-	bh=GGaYiwaYa4N9Fv/e4cYbdBiELgwBwoSdz0V5iPN1NwU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=nEAE3Qve0EZ0H0F2bLur/AK3DmCsUBfeU/CEzdAAxPpT5AKgB5Pa8zUQOmMw50gf4
-	 gouJ6A+TvwwgAYZBgYYlrAIKv3u9zZDjHgJFa5D8krvLaBkGXOjsaS8QtBJNFLrDPv
-	 qO6ORzvzjwIQwqj35Yaqh0dVWLiecHHScRfuVnJ3zE3t0g9EWZIyjklEC99751U1Rn
-	 e2wwdmqEuovI+YZj5YMK3l1oxJRbSxn5c8BWpb28+B+N0BkPcVSTwFIUmFlgYVdp+s
-	 9j4L8pzu6kHa8Pxwq9hPUz8NPmHY0t4cVaDmSeOYy1Ius0Az+wFhOOkiXJFIWdXU3d
-	 0F4K6Bf15dAeA==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	NeilBrown <neilb@suse.de>,
-	"J. Bruce Fields" <bfields@fieldses.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	Simon Horman <horms@kernel.org>,
-	Yang Erkun <yangerkun@huawei.com>,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] [RESEND] sunrpc: suppress warnings for unused procfs functions
-Date: Tue, 25 Feb 2025 15:52:21 +0100
-Message-Id: <20250225145234.1097985-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OcpfU73g"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7c2303a56d6so227492985a.3;
+        Tue, 25 Feb 2025 06:55:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740495330; x=1741100130; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hjv1BVttWy8yEf+ech4rBoic+lPnV1nxxM8d9pp6mDA=;
+        b=OcpfU73g187VXJUQSlVKjrMQCgHwblswuei4zVS2NgXEQ83pxB3lIY/rwISqaFbft1
+         RZMgjRuLyqHBN9CjAwlc3dXd2lc5eIhaVki/vFZSrf7C9sRzo98CM72/5nPkidq/IirI
+         fHFDPgQYWBgllyHwSxA+cRF4sGEtKMVx7mCbJsGJHWDs6DeaXO345nlZZ2kg5yQIxtig
+         BUdfvZgLh7Cp4AQLiMh8G5bvz39GGY/fsUCLYIgSypCAc3hR5f1hGppWHlnFBgq4pGiZ
+         P8PKwn2/sNH7jYj0AfGurF95D232LKonJZANxVRbl6U8k61e6GdVIdMoUa7BmKy7IDC7
+         CnqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740495330; x=1741100130;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=hjv1BVttWy8yEf+ech4rBoic+lPnV1nxxM8d9pp6mDA=;
+        b=Ml7p+5Ncgw+A3EPjvNG1nvi68WXisoRfxtvErWDmKEIgqdv1lbxdMctehWxADGEkoE
+         BIlLvF6cTU/RqR3+wLeamBuaws1BF0Zo8KvNKFKRg+d6sl4T/jQWdy3xlS/Mm7DBzavW
+         70bYlTdm4jcgsUgBatnpVxMmhRtB3lo3VmBrxYubS1is3YQl2LpZErhA6FC9b2lOh7gb
+         pkZPsX4cUuHeue4SnrvjBAMDuXya+IYnQGtImQOe2cvaa904xemdQDGqTEKCG3vkRgW9
+         ok78agWyMfeeEctQZnQYiwiGxs1IWl8n9nJ3i4YB6g5mQfkdXvjkYsvAadG5SHT5jQIs
+         E9tQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVbZxPW65Bqb2JsIaAXsRYLCfRzMGsAgvbG0MHumTy0dFJbOnWs05j8HbBsOOzczfPx6ln5rkUX@vger.kernel.org, AJvYcCWzh6tvm9HVns6TpZ+YADSZZVr3pmEylVkPac+AihT6TKAGzfvFniV9DZfuZbVSZFiLOTUxqLcA969hWppM@vger.kernel.org, AJvYcCX4X0bj9/8sNyI5OiYxYpPBojbOTYtBig6WbrulE8QhRL+KBQkI/NDSHwy0jvRYJyL1Z8U=@vger.kernel.org, AJvYcCXFdlnsTzgyLAy3F4Hq/HwREP9imqL61hpwklMoAzx0YIOnOYeOJ1cIc1z1xt+8rrP9gKlZGeSzC4kSbr36tsOZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwW5uOwp9jGcZ+a9JB6wGosCczYiR8VnUSpI70lWdNwsHyyTy4N
+	IU7WGjHtvXQMFj5VOCU0uWf6ciVWiWxSi0CKyJaB1z7loNldvp9G
+X-Gm-Gg: ASbGncsQiZa8ahrECZYQRZ9rqV8alKjOtMWghzyLOkO9ttC5wypI8sxADLscOFiyWti
+	7uWxQW2Moutr8lpiQe5hhCJg6HxYvgA2LL3LYOSFmL4Y7eZANzCX0HgKviT9dM/huGRj7XsfVP5
+	KnhbXrBPWQEd0MiD5QNtfqRQZVJJQHAqpuxBObThNAU6G4dMrSclwPd80bbAaAV2KJLuP1H+jpU
+	MEKPXJ+hZUCXIzsQkjz2Rq6jGyjDuNox1Bh64i4iWhQbQ3NOOO75G3bPtumhIWMCIXFfnJdCX98
+	KBxS0zBpkPk4v/rED9sgdmrUDTfmprNlscn53vQwr6xlQnGws9IUP6CEhGpqnCdlYvUNQqkrJHA
+	llUI=
+X-Google-Smtp-Source: AGHT+IGjv2NvDrduope8pvx/36i17irAfSvtdZpt+ljFP0O7tK4Zc2qgfkUk4vwB434o/1wqwg4SIA==
+X-Received: by 2002:a05:620a:800b:b0:7c0:c264:6737 with SMTP id af79cd13be357-7c0cf8b015emr2386412885a.4.1740495329747;
+        Tue, 25 Feb 2025 06:55:29 -0800 (PST)
+Received: from localhost (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c23c2c2925sm115007585a.61.2025.02.25.06.55.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2025 06:55:29 -0800 (PST)
+Date: Tue, 25 Feb 2025 09:55:28 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com, 
+ jasowang@redhat.com, 
+ andrew+netdev@lunn.ch, 
+ davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ andrii@kernel.org, 
+ eddyz87@gmail.com, 
+ mykolal@fb.com, 
+ ast@kernel.org, 
+ daniel@iogearbox.net, 
+ martin.lau@linux.dev, 
+ song@kernel.org, 
+ yonghong.song@linux.dev, 
+ john.fastabend@gmail.com, 
+ kpsingh@kernel.org, 
+ sdf@fomichev.me, 
+ haoluo@google.com, 
+ jolsa@kernel.org, 
+ shuah@kernel.org, 
+ hawk@kernel.org, 
+ marcus.wichelmann@hetzner-cloud.de, 
+ Willem de Bruijn <willemb@google.com>
+Message-ID: <67bdd9e0c54d9_2474a12947d@willemb.c.googlers.com.notmuch>
+In-Reply-To: <20250224152909.3911544-1-marcus.wichelmann@hetzner-cloud.de>
+References: <20250224152909.3911544-1-marcus.wichelmann@hetzner-cloud.de>
+Subject: Re: [PATCH bpf-next v3 0/6] XDP metadata support for tun driver
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+Marcus Wichelmann wrote:
+> Hi,
+> 
+> thank you for your reviw. As promised, here is V3 of this patch series.
+> 
+> I noticed that the updated selftests were flaky sometimes due to the kernel
+> networking stack sending IPv6 multicast listener reports on the created
+> test interfaces.
+> This can be seen here:
+> https://github.com/kernel-patches/bpf/actions/runs/13449071153/job/37580497963
+> 
+> Setting the NOARP flag on the interfaces should fix this race condition.
+> 
+> Successful pipeline:
+> https://github.com/kernel-patches/bpf/actions/runs/13500667544
+> 
+> Signed-off-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
+> Acked-by: Jason Wang <jasowang@redhat.com>
+> Reviewed-by: Willem de Bruijn <willemb@google.com>
 
-There is a warning about unused variables when building with W=1 and no procfs:
+Please don't add tags, unless a person has explicitly added them.
 
-net/sunrpc/cache.c:1660:30: error: 'cache_flush_proc_ops' defined but not used [-Werror=unused-const-variable=]
- 1660 | static const struct proc_ops cache_flush_proc_ops = {
-      |                              ^~~~~~~~~~~~~~~~~~~~
-net/sunrpc/cache.c:1622:30: error: 'content_proc_ops' defined but not used [-Werror=unused-const-variable=]
- 1622 | static const struct proc_ops content_proc_ops = {
-      |                              ^~~~~~~~~~~~~~~~
-net/sunrpc/cache.c:1598:30: error: 'cache_channel_proc_ops' defined but not used [-Werror=unused-const-variable=]
- 1598 | static const struct proc_ops cache_channel_proc_ops = {
-      |                              ^~~~~~~~~~~~~~~~~~~~~~
+And they are only sticky when the code has not been changed since
+they added them.
 
-These are used inside of an #ifdef, so replacing that with an
-IS_ENABLED() check lets the compiler see how they are used while
-still dropping them during dead code elimination.
+These are only in the cover letter, so not picked up. But for future
+revisions and patches.
 
-Fixes: dbf847ecb631 ("knfsd: allow cache_register to return error on failure")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-This patch from last year is still needed, resending without changes
----
- net/sunrpc/cache.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
-
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index 6e36b1204f51..004cdb59f010 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -1678,12 +1678,14 @@ static void remove_cache_proc_entries(struct cache_detail *cd)
- 	}
- }
+I'll take a closer look at the actual patches in a bit.
  
--#ifdef CONFIG_PROC_FS
- static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
- {
- 	struct proc_dir_entry *p;
- 	struct sunrpc_net *sn;
- 
-+	if (!IS_ENABLED(CONFIG_PROC_FS))
-+		return 0;
-+
- 	sn = net_generic(net, sunrpc_net_id);
- 	cd->procfs = proc_mkdir(cd->name, sn->proc_net_rpc);
- 	if (cd->procfs == NULL)
-@@ -1711,12 +1713,6 @@ static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
- 	remove_cache_proc_entries(cd);
- 	return -ENOMEM;
- }
--#else /* CONFIG_PROC_FS */
--static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
--{
--	return 0;
--}
--#endif
- 
- void __init cache_initialize(void)
- {
--- 
-2.39.5
+> ---
+> 
+> v3:
+> - change the condition to handle xdp_buffs without metadata support, as
+>   suggested by Willem de Bruijn <willemb@google.com>
+> - add clarifying comment why that condition is needed
+> - set NOARP flag in selftests to ensure that the kernel does not send
+>   packets on the test interfaces that may interfere with the tests
+> 
+> v2: https://lore.kernel.org/bpf/20250217172308.3291739-1-marcus.wichelmann@hetzner-cloud.de/
+> - submit against bpf-next subtree
+> - split commits and improved commit messages
+> - remove redundant metasize check and add clarifying comment instead
+> - use max() instead of ternary operator
+> - add selftest for metadata support in the tun driver
+> 
+> v1: https://lore.kernel.org/all/20250130171614.1657224-1-marcus.wichelmann@hetzner-cloud.de/
+> 
+> Marcus Wichelmann (6):
+>   net: tun: enable XDP metadata support
+>   net: tun: enable transfer of XDP metadata to skb
+>   selftests/bpf: move open_tuntap to network helpers
+>   selftests/bpf: refactor xdp_context_functional test and bpf program
+>   selftests/bpf: add test for XDP metadata support in tun driver
+>   selftests/bpf: fix file descriptor assertion in open_tuntap helper
+> 
+>  drivers/net/tun.c                             |  28 ++-
+>  tools/testing/selftests/bpf/network_helpers.c |  28 +++
+>  tools/testing/selftests/bpf/network_helpers.h |   3 +
+>  .../selftests/bpf/prog_tests/lwt_helpers.h    |  29 ----
+>  .../bpf/prog_tests/xdp_context_test_run.c     | 163 ++++++++++++++++--
+>  .../selftests/bpf/progs/test_xdp_meta.c       |  56 +++---
+>  6 files changed, 230 insertions(+), 77 deletions(-)
+> 
+> -- 
+> 2.43.0
+> 
+
 
