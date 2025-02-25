@@ -1,168 +1,364 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5E320F076;
-	Tue, 25 Feb 2025 14:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F32126C18;
+	Tue, 25 Feb 2025 14:20:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740493068; cv=none; b=F3qLh14iG+VvelThEs3+BG01r0PNrJ609H07rUsSWAEChN8Ji0DfZgL1sOrD7x2X7/yhvJLzpIHhlUCb1qgJzfclxmI9lHwvF0AwUc/A9z+p1b/wRTm7qiRDXZuj1PWNB1wW9x2aqsqfXWLJuSrv4OvX6LHLN7odtQgk6J6v6qQ=
+	t=1740493239; cv=none; b=rWGQCZbhZHBEhIPfKx2VbJKAsipAUlPYhyUYdWZODtizOkAjXK0LVpL4s07DanArzNoJmJGIWXBaMm/sYApxqQxlrlKW0KfEISTWdt/uGJ09gFUw+88hzNjSqQLKRiiUZvB2x1UCN9QCBG9FEpEetKjA9rWOHkNPue68K2wh+FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740493068; c=relaxed/simple;
-	bh=go1mE9+6Gnf09mRgfZKcNZ8lEWmnfnzRfoURcvriDl0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A/3gVA4CPqI2w/OtY3ciloI4fFXYNHIq4AhtHNL+WS6yzM3FiRpnaUiGk2mgObBnNFOgH+Kckwg0yHOZgqU69GRGAYnnvM+E45d/+7bUbIBAWqsGKYmxqFe7p9k5EgVrKcAl8lsvH9shg18RZMQGzCx8Hye70xxS5ZLQIAjiwX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UUPWPa4n; arc=none smtp.client-ip=209.85.221.53
+	s=arc-20240116; t=1740493239; c=relaxed/simple;
+	bh=igL96eUEZrEr7nXbYX4xSAi+Is+y1+sZ4i8SGsdn+rw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kFX/iqEZGgV018mmTvOmgvjtsxvSjMbo3HLL7wFjFrouNeSLhIMykrUQhgH8Fe5QYCnwSNQpPKQ5DExm0yXeMq2RzURIJafkufKqdsPXyX941X0rDwFIr4GbfvUyUSc1drsRxEZnkp9zPDcUGUeuAm+hF0JYCFjoYjC6dmln82o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l32UPZdx; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UUPWPa4n"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-38f2b7ce319so4705842f8f.2;
-        Tue, 25 Feb 2025 06:17:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l32UPZdx"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-220d28c215eso87779015ad.1;
+        Tue, 25 Feb 2025 06:20:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740493065; x=1741097865; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/KgWBEXvpPJ1izY+CQ5WBRzeUj02pc2AV48/6n70IVQ=;
-        b=UUPWPa4nnB3+/asqEjixwBC80UTvVLLEAdmebiQErjCKOF24LaTqalzD1LstfhbVuh
-         oIpqEQGNXn1+GyAL+6M/if0DnYxOW2zzeDD+k8o4lBGFXvbi4UuVgBt1qwRVtGoovsQ3
-         qeSq5sgBCc1ernFBkQ8fqlatfRkPlQxQspjOVQbjmjjGcFdBOzkyQMIFrxeHw3SgAdXS
-         961wkAaC6Rc9P+KgY5cb1pHt4bH9+hG2nHhFxNEYirn7SKVaZU7bILR/bn+pqRHG5/E3
-         AnSC8JOqeu2/gIwqi6vQag2+Ryjdxzgz2QJIXzK2JsbSN2NhaqSMK9D9T3Igyel8ZKfa
-         R09w==
+        d=gmail.com; s=20230601; t=1740493237; x=1741098037; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pH6kCz8lTpjp3q7JFqjKA+FgBtUVtLCpjnGefR5mF5k=;
+        b=l32UPZdx67KNPYRn63WdCiA5o1RngRRcjta9ekdoM4ODbTaDBwtniCLew39vzy79N8
+         2vR51cK/kBRvgSBqK/Q1VOalgI08fxRmwyoIlbhGgOFapSocVm6L2PnPU2iRPD/3pdlu
+         Cxi9lyQPkmqN0zYkX0Bao3VqgVTA9nw+O0Wdlg1gM40i8lhg6Cv7M+jIZdhTydLRoY/c
+         eR0Q6HlTyMQXt6NrfVRDBOxbLvcRISpMZX/hPJ51P6Y/Qej+uGIrLrPGJw4e78bgmJ5X
+         7JmikLePAXGw3RhGd0Qrgt4F2cynzoMjsPLS6tFviuGN7H1bzOc9h5z4owrkyi1Td0KN
+         1xrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740493065; x=1741097865;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/KgWBEXvpPJ1izY+CQ5WBRzeUj02pc2AV48/6n70IVQ=;
-        b=eiO1Agnr4RQi1mdyZD6k/5YbFnMNJksUe/BtChb9g+OJDjr3TE2sqHnVMX93l+Jsji
-         xbbu0hfPl+EwvgdF0QcZLRhXY49/OFV8UnkrLxtDUUff5wCffaD5DZG/dhIeLne9ZDGe
-         IsIwut/nntIswW4hpvD74ZciKpSXsOSNqJn/WtaauuAcG12aivCrSzjZl2qTyNfyJmUR
-         olVRy4KNOeQ0zjrenv2fSLJKD6gexDIwQr8vUQOTOvlggADKoNGy+skuNYZK6NOxTcRL
-         7n8El9Ysslg0DrwRj218cLixT6Pg9D+xEaNr2pYrVLz1IVaM+YU9WUAnm/fcz9PoyNgN
-         zgbw==
-X-Forwarded-Encrypted: i=1; AJvYcCXkYOPy/8M1kRRS+LmEVBjS/yZv610lmW1iw974q+y+0/p9KFhCfuG2YV9eMb55jtd2Bn1APmSwqtmDHhU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7zoU4UeEJAxd7h8/oTADZ0xGdaKuf7nl7f/VpOnYGZA1MtbJW
-	DPC5C2RcGYKF7apoEzzj+Clq+jXkSKbBPtpDSDMNCT1xCRyLTS9WnWXrkVWM
-X-Gm-Gg: ASbGncsb0bSk24g2wKbt47YrDTst6T3uIdRc+p+kHvI2YdASTiECKVNwW1gdtXDCg59
-	AKy5lRNAitSlsf1v+J9meijC7swTcftUiSwTUHm7J3K5Yf9i1YIez12i9uoTYFgwYlOUla37V85
-	Jt8lEmgHHH2qHEcVN9Hd6xfgXVqEL1LOQEayEEGWiLpSn3RfclMXsUO4Zwh/Syc1aZBsh5dJnFS
-	nm6BQZmaK1ucUX84klsRXlgSNoCb3MtjDhy1fV9WvmOOnmiGGtuRvGtWOsAkWfY163+HOT0SsgB
-	iMPH7v/S9ZW2tpq+VYc+gwHj5ItspZtrIGzy6FQ=
-X-Google-Smtp-Source: AGHT+IFZSXG8PEqzt6l0ksAlLiAmH/XPg87BT/UfaoQ0ZTdJdIbQZIab2dlPhgvKtPXzZUJKPpAwiA==
-X-Received: by 2002:a5d:59a2:0:b0:38d:ba09:86b5 with SMTP id ffacd0b85a97d-38f6f0c4985mr11781297f8f.52.1740493062969;
-        Tue, 25 Feb 2025 06:17:42 -0800 (PST)
-Received: from localhost.localdomain ([45.128.133.219])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ab1546fadsm27738485e9.18.2025.02.25.06.17.38
+        d=1e100.net; s=20230601; t=1740493237; x=1741098037;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pH6kCz8lTpjp3q7JFqjKA+FgBtUVtLCpjnGefR5mF5k=;
+        b=hkUihvKc6DPrj9NR0Oo+LEeu3YZQ9DqoUD419eMO0H8j1YTDGiPCtp7MpEah0fj2xC
+         Hp8QaMVLjNweCCYSQX8TG+xasOR52rZHhXt0n0g+rpjSRRg+3/xb/KPX26YJKbrYF8Lw
+         VuqUpOUgPk9MqC+ZTotJRdUyxkZZp/4DK5YDWhhqBla1nLBNgTlJ7T8tJr2aB5tVCNWS
+         Equ4yg92WTOmSmlLbDehjqTaGsCN1PHu7iKe4M01kk/TzQgoPKt7oCpoZHVDYlA9hHjD
+         yWj+8dROVDIk6OV7wg8TfZApWpRhyD+BW8HTbqcms/sbbnrAuI/38VQGaYqoOkC7HNn9
+         vOdg==
+X-Forwarded-Encrypted: i=1; AJvYcCU1DIrzUzrhtepBROBkn5gVsBuaHb6fnyJAPsvLMzG5InWDbSFp7ntzMIi7vmQoG5122qg=@vger.kernel.org, AJvYcCUGJP75ulyZJeTtkYcthdvw1IGm2TUdKeTmR6tGARwCDS80toPhECx4wAWohgMv8lXwHDamz/LnMX5C6BE=@vger.kernel.org, AJvYcCW1G/sRPezlb6Tx0gfsqpzl0QzXfe1bC4xbozwfYY/2pd+uC5ajpfGARIw9+7u8Bv/59CdlNKR4pt7BdOd1b+8=@vger.kernel.org, AJvYcCWjdDiTYXviznEV4fPTHiMa4dnjerg6fpDac1cCbXV3Ax0j6HQ4pGtnM/zOJbjsUWGL5rRV8lgc0y1cxZd6@vger.kernel.org, AJvYcCX/W1hvsrXueQsd8AANgUvBCgtOgvidLJyQn2KDntm3Th6FwpgcydNd1zPhhMf6lHtiCnkxKH88wV/3Cz6t@vger.kernel.org, AJvYcCXMiMod8z4lh0qgjvJf4xQJsHelcf0DHfchUUlAXA5bjgZhxO6jTyfqITSb2wKU/gkQdsmgpyZ1@vger.kernel.org, AJvYcCXUvEo7acbk8Iic/OabaEvH0+kARNiuNDb9FQHvXnE1FEgvHd9lEosk8xDAgzGNE6BWwN4jb2yWMGDUwuo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkdD8+2F8Vec3/ek29a0PsxsU0tBiCDLDoOp7odiO+vBnc9FMW
+	r51qZXUSCyQe8WJCaSfZtj2yzLRlHzoQ4pdTrQfkQtorFcc9+onq
+X-Gm-Gg: ASbGncvZQFb+bL6wKtMgPk66kQxQwI+PTik994XtBCbO2I/roHMQc6q9w2lSWMOFkm0
+	gfHuYFphQ5yO5jeHJFzZhxbdSp1/CNaZyUe7yR8Ew5SWdNDjGaLvKtiPBTi8v/zKb32LsofC8zm
+	vF4L6i8dAqQ5W+9FHANwRc1+IrJN1qxe5koou5zhlqF6zz2vKAbmILoGGJV7J6So+nOw/tAfl4M
+	OpmcY1NIrA2F0hAotxyliJYa9FwRR7ResbCuqmCBk2WALsBM9TC+j1N84JN77NdPBA8PZ1GIONu
+	dClQ3GRp3MYeY8HW7ooNX9/NSAgk5yr2eKCadT92ZgXFssvF1YUNpA==
+X-Google-Smtp-Source: AGHT+IF5xwcyMuEse5d6U24DTrm7La/i/EXLcWUjTbDTBaLHgklr2LYp0Shxn4PZ0SRkVV82FkT4WQ==
+X-Received: by 2002:a05:6a00:3392:b0:730:9946:5973 with SMTP id d2e1a72fcca58-734790a2af5mr5118831b3a.5.1740493236834;
+        Tue, 25 Feb 2025 06:20:36 -0800 (PST)
+Received: from visitorckw-System-Product-Name ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7347a72ef60sm1586035b3a.75.2025.02.25.06.20.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 06:17:42 -0800 (PST)
-From: Oscar Maes <oscmaes92@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	viro@zeniv.linux.org.uk,
-	jiri@resnulli.us,
-	linux-kernel@vger.kernel.org,
-	security@kernel.org,
-	stable@kernel.org,
-	idosch@idosch.org,
-	Oscar Maes <oscmaes92@gmail.com>,
-	syzbot <syzbot+91161fe81857b396c8a0@syzkaller.appspotmail.com>
-Subject: [PATCH net v2] net: 802: enforce underlying device type for GARP and MRP
-Date: Tue, 25 Feb 2025 15:17:09 +0100
-Message-Id: <20250225141709.5961-1-oscmaes92@gmail.com>
-X-Mailer: git-send-email 2.39.5
+        Tue, 25 Feb 2025 06:20:36 -0800 (PST)
+Date: Tue, 25 Feb 2025 22:20:26 +0800
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, jk@ozlabs.org,
+	joel@jms.id.au, eajames@linux.ibm.com, andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org, rfoss@kernel.org,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+	dmitry.torokhov@gmail.com, mchehab@kernel.org,
+	awalls@md.metrocast.net, hverkuil@xs4all.nl,
+	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+	louis.peens@corigine.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
+	johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+	jirislaby@kernel.org, akpm@linux-foundation.org, hpa@zytor.com,
+	alistair@popple.id.au, linux@rasmusvillemoes.dk,
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+	jernej.skrabec@gmail.com, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
+	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
+	oss-drivers@corigine.com, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
+	bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
+	Yu-Chun Lin <eleanor15x@gmail.com>
+Subject: Re: [PATCH 02/17] bitops: Add generic parity calculation for u64
+Message-ID: <Z73RqnMRS+31wzrv@visitorckw-System-Product-Name>
+References: <20250223164217.2139331-1-visitorckw@gmail.com>
+ <20250223164217.2139331-3-visitorckw@gmail.com>
+ <Z7zIBwH4aUA7G9MY@thinkpad>
+ <Z73FxIv353lbXO3A@visitorckw-System-Product-Name>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z73FxIv353lbXO3A@visitorckw-System-Product-Name>
 
-When creating a VLAN device, we initialize GARP (garp_init_applicant)
-and MRP (mrp_init_applicant) for the underlying device.
+On Tue, Feb 25, 2025 at 09:29:51PM +0800, Kuan-Wei Chiu wrote:
+> Hi Yury,
+> 
+> On Mon, Feb 24, 2025 at 02:27:03PM -0500, Yury Norov wrote:
+> > On Mon, Feb 24, 2025 at 12:42:02AM +0800, Kuan-Wei Chiu wrote:
+> > > Several parts of the kernel open-code parity calculations using
+> > > different methods. Add a generic parity64() helper implemented with the
+> > > same efficient approach as parity8().
+> > 
+> > No reason to add parity32() and parity64() in separate patches
+> 
+> Ack.
+> 
+> >  
+> > > Co-developed-by: Yu-Chun Lin <eleanor15x@gmail.com>
+> > > Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+> > > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+> > > ---
+> > >  include/linux/bitops.h | 22 ++++++++++++++++++++++
+> > >  1 file changed, 22 insertions(+)
+> > > 
+> > > diff --git a/include/linux/bitops.h b/include/linux/bitops.h
+> > > index fb13dedad7aa..67677057f5e2 100644
+> > > --- a/include/linux/bitops.h
+> > > +++ b/include/linux/bitops.h
+> > > @@ -281,6 +281,28 @@ static inline int parity32(u32 val)
+> > >  	return (0x6996 >> (val & 0xf)) & 1;
+> > >  }
+> > >  
+> > > +/**
+> > > + * parity64 - get the parity of an u64 value
+> > > + * @value: the value to be examined
+> > > + *
+> > > + * Determine the parity of the u64 argument.
+> > > + *
+> > > + * Returns:
+> > > + * 0 for even parity, 1 for odd parity
+> > > + */
+> > > +static inline int parity64(u64 val)
+> > > +{
+> > > +	/*
+> > > +	 * One explanation of this algorithm:
+> > > +	 * https://funloop.org/codex/problem/parity/README.html
+> > 
+> > This is already referenced in sources. No need to spread it for more.
+> 
+> Ack.
+> 
+> > 
+> > > +	 */
+> > > +	val ^= val >> 32;
+> > > +	val ^= val >> 16;
+> > > +	val ^= val >> 8;
+> > > +	val ^= val >> 4;
+> > > +	return (0x6996 >> (val & 0xf)) & 1;
+> > 
+> > It's better to avoid duplicating the same logic again and again.
+> 
+> Ack.
+> 
+> > 
+> > > +}
+> > > +
+> > 
+> > So maybe make it a macro?
+> > 
+> > 
+> > From f17a28ae3429f49825d65ebc0f7717c6a191a3e2 Mon Sep 17 00:00:00 2001
+> > From: Yury Norov <yury.norov@gmail.com>
+> > Date: Mon, 24 Feb 2025 14:14:27 -0500
+> > Subject: [PATCH] bitops: generalize parity8()
+> > 
+> > The generic parity calculation approach may be easily generalized for
+> > other standard types. Do that and drop sub-optimal implementation of
+> > parity calculation in x86 code.
+> > 
+> > Signed-off-by: Yury Norov [NVIDIA] <yury.norov@gmail.com>
+> > ---
+> >  arch/x86/kernel/bootflag.c | 14 +-----------
+> >  include/linux/bitops.h     | 47 +++++++++++++++++++++++++++-----------
+> >  2 files changed, 35 insertions(+), 26 deletions(-)
+> > 
+> > diff --git a/arch/x86/kernel/bootflag.c b/arch/x86/kernel/bootflag.c
+> > index 3fed7ae58b60..4a85c69a28f8 100644
+> > --- a/arch/x86/kernel/bootflag.c
+> > +++ b/arch/x86/kernel/bootflag.c
+> > @@ -2,6 +2,7 @@
+> >  /*
+> >   *	Implement 'Simple Boot Flag Specification 2.0'
+> >   */
+> > +#include <linux/bitops.h>
+> >  #include <linux/types.h>
+> >  #include <linux/kernel.h>
+> >  #include <linux/init.h>
+> > @@ -20,19 +21,6 @@
+> >  
+> >  int sbf_port __initdata = -1;	/* set via acpi_boot_init() */
+> >  
+> > -static int __init parity(u8 v)
+> > -{
+> > -	int x = 0;
+> > -	int i;
+> > -
+> > -	for (i = 0; i < 8; i++) {
+> > -		x ^= (v & 1);
+> > -		v >>= 1;
+> > -	}
+> > -
+> > -	return x;
+> > -}
+> > -
+> >  static void __init sbf_write(u8 v)
+> >  {
+> >  	unsigned long flags;
+> > diff --git a/include/linux/bitops.h b/include/linux/bitops.h
+> > index c1cb53cf2f0f..29601434f5f4 100644
+> > --- a/include/linux/bitops.h
+> > +++ b/include/linux/bitops.h
+> > @@ -230,10 +230,10 @@ static inline int get_count_order_long(unsigned long l)
+> >  }
+> >  
+> >  /**
+> > - * parity8 - get the parity of an u8 value
+> > + * parity - get the parity of a value
+> >   * @value: the value to be examined
+> >   *
+> > - * Determine the parity of the u8 argument.
+> > + * Determine parity of the argument.
+> >   *
+> >   * Returns:
+> >   * 0 for even parity, 1 for odd parity
+> > @@ -241,24 +241,45 @@ static inline int get_count_order_long(unsigned long l)
+> >   * Note: This function informs you about the current parity. Example to bail
+> >   * out when parity is odd:
+> >   *
+> > - *	if (parity8(val) == 1)
+> > + *	if (parity(val) == 1)
+> >   *		return -EBADMSG;
+> >   *
+> >   * If you need to calculate a parity bit, you need to draw the conclusion from
+> >   * this result yourself. Example to enforce odd parity, parity bit is bit 7:
+> >   *
+> > - *	if (parity8(val) == 0)
+> > + *	if (parity(val) == 0)
+> >   *		val ^= BIT(7);
+> > + *
+> > + * One explanation of this algorithm:
+> > + * https://funloop.org/codex/problem/parity/README.html
+> >   */
+> > -static inline int parity8(u8 val)
+> > -{
+> > -	/*
+> > -	 * One explanation of this algorithm:
+> > -	 * https://funloop.org/codex/problem/parity/README.html
+> > -	 */
+> > -	val ^= val >> 4;
+> > -	return (0x6996 >> (val & 0xf)) & 1;
+> > -}
+> > +#define parity(val)					\
+> > +({							\
+> > +	u64 __v = (val);				\
+> > +	int __ret;					\
+> > +	switch (BITS_PER_TYPE(val)) {			\
+> > +	case 64:					\
+> > +		__v ^= __v >> 32;			\
+> > +		fallthrough;				\
+> > +	case 32:					\
+> > +		__v ^= __v >> 16;			\
+> > +		fallthrough;				\
+> > +	case 16:					\
+> > +		__v ^= __v >> 8;			\
+> > +		fallthrough;				\
+> > +	case 8:						\
+> > +		__v ^= __v >> 4;			\
+> > +		__ret =  (0x6996 >> (__v & 0xf)) & 1;	\
+> > +		break;					\
+> > +	default:					\
+> > +		BUILD_BUG();				\
+> > +	}						\
+> > +	__ret;						\
+> > +})
+> > +
+> > +#define parity8(val)	parity((u8)(val))
+> > +#define parity32(val)	parity((u32)(val))
+> > +#define parity64(val)	parity((u64)(val))
+> >  
+> What do you think about using these inline functions instead of macros?
+> Except for parity8(), each function is a single line and follows the
+> same logic. I find inline functions more readable, and coding-style.rst
+> also recommends them over macros.
+> 
+> Regards,
+> Kuan-Wei
+> 
+> diff --git a/include/linux/bitops.h b/include/linux/bitops.h
+> index c1cb53cf2f0f..d518a382f1fe 100644
+> --- a/include/linux/bitops.h
+> +++ b/include/linux/bitops.h
+> @@ -260,6 +260,26 @@ static inline int parity8(u8 val)
+>  	return (0x6996 >> (val & 0xf)) & 1;
+>  }
+>  
+> +static inline parity16(u16 val)
+> +{
+> +	return parity8(val ^ (val >> 8));
+> +}
+> +
+> +static inline parity16(u16 val)
+> +{
+> +	return parity8(val ^ (val >> 8));
+> +}
+> +
+> +static inline parity32(u32)
+> +{
+> +	return parity16(val ^ (val >> 16));
+> +}
+> +
+> +static inline parity64(u64)
+> +{
+> +	return parity32(val ^ (val >> 32));
+> +}
+> +
+>  /**
+>   * __ffs64 - find first set bit in a 64 bit word
+>   * @word: The 64 bit word
+> 
+>
+Oops... I made a lot of fat-finger mistakes. Here's the correct one.
 
-As part of the initialization process, we add the multicast address of
-each applicant to the underlying device, by calling dev_mc_add.
-
-__dev_mc_add uses dev->addr_len to determine the length of the new
-multicast address.
-
-This causes an out-of-bounds read if dev->addr_len is greater than 6,
-since the multicast addresses provided by GARP and MRP are only 6 bytes
-long.
-
-This behaviour can be reproduced using the following commands:
-
-ip tunnel add gretest mode ip6gre local ::1 remote ::2 dev lo
-ip l set up dev gretest
-ip link add link gretest name vlantest type vlan id 100
-
-Then, the following command will display the address of garp_pdu_rcv:
-
-ip maddr show | grep 01:80:c2:00:00:21
-
-Fix this by enforcing the type of the underlying device during GARP
-and MRP initialization.
-
-Fixes: 22bedad3ce11 ("net: convert multicast list to list_head")
-Reported-by: syzbot <syzbot+91161fe81857b396c8a0@syzkaller.appspotmail.com>
-Closes: https://lore.kernel.org/netdev/000000000000ca9a81061a01ec20@google.com/
-Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
----
- net/802/garp.c | 5 +++++
- net/802/mrp.c  | 5 +++++
- 2 files changed, 10 insertions(+)
-
-diff --git a/net/802/garp.c b/net/802/garp.c
-index 27f0ab146..32ab7df0e 100644
---- a/net/802/garp.c
-+++ b/net/802/garp.c
-@@ -9,6 +9,7 @@
- #include <linux/skbuff.h>
- #include <linux/netdevice.h>
- #include <linux/etherdevice.h>
-+#include <linux/if_arp.h>
- #include <linux/rtnetlink.h>
- #include <linux/llc.h>
- #include <linux/slab.h>
-@@ -574,6 +575,10 @@ int garp_init_applicant(struct net_device *dev, struct garp_application *appl)
+diff --git a/include/linux/bitops.h b/include/linux/bitops.h
+index c1cb53cf2f0f..427e4c06055e 100644
+--- a/include/linux/bitops.h
++++ b/include/linux/bitops.h
+@@ -260,6 +260,21 @@ static inline int parity8(u8 val)
+ 	return (0x6996 >> (val & 0xf)) & 1;
+ }
  
- 	ASSERT_RTNL();
- 
-+	err = -EINVAL;
-+	if (dev->type != ARPHRD_ETHER)
-+		goto err1;
++static inline int parity16(u16 val)
++{
++	return parity8(val ^ (val >> 8));
++}
 +
- 	if (!rtnl_dereference(dev->garp_port)) {
- 		err = garp_init_port(dev);
- 		if (err < 0)
-diff --git a/net/802/mrp.c b/net/802/mrp.c
-index e0c96d0da..7ee7626f5 100644
---- a/net/802/mrp.c
-+++ b/net/802/mrp.c
-@@ -12,6 +12,7 @@
- #include <linux/skbuff.h>
- #include <linux/netdevice.h>
- #include <linux/etherdevice.h>
-+#include <linux/if_arp.h>
- #include <linux/rtnetlink.h>
- #include <linux/slab.h>
- #include <linux/module.h>
-@@ -859,6 +860,10 @@ int mrp_init_applicant(struct net_device *dev, struct mrp_application *appl)
- 
- 	ASSERT_RTNL();
- 
-+	err = -EINVAL;
-+	if (dev->type != ARPHRD_ETHER)
-+		goto err1;
++static inline int parity32(u32 val)
++{
++	return parity16(val ^ (val >> 16));
++}
 +
- 	if (!rtnl_dereference(dev->mrp_port)) {
- 		err = mrp_init_port(dev);
- 		if (err < 0)
--- 
-2.39.5
++static inline int parity64(u64 val)
++{
++	return parity32(val ^ (val >> 32));
++}
++
+ /**
+  * __ffs64 - find first set bit in a 64 bit word
+  * @word: The 64 bit word
 
+
+> >  /**
+> >   * __ffs64 - find first set bit in a 64 bit word
+> > -- 
+> > 2.43.0
+> > 
