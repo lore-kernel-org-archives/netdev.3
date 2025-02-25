@@ -1,155 +1,103 @@
-Received: from terminus.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B96242912;
-	Tue, 25 Feb 2025 03:40:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63122EEA9;
+	Tue, 25 Feb 2025 04:21:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740454819; cv=none; b=tOxmGkDYcy/je214/o7eMIXkgj8xvGTCsAJYhnabekgcWaFxCH6eluKDFjN9yYGZaNAqtZcOM/e6LEH5i/7gZDIhF187ugjL0mIhK8rSPRdG2cZVB9VWyVWnOuN9dN4T4UzaQSOnXvcZdu0Bf8vCdIwdw8lpz6Cpn1YskCgE0u8=
+	t=1740457304; cv=none; b=ZbStciJoEA0l+mJ1SQIIystm14TPO83QxuyFe9iRdZdOAbd00Q6COHjRwtjU21f6lsxdIZBl9jOv2ZFYjUzwguIoF6VRDL/rfYJ0kqmVQTbpQvGIYtChEjHqal+O2ZaStuSICxL4NAGke+6DHw0Bcy/1uf8i3MzJLOM9SzQdwmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740454819; c=relaxed/simple;
-	bh=qJuy0nK2q6YCUlorfPoA1uGhIzEe0LfAfeiGmFKmujU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l6I6aJyqp12dgdp4fK0A+SJCajV6XuJuc5ajjDVqpMRw5RwboP8Blz/UCCEiKFyFPkvlM4Ja7tldkfsdTEL6BNo+gb/V4Vqp0JGhfM1eBOy3zvfTZhq+CELWQLdQKcKWl7LC0Jmi3eRJwwl++RzwqTX5Nj1T4nsrSrbMtzqiJNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=iF9iqF5I; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1740457304; c=relaxed/simple;
+	bh=H4OmXnztUEsPC7v/SI96osX4EalFKkfsxVy36yEaTZQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=i4Og9rMV17wYtBci1LyUcA/ZklzOLEGmXpwNHRciq8en8mGVERS/4OBTsPHxxeJ5Pmd3mZ+1Awjs5uxL2zZ+DrLcL/YwTc+CvarjHGOjI45ImwWYDYm3AGme1BZREsGk5xh8rWFGuF+VLtFoTlyQ4TBFgwp1eAGtRh31GIywoHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=SYTO+lSf; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="iF9iqF5I"
-Received: from [172.27.1.176] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 51P3aPQT1061652
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Mon, 24 Feb 2025 19:36:26 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 51P3aPQT1061652
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025021701; t=1740454597;
-	bh=ISdSv8V44MsbYhNsZikfbFNm2jh7tbbEZwA+56mURdo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iF9iqF5IJij6HEIYPvvetQ6+tmIzHsh+pMTMVnu3P5ykEhZfImV1libD4devCmagC
-	 3iyNSk1XFew7r8nfwrcPOMDwT9Cet01bBs8IAXImpdZtFUNL3xujHc86QVgJiUt4X2
-	 0obQOYiKlDxXVK9eiAHHN4J1RQO+t4f6a/s1DU/qIj/jceKMbtNss8wjpWMLBt7Ymh
-	 YFL/VhabUdylO/46/55nX8FOwHbYthWKv8154FTojDQ/TbamsE3xTiQ8D2e6xanXYX
-	 Oq30jBmkXfmGEjBRSmTsnad5TAIoXsXj3RQH1SppbmnJ0+TSzbTmjlZvJzSgp8i1Fw
-	 p0rBDMFAbZAag==
-Message-ID: <d0067e6a-a6af-4b38-ac72-f655af4d3b3d@zytor.com>
-Date: Mon, 24 Feb 2025 19:36:25 -0800
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="SYTO+lSf"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51ONUUHQ004527;
+	Mon, 24 Feb 2025 20:21:16 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=5owx7nFq6qHKJn0Te52Tnn3
+	1Lk4PLT722UG2bOCfBHc=; b=SYTO+lSfbIhvU+SDUPHOfjxkDrcLJl3C0JSoJ8z
+	kXo+RseHHDN0Nj0pVrLn6y7lmUAUY2GLEQPrEYp2UV3vEqghXLED4xZVPkhovqMT
+	l3AzMJONV/lf9Iso7DRwfUqeB5gRme0PgzhWMZf9Mel/NslpT4tms8B1bbaWK84x
+	+4AdqQLagu2NDj6HcRfRIQE8T+NKxaGZafddF8bCTwlppbXus+iuUWlLVg8xbxwN
+	g4KsBS7AJi61PZ5V2B9N/K/ft77u9XfArm0LPesRpuns/bhCThuULnxEpaAzUOMd
+	Xw0SxFtYHfodAHDtqWgxGpBjKsJJcEtuyKr/Sz/ye6YMkcw==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4512ge0hd5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Feb 2025 20:21:15 -0800 (PST)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Mon, 24 Feb 2025 20:21:00 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Mon, 24 Feb 2025 20:21:00 -0800
+Received: from localhost.localdomain (unknown [10.111.135.16])
+	by maili.marvell.com (Postfix) with ESMTP id 551D13F7065;
+	Mon, 24 Feb 2025 20:21:00 -0800 (PST)
+From: Harshal Chaudhari <hchaudhari@marvell.com>
+To: <marcin.s.wojtas@gmail.com>, <linux@armlinux.org.uk>,
+        <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Harshal
+ Chaudhari" <hchaudhari@marvell.com>
+Subject: [PATCH v2] net: mvpp2: cls: Fixed Non IP flow, with vlan tag flow defination.
+Date: Mon, 24 Feb 2025 20:20:58 -0800
+Message-ID: <20250225042058.2643838-1-hchaudhari@marvell.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/17] x86: Replace open-coded parity calculation with
- parity8()
-To: Uros Bizjak <ubizjak@gmail.com>
-Cc: Kuan-Wei Chiu <visitorckw@gmail.com>, tglx@linutronix.de,
-        Ingo Molnar <mingo@redhat.com>, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, jk@ozlabs.org,
-        joel@jms.id.au, eajames@linux.ibm.com, andrzej.hajda@intel.com,
-        neil.armstrong@linaro.org, rfoss@kernel.org,
-        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-        tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-        dmitry.torokhov@gmail.com, mchehab@kernel.org, awalls@md.metrocast.net,
-        hverkuil@xs4all.nl, miquel.raynal@bootlin.com, richard@nod.at,
-        vigneshr@ti.com, louis.peens@corigine.com, andrew+netdev@lunn.ch,
-        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-        parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
-        johannes@sipsolutions.net, gregkh@linuxfoundation.org,
-        jirislaby@kernel.org, yury.norov@gmail.com, akpm@linux-foundation.org,
-        mingo@kernel.org, alistair@popple.id.au, linux@rasmusvillemoes.dk,
-        Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
-        jernej.skrabec@gmail.com, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
-        dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-        oss-drivers@corigine.com, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-        brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
-        bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw,
-        Yu-Chun Lin <eleanor15x@gmail.com>
-References: <20250223164217.2139331-1-visitorckw@gmail.com>
- <20250223164217.2139331-4-visitorckw@gmail.com>
- <d080a2d6-9ec7-1c86-4cf4-536400221f68@gmail.com>
- <e0b1c299-7f19-4453-a1ce-676068601213@zytor.com>
- <CAFULd4a_AnP4iqgQs7a6xAsnUFL8oZXxFcAWLmZFMm6MPF_zDQ@mail.gmail.com>
-Content-Language: en-US
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <CAFULd4a_AnP4iqgQs7a6xAsnUFL8oZXxFcAWLmZFMm6MPF_zDQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=P6XAhjAu c=1 sm=1 tr=0 ts=67bd453c cx=c_pps a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17 a=T2h4t0Lz3GQA:10 a=M5GUcnROAAAA:8 a=kR3TKN_x4rxgODecb9QA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: yUy462nxTJJH6JGJpKveUrqDc4m4wxGx
+X-Proofpoint-ORIG-GUID: yUy462nxTJJH6JGJpKveUrqDc4m4wxGx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-25_01,2025-02-24_02,2024-11-22_01
 
+Non IP flow, with vlan tag not working as expected while
+running below command for vlan-priority. fixed that.
 
-On 2/24/25 14:08, Uros Bizjak wrote:
-> On Mon, Feb 24, 2025 at 10:56 PM H. Peter Anvin <hpa@zytor.com> wrote:
->>
->> On 2/24/25 07:24, Uros Bizjak wrote:
->>>
->>>
->>> On 23. 02. 25 17:42, Kuan-Wei Chiu wrote:
->>>> Refactor parity calculations to use the standard parity8() helper. This
->>>> change eliminates redundant implementations and improves code
->>>> efficiency.
->>>
->>> The patch improves parity assembly code in bootflag.o from:
->>>
->>>     58:    89 de                    mov    %ebx,%esi
->>>     5a:    b9 08 00 00 00           mov    $0x8,%ecx
->>>     5f:    31 d2                    xor    %edx,%edx
->>>     61:    89 f0                    mov    %esi,%eax
->>>     63:    89 d7                    mov    %edx,%edi
->>>     65:    40 d0 ee                 shr    %sil
->>>     68:    83 e0 01                 and    $0x1,%eax
->>>     6b:    31 c2                    xor    %eax,%edx
->>>     6d:    83 e9 01                 sub    $0x1,%ecx
->>>     70:    75 ef                    jne    61 <sbf_init+0x51>
->>>     72:    39 c7                    cmp    %eax,%edi
->>>     74:    74 7f                    je     f5 <sbf_init+0xe5>
->>>     76:
->>>
->>> to:
->>>
->>>     54:    89 d8                    mov    %ebx,%eax
->>>     56:    ba 96 69 00 00           mov    $0x6996,%edx
->>>     5b:    c0 e8 04                 shr    $0x4,%al
->>>     5e:    31 d8                    xor    %ebx,%eax
->>>     60:    83 e0 0f                 and    $0xf,%eax
->>>     63:    0f a3 c2                 bt     %eax,%edx
->>>     66:    73 64                    jae    cc <sbf_init+0xbc>
->>>     68:
->>>
->>> which is faster and smaller (-10 bytes) code.
->>>
->>
->> Of course, on x86, parity8() and parity16() can be implemented very simply:
->>
->> (Also, the parity functions really ought to return bool, and be flagged
->> __attribute_const__.)
->>
->> static inline __attribute_const__ bool _arch_parity8(u8 val)
->> {
->>          bool parity;
->>          asm("and %0,%0" : "=@ccnp" (parity) : "q" (val));
-> 
-> asm("test %0,%0" : "=@ccnp" (parity) : "q" (val));
-> 
-> because we are interested only in flags.
-> 
+ethtool -N eth1 flow-type ether vlan 0x8000 vlan-mask 0x1fff action 0 loc 0
 
-Also, needs to be %1,%1 (my mistake, thought flags outputs didn't count.)
+Fixes: 1274daede3ef ("net: mvpp2: cls: Add steering based on vlan Id and priority.")
+Signed-off-by: Harshal Chaudhari <hchaudhari@marvell.com>
+---
 
-Finally, this is kind of an obvious improvement:
+Notes:
+    Change from v1:
+            - Added the fixes tag
+    Change from v2:
+            - Corrected description format.
 
-  static void __init sbf_write(u8 v)
-  {
-         unsigned long flags;
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-         if (sbf_port != -1) {
--               v &= ~SBF_PARITY;
-                 if (!parity(v))
--                       v |= SBF_PARITY;
-+                       v ^= SBF_PARITY;
-
-	-hpa
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
+index 1641791a2d5b..8ed83fb98862 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
+@@ -324,7 +324,7 @@ static const struct mvpp2_cls_flow cls_flows[MVPP2_N_PRS_FLOWS] = {
+ 		       MVPP2_PRS_RI_VLAN_MASK),
+ 	/* Non IP flow, with vlan tag */
+ 	MVPP2_DEF_FLOW(MVPP22_FLOW_ETHERNET, MVPP2_FL_NON_IP_TAG,
+-		       MVPP22_CLS_HEK_OPT_VLAN,
++		       MVPP22_CLS_HEK_TAGGED,
+ 		       0, 0),
+ };
+ 
+-- 
+2.25.1
 
