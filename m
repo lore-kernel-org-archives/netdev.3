@@ -1,61 +1,54 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5217F21ABAD
-	for <netdev@vger.kernel.org>; Tue, 25 Feb 2025 14:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333EB21ABC6;
+	Tue, 25 Feb 2025 14:52:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740494873; cv=none; b=FC4Rc7ABPol3keR8OSv+qJ7sbXG2ToxQsjZdPN9LHsGChkTe74w5tXWvKwvaObTI8M53uXyati7o1bNlbIAwxfNLKCztOUhsinFVDEqnhHbV04VyY1qHHfraM2BdKHCo7UYHF6qyuuslvl6q8gUtjWzSiBgF0CaJkyrnU7IL+Rc=
+	t=1740495169; cv=none; b=iVEz4zml19PtHqsd8o+2dNFnOcpEacp+8HaCOBdB6TdS7kAqEBZFHTfUeiqLoo3Qgre7+FEfWz0GdmfRgWHtiJ959E+1HIC6Lk9JBLCQkMe4fOfwD/SuMQUxOnMTjgBfkvGd+jqL9a0NYl9T3+UsSWXmqUJNwd3BIEWjP88JA5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740494873; c=relaxed/simple;
-	bh=GOlnuZsMCeEkaF9DW/p74sS+cbCTA2hqkjHbsiAlfNw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=V/5i92Q2rxkdpjZHzcLZNu+Ef7FMTSpgIG1B2dv/93NELpQ06H/VxsNGqCrhCdjqoHe6O3NzmPv8fW0jOlZJI3CNi+T9xz7FIaL4pyeJ9O9FVJZl+F9n3rNIgzju2UpdN7pEa5PMRi84ppAati6I9jW9PxMeBbipA0uG6QthKEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cj0ul1sR; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1740495169; c=relaxed/simple;
+	bh=GGaYiwaYa4N9Fv/e4cYbdBiELgwBwoSdz0V5iPN1NwU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BM0Hgs9ARM1ny23bU624vcxrh0gfLpZ++96jwf1IvYatqEa8Meu4azabjcsCKx+eEuwpUoY+gCQa82HRkoKgH2qH3ehyJjruA/i26+YKPwOpJe80Z93hlUA/W1y40U2mVOL7Is/ocNQr+E3giEHyE5ZPd9bQWyhKFZxKL91TUR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nEAE3Qve; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cj0ul1sR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740494871; x=1772030871;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=GOlnuZsMCeEkaF9DW/p74sS+cbCTA2hqkjHbsiAlfNw=;
-  b=Cj0ul1sRSCy/g4EiwftuBQkD1aP8ohG7O2jdZ5z4S8XD4mBFm5wL+t+l
-   Aj31F0RN65pfsxk0OZR08RJIueZLyJSRb1XcPxZ9/71Hzww4Qde4ERB+o
-   XzI2CKHOs2ik0UYxNF/W6d5c+qaZwx5LmX5jx6kz7zyoprFLMdO/PHXjE
-   TUqWjJu6E5wOddYFEwhRJekNp+Nq7nnK6LwfNOiJU/G/1HNyzjt5cN54E
-   ZT/sHLRjxjzO0jVdNAs68Y2RJi7g4th9PIg4nMkFxonRmjj2q7zgbyYMe
-   sbscKu8L+r7OZyCEUgCI+1j+z8WMYhVPdq6bwOhTDjRs1q4VZRb2KlDdR
-   g==;
-X-CSE-ConnectionGUID: VcEDL56jR3u5BAZ7vKgVCw==
-X-CSE-MsgGUID: BPb3g9S2S/CzIM1e9oHZUA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="52726744"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="52726744"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 06:47:51 -0800
-X-CSE-ConnectionGUID: PbCDNw04STqSU6KyEZRFHw==
-X-CSE-MsgGUID: FOeA6XzKTl6CfEDKDeK1Qg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,314,1732608000"; 
-   d="scan'208";a="139649337"
-Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by fmviesa002.fm.intel.com with ESMTP; 25 Feb 2025 06:47:48 -0800
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nEAE3Qve"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40553C4CEDD;
+	Tue, 25 Feb 2025 14:52:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740495168;
+	bh=GGaYiwaYa4N9Fv/e4cYbdBiELgwBwoSdz0V5iPN1NwU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nEAE3Qve0EZ0H0F2bLur/AK3DmCsUBfeU/CEzdAAxPpT5AKgB5Pa8zUQOmMw50gf4
+	 gouJ6A+TvwwgAYZBgYYlrAIKv3u9zZDjHgJFa5D8krvLaBkGXOjsaS8QtBJNFLrDPv
+	 qO6ORzvzjwIQwqj35Yaqh0dVWLiecHHScRfuVnJ3zE3t0g9EWZIyjklEC99751U1Rn
+	 e2wwdmqEuovI+YZj5YMK3l1oxJRbSxn5c8BWpb28+B+N0BkPcVSTwFIUmFlgYVdp+s
+	 9j4L8pzu6kHa8Pxwq9hPUz8NPmHY0t4cVaDmSeOYy1Ius0Az+wFhOOkiXJFIWdXU3d
+	 0F4K6Bf15dAeA==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	NeilBrown <neilb@suse.de>,
+	"J. Bruce Fields" <bfields@fieldses.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Simon Horman <horms@kernel.org>,
+	Yang Erkun <yangerkun@huawei.com>,
+	linux-nfs@vger.kernel.org,
 	netdev@vger.kernel.org,
-	andrew@lunn.ch,
-	pmenzel@molgen.mpg.de,
-	horms@kernel.org,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Subject: [PATCH iwl-next v5] ixgbe: add support for thermal sensor event reception
-Date: Tue, 25 Feb 2025 15:33:55 +0100
-Message-Id: <20250225143355.190469-1-jedrzej.jagielski@intel.com>
-X-Mailer: git-send-email 2.31.1
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] [RESEND] sunrpc: suppress warnings for unused procfs functions
+Date: Tue, 25 Feb 2025 15:52:21 +0100
+Message-Id: <20250225145234.1097985-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,61 +57,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-E610 NICs unlike the previous devices utilising ixgbe driver
-are notified in the case of overheating by the FW ACI event.
+From: Arnd Bergmann <arnd@arndb.de>
 
-In event of overheat when threshold is exceeded, FW suspends all
-traffic and sends overtemp event to the driver. Then driver
-logs appropriate message and disables the adapter instance.
-The card remains in that state until the platform is rebooted.
+There is a warning about unused variables when building with W=1 and no procfs:
 
-This approach is a solution to the fact current version of the
-E610 FW doesn't support reading thermal sensor data by the
-SW. So give to user at least any info that overtemp event
-has occurred, without interface disappearing from the OS
-without any note.
+net/sunrpc/cache.c:1660:30: error: 'cache_flush_proc_ops' defined but not used [-Werror=unused-const-variable=]
+ 1660 | static const struct proc_ops cache_flush_proc_ops = {
+      |                              ^~~~~~~~~~~~~~~~~~~~
+net/sunrpc/cache.c:1622:30: error: 'content_proc_ops' defined but not used [-Werror=unused-const-variable=]
+ 1622 | static const struct proc_ops content_proc_ops = {
+      |                              ^~~~~~~~~~~~~~~~
+net/sunrpc/cache.c:1598:30: error: 'cache_channel_proc_ops' defined but not used [-Werror=unused-const-variable=]
+ 1598 | static const struct proc_ops cache_channel_proc_ops = {
+      |                              ^~~~~~~~~~~~~~~~~~~~~~
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+These are used inside of an #ifdef, so replacing that with an
+IS_ENABLED() check lets the compiler see how they are used while
+still dropping them during dead code elimination.
+
+Fixes: dbf847ecb631 ("knfsd: allow cache_register to return error on failure")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
-v2,3,4 : commit msg tweaks
-v5: use ixgbe_down()
+This patch from last year is still needed, resending without changes
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c      | 4 ++++
- drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h | 3 +++
- 2 files changed, 7 insertions(+)
+ net/sunrpc/cache.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 7236f20c9a30..41809dd02aff 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -3185,6 +3185,10 @@ static void ixgbe_handle_fw_event(struct ixgbe_adapter *adapter)
- 		case ixgbe_aci_opc_get_link_status:
- 			ixgbe_handle_link_status_event(adapter, &event);
- 			break;
-+		case ixgbe_aci_opc_temp_tca_event:
-+			e_crit(drv, "%s\n", ixgbe_overheat_msg);
-+			ixgbe_down(adapter);
-+			break;
- 		default:
- 			e_warn(hw, "unknown FW async event captured\n");
- 			break;
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-index 8d06ade3c7cd..617e07878e4f 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-@@ -171,6 +171,9 @@ enum ixgbe_aci_opc {
- 	ixgbe_aci_opc_done_alt_write			= 0x0904,
- 	ixgbe_aci_opc_clear_port_alt_write		= 0x0906,
+diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
+index 6e36b1204f51..004cdb59f010 100644
+--- a/net/sunrpc/cache.c
++++ b/net/sunrpc/cache.c
+@@ -1678,12 +1678,14 @@ static void remove_cache_proc_entries(struct cache_detail *cd)
+ 	}
+ }
  
-+	/* TCA Events */
-+	ixgbe_aci_opc_temp_tca_event                    = 0x0C94,
+-#ifdef CONFIG_PROC_FS
+ static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
+ {
+ 	struct proc_dir_entry *p;
+ 	struct sunrpc_net *sn;
+ 
++	if (!IS_ENABLED(CONFIG_PROC_FS))
++		return 0;
 +
- 	/* debug commands */
- 	ixgbe_aci_opc_debug_dump_internals		= 0xFF08,
+ 	sn = net_generic(net, sunrpc_net_id);
+ 	cd->procfs = proc_mkdir(cd->name, sn->proc_net_rpc);
+ 	if (cd->procfs == NULL)
+@@ -1711,12 +1713,6 @@ static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
+ 	remove_cache_proc_entries(cd);
+ 	return -ENOMEM;
+ }
+-#else /* CONFIG_PROC_FS */
+-static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
+-{
+-	return 0;
+-}
+-#endif
  
+ void __init cache_initialize(void)
+ {
 -- 
-2.31.1
+2.39.5
 
