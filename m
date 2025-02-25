@@ -1,108 +1,96 @@
-Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45221DDC1A
-	for <netdev@vger.kernel.org>; Tue, 25 Feb 2025 17:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7744A15445D;
+	Tue, 25 Feb 2025 18:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740506395; cv=none; b=V/OafHT3R9TpLSRp4hLiYoaNCrHcT9YWc6gwmC2TuhCK+6B9pN77nZDGvyM7p/9QkNs9mmJLhsqAxQ3zSnNwD+KzWAEZ+sWTkPnNth3sF52ci5BoYVepEbO3upqi2PcoeRAUxu5+4xkFiBh+JHLUaxy0EC55yIcSuEL+K1rpD8Y=
+	t=1740506610; cv=none; b=qh447+iMZhDHmNpTqYZ/UlC7DTg15GO4WRMevk59h1h2kdwmc2yXE/33j1BLvIO2tV45u2WENNj+JYHgjq7MsNJCvalXYNvEMZEks8Cwv9BM1UmrSEGL9Jt5OPhMSlctFCewoYf/zv+t4s0W2zy4RHTgJqL5QQqYGc8hO8auaWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740506395; c=relaxed/simple;
-	bh=BTo1Uo/janfGowoRh9wLWNFctFGQEatfEr3rs2w8pQs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pps4XmyFWZHDjGVk90q0PjNEVbTStqmNVLa9Dyq71hF8hkiPVLeQy6UfK1UzWFbDLw6C6CcaZ2rtTf0yEWmaLg08rafKwa9JjCee8fsky8/ozCLXSlfvs/pUf8icNlPhoQCweyvKOJqH3URxyP/5NHPcACpzc2ZDVLTRyTB16Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=tg3vqDng; arc=none smtp.client-ip=139.165.32.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
+	s=arc-20240116; t=1740506610; c=relaxed/simple;
+	bh=DCOUoVzVNSydpQ/dS03bguPxoI1g9gTndpvRpxQgL5U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=srth9ON8cS7uxndXqUHBDmn9wpykmuZ+mn7qV5y1maA+YtJAU7Mx5QyF9K42QD+sYLEzHKYXXrKvvBHfDdlWluSJXAAjFEUWGE4kfCHe+cmYGfhPAAriq6CXlhiglvjXI6Kyz3mZz7vnDLrb/bQAo2hyrHwRrDrs4TgY5lwEF94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gVmnxV6o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="tg3vqDng"
-Received: from localhost.localdomain (220.24-245-81.adsl-dyn.isp.belgacom.be [81.245.24.220])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id 666652061C40;
-	Tue, 25 Feb 2025 18:51:47 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be 666652061C40
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
-	s=ulg20190529; t=1740505907;
-	bh=hEQ4CIWNsVWBXd/pRVC7xRzrQ2ZWkht2NBhWtqlQz3s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tg3vqDngftmoK0yd84iXqLQ75jToubkMkZsy1aKDCS3qbQ67eaOfJ7fz662aEQZoj
-	 A1Kwx+kHIOgYNQvtArPgAFroqUd1zhcM5vEv98Hu5IYrrWQM2TedYV/DXt3oF+MdTN
-	 URGcfUt4F0gBNHPb+2B8eHuFBmt0p+JR83IsCWofr70+a3BR7vB+L5G+iFJmQobWds
-	 9ReKBeaRGTn48EZTIf+7dWhBUqShvNPEf2d7f2ZtKkGjaP9KP/w6CBL0ORlKkJqepJ
-	 1ogtdK6xAKjfsDZwCEpA/IB59lM24wahXQKEihyBbQBb1kjSEnnItWZTk/+kiHjV4b
-	 1qNZmbMYPsYPA==
-From: Justin Iurman <justin.iurman@uliege.be>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	justin.iurman@uliege.be,
-	David Lebrun <dlebrun@google.com>,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net v3 1/2] net: ipv6: fix dst ref loop on input in seg6 lwt
-Date: Tue, 25 Feb 2025 18:51:38 +0100
-Message-Id: <20250225175139.25239-2-justin.iurman@uliege.be>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250225175139.25239-1-justin.iurman@uliege.be>
-References: <20250225175139.25239-1-justin.iurman@uliege.be>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gVmnxV6o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 989D2C4CEDD;
+	Tue, 25 Feb 2025 18:03:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740506610;
+	bh=DCOUoVzVNSydpQ/dS03bguPxoI1g9gTndpvRpxQgL5U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gVmnxV6oNNkD0+ncPquUaGL++hfjCkZTHvhFuvpdtUabzc6pemipfQ4iZYzu83xon
+	 pRwkkf5xh/DVcSTsBOX65vog+SrmsoUmcy6ISp3y3vPCDVurmE28vRuAbOA/+Ya32A
+	 JKlciHKttoak86VlLAj2HyuQbfVQNMDQmXlqq6l7ILI7CC/yt2TIsGXOa7JBex7k9t
+	 65QZV1j/M3zjdFuI0UtXgEQwMl9DrT46m6rptwZ/UblGoodb8aOozG/rzaulK2Gabh
+	 4Pk7Gy6R/BzrOashE02ihMAjxNzjWR1VF0rYixW9TLQ5/hZRNb8Zwm8AQ0/nOtbqBq
+	 3Lfft0A1FtP7A==
+Message-ID: <a003b144-0abf-4274-abff-a6e391a3e20b@kernel.org>
+Date: Tue, 25 Feb 2025 11:03:27 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 3/9] net: devmem: Implement TX path
+Content-Language: en-US
+To: Mina Almasry <almasrymina@google.com>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, virtualization@lists.linux.dev,
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Jeroen de Borst <jeroendb@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Kuniyuki Iwashima <kuniyu@amazon.com>, Willem de Bruijn
+ <willemb@google.com>, Neal Cardwell <ncardwell@google.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>, sdf@fomichev.me,
+ asml.silence@gmail.com, dw@davidwei.uk, Jamal Hadi Salim <jhs@mojatatu.com>,
+ Victor Nogueira <victor@mojatatu.com>, Pedro Tammela
+ <pctammela@mojatatu.com>, Samiullah Khawaja <skhawaja@google.com>,
+ Kaiyuan Zhang <kaiyuanz@google.com>
+References: <20250222191517.743530-1-almasrymina@google.com>
+ <20250222191517.743530-4-almasrymina@google.com>
+ <a814c41a-40f9-4632-a5bb-ad3da5911fb6@redhat.com>
+ <CAHS8izNfNJLrMtdR0je3DsXDAvP2Hs8HfKf5Jq7_kQJsVUbrzg@mail.gmail.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <CAHS8izNfNJLrMtdR0je3DsXDAvP2Hs8HfKf5Jq7_kQJsVUbrzg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Prevent a dst ref loop on input in seg6_iptunnel.
+On 2/25/25 10:41 AM, Mina Almasry wrote:
+> On Tue, Feb 25, 2025 at 5:04 AM Paolo Abeni <pabeni@redhat.com> wrote:
+>>
+>> On 2/22/25 8:15 PM, Mina Almasry wrote:
+>> [...]
+>>> @@ -119,6 +122,13 @@ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
+>>>       unsigned long xa_idx;
+>>>       unsigned int rxq_idx;
+>>>
+>>> +     xa_erase(&net_devmem_dmabuf_bindings, binding->id);
+>>> +
+>>> +     /* Ensure no tx net_devmem_lookup_dmabuf() are in flight after the
+>>> +      * erase.
+>>> +      */
+>>> +     synchronize_net();
+>>
+>> Is the above statement always true? can the dmabuf being stuck in some
+>> qdisc? or even some local socket due to redirect?
+>>
+> 
+> Yes, we could have have netmems in the TX path in the qdisc or waiting
+> for retransmits that still have references to the dmabuf, and that's
+> fine here I think.
 
-Fixes: af4a2209b134 ("ipv6: sr: use dst_cache in seg6_input")
-Cc: David Lebrun <dlebrun@google.com>
-Cc: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
----
- net/ipv6/seg6_iptunnel.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+skbs with references to netmem from a dmabuf can get stuck in retransmit
+queues for a long time. The comment should at least acknowledge that.
 
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 33833b2064c0..51583461ae29 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -472,10 +472,18 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- {
- 	struct dst_entry *orig_dst = skb_dst(skb);
- 	struct dst_entry *dst = NULL;
-+	struct lwtunnel_state *lwtst;
- 	struct seg6_lwt *slwt;
- 	int err;
- 
--	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
-+	/* We cannot dereference "orig_dst" once ip6_route_input() or
-+	 * skb_dst_drop() is called. However, in order to detect a dst loop, we
-+	 * need the address of its lwtstate. So, save the address of lwtstate
-+	 * now and use it later as a comparison.
-+	 */
-+	lwtst = orig_dst->lwtstate;
-+
-+	slwt = seg6_lwt_lwtunnel(lwtst);
- 
- 	local_bh_disable();
- 	dst = dst_cache_get(&slwt->cache);
-@@ -490,7 +498,9 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 	if (!dst) {
- 		ip6_route_input(skb);
- 		dst = skb_dst(skb);
--		if (!dst->error) {
-+
-+		/* cache only if we don't create a dst reference loop */
-+		if (!dst->error && lwtst != dst->lwtstate) {
- 			local_bh_disable();
- 			dst_cache_set_ip6(&slwt->cache, dst,
- 					  &ipv6_hdr(skb)->saddr);
--- 
-2.34.1
 
