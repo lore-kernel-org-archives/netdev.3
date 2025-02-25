@@ -1,125 +1,139 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F55269B1C
-	for <netdev@vger.kernel.org>; Tue, 25 Feb 2025 13:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740490748; cv=pass; b=TGQfy7ywhWIvgUfkYdYCeEAYU08s2dJdDR5UdlzXfzMcUXP7Qcb9AWppI6AgU8SMjJzM0ckM9Tp2XKuaIKULlGm+dG5Ou+oXZ1glx8Q5xgrPyynMNClOpXuLQ1wTf7dnxb1EbL8cZ0EwqqG0j00RPhMPB/ZLkbPF5ym6UBzCwNA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740490748; c=relaxed/simple;
-	bh=Er8L/RidarTahqR7VycrG4OSXqfTiHAybWHQ6rol/5o=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mDfVk/XvnwLPKh3WH/q5KIYziyeEsoOcgdq8BAryHW1r8TSzYBHJFTZe/faZeMOjfd+PWuXruMnev5iPAwFUtNubBOBkHdzU2+g3utQL4Aeaoq5hVt4nCxCxrEZUzTrl7DTQ8XQdwNW/gMIrm/6x/iWbRWm1FmRlEboH9oqflTs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=AZfPrdW1; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FE4267AE5;
+	Tue, 25 Feb 2025 13:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740490873; cv=none; b=movXY7DOQGC4jg+ifmkaedh5vhMwTpuVY6ADqndSTwn2rx2yhXtf2n8O93BWVTDBLW8GOHkYS6LlQ9r+ttmoBCGeLAB2nZWNwYoxqAymRWoqzVw4Jtcc0Gqej483iC45g7O57JLa6/rBMLknB46R8Q3V65jxjFk3Xn7N/pDqTew=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740490873; c=relaxed/simple;
+	bh=8o2HtVC4FM1XL6kCNAFsNzIUp3tYpuDgORl59KzI2dQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sh3VGMv8nBIA8qbhZ3asOynUZ4H05Mz3PD02ddp2fnWM7GAN0pEtK740GUo5hMzRI1JDi3xP8ptIIwj9jPXYR0ZDt53pDktnnSEAo91ELUGJUqsrBcOlJQ2UyxVx7D4BAbXVKn7G+ghjT9NxtZv37oz6y0p1f6omLZrSetmx678=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=aABty445; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="AZfPrdW1"
-ARC-Seal: i=1; a=rsa-sha256; t=1740490723; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=PwggEEaZ9CQ2GimeIZGS1fmbi59boeo/kXePKMhJ2kcELz5F+pwwS7V5Gu0bqr+m09VOmQJInMo6L7Ra37jdBaT4j329+JwMt4vA4F9CnP23E6AKt72MFpaeRkCzjOgj3kV7e05+kWOHM17hEAMRIYvNgD54PhBdy2rxaS/gYWc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1740490723; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Er8L/RidarTahqR7VycrG4OSXqfTiHAybWHQ6rol/5o=; 
-	b=OvE8JLmbyupMizpcVZwkCvMFhKetCZ7THftrTcirYcLzMS9HHjrXKLexpCvDKLhTF5dvnlYf3CH05Yzf9eOkUMKYSEU5/aK1aVUVeFFFd5JGTheaPw3An4828MFQyGj04SSMQTinsqjmb8xPwzmUmnJgkhd3JWah+DuhiR3QEVA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=gus@collabora.com;
-	dmarc=pass header.from=<gus@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740490723;
-	s=zohomail; d=collabora.com; i=gus@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
-	bh=Er8L/RidarTahqR7VycrG4OSXqfTiHAybWHQ6rol/5o=;
-	b=AZfPrdW1ROB8wr0BspoOIaDwRjipKL5LrmmAC/s40lMo9SX7OcCnCQmAVzZeP7V0
-	gIgHDNk2LoBapnJtGyWO21kHBVDWDSZl3iGCOGjQ2NpzF9z4XaPHR1cFw6gkXx22Qlz
-	jaZI3whC9H5swCMAfAlga/Pzk2dbPH/FaFu31tpo=
-Received: by mx.zohomail.com with SMTPS id 1740490721679326.96450953391957;
-	Tue, 25 Feb 2025 05:38:41 -0800 (PST)
-Message-ID: <5e610cabe469732582afb752a0155ccf0e0d84fb.camel@collabora.com>
-Subject: Re: [PATCH v26 00/20] nvme-tcp receive offloads
-From: Gustavo Padovan <gus@collabora.com>
-To: Paolo Abeni <pabeni@redhat.com>, Aurelien Aptel <aaptel@nvidia.com>, 
-	linux-nvme@lists.infradead.org, netdev@vger.kernel.org, sagi@grimberg.me, 
-	hch@lst.de, kbusch@kernel.org, axboe@fb.com, chaitanyak@nvidia.com, 
-	davem@davemloft.net, kuba@kernel.org
-Cc: aurelien.aptel@gmail.com, smalin@nvidia.com, malin1024@gmail.com, 
- ogerlitz@nvidia.com, yorayz@nvidia.com, borisp@nvidia.com,
- galshalom@nvidia.com,  mgurtovoy@nvidia.com, edumazet@google.com
-Date: Tue, 25 Feb 2025 10:38:35 -0300
-In-Reply-To: <63ede1de-1ee3-4872-84b7-d65ec2f68856@redhat.com>
-References: <20250221095225.2159-1-aaptel@nvidia.com>
-	 <63ede1de-1ee3-4872-84b7-d65ec2f68856@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="aABty445"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=jKrGQQamhJ8YtplUcRQjmzSHfY9OrteybnOt/SSElS0=; b=aABty445XXKeIao5C45E3biwF2
+	EfP7YysQoO7WNpL550cbNMOlSyTc16oMQKSTLvRn7FkdprFZnlb9qTX1BRS4OMTMLi48L6RVHHun0
+	foT+ZyHpEiHco8U/j17i7B+avvjInmo+Nap3pTJptLscI68Uj6tmH22FjLAF7TsX+rMk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tmvBI-00HWgW-Ue; Tue, 25 Feb 2025 14:41:04 +0100
+Date: Tue, 25 Feb 2025 14:41:04 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	=?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	=?iso-8859-1?Q?Bj=F8rn?= Mork <bjorn@mork.no>
+Subject: Re: [PATCH net-next v2 1/2] net: phy: sfp: Add support for SMBus
+ module access
+Message-ID: <6ff4a225-07c0-40f6-9509-c4fa79966266@lunn.ch>
+References: <20250225112043.419189-1-maxime.chevallier@bootlin.com>
+ <20250225112043.419189-2-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250225112043.419189-2-maxime.chevallier@bootlin.com>
 
-Hello,
+On Tue, Feb 25, 2025 at 12:20:39PM +0100, Maxime Chevallier wrote:
+> The SFP module's eeprom and internals are accessible through an i2c bus.
+> However, all the i2c transfers that are performed are SMBus-style
+> transfers for read and write operations.
+> 
+> It is possible that the SFP might be connected to an SMBus-only
+> controller, such as the one found in some PHY devices in the VSC85xx
+> family.
+> 
+> Introduce a set of sfp read/write ops that are going to be used if the
+> i2c bus is only capable of doing smbus byte accesses.
+> 
+> As Single-byte SMBus transaction go against SFF-8472 and breaks the
+> atomicity for diagnostics data access, hwmon is disabled in the case
+> of SMBus access.
+> 
+> Moreover, as this may cause other instabilities, print a warning at
+> probe time to indicate that the setup may be unreliable because of the
+> hardware design.
+> 
+> Tested-by: Sean Anderson <sean.anderson@linux.dev>
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> ---
+> 
+> V2: - Added Sean's tested-by
+>     - Added a warning indicating that operations won't be reliable, from
+>       Russell and Andrew's reviews
+>     - Also added a flag saying we're under a single-byte-access bus, to
+>       both print the warning and disable hwmon.
+> 
+>  drivers/net/phy/sfp.c | 79 +++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 73 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+> index 9369f5297769..6e9d3d95eb95 100644
+> --- a/drivers/net/phy/sfp.c
+> +++ b/drivers/net/phy/sfp.c
+> @@ -282,6 +282,7 @@ struct sfp {
+>  	unsigned int rs_state_mask;
+>  
+>  	bool have_a2;
+> +	bool single_byte_access;
+>  
+>  	const struct sfp_quirk *quirk;
+>  
+> @@ -690,14 +691,70 @@ static int sfp_i2c_write(struct sfp *sfp, bool a2, u8 dev_addr, void *buf,
+>  	return ret == ARRAY_SIZE(msgs) ? len : 0;
+>  }
+>  
+> -static int sfp_i2c_configure(struct sfp *sfp, struct i2c_adapter *i2c)
+> +static int sfp_smbus_read(struct sfp *sfp, bool a2, u8 dev_addr, void *buf,
+
+Maybe call this sfp_smbus_byte_read(), leaving space for
+sfp_smbus_word_read() in the future.
+
+> +			  size_t len)
+>  {
+> -	if (!i2c_check_functionality(i2c, I2C_FUNC_I2C))
+> -		return -EINVAL;
+> +	u8 bus_addr = a2 ? 0x51 : 0x50;
+> +	union i2c_smbus_data smbus_data;
+> +	u8 *data = buf;
+> +	int ret;
+> +
+> +	while (len) {
+> +		ret = i2c_smbus_xfer(sfp->i2c, bus_addr, 0,
+> +				     I2C_SMBUS_READ, dev_addr,
+> +				     I2C_SMBUS_BYTE_DATA, &smbus_data);
+> +		if (ret < 0)
+> +			return ret;
+
+Isn't this the wrong order? You should do the upper byte first, then
+the lower?
 
 
-On Tue, 2025-02-25 at 11:12 +0100, Paolo Abeni wrote:
-> On 2/21/25 10:52 AM, Aurelien Aptel wrote:
-> > The next iteration of our nvme-tcp receive offload series, rebased
-> > on top of yesterdays
-> > net-next 671819852118 ("Merge branch 'selftests-drv-net-add-a-
-> > simple-tso-test'")
-> >=20
-> > We are pleased to announce that -as requested by Jakub- we now have
-> > continuous integration (via NIPA) testing running for this feature.
->=20
-> I'm sorry for the dumb question, but can you please share more
-> details
-> on this point?
->=20
-> I don't see any self-test included here, nor any test result feeded
-> to
-> the CI:
->=20
-> https://netdev.bots.linux.dev/devices.html
+    Andrew
 
-
-The integration is final stages of deployment. It is happening using
-KernelCI[1] as the hardware executor with the NICs hosted on a server
-in our lab and then publishing the results for NIPA consumption. We are
-currently working with Jakub on the integration of the results produced
-by KernelCI.
-
-Since last week, NIPA generates a special branch only for hw testing.
-This is the latest one for example:=20
-https://github.com/linux-netdev/testing/commits/net-next-2025-02-25--12-00/
-
-However, it doesn't include Aurelien patches yet, as from what I
-understood from Jakub, this new tree only includes patches that
-passed the existing SW CI. Currently this series has some fails:
-
-https://patchwork.kernel.org/project/netdevbpf/list/?series=3D936360
-
-Once, we get the series to pass the SW CI, I believe the patches
-will land in the hw testing branch and then be picked up by KernelCI
-for testing.
-
-For information purposes, here is the same test but being executed
-against aaptel tree last week:
-https://dashboard.kernelci.org/test/maestro:67b8d4ace3e60eeff606d9c7
-
-
-Once things are finalized, I'll send an email to the list describing
-the integration as I believe more folks might be interested in the
-integration through KernelCI.
-
-
-[1] https://kernelci.org/
-
-
-Best,
-
-- Gus
-
-
+---
+pw-bot: cr
