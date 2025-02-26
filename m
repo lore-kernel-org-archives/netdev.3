@@ -1,164 +1,94 @@
-Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F740238D5A
-	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 19:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A977223959E
+	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 19:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740598093; cv=none; b=Ba8Z30PC8/kRszEsZk78FX1qW0PxlyUV3CwUxPC+Ic3l2GZwQ0vRQ8807xfm5COrFaGvQqguPqWGORLnz1GZElwPmOzKn79jfEwBENdmtjuhnvE94Voe6pqPb3W0CQVz129tf0KnkdS7/jB9w+1oH4ly0SsobeRGbI3QuLu00HA=
+	t=1740598099; cv=none; b=AVP7m2+wRE6tWNGtBkrVO5kG6tYcrMbmgLvn7IFwi8/dYIZ+Hx8UiSVE6CupF99YtOPgq7apZ5n7QVsrFCvUKNEUYTX40vxS2fhU7w0XeNRf7Bcy5o1iPnJ9qXqdc4HbJhuW2eLD4Zfsn8Q3ioB8vDlAqeIOO776VJoGUoGcjG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740598093; c=relaxed/simple;
-	bh=8PloxJJ2yYUhVRhdsTM0QNP3l0+hYHSdQydXTCoBo1Y=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ns/FqAoDjlaIxpfU2d30GPbOklxF9AsjLtXR/s7MuXda2Yh2Y/dSTjyhEyweYOXyEI5uT3cAS9OnaxTfyfE7vAHehn/XKysM5KqrursPTxE9R9gVDrnBIHqJ22JGd188hsI9c5u2UGFOCUM+Hl0MDjQMmuitInUjKmOLPQflC/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=TnGDzAef; arc=none smtp.client-ip=99.78.197.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1740598099; c=relaxed/simple;
+	bh=bl9Plq6JnXW74ZZ2OyZkxJ1bQfSDrH+0T8qUb2SbqgY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TeZPYyBWx99VPRtolEAZJXtG+glqEOBSlZOZbHGNZARmFzyhoZO3qE3s/uEDjO51u02t8aAVvHRtEFfoBeg21FKe5zfttG62Y8PJoXzhR5I6dL1kWkiw7KFc6r8SpYFmbKwnApnhBGrDRHcwpMxjl/tqZv1cr/joRN+Mm3pacxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--krakauer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JtIjqmS6; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--krakauer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="TnGDzAef"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JtIjqmS6"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-220f0382404so1894615ad.1
+        for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 11:28:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1740598092; x=1772134092;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=IU2uLDZXZ1whHt75f5UbrdE5+EvlvFkI84Hl+q6Qp9w=;
-  b=TnGDzAefQsrxXECVOl3UXHsub1PClZOGE6hRJBf+IOSZwwc8wyDoqipW
-   5fnZeX2CUboAVvBma8N4G0oMvnjQQeJrEkUCJ3sP/uuyuqoEnCN1EM8g2
-   /3E/K+fk19BtPhSpA+nuDBYUYrRi+dl1Vj7xDvL18KKJ65M7EoXBAiBWF
-   U=;
-X-IronPort-AV: E=Sophos;i="6.13,318,1732579200"; 
-   d="scan'208";a="26358298"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 19:27:07 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.7.35:42357]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.11.69:2525] with esmtp (Farcaster)
- id df194479-fe90-40a5-89f3-a072ac933237; Wed, 26 Feb 2025 19:27:06 +0000 (UTC)
-X-Farcaster-Flow-ID: df194479-fe90-40a5-89f3-a072ac933237
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 26 Feb 2025 19:26:58 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.187.170.36) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 26 Feb 2025 19:26:55 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-CC: Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
-	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v2 net-next 02/12] ipv4: fib: Allocate fib_info_hash[] and fib_info_laddrhash[] by kvmalloc_array().
-Date: Wed, 26 Feb 2025 11:25:46 -0800
-Message-ID: <20250226192556.21633-3-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250226192556.21633-1-kuniyu@amazon.com>
-References: <20250226192556.21633-1-kuniyu@amazon.com>
+        d=google.com; s=20230601; t=1740598097; x=1741202897; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qKg29E18EQ/8K9KKxW0a2f9wLs1Xc02tFARhkKQdFJI=;
+        b=JtIjqmS6IYgExDgS6kJWBRzm7hW5KLRv3qNhDdu4R5/AxHzceNro3vmM+Vz9BCpL4t
+         Rq5H4ZTpBA+0X5wzNrZdavjmpVQzGFqHl9wk4Ojrs/NpVPY5rfdNxJP6PsR6pwyiw2no
+         uujzXnSg94EReU8HPNdl1ZUbjsUIgpFeRYmDN+xHP3cT47gBZhKvuiIrywCdCWMlR/T9
+         x9QyacQapqkvSYxVDHXDNZTuBu0NYQuR55OC22xFoX3XA2+FYJFA6hcCexbCKgqVMdnU
+         o8t2vGZsfzvhCs10Oh1Vyjhgo+jKenDTysLDNfSDfg+rfjDmt0/qevl64d0ggr7xa7f9
+         aRCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740598097; x=1741202897;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qKg29E18EQ/8K9KKxW0a2f9wLs1Xc02tFARhkKQdFJI=;
+        b=GyxDZsp2btFVDv21vdvxXDraKy/tluf2h2SBN3ZOY3WjnxNnaKor7kBr4jr0ZF0Ldi
+         7XV6UBGjyJuBFxyOOkpsjTik6zRhLAxAOdLvtAfgbTRteeT5NQ/Spwh9PZN6akVfRvsn
+         vjabZWoj44KvN5YydVhgggqDUkW0ocqxVLOiLqeXahyh3zzNdr8HTl6XExONLEvmsvIA
+         eiXNd/HjUuCJuEQKtHyqnvWiuPHxZUlaA4+htkr1N3EAGVfmIEgsml8c9UXLxszOVcvk
+         aW8u5kzZ3oQZ0hM7w4sWajh96Qiyh+/svh7fNJMZYFvj+AWpfxcGA7Ph2FEyynw1CPJ9
+         FOqw==
+X-Gm-Message-State: AOJu0YwQB/2qhxEnIEKzuR8KbfjBchbRSc39tqonvnjpaBlXAP2Jjj1T
+	hk1LGJabbwsNAqj9/5TsUxFC/jHpA2vaCzBQBO8lzvP6LIE5CdhPbzcil9oVLIVikVnomURoUJf
+	y1T4qF6ewugL8D6hOVyJS7Rt6beMl1PEKR+Q2Prj2nHQsCtnSALiOTBYH47WpI2j7lRsvCSLi4z
+	8JfHtX2+iP9MzsDJfqzxhLPnwIE9YByfNwHFVkbN4+XA==
+X-Google-Smtp-Source: AGHT+IHKu4c7meNjkGUZE1g8urh4/azLv13+UGEM3NtUkBkRgsExSR+jbSrEuSkHB2KxuBwP29fasZf1vU6dkQ==
+X-Received: from pfhj23.prod.google.com ([2002:a62:e917:0:b0:725:1ef3:c075])
+ (user=krakauer job=prod-delivery.src-stubby-dispatcher) by
+ 2002:aa7:8d41:0:b0:72f:590f:2859 with SMTP id d2e1a72fcca58-7348bdd0046mr5402845b3a.13.1740598096762;
+ Wed, 26 Feb 2025 11:28:16 -0800 (PST)
+Date: Wed, 26 Feb 2025 11:27:22 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D036UWB001.ant.amazon.com (10.13.139.133) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.658.g4767266eb4-goog
+Message-ID: <20250226192725.621969-1-krakauer@google.com>
+Subject: [PATCH v2 0/3] selftests/net: deflake GRO tests and fix return value
+ and output
+From: Kevin Krakauer <krakauer@google.com>
+To: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
+	Kevin Krakauer <krakauer@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Both fib_info_hash[] and fib_info_laddrhash[] are hash tables for
-struct fib_info and are allocated by kvzmalloc() separately.
+The GRO selftests can flake and have some confusing behavior. These
+changes make the output and return value of GRO behave as expected, then
+deflake the tests.
 
-Let's replace the two kvzmalloc() calls with kvmalloc_array() to
-remove the fib_info_laddrhash pointer later.
+v2:
+- Split into multiple commits.
+- Reduced napi_defer_hard_irqs to 1.
+- Reduced gro_flush_timeout to 100us.
+- Fixed comment that wasn't updated.
 
-Note that fib_info_hash_alloc() allocates a new hash table based on
-fib_info_hash_bits because we will remove fib_info_hash_size later.
+v1: https://lore.kernel.org/netdev/20250218164555.1955400-1-krakauer@google.com/
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
----
- net/ipv4/fib_semantics.c | 44 ++++++++++++++++++++++++----------------
- 1 file changed, 26 insertions(+), 18 deletions(-)
+Kevin Krakauer (3):
+  selftests/net: have `gro.sh -t` return a correct exit code
+  selftests/net: only print passing message in GRO tests when tests pass
+  selftests/net: deflake GRO tests
 
-diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-index d2cee5c314f5..a68a4eb5e0d1 100644
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -357,6 +357,19 @@ static inline unsigned int fib_info_hashfn(struct fib_info *fi)
- 	return fib_info_hashfn_result(fi->fib_net, val);
- }
- 
-+static struct hlist_head *fib_info_hash_alloc(unsigned int hash_bits)
-+{
-+	/* The second half is used for prefsrc */
-+	return kvmalloc_array((1 << hash_bits) * 2,
-+			      sizeof(struct hlist_head *),
-+			      GFP_KERNEL | __GFP_ZERO);
-+}
-+
-+static void fib_info_hash_free(struct hlist_head *head)
-+{
-+	kvfree(head);
-+}
-+
- /* no metrics, only nexthop id */
- static struct fib_info *fib_find_info_nh(struct net *net,
- 					 const struct fib_config *cfg)
-@@ -1249,9 +1262,9 @@ fib_info_laddrhash_bucket(const struct net *net, __be32 val)
- }
- 
- static void fib_info_hash_move(struct hlist_head *new_info_hash,
--			       struct hlist_head *new_laddrhash,
- 			       unsigned int new_size)
- {
-+	struct hlist_head *new_laddrhash = new_info_hash + new_size;
- 	struct hlist_head *old_info_hash, *old_laddrhash;
- 	unsigned int old_size = fib_info_hash_size;
- 	unsigned int i;
-@@ -1293,8 +1306,7 @@ static void fib_info_hash_move(struct hlist_head *new_info_hash,
- 		}
- 	}
- 
--	kvfree(old_info_hash);
--	kvfree(old_laddrhash);
-+	fib_info_hash_free(old_info_hash);
- }
- 
- __be32 fib_info_update_nhc_saddr(struct net *net, struct fib_nh_common *nhc,
-@@ -1412,22 +1424,18 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
- 	err = -ENOBUFS;
- 
- 	if (fib_info_cnt >= fib_info_hash_size) {
--		unsigned int new_size = fib_info_hash_size << 1;
- 		struct hlist_head *new_info_hash;
--		struct hlist_head *new_laddrhash;
--		size_t bytes;
--
--		if (!new_size)
--			new_size = 16;
--		bytes = (size_t)new_size * sizeof(struct hlist_head *);
--		new_info_hash = kvzalloc(bytes, GFP_KERNEL);
--		new_laddrhash = kvzalloc(bytes, GFP_KERNEL);
--		if (!new_info_hash || !new_laddrhash) {
--			kvfree(new_info_hash);
--			kvfree(new_laddrhash);
--		} else {
--			fib_info_hash_move(new_info_hash, new_laddrhash, new_size);
--		}
-+		unsigned int new_hash_bits;
-+
-+		if (!fib_info_hash_bits)
-+			new_hash_bits = 4;
-+		else
-+			new_hash_bits = fib_info_hash_bits + 1;
-+
-+		new_info_hash = fib_info_hash_alloc(new_hash_bits);
-+		if (new_info_hash)
-+			fib_info_hash_move(new_info_hash, 1 << new_hash_bits);
-+
- 		if (!fib_info_hash_size)
- 			goto failure;
- 	}
+ tools/testing/selftests/net/gro.c         | 8 +++++---
+ tools/testing/selftests/net/gro.sh        | 7 ++++---
+ tools/testing/selftests/net/setup_veth.sh | 3 ++-
+ 3 files changed, 11 insertions(+), 7 deletions(-)
+
 -- 
-2.39.5 (Apple Git-154)
+2.48.1.658.g4767266eb4-goog
 
