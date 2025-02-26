@@ -1,115 +1,187 @@
-Received: from dediextern.your-server.de (dediextern.your-server.de [85.10.215.232])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE9919CC3E;
-	Wed, 26 Feb 2025 15:57:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.215.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D0179D0;
+	Wed, 26 Feb 2025 16:00:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740585429; cv=none; b=RO5shzWP/puReFOWtzwxJXaZOAcsuRafmUuG7sIx7HcaqSGZ5Pei6mg+so5I6kB/uoNrxhUBirvs+Ae0IY/1iD+j2YBhOoffU6v+2ypwuIfy1N+rhiRD649LhkL97NG86sp8yWKm6sehoJSK7sBAw/+WsYSl06RZ2A2TXQXDT8A=
+	t=1740585629; cv=none; b=OdGdS7qJQ46jr8BJQEipJtnK3AyUEekSpMwUB3vI/4uBZSaz9byBL9ZwIDFPxiL18gfaq5dV6ZbGwZQ5faGdRJbNoz6Qejp1Xe1dQMlm1mmw+nk/+fQf0D8N2rTuuHFbAJc9YcQkl779KIcYeaD/p05KWtCG2oEpqRurwORZn0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740585429; c=relaxed/simple;
-	bh=GKMzlZ2maRtkgC5P94Kko9bp/n+VqxMprs5WYnSKGPA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y6OCmHV/MFEtC2f7VhS1aMzAJkPFlxJWZSgSxREVc5TuUmPlSVa6Qhl/82JxTgEgJWNpIJ9ZNF6HF6XMnWm0sqo2jj7bEftKEfuVJzRdkQ7RrJQar2e4DqnXaQA/S0fxseqmP0ZjbrlP9KsQGKo9yJhIlg6FoZbjG0QlCqPL0tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hetzner-cloud.de; spf=pass smtp.mailfrom=hetzner-cloud.de; arc=none smtp.client-ip=85.10.215.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hetzner-cloud.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hetzner-cloud.de
-Received: from sslproxy07.your-server.de ([78.47.199.104])
-	by dediextern.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <marcus.wichelmann@hetzner-cloud.de>)
-	id 1tnJm0-000Fvw-Fh; Wed, 26 Feb 2025 16:56:36 +0100
-Received: from [2a0d:3344:1523:1f10:f118:b2d4:edbb:54af]
-	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	s=arc-20240116; t=1740585629; c=relaxed/simple;
+	bh=ZxSGjSCDnGJoaUnZ5/IVoq7/amNAZpMr77kL4r9LnA4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZYf23aKtJs1LRrpADE3SxNfLqEXeyO0k7sDyTl9O+xheiVaQ3tac+i2buW05QA7nvwPY9IpmeOkaaHxux+UBLG15gJfbsCXEj6zyShpdHA9myuSNjYY2izJT99vxSj/rIdXJAEYJ2WwTvAZtt4H3EZLLs5NfO2E7uaeKbkss6hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=gw9Cx2gx; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="gw9Cx2gx"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Wv2MNWteJjWH++eqTDYglGmucmNcmvUK/WykTj90mq4=; b=gw9Cx2gxTh8JE8x7FgYq6KRnd2
+	E783qDZfUv+7jdS7hxAd3iSmFIshKjx47m//zeX8U36PAB33wdRVsbmHAv2CkXkrGQsmGgcToXMZq
+	dEHjYZwVJyXTWv0cGG1NbryTaQZtBlqlQIeQgx9VBbae6iv0Q8PkLaNXdUorA7eUzQEaMQvBo24sI
+	6HlTYO8nu0/QVsoHsiFe4IYHuBsz+dOm634VVKaURqIp2zVrupv2OlTApbslISltaYzw2liVVWwWD
+	z9EFpa6MyxhYnl6Z3Yf+27mN4tHMnxWs7Wv/5i0xlOum+zP7tjJTowrb5qtpMUojKid8DI9BMSlwW
+	LEQ2Cm0A==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39794)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <marcus.wichelmann@hetzner-cloud.de>)
-	id 1tnJm0-000FGH-0e;
-	Wed, 26 Feb 2025 16:56:36 +0100
-Message-ID: <9c00cff3-92a8-492a-b059-7d8c66c23daf@hetzner-cloud.de>
-Date: Wed, 26 Feb 2025 16:56:35 +0100
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tnJpX-0004o8-1x;
+	Wed, 26 Feb 2025 16:00:15 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tnJpV-0007Dw-07;
+	Wed, 26 Feb 2025 16:00:13 +0000
+Date: Wed, 26 Feb 2025 16:00:12 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Jon Hunter <jonathanh@nvidia.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Bryan Whitehead <bryan.whitehead@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>, UNGLinuxDriver@microchip.com,
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+Subject: Re: [PATCH net-next 9/9] net: stmmac: convert to phylink managed EEE
+ support
+Message-ID: <Z786jCGYDewTH7bN@shell.armlinux.org.uk>
+References: <Z7X6Z8yLMsQ1wa2D@shell.armlinux.org.uk>
+ <203871c2-c673-4a98-a0a3-299d1cf71cf0@nvidia.com>
+ <Z7YtWmkVl0rWFvQO@shell.armlinux.org.uk>
+ <fd4af708-0c92-4295-9801-bf53db3a16cc@nvidia.com>
+ <Z7ZF0dA4-jwU7O2E@shell.armlinux.org.uk>
+ <31731125-ab8f-48d9-bd6f-431d49431957@nvidia.com>
+ <Z77myuNCoe_la7e4@shell.armlinux.org.uk>
+ <dd1f65bf-8579-4d32-9c9c-9815d25cc116@nvidia.com>
+ <Z770LRrhPOjOsdrd@shell.armlinux.org.uk>
+ <63f9d470-e4e4-4e06-a057-1e1ab0aca9d0@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v3 4/6] selftests/bpf: refactor
- xdp_context_functional test and bpf program
-To: Stanislav Fomichev <stfomichev@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- willemdebruijn.kernel@gmail.com, jasowang@redhat.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrii@kernel.org, eddyz87@gmail.com, mykolal@fb.com,
- ast@kernel.org, daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, shuah@kernel.org,
- hawk@kernel.org
-References: <20250224152909.3911544-1-marcus.wichelmann@hetzner-cloud.de>
- <20250224152909.3911544-5-marcus.wichelmann@hetzner-cloud.de>
- <Z7yof3pafRsMwBrf@mini-arch>
-Content-Language: en-US
-From: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Autocrypt: addr=marcus.wichelmann@hetzner-cloud.de; keydata=
- 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
- wySmewx3h/yfMh0aFxHhvLPxrO2IEQ==
-In-Reply-To: <Z7yof3pafRsMwBrf@mini-arch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: marcus.wichelmann@hetzner-cloud.de
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27561/Wed Feb 26 10:36:26 2025)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <63f9d470-e4e4-4e06-a057-1e1ab0aca9d0@nvidia.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Am 24.02.25 um 18:12 schrieb Stanislav Fomichev:
-> On 02/24, Marcus Wichelmann wrote:
-> [..]
+On Wed, Feb 26, 2025 at 03:55:47PM +0000, Jon Hunter wrote:
 > 
->> +int send_test_packet(int ifindex)
+> On 26/02/2025 10:59, Russell King (Oracle) wrote:
+> > On Wed, Feb 26, 2025 at 10:11:58AM +0000, Jon Hunter wrote:
+> > > 
+> > > On 26/02/2025 10:02, Russell King (Oracle) wrote:
+> > > > On Tue, Feb 25, 2025 at 02:21:01PM +0000, Jon Hunter wrote:
+> > > > > Hi Russell,
+> > > > > 
+> > > > > On 19/02/2025 20:57, Russell King (Oracle) wrote:
+> > > > > > So, let's try something (I haven't tested this, and its likely you
+> > > > > > will need to work it in to your other change.)
+> > > > > > 
+> > > > > > Essentially, this disables the receive clock stop around the reset,
+> > > > > > something the stmmac driver has never done in the past.
+> > > > > > 
+> > > > > > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > > > > > index 1cbea627b216..8e975863a2e3 100644
+> > > > > > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > > > > > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > > > > > @@ -7926,6 +7926,8 @@ int stmmac_resume(struct device *dev)
+> > > > > >     	rtnl_lock();
+> > > > > >     	mutex_lock(&priv->lock);
+> > > > > > +	phy_eee_rx_clock_stop(priv->dev->phydev, false);
+> > > > > > +
+> > > > > >     	stmmac_reset_queues_param(priv);
+> > > > > >     	stmmac_free_tx_skbufs(priv);
+> > > > > > @@ -7937,6 +7939,9 @@ int stmmac_resume(struct device *dev)
+> > > > > >     	stmmac_restore_hw_vlan_rx_fltr(priv, ndev, priv->hw);
+> > > > > > +	phy_eee_rx_clock_stop(priv->dev->phydev,
+> > > > > > +			      priv->phylink_config.eee_rx_clk_stop_enable);
+> > > > > > +
+> > > > > >     	stmmac_enable_all_queues(priv);
+> > > > > >     	stmmac_enable_all_dma_irq(priv);
+> > > > > 
+> > > > > 
+> > > > > Sorry for the delay, I have been testing various issues recently and needed
+> > > > > a bit more time to test this.
+> > > > > 
+> > > > > It turns out that what I had proposed last week does not work. I believe
+> > > > > that with all the various debug/instrumentation I had added, I was again
+> > > > > getting lucky. So when I tested again this week on top of vanilla v6.14-rc2,
+> > > > > it did not work :-(
+> > > > > 
+> > > > > However, what you are suggesting above, all by itself, is working. I have
+> > > > > tested this on top of vanilla v6.14-rc2 and v6.14-rc4 and it is working
+> > > > > reliably. I have also tested on some other boards that use the same stmmac
+> > > > > driver (but use the Aquantia PHY) and I have not seen any issues. So this
+> > > > > does fix the issue I am seeing.
+> > > > > 
+> > > > > I know we are getting quite late in the rc for v6.14, but not sure if we
+> > > > > could add this as a fix?
+> > > > 
+> > > > The patch above was something of a hack, bypassing the layering, so I
+> > > > would like to consider how this should be done properly.
+> > > > 
+> > > > I'm still wondering whether the early call to phylink_resume() is
+> > > > symptomatic of this same issue, or whether there is a PHY that needs
+> > > > phy_start() to be called to output its clock even with link down that
+> > > > we don't know about.
+> > > > 
+> > > > The phylink_resume() call is relevant to this because I'd like to put:
+> > > > 
+> > > > 	phy_eee_rx_clock_stop(priv->dev->phydev,
+> > > > 			      priv->phylink_config.eee_rx_clk_stop_enable);
+> > > > 
+> > > > in there to ensure that the PHY is correctly configured for clock-stop,
+> > > > but given stmmac's placement that wouldn't work.
+> > > > 
+> > > > I'm then thinking of phylink_pre_resume() to disable the EEE clock-stop
+> > > > at the PHY.
+> > > > 
+> > > > I think the only thing we could do is try solving this problem as per
+> > > > above and see what the fall-out from it is. I don't get the impression
+> > > > that stmmac users are particularly active at testing patches though, so
+> > > > it may take months to get breakage reports.
+> > > 
+> > > 
+> > > We can ask Furong to test as he seems to active and making changes, but
+> > > otherwise I am not sure how well it is being tested across various devices.
+> > > On the other hand, it feels like there are still lingering issues like this
+> > > with the driver and so I would hope this is moving in the right direction.
+> > > 
+> > > Let me know if you have a patch you want me to test and I will run in on our
+> > > Tegra186, Tegra194 and Tegra234 devices that all use this.
+> > 
+> > Do we think this needs to be a patch for the net tree or the net-next
+> > tree? I think we've established that it's been a long-standing bug,
+> > so maybe if we target net-next to give it more time to be tested?
+> > 
 > 
-> nit: static? same for assert_test_result below
-> 
+> Yes I agree there is a long-standing issue here. What is unfortunate for
+> Linux v6.14 is that failure rate is much higher. However, I don't see what I
+> can really do about that. I can mark suspend as broken for Linux v6.14 for
+> this device and then hopefully we will get this resolved properly.
 
-Yeah why not. Will change it.
+If we put the patches in net-next, it can have longer to be tested - it
+won't go straight into 6.14, but will wait until after net-next gets
+merged, and it'll then be backported to 6.14 stable trees.
 
-Thanks!
+I think the fix that I've outlined is too big and too risky to go
+straight into 6.14, but the smaller fix may be better, but would then
+need to be rewritten into the larger fix.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
