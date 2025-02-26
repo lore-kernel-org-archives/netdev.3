@@ -1,56 +1,56 @@
-Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
+Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C86324394B
-	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 19:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1417621ABA9
+	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 19:31:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740598251; cv=none; b=gC6zWWrGJZ2z18/6nXlaCGDSP6LFkObQrPXneGNhafGAknHRB515HtiE53LpkyOUlKFT1wL7zaKwd6XfgMbETZ+PR1bwnxbFe5gHXOKzBKd+3IqzG7OkRWYAHyn3w1hcUpAOTbntBgf83E8uqlr8K3rFuAjIzAv2HVThQroRGLA=
+	t=1740598297; cv=none; b=rJM7GgK80OIXPno+icBZx1VWCX/wWb+WYM59SW0ggAG9TQ5TAp6WjKrqsb3Gd+yzIiiJhw6JENPJATZdE1TuKx6Wy2eEcv+4ki2g/uLYBiTyY7z0kgsW1o2IZk8Ij3O9vq2NcQ/e6FqQGWq7IQWpQrMVpvInFuqf/wLSTh+QmYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740598251; c=relaxed/simple;
-	bh=g+QnOLrpWFBl4yoBCC21S+5vcTS+HbdM2Cl2Kbszdf8=;
+	s=arc-20240116; t=1740598297; c=relaxed/simple;
+	bh=WqIeWs5TOBaXtLnowolkiUPXc9jeoxpqC7RapXgPTic=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BJ2rWz8DLesnHIHvqejMOxaf77Ifa62mCx5gfYuOaKiC7vdw6oCWXOR6Rl1iJYCU4g6S/EkjVsluCCJ45yMv/0dGO5xMFRUWchM+DOYK3rKAxSfncoZjC12VncpXbSbGm0ZfJEHWwiZYQ2bJN2PXe9q4zKxapos3XjsC/giec4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=osYnQHql; arc=none smtp.client-ip=99.78.197.218
+	 MIME-Version:Content-Type; b=JBDB97h3cFzITjG8y0i59idv0QYm0CZJPB64/K5IrTi2QjrHU+6XU89CgZnWw89TUuNgRn2TcitY5EHFxeh334GSx+wXFTsGdxiYsn8Mx+IadWyJxPW7GAO8Vv0n1jRPg1bi5W1cl3zYZGEQQgcCX/+W3Jz3o7t6LGVAdM8CHFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=T5fKp2ol; arc=none smtp.client-ip=52.95.48.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="osYnQHql"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="T5fKp2ol"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1740598250; x=1772134250;
+  t=1740598293; x=1772134293;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=HTvaMzZJBvSRbIkQJDi+h987CWMdmBU2WYN5tb03jMY=;
-  b=osYnQHqlXQwLDWzYTrxXWhXtLLwDMBiJwfuxp08Lzj4RjgjxrVEy1FdG
-   MeCGy/CuV3UWNgu0rPRp4KrcmqA8L1o+r0JFCKtMOo4RU7rB7uLjzsmim
-   7p13nX+AKNJnM3IX+j9ooUTHPRHWn3GdFRCEEz4hVmd7vAJkjMeDkG7bC
-   w=;
+  bh=cfK8FEFW5RMVO5+IYO4ybU2+lGS8HhROHjUl+Xt4IZM=;
+  b=T5fKp2olW8tygvMvie6FeumfMN2pGMVgHUzi1E5ILBr2/cGYmNS4kzxK
+   g9FUNNIF5c70QU66FygFyUx7PPVXD0fKC/80dZmrLhp+pf+9F8pMX8Cke
+   1Mh4Og+gjFQBgsLhoUj7OL8O0bdIUFhb5nRqZk+7AQpstYtLqQj1EIS19
+   Y=;
 X-IronPort-AV: E=Sophos;i="6.13,318,1732579200"; 
-   d="scan'208";a="381129481"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 19:29:13 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [10.0.38.20:29566]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.11.69:2525] with esmtp (Farcaster)
- id bdeaafb1-41a0-422e-aa74-ed479a9e8199; Wed, 26 Feb 2025 19:29:13 +0000 (UTC)
-X-Farcaster-Flow-ID: bdeaafb1-41a0-422e-aa74-ed479a9e8199
+   d="scan'208";a="466073849"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
+  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 19:30:16 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [10.0.38.20:51063]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.6.186:2525] with esmtp (Farcaster)
+ id 37dd9a89-a21a-4ea0-904c-92f6e6448853; Wed, 26 Feb 2025 19:30:15 +0000 (UTC)
+X-Farcaster-Flow-ID: 37dd9a89-a21a-4ea0-904c-92f6e6448853
 Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
  EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 26 Feb 2025 19:29:01 +0000
+ Wed, 26 Feb 2025 19:30:15 +0000
 Received: from 6c7e67bfbae3.amazon.com (10.187.170.36) by
  EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 26 Feb 2025 19:28:59 +0000
+ Wed, 26 Feb 2025 19:30:12 +0000
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 To: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
 	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
  Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
 CC: Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
 	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v2 net-next 07/12] ipv4: fib: Add fib_info_hash_grow().
-Date: Wed, 26 Feb 2025 11:25:51 -0800
-Message-ID: <20250226192556.21633-8-kuniyu@amazon.com>
+Subject: [PATCH v2 net-next 10/12] ipv4: fib: Hold rtnl_net_lock() in ip_rt_ioctl().
+Date: Wed, 26 Feb 2025 11:25:54 -0800
+Message-ID: <20250226192556.21633-11-kuniyu@amazon.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20250226192556.21633-1-kuniyu@amazon.com>
 References: <20250226192556.21633-1-kuniyu@amazon.com>
@@ -62,138 +62,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D041UWB001.ant.amazon.com (10.13.139.132) To
+X-ClientProxiedBy: EX19D037UWB002.ant.amazon.com (10.13.138.121) To
  EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-When the number of struct fib_info exceeds the hash table size in
-fib_create_info(), we try to allocate a new hash table with the
-doubled size.
+ioctl(SIOCADDRT/SIOCDELRT) calls ip_rt_ioctl() to add/remove a route in
+the netns of the specified socket.
 
-The allocation is done in fib_create_info(), and if successful, each
-struct fib_info is moved to the new hash table by fib_info_hash_move().
+Let's hold rtnl_net_lock() there.
 
-Let's integrate the allocation and fib_info_hash_move() as
-fib_info_hash_grow() to make the following change cleaner.
-
-While at it, fib_info_hash_grow() is placed near other hash-table-specific
-functions.
+Note that rtentry_to_fib_config() can be called without rtnl_net_lock()
+if we convert rtentry.dev handling to RCU later.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
 ---
- net/ipv4/fib_semantics.c | 85 +++++++++++++++++++---------------------
- 1 file changed, 41 insertions(+), 44 deletions(-)
+ net/ipv4/fib_frontend.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-index cf45e35a603f..0eb583a7d772 100644
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -377,6 +377,46 @@ static void fib_info_hash_free(struct hlist_head *head)
- 	kvfree(head);
- }
+diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
+index c48ed369b179..a76dacc3e577 100644
+--- a/net/ipv4/fib_frontend.c
++++ b/net/ipv4/fib_frontend.c
+@@ -553,18 +553,16 @@ static int rtentry_to_fib_config(struct net *net, int cmd, struct rtentry *rt,
+ 			const struct in_ifaddr *ifa;
+ 			struct in_device *in_dev;
  
-+static void fib_info_hash_grow(void)
-+{
-+	struct hlist_head *new_info_hash, *old_info_hash;
-+	unsigned int old_size = 1 << fib_info_hash_bits;
-+	unsigned int i;
-+
-+	if (fib_info_cnt < old_size)
-+		return;
-+
-+	new_info_hash = fib_info_hash_alloc(fib_info_hash_bits + 1);
-+	if (!new_info_hash)
-+		return;
-+
-+	old_info_hash = fib_info_hash;
-+	fib_info_hash = new_info_hash;
-+	fib_info_hash_bits += 1;
-+
-+	for (i = 0; i < old_size; i++) {
-+		struct hlist_head *head = &old_info_hash[i];
-+		struct hlist_node *n;
-+		struct fib_info *fi;
-+
-+		hlist_for_each_entry_safe(fi, n, head, fib_hash)
-+			hlist_add_head(&fi->fib_hash, fib_info_hash_bucket(fi));
-+	}
-+
-+	for (i = 0; i < old_size; i++) {
-+		struct hlist_head *lhead = &old_info_hash[old_size + i];
-+		struct hlist_node *n;
-+		struct fib_info *fi;
-+
-+		hlist_for_each_entry_safe(fi, n, lhead, fib_lhash)
-+			hlist_add_head(&fi->fib_lhash,
-+				       fib_info_laddrhash_bucket(fi->fib_net,
-+								 fi->fib_prefsrc));
-+	}
-+
-+	fib_info_hash_free(old_info_hash);
-+}
-+
- /* no metrics, only nexthop id */
- static struct fib_info *fib_find_info_nh(struct net *net,
- 					 const struct fib_config *cfg)
-@@ -1255,43 +1295,6 @@ int fib_check_nh(struct net *net, struct fib_nh *nh, u32 table, u8 scope,
- 	return err;
- }
+-			in_dev = __in_dev_get_rtnl(dev);
++			in_dev = __in_dev_get_rtnl_net(dev);
+ 			if (!in_dev)
+ 				return -ENODEV;
  
--static void fib_info_hash_move(struct hlist_head *new_info_hash)
--{
--	unsigned int old_size = 1 << fib_info_hash_bits;
--	struct hlist_head *old_info_hash;
--	unsigned int i;
--
--	ASSERT_RTNL();
--	old_info_hash = fib_info_hash;
--	fib_info_hash_bits += 1;
--	fib_info_hash = new_info_hash;
--
--	for (i = 0; i < old_size; i++) {
--		struct hlist_head *head = &old_info_hash[i];
--		struct hlist_node *n;
--		struct fib_info *fi;
--
--		hlist_for_each_entry_safe(fi, n, head, fib_hash)
--			hlist_add_head(&fi->fib_hash, fib_info_hash_bucket(fi));
--	}
--
--	for (i = 0; i < old_size; i++) {
--		struct hlist_head *lhead = &old_info_hash[old_size + i];
--		struct hlist_node *n;
--		struct fib_info *fi;
--
--		hlist_for_each_entry_safe(fi, n, lhead, fib_lhash) {
--			struct hlist_head *ldest;
--
--			ldest = fib_info_laddrhash_bucket(fi->fib_net,
--							  fi->fib_prefsrc);
--			hlist_add_head(&fi->fib_lhash, ldest);
--		}
--	}
--
--	fib_info_hash_free(old_info_hash);
--}
--
- __be32 fib_info_update_nhc_saddr(struct net *net, struct fib_nh_common *nhc,
- 				 unsigned char scope)
- {
-@@ -1404,13 +1407,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
+ 			*colon = ':';
+ 
+-			rcu_read_lock();
+-			in_dev_for_each_ifa_rcu(ifa, in_dev) {
++			in_dev_for_each_ifa_rtnl_net(net, ifa, in_dev) {
+ 				if (strcmp(ifa->ifa_label, devname) == 0)
+ 					break;
+ 			}
+-			rcu_read_unlock();
+ 
+ 			if (!ifa)
+ 				return -ENODEV;
+@@ -635,7 +633,7 @@ int ip_rt_ioctl(struct net *net, unsigned int cmd, struct rtentry *rt)
+ 		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
+ 			return -EPERM;
+ 
+-		rtnl_lock();
++		rtnl_net_lock(net);
+ 		err = rtentry_to_fib_config(net, cmd, rt, &cfg);
+ 		if (err == 0) {
+ 			struct fib_table *tb;
+@@ -659,7 +657,7 @@ int ip_rt_ioctl(struct net *net, unsigned int cmd, struct rtentry *rt)
+ 			/* allocated by rtentry_to_fib_config() */
+ 			kfree(cfg.fc_mx);
+ 		}
+-		rtnl_unlock();
++		rtnl_net_unlock(net);
+ 		return err;
  	}
- #endif
- 
--	if (fib_info_cnt >= (1 << fib_info_hash_bits)) {
--		struct hlist_head *new_info_hash;
--
--		new_info_hash = fib_info_hash_alloc(fib_info_hash_bits + 1);
--		if (new_info_hash)
--			fib_info_hash_move(new_info_hash);
--	}
-+	fib_info_hash_grow();
- 
- 	fi = kzalloc(struct_size(fi, fib_nh, nhs), GFP_KERNEL);
- 	if (!fi) {
+ 	return -EINVAL;
 -- 
 2.39.5 (Apple Git-154)
 
