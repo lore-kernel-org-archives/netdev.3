@@ -1,75 +1,48 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FEB20E31F
-	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 18:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96DB235BE1
+	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 18:20:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740594011; cv=none; b=Y4/6XhClLNGWwfuplrwN6ZWQ35aJOc32cjIuQ5DDLJxrOAbG5xQa3Sb5TL2uXCVu7WS7gAXTC9UIAryY9d2j/TMVAtrLm6BZmjgd4mhYF8zLtR6jZXBPkTIXGWtNHGp6oVGW5hZ9+jOynLrfL4hzChOKmIUBLOWMUZZF/tN3hAU=
+	t=1740594036; cv=none; b=ApF7LKCxhkdyjV7FusznL6hrAXNqY8Mcifj8ciFyMwkYCAQCW6REKeGo9bq6288Ot5zHUmHhz2S5P+7uBS7lw3wITbPZlQ/qEn8oc+g1IaLIM8iDTt5NRi21llQ5zS1rd7ACqYqYu0dYvlwXnYGIfOxkcbyXBmGs+yATyqMqnSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740594011; c=relaxed/simple;
-	bh=DENE5vGFyvr8fm4PtMAf1uR2PuyTsCbmavM5sDeKQrg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z/5j0Hqw/BRZqmQMHZMigi/7pXxWr+1p+tMkvIcd8Pry19dL3PU3y6oIXKsjL79gmzfen2eoy/I5S5lSamM4osGfk1h4dCxlnvjktUf4xb/Urv6jkiryYwD6nYi/hxWxTT2yXXK9g7Up+nDs0+ENSKC6U+8TWBOGOkBky6s5ScE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=YF3h5NtH; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	s=arc-20240116; t=1740594036; c=relaxed/simple;
+	bh=3J3XJd8PRuO6gmaNC0orT4R44OnxcZeK0a561XdDj8I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CY8TO+clrS6EwHgz19TYNu80nHOBsytsjav9jD18VUBiAtxPrgofGYCtRxOYb/qHTq70Wa5k4pfBmrv6aeIciW8yXXf90ToZ30ZabVlwQ7oYQ5dm8IcRiEBkdhieaa9uimFXjqh0kTmVBEGJ2W/QzNqKJWHXQrOkvGor8BgKzj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=PtnobXW/; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="YF3h5NtH"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-221050f3f00so775375ad.2
-        for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 10:20:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1740594008; x=1741198808; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=R/u8Rfl3i4s63180zjFA0r/u7AlCwmzDwo9m+X1pIOk=;
-        b=YF3h5NtHYzuTaYKbm5nKqLq35g3pPEeKpNLmz/TPg5Sx/pX7r0bKyRzSkQ2RL+DQMk
-         87MID0B+sA9jk6+SdWX1DyqcNhIgWeQoOFJVLNqOUG7b2bv01u86SFHaPoDUZD0k53Gi
-         BeRxxNeTw7IfLdnoyTDv5e8hj1zH76PgEE30g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740594008; x=1741198808;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=R/u8Rfl3i4s63180zjFA0r/u7AlCwmzDwo9m+X1pIOk=;
-        b=BHFQRiHVLs0NuNvt4bviJSooHGmU7wuLg9sA9nt5jNzQWd0H1jDTjuxHnJK3isRToq
-         0KO31mLhyz2Gghc7vRtGDdWVeNDr8G9jLhsFZn1mI93T1TgebVwW9BN52Ytgwa4TToVb
-         bvlEYb/ZTs5cfpgqy0HtrtOATHhjDCaqWCRr7udUIOVn/pJsMrlQbgxUMIKNBPRaQhrb
-         g/4Y1N523czdVDc9q3Y/sl/gWbsURKxqcaOBWvSl/XDsFfxONNMxdJ3MUemqL72yNYnN
-         b0xAmHDqYvXkak6bPSfKdmjENUtWO/LTP2tICBYuFQQS2tWJO8EZd8fiMupVoyomY4yI
-         Pv8A==
-X-Gm-Message-State: AOJu0YyGC9n0Z2oZQaq8pLhRvmPB1HMShKzVql3ajylx69l5IdXj6zF8
-	tNLQybvG0kMdXOIfCrM7CAbE10HCSWh9hUVFnFxzDW7nQsQzkIo2PwgNqAr+/1/Ln5CensDoSQs
-	Dpl20Y7FcA2SQdiCkVrro1ETqArm81tN7CKcHkIi2rB64JgaJR3LFOn4Zdumt3kJXbk9zbRe+uF
-	EBtxoiVgm2X+/YUIH3VQHhAvizMb61BusUWnlArQ==
-X-Gm-Gg: ASbGnct92NczsdNGWDbHlX6oPTp1X9ieFJFpCOMqC5H3dye/DSqxV6cFHMIAEVQqHmj
-	6iZNY/1Ru351B73sLW52JtIkgKh6tZDpvw6e5j5WXW7X12JcGyLnYG/kuK3trrZukOSrF8Byfs3
-	6eNg0cEtYWFRkp7T06Ez/sLql77dyrm85mup1GPXbVQDzECpgnopyWFjr8KlvEecQvP1Rm9x09a
-	tHJ0XFnKI8ytjqNWiDne6cME01bj1hk853HIhbtDlpj7SC2H/5/sNhPul6STtdTiHcOhjoO8j4m
-	2SzGgmulHcQTZ4AAVOZaN52VTgP4Vvkdtg==
-X-Google-Smtp-Source: AGHT+IGQ9P2db2MPKQ5jkTyBVTvjGT02yCN10YbMc98M7tyiK+5xNGCagd2RA27I5P3r0Yg5QTQssQ==
-X-Received: by 2002:a17:902:e54f:b0:21f:68ae:56e3 with SMTP id d9443c01a7336-22307e6b74emr119351795ad.39.1740594008395;
-        Wed, 26 Feb 2025 10:20:08 -0800 (PST)
-Received: from localhost.localdomain ([2620:11a:c019:0:65e:3115:2f58:c5fd])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7347a72f131sm3840749b3a.76.2025.02.26.10.20.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 10:20:07 -0800 (PST)
-From: Joe Damato <jdamato@fastly.com>
-To: netdev@vger.kernel.org
-Cc: dw@davidwei.uk,
-	gerhard@engleder-embedded.com,
-	Joe Damato <jdamato@fastly.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org (open list:KERNEL SELFTEST FRAMEWORK),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v2] selftests: drv-net: Check if combined-count exists
-Date: Wed, 26 Feb 2025 18:19:57 +0000
-Message-ID: <20250226181957.212189-1-jdamato@fastly.com>
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="PtnobXW/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=b13hFSebNGCQkZy2Ggu3MRadml5qSAvcvzKRmbKtOM4=; b=PtnobXW/taBEKjyO9hfYPtMPHB
+	6B4uymkkgy/f1ZJwPlw0dX9OEMEjCqfNcM6S3I7NX+bkXEygSFps1PVV8+88hEfGhKg6Kod5jx37T
+	PUPKEBi3TOlrj0bfNENB7OxYTojSSDFiHZRqU8cJjX38elwUYGRXFfChFKnqNUG3oXD4BNQXLPnIk
+	NbAbLEFQlRxfofKX+xsqAyAFp46l+ZiFaatevgphejAnHEscm074oxqU0S3z+yVk7z1bWHtxB2NGA
+	qrsFPA4GVT1YALUhyhiBAIM3q3j9Ms/gsVKvHSuPDTiM2Z7mtmTZh5fOCjttccwfpmlVabnRNfP/+
+	Os6az4pA==;
+Received: from 226.206.1.85.dynamic.cust.swisscom.net ([85.1.206.226] helo=localhost)
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1tnM1H-000BLN-1Y;
+	Wed, 26 Feb 2025 19:20:31 +0100
+From: Daniel Borkmann <daniel@iogearbox.net>
+To: kuba@kernel.org
+Cc: pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v2 2/2] geneve, specs: Add port range to rt_link specification
+Date: Wed, 26 Feb 2025 19:20:30 +0100
+Message-ID: <20250226182030.89440-2-daniel@iogearbox.net>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250226182030.89440-1-daniel@iogearbox.net>
+References: <20250226182030.89440-1-daniel@iogearbox.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,81 +50,80 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27561/Wed Feb 26 10:36:26 2025)
 
-Some drivers, like tg3, do not set combined-count:
+Add the port range to rt_link, example:
 
-$ ethtool -l enp4s0f1
-Channel parameters for enp4s0f1:
-Pre-set maximums:
-RX:		4
-TX:		4
-Other:		n/a
-Combined:	n/a
-Current hardware settings:
-RX:		4
-TX:		1
-Other:		n/a
-Combined:	n/a
+  # tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/rt_link.yaml \
+    --do getlink --json '{"ifname": "geneve1"}' --output-json | jq
+  {
+    "ifname": "geneve1",
+    [...]
+    "linkinfo": {
+      "kind": "geneve",
+      "data": {
+        "id": 1000,
+        "remote": "147.28.227.100",
+        "udp-csum": 0,
+        "ttl": 0,
+        "tos": 0,
+        "label": 0,
+        "df": 0,
+        "port": 49431,
+        "udp-zero-csum6-rx": 1,
+        "ttl-inherit": 0,
+        "port-range": {
+          "low": 4000,
+          "high": 5000
+        }
+      }
+    },
+    [...]
+  }
 
-In the case where combined-count is not set, the ethtool netlink code
-in the kernel elides the value and the code in the test:
-
-  netnl.channels_get(...)
-
-With a tg3 device, the returned dictionary looks like:
-
-{'header': {'dev-index': 3, 'dev-name': 'enp4s0f1'},
- 'rx-max': 4,
- 'rx-count': 4,
- 'tx-max': 4,
- 'tx-count': 1}
-
-Note that the key 'combined-count' is missing. As a result of this
-missing key the test raises an exception:
-
- # Exception|     if channels['combined-count'] == 0:
- # Exception|        ~~~~~~~~^^^^^^^^^^^^^^^^^^
- # Exception| KeyError: 'combined-count'
-
-Change the test to check if 'combined-count' is a key in the dictionary
-first and if not assume that this means the driver has separate RX and
-TX queues.
-
-With this change, the test now passes successfully on tg3 and mlx5
-(which does have a 'combined-count').
-
-Fixes: 1cf270424218 ("net: selftest: add test for netdev netlink queue-get API")
-Signed-off-by: Joe Damato <jdamato@fastly.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 ---
- v2:
-   - Simplify logic and reduce indentation as suggested by David Wei.
-     Retested on both tg3 and mlx5 and test passes as expected.
+ v1->v2:
+   - add byte-order
 
- v1: https://lore.kernel.org/lkml/20250225181455.224309-1-jdamato@fastly.com/
+ Documentation/netlink/specs/rt_link.yaml | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
- tools/testing/selftests/drivers/net/queues.py | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/tools/testing/selftests/drivers/net/queues.py b/tools/testing/selftests/drivers/net/queues.py
-index 38303da957ee..8a518905a9f9 100755
---- a/tools/testing/selftests/drivers/net/queues.py
-+++ b/tools/testing/selftests/drivers/net/queues.py
-@@ -45,10 +45,9 @@ def addremove_queues(cfg, nl) -> None:
- 
-     netnl = EthtoolFamily()
-     channels = netnl.channels_get({'header': {'dev-index': cfg.ifindex}})
--    if channels['combined-count'] == 0:
--        rx_type = 'rx'
--    else:
--        rx_type = 'combined'
-+    rx_type = 'rx'
-+    if channels.get('combined-count', 0) > 0:
-+            rx_type = 'combined'
- 
-     expected = curr_queues - 1
-     cmd(f"ethtool -L {cfg.dev['ifname']} {rx_type} {expected}", timeout=10)
-
-base-commit: 8d52da23b6c68a0f6bad83959ebb61a2cf623c4e
+diff --git a/Documentation/netlink/specs/rt_link.yaml b/Documentation/netlink/specs/rt_link.yaml
+index 0d492500c7e5..8b5c0f067328 100644
+--- a/Documentation/netlink/specs/rt_link.yaml
++++ b/Documentation/netlink/specs/rt_link.yaml
+@@ -770,6 +770,18 @@ definitions:
+       -
+         name: to
+         type: u32
++  -
++    name: ifla-geneve-port-range
++    type: struct
++    members:
++      -
++        name: low
++        type: u16
++        byte-order: big-endian
++      -
++        name: high
++        type: u16
++        byte-order: big-endian
+   -
+     name: ifla-vf-mac
+     type: struct
+@@ -1915,6 +1927,10 @@ attribute-sets:
+       -
+         name: inner-proto-inherit
+         type: flag
++      -
++        name: port-range
++        type: binary
++        struct: ifla-geneve-port-range
+   -
+     name: linkinfo-iptun-attrs
+     name-prefix: ifla-iptun-
 -- 
 2.43.0
 
