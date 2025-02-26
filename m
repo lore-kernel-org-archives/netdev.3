@@ -1,220 +1,198 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2046.outbound.protection.outlook.com [40.107.220.46])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEFE2459CA
-	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 09:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740562791; cv=fail; b=ccIZurekpYz81BGdgqOaWsLjK/r4fcyfzHAxo/cLT2WG42+lWn8bDhHtX9GBzilYtm89WX/NwsUj01xFAKN3KlYwNtBqI5o2MpuOFuNhSWDcczCDozD+Im91sOBSfgWsDzGQEuXEQYNqiKjqj2o7AfriOoOTvzEui/jJ0yjn1VE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740562791; c=relaxed/simple;
-	bh=2YZ5mXyRbfXm5w5dF3nagO6ys6LYgjlsJUtumFMPZxk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Leo5RNeBxXe/mEAPCa23RBS58QXNlIfQdRXkOBbU+hffB/ZRwiVXRzwq/An0XBnuS7mpG+GDnSpRHdsnfY/QxGEkP1ah/F7oNsIo4CO5dwnz2GmMrRa0ivKYsB6P4BP+zQtTAIhNzH4FB2fYgk82WC9DNVyXaQ/IvEOiEncBW74=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FUwQm791; arc=fail smtp.client-ip=40.107.220.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B54C226D0D
+	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 09:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740562813; cv=none; b=IjT4a4SCrvh842mKj3wRQWRx6ESFjLC0+Ab+wURXt3vVn3AYaX8wxhPkDRDWpeQuvONJJEyRp9WzvAcFlCBWxRmjFB+mrrMlzxWWiyMWQqYNCY8e0YjMWN1KVHNu8ogN7hpmxWY2VRTQEpwK6gU+EJi3SDv8IDYSeiEr2hzZ0VI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740562813; c=relaxed/simple;
+	bh=oXYrs8fLkSqwtRneRydxS1WiAhpp9hDEK2JtL3e2Wtc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AlgaKnh1H5f3XmfLvT5gESEtlpxEswIzsQFHTzDGKqJY728GB95jBOjDrCIVJNwf0k137ZzgLLFcfCBErBzu1p2rnYt1P9a7HrEJirFFFimH34MFf+pSspi1vM6plNPa448ZbY4fY8ddnj7Od6G9vJ8s2hdMKQCmgmlSuoVy0N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=UqutqlGJ; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FUwQm791"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I1Swdq4jsqA6z9KWg35viNtWGHnRQu5Jd2c/Ds7K96nwyjmLtx45loAFw/h3GaoHdAszsgeyw2b5kxPSs5WzlLgpFobKCxScOg+3x9Nr22p4eUuZkx9DghTvJx+DwmbFPsOSuDPoA1tknB9E94pLPNoV33vfyE7osEDCDJFjfEnXCNmgWQqPIxyP8dBgD8f7jYZNLBJdgGlL/Tdo40FxNVLuGIZ+cHJ7l5wtZpf9aSAXNwGV65eBUeosWzjNgL1o7gXNGE4Z8h1zxN/U1D3eOx65CPBSfQUEwxrMVdsk5imbMnX0lb3EFpeEH6E54lu2zXHxWSRqxvBA4UYP42PPvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UxecmR697fsmiXP7i1obhupNZo8zOUA2AsxlRmfPHHo=;
- b=kw3ZABESsZ+Ad0sJORo6HfPOHqLL9toAcKlW7fVYGlreqWq89XcjfH/AqGZQUmaTQmOE9RcQwXKyO3xFXE0FEnUMOkzKPTYdI1K/YMxv7j3LQfcgB6gjf5X0pt0PaZce9C7dh0eUxnz2jP1tdoS46QO4htabw+/zKi/oXmq3YaduSA+q4RRLihj59rCax3r+tXklqyvccNsaQKy4gFiD3LFD1qBBiK1mAaPPs3hARHUeRKaXLZFoBevCEC8NXflD7Yn8gUL2yrPMjJU+H1Ye8qz88z6nuSfsT+irXvo4ruRWLOR6+C6+fwbd6ohK5aBMG7PNoHn25aIwjeEl4E424A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UxecmR697fsmiXP7i1obhupNZo8zOUA2AsxlRmfPHHo=;
- b=FUwQm791Ygk3ny3UIn//71fD191Qt3RhfrEOZBk5GS5i/LzEt0uJbRYu7MWPY6Jgl15yiryMHnnAiinLrOnrtQtRiib1c+6pgSGp6bPC/AoQdFgxNfVx0ZDsarvaVxRjnpLvri+kOPJgnnWGQx0PaZIR19jAihUFrTSzrc7wEi9xZ1NzD7GmjSlI9vR1CH0nOR1QFqhFzymbKUEDzqDKz5Iljy7/1LTkrhSR3Jsu4OZUPoE5tlSdwkheYePo31KKH9DIhHaboDTBDtSxTgyLFH3HPiHFQ6AuyISgcXaJwV2T0VqrPc9ZlMdzFwQ2/4eO5cqaOAKoGHLTYPG6MCKc5g==
-Received: from BL0PR05CA0001.namprd05.prod.outlook.com (2603:10b6:208:91::11)
- by SJ2PR12MB8009.namprd12.prod.outlook.com (2603:10b6:a03:4c7::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.15; Wed, 26 Feb
- 2025 09:39:46 +0000
-Received: from BL6PEPF0002256E.namprd02.prod.outlook.com
- (2603:10b6:208:91:cafe::ac) by BL0PR05CA0001.outlook.office365.com
- (2603:10b6:208:91::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8489.16 via Frontend Transport; Wed,
- 26 Feb 2025 09:39:45 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BL6PEPF0002256E.mail.protection.outlook.com (10.167.249.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8489.16 via Frontend Transport; Wed, 26 Feb 2025 09:39:45 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 26 Feb
- 2025 01:39:34 -0800
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 26 Feb
- 2025 01:39:34 -0800
-Received: from vdi.nvidia.com (10.127.8.12) by mail.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server id 15.2.1544.14 via Frontend Transport; Wed, 26
- Feb 2025 01:39:30 -0800
-From: Gal Pressman <gal@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	<netdev@vger.kernel.org>
-CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
-	<przemyslaw.kitszel@intel.com>, Tariq Toukan <tariqt@nvidia.com>, Edward Cree
-	<ecree.xilinx@gmail.com>, Martin Habets <habetsm.xilinx@gmail.com>, "Jamal
- Hadi Salim" <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, "Jiri
- Pirko" <jiri@resnulli.us>, Simon Horman <horms@kernel.org>, Julia Lawall
-	<Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, Gal Pressman
-	<gal@nvidia.com>
-Subject: [PATCH net-next 5/5] ice: dpll: Remove newline at the end of a netlink error message
-Date: Wed, 26 Feb 2025 11:39:04 +0200
-Message-ID: <20250226093904.6632-6-gal@nvidia.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20250226093904.6632-1-gal@nvidia.com>
-References: <20250226093904.6632-1-gal@nvidia.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="UqutqlGJ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=83zqbI+x0U8gPtjXear3SquLiO46uugWTwSYAMtbREo=; b=UqutqlGJIvxUsGizH3OmMYEY79
+	1gUkhNTP6dnsG+xmSD9xemC1LTrj5vJtrHPQFCOEf8uykUCEgktMB9PRlBrgw8V9Plwa/r1N1Yhkn
+	tjB0bufEAycPO1r/FWfGxiEYGaWv8s0UhFkIlcCnfKsx7N08rKykXCsy0XjPqmxabduh/ypagv8JV
+	OJIuldAhllwqQGTb9TEsS/afmerYWy8+wPNqeO41sSu35L7UDEkVI8aawV/LmZftEmEtNxAm78bn5
+	olE6xbjjH8MHE2Vd1QBQp0bBVc/zGk2/FIviY8wWn6fzq90d4x5BM/Aq02WkJWFN87+xpfIhfuf21
+	dL2zjjyw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:45812)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tnDtL-0003mS-2I;
+	Wed, 26 Feb 2025 09:39:49 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tnDt8-0006xF-1k;
+	Wed, 26 Feb 2025 09:39:34 +0000
+Date: Wed, 26 Feb 2025 09:39:34 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Furong Xu <0x1207@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jan Petrous <jan.petrous@oss.nxp.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Minda Chen <minda.chen@starfivetech.com>, netdev@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Thierry Reding <treding@nvidia.com>, hailong.fan@siengine.com,
+	2694439648@qq.com
+Subject: Re: net: stmmac: weirdness in stmmac_hw_setup()
+Message-ID: <Z77hVrC5Lcbxrlx8@shell.armlinux.org.uk>
+References: <Z7dVp7_InAHe0q_y@shell.armlinux.org.uk>
+ <20250226104326.0000766e@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0002256E:EE_|SJ2PR12MB8009:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5fc45947-fda5-4a93-5573-08dd5649811b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|82310400026|1800799024|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?rxeSYhn0D9/pYWLaACiGormjIt10Mxez2n62/RwkShZImdFZhTkhDxjSNflK?=
- =?us-ascii?Q?JUHJYtMOQfuesj8pwqyumylqC51IE68wGJwOfM0OjcNKPUP78Gc1xwUdhuQ/?=
- =?us-ascii?Q?wcwF5mWfUNe5ELTwfT0uVAJJQjO2EP0Evu7RlEJR2VJ6bUu5WzdBqFx+jrED?=
- =?us-ascii?Q?b+JbodxES+evKInBqqoCeRfPRhdHGi2qKD1lAIMNuVqp9QdCTHQSUZpWyxk+?=
- =?us-ascii?Q?Y1nkPxiyTrulwBHwRSPxOTC1g1+7g8isjGI0qiD7WeVNsQ8RDlnUTgTmguHY?=
- =?us-ascii?Q?UiNr0Ty+6HZ8DqnQQTZc6r05/H3jPcMU5XHXrwjFhDgTWDRp0yuajLaoGsP5?=
- =?us-ascii?Q?GgsR2pH1+KfCcs7fFiBTcQ597CRx+vKnRMe2Kj8AVB1mCr852UhII1fH2VI6?=
- =?us-ascii?Q?2J40xrrfjxKtoAgYtuKGBxhCMe4YMcWL5CZkviGVIJ1XF5SoI+21327BAzt/?=
- =?us-ascii?Q?rm2KchEutfp/L1NcgVgPxDDUFeyNarRWl6Oq+eg/XJvWl1BHKWHGpv1DOwHB?=
- =?us-ascii?Q?lWPu0K4zHqWarQz3LDUyUPcjTJZ544FL1uNiMKoNMSZz/jhG473tS0Nx0Q/X?=
- =?us-ascii?Q?N5c+7mwXdwAHd4LxNwpGIykGnTg5yBYv5hiARdvnZqa4sfnmryc7N/YLfJWT?=
- =?us-ascii?Q?mtTOHj4C/tq6lY0LWKpwzwHFJPz1vhGGN+V9tElzjMk0PJbrK/sGovntbZRp?=
- =?us-ascii?Q?qdI4wZ435PThlyEnxpZSz1tetriR/yE8z4mpYB9COxMd7rQtfdiyf4AUt6SY?=
- =?us-ascii?Q?IqluRQI8vMa444nx7BwD+gJK/Qc/T1tpGMU/mS2kND3YoF9CbO5L5g8wk8mI?=
- =?us-ascii?Q?bs2pFVJySWuakMe+2QMsQy6aoh48gMJoEn+dIp3Yi7udNR/kf9lohuVjkKpd?=
- =?us-ascii?Q?PN3jbQIisUuSPgFi9RQLlDLav/5PFIAq3tKmcLr7PumcgRf0Ia+RbeIIGTAd?=
- =?us-ascii?Q?bvWiBFGKhHKm/i+4Hd3dITwamJAZlgQ5w3u0wcMztquHk57Ddx/vDTQdphzx?=
- =?us-ascii?Q?aP3qlkmCciXgbs3Hh6WS81Y48EOF99S28IX/R6IY5iAspQ9Yci/O3bwtkT9m?=
- =?us-ascii?Q?zbm8LmX+PfzHz3euGuSKTIr5KeJTZvl6GD6hNr0htE6NxQF44awDEQ4MTEHU?=
- =?us-ascii?Q?Ey0HGxe/kIcZizjKKm1K4nglNxIvvGsflaMd1BIPlxk6SppgSPdeMefDsMzW?=
- =?us-ascii?Q?jfjYwWBey+XXlGUmTjvLFN6aL2ZUa/fvr88JuqoIQ4gSkUiaA+sEkIjOg+xt?=
- =?us-ascii?Q?9jfRcaY/ThCO3dF6+JKBu/atGXHKO4XNhWl8DCQDa4mkhLGZ+/LJY2wRK7Am?=
- =?us-ascii?Q?1X19DLC1mUyD3NqWeQuy2jMcFbVGV86tJDrWf09lnR/sTAlwZyt3sptJEycN?=
- =?us-ascii?Q?VfvpwIAry7308F4mCkqVXbxKxXXTN5jIuzlHj6Gak8GkaOAqj/VhIb5sgs2d?=
- =?us-ascii?Q?zcLHpQkwit3MBer0Ehu/YqwZt1E+o1byVg9dusFtuaz4q9qn9pUIro1ep0mf?=
- =?us-ascii?Q?p92tBSCqsYp9Czo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(82310400026)(1800799024)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2025 09:39:45.2788
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5fc45947-fda5-4a93-5573-08dd5649811b
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0002256E.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250226104326.0000766e@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Netlink error messages should not have a newline at the end of the
-string.
+On Wed, Feb 26, 2025 at 10:43:26AM +0800, Furong Xu wrote:
+> On Thu, 20 Feb 2025 16:17:43 +0000, "Russell King (Oracle)" wrote:
+> 
+> > While looking through the stmmac driver, I've come across some
+> > weirdness in stmmac_hw_setup() which looks completely barmy to me.
+> > 
+> > It seems that it follows the initialisation suggested by Synopsys
+> > (as best I can determine from the iMX8MP documentation), even going
+> > as far as to *enable* transmit and receive *before* the network
+> > device has been administratively brought up. stmmac_hw_setup() does
+> > this:
+> > 
+> >         /* Enable the MAC Rx/Tx */
+> >         stmmac_mac_set(priv, priv->ioaddr, true);
+> > 
+> > which sets the TE and RE bits in the MAC configuration register.
+> > 
+> > This means that if the network link is active, packets will start
+> > to be received and will be placed into the receive descriptors.
+> > 
+> > We won't transmit anything because we won't be placing packets in
+> > the transmit descriptors to be transmitted.
+> > 
+> > However, this in stmmac_hw_setup() is just wrong. Can it be deleted
+> > as per the below?
+> > Tested-by: Thierry Reding <treding@nvidia.com>
+> > 
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > index c2913f003fe6..d6e492f523f5 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > @@ -3493,9 +3493,6 @@ static int stmmac_hw_setup(struct net_device *dev, bool ptp_register)
+> >  		priv->hw->rx_csum = 0;
+> >  	}
+> >  
+> > -	/* Enable the MAC Rx/Tx */
+> > -	stmmac_mac_set(priv, priv->ioaddr, true);
+> > -
+> >  	/* Set the HW DMA mode and the COE */
+> >  	stmmac_dma_operation_mode(priv);
+> >  
+> 
+> A better fix here:
+> https://lore.kernel.org/all/tencent_CCC29C4F562F2DEFE48289DB52F4D91BDE05@qq.com/
 
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
----
- drivers/net/ethernet/intel/ice/ice_dpll.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+I don't think that addresses the issue I highlighted above, since it's
+still calling stmmac_mac_set(, true) in stmmac_hw_setup(), which I
+believe to be wrong (as per my explanation above.)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index 8d806d8ad761..bce3ad6ca2a6 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -95,7 +95,7 @@ ice_dpll_pin_freq_set(struct ice_pf *pf, struct ice_dpll_pin *pin,
- 	}
- 	if (ret) {
- 		NL_SET_ERR_MSG_FMT(extack,
--				   "err:%d %s failed to set pin freq:%u on pin:%u\n",
-+				   "err:%d %s failed to set pin freq:%u on pin:%u",
- 				   ret,
- 				   ice_aq_str(pf->hw.adminq.sq_last_status),
- 				   freq, pin->idx);
-@@ -322,7 +322,7 @@ ice_dpll_pin_enable(struct ice_hw *hw, struct ice_dpll_pin *pin,
- 	}
- 	if (ret)
- 		NL_SET_ERR_MSG_FMT(extack,
--				   "err:%d %s failed to enable %s pin:%u\n",
-+				   "err:%d %s failed to enable %s pin:%u",
- 				   ret, ice_aq_str(hw->adminq.sq_last_status),
- 				   pin_type_name[pin_type], pin->idx);
- 
-@@ -367,7 +367,7 @@ ice_dpll_pin_disable(struct ice_hw *hw, struct ice_dpll_pin *pin,
- 	}
- 	if (ret)
- 		NL_SET_ERR_MSG_FMT(extack,
--				   "err:%d %s failed to disable %s pin:%u\n",
-+				   "err:%d %s failed to disable %s pin:%u",
- 				   ret, ice_aq_str(hw->adminq.sq_last_status),
- 				   pin_type_name[pin_type], pin->idx);
- 
-@@ -479,7 +479,7 @@ ice_dpll_pin_state_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
- err:
- 	if (extack)
- 		NL_SET_ERR_MSG_FMT(extack,
--				   "err:%d %s failed to update %s pin:%u\n",
-+				   "err:%d %s failed to update %s pin:%u",
- 				   ret,
- 				   ice_aq_str(pf->hw.adminq.sq_last_status),
- 				   pin_type_name[pin_type], pin->idx);
-@@ -518,7 +518,7 @@ ice_dpll_hw_input_prio_set(struct ice_pf *pf, struct ice_dpll *dpll,
- 				      (u8)prio);
- 	if (ret)
- 		NL_SET_ERR_MSG_FMT(extack,
--				   "err:%d %s failed to set pin prio:%u on pin:%u\n",
-+				   "err:%d %s failed to set pin prio:%u on pin:%u",
- 				   ret,
- 				   ice_aq_str(pf->hw.adminq.sq_last_status),
- 				   prio, pin->idx);
-@@ -1004,7 +1004,7 @@ ice_dpll_pin_phase_adjust_set(const struct dpll_pin *pin, void *pin_priv,
- 	mutex_unlock(&pf->dplls.lock);
- 	if (ret)
- 		NL_SET_ERR_MSG_FMT(extack,
--				   "err:%d %s failed to set pin phase_adjust:%d for pin:%u on dpll:%u\n",
-+				   "err:%d %s failed to set pin phase_adjust:%d for pin:%u on dpll:%u",
- 				   ret,
- 				   ice_aq_str(pf->hw.adminq.sq_last_status),
- 				   phase_adjust, p->idx, d->dpll_idx);
-@@ -1362,7 +1362,7 @@ ice_dpll_rclk_state_on_pin_set(const struct dpll_pin *pin, void *pin_priv,
- 					 &p->freq);
- 	if (ret)
- 		NL_SET_ERR_MSG_FMT(extack,
--				   "err:%d %s failed to set pin state:%u for pin:%u on parent:%u\n",
-+				   "err:%d %s failed to set pin state:%u for pin:%u on parent:%u",
- 				   ret,
- 				   ice_aq_str(pf->hw.adminq.sq_last_status),
- 				   state, p->idx, parent->idx);
+However, the removal of setting GMAC_CONFIG_TE in the start_tx method
+looks correct to me, because:
+
+- the start_tx method is called via stmmac_start_tx(), which is only
+  called from stmmac_start_tx_dma().
+
+- stmmac_start_tx_dma() is called from:
+  * stmmac_start_all_dma()
+  * stmmac_tx_err()
+  * stmmac_enable_tx_queue()
+
+* stmmac_start_all_dma() is called from the end of stmmac_hw_setup(),
+  but we've already called stmmac_mac_set(, true) both before and
+  after the patch in the above URL, so is redundant.
+
+  Incidentally, this brings the same set of questions I've stated in
+  my initial email, and to me this is wrong.
+
+* stmmac_tx_err() can only happen when we are already active (so
+  transmission was already enabled).
+
+* stmmac_enable_tx_queue() is called from stmmac_xdp_enable_pool(),
+  which will only call this if netif_running() returns true,
+  implying that the netdev is already adminstratively brought up
+  and thus stmmac_hw_setup() will have been called.
+
+  Again, this brings the same set of questions I've stated in my
+  initial email, and to me this is wrong.
+
+
+While looking at Simon's comment, he talks about stmmac_xdp_open(), so
+I just looked at that, and found:
+
+        netif_carrier_on(dev);
+
+Then there's:
+
+        netif_carrier_off(dev);
+
+in stmmac_xdp_release().
+
+These were introduced in commit ac746c8520d9 ("net: stmmac: enhance XDP
+ZC driver level switching performance"), well after stmmac had been
+converted to phylink. Phylink documents this:
+
+16. Verify that the driver does not call::
+
+        netif_carrier_on()
+        netif_carrier_off()
+
+    as these will interfere with phylink's tracking of the link state,
+    and cause phylink to omit calls via the :c:func:`mac_link_up` and
+    :c:func:`mac_link_down` methods.
+
+So, the presence of these calls will mess up phylink, resulting in
+mac_link_up() and/or mac_link_down() *NOT* being called at appropriate
+times.
+
+However, stmmac_xdp_(open|release)() doesn't seem to do anything to
+bring the PHY or PCS up/down. This makes me wonder whether XDP support
+in the stmmac driver is basically broken, or maybe the netdev needs to
+already be administratively up (ip li set dev ... up). I don't know
+XDP as I've never used it. If that is the case, then those
+netif_carrier_*() calls need removing. Or - I say again - stmmac needs
+to *stop* using phylink. It's one or the other. A network driver
+either needs to use phylink properly or not use phylink *at* *all*.
+
 -- 
-2.40.1
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
