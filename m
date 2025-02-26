@@ -1,75 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4E742A9D
-	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 01:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B43198A19
+	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 01:37:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740532351; cv=none; b=oGqDXZSpPqYm2AC5ftAltJOKYSPrt+hamz41Z0ryCsjAcOwmUo2F1IsNmDKXYbzfpbpbbnVNKn0gTYn8O5R0h/G2oE3qHw9uygc4f5RUHhN2PXBsCfICdeW0iWlTsNFfQ7cEd16ga5lWQQO6JFbRDZXYRJc3gh5eNRCoOU85Umg=
+	t=1740533845; cv=none; b=uhuFuNWMnlexAMAIquNRCg40nQTVldmXA/KrnVsgH90Tsx7w/lxY44WI9bl253ZEkTXpOpXJKA/tqg8d0xf/+LhxnbTTSpLeA9SOUgfuH1+TUVqKTxEI6E9Y5IVAGsGvRHF2Kujye54yD2m2TequHG2jv1eCrEbxzZZ3j3XbfKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740532351; c=relaxed/simple;
-	bh=Q7XNbnyHVAO/AJkzOQub1PmkrtWAzONU+a89IzTOhbg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aj5/f10kv04TenjeBr9nB7RnAIDP1Miu24JecxtY/sVxnKltXeB+gxC1zsB/CFRz1bINIBcke4TYNNCrnZgCkAKSqWMOt9uvnMkFFUOGOGytctdsG/LjHgTgXi28QnI+GuGlUDFMgDGCZs1VW6mTARnx7OVecTALKf1v20R4dLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H6RyuVP3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740533845; c=relaxed/simple;
+	bh=6jMqSHCB1b/d3tIPznfvnPv5y2TPzXfyEbziUHnLOwg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eNabKdTNoeQ+9YD5UaJ/P/Aos0duZiQJXcUpBp9lYBIItK3qWA1PtbKOtk+nvCXDclJcOqjt5hDgCYmfsOySZcxYLZeYbXEAAv1GNMCIdp1+6kdBe2Kj6R6AhtyO6/YnMSm1H1M+T9cOp5TM9kNJHXvLfpyV4fyvbIZXoYB6mEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kp7NLbUb; arc=none smtp.client-ip=91.218.175.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H6RyuVP3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37576C4CEDD;
-	Wed, 26 Feb 2025 01:12:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740532350;
-	bh=Q7XNbnyHVAO/AJkzOQub1PmkrtWAzONU+a89IzTOhbg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=H6RyuVP36/hX8I0JJ4a0gT2WLAxdQfra+wyrEsonhRFqX7TL6gthPJJuSogm9X3mD
-	 Todx73voTJ6OmQcYfjkaruU+vrfK9UHdmSs9hGBvzjEgoDTj5AF7jq+GemS/QUCTXT
-	 +xAVMvUgVJkRXf4XSkaI6FZgPpn/+DsZQlf/OyQ3L3TQD6Jli3aJ1g3Iv4fR1br6wZ
-	 /1n1TcoOf2L9avMOxi/aX2WmMKTh8/NKWK6YmvtDqf0oJDhjqD0D1w3e5/asvYzdYh
-	 o1MwcFQjb9XM+H0KDZIZkKTc3FNp4iP326SIlhLIwMbcqxwgZSvMJl63/MQYkSvNWZ
-	 IqhN/aA+w42Qw==
-Date: Tue, 25 Feb 2025 17:12:29 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Xin Tian" <tianx@yunsilicon.com>
-Cc: <netdev@vger.kernel.org>, <leon@kernel.org>, <andrew+netdev@lunn.ch>,
- <pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>,
- <jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>,
- <weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <horms@kernel.org>,
- <parthiban.veerasooran@microchip.com>, <masahiroy@kernel.org>
-Subject: Re: [PATCH net-next v5 07/14] xsc: Init auxiliary device
-Message-ID: <20250225171229.0721fabb@kernel.org>
-In-Reply-To: <20250224172429.2455751-8-tianx@yunsilicon.com>
-References: <20250224172416.2455751-1-tianx@yunsilicon.com>
-	<20250224172429.2455751-8-tianx@yunsilicon.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kp7NLbUb"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740533840;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c6lV2O/MV07x2xCD5gRyXKU/naKq49lc8wVecRpyzJY=;
+	b=kp7NLbUbFkijnU8Nd3tRXnRzRt88xeE3r6qyYDNVsdcLu//PHlllllF9cw62u2LxU+5zBp
+	ECjKglKSRLHKZdKCdpmRA7RKSee9ZF81DFTevlbWlk7M0DsneewFBlbRtrXhJhTBYJ1e9j
+	Gyr3tKio/MAG0NQGh5i0tQCoI+cqNus=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: horms@kernel.org,
+	kuba@kernel.org
+Cc: bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	ricardo@marliere.net,
+	viro@zeniv.linux.org.uk,
+	dmantipov@yandex.ru,
+	aleksander.lobakin@intel.com,
+	linux-ppp@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mrpre@163.com,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	syzbot+853242d9c9917165d791@syzkaller.appspotmail.com
+Subject: [PATCH net-next v4 1/1] ppp: Fix KMSAN warning by initializing 2-byte header
+Date: Wed, 26 Feb 2025 09:36:58 +0800
+Message-ID: <20250226013658.891214-2-jiayuan.chen@linux.dev>
+In-Reply-To: <20250226013658.891214-1-jiayuan.chen@linux.dev>
+References: <20250226013658.891214-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, 25 Feb 2025 01:24:31 +0800 Xin Tian wrote:
-> Our device supports both Ethernet and RDMA functionalities, and
-> leveraging the auxiliary bus perfectly addresses our needs for
-> managing these distinct features. This patch utilizes auxiliary
-> device to handle the Ethernet functionality, while defining
-> xsc_adev_list to reserve expansion space for future RDMA
-> capabilities.
+The PPP driver adds an extra 2-byte header to enable socket filters to run
+correctly. However, the driver only initializes the first byte, which
+indicates the direction. For normal BPF programs, this is not a problem
+since they only read the first byte.
 
-drivers/net/ethernet/yunsilicon/xsc/pci/adev.c:90:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-   90 |         if (adev_id < 0)
-      |             ^~~~~~~~~~~
-drivers/net/ethernet/yunsilicon/xsc/pci/adev.c:104:9: note: uninitialized use occurs here
-  104 |         return ret;
-      |                ^~~
-drivers/net/ethernet/yunsilicon/xsc/pci/adev.c:90:2: note: remove the 'if' if its condition is always false
-   90 |         if (adev_id < 0)
-      |         ^~~~~~~~~~~~~~~~
-   91 |                 goto err_free_adev_list;
-      |                 ~~~~~~~~~~~~~~~~~~~~~~~
-drivers/net/ethernet/yunsilicon/xsc/pci/adev.c:82:9: note: initialize the variable 'ret' to silence this warning
-   82 |         int ret;
-      |                ^
-      |                 = 0
+Nevertheless, for carefully crafted BPF programs, if they read the second
+byte, this will trigger a KMSAN warning for reading uninitialized data.
+
+Reported-by: syzbot+853242d9c9917165d791@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/000000000000dea025060d6bc3bc@google.com/
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+ drivers/net/ppp/ppp_generic.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index 4583e15ad03a..b4433badf03c 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -72,6 +72,10 @@
+ #define PPP_PROTO_LEN	2
+ #define PPP_LCP_HDRLEN	4
+ 
++/* These are fields recognized by libpcap */
++#define PPP_FILTER_OUTBOUND_TAG 0x0100
++#define PPP_FILTER_INBOUND_TAG  0x0000
++
+ /*
+  * An instance of /dev/ppp can be associated with either a ppp
+  * interface unit or a ppp channel.  In both cases, file->private_data
+@@ -1762,10 +1766,15 @@ ppp_send_frame(struct ppp *ppp, struct sk_buff *skb)
+ 
+ 	if (proto < 0x8000) {
+ #ifdef CONFIG_PPP_FILTER
+-		/* check if we should pass this packet */
+-		/* the filter instructions are constructed assuming
+-		   a four-byte PPP header on each packet */
+-		*(u8 *)skb_push(skb, 2) = 1;
++		/* Check if we should pass this packet.
++		 * The filter instructions are constructed assuming
++		 * a four-byte PPP header on each packet. The first byte
++		 * indicates the direction, and the second byte is meaningless,
++		 * but we still need to initialize it to prevent crafted BPF
++		 * programs from reading them which would cause reading of
++		 * uninitialized data.
++		 */
++		*(__be16 *)skb_push(skb, 2) = htons(PPP_FILTER_OUTBOUND_TAG);
+ 		if (ppp->pass_filter &&
+ 		    bpf_prog_run(ppp->pass_filter, skb) == 0) {
+ 			if (ppp->debug & 1)
 -- 
-pw-bot: cr
+2.47.1
+
