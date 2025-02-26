@@ -1,183 +1,208 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7E118024
-	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 12:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6CF212B23
+	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 12:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740573639; cv=none; b=S7hJ9k6+fPCMFZAFgCB5CudxrRzjxQLOizfXUXaosNgBZg8jtiwhv9uz9AT9J+lepvnWelIfkL83HJJ0pq9qmqAdDQJ9F0UasUZv3tC44qla7V7KMaY+YskePj7d30fm3KwhIYwSDHq8YmySAPxcMs6B0PITS7oR+AYMw+dpvdw=
+	t=1740573698; cv=none; b=D7ARhihKejAkSoXPyzQAiC+/EsqZ9qGpk0ICqk+4otAVZpixeao6EEYdwK9ig2vFfPUPWjbr3ARs1oZDBJfHZqICzc2RPLEuGEbv+Gc9tmkZsm0Ba8MxDRN9H0Sc/0Vqj1LAvrw6XY/d47wAHA2g9RWLcf9lEaYb/0qPLPy7Oqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740573639; c=relaxed/simple;
-	bh=4l7oxSeeX+iwjdikDsl221mshHqE7XJYGKYFrPjhu+I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q3hQ9Yh0qyjIYXsl343S+ZZiTipauc5SAi32zLSS9GzRUVCvyKMRUGIrINaZVRjcldQCzNyB7mnrFImA+Mqwj5J98UGcKyYQ0l/s4QNMVHVs02k0e+PzDO+YhuksCfXQBcPbmGWrZjYoh0Pyzgad81KUUBW+tHHhiXzpugklCp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=qeMkGQ3y; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1740573698; c=relaxed/simple;
+	bh=2Wtl/99KUY6VSqZjgNxx680yUju/s18Trdq/SjzInIA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HPfkqRKZUsaz9Dy9YhBYZx9fwRqzekYKZSUPLPvP/H087EhcJrtPwGIAyM7Ay1af/N/d/R5zrMuDSRIu0Bg932GOD4fPmFfnfvCd7ZW1W6e0+1Egi6C8PLd4j3dJb74ABWSjN/aDOKCIswO0M5D1ZMlcS9mCUcvejB0lImopcuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RHzSKtFN; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="qeMkGQ3y"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=jY/bwN9A5xa9iSopLwyTQOxIV4QgdsLsdC4BTyAYt0s=; b=qeMkGQ3y0EikusQ5iHd4bfTahQ
-	VIXzKqFJ8IuD3zi7Bds5zQxg6xqFWF1UTAxmGM5ZFoaZpFhfGgwlOywV9EthV0Aw1BXHUkvLrNKAV
-	rmcVXqxqtO4SQUrZ2YNITE4q9QJqb2A+zRm77pMqU3169CUNZCcoFYmCGRod2yFDfu8ydaJ+NHk6a
-	jQVGp+KrPPtvH8pDfAlr5i1MHou26K+PWMKnf+fbN40ZHh1D6KN9GJhwEUQ0jmwijbhhKS9UAj/h4
-	+kZw30OqsrDFWVsqH1MK6fFHR/ZAS5ERJK8l/v+NOP86YirCEDQ51wEXwnGxoIjp/dfaT3PbslIWO
-	IdQ4fMHQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:32848)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tnGi8-0004Ez-2J;
-	Wed, 26 Feb 2025 12:40:24 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tnGi5-000766-0H;
-	Wed, 26 Feb 2025 12:40:21 +0000
-Date: Wed, 26 Feb 2025 12:40:20 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Thierry Reding <thierry.reding@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jan Petrous <jan.petrous@oss.nxp.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Minda Chen <minda.chen@starfivetech.com>, netdev@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Thierry Reding <treding@nvidia.com>
-Subject: Re: [PATCH RFC net-next 6/7] net: stmmac: intel: use generic
- stmmac_set_clk_tx_rate()
-Message-ID: <Z78LtBo2lfTGG-9o@shell.armlinux.org.uk>
-References: <Z7RrnyER5ewy0f3T@shell.armlinux.org.uk>
- <E1tkLZB-004RZU-4A@rmk-PC.armlinux.org.uk>
- <n67c4bq7n7ejakmqmglve3os6vqvm57umysjjzexxkygvusnoo@ndee4gfnmsst>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RHzSKtFN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740573696; x=1772109696;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2Wtl/99KUY6VSqZjgNxx680yUju/s18Trdq/SjzInIA=;
+  b=RHzSKtFNM1HHADfhkJreFZRL4fDOffOhBs22jNU4DdTTbzo1aDi6UHEz
+   NokJuF6cs8v3e6VmmaXDCdhg3z2L+6vpxZz4uBJURo3wswscTEk4MUhj8
+   YfUcYqyQ+y4445migzJnlEzsz0+DeKwrBggcIJNc4ZOBuJ+sKA0PESc2R
+   K0AzuRfZfRTLvEbxmErnhOBMwLKGGp4N42hwQBhJ5EPWWJ1radA3WRy2U
+   lcWsYsdHeTw6R0nCCO0GBaJ3jQWP66Nq4q+rp4K0DPmGmAr9weKuQKHgZ
+   OXHI/PyHLq3cXa2eH/G2lMs2WKmTAx7WV7pRqVV2vgCtvZEy9ets1+P+D
+   Q==;
+X-CSE-ConnectionGUID: k3isdd0tRlCioHbZf+jMqQ==
+X-CSE-MsgGUID: wZr/cYVOQrSzMk2O+tTXKA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="41259257"
+X-IronPort-AV: E=Sophos;i="6.13,317,1732608000"; 
+   d="scan'208";a="41259257"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 04:41:35 -0800
+X-CSE-ConnectionGUID: OzUplYlUT0S491KkA4jXBA==
+X-CSE-MsgGUID: f72xxEfzQOapx08Ge0Mwdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,317,1732608000"; 
+   d="scan'208";a="116882902"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by fmviesa008.fm.intel.com with ESMTP; 26 Feb 2025 04:41:33 -0800
+Received: from ilmater.igk.intel.com (ilmater.igk.intel.com [10.123.220.50])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 19ECE12419;
+	Wed, 26 Feb 2025 12:41:32 +0000 (GMT)
+From: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [Intel-wired-lan] [PATCH iwl-next v1] ice: refactor the Tx scheduler feature
+Date: Wed, 26 Feb 2025 12:33:56 +0100
+Message-ID: <20250226113409.446325-1-mateusz.polchlopek@intel.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <n67c4bq7n7ejakmqmglve3os6vqvm57umysjjzexxkygvusnoo@ndee4gfnmsst>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 25, 2025 at 09:46:56PM +0100, Thierry Reding wrote:
-> On Tue, Feb 18, 2025 at 11:15:05AM +0000, Russell King (Oracle) wrote:
-> > Use the generic stmmac_set_clk_tx_rate() to configure the MAC transmit
-> > clock.
-> > 
-> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > ---
-> >  .../stmicro/stmmac/dwmac-intel-plat.c         | 24 +++----------------
-> >  1 file changed, 3 insertions(+), 21 deletions(-)
-> 
-> This isn't quite the same code, but the result should be the same since
-> clk_set_rate() will be ignored if the clock is NULL, which would be the
-> case for !dwmac->data->tx_clk_en.
+Embed ice_get_tx_topo_user_sel() inside the only caller:
+ice_devlink_tx_sched_layers_get().
+Instead of jump from the wrapper to the function that does "get" operation
+it does "get" itself.
 
-You're right, thanks for spotting! I'll move it out of the if()
-statement so the code has the exact same behaviour. Replacement patch
-below.
+Remove unnecessary comment and make usage of str_enabled_disabled()
+in ice_init_tx_topology().
 
-> Reviewed-by: Thierry Reding <treding@nvidia.com>
-
-Thanks for the review.
-
-8<====
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH net-next] net: stmmac: intel: use generic
- stmmac_set_clk_tx_rate()
-
-Use the generic stmmac_set_clk_tx_rate() to configure the MAC transmit
-clock.
-
-Note that given the current unpatched driver structure,
-plat_dat->fix_mac_speed will always be populated with
-kmb_eth_fix_mac_speed(), even when no clock is present. We preserve
-this behaviour in this patch by always initialising plat_dat->clk_tx_i
-and plat_dat->set_clk_tx_rate.
-
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Suggested-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
 ---
- .../stmicro/stmmac/dwmac-intel-plat.c         | 24 +++----------------
- 1 file changed, 3 insertions(+), 21 deletions(-)
+ .../net/ethernet/intel/ice/devlink/devlink.c  | 56 +++++++------------
+ drivers/net/ethernet/intel/ice/ice_ddp.c      |  2 -
+ drivers/net/ethernet/intel/ice/ice_main.c     |  8 +--
+ 3 files changed, 23 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-index 0591756a2100..599def7b3a64 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-@@ -22,31 +22,12 @@ struct intel_dwmac {
- };
+diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers/net/ethernet/intel/ice/devlink/devlink.c
+index fcb199efbea5..2355e21d115c 100644
+--- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
++++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
+@@ -529,41 +529,6 @@ ice_devlink_reload_empr_finish(struct ice_pf *pf,
+ 	return 0;
+ }
  
- struct intel_dwmac_data {
--	void (*fix_mac_speed)(void *priv, int speed, unsigned int mode);
- 	unsigned long ptp_ref_clk_rate;
- 	unsigned long tx_clk_rate;
- 	bool tx_clk_en;
- };
- 
--static void kmb_eth_fix_mac_speed(void *priv, int speed, unsigned int mode)
+-/**
+- * ice_get_tx_topo_user_sel - Read user's choice from flash
+- * @pf: pointer to pf structure
+- * @layers: value read from flash will be saved here
+- *
+- * Reads user's preference for Tx Scheduler Topology Tree from PFA TLV.
+- *
+- * Return: zero when read was successful, negative values otherwise.
+- */
+-static int ice_get_tx_topo_user_sel(struct ice_pf *pf, uint8_t *layers)
 -{
--	struct intel_dwmac *dwmac = priv;
--	long rate;
--	int ret;
+-	struct ice_aqc_nvm_tx_topo_user_sel usr_sel = {};
+-	struct ice_hw *hw = &pf->hw;
+-	int err;
 -
--	rate = rgmii_clock(speed);
--	if (rate < 0) {
--		dev_err(dwmac->dev, "Invalid speed\n");
--		return;
--	}
+-	err = ice_acquire_nvm(hw, ICE_RES_READ);
+-	if (err)
+-		return err;
 -
--	ret = clk_set_rate(dwmac->tx_clk, rate);
--	if (ret)
--		dev_err(dwmac->dev, "Failed to configure tx clock rate\n");
+-	err = ice_aq_read_nvm(hw, ICE_AQC_NVM_TX_TOPO_MOD_ID, 0,
+-			      sizeof(usr_sel), &usr_sel, true, true, NULL);
+-	if (err)
+-		goto exit_release_res;
+-
+-	if (usr_sel.data & ICE_AQC_NVM_TX_TOPO_USER_SEL)
+-		*layers = ICE_SCHED_5_LAYERS;
+-	else
+-		*layers = ICE_SCHED_9_LAYERS;
+-
+-exit_release_res:
+-	ice_release_nvm(hw);
+-
+-	return err;
 -}
 -
- static const struct intel_dwmac_data kmb_data = {
--	.fix_mac_speed = kmb_eth_fix_mac_speed,
- 	.ptp_ref_clk_rate = 200000000,
- 	.tx_clk_rate = 125000000,
- 	.tx_clk_en = true,
-@@ -89,8 +70,6 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
- 	 * platform_match().
- 	 */
- 	dwmac->data = device_get_match_data(&pdev->dev);
--	if (dwmac->data->fix_mac_speed)
--		plat_dat->fix_mac_speed = dwmac->data->fix_mac_speed;
+ /**
+  * ice_update_tx_topo_user_sel - Save user's preference in flash
+  * @pf: pointer to pf structure
+@@ -610,19 +575,36 @@ static int ice_update_tx_topo_user_sel(struct ice_pf *pf, int layers)
+  * @id: the parameter ID to set
+  * @ctx: context to store the parameter value
+  *
++ * Reads user's preference for Tx Scheduler Topology Tree from PFA TLV.
++ *
+  * Return: zero on success and negative value on failure.
+  */
+ static int ice_devlink_tx_sched_layers_get(struct devlink *devlink, u32 id,
+ 					   struct devlink_param_gset_ctx *ctx)
+ {
++	struct ice_aqc_nvm_tx_topo_user_sel usr_sel = {};
+ 	struct ice_pf *pf = devlink_priv(devlink);
++	struct ice_hw *hw = &pf->hw;
+ 	int err;
  
- 	/* Enable TX clock */
- 	if (dwmac->data->tx_clk_en) {
-@@ -132,6 +111,9 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
- 		}
- 	}
+-	err = ice_get_tx_topo_user_sel(pf, &ctx->val.vu8);
++	err = ice_acquire_nvm(hw, ICE_RES_READ);
+ 	if (err)
+ 		return err;
  
-+	plat_dat->clk_tx_i = dwmac->tx_clk;
-+	plat_dat->set_clk_tx_rate = stmmac_set_clk_tx_rate;
+-	return 0;
++	err = ice_aq_read_nvm(hw, ICE_AQC_NVM_TX_TOPO_MOD_ID, 0,
++			      sizeof(usr_sel), &usr_sel, true, true, NULL);
++	if (err)
++		goto exit_release_res;
 +
- 	plat_dat->bsp_priv = dwmac;
- 	plat_dat->eee_usecs_rate = plat_dat->clk_ptp_rate;
++	if (usr_sel.data & ICE_AQC_NVM_TX_TOPO_USER_SEL)
++		ctx->val.vu8 = ICE_SCHED_5_LAYERS;
++	else
++		ctx->val.vu8 = ICE_SCHED_9_LAYERS;
++
++exit_release_res:
++	ice_release_nvm(hw);
++
++	return err;
+ }
  
+ /**
+diff --git a/drivers/net/ethernet/intel/ice/ice_ddp.c b/drivers/net/ethernet/intel/ice/ice_ddp.c
+index 69d5b1a28491..a2f738eaf02e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ddp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ddp.c
+@@ -2324,8 +2324,6 @@ enum ice_ddp_state ice_copy_and_init_pkg(struct ice_hw *hw, const u8 *buf,
+  * @flags: pointer to descriptor flags
+  * @set: 0-get, 1-set topology
+  *
+- * The function will get or set Tx topology
+- *
+  * Return: zero when set was successful, negative values otherwise.
+  */
+ static int
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index b084839eb811..9d9cad81b336 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -4544,10 +4544,10 @@ ice_init_tx_topology(struct ice_hw *hw, const struct firmware *firmware)
+ 	dev = ice_pf_to_dev(pf);
+ 	err = ice_cfg_tx_topo(hw, firmware->data, firmware->size);
+ 	if (!err) {
+-		if (hw->num_tx_sched_layers > num_tx_sched_layers)
+-			dev_info(dev, "Tx scheduling layers switching feature disabled\n");
+-		else
+-			dev_info(dev, "Tx scheduling layers switching feature enabled\n");
++		dev_info(dev, "Tx scheduling layers switching feature %s\n",
++			 str_enabled_disabled(hw->num_tx_sched_layers <=
++					      num_tx_sched_layers));
++
+ 		/* if there was a change in topology ice_cfg_tx_topo triggered
+ 		 * a CORER and we need to re-init hw
+ 		 */
 -- 
-2.30.2
+2.48.1
 
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
