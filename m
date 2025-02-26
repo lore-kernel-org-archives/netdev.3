@@ -1,56 +1,56 @@
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311C221ABA9
-	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 19:32:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1CB24A06C
+	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 19:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740598353; cv=none; b=Wd0HiTyiwn2Rwz3WmbOd67vViYwd46poSMlNXrs8aDIFqwtdZwOa4Exq4Yfh1EeR+RsWiMJitb1tQ1Kbj2iS4XXG3DmLg5HtY/yKfTboYGTxGnH9zNDe+CLikXQ0SoCJyKLu9K9NFY32euFZkPYa7GZg7D9QU+rPHPsrqFPkknU=
+	t=1740598356; cv=none; b=rGPNBqmo0ofnb+1ZCaGAK7L4AcYT7Mo4Z1Py0krWt7ckYDw5ZI/Rv93YvZiD1KzyB5MwNtuo6jupzxYG6wSKiD3gngo7a0qcKnuLvKpbOkr77KcQ2zeatvIk3O3UT02E8agfKe1KEYQrNEg77MVWguPcmXx215oI6BPoMqjwjEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740598353; c=relaxed/simple;
-	bh=bMBsBRjw/lRUtGuUMc71/I/S/lp0ZTwauL7I5alfvFI=;
+	s=arc-20240116; t=1740598356; c=relaxed/simple;
+	bh=8DbAhIql40RzAZFOKS9rwyPdrPIXxIDQ0/SYk7/K5TM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tHDAerf5gAIfIQe2dtRj6DnV099MnqnG0jSiulgd4AQaYkFS4NzA6veE3phBAh8kR3EOH3K6uxCFJl0u8zftGgVBNuXtKX21JSjB5yK4guk8VsFdLgtKzzrnBs85olLRaxwjL+yEvdF+bUUf0DETsDj6lZ5dB/Xg1HncC9UVYxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=rsvAAeBj; arc=none smtp.client-ip=52.95.49.90
+	 MIME-Version:Content-Type; b=Ymf9I0d2G3PCBFbG6CZU6ZRcdM13q5lwZVx2m2BApVgkRRl65vfemRoyz4MNqe1NJut0QyhAxO6+TClPdswgWp7H0ME9HIw7zEA6FyJK+S4LQNakTvoigEQXtEK5QtR49KwcXhmMfamLLtkd+zKjJgzC6y+KuJc/ZDto0vEgr4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=rhwV6afH; arc=none smtp.client-ip=99.78.197.220
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="rsvAAeBj"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="rhwV6afH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1740598349; x=1772134349;
+  t=1740598354; x=1772134354;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=RdhpugZ0ovpSSzgmTLWYFM6J4IE8hkBH8r6QF5K7iSw=;
-  b=rsvAAeBjBG31eZOc9zSv/oAMFN/8wIU4MpwaEUPtH/eIGGYdwwE9vKxt
-   Qr3hvDoZnAys66PSCqMd2/QZtdENGWGk7gNGUlNyhcz00F7QDePloDiV4
-   LvSWU/wGRGMKih9qW1w9mpwBRV6kA2wkyv3wlYl6umy8OGfTQ9wAbwvDc
-   I=;
+  bh=K3u6PhPeHRherC5lcTCBSrJ6b+PgVB/Tq7iB2T8rPGk=;
+  b=rhwV6afHj/YPas8CWCXQ/BIZRU7/VNpLlVrVHdbulJn8argVpLEzr46J
+   F8H+7kFjD9q4DjQejzAPOGdDVwC2kcUN6BT+F1UqcCn6/TYru0aFdklpS
+   aI/iULfkHWH9MAbmERoJElk59IL5uvB6IO6jag/MmKMotp0hjkgG6VBYT
+   U=;
 X-IronPort-AV: E=Sophos;i="6.13,318,1732579200"; 
-   d="scan'208";a="475576113"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 19:31:20 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.38.20:18015]
+   d="scan'208";a="176287234"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 19:30:07 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.38.20:33677]
  by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.48.97:2525] with esmtp (Farcaster)
- id 7f691583-ec7b-4917-9905-2b6c92de0b8e; Wed, 26 Feb 2025 19:31:20 +0000 (UTC)
-X-Farcaster-Flow-ID: 7f691583-ec7b-4917-9905-2b6c92de0b8e
+ id 7087981e-9911-46f5-9697-5288957e397a; Wed, 26 Feb 2025 19:30:07 +0000 (UTC)
+X-Farcaster-Flow-ID: 7087981e-9911-46f5-9697-5288957e397a
 Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 26 Feb 2025 19:31:04 +0000
+ Wed, 26 Feb 2025 19:29:50 +0000
 Received: from 6c7e67bfbae3.amazon.com (10.187.170.36) by
  EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 26 Feb 2025 19:31:01 +0000
+ Wed, 26 Feb 2025 19:29:47 +0000
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 To: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
 	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
  Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
 CC: Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
 	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v2 net-next 12/12] ipv4: fib: Convert RTM_NEWROUTE and RTM_DELROUTE to per-netns RTNL.
-Date: Wed, 26 Feb 2025 11:25:56 -0800
-Message-ID: <20250226192556.21633-13-kuniyu@amazon.com>
+Subject: [PATCH v2 net-next 09/12] ipv4: fib: Hold rtnl_net_lock() for ip_fib_net_exit().
+Date: Wed, 26 Feb 2025 11:25:53 -0800
+Message-ID: <20250226192556.21633-10-kuniyu@amazon.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20250226192556.21633-1-kuniyu@amazon.com>
 References: <20250226192556.21633-1-kuniyu@amazon.com>
@@ -62,85 +62,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D041UWA004.ant.amazon.com (10.13.139.9) To
+X-ClientProxiedBy: EX19D038UWC004.ant.amazon.com (10.13.139.229) To
  EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-We converted fib_info hash tables to per-netns one and now ready to
-convert RTM_NEWROUTE and RTM_DELROUTE to per-netns RTNL.
+ip_fib_net_exit() requires RTNL and is called from fib_net_init()
+and fib_net_exit_batch().
 
-Let's hold rtnl_net_lock() in inet_rtm_newroute() and inet_rtm_delroute().
+Let's hold rtnl_net_lock() before ip_fib_net_exit().
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
 ---
- net/ipv4/fib_frontend.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ net/ipv4/fib_frontend.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
-index a6372d934e45..6de77415b5b3 100644
+index 40c062f820f2..c48ed369b179 100644
 --- a/net/ipv4/fib_frontend.c
 +++ b/net/ipv4/fib_frontend.c
-@@ -884,20 +884,24 @@ static int inet_rtm_delroute(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	if (err < 0)
- 		goto errout;
+@@ -1575,7 +1575,7 @@ static void ip_fib_net_exit(struct net *net)
+ {
+ 	int i;
  
+-	ASSERT_RTNL();
++	ASSERT_RTNL_NET(net);
+ #ifdef CONFIG_IP_MULTIPLE_TABLES
+ 	RCU_INIT_POINTER(net->ipv4.fib_main, NULL);
+ 	RCU_INIT_POINTER(net->ipv4.fib_default, NULL);
+@@ -1635,9 +1635,9 @@ static int __net_init fib_net_init(struct net *net)
+ out_nlfl:
+ 	fib4_semantics_exit(net);
+ out_semantics:
+-	rtnl_lock();
 +	rtnl_net_lock(net);
-+
- 	if (cfg.fc_nh_id && !nexthop_find_by_id(net, cfg.fc_nh_id)) {
- 		NL_SET_ERR_MSG(extack, "Nexthop id does not exist");
- 		err = -EINVAL;
--		goto errout;
-+		goto unlock;
- 	}
- 
- 	tb = fib_get_table(net, cfg.fc_table);
- 	if (!tb) {
- 		NL_SET_ERR_MSG(extack, "FIB table does not exist");
- 		err = -ESRCH;
--		goto errout;
-+		goto unlock;
- 	}
- 
- 	err = fib_table_delete(net, tb, &cfg, extack);
-+unlock:
+ 	ip_fib_net_exit(net);
+-	rtnl_unlock();
 +	rtnl_net_unlock(net);
- errout:
- 	return err;
+ 	goto out;
  }
-@@ -914,15 +918,20 @@ static int inet_rtm_newroute(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	if (err < 0)
- 		goto errout;
  
-+	rtnl_net_lock(net);
-+
- 	tb = fib_new_table(net, cfg.fc_table);
- 	if (!tb) {
- 		err = -ENOBUFS;
--		goto errout;
-+		goto unlock;
- 	}
+@@ -1652,9 +1652,11 @@ static void __net_exit fib_net_exit_batch(struct list_head *net_list)
+ 	struct net *net;
  
- 	err = fib_table_insert(net, tb, &cfg, extack);
- 	if (!err && cfg.fc_type == RTN_LOCAL)
- 		net->ipv4.fib_has_custom_local_routes = true;
-+
-+unlock:
-+	rtnl_net_unlock(net);
- errout:
- 	return err;
- }
-@@ -1683,9 +1692,9 @@ static struct pernet_operations fib_net_ops = {
+ 	rtnl_lock();
+-	list_for_each_entry(net, net_list, exit_list)
++	list_for_each_entry(net, net_list, exit_list) {
++		__rtnl_net_lock(net);
+ 		ip_fib_net_exit(net);
+-
++		__rtnl_net_unlock(net);
++	}
+ 	rtnl_unlock();
  
- static const struct rtnl_msg_handler fib_rtnl_msg_handlers[] __initconst = {
- 	{.protocol = PF_INET, .msgtype = RTM_NEWROUTE,
--	 .doit = inet_rtm_newroute},
-+	 .doit = inet_rtm_newroute, .flags = RTNL_FLAG_DOIT_PERNET},
- 	{.protocol = PF_INET, .msgtype = RTM_DELROUTE,
--	 .doit = inet_rtm_delroute},
-+	 .doit = inet_rtm_delroute, .flags = RTNL_FLAG_DOIT_PERNET},
- 	{.protocol = PF_INET, .msgtype = RTM_GETROUTE, .dumpit = inet_dump_fib,
- 	 .flags = RTNL_FLAG_DUMP_UNLOCKED | RTNL_FLAG_DUMP_SPLIT_NLM_DONE},
- };
+ 	list_for_each_entry(net, net_list, exit_list)
 -- 
 2.39.5 (Apple Git-154)
 
