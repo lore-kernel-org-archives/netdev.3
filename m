@@ -1,177 +1,74 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD3121B1B5;
-	Wed, 26 Feb 2025 17:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE36C1E1E1A
+	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 17:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740591033; cv=none; b=gkbkm/gYTuixfluhUB11jCKfZRRPAWwABAE8JvMNvdwqtrb7aLJSdABXOiIJUgd3GNJZvNn8lb0sSpKf9RzuyQNma7hzhHbR6XTLCwvy7F+1PlGrcU0kNzzR1QQUnV4NADrjWpLFR1HkWP87BaM3Z6p8RgI19cc/VxvP+7s4/aA=
+	t=1740591154; cv=none; b=sC7SIpek6Psa7Jwd1Gg/Wwz+zWhKjm5Ecm/CnrhmI8+zVp8NkoK6CAwM5CBIdhAgGnJN2zPm8hgaVH3PtgiWfIJKVYp89Gbkj9B/P9edtFGwUWrkWPw+BE4Up7SUXI35stcM5NPLj6M3TJVt8SpVdC2lflnRTB4DpMbSEc56PWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740591033; c=relaxed/simple;
-	bh=W+8mDNDJZwCYE7aOSphfX0nQzEuh/auhF9/CmRXBCSI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PHJW4qMYWKQWRC94fTbQF6fl+hsPp6PNIER8RRJWXA7p+Y9JrFw3pTKzyAaNwaQjRVa5lI9Ql/HI5cxvlPzpguYQ0QWPWiMZUyeGOEvNnVSsj2XleUVU5boaPCwLynbrldwKDQjKTW6Z1X2ElBttTkTBrPbQsvEyVfCdnanDWDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dsNbOEu6; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740591154; c=relaxed/simple;
+	bh=JGvRpxteJxWEJq3pHWFtcHfXehKkzuG17f3YzkWNZJM=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=uacYWk/cL56nak8MlKo3spCoqLb9yktRjezPxGhophB07KXqAOtOM0vvXCl8lqipx8PZ8AVt/ajfb1tQK5kZnkSyol44RKMoKBTAx1oIu83hjfX/gG88zRnMX1Ta9jfzqUZc/Qv8sEDzvrls89/VcAE/8rzj92/+DsTLQbmxnd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fNh6FIqG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dsNbOEu6"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-38f403edb4eso4241638f8f.3;
-        Wed, 26 Feb 2025 09:30:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740591030; x=1741195830; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W+8mDNDJZwCYE7aOSphfX0nQzEuh/auhF9/CmRXBCSI=;
-        b=dsNbOEu6RVCS4Vw+XwRh1p0HELuKI67VLwuZ3DxPei3dE0HmijahWvQAEiLq3yyypm
-         iP04A1tzW3La2G3BVwAljybcWdFWKKab6mCy8Qe+G0NIpYC7aowoGv3+RlBTuiR1Vk3+
-         U+0h72TmzEMmO5qww4jq4WY5PUfcyfMm9xunlFmFaXFjDBdeMza8b4HPC35kmBN1jtP0
-         isGzMhRK1rhepvp7V+pUt3LG60X0vcHQ2jtoLSJijFLW9/VcsX/JaowPkiqpcd84hkaB
-         mpl2igeJMzN/IAex94oKk4VNlfhsgoZv4ptahiXkk1ZKU2FOIn5ON79D17g8suL32SoJ
-         8W8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740591030; x=1741195830;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W+8mDNDJZwCYE7aOSphfX0nQzEuh/auhF9/CmRXBCSI=;
-        b=JKQ7UvwL37aFkcRpjXVFvFlcXFyL02DMxT22a1oIF09Kh6wy8/y1XkcCbs58UrotYZ
-         D67t0Zgosc96kYdad0TK+2Dk6vH4KUXM0BwsULsNOuavRzimvVTBM9Et6FnHX6ZQ4E7w
-         4TaIYIzVP3szstDbnqgBzq2gwOi7oWSqXY/5UkMaaah4MYQcolhveu7ta9C5gS7MocaI
-         GhTtWmv6cvGx7I2bB6xrfpB72oA2SzPcocLs+F14D7n0wPj9z9uWxr+rHepWA15mYlfq
-         0Cn74I/deZLb7NXP9aoqo+vX5816H7P5icHNBZiCLpCAPxxMyDfoG6grJAw0AZh6dbXe
-         Y22A==
-X-Forwarded-Encrypted: i=1; AJvYcCWERMxv9d7kUOSEiOL1Rzkcw5OqXbZ4Tydby90eEOr74HBxX9CGCt7Y0SW+3axzpI832pIeMbE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxx6JtR7NOTmFBLmNlERSDzmlYO+Fa54TzDmirCQ5lmrd6f+bXn
-	pRvqYBpsLGiWLDYZvpKSOi+8GL1XcZ/V8dR7EMglKPqPr0vhsrp97aXduU3Ajjqv046aATQvsx2
-	bCaZJ8NumFC9VdyBg7oAg30MPhyE=
-X-Gm-Gg: ASbGncvHvqDELr2QYlUN9VgO5h2OUphcNrP8gmMlmxsHkF2LDYa6aaaCnXQ2mP1isRp
-	TEFQI2rP08rvJoKlWUv2Yw4XUMDrTeJD3OmSKfFgpbrYZKRGx7eo7ckmWsH4TVkElLWC22h8b5L
-	EpOLibDpf74Z0yDDZ80Wd83OU=
-X-Google-Smtp-Source: AGHT+IGEjG4QXZW3khJ9pJWOBa/Y+jo71vJ+/93A1uk75nHWtmHXzhPzZiXUGjMRdCrsPfaN3qc7s+v/rucD7ehgcog=
-X-Received: by 2002:a5d:5983:0:b0:38f:4d20:4a0a with SMTP id
- ffacd0b85a97d-390cc609d0fmr7100943f8f.28.1740591029923; Wed, 26 Feb 2025
- 09:30:29 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fNh6FIqG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740591151;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JGvRpxteJxWEJq3pHWFtcHfXehKkzuG17f3YzkWNZJM=;
+	b=fNh6FIqGGZ5dx/taNZ0unEoAk9+GjTo/Fzo6e4x8qDQNQ6eXxknFmYcZjPa1G3e86P+cok
+	5wrOPVZj5AN8EDtw9khysE7Te3mE9U9VGSHBj6kIUxf7zsA5lrxrhTGpsBxHb/a6Xlccin
+	kvNdayp/2E3BcBAiVw3JXNNyLOAQjh8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-248-Mq3gCe4WM2exIZO678rRDQ-1; Wed,
+ 26 Feb 2025 12:32:27 -0500
+X-MC-Unique: Mq3gCe4WM2exIZO678rRDQ-1
+X-Mimecast-MFC-AGG-ID: Mq3gCe4WM2exIZO678rRDQ_1740591146
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B163D1955F28;
+	Wed, 26 Feb 2025 17:32:25 +0000 (UTC)
+Received: from pablmart-thinkpadt14gen4.rmtes.csb (unknown [10.44.33.78])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 964381800358;
+	Wed, 26 Feb 2025 17:32:22 +0000 (UTC)
+Date: Wed, 26 Feb 2025 18:32:19 +0100 (CET)
+From: Pablo Martin Medrano <pablmart@redhat.com>
+To: Petr Machata <petrm@nvidia.com>
+cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, 
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+    Shuah Khan <shuah@kernel.org>, Petr Machata <petrm@nvidia.com>
+Subject: Re: [PATCH net v2] selftests/net: big_tcp: return xfail on slow
+ machines
+In-Reply-To: <874j0ii3ip.fsf@nvidia.com>
+Message-ID: <d38dc75d-adec-77cb-6f06-ad006d1f8c5d@redhat.com>
+References: <23340252eb7bbc1547f5e873be7804adbd7ad092.1739983848.git.pablmart@redhat.com> <874j0ii3ip.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250220134503.835224-1-maciej.fijalkowski@intel.com>
- <CAADnVQKYkwV1jc3aLwWqzgP7TKaPvq_NjpwvYdOXOgDQ3QZfeA@mail.gmail.com> <Z73TS/tjk9okSqlC@boxer>
-In-Reply-To: <Z73TS/tjk9okSqlC@boxer>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Wed, 26 Feb 2025 09:30:18 -0800
-X-Gm-Features: AQ5f1JpQtap0tuew6P2Heurpjvuf24ejI9hIjLoPl8xun3nE45XvegWs-UvTRd4
-Message-ID: <CAADnVQ++0o-YoFR=yUcbJvaLX2rmWjC2LHjc3yyCp+bkgWGn1Q@mail.gmail.com>
-Subject: Re: [PATCH bpf-next 0/3] bpf: introduce skb refcount kfuncs
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Network Development <netdev@vger.kernel.org>, "Karlsson, Magnus" <magnus.karlsson@intel.com>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Amery Hung <ameryhung@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Tue, Feb 25, 2025 at 6:27=E2=80=AFAM Maciej Fijalkowski
-<maciej.fijalkowski@intel.com> wrote:
->
-> On Fri, Feb 21, 2025 at 05:55:57PM -0800, Alexei Starovoitov wrote:
-> > On Thu, Feb 20, 2025 at 5:45=E2=80=AFAM Maciej Fijalkowski
-> > <maciej.fijalkowski@intel.com> wrote:
-> > >
-> > > Hi!
-> > >
-> > > This patchset provides what is needed for storing skbs as kptrs in bp=
-f
-> > > maps. We start with necessary kernel change as discussed at [0] with
-> > > Martin, then next patch adds kfuncs for handling skb refcount and on =
-top
-> > > of that a test case is added where one program stores skbs and then n=
-ext
-> > > program is able to retrieve them from map.
-> > >
-> > > Martin, regarding the kernel change I decided to go with boolean
-> > > approach instead of what you initially suggested. Let me know if it
-> > > works for you.
-> > >
-> > > Thanks,
-> > > Maciej
-> > >
-> > > [0]: https://lore.kernel.org/bpf/Z0X%2F9PhIhvQwsgfW@boxer/
-> >
-> > Before we go further we need a lot more details on "why" part.
-> > In the old thread I was able to find:
-> >
-> > > On TC egress hook skb is stored in a map ...
-> > > During TC ingress hook on the same interface, the skb that was previo=
-usly
-> > stored in map is retrieved ...
-> >
-> > This is too cryptic. I see several concerns with such use case
-> > including netns crossing, L2/L3 mismatch, skb_scrub.
-> >
-> > I doubt we can make such "skb stash in a map" safe without
-> > restricting the usage, so please provide detailed
-> > description of the use case.
->
-> Hi Alexei,
->
-> We have a system with two nodes: one is a fully fledged Linux system (big=
- node)
-> and the other one a smaller embedded system. The big node runs Linux PTP =
-for
-> time synchronization, the smaller node we have no control over (might run=
- Linux
-> or something else). The problem is that we would like to use the Tx times=
-tamps
-> from the small node in the Linux PTP application on the big node. When a =
-packet
-> is sent out from the big node it arrives at the small node that send it o=
-ut one
-> of its interfaces. It then replies with another packet back to the big no=
-de
-> with the Tx timestamp in it.
->
-> Our current PoC for attacking this is to store the skb in a map (using th=
-is
-> patch set) when it is sent out from the big node then retrieve it from th=
-e map
-> when the reply from the small node is received. We then take the timestam=
-p from
-> the packet and put it in the skb and send it up to the socket error queue=
- so
-> that Linux PTP works out of the box.
 
-This sounds like you're actually xmit-ing the skb out of the big node
-and storing it in a map via simple refcnt++.
-That may work in some setups, but in general is not quite correct
-from networking stack pov.
-You need to skb_clone() it and keep the clone, so only cloned skb
-can go into the socket error queue and up to user space.
-xmit-ing the same skb and sending to user space
-is going to cause issues.
 
-Cleaner design would probably involve bpf_clone_redirect()
-and may be some form of bpf-qdisc where packet is waiting in the queue
-until its hwtimestamp is adjusted and its released from the queue
-into user space.
+On Tue, 25 Feb 2025, Petr Machata wrote:
 
-What happens when small node doesn't send that timestamped packet?
-The map will eventually overflow, right?
-Overall it feels that stashing skb-s in a map isn't the right approach.
+> It is customary to Cc people who have expressed interest in past
+> versions of your patches. I had opinions on v1, so please Cc me
+> on v2+ as well.
 
-> Note that for the purpose of setting skb->hwtstamp and sending it up to t=
-he
-> error queue we are adding a kfunc (bpf_tx_tstamp) responsible for it, whi=
-ch is
-> not included in this set, so I understand it is not obvious what we achie=
-ved
-> with the current form of this patch set being discussed.
->
-> We did not consider the restrictions that should be implemented from netn=
-s POV,
-> so that is a good point. How would you see this being fixed?
->
+I will keep that in mind for next versions. Thank you Petr!
+
