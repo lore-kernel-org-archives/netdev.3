@@ -1,98 +1,107 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009E041C71;
-	Wed, 26 Feb 2025 13:43:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40774217F5D
+	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 13:49:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740577421; cv=none; b=FYjjDYxn/fO5Lo+a0J1K3p0B48RvBj/ECYvfw5kBTc8BmT9Gy//GFO3E4EePS0cvXT9m0jDwhe6heFvdXfCxRBFAFM66NXEmNNJv/YNm3zCe6qkZ+TKmtIJrpNyMDKI13rC/VR5AEFsJ3j6Ei519cuO9LEzhKrfXIS3Btgt86ZU=
+	t=1740577763; cv=none; b=JOpA01Hip4Nd73vtKPCLbHrcX+1ffsqspqv7N8A4GnAR0jY1sAD/8ZALGxsHBeZxOBbgbjFKt599I75C39NQbHIkHwaZqu74/ckszexpkXEXvQWshjIa75dbqWbyO9HyvmVvCDOotHjRcQ9bnw6vNzZM2xueMDD9gTdlhe1kfiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740577421; c=relaxed/simple;
-	bh=C1RgbLR6GSfvgGMUX8LxeDVo7GdVzjmW06YGox9WhSA=;
-	h=Date:From:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Md+QrwwDR005Mwl2QpnxTVImF9KRaAQsRWAc9yETJXQu6GpLzN6DmT7/UgEK+yPAuQkWDFCFqV8VsKQjzsEBPbWaVYw9Eb5jwdKIx52+n3+4tN6xUrxax4Q70xiRbmfFocgTVH1XB9nXLkF4mhv9BzCN2tLUDpMqaPCawSwhmeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=O+J6C6YS; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1740577763; c=relaxed/simple;
+	bh=7Sjqx+lWiFFlcoTpiTe2+WbeyQkokQywUdjL2faY724=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fnPnTyG31ymIl7+itLigGSh4QNjsnTEyxaRMMcCF51g5EqpL8I6lBwyoFhxy5Zbc2fAZG6OGGVNdiKBN8EgR45AW4Zd5ct6P7qVr9hDIDik6d26oDGYzukYQbbm6NMK/pdVdt8Sk8lungfnz5otIN8A0IFW16m60zof5EgDO+w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=AtDrnHJG; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="O+J6C6YS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:From:Date:From:Sender:Reply-To:Subject:Date:
-	Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=+RM9fCd/pH/t1kXOr5ohz3w+lMtjBfCOedTcP39zAaM=; b=O+J6C6YSUoR+qkSnbq3xnBv7kq
-	TK4+SebVazszU6RcdBlkTq5CUyf3NmIhIhYO4MGohY316oVlXE0KLvs6ss0yQ3ky3nYPY3QhgpeF9
-	eE9Sc7oXJ+d8EeSJgvEf/0+iAexlZBH/QGnIn08RsEP67gXc1wGFh+n+8SXiFA7yLrgA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tnHhD-000Gqa-Mm; Wed, 26 Feb 2025 14:43:31 +0100
-Date: Wed, 26 Feb 2025 14:43:31 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: fix uninitialised access in mii_nway_restart()
-Message-ID: <418ddcf6-e7c9-4a8e-ba1a-38a83cb2b5f8@lunn.ch>
-References: <Z7R6uet1dJ1UJsJ1@qasdev.system>
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="AtDrnHJG"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5e033c2f106so8968423a12.3
+        for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 05:49:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1740577759; x=1741182559; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6f2oUbpNnWs5FWgzYsSndrQ+qrKeORdGmzd9Kwn/DJU=;
+        b=AtDrnHJGALKkgx4DndQbc70sTkQKVbSkk8iRtM5+5Ti4nKYp1gqgmMwF+MDh+k8ayx
+         2tPHbWgqv2Bdp52ibZS0KWIwN8jM9HfxlFffXh8Gf3Zp1RaW+qbyoBX3p4DQb5OJANM3
+         TyaK+m89Q4WZmf+m6FZQTo5CJzUjM2KZkSBba6lWbg6M2Jn4TSqQNbeVqEpc/083f7G9
+         QvAQsZQKU9J0HDjGJJ/YQVsB7JpMA90cjyyzyj+JJXEDXx/37e23IB65vuBulH/z9WVh
+         sGkUgjSa9EEsrdN7eqznE+fOn30ofWbxo7oPP9aYp8I81r2q2FHLucEysCDr50rRWd8+
+         uQwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740577759; x=1741182559;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6f2oUbpNnWs5FWgzYsSndrQ+qrKeORdGmzd9Kwn/DJU=;
+        b=UzFS+ByfGuHQKu4/vmuCyRChQxYMSnvEE8TB4Gqf2pPMO7+mrT7SqcF8SlZRIjwuKa
+         CVXuv0RkjMY6xC3BNDMuBI6jo6u1zCVxoFa66468QU3ZoDxmyBvTRtQWXEODswVouwNJ
+         btmuh7WSEXgBGZbq//VqbBYWhH1HyF7aK49yZfzMGVcEoFg4J1cWLv5BbYxQYWuYuXrU
+         D8lSqrq2C4qC/cSk7X9QMxdzxPSO7dVgioebclaEJdIh3FM9A0Aad5F1fKGYYGPUPTYb
+         LGgsiAGGrofwNWTlY5F1RxEhtezYQI0C/sog+iHYl7Kfnuuf6Nn0rvvlM2rdNx2ewAJJ
+         EszQ==
+X-Gm-Message-State: AOJu0YzOpmCjGJzRdg//sSBJBfjyS7ZdytqwXhKjptk0tzCiZgdNXKA/
+	YSIUcNFP+qhKgYlvvQ/C1L35JiZhUOhmz2pmPnVu4vbbiDk18YPvUzNHLOjax2Y=
+X-Gm-Gg: ASbGncuMb8jfzy0p8zpLGRMa7C+2x5duwLLA7GT90HX3ASbjGtf7AM55NhNVWHTkRNy
+	8x1EQIov81sLIaG+mHNQeZmkpQOz1QzuiwNSnR1SXnJQKh/iAxszRG7xq1YXlhM0nLkgZqNSLIE
+	Wh7QJjy1rcrPJSjREv8D5njDW5em5+uYXFK3PCdiYIy77OEkvE9nYzTixNp9EdGg/bbUBrjJ0Sa
+	IHVz4hue03pSV3zqJYgKG9dl4vxSSOPNUCfdp1xK7JlMhKQpXHNgzkTvGHKEfEJmAZlqy5WK0g5
+	aTqQSzQEGFdCfDjaoGAVJf69wMsMlbmoih8=
+X-Google-Smtp-Source: AGHT+IF/g6bbTd7C6qwckxi2v5TGUNH2Ooq2NC0xGM9g91hQFRyQNdoBE7TwzGOd8cpZlq0Esto7cA==
+X-Received: by 2002:a05:6402:238f:b0:5e4:9348:72e3 with SMTP id 4fb4d7f45d1cf-5e49348799cmr9524629a12.21.1740577759419;
+        Wed, 26 Feb 2025 05:49:19 -0800 (PST)
+Received: from cloudflare.com ([2a09:bac5:506a:2dc::49:ca])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed1cd564esm328612266b.21.2025.02.26.05.49.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Feb 2025 05:49:18 -0800 (PST)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: netdev@vger.kernel.org,  bpf@vger.kernel.org,  john.fastabend@gmail.com,
+  zhoufeng.zf@bytedance.com,  zijianzhang@bytedance.com,  Cong Wang
+ <cong.wang@bytedance.com>
+Subject: Re: [Patch bpf-next 3/4] skmsg: use bitfields for struct sk_psock
+In-Reply-To: <20250222183057.800800-4-xiyou.wangcong@gmail.com> (Cong Wang's
+	message of "Sat, 22 Feb 2025 10:30:56 -0800")
+References: <20250222183057.800800-1-xiyou.wangcong@gmail.com>
+	<20250222183057.800800-4-xiyou.wangcong@gmail.com>
+Date: Wed, 26 Feb 2025 14:49:17 +0100
+Message-ID: <87ldtsu882.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z7R6uet1dJ1UJsJ1@qasdev.system>
+Content-Type: text/plain
 
-On Tue, Feb 18, 2025 at 12:19:57PM +0000, Qasim Ijaz wrote:
-> On Tue, Feb 18, 2025 at 02:10:08AM +0100, Andrew Lunn wrote:
-> > On Tue, Feb 18, 2025 at 12:24:43AM +0000, Qasim Ijaz wrote:
-> > > In mii_nway_restart() during the line:
-> > > 
-> > > 	bmcr = mii->mdio_read(mii->dev, mii->phy_id, MII_BMCR);
-> > > 
-> > > The code attempts to call mii->mdio_read which is ch9200_mdio_read().
-> > > 
-> > > ch9200_mdio_read() utilises a local buffer, which is initialised 
-> > > with control_read():
-> > > 
-> > > 	unsigned char buff[2];
-> > > 	
-> > > However buff is conditionally initialised inside control_read():
-> > > 
-> > > 	if (err == size) {
-> > > 		memcpy(data, buf, size);
-> > > 	}
-> > > 
-> > > If the condition of "err == size" is not met, then buff remains 
-> > > uninitialised. Once this happens the uninitialised buff is accessed 
-> > > and returned during ch9200_mdio_read():
-> > > 
-> > > 	return (buff[0] | buff[1] << 8);
-> > > 	
-> > > The problem stems from the fact that ch9200_mdio_read() ignores the
-> > > return value of control_read(), leading to uinit-access of buff.
-> > > 
-> > > To fix this we should check the return value of control_read()
-> > > and return early on error.
-> > 
-> > What about get_mac_address()?
-> > 
-> > If you find a bug, it is a good idea to look around and see if there
-> > are any more instances of the same bug. I could be wrong, but it seems
-> > like get_mac_address() suffers from the same problem?
-> 
-> Thank you for the feedback Andrew. I checked get_mac_address() before
-> sending this patch and to me it looks like it does check the return value of
-> control_read(). It accumulates the return value of each control_read() call into 
-> rd_mac_len and then checks if it not equal to what is expected (ETH_ALEN which is 6),
-> I believe each call should return 2.
+On Sat, Feb 22, 2025 at 10:30 AM -08, Cong Wang wrote:
+> From: Cong Wang <cong.wang@bytedance.com>
+>
+> psock->eval can only have 4 possible values, make it 8-bit is
+> sufficient.
+>
+> psock->redir_ingress is just a boolean, using 1 bit is enough.
+>
+> Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+> ---
+>  include/linux/skmsg.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
+> index bf28ce9b5fdb..beaf79b2b68b 100644
+> --- a/include/linux/skmsg.h
+> +++ b/include/linux/skmsg.h
+> @@ -85,8 +85,8 @@ struct sk_psock {
+>  	struct sock			*sk_redir;
+>  	u32				apply_bytes;
+>  	u32				cork_bytes;
+> -	u32				eval;
+> -	bool				redir_ingress; /* undefined if sk_redir is null */
+> +	unsigned int			eval : 8;
+> +	unsigned int			redir_ingress : 1; /* undefined if sk_redir is null */
+>  	struct sk_msg			*cork;
+>  	struct sk_psock_progs		progs;
+>  #if IS_ENABLED(CONFIG_BPF_STREAM_PARSER)
 
-It is unlikely a real device could trigger an issue, but a USB Rubber
-Ducky might be able to. So the question is, are you interested in
-protecting against malicious devices, or just making a static analyser
-happy? Feel free to submit the patch as is.
-
-	Andrew
+Are you doing this bit packing to create a hole big enough to fit
+another u32 introduced in the next patch?
