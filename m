@@ -1,140 +1,160 @@
-Received: from dediextern.your-server.de (dediextern.your-server.de [85.10.215.232])
+Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33999239097;
-	Wed, 26 Feb 2025 19:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.215.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CA422D4F6
+	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 19:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740598158; cv=none; b=NY5WxDT3Cno1u58CpjIsWHyee3E4XDAS0wYNzvfeQAdVQR6KswkSyqucm/VjMU8i5YzDHwv3ANRRGXF4F3pi0y23+ZalCcG2UZgtfD6LF9S3ZQg11MXWDKCTHfnyTpYjvHhLZqJBEcSHsuIbdWmWuYoBmhtQCnMCHMWXhZgA/Zo=
+	t=1740598181; cv=none; b=oBWrKhNpozwcJvVsKNthIE0PiOxMDTQXHGNdyGnF2wtjkQiTOzWGPeaQ83NF3axORbe+++rkHftU/gZUrzlPzEZZm+x7g4Rl4LNCL+hi6ZcL2blve+vqV27kmRhk0OMBtc6quDxH6ONgG1k3FT9b077uZM/vOI5spASrxEQ3DVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740598158; c=relaxed/simple;
-	bh=2ZUteOkaSTwBrgPlfemqClgy+FPwyulmg41Bi4EpecI=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
-	 In-Reply-To:Content-Type; b=ujHWqN7wb/E+xUoesthdCzeJlGH/DdVhLaf/3xlQrriD9VZih2WJvnYvLU62PF4wRVJG7vulGlOdnlrGahoLgajn7adeusPx+sYk79zN9oSLHfkZR9lpliRvyDBPtcfo+spwGoM+Pe/TMeKtC76HUAiYSz9W7fsrKTdWoh9MQ9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hetzner-cloud.de; spf=pass smtp.mailfrom=hetzner-cloud.de; arc=none smtp.client-ip=85.10.215.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hetzner-cloud.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hetzner-cloud.de
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-	by dediextern.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <marcus.wichelmann@hetzner-cloud.de>)
-	id 1tnN5b-0002zp-CB; Wed, 26 Feb 2025 20:29:03 +0100
-Received: from [2a0d:3344:1523:1f10:f118:b2d4:edbb:54af]
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <marcus.wichelmann@hetzner-cloud.de>)
-	id 1tnN5b-000453-03;
-	Wed, 26 Feb 2025 20:29:03 +0100
-Message-ID: <0ec1f766-a0be-42ed-b505-0fc94205f724@hetzner-cloud.de>
-Date: Wed, 26 Feb 2025 20:29:01 +0100
+	s=arc-20240116; t=1740598181; c=relaxed/simple;
+	bh=QsuaelTi6apo+1WarSwxky4X5mzuqathxRJb+if0W+c=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q6YWFdbY7BM7OvzsHn2N5YtftrnL7z8OAFpD3d+H0QLBy2yeC1XHl5RX1U7zNBWFievhtCsC1lBSra31ym89TCpt1s0+/OBTwQg/g9vyHqbL7PUAY/v4dDJwTUou2TPF1zLIfjFXeUK/TRtf8YfEboDxnjwfaq5/+SjIedNXyj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=MaxKViEo; arc=none smtp.client-ip=52.119.213.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="MaxKViEo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1740598181; x=1772134181;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=B4NsKfpJfOYEBEj9uG/UYLm0zCQ2G+UK26RsVYWLcvg=;
+  b=MaxKViEoctrSsm7b50EkE/LlsuQ9U+eAGmsSZ8dUZOjQB7MDaeQw5HM2
+   Joq/c6VnOtPhYytlWsnUg+8MK5PoPgc8oQHiJ/HzbeGbnin1TvVtZvLRw
+   +LXWVJUdgHfl5L97UyiNCBDxLvxNJppQHoBk+jNSBdJcGQkFUZGNSDgf1
+   A=;
+X-IronPort-AV: E=Sophos;i="6.13,318,1732579200"; 
+   d="scan'208";a="274609765"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
+  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 19:29:15 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.38.20:10884]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.18.70:2525] with esmtp (Farcaster)
+ id 14ebf105-9450-4112-8d34-bed423e40584; Wed, 26 Feb 2025 19:29:13 +0000 (UTC)
+X-Farcaster-Flow-ID: 14ebf105-9450-4112-8d34-bed423e40584
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 26 Feb 2025 19:28:06 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.187.170.36) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 26 Feb 2025 19:27:45 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+CC: Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
+	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
+Subject: [PATCH v2 net-next 04/12] ipv4: fib: Make fib_info_hashfn() return struct hlist_head.
+Date: Wed, 26 Feb 2025 11:25:48 -0800
+Message-ID: <20250226192556.21633-5-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250226192556.21633-1-kuniyu@amazon.com>
+References: <20250226192556.21633-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Stanislav Fomichev <stfomichev@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- willemdebruijn.kernel@gmail.com, jasowang@redhat.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrii@kernel.org, eddyz87@gmail.com, mykolal@fb.com,
- ast@kernel.org, daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, shuah@kernel.org,
- hawk@kernel.org
-References: <20250224152909.3911544-1-marcus.wichelmann@hetzner-cloud.de>
- <20250224152909.3911544-6-marcus.wichelmann@hetzner-cloud.de>
- <Z7yo3VfHofK-W7EY@mini-arch>
- <165bbf6e-ca06-4eac-a9a2-2033314aa027@hetzner-cloud.de>
- <Z79k0vKn39XsZ-j7@mini-arch>
-Content-Language: en-US
-From: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Autocrypt: addr=marcus.wichelmann@hetzner-cloud.de; keydata=
- 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
- wySmewx3h/yfMh0aFxHhvLPxrO2IEQ==
-Subject: Re: [PATCH bpf-next v3 5/6] selftests/bpf: add test for XDP metadata
- support in tun driver
-In-Reply-To: <Z79k0vKn39XsZ-j7@mini-arch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: marcus.wichelmann@hetzner-cloud.de
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27561/Wed Feb 26 10:36:26 2025)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D041UWB001.ant.amazon.com (10.13.139.132) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
+Every time fib_info_hashfn() returns a hash value, we fetch
+&fib_info_hash[hash].
 
-Am 26.02.25 um 20:00 schrieb Stanislav Fomichev:
-> On 02/26, Marcus Wichelmann wrote:
->> Am 24.02.25 um 18:14 schrieb Stanislav Fomichev:
->>> On 02/24, Marcus Wichelmann wrote:
->>>> [...]
->>>> +void test_xdp_context_tuntap(void)
->>>
->>> tap0 is already used by lwt tests, so there is a chance this new test
->>> will clash with it? Should we run your new test in a net namespace
->>> to be safe? Bastien recently added a change where you can make
->>> your test run in a net ns by naming the function test_ns_xxx.
->>>
->>
->> Ah, cool, I didn't know of that feature.
->>
->> For reference, you probably mean this one?
->> commit c047e0e0e435 ("selftests/bpf: Optionally open a dedicated namespace to run test in it")
-> 
-> Yes.
->   
->> As long as the tests are not run in parallel, the test function SHOULD
->> clean up well enough behind itself that no conflicts should occur.
->> But having that bit of extra safety won't hurt.
-> 
-> The test you're adding is gonna be running in parallel with most of the
-> other test cases. If you want it to be executed in a serial fashion
-> (which I don't think you do, running in parallel in a ns is a better
-> option), the function as to be called serial_test_xxx.
-> 
+Let's return the hlist_head pointer from fib_info_hashfn() and
+rename it to fib_info_hash_bucket() to match a similar function,
+fib_info_laddrhash_bucket().
 
-Ah, I didn't know parallel execution is opt-out. Then I must have been
-lucky that it didn't cause issues.
+Note that we need to move the fib_info_hash assignment earlier in
+fib_info_hash_move() to use fib_info_hash_bucket() in the for loop.
 
-Added it in the V4 patch series that I'll send in a bit.
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+---
+ net/ipv4/fib_semantics.c | 28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
+
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index f00ac983861a..18bec34645ec 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -338,7 +338,7 @@ static unsigned int fib_info_hashfn_result(const struct net *net,
+ 	return hash_32(val ^ net_hash_mix(net), fib_info_hash_bits);
+ }
+ 
+-static inline unsigned int fib_info_hashfn(struct fib_info *fi)
++static struct hlist_head *fib_info_hash_bucket(struct fib_info *fi)
+ {
+ 	unsigned int val;
+ 
+@@ -354,7 +354,7 @@ static inline unsigned int fib_info_hashfn(struct fib_info *fi)
+ 		} endfor_nexthops(fi)
+ 	}
+ 
+-	return fib_info_hashfn_result(fi->fib_net, val);
++	return &fib_info_hash[fib_info_hashfn_result(fi->fib_net, val)];
+ }
+ 
+ static struct hlist_head *fib_info_hash_alloc(unsigned int hash_bits)
+@@ -405,12 +405,8 @@ static struct fib_info *fib_find_info_nh(struct net *net,
+ 
+ static struct fib_info *fib_find_info(struct fib_info *nfi)
+ {
+-	struct hlist_head *head;
++	struct hlist_head *head = fib_info_hash_bucket(nfi);
+ 	struct fib_info *fi;
+-	unsigned int hash;
+-
+-	hash = fib_info_hashfn(nfi);
+-	head = &fib_info_hash[hash];
+ 
+ 	hlist_for_each_entry(fi, head, fib_hash) {
+ 		if (!net_eq(fi->fib_net, nfi->fib_net))
+@@ -1274,22 +1270,16 @@ static void fib_info_hash_move(struct hlist_head *new_info_hash,
+ 	old_laddrhash = fib_info_laddrhash;
+ 	fib_info_hash_size = new_size;
+ 	fib_info_hash_bits = ilog2(new_size);
++	fib_info_hash = new_info_hash;
+ 
+ 	for (i = 0; i < old_size; i++) {
+-		struct hlist_head *head = &fib_info_hash[i];
++		struct hlist_head *head = &old_info_hash[i];
+ 		struct hlist_node *n;
+ 		struct fib_info *fi;
+ 
+-		hlist_for_each_entry_safe(fi, n, head, fib_hash) {
+-			struct hlist_head *dest;
+-			unsigned int new_hash;
+-
+-			new_hash = fib_info_hashfn(fi);
+-			dest = &new_info_hash[new_hash];
+-			hlist_add_head(&fi->fib_hash, dest);
+-		}
++		hlist_for_each_entry_safe(fi, n, head, fib_hash)
++			hlist_add_head(&fi->fib_hash, fib_info_hash_bucket(fi));
+ 	}
+-	fib_info_hash = new_info_hash;
+ 
+ 	fib_info_laddrhash = new_laddrhash;
+ 	for (i = 0; i < old_size; i++) {
+@@ -1573,8 +1563,8 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
+ 	refcount_set(&fi->fib_clntref, 1);
+ 
+ 	fib_info_cnt++;
+-	hlist_add_head(&fi->fib_hash,
+-		       &fib_info_hash[fib_info_hashfn(fi)]);
++	hlist_add_head(&fi->fib_hash, fib_info_hash_bucket(fi));
++
+ 	if (fi->fib_prefsrc) {
+ 		struct hlist_head *head;
+ 
+-- 
+2.39.5 (Apple Git-154)
+
