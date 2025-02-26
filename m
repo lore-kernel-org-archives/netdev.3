@@ -1,107 +1,117 @@
-Received: from mxout70.expurgate.net (mxout70.expurgate.net [194.37.255.70])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90322222C9;
-	Wed, 26 Feb 2025 15:08:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.37.255.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719D41A01BF;
+	Wed, 26 Feb 2025 15:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740582518; cv=none; b=makh8imfjP4K9eNKDBwMoNKLzjlRUrQqXM5r3WoRjBUdqboSArYYEyLCyKhT/sHHBk7emgQJ/hf5ismXz2oD8UniH7WzTXi7epvGr87aHsIESZz/S+rlCEvKdTl2phBuXGdUPBr4VQAQ7Qj+Vc7ExgkZ9pCNZ3xRFJ4XV57vuj0=
+	t=1740582590; cv=none; b=q2uYDed5rzxVnLK/NwhgUw/4LCx52fdbPUDutpMV7e4Q6tyOuhZfPWJXVPkCXPDXbpf6Tn9rVdvsil2dn5s8CSzIOJnusvthfr8TpcsyQ1mZeQLCaYhd7QdGbh8fZpc1xN/nafD5il9sRehQJKfoR23v/ngnRnx5eFsXyAsRIVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740582518; c=relaxed/simple;
-	bh=XC4CoAOtpcdCWitRC86lJSVmMf2M60ZyiNsaJQyjcPo=;
-	h=MIME-Version:Content-Type:Date:From:To:Cc:Subject:In-Reply-To:
-	 References:Message-ID; b=toten300iA5bEV1jN5ghDrukOM0sM/7cJB1F3p7bFlmnbVkpLZ/QxzUlXkmaq+G0WngOb3M2p07I8jk0ICufm+2lgdp3KtRNzipe1cdBiNdzvhZwPikL8ZfKuCysE7tn2vWHiqfC6VgHGJnBN4d8QDsuLnqMThJQr6WGpcRGZM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dev.tdt.de; spf=pass smtp.mailfrom=dev.tdt.de; dkim=temperror (0-bit key) header.d=dev.tdt.de header.i=@dev.tdt.de header.b=IW05DA0T; arc=none smtp.client-ip=194.37.255.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dev.tdt.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dev.tdt.de
+	s=arc-20240116; t=1740582590; c=relaxed/simple;
+	bh=AlPedn04wCTvnoDUgDbBua195xjkBTaAEu/DorTdYk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cDsOFfH6WGEN99Mfe8voBdjaqwBx2G70VOxg7/BXrU/vUHLqxEyFs1JVujgsPRdU4AAGvUW2a+qKp29zM+niWbGOfiWckNP4CX+5nSUCOq8Z611Pd9lYZ/gSr51K8A0PgPuoqEF0j3RX8Hjr3rbdQoSzt1QpSjlsMK8xEf1FUW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=iKDOgaJ5; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=dev.tdt.de header.i=@dev.tdt.de header.b="IW05DA0T"
-Received: from [194.37.255.9] (helo=mxout.expurgate.net)
-	by relay.expurgate.net with smtp (Exim 4.92)
-	(envelope-from <prvs=916645903c=ms@dev.tdt.de>)
-	id 1tnIkK-00EV0r-Iw; Wed, 26 Feb 2025 15:50:48 +0100
-Received: from [195.243.126.94] (helo=securemail.tdt.de)
-	by relay.expurgate.net with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ms@dev.tdt.de>)
-	id 1tnIkJ-00Bs3D-J1; Wed, 26 Feb 2025 15:50:47 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dev.tdt.de;
-	s=z1-selector1; t=1740581447;
-	bh=wbgWqnP45V/0QnMauvuVxU6kL8PYNnce0PZGrp8aK2c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IW05DA0TCwK2pOqmT8Zl9htARI7UYWNstHfUtGZ0P3fQzrOHEJcr0YEWl2cOjtvu/
-	 d5xQzvB5FFr6Pt3akRWlHcGrT5yQg8uaxuLfJdCPOcL+yymyVNXfcPS1UksXFTN+YT
-	 Pw1PazMh8lR4qu9m8fxS2xMDUDOqkCd7TBEZtPua0Vflj3g0D4iuYdygEDip3FtA6M
-	 diEe/wNSo5GZuzvYncH2yWtLffBdSuv5tkGq0rjlCyT7KsdQrnDcRqYHXkwq5WUh8H
-	 kdF6eeKSvxhYfm0EKeciqg7mMqBVraHbNGYXFuhYm4+xCtxiRO8+DIuyKAUJFkwj38
-	 eqKNpPHB7X/XQ==
-Received: from securemail.tdt.de (localhost [127.0.0.1])
-	by securemail.tdt.de (Postfix) with ESMTP id 2319C240041;
-	Wed, 26 Feb 2025 15:50:47 +0100 (CET)
-Received: from mail.dev.tdt.de (unknown [10.2.4.42])
-	by securemail.tdt.de (Postfix) with ESMTP id 1C874240036;
-	Wed, 26 Feb 2025 15:50:47 +0100 (CET)
-Received: from mail.dev.tdt.de (localhost [IPv6:::1])
-	by mail.dev.tdt.de (Postfix) with ESMTP id A2F4F238E5;
-	Wed, 26 Feb 2025 15:50:46 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="iKDOgaJ5"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 57D6044262;
+	Wed, 26 Feb 2025 15:09:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1740582581;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qr8ZzAHwUGa1pa18g5lB7LpvO3T+N6fqzFerpRdWrhw=;
+	b=iKDOgaJ5wJ04L921BEqnnpQzVMZYbO+FPuNCfmaOfFvJBXvFXqSRGdmxiiyzN5wYUKGpTe
+	ksC8H3kElU61IV8Rgvtmtey+NZpSMOrM0I6A2CjP2BzPZZm/kzgTFcmqafGH1cndkgwIrA
+	gjzMkWft0EEuLzTYcjzr1+AqPdSpKUMStQB+KKVbnI0SNgp95ofpXrtoFHLWe5pabEGZWT
+	VZeOdtBO3EP0aXdvQ/kqXOAcpP5tLmJUdzvT8cIfUk3q4vayLkTlnZAHBR23IVzBGj9ob4
+	ZZRu/JA1Fp5OnabcH56WOTsUII9MNzAB2DK/3izzPlsaNB2PD1/wmndXu56vFQ==
+Date: Wed, 26 Feb 2025 16:09:38 +0100
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski
+ <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Heiner Kallweit <hkallweit1@gmail.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Herve Codina
+ <herve.codina@bootlin.com>, Florian Fainelli <f.fainelli@gmail.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, =?UTF-8?B?S8O2cnk=?= Maincent
+ <kory.maincent@bootlin.com>, Oleksij Rempel <o.rempel@pengutronix.de>,
+ Simon Horman <horms@kernel.org>, Romain Gantois
+ <romain.gantois@bootlin.com>
+Subject: Re: [PATCH net-next v2 11/13] net: phy: phylink: Add a mapping
+ between MAC_CAPS and LINK_CAPS
+Message-ID: <20250226160938.101be22d@fedora.home>
+In-Reply-To: <Z78fKCZl4-77NjeK@shell.armlinux.org.uk>
+References: <20250226100929.1646454-1-maxime.chevallier@bootlin.com>
+	<20250226100929.1646454-12-maxime.chevallier@bootlin.com>
+	<Z78fKCZl4-77NjeK@shell.armlinux.org.uk>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Date: Wed, 26 Feb 2025 15:50:46 +0100
-From: Martin Schiller <ms@dev.tdt.de>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: sfp: add quirk for FS SFP-10GM-T copper
- SFP+ module
-Organization: TDT AG
-In-Reply-To: <Z78neFoGNPC0PYjt@shell.armlinux.org.uk>
-References: <20250226141002.1214000-1-ms@dev.tdt.de>
- <Z78neFoGNPC0PYjt@shell.armlinux.org.uk>
-Message-ID: <d03103b9cab4a1d2d779b3044f340c6d@dev.tdt.de>
-X-Sender: ms@dev.tdt.de
-User-Agent: Roundcube Webmail/1.3.17
-X-purgate-ID: 151534::1740581448-096E7976-E8DE8542/0/0
-X-purgate: clean
-X-purgate-type: clean
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekgeeltdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedugfelledvtdffvdekudeijeduueevvdevffehudehvdeuudetheekheeigfetheenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvrgdtudemtggsudelmeekugegtgemlehftddtmegstgdvudemkeekleelmeehgedttgemvgehlegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugegtmeelfhdttdemsggtvddumeekkeelleemheegtdgtmegvheelvgdphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudelpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepr
+ ghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-On 2025-02-26 15:38, Russell King (Oracle) wrote:
-> On Wed, Feb 26, 2025 at 03:10:02PM +0100, Martin Schiller wrote:
->> Add quirk for a copper SFP that identifies itself as "FS" 
->> "SFP-10GM-T".
->> It uses RollBall protocol to talk to the PHY and needs 4 sec wait 
->> before
->> probing the PHY.
->> 
->> Signed-off-by: Martin Schiller <ms@dev.tdt.de>
->> ---
->>  drivers/net/phy/sfp.c | 5 +++--
->>  1 file changed, 3 insertions(+), 2 deletions(-)
->> 
->> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
->> index 9369f5297769..15284be4c38c 100644
->> --- a/drivers/net/phy/sfp.c
->> +++ b/drivers/net/phy/sfp.c
->> @@ -479,9 +479,10 @@ static const struct sfp_quirk sfp_quirks[] = {
->>  	// PHY.
->>  	SFP_QUIRK_F("FS", "SFP-10G-T", sfp_fixup_fs_10gt),
->> 
->> -	// Fiberstore SFP-2.5G-T uses Rollball protocol to talk to the PHY 
->> and
->> -	// needs 4 sec wait before probing the PHY.
->> +	// Fiberstore SFP-2.5G-T and SFP-10GM-T uses Rollball protocol to 
->> talk
->> +	// to the PHY and needs 4 sec wait before probing the PHY.
->>  	SFP_QUIRK_F("FS", "SFP-2.5G-T", sfp_fixup_fs_2_5gt),
->> +	SFP_QUIRK_F("FS", "SFP-10GM-T", sfp_fixup_fs_2_5gt),
+Hello Russell,
+
+On Wed, 26 Feb 2025 14:03:20 +0000
+"Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+
+> On Wed, Feb 26, 2025 at 11:09:26AM +0100, Maxime Chevallier wrote:
+> > phylink allows MAC drivers to report the capabilities in terms of speed,
+> > duplex and pause support. This is done through a dedicated set of enum
+> > values in the form of the MAC_ capabilities. They are very close to what
+> > the LINK_CAPA_xxx can express, with the difference that LINK_CAPA don't
+> > have any information about Pause/Asym Pause support.
+> > 
+> > To prepare converting phylink to using the phy_caps, add the mapping
+> > between MAC capabilities and phy_caps. While doing so, we move the
+> > phylink_caps_params array up a bit to simplify future commits.  
 > 
-> Which makes sfp_fixup_fs_2_5gt mis-named. Please rename.
+> I still want to know why we need to do this type of thing -
 
-OK, I'll rename it to sfp_fixup_rollball_wait.
+Sorry not to have included more details on the why. The main reason is
+for the phy_port work. In the previous phy_port series [1] I included an
+attempt at making a first step forward with PHY-driven SFP, so that
+phylib itself provides the sfp_upstream_ops and not individual PHY
+drivers. That's to get a better handling for multi-port PHYs, which is
+one of the end-goals.
+
+[1]: https://lore.kernel.org/netdev/20250213101606.1154014-1-maxime.chevallier@bootlin.com/
+
+As part of that PHY-sfp work, I find it very useful for PHY drivers to
+be able to tell what phy_interface_t they can expose on their serdes
+interfaces, and from then build a list of linkmodes to get an idea of
+what we can support on that port. That's why I'm extracting that out of
+phylink.
+
+I did see that you suggested having phylink involved for PHY sfp maybe,
+but TBH I don't even know where to start, so I took a safer approach
+with phylib-driven SFPs.
+
+> unfortunately I don't have time to review all your patches at the
+> moment. I haven't reviewed all your patches since you've started
+> posting them. Sorry.
+
+No worries, I understand that that whole work is quite the mouthful and
+implies some involved reviews. But even discussing higher level stuff,
+like we do now, helps me steer that work in the right direction and
+hopefully make it easier for you and the other PHY maintainers to
+review that in the future.
+
+Maxime
