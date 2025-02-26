@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0B722A4F7;
-	Wed, 26 Feb 2025 03:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A89522DF97;
+	Wed, 26 Feb 2025 03:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740539413; cv=none; b=fprM11nLZd9kJ+ns5CrPN4tYhUaBX6wLcQYJsW7gmsrTQQdh2b5aKpZTBEKgBXCDUdnojMA4hQxpOFd4odM18Muh3TdTL9wh1dYwJBYbyi4CAZVQTWffzMyt3xiu2QsOZkAEoIDtayv3mbyudUMkxwlx4fM4NPzu0ls3tXA/6B8=
+	t=1740539414; cv=none; b=YK8BdLrDQjB8QSv4zjkvON7n5EBGrC0QPS72UXeb5X7q9TPqsKYu5WmOtEm6OP47N9XmywnaNNQe6mtCm8pDQGLtlMtN9RDDtC2V+jrXB2skMU+Vx+ZIQPHXlYyTh81yXxK1A7gtQGCsIBzuTwqxUjQijKscPWEMWWYt1uVDiEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740539413; c=relaxed/simple;
-	bh=7SZKCabJX2HhzOUVLWc4O6ED5KbebiL7NRXD7bLYeDs=;
+	s=arc-20240116; t=1740539414; c=relaxed/simple;
+	bh=xb1Ws3bRO0blUM9PSeZztd+NuBUlLGUqP26dTAHjMRI=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ZVYH6Ti9XgREpzXslGbi0hGDd67pEE/ylINq1vZyTn0aPuRZTI4SkWtjml2MJL2XPeCQasJJjCqtflhue8sxlt0KgOhK4/LuQtC2Zx5mgtlnvvU2majJvYorRTHVlEy+p2u9oPXVoqWcuCH0Cse2+BHXSZ/54TmFsHe+tCEXnss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7riKW2y; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=bZml6M/qy3v91m3ZKn2PJtaJOWWiI4tG1MyX3S+PUxEjikYZuSD77OAiLG0Qsk7OBnQ/6ZGIg1O7fjIpjMhRHO+R3F7vj50E0iJHjO2i9CVEBlIDeUT91rKCix4umRQBAAB+q41hQMPL08+rsehzkzmZkOXoaZrCO3j/f0GtsvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QIncSe2w; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7riKW2y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21BCC4CEE7;
-	Wed, 26 Feb 2025 03:10:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QIncSe2w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8BBC4CEE4;
+	Wed, 26 Feb 2025 03:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740539412;
-	bh=7SZKCabJX2HhzOUVLWc4O6ED5KbebiL7NRXD7bLYeDs=;
+	s=k20201202; t=1740539414;
+	bh=xb1Ws3bRO0blUM9PSeZztd+NuBUlLGUqP26dTAHjMRI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=m7riKW2yeZiEyIsB0QWoJhRpLUmAOwYUtUlqUSecnU6LhPO5bHRobROJgnBumA1LU
-	 OsAZqHhwE3emp3ss0g2nF0yL+WYsOAjTKKfT50xDlRqHtApDx5QtRhuGkRc5Zv+sY3
-	 2lwCGw8WRZx0sIrDljVsH4jhw78+A7ove9mf059naedxZrOIIPCp2/vaxktlx+vNSe
-	 SzNwwRccjI2lKrN/iJdSIWwhW9N7DedD27vpPUu3HKx4zCJbP1kwknnVEVlTc2PJkV
-	 Hx3IhZ97qB7+K2j57hXbv5CjKRpPD2WUK+3Hs6PBus6odRb+JF8N0PJ1JTE9yThB1g
-	 pZX6VVIAuQ2fA==
+	b=QIncSe2w0gnj/xTCpk3F9XVaRNXhqsA+m8/u8R2tCNYvDf5VEPKtzhQUqZ9c6Jqfj
+	 vaVYu6ffc8zP6ppmTVqvqfSgQFebkPW/1WNc3XRbUYG2Uxj7LncINPvmgFqR9RGQMH
+	 nbuB84wOG9uxwlusK/3weIxPEp7iUemebs/5Cs2x7yK8Q/9noQ2Fy+RqMIZbz5SYNY
+	 yBkRVuON5r/XXuSPb16hWMHB5cKigpCU4u/y5lW20itPFPFh0RgD69Qww4Ku7duZpK
+	 bkwnaW81aVC6ValgPaO9OfsGbIbiCPjnXRv3x7T1TquLFHl0mHdLRl3qtkrNFQWPIx
+	 TKIrrQnkodR5Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE011380CFDD;
-	Wed, 26 Feb 2025 03:10:45 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33AEB380CFDD;
+	Wed, 26 Feb 2025 03:10:47 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] Add OVN to `rtnetlink.h`
+Subject: Re: [PATCH net-next v5 0/4] Symmetric OR-XOR RSS hash
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174053944450.217003.5009204346469404479.git-patchwork-notify@kernel.org>
-Date: Wed, 26 Feb 2025 03:10:44 +0000
-References: <Z7w_e7cfA3xmHDa6@SIT-SDELAP4051.int.lidl.net>
-In-Reply-To: <Z7w_e7cfA3xmHDa6@SIT-SDELAP4051.int.lidl.net>
-To: Felix Huettner <felix.huettner@stackit.cloud>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, jonas.gottlieb@stackit.cloud
+ <174053944574.217003.9851382411515226384.git-patchwork-notify@kernel.org>
+Date: Wed, 26 Feb 2025 03:10:45 +0000
+References: <20250224174416.499070-1-gal@nvidia.com>
+In-Reply-To: <20250224174416.499070-1-gal@nvidia.com>
+To: Gal Pressman <gal@nvidia.com>
+Cc: davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
+ anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ andrew+netdev@lunn.ch, tariqt@nvidia.com, ecree.xilinx@gmail.com,
+ ahmed.zaki@intel.com, linux-doc@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 24 Feb 2025 10:44:27 +0100 you wrote:
-> From: Jonas Gottlieb <jonas.gottlieb@stackit.cloud>
+On Mon, 24 Feb 2025 19:44:12 +0200 you wrote:
+> Add support for a new type of input_xfrm: Symmetric OR-XOR.
+> Symmetric OR-XOR performs hash as follows:
+> (SRC_IP | DST_IP, SRC_IP ^ DST_IP, SRC_PORT | DST_PORT, SRC_PORT ^ DST_PORT)
 > 
-> - The Open Virtual Network (OVN) routing netlink handler uses ID 84
-> - Will also add to `/etc/iproute2/rt_protos` once this is accepted
-> - For more information: https://github.com/ovn-org/ovn
-> 
-> Signed-off-by: Jonas Gottlieb <jonas.gottlieb@stackit.cloud>
+> Configuration is done through ethtool -x/X command.
+> For mlx5, the default is already symmetric hash, this patch now exposes
+> this to userspace and allows enabling/disabling of the feature.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] Add OVN to `rtnetlink.h`
-    https://git.kernel.org/netdev/net-next/c/6002850fdfe0
+  - [net-next,v5,1/4] ethtool: Symmetric OR-XOR RSS hash
+    https://git.kernel.org/netdev/net-next/c/ecdff893384c
+  - [net-next,v5,2/4] net/mlx5e: Symmetric OR-XOR RSS hash control
+    https://git.kernel.org/netdev/net-next/c/4d20c9f2db83
+  - [net-next,v5,3/4] selftests: drv-net: Make rand_port() get a port more reliably
+    https://git.kernel.org/netdev/net-next/c/0163250039c3
+  - [net-next,v5,4/4] selftests: drv-net-hw: Add a test for symmetric RSS hash
+    https://git.kernel.org/netdev/net-next/c/da87cabaf877
 
 You are awesome, thank you!
 -- 
