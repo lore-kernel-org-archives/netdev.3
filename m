@@ -1,182 +1,113 @@
-Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8801B24290B
-	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 19:33:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B9323F421
+	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 19:35:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740598436; cv=none; b=Fac1GVuy5cODG37NOqrenENCg/FfigDk5TBuGiKlA1edggcCLXtgpyyQg2KABLPwqTw5ib2UdJOZuihFUf1O3WpLSFjQA1xnW+WsubRGDONtlCoiqHdsK7joKKVPRs/aXRlfpVrlZ4qTXA5z8Z418cenlBr2Jomef/YieazywL8=
+	t=1740598507; cv=none; b=GHNsOFAQffh1FZBHtMCgED+2DtnUVbq7nIsTnZbhhwDEzhO5Sfctd/+nf78SG87wqzo/GRraXIMR+2Vr973D9XWmd3PGQYLsTXjld2f9cZFziCVr8TgsRktaA3OM5Jh1+P0vQGtkteJEtrmrz+mfOY14ZzU/52IpIegR3wvYRuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740598436; c=relaxed/simple;
-	bh=eXzVXvsZGTjSjD2FcXbb1MdW26hn8UOjMeYiU0kWIeM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=asjj/rlRfsspxrMP0ncaBDyOYAaiTm3YOzrwbJ90WM0nw7hjtcGMd5iovl15Z/rRAZrUGJz7Q046hBWA+uM6i7E7X/OK3JKI8EcxB6S91dPGbELJwXK4jLJLJvTYQpBJAas3UOdUR3zD1lBefmohWYsKXzY99iI+tTeet0sGAPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=vxbN2aiG; arc=none smtp.client-ip=99.78.197.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1740598507; c=relaxed/simple;
+	bh=bvEh2cJJ8fQdCKZqF4/MHgwher79PNLHTe2wORKT3qI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LTea3UX77Up+N9pIa9RtdqJk8SOAgdEOwWsg8XRJSG3S8V1ZnxZJ9eY7xLGVWujHSW2YUrijq8BYT9DTOh2ZhpVffuqHPT/xTaa6XoLngScAVj2D+mrSiDdczIncsaDZuWC4At1c/vI30AmRbzCQMCC2TWcWbAyCc9XqXm7wJJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=dlWusk4Z; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="vxbN2aiG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1740598434; x=1772134434;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=decV62Ut2mz6a8LfXOCRwGRSwph0h6C8pZzRkkfVpqA=;
-  b=vxbN2aiGspd3HvgpIoIW9H0WQ/oUTPUegBuNwHGfdeR3bx5i9NYM2HDo
-   UqG2YihfNrimNhlwK7d9hU1ZuGl3z97lbEF3D/nK7DVZHW+WDWF6UhSnq
-   GvVSqsmOQlypCtfTULMT2muX5IZpBPFhCbQv0zuvEeoEPcKtycl77h939
-   U=;
-X-IronPort-AV: E=Sophos;i="6.13,318,1732579200"; 
-   d="scan'208";a="381132149"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 19:30:40 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.7.35:24906]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.7.176:2525] with esmtp (Farcaster)
- id 06b735ad-c2d9-4d62-a1c5-841ffe920779; Wed, 26 Feb 2025 19:30:39 +0000 (UTC)
-X-Farcaster-Flow-ID: 06b735ad-c2d9-4d62-a1c5-841ffe920779
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 26 Feb 2025 19:30:39 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.187.170.36) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 26 Feb 2025 19:30:36 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-CC: Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
-	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v2 net-next 11/12] ipv4: fib: Move fib_valid_key_len() to rtm_to_fib_config().
-Date: Wed, 26 Feb 2025 11:25:55 -0800
-Message-ID: <20250226192556.21633-12-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250226192556.21633-1-kuniyu@amazon.com>
-References: <20250226192556.21633-1-kuniyu@amazon.com>
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="dlWusk4Z"
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 359C02C041E;
+	Thu, 27 Feb 2025 08:35:01 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1740598501;
+	bh=bvEh2cJJ8fQdCKZqF4/MHgwher79PNLHTe2wORKT3qI=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=dlWusk4Z8rr/xuuuGKE7FB4vkMzOYJGFxd4ZxxK8/XdTeP4EYsOUU97Zag4JB3t/0
+	 qSOp+848SX3CKtUdHh97rJVgEUJ6s/H2JMhV7gshtC2j0yPGAoSMQedEi981ymutrY
+	 GYTIyEYOMS4Tj6NHJgMjqp78gsiiF3glMNtBwYMlbTwHinSer/s7Ra8xpcO/nSoRP0
+	 AuYAslN5oFhQ89oMcFuQBGt+UhjB93xlND/plC8gKdfWenTu2TGCXvyRdz/4dfQNfr
+	 beHREWjyT0jXfZP8e5GMBWPOHKwzHpU6BFAmnqXNg7J0tesAgNauMUremESfofrxye
+	 Qf/UDvQJb9pGQ==
+Received: from svr-chch-ex2.atlnz.lc (Not Verified[2001:df5:b000:bc8::76]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B67bf6ce50001>; Thu, 27 Feb 2025 08:35:01 +1300
+Received: from svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) by
+ svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Thu, 27 Feb 2025 08:35:00 +1300
+Received: from svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567]) by
+ svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567%15]) with mapi id
+ 15.02.1544.014; Thu, 27 Feb 2025 08:35:00 +1300
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+CC: "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>, "andrew@lunn.ch"
+	<andrew@lunn.ch>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"sander@svanheule.net" <sander@svanheule.net>, "markus.stockhausen@gmx.de"
+	<markus.stockhausen@gmx.de>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-mips@vger.kernel.org"
+	<linux-mips@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+Subject: Re: [PATCH net-next v7 1/2] net: mdio: Add RTL9300 MDIO driver
+Thread-Topic: [PATCH net-next v7 1/2] net: mdio: Add RTL9300 MDIO driver
+Thread-Index: AQHbh+J8lt76RIU/40yozHOVVg4xD7NYWweAgADGUgA=
+Date: Wed, 26 Feb 2025 19:35:00 +0000
+Message-ID: <121f35fc-f151-4c5e-a644-87485acf2eda@alliedtelesis.co.nz>
+References: <20250226000748.3979148-1-chris.packham@alliedtelesis.co.nz>
+ <20250226000748.3979148-2-chris.packham@alliedtelesis.co.nz>
+ <20250226084511.5f8f4c62@fedora.home>
+In-Reply-To: <20250226084511.5f8f4c62@fedora.home>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <FAA606CD114D8C44959722D921238B9D@alliedtelesis.co.nz>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D046UWB004.ant.amazon.com (10.13.139.164) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=ccpxrWDM c=1 sm=1 tr=0 ts=67bf6ce5 a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=75chYTbOgJ0A:10 a=IkcTkHD0fZMA:10 a=T2h4t0Lz3GQA:10 a=p39UaIAQFBWNGi97qX4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-SEG-SpamProfiler-Score: 0
 
-fib_valid_key_len() is called in the beginning of fib_table_insert()
-or fib_table_delete() to check if the prefix length is valid.
-
-fib_table_insert() and fib_table_delete() are called from 3 paths
-
-  - ip_rt_ioctl()
-  - inet_rtm_newroute() / inet_rtm_delroute()
-  - fib_magic()
-
-In the first ioctl() path, rtentry_to_fib_config() checks the prefix
-length with bad_mask().  Also, fib_magic() always passes the correct
-prefix: 32 or ifa->ifa_prefixlen, which is already validated.
-
-Let's move fib_valid_key_len() to the rtnetlink path, rtm_to_fib_config().
-
-While at it, 2 direct returns in rtm_to_fib_config() are changed to
-goto to match other places in the same function
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
----
- net/ipv4/fib_frontend.c | 18 ++++++++++++++++--
- net/ipv4/fib_trie.c     | 22 ----------------------
- 2 files changed, 16 insertions(+), 24 deletions(-)
-
-diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
-index a76dacc3e577..a6372d934e45 100644
---- a/net/ipv4/fib_frontend.c
-+++ b/net/ipv4/fib_frontend.c
-@@ -835,19 +835,33 @@ static int rtm_to_fib_config(struct net *net, struct sk_buff *skb,
- 		}
- 	}
- 
-+	if (cfg->fc_dst_len > 32) {
-+		NL_SET_ERR_MSG(extack, "Invalid prefix length");
-+		err = -EINVAL;
-+		goto errout;
-+	}
-+
-+	if (cfg->fc_dst_len < 32 && (ntohl(cfg->fc_dst) << cfg->fc_dst_len)) {
-+		NL_SET_ERR_MSG(extack, "Invalid prefix for given prefix length");
-+		err = -EINVAL;
-+		goto errout;
-+	}
-+
- 	if (cfg->fc_nh_id) {
- 		if (cfg->fc_oif || cfg->fc_gw_family ||
- 		    cfg->fc_encap || cfg->fc_mp) {
- 			NL_SET_ERR_MSG(extack,
- 				       "Nexthop specification and nexthop id are mutually exclusive");
--			return -EINVAL;
-+			err = -EINVAL;
-+			goto errout;
- 		}
- 	}
- 
- 	if (has_gw && has_via) {
- 		NL_SET_ERR_MSG(extack,
- 			       "Nexthop configuration can not contain both GATEWAY and VIA");
--		return -EINVAL;
-+		err = -EINVAL;
-+		goto errout;
- 	}
- 
- 	if (!cfg->fc_table)
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index d6411ac81096..59a6f0a9638f 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -1187,22 +1187,6 @@ static int fib_insert_alias(struct trie *t, struct key_vector *tp,
- 	return 0;
- }
- 
--static bool fib_valid_key_len(u32 key, u8 plen, struct netlink_ext_ack *extack)
--{
--	if (plen > KEYLENGTH) {
--		NL_SET_ERR_MSG(extack, "Invalid prefix length");
--		return false;
--	}
--
--	if ((plen < KEYLENGTH) && (key << plen)) {
--		NL_SET_ERR_MSG(extack,
--			       "Invalid prefix for given prefix length");
--		return false;
--	}
--
--	return true;
--}
--
- static void fib_remove_alias(struct trie *t, struct key_vector *tp,
- 			     struct key_vector *l, struct fib_alias *old);
- 
-@@ -1223,9 +1207,6 @@ int fib_table_insert(struct net *net, struct fib_table *tb,
- 
- 	key = ntohl(cfg->fc_dst);
- 
--	if (!fib_valid_key_len(key, plen, extack))
--		return -EINVAL;
--
- 	pr_debug("Insert table=%u %08x/%d\n", tb->tb_id, key, plen);
- 
- 	fi = fib_create_info(cfg, extack);
-@@ -1717,9 +1698,6 @@ int fib_table_delete(struct net *net, struct fib_table *tb,
- 
- 	key = ntohl(cfg->fc_dst);
- 
--	if (!fib_valid_key_len(key, plen, extack))
--		return -EINVAL;
--
- 	l = fib_find_node(t, &tp, key);
- 	if (!l)
- 		return -ESRCH;
--- 
-2.39.5 (Apple Git-154)
-
+SGkgTWF4aW1lLA0KDQpPbiAyNi8wMi8yMDI1IDIwOjQ1LCBNYXhpbWUgQ2hldmFsbGllciB3cm90
+ZToNCj4gSGkgQ2hyaXMsDQo+DQo+IE9uIFdlZCwgMjYgRmViIDIwMjUgMTM6MDc6NDcgKzEzMDAN
+Cj4gQ2hyaXMgUGFja2hhbSA8Y2hyaXMucGFja2hhbUBhbGxpZWR0ZWxlc2lzLmNvLm56PiB3cm90
+ZToNCj4NCj4+IEFkZCBhIGRyaXZlciBmb3IgdGhlIE1ESU8gY29udHJvbGxlciBvbiB0aGUgUlRM
+OTMwMCBmYW1pbHkgb2YgRXRoZXJuZXQNCj4+IHN3aXRjaGVzIHdpdGggaW50ZWdyYXRlZCBTb0Mu
+IFRoZXJlIGFyZSA0IHBoeXNpY2FsIFNNSSBpbnRlcmZhY2VzIG9uIHRoZQ0KPj4gUlRMOTMwMCBo
+b3dldmVyIGFjY2VzcyBpcyBkb25lIHVzaW5nIHRoZSBzd2l0Y2ggcG9ydHMuIFRoZSBkcml2ZXIg
+dGFrZXMNCj4+IHRoZSBNRElPIGJ1cyBoaWVyYXJjaHkgZnJvbSB0aGUgRFRTIGFuZCB1c2VzIHRo
+aXMgdG8gY29uZmlndXJlIHRoZQ0KPj4gc3dpdGNoIHBvcnRzIHNvIHRoZXkgYXJlIGFzc29jaWF0
+ZWQgd2l0aCB0aGUgY29ycmVjdCBQSFkuIFRoaXMgbWFwcGluZw0KPj4gaXMgYWxzbyB1c2VkIHdo
+ZW4gZGVhbGluZyB3aXRoIHNvZnR3YXJlIHJlcXVlc3RzIGZyb20gcGh5bGliLg0KPj4NCj4+IFNp
+Z25lZC1vZmYtYnk6IENocmlzIFBhY2toYW0gPGNocmlzLnBhY2toYW1AYWxsaWVkdGVsZXNpcy5j
+by5uej4NCj4gSXQgYWxsIG1vc3RseSBsb29rcyBnb29kIHRvIG1lLCB0aGVyZSdzIG9uZSB0eXBv
+IHRob3VnaCBhbmQgYXMgaXQgbWF5DQo+IGJlIHVzZXIgdmlzaWJsZSwgSSB0aGluayBpdCdzIHdv
+cnRoIGZpeGluZy4uLg0KPg0KPiBbLi4uXQ0KPg0KPj4gK3N0YXRpYyBpbnQgcnRsOTMwMF9tZGlv
+YnVzX3Byb2JlX29uZShzdHJ1Y3QgZGV2aWNlICpkZXYsIHN0cnVjdCBydGw5MzAwX21kaW9fcHJp
+diAqcHJpdiwNCj4+ICsJCQkJICAgICBzdHJ1Y3QgZndub2RlX2hhbmRsZSAqbm9kZSkNCj4+ICt7
+DQo+PiArCXN0cnVjdCBydGw5MzAwX21kaW9fY2hhbiAqY2hhbjsNCj4+ICsJc3RydWN0IGZ3bm9k
+ZV9oYW5kbGUgKmNoaWxkOw0KPj4gKwlzdHJ1Y3QgbWlpX2J1cyAqYnVzOw0KPj4gKwl1MzIgbWRp
+b19idXM7DQo+PiArCWludCBlcnI7DQo+PiArDQo+PiArCWVyciA9IGZ3bm9kZV9wcm9wZXJ0eV9y
+ZWFkX3UzMihub2RlLCAicmVnIiwgJm1kaW9fYnVzKTsNCj4+ICsJaWYgKGVycikNCj4+ICsJCXJl
+dHVybiBlcnI7DQo+PiArDQo+PiArCWZ3bm9kZV9mb3JfZWFjaF9jaGlsZF9ub2RlKG5vZGUsIGNo
+aWxkKQ0KPj4gKwkJaWYgKGZ3bm9kZV9kZXZpY2VfaXNfY29tcGF0aWJsZShjaGlsZCwgImV0aGVy
+bmV0LXBoeS1pZWVlODAyLjMtYzQ1IikpDQo+PiArCQkJcHJpdi0+c21pX2J1c19pc19jNDVbbWRp
+b19idXNdID0gdHJ1ZTsNCj4+ICsNCj4+ICsJYnVzID0gZGV2bV9tZGlvYnVzX2FsbG9jX3NpemUo
+ZGV2LCBzaXplb2YoKmNoYW4pKTsNCj4+ICsJaWYgKCFidXMpDQo+PiArCQlyZXR1cm4gLUVOT01F
+TTsNCj4+ICsNCj4+ICsJYnVzLT5uYW1lID0gIlJlYWt0ZWsgU3dpdGNoIE1ESU8gQnVzIjsNCj4g
+WW91IHByb2JhYmx5IG1lYW4gUmVhbHRlayA/IDopDQoNCkdvb2QgY2F0Y2ggdGhhbmtzLiBJJ3Zl
+IGZpeGVkIHRoZSB0eXBvIGxvY2FsbHkgYW5kIEknbGwgc2VuZCBvdXQgYSB2OCANCnRvbW9ycm93
+IGlmIHRoZXJlIGFyZW4ndCBhbnkgb3RoZXIgY29tbWVudHMuDQo=
