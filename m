@@ -1,215 +1,94 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAEA2165E9;
-	Wed, 26 Feb 2025 11:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6F01632E6
+	for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 11:13:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740568289; cv=none; b=tNzyEAWfZKvwcitcvNlEUW2JwgQc+YGldOdVTVYdxmDJtA1JAa+aeG2AiTN30KHzovLkgWWlFTJ+CKQcLGZmzSwlcs7ExtVt4QW9ZaMKxXrUcreNG2AMF53CbbpgrE5/1r+F1470QHJuu1+Mc7mKx7xnWHH8EiOh/R5QQfyL49U=
+	t=1740568421; cv=none; b=dQVqlrf3q+a/GIQ4WDUBQjjt50DP4o9O1YvsupK5JkA5ttj3FOedIeTadLbY/E2rd5LAHH2ypMOieC5j9zruk7FKYHAXNxxADGHTOrZSYWD9/GHO+dtFQ1HXr3LiQ4dva/gX/v9Ba7xt7hy3STTQxZndaFEchvgliLD/muKNW2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740568289; c=relaxed/simple;
-	bh=ZT8kd72ABogyCyb0UI32w5ZKV0iSLmqQBof1wsGv5v4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FNRpYeUG3YkhTTFhCvOUmHh83WNp6u/fkFxIyiaE+7yCvDDIWSR9kDAwfl8/Y9iWg6xP0N1OCgue3FXL3J0tBpvoVUNjQ4AhFa3EOt9PQpYm9IqRyzI5LvWt4cBOCtuCgFTTFgkb+dEjv+3161KeVL+pzbnGgry5w3SJmNsG7io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Z2s9V39cCzdb9G;
-	Wed, 26 Feb 2025 19:06:38 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id D501C180113;
-	Wed, 26 Feb 2025 19:11:23 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 26 Feb 2025 19:11:23 +0800
-From: Yunsheng Lin <linyunsheng@huawei.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC: <zhangkun09@huawei.com>, <liuyonglong@huawei.com>,
-	<fanghaiqing@huawei.com>, Yunsheng Lin <linyunsheng@huawei.com>, Robin Murphy
-	<robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, IOMMU
-	<iommu@lists.linux.dev>, Jesper Dangaard Brouer <hawk@kernel.org>, Ilias
- Apalodimas <ilias.apalodimas@linaro.org>, Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next v10 4/4] page_pool: skip dma sync operation for inflight pages
-Date: Wed, 26 Feb 2025 19:03:39 +0800
-Message-ID: <20250226110340.2671366-5-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20250226110340.2671366-1-linyunsheng@huawei.com>
-References: <20250226110340.2671366-1-linyunsheng@huawei.com>
+	s=arc-20240116; t=1740568421; c=relaxed/simple;
+	bh=BR0KAThpEksuO0Zdxp6bIrwoIa/tcVke/tqVtFYFjng=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BkRcQ/Zu0Q6Zr8l+S+C4gsS0NQScygT92SC81Ix3sbNtip6eFNlnoST+UPJpIcetOvogiNKJ1ssMVbnW077HDGOFH/dgGyyh2HF11GUDIQr2eQ7GG0fy7xAJMNiMynWtD1tu4z10Uj/M9LBxoMvA0yGp3PdJYIfYTd/QYMabCJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zVK3tAAg; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zVK3tAAg"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5ded51d31f1so12028647a12.3
+        for <netdev@vger.kernel.org>; Wed, 26 Feb 2025 03:13:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740568417; x=1741173217; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BR0KAThpEksuO0Zdxp6bIrwoIa/tcVke/tqVtFYFjng=;
+        b=zVK3tAAgJWz168nFc4A/JMHy9FKHIczuXWHvviq7wtPkx+xyPUErZAZENwXnjotse/
+         9DhEmsydsivND1USbyvPNEkgWRfkhFsWF3cvI30HudwvDMtACk/Amtt5vJOcqDMvxZev
+         hwN4+aBIpFmpNnsEBHCZES91u1XPzPNpogvSlS6draRjXBc4Bwrxy0YHQ+2OVO6lSXH6
+         0/yBOu9oeqGXlmbkgs41P0gKIeki6Eai3VF0LOdLVuA3ltC3ctg3VMNst1uitmdXsigv
+         pi3/D5Eie3gpbkre6cvmshMBylIBJ38rRi5s/YsTpr98N5QkXE/ZO7Tj8UZbe2s6V3Bx
+         hgDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740568417; x=1741173217;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BR0KAThpEksuO0Zdxp6bIrwoIa/tcVke/tqVtFYFjng=;
+        b=vILVuIBvsi1TcI0EF1Tz9sTia9A/DFuPVHGX7Brma/LhGHHIhThYDS1YdKgNrMs30e
+         51DeYw3qNF014NEGeP8lcdG1ucqmK9h4WiRzb2+IvH3QSz8rqeB/13nR+MataRMQdm5R
+         4TibBHf9a/ZD+l5QFJP4IcVa7tzQ8NEdBi2C7IfMwjdNsfcvHmJwlw/WHyKJ7LyQoP6e
+         z94YuWyZ6EU1QqoG6y5fP/F6ssGBMD3M5LrDitkzx0qGCsuf0w/mHqVtEH1SM5YlpGlp
+         cLPkRWk5MHfY8ptKxEsLbCLCdUC2fm9GaSISKY/FmHyyOKmtH8Q1FPk9lYmvZu5YMePp
+         1X5g==
+X-Forwarded-Encrypted: i=1; AJvYcCWQwkE1CdCiHaYcB9/rThlzPlAIWao+stNBR/skNy3Tj5CvY0zIDM9euWqprYNFiR+FUhfRKfI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywxh9k2uKNB58ra7aE9bp7liV3cWsY9UD9hvm/qBaHXKVIjE1ky
+	71H+Tr06qaTFXG56hUxwXPOQpe11T99gikQQv2ZeiQKGINxfN53fzmYlEEJUirjb/4BPFlCTRZY
+	mjDOVs5mol1NYUetHUcMGpeDWJnMaL9+UTNhK
+X-Gm-Gg: ASbGncvzJswzWWMCWpVujve9/csfBAwTLjaYK8UDyfswFM4g4DXsCxgLIBHOXWhHfGb
+	U0VDuodduOPHw3hKttqPfs581cVbASiqx1CUsXi+LsGnsExWshRmQyHAKOoGiATQuHKXsUM9O/a
+	/LkGw/EsE=
+X-Google-Smtp-Source: AGHT+IHuoWtVo2XweZv3wSmKmkLv81mqas4sodkL8k0KUw9/zgTFDXMoArultwDS9uiqX4U7Pq3pyJj5ilG4w64Vs3Y=
+X-Received: by 2002:a05:6402:13cd:b0:5e0:8261:ebb2 with SMTP id
+ 4fb4d7f45d1cf-5e4a0d71c4fmr3459376a12.12.1740568416668; Wed, 26 Feb 2025
+ 03:13:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+References: <20250225182250.74650-1-kuniyu@amazon.com> <20250225182250.74650-5-kuniyu@amazon.com>
+In-Reply-To: <20250225182250.74650-5-kuniyu@amazon.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 26 Feb 2025 12:13:25 +0100
+X-Gm-Features: AQ5f1JrerZRWk9L93PvMeSdTUvAGNroFHU0RoRYB02CNiz7sxM2Xm4Qiim9gE_s
+Message-ID: <CANn89iJXmQaZ7Ar+HGx1eZuH9TQwZ_BhVYEhgwE6re7uU8Dteg@mail.gmail.com>
+Subject: Re: [PATCH v1 net-next 04/12] ipv4: fib: Make fib_info_hashfn()
+ return struct hlist_head.
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Skip dma sync operation for inflight pages before the
-sync operation in page_pool_item_unmap() as DMA API
-expects to be called with a valid device bound to a
-driver as mentioned in [1].
+On Tue, Feb 25, 2025 at 7:24=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon.co=
+m> wrote:
+>
+> Every time fib_info_hashfn() returns a hash value, we fetch
+> &fib_info_hash[hash].
+>
+> Let's return the hlist_head pointer from fib_info_hashfn() and
+> rename it to fib_info_hash_bucket() to match a similar function,
+> fib_info_laddrhash_bucket().
+>
+> Note that we need to move the fib_info_hash assignment earlier in
+> fib_info_hash_move() to use fib_info_hash_bucket() in the for loop.
+>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-After page_pool_destroy() is called, the page is not
-expected to be recycled back to pool->alloc cache and
-dma sync operation is not needed when the page is not
-recyclable or pool->ring is full, so only skip the dma
-sync operation for the infilght pages by clearing the
-pool->dma_sync, as rcu sync operation in
-page_pool_destroy() is paired with rcu lock in
-page_pool_recycle_in_ring() to ensure that there is no
-dma sync operation called after rcu sync operation.
+Nice !
 
-1. https://lore.kernel.org/all/caf31b5e-0e8f-4844-b7ba-ef59ed13b74e@arm.com/
-CC: Robin Murphy <robin.murphy@arm.com>
-CC: Alexander Duyck <alexander.duyck@gmail.com>
-CC: IOMMU <iommu@lists.linux.dev>
-Fixes: f71fec47c2df ("page_pool: make sure struct device is stable")
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
----
- net/core/page_pool.c | 56 +++++++++++++++++++++++++++++++++-----------
- 1 file changed, 42 insertions(+), 14 deletions(-)
-
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index dc9574bd129b..0f9abd0bf664 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -281,9 +281,6 @@ static int page_pool_init(struct page_pool *pool,
- 	/* Driver calling page_pool_create() also call page_pool_destroy() */
- 	refcount_set(&pool->user_cnt, 1);
- 
--	if (pool->dma_map)
--		get_device(pool->p.dev);
--
- 	if (pool->slow.flags & PP_FLAG_ALLOW_UNREADABLE_NETMEM) {
- 		/* We rely on rtnl_lock()ing to make sure netdev_rx_queue
- 		 * configuration doesn't change while we're initializing
-@@ -330,9 +327,6 @@ static void page_pool_uninit(struct page_pool *pool)
- {
- 	ptr_ring_cleanup(&pool->ring, NULL);
- 
--	if (pool->dma_map)
--		put_device(pool->p.dev);
--
- #ifdef CONFIG_PAGE_POOL_STATS
- 	if (!pool->system)
- 		free_percpu(pool->recycle_stats);
-@@ -481,6 +475,16 @@ static void page_pool_item_unmap(struct page_pool *pool)
- 	if (!pool->dma_map || pool->mp_priv)
- 		return;
- 
-+	/* After page_pool_destroy() is called, the page is not expected to be
-+	 * recycled back to pool->alloc cache and dma sync operation is not
-+	 * needed when the page is not recyclable or pool->ring is full, skip
-+	 * the dma sync operation for the infilght pages by clearing the
-+	 * pool->dma_sync, and the below synchronize_net() is paired with rcu
-+	 * lock when page is recycled back into ptr_ring to ensure that there is
-+	 * no dma sync operation called after rcu sync operation.
-+	 */
-+	pool->dma_sync = false;
-+
- 	/* Paired with rcu read lock in __page_pool_release_page_dma() to
- 	 * synchronize dma unmapping operations.
- 	 */
-@@ -764,6 +768,25 @@ page_pool_dma_sync_for_device(const struct page_pool *pool,
- 		__page_pool_dma_sync_for_device(pool, netmem, dma_sync_size);
- }
- 
-+static __always_inline void
-+page_pool_dma_sync_for_device_rcu(const struct page_pool *pool,
-+				  netmem_ref netmem,
-+				  u32 dma_sync_size)
-+{
-+	if (!pool->dma_sync || !dma_dev_need_sync(pool->p.dev))
-+		return;
-+
-+	rcu_read_lock();
-+
-+	/* Recheck the dma_sync under rcu lock to pair with rcu sync operation
-+	 * in page_pool_destroy().
-+	 */
-+	if (likely(pool->dma_sync))
-+		__page_pool_dma_sync_for_device(pool, netmem, dma_sync_size);
-+
-+	rcu_read_unlock();
-+}
-+
- static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem)
- {
- 	struct page_pool_item *item;
-@@ -1001,7 +1024,8 @@ void page_pool_return_page(struct page_pool *pool, netmem_ref netmem)
- 	 */
- }
- 
--static bool page_pool_recycle_in_ring(struct page_pool *pool, netmem_ref netmem)
-+static bool page_pool_recycle_in_ring(struct page_pool *pool, netmem_ref netmem,
-+				      unsigned int dma_sync_size)
- {
- 	int ret;
- 	/* BH protection not needed if current is softirq */
-@@ -1010,12 +1034,12 @@ static bool page_pool_recycle_in_ring(struct page_pool *pool, netmem_ref netmem)
- 	else
- 		ret = ptr_ring_produce_bh(&pool->ring, (__force void *)netmem);
- 
--	if (!ret) {
-+	if (likely(!ret)) {
-+		page_pool_dma_sync_for_device_rcu(pool, netmem, dma_sync_size);
- 		recycle_stat_inc(pool, ring);
--		return true;
- 	}
- 
--	return false;
-+	return !ret;
- }
- 
- /* Only allow direct recycling in special circumstances, into the
-@@ -1068,10 +1092,10 @@ __page_pool_put_page(struct page_pool *pool, netmem_ref netmem,
- 	if (likely(__page_pool_page_can_be_recycled(netmem))) {
- 		/* Read barrier done in page_ref_count / READ_ONCE */
- 
--		page_pool_dma_sync_for_device(pool, netmem, dma_sync_size);
--
--		if (allow_direct && page_pool_recycle_in_cache(netmem, pool))
-+		if (allow_direct && page_pool_recycle_in_cache(netmem, pool)) {
-+			page_pool_dma_sync_for_device(pool, netmem, dma_sync_size);
- 			return 0;
-+		}
- 
- 		/* Page found as candidate for recycling */
- 		return netmem;
-@@ -1127,7 +1151,7 @@ void page_pool_put_unrefed_netmem(struct page_pool *pool, netmem_ref netmem,
- 
- 	netmem =
- 		__page_pool_put_page(pool, netmem, dma_sync_size, allow_direct);
--	if (netmem && !page_pool_recycle_in_ring(pool, netmem)) {
-+	if (netmem && !page_pool_recycle_in_ring(pool, netmem, dma_sync_size)) {
- 		/* Cache full, fallback to free pages */
- 		recycle_stat_inc(pool, ring_full);
- 		page_pool_return_page(pool, netmem);
-@@ -1153,14 +1177,18 @@ static void page_pool_recycle_ring_bulk(struct page_pool *pool,
- 	/* Bulk produce into ptr_ring page_pool cache */
- 	in_softirq = page_pool_producer_lock(pool);
- 
-+	rcu_read_lock();
- 	for (i = 0; i < bulk_len; i++) {
- 		if (__ptr_ring_produce(&pool->ring, (__force void *)bulk[i])) {
- 			/* ring full */
- 			recycle_stat_inc(pool, ring_full);
- 			break;
- 		}
-+
-+		page_pool_dma_sync_for_device(pool, bulk[i], -1);
- 	}
- 
-+	rcu_read_unlock();
- 	page_pool_producer_unlock(pool, in_softirq);
- 	recycle_stat_add(pool, ring, i);
- 
--- 
-2.33.0
-
+Reviewed-by: Eric Dumazet <edumazet@google.com>
