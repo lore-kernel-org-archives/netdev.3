@@ -1,221 +1,368 @@
-Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
+Received: from va-1-13.ptr.blmpb.com (va-1-13.ptr.blmpb.com [209.127.230.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F910227BB0
-	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 08:26:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357D82253BB
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 08:26:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.230.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740644806; cv=none; b=U/YYCh62iSR+dj4/lbsUWx/C/e2S1HFIV/PjLGCK9Nc4ABaQpXFoM26LJV7p26X5e+IIo0QcyKfk/M0SpzmU2exO5JWNCLg/wHjy7f8B6iP4bZWBjMPcv/YcMXldxq4Sn8gdzKipjw1fVR9tw5cT1VJMaTRFXbQrs1F3Z5yaV/8=
+	t=1740644814; cv=none; b=VKrZRB28tFHH5BM3oZSaKbuZPZhAxiP9z4FVYxYaDi7s5epSoUl7JROpoGcQzFmfZYjm6I+v+39Zso2hXT00DelXnQdlVrgq+nyxJYVQtgtok34E5yuEHFlM0nxN8W0pdpFEd3IY7uEeRwTKeo6JezTFe9016tCfwtxWBmTTOl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740644806; c=relaxed/simple;
-	bh=ZZyK9ncSxNgsnbzI7SD9hbjZFCsRdpCAkGV/QkBoqro=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=sjGtL+Ko+rmB0dE0ayXe8L3/5OUbPUNsC1PuNgD7S4pI7fFZLypdrOfbGlN5W0zz+CVWSyKvNesPrXe39OxOFdtKtNYKlfhyXvNNLM8NjKds3r7OVcZFwIXHD2cYyv8KQkHgLarf0CCKkP0FcJRg2G+MuQ736xW6YhzSSonYSgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HFMXg7KE; arc=none smtp.client-ip=209.85.160.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1740644814; c=relaxed/simple;
+	bh=DN95rhpe8VguBp2D8Q/DzVtr5g6wI3nyP7lot8KsAxk=;
+	h=References:Mime-Version:Cc:Date:Message-Id:Content-Type:
+	 In-Reply-To:To:From:Subject; b=gEGutWBGypRffWtbgdhpvt84puPpeQVkukQBHssFd5yzs/vI+hYVNItU0EDKCpkr/7T7CwkU4EOuS55w/UlFNK2SXJl+rBUu9SS/aZZV3COm1MgCzmNXQseTq/m6SU/HXgA5PyP2nd2zBeH7Iwub0MIZxuBbQXaI6biFqQSPUtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=F8LPbeHs; arc=none smtp.client-ip=209.127.230.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HFMXg7KE"
-Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-471fefffdf8so15522721cf.1
-        for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 00:26:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740644803; x=1741249603; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=CnCz9bZaDtojywmY++Db5h0SeQnR9YeJbEckiNZpwvQ=;
-        b=HFMXg7KEKCeIOzS58aghBqwe27AVPa1O3yf0zlCaC+z2DxjUAG28vGQeWp3rvUjzaT
-         ARRBYWqMgse1tRRIQITVk10kG3tlnUy/Z/O95Korh89PvuTzl9g+WKvMV/yuLOYK3CnR
-         3J91nk0CxdWSnWNOkYmZpejgP6yaUahIvtgdM9L74VvIwdr8t26kHKOITHAZiAX2sQf0
-         6kFHr3faS5wFZO0J6aQGgFaGZNMa8m+CLyoIeXgnzhASU0BQJfcCt/fdS9eXi2IcY/C8
-         Nu9anRBenX9m+pePdU7EXvzS2ekzWgkjsiCpI22Rg3PFbAnHlq/ZCkE8KGREofQ88Pax
-         ND5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740644803; x=1741249603;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CnCz9bZaDtojywmY++Db5h0SeQnR9YeJbEckiNZpwvQ=;
-        b=R0sQtOIfeScHFhPJYkkGmTIoSw5Uj0095pA+o6SjoeoxmyA3XBi6cn8aQ4tAqnEAkv
-         WwUiLpmqUuMZusZ5SqZdyx9scw8j8xMe5zkz3U6jD9EsyaTKV1BanslHpx44ksXjrL88
-         wWoUak7pZKrJ8lVicwla3UA+YJUJ35RfelMTNI2rYkpUY1Q4v+fA5maDfmjKiWev2fT/
-         D9mM9OCBIRN00uHHTOVYLoy3/J5Rw27p4hbubvOAJ4NesYuomMEsCl/QJ8GjXth4R+c5
-         It1/GqcHRcgSfCMF+Q3cjXRf925szAZ+QhgxXXQ8fzaIL0rtnNxyfJ5TgLtPqZwZewA1
-         lang==
-X-Forwarded-Encrypted: i=1; AJvYcCWNg18+KcUXwgOeFvdyI6zLajUbzv+k8PTNhXODfPCDRwtPrVaME5zfJd5e+LCrexsg4EpvDkE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywfgu+EbERy8TdJXOdlpXrjglcbDJD09wJUyqd8+9zK+slEb5CX
-	4LnfOWphIzZRkQ5EBV6JP2x8+on62H/KmN2YviTp/2d3dOR+6fBLuNdOlXXBzMrx852hNOMg/P9
-	bAaBFbHcJ9g==
-X-Google-Smtp-Source: AGHT+IF7uwE9hbQFPmddpf8vHA2TWa4wQ1uCK+q66X3+8VYcjcExDqziHo1k3pkUOuCOezQWqh7m55OWofO8FA==
-X-Received: from qtbcg3.prod.google.com ([2002:a05:622a:4083:b0:471:f2b1:9a61])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:ac8:5910:0:b0:472:4ed:40ec with SMTP id d75a77b69052e-472228abafamr319715951cf.8.1740644803514;
- Thu, 27 Feb 2025 00:26:43 -0800 (PST)
-Date: Thu, 27 Feb 2025 08:26:42 +0000
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="F8LPbeHs"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2403070942; d=yunsilicon.com; t=1740644796; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=eD6jHdx86JdvA+pfPuNJ2iV0nsIrxYK2avZ5gk7ZUHk=;
+ b=F8LPbeHscF3XY6UqQIOgFtougDdsIHfoIRkZ7xvLYhYijVkeEer30pRkDpLiJzUXA9AAvx
+ fpClRFwL0rleDEMQ6rhWWcFvhk9vNdhwdGkPLgMFh51vL6Y7ku3XodMTSEQ7MnaMnFYTO7
+ mtaZF3amKh9rTp3QsKfVsM+TeQmHLjfW9ryooaOVLrDjhxbuLm1PYdiQQjnN0TRPbxNRo8
+ GnZ2W/UIneqPMkuYta011wsYCp7kZZkO9t1AQPqQvcisAeextPsahQZKuxlBV2Vv79c8JK
+ Z1k0q+ALh5YbtlSSlx3tAAodcbMK7wrccsJqwf7xAqsvjwBLljUp7MRfCtPRBw==
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+References: <20250227082558.151093-1-tianx@yunsilicon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-Mailer: git-send-email 2.48.1.658.g4767266eb4-goog
-Message-ID: <20250227082642.2461118-1-edumazet@google.com>
-Subject: [PATCH net] llc: do not use skb_get() before dev_queue_xmit()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot+da65c993ae113742a25f@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
+	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
+	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
+	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <horms@kernel.org>, 
+	<parthiban.veerasooran@microchip.com>, <masahiroy@kernel.org>
+Date: Thu, 27 Feb 2025 16:26:34 +0800
+Message-Id: <20250227082632.151093-15-tianx@yunsilicon.com>
+Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20250227082558.151093-1-tianx@yunsilicon.com>
+X-Lms-Return-Path: <lba+267c021ba+b3b755+vger.kernel.org+tianx@yunsilicon.com>
+Content-Transfer-Encoding: 7bit
+To: <netdev@vger.kernel.org>
+From: "Xin Tian" <tianx@yunsilicon.com>
+Subject: [PATCH net-next v6 14/14] xsc: add ndo_get_stats64
+X-Mailer: git-send-email 2.25.1
+Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Thu, 27 Feb 2025 16:26:33 +0800
 
-syzbot is able to crash hosts [1], using llc and devices
-not supporting IFF_TX_SKB_SHARING.
+Added basic network interface statistics.
 
-In this case, e1000 driver calls eth_skb_pad(), while
-the skb is shared.
-
-Simply replace skb_get() by skb_clone() in net/llc/llc_s_ac.c
-
-Note that e1000 driver might have an issue with pktgen,
-because it does not clear IFF_TX_SKB_SHARING, this is an
-orthogonal change.
-
-We need to audit other skb_get() uses in net/llc.
-
-[1]
-
-kernel BUG at net/core/skbuff.c:2178 !
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 16371 Comm: syz.2.2764 Not tainted 6.14.0-rc4-syzkaller-00052-gac9c34d1e45a #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
- RIP: 0010:pskb_expand_head+0x6ce/0x1240 net/core/skbuff.c:2178
-Call Trace:
- <TASK>
-  __skb_pad+0x18a/0x610 net/core/skbuff.c:2466
-  __skb_put_padto include/linux/skbuff.h:3843 [inline]
-  skb_put_padto include/linux/skbuff.h:3862 [inline]
-  eth_skb_pad include/linux/etherdevice.h:656 [inline]
-  e1000_xmit_frame+0x2d99/0x5800 drivers/net/ethernet/intel/e1000/e1000_main.c:3128
-  __netdev_start_xmit include/linux/netdevice.h:5151 [inline]
-  netdev_start_xmit include/linux/netdevice.h:5160 [inline]
-  xmit_one net/core/dev.c:3806 [inline]
-  dev_hard_start_xmit+0x9a/0x7b0 net/core/dev.c:3822
-  sch_direct_xmit+0x1ae/0xc30 net/sched/sch_generic.c:343
-  __dev_xmit_skb net/core/dev.c:4045 [inline]
-  __dev_queue_xmit+0x13d4/0x43e0 net/core/dev.c:4621
-  dev_queue_xmit include/linux/netdevice.h:3313 [inline]
-  llc_sap_action_send_test_c+0x268/0x320 net/llc/llc_s_ac.c:144
-  llc_exec_sap_trans_actions net/llc/llc_sap.c:153 [inline]
-  llc_sap_next_state net/llc/llc_sap.c:182 [inline]
-  llc_sap_state_process+0x239/0x510 net/llc/llc_sap.c:209
-  llc_ui_sendmsg+0xd0d/0x14e0 net/llc/af_llc.c:993
-  sock_sendmsg_nosec net/socket.c:718 [inline]
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+da65c993ae113742a25f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/67c020c0.050a0220.222324.0011.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
+Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
+Co-developed-by: Lei Yan <jacky@yunsilicon.com>
+Signed-off-by: Lei Yan <jacky@yunsilicon.com>
+Signed-off-by: Xin Tian <tianx@yunsilicon.com>
 ---
- net/llc/llc_s_ac.c | 49 +++++++++++++++++++++++++---------------------
- 1 file changed, 27 insertions(+), 22 deletions(-)
+ .../net/ethernet/yunsilicon/xsc/net/Makefile  |  2 +-
+ .../net/ethernet/yunsilicon/xsc/net/main.c    | 29 +++++++++++-
+ .../net/ethernet/yunsilicon/xsc/net/xsc_eth.h |  3 ++
+ .../ethernet/yunsilicon/xsc/net/xsc_eth_rx.c  |  4 ++
+ .../yunsilicon/xsc/net/xsc_eth_stats.c        | 46 +++++++++++++++++++
+ .../yunsilicon/xsc/net/xsc_eth_stats.h        | 34 ++++++++++++++
+ .../ethernet/yunsilicon/xsc/net/xsc_eth_tx.c  |  5 ++
+ .../ethernet/yunsilicon/xsc/net/xsc_queue.h   |  2 +
+ 8 files changed, 122 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
 
-diff --git a/net/llc/llc_s_ac.c b/net/llc/llc_s_ac.c
-index 06fb8e6944b06aecad73739bc9337e551cf73a90..7a0cae9a8111488979ce1c22bcc7ed86ccee5269 100644
---- a/net/llc/llc_s_ac.c
-+++ b/net/llc/llc_s_ac.c
-@@ -24,7 +24,7 @@
- #include <net/llc_s_ac.h>
- #include <net/llc_s_ev.h>
- #include <net/llc_sap.h>
--
-+#include <net/sock.h>
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/Makefile b/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
+index 7cfc2aaa2..e1cfa3cdf 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
+@@ -6,4 +6,4 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
  
- /**
-  *	llc_sap_action_unitdata_ind - forward UI PDU to network layer
-@@ -40,6 +40,26 @@ int llc_sap_action_unitdata_ind(struct llc_sap *sap, struct sk_buff *skb)
- 	return 0;
+ obj-$(CONFIG_YUNSILICON_XSC_ETH) += xsc_eth.o
+ 
+-xsc_eth-y := main.o xsc_eth_wq.o xsc_eth_txrx.o xsc_eth_tx.o xsc_eth_rx.o
++xsc_eth-y := main.o xsc_eth_wq.o xsc_eth_txrx.o xsc_eth_tx.o xsc_eth_rx.o xsc_eth_stats.o
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/main.c b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
+index cd9797ed7..43db3e7b1 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/main.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
+@@ -560,15 +560,20 @@ static int xsc_eth_open_qp_sq(struct xsc_channel *c,
+ 	u8 ele_log_size = psq_param->sq_attr.ele_log_size;
+ 	u8 q_log_size = psq_param->sq_attr.q_log_size;
+ 	struct xsc_modify_raw_qp_mbox_in *modify_in;
++	struct xsc_channel_stats *channel_stats;
+ 	struct xsc_create_qp_mbox_in *in;
+ 	struct xsc_core_device *xdev;
+ 	struct xsc_adapter *adapter;
++	struct xsc_stats *stats;
+ 	unsigned int hw_npages;
+ 	int inlen;
+ 	int ret;
+ 
+ 	adapter = c->adapter;
+ 	xdev  = adapter->xdev;
++	stats = adapter->stats;
++	channel_stats = &stats->channel_stats[c->chl_idx];
++	psq->stats = &channel_stats->sq[sq_idx];
+ 	psq_param->wq.db_numa_node = cpu_to_node(c->cpu);
+ 
+ 	ret = xsc_eth_wq_cyc_create(xdev, &psq_param->wq,
+@@ -869,11 +874,16 @@ static int xsc_eth_alloc_rq(struct xsc_channel *c,
+ 	u8 q_log_size = prq_param->rq_attr.q_log_size;
+ 	struct page_pool_params pagepool_params = {0};
+ 	struct xsc_adapter *adapter = c->adapter;
++	struct xsc_channel_stats *channel_stats;
+ 	u32 pool_size = 1 << q_log_size;
++	struct xsc_stats *stats;
+ 	int ret = 0;
+ 	u32 wq_sz;
+ 	int i, f;
+ 
++	stats = c->adapter->stats;
++	channel_stats = &stats->channel_stats[c->chl_idx];
++	prq->stats = &channel_stats->rq;
+ 	prq_param->wq.db_numa_node = cpu_to_node(c->cpu);
+ 
+ 	ret = xsc_eth_wq_cyc_create(c->adapter->xdev, &prq_param->wq,
+@@ -1669,6 +1679,14 @@ static int xsc_eth_close(struct net_device *netdev)
+ 	return ret;
  }
  
-+static int llc_prepare_and_xmit(struct sk_buff *skb)
++static void xsc_eth_get_stats(struct net_device *netdev,
++			      struct rtnl_link_stats64 *stats)
 +{
-+	struct llc_sap_state_ev *ev = llc_sap_ev(skb);
-+	struct sk_buff *nskb;
-+	int rc;
++	struct xsc_adapter *adapter = netdev_priv(netdev);
 +
-+	rc = llc_mac_hdr_init(skb, ev->saddr.mac, ev->daddr.mac);
-+	if (rc)
-+		return rc;
-+
-+	nskb = skb_clone(skb, GFP_ATOMIC);
-+	if (!nskb)
-+		return -ENOMEM;
-+
-+	if (skb->sk)
-+		skb_set_owner_w(nskb, skb->sk);
-+
-+	return dev_queue_xmit(nskb);
++	xsc_eth_fold_sw_stats64(adapter, stats);
 +}
 +
- /**
-  *	llc_sap_action_send_ui - sends UI PDU resp to UNITDATA REQ to MAC layer
-  *	@sap: SAP
-@@ -52,17 +72,12 @@ int llc_sap_action_unitdata_ind(struct llc_sap *sap, struct sk_buff *skb)
- int llc_sap_action_send_ui(struct llc_sap *sap, struct sk_buff *skb)
+ static int xsc_eth_set_hw_mtu(struct xsc_core_device *xdev,
+ 			      u16 mtu, u16 rx_buf_sz)
  {
- 	struct llc_sap_state_ev *ev = llc_sap_ev(skb);
--	int rc;
+@@ -1700,6 +1718,7 @@ static const struct net_device_ops xsc_netdev_ops = {
+ 	.ndo_open		= xsc_eth_open,
+ 	.ndo_stop		= xsc_eth_close,
+ 	.ndo_start_xmit		= xsc_eth_xmit_start,
++	.ndo_get_stats64	= xsc_eth_get_stats,
+ };
  
- 	llc_pdu_header_init(skb, LLC_PDU_TYPE_U, ev->saddr.lsap,
- 			    ev->daddr.lsap, LLC_PDU_CMD);
- 	llc_pdu_init_as_ui_cmd(skb);
--	rc = llc_mac_hdr_init(skb, ev->saddr.mac, ev->daddr.mac);
--	if (likely(!rc)) {
--		skb_get(skb);
--		rc = dev_queue_xmit(skb);
--	}
--	return rc;
+ static void xsc_eth_build_nic_netdev(struct xsc_adapter *adapter)
+@@ -1911,14 +1930,20 @@ static int xsc_eth_probe(struct auxiliary_device *adev,
+ 		goto err_nic_cleanup;
+ 	}
+ 
++	adapter->stats = kvzalloc(sizeof(*adapter->stats), GFP_KERNEL);
++	if (!adapter->stats)
++		goto err_detach;
 +
-+	return llc_prepare_and_xmit(skb);
+ 	err = register_netdev(netdev);
+ 	if (err) {
+ 		netdev_err(netdev, "register_netdev failed, err=%d\n", err);
+-		goto err_detach;
++		goto err_free_stats;
+ 	}
+ 
+ 	return 0;
+ 
++err_free_stats:
++	kfree(adapter->stats);
+ err_detach:
+ 	xsc_eth_detach(xdev, adapter);
+ err_nic_cleanup:
+@@ -1945,7 +1970,7 @@ static void xsc_eth_remove(struct auxiliary_device *adev)
+ 	}
+ 
+ 	unregister_netdev(adapter->netdev);
+-
++	kfree(adapter->stats);
+ 	free_netdev(adapter->netdev);
+ 
+ 	xdev->eth_priv = NULL;
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
+index e8088b5b3..2cc210efb 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
+@@ -10,6 +10,7 @@
+ 
+ #include "common/xsc_device.h"
+ #include "xsc_eth_common.h"
++#include "xsc_eth_stats.h"
+ 
+ #define XSC_INVALID_LKEY	0x100
+ 
+@@ -49,6 +50,8 @@ struct xsc_adapter {
+ 
+ 	u32	status;
+ 	struct mutex	status_lock; /*protect status */
++
++	struct xsc_stats	*stats;
+ };
+ 
+ #endif /* __XSC_ETH_H */
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
+index 81c4a2934..18e7acf86 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
+@@ -159,6 +159,10 @@ static void xsc_complete_rx_cqe(struct xsc_rq *rq,
+ 				struct sk_buff *skb,
+ 				struct xsc_wqe_frag_info *wi)
+ {
++	struct xsc_rq_stats *stats = rq->stats;
++
++	stats->packets++;
++	stats->bytes += cqe_bcnt;
+ 	xsc_build_rx_skb(cqe, cqe_bcnt, rq, skb, wi);
  }
  
- /**
-@@ -77,17 +92,12 @@ int llc_sap_action_send_ui(struct llc_sap *sap, struct sk_buff *skb)
- int llc_sap_action_send_xid_c(struct llc_sap *sap, struct sk_buff *skb)
- {
- 	struct llc_sap_state_ev *ev = llc_sap_ev(skb);
--	int rc;
- 
- 	llc_pdu_header_init(skb, LLC_PDU_TYPE_U_XID, ev->saddr.lsap,
- 			    ev->daddr.lsap, LLC_PDU_CMD);
- 	llc_pdu_init_as_xid_cmd(skb, LLC_XID_NULL_CLASS_2, 0);
--	rc = llc_mac_hdr_init(skb, ev->saddr.mac, ev->daddr.mac);
--	if (likely(!rc)) {
--		skb_get(skb);
--		rc = dev_queue_xmit(skb);
--	}
--	return rc;
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
+new file mode 100644
+index 000000000..38bab39b9
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
+@@ -0,0 +1,46 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
 +
-+	return llc_prepare_and_xmit(skb);
- }
- 
- /**
-@@ -133,17 +143,12 @@ int llc_sap_action_send_xid_r(struct llc_sap *sap, struct sk_buff *skb)
- int llc_sap_action_send_test_c(struct llc_sap *sap, struct sk_buff *skb)
- {
- 	struct llc_sap_state_ev *ev = llc_sap_ev(skb);
--	int rc;
- 
- 	llc_pdu_header_init(skb, LLC_PDU_TYPE_U, ev->saddr.lsap,
- 			    ev->daddr.lsap, LLC_PDU_CMD);
- 	llc_pdu_init_as_test_cmd(skb);
--	rc = llc_mac_hdr_init(skb, ev->saddr.mac, ev->daddr.mac);
--	if (likely(!rc)) {
--		skb_get(skb);
--		rc = dev_queue_xmit(skb);
--	}
--	return rc;
++#include "xsc_eth_stats.h"
++#include "xsc_eth.h"
 +
-+	return llc_prepare_and_xmit(skb);
- }
++static int xsc_get_netdev_max_channels(struct xsc_adapter *adapter)
++{
++	struct net_device *netdev = adapter->netdev;
++
++	return min_t(unsigned int, netdev->num_rx_queues,
++		     netdev->num_tx_queues);
++}
++
++static int xsc_get_netdev_max_tc(struct xsc_adapter *adapter)
++{
++	return adapter->nic_param.num_tc;
++}
++
++void xsc_eth_fold_sw_stats64(struct xsc_adapter *adapter,
++			     struct rtnl_link_stats64 *s)
++{
++	int i, j;
++
++	for (i = 0; i < xsc_get_netdev_max_channels(adapter); i++) {
++		struct xsc_channel_stats *channel_stats;
++		struct xsc_rq_stats *rq_stats;
++
++		channel_stats = &adapter->stats->channel_stats[i];
++		rq_stats = &channel_stats->rq;
++
++		s->rx_packets   += rq_stats->packets;
++		s->rx_bytes     += rq_stats->bytes;
++
++		for (j = 0; j < xsc_get_netdev_max_tc(adapter); j++) {
++			struct xsc_sq_stats *sq_stats = &channel_stats->sq[j];
++
++			s->tx_packets    += sq_stats->packets;
++			s->tx_bytes      += sq_stats->bytes;
++			s->tx_dropped    += sq_stats->dropped;
++		}
++	}
++}
++
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
+new file mode 100644
+index 000000000..1828f4608
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
+@@ -0,0 +1,34 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#ifndef __XSC_EN_STATS_H
++#define __XSC_EN_STATS_H
++
++#include "xsc_eth_common.h"
++
++struct xsc_rq_stats {
++	u64 packets;
++	u64 bytes;
++};
++
++struct xsc_sq_stats {
++	u64 packets;
++	u64 bytes;
++	u64 dropped;
++};
++
++struct xsc_channel_stats {
++	struct xsc_sq_stats sq[XSC_MAX_NUM_TC];
++	struct xsc_rq_stats rq;
++} ____cacheline_aligned_in_smp;
++
++struct xsc_stats {
++	struct xsc_channel_stats channel_stats[XSC_ETH_MAX_NUM_CHANNELS];
++};
++
++void xsc_eth_fold_sw_stats64(struct xsc_adapter *adapter,
++			     struct rtnl_link_stats64 *s);
++
++#endif /* XSC_EN_STATS_H */
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
+index e41ff0d77..b16bff45c 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
+@@ -221,6 +221,7 @@ static uint32_t xsc_eth_xmit_frame(struct sk_buff *skb,
+ 				   u16 pi)
+ {
+ 	struct xsc_core_device *xdev = sq->cq.xdev;
++	struct xsc_sq_stats *stats = sq->stats;
+ 	struct xsc_send_wqe_ctrl_seg *cseg;
+ 	struct xsc_wqe_data_seg *dseg;
+ 	struct xsc_tx_wqe_info *wi;
+@@ -241,11 +242,13 @@ static uint32_t xsc_eth_xmit_frame(struct sk_buff *skb,
+ 		mss       = skb_shinfo(skb)->gso_size;
+ 		ihs       = xsc_tx_get_gso_ihs(sq, skb);
+ 		num_bytes = skb->len;
++		stats->packets += skb_shinfo(skb)->gso_segs;
+ 	} else {
+ 		opcode    = XSC_OPCODE_RAW;
+ 		mss       = 0;
+ 		ihs       = 0;
+ 		num_bytes = skb->len;
++		stats->packets++;
+ 	}
  
- int llc_sap_action_send_test_r(struct llc_sap *sap, struct sk_buff *skb)
+ 	/*linear data in skb*/
+@@ -283,10 +286,12 @@ static uint32_t xsc_eth_xmit_frame(struct sk_buff *skb,
+ 
+ 	xsc_txwqe_complete(sq, skb, opcode, ds_cnt, num_wqebbs, num_bytes,
+ 			   num_dma, wi);
++	stats->bytes     += num_bytes;
+ 
+ 	return NETDEV_TX_OK;
+ 
+ err_drop:
++	stats->dropped++;
+ 	dev_kfree_skb_any(skb);
+ 
+ 	return NETDEV_TX_OK;
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
+index 4c9f183fc..83fb13d8e 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
+@@ -132,6 +132,7 @@ struct xsc_rq {
+ 
+ 	unsigned long	state;
+ 	struct work_struct  recover_work;
++	struct xsc_rq_stats *stats;
+ 
+ 	u32 hw_mtu;
+ 	u32 frags_sz;
+@@ -180,6 +181,7 @@ struct xsc_sq {
+ 	/* read only */
+ 	struct xsc_wq_cyc         wq;
+ 	u32                        dma_fifo_mask;
++	struct xsc_sq_stats     *stats;
+ 	struct {
+ 		struct xsc_sq_dma         *dma_fifo;
+ 		struct xsc_tx_wqe_info    *wqe_info;
 -- 
-2.48.1.658.g4767266eb4-goog
-
+2.18.4
