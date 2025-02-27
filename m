@@ -1,229 +1,243 @@
-Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com [209.85.214.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340BA27003F;
-	Thu, 27 Feb 2025 12:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E7C27003F
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 12:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740659614; cv=none; b=EP1fcjSgUsyrj45wY7wrfLLsgCJed3c0OeAP7KyLdw/CtHnP/tsMv0YPq+UZDuBUaGqf3mhpZKnrAUNEFku9r62x/ssa5c9qK4SJgFsprxyGq7OqBJi/nL1R/vpYyXr/a7pMD/Iib1qOREFT5RkfNbHRTYrU/m3WWScDTHrF19w=
+	t=1740659653; cv=none; b=mZvsqnUKgjU745dF0pTBiYpHiY5hPmI/kXHakevRXvD2YOcdHVqkPzHj2/4MvBT/6pyLhqRNuP2oB7fkevRaXzlsWShewFh8EdEO4QwYazyxxE05QJ/8QjO7cxD+E1oM1e3OWDygRCDUyVB6C4WsOLjEETN6gAwU6UJAC0lba1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740659614; c=relaxed/simple;
-	bh=eNCnDk3o13zHYhDmGLY3PfMS8o3BX2U8JaG67s0LvAY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Sb2/KUoQWSMmAChbfVLtnQ6FyBs+PxrggSOI851hts9JRjJWxvcPFZNwAmiXyIcYsNyByS9if3fztwFJg+k5s1J+2Wt+c0CsWCIpPoWzt8h7OOmOTbIoJIpZ7ldFqoK1mrJZxwHHkwq/TU2U2kmP2sFhUCWja3XWnwCeouqfj5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nSPXZi8i; arc=none smtp.client-ip=209.85.214.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740659653; c=relaxed/simple;
+	bh=9idlHId5N61HZnym4E8QQnoZ8XcrBAk6EC1QRm06OnE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aZtmH1tVvWP/9gfKbVrYmy7vDAMJvhDXwtA37EGFi7Eotwpp0D8fXgBf62YG3dOonmXXBnIZ3L+Tga1jowsfIS1iEJEJjGIW7ZOko7yniRnjpjuOpXh4NMdCScH4quPCMgV2WDWHlDnyWXJFQOqEpvaw0Cqc36S8gLzURLFvgF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=yOwIp/wL; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nSPXZi8i"
-Received: by mail-pl1-f196.google.com with SMTP id d9443c01a7336-22349dc31bcso13574165ad.3;
-        Thu, 27 Feb 2025 04:33:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740659609; x=1741264409; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=E1UPW0Km5K8LrkkofbxPBeAljxlRf+qjqAALOT7M8Zw=;
-        b=nSPXZi8iW+ArB1SsTYka+EFlslyp/okKilHbHYPj7/NGlLbFfhtwtSIGRI5oMkQnJ7
-         AA+PgJAgp3xF4RU0O8M4ne16nIqCUeBSDKL6yfczwGEXQnBZZ92MpdhzlKqLgptvfvA+
-         OULbYWPk4LfPSRQvqiqnwRa1qgoWatAhLqroA/T1+Js2byMW7nUhJY/IiWoNwtSivq1g
-         DugnrvCZhPbuAUFSajwRsHf9vvJM/bL+ORkrshr3cn5MPTclu6BXkVGyT5grOeLeyinh
-         DAaFRkgau0NsgHjBnWmS/08Nv/mFMu3kXmNBSDhxqggxkT9hJdIB++xpp7+B4FliiSqX
-         +uww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740659609; x=1741264409;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E1UPW0Km5K8LrkkofbxPBeAljxlRf+qjqAALOT7M8Zw=;
-        b=vzHfs0ALT8NVAnNB+YefkMfhuO6dsCaj/VeBmOpfcIA2UkuOA66vaVH1qLbK3OuQJz
-         5x6GmKsMrvTp2YoLlbVtgjDomTO8kjpwbHxTGJeuoP127UAP1at4de3Re7q0fbgz+OcR
-         29vYRiWzjtHRntZHxe5NRy//PAE10k/5OUQMXLEYugffx5W2ZTS+wZsIYMEQ7Ud/G6sY
-         4geL/akWjNaOJHgmTOh4oY9E7o2oyxLiTiF3VSF2QkuGZhe3Sa50oWr+zbcZ3jytMZkU
-         GWIURmjUIeslVceXhtc6O0XizPUrWIlWgLXd9U1GfRW19mtP24v+gQBCbGfP7v6rNc6e
-         gOVg==
-X-Forwarded-Encrypted: i=1; AJvYcCWue/O4DqIef4k3qrKaWKgoDmDSrcYcLhIOXmaauGxcswfCI6rhPP77qcxpdJsWyxYGiSfO6Fy1@vger.kernel.org, AJvYcCXeUFrZMxtssfZlBBqEpxk/9rFtiCQnPS3LLZl9Xg5Qy5Z06sdLidVltaGeM60Ek6Jf7h9RtwrLe68xQ38=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxjKDhc2ek3f8pd6m0++ZKNz+FV9XRzwqLSaukTG58vGMWquPD
-	CJTtGI7aMog+UbFs0JYlMHFTxPkLIwcPvdoB5ixTZNn6W1HwNtuo
-X-Gm-Gg: ASbGncsJ5NaKlu8UxR22bobtL432iRVZMVr/O4LKPhkhWWGU1nmO0Yji2hh1OqfY5mb
-	VFqgVhlkGLJL39OCK7DY67Ca2zYX9FdlljhE0/Qw3XIhbICxI7w1rotbrc+5Zs+J6R//Odh5WCX
-	8qID6irplFH1QzNiSCdx6ywDCp3fiXIqXzb9Y/EGfBC72w2o0VJsmaQcOiOosFtX2y40kjVkLnx
-	k7QyEySJjXqxvZh0KqU1I9Hx4q/rqOJCbIY+VocJ9ziixBy3Z7METVSFplCXrRJ8IN5peuQm7iU
-	GYKfPtRiwDvgJ/h617H4dLay0nKQKZcF50ygZ8CL6go=
-X-Google-Smtp-Source: AGHT+IHbN+BZckJ+0jjRPlpmszaz/VaHtnknrWt71UWIDmqfJaql6oSUzuNp9uuWeO754PkxMFPphA==
-X-Received: by 2002:a17:902:e752:b0:223:3bf6:7e6a with SMTP id d9443c01a7336-2233bf6806bmr71862745ad.12.1740659609193;
-        Thu, 27 Feb 2025 04:33:29 -0800 (PST)
-Received: from localhost.localdomain ([43.129.244.20])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2235050ceb0sm13132615ad.203.2025.02.27.04.33.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2025 04:33:28 -0800 (PST)
-From: Menglong Dong <menglong8.dong@gmail.com>
-X-Google-Original-From: Menglong Dong <dongml2@chinatelecom.cn>
-To: edumazet@google.com
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ncardwell@google.com,
-	kuniyu@amazon.com,
-	dsahern@kernel.org,
-	kerneljasonxing@gmail.com,
-	yyd@google.com,
-	dongml2@chinatelecom.cn,
-	petrm@nvidia.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH net-next] net: ip: add sysctl_ip_reuse_exact_match
-Date: Thu, 27 Feb 2025 20:31:37 +0800
-Message-Id: <20250227123137.138778-1-dongml2@chinatelecom.cn>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="yOwIp/wL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=gLtar/wHfeVCmLMg/jaoFP7v7u+SOrYejD4+SDmmhUE=; b=yOwIp/wLpIAD63YfkPXz6hmvgx
+	8wybSmMu5NeH5TJurRum8vIiTyAWntTUZPBagHrPzZ/Kz1uBarRkJc9JORZSScrrfQRqYkTYk7C0B
+	Wezx7q6s4uoDZI3vh3q9rORa7zpsdCDYMhAwnba7CyitYDmQCk8mWgNc2+1c642iTsgDY5TUlGhwc
+	dZi61rVK/bKoj4wIr8m9YgHFwiewA3GDuGsvZ/cxcF3D+l/VPuNFSWyMBRIr/kKtMOpWZ1SdP7+Py
+	+fUxpjcNsKPlB8hhmLR6zncZdIxOzvZhf0C38kNgCg+bfmcgKpA79Du8ivR4nAZIt45hWu2+n9Rt1
+	lQ7yRHwA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43564)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tnd5J-00074f-0H;
+	Thu, 27 Feb 2025 12:33:49 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tnd57-00087j-2f;
+	Thu, 27 Feb 2025 12:33:37 +0000
+Date: Thu, 27 Feb 2025 12:33:37 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Furong Xu <0x1207@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jan Petrous <jan.petrous@oss.nxp.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Minda Chen <minda.chen@starfivetech.com>, netdev@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Thierry Reding <treding@nvidia.com>, hailong.fan@siengine.com,
+	2694439648@qq.com
+Subject: Re: net: stmmac: weirdness in stmmac_hw_setup()
+Message-ID: <Z8BboX9RxZBSXRr1@shell.armlinux.org.uk>
+References: <Z7dVp7_InAHe0q_y@shell.armlinux.org.uk>
+ <20250226104326.0000766e@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250226104326.0000766e@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-For now, the socket lookup will terminate if the socket is reuse port in
-inet_lhash2_lookup(), which makes the socket is not the best match.
+On Wed, Feb 26, 2025 at 10:43:26AM +0800, Furong Xu wrote:
+> On Thu, 20 Feb 2025 16:17:43 +0000, "Russell King (Oracle)" wrote:
+> 
+> > While looking through the stmmac driver, I've come across some
+> > weirdness in stmmac_hw_setup() which looks completely barmy to me.
+> > 
+> > It seems that it follows the initialisation suggested by Synopsys
+> > (as best I can determine from the iMX8MP documentation), even going
+> > as far as to *enable* transmit and receive *before* the network
+> > device has been administratively brought up. stmmac_hw_setup() does
+> > this:
+> > 
+> >         /* Enable the MAC Rx/Tx */
+> >         stmmac_mac_set(priv, priv->ioaddr, true);
+> > 
+> > which sets the TE and RE bits in the MAC configuration register.
+> > 
+> > This means that if the network link is active, packets will start
+> > to be received and will be placed into the receive descriptors.
+> > 
+> > We won't transmit anything because we won't be placing packets in
+> > the transmit descriptors to be transmitted.
+> > 
+> > However, this in stmmac_hw_setup() is just wrong. Can it be deleted
+> > as per the below?
+> > Tested-by: Thierry Reding <treding@nvidia.com>
+> > 
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > index c2913f003fe6..d6e492f523f5 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > @@ -3493,9 +3493,6 @@ static int stmmac_hw_setup(struct net_device *dev, bool ptp_register)
+> >  		priv->hw->rx_csum = 0;
+> >  	}
+> >  
+> > -	/* Enable the MAC Rx/Tx */
+> > -	stmmac_mac_set(priv, priv->ioaddr, true);
+> > -
+> >  	/* Set the HW DMA mode and the COE */
+> >  	stmmac_dma_operation_mode(priv);
+> >  
+> 
+> A better fix here:
+> https://lore.kernel.org/all/tencent_CCC29C4F562F2DEFE48289DB52F4D91BDE05@qq.com/
+> 
+> I can reproduce and confirm that patch works well.
+> I was going to leave a Tested-by: tag on that patch if everything looks good enough,
+> but the author (now copied) never come back.
 
-For example, we have socket1 listening on "0.0.0.0:1234" and socket2
-listening on "192.168.1.1:1234", and both of them enabled reuse port. The
-socket1 will always be matched when a connection with the peer ip
-"192.168.1.xx" comes if the socket1 is created later than socket2. This
-is not expected, as socket2 has higher priority.
+As I now have access to the databook, the initialisation guidance given
+in appendix E is very clear that at least the RE bit should not be set
+until initialisation of both DMA and MAC have been completed.
 
-This can cause unexpected behavior if TCP MD5 keys is used, as described
-in Documentation/networking/vrf.rst -> Applications.
+RE allows the MAC to start receiving packets and placing them in the
+FIFO for the DMA block to then transfer them to memory.
 
-Introduce the sysctl_ip_reuse_exact_match to make it find a best matched
-socket when reuse port is used.
+If the link is down, then there should be no activity on the receive
+interface, so not setting RE until the link is up should have no
+effect. Therefore, start_rx methods that set this bit should not be
+doing so, and we should not set this bit until mac_link_up() has
+been called.
 
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
----
- include/net/netns/ipv4.h    |  1 +
- net/ipv4/inet_hashtables.c  | 22 ++++++++++++++++++----
- net/ipv4/sysctl_net_ipv4.c  |  9 +++++++++
- net/ipv6/inet6_hashtables.c | 22 ++++++++++++++++++----
- 4 files changed, 46 insertions(+), 8 deletions(-)
+Analysing the code for the RE bit, we have:
 
-diff --git a/include/net/netns/ipv4.h b/include/net/netns/ipv4.h
-index 45ac125e8aeb..5e4b63c40e1c 100644
---- a/include/net/netns/ipv4.h
-+++ b/include/net/netns/ipv4.h
-@@ -142,6 +142,7 @@ struct netns_ipv4 {
- 	u8 sysctl_ip_fwd_update_priority;
- 	u8 sysctl_ip_nonlocal_bind;
- 	u8 sysctl_ip_autobind_reuse;
-+	u8 sysctl_ip_reuse_exact_match;
- 	/* Shall we try to damage output packets if routing dev changes? */
- 	u8 sysctl_ip_dynaddr;
- #ifdef CONFIG_NET_L3_MASTER_DEV
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index 9bfcfd016e18..5ca495361484 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -384,20 +384,34 @@ static struct sock *inet_lhash2_lookup(const struct net *net,
- 	struct sock *sk, *result = NULL;
- 	struct hlist_nulls_node *node;
- 	int score, hiscore = 0;
-+	bool reuse_exact_match;
- 
-+	reuse_exact_match = READ_ONCE(net->ipv4.sysctl_ip_reuse_exact_match);
- 	sk_nulls_for_each_rcu(sk, node, &ilb2->nulls_head) {
- 		score = compute_score(sk, net, hnum, daddr, dif, sdif);
- 		if (score > hiscore) {
--			result = inet_lookup_reuseport(net, sk, skb, doff,
--						       saddr, sport, daddr, hnum, inet_ehashfn);
--			if (result)
--				return result;
-+			if (!reuse_exact_match) {
-+				result = inet_lookup_reuseport(net, sk, skb,
-+							       doff, saddr,
-+							       sport, daddr,
-+							       hnum, inet_ehashfn);
-+				if (result)
-+					return result;
-+			}
- 
- 			result = sk;
- 			hiscore = score;
- 		}
- 	}
- 
-+	if (reuse_exact_match) {
-+		sk = inet_lookup_reuseport(net, result, skb, doff, saddr,
-+					   sport, daddr, hnum,
-+					   inet_ehashfn);
-+		if (sk)
-+			return sk;
-+	}
-+
- 	return result;
- }
- 
-diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
-index 3a43010d726f..be93b2c22d91 100644
---- a/net/ipv4/sysctl_net_ipv4.c
-+++ b/net/ipv4/sysctl_net_ipv4.c
-@@ -838,6 +838,15 @@ static struct ctl_table ipv4_net_table[] = {
- 		.extra1         = SYSCTL_ZERO,
- 		.extra2         = SYSCTL_ONE,
- 	},
-+	{
-+		.procname	= "ip_reuse_exact_match",
-+		.data		= &init_net.ipv4.sysctl_ip_reuse_exact_match,
-+		.maxlen		= sizeof(u8),
-+		.mode		= 0644,
-+		.proc_handler	= proc_dou8vec_minmax,
-+		.extra1         = SYSCTL_ZERO,
-+		.extra2         = SYSCTL_ONE,
-+	},
- 	{
- 		.procname	= "fwmark_reflect",
- 		.data		= &init_net.ipv4.sysctl_fwmark_reflect,
-diff --git a/net/ipv6/inet6_hashtables.c b/net/ipv6/inet6_hashtables.c
-index 9ec05e354baa..b8f130a2a135 100644
---- a/net/ipv6/inet6_hashtables.c
-+++ b/net/ipv6/inet6_hashtables.c
-@@ -157,20 +157,34 @@ static struct sock *inet6_lhash2_lookup(const struct net *net,
- 	struct sock *sk, *result = NULL;
- 	struct hlist_nulls_node *node;
- 	int score, hiscore = 0;
-+	bool reuse_exact_match;
- 
-+	reuse_exact_match = READ_ONCE(net->ipv4.sysctl_ip_reuse_exact_match);
- 	sk_nulls_for_each_rcu(sk, node, &ilb2->nulls_head) {
- 		score = compute_score(sk, net, hnum, daddr, dif, sdif);
- 		if (score > hiscore) {
--			result = inet6_lookup_reuseport(net, sk, skb, doff,
--							saddr, sport, daddr, hnum, inet6_ehashfn);
--			if (result)
--				return result;
-+			if (!reuse_exact_match) {
-+				result = inet6_lookup_reuseport(net, sk, skb,
-+								doff, saddr,
-+								sport, daddr,
-+								hnum, inet6_ehashfn);
-+				if (result)
-+					return result;
-+			}
- 
- 			result = sk;
- 			hiscore = score;
- 		}
- 	}
- 
-+	if (reuse_exact_match) {
-+		sk = inet6_lookup_reuseport(net, result, skb, doff, saddr,
-+					    sport, daddr, hnum,
-+					    inet6_ehashfn);
-+		if (sk)
-+			return sk;
-+	}
-+
- 	return result;
- }
- 
+1. xxx_set_mac() (called via stmmac_mac_set()) which sets/clears both
+   the RE and TE bits together. This is called with a "true" argument
+   from:
+
+1.1. stmmac_mac_link_up() - correct, the link has come up.
+
+1.2. stmmac_hw_setup() - incorrect, we don't know whether the link
+     is up or down. I think simply removing this would be correct,
+     provided the patches that move phylink_resume() later in
+     stmmac_resume() are merged (will be posted non-RFC only once my
+     current set of stmmac clock changes have been merged.)
+
+1.3. stmmac_xdp_open() - probably incorrect, we don't know whether
+     the link is up or down. stmmac_xdp_open() is only called from
+     stmmac_xdp_set_prog(), and the network interface must be
+     running. This implies that everything has already been
+     initialised, and phylink has been started. stmmac_xdp_open()
+     also messes with the carrier, which will upset phylink.
+     I think the right solution here is to call phylink_stop() in
+     stmmac_xdp_release() and phylink_start() in stmmac_xdp_open(),
+     removing the stmmac_mac_set() and netif_carrier*() calls in
+     both these functions.
+
+2. xxx_pmt() (called via stmmac_pmt()) sets RE if (e.g. dwxgmac2)
+   WAKE_MAGIC or WAKE_UCAST is set.
+
+   This brings up questions. The only place it's called with a
+   potentially non-zero argument is in stmmac_suspend(). A few lines
+   above is:
+
+        /* Stop TX/RX DMA */
+        stmmac_stop_all_dma(priv);
+
+   which is a reasonable thing to do when suspending. However, the
+   DW databook states clearly that RE should not be set if DMA is
+   not able to empty the FIFO between the MAC and DMA otherwise it
+   will overflow. So... I think this causes overflow there. I'm not
+   sure what effect that has. Has wake-on-lan been tested?
+
+3. xxx_start_rx() (called via stmmac_start_rx()) sets RE along with
+   starting the requested queue.
+
+   This is called in two places:
+
+3.1. stmmac_test_flowctrl(). It looks to me like this needs the link
+     to already be up, which means that RE must already be set. Note
+     that the call to stmmac_stop_rx() does not clear RE.
+
+3.2. stmmac_start_rx_dma() which has two callers.
+
+3.2.1. stmmac_start_all_dma(). This is called from:
+
+3.2.1.1. the end of stmmac_hw_setup(), which has already called
+         stmmac_mac_set() which would've set the RE bit. Same
+         arguments as for 1.2 for why this is wrong.
+
+3.2.2. the end of stmmac_enable_rx_queue(), which is called from
+       stmmac_xdp_enable_pool(). Very similar to 3.1 above.
+
+TE seems to be a very similar story with the exception of xxx_pmt(),
+except the functions are "tx" rather than "rx".
+
+So, my plan with regard to RE is:
+
+1. Add phylink_start() and phylink_stop() into stmmac_xdp_open()
+   and stmmac_xdp_release() to the link is properly managed.
+
+2. Remove setting RE from xxx_start_rx().
+
+3. Remove stmmac_mac_set(, true) from everywhere except
+   stmmac_mac_link_up().
+
+4. Remove stmmac_mac_set(, false) from stmmac_release(). This has
+   already called phylink_stop(), which will have synchronously called
+   stmmac_mac_link_down().
+
+5. With (1) addressed stmmac_mac_set(, false) and netif_carrier_off()
+   both become redundant in stmmac_xdp_release().
+
+6. Remove stmmac_stop_all_dma() and stmmac_mac_set(, false) in
+   stmmac_dvr_remove(). Not only is this inherently racy (the network
+   device is *still* *published* *to* *userspace* here, but one of
+   the jobs unregister_netdev() does is to take the network device
+   down before unregistering - in other words, .ndo_stop() will
+   have been called and completed before this returns, which will have
+   the effect of calling stmmac_mac_link_down() (which will call
+   stmmac_mac_set(, false), and stmmac_release() will have already
+   called stmmac_stop_all_dma().
+
+(6) is a frequent programming mistake that I see in lots of network
+drivers. It seems most people assume that unregister_netdev() does
+nothing, and they need to manually take stop the MAC and take down the
+link. :(
+
+I'm going to leave xxx_pmt() alone for the moment as although that's
+questionable, I think feedback from people using WoL is necessary.
+
 -- 
-2.39.5
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
