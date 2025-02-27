@@ -1,150 +1,93 @@
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
+Received: from mx24lb.world4you.com (mx24lb.world4you.com [81.19.149.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6703427127A
-	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 21:33:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446931A9B2A;
+	Thu, 27 Feb 2025 21:42:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740691983; cv=none; b=nT6WjAUDVmcwQgKKQgtzMrnTYaLJ7qrFx/JrSINvs4xY1rwYpNwPUcPO4CvoGhVNMi01K6Doj6NL0162TfWNoxc9LdmRYOVI3BqB+0qys4kxxeSC23f8xjeS4FHW2mB+qBUTF6Ve1OEg0ADpwT9u2Mz6PygzDaPlPreBH5QXxUo=
+	t=1740692539; cv=none; b=LOiOrOT6ystA5/6w/T0ci98CJzIVq+h10/LKo5Gd/1Bfali1dF4rMp6AZ6bFGU/s0NISQpe66mSVOA0IBJIOJiIdspCxZQ+OFytJ0lTjGrs+m35g+zTxAzRXOJgwsbzmFA2vSygwzrNN/pR5QIM8t4LBkDYPjcgWCeUngh3H2EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740691983; c=relaxed/simple;
-	bh=O78laQRCugQQJVm33qwQw6Vm1O71zPoAwdwqZY3zw2Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gui3EPO9ZGHHdKLHRglcnghFG+dzDrIw8BrQFsnRrwkJGcvCRbNYCXnTrKur0go2ax1Glkf/7yPrYlOx9pwesoV0vg7+WdON46H8k89GJlLx5+2rO6Y6C+fbCBP/RURWqA1ET7RoAz+2bUSgAOwMuOrmh6iDHa2BwpD1YoqNodI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=rv40QSHI; arc=none smtp.client-ip=202.36.163.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+	s=arc-20240116; t=1740692539; c=relaxed/simple;
+	bh=ZgLkTQpi46zVF4g45Rb7vFFSn7wnrwrrKVkZSld/DCk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SvKeU+qKK1MspKeWjzG2EJMQxaYvzSfi+sZujMjrnan6S/jEG1Mrq9ku3HHRrmYUXX+L1eFyUFlbPKjdb5wOp+CdyXP0UyaV2C0CuFbxHkax3rSa7IL1zLbGTxUx4ZU+0QpXiRejBQNWC69Z1NCsAhGeXi0m0lM3VylQ0mma+Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=nxNnjZ6h; arc=none smtp.client-ip=81.19.149.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="rv40QSHI"
-Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 17F3D2C066F;
-	Fri, 28 Feb 2025 10:32:55 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1740691975;
-	bh=cU5KnnGteSBBNh2MJua3cK4JTvnCQNhda1NWxrZBi1I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rv40QSHIm6CXLc0HWvjwWiGhQKKL4uEGiaH+MSmEsgsLTRCl/Mye1fxfojYebNTXp
-	 PS1if9IU4jH8A1qkgMc1ppDU8Udy/yOsiouWz88r6L4J0y1rqlAG6cp8Zr4sMhvnxV
-	 MkrLe4IPVSKWXWxiX0bsORmEu/H8//u6YCTkcTxFtzmql46DlAO23AALRywYmW1Q9M
-	 Ee8OFPyCi8cykxL8/a565igqqimvrsck/4wlnYtBHIEvCEEXQh1+EQgBbUakSklRS4
-	 l1ZhiguU0EGrrcXLOJfu87QEkx4NqpwWQ0FMDlsDQWtM/KSuYanZ6t9d64waPMg7cn
-	 5/Tg45I3IyGIw==
-Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B67c0da060000>; Fri, 28 Feb 2025 10:32:54 +1300
-Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
-	by pat.atlnz.lc (Postfix) with ESMTP id DE7B113ED4A;
-	Fri, 28 Feb 2025 10:32:54 +1300 (NZDT)
-Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-	id DC257280AFD; Fri, 28 Feb 2025 10:32:54 +1300 (NZDT)
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	tsbogend@alpha.franken.de,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	sander@svanheule.net,
-	markus.stockhausen@gmx.de
-Cc: devicetree@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [PATCH net-next v8 2/2] mips: dts: realtek: Add MDIO controller
-Date: Fri, 28 Feb 2025 10:32:48 +1300
-Message-ID: <20250227213248.2010986-3-chris.packham@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250227213248.2010986-1-chris.packham@alliedtelesis.co.nz>
-References: <20250227213248.2010986-1-chris.packham@alliedtelesis.co.nz>
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="nxNnjZ6h"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=NXcp1FiqxMKRjKgh60iR4pFXneo9a1uhMTjZAaxEfm0=; b=nxNnjZ6hbxsWBoU0izOH/n1fJp
+	rrQKHMkTDk+5mX1fxI07czCN/4RiRq6VFfn2yKEO2DBulYz8p1Rt3AFy7m+LjosjIJ3JKs0380Cb6
+	KoLeAtDOuokIhOk1J5A5e6UiEL3xj0VjLCSrAsKpyr+pkVVa2ob528VKxxIePcxD6ADM=;
+Received: from [88.117.55.1] (helo=[10.0.0.160])
+	by mx24lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tnkrC-000000000l3-2Rs8;
+	Thu, 27 Feb 2025 21:51:46 +0100
+Message-ID: <1ea6a1df-357d-4d00-828b-98345254b4b2@engleder-embedded.com>
+Date: Thu, 27 Feb 2025 21:51:43 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=ccpxrWDM c=1 sm=1 tr=0 ts=67c0da06 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=T2h4t0Lz3GQA:10 a=Vd_wJYyKU8c0xNhbhIwA:9 a=3ZKOabzyN94A:10
-X-SEG-SpamProfiler-Score: 0
-x-atlnz-ls: pat
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] caif_virtio: fix wrong pointer check in cfv_probe()
+To: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jiri Pirko <jiri@resnulli.us>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Rusty Russell <rusty@rustcorp.com.au>, Erwan Yvin
+ <erwan.yvin@stericsson.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+ Andrew Lunn <andrew+netdev@lunn.ch>
+References: <20250227184716.4715-1-v.shevtsov@mt-integration.ru>
+Content-Language: en-US
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <20250227184716.4715-1-v.shevtsov@mt-integration.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AV-Do-Run: Yes
 
-Add a device tree node for the MDIO controller on the RTL9300 chips.
+On 27.02.25 19:46, Vitaliy Shevtsov wrote:
+> del_vqs() frees virtqueues, therefore cfv->vq_tx pointer should be checked
+> for NULL before calling it, not cfv->vdev. Also the current implementation
+> is redundant because the pointer cfv->vdev is dereferenced before it is
+> checked for NULL.
+> 
+> Fix this by checking cfv->vq_tx for NULL instead of cfv->vdev before
+> calling del_vqs().
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Svace.
+> 
+> Fixes: 0d2e1a2926b1 ("caif_virtio: Introduce caif over virtio")
+> Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+> ---
+>   drivers/net/caif/caif_virtio.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/caif/caif_virtio.c b/drivers/net/caif/caif_virtio.c
+> index 7fea00c7ca8a..c60386bf2d1a 100644
+> --- a/drivers/net/caif/caif_virtio.c
+> +++ b/drivers/net/caif/caif_virtio.c
+> @@ -745,7 +745,7 @@ static int cfv_probe(struct virtio_device *vdev)
+>   
+>   	if (cfv->vr_rx)
+>   		vdev->vringh_config->del_vrhs(cfv->vdev);
+> -	if (cfv->vdev)
+> +	if (cfv->vq_tx)
+>   		vdev->config->del_vqs(cfv->vdev);
+>   	free_netdev(netdev);
+>   	return err;
 
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
----
-
-Notes:
-    Changes in v8:
-    - None
-    Changes in v7:
-    - None
-    Changes in v6:
-    - None
-    Changes in v5:
-    - Add reg property to mdio-controller
-    Changes in v4:
-    - Have a single mdio-controller with the individual buses as child
-      nodes
-    Changes in v3:
-    - None
-    Changes in v2:
-    - None
-
- arch/mips/boot/dts/realtek/rtl930x.dtsi | 33 +++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/arch/mips/boot/dts/realtek/rtl930x.dtsi b/arch/mips/boot/dts=
-/realtek/rtl930x.dtsi
-index f2e57ea3a60c..101bab72a95f 100644
---- a/arch/mips/boot/dts/realtek/rtl930x.dtsi
-+++ b/arch/mips/boot/dts/realtek/rtl930x.dtsi
-@@ -69,6 +69,39 @@ i2c1: i2c@388 {
- 			#size-cells =3D <0>;
- 			status =3D "disabled";
- 		};
-+
-+		mdio_controller: mdio-controller@ca00 {
-+			compatible =3D "realtek,rtl9301-mdio";
-+			reg =3D <0xca00 0x200>;
-+			#address-cells =3D <1>;
-+			#size-cells =3D <0>;
-+			status =3D "disabled";
-+
-+			mdio0: mdio-bus@0 {
-+				reg =3D <0>;
-+				#address-cells =3D <1>;
-+				#size-cells =3D <0>;
-+				status =3D "disabled";
-+			};
-+			mdio1: mdio-bus@1 {
-+				reg =3D <1>;
-+				#address-cells =3D <1>;
-+				#size-cells =3D <0>;
-+				status =3D "disabled";
-+			};
-+			mdio2: mdio-bus@2 {
-+				reg =3D <2>;
-+				#address-cells =3D <1>;
-+				#size-cells =3D <0>;
-+				status =3D "disabled";
-+			};
-+			mdio3: mdio-bus@3 {
-+				reg =3D <3>;
-+				#address-cells =3D <1>;
-+				#size-cells =3D <0>;
-+				status =3D "disabled";
-+			};
-+		};
- 	};
-=20
- 	soc: soc@18000000 {
---=20
-2.48.1
-
+Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
