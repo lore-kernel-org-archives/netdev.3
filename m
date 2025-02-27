@@ -1,116 +1,156 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mail-m3289.qiye.163.com (mail-m3289.qiye.163.com [220.197.32.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA70322D7A5;
-	Thu, 27 Feb 2025 11:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3F8137E;
+	Thu, 27 Feb 2025 11:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740655118; cv=none; b=Q1pko3WYiDVPWQ0w60x0DVc6vLCGSf1p5xAd7DhwX7dNlwbFqptiZQdraTgP1bSnp5XHaiHNzpEGtklt8m+1Rw1/z3vtMAMEB//lEcuNDlHYfvcl3nlQMNMoaOM209CRw7IyN8lG/Mt10w160GvMMVblCIho42W2RHiF+g7aMLE=
+	t=1740655342; cv=none; b=DsM6lSlwV5+/MMDQOVqS5Z0n9OmIxYe4bOhw7wmahh/uwetHFZmNQRRHapUuw/SZLFY/Si7UiEcd73h80mD44wdXi7S8Q4Nrgi/GFSmkWKHC91YgqKCBJ3skhfUBzgzO1wo7xk93MdwbEJNoLGv8SHYlr4iUiCVXqdWvGNcYA+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740655118; c=relaxed/simple;
-	bh=IDZov/Dczn2f/ieNl0tUIoh9CnexHmfb2x1sTLNrFZA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Sw8D+T4XcqP5S8TJNDWpOa690jhJsF2A8pF1LUZaiDU0O6lTbRMfb1Zhy5p3WFpp5jFPteC+NGElpx9sa8c8f/PtZXlsW+UlMEu/QyDUPqnpS+H+GMHJJ22fdnUgJCbr3K6CgKWL3Q/xNTKJzDLo2oT259umxzkhL2G7nSzilvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bZqxDYmG; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1740655342; c=relaxed/simple;
+	bh=Iz86wunlX8HUmL1XH3Sb+R8oMx3eu/od7nb4OIXVqX8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tG+yEgwHUktaHMkJrJPfAU54SiYmxlKdu4Bcm6ZUZBFxWYfISoJwyithNu3ryWPhxXOP+NP7UyyvzIWJrdq1uiF3OHWm2ag+f0H8qGjHImlOnXdqYG8WNHursILSOie5DjrUVITCvcYxfCeRrODoejtSMiNkRJ+nCMzhwUakDqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=j9uRAdCL; arc=none smtp.client-ip=220.197.32.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bZqxDYmG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740655117; x=1772191117;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=IDZov/Dczn2f/ieNl0tUIoh9CnexHmfb2x1sTLNrFZA=;
-  b=bZqxDYmGd8ofzhohhdB4mvgtrSgFqaVnT6LO+Pwl+Cw0mq4pzB4iyfCQ
-   P3l3X7C8LYYt/tGhqB9Mx8bdQg+rZn2Of5R9V6beds1xDzk8repbR2UAN
-   MGkGG/1hCQvxAOKW7+0PwyAc7naSgzlEVnT2ujba6H0dnbQrQ11RFv98S
-   134PJeRAQ7LSGNh51tGCjLuVMelXklr5eONj08WTtxl6vpnjnP9QJ8hpf
-   xjUvBxocNzoV0PTX67S8JW07mLEDWIGuE+gh5eh+8muECw6qTDD/Bf8PK
-   oLf55cH0qC25/1wMbDI3q+ZZUzbPfJdQs4ZFcH+mA9AsmeXEoUj+mqc15
-   w==;
-X-CSE-ConnectionGUID: Gjl+TKEYTnm8RlwIKCadJw==
-X-CSE-MsgGUID: S6HeA2jpSQWfUP8JkTrgXg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="58955619"
-X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; 
-   d="scan'208";a="58955619"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 03:18:36 -0800
-X-CSE-ConnectionGUID: CyeTxPjwSHeHLctx7MMYQw==
-X-CSE-MsgGUID: 9QUOdIUaRUO9MO1mKfn1Wg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; 
-   d="scan'208";a="117172376"
-Received: from choongyo-mobl.gar.corp.intel.com (HELO [10.247.81.210]) ([10.247.81.210])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 03:18:28 -0800
-Message-ID: <8395554a-4aaf-45fb-a89d-34f5b10255fb@linux.intel.com>
-Date: Thu, 27 Feb 2025 19:18:26 +0800
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="j9uRAdCL"
+Received: from localhost.localdomain (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id c65b3753;
+	Thu, 27 Feb 2025 19:06:54 +0800 (GMT+08:00)
+From: Kever Yang <kever.yang@rock-chips.com>
+To: heiko@sntech.de
+Cc: linux-rockchip@lists.infradead.org,
+	Kever Yang <kever.yang@rock-chips.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	devicetree@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Rob Herring <robh@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	David Wu <david.wu@rock-chips.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 1/3] dt-bindings: net: Add support for rk3562 dwmac
+Date: Thu, 27 Feb 2025 19:06:50 +0800
+Message-Id: <20250227110652.2342729-1-kever.yang@rock-chips.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v8 4/6] stmmac: intel: configure SerDes according
- to the interface mode
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Simon Horman <horms@kernel.org>, Jose Abreu <joabreu@synopsys.com>,
- Jose Abreu <Jose.Abreu@synopsys.com>,
- David E Box <david.e.box@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H . Peter Anvin" <hpa@zytor.com>,
- Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
- David E Box <david.e.box@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Jiawen Wu <jiawenwu@trustnetic.com>,
- Mengyuan Lou <mengyuanlou@net-swift.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, Hans de Goede <hdegoede@redhat.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Serge Semin <fancer.lancer@gmail.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- platform-driver-x86@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-References: <20250226074837.1679988-1-yong.liang.choong@linux.intel.com>
- <20250226074837.1679988-5-yong.liang.choong@linux.intel.com>
- <Z782i67tlpj6d57m@shell.armlinux.org.uk>
-Content-Language: en-US
-From: Choong Yong Liang <yong.liang.choong@linux.intel.com>
-In-Reply-To: <Z782i67tlpj6d57m@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGUMdTFYaGB0fTkgYQkwYTB5WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+X-HM-Tid: 0a9547168b4f03afkunmc65b3753
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NBA6CQw6LTINIw0LKBISDCwI
+	GkMwFDNVSlVKTE9LTU5PT0pNSUxMVTMWGhIXVRAeDR4JVQIaFRw7CRQYEFYYExILCFUYFBZFWVdZ
+	EgtZQVlOQ1VJSVVMVUpKT1lXWQgBWUFJTUpNNwY+
+DKIM-Signature:a=rsa-sha256;
+	b=j9uRAdCLAZBHyRBM1IUi9c3b2iIQOdTnuvJYVQRSibTDS2vPxDZgM9Kh5jNR7JJhEOVr6gv0fcG8RyEpo1XI1DybHcqnXSDVGdsAQod763cpywfJrLJvxipXeODZZVgniCX3amL7w9YMfU01llaOFXSsf4SwYRnFxIFkO7z45Ow=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=xV+WNQl8ROCA2e9xUBpBg/FLDkWJ/IRVuqOd98DcSZE=;
+	h=date:mime-version:subject:message-id:from;
 
+Add a rockchip,rk3562-gmac compatible for supporting the 2 gmac
+devices on the rk3562.
+rk3562 only has 4 clocks availabl for gmac module.
 
+Signed-off-by: Kever Yang <kever.yang@rock-chips.com>
+---
 
-On 26/2/2025 11:43 pm, Russell King (Oracle) wrote:
-> On Wed, Feb 26, 2025 at 03:48:35PM +0800, Choong Yong Liang wrote:
->> diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
->> index 6d2aa77ea963..af22a11c2b8a 100644
->> --- a/include/linux/stmmac.h
->> +++ b/include/linux/stmmac.h
->> @@ -236,6 +236,10 @@ struct plat_stmmacenet_data {
->>   	int (*serdes_powerup)(struct net_device *ndev, void *priv);
->>   	void (*serdes_powerdown)(struct net_device *ndev, void *priv);
->>   	void (*speed_mode_2500)(struct net_device *ndev, void *priv);
->> +	int (*mac_finish)(struct net_device *ndev,
->> +			  void *priv,
->> +			  unsigned int mode,
->> +			  phy_interface_t interface);
->>   	void (*ptp_clk_freq_config)(struct stmmac_priv *priv);
->>   	int (*init)(struct platform_device *pdev, void *priv);
->>   	void (*exit)(struct platform_device *pdev, void *priv);
-> 
-> This should be part of patch 5, and the order of patches 4 and 5
-> reversed.
-> 
-> The subject line should also be "net: stmmac: ..."
-> 
-Thank you for your guidance. I will adjust the patch sequence as suggested 
-and update the subject line to "net: stmmac: ...". I appreciate your 
-attention to detail.
+Changes in v2:
+- Fix schema entry and add clocks minItem change
+
+ .../bindings/net/rockchip-dwmac.yaml          | 23 +++++++++++++++----
+ .../devicetree/bindings/net/snps,dwmac.yaml   |  1 +
+ 2 files changed, 20 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
+index f8a576611d6c..81ddad924e35 100644
+--- a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
+@@ -24,6 +24,7 @@ select:
+           - rockchip,rk3366-gmac
+           - rockchip,rk3368-gmac
+           - rockchip,rk3399-gmac
++          - rockchip,rk3562-gmac
+           - rockchip,rk3568-gmac
+           - rockchip,rk3576-gmac
+           - rockchip,rk3588-gmac
+@@ -32,9 +33,6 @@ select:
+   required:
+     - compatible
+ 
+-allOf:
+-  - $ref: snps,dwmac.yaml#
+-
+ properties:
+   compatible:
+     oneOf:
+@@ -52,6 +50,7 @@ properties:
+               - rockchip,rv1108-gmac
+       - items:
+           - enum:
++              - rockchip,rk3562-gmac
+               - rockchip,rk3568-gmac
+               - rockchip,rk3576-gmac
+               - rockchip,rk3588-gmac
+@@ -59,7 +58,7 @@ properties:
+           - const: snps,dwmac-4.20a
+ 
+   clocks:
+-    minItems: 5
++    minItems: 4
+     maxItems: 8
+ 
+   clock-names:
+@@ -117,6 +116,22 @@ required:
+ 
+ unevaluatedProperties: false
+ 
++allOf:
++  - $ref: snps,dwmac.yaml#
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: rockchip,rk3562-gmac
++    then:
++      properties:
++        clocks:
++          minItems: 4
++    else:
++      properties:
++        clocks:
++          minItems: 5
++
+ examples:
+   - |
+     #include <dt-bindings/interrupt-controller/arm-gic.h>
+diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+index 91e75eb3f329..97d42ab8d374 100644
+--- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+@@ -82,6 +82,7 @@ properties:
+         - rockchip,rk3328-gmac
+         - rockchip,rk3366-gmac
+         - rockchip,rk3368-gmac
++        - rockchip,rk3562-gmac
+         - rockchip,rk3576-gmac
+         - rockchip,rk3588-gmac
+         - rockchip,rk3399-gmac
+-- 
+2.25.1
+
