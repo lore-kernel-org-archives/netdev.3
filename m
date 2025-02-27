@@ -1,339 +1,116 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5218325E81F;
-	Thu, 27 Feb 2025 14:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FFB25E834
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 14:56:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740668167; cv=none; b=E8UBWsjgJKupzxz3hWs+LOEVNgqb1u3L4IMhQZeAtU45Q0Pvoc9iluqfkOIstJ9LkGILvL7Gs9VM3Hge/dslCmJKA34f7xHtGD91ERcf2Wk2iu7USDibF3WULHOlATI/Y3fnPoqex5337KcOdbyQXxByJfE+M9vOFCH7bVavMno=
+	t=1740668187; cv=none; b=TLVJUlIemHrAiENEZUHAfk8k+6x4cQXMHn7F1JXH6hd1LkFLoiE5/CUmVrcaMVxmH8yJlgHt797kMU4Os4T751jEfrtpnN06b5q11+8VJCBQ1t2+X5K9jgCdB3VclexqenD1XkCr3vaGw9mJ8rE9dTemLvKza6T6K1xD8QeboEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740668167; c=relaxed/simple;
-	bh=TqnvgyMWkrYEi2Qor6A2qUjZkniGUlY4nJeV8q2ZO/k=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XTxDr0ccDAykEhVqbo/LVDMM19J9LAqcEhdyyOarg8hXQI3mXDbD8hRC5gp8eO9sZinKI6/4nlFohSU2JtcuE1TilcAggBGdXCwJH4EytrC5aIwQbm5QtXVxiKCbwwp1qwNq1S4FqwsgTYRNgbFvu/tKCHYt72p1lE8z2mAxWtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IbW+fQ3v; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1740668187; c=relaxed/simple;
+	bh=K5nG0KeFbFew0xl//ZEBCHt+dzwaJNKp2itJxE+tTOo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R1IQBXHAHNZMq741/7Auy9AeeYEc6ot8Akizjz0sFsKcc66kL4nl7EFt944SJ11R26gXdYO+kcbI2SVx2zafgZ5liLsf6IgdOTq00QSKhY8e5ZFZ6zTPxc7KEQwlxCurXcl0lhyqw1OTm5mWDUOX61KX8lONdPyZhBGef5w+A3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=ZH5nw2Hm; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IbW+fQ3v"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740668166; x=1772204166;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=TqnvgyMWkrYEi2Qor6A2qUjZkniGUlY4nJeV8q2ZO/k=;
-  b=IbW+fQ3vwjyk7VTtcBG/dLjXUXj2bD6F8wu41M6yH31uYsFxlnEItQxq
-   vNJCl6gT/K+vVZna6ZCQqMOhsk53NjgeLNAOWFUu6mC4eRL7XiDi/cPTY
-   9qN1kJIT5WPyPpEY3/yjeKtAO3IBJZs0gr/mI9N7YLqUYsQBy84pxblkm
-   qJAolXkhnxhubaPNteCedUQnFwAkiQyFALkBGF/DCK+q5H3U7OHzl+/hR
-   JRjGdDaH59DomUjnwkFYNmsxSg+N2bK8XwI46c3isTQPMkDCi1qYAo0FP
-   a+dUd1Ej9klx2NLyw5UoMg6TPA7FvYy6ONHHVF2HtAXo/vG4Rygx0cUzS
-   g==;
-X-CSE-ConnectionGUID: RTU2AiicQ1CAmz7h5p4apw==
-X-CSE-MsgGUID: CSVmYFcUTkmQC8fGA3MS6g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11358"; a="41480555"
-X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
-   d="scan'208";a="41480555"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 06:56:05 -0800
-X-CSE-ConnectionGUID: WEhk7NGuQqmeUWiW5hWCPg==
-X-CSE-MsgGUID: jE2xY6IBR6mEbseQ/OJL9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
-   d="scan'208";a="117541131"
-Received: from brc05.iind.intel.com (HELO brc05..) ([10.190.162.156])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 06:56:01 -0800
-From: Tushar Vyavahare <tushar.vyavahare@intel.com>
-To: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	bjorn@kernel.org,
-	magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	jonathan.lemon@gmail.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	tirthendu.sarkar@intel.com,
-	tushar.vyavahare@intel.com
-Subject: [PATCH bpf-next v2 2/2] selftests/xsk: Add tail adjustment tests and support check
-Date: Thu, 27 Feb 2025 14:27:37 +0000
-Message-Id: <20250227142737.165268-3-tushar.vyavahare@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250227142737.165268-1-tushar.vyavahare@intel.com>
-References: <20250227142737.165268-1-tushar.vyavahare@intel.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="ZH5nw2Hm"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=JZ0rC//sE06hPYVngKetF+Xs1DKrHPyHj2XylN4/E1I=; b=ZH5nw2HmODeAQoGF5DwatfyRge
+	+AUj4ZofsP5hrrQshUdx0NTfcOTcd0tqxPCrtp8XyTAidSTzSozayjo2LiC0BN9fB8BWk8CY8ZHKs
+	11tHep8i8RET06cu+C1Bi7sMZ4F9/O2toXvO+0tdoGMg8QPJYBQOe1FYgQW3zvab1IPI363kK57TP
+	kPC3nL/5VU1GGO8Ur+zAH0nT0pp3kB16gwYYMR2YEUHWeZalIO3BovKycBe+bkMg3XKVwynxoSw1v
+	E+IAuGrytIT/0lY/KRfWfujqysevSnma6znK3JlmuO0u3z0kPf/CWLKPTpBHhN6DWuHYCmnEWKPJJ
+	J6IIAaYQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57152)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tnfJ8-0007Un-1W;
+	Thu, 27 Feb 2025 14:56:14 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tnfJ5-0008Dz-0M;
+	Thu, 27 Feb 2025 14:56:11 +0000
+Date: Thu, 27 Feb 2025 14:56:10 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	linux-amlogic@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next 10/11] net: stmmac: meson: switch to use
+ set_clk_tx_rate() hook
+Message-ID: <Z8B9Cie3nFVY7mMS@shell.armlinux.org.uk>
+References: <Z8AtX-wyPal1auVO@shell.armlinux.org.uk>
+ <E1tna0z-0052tN-O1@rmk-PC.armlinux.org.uk>
+ <2198e689-ed38-4842-9964-dca42468088a@linaro.org>
+ <Z8B4OSbY954Zy37S@shell.armlinux.org.uk>
+ <f21edb2c-e49d-4448-a25d-fb75f44c902a@linaro.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f21edb2c-e49d-4448-a25d-fb75f44c902a@linaro.org>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Introduce tail adjustment functionality in xskxceiver using
-bpf_xdp_adjust_tail(). Add `xsk_xdp_adjust_tail` to modify packet sizes
-and drop unmodified packets. Implement `is_adjust_tail_supported` to check
-helper availability. Develop packet resizing tests, including shrinking
-and growing scenarios, with functions for both single-buffer and
-multi-buffer cases. Update the test framework to handle various scenarios
-and adjust MTU settings. These changes enhance the testing of packet tail
-adjustments, improving AF_XDP framework reliability.
+On Thu, Feb 27, 2025 at 03:38:53PM +0100, Neil Armstrong wrote:
+> On 27/02/2025 15:35, Russell King (Oracle) wrote:
+> > On Thu, Feb 27, 2025 at 03:18:22PM +0100, Neil Armstrong wrote:
+> > > Hi,
+> > > 
+> > > On 27/02/2025 10:17, Russell King (Oracle) wrote:
+> > > > Switch from using the fix_mac_speed() hook to set_clk_tx_rate() to
+> > > > manage the transmit clock.
+> > > > 
+> > > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > > > ---
+> > > >    drivers/net/ethernet/stmicro/stmmac/dwmac-meson.c | 9 ++++++---
+> > > >    1 file changed, 6 insertions(+), 3 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-meson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-meson.c
+> > > > index b115b7873cef..07c504d07604 100644
+> > > > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-meson.c
+> > > > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-meson.c
+> > > > @@ -22,9 +22,10 @@ struct meson_dwmac {
+> > > >    	void __iomem	*reg;
+> > > >    };
+> > > > -static void meson6_dwmac_fix_mac_speed(void *priv, int speed, unsigned int mode)
+> > > > +static int meson6_dwmac_set_clk_tx_rate(void *bsp_priv, struct clk *clk_tx_i,
+> > > > +					phy_interface_t interface, int speed)
+> > > 
+> > > You can keep priv as first argument name and remove the next changes
+> > 
+> > I *can* but I don't want to. Inside the bulk of the stmmac driver,
+> > "priv" is used with struct stmmac_priv. "plat_dat" is used with
+> > struct plat_stmmacenet_data.
+> 
+> Right, it's still an unrelated change in this case.
 
-Signed-off-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
----
- .../selftests/bpf/progs/xsk_xdp_progs.c       |  48 +++++++
- tools/testing/selftests/bpf/xsk_xdp_common.h  |   1 +
- tools/testing/selftests/bpf/xskxceiver.c      | 118 +++++++++++++++++-
- tools/testing/selftests/bpf/xskxceiver.h      |   2 +
- 4 files changed, 167 insertions(+), 2 deletions(-)
+This is a new method, even though it happens to have mostly the same
+body. All instances of this new method use "bsp_priv" for this argument,
+therefore it is consistent.
 
-diff --git a/tools/testing/selftests/bpf/progs/xsk_xdp_progs.c b/tools/testing/selftests/bpf/progs/xsk_xdp_progs.c
-index ccde6a4c6319..2e8e2faf17e0 100644
---- a/tools/testing/selftests/bpf/progs/xsk_xdp_progs.c
-+++ b/tools/testing/selftests/bpf/progs/xsk_xdp_progs.c
-@@ -4,6 +4,8 @@
- #include <linux/bpf.h>
- #include <bpf/bpf_helpers.h>
- #include <linux/if_ether.h>
-+#include <linux/ip.h>
-+#include <linux/errno.h>
- #include "xsk_xdp_common.h"
- 
- struct {
-@@ -70,4 +72,50 @@ SEC("xdp") int xsk_xdp_shared_umem(struct xdp_md *xdp)
- 	return bpf_redirect_map(&xsk, idx, XDP_DROP);
- }
- 
-+SEC("xdp.frags") int xsk_xdp_adjust_tail(struct xdp_md *xdp)
-+{
-+	__u32 buff_len, curr_buff_len;
-+	int ret;
-+
-+	buff_len = bpf_xdp_get_buff_len(xdp);
-+	if (buff_len == 0)
-+		return XDP_DROP;
-+
-+	ret = bpf_xdp_adjust_tail(xdp, count);
-+	if (ret < 0) {
-+		/* Handle unsupported cases */
-+		if (ret == -EOPNOTSUPP) {
-+			/* Set count to -EOPNOTSUPP to indicate to userspace that this case is
-+			 * unsupported
-+			 */
-+			count = -EOPNOTSUPP;
-+			return bpf_redirect_map(&xsk, 0, XDP_DROP);
-+		}
-+
-+		return XDP_DROP;
-+	}
-+
-+	curr_buff_len = bpf_xdp_get_buff_len(xdp);
-+	if (curr_buff_len != buff_len + count)
-+		return XDP_DROP;
-+
-+	if (curr_buff_len > buff_len) {
-+		__u32 *pkt_data = (void *)(long)xdp->data;
-+		__u32 len, words_to_end, seq_num;
-+
-+		len = curr_buff_len - PKT_HDR_ALIGN;
-+		words_to_end = len / sizeof(*pkt_data) - 1;
-+		seq_num = words_to_end;
-+
-+		/* Convert sequence number to network byte order. Store this in the last 4 bytes of
-+		 * the packet. Use 'count' to determine the position at the end of the packet for
-+		 * storing the sequence number.
-+		 */
-+		seq_num = __constant_htonl(words_to_end);
-+		bpf_xdp_store_bytes(xdp, curr_buff_len - count, &seq_num, sizeof(seq_num));
-+	}
-+
-+	return bpf_redirect_map(&xsk, 0, XDP_DROP);
-+}
-+
- char _license[] SEC("license") = "GPL";
-diff --git a/tools/testing/selftests/bpf/xsk_xdp_common.h b/tools/testing/selftests/bpf/xsk_xdp_common.h
-index 5a6f36f07383..45810ff552da 100644
---- a/tools/testing/selftests/bpf/xsk_xdp_common.h
-+++ b/tools/testing/selftests/bpf/xsk_xdp_common.h
-@@ -4,6 +4,7 @@
- #define XSK_XDP_COMMON_H_
- 
- #define MAX_SOCKETS 2
-+#define PKT_HDR_ALIGN (sizeof(struct ethhdr) + 2) /* Just to align the data in the packet */
- 
- struct xdp_info {
- 	__u64 count;
-diff --git a/tools/testing/selftests/bpf/xskxceiver.c b/tools/testing/selftests/bpf/xskxceiver.c
-index d60ee6a31c09..ee196b638662 100644
---- a/tools/testing/selftests/bpf/xskxceiver.c
-+++ b/tools/testing/selftests/bpf/xskxceiver.c
-@@ -524,6 +524,8 @@ static void __test_spec_init(struct test_spec *test, struct ifobject *ifobj_tx,
- 	test->nb_sockets = 1;
- 	test->fail = false;
- 	test->set_ring = false;
-+	test->adjust_tail = false;
-+	test->adjust_tail_support = false;
- 	test->mtu = MAX_ETH_PKT_SIZE;
- 	test->xdp_prog_rx = ifobj_rx->xdp_progs->progs.xsk_def_prog;
- 	test->xskmap_rx = ifobj_rx->xdp_progs->maps.xsk;
-@@ -992,6 +994,31 @@ static bool is_metadata_correct(struct pkt *pkt, void *buffer, u64 addr)
- 	return true;
- }
- 
-+static bool is_adjust_tail_supported(struct xsk_xdp_progs *skel_rx)
-+{
-+	struct bpf_map *data_map;
-+	int value = 0;
-+	int key = 0;
-+	int ret;
-+
-+	data_map = bpf_object__find_map_by_name(skel_rx->obj, "xsk_xdp_.bss");
-+	if (!data_map || !bpf_map__is_internal(data_map)) {
-+		ksft_print_msg("Error: could not find bss section of XDP program\n");
-+		exit_with_error(errno);
-+	}
-+
-+	ret = bpf_map_lookup_elem(bpf_map__fd(data_map), &key, &value);
-+	if (ret) {
-+		ksft_print_msg("Error: bpf_map_lookup_elem failed with error %d\n", ret);
-+		return false;
-+	}
-+
-+	/* Set the 'count' variable to -EOPNOTSUPP in the XDP program if the adjust_tail helper is
-+	 * not supported. Skip the adjust_tail test case in this scenario.
-+	 */
-+	return value != -EOPNOTSUPP;
-+}
-+
- static bool is_frag_valid(struct xsk_umem_info *umem, u64 addr, u32 len, u32 expected_pkt_nb,
- 			  u32 bytes_processed)
- {
-@@ -1768,8 +1795,13 @@ static void *worker_testapp_validate_rx(void *arg)
- 
- 	if (!err && ifobject->validation_func)
- 		err = ifobject->validation_func(ifobject);
--	if (err)
--		report_failure(test);
-+
-+	if (err) {
-+		if (test->adjust_tail && !is_adjust_tail_supported(ifobject->xdp_progs))
-+			test->adjust_tail_support = false;
-+		else
-+			report_failure(test);
-+	}
- 
- 	pthread_exit(NULL);
- }
-@@ -2516,6 +2548,84 @@ static int testapp_hw_sw_max_ring_size(struct test_spec *test)
- 	return testapp_validate_traffic(test);
- }
- 
-+static int testapp_xdp_adjust_tail(struct test_spec *test, int count)
-+{
-+	struct xsk_xdp_progs *skel_rx = test->ifobj_rx->xdp_progs;
-+	struct xsk_xdp_progs *skel_tx = test->ifobj_tx->xdp_progs;
-+	struct bpf_map *data_map;
-+	int key = 0;
-+
-+	test_spec_set_xdp_prog(test, skel_rx->progs.xsk_xdp_adjust_tail,
-+			       skel_tx->progs.xsk_xdp_adjust_tail,
-+			       skel_rx->maps.xsk, skel_tx->maps.xsk);
-+
-+	data_map = bpf_object__find_map_by_name(skel_rx->obj, "xsk_xdp_.bss");
-+	if (!data_map || !bpf_map__is_internal(data_map)) {
-+		ksft_print_msg("Error: could not find bss section of XDP program\n");
-+		return TEST_FAILURE;
-+	}
-+
-+	if (bpf_map_update_elem(bpf_map__fd(data_map), &key, &count, BPF_ANY)) {
-+		ksft_print_msg("Error: could not update count element\n");
-+		return TEST_FAILURE;
-+	}
-+
-+	return testapp_validate_traffic(test);
-+}
-+
-+static int testapp_adjust_tail(struct test_spec *test, u32 value, u32 pkt_len)
-+{
-+	u32 pkt_cnt = DEFAULT_BATCH_SIZE;
-+	int ret;
-+
-+	test->adjust_tail_support = true;
-+	test->adjust_tail = true;
-+	test->total_steps = 1;
-+
-+	pkt_stream_replace_ifobject(test->ifobj_tx, pkt_cnt, pkt_len);
-+	pkt_stream_replace_ifobject(test->ifobj_rx, pkt_cnt, pkt_len + value);
-+
-+	ret = testapp_xdp_adjust_tail(test, value);
-+	if (ret)
-+		return ret;
-+
-+	if (!test->adjust_tail_support) {
-+		ksft_test_result_skip("%s %sResize pkt with bpf_xdp_adjust_tail() not supported\n",
-+				      mode_string(test), busy_poll_string(test));
-+	return TEST_SKIP;
-+	}
-+
-+	return 0;
-+}
-+
-+static int testapp_adjust_tail_common(struct test_spec *test, int adjust_value, u32 len,
-+				      bool set_mtu)
-+{
-+	if (set_mtu)
-+		test->mtu = MAX_ETH_JUMBO_SIZE;
-+	return testapp_adjust_tail(test, adjust_value, len);
-+}
-+
-+static int testapp_adjust_tail_shrink(struct test_spec *test)
-+{
-+	return testapp_adjust_tail_common(test, -4, MIN_PKT_SIZE, false);
-+}
-+
-+static int testapp_adjust_tail_shrink_mb(struct test_spec *test)
-+{
-+	return testapp_adjust_tail_common(test, -4, XSK_RING_PROD__DEFAULT_NUM_DESCS * 3, true);
-+}
-+
-+static int testapp_adjust_tail_grow(struct test_spec *test)
-+{
-+	return testapp_adjust_tail_common(test, 4, MIN_PKT_SIZE, false);
-+}
-+
-+static int testapp_adjust_tail_grow_mb(struct test_spec *test)
-+{
-+	return testapp_adjust_tail_common(test, 4, XSK_RING_PROD__DEFAULT_NUM_DESCS * 3, true);
-+}
-+
- static void run_pkt_test(struct test_spec *test)
- {
- 	int ret;
-@@ -2622,6 +2732,10 @@ static const struct test_spec tests[] = {
- 	{.name = "TOO_MANY_FRAGS", .test_func = testapp_too_many_frags},
- 	{.name = "HW_SW_MIN_RING_SIZE", .test_func = testapp_hw_sw_min_ring_size},
- 	{.name = "HW_SW_MAX_RING_SIZE", .test_func = testapp_hw_sw_max_ring_size},
-+	{.name = "XDP_ADJUST_TAIL_SHRINK", .test_func = testapp_adjust_tail_shrink},
-+	{.name = "XDP_ADJUST_TAIL_SHRINK_MULTI_BUFF", .test_func = testapp_adjust_tail_shrink_mb},
-+	{.name = "XDP_ADJUST_TAIL_GROW", .test_func = testapp_adjust_tail_grow},
-+	{.name = "XDP_ADJUST_TAIL_GROW_MULTI_BUFF", .test_func = testapp_adjust_tail_grow_mb},
- 	};
- 
- static void print_tests(void)
-diff --git a/tools/testing/selftests/bpf/xskxceiver.h b/tools/testing/selftests/bpf/xskxceiver.h
-index e46e823f6a1a..67fc44b2813b 100644
---- a/tools/testing/selftests/bpf/xskxceiver.h
-+++ b/tools/testing/selftests/bpf/xskxceiver.h
-@@ -173,6 +173,8 @@ struct test_spec {
- 	u16 nb_sockets;
- 	bool fail;
- 	bool set_ring;
-+	bool adjust_tail;
-+	bool adjust_tail_support;
- 	enum test_mode mode;
- 	char name[MAX_TEST_NAME_SIZE];
- };
 -- 
-2.34.1
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
