@@ -1,134 +1,101 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3111EB5ED;
-	Thu, 27 Feb 2025 13:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA4122F178
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 13:10:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740661469; cv=none; b=C5ITfpT4jcwVHPphaBwnLNLxsBkWZHknJf27p7kLafZYNzsQER/8cbATXfJsQxWxRP/npSOGDLcCO5/bLgmvkUnLpvlmWGW3/ENqC6AsLofmqOyBFVXt0Ajxu0L+/fFxJjbo8K8zyDG/dLPRB0tDdypV7v1CnzhT1G7feaUyEvw=
+	t=1740661842; cv=none; b=Cs2EVdRk0BsunYCJkK8Rcb/QQrU08xBbAOD9VECjFyulcoMpKqlMEjE6DSdHBZV5qcb8hytnYiuQOIk4Onm1ZgOQNL5B88wT4gWqMtL9ZqxUgtlsAWFmnCAtlGTYy8nJ/QPr1K/onvQe5awXT4pZ6Q5o4KGMJ08aGzbn1q5QjwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740661469; c=relaxed/simple;
-	bh=RhAn648KZjGR1zL9fk7lBgC1kuhesOSbeueMHlrV+FQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h3fhmBk9yNtZedd0uJfc6NMuRGpGM6oJBgaLn6l9YyJbMAPgyUga06ncKCQdauJ7mN5K9jc3/6wZd4tpACP54NvLTeDhZdJ4sfAKyhZ4b9DIjjshdPzL99wzFGw3EedNmfPBQQis/Uj4MELnRO0Ozx9ytmCHG+sOgLxtS5hvPzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Dpw3udR3; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1740661842; c=relaxed/simple;
+	bh=x0K9es0UVKWTnlmDD8ugRax1f8Iim+oHnXb/jzmCklw=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=m6qgMm1ZeQxt3EFUGviB8VSatYjlnuCjbj0U/hV90nGKTHc7W5Fp2XUmUuPvghM0TEx06+r+3bGzw3Lmy6qBu4yCQA6OIXpPinda8KBdSs3HHOY1JBgseYuabR86iRjmh0JHuNgZURcR8nhhKE+ylhlu1BOKENpaVg3QjLfadus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qk8bfTSw; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Dpw3udR3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=C4NTJOJ3dCAJ9+vpvzEprQrWJrpsHSJFBRqUQ8todYw=; b=Dpw3udR3BJAFq9SyV4WrEEtnAj
-	4AK/f2BJmM2iCspBbFHcvyAYokish3HnL+MnOj7JlEsRpxTpwaGNuOZ0GjF1xl2kJOx4qt3J2ahuW
-	az6fb102wILROrGzFvXwJPaH58zNpMOOcrCBc343TieQO3/CDGnn7X1+s/6kO95pgHKXAnEejIoZr
-	eB7TVgWCB6dlZRGlAflwAymbuHq47SCX9B61CP43qWtZ2O6ijiX7nvvVtATjJJOXC5cOJJTTKtd0a
-	0oXIb31u03yt/F+rw+NDupYNgVgy0IBHz3v3ZGkJAqcax4tYjHYegxiTUmQ4/XbT5eUfHjXU340Lp
-	d0XLYfiw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tndYL-0000000Hb1D-0gW6;
-	Thu, 27 Feb 2025 13:03:49 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 45472300472; Thu, 27 Feb 2025 14:03:47 +0100 (CET)
-Date: Thu, 27 Feb 2025 14:03:47 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>,
-	Thomas Graf <tgraf@suug.ch>, Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-rdma@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-	iommu@lists.linux.dev, linux-mtd@lists.infradead.org
-Subject: Re: [PATCH *-next 00/18] Remove weird and needless 'return' for void
- APIs
-Message-ID: <20250227130347.GA5880@noisy.programming.kicks-ass.net>
-References: <20250221-rmv_return-v1-0-cc8dff275827@quicinc.com>
- <46d17d84-5298-4460-96b0-9c62672167a0@icloud.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qk8bfTSw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740661840;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RIJmqPFW7GnIJ0hY3Mu09dKEfAL2sWzM9Kk2euVLCuc=;
+	b=Qk8bfTSwYU/XQaDe38RHrm/m4iOGpz1903DaRVdwC0hzmc7zUFOyNbx+Iu9HFqMRPSfvIu
+	+JCt6EA+13YCZzhQeY3LwEygvIbOuywY/rkyuEoJ+l3LiRRR498jn7qblxLoTv+ThOZ1D1
+	kcYHB9DwLSjLZYUZLq9lRHslHOvYeoE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-22-2AIoxtemOkG2Lhh5ZO9hsQ-1; Thu,
+ 27 Feb 2025 08:10:37 -0500
+X-MC-Unique: 2AIoxtemOkG2Lhh5ZO9hsQ-1
+X-Mimecast-MFC-AGG-ID: 2AIoxtemOkG2Lhh5ZO9hsQ_1740661836
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 195491944CFD;
+	Thu, 27 Feb 2025 13:10:36 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.32.200])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9DD781944CC9;
+	Thu, 27 Feb 2025 13:10:32 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <899dfc34-bff8-4f41-8c8c-b9aa457880df@redhat.com>
+References: <899dfc34-bff8-4f41-8c8c-b9aa457880df@redhat.com> <20250224234154.2014840-1-dhowells@redhat.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: dhowells@redhat.com, netdev@vger.kernel.org,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Jakub Kicinski <kuba@kernel.org>,
+    "David S. Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>,
+    Christian Brauner <brauner@kernel.org>,
+    linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 00/15] afs, rxrpc: Clean up refcounting on afs_cell and afs_server records
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <46d17d84-5298-4460-96b0-9c62672167a0@icloud.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3151400.1740661831.1@warthog.procyon.org.uk>
+Date: Thu, 27 Feb 2025 13:10:31 +0000
+Message-ID: <3151401.1740661831@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Thu, Feb 27, 2025 at 08:48:19PM +0800, Zijun Hu wrote:
-> On 2025/2/21 21:02, Zijun Hu wrote:
-> > void api_func_a(...);
-> > 
-> > static inline void api_func_b(...)
-> > {
-> > 	return api_func_a(...);
-> > }
-> 
-> The Usage : Return void function in void function
-> 
-> IMO, perhaps, the usage is not good since:
-> 
-> A) STD C does not like the usage, and i find GCC has no description
-> about the usage.
->    C11/C17: 6.8.6.4 The return statement
->    "A return statement with an expression shall not appear in a
-> function whose return type is void"
+Paolo Abeni <pabeni@redhat.com> wrote:
 
-We really don't use STD C, the kernel is littered with extensions.
+> The remaining patches in this series touch only AFS, I'm unsure if net-next
+> if the best target here???
 
-> B) According to discussion, the usage have function that return type
->    of the callee api_func_a() is monitored. but this function has below
-> shortcoming as well:
-> 
-> the monitor is not needed if the caller api_func_b() is in the same
-> module with the callee api_func_a(), otherwise, provided the callee is
-> a API and provided by author of other module. the author needs to clean
-> up lot of usages of the API if he/she changes the API's return type from
-> void to any other type, so it is not nice to API provider.
-> 
-> C) perhaps, most ordinary developers don't known the function mentioned
->    by B), and also feel strange for the usage
+Yeah.  It's tricky as the complete set of patches I would like to post spans
+three subsystems.
 
-It is quite common to do kernel wide updates using scripts / cocinelle.
+> The rxrpc follow-up could just wait the upcoming net -> net-next merge.
+> AFAICS crypto patches go trough their own tree.
 
-If you have a specialization that wraps a function to fill out a default
-value, then you want the return types to keep matching.
+Ah, no.  That doesn't work.  The rxrpc follow-up needs the crypto patches to
+even compile and so needs to go through the same tree.
 
-Ex.
+Further, the afs patches in this patchset are also something of a
+pre-requisite for the afs part of the rxrpc follow-up.  The problem is that we
+have to be able to map back from the address in a challenge packet back to the
+managing socket and the server record in order that we can send find the info
+to put in the response packet and the key required in order to encrypt it.
 
-return_type foo(type1 a1, type2 a2);
+This is something that this patchset deals with, as part of fixing some a
+couple of very low-probability bugs (hence why I proposed it for net-next
+rather than pushing it Linuswards).
 
-return_type my_foo(type1 a1)
-{
-	return foo(a1, value);
-}
+If you prefer, I can see about sending all the patches through the vfs tree or
+the crypto tree rather than net-next.  Or I can see if I can push this set as
+a bug fix through the VFS tree.
 
-is a normal thing to do. The whole STD C cannot return void bollocks
-breaks that when return_type := void, so in that regards I would call
-this a STD C defect.
+David
+
