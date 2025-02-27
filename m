@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3143B14B950;
-	Thu, 27 Feb 2025 14:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A00421323B
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 14:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740664906; cv=none; b=OcADP3pxCVUdZlSDYODHnqLqBQ1GDcYmTSIXBSNCyj8MnWnAzo7L6+AF2JvpTVgFtY+T1p4++yhL+WHdeTsDRQL4g4CBPSNVSATbznzUa6kZDZcJ58s+ixGP3CZB0iZrqhW20xnFDvARt2Xqg26fa9CvohojdZDJE4r4Ro7y6z4=
+	t=1740664947; cv=none; b=tokmgG5H7C0PvAZRMTVoPaTBOPnDEDNMvtlJemYd3X7ucTjBItWVLiCYN99xjv58rXr7axw/gFTUhiH9phfOvma235Zk9ZL1b+NPqmO7l4Gz52nQEro1YpbhxmOAPNri8WH4tEzb2wzA5QnXXV4cY4Oj8q50WtF/0QopCrByxFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740664906; c=relaxed/simple;
-	bh=g3YZ6f7bx1/7Yfl44NhYE9+t7VQTj4wLsri2zPsrpCc=;
+	s=arc-20240116; t=1740664947; c=relaxed/simple;
+	bh=c6Ob7W5xSmYOdSk+FKVIEv/asNAKIzgQod4Ms9k4nKU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ADv+/VBz8fDSuBGk59sCGoi1Wf7tSZZLGGurBeM4idLlkwufwj+MCWqxX8VQ0ZFUuB1bEJrSAA+udSY8kGtUNGquIqZTO9PN/w4YA1Ng7wOf/RIcXv+0CQKQrXXlejXy3ZfYPsAut0hh2VksEMg62QZxW6IfXxB36lDCIssG06E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jFuaSenf; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=vBgmngLGO2NZoT5dg6NmaXP0tO86ATdb58A5Quk5/wRT7+dZDHWwFCwnILXdGaCnyTGSSCmXiZ2uOsA8BfP4Y4EJNSm9Gv6WzI5BsBPL+PhSuKeQAeEncJHbOFRpjlRwJGscSPAj4qMxvRy+2qBJq0tbnFoo3gn+sonH2TeV2nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=lgISJFit; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jFuaSenf"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="lgISJFit"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xgAg3JM8CZiG7u98pcAWeS5QXuN+a22FjBOlCQaI+Jw=; b=jFuaSenfpj6WCde/Q2Qj7OSPzm
-	slERq0tCjrkrPTNXzIAr9WcQ1AbRe83M7fZ1D/8YzX3nJ8Xn2eiDqUJb/u4diLA4ATgUX0j5dDUyw
-	q8wlboTqUtnToAhroOwm3KGv+RTLMW+aioBayBs1Cb9r5TAt1oUdUS45rpB53/h4Sywk=;
+	bh=JXo/gwQcHIzjTzOx3CIOMAATJASGHIlvjB+ltGLd90w=; b=lgISJFitMArp1pyFbmmz7qXrym
+	cYJMCGJZ1iOqhPso3y+jmxfwI6EQoFxD0MRfJZB76SC2Ejis7hJm6VZqIMjG2T0Yn4UyHAV/dUOOW
+	CS9s2M1gaWN5QgTBiXR8S9HpbhqFMNck5XhhwHZr4Acg6ArJf6Z35H3YRJNwUNdlyegM=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1tneSJ-000bwl-NJ; Thu, 27 Feb 2025 15:01:39 +0100
-Date: Thu, 27 Feb 2025 15:01:39 +0100
+	id 1tneSw-000bxn-0G; Thu, 27 Feb 2025 15:02:18 +0100
+Date: Thu, 27 Feb 2025 15:02:17 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 Cc: Heiner Kallweit <hkallweit1@gmail.com>,
@@ -35,20 +35,16 @@ Cc: Heiner Kallweit <hkallweit1@gmail.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
 	Jakub Kicinski <kuba@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH net-next 07/11] net: stmmac: imx: use generic
- stmmac_set_clk_tx_rate()
-Message-ID: <021f1ba7-739d-403e-960e-f0b0363f0f28@lunn.ch>
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next 08/11] net: stmmac: rk: switch to use
+ set_clk_tx_rate() hook
+Message-ID: <1e7b72d2-b2f1-4ec4-90ba-5b712edf8f0b@lunn.ch>
 References: <Z8AtX-wyPal1auVO@shell.armlinux.org.uk>
- <E1tna0k-0052t2-Cc@rmk-PC.armlinux.org.uk>
+ <E1tna0p-0052t8-Gn@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,11 +53,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1tna0k-0052t2-Cc@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1tna0p-0052t8-Gn@rmk-PC.armlinux.org.uk>
 
-On Thu, Feb 27, 2025 at 09:16:54AM +0000, Russell King (Oracle) wrote:
-> Convert non-i.MX93 users to use the generic stmmac_set_clk_tx_rate() to
-> configure the MAC transmit clock rate.
+On Thu, Feb 27, 2025 at 09:16:59AM +0000, Russell King (Oracle) wrote:
+> Switch from using the fix_mac_speed() hook to set_clk_tx_rate() to
+> manage the transmit clock.
 > 
 > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
