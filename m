@@ -1,64 +1,52 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mx02lb.world4you.com (mx02lb.world4you.com [81.19.149.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EC48BEC
-	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 21:16:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD8926E64A
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 21:19:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740690977; cv=none; b=dQXtr53wlGrLxpd4o6IM9u4PWPHoXA0bxlG+5EQ0bfmCXdUS7nbomyl/FNyr8lHh9XbUkex+XjFO/DZmNxS/arwBN2P/BE/fIuLrEFaDhDOwJyJYHpIMbTgkIlTFMvGYi5H55nbrq1+JTOF3HBy0DEyKCA4k84suMtBjjl+nIiA=
+	t=1740691185; cv=none; b=Ht4Qw4v7HHAgOUAR50hyNdFZdpWWvKjC10osUf8CnaRABdUTFvgUWcbiTAdU7bL4VZrQgRja+FfL9wsrj0CYqLHbP4EYsIqUJN2d6xiuihBJ+F5Goi+KogFqW53qjz+rvAu/w0MUOFuFab+mPGfu+Jl7O1Ek3yCO9DwickwMQAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740690977; c=relaxed/simple;
-	bh=oh3IVZx752jbwhy7GaUotxI9REU9iazHHuSmuL5k8T8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i82boP6bc1Z2iaXt3zltsucuWq5/B0ry7YftNMkT0yJNrKbrbNcz5+4JrEahrdlGHyYh3kzebUBxdtKjot5RrtB6cRizrtn1+qhlthzVS+onJpER6wTVVHM1/j4n+ofc0vUikDbZlIkBCHDDC0dA/6+Ra0fA6lmnoKJPepscsQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T4uXkicO; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1740691185; c=relaxed/simple;
+	bh=S2dE/z0aGsnbY8NdaLYNkmZW9KztXUsXLqLz6hIA4B8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=sYSx2GNTZPjTD4LMwIn/huEGGGyyFEqC9C1iK19AO8Lit/r5mv6Q1eWz5lOQjhu0rfbc/f5UF0eyJziz4dRFQB0BzlVFCXY+DzBK9czo896fsRv+vI+y51A2HeCa46C532IbeM9P7MSzv2FMfdj9avgD0W7MVzOxB6gj25Fc7pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=li5zcPDK; arc=none smtp.client-ip=81.19.149.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T4uXkicO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740690976; x=1772226976;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=oh3IVZx752jbwhy7GaUotxI9REU9iazHHuSmuL5k8T8=;
-  b=T4uXkicO5DkC650T+DZrvycAr4vQUim+S+YvfdNR1oRYjBAK+v7c3DDm
-   6jgTZLL5wA4G19RJJuUONND4LSj7zuky0ClQKLnNcey0EYeQgDZ+uNGN3
-   651eQhD5fMGSsVZb7K5CEMaj4z8NoAqi3l7ihBkxd3jHbLPKfTBB0jmA4
-   O69o8b6ntTYuYQJQutjkzrSNiocJPhE9DWVxGE25JjALjFRD58yWIGap5
-   mzDokKF5eWroTdrn+mucEHnOGs4ckQyIc/y/hhHBARkqNOwjxhg7ZdyCl
-   5Nt2q34AlJuvVAjLmffZ/UiHdKrPx5Xes63EUPEoC3vgjiWJHTPstXgd+
-   g==;
-X-CSE-ConnectionGUID: OPdDT65yQ7i+O5NaU1ctSQ==
-X-CSE-MsgGUID: oerNaE9hQ92diEZ4c4U1EA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11358"; a="29205991"
-X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
-   d="scan'208";a="29205991"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 13:16:15 -0800
-X-CSE-ConnectionGUID: ZbTco0XYQS+Xpr9XC8b88A==
-X-CSE-MsgGUID: 7lWfphKGRReHFJfnTXRGbA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
-   d="scan'208";a="140365217"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa002.fm.intel.com with ESMTP; 27 Feb 2025 13:16:14 -0800
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="li5zcPDK"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ZiPc592vzeYKTRjw+Zr7BdQk9/pym+uW6W6CjjQX6Oc=; b=li5zcPDKwz4JC02PFqsLwLphXt
+	0GITyaMz654wkkx2qELFDCk58ZmCqs0+mHJbbv3RJACYzkycTS/F8abwfPCl/evPjuCDGErPvi1Il
+	bTJjzwlbOFQ7MGRElZ6Nmtxda0NnvTEBg5g7FSohvLTgPugt6X5a90/U1qQ14MtY+C8k=;
+Received: from 88-117-55-1.adsl.highway.telekom.at ([88.117.55.1] helo=hornet.engleder.at)
+	by mx02lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tnkXs-000000000iA-0U4L;
+	Thu, 27 Feb 2025 21:31:48 +0100
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
 	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Ahmed Zaki <ahmed.zaki@intel.com>,
-	anthony.l.nguyen@intel.com,
-	willemb@google.com,
-	Madhu Chittim <madhu.chittim@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Samuel Salin <Samuel.salin@intel.com>
-Subject: [PATCH net v2] idpf: synchronize pending IRQs after disable
-Date: Thu, 27 Feb 2025 13:16:09 -0800
-Message-ID: <20250227211610.1154503-1-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	Gerhard Engleder <gerhard@engleder-embedded.com>
+Subject: [PATCH net-next v9 4/8] net: phy: marvell: Align set_loopback() implementation
+Date: Thu, 27 Feb 2025 21:31:34 +0100
+Message-Id: <20250227203138.60420-5-gerhard@engleder-embedded.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250227203138.60420-1-gerhard@engleder-embedded.com>
+References: <20250227203138.60420-1-gerhard@engleder-embedded.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,52 +54,117 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-AV-Do-Run: Yes
+X-ACL-Warn: X-W4Y-Internal
 
-From: Ahmed Zaki <ahmed.zaki@intel.com>
+Use genphy_loopback() to disable loopback like ksz9031_set_loopback().
+This way disable loopback is implemented only once within
+genphy_loopback() and the set_loopback() implementations look similar.
 
-IDPF deinits all interrupts in idpf_vport_intr_deinit() by first disabling
-the interrupt registers in idpf_vport_intr_dis_irq_all(), then later on frees
-the irqs in idpf_vport_intr_rel_irq().
+Also fix comment about msleep() in the out-of loopback case which is not
+executed in the out-of loopback case.
 
-Prevent any races by waiting for pending IRQ handler after it is disabled.
-This will ensure the IRQ is cleanly freed afterwards.
-
-Fixes: d4d558718266 ("idpf: initialize interrupts and enable vport")
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Suggested-by: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
-Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
-v1 (originally from): https://lore.kernel.org/netdev/20250224190647.3601930-4-anthony.l.nguyen@intel.com/
-- Rewrote commit message
+ drivers/net/phy/marvell.c | 72 ++++++++++++++++++---------------------
+ 1 file changed, 33 insertions(+), 39 deletions(-)
 
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 977741c41498..70387e091e69 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -3593,10 +3593,15 @@ static void idpf_vport_intr_rel_irq(struct idpf_vport *vport)
- static void idpf_vport_intr_dis_irq_all(struct idpf_vport *vport)
- {
- 	struct idpf_q_vector *q_vector = vport->q_vectors;
--	int q_idx;
-+	int q_idx, vidx, irq_num;
-+
-+	for (q_idx = 0; q_idx < vport->num_q_vectors; q_idx++) {
-+		vidx = vport->q_vector_idxs[q_idx];
-+		irq_num = vport->adapter->msix_entries[vidx].vector;
+diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+index f2ad675537d1..623292948fa7 100644
+--- a/drivers/net/phy/marvell.c
++++ b/drivers/net/phy/marvell.c
+@@ -2133,56 +2133,50 @@ static void marvell_get_stats_simple(struct phy_device *phydev,
  
--	for (q_idx = 0; q_idx < vport->num_q_vectors; q_idx++)
- 		writel(0, q_vector[q_idx].intr_reg.dyn_ctl);
-+		synchronize_irq(irq_num);
-+	}
+ static int m88e1510_loopback(struct phy_device *phydev, bool enable, int speed)
+ {
++	u16 bmcr_ctl, mscr2_ctl = 0;
+ 	int err;
+ 
+-	if (enable) {
+-		u16 bmcr_ctl, mscr2_ctl = 0;
++	if (!enable)
++		return genphy_loopback(phydev, enable, 0);
+ 
+-		if (speed == SPEED_10 || speed == SPEED_100 ||
+-		    speed == SPEED_1000)
+-			phydev->speed = speed;
+-		else if (speed)
+-			return -EINVAL;
+-
+-		bmcr_ctl = mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
+-
+-		err = phy_write(phydev, MII_BMCR, bmcr_ctl);
+-		if (err < 0)
+-			return err;
++	if (speed == SPEED_10 || speed == SPEED_100 || speed == SPEED_1000)
++		phydev->speed = speed;
++	else if (speed)
++		return -EINVAL;
+ 
+-		if (phydev->speed == SPEED_1000)
+-			mscr2_ctl = BMCR_SPEED1000;
+-		else if (phydev->speed == SPEED_100)
+-			mscr2_ctl = BMCR_SPEED100;
++	bmcr_ctl = mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
+ 
+-		err = phy_modify_paged(phydev, MII_MARVELL_MSCR_PAGE,
+-				       MII_88E1510_MSCR_2, BMCR_SPEED1000 |
+-				       BMCR_SPEED100, mscr2_ctl);
+-		if (err < 0)
+-			return err;
++	err = phy_write(phydev, MII_BMCR, bmcr_ctl);
++	if (err < 0)
++		return err;
+ 
+-		/* Need soft reset to have speed configuration takes effect */
+-		err = genphy_soft_reset(phydev);
+-		if (err < 0)
+-			return err;
++	if (phydev->speed == SPEED_1000)
++		mscr2_ctl = BMCR_SPEED1000;
++	else if (phydev->speed == SPEED_100)
++		mscr2_ctl = BMCR_SPEED100;
+ 
+-		err = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
+-				 BMCR_LOOPBACK);
++	err = phy_modify_paged(phydev, MII_MARVELL_MSCR_PAGE,
++			       MII_88E1510_MSCR_2, BMCR_SPEED1000 |
++			       BMCR_SPEED100, mscr2_ctl);
++	if (err < 0)
++		return err;
+ 
+-		if (!err) {
+-			/* It takes some time for PHY device to switch
+-			 * into/out-of loopback mode.
+-			 */
+-			msleep(1000);
+-		}
++	/* Need soft reset to have speed configuration takes effect */
++	err = genphy_soft_reset(phydev);
++	if (err < 0)
+ 		return err;
+-	} else {
+-		err = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK, 0);
+-		if (err < 0)
+-			return err;
+ 
+-		return phy_config_aneg(phydev);
++	err = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
++			 BMCR_LOOPBACK);
++
++	if (!err) {
++		/*
++		 * It takes some time for PHY device to switch into loopback
++		 * mode.
++		 */
++		msleep(1000);
+ 	}
++	return err;
  }
  
- /**
+ static int marvell_vct5_wait_complete(struct phy_device *phydev)
 -- 
-2.47.1
+2.39.5
 
