@@ -1,36 +1,35 @@
 Received: from mx02lb.world4you.com (mx02lb.world4you.com [81.19.149.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD8926E64A
-	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 21:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99788BEC
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 21:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740691185; cv=none; b=Ht4Qw4v7HHAgOUAR50hyNdFZdpWWvKjC10osUf8CnaRABdUTFvgUWcbiTAdU7bL4VZrQgRja+FfL9wsrj0CYqLHbP4EYsIqUJN2d6xiuihBJ+F5Goi+KogFqW53qjz+rvAu/w0MUOFuFab+mPGfu+Jl7O1Ek3yCO9DwickwMQAY=
+	t=1740691452; cv=none; b=FQXBDTyf8tUV6CBiO3i2eKPDL13OMO1DnKoybhIAs1I1NDiJgdII41r1GrjlOFgkt6Bl0yXLdiJ6FdRw9Dcl21FjbauqNPmtnSrT0SJpK7s+9nw9otufMPDoor4fY8H/7uvAk9zRDd+EBM7gadkWKj+4byO5Z4nVlFO+ofDc6Y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740691185; c=relaxed/simple;
-	bh=S2dE/z0aGsnbY8NdaLYNkmZW9KztXUsXLqLz6hIA4B8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sYSx2GNTZPjTD4LMwIn/huEGGGyyFEqC9C1iK19AO8Lit/r5mv6Q1eWz5lOQjhu0rfbc/f5UF0eyJziz4dRFQB0BzlVFCXY+DzBK9czo896fsRv+vI+y51A2HeCa46C532IbeM9P7MSzv2FMfdj9avgD0W7MVzOxB6gj25Fc7pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=li5zcPDK; arc=none smtp.client-ip=81.19.149.112
+	s=arc-20240116; t=1740691452; c=relaxed/simple;
+	bh=DXVDL52IDy2bsv4umiZa3Wy8xZbthByYhPv70isl2jQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nyyLmuhh3nejBcEJTNB7uT7YwrPS4YDYUy6Waa5fY2SkZI9MMLSVSRs+l7kMJuitST4C2qPu20qCPhUQpQTzOWyMOi6xX+bY1dRvWpNnHSqPZwib4/bnTBcokWrQJJnFvD/7rae5YVeTDFS1LhqFap5V6012jiYPiil5Jd97HrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=ttXPsNU/; arc=none smtp.client-ip=81.19.149.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="li5zcPDK"
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="ttXPsNU/"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ZiPc592vzeYKTRjw+Zr7BdQk9/pym+uW6W6CjjQX6Oc=; b=li5zcPDKwz4JC02PFqsLwLphXt
-	0GITyaMz654wkkx2qELFDCk58ZmCqs0+mHJbbv3RJACYzkycTS/F8abwfPCl/evPjuCDGErPvi1Il
-	bTJjzwlbOFQ7MGRElZ6Nmtxda0NnvTEBg5g7FSohvLTgPugt6X5a90/U1qQ14MtY+C8k=;
-Received: from 88-117-55-1.adsl.highway.telekom.at ([88.117.55.1] helo=hornet.engleder.at)
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=AsaFwa7674FPCsMttkAFNCjFnUSMFGvCzZoYoUT2nTY=; b=ttXPsNU/VKqbgQWpFqc6By9C5V
+	VQNyofGUTj2798rteQ/tCElCK8je/NAvVABUjl3cVZ/MjGqDAJIe6phmQc2nfaQFx5Nr/p8jU3VDv
+	bvRKUgBLwAUbzELJRWeH1P8pXPdte8kOfY1v9s+0x1jJSuaexYukl2cwToTkbz9QHxbQ=;
+Received: from [88.117.55.1] (helo=hornet.engleder.at)
 	by mx02lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1tnkXs-000000000iA-0U4L;
-	Thu, 27 Feb 2025 21:31:48 +0100
+	id 1tnkXl-000000000iA-3ycy;
+	Thu, 27 Feb 2025 21:31:42 +0100
 From: Gerhard Engleder <gerhard@engleder-embedded.com>
 To: andrew@lunn.ch,
 	hkallweit1@gmail.com,
@@ -41,12 +40,10 @@ To: andrew@lunn.ch,
 	pabeni@redhat.com
 Cc: netdev@vger.kernel.org,
 	Gerhard Engleder <gerhard@engleder-embedded.com>
-Subject: [PATCH net-next v9 4/8] net: phy: marvell: Align set_loopback() implementation
-Date: Thu, 27 Feb 2025 21:31:34 +0100
-Message-Id: <20250227203138.60420-5-gerhard@engleder-embedded.com>
+Subject: [PATCH net-next v9 0/8] Support loopback mode speed selection
+Date: Thu, 27 Feb 2025 21:31:30 +0100
+Message-Id: <20250227203138.60420-1-gerhard@engleder-embedded.com>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250227203138.60420-1-gerhard@engleder-embedded.com>
-References: <20250227203138.60420-1-gerhard@engleder-embedded.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,114 +54,91 @@ Content-Transfer-Encoding: 8bit
 X-AV-Do-Run: Yes
 X-ACL-Warn: X-W4Y-Internal
 
-Use genphy_loopback() to disable loopback like ksz9031_set_loopback().
-This way disable loopback is implemented only once within
-genphy_loopback() and the set_loopback() implementations look similar.
+Previously to commit 6ff3cddc365b ("net: phylib: do not disable autoneg
+for fixed speeds >= 1G") it was possible to select the speed of the
+loopback mode by configuring a fixed speed before enabling the loopback
+mode. Now autoneg is always enabled for >= 1G and a fixed speed of >= 1G
+requires successful autoneg. Thus, the speed of the loopback mode depends
+on the link partner for >= 1G. There is no technical reason to depend on
+the link partner for loopback mode. With this behavior the loopback mode
+is less useful for testing.
 
-Also fix comment about msleep() in the out-of loopback case which is not
-executed in the out-of loopback case.
+Allow PHYs to support optional speed selection for the loopback mode.
+This support is implemented for the generic loopback support and for PHY
+drivers, which obviously support speed selection for loopback mode.
+Additionally, loopback support according to the data sheet is added to
+the KSZ9031 PHY.
 
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
----
- drivers/net/phy/marvell.c | 72 ++++++++++++++++++---------------------
- 1 file changed, 33 insertions(+), 39 deletions(-)
+Extend phy_loopback() to signal link up and down if speed changes,
+because a new link speed requires link up signalling.
 
-diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-index f2ad675537d1..623292948fa7 100644
---- a/drivers/net/phy/marvell.c
-+++ b/drivers/net/phy/marvell.c
-@@ -2133,56 +2133,50 @@ static void marvell_get_stats_simple(struct phy_device *phydev,
- 
- static int m88e1510_loopback(struct phy_device *phydev, bool enable, int speed)
- {
-+	u16 bmcr_ctl, mscr2_ctl = 0;
- 	int err;
- 
--	if (enable) {
--		u16 bmcr_ctl, mscr2_ctl = 0;
-+	if (!enable)
-+		return genphy_loopback(phydev, enable, 0);
- 
--		if (speed == SPEED_10 || speed == SPEED_100 ||
--		    speed == SPEED_1000)
--			phydev->speed = speed;
--		else if (speed)
--			return -EINVAL;
--
--		bmcr_ctl = mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
--
--		err = phy_write(phydev, MII_BMCR, bmcr_ctl);
--		if (err < 0)
--			return err;
-+	if (speed == SPEED_10 || speed == SPEED_100 || speed == SPEED_1000)
-+		phydev->speed = speed;
-+	else if (speed)
-+		return -EINVAL;
- 
--		if (phydev->speed == SPEED_1000)
--			mscr2_ctl = BMCR_SPEED1000;
--		else if (phydev->speed == SPEED_100)
--			mscr2_ctl = BMCR_SPEED100;
-+	bmcr_ctl = mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
- 
--		err = phy_modify_paged(phydev, MII_MARVELL_MSCR_PAGE,
--				       MII_88E1510_MSCR_2, BMCR_SPEED1000 |
--				       BMCR_SPEED100, mscr2_ctl);
--		if (err < 0)
--			return err;
-+	err = phy_write(phydev, MII_BMCR, bmcr_ctl);
-+	if (err < 0)
-+		return err;
- 
--		/* Need soft reset to have speed configuration takes effect */
--		err = genphy_soft_reset(phydev);
--		if (err < 0)
--			return err;
-+	if (phydev->speed == SPEED_1000)
-+		mscr2_ctl = BMCR_SPEED1000;
-+	else if (phydev->speed == SPEED_100)
-+		mscr2_ctl = BMCR_SPEED100;
- 
--		err = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
--				 BMCR_LOOPBACK);
-+	err = phy_modify_paged(phydev, MII_MARVELL_MSCR_PAGE,
-+			       MII_88E1510_MSCR_2, BMCR_SPEED1000 |
-+			       BMCR_SPEED100, mscr2_ctl);
-+	if (err < 0)
-+		return err;
- 
--		if (!err) {
--			/* It takes some time for PHY device to switch
--			 * into/out-of loopback mode.
--			 */
--			msleep(1000);
--		}
-+	/* Need soft reset to have speed configuration takes effect */
-+	err = genphy_soft_reset(phydev);
-+	if (err < 0)
- 		return err;
--	} else {
--		err = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK, 0);
--		if (err < 0)
--			return err;
- 
--		return phy_config_aneg(phydev);
-+	err = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
-+			 BMCR_LOOPBACK);
-+
-+	if (!err) {
-+		/*
-+		 * It takes some time for PHY device to switch into loopback
-+		 * mode.
-+		 */
-+		msleep(1000);
- 	}
-+	return err;
- }
- 
- static int marvell_vct5_wait_complete(struct phy_device *phydev)
+Use this loopback speed selection in the tsnep driver to select the
+loopback mode speed depending the previously active speed. User space
+tests with 100 Mbps and 1 Gbps loopback are possible again.
+
+v9:
+- move struct net_test member loopback_speed to correct commit
+- fix argument of net_selftest_set_get_count() dummy (kernel test robot)
+- fix argument of net_selftest_set_get_strings() dummy (kernel test robot)
+
+v8:
+- align naming and kdoc of selftest set enum (Jakub Kicinski)
+- add support for all link speeds (Jakub Kicinski)
+
+v7:
+- simplify ksz9031_set_loopback() (Andrew Lunn)
+- try to restore link if loopback enable fails (Andrew Lunn)
+- extend generic selftests to enable reuse (Andrew Lunn)
+
+v6:
+- add return value documentation to phy_loopback() (Jakub Kicinski)
+
+v5:
+- use phy_write() instead of phy_modify() (Russel King)
+- add missing inline for export dummies (kernel test robot)
+
+v4:
+- resend without changed to RFC v3
+
+RFC v3:
+- align set_loopback() of Marvell to Micrel (Andrew Lunn)
+- transmit packets in loopback selftests (Andrew Lunn)
+- don't flush PHY statemachine in phy_loopback()
+- remove setting of carrier on and link mode after phy_loopback() in tsnep
+
+v2:
+- signal link up to keep MAC and PHY in sync about speed (Andrew Lunn)
+
+Gerhard Engleder (8):
+  net: phy: Allow loopback speed selection for PHY drivers
+  net: phy: Support speed selection for PHY loopback
+  net: phy: micrel: Add loopback support
+  net: phy: marvell: Align set_loopback() implementation
+  tsnep: Select speed for loopback
+  net: selftests: Support selftest sets
+  net: selftests: Add selftests sets with fixed speed
+  tsnep: Add loopback selftests
+
+ drivers/net/ethernet/engleder/tsnep_main.c    |  21 +-
+ .../net/ethernet/engleder/tsnep_selftests.c   |  30 ++-
+ .../net/ethernet/hisilicon/hns/hns_ethtool.c  |   4 +-
+ .../hisilicon/hns3/hns3pf/hclge_main.c        |   4 +-
+ .../hisilicon/hns3/hns3pf/hclge_mdio.c        |   2 +-
+ .../stmicro/stmmac/stmmac_selftests.c         |   8 +-
+ drivers/net/phy/adin1100.c                    |   5 +-
+ drivers/net/phy/dp83867.c                     |   5 +-
+ drivers/net/phy/marvell.c                     |  68 +++---
+ drivers/net/phy/micrel.c                      |  24 ++
+ drivers/net/phy/mxl-gpy.c                     |  11 +-
+ drivers/net/phy/phy-c45.c                     |   5 +-
+ drivers/net/phy/phy.c                         |  87 +++++++
+ drivers/net/phy/phy_device.c                  |  43 +---
+ drivers/net/phy/xilinx_gmii2rgmii.c           |   7 +-
+ include/linux/phy.h                           |  18 +-
+ include/net/selftests.h                       |  29 +++
+ net/core/selftests.c                          | 216 +++++++++++++-----
+ 18 files changed, 417 insertions(+), 170 deletions(-)
+
 -- 
 2.39.5
 
