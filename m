@@ -1,99 +1,163 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC6122576A;
-	Thu, 27 Feb 2025 23:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07287323D
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 23:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740697563; cv=none; b=fkVaIKZN65bGtT/R6RH3rHSVIkr2l9M3vpyCISCbnSU1IScrTfjvjBACZPBbygIJMbziyvON6I/pVuOkb21QbNb6NNct9RyDdCZfUPw9CjH2argiUNZyn0GzCCWHVEFU4YY/aklkN47lIwzh16pSZ2smksVh+rDPh3O9BuRPzfE=
+	t=1740697601; cv=none; b=NK8fx9HGFPIY9ZnwkjNQP9vIam66hCA+NXmucO9hwsf9oLjBMCFJfzJ+7V7fnNcf+Fo//mnkkcA/s6mf+OAgKSjgplu3+as0BfY5ufE4xwvb4r5JdgrWskJ76qqn24fqe3QMz7p6sa1AviowrmIpYozdN/8ae2VxQkv1k10Z7BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740697563; c=relaxed/simple;
-	bh=rgtrLuHOSA+BJDhMAVUtsCdxF0mStA5rtZm9Atuab/Q=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=cpOwHrhbD67XIUQtsUAiIW5sXkUMJRMoAeduyQz7SbAjR3NDspcvUgpEdLjWOdWIDjvOeYE7maATSsoLXbAs6fZ1Jn94p46+nhGAm766QiQadFp5EDAIEvjlptFEWIwR/DVHn/JHsyw9HU/MhxTn+s+3M4DnakgJbMUyOS5I4cU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bcyfu+iY; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740697601; c=relaxed/simple;
+	bh=A/BzAyoOxn05ksse1UTyjUhVyTuIxw9DAsG67prymIE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=T5DJrVKn3Omnequ7XXwi7+NX2dksnRavwNki+GT+c8vHSDoJD25LwhhPgIss6G9nT2FypTrEGfUpb+IS4eYmcWk644DRa9N4peRdRckdNGGIG26BOPtQV/mkiKyauGJHMzpAJPUwVQEOm8MY7ILO3iYT3YCSNFfzp1aLxYlv72I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=V0Q1F8/k; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bcyfu+iY"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2212a930001so38778175ad.0;
-        Thu, 27 Feb 2025 15:06:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740697561; x=1741302361; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Jiu1ZZXw7IbtEQRSg1vKDSS8D0FLIfuwYf9MN3udZxQ=;
-        b=bcyfu+iYnIRgtf0B/ehn7hMHaZ8L3mTza8LSasSCvlCkmlDITQiNh1N1UTFBbsSk45
-         65f0fB8MMjYuBkc0LGZPVpi0oG2Ga5a4/EFOsxYYLEn47S943+D4jzv1bjW6MiKWCsmx
-         /ldA+AmiOxvX5eOwmitXCoPhWvxcdGMUmm3CEUyWvWojzbdNcJzDqY+kuNMj/mWAALPE
-         AmtXp6ONafno4sZ2mirXM35f2PASUwx/dlht7bPqJZ8IP2ZBYIVp7z+iXuI5+CHNAgCH
-         NsXV45d0zbSuWifKY8CUn5e6EeZTOxNjvVAgy5wnMCnvgWeT0DfGN2rzf6iVjTZGkdo4
-         LUOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740697561; x=1741302361;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Jiu1ZZXw7IbtEQRSg1vKDSS8D0FLIfuwYf9MN3udZxQ=;
-        b=g80wSyB+NVhY2NqpQxK/1lrIVOieM5vLCqyXsUYHtPveTF05H4MpD8bcFaxDSqgSrA
-         H6oA/HlVZ3ZTLLnhPovEKuzvT25fqU/J1ggv1XUeX4cOuqJzpCZo4GGJ2xszhzHLLMsJ
-         m7KGEJ+B+V3YAruAnnCovHSappgbKSrwWBMondCByZUQhmCRy669Bmgy7hhxiMVrFIfR
-         /4gXGYge7je3PGWXGqlLm4GMZlfgy5S3nHRNR03gG7GuL7iIaxt65d4aWhtfcEY4YlxX
-         4+dNXTKxvogZ4DfAJs213gSQHgML7xGIa2e4bhYEAmOvdHUQaGl4608DDLlhnoQOzirf
-         DTzA==
-X-Forwarded-Encrypted: i=1; AJvYcCUeL8OPASt395C5FJoSRSWNP0vlJfLqC3y5/XyRUyylAs6qKfiJSZcJV2mthOo7wjjjWzKXYSNQ@vger.kernel.org, AJvYcCWOg4pCJtmumohQ/TLGl+r39mOhBZuAIObDDbFCuxMF9fTC6aMnNWGWpgr1tbOPHSrNxAhXyI10+t2+kv8=@vger.kernel.org, AJvYcCXZTtGHBwMO085r7t0bA9Y8G/AiJyO2UH3bUj8a8E1fi81NwoBK//qOC8cKuHm/kokMazkmg7SgQeJBvvyCxVg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxE6GXit1EjcfKpk320Ajf3JiQFR4uNlZ32ddqpKv6JebWzy0CA
-	IdmFnIcpYps+ipV88GW1B9v9dRIQLhpD+wxFxq/B9qgfSaZa3P5w
-X-Gm-Gg: ASbGnctDbaijNlSWgUitXFNakYM1uYLl2BKF1uFd6856zXtDAjFobPXRNKbq6ARu9Zt
-	cWIc5FeXdbR0Uumt2Y0nK+IaM7YTulggtmrkNjRbkAePNwgFtMTCnDWo9tPcbBE43LvnuWV395S
-	umge3q+uk/ETSfq4AAYzuoGzGwmgGRjplYr17m3GdBtPzjAKvEgd5t2uz28VqB/aV8NUe8sdwGD
-	hW+lYaeqqJYCue0hg4FcMMZi2oZ5xo7O3Ya+l9bVvqdjYavGP9OJW5TWV7Ze0u3Y8mIOWAieN88
-	aYp1rOK4tQzVmWn5g7lD2foa6dJJR3x2hi1+8ha40NIpkeNmMerJdFPDju49HWMbNAXypIciCPF
-	z2WygE6A=
-X-Google-Smtp-Source: AGHT+IFR2YCuurIowDt0hjyfCW8MB2cgilAQvppkruAaln0xxOMIftrIrBwIJmpCsUOH2jxFnOuCGA==
-X-Received: by 2002:a05:6a00:847:b0:732:516f:21fa with SMTP id d2e1a72fcca58-734ac36f3d1mr1877980b3a.14.1740697560726;
-        Thu, 27 Feb 2025 15:06:00 -0800 (PST)
-Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-734a005fd15sm2298487b3a.168.2025.02.27.15.05.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2025 15:05:59 -0800 (PST)
-Date: Fri, 28 Feb 2025 08:05:50 +0900 (JST)
-Message-Id: <20250228.080550.354359820929821928.fujita.tomonori@gmail.com>
-To: daniel.almeida@collabora.com
-Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
- anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
- arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev,
- david.laight.linux@gmail.com
-Subject: Re: [PATCH v11 0/8] rust: Add IO polling
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <4647720C-28CA-4E18-AD1E-55844CF078E6@collabora.com>
-References: <20250220070611.214262-1-fujita.tomonori@gmail.com>
-	<4647720C-28CA-4E18-AD1E-55844CF078E6@collabora.com>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="V0Q1F8/k"
+Received: from pps.filterd (m0148461.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51RMbm1U032471
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 15:06:39 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2021-q4;
+	 bh=mUQSIe+ZB5g6/BDTv+u2v3zHU+qSX1cA/76PINODPKk=; b=V0Q1F8/kLU2B
+	Mn8h7mVpnZd1KWgb7af1qM5fdw3aeTm8jFRggCfjzyOjf5sSehn+6/FWKdO6f/s8
+	SK71fvE5sUdT2ONGDhI5ID5gE/aJA1VrZeAlrFI63PP4UTAfZlGTlNFRED08wTGo
+	VmfgUFs1cJ6AmTvpqqpuTjlFI9OA6CxDkHwuemn5ZBHI8P2DRIIetCi67WJi+JT4
+	CEjni5W5mF8J0oBtFH52CJ0rnAcdW5muvR8MzxOhGCPvamNfvZXX94514gHawhIM
+	q7uoZgGkZzKzFOIrl7R0JrhF0XRkAUIpwSOrwzK1z0DCQI7bWECdC4VkvcqHuLJ5
+	zXu0PkHiag==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4530qwga3s-3
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 15:06:39 -0800 (PST)
+Received: from twshared40462.17.frc2.facebook.com (2620:10d:c0a8:1b::2d) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.1544.14; Thu, 27 Feb 2025 23:06:28 +0000
+Received: by devbig638.nha1.facebook.com (Postfix, from userid 544533)
+	id A2B4D1888533A; Thu, 27 Feb 2025 15:06:31 -0800 (PST)
+From: Keith Busch <kbusch@meta.com>
+To: <seanjc@google.com>, <pbonzini@redhat.com>, <kvm@vger.kernel.org>
+CC: <leiyang@redhat.com>, <virtualization@lists.linux.dev>, <x86@kernel.org>,
+        <netdev@vger.kernel.org>, Keith Busch <kbusch@kernel.org>
+Subject: [PATCHv3 2/2] kvm: retry nx_huge_page_recovery_thread creation
+Date: Thu, 27 Feb 2025 15:06:31 -0800
+Message-ID: <20250227230631.303431-3-kbusch@meta.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250227230631.303431-1-kbusch@meta.com>
+References: <20250227230631.303431-1-kbusch@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-FB-Internal: Safe
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: pQx2ZpAGqSxKIn3Is8eCNSA34kF2icPq
+X-Proofpoint-GUID: pQx2ZpAGqSxKIn3Is8eCNSA34kF2icPq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-27_08,2025-02-27_01,2024-11-22_01
 
-On Thu, 27 Feb 2025 14:29:45 -0300
-Daniel Almeida <daniel.almeida@collabora.com> wrote:
+From: Sean Christopherson <seanjc@google.com>
 
-> Would you be interested in working on read_poll_timeout_atomic() as well?
-> 
-> There would be a user for that.
+A VMM may send a signal to its threads while they've entered KVM_RUN. If
+that thread happens to be trying to make the huge page recovery vhost
+task, then it fails with -ERESTARTNOINTR. We need to retry if that
+happens, so call_once needs to be retryable. Make call_once complete
+only if what it called was successful.
 
-I think that I can add it.
+[implemented the kvm user side]
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+---
+ arch/x86/kvm/mmu/mmu.c    | 10 ++++------
+ include/linux/call_once.h | 16 +++++++++++-----
+ 2 files changed, 15 insertions(+), 11 deletions(-)
 
-But I prefer to push the current patchset into mainline first. I need
-an ack or nack for the first patch from SCHEDULER maintainers.
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 18ca1ea6dc240..8160870398b90 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -7460,7 +7460,7 @@ static bool kvm_nx_huge_page_recovery_worker(void *=
+data)
+ 	return true;
+ }
+=20
+-static void kvm_mmu_start_lpage_recovery(struct once *once)
++static int kvm_mmu_start_lpage_recovery(struct once *once)
+ {
+ 	struct kvm_arch *ka =3D container_of(once, struct kvm_arch, nx_once);
+ 	struct kvm *kvm =3D container_of(ka, struct kvm, arch);
+@@ -7472,12 +7472,13 @@ static void kvm_mmu_start_lpage_recovery(struct o=
+nce *once)
+ 				      kvm, "kvm-nx-lpage-recovery");
+=20
+ 	if (IS_ERR(nx_thread))
+-		return;
++		return PTR_ERR(nx_thread);
+=20
+ 	vhost_task_start(nx_thread);
+=20
+ 	/* Make the task visible only once it is fully started. */
+ 	WRITE_ONCE(kvm->arch.nx_huge_page_recovery_thread, nx_thread);
++	return 0;
+ }
+=20
+ int kvm_mmu_post_init_vm(struct kvm *kvm)
+@@ -7485,10 +7486,7 @@ int kvm_mmu_post_init_vm(struct kvm *kvm)
+ 	if (nx_hugepage_mitigation_hard_disabled)
+ 		return 0;
+=20
+-	call_once(&kvm->arch.nx_once, kvm_mmu_start_lpage_recovery);
+-	if (!kvm->arch.nx_huge_page_recovery_thread)
+-		return -ENOMEM;
+-	return 0;
++	return call_once(&kvm->arch.nx_once, kvm_mmu_start_lpage_recovery);
+ }
+=20
+ void kvm_mmu_pre_destroy_vm(struct kvm *kvm)
+diff --git a/include/linux/call_once.h b/include/linux/call_once.h
+index 6261aa0b3fb00..ddcfd91493eaa 100644
+--- a/include/linux/call_once.h
++++ b/include/linux/call_once.h
+@@ -26,20 +26,26 @@ do {									\
+ 	__once_init((once), #once, &__key);				\
+ } while (0)
+=20
+-static inline void call_once(struct once *once, void (*cb)(struct once *=
+))
++static inline int call_once(struct once *once, int (*cb)(struct once *))
+ {
++	int r;
++
+         /* Pairs with atomic_set_release() below.  */
+         if (atomic_read_acquire(&once->state) =3D=3D ONCE_COMPLETED)
+-                return;
++		return 0;
+=20
+         guard(mutex)(&once->lock);
+         WARN_ON(atomic_read(&once->state) =3D=3D ONCE_RUNNING);
+         if (atomic_read(&once->state) !=3D ONCE_NOT_STARTED)
+-                return;
++                return -EINVAL;
+=20
+         atomic_set(&once->state, ONCE_RUNNING);
+-        cb(once);
+-        atomic_set_release(&once->state, ONCE_COMPLETED);
++	r =3D cb(once);
++	if (r)
++		atomic_set(&once->state, ONCE_NOT_STARTED);
++	else
++		atomic_set_release(&once->state, ONCE_COMPLETED);
++	return r;
+ }
+=20
+ #endif /* _LINUX_CALL_ONCE_H */
+--=20
+2.43.5
+
