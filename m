@@ -1,57 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B68182BD
-	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 03:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2501F78F4B;
+	Thu, 27 Feb 2025 03:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740625507; cv=none; b=gat9yrVdxu4/wtp5VXpYqEr3ByLy/x9Muo8ducLv3pqgqX6mDZvI+zY65BYtGM9D8P+30v2knQzaKMqHPrw9Qt2liEn2GrcZTtf/RwWW7ZLTtXyFTW2CHymdvywy0PxtePuNvg3U9rtfFl+MhJl31ikxHsgscIjfNUtlJwu4leo=
+	t=1740625799; cv=none; b=VOQJL1V6ll4Rr22GC6SZbshjMDrnSEMdg97PLNNF+sx0vxv0HIuUBGsIKWV4Nme0EzqBpw5K/Jb0LZsressYEl48Co25dTGZegmGg5/PmUcJQRpmb2PiuywrIxCzeymAoou5bUvuOe7aaR0am5p67ocoOEdBKxjj9a3iQPwLGfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740625507; c=relaxed/simple;
-	bh=1WCzRUiWdOh3Z7ACd6nSUaQp45jGi7UUglncaMl8U0M=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WRzdkOLbQ4Oq7owJpE4HPhkYuWB5JuZekbwljaisiXCGW7jAspGuK2sPJqxUia+SFbczq91Aa2WwTki/4ezzurAkIm4l2Lz5djbYNU99NnQ7h/HkgDl2Kq0G1N6blOacrHsZdDSykd14Joo5pXIr3KhHf2I52XsCS2Y7naiINx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kXRMEJgp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740625799; c=relaxed/simple;
+	bh=RgujR+m5YBqIcHeODOWwq2gtvylemdsXvfYXhRFHWUQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=o3ELGfcpldtmzuyXEhFqnZFtc3cpI829iXyRLHFYy9i9oRM+xxmZ+RjUW4M+pbth/TJkqVNwh9SUgljfGGc3ruRncDZKDZRmcOaSNxnkwxWcglWBz6veyCbxVLIfB1KGhg1ydgwVosDAn1KSYqJKhdDq5DGDM2iibF4+JgqOiNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SxbPrrdc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kXRMEJgp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46248C4CED6;
-	Thu, 27 Feb 2025 03:05:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SxbPrrdc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1A5C4CED6;
+	Thu, 27 Feb 2025 03:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740625505;
-	bh=1WCzRUiWdOh3Z7ACd6nSUaQp45jGi7UUglncaMl8U0M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kXRMEJgpJOnZErMy83X5knz+h4zd92N4lq8WQdRWJqn62cuUfN8itmSOFZmXfKsxp
-	 ci3pYtCcbb7kgAfpfD/4MNrTzSH3g9egCyfrMieqfruRYnrpfkIh8upuoAOfZ2fZss
-	 oFwbWOcsqBBW5SPgrxYP2GF7MmQDsV/XoVODHfVo9y+lrszUqXcC6z+vojBPZL0jyU
-	 51y7io0Pxp+D0VVJKKdgF+niNLFOIvBK6nmx1k9PG+EEm5ekJn5c8oX7l26PZMI2DX
-	 GG2Bz4Zqn11FsH2NcbZ3pr+ncJtTLbrZZ7LUfbjYqYpE0OSAmzVCvNITVMQitSVmdV
-	 775e/eqBSkdQA==
-Date: Wed, 26 Feb 2025 19:05:04 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Antonio Quartulli <antonio@openvpn.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v20 01/25] mailmap: remove unwanted entry for
- Antonio Quartulli
-Message-ID: <20250226190504.09b57456@kernel.org>
-In-Reply-To: <53278a6e-dbb4-4f81-8c21-1bfb447ab8b1@openvpn.net>
-References: <20250227-b4-ovpn-v20-0-93f363310834@openvpn.net>
-	<20250227-b4-ovpn-v20-1-93f363310834@openvpn.net>
-	<53278a6e-dbb4-4f81-8c21-1bfb447ab8b1@openvpn.net>
+	s=k20201202; t=1740625798;
+	bh=RgujR+m5YBqIcHeODOWwq2gtvylemdsXvfYXhRFHWUQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=SxbPrrdcLqqZ5fTezHOfqY/lbpH5dDqhsW6N36W1xUrYvq0IZl7TMdDwa9Pi6kvIR
+	 DgG7TGiOhSovczxXDbBiTIblCNvUzZEMFMImSJSL0p8DeCcqbLRVwiRTXwZEuretX+
+	 Ja4wtkoGADvRassOVVJQmBnUPdVlLLIxWMXvK6932E4M9mwK3ThRJBk9pwsTv+QNPz
+	 7VRsz2xVgGpGz65S5nlr1Z1c9KOA8mh/J3xK+Y7uWlEearYER2zdRxBE56aVP5KNC/
+	 sOp9xLrXrjPN/A+/jst+Hk3gxy50rhOI+kl8nVO4oEC6NMN/Gcj+vIzo9YwO4P8LY6
+	 DOWtIdesteQyw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD19380CFE6;
+	Thu, 27 Feb 2025 03:10:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/2] expand cmsg_ipv6.sh with ipv4 support
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174062583050.951105.16448796087818825466.git-patchwork-notify@kernel.org>
+Date: Thu, 27 Feb 2025 03:10:30 +0000
+References: <20250225022431.2083926-1-willemdebruijn.kernel@gmail.com>
+In-Reply-To: <20250225022431.2083926-1-willemdebruijn.kernel@gmail.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, willemb@google.com
 
-On Thu, 27 Feb 2025 02:30:06 +0100 Antonio Quartulli wrote:
-> any chance to get this patch merged in net-next, so that I don't need to 
-> resend it each time?
+Hello:
 
-Sure.. let's see if the series can get merged as a whole and then
-either it's a non-issue or we can pick it up.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-In general if you want it applied separately you could post it
-separately. I guess, stating the obvious.
+On Mon, 24 Feb 2025 21:23:57 -0500 you wrote:
+> From: Willem de Bruijn <willemb@google.com>
+> 
+> Expand IPV6_TCLASS to also cover IP_TOS.
+> Expand IPV6_HOPLIMIT to also cover IP_TTL.
+> 
+> A series of two patches for basic readability (patch 1 is a noop),
+> and so that git does not interpret code changes + file rename as
+> a whole file del + add.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,1/2] selftests/net: prepare cmsg_ipv6.sh for ipv4
+    https://git.kernel.org/netdev/net-next/c/c1d6d629ab0b
+  - [net-next,2/2] selftests/net: expand cmsg_ipv6.sh with ipv4
+    https://git.kernel.org/netdev/net-next/c/2e5584e0f913
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
