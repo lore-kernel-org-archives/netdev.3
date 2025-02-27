@@ -1,185 +1,94 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CDE1F5824;
-	Thu, 27 Feb 2025 18:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3103C1F
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 18:27:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740680813; cv=none; b=eDzPG/Gd7ABbxBYQWQ8SUkB67rNqHIvAs2fxz2jrad6cLR27967UPkX35abV8y93Yl04JyezNdBgrCRVG2axcFQT1MqgSwsCVRLvxtA/SWmSotrs6/tr60E7arjBxfJzeyRDUHGp7VoNW1NZ8HAgMLEmR/M9GJLs83iCaLhupEs=
+	t=1740680823; cv=none; b=U0c5BBONLBVjb8dTiQzbJ6we7U+2ZXA8lKYn8FeF5DSEcXe3JGiXOCIBqA0MAbxvYMrj9K1vpCwi2G1mLsJonpbQujWrlEUmUpsZwfLXhDS8hBO1vKj2XDS3Z7iJcpKZduLK2CFr843BYpm5X5X5atISHqrZMjbWKvhQ7b5GhuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740680813; c=relaxed/simple;
-	bh=5sc/J0s6lEdIy2pZt0nxLEL2mjPywISFCV+wJ7uO7gQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hog+7m3/gL9IWeqIodxVx6SsGO82Fg/oFKUFDUOn+1kO9UOCH1JY3hIXXkIGr5CSeAXmdTrPRWthUkmR4lrQTRteo5JNGnMWDqSzo2PJJJEdI3mpHgop84ylE7SU1e9RCtp/Cm2x64+m6SW1uWzC3LuXWMdHx9UCwRATKxQyLrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UFgVAsAl; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1740680823; c=relaxed/simple;
+	bh=0zsz+mMjvGo4Tw2uJZlOjqUkXoLaWJucvmHSP3Y2wl4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U92Dq/dZsH7XJoBo91RTKzWYK4uPkDEWOm2m1MO8dmMNKE9rofxHnJvt2kV5q1wiw0W5yu6gV/5I+ssabaE1GfFi08vxV+69Ijii/Y9fpXeQY4frCS03Lf1u3vMH2B80LHzd+KIYl6JE8w2GJM/XVu5UEKVRgL1KiKylwEFk4sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BtukSfIu; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UFgVAsAl"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 071E943C67;
-	Thu, 27 Feb 2025 18:26:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1740680804;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c9oO+amqa8DFX9tqfu1bJ3Nj0kZiOGUnRSOidwS8pfc=;
-	b=UFgVAsAlx4FDMBuupoAnv0/iymk/kGT6KiQjA23TUVjouMBXRIpUwV9p0GNm1A82soxVNZ
-	mPwDVzJLqxWivyjWcb3+Yvpe6/kPQfl8h4BUE+cbwKbNf6ExzZt4rw19dmRQm5sFtFf3QO
-	HlvK/hg06wUpR+y+eNLqRUT1aNtjK4s/5gYJ7u6rpWz5weQPW4MbBQQL64d6caR1j6nhUe
-	AP7cJfOahS6no0YopMudyQm/LnAAlt+jwfUGX/GHKXC/kvLnaXH9sHJfnA8M46dfCznd6e
-	GVsnj1m/h7DaWMX1T92K4b+Abl1WhpdKmBUdX5dv00mU9XAr2KwW2MLcKNmYyQ==
-Date: Thu, 27 Feb 2025 19:26:40 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Donald Hunter
- <donald.hunter@gmail.com>, Rob Herring <robh@kernel.org>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>, Heiner Kallweit
- <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, Dent
- Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, Maxime
- Chevallier <maxime.chevallier@bootlin.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v5 06/12] net: pse-pd: Add support for budget
- evaluation strategies
-Message-ID: <20250227192640.20df155d@kmaincent-XPS-13-7390>
-In-Reply-To: <Z8CVimyMj261wc7w@pengutronix.de>
-References: <20250220165129.6f72f51a@kernel.org>
-	<20250224141037.1c79122b@kmaincent-XPS-13-7390>
-	<20250224134522.1cc36aa3@kernel.org>
-	<20250225102558.2cf3d8a5@kmaincent-XPS-13-7390>
-	<20250225174752.5dbf65e2@kernel.org>
-	<Z76t0VotFL7ji41M@pengutronix.de>
-	<Z76vfyv5XoMKmyH_@pengutronix.de>
-	<20250226184257.7d2187aa@kernel.org>
-	<Z8AW6S2xmzGZ0y9B@pengutronix.de>
-	<20250227155727.7bdc069f@kmaincent-XPS-13-7390>
-	<Z8CVimyMj261wc7w@pengutronix.de>
-Organization: bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BtukSfIu"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2233622fdffso26171885ad.2
+        for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 10:27:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740680821; x=1741285621; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0zsz+mMjvGo4Tw2uJZlOjqUkXoLaWJucvmHSP3Y2wl4=;
+        b=BtukSfIu3xE6Mgl3Mitn16aWTx++e6naGChoGpcbeL1V9xm3BFx6TV1hGutJpuRdh2
+         fNDoove6cW7yyVNnAa5XgXMnwC6splCYe4oV1nNyMANLVyvpG0Ugp4jo/6nkYJ7ehAIN
+         edoVGoMnaAYstRCKhkKW/De+AmFk49k2mj8PeRNIUBKwWqHN6PQ4ex1h+oWvQhfvyKJG
+         EYNnEZllQje1pY0sTm2Pz8YEwBU+jGhgj85WtG0QFKr6pgklatC7veLoXPWj6hMvzj9W
+         XKOR/p8YYRlIj2pzZUitlYToBn2eb5pqr1WxVZ6IFGngFoI9J6WSXZ99ZqCpk5HrnPoF
+         pC1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740680821; x=1741285621;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0zsz+mMjvGo4Tw2uJZlOjqUkXoLaWJucvmHSP3Y2wl4=;
+        b=qxCiEv8m8rbtEGXOYF1Hzk9p3JPlKeM1ijZmracKmKcuNhI487n7ji8Iw1cZ5SgFZs
+         QjH722MzqCDKoWeFT/wGlOuzyPCvH76S5amsGqYhknCQVOXPE37hugiY8chIFveWqBvD
+         +1KdEvIitQWY2UtQlqs5eKFeQ9FsItiTwB6BSOK0L1Zj+lplQHAlFz1fZDuxu+MA5VXM
+         NaN2PRxFWLeCoUVTkePVv4NNVdYZfGpKAQ/0ZBux+ft1dF2L2LJUGc7sTaWyvmFnp6f4
+         4XbEBTuumRvH6h2WOwAOaXL6NfQ4mAud5HpEh9WkAd98dCqOUy0RQ+OUoSfBWwaufnMQ
+         BfUg==
+X-Gm-Message-State: AOJu0Yxfogs/bNgqGGZoaasptX7wbUkwKSSa6XrEAS4NYuD9FgAAnx66
+	G2r/jDbab98ek/RGAxZUHDTgQLwfZduA6HkXnUgHonJfhR/enJQ956nJmg==
+X-Gm-Gg: ASbGncshYvxHKHy5gekKOQNA3tsqzyizT7xwGAgOuyH0uecg+sfcyWhtaZOhk22BndP
+	VA9S3vDlDHBYrcvVl4QrDqgVyxhgEr7+srMTOTHdTlhY6eKwPz1vl1nfNitMEY+8CkynrvZ++g4
+	MVkO4R08NH+YMM+DSwbUmH8Q6ejM0RZWcmcTsiQdHOImMz59oR3l/+haFSkdxgiqXzN9Vq0ePfJ
+	CZU49IuQEh6zAd8/qd/k1+7KGo7MAL0oN3LYupoLRQALGRXqr8NUm/FApmUSKnm4WnSnBXIc9Ab
+	31vFq4mf3DAsRIjUrHl5OnKJapsFIg==
+X-Google-Smtp-Source: AGHT+IHEdSjFoqx9WzzmMqbMgA2cVIHdezB1TX4mdA4Zi1dxguprs/7eqvhWc1ZvCkzdbITTxoRwVQ==
+X-Received: by 2002:a17:903:1d0:b0:220:bd61:a337 with SMTP id d9443c01a7336-223690ddef3mr2483025ad.23.1740680820872;
+        Thu, 27 Feb 2025 10:27:00 -0800 (PST)
+Received: from localhost ([129.210.115.104])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-734a0024cc7sm1980421b3a.117.2025.02.27.10.26.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Feb 2025 10:27:00 -0800 (PST)
+Date: Thu, 27 Feb 2025 10:26:59 -0800
+From: Cong Wang <xiyou.wangcong@gmail.com>
+To: kwqcheii <juny24602@gmail.com>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH] sched: address a potential NULL pointer dereference in
+ the GRED scheduler.
+Message-ID: <Z8Cuc1sIjXMQaf3W@pop-os.localdomain>
+References: <20250227160419.3065643-1-juny24602@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekkedujecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthhqredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefgudeuudehudekvdehteeuudefudeugfeitdeitdeuuefhudekjefhteevffdtheenucffohhmrghinhepughirghgnhhoshhtihgtshdrtggrthdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgduleemleehrggvmeelfhdttdemfhegtdgumegvvdejleemudejrghfmeegheejleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeelhegrvgemlehftddtmehfgedtugemvgdvjeelmedujegrfhemgeehjeelpdhhvghlohepkhhmrghinhgtvghnthdqigfrufdqudefqdejfeeltddpmhgrihhlfhhrohhmpehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvhedprhgtphhtthhopehordhrvghmphgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhhusggrsehkvghrnhgvl
- hdrohhrghdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtoheptghorhgsvghtsehlfihnrdhnvghtpdhrtghpthhtohepughonhgrlhgurdhhuhhnthgvrhesghhmrghilhdrtghomh
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250227160419.3065643-1-juny24602@gmail.com>
 
-On Thu, 27 Feb 2025 17:40:42 +0100
-Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+On Fri, Feb 28, 2025 at 12:04:19AM +0800, kwqcheii wrote:
+> If kzalloc in gred_init returns a NULL pointer, the code follows the error handling path, invoking gred_destroy. This, in turn, calls gred_offload, where memset could receive a NULL pointer as input, potentially leading to a kernel crash.
 
-> On Thu, Feb 27, 2025 at 03:57:27PM +0100, Kory Maincent wrote:
-> > On Thu, 27 Feb 2025 08:40:25 +0100
-> > Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> >  =20
-> > > On Wed, Feb 26, 2025 at 06:42:57PM -0800, Jakub Kicinski wrote: =20
->  [...] =20
->  [...] =20
->  [...] =20
-> > >=20
-> > > Ok, I see. @K=C3=B6ry, can you please provide regulator_summary with =
-some
-> > > inlined comments to regulators related to the PSE components and PSE
-> > > related outputs of ethtool (or what ever tool you are using).
-> > >=20
-> > > I wont to use this examples to answer. =20
-> >=20
-> > On my side, I am not close to using sysfs. As we do all configurations
-> > through ethtool I have assumed we should continue with ethtool. =20
->=20
-> Yes, I agree. But it won't be possible to do it for all components.
->=20
-> > I think we should set the port priority through ethtool. =20
->=20
-> ack
->=20
-> > but indeed the PSE  power domain method get and set could be moved to
-> > sysfs as it is not something  relative to the port but to a group of
-> > ports. =20
->=20
-> I would prefer to have it in the for of devlink or use regulator netlink
-> interface. But, we do not need to do this discussion right now.
 
-If we want to report the method we should discuss it now. We shouldn't add
-BUDGET_EVAL_STRAT uAPI to ethtool if we use another way to get and set the
-method later.
+Thanks for your patch.
 
-We could also not report the method for now and assume the user knows it for
-the two controllers currently supported.
-=20
-> > Ethtool should still report the  PSE power domain ID of a port to know
-> > which domain the port is. =20
->=20
-> Exactly.
->=20
-> @Jakub, at current implementation stage, user need to know the domain
-> id, because ports (and priorities) are grouped by the top level
-> regulators (pse-regX in the regulator_summary), they are our top-level
-> bottlenecks.
->=20
-> HP and Cisco switch either use different PSE controllers, or just didn't
-> exposed this nuance to the user. Let's assume, they have only one
-> global power domain.
->=20
-> So, in current patch set I would expect (not force :) ) implementation for
-> following fields:
-> - per port:
->   - priority (valid within the power domain)
->   - power reservation/allocation methods. First of all, because all
->     already supported controllers have different implemented/default
->     methods: microchip - dynamic, TI - static, regulator-pse - fixed (no
->     classification is supported).
->     At same time, in the future, we will need be able switch between
->     (static or dynamic) and fixed for LLPD or manual configuration.
->     Yes, at this point all ports show the same information and it seems
->     to be duplicated.
->   - power domain ID.
->=20
-> @Jakub, did I answered you question, or missed the point? :)
->
-> > @Oleksij here it is: =20
->=20
-> Thank you!
->=20
-> I do not expect it to be the primer user interface, but it can provide
-> additional diagnostic information. I wonted to see how it is aligns
-> with current ethtool UAPI implementation and if it possible to combine
-> it for diagnostics.
->=20
-> > # cat /sys/kernel/debug/regulator/regulator_summary
-> >  regulator                      use open bypass  opmode voltage current
-> > min     max
-> > -----------------------------------------------------------------------=
-----------------
-> > regulator-dummy                  5    4      0 unknown     0mV     0mA
-> > 0mV     0mV d00e0000.sata-target          1
-> > 0mA     0mV     0mV d00e0000.sata-phy             1
-> >         0mA     0mV     0mV d00e0000.sata-ahci            1
-> >                 0mA     0mV     0mV spi0.0-vcc                    1
-> >                         0mA     0mV     0mV pse-reg
-> >  1    4      0 unknown     0mV     0mA     0mV     0mV  =20
->=20
-> pse-regX should be attached to the main supply regulator for better full
-> picture. And use different name to be better identified as PSE power doma=
-ins
-> with ID?
+Please add your Signed-off-by for your patch, which is a minimum
+requirement here. You can check Linux kernel development process for
+more details: https://docs.kernel.org/process/5.Posting.html#before-creating-patches
 
-This is the regulator name set in the devicetree description so we can set
-whatever we want.
+Also, ./scripts/checkpatch.pl could help you catch issues like this one,
+it would save you and others a lot of time.
+
+Lastly, if you saw a real crash, please include the kernel stack trace
+in your patch description. There is a significant difference between a
+real crash and a theoretical one.
 
 Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+Cong
