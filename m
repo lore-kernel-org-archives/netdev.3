@@ -1,33 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E481991CD;
-	Thu, 27 Feb 2025 12:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDF22556E
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 12:33:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740659234; cv=none; b=bLUc0Fl9OjNfoekUG9iqOrBhARd6u9BGNc6uKP9YyCLpHRRqg/k+RphOkw9lMR1wdxayUmv7Wtq45cAeq5erNKc9pJM48DeI5L0enXePxwLY4hj9+fBTB8vRtWZFsxYDU8KdK7O54OsCR/t8XASJv2OK5aP2R3O6Go//bzTz8Lk=
+	t=1740659613; cv=none; b=GOEeodNRxdBibuibsTzV9EztCNIbxpFL3kOvAKJzfpM1Af6PJDEtlKZ3yM0JAyGN9vxd1HRAXBM3FuWZkoFlhZOdOvjgDM1I/YpJXncaar+wbD7SI82tBxrCvXwaZ4zeNfFTuB4NCdLUEyUF2+bV9bx0EQt48yXt+coczvW4k+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740659234; c=relaxed/simple;
-	bh=uMZBezwxFUMj3RoW99boTcLGrIl4YTJQjxUXtEwbbp4=;
+	s=arc-20240116; t=1740659613; c=relaxed/simple;
+	bh=UUF3X91+llyZURTHOSpXPepCKrlN8rL/U4WR82VKFD0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kRAE+BVYFTzpDdHBVXlFJKe0D8cWvYFUkbFuXnqm4HtZf8eaSNk+B800tdqjy5Px2JzDE/rdo5fVkOnsRHidcJimSp7ILA8zCrHmRO+2JSwgbrfRO2G7xlYwHiK6A2FbB1YV9qN+vkQMhd495dFx1vHekhtM5WRqFbSFbWOMUqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=itc5ZFp6; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=Cjr0lZIbG3CRlfu5sQRg/BsG/+7ICcMX5b470d29X149hj35OMjOhmC0kmAp7gbtnZuwQ40AeE4xPxWByX+ue8HgGBDEjkWLd8SVr2934bG000GqEnerTTp8czdwUTKK5AJNxOd9O1qSMz9l+hJ7xSAzFtj77Z4CTwz2JVU8FKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HgLGNO33; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="itc5ZFp6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2917AC4CEDD;
-	Thu, 27 Feb 2025 12:27:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740659233;
-	bh=uMZBezwxFUMj3RoW99boTcLGrIl4YTJQjxUXtEwbbp4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=itc5ZFp69cMRKU04DpCA9d0bZ88EJhRVt6NNGlZ+Qw9D7t5vPq6Ukj/45zjJTFDyU
-	 IzDuTI32kdp4a/vl1Kaoyyj3UEDNXxnsg5N5y5It6XN/58Jdbes6PgQ7SlILJiw6Ht
-	 3sz3UdW8iED/pVzyCmCA7bs8wZf9FLgFBSNYuJkudPDWWjqxkiTyuX/nqOhSor5cyC
-	 0ih6Tlh5RRtuVkr4n7SvKmxDguNp32gAhzQmHiIk82IucvQ6NSM3lMmm2/jG3jZWrp
-	 tN8ofifaTdlTyp+ee4f9zT7obQQmgx1d6oQPhbhqxymGjY8O0BjzkotTMXIHMhTi4R
-	 QAd/y60enq0sw==
-Message-ID: <3d3d180a-12b7-4bee-8172-700f0dae2439@kernel.org>
-Date: Thu, 27 Feb 2025 14:27:05 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HgLGNO33"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740659611;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JVZyoIiO2tKVS/DGhefvVf60W+221dDlikQw+QH0D28=;
+	b=HgLGNO33cqE069dD0VHzH0SSU5odJLLPWXtKGgq2/Z5o5b4tXl+F9KLiI2Mz8MfWUE9ORT
+	gJcaU4K/K6ma5/cmK9EApMyuUkUeopIBvq2wy+iBpQCp88AqFqlmd+Q2lCQH7/okIOiTLW
+	UrraCtPk4WkBPagLyk0/kxleM9XVwXk=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-53-xTc_OjKfM_q0GvwFnE_mwA-1; Thu, 27 Feb 2025 07:33:29 -0500
+X-MC-Unique: xTc_OjKfM_q0GvwFnE_mwA-1
+X-Mimecast-MFC-AGG-ID: xTc_OjKfM_q0GvwFnE_mwA_1740659608
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4399c32efb4so8560975e9.1
+        for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 04:33:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740659608; x=1741264408;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JVZyoIiO2tKVS/DGhefvVf60W+221dDlikQw+QH0D28=;
+        b=FEz7vNouVF8TFMZYcBzMd/lJ+M/0WoWCGnndmKxQurkikg3agbjGxmdPk5NYTvgbd5
+         EUZD9nvYRwrDkWlaBl21uMzAogzAy5JpIElPCfWME09OcFdesWjvObKoS13hWBOW+qb4
+         OudKVBaqkW12s89Uw1UdNFYE0ON525xWsuAH8P/UBFxAACUKdfBuOvGUZoAB8n+Dbhh1
+         DsLS/iMo5jaqiNCyuZaf/0HsBsJzibelHJlBbWaHYki4Oatfu+ZNHBpSfTodnmh2n43h
+         jTh4TZUJ3CoVM0YhKjUJuSNgFeoEGocrbwlmuFAMsBsLOXZKik5MSmZNU9RGFFGofwQW
+         508A==
+X-Gm-Message-State: AOJu0Yw2xK6ItUeLB+Y0cwR/8NYepi1ow3JMvJKDQqy5p2WC9p/23H/8
+	nAqk7b2JUV0B2CS/LE7yQz5AM3oINHys9A26j/yNAZXmp3swV2uRAO6eygtRN+PxIczjIOD5WiM
+	29s3L2M8Y82IWazQxi5epHv/dLeiLDh/rliE1YUUq1tafT4+ij+hf+g==
+X-Gm-Gg: ASbGncsSkIPIjO3le2h3yp0YAq7KbYFQiTeISzrd5QPlrMky/2WcfWgUuDjViPZdLQd
+	MKjke/PJCS39LGNNfWpM1lZJRJOUnIpsE5k97Dt6wwdkF5TWpBXF2wtYK+kb6HqDwumar681mqc
+	wD40O2HAPKT+f5qDMCBXsW3JZefgGPnHh3oz3WKaEnEpRI2b8wGbOb8tgnxVTR4ENHATZn6Bx5a
+	PU2IGLBjEwUcgpvJQVaNntc5ycJx5uqtjU/6vlbAp2YGAKkB3i9bpXASDjQdsiv4vvsplTUkR8i
+	DkD0ZM+mdtVE1awbo+bEODax1k2DC5xGFI3Aec2Q+mV4XA==
+X-Received: by 2002:a05:600c:5252:b0:439:873a:1114 with SMTP id 5b1f17b1804b1-43b31f2020bmr20299015e9.6.1740659608395;
+        Thu, 27 Feb 2025 04:33:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHJRVuDkKv1lD+05VcNthhgmdrXrOUOHQ1OuZCCPnpYc58GHcizWC6uipdF3o0/PTnA5BwnYg==
+X-Received: by 2002:a05:600c:5252:b0:439:873a:1114 with SMTP id 5b1f17b1804b1-43b31f2020bmr20298595e9.6.1740659607556;
+        Thu, 27 Feb 2025 04:33:27 -0800 (PST)
+Received: from [192.168.88.253] (146-241-81-153.dyn.eolo.it. [146.241.81.153])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43b73717230sm21170475e9.19.2025.02.27.04.33.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Feb 2025 04:33:27 -0800 (PST)
+Message-ID: <d1e3d6a6-90b8-45bd-a57f-c8175d0bd906@redhat.com>
+Date: Thu, 27 Feb 2025 13:33:25 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,302 +72,134 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 2/3] net: ti: icssg-prueth: introduce and use
- prueth_swdata struct for SWDATA
-To: Meghana Malladi <m-malladi@ti.com>, danishanwar@ti.com,
- pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
- davem@davemloft.net, andrew+netdev@lunn.ch
-Cc: bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- u.kleine-koenig@baylibre.com, matthias.schiffer@ew.tq-group.com,
- dan.carpenter@linaro.org, schnelle@linux.ibm.com, diogo.ivo@siemens.com,
- glaroque@baylibre.com, macro@orcam.me.uk, john.fastabend@gmail.com,
- hawk@kernel.org, daniel@iogearbox.net, ast@kernel.org, srk@ti.com,
- Vignesh Raghavendra <vigneshr@ti.com>
-References: <20250224110102.1528552-1-m-malladi@ti.com>
- <20250224110102.1528552-3-m-malladi@ti.com>
+Subject: Re: [PATCH net v3 2/2] selftests: Add IPv6 link-local address
+ generation tests for GRE devices.
+To: Guillaume Nault <gnault@redhat.com>, David Miller <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
+ David Ahern <dsahern@kernel.org>, Antonio Quartulli <antonio@mandelbit.com>,
+ Ido Schimmel <idosch@idosch.org>
+References: <cover.1740493813.git.gnault@redhat.com>
+ <a05174174b9fa6a79a9c3ee32e7a5c506d8553aa.1740493813.git.gnault@redhat.com>
 Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20250224110102.1528552-3-m-malladi@ti.com>
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <a05174174b9fa6a79a9c3ee32e7a5c506d8553aa.1740493813.git.gnault@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-
-
-On 24/02/2025 13:01, Meghana Malladi wrote:
-> From: Roger Quadros <rogerq@kernel.org>
-> 
-> We have different cases for SWDATA (skb, page, cmd, etc)
-> so it is better to have a dedicated data structure for that.
-> We can embed the type field inside the struct and use it
-> to interpret the data in completion handlers.
-> 
-> Increase SWDATA size to 48 so we have some room to add
-> more data if required.
-> 
-> Signed-off-by: Roger Quadros <rogerq@kernel.org>
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-> Signed-off-by: Meghana Malladi <m-malladi@ti.com>
-> ---
-> Changes since v2 (v3-v2):
-> - Fix leaking tx descriptor in emac_tx_complete_packets()
-> - Free rx descriptor if swdata type is not page in emac_rx_packet()
-> - Revert back the size of PRUETH_NAV_SW_DATA_SIZE
-> - Use build time check for prueth_swdata size
-> - re-write prueth_swdata to have enum type as first member in the struct
-> and prueth_data union embedded in the struct
-> 
-> All the above changes have been suggested by Roger Quadros <rogerq@kernel.org>
-> 
->  drivers/net/ethernet/ti/icssg/icssg_common.c  | 52 +++++++++++++------
->  drivers/net/ethernet/ti/icssg/icssg_prueth.c  |  3 ++
->  drivers/net/ethernet/ti/icssg/icssg_prueth.h  | 16 ++++++
->  .../net/ethernet/ti/icssg/icssg_prueth_sr1.c  |  4 +-
->  4 files changed, 57 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_common.c b/drivers/net/ethernet/ti/icssg/icssg_common.c
-> index acbb79ad8b0c..01eeabe83eff 100644
-> --- a/drivers/net/ethernet/ti/icssg/icssg_common.c
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_common.c
-> @@ -136,12 +136,12 @@ int emac_tx_complete_packets(struct prueth_emac *emac, int chn,
->  	struct net_device *ndev = emac->ndev;
->  	struct cppi5_host_desc_t *desc_tx;
->  	struct netdev_queue *netif_txq;
-> +	struct prueth_swdata *swdata;
->  	struct prueth_tx_chn *tx_chn;
->  	unsigned int total_bytes = 0;
->  	struct sk_buff *skb;
->  	dma_addr_t desc_dma;
->  	int res, num_tx = 0;
-> -	void **swdata;
->  
->  	tx_chn = &emac->tx_chns[chn];
->  
-> @@ -163,12 +163,19 @@ int emac_tx_complete_packets(struct prueth_emac *emac, int chn,
->  		swdata = cppi5_hdesc_get_swdata(desc_tx);
->  
->  		/* was this command's TX complete? */
-> -		if (emac->is_sr1 && *(swdata) == emac->cmd_data) {
-> +		if (emac->is_sr1 && (void *)(swdata) == emac->cmd_data) {
->  			prueth_xmit_free(tx_chn, desc_tx);
->  			continue;
->  		}
->  
-> -		skb = *(swdata);
-> +		if (swdata->type != PRUETH_SWDATA_SKB) {
-> +			netdev_err(ndev, "tx_complete: invalid swdata type %d\n", swdata->type);
-> +			prueth_xmit_free(tx_chn, desc_tx);
-> +			budget++;
-
-I don't recollect why we need to increase budget here.
-
-> +			continue;
-> +		}
+On 2/25/25 3:43 PM, Guillaume Nault wrote:
+> diff --git a/tools/testing/selftests/net/gre_ipv6_lladdr.sh b/tools/testing/selftests/net/gre_ipv6_lladdr.sh
+> new file mode 100755
+> index 000000000000..85e40b6df55e
+> --- /dev/null
+> +++ b/tools/testing/selftests/net/gre_ipv6_lladdr.sh
+> @@ -0,0 +1,227 @@
+> +#!/bin/sh
+> +# SPDX-License-Identifier: GPL-2.0
 > +
-> +		skb = swdata->data.skb;
->  		prueth_xmit_free(tx_chn, desc_tx);
-
-if we set swdata->type to PRUETH_SWDATA_CMD in emac_send_command_sr1() then we could
-reduce all above code including both ifs to
-
-		swdata = cppi5_hdesc_get_swdata(desc_tx);
-		prueth_xmit_free(tx_chn, desc_tx);
-		if (swdata->type != PRUETH_SWDATA_SKB)
-			continue;
-
-		skb = swdata->data.skb;
-
->  
->  		ndev = skb->dev;
-> @@ -472,9 +479,9 @@ int prueth_dma_rx_push_mapped(struct prueth_emac *emac,
->  {
->  	struct net_device *ndev = emac->ndev;
->  	struct cppi5_host_desc_t *desc_rx;
-> +	struct prueth_swdata *swdata;
->  	dma_addr_t desc_dma;
->  	dma_addr_t buf_dma;
-> -	void **swdata;
->  
->  	buf_dma = page_pool_get_dma_addr(page) + PRUETH_HEADROOM;
->  	desc_rx = k3_cppi_desc_pool_alloc(rx_chn->desc_pool);
-> @@ -490,7 +497,8 @@ int prueth_dma_rx_push_mapped(struct prueth_emac *emac,
->  	cppi5_hdesc_attach_buf(desc_rx, buf_dma, buf_len, buf_dma, buf_len);
->  
->  	swdata = cppi5_hdesc_get_swdata(desc_rx);
-> -	*swdata = page;
-> +	swdata->type = PRUETH_SWDATA_PAGE;
-> +	swdata->data.page = page;
->  
->  	return k3_udma_glue_push_rx_chn(rx_chn->rx_chn, PRUETH_RX_FLOW_DATA,
->  					desc_rx, desc_dma);
-> @@ -539,11 +547,11 @@ static int emac_rx_packet(struct prueth_emac *emac, u32 flow_id)
->  	u32 buf_dma_len, pkt_len, port_id = 0;
->  	struct net_device *ndev = emac->ndev;
->  	struct cppi5_host_desc_t *desc_rx;
-> +	struct prueth_swdata *swdata;
->  	dma_addr_t desc_dma, buf_dma;
->  	struct page *page, *new_page;
->  	struct page_pool *pool;
->  	struct sk_buff *skb;
-> -	void **swdata;
->  	u32 *psdata;
->  	void *pa;
->  	int ret;
-> @@ -561,7 +569,13 @@ static int emac_rx_packet(struct prueth_emac *emac, u32 flow_id)
->  
->  	desc_rx = k3_cppi_desc_pool_dma2virt(rx_chn->desc_pool, desc_dma);
->  	swdata = cppi5_hdesc_get_swdata(desc_rx);
-> -	page = *swdata;
-> +	if (swdata->type != PRUETH_SWDATA_PAGE) {
-> +		netdev_err(ndev, "rx_pkt: invalid swdata->type %d\n", swdata->type);
-> +		k3_cppi_desc_pool_free(rx_chn->desc_pool, desc_rx);
-> +		return 0;
-> +	}
+> +ERR=4 # Return 4 by default, which is the SKIP code for kselftest
+> +PAUSE_ON_FAIL="no"
 > +
-> +	page = swdata->data.page;
->  	page_pool_dma_sync_for_cpu(pool, page, 0, PAGE_SIZE);
->  	cppi5_hdesc_get_obuf(desc_rx, &buf_dma, &buf_dma_len);
->  	k3_udma_glue_rx_cppi5_to_dma_addr(rx_chn->rx_chn, &buf_dma);
-> @@ -626,15 +640,18 @@ static void prueth_rx_cleanup(void *data, dma_addr_t desc_dma)
->  {
->  	struct prueth_rx_chn *rx_chn = data;
->  	struct cppi5_host_desc_t *desc_rx;
-> +	struct prueth_swdata *swdata;
->  	struct page_pool *pool;
->  	struct page *page;
-> -	void **swdata;
->  
->  	pool = rx_chn->pg_pool;
->  	desc_rx = k3_cppi_desc_pool_dma2virt(rx_chn->desc_pool, desc_dma);
->  	swdata = cppi5_hdesc_get_swdata(desc_rx);
-> -	page = *swdata;
-> -	page_pool_recycle_direct(pool, page);
-> +	if (swdata->type == PRUETH_SWDATA_PAGE) {
-> +		page = swdata->data.page;
-> +		page_pool_recycle_direct(pool, page);
-> +	}
+> +readonly NS0=$(mktemp -u ns0-XXXXXXXX)
 > +
->  	k3_cppi_desc_pool_free(rx_chn->desc_pool, desc_rx);
->  }
->  
-> @@ -671,13 +688,13 @@ enum netdev_tx icssg_ndo_start_xmit(struct sk_buff *skb, struct net_device *ndev
->  	struct prueth_emac *emac = netdev_priv(ndev);
->  	struct prueth *prueth = emac->prueth;
->  	struct netdev_queue *netif_txq;
-> +	struct prueth_swdata *swdata;
->  	struct prueth_tx_chn *tx_chn;
->  	dma_addr_t desc_dma, buf_dma;
->  	u32 pkt_len, dst_tag_id;
->  	int i, ret = 0, q_idx;
->  	bool in_tx_ts = 0;
->  	int tx_ts_cookie;
-> -	void **swdata;
->  	u32 *epib;
->  
->  	pkt_len = skb_headlen(skb);
-> @@ -739,7 +756,8 @@ enum netdev_tx icssg_ndo_start_xmit(struct sk_buff *skb, struct net_device *ndev
->  	k3_udma_glue_tx_dma_to_cppi5_addr(tx_chn->tx_chn, &buf_dma);
->  	cppi5_hdesc_attach_buf(first_desc, buf_dma, pkt_len, buf_dma, pkt_len);
->  	swdata = cppi5_hdesc_get_swdata(first_desc);
-> -	*swdata = skb;
-> +	swdata->type = PRUETH_SWDATA_SKB;
-> +	swdata->data.skb = skb;
->  
->  	/* Handle the case where skb is fragmented in pages */
->  	cur_desc = first_desc;
-> @@ -842,15 +860,17 @@ static void prueth_tx_cleanup(void *data, dma_addr_t desc_dma)
->  {
->  	struct prueth_tx_chn *tx_chn = data;
->  	struct cppi5_host_desc_t *desc_tx;
-> +	struct prueth_swdata *swdata;
->  	struct sk_buff *skb;
-> -	void **swdata;
->  
->  	desc_tx = k3_cppi_desc_pool_dma2virt(tx_chn->desc_pool, desc_dma);
->  	swdata = cppi5_hdesc_get_swdata(desc_tx);
-> -	skb = *(swdata);
-> -	prueth_xmit_free(tx_chn, desc_tx);
-> +	if (swdata->type == PRUETH_SWDATA_SKB) {
-> +		skb = swdata->data.skb;
-> +		dev_kfree_skb_any(skb);
-> +	}
->  
-> -	dev_kfree_skb_any(skb);
-> +	prueth_xmit_free(tx_chn, desc_tx);
->  }
->  
->  irqreturn_t prueth_rx_irq(int irq, void *dev_id)
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> index 00ed97860547..3ff8c322f9d9 100644
-> --- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> @@ -1522,6 +1522,9 @@ static int prueth_probe(struct platform_device *pdev)
->  
->  	np = dev->of_node;
->  
-> +	BUILD_BUG_ON_MSG((sizeof(struct prueth_swdata) > PRUETH_NAV_SW_DATA_SIZE),
-> +			 "insufficient SW_DATA size");
+> +# Exit the script after having removed the network namespaces it created
+> +#
+> +# Parameters:
+> +#
+> +#   * The list of network namespaces to delete before exiting.
+> +#
+> +exit_cleanup()
+> +{
+> +	for ns in "$@"; do
+> +		ip netns delete "${ns}" 2>/dev/null || true
+> +	done
 > +
->  	prueth = devm_kzalloc(dev, sizeof(*prueth), GFP_KERNEL);
->  	if (!prueth)
->  		return -ENOMEM;
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-> index c7b906de18af..3bbabd007129 100644
-> --- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-> @@ -136,6 +136,22 @@ struct prueth_rx_chn {
->  	struct page_pool *pg_pool;
->  };
->  
-> +enum prueth_swdata_type {
-> +	PRUETH_SWDATA_INVALID = 0,
-> +	PRUETH_SWDATA_SKB,
-> +	PRUETH_SWDATA_PAGE,
-> +	PRUETH_SWDATA_CMD,
+> +	if [ "${ERR}" -eq 4 ]; then
+> +		echo "Error: Setting up the testing environment failed." >&2
+> +	fi
+> +
+> +	exit "${ERR}"
 
-PRUETH_SWDATA_CMD is not beig used so let's use it in emac_send_command_sr1()
+I'm sorry for the late feedback, but if you use the helper from lib.sh
+you could avoid some code duplication for ns setup and cleanup.
 
-> +};
+> +}
 > +
-> +struct prueth_swdata {
-> +	enum prueth_swdata_type type;
-> +	union prueth_data {
-> +		struct sk_buff *skb;
-> +		struct page *page;
-> +		u32 cmd;
-> +	} data;
-> +};
-> +
->  /* There are 4 Tx DMA channels, but the highest priority is CH3 (thread 3)
->   * and lower three are lower priority channels or threads.
->   */
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-> index aeeb8a50376b..7bbe0808b3ec 100644
-> --- a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-> @@ -275,10 +275,10 @@ static struct sk_buff *prueth_process_rx_mgm(struct prueth_emac *emac,
->  	struct net_device *ndev = emac->ndev;
->  	struct cppi5_host_desc_t *desc_rx;
->  	struct page *page, *new_page;
-> +	struct prueth_swdata *swdata;
->  	dma_addr_t desc_dma, buf_dma;
->  	u32 buf_dma_len, pkt_len;
->  	struct sk_buff *skb;
-> -	void **swdata;
->  	void *pa;
->  	int ret;
->  
-> @@ -301,7 +301,7 @@ static struct sk_buff *prueth_process_rx_mgm(struct prueth_emac *emac,
->  	}
->  
->  	swdata = cppi5_hdesc_get_swdata(desc_rx);
-> -	page = *swdata;
-> +	page = swdata->data.page;
->  	cppi5_hdesc_get_obuf(desc_rx, &buf_dma, &buf_dma_len);
->  	pkt_len = cppi5_hdesc_get_pktlen(desc_rx);
->  
+> +# Create the network namespaces used by the script (NS0)
+> +#
+> +create_namespaces()
+> +{
+> +	ip netns add "${NS0}" || exit_cleanup
 
--- 
-cheers,
--roger
+Also no need to check for failures at this point. If there is no
+namespace support most/all selftests will fail badly
+
+> +}
+> +
+> +# The trap function handler
+> +#
+> +exit_cleanup_all()
+> +{
+> +	exit_cleanup "${NS0}"
+> +}
+> +
+> +# Add fake IPv4 and IPv6 networks on the loopback device, to be used as
+> +# underlay by future GRE devices.
+> +#
+> +setup_basenet()
+> +{
+> +	ip -netns "${NS0}" link set dev lo up
+> +	ip -netns "${NS0}" address add dev lo 192.0.2.10/24
+> +	ip -netns "${NS0}" address add dev lo 2001:db8::10/64 nodad
+> +}
+> +
+> +# Check if network device has an IPv6 link-local address assigned.
+> +#
+> +# Parameters:
+> +#
+> +#   * $1: The network device to test
+> +#   * $2: An extra regular expression that should be matched (to verify the
+> +#         presence of extra attributes)
+> +#   * $3: The expected return code from grep (to allow checking the abscence of
+> +#         a link-local address)
+> +#   * $4: The user visible name for the scenario being tested
+> +#
+> +check_ipv6_ll_addr()
+> +{
+> +	local DEV="$1"
+> +	local EXTRA_MATCH="$2"
+> +	local XRET="$3"
+> +	local MSG="$4"
+> +	local RET
+> +
+> +	printf "%-75s  " "${MSG}"
+> +
+> +	set +e
+> +	ip -netns "${NS0}" -6 address show dev "${DEV}" scope link | grep "fe80::" | grep -q "${EXTRA_MATCH}"
+> +	RET=$?
+> +	set -e
+> +
+> +	if [ "${RET}" -eq "${XRET}" ]; then
+> +		printf "[ OK ]\n"
+
+You can use check_err / log_test from lib.sh to reduce code duplication
+with other tests and more consistent output.
+
+> +	else
+> +		ERR=1
+> +		printf "[FAIL]\n"
+> +		if [ "${PAUSE_ON_FAIL}" = "yes" ]; then
+> +			printf "\nHit enter to continue, 'q' to quit\n"
+> +			read -r a
+> +			if [ "$a" = "q" ]; then
+> +				exit 1
+> +			fi
+> +		fi
+
+I guess something like this could be placed into lib.sh, but that would
+be net-next material
+
+Thanks,
+
+Paolo
 
