@@ -1,163 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7E12206BE;
-	Thu, 27 Feb 2025 08:23:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D853822256C
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 08:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740644634; cv=none; b=kHOHKQEnITiZdyIH9Jq55zG6v5w3Zz3PXzdxADCyV4uNyo5Mp+vdGhj4N70oXODUehE8juNGQrbd3Ff0+VF67agKgTbCPdM6FzeodnTm0YLWLiyUqJgdCxD3EBQVTT2V5xJK9bfrKMSaqfsu1k2NaypQ+iAHaTDeGSX6+QLb2DY=
+	t=1740644635; cv=none; b=Egehr7xLi2oKXzlr6XCKxEyOtSN0URriirI/vfP2N3zcmXrx+/rS1Cq8azr+zGJ9IdoKafZiEmAH031e2IMzCl+OOX7PLI1fRwCZiKn0jGmPsLX+EfSwOcirXy3SXN4do9jZSuAzAuS0pg6mFPX15+ve7x1P10RDSAV0GF0kEEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740644634; c=relaxed/simple;
-	bh=PdLTmLyeTDgnTiJA/RdFq4UEue65i61KUJwuOFy3wcw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aGKnbhq4fXGMAsDD8hijsmtF/migr1BMFt+GoeNS3mmR5xVC5YPiEsB92qe7K1bKNDiI34w3l+AQQcyxtQTfbzhqh+MPxnt1FHO47QKhA5T+sRZY30YX1Kdz4dTfYAw98BLabrDfIn/13rzd1PD6WJStEU6U51t0HR4WdyyrGaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rtq2K3N7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740644635; c=relaxed/simple;
+	bh=Zteo2l4dqYLNSxyP664BkAgfcE1m1xZ+uVLxjADJ7+4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TXXGCPd9C4/+vTDTz9Glo1SlWAP2N/1m4WZ7WNzAOIXaRfa3SwaMHpNBRZlONAOwHOlo8mnaJxBixotZLanlURxAA31GyOEQssK/jNBZ3cUlY9jQFkOP13Ys1J2DWW0l8vHMmmXKZg+NfieYLXgvDhV/cdBHrvE3oLEB5OuTjmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FlNuuFHi; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rtq2K3N7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839AFC4CEDD;
-	Thu, 27 Feb 2025 08:23:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740644634;
-	bh=PdLTmLyeTDgnTiJA/RdFq4UEue65i61KUJwuOFy3wcw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=rtq2K3N7zkNRXfw5WGz6Yo365HqS+SxHLaTvt4y1rS0t2zbLl2sKJG80TdQMIC1V2
-	 Kd7vJhSpMTaN8CbegpqobVEG4oCbYQsq10gRcVLbL22BOvRx38oo834N/vubU1ZzA9
-	 vfWGbjLb9OMWeaNslGuAFmBKuKGx5V4TOMGwZq7gQsWW5SkBtFHVCBB83MVqLfNLgP
-	 LxsP/j+2t0cFMlMd22xK2q8MNBZsfVHNiuK5KunGxpcdX5QVRX63UozCQ3Vs5W6BNc
-	 iP9FOSfrItbaQ/7yi1UvDrooFu9iXaWqpYPCK8alz7I/+sJUgajx9HtETCpEDEos+o
-	 wfInmdw4BpZ7g==
-From: Geliang Tang <geliang@kernel.org>
-To: Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>
-Cc: Geliang Tang <tanggeliang@kylinos.cn>,
-	netdev@vger.kernel.org,
-	mptcp@lists.linux.dev,
-	linux-sctp@vger.kernel.org
-Subject: [PATCH net-next 0/4] add sock_kmemdup helper
-Date: Thu, 27 Feb 2025 16:23:22 +0800
-Message-ID: <cover.1740643844.git.tanggeliang@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FlNuuFHi"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-46c8474d8f6so5766761cf.3
+        for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 00:23:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740644633; x=1741249433; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Zteo2l4dqYLNSxyP664BkAgfcE1m1xZ+uVLxjADJ7+4=;
+        b=FlNuuFHiEDYKWSbnN8/djwDIkRloc+N2hvD/y/GdLGjpDSLvcKah7XA2KwQts6igFh
+         Yee97+cqLOgVfN2Qz9Y6R4cOsae1bafBKRsbVFPpl0GyIo3GyPWzSmDYqYJ9ospJXGPV
+         4Sa7HHK9rF1wGO3GOBtgEd3q+uJyufgB/jXAGUlVit9juC9jZ7ZMuiJOXc8YQ6WDA2Fy
+         apXNNqYGcwzjLwJ0UhwwH7BGNIrF4DKEWQfQIloalumPwjheIBkzG+n7yOmSpgnygZDE
+         AHvmy2DkcpK4WNIdEiBrJPGlw93a4uSYw2dsWsY2QxgIejJ+neLXhWXsZxomXgKRiw9f
+         7o2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740644633; x=1741249433;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Zteo2l4dqYLNSxyP664BkAgfcE1m1xZ+uVLxjADJ7+4=;
+        b=UtuAaEGF7+CMeEdpBuMFXrCJYcf2JhL3E4mfDTLl0UMsMo3i4r+8jgUVEC0NFN+pMb
+         cFl+6nriHoKEZmwHoB+vmBwWFxIyg+4fk4cgJBEpvmb+6vW6pX09QgmIxgx6kIdugSdj
+         lBJ2hviHaBVeBVJb7WWnBEKMJ9e9vNoPts0qOjTK3YKMMRd2FhxuqEJnTl3zDbCevYLB
+         /G7omtXqxcMzcmf5p9AZb7YlZTcGNMc6S/rYvaKQat440KVYwPaLtWtvoqLxkJ7NlNtk
+         BnrsZO94YYD+lxFH9/7myiLVdVdjPNA1PgQuMhhVHlsGGtwbOFQpVPkEZ/+47eyGSlNe
+         hZ4A==
+X-Forwarded-Encrypted: i=1; AJvYcCUqxT4TW1SmFACBJfS9zE0dB43DH7WJtwBcHRndlZ9T/4vQsMZh/YBRjt0vLxkaveuHE8BYQ8g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyks17xoz8ei6aGfBd5+/npq5XCT2OZftiE6+MGBhkO5Vhlz1YS
+	04XbWf8lDK3KL6s/KG4ByGyFiIXJ/OMQptbBNVL7nSyqsr4Qsei/xVREQCTarFY5ae7osPAYMqI
+	KRJwBiImrgxocBa6HwRZiuNIts3Coe0wxotfc
+X-Gm-Gg: ASbGncvcH8X9vSWz8VkjxeLv6lR9QN9EfVhKrUn5sHgBM+90Q297Sg5quEOvbT3/i0+
+	49tGpIj4qFPUEM0V9qqI8U/hqBVjWI5i6w0fpJyUA06xibe6aX+wwpcL/YlVn39qKDc3npmU4hH
+	OCiB7YKHA=
+X-Google-Smtp-Source: AGHT+IH98ewuMtamuZXaNWIk/Te5FEKizVKaxpFe3fIeA58sV+v0H1v4Qk6c+BUPcdraIlg1jrbBfb3fgHs8TBhhDU0=
+X-Received: by 2002:a05:622a:2d2:b0:471:f730:20bf with SMTP id
+ d75a77b69052e-472228c6ba8mr316474951cf.12.1740644632528; Thu, 27 Feb 2025
+ 00:23:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250226192556.21633-1-kuniyu@amazon.com> <20250226192556.21633-4-kuniyu@amazon.com>
+In-Reply-To: <20250226192556.21633-4-kuniyu@amazon.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 27 Feb 2025 09:23:41 +0100
+X-Gm-Features: AQ5f1Jq6Q_EWtu9Fh80F9X87jQVrds7t0u4YBUprF1eShkuGLce5DfrDfLiMCvs
+Message-ID: <CANn89i+851PahsD9TLpqfWqmSLsG0nc=8sSD=0AQQgmRcp4zgQ@mail.gmail.com>
+Subject: Re: [PATCH v2 net-next 03/12] ipv4: fib: Allocate fib_info_hash[]
+ during netns initialisation.
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+On Wed, Feb 26, 2025 at 8:30=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon.co=
+m> wrote:
+>
+> We will allocate fib_info_hash[] and fib_info_laddrhash[] for each netns.
+>
+> Currently, fib_info_hash[] is allocated when the first route is added.
+>
+> Let's move the first allocation to a new __net_init function.
+>
+> Note that we must call fib4_semantics_exit() in fib_net_exit_batch()
+> because ->exit() is called earlier than ->exit_batch().
+>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+> ---
 
-While developing MPTCP BPF path manager [1], I found it's useful to
-add a new sock_kmemdup() helper.
-
-My use case is this:
-
-In mptcp_userspace_pm_append_new_local_addr() function (see patch 3
-in this patchset), there is a code that uses sock_kmalloc() to
-allocate an address entry "e", then immediately duplicate the input
-"entry" to it:
-
-	e = sock_kmalloc(sk, sizeof(*e), GFP_ATOMIC);
-	if (!e) {
-		ret = -ENOMEM;
-		goto append_err;
-	}
-	*e = *entry;
-
-When I implemented MPTCP BPF path manager, I needed to implement a
-code similar to this in BPF.
-
-The kfunc sock_kmalloc() can be easily invoked in BPF to allocate
-an entry "e", but the code "*e = *entry;" that assigns "entry" to
-"e" is not easy to implemented. 
-
-I had to implement such a copy entry helper in BPF:
-
-static void mptcp_pm_copy_addr(struct mptcp_addr_info *dst,
-                               struct mptcp_addr_info *src)
-{
-       dst->id = src->id;
-       dst->family = src->family;
-       dst->port = src->port;
-
-       if (src->family == AF_INET) {
-               dst->addr.s_addr = src->addr.s_addr;
-       } else if (src->family == AF_INET6) {
-               dst->addr6.s6_addr32[0] = src->addr6.s6_addr32[0];
-               dst->addr6.s6_addr32[1] = src->addr6.s6_addr32[1];
-               dst->addr6.s6_addr32[2] = src->addr6.s6_addr32[2];
-               dst->addr6.s6_addr32[3] = src->addr6.s6_addr32[3];
-       }
-}
-
-static void mptcp_pm_copy_entry(struct mptcp_pm_addr_entry *dst,
-                                struct mptcp_pm_addr_entry *src)
-{
-       mptcp_pm_copy_addr(&dst->addr, &src->addr);
-
-       dst->flags = src->flags;
-       dst->ifindex = src->ifindex;
-}
-
-And add write permission for BPF to each field of mptcp_pm_addr_entry:
-
-@@ -74,24 +74,6 @@ static int bpf_mptcp_pm_btf_struct_access(struct bpf_verifier_log *log,
-               case offsetof(struct mptcp_pm_addr_entry, addr.port):
-                       end = offsetofend(struct mptcp_pm_addr_entry, addr.port);
-                       break;
-#if IS_ENABLED(CONFIG_MPTCP_IPV6)
-               case offsetof(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[0]):
-                       end = offsetofend(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[0]);
-                       break;
-               case offsetof(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[1]):
-                       end = offsetofend(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[1]);
-                       break;
-               case offsetof(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[2]):
-                       end = offsetofend(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[2]);
-                       break;
-               case offsetof(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[3]):
-                       end = offsetofend(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[3]);
-                       break;
-#else
-               case offsetof(struct mptcp_pm_addr_entry, addr.addr.s_addr):
-                       end = offsetofend(struct mptcp_pm_addr_entry, addr.addr.s_addr);
-                       break;
-#endif
-
-
-But if there's a sock_kmemdup() helper, it will become much simpler,
-only need to call kfunc sock_kmemdup() instead in BPF.
-
-So this patchset adds this new helper and uses it in several places.
-
-[1]
-https://patchwork.kernel.org/project/mptcp/cover/cover.1738924875.git.tanggeliang@kylinos.cn/
-
-Geliang Tang (4):
-  sock: add sock_kmemdup helper
-  net: use sock_kmemdup for ip_options
-  mptcp: use sock_kmemdup for address entry
-  net/tcp_ao: use sock_kmemdup for tcp_ao_key
-
- include/net/sock.h       |  2 ++
- net/core/sock.c          | 15 +++++++++++++++
- net/ipv4/tcp_ao.c        |  3 +--
- net/ipv6/exthdrs.c       |  3 +--
- net/mptcp/pm_userspace.c |  3 +--
- net/mptcp/protocol.c     |  7 ++-----
- net/sctp/protocol.c      |  7 ++-----
- 7 files changed, 24 insertions(+), 16 deletions(-)
-
--- 
-2.43.0
-
+Reviewed-by: Eric Dumazet <edumazet@google.com>
