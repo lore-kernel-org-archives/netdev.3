@@ -1,79 +1,100 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580D04EB38;
-	Thu, 27 Feb 2025 16:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA64B1DE3DC
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 16:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740672192; cv=none; b=dmEgFttjWOGZgyE/Rd8KFNWLdhqaANM/Yh2NWC8TS0LixqhuGSedTU0FCsMgrG2VM2Kf2DDsqAK5SKx3W8xynA1qg9vVKOMp3/obso+/54tWzDcaZu+ZpTUi/THAmgeBlSL9UjsoE94TA7tTx2rOV1uSluDp3k/ezr52H2JXk2s=
+	t=1740672267; cv=none; b=oCHaEKA7uCTu5RK9xQYSRGc20m4DdyJ//YDfXze2zcQXQl8A3s7xsx+y7FndmD9Wh8FTA5mXHCo9+kulYJfa+W7JS1s1GIELg/Hw6EMUbKYQuK7F9Nw3luqD3Py4j1a3dedB1stdW4wbrEfC7FrGzMEC75ZUjX7ADNnCG37ZRtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740672192; c=relaxed/simple;
-	bh=kDR/3BsbGHNq1vO8Xg5bepJteccoLWRVMd1vEEh2v1c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hOEflF5bXzPprD47h6k0wBBmNVnPSoz4MCTSnjbeR6SyEj4yAl4iTmnoP1Urp9BECI6Le6tEPNQmRuV513xtY5vZl6LaxcRv4dpjl6VcdyAtoIht+gth7+zTaNr/EAaiN+RXljdSlhDMvhftcrsop5YZGdFBCUro9Yc24IVyQMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0Tr/jzQg; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1740672267; c=relaxed/simple;
+	bh=aQ5XckA8vTqXPTypuwSjzIG6pSFrlPThzam8D0lLKkc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f2rEkLUqMA2yBgn6Fkd2ChJAw6euE75AU+ZO9b8uR+mbSuAPUcv7OeoBcofokrXizrRXxpBCVj8I/S7ZyCgwnx228884fTZq+Nyl32JlnshPcO/Q9XLHlS/4OMzN6/cnJCPGY/voekGMvs140yUfPgxwRbB5H0r2FXx8Sf5qmgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fMMf+ygx; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0Tr/jzQg"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=jHA36oJ30EP9uMa5rF7xPESwPrtKLCK7Cd5ezd49fWk=; b=0Tr/jzQg9aJuTcenur4l/oX+xr
-	4IxBeJe4kMTdHI7YinrnF4qym310wM1HdVJS+OF7M7xsmrryPnHn8zHfb8PzU3vAkbZ/v6gHkLBlb
-	FdB6ztqqpqTYHv544JgFMldLAiS8/Cz9HvXXzivirZGe+vQ12cfJb1itGb4RA/YgYkso=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tngLe-000e3j-3H; Thu, 27 Feb 2025 17:02:54 +0100
-Date: Thu, 27 Feb 2025 17:02:54 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Mark Pearson <mpearson-lenovo@squebb.ca>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] e1000e: Link flap workaround option for false IRP events
-Message-ID: <8c0a80fe-5e92-42c4-88cc-0fc46c17a936@lunn.ch>
-References: <mpearson-lenovo@squebb.ca>
- <20250226194422.1030419-1-mpearson-lenovo@squebb.ca>
- <36ae9886-8696-4f8a-a1e4-b93a9bd47b2f@lunn.ch>
- <50d86329-98b1-4579-9cf1-d974cf7a748d@app.fastmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fMMf+ygx"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-22185cddbffso40075405ad.1
+        for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 08:04:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740672265; x=1741277065; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QgRkOay8wqsOuKwF5FjepFqr5KSlTxi61MFKNp0lZvQ=;
+        b=fMMf+ygxv4N8fKyD1Ega1lbQNhgyMv3sJHGoRrq/z61D3M3EbwOCtH4LG9Xf2enqSJ
+         L59UPb9Rco0d5aZ1TjVvMy2keAvx7OFs6EbzeSLO0Mi722O5Lwvl29cFW+oB5Of1tdi+
+         ZLPy9lcvkaoniPd9FEkrGnRYvkc1GF7SGrQ5uAXfTfaOWM2QYu/JPC51yfE7ZtaIk0da
+         jVlNGn/SpmTGRKp6kmTzYSc2YYhTXrnqrwDGZQS0fnrOc3aCrijMowBHbYHtsOUBWsM9
+         uY8l7UBoz/qtDOTTDcneLKAPmz4BtsaKmnZR8G/n4hMn1cUw0To66EWfE1wCKRmDeObk
+         C4uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740672265; x=1741277065;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QgRkOay8wqsOuKwF5FjepFqr5KSlTxi61MFKNp0lZvQ=;
+        b=uRpIDqYjD2HeauoRkl135FCGKnpVCR3/CXNXOLPlzTWxXuNioFU7VHTcg5MeNsefDb
+         a7KrjVo/mgUNRKRIMFmKiJK7DIKrTD5ob4UPDGsIX2ojueZttnJ2u+4xFTt+u8KLxJqe
+         TpdCoTK0psbJvRehm8Ho9ZX53AL/aLaHrsvOI7uhPRFOotTbg9+gRCfZWW6qTlXT2WUp
+         /MVhzCHREGcxvNCbrE2gkB3z5+5dPnFOjuDgwpI4XkiH9rJsbZcGluFLwcCf0gocCgJA
+         /xvMoZ3AyG8OegrOQGHq2dOfT5UYG83eVTO7YuRjClaqhn73/123k45sNqQJ+YurOIdV
+         jW3g==
+X-Gm-Message-State: AOJu0Yy25MrSNaUiUDPKqzRe63rPtbQfpVRIdoZxi7fs7jk/abBD+L3R
+	qFpraUzjWzP3WNXtUDRBykYX9E9sWy2XAG/biPBOrTHqC66PPytVqI4X9gfwl/jxhQ7A
+X-Gm-Gg: ASbGnctFLCt77trAtizCsytbqvLes4TZoPmnryNDIOJQZQMEPzLzVvK/xC6ddBlRBo0
+	nOeu7N5ncALDdZqLDZPSVmuKm2AQC7TjeR5wvPrJcGCV1sR2mUG/0/Dc78NSvejfXkNQQ0Zqr1m
+	R1Ph1sBhTrXI1dqFXncnKVR5799sk8UfBJuqdeB9zAZWBKUCeynGuk3uYa3Mxlfs/GSpnaKdYMx
+	eZunZnCrj4h91C9CJJvaDEoFZ0VDDZ/5rjmvDMtzPbAFoOVOrkjpod9FUB7gbeKUh+5Ymw6FV6Z
+	6a26Afbk0ocrsrn9hOPntKcYDcmeEtQUG3FB2i6f
+X-Google-Smtp-Source: AGHT+IHB1qHi6fBy1SWVAaP3nUYNFroFZhw9y2E31D3RTNtaRJBeeDCChjRXBFZccvzFhJA9TaTkww==
+X-Received: by 2002:a05:6a00:998:b0:726:a820:921d with SMTP id d2e1a72fcca58-7349d2a31a5mr6347407b3a.10.1740672264452;
+        Thu, 27 Feb 2025 08:04:24 -0800 (PST)
+Received: from localhost.localdomain ([2a02:6ea0:d612:0:6f72:8d23:acb5:6c4b])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-734a0024c04sm1833133b3a.105.2025.02.27.08.04.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Feb 2025 08:04:23 -0800 (PST)
+From: kwqcheii <juny24602@gmail.com>
+To: netdev@vger.kernel.org
+Cc: kwqcheii <juny24602@gmail.com>
+Subject: [PATCH] sched: address a potential NULL pointer dereference in the GRED scheduler.
+Date: Fri, 28 Feb 2025 00:04:19 +0800
+Message-ID: <20250227160419.3065643-1-juny24602@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <50d86329-98b1-4579-9cf1-d974cf7a748d@app.fastmail.com>
+Content-Transfer-Encoding: 8bit
 
-> The reason for the module option is I'm playing it safe, as Intel couldn't determine root cause.
+If kzalloc in gred_init returns a NULL pointer, the code follows the error handling path, invoking gred_destroy. This, in turn, calls gred_offload, where memset could receive a NULL pointer as input, potentially leading to a kernel crash.
+---
+ net/sched/sch_gred.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-> The aim of the patch is to keep the effect to a minimum whilst
-> allowing users who are impacted to turn on the workaround, if they
-> are encountering the issue.
+diff --git a/net/sched/sch_gred.c b/net/sched/sch_gred.c
+index ab6234b4fcd5..fa643e5709bd 100644
+--- a/net/sched/sch_gred.c
++++ b/net/sched/sch_gred.c
+@@ -317,10 +317,12 @@ static void gred_offload(struct Qdisc *sch, enum tc_gred_command command)
+ 	if (!tc_can_offload(dev) || !dev->netdev_ops->ndo_setup_tc)
+ 		return;
+ 
+-	memset(opt, 0, sizeof(*opt));
+-	opt->command = command;
+-	opt->handle = sch->handle;
+-	opt->parent = sch->parent;
++	if (opt) {
++		memset(opt, 0, sizeof(*opt));
++		opt->command = command;
++		opt->handle = sch->handle;
++		opt->parent = sch->parent;
++	}
+ 
+ 	if (command == TC_GRED_REPLACE) {
+ 		unsigned int i;
+-- 
+2.48.1
 
-And how do such users determine this module parameter exists? You need
-to be a pretty savvy user to know about them, and how the set them,
-etc.
-
-> Issue details:
-
-> We have seen the issue when running high level traffic on a network
-> involving at least two nodes and also having two different network
-> speeds are need. For example:
-
-> [Lenovo WS] <---1G link---> Network switch <---100M link--->[traffic source]
-> The link flap can take a day or two to reproduce - it's rare.
-
-By flap, you mean down/up? So the network dies for a couple of seconds
-while autoneg happens? And this repeats at 1 to 2 day intervals?
-
-Or does the link go down, and stay down, and it needs user
-intervention to get the link back?
-
-	Andrew
