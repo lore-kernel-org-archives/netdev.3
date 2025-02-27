@@ -1,67 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B233623F285;
-	Thu, 27 Feb 2025 14:47:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA45B25E80F;
+	Thu, 27 Feb 2025 14:55:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740667631; cv=none; b=gMPRHvZjwiwKCEm4ALFEAFwo8Dy0U9q8van7ZTFJIGyt03fdZTCiRSEdM1L2p13EBidkBnK9rAU8Hw74broBhASvJgZuVEmqL3UdeaTLqDRuNRk5uxULtGN3i5AbzWvl7aHa1cFiZyUj0rqg2/l4tXUB1TToqelMKhbQNkOfnPI=
+	t=1740668159; cv=none; b=SQ60vbY3Dy1X+H9h6uHqyKLrZXeNsndp7z/IylTCZokVm3Iq9MsEVaQ6her5zv1GjeqqdTf/x3E7ymoTvDplu6sYGwYfXOxMUn1ghddwycV7ULGdOiXhpmRLkfLoM9GNVwTx/ajK7z7qz53Rh7LM4MXnI4w0NXXNRVunL7lorxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740667631; c=relaxed/simple;
-	bh=jox/nfnwrjGVspjEMLfYePtujaSPad7kpCrtDhZkrbw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CI4MncWq7lLXqwfn+OgO/g+/AqMSTlGmmayju49/AkS5vg9So86hhg+4aRCv+K5fZUKI5DTX2jBbGT0Hs22BAGgL9iYS4o+NF2WQHnymGtQ9M/DORBKostmknhQ6vk5SkRYF5NvQiZ6rsXJ1rGpgr8PA161FosfnkU6tpXZRQoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+zIfa19; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740668159; c=relaxed/simple;
+	bh=B+3yO58mPXLNKWSK23exJcJPPCrGftTXonjllEkm1OE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZfWvqeelLeqkjXlIYWaqkGA1Qn62Xz99t301dtGqfmRdQ58rl+Jp8JXhKuqUSvfXfOSBH1ED4/+0Fe3fqsgkaBPEGLYR6HTDqeR/69sZkL33FFGlpAXkb931WCFUfb0RDaXGL1KN0V6hd1/wB4lA31UZCCGVBHmlorCXKNE9+cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AhRKfPb0; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+zIfa19"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F33C4CEDD;
-	Thu, 27 Feb 2025 14:47:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740667630;
-	bh=jox/nfnwrjGVspjEMLfYePtujaSPad7kpCrtDhZkrbw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=D+zIfa19zkkTaux2FTjQm0ge9hDBDiUyElLgz2ec9g0UW5ggQA26WIbtDNCRs/fOc
-	 t0ReRpIHH2Zjs/rfi2VR+rfQz2WBjk8t3b/NGBvT0h6ZB7zXDK3MJLk7z6yTeX0HXt
-	 PPvcvMtDDxHdjuxAwEj6yERSzNOyhuPtohfGwxnX92ql5Iie9xOFY/kqzfq97vR5vj
-	 4lZoj5ofQj/bXHH4XoN2p3JisgjN8jTgnhyyHvj909sslZslrCphnlOialGZNV1vwV
-	 z005MwR6LGEkZyUAEG29EIeGKV/Bq+S8JrIF7I4rM7Pw+fTLAUk63NC1Ms55kpY1Q2
-	 RqwMpalXXaSaQ==
-Date: Thu, 27 Feb 2025 06:47:08 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jijie Shao <shaojijie@huawei.com>
-Cc: <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
- <andrew+netdev@lunn.ch>, <horms@kernel.org>, <shenjian15@huawei.com>,
- <wangpeiyang1@huawei.com>, <liuyonglong@huawei.com>,
- <chenhao418@huawei.com>, <sudongming1@huawei.com>, <xujunsheng@huawei.com>,
- <shiyongbang@huawei.com>, <libaihan@huawei.com>,
- <jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
- <salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <kalesh-anakkur.purayil@broadcom.com>
-Subject: Re: [PATCH v3 net-next 2/6] net: hibmcge: Add support for rx
- checksum offload
-Message-ID: <20250227064708.7811dfa7@kernel.org>
-In-Reply-To: <11198621-5c04-4a00-a69e-165e22ebf0e8@huawei.com>
-References: <20250221115526.1082660-1-shaojijie@huawei.com>
-	<20250221115526.1082660-3-shaojijie@huawei.com>
-	<20250224190937.05b421d0@kernel.org>
-	<641ddf73-3497-433b-baf4-f7189384d19b@huawei.com>
-	<20250225082306.524e8d6a@kernel.org>
-	<11198621-5c04-4a00-a69e-165e22ebf0e8@huawei.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AhRKfPb0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740668158; x=1772204158;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=B+3yO58mPXLNKWSK23exJcJPPCrGftTXonjllEkm1OE=;
+  b=AhRKfPb0vNVqE9hRcwImlpm4QAhGCMOPAXsG1BvRuOPZtZ5s7gGXrgli
+   jK0yebfRmqNF6YUBb4vtwioMD5I3a3m1Z3oTaXBLiKOWGeWC/Bdv1q4jQ
+   JRkYyHEalvh/jUG6SZ2NgMb5AJp/e6LRVq8pBpvFl2W+94DobiYPVc8zA
+   v42Bsl8oa0t5GCbbQhlUL/ip8ynWYYAsZ2TOkexjgqFLUvctvvc7vJSvQ
+   7nW70AW5yv0onq/P5+/wlHkREx4m59eQqOtlTRcE2LAvszdxBPOLX0eTT
+   0vbkKOSs70ivzcts4SkhdxibrHT1iD3kEMmEkqj4TIxy7DIqwVeRV97Rc
+   Q==;
+X-CSE-ConnectionGUID: 52CwQkq2RgS7Gk0UuKFRUA==
+X-CSE-MsgGUID: EjRpxDKLSDOCxZEq93DRMA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11358"; a="41480542"
+X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
+   d="scan'208";a="41480542"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 06:55:57 -0800
+X-CSE-ConnectionGUID: grw6SfyGT024CqUHLNb46A==
+X-CSE-MsgGUID: 5XidMIstRR2nGsbJaB9+aw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
+   d="scan'208";a="117541119"
+Received: from brc05.iind.intel.com (HELO brc05..) ([10.190.162.156])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 06:55:53 -0800
+From: Tushar Vyavahare <tushar.vyavahare@intel.com>
+To: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	bjorn@kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	jonathan.lemon@gmail.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	tirthendu.sarkar@intel.com,
+	tushar.vyavahare@intel.com
+Subject: [PATCH bpf-next v2 0/2] selftests/xsk: Add tests for XDP tail adjustment in AF_XDP
+Date: Thu, 27 Feb 2025 14:27:35 +0000
+Message-Id: <20250227142737.165268-1-tushar.vyavahare@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 27 Feb 2025 19:28:25 +0800 Jijie Shao wrote:
-> rx checksum offload enable:
-> 	device check ok ->  CHECKSUM_UNNECESSARY -> stack
-> 	device check fail ->  drop
+This patch series adds tests to validate the XDP tail adjustment
+functionality, focusing on its use within the AF_XDP context. The tests
+verify dynamic packet size manipulation using the bpf_xdp_adjust_tail()
+helper function, covering both single and multi-buffer scenarios.
 
-Don't drop packets on csum validation failure.
-The stack can easily handle packets with bad csum.
-And users will monitor stack metrics for csum errors.
-Plus devices are wrong more often than the stack.
+v1 -> v2:
+1. Retain and extend stream replacement: Keep `pkt_stream_replace`
+   unchanged. Add `pkt_stream_replace_ifobject` for targeted ifobject
+   handling.
+
+2. Consolidate patches: Merge patches 2 to 6 for tail adjustment tests and
+   check.
+
+---
+Patch Summary:
+
+1. Packet stream replacement: Add `pkt_stream_replace_ifobject` to manage
+   packet streams efficiently.
+
+2. Tail adjustment tests and support check: Implement dynamic packet
+   resizing in xskxceiver by adding `xsk_xdp_adjust_tail` and extend this
+   functionality to userspace with `testapp_xdp_adjust_tail` for
+   validation. Ensure support by adding `is_adjust_tail_supported` to
+   verify the availability of `bpf_xdp_adjust_tail()`. Introduce tests for
+   shrinking and growing packets using `bpf_xdp_adjust_tail()`, covering
+   both single and multi-buffer scenarios when used with AF_XDP.
+---
+
+Tushar Vyavahare (2):
+  selftests/xsk: Add packet stream replacement function
+  selftests/xsk: Add tail adjustment tests and support check
+
+Signed-off-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
+
+ .../selftests/bpf/progs/xsk_xdp_progs.c       |  48 +++++++
+ tools/testing/selftests/bpf/xsk_xdp_common.h  |   1 +
+ tools/testing/selftests/bpf/xskxceiver.c      | 131 ++++++++++++++++--
+ tools/testing/selftests/bpf/xskxceiver.h      |   2 +
+ 4 files changed, 174 insertions(+), 8 deletions(-)
+
+-- 
+2.34.1
+
