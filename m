@@ -1,134 +1,71 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from s.wfbtzhsb.outbound-mail.sendgrid.net (s.wfbtzhsb.outbound-mail.sendgrid.net [159.183.224.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA4F23E32C
-	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 23:06:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E98622576A
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 23:10:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.183.224.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740697607; cv=none; b=pPdb7GBR0FAg3IMkDDovsImzu48YQO45yJSBsTEZo+3iIkovfDa5Yu/l7V/MfEtZpDINOWQor/0D8SbuPwxkW4NWt4WgT353QNQPNdxG/hqiB6VsPJ+n9T0vlSvrzHZyMCMbOOlgF5eDCit0JSP7fmIXgWoSgN51MWqfwvx7RMU=
+	t=1740697861; cv=none; b=mpdhF5mSmuvipG9rTfdCG66TW3PN+QnIYTeDYJq8OxjX7x0FZjyOxuZxxfZJwDHkjNbvR1V/dTfDXY0AT+3pS3d7YZ3JvHIUi8SEPeHvSd8R2kSRo+rVK6kCEdh2PuxLGGrFbb26vZXM63VrooTHre4epJvrL30GOxdVk6b+zTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740697607; c=relaxed/simple;
-	bh=n20JTjqARi3bIKMGVpnP5071GH6mRPRCGiKcCnHkOuw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T37/p1ipa+M481C2mv4h/yvDg0agLa5lT1vP94JlkZiDtXC37PwvhdHtCBZpz0lsE559vIhTswFtde5zXv+4bd91lcKCTBcQuRzI3jN5EBje7AvtgGhNzMyXiXHcjDEo05+Eg+BP7OiG1pT51E9kDBm/8l9gEOkTU9uno5zoIR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=jGfJyFnA; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1740697861; c=relaxed/simple;
+	bh=7cfikuYTKVCiqGcVYPtidbuhSLlsNkzHnX2+hkv1fwg=;
+	h=Content-Type:From:Subject:Message-ID:Date:MIME-Version:To; b=FI29OybF80ecr5xtSswfZJ6cVXlP354QeFZnbRn58MA4jqFBGarxhD5wmLiCbf+IigmjVDNkVfYQ1BggkxE1W1g131CYXEO7F7j+1HwTPBygLkrJEVm1ky3HdBC98xfCFLLevjThy3n8QPe2oWjBUEQ4ggB4aRhYvG0jpONUXFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=beachtrans.com; spf=pass smtp.mailfrom=em3945.beachtrans.com; dkim=pass (2048-bit key) header.d=beachtrans.com header.i=@beachtrans.com header.b=iZHG7aPm; arc=none smtp.client-ip=159.183.224.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=beachtrans.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em3945.beachtrans.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="jGfJyFnA"
-Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51RN0CT7025640
-	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 15:06:43 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2021-q4;
-	 bh=vCIsZt403ulsh6i+1Y7fMucf02/XpxKVHcBj4IVeiiA=; b=jGfJyFnAQszI
-	2ufui3RvKjM83ALgN63+lwWFbsbDB4L2MAQgcbedrS8irYOU9R6KNTZoAHosD9pj
-	odb2mhidwdrdbHsMvoqSA4Ssw4597YjDBRGD0QdoFElP4ndpHVhGTHc+6gwTKew+
-	FzvXUlbYbEK1B2MwWxbly1zZupamgNeQD9c5eA27ms2asLLXClVf+j/V3spHPMcG
-	uxJH3fBpDOkAZASBzkKjYoB+mVefeYTOznEzDl2/T8atnNnkFu0qVQxYAhVFU/vO
-	DP1T3BwBG8/k65iaKppmztGjEp0V0ZKE1yc+Cn0qw8pfEfRlU4xzAhzUD8xSBVGD
-	zBXNJHaEYw==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4531bbg1m3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 15:06:43 -0800 (PST)
-Received: from twshared18153.09.ash9.facebook.com (2620:10d:c0a8:1b::2d) by
- mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.1544.14; Thu, 27 Feb 2025 23:06:34 +0000
-Received: by devbig638.nha1.facebook.com (Postfix, from userid 544533)
-	id 9A9C318885339; Thu, 27 Feb 2025 15:06:31 -0800 (PST)
-From: Keith Busch <kbusch@meta.com>
-To: <seanjc@google.com>, <pbonzini@redhat.com>, <kvm@vger.kernel.org>
-CC: <leiyang@redhat.com>, <virtualization@lists.linux.dev>, <x86@kernel.org>,
-        <netdev@vger.kernel.org>, Keith Busch <kbusch@kernel.org>
-Subject: [PATCHv3 1/2] vhost: return task creation error instead of NULL
-Date: Thu, 27 Feb 2025 15:06:30 -0800
-Message-ID: <20250227230631.303431-2-kbusch@meta.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250227230631.303431-1-kbusch@meta.com>
-References: <20250227230631.303431-1-kbusch@meta.com>
+	dkim=pass (2048-bit key) header.d=beachtrans.com header.i=@beachtrans.com header.b="iZHG7aPm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=beachtrans.com;
+	h=content-type:from:subject:content-transfer-encoding:mime-version:
+	reply-to:to:cc:content-type:from:subject:to;
+	s=s1; bh=7cfikuYTKVCiqGcVYPtidbuhSLlsNkzHnX2+hkv1fwg=;
+	b=iZHG7aPmMG3rezfLjx/0rLAw7DaNZS1dnIlVSIPLCiNcA2c0JoXhTL3C2gYbe0NSqeew
+	MtqjRaPLUdAZ23plnif5XSR1HMlevCPfM7MzZhFQha4qGLR8goKCu+5/fA2Ovf3C0jsUAy
+	D0Kd5mOz+PIpEV81RHSsFfeT0wAvXdI8RrAOsH0z3JeYf6vq79iJDBHlzC5MRCzevKLFGN
+	CYgwjVbVaYfvgvaeyM+MijqlG5RRGBwQq5k9L8sY0FkNvKJ6X0uNYrpWB5hcrtqUtbdMyL
+	hiS0SXYX48B2JXKLz4TlpjFLe2PPUatRt5v/Vgqc5WZTyAxPYc8mw59OtHaIPXNg==
+Received: by recvd-5f5cf94c86-4vzs8 with SMTP id recvd-5f5cf94c86-4vzs8-1-67C0F100-1A
+	2025-02-27 23:10:56.314646002 +0000 UTC m=+9078454.221566325
+Received: from [127.0.0.1] (unknown)
+	by geopod-ismtpd-10 (SG) with ESMTP
+	id 0s0LpndqQoC1Jxy6ybtQCg
+	for <netdev@vger.kernel.org>;
+	Thu, 27 Feb 2025 23:10:56.097 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+From: Trina Norman <beachtrans@beachtrans.com>
+Subject: -CPA for 2024 Tax Preparation
+Message-ID: <67b6a87e-2925-0531-fd45-d63469c87e1d@beachtrans.com>
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 27 Feb 2025 23:10:56 +0000 (UTC)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-FB-Internal: Safe
-Content-Type: text/plain
-X-Proofpoint-GUID: oZZfQdyiLcXqNUW7UMKi2i1d1Ieb8lBv
-X-Proofpoint-ORIG-GUID: oZZfQdyiLcXqNUW7UMKi2i1d1Ieb8lBv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-27_08,2025-02-27_01,2024-11-22_01
+Reply-To: trinanorman@quantumsynergysolutiongroupz.com
+X-SG-EID: 
+ =?us-ascii?Q?u001=2E8XscFR3rpduFdB27tRfUKavLwUZvMEoVMTYMOG1kmEWri5i8WUgQe5XT+?=
+ =?us-ascii?Q?U5vVhE1+l1hKM6Om5j=2F6EGG24sDLPRVQHgmow1P?=
+ =?us-ascii?Q?tiponuYEEUxptpdKBAoxuN=2F8rJHwEOd3+fovjA9?=
+ =?us-ascii?Q?LP3J6IekjHhrg2U7ap5UAWlTEOH42D8ByEkr3oY?=
+ =?us-ascii?Q?bgBro38NVVZ8revJsjfCrJKID9Kec+z2oQhTpWw?=
+ =?us-ascii?Q?Rpwy76jSA=2FdhyZJTUpzS6zG69LUb8sDQRhEjUa6?= =?us-ascii?Q?l5wX?=
+To: netdev@vger.kernel.org
+X-Entity-ID: u001.R7thWtYRDgf6qc1FvLYI4g==
 
-From: Keith Busch <kbusch@kernel.org>
+Hi,
 
-Lets callers distinguish why the vhost task creation failed. No one
-currently cares why it failed, so no real runtime change from this
-patch, but that will not be the case for long.
+I hope you=E2=80=99re doing well. My name is Trina Norman, and I work as an=
+ Archaeologist with the U.S. Department of the Interior. Due to the nature =
+of my job, which involves frequent travel, I=E2=80=99m seeking a CPA to ass=
+ist with my 2024 tax preparation.
 
-Signed-off-by: Keith Busch <kbusch@kernel.org>
----
- arch/x86/kvm/mmu/mmu.c | 2 +-
- drivers/vhost/vhost.c  | 2 +-
- kernel/vhost_task.c    | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+I=E2=80=99d appreciate the opportunity to schedule a call or Zoom meeting t=
+o learn more about your services, discuss your fees, and go over any releva=
+nt details. Please let me know your availability at your convenience.
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index d4ac4a1f8b81b..18ca1ea6dc240 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -7471,7 +7471,7 @@ static void kvm_mmu_start_lpage_recovery(struct onc=
-e *once)
- 				      kvm_nx_huge_page_recovery_worker_kill,
- 				      kvm, "kvm-nx-lpage-recovery");
-=20
--	if (!nx_thread)
-+	if (IS_ERR(nx_thread))
- 		return;
-=20
- 	vhost_task_start(nx_thread);
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 9ac25d08f473e..63612faeab727 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -666,7 +666,7 @@ static struct vhost_worker *vhost_worker_create(struc=
-t vhost_dev *dev)
-=20
- 	vtsk =3D vhost_task_create(vhost_run_work_list, vhost_worker_killed,
- 				 worker, name);
--	if (!vtsk)
-+	if (IS_ERR(vtsk))
- 		goto free_worker;
-=20
- 	mutex_init(&worker->mutex);
-diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
-index 8800f5acc0071..2ef2e1b800916 100644
---- a/kernel/vhost_task.c
-+++ b/kernel/vhost_task.c
-@@ -133,7 +133,7 @@ struct vhost_task *vhost_task_create(bool (*fn)(void =
-*),
-=20
- 	vtsk =3D kzalloc(sizeof(*vtsk), GFP_KERNEL);
- 	if (!vtsk)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 	init_completion(&vtsk->exited);
- 	mutex_init(&vtsk->exit_mutex);
- 	vtsk->data =3D arg;
-@@ -145,7 +145,7 @@ struct vhost_task *vhost_task_create(bool (*fn)(void =
-*),
- 	tsk =3D copy_process(NULL, 0, NUMA_NO_NODE, &args);
- 	if (IS_ERR(tsk)) {
- 		kfree(vtsk);
--		return NULL;
-+		return ERR_PTR(PTR_ERR(tsk));
- 	}
-=20
- 	vtsk->task =3D tsk;
---=20
-2.43.5
+Thank you for your time and consideration. I look forward to your response.
 
+Best regards,
+Trina Norman
