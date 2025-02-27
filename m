@@ -1,35 +1,50 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m15597.qiye.163.com (mail-m15597.qiye.163.com [101.71.155.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009B82288EA;
-	Thu, 27 Feb 2025 10:49:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209C822DFA5;
+	Thu, 27 Feb 2025 11:07:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740653398; cv=none; b=C0ZmFJX6yJsKh+BJavH+y5Lo7Tekw+jVMEwvQz+TeQp02oJmrOCW+8xGN/Av2+2kGCMHunFAMiv4LHOewAxeea/rz5rcbfL8L08lz5OFM1puuFN3O4JdHbf5G034bNbNGaWGk8CWBiUhkvB9Pk1Za2ov3l0TkxKjIM5O5KdZbnM=
+	t=1740654430; cv=none; b=s574CetsFBLVrCxsvgs9RihvaEg8oYsOI3fhyTPTC6ZQZYQw7PD20aISamBsQiy+aIHK1qOoLyk7CxgfZy9eB4FXv44CHkR6z17nQidiFDA96AJHOvkzai5uhw3SIMBoVODqWHOSEDj6HfFBGBQ/wmHoml8H3GXWATF8EuEcxNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740653398; c=relaxed/simple;
-	bh=YYJ7gEsR0U/YGiOODkNqsZ8vEFtQRhso7UfJ5DEdLUY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=V+4Zhj383gR9XRbjrcLi2FLaJRnvTHlyWVZD+0Fjy+TcN+B1gmWsEXv88jEl0dwIuLjtlmkfEXQDGv3AMj82D9ZzumgMAmhPgKtwc35CSTXu0cX2EfGPViHjENB0nqLoJeKLiXUx/84upFiZUWhIWd2Oi/E8drc7M6c9ofggn/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rm2O31xo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740654430; c=relaxed/simple;
+	bh=QcScKeljPaP6q4KsbNlSyNEca/2Bc0ZZ2CPbrSexmoU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=TahogSnQJQhpXxZ8b+HMFYsr1sr8sHggdNoh2fDsRXzIAoIzS/t80Pr4UQlFvd1EsKS4ruKqLk/nexVz43yQqRTO+ewVt16Ztr4rSKly5JHy+IyG7xY50G/YROT+pS5Q9P3N8yceB/HzgN9DzZM5d4wHRfom81ds6iZDGkZV95E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=SDzKw6O1; arc=none smtp.client-ip=101.71.155.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rm2O31xo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F582C4CEDD;
-	Thu, 27 Feb 2025 10:49:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740653397;
-	bh=YYJ7gEsR0U/YGiOODkNqsZ8vEFtQRhso7UfJ5DEdLUY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Rm2O31xoE60HsohBYtZYWmEY9ZjWpZVed0MrgkMC8cYzFZr9821hoaQp6J5S51l+b
-	 +lNILK3oVdq9j8+v1Q6eEE9FpdBxAflApa0lp0OoywGucSPrS9PKglx4igMkXbyUe5
-	 lYi/lCZurDjxynI1g2zYURjitGpTri4nbILEg67U7aRJwXT5NL5qxj0nqBDvgBPt9I
-	 q4h7za9wlcYce+FVMzp41SOK+hFEqxjVrLAJxfeZjMxMhGsq1X3qSAn2iQv24aq7H4
-	 uoj0Z0OIzPh2R/QIX+slEKhnb1TdqmJCxTqn0D8rqvxtY3/qPGjXz28Wpg3VkYw82q
-	 oO09ulWQylvUg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE0BD380AA7F;
-	Thu, 27 Feb 2025 10:50:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="SDzKw6O1"
+Received: from localhost.localdomain (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id c65b3758;
+	Thu, 27 Feb 2025 19:06:58 +0800 (GMT+08:00)
+From: Kever Yang <kever.yang@rock-chips.com>
+To: heiko@sntech.de
+Cc: linux-rockchip@lists.infradead.org,
+	David Wu <david.wu@rock-chips.com>,
+	Kever Yang <kever.yang@rock-chips.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	netdev@vger.kernel.org,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-kernel@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	"Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Eric Dumazet <edumazet@google.com>
+Subject: [PATCH v2 3/3] ethernet: stmmac: dwmac-rk: Make the phy clock could be used for external phy
+Date: Thu, 27 Feb 2025 19:06:52 +0800
+Message-Id: <20250227110652.2342729-3-kever.yang@rock-chips.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250227110652.2342729-1-kever.yang@rock-chips.com>
+References: <20250227110652.2342729-1-kever.yang@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,42 +52,54 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] usbnet: gl620a: fix endpoint checking in genelink_bind()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174065342951.1379797.16119885160230991674.git-patchwork-notify@kernel.org>
-Date: Thu, 27 Feb 2025 10:50:29 +0000
-References: <20250224172919.1220522-1-n.zhandarovich@fintech.ru>
-In-Reply-To: <20250224172919.1220522-1-n.zhandarovich@fintech.ru>
-To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-usb@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzbot+d693c07c6f647e0388d3@syzkaller.appspotmail.com,
- syzkaller-bugs@googlegroups.com, lvc-project@linuxtesting.org
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGUwfSFZLQ0sfSUweSUpIHktWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
+X-HM-Tid: 0a954716998c03afkunmc65b3758
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6OCo6TDo*NDIQQg0KEhQ4L05K
+	Hi8aChFVSlVKTE9LTU5PT0pCQk9OVTMWGhIXVRAeDR4JVQIaFRw7CRQYEFYYExILCFUYFBZFWVdZ
+	EgtZQVlOQ1VJSVVMVUpKT1lXWQgBWUFKSU5KNwY+
+DKIM-Signature:a=rsa-sha256;
+	b=SDzKw6O1ad1HTN56DBqdOpnbD7IMM+V26Hprp/qQctw4Cq814Ew4vphHWMvo41Uo9IMcW2QvJHtUuP2ioVhdBgeWTgdGcKx0grhhKovB11Ggb6cYv5x0U0Pz235kKKtt8REWDYLndDhLkQduFSLlfMP1UWfQMEOuVzGN9GhTROc=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=jrwDkuFUXUDj9MICD8KUchO+3GWZ8SbQ7JyWrq5N/Ck=;
+	h=date:mime-version:subject:message-id:from;
 
-Hello:
+From: David Wu <david.wu@rock-chips.com>
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Use the phy_clk to prepare_enable and unprepare_disable related phy clock.
 
-On Mon, 24 Feb 2025 20:29:17 +0300 you wrote:
-> Syzbot reports [1] a warning in usb_submit_urb() triggered by
-> inconsistencies between expected and actually present endpoints
-> in gl620a driver. Since genelink_bind() does not properly
-> verify whether specified eps are in fact provided by the device,
-> in this case, an artificially manufactured one, one may get a
-> mismatch.
-> 
-> [...]
+Signed-off-by: David Wu <david.wu@rock-chips.com>
+Signed-off-by: Kever Yang <kever.yang@rock-chips.com>
+---
 
-Here is the summary with links:
-  - [net] usbnet: gl620a: fix endpoint checking in genelink_bind()
-    https://git.kernel.org/netdev/net/c/1cf9631d836b
+Changes in v2: None
 
-You are awesome, thank you!
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+index ccf4ecdffad3..cc90c74ec70c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+@@ -1867,12 +1867,14 @@ static int rk_gmac_clk_init(struct plat_stmmacenet_data *plat)
+ 		clk_set_rate(bsp_priv->clk_mac, 50000000);
+ 	}
+ 
+-	if (plat->phy_node && bsp_priv->integrated_phy) {
++	if (plat->phy_node) {
+ 		bsp_priv->clk_phy = of_clk_get(plat->phy_node, 0);
+ 		ret = PTR_ERR_OR_ZERO(bsp_priv->clk_phy);
+ 		if (ret)
+ 			return dev_err_probe(dev, ret, "Cannot get PHY clock\n");
+-		clk_set_rate(bsp_priv->clk_phy, 50000000);
++		/* If it is not integrated_phy, clk_phy is optional */
++		if (bsp_priv->integrated_phy)
++			clk_set_rate(bsp_priv->clk_phy, 50000000);
+ 	}
+ 
+ 	return 0;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.1
 
