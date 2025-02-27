@@ -1,71 +1,165 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278BE239597
-	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 14:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33F623A9AF;
+	Thu, 27 Feb 2025 14:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740665005; cv=none; b=KAcZYUKBXK4j0d9225k5kclais4gpsBBTtcdq66VnY/ngWvg7jwBz8Uj2shcPMgjK5b/z53NXcb1V+m13KdmBlDPpv3EUlq409oL2jGCk2Gi6fnkXYHA1r27Ni4Y/Ue1g58IR6jK+aI5oaj/58myJRTiU9vhAeI5m5BlK95I5bI=
+	t=1740665009; cv=none; b=DjVj9kxJ9AcLM7E0y9k0Zw/WgrIP8ke+3hm8AsFfsyoQ66NGH+Wt1oOlJTlbFWO0AiFNU4ks+11Yzepg37i1ys/0jhLwAK/ZTw6/i6eAbYa6tl4XZHP4kAMUi8DWG7GFKCK3CwuRnN7uF5uP6vcFUd0/XeqsMFWsyLiY6UQfipQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740665005; c=relaxed/simple;
-	bh=Zzpn0pRTga636qp3sddIQTCCKERO7IKi/ew10wKQn7c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QS6CALvlPt2whJjvj1/sj4d3IzKtNbTowTJM6EFXkfMh/kg51EGn5zKGxOgLWjYikb3GW3CO+gTOBZglDB85dhiljju1Cpt9jm3bg85xAcBdDhEOMn63q6XNCdbJc1n7iStuN5lWNYQqID0hCknMaWMBI+OUsALdSzMF8fmwYI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cMKpHQSy; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1740665009; c=relaxed/simple;
+	bh=claEV0o7Z2UgBKhKfxHYHpDfoRczRJppwv++FUBhBRg=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=qQBsfZ36YjMKqLP+hd4i3+H/EONyRZ6pw9EASgzY3J2Wli2pQiRzxpqKKn2UcicVBKXOIO558TC0DAk+SUzGPWiZi1QlHRS6+c/JRYMJz5muEq8IYpX4Em+EjuXeXJE75XD4MsmN4LKpU3X8MZMATa5RgrWJaJK06OWawz5Vhy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N5WkGAxb; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cMKpHQSy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xePIqSZRtPqrkucMriIXQPaMQ+IQJ/L4yNAy7Utb37g=; b=cMKpHQSyYbw/5y0ZY1r+4/MfZx
-	rWjB74uh1dq8N1mfCSbSuTSsxWrHDuQjY/5ZOX5pl0eF+ZMaQtvK2RsFjGU6rEfrayx5whJcoE7iS
-	ZlmBZTKNEGllIhnPCMsz+nNdtEWV3GBtO8EnkpWMJseUupKgG7YMUrBHKkkByE2Z8rpY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tneTn-000c1o-CW; Thu, 27 Feb 2025 15:03:11 +0100
-Date: Thu, 27 Feb 2025 15:03:11 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N5WkGAxb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740665008; x=1772201008;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding;
+  bh=claEV0o7Z2UgBKhKfxHYHpDfoRczRJppwv++FUBhBRg=;
+  b=N5WkGAxbbcRAKMU4zjrxD2jziDbRT98RpqGbZNPPZjIbLluuHqJlIfte
+   3YQ7uAqtoyM9la/sNrsWorKkIzSj6oq8OIHMd99M+WsUeiYsuCLahO+Oo
+   GgTLGEzGYk718JiQf4VnVh+wZKfnDUeD91LatScXZlZP5LE/ShFFArgUK
+   eWSp+Bkf9f3i6/nFclkVssw8aENMfY+cor+tRLpKhSvCywWYg1E4B6Dma
+   29PNNzrkkX7aw5hp3rVa7HiVF9H3tScBOZroHQNAv9GZyx+TIkIn4iaE4
+   BEOz3SNZRwiQIlUYJTxjqwWp+dw0CFVPLR0f/anroPQdrTVM3Ov3Bo/8y
+   w==;
+X-CSE-ConnectionGUID: y1Au7YueRcaSMTUhpVPkDg==
+X-CSE-MsgGUID: UbF4qunNQAaSvHrKW3NJnA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41752492"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="41752492"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 06:03:27 -0800
+X-CSE-ConnectionGUID: 3whTWWJwQZyZVdxfg1Hj+A==
+X-CSE-MsgGUID: l48GnSgRSCm/l9QxzDQuSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; 
+   d="scan'208";a="122149788"
+Received: from mohdfai2-ilbpg12-1.png.intel.com ([10.88.227.73])
+  by fmviesa004.fm.intel.com with ESMTP; 27 Feb 2025 06:03:19 -0800
+From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	linux-amlogic@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next 10/11] net: stmmac: meson: switch to use
- set_clk_tx_rate() hook
-Message-ID: <08b59e95-263b-47ae-9ac4-529c1e643d26@lunn.ch>
-References: <Z8AtX-wyPal1auVO@shell.armlinux.org.uk>
- <E1tna0z-0052tN-O1@rmk-PC.armlinux.org.uk>
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Furong Xu <0x1207@gmail.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Suraj Jaiswal <quic_jsuraj@quicinc.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	bpf@vger.kernel.org
+Subject: [PATCH iwl-next v6 8/9] igc: Add support to get MAC Merge data via ethtool
+Date: Thu, 27 Feb 2025 09:01:56 -0500
+Message-Id: <20250227140158.2129988-9-faizal.abdul.rahim@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250227140158.2129988-1-faizal.abdul.rahim@linux.intel.com>
+References: <20250227140158.2129988-1-faizal.abdul.rahim@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E1tna0z-0052tN-O1@rmk-PC.armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 27, 2025 at 09:17:09AM +0000, Russell King (Oracle) wrote:
-> Switch from using the fix_mac_speed() hook to set_clk_tx_rate() to
-> manage the transmit clock.
-> 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Implement "ethtool --show-mm" callback for IGC.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Tested with command:
+$ ethtool --show-mm enp1s0.
+  MAC Merge layer state for enp1s0:
+  pMAC enabled: on
+  TX enabled: on
+  TX active: on
+  TX minimum fragment size: 64
+  RX minimum fragment size: 60
+  Verify enabled: on
+  Verify time: 128
+  Max verify time: 128
+  Verification status: SUCCEEDED
 
-    Andrew
+Verified that the fields value are retrieved correctly.
+
+Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+---
+ drivers/net/ethernet/intel/igc/igc_ethtool.c | 14 ++++++++++++++
+ drivers/net/ethernet/intel/igc/igc_tsn.h     |  1 +
+ 2 files changed, 15 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+index 081e24f228b2..7f0052e0d50c 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
++++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+@@ -1782,6 +1782,19 @@ static int igc_ethtool_set_eee(struct net_device *netdev,
+ 	return 0;
+ }
+ 
++static int igc_ethtool_get_mm(struct net_device *netdev,
++			      struct ethtool_mm_state *cmd)
++{
++	struct igc_adapter *adapter = netdev_priv(netdev);
++	struct fpe_t *fpe = &adapter->fpe;
++
++	ethtool_mmsv_get_mm(&fpe->mmsv, cmd);
++	cmd->tx_min_frag_size = fpe->tx_min_frag_size;
++	cmd->rx_min_frag_size = IGC_RX_MIN_FRAG_SIZE;
++
++	return 0;
++}
++
+ static int igc_ethtool_set_mm(struct net_device *netdev,
+ 			      struct ethtool_mm_cfg *cmd,
+ 			      struct netlink_ext_ack *extack)
+@@ -2093,6 +2106,7 @@ static const struct ethtool_ops igc_ethtool_ops = {
+ 	.set_rxfh		= igc_ethtool_set_rxfh,
+ 	.get_ts_info		= igc_ethtool_get_ts_info,
+ 	.get_channels		= igc_ethtool_get_channels,
++	.get_mm			= igc_ethtool_get_mm,
+ 	.set_mm			= igc_ethtool_set_mm,
+ 	.set_channels		= igc_ethtool_set_channels,
+ 	.get_priv_flags		= igc_ethtool_get_priv_flags,
+diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.h b/drivers/net/ethernet/intel/igc/igc_tsn.h
+index 7491fd65b846..14495a22f77d 100644
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.h
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.h
+@@ -4,6 +4,7 @@
+ #ifndef _IGC_TSN_H_
+ #define _IGC_TSN_H_
+ 
++#define IGC_RX_MIN_FRAG_SIZE		60
+ #define SMD_FRAME_SIZE			60
+ 
+ enum igc_txd_popts_type {
+-- 
+2.34.1
+
