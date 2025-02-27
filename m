@@ -1,171 +1,120 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFA5235348
-	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 14:18:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F5722DFAE
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 14:18:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740665907; cv=none; b=o7VKQDumybS//KPwRmzP9cnFA7OhylduRrDYB3lDNcZDUn3lKRnLP5yddF2934gYqvwlnixqRMqIPM7kyUcvLeAC6OiWPasa0EJTydICe5La4BzE5VFCeZH0zPXjFOD4/r8NbbrTQDhej2v8CMdwsttdspGmOiDQ5RJn6Teqftg=
+	t=1740665921; cv=none; b=L6EYOaRx3W0WFocFDyKziArx5tM5XSDHACbKj/XkKMayDNvMy9G1Dhp90MZhYKG8xdh575lu/wiXL3dzdJC1I4QtnisKVI+WmviFMOgmLS6JwLDDIBGYiuBIGHezS7lQTskQ8qEtWgAS79etEaKSv30OVLrZ6qS3VWg0M1LVhSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740665907; c=relaxed/simple;
-	bh=VLcO+K6nhbLhNSZ0n16zAOBERBengOOksjgBwK2wrV8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=n9tssTXETAjKjsX7TlHN4YC1duASB9i2U8hXkMPXziMkO2rctz7K0zvrLRUjB2akx3X/H3Gbe73KikC98/joeiSIUTTgilH0gNz/k2+l+3Ne/VKHVN/Nh1GoG0q2LrgYnnvkIYnV6wt/W4dWNjDb5jmvtNsSBKkLy/CHQMmtYzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ANlyKDcz; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ANlyKDcz"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-439ac3216dcso7118445e9.1
-        for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 06:18:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740665903; x=1741270703; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3KjmgTTmGKnNMLEkQ2tYRKgEmMShvtFLmbhC7J1ZseQ=;
-        b=ANlyKDcze0VHBAf2a/p9W1obJzG0dAfLcIWjO4s/hhzCNQsbLhuAc7E5eI4sRKLTVi
-         eE5fk/6oCci1XoGWGB+SQULZJx3gfbzFM31FSs5J26hVI6Wdp0GguBeUqPGMuMPx8XYA
-         PCIxJCpiwfnd+WB1sa+pXJ3zQl7X60LNgoIcx8u4KitTkT+fjlhWdl7w9ju5XHk85TAv
-         CCOg11c0sl9wHI81SABO22ymtNXSBHj1RTRwNery4qB+DvOpPoEDIwri7nSBW8L/0rR7
-         VrSq3UYa9RSKytASafOEKkASDFqZ8ngUdQc4IiIAr5R6VTYVYdkVVNx/QaM+R5gAW1cZ
-         2SJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740665903; x=1741270703;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=3KjmgTTmGKnNMLEkQ2tYRKgEmMShvtFLmbhC7J1ZseQ=;
-        b=YSpOtgAP8L5ywtX4pvQ61oYXHmOYnjJuZtdS8btPmtj5rrhb+Lo6yf7pfP8TTUgYGn
-         jxA9YTbCZfG+dj/FOgZlYUmK2FStsjZj97n3u7uta9DFbfEcISsKW8Hx7qsmAYTxaTmM
-         Vn8S72bLBkAYXbEedkWfOEoQMdtS6VQO8qPCwyGek3vGOqn5DRQpVWzCEeHBVOKvLMv+
-         tFBl+eK/o/pFDJ2u4T4o1vs3hYAIMhyoF5DZD5uJIvq0TyWWX7zRAQGEzBDdr7N+mduU
-         H65zIZxzIsqYA7pmW9KAJJNXgVCFiW1n0LOGTvRgp+zv+PI9vO2rSzaOx07bJE8pfgAn
-         appA==
-X-Forwarded-Encrypted: i=1; AJvYcCVqX77iX3xWeFiFD3qNFiYodZvB5LrCzonUWRdBpSDoXU9cImSMxxVuNvp6uboUdY73DSL3Y1s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHMqtHISwh443flGglvXPpeNKE+ZbtwC41kFRIOH5q3rvnOSkr
-	E8YA36pxYEYZYz3O9ro/PcQu1RlIUsE68PQkyuOL+NQ5efwcF+v9ye7OU4+jZSc=
-X-Gm-Gg: ASbGncvADIrGtKB8JXq6vhScfGQnT3xg3GZaVxXkriFx5+WeFMc3Tvr0GDdpBx8lcSq
-	OyMydbXKaB8CkA6zIBRKa19PsYJjGFBc18ZJVNuQSyPfIWsvGDe6X8P/tGNgtszgahXadNmHmzb
-	DpmalsGhKVYt9Enl9rlmgjB2edmWEe7Zf3vh3EkfcUFf1jFQOw9Z4Nyz2axTc+mOeM4ZxArBpJZ
-	kgfZmVhGxnD0/mcJcKpr5OibG/2VAFv2B9yf3E6XTDPmhAHdVodyxSIoyW4MoFg4BNfSnq3YN2K
-	gza7imRbZi9RDJspz01Txij4N7SHf4PnWi7JU6plrJba5sNT7P8cxAh5xgvAXaD4s6AEdspjOLr
-	ZlqA=
-X-Google-Smtp-Source: AGHT+IFcL1gSMJCTCnZcd6HJw2zwybdNPIHKIrsiUSeI2jk/mbKwBJYRWGcu2yQ2deoYklOEQz/emw==
-X-Received: by 2002:a05:600c:4e50:b0:439:8653:20bb with SMTP id 5b1f17b1804b1-439b2b06189mr248030835e9.14.1740665903502;
-        Thu, 27 Feb 2025 06:18:23 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:982:cbb0:c5de:e7f3:73c7:7958? ([2a01:e0a:982:cbb0:c5de:e7f3:73c7:7958])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba5870e7sm59261405e9.35.2025.02.27.06.18.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Feb 2025 06:18:23 -0800 (PST)
-Message-ID: <2198e689-ed38-4842-9964-dca42468088a@linaro.org>
-Date: Thu, 27 Feb 2025 15:18:22 +0100
+	s=arc-20240116; t=1740665921; c=relaxed/simple;
+	bh=LxGqDDciDNPai+yMXfQ6y3up7TsSxsnZOwf8EJYTN8g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BNCyNQ3reA+KKL+UeDgGaQOZJfLPvua7OXRci5wxq6XwV9lis0XvUNYIFdRy2gBflW9YB+W9jhE7iLPzqDChjjLg2AAJUMauWIWZYaUDWvbTUDOPXNOcGQJX6l2EZhcMLbqW7mH+HZLdRQRWOAk4HOErS0QP88o6bsslTQfJx4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tnehz-0003GQ-MD; Thu, 27 Feb 2025 15:17:51 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tnehw-0038i4-0Z;
+	Thu, 27 Feb 2025 15:17:48 +0100
+Received: from pengutronix.de (p5b164285.dip0.t-ipconnect.de [91.22.66.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id C00033CD6A6;
+	Thu, 27 Feb 2025 14:17:47 +0000 (UTC)
+Date: Thu, 27 Feb 2025 15:17:47 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Cc: Ming Yu <a0282524688@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-rtc@vger.kernel.org, linux-usb@vger.kernel.org, tmyu0@nuvoton.com, lee@kernel.org, 
+	linus.walleij@linaro.org, brgl@bgdev.pl, andi.shyti@kernel.org, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
+	alexandre.belloni@bootlin.com
+Subject: Re: [PATCH v8 4/7] can: Add Nuvoton NCT6694 CANFD support
+Message-ID: <20250227-gregarious-garrulous-echidna-ca7975-mkl@pengutronix.de>
+References: <20250225081644.3524915-1-a0282524688@gmail.com>
+ <20250225081644.3524915-5-a0282524688@gmail.com>
+ <a32b4ca1-0bcf-48e4-87ab-61fbd077a3c3@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH net-next 10/11] net: stmmac: meson: switch to use
- set_clk_tx_rate() hook
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Jerome Brunet <jbrunet@baylibre.com>,
- Kevin Hilman <khilman@baylibre.com>, linux-amlogic@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>
-References: <Z8AtX-wyPal1auVO@shell.armlinux.org.uk>
- <E1tna0z-0052tN-O1@rmk-PC.armlinux.org.uk>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <E1tna0z-0052tN-O1@rmk-PC.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="i5nv6d7na7xl5d3b"
+Content-Disposition: inline
+In-Reply-To: <a32b4ca1-0bcf-48e4-87ab-61fbd077a3c3@wanadoo.fr>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hi,
 
-On 27/02/2025 10:17, Russell King (Oracle) wrote:
-> Switch from using the fix_mac_speed() hook to set_clk_tx_rate() to
-> manage the transmit clock.
-> 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> ---
->   drivers/net/ethernet/stmicro/stmmac/dwmac-meson.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-meson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-meson.c
-> index b115b7873cef..07c504d07604 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-meson.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-meson.c
-> @@ -22,9 +22,10 @@ struct meson_dwmac {
->   	void __iomem	*reg;
->   };
->   
-> -static void meson6_dwmac_fix_mac_speed(void *priv, int speed, unsigned int mode)
-> +static int meson6_dwmac_set_clk_tx_rate(void *bsp_priv, struct clk *clk_tx_i,
-> +					phy_interface_t interface, int speed)
+--i5nv6d7na7xl5d3b
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v8 4/7] can: Add Nuvoton NCT6694 CANFD support
+MIME-Version: 1.0
 
-You can keep priv as first argument name and remove the next changes
+On 27.02.2025 11:08:50, Vincent Mailhol wrote:
+> > +static int nct6694_can_stop(struct net_device *ndev)
+> > +{
+> > +	struct nct6694_can_priv *priv =3D netdev_priv(ndev);
+> > +
+> > +	priv->can.ctrlmode =3D CAN_CTRLMODE_LISTENONLY;
+>=20
+> Hmmm, when Marc asked you to put the device in listen only mode, I think
+> he meant that you set it on the device side (i.e. flag
+> NCT6694_CAN_SETTING_CTRL1_MON) and not on the driver side. If you set
+> CAN_CTRLMODE_LISTENONLY flag, that will be reported in the netlink
+> interface. So you should not change that flag.
 
-Neil
+ACK
 
->   {
-> -	struct meson_dwmac *dwmac = priv;
-> +	struct meson_dwmac *dwmac = bsp_priv;
->   	unsigned int val;
->   
->   	val = readl(dwmac->reg);
-> @@ -39,6 +40,8 @@ static void meson6_dwmac_fix_mac_speed(void *priv, int speed, unsigned int mode)
->   	}
->   
->   	writel(val, dwmac->reg);
-> +
-> +	return 0;
->   }
->   
->   static int meson6_dwmac_probe(struct platform_device *pdev)
-> @@ -65,7 +68,7 @@ static int meson6_dwmac_probe(struct platform_device *pdev)
->   		return PTR_ERR(dwmac->reg);
->   
->   	plat_dat->bsp_priv = dwmac;
-> -	plat_dat->fix_mac_speed = meson6_dwmac_fix_mac_speed;
-> +	plat_dat->set_clk_tx_rate = meson6_dwmac_set_clk_tx_rate;
->   
->   	return stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
->   }
+> But before that, did you check the datasheet? Don't you have a device
+> flag to actually turn the device off (e.g. sleep mode)?
 
+Please test that the ifup -> ifdown -> ifup sequence works properly,
+even on a busy bus and on a bus without with a 2nd CAN station that is
+sending and you are the only receiver.
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--i5nv6d7na7xl5d3b
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmfAdAgACgkQDHRl3/mQ
+kZxjHQf/cl+NPaGA6wNUTa68Le8AS6tbcg6UkzWcAd8AS8/6CWkgPeebGEbmzKvl
+iENWrgc7mfiuy346ubOPufojybeeXMdOHLiwDPEkVgZegMycqUnS+2F/mTCm50fR
+vf9mETJuODrqvL4I265jS9Z+SUA/R/pzTcs0pQItMSzfUwGJ5nv9JQS8mv3MOQhM
+zOqyOMX1bv3+0Ov9ZTpjaV2JoOmTqpDFIYuN2DyqGl+NlJfZyHCp/Z8UJ7MyQykL
+Nzk53OPw0yb1MC6RT8m5ijRnpiVzfV5Et+2/FEXSW0aE/SXBRailPfDqdEmxXFnf
+f4DOoo4Z+H6xhf0L7EUZ1HcmpU+ckA==
+=2o2X
+-----END PGP SIGNATURE-----
+
+--i5nv6d7na7xl5d3b--
