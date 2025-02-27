@@ -1,329 +1,192 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6C22222AC;
-	Thu, 27 Feb 2025 08:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E3242065
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 08:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740643204; cv=none; b=kfrZg002xSQHcgW2ULddWtspiFWtNKHEaRJ7G589TlPcezVGGX0t+qMKJ8VL2XHc9K8cTcfekFWrQma89vY1VNUYC6LxhluTmpK5yjpdIcieN+rXq0tvFkF/X7Lqfbprx58C3t3wBZUPbPQH3pOBjVQ2HI3oDnMEyKczVS08pEY=
+	t=1740644546; cv=none; b=Dco9ZKVSRJ1coQeo+WZroffFjT0wfD+l39EaI4LiMyXQEHPdqMvJhq1ZLRNE6wBvcfcIkX8cgA5yNgAsHVob+9smii9XIh28VFgI1me/PY6+43YEgkd69CD6u+rQzQl1au9IMjlF7QhfOA6XeOO0sWK08D5xakYTC9/XtpKVpUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740643204; c=relaxed/simple;
-	bh=F/Q/rQMBhG8QlQ0hvZO4Vy6dvWhPpbp2iZ88VJNmuaQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gRXF/bS6o70Ga/A4t5QwpIBN/zeO64lW5wAPMnetXX7KneDUwZPySH2sJsNj0orLAIWenTAwixlGhXlR70dA2zo8Ocyam9Bk1n1NUv84Mbc44IP04KsIQnUIg4qc++ZpmlaaYLlTmgk3iZqfWGetdBk1IzfbjeEJNSFIJ5wF8Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UKirZCsX; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UKirZCsX"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-22337bc9ac3so10294445ad.1;
-        Thu, 27 Feb 2025 00:00:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740643202; x=1741248002; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=e+VhD1FcQ4v0IAeCPGXacuvSg0+RMPQMMHyVhpvcmHA=;
-        b=UKirZCsX5tRGNE/5mAhj3FsL1I6H4QCbI7FZckmmbzJvaeZ1SqzGkHmTiUQwrO8npp
-         R4IIjNNFFop1hbea9O4NeYjtez+qwp/cLPRotG1UeRPocyriETZShMUStWl+nI6omuUT
-         Xk0t3oPlhS/nOeGWMX88byrEx+CvVe+AFvuVhoCSZ40YZJHjKTSMRPX3gW3K4IlhL0lZ
-         8z9lJnwzut331eF0BH2HVT6U7xe24+4uKRr3Nt2mP5MFb8rusuylepI1w6/+p+qnznHa
-         N3b8pgcSQFRsy+VZSgRuGqhBILWNaTxtePBSUHgPhrp1LmYh+9kSHJoa/eyXfCXTy2Er
-         pvwQ==
+	s=arc-20240116; t=1740644546; c=relaxed/simple;
+	bh=I3uI1Jfhl5RceNORzTjevuDmTDtsNqkVAUebUcu1a1c=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=IjYQdMvV1UO6AZfLUYG1YuSbnhSSpwNyjFSFm7ILIS/okMEnTbuRTuzwZXfw2Carf6N8e5SeF6YDZB0UcmkVdiZ5eg/ZObiIX0yU0fHDNEQcRByK4d13TQA0aTmNKkXLW2EsPrC1usaVx2cwTrSZSoQbNr0cUANkAv3j1TXNfA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3d289bf6c39so14481995ab.1
+        for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 00:22:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740643202; x=1741248002;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e+VhD1FcQ4v0IAeCPGXacuvSg0+RMPQMMHyVhpvcmHA=;
-        b=wuO76JAa62qrMx5U4+t7UMAivj2FHFgRZ+3PMpbvDkB+08vf6odnDvv4tP7zveYzRS
-         ridw18lHUUopXlIKZxzWU8rWqfHdG1FSBHRRbHSMZ65ujMDm2VMq9Y2tmuNUJ5fc+TwI
-         eKpXlCvOjm8tEKEVEx+LVS1VBUNnrq/FsW1ss29PCntpOt8DC42HsExmoSRtnh86tEL0
-         5/koIYJJ+gvVuKhfKjJk+uvPwgLbX4RK2lvWXsL/JKSCX7KuDiWyFPJ5D71On8Xzlfb6
-         9Xznu96ZEM3ouYqLL7qqjzwIg0oaqYI+enjumQDKPa3F0rywTcIceMCp7zsSwofBruI4
-         OrWw==
-X-Forwarded-Encrypted: i=1; AJvYcCUPL36GVOi+/4mDbfRMsyagvgicsi+6AUyAilcJc+JzCLR2I4E0tl4qlXDhOuEDvSA3LNHz9/iDALnK@vger.kernel.org, AJvYcCVaKzrv7czdjwUyBAqUKerBpNzHqOORW05kSVFzfWyjdd6oH+MUHnJtXRc1mwXROtQk8tc=@vger.kernel.org, AJvYcCXLlsjgBQkLaeo9ubVuTnHAvZv8PgeFLUDWJZhqdA2NPd33jLcj2miZi4mzF+t/a/juDqPI6GEc@vger.kernel.org, AJvYcCXct7HGDyN7KbTOUmZ6eCiWyGAObf+Yu0plSIOroU/woeiXfU+EWQd4tQUWqwd675ncDCNc2la8i5IBpZNM@vger.kernel.org, AJvYcCXkAGhnw/chUSLsGmiUQNDCfcpszDqkp4+w5Ip7ZAm1ESeIP/f++IdRUDTKCLAghRhiC0L/o2ZfkbMacrzmrJt+@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmMusFA6jxYwyQ5xJ+3o6YkGStT8fd3NeZT4P0FjexFqgDe4nL
-	cUl2LAtMDCCtHlm2h8yYX81szpd/qhAnWUMNcZ4NZu2Ax6TcWj66
-X-Gm-Gg: ASbGncvA6sLkV/ApCYsYsdvDLwP4GDo0iK8YDL2v1OWqA8rYkJ48j6nNNlVzZ4YRypG
-	v2Vd3uQyGHTVj2FsAXxTLdJD3EnQofFCwZZkGnlS/xvle3eOdfyp68O9WC0KAeoF2YTlBM+6EsZ
-	vkws9L6m723OGL3VJWrd12SSqtKUz8x2vQ6zTay76tFtV4B/2QlqLXD1CQfEoiuUUZXatfOFpTA
-	dbcqKFIaROoyKt+eu/KgJaG0V0tYwE+nH8tszslbr63KrewLinBp2GZ+2KOVrvSUHKkLow3Pom9
-	6BKsuct9SFqkpasohO7gIsssEw==
-X-Google-Smtp-Source: AGHT+IHbgNhJloGNS3WGI/ZiBYGWLiZc0ShwSla+EDWIC7+o+EwVg1hEUCizPi07PZDxpMZGk59OJg==
-X-Received: by 2002:a17:903:2311:b0:220:dff2:18ee with SMTP id d9443c01a7336-221a0edbf42mr392893445ad.14.1740643201794;
-        Thu, 27 Feb 2025 00:00:01 -0800 (PST)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223505336f9sm8356295ad.245.2025.02.27.00.00.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2025 00:00:00 -0800 (PST)
-Received: by archie.me (Postfix, from userid 1000)
-	id 55C6941296D8; Thu, 27 Feb 2025 14:59:58 +0700 (WIB)
-Date: Thu, 27 Feb 2025 14:59:57 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	kvm@vger.kernel.org, virtualization@lists.linux.dev,
-	linux-kselftest@vger.kernel.org
-Cc: Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jeroen de Borst <jeroendb@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Willem de Bruijn <willemb@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, sdf@fomichev.me,
-	asml.silence@gmail.com, dw@davidwei.uk,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Samiullah Khawaja <skhawaja@google.com>
-Subject: Re: [PATCH net-next v6 4/8] net: add devmem TCP TX documentation
-Message-ID: <Z8AbfZg98HS_QQjb@archie.me>
-References: <20250227041209.2031104-1-almasrymina@google.com>
- <20250227041209.2031104-5-almasrymina@google.com>
+        d=1e100.net; s=20230601; t=1740644544; x=1741249344;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lX/m3nnf7YLk7rWeS7FHGWYPncB5OtqoPav3Xi3zF38=;
+        b=rdt9I6DgC6OvdR69Nv4Wd9h6FnTKoxzu+GccprYRXm05WrZd5jybfY39nCWWBpK44O
+         qssxLn2WKAAC5swDdQNKhZt4ojn+MPPEACu9nxI1VT7mTUTIWhGwhxKyQWMdYYZZcdMI
+         tTUQaHxPDpI5S1M83AxY9r+refy7EkienaJavO/NfRaw97Q8VHzHJkrkUxBqCyNsGISP
+         q2DAxvrXr9+Ey9Zolz4hCY7oi8ktO8NCY4kkZyeAXIfH/9Ll/VVX4MNltqwNvh2x6hYa
+         OOw2DVA5LANajZPvnDxXio8bZ5uRius7Ps3a906iAmIzKfoqlC0Z8HdtRfwSftQ7Zk+Y
+         u1EQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWifxf199n8ebLeBrW7uJd97HdceSkPcTUwNGdwfM2K/yq18SS3AV6WiBjS8fx3bowR6A4Nwo0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywIaS8JjMPjO4ymRA5aEegPvUQax8TZh66n5zpskm836FiMf5i
+	EWWHtVt52rrXL1CIT9lwPch2GPdg4yzPMxxKZ1pT3kSM53G0cZSCLJNknD7xW1h0JHxj/L61xX8
+	LHSEZzrQXBW7DLR97jz4l3S/KUB/1S8EXOhtP8BNHN39SnJBljdsdeS0=
+X-Google-Smtp-Source: AGHT+IHcQW6B6QePv0+ZxKqh9G7YYitC+fhui9RZFurMckxd1PhSpkzoTzpq8URaDrFbK27MtTatcCVY5c4VtP+QUYbVRAaqTMO/
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="AMvatQGVE1g1y7TH"
-Content-Disposition: inline
-In-Reply-To: <20250227041209.2031104-5-almasrymina@google.com>
+X-Received: by 2002:a05:6e02:184e:b0:3cd:d14c:be69 with SMTP id
+ e9e14a558f8ab-3d3dd2d9ea5mr17906235ab.11.1740644544319; Thu, 27 Feb 2025
+ 00:22:24 -0800 (PST)
+Date: Thu, 27 Feb 2025 00:22:24 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67c020c0.050a0220.222324.0011.GAE@google.com>
+Subject: [syzbot] [intel-wired-lan?] kernel BUG in pskb_expand_head (4)
+From: syzbot <syzbot+da65c993ae113742a25f@syzkaller.appspotmail.com>
+To: andrew+netdev@lunn.ch, anthony.l.nguyen@intel.com, davem@davemloft.net, 
+	edumazet@google.com, intel-wired-lan@lists.osuosl.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	przemyslaw.kitszel@intel.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    ac9c34d1e45a Merge tag 'for-linus' of git://git.kernel.org..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=10da9db0580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b1635bf4c5557b92
+dashboard link: https://syzkaller.appspot.com/bug?extid=da65c993ae113742a25f
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: i386
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-ac9c34d1.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/a84d67d61e80/vmlinux-ac9c34d1.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/951486618398/bzImage-ac9c34d1.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+da65c993ae113742a25f@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+kernel BUG at net/core/skbuff.c:2178!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 16371 Comm: syz.2.2764 Not tainted 6.14.0-rc4-syzkaller-00052-gac9c34d1e45a #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:pskb_expand_head+0x6ce/0x1240 net/core/skbuff.c:2178
+Code: 7f 05 e8 35 98 f1 f8 8b 44 24 40 8b 74 24 44 29 f0 01 83 e0 00 00 00 e9 70 ff ff ff e8 4b 5e 8f f8 90 0f 0b e8 43 5e 8f f8 90 <0f> 0b e8 3b 5e 8f f8 41 81 cd 00 00 02 00 e9 46 fb ff ff e8 2a 5e
+RSP: 0018:ffffc9000d6f7160 EFLAGS: 00010246
+RAX: 0000000000080000 RBX: ffff88806c1f9400 RCX: ffffc900273e9000
+RDX: 0000000000080000 RSI: ffffffff892a810d RDI: 0000000000000005
+RBP: ffff88806c1f94cc R08: 0000000000000005 R09: 0000000000000001
+R10: 0000000000000002 R11: 0000000000000005 R12: 0000000000000002
+R13: 0000000000000820 R14: dffffc0000000000 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff88802b400000(0063) knlGS:00000000f5066b40
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: 000000008000601c CR3: 0000000054770000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ __skb_pad+0x18a/0x610 net/core/skbuff.c:2466
+ __skb_put_padto include/linux/skbuff.h:3843 [inline]
+ skb_put_padto include/linux/skbuff.h:3862 [inline]
+ eth_skb_pad include/linux/etherdevice.h:656 [inline]
+ e1000_xmit_frame+0x2d99/0x5800 drivers/net/ethernet/intel/e1000/e1000_main.c:3128
+ __netdev_start_xmit include/linux/netdevice.h:5151 [inline]
+ netdev_start_xmit include/linux/netdevice.h:5160 [inline]
+ xmit_one net/core/dev.c:3806 [inline]
+ dev_hard_start_xmit+0x9a/0x7b0 net/core/dev.c:3822
+ sch_direct_xmit+0x1ae/0xc30 net/sched/sch_generic.c:343
+ __dev_xmit_skb net/core/dev.c:4045 [inline]
+ __dev_queue_xmit+0x13d4/0x43e0 net/core/dev.c:4621
+ dev_queue_xmit include/linux/netdevice.h:3313 [inline]
+ llc_sap_action_send_test_c+0x268/0x320 net/llc/llc_s_ac.c:144
+ llc_exec_sap_trans_actions net/llc/llc_sap.c:153 [inline]
+ llc_sap_next_state net/llc/llc_sap.c:182 [inline]
+ llc_sap_state_process+0x239/0x510 net/llc/llc_sap.c:209
+ llc_ui_sendmsg+0xd0d/0x14e0 net/llc/af_llc.c:993
+ sock_sendmsg_nosec net/socket.c:718 [inline]
+ __sock_sendmsg net/socket.c:733 [inline]
+ ____sys_sendmsg+0xaaf/0xc90 net/socket.c:2573
+ ___sys_sendmsg+0x135/0x1e0 net/socket.c:2627
+ __sys_sendmmsg+0x2fa/0x420 net/socket.c:2709
+ __compat_sys_sendmmsg net/compat.c:360 [inline]
+ __do_compat_sys_sendmmsg net/compat.c:367 [inline]
+ __se_compat_sys_sendmmsg net/compat.c:364 [inline]
+ __ia32_compat_sys_sendmmsg+0x9d/0x100 net/compat.c:364
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0x73/0x120 arch/x86/entry/common.c:386
+ do_fast_syscall_32+0x32/0x80 arch/x86/entry/common.c:411
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+RIP: 0023:0xf73de579
+Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00
+RSP: 002b:00000000f506655c EFLAGS: 00000296 ORIG_RAX: 0000000000000159
+RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 0000000080000c40
+RDX: 00000000842c97f7 RSI: 0000000000008014 RDI: 0000000000000000
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:pskb_expand_head+0x6ce/0x1240 net/core/skbuff.c:2178
+Code: 7f 05 e8 35 98 f1 f8 8b 44 24 40 8b 74 24 44 29 f0 01 83 e0 00 00 00 e9 70 ff ff ff e8 4b 5e 8f f8 90 0f 0b e8 43 5e 8f f8 90 <0f> 0b e8 3b 5e 8f f8 41 81 cd 00 00 02 00 e9 46 fb ff ff e8 2a 5e
+RSP: 0018:ffffc9000d6f7160 EFLAGS: 00010246
+RAX: 0000000000080000 RBX: ffff88806c1f9400 RCX: ffffc900273e9000
+RDX: 0000000000080000 RSI: ffffffff892a810d RDI: 0000000000000005
+RBP: ffff88806c1f94cc R08: 0000000000000005 R09: 0000000000000001
+R10: 0000000000000002 R11: 0000000000000005 R12: 0000000000000002
+R13: 0000000000000820 R14: dffffc0000000000 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff88802b400000(0063) knlGS:00000000f5066b40
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: 000000008000601c CR3: 0000000054770000 CR4: 0000000000352ef0
+----------------
+Code disassembly (best guess), 2 bytes skipped:
+   0:	10 06                	adc    %al,(%rsi)
+   2:	03 74 b4 01          	add    0x1(%rsp,%rsi,4),%esi
+   6:	10 07                	adc    %al,(%rdi)
+   8:	03 74 b0 01          	add    0x1(%rax,%rsi,4),%esi
+   c:	10 08                	adc    %cl,(%rax)
+   e:	03 74 d8 01          	add    0x1(%rax,%rbx,8),%esi
+  1e:	00 51 52             	add    %dl,0x52(%rcx)
+  21:	55                   	push   %rbp
+  22:	89 e5                	mov    %esp,%ebp
+  24:	0f 34                	sysenter
+  26:	cd 80                	int    $0x80
+* 28:	5d                   	pop    %rbp <-- trapping instruction
+  29:	5a                   	pop    %rdx
+  2a:	59                   	pop    %rcx
+  2b:	c3                   	ret
+  2c:	90                   	nop
+  2d:	90                   	nop
+  2e:	90                   	nop
+  2f:	90                   	nop
+  30:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
+  37:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
 
 
---AMvatQGVE1g1y7TH
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-On Thu, Feb 27, 2025 at 04:12:05AM +0000, Mina Almasry wrote:
-> diff --git a/Documentation/networking/devmem.rst b/Documentation/networki=
-ng/devmem.rst
-> index d95363645331..1c476522d6f5 100644
-> --- a/Documentation/networking/devmem.rst
-> +++ b/Documentation/networking/devmem.rst
-> @@ -62,15 +62,15 @@ More Info
->      https://lore.kernel.org/netdev/20240831004313.3713467-1-almasrymina@=
-google.com/
-> =20
-> =20
-> -Interface
-> -=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +RX Interface
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> =20
-> =20
->  Example
->  -------
-> =20
-> -tools/testing/selftests/net/ncdevmem.c:do_server shows an example of set=
-ting up
-> -the RX path of this API.
-> +./tools/testing/selftests/drivers/net/hw/ncdevmem:do_server shows an exa=
-mple of
-> +setting up the RX path of this API.
-> =20
-> =20
->  NIC Setup
-> @@ -235,6 +235,148 @@ can be less than the tokens provided by the user in=
- case of:
->  (a) an internal kernel leak bug.
->  (b) the user passed more than 1024 frags.
-> =20
-> +TX Interface
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +
-> +Example
-> +-------
-> +
-> +./tools/testing/selftests/drivers/net/hw/ncdevmem:do_client shows an exa=
-mple of
-> +setting up the TX path of this API.
-> +
-> +
-> +NIC Setup
-> +---------
-> +
-> +The user must bind a TX dmabuf to a given NIC using the netlink API::
-> +
-> +        struct netdev_bind_tx_req *req =3D NULL;
-> +        struct netdev_bind_tx_rsp *rsp =3D NULL;
-> +        struct ynl_error yerr;
-> +
-> +        *ys =3D ynl_sock_create(&ynl_netdev_family, &yerr);
-> +
-> +        req =3D netdev_bind_tx_req_alloc();
-> +        netdev_bind_tx_req_set_ifindex(req, ifindex);
-> +        netdev_bind_tx_req_set_fd(req, dmabuf_fd);
-> +
-> +        rsp =3D netdev_bind_tx(*ys, req);
-> +
-> +        tx_dmabuf_id =3D rsp->id;
-> +
-> +
-> +The netlink API returns a dmabuf_id: a unique ID that refers to this dma=
-buf
-> +that has been bound.
-> +
-> +The user can unbind the dmabuf from the netdevice by closing the netlink=
- socket
-> +that established the binding. We do this so that the binding is automati=
-cally
-> +unbound even if the userspace process crashes.
-> +
-> +Note that any reasonably well-behaved dmabuf from any exporter should wo=
-rk with
-> +devmem TCP, even if the dmabuf is not actually backed by devmem. An exam=
-ple of
-> +this is udmabuf, which wraps user memory (non-devmem) in a dmabuf.
-> +
-> +Socket Setup
-> +------------
-> +
-> +The user application must use MSG_ZEROCOPY flag when sending devmem TCP.=
- Devmem
-> +cannot be copied by the kernel, so the semantics of the devmem TX are si=
-milar
-> +to the semantics of MSG_ZEROCOPY::
-> +
-> +	setsockopt(socket_fd, SOL_SOCKET, SO_ZEROCOPY, &opt, sizeof(opt));
-> +
-> +It is also recommended that the user binds the TX socket to the same int=
-erface
-> +the dma-buf has been bound to via SO_BINDTODEVICE::
-> +
-> +	setsockopt(socket_fd, SOL_SOCKET, SO_BINDTODEVICE, ifname, strlen(ifnam=
-e) + 1);
-> +
-> +
-> +Sending data
-> +------------
-> +
-> +Devmem data is sent using the SCM_DEVMEM_DMABUF cmsg.
-> +
-> +The user should create a msghdr where,
-> +
-> +* iov_base is set to the offset into the dmabuf to start sending from
-> +* iov_len is set to the number of bytes to be sent from the dmabuf
-> +
-> +The user passes the dma-buf id to send from via the dmabuf_tx_cmsg.dmabu=
-f_id.
-> +
-> +The example below sends 1024 bytes from offset 100 into the dmabuf, and =
-2048
-> +from offset 2000 into the dmabuf. The dmabuf to send from is tx_dmabuf_i=
-d::
-> +
-> +       char ctrl_data[CMSG_SPACE(sizeof(struct dmabuf_tx_cmsg))];
-> +       struct dmabuf_tx_cmsg ddmabuf;
-> +       struct msghdr msg =3D {};
-> +       struct cmsghdr *cmsg;
-> +       struct iovec iov[2];
-> +
-> +       iov[0].iov_base =3D (void*)100;
-> +       iov[0].iov_len =3D 1024;
-> +       iov[1].iov_base =3D (void*)2000;
-> +       iov[1].iov_len =3D 2048;
-> +
-> +       msg.msg_iov =3D iov;
-> +       msg.msg_iovlen =3D 2;
-> +
-> +       msg.msg_control =3D ctrl_data;
-> +       msg.msg_controllen =3D sizeof(ctrl_data);
-> +
-> +       cmsg =3D CMSG_FIRSTHDR(&msg);
-> +       cmsg->cmsg_level =3D SOL_SOCKET;
-> +       cmsg->cmsg_type =3D SCM_DEVMEM_DMABUF;
-> +       cmsg->cmsg_len =3D CMSG_LEN(sizeof(struct dmabuf_tx_cmsg));
-> +
-> +       ddmabuf.dmabuf_id =3D tx_dmabuf_id;
-> +
-> +       *((struct dmabuf_tx_cmsg *)CMSG_DATA(cmsg)) =3D ddmabuf;
-> +
-> +       sendmsg(socket_fd, &msg, MSG_ZEROCOPY);
-> +
-> +
-> +Reusing TX dmabufs
-> +------------------
-> +
-> +Similar to MSG_ZEROCOPY with regular memory, the user should not modify =
-the
-> +contents of the dma-buf while a send operation is in progress. This is b=
-ecause
-> +the kernel does not keep a copy of the dmabuf contents. Instead, the ker=
-nel
-> +will pin and send data from the buffer available to the userspace.
-> +
-> +Just as in MSG_ZEROCOPY, the kernel notifies the userspace of send compl=
-etions
-> +using MSG_ERRQUEUE::
-> +
-> +        int64_t tstop =3D gettimeofday_ms() + waittime_ms;
-> +        char control[CMSG_SPACE(100)] =3D {};
-> +        struct sock_extended_err *serr;
-> +        struct msghdr msg =3D {};
-> +        struct cmsghdr *cm;
-> +        int retries =3D 10;
-> +        __u32 hi, lo;
-> +
-> +        msg.msg_control =3D control;
-> +        msg.msg_controllen =3D sizeof(control);
-> +
-> +        while (gettimeofday_ms() < tstop) {
-> +                if (!do_poll(fd)) continue;
-> +
-> +                ret =3D recvmsg(fd, &msg, MSG_ERRQUEUE);
-> +
-> +                for (cm =3D CMSG_FIRSTHDR(&msg); cm; cm =3D CMSG_NXTHDR(=
-&msg, cm)) {
-> +                        serr =3D (void *)CMSG_DATA(cm);
-> +
-> +                        hi =3D serr->ee_data;
-> +                        lo =3D serr->ee_info;
-> +
-> +                        fprintf(stdout, "tx complete [%d,%d]\n", lo, hi);
-> +                }
-> +        }
-> +
-> +After the associated sendmsg has been completed, the dmabuf can be reuse=
-d by
-> +the userspace.
-> +
-> +
->  Implementation & Caveats
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> =20
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-Looks good, thanks!
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
---=20
-An old man doll... just what I always wanted! - Clara
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
---AMvatQGVE1g1y7TH
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZ8AbdwAKCRD2uYlJVVFO
-o5L6AP94BQBQkG23E8CUzSu2bJ8z0CxxYycEKJqhqTQ+o4ZjrAEA+k30eIV66TQg
-+CdsIvY8VaYj1OlgpJ5nlSex5IoycAg=
-=GAXk
------END PGP SIGNATURE-----
-
---AMvatQGVE1g1y7TH--
+If you want to undo deduplication, reply with:
+#syz undup
