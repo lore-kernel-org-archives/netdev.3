@@ -1,218 +1,1023 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191AB1B21AC
-	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 16:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B789C1BA89C
+	for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 16:41:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740674483; cv=none; b=obFpc6fYCEdwJizP5ljzQEalovBP35EyXjzkgHf0RFMzr4EX+cE/omBO/AoNGZr+Ib6oZRcqEPP5fmUbGgNoH5ov5G8Z9SZVS8udVi2c8GufrdnUlN+1l51Aok6O1OLh3at1VlN2UrTcst/nT98PeJuIrsqlamEldOfxfRfC32I=
+	t=1740674500; cv=none; b=PU7PTpqgBzInpg/IVzl2yOVaqGaTnltLvinUodcJhfnDApwwm7qihEp7gIahphv9U2DuJr1sSZy12rX6rh/KCL80b9DIw0LIdL7kLQBgLR6cihDkKObsnY4K+jQWwcPNhwMO+9ox7Dl96jtTmDNvqfkS/oQayyM7LeBVYW5/OMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740674483; c=relaxed/simple;
-	bh=QRz2GR01hMpu7P7aMvh4cB65ZqdVrSDqQqVZTdvDRCA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ihDvGk5CeC+lVU+f62NL3zNmZatPeHqEO7lqdsFZtRMeBj4SEqaDOO5uUMPcCvX46twX9HCVKYbktT57p7TK1D/LRLUbswPdOQE3DqYg3OYiefoXLB7w3RNWMmFNcUUPCFCnPRgBOCFzZyjcVSyNOjVdcIBJ9I/FKLs5B55oQB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tngwH-0007ld-79; Thu, 27 Feb 2025 17:40:45 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tngwE-0039ik-2j;
-	Thu, 27 Feb 2025 17:40:42 +0100
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tngwE-003TkQ-2I;
-	Thu, 27 Feb 2025 17:40:42 +0100
-Date: Thu, 27 Feb 2025 17:40:42 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Kory Maincent <kory.maincent@bootlin.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Rob Herring <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	Kyle Swenson <kyle.swenson@est.tech>,
-	Dent Project <dentproject@linuxfoundation.org>,
-	kernel@pengutronix.de,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v5 06/12] net: pse-pd: Add support for budget
- evaluation strategies
-Message-ID: <Z8CVimyMj261wc7w@pengutronix.de>
-References: <20250220165129.6f72f51a@kernel.org>
- <20250224141037.1c79122b@kmaincent-XPS-13-7390>
- <20250224134522.1cc36aa3@kernel.org>
- <20250225102558.2cf3d8a5@kmaincent-XPS-13-7390>
- <20250225174752.5dbf65e2@kernel.org>
- <Z76t0VotFL7ji41M@pengutronix.de>
- <Z76vfyv5XoMKmyH_@pengutronix.de>
- <20250226184257.7d2187aa@kernel.org>
- <Z8AW6S2xmzGZ0y9B@pengutronix.de>
- <20250227155727.7bdc069f@kmaincent-XPS-13-7390>
+	s=arc-20240116; t=1740674500; c=relaxed/simple;
+	bh=2hI8eeP8f5gf78amLlEan18AfN6ooo7UEsMF2PQ4wt0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hVF7OX9Cu3/iizif+k/cr4IKnznz+soqSrjXA8s+eFEvqzuZS61Twe6XJR/5FK7vuboxKv2UI8cUI4JQIYhDL2sxFqP/C6kmo2LPzqsrIAeG4Nei0CnHW/ew6V8haPmKNW9yNDhDOCRUQfbblvlEFl7nNwIvIcem2GUgtUmL3oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b=H0AEUVcV; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b="H0AEUVcV"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5e4ad1d67bdso1611261a12.2
+        for <netdev@vger.kernel.org>; Thu, 27 Feb 2025 08:41:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1740674495; x=1741279295; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ijyoQ7XuDDkc/+1r5OYAHvqhsfguuVlQpkS211FhEfw=;
+        b=H0AEUVcVXEFA97nLomNdfQVClqjfCV/vf7//+Mtw2iqQkwHS6RTw77nW5slxPzWzlp
+         df0A+WWm7DyGb9y+LjdtED8pPEUOXJW2LBX+J1yBEFPwRZL5zfscd3N9Cj2UMFA6D5r1
+         lKeAFZRRhb2sy+cP1FJo24dsVKu4eQVa8tr1KsVh4xC1JKnIyqKKL63iXSv5m3qd/Cw6
+         BbLSdNtwh5tRkTSoyBhDOf/sUiEBcfa/aLcpOFrzqXufaFSX33lueVfipKG1dbcjAzuv
+         6EDv0gyX0dO/1OwaW3Ar/pj522/Lh7ug2vwmYTGrAEJrkNZbz5ME93G6l43eVoXbHzYE
+         7UIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740674495; x=1741279295;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ijyoQ7XuDDkc/+1r5OYAHvqhsfguuVlQpkS211FhEfw=;
+        b=TWDtMbKRPqVZV1nrnhBHdCnlc/ju20WrAo/0OYZuZKi2g731ypJnzF5Io80HZNyQ6N
+         vICYBZh2h3IpPSKAX44XPgXi12b3zU2L/she1A8f3AZ9BndPXaO9iUXaVf8ZKZcMBDPH
+         PmDlHBoXruqeoMOMF0NKZpwnxmFZ+y0T9TsoU8NaoNLmSQutsDdt7PqVZ3xqgh/MGSYI
+         99STxaGbhOnwtvfdgrPppEExlRvDHczWyPtISDxnHh4v3v24yXWd+RAKj1sNZTll0VOh
+         G+6hHg9SXLaKIllWIV+lEESGbC9W7zeKUWblKVwAc4BAR6zw/6+Su4xCuOqxLPeo5McP
+         3/+Q==
+X-Gm-Message-State: AOJu0YzaWU2VIrBTI3ES9lrGlnnwo0yW/e4gz3Ij5EEsRAGjqd+ZF4I2
+	h2WASi4eTOzlTdW84dSG8/EopW1QAkPfNjyErM6e9NwQjAHdNSf4NjVY3+/ifkJUphMW3drTx+/
+	l
+X-Gm-Gg: ASbGncvp3WlUXCo8DJgOWoQoz81jsqAGQpV8AOYnrhItVjGApSbiE5F5oWiOQjIfiiA
+	TWTSacijZhr0ermMQt6k/64IcN50+qdxhnLOCvRjcrCkZrJ8Ek2Qbmolac+ITmAz2ZOfMWoWc3S
+	KH9NWT6tKv34anBc+bjUOCr57yzs1TndchQY3dvuefROT0PG5vwcHWwBptDfysEJq/qEGvDX+J5
+	gS8o/+kPMI68Rs9jD8lWaSJRfLesRPEkDQRQbAMiXEF84vzjEhU3lIetPF4jIrBzUtMAtYouiYU
+	R7sF6BXZvd2bCNX8E64zCaJ/QJxGZm3mMiA7fqPJ7faJkzE=
+X-Google-Smtp-Source: AGHT+IFfFdpgcesxwEfyCQ4RLcNzmpCXSuAjdMdVzvWqllRVSgtUOw0XWiZeirDxUu9AxjkE/o+puA==
+X-Received: by 2002:a17:907:7ea7:b0:aba:620a:acf8 with SMTP id a640c23a62f3a-abf25fac8e7mr13957866b.24.1740674495132;
+        Thu, 27 Feb 2025 08:41:35 -0800 (PST)
+Received: from debil.. (78-154-15-142.ip.btc-net.bg. [78.154.15.142])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c7bb872sm146741466b.165.2025.02.27.08.41.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Feb 2025 08:41:34 -0800 (PST)
+From: Nikolay Aleksandrov <razor@blackwall.org>
+To: netdev@vger.kernel.org
+Cc: Ajit Khaparde <ajit.khaparde@broadcom.com>,
+	Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	edumazet@google.com,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ian Kumlien <ian.kumlien@gmail.com>
+Subject: [PATCH net] be2net: fix sleeping while atomic bugs in be_ndo_bridge_getlink
+Date: Thu, 27 Feb 2025 18:41:29 +0200
+Message-ID: <20250227164129.1201164-1-razor@blackwall.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250227155727.7bdc069f@kmaincent-XPS-13-7390>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Thu, Feb 27, 2025 at 03:57:27PM +0100, Kory Maincent wrote:
-> On Thu, 27 Feb 2025 08:40:25 +0100
-> Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> 
-> > On Wed, Feb 26, 2025 at 06:42:57PM -0800, Jakub Kicinski wrote:
-> > > On Wed, 26 Feb 2025 07:06:55 +0100 Oleksij Rempel wrote:  
-> > > > Here is one example how it is done by HP switches:
-> > > > https://arubanetworking.hpe.com/techdocs/AOS-CX/10.08/HTML/monitoring_6200/Content/Chp_PoE/PoE_cmds/pow-ove-eth-all-by.htm
-> > > > 
-> > > > switch(config)# interface 1/1/1    <---- per interface
-> > > > switch(config-if)# power-over-ethernet allocate-by usage
-> > > > switch(config-if)# power-over-ethernet allocate-by class
-> > > > 
-> > > > Cisco example:
-> > > > https://www.cisco.com/c/en/us/td/docs/switches/datacenter/nexus9000/sw/93x/power-over-ethernet/configuration/configuring-power-over-ethernet/m-configuring-power-over-ethernet.html
-> > > > 
-> > > > switch(config)# interface ethernet1/1   <---- per interface
-> > > > switch(config-if)# power inline auto  
-> > > 
-> > > I don't see any mention of a domain in these docs.
-> > > This patchset is creating a concept of "domain" but does 
-> > > not expose it as an object.  
-> > 
-> > Ok, I see. @Köry, can you please provide regulator_summary with some
-> > inlined comments to regulators related to the PSE components and PSE
-> > related outputs of ethtool (or what ever tool you are using).
-> > 
-> > I wont to use this examples to answer.
-> 
-> On my side, I am not close to using sysfs. As we do all configurations
-> through ethtool I have assumed we should continue with ethtool.
+Partially revert commit b71724147e73 ("be2net: replace polling with
+sleeping in the FW completion path") w.r.t mcc mutex it introduces and the
+use of usleep_range. The be2net be_ndo_bridge_getlink() callback is
+called with rcu_read_lock, so this code has been broken for a long time.
+Both the mutex_lock and the usleep_range can cause the issue Ian Kumlien
+reported[1]. The call path is:
+be_ndo_bridge_getlink -> be_cmd_get_hsw_config -> be_mcc_notify_wait ->
+be_mcc_wait_compl -> usleep_range()
 
-Yes, I agree. But it won't be possible to do it for all components.
+[1] https://lore.kernel.org/netdev/CAA85sZveppNgEVa_FD+qhOMtG_AavK9_mFiU+jWrMtXmwqefGA@mail.gmail.com/
 
-> I think we should set the port priority through ethtool.
+Tested-by: Ian Kumlien <ian.kumlien@gmail.com>
+Fixes: b71724147e73 ("be2net: replace polling with sleeping in the FW completion path")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+---
+Note I haven't included the original patch author in the CC list because
+the email bounces.
 
-ack
+ drivers/net/ethernet/emulex/benet/be.h      |   2 +-
+ drivers/net/ethernet/emulex/benet/be_cmds.c | 197 ++++++++++----------
+ drivers/net/ethernet/emulex/benet/be_main.c |   2 +-
+ 3 files changed, 100 insertions(+), 101 deletions(-)
 
-> but indeed the PSE  power domain method get and set could be moved to
-> sysfs as it is not something  relative to the port but to a group of
-> ports.
-
-I would prefer to have it in the for of devlink or use regulator netlink
-interface. But, we do not need to do this discussion right now.
-
-> Ethtool should still report the  PSE power domain ID of a port to know
-> which domain the port is.
-
-Exactly.
-
-@Jakub, at current implementation stage, user need to know the domain
-id, because ports (and priorities) are grouped by the top level
-regulators (pse-regX in the regulator_summary), they are our top-level
-bottlenecks.
-
-HP and Cisco switch either use different PSE controllers, or just didn't
-exposed this nuance to the user. Let's assume, they have only one
-global power domain.
-
-So, in current patch set I would expect (not force :) ) implementation for
-following fields:
-- per port:
-  - priority (valid within the power domain)
-  - power reservation/allocation methods. First of all, because all
-    already supported controllers have different implemented/default
-    methods: microchip - dynamic, TI - static, regulator-pse - fixed (no
-    classification is supported).
-    At same time, in the future, we will need be able switch between
-    (static or dynamic) and fixed for LLPD or manual configuration.
-    Yes, at this point all ports show the same information and it seems
-    to be duplicated.
-  - power domain ID.
-
-@Jakub, did I answered you question, or missed the point? :)
-
-> @Oleksij here it is:
-
-Thank you!
-
-I do not expect it to be the primer user interface, but it can provide
-additional diagnostic information. I wonted to see how it is aligns
-with current ethtool UAPI implementation and if it possible to combine
-it for diagnostics.
-
-> # cat /sys/kernel/debug/regulator/regulator_summary
->  regulator                      use open bypass  opmode voltage current     min     max
-> ---------------------------------------------------------------------------------------
->  regulator-dummy                  5    4      0 unknown     0mV     0mA     0mV     0mV 
->     d00e0000.sata-target          1                                 0mA     0mV     0mV
->     d00e0000.sata-phy             1                                 0mA     0mV     0mV
->     d00e0000.sata-ahci            1                                 0mA     0mV     0mV
->     spi0.0-vcc                    1                                 0mA     0mV     0mV
->  pse-reg                          1    4      0 unknown     0mV     0mA     0mV     0mV 
-
-pse-regX should be attached to the main supply regulator for better full
-picture. And use different name to be better identified as PSE power domains with ID?
-
->     pse-0-0020_pi0                0    1      0 unknown 53816mV  2369mA     0mV     0mV 
->        0-0020-pse-0-0020_pi0      0                                 0mA     0mV     0mV
->     pse-0-0020_pi2                0    1      0 unknown 53816mV  2369mA     0mV     0mV 
->        0-0020-pse-0-0020_pi2      0                                 0mA     0mV     0mV
->     pse-0-0020_pi7                0    1      0 unknown 53816mV  2369mA     0mV     0mV 
->        0-0020-pse-0-0020_pi7      0                                 0mA     0mV     0mV
->  pse-reg2                         1    2      0 unknown     0mV     0mA     0mV     0mV 
->     pse-0-0020_pi1                0    0      0 unknown 53816mV  4738mA     0mV     0mV 
->  vcc_sd1                          2    1      0 unknown  1800mV     0mA  1800mV  3300mV 
->     d00d0000.mmc-vqmmc            1                                 0mA  1800mV  1950mV
-> 
-> # ./ynl/cli.py --spec netlink/specs/ethtool.yaml --no-schema --do pse-get --json
->  '{"header":{"dev-name":"wan"}}'
-> {'c33-pse-admin-state': 2,
->  'c33-pse-avail-pw-limit': 127500,
->  'c33-pse-pw-d-status': 2,
->  'c33-pse-pw-limit-ranges': [{'max': 99900, 'min': 2000}],
->  'header': {'dev-index': 4, 'dev-name': 'wan'},
->  'pse-budget-eval-strat': 2,
->  'pse-prio': 0,
->  'pse-prio-max': 8,
->  'pse-pw-d-id': 1}
-> 
-> # ./ynl/cli.py --spec netlink/specs/ethtool.yaml --no-schema --do pse-set --json
->  '{"header":{"dev-name":"wan"}, "pse-prio":1}'
-> None
-> # ./ynl/cli.py --spec netlink/specs/ethtool.yaml --no-schema --do pse-set --json
-> '{"header":{"dev-name":"wan"}, "c33-pse-avail-pw-limit":15000}'
-
-
-Best Regards,
-Oleksij
+diff --git a/drivers/net/ethernet/emulex/benet/be.h b/drivers/net/ethernet/emulex/benet/be.h
+index e48b861e4ce1..270ff9aab335 100644
+--- a/drivers/net/ethernet/emulex/benet/be.h
++++ b/drivers/net/ethernet/emulex/benet/be.h
+@@ -562,7 +562,7 @@ struct be_adapter {
+ 	struct be_dma_mem mbox_mem_alloced;
+ 
+ 	struct be_mcc_obj mcc_obj;
+-	struct mutex mcc_lock;	/* For serializing mcc cmds to BE card */
++	spinlock_t mcc_lock;	/* For serializing mcc cmds to BE card */
+ 	spinlock_t mcc_cq_lock;
+ 
+ 	u16 cfg_num_rx_irqs;		/* configured via set-channels */
+diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
+index 61adcebeef01..51b8377edd1d 100644
+--- a/drivers/net/ethernet/emulex/benet/be_cmds.c
++++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
+@@ -575,7 +575,7 @@ int be_process_mcc(struct be_adapter *adapter)
+ /* Wait till no more pending mcc requests are present */
+ static int be_mcc_wait_compl(struct be_adapter *adapter)
+ {
+-#define mcc_timeout		12000 /* 12s timeout */
++#define mcc_timeout		120000 /* 12s timeout */
+ 	int i, status = 0;
+ 	struct be_mcc_obj *mcc_obj = &adapter->mcc_obj;
+ 
+@@ -589,7 +589,7 @@ static int be_mcc_wait_compl(struct be_adapter *adapter)
+ 
+ 		if (atomic_read(&mcc_obj->q.used) == 0)
+ 			break;
+-		usleep_range(500, 1000);
++		udelay(100);
+ 	}
+ 	if (i == mcc_timeout) {
+ 		dev_err(&adapter->pdev->dev, "FW not responding\n");
+@@ -866,7 +866,7 @@ static bool use_mcc(struct be_adapter *adapter)
+ static int be_cmd_lock(struct be_adapter *adapter)
+ {
+ 	if (use_mcc(adapter)) {
+-		mutex_lock(&adapter->mcc_lock);
++		spin_lock_bh(&adapter->mcc_lock);
+ 		return 0;
+ 	} else {
+ 		return mutex_lock_interruptible(&adapter->mbox_lock);
+@@ -877,7 +877,7 @@ static int be_cmd_lock(struct be_adapter *adapter)
+ static void be_cmd_unlock(struct be_adapter *adapter)
+ {
+ 	if (use_mcc(adapter))
+-		return mutex_unlock(&adapter->mcc_lock);
++		return spin_unlock_bh(&adapter->mcc_lock);
+ 	else
+ 		return mutex_unlock(&adapter->mbox_lock);
+ }
+@@ -1047,7 +1047,7 @@ int be_cmd_mac_addr_query(struct be_adapter *adapter, u8 *mac_addr,
+ 	struct be_cmd_req_mac_query *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1076,7 +1076,7 @@ int be_cmd_mac_addr_query(struct be_adapter *adapter, u8 *mac_addr,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1088,7 +1088,7 @@ int be_cmd_pmac_add(struct be_adapter *adapter, const u8 *mac_addr,
+ 	struct be_cmd_req_pmac_add *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1113,7 +1113,7 @@ int be_cmd_pmac_add(struct be_adapter *adapter, const u8 *mac_addr,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 
+ 	if (base_status(status) == MCC_STATUS_UNAUTHORIZED_REQUEST)
+ 		status = -EPERM;
+@@ -1131,7 +1131,7 @@ int be_cmd_pmac_del(struct be_adapter *adapter, u32 if_id, int pmac_id, u32 dom)
+ 	if (pmac_id == -1)
+ 		return 0;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1151,7 +1151,7 @@ int be_cmd_pmac_del(struct be_adapter *adapter, u32 if_id, int pmac_id, u32 dom)
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1414,7 +1414,7 @@ int be_cmd_rxq_create(struct be_adapter *adapter,
+ 	struct be_dma_mem *q_mem = &rxq->dma_mem;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1444,7 +1444,7 @@ int be_cmd_rxq_create(struct be_adapter *adapter,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1508,7 +1508,7 @@ int be_cmd_rxq_destroy(struct be_adapter *adapter, struct be_queue_info *q)
+ 	struct be_cmd_req_q_destroy *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1525,7 +1525,7 @@ int be_cmd_rxq_destroy(struct be_adapter *adapter, struct be_queue_info *q)
+ 	q->created = false;
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1593,7 +1593,7 @@ int be_cmd_get_stats(struct be_adapter *adapter, struct be_dma_mem *nonemb_cmd)
+ 	struct be_cmd_req_hdr *hdr;
+ 	int status = 0;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1621,7 +1621,7 @@ int be_cmd_get_stats(struct be_adapter *adapter, struct be_dma_mem *nonemb_cmd)
+ 	adapter->stats_cmd_sent = true;
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1637,7 +1637,7 @@ int lancer_cmd_get_pport_stats(struct be_adapter *adapter,
+ 			    CMD_SUBSYSTEM_ETH))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1660,7 +1660,7 @@ int lancer_cmd_get_pport_stats(struct be_adapter *adapter,
+ 	adapter->stats_cmd_sent = true;
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1697,7 +1697,7 @@ int be_cmd_link_status_query(struct be_adapter *adapter, u16 *link_speed,
+ 	struct be_cmd_req_link_status *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	if (link_status)
+ 		*link_status = LINK_DOWN;
+@@ -1736,7 +1736,7 @@ int be_cmd_link_status_query(struct be_adapter *adapter, u16 *link_speed,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1747,7 +1747,7 @@ int be_cmd_get_die_temperature(struct be_adapter *adapter)
+ 	struct be_cmd_req_get_cntl_addnl_attribs *req;
+ 	int status = 0;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1762,7 +1762,7 @@ int be_cmd_get_die_temperature(struct be_adapter *adapter)
+ 
+ 	status = be_mcc_notify(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1811,7 +1811,7 @@ int be_cmd_get_fat_dump(struct be_adapter *adapter, u32 buf_len, void *buf)
+ 	if (!get_fat_cmd.va)
+ 		return -ENOMEM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	while (total_size) {
+ 		buf_size = min(total_size, (u32)60 * 1024);
+@@ -1849,9 +1849,9 @@ int be_cmd_get_fat_dump(struct be_adapter *adapter, u32 buf_len, void *buf)
+ 		log_offset += buf_size;
+ 	}
+ err:
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	dma_free_coherent(&adapter->pdev->dev, get_fat_cmd.size,
+ 			  get_fat_cmd.va, get_fat_cmd.dma);
+-	mutex_unlock(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1862,7 +1862,7 @@ int be_cmd_get_fw_ver(struct be_adapter *adapter)
+ 	struct be_cmd_req_get_fw_version *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1885,7 +1885,7 @@ int be_cmd_get_fw_ver(struct be_adapter *adapter)
+ 			sizeof(adapter->fw_on_flash));
+ 	}
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1899,7 +1899,7 @@ static int __be_cmd_modify_eqd(struct be_adapter *adapter,
+ 	struct be_cmd_req_modify_eq_delay *req;
+ 	int status = 0, i;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1922,7 +1922,7 @@ static int __be_cmd_modify_eqd(struct be_adapter *adapter,
+ 
+ 	status = be_mcc_notify(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1949,7 +1949,7 @@ int be_cmd_vlan_config(struct be_adapter *adapter, u32 if_id, u16 *vtag_array,
+ 	struct be_cmd_req_vlan_config *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -1971,7 +1971,7 @@ int be_cmd_vlan_config(struct be_adapter *adapter, u32 if_id, u16 *vtag_array,
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -1982,7 +1982,7 @@ static int __be_cmd_rx_filter(struct be_adapter *adapter, u32 flags, u32 value)
+ 	struct be_cmd_req_rx_filter *req = mem->va;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2015,7 +2015,7 @@ static int __be_cmd_rx_filter(struct be_adapter *adapter, u32 flags, u32 value)
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2046,7 +2046,7 @@ int be_cmd_set_flow_control(struct be_adapter *adapter, u32 tx_fc, u32 rx_fc)
+ 			    CMD_SUBSYSTEM_COMMON))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2066,7 +2066,7 @@ int be_cmd_set_flow_control(struct be_adapter *adapter, u32 tx_fc, u32 rx_fc)
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 
+ 	if (base_status(status) == MCC_STATUS_FEATURE_NOT_SUPPORTED)
+ 		return  -EOPNOTSUPP;
+@@ -2085,7 +2085,7 @@ int be_cmd_get_flow_control(struct be_adapter *adapter, u32 *tx_fc, u32 *rx_fc)
+ 			    CMD_SUBSYSTEM_COMMON))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2108,7 +2108,7 @@ int be_cmd_get_flow_control(struct be_adapter *adapter, u32 *tx_fc, u32 *rx_fc)
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2189,7 +2189,7 @@ int be_cmd_rss_config(struct be_adapter *adapter, u8 *rsstable,
+ 	if (!(be_if_cap_flags(adapter) & BE_IF_FLAGS_RSS))
+ 		return 0;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2214,7 +2214,7 @@ int be_cmd_rss_config(struct be_adapter *adapter, u8 *rsstable,
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2226,7 +2226,7 @@ int be_cmd_set_beacon_state(struct be_adapter *adapter, u8 port_num,
+ 	struct be_cmd_req_enable_disable_beacon *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2247,7 +2247,7 @@ int be_cmd_set_beacon_state(struct be_adapter *adapter, u8 port_num,
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2258,7 +2258,7 @@ int be_cmd_get_beacon_state(struct be_adapter *adapter, u8 port_num, u32 *state)
+ 	struct be_cmd_req_get_beacon_state *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2282,7 +2282,7 @@ int be_cmd_get_beacon_state(struct be_adapter *adapter, u8 port_num, u32 *state)
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2306,7 +2306,7 @@ int be_cmd_read_port_transceiver_data(struct be_adapter *adapter,
+ 		return -ENOMEM;
+ 	}
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2328,7 +2328,7 @@ int be_cmd_read_port_transceiver_data(struct be_adapter *adapter,
+ 		memcpy(data, resp->page_data + off, len);
+ 	}
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
+ 	return status;
+ }
+@@ -2345,7 +2345,7 @@ static int lancer_cmd_write_object(struct be_adapter *adapter,
+ 	void *ctxt = NULL;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 	adapter->flash_status = 0;
+ 
+ 	wrb = wrb_from_mccq(adapter);
+@@ -2387,7 +2387,7 @@ static int lancer_cmd_write_object(struct be_adapter *adapter,
+ 	if (status)
+ 		goto err_unlock;
+ 
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 
+ 	if (!wait_for_completion_timeout(&adapter->et_cmd_compl,
+ 					 msecs_to_jiffies(60000)))
+@@ -2406,7 +2406,7 @@ static int lancer_cmd_write_object(struct be_adapter *adapter,
+ 	return status;
+ 
+ err_unlock:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2460,7 +2460,7 @@ static int lancer_cmd_delete_object(struct be_adapter *adapter,
+ 	struct be_mcc_wrb *wrb;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2478,7 +2478,7 @@ static int lancer_cmd_delete_object(struct be_adapter *adapter,
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2491,7 +2491,7 @@ int lancer_cmd_read_object(struct be_adapter *adapter, struct be_dma_mem *cmd,
+ 	struct lancer_cmd_resp_read_object *resp;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2525,7 +2525,7 @@ int lancer_cmd_read_object(struct be_adapter *adapter, struct be_dma_mem *cmd,
+ 	}
+ 
+ err_unlock:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2537,7 +2537,7 @@ static int be_cmd_write_flashrom(struct be_adapter *adapter,
+ 	struct be_cmd_write_flashrom *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 	adapter->flash_status = 0;
+ 
+ 	wrb = wrb_from_mccq(adapter);
+@@ -2562,7 +2562,7 @@ static int be_cmd_write_flashrom(struct be_adapter *adapter,
+ 	if (status)
+ 		goto err_unlock;
+ 
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 
+ 	if (!wait_for_completion_timeout(&adapter->et_cmd_compl,
+ 					 msecs_to_jiffies(40000)))
+@@ -2573,7 +2573,7 @@ static int be_cmd_write_flashrom(struct be_adapter *adapter,
+ 	return status;
+ 
+ err_unlock:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -2584,7 +2584,7 @@ static int be_cmd_get_flash_crc(struct be_adapter *adapter, u8 *flashed_crc,
+ 	struct be_mcc_wrb *wrb;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -2611,7 +2611,7 @@ static int be_cmd_get_flash_crc(struct be_adapter *adapter, u8 *flashed_crc,
+ 		memcpy(flashed_crc, req->crc, 4);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3217,7 +3217,7 @@ int be_cmd_enable_magic_wol(struct be_adapter *adapter, u8 *mac,
+ 	struct be_cmd_req_acpi_wol_magic_config *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3234,7 +3234,7 @@ int be_cmd_enable_magic_wol(struct be_adapter *adapter, u8 *mac,
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3249,7 +3249,7 @@ int be_cmd_set_loopback(struct be_adapter *adapter, u8 port_num,
+ 			    CMD_SUBSYSTEM_LOWLEVEL))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3272,7 +3272,7 @@ int be_cmd_set_loopback(struct be_adapter *adapter, u8 port_num,
+ 	if (status)
+ 		goto err_unlock;
+ 
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 
+ 	if (!wait_for_completion_timeout(&adapter->et_cmd_compl,
+ 					 msecs_to_jiffies(SET_LB_MODE_TIMEOUT)))
+@@ -3281,7 +3281,7 @@ int be_cmd_set_loopback(struct be_adapter *adapter, u8 port_num,
+ 	return status;
+ 
+ err_unlock:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3298,7 +3298,7 @@ int be_cmd_loopback_test(struct be_adapter *adapter, u32 port_num,
+ 			    CMD_SUBSYSTEM_LOWLEVEL))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3324,7 +3324,7 @@ int be_cmd_loopback_test(struct be_adapter *adapter, u32 port_num,
+ 	if (status)
+ 		goto err;
+ 
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 
+ 	wait_for_completion(&adapter->et_cmd_compl);
+ 	resp = embedded_payload(wrb);
+@@ -3332,7 +3332,7 @@ int be_cmd_loopback_test(struct be_adapter *adapter, u32 port_num,
+ 
+ 	return status;
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3348,7 +3348,7 @@ int be_cmd_ddr_dma_test(struct be_adapter *adapter, u64 pattern,
+ 			    CMD_SUBSYSTEM_LOWLEVEL))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3382,7 +3382,7 @@ int be_cmd_ddr_dma_test(struct be_adapter *adapter, u64 pattern,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3393,7 +3393,7 @@ int be_cmd_get_seeprom_data(struct be_adapter *adapter,
+ 	struct be_cmd_req_seeprom_read *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3409,7 +3409,7 @@ int be_cmd_get_seeprom_data(struct be_adapter *adapter,
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3424,7 +3424,7 @@ int be_cmd_get_phy_info(struct be_adapter *adapter)
+ 			    CMD_SUBSYSTEM_COMMON))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3469,7 +3469,7 @@ int be_cmd_get_phy_info(struct be_adapter *adapter)
+ 	}
+ 	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3479,7 +3479,7 @@ static int be_cmd_set_qos(struct be_adapter *adapter, u32 bps, u32 domain)
+ 	struct be_cmd_req_set_qos *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3499,7 +3499,7 @@ static int be_cmd_set_qos(struct be_adapter *adapter, u32 bps, u32 domain)
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3611,7 +3611,7 @@ int be_cmd_get_fn_privileges(struct be_adapter *adapter, u32 *privilege,
+ 	struct be_cmd_req_get_fn_privileges *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3643,7 +3643,7 @@ int be_cmd_get_fn_privileges(struct be_adapter *adapter, u32 *privilege,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3655,7 +3655,7 @@ int be_cmd_set_fn_privileges(struct be_adapter *adapter, u32 privileges,
+ 	struct be_cmd_req_set_fn_privileges *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3675,7 +3675,7 @@ int be_cmd_set_fn_privileges(struct be_adapter *adapter, u32 privileges,
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3707,7 +3707,7 @@ int be_cmd_get_mac_from_list(struct be_adapter *adapter, u8 *mac,
+ 		return -ENOMEM;
+ 	}
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3771,7 +3771,7 @@ int be_cmd_get_mac_from_list(struct be_adapter *adapter, u8 *mac,
+ 	}
+ 
+ out:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	dma_free_coherent(&adapter->pdev->dev, get_mac_list_cmd.size,
+ 			  get_mac_list_cmd.va, get_mac_list_cmd.dma);
+ 	return status;
+@@ -3831,7 +3831,7 @@ int be_cmd_set_mac_list(struct be_adapter *adapter, u8 *mac_array,
+ 	if (!cmd.va)
+ 		return -ENOMEM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3853,7 +3853,7 @@ int be_cmd_set_mac_list(struct be_adapter *adapter, u8 *mac_array,
+ 
+ err:
+ 	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3889,7 +3889,7 @@ int be_cmd_set_hsw_config(struct be_adapter *adapter, u16 pvid,
+ 			    CMD_SUBSYSTEM_COMMON))
+ 		return -EPERM;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3930,7 +3930,7 @@ int be_cmd_set_hsw_config(struct be_adapter *adapter, u16 pvid,
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -3944,7 +3944,7 @@ int be_cmd_get_hsw_config(struct be_adapter *adapter, u16 *pvid,
+ 	int status;
+ 	u16 vid;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -3991,7 +3991,7 @@ int be_cmd_get_hsw_config(struct be_adapter *adapter, u16 *pvid,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -4190,7 +4190,7 @@ int be_cmd_set_ext_fat_capabilites(struct be_adapter *adapter,
+ 	struct be_cmd_req_set_ext_fat_caps *req;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -4206,7 +4206,7 @@ int be_cmd_set_ext_fat_capabilites(struct be_adapter *adapter,
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -4684,7 +4684,7 @@ int be_cmd_manage_iface(struct be_adapter *adapter, u32 iface, u8 op)
+ 	if (iface == 0xFFFFFFFF)
+ 		return -1;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -4701,7 +4701,7 @@ int be_cmd_manage_iface(struct be_adapter *adapter, u32 iface, u8 op)
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -4735,7 +4735,7 @@ int be_cmd_get_if_id(struct be_adapter *adapter, struct be_vf_cfg *vf_cfg,
+ 	struct be_cmd_resp_get_iface_list *resp;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -4756,7 +4756,7 @@ int be_cmd_get_if_id(struct be_adapter *adapter, struct be_vf_cfg *vf_cfg,
+ 	}
+ 
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -4850,7 +4850,7 @@ int be_cmd_enable_vf(struct be_adapter *adapter, u8 domain)
+ 	if (BEx_chip(adapter))
+ 		return 0;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -4868,7 +4868,7 @@ int be_cmd_enable_vf(struct be_adapter *adapter, u8 domain)
+ 	req->enable = 1;
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -4941,7 +4941,7 @@ __be_cmd_set_logical_link_config(struct be_adapter *adapter,
+ 	u32 link_config = 0;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -4969,7 +4969,7 @@ __be_cmd_set_logical_link_config(struct be_adapter *adapter,
+ 
+ 	status = be_mcc_notify_wait(adapter);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -5000,8 +5000,7 @@ int be_cmd_set_features(struct be_adapter *adapter)
+ 	struct be_mcc_wrb *wrb;
+ 	int status;
+ 
+-	if (mutex_lock_interruptible(&adapter->mcc_lock))
+-		return -1;
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -5039,7 +5038,7 @@ int be_cmd_set_features(struct be_adapter *adapter)
+ 		dev_info(&adapter->pdev->dev,
+ 			 "Adapter does not support HW error recovery\n");
+ 
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ 
+@@ -5053,7 +5052,7 @@ int be_roce_mcc_cmd(void *netdev_handle, void *wrb_payload,
+ 	struct be_cmd_resp_hdr *resp;
+ 	int status;
+ 
+-	mutex_lock(&adapter->mcc_lock);
++	spin_lock_bh(&adapter->mcc_lock);
+ 
+ 	wrb = wrb_from_mccq(adapter);
+ 	if (!wrb) {
+@@ -5076,7 +5075,7 @@ int be_roce_mcc_cmd(void *netdev_handle, void *wrb_payload,
+ 	memcpy(wrb_payload, resp, sizeof(*resp) + resp->response_length);
+ 	be_dws_le_to_cpu(wrb_payload, sizeof(*resp) + resp->response_length);
+ err:
+-	mutex_unlock(&adapter->mcc_lock);
++	spin_unlock_bh(&adapter->mcc_lock);
+ 	return status;
+ }
+ EXPORT_SYMBOL(be_roce_mcc_cmd);
+diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
+index 875fe379eea2..3d2e21592119 100644
+--- a/drivers/net/ethernet/emulex/benet/be_main.c
++++ b/drivers/net/ethernet/emulex/benet/be_main.c
+@@ -5667,8 +5667,8 @@ static int be_drv_init(struct be_adapter *adapter)
+ 	}
+ 
+ 	mutex_init(&adapter->mbox_lock);
+-	mutex_init(&adapter->mcc_lock);
+ 	mutex_init(&adapter->rx_filter_lock);
++	spin_lock_init(&adapter->mcc_lock);
+ 	spin_lock_init(&adapter->mcc_cq_lock);
+ 	init_completion(&adapter->et_cmd_compl);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.48.1
+
