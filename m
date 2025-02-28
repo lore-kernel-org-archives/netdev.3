@@ -1,527 +1,380 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA3726A0EC;
-	Fri, 28 Feb 2025 12:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC1B25DD1F;
+	Fri, 28 Feb 2025 12:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740744116; cv=none; b=LSAxGkG9QFJZ/KhrhUtt/R13fPg2D1Dfqij2KzJlP+bIeEoiO4uYjf8M8/f/uszCUbL5AET0ko5CYl7+PukhHJVRHz0fpQVfjW7sluF43arZv2QbO9rnChEmjYDgmQ/pJys7DPTrKXBVwAWfKnvMY09lpC8rm/t8XVGsJj+i9XA=
+	t=1740744375; cv=none; b=pFEffCoFwGqnhT+aJqsD4r1SZ6qmBf9KxD/vOdilSbOS4hmjY1O8l/LfW4vl48s0QqooalVTU5L4Dr+jO1aFIFTPqycrOmcBkWWJyfSq/de0G6MzpK3O9nL0ibAUyTsxJH9p+4wXQNCwdGuf3FHHVHRgJJhRNcTKCBrap2AA1iM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740744116; c=relaxed/simple;
-	bh=Iaxdyn1ZxNAHTE0X1IRr9c+m/+C95a9vxCEEb4rkn10=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YuRa2M7xGxiZ9d3xlwhcdliG+KUFM1Qx7FoQ2zBkuEpG0FGkFyMVxY46e7KK2ijcQYYiLKhjQOmhAhrJVdJOrCmyxMNPADR7oSy5YO/0RoX7aDvdmvcd4dW50cfX2p1oWbrncGXHAoqvj5ujt5a13K7IYEJSebAz+7eQBxWSw3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Z46Db6z7Mz21mxG;
-	Fri, 28 Feb 2025 19:58:39 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 756391A016C;
-	Fri, 28 Feb 2025 20:01:45 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 28 Feb 2025 20:01:44 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
-CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
-	<liuyonglong@huawei.com>, <chenhao418@huawei.com>, <sudongming1@huawei.com>,
-	<xujunsheng@huawei.com>, <shiyongbang@huawei.com>, <libaihan@huawei.com>,
-	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
-	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <kalesh-anakkur.purayil@broadcom.com>,
-	<shaojijie@huawei.com>
-Subject: [PATCH v4 net-next 5/6] net: hibmcge: Add support for BMC diagnose feature
-Date: Fri, 28 Feb 2025 19:54:10 +0800
-Message-ID: <20250228115411.1750803-6-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20250228115411.1750803-1-shaojijie@huawei.com>
-References: <20250228115411.1750803-1-shaojijie@huawei.com>
+	s=arc-20240116; t=1740744375; c=relaxed/simple;
+	bh=xCz6URh5N68y/Bpste8IV03k10jt1dkDzC1Mga/T9Mo=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=XUBJXtHh9c5fCF5hv1yz7wj0mO5In41qI2kMd1pDou+JZTcPqRDp8FpwPIjMAWXj84i3U/I9iXZd84rB8XpPBdWk6hO3ZxUZfSFPDbkdQx+qwV+0rKiUQlvMSv3le/zdfD0D3uinhQRA+3hAH6NzZVaf6b4EjPGwgve0qPt0q8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=lNCuR113; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="lNCuR113"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51SAXGg1031891;
+	Fri, 28 Feb 2025 12:05:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	m4TF+meqj9oO8mFRWmIHylEZzspy0l0qdWfcYcpeo3I=; b=lNCuR113SCfv9GSo
+	u/TAnOEo+Zts0vh6DlkpfG3WxvCDiOAc21E3olFSCQoyjrmGIF/LE+omrklmHJX8
+	NlmmubpzdgKlZjgtb2C5qhrbZqY/ezXp1eHHLqVf8e2ZWmzh1v3eh7b1EYtygpXu
+	bsTWy8IFIdXi5etVacjRW6GuyDumWKtj+jsajT9EuGGdQPCuuhd9fFlZ250S57eB
+	qYNWe86k6NEsJkZ5dOSUSIcZLS8fiTq+uO2GERk1a2wkqQ9YR85+9i+WqvWb8Qpc
+	DeqyWZ9BvKP/gpV//DQE58HuHm1wExxtRZ1kiNsZgYIWT9LFwvJ6e6rT5aJ9nK2V
+	H2Fdng==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 451prksafa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Feb 2025 12:05:49 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51SC5mvs008689
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Feb 2025 12:05:48 GMT
+Received: from [10.253.35.151] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 28 Feb
+ 2025 04:05:42 -0800
+Message-ID: <3376db36-ffc5-480e-960a-5d808e438ce4@quicinc.com>
+Date: Fri, 28 Feb 2025 20:05:40 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 0/5] Add PCS support for Qualcomm IPQ9574 SoC
+From: Lei Wei <quic_leiwei@quicinc.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        Jakub Kicinski
+	<kuba@kernel.org>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Paolo Abeni
+	<pabeni@redhat.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Andrew Lunn
+	<andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>, <netdev@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <quic_kkumarcs@quicinc.com>,
+        <quic_suruchia@quicinc.com>, <quic_pavir@quicinc.com>,
+        <quic_linchen@quicinc.com>, <quic_luoj@quicinc.com>,
+        <srinivas.kandagatla@linaro.org>, <bartosz.golaszewski@linaro.org>,
+        <vsmuthu@qti.qualcomm.com>, <john@phrozen.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <20250207-ipq_pcs_6-14_rc1-v5-0-be2ebec32921@quicinc.com>
+ <20250211195934.47943371@kernel.org> <Z6x1xD0krK0_eycB@shell.armlinux.org.uk>
+ <71a69eb6-9e24-48ab-8301-93ec3ff43cc7@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <71a69eb6-9e24-48ab-8301-93ec3ff43cc7@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: iyewhzWLqWPW0sumEXL2RcB0hnzjKbZO
+X-Proofpoint-ORIG-GUID: iyewhzWLqWPW0sumEXL2RcB0hnzjKbZO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-28_02,2025-02-27_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ adultscore=0 phishscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
+ clxscore=1015 malwarescore=0 priorityscore=1501 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502280087
 
-The MAC hardware is on the BMC side, and the driver is on the host side.
-When the driver is abnormal, the BMC cannot directly detect the
-exception cause.
-Therefore, this patch implements the BMC diagnosis feature.
 
-When users query driver diagnosis information on the BMC, the driver
-detects the query request in the scheduled task and reports
-driver statistics and link status to the BMC through the bar space.
-The BMC collects logs to analyze exception causes.
 
-Currently, the scheduled task is executed every 30 seconds
-To quickly respond to user query requests,
-this patch changes the scheduled task to once every second.
+On 2/19/2025 6:46 PM, Lei Wei wrote:
+> 
+> 
+> On 2/12/2025 6:19 PM, Russell King (Oracle) wrote:
+>> On Tue, Feb 11, 2025 at 07:59:34PM -0800, Jakub Kicinski wrote:
+>>> On Fri, 7 Feb 2025 23:53:11 +0800 Lei Wei wrote:
+>>>> The 'UNIPHY' PCS block in the Qualcomm IPQ9574 SoC provides Ethernet
+>>>> PCS and SerDes functions. It supports 1Gbps mode PCS and 10-Gigabit
+>>>> mode PCS (XPCS) functions, and supports various interface modes for
+>>>> the connectivity between the Ethernet MAC and the external PHYs/Switch.
+>>>> There are three UNIPHY (PCS) instances in IPQ9574, supporting the six
+>>>> Ethernet ports.
+>>>>
+>>>> This patch series adds base driver support for initializing the PCS,
+>>>> and PCS phylink ops for managing the PCS modes/states. Support for
+>>>> SGMII/QSGMII (PCS) and USXGMII (XPCS) modes is being added initially.
+>>>>
+>>>> The Ethernet driver which handles the MAC operations will create the
+>>>> PCS instances and phylink for the MAC, by utilizing the API exported
+>>>> by this driver.
+>>>>
+>>>> While support is being added initially for IPQ9574, the driver is
+>>>> expected to be easily extendable later for other SoCs in the IPQ
+>>>> family such as IPQ5332.
+>>>
+>>> Could someone with PHY, or even, dare I say, phylink expertise
+>>> take a look here?
+>>
+>> I've not had the time, sorry. Looking at it now, I have lots of
+>> questions over this.
+>>
+>> 1) clocks.
+>>
+>> - Patch 2 provides clocks from this driver which are exported to the
+>>    NSCCC block that are then used to provide the MII clocks.
+>> - Patch 3 consumes clocks from the NSCCC block for use with each PCS.
+>>
+>> Surely this leads to a circular dependency, where the MSCCC driver
+>> can't get the clocks it needs until this driver has initialised, but
+>> this driver can't get the clocks it needs for each PCS from the NSCCC
+>> because the MSCCC driver needs this driver to initialise.
+>>
+> 
+> Sorry for the delay in response. Below is a description of the 
+> dependencies between the PCS/NSSCC drivers during initialization time 
+> and how the clock relationships are set up. Based on this, there should 
+> not any issue due to circular dependency, but please let me know if any 
+> improvement is possible here given the hardware clock dependency. The 
+> module loading order is as follows:
+> 
+> Step 1.) NSCC driver module
+> Step 2.) PCS driver module
+> Step 3.) Ethernet driver module
+> 
+> The 'UNIPHY' PCS clocks (from Serdes to NSSCC) are not needed to be 
+> available at the time of registration of PCS MII clocks (NSSCC to PCS 
+> MII) by the NSSCC driver (Step 1). The PCS MII clocks is registered 
+> before 'UNIPHY' PCS clock is registered, since by default the parent is 
+> initialized to 'xo' clock. Below is the output of clock tree on the 
+> board before the PCS driver is loaded.
+> 
+> xo-board-clk
+>      nss_cc_port1_rx_clk_src
+>          nss_cc_port1_rx_div_clk_src
+>              nss_cc_uniphy_port1_rx_clk
+>              nss_cc_port1_rx_clk
+> 
+> The 'UNIPHY' PCS clock is later configured as a parent to the PCS MII 
+> clock at the time when the Ethernet and PCS drivers are enabled (step3) 
+> and the MAC links up. At link up time, the NSSCC driver sets the NSSCC 
+> port clock rate (by configuring the divider) based on the link speed, 
+> during which time the NSSCC port clock's parent is switched to 'UNIPHY' 
+> PCS clock. Below is the clock tree dump after this step.
+> 
+> 7a00000.ethernet-pcs::rx_clk
+>      nss_cc_port1_rx_clk_src
+>          nss_cc_port1_rx_div_clk_src
+>              nss_cc_uniphy_port1_rx_clk
+>              nss_cc_port1_rx_clk
+> 
+>> 2) there's yet another open coded "_get" function for getting the
+>> PCS given a DT node which is different from every other "_get"
+>> function - this one checks the parent DT node has an appropriate
+>> compatible whereas others don't. The whole poliferation of "_get"
+>> methods that are specific to each PCS still needs solving, and I
+>> still have the big question around what happens when the PCS driver
+>> gets unbound - and whether that causes the kernel to oops. I'm also
+>> not a fan of "look up the struct device and then get its driver data".
+>> There is *no* locking over accessing the driver data.
+>>
+> 
+> The PCS device in IPQ9574 chipset is built into the SoC chip and is not 
+> pluggable. Also, the PCS driver module is not unloadable until the MAC 
+> driver that depends on it is unloaded. Therefore, marking the driver 
+> '.suppress_bind_attrs = true' to disable user unbind action may be good 
+> enough to cover all possible scenarios of device going away for IPQ9574 
+> PCS driver.
+> 
+> To avoid looking up the device and getting its driver data (which is 
+> also seen in other PCS device drivers currently), a common 
+> infrastructure is certainly preferable for the longer term to have a 
+> consistent lookup. As far as I understand, the urgency for the common 
+> infrastructure for lookup is perhaps more to resolve the issue of hot- 
+> pluggable devices going away, and less for devices that do not support it.
+> 
+> Also, the _get() API is only called once during MAC port initialization 
+> and never later, so if the device is not pluggable and unbind is not 
+> possible, there may not be any race concerns when accessing the driver 
+> data using the _get() API. Please let me know if this understanding is 
+> incorrect.
+> 
+>> 3) doesn't populate supported_interfaces for the PCS - which would
+>> make ipq_pcs_validate() unnecessary until patch 4 (but see 6 below.)
+>>
+> 
+> Agree, we will update the patch to advertise 'supported interfaces' and 
+> use the 'pcs_validate' op only for patch4 as you pointed (for filtering 
+> half duplex modes for USXGMII.).
+> [The 'pcs_validate()' was suggested by you and added in the version 3 of 
+> this driver, and at that time, the pcs supported_interfaces is not 
+> introduced.]
+> 
+>> 4)
+>> "+       /* Nothing to do here as in-band autoneg mode is enabled
+>> +        * by default for each PCS MII port."
+>>
+>> "by default" doesn't matter - what if in-band is disabled and then
+>> subsequently enabled.
+>>
+> 
+> OK, I will fix this function to handle both in-band neg enabled and 
+> disabled cases in next update.
+> 
+>> 5) there seems to be an open-coded decision about the clock rate but
+>> there's also ipq_pcs_clk_rate_get() which seems to make the same
+>> decision.
+>>
+> 
+> I think you may be referring to both ipq_pcs_config_mode() and 
+> ipq_pcs_clk_rate_get() functions having the similar switch case to 
+> decide the clock rate based on the interface mode. I do agree, we can 
+> simplify this by saving the clock rate in ipq_pcs_config_mode() before 
+> the clk_set_rate() is called, and then simply returning this clock rate 
+> from the recalc_rate() op.
+> 
+> 
+>> 6) it seems this block has N PCS, but all PCS must operate in the same
+>> mode (e.g. one PCS can't operate in SGMII mode, another in USXGMII
+>> mode.) Currently, the last "config" wins over previous configs across
+>> all interfaces. Is this the best solution? Should we be detecting
+>> conflicting configurations? Unfortunately, pcs->supported_interfaces
+>> can't really be changed after the PCS is being used, so I guess
+>> any such restrictions would need to go in ipq_pcs_validate() which
+>> should work fine - although it would mean that a MAC populating
+>> its phylink_config->supported_interfaces using pcs->supported_interfaces
+>> may end up with too many interface bits set.
+>>
+> 
+> I would like to clarify on the hardware supported configurations for the
+> UNIPHY PCS hardware instances. [Note: There are three instances of 
+> 'UNIPHY PCS' in IPQ9574. However we take the example here for PCS0]
+> 
+> UNIPHY PCS0 --> pcs0_mii0..pcs0_mii4 (5 PCS MII channels maximum).
+> Possible combinations: QSGMII (4x 1 SGMII)
+>              PSGMII (5 x 1 SGMII),
+>              SGMII (1 x 1 SGMII)
+>              USXGMII (1 x 1 USXGMII)
+> 
+> As we can see above, different PCS channels in a 'UNIPHY' PCS block 
+> working in different PHY interface modes is not supported by the 
+> hardware. So, it might not be necessary to detect that conflict. If the 
+> interface mode changes from one to another, the same interface mode is 
+> applicable to all the PCS channels that are associated with the UNIPHY 
+> PCS block.
+> 
+> Below is an example of a DTS configuration which depicts one board 
+> configuration where one 'UNIPHY' (PCS0) is connected with a QCA8075 Quad 
+> PHY, it has 4 MII channels enabled and connected with 4 PPE MAC ports, 
+> and all the PCS MII channels are in QSGMII mode. For the 'UNIPHY' 
+> connected with single SGMII or USXGMII PHY (PCS1), only one MII channel 
+> is enabled and connected with one PPE MAC port.
+> 
+> PHY:
+> &mdio {
+>      ethernet-phy-package@0 {
+>                  compatible = "qcom,qca8075-package";
+>                  #address-cells = <1>;
+>                  #size-cells = <0>;
+>                  reg = <0x10>;
+>                  qcom,package-mode = "qsgmii";
+> 
+>                  phy0: ethernet-phy@10 {
+>                          reg = <0x10>;
+>                  };
+> 
+>                  phy1: ethernet-phy@11 {
+>                          reg = <0x11>;
+>                  };
+> 
+>                  phy2: ethernet-phy@12 {
+>                          reg = <0x12>;
+>                  };
+> 
+>                  phy3: ethernet-phy@13 {
+>                          reg = <0x13>;
+>                  };
+>      };
+>      phy4: ethernet-phy@8 {
+>                  compatible ="ethernet-phy-ieee802.3-c45";
+>                  reg = <8>;
+>          };
+> }
+> 
+> PCS:
+> pcs0: ethernet-pcs@7a00000 {
+>      ......
+>      pcs0_mii0: pcs-mii@0 {
+>          reg = <0>;
+>          status = "enabled";
+>      };
+> 
+>      ......
+> 
+>      pcs0_mii3: pcs-mii@3 {
+>          reg = <3>;
+>          status = "enabled";
+>      };
+> };
+> 
+> pcs1: ethernet-pcs@7a10000 {
+>      ......
+> 
+>      pcs1_mii0: pcs-mii@0 {
+>          reg = <0>;
+>          status = "enabled";
+>      };
+> };
+> 
+> MAC:
+> port@1 {
+>      phy-mode = "qsgmii";
+>      phy-handle = <&phy0>;
+>      pcs-handle = <&pcs0_mii0>;
+> }
+> 
+> port@2 {
+>      phy-mode = "qsgmii";
+>      phy-handle = <&phy1>;
+>      pcs-handle = <&pcs0_mii1>;
+> }
+> port@3 {
+>      phy-mode = "qsgmii";
+>      phy-handle = <&phy2>;
+>      pcs-handle = <&pcs0_mii2>;
+> }
+> port@4 {
+>      phy-mode = "qsgmii";
+>      phy-handle = <&phy3>;
+>      pcs-handle = <&pcs0_mii3>;
+> }
+> port@5 {
+>          phy-mode = "usxgmii";
+>          phy-handle = <&phy4>;
+>          pcs-handle = <&pcs1_mii0>;
+> }
+> 
+>> (1), (2) and (6) are probably the major issues at the moment, and (2)
+>> has been around for a while.
+>>
+>> Given (1), I'm just left wondering whether this has been runtime
+>> tested, and how the driver model's driver dependencies cope with it
+>> if the NSCCC driver is both a clock consumer of/provider to this
+>> driver.
+>>
+> 
+> Yes, I have tested the PCS driver along with NSSCC driver and PPE 
+> Ethernet driver.
 
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
----
- .../net/ethernet/hisilicon/hibmcge/Makefile   |   2 +-
- .../ethernet/hisilicon/hibmcge/hbg_common.h   |   1 +
- .../ethernet/hisilicon/hibmcge/hbg_diagnose.c | 348 ++++++++++++++++++
- .../ethernet/hisilicon/hibmcge/hbg_diagnose.h |  11 +
- .../net/ethernet/hisilicon/hibmcge/hbg_main.c |  11 +-
- .../net/ethernet/hisilicon/hibmcge/hbg_reg.h  |   7 +
- 6 files changed, 377 insertions(+), 3 deletions(-)
- create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.c
- create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.h
-
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/Makefile b/drivers/net/ethernet/hisilicon/hibmcge/Makefile
-index 7ea15f9ef849..1a9da564b306 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/Makefile
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/Makefile
-@@ -6,4 +6,4 @@
- obj-$(CONFIG_HIBMCGE) += hibmcge.o
- 
- hibmcge-objs = hbg_main.o hbg_hw.o hbg_mdio.o hbg_irq.o hbg_txrx.o hbg_ethtool.o \
--		hbg_debugfs.o hbg_err.o
-+		hbg_debugfs.o hbg_err.o hbg_diagnose.o
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-index 8b943912184b..f8cdab62bf85 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-@@ -272,6 +272,7 @@ struct hbg_priv {
- 	enum hbg_reset_type reset_type;
- 	struct hbg_user_def user_def;
- 	struct hbg_stats stats;
-+	unsigned long last_update_stats_time;
- 	struct delayed_work service_task;
- };
- 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.c
-new file mode 100644
-index 000000000000..d61c03f34ff0
---- /dev/null
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.c
-@@ -0,0 +1,348 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+// Copyright (c) 2025 Hisilicon Limited.
-+
-+#include <linux/iopoll.h>
-+#include <linux/phy.h>
-+#include "hbg_common.h"
-+#include "hbg_ethtool.h"
-+#include "hbg_hw.h"
-+#include "hbg_diagnose.h"
-+
-+#define HBG_MSG_DATA_MAX_NUM	64
-+
-+struct hbg_diagnose_message {
-+	u32 opcode;
-+	u32 status;
-+	u32 data_num;
-+	struct hbg_priv *priv;
-+
-+	u32 data[HBG_MSG_DATA_MAX_NUM];
-+};
-+
-+#define HBG_HW_PUSH_WAIT_TIMEOUT_US	(2 * 1000 * 1000)
-+#define HBG_HW_PUSH_WAIT_INTERVAL_US	(1 * 1000)
-+
-+enum hbg_push_cmd {
-+	HBG_PUSH_CMD_IRQ = 0,
-+	HBG_PUSH_CMD_STATS,
-+	HBG_PUSH_CMD_LINK,
-+};
-+
-+struct hbg_push_stats_info {
-+	/* id is used to match the name of the current stats item.
-+	 * and is used for pretty print on BMC
-+	 */
-+	u32 id;
-+	u64 offset;
-+};
-+
-+struct hbg_push_irq_info {
-+	/* id is used to match the name of the current irq.
-+	 * and is used for pretty print on BMC
-+	 */
-+	u32 id;
-+	u32 mask;
-+};
-+
-+#define HBG_PUSH_IRQ_I(name, id) {id, HBG_INT_MSK_##name##_B}
-+static const struct hbg_push_irq_info hbg_push_irq_list[] = {
-+	HBG_PUSH_IRQ_I(RX, 0),
-+	HBG_PUSH_IRQ_I(TX, 1),
-+	HBG_PUSH_IRQ_I(TX_PKT_CPL, 2),
-+	HBG_PUSH_IRQ_I(MAC_MII_FIFO_ERR, 3),
-+	HBG_PUSH_IRQ_I(MAC_PCS_RX_FIFO_ERR, 4),
-+	HBG_PUSH_IRQ_I(MAC_PCS_TX_FIFO_ERR, 5),
-+	HBG_PUSH_IRQ_I(MAC_APP_RX_FIFO_ERR, 6),
-+	HBG_PUSH_IRQ_I(MAC_APP_TX_FIFO_ERR, 7),
-+	HBG_PUSH_IRQ_I(SRAM_PARITY_ERR, 8),
-+	HBG_PUSH_IRQ_I(TX_AHB_ERR, 9),
-+	HBG_PUSH_IRQ_I(RX_BUF_AVL, 10),
-+	HBG_PUSH_IRQ_I(REL_BUF_ERR, 11),
-+	HBG_PUSH_IRQ_I(TXCFG_AVL, 12),
-+	HBG_PUSH_IRQ_I(TX_DROP, 13),
-+	HBG_PUSH_IRQ_I(RX_DROP, 14),
-+	HBG_PUSH_IRQ_I(RX_AHB_ERR, 15),
-+	HBG_PUSH_IRQ_I(MAC_FIFO_ERR, 16),
-+	HBG_PUSH_IRQ_I(RBREQ_ERR, 17),
-+	HBG_PUSH_IRQ_I(WE_ERR, 18),
-+};
-+
-+#define HBG_PUSH_STATS_I(name, id) {id, HBG_STATS_FIELD_OFF(name)}
-+static const struct hbg_push_stats_info hbg_push_stats_list[] = {
-+	HBG_PUSH_STATS_I(rx_desc_drop, 0),
-+	HBG_PUSH_STATS_I(rx_desc_l2_err_cnt, 1),
-+	HBG_PUSH_STATS_I(rx_desc_pkt_len_err_cnt, 2),
-+	HBG_PUSH_STATS_I(rx_desc_l3_wrong_head_cnt, 3),
-+	HBG_PUSH_STATS_I(rx_desc_l3_csum_err_cnt, 4),
-+	HBG_PUSH_STATS_I(rx_desc_l3_len_err_cnt, 5),
-+	HBG_PUSH_STATS_I(rx_desc_l3_zero_ttl_cnt, 6),
-+	HBG_PUSH_STATS_I(rx_desc_l3_other_cnt, 7),
-+	HBG_PUSH_STATS_I(rx_desc_l4_err_cnt, 8),
-+	HBG_PUSH_STATS_I(rx_desc_l4_wrong_head_cnt, 9),
-+	HBG_PUSH_STATS_I(rx_desc_l4_len_err_cnt, 10),
-+	HBG_PUSH_STATS_I(rx_desc_l4_csum_err_cnt, 11),
-+	HBG_PUSH_STATS_I(rx_desc_l4_zero_port_num_cnt, 12),
-+	HBG_PUSH_STATS_I(rx_desc_l4_other_cnt, 13),
-+	HBG_PUSH_STATS_I(rx_desc_frag_cnt, 14),
-+	HBG_PUSH_STATS_I(rx_desc_ip_ver_err_cnt, 15),
-+	HBG_PUSH_STATS_I(rx_desc_ipv4_pkt_cnt, 16),
-+	HBG_PUSH_STATS_I(rx_desc_ipv6_pkt_cnt, 17),
-+	HBG_PUSH_STATS_I(rx_desc_no_ip_pkt_cnt, 18),
-+	HBG_PUSH_STATS_I(rx_desc_ip_pkt_cnt, 19),
-+	HBG_PUSH_STATS_I(rx_desc_tcp_pkt_cnt, 20),
-+	HBG_PUSH_STATS_I(rx_desc_udp_pkt_cnt, 21),
-+	HBG_PUSH_STATS_I(rx_desc_vlan_pkt_cnt, 22),
-+	HBG_PUSH_STATS_I(rx_desc_icmp_pkt_cnt, 23),
-+	HBG_PUSH_STATS_I(rx_desc_arp_pkt_cnt, 24),
-+	HBG_PUSH_STATS_I(rx_desc_rarp_pkt_cnt, 25),
-+	HBG_PUSH_STATS_I(rx_desc_multicast_pkt_cnt, 26),
-+	HBG_PUSH_STATS_I(rx_desc_broadcast_pkt_cnt, 27),
-+	HBG_PUSH_STATS_I(rx_desc_ipsec_pkt_cnt, 28),
-+	HBG_PUSH_STATS_I(rx_desc_ip_opt_pkt_cnt, 29),
-+	HBG_PUSH_STATS_I(rx_desc_key_not_match_cnt, 30),
-+	HBG_PUSH_STATS_I(rx_octets_total_ok_cnt, 31),
-+	HBG_PUSH_STATS_I(rx_uc_pkt_cnt, 32),
-+	HBG_PUSH_STATS_I(rx_mc_pkt_cnt, 33),
-+	HBG_PUSH_STATS_I(rx_bc_pkt_cnt, 34),
-+	HBG_PUSH_STATS_I(rx_vlan_pkt_cnt, 35),
-+	HBG_PUSH_STATS_I(rx_octets_bad_cnt, 36),
-+	HBG_PUSH_STATS_I(rx_octets_total_filt_cnt, 37),
-+	HBG_PUSH_STATS_I(rx_filt_pkt_cnt, 38),
-+	HBG_PUSH_STATS_I(rx_trans_pkt_cnt, 39),
-+	HBG_PUSH_STATS_I(rx_framesize_64, 40),
-+	HBG_PUSH_STATS_I(rx_framesize_65_127, 41),
-+	HBG_PUSH_STATS_I(rx_framesize_128_255, 42),
-+	HBG_PUSH_STATS_I(rx_framesize_256_511, 43),
-+	HBG_PUSH_STATS_I(rx_framesize_512_1023, 44),
-+	HBG_PUSH_STATS_I(rx_framesize_1024_1518, 45),
-+	HBG_PUSH_STATS_I(rx_framesize_bt_1518, 46),
-+	HBG_PUSH_STATS_I(rx_fcs_error_cnt, 47),
-+	HBG_PUSH_STATS_I(rx_data_error_cnt, 48),
-+	HBG_PUSH_STATS_I(rx_align_error_cnt, 49),
-+	HBG_PUSH_STATS_I(rx_frame_long_err_cnt, 50),
-+	HBG_PUSH_STATS_I(rx_jabber_err_cnt, 51),
-+	HBG_PUSH_STATS_I(rx_pause_macctl_frame_cnt, 52),
-+	HBG_PUSH_STATS_I(rx_unknown_macctl_frame_cnt, 53),
-+	HBG_PUSH_STATS_I(rx_frame_very_long_err_cnt, 54),
-+	HBG_PUSH_STATS_I(rx_frame_runt_err_cnt, 55),
-+	HBG_PUSH_STATS_I(rx_frame_short_err_cnt, 56),
-+	HBG_PUSH_STATS_I(rx_overflow_cnt, 57),
-+	HBG_PUSH_STATS_I(rx_bufrq_err_cnt, 58),
-+	HBG_PUSH_STATS_I(rx_we_err_cnt, 59),
-+	HBG_PUSH_STATS_I(rx_overrun_cnt, 60),
-+	HBG_PUSH_STATS_I(rx_lengthfield_err_cnt, 61),
-+	HBG_PUSH_STATS_I(rx_fail_comma_cnt, 62),
-+	HBG_PUSH_STATS_I(rx_dma_err_cnt, 63),
-+	HBG_PUSH_STATS_I(rx_fifo_less_empty_thrsld_cnt, 64),
-+	HBG_PUSH_STATS_I(tx_octets_total_ok_cnt, 65),
-+	HBG_PUSH_STATS_I(tx_uc_pkt_cnt, 66),
-+	HBG_PUSH_STATS_I(tx_mc_pkt_cnt, 67),
-+	HBG_PUSH_STATS_I(tx_bc_pkt_cnt, 68),
-+	HBG_PUSH_STATS_I(tx_vlan_pkt_cnt, 69),
-+	HBG_PUSH_STATS_I(tx_octets_bad_cnt, 70),
-+	HBG_PUSH_STATS_I(tx_trans_pkt_cnt, 71),
-+	HBG_PUSH_STATS_I(tx_pause_frame_cnt, 72),
-+	HBG_PUSH_STATS_I(tx_framesize_64, 73),
-+	HBG_PUSH_STATS_I(tx_framesize_65_127, 74),
-+	HBG_PUSH_STATS_I(tx_framesize_128_255, 75),
-+	HBG_PUSH_STATS_I(tx_framesize_256_511, 76),
-+	HBG_PUSH_STATS_I(tx_framesize_512_1023, 77),
-+	HBG_PUSH_STATS_I(tx_framesize_1024_1518, 78),
-+	HBG_PUSH_STATS_I(tx_framesize_bt_1518, 79),
-+	HBG_PUSH_STATS_I(tx_underrun_err_cnt, 80),
-+	HBG_PUSH_STATS_I(tx_add_cs_fail_cnt, 81),
-+	HBG_PUSH_STATS_I(tx_bufrl_err_cnt, 82),
-+	HBG_PUSH_STATS_I(tx_crc_err_cnt, 83),
-+	HBG_PUSH_STATS_I(tx_drop_cnt, 84),
-+	HBG_PUSH_STATS_I(tx_excessive_length_drop_cnt, 85),
-+	HBG_PUSH_STATS_I(tx_dma_err_cnt, 86),
-+};
-+
-+static int hbg_push_msg_send(struct hbg_priv *priv,
-+			     struct hbg_diagnose_message *msg)
-+{
-+	u32 header = 0;
-+	u32 i;
-+
-+	if (msg->data_num == 0)
-+		return 0;
-+
-+	for (i = 0; i < msg->data_num && i < HBG_MSG_DATA_MAX_NUM; i++)
-+		hbg_reg_write(priv,
-+			      HBG_REG_MSG_DATA_BASE_ADDR + i * sizeof(u32),
-+			      msg->data[i]);
-+
-+	hbg_field_modify(header, HBG_REG_MSG_HEADER_OPCODE_M, msg->opcode);
-+	hbg_field_modify(header, HBG_REG_MSG_HEADER_DATA_NUM_M,  msg->data_num);
-+	hbg_field_modify(header, HBG_REG_MSG_HEADER_RESP_CODE_M, ETIMEDOUT);
-+
-+	/* start status */
-+	hbg_field_modify(header, HBG_REG_MSG_HEADER_STATUS_M, 1);
-+
-+	/* write header msg to start push */
-+	hbg_reg_write(priv, HBG_REG_MSG_HEADER_ADDR, header);
-+
-+	/* wait done */
-+	readl_poll_timeout(priv->io_base + HBG_REG_MSG_HEADER_ADDR, header,
-+			   !FIELD_GET(HBG_REG_MSG_HEADER_STATUS_M, header),
-+			   HBG_HW_PUSH_WAIT_INTERVAL_US,
-+			   HBG_HW_PUSH_WAIT_TIMEOUT_US);
-+
-+	msg->status = FIELD_GET(HBG_REG_MSG_HEADER_STATUS_M, header);
-+	return -(int)FIELD_GET(HBG_REG_MSG_HEADER_RESP_CODE_M, header);
-+}
-+
-+static int hbg_push_data(struct hbg_priv *priv,
-+			 u32 opcode, u32 *data, u32 data_num)
-+{
-+	struct hbg_diagnose_message msg = {0};
-+	u32 data_left_num;
-+	u32 i, j;
-+	int ret;
-+
-+	msg.priv = priv;
-+	msg.opcode = opcode;
-+	for (i = 0; i < data_num / HBG_MSG_DATA_MAX_NUM + 1; i++) {
-+		if (i * HBG_MSG_DATA_MAX_NUM >= data_num)
-+			break;
-+
-+		data_left_num = data_num - i * HBG_MSG_DATA_MAX_NUM;
-+		for (j = 0; j < data_left_num && j < HBG_MSG_DATA_MAX_NUM; j++)
-+			msg.data[j] = data[i * HBG_MSG_DATA_MAX_NUM + j];
-+
-+		msg.data_num = j;
-+		ret = hbg_push_msg_send(priv, &msg);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int hbg_push_data_u64(struct hbg_priv *priv, u32 opcode,
-+			     u64 *data, u32 data_num)
-+{
-+	/* The length of u64 is twice that of u32,
-+	 * the data_num must be multiplied by 2.
-+	 */
-+	return hbg_push_data(priv, opcode, (u32 *)data, data_num * 2);
-+}
-+
-+static u64 hbg_get_irq_stats(struct hbg_vector *vectors, u32 mask)
-+{
-+	u32 i = 0;
-+
-+	for (i = 0; i < vectors->info_array_len; i++)
-+		if (vectors->info_array[i].mask == mask)
-+			return vectors->info_array[i].count;
-+
-+	return 0;
-+}
-+
-+static int hbg_push_irq_cnt(struct hbg_priv *priv)
-+{
-+	/* An id needs to be added for each data.
-+	 * Therefore, the data_num must be multiplied by 2.
-+	 */
-+	u32 data_num = ARRAY_SIZE(hbg_push_irq_list) * 2;
-+	struct hbg_vector *vectors = &priv->vectors;
-+	const struct hbg_push_irq_info *info;
-+	u32 i, j = 0;
-+	u64 *data;
-+	int ret;
-+
-+	data = kcalloc(data_num, sizeof(u64), GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	/* An id needs to be added for each data.
-+	 * So i + 2 for each loop.
-+	 */
-+	for (i = 0; i < data_num; i += 2) {
-+		info = &hbg_push_irq_list[j++];
-+		data[i] = info->id;
-+		data[i + 1] = hbg_get_irq_stats(vectors, info->mask);
-+	}
-+
-+	ret = hbg_push_data_u64(priv, HBG_PUSH_CMD_IRQ, data, data_num);
-+	kfree(data);
-+	return ret;
-+}
-+
-+static int hbg_push_link_status(struct hbg_priv *priv)
-+{
-+	u32 link_status[2];
-+
-+	/* phy link status */
-+	link_status[0] = priv->mac.phydev->link;
-+	/* mac link status */
-+	link_status[1] = hbg_reg_read_field(priv, HBG_REG_AN_NEG_STATE_ADDR,
-+					    HBG_REG_AN_NEG_STATE_NP_LINK_OK_B);
-+
-+	return hbg_push_data(priv, HBG_PUSH_CMD_LINK,
-+			     link_status, ARRAY_SIZE(link_status));
-+}
-+
-+static int hbg_push_stats(struct hbg_priv *priv)
-+{
-+	/* An id needs to be added for each data.
-+	 * Therefore, the data_num must be multiplied by 2.
-+	 */
-+	u64 data_num = ARRAY_SIZE(hbg_push_stats_list) * 2;
-+	struct hbg_stats *stats = &priv->stats;
-+	const struct hbg_push_stats_info *info;
-+	u32 i, j = 0;
-+	u64 *data;
-+	int ret;
-+
-+	data = kcalloc(data_num, sizeof(u64), GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	/* An id needs to be added for each data.
-+	 * So i + 2 for each loop.
-+	 */
-+	for (i = 0; i < data_num; i += 2) {
-+		info = &hbg_push_stats_list[j++];
-+		data[i] = info->id;
-+		data[i + 1] = HBG_STATS_R(stats, info->offset);
-+	}
-+
-+	ret = hbg_push_data_u64(priv, HBG_PUSH_CMD_STATS, data, data_num);
-+	kfree(data);
-+	return ret;
-+}
-+
-+void hbg_diagnose_message_push(struct hbg_priv *priv)
-+{
-+	int ret;
-+
-+	if (test_bit(HBG_NIC_STATE_RESETTING, &priv->state))
-+		return;
-+
-+	/* only 1 is the right value */
-+	if (hbg_reg_read(priv, HBG_REG_PUSH_REQ_ADDR) != 1)
-+		return;
-+
-+	ret = hbg_push_irq_cnt(priv);
-+	if (ret) {
-+		dev_err(&priv->pdev->dev,
-+			"failed to push irq cnt, ret = %d\n", ret);
-+		goto push_done;
-+	}
-+
-+	ret = hbg_push_link_status(priv);
-+	if (ret) {
-+		dev_err(&priv->pdev->dev,
-+			"failed to push link status, ret = %d\n", ret);
-+		goto push_done;
-+	}
-+
-+	ret = hbg_push_stats(priv);
-+	if (ret)
-+		dev_err(&priv->pdev->dev,
-+			"failed to push stats, ret = %d\n", ret);
-+
-+push_done:
-+	hbg_reg_write(priv, HBG_REG_PUSH_REQ_ADDR, 0);
-+}
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.h
-new file mode 100644
-index 000000000000..ba04c6d8c03d
---- /dev/null
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.h
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/* Copyright (c) 2025 Hisilicon Limited. */
-+
-+#ifndef __HBG_DIAGNOSE_H
-+#define __HBG_DIAGNOSE_H
-+
-+#include "hbg_common.h"
-+
-+void hbg_diagnose_message_push(struct hbg_priv *priv);
-+
-+#endif
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-index 3b7955f57b4d..c6a955e640fc 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-@@ -6,6 +6,7 @@
- #include <linux/netdevice.h>
- #include <linux/pci.h>
- #include "hbg_common.h"
-+#include "hbg_diagnose.h"
- #include "hbg_err.h"
- #include "hbg_ethtool.h"
- #include "hbg_hw.h"
-@@ -289,13 +290,19 @@ static void hbg_service_task(struct work_struct *work)
- 	if (test_and_clear_bit(HBG_NIC_STATE_NP_LINK_FAIL, &priv->state))
- 		hbg_fix_np_link_fail(priv);
- 
-+	hbg_diagnose_message_push(priv);
-+
- 	/* The type of statistics register is u32,
- 	 * To prevent the statistics register from overflowing,
- 	 * the driver dumps the statistics every 30 seconds.
- 	 */
--	hbg_update_stats(priv);
-+	if (time_after(jiffies, priv->last_update_stats_time + 30 * HZ)) {
-+		hbg_update_stats(priv);
-+		priv->last_update_stats_time = jiffies;
-+	}
-+
- 	schedule_delayed_work(&priv->service_task,
--			      msecs_to_jiffies(30 * MSEC_PER_SEC));
-+			      msecs_to_jiffies(MSEC_PER_SEC));
- }
- 
- void hbg_err_reset_task_schedule(struct hbg_priv *priv)
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-index 23c55a24b284..cc2cc612770d 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-@@ -18,6 +18,13 @@
- #define HBG_REG_TX_FIFO_NUM_ADDR		0x0030
- #define HBG_REG_RX_FIFO_NUM_ADDR		0x0034
- #define HBG_REG_VLAN_LAYERS_ADDR		0x0038
-+#define HBG_REG_PUSH_REQ_ADDR			0x00F0
-+#define HBG_REG_MSG_HEADER_ADDR			0x00F4
-+#define HBG_REG_MSG_HEADER_OPCODE_M		GENMASK(7, 0)
-+#define HBG_REG_MSG_HEADER_STATUS_M		GENMASK(11, 8)
-+#define HBG_REG_MSG_HEADER_DATA_NUM_M		GENMASK(19, 12)
-+#define HBG_REG_MSG_HEADER_RESP_CODE_M		GENMASK(27, 20)
-+#define HBG_REG_MSG_DATA_BASE_ADDR		0x0100
- 
- /* MDIO */
- #define HBG_REG_MDIO_BASE			0x8000
--- 
-2.33.0
-
+Hi Russell,
+Gentle reminder, to review my responses and provide your comments. Thank 
+you in advance.
