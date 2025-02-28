@@ -1,67 +1,77 @@
-Received: from trager.us (trager.us [52.5.81.116])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141EA230BF2;
-	Fri, 28 Feb 2025 19:57:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.5.81.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A652426FDB4
+	for <netdev@vger.kernel.org>; Fri, 28 Feb 2025 20:08:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740772651; cv=none; b=YH8NP9p2QyBZ81CVQQ6vmXhWoPliYJ6q2XzZbqa5mP0A7NdLT0igSSofJdwR1o2vqFm4JfYCh9K5cmEKetY61awm+HJfad3F0aDOkhFG9UpLy+vlflVKYI5ZkNtxNYP7fqTXC0BASdYBlICGNJItRjXFvW9od1lYeQIw5TH3dzw=
+	t=1740773319; cv=none; b=sadGFphEEtcFQ/YAYqYI2Z0PW3zYnS17lxU3erugIrsUCPQlC3qvnJGK0yG1D4Xyfpzaf2CemJL3FoKvbphSHz86NSQq5CIZ8xSWZS79dRkaxs42uGqqjnVBPv01SpmGHoP2KxI/Jr/y+j7GoNcvkpxEztIlpKeQ3ye++6Ru4PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740772651; c=relaxed/simple;
-	bh=b3V4HtJ0cfwYR66QRbWlu88R6oCl7vJge5HD17H8l3w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GkB/9B8UYNgr+h32XiFQFP2EsagSrk0VBs36I+VCqvrrJvDuzUat/jwCiThc9kmSK+y5hiSZ2AEotdHFkskvfYBYcJG9/It43+YkJHxLjeRBWnHpoWrosXx00J197a2G94Xo9k8+yQAGIwvtWYxUie8ODYNrjt20/hAMWYPPUSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us; spf=pass smtp.mailfrom=trager.us; arc=none smtp.client-ip=52.5.81.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trager.us
-Received: from c-76-104-255-50.hsd1.wa.comcast.net ([76.104.255.50] helo=localhost)
-	by trager.us with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-	(Exim 4.92.3)
-	(envelope-from <lee@trager.us>)
-	id 1to5u7-0001Pa-HK; Fri, 28 Feb 2025 19:20:11 +0000
-From: Lee Trager <lee@trager.us>
-To: Alexander Duyck <alexanderduyck@fb.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	kernel-team@meta.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Lee Trager <lee@trager.us>,
-	Sanman Pradhan <sanman.p211993@gmail.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Mohsin Bashir <mohsin.bashr@gmail.com>,
-	Su Hui <suhui@nfschina.com>
-Cc: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 0/3] eth: fbnic: Cleanup macros and string function
-Date: Fri, 28 Feb 2025 11:15:25 -0800
-Message-ID: <20250228191935.3953712-1-lee@trager.us>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1740773319; c=relaxed/simple;
+	bh=dN5erVEOdVNv3oiWJXPSnonCC/q7xzUNqwNCyBAEI3A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WA5PZu3LSv/YvWqlSkUhmQhRUWfYAH89DDYDRNMheuyUjQaf/Nk9pah9V7p1QR29uLDqiWdQeaAnGr2hpXEmAZ3vyqi9XMLnYLsUI48Imy54K0csYLPlOyRP21JFKHquto6v5Y16hwHg4uFnyLN6o7nJCqozYJE9MaGj1C5w+TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Iee3yVRM; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Iee3yVRM"
+Message-ID: <5ef054b4-3340-4b0e-9ba6-7b7409f9eb71@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740773305;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AUG1i0ZL+wix5b2+TFEt5FV9JDKNxVcCuHH6kCyEvFM=;
+	b=Iee3yVRM9G4Kqlw+8+wbdMX2GaTOnlnea8Slk0svUu1qmw1YouBr6SZsANz4314sMTIoTp
+	9dEbz6DBjunvK69It02uhBvXu3ni7oBeseTGcz6qj6mZTYEAuUTXeSEPQZuFI0ypRhHFC6
+	ksjX9h/XWWy6RwsiOVhMoZ10MPzgJYQ=
+Date: Fri, 28 Feb 2025 12:08:18 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf-next v4 0/2] Introduced to support the ULP to get or
+ set sockets
+To: zhangmingyi <zhangmingyi5@huawei.com>
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, song@kernel.org,
+ yhs@fb.com, john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
+ haoluo@google.com, jolsa@kernel.org, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org, yanan@huawei.com, wuchangye@huawei.com,
+ xiesongyang@huawei.com, liuxin350@huawei.com, liwei883@huawei.com,
+ tianmuyang@huawei.com, Network Development <netdev@vger.kernel.org>
+References: <20250228085340.3219391-1-zhangmingyi5@huawei.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+In-Reply-To: <20250228085340.3219391-1-zhangmingyi5@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-We have received some feedback that the macros we use for reading FW mailbox
-attributes are too large in scope and confusing to understanding. Additionally
-the string function did not provide errors allowing it to silently succeed.
-This patch set fixes theses issues.
+On 2/28/25 12:53 AM, zhangmingyi wrote:
+> From: Mingyi Zhang <zhangmingyi5@huawei.com>
+> 
+> We want call bpf_setsockopt to replace the kernel module in the TCP_ULP
+> case. The purpose is to customize the behavior in connect and sendmsg
+> after the user-defined ko file is loaded. We have an open source
+> community project kmesh (kmesh.net). Based on this, we refer to some
+> processes of tcp fastopen to implement delayed connet and perform HTTP
+> DNAT when sendmsg.In this case, we need to parse HTTP packets in the
+> bpf program and set TCP_ULP for the specified socket.
+> 
+> Note that tcp_getsockopt and tcp_setsockopt support TCP_ULP, while
+> bpf_getsockopt and bpf_setsockopt do not support TCP_ULP.
+> I'm not sure why there is such a difference, but I noticed that
+> tcp_setsockopt is called in bpf_setsockopt.I think we can add the
+> handling of this case.
 
-Lee Trager (3):
-  eth: fbnic: Prepend TSENE FW fields with FBNIC_FW
-  eth: fbnic: Update fbnic_tlv_attr_get_string() to work like
-    nla_strscpy()
-  eth: fbnic: Replace firmware field macros
+Please stop sending multiple new versions while the earlier raised questions
+still have not been replied [1]. Also, netdev is still not cc-ed.
 
- drivers/net/ethernet/meta/fbnic/fbnic_fw.c  | 109 ++++++++++----------
- drivers/net/ethernet/meta/fbnic/fbnic_fw.h  |   8 +-
- drivers/net/ethernet/meta/fbnic/fbnic_tlv.c |  55 +++++++---
- drivers/net/ethernet/meta/fbnic/fbnic_tlv.h |  39 ++-----
- 4 files changed, 110 insertions(+), 101 deletions(-)
+[1]: https://lore.kernel.org/all/44668201-cf8b-49c1-9dd0-90e0e5a95457@linux.dev/
 
---
-2.43.5
+pw-bot: cr
