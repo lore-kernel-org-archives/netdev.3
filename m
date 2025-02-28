@@ -1,403 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3361A8F9E;
-	Fri, 28 Feb 2025 17:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62E61F4C83
+	for <netdev@vger.kernel.org>; Fri, 28 Feb 2025 17:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740763973; cv=none; b=Wp0ZnWc4JxAmLRB48p2bdYEAlrk2CYis+lQKavXk7g2o7291SStxOTtofGEi9wz93UEOEnkNCaPM8Q+eVDd5tavD0rgO5gZK7Nydr7RfFdR08IM7RqzReKQRoR6uaQOcBQFSMgjpd/v9Uvw2JY7EjPefZFTLIB9XVsxpS4k1Uvs=
+	t=1740764125; cv=none; b=C6BjHnwqfe65/33jekdIUz+uEnuiBk/J00oVIIj2FZTtoeMPCc6Xj0yB0YHPi23+DpipatoKBjH8ttLQPl6jXYzh0v8T/tKwzIR2u+ONNzQGbd1bH+cjoS2ULNsKQ8DlURmOsssVGg3SMQSrlh9LqXupEVQ37eRDIT4mSOjVq1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740763973; c=relaxed/simple;
-	bh=ReYk6jJVsIMYTOIoTQKPS1h5Xno1Ot4VEYyDgi6Urow=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tc84SRtddOLdgVtt21K06imeZpGF1iEV7bRsLGSV2C6VSYeJWssNV/UElDecv8nXkNEMLiGUQ72BGT9ROopjD5NwXZgUaMBR464WY0GH830GmiXMsMrbqnKaMk217BX6mquS06yM3QSpc2NVIMK6E5ZYlqvy6HGskPawgx8lLDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WMiuDfHr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740764125; c=relaxed/simple;
+	bh=AvKcfi6J7Inl1hX+sxLBONbarQPJfKHGuYSlgE+eyjM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LJ05ZNeDy9yVZE/6RSWwWZFcLASXVveKJCD2YlLnpEbHboOMh9VP9jQM1CxXwSR8SVe3kqqmrg5rIVh7FlG4QpwhjqjkIwqdLzEnHEwsW0rgVPfjCjfv3bPYNr4Jz8A7NqaqLHigzYCBB0HsumQlRKG088X5uxkUB5dLd6A1REU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VRPnetrl; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WMiuDfHr"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 26895C4CEEB;
-	Fri, 28 Feb 2025 17:32:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740763973;
-	bh=ReYk6jJVsIMYTOIoTQKPS1h5Xno1Ot4VEYyDgi6Urow=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=WMiuDfHrsOTOiT9fkYgQcZe6NWwgSscn2LOTGDEhybHKG6aQfvaeyuFa1B//u6JAk
-	 y5V20oVeInfRPcosZEE2Fhz5wbJsM72uQPVtawaq7iL7iaXkp/EvZuv/t/EhomPjt3
-	 MadxB2L9fZSkj3uJuEEHoiWS9JuMXT+Lhm/sK5kTZ5T2kWtKEMAoRN6cGM9kFFd75p
-	 sojJmNnkt90L6gon/Bu5x92YCm6lIKZrbmGSsBB45hLPXDS70iv6eV97+UjSVUnuJA
-	 x6KexAn3TVmtybmXGhTCrgq8vo4JL1u+UPgqUYrigLQN7bRL8eSYJbE6YVdXQO1YrN
-	 171FdClvzYKyg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DF0EC282D0;
-	Fri, 28 Feb 2025 17:32:53 +0000 (UTC)
-From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
-Date: Fri, 28 Feb 2025 18:32:52 +0100
-Subject: [PATCH v2 3/3] dt-bindings: net: Convert fsl,gianfar to YAML
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VRPnetrl"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43995b907cfso15920315e9.3
+        for <netdev@vger.kernel.org>; Fri, 28 Feb 2025 09:35:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740764122; x=1741368922; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VEOHTT5bGWNRWFvPq36jSPYDFsBGCPSq40LhDAyjb0E=;
+        b=VRPnetrl8KxWSaRZOSnqgd3P5UIamtu8O3akI9B/pPBy0jEh+XjgpC6N0YNgENYFPR
+         bc46EieJN6Ld96RyBaRYtvJ71gMtXhejgbo9ZoYQ2y6w4v88esAKE6/GP4XNZ7H5QJfx
+         TYDjiMpjTs1BD5gfqiNiDCG/RRh/jKL+ajmVipAnZDuSDn/24LpcMyiZ36setGmaku9M
+         qEF9B+lejhDza2P7PvqXHEP8/nFE2jR1957w65ECx1qZ9jm/w7ElOv/gs+nWoE3r3yRf
+         DMEwgol51Wy5sH9vskHPYbmWWQon2iINRyaFVqk+oO96qtXe+7b2m2uTbk/RH7B+qf8d
+         15yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740764122; x=1741368922;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VEOHTT5bGWNRWFvPq36jSPYDFsBGCPSq40LhDAyjb0E=;
+        b=FO2qEiSW5sg3/PXpuya7DC2LSQGTZmu1BasnnT2ahfHQGgFbWliDvQnJiHbTXbYVf9
+         0HoQ4l4WsEEyp7Kh8ykKfLI+u4xN5enOvAvC8JPjLtvO586zVJZzMFMDXvCPnxz+njTQ
+         FoywyjANzdjiufojydFONGxVI0vBOJAgFmZgsl0szQkzO6g5nq3KNxCVlnfdMLGmzQ1c
+         kud/OnGwog1OOG79rLoeJyNJeR6b8UocOU/QbGtgti5Xrt47I9yYNqdVVlOBJFVh5xru
+         sAFD40aF2EfSq7NF6tdI7QFQ5gfo1BxbLDxxUaewIu3HKkpc9vrOv0QvusIGYgKYOPBh
+         tTIw==
+X-Gm-Message-State: AOJu0YwN5GvqGsvX7blqEw13XhAafEvcZfnsuas7HH+rzBmepeWXQAdE
+	mLqeGOnpzWyDB/dI073erNQYdufgu4WASqtzcCZgDuWsX10lo2k=
+X-Gm-Gg: ASbGnctkVzXg1/O+oK0SWI3kqIZAhrUjBFc+gttF4mlz7CvR+aRladq1zpl0Gp10g95
+	kfEod/F3vaXFJKJFbLTNWTLhMjjf7/521VldjF4YYZzdaEtopuK63Mh0ridaF+6x6fPAxBLQN70
+	db9UYzcUrWYW1hArpz2uoboAAwONIBWWPpkZcyHFZRE+LPPA7L9ZnD1PYG3gYdFm56yTgW5W/vm
+	qFvYxVNKCxsJV5O+6tTlbynE4oQOdcNzwYu0G46ePy+X6i1PYPj0JuQnKBT8RFYUvif/mCpiuXY
+	odFoo5VFWafPcrswIbsvfgy8oA==
+X-Google-Smtp-Source: AGHT+IFV9SnDvRoCDjln11BCo+xow7BQMR81+7dh9GK2AYRrZ1dCedUHi+zXa6ZSguSHC9eQcj6PAQ==
+X-Received: by 2002:a05:600c:3c92:b0:439:9595:c8e8 with SMTP id 5b1f17b1804b1-43ba66f5474mr41160285e9.0.1740764121743;
+        Fri, 28 Feb 2025 09:35:21 -0800 (PST)
+Received: from phoenix.rocket.internal ([2a12:26c0:2201:9b02::14])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43b73717ac0sm61917775e9.20.2025.02.28.09.35.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Feb 2025 09:35:21 -0800 (PST)
+From: Rui Salvaterra <rsalvaterra@gmail.com>
+To: hkallweit1@gmail.com,
+	nic_swsd@realtek.com
+Cc: netdev@vger.kernel.org,
+	Rui Salvaterra <rsalvaterra@gmail.com>
+Subject: [PATCH] r8169: add support for 16K jumbo frames on RTL8125B
+Date: Fri, 28 Feb 2025 17:30:31 +0000
+Message-ID: <20250228173505.3636-1-rsalvaterra@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250228-gianfar-yaml-v2-3-6beeefbd4818@posteo.net>
-References: <20250228-gianfar-yaml-v2-0-6beeefbd4818@posteo.net>
-In-Reply-To: <20250228-gianfar-yaml-v2-0-6beeefbd4818@posteo.net>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Claudiu Manoil <claudiu.manoil@nxp.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1740763971; l=10323;
- i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
- bh=PHFK6ij47fbj4JmpPy2/3CUOBG49DJDpgjnVIZVn6QQ=;
- b=/VCBlPdyWnO80kkJilZJV3r7UrvAJMz/C62Cpa6Havos22nHsYpxfX9+n0fs3K7MvWyWRg7bB
- 4lX/n31JzqxDaPlu/qLMfY6ZqyymJoP+2sELoQ1YS5WqAvKhIeh+0aS
-X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
- pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
-X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
- auth_id=156
-X-Original-From: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-Reply-To: j.ne@posteo.net
 
-From: "J. Neuschäfer" <j.ne@posteo.net>
+It's supported, according to the specifications.
 
-Add a binding for the "Gianfar" ethernet controller, also known as
-TSEC/eTSEC.
-
-Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+Signed-off-by: Rui Salvaterra <rsalvaterra@gmail.com>
 ---
 
-V2:
-- change MAC address in example to 00:00:00:00:00:00 instead of a real
-  Motorola MAC address (suggested by Andrew Lunn)
-- add constraints to #address/size-cells, fsl,num_tr/rx_queues
-- remove unnecessary type from dma-coherent
-- add minItems to interrupts
-- remove unnecessary #address/size-cells from queue-group@.*
-- describe interrupts of queue-group@.*
-- remove unnecessary bus in example
-- consistently use "type: boolean" for fsl,magic-packet,
-  instead of "$ref: /schemas/types.yaml#/definitions/flag"
-- fix name of rx-stash-idx property
-- fix type of rx-stash-len/idx properties
-- actually reference fsl,gianfar-mdio schema for mdio@.* subnodes
-- disambiguate compatible = "gianfar" schemas by using a "select:" schema
----
- .../devicetree/bindings/net/fsl,gianfar.yaml       | 248 +++++++++++++++++++++
- .../devicetree/bindings/net/fsl-tsec-phy.txt       |  39 +---
- 2 files changed, 249 insertions(+), 38 deletions(-)
+It's very likely that other RTL8125x devices also support 16K jumbo frames, but
+I only have RTL8125B ones to test with. Additionally, I've only tested up to 12K
+(my switch's limit).
 
-diff --git a/Documentation/devicetree/bindings/net/fsl,gianfar.yaml b/Documentation/devicetree/bindings/net/fsl,gianfar.yaml
-new file mode 100644
-index 0000000000000000000000000000000000000000..f92f284aa05b0ee34e331661308b7258cbda43c0
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/fsl,gianfar.yaml
-@@ -0,0 +1,248 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/fsl,gianfar.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale Three-Speed Ethernet Controller (TSEC), "Gianfar"
-+
-+maintainers:
-+  - J. Neuschäfer <j.ne@posteo.net>
-+
-+# This is needed to distinguish gianfar.yaml and gianfar-mdio.yaml, because
-+# both use compatible = "gianfar" (with different device_type values)
-+select:
-+  oneOf:
-+    - properties:
-+        compatible:
-+          contains:
-+            const: gianfar
-+        device_type:
-+          const: network
-+      required:
-+        - device_type
-+
-+    - properties:
-+        compatible:
-+          const: fsl,etsec2
-+
-+  required:
-+    - compatible
-+
-+properties:
-+  compatible:
-+    enum:
-+      - gianfar
-+      - fsl,etsec2
-+
-+  device_type:
-+    const: network
-+
-+  model:
-+    enum:
-+      - FEC
-+      - TSEC
-+      - eTSEC
-+
-+  reg:
-+    maxItems: 1
-+
-+  ranges: true
-+
-+  "#address-cells":
-+    enum: [ 1, 2 ]
-+
-+  "#size-cells":
-+    enum: [ 1, 2 ]
-+
-+  cell-index:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  interrupts:
-+    minItems: 1
-+    items:
-+      - description: Transmit interrupt or single combined interrupt
-+      - description: Receive interrupt
-+      - description: Error interrupt
-+
-+  dma-coherent: true
-+
-+  fsl,magic-packet:
-+    type: boolean
-+    description:
-+      If present, indicates that the hardware supports waking up via magic packet.
-+
-+  fsl,wake-on-filer:
-+    type: boolean
-+    description:
-+      If present, indicates that the hardware supports waking up by Filer
-+      General Purpose Interrupt (FGPI) asserted on the Rx int line. This is
-+      an advanced power management capability allowing certain packet types
-+      (user) defined by filer rules to wake up the system.
-+
-+  bd-stash:
-+    type: boolean
-+    description:
-+      If present, indicates that the hardware supports stashing buffer
-+      descriptors in the L2.
-+
-+  rx-stash-len:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Denotes the number of bytes of a received buffer to stash in the L2.
-+
-+  rx-stash-idx:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Denotes the index of the first byte from the received buffer to stash in
-+      the L2.
-+
-+  fsl,num_rx_queues:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: Number of receive queues
-+    const: 8
-+
-+  fsl,num_tx_queues:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: Number of transmit queues
-+    const: 8
-+
-+  tbi-handle:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: Reference (phandle) to the TBI node
-+
-+required:
-+  - compatible
-+  - model
-+
-+patternProperties:
-+  "^mdio@[0-9a-f]+$":
-+    $ref: /schemas/net/fsl,gianfar-mdio.yaml#
-+
-+allOf:
-+  - $ref: ethernet-controller.yaml#
-+
-+  # eTSEC2 controller nodes have "queue group" subnodes and don't need a "reg"
-+  # property.
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: fsl,etsec2
-+    then:
-+      patternProperties:
-+        "^queue-group@[0-9a-f]+$":
-+          type: object
-+
-+          properties:
-+            reg:
-+              maxItems: 1
-+
-+            interrupts:
-+              items:
-+                - description: Transmit interrupt
-+                - description: Receive interrupt
-+                - description: Error interrupt
-+
-+          required:
-+            - reg
-+            - interrupts
-+
-+          additionalProperties: false
-+    else:
-+      required:
-+        - reg
-+
-+  # TSEC and eTSEC devices require three interrupts
-+  - if:
-+      properties:
-+        model:
-+          contains:
-+            enum: [ TSEC, eTSEC ]
-+    then:
-+      properties:
-+        interrupts:
-+          items:
-+            - description: Transmit interrupt
-+            - description: Receive interrupt
-+            - description: Error interrupt
-+
-+
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    ethernet@24000 {
-+        device_type = "network";
-+        model = "TSEC";
-+        compatible = "gianfar";
-+        reg = <0x24000 0x1000>;
-+        local-mac-address = [ 00 00 00 00 00 00 ];
-+        interrupts = <29 2>, <30 2>, <34 2>;
-+        interrupt-parent = <&mpic>;
-+        phy-handle = <&phy0>;
-+    };
-+
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    ethernet@24000 {
-+        compatible = "gianfar";
-+        reg = <0x24000 0x1000>;
-+        ranges = <0x0 0x24000 0x1000>;
-+        #address-cells = <1>;
-+        #size-cells = <1>;
-+        cell-index = <0>;
-+        device_type = "network";
-+        model = "eTSEC";
-+        local-mac-address = [ 00 00 00 00 00 00 ];
-+        interrupts = <32 IRQ_TYPE_LEVEL_LOW>,
-+                     <33 IRQ_TYPE_LEVEL_LOW>,
-+                     <34 IRQ_TYPE_LEVEL_LOW>;
-+        interrupt-parent = <&ipic>;
-+
-+        mdio@520 {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+            compatible = "fsl,gianfar-mdio";
-+            reg = <0x520 0x20>;
-+        };
-+    };
-+
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+
-+    bus {
-+        #address-cells = <2>;
-+        #size-cells = <2>;
-+
-+        ethernet {
-+            compatible = "fsl,etsec2";
-+            ranges;
-+            device_type = "network";
-+            #address-cells = <2>;
-+            #size-cells = <2>;
-+            interrupt-parent = <&gic>;
-+            model = "eTSEC";
-+            fsl,magic-packet;
-+            dma-coherent;
-+
-+            queue-group@2d10000 {
-+                reg = <0x0 0x2d10000 0x0 0x1000>;
-+                interrupts = <GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>,
-+                             <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>,
-+                             <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>;
-+            };
-+
-+            queue-group@2d14000  {
-+                reg = <0x0 0x2d14000 0x0 0x1000>;
-+                interrupts = <GIC_SPI 147 IRQ_TYPE_LEVEL_HIGH>,
-+                             <GIC_SPI 148 IRQ_TYPE_LEVEL_HIGH>,
-+                             <GIC_SPI 149 IRQ_TYPE_LEVEL_HIGH>;
-+            };
-+        };
-+    };
-+
-+...
-diff --git a/Documentation/devicetree/bindings/net/fsl-tsec-phy.txt b/Documentation/devicetree/bindings/net/fsl-tsec-phy.txt
-index 0e55e0af7d6f59cfb571dd3fcff704b7f4c140d2..b18bb4c997ea3a221e599f694d9a28692cbcaa7c 100644
---- a/Documentation/devicetree/bindings/net/fsl-tsec-phy.txt
-+++ b/Documentation/devicetree/bindings/net/fsl-tsec-phy.txt
-@@ -8,44 +8,7 @@ Refer to Documentation/devicetree/bindings/net/fsl,gianfar-mdio.yaml
- 
- * Gianfar-compatible ethernet nodes
- 
--Properties:
--
--  - device_type : Should be "network"
--  - model : Model of the device.  Can be "TSEC", "eTSEC", or "FEC"
--  - compatible : Should be "gianfar"
--  - reg : Offset and length of the register set for the device
--  - interrupts : For FEC devices, the first interrupt is the device's
--    interrupt.  For TSEC and eTSEC devices, the first interrupt is
--    transmit, the second is receive, and the third is error.
--  - phy-handle : See ethernet.txt file in the same directory.
--  - fixed-link : See fixed-link.txt in the same directory.
--  - phy-connection-type : See ethernet.txt file in the same directory.
--    This property is only really needed if the connection is of type
--    "rgmii-id", as all other connection types are detected by hardware.
--  - fsl,magic-packet : If present, indicates that the hardware supports
--    waking up via magic packet.
--  - fsl,wake-on-filer : If present, indicates that the hardware supports
--    waking up by Filer General Purpose Interrupt (FGPI) asserted on the
--    Rx int line.  This is an advanced power management capability allowing
--    certain packet types (user) defined by filer rules to wake up the system.
--  - bd-stash : If present, indicates that the hardware supports stashing
--    buffer descriptors in the L2.
--  - rx-stash-len : Denotes the number of bytes of a received buffer to stash
--    in the L2.
--  - rx-stash-idx : Denotes the index of the first byte from the received
--    buffer to stash in the L2.
--
--Example:
--	ethernet@24000 {
--		device_type = "network";
--		model = "TSEC";
--		compatible = "gianfar";
--		reg = <0x24000 0x1000>;
--		local-mac-address = [ 00 E0 0C 00 73 00 ];
--		interrupts = <29 2 30 2 34 2>;
--		interrupt-parent = <&mpic>;
--		phy-handle = <&phy0>
--	};
-+Refer to Documentation/devicetree/bindings/net/fsl,gianfar.yaml
- 
- * Gianfar PTP clock nodes
- 
+ drivers/net/ethernet/realtek/r8169_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 5a5eba49c651..2d9fd2b70735 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -89,6 +89,7 @@
+ #define JUMBO_6K	(6 * SZ_1K - VLAN_ETH_HLEN - ETH_FCS_LEN)
+ #define JUMBO_7K	(7 * SZ_1K - VLAN_ETH_HLEN - ETH_FCS_LEN)
+ #define JUMBO_9K	(9 * SZ_1K - VLAN_ETH_HLEN - ETH_FCS_LEN)
++#define JUMBO_16K	(16 * SZ_1K - VLAN_ETH_HLEN - ETH_FCS_LEN)
+ 
+ static const struct {
+ 	const char *name;
+@@ -5326,6 +5327,9 @@ static int rtl_jumbo_max(struct rtl8169_private *tp)
+ 	/* RTL8168c */
+ 	case RTL_GIGA_MAC_VER_18 ... RTL_GIGA_MAC_VER_24:
+ 		return JUMBO_6K;
++	/* RTL8125B */
++	case RTL_GIGA_MAC_VER_63:
++		return JUMBO_16K;
+ 	default:
+ 		return JUMBO_9K;
+ 	}
 -- 
-2.48.0.rc1.219.gb6b6757d772
-
+2.48.1
 
