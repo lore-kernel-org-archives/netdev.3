@@ -1,44 +1,52 @@
-Received: from out28-194.mail.aliyun.com (out28-194.mail.aliyun.com [115.124.28.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7B5267387;
-	Fri, 28 Feb 2025 10:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE5925D218;
+	Fri, 28 Feb 2025 10:01:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740736890; cv=none; b=hWpKBeY5lQeRwBKAi9zhUtUD5VMdBBZ/lllumEBMat7GKwKesHmruwMWyrKHM7YStjtS9pVDgLZDvTzbQ9PIN99b7DlEh3BaWMtzd/IWpRPlbL1BC0nzPAVHeUtZBT9cXbiL/oVnL6ei0nwIbAi4iPhi4WLLlIhyDmTkZegjrcM=
+	t=1740736907; cv=none; b=k2wtEWr8KMKq0eOl7uEU164E1FLTJuGog8L8bd0dsmZCKHX+/WKbdpyLbhUfzHTLFyaQY9mrLYVyLuTKAzTFZOZrwhdu/Uind7ybfFlerUUGIHBvNKck9bsIJ0WqgqoWWQlXF9sJDBU6MFdMSQfgZRGf349TwogoarrtTQWoc3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740736890; c=relaxed/simple;
-	bh=i8oy1nl2lI4VEOafYDHC5zGh6osQGB0cnoBSrfv9BHs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qsggiShuYB/3IwdDrhF8W6/+I3XA7j5GKG3eQLPpPkowv7bUGuYwrVAK8BbTlsS3VPNht86VULiKdNqiEeeX3OA/HMDFYAmWh04pPBE+N4yBTt5Jy67NPvSk77luYGmkmt5Zr5sITKYXFjgydmtQOMzGrC0BpD3mYZT46+rk2pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-Received: from sun-VirtualBox..(mailfrom:Frank.Sae@motor-comm.com fp:SMTPD_---.bfyn1Kn_1740736839 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Fri, 28 Feb 2025 18:00:40 +0800
-From: Frank Sae <Frank.Sae@motor-comm.com>
-To: Jakub Kicinski <kuba@kernel.org>,
+	s=arc-20240116; t=1740736907; c=relaxed/simple;
+	bh=WG2xZI0wmFn+Azmg6PmV3m8qa+1ewbLpbNmj4jiXmJY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MlcnmXUZMfzeOA7lna+Vk3UvIfHt3tNDqicKqX/kXPJoSELrpSDOW23iMpnySi8APm+/D/6jUAs7nL1+WSrlNe5WgPqCKm5P8WGzo88K1AsIqfw3xZfOYKBIOB+xWpQt9P2kXE3UfhfxtF20cM/KodXhrICQhQD1Tegms5HZ10g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kr3e59p4; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kr3e59p4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5372C4CED6;
+	Fri, 28 Feb 2025 10:01:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740736906;
+	bh=WG2xZI0wmFn+Azmg6PmV3m8qa+1ewbLpbNmj4jiXmJY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Kr3e59p4oI135FiQwVWVoxKHXIKSsF8DyqNcr0YKvSHIIjXUQ2SfNWvnfVjQNCchF
+	 6Quo2kp8M+Ny868FIibt3EuhvF0ffx2ZOSZS9g7WKsWpB+oGkUu6ix2OldsMRTYboE
+	 5sfAhuWkOdtS7btQS3uVbZme7l6NWHtLJZDDqZysczdO0Dv4Iw7yBBBn3zezhmjnJf
+	 vfRxnS9ZUUQlKqufE97DKS8bf1DgTG4VZYprMx3bWYm5nEYd9V0ibvWIKQspg/mf33
+	 VEYrY9ySmKFi3LCiGeNVUEjBedgFCv3b3maArlIpqTxTWDxABUYL5WA+FqmTkJaUBA
+	 UMFbGIr8ydauw==
+From: Geliang Tang <geliang@kernel.org>
+To: Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Frank <Frank.Sae@motor-comm.com>,
-	netdev@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Parthiban.Veerasooran@microchip.com,
-	linux-kernel@vger.kernel.org,
-	xiaogang.fan@motor-comm.com,
-	fei.zhang@motor-comm.com,
-	hua.sun@motor-comm.com
-Subject: [PATCH net-next v3 11/14] motorcomm:yt6801: Implement some net_device_ops function
-Date: Fri, 28 Feb 2025 18:01:20 +0800
-Message-Id: <20250228100020.3944-12-Frank.Sae@motor-comm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250228100020.3944-1-Frank.Sae@motor-comm.com>
-References: <20250228100020.3944-1-Frank.Sae@motor-comm.com>
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>
+Cc: Geliang Tang <tanggeliang@kylinos.cn>,
+	netdev@vger.kernel.org,
+	mptcp@lists.linux.dev,
+	linux-sctp@vger.kernel.org
+Subject: [PATCH net-next v2 0/3] add sock_kmemdup helper
+Date: Fri, 28 Feb 2025 18:01:30 +0800
+Message-ID: <cover.1740735165.git.tanggeliang@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,219 +55,116 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Implement following callback function
-.ndo_stop
-.ndo_start_xmit
-.ndo_tx_timeout
-.ndo_validate_addr
-.ndo_poll_controller
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-Signed-off-by: Frank Sae <Frank.Sae@motor-comm.com>
----
- .../ethernet/motorcomm/yt6801/yt6801_net.c    | 173 ++++++++++++++++++
- 1 file changed, 173 insertions(+)
+v2:
+ - add "EXPORT_SYMBOL(sock_kmemdup)" as Matthieu suggested.
+ - drop the patch "use sock_kmemdup for tcp_ao_key".
 
-diff --git a/drivers/net/ethernet/motorcomm/yt6801/yt6801_net.c b/drivers/net/ethernet/motorcomm/yt6801/yt6801_net.c
-index 74af6bcd4..d6c1c0fd4 100644
---- a/drivers/net/ethernet/motorcomm/yt6801/yt6801_net.c
-+++ b/drivers/net/ethernet/motorcomm/yt6801/yt6801_net.c
-@@ -1475,6 +1475,68 @@ static int fxgmac_open(struct net_device *netdev)
- 	return ret;
- }
- 
-+static int fxgmac_close(struct net_device *netdev)
-+{
-+	struct fxgmac_pdata *priv = netdev_priv(netdev);
-+
-+	mutex_lock(&priv->mutex);
-+	fxgmac_stop(priv); /* Stop the device */
-+	priv->dev_state = FXGMAC_DEV_CLOSE;
-+	fxgmac_channels_rings_free(priv); /* Free the channels and rings */
-+	fxgmac_phy_reset(priv);
-+	phy_disconnect(priv->phydev);
-+	mutex_unlock(&priv->mutex);
-+	return 0;
-+}
-+
-+static void fxgmac_dump_state(struct fxgmac_pdata *priv)
-+{
-+	struct fxgmac_channel *channel = priv->channel_head;
-+	struct fxgmac_ring *ring = &channel->tx_ring[0];
-+
-+	yt_err(priv, "Tx descriptor info:\n");
-+	yt_err(priv, "Tx cur = 0x%x\n", ring->cur);
-+	yt_err(priv, "Tx dirty = 0x%x\n", ring->dirty);
-+	yt_err(priv, "Tx dma_desc_head = %pad\n", &ring->dma_desc_head);
-+	yt_err(priv, "Tx desc_data_head = %pad\n", &ring->desc_data_head);
-+
-+	for (u32 i = 0; i < priv->channel_count; i++, channel++) {
-+		ring = &channel->rx_ring[0];
-+		yt_err(priv, "Rx[%d] descriptor info:\n", i);
-+		yt_err(priv, "Rx cur = 0x%x\n", ring->cur);
-+		yt_err(priv, "Rx dirty = 0x%x\n", ring->dirty);
-+		yt_err(priv, "Rx dma_desc_head = %pad\n", &ring->dma_desc_head);
-+		yt_err(priv, "Rx desc_data_head = %pad\n",
-+		       &ring->desc_data_head);
-+	}
-+
-+	yt_err(priv, "Device Registers:\n");
-+	yt_err(priv, "MAC_ISR = %08x\n", FXGMAC_MAC_IO_RD(priv, MAC_ISR));
-+	yt_err(priv, "MAC_IER = %08x\n", FXGMAC_MAC_IO_RD(priv, MAC_IER));
-+	yt_err(priv, "MMC_RISR = %08x\n", FXGMAC_MAC_IO_RD(priv, MMC_RISR));
-+	yt_err(priv, "MMC_RIER = %08x\n", FXGMAC_MAC_IO_RD(priv, MMC_RIER));
-+	yt_err(priv, "MMC_TISR = %08x\n", FXGMAC_MAC_IO_RD(priv, MMC_TISR));
-+	yt_err(priv, "MMC_TIER = %08x\n", FXGMAC_MAC_IO_RD(priv, MMC_TIER));
-+
-+	yt_err(priv, "EPHY_CTRL = %04x\n", FXGMAC_IO_RD(priv, EPHY_CTRL));
-+	yt_err(priv, "MGMT_INT_CTRL0 = %04x\n",
-+	       FXGMAC_IO_RD(priv, MGMT_INT_CTRL0));
-+	yt_err(priv, "MSIX_TBL_MASK = %04x\n",
-+	       FXGMAC_IO_RD(priv, MSIX_TBL_MASK));
-+
-+	yt_err(priv, "Dump nonstick regs:\n");
-+	for (u32 i = GLOBAL_CTRL0; i < MSI_PBA; i += 4)
-+		yt_err(priv, "[%d] = %04x\n", i / 4, FXGMAC_IO_RD(priv, i));
-+}
-+
-+static void fxgmac_tx_timeout(struct net_device *netdev, unsigned int unused)
-+{
-+	struct fxgmac_pdata *priv = netdev_priv(netdev);
-+
-+	fxgmac_dump_state(priv);
-+	schedule_work(&priv->restart_work);
-+}
-+
- #define EFUSE_FISRT_UPDATE_ADDR				255
- #define EFUSE_SECOND_UPDATE_ADDR			209
- #define EFUSE_MAX_ENTRY					39
-@@ -2323,9 +2385,33 @@ static netdev_tx_t fxgmac_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	return NETDEV_TX_OK;
- }
- 
-+#ifdef CONFIG_NET_POLL_CONTROLLER
-+static void fxgmac_poll_controller(struct net_device *netdev)
-+{
-+	struct fxgmac_pdata *priv = netdev_priv(netdev);
-+	struct fxgmac_channel *channel;
-+
-+	if (priv->per_channel_irq) {
-+		channel = priv->channel_head;
-+		for (u32 i = 0; i < priv->channel_count; i++, channel++)
-+			fxgmac_dma_isr(channel->dma_irq_rx, channel);
-+	} else {
-+		disable_irq(priv->dev_irq);
-+		fxgmac_isr(priv->dev_irq, priv);
-+		enable_irq(priv->dev_irq);
-+	}
-+}
-+#endif /* CONFIG_NET_POLL_CONTROLLER */
-+
- static const struct net_device_ops fxgmac_netdev_ops = {
- 	.ndo_open		= fxgmac_open,
-+	.ndo_stop		= fxgmac_close,
- 	.ndo_start_xmit		= fxgmac_xmit,
-+	.ndo_tx_timeout		= fxgmac_tx_timeout,
-+	.ndo_validate_addr	= eth_validate_addr,
-+#ifdef CONFIG_NET_POLL_CONTROLLER
-+	.ndo_poll_controller	= fxgmac_poll_controller,
-+#endif
- };
- 
- const struct net_device_ops *fxgmac_get_netdev_ops(void)
-@@ -2479,6 +2565,93 @@ static int fxgmac_one_poll_tx(struct napi_struct *napi, int budget)
- 	return ret;
- }
- 
-+static int fxgmac_dev_read(struct fxgmac_channel *channel)
-+{
-+	struct fxgmac_pdata *priv = channel->priv;
-+	struct fxgmac_ring *ring = channel->rx_ring;
-+	struct net_device *netdev = priv->netdev;
-+	static unsigned int cnt_incomplete;
-+	struct fxgmac_desc_data *desc_data;
-+	struct fxgmac_dma_desc *dma_desc;
-+	struct fxgmac_pkt_info *pkt_info;
-+	u32 ipce, iphe, rxparser;
-+	unsigned int err, etlt;
-+
-+	desc_data = FXGMAC_GET_DESC_DATA(ring, ring->cur);
-+	dma_desc = desc_data->dma_desc;
-+	pkt_info = &ring->pkt_info;
-+
-+	/* Check for data availability */
-+	if (FXGMAC_GET_BITS_LE(dma_desc->desc3, RX_NORMAL_DESC3, OWN))
-+		return 1;
-+
-+	/* Make sure descriptor fields are read after reading the OWN bit */
-+	dma_rmb();
-+
-+	if (netif_msg_rx_status(priv))
-+		fxgmac_dump_rx_desc(priv, ring, ring->cur);
-+
-+	/* Normal Descriptor, be sure Context Descriptor bit is off */
-+	FXGMAC_SET_BITS(pkt_info->attr, ATTR_RX, CONTEXT, 0);
-+
-+	/* Indicate if a Context Descriptor is next */
-+	/* Get the header length */
-+	if (FXGMAC_GET_BITS_LE(dma_desc->desc3, RX_NORMAL_DESC3, FD)) {
-+		desc_data->rx.hdr_len = FXGMAC_GET_BITS_LE(dma_desc->desc2,
-+							   RX_NORMAL_DESC2, HL);
-+	}
-+
-+	/* Get the pkt_info length */
-+	desc_data->rx.len =
-+		FXGMAC_GET_BITS_LE(dma_desc->desc3, RX_NORMAL_DESC3, PL);
-+
-+	if (!FXGMAC_GET_BITS_LE(dma_desc->desc3, RX_NORMAL_DESC3, LD)) {
-+		/* Not all the data has been transferred for this pkt_info */
-+		FXGMAC_SET_BITS(pkt_info->attr, ATTR_RX, INCOMPLETE, 1);
-+		cnt_incomplete++;
-+		return 0;
-+	}
-+
-+	if ((cnt_incomplete) && netif_msg_rx_status(priv))
-+		yt_dbg(priv, "%s, rx back to normal and incomplete cnt=%u\n",
-+		       __func__, cnt_incomplete);
-+	cnt_incomplete = 0;
-+
-+	/* This is the last of the data for this pkt_info */
-+	FXGMAC_SET_BITS(pkt_info->attr, ATTR_RX, INCOMPLETE, 0);
-+
-+	/* Set checksum done indicator as appropriate */
-+	if (netdev->features & NETIF_F_RXCSUM) {
-+		ipce = FXGMAC_GET_BITS_LE(dma_desc->desc1, RX_NORMAL_DESC1_WB,
-+					  IPCE);
-+		iphe = FXGMAC_GET_BITS_LE(dma_desc->desc1, RX_NORMAL_DESC1_WB,
-+					  IPHE);
-+		if (!ipce && !iphe)
-+			FXGMAC_SET_BITS(pkt_info->attr, ATTR_RX, CSUM_DONE, 1);
-+		else
-+			return 0;
-+	}
-+
-+	/* Check for errors (only valid in last descriptor) */
-+	err = FXGMAC_GET_BITS_LE(dma_desc->desc3, RX_NORMAL_DESC3, ES);
-+	rxparser = FXGMAC_GET_BITS_LE(dma_desc->desc2, RX_NORMAL_DESC2_WB,
-+				      RAPARSER);
-+	/* Error or incomplete parsing due to ECC error */
-+	if (err || rxparser == 0x7) {
-+		FXGMAC_SET_BITS(pkt_info->errors, ERRORS_RX, FRAME, 1);
-+		return 0;
-+	}
-+
-+	etlt = FXGMAC_GET_BITS_LE(dma_desc->desc3, RX_NORMAL_DESC3, ETLT);
-+	if (etlt == 0x4 && (netdev->features & NETIF_F_HW_VLAN_CTAG_RX)) {
-+		FXGMAC_SET_BITS(pkt_info->attr, ATTR_RX, VLAN_CTAG, 1);
-+		pkt_info->vlan_ctag = FXGMAC_GET_BITS_LE(dma_desc->desc0,
-+							 RX_NORMAL_DESC0, OVT);
-+	}
-+
-+	return 0;
-+}
-+
- static unsigned int fxgmac_desc_rx_dirty(struct fxgmac_ring *ring)
- {
- 	unsigned int dirty;
+While developing MPTCP BPF path manager [1], I found it's useful to
+add a new sock_kmemdup() helper.
+
+My use case is this:
+
+In mptcp_userspace_pm_append_new_local_addr() function (see patch 3
+in this patchset), it uses sock_kmalloc() to allocate an address
+entry "e", then immediately duplicate the input "entry" to it:
+
+'''
+	e = sock_kmalloc(sk, sizeof(*e), GFP_ATOMIC);
+	if (!e) {
+		ret = -ENOMEM;
+		goto append_err;
+	}
+
+	*e = *entry;
+'''
+
+When I implemented MPTCP BPF path manager, I needed to implement a
+code similar to this in BPF.
+
+The kfunc sock_kmalloc() can be easily invoked in BPF to allocate
+an entry "e", but the code "*e = *entry;" that assigns "entry" to
+"e" is not easy to implemented. 
+
+I had to implement such a "copy entry" helper in BPF:
+
+'''
+static void mptcp_pm_copy_addr(struct mptcp_addr_info *dst,
+                               struct mptcp_addr_info *src)
+{
+       dst->id = src->id;
+       dst->family = src->family;
+       dst->port = src->port;
+
+       if (src->family == AF_INET) {
+               dst->addr.s_addr = src->addr.s_addr;
+       } else if (src->family == AF_INET6) {
+               dst->addr6.s6_addr32[0] = src->addr6.s6_addr32[0];
+               dst->addr6.s6_addr32[1] = src->addr6.s6_addr32[1];
+               dst->addr6.s6_addr32[2] = src->addr6.s6_addr32[2];
+               dst->addr6.s6_addr32[3] = src->addr6.s6_addr32[3];
+       }
+}
+
+static void mptcp_pm_copy_entry(struct mptcp_pm_addr_entry *dst,
+                                struct mptcp_pm_addr_entry *src)
+{
+       mptcp_pm_copy_addr(&dst->addr, &src->addr);
+
+       dst->flags = src->flags;
+       dst->ifindex = src->ifindex;
+}
+'''
+
+And add "write permission" for BPF to each field of mptcp_pm_addr_entry:
+
+'''
+@@ static int bpf_mptcp_pm_btf_struct_access(struct bpf_verifier_log *log,
+  case offsetof(struct mptcp_pm_addr_entry, addr.port):
+    end = offsetofend(struct mptcp_pm_addr_entry, addr.port);
+    break;
+ #if IS_ENABLED(CONFIG_MPTCP_IPV6)
+  case offsetof(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[0]):
+    end = offsetofend(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[0]);
+    break;
+  case offsetof(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[1]):
+    end = offsetofend(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[1]);
+    break;
+  case offsetof(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[2]):
+    end = offsetofend(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[2]);
+    break;
+  case offsetof(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[3]):
+    end = offsetofend(struct mptcp_pm_addr_entry, addr.addr6.s6_addr32[3]);
+    break;
+ #else
+  case offsetof(struct mptcp_pm_addr_entry, addr.addr.s_addr):
+    end = offsetofend(struct mptcp_pm_addr_entry, addr.addr.s_addr);
+    break;
+ #endif
+'''
+
+But if there's a sock_kmemdup() helper, it will become much simpler,
+only need to call kfunc sock_kmemdup() instead in BPF.
+
+So this patchset adds this new helper and uses it in several places.
+
+[1]
+https://lore.kernel.org/mptcp/cover.1738924875.git.tanggeliang@kylinos.cn/
+
+Geliang Tang (3):
+  sock: add sock_kmemdup helper
+  net: use sock_kmemdup for ip_options
+  mptcp: use sock_kmemdup for address entry
+
+ include/net/sock.h       |  2 ++
+ net/core/sock.c          | 16 ++++++++++++++++
+ net/ipv6/exthdrs.c       |  3 +--
+ net/mptcp/pm_userspace.c |  3 +--
+ net/mptcp/protocol.c     |  7 ++-----
+ net/sctp/protocol.c      |  7 ++-----
+ 6 files changed, 24 insertions(+), 14 deletions(-)
+
 -- 
-2.34.1
+2.43.0
 
