@@ -1,60 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA48C2F37;
-	Fri, 28 Feb 2025 02:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8B8224D6;
+	Fri, 28 Feb 2025 02:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740710418; cv=none; b=q3f+a495btoWAKAK9CTpr2bi9XWgKsi53XK3IozImJ5xp8sTY2LLoAVOqXWZufmwvHTGiy2PGGFWnDB49aXgQXJVgv8HB426vdy6JD+9GXS27IexcYfHRqKTNfCYoZAIRFZjYAnAECrVE6EePqTyoT5xo3/X/EJeQSHfOdTqaTQ=
+	t=1740710999; cv=none; b=jFU2VAiLNGWyb516qRrU7DEwqztc46DMtzksBsAuYx62vQs3A+2fZiiJkz49PCHwHtJ20cPjIQ1pBCQrESGZJy4kvp4+R08JwXdQdYD/SeMsvlAnnzUykwbL52iT96I93kGVOtG06FZ3dec7+I8vFmsTq6nu3ejCSnzHE4fvz6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740710418; c=relaxed/simple;
-	bh=Ob2dsG0zgW0eN4CQrbKeXTe3FyXBv3AqsIuBlS2ahUo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oqGCVK+56q/1b/zTp8aJnC0kSjoJWNnVX3SEvfmKP2rT3KU0fQ6VA5ZHiuHxKpX71AtngfUkzcGb61wtqEjBxNUEMpTSYGzDswkrHjCraUYCIgQXV2LyUsS5amlZ4e+58V1z1xcnNA4gPq54w5CS0V2Cou7SFi8i4cMePFNcrkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S0XeMSH/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740710999; c=relaxed/simple;
+	bh=ydxu/skYurmAld4vb7S643yLAKc57hVF7vBSFY1pjPU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hWAW0ZAejwtX5h2lhu88zMUK0LYjrpm50k1IO5SGfofOp5rWXapMIDIUniXSraF4D2xM9KxzTHYRbxS2CpI3HIAJyEBYa5m1LSnHlh0i+pF8dHvJ04dI9yOVNGZD9Z4c39o0U0/QGUy8w3iOUI5TMtOyHfZ5kaRB4NoruymcaYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YymxivtC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S0XeMSH/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEBDC4CEDD;
-	Fri, 28 Feb 2025 02:40:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YymxivtC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCE3C4CEDD;
+	Fri, 28 Feb 2025 02:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740710418;
-	bh=Ob2dsG0zgW0eN4CQrbKeXTe3FyXBv3AqsIuBlS2ahUo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=S0XeMSH/uTHN4Vls9srGbPMx7+RsmhJ+TJY6eFjRPAdpVIwfIapCdmJ30wNl1cWp+
-	 wbQftOFeMZTsrVnst/hfBxgxJdCpDczL73l2HzvSfs5RvJJ7z8ytWIaQ29+PK2kfAe
-	 guKWkW7I3IM0mFoVE9vCykA0VRR+AD7PYwxFf5Nc2ncgiuTK9vrzr/+wKdDJ3Spcmb
-	 YePOl7kQtZfiwvBCSn2U5VEtOZGgNpE1w1qP2OHn/wSZE2YuVn+VoeIGgMeA0zfTt+
-	 hL0qSmot78FCs6tKASqcSW5ldkpy9JnzAzJt0G9FmkSaRzBwwnZDmgmsMp8Y6Y4oE0
-	 moJoWUbwr/YzA==
-Date: Thu, 27 Feb 2025 18:40:17 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Danny Lin <danny@orbstack.dev>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: fully namespace net.core.{r,w}mem_{default,max}
- sysctls
-Message-ID: <20250227184017.100fe713@kernel.org>
-In-Reply-To: <20250226085229.7882-1-danny@orbstack.dev>
-References: <20250226085229.7882-1-danny@orbstack.dev>
+	s=k20201202; t=1740710998;
+	bh=ydxu/skYurmAld4vb7S643yLAKc57hVF7vBSFY1pjPU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=YymxivtCeZTphclh1mW2FSkq66ehF5xMsP6BU2pTHt2fO2EiJkm3VDw7JxUrij8Pq
+	 H3Vlt8dkB+TyYkiUElZDSHs7U8RuBRjL2Aco1pOckVRgqO1l1Of/ZJrribb4JQ0T8E
+	 cn0yt2ZNdFv00+l8F25OYnRZ2P/dF4OKtYq+ADDBzQp2srVGblT4P0cSKNJHFmixVo
+	 bjVtknKh86DAaSLr7hu+ovpdWUab4YbQlkBLbZSVYGAi9FH+i/ZtjSHzlKLdoHAhdj
+	 Bx6Qrm0XwEaode9SZkY0FXzViR0k2BQ0zGbBPxEEUs3g44ioPCr3F8D49DZGIi/zMr
+	 Ktm7ed+8qgDeQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADDA8380AACB;
+	Fri, 28 Feb 2025 02:50:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 0/3] selftests/net: deflake GRO tests and fix return value
+ and output
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174071103050.1664035.10238417641881750067.git-patchwork-notify@kernel.org>
+Date: Fri, 28 Feb 2025 02:50:30 +0000
+References: <20250226192725.621969-1-krakauer@google.com>
+In-Reply-To: <20250226192725.621969-1-krakauer@google.com>
+To: Kevin Krakauer <krakauer@google.com>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, shuah@kernel.org, linux-kernel@vger.kernel.org
 
-On Wed, 26 Feb 2025 00:52:27 -0800 Danny Lin wrote:
-> This builds on commit 19249c0724f2 ("net: make net.core.{r,w}mem_{default,max} namespaced")
-> by adding support for writing the sysctls from within net namespaces,
-> rather than only reading the values that were set in init_net. These are
-> relatively commonly-used sysctls, so programs may try to set them without
-> knowing that they're in a container. It can be surprising for such attempts
-> to fail with EACCES.
+Hello:
 
-This does not apply, please rebase on latest net-next/main.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 26 Feb 2025 11:27:22 -0800 you wrote:
+> The GRO selftests can flake and have some confusing behavior. These
+> changes make the output and return value of GRO behave as expected, then
+> deflake the tests.
+> 
+> v2:
+> - Split into multiple commits.
+> - Reduced napi_defer_hard_irqs to 1.
+> - Reduced gro_flush_timeout to 100us.
+> - Fixed comment that wasn't updated.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2,1/3] selftests/net: have `gro.sh -t` return a correct exit code
+    https://git.kernel.org/netdev/net-next/c/784e6abd99f2
+  - [v2,2/3] selftests/net: only print passing message in GRO tests when tests pass
+    https://git.kernel.org/netdev/net-next/c/41cda5728470
+  - [v2,3/3] selftests/net: deflake GRO tests
+    https://git.kernel.org/netdev/net-next/c/51bef03e1a71
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
