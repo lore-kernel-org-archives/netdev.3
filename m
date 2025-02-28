@@ -1,44 +1,76 @@
-Received: from out28-170.mail.aliyun.com (out28-170.mail.aliyun.com [115.124.28.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2725425BACA;
-	Fri, 28 Feb 2025 10:06:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C972265637;
+	Fri, 28 Feb 2025 10:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740737207; cv=none; b=ED+BqVgUMC4sg4mHUsWAB5DU4SSWEmJtiVrC9WhDFa1oUEFX2P3Rzg8ClAkEVoyt2oWZYhBfS80PFnPX8TpmFeqM3RJB9nPW1K/Pjjr3AZY15TvtiVuNC01tWekMc4ejIObweSpAQPQLEV1X0toSehQu5vqJgYMiY9H5GngUlbc=
+	t=1740737258; cv=none; b=d/QMIPnCVXIPa6XppQ+ZcPJDk4c2IMBXrHFDb0UQckbk4o58tM+iXLJg7/9bF9Rc+/07sBq7swvHAJvV3TtxFsrkrsU711XfPiyLD7+Dkmp/BngE+6nDtCClm58JY4bWjiPChNpe4IKACUp1g/I1kMPqBzbOBoOSKf8AaOzz038=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740737207; c=relaxed/simple;
-	bh=/Egb4jGASEIxFJ/497+mh5eGk73BWY/qxCviR/YM420=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IvwXXlFU+Zm1OfqD7kjJI7ZHaMDALbFs1VeSSCCT+mfBN0vbMkTxAaw3LDyeror+Qx1NSMcjmSOzIo77Vd1ADxinedzAet2m1jccWMrw5uiTg7chK4JxxcYGW5yCU30y7pgHjnqfCqubZ98G5YJO8VOBRA48v6sb9qAbj0Gmkts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-Received: from sun-VirtualBox..(mailfrom:Frank.Sae@motor-comm.com fp:SMTPD_---.bfyn1Jl_1740736839 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Fri, 28 Feb 2025 18:00:39 +0800
-From: Frank Sae <Frank.Sae@motor-comm.com>
-To: Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1740737258; c=relaxed/simple;
+	bh=SobFsDnTI4m6qTe1t20nYb3oIxkffHzDivI5WekYvSI=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=THxB/keW0tz1fbeUYNkhIwfzLUp/XwZApDoDMMPtUzWdgFQgmmSRwt08dRlYT8kskUE0gQhYa/jRMPiEDsqewzdO8q51NP/dP3SH35rwyNNWBAI+NQQ9ngKzx3TgtVTltreaSgnPtNYoYoM1kXzOG67CiBs51lWxKgqQ/pubj60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DvLDyR4u; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DvLDyR4u"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2febaaf175fso1203480a91.3;
+        Fri, 28 Feb 2025 02:07:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740737256; x=1741342056; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1KhittMhY0h/tO53ehIj8FCozghMnSK8sedrBTTc9Zw=;
+        b=DvLDyR4uvp9OyaYOQIikfZvwoUHRiMuBMnN5N0KlngKpsLuEliW85UkBYgtShRcoq2
+         9JEeS4u2sVUGDtDuHCanL79PygJJLlp95/38Lkey1dPBYrZSw4ggSactifmsELDGE3ZT
+         PsxvSJw4xQ4VmuSukX+KbScnR3MGBCv190QHkPo9yaI0Jor0My/zeMTvaQr3cCyu+qaX
+         eIBQYmBIUh4+fCGhVEDjnibN7AEyyRVREiO5BVc74EgPl2B3MbjoiQFFEcWQifBjJvdp
+         5PRZDZ6wxOu3aZKNIsaAWBG59LbY+euZurVOY/R/EyzRKbi/cI7TwBzutlYJ2pObgdC9
+         lPtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740737256; x=1741342056;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1KhittMhY0h/tO53ehIj8FCozghMnSK8sedrBTTc9Zw=;
+        b=Xni8tb+dfKTS+x9iQwJBTYURIZeH+ODQbkcyHdcJWbjEIVIylSTny+wYGlfWD6HXdM
+         o4hqXyO+MJplZMEw0j/e93dL1Sdppm51rYjP77yUnW0pBGnRW2z5YndM9TwYMwVD7JGa
+         Gn3pDa4Gb28OHzduaBGrFv7+Xe1tgv1IxbHb1tNLP3Ja6sIzRmzmp5Mp6p+5boou5I/f
+         74Hznz2HeX/f7JYdhhIvp8Zt1+wbdtNX8P+fmOquDbDJwqQh4ytdvGUUOyL/JSFuhsDc
+         8u0pcX+RX/FefncvkKMHpWastFaGugXSAmDQDwZu674vzBvK8k9ljQNlWHbTU6wpnKGr
+         2cEg==
+X-Forwarded-Encrypted: i=1; AJvYcCW01VnQlhz6aIfMLvgGmNMGOECnJ9tZQ4fjfuTvOXheYce6mOXo8k9EE9jChlg9/sFJ8hH5QIrL@vger.kernel.org, AJvYcCWqNNSg6k7skKEdieUVsgk7XWZAo7s0aOHZWxvhNfzWvSEk7IB6ZoVk5ZCCNwbTLcQe9nCShyM13l4AgSU=@vger.kernel.org, AJvYcCWu7YRuQxOdtc+smjMIc9XY/IAOfTNuTs0V+TMQWzNSxy8uUMlSRoPaE/JY1iqs8lD09/4y8GbS+7GY@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKXk1Y5aq5H1+D8PS8o6HtWsJGx1RqeZ9/yqSoJKjOkkyE1SCQ
+	TETPDBmxnBmJFLyGx5/hPB+eqwiterm437CsiPvHbI+5wH3mPD/c
+X-Gm-Gg: ASbGncsmVlCqWhlx+j1/NLhZADnqQ00YX7ZNEGBdYR3yZOde59/qqFLXxDTosZBMnNi
+	voPvVdSaGfiiqWm/jFClpo2lnSyAnMllymvHd5ydh9GDZdXRrGlRrtVPcylQddUyJC/MdqzRUky
+	2e/vI0qqyVuVnE6xJve1KOzgn/KwO+49bN3FuYjeY6xlM5zU7Nonw2Qena15y9J28Sxb6ZPcdsK
+	0/UhgfxacvqCh8LTXqeBWd4jzI9iLjCdIUTZ2JICG/37wQjmJkR9u24VmnRn718TZORZJdqJzS/
+	++3yX/Gv8jIRdyII7Lo=
+X-Google-Smtp-Source: AGHT+IEFyR2TWrO1nRdqRdyz5cjQm4zsLOTSk6QlzmmxKbItYR9Ye1wOLsDfbx+ltJKM+QuAchFerg==
+X-Received: by 2002:a17:90b:3bd0:b0:2fa:2217:531b with SMTP id 98e67ed59e1d1-2febab71b22mr4034275a91.21.1740737255558;
+        Fri, 28 Feb 2025 02:07:35 -0800 (PST)
+Received: from gmail.com ([116.237.135.88])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fe8284f116sm5957009a91.49.2025.02.28.02.07.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Feb 2025 02:07:35 -0800 (PST)
+From: Qingfang Deng <dqfext@gmail.com>
+To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Frank <Frank.Sae@motor-comm.com>,
-	netdev@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Parthiban.Veerasooran@microchip.com,
-	linux-kernel@vger.kernel.org,
-	xiaogang.fan@motor-comm.com,
-	fei.zhang@motor-comm.com,
-	hua.sun@motor-comm.com
-Subject: [PATCH net-next v3 10/14] motorcomm:yt6801: Implement .ndo_start_xmit function
-Date: Fri, 28 Feb 2025 18:01:23 +0800
-Message-Id: <20250228100020.3944-11-Frank.Sae@motor-comm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250228100020.3944-1-Frank.Sae@motor-comm.com>
-References: <20250228100020.3944-1-Frank.Sae@motor-comm.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Michal Ostrowski <mostrows@earthlink.net>,
+	James Chapman <jchapman@katalix.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-ppp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH net-next v3] ppp: use IFF_NO_QUEUE in virtual interfaces
+Date: Fri, 28 Feb 2025 18:07:28 +0800
+Message-ID: <20250228100730.670587-1-dqfext@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,410 +79,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Implement .ndo_start_xmit function to prepare preliminary packet info for
- TX, prepare tso and vlan, then map tx skb, at last it call dev_xmit
- function to send data.
+For PPPoE, PPTP, and PPPoL2TP, the start_xmit() function directly
+forwards packets to the underlying network stack and never returns
+anything other than 1. So these interfaces do not require a qdisc,
+and the IFF_NO_QUEUE flag should be set.
 
-Signed-off-by: Frank Sae <Frank.Sae@motor-comm.com>
+Introduces a direct_xmit flag in struct ppp_channel to indicate when
+IFF_NO_QUEUE should be applied. The flag is set in ppp_connect_channel()
+for relevant protocols.
+
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
 ---
- .../ethernet/motorcomm/yt6801/yt6801_net.c    | 368 ++++++++++++++++++
- 1 file changed, 368 insertions(+)
+v3:
+  Move direct_xmit above the unused "latency" member to avoid
+  confusion. Should I remove it instead?
 
-diff --git a/drivers/net/ethernet/motorcomm/yt6801/yt6801_net.c b/drivers/net/ethernet/motorcomm/yt6801/yt6801_net.c
-index ddfdde001..74af6bcd4 100644
---- a/drivers/net/ethernet/motorcomm/yt6801/yt6801_net.c
-+++ b/drivers/net/ethernet/motorcomm/yt6801/yt6801_net.c
-@@ -102,6 +102,23 @@ static int fxgmac_mdio_register(struct fxgmac_pdata *priv)
- 	return 0;
- }
+ drivers/net/ppp/ppp_generic.c | 4 ++++
+ drivers/net/ppp/pppoe.c       | 1 +
+ drivers/net/ppp/pptp.c        | 1 +
+ include/linux/ppp_channel.h   | 1 +
+ net/l2tp/l2tp_ppp.c           | 1 +
+ 5 files changed, 8 insertions(+)
+
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index 6220866258fc..815108c98b78 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -3493,6 +3493,10 @@ ppp_connect_channel(struct channel *pch, int unit)
+ 		ret = -ENOTCONN;
+ 		goto outl;
+ 	}
++	if (pch->chan->direct_xmit)
++		ppp->dev->priv_flags |= IFF_NO_QUEUE;
++	else
++		ppp->dev->priv_flags &= ~IFF_NO_QUEUE;
+ 	spin_unlock_bh(&pch->downl);
+ 	if (pch->file.hdrlen > ppp->file.hdrlen)
+ 		ppp->file.hdrlen = pch->file.hdrlen;
+diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+index 2ea4f4890d23..68e631718ab0 100644
+--- a/drivers/net/ppp/pppoe.c
++++ b/drivers/net/ppp/pppoe.c
+@@ -693,6 +693,7 @@ static int pppoe_connect(struct socket *sock, struct sockaddr *uservaddr,
+ 		po->chan.mtu = dev->mtu - sizeof(struct pppoe_hdr) - 2;
+ 		po->chan.private = sk;
+ 		po->chan.ops = &pppoe_chan_ops;
++		po->chan.direct_xmit = true;
  
-+static void fxgmac_tx_start_xmit(struct fxgmac_channel *channel,
-+				 struct fxgmac_ring *ring)
-+{
-+	struct fxgmac_desc_data *desc_data;
-+
-+	wmb();  /* Make sure everything is written before the register write */
-+
-+	/* Issue a poll command to Tx DMA by writing address
-+	 * of next immediate free descriptor
-+	 */
-+	desc_data = FXGMAC_GET_DESC_DATA(ring, ring->cur);
-+	FXGMAC_DMA_IO_WR(channel, DMA_CH_TDTR_LO,
-+			 lower_32_bits(desc_data->dma_desc_addr));
-+
-+	ring->tx.xmit_more = 0;
-+}
-+
- static unsigned int fxgmac_desc_tx_avail(struct fxgmac_ring *ring)
- {
- 	if (ring->dirty > ring->cur)
-@@ -109,6 +126,30 @@ static unsigned int fxgmac_desc_tx_avail(struct fxgmac_ring *ring)
- 	else
- 		return ring->dma_desc_count - ring->cur + ring->dirty;
- }
-+
-+static netdev_tx_t fxgmac_maybe_stop_tx_queue(struct fxgmac_channel *channel,
-+					      struct fxgmac_ring *ring,
-+					      unsigned int count)
-+{
-+	struct fxgmac_pdata *priv = channel->priv;
-+
-+	if (count > fxgmac_desc_tx_avail(ring)) {
-+		yt_err(priv, "Tx queue stopped, not enough descriptors available\n");
-+		netif_stop_subqueue(priv->netdev, channel->queue_index);
-+		ring->tx.queue_stopped = 1;
-+
-+		/* If we haven't notified the hardware because of xmit_more
-+		 * support, tell it now
-+		 */
-+		if (ring->tx.xmit_more)
-+			fxgmac_tx_start_xmit(channel, ring);
-+
-+		return NETDEV_TX_BUSY;
-+	}
-+
-+	return NETDEV_TX_OK;
-+}
-+
- static void fxgmac_enable_msix_one_irq(struct fxgmac_pdata *priv, u32 int_id)
- {
- 	FXGMAC_IO_WR(priv, MSIX_TBL_MASK + int_id * 16, 0);
-@@ -1956,8 +1997,335 @@ static void fxgmac_dbg_pkt(struct fxgmac_pdata *priv, struct sk_buff *skb,
- 	yt_dbg(priv, "\n************** SKB dump ****************\n");
- }
+ 		error = ppp_register_net_channel(dev_net(dev), &po->chan);
+ 		if (error) {
+diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
+index 689687bd2574..5feaa70b5f47 100644
+--- a/drivers/net/ppp/pptp.c
++++ b/drivers/net/ppp/pptp.c
+@@ -465,6 +465,7 @@ static int pptp_connect(struct socket *sock, struct sockaddr *uservaddr,
+ 	po->chan.mtu -= PPTP_HEADER_OVERHEAD;
  
-+static void fxgmac_dev_xmit(struct fxgmac_channel *channel)
-+{
-+	struct fxgmac_pdata *priv = channel->priv;
-+	struct fxgmac_ring *ring = channel->tx_ring;
-+	unsigned int tso_context, vlan_context;
-+	struct fxgmac_desc_data *desc_data;
-+	struct fxgmac_dma_desc *dma_desc;
-+	struct fxgmac_pkt_info *pkt_info;
-+	unsigned int csum, tso, vlan;
-+	int i, start_index = ring->cur;
-+	int cur_index = ring->cur;
-+
-+	pkt_info = &ring->pkt_info;
-+	csum = FXGMAC_GET_BITS(pkt_info->attr, ATTR_TX, CSUM_ENABLE);
-+	tso = FXGMAC_GET_BITS(pkt_info->attr, ATTR_TX, TSO_ENABLE);
-+	vlan = FXGMAC_GET_BITS(pkt_info->attr, ATTR_TX, VLAN_CTAG);
-+
-+	if (tso && pkt_info->mss != ring->tx.cur_mss)
-+		tso_context = 1;
-+	else
-+		tso_context = 0;
-+
-+	if (vlan && pkt_info->vlan_ctag != ring->tx.cur_vlan_ctag)
-+		vlan_context = 1;
-+	else
-+		vlan_context = 0;
-+
-+	desc_data = FXGMAC_GET_DESC_DATA(ring, cur_index);
-+	dma_desc = desc_data->dma_desc;
-+
-+	/* Create a context descriptor if this is a TSO pkt_info */
-+	if (tso_context) {
-+		/* Set the MSS size */
-+		FXGMAC_SET_BITS_LE(dma_desc->desc2, TX_CONTEXT_DESC2, MSS,
-+				   pkt_info->mss);
-+
-+		/* Mark it as a CONTEXT descriptor */
-+		FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_CONTEXT_DESC3, CTXT, 1);
-+
-+		/* Indicate this descriptor contains the MSS */
-+		FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_CONTEXT_DESC3, TCMSSV,
-+				   1);
-+
-+		ring->tx.cur_mss = pkt_info->mss;
-+	}
-+
-+	if (vlan_context) {
-+		/* Mark it as a CONTEXT descriptor */
-+		FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_CONTEXT_DESC3, CTXT, 1);
-+
-+		/* Set the VLAN tag */
-+		FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_CONTEXT_DESC3, VT,
-+				   pkt_info->vlan_ctag);
-+
-+		/* Indicate this descriptor contains the VLAN tag */
-+		FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_CONTEXT_DESC3, VLTV, 1);
-+
-+		ring->tx.cur_vlan_ctag = pkt_info->vlan_ctag;
-+	}
-+	if (tso_context || vlan_context) {
-+		cur_index = FXGMAC_GET_ENTRY(cur_index, ring->dma_desc_count);
-+		desc_data = FXGMAC_GET_DESC_DATA(ring, cur_index);
-+		dma_desc = desc_data->dma_desc;
-+	}
-+
-+	/* Update buffer address (for TSO this is the header) */
-+	dma_desc->desc0 = cpu_to_le32(lower_32_bits(desc_data->skb_dma));
-+	dma_desc->desc1 = cpu_to_le32(upper_32_bits(desc_data->skb_dma));
-+
-+	/* Update the buffer length */
-+	FXGMAC_SET_BITS_LE(dma_desc->desc2, TX_NORMAL_DESC2, HL_B1L,
-+			   desc_data->skb_dma_len);
-+
-+	/* VLAN tag insertion check */
-+	if (vlan)
-+		FXGMAC_SET_BITS_LE(dma_desc->desc2, TX_NORMAL_DESC2, VTIR,
-+				   TX_NORMAL_DESC2_VLAN_INSERT);
-+
-+	/* Timestamp enablement check */
-+	if (FXGMAC_GET_BITS(pkt_info->attr, ATTR_TX, PTP))
-+		FXGMAC_SET_BITS_LE(dma_desc->desc2, TX_NORMAL_DESC2, TTSE, 1);
-+
-+	/* Mark it as First Descriptor */
-+	FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_NORMAL_DESC3, FD, 1);
-+
-+	/* Mark it as a NORMAL descriptor */
-+	FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_NORMAL_DESC3, CTXT, 0);
-+
-+	/* Set OWN bit if not the first descriptor */
-+	if (cur_index != start_index)
-+		FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_NORMAL_DESC3, OWN, 1);
-+
-+	if (tso) {
-+		/* Enable TSO */
-+		FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_NORMAL_DESC3, TSE, 1);
-+		FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_NORMAL_DESC3, TCPPL,
-+				   pkt_info->tcp_payload_len);
-+		FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_NORMAL_DESC3, TCPHDRLEN,
-+				   pkt_info->tcp_header_len / 4);
-+	} else {
-+		/* Enable CRC and Pad Insertion */
-+		FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_NORMAL_DESC3, CPC, 0);
-+
-+		/* Enable HW CSUM */
-+		if (csum)
-+			FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_NORMAL_DESC3,
-+					   CIC, 0x3);
-+
-+		/* Set the total length to be transmitted */
-+		FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_NORMAL_DESC3, FL,
-+				   pkt_info->length);
-+	}
-+
-+	if (start_index <= cur_index)
-+		i = cur_index - start_index + 1;
-+	else
-+		i = ring->dma_desc_count - start_index + cur_index;
-+
-+	for (; i < pkt_info->desc_count; i++) {
-+		cur_index = FXGMAC_GET_ENTRY(cur_index, ring->dma_desc_count);
-+		desc_data = FXGMAC_GET_DESC_DATA(ring, cur_index);
-+		dma_desc = desc_data->dma_desc;
-+
-+		/* Update buffer address */
-+		dma_desc->desc0 =
-+			cpu_to_le32(lower_32_bits(desc_data->skb_dma));
-+		dma_desc->desc1 =
-+			cpu_to_le32(upper_32_bits(desc_data->skb_dma));
-+
-+		/* Update the buffer length */
-+		FXGMAC_SET_BITS_LE(dma_desc->desc2, TX_NORMAL_DESC2, HL_B1L,
-+				   desc_data->skb_dma_len);
-+
-+		/* Set OWN bit */
-+		FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_NORMAL_DESC3, OWN, 1);
-+
-+		/* Mark it as NORMAL descriptor */
-+		FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_NORMAL_DESC3, CTXT, 0);
-+
-+		/* Enable HW CSUM */
-+		if (csum)
-+			FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_NORMAL_DESC3,
-+					   CIC, 0x3);
-+	}
-+
-+	/* Set LAST bit for the last descriptor */
-+	FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_NORMAL_DESC3, LD, 1);
-+
-+	FXGMAC_SET_BITS_LE(dma_desc->desc2, TX_NORMAL_DESC2, IC, 1);
-+
-+	/* Save the Tx info to report back during cleanup */
-+	desc_data->tx.packets = pkt_info->tx_packets;
-+	desc_data->tx.bytes = pkt_info->tx_bytes;
-+
-+	/* In case the Tx DMA engine is running, make sure everything
-+	 * is written to the descriptor(s) before setting the OWN bit
-+	 * for the first descriptor
-+	 */
-+	dma_wmb();
-+
-+	/* Set OWN bit for the first descriptor */
-+	desc_data = FXGMAC_GET_DESC_DATA(ring, start_index);
-+	dma_desc = desc_data->dma_desc;
-+	FXGMAC_SET_BITS_LE(dma_desc->desc3, TX_NORMAL_DESC3, OWN, 1);
-+
-+	if (netif_msg_tx_queued(priv))
-+		fxgmac_dump_tx_desc(priv, ring, start_index,
-+				    pkt_info->desc_count, 1);
-+
-+	smp_wmb();  /* Make sure ownership is written to the descriptor */
-+
-+	ring->cur = FXGMAC_GET_ENTRY(cur_index, ring->dma_desc_count);
-+	fxgmac_tx_start_xmit(channel, ring);
-+}
-+
-+static void fxgmac_prep_vlan(struct sk_buff *skb,
-+			     struct fxgmac_pkt_info *pkt_info)
-+{
-+	if (skb_vlan_tag_present(skb))
-+		pkt_info->vlan_ctag = skb_vlan_tag_get(skb);
-+}
-+
-+static int fxgmac_prep_tso(struct fxgmac_pdata *priv, struct sk_buff *skb,
-+			   struct fxgmac_pkt_info *pkt_info)
-+{
-+	int ret;
-+
-+	if (!FXGMAC_GET_BITS(pkt_info->attr, ATTR_TX, TSO_ENABLE))
-+		return 0;
-+
-+	ret = skb_cow_head(skb, 0);
-+	if (ret)
-+		return ret;
-+
-+	pkt_info->header_len = skb_transport_offset(skb) + tcp_hdrlen(skb);
-+	pkt_info->tcp_header_len = tcp_hdrlen(skb);
-+	pkt_info->tcp_payload_len = skb->len - pkt_info->header_len;
-+	pkt_info->mss = skb_shinfo(skb)->gso_size;
-+
-+	/* Update the number of packets that will ultimately be transmitted
-+	 * along with the extra bytes for each extra packet
-+	 */
-+	pkt_info->tx_packets = skb_shinfo(skb)->gso_segs;
-+	pkt_info->tx_bytes += (pkt_info->tx_packets - 1) * pkt_info->header_len;
-+
-+	return 0;
-+}
-+
-+static int fxgmac_is_tso(struct sk_buff *skb)
-+{
-+	if (skb->ip_summed != CHECKSUM_PARTIAL)
-+		return 0;
-+
-+	if (!skb_is_gso(skb))
-+		return 0;
-+
-+	return 1;
-+}
-+
-+static void fxgmac_prep_tx_pkt(struct fxgmac_pdata *priv,
-+			       struct fxgmac_ring *ring, struct sk_buff *skb,
-+			       struct fxgmac_pkt_info *pkt_info)
-+{
-+	u32 len, context_desc = 0;
-+
-+	pkt_info->skb = skb;
-+	pkt_info->desc_count = 0;
-+	pkt_info->tx_packets = 1;
-+	pkt_info->tx_bytes = skb->len;
-+
-+	if (fxgmac_is_tso(skb)) {
-+		/* TSO requires an extra descriptor if mss is different */
-+		if (skb_shinfo(skb)->gso_size != ring->tx.cur_mss) {
-+			context_desc = 1;
-+			pkt_info->desc_count++;
-+		}
-+
-+		/* TSO requires an extra descriptor for TSO header */
-+		pkt_info->desc_count++;
-+		FXGMAC_SET_BITS(pkt_info->attr, ATTR_TX, TSO_ENABLE, 1);
-+		FXGMAC_SET_BITS(pkt_info->attr, ATTR_TX, CSUM_ENABLE, 1);
-+	} else if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		FXGMAC_SET_BITS(pkt_info->attr, ATTR_TX, CSUM_ENABLE, 1);
-+	}
-+
-+	if (skb_vlan_tag_present(skb)) {
-+		/* VLAN requires an extra descriptor if tag is different */
-+		if (skb_vlan_tag_get(skb) != ring->tx.cur_vlan_ctag)
-+			/* We can share with the TSO context descriptor */
-+			if (!context_desc)
-+				pkt_info->desc_count++;
-+
-+		FXGMAC_SET_BITS(pkt_info->attr, ATTR_TX, VLAN_CTAG, 1);
-+	}
-+
-+	for (len = skb_headlen(skb); len;) {
-+		pkt_info->desc_count++;
-+		len -= min_t(unsigned int, len, FXGMAC_TX_MAX_BUF_SIZE);
-+	}
-+
-+	for (u32 i = 0; i < skb_shinfo(skb)->nr_frags; i++)
-+		for (len = skb_frag_size(&skb_shinfo(skb)->frags[i]); len;) {
-+			pkt_info->desc_count++;
-+			len -= min_t(unsigned int, len, FXGMAC_TX_MAX_BUF_SIZE);
-+		}
-+}
-+
-+static netdev_tx_t fxgmac_xmit(struct sk_buff *skb, struct net_device *netdev)
-+{
-+	struct fxgmac_pdata *priv = netdev_priv(netdev);
-+	struct fxgmac_pkt_info *tx_pkt_info;
-+	struct fxgmac_channel *channel;
-+	struct netdev_queue *txq;
-+	struct fxgmac_ring *ring;
-+	int ret;
-+
-+	channel = priv->channel_head + skb->queue_mapping;
-+	txq = netdev_get_tx_queue(netdev, channel->queue_index);
-+	ring = channel->tx_ring;
-+	tx_pkt_info = &ring->pkt_info;
-+
-+	if (skb->len == 0) {
-+		yt_err(priv, "empty skb received from stack\n");
-+		dev_kfree_skb_any(skb);
-+		return NETDEV_TX_OK;
-+	}
-+
-+	/* Prepare preliminary packet info for TX */
-+	memset(tx_pkt_info, 0, sizeof(*tx_pkt_info));
-+	fxgmac_prep_tx_pkt(priv, ring, skb, tx_pkt_info);
-+
-+	/* Check that there are enough descriptors available */
-+	ret = fxgmac_maybe_stop_tx_queue(channel, ring,
-+					 tx_pkt_info->desc_count);
-+	if (ret == NETDEV_TX_BUSY)
-+		return ret;
-+
-+	ret = fxgmac_prep_tso(priv, skb, tx_pkt_info);
-+	if (ret < 0) {
-+		yt_err(priv, "error processing TSO packet\n");
-+		dev_kfree_skb_any(skb);
-+		return NETDEV_TX_OK;
-+	}
-+	fxgmac_prep_vlan(skb, tx_pkt_info);
-+
-+	if (!fxgmac_tx_skb_map(channel, skb)) {
-+		dev_kfree_skb_any(skb);
-+		yt_err(priv, "xmit, map tx skb err\n");
-+		return NETDEV_TX_OK;
-+	}
-+
-+	/* Report on the actual number of bytes (to be) sent */
-+	netdev_tx_sent_queue(txq, tx_pkt_info->tx_bytes);
-+
-+	/* Configure required descriptor fields for transmission */
-+	fxgmac_dev_xmit(channel);
-+
-+	if (netif_msg_pktdata(priv))
-+		fxgmac_dbg_pkt(priv, skb, true);
-+
-+	/* Stop the queue in advance if there may not be enough descriptors */
-+	fxgmac_maybe_stop_tx_queue(channel, ring, FXGMAC_TX_MAX_DESC_NR);
-+
-+	return NETDEV_TX_OK;
-+}
-+
- static const struct net_device_ops fxgmac_netdev_ops = {
- 	.ndo_open		= fxgmac_open,
-+	.ndo_start_xmit		= fxgmac_xmit,
+ 	po->chan.hdrlen = 2 + sizeof(struct pptp_gre_header);
++	po->chan.direct_xmit = true;
+ 	error = ppp_register_channel(&po->chan);
+ 	if (error) {
+ 		pr_err("PPTP: failed to register PPP channel (%d)\n", error);
+diff --git a/include/linux/ppp_channel.h b/include/linux/ppp_channel.h
+index 45e6e427ceb8..53b62e145078 100644
+--- a/include/linux/ppp_channel.h
++++ b/include/linux/ppp_channel.h
+@@ -42,6 +42,7 @@ struct ppp_channel {
+ 	int		hdrlen;		/* amount of headroom channel needs */
+ 	void		*ppp;		/* opaque to channel */
+ 	int		speed;		/* transfer rate (bytes/second) */
++	bool		direct_xmit;	/* no qdisc, xmit directly */
+ 	/* the following is not used at present */
+ 	int		latency;	/* overhead time in milliseconds */
  };
+diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
+index 53baf2dd5d5d..fc5c2fd8f34c 100644
+--- a/net/l2tp/l2tp_ppp.c
++++ b/net/l2tp/l2tp_ppp.c
+@@ -806,6 +806,7 @@ static int pppol2tp_connect(struct socket *sock, struct sockaddr *uservaddr,
+ 	po->chan.private = sk;
+ 	po->chan.ops	 = &pppol2tp_chan_ops;
+ 	po->chan.mtu	 = pppol2tp_tunnel_mtu(tunnel);
++	po->chan.direct_xmit	= true;
  
- const struct net_device_ops *fxgmac_get_netdev_ops(void)
+ 	error = ppp_register_net_channel(sock_net(sk), &po->chan);
+ 	if (error) {
 -- 
-2.34.1
+2.43.0
 
