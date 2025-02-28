@@ -1,615 +1,247 @@
-Received: from mail-lf1-f98.google.com (mail-lf1-f98.google.com [209.85.167.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2080.outbound.protection.outlook.com [40.107.94.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379D825D91A
-	for <netdev@vger.kernel.org>; Fri, 28 Feb 2025 10:21:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.98
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740738111; cv=none; b=ekp1YKz8a5/nNxBg8ilVC6dMKqMmajAJIbm9JmS/iTWiLJfzZLDK/U2FQavpa/Rlvfap/iCd+vOgsHgKMtU3+a3KRaA2WguRAeYwnlzYb1QoWzTwxMJGeTpo4qx5CZmrB271+yMBU8FKbuLnAfT202w3gPHSiYiBPrF8f8b+9Us=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740738111; c=relaxed/simple;
-	bh=frPzm9j71cvkMEtEZpIWAJv071SMJjD5djta3wBB06g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDlZB5um2wIxGYONuvTftv3fT52AO4dPyA6W79J3WGTurpoKTyvRCOD8RaqBu3Hq9NID6cbdHoLRKz8V9JwU5QrFa0PbtVHmWaxrNKJDKh2NOuMter3qv3BcsQeqONE+1vNWgUhE+iHoyi0Epxn/X7DrPW4YjFj4ydv0Rm8zasw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=agMPWxwW; arc=none smtp.client-ip=209.85.167.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672051C3029;
+	Fri, 28 Feb 2025 10:32:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.80
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740738723; cv=fail; b=avCwejQcBpLgjcwRgowBSYljPcMaW2wVAXnRDaQo+irJbBlSAlhEVSKTBJ1AEqOH2yN0Z+CcBcI0TBIOjyrZg9E5owDgf6zfAjA1VJRD2wILd+palgn2GlX6EnV3ZNAz0UhKWVzq/FOJun/64S85gr1IU8KIBN6JRGPDqnISId0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740738723; c=relaxed/simple;
+	bh=Z0AV6SLvE+lWj3m0LPLnRQkLzWUijiXZmPuWgewLixo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=tLDofImT0OTjR9DVCJDWTjzHcgcJTzpj3wNbk048aG3au+zCbfi0v2FwzzLj2yYwsQB4xlrwU/aMCUEfTDGaCLvSIjcm9mvzF40Wj9idYuH/lSBd9l/OilyKzjfJruFXKyA8nNNF1pc54zsdymsMMZ/j+G9FtnwkGQXZn/4B94E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tZcmUVV1; arc=fail smtp.client-ip=40.107.94.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="agMPWxwW"
-Received: by mail-lf1-f98.google.com with SMTP id 2adb3069b0e04-5456a71a7d9so267582e87.3
-        for <netdev@vger.kernel.org>; Fri, 28 Feb 2025 02:21:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1740738106; x=1741342906; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l18lS/ZnTYlpD/f3P/AnhzLsGDqaeZpCSEDfJ847EHI=;
-        b=agMPWxwWeHZGO7xjxWgvtu3iq1PcrK/o6HpRlbkuUwNyl+dt/C8fgD9TGT5Gv2keqI
-         cIqzkYeYf3gmkn/tOH5lJ8XOMy2r1UBhEh5Ie/9t4Ij1/S2d9fczxYmOxAkTZ0tEvSwB
-         YZ9WfsgS8s7Z0vXw4vocfa2efWeCRj2t1ICaH6/O+GNspEfEbvTZonmtfCL5ObFpA590
-         oy5s2tKcBH4Y5XMQZtyOTHamgjYAjKa/L4rAso5qQ/E+jzQcUYdN/LsCxz3b3meK3iN8
-         iIedNNMAl4R+fz+BHBRbN0TsnjUbTt+Yee1EYRRRbFgV3tDdIeRQYrdRPuMfuw3vAGr/
-         Ztpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740738106; x=1741342906;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l18lS/ZnTYlpD/f3P/AnhzLsGDqaeZpCSEDfJ847EHI=;
-        b=CTT42/7+BfoWoDwL85rNJRioSJOpdgdAcWVftMfcrxvEqRz7xQfAlA09PjArP8JohL
-         p5fwdWvEXSwheZxXo6RmEGmKQyJpPvf68Ix0oCzwmtwWCibjMf9lIMMwZzGeCBehC+gp
-         UNiNsMDeeYpXzAE9TdjqIBS2hZBA28W4e5e4TTdg4eGl0quwnAOtvFVvVHFGDShN2qbj
-         pqwHNFND+w0xVs3Swn2pXCkNEWSDL92LMR92WzxrWAkv3wz+hu0J6TP7YhAz1x5s3Co0
-         bE1NkM674WaK4ZlVHEtRZ7nYV8sOxd7cuXAqyAFgDYhiOD3GpPhAgI3++t7d7wvD/uxO
-         46xQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7p5yJS5/3e+9hu2BR/VhollA9uvgCU3vDY59gI5NJXvh3YloqsHyMwJKiiiPLJAPvmWcpjkI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyX4dEr1ePYFeK0VQRG2JMc1C/1jPUBm/Z/AZYFNZBoEkKjr3/X
-	PpWGqsGtKhmZ9ykkMbVnBqGn1Aol1Sv9kzr+PMS+6Fy2jDpP0HW3eY5XvhVKvwu2Exku+4+v47M
-	ZEOu2CfMtMpKX9bx1NJWlYWZbYRD1v3sI
-X-Gm-Gg: ASbGnctTtElVan7v+pkPt4xXHGQIzwir/se6Iep6JlZp90vtnJBDwH4KKCf4yDeUrej
-	iLAXszz+92FxvcPD4+KfJH0HfAvMsj3Ghcu8VHvggmQ2dOnnzcEhaU3Q3qGxdveclNX5Qzecapw
-	Ppa+00mXCXKRMad1JCdqxGggLJ1x82SFJ1kQ/9VGz9uj+yVLYMakWA4DfptbmYKKJ6imoe9N1HY
-	N5o7mtSen3O0gD9XhYRkxB8nLEJaICdzGoj5PDpAWT8fBGwZKWKRNj+GWCubZmf4toIlMi/c5Ef
-	pySY55/XgNhOieV4oUXvewK+b31tcK+/QVvezzNVir2T+XDU/94B7mNhZCTArS/2LfLnM38=
-X-Google-Smtp-Source: AGHT+IG8y0xDJLW/tpBkCm5AXI5pREnHHlRwTCq3+qOCw15Hes7yAmtk1tm/45aE+TR2sl3keeKHQ6hOtg4l
-X-Received: by 2002:a05:6512:281d:b0:545:8a1:536d with SMTP id 2adb3069b0e04-5494c1291c8mr327686e87.2.1740738106019;
-        Fri, 28 Feb 2025 02:21:46 -0800 (PST)
-Received: from smtpservice.6wind.com ([185.13.181.2])
-        by smtp-relay.gmail.com with ESMTP id 2adb3069b0e04-5494417b519sm125094e87.40.2025.02.28.02.21.45;
-        Fri, 28 Feb 2025 02:21:46 -0800 (PST)
-X-Relaying-Domain: 6wind.com
-Received: from bretzel (bretzel.dev.6wind.com [10.17.1.57])
-	by smtpservice.6wind.com (Postfix) with ESMTPS id 85B9318601;
-	Fri, 28 Feb 2025 11:21:45 +0100 (CET)
-Received: from dichtel by bretzel with local (Exim 4.94.2)
-	(envelope-from <nicolas.dichtel@6wind.com>)
-	id 1tnxV3-000eHu-8c; Fri, 28 Feb 2025 11:21:45 +0100
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Ido Schimmel <idosch@idosch.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	netdev@vger.kernel.org,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Subject: [PATCH net-next v6 1/3] net: rename netns_local to netns_immutable
-Date: Fri, 28 Feb 2025 11:20:56 +0100
-Message-ID: <20250228102144.154802-2-nicolas.dichtel@6wind.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250228102144.154802-1-nicolas.dichtel@6wind.com>
-References: <20250228102144.154802-1-nicolas.dichtel@6wind.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tZcmUVV1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PhwLx+7OafMpixi4AhXc17t+/kR1l3/x5msIS42QBHe8U/cf2QbpwxQjv4DeOtT+em3LtuQITFj110ILZlQT5zda9zDNE5SUr5qMIagBggoBoSalT/ayy7g66eSvrj8Ipyl1c+BpmIIl+FG5IVKu14yFeNyOdIWbF0QC+S4TLhei406ftIEqEfWSAdLVV3QYpJgIeTfWjqsDbl1tTjp5hIixWW/yb3aLMQy0cv/O13nbHOABsFGiV7S/d3Kfbdj1+EuiifDYtBh9qvDsDN5ZKPiHmRjQuxolbliE08Iz26Wc/OYHeLAzcWc9hETWv+M5CQVFuE24xqHxKEZSbSFnog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Z0AV6SLvE+lWj3m0LPLnRQkLzWUijiXZmPuWgewLixo=;
+ b=oELWUpCggdW5CE5/1K+QfXliKCi8mRleyiyglwebAPmqNdf4VTBkP//FbiQY2EdhrZict+TaSGwXMIQ4lIpufH/BlnnB2+UKYrmp51lpSxi7c1371hnWF6M2WAj9Ge++Bb/neJuInlru91mAfOhzOtv7E7ui2fwl9nkkkovvkZH96NfUkl9o42khZUdhC0p47fMsvvESsM4sEH0Er5DmLa6HaOIplMG5ZYpcKv6Tae5kW5c1D9CEXyVhx9N89vrz+HN9wSvErfoEIJznl100olGiQM04HdA+HISWNQhnUEj2AVlY6ww0eU0VPTjMhTlD7yA8BR5+VpgTDL9BG7u65Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Z0AV6SLvE+lWj3m0LPLnRQkLzWUijiXZmPuWgewLixo=;
+ b=tZcmUVV14IMdRctmHLO3ete2x+4IRpfLA5SqbileOm0+CAYKoQNCmRSzZyrpnfelBpF7zdRrH6P6qtuxDQeUD6puiXQpprOkABtDzFwGWZFmZvHUtcFbpuHRrm4IjP3uYKry9qMtc4cq6Em8VOrRBTvDXgmX9GLLoAPQ/bf1Eao51KfxWmIXvp1yrSKXVN8rvSfDuv5v7NH5LKfIpilXKDQQQrKmdzBZPbI46m4w/qSbz2+V/4ihNtunhP5PwcCpZbjkv43hg7I8Fn2LHNjV3RQc8ab92V+0sukxM+ejSjhP99q66LinoszrqUz18/QzpM4/j+37OGJJg/cEOzkjyg==
+Received: from DS0PR12MB6560.namprd12.prod.outlook.com (2603:10b6:8:d0::22) by
+ CH3PR12MB9024.namprd12.prod.outlook.com (2603:10b6:610:176::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8489.22; Fri, 28 Feb 2025 10:31:58 +0000
+Received: from DS0PR12MB6560.namprd12.prod.outlook.com
+ ([fe80::4c05:4274:b769:b8af]) by DS0PR12MB6560.namprd12.prod.outlook.com
+ ([fe80::4c05:4274:b769:b8af%4]) with mapi id 15.20.8489.021; Fri, 28 Feb 2025
+ 10:31:58 +0000
+From: Cosmin Ratiu <cratiu@nvidia.com>
+To: "razor@blackwall.org" <razor@blackwall.org>, "liuhangbin@gmail.com"
+	<liuhangbin@gmail.com>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "jarod@redhat.com"
+	<jarod@redhat.com>, "davem@davemloft.net" <davem@davemloft.net>, Tariq Toukan
+	<tariqt@nvidia.com>, "linux-kselftest@vger.kernel.org"
+	<linux-kselftest@vger.kernel.org>, "shuah@kernel.org" <shuah@kernel.org>,
+	"steffen.klassert@secunet.com" <steffen.klassert@secunet.com>,
+	"jv@jvosburgh.net" <jv@jvosburgh.net>, "kuba@kernel.org" <kuba@kernel.org>,
+	"horms@kernel.org" <horms@kernel.org>, "edumazet@google.com"
+	<edumazet@google.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Jianbo Liu
+	<jianbol@nvidia.com>, "pabeni@redhat.com" <pabeni@redhat.com>
+Subject: Re: [PATCHv3 net 1/3] bonding: move IPsec deletion to
+ bond_ipsec_free_sa
+Thread-Topic: [PATCHv3 net 1/3] bonding: move IPsec deletion to
+ bond_ipsec_free_sa
+Thread-Index:
+ AQHbiPLkayT55t/yvkep5csWYH7qZLNa102AgAAI3oCAAEMWAIAAAoiAgADW+QCAAIlUgA==
+Date: Fri, 28 Feb 2025 10:31:58 +0000
+Message-ID: <76ed1d018596b81548d095aa2d4a9b31b360479c.camel@nvidia.com>
+References: <20250227083717.4307-1-liuhangbin@gmail.com>
+	 <20250227083717.4307-2-liuhangbin@gmail.com>
+	 <446e8ef4-7ac0-43ad-99ff-29c21a2ee117@blackwall.org>
+	 <13cb4b16-51b0-4042-8435-6dac72586e55@blackwall.org>
+	 <Z8Bm9i9St0zzDhRZ@fedora>
+	 <f88b234a-37ec-46a4-b920-35f598ab6c38@blackwall.org>
+	 <Z8EdatcTr9weRfHr@fedora>
+In-Reply-To: <Z8EdatcTr9weRfHr@fedora>
+Reply-To: Cosmin Ratiu <cratiu@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DS0PR12MB6560:EE_|CH3PR12MB9024:EE_
+x-ms-office365-filtering-correlation-id: 98caaa95-66c2-4aab-3148-08dd57e32156
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?ZUxjeTRwNytWaFJ6OElJZC9oUjQwd2hoR3dWR3BXdmFVVXo1UVI2Vjc4clo0?=
+ =?utf-8?B?V1JIa05vcVhuMkRscTQwU21UUklyaE15M0J5ZTB4Q29xYktBVkV5a0pzUEhX?=
+ =?utf-8?B?bW9maGllTjEyb0FEcHdoa2x3TWhoRkhxS3JZMmVSSzNzOS9abFQ1L0tZeEJa?=
+ =?utf-8?B?dnNrL01mb1ByeFUxWEJVL0tSaWgzRWw2OEZjMlRHN2cvaFFCVzZPajRxN2lE?=
+ =?utf-8?B?VlBDL2NDY01qUXFHUEprblhJVFd3aDdELzFqS1RWQUd3TkRrQmg1ejVZamg2?=
+ =?utf-8?B?K2pURGRXVHdVZThtSVBnQUVOZVM2akVVSnoxbi91Q29scDJqdWREejAzWFJr?=
+ =?utf-8?B?aEpKTGlrTU5ocFdaRERPbWpZZE9seWJ5d25ZeHc4QU5JK3gwNDdYYjBIb1RP?=
+ =?utf-8?B?bXgyODJ1Nk1aMGJ5aVNHM0tzbkxEcVVKRkdzeDErYjkwLzIrTFZOditGM1Jp?=
+ =?utf-8?B?dXMvN05zOWIxZjlWUzhMVkJXOTVJYWphZzB2NjAzLzV0TWptMHR1ZTVIMHdQ?=
+ =?utf-8?B?MVhIZlBjRDFVUGtFUFBiRUhWR0t1b0NUeVdCUlV5aUZiTTNIWVpnQWczTlkw?=
+ =?utf-8?B?U1JiaDI3bHpGaStxWGIvdkNZWlQwMnphd1orcjZCaVZLMXh5ak1BUlZpVGpG?=
+ =?utf-8?B?TG1jL3FiWFZnbFg0V2F0alV6OWppSyt1WkVxRkFMb05weWQ4WHBsVVQwQk43?=
+ =?utf-8?B?cUQ0Nnh3bE5LbldIZXN6aGEyRzNESXJRbWJRb0dqelhOWHJOeWc0VllyTlRZ?=
+ =?utf-8?B?cE1aTFc1ME1CL3JXSWFDTVY4a1NqYTI3N29EMVZ4Q29UdzJtMHlwNTNJZ01Q?=
+ =?utf-8?B?a09MTFpZTmk1ODMrRmhFNVBGSVcrRVpVYXZxd2FXSVFJM3JlNy9Kcy9XRzdp?=
+ =?utf-8?B?R1M1V0VqelZ5S0d6UG82dUIvTGpmUVJCRzBISlhOekx0MCtocGRkR0xvejd6?=
+ =?utf-8?B?eTJPZmNYcElqa2cwQUZDK3RXNHZxdWNCSUVBWGxIMmYwa0o4ZnJHcU9VZENk?=
+ =?utf-8?B?YXdKMEVWYlNEZ0VhWXlmMHBMbE9maWFFWXpEKzFUdENDd2dRZ2hzdlNmbjVl?=
+ =?utf-8?B?b0VhTHRKWHZFUGFkOGd0Vk9UeUpEaGdPUGZHemZUUDRvLzR0ZGlwRXM0Tzlr?=
+ =?utf-8?B?ZjFwSWVpTjd5T2RudzIwZ2JZaWtvT0tOMjc3ZGk5N1NibkFpVVN4RjViSkwy?=
+ =?utf-8?B?eHgyNmcxeVVrTHdsd2EyMk5wUy9EalZZT0J4Q2JVcHArNklQaWRheGg5YWRD?=
+ =?utf-8?B?dEtmSlV0RytUU3RaVkNKMHNUVTRLS3FOMkczTkYzbTIyN0FadStVSjJqbjFj?=
+ =?utf-8?B?dWxtRVFCQUFiempiMGYxSG4rWXhPLy9QamhuUHU1R2lTeFNaYUtMWkxqeVh4?=
+ =?utf-8?B?eDRZb09qTkM1U2FSL0s1cFNLa1VmRlRrdU50U0FCSFgyUGlzdTFIemxXY09C?=
+ =?utf-8?B?elRCRERvRGgwM2UwblEwZjhHS1ZKbG5jczUyNS9QWEtoRVg5NFJzRGlkaCtl?=
+ =?utf-8?B?VWFsaUtLL1lhRTFqdlBSVjJqSlRhdFlPQmlxUURaTnN1NkZxNjBCd0VPTjQ5?=
+ =?utf-8?B?cjVxNmExQ2hGVG9EM2xidVE0ZTRHbEp0dFkyMXpFbkVsbWRhMG5ENU9rTy8z?=
+ =?utf-8?B?eG5Iam83U0RvOUxJcHNQaHZGY0VuYzBjRjBZaFdmeURhSkxTL2ZoNks5MDZH?=
+ =?utf-8?B?YmdjbDBITUp5T3VNL1NXdjNqa0U3TlNSN0JwS29WTEs3ZDZmY3k3RVhydmVq?=
+ =?utf-8?B?cjRSaGNnUGJYM2FTVHc2elNYZiszWFA0VTBlMDhzTWhjKzFVTmo0MHFoQmtV?=
+ =?utf-8?B?SVc3eVlraURmZGVKcjlEM2l0UzBmcGxUWmV6dzFhUnczeWN5S09lNERYUFZF?=
+ =?utf-8?B?M25ieGY5NzNvRWlsb2lGRmtXbEZ2UTNPTXZ6KzdrUDB6dFhPejFsVnUzSzE5?=
+ =?utf-8?Q?RFWnYBRbtj3rBqoYffP8DmXdRR4Bg7jN?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6560.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?eWplUnQ5MFFIaTZZOW5DaGVRemJKZzNhUktVNTN2Q3hJNkhaTFhoZmVyNmxU?=
+ =?utf-8?B?VHI1bGJWZGpqR3pMTVZXZFZxdFA1U2M4SHQweERJS1Q1TTdzQktWdEpBTWpU?=
+ =?utf-8?B?VGZDb3lsdEVtMVp4MzQ3NU1vSTI5SFB3eXlNS3FjU3I5eE5HSWZUdm53WG5L?=
+ =?utf-8?B?UkZYeVd1WnlBK0crcUg5bUlyU2lLbTNpd25QU2E4WEQ5OGVSSjBLQ0FZaUli?=
+ =?utf-8?B?NEluV1BLS2kyQVRmMDMxeHYyU29nUXpMMzdXdmlyL2FwS2xHWWZ4VUt4bE10?=
+ =?utf-8?B?bFdzcmFSTHI3VEl6WkpKNHhuSXZMZUVHOEVEd2QvUW4wbEhrb2lRVmRleXY0?=
+ =?utf-8?B?aVV5VlRYU0lvejJLZ3JQanlUa0NxNVQvSHBjSVY4cy8zb0VDUXFqUUtrZGJu?=
+ =?utf-8?B?T3lSb1FrSVRqYWpqU2ZiWTI4Sk9sSGRsbE93aEhZbjl2RDVmOHZKQU5kTkdX?=
+ =?utf-8?B?MFpGcGMyTEJvK3k5ai80c1pvVVN1VnNBVVFTeGgvWTR2SDBBdVBFclJXMFlO?=
+ =?utf-8?B?WWg2R2xobk5LWjBHUUVWYjhVS3hoYWVzZmJDcFExVDBFYnozalNxK0UrbDBz?=
+ =?utf-8?B?dmo1NlZrNVdLSk03YU9JdmlvcTFRdkZXblg2bzQzMTlzeGdqT29vbzlPNTNE?=
+ =?utf-8?B?VFR1Q2dWYmlpWDd3LzZydUtKS3ZTMUx0SjdvczNFcnRVT2trRnhlWTZRalh0?=
+ =?utf-8?B?allqbjVuRHFqaWFnMXVzTFpXdWJyZHMxOTIra2NGVkFwZjhiTTgxdkNLeWZm?=
+ =?utf-8?B?YTRJOHlGY0taL3gwbFp3ZkpRVHBsMnpFWElveUwrYlhBdG03WEp0WHk4cG9S?=
+ =?utf-8?B?NWpBcXV1NlJ4NTZkSXowTVRJWGFHMDdzcHRTODk4eUp4MEswdDVZRVhITUhP?=
+ =?utf-8?B?dEI5ZVRxWXV6ZWdPMnNJV3djbkxwNlJLSFdNK2NEY0FUMkIrY25vV2M5Y0JO?=
+ =?utf-8?B?cXZrUDQyM2hvZG5lR28wQzdjUjJ1a0U0RUFwRkRGa0xLUFhuZkQxN29zd3hY?=
+ =?utf-8?B?RnFVaFd1ZVhYZTVBdG51eHJnSGlZNHpMKzBqYkUySEQxTGc4elFQYjUxeldI?=
+ =?utf-8?B?L284S2hOZzhmdmdXbmE4RVMwS3RoZk84c2k4dmVLN1hUS2drM1FHUTZROTE4?=
+ =?utf-8?B?dnJvMGdLNE1SOWtkVlBPa1h5c1VVdXUvZ01HWnRIOEJraHlsM0FheE1mUE9i?=
+ =?utf-8?B?NUt1MkNYUFN4WkVpL3FsdStyeit5V2lIaFN6SUFJOUc3eTFDZUNCRTJ4YllI?=
+ =?utf-8?B?UmRYNkZKaEk0WU1CVzREYjJKbmxReTc4NEhQY3FIM0E2YzNCZ0EzWFlJTzR6?=
+ =?utf-8?B?NXd6elNTekczUFkwWTJWVmsrMVlUMnFUUk5mdVJWVHNMekgzcHNSNUlFRHlZ?=
+ =?utf-8?B?U2dGUTNsWkF1SlVyMlFZY2doSWh5QTgxbDV4VUVpUHhNUUFZbUphRUtwNWpW?=
+ =?utf-8?B?V3REdUZjeUdCYkNhczhNcG9DMyt1SlpKRlFWZ3pZM3o3TWJOT3dZS1NLWXhV?=
+ =?utf-8?B?M3pPcHdnaWU4QnpQTnVUSC92eE1GeVRBTEpPR3d6T1Z1K25GOGs5S1M0UGJY?=
+ =?utf-8?B?OUZoTFc3ODlRS3c3Vk5mblNwamNFVDhvYXVoa1R6RFdIK1RpZG5QYzNpWHdG?=
+ =?utf-8?B?OEljb3dybXQ3RGtZME5QN0lHTURkVTNrVUw4ODUyd25XajA4WUtVOVI5WkxU?=
+ =?utf-8?B?Qk9VUWFsY0xPR0JLdy96MzdRa2QxZnlrT251SGV5aFQ2TWYxQzdEazhNUW51?=
+ =?utf-8?B?d0tNcXRJdEh6ZVBjTGw4TXZOOUpkOGMrNyt2M2cvKzNrQWtVOW42ekRBTlIz?=
+ =?utf-8?B?STAzNUxOcDZieDVkSHFTajkrNHV5dW9tN0FjckJkWVdvWHkybnh3Wi9SbC9a?=
+ =?utf-8?B?TFpzQ0ZlUlF6V3RDT2ROUUNubU85eWh5bGJiMG5qN0cvclRXVVZzbUdsUjhw?=
+ =?utf-8?B?YzAyNFBKcHJKQWtqM3A0UW1TMWRRdWpwOWVDTVJORFU5Nlc2anpMNSs0amMx?=
+ =?utf-8?B?aHM3bm9oSHI1Mnl4OU5lSWlJK205WUhUbUtIMzVMemtGMlk4eWhzeS9RVUNa?=
+ =?utf-8?B?Y0puWm5nM2FweGpRRkQ5TWp0YzFkeFFuenRySnNLbGhCNG1TdTg3KzhJRXBL?=
+ =?utf-8?Q?jTOfO5MymDF33hL+VsD3+WYz4?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <8B9C79842AC323489230648423DC7ABF@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6560.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98caaa95-66c2-4aab-3148-08dd57e32156
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Feb 2025 10:31:58.4460
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: UKZoqKO7L2Pnvhk4VCsVEGue27204RL/Fpx39+uU3xeirUgsmXlzdjB32Fz/ELkJK4zH4KgSx9AI5pHfipVAmg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9024
 
-The name 'netns_local' is confusing. A following commit will export it via
-netlink, so let's use a more explicit name.
-
-Reported-by: Eric Dumazet <edumazet@google.com>
-Suggested-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
----
- Documentation/networking/net_cachelines/net_device.rst |  2 +-
- Documentation/networking/switchdev.rst                 |  2 +-
- drivers/net/amt.c                                      |  2 +-
- drivers/net/bonding/bond_main.c                        |  2 +-
- drivers/net/ethernet/adi/adin1110.c                    |  2 +-
- drivers/net/ethernet/marvell/prestera/prestera_main.c  |  2 +-
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c      |  4 ++--
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c       |  2 +-
- drivers/net/ethernet/mellanox/mlxsw/spectrum.c         |  2 +-
- drivers/net/ethernet/rocker/rocker_main.c              |  2 +-
- drivers/net/ethernet/ti/cpsw_new.c                     |  2 +-
- drivers/net/loopback.c                                 |  2 +-
- drivers/net/net_failover.c                             |  2 +-
- drivers/net/team/team_core.c                           |  2 +-
- drivers/net/vrf.c                                      |  2 +-
- include/linux/netdevice.h                              |  4 ++--
- net/batman-adv/soft-interface.c                        |  2 +-
- net/bridge/br_device.c                                 |  2 +-
- net/core/dev.c                                         |  4 ++--
- net/hsr/hsr_device.c                                   |  2 +-
- net/ieee802154/6lowpan/core.c                          |  2 +-
- net/ieee802154/core.c                                  | 10 +++++-----
- net/ipv4/ip_tunnel.c                                   |  2 +-
- net/ipv4/ipmr.c                                        |  2 +-
- net/ipv6/ip6_gre.c                                     |  2 +-
- net/ipv6/ip6_tunnel.c                                  |  2 +-
- net/ipv6/ip6mr.c                                       |  2 +-
- net/ipv6/sit.c                                         |  2 +-
- net/openvswitch/vport-internal_dev.c                   |  2 +-
- net/wireless/core.c                                    | 10 +++++-----
- tools/testing/selftests/net/forwarding/README          |  2 +-
- 31 files changed, 42 insertions(+), 42 deletions(-)
-
-diff --git a/Documentation/networking/net_cachelines/net_device.rst b/Documentation/networking/net_cachelines/net_device.rst
-index 15e31ece675f..6327e689e8a8 100644
---- a/Documentation/networking/net_cachelines/net_device.rst
-+++ b/Documentation/networking/net_cachelines/net_device.rst
-@@ -167,7 +167,7 @@ unsigned:1                          wol_enabled
- unsigned:1                          threaded                                                            napi_poll(napi_enable,dev_set_threaded)
- unsigned_long:1                     see_all_hwtstamp_requests
- unsigned_long:1                     change_proto_down
--unsigned_long:1                     netns_local
-+unsigned_long:1                     netns_immutable
- unsigned_long:1                     fcoe_mtu
- struct list_head                    net_notifier_list
- struct macsec_ops*                  macsec_ops
-diff --git a/Documentation/networking/switchdev.rst b/Documentation/networking/switchdev.rst
-index f355f0166f1b..2966b7122f05 100644
---- a/Documentation/networking/switchdev.rst
-+++ b/Documentation/networking/switchdev.rst
-@@ -137,7 +137,7 @@ would be sub-port 0 on port 1 on switch 1.
- Port Features
- ^^^^^^^^^^^^^
- 
--dev->netns_local
-+dev->netns_immutable
- 
- If the switchdev driver (and device) only supports offloading of the default
- network namespace (netns), the driver should set this private flag to prevent
-diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-index 53899b70fae1..734a0b3242a9 100644
---- a/drivers/net/amt.c
-+++ b/drivers/net/amt.c
-@@ -3099,7 +3099,7 @@ static void amt_link_setup(struct net_device *dev)
- 	dev->addr_len		= 0;
- 	dev->priv_flags		|= IFF_NO_QUEUE;
- 	dev->lltx		= true;
--	dev->netns_local	= true;
-+	dev->netns_immutable	= true;
- 	dev->features		|= NETIF_F_GSO_SOFTWARE;
- 	dev->hw_features	|= NETIF_F_SG | NETIF_F_HW_CSUM;
- 	dev->hw_features	|= NETIF_F_FRAGLIST | NETIF_F_RXCSUM;
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 7d98fee5a27f..fe7072336e8f 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -6025,7 +6025,7 @@ void bond_setup(struct net_device *bond_dev)
- 	bond_dev->lltx = true;
- 
- 	/* Don't allow bond devices to change network namespaces. */
--	bond_dev->netns_local = true;
-+	bond_dev->netns_immutable = true;
- 
- 	/* By default, we declare the bond to be fully
- 	 * VLAN hardware accelerated capable. Special
-diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
-index 68fad5575fd4..30f9d271e595 100644
---- a/drivers/net/ethernet/adi/adin1110.c
-+++ b/drivers/net/ethernet/adi/adin1110.c
-@@ -1599,7 +1599,7 @@ static int adin1110_probe_netdevs(struct adin1110_priv *priv)
- 		netdev->netdev_ops = &adin1110_netdev_ops;
- 		netdev->ethtool_ops = &adin1110_ethtool_ops;
- 		netdev->priv_flags |= IFF_UNICAST_FLT;
--		netdev->netns_local = true;
-+		netdev->netns_immutable = true;
- 
- 		port_priv->phydev = get_phy_device(priv->mii_bus, i + 1, false);
- 		if (IS_ERR(port_priv->phydev)) {
-diff --git a/drivers/net/ethernet/marvell/prestera/prestera_main.c b/drivers/net/ethernet/marvell/prestera/prestera_main.c
-index 8cdecf61253c..71ffb55d1fc4 100644
---- a/drivers/net/ethernet/marvell/prestera/prestera_main.c
-+++ b/drivers/net/ethernet/marvell/prestera/prestera_main.c
-@@ -634,7 +634,7 @@ static int prestera_port_create(struct prestera_switch *sw, u32 id)
- 		goto err_dl_port_register;
- 
- 	dev->features |= NETIF_F_HW_TC;
--	dev->netns_local = true;
-+	dev->netns_immutable = true;
- 	dev->netdev_ops = &prestera_netdev_ops;
- 	dev->ethtool_ops = &prestera_ethtool_ops;
- 	SET_NETDEV_DEV(dev, sw->dev->dev);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 7e3aad015111..6eb8642d2e2b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -4423,9 +4423,9 @@ static netdev_features_t mlx5e_fix_features(struct net_device *netdev,
- 
- 	if (mlx5e_is_uplink_rep(priv)) {
- 		features = mlx5e_fix_uplink_rep_features(netdev, features);
--		netdev->netns_local = true;
-+		netdev->netns_immutable = true;
- 	} else {
--		netdev->netns_local = false;
-+		netdev->netns_immutable = false;
- 	}
- 
- 	mutex_unlock(&priv->state_lock);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index 07f38f472a27..2abab241f03b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -905,7 +905,7 @@ static void mlx5e_build_rep_netdev(struct net_device *netdev,
- 
- 	netdev->features |= netdev->hw_features;
- 
--	netdev->netns_local = true;
-+	netdev->netns_immutable = true;
- }
- 
- static int mlx5e_init_rep(struct mlx5_core_dev *mdev,
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-index 1f8362788c75..c7e6a3258244 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-@@ -1579,7 +1579,7 @@ static int mlxsw_sp_port_create(struct mlxsw_sp *mlxsw_sp, u16 local_port,
- 			    NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM;
- 	dev->vlan_features |= NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM;
- 	dev->lltx = true;
--	dev->netns_local = true;
-+	dev->netns_immutable = true;
- 
- 	dev->min_mtu = ETH_MIN_MTU;
- 	dev->max_mtu = MLXSW_PORT_MAX_MTU - MLXSW_PORT_ETH_FRAME_HDR;
-diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
-index fe0bf1d3217a..36af94a2e062 100644
---- a/drivers/net/ethernet/rocker/rocker_main.c
-+++ b/drivers/net/ethernet/rocker/rocker_main.c
-@@ -2576,7 +2576,7 @@ static int rocker_probe_port(struct rocker *rocker, unsigned int port_number)
- 	rocker_carrier_init(rocker_port);
- 
- 	dev->features |= NETIF_F_SG;
--	dev->netns_local = true;
-+	dev->netns_immutable = true;
- 
- 	/* MTU range: 68 - 9000 */
- 	dev->min_mtu = ROCKER_PORT_MIN_MTU;
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index cec0a90659d9..b01289d4726d 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -1409,7 +1409,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
- 
- 		ndev->features |= NETIF_F_HW_VLAN_CTAG_FILTER |
- 				  NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_TC;
--		ndev->netns_local = true;
-+		ndev->netns_immutable = true;
- 
- 		ndev->xdp_features = NETDEV_XDP_ACT_BASIC |
- 				     NETDEV_XDP_ACT_REDIRECT |
-diff --git a/drivers/net/loopback.c b/drivers/net/loopback.c
-index f1d68153987e..201fddcd3b1e 100644
---- a/drivers/net/loopback.c
-+++ b/drivers/net/loopback.c
-@@ -172,7 +172,7 @@ static void gen_lo_setup(struct net_device *dev,
- 	dev->flags		= IFF_LOOPBACK;
- 	dev->priv_flags		|= IFF_LIVE_ADDR_CHANGE | IFF_NO_QUEUE;
- 	dev->lltx		= true;
--	dev->netns_local	= true;
-+	dev->netns_immutable	= true;
- 	netif_keep_dst(dev);
- 	dev->hw_features	= NETIF_F_GSO_SOFTWARE;
- 	dev->features		= NETIF_F_SG | NETIF_F_FRAGLIST
-diff --git a/drivers/net/net_failover.c b/drivers/net/net_failover.c
-index 54c8b9d5b5fc..5b50d9186f12 100644
---- a/drivers/net/net_failover.c
-+++ b/drivers/net/net_failover.c
-@@ -734,7 +734,7 @@ struct failover *net_failover_create(struct net_device *standby_dev)
- 	failover_dev->lltx = true;
- 
- 	/* Don't allow failover devices to change network namespaces. */
--	failover_dev->netns_local = true;
-+	failover_dev->netns_immutable = true;
- 
- 	failover_dev->hw_features = FAILOVER_VLAN_FEATURES |
- 				    NETIF_F_HW_VLAN_CTAG_TX |
-diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
-index 78edb8186b6d..fb917560d0a2 100644
---- a/drivers/net/team/team_core.c
-+++ b/drivers/net/team/team_core.c
-@@ -2203,7 +2203,7 @@ static void team_setup(struct net_device *dev)
- 	dev->lltx = true;
- 
- 	/* Don't allow team devices to change network namespaces. */
--	dev->netns_local = true;
-+	dev->netns_immutable = true;
- 
- 	dev->features |= NETIF_F_GRO;
- 
-diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-index 849c3ced2690..36cf6191335e 100644
---- a/drivers/net/vrf.c
-+++ b/drivers/net/vrf.c
-@@ -1617,7 +1617,7 @@ static void vrf_setup(struct net_device *dev)
- 	dev->lltx = true;
- 
- 	/* don't allow vrf devices to change network namespaces. */
--	dev->netns_local = true;
-+	dev->netns_immutable = true;
- 
- 	/* does not make sense for a VLAN to be added to a vrf device */
- 	dev->features   |= NETIF_F_VLAN_CHALLENGED;
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 26a0c4e4d963..b8728d67ea91 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2021,7 +2021,7 @@ enum netdev_reg_state {
-  *			regardless of source, even if those aren't
-  *			HWTSTAMP_SOURCE_NETDEV
-  *	@change_proto_down: device supports setting carrier via IFLA_PROTO_DOWN
-- *	@netns_local: interface can't change network namespaces
-+ *	@netns_immutable: interface can't change network namespaces
-  *	@fcoe_mtu:	device supports maximum FCoE MTU, 2158 bytes
-  *
-  *	@net_notifier_list:	List of per-net netdev notifier block
-@@ -2429,7 +2429,7 @@ struct net_device {
- 	/* priv_flags_slow, ungrouped to save space */
- 	unsigned long		see_all_hwtstamp_requests:1;
- 	unsigned long		change_proto_down:1;
--	unsigned long		netns_local:1;
-+	unsigned long		netns_immutable:1;
- 	unsigned long		fcoe_mtu:1;
- 
- 	struct list_head	net_notifier_list;
-diff --git a/net/batman-adv/soft-interface.c b/net/batman-adv/soft-interface.c
-index d893c8013261..e190fa954f22 100644
---- a/net/batman-adv/soft-interface.c
-+++ b/net/batman-adv/soft-interface.c
-@@ -1037,7 +1037,7 @@ static void batadv_softif_init_early(struct net_device *dev)
- 	dev->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
- 	dev->priv_flags |= IFF_NO_QUEUE;
- 	dev->lltx = true;
--	dev->netns_local = true;
-+	dev->netns_immutable = true;
- 
- 	/* can't call min_mtu, because the needed variables
- 	 * have not been initialized yet
-diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
-index 0ab4613aa07a..9d8c72ed01ab 100644
---- a/net/bridge/br_device.c
-+++ b/net/bridge/br_device.c
-@@ -488,7 +488,7 @@ void br_dev_setup(struct net_device *dev)
- 	SET_NETDEV_DEVTYPE(dev, &br_type);
- 	dev->priv_flags = IFF_EBRIDGE | IFF_NO_QUEUE;
- 	dev->lltx = true;
--	dev->netns_local = true;
-+	dev->netns_immutable = true;
- 
- 	dev->features = COMMON_FEATURES | NETIF_F_HW_VLAN_CTAG_TX |
- 			NETIF_F_HW_VLAN_STAG_TX;
-diff --git a/net/core/dev.c b/net/core/dev.c
-index d6d68a2d2355..357ae88064a5 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -12151,7 +12151,7 @@ int __dev_change_net_namespace(struct net_device *dev, struct net *net,
- 
- 	/* Don't allow namespace local devices to be moved. */
- 	err = -EINVAL;
--	if (dev->netns_local)
-+	if (dev->netns_immutable)
- 		goto out;
- 
- 	/* Ensure the device has been registered */
-@@ -12533,7 +12533,7 @@ static void __net_exit default_device_exit_net(struct net *net)
- 		char fb_name[IFNAMSIZ];
- 
- 		/* Ignore unmoveable devices (i.e. loopback) */
--		if (dev->netns_local)
-+		if (dev->netns_immutable)
- 			continue;
- 
- 		/* Leave virtual devices for the generic cleanup */
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index b6fb18469439..c6f8614e9ed1 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -643,7 +643,7 @@ void hsr_dev_setup(struct net_device *dev)
- 	/* Not sure about this. Taken from bridge code. netdevice.h says
- 	 * it means "Does not change network namespaces".
- 	 */
--	dev->netns_local = true;
-+	dev->netns_immutable = true;
- 
- 	dev->needs_free_netdev = true;
- 
-diff --git a/net/ieee802154/6lowpan/core.c b/net/ieee802154/6lowpan/core.c
-index ee318d46817d..9a9da74b0a4f 100644
---- a/net/ieee802154/6lowpan/core.c
-+++ b/net/ieee802154/6lowpan/core.c
-@@ -116,7 +116,7 @@ static void lowpan_setup(struct net_device *ldev)
- 	ldev->netdev_ops	= &lowpan_netdev_ops;
- 	ldev->header_ops	= &lowpan_header_ops;
- 	ldev->needs_free_netdev	= true;
--	ldev->netns_local	= true;
-+	ldev->netns_immutable	= true;
- }
- 
- static int lowpan_validate(struct nlattr *tb[], struct nlattr *data[],
-diff --git a/net/ieee802154/core.c b/net/ieee802154/core.c
-index 88adb04e4072..89b671b12600 100644
---- a/net/ieee802154/core.c
-+++ b/net/ieee802154/core.c
-@@ -226,11 +226,11 @@ int cfg802154_switch_netns(struct cfg802154_registered_device *rdev,
- 	list_for_each_entry(wpan_dev, &rdev->wpan_dev_list, list) {
- 		if (!wpan_dev->netdev)
- 			continue;
--		wpan_dev->netdev->netns_local = false;
-+		wpan_dev->netdev->netns_immutable = false;
- 		err = dev_change_net_namespace(wpan_dev->netdev, net, "wpan%d");
- 		if (err)
- 			break;
--		wpan_dev->netdev->netns_local = true;
-+		wpan_dev->netdev->netns_immutable = true;
- 	}
- 
- 	if (err) {
-@@ -242,11 +242,11 @@ int cfg802154_switch_netns(struct cfg802154_registered_device *rdev,
- 						     list) {
- 			if (!wpan_dev->netdev)
- 				continue;
--			wpan_dev->netdev->netns_local = false;
-+			wpan_dev->netdev->netns_immutable = false;
- 			err = dev_change_net_namespace(wpan_dev->netdev, net,
- 						       "wpan%d");
- 			WARN_ON(err);
--			wpan_dev->netdev->netns_local = true;
-+			wpan_dev->netdev->netns_immutable = true;
- 		}
- 
- 		return err;
-@@ -291,7 +291,7 @@ static int cfg802154_netdev_notifier_call(struct notifier_block *nb,
- 	switch (state) {
- 		/* TODO NETDEV_DEVTYPE */
- 	case NETDEV_REGISTER:
--		dev->netns_local = true;
-+		dev->netns_immutable = true;
- 		wpan_dev->identifier = ++rdev->wpan_dev_id;
- 		list_add_rcu(&wpan_dev->list, &rdev->wpan_dev_list);
- 		rdev->devlist_generation++;
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 011f2a5aab3b..4b06dc7e04f2 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -1162,7 +1162,7 @@ int ip_tunnel_init_net(struct net *net, unsigned int ip_tnl_net_id,
- 	 * Allowing to move it to another netns is clearly unsafe.
- 	 */
- 	if (!IS_ERR(itn->fb_tunnel_dev)) {
--		itn->fb_tunnel_dev->netns_local = true;
-+		itn->fb_tunnel_dev->netns_immutable = true;
- 		itn->fb_tunnel_dev->mtu = ip_tunnel_bind_dev(itn->fb_tunnel_dev);
- 		ip_tunnel_add(itn, netdev_priv(itn->fb_tunnel_dev));
- 		itn->type = itn->fb_tunnel_dev->type;
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index 21ae7594a852..b81c8131e23f 100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -563,7 +563,7 @@ static void reg_vif_setup(struct net_device *dev)
- 	dev->flags		= IFF_NOARP;
- 	dev->netdev_ops		= &reg_vif_netdev_ops;
- 	dev->needs_free_netdev	= true;
--	dev->netns_local	= true;
-+	dev->netns_immutable	= true;
- }
- 
- static struct net_device *ipmr_reg_vif(struct net *net, struct mr_table *mrt)
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index d31a4ce3b19f..c6ebb6a6d390 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -1620,7 +1620,7 @@ static int __net_init ip6gre_init_net(struct net *net)
- 	/* FB netdevice is special: we have one, and only one per netns.
- 	 * Allowing to move it to another netns is clearly unsafe.
- 	 */
--	ign->fb_tunnel_dev->netns_local = true;
-+	ign->fb_tunnel_dev->netns_immutable = true;
- 
- 	ip6gre_fb_tunnel_init(ign->fb_tunnel_dev);
- 	ign->fb_tunnel_dev->rtnl_link_ops = &ip6gre_link_ops;
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 89d206731af0..170a6ac30889 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -2265,7 +2265,7 @@ static int __net_init ip6_tnl_init_net(struct net *net)
- 	/* FB netdevice is special: we have one, and only one per netns.
- 	 * Allowing to move it to another netns is clearly unsafe.
- 	 */
--	ip6n->fb_tnl_dev->netns_local = true;
-+	ip6n->fb_tnl_dev->netns_immutable = true;
- 
- 	err = ip6_fb_tnl_dev_init(ip6n->fb_tnl_dev);
- 	if (err < 0)
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index 535e9f72514c..e8ade93a0f0e 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -668,7 +668,7 @@ static void reg_vif_setup(struct net_device *dev)
- 	dev->flags		= IFF_NOARP;
- 	dev->netdev_ops		= &reg_vif_netdev_ops;
- 	dev->needs_free_netdev	= true;
--	dev->netns_local	= true;
-+	dev->netns_immutable	= true;
- }
- 
- static struct net_device *ip6mr_reg_vif(struct net *net, struct mr_table *mrt)
-diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
-index f7b59bc957d3..6f04703fe638 100644
---- a/net/ipv6/sit.c
-+++ b/net/ipv6/sit.c
-@@ -1859,7 +1859,7 @@ static int __net_init sit_init_net(struct net *net)
- 	/* FB netdevice is special: we have one, and only one per netns.
- 	 * Allowing to move it to another netns is clearly unsafe.
- 	 */
--	sitn->fb_tunnel_dev->netns_local = true;
-+	sitn->fb_tunnel_dev->netns_immutable = true;
- 
- 	t = netdev_priv(sitn->fb_tunnel_dev);
- 	t->net = net;
-diff --git a/net/openvswitch/vport-internal_dev.c b/net/openvswitch/vport-internal_dev.c
-index 2412d7813d24..125d310871e9 100644
---- a/net/openvswitch/vport-internal_dev.c
-+++ b/net/openvswitch/vport-internal_dev.c
-@@ -149,7 +149,7 @@ static struct vport *internal_dev_create(const struct vport_parms *parms)
- 
- 	/* Restrict bridge port to current netns. */
- 	if (vport->port_no == OVSP_LOCAL)
--		vport->dev->netns_local = true;
-+		vport->dev->netns_immutable = true;
- 
- 	rtnl_lock();
- 	err = register_netdevice(vport->dev);
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 12b780de8779..15bbc9d06c9e 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -162,11 +162,11 @@ int cfg80211_switch_netns(struct cfg80211_registered_device *rdev,
- 	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
- 		if (!wdev->netdev)
- 			continue;
--		wdev->netdev->netns_local = false;
-+		wdev->netdev->netns_immutable = false;
- 		err = dev_change_net_namespace(wdev->netdev, net, "wlan%d");
- 		if (err)
- 			break;
--		wdev->netdev->netns_local = true;
-+		wdev->netdev->netns_immutable = true;
- 	}
- 
- 	if (err) {
-@@ -178,11 +178,11 @@ int cfg80211_switch_netns(struct cfg80211_registered_device *rdev,
- 						     list) {
- 			if (!wdev->netdev)
- 				continue;
--			wdev->netdev->netns_local = false;
-+			wdev->netdev->netns_immutable = false;
- 			err = dev_change_net_namespace(wdev->netdev, net,
- 							"wlan%d");
- 			WARN_ON(err);
--			wdev->netdev->netns_local = true;
-+			wdev->netdev->netns_immutable = true;
- 		}
- 
- 		return err;
-@@ -1513,7 +1513,7 @@ static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
- 		SET_NETDEV_DEVTYPE(dev, &wiphy_type);
- 		wdev->netdev = dev;
- 		/* can only change netns with wiphy */
--		dev->netns_local = true;
-+		dev->netns_immutable = true;
- 
- 		cfg80211_init_wdev(wdev);
- 		break;
-diff --git a/tools/testing/selftests/net/forwarding/README b/tools/testing/selftests/net/forwarding/README
-index a652429bfd53..7b41cff993ad 100644
---- a/tools/testing/selftests/net/forwarding/README
-+++ b/tools/testing/selftests/net/forwarding/README
-@@ -6,7 +6,7 @@ to easily create and test complex environments.
- 
- Unfortunately, these namespaces can not be used with actual switching
- ASICs, as their ports can not be migrated to other network namespaces
--(dev->netns_local) and most of them probably do not support the
-+(dev->netns_immutable) and most of them probably do not support the
- L1-separation provided by namespaces.
- 
- However, a similar kind of flexibility can be achieved by using VRFs and
--- 
-2.47.1
-
+T24gRnJpLCAyMDI1LTAyLTI4IGF0IDAyOjIwICswMDAwLCBIYW5nYmluIExpdSB3cm90ZToNCj4g
+T24gVGh1LCBGZWIgMjcsIDIwMjUgYXQgMDM6MzE6MDFQTSArMDIwMCwgTmlrb2xheSBBbGVrc2Fu
+ZHJvdiB3cm90ZToNCj4gPiA+ID4gT25lIG1vcmUgdGhpbmcgLSBub3RlIEknbSBub3QgYW4geGZy
+bSBleHBlcnQgYnkgZmFyIGJ1dCBpdA0KPiA+ID4gPiBzZWVtcyB0byBtZSBoZXJlIHlvdSBoYXZl
+DQo+ID4gPiA+IHRvIGFsc28gY2FsbMKgIHhkb19kZXZfc3RhdGVfZnJlZSgpIHdpdGggdGhlIG9s
+ZCBhY3RpdmUgc2xhdmUNCj4gPiA+ID4gZGV2IG90aGVyd2lzZSB0aGF0IHdpbGwNCj4gPiA+ID4g
+bmV2ZXIgZ2V0IGNhbGxlZCB3aXRoIHRoZSBvcmlnaW5hbCByZWFsX2RldiBhZnRlciB0aGUgc3dp
+dGNoIHRvDQo+ID4gPiA+IGEgbmV3DQo+ID4gPiA+IGFjdGl2ZSBzbGF2ZSAob3IgbW9yZSBhY2N1
+cmF0ZWx5IGl0IG1pZ2h0IGlmIHRoZSBHQyBydW5zDQo+ID4gPiA+IGJldHdlZW4gdGhlIHN3aXRj
+aGluZw0KPiA+ID4gPiBidXQgaXQgaXMgYSByYWNlKSwgY2FyZSBtdXN0IGJlIHRha2VuIHdydCBz
+ZXF1ZW5jZSBvZiBldmVudHMNCj4gPiA+ID4gYmVjYXVzZSB0aGUgWEZSTQ0KPiA+ID4gDQo+ID4g
+PiBDYW4gd2UganVzdCBjYWxsIHhzLT54c28ucmVhbF9kZXYtPnhmcm1kZXZfb3BzLQ0KPiA+ID4g
+Pnhkb19kZXZfc3RhdGVfZnJlZSh4cykNCj4gPiA+IG5vIG1hdHRlciB4cy0+eHNvLnJlYWxfZGV2
+ID09IHJlYWxfZGV2IG9yIG5vdD8gSSdtIGFmcmFpZCBjYWxsaW5nDQo+ID4gPiB4ZG9fZGV2X3N0
+YXRlX2ZyZWUoKSBldmVyeSB3aGVyZSBtYXkgbWFrZSB1cyBsb3QgbW9yZSBlYXNpbHkuDQo+ID4g
+PiANCj4gPiANCj4gPiBZb3UnZCBoYXZlIHRvIGNoZWNrIGFsbCBkcml2ZXJzIHRoYXQgaW1wbGVt
+ZW50IHRoZSBjYWxsYmFjayB0bw0KPiA+IGFuc3dlciB0aGF0IGFuZCBldmVuIHRoZW4NCj4gPiBJ
+J2Qgc3RpY2sgdG8gdGhlIGNhbm9uaWNhbCB3YXkgb2YgaG93IGl0J3MgZG9uZSBpbiB4ZnJtIGFu
+ZCBtYWtlDQo+ID4gdGhlIGJvbmQganVzdCBwYXNzdGhyb3VnaC4NCj4gPiBBbnkgb3RoZXIgZ2Ft
+ZXMgYmVjb21lIGRhbmdlcm91cyBhbmQgbmV3IGNvZGUgd2lsbCBoYXZlIHRvIGJlDQo+ID4gY2Fy
+ZWZ1bGx5IHJldmlld2VkIGV2ZXJ5DQo+ID4gdGltZSwgY2FsbGluZyBhbm90aGVyIGRldmljZSdz
+IGZyZWVfc2Egd2hlbiBpdCB3YXNuJ3QgYWRkZWQgYmVmb3JlDQo+ID4gZG9lc24ndCBzb3VuZCBn
+b29kLg0KPiA+IA0KPiA+ID4gPiBHQyBtYXkgYmUgcnVubmluZyBpbiBwYXJhbGxlbCB3aGljaCBw
+cm9iYWJseSBtZWFucyB0aGF0IGluDQo+ID4gPiA+IGJvbmRfaXBzZWNfZnJlZV9zYSgpDQo+ID4g
+PiA+IHlvdSdsbCBoYXZlIHRvIHRha2UgdGhlIG11dGV4IGJlZm9yZSBjYWxsaW5nDQo+ID4gPiA+
+IHhkb19kZXZfc3RhdGVfZnJlZSgpIGFuZCBjaGVjaw0KPiA+ID4gPiBpZiB0aGUgZW50cnkgaXMg
+c3RpbGwgbGlua2VkIGluIHRoZSBib25kJ3MgaXBzZWMgbGlzdCBiZWZvcmUNCj4gPiA+ID4gY2Fs
+bGluZyB0aGUgZnJlZV9zYQ0KPiA+ID4gPiBjYWxsYmFjaywgaWYgaXQgaXNuJ3QgdGhlbiBkZWxf
+c2FfYWxsIGdvdCB0byBpdCBiZWZvcmUgdGhlIEdDDQo+ID4gPiA+IGFuZCB0aGVyZSdzIG5vdGhp
+bmcNCj4gPiA+ID4gdG8gZG8gaWYgaXQgYWxzbyBjYWxsZWQgdGhlIGRldidzIGZyZWVfc2EgY2Fs
+bGJhY2suIFRoZSBjaGVjaw0KPiA+ID4gPiBmb3IgcmVhbF9kZXYgZG9lc24ndA0KPiA+ID4gPiBz
+ZWVtIGVub3VnaCB0byBwcm90ZWN0IGFnYWluc3QgdGhpcyByYWNlLg0KPiA+ID4gDQo+ID4gPiBJ
+IGFncmVlIHRoYXQgd2UgbmVlZCB0byB0YWtlIHRoZSBtdXRleCBiZWZvcmUgY2FsbGluZw0KPiA+
+ID4geGRvX2Rldl9zdGF0ZV9mcmVlKCkNCj4gPiA+IGluIGJvbmRfaXBzZWNfZnJlZV9zYSgpLiBE
+byB5b3UgdGhpbmsgaWYgdGhpcyBpcyBlbm91Z2g/IEknbSBhDQo+ID4gPiBiaXQgbG90IGhlcmUu
+DQo+ID4gPiANCj4gPiA+IFRoYW5rcw0KPiA+ID4gSGFuZ2Jpbg0KPiA+IA0KPiA+IFdlbGwsIHRo
+ZSByYWNlIGlzIGJldHdlZW4gdGhlIHhmcm0gR0MgYW5kIGRlbF9zYV9hbGwsIGluIGJvbmQncw0K
+PiA+IGZyZWVfc2EgaWYgeW91DQo+ID4gd2FsayB0aGUgbGlzdCB1bmRlciB0aGUgbXV0ZXggYmVm
+b3JlIGNhbGxpbmcgcmVhbF9kZXYncyBmcmVlDQo+ID4gY2FsbGJhY2sgYW5kDQo+ID4gZG9uJ3Qg
+ZmluZCB0aGUgY3VycmVudCBlbGVtZW50IHRoYXQncyBiZWluZyBmcmVlZCBpbiBmcmVlX3NhIHRo
+ZW4NCj4gPiBpdCB3YXMNCj4gPiBjbGVhbmVkIHVwIGJ5IGRlbF9zYV9hbGwsIG90aGVyd2lzZSBk
+ZWxfc2FfYWxsIGlzIHdhaXRpbmcgdG8gd2Fsaw0KPiA+IHRoYXQNCj4gPiBsaXN0IGFuZCBjbGVh
+biB0aGUgZW50cmllcy4gSSB0aGluayBpdCBzaG91bGQgYmUgZmluZSBhcyBsb25nIGFzDQo+ID4g
+ZnJlZV9zYQ0KPiA+IHdhcyBjYWxsZWQgb25jZSB3aXRoIHRoZSBwcm9wZXIgZGV2aWNlLg0KPiAN
+Cj4gT0ssIHNvIHRoZSBmcmVlIHdpbGwgYmUgY2FsbGVkIGVpdGhlciBpbiBkZWxfc2FfYWxsKCkg
+b3IgZnJlZV9zYSgpLg0KPiBTb21ldGhpbmcgbGlrZSB0aGlzPw0KPiANClsuLi5dDQoNClVuZm9y
+dHVuYXRlbHksIGFmdGVyIGFwcGx5aW5nIHRoZXNlIGNoYW5nZXMgYW5kIHJlYXNvbmluZyBhYm91
+dCB0aGVtDQpmb3IgYSBiaXQsIEkgZG9uJ3QgdGhpbmsgdGhpcyB3aWxsIHdvcmsuIFRoZXJlIGFy
+ZSBzdGlsbCByYWNlcyBsZWZ0Lg0KRm9yIGV4YW1wbGU6DQoxLiBBbiB4cyBpcyBtYXJrZWQgREVB
+RCAoaW4gX194ZnJtX3N0YXRlX2RlbGV0ZSwgd2l0aCB4LT5sb2NrIGhlbGQpIGFuZA0KYmVmb3Jl
+IC54ZG9fZGV2X3N0YXRlX2RlbGV0ZSgpIGlzIGNhbGxlZCBvbiBpdCwgYm9uZF9pcHNlY19kZWxf
+c2FfYWxsDQppcyBjYWxsZWQgaW4gcGFyYWxsZWwsIGRvZXNuJ3QgY2FsbCBkZWxldGUgb24geHMg
+KGJlY2F1c2UgaXQncyBkZWFkKSwNCnRoZW4gY2FsbHMgZnJlZSAoaW5jb3JyZWN0IHdpdGhvdXQg
+ZGVsZXRlIGZpcnN0KSwgdGhlbiByZW1vdmVzIHRoZSBsaXN0DQplbnRyeS4gTGF0ZXIsIHhkb19k
+ZXZfc3RhdGVfZGVsZXRlKCA9PSBib25kX2lwc2VjX2RlbF9zYSkgaXMgY2FsbGVkLA0KYW5kIGNh
+bGxzIGRlbGV0ZSAoaW5jb3JyZWN0LCBvdXQgb2Ygb3JkZXIgd2l0aCBmcmVlKS4gRmluYWxseSwN
+CmJvbmRfaXBzZWNfZnJlZV9zYSBpcyBjYWxsZWQsIHdoaWNoIGZvcnR1bmF0ZWx5IGRvZXNuJ3Qg
+ZG8gYW55dGhpbmcNCnNpbGx5IGluIHRoZSBuZXcgcHJvcG9zZWQgZm9ybSBiZWNhdXNlIHhzIGlz
+IG5vIGxvbmdlciBpbiB0aGUgbGlzdC4NCg0KMi4gQSBtb3JlIHNpbmlzdGVyIGZvcm0gb2YgdGhl
+IGFib3ZlIHJhY2UgY2FuIGhhcHBlbiB3aGVuIA0KYm9uZF9pcHNlY19kZWxfc2FfYWxsKCkgY2Fs
+bHMgZGVsZXRlIG9uIHJlYWxfZGV2LCB0aGVuIGluIHBhcmFsbGVsIGFuZA0KaW1tZWRpYXRlbHkg
+YWZ0ZXIgX194ZnJtX3N0YXRlX2RlbGV0ZSBtYXJrcyB4cyBhcyBERUFEIGFuZCBjYWxscw0KYm9u
+ZF9pcHNlY19kZWxfc2EoKSB3aGljaCBoYXBwaWx5IGNhbGxzIGRlbGV0ZSBvbiByZWFsX2RldiBh
+Z2Fpbi4NCg0KSW4gb3JkZXIgdG8gZml4IHRoZXNlIHJhY2VzIChhbmQgb3RoZXJzIGxpa2UgaXQp
+LCBJIHRoaW5rDQpib25kX2lwc2VjX2RlbF9zYV9hbGwgYW5kIGJvbmRfaXBzZWNfYWRkX3NhX2Fs
+bCAqbmVlZCogdG8gYWNxdWlyZSB4LQ0KPmxvY2sgZm9yIGVhY2ggeHMgYmVpbmcgcHJvY2Vzc2Vk
+LiBUaGlzIHdvdWxkIHByZXZlbnQgeGZybSBmcm9tDQpjb25jdXJyZW50bHkgaW5pdGlhdGluZyBh
+ZGQvZGVsZXRlIG9wZXJhdGlvbnMgb24gdGhlIG1hbmFnZWQgc3RhdGVzLg0KDQpDb3NtaW4uDQo=
