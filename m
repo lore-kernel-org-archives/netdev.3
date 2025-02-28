@@ -1,93 +1,67 @@
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5E61D9A50
-	for <netdev@vger.kernel.org>; Fri, 28 Feb 2025 21:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C7B1D9663;
+	Fri, 28 Feb 2025 22:02:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740779505; cv=none; b=pZFV7k3loMBaiMQy7JN3gFzpQXSzF9+9My3iJQMzYl4NWvmfx0SOJ76XCSkYLYMifjB6+FbGvbqASR98xjsbibbchMDwexYPGq+X4IdinZyVIZ9jTji4R6pHP1uNzV2T0nT4kjvEAyz+sDhHgzXCFSoFdrNTCOeJCMO0j9fhwQE=
+	t=1740780124; cv=none; b=eqiaE8QYq5FeJNxtUqd2xHax5vKVx5F9L9MDwMVtf1JnbmBD+htLNuYhdp3+gA7vAneu2dRpDQ16kGeaiJQdHd1ZWZ1ebwgQEsi9IPuqO143G1uZzNjqx6PMV8B7WWwHvi6rkWJIR9lXg/y2bdZldKPztA9kEY9OmIOAnyvlO/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740779505; c=relaxed/simple;
-	bh=rDpXr3LWdZ9ywdc21pF8v9KnrIrY/QQe6LJjl4LkXoM=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=NxAtpzLJKhAYEytnXfIsrBdrxiVfyv7cMUO/goTP3uWb1EOc1vhLQFhNYi5O7hN4s1R/VvJbgA+Of6cr6Ol1AJ3+mzSBXvbIhsbv2TiufG9DFg0SRVEbryeeKllWkdRth5gqq+Bx1C0uVO8ZcuzXGAmEzPogCKY7NBP7jd7qnY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ATVixQhy; arc=none smtp.client-ip=209.85.221.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740780124; c=relaxed/simple;
+	bh=Nw/MKOIkxVmmkDc/avI1b9nUxkB/g/7R9GAVpsyzNOM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CM+v2J2b/+gO5qB4vqp3ppIK4zz/N75qXimErQUGNcEK68PIJMFoGUONsNOz7jvK6CoVCoHAFJo+cq8gGg1nNJXHAIPayp5xawtP0IN3mLhIV2VBzgfwF5LEhQJURIomw+SQ7bUVfma+vt2NMc5uPoqQirCsRGLviPe49vcCi4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFOD6HxX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ATVixQhy"
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-52096b4e163so1150323e0c.1
-        for <netdev@vger.kernel.org>; Fri, 28 Feb 2025 13:51:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740779503; x=1741384303; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rDpXr3LWdZ9ywdc21pF8v9KnrIrY/QQe6LJjl4LkXoM=;
-        b=ATVixQhyOOp8VCMUM15RX/DcNMCjcb2YymbWMaCFGcucYsj8xt1xAz1HT5bTw4MId2
-         j6OVY9zyne+OBDk8lJttZk0WjsJhWR2B5NMpKu1Nb1hv5zdtaXO3wna23UNu7dZpFlN2
-         QiRYnQ1jVMfIUCzAHIA5nZwPw+DsoDC74aIvtqJ2qvySp7ilpvV33OIL6wS3Sb7M1Xx2
-         ya/4Emb3EjzUhazhTfU9ZujcJhBsP6GwKIWRRAYN7HQy79lVpu3LuyD1uvnsssQwhLBN
-         Dyxn5uu7o4K5l1+8VCn5ZTbGeHEEBcu3qm3awpNTjnbRq8chHGQLuHWByzYJmB/cjSbq
-         aypA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740779503; x=1741384303;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rDpXr3LWdZ9ywdc21pF8v9KnrIrY/QQe6LJjl4LkXoM=;
-        b=S8rgea7JiD2LGfzibq20HKSiggrXUE1ZmJVuiC44InK3zUTMpz2brdCO70AxjeTOQV
-         PVI/WFHoN37rMdRLTwK3NAjpb7OiCdLQKLvQ9N0LMru2FCRhLJn6HvsbDHk/gPsjMf7a
-         +fCiF+vJfbj1IgswBdEHXBNLXHaYqExA1OJiRrz+1LYvYasUyvYm4hoRGCP1bEm9G8+J
-         /cEL4uFH+GeRsPgEHGHjo7rkiSjH6hT7RKrbOmhToBGqjjTpui7lLMVV00v9Iz1cDPKN
-         v8XlzpYj/PZdNcixoHbiuqP8Zynlr12yH2cgCUtfRjBSgFddymJkP9mTqAre+nwKZHbb
-         IcKg==
-X-Gm-Message-State: AOJu0YwG9LQC/jlePgHnJbk158W3WO2l6GPpovVEq9B5kxoebdpynsQF
-	G9AOhtmeAlljXeKuAxU77D0DYmYxLhdekhJXqyohsSGneMXDgo4ppLGDWjULXFmpu0GhuPlIWIC
-	/SnJ8yxO0qgpMLpsebMdOhaUdhIt9SwpG1zc=
-X-Gm-Gg: ASbGnctHT3dVMfB33xuQwhFB3hTpVriz8RdXQkfvfs0BZc8pR8GJ+OiFv8XuVr2rg4a
-	lal4UqEy06K6NEdjxONYKG2wdFKnb8E3K6pCjZ94JuOn6Cx2yrsVETHfWsAPKnh7KAF9vZPAcB+
-	kjq6pIWAX6i3PFPpNkZW2vzILURKI+LIdac2VZfFI=
-X-Google-Smtp-Source: AGHT+IFCqrPEPTSu7TssO7W9mXeuA0IvFpO9Xq/OV2gqd9h26O17iD1B8d7CR4dRYjiJyH50mrIErD7ekP+9rzhbLJ4=
-X-Received: by 2002:a05:6122:4f96:b0:520:51a4:b84f with SMTP id
- 71dfb90a1353d-5235b747640mr4401131e0c.4.1740779502921; Fri, 28 Feb 2025
- 13:51:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFOD6HxX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCC9C4CED6;
+	Fri, 28 Feb 2025 22:02:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740780124;
+	bh=Nw/MKOIkxVmmkDc/avI1b9nUxkB/g/7R9GAVpsyzNOM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=JFOD6HxX/SimWYikwyJ6TJKw8IM3P3stZZ984ZVQomWcpRhdlivUrQl7KfqlfwHK7
+	 TH41f/Mzj/VCIZNWTYWH+v3CO7br6pFCDw6Er/VFGZ5zGvmsgh05UBPj4wkuWqUW0y
+	 mvHSa0rM21sftK8ZSi6tb8+nnsxS1sCHUrG2i2IHJmYrvPQZZLUIo1Hze5bXpgodoX
+	 SMWpJ7oL5ZQu6LRcxpVnQ3dvpNBM1elrITOyJ1ifWi6R1Gpj1zxU61JBqgEyRbWaoS
+	 TNL4zV+mfUFNQ1OFFm9Xx/eTQPNhwK4+W6CcHQO7bzRJUc7UgsV7F3v9o0om57cQYf
+	 EZrliZf0W/tRA==
+Date: Fri, 28 Feb 2025 14:02:02 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: horms@kernel.org, bpf@vger.kernel.org, netdev@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, ricardo@marliere.net, viro@zeniv.linux.org.uk,
+ dmantipov@yandex.ru, aleksander.lobakin@intel.com,
+ linux-ppp@vger.kernel.org, linux-kernel@vger.kernel.org, mrpre@163.com,
+ syzbot+853242d9c9917165d791@syzkaller.appspotmail.com
+Subject: Re: [PATCH net-next v4 1/1] ppp: Fix KMSAN warning by initializing
+ 2-byte header
+Message-ID: <20250228140202.7f39a30c@kernel.org>
+In-Reply-To: <wm7gi3hafgaruhnjaz5bqdv7yrduf6cum3gljylypzqkvw2ctw@b2zb75i2hpid>
+References: <20250226013658.891214-1-jiayuan.chen@linux.dev>
+	<20250226013658.891214-2-jiayuan.chen@linux.dev>
+	<20250227174812.50d2eabe@kernel.org>
+	<wm7gi3hafgaruhnjaz5bqdv7yrduf6cum3gljylypzqkvw2ctw@b2zb75i2hpid>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date: Fri, 28 Feb 2025 21:51:15 +0000
-X-Gm-Features: AQ5f1Jpi4BUP-VGiX-sio213C5xB42fEf44grsR2roywF652JSvb8CddDj-SGnY
-Message-ID: <CA+V-a8u04AskomiOqBKLkTzq3uJnFas6sitF6wbNi=md6DtZbw@mail.gmail.com>
-Subject: [QUERY] : STMMAC Clocks
-To: Russell King <linux@armlinux.org.uk>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>
-Cc: netdev <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi All,
+On Fri, 28 Feb 2025 12:55:41 +0800 Jiayuan Chen wrote:
+> > The exact same problem seems to be present in ppp_receive_nonmp_frame()
+> > please fix them both.
+> > -- 
+> > pw-bot: cr  
+> Thanks, Jakub! I'll do that.
+> 
+> I was previously worried that the commit message would be too long,
+> so I put the detailed information in the cover letter instead. I'll make
+> the commit message more concise.
 
-I am bit confused related clocks naming in with respect to STMMAC driver,
-
-We have the below clocks in the binding doc:
-- stmmaceth
-- pclk
-- ptp_ref
-
-But there isn't any description for this. Based on this patch [0]
-which isn't in mainline we have,
-- stmmaceth - system clock
-- pclk - CSR clock
-- ptp_ref - PTP reference clock.
-
-[0] https://patches.linaro.org/project/netdev/patch/20210208135609.7685-23-Sergey.Semin@baikalelectronics.ru/
-
-Can somebody please clarify on the above as I am planning to add a
-platform which supports the below clocks:
-- CSR clock
-- AXI system clock
-- Tx & Tx-180
-- Rx & Rx-180
-
-Cheers,
-Prabhakar
+FWIW we commit the cover letter as well, as a merge commit.
+So both would end up in the tree.
