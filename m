@@ -1,488 +1,188 @@
-Received: from lf-2-36.ptr.blmpb.com (lf-2-36.ptr.blmpb.com [101.36.218.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2047.outbound.protection.outlook.com [40.107.20.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD1A187859
-	for <netdev@vger.kernel.org>; Fri, 28 Feb 2025 15:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.36.218.36
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740757376; cv=none; b=qzX5Z7HgRsB8EE3PTcFUplNMvDDZCQA1TvZocDrXok5cvibBhYAS3NjY6PWDoaBOQCWUhZquQKPEZyIXh9TWqdl0RIeRvJaE63RB76MRSTxPD3cqNL/T/SGVJoC5CO84vJrXSlI2tA9QntD/SpHY3oC745HGQiS1BfKCnrZGxj0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740757376; c=relaxed/simple;
-	bh=IpuWj9MT1218l3qz9YyIUzydFbX2wqdHm2SQFLY79oE=;
-	h=To:From:Content-Type:In-Reply-To:Date:Cc:Message-Id:Subject:
-	 Mime-Version:References; b=Ltow8bEQ0BIiF9a1GPXWbwPXuFgzAlVRSeo/grzdA5vNJs9t88yL2e+/+XHAqW5X96oS6o/Srd9HE1zaBP1f8e1Y5+iMjWd8RiOh9OLJXKN3ZorNP5yzkxDTb8MBA8g/7pea1skfC0gtuLSZIB33/0mKL3mch68UrbjIK0selPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=iBT8PA9D; arc=none smtp.client-ip=101.36.218.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8AE2702A5;
+	Fri, 28 Feb 2025 15:43:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740757428; cv=fail; b=BcfJx7+nnCcOerdko5x6sTiUS99y//HZhKMesut5aRqqdQIxtwbGK+ZO7K/C0KTOqKtqRJA3Jbau0Nim5ZEU70tnFi5xaUQmYFZUNA+m0Vsy3Jo301Q4BnunBoKfxbt1Q5HQ6NR+48B3zLnW6dzVQqJ4Qt7/gxKqF/4e6Dz7kmg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740757428; c=relaxed/simple;
+	bh=bvEF3X1xspEkrRl/6XCuZmqiGytC9KyBHv3h9uzpYd0=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=nIzTo6yE5Cwrf1aqxlrmzsfz2DLcRb4QT9WKZuHpDt71xcNlukkVFXSUXkQoUt6aFHuoGcVKu9zGv4M9bocGHufw4MRmDp3IN6G2bcxn4U5155ebGwbvua5GNTKncusTZlPk8uo/ZICX7fXr22KIaM91GmTUDqgg2ZQ9FhFcntI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=cTKA2VcW; arc=fail smtp.client-ip=40.107.20.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="iBT8PA9D"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1740757293; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=1C8p8Iy+Ux1/u1Lns6Njm94EvC6SD+G41VUQOeYeFXo=;
- b=iBT8PA9DjUX++1Nnqbe+l+6Ug+D+pxsBoSxnTdrY/eNOcsdfTRzkSndvGuXhw5RAaIFLCI
- eu5ZQ8+eaZWR+PXYr6Pq6KhyL6DjQRDsiZwzI+8EpzFrXF4GeejScRsC2qsGqa+Yclx3WH
- oAio75Tpl8daKU2N5oetfau/k66N29F0r6o/ZkPwbpfCPpGICRuqRPIFib6UMrQ3q/UWuS
- k0j6ob8wIg5lwbJuK3+JzR1ichk2CrmI+J8+iFmVvqziT5DEaBUd/qUmzCZPrptxqFRNpM
- t9+S9WJjhLx8xzc/JjNEvmHJNMuUqPGmZOgKA60RpVnPzLfXkLYvhFYpoc6T8Q==
-To: <netdev@vger.kernel.org>
-From: "Xin Tian" <tianx@yunsilicon.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="cTKA2VcW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Sbjos0KBZdLif3mu3BdYWccLmMySNbU4WXlOcVlsczMsrcHGvSEykh2xIxUZnTtK38pmH2yjl4X/u6ZoxN2h+E4E7HO31U2M1gobV4h3sf6O3jFUZtMvIFJmXfIHmTTuFIKW5am/m0Mr5PwrIx5np6TKsDwtfSJ3rSil6519AATtK2DttxOLDr0VCkoM5ahbvZBGVe5MYJdWiKuvuJ6mXaUSYBukHh7TFBEPltzzj4rytOhYCXnP9/tq3Jgn1yGyHt8XvAYYvkFUy9dgB1FGvW3WVoKwkah6HZ4eSdyAE2xC6mZcQPDE+tJzd0Fo341/pTSTLRGSabIpvRK8+VZV5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=giG25u9QW7UUSc7J55ByNf6RWI66RXJ1nJiWcWmD4pw=;
+ b=nn4Q9jxLLqxjzTOCqlfpXg4dUOvGZRgMW/1ZXWDBlgcRfTv/Xarg4xcu3jJDTVe4I+fZxc/OSDpA4oq2/hQyhZljLBIRzkY4MzbmjWep1k5l0SmihR/JoIBmyX4rIlNzkFJUegTWiXj2UV/+78pgjREYqCh0Kb24bljFddxVke8uqkOkEvia4DivCEUVG08OGOau/TXFPkN6IDsW7OAVT4/87YUztURKHsB/ejvS9Gy81NuXMrBIQpAUlb2BXEwY0PFHdcB2OTQpZrmLUUshF4Qxjc52nWV0wuBW4KChACdw3PInbqGN3AboHe65u+kuTdgufVwm69lBE8gsAH7cMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=giG25u9QW7UUSc7J55ByNf6RWI66RXJ1nJiWcWmD4pw=;
+ b=cTKA2VcWoJKWfT7Tbhznw1ReVttPmWQLdtg+bnThJDeitCowPtOVzC6O8eQFOi1a08dici1sM4rNqkRJkDGlOfjf4VNY5RWvZBNi0YDqvfim9LZK+fYlT56/4QY2fhhMmv1voG4nXCKOVtCDZsfoisIWfddxir5DkxZS3sfsDXbfrzUrw2Vyy+nPsrhfvj/GJ3rMWW/nFUsLwYnlVXNk5l57k8x6afUp8fqjZ+kBUN//EOpvxtD+j+TtrPjBuhAmUVZUcfFMmXnVJ61m7rs3f6OE2VCpDhesNjql9FS8ICn3vdpQe3hDZD7qdnmMJOIMNGwD1hLMfBg0TvVmrULB6A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS8PR04MB8216.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::22)
+ by DU4PR04MB11054.eurprd04.prod.outlook.com (2603:10a6:10:581::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.22; Fri, 28 Feb
+ 2025 15:43:43 +0000
+Received: from AS8PR04MB8216.eurprd04.prod.outlook.com
+ ([fe80::f1:514e:3f1e:4e4a]) by AS8PR04MB8216.eurprd04.prod.outlook.com
+ ([fe80::f1:514e:3f1e:4e4a%5]) with mapi id 15.20.8489.018; Fri, 28 Feb 2025
+ 15:43:42 +0000
+From: Andrei Botila <andrei.botila@oss.nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	s32@nxp.com,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>,
+	Andrei Botila <andrei.botila@oss.nxp.com>
+Subject: [PATCH net-next v2 0/2] net: phy: nxp-c45-tja11xx: add support for TJA1121
+Date: Fri, 28 Feb 2025 17:43:18 +0200
+Message-ID: <20250228154320.2979000-1-andrei.botila@oss.nxp.com>
+X-Mailer: git-send-email 2.48.1
 Content-Type: text/plain; charset=UTF-8
-In-Reply-To: <20250228154122.216053-1-tianx@yunsilicon.com>
-Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Fri, 28 Feb 2025 23:41:30 +0800
-X-Lms-Return-Path: <lba+267c1d92b+b2b755+vger.kernel.org+tianx@yunsilicon.com>
-Date: Fri, 28 Feb 2025 23:41:31 +0800
-Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
-	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
-	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
-	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <jacky@yunsilicon.com>, 
-	<horms@kernel.org>, <parthiban.veerasooran@microchip.com>, 
-	<masahiroy@kernel.org>
-Message-Id: <20250228154129.216053-5-tianx@yunsilicon.com>
-X-Original-From: Xin Tian <tianx@yunsilicon.com>
-Subject: [PATCH net-next v7 04/14] xsc: Add qp and cq management
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM0PR05CA0092.eurprd05.prod.outlook.com
+ (2603:10a6:208:136::32) To AS8PR04MB8216.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3f2::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.25.1
-References: <20250228154122.216053-1-tianx@yunsilicon.com>
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8216:EE_|DU4PR04MB11054:EE_
+X-MS-Office365-Filtering-Correlation-Id: c182a436-f452-4672-cbf0-08dd580eadba
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MVY0OTd3VmpreUFJRkJjTnFGSVRVSUU5Z3AzWlJmQjlMVkF5YWw2UThTTkZS?=
+ =?utf-8?B?NkN4dEhzSkkvVnlONkJHeDErRGJyZ2hJNzRxeDd4a2tJUGZDL3RvcWNsZ1k5?=
+ =?utf-8?B?WFlUMVU4TXpaTDRUNVNrcUphVG1wQVEvTENUeDBQdFI2czhkYjBwRHJNNFNJ?=
+ =?utf-8?B?blJFLzZaZEpoZDIzSGNqUWxxN21FWSsreTk3aXEzSUtvWjdnK0UrdnRPamJ5?=
+ =?utf-8?B?ei9qWHp0b2RnNjBsMjNiRVdIUGRERkw0eGIrcmU0b0NmNnIxbHVpdXRtdi83?=
+ =?utf-8?B?T1FFdGhLczJhZTJUVC9RRmUrNkJSSVJod01DMHg4RitpNjVwdS9qb3BkOHU0?=
+ =?utf-8?B?RllUcmt5RUR0UnN3RWpPNzZyS3hkMFUyMXRXSUZKejBiQm55SWVSb1BWUmQ1?=
+ =?utf-8?B?U2h3WnlnM01YVjMydU55SlduU2dvTWI0MHBYSDBZZHBlK3Y0K0cvR2Jvcjlx?=
+ =?utf-8?B?VEtlK3pQWlcvVnlyVysxcHV5L3dpN3VBQ0o5Vm82ZGpjdzljWVdBVytOWnZw?=
+ =?utf-8?B?MEw5NUl5K2lwSlprbytNVnkwdkpFVUJTa3hld2V0WWZCRWZGTW5qM2JiR3dO?=
+ =?utf-8?B?M3d4ZVRRSVNaTllEYTVybnl1bkFneVloSzNVbWMvZWc1alNvcFQ2eTJMbW91?=
+ =?utf-8?B?RjN3S1drRjhBTWF6OE9TY1FhWlhnbkNkZEtXZTZSMWhSbVh2SGdCNlQyRTNC?=
+ =?utf-8?B?V2s3ZUNDeGEzQndwSWNWSndsWk9yVzlQamYrOVlGcldkMkhoZDZPdmQ4QkFx?=
+ =?utf-8?B?emhWU1AvTnh3cUxuRk52K3IyR296cnVTWFcyWkttTndGU3VCNnVvbzdzVmty?=
+ =?utf-8?B?UUIzYmxLSnZmUnJLSDlSbFl2dUxQSmV6eDgzUW1LeTNSSHhHNndsQ1BxSWkw?=
+ =?utf-8?B?VXZVVWNWRU8xMEEzak5SajgxcjVWbkIvck8xMEE2UXRoaElPZVIzbWNKUUM0?=
+ =?utf-8?B?bVVrSzQ0QXljYkZBNXgvVk9HM3RGeUhFcTRMTUFiOGNQMWd0WGUybXBDbHFX?=
+ =?utf-8?B?TzY3b2RDTWh2TUFCenU5RDgyUkIvUmE1T2F4eUZ4MjliQzBCVGY5RHdkd1c0?=
+ =?utf-8?B?MzZFb1dBRjdVU2liR1hjYjcrVkZzdTljWjE1NW9kNkJQTlRNVW1ReXlIem9Q?=
+ =?utf-8?B?S2tiV2NWUXpxNGU5c0U5VVBuZ3FZSHpaM3dJb3gxZVNYTXhrUHdBeGFuaFd5?=
+ =?utf-8?B?UjkwTmpncDNVRXN3WGRNSi9Ea3RSb2Iwdll4QURXdGxaRWppZExHRHN5RGl4?=
+ =?utf-8?B?NS9kM2QxMVBHZjJ2czVTZGUyVjU1TkQ3cUlGUzJ0Q0UvSGI3Zks1d2syNGkz?=
+ =?utf-8?B?ZWxEc0tRV0I5RmJGdzhiNGhlTU1VejdHL29jNncxT1g3TUNPNzRqWEQwUkNQ?=
+ =?utf-8?B?MXYyQ2VxelBBa2psZUNHcEVwbUdPekluRTBJVGY0SW5vSVhZeC9qVVFTZVZV?=
+ =?utf-8?B?a3daanVXN1BhcUlVZTgrZWJPSDFSYWE4cUNteFM3dWVST1JiaEtwV0VLQWZH?=
+ =?utf-8?B?Q013cjVMMjVTM1NVenlVRlpXUjhHcThpQlpXSTlodGVhMzRiZG1OWExoQ2Zu?=
+ =?utf-8?B?MkNCYXVJQUwyRVZzOFBBYTN1SklCRUdYcWFVQU96djdXSHlsRWRRLzFSWHlL?=
+ =?utf-8?B?bTJxMXVSNTFlS3dibXNkbFFwWnBabjVneDM2dVFTemdVSFUwa1RMeEJlOVd6?=
+ =?utf-8?B?dkVEMy9oY1d0c3V6aDRlMFFpOEJIUzZ1KzhDczhtRHI0RVBqaCtVZlZPMEpD?=
+ =?utf-8?B?Q0FqMFVZeCtvN2dselBVSVF4S2E3TXYwV0ZCSHZUVk13SnAxcTNFUzhPRGdY?=
+ =?utf-8?B?cHUrNjRvcEJaL09ESEpMekpDWVJ4K2VKMzg3OEZxY1MxYjhZSzEwS29OMXFi?=
+ =?utf-8?Q?hJiP0628nQnbz?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZW8yalVGRUpVcnVSNVpRSXBseTRVbWttb040aHNXNTNzZDhFaTRieVVGb2JP?=
+ =?utf-8?B?bFNPVk1QU3VvYnVzU2NQRFc5bDhpUGEvRlhqeUtxK3pVem0rV0Q1V1BBbVps?=
+ =?utf-8?B?RHRTdFB3SW1GZGFyc0h5bUF1cjZIUlp0R1NTOHYzU0tXSlpBY3hrQXh6ZThW?=
+ =?utf-8?B?VzNTaTJwbVdjeGpoc1UxL2JPWFMxTXFHZldEUVMxMWNWajR6UHdlODJWMk1C?=
+ =?utf-8?B?N3VUTlpPRnFjbEl4d0Q4dUF3ZjlBd3NTT0JlM3UzVlZ0d2I4V0pTb1c0VkNU?=
+ =?utf-8?B?VlB3ZXN6WEUzcm5iRlUzdkVsY0M5TE9DZGRTaXBEQ2ZUalozSXFLNU1CSnZt?=
+ =?utf-8?B?eGFERG1haTU3V3JSZmtMbVo5WUl5N0xhRnhsSmlhSFp2djc1bEpsZHRrOXAy?=
+ =?utf-8?B?eXNEaXd0NE1MS04zZmpvNElXQzg1RDRRVktuVTA2U3d4em1SenRUVDJ0dzEx?=
+ =?utf-8?B?NmNtQitGSEErd0VBcjV4TERDcEF1ODVMU3A5a0lKOTRHWmNlZndEMHpBZWNy?=
+ =?utf-8?B?c1hFNFRtR2NYTk1DVmpsSUxXaWZtWGRFYTNianVhL2FHaUpkQ1VxVGE3Zm5Z?=
+ =?utf-8?B?Q0dlMUhUeEhQN2R5dVRuNXZDaDZFMHlqd01YbC9VL041SkdMZTRxWG11ZURV?=
+ =?utf-8?B?dUNmV0VmN00xemRTU0phSG1kaFJvaWJKM0tIbGVpKy9WQlhjWXozdE5zUVdB?=
+ =?utf-8?B?Wm5IVHJiWWZzMGtzZ1NzSHJGL0ZWSTR0MjhJUGx0RTAyYVVYRnFCbXQ1NWdI?=
+ =?utf-8?B?WlppeHJWSURyQ1R6emwxTzBobDMyVXlQUkM2aGQ0NjNUSHFITVZGVFJIb2tR?=
+ =?utf-8?B?TzFXV2pTbWJ4ckt6QkNWTmpsUm52K2M5cldwN2IyRGlFWVNiOS9HQUVxL2cx?=
+ =?utf-8?B?M2NEWGllZ2xkMXFXcnhjSkVVZzhYSmNQQUJBeGdmZHJFQVRSN1REc0hvVFhW?=
+ =?utf-8?B?cVhWVjByZHJLSWhsMW1tY2hFN2QzSERUS2VyblpSUXhTbHRuN0J6YjhraFpw?=
+ =?utf-8?B?Ujc3Znp4Tm1rU1BRa1dvblpzL1lKdDg0NVlaQ3BBTTBvZjJTUlV5YWV3U0R1?=
+ =?utf-8?B?WWRNOUxEbkVJT0xLQ1Q3VTBTQklDaHp2WEYxd0orVmtrNTdFalNaSE9qMEEv?=
+ =?utf-8?B?Wng1UzBOYlhqOWt5NmFjeDRjTktiZzJiWnFhY2tSMURKZzV5TC9kN3ZmcG5C?=
+ =?utf-8?B?RG5DeGtkekJISnlzQmNuYUp2TE1wdzRrZ0lERS8rK0pieFpkVS9peW85cEpx?=
+ =?utf-8?B?MlFMY3dZc2YvektaVGJLbndDL1lWVlYweTY4U2EraWV1ckdzM0t2SzRMTVlC?=
+ =?utf-8?B?TDgrOUtuWGNiWjRITVlUUmVvMVFTakFOV2RMZnZiSTYrRk1uWDJrNklrdU0z?=
+ =?utf-8?B?dC9NdWozS3J1ZFFGNnBkVUlMa1hqTDFGeW1VbGpFK09lcEZJdUFETnpaTW1p?=
+ =?utf-8?B?RkpFemxtVCs3TXBndTZ5V01uUllCb2ovYXNyMENkeFpvUXlQcnl0OS8vVjRG?=
+ =?utf-8?B?dUl2SnFQN2d2ZzNob1dDRzh2SEZva1hkRCtQY0UxdXg2UndhVVl2cDR2ME80?=
+ =?utf-8?B?bXRBS0tkbWFhS3I1M2RQZ2hROVhnSmR5QkNUK3VGRE1OOVhJR1ZtWStuWHhE?=
+ =?utf-8?B?QUdZajdUL2pyWUU2Qm96bm9tZUsya2NpbDRyK0t4UXpnNkR4b3hWQ2MvZloy?=
+ =?utf-8?B?VmJkM1pSSSswdkhnYldZeWozRUF6c3NKdCtYV2ZDWGZ5L1RhZnJaR1NLZVAz?=
+ =?utf-8?B?TGt5dlROc2pzTUlVYzRwRkhDZXZDcDhuVFNKMDVGTEFMUkc0MlJNME1EMksx?=
+ =?utf-8?B?SmxGeHdsM0RYeDFjLzg4VCtyNUxjdDNkL0FKVEVuTldFbUh0T0E5MXVvRkhv?=
+ =?utf-8?B?YzVLV1F1UVZ4T1QwSHBaVHdvdDBsd2NlalFCR2xRT0ovd3RhNzljUi9yYldF?=
+ =?utf-8?B?TlN1eEJnTjJ1d1VZT24vUHNhbzZHWlpUMTFla2JNN3BBV3VPb1pxeXpJRitS?=
+ =?utf-8?B?S1U1dHVPMXBmeDhLeUE4cU5yRDZOeVRpRE9LUjgvRjNFYWdzT2J2VTY5ZTJS?=
+ =?utf-8?B?VlhIM1NDcjZTbGpIcGl5TDlwOXFEaGtMYjNLU0REbENTSUhjaHlnVERjM2ZN?=
+ =?utf-8?Q?3+79sdTY5PRSXtWdrfXdLoUBc?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c182a436-f452-4672-cbf0-08dd580eadba
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 15:43:42.7517
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +zMG0O0MI6RBXw9f0cJjuuOrN4lzyKgpCcT9EPAiwtC2CxP78dgCFuhlqQU5ZUg5oNkrcIM95fyD1cdGD/rpkg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11054
 
-Our hardware uses queue pairs (QP) and completion queues (CQ)
-for packet transmission and reception. In the PCI driver, all
-QP and CQ resources used by all xsc drivers(ethernet and rdma)
-are recorded witch radix tree.
-This patch defines the QP and CQ structures and initializes
-the QP and CQ resource management during PCI initialization.
+This patch series adds .match_phy_device for the existing TJAs
+to differentiate between TJA1103/TJA1104 and TJA1120/TJA1121.
+TJA1103 and TJA1104 share the same PHY_ID but TJA1104 has MACsec
+capabilities while TJA1103 doesn't.
+Also add support for TJA1121 which is based on TJA1120 hardware
+with additional MACsec IP.
 
-Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
-Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
-Co-developed-by: Lei Yan <jacky@yunsilicon.com>
-Signed-off-by: Lei Yan <jacky@yunsilicon.com>
-Signed-off-by: Xin Tian <tianx@yunsilicon.com>
----
- .../ethernet/yunsilicon/xsc/common/xsc_core.h | 157 ++++++++++++++++++
- .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   3 +-
- drivers/net/ethernet/yunsilicon/xsc/pci/cq.c  |  39 +++++
- drivers/net/ethernet/yunsilicon/xsc/pci/cq.h  |  14 ++
- drivers/net/ethernet/yunsilicon/xsc/pci/hw.c  |   1 +
- .../net/ethernet/yunsilicon/xsc/pci/main.c    |   5 +
- drivers/net/ethernet/yunsilicon/xsc/pci/qp.c  |  80 +++++++++
- drivers/net/ethernet/yunsilicon/xsc/pci/qp.h  |  15 ++
- 8 files changed, 313 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cq.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/qp.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/qp.h
+Changes in v2:
+- add .match_phy_device
+- removed errata from v1, will be sent to net for backporting
 
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-index b2dd57d96..819f6498e 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-+++ b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-@@ -29,6 +29,10 @@
- 
- #define XSC_REG_ADDR(dev, offset)	(((dev)->bar) + ((offset) - 0xA0000000))
- 
-+enum {
-+	XSC_MAX_EQ_NAME	= 20
-+};
-+
- enum {
- 	XSC_MAX_PORTS	= 2,
- };
-@@ -43,6 +47,143 @@ enum {
- 	XSC_MAX_UUARS		= XSC_MAX_UAR_PAGES * XSC_BF_REGS_PER_PAGE,
- };
- 
-+/* alloc */
-+struct xsc_buf_list {
-+	void			*buf;
-+	dma_addr_t		map;
-+};
-+
-+struct xsc_buf {
-+	struct xsc_buf_list	direct;
-+	struct xsc_buf_list	*page_list;
-+	unsigned long		nbufs;
-+	unsigned long		npages;
-+	unsigned long		page_shift;
-+	unsigned long		size;
-+};
-+
-+struct xsc_frag_buf {
-+	struct xsc_buf_list	*frags;
-+	unsigned long		npages;
-+	unsigned long		size;
-+	u8			page_shift;
-+};
-+
-+struct xsc_frag_buf_ctrl {
-+	struct xsc_buf_list	*frags;
-+	u32			sz_m1;
-+	u16			frag_sz_m1;
-+	u16			strides_offset;
-+	u8			log_sz;
-+	u8			log_stride;
-+	u8			log_frag_strides;
-+};
-+
-+/* qp */
-+struct xsc_send_wqe_ctrl_seg {
-+	__le32		data0;
-+#define XSC_WQE_CTRL_SEG_MSG_OPCODE_MASK	GENMASK(7, 0)
-+#define XSC_WQE_CTRL_SEG_WITH_IMM		BIT(8)
-+#define XSC_WQE_CTRL_SEG_CSUM_EN_MASK		GENMASK(10, 9)
-+#define XSC_WQE_CTRL_SEG_DS_DATA_NUM_MASK	GENMASK(15, 11)
-+#define XSC_WQE_CTRL_SEG_WQE_ID_MASK		GENMASK(31, 16)
-+
-+	__le32		msg_len;
-+	__le32		data2;
-+#define XSC_WQE_CTRL_SEG_HAS_PPH		BIT(0)
-+#define XSC_WQE_CTRL_SEG_SO_TYPE		BIT(1)
-+#define XSC_WQE_CTRL_SEG_SO_DATA_SIZE_MASK	GENMASK(15, 2)
-+#define XSC_WQE_CTRL_SEG_SO_HDR_LEN_MASK	GENMASK(31, 24)
-+
-+	__le32		data3;
-+#define XSC_WQE_CTRL_SEG_SE			BIT(0)
-+#define XSC_WQE_CTRL_SEG_CE			BIT(1)
-+};
-+
-+struct xsc_wqe_data_seg {
-+	__le32		data0;
-+#define XSC_WQE_DATA_SEG_SEG_LEN_MASK		GENMASK(31, 1)
-+
-+	__le32		mkey;
-+	__le64		va;
-+};
-+
-+struct xsc_core_qp {
-+	void			(*event)(struct xsc_core_qp *qp, int type);
-+	u32			qpn;
-+	atomic_t		refcount;
-+	struct completion	free;
-+	int			pid;
-+	u16			qp_type;
-+	u16			eth_queue_type;
-+	u16			qp_type_internal;
-+	u16			grp_id;
-+	u8			mac_id;
-+};
-+
-+struct xsc_qp_table {
-+	spinlock_t		lock; /* protect radix tree */
-+	struct radix_tree_root	tree;
-+};
-+
-+/* cq */
-+enum xsc_event {
-+	XSC_EVENT_TYPE_COMP			= 0x0,
-+	/* mad */
-+	XSC_EVENT_TYPE_COMM_EST			= 0x02,
-+	XSC_EVENT_TYPE_CQ_ERROR			= 0x04,
-+	XSC_EVENT_TYPE_WQ_CATAS_ERROR		= 0x05,
-+	XSC_EVENT_TYPE_INTERNAL_ERROR		= 0x08,
-+	/* IBV_EVENT_QP_REQ_ERR */
-+	XSC_EVENT_TYPE_WQ_INVAL_REQ_ERROR	= 0x10,
-+	/* IBV_EVENT_QP_ACCESS_ERR */
-+	XSC_EVENT_TYPE_WQ_ACCESS_ERROR		= 0x11,
-+};
-+
-+struct xsc_core_cq {
-+	u32			cqn;
-+	u32			cqe_sz;
-+	u64			arm_db;
-+	u64			ci_db;
-+	struct xsc_core_device	*xdev;
-+	atomic_t		refcount;
-+	struct completion	free;
-+	unsigned int		vector;
-+	unsigned int		irqn;
-+	u16			dim_us;
-+	u16			dim_pkts;
-+	void			(*comp)(struct xsc_core_cq *cq);
-+	void			(*event)(struct xsc_core_cq *cq,
-+					 enum xsc_event);
-+	u32			cons_index;
-+	unsigned int		arm_sn;
-+	int			pid;
-+	u32			reg_next_cid;
-+	u32			reg_done_pid;
-+	struct xsc_eq		*eq;
-+};
-+
-+struct xsc_cq_table {
-+	spinlock_t		lock; /* protect radix tree */
-+	struct radix_tree_root	tree;
-+};
-+
-+struct xsc_eq {
-+	struct xsc_core_device	*dev;
-+	struct xsc_cq_table	cq_table;
-+	/* offset from bar0/2 space start */
-+	u32			doorbell;
-+	u32			cons_index;
-+	struct xsc_buf		buf;
-+	unsigned int		irqn;
-+	u32			eqn;
-+	u32			nent;
-+	cpumask_var_t		mask;
-+	char			name[XSC_MAX_EQ_NAME];
-+	struct list_head	list;
-+	u16			index;
-+};
-+
- /* hw */
- struct xsc_reg_addr {
- 	u64	tx_db;
-@@ -169,6 +310,8 @@ struct xsc_caps {
- 
- /* xsc_core */
- struct xsc_dev_resource {
-+	struct xsc_qp_table	qp_table;
-+	struct xsc_cq_table	cq_table;
- 	/* protect buffer allocation according to numa node */
- 	struct mutex		alloc_mutex;
- };
-@@ -219,4 +362,18 @@ struct xsc_core_device {
- 	u8			fw_version_extra_flag;
- };
- 
-+int xsc_core_create_resource_common(struct xsc_core_device *xdev,
-+				    struct xsc_core_qp *qp);
-+void xsc_core_destroy_resource_common(struct xsc_core_device *xdev,
-+				      struct xsc_core_qp *qp);
-+
-+static inline void *xsc_buf_offset(struct xsc_buf *buf, unsigned long offset)
-+{
-+	if (likely(buf->nbufs == 1))
-+		return buf->direct.buf + offset;
-+	else
-+		return buf->page_list[offset >> PAGE_SHIFT].buf +
-+			(offset & (PAGE_SIZE - 1));
-+}
-+
- #endif
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
-index fea625d54..9a4a6e02d 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
-@@ -6,4 +6,5 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
- 
- obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc_pci.o
- 
--xsc_pci-y := main.o cmdq.o hw.o
-+xsc_pci-y := main.o cmdq.o hw.o qp.o cq.o
-+
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/cq.c b/drivers/net/ethernet/yunsilicon/xsc/pci/cq.c
-new file mode 100644
-index 000000000..5cff9025c
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/cq.c
-@@ -0,0 +1,39 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#include "common/xsc_core.h"
-+#include "cq.h"
-+
-+void xsc_cq_event(struct xsc_core_device *xdev, u32 cqn, int event_type)
-+{
-+	struct xsc_cq_table *table = &xdev->dev_res->cq_table;
-+	struct xsc_core_cq *cq;
-+
-+	spin_lock(&table->lock);
-+
-+	cq = radix_tree_lookup(&table->tree, cqn);
-+	if (cq)
-+		atomic_inc(&cq->refcount);
-+
-+	spin_unlock(&table->lock);
-+
-+	if (!cq) {
-+		pci_err(xdev->pdev, "Async event for bogus CQ 0x%x\n", cqn);
-+		return;
-+	}
-+
-+	cq->event(cq, event_type);
-+
-+	if (atomic_dec_and_test(&cq->refcount))
-+		complete(&cq->free);
-+}
-+
-+void xsc_init_cq_table(struct xsc_core_device *xdev)
-+{
-+	struct xsc_cq_table *table = &xdev->dev_res->cq_table;
-+
-+	spin_lock_init(&table->lock);
-+	INIT_RADIX_TREE(&table->tree, GFP_ATOMIC);
-+}
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/cq.h b/drivers/net/ethernet/yunsilicon/xsc/pci/cq.h
-new file mode 100644
-index 000000000..902a7f1f2
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/cq.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#ifndef __CQ_H
-+#define __CQ_H
-+
-+#include "common/xsc_core.h"
-+
-+void xsc_cq_event(struct xsc_core_device *xdev, u32 cqn, int event_type);
-+void xsc_init_cq_table(struct xsc_core_device *xdev);
-+
-+#endif /* __CQ_H */
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/hw.c b/drivers/net/ethernet/yunsilicon/xsc/pci/hw.c
-index 5e13cfe36..315ea2725 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/pci/hw.c
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/hw.c
-@@ -5,6 +5,7 @@
- 
- #include <linux/module.h>
- #include <linux/vmalloc.h>
-+
- #include "common/xsc_driver.h"
- #include "hw.h"
- 
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
-index 4b505fd9a..68ae2fe93 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
-@@ -6,6 +6,8 @@
- #include "common/xsc_core.h"
- #include "common/xsc_driver.h"
- #include "hw.h"
-+#include "qp.h"
-+#include "cq.h"
- 
- static const struct pci_device_id xsc_pci_id_table[] = {
- 	{ PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MC_PF_DEV_ID) },
-@@ -218,6 +220,9 @@ static int xsc_hw_setup(struct xsc_core_device *xdev)
- 		goto err_cmd_cleanup;
- 	}
- 
-+	xsc_init_cq_table(xdev);
-+	xsc_init_qp_table(xdev);
-+
- 	return 0;
- err_cmd_cleanup:
- 	xsc_cmd_cleanup(xdev);
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/qp.c b/drivers/net/ethernet/yunsilicon/xsc/pci/qp.c
-new file mode 100644
-index 000000000..cc79eaf92
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/qp.c
-@@ -0,0 +1,80 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#include <linux/gfp.h>
-+#include <linux/time.h>
-+#include <linux/export.h>
-+#include <linux/kthread.h>
-+
-+#include "common/xsc_core.h"
-+#include "qp.h"
-+
-+int xsc_core_create_resource_common(struct xsc_core_device *xdev,
-+				    struct xsc_core_qp *qp)
-+{
-+	struct xsc_qp_table *table = &xdev->dev_res->qp_table;
-+	int err;
-+
-+	spin_lock_irq(&table->lock);
-+	err = radix_tree_insert(&table->tree, qp->qpn, qp);
-+	spin_unlock_irq(&table->lock);
-+	if (err)
-+		return err;
-+
-+	atomic_set(&qp->refcount, 1);
-+	init_completion(&qp->free);
-+	qp->pid = current->pid;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(xsc_core_create_resource_common);
-+
-+void xsc_core_destroy_resource_common(struct xsc_core_device *xdev,
-+				      struct xsc_core_qp *qp)
-+{
-+	struct xsc_qp_table *table = &xdev->dev_res->qp_table;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&table->lock, flags);
-+	radix_tree_delete(&table->tree, qp->qpn);
-+	spin_unlock_irqrestore(&table->lock, flags);
-+
-+	if (atomic_dec_and_test(&qp->refcount))
-+		complete(&qp->free);
-+	wait_for_completion(&qp->free);
-+}
-+EXPORT_SYMBOL(xsc_core_destroy_resource_common);
-+
-+void xsc_qp_event(struct xsc_core_device *xdev, u32 qpn, int event_type)
-+{
-+	struct xsc_qp_table *table = &xdev->dev_res->qp_table;
-+	struct xsc_core_qp *qp;
-+
-+	spin_lock(&table->lock);
-+
-+	qp = radix_tree_lookup(&table->tree, qpn);
-+	if (qp)
-+		atomic_inc(&qp->refcount);
-+
-+	spin_unlock(&table->lock);
-+
-+	if (!qp) {
-+		pci_err(xdev->pdev, "Async event for bogus QP 0x%x\n", qpn);
-+		return;
-+	}
-+
-+	qp->event(qp, event_type);
-+
-+	if (atomic_dec_and_test(&qp->refcount))
-+		complete(&qp->free);
-+}
-+
-+void xsc_init_qp_table(struct xsc_core_device *xdev)
-+{
-+	struct xsc_qp_table *table = &xdev->dev_res->qp_table;
-+
-+	spin_lock_init(&table->lock);
-+	INIT_RADIX_TREE(&table->tree, GFP_ATOMIC);
-+}
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/qp.h b/drivers/net/ethernet/yunsilicon/xsc/pci/qp.h
-new file mode 100644
-index 000000000..52af8db7c
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/qp.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
-+
-+#ifndef __QP_H
-+#define __QP_H
-+
-+#include "common/xsc_core.h"
-+
-+void xsc_init_qp_table(struct xsc_core_device *xdev);
-+void xsc_cleanup_qp_table(struct xsc_core_device *xdev);
-+void xsc_qp_event(struct xsc_core_device *xdev, u32 qpn, int event_type);
-+
-+#endif /* __QP_H */
+Andrei Botila (2):
+  net: phy: nxp-c45-tja11xx: add match_phy_device to TJA1103/TJA1104
+  net: phy: nxp-c45-tja11xx: add support for TJA1121
+
+ drivers/net/phy/Kconfig           |  2 +-
+ drivers/net/phy/nxp-c45-tja11xx.c | 94 ++++++++++++++++++++++++++++++-
+ 2 files changed, 92 insertions(+), 4 deletions(-)
+
 -- 
-2.18.4
+2.48.1
+
