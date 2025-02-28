@@ -1,87 +1,128 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0351F30A2;
-	Fri, 28 Feb 2025 09:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08EB257428
+	for <netdev@vger.kernel.org>; Fri, 28 Feb 2025 09:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740734728; cv=none; b=Aw7vwUYk1y1g/TMCp+7I3aBpVy181bPgERKvOAHPBj6Eg9k++Q2Scy9riT1Gg6vZXblzMbxfrrdOkVH3a+XRtlqnFsIJK7inWeDg4PYdmwHB+cxWe9Eq5aj/54qOi6ZVf92SCvMckW4wIK3k4o2OtG0hZOvJtw9R1cqrmvhNvN4=
+	t=1740734791; cv=none; b=q0JcN/Dm/RF4KMti0YsatsOxXaMo4MRxU1ccYdGa/QtfPAgClN6SCmQqFg6Kfedi6MONIPQbrjKZB5asf/3ixe/gLO2oXcreFWKsit66qMXbGo4flRfJDKY1iQE8uMWbl4G3wHDSy5cOUsIpl12NE7kxpDrsdMb75kgEb1ywQ28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740734728; c=relaxed/simple;
-	bh=oAPbqbblLWp21an+z84tAVzI3aljqmgqN18ng4MMmEQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ml1jdJAE6Z7MdGW5dCTUgd4kNpiYizJqwycA256DOueBMKDDGZqGuZQIpzz1JeSDV7wWrT20+UomFCw12Y6jUvQ0DnzaU6QOTrl4anYst758phbclwFARioxkVekfLA49ZshE1iQs6JO+TSJ0ewZwH9eiJqEEpFXypVPLav0lY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=CgXmWRrZ; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1740734791; c=relaxed/simple;
+	bh=qyXnd1QeVCFR0UPHxNUE8dIZREv7JdUyyVgv52l4qOU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Iy7sGB2wdlTEPZEQRGQUCKKHBdInMUy7MOZCLOng5EnY0x59TBEGoINAcrosOLFLxLyouMmNi9TWtlfQAz3ykDJS+bcd3woW4GPg5vE4BoIldelI/4wqBMC9wARM5aE27Wwqn81qJ0KX7k94y74FnZ/dtCpUHvYjVrjdybzFkpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BavGDj5/; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="CgXmWRrZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=t+QWg
-	uMxoLDRH5vcXi4r28RqexjrSgeJPwqF3tPYLt8=; b=CgXmWRrZM2xX2nJAyw40J
-	Tk1nm51ZOnW4v/HxyQzhfxewHVx+ZluJqUH53ETnT3WSUvZRjeA2XGHcwmWX+fWO
-	MpyP+yaHfF1U3L7oAyLtAXZ257HUv2Zky5hmG8qK7lV4tBPuJOOHjjdRO2li59di
-	EaB/0cXsRaJaDcI5Ry0C9M=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wCnnh3kgMFn9GRbPQ--.63080S4;
-	Fri, 28 Feb 2025 17:24:53 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: shshaikh@marvell.com,
-	manishc@marvell.com,
-	GR-Linux-NIC-Dev@marvell.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	rajesh.borundia@qlogic.com,
-	sucheta.chakraborty@qlogic.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] qlcnic: fix a memory leak in qlcnic_sriov_set_guest_vlan_mode()
-Date: Fri, 28 Feb 2025 17:24:49 +0800
-Message-Id: <20250228092449.3759573-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BavGDj5/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740734788;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qyXnd1QeVCFR0UPHxNUE8dIZREv7JdUyyVgv52l4qOU=;
+	b=BavGDj5/i86PhS/FOnIADA2YgCqonFhRr4ReaM5Qqxn36Fa99XWaTHVyrQXLuEmE9R/OeB
+	0kkRVY4KHIuPXA8gVrop7tJc5CGjzOp9KRxbTDX92ukd5oA7vJmZDVW4h+YT8tqi3xvbTE
+	4TiRlEJjLL70pb9Yv103EWIUvoC7mRs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-138-iK4tGHs3NV6gyyUOYNyQ7A-1; Fri, 28 Feb 2025 04:26:27 -0500
+X-MC-Unique: iK4tGHs3NV6gyyUOYNyQ7A-1
+X-Mimecast-MFC-AGG-ID: iK4tGHs3NV6gyyUOYNyQ7A_1740734786
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43935e09897so13787445e9.1
+        for <netdev@vger.kernel.org>; Fri, 28 Feb 2025 01:26:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740734786; x=1741339586;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qyXnd1QeVCFR0UPHxNUE8dIZREv7JdUyyVgv52l4qOU=;
+        b=bY8t+Or3oKnU3bO4EXilPEfRoYBk6gmUXpoP4q6qf9FNVJNxTFJbVTyEGegF87R4Vb
+         ypJpZC5SJMyVSrkE1S7iVuKTaxJe6XTJ8YkKx1n0VcBbnu6RvU1FQJDdnCWavPc2cA5J
+         hU+FvVqSvUtQWDFMmQvmMir169NO+/OxTCykNyXAKVTnxCSA/MprAyMHD3RiOZiTZhtn
+         FAMtuCJZEwg9P1zlCNUdIu/k2Jpax1NwuKbXu3uaeMBwkG6RCk74+pVMuAwff9z0YzOw
+         bAbBbzL43D+I+HHFxhSUmqJBNMWD7U4ulWaEZhQcbRc9IOliGpqpXbgXtfPjW4+IuUd7
+         furA==
+X-Forwarded-Encrypted: i=1; AJvYcCWonz+V9AV7ANzeO7i/mf+0sJKoXM+OfxbzBZNlN+kvE0JImioDF9exbkNxD2bBj1xpa8nV7KI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywq+zZCwvnbWYWotZQGc2b1T7lGUsCYRCU9Jmt4ULwD1uYGJUBw
+	FNvkndSmC6JSkqwXouKCG5tNKsBRmSwSwtvSWI9bIpQ+JB7MB64vXeQwDT/yI2AgwMOoxyELQHR
+	BLznBumSfq7Id18QVsU7cicwxxekp0u4fd9dTXdc/+rLKs2040ntMww==
+X-Gm-Gg: ASbGncvfJURAxeuhK7D6/aNMLu2LVlHQbqCdeiSIuh9cAgU/+qxG7tSBjLG34wFt/yv
+	gt+3mWQQCEo2XXj1SG1la3qfPWAbnZwQKll4R5WA8lY34N6OyCYdFIoKIigawzfe+cMlJ328LbE
+	vg1+peSqAaCDdVhGkpeX80FIVJY1KOqgaV6wmqcnr1MdG52/PlJryT4Kw8vPUEGIAtFMpjPNABJ
+	10r3fVJz2OcNSHh8k6y4VbuFP+gMLXYHPiDBmwcXWXA2MdTWwnkgFLD1MbpOLQxy1maHLny/CDi
+	gGWh4bHCO9kSEAcdtXVqeViK3rCt0h89/7x5HOI/sFP4bsVbx7TXUrolCNYEqiIOUw==
+X-Received: by 2002:a05:600c:1c85:b0:439:89d1:30ec with SMTP id 5b1f17b1804b1-43ba6747587mr20161705e9.29.1740734785952;
+        Fri, 28 Feb 2025 01:26:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFrk8HCJDFMTsz7xCP+NNdsyxhZ1X9lB/qPY5M9JGAe9E6mxJhigejXtxTR6plCVUKRLft8mw==
+X-Received: by 2002:a05:600c:1c85:b0:439:89d1:30ec with SMTP id 5b1f17b1804b1-43ba6747587mr20161455e9.29.1740734785589;
+        Fri, 28 Feb 2025 01:26:25 -0800 (PST)
+Received: from ?IPv6:2001:16b8:3d09:ac00:a782:635e:5e55:166d? ([2001:16b8:3d09:ac00:a782:635e:5e55:166d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43b7a27b27bsm49277385e9.31.2025.02.28.01.26.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Feb 2025 01:26:25 -0800 (PST)
+Message-ID: <a7720a091ea02a6bbaa88c7311d7a642f9c7fdff.camel@redhat.com>
+Subject: Re: [PATCH net-next v4 1/4] stmmac: loongson: Pass correct arg to
+ PCI function
+From: Philipp Stanner <pstanner@redhat.com>
+To: Jakub Kicinski <kuba@kernel.org>, Philipp Stanner <phasta@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
+ Torgue <alexandre.torgue@foss.st.com>,  Huacai Chen
+ <chenhuacai@kernel.org>, Yanteng Si <si.yanteng@linux.dev>, Yinggang Gu
+ <guyinggang@loongson.cn>,  Feiyang Chen <chenfeiyang@loongson.cn>, Jiaxun
+ Yang <jiaxun.yang@flygoat.com>, Qing Zhang <zhangqing@loongson.cn>,
+ netdev@vger.kernel.org,  linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,  Henry Chen
+ <chenx97@aosc.io>
+Date: Fri, 28 Feb 2025 10:26:24 +0100
+In-Reply-To: <20250227183545.0848dd61@kernel.org>
+References: <20250226085208.97891-1-phasta@kernel.org>
+	 <20250226085208.97891-2-phasta@kernel.org>
+	 <20250227183545.0848dd61@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCnnh3kgMFn9GRbPQ--.63080S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Jw4kAFWrtFy5ur4ktr15twb_yoWktFcEkF
-	17Zr1rX3yUCr9xK3y3twsru342gwnrX3WfZa4FgayrtwnrCF4jyw17Jas5JFyDX3yrZr9r
-	G3Wayry5C34IyjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNvtCUUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbB0hkCbmfBfo4+eQAAs2
 
-Add qlcnic_sriov_free_vlans() to free the memory allocated by
-qlcnic_sriov_alloc_vlans() if "sriov->allowed_vlans" fails to
-be allocated.
+On Thu, 2025-02-27 at 18:35 -0800, Jakub Kicinski wrote:
+> On Wed, 26 Feb 2025 09:52:05 +0100 Philipp Stanner wrote:
+> > pcim_iomap_regions() should receive the driver's name as its third
+> > parameter, not the PCI device's name.
+> >=20
+> > Define the driver name with a macro and use it at the appropriate
+> > places, including pcim_iomap_regions().
+> >=20
+> > Cc: stable@vger.kernel.org=C2=A0# v5.14+
+> > Fixes: 30bba69d7db4 ("stmmac: pci: Add dwmac support for Loongson")
+>=20
+> Since you sent this as a fix (which.. yea.. I guess.. why not..)
+> I'll apply it to the fixes tree. But then the other patches have=20
+> to wait and be reposted next Thu. The fixes are merged with net-next
+> every Thu, but since this series was tagged as net-next I missed
+> it in today's cross merge :(
+>=20
 
-Fixes: 91b7282b613d ("qlcnic: Support VLAN id config.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Oh OK, I see =E2=80=93 I'm not very familiar with the net subsystem process=
+. So
+far I always had it like this: fire everything into Linus's master and
+Greg & Sasha then pick those with Fixes tags into the stable trees
+automatically :)
 
-diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-index f9dd50152b1e..2c01a9ad444f 100644
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-@@ -454,8 +454,10 @@ static int qlcnic_sriov_set_guest_vlan_mode(struct qlcnic_adapter *adapter,
- 
- 	num_vlans = sriov->num_allowed_vlans;
- 	sriov->allowed_vlans = kcalloc(num_vlans, sizeof(u16), GFP_KERNEL);
--	if (!sriov->allowed_vlans)
-+	if (!sriov->allowed_vlans) {
-+		qlcnic_sriov_free_vlans(adapter);
- 		return -ENOMEM;
-+	}
- 
- 	vlans = (u16 *)&cmd->rsp.arg[3];
- 	for (i = 0; i < num_vlans; i++)
--- 
-2.25.1
+Anyways, I interpret your message so that this series is done and I
+don't have to do anything about it anymore. Correct me if I'm wrong.
+
+
+Thanks
+P.
 
