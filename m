@@ -1,133 +1,78 @@
-Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7591B4250;
-	Fri, 28 Feb 2025 10:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6741ACEDB;
+	Fri, 28 Feb 2025 11:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740740300; cv=none; b=nBnZXSMpzlLgHxGVFz0DQG8m/ywmJtLizIqY3Neqb9JAACh3SaHhsQC+nCXF4MhVRAldjl3n1nHzbvOZ8Q9I813fY/UbskwpaG59jE/79tnnxs8bU6MOAD1q4sNnB1q2dzekuGrTNHqBc/Y9SSXCctmsskOb5xxcmQSol9NS6GM=
+	t=1740740457; cv=none; b=oUjkNb10YbTjwePVkIuYOVmC2hcXI47xuvMQas7LSleuUYPTK1jVFVc5R1mCUALfrNnhNuajhuXy5b8tBVkXJ788xFJE3MedHKDKgPQ2zpquDnCGNl+CIZd7KxTjK9LA9eV+TjKWiglpkNOgzHvitVGGlnyoMKQiNNsG4TSrLVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740740300; c=relaxed/simple;
-	bh=y4qLzVKeSumaJbQ2OcL2SjtVFyTfjHTiQ6ulK7YfVZ4=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=Mt3FcU1RxQqe2rABKfkfmynjXVcB0kkpwmCUEHFeMfbQGIFFnNown3q8rR2F2FM+7BpTQG9jaFabUK8ZFqI8yN/ntU1CcSPkhBqRhtmS2VjjOX6zSItptIzWf/GYKKVVK2dP4QB2Mpsl6nNgLyI9q8KZMFtk7eyPF8rSVg1thzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=EUKyxWgt; arc=none smtp.client-ip=162.240.238.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="EUKyxWgt"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
-	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=sE6TUNROnNN1BDGkZDG+hbLODugZVEpsfc3S6d8BpfU=; b=EUKyxWgtREsHH005xVidHeShMx
-	o2x3gSov/MlMrfIA27GHA5iGyEQwi3KIMdUbPYzkOMfk2/bQH3VV2QHcxl2MfFHGDmMiiCcRyDV2G
-	P3sSQc+ZRzWAlw/lANFEUHIRpFjAa28kdzEb0iGlatdiDSr/QpkG1TPl+Y5G1+V262nOY0WsaQoNH
-	/O6aOmQshXEiddFa+rgrgmNFg8eTciU64Oieyx5iyu08RoDurdKPku1Xa6KpsPhWs4LFt+LuHlm0L
-	6aM/f8/qdaDTTj/dt3NtV5vIrrK6td+9pqrYzM8OAqpIZ2rsO5c0G6YyTNTrB2nNvqs9s4yLKZxNL
-	OtKk1cBQ==;
-Received: from [122.175.9.182] (port=44904 helo=zimbra.couthit.local)
-	by server.wki.vra.mybluehostin.me with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.1)
-	(envelope-from <parvathi@couthit.com>)
-	id 1tny4L-000000003tI-3dut;
-	Fri, 28 Feb 2025 16:28:14 +0530
-Received: from zimbra.couthit.local (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTPS id 21DA91782035;
-	Fri, 28 Feb 2025 16:28:08 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id F05031784068;
-	Fri, 28 Feb 2025 16:28:07 +0530 (IST)
-Received: from zimbra.couthit.local ([127.0.0.1])
-	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id MkyykbHGCm10; Fri, 28 Feb 2025 16:28:07 +0530 (IST)
-Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
-	by zimbra.couthit.local (Postfix) with ESMTP id B25DB1782035;
-	Fri, 28 Feb 2025 16:28:07 +0530 (IST)
-Date: Fri, 28 Feb 2025 16:28:07 +0530 (IST)
-From: Parvathi Pudi <parvathi@couthit.com>
-To: nm <nm@ti.com>
-Cc: parvathi <parvathi@couthit.com>, danishanwar <danishanwar@ti.com>, 
-	rogerq <rogerq@kernel.org>, andrew+netdev <andrew+netdev@lunn.ch>, 
-	davem <davem@davemloft.net>, edumazet <edumazet@google.com>, 
-	kuba <kuba@kernel.org>, pabeni <pabeni@redhat.com>, 
-	robh <robh@kernel.org>, krzk+dt <krzk+dt@kernel.org>, 
-	conor+dt <conor+dt@kernel.org>, ssantosh <ssantosh@kernel.org>, 
-	richardcochran <richardcochran@gmail.com>, 
-	basharath <basharath@couthit.com>, schnelle <schnelle@linux.ibm.com>, 
-	diogo ivo <diogo.ivo@siemens.com>, 
-	m-karicheri2 <m-karicheri2@ti.com>, horms <horms@kernel.org>, 
-	jacob e keller <jacob.e.keller@intel.com>, 
-	m-malladi <m-malladi@ti.com>, 
-	javier carrasco cruz <javier.carrasco.cruz@gmail.com>, 
-	afd <afd@ti.com>, s-anna <s-anna@ti.com>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	netdev <netdev@vger.kernel.org>, 
-	devicetree <devicetree@vger.kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	pratheesh <pratheesh@ti.com>, Prajith Jayarajan <prajith@ti.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
-	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
-	krishna <krishna@couthit.com>, pmohan <pmohan@couthit.com>, 
-	mohan <mohan@couthit.com>
-Message-ID: <506678778.717678.1740740287558.JavaMail.zimbra@couthit.local>
-In-Reply-To: <20250226184408.d4gpr3uu2dm7oxa2@handwork>
-References: <20250214054702.1073139-1-parvathi@couthit.com> <20250226184408.d4gpr3uu2dm7oxa2@handwork>
-Subject: Re: [PATCH net-next v3 00/10] PRU-ICSSM Ethernet Driver
+	s=arc-20240116; t=1740740457; c=relaxed/simple;
+	bh=fy0rrOyVDewDPklbCqvdhOp3juLTfjm0e3sk1PpGsj0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ilw3LcDDHPlF1zOgTPTIM42ePImQRDc6+CVS/sqML0Oe5HhgFlrZAmJXxhEEFbD+4k0XZZ60qaNK3fcKxq+V/VAjFaczS076GqgpRAvQEhPHP16xKKr1yPtkIAFUVXIr3HEXPsF86OpjKKpcd3W9cVfO/CQK7jqhs4XZpEyupKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Z44rM06kWzwXF5;
+	Fri, 28 Feb 2025 18:56:03 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 059401800CD;
+	Fri, 28 Feb 2025 19:00:51 +0800 (CST)
+Received: from localhost.localdomain (10.90.30.45) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 28 Feb 2025 19:00:50 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
+	<liuyonglong@huawei.com>, <chenhao418@huawei.com>,
+	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
+	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
+Subject: [PATCH net] net: hns3: make sure ptp clock is unregister and freed if hclge_ptp_get_cycle returns an error
+Date: Fri, 28 Feb 2025 18:52:58 +0800
+Message-ID: <20250228105258.1243461-1-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - FF113 (Linux)/8.8.15_GA_3968)
-Thread-Topic: PRU-ICSSM Ethernet Driver
-Thread-Index: IPUW/PB0LmhbxyH+Oxy+FoQN15s69g==
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.wki.vra.mybluehostin.me
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.wki.vra.mybluehostin.me: authenticated_id: smtp@couthit.com
-X-Authenticated-Sender: server.wki.vra.mybluehostin.me: smtp@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-Hi,
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-> On 11:16-20250214, parvathi wrote:
-> [...]
->> The patches presented in this series have gone through the patch verification
->> tools and no warnings or errors are reported. Sample test logs verifying the
->> functionality on Linux next kernel are available here:
->> 
->> [Interface up
->> Testing](https://gist.github.com/ParvathiPudi/f481837cc6994e400284cb4b58972804)
->> 
->> [Ping
->> Testing](https://gist.github.com/ParvathiPudi/a121aad402defcef389e93f303d79317)
->> 
->> [Iperf
->> Testing](https://gist.github.com/ParvathiPudi/581db46b0e9814ddb5903bdfee73fc6f)
->> 
-> 
-> 
-> I am looking at
-> https://lore.kernel.org/all/20250214085315.1077108-11-parvathi@couthit.com/
-> and wondering if i can see the test log for am335x and am47xx to make
-> sure that PRUs are functional on those two?
-> 
+During the initialization of ptp, hclge_ptp_get_cycle might return an error
+and returned directly without unregister clock and free it. To avoid that,
+call hclge_ptp_destroy_clock to unregist and free clock if
+hclge_ptp_get_cycle failed.
 
-In this patch series we have added support for PRU-ICSS on the AM57x SOC.
-Hence the test log was only included for the AM57x SOC. We are working in parallel
-to add support for PRU-ICSS on the AM33x and AM43x SOC's as well. We will send it as
-a separate patch series at a later time.
+Fixes: 8373cd38a888 ("net: hns3: change the method of obtaining default ptp cycle")
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
+index bab16c2191b2..181af419b878 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
+@@ -483,7 +483,7 @@ int hclge_ptp_init(struct hclge_dev *hdev)
+ 
+ 		ret = hclge_ptp_get_cycle(hdev);
+ 		if (ret)
+-			return ret;
++			goto out;
+ 	}
+ 
+ 	ret = hclge_ptp_int_en(hdev, true);
+-- 
+2.33.0
 
-Thanks and Regards,
-Parvathi.
