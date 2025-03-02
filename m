@@ -1,264 +1,115 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BA71BD00C;
-	Sun,  2 Mar 2025 13:10:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740921029; cv=fail; b=HHtVrBm3zP++dRgU/etNIlB8vmpydlPOKx0zNGon6D9R+D+DQamCSF8LB0dMu8wcf0JFnAM3GgFnUeFEAItcW/sgsHnW4xoPjcT9Dx/XbNazaMFjl3K9zmc6EljFkLIvbat7SdgEzEuETiraIxPIGg7DVtEaRvGwJYL2zXJP9JA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740921029; c=relaxed/simple;
-	bh=DBxfPx1Qw3cFSsUyEYfgfz2kkRBeWKyu+dvUuwcMnEo=;
-	h=Subject:To:CC:References:From:Message-ID:Date:In-Reply-To:
-	 Content-Type:MIME-Version; b=PSL/TgyfbC9rBinIZpK9J1GlAsiOFdCLR+Ed0HwpwsMyms1JPGV4UJr9zWBTNyOZKQSg1zc9Re7PTGvTC7q+3Ab1Nw67kKtl2/7Ygyue6Mdtf+3/GG9HoEjV8zw63zeNdM81UDDs19M4SBqip+ZfHwkr2Ep854554O9up5Ki07Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LbKvSX9x; arc=fail smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C2F182D7
+	for <netdev@vger.kernel.org>; Sun,  2 Mar 2025 14:33:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740926007; cv=none; b=Sb4L+JU2kicSZTzD7qSkTgrULfN+V+7R01PA22ytjunnOUcxJgzDLMS0UCh7tG+vZFAOevA/temi83jnkbeQeyZLH1bgUy1ryyvQY1uvdc/0Tsac5jMlctZMwDgWdLKS8fiAXwA4pCK4BJcdwspvC/IdjK7y/N+6BnPiLY/iLX0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740926007; c=relaxed/simple;
+	bh=C/xAItdObRhE+7CYDvFZUYp59fIC72o7p9syeQ2nR0M=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JLqngln1waOJ1a75B2Ldb2iiDueRY7sMyk415yS+FvaMpklHZ/ZzIi6uTG9Vwj551RCldlCCbgDGJbQYAXdV9kP5ZbtS9Imm8/PFeJouy7XZaj4FYSq9YO9YjC8yK0oMpQSQHzrhXE6yZ54eSSRdKn0GV/g37Wz5hbxdFS5pBXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gm78BwSR; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LbKvSX9x"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740921027; x=1772457027;
-  h=subject:to:cc:references:from:message-id:date:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=DBxfPx1Qw3cFSsUyEYfgfz2kkRBeWKyu+dvUuwcMnEo=;
-  b=LbKvSX9xHdcAaM1Kc6q4S5xij/bs9tXRIjega67lO9gX3PKqwDrQ9mbx
-   dj+wYW4ch+1Phj2cXyM+0mNQJVH7a6QHp85f9yW/UVWtvNwTZm9FrSEHJ
-   ady7xe+m/WP8c/XD5/jvtsEqn6Wi7HiKaKFnG35dLDwjtkR0aY+CQ5dPI
-   Spm/DgJCcTHZ4qgW9D20hKeBg01+857y3aa0R90cnf9MDtU/QkdOmyMO2
-   70muGdQdpbGhmBz2ozbD2tGQe7iguSzdjN9fNllHp9O8BATX6SVkObXtY
-   cb3+lQzdW0aqfnFjZ7I8CL9IA4Z49nHdktemTJ4EZwdJjdrGm7TKJXYn0
-   Q==;
-X-CSE-ConnectionGUID: tqhKWg0/TKSCg7Hm29nF5A==
-X-CSE-MsgGUID: epJ7pkDxQHywqQ0lFr4O3A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11360"; a="52442164"
-X-IronPort-AV: E=Sophos;i="6.13,327,1732608000"; 
-   d="scan'208";a="52442164"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2025 05:10:26 -0800
-X-CSE-ConnectionGUID: 22mxE1dLRryEqTqFST77YQ==
-X-CSE-MsgGUID: rvPI7+uUSoy49YayPNn9kQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,327,1732608000"; 
-   d="scan'208";a="117762608"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2025 05:10:26 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Sun, 2 Mar 2025 05:10:25 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Sun, 2 Mar 2025 05:10:25 -0800
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.173)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Sun, 2 Mar 2025 05:10:25 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jjetns7d6qCfKSt6hfmhOcgVUk9sqjsSeb9lafh2OjdWN2InYCskoY4s3UqoTNtyWNJHp44/pgaeR7fSlPFtgHZv8limWpEkYlrT1LEFYtfTqnJIe1bJMIPmuH6ntwC1TcqL/FQd4pnEif8trXwqU27JjeyF0CoCJh2NsGNl/QKYmKiFw0pfiRQ6m3YhZ5Z6TCsdoadni7CiaOLOg9XQzMRMpii6eVcJJmjEocaR+XAlsuMSAny/SxNuDi3Uw0QoDKcBElngfa7PNbO9Z8DLDFfdJO66w+/C5pFRQfVeauPf94ed0/8dIq7OvsEbLlyNqR2GyQSAMBbt3qfhUFHNMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cCaDCsr++QWXRO7nPpDVmQGYG+J4kkpdaEqWl/FXync=;
- b=C6ckucqz/6ypDwx2htv1YXetHksfuglleV/2QNF4MUBwzAx7Q5VyfcROHUj5L+pDZeqCjEDO2SMHrelt+OsGR6hhSiJDYBbh8JUNhkqKkZgNARtwBrGPwPkGMuI/ZdiDnEELPYXOwMQ7ceeBVE4Vlw0wBwETBDaLuahspcBbh39nN4W0Zn9rSox5Y8Esh6O9Wdn6BdsBC+QwP6YI0Bbtlg2HexV7TOmyDXWhnYQxFYywidaCgpEtD5njHliQV58udmfly8l3y2QSMkwtdWB1lSqkUfm9WuRH84sciMZXQSvSs0zhJvCjV+PvGmdAsoLJgHCNQGBf6IwMM6iSKVMnkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB5949.namprd11.prod.outlook.com (2603:10b6:510:144::6)
- by SJ1PR11MB6226.namprd11.prod.outlook.com (2603:10b6:a03:45b::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.25; Sun, 2 Mar
- 2025 13:09:42 +0000
-Received: from PH0PR11MB5949.namprd11.prod.outlook.com
- ([fe80::1c5d:e556:f779:e861]) by PH0PR11MB5949.namprd11.prod.outlook.com
- ([fe80::1c5d:e556:f779:e861%6]) with mapi id 15.20.8489.025; Sun, 2 Mar 2025
- 13:09:42 +0000
-Subject: Re: [Intel-wired-lan] [PATCH] e1000e: Link flap workaround option for
- false IRP events
-To: Mark Pearson <mpearson-lenovo@squebb.ca>, Andrew Lunn <andrew@lunn.ch>
-CC: <anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <intel-wired-lan@lists.osuosl.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <mpearson-lenovo@squebb.ca>
- <20250226194422.1030419-1-mpearson-lenovo@squebb.ca>
- <36ae9886-8696-4f8a-a1e4-b93a9bd47b2f@lunn.ch>
- <50d86329-98b1-4579-9cf1-d974cf7a748d@app.fastmail.com>
- <1a4ed373-9d27-4f4b-9e75-9434b4f5cad9@lunn.ch>
- <9f460418-99c6-49f9-ac2c-7a957f781e17@app.fastmail.com>
-From: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
-Message-ID: <4b5b0f52-7ed8-7eef-2467-fa59ca5de937@intel.com>
-Date: Sun, 2 Mar 2025 15:09:35 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
-In-Reply-To: <9f460418-99c6-49f9-ac2c-7a957f781e17@app.fastmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TLZP290CA0004.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:9::15) To PH0PR11MB5949.namprd11.prod.outlook.com
- (2603:10b6:510:144::6)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gm78BwSR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740926004;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xGq2Axvzt/J7qgw1KDrXhDAtkMcdMfmrQjoiox/FEqY=;
+	b=gm78BwSRFajroFok+Y+w6FCsFGEE4WqcppFeWUx9QXbwhuNwqpWzMcos8RE2krt54kBvLf
+	ybRdN2ZcHWIl5bslcS8o4WcZfVh0xxy8GyKunt7FPhXm0ykJxONmvSDhYrmCOcbFDYWL3t
+	Yh0fk/fV1yw4iVIjibvgE+X+NOdvcao=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-8Mwhey9yN2umJaXpiBKHVQ-1; Sun,
+ 02 Mar 2025 09:33:20 -0500
+X-MC-Unique: 8Mwhey9yN2umJaXpiBKHVQ-1
+X-Mimecast-MFC-AGG-ID: 8Mwhey9yN2umJaXpiBKHVQ_1740925999
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 098391944F04;
+	Sun,  2 Mar 2025 14:33:19 +0000 (UTC)
+Received: from server.redhat.com (unknown [10.72.112.49])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 752F21800359;
+	Sun,  2 Mar 2025 14:33:14 +0000 (UTC)
+From: Cindy Lu <lulu@redhat.com>
+To: lulu@redhat.com,
+	jasowang@redhat.com,
+	mst@redhat.com,
+	michael.christie@oracle.com,
+	sgarzare@redhat.com,
+	linux-kernel@vger.kernel.org,
+	virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org
+Subject: [PATCH v7 1/8] vhost: Add a new parameter in vhost_dev to allow user select kthread
+Date: Sun,  2 Mar 2025 22:32:03 +0800
+Message-ID: <20250302143259.1221569-2-lulu@redhat.com>
+In-Reply-To: <20250302143259.1221569-1-lulu@redhat.com>
+References: <20250302143259.1221569-1-lulu@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB5949:EE_|SJ1PR11MB6226:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4a35bcdb-fe2a-4407-97c1-08dd598b7eb6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SjlaV0NINXR2NklJclRpVjlOR1pldW1QVThvQWw3M011eXdqWDhrQko5RzBz?=
- =?utf-8?B?SDFLMkJHWCt2Rks5cGpSRk11b29tdFl6emxCOUJpMHlka1RoVUsxek1mS2t0?=
- =?utf-8?B?UXVyalpEY3ljMWl3OTZxd2theDhxdjg5MTV6aVl2NWl0MzhqNWhmenRIRnRS?=
- =?utf-8?B?Nm5USEM3MGJEYnZzbkx1U2orYm1zSXpNaHRmOU9tKzBXbGhUOTBEaWoyUmZS?=
- =?utf-8?B?QVlpMndiZlJ1RFFJOXRodHIvdThqWUtzeVNwcmZreG5zY2ZabzRlMmlWcEFq?=
- =?utf-8?B?c3p4cVZsRmpmV1E5VUF4RFFnSWl2TkU3SkwzdDRMaHdtMGhJSzJ1bEhoZnV6?=
- =?utf-8?B?TG9EVGJRWHl4UklzTVh4MjIzd0dqbThrLzRSMkN1dGtUTmFRZjVmSFF3UXhX?=
- =?utf-8?B?LzNHK1hFN2I4YUQwbWY4aVkxSmtuSWluN2RwZmQrLzJnK0psUytKNWxjWHJX?=
- =?utf-8?B?M09tUytYdVdoYmt1NEdMMU1HMUJLYnNJYVZSQWk0SHZkUFhISnl2a3FMQ0I1?=
- =?utf-8?B?UzEyaFEranRFR0U5QzJOQ3QrdElMN3FFc25ZTkpqd0IvamRZY0R2NWJ4eGd4?=
- =?utf-8?B?UTNXUUVXOXVqcjQyYk1jQU9iZVNlQktmbWR4UUprWDVlSCt2SElua3dpenJh?=
- =?utf-8?B?TTVhRGtYVE5URVRlWUg1b0gxNVpjR2NJbjREMWxxREduVXQzOXpUMHFsSlhO?=
- =?utf-8?B?a2Z0Y0NnQTFtSDc5V0lienRmWGwwUEdDU0Y1MVpNOUNLdWdDcFAzM091bjRR?=
- =?utf-8?B?SVQ5VzlwN1A4NlQzNmUzN2NpZk5QaTVadERtOFpGRnhuTU1VNDhheGV6bEpm?=
- =?utf-8?B?MTF0VjVuM2M3VWJoeHkrU3pIY3hrVElNQldETlpoODFJdENqL3FCV0JVdGkx?=
- =?utf-8?B?NzFaQnAyNnZEVDQxVHVyeDlJTWwwYzlnMXRXY0VmbXRSakdldXBCaW0ramtj?=
- =?utf-8?B?R1RyYlJEdmsvand5TWJEamdFcXZXZXBTenhrRFM4Zy9WWnVzdmtnWk9Ub0Fa?=
- =?utf-8?B?bFpOUDhzZHU5VVpJdnlrZUFOTG43cWxrMGdualVreWFYZnV0RkFYbXZ5byt4?=
- =?utf-8?B?T0RDTHB1L2dlbnE1dVNTbmgyNUFPTHIzRjdsUUZ2S25XOWhGS1RqK2pibkxt?=
- =?utf-8?B?VzRyS3lIaXp2UDZSWlFrYkdIdjJRc2RCUkpTZ29JSXJWdEhFZVk1RllmNzNU?=
- =?utf-8?B?MFFFWXF5dGFEVWVsSzNFUk5qb295MlVwWFNwSU5yZW5EOGhYZmNlcWphWlF0?=
- =?utf-8?B?T2FOUHZXVVBjNSt2S3RrSEs0cUxVMGZVaTVOcGVYR1FXK0d2TDg1OXM1ajhD?=
- =?utf-8?B?UUdXaldQT2FDUXM5Lzl4VnpidGU2ZHNrUFMwRDlVWDNtN3pVamJmeSswS2o0?=
- =?utf-8?B?bDJablM0M042YlJ4c1J1allBcVhYYnQ5OWtWWTBJZDV0MFVKNTZ1aGg3WlB3?=
- =?utf-8?B?dCthM1VhNjdPaTc3TnQ5Wlh3cTVoTjlqcVNWMnRIaEVJWCtqenRrd3ByS0pq?=
- =?utf-8?B?TFJZdWpTU0hzOVpHZVV1RU50SE5TVHM2N3JVUllZWkFJK2xvV2pvL2Z0Y3Rz?=
- =?utf-8?B?MW9hMzRWQ3JacUZpT2NrVjFvdzBGQWM4cFgzcDl6ZG9xcVVFc1pTdkJCaVlj?=
- =?utf-8?B?d0tpZHNWT1RMbWMvaFlWSk4zVHZNaFhKVjF3K2hHamhhdWRGT3A0d2hBM3Zy?=
- =?utf-8?B?K3BXelo4bnQvSHBWb2lpUEcwcERkb2VmZlFGcWEzbDVYRnVVS0lRelU0eHJl?=
- =?utf-8?B?eDJyS3l2bU0rMHdtMW82ZHZwajE4T1UrMUlWVm4yMTV6d1ZLckFwc2FSZW9J?=
- =?utf-8?B?ZUI4aFNON1ZYeXo0dkFRdz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5949.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NnZFWUNCNkZUU1VoY3d5K2wxS2hmOFAwdVVKeW5VZm9Cb21BVTlvV0Q5KytC?=
- =?utf-8?B?N3pVTG44d2R3c3gwNFZYc1g1ZlcwbzRRTG5rNHRTaEV4YnFWL21vT0hIcWc2?=
- =?utf-8?B?ZDVtVUVWb1UwN1FVc3M4SytqS3c2Q1dkZVpBWFdVTzZSd1lBSGN2TEhoaUVl?=
- =?utf-8?B?RENOeHhzUWtzaUQxS0Nydlp0WHlJMm5oRVBRd3Q2dU9POUZRZHpwSjlMZ1Rz?=
- =?utf-8?B?aEo2Zm5qcEU1REJTSGRhc3U3VGlpT0FvR1RHVjJMM05FbXE5QnlDRm1SNXpr?=
- =?utf-8?B?UHF2V244eWRsVlU0SXJ0OVJyRmRCVytXNW9PTVVicG55SkdyZmlCSXhyZDM1?=
- =?utf-8?B?amZ6eWhaUUZqcDRUR3ZFZm5zYzBzRTB0V3A0NW5nTVJxRFQzK1VLQktGclRt?=
- =?utf-8?B?VkZacHpsMjhMQVI0ZkhvWnY3dFlhbVIxenUvVzdnaWRJbnkwUkwzNnd3b2tw?=
- =?utf-8?B?WnY3cW1kcHNxdHJCZzN3cHFHK29xT1RzY0sydDYwTE56T3BqcGt4V2g1UGE0?=
- =?utf-8?B?V01ZZS9MZXBTdmF5a0t2N3dHcVI1MEVReU9jR0VBWjBDNi8wSW8xZnFKSUlG?=
- =?utf-8?B?c0k2OVVURCtJOGJ4bHM3RmZnQ1JQd0UweUFIWWg4Q2VNMjJQeE53Qk11N1lI?=
- =?utf-8?B?NUhzZGNVYmhoNWc1NXhKbE5ybFoxbEoyT3p1VXVPWDB1SHhQQkdiWEZRQlVw?=
- =?utf-8?B?WWpZOUExN1FxZGJjaUpJZUZvVWVIVCtPZWtwRXZLVElVSHJPelo3K2xVMllC?=
- =?utf-8?B?N084VzZlK0N4K1RCUFd2R243NUJpTEZ3SVo5VW1IalJoMGE2Y3pPVlQrQjRQ?=
- =?utf-8?B?R2REL3E0d250SXo0K0N3elFSQkowS0oxYXJLNVd3dGoxcTlKVjRVSkhGSUJ5?=
- =?utf-8?B?RlRPRnZWZVFMZDVUem5US3JUVFFiZjVDRDNuUVF4YVR2TXJKNkl3dzVQRUpq?=
- =?utf-8?B?Wldsc3VZOTRlZTVVeUlXV3Rlc2E3OEcrZ0cxUjVXRER2ajM3WWJzUFZJc1Fk?=
- =?utf-8?B?NE5UYTRndzdjejM4K1V2TFdhK2dublVPMkFwMnI4dmptM3FibVhUOElJRDd1?=
- =?utf-8?B?VjVTQXdkVmoyWkhZQS9tRjdrV3J1ZlpEWThVekdHMG1YQVBqdjNtV3R1M0Nw?=
- =?utf-8?B?YWhrNytqMzVqN3pHMjR5dzNVOVpmSURxZDJlb05MNS9RTStpTENFdXRIa0VS?=
- =?utf-8?B?ay9hZnZGYnBGUHR6dEZYRk02VnlZTkNjc2NhS0lmL2lmZ2plc3BwazJVL3pZ?=
- =?utf-8?B?Z1V3aStLREZBNGZ4Vzkzb08wMmorTDR6cXQwT0hPaGFVZXlaaFFIUDl2ZVpM?=
- =?utf-8?B?OVBNK2FZc0gzb3JCU2VDRUFhYnVqb2hORzdsNENad1hrN3BHZ0ozYVVoMkkz?=
- =?utf-8?B?ZGZrbnBCS05NS2hDUVRKZ1djbTBhZSswUWEwUzd2YlBxbHovWlowZGUwZy9h?=
- =?utf-8?B?M0R5NTRoYW02U014UWl6SkdIbnNNMGZ5VUlZZkxqclIwMFZTZUwvS3V2VTY3?=
- =?utf-8?B?RVhlNE5KMEdZdE5senVZSW9RaGJFK3JzQ1NDR2ZBd0g5QmlXNGZUWDdjVU5B?=
- =?utf-8?B?aWRWN1NTRVhhbVhRZDZPOW9TN3BhZmtRNzZVZ0hJSk5uUjJIU0t6bkdvOUx6?=
- =?utf-8?B?cnppSjhUbFJDQis1TU5BNVZYNnZvelFwUjc0YU9wOEVOV3N4STdxSHVvWEc5?=
- =?utf-8?B?dlQzdHE5dURMRVFHcFJsUkFUVERicjNUL1NkNlVsRE1hUXZaZjVKU3dyR2k5?=
- =?utf-8?B?OHVXeTN2REJmek1WTzZ5WFBIaWhBbHJ1dm1kc2N5aE9sZHM1Tm1TOU8yYWFr?=
- =?utf-8?B?U1g0aTdnVUZYcExUZFliUHY1MVRlaUk0UnJyajF1OUhFQkwxbWFPdkp2TURF?=
- =?utf-8?B?M2hSaFFNN2lpOWpoQUdwOUJjTWpqL2ZvcWpEZGcySWh0eVdYZDA5RmpES0Uz?=
- =?utf-8?B?KzB6Z2lKWHRaVGxqTUFNVHlSdmFCMmVkMWdaYWU0Vi9lSVZZMm1mUVhnU3lY?=
- =?utf-8?B?MUl3anBnYld6VkxEaWhQdVAxSzNXU0tSUUJobXc1QjB6YWxvUUhzdkN2aHdM?=
- =?utf-8?B?UW9QRmJCanRVcTVWR05veXBQVUV4ZDhjWUQvWHlTdUJIa1FxcTMzazlwMURQ?=
- =?utf-8?B?YWJsMzhZeXdMUU9kcklWVHlxM1FiUmVmOFFsMGZrTkc5VENUUmtReFE0UWc3?=
- =?utf-8?B?ZkE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4a35bcdb-fe2a-4407-97c1-08dd598b7eb6
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5949.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2025 13:09:41.9384
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Vnt+MJ6FRxm5j1CyZtWOClBioydLBZSNR8UWTkk5N53AsMw6W2V+/egoaYE/pGgtMOmI81+360gt2zfItQBHKgQM3TQPKD7/KxD8zMKYajk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR11MB6226
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
+The vhost now uses vhost_task and workers as a child of the owner thread.
+While this aligns with containerization principles,it confuses some legacy
+userspace app, Therefore, we are reintroducing kthread API support.
 
+Introduce a new parameter to enable users to choose between
+kthread and task mode.
 
-Hi Mark,
+Signed-off-by: Cindy Lu <lulu@redhat.com>
+---
+ drivers/vhost/vhost.c | 1 +
+ drivers/vhost/vhost.h | 9 +++++++++
+ 2 files changed, 10 insertions(+)
 
-> Hi Andrew
-> 
-> On Thu, Feb 27, 2025, at 11:07 AM, Andrew Lunn wrote:
->>>>> +			e1e_rphy(hw, PHY_REG(772, 26), &phy_data);
->>>>
->>>> Please add some #define for these magic numbers, so we have some idea
->>>> what PHY register you are actually reading. That in itself might help
->>>> explain how the workaround actually works.
->>>>
->>>
->>> I don't know what this register does I'm afraid - that's Intel knowledge and has not been shared.
->>
->> What PHY is it? Often it is just a COTS PHY, and the datasheet might
->> be available.
->>
->> Given your setup description, pause seems like the obvious thing to
->> check. When trying to debug this, did you look at pause settings?
->> Knowing what this register is might also point towards pause, or
->> something totally different.
->>
->> 	Andrew
-> 
-> For the PHY - do you know a way of determining this easily? I can reach out to the platform team but that will take some time. I'm not seeing anything in the kernel logs, but if there's a recommended way of confirming that would be appreciated.
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 63612faeab72..250dc43f1786 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -552,6 +552,7 @@ void vhost_dev_init(struct vhost_dev *dev,
+ 	dev->byte_weight = byte_weight;
+ 	dev->use_worker = use_worker;
+ 	dev->msg_handler = msg_handler;
++	dev->inherit_owner = true;
+ 	init_waitqueue_head(&dev->wait);
+ 	INIT_LIST_HEAD(&dev->read_list);
+ 	INIT_LIST_HEAD(&dev->pending_list);
+diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
+index bb75a292d50c..19bb94922a0e 100644
+--- a/drivers/vhost/vhost.h
++++ b/drivers/vhost/vhost.h
+@@ -176,6 +176,15 @@ struct vhost_dev {
+ 	int byte_weight;
+ 	struct xarray worker_xa;
+ 	bool use_worker;
++	/*
++	 * If inherit_owner is true we use vhost_tasks to create
++	 * the worker so all settings/limits like cgroups, NPROC,
++	 * scheduler, etc are inherited from the owner. If false,
++	 * we use kthreads and only attach to the same cgroups
++	 * as the owner for compat with older kernels.
++	 * here we use true as default value
++	 */
++	bool inherit_owner;
+ 	int (*msg_handler)(struct vhost_dev *dev, u32 asid,
+ 			   struct vhost_iotlb_msg *msg);
+ };
+-- 
+2.45.0
 
-The PHY is I219 PHY.
-The datasheet is indeed accessible to the public: 
-https://cdrdv2-public.intel.com/612523/ethernet-connection-i219-datasheet.pdf
-
-> 
-> We did look at at the pause pieces - which I agree seems like an obvious candidate given the speed mismatch on the network.
-> Experts on the Intel networking team did reproduce the issue in their lab and looked at this for many weeks without determining root cause. I wish it was as obvious as pause control configuration :)
-> 
-> Thanks
-> Mark
-> 
-
-Reading this register was suggested for debug purposes to understand if 
-there is some misconfiguration. We did not find any misconfiguration.
-The issue as we discovered was a link status change interrupt caused the 
-CSME to reset the adapter causing the link flap.
-
-We were unable to determine what causes the link status change interrupt 
-in the first place. As stated in the comment, it was only ever observed 
-on Lenovo P5/P7systems and we couldn't ever reproduce on other systems. 
-The reproduction in our lab was on a P5 system as well.
-
-
-Regarding the suggested workaround, there isn’t a clear understanding 
-why it works. We suspect that reading a PHY register is probably 
-prevents the CSME from resetting the PHY when it handles the LSC 
-interrupt it gets. However, it can also be a matter of slight timing 
-variations.
-We communicated that this solution is not likely to be accepted to the 
-kernel as is, and the initial responses on the mailing list demonstrate 
-the pushback. We do understand the frustration of end-users that may 
-experience the problem. A couple of suggestions that can make it look 
-less “out-of-the-blue” are: try a short delay instead of the register 
-read, or read a more common register like PHY STATUS instead.
-On a different topic, I suggest removing the part of the comment below:
-* Intel unable to determine root cause.
-The issue went through joint debug by Intel and Lenovo, and no obvious 
-spec violations by either party were found. There doesn’t seem to be 
-value in including this information in the comments of upstream code.
