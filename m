@@ -1,57 +1,56 @@
 Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E62623A6
-	for <netdev@vger.kernel.org>; Sun,  2 Mar 2025 00:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3906D4C9D
+	for <netdev@vger.kernel.org>; Sun,  2 Mar 2025 00:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740874158; cv=none; b=Qr4D4aRQPiJhYlHKl0+1f8As95+7FueowCsH4k2RMFS/N2YT4GRizlJlBF8oyNHB21a73JWbOFXX0Lf3MLlfxOm5RIsQb/y+3D9Lvr/VoDjHEE/RuZ+vtOkBEb8UtkchQ186zFiaTrh9GAO96lqpA/NTOfuwOoId1E8kzQJVm4Q=
+	t=1740874159; cv=none; b=ENuyo6s7JAVSvKHQ+1lnOvVPlePfIyBArLD9DTrKelqBIiMq3ogn6cSeCaHU0Skh1ekg8I6nhmXECuiXf/I4BNTI57XIeEjPIBLB1AWukbEVta4H3sQKbrjxr28kAqfwJJg/Mb61qju4DD93ag0/s2FzQPJImOKukKbxXFTykaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740874158; c=relaxed/simple;
-	bh=WDe6t7TcB/Gc88Vyctly6yjlOcICyQjbhuXC+CCnfvo=;
+	s=arc-20240116; t=1740874159; c=relaxed/simple;
+	bh=rw5HxQ01OM4OnaoMZPErZQ3AP5PK+6pCiRSuQM3irG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3TRoe83pXc3OMr3O+D58ytiLUfJU/of4vqk+oLtQCvFtpxBNxsPEx+/SQdj/MNxL5hu/4lrRALQEhXrOJCBiTUVPkSVXNmaK9amQa2+oXtpeHucF/FATnML3h4pvjBnlf1Id8H7uWPlbD0OMs33fQ54kfzBiFcZ6Rgt1gp9De4=
+	 MIME-Version; b=Ncc/F0WXbQb5c1IRlIRgWCsi0KTsZYM1TU9AgcGCnuTBF4bXL+1loQjT4yDJrT8fUGcSq5gRvrAAxVlU8geL27KkEkQuALTyWkjpVhMpDbNSnT6ByIqssmjCBItu4CvSy/BxOfYmrdaWVimJly2ep9gMJUfxyv4vu2SsZZeTp+Q=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-223594b3c6dso55431395ad.2
-        for <netdev@vger.kernel.org>; Sat, 01 Mar 2025 16:09:15 -0800 (PST)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2234daaf269so23602085ad.3
+        for <netdev@vger.kernel.org>; Sat, 01 Mar 2025 16:09:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740874155; x=1741478955;
+        d=1e100.net; s=20230601; t=1740874157; x=1741478957;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7DfHfPjznBjEEVhI/LURTLOGlmXRYYaKDIKr2U2eypc=;
-        b=kGCmZjGlzDsgZTLI8bRLrglAaOWLAhL3LmVG2pmvEPI6i/wrpzYTHf9GJ6h54ZQyyN
-         Bqw3UDmX3k+jztFKY+mCfyn3CR8tD9Og3qOzjKwmgt/2g5Z4KxXZrR4v+9hTs6BdtrFe
-         th9nRMb33cutgEglF1qqCGqOMCima14SbR6klqdqVJy18UoWa3YGrAS2xj/8qX3rCOSU
-         oiaKEflbPwPWOzV+XbLlCU+FOOdTA2lx36Ap3Ys7wiAlkMJ8Bwtn4m2zUr417MWcvmGd
-         6/lujSRldWwFcjgSrJwuev5Aipzzdybt3mdCvJxM0BI1FMS4iiUrQD/8wV/m/gk1xKZG
-         bpCw==
-X-Gm-Message-State: AOJu0YzwDnUTdUyjLkIYz1QuLBlA5k0uA7MdVR/11L30k4XLpaoG/Pu9
-	6JhigihI21H+4Z6gpFYWzv0c5jnPkDpla/t4Ji8nQichjzn/4fkqupjx
-X-Gm-Gg: ASbGnctgsX+Xk4/9wlPpxVwhYTyL1vSv59kfaE8cpsJe+z51uel+e33XlFVI/Wb06TQ
-	lOFU2lAJHM5/MGSd9vMbHhzbgBoLwxyGWcd+obWSNxPNj/EoIzP0JXdSgGNmn1Kkj101gaZNrt2
-	vM1vO2l/N1GjwTCXb3Fy4ZJv+oO864IbAVi0uZww29H5denFxV6NAO7YeITaD5/4eILgEJ3DBR+
-	xg5XelrFThMq6wfMOnQqTfVfzmGj22W+eQfDXSasYNCePA+nVEw0MwB9kbe2aXRrz6SXdCODT1z
-	gZ0kuBKhenq+KLUzjskcDytyjY+vnQVWGLf2lLHRTfVT
-X-Google-Smtp-Source: AGHT+IGBGAu/gzM8WaSE7JpqD+wsyNhXTA4yJ5u0JNYMsYGkeyFKAwkKlCwZTdNRNI77Bipc+ZYOJA==
-X-Received: by 2002:a17:903:198c:b0:220:e1e6:4457 with SMTP id d9443c01a7336-22368fc987fmr137319885ad.26.1740874154763;
-        Sat, 01 Mar 2025 16:09:14 -0800 (PST)
+        bh=Y9DTP0L1xMvcuLrP8bxxNf8JBEHMapMdvJO4bFxdN28=;
+        b=ArNM/d+WTbnnkUxqdho4I9nJmUOBCgTD1OLBzYiZVtLQfxSBAetD0ArjSUuzhg2D37
+         ONpwBKiHdOb93gj8Uwpj3DwkLftl82bPlkf+a19kbjz5wVgCVKqTpBWXBv38iwbg1mk3
+         DRg4h4Ji8EW/mMCWczMg9wym/IssWe8aKQGFJsyOXECIo+fLxo8TZdx4LlkwTV+ToIoG
+         JzyOnxBWMFVr6PiWgHcVYlk+TBrghfLZigzpIKyPeKebpVpz6sB1QYg0qut0DE34SJfI
+         L5je/sOl/DGBfITxEEde9WzbWx7MjWMTJhCnEj+UrhA6NkTx/F6b9O4F8kpiNj7Eob66
+         0JRA==
+X-Gm-Message-State: AOJu0YwXveOEBXV+HMpAN3llWDVvqvqr9rftzQrujgUaSSRw4/vQ+2HI
+	WfV1m/gJVaSANUtpOqSJVQlOJL1yzzINrBHmGatPCDLrFFtLFJqrSVlM
+X-Gm-Gg: ASbGncugy1ksAIqzSYOdG+QaobAqqvPupEfS+KawHCxaN7IWCdv+RPM82eTHJriyJu0
+	Sv7mIA/NSHsaMmyZZPEpRLUgN7C8sgRH1tIPvxPmOYLc5zvhOSWcWxeqgdshPXa0U0CHMzwufE8
+	0zdgZEBQLtH4/psiHRznMZc6sd5sOjhoZW40LyR4p8VHTSyDELyZFRsDv+9Qa8y/WFNjyd8yxeu
+	y/zA0+PvBYkNprL3akaCrU51rrow6d3d8Wuv42KwPzOeYLUOfEz1QO+Rg2+HKz7n/yR/Vegpn/N
+	/lvBl10gJSy4N6DGlixjzmAB4YZnYlXTJAH+8jNeu2gd
+X-Google-Smtp-Source: AGHT+IGov9XMRPa9d50rK5Ept5CyfgfwEssVG9zO1fqIGdrwEjufvpP3+c+2IjA1QZbazmmKVG5oEw==
+X-Received: by 2002:a17:902:d503:b0:21f:3616:1c7b with SMTP id d9443c01a7336-223690e1c4emr146537275ad.29.1740874157212;
+        Sat, 01 Mar 2025 16:09:17 -0800 (PST)
 Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-223504c5d91sm53629575ad.108.2025.03.01.16.09.14
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-223501f97bfsm53809995ad.85.2025.03.01.16.09.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Mar 2025 16:09:14 -0800 (PST)
+        Sat, 01 Mar 2025 16:09:16 -0800 (PST)
 From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	Saeed Mahameed <saeed@kernel.org>
-Subject: [PATCH net-next v10 09/14] net: hold netdev instance lock during ndo_bpf
-Date: Sat,  1 Mar 2025 16:08:56 -0800
-Message-ID: <20250302000901.2729164-10-sdf@fomichev.me>
+	pabeni@redhat.com
+Subject: [PATCH net-next v10 11/14] net: replace dev_addr_sem with netdev instance lock
+Date: Sat,  1 Mar 2025 16:08:58 -0800
+Message-ID: <20250302000901.2729164-12-sdf@fomichev.me>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250302000901.2729164-1-sdf@fomichev.me>
 References: <20250302000901.2729164-1-sdf@fomichev.me>
@@ -63,196 +62,270 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Cover the paths that come via bpf system call and XSK bind.
+Lockdep reports possible circular dependency in [0]. Instead of
+fixing the ordering, replace global dev_addr_sem with netdev
+instance lock. Most of the paths that set/get mac are RTNL
+protected. Two places where it's not, convert to explicit
+locking:
+- sysfs address_show
+- dev_get_mac_address via dev_ioctl
 
-Cc: Saeed Mahameed <saeed@kernel.org>
+0: https://netdev-3.bots.linux.dev/vmksft-forwarding-dbg/results/993321/24-router-bridge-1d-lag-sh/stderr
+
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- include/linux/netdevice.h |  1 +
- kernel/bpf/offload.c      |  6 ++++--
- net/core/dev.c            | 13 +++++++++++--
- net/core/dev_api.c        | 12 ++++++++++++
- net/xdp/xsk.c             |  3 +++
- net/xdp/xsk_buff_pool.c   |  2 ++
- 6 files changed, 33 insertions(+), 4 deletions(-)
+ drivers/net/tap.c         |  2 +-
+ drivers/net/tun.c         |  2 +-
+ include/linux/netdevice.h |  6 +----
+ net/core/dev.c            | 52 ++++++++++++++++++++-------------------
+ net/core/dev.h            |  3 +--
+ net/core/dev_api.c        | 17 ++-----------
+ net/core/dev_ioctl.c      |  2 +-
+ net/core/net-sysfs.c      |  7 ++----
+ net/core/rtnetlink.c      |  6 ++++-
+ 9 files changed, 41 insertions(+), 56 deletions(-)
 
+diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+index d4ece538f1b2..4382f5e323b0 100644
+--- a/drivers/net/tap.c
++++ b/drivers/net/tap.c
+@@ -1017,7 +1017,7 @@ static long tap_ioctl(struct file *file, unsigned int cmd,
+ 			rtnl_unlock();
+ 			return -ENOLINK;
+ 		}
+-		ret = dev_set_mac_address_user(tap->dev, &sa, NULL);
++		ret = dev_set_mac_address(tap->dev, &sa, NULL);
+ 		tap_put_tap_dev(tap);
+ 		rtnl_unlock();
+ 		return ret;
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index d8f4d3e996a7..1e645d5e225c 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -3175,7 +3175,7 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
+ 
+ 	case SIOCSIFHWADDR:
+ 		/* Set hw address */
+-		ret = dev_set_mac_address_user(tun->dev, &ifr.ifr_hwaddr, NULL);
++		ret = dev_set_mac_address(tun->dev, &ifr.ifr_hwaddr, NULL);
+ 		break;
+ 
+ 	case TUNGETSNDBUF:
 diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index f95d389959d0..8c672406430a 100644
+index 8c672406430a..efa0e3755a27 100644
 --- a/include/linux/netdevice.h
 +++ b/include/linux/netdevice.h
-@@ -4276,6 +4276,7 @@ struct sk_buff *dev_hard_start_xmit(struct sk_buff *skb, struct net_device *dev,
- 
- int bpf_xdp_link_attach(const union bpf_attr *attr, struct bpf_prog *prog);
- u8 dev_xdp_prog_count(struct net_device *dev);
-+int netif_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf);
- int dev_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf);
- u8 dev_xdp_sb_prog_count(struct net_device *dev);
- u32 dev_xdp_prog_id(struct net_device *dev, enum bpf_xdp_mode mode);
-diff --git a/kernel/bpf/offload.c b/kernel/bpf/offload.c
-index 1a4fec330eaa..a10153c3be2d 100644
---- a/kernel/bpf/offload.c
-+++ b/kernel/bpf/offload.c
-@@ -528,10 +528,10 @@ struct bpf_map *bpf_map_offload_map_alloc(union bpf_attr *attr)
- 		return ERR_PTR(-ENOMEM);
- 
- 	bpf_map_init_from_attr(&offmap->map, attr);
--
- 	rtnl_lock();
--	down_write(&bpf_devs_lock);
- 	offmap->netdev = __dev_get_by_index(net, attr->map_ifindex);
-+	netdev_lock_ops(offmap->netdev);
-+	down_write(&bpf_devs_lock);
- 	err = bpf_dev_offload_check(offmap->netdev);
- 	if (err)
- 		goto err_unlock;
-@@ -548,12 +548,14 @@ struct bpf_map *bpf_map_offload_map_alloc(union bpf_attr *attr)
- 
- 	list_add_tail(&offmap->offloads, &ondev->maps);
- 	up_write(&bpf_devs_lock);
-+	netdev_unlock_ops(offmap->netdev);
- 	rtnl_unlock();
- 
- 	return &offmap->map;
- 
- err_unlock:
- 	up_write(&bpf_devs_lock);
-+	netdev_unlock_ops(offmap->netdev);
- 	rtnl_unlock();
- 	bpf_map_area_free(offmap);
- 	return ERR_PTR(err);
+@@ -2492,7 +2492,7 @@ struct net_device {
+ 	 *
+ 	 * Protects:
+ 	 *	@gro_flush_timeout, @napi_defer_hard_irqs, @napi_list,
+-	 *	@net_shaper_hierarchy, @reg_state, @threaded
++	 *	@net_shaper_hierarchy, @reg_state, @threaded, @dev_addr
+ 	 *
+ 	 * Partially protects (writers must hold both @lock and rtnl_lock):
+ 	 *	@up
+@@ -4261,10 +4261,6 @@ int netif_set_mac_address(struct net_device *dev, struct sockaddr *sa,
+ 			  struct netlink_ext_ack *extack);
+ int dev_set_mac_address(struct net_device *dev, struct sockaddr *sa,
+ 			struct netlink_ext_ack *extack);
+-int netif_set_mac_address_user(struct net_device *dev, struct sockaddr *sa,
+-			       struct netlink_ext_ack *extack);
+-int dev_set_mac_address_user(struct net_device *dev, struct sockaddr *sa,
+-			     struct netlink_ext_ack *extack);
+ int dev_get_mac_address(struct sockaddr *sa, struct net *net, char *dev_name);
+ int dev_get_port_parent_id(struct net_device *dev,
+ 			   struct netdev_phys_item_id *ppid, bool recurse);
 diff --git a/net/core/dev.c b/net/core/dev.c
-index fd12bb119372..d6efb4d387df 100644
+index d6efb4d387df..e8fcb7389e20 100644
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -9852,7 +9852,7 @@ u8 dev_xdp_sb_prog_count(struct net_device *dev)
- 	return count;
+@@ -1058,6 +1058,28 @@ struct net_device *netdev_get_by_index_lock(struct net *net, int ifindex)
+ 	return __netdev_put_lock(dev);
  }
  
--int dev_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf)
-+int netif_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf)
- {
- 	if (!dev->netdev_ops->ndo_bpf)
- 		return -EOPNOTSUPP;
-@@ -9872,7 +9872,6 @@ int dev_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf)
- 
- 	return dev->netdev_ops->ndo_bpf(dev, bpf);
- }
--EXPORT_SYMBOL_GPL(dev_xdp_propagate);
- 
- u32 dev_xdp_prog_id(struct net_device *dev, enum bpf_xdp_mode mode)
- {
-@@ -9902,6 +9901,8 @@ static int dev_xdp_install(struct net_device *dev, enum bpf_xdp_mode mode,
- 	struct netdev_bpf xdp;
- 	int err;
- 
-+	netdev_ops_assert_locked(dev);
++/**
++ * netdev_get_by_name_lock() - find a device by its name
++ * @net: the applicable net namespace
++ * @name: name of device
++ *
++ * Search for an interface by name. If a valid device
++ * with @name is found it will be returned with netdev->lock held.
++ * netdev_unlock() must be called to release it.
++ *
++ * Return: pointer to a device with lock held, NULL if not found.
++ */
++struct net_device *netdev_get_by_name_lock(struct net *net, const char *name)
++{
++	struct net_device *dev;
 +
- 	if (dev->cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
- 	    prog && !prog->aux->xdp_has_frags) {
- 		NL_SET_ERR_MSG(extack, "unable to install XDP to device using tcp-data-split");
-@@ -10134,7 +10135,9 @@ static void bpf_xdp_link_release(struct bpf_link *link)
- 	 * already NULL, in which case link was already auto-detached
- 	 */
- 	if (xdp_link->dev) {
-+		netdev_lock_ops(xdp_link->dev);
- 		WARN_ON(dev_xdp_detach_link(xdp_link->dev, NULL, xdp_link));
-+		netdev_unlock_ops(xdp_link->dev);
- 		xdp_link->dev = NULL;
- 	}
++	dev = dev_get_by_name(net, name);
++	if (!dev)
++		return NULL;
++
++	return __netdev_put_lock(dev);
++}
++
+ struct net_device *
+ netdev_xa_find_lock(struct net *net, struct net_device *dev,
+ 		    unsigned long *index)
+@@ -9589,44 +9611,24 @@ int netif_set_mac_address(struct net_device *dev, struct sockaddr *sa,
+ 	return 0;
+ }
  
-@@ -10216,10 +10219,12 @@ static int bpf_xdp_link_update(struct bpf_link *link, struct bpf_prog *new_prog,
- 		goto out_unlock;
- 	}
+-DECLARE_RWSEM(dev_addr_sem);
+-
+-int netif_set_mac_address_user(struct net_device *dev, struct sockaddr *sa,
+-			       struct netlink_ext_ack *extack)
+-{
+-	int ret;
+-
+-	down_write(&dev_addr_sem);
+-	ret = netif_set_mac_address(dev, sa, extack);
+-	up_write(&dev_addr_sem);
+-	return ret;
+-}
+-
+ int dev_get_mac_address(struct sockaddr *sa, struct net *net, char *dev_name)
+ {
+ 	size_t size = sizeof(sa->sa_data_min);
+ 	struct net_device *dev;
+-	int ret = 0;
  
-+	netdev_lock_ops(xdp_link->dev);
- 	mode = dev_xdp_mode(xdp_link->dev, xdp_link->flags);
- 	bpf_op = dev_xdp_bpf_op(xdp_link->dev, mode);
- 	err = dev_xdp_install(xdp_link->dev, mode, bpf_op, NULL,
- 			      xdp_link->flags, new_prog);
-+	netdev_unlock_ops(xdp_link->dev);
- 	if (err)
- 		goto out_unlock;
+-	down_read(&dev_addr_sem);
+-	rcu_read_lock();
++	dev = netdev_get_by_name_lock(net, dev_name);
++	if (!dev)
++		return -ENODEV;
  
-@@ -11005,7 +11010,9 @@ int register_netdevice(struct net_device *dev)
- 	if (ret)
- 		goto err_uninit_notify;
+-	dev = dev_get_by_name_rcu(net, dev_name);
+-	if (!dev) {
+-		ret = -ENODEV;
+-		goto unlock;
+-	}
+ 	if (!dev->addr_len)
+ 		memset(sa->sa_data, 0, size);
+ 	else
+ 		memcpy(sa->sa_data, dev->dev_addr,
+ 		       min_t(size_t, size, dev->addr_len));
+ 	sa->sa_family = dev->type;
++	netdev_unlock(dev);
  
-+	netdev_lock_ops(dev);
- 	__netdev_update_features(dev);
-+	netdev_unlock_ops(dev);
+-unlock:
+-	rcu_read_unlock();
+-	up_read(&dev_addr_sem);
+-	return ret;
++	return 0;
+ }
+ EXPORT_SYMBOL(dev_get_mac_address);
  
- 	/*
- 	 *	Default initial state at registry is that the
-@@ -11945,7 +11952,9 @@ void unregister_netdevice_many_notify(struct list_head *head,
- 		/* Shutdown queueing discipline. */
- 		dev_shutdown(dev);
- 		dev_tcx_uninstall(dev);
-+		netdev_lock_ops(dev);
- 		dev_xdp_uninstall(dev);
-+		netdev_unlock_ops(dev);
- 		bpf_dev_bound_netdev_unregister(dev);
- 		dev_memory_provider_uninstall(dev);
+diff --git a/net/core/dev.h b/net/core/dev.h
+index 41b0831aba60..b50ca645c086 100644
+--- a/net/core/dev.h
++++ b/net/core/dev.h
+@@ -28,6 +28,7 @@ netdev_napi_by_id_lock(struct net *net, unsigned int napi_id);
+ struct net_device *dev_get_by_napi_id(unsigned int napi_id);
  
+ struct net_device *netdev_get_by_index_lock(struct net *net, int ifindex);
++struct net_device *netdev_get_by_name_lock(struct net *net, const char *name);
+ struct net_device *__netdev_put_lock(struct net_device *dev);
+ struct net_device *
+ netdev_xa_find_lock(struct net *net, struct net_device *dev,
+@@ -69,8 +70,6 @@ extern int		weight_p;
+ extern int		dev_weight_rx_bias;
+ extern int		dev_weight_tx_bias;
+ 
+-extern struct rw_semaphore dev_addr_sem;
+-
+ /* rtnl helpers */
+ extern struct list_head net_todo_list;
+ void netdev_run_todo(void);
 diff --git a/net/core/dev_api.c b/net/core/dev_api.c
-index 87a62022ef1c..0db20ed086d3 100644
+index 0db20ed086d3..68d294e6d48d 100644
 --- a/net/core/dev_api.c
 +++ b/net/core/dev_api.c
-@@ -317,3 +317,15 @@ int dev_set_mac_address(struct net_device *dev, struct sockaddr *sa,
+@@ -82,19 +82,6 @@ void dev_set_group(struct net_device *dev, int new_group)
+ 	netdev_unlock_ops(dev);
+ }
+ 
+-int dev_set_mac_address_user(struct net_device *dev, struct sockaddr *sa,
+-			     struct netlink_ext_ack *extack)
+-{
+-	int ret;
+-
+-	netdev_lock_ops(dev);
+-	ret = netif_set_mac_address_user(dev, sa, extack);
+-	netdev_unlock_ops(dev);
+-
+-	return ret;
+-}
+-EXPORT_SYMBOL(dev_set_mac_address_user);
+-
+ /**
+  * dev_change_net_namespace() - move device to different nethost namespace
+  * @dev: device
+@@ -310,9 +297,9 @@ int dev_set_mac_address(struct net_device *dev, struct sockaddr *sa,
+ {
+ 	int ret;
+ 
+-	netdev_lock_ops(dev);
++	netdev_lock(dev);
+ 	ret = netif_set_mac_address(dev, sa, extack);
+-	netdev_unlock_ops(dev);
++	netdev_unlock(dev);
+ 
  	return ret;
  }
- EXPORT_SYMBOL(dev_set_mac_address);
-+
-+int dev_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf)
-+{
-+	int ret;
-+
-+	netdev_lock_ops(dev);
-+	ret = netif_xdp_propagate(dev, bpf);
-+	netdev_unlock_ops(dev);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(dev_xdp_propagate);
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 84bf9f1d4bf2..f864e5d70b40 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -1181,6 +1181,8 @@ static int xsk_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
- 		goto out_release;
- 	}
+diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+index d9f350593121..296e52d1395d 100644
+--- a/net/core/dev_ioctl.c
++++ b/net/core/dev_ioctl.c
+@@ -574,7 +574,7 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
+ 	case SIOCSIFHWADDR:
+ 		if (dev->addr_len > sizeof(struct sockaddr))
+ 			return -EINVAL;
+-		return dev_set_mac_address_user(dev, &ifr->ifr_hwaddr, NULL);
++		return dev_set_mac_address(dev, &ifr->ifr_hwaddr, NULL);
  
-+	netdev_lock_ops(dev);
-+
- 	if (!xs->rx && !xs->tx) {
- 		err = -EINVAL;
- 		goto out_unlock;
-@@ -1315,6 +1317,7 @@ static int xsk_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
- 		smp_wmb();
- 		WRITE_ONCE(xs->state, XSK_BOUND);
- 	}
-+	netdev_unlock_ops(dev);
- out_release:
- 	mutex_unlock(&xs->mutex);
- 	rtnl_unlock();
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index c263fb7a68dc..0e6ca568fdee 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
+ 	case SIOCSIFHWBROADCAST:
+ 		if (ifr->ifr_hwaddr.sa_family != dev->type)
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index 27eea34d1b41..02d1d40b47ae 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -262,14 +262,11 @@ static ssize_t address_show(struct device *dev, struct device_attribute *attr,
+ 	struct net_device *ndev = to_net_dev(dev);
+ 	ssize_t ret = -EINVAL;
  
-+#include <linux/netdevice.h>
- #include <net/xsk_buff_pool.h>
- #include <net/xdp_sock.h>
- #include <net/xdp_sock_drv.h>
-@@ -219,6 +220,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 	bpf.xsk.pool = pool;
- 	bpf.xsk.queue_id = queue_id;
+-	down_read(&dev_addr_sem);
+-
+-	rcu_read_lock();
++	netdev_lock(ndev);
+ 	if (dev_isalive(ndev))
+ 		ret = sysfs_format_mac(buf, ndev->dev_addr, ndev->addr_len);
+-	rcu_read_unlock();
++	netdev_unlock(ndev);
  
-+	netdev_ops_assert_locked(netdev);
- 	err = netdev->netdev_ops->ndo_bpf(netdev, &bpf);
- 	if (err)
- 		goto err_unreg_pool;
+-	up_read(&dev_addr_sem);
+ 	return ret;
+ }
+ static DEVICE_ATTR_RO(address);
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 7828584a6791..968060c0ebb4 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -3086,7 +3086,11 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+ 		sa->sa_family = dev->type;
+ 		memcpy(sa->sa_data, nla_data(tb[IFLA_ADDRESS]),
+ 		       dev->addr_len);
+-		err = netif_set_mac_address_user(dev, sa, extack);
++		if (!netdev_need_ops_lock(dev))
++			netdev_lock(dev);
++		err = netif_set_mac_address(dev, sa, extack);
++		if (!netdev_need_ops_lock(dev))
++			netdev_unlock(dev);
+ 		kfree(sa);
+ 		if (err)
+ 			goto errout;
 -- 
 2.48.1
 
