@@ -1,65 +1,90 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96579A94A
-	for <netdev@vger.kernel.org>; Mon,  3 Mar 2025 10:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559DA1F1531;
+	Mon,  3 Mar 2025 10:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740997681; cv=none; b=Y+H0AkDDbGrWPlRha3yOdVP8QKn4ji+fIeQoXg+k+QrzAHU+aU15Z/ljR9AyTUN3McxIB4KcDs2WHmKgOYCX12xNAsipFwwV6q2HUaCbaCuyHpdkgdB0u2c/iuhi1kBmgSk7Z4ZGnO3H1I/kpTNFXryPbXwNG9bYffWVYSZpkg8=
+	t=1740997682; cv=none; b=J3EFh39Ksro3i2hphp1EYlPeWxb7FHZpEJ2pjMHpWy7Z9xvVRxWZcqsVISgIETaYwQKPfi6KqA7SZwmgvV5uX9pm5l8U81NsFcwkx6dAQ+UBhatcaBbrBHVTNAWH3/kIYYNeSVLKSCysgGaRrxCXLcZLSlUa8SzqnkJgZHg/4Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740997681; c=relaxed/simple;
-	bh=4wt6m0NvfbDukJoRfu7PhPG4dz0cll8Nf7VX9i3rQIY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YZqcQeM0i8xSn5UFuZ9LMFMA/C0wtffx1Dk8VLi6Et5Luo6Ne6SsNjotwWDSqwDGhxVMmWtvofrAHO84Kknk2F3vDf6auBTtlUV/pbAJ6xNYl7hVWM8X+LWHbQ3YsFljgOHSICLaOiaTEKWalvGKlQPvGth2y2AUOrcmUUpdJzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dewesoft.com; spf=pass smtp.mailfrom=dewesoft.com; dkim=pass (1024-bit key) header.d=dewesoft.com header.i=@dewesoft.com header.b=yoHrYcY8; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dewesoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dewesoft.com
+	s=arc-20240116; t=1740997682; c=relaxed/simple;
+	bh=2Msp7YoBmanu425m0MXmljH1/c1Or8M2lkzZSA8x+50=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=gwFL7HifRZ31pXnXgm3LCxleNcgXmlY0m7lLUK3xNokOZlMQFHRE4I2/gu6XED9xVqdzR76sBe35GuNpHgNn+t1Dkfb5KsPla5FkUZQuVmvVSrby6pfF9FDFQ5m9RLnuyekrTVFlpfAjseFJ6otX8BKn6p3nfcdeeubcOeXGxYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Atf7+ptv; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=dewesoft.com header.i=@dewesoft.com header.b="yoHrYcY8"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5e058ca6806so6840410a12.3
-        for <netdev@vger.kernel.org>; Mon, 03 Mar 2025 02:27:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dewesoft.com; s=google; t=1740997678; x=1741602478; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cZzgUSOPusx3oBA+xxosOa4Kzj/VvTGGLduJlowSEfY=;
-        b=yoHrYcY8kSE8ebZ217wP+pIgkKf2ZywALMbBFIZ8aZeKE3mNXVDi7WfX/T2tg5A/3J
-         orxZpnLhuOFy0JE4fn7Mb2njCEj/g9oj3bLjHJpUre4Bs8nMgMikabvjPimI85Al/fq2
-         zuUndRvn3CxWV6QgOZUR15FSkoYrBlQFy+sRE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740997678; x=1741602478;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cZzgUSOPusx3oBA+xxosOa4Kzj/VvTGGLduJlowSEfY=;
-        b=Z8smG2PReflLVOYCcCJ8rdkKMZGkVtHNDFztFb+O1PFbfhbnyyNzj3mFWmUkKPA9Rl
-         LcpSLvPPNekekn0I7E4IFb32BxzIhm3uYj6UOPbJ/IrCyLBjt6cq/llmU2AAIgh+silF
-         tQUOEgNBS82CdYVgOg8+kelCIHJ6BzF1HmWv4LSCO0t/E4vNexIHHeHUjCqECnJ6F/fF
-         1iQxPLMqxOy5bZ8XSPntZUSX4tcpvijMrMtMISihSIlQjyQSXU5K4YTic6m7V4sKWVMs
-         k40LuATzcHKPnjFTZJpLu8SrTLfJBuMUeGU5VUhwoGSVNAJV5AJwe/HUEKNgQP5oxLCA
-         +pbA==
-X-Gm-Message-State: AOJu0YxHSHJSoTux2bK99G/DTX36jNADpPRPUPRW9CcT58etqZRcxKT2
-	YQbEZejpdLpAIVrSTsBxGG3TlfkegGtVNEyjbVHTUTwohCmFhn1o92EL2QzIhRk=
-X-Gm-Gg: ASbGncszUr2v0GqhNlXnWV0JA7b9/nkKUUeuqZgUgvHpmKC8oV8pCYvWQPMrIH4xYMs
-	lVJ3QJ28tKagevkM6DLtlJ00yv8Xbzvdt59TX92fGc6kIF2hnlQo5iBa29n+EI/MFGkbPqDb/DU
-	KLJLNVa98BqabwT5vVCu+egGqGfXw8DT3IYnS4dFynZopZjsdEIktRwe9KffMxgDVRgiLPRfzwK
-	bSjbMRmlgErPoPmMzuX9zdMhWo2oU1J9xwCOOfymWDK7RzVBZXAkeodpsrjaKFtNJouSSIrClWL
-	EXtUOqhYB0lLOxLwEHsdqXjcbnLHEVkZ+0h+PGROuzDMPzuuX6Ef
-X-Google-Smtp-Source: AGHT+IGgE7euTBhWkkSsy3GfdjM0j7aC6RPT5+pACUQR6QcAKHHItQuKahfGTFuJw08nUkIBSXYWqw==
-X-Received: by 2002:a05:6402:35c6:b0:5dc:c943:7b6 with SMTP id 4fb4d7f45d1cf-5e4d6ad4a6amr14869794a12.3.1740997677760;
-        Mon, 03 Mar 2025 02:27:57 -0800 (PST)
-Received: from gabrsko.. ([213.250.0.74])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e4c3bb747csm6773284a12.42.2025.03.03.02.27.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 02:27:56 -0800 (PST)
-From: Viktar Palstsiuk <viktar.palstsiuk@dewesoft.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com
-Cc: netdev@vger.kernel.org,
-	Viktar Palstsiuk <viktar.palstsiuk@dewesoft.com>
-Subject: [PATCH] net: phy: dp83869: fix status reporting for speed optimization
-Date: Mon,  3 Mar 2025 11:27:39 +0100
-Message-Id: <20250303102739.137058-1-viktar.palstsiuk@dewesoft.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Atf7+ptv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740997681; x=1772533681;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding;
+  bh=2Msp7YoBmanu425m0MXmljH1/c1Or8M2lkzZSA8x+50=;
+  b=Atf7+ptv8dTGijcC4Y2ByFOWVgMvl16sgYfwDZeuSpxjsGwPTAfVwEOL
+   hAsv9w8r6qXw+A99LJQbL8U3aJx5MWhGuH+wFP+m6RicTowSZ+BuzPPBJ
+   FHfGLgfGAsCQ2TRrEeB3O+VoAZ0M8WOdoJvT1onD3gHGydHx4s0T0LRp/
+   JPNolp4zpFUpbV1sVF5VnH/hoxTKJmD688FapwgWfbmwP9TgFnUDYOTyo
+   o825lFYxO5q/7BdELdeQFWSygIJeQOJc96AMXdyqkf/WmXh+gJOeF1aaN
+   TQJR0InVlpsg/Dn+KfSuxwoOoPn5QvTQnkhJnyPnXh2AmZ8Pv4tVzI84q
+   A==;
+X-CSE-ConnectionGUID: USuXoOE4SMm7+bg5rJ8cnw==
+X-CSE-MsgGUID: HzMTCOLxTdOGRmFPo6mRMQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11361"; a="64310149"
+X-IronPort-AV: E=Sophos;i="6.13,329,1732608000"; 
+   d="scan'208";a="64310149"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 02:28:00 -0800
+X-CSE-ConnectionGUID: t9zZnSvsR46o8m5nS2uR3g==
+X-CSE-MsgGUID: DkMFzS4QTBm8OGTiacD7eQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,329,1732608000"; 
+   d="scan'208";a="122569880"
+Received: from mohdfai2-ilbpg12-1.png.intel.com ([10.88.227.73])
+  by fmviesa005.fm.intel.com with ESMTP; 03 Mar 2025 02:27:53 -0800
+From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Furong Xu <0x1207@gmail.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Suraj Jaiswal <quic_jsuraj@quicinc.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	bpf@vger.kernel.org
+Subject: [PATCH iwl-next v7 4/9] igc: Set the RX packet buffer size for TSN mode
+Date: Mon,  3 Mar 2025 05:26:53 -0500
+Message-Id: <20250303102658.3580232-5-faizal.abdul.rahim@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250303102658.3580232-1-faizal.abdul.rahim@linux.intel.com>
+References: <20250303102658.3580232-1-faizal.abdul.rahim@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,71 +93,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Speed optimization is enabled for the PHY, but unlike the DP83867,
-the DP83869 driver does not take the PHY status register into account.
+In preparation for supporting frame preemption, when entering TSN mode
+set the receive packet buffer to 16KB for the Express MAC, 16KB for
+the Preemptible MAC and 2KB for the BMC, according to the datasheet
+section 7.1.3.2.
 
-Update link speed and duplex settings based on the DP83869 PHY status
-register, which is necessary when speed optimization occurs.
-
-Signed-off-by: Viktar Palstsiuk <viktar.palstsiuk@dewesoft.com>
+Co-developed-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 ---
- drivers/net/phy/dp83869.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_defines.h |  3 +++
+ drivers/net/ethernet/intel/igc/igc_tsn.c     | 13 +++++++++++--
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
-index a62cd838a9ea..fd61d4fbe81d 100644
---- a/drivers/net/phy/dp83869.c
-+++ b/drivers/net/phy/dp83869.c
-@@ -20,6 +20,7 @@
- #define DP83869_DEVADDR		0x1f
+diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
+index 516ef70c98e9..b19ac6f30dac 100644
+--- a/drivers/net/ethernet/intel/igc/igc_defines.h
++++ b/drivers/net/ethernet/intel/igc/igc_defines.h
+@@ -402,6 +402,9 @@
  
- #define MII_DP83869_PHYCTRL	0x10
-+#define MII_DP83869_PHYSTS	0x11
- #define MII_DP83869_MICR	0x12
- #define MII_DP83869_ISR		0x13
- #define DP83869_CFG2		0x14
-@@ -123,6 +124,12 @@
- #define DP83869_WOL_SEC_EN		BIT(5)
- #define DP83869_WOL_ENH_MAC		BIT(7)
+  /* 7KB bytes buffer for each tx queue (total 4 queues) + 4KB for BMC*/
+ #define IGC_TXPBSIZE_TSN	0x041c71c7
++/* 15KB for EXP + 15KB for BE + 2KB for BMC */
++#define IGC_RXPBSIZE_TSN	0x0000f08f
++#define IGC_RXPBSIZE_SIZE_MASK	0x0001FFFF
  
-+/* PHY STS bits */
-+#define DP83869_PHYSTS_1000			BIT(15)
-+#define DP83869_PHYSTS_100			BIT(14)
-+#define DP83869_PHYSTS_DUPLEX			BIT(13)
-+#define DP83869_PHYSTS_LINK			BIT(10)
-+
- /* CFG2 bits */
- #define DP83869_DOWNSHIFT_EN		(BIT(8) | BIT(9))
- #define DP83869_DOWNSHIFT_ATTEMPT_MASK	(BIT(10) | BIT(11))
-@@ -165,6 +172,7 @@ static int dp83869_config_aneg(struct phy_device *phydev)
- 
- static int dp83869_read_status(struct phy_device *phydev)
+ #define IGC_DTXMXPKTSZ_TSN	0x19 /* 1600 bytes of max TX DMA packet size */
+ #define IGC_DTXMXPKTSZ_DEFAULT	0x98 /* 9728-byte Jumbo frames */
+diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
+index 1e44374ca1ff..f0213cfce07d 100644
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.c
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
+@@ -132,13 +132,17 @@ static int igc_tsn_disable_offload(struct igc_adapter *adapter)
  {
-+	int status = phy_read(phydev, MII_DP83869_PHYSTS);
- 	struct dp83869_private *dp83869 = phydev->priv;
- 	bool changed;
- 	int ret;
-@@ -185,6 +193,21 @@ static int dp83869_read_status(struct phy_device *phydev)
- 		}
- 	}
+ 	u16 queue_per_tc[4] = { 3, 2, 1, 0 };
+ 	struct igc_hw *hw = &adapter->hw;
+-	u32 tqavctrl;
++	u32 tqavctrl, rxpbs;
+ 	int i;
  
-+	if (status < 0)
-+		return status;
+ 	wr32(IGC_GTXOFFSET, 0);
+ 	wr32(IGC_TXPBS, I225_TXPBSIZE_DEFAULT);
+ 	wr32(IGC_DTXMXPKTSZ, IGC_DTXMXPKTSZ_DEFAULT);
+ 
++	rxpbs = rd32(IGC_RXPBS) & ~IGC_RXPBSIZE_SIZE_MASK;
++	rxpbs |= I225_RXPBSIZE_DEFAULT;
++	wr32(IGC_RXPBS, rxpbs);
 +
-+	if (status & DP83869_PHYSTS_DUPLEX)
-+		phydev->duplex = DUPLEX_FULL;
-+	else
-+		phydev->duplex = DUPLEX_HALF;
+ 	if (igc_is_device_id_i226(hw))
+ 		igc_tsn_restore_retx_default(adapter);
+ 
+@@ -194,7 +198,7 @@ static int igc_tsn_enable_offload(struct igc_adapter *adapter)
+ {
+ 	struct igc_hw *hw = &adapter->hw;
+ 	u32 tqavctrl, baset_l, baset_h;
+-	u32 sec, nsec, cycle;
++	u32 sec, nsec, cycle, rxpbs;
+ 	ktime_t base_time, systim;
+ 	int i;
+ 
+@@ -202,6 +206,11 @@ static int igc_tsn_enable_offload(struct igc_adapter *adapter)
+ 	wr32(IGC_DTXMXPKTSZ, IGC_DTXMXPKTSZ_TSN);
+ 	wr32(IGC_TXPBS, IGC_TXPBSIZE_TSN);
+ 
++	rxpbs = rd32(IGC_RXPBS) & ~IGC_RXPBSIZE_SIZE_MASK;
++	rxpbs |= IGC_RXPBSIZE_TSN;
 +
-+	if (status & DP83869_PHYSTS_1000)
-+		phydev->speed = SPEED_1000;
-+	else if (status & DP83869_PHYSTS_100)
-+		phydev->speed = SPEED_100;
-+	else
-+		phydev->speed = SPEED_10;
++	wr32(IGC_RXPBS, rxpbs);
 +
- 	return 0;
- }
+ 	if (igc_is_device_id_i226(hw))
+ 		igc_tsn_set_retx_qbvfullthreshold(adapter);
  
 -- 
 2.34.1
