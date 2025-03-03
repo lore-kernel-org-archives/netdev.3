@@ -1,80 +1,135 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8672C22B59B;
-	Mon,  3 Mar 2025 16:48:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B969253F24;
+	Mon,  3 Mar 2025 16:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741020530; cv=none; b=MvFuPqN/oTXx3xPbtsjO+pT+mfHUQPQ1i8b79yqWgRe5wsAxdThGgZxQAZ3kmATyglXdZp5aqNPsLCUcuw2XK48B1IXO1F6uNsuKJNpMHfqY+jg8+ncucko5b1sofMFGhC4EgRlr1wHEOVsaV8vbNH8kLdNF0onkexdMPeLhlsA=
+	t=1741020576; cv=none; b=Fl6Q4O9nmv6qP2sObo5LAS1aZfuBiOMZA1WwrBZubLHnNhbtO/UgXfvWvAZ2JuoaAFSQx6sxzE/YnVpB1weutSGbQw0PjTbA7DBlEo8WIc1AFF4FPUAtdxC6rBh+qkpeim4wF3nQEGaBeFmDVPgs0NK8V8YjLFmgKm79+3dETMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741020530; c=relaxed/simple;
-	bh=Yiu6Kbk6MX3ydfBVSov1djVqoS6eXTGJ/p/f3mr8Ft8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jLWXTkTXNfvxJnxKFUZec+FapZs/K3iE7BVVja3KXjHKujWibML85VbeGj0R8R2KZRjsWbSnRif4VoRl6IQWW1BnsgtdS9ZhSe24JgjHqYQLSX2J67jlk5D4AX8Hx0siXs7obqUL+iHGCvS6KY1K/9HQx8gKUl/0Qf5b8oS4QHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IuZIzNgI; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1741020576; c=relaxed/simple;
+	bh=PgymxrapIwEkqIJnDFsAgZKjAOuBSrz6G8oyvNtMtgE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Q7vgM6JpQ7bDgTwQNCIM+iOj9H14UiAqTGy7bbyCUMuGqkbYGxcx2PN7bzeQTcBNJQ/ZtQrUK2FTs0Hak1c14bKOyWaFCN7N3QcHbcrvqtq8cmWzcWiTR43kZb2ox0VHnGruHvu0k0gBMHJOy3ANEYC92uQIIS1vMhxxWwB7XdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xy0QtwKE; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IuZIzNgI"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 057814441A;
-	Mon,  3 Mar 2025 16:48:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1741020519;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Yiu6Kbk6MX3ydfBVSov1djVqoS6eXTGJ/p/f3mr8Ft8=;
-	b=IuZIzNgIzkMgEPUZgOk63NYcqE6Zdpaxvdh1icXdM7BLSyNXBKmWE1wAipFaqEuac9gAkj
-	g0oERgk+uOtooqQo5nLgX5Ei1o5AjnKIKmqGMG4LZpupZXkPLK78VhIGYWMmVP0ZA+oJdl
-	hpm08La3Iq25znFTbjEOrtZJSzuPHXWfTRvkYoC2vBZJaShHPqpHiQBHxPMgaqYBm+TH5B
-	LA5lCn8CBv30PpLAFS+SYIclWdJp8O6Ew4kzd2DTX4efSQlaVFoNtScyd7Mc9Bai1OTKHj
-	ihty2z7BYzx8Ys4Cp2LtqFO1Fw0Ysa94H98opSbZMiL15V9jPswtRzoYVj+Yuw==
-Date: Mon, 3 Mar 2025 17:48:37 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Dimitri Fedrau via B4 Relay
- <devnull+dimitri.fedrau.liebherr.com@kernel.org>
-Cc: dimitri.fedrau@liebherr.com, Andrew Lunn <andrew@lunn.ch>, Heiner
- Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Dimitri Fedrau <dima.fedrau@gmail.com>, Marek Vasut <marex@denx.de>,
- Oleksij Rempel <o.rempel@pengutronix.de>
-Subject: Re: [PATCH 0/2] net: phy: tja11xx: add support for TJA1102S
-Message-ID: <20250303174837.4c97131f@kmaincent-XPS-13-7390>
-In-Reply-To: <20250303-tja1102s-support-v1-0-180e945396e0@liebherr.com>
-References: <20250303-tja1102s-support-v1-0-180e945396e0@liebherr.com>
-Organization: bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xy0QtwKE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741020575; x=1772556575;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=PgymxrapIwEkqIJnDFsAgZKjAOuBSrz6G8oyvNtMtgE=;
+  b=Xy0QtwKErWR86mLuXz237W1dv1xLaoDTSdgbw0IYqSQQMEhom+EbArQx
+   p/1jGazZ5YMJEmLOHTv14kfVeU4DEcAU++n2VGhv8ON9F2wFOR4T5sHZc
+   TD9DjwR2x0HsGOGrX8S08qyxwP4G7V8tGk4lSSh8IIR42u1WkUrwFoPxf
+   s6ssbNpHsZ9Z7NZLRLwPuHAwTaFHoJK0UgNsSbGdgnfbO2YaS+HMGE+mv
+   zZGmFY/IVjuh/kp99M+smU3WZdvmb5DwcPOQ6tbiOXGApT2LDVqHkbBRG
+   B8k/92L0q1PPCRijhxbdzygK83xrVtT4+UxsUPWJv84EzH4OEJRNG/HjV
+   A==;
+X-CSE-ConnectionGUID: FwRlmoF4Q1empaeOKODJ6A==
+X-CSE-MsgGUID: xAiP2uKNQSKLADbw0zmbUA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41761391"
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; 
+   d="scan'208";a="41761391"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 08:49:34 -0800
+X-CSE-ConnectionGUID: rGlG1Fp1SLiLANdqv5KXaQ==
+X-CSE-MsgGUID: XzTS+SNlQoe7unm3L7cOUQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; 
+   d="scan'208";a="123212197"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa004.fm.intel.com with ESMTP; 03 Mar 2025 08:49:30 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id A7309224; Mon, 03 Mar 2025 18:49:29 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Cc: Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: [PATCH net-next v2 2/3] ieee802154: ca8210: Get platform data via dev_get_platdata()
+Date: Mon,  3 Mar 2025 18:49:09 +0200
+Message-ID: <20250303164928.1466246-3-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250303164928.1466246-1-andriy.shevchenko@linux.intel.com>
+References: <20250303164928.1466246-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdelleeigecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthhqredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefguddtfeevtddugeevgfevtdfgvdfhtdeuleetffefffffhffgteekvdefudeiieenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghlohepkhhmrghinhgtvghnthdqigfrufdqudefqdejfeeltddpmhgrihhlfhhrohhmpehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduhedprhgtphhtthhopeguvghvnhhulhhlodguihhmihhtrhhirdhfvggurhgruhdrlhhivggshhgvrhhrrdgtohhmsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeguihhmihhtrhhirdhfvggurhgruheslhhivggshhgvrhhrrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhto
- hephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhg
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Transfer-Encoding: 8bit
 
-On Mon, 03 Mar 2025 16:14:35 +0100
-Dimitri Fedrau via B4 Relay <devnull+dimitri.fedrau.liebherr.com@kernel.org>
-wrote:
+Access to platform data via dev_get_platdata() getter to make code cleaner.
 
-> - add support for TJA1102S
-> - enable PHY in sleep mode for TJA1102S
->=20
-> Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/net/ieee802154/ca8210.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Please add net-next prefix. With b4:=20
-b4 prep --set-prefixes "net-next"
+diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+index a036910f6082..65f042c8734b 100644
+--- a/drivers/net/ieee802154/ca8210.c
++++ b/drivers/net/ieee802154/ca8210.c
+@@ -627,7 +627,8 @@ static int ca8210_spi_transfer(
+  */
+ static void ca8210_reset_send(struct spi_device *spi, unsigned int ms)
+ {
+-	struct ca8210_platform_data *pdata = spi->dev.platform_data;
++	struct device *dev = &spi->dev;
++	struct ca8210_platform_data *pdata = dev_get_platdata(dev);
+ 	struct ca8210_priv *priv = spi_get_drvdata(spi);
+ 	long status;
+ 
+@@ -2736,9 +2737,10 @@ static int ca8210_config_extern_clk(
+  */
+ static int ca8210_register_ext_clock(struct spi_device *spi)
+ {
++	struct device *dev = &spi->dev;
++	struct ca8210_platform_data *pdata = dev_get_platdata(dev);
+ 	struct device_node *np = spi->dev.of_node;
+ 	struct ca8210_priv *priv = spi_get_drvdata(spi);
+-	struct ca8210_platform_data *pdata = spi->dev.platform_data;
+ 
+ 	if (!np)
+ 		return -EFAULT;
+@@ -2784,8 +2786,9 @@ static void ca8210_unregister_ext_clock(struct spi_device *spi)
+  */
+ static int ca8210_reset_init(struct spi_device *spi)
+ {
++	struct device *dev = &spi->dev;
++	struct ca8210_platform_data *pdata = dev_get_platdata(dev);
+ 	int ret;
+-	struct ca8210_platform_data *pdata = spi->dev.platform_data;
+ 
+ 	pdata->gpio_reset = of_get_named_gpio(
+ 		spi->dev.of_node,
+@@ -2813,8 +2816,9 @@ static int ca8210_reset_init(struct spi_device *spi)
+  */
+ static int ca8210_interrupt_init(struct spi_device *spi)
+ {
++	struct device *dev = &spi->dev;
++	struct ca8210_platform_data *pdata = dev_get_platdata(dev);
+ 	int ret;
+-	struct ca8210_platform_data *pdata = spi->dev.platform_data;
+ 
+ 	pdata->gpio_irq = of_get_named_gpio(
+ 		spi->dev.of_node,
+-- 
+2.47.2
 
-Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
