@@ -1,122 +1,93 @@
-Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7C8267397
-	for <netdev@vger.kernel.org>; Mon,  3 Mar 2025 16:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB3522E405;
+	Mon,  3 Mar 2025 16:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741019520; cv=none; b=LhG2Z0iPIl0H3mBFjtPe3J8l/JOxX5dxXRXbSsGvXcOeqLYPxj9dRe4i+mJux4Xt36q0skjMpWCOXjBz+o6Gp2BSfcSmZ7wA8+UepvtUZ1sqtTgBEeVgQmSIfQeWwfDJ7umB/Lvh+PjGTyqBuPAID2gr4kWLZhkvW9h7seRQdXA=
+	t=1741019527; cv=none; b=RJxEIe8//HAbdFCwzqh68iTdypUVmjHINoqyESDt+5EFl48xRghjSRis1bC+u71/fWE4FN9Klwr7Jez2jeYmycZZs7GgF3MSZPIVXbafYquHufcVp3IfJjkzzzqxMHbGvx+3V3+nfw5X4EdEV7km4YygvaznOhhTfF/2ifaDp8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741019520; c=relaxed/simple;
-	bh=ogk7ICgun509icSqfv3LLhxK0HyJB1uO830+G92khgo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j2/WGlPGjGtJHqiHRV6wlyw8Az8e8P5bt4572jZ4HKUkpC7lRVWwnoLZPxgIIkDS8NBpGRq9KXFpi5p+eYvYPjZ7me7+rWEhnEB3IQvOOPgtD8xJbN/eZKreQfVOwSys0XDEtQ+YWleJyYHosiy/vhKJoRDNHbwvl5d0+6hcYj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bx2wj7gW; arc=none smtp.client-ip=209.85.166.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741019527; c=relaxed/simple;
+	bh=4LlMWS7unNjrr4UO9L6/YFDaJLbN0Pbn3aVKgAkooS4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=F9WsRLn9xIjNj885TTk4K+vg4cAuyMqt75EO7SBGBz+hyDYNL9hG9yBkxjycHzye+hwkZBtHVd7/ZA32+41LA8AoBToF/4fzpAP1q9J0kwPbg0z7e9BGl1dQyaLgdX86DgynMaEu2DWG9UVPpv96TidfoUNP/LvySgPim959e+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dCZk50QK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bx2wj7gW"
-Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-855a8c1ffe9so126405639f.1
-        for <netdev@vger.kernel.org>; Mon, 03 Mar 2025 08:31:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741019518; x=1741624318; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7wol95raGQMZ+MJi1v3glm6RiUeoeTIMsXPnEu7OKMU=;
-        b=bx2wj7gWhpiU8uP108NfbP7nsUURr2KOCr80ZeyviR6AF/Ef7hoxft/m+tq1w2A/fD
-         +j8eQamotrAfAd21+q0kMTM0Q61ksePMIy/WtZ+VbzGJEF6n4mIc0wZRbKAYmzcQnCSl
-         lyjsJjE6g10chmE6CnmGVhyfbtd3LIBccdUHJig0cC9+F8E5NarYNNpgIgiNhWkSBcoJ
-         0xqLL7+v0AmZqv5Ap0RFVtYJ/yIEE7Wne1dIlrVwxVYyV4lGlwVmZzr1Z/ocqbZGmqpC
-         AWX0KnjblyfrbX6dGdhZCX81SQqBlGbWyXxAb6E3MYXzODgoygbZGqD1khj+0nrHTHpO
-         /EBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741019518; x=1741624318;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7wol95raGQMZ+MJi1v3glm6RiUeoeTIMsXPnEu7OKMU=;
-        b=AsnJOBhXmGWtUlDD7DoVkQYmcG6zwEbwXMp/ypT5hMtvb7rSZkhG+TYnzHFV2UKLMW
-         HDr3WYbPbTCr3axDGyvrrq1dtLCnlRMFoNcP0+Y/n509xKCwV8GGXzrMXBe9A6DRM4+q
-         Ia1+EW6uglFYBBM2jtnvJGqnGXoFizQ87ULwqBgLYEIJAYmY/mUuBKjMSS6RwxSG+Zs9
-         BoUybpq7MdEhyQHT9ETCmUhvZv1KtBAz3kWTbC6BVse+dcofQUw+z48hvxrFI7dz72Bt
-         gI1REBNaVyL3xmyf/bLig/yW2hhqi4zuo8IS5ZK0UrrTVhBQEBMfK15tizcmUKtnfk4w
-         uaaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW1VT0+Izq2Vidt9wJj5h34GoQiXxBDJ4mU9NicuLZeg3xJrBQd8CLz+cKBQ4dPgFYUkWHT9mM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9ZX0Bas3xIsP4M2SzshDdwuAYcOPpql6ydDuyWG5fbqeYqiEw
-	wnFGZ1mQ6ZIaZJ/Sa2rbHHjHl6wn/wEqLqxUmOtWUHln3p9ZJkqIjMC4R6eEOOm2oK2gC0Uah8R
-	VltQRqvKi9pfp/c4OxytW6srpG2Y=
-X-Gm-Gg: ASbGncs/Z3rL4UyjJUJgpWJ3Ynj0Ma5ySy8O9sAUOZv/XIzk0Jlk1bqq/IBQbtn1qcH
-	brdmAVw+B3uNz8mIQN931zaTvRoO/sNIe/XG6TuhZ4bkPVbwC1Y5+awvWm0h/yIEDpk2Rw4IdtP
-	lf5aMi2x8eOw+t07lYsfRhhIoa
-X-Google-Smtp-Source: AGHT+IGleWaqyn7dvsPTOSRIMXE0ap/2CnnVzK7hAIjBZOHgdCegiILOxo/7SlGFxnfsvHQwBSYeOh8SGq8yiEXhpQU=
-X-Received: by 2002:a05:6e02:1705:b0:3d3:fdb8:17a7 with SMTP id
- e9e14a558f8ab-3d3fdb81a82mr49390095ab.6.1741019518337; Mon, 03 Mar 2025
- 08:31:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dCZk50QK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CDBC4CED6;
+	Mon,  3 Mar 2025 16:32:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741019527;
+	bh=4LlMWS7unNjrr4UO9L6/YFDaJLbN0Pbn3aVKgAkooS4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dCZk50QKQklRygiHfqvmd9YQC+lJIg7B5J/OzLJuldIakCbTs9o5+a/4cDJLlpNHN
+	 3rTe+pbI9EYFS6Z580FFwtk/3UVUIKWCodDzFnL6u+cc7DP6wHarUQu1sO3ivZtfe5
+	 ysYabUuSk27ocgJBt7RejRhhXCk5oiDEjENiZttaEwiZYFDn0uXjEnQiKmg49dmw5F
+	 xqItIzcz/Xdv1Fcj24Cn5v1MiAhtgq/Pv7QK9uqdXk0V5O48fhcEaPYB2WK8JewW0e
+	 OCOABoFrJlL5Zvvs/j/cfrWMTWfcWxmdHJzdd6cFQw5OesCqjHtmQKOwINKJGgWzJi
+	 ebVfVVHC6BdHQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	martineau@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	netdev@vger.kernel.org,
+	mptcp@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.15 7/9] mptcp: safety check before fallback
+Date: Mon,  3 Mar 2025 11:31:50 -0500
+Message-Id: <20250303163152.3764156-7-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250303163152.3764156-1-sashal@kernel.org>
+References: <20250303163152.3764156-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250303080404.70042-1-kerneljasonxing@gmail.com> <20250303074105.0b562205@kernel.org>
-In-Reply-To: <20250303074105.0b562205@kernel.org>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Tue, 4 Mar 2025 00:31:22 +0800
-X-Gm-Features: AQ5f1JpnxhJG-Sum7lE2HVpQMUurCO5DL8XtZivhs6h2DcyETzAfRRUsQXggLcY
-Message-ID: <CAL+tcoCV-SbnMuJetKVuMpAhf_zuD5_+eHC_HLhdq-Jfp3H_+w@mail.gmail.com>
-Subject: Re: [PATCH net-next] selftests: txtimestamp: ignore the old skb from ERRQUEUE
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
-	horms@kernel.org, willemdebruijn.kernel@gmail.com, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.15.178
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 3, 2025 at 11:41=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Mon,  3 Mar 2025 16:04:04 +0800 Jason Xing wrote:
-> > When I was playing with txtimestamp.c to see how kernel behaves,
-> > I saw the following error outputs if I adjusted the loopback mtu to
-> > 1500 and then ran './txtimestamp -4 -L 127.0.0.1 -l 30000 -t 100000':
-> >
-> > test SND
-> >     USR: 1740877371 s 488712 us (seq=3D0, len=3D0)
-> >     SND: 1740877371 s 489519 us (seq=3D29999, len=3D1106)  (USR +806 us=
-)
-> >     USR: 1740877371 s 581251 us (seq=3D0, len=3D0)
-> >     SND: 1740877371 s 581970 us (seq=3D59999, len=3D8346)  (USR +719 us=
-)
-> >     USR: 1740877371 s 673855 us (seq=3D0, len=3D0)
-> >     SND: 1740877371 s 674651 us (seq=3D89999, len=3D30000)  (USR +795 u=
-s)
-> >     USR: 1740877371 s 765715 us (seq=3D0, len=3D0)
-> > ERROR: key 89999, expected 119999
-> > ERROR: -12665 us expected between 0 and 100000
-> >     SND: 1740877371 s 753050 us (seq=3D89999, len=3D1106)  (USR +-12665=
- us)
-> >     SND: 1740877371 s 800783 us (seq=3D119999, len=3D30000)  (USR +3506=
-8 us)
-> >     USR-SND: count=3D5, avg=3D4945 us, min=3D-12665 us, max=3D35068 us
-> >
-> > Actually, the kernel behaved correctly after I did the analysis. The
-> > second skb carrying 1106 payload was generated due to tail loss probe,
-> > leading to the wrong estimation of tskey in this C program.
-> >
-> > This patch does:
-> > - Neglect the old tskey skb received from ERRQUEUE.
-> > - Add a new test to count how many valid skbs received to compare with
-> > cfg_num_pkts.
->
-> This appears to break some UDP test cases when running in the CI:
->
-> https://netdev-3.bots.linux.dev/vmksft-net/results/16721/41-txtimestamp-s=
-h/stdout
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-Thanks for catching this. I did break this testcase: run_test_v4v6
-${args} -u -o 42.
+[ Upstream commit db75a16813aabae3b78c06b1b99f5e314c1f55d3 ]
 
-Will take a deep look into it tomorrow morning.
+Recently, some fallback have been initiated, while the connection was
+not supposed to fallback.
 
-Thanks,
-Jason
+Add a safety check with a warning to detect when an wrong attempt to
+fallback is being done. This should help detecting any future issues
+quicker.
+
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250224-net-mptcp-misc-fixes-v1-3-f550f636b435@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mptcp/protocol.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 6026f0bcdea60..b92646ddbf077 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -870,6 +870,8 @@ static inline void __mptcp_do_fallback(struct mptcp_sock *msk)
+ 		pr_debug("TCP fallback already done (msk=%p)\n", msk);
+ 		return;
+ 	}
++	if (WARN_ON_ONCE(!READ_ONCE(msk->allow_infinite_fallback)))
++		return;
+ 	set_bit(MPTCP_FALLBACK_DONE, &msk->flags);
+ }
+ 
+-- 
+2.39.5
+
