@@ -1,140 +1,186 @@
-Received: from dediextern.your-server.de (dediextern.your-server.de [85.10.215.232])
+Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazolkn19013077.outbound.protection.outlook.com [52.103.74.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D8C215186;
-	Mon,  3 Mar 2025 16:37:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.215.232
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741019858; cv=none; b=gsuWFcJ7oxlFK8ag7XUenFe3w+8b1VocJf8tvFf+YLsMd2ttA85TaT9Flzx2STe6DyjfDlKfdS3ugfCIJLHxEwFFLc1BOXbZ3rqjWRAPYapZLxpKt4Rlja1omJM2ZZUXO7uOIc8xxKJN7aKhi90R8hC01XYrlN6Ppzqsv5gm81g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741019858; c=relaxed/simple;
-	bh=7cLK0c6/NN6Y78XzvU0YKuImm5q5qadvNye1FRGgIJE=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
-	 In-Reply-To:Content-Type; b=jGpNVziW2T2pyC6I4qlEm3pGTSMP0al+aI+4qJq0oiZtOXQFK37blJ7UKLrDf4JwWjtw3I0oSK/VFzZ+R1tS8MijeBzw8LYHTwojMfKhFMrjsrFyQ5xcM4Y/zMRuuw8oGqoTjnvJ7hs9YR2nDplcdwGRR4oXiSLDzuTsquYSYI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hetzner-cloud.de; spf=pass smtp.mailfrom=hetzner-cloud.de; arc=none smtp.client-ip=85.10.215.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hetzner-cloud.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hetzner-cloud.de
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-	by dediextern.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <marcus.wichelmann@hetzner-cloud.de>)
-	id 1tp8QD-000A7N-9R; Mon, 03 Mar 2025 17:13:37 +0100
-Received: from [2a01:599:740:99a0:dca3:a01b:3e4a:389f]
-	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <marcus.wichelmann@hetzner-cloud.de>)
-	id 1tp8QC-000ICz-06;
-	Mon, 03 Mar 2025 17:13:37 +0100
-Message-ID: <4b69bd2b-a0ad-44f6-9f43-070241bd8089@hetzner-cloud.de>
-Date: Mon, 3 Mar 2025 17:13:34 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8C423C8D4;
+	Mon,  3 Mar 2025 16:37:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.74.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741019872; cv=fail; b=QI0PaqPC3kipzsmrTB3iZj9NtNuD7gDVySbKssTmtd5olz810O9g6mHxsZogZxz+3iQDmbza1mSCjSU+L+NVeC0syfpXxoZJGJsz0FHhWdxaaXeij9t/g0IfJkqy5Lf83DFYJRProydssxX+WUycLR9j/V5v0uTMxPc9IYfWD50=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741019872; c=relaxed/simple;
+	bh=ZzMuHtft7RFIPWd0SGwfSwlIr4jft1YI7Gdwfq947T8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=BlM1mmh+0H1Yvg30/m/nYZDS7MhBf/XBtjICDd3cYW1chrvl24Aw5/h/rYGD0q098Y8iZlp1gGmxU8dBJRKRQKIkvbooxB34ZTVPKWxzUkf+3bV0jSN6ICMsMvfVRqrytZNCedMDdAFSdf7+/GagqjJcGb4+xLGavhYUo0LUTt4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=IVJnIxhc; arc=fail smtp.client-ip=52.103.74.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="IVJnIxhc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MWX6nZHLW4qgHZ8BEOa8Gbd4a4aBlTIMA5+uls2pJINHMC1A7BvTgCKwRUir08ms0UDi7JJ5DKgGW7oAh7oMhF82ACieCP8/NdmJXMzlzysRVPKD5YkeDO5MBZRleHHPsuKz+oOya9JqfWc2LkeUzXL3N2cFOMoS+naq9oyLYf/tayXCFINMG4NkWO58k+BpuVA9qx0QZEOn0YzIbGXdt8q1nww1ulLuvQKd481XQvk+TYlGfUeiNaTgPFcUO6Dsw/Y7gEnw+aH2TXU2swmQH/+zNJvInOIutYyzK6OcUJkgY1WJ6eU9ydBSKcl1R2F/+iMeeqJO0Onu+b9s2nzIKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NHHHAjBwBPOW5apZJ+ZViucjtSoJjqLL33d6UMPlwOc=;
+ b=d+Lk1cQ3ZQL6sERKT8ZZPjTctO4G8WNhsGV3f8DEPEKT9w5HRu9G9AW0elQjJwanCp2QbPeZhseXuuTYTVTxwi+1NIfOaOo4SUaZXqz53Xz6/dgj9htRuYmf+QpTfoUgQSGazm5V2bF/8fwU35EHtfUKIGTV+14FO4W3yQxkJ3nNgZQDm7klVgYJozvetOPYqTas39inMvV4mQleR/KcsfdrLpWVsmHdx0NRrIcXqynfNiYhMqd5tFi1mLddLw6imqfgtLy9157yfr1p5AUZH6FGB6y+CmU9b8sN8c2tLJ1kXXcZ0I9w6XhO9habvgBtxeAVGyPf1tZv0mFEDK5Hvg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NHHHAjBwBPOW5apZJ+ZViucjtSoJjqLL33d6UMPlwOc=;
+ b=IVJnIxhcckYvkNv4bDy5ocNqHy3Nje/FkXiNJH2SBvzPdVVQUouK0jZh5GLEpmA1zAp1DuCgmk/sZF/2OL7j+vTWoWp/q0/3Zw/hw6MObS98n+ZAPb4KGDbl2WR0/7rH2qd3Z1S/u103KNFo6G1WYo+KJpSgnnE6oe43D+S2qsYBgwgxYeBcg9T4mXvLBHIbH0J4CYfCTdsRABnQ3ASm2xF5I905iXSJz3DUDhXUShMJhuTRH488JurnOgeIPNUCl8Uy4ORfjSaxhjKJHI7aKd8yXcjFuooSkNt94mqH0quDw75sg0XOBPifoyHMlJFZWv8yKfPP1ZwctRWbe8ajNw==
+Received: from TYZPR01MB5556.apcprd01.prod.exchangelabs.com
+ (2603:1096:400:363::9) by TYZPR01MB5040.apcprd01.prod.exchangelabs.com
+ (2603:1096:400:258::5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.27; Mon, 3 Mar
+ 2025 16:37:46 +0000
+Received: from TYZPR01MB5556.apcprd01.prod.exchangelabs.com
+ ([fe80::3641:305b:41e2:6094]) by TYZPR01MB5556.apcprd01.prod.exchangelabs.com
+ ([fe80::3641:305b:41e2:6094%5]) with mapi id 15.20.8489.025; Mon, 3 Mar 2025
+ 16:37:46 +0000
+Message-ID:
+ <TYZPR01MB5556C13F2BE2042DDE466C95C9C92@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
+Date: Tue, 4 Mar 2025 00:37:36 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] dt-bindings: net: dsa: qca8k: add internal-PHY-to-PHY
+ CPU link example
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, rmk+kernel@armlinux.org.uk,
+ javier.carrasco.cruz@gmail.com, john@phrozen.org, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <TYZPR01MB555632DC209AA69996309B58C9C92@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB5556D90A3778BDF7AB9A7030C9C92@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
+ <ae329902-c940-4fd3-a857-c6689fa35680@lunn.ch>
+From: Ziyang Huang <hzyitc@outlook.com>
+In-Reply-To: <ae329902-c940-4fd3-a857-c6689fa35680@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SGXP274CA0005.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::17)
+ To TYZPR01MB5556.apcprd01.prod.exchangelabs.com (2603:1096:400:363::9)
+X-Microsoft-Original-Message-ID:
+ <b308e295-1801-4b00-b468-613a02440962@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
- andrii@kernel.org, eddyz87@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, mykolal@fb.com,
- shuah@kernel.org, hawk@kernel.org, Willem de Bruijn <willemb@google.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20250227142330.1605996-1-marcus.wichelmann@hetzner-cloud.de>
- <20250227142330.1605996-3-marcus.wichelmann@hetzner-cloud.de>
- <090ede76-0c9f-4297-9d5a-7b75aa20ca27@linux.dev>
-Content-Language: en-US
-From: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Autocrypt: addr=marcus.wichelmann@hetzner-cloud.de; keydata=
- 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
- wySmewx3h/yfMh0aFxHhvLPxrO2IEQ==
-Subject: Re: [PATCH bpf-next v4 2/6] net: tun: enable transfer of XDP metadata
- to skb
-In-Reply-To: <090ede76-0c9f-4297-9d5a-7b75aa20ca27@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: marcus.wichelmann@hetzner-cloud.de
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27566/Mon Mar  3 11:10:09 2025)
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYZPR01MB5556:EE_|TYZPR01MB5040:EE_
+X-MS-Office365-Filtering-Correlation-Id: b7ff7dce-2074-4666-7139-08dd5a71ba18
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|15080799006|19110799003|461199028|5072599009|6090799003|8060799006|10035399004|440099028|4302099013|3412199025|1602099012;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Y1JFaGJXMkxVU3dPSmlSNEtUM3hFSmhRM29jVmVzUkhSRllDc25hMHIzcWFz?=
+ =?utf-8?B?M1l1cE1UR0ZJL1FXNFdGVC9Hc2kvNTRlejEwTW14YlJJK1hGclF2OUtiWUdJ?=
+ =?utf-8?B?S0dzTUpDSWhoVm1MaUV2NmNvZUF2Vjl4SStoSnAzQWFvbjFGdzZFLzFwWHpk?=
+ =?utf-8?B?NG9YVWcwTS9VVGF6NEMzWGRnc1BpWjNOTjVrWE1DdzRHenNXdGZQQS9QRUNu?=
+ =?utf-8?B?cmpic1hYSWpsS1ovckxqZUUxemp4S0swSUhham4wRzNJeUVvemNnUlJieG5o?=
+ =?utf-8?B?Ris2RXNsazV3aEIxYlFRNVVka0pNZjlDajNXWDNwZlZGK1NRWnZPZ3A3cGJK?=
+ =?utf-8?B?UytWOE1LU0xTYzhkdXRGZjdrcS9IWDBFSXdpeG9VWmZaeWdVNjBsZWNXZ1A1?=
+ =?utf-8?B?L08wUlhxSUlEaW5WL1ZoK3JKNHlPZUNYOFR1dW5BbkZ6YktTQVJFWFQ3YXVV?=
+ =?utf-8?B?UXNOK1NYVXV4S3pKVXUzcTY1S2g3TTg1OVNxWEVKM21FdVBNWUdSdXpoUS9k?=
+ =?utf-8?B?eHNHVFZYbDV3aWNIZ1Iva2VubEhLamhhRGcyQzEvOXlxQlBOSVZGcFdKVHBh?=
+ =?utf-8?B?cnI3U29jQzlXTWI5QzIxNVhLbnh5VUhlNEVMU3BNcGVwLzh5OG5hNGxoUlMr?=
+ =?utf-8?B?NFFicHo1ZVRVYkY2enh5YU9sc1dpTWdtalo1MzBPL25jZzUrSlVCcU5FZHdx?=
+ =?utf-8?B?SXByVW0vVitaeU9wdzRuTXdHNktIUThnZCszLzFadExYNmdUUlNJdmxUM2Mz?=
+ =?utf-8?B?MFVVcmZsall2NGhiYXFrR24vLyttbnM0WUQzV2hBZytJbFgvcmdZcjZPV21t?=
+ =?utf-8?B?a1c5YTRsNjV6bzVIODNzT01haVdvdmhYRHVhdnM3MUVoUlNqejJLMFQ5aWNn?=
+ =?utf-8?B?cmRtY0h0S2VlK0RNNnp2NXQyaXlINDJtaG5FOHlKckdPaDJ1S0lPVXdMOFlT?=
+ =?utf-8?B?djJXN2J2R0R0Q1JkYUhwdXp6SUlnMENLWUNxbTRRNG5Pc09kaWFvK2dnaUlP?=
+ =?utf-8?B?WDdiUUNRUGtJTVozZ28zRlNnSUQ3dmNSeUV0Y0NESHFtNTloZXpaOXdhWlk4?=
+ =?utf-8?B?MVBaYStCSk5JOHBIaE5CbEZJZGNIdXNHSjB3NmNLZnJWM0JSczBxYWNNeUVw?=
+ =?utf-8?B?cFZXbC9BY21zWVRrVHBRTXdnTkc1L2swQlZWZzV4OFhtYWQzTE94TWtOQU0r?=
+ =?utf-8?B?QlBteHI0MzVIUW1vdzlLK0Jkay9BN2xWcXJ0OTgzTDBLWVA5Qk9pNUl0b3FT?=
+ =?utf-8?B?eDBzeHNIdFdKRDA4dlYxU29QWFhNMzNaQjZvdG1QdS9HU2RkVXpXa20vbENi?=
+ =?utf-8?B?SW5HS3FZTzdFeENoK0FGclVmTFFaOFRhQ1BRWGRjUi9xaStYQ3ZRNTkwT1k5?=
+ =?utf-8?B?SVdNaGdDaXY2cXVyZzdUUEpjd3I4a3dzUDFGNnlDTzZuMzd2T3dabkpnU1Jl?=
+ =?utf-8?B?aEhZb3UzVG9KR1hCa3h2N0JiSlJzZUVYeGtoMXQxblBtaEFSZEhPYy95eits?=
+ =?utf-8?B?OEFtaVQ5UEQ1T2J3RzFnVnJ1akJyQ01Kc1htSUJYNjFvcXFLbElkeTlLaGZn?=
+ =?utf-8?B?QW8vV0c1M3QyYmtRclI0ZWhvc3RMVXgxczc3VHJBT0NBejBrMTRPczdxN09L?=
+ =?utf-8?Q?Ty1kcr/eLCZ1pvYnkvUpugYHSKD4EdGYdIjwlFvyKqbk=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZFMyelNNUTE5OFUvcWlIUVVCYzBOTGhiWnpKM2NRc0ZXdGRvME5UYzdwK0ZP?=
+ =?utf-8?B?akhtZjVYUkVSd21ZbnlUNHBBQm41a2gvNU1PdVBMbU0wbGt0dnMvbTZITFZt?=
+ =?utf-8?B?RmVRWmVteVlYNVN0RG5pS3ZSL09zT1ZXTGhPYmYrQitONDZVT2xnNEVnMUdL?=
+ =?utf-8?B?THZyYzZjNmlNdzlhZzJ6QVlYdWV6Z3BiYkNCL0s5cDY5dEhPTC9wMHVxRmpj?=
+ =?utf-8?B?NzZSMmdxSWdqSGVzR1lMcEhEKzFsSGo2N3VwcE56WDVaUWd6ZDlqbWxEdDNh?=
+ =?utf-8?B?WUEzQTRrTnd4eVUyazZPS0NEYjFGNGpqMTFLQzhVK1EzMElkNDhURHpQSXQ1?=
+ =?utf-8?B?dFJYNFQvWE1ENVE5VWwxaVdwTitrN3lqTEppdFhwQkxGM0pubE9hcWRaOUtU?=
+ =?utf-8?B?MEM3aXUxVWRWclRZU3ZxL3NRVW82KzN3bVU2RUIrR1Vrb0dML05kSzVFQnUx?=
+ =?utf-8?B?S2FYR2FJUG9qdVlUNGE3dENNWXJ4ZFZpakh6L3FhZkpSUVJkYlU0QVhlN3ho?=
+ =?utf-8?B?bTIyRHExdHlxQjVNQ1dVRURnWmVTZzRiRGthVXk2R2p4Wmw5RkVHSVloem9q?=
+ =?utf-8?B?aTNZMFFLMkVzUkgvMXpsdWYwWHorR2ZUUWhkYnVZUG9IbXRXM0hYdzdoa1d5?=
+ =?utf-8?B?aTdtZVlEbHJ2S2l5aUVmbzBOVElFY2crSXhKU1RvRVJuUTNPZkFHeTM0TGli?=
+ =?utf-8?B?N3l6SG5WUlZ6aFNZeFA5cC9JTUc0UlFoRXRrUjgzU0tDN1hMUjRrWldaWVFG?=
+ =?utf-8?B?MHdlMEM0MGNSOWcvUVB1aHJnTEIzN1J6V2tkNnZOcmtuY3A1OEJ0cVQ1Rko5?=
+ =?utf-8?B?Uk9KNEZIUXJRNUo3WnR3TnIxUHFuZEFXdTVxYUdNam01eTNZenNwdCtiUUhr?=
+ =?utf-8?B?WXN4YmZVMiswRjdoSTBDRW9LZlpTMzBUSWxIMkVKSmZsSTVYeTE1MlprZnRE?=
+ =?utf-8?B?eTRlazZlS3ZNOWtFZ0ZBdEhSbnFVSFpRSDBHeElKSCt5N0hKMDNTRmFueDZq?=
+ =?utf-8?B?Z1pyL3pIOWNjTmYrYndITS81dExDQUhkcExRQnk0Uk1Na3pBRHVQQmJ5bmVX?=
+ =?utf-8?B?QWFtYS9Ja1VwVm9IeE5iQWo2VEQ5b0ZMbFRKbm9jSk1IaXFrOE1lblozc25s?=
+ =?utf-8?B?Wi9IQm9GTHVUZ3h2MUs4c1AyME5BdkhUU3JMME5qVmpZRS8xK1dMZFIrZVBO?=
+ =?utf-8?B?cnRRZU53eFZoMi9MVDh0S3VibUhYN1RWVkNCSDdHUXh1bTliWnlMQkJ5Y1VU?=
+ =?utf-8?B?MkdVbWJPS2pTc2xBVWtPUjFIS0pwamV5WEZncG5rMVNFc0ptdjJZK2RWamM2?=
+ =?utf-8?B?d0FVeGFSRFUrWnhSbzFRdXdGRzdUSGo1cHBrUkRUK1Y1VGNwc3NOSWFaVThQ?=
+ =?utf-8?B?WDg5M3BzYlZONGh1dXVISHNoUDFOWDFBZ2tqMnhsanNyRE1oQ0N4RytRRjhi?=
+ =?utf-8?B?Y1plZU93U0FvV1VKQnlXeVVHbW81WTE5Z2p5UjVaL2xXNVZDYlhYUHRuWFJ0?=
+ =?utf-8?B?ei9MQTdtR3M3T0xyanZiN3ZWR2RyVGlOMS94NCs3blYrUTM2RGQ5alRjbkJI?=
+ =?utf-8?B?MEozY1pVT1pINWJXbkF4QURCNnNnbnhNUWo2bjlhVXpIZm5idXJHUy9BU0Ir?=
+ =?utf-8?Q?PE0jsf+a/778zX4Qc46HuAfyzZHCKF6WgXsmZlqEek+0=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b7ff7dce-2074-4666-7139-08dd5a71ba18
+X-MS-Exchange-CrossTenant-AuthSource: TYZPR01MB5556.apcprd01.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2025 16:37:45.9037
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR01MB5040
 
-Am 28.02.25 um 20:49 schrieb Martin KaFai Lau:
-> On 2/27/25 6:23 AM, Marcus Wichelmann wrote:
->> When the XDP metadata area was used, it is expected that the same
->> metadata can also be accessed from TC, as can be read in the description
->> of the bpf_xdp_adjust_meta helper function. In the tun driver, this was
->> not yet implemented.
->>
->> To make this work, the skb that is being built on XDP_PASS should know
->> of the current size of the metadata area. This is ensured by adding
->> calls to skb_metadata_set. For the tun_xdp_one code path, an additional
->> check is necessary to handle the case where the externally initialized
->> xdp_buff has no metadata support (xdp->data_meta == xdp->data + 1).
->>
->> More information about this feature can be found in the commit message
->> of commit de8f3a83b0a0 ("bpf: add meta pointer for direct access").
->> > Signed-off-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
->> Reviewed-by: Willem de Bruijn <willemb@google.com>
->> Acked-by: Jason Wang <jasowang@redhat.com>
->> ---
->>   drivers/net/tun.c | 25 ++++++++++++++++++++++---
->>   1 file changed, 22 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
->> index 4ec8fbd93c8d..70208b3a2e93 100644
->> --- a/drivers/net/tun.c
->> +++ b/drivers/net/tun.c
+在 2025/3/4 0:15, Andrew Lunn 写道:
+> ...
 > 
-> The changes have conflicts with the commit 2506251e81d1 ("tun: Decouple vnet handling").
+> The previous patch still causes it to look at port 0 and then port 6
+> first. Only if they are not CPU ports will it look at other ports. So
+> this example does not work, port 6 will be the CPU port, even with the
+> properties you added.
+
+Sorry, I forget that the following patch is still penging:
+https://lore.kernel.org/all/20230620063747.19175-1-ansuelsmth@gmail.com/
+
+With this path, we can have multi CPU link.
+
+> When you fix this, i also think it would be good to extend:
 > 
-> It is better to rebase the works onto the bpf-next/net,
-> i.e. the "net" branch instead of the "master" branch.
+>> +                    /* PHY-to-PHY CPU link */
+> 
+> with the work internal.
+> 
+> This also seems an odd architecture to me. If this is SoC internal,
+> why not do a MAC to MAC link? What benefit do you get from having the
+> PHYs?
 
-Alright, will do that. Should I send it as a v5 and still with "PATCH bpf-next"
-in the header or something else?
+This patches are for IPQ50xx platform which has only one a SGMII/SGMII+ 
+link and a MDI link.
 
-Thanks!
-Marcus
+It has 2 common designs:
+  1. SGMII+ is used to connect a 2.5G PHY, which make qca8337 only be 
+able to be connected through the MDI link.
+  2. Both SGMII and MDI links are used to connect the qca8337, so we can 
+get 2G link which is beneficial in NAT mode (total 2G bidirectional).
+
+> 
+> 
+>      Andrew
+> 
+> ---
+> pw-bot: cr
+
