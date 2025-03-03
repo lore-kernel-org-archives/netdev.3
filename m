@@ -1,67 +1,76 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28751DF754;
-	Mon,  3 Mar 2025 16:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAE821578D;
+	Mon,  3 Mar 2025 16:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741017871; cv=none; b=qd6B153JAYcyJsrRxshhY6oo2rmgeN3/XC1zDnCAMiMJul8lfFYwOC/IgahGXP5VdnWGegbPcPORIrwR9BNX0QSNFT9fdnURZDIJvVOH+2hELKa+E/+0pBkAK40Wx5pbZK7N2MDYekNeTmgpFcDjFPEuM6WRpsKr9m0rAD3nDec=
+	t=1741017912; cv=none; b=iu2tpEQ92HAxHwcF2eqDcTXoP7Ld7vI5u5XimKhGjMd+Zh2z+IZg4gpxm3IbtYNMemWiBr2kixzhIbCulg04QAxqy6FpiFrJF0vSs0ozlBk7fop1AsPoEN4S+E3R4pelPix0epSYue0YcFsPpIN9jrRuVkB0hnnuw8gw5X8ZrC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741017871; c=relaxed/simple;
-	bh=AYfMTvFM9Oy2fOLuH2dlsx+npGwbaV+gUIDf7/AoLN8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WyIJRjZPodZ/8HKNjKtl+iSbGVuEyRrdNCjfQtPDgD/Hd6SY+XIwOAVFOhkKqqQz9TYU2agZB74LXqKPDra9Ln7HrITmoq3dxLniHHdUkdP73OkwLxswd9vqpt1oBxnsNyBLI+hSPjYxYwjf9pXbTHLv6b+KwCh9jRs23UMHXPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=lQnLgtOL; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="lQnLgtOL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=15fj5t9EBCZ5Augif8pGhVBuKDxtKPL0rSp0HPof3PA=; b=lQnLgtOLYC+sbFxynJrnHRNtbP
-	P7YA7/+eM0M6VdcSWOt8nYEuC7ShVColGq+loCdNwIhWXLrw4NuC7qugqTjzndaPil0W5vv8CpcDE
-	jMoAUnMIGXTYH6lZDCsiWsGe0XTLz/CyjlDyDvxbyOYdyIJuinxp1gl8XU2ZsAiow3/o=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tp8HG-001r14-3g; Mon, 03 Mar 2025 17:04:22 +0100
-Date: Mon, 3 Mar 2025 17:04:22 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: dimitri.fedrau@liebherr.com
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Dimitri Fedrau <dima.fedrau@gmail.com>, Marek Vasut <marex@denx.de>,
-	Oleksij Rempel <o.rempel@pengutronix.de>
-Subject: Re: [PATCH 2/2] net: phy: tja11xx: enable PHY in sleep mode for
- TJA1102S
-Message-ID: <a9987a37-1a04-44e6-a070-7b76f237cf43@lunn.ch>
-References: <20250303-tja1102s-support-v1-0-180e945396e0@liebherr.com>
- <20250303-tja1102s-support-v1-2-180e945396e0@liebherr.com>
+	s=arc-20240116; t=1741017912; c=relaxed/simple;
+	bh=jbJ2N2jSzuaiP65Mwcj5vtf0bSK0vEHTkqqcaJYFKVk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JWiRbel0+wTwb55U9/ZT9pEYAqyDGIqG8u3h+oaDl1Mq8M2xIyQ7+d34KTVHtfzXOp7FJrmTeVLrq5WqKCcwcs6sx4dhE+uuvApc5HX14NlIjguQSlieaqsB2K5whHhy8wFqvVfU1igMUF+ZEc93XNQvroHk/UeathF+SxLW/mM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA387C4CED6;
+	Mon,  3 Mar 2025 16:05:07 +0000 (UTC)
+Date: Mon, 3 Mar 2025 11:05:59 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Menglong Dong <menglong8.dong@gmail.com>
+Cc: peterz@infradead.org, mark.rutland@arm.com,
+ alexei.starovoitov@gmail.com, catalin.marinas@arm.com, will@kernel.org,
+ mhiramat@kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, ast@kernel.org,
+ daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
+ eddyz87@gmail.com, yonghong.song@linux.dev, john.fastabend@gmail.com,
+ kpsingh@kernel.org, sdf@fomichev.me, jolsa@kernel.org, davem@davemloft.net,
+ dsahern@kernel.org, mathieu.desnoyers@efficios.com, nathan@kernel.org,
+ nick.desaulniers+lkml@gmail.com, morbo@google.com, samitolvanen@google.com,
+ kees@kernel.org, dongml2@chinatelecom.cn, akpm@linux-foundation.org,
+ riel@surriel.com, rppt@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, netdev@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH bpf-next v3 3/4] x86: implement per-function metadata
+ storage for x86
+Message-ID: <20250303110559.5a584602@gandalf.local.home>
+In-Reply-To: <20250303065345.229298-4-dongml2@chinatelecom.cn>
+References: <20250303065345.229298-1-dongml2@chinatelecom.cn>
+	<20250303065345.229298-4-dongml2@chinatelecom.cn>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250303-tja1102s-support-v1-2-180e945396e0@liebherr.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 03, 2025 at 04:14:37PM +0100, Dimitri Fedrau via B4 Relay wrote:
-> From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+On Mon,  3 Mar 2025 14:53:44 +0800
+Menglong Dong <menglong8.dong@gmail.com> wrote:
+
+> In the third case, we make the kernel function 32 bytes aligned, and there
+> will be 32 bytes padding before the functions. According to my testing,
+> the text size didn't increase on this case, which is weird.
 > 
-> Due to pin strapping the PHY maybe disabled per default. TJA1102 devices
-> can be enabled by setting the PHY_EN bit. Support is provided for TJA1102S
-> devices but can be easily added for TJA1102 too.
+> With 16-bytes padding:
 > 
-> Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+> -rwxr-xr-x 1 401190688  x86-dev/vmlinux*
+> -rw-r--r-- 1    251068  x86-dev/vmlinux.a
+> -rw-r--r-- 1 851892992  x86-dev/vmlinux.o
+> -rw-r--r-- 1  12395008  x86-dev/arch/x86/boot/bzImage
+> 
+> With 32-bytes padding:
+> 
+> -rwxr-xr-x 1 401318128 x86-dev/vmlinux*
+> -rw-r--r-- 1    251154 x86-dev/vmlinux.a
+> -rw-r--r-- 1 853636704 x86-dev/vmlinux.o
+> -rw-r--r-- 1  12509696 x86-dev/arch/x86/boot/bzImage
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Use the "size" command to see the differences in sizes and not the file size.
 
-    Andrew
+$ size vmlinux
+   text    data     bss     dec     hex filename
+36892658        9798658 16982016        63673332        3cb93f4 vmlinux
+
+-- Steve
