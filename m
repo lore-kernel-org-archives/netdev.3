@@ -1,35 +1,35 @@
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB27F1EF0A3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2141D9A5F;
 	Mon,  3 Mar 2025 09:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740992619; cv=none; b=aP8e+TJe3EAmq+tlXiewx80bUC+kbQy3aFXhopPyyMiFweF53zQz6kOUUb7hL7huej6qES45/ruGtJkoZf0gaB4xxlc0ooAjlTjhMEpTrIAsTsALl4CnENg06Wt6km324rR4R9MZQWwDa+SItqd7Lf8Dg3w93pQLiwCIuCa0Q9k=
+	t=1740992620; cv=none; b=CZnEvxGlM86Ror5JXtVmzEoOyVF8pcHRy5s+eEa8CeB6GL4VBGGhdTlCAk3GylabCFTeeH9cqbTLC/H0Wx898175Cxdwa754HXMdn3fdVd0LOz1qKmqTEiFayMbVyMdqY0eIiwulZgPgnxduCQa1uIoltDnG8vRe0BaLw/eM3cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740992619; c=relaxed/simple;
-	bh=Lj4c/xpNWcIiZriKGAoheiWyfj04HJqsQBBLykNw90Y=;
+	s=arc-20240116; t=1740992620; c=relaxed/simple;
+	bh=bFbCevQNkElqpdlytOHRCh8fxso9W1uR89S3dw39960=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZNXPFMead1eyFASyc65e7L1COnM1qAc1ytE78rXW3dZayiaL6jaSRSrGGonpaWIY+7TwCOdfj0NQyX5FNtWiSxB26RMTJa80cnv4bxxlSawfx2hYzM3qMh0d22ZDjb9kKm4NR2J9np6izlgy7Dl6w6VKOK7/2Bu05NBfUFVrSRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=H10qubaK; arc=none smtp.client-ip=217.70.183.196
+	 MIME-Version; b=tA8gH1DXmaun+KM02upL6Qnbu7Y5pFEZ9e4UvnKWnSK2ZjPf/vG2ULg1L3z7kVaGYiVmxaqj+IDdg9Iw2aGCeR316FxLjXLIQcuLlYYR9WHeJtT+cI8JRYtAMXMhmlSjTsFxeH6q80Q/2iQK+lJbfPjcnYrtSPzPtMOkzhFfaQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cqClj21L; arc=none smtp.client-ip=217.70.183.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="H10qubaK"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 096184453E;
-	Mon,  3 Mar 2025 09:03:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cqClj21L"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7855F44530;
+	Mon,  3 Mar 2025 09:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1740992616;
+	t=1740992610;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=c6bcy99zdNbeNFZMlRjx168Yd1XH1bH9AK8JYCC77eM=;
-	b=H10qubaK0ZvykMKExpyIyox/Xc1U1bRnXlCGB7nvCZxOQrEPvHiqttgpI1YwtuKo2tDbzz
-	B5bN4nBWifffb+gUNHQeZb0v35VpR2Y/DBgCMNFs0ASiL5F1qUq/E6xlirPm+5ByRdrle5
-	o+eGf0FIHPu/dg93uVNcFBSTeikw7/4N+A1NW6dJNhsaaKnGgnhU3SoqxC6P0zcd1IwgpM
-	2tlRWjTRZL4Vk1ReQyuGmsGWWi8pzBpbaY4NJDX1leQLyr8RuqdQ+yw+nLViweLXP4lWpi
-	iCQ7CTFPQt2fD2b6SdZnG9iwPkW0YtOeKlED8HmEXisHUXgB60AiEjthOetaAQ==
+	bh=cl4+BpUAD7fugJahCUGya4325z+7F8ylwvGXPNqdVjg=;
+	b=cqClj21LsK++Vzvxn2X1h5cEJuz5XwTPAh3QfxfaDmXRx015C0pUuP3sRhonAmet4NWYeA
+	HWsu3qQhSE3wwXw39FJHAajtUwMNZid3meW0na9f7//oFPFpalSIhYU4QHDrGuE5Urabah
+	hKL9jzNu35IJxmIn7d1rJD9AIm3RM/bP6OwdO4MzhnopSc3azRpLctq6YYpi/ahEIim4Xe
+	mheghF65b0poRx1Aqib1cxICScKo1PSwf7hUnBtdKJzuS77LIHlmHeRuDM1VG3R/CSbofG
+	zokEnpLUflTKUdrJr01YPvBY+IuTGwdF48AXiaTud/gQYarnRDibNt/gWC7doQ==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -51,9 +51,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Oleksij Rempel <o.rempel@pengutronix.de>,
 	Simon Horman <horms@kernel.org>,
 	Romain Gantois <romain.gantois@bootlin.com>
-Subject: [PATCH net-next v4 07/13] net: phy: phy_caps: Allow looking-up link caps based on speed and duplex
-Date: Mon,  3 Mar 2025 10:03:13 +0100
-Message-ID: <20250303090321.805785-8-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v4 02/13] net: phy: Use an internal, searchable storage for the linkmodes
+Date: Mon,  3 Mar 2025 10:03:08 +0100
+Message-ID: <20250303090321.805785-3-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250303090321.805785-1-maxime.chevallier@bootlin.com>
 References: <20250303090321.805785-1-maxime.chevallier@bootlin.com>
@@ -66,215 +66,216 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdelkeejudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevgedtffelffelveeuleelgfejfeevvdejhfehgeefgfffvdefteegvedutefftdenucfkphepvdgrtddumegtsgduleemkegugegtmeelfhdttdemsggtvddumeekkeelleemheegtdgtmegvheelvgenucevlhhushhtvghrufhiiigvpeeinecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegtgemlehftddtmegstgdvudemkeekleelmeehgedttgemvgehlegvpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvtddprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgri
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdelkeejudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevgedtffelffelveeuleelgfejfeevvdejhfehgeefgfffvdefteegvedutefftdenucfkphepvdgrtddumegtsgduleemkegugegtmeelfhdttdemsggtvddumeekkeelleemheegtdgtmegvheelvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegtgemlehftddtmegstgdvudemkeekleelmeehgedttgemvgehlegvpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvtddprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgri
  igvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtohepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomh
 X-GND-Sasl: maxime.chevallier@bootlin.com
 
-As the link_caps array is efficient for <speed,duplex> lookups,
-implement a function for speed/duplex lookups that matches a given
-mask. This replicates to some extent the phy_lookup_settings()
-behaviour, matching full link_capabilities instead of a single linkmode.
+The canonical definition for all the link modes is in linux/ethtool.h,
+which is complemented by the link_mode_params array stored in
+net/ethtool/common.h . That array contains all the metadata about each
+of these modes, including the Speed and Duplex information.
 
-phy.c's phy_santize_settings() and phylink's
-phylink_ethtool_ksettings_set() performs such lookup using the
-phy_settings table, but are only interested in the actual speed/duplex
-that were matched, rathet than the individual linkmode.
+Phylib and phylink needs that information as well for internal
+management of the link, which was done by duplicating that information
+in locally-stored arrays and lookup functions. This makes it easy for
+developpers adding new modes to forget modifying phylib and phylink
+accordingly.
 
-Similar to phy_lookup_settings(), the newly introduced phy_caps_lookup()
-will run through the link_caps[] array by descending speed/duplex order.
+However, the link_mode_params array in net/ethtool/common.c is fairly
+inefficient to search through, as it isn't sorted in any manner. Phylib
+and phylink perform a lot of lookup operations, mostly to filter modes
+by speed and/or duplex.
 
-If the link_capabilities for a given <speed/duplex> tuple intersects the
-passed linkmodes, we consider that a match.
+We therefore introduce the link_caps private array in phy_caps.c, that
+indexes linkmodes in a more efficient manner. Each element associated a
+tuple <speed, duplex> to a bitfield of all the linkmodes runs at these
+speed/duplex.
 
-Similar to phy_lookup_settings(), we also allow passing an 'exact'
-boolean, allowing non-exact match. Here, we MUST always match the
-linkmodes mask, but we allow matching on lower speed settings.
+We end-up with an array that's fairly short, easily addressable and that
+it optimised for the typical use-cases of phylib/phylink.
+
+That array is initialized at the same time as phylib. As the
+link_mode_params array is part of the net stack, which phylink depends
+on, it should always be accessible from phylib.
 
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
-V4: Switch to macro iterators for better readability (Russell)
+V4: Ditch the __LINK_CAPA_LAST (no longer needed)
 
- drivers/net/phy/phy-caps.h |  4 ++++
- drivers/net/phy/phy.c      | 32 ++++++--------------------
- drivers/net/phy/phy_caps.c | 47 ++++++++++++++++++++++++++++++++++++++
- drivers/net/phy/phylink.c  | 17 +++++++-------
- 4 files changed, 67 insertions(+), 33 deletions(-)
+ drivers/net/phy/Makefile     |  2 +-
+ drivers/net/phy/phy-caps.h   | 43 ++++++++++++++++++++
+ drivers/net/phy/phy_caps.c   | 78 ++++++++++++++++++++++++++++++++++++
+ drivers/net/phy/phy_device.c |  2 +
+ 4 files changed, 124 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/phy/phy-caps.h
+ create mode 100644 drivers/net/phy/phy_caps.c
 
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index c8dac6e92278..7e800619162b 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -2,7 +2,7 @@
+ # Makefile for Linux PHY drivers
+ 
+ libphy-y			:= phy.o phy-c45.o phy-core.o phy_device.o \
+-				   linkmode.o phy_link_topology.o
++				   linkmode.o phy_link_topology.o phy_caps.o
+ mdio-bus-y			+= mdio_bus.o mdio_device.o
+ 
+ ifdef CONFIG_MDIO_DEVICE
 diff --git a/drivers/net/phy/phy-caps.h b/drivers/net/phy/phy-caps.h
-index 7103cf508d7e..8ae8dc42494f 100644
---- a/drivers/net/phy/phy-caps.h
+new file mode 100644
+index 000000000000..8a0dc2c486bb
+--- /dev/null
 +++ b/drivers/net/phy/phy-caps.h
-@@ -51,4 +51,8 @@ phy_caps_lookup_by_linkmode(const unsigned long *linkmodes);
- const struct link_capabilities *
- phy_caps_lookup_by_linkmode_rev(const unsigned long *linkmodes, bool fdx_only);
- 
-+const struct link_capabilities *
-+phy_caps_lookup(int speed, unsigned int duplex, const unsigned long *supported,
-+		bool exact);
-+
- #endif /* __PHY_CAPS_H */
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 8df37d221fba..562acde89224 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -213,25 +213,6 @@ int phy_aneg_done(struct phy_device *phydev)
- }
- EXPORT_SYMBOL(phy_aneg_done);
- 
--/**
-- * phy_find_valid - find a PHY setting that matches the requested parameters
-- * @speed: desired speed
-- * @duplex: desired duplex
-- * @supported: mask of supported link modes
-- *
-- * Locate a supported phy setting that is, in priority order:
-- * - an exact match for the specified speed and duplex mode
-- * - a match for the specified speed, or slower speed
-- * - the slowest supported speed
-- * Returns the matched phy_setting entry, or %NULL if no supported phy
-- * settings were found.
-- */
--static const struct phy_setting *
--phy_find_valid(int speed, int duplex, unsigned long *supported)
--{
--	return phy_lookup_setting(speed, duplex, supported, false);
--}
--
- /**
-  * phy_supported_speeds - return all speeds currently supported by a phy device
-  * @phy: The phy device to return supported speeds of.
-@@ -274,13 +255,14 @@ EXPORT_SYMBOL(phy_check_valid);
-  */
- static void phy_sanitize_settings(struct phy_device *phydev)
- {
--	const struct phy_setting *setting;
-+	const struct link_capabilities *c;
-+
-+	c = phy_caps_lookup(phydev->speed, phydev->duplex, phydev->supported,
-+			    false);
- 
--	setting = phy_find_valid(phydev->speed, phydev->duplex,
--				 phydev->supported);
--	if (setting) {
--		phydev->speed = setting->speed;
--		phydev->duplex = setting->duplex;
-+	if (c) {
-+		phydev->speed = c->speed;
-+		phydev->duplex = c->duplex;
- 	} else {
- 		/* We failed to find anything (no supported speeds?) */
- 		phydev->speed = SPEED_UNKNOWN;
-diff --git a/drivers/net/phy/phy_caps.c b/drivers/net/phy/phy_caps.c
-index 8160cb53b5ae..8b90fb6d6b15 100644
---- a/drivers/net/phy/phy_caps.c
-+++ b/drivers/net/phy/phy_caps.c
-@@ -158,6 +158,53 @@ phy_caps_lookup_by_linkmode_rev(const unsigned long *linkmodes, bool fdx_only)
- 	return NULL;
- }
- 
-+/**
-+ * phy_caps_lookup() - Lookup capabilities by speed/duplex that matches a mask
-+ * @speed: Speed to match
-+ * @duplex: Duplex to match
-+ * @supported: Mask of linkmodes to match
-+ * @exact: Perform an exact match or not.
-+ *
-+ * Lookup a link_capabilities entry that intersect the supported linkmodes mask,
-+ * and that matches the passed speed and duplex.
-+ *
-+ * When @exact is set, an exact match is performed on speed and duplex, meaning
-+ * that if the linkmodes for the given speed and duplex intersect the supported
-+ * mask, this capability is returned, otherwise we don't have a match and return
-+ * NULL.
-+ *
-+ * When @exact is not set, we return either an exact match, or matching capabilities
-+ * at lower speed, or the lowest matching speed, or NULL.
-+ *
-+ * Returns: a matched link_capabilities according to the above process, NULL
-+ *	    otherwise.
+@@ -0,0 +1,43 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * link caps internal header, for link modes <-> capabilities <-> interfaces
++ * conversions.
 + */
-+const struct link_capabilities *
-+phy_caps_lookup(int speed, unsigned int duplex, const unsigned long *supported,
-+		bool exact)
-+{
-+	const struct link_capabilities *lcap, *last = NULL;
 +
-+	for_each_link_caps_desc_speed(lcap) {
-+		if (linkmode_intersects(lcap->linkmodes, supported)) {
-+			last = lcap;
-+			/* exact match on speed and duplex*/
-+			if (lcap->speed == speed && lcap->duplex == duplex) {
-+				return lcap;
-+			} else if (!exact) {
-+				if (lcap->speed <= speed)
-+					return lcap;
-+			}
-+		}
++#ifndef __PHY_CAPS_H
++#define __PHY_CAPS_H
++
++#include <linux/ethtool.h>
++
++enum {
++	LINK_CAPA_10HD = 0,
++	LINK_CAPA_10FD,
++	LINK_CAPA_100HD,
++	LINK_CAPA_100FD,
++	LINK_CAPA_1000HD,
++	LINK_CAPA_1000FD,
++	LINK_CAPA_2500FD,
++	LINK_CAPA_5000FD,
++	LINK_CAPA_10000FD,
++	LINK_CAPA_20000FD,
++	LINK_CAPA_25000FD,
++	LINK_CAPA_40000FD,
++	LINK_CAPA_50000FD,
++	LINK_CAPA_56000FD,
++	LINK_CAPA_100000FD,
++	LINK_CAPA_200000FD,
++	LINK_CAPA_400000FD,
++	LINK_CAPA_800000FD,
++
++	__LINK_CAPA_MAX,
++};
++
++struct link_capabilities {
++	int speed;
++	unsigned int duplex;
++	__ETHTOOL_DECLARE_LINK_MODE_MASK(linkmodes);
++};
++
++void phy_caps_init(void);
++
++#endif /* __PHY_CAPS_H */
+diff --git a/drivers/net/phy/phy_caps.c b/drivers/net/phy/phy_caps.c
+new file mode 100644
+index 000000000000..367ca7110ddc
+--- /dev/null
++++ b/drivers/net/phy/phy_caps.c
+@@ -0,0 +1,78 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++#include <linux/ethtool.h>
++#include <linux/linkmode.h>
++#include <linux/phy.h>
++
++#include "phy-caps.h"
++
++static struct link_capabilities link_caps[__LINK_CAPA_MAX] __ro_after_init = {
++	{ SPEED_10, DUPLEX_HALF, {0} }, /* LINK_CAPA_10HD */
++	{ SPEED_10, DUPLEX_FULL, {0} }, /* LINK_CAPA_10FD */
++	{ SPEED_100, DUPLEX_HALF, {0} }, /* LINK_CAPA_100HD */
++	{ SPEED_100, DUPLEX_FULL, {0} }, /* LINK_CAPA_100FD */
++	{ SPEED_1000, DUPLEX_HALF, {0} }, /* LINK_CAPA_1000HD */
++	{ SPEED_1000, DUPLEX_FULL, {0} }, /* LINK_CAPA_1000FD */
++	{ SPEED_2500, DUPLEX_FULL, {0} }, /* LINK_CAPA_2500FD */
++	{ SPEED_5000, DUPLEX_FULL, {0} }, /* LINK_CAPA_5000FD */
++	{ SPEED_10000, DUPLEX_FULL, {0} }, /* LINK_CAPA_10000FD */
++	{ SPEED_20000, DUPLEX_FULL, {0} }, /* LINK_CAPA_20000FD */
++	{ SPEED_25000, DUPLEX_FULL, {0} }, /* LINK_CAPA_25000FD */
++	{ SPEED_40000, DUPLEX_FULL, {0} }, /* LINK_CAPA_40000FD */
++	{ SPEED_50000, DUPLEX_FULL, {0} }, /* LINK_CAPA_50000FD */
++	{ SPEED_56000, DUPLEX_FULL, {0} }, /* LINK_CAPA_56000FD */
++	{ SPEED_100000, DUPLEX_FULL, {0} }, /* LINK_CAPA_100000FD */
++	{ SPEED_200000, DUPLEX_FULL, {0} }, /* LINK_CAPA_200000FD */
++	{ SPEED_400000, DUPLEX_FULL, {0} }, /* LINK_CAPA_400000FD */
++	{ SPEED_800000, DUPLEX_FULL, {0} }, /* LINK_CAPA_800000FD */
++};
++
++static int speed_duplex_to_capa(int speed, unsigned int duplex)
++{
++	if (duplex == DUPLEX_UNKNOWN ||
++	    (speed > SPEED_1000 && duplex != DUPLEX_FULL))
++		return -EINVAL;
++
++	switch (speed) {
++	case SPEED_10: return duplex == DUPLEX_FULL ?
++			      LINK_CAPA_10FD : LINK_CAPA_10HD;
++	case SPEED_100: return duplex == DUPLEX_FULL ?
++			       LINK_CAPA_100FD : LINK_CAPA_100HD;
++	case SPEED_1000: return duplex == DUPLEX_FULL ?
++				LINK_CAPA_1000FD : LINK_CAPA_1000HD;
++	case SPEED_2500: return LINK_CAPA_2500FD;
++	case SPEED_5000: return LINK_CAPA_5000FD;
++	case SPEED_10000: return LINK_CAPA_10000FD;
++	case SPEED_20000: return LINK_CAPA_20000FD;
++	case SPEED_25000: return LINK_CAPA_25000FD;
++	case SPEED_40000: return LINK_CAPA_40000FD;
++	case SPEED_50000: return LINK_CAPA_50000FD;
++	case SPEED_56000: return LINK_CAPA_56000FD;
++	case SPEED_100000: return LINK_CAPA_100000FD;
++	case SPEED_200000: return LINK_CAPA_200000FD;
++	case SPEED_400000: return LINK_CAPA_400000FD;
++	case SPEED_800000: return LINK_CAPA_800000FD;
 +	}
 +
-+	if (!exact)
-+		return last;
-+
-+	return NULL;
++	return -EINVAL;
 +}
-+EXPORT_SYMBOL_GPL(phy_caps_lookup);
 +
- /**
-  * phy_caps_linkmode_max_speed() - Clamp a linkmodes set to a max speed
-  * @max_speed: Speed limit for the linkmode set
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index a3b186ab3854..6c67d5c9b787 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -20,6 +20,7 @@
- #include <linux/timer.h>
- #include <linux/workqueue.h>
++/**
++ * phy_caps_init() - Initializes the link_caps array from the link_mode_params.
++ */
++void phy_caps_init(void)
++{
++	const struct link_mode_info *linkmode;
++	int i, capa;
++
++	/* Fill the caps array from net/ethtool/common.c */
++	for (i = 0; i < __ETHTOOL_LINK_MODE_MASK_NBITS; i++) {
++		linkmode = &link_mode_params[i];
++		capa = speed_duplex_to_capa(linkmode->speed, linkmode->duplex);
++
++		if (capa < 0)
++			continue;
++
++		__set_bit(i, link_caps[capa].linkmodes);
++	}
++}
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index a38d399f244b..9c573555ac49 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -42,6 +42,7 @@
+ #include <linux/unistd.h>
  
+ #include "phylib-internal.h"
 +#include "phy-caps.h"
- #include "sfp.h"
- #include "swphy.h"
  
-@@ -2852,8 +2853,8 @@ int phylink_ethtool_ksettings_set(struct phylink *pl,
- 				  const struct ethtool_link_ksettings *kset)
- {
- 	__ETHTOOL_DECLARE_LINK_MODE_MASK(support);
-+	const struct link_capabilities *c;
- 	struct phylink_link_state config;
--	const struct phy_setting *s;
+ MODULE_DESCRIPTION("PHY library");
+ MODULE_AUTHOR("Andy Fleming");
+@@ -3795,6 +3796,7 @@ static int __init phy_init(void)
+ 	if (rc)
+ 		goto err_ethtool_phy_ops;
  
- 	ASSERT_RTNL();
++	phy_caps_init();
+ 	features_init();
  
-@@ -2896,23 +2897,23 @@ int phylink_ethtool_ksettings_set(struct phylink *pl,
- 		/* Autonegotiation disabled, select a suitable speed and
- 		 * duplex.
- 		 */
--		s = phy_lookup_setting(kset->base.speed, kset->base.duplex,
--				       pl->supported, false);
--		if (!s)
-+		c = phy_caps_lookup(kset->base.speed, kset->base.duplex,
-+				    pl->supported, false);
-+		if (!c)
- 			return -EINVAL;
- 
- 		/* If we have a fixed link, refuse to change link parameters.
- 		 * If the link parameters match, accept them but do nothing.
- 		 */
- 		if (pl->req_link_an_mode == MLO_AN_FIXED) {
--			if (s->speed != pl->link_config.speed ||
--			    s->duplex != pl->link_config.duplex)
-+			if (c->speed != pl->link_config.speed ||
-+			    c->duplex != pl->link_config.duplex)
- 				return -EINVAL;
- 			return 0;
- 		}
- 
--		config.speed = s->speed;
--		config.duplex = s->duplex;
-+		config.speed = c->speed;
-+		config.duplex = c->duplex;
- 		break;
- 
- 	case AUTONEG_ENABLE:
+ 	rc = phy_driver_register(&genphy_c45_driver, THIS_MODULE);
 -- 
 2.48.1
 
