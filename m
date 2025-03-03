@@ -1,118 +1,187 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2B7211A11
-	for <netdev@vger.kernel.org>; Mon,  3 Mar 2025 13:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7F186347;
+	Mon,  3 Mar 2025 13:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741009787; cv=none; b=GW5pgxDd5BJE618yJoG5wk+2wRGfvBZvEDSqK1gK62d3PwWqfN5BYpKyNBhPRNB373IY521fSi5dRJe9hlhxcZ+s1AAz3lam1XbqJTmlP6sMthIrSqXewXfGzWnND4UUW3mCdSY+VMZtIgWrk8xMSQJLRVOQjsyhgyhrylei8+Y=
+	t=1741009954; cv=none; b=bdmacFf8OjkgSnPDxm97dQILBCgpFVDLiDvFvTiSxckoa/ZDUJae+8LPLjfQ+qF2p8T8lhz209GXhKt3OPe5OhReAQ557ICQj+DT0aCJ0XY9Hzlfm/5aRMjI8y6WFO/wbIZhelV6MwtptUCh/jGXeJb7ZfxwECdh4DFlAvgEZ4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741009787; c=relaxed/simple;
-	bh=lgAbImJ18uS+0pEgdg6lJJUqs3C7WgEX7SaJ5zshD0w=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=BWQG2FWa/ofWIwXeIhmmDxiV6DwTtIZl5nxAs+uuqDOxbwivkMhVQhp/r+JdNfSXsdZlNx1ZcNrPS2itCHncNEHn2O8pFSZVV51vMbEw6lSDWvOjHSwHatAMMCjc/1axkqslkpWlNQD4CMp0K3BaJR0SN/xpvbkPaEBNyUm+Rso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bT3dqUjb; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741009954; c=relaxed/simple;
+	bh=o8VoAt5dL3GJqO4ZL7G+9SXofDr7fMM3zttZuWylbZc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uYOmv5o/m2q/Bn01GtePilZmFRhqkAyvbWjmiyJaV6G1VwJxWiJFhOSNnVBazSx0NOOeKDs0XjezAyU+jg5Jr41Dv/wUxl3Ev7qxsBMJXcfrGntWOKpEhmYVw1ZPJ3aHE7TXm2kKCauTqnD1h/Z7zrvnqw/wLzxfJv17BHfQ8aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=CiOyJp6K; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bT3dqUjb"
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6e897847086so33252886d6.3
-        for <netdev@vger.kernel.org>; Mon, 03 Mar 2025 05:49:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741009784; x=1741614584; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lgAbImJ18uS+0pEgdg6lJJUqs3C7WgEX7SaJ5zshD0w=;
-        b=bT3dqUjbHNIPgdpu4AlPhNMKZEAMn6RnqiqerVdhmOaArb0hHAX+/AxkHvA8tsnad8
-         kA5nwQgCoQkEvRtH/r1dvt/5F7liud500+gRz685kLpYfbGI8rUHG9nxy76s7swa11Fz
-         gocMTUf2T9wadfnYs9MpCKMhO1bwlo15basu6PYrpJxH2yrbO4vtqNNECcMX8LeGn5RJ
-         SqN4ZERvUvXC5zi7LiKNSzxq18jxnHZJT3qw9n+7bMzEQX1bxL3nghWFElquDDMxibgE
-         /IfrTdBejXdI1hW7XBt1xE5JrjpoA0Woo+K3mH3JnuyrorTt99c8Yo9j/8pbZp8xWyXw
-         oNCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741009784; x=1741614584;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=lgAbImJ18uS+0pEgdg6lJJUqs3C7WgEX7SaJ5zshD0w=;
-        b=XCNyx8FU8pyEdSaxAsca+YrKa0GqkR2Zv5DikmpaewGynS0gXwUwntWYlMoQjxkBaX
-         8fNO3NURwSwbRHbwNHS6vw1/dSjouJPUTv5YEs/rts42fod1cm1DtH4aIFXrg9r5//Og
-         /NyOEK/QJBSzLdrjnpwkM96lILZbGwSvMwZ4oqmGDqoGMv13myYQEIwrGKurbEOUqcvG
-         FFiwcyqhoQXWel1B0kNd0f66/bSWkjDzxoxw7CBs5xBR4yUGVGIUTFI7PDOpQMs8vCkP
-         R23psAZUSiSVpCNtkxtyrbYKteQO/c+X7gvpPNopJcEDHijqAGevkzSpCl9qN6HnBa1b
-         8SLw==
-X-Forwarded-Encrypted: i=1; AJvYcCXmHJuVAy/GRkcUzjfy9UdfZd7io6KRnuMudcVX0462HWgnVsvSO+PclF0Hf3yaGyl7wbyZ/3k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywj8twGaXbUTnRnjC2INV0B4emROo9fDDSf73vosr4Gx5JoDH7I
-	JU8hY4GUTAzZs3rOnUopva2UmMxtbHpBH++UqkVxQZjchV/sBXXW
-X-Gm-Gg: ASbGncv08SZKlxrjPdZMxSU/VxIJvcfqL8jsrQGUihD3MzNYhhjWA3K+oOhTsikxK25
-	3aCtZ4A2/ORx7QYyP1hUGJYsUgGCEwqK/HVEGZNlTvw2etdRlWqFq03p7/2NaAnO1UsxmZ5XlYb
-	gvx98skJIf3V1VHbAQnSBi18q+pkBo8jk5SBHb4KLt/uuYjCqt93YXt9ZKqGTbOAIdhg6oro7D7
-	IznMDIVc1Mm48aiK8vJ1S4A/+816/ug2Ac07nCWXegER+k3k4PFS0sO4GWN9yGjBmONNTQtS2Iz
-	lPBSKEVDogrGsJ3wn6JVauRPXX4NDeF1eLdvtmc7LdVI74twsy1QUPdhKH/A7fiDaroNnPYBQmq
-	N9C4wZLUUVDPsNv2XDzUF7w==
-X-Google-Smtp-Source: AGHT+IFnq9P5+lqpoIWAR5TcUB+pzezVF/ro/UoQh1HYcSfh+67XDz28NFX8HRkfViqnVLRoWe+EvA==
-X-Received: by 2002:a05:6214:2462:b0:6e4:4331:aae6 with SMTP id 6a1803df08f44-6e8a0d9990emr204909266d6.39.1741009784347;
-        Mon, 03 Mar 2025 05:49:44 -0800 (PST)
-Received: from localhost (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8976534cbsm53155846d6.31.2025.03.03.05.49.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 05:49:43 -0800 (PST)
-Date: Mon, 03 Mar 2025 08:49:43 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Jason Xing <kerneljasonxing@gmail.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- ncardwell@google.com, 
- kuniyu@amazon.com, 
- dsahern@kernel.org, 
- willemb@google.com, 
- horms@kernel.org, 
- netdev@vger.kernel.org
-Message-ID: <67c5b3775ea69_1b832729461@willemb.c.googlers.com.notmuch>
-In-Reply-To: <CAL+tcoDg1mQ+7DtYNgYomum9o=gzwtrjedYf7VmHud54VfSynQ@mail.gmail.com>
-References: <20250228164904.47511-1-kerneljasonxing@gmail.com>
- <67c5111ae5754_170775294fe@willemb.c.googlers.com.notmuch>
- <CAL+tcoDg1mQ+7DtYNgYomum9o=gzwtrjedYf7VmHud54VfSynQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] net-timestamp: support TCP GSO case for a few
- missing flags
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="CiOyJp6K"
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 523DqFDJ3287675
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Mon, 3 Mar 2025 07:52:15 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1741009935;
+	bh=Lz8EOBn9FUAA9PUMl7yDcfKigTwB7zLIEjA+CKP0ZPA=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=CiOyJp6KRusPBdfZ7/h7j/VSlAOKo5ujK0iDwmb49mxCcMuBHL0SnSC/5PS1Dn9Kk
+	 wh7yeSTnFm4SwApy5PyypIn07tbNn0ZK4PmswvulqjnfiWXD9xWeQvVxk5CRmpp6O5
+	 qGthWuDvMINi7GC0q6nCFPK/LbOEiZMQIlzr+9/U=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 523DqF79095313;
+	Mon, 3 Mar 2025 07:52:15 -0600
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 3
+ Mar 2025 07:52:14 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 3 Mar 2025 07:52:14 -0600
+Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 523DqEhA092412;
+	Mon, 3 Mar 2025 07:52:14 -0600
+Received: from localhost (meghana-pc.dhcp.ti.com [10.24.69.13] (may be forged))
+	by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 523DqDP2018084;
+	Mon, 3 Mar 2025 07:52:14 -0600
+From: Meghana Malladi <m-malladi@ti.com>
+To: <javier.carrasco.cruz@gmail.com>, <diogo.ivo@siemens.com>,
+        <horms@kernel.org>, <jacob.e.keller@intel.com>, <m-malladi@ti.com>,
+        <richardcochran@gmail.com>, <pabeni@redhat.com>, <kuba@kernel.org>,
+        <edumazet@google.com>, <davem@davemloft.net>, <andrew+netdev@lunn.ch>
+CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
+        Vignesh Raghavendra
+	<vigneshr@ti.com>,
+        Roger Quadros <rogerq@kernel.org>, <danishanwar@ti.com>
+Subject: [PATCH net-next v3 1/2] net: ti: icss-iep: Add pwidth configuration for perout signal
+Date: Mon, 3 Mar 2025 19:21:23 +0530
+Message-ID: <20250303135124.632845-2-m-malladi@ti.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250303135124.632845-1-m-malladi@ti.com>
+References: <20250303135124.632845-1-m-malladi@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Jason Xing wrote:
-> On Mon, Mar 3, 2025 at 10:17=E2=80=AFAM Willem de Bruijn
-> <willemdebruijn.kernel@gmail.com> wrote:
-> >
-> > Jason Xing wrote:
-> > > When I read through the TSO codes, I found out that we probably
-> > > miss initializing the tx_flags of last seg when TSO is turned
-> > > off,
-> >
-> > When falling back onto TCP GSO. Good catch.
-> >
-> > This is a fix, so should target net?
-> =
+icss_iep_perout_enable_hw() is a common function for generating
+both pps and perout signals. When enabling pps, the application needs
+to only pass enable/disable argument, whereas for perout it supports
+different flags to configure the signal.
 
-> After seeing your comment below, I'm not sure if the next version
-> targets the net branch because SKBTX_BPF flag is not in the net branch.=
+But icss_iep_perout_enable_hw() function is missing to hook the
+configuration params passed by the app, causing perout to behave
+same a pps (except being able to configure the period). As duty cycle
+is also one feature which can configured for perout, incorporate this
+in the function to get the expected signal.
 
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+---
+Changes from v2 (v3-v2):
+- Posted patch to net-next as feature addition
+- Collected RB tag from Jacob Keller <jacob.e.keller@intel.com>
 
-HWTSTAMP is sufficient reason
- =
+ drivers/net/ethernet/ti/icssg/icss_iep.c | 49 ++++++++++++++++++++++--
+ 1 file changed, 46 insertions(+), 3 deletions(-)
 
-> If target net-net tree, I would add the following:
-> Fixes: 6b98ec7e882af ("bpf: Add BPF_SOCK_OPS_TSTAMP_SCHED_CB callback")=
+diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
+index d59c1744840a..0411438a3b5d 100644
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -406,9 +406,16 @@ static void icss_iep_update_to_next_boundary(struct icss_iep *iep, u64 start_ns)
+ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 				     struct ptp_perout_request *req, int on)
+ {
++	struct timespec64 ts;
++	u64 ns_width;
+ 	int ret;
+ 	u64 cmp;
+ 
++	/* Calculate width of the signal for PPS/PEROUT handling */
++	ts.tv_sec = req->on.sec;
++	ts.tv_nsec = req->on.nsec;
++	ns_width = timespec64_to_ns(&ts);
++
+ 	if (iep->ops && iep->ops->perout_enable) {
+ 		ret = iep->ops->perout_enable(iep->clockops_data, req, on, &cmp);
+ 		if (ret)
+@@ -419,8 +426,9 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 			regmap_write(iep->map, ICSS_IEP_CMP1_REG0, lower_32_bits(cmp));
+ 			if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
+ 				regmap_write(iep->map, ICSS_IEP_CMP1_REG1, upper_32_bits(cmp));
+-			/* Configure SYNC, 1ms pulse width */
+-			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG, 1000000);
++			/* Configure SYNC, based on req on width */
++			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
++				     div_u64(ns_width, iep->def_inc));
+ 			regmap_write(iep->map, ICSS_IEP_SYNC0_PERIOD_REG, 0);
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG, 0);
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0); /* one-shot mode */
+@@ -447,6 +455,8 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 				   + req->period.nsec;
+ 			icss_iep_update_to_next_boundary(iep, start_ns);
+ 
++			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
++				     div_u64(ns_width, iep->def_inc));
+ 			/* Enable Sync in single shot mode  */
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG,
+ 				     IEP_SYNC_CTRL_SYNC_N_EN(0) | IEP_SYNC_CTRL_SYNC_EN);
+@@ -474,7 +484,38 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ static int icss_iep_perout_enable(struct icss_iep *iep,
+ 				  struct ptp_perout_request *req, int on)
+ {
+-	return -EOPNOTSUPP;
++	int ret = 0;
++
++	mutex_lock(&iep->ptp_clk_mutex);
++
++	/* Reject requests with unsupported flags */
++	if (req->flags & ~PTP_PEROUT_DUTY_CYCLE) {
++		ret = -EOPNOTSUPP;
++		goto exit;
++	}
++
++	if (iep->pps_enabled) {
++		ret = -EBUSY;
++		goto exit;
++	}
++
++	if (iep->perout_enabled == !!on)
++		goto exit;
++
++	/* Set default "on" time (1ms) for the signal if not passed by the app */
++	if (!(req->flags & PTP_PEROUT_DUTY_CYCLE)) {
++		req->on.sec = 0;
++		req->on.nsec = NSEC_PER_MSEC;
++	}
++
++	ret = icss_iep_perout_enable_hw(iep, req, on);
++	if (!ret)
++		iep->perout_enabled = !!on;
++
++exit:
++	mutex_unlock(&iep->ptp_clk_mutex);
++
++	return ret;
+ }
+ 
+ static void icss_iep_cap_cmp_work(struct work_struct *work)
+@@ -553,6 +594,8 @@ static int icss_iep_pps_enable(struct icss_iep *iep, int on)
+ 		rq.perout.period.nsec = 0;
+ 		rq.perout.start.sec = ts.tv_sec + 2;
+ 		rq.perout.start.nsec = 0;
++		rq.perout.on.sec = 0;
++		rq.perout.on.nsec = NSEC_PER_MSEC;
+ 		ret = icss_iep_perout_enable_hw(iep, &rq.perout, on);
+ 	} else {
+ 		ret = icss_iep_perout_enable_hw(iep, &rq.perout, on);
+-- 
+2.43.0
 
-> Fixes: 4ed2d765dfacc ("net-timestamp: TCP timestamping")
-
-Please only add one Fixes tag. In this case 4ed2d765dfacc
