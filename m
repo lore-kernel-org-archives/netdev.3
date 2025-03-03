@@ -1,95 +1,128 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB8E254878;
-	Mon,  3 Mar 2025 16:49:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569C725BAAB
+	for <netdev@vger.kernel.org>; Mon,  3 Mar 2025 16:49:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741020578; cv=none; b=HbxobgZJlVVtF5AACXaADp73Jk9P+2fsK1JSpAZQetyWSRKv3DUzMN24n/76exx0KVcuOFfDPuJoaax4F7E60cH7xzFc7mE3hz8gDbveubrO+aeVejhwKCajJQRAVLpPaAEdRq1TXPBORozkuWVOytqGfKkW5YU1vKRVTuor2JA=
+	t=1741020589; cv=none; b=kP/CB21QYO3ER5yfKEmI6LGVWlwka6JB8oZyUm8klPhxJ97vnNvb5Ew4l+cVJaEvF30TFfKKpGo2k945GZ/NEPuGHWyYotC3Ojk9jRJeNVvIBP+rXPo18s3hVBwtT3SPxidhu/mYK5tqe2stx1aD/RntzTwxjZzaY4qB/c044sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741020578; c=relaxed/simple;
-	bh=OLvj9XfHwKBvLw1IUZK40ZzryVhHV53ya337D+KIWcw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tb1q8JEjK2y+h/4hFhtDEJBcW++5JmS5AG+uiXArJOiz+/XuFp1pJeWOzuxWEmozA0ohEVlbqGaXJcU8xZdX1FQv2B64vzqO6VRQlUTfgAOQxo9DgKjnTMOPDqewmhGrtlamA+t+y5N6MVFr+uPRZnLC/d6Vbn05nD1e7uTaATA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jp3sxPgp; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1741020589; c=relaxed/simple;
+	bh=Sj/9n5yaDww5LsxV++b4jRZ/RCn196tGutCKBqXJ5p0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RAEaxO3m+kLXg1YZA9mnyFGRUPjL7OC4OBa2wwGz2EvV4P+sU/cd5n4bJh5mj342z/5hB69t0861nzPw50De55HecZaR6n/dCRurbdAPje75M08Uh0cSqDBbn/yYwxn52CZok3HdUqdPasSzmHyjxlaeunYg7+uPjNxKEQtV9u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UBZY2tHV; arc=none smtp.client-ip=209.85.166.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jp3sxPgp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741020577; x=1772556577;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=OLvj9XfHwKBvLw1IUZK40ZzryVhHV53ya337D+KIWcw=;
-  b=Jp3sxPgpSAAzTKxnGrtF5txJTPznxmTPcfB10+JEdbFH/y2XdfTLAp++
-   nu6b/y1GhrwzN3T3PCN7BSgOelc8MKg7nYFqRMMbVB+Hc3TBysRY9LkTZ
-   WYcmqLLCcX9dppPNxio0VON9MoTAtVUpC+L2HIuo/Pbk8T83OS9hvs4qG
-   3YLaRG5u3WFS55eUk/vrNYfsJ2gcaKFMOEBuonuH7Ej2BByPu96NA7abZ
-   pJ0I2AWQv6UPmi0U4GUJawdLY53RZfjAHk4e0j/3tE4dp4+b7MVIToDqL
-   qcckA+OzUuQ6xiWaBq0TUFb5nISWt6wR9l/EBKpkcNSfSSt19DANbey+e
-   A==;
-X-CSE-ConnectionGUID: OcyWfkrvQoaRd6tPoLe09w==
-X-CSE-MsgGUID: gV9rx38HTleru39VTAxeZA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41761419"
-X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; 
-   d="scan'208";a="41761419"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 08:49:34 -0800
-X-CSE-ConnectionGUID: fRhiKrVCTb2TYWdd12k7zA==
-X-CSE-MsgGUID: wzNomfKlSf2pOXQ5SJYukA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,330,1732608000"; 
-   d="scan'208";a="123212199"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa004.fm.intel.com with ESMTP; 03 Mar 2025 08:49:31 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 7A4D0156; Mon, 03 Mar 2025 18:49:29 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org
-Cc: Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: [PATCH v2 0/3] ieee802154: ca8210: Sparse fix and GPIOd conversion
-Date: Mon,  3 Mar 2025 18:49:07 +0200
-Message-ID: <20250303164928.1466246-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.47.2
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UBZY2tHV"
+Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-3d191bfeafbso18739675ab.0
+        for <netdev@vger.kernel.org>; Mon, 03 Mar 2025 08:49:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741020587; x=1741625387; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X1JM3jch4378qUNKnoRBygByBvzeQq9d+/vev+wxynQ=;
+        b=UBZY2tHVbLLzWukafq0O5Ao7AITZg69ZJD3QihKvWIAnSLqisgp7GgJlOEhpIlgoFU
+         vNf9bzg0fQZJiT1ysRLJDX7LWnOJEFVaFoYZ2o3DMzXQxRhNT+6wDFgfR4DF+qivoTDx
+         h/C2mHtarUqbsgPEs0ljvh2MYbKvtPUJ/F0CHA5l0Lk8Fcv1MVjI7TfySPuhkZoEjtzx
+         REoJOOlp/LHRIwnmXvgZ4e3aSN0K3DNC157WpkNPoR5+CLnR3L0u4/mOQ+ZyMGIGpkaX
+         dAirad7KpBVPWi1kJ+UsD8538AKdVMouF9NVOC4eQqzXwqv4TcYR1bp0KcMbPwWLgp8w
+         myeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741020587; x=1741625387;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X1JM3jch4378qUNKnoRBygByBvzeQq9d+/vev+wxynQ=;
+        b=P4ChgtD1q7oplTH0U2mDwx2oxEbnqnOVZFGH9Bv3EOpGDkUMw11NOOmXH2aXESlffW
+         LPhrGe/eOkbv+axOha4hfbPJCbJL1y2vdW+DF9NeDQswSveWwJ1KdLofAeeK2zIkpD0y
+         LXOY8DKa/4jXhHoRx1I4Ssq4/I3sYcG0DnduHpJojXTwo2KIokMxx0PCuqA0fQiE4W9C
+         lpzYluEdqNsft+OMybKSF6vpScfoapQHu57LTriIQzzMqZdMFfziYplOpNm4QVe3MHJt
+         OxMxGN7weYi4w9GlzWg830ko8RPdEh3IUnp86tF9C5Se5tjDlFWPEKO2VR24TIeqgD4k
+         mx+w==
+X-Forwarded-Encrypted: i=1; AJvYcCWrEm5PjoWXBRkZSjttdUyDE2tuoWvcA/F0Xfv6hWHp+65sMmR4H8xv+nVp/G4DT5xhwL0YWGY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzVEbTOYV97iBIYYNj5RY+dvr4ziQla7b5XwSVRmeK20WX8t9R
+	XdiiH4CtN2wIRm01DVUnTVOJfQfy5sv/1HOwA5QfClgTIiK3FjXbTQhW+9uVgBphxpIFAKeOnKk
+	klzwwC/9xSoo7P80l48knEHOidKQ=
+X-Gm-Gg: ASbGnctR0ux1CHbpj0E7aiG8sM/1MJ2/R33F7RZ+ksVeiKjgReAmwrMnkq1BsG71sg+
+	6Jq96BZGXdaaIohn3S9SNk0n/mVIlwS0yK9kRzJ9p3jbwmSHpEkmyUTzcTOx4oqqmpBsdEgbZmT
+	HHq90tZMmz5oXI9sya1IUPICAU
+X-Google-Smtp-Source: AGHT+IF+o+ma8+T3pJgOeA06yMJTxOH3F3z00RFIHs7rACJYU1Ye0+3nUJqcE3YljUBJ5TYk2oejUZ9xAlQFQL4cxaY=
+X-Received: by 2002:a05:6e02:180d:b0:3d0:4e57:bbda with SMTP id
+ e9e14a558f8ab-3d3e6e45cf7mr114601265ab.1.1741020587306; Mon, 03 Mar 2025
+ 08:49:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250303080404.70042-1-kerneljasonxing@gmail.com>
+ <20250303074105.0b562205@kernel.org> <CAL+tcoCV-SbnMuJetKVuMpAhf_zuD5_+eHC_HLhdq-Jfp3H_+w@mail.gmail.com>
+In-Reply-To: <CAL+tcoCV-SbnMuJetKVuMpAhf_zuD5_+eHC_HLhdq-Jfp3H_+w@mail.gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Tue, 4 Mar 2025 00:49:10 +0800
+X-Gm-Features: AQ5f1Joqjd9GSsN3A5AsOQSiBYCpkea53UuxKp0_OFBxQ9CYBfNch2XcH-QpwzY
+Message-ID: <CAL+tcoBogEc-pn_Z050wCWreVA86HEpjZQhhzie7_tnNU=TKpA@mail.gmail.com>
+Subject: Re: [PATCH net-next] selftests: txtimestamp: ignore the old skb from ERRQUEUE
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
+	horms@kernel.org, willemdebruijn.kernel@gmail.com, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The main part is the patch 3 that converts the driver to GPIO descriptor APIs,
-the first one is just an ad-hoc fix WRT sparse complains on the bitwise
-types misuse. The second one is a small cleanup that helps patch 3 to be nicer.
+On Tue, Mar 4, 2025 at 12:31=E2=80=AFAM Jason Xing <kerneljasonxing@gmail.c=
+om> wrote:
+>
+> On Mon, Mar 3, 2025 at 11:41=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
+wrote:
+> >
+> > On Mon,  3 Mar 2025 16:04:04 +0800 Jason Xing wrote:
+> > > When I was playing with txtimestamp.c to see how kernel behaves,
+> > > I saw the following error outputs if I adjusted the loopback mtu to
+> > > 1500 and then ran './txtimestamp -4 -L 127.0.0.1 -l 30000 -t 100000':
+> > >
+> > > test SND
+> > >     USR: 1740877371 s 488712 us (seq=3D0, len=3D0)
+> > >     SND: 1740877371 s 489519 us (seq=3D29999, len=3D1106)  (USR +806 =
+us)
+> > >     USR: 1740877371 s 581251 us (seq=3D0, len=3D0)
+> > >     SND: 1740877371 s 581970 us (seq=3D59999, len=3D8346)  (USR +719 =
+us)
+> > >     USR: 1740877371 s 673855 us (seq=3D0, len=3D0)
+> > >     SND: 1740877371 s 674651 us (seq=3D89999, len=3D30000)  (USR +795=
+ us)
+> > >     USR: 1740877371 s 765715 us (seq=3D0, len=3D0)
+> > > ERROR: key 89999, expected 119999
+> > > ERROR: -12665 us expected between 0 and 100000
+> > >     SND: 1740877371 s 753050 us (seq=3D89999, len=3D1106)  (USR +-126=
+65 us)
+> > >     SND: 1740877371 s 800783 us (seq=3D119999, len=3D30000)  (USR +35=
+068 us)
+> > >     USR-SND: count=3D5, avg=3D4945 us, min=3D-12665 us, max=3D35068 u=
+s
+> > >
+> > > Actually, the kernel behaved correctly after I did the analysis. The
+> > > second skb carrying 1106 payload was generated due to tail loss probe=
+,
+> > > leading to the wrong estimation of tskey in this C program.
+> > >
+> > > This patch does:
+> > > - Neglect the old tskey skb received from ERRQUEUE.
+> > > - Add a new test to count how many valid skbs received to compare wit=
+h
+> > > cfg_num_pkts.
+> >
+> > This appears to break some UDP test cases when running in the CI:
+> >
+> > https://netdev-3.bots.linux.dev/vmksft-net/results/16721/41-txtimestamp=
+-sh/stdout
+>
+> Thanks for catching this. I did break this testcase: run_test_v4v6
+> ${args} -u -o 42.
+>
 
-In v2:
-- split and extended cleanup pieces into patch 2 (Miquel)
-- updated kernel doc for changed members (Miquel)
-- unfolded PTR_ERR_OR_ZERO() to the preferred pattern (Miquel)
-- collected tags (Miquel)
-
-Andy Shevchenko (3):
-  ieee802154: ca8210: Use proper setter and getters for bitwise types
-  ieee802154: ca8210: Get platform data via dev_get_platdata()
-  ieee802154: ca8210: Switch to using gpiod API
-
- drivers/net/ieee802154/ca8210.c | 78 +++++++++++++--------------------
- 1 file changed, 31 insertions(+), 47 deletions(-)
-
--- 
-2.47.2
-
+To handle this particular case, I broke more than that, so I'll drop
+this patch. Sorry for the inconvenience :( I must be out of mind.
