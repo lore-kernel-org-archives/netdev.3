@@ -1,152 +1,145 @@
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C4924EABA;
-	Tue,  4 Mar 2025 19:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03C72063E0
+	for <netdev@vger.kernel.org>; Tue,  4 Mar 2025 19:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741114946; cv=none; b=p4LDFqCnIw1Bj2I9IcDuoeRAwX3BH+XjXDzQBybDvgJ8jfcw6bCjNKws0W2pXhGHnmEuVgYp/2cZP58fSiFczyv9wgTZlYEKZgSoJ41IfQ6PmBPW3uOvOWsvL9AUyFPDfHtyFxHBYVEIVVUUzw4pe+fDSJKUEAXQhiP3rUvdR5U=
+	t=1741115126; cv=none; b=JZTpt2gD41b+imtKaATo0lQV3uyGTzhlOl/ZyNZjGFoslYfmNBSTdjg+p1I7KICNaXjLbIdrdqScVP7ja4fwZWo8snw0eJnIHFc2M3TmnM3wJaLX3JA3gE7rh09+3Zp4qih0U48ny7cg6Ztka4Zm3ivLRNrsfZEGdJOPm+ZKBfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741114946; c=relaxed/simple;
-	bh=oeO3k+fQ2uc2xW3PAoVoZusaYb/VRHAyBWTKFEnt+OA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZRSGT5oL5sB2CNhYJo9iuFlg1LIUYVDybs/VidzSmBUHpsFXyHeAmOyY04/bRof3XPkfWkdSg2cPjtCd28Ukc0EJ6ZQfGMdkgPGPXHzw99AjKMON184eg9KAsLdX6PP6+NfVX4hzyzYopjEFAEEm05h1NKvgPVyXIPzQnUsC4S4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=lHabd9vs; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ev+jCEBw; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1741115126; c=relaxed/simple;
+	bh=VymyZI8orx5mQ4IUaLUYYJXe3CCShwinSpMBCQQvcOM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=f/UqtdVwBKn2sqLsFZSxOqf4Pd1hhCiv0WyoIsSsFfjDhoowDKgdf+VOXvRnr2W5P3VarYqVSym1bsz5FzBc9E2BPURRdlJF96WbhAG6ADJw18m+FVbBFMCw8TEuDJ0P+39doZgmfantg3UOlrJHtYGjC6MPDm3huTwoNCVgIq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=M6++a+VC; arc=none smtp.client-ip=99.78.197.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="lHabd9vs";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ev+jCEBw"
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 294C61140109;
-	Tue,  4 Mar 2025 14:02:22 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Tue, 04 Mar 2025 14:02:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1741114942; x=
-	1741201342; bh=Pgi+DunqwLwq74Jly3YwOvG4Ta4hOiz0xroRVd15Urw=; b=l
-	Habd9vs30fdL28oTItRbA1XW+04wrHPY5ODRttgyEguacL3rY/m+PJS+sEbwU233
-	BmqT6V8s4lQa8kNge/9sGtF5D7dnNi2cBFAWNLFDNKdZW0GE4/macfFpiaTBd3kR
-	m8cC98Lp6mJI2907ZezUlvLGsEr64b7j2aJoQBcIHv5HjriqJkBY259yw4VrY7IA
-	qMycTjQIVNntwRVftQTX/vk+a80/0zqz95iMtL48C/D+e0cTW8c+F2+p8i7PsNev
-	oFzu+u6rmgRex+JDBuWQAynOsN/uFB21ZGIDh5LEle873yrTNFcvExg/IE//mffE
-	NoCvEDi7btr1jEsbz4Z+A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1741114942; x=1741201342; bh=Pgi+DunqwLwq74Jly3YwOvG4Ta4hOiz0xro
-	RVd15Urw=; b=Ev+jCEBwgjl+CCT5iDqMekTBNCU2vL9lY5sYtgpide4sM81W/C2
-	PKXxDqa7n7NfdSjuF/wcKHL0pSJTAbCsbggHy4G7BsZv3J97QfY9wzbXOQgd9U/h
-	AJy6WZJzMEmwrRBAt7x+uehZDsPX87DfLdlO1t/v+msZ1ijaNiof7S6GlAOnV0oQ
-	kbE2AbEOKNzNIiqOfVwOF7ynglupW33s+SP6l5u9YYcK/gxy3OwwMvyLpIEB9LeW
-	3E9+HcMLCO/YvFzSSAHWe3XdcK5aoZaOHfwptvLku/USF9zExk2b/9DqtXqeMW6O
-	ffJW2JyXTynfTyFiSmR/1QMvoBnWWRthPuw==
-X-ME-Sender: <xms:PU7HZ5YJaYoe3gBUiQdMtZcL_S6evoKtVMTWuwWHHU5YeORy_N4fBg>
-    <xme:PU7HZwb1k3_T_U657_1x1p1uIO3jMzzSao1wnpWGuPq9UzeaPMtdDllWu6VWS8j77
-    x0TNFwF8RDqlpLD9Y0>
-X-ME-Received: <xmr:PU7HZ78PC01jiQHPUtrAFZmiTb83BAwkRqA84QWLADDTOsCXnBy8fDwTAvKz>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddutddvkeefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    jeenucfhrhhomhepufgrsghrihhnrgcuffhusghrohgtrgcuoehsugesqhhuvggrshihsh
-    hnrghilhdrnhgvtheqnecuggftrfgrthhtvghrnhepuefhhfffgfffhfefueeiudegtdef
-    hfekgeetheegheeifffguedvuefffefgudffnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhn
-    sggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghnth
-    honhhiohesohhpvghnvhhpnhdrnhgvthdprhgtphhtthhopehnvghtuggvvhesvhhgvghr
-    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrd
-    gtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehp
-    rggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepughonhgrlhgurdhhuhhnth
-    gvrhesghhmrghilhdrtghomhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehrhigriigrnhhovhdrshdrrgesghhmrghilhdrtghomhdprhgtph
-    htthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghh
-X-ME-Proxy: <xmx:PU7HZ3q60ijFSyPaYi875yQA9SYT06ZrmrAYtnVXUQL68g_0y2bIoA>
-    <xmx:PU7HZ0rG_qUw2z0DBkJzZ5BM2pME_11XtYPZHfex2tqLuQrVJGQWeQ>
-    <xmx:PU7HZ9SFvwxCDmVEKjsZBn3bBnBBY7O9tT4DT0qIsX1ygk8uRR3kCw>
-    <xmx:PU7HZ8oE1ilRcAHF2QGVk_qNg9JJdf2ZhITX2riumaUzfezeucodng>
-    <xmx:Pk7HZx4ileAH-OCVIQb-UsPWKcNc6GMp4HwKKCsZ29BOdn4DiYjRa1dJ>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 4 Mar 2025 14:02:20 -0500 (EST)
-Date: Tue, 4 Mar 2025 20:02:19 +0100
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Antonio Quartulli <antonio@openvpn.net>
-Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Shuah Khan <shuah@kernel.org>, ryazanov.s.a@gmail.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, Xiao Liang <shaw.leon@gmail.com>
-Subject: Re: [PATCH v21 09/24] ovpn: implement packet processing
-Message-ID: <Z8dOOy9tSpJ1UCiR@hog>
-References: <20250304-b4-ovpn-tmp-v21-0-d3cbb74bb581@openvpn.net>
- <20250304-b4-ovpn-tmp-v21-9-d3cbb74bb581@openvpn.net>
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="M6++a+VC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1741115125; x=1772651125;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=cmWgUx2CIt2BnglFLLO24rSuYNOpAMYfwt5mIgC/rtA=;
+  b=M6++a+VCjau1GK4IBR8HrDJs5qikI9OIF6pOjweRhLXcu1RMX447UbqE
+   gKBc9wvS0xwTejL2kZ88LtlA+UR6p6TJ1Wqqk8Giqi4023NYVfZQLAGk4
+   7t/IYGK6XDG/FohaFgtU8DkNWHb/gj5v7a5trI5ziO4sRlWABFgUbMmYg
+   I=;
+X-IronPort-AV: E=Sophos;i="6.14,220,1736812800"; 
+   d="scan'208";a="28366152"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 19:05:23 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:28015]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.23.28:2525] with esmtp (Farcaster)
+ id bbe242e5-0c1a-4bba-8f1a-e481b9b8010d; Tue, 4 Mar 2025 19:05:22 +0000 (UTC)
+X-Farcaster-Flow-ID: bbe242e5-0c1a-4bba-8f1a-e481b9b8010d
+Received: from EX19D010UWB002.ant.amazon.com (10.13.138.71) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 4 Mar 2025 19:05:14 +0000
+Received: from EX19MTAUWA002.ant.amazon.com (10.250.64.202) by
+ EX19D010UWB002.ant.amazon.com (10.13.138.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 4 Mar 2025 19:05:13 +0000
+Received: from email-imr-corp-prod-pdx-1box-2b-8c2c6aed.us-west-2.amazon.com
+ (10.25.36.210) by mail-relay.amazon.com (10.250.64.203) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1544.14 via Frontend Transport; Tue, 4 Mar 2025 19:05:13 +0000
+Received: from HFA15-G9FV5D3.amazon.com (unknown [10.85.143.178])
+	by email-imr-corp-prod-pdx-1box-2b-8c2c6aed.us-west-2.amazon.com (Postfix) with ESMTP id 681B1A07D3;
+	Tue,  4 Mar 2025 19:05:07 +0000 (UTC)
+From: David Arinzon <darinzon@amazon.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	<netdev@vger.kernel.org>
+CC: David Arinzon <darinzon@amazon.com>, Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, "Richard
+ Cochran" <richardcochran@gmail.com>, "Woodhouse, David" <dwmw@amazon.com>,
+	"Machulsky, Zorik" <zorik@amazon.com>, "Matushevsky, Alexander"
+	<matua@amazon.com>, Saeed Bshara <saeedb@amazon.com>, "Wilson, Matt"
+	<msw@amazon.com>, "Liguori, Anthony" <aliguori@amazon.com>, "Bshara, Nafea"
+	<nafea@amazon.com>, "Schmeilin, Evgeny" <evgenys@amazon.com>, "Belgazal,
+ Netanel" <netanel@amazon.com>, "Saidi, Ali" <alisaidi@amazon.com>,
+	"Herrenschmidt, Benjamin" <benh@amazon.com>, "Kiyanovski, Arthur"
+	<akiyano@amazon.com>, "Dagan, Noam" <ndagan@amazon.com>, "Bernstein, Amit"
+	<amitbern@amazon.com>, "Agroskin, Shay" <shayagr@amazon.com>, "Ostrovsky,
+ Evgeny" <evostrov@amazon.com>, "Tabachnik, Ofir" <ofirt@amazon.com>,
+	"Machnikowski, Maciek" <maciek@machnikowski.net>, Rahul Rameshbabu
+	<rrameshbabu@nvidia.com>, Gal Pressman <gal@nvidia.com>, Vadim Fedorenko
+	<vadim.fedorenko@linux.dev>
+Subject: [PATCH v8 net-next 0/5] PHC support in ENA driver
+Date: Tue, 4 Mar 2025 21:04:59 +0200
+Message-ID: <20250304190504.3743-1-darinzon@amazon.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250304-b4-ovpn-tmp-v21-9-d3cbb74bb581@openvpn.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-2025-03-04, 01:33:39 +0100, Antonio Quartulli wrote:
-> +struct crypto_aead *ovpn_aead_init(const char *title, const char *alg_name,
-> +				   const unsigned char *key,
-> +				   unsigned int keylen)
+Changes in v8:
+- Create a sysfs entry for each PHC stat
 
-nit: static? I don't see it used outside this file.
+Changes in v7 (https://lore.kernel.org/netdev/20250218183948.757-1-darinzon@amazon.com/):
+- Move PHC stats to sysfs
+- Add information about PHC enablement
+- Remove unrelated style changes
 
+Changes in v6 (https://lore.kernel.org/netdev/20250206141538.549-1-darinzon@amazon.com/):
+- Remove PHC error bound
 
-[...]
-> +static inline struct ovpn_crypto_key_slot *
-> +ovpn_crypto_key_id_to_slot(const struct ovpn_crypto_state *cs, u8 key_id)
-> +{
-> +	struct ovpn_crypto_key_slot *ks;
-> +	u8 idx;
-> +
-> +	if (unlikely(!cs))
-> +		return NULL;
-> +
-> +	rcu_read_lock();
-> +	idx = cs->primary_idx;
+Changes in v5 (https://lore.kernel.org/netdev/20250122102040.752-1-darinzon@amazon.com/):
+- Add PHC error bound
+- Add PHC enablement and error bound retrieval through sysfs
 
-I'd go with slots[0] and slots[1], since it doesn't really matter
-whether we check the primary or secondary first. It would avoid a
-possible reload of cs->primary_idx (which might be updated
-concurrently by a key swap and cause us to look into the same slot
-twice) -- a READ_ONCE would also prevent that.
+Changes in v4 (https://lore.kernel.org/netdev/20241114095930.200-1-darinzon@amazon.com/):
+- Minor documentation change (resolution instead of accuracy)
 
-> +	ks = rcu_dereference(cs->slots[idx]);
-> +	if (ks && ks->key_id == key_id) {
-> +		if (unlikely(!ovpn_crypto_key_slot_hold(ks)))
-> +			ks = NULL;
-> +		goto out;
-> +	}
-> +
-> +	ks = rcu_dereference(cs->slots[!idx]);
-> +	if (ks && ks->key_id == key_id) {
-> +		if (unlikely(!ovpn_crypto_key_slot_hold(ks)))
-> +			ks = NULL;
-> +		goto out;
-> +	}
-> +
-> +	/* when both key slots are occupied but no matching key ID is found, ks
-> +	 * has to be reset to NULL to avoid carrying a stale pointer
-> +	 */
-> +	ks = NULL;
-> +out:
-> +	rcu_read_unlock();
-> +
-> +	return ks;
-> +}
+Changes in v3 (https://lore.kernel.org/netdev/20241103113140.275-1-darinzon@amazon.com/):
+- Resolve a compilation error
+
+Changes in v2 (https://lore.kernel.org/netdev/20241031085245.18146-1-darinzon@amazon.com/):
+- CCd PTP maintainer
+- Fixed style issues
+- Fixed documentation warning
+
+v1 (https://lore.kernel.org/netdev/20241021052011.591-1-darinzon@amazon.com/)
+
+This patchset adds the support for PHC (PTP Hardware Clock)
+in the ENA driver. The documentation part of the patchset
+includes additional information, including statistics,
+utilization and invocation examples through the testptp
+utility.
+
+David Arinzon (5):
+  net: ena: Add PHC support in the ENA driver
+  net: ena: PHC silent reset
+  net: ena: PHC enable through sysfs
+  net: ena: PHC stats through sysfs
+  net: ena: Add PHC documentation
+
+ .../device_drivers/ethernet/amazon/ena.rst    |  96 +++++++
+ drivers/net/ethernet/amazon/Kconfig           |   1 +
+ drivers/net/ethernet/amazon/ena/Makefile      |   2 +-
+ .../net/ethernet/amazon/ena/ena_admin_defs.h  |  63 ++++-
+ drivers/net/ethernet/amazon/ena/ena_com.c     | 247 ++++++++++++++++++
+ drivers/net/ethernet/amazon/ena/ena_com.h     |  83 ++++++
+ drivers/net/ethernet/amazon/ena/ena_ethtool.c |  16 +-
+ drivers/net/ethernet/amazon/ena/ena_netdev.c  |  44 +++-
+ drivers/net/ethernet/amazon/ena/ena_netdev.h  |   6 +
+ drivers/net/ethernet/amazon/ena/ena_phc.c     | 230 ++++++++++++++++
+ drivers/net/ethernet/amazon/ena/ena_phc.h     |  37 +++
+ .../net/ethernet/amazon/ena/ena_regs_defs.h   |   8 +
+ drivers/net/ethernet/amazon/ena/ena_sysfs.c   | 163 ++++++++++++
+ drivers/net/ethernet/amazon/ena/ena_sysfs.h   |  28 ++
+ 14 files changed, 1014 insertions(+), 10 deletions(-)
+ create mode 100644 drivers/net/ethernet/amazon/ena/ena_phc.c
+ create mode 100644 drivers/net/ethernet/amazon/ena/ena_phc.h
+ create mode 100644 drivers/net/ethernet/amazon/ena/ena_sysfs.c
+ create mode 100644 drivers/net/ethernet/amazon/ena/ena_sysfs.h
 
 -- 
-Sabrina
+2.47.1
+
