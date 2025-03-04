@@ -1,141 +1,150 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602E5259C89;
-	Tue,  4 Mar 2025 16:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA82259C87;
+	Tue,  4 Mar 2025 16:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741104924; cv=none; b=OyS9l8vkagoB4xgdIoBIzRVidBc+pH0Aba0DIwzZWijhWlb1969mvgQqgBTaDt7XSr6ewsPMYNQ2Md04YzV7Xy9Fukzz1X4cNWxT/Z3cpkPaz1wSVnFD97uf5eTYuWLr+g72pt5hI6yeAd58xRxwBkS0z2AKIV+MBDmV9/kah9g=
+	t=1741104925; cv=none; b=Wl94H1/bjM/1z+ymiclZZvOyt7VxqQ/gQRTOFBkf2SDNGbC6HMDvBeDqLED93MGsF266DT+/xEmRNdco31kKX9+6xZeeCSioRYKfX2iUyww59qRg1ekklGb6TV2OcPC29mQyPC7TWzu8KsQuDtqNLtOSUY9zK9GwZTxaQVax4pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741104924; c=relaxed/simple;
-	bh=lQ4+10D0t0Q8TuYC/AyuEbU8Fo9fE1QT4c/FV1EckiE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i0kGjniu55SQYu5ilQrzQZLCsBaxfykJPoODR9V1VbnQ6mY/Ug3PQyhe0uEYetQ/5UUpFpfyPZAlJth2TaLro/h7c3V1P/8VMBCCaQUnggieLiWPHSOSdX3ejvJnrJ+fkMIQiZ4VDeh7OI6E57KS/6b+Px8fjSrCZAg7tb7QgfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ioDwsSDp; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1741104925; c=relaxed/simple;
+	bh=FaitQFZZEqjD/jJ9v92zye6uteHEsM/IP3Sgot+eYM8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nozAVSKnczdqDsGJGVLHChw8ykn9QcI7018pxhwtYo2Coa25XngQ87y2IWAxcdpsynCf1J5n6SpD8WvewaDuj8QyqAMj4oJAArRsn7yX8BqXMAjF4OR08EDjdjzDrtP4UL1ns/Jq18i3EK6dAseAaukq4jfmViWgHiQSSVvCgkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=o9OpQSWC; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ioDwsSDp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=pL43Quyb0ICgUXShUhHF7YtI0r/6haqOAOyn/xgv5nc=; b=ioDwsSDpQ9ByKM98PVFr7qaGNi
-	ST5mF0gVx3oPZQTPM8RRnZZYPYhFxl3wf4Hgbb74Siu4a4vSM6QrDDYg5hbNVVvD2YUhnjQHQSRjU
-	+qBTBt6+RTbgRd2HTeeiOB526g0wagPsMbvr30E5ehADsnEgtxqK4aS0jx0QnL0fbQbHDPaiwe/cH
-	5Q5mo2PH0cYQTIpj0ZUi1FjKqsiz4qD0TC9lxltij7tHfMbcPlXDV/5q1xyAoMaiSlB3KsT5qAHrW
-	4TBYXuHmZxYTU57sjC3Cz2/z4B4u6ZQA5New8VCPd9h6mAWZsRGe7ihZ46UaHmXsuQXzo+DTAa2xp
-	PvQJsBeQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tpUub-00000001h5s-2rJd;
-	Tue, 04 Mar 2025 16:14:30 +0000
-Date: Tue, 4 Mar 2025 16:14:29 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Hannes Reinecke <hare@suse.com>, Boris Pismenny <borisp@nvidia.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, Sagi Grimberg <sagi@grimberg.me>,
-	"linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	linux-mm@kvack.org, Harry Yoo <harry.yoo@oracle.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: Kernel oops with 6.14 when enabling TLS
-Message-ID: <Z8cm5bVJsbskj4kC@casper.infradead.org>
-References: <Z8W8OtJYFzr9OQac@casper.infradead.org>
- <Z8W_1l7lCFqMiwXV@casper.infradead.org>
- <15be2446-f096-45b9-aaf3-b371a694049d@suse.com>
- <Z8XPYNw4BSAWPAWT@casper.infradead.org>
- <edf65d4e-90f0-4b12-b04f-35e97974a36f@suse.cz>
- <95b0b93b-3b27-4482-8965-01963cc8beb8@suse.cz>
- <fcfa11c6-2738-4a2e-baa8-09fa8f79cbf3@suse.de>
- <a466b577-6156-4501-9756-1e9960aa4891@suse.cz>
- <6877dfb1-9f44-4023-bb6d-e7530d03e33c@suse.com>
- <db1a4681-1882-4e0a-b96f-a793e8fffb56@suse.cz>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="o9OpQSWC"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C0A8720479;
+	Tue,  4 Mar 2025 16:15:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1741104921;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CqAT5+Gi1O68uLcYreVHzC9MDAGC4lcpXT9gC3flVdI=;
+	b=o9OpQSWCPcLhU75kNX2KB5/lnvHNChPaWtHihmyulicnkYRnOi0iBSibqDPh1HIurd5oXa
+	I8YiOwkICGHH3ijfJHOspj/VJLvjtz2DlSh+Bm5gAyC7rHHtSLhXp143kVLyZS0xblCbxy
+	GnHWOPVcYD+nAQ+wn2K1khX2vrkj+D8MMHwmxxkUTTFCFshXEbkYNMnhpxi7X2Lc7pqTfa
+	cNNZwJoEJqtLXnVLoXIKDuvzE+ZQybJEVzqdOfexBoUSMDrrWx0uFTJd3uDtXqx/sUU5je
+	uSScUY8lwpYIcZOGgvyNhh4fd3+xdXA3FGhygoOH6J5hzvElm5v03SYg1D1rww==
+Date: Tue, 4 Mar 2025 17:15:15 +0100
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski
+ <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Heiner Kallweit <hkallweit1@gmail.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Herve Codina
+ <herve.codina@bootlin.com>, Florian Fainelli <f.fainelli@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, Oleksij Rempel <o.rempel@pengutronix.de>, Simon
+ Horman <horms@kernel.org>, Romain Gantois <romain.gantois@bootlin.com>,
+ Piergiorgio Beruto <piergiorgio.beruto@gmail.com>
+Subject: Re: [PATCH net] net: ethtool: Set the req_info->dev on DUMP
+ requests for each dev
+Message-ID: <20250304171515.297d15df@fedora.home>
+In-Reply-To: <20250304170051.607097e9@kmaincent-XPS-13-7390>
+References: <20250302162137.698092-1-maxime.chevallier@bootlin.com>
+	<20250304170051.607097e9@kmaincent-XPS-13-7390>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <db1a4681-1882-4e0a-b96f-a793e8fffb56@suse.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddutddvhedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtqhertdertdejnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepuefhfefggfdthffghfdvhffhhfetuedtkeetgffhteevheehjeejgfduieduhedunecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddtpdhrtghpthhtohepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrt
+ ghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-On Tue, Mar 04, 2025 at 11:26:07AM +0100, Vlastimil Babka wrote:
-> +Cc NETWORKING [TLS] maintainers and netdev for input, thanks.
-> 
-> The full error is here:
-> https://lore.kernel.org/all/fcfa11c6-2738-4a2e-baa8-09fa8f79cbf3@suse.de/
-> 
-> On 3/4/25 11:20, Hannes Reinecke wrote:
-> > On 3/4/25 09:18, Vlastimil Babka wrote:
-> >> On 3/4/25 08:58, Hannes Reinecke wrote:
-> >>> On 3/3/25 23:02, Vlastimil Babka wrote:
-> >>>> Also make sure you have CONFIG_DEBUG_VM please.
-> >>>>
-> >>> Here you go:
-> >>>
-> >>> [  134.506802] page: refcount:0 mapcount:0 mapping:0000000000000000
-> >>> index:0x0 pfn:0x101ef8
-> >>> [  134.509253] head: order:3 mapcount:0 entire_mapcount:0
-> >>> nr_pages_mapped:0 pincount:0
-> >>> [  134.511594] flags:
-> >>> 0x17ffffc0000040(head|node=0|zone=2|lastcpupid=0x1fffff)
-> >>> [  134.513556] page_type: f5(slab)
-> >>> [  134.513563] raw: 0017ffffc0000040 ffff888100041b00 ffffea0004a90810
-> >>> ffff8881000402f0
-> >>> [  134.513568] raw: 0000000000000000 00000000000a000a 00000000f5000000
-> >>> 0000000000000000
-> >>> [  134.513572] head: 0017ffffc0000040 ffff888100041b00 ffffea0004a90810
-> >>> ffff8881000402f0
-> >>> [  134.513575] head: 0000000000000000 00000000000a000a 00000000f5000000
-> >>> 0000000000000000
-> >>> [  134.513579] head: 0017ffffc0000003 ffffea000407be01 ffffffffffffffff
-> >>> 0000000000000000
-> >>> [  134.513583] head: 0000000000000008 0000000000000000 00000000ffffffff
-> >>> 0000000000000000
-> >>> [  134.513585] page dumped because: VM_BUG_ON_FOLIO(((unsigned int)
-> >>> folio_ref_count(folio) + 127u <= 127u))
-> >>> [  134.513615] ------------[ cut here ]------------
-> >>> [  134.529822] kernel BUG at ./include/linux/mm.h:1455!
-> >> 
-> >> Yeah, just as I suspected, folio_get() says the refcount is 0.
+Hi K=C3=B6ry,
 
-... and it has a page_type of f5 (slab)
+On Tue, 4 Mar 2025 17:00:51 +0100
+Kory Maincent <kory.maincent@bootlin.com> wrote:
 
-> >>> [  134.554509] Call Trace:
-> >>> [  134.580282]  iov_iter_get_pages2+0x19/0x30
-> >> 
-> >> Presumably that's __iov_iter_get_pages_alloc() doing get_page() either in
-> >> the " if (iov_iter_is_bvec(i)) " branch or via iter_folioq_get_pages()?
+> On Sun,  2 Mar 2025 17:21:36 +0100
+> Maxime Chevallier <maxime.chevallier@bootlin.com> wrote:
+>=20
+> > There are a few netlink commands that rely on the req_info->dev field
+> > being populated by ethnl in their ->prepare_data() and ->fill_reply().
+> >=20
+> > For a regular GET request, this will be set by ethnl_default_parse(),
+> > which calls ethnl_parse_header_dev_get().
+> >=20
+> > In the case of a DUMP request, the ->prepare_data() and ->fill_reply()
+> > callbacks will be called with the req_info->dev being NULL, which can
+> > cause discrepancies in the behaviour between GET and DUMP results.
+> >=20
+> > The main impact is that ethnl_req_get_phydev() will not find any
+> > phy_device, impacting :
+> >  - plca
+> >  - pse-pd
+> >  - stats
+> >=20
+> > Some other commands rely on req_info->dev, namely :
+> >  - coalesce in ->fill_reply to look for an irq_moder
+> >=20
+> > Although cable_test and tunnels also rely on req_info->dev being set,
+> > that's not a problem for these commands as :
+> >  - cable_test doesn't support DUMP
+> >  - tunnels rolls its own ->dumpit (and sets dev in the req_info).
+> >  - phy also has its own ->dumpit
+> >=20
+> > All other commands use reply_data->dev (probably the correct way of
+> > doing things) and aren't facing this issue.
+> >=20
+> > Simply set the dev in the req_info context when iterating to dump each
+> > dev.
+> >=20
+> > Fixes: c15e065b46dc ("net: ethtool: Allow passing a phy index for some
+> > commands") Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.=
+com>
+> > ---
+> >=20
+> > Fixes tag targets the phy-index commit, as it introduced a change in
+> > behaviour for PLCA. From what I can tell, coalesce never correctly
+> > detected irq_moder in DUMP requests.
+> >=20
+> > We could also consider fixing all individual commands that use
+> > req_info->dev, however I'm not actually sure it's incorrect to do so,
+> > feel free to correct me though.
+> >=20
+> > Maxime
+> >=20
+> >  net/ethtool/netlink.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >=20
+> > diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
+> > index b4c45207fa32..de967961d8fe 100644
+> > --- a/net/ethtool/netlink.c
+> > +++ b/net/ethtool/netlink.c
+> > @@ -582,6 +582,7 @@ static int ethnl_default_dumpit(struct sk_buff *skb,
+> >  		dev_hold(dev);
+> >  		rcu_read_unlock();
+> > =20
+> > +		ctx->req_info->dev =3D dev; =20
+>=20
+> I would rather put it in ethnl_default_dump_one() before
+> ethnl_init_reply_data() call.
 
-It's the bvec path:
+Ah yes true, that'll be more consistent with the other callpaths.
 
-                iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, len);
+> With this change:
+> Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+> Tested-by: Kory Maincent <kory.maincent@bootlin.com>
 
-> >> Which doesn't work for a sub-size kmalloc() from a slab folio, which after
-> >> the frozen refcount conversion no longer supports get_page().
-> >> 
-> >> The question is if this is a mistake specific for this path that's easy to
-> >> fix or there are more paths that do this. At the very least the pinning of
-> >> page through a kmalloc() allocation from it is useless - the object itself
-> >> has to be kfree()'d and that would never happen through a put_page()
-> >> reaching zero.
-> >> 
-> > Looks like a specific mistake.
-> > tls_sw is the only user of sk_msg_zerocopy_from_iter()
-> > (which is calling into __iov_iter_get_pages_alloc()).
-> > 
-> > And, more to the point, tls_sw messes up iov pacing coming in from
-> > the upper layers.
-> > So even if the upper layers send individual iovs (where each iov might
-> > contain different allocation types), tls_sw is packing them together 
-> > into full records. So it might end up with iovs having _different_ 
-> > allocations.
-> > Which would explain why we only see it with TLS, but not with normal
-> > connections.
+Thank you for testing, I'll respin.
 
-I thought we'd done all the work needed to get rid of these pointless
-refcount bumps.  Turns out that's only on the block side (eg commit
-e4cc64657bec).  So what does networking need in order to understand
-that some iovecs do not need to mess with the refcount?
+Maxime
+
+>=20
+
