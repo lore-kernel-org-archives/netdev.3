@@ -1,121 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B90025FA14;
-	Tue,  4 Mar 2025 18:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315E723312E
+	for <netdev@vger.kernel.org>; Tue,  4 Mar 2025 18:44:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741113450; cv=none; b=SaesmcG+Q07S8ybZlqIQbC20maLvlKwZSI6CtkDuHkikVVmBlTAsE0k2vDX7y5oVp5nitXmIeqLo8YoFmbf32+rvx3GzU4Vm/9QB4msUtB5jjwk5ni7RPSi4x/9RRGxiNlnsUT8c24pqHCNaBY7IQFH6+TIqvm+n6J34Kb9F29k=
+	t=1741113901; cv=none; b=A+HLfEy/QIroePiYnQLMGlKeJm+/9tH4aw6Fdb4ziq2A/FhOYoyMDWmdbVYHCrglZAiFaYn4fRXOyaRTzaRJX+2JUcZ8w117f0ggpI787yf/ySdCJFwrZb1kojqXFg7mzN+yfb1EI0GExIVwvhOymtQF+aQlauusEgEL/fsjvnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741113450; c=relaxed/simple;
-	bh=vJ7q3UiEIm0cEXoZ+oIW1aIvNSJiLjWq2Fl9mkg2krA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=c8ZikqwB7RGY3uMVpKBWJt2T05hkfkOT0a7v4mQho/rNZQ0eG/UPBJavnVcv8OeXJwoq/KeurwRhkw7Xr1+gsydXXS9kNcqS8YED1HsGaqWe4R8mXvHA0hwKDVt4ugcGjiE8UypdFFAunrubXM/QsP//j0cTA3hMXzEbn/xbkVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EcVQphO3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741113901; c=relaxed/simple;
+	bh=K0vyVBX/z7m/nfeOw5UU6Bxl77dBF/zTNNadpikEYcw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oz/YPNvEKV7NF7vvcW2ca/85/3Rn/WRVJ+zaSrIKfyrdyGoXrdW05LWrcHafgnx0Mkx6Dk3BpKZmvSSCWD9U0/IMIh/bWRpFg2Z4U+j6xRjAM4zMMSoE+ZUpgplJU2ucgVxGoolsnLekoA7CrZxhIbFaaAkIiU+mLaWdusC4ktg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=RVXqlQ1X; arc=none smtp.client-ip=207.171.188.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EcVQphO3"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1123BC4CEEB;
-	Tue,  4 Mar 2025 18:37:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741113450;
-	bh=vJ7q3UiEIm0cEXoZ+oIW1aIvNSJiLjWq2Fl9mkg2krA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=EcVQphO3OOyuJET2B138Q3e6IQonTRk3y6q/FOQmZFn1i1jhYh+ndj8ViXNjCgEl7
-	 qv7GOI4buZu2rRW9Ru8j1M8/ec4GtPqtOEbIXZT6+FjyGZoTFbM24psf842Ve3j8HA
-	 VuB8QnshDMV6sDKZHChevs5Hhbu0doxPar5D8RPn074CdYuGcvm4ZGagkjY14HyC68
-	 qNI1H2lT2tnScBN7e3Vbu4Y2syB7ZTJ93TNx+Ls/WlwPrMfbAXAZDEfObJv49Njzao
-	 vQEMNSMqeoucNVCRlI7Y9ikhlipDR0UtYbPahQIuV3aiPJpeCx5WgJnaLUSmMRHvp5
-	 L0w5MmlIOxllw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0654DC282D9;
-	Tue,  4 Mar 2025 18:37:30 +0000 (UTC)
-From: Dimitri Fedrau via B4 Relay <devnull+dimitri.fedrau.liebherr.com@kernel.org>
-Date: Tue, 04 Mar 2025 19:37:27 +0100
-Subject: [PATCH net-next v2 2/2] net: phy: tja11xx: enable PHY in sleep
- mode for TJA1102S
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="RVXqlQ1X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1741113900; x=1772649900;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=o0DhpsMqRpOcwyYJ3EoKux1Tln8wF3CkGJUTydued30=;
+  b=RVXqlQ1XGoLRttmW8h5ZLsta9CEC1qsgMoomGPjIneBE+Xm/6grqiXsi
+   qFvqyqX7PQ5O0hqMVCUzMxAH1KHpD5A9F+pEwRhtOLsmtVfjJSMo9ue4q
+   W1FvAU8xC2Gy8vf/+nAVMFDgVpuwcvGE7POTaBUKLZeqxMnPdeI0tBeYD
+   0=;
+X-IronPort-AV: E=Sophos;i="6.14,220,1736812800"; 
+   d="scan'208";a="804199508"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 18:44:52 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:9736]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.35.48:2525] with esmtp (Farcaster)
+ id 3bbc151f-e2de-4ab7-ad72-253d82848251; Tue, 4 Mar 2025 18:44:51 +0000 (UTC)
+X-Farcaster-Flow-ID: 3bbc151f-e2de-4ab7-ad72-253d82848251
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 4 Mar 2025 18:44:51 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.142.149.19) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 4 Mar 2025 18:44:49 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <edumazet@google.com>
+CC: <davem@davemloft.net>, <dsahern@kernel.org>, <eric.dumazet@gmail.com>,
+	<horms@kernel.org>, <kuba@kernel.org>, <kuniyu@amazon.com>,
+	<netdev@vger.kernel.org>, <pabeni@redhat.com>,
+	<syzbot+3f18ef0f7df107a3f6a0@syzkaller.appspotmail.com>
+Subject: Re: [PATCH net-next] inet: fix lwtunnel_valid_encap_type() lock imbalance
+Date: Tue, 4 Mar 2025 10:44:05 -0800
+Message-ID: <20250304184408.9444-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250304125918.2763514-1-edumazet@google.com>
+References: <20250304125918.2763514-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250304-tja1102s-support-v2-2-cd3e61ab920f@liebherr.com>
-References: <20250304-tja1102s-support-v2-0-cd3e61ab920f@liebherr.com>
-In-Reply-To: <20250304-tja1102s-support-v2-0-cd3e61ab920f@liebherr.com>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Dimitri Fedrau <dimitri.fedrau@liebherr.com>, 
- Dimitri Fedrau <dima.fedrau@gmail.com>, Marek Vasut <marex@denx.de>, 
- Oleksij Rempel <o.rempel@pengutronix.de>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741113448; l=1700;
- i=dimitri.fedrau@liebherr.com; s=20241202; h=from:subject:message-id;
- bh=DWnLX8up0ewgoQK/chnywysY6pNuZir0wY9kYTPFSC8=;
- b=Pe8Mg7UQFFHMEDej+r44aZcmqA5f+skjcS/S5M6mcZnkLLmh1yvcNMQd66xMM9h+9lMwZ8B4i
- aJ7cBieHtiMDdKw9SYpsrW+6oxvhxJhXJnzKhwhYuD0GKZucyKs9eXU
-X-Developer-Key: i=dimitri.fedrau@liebherr.com; a=ed25519;
- pk=rT653x09JSQvotxIqQl4/XiI4AOiBZrdOGvxDUbb5m8=
-X-Endpoint-Received: by B4 Relay for dimitri.fedrau@liebherr.com/20241202
- with auth_id=290
-X-Original-From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Reply-To: dimitri.fedrau@liebherr.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D039UWB003.ant.amazon.com (10.13.138.93) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue,  4 Mar 2025 12:59:18 +0000
+> After blamed commit rtm_to_fib_config() now calls
+> lwtunnel_valid_encap_type{_attr}() without RTNL held,
+> triggering an unlock balance in __rtnl_unlock,
+> as reported by syzbot [1]
+> 
+> IPv6 and rtm_to_nh_config() are not yet converted.
+> 
+> Add a temporary @rtnl_is_held parameter to lwtunnel_valid_encap_type()
+> and lwtunnel_valid_encap_type_attr().
+> 
+> While we are at it replace the two rcu_dereference()
+> in lwtunnel_valid_encap_type() with more appropriate
+> rcu_access_pointer().
+> 
+> [1]
+> syz-executor245/5836 is trying to release lock (rtnl_mutex) at:
+>  [<ffffffff89d0e38c>] __rtnl_unlock+0x6c/0xf0 net/core/rtnetlink.c:142
+> but there are no more locks to release!
+> 
+> other info that might help us debug this:
+> no locks held by syz-executor245/5836.
+> 
+> stack backtrace:
+> CPU: 0 UID: 0 PID: 5836 Comm: syz-executor245 Not tainted 6.14.0-rc4-syzkaller-00873-g3424291dd242 #0
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+> Call Trace:
+>  <TASK>
+>   __dump_stack lib/dump_stack.c:94 [inline]
+>   dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+>   print_unlock_imbalance_bug+0x25b/0x2d0 kernel/locking/lockdep.c:5289
+>   __lock_release kernel/locking/lockdep.c:5518 [inline]
+>   lock_release+0x47e/0xa30 kernel/locking/lockdep.c:5872
+>   __mutex_unlock_slowpath+0xec/0x800 kernel/locking/mutex.c:891
+>   __rtnl_unlock+0x6c/0xf0 net/core/rtnetlink.c:142
+>   lwtunnel_valid_encap_type+0x38a/0x5f0 net/core/lwtunnel.c:169
+>   lwtunnel_valid_encap_type_attr+0x113/0x270 net/core/lwtunnel.c:209
+>   rtm_to_fib_config+0x949/0x14e0 net/ipv4/fib_frontend.c:808
+>   inet_rtm_newroute+0xf6/0x2a0 net/ipv4/fib_frontend.c:917
+>   rtnetlink_rcv_msg+0x791/0xcf0 net/core/rtnetlink.c:6919
+>   netlink_rcv_skb+0x206/0x480 net/netlink/af_netlink.c:2534
+>   netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
+>   netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1339
+>   netlink_sendmsg+0x8de/0xcb0 net/netlink/af_netlink.c:1883
+>   sock_sendmsg_nosec net/socket.c:709 [inline]
+> 
+> Fixes: 1dd2af7963e9 ("ipv4: fib: Convert RTM_NEWROUTE and RTM_DELROUTE to per-netns RTNL.")
+> Reported-by: syzbot+3f18ef0f7df107a3f6a0@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/67c6f87a.050a0220.38b91b.0147.GAE@google.com/T/#u
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-Due to pin strapping the PHY maybe disabled per default. TJA1102 devices
-can be enabled by setting the PHY_EN bit. Support is provided for TJA1102S
-devices but can be easily added for TJA1102 too.
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
----
- drivers/net/phy/nxp-tja11xx.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/net/phy/nxp-tja11xx.c b/drivers/net/phy/nxp-tja11xx.c
-index 9cf5e6d32fab88cae5cd556623a9ffa285227ab6..601094fe24ca8273a845512b111ccdd9d2785758 100644
---- a/drivers/net/phy/nxp-tja11xx.c
-+++ b/drivers/net/phy/nxp-tja11xx.c
-@@ -28,6 +28,7 @@
- #define MII_ECTRL_POWER_MODE_MASK	GENMASK(14, 11)
- #define MII_ECTRL_POWER_MODE_NO_CHANGE	(0x0 << 11)
- #define MII_ECTRL_POWER_MODE_NORMAL	(0x3 << 11)
-+#define MII_ECTRL_POWER_MODE_SLEEP	(0xa << 11)
- #define MII_ECTRL_POWER_MODE_STANDBY	(0xc << 11)
- #define MII_ECTRL_CABLE_TEST		BIT(5)
- #define MII_ECTRL_CONFIG_EN		BIT(2)
-@@ -79,6 +80,9 @@
- #define MII_COMMCFG			27
- #define MII_COMMCFG_AUTO_OP		BIT(15)
- 
-+#define MII_CFG3			28
-+#define MII_CFG3_PHY_EN			BIT(0)
-+
- /* Configure REF_CLK as input in RMII mode */
- #define TJA110X_RMII_MODE_REFCLK_IN       BIT(0)
- 
-@@ -180,6 +184,14 @@ static int tja11xx_wakeup(struct phy_device *phydev)
- 			return ret;
- 
- 		return tja11xx_enable_link_control(phydev);
-+	case MII_ECTRL_POWER_MODE_SLEEP:
-+		switch (phydev->phy_id & PHY_ID_MASK) {
-+		case PHY_ID_TJA1102S:
-+			/* Enable PHY, maybe it is disabled due to pin strapping */
-+			return phy_set_bits(phydev, MII_CFG3, MII_CFG3_PHY_EN);
-+		default:
-+			return 0;
-+		}
- 	default:
- 		break;
- 	}
-
--- 
-2.39.5
-
-
+I completely missed this, thank you!
+I'll post v6 and nexthop series after this is merged.
