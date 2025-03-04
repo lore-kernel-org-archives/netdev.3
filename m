@@ -1,108 +1,132 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BF4207657
-	for <netdev@vger.kernel.org>; Tue,  4 Mar 2025 14:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721C226E169;
+	Tue,  4 Mar 2025 14:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741098424; cv=none; b=YqLCcRVNpDS/00+c32tm3Hzqg6LgEbTYcATAPPIPcqf2g2++66dZ0B44GXh9ZVhMc5oZ98mMSxxhgCfN1u0XgM8Nnqfo1HT0XFex/UR9fwolx3Xbokn5ADXISnlYU9wEkk3nq25SJ6BtryJZdxyosGtw7NPEL9dDJyPkMiOjY/c=
+	t=1741098932; cv=none; b=XpD0Eahmcgp4BgJPPqL/Fba5xMe3lOdTs194SU4eaTHq8ZLOX4XWGqx4D/L7nqeBRsLZZpzKBBLpa6RfX4Mz5tcjecolr22rJWFEXIymgOkLMFCwh9R5vQBuSdTCHrTCbDKhcQXoBV6zeiWNGHOG5EPmHsHwCUk2+uMtFvl+44U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741098424; c=relaxed/simple;
-	bh=zdmxs6VsXw14yr85AedGsfgI317UadTw9G/y0Eo+IT8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mf8GvW19mkh6IReiq5lGuHXye36APhU0hE5KF/Z5gZPDM6AEKNR/NxR/MIqLRc3fcSzkcB01ixuIuDUmr/HSftjSqBnhYOfTrKIjm1Yp03mXXE2XNBffgvDoOAGG4QV4LBkT5XrCh5lKfBKltXxTo/n36AAoCOpXksVDqD0wJIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q0kwdmpM; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741098932; c=relaxed/simple;
+	bh=YMy5gkaueEQktqoKVHPtEIDeqrmLdBspWegegQlhlwA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EVJkfK9I6myaU27z/BpAvz7MLYFXiMVIZhosNsRT0P65VDbLpMKw9qzgH79JZM7UEmBTBuZj79st8UZiyjwqnLy23wuUkNUrRH9fRdxi+2gI3cFVqplBSeM35WTeIGU4ZnPOvVYTdrxP6WwrzbrfGXI/DV4pHA75ygrH2YJ/N98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=VuNzS7MB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=uhv181ey; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q0kwdmpM"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2fec13a4067so6725199a91.2
-        for <netdev@vger.kernel.org>; Tue, 04 Mar 2025 06:27:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741098422; x=1741703222; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jwXdOvbbbLdu50pXhFTdO8hht9jHfvqFnYYcdEDP0o8=;
-        b=Q0kwdmpMJgoigiiELntJFwxdP8KzIm8vUHzb8F4DakuQIOaVHw5GpJoIMar09adcUQ
-         73bSybgHl1QWhNoO096n68/1cHvca/SL2fc6djI+Ti5a+ykOnkVgvZq+3Y1jzspc0Z3P
-         sYRmMGJECDRy6JRjIuniRqnLIXeGEhcLXF+yZsirr6xjjjvjML1ZHDs+rp+x761/39Dn
-         M6vaKTSklE5R+nzUKuRAJ3NKf83Q9lQB0nxrCcCuCm+dlt1KLkzr1bQDjyNuhDLiJ24O
-         pJnqtkNqlzHBDdvpUYKyg5RnFbxgwTpV5aECZqXIPu05fhRpeNKsdvMDuvyFwNnMwLn3
-         4x3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741098422; x=1741703222;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jwXdOvbbbLdu50pXhFTdO8hht9jHfvqFnYYcdEDP0o8=;
-        b=Lm2wM2rKFLC2euXpkle035rPq+zslfmfG54nO8vLMWWKqiTIrZeqEx7qwxydYa+6F7
-         XxS15FXhdoZ+cqix+t+63nD/bZKVmjY+7dFvRcLQhdaGeFpDwNzr2+47HZecWdQJPDjt
-         lv5uMf1VDIWlkc+dALKwYl8an+httjM7AAEIkdu19SYhAJLv10bmZk5sF1zG3dLavOVb
-         2Qo5SrLlIkU/WUCv6QFK6asqZSJ5PWCSlVsYPm4+LRfz9iyQQQuGUCWnIDqFw7x1bqxj
-         JHzet0TJXSly8ZGcW2LHNx1FvOXhxZQ/Mgw6eAqEQSkbD6oBbmf2jHNclDs3yIg53tlp
-         MwxQ==
-X-Gm-Message-State: AOJu0Yx+js0AcA2Sv+FlMQ4UzJQmG8uKgpTZbtaZW4mmwWFr9jelxa19
-	t5JZG9KWstFXppzFa2Y3VrRafMtKDS7oRDUvyxIJ+EMD3+P8CShYTRAZohPGjyWpYJjK
-X-Gm-Gg: ASbGncu5sk1PIxVf6KDVevDb8DL8DZfKhhp3tWPL6DQPKZeVHXO0MVlolCUZJeZrV4l
-	kJRk7gmnwYPZBtyaFHE6sWvhSAqk3KwdkFjoiQxt9q9yVvzMCng4FnHsB8FCli3U3fBPj54C8py
-	vGzNFMay+wNehG7UvaHOOEB4EIx44ZYSy+YpEW16+1lwR39A12/SoK3quF7pw8nRwE8+697OrMJ
-	NU4xltvnmGi4MZ1/RSGdERGrAbmsU3UPOKxcT+wVtJQ+Gh1Tlu/q0biq9rK13hzH+285+HDUtRz
-	FIPwH650bFTG+muxdSNd7SPCuODJpFg5mqXf65pg/Sf3e/mmK/b2cdYY
-X-Google-Smtp-Source: AGHT+IGne9y3wK6UyaqZ5AZvT/y8Vy1CNjgF2Xhb+/NgwU1dEquorNFbSLqae1No5WdiiXxUh/9Q4Q==
-X-Received: by 2002:a17:90b:1ccb:b0:2fe:b470:dde4 with SMTP id 98e67ed59e1d1-2febab3c659mr32250918a91.12.1741098422016;
-        Tue, 04 Mar 2025 06:27:02 -0800 (PST)
-Received: from localhost.localdomain ([2a02:6ea0:c807:0:fa79:f8bc:7c1:855])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fea676b133sm11076532a91.13.2025.03.04.06.27.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Mar 2025 06:27:01 -0800 (PST)
-From: kwqcheii <juny24602@gmail.com>
-To: netdev@vger.kernel.org
-Cc: kwqcheii <juny24602@gmail.com>
-Subject: [PATCH] sched: address a potential NULL pointer dereference in the GRED scheduler.
-Date: Tue,  4 Mar 2025 22:18:59 +0800
-Message-ID: <20250304141858.3392957-2-juny24602@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250227160419.3065643-1-juny24602@gmail.com>
-References: <20250227160419.3065643-1-juny24602@gmail.com>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="VuNzS7MB";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="uhv181ey"
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 3253B11400BC;
+	Tue,  4 Mar 2025 09:35:28 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 04 Mar 2025 09:35:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1741098928; x=
+	1741185328; bh=wRZRNLutIoBb8oF0ngDTZPa0vNaZ5AVJbj6GM4zyYs0=; b=V
+	uNzS7MBwuIfKhW8lgt3WmAlh/dEDeB9BAEpXZA0kq/kFyXTEQ6e3Eb0OYf4sbv6j
+	1XQ5JUrSGlkB28TpkUxvizOi1rwa3CSZeoxTPiGLtltlmk6DbpaVaCsH761tWRvy
+	64PByEuc4xFsKng3HBimzgv0xeTIGQ1RyqsJslnlRwCihmW6uzw22sMPgbD5BUdI
+	EwMvaf/uMGhP0Yfu6VMZcLGezNlE0r8W3yBweAJmDVr0FT5m/DJ/fVTqGnMMuh+J
+	P/6/I5QQCVJWUhwPOAiYhdggrTgYu3aowRT/n1vtWTLTyp4fuDe2Z0A+ybjSDR7w
+	oGPnBTKUz7rZexUCPWMqw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1741098928; x=1741185328; bh=wRZRNLutIoBb8oF0ngDTZPa0vNaZ5AVJbj6
+	GM4zyYs0=; b=uhv181eyF6LArvZTYb+QgVT4sGvPPkZCDqtMihzV3VZ1ZXhhGyV
+	p4YSj6jJ9XamrqG+UFCxH0oaL9qc2gw7vHZElq9Yue6TRERldW6pLnVGuDGpHb0i
+	fKYs8We9FotWJdvw/CoWosjlT3I/gieIGVQ4/Eq8O8TIDmiTuSyiTNR02n/jcD0s
+	VRb/EE36pJwO8LzBgTiQgXcA501/7tDDa1/PRoKRyhD+dfoAZfWVIOK6nQTrwWiW
+	1FINh9L1G6i9vox5bpO0vPzNBVsdLZ+XuirVPvn0Ekr7nfsQ6qnFgdn1BgUFYhDz
+	3KhrX2MiQSHKfpSTbPO4oVgdEjp3LCF0uaA==
+X-ME-Sender: <xms:rw_HZ0yOSUDvbujyVfQwEGipbyNwKEa-3YlwR4nAaZKQf6SNKDAcPQ>
+    <xme:rw_HZ4T6L9OyXdwzg29l8jZayeMWhr_wqyhMtNVWZ9S7mJojGka83Mtzb3sQPl687
+    dIYXMZNzOm2AdghMiw>
+X-ME-Received: <xmr:rw_HZ2WakGeJ-7hOIfr5eiL_vUYvmz1lK-d1_9Qld-U7PU1Wm8vz4ryZw9Ol>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddutddvfedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    jeenucfhrhhomhepufgrsghrihhnrgcuffhusghrohgtrgcuoehsugesqhhuvggrshihsh
+    hnrghilhdrnhgvtheqnecuggftrfgrthhtvghrnhepuefhhfffgfffhfefueeiudegtdef
+    hfekgeetheegheeifffguedvuefffefgudffnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhn
+    sggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghnth
+    honhhiohesohhpvghnvhhpnhdrnhgvthdprhgtphhtthhopehnvghtuggvvhesvhhgvghr
+    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrd
+    gtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehp
+    rggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepughonhgrlhgurdhhuhhnth
+    gvrhesghhmrghilhdrtghomhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehrhigriigrnhhovhdrshdrrgesghhmrghilhdrtghomhdprhgtph
+    htthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghh
+X-ME-Proxy: <xmx:rw_HZyjnRzMpCPET0Wf_HyOZ7PAV7OQyX2bABphrYL7SiS0-uaAn1A>
+    <xmx:rw_HZ2Agb3RXYN6qnR7-G0xL2-kTG2msyZxIup5-PvdhJZVpypoozA>
+    <xmx:rw_HZzKlzQPdAt8Rbp9jcErn-vs5qMD8RAIubDGwCCZwCXaCW-jOFw>
+    <xmx:rw_HZ9DTr3nx2qlyFXlQdZ0m9Br1gKwapkEoKGpg2bjO-snTP11DgQ>
+    <xmx:sA_HZywrZwyOiY_19rSz2RZ2nE-bBI55aqdOZKkchKu2upcW8fp1Z7t0>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 4 Mar 2025 09:35:27 -0500 (EST)
+Date: Tue, 4 Mar 2025 15:35:25 +0100
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Antonio Quartulli <antonio@openvpn.net>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Shuah Khan <shuah@kernel.org>, ryazanov.s.a@gmail.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Xiao Liang <shaw.leon@gmail.com>
+Subject: Re: [PATCH v21 19/24] ovpn: implement peer add/get/dump/delete via
+ netlink
+Message-ID: <Z8cPrYs0TuQfLlKX@hog>
+References: <20250304-b4-ovpn-tmp-v21-0-d3cbb74bb581@openvpn.net>
+ <20250304-b4-ovpn-tmp-v21-19-d3cbb74bb581@openvpn.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250304-b4-ovpn-tmp-v21-19-d3cbb74bb581@openvpn.net>
 
-If kzalloc in gred_init returns a NULL pointer, the code follows the error handling path,
-invoking gred_destroy. This, in turn, calls gred_offload, where memset could receive
-a NULL pointer as input, potentially leading to a kernel crash.
+2025-03-04, 01:33:49 +0100, Antonio Quartulli wrote:
+> @@ -1317,11 +1336,16 @@ void ovpn_peer_keepalive_work(struct work_struct *work)
+>  
+>  	/* prevent rearming if the interface is being destroyed */
+>  	if (next_run > 0 && ovpn->registered) {
+> +		time64_t delta = next_run - now;
+> +
+>  		netdev_dbg(ovpn->dev,
+>  			   "scheduling keepalive work: now=%llu next_run=%llu delta=%llu\n",
+> -			   next_run, now, next_run - now);
+> +			   next_run, now, delta > 0 ? delta : 0);
+> +		/* due to the waiting above, the next_run deadline may have
+> +		 * passed: in this case we reschedule the worker immediately
+> +		 */
 
-Signed-off-by: kwqcheii <juny24602@gmail.com>
----
- net/sched/sch_gred.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+I don't understand this bit. I don't see what waiting you're refering
+to (in particular within this patch), and I don't see how we could get
+next_run < now based on how next_run is computed in
+ovpn_peer_keepalive_work_single (next_run1/next_run2 is always set to
+now + X or something that we just tested to be > now).
 
-diff --git a/net/sched/sch_gred.c b/net/sched/sch_gred.c
-index ab6234b4fcd5..fa643e5709bd 100644
---- a/net/sched/sch_gred.c
-+++ b/net/sched/sch_gred.c
-@@ -317,10 +317,12 @@ static void gred_offload(struct Qdisc *sch, enum tc_gred_command command)
- 	if (!tc_can_offload(dev) || !dev->netdev_ops->ndo_setup_tc)
- 		return;
- 
--	memset(opt, 0, sizeof(*opt));
--	opt->command = command;
--	opt->handle = sch->handle;
--	opt->parent = sch->parent;
-+	if (opt) {
-+		memset(opt, 0, sizeof(*opt));
-+		opt->command = command;
-+		opt->handle = sch->handle;
-+		opt->parent = sch->parent;
-+	}
- 
- 	if (command == TC_GRED_REPLACE) {
- 		unsigned int i;
+Am I missing something?
+
+>  		schedule_delayed_work(&ovpn->keepalive_work,
+> -				      (next_run - now) * HZ);
+> +				      delta * HZ > 0 ? delta * HZ : 0);
+>  	}
+>  	unlock_ovpn(ovpn, &release_list);
+>  }
+
 -- 
-2.48.1
-
+Sabrina
