@@ -1,83 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5913D561
-	for <netdev@vger.kernel.org>; Tue,  4 Mar 2025 11:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961861FFC68;
+	Tue,  4 Mar 2025 11:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741088997; cv=none; b=gAeqqbQgHDeQaz11iMXHK1qWUHHdzuxmJe9CWwRitnvi2uqhDl7mXFjBN8BcRJ2YZolcPwKSbibkVy6uxJvOD6ctSRGyVw1VNL5V4uCSAVErbUJx/IJobXMW0q2gF/+30pOSULkL7aKMgbIdxKhrPsTP98+YwVFo3nLTQ3IsI18=
+	t=1741089028; cv=none; b=sE6260TrivJEn3cxD6ZTbssXYXYV/W1qxINZhb9ZxwfPhsdEEUqIb2KWQ4YrW+qRQ2OUXjGl7tw0Hoc74swhQivjrwG8kZGXXWJghY0y6eQvHwUxI7mwZGoomzplCiVRHPK7rgmN0FjTha+bnUbsnE+VGcO554A4OTrkTqm4Ydc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741088997; c=relaxed/simple;
-	bh=FEy8wb0Vfp2rft+m+EKevy1bDol8G0fpS42NKf4iXx4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=FeokgxZMZoBmyY1FnfrowCmcjme+UBzBXcJ00ciqdgUrKBg6pzzO5MRMww/gSFI4JwjAlC/Nw7/yYM3bClV0P3NH5UeIVF9mP+mcIrVK45cA+xVTzUbFf5Wpjq2qi7TK3AZHtRLyypfTPllC2nguuh7/s4roX13amaCv9Awi/Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bnipqefL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741089028; c=relaxed/simple;
+	bh=kmomjaiI3c2VGNM7oWwROpYWTIS/k9TkBJGFHrTSAeQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kKMm/amFbSqF4JTL+HNXr8GZCkWiEttbad0MWtnDzo+G/zDV171raQ570tDedKJlDrxMgrR6nhU3gMg2XajipXA7GJk4a3LV20JY35/ASS1DmR2ekOKLFyN31M8Sl/ROQBsMoehRNaJA4VRYt95cCnJ1ketMLVnX6+i/iNLqvwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D20TNwTK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bnipqefL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00F0C4CEE5;
-	Tue,  4 Mar 2025 11:49:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D20TNwTK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2918C4CEE5;
+	Tue,  4 Mar 2025 11:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741088996;
-	bh=FEy8wb0Vfp2rft+m+EKevy1bDol8G0fpS42NKf4iXx4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=bnipqefLWEfuG3fe5vzqev8V1BvnpArMo9SM2pSvCR1G8d8ueXMQMKz8eEttKpQch
-	 oYJf4MStOSN+/UqiTGsvxx6oYDQanfdtc8IDYh9+pFwFsh32tv0z1LArYVWl3Ge18L
-	 Qzh+LmNVH9MC+H3Ag8sHnPBp1V1Vh06C8IvrIHopRLAzceeqGlfSLWlq6Bi/aKDd6f
-	 HAZni0waic34p334gG4orgpZu1dF7f6Cj6gg/HKrh/SY6VOv9Bk3sebvOvoI1Sa0gS
-	 cbiVIeKn9KwZe65/La2qj6OqilJdgN9jYdJxu+OatAwNPlbqRCTrKwB0kz4STon+Er
-	 vWcbSlDSxJ6ug==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAD5A380AA7F;
-	Tue,  4 Mar 2025 11:50:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1741089028;
+	bh=kmomjaiI3c2VGNM7oWwROpYWTIS/k9TkBJGFHrTSAeQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D20TNwTK7KVFhQq1NmArBDPe4rQlX8/WvrpJFFgqMR0rG1pyCZibVccsp83IIzacO
+	 RstbbvOSgYHkKA68NOPU8/tqoSuceilz9wLwtZuYWNnMFrgDg5LdHkUka8M7hkyhZQ
+	 NNHND9WXIvgl6C5ouNJEwgQ2+zMulJHbIHDWLGBuWXhvWTFtV3oMuDqNao0YVT+Mue
+	 xE6Q5y/Gy1j1U9uCHuq6cusMFA3bzv+0P5F9XY2WtcRJo/Fh9FiLxEOoDi/7B+BbSc
+	 lAD0eFmwI7JFA4zgCG0LDVf1+FRPWJjBSA5GtdCmAlpyFCNmYKJY47kPLfn9zsgLxe
+	 PTtZ0XI2l4bLA==
+Date: Tue, 4 Mar 2025 11:50:23 +0000
+From: Simon Horman <horms@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH net-next v2 2/8] netconsole: Make boolean comparison
+ consistent
+Message-ID: <20250304115023.GB3666230@kernel.org>
+References: <20250228-netcons_current-v2-0-f53ff79a0db2@debian.org>
+ <20250228-netcons_current-v2-2-f53ff79a0db2@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v6 0/3] net: notify users when an iface cannot change
- its netns
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174108902974.110360.3257129140639138427.git-patchwork-notify@kernel.org>
-Date: Tue, 04 Mar 2025 11:50:29 +0000
-References: <20250228102144.154802-1-nicolas.dichtel@6wind.com>
-In-Reply-To: <20250228102144.154802-1-nicolas.dichtel@6wind.com>
-To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, aleksander.lobakin@intel.com, idosch@idosch.org,
- andrew@lunn.ch, kuniyu@amazon.com, netdev@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250228-netcons_current-v2-2-f53ff79a0db2@debian.org>
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri, 28 Feb 2025 11:20:55 +0100 you wrote:
-> This series adds a way to see if an interface cannot be moved to another netns.
+On Fri, Feb 28, 2025 at 04:50:18AM -0800, Breno Leitao wrote:
+> Convert the current state assignment to use explicit boolean conversion,
+> making the code more robust and easier to read. This change adds a
+> double-negation operator to ensure consistent boolean conversion as
+> suggested by Paolo[1].
 > 
-> v5 -> v6:
->  - reword a nl ack comment in patch #1 (add "in the target netns")
->  - add { } in the netdev_for_each_altname() loop in patch #1
+> This approach aligns with the existing pattern used in
+> sysdata_cpu_nr_enabled_show().
 > 
-> v4 -> v5:
->  - rebase on top of net-next
-> 
-> [...]
+> Link: https://lore.kernel.org/all/7309e760-63b0-4b58-ad33-2fb8db361141@redhat.com/ [1]
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-Here is the summary with links:
-  - [net-next,v6,1/3] net: rename netns_local to netns_immutable
-    https://git.kernel.org/netdev/net-next/c/0c493da86374
-  - [net-next,v6,2/3] net: advertise netns_immutable property via netlink
-    https://git.kernel.org/netdev/net-next/c/4754affe0b57
-  - [net-next,v6,3/3] net: plumb extack in __dev_change_net_namespace()
-    https://git.kernel.org/netdev/net-next/c/12b6f7069ba5
+Thanks Breno,
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+FWIIW, I 100% agree with this change.
 
-
+Reviewed-by: Simon Horman <horms@kernel.org>
