@@ -1,117 +1,134 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF17207DE6;
-	Tue,  4 Mar 2025 17:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3029B285402;
+	Tue,  4 Mar 2025 18:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741111179; cv=none; b=QroyOMlQlEiD3nTzgrcP3wuCZMrDw+8vE9qYRfZWHPWQUfQw8MMJy4zAs1xHi4LUGqE/ZXV+FEW/2QcEVFaZLXhxmfUGlpz4CIw1FIubkz1595srISCPg2dWMBCrpkLGHOUSml0UEILqBg/fVaUDAilXWvQan0WKntwPOkXiidQ=
+	t=1741111578; cv=none; b=TkBwejujiAr6Tz+a04Vc1ve8ISFAhQG92fxaeCVyiEiR+v3AseGpQ3gx6VArrpJBpMvLancROCeMiCP/4lC1OaqJvE98oCzjPR9N5JA/n3G+pgWlTy/1f7dI/748fsE1C/xJbMEWO18xjEx+ijg7/b84BOF9A7FJZf/pPvlVeNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741111179; c=relaxed/simple;
-	bh=YVZdnIYU5dWmx6KvKoMzGZLeD/aY3dyAs8KrL9Pjvxs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YxuEgp/AmI0anlBX1R3/e5jUEmtvfoFWX7bbqY0OIorLEJa2C5c/Ho7hj30cgb38hjICD5XMxP9l6FdNqGL51m52FXO5nB/6/vhEkCSf9CmQrC6fFATYdQVvGjmbdorcJ1YMACkXpm1RIBzXhgtaweZQ+5ztQ3FBPTFIJYm4biU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c8KYe4Jp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741111578; c=relaxed/simple;
+	bh=/mHrneXC+FDFR+ulcKLKzYeJxuL6kACz3C5Ak/ky3F0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Snrf9Ssx56Lv+OegfTvzxVrcjmUgg3ahwppFzAErlkUl/TMRabUdHIDJVHip82vDxL9cysQuMSTHlX7OET14bl66Anmq9J75EBAf7rGMxdHTX7uGKDTc7C/oFlYLo5ksv2HiAuFdYcCN8kbcPbqQ4nFnHEiQBskCipG7+xX7NDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rgV18Yza; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c8KYe4Jp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C6CC4CEE5;
-	Tue,  4 Mar 2025 17:59:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rgV18Yza"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BEF1C4CEE7;
+	Tue,  4 Mar 2025 18:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741111178;
-	bh=YVZdnIYU5dWmx6KvKoMzGZLeD/aY3dyAs8KrL9Pjvxs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c8KYe4Jp6/Sx/x93RVneDKiT6giUhpqeUWQgkD8WFbqlLUzv1XqnMaZiVVmmwoU56
-	 pA8rTblZCA/GJXZIZuQ3isx7eYAcyx19c4QKfUEVLdvCkgJCKvm45VsSHhNUexFOeU
-	 iGMqChatgjFhlkSj1SGzU319VYsGUxLdu+Dz8srAIhmDJcsSY2yZJ5T0QH10+loH3N
-	 WBQuOkrTCINa9nJI1H9P+/eXuc3Bv9Cz5VNk3UMZHtHv3UaV/BQxr/yMYiwjcFNINq
-	 O8J+W1MxvESlz3Y44Cm9zgoFWUH3086IZxU0N58cx5WN9v0VXLaL+vXF/WW0l7chxu
-	 IP/PNUHcFlKyA==
-Date: Tue, 4 Mar 2025 09:59:37 -0800
-From: Saeed Mahameed <saeed@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Aron Silverton <aron.silverton@oracle.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Dave Jiang <dave.jiang@intel.com>, David Ahern <dsahern@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Itay Avraham <itayavr@nvidia.com>, Jiri Pirko <jiri@nvidia.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Leonid Bloch <lbloch@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-cxl@vger.kernel.org,
-	linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	"Nelson, Shannon" <shannon.nelson@amd.com>
-Subject: Re: [PATCH v5 0/8] Introduce fwctl subystem
-Message-ID: <Z8c_iRE-XWuv5mrD@x130>
-References: <0-v5-642aa0c94070+4447f-fwctl_jgg@nvidia.com>
- <20250303175358.4e9e0f78@kernel.org>
- <20250304140036.GK133783@nvidia.com>
+	s=k20201202; t=1741111577;
+	bh=/mHrneXC+FDFR+ulcKLKzYeJxuL6kACz3C5Ak/ky3F0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rgV18Yzagv9cverj+FZNtx0115Jef9e5DyRMVPT0V3pN3e2KVaQUCtEsoAs+bLdFa
+	 wUzBBow+vrMYDxc9ReyxGohY7QY9s7hJc3W9Lae0cbsG5AtiQS/2/f8xd8SVAoqr1v
+	 37YJqjKCD46nns86s330YOVZf9V2GGOk0FOY72JPfVi6VvoCzcYrFe/K+y6zzUV4Lg
+	 qqw7jSd33lSRyims26GfPgX7RjZzaGR41Oy4mVapn+BEe8EkIZGcBkRyRZjJVqju6r
+	 QLKq8K/2/C0rtMZ0ul0OFHjTqGATWujILMljQd3iiyJbebQcFdt/7sRUIOpgpBqcPJ
+	 mXREknW0ADuIA==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	shuah@kernel.org,
+	pshelar@ovn.org,
+	aconole@redhat.com,
+	amorenoz@redhat.com,
+	linux-kselftest@vger.kernel.org,
+	dev@openvswitch.org
+Subject: [PATCH net-next] selftests: openvswitch: don't hardcode the drop reason subsys
+Date: Tue,  4 Mar 2025 10:06:15 -0800
+Message-ID: <20250304180615.945945-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250304140036.GK133783@nvidia.com>
+Content-Transfer-Encoding: 8bit
 
-On 04 Mar 10:00, Jason Gunthorpe wrote:
->On Mon, Mar 03, 2025 at 05:53:58PM -0800, Jakub Kicinski wrote:
->> On Thu, 27 Feb 2025 20:26:28 -0400 Jason Gunthorpe wrote:
->> > v5:
->> >  - Move hunks between patches to make more sense
->> >  - Rename ucmd_buffer to fwctl_ucmd_buffer
->> >  - Update comments and commit messages
->> >  - Copyright to 2025
->> >  - Drop bxnt WIP patches
->> >  - Allow a NULL ops->info
->> >  - Decode more op codes for mlx5 and the sub-operation for
->> >    MLX5_CMD_OP_ACCESS_REG/_USER
->>
->> Did you address my feedback? I asked for the mlx5 support to only be
->> enabled in RDMA is in use. Saeed who wrote the mlx5 parts of this
->> patchset clearly admitted on v4:
+WiFi removed one of their subsys entries from drop reasons, in
+commit 286e69677065 ("wifi: mac80211: Drop cooked monitor support")
+SKB_DROP_REASON_SUBSYS_OPENVSWITCH is now 2 not 3.
+The drop reasons are not uAPI, read the correct value
+from debug info.
 
-When I said fwctl is not needed for netdev, I meant that it will not be used
-for netdev object configuration and as I said before FW will block that
-anyways. fwctl in mlx5 is not only for RDMA, So I don't know how to address
-your comment. 
+We need to enable vmlinux BTF, otherwise pahole needs
+a few GB of memory to decode the enum name.
 
-Not to mention that fwctl is a very great tool to debug netdev problems.
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+CC: shuah@kernel.org
+CC: pshelar@ovn.org
+CC: aconole@redhat.com
+CC: amorenoz@redhat.com
+CC: linux-kselftest@vger.kernel.org
+CC: dev@openvswitch.org
+---
+ tools/testing/selftests/net/config                    |  2 ++
+ .../testing/selftests/net/openvswitch/openvswitch.sh  | 11 ++++++++---
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
->
->I never agreed to that formulation. I suggested that perhaps runtime
->configurations where netdev is the only driver using the HW could be
->disabled (ie a netdev exclusion, not a rdma inclusion).
->
->However, there is not agreement on this from Saeed who is responsible
->for mlx5:
->
-> https://lore.kernel.org/all/Z7z0ADkimCkhr7Xz@x130/
->
->I also surveyed other stakeholders on a netdev-exclusion proposal and
->did not hear support. You need to convince people this is a good idea.
->
->However, I would agree fwctl should not accept any fwctl drivers for
->simple networking devices. However, "smart nics" and RDMA capable
->devices are in-scope.
->
+diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+index 5b9baf708950..3365bcc35304 100644
+--- a/tools/testing/selftests/net/config
++++ b/tools/testing/selftests/net/config
+@@ -18,6 +18,8 @@ CONFIG_DUMMY=y
+ CONFIG_BRIDGE_VLAN_FILTERING=y
+ CONFIG_BRIDGE=y
+ CONFIG_CRYPTO_CHACHA20POLY1305=m
++CONFIG_DEBUG_INFO_BTF=y
++CONFIG_DEBUG_INFO_BTF_MODULES=n
+ CONFIG_VLAN_8021Q=y
+ CONFIG_GENEVE=m
+ CONFIG_IFB=y
+diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+index 960e1ab4dd04..3c8d3455d8e7 100755
+--- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
++++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+@@ -330,6 +330,11 @@ test_psample() {
+ # - drop packets and verify the right drop reason is reported
+ test_drop_reason() {
+ 	which perf >/dev/null 2>&1 || return $ksft_skip
++	which pahole >/dev/null 2>&1 || return $ksft_skip
++
++	ovs_drop_subsys=$(pahole -C skb_drop_reason_subsys |
++			      awk '/OPENVSWITCH/ { print $3; }' |
++			      tr -d ,)
+ 
+ 	sbx_add "test_drop_reason" || return $?
+ 
+@@ -373,7 +378,7 @@ test_drop_reason() {
+ 		"in_port(2),eth(),eth_type(0x0800),ipv4(src=172.31.110.20,proto=1),icmp()" 'drop'
+ 
+ 	ovs_drop_record_and_run "test_drop_reason" ip netns exec client ping -c 2 172.31.110.20
+-	ovs_drop_reason_count 0x30001 # OVS_DROP_FLOW_ACTION
++	ovs_drop_reason_count 0x${ovs_drop_subsys}0001 # OVS_DROP_FLOW_ACTION
+ 	if [[ "$?" -ne "2" ]]; then
+ 		info "Did not detect expected drops: $?"
+ 		return 1
+@@ -390,7 +395,7 @@ test_drop_reason() {
+ 
+ 	ovs_drop_record_and_run \
+             "test_drop_reason" ip netns exec client nc -i 1 -zuv 172.31.110.20 6000
+-	ovs_drop_reason_count 0x30004 # OVS_DROP_EXPLICIT_ACTION_ERROR
++	ovs_drop_reason_count 0x${ovs_drop_subsys}0004 # OVS_DROP_EXPLICIT_ACTION_ERROR
+ 	if [[ "$?" -ne "1" ]]; then
+ 		info "Did not detect expected explicit error drops: $?"
+ 		return 1
+@@ -398,7 +403,7 @@ test_drop_reason() {
+ 
+ 	ovs_drop_record_and_run \
+             "test_drop_reason" ip netns exec client nc -i 1 -zuv 172.31.110.20 7000
+-	ovs_drop_reason_count 0x30003 # OVS_DROP_EXPLICIT_ACTION
++	ovs_drop_reason_count 0x${ovs_drop_subsys}0003 # OVS_DROP_EXPLICIT_ACTION
+ 	if [[ "$?" -ne "1" ]]; then
+ 		info "Did not detect expected explicit drops: $?"
+ 		return 1
+-- 
+2.48.1
 
->I could also probably agree to using kconfig to disable fwctl drivers
->on kernels that statically compile out rdma, vdpa, nvme and related,
->though I agree with Saeed that it seems to lack technical merit.
->
->> Greg, I've been asking for this interface to be scoped to when RDMA
->> (/CXL/storage) is in enabled on these NICs since pretty much the first
->> RFC.
->
->You only started asking for this more limited approach in v4. All your
->previous arguments were that fwctl should be entirely killed for any
->networking HW.
->
->Jason
->
