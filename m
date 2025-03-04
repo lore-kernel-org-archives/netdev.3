@@ -1,119 +1,123 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8339E1FF611
-	for <netdev@vger.kernel.org>; Tue,  4 Mar 2025 11:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745461F150D;
+	Tue,  4 Mar 2025 11:58:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741089144; cv=none; b=ktu/wJigvTB96qlEGCUCH7sGTzsHO9zeRSC7sU1mUyYthPkngy+oilnPSMFHM6sfGuu45ca84iqKUtMu3Juc/ILpJ8AKW9lNy6wV8Ib+e2Ab61bx20PNkLUZZ3ClFEVh+7W4JTAXlRXm1Vg1oyZdawX+FkoenZxLj5+YdYJMmbY=
+	t=1741089524; cv=none; b=pu/XRv1QvMcEgIe+wa5cBmsMx7DKZwmwRDybVA+gQgA6OJRpEb8BKe3++4hToTo+zc+GRS5UKb3MvFN/vNxJLd1MB67zvUWU5eAaGWSkp8WXCl8ppd5WCgqaA8zGIW0a7iF5cUaG7IsFpDoAW2hHutCaHqtRnqUfZp5p+RPEOeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741089144; c=relaxed/simple;
-	bh=dvDG7NRGyP+YznlZz5HDNV5xXXkrTLabFuBacVNczI8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lbGy1s/Z7VzflZbNJktYSDo3En8HJx4/VWhB659TNHQWHs01/WXdVsZ7IyPFdItO8NfDg4LYJfpFWaje6AsFehHsBBBSZ192IWOWouis4pEBFCB57s1wIBPca+biUH/1wP3TU+v6mxbwQjNgsBILBT3FDzqHdATdP91abZIcCiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.220.45] (g45.guest.molgen.mpg.de [141.14.220.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 09D8061E64795;
-	Tue, 04 Mar 2025 12:51:52 +0100 (CET)
-Message-ID: <832cc2a5-0c15-42d1-924b-a14674db6391@molgen.mpg.de>
-Date: Tue, 4 Mar 2025 12:51:51 +0100
+	s=arc-20240116; t=1741089524; c=relaxed/simple;
+	bh=zJsKIqxmW/ciJ/CGeURsPQPLty/XONLIcsf/+xtesFI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BPlCsvjUJrpoU4hLQkVLj3uB74ItFyqUF5LrLPIOlrf/73aOvHOsp/juZE6LUTC6QH8vrLI2BZ3ybOgDTrPtvedIdWi2zX5dmcgOJX2FsJK5lqIIhDpvf/RZ7hckkmSVhfI4e5rir+n5f838f8UmvQamn9qbyIF78lhr5/KgeCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jrhw20Qy; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jrhw20Qy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741089522; x=1772625522;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zJsKIqxmW/ciJ/CGeURsPQPLty/XONLIcsf/+xtesFI=;
+  b=Jrhw20Qy4jy418BWFX8mP0aq1zoIX8nWn0ukKhs1lOtWfEiZlcE7NMKI
+   z6wKyj0zQpo0L1ozffD0aR9569KksYgUiI3mQSgxXrkbcDqFdouK2ibYk
+   3gxS7s/CmYeJ0Thlmx4t8kG1usunLc9gZTpMAVWT0/GYGyHzu2NiPVkYJ
+   X+IWf4tMhf6i5d3g3jtDkOKbkXYbw3rd/ckIA4rDpd5hEIeJtvTuqz07P
+   wj2+UkuiRX1Q9+gpPLguDHK6mMKSzsJJeIBjqa5r2KSwbRRcWRPbDYPpy
+   cNd9RL3eW58fxHyMaYOFfWiyn0lA0cWGiC5Aeehbu1SHKS8RrZTjnde2p
+   g==;
+X-CSE-ConnectionGUID: VZZiqB0KR4S+u4MVTh25jQ==
+X-CSE-MsgGUID: SV2uDMq7Q96PHy5w+WBMHQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="67371840"
+X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
+   d="scan'208";a="67371840"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 03:58:39 -0800
+X-CSE-ConnectionGUID: 42inDFCaQcmVRHWLz/Mh0w==
+X-CSE-MsgGUID: W8on7+kbS2mKhC1BWiOwHA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="149285886"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 03:58:36 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tpQuv-0000000H7B4-2FWl;
+	Tue, 04 Mar 2025 13:58:33 +0200
+Date: Tue, 4 Mar 2025 13:58:33 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Paolo Abeni <pabeni@redhat.com>, Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Rasesh Mody <rmody@marvell.com>,
+	GR-Linux-NIC-Dev@marvell.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>
+Subject: Re: [PATCH net v1 1/1] bnx2: Fix unused data compilation warning
+Message-ID: <Z8bq6XJGJNbycmJ9@smile.fi.intel.com>
+References: <20250228100538.32029-1-andriy.shevchenko@linux.intel.com>
+ <20250303172114.6004ef32@kernel.org>
+ <Z8bcaR9MS7dk8Q0p@smile.fi.intel.com>
+ <5ec0a2cc-e5f6-42dd-992c-79b1a0c1b9f5@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [iwl-net v3 1/5] virtchnl: make proto and
- filter action count unsigned
-To: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
- Jan Glaza <jan.glaza@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
- Simon Horman <horms@kernel.org>,
- Alexander Lobakin <aleksander.lobakin@intel.com>
-References: <20250304110833.95997-2-martyna.szapar-mudlaw@linux.intel.com>
- <20250304110833.95997-4-martyna.szapar-mudlaw@linux.intel.com>
- <9f6b830f-d2ee-4fde-a131-a956a6e84df7@molgen.mpg.de>
- <00a160e5-c9b2-4b91-9823-dee37fdc5d25@linux.intel.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <00a160e5-c9b2-4b91-9823-dee37fdc5d25@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5ec0a2cc-e5f6-42dd-992c-79b1a0c1b9f5@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Dear Martyna,
++ Marek/Christoph (for the clarification/commenting on the below)
 
+On Tue, Mar 04, 2025 at 12:39:40PM +0100, Paolo Abeni wrote:
+> On 3/4/25 11:56 AM, Andy Shevchenko wrote:
+> > On Mon, Mar 03, 2025 at 05:21:14PM -0800, Jakub Kicinski wrote:
+> >> On Fri, 28 Feb 2025 12:05:37 +0200 Andy Shevchenko wrote:
+> >>> In some configuration, compilation raises warnings related to unused
+> >>> data. Indeed, depending on configuration, those data can be unused.
+> >>>
+> >>> Mark those data as __maybe_unused to avoid compilation warnings.
+> >>
+> >> Will making dma_unmap_addr access the first argument instead of
+> >> pre-processing down to nothing not work?
+> > 
+> > I looked at the implementation of those macros and I have no clue
+> > how to do that in a least intrusive way. Otherwise it sounds to me
+> > quite far from the scope of the small compilation error fix that
+> > I presented here.
 
-Thank you for your quick reply.
+> I *think* Jakub is suggesting something alike:
 
-Am 04.03.25 um 12:45 schrieb Szapar-Mudlaw, Martyna:
+I see. Perhpas we need Marek's/Christoph's opinion on this...
 
-> On 3/4/2025 12:15 PM, Paul Menzel wrote:
-
->> Am 04.03.25 um 12:08 schrieb Martyna Szapar-Mudlaw:
->>> From: Jan Glaza <jan.glaza@intel.com>
->>>
->>> The count field in virtchnl_proto_hdrs and virtchnl_filter_action_set
->>> should never be negative while still being valid. Changing it from
->>> int to u32 ensures proper handling of values in virtchnl messages in
->>> driverrs and prevents unintended behavior.
->>> In its current signed form, a negative count does not trigger
->>> an error in ice driver but instead results in it being treated as 0.
->>> This can lead to unexpected outcomes when processing messages.
->>> By using u32, any invalid values will correctly trigger -EINVAL,
->>> making error detection more robust.
->>>
->>> Fixes: 1f7ea1cd6a374 ("ice: Enable FDIR Configure for AVF")
->>> Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
->>> Reviewed-by: Simon Horman <horms@kernel.org>
->>> Signed-off-by: Jan Glaza <jan.glaza@intel.com>
->>> Signed-off-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
->>> ---
->>>   include/linux/avf/virtchnl.h | 4 ++--
->>>   1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/include/linux/avf/virtchnl.h b/include/linux/avf/virtchnl.h
->>> index 4811b9a14604..cf0afa60e4a7 100644
->>> --- a/include/linux/avf/virtchnl.h
->>> +++ b/include/linux/avf/virtchnl.h
->>> @@ -1343,7 +1343,7 @@ struct virtchnl_proto_hdrs {
->>>        * 2 - from the second inner layer
->>>        * ....
->>>        **/
->>> -    int count; /* the proto layers must < VIRTCHNL_MAX_NUM_PROTO_HDRS */
->>> +    u32 count; /* the proto layers must < VIRTCHNL_MAX_NUM_PROTO_HDRS */
->>
->> Why limit the length, and not use unsigned int?
+> ---
+> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+> index b79925b1c433..927884f10b0f 100644
+> --- a/include/linux/dma-mapping.h
+> +++ b/include/linux/dma-mapping.h
+> @@ -629,7 +629,7 @@ static inline int dma_mmap_wc(struct device *dev,
+>  #else
+>  #define DEFINE_DMA_UNMAP_ADDR(ADDR_NAME)
+>  #define DEFINE_DMA_UNMAP_LEN(LEN_NAME)
+> -#define dma_unmap_addr(PTR, ADDR_NAME)           (0)
+> +#define dma_unmap_addr(PTR, ADDR_NAME)           (((PTR)->ADDR_NAME), 0)
+>  #define dma_unmap_addr_set(PTR, ADDR_NAME, VAL)  do { } while (0)
+>  #define dma_unmap_len(PTR, LEN_NAME)             (0)
+>  #define dma_unmap_len_set(PTR, LEN_NAME, VAL)    do { } while (0)
+> ---
 > 
-> u32 range is completely sufficient for number of proto hdrs (as said: 
-> "the proto layers must < VIRTCHNL_MAX_NUM_PROTO_HDRS") and I believe it 
-> is recommended to use fixed sized variables where possible
+> Would that work?
 
-Do you have a pointer to the recommendation? I heard the opposite, that 
-fixed length is only useful for register writes. Otherwise, you should 
-use the “generic” types [1].
+I do not know. Not my area of expertise.
 
->>>       union {
->>>           struct virtchnl_proto_hdr
->>>               proto_hdr[VIRTCHNL_MAX_NUM_PROTO_HDRS];
->>> @@ -1395,7 +1395,7 @@ VIRTCHNL_CHECK_STRUCT_LEN(36, virtchnl_filter_action);
->>>   struct virtchnl_filter_action_set {
->>>       /* action number must be less then VIRTCHNL_MAX_NUM_ACTIONS */
->>> -    int count;
->>> +    u32 count;
->>>       struct virtchnl_filter_action actions[VIRTCHNL_MAX_NUM_ACTIONS];
->>>   };
-
-Kind regards,
-
-Paul
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-[1]: https://notabs.org/coding/smallIntsBigPenalty.htm
