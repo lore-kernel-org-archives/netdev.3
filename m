@@ -1,81 +1,71 @@
-Received: from bactrian.tulip.relay.mailchannels.net (bactrian.tulip.relay.mailchannels.net [23.83.218.9])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA646481C4
-	for <netdev@vger.kernel.org>; Tue,  4 Mar 2025 09:46:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741081620; cv=pass; b=t573y/Ca71pdPoA7wgyc6jb/IbuVf8ndF+i9lymUlQ75oSicDrRvnjNVbkE1yBYmrWGN/5QBcY1BU2+4XuyJSqd6AQqtz21JbsT3I5x1Ie3bATV+fD+QvW2Cg/8PrU2zXtD6EZ1q78URFtEbm6ID9NMR4dBScQfr+KhzT8A7cBQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741081620; c=relaxed/simple;
-	bh=+r8TFsquWm3u90sZ2XVyWKCsWfP3h3k6rMBbkAsqNi8=;
-	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Date; b=E+7hq5o2JfFsINfpg+e38l+KLci7P1uZtXvcbsNlVaGwBEclFrp1/m1lPA5rksvE4LJIjobsNfb5AXsM34Lu0b6YNGeZ4wZE2EAqR8FJZC54wDtrWOmazigS8JL5LB79EntK/rBsNXgTmXFQmU4eg1bJxTJny+mXF4apnNUFYzM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com; spf=pass smtp.mailfrom=arinc9.com; dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b=O3QbHPIr; arc=pass smtp.client-ip=23.83.218.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arinc9.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1A61FCFFE
+	for <netdev@vger.kernel.org>; Tue,  4 Mar 2025 09:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741082082; cv=none; b=PKE7tWL6jxHFbG14R/UDB9WcvdkO8AQLqueLgbwDKBNpI5nBFr/uISX7DHM4EjkpaQKhhY44K45BwetpazsYd7GLs0bYnexrCVjZxeWo8LPsKqTGtwk8c29i07cBXASMX5gbGgW7P2il47RcecnmevdnHxkPqUTkcB54YWPDpZk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741082082; c=relaxed/simple;
+	bh=bEZtTwPyY37XnL+BOrDB3iYLlnxsxgbs+5Nwb5ZPZ5I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DY0rm2NxqvjZX6fDt4KaafkoRdIHqGy4IN/rjE0C0sX2I8Dl3cfhyT6UEJ1pBzL7avmb8Wdxqfg1KpixRsiDkF2mFhlb6K8PUKNMYdZtkSz5krDK1TMpR8S6gzQZDvd64Tsqgqfv37LBDm/9AMJ15AQ6lMk9AuBxqvQ87oTL30A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P7F1tfve; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b="O3QbHPIr"
-X-Sender-Id: hostingeremail|x-authuser|chester.a.unal@arinc9.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 1B9A78C3E29;
-	Tue,  4 Mar 2025 09:46:57 +0000 (UTC)
-Received: from nl-srv-smtpout1.hostinger.io (trex-8.trex.outbound.svc.cluster.local [100.101.191.136])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id E7C588C3ACC;
-	Tue,  4 Mar 2025 09:46:53 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1741081616; a=rsa-sha256;
-	cv=none;
-	b=af7eV8eu4Ky/VzUdDADBUxjgxKKKs7u3q1Ev7az2ONYZp4OxvPhkZo6tgrdIRJd2itYF0h
-	zrPfYU4JGa9mxZneKMiCPXRlWWtEowsV6wH5Si0VGLw+oZi3ot6njAU15PiHufC0VB3FtT
-	CGaPVd/WJS6koZnsxf/xUIASrxiJf/+dWTK8OaQtu7mR6vx7DM9wfO2KfZDoYvH1v4A3Up
-	/9oMWljF+mmEFKPrTA+ApQHX9ORnLDQDRBWMhjGdM/Nj91Oe6hFssniYCG6IjYPwnGraWb
-	itnZqmA1/OyXlms4EQfS2aBktOWTzdwlWvDmeBLyMy2OllmPfIHM7p1uTLbjlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1741081616;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D5t4LO5iZc4495dyi2ppzMU1jd7cqzfUiUSRCJpWlCU=;
-	b=GiAtfS43kFwoJr/tRcZ9Zn8Pz6XjVCRaYleWaTx2nTh0ioce/VASeJBkMXIWwtcNX9c1tF
-	vl8L1WEnDQuedsCyjqTv9cInWgcUbOI8k+jkuJaxabNhxKBOKUtDHWFu5SN3a1LzORLcVS
-	3B5Rpu8xmYavOQmb2Hhq1dXqdjHebCJHaDedcM0rDOgNK8FIfU+2bVB2fJ81Uz2wcGHbY2
-	MOz/fWFXHp9eFhvmv5khRrJBUNhIziGHOwk86F2ewRbT2okKv3aQAlrPOVNBHHEguDeh9A
-	kliPmYOC9yQKc2Yiuxe4I2mjciRPRxjwV0z25+ZNMb0M5ouB5a7gM7qjadpMjg==
-ARC-Authentication-Results: i=1;
-	rspamd-58748c789d-w6rjb;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=chester.a.unal@arinc9.com
-X-Sender-Id: hostingeremail|x-authuser|chester.a.unal@arinc9.com
-X-MC-Relay: Bad
-X-MailChannels-SenderId: hostingeremail|x-authuser|chester.a.unal@arinc9.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Slimy-Shoe: 19d76dbe66a13cec_1741081616908_3888167419
-X-MC-Loop-Signature: 1741081616908:8098079
-X-MC-Ingress-Time: 1741081616908
-Received: from nl-srv-smtpout1.hostinger.io (nl-srv-smtpout1.hostinger.io
- [145.14.150.87])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.101.191.136 (trex/7.0.2);
-	Tue, 04 Mar 2025 09:46:56 +0000
-Received: from [10.9.32.97] (unknown [185.182.236.36])
-	(Authenticated sender: chester.a.unal@arinc9.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4Z6W6D2wtsz35BH3;
-	Tue, 04 Mar 2025 09:46:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arinc9.com;
-	s=hostingermail-a; t=1741081590;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P7F1tfve"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741082079;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=D5t4LO5iZc4495dyi2ppzMU1jd7cqzfUiUSRCJpWlCU=;
-	b=O3QbHPIru7AnlxKZ0j2JcvM0aDko5YyybmfATwJ7W6Uyy0cYcrQ0Ay3i69qGkiy1nlWaYc
-	1hWpE1a3EaybroRWRfsrOnJnL6kBJ6z5gCnUTJHTMxKVrs9DSkj0iBLAG6y/MkrZuhftMJ
-	R++VBdvY03avb4Esfcfg4EWVS0Nn2MnBWTT9KcJruUXjzKOwRs6863OXMnuPxIeELxq0J0
-	ZuyG6OlYYkt8NLFn3abG5liwj1OZXhB6AGl2oZgaPbYXoVwpo8/YhNSXLrv/Fg1wtRf7pP
-	V8vuI1Pvaxpb3sOMYi/9mm1f2h85PsbKQa10PHLAk6fSnYDG31414GFXiFez+w==
-Message-ID: <b63fcbaa-ef27-48a9-885c-7962bd92a8b9@arinc9.com>
+	bh=u7cLRomgT9aYrM8YJE7hwcT94wlH0qz2XRoudr3Vr10=;
+	b=P7F1tfveGx7sbKQfgNrnqVOyKW6oY+YWQfFzCeKFfDBdhrsWPgg+WUVmPx5oxQ3+lEO5KG
+	m8aaf7+d5z954gsn9yHVO4aVHJGgBR1qJTokOKMmpQ6/LPYGJZxnp54wHhZjTJReQzGL4D
+	VHQwtemXON7iqrxHqRemhl8ZL2imMZk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-261-8bf7ljmoMVih7q8hEAI-vw-1; Tue, 04 Mar 2025 04:54:38 -0500
+X-MC-Unique: 8bf7ljmoMVih7q8hEAI-vw-1
+X-Mimecast-MFC-AGG-ID: 8bf7ljmoMVih7q8hEAI-vw_1741082077
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-438e4e9a53fso37969185e9.1
+        for <netdev@vger.kernel.org>; Tue, 04 Mar 2025 01:54:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741082077; x=1741686877;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u7cLRomgT9aYrM8YJE7hwcT94wlH0qz2XRoudr3Vr10=;
+        b=ZfdkgLn8gzhOUaw3K59poxLuVphV+6Hi2mCd1ZUK/vBBJ9NAGTUoZ7PfdOx/BMSDYc
+         tPQYHys+0ujJqZpBfgLzYfSP6lgUuNEBvc3MoXa3KbcIgFI8SmmnX7p6ZBeYUE6k/8NO
+         KBLoiAJfbjsp7NpFQqKZMF8LbN+vDVN9hrC6K2I21F+okV7b3nCvvFYz83lkoJ31R6sy
+         ah0SonlS3lyhaqoDEEVEdSM0oPp+b4hX4wmEpmclUHCwVChjTQfhzQcNSEmEq7kfcPOI
+         1EDwARPAGDbUJkrjfooaNvLavwowEk5Nyih1E4f9o5FLNUtJ53yNK7pKY+awi1iVwd6h
+         DYvA==
+X-Forwarded-Encrypted: i=1; AJvYcCUBx9jQlREXssMc7cKX2Q3zEYVg2gST/VT6m2Pn9zVrAs+hSk4u9cm5at2FRWa5yh3RWCYol8k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz83Bkj/QE2HhLeMmz2d+8weDGV4kHq/Al6eVXyiFFxQS3DtLNv
+	ndG2ixSIw5/hR9+/ydjddM7OejWyguC6C11A1iY5IdaQA6iVKq34lg5akO4Axj6tpoLSBegnU4B
+	EuU43muo6d9uEUo2nuWYQidFIIJodgswcooYW9/PVStWg4hLPfEG7Pg==
+X-Gm-Gg: ASbGnctUaS8obNLWlPqJRgm0SV2OHZuL7aeH4NOXFowF6xYWBsVM1UD77eYSrhzsmVN
+	zvWYKZyPezjB71CQ3UCORFTZLhoYPyBHMMLmerlXd2OPnle+SqR3eYVJ+5TYtZcERHbuCgdGl8u
+	APz2zO1W+ujVBASdB38jCnJZgpvxp7ALWrccr1TDqZUv37V8zpznPtxbnjjEhYKbYtjGSrSnnQf
+	7DBpYI51Sf7pn22oraT9t1NzlFh+KYJ53wVXJt8Q5SYUOxlpXaIp9q9Gi12k4sRpHSr31Gj/UpC
+	u0hOjPcPWNew3tVXY6FwWx4QX6jZ5Es0C1rcx5z/VBUuvQ==
+X-Received: by 2002:a05:600c:1c8c:b0:439:9ba1:5f7e with SMTP id 5b1f17b1804b1-43ba675a843mr118312625e9.21.1741082077452;
+        Tue, 04 Mar 2025 01:54:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGCYvnIe76LEUSPaxBjczhESkT9xksjygv9YFGPgN7D+cz81nubOVGbUrKCatMMMLTJvcstbw==
+X-Received: by 2002:a05:600c:1c8c:b0:439:9ba1:5f7e with SMTP id 5b1f17b1804b1-43ba675a843mr118312285e9.21.1741082077032;
+        Tue, 04 Mar 2025 01:54:37 -0800 (PST)
+Received: from [192.168.88.253] (146-241-81-153.dyn.eolo.it. [146.241.81.153])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bbc030d24sm82094335e9.22.2025.03.04.01.54.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Mar 2025 01:54:36 -0800 (PST)
+Message-ID: <48885074-b590-41e6-9794-49ec12713cce@redhat.com>
+Date: Tue, 4 Mar 2025 10:54:34 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,41 +73,57 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: dsa: mt7530: Fix traffic flooding for MMIO
- devices
-To: Lorenzo Bianconi <lorenzo@kernel.org>,
- Daniel Golle <daniel@makrotopia.org>, DENG Qingfang <dqfext@gmail.com>,
- Sean Wang <sean.wang@mediatek.com>, Andrew Lunn <andrew@lunn.ch>,
- Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+Subject: Re: [PATCH net-next v9 3/6] arch: x86: add IPC mailbox accessor
+ function and add SoC register access
+To: Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org,
+ Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+ Simon Horman <horms@kernel.org>, Jose Abreu <joabreu@synopsys.com>,
+ Jose Abreu <Jose.Abreu@synopsys.com>,
+ David E Box <david.e.box@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
+ <hpa@zytor.com>, David E Box <david.e.box@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-References: <20250304-mt7988-flooding-fix-v1-1-905523ae83e9@kernel.org>
+ Jakub Kicinski <kuba@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jiawen Wu <jiawenwu@trustnetic.com>, Mengyuan Lou
+ <mengyuanlou@net-swift.com>, Russell King <linux@armlinux.org.uk>,
+ Serge Semin <fancer.lancer@gmail.com>
+References: <20250227121522.1802832-1-yong.liang.choong@linux.intel.com>
+ <20250227121522.1802832-4-yong.liang.choong@linux.intel.com>
 Content-Language: en-US
-From: "Chester A. Unal" <chester.a.unal@arinc9.com>
-In-Reply-To: <20250304-mt7988-flooding-fix-v1-1-905523ae83e9@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250227121522.1802832-4-yong.liang.choong@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Date: Tue, 04 Mar 2025 09:46:28 +0000 (UTC)
-X-CM-Envelope: MS4xfAak46EaWbKlaQAOOnK1fi3wYW/2+4l5aFepSvjx8uGgOA14qId//toYZLzeR8I+fViXYRlIlNrSjhVYMS07D3LEvzQpZSwyrxo5G9Gty/xvDUy3QReb 81z8mlUhj8RTJim8GAvhYmM6/pF4WuB98DsIwesDXLY0yHpEm/E4voVX2sYx/kRelHjE5ZBFitzVbCH6SbiW/rCQx6pIvy7WNTLecRcB4gK5PUnSvp6bgpI5 Vp8PZG773xMy9cwJSctfC0mHiuA7qSvV+toWfGyhQLx+BXpppAfLFYedocznA8KwlosasXFjoGihBHj2golKcOv0nfcU2dXferx/0xfaoGPlOcIKt7iabktN iA1sFATs9WZO9x3kSxeA8u0HpQbsPUk8JwvXAz/4qP7BTX5Kr6VPd7QoCEyK4d4jZfNG0kpgp9o9ch5t7YboX4IuSr2wCc7FVXkHFFM9wOnRdkfCqygd7Nes qmYirDGRadJL+OcTKysDx4Lkurf/dh8sR6T8eOa4D+633H0+QKjbxlbzKZyIzmaupWPgrbUydGKr3k0sgbv3j5wXbcJRhsyLqW/MOEHYH9wtACwUpPEkJCzM 0lOjmmauEwkKUWVjJhNGMxlojrEdw/Ov4DaRFHwbM0JHZmROfNaKWCZGkZae/Ku8PGSFRroLVy2cTdn+llFe4d+Ok3ttmbSFd85rV+z4OsljPg==
-X-CM-Analysis: v=2.4 cv=F4sFdbhN c=1 sm=1 tr=0 ts=67c6cbf6 a=jLKKKTx0pIsUXH9Z8yxYVg==:117 a=jLKKKTx0pIsUXH9Z8yxYVg==:17 a=IkcTkHD0fZMA:10 a=VwQbUJbxAAAA:8 a=GvHEsTVZAAAA:8 a=oMYzIxOzatuwx5kPrsYA:9 a=QEXdDO2ut3YA:10 a=aajZ2D0djhd3YR65f-bR:22
-X-AuthUser: chester.a.unal@arinc9.com
 
-On 04/03/2025 08:50, Lorenzo Bianconi wrote:
-> On MMIO devices (e.g. MT7988 or EN7581) unicast traffic received on lanX
-> port is flooded on all other user ports if the DSA switch is configured
-> without VLAN support since PORT_MATRIX in PCR regs contains all user
-> ports. Similar to MDIO devices (e.g. MT7530 and MT7531) fix the issue
-> defining default VLAN-ID 0 for MT7530 MMIO devices.
+On 2/27/25 1:15 PM, Choong Yong Liang wrote:
+> From: "David E. Box" <david.e.box@linux.intel.com>
 > 
-> Fixes: 110c18bfed414 ("net: dsa: mt7530: introduce driver for MT7988 built-in switch")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> - Exports intel_pmc_ipc() for host access to the PMC IPC mailbox
+> - Enables the host to access specific SoC registers through the PMC
+> firmware using IPC commands. This access method is necessary for
+> registers that are not available through direct Memory-Mapped I/O (MMIO),
+> which is used for other accessible parts of the PMC.
+> 
+> Signed-off-by: David E. Box <david.e.box@linux.intel.com>
+> Signed-off-by: Chao Qin <chao.qin@intel.com>
+> Signed-off-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
 
-I was suspecting of this for a while. Thanks for addressing it.
+Hans, Ilpo, are you ok with this patch going through the netdev/net-next
+tree?
 
-Reviewed-by: Chester A. Unal <chester.a.unal@arinc9.com>
+Thanks,
 
-Chester A.
+Paolo
+
