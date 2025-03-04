@@ -1,100 +1,109 @@
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+Received: from ixit.cz (ip-89-177-23-149.bb.vodafone.cz [89.177.23.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1749A1F583E
-	for <netdev@vger.kernel.org>; Tue,  4 Mar 2025 18:49:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C11F204C22;
+	Tue,  4 Mar 2025 18:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.177.23.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741114192; cv=none; b=t4LUzQ4NgCZsL9OZOkf2ORkX0RceTQ2CKTx5678g44Y/R7uJ1vxGUei31Hy9kvBs6156EPJ/p/2uGjK6OwwTfUFHXyp2ozQ89RV3p/wBpZOQ4ZaZU3KYAwNdvQpOTL8s1ZzZfqoamIEsme94aPmWEXiFAacPyc2ruh3cht3dTvE=
+	t=1741114205; cv=none; b=cha1/cIZWDkVFIYEmrwScQeVqna/DQsghX0HaNNDkuF7JyFMSmEzo2i8Hg/xqj6ZwZzNA0h/wUFTCyP8lIKzFPTEA3+guj/NCBZZ1MWMLDsH0m9N8YueOlubiyS4NceB+F9G8ha+PZRHy1CE8aI98JxafuXK594ps7rKYpaYfsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741114192; c=relaxed/simple;
-	bh=jwlOKulsBSMuF4MDnFuU985NWfYShzTdreneh24Y0ks=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ts2c3eIBMEO8Qcd2/DVLG8FFepVdVxvVUpKRgUGboeIEXqOK6sOeSTzHu1b2x6PuXOHRS3FolW8NgL/wmeKxkJav0FJRJbILdHkg0KTp6scgcM4fGx2iBIta/5sHpn4fTtsQidybNG1qnafPFticfnn/NAPKiIQWh/DDtyIl0mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=fyNQrOUU; arc=none smtp.client-ip=52.95.49.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1741114205; c=relaxed/simple;
+	bh=0CAx1mQ5RZ6zsMxOMxa0QiY+PZp3mnFBFPc/jCZGve4=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=gD65AjMsW2qowNxYbCpX+DC6a2HYNjBjIOPHXLNEE52ewoEbVogEB4iktdWI5XlTZNBY/edQQpOsxhiCD3k4Vzkvpt6lb2XDp20P9cuDUyINrfFXcqnqJ0BCrMfGPP7jUSKnmuF3Pjml+2ilJrC+2ZAEQK5eiANQZESw8j+mZbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=eOfA0JzF; arc=none smtp.client-ip=89.177.23.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="fyNQrOUU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1741114191; x=1772650191;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=25iuFOzGy0yAeSj+qO54x2p6UzgOf3KWTrAzRDVIoiA=;
-  b=fyNQrOUUFY296ytP6v8ZF4afzR2W0klbmcItFNXdlHPqemBM6kPmwzY8
-   7CGI1l/MwA0qRNdeHmfBmXu+gOyrz3hrRU3R+wSFdOgNdNpFNl3o5Btpw
-   A9AuzhF5H4OyuT872j5/EcRjc/5P1A3xz5waFjjMi6K1afzvuiPb3Qv04
-   0=;
-X-IronPort-AV: E=Sophos;i="6.14,220,1736812800"; 
-   d="scan'208";a="477334730"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 18:49:46 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.21.151:28186]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.21.102:2525] with esmtp (Farcaster)
- id 8015db65-e005-476b-90c8-8f62002c137e; Tue, 4 Mar 2025 18:49:45 +0000 (UTC)
-X-Farcaster-Flow-ID: 8015db65-e005-476b-90c8-8f62002c137e
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Tue, 4 Mar 2025 18:49:45 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.142.149.19) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Tue, 4 Mar 2025 18:49:43 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <kuba@kernel.org>
-CC: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
-	<horms@kernel.org>, <kuni1840@gmail.com>, <kuniyu@amazon.com>,
-	<netdev@vger.kernel.org>, <pabeni@redhat.com>
-Subject: Re: [PATCH v3 net-next 00/12] ipv4: fib: Convert RTM_NEWROUTE and RTM_DELROUTE to per-netns RTNL.
-Date: Tue, 4 Mar 2025 10:49:13 -0800
-Message-ID: <20250304184919.13080-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250304063928.48e43593@kernel.org>
-References: <20250304063928.48e43593@kernel.org>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="eOfA0JzF"
+Received: from [10.0.0.228] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 7EBF116508E;
+	Tue,  4 Mar 2025 19:43:44 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1741113824; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0CAx1mQ5RZ6zsMxOMxa0QiY+PZp3mnFBFPc/jCZGve4=;
+	b=eOfA0JzF8XO4Oy6q9bZSu45oTn4TozB4eK33nfrsSbKtCx+rx41ZQu1V1gPmoRtQpXQjKB
+	DsRj8bLeu3L+0pqe3cRvqhvh8iQQYXrK+DIDVuwndJ2foTeVswZ0oJI4O0AQrKhqHfRira
+	0mP8EMEAVCTWwhcUauIHqB/wbvg+pjc=
+Message-ID: <b796bfee-b753-479a-a8d6-ba1fe3ee6222@ixit.cz>
+Date: Tue, 4 Mar 2025 19:43:44 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D039UWA004.ant.amazon.com (10.13.139.68) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+User-Agent: Mozilla Thunderbird Beta
+To: amit.pundir@linaro.org
+Cc: ath10k@lists.infradead.org, bjorn.andersson@linaro.org,
+ davem@davemloft.net, devicetree@vger.kernel.org, jeffrey.l.hugo@gmail.com,
+ john.stultz@linaro.org, konradybcio@gmail.com, kuba@kernel.org,
+ kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org, robh@kernel.org,
+ sumit.semwal@linaro.org
+References: <CAMi1Hd2g68U8LVng2+RmhD+zFLqW8vcHS54FvaKxNF+BMs_tZg@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Introduce a devicetree quirk to skip host cap QMI
+ requests
+Content-Language: en-US
+Reply-To: CAMi1Hd2g68U8LVng2+RmhD+zFLqW8vcHS54FvaKxNF+BMs_tZg@mail.gmail.com
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <CAMi1Hd2g68U8LVng2+RmhD+zFLqW8vcHS54FvaKxNF+BMs_tZg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Jakub Kicinski <kuba@kernel.org>
-Date: Tue, 4 Mar 2025 06:39:28 -0800
-> On Thu, 27 Feb 2025 20:23:16 -0800 Kuniyuki Iwashima wrote:
-> > Patch 1 is misc cleanup.
-> > Patch 2 ~ 8 converts two fib_info hash tables to per-netns.
-> > Patch 9 ~ 12 converts rtnl_lock() to rtnl_net_lcok().
-> 
-> I think there's another leak. Not 100% reproducible but one of the runs
-> of the device csum test hit:
+Kind reminder.
 
-Looks like v6 sk is also leaked...
-Will try csum test.
+This workaround is still used by sdm845 downstream.
 
-Thanks!
-
-
-> 
-> unreferenced object 0xffff888005c35440 (size 1576):
->   comm "csum", pid 366, jiffies 4294693057
->   hex dump (first 32 bytes):
->     c0 00 02 01 c0 00 02 02 00 00 00 00 84 d0 ff 00  ................
->     02 00 01 41 00 00 00 00 00 00 00 00 00 00 00 00  ...A............
->   backtrace (crc 3c3950b5):
->     kmem_cache_alloc_noprof+0x2ad/0x350
->     sk_prot_alloc.constprop.0+0x4e/0x1b0
->     sk_alloc+0x36/0x6c0
->     inet_create.part.0.constprop.0+0x289/0xea0
->     __sock_create+0x23c/0x6a0
->     __sys_socket+0x11c/0x1e0
->     __x64_sys_socket+0x72/0xb0
->     do_syscall_64+0xc1/0x1d0
->     entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> https://netdev-3.bots.linux.dev/vmksft-drv-hw-dbg/results/17921/2-csum-py/stdout
+Thank you
+David
