@@ -1,113 +1,134 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C775A1FF1BF
-	for <netdev@vger.kernel.org>; Tue,  4 Mar 2025 23:49:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3F524C09A;
+	Wed,  5 Mar 2025 00:00:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741132181; cv=none; b=Afv08oCp+Iy/eWA9zXfzSXumDIsx6O59kx455nytT4xwiyl52tlQotV6+Dc2xmAmEoQvTa4LpmnVIApkz8L7BuTevccba0Z19achEcAkanQO1/MTpAa/6CmfHjaaLG5ABLq+ZjnQLnpqvEG40I7oux/77Pr2i7Y3zx1s+wNhbHE=
+	t=1741132809; cv=none; b=abMoiwmWNrmEd+PrgPPpK4AU2RAMIHmYZPmoaebKXGJiqQIMsw9Hsqysct1PxX8BK4Ao5UE8mW6YiKBJQKEp577eJLBq0PGjCEdX+MSz50Oq/G53nUsKD1RwpFuHxt5QVRlSumB1jfN/5Q9DqmpUN7eDG0IMtKWCWGmtBpS8st4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741132181; c=relaxed/simple;
-	bh=KGc5ZOpthDNGd1BsUds+xgHbJiLHtxGxIIOfKvP7wJk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Mx5fDF6ecPcq/vtYlr+6SAV5dD0k8/1s/oZ4UIbGYqqFzOeICe7Y0DNeb8LLy/E8QVhq3XV1ZVXgAmuDKsIfOIh5l7EhAkFP3wOZJ3OMEf8wQ7qVRsAQuBskFnQzcdF9dLhc+e6VLEmplYGrWTV6p70uDRUWpeFfgCP1Ug4qQw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OHGS+YbH; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	s=arc-20240116; t=1741132809; c=relaxed/simple;
+	bh=maeTuTRd1RxaKuCtTaK1UNUJtNBfFivEbPZ207OaVYM=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=GMYL8VFvaKjl1t77Ifc6TgjYM2greaU2kWSY2zf0ND18Cs5zh+WFl3lHXNGa49fMP9mU4fH4yJOf7jkIfmHMV7OMFfpInEJ1xxU9x91OZ6SCh0ZuA3J/0koFcClUDzlAvtUS6EAsZ0EVYgUY6BGd9FUl+u7+F9RgJwNaI8ct9mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxonhyperv.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linuxonhyperv.com header.i=@linuxonhyperv.com header.b=hA3/+aEQ; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxonhyperv.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OHGS+YbH"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2fe8c5dbdb0so11938991a91.3
-        for <netdev@vger.kernel.org>; Tue, 04 Mar 2025 15:49:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741132179; x=1741736979; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+YMZiKSz5zNA/0UkYVvQA9DfWhT+3c5l8KwfO4x1oWs=;
-        b=OHGS+YbHklFyjo2ZqSSi0Mksn52GfkpX6woVhcc/Svmpd+5J3NhSw1NpI4353N7zKL
-         uG5p6BJHkGuA7SAOa4ZKns3mGkkPIkiZdGAqgKslUcxB1Fubs5jZXJAGwGSwG9OgI58Q
-         kUqIql8Pk8tXwOlAV2g6UsA5H9Je311SiKcboR87S702+X7c2oVjY1J3vxUU6PvVLN72
-         NnWwt5Cylk2wzGvRG8+Lu7NipnvttuhTqnLbjEekt/I507dX64NAbN4cwH2Z7XR/P+tx
-         r2/1JIm0KjHWg0qs7vnNmZ9RYjkoAtRvheYGlux269bkcUOKZVprPk1AYzQHOXtDKBNF
-         sQOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741132179; x=1741736979;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+YMZiKSz5zNA/0UkYVvQA9DfWhT+3c5l8KwfO4x1oWs=;
-        b=uDRjYX7mLTx3gn4ehNMPLbG1w0A/YDYUCH5cgU7eZcPz6G/AragYVpPqmF9d0/65PS
-         A0ZL/3jeIvNwSzLNdjq9T8YCRt0bHEfSZKlmYzb6H1isMmQN2Bq1xRtGGJXcsR2uq5Sl
-         Ntma6om8riuNDpz/R/8cVj44gsvIte/ofc085gx2vO/KJrkPDAtas/mapHpcnxcrTZ3P
-         s3wr2LkOS9KVi7+VaOyxB1v5rrxYhHd//2/S/U9mtGd7aYW1bGVd9045hW3WsE5FnhvA
-         Bl5MPF4WtJi/eEZWDsxs2NffNxdYcsEKzngBfZJfNsEEewgFjvJXgwEUF3PzthBVCCY0
-         zxRA==
-X-Gm-Message-State: AOJu0YzhiaeBWwufbpbJ+O88gAhNcUs7jQrV6pBlzRy1J2HYpUnZ5ZCn
-	Te40+Fru3kYqwKMwHL3+dNtlKp9Af+i22Dbb77gCMp2us1rN6IdpPHCs1eqyQhybeXi49qFY8g3
-	WFO4Kt3HyzcyQvSg2dA/rCZ3TKxvt19o9MTEb3hRGsDDatUbbSqln9+n3JcQHwrWT9fHQWyRE5j
-	UtwoU8g0L8KIQtdz/yyKp5H9azObEugY04cbhlHx/XiO+ssQuDQDjSx+XOrGk=
-X-Google-Smtp-Source: AGHT+IHyEqSO1UoerwLMdOalFYRe0Gf8bawb/DcdZP+I3DG6F3XwdwIcjvKhQhRV3aPh8doeU1NUpGVgU+jQgq2Yfw==
-X-Received: from pjbmf13.prod.google.com ([2002:a17:90b:184d:b0:2fa:1803:2f9f])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3b51:b0:2ee:44ec:e524 with SMTP id 98e67ed59e1d1-2ff497c5dadmr1910088a91.35.1741132179057;
- Tue, 04 Mar 2025 15:49:39 -0800 (PST)
-Date: Tue,  4 Mar 2025 23:49:24 +0000
+	dkim=pass (1024-bit key) header.d=linuxonhyperv.com header.i=@linuxonhyperv.com header.b="hA3/+aEQ"
+Received: by linux.microsoft.com (Postfix, from userid 1202)
+	id D22CE2112503; Tue,  4 Mar 2025 16:00:06 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D22CE2112503
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxonhyperv.com;
+	s=default; t=1741132806;
+	bh=YQAURlkfG3zyvMgNUuVAdt7wlORGt/c6p0druqSXPmM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hA3/+aEQsCaaOvHufY5KTMCArhTJFvIdHfJ7u4joBgsDWBpjZpqLE1O2uVdpDxd6A
+	 MkTAcW6ND7hADwClrgS7UTZ6CZYvVWuEnCpzuFwNSBq93ar4PUzOzBeeFYMcOIwxzy
+	 xamNw2rSq33mKeODFampNIZaBiYIxxOhzz98HhPQ=
+From: longli@linuxonhyperv.com
+To: Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	Long Li <longli@microsoft.com>
+Subject: [patch rdma-next v3 1/2] net: mana: Change the function signature of mana_get_primary_netdev_rcu
+Date: Tue,  4 Mar 2025 16:00:01 -0800
+Message-Id: <1741132802-26795-1-git-send-email-longli@linuxonhyperv.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.48.1.711.g2feabab25a-goog
-Message-ID: <20250304234924.1583687-1-almasrymina@google.com>
-Subject: [PATCH net v1] netmem: prevent TX of unreadable skbs
-From: Mina Almasry <almasrymina@google.com>
-To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Mina Almasry <almasrymina@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-Currently on stable trees we have support for netmem/devmem RX but not
-TX. It is not safe to forward/redirect an RX unreadable netmem packet
-into the device's TX path, as the device may call dma-mapping APIs on
-dma addrs that should not be passed to it.
+From: Long Li <longli@microsoft.com>
 
-Fix this by preventing the xmit of unreadable skbs.
+Change mana_get_primary_netdev_rcu() to mana_get_primary_netdev(), and
+return the ndev with refcount held. The caller is responsible for dropping
+the refcount by calling dev_put().
 
-Tested by configuring tc redirect:
-
-sudo tc qdisc add dev eth1 ingress
-sudo tc filter add dev eth1 ingress protocol ip prio 1 flower ip_proto \
-tcp src_ip 192.168.1.12 action mirred egress redirect dev eth1
-
-Before, I see unreadable skbs in the driver's TX path passed to dma
-mapping APIs.
-
-After, I don't see unreadable skbs in the driver's TX path passed to dma
-mapping APIs.
-
-Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mina Almasry <almasrymina@google.com>
+Signed-off-by: Long Li <longli@microsoft.com>
 ---
- net/core/dev.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/hw/mana/device.c           |  7 +++----
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 11 +++++++----
+ include/net/mana/mana.h                       |  2 +-
+ 3 files changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 30da277c5a6f..63b31afacf84 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3914,6 +3914,9 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
+diff --git a/drivers/infiniband/hw/mana/device.c b/drivers/infiniband/hw/mana/device.c
+index 3416a85f8738..afe3d8d20b3b 100644
+--- a/drivers/infiniband/hw/mana/device.c
++++ b/drivers/infiniband/hw/mana/device.c
+@@ -84,10 +84,8 @@ static int mana_ib_probe(struct auxiliary_device *adev,
+ 	dev->ib_dev.num_comp_vectors = mdev->gdma_context->max_num_queues;
+ 	dev->ib_dev.dev.parent = mdev->gdma_context->dev;
  
- 	skb = validate_xmit_xfrm(skb, features, again);
+-	rcu_read_lock(); /* required to get primary netdev */
+-	ndev = mana_get_primary_netdev_rcu(mc, 0);
++	ndev = mana_get_primary_netdev(mc, 0);
+ 	if (!ndev) {
+-		rcu_read_unlock();
+ 		ret = -ENODEV;
+ 		ibdev_err(&dev->ib_dev, "Failed to get netdev for IB port 1");
+ 		goto free_ib_device;
+@@ -95,7 +93,8 @@ static int mana_ib_probe(struct auxiliary_device *adev,
+ 	ether_addr_copy(mac_addr, ndev->dev_addr);
+ 	addrconf_addr_eui48((u8 *)&dev->ib_dev.node_guid, ndev->dev_addr);
+ 	ret = ib_device_set_netdev(&dev->ib_dev, ndev, 1);
+-	rcu_read_unlock();
++	/* mana_get_primary_netdev() returns ndev with refcount held */
++	dev_put(ndev);
+ 	if (ret) {
+ 		ibdev_err(&dev->ib_dev, "Failed to set ib netdev, ret %d", ret);
+ 		goto free_ib_device;
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index aa1e47233fe5..cfa664d5a137 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -3131,21 +3131,24 @@ void mana_remove(struct gdma_dev *gd, bool suspending)
+ 	kfree(ac);
+ }
  
-+	if (!skb_frags_readable(skb))
-+		goto out_kfree_skb;
+-struct net_device *mana_get_primary_netdev_rcu(struct mana_context *ac, u32 port_index)
++struct net_device *mana_get_primary_netdev(struct mana_context *ac, u32 port_index)
+ {
+ 	struct net_device *ndev;
+ 
+-	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
+-			 "Taking primary netdev without holding the RCU read lock");
+ 	if (port_index >= ac->num_ports)
+ 		return NULL;
+ 
++	rcu_read_lock();
 +
- 	return skb;
+ 	/* When mana is used in netvsc, the upper netdevice should be returned. */
+ 	if (ac->ports[port_index]->flags & IFF_SLAVE)
+ 		ndev = netdev_master_upper_dev_get_rcu(ac->ports[port_index]);
+ 	else
+ 		ndev = ac->ports[port_index];
  
- out_kfree_skb:
-
-base-commit: 3c6a041b317a9bb0c707343c0b99d2a29d523390
++	dev_hold(ndev);
++	rcu_read_unlock();
++
+ 	return ndev;
+ }
+-EXPORT_SYMBOL_NS(mana_get_primary_netdev_rcu, "NET_MANA");
++EXPORT_SYMBOL_NS(mana_get_primary_netdev, "NET_MANA");
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index 0d00b24eacaf..770359ce7d3b 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -827,5 +827,5 @@ int mana_cfg_vport(struct mana_port_context *apc, u32 protection_dom_id,
+ 		   u32 doorbell_pg_id);
+ void mana_uncfg_vport(struct mana_port_context *apc);
+ 
+-struct net_device *mana_get_primary_netdev_rcu(struct mana_context *ac, u32 port_index);
++struct net_device *mana_get_primary_netdev(struct mana_context *ac, u32 port_index);
+ #endif /* _MANA_H */
 -- 
-2.48.1.711.g2feabab25a-goog
+2.34.1
 
