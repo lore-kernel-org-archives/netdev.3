@@ -1,179 +1,121 @@
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893351AAE1E
-	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 17:09:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCE61A3160;
+	Wed,  5 Mar 2025 17:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741194584; cv=none; b=NQgXb8Kgx5ozD7kk9Xi6SYOPDC+NSa8tlR4Ky6rCRVAnLFxt+Ufnc9s1cHNC6HOcM/NwkPwH2Q3DVacFbidIxv+nxgypk/UtkeM/f6vKjdXU/fBz2p+Sq9f2s525Is/0qUejLTrdmgKp5sUJ2PPx+cMFAiqtPjvvR7hbMk517/M=
+	t=1741194844; cv=none; b=UAJLf1x/J9zOZObWECeim0nhfK7oIDmVU30JSkkkefIAsx9hqzvmdJzYej0np4e9+KDznUi2ds7U1k0mE8wIKkMm0oNfLSKuFZtvkQPwaIflkT6sTStjKeGs5nS1XTYIippBMJDlLSAz2EBjWj2n7I369sAyXtGk67lKww2udtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741194584; c=relaxed/simple;
-	bh=irFcCVMJ+YoW6k8byXnRJIVW9wTUS4yGDTwhsoaB6Ak=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HC89aS4MyyK0qOx+5rO5csPyNPei8FowBaP85b97Z8D+6MeJdd0oIYw4yWZ7CN6C1/ugm3Z4a/Wa0nkBngnG6C1pe6gekERxbwBLUxowmI8+o9riUusVs5QgsbIPhHA9y0lLIdxZDqt5/ri3NE+t/q+K7pMcQNhUd1sTXGLAmGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=P1p3UOO0; arc=none smtp.client-ip=209.85.128.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1741194844; c=relaxed/simple;
+	bh=JG3bEgryVkD89ivJEHDvKdoz5pX+G5di1bV0ReHD08c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PQ9HkdP/X5q0LuDwdSvwS+l8JJPB1N3WDE0gopQdgDo5Kl7mcfpphb3hPAfLStSnBSNXlxqvF5BNE4TELZQrFBtdH7pQ7cq9KbOlPY+Izp9jsrMwpKzhslG4keaARnOvfpuEW8w1ElW4YFMHpNewQAfadvMhRsNcHTm01s3mz2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ust7rjDG; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="P1p3UOO0"
-Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-4394a0c65fcso76723395e9.1
-        for <netdev@vger.kernel.org>; Wed, 05 Mar 2025 09:09:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ust7rjDG"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22334203781so21833985ad.0;
+        Wed, 05 Mar 2025 09:14:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1741194579; x=1741799379; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8Xwduz/qNPiyy4RhwG9d9PScJsmgmVdCqCQSC6jOGw4=;
-        b=P1p3UOO0b9YDJTFpWR4YE+ZSKZf6Xcn52yudVG+sPHwyBxBtardW009r9baCZcBeB4
-         4YrBwUNx2JnWKUZCwE8P5GXIHIEPQ0jNvCevdy2YOChbqBHkzpHt/1wzFn5RYouw4lg7
-         Ubnyj/AmJTt084JQMIhTcWp0jpVFjR0Xndt2RDe864mTy2ddPAAr0onst3U6rKkFxD45
-         H0M4bgWyKxC98MlJmxb9oAlG/J9F2VNQt4FJxc+tUtjyiDfKCDHtPn8v130bldZUxkdd
-         1L/Pie03mBgGdJDVfupW8ScDCv5mNHuWB5VmdaSSZ68xZEXatoTBkzENiNCy/KsCr8T5
-         oqQw==
+        d=gmail.com; s=20230601; t=1741194843; x=1741799643; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PDY4vgETAYK/Bcf1CBHzUdesUL3jSm/FcT00+a6QmGo=;
+        b=Ust7rjDGoqZx3HCrfajj2gtB9xYBYxbHAFmYrxM0smoVZKk77Q6M0kqoqg95PjJqSG
+         dndICRxP3GlP8LtzHOXhnuth0cIlIi3vSzbZSy6/0/x1VVGfYA0CCQ1p+/YB7yU8/xwN
+         /U4lC5o3wO6zzKONdm5GZZSTZLGo9yVEUK4+uPKrscPqzxhQ5TkQsERYBlQZteh38q6Z
+         9xxMHO+Vc3Z00xYcP/iOUSTKm5CHoBYo6T6CVRVxN8GSf7N+v/+rns76vwQ/Tf3TC6mk
+         h/J5J+jLYxN9NHdJ8+e88nlYAxqim64nnzoRyWjckWS7ujnp7C3ne4B1Ky7ZcT6mmYa/
+         5TEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741194579; x=1741799379;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8Xwduz/qNPiyy4RhwG9d9PScJsmgmVdCqCQSC6jOGw4=;
-        b=SqqETsjd44pZ8CAuHnspVxfP3qebCR8TE2m0UQAq/IvJJiR7iVNewTOsnkTxI791xu
-         dq+dUCPSXuct0lA4VyZy0fVHvv2r4NVYm7os/Ix+LHPoICqgtrMbatR4G9n8ZyWYfgXM
-         0tpIPVnnbLZz1Zv4mmAvyUYfiAUGakVTmwL1budltehKzGe4rFuxTeN8ByUQRjSWQB+n
-         mozY4C6zu9rJAkkmnUMnbHtZZal49JRCx0uaRMureAjSuquCtVomMz6WFGsBQ1Bl7kZs
-         DKfmOqnR6zKkl6nLKy/rjlEHuNC5eXQDnNmK+Mqhkl9KYvTQsARxQJMZWD4hDU63eZp6
-         BiDA==
-X-Forwarded-Encrypted: i=1; AJvYcCW02teZi1OchPtZsjy9hmhDJzNd3pGOcWb3LPRFmKm3ed7cr2/wwL+nEldtJgOyKSgbJLlEwBg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhWl/B1+Tyr6Uj0YHjbaLJb2Y5auUBRc+rS072X0qZwVsJAPxr
-	6Suln0gxI5EX+bnrNbc9PwjafqxwIbfdH+l60Zb7PUfDYhbFJXKcAzt5Y60QTbI=
-X-Gm-Gg: ASbGnctO5tYOiIA7rTFBNz4fXJU3Blo0O63v64kB0ogr2ZOiiEvjnEeNku+9eb8kFUU
-	kSc8QkmqsGA6xiZcp0mDvJ5oyIYSR289WCoPirPrT7fF5k2xEU6n4HOgg9hqiX3QtWAgbkKHrPG
-	/jsXWfsCZN7wgIykdIRPK95USg2JW6WJPwcA8V8plA/uylTDuv7Hruk9QSe0hZbXvebCk9QqcOy
-	+EvcpO/9EO1xyuIYldlW7e5yvlOgy7Zsgzi7f2skZOJHJtJNLpv9HkTzopFIPoBtNAi8/c1Y13W
-	CEdCVxed9Pn0Asj/CphRNY+xE2tHlEtv/n1pxC7kliz1lHI=
-X-Google-Smtp-Source: AGHT+IHtALOlZRY8OEkAfMy/8LP4eO3WEczzKfPhSQDmbP+zhNlJTZUTR0mJ/R+5FMnzK/l5vhD0mw==
-X-Received: by 2002:a05:600c:1d01:b0:43b:cf12:2ca6 with SMTP id 5b1f17b1804b1-43bd292e1cemr28484335e9.1.1741194578635;
-        Wed, 05 Mar 2025 09:09:38 -0800 (PST)
-Received: from blackdock.suse.cz ([193.86.92.181])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e47b6ceesm21323862f8f.45.2025.03.05.09.09.38
+        d=1e100.net; s=20230601; t=1741194843; x=1741799643;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PDY4vgETAYK/Bcf1CBHzUdesUL3jSm/FcT00+a6QmGo=;
+        b=kF2yiS1dZmOD94UqNdARa+aNuSBxF5w1cDVViRDVnUHzBVTYMztLVIW5+vRkdrd21f
+         tQxhurc/umE2fpZ4DCcslwVxc4jJxHJR/Ra9oZPS1b5Pm5pj8UyT8NbE7RA/ZSZ2vnDM
+         7itjug/1dr1sdryNAkINBEdw7zfNkjy/L93OTmOK+whbaSYVMMay4/XAeLF1ovo11s0i
+         w5TdMZky/9AOrRfMOhdEFVexMlJEE0UqA0JB/hAJlsTxC6ka0jHQfPXV6aGaxg1u6Nhu
+         ej7+DMwIEnXhcTA5NlGlAD/i3rrSS5W3uND1Lv0k5rv8wIORcvQ1L3Vn44mbMEVc9g+V
+         RWRw==
+X-Forwarded-Encrypted: i=1; AJvYcCUyOOeTZEq9dy8OgFWAtVyltOoTqvgdVj+iNsg4otviKyZgsTTcOCb/KPwuqJ3D4WOH67k=@vger.kernel.org, AJvYcCV+WJdQwg5Jth1Okqp1+Z8LvIvdHroTvLDbyv5+wk4CuYW4DrcC8ZMF+1J8yzXPDXPiy4lFmtIM@vger.kernel.org, AJvYcCVa4mYbey2MNt7WSznsBJDo7A1x9a8AMo3PY6oIBG/cMEdr2ttory/tS5qsVv0Ks4LvExvxkonENo6rQETr@vger.kernel.org, AJvYcCVgnUtXFdBLnghdvW+uEkXdSTCOz0A2qpRiEKOY/I8MzQ3cj+pedWfdeMeLTiqwSGiUtAg9A68XwUP892ng@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSySokwwCx39XppRH3cw4KLy6czK6R66ErcAn0q5VJTkFuIy+l
+	3C4xPuz8fjXvJqnmDCkDufqcFdLo9Jw4DJs+R9ZQEshAuOIv1/Mj
+X-Gm-Gg: ASbGnct3X3iWjfSH1N1nC5iaXj9r8keT9DYKueD8SlilRI6ELxCs/z7v1WbeBCvc012
+	DHbf4MHiXvHVa5LDbxuJb88limDyDYnD/wPWsAlXj2vYE4oTpNDgNymeDfOG7didrY7EvkeCtef
+	CRv7i5efCzO5z3pwsMFmk8ZezaNvNwIkudPKrGXTXuw033ojbKyCp/8455QUYOjG7TOrc27cZsR
+	0HAfifSe3T/Nu4FjTSYUIPO/+bp5q9rJgqiAAV/10ksUwd/lu7SD1WwD32F1GuldPZJi2TD84dL
+	6Raoz1FVqgSlwl8y3gmjSYixiYtpIKiWTOQ+6vzu5WHHFKd0qsDpN8Vt5ZA0sy3Zog==
+X-Google-Smtp-Source: AGHT+IEdZkMPD62CNO9btal/a+oXLs3ROwPZYX/AQSk8n+IbCHpG0Z2D91NOXzOmsZW9ggc8Myd3iw==
+X-Received: by 2002:a05:6a00:26f8:b0:732:6276:b46c with SMTP id d2e1a72fcca58-73693cfa00emr165967b3a.0.1741194842711;
+        Wed, 05 Mar 2025 09:14:02 -0800 (PST)
+Received: from devvm6277.cco0.facebook.com ([2a03:2880:2ff:1::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7364ba1371asm7133443b3a.5.2025.03.05.09.14.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Mar 2025 09:09:38 -0800 (PST)
-From: =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
-To: netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	cgroups@vger.kernel.org,
-	Jan Engelhardt <ej@inai.de>,
-	Florian Westphal <fw@strlen.de>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
-Subject: [PATCH v2] netfilter: Make xt_cgroup independent from net_cls
-Date: Wed,  5 Mar 2025 18:09:35 +0100
-Message-ID: <20250305170935.80558-1-mkoutny@suse.com>
-X-Mailer: git-send-email 2.48.1
+        Wed, 05 Mar 2025 09:14:02 -0800 (PST)
+Date: Wed, 5 Mar 2025 09:14:00 -0800
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Jorgen Hansen <jhansen@vmware.com>,
+	Jason Wang <jasowang@redhat.com>, kvm@vger.kernel.org,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	virtualization@lists.linux-foundation.org,
+	linux-hyperv@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
+	Dexuan Cui <decui@microsoft.com>, Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH net-next 0/3] vsock: support network namespace
+Message-ID: <Z8iGWLsQGdTv47je@devvm6277.cco0.facebook.com>
+References: <20200116172428.311437-1-sgarzare@redhat.com>
+ <Z8eVanBR7r90FK7m@devvm6277.cco0.facebook.com>
+ <cmkkkyzyo34pspkewbuthotojte4fcjrzqivjxxgi4agpw7bck@ddofpz3g77z7>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cmkkkyzyo34pspkewbuthotojte4fcjrzqivjxxgi4agpw7bck@ddofpz3g77z7>
 
-The xt_group matching supports the default hierarchy since commit
-c38c4597e4bf3 ("netfilter: implement xt_cgroup cgroup2 path match").
-The cgroup v1 matching (based on clsid) and cgroup v2 matching (based on
-path) are rather independent. Downgrade the Kconfig dependency to
-mere CONFIG_SOCK_GROUP_DATA so that xt_group can be built even without
-CONFIG_NET_CLS_CGROUP for path matching.
-Also add a message for users when they attempt to specify any
-non-trivial clsid.
+On Wed, Mar 05, 2025 at 10:42:58AM +0100, Stefano Garzarella wrote:
+> On Tue, Mar 04, 2025 at 04:06:02PM -0800, Bobby Eshleman wrote:
+> > On Thu, Jan 16, 2020 at 06:24:25PM +0100, Stefano Garzarella wrote:
+> > 
+> > One question: what is the behavior we expect from guest namespaces?  In
+> > v2, you mentioned prototyping a /dev/vsock ioctl() to define the
+> > namespace for the virtio-vsock device. This would mean only one
+> > namespace could use vsock in the guest? Do we want to make sure that our
+> > design makes it possible to support multiple namespaces in the future if
+> > the use case arrives?
+> 
+> Yes, I guess it makes sense that multiple namespaces can communicate with
+> the host and then use the virtio-vsock device!
+> 
+> IIRC, the main use case here was also nested VMs. So a netns could be used
+> to isolate a nested VM in L1 and it may not need to talk to L0, so the
+> software in the L1 netns can use vsock, but only to talk to L2.
+> 
 
-Link: https://lists.opensuse.org/archives/list/kernel@lists.opensuse.org/thread/S23NOILB7MUIRHSKPBOQKJHVSK26GP6X/
-Signed-off-by: Michal Koutný <mkoutny@suse.com>
----
- net/netfilter/Kconfig     |  2 +-
- net/netfilter/xt_cgroup.c | 22 ++++++++++++++++++++++
- 2 files changed, 23 insertions(+), 1 deletion(-)
+Oh I see. The ioctl(IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS) makes sense here
+and seems like the simplest approach. Maybe we don't want multiple
+namespaces for virtio-vsocka then? The problem I see is that then users
+might expect non-colliding port spaces, which means there needs to be
+some kind of port-mapping, which would then require vsock users to pass
+around their port mappings out-of-band...
 
-Changes from v1 (https://lore.kernel.org/r/20250228165216.339407-1-mkoutny@suse.com)
-- terser guard (Jan)
-- verboser message (Florian)
-- better select !CGROUP_BPF (kernel test robot)
+It sounds like none of our known use cases requires non-colliding ports?
 
-diff --git a/net/netfilter/Kconfig b/net/netfilter/Kconfig
-index df2dc21304efb..346ac2152fa18 100644
---- a/net/netfilter/Kconfig
-+++ b/net/netfilter/Kconfig
-@@ -1180,7 +1180,7 @@ config NETFILTER_XT_MATCH_CGROUP
- 	tristate '"control group" match support'
- 	depends on NETFILTER_ADVANCED
- 	depends on CGROUPS
--	select CGROUP_NET_CLASSID
-+	select SOCK_CGROUP_DATA
- 	help
- 	Socket/process control group matching allows you to match locally
- 	generated packets based on which net_cls control group processes
-diff --git a/net/netfilter/xt_cgroup.c b/net/netfilter/xt_cgroup.c
-index c0f5e9a4f3c65..c3055e74aa0ea 100644
---- a/net/netfilter/xt_cgroup.c
-+++ b/net/netfilter/xt_cgroup.c
-@@ -23,6 +23,13 @@ MODULE_DESCRIPTION("Xtables: process control group matching");
- MODULE_ALIAS("ipt_cgroup");
- MODULE_ALIAS("ip6t_cgroup");
- 
-+#define NET_CLS_CLASSID_INVALID_MSG "xt_cgroup: classid invalid without net_cls cgroups\n"
-+
-+static bool possible_classid(u32 classid)
-+{
-+	return IS_ENABLED(CONFIG_CGROUP_NET_CLASSID) || classid == 0;
-+}
-+
- static int cgroup_mt_check_v0(const struct xt_mtchk_param *par)
- {
- 	struct xt_cgroup_info_v0 *info = par->matchinfo;
-@@ -30,6 +37,11 @@ static int cgroup_mt_check_v0(const struct xt_mtchk_param *par)
- 	if (info->invert & ~1)
- 		return -EINVAL;
- 
-+	if (!possible_classid(info->id)) {
-+		pr_info(NET_CLS_CLASSID_INVALID_MSG);
-+		return -EINVAL;
-+	}
-+
- 	return 0;
- }
- 
-@@ -51,6 +63,11 @@ static int cgroup_mt_check_v1(const struct xt_mtchk_param *par)
- 		return -EINVAL;
- 	}
- 
-+	if (!possible_classid(info->classid)) {
-+		pr_info(NET_CLS_CLASSID_INVALID_MSG);
-+		return -EINVAL;
-+	}
-+
- 	info->priv = NULL;
- 	if (info->has_path) {
- 		cgrp = cgroup_get_from_path(info->path);
-@@ -83,6 +100,11 @@ static int cgroup_mt_check_v2(const struct xt_mtchk_param *par)
- 		return -EINVAL;
- 	}
- 
-+	if (info->has_classid && !possible_classid(info->classid)) {
-+		pr_info(NET_CLS_CLASSID_INVALID_MSG);
-+		return -EINVAL;
-+	}
-+
- 	info->priv = NULL;
- 	if (info->has_path) {
- 		cgrp = cgroup_get_from_path(info->path);
+> > 
+> > More questions/comments in other parts of this thread.
+> 
+> Sure, I'm happy to help with this effort with discussions/reviews!
+> 
 
-base-commit: dd83757f6e686a2188997cb58b5975f744bb7786
--- 
-2.48.1
+Awesome, thank you!
 
+Best,
+Bobby
