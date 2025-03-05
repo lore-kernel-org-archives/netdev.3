@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27F1257AC8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A5F25BAD7
 	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 21:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741210565; cv=none; b=qGRr6dXXngBPA+WzqXsGhA9u65k4nQ+Ucv0qeGV0jMsJxMS9EE/YPdol1J8Z2+a8qQD6iols2n6Dw2TYlQ+xeA8fmndHq1aIqaa9WrKdz1qnXr66qBgnYg0V4RbUuQ+whc3ysNH/2VOaZ2iMf+iA8P6yePkptPx6CM8q7b+rWeQ=
+	t=1741210565; cv=none; b=KfWS/8NC/+Yd1uD8Q0yIxy4Y2GDNlb6j6i3J5r5vUTxaseQWdZB0riNSl0HLwPRxt2MM/kUr80Hit51yL1cuFk2jAROdgf4PyWkoQd7Nl8I2VUBS5Y2zLzuNzKBiBW8zmKED5yCGTcCRhN6wqx7eZhH5l4Y7NCr/llYH9PLPLB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741210565; c=relaxed/simple;
-	bh=xZF9mGXmB44HOH7lioiVMEtFdGRrl8k8zjhnuToNjeY=;
+	bh=uNRKKVqID7kZB9OgAHMn4nS931Qj79b5NBPgV2Wo9fY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNS/FgsIxu7Zik7bZeQOKI/6OvCw2fL2KwALTicSRanIuxeTqCj0W4LiVXZKWUYrWmW7RN53PSVob4mrjPo0ORqSQ6XglET/jMEhgju7fQ1FHHCmk0hD55jyIADuVHMQnO4ZVp3aV8VpeZQTatKb+BLX5vKjmIIlHirvpWnVgAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gdKFtwFp; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=iqr30iwudkegsveUbFXLl+Q/fNSOZ36JG5sbDKYoF/7bRn9SYNjwVXIbC+0Wt4XojJgILE6HGZdkalpGT7E1zXjKyOl/Vu46HELajS1wOoG1+yRWTdXWrXgNIiWydUhXB8ODW48mswPtfk010pt+K81f6VBZ6J7amfSA+QluFhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SBD2S2yd; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gdKFtwFp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SBD2S2yd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741210563; x=1772746563;
+  t=1741210564; x=1772746564;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=xZF9mGXmB44HOH7lioiVMEtFdGRrl8k8zjhnuToNjeY=;
-  b=gdKFtwFpqTGfowsAujvOUP749vlbWlrZRb3+aR45Mp5TsPkjg7itll52
-   5b6X0MVH77W++EfQbxDMhMm0qsKD7v1ngCioZNPO52G2w7SrqsSqwvIbJ
-   fbVTAR/11NSaEYNfi7lWyQWx6lhD18oMUzDzJTG/cpsR1J8pifKmwScWr
-   GwudlykpvjI6Ck/s20bqwYpuAVNwX2AsiVJ+7Is8fAhabuhVNqcGgLgUm
-   HyQnvXWaJ1dX2buGJX2tz1iGC3UR/A/QtNzVdOhFpUFfVAEbJY8h3qwju
-   twsXsRGelR0CUd6QkPPmmEAgjIQkLQXKHcTgrBwRHXDjTyViI82ZMGrXE
-   A==;
-X-CSE-ConnectionGUID: YrktvPoCSd+fYFKrXcUXKg==
-X-CSE-MsgGUID: g0ekssfgQIWIE6HILmgBRA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="53606493"
+  bh=uNRKKVqID7kZB9OgAHMn4nS931Qj79b5NBPgV2Wo9fY=;
+  b=SBD2S2ydO1SiCN8r2ilvgKkyHYMDKUAUqlE3gXoPegaO+jgeK3fCUI9j
+   ClQ5fOPBADtr+i7tucoNJvuQpYg8yc6yd/bBxbQrPOU5Z/ukd+qEZiVC9
+   ncAxU4bIOvaX+0TBFdPnbyXydJG34uvVT40FXydqC/D69mEROeMQanSvV
+   U+9Te6gdO9AygBA/sHjdGm4H+t5GN/21De9V1kcFZ/Iu2Ytf4z5Qn2b5k
+   7eSU0uuaVNYvTltLi14JBZu8aaExU3XJGu4ZIJoUg+Vt8ZpcLk9oOyXu3
+   u+Fsw6bRuwjlovdsYaqsd7l1KWZ4tNvR3HnN89I8xyaSEc7HoSceg4M0O
+   Q==;
+X-CSE-ConnectionGUID: lAFSCCvqR8KgK0D4/WmWQA==
+X-CSE-MsgGUID: aR3dfUkbQ0io9UcQPAAcdw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="53606497"
 X-IronPort-AV: E=Sophos;i="6.14,224,1736841600"; 
-   d="scan'208";a="53606493"
+   d="scan'208";a="53606497"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
   by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 13:35:58 -0800
-X-CSE-ConnectionGUID: WqN3wkqxQJOoI/hqvNLBnA==
-X-CSE-MsgGUID: tXylPksPR9KNFoJRv06QRQ==
+X-CSE-ConnectionGUID: Ga2Be8GyRtm+JnoU0n3NSQ==
+X-CSE-MsgGUID: 1+NjlbOpRnW7fmldOVb1iw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,224,1736841600"; 
-   d="scan'208";a="123828489"
+   d="scan'208";a="123828483"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa004.jf.intel.com with ESMTP; 05 Mar 2025 13:35:55 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,17 +50,14 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>,
 	anthony.l.nguyen@intel.com,
-	horms@kernel.org,
-	jiri@resnulli.us,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Konrad Knitter <konrad.knitter@intel.com>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>
-Subject: [PATCH net 4/4] ice: register devlink prior to creating health reporters
-Date: Wed,  5 Mar 2025 13:35:46 -0800
-Message-ID: <20250305213549.1514274-5-anthony.l.nguyen@intel.com>
+	Simon Horman <horms@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH net 2/4] ice: fix memory leak in aRFS after reset
+Date: Wed,  5 Mar 2025 13:35:44 -0800
+Message-ID: <20250305213549.1514274-3-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305213549.1514274-1-anthony.l.nguyen@intel.com>
 References: <20250305213549.1514274-1-anthony.l.nguyen@intel.com>
@@ -72,55 +69,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-ice_health_init() was introduced in the commit 2a82874a3b7b ("ice: add
-Tx hang devlink health reporter"). The call to it should have been put
-after ice_devlink_register(). It went unnoticed until next reporter by
-Konrad, which receives events from FW. FW is reporting all events, also
-from prior driver load, and thus it is not unlikely to have something
-at the very beginning. And that results in a splat:
-[   24.455950]  ? devlink_recover_notify.constprop.0+0x198/0x1b0
-[   24.455973]  devlink_health_report+0x5d/0x2a0
-[   24.455976]  ? __pfx_ice_health_status_lookup_compare+0x10/0x10 [ice]
-[   24.456044]  ice_process_health_status_event+0x1b7/0x200 [ice]
+Fix aRFS (accelerated Receive Flow Steering) structures memory leak by
+adding a checker to verify if aRFS memory is already allocated while
+configuring VSI. aRFS objects are allocated in two cases:
+- as part of VSI initialization (at probe), and
+- as part of reset handling
 
-Do the analogous thing for deinit patch.
+However, VSI reconfiguration executed during reset involves memory
+allocation one more time, without prior releasing already allocated
+resources. This led to the memory leak with the following signature:
 
-Fixes: 85d6164ec56d ("ice: add fw and port health reporters")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+[root@os-delivery ~]# cat /sys/kernel/debug/kmemleak
+unreferenced object 0xff3c1ca7252e6000 (size 8192):
+  comm "kworker/0:0", pid 8, jiffies 4296833052
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 0):
+    [<ffffffff991ec485>] __kmalloc_cache_noprof+0x275/0x340
+    [<ffffffffc0a6e06a>] ice_init_arfs+0x3a/0xe0 [ice]
+    [<ffffffffc09f1027>] ice_vsi_cfg_def+0x607/0x850 [ice]
+    [<ffffffffc09f244b>] ice_vsi_setup+0x5b/0x130 [ice]
+    [<ffffffffc09c2131>] ice_init+0x1c1/0x460 [ice]
+    [<ffffffffc09c64af>] ice_probe+0x2af/0x520 [ice]
+    [<ffffffff994fbcd3>] local_pci_probe+0x43/0xa0
+    [<ffffffff98f07103>] work_for_cpu_fn+0x13/0x20
+    [<ffffffff98f0b6d9>] process_one_work+0x179/0x390
+    [<ffffffff98f0c1e9>] worker_thread+0x239/0x340
+    [<ffffffff98f14abc>] kthread+0xcc/0x100
+    [<ffffffff98e45a6d>] ret_from_fork+0x2d/0x50
+    [<ffffffff98e083ba>] ret_from_fork_asm+0x1a/0x30
+    ...
+
+Fixes: 28bf26724fdb ("ice: Implement aRFS")
 Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Konrad Knitter <konrad.knitter@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_arfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index c3a0fb97c5ee..e13bd5a6cb6c 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -5065,16 +5065,16 @@ static int ice_init_devlink(struct ice_pf *pf)
- 		return err;
+diff --git a/drivers/net/ethernet/intel/ice/ice_arfs.c b/drivers/net/ethernet/intel/ice/ice_arfs.c
+index 7cee365cc7d1..405ddd17de1b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_arfs.c
++++ b/drivers/net/ethernet/intel/ice/ice_arfs.c
+@@ -511,7 +511,7 @@ void ice_init_arfs(struct ice_vsi *vsi)
+ 	struct hlist_head *arfs_fltr_list;
+ 	unsigned int i;
  
- 	ice_devlink_init_regions(pf);
--	ice_health_init(pf);
- 	ice_devlink_register(pf);
-+	ice_health_init(pf);
+-	if (!vsi || vsi->type != ICE_VSI_PF)
++	if (!vsi || vsi->type != ICE_VSI_PF || ice_is_arfs_active(vsi))
+ 		return;
  
- 	return 0;
- }
- 
- static void ice_deinit_devlink(struct ice_pf *pf)
- {
--	ice_devlink_unregister(pf);
- 	ice_health_deinit(pf);
-+	ice_devlink_unregister(pf);
- 	ice_devlink_destroy_regions(pf);
- 	ice_devlink_unregister_params(pf);
- }
+ 	arfs_fltr_list = kcalloc(ICE_MAX_ARFS_LIST, sizeof(*arfs_fltr_list),
 -- 
 2.47.1
 
