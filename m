@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5ED266B6E
-	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 22:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4A5266EE8
+	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 22:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741215155; cv=none; b=OGpJxpXd487V935y6u5eKduyS2QG4eskZaMDhlsR5jHKHeT93irZ0QD8m4B/rjs4Ya7Snq/3TWUmwDFKBpeS5Wutey4KyALg2pUAQ/3QsHsufW4y0GpymaDCQNGZq+GheEpk3Dcq8c1sgA1QBDx/+qqTSfdXyWouCrFLnd5X+M0=
+	t=1741215155; cv=none; b=sMf4vpnzhbaJO/9fUa4OVFKW5GgwhtvpavW7RtSxMv+UnJ+NSfUK8aZg3QAMObwK8Tw22lE4LruDd2pxx5fJN0dPGmCpmuGadknT8Tf79iDt/MPrIod/ei/wc76HuTX7mz26jdlpqL6XQZRKkiSR2Fr9wHoYULN4oH2SXKkp2QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741215155; c=relaxed/simple;
-	bh=IY20lfkY+UNYlWGCZFCHdOtNVnxbujeCAbHCmOJ+44E=;
+	bh=7xfdE6ulWRHzqg2UefNkQLPvSQm33yTlOcS3wYTbyYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qaDzABKLNAr6OhLCsm7srB6Fuo0Od6nIP3u66AcY3XkyDEVpwZxLTzVVeaxgwOYg02UQ6zEbVjxOriHKhFPbxoKlUGmKq/KJMFTMmxvLyWJFMKfFRSE3RgkWPuzXG2OvY8cLhmqpyZRwWZUXC63UpjJNvH/O++DRyrth3pnB9DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aT3OOD8j; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=BonUe+374/z3GpIV7Rx4L86r6ihknX92xBckPatyiAFwBKcHii7ecftjoM3KJqtItvTfTFFLsl5IJlBT9zEICjabrQROTnJ6Ho7283l6F2qk1UlhlYTr09RhFf8taMF1LsxCBIBs2AefzPatEU9yketd1b4cq1nd9ctDvVRFrVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TbhIJ9Va; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aT3OOD8j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0FFC4CEEA;
-	Wed,  5 Mar 2025 22:52:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TbhIJ9Va"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999D9C4CEEE;
+	Wed,  5 Mar 2025 22:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741215155;
-	bh=IY20lfkY+UNYlWGCZFCHdOtNVnxbujeCAbHCmOJ+44E=;
+	s=k20201202; t=1741215153;
+	bh=7xfdE6ulWRHzqg2UefNkQLPvSQm33yTlOcS3wYTbyYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aT3OOD8jKI7VdY+OAGk9+sE31vGyy32v0A1KgSyS4+mM7yY7A+gNF6MxNqN/SclhA
-	 3LSA9kVlXOm5UrSvoe7pJ0dOc7vvWaVuTJunEZHpOtBTbKFirk9+kVg/jenvPODuuF
-	 jjIRJkrYVEM1EB0pQG0jBO3hff66RmvHTaCHb8p3Gv8bTu6fV6eo3q1EMcO975iHBS
-	 fZkOGA01CivkytgNc0E6I8JeMLd6jT9gIkB54XRMnMTj1YDmMkvoA4KDh7Oou5anFN
-	 ztYTZpVShdMqy0qDDzXyC42Tzv4MwRIHijkhSk2+pTlc+TMoY3tezzwUkzhtxYVIKD
-	 tBHWceMf1xAFQ==
+	b=TbhIJ9VatxUj2krlfBGA5XKxqbSG38IGbke/8zn1aatG3yTXQ5qhxK4H1ngl0Wws+
+	 2rpEGQkcpJekGnUPiIIkt8JVCvPw6GWqbeOLnFrAA6F9z/0mrgf4HpVrH4Cqh3NL2z
+	 6ETdnpxg/aUZziFPOzGamu9Mld1mkIS13V+eLDhduC2yLRRsGjvJBAxoXYShMxzZ+4
+	 uNHh6kvYSGpEXWt/xm7iq158VimlOqclcfLZwKEQF008KMDwBs0UZII3eH6FlQfo+X
+	 TAL1Om8WW2lWdGEorcnpTB/OtzXDbR0aM4rnlT5B/eYCMT9+Iq4Fj0D46MZGJubAcq
+	 2U0rtZjwh/QdA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -37,9 +37,9 @@ Cc: netdev@vger.kernel.org,
 	pavan.chebbi@broadcom.com,
 	przemyslaw.kitszel@intel.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v3 07/10] eth: bnxt: extract VLAN info early on
-Date: Wed,  5 Mar 2025 14:52:12 -0800
-Message-ID: <20250305225215.1567043-8-kuba@kernel.org>
+Subject: [PATCH net-next v3 04/10] eth: bnxt: snapshot driver stats
+Date: Wed,  5 Mar 2025 14:52:09 -0800
+Message-ID: <20250305225215.1567043-5-kuba@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305225215.1567043-1-kuba@kernel.org>
 References: <20250305225215.1567043-1-kuba@kernel.org>
@@ -51,109 +51,86 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Michael would like the SW stats to include VLAN bytes, perhaps
-uniquely among ethernet drivers. To do this we need to extract
-the VLAN info before we call XDP, so before skb is allocated.
+Subsequent commits will add datapath stats which need u64_stats
+protection. Make current readers work on a snapshot, so it's
+easier to extend this code without much duplication.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 42 ++++++++++-------------
- 1 file changed, 18 insertions(+), 24 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 31 +++++++++++++++--------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index dba4779f0925..b0a9e3c6b377 100644
+index 4b85f224c344..854e7ec5390b 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -1966,45 +1966,36 @@ static bool bnxt_rx_ts_valid(struct bnxt *bp, u32 flags,
- 	return true;
+@@ -13093,6 +13093,12 @@ static int bnxt_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
+ 	return -EOPNOTSUPP;
  }
  
--static struct sk_buff *bnxt_rx_vlan(struct sk_buff *skb, u8 cmp_type,
--				    struct rx_cmp *rxcmp,
--				    struct rx_cmp_ext *rxcmp1)
-+static u32
-+bnxt_rx_vlan(u8 cmp_type, struct rx_cmp *rxcmp, struct rx_cmp_ext *rxcmp1)
++static void bnxt_drv_stat_snapshot(const struct bnxt_sw_stats *sw_stats,
++				   struct bnxt_sw_stats *snapshot)
++{
++	memcpy(snapshot, sw_stats, sizeof(*snapshot));
++}
++
+ static void bnxt_get_ring_stats(struct bnxt *bp,
+ 				struct rtnl_link_stats64 *stats)
  {
--	__be16 vlan_proto;
--	u16 vtag;
-+	u16 vlan_proto = 0, vtag = 0;
+@@ -13101,8 +13107,11 @@ static void bnxt_get_ring_stats(struct bnxt *bp,
+ 	for (i = 0; i < bp->cp_nr_rings; i++) {
+ 		struct bnxt_napi *bnapi = bp->bnapi[i];
+ 		struct bnxt_cp_ring_info *cpr = &bnapi->cp_ring;
++		struct bnxt_sw_stats sw_stats;
+ 		u64 *sw = cpr->stats.sw_stats;
  
- 	if (cmp_type == CMP_TYPE_RX_L2_CMP) {
- 		__le32 flags2 = rxcmp1->rx_cmp_flags2;
- 		u32 meta_data;
- 
- 		if (!(flags2 & cpu_to_le32(RX_CMP_FLAGS2_META_FORMAT_VLAN)))
--			return skb;
-+			return 0;
- 
- 		meta_data = le32_to_cpu(rxcmp1->rx_cmp_meta_data);
- 		vtag = meta_data & RX_CMP_FLAGS2_METADATA_TCI_MASK;
--		vlan_proto = htons(meta_data >> RX_CMP_FLAGS2_METADATA_TPID_SFT);
--		if (eth_type_vlan(vlan_proto))
--			__vlan_hwaccel_put_tag(skb, vlan_proto, vtag);
--		else
--			goto vlan_err;
-+		vlan_proto = meta_data >> RX_CMP_FLAGS2_METADATA_TPID_SFT;
- 	} else if (cmp_type == CMP_TYPE_RX_L2_V3_CMP) {
- 		if (RX_CMP_VLAN_VALID(rxcmp)) {
- 			u32 tpid_sel = RX_CMP_VLAN_TPID_SEL(rxcmp);
- 
- 			if (tpid_sel == RX_CMP_METADATA1_TPID_8021Q)
--				vlan_proto = htons(ETH_P_8021Q);
-+				vlan_proto = ETH_P_8021Q;
- 			else if (tpid_sel == RX_CMP_METADATA1_TPID_8021AD)
--				vlan_proto = htons(ETH_P_8021AD);
-+				vlan_proto = ETH_P_8021AD;
- 			else
--				goto vlan_err;
-+				vlan_proto = 0xffff;
- 			vtag = RX_CMP_METADATA0_TCI(rxcmp1);
--			__vlan_hwaccel_put_tag(skb, vlan_proto, vtag);
- 		}
- 	}
--	return skb;
--vlan_err:
--	dev_kfree_skb(skb);
--	return NULL;
++		bnxt_drv_stat_snapshot(cpr->sw_stats, &sw_stats);
 +
-+	return (u32)vlan_proto << 16 | vtag;
+ 		stats->rx_packets += BNXT_GET_RING_STATS64(sw, rx_ucast_pkts);
+ 		stats->rx_packets += BNXT_GET_RING_STATS64(sw, rx_mcast_pkts);
+ 		stats->rx_packets += BNXT_GET_RING_STATS64(sw, rx_bcast_pkts);
+@@ -13127,8 +13136,8 @@ static void bnxt_get_ring_stats(struct bnxt *bp,
+ 		stats->tx_dropped += BNXT_GET_RING_STATS64(sw, tx_error_pkts);
+ 
+ 		stats->rx_dropped +=
+-			cpr->sw_stats->rx.rx_netpoll_discards +
+-			cpr->sw_stats->rx.rx_oom_discards;
++			sw_stats.rx.rx_netpoll_discards +
++			sw_stats.rx.rx_oom_discards;
+ 	}
  }
  
- static enum pkt_hash_types bnxt_rss_ext_op(struct bnxt *bp,
-@@ -2049,6 +2040,7 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
- 	struct sk_buff *skb;
- 	struct xdp_buff xdp;
- 	u32 flags, misc;
-+	u32 vlan_info;
- 	u32 cmpl_ts;
- 	void *data;
- 	int rc = 0;
-@@ -2163,6 +2155,10 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
- 	if (cmp_type == CMP_TYPE_RX_L2_CMP)
- 		dev = bnxt_get_pkt_dev(bp, RX_CMP_CFA_CODE(rxcmp1));
+@@ -13195,20 +13204,22 @@ static void bnxt_get_one_ring_drv_stats(struct bnxt *bp,
+ 					struct bnxt_total_ring_drv_stats *stats,
+ 					struct bnxt_cp_ring_info *cpr)
+ {
+-	struct bnxt_sw_stats *sw_stats = cpr->sw_stats;
+ 	u64 *hw_stats = cpr->stats.sw_stats;
++	struct bnxt_sw_stats sw_stats;
  
-+	vlan_info = bnxt_rx_vlan(cmp_type, rxcmp, rxcmp1);
-+	if (vlan_info && !eth_type_vlan(htons(vlan_info >> 16)))
-+		goto next_rx;
+-	stats->rx_total_l4_csum_errors += sw_stats->rx.rx_l4_csum_errors;
+-	stats->rx_total_resets += sw_stats->rx.rx_resets;
+-	stats->rx_total_buf_errors += sw_stats->rx.rx_buf_errors;
+-	stats->rx_total_oom_discards += sw_stats->rx.rx_oom_discards;
+-	stats->rx_total_netpoll_discards += sw_stats->rx.rx_netpoll_discards;
++	bnxt_drv_stat_snapshot(cpr->sw_stats, &sw_stats);
 +
- 	if (bnxt_xdp_attached(bp, rxr)) {
- 		bnxt_xdp_buff_init(bp, rxr, cons, data_ptr, len, &xdp);
- 		if (agg_bufs) {
-@@ -2246,11 +2242,9 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
++	stats->rx_total_l4_csum_errors += sw_stats.rx.rx_l4_csum_errors;
++	stats->rx_total_resets += sw_stats.rx.rx_resets;
++	stats->rx_total_buf_errors += sw_stats.rx.rx_buf_errors;
++	stats->rx_total_oom_discards += sw_stats.rx.rx_oom_discards;
++	stats->rx_total_netpoll_discards += sw_stats.rx.rx_netpoll_discards;
+ 	stats->rx_total_ring_discards +=
+ 		BNXT_GET_RING_STATS64(hw_stats, rx_discard_pkts);
+-	stats->tx_total_resets += sw_stats->tx.tx_resets;
++	stats->tx_total_resets += sw_stats.tx.tx_resets;
+ 	stats->tx_total_ring_discards +=
+ 		BNXT_GET_RING_STATS64(hw_stats, tx_discard_pkts);
+-	stats->total_missed_irqs += sw_stats->cmn.missed_irqs;
++	stats->total_missed_irqs += sw_stats.cmn.missed_irqs;
+ }
  
- 	skb->protocol = eth_type_trans(skb, dev);
- 
--	if (skb->dev->features & BNXT_HW_FEATURE_VLAN_ALL_RX) {
--		skb = bnxt_rx_vlan(skb, cmp_type, rxcmp, rxcmp1);
--		if (!skb)
--			goto next_rx;
--	}
-+	if (vlan_info && skb->dev->features & BNXT_HW_FEATURE_VLAN_ALL_RX)
-+		__vlan_hwaccel_put_tag(skb, htons(vlan_info >> 16),
-+				       vlan_info & 0xffff);
- 
- 	skb_checksum_none_assert(skb);
- 	if (RX_CMP_L4_CS_OK(rxcmp1)) {
+ void bnxt_get_ring_drv_stats(struct bnxt *bp,
 -- 
 2.48.1
 
