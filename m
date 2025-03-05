@@ -1,84 +1,117 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC792505A3;
-	Wed,  5 Mar 2025 14:44:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39563594C;
+	Wed,  5 Mar 2025 14:46:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741185858; cv=none; b=shF5yICROgrAKPAJ1ypI6j6ydme4bu+FJAIvMO13YqAwRrHXjzwNd9qIqHcTL2LqfyZGnimqwIUcrW9XorDjXnPwRE+MRtmWd+oP49Y7Dc84p+oYMIZ9MHh4Fz2lktZ0Gw8H9ZV87ze9rhzY9zZBVTCpjE+iMcm31Jqc3Qgeeqs=
+	t=1741185998; cv=none; b=lqm4yRbQVuKKuAjxIsl6W1TDXkGdqfwB5OCmY/6SSLa92rndtvC0C/BcgRVun75U7Fqs50cYMJT2r5HBOzVjETkxxfEXFPtMkR1iQ0p0DvD7Hpo607j+Kgv2P6fL6zudLvGcc3s1hFquSX2IYjeRAWfHp5lNP/nxT/vBt3LxVVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741185858; c=relaxed/simple;
-	bh=HDAKKlonGba8rX1tjbow73YK4MXTBgC+sezxw2K7eec=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oh4kob52hejA/1PIIsGJBVJ/RQLskKkGqluc4eZAzfvjkVU+J7Ld5+AFgv/nPlqVAWo6rMVYdvXCyJIh4HNVktimp9zcQekq9eZL+e2cgGV0h6GBijEO6P0gq6q32AwBfWGdMFAgXlwS2LWQ+aNCzyJwrds8cXbyGcclEpS2GJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=jW9wJ7/p; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1741185998; c=relaxed/simple;
+	bh=UNQnrk7ea2qjUTxEYudX1sfMK1ZpSwuAnn5ETANGDms=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mY+Hxu/ZaTvAVRbf3VeVaTFagIk96ewaQUONGnUa09NLsLB2jajymKMrXiChveUP2Ory65EgKH3+ZrIG51+1pXG/yEGEa6NVrUtQncZ9np/uePSLbOKblWc4IsMkrYeUGl4U5AIporUrZ3jckdCVBXaNuet2gAxoPF4N9giaFzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ROnFcmmv; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="jW9wJ7/p"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ezfHGj2cBWaEtzI2GUJQGGe0pXWbLGhCMJSGAb0XXr4=; b=jW9wJ7/ppvRin+Y4JUSWXTLaM1
-	yehJW1Smm4DGYwEuwb5ZvnlCk/wtdsusMLbKAZjT74M3C2oeSJFjV1z67c8sepbl0eBldOJOSZQdq
-	JShkPG3qy+eEoQwya185JoDQGas0okfzmC29Q6E+26u5/JB4hlyr6S5VfDe9Ch25F8I4Prf86oI2G
-	T7OAdYOsXBDpahK2sJya6ri14yku28ZMfZ2PIEqjK0tfSFMvKSDAUdxE3d3nqbI9oi+Qg8e/SAtY2
-	pS8pI8x/yJhA8HBfvyDWjao6InfAmpX3NHEWmFtK97D06F3vJMQd+CAkQPfOy5VeVYS6rNCf6tRCg
-	0A+NQqJw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:45016)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tppyZ-0004Sc-2H;
-	Wed, 05 Mar 2025 14:43:59 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tppyS-0005rB-2p;
-	Wed, 05 Mar 2025 14:43:52 +0000
-Date: Wed, 5 Mar 2025 14:43:52 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Swathi K S <swathi.ks@samsung.com>
-Cc: krzk+dt@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	robh@kernel.org, conor+dt@kernel.org, richardcochran@gmail.com,
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	pankaj.dubey@samsung.com, ravi.patel@samsung.com,
-	gost.dev@samsung.com
-Subject: Re: [PATCH v8 2/2] net: stmmac: dwc-qos: Add FSD EQoS support
-Message-ID: <Z8hjKI1ZqU19nrTP@shell.armlinux.org.uk>
-References: <20250305091246.106626-1-swathi.ks@samsung.com>
- <CGME20250305091856epcas5p4228c09989c7acfe45a99541eef01fbcd@epcas5p4.samsung.com>
- <20250305091246.106626-3-swathi.ks@samsung.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ROnFcmmv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741185997; x=1772721997;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=UNQnrk7ea2qjUTxEYudX1sfMK1ZpSwuAnn5ETANGDms=;
+  b=ROnFcmmvnAgnfLNkNQ4ab7GAJwbq6NdIiFcMAu1Yjpegc9AJFkqIIqMk
+   otMtYbxMAQ09a5jYRtpbR17lSMcHg9qwQITdEJGRQYS8ywb6S3EiB2a/l
+   Xy7MxbF+HB2cbMmP594yDORVSfc3WMs57Eq5y+p9nrKtTN0wWOEgJpJGh
+   6pl69+9yKJsPEPly2kwHOSsH7bWDuYgDc4Z6aXwyj+n+JRShzeuExX4XJ
+   nbYA5cuRHbeFoaTZajmUqLbQQmDstLCLnDvr2OPfduq0DkHLoionzdWk/
+   y3jt8G6c7yZtwZMeM8Lv+b9xBGKV6brGr9+HQ97RqTIPR96MMpF2xQjwU
+   Q==;
+X-CSE-ConnectionGUID: TfTo2LXyTCeeCcVXduVKnQ==
+X-CSE-MsgGUID: yo8bHt+5R6iN7KaN4lgtKw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="52355897"
+X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; 
+   d="scan'208";a="52355897"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 06:46:36 -0800
+X-CSE-ConnectionGUID: p8lwS4tDSHyq62YldatsFw==
+X-CSE-MsgGUID: sj0NcocZQvixdZxT7/WTXw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; 
+   d="scan'208";a="123296897"
+Received: from brc05.iind.intel.com (HELO brc05..) ([10.190.162.156])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 06:46:33 -0800
+From: Tushar Vyavahare <tushar.vyavahare@intel.com>
+To: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	bjorn@kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	jonathan.lemon@gmail.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	tirthendu.sarkar@intel.com,
+	tushar.vyavahare@intel.com
+Subject: [PATCH bpf-next v3 0/2] selftests/xsk: Add tests for XDP tail adjustment in AF_XDP
+Date: Wed,  5 Mar 2025 14:18:11 +0000
+Message-Id: <20250305141813.286906-1-tushar.vyavahare@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250305091246.106626-3-swathi.ks@samsung.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 05, 2025 at 02:42:46PM +0530, Swathi K S wrote:
-> The FSD SoC contains two instance of the Synopsys DWC ethernet QOS IP core.
-> The binding that it uses is slightly different from existing ones because
-> of the integration (clocks, resets).
-> 
-> Signed-off-by: Swathi K S <swathi.ks@samsung.com>
+This patch series adds tests to validate the XDP tail adjustment
+functionality, focusing on its use within the AF_XDP context. The tests
+verify dynamic packet size manipulation using the bpf_xdp_adjust_tail()
+helper function, covering both single and multi-buffer scenarios.
 
-This looks much better!
+v1 -> v2:
+1. Retain and extend stream replacement: Keep `pkt_stream_replace`
+   unchanged. Add `pkt_stream_replace_ifobject` for targeted ifobject
+   handling.
 
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+2. Consolidate patches: Merge patches 2 to 6 for tail adjustment tests and
+   check.
 
-Thanks!
+v2 -> v3:
+1. Introduce `adjust_value` to replace `count` for clearer communication
+   with userspace.
+
+---
+Patch Summary:
+
+1. Packet stream replacement: Add `pkt_stream_replace_ifobject` to manage
+   packet streams efficiently.
+
+2. Tail adjustment tests and support check: Implement dynamic packet
+   resizing in xskxceiver by adding `xsk_xdp_adjust_tail` and extend this
+   functionality to userspace with `testapp_xdp_adjust_tail` for
+   validation. Ensure support by adding `is_adjust_tail_supported` to
+   verify the availability of `bpf_xdp_adjust_tail()`. Introduce tests for
+   shrinking and growing packets using `bpf_xdp_adjust_tail()`, covering
+   both single and multi-buffer scenarios when used with AF_XDP.
+---
+
+Tushar Vyavahare (2):
+  selftests/xsk: Add packet stream replacement function
+  selftests/xsk: Add tail adjustment tests and support check
+
+Signed-off-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
+
+ .../selftests/bpf/progs/xsk_xdp_progs.c       |  49 +++++++
+ tools/testing/selftests/bpf/xsk_xdp_common.h  |   1 +
+ tools/testing/selftests/bpf/xskxceiver.c      | 120 ++++++++++++++++--
+ tools/testing/selftests/bpf/xskxceiver.h      |   2 +
+ 4 files changed, 164 insertions(+), 8 deletions(-)
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.34.1
+
