@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFC9282EE;
-	Wed,  5 Mar 2025 01:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D185E11187;
+	Wed,  5 Mar 2025 01:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741137010; cv=none; b=JQMy4ONwLpJZ0qerMH4ntQx6+iVxraRhY3NS3qnLLdBug+YMSyNh4QN+Hq5nMxa/44LCDohAJXDiWX7ix1r7H2NtM/+YmX4ziUr8Hx2+dJCwCYWIyOHifJInkYRrDQHaSRoGlydu72Q9iri5WtkhN0RZ8cmSx5aBgHcHtGbWyVc=
+	t=1741137599; cv=none; b=HrdH4DL6HzWxvMpvTnOXOm8pCl9rCuoVdUB6Ma+Ykm6vvEWtCuQocEGKs5UQX5QBhfmTeYskJOoonlFL0HfOXM30FUPsqb26SgPsk/hJDPUqFoL7cO2aX9fgHt1VPStB/D7nJlOyAHOtfeoImgV1S0F1A7Nm8Ra2ND9dM97WrB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741137010; c=relaxed/simple;
-	bh=o2GS4bqqE977OqAGP8Gc1WH1R92Ml4Sy3dtY91sTP1c=;
+	s=arc-20240116; t=1741137599; c=relaxed/simple;
+	bh=Zo1aULGkAE1iQtalKdej5/kWzCNtDu/xrdwQwX+JEHA=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=I3U0KqkYKo5mXayJCv37rJ+ftafZnRxTNxRkTfC0HrMiI4RORncGCEN7btgHdWMRiPnlFYvxzT+s84GuNWAPfVdWPY+3U4DlZkl+kCLwrpjb3w5mmcH8xVh0XGR3OdZP/o1Ugdyi3BCVuMhu3FvLujTOu18r9/jl1kC2BFvY1Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MIBs/HvY; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=E/klvnAE5YmEJgOZDpRIHrfaxrYnpz7tA+Zz4pKJ0mnOGoZR6Z+8lUxBsZTM1Y0zuzHB7bIrBg+/UX0n6jt8o4GPj2STD93K/Sr2RTmV9xCbu0dB72+JAQfqudbo96Ulb41TQ7cjR11GqxB/FGhfnme9SqzOG4WxIH7aCmv2hqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qeRb9AB/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MIBs/HvY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9050AC4CEE5;
-	Wed,  5 Mar 2025 01:10:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qeRb9AB/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4240FC4CEE5;
+	Wed,  5 Mar 2025 01:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741137009;
-	bh=o2GS4bqqE977OqAGP8Gc1WH1R92Ml4Sy3dtY91sTP1c=;
+	s=k20201202; t=1741137599;
+	bh=Zo1aULGkAE1iQtalKdej5/kWzCNtDu/xrdwQwX+JEHA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=MIBs/HvYoceKM6s3CP46Kv7DLdc7J5vFMIqW7wXABFnd3wmYrxt8DEc3NycgW+Yn3
-	 BxLIYp9wKh/07ldbNG0h09RTuY9VYsOf4cnqUiZc1KqItIC5ERhAMOxHkCjUslS9xD
-	 VQ6wW8BQRqLp0g0YAC9k9ofAWwkiEWWwqX9xzFuVdbEcsB1hb6l/cb9g78Vgq9Qy9Y
-	 PojeabFho7z7OHPRm9dD5XsCihqxhMlwrroiT1zvnc65KAPe9uuDgEfpWgId3L9sCp
-	 qeA8zi8IOg6EwWLK7lWlwQ9i8rpVgKs8UrI3IBiYX8hCvnJjr53Oj+8Eq33Ht84poV
-	 068afxA5xpWdQ==
+	b=qeRb9AB/dK9DxTDq3Tvy1mXCAEgv6QPsLIucgKLTT79XycFRf90j97Egn9o2ubQDg
+	 /Hq0ILo7De2QZxOPHR33hK5REBVX6RFNhi9bk+J0loyC5XWIJmYn+5OlKbwFchGBgU
+	 b8+n0obMSTlk+PPOmYIx28t8ukbrq9jyOVw131Y6ljzJZgh8RDKImzjSyzs3GlzOiw
+	 jMlc+XDd14OD8Qft/rzQMrxu70AGRlJBU18iOli2nIHsD9qmqk0tuaN1hjeA9pESrP
+	 T3H2kZjcIipz3GY6LTq7+OSU/ZULXAomdDWvrlW/wKikuRmmDio5wQNLoGclAx/MCW
+	 23RaUrxik/WpA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE531380CFEB;
-	Wed,  5 Mar 2025 01:10:43 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7106D380CFEB;
+	Wed,  5 Mar 2025 01:20:33 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,46 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/5] mptcp: improve code coverage and small
- optimisations
+Subject: Re: [PATCH net v2] net: ethtool: netlink: Allow NULL nlattrs when getting
+ a phy_device
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174113704249.354590.10497092944102408031.git-patchwork-notify@kernel.org>
-Date: Wed, 05 Mar 2025 01:10:42 +0000
-References: <20250228-net-next-mptcp-coverage-small-opti-v1-0-f933c4275676@kernel.org>
-In-Reply-To: <20250228-net-next-mptcp-coverage-small-opti-v1-0-f933c4275676@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, shuah@kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, yangang@kylinos.cn
+ <174113763227.356990.18423879063180957214.git-patchwork-notify@kernel.org>
+Date: Wed, 05 Mar 2025 01:20:32 +0000
+References: <20250301141114.97204-1-maxime.chevallier@bootlin.com>
+In-Reply-To: <20250301141114.97204-1-maxime.chevallier@bootlin.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org, edumazet@google.com,
+ pabeni@redhat.com, hkallweit1@gmail.com, parthiban.veerasooran@microchip.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
+ christophe.leroy@csgroup.eu, herve.codina@bootlin.com, f.fainelli@gmail.com,
+ vladimir.oltean@nxp.com, kory.maincent@bootlin.com, o.rempel@pengutronix.de,
+ horms@kernel.org, romain.gantois@bootlin.com, piergiorgio.beruto@gmail.com
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 28 Feb 2025 15:38:34 +0100 you wrote:
-> This small series have various unrelated patches:
+On Sat,  1 Mar 2025 15:11:13 +0100 you wrote:
+> ethnl_req_get_phydev() is used to lookup a phy_device, in the case an
+> ethtool netlink command targets a specific phydev within a netdev's
+> topology.
 > 
-> - Patch 1 and 2: improve code coverage by validating mptcp_diag_dump_one
->   thanks to a new tool displaying MPTCP info for a specific token.
-> 
-> - Patch 3: a fix for a commit which is only in net-next.
+> It takes as a parameter a const struct nlattr *header that's used for
+> error handling :
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,1/5] selftests: mptcp: Add a tool to get specific msk_info
-    https://git.kernel.org/netdev/net-next/c/00f5e338cf7e
-  - [net-next,2/5] selftests: mptcp: add a test for mptcp_diag_dump_one
-    https://git.kernel.org/netdev/net-next/c/ba2400166570
-  - [net-next,3/5] mptcp: pm: in-kernel: avoid access entry without lock
-    https://git.kernel.org/netdev/net-next/c/e85d33b35508
-  - [net-next,4/5] mptcp: pm: in-kernel: reduce parameters of set_flags
-    https://git.kernel.org/netdev/net-next/c/70c575d5a94f
-  - [net-next,5/5] mptcp: pm: exit early with ADD_ADDR echo if possible
-    https://git.kernel.org/netdev/net-next/c/f0de92479a09
+  - [net,v2] net: ethtool: netlink: Allow NULL nlattrs when getting a phy_device
+    https://git.kernel.org/netdev/net/c/637399bf7e77
 
 You are awesome, thank you!
 -- 
