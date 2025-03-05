@@ -1,211 +1,110 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646BB18DF64;
-	Wed,  5 Mar 2025 16:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B35A18FC9F;
+	Wed,  5 Mar 2025 16:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741191805; cv=none; b=MtShRvu50bMgOXDcKWBVaVDC6oEdJlIvvApoM9i3SCCw8GRJHIx05VxcEx1h7PbEjxQ3+ntUBi+HIV1M0rIpQbviGi+vxl4nEwYsb7w2j+I+URamPmXVU9EK4rkdKIUOvQeBhDuaQrcqWknoUTN5MT+ao8kUHmgMa0F1gXM2P8w=
+	t=1741192001; cv=none; b=Ft5gRuS3QkX/mMYGNbnLzzuS1h2WYKvXepFTVMEdUK1yQJVOuUfd28DC8LLEUDvkrCFxjJ/+5SDv4s7HuuraTBgEoQDVdQYqQgatQ0odbvbJWMaZBW8ux7V5uTGnkVCz/yM6ffeALQx4I/87vaVWF9Dsqb1hmzN8t/2fJJj3UdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741191805; c=relaxed/simple;
-	bh=ZW51NgkeoNFGH21SSoAtIAD2UcPCUZ7Dkvt+E4gXwis=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IYX79HuzOG5UeG07XbwdGfjo4HbKs5xjuMj6Nc7+MECRGMd7640W8cJcdmfy5Mlm86fg0zAhKoIZETSnFQkZIcjvhdfBTMTcShC/lLO/haZnzA8QBCm4PCRXZZQjhRvQ7caQAJvLMUahS0iPSwiUit+U2VV5hxtwh1N6Ct8uYks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f8U7fxvC; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1741192001; c=relaxed/simple;
+	bh=47ZpcMy5LCUivpIcvFmxjz3YPcpVLjTg7akVh13dhdg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q1oPaZA2lV3suQCTp6YUOvy3icgr7ysEojJDclT7uoCiPmJoP79v0+IG//e4EaRlyZd9mV3mSIifn5Xh3kv3nYMQ/dwIGlgSO4sOnsrDeRMKlUHClNoPKA9+eR1Q+bx4HRVdn4DxkEf0NrXqVQqOQNIIgbznrIrUUzim0DzL+ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mTRGVeHC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gVVg7iIu; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f8U7fxvC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741191804; x=1772727804;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ZW51NgkeoNFGH21SSoAtIAD2UcPCUZ7Dkvt+E4gXwis=;
-  b=f8U7fxvC93QbzufSw61uvtdZUzjQQrvIkFDH1KlRGvZjmNJRYO4vMnP/
-   51yOD2LHnzN+yVeyB+XxLdBBY9BZkBHkQFdso3HKZyIn5m6pa8HpmAhk6
-   skqUYNPhyq4TkBVFk/EAbmUJaS/URbhS3VAGsA3rXD4wW7pyTcBc7QNlm
-   2FG/gQ32SdyB6pMqqOm9fv+KopMxeKn4dTj6eNlso8LGLeI6i1MPk7f/D
-   alrrsTTsEeMCsphBH9SX9j7UuzGEhoB+TVyuAB8P9J4gN/+k2TScOhih7
-   IeinDSDSnk1CfsYuSiMWKKV2o0QdClZlmzoea+yOboqClQHb45cqGUL71
-   A==;
-X-CSE-ConnectionGUID: i1fgl1pZQKelYsoCeevOJA==
-X-CSE-MsgGUID: VhoqhELbSQuCEa2Ve7CFIg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="42026649"
-X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; 
-   d="scan'208";a="42026649"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 08:23:23 -0800
-X-CSE-ConnectionGUID: EYnFiPUkSaOqE90dufVLMA==
-X-CSE-MsgGUID: jBtuLi88RbSkiBsbKsS9wg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; 
-   d="scan'208";a="123833046"
-Received: from newjersey.igk.intel.com ([10.102.20.203])
-  by fmviesa004.fm.intel.com with ESMTP; 05 Mar 2025 08:23:19 -0800
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mTRGVeHC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gVVg7iIu"
+Date: Wed, 5 Mar 2025 17:26:36 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1741191997;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+EUWRgdHcKOIwdKsipg2rolTqSP+W0UujWsBhAfb6aM=;
+	b=mTRGVeHCcHD39tJS8eOy/YUjw+v4NGFyBGtxG2JAA2mag3ITx/9vUDrIVHwkF6BAZbTK8x
+	wo94O921I57HX6Ww2eR3uCKxPneTE7Gu2e14QAPm4YDmCOqxjjQhD2oKKh/HM+B0X8pnnb
+	qvx2s1hnd0ehBmN127mIRipCvl4dQuDk6m3lAizKkiEMjF4zb+hZlvWYoTmk9i4zN9Aung
+	Ew71Cr+gWC2A/35dCUVpN/Ao2cYbYMRRwMu+pKPMGU+cJfAbahi580JsGSp3k600WCbefh
+	aqlnmj9ZGDXRJ7hOFjZzUfKv5JmDFIOqzz+MLs37FqXg+SqyLqbco1eJxYRWDg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1741191997;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+EUWRgdHcKOIwdKsipg2rolTqSP+W0UujWsBhAfb6aM=;
+	b=gVVg7iIuaMvCx/TAfEOgk38rjSAHkkcawzd/jY6MxcTFYQ+E2m2hoPR0OXdVN4gY8fXHHE
+	Giz5y22ThoOihBCw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
 	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 16/16] idpf: add XDP RSS hash hint
-Date: Wed,  5 Mar 2025 17:21:32 +0100
-Message-ID: <20250305162132.1106080-17-aleksander.lobakin@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305162132.1106080-1-aleksander.lobakin@intel.com>
-References: <20250305162132.1106080-1-aleksander.lobakin@intel.com>
+	Jakub Kicinski <kuba@kernel.org>, Joe Damato <jdamato@fastly.com>,
+	Leon Romanovsky <leon@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH net-next] net/mlnx5: Use generic code for page_pool
+ statistics.
+Message-ID: <20250305162636.cQf23qHf@linutronix.de>
+References: <20250305121420.kFO617zQ@linutronix.de>
+ <433b43b1-0a42-4606-b919-3429c36aa934@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <433b43b1-0a42-4606-b919-3429c36aa934@lunn.ch>
 
-Add &xdp_metadata_ops with a callback to get RSS hash hint from the
-descriptor. Declare the splitq 32-byte descriptor as 4 u64s to parse
-them more efficiently when possible.
+On 2025-03-05 17:21:56 [+0100], Andrew Lunn wrote:
+> > @@ -276,6 +263,9 @@ static MLX5E_DECLARE_STATS_GRP_OP_FILL_STATS(sw)
+> >  		mlx5e_ethtool_put_stat(data,
+> >  				       MLX5E_READ_CTR64_CPU(&priv->stats.sw,
+> >  							    sw_stats_desc, i));
+> > +#ifdef CONFIG_PAGE_POOL_STATS
+> > +	*data = page_pool_ethtool_stats_get(*data, &priv->stats.sw.page_pool_stats);
+> > +#endif
+> >  }
+> 
+> Are these #ifdef required? include/net/page_pool/helpers.h:
+> 
+> static inline u64 *page_pool_ethtool_stats_get(u64 *data, const void *stats)
+> {
+> 	return data;
+> }
+> 
+> Seems silly to have a stub if it cannot be used.
 
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
----
- drivers/net/ethernet/intel/idpf/xdp.h | 64 +++++++++++++++++++++++++++
- drivers/net/ethernet/intel/idpf/xdp.c | 28 +++++++++++-
- 2 files changed, 91 insertions(+), 1 deletion(-)
+As I mentioned in the diffstat section, if we add the snippet below then
+it would work. Because the struct itself is not there.
 
-diff --git a/drivers/net/ethernet/intel/idpf/xdp.h b/drivers/net/ethernet/intel/idpf/xdp.h
-index a2ac1b2f334f..52783a5c8e0f 100644
---- a/drivers/net/ethernet/intel/idpf/xdp.h
-+++ b/drivers/net/ethernet/intel/idpf/xdp.h
-@@ -107,6 +107,70 @@ static inline void idpf_xdp_tx_finalize(void *_xdpq, bool sent, bool flush)
- 	libeth_xdpsq_unlock(&xdpq->xdp_lock);
- }
+diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
+index f45d55e6e8643..78984b9286c6b 100644
+--- a/include/net/page_pool/types.h
++++ b/include/net/page_pool/types.h
+@@ -143,10 +143,14 @@ struct page_pool_recycle_stats {
+  */
+ struct page_pool_stats {
+ 	struct page_pool_alloc_stats alloc_stats;
+ 	struct page_pool_recycle_stats recycle_stats;
+ };
++
++#else /* !CONFIG_PAGE_POOL_STATS */
++
++struct page_pool_stats { };
+ #endif
  
-+struct idpf_xdp_rx_desc {
-+	aligned_u64		qw0;
-+#define IDPF_XDP_RX_BUFQ	BIT_ULL(47)
-+#define IDPF_XDP_RX_GEN		BIT_ULL(46)
-+#define IDPF_XDP_RX_LEN		GENMASK_ULL(45, 32)
-+#define IDPF_XDP_RX_PT		GENMASK_ULL(25, 16)
-+
-+	aligned_u64		qw1;
-+#define IDPF_XDP_RX_BUF		GENMASK_ULL(47, 32)
-+#define IDPF_XDP_RX_EOP		BIT_ULL(1)
-+
-+	aligned_u64		qw2;
-+#define IDPF_XDP_RX_HASH	GENMASK_ULL(31, 0)
-+
-+	aligned_u64		qw3;
-+} __aligned(4 * sizeof(u64));
-+static_assert(sizeof(struct idpf_xdp_rx_desc) ==
-+	      sizeof(struct virtchnl2_rx_flex_desc_adv_nic_3));
-+
-+#define idpf_xdp_rx_bufq(desc)	!!((desc)->qw0 & IDPF_XDP_RX_BUFQ)
-+#define idpf_xdp_rx_gen(desc)	!!((desc)->qw0 & IDPF_XDP_RX_GEN)
-+#define idpf_xdp_rx_len(desc)	FIELD_GET(IDPF_XDP_RX_LEN, (desc)->qw0)
-+#define idpf_xdp_rx_pt(desc)	FIELD_GET(IDPF_XDP_RX_PT, (desc)->qw0)
-+#define idpf_xdp_rx_buf(desc)	FIELD_GET(IDPF_XDP_RX_BUF, (desc)->qw1)
-+#define idpf_xdp_rx_eop(desc)	!!((desc)->qw1 & IDPF_XDP_RX_EOP)
-+#define idpf_xdp_rx_hash(desc)	FIELD_GET(IDPF_XDP_RX_HASH, (desc)->qw2)
-+
-+static inline void
-+idpf_xdp_get_qw0(struct idpf_xdp_rx_desc *desc,
-+		 const struct virtchnl2_rx_flex_desc_adv_nic_3 *rxd)
-+{
-+#ifdef __LIBETH_WORD_ACCESS
-+	desc->qw0 = ((const typeof(desc))rxd)->qw0;
-+#else
-+	desc->qw0 = ((u64)le16_to_cpu(rxd->pktlen_gen_bufq_id) << 32) |
-+		    ((u64)le16_to_cpu(rxd->ptype_err_fflags0) << 16);
-+#endif
-+}
-+
-+static inline void
-+idpf_xdp_get_qw1(struct idpf_xdp_rx_desc *desc,
-+		 const struct virtchnl2_rx_flex_desc_adv_nic_3 *rxd)
-+{
-+#ifdef __LIBETH_WORD_ACCESS
-+	desc->qw1 = ((const typeof(desc))rxd)->qw1;
-+#else
-+	desc->qw1 = ((u64)le16_to_cpu(rxd->buf_id) << 32) |
-+		    rxd->status_err0_qw1;
-+#endif
-+}
-+
-+static inline void
-+idpf_xdp_get_qw2(struct idpf_xdp_rx_desc *desc,
-+		 const struct virtchnl2_rx_flex_desc_adv_nic_3 *rxd)
-+{
-+#ifdef __LIBETH_WORD_ACCESS
-+	desc->qw2 = ((const typeof(desc))rxd)->qw2;
-+#else
-+	desc->qw2 = ((u64)rxd->hash3 << 24) |
-+		    ((u64)rxd->ff2_mirrid_hash2.hash2 << 16) |
-+		    le16_to_cpu(rxd->hash1);
-+#endif
-+}
-+
- void idpf_xdp_set_features(const struct idpf_vport *vport);
- 
- int idpf_xdp(struct net_device *dev, struct netdev_bpf *xdp);
-diff --git a/drivers/net/ethernet/intel/idpf/xdp.c b/drivers/net/ethernet/intel/idpf/xdp.c
-index 1834f217a07f..b0b4b785bf8e 100644
---- a/drivers/net/ethernet/intel/idpf/xdp.c
-+++ b/drivers/net/ethernet/intel/idpf/xdp.c
-@@ -386,12 +386,38 @@ int idpf_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
- 				       idpf_xdp_tx_finalize);
- }
- 
-+static int idpf_xdpmo_rx_hash(const struct xdp_md *ctx, u32 *hash,
-+			      enum xdp_rss_hash_type *rss_type)
-+{
-+	const struct libeth_xdp_buff *xdp = (typeof(xdp))ctx;
-+	const struct idpf_rx_queue *rxq;
-+	struct idpf_xdp_rx_desc desc;
-+	struct libeth_rx_pt pt;
-+
-+	rxq = libeth_xdp_buff_to_rq(xdp, typeof(*rxq), xdp_rxq);
-+
-+	idpf_xdp_get_qw0(&desc, xdp->desc);
-+
-+	pt = rxq->rx_ptype_lkup[idpf_xdp_rx_pt(&desc)];
-+	if (!libeth_rx_pt_has_hash(rxq->xdp_rxq.dev, pt))
-+		return -ENODATA;
-+
-+	idpf_xdp_get_qw2(&desc, xdp->desc);
-+
-+	return libeth_xdpmo_rx_hash(hash, rss_type, idpf_xdp_rx_hash(&desc),
-+				    pt);
-+}
-+
-+static const struct xdp_metadata_ops idpf_xdpmo = {
-+	.xmo_rx_hash		= idpf_xdpmo_rx_hash,
-+};
-+
- void idpf_xdp_set_features(const struct idpf_vport *vport)
- {
- 	if (!idpf_is_queue_model_split(vport->rxq_model))
- 		return;
- 
--	libeth_xdp_set_features_noredir(vport->netdev);
-+	libeth_xdp_set_features_noredir(vport->netdev, &idpf_xdpmo);
- }
- 
- /**
--- 
-2.48.1
+ /* The whole frag API block must stay within one cacheline. On 32-bit systems,
+  * sizeof(long) == sizeof(int), so that the block size is ``3 * sizeof(long)``.
+  * On 64-bit systems, the actual size is ``2 * sizeof(long) + sizeof(int)``.
 
+> 	Andrew
+
+Sebastian
