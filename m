@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAD925743D
-	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 21:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27F1257AC8
+	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 21:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741210564; cv=none; b=RVUNtzU4YP0XQW18fCqztlB6QizBL4cvYsV7y7efsAaJOG0So+qZvVslmymb7AEom1+STo0Ee+7IOgbfQjaSf63ubLNg+9epWJKXVsDYY3j047NHO8k3ZhN8K22GnLRem3kTBYV0kCr+OhP0L2I8rGJ3aKdfR3g9xh8sOwTfR+k=
+	t=1741210565; cv=none; b=qGRr6dXXngBPA+WzqXsGhA9u65k4nQ+Ucv0qeGV0jMsJxMS9EE/YPdol1J8Z2+a8qQD6iols2n6Dw2TYlQ+xeA8fmndHq1aIqaa9WrKdz1qnXr66qBgnYg0V4RbUuQ+whc3ysNH/2VOaZ2iMf+iA8P6yePkptPx6CM8q7b+rWeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741210564; c=relaxed/simple;
-	bh=GuwR3mhZuYCpbs97AgybkQQLFzvRbxU8C1+NMIk78bE=;
+	s=arc-20240116; t=1741210565; c=relaxed/simple;
+	bh=xZF9mGXmB44HOH7lioiVMEtFdGRrl8k8zjhnuToNjeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qspp+z/Qy9kZSJPKRC6biVIn0Xw8Er2cc0A5tx91ilHCWGHkiTn12aCuTANk2NOMNJC/PA0KHCv4oOc6P7uU98XpAb3Clky/aSn1XK/plMVun3+wM+njykJnTplu5uAvHPgzus/WkkBK4JSghAL9z8q9thIJEQfcnXvgD4h5B2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=azQMfHjX; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=eNS/FgsIxu7Zik7bZeQOKI/6OvCw2fL2KwALTicSRanIuxeTqCj0W4LiVXZKWUYrWmW7RN53PSVob4mrjPo0ORqSQ6XglET/jMEhgju7fQ1FHHCmk0hD55jyIADuVHMQnO4ZVp3aV8VpeZQTatKb+BLX5vKjmIIlHirvpWnVgAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gdKFtwFp; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="azQMfHjX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gdKFtwFp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741210562; x=1772746562;
+  t=1741210563; x=1772746563;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GuwR3mhZuYCpbs97AgybkQQLFzvRbxU8C1+NMIk78bE=;
-  b=azQMfHjXyWVuxJXh7IxWs+o8v4xevsiFyEqbSxG4lmmDxfsVKJu//btd
-   q8GQfmJku1wTvKNPk5gBHtxz7mHy3MYEbG6C/O1RRY+dPB3Gdc4qj0DSF
-   SO88jvL1gZw/J8zFm6GWFtvlZNJaLZMaAL8La0QRNZrfrIim31qMi4STa
-   J1LlXX2ScVgGWvKFaZBJaI6DtThQp4qAdMSj7w0IQdJGM5b7wfa1vLh8L
-   zjdgVGWQiL984n8amoMvWh1uAuVfRjIO/9ldAq8rSBvS7MWnG2ZRKCpUE
-   Uurn3BAdGGC0iZV3LNlfsPN8qrmsrbvFxF9sFiwAYLwBIUEKIGMTpifu/
-   Q==;
-X-CSE-ConnectionGUID: gnLZwB+YRimqdJK4CUTPjQ==
-X-CSE-MsgGUID: Pf1LNsq/QOCnpMfgupGBAg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="53606486"
+  bh=xZF9mGXmB44HOH7lioiVMEtFdGRrl8k8zjhnuToNjeY=;
+  b=gdKFtwFpqTGfowsAujvOUP749vlbWlrZRb3+aR45Mp5TsPkjg7itll52
+   5b6X0MVH77W++EfQbxDMhMm0qsKD7v1ngCioZNPO52G2w7SrqsSqwvIbJ
+   fbVTAR/11NSaEYNfi7lWyQWx6lhD18oMUzDzJTG/cpsR1J8pifKmwScWr
+   GwudlykpvjI6Ck/s20bqwYpuAVNwX2AsiVJ+7Is8fAhabuhVNqcGgLgUm
+   HyQnvXWaJ1dX2buGJX2tz1iGC3UR/A/QtNzVdOhFpUFfVAEbJY8h3qwju
+   twsXsRGelR0CUd6QkPPmmEAgjIQkLQXKHcTgrBwRHXDjTyViI82ZMGrXE
+   A==;
+X-CSE-ConnectionGUID: YrktvPoCSd+fYFKrXcUXKg==
+X-CSE-MsgGUID: g0ekssfgQIWIE6HILmgBRA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="53606493"
 X-IronPort-AV: E=Sophos;i="6.14,224,1736841600"; 
-   d="scan'208";a="53606486"
+   d="scan'208";a="53606493"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
   by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 13:35:58 -0800
-X-CSE-ConnectionGUID: npqG6Qf4Q7Szb3WKbwhW8A==
-X-CSE-MsgGUID: yBTuF3EUThCSE/rMIeI8GQ==
+X-CSE-ConnectionGUID: WqN3wkqxQJOoI/hqvNLBnA==
+X-CSE-MsgGUID: tXylPksPR9KNFoJRv06QRQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,224,1736841600"; 
-   d="scan'208";a="123828479"
+   d="scan'208";a="123828489"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa004.jf.intel.com with ESMTP; 05 Mar 2025 13:35:55 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,15 +50,17 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	anthony.l.nguyen@intel.com,
-	michal.swiatkowski@linux.intel.com,
-	przemyslaw.kitszel@intel.com,
-	Simon Horman <horms@kernel.org>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Subject: [PATCH net 1/4] ice: do not configure destination override for switchdev
-Date: Wed,  5 Mar 2025 13:35:43 -0800
-Message-ID: <20250305213549.1514274-2-anthony.l.nguyen@intel.com>
+	horms@kernel.org,
+	jiri@resnulli.us,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Konrad Knitter <konrad.knitter@intel.com>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>
+Subject: [PATCH net 4/4] ice: register devlink prior to creating health reporters
+Date: Wed,  5 Mar 2025 13:35:46 -0800
+Message-ID: <20250305213549.1514274-5-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250305213549.1514274-1-anthony.l.nguyen@intel.com>
 References: <20250305213549.1514274-1-anthony.l.nguyen@intel.com>
@@ -70,114 +72,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-After switchdev is enabled and disabled later, LLDP packets sending stops,
-despite working perfectly fine before and during switchdev state.
-To reproduce (creating/destroying VF is what triggers the reconfiguration):
+ice_health_init() was introduced in the commit 2a82874a3b7b ("ice: add
+Tx hang devlink health reporter"). The call to it should have been put
+after ice_devlink_register(). It went unnoticed until next reporter by
+Konrad, which receives events from FW. FW is reporting all events, also
+from prior driver load, and thus it is not unlikely to have something
+at the very beginning. And that results in a splat:
+[   24.455950]  ? devlink_recover_notify.constprop.0+0x198/0x1b0
+[   24.455973]  devlink_health_report+0x5d/0x2a0
+[   24.455976]  ? __pfx_ice_health_status_lookup_compare+0x10/0x10 [ice]
+[   24.456044]  ice_process_health_status_event+0x1b7/0x200 [ice]
 
-devlink dev eswitch set pci/<address> mode switchdev
-echo '2' > /sys/class/net/<ifname>/device/sriov_numvfs
-echo '0' > /sys/class/net/<ifname>/device/sriov_numvfs
+Do the analogous thing for deinit patch.
 
-This happens because LLDP relies on the destination override functionality.
-It needs to 1) set a flag in the descriptor, 2) set the VSI permission to
-make it valid. The permissions are set when the PF VSI is first configured,
-but switchdev then enables it for the uplink VSI (which is always the PF)
-once more when configured and disables when deconfigured, which leads to
-software-generated LLDP packets being blocked.
-
-Do not modify the destination override permissions when configuring
-switchdev, as the enabled state is the default configuration that is never
-modified.
-
-Fixes: 1a1c40df2e80 ("ice: set and release switchdev environment")
+Fixes: 85d6164ec56d ("ice: add fw and port health reporters")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Reviewed-by: Konrad Knitter <konrad.knitter@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_eswitch.c |  6 ------
- drivers/net/ethernet/intel/ice/ice_lib.c     | 18 ------------------
- drivers/net/ethernet/intel/ice/ice_lib.h     |  4 ----
- 3 files changed, 28 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index d649c197cf67..ed21d7f55ac1 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -49,9 +49,6 @@ static int ice_eswitch_setup_env(struct ice_pf *pf)
- 	if (vlan_ops->dis_rx_filtering(uplink_vsi))
- 		goto err_vlan_filtering;
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index c3a0fb97c5ee..e13bd5a6cb6c 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -5065,16 +5065,16 @@ static int ice_init_devlink(struct ice_pf *pf)
+ 		return err;
  
--	if (ice_vsi_update_security(uplink_vsi, ice_vsi_ctx_set_allow_override))
--		goto err_override_uplink;
--
- 	if (ice_vsi_update_local_lb(uplink_vsi, true))
- 		goto err_override_local_lb;
+ 	ice_devlink_init_regions(pf);
+-	ice_health_init(pf);
+ 	ice_devlink_register(pf);
++	ice_health_init(pf);
  
-@@ -63,8 +60,6 @@ static int ice_eswitch_setup_env(struct ice_pf *pf)
- err_up:
- 	ice_vsi_update_local_lb(uplink_vsi, false);
- err_override_local_lb:
--	ice_vsi_update_security(uplink_vsi, ice_vsi_ctx_clear_allow_override);
--err_override_uplink:
- 	vlan_ops->ena_rx_filtering(uplink_vsi);
- err_vlan_filtering:
- 	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
-@@ -275,7 +270,6 @@ static void ice_eswitch_release_env(struct ice_pf *pf)
- 	vlan_ops = ice_get_compat_vsi_vlan_ops(uplink_vsi);
- 
- 	ice_vsi_update_local_lb(uplink_vsi, false);
--	ice_vsi_update_security(uplink_vsi, ice_vsi_ctx_clear_allow_override);
- 	vlan_ops->ena_rx_filtering(uplink_vsi);
- 	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
- 			 ICE_FLTR_TX);
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 38a1c8372180..d0faa087793d 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -3936,24 +3936,6 @@ void ice_vsi_ctx_clear_antispoof(struct ice_vsi_ctx *ctx)
- 				 ICE_AQ_VSI_SEC_TX_PRUNE_ENA_S);
+ 	return 0;
  }
  
--/**
-- * ice_vsi_ctx_set_allow_override - allow destination override on VSI
-- * @ctx: pointer to VSI ctx structure
-- */
--void ice_vsi_ctx_set_allow_override(struct ice_vsi_ctx *ctx)
--{
--	ctx->info.sec_flags |= ICE_AQ_VSI_SEC_FLAG_ALLOW_DEST_OVRD;
--}
--
--/**
-- * ice_vsi_ctx_clear_allow_override - turn off destination override on VSI
-- * @ctx: pointer to VSI ctx structure
-- */
--void ice_vsi_ctx_clear_allow_override(struct ice_vsi_ctx *ctx)
--{
--	ctx->info.sec_flags &= ~ICE_AQ_VSI_SEC_FLAG_ALLOW_DEST_OVRD;
--}
--
- /**
-  * ice_vsi_update_local_lb - update sw block in VSI with local loopback bit
-  * @vsi: pointer to VSI structure
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.h b/drivers/net/ethernet/intel/ice/ice_lib.h
-index eabb35834a24..b4c9cb28a016 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.h
-@@ -105,10 +105,6 @@ ice_vsi_update_security(struct ice_vsi *vsi, void (*fill)(struct ice_vsi_ctx *))
- void ice_vsi_ctx_set_antispoof(struct ice_vsi_ctx *ctx);
- 
- void ice_vsi_ctx_clear_antispoof(struct ice_vsi_ctx *ctx);
--
--void ice_vsi_ctx_set_allow_override(struct ice_vsi_ctx *ctx);
--
--void ice_vsi_ctx_clear_allow_override(struct ice_vsi_ctx *ctx);
- int ice_vsi_update_local_lb(struct ice_vsi *vsi, bool set);
- int ice_vsi_add_vlan_zero(struct ice_vsi *vsi);
- int ice_vsi_del_vlan_zero(struct ice_vsi *vsi);
+ static void ice_deinit_devlink(struct ice_pf *pf)
+ {
+-	ice_devlink_unregister(pf);
+ 	ice_health_deinit(pf);
++	ice_devlink_unregister(pf);
+ 	ice_devlink_destroy_regions(pf);
+ 	ice_devlink_unregister_params(pf);
+ }
 -- 
 2.47.1
 
