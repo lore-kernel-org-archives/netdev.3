@@ -1,290 +1,206 @@
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2676E24886E
-	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 12:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6082451C3
+	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 12:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741179455; cv=none; b=WMVp6gppsUF/vK2yP88TJ5hk8InaUoh9qyCyfdQ9RcgsaysnKR+nSXjEyt4+rB8M2k3NdTtJCmPCL99cgATYy5QGFNRVnPPcbHVhwb/GDi+wXDbjRvzkVFzmbL3oyWjgq5oelQi61ULa41q4etHwq3PXdGXaaWWF/6wkrizatQE=
+	t=1741179587; cv=none; b=Hliw4X5t09mcSTuBy9lF0cFStBEu6XL/e0f4v0TIlkFPju7p9kb+UEEXIgck0PKf3SESvgiR2zuSrprBWicnW4kbQSLi0ttcNr+gBcq10ig4bZSwad+q4Pd/u4EwR+P41L3Eyu7SWvkpjxgutOlRcK+gHggqc62+sRt7j3F4HgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741179455; c=relaxed/simple;
-	bh=5M8+uJC2uyidtPtLyF1PLSFVCUkPNquGCVQ5R3aVAyk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:Content-Type:
-	 References; b=eXx86jL19t3lj3XbF//D2hjhVwSdZEgGNafuJe3FJjrtOqrVkqxnbQu0f28yaPRZdGYKFWZiOII7hVkHa6DnIHF5A6Hmg3Q7nyLGpPKMhuC49JhwgkoP+snpHzPZ9QiNBeaUJ8Kryk8E0ZGoNwWwDhf5O+qBYRZnZJxaspQJ0Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=W6kBUqmd; arc=none smtp.client-ip=203.254.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1741179587; c=relaxed/simple;
+	bh=snXQsn4uHPBRhQjqqhz917UlWHHTAopA/n31bLxjkMM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TnpKL5xE7cjXa/HZf4rja+9QfwUn5MgC3FT6UPAaXLDyOj49nP41DwBv6lQ1uDnBXmRq6lxtFIZl53aBRB6Vsx2GlcF0GR0GP1NeqIqr051Qd50Wleja4tSNgFNciF8HhDL4PSFaR/A0vluFhRQqb1pla9+nfEVSErV2AinmvQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=XLp+zVHV; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="W6kBUqmd"
-Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250305125725epoutp04a513c64516d80b72212e6bc96956f9dc~p6XsPMUAk1408214082epoutp04e
-	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 12:57:25 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250305125725epoutp04a513c64516d80b72212e6bc96956f9dc~p6XsPMUAk1408214082epoutp04e
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1741179445;
-	bh=+mlxEJSnBQ5SOauVTxxy7LkVjwsmsbn9vtY2XudMo9A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W6kBUqmdcKfpLQkBjcg2PWKmsU813FX/N4PcOHVIU7uCZOj9ejo+QWuZ1HsIHiwIu
-	 eRfvv6sQ6ptmXaFL3MQuwMMexHYo4hI+hNoabG+oXym8g2HbYBWg2pWFWWTxLoGxh+
-	 HcLZBdp9STkMz3/i99o5770iXMK3BQkTMq4r4fZI=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTP id
-	20250305125725epcas5p2560fadf03bc87cfb32132584d439092d~p6XroZ21m1536915369epcas5p2B;
-	Wed,  5 Mar 2025 12:57:25 +0000 (GMT)
-Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.181]) by
-	epsnrtp1.localdomain (Postfix) with ESMTP id 4Z7CJ32yZXz4x9Pp; Wed,  5 Mar
-	2025 12:57:23 +0000 (GMT)
-Received: from epcas5p3.samsung.com ( [182.195.41.41]) by
-	epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	DF.5F.29212.33A48C76; Wed,  5 Mar 2025 21:57:23 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250305091852epcas5p18a0853e85a5ed3d36d5d42ef89735ca6~p3Y3k2qj72626326263epcas5p1O;
-	Wed,  5 Mar 2025 09:18:52 +0000 (GMT)
-Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20250305091852epsmtrp2b0ada9270ba94a7b26c74f60cdf53a37~p3Y3bb8A00427204272epsmtrp2L;
-	Wed,  5 Mar 2025 09:18:52 +0000 (GMT)
-X-AuditID: b6c32a50-801fa7000000721c-9e-67c84a331b94
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
-	56.09.33707.CF618C76; Wed,  5 Mar 2025 18:18:52 +0900 (KST)
-Received: from cheetah.samsungds.net (unknown [107.109.115.53]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250305091849epsmtip2882efafca16a2c30868fa1a74defb38d~p3Y0omLon1567815678epsmtip25;
-	Wed,  5 Mar 2025 09:18:49 +0000 (GMT)
-From: Swathi K S <swathi.ks@samsung.com>
-To: krzk+dt@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	conor+dt@kernel.org, richardcochran@gmail.com, mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com
-Cc: rmk+kernel@armlinux.org.uk, swathi.ks@samsung.com,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	pankaj.dubey@samsung.com, ravi.patel@samsung.com, gost.dev@samsung.com
-Subject: [PATCH v8 1/2] dt-bindings: net: Add FSD EQoS device tree bindings
-Date: Wed,  5 Mar 2025 14:42:45 +0530
-Message-Id: <20250305091246.106626-2-swathi.ks@samsung.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250305091246.106626-1-swathi.ks@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAA0VTe0xbVRzOubftvRC7XHntrBmIt1mUJYV2a/HAgKGiXocxKDFOfNQ7etMi
-	0NY+UBkKieAmYVSW4bAhSHSkDMYGHa+Oh7wcC491YzxGJg4HG2PoIKPOgSIWWuZ/3+/7fb/3
-	OSTu1y8QkWlaE2fQshm0wJfX3BsWJtl74JJaWvEVhVbmvwXINt3KR2c6LmOo3JnPQ9/3Xeaj
-	2xdvEWiyy4GheeuvAnSluZiP7DPjfHTtQrkAFY7P8lHFWh0fXawMQg8HfwfohyYXgX5baidQ
-	39BdHI1YSjC03t5KIFfDJBEfyFwbv4ozjacnMea2pYlgHNYpgqm0mxl7zdcC5vypXMbRuowx
-	i51jAqa4sQYw3Z0yZtkekvRESnqMhmNVnCGU06bqVGladSydmKx8UamIlMoksij0HB2qZTO5
-	WDrhtSTJy2kZ7lnp0Cw2w+ymklijkY6IizHozCYuVKMzmmJpTq/K0Mv14UY202jWqsO1nCla
-	JpXuUbiFH6ZrFqeE+rawT1cdgXkgL6QQ+JCQksM12yivEPiSflQ7gFVHh73GAwBnF1rAY6Ot
-	3o5vhZy+6sI9DgeADWVLmMdwAViyVE1sqATUs3CiuoXYcARQqwAuHR/cDMEpGwYHp0c3c/lT
-	ibDqr1LeBuZRu2BZWSnYwEJqH5xzNgk89Z6CtfVdm3ofKgb+3F242SGkrpNwdbIeeEQJ0Da8
-	4G3QH97rbyQ8WASX73d4EylhbfEYz4M1cGq1xMvvh12j5W6edHcXBs9diPDQwbB04Cy2gXFq
-	Gzz29yzm4YWwtWILi+Hawrg35Q7YXLXoLcvARyfPCDxrsbinXx8hvgEh1v9LVAJQA0Sc3pip
-	5lIVeplEy33y+G6pukw72HzRu5NaQW39WngPwEjQAyCJ0wHChYF+tZ9QxX6WzRl0SoM5gzP2
-	AIV7gyW4KDBV5/4SWpNSJo+SyiMjI+VReyNl9Hbhl458tR+lZk1cOsfpOcNWHEb6iPIwgaXo
-	SOjKHTU54nwY8szN6WRJThV6RTLcLd6nnI4o6n3ymPTg8xaUfbhBenB+7nOVLujfk2R/9eAe
-	3ts54nNf1KUvx7Vo6pqdhyZsN1aWT9zEhD5tKRG5DZK3rN/tz9qVctiyfrcqeCQ1Lzu/Azva
-	aRb/SGB/4mND7yVWP/3PjEo4ZKfrjgQFf4ydUBTUx5lzip0Nj1x/RG9PyNJeKnjV7gy4RdiC
-	4/vkPZXv+77Tc30m/oUPdrz57k/iNOtLE1O9zXUH+Odz2czkle7X/X0nF+feiJF1Hb9B7FT8
-	cuje4LYHsuTEHGW74UpBii3aRXauB4o+ksSdWtp5J+3+QtHAWetqCM0zaljZbtxgZP8Dm/EC
-	XloEAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrOLMWRmVeSWpSXmKPExsWy7bCSvO4fsRPpBp/uc1r8fDmN0WL5gx2s
-	Fmv2nmOymHO+hcVi/pFzrBZPjz1it7h5YCeTxctZ99gsLmzrY7XY9Pgaq8XlXXPYLLquPWG1
-	mPd3LavFsQViFt9Ov2G0WLT1C7vFww972C2OnHnBbHGpfyKTxf89O9gtvmy8ye4g6nH52kVm
-	jy0rbzJ5PO3fyu6xc9Zddo8Fm0o9Nq3qZPPYvKTeY+eOz0we7/ddZfPo27KK0ePgPkOPz5vk
-	AniiuGxSUnMyy1KL9O0SuDLe3+Ut2K1Z8WunaANjg1wXIyeHhICJxMqLX5i7GLk4hAS2M0os
-	XLWfGSIhKfGpeSorhC0ssfLfc3aIok+MEhM/bQFLsAloSFxfsR0sISLQwSSxZ+pJsFHMAhuZ
-	JI5d2swOUiUs4C2x9PtUFhCbRUBVYsaMqYwgNq+AtcTz81vZIFbIS6zecABsNaeAjcTRg11A
-	9RxA66wlTv5kn8DIt4CRYRWjaGpBcW56bnKBoV5xYm5xaV66XnJ+7iZGcNxoBe1gXLb+r94h
-	RiYOxkOMEhzMSiK8r08dTxfiTUmsrEotyo8vKs1JLT7EKM3BoiTOq5zTmSIkkJ5YkpqdmlqQ
-	WgSTZeLglGpg6ppSFmCxI18qc0ZU39q7eRXTFiziDLaO2BJZv9LUXCdJSjzPxSzXVzN64+lH
-	s9nm7fg+45z0r+WKDD+7dgW2zpdJvvQpeZqw9+Nk+ZuboqqmKz/8cm6D+xEl64S6ZXmt99gm
-	//xx4PBe88bv06YET39p3GB+LiWVy+PXp2+NAnO7tuzWsGG+764pOS9lwruzDzWyFv1mZ/CK
-	0N4iNJ+bSefbLzNT6enJ2y8+9b3/U+x7y8fOTqYD9yKFDoYceXcvi+HFvPfxDMFrlqwRUnH9
-	filDvT02KruqY1JUq/iRM4daijcdP7PDprZuedtOx6uW688mbyo5NXNRmNilJFGeNV48zh2M
-	KpNPrrUJa+a0VmIpzkg01GIuKk4EAKcZBXoKAwAA
-X-CMS-MailID: 20250305091852epcas5p18a0853e85a5ed3d36d5d42ef89735ca6
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250305091852epcas5p18a0853e85a5ed3d36d5d42ef89735ca6
-References: <20250305091246.106626-1-swathi.ks@samsung.com>
-	<CGME20250305091852epcas5p18a0853e85a5ed3d36d5d42ef89735ca6@epcas5p1.samsung.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XLp+zVHV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=7IrL3Tq6LNofRY3nTWBxJJ+VbKoCzHwSK7jrR5cwz8Y=; b=XLp+zVHV8wTKSSQ/8sds9Evkir
+	s0Wf8l1kB7xU+0ENiLKhc+0md5+Lg78BQw95BTN/EvhQu7gbcw9Lyr1OqSRzo6nu2SLXwXcjAvL6k
+	hqn3EZfck+CxqzuCe1rMiTVrHv69sqYZkGWI7XqjhlNpUIkSkFjE393oLLA3VJuGYP49F3yu50cnL
+	WM3rCt3AnAwbdkXVKQNSxdu0Arh6s+t9XGMV7pwvkRgGtaWOl4Pkp5HH171Pvx0mMdJYYRRmU0mVS
+	GjzkmnLeHlfGy/FpEBy5FKiq3TA5ynEZHkts0E5B7IpbSJxMD1j5qjW+OqejGpHQfFQigWr9ogVFl
+	Md3sFdUw==;
+Received: from [172.31.31.145] (helo=u09cd745991455d.lumleys.internal)
+	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tpoLb-00000000X9G-1vsD;
+	Wed, 05 Mar 2025 12:59:39 +0000
+Message-ID: <65d766e4a06bf85b9141452039f10a1d59545f76.camel@infradead.org>
+Subject: Re: [EXTERNAL] [PATCH v8 net-next 5/5] net: ena: Add PHC
+ documentation
+From: David Woodhouse <dwmw2@infradead.org>
+To: "Arinzon, David" <darinzon@amazon.com>, Andrew Lunn <andrew@lunn.ch>
+Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Richard Cochran <richardcochran@gmail.com>, "Machulsky,
+ Zorik" <zorik@amazon.com>,  "Matushevsky, Alexander" <matua@amazon.com>,
+ "Bshara, Saeed" <saeedb@amazon.com>, "Wilson, Matt" <msw@amazon.com>,
+ "Liguori, Anthony" <aliguori@amazon.com>, "Bshara, Nafea"
+ <nafea@amazon.com>, "Schmeilin, Evgeny" <evgenys@amazon.com>, "Belgazal,
+ Netanel" <netanel@amazon.com>, "Saidi, Ali" <alisaidi@amazon.com>,
+ "Herrenschmidt, Benjamin" <benh@amazon.com>, "Kiyanovski, Arthur"
+ <akiyano@amazon.com>, "Dagan, Noam" <ndagan@amazon.com>, "Bernstein, Amit"
+ <amitbern@amazon.com>, "Allen, Neil" <shayagr@amazon.com>, "Ostrovsky,
+ Evgeny" <evostrov@amazon.com>, "Tabachnik, Ofir" <ofirt@amazon.com>,
+ "Machnikowski, Maciek" <maciek@machnikowski.net>, Rahul Rameshbabu
+ <rrameshbabu@nvidia.com>, Gal Pressman <gal@nvidia.com>, Vadim Fedorenko
+ <vadim.fedorenko@linux.dev>
+Date: Wed, 05 Mar 2025 12:59:39 +0000
+In-Reply-To: <a4be818e2a984c899d978130d6707f1f@amazon.com>
+References: <20250304190504.3743-1-darinzon@amazon.com>
+	 <20250304190504.3743-6-darinzon@amazon.com>
+	 <aecb8d12-805b-4592-94f3-4dbfcdcd5cff@lunn.ch>
+	 <a4be818e2a984c899d978130d6707f1f@amazon.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-AorDHtmirK4tWPwGroG5"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-Add FSD Ethernet compatible in Synopsys dt-bindings document. Add FSD
-Ethernet YAML schema to enable the DT validation.
 
-Signed-off-by: Pankaj Dubey <pankaj.dubey@samsung.com>
-Signed-off-by: Ravi Patel <ravi.patel@samsung.com>
-Signed-off-by: Swathi K S <swathi.ks@samsung.com>
----
- .../devicetree/bindings/net/snps,dwmac.yaml   |   5 +-
- .../bindings/net/tesla,fsd-ethqos.yaml        | 118 ++++++++++++++++++
- 2 files changed, 121 insertions(+), 2 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/tesla,fsd-ethqos.yaml
+--=-AorDHtmirK4tWPwGroG5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-index 91e75eb3f329..c7004eaa8eae 100644
---- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-@@ -102,6 +102,7 @@ properties:
-         - snps,dwxgmac-2.10
-         - starfive,jh7100-dwmac
-         - starfive,jh7110-dwmac
-+        - tesla,fsd-ethqos
-         - thead,th1520-gmac
- 
-   reg:
-@@ -126,7 +127,7 @@ properties:
- 
-   clocks:
-     minItems: 1
--    maxItems: 8
-+    maxItems: 10
-     additionalItems: true
-     items:
-       - description: GMAC main clock
-@@ -138,7 +139,7 @@ properties:
- 
-   clock-names:
-     minItems: 1
--    maxItems: 8
-+    maxItems: 10
-     additionalItems: true
-     contains:
-       enum:
-diff --git a/Documentation/devicetree/bindings/net/tesla,fsd-ethqos.yaml b/Documentation/devicetree/bindings/net/tesla,fsd-ethqos.yaml
-new file mode 100644
-index 000000000000..dd7481bb16e5
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/tesla,fsd-ethqos.yaml
-@@ -0,0 +1,118 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/tesla,fsd-ethqos.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: FSD Ethernet Quality of Service
-+
-+maintainers:
-+  - Swathi K S <swathi.ks@samsung.com>
-+
-+description:
-+  Tesla ethernet devices based on dwmmac support Gigabit ethernet.
-+
-+allOf:
-+  - $ref: snps,dwmac.yaml#
-+
-+properties:
-+  compatible:
-+    const: tesla,fsd-ethqos
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  interrupt-names:
-+    items:
-+      - const: macirq
-+
-+  clocks:
-+    minItems: 5
-+    items:
-+      - description: PTP clock
-+      - description: Master bus clock
-+      - description: Slave bus clock
-+      - description: MAC TX clock
-+      - description: MAC RX clock
-+      - description: Master2 bus clock
-+      - description: Slave2 bus clock
-+      - description: RX MUX clock
-+      - description: PHY RX clock
-+      - description: PERIC RGMII clock
-+
-+  clock-names:
-+    minItems: 5
-+    items:
-+      - const: ptp_ref
-+      - const: master_bus
-+      - const: slave_bus
-+      - const: tx
-+      - const: rx
-+      - const: master2_bus
-+      - const: slave2_bus
-+      - const: eqos_rxclk_mux
-+      - const: eqos_phyrxclk
-+      - const: dout_peric_rgmii_clk
-+
-+  iommus:
-+    maxItems: 1
-+
-+  phy-mode:
-+    enum:
-+      - rgmii
-+      - rgmii-id
-+      - rgmii-rxid
-+      - rgmii-txid
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+  - iommus
-+  - phy-mode
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/fsd-clk.h>
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    soc {
-+        #address-cells = <2>;
-+        #size-cells = <2>;
-+        ethernet1: ethernet@14300000 {
-+            compatible = "tesla,fsd-ethqos";
-+            reg = <0x0 0x14300000 0x0 0x10000>;
-+            interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
-+            interrupt-names = "macirq";
-+            clocks = <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_CLK_PTP_REF_I>,
-+                     <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_ACLK_I>,
-+                     <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_HCLK_I>,
-+                     <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_RGMII_CLK_I>,
-+                     <&clock_peric PERIC_EQOS_TOP_IPCLKPORT_CLK_RX_I>,
-+                     <&clock_peric PERIC_BUS_D_PERIC_IPCLKPORT_EQOSCLK>,
-+                     <&clock_peric PERIC_BUS_P_PERIC_IPCLKPORT_EQOSCLK>,
-+                     <&clock_peric PERIC_EQOS_PHYRXCLK_MUX>,
-+                     <&clock_peric PERIC_EQOS_PHYRXCLK>,
-+                     <&clock_peric PERIC_DOUT_RGMII_CLK>;
-+            clock-names = "ptp_ref", "master_bus", "slave_bus","tx",
-+                          "rx", "master2_bus", "slave2_bus", "eqos_rxclk_mux",
-+                          "eqos_phyrxclk","dout_peric_rgmii_clk";
-+            assigned-clocks = <&clock_peric PERIC_EQOS_PHYRXCLK_MUX>,
-+                              <&clock_peric PERIC_EQOS_PHYRXCLK>;
-+            assigned-clock-parents = <&clock_peric PERIC_EQOS_PHYRXCLK>;
-+            pinctrl-names = "default";
-+            pinctrl-0 = <&eth1_tx_clk>, <&eth1_tx_data>, <&eth1_tx_ctrl>,
-+                        <&eth1_phy_intr>, <&eth1_rx_clk>, <&eth1_rx_data>,
-+                        <&eth1_rx_ctrl>, <&eth1_mdio>;
-+            iommus = <&smmu_peric 0x0 0x1>;
-+            phy-mode = "rgmii-id";
-+        };
-+    };
-+
-+...
--- 
-2.17.1
+On Wed, 2025-03-05 at 12:50 +0000, Arinzon, David wrote:
+> =C2=A0
+> > Why is not opening /dev/ptpX sufficient to enable the PHC?
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0 Andrew
+>=20
+> Hi Andrew,
+>=20
+> The reasoning for the enablement option of PHC was explained in patch 3 i=
+n the series
+> https://lore.kernel.org/netdev/20250304190504.3743-4-darinzon@amazon.com/
 
+Not really. That says,
+
+"The PHC feature is disabled by default, although its
+footprint is small, most customers do not require such
+high-precision timestamping. Enabling PHC unnecessarily
+in environments that do not need it might introduce a
+minor but unnecessary overhead."
+
+Disable by default, sure. But it gives no explanation for why we need a
+separate knob in sysfs to enable/disable it, and we can't just enable
+it automatically when /dev/ptpX is opened as Andrew suggested.
+
+If you read the actual code in that patch, there's a hint though.
+Because the actual process in ena_phc_enable_set() does the following:
+
++	ena_destroy_device(adapter, false);
++	rc =3D ena_restore_device(adapter);
+
+Is that actually tearing down the whole netdev and recreating it when
+the PHC enable is flipped? Does it really have to? That doesn't seem
+ideal even if it *is* a separate knob in sysfs.
+
+--=-AorDHtmirK4tWPwGroG5
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDMwNTEyNTkz
+OVowLwYJKoZIhvcNAQkEMSIEICxc2cMRjonmW/FjgU5H9yJjjtXRqGbQos/EJiAv03eZMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAaUHEYVOm5Msq
+U/wl2NsCy4Z/CS+3XCmgdbymjB7TYS0KaEhOBLl0QJczeHYnRmcYKgrkLJM6kz48gN8+5Z35j0fy
+6u+TZNcptJ7eTnsRvPIOXzE7tzQ2GtQd6wzN8R/opWPUGNTiJ6c9CmRUp0g2DSSKMQT66NBNvzoV
+j/XdnfZ5UP6Z7kYdd5A2zZoYTN5x6NyjbBsXfoknOYasjGz4VA6MJB7CE90EKoUPtkEZCf7N7Z1j
+HuAz5GDuvW+4rQQEM3gLmK+Vr+y+y9sLciT8GH+/JUCH5BE5Wj4l/R7bktbM9+fvUHeQPKOZdQph
+xkb9rKsx1UxGtjdaLWdRjZVidphipxnm/ki9PIDorLbzpDASCyJnjccrUW8KFgi9zC9P9YaYGOsu
+FqR8sGFj7rrdSqy34IIJLqv/uI6RTsawq95j2Em4FOtPfxvWwYrkb4py0/8i/RRDw8ISm5wVvZY1
+vJpll2DT8ztQhCaPZS5uzXn1xlreV7MvCMUXjK0ckifsghfgHErEfEc+G/nNywC0hoTrB7BWTsUB
+PulCVGtf4tcpyGnbKVKdjarCGZ8QOS+nWBtHBD6yf/sBpV4vWVwS9jrHpe5K6TAmCRZjP26QCdPL
+0VurKt33NvC6GnOUNgmO1u85wim7WWWL9yKS2/XLIU4e04j6p7gV3Gt18Rrkip8AAAAAAAA=
+
+
+--=-AorDHtmirK4tWPwGroG5--
