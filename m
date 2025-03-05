@@ -1,108 +1,81 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406C6248892
-	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 12:37:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5F313633F
+	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 12:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741178278; cv=none; b=pM+HrWWjIy5H+3CkeMJJG4KLzYcbk79UHMLc/3xH+1ysF3X0G1TkHLPNVoF1s25AH8BE/uH7EvKsPtJKj+c+3AJXdZpbtHn0jBkhKHiOmcHR813XvtlGNYbe5QD9yAYdIV9yebKpi+nFm/oY5rhlKaJFq9h1VOyQfyBU1klZ4fQ=
+	t=1741179000; cv=none; b=Mghh5t1/qSish20Az41Owwozev4/FkT/kOD7PxiSOM9+HpXXFPWb0jGDILy1xU4QPqxojS3td8waNj7GOd9o8MV+fMB8FXri6tAxkhXTF/EtF2zjMPQZIoPtCjeez5pyELTz4B8T3cXy3KJmiYB5YX0Hu1sluj/MrJWD5gFSnqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741178278; c=relaxed/simple;
-	bh=atbo+Sw+ywEjXYbDqhJ7fHwRDqekYLT15511ErIShro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V+QRNEaL4wLyulTOv9NAC5hnGUuWLFwKDy6jyTVirpnTLNW7wXP14hIJKnnpjqREmNAI0OVdiOg+9ooNm9zjd2B3BbXHEam1bzx+cJPG7/zjXMRuq9D07GuJ1NrHxIvc2f2zD0BzVzYIXyCvNwHouDtcoIiujUxs3ga/BreSH8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tpo0P-0003XA-U0; Wed, 05 Mar 2025 13:37:45 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tpo0O-00495a-0K;
-	Wed, 05 Mar 2025 13:37:44 +0100
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tpo0N-00ERN3-37;
-	Wed, 05 Mar 2025 13:37:43 +0100
-Date: Wed, 5 Mar 2025 13:37:43 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, devicetree@vger.kernel.org,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Conor Dooley <conor+dt@kernel.org>, kernel@pengutronix.de,
-	netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Subject: Re: [PATCH v4 1/4] dt-bindings: sound: convert ICS-43432 binding to
- YAML
-Message-ID: <Z8hFlwK27AM4d17b@pengutronix.de>
-References: <20250305102103.1194277-1-o.rempel@pengutronix.de>
- <20250305102103.1194277-2-o.rempel@pengutronix.de>
- <174117806721.1245382.8322491579922154490.robh@kernel.org>
+	s=arc-20240116; t=1741179000; c=relaxed/simple;
+	bh=KHlpuzuOwYVWpkheoJ2LxJf2IaKbdHRqMjdN29NewF4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=TTXGc31qFeeW0f80OHosPrVUh4iZinO4UiBwEOXBVT+9nrGdfpAnI10ybq3YgpAXzGH8TYwhnoLHVQr70xqrgF/Owwg3qbJTL+ap07cYQfu+09ZlLxNhcWW/QuPJb0ks3gyzpwCL36f1rMpN/EiqzlF0Ehtlr/MdmDY7VuE5Cl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lTSUJq5Z; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lTSUJq5Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2201DC4CEE2;
+	Wed,  5 Mar 2025 12:50:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741179000;
+	bh=KHlpuzuOwYVWpkheoJ2LxJf2IaKbdHRqMjdN29NewF4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=lTSUJq5Z/JpED0QqVCgPQx723A5a3od7xZDIbT2W5dXFDjPbJfh0JAwP6Z814ZXCT
+	 EANhQlt/BsOyvveahKfRkIhufFQBr2YHTPX/dZys4jC7fhp01hhtBezBZ7puU/XQK1
+	 IzTwYvgWkQbfqgF7F6gl/K3pNZcafcK6ofDI+8EtgLzF9CTGXHrsoHXsbAG/cT7NPq
+	 ezqHXKzVc4Ux5iUFyIRdYf3/AtFNSRmsYFhwb+XLUfqnb9dgWCh+2Utxqj9IKJUepE
+	 qywfjhV1/HRGUnI+T6GGH6QE3KOkIv1wTWo8IOpEApMPvtysCGJIdH1kzmgYoiLc1H
+	 YmqD1J4gtSDjQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70CE9380CEDD;
+	Wed,  5 Mar 2025 12:50:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <174117806721.1245382.8322491579922154490.robh@kernel.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v4 0/3] Permission checks for dynamic POSIX clocks
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174117903325.870005.17317001813536727921.git-patchwork-notify@kernel.org>
+Date: Wed, 05 Mar 2025 12:50:33 +0000
+References: <20250303161345.3053496-1-wwasko@nvidia.com>
+In-Reply-To: <20250303161345.3053496-1-wwasko@nvidia.com>
+To: Wojtek Wasko <wwasko@nvidia.com>
+Cc: netdev@vger.kernel.org, richardcochran@gmail.com,
+ vadim.fedorenko@linux.dev, kuba@kernel.org, horms@kernel.org,
+ anna-maria@linutronix.de, frederic@kernel.org, pabeni@redhat.com,
+ tglx@linutronix.de
 
-On Wed, Mar 05, 2025 at 06:34:27AM -0600, Rob Herring (Arm) wrote:
-> 
-> On Wed, 05 Mar 2025 11:21:00 +0100, Oleksij Rempel wrote:
-> > Convert the ICS-43432 MEMS microphone device tree binding from text format
-> > to YAML.
-> > 
-> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> > Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> > ---
-> > changes v4:
-> > - add Reviewed-by: Rob...
-> > changes v3:
-> > - add maintainer
-> > - remove '|' after 'description:'
-> > changes v2:
-> > - use "enum" instead "oneOf + const"
-> > ---
-> >  .../devicetree/bindings/sound/ics43432.txt    | 19 -------
-> >  .../bindings/sound/invensense,ics43432.yaml   | 51 +++++++++++++++++++
-> >  2 files changed, 51 insertions(+), 19 deletions(-)
-> >  delete mode 100644 Documentation/devicetree/bindings/sound/ics43432.txt
-> >  create mode 100644 Documentation/devicetree/bindings/sound/invensense,ics43432.yaml
-> > 
-> 
-> My bot found errors running 'make dt_binding_check' on your patch:
-> 
-> yamllint warnings/errors:
-> 
-> dtschema/dtc warnings/errors:
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/sound/invensense,ics43432.yaml: maintainers:0: 'N/A' does not match '@'
-> 	from schema $id: http://devicetree.org/meta-schemas/base.yaml#
-> 
+Hello:
 
-Sorry, i picked the old version...
+This series was applied to netdev/net-next.git (main)
+by David S. Miller <davem@davemloft.net>:
 
+On Mon,  3 Mar 2025 18:13:42 +0200 you wrote:
+> Dynamic clocks - such as PTP clocks - extend beyond the standard POSIX
+> clock API by using ioctl calls. While file permissions are enforced for
+> standard POSIX operations, they are not implemented for ioctl calls,
+> since the POSIX layer cannot differentiate between calls which modify
+> the clock's state (like enabling PPS output generation) and those that
+> don't (such as retrieving the clock's PPS capabilities).
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v4,1/3] posix-clock: Store file pointer in struct posix_clock_context
+    https://git.kernel.org/netdev/net-next/c/e859d375d169
+  - [net-next,v4,2/3] ptp: Add PHC file mode checks. Allow RO adjtime() without FMODE_WRITE.
+    https://git.kernel.org/netdev/net-next/c/b4e53b15c04e
+  - [net-next,v4,3/3] testptp: Add option to open PHC in readonly mode
+    https://git.kernel.org/netdev/net-next/c/76868642e427
+
+You are awesome, thank you!
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
