@@ -1,109 +1,273 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6802218CBEC
-	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 17:29:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F29A95C;
+	Wed,  5 Mar 2025 17:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741195751; cv=none; b=hiUprMlgy9H+iXjKSoIeZvWET1QXh+KWzlTqvACwegVXA7BJ80GpmyQoLouHJj11cY0FM1zBXSjhnKAN7LNfTLskyvnQ0SydqteSUaLHWz2C2NNBzVcFpX1K82vRPRTVGF3GkHMGHWWpR56tapJCemoxcMHtSWnlepR24qlkl94=
+	t=1741196049; cv=none; b=F0pqbZ8ochqUT02ZhbSgh4wxMru5BHQBfUTZId0W9TEeWMICp5ruF5m3jTqbS3P4fz1Pu37RLtkwa+RIm/UTGfVUsVEJ1Iprx0CJ/oubQxH28pyqevaYHRcDzoI70RJR5FFqMJPwSe+6hFLCyyE9a/2JM8WO+D4tEoDzserNgEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741195751; c=relaxed/simple;
-	bh=B1wNsGRlbNuh23FquOiVRPjfZ7QTWBC3oKDQKjyCdJQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lYtZK9BmSYLJfNzH3ga82wvRd3sRrQsVSLyLb0AZD3rKc2lHIR6Kf3x3GyUXkCkDYFrrwiQlk23SUGl3mtWUslGm2yKyQ73wG6psdLmyMuw9m5bp4CA2WkpLpdbOtM1UF2yLH977srOgKGXH8ec+hVvduYiho08loRrq1fBnpoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=K0TT9O2h; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1741196049; c=relaxed/simple;
+	bh=rRm/nX3HORKGH4E5Fib2TAEBQ4Npz5BTDc5/0mnYr/8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=gjhoA4VVvHHTXk85Js/ORT9YAW1OFrFU/pCzPdLaGAE2halx1knzfYLgtRsMs3X2CVd8UabFQAdeEVSH5ApHDiJayKZUDT1+ImvrIv2cOhYBgWKDYS9KfaU7IywfV/dgQypuMpguF+Cxlsm+y+ehmVdjLZ/gkoRBlwHLEBdvkcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=HA7vUGfT; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="K0TT9O2h"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4751507fd08so4794051cf.2
-        for <netdev@vger.kernel.org>; Wed, 05 Mar 2025 09:29:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1741195748; x=1741800548; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=c907La5P+bJluU/LHcR6Es6yd6jk3jgKb5ChVAM4Ut4=;
-        b=K0TT9O2hTf5bnrGKM+kXK/8rBL6Dhtz+A4wj+laJR6nnyAkZjq44J4EE8EtNgDvcTR
-         GMZ8BmS30STVnJERL3MiucAk51Asx+hAXWU3mK64Tyu6LDYr6bbSlR9Gn3neJ8hptXsU
-         xxCyRay28z+yZFzULF33wVx/WebpPtuS0bdTnhcm6aMKxZ0vtXc9EVI1HhsFl3RZ803M
-         WHt8l2Rm84t/cv+0/aOiUfxGjWLrkJgHPnYhfXxPYysppMTQDtER6BfmG88GKeNfcx9g
-         JLP51QHm2HG1X1xQW7cyLXqqo8SSrvqiO9bZjjom0hoSBTPsG1caktyW69JBJOW5OpGp
-         HeWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741195748; x=1741800548;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c907La5P+bJluU/LHcR6Es6yd6jk3jgKb5ChVAM4Ut4=;
-        b=wYxhOsSo4S5HJGH+4jFxZiamekzFiLaLcgHlPcG6JZGSs5F+zVEPL0ijczsjhMyNTH
-         irqvszq5BwFePCvE+OLUlkqDOk9QGglbPAYPYxDOVjR0xSDc3eY1iY8qrkF28yAc8SSx
-         Z6ZQqPdOm3afnkO/p6laHnNptZEVM2RJQ3HTUeNFaLqoX9Mrc6SMUVyvBc7BIMfk5MBJ
-         iKrm3smrSJQmq8sKuR08oHIFE4CaE2tFVlCSfYWugMrqZZWYvuc6YyAcmLJ6laWn/hK9
-         WUiZEnb8BKRhjVWqLLEdTHTxdfeoth53fJU6tMhX+9CB7m22A/Ll6EzSph7V3jqoxaJg
-         nO/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXjxojsWbSGecmENEkSw4MDgF8b1Vuiu+8gtFvQKn34chUkAgW+4PjDPgn6wduogCUxpysB60E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwR9c3zAMckiYME+NwY6zUKvVXcYn2+Vizr0aw29V0PUbS9701A
-	wonSWpMWWdcGeVZLHG2Z7pOOi0C/PhqU65AGqnNaqzeekNvsEHvRjTcS2jY2tk4=
-X-Gm-Gg: ASbGncvB80cMxprAkmtcz/Ao/FYru7mVYu4VKB/BJ+21k6q+Nbc5hXXiGeHKZiXLKYD
-	uP2ELcM+oK3DvfU9QW5fG+vzKM1fQNhDe9OAIIjDFx2v3UsVx7BbmUrmR8CHKzHdyYZZIMjZ1tO
-	BhX7vHwVJ5IebvWqkmoe1DOEgGFi9UAe62v7w6lnC4gsYxZnMiJsNu4E8nwL7RKwyW6vQ2ho+co
-	VNas5dRXuSS9TGR4RBZArckR6094VGz5O6BOaE2IFFtuEMqFJTiwCG74rwF0O/kXXo6rq+13vR0
-	GvxkJUY22SNUwWON2QQ=
-X-Google-Smtp-Source: AGHT+IF4HNniD3vBEgV7Gc4XgcYAVaPywo5omCnN6AqAFGgL1Wjv+qwspVU+lTzqtNoHgcoOul5LVg==
-X-Received: by 2002:a05:6214:2525:b0:6e1:6c94:b5c5 with SMTP id 6a1803df08f44-6e8e6d144c4mr53580176d6.4.1741195748275;
-        Wed, 05 Mar 2025 09:29:08 -0800 (PST)
-Received: from ziepe.ca ([130.41.10.206])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e89765364esm81249136d6.35.2025.03.05.09.29.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Mar 2025 09:29:07 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1tpsYM-00000001TIk-3gw4;
-	Wed, 05 Mar 2025 13:29:06 -0400
-Date: Wed, 5 Mar 2025 13:29:06 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Yunsheng Lin <linyunsheng@huawei.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-	zhangkun09@huawei.com, liuyonglong@huawei.com,
-	fanghaiqing@huawei.com, Robin Murphy <robin.murphy@arm.com>,
-	Alexander Duyck <alexander.duyck@gmail.com>,
-	IOMMU <iommu@lists.linux.dev>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v10 4/4] page_pool: skip dma sync operation for
- inflight pages
-Message-ID: <20250305172906.GG5011@ziepe.ca>
-References: <20250226110340.2671366-1-linyunsheng@huawei.com>
- <20250226110340.2671366-5-linyunsheng@huawei.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="HA7vUGfT"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 711CF443BC;
+	Wed,  5 Mar 2025 17:34:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1741196045;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yzxGwDEPZtB7KagOsMG3rLKE9agCT9Rsr8B4ykwG3uk=;
+	b=HA7vUGfTxVY7jFbZTUjDna9Y55jhR2acna86OiIqEaX/Axv/xooHMR9tqG3l0I8pwdo9Ed
+	6rep4MwcjSBf2uody4hJRMnDVkxFyS6dqmtHHJXKq7y6HJaKPCkHLkQgX0OFsUG6+qU9qG
+	tH6vkrLRG8iukWJ5NiJPG4EUcw7ztQg4Pp2tcoV5PBp/A/GGnUJUmoNXD022MUxeWlWTF7
+	TVIij0QTtZXDg7R6DcgJdwKSkLFkEdAJwpkWtBKFSJHQPodVJQi1Covjc0+dLk+U6Tw+8t
+	ILcS/GaHjR59SqO+FIOoijz+R1DmneWTseF7Y/6d3EqJKGjaUP/qmQyjG567fg==
+From: Kory Maincent <kory.maincent@bootlin.com>
+Date: Wed, 05 Mar 2025 18:33:38 +0100
+Subject: [PATCH ethtool-next 2/3] tsinfo: Add support for hwtstamp provider
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250226110340.2671366-5-linyunsheng@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250305-feature_ptp-v1-2-f36f64f69aaa@bootlin.com>
+References: <20250305-feature_ptp-v1-0-f36f64f69aaa@bootlin.com>
+In-Reply-To: <20250305-feature_ptp-v1-0-f36f64f69aaa@bootlin.com>
+To: Michal Kubecek <mkubecek@suse.cz>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Andrew Lunn <andrew@lunn.ch>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jason Xing <kernelxing@tencent.com>, Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Kory Maincent <kory.maincent@bootlin.com>
+X-Mailer: b4 0.14.2
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddutdehgeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevgfdvgfektefgfefggeekudfggffhtdfffedtueetheejtddvledvvdelhedtveenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedufedprhgtphhtthhopeifihhllhgvmhguvggsrhhuihhjnhdrkhgvrhhnvghlsehgmhgrihhlrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkvghrnhgvlhigihhnghesthgvnhgtvghnthdrtghomhdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtohepkhhorhihrdhmrghinhgtvghnthessghoohhtl
+ hhinhdrtghomhdprhgtphhtthhopehmkhhusggvtggvkhesshhushgvrdgtiidprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhm
+X-GND-Sasl: kory.maincent@bootlin.com
 
-On Wed, Feb 26, 2025 at 07:03:39PM +0800, Yunsheng Lin wrote:
-> Skip dma sync operation for inflight pages before the
-> sync operation in page_pool_item_unmap() as DMA API
-> expects to be called with a valid device bound to a
-> driver as mentioned in [1].
-> 
-> After page_pool_destroy() is called, the page is not
-> expected to be recycled back to pool->alloc cache and
-> dma sync operation is not needed when the page is not
-> recyclable or pool->ring is full, so only skip the dma
-> sync operation for the infilght pages by clearing the
-> pool->dma_sync, as rcu sync operation in
-> page_pool_destroy() is paired with rcu lock in
-> page_pool_recycle_in_ring() to ensure that there is no
-> dma sync operation called after rcu sync operation.
+Add support for retrieving the hwtstamp provider description, which
+consists of an index and a qualifier.
 
-Are you guaranteeing that the cache is made consistent before freeing
-the page back to the mm? That is required..
+Extend tsinfo to allow querying timestamping information for a specific
+hwtstamp provider within a network interface topology.
 
-Jason
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+---
+ ethtool.8.in     |  16 ++++++++-
+ ethtool.c        |   3 +-
+ netlink/tsinfo.c | 103 ++++++++++++++++++++++++++++++++++++++++++++++++++-----
+ 3 files changed, 112 insertions(+), 10 deletions(-)
+
+diff --git a/ethtool.8.in b/ethtool.8.in
+index 9e272f7056a8c9122b122ade745f3bc601c13c27..7188e6ab5005cd0221ae0d2c6a0ec6a1566181fc 100644
+--- a/ethtool.8.in
++++ b/ethtool.8.in
+@@ -342,6 +342,10 @@ ethtool \- query or control network driver and hardware settings
+ .HP
+ .B ethtool \-T|\-\-show\-time\-stamping
+ .I devname
++.RB [ index
++.IR N
++.BI qualifier
++.IR precise|approx ]
+ .HP
+ .B ethtool \-x|\-\-show\-rxfh\-indir|\-\-show\-rxfh
+ .I devname
+@@ -1233,7 +1237,17 @@ Sets the dump flag for the device.
+ .TP
+ .B \-T \-\-show\-time\-stamping
+ Show the device's time stamping capabilities and associated PTP
+-hardware clock.
++hardware clock. Show the capabilities of the currently selected time
++stamping if no \fBindex\fR and \fBqualifier\fR is provided.
++.RS 4
++.TP
++.BI index \ N
++Index of the ptp hardware clock
++.TP
++.BI qualifier \ precise | approx
++Qualifier of the ptp hardware clock. Mainly "precise" the default one is
++for IEEE 1588 quality and "approx" is for NICs DMA point.
++.RE
+ .TP
+ .B \-x \-\-show\-rxfh\-indir \-\-show\-rxfh
+ Retrieves the receive flow hash indirection table and/or RSS hash key.
+diff --git a/ethtool.c b/ethtool.c
+index a1393bc14b7b1a473853965fd3557b51efabc3c6..cd3434021857e8c441325e321378323481fd98e0 100644
+--- a/ethtool.c
++++ b/ethtool.c
+@@ -5974,7 +5974,8 @@ static const struct option args[] = {
+ 		.opts	= "-T|--show-time-stamping",
+ 		.func	= do_tsinfo,
+ 		.nlfunc	= nl_tsinfo,
+-		.help	= "Show time stamping capabilities"
++		.help	= "Show time stamping capabilities",
++		.xhelp	= "		[ index N qualifier precise|approx ]\n"
+ 	},
+ 	{
+ 		.opts	= "-x|--show-rxfh-indir|--show-rxfh",
+diff --git a/netlink/tsinfo.c b/netlink/tsinfo.c
+index 4df41415dc478415fa5e991b31c4feb91b0cb5e4..c12070fc877b68d925d845caee6fe8a126e19882 100644
+--- a/netlink/tsinfo.c
++++ b/netlink/tsinfo.c
+@@ -13,9 +13,44 @@
+ #include "../common.h"
+ #include "netlink.h"
+ #include "bitset.h"
++#include "parser.h"
+ 
+ /* TSINFO_GET */
+ 
++static const char *tsinfo_hwprov_qualifier_names(u32 val)
++{
++	switch (val) {
++	case HWTSTAMP_PROVIDER_QUALIFIER_PRECISE:
++		return "Precise (IEEE 1588 quality)";
++	case HWTSTAMP_PROVIDER_QUALIFIER_APPROX:
++		return "Approximate";
++	default:
++		return "unsupported";
++	}
++}
++
++static int tsinfo_show_hwprov(const struct nlattr *nest)
++{
++	const struct nlattr *tb[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_MAX + 1] = {};
++	DECLARE_ATTR_TB_INFO(tb);
++	u32 val;
++	int ret;
++
++	ret = mnl_attr_parse_nested(nest, attr_cb, &tb_info);
++	if (ret < 0)
++		return ret;
++
++	val = mnl_attr_get_u32(tb[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX]);
++	print_uint(PRINT_ANY, "hwtstamp-provider-index",
++		   "Hardware timestamp provider index: %u\n", val);
++	val = mnl_attr_get_u32(tb[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_QUALIFIER]);
++	print_string(PRINT_ANY, "hwtstamp-provider-qualifier",
++		     "Hardware timestamp provider qualifier: %s\n",
++		     tsinfo_hwprov_qualifier_names(val));
++
++	return 0;
++}
++
+ static int tsinfo_show_stats(const struct nlattr *nest)
+ {
+ 	const struct nlattr *tb[ETHTOOL_A_TS_STAT_MAX + 1] = {};
+@@ -135,12 +170,19 @@ int tsinfo_reply_cb(const struct nlmsghdr *nlhdr, void *data)
+ 	if (ret < 0)
+ 		return err_ret;
+ 
+-	printf("PTP Hardware Clock: ");
+-	if (tb[ETHTOOL_A_TSINFO_PHC_INDEX])
++	if (tb[ETHTOOL_A_TSINFO_HWTSTAMP_PROVIDER]) {
++		ret = tsinfo_show_hwprov(tb[ETHTOOL_A_TSINFO_HWTSTAMP_PROVIDER]);
++		if (ret < 0)
++			return err_ret;
++
++	} else if (tb[ETHTOOL_A_TSINFO_PHC_INDEX]) {
++		printf("PTP Hardware Clock: ");
+ 		printf("%d\n",
+ 		       mnl_attr_get_u32(tb[ETHTOOL_A_TSINFO_PHC_INDEX]));
+-	else
++	} else {
++		printf("PTP Hardware Clock: ");
+ 		printf("none\n");
++	}
+ 
+ 	ret = tsinfo_dump_list(nlctx, tb[ETHTOOL_A_TSINFO_TX_TYPES],
+ 			       "Hardware Transmit Timestamp Modes", " none",
+@@ -163,6 +205,46 @@ int tsinfo_reply_cb(const struct nlmsghdr *nlhdr, void *data)
+ 	return MNL_CB_OK;
+ }
+ 
++static int tsinfo_qualifier_parser(struct nl_context *nlctx,
++				   uint16_t type __maybe_unused,
++				   const void *data __maybe_unused,
++				   struct nl_msg_buff *msgbuff __maybe_unused,
++				   void *dest __maybe_unused)
++{
++	const char *arg = *nlctx->argp;
++	u32 val;
++
++	nlctx->argp++;
++	nlctx->argc--;
++
++	if (!strncmp(arg, "precise", sizeof("precise")))
++		val = HWTSTAMP_PROVIDER_QUALIFIER_PRECISE;
++	else if (!strncmp(arg, "approx", sizeof("approx")))
++		val = HWTSTAMP_PROVIDER_QUALIFIER_APPROX;
++	else
++		return -EINVAL;
++
++	return (type && ethnla_put_u32(msgbuff, type, val)) ? -EMSGSIZE : 0;
++}
++
++static const struct param_parser tsinfo_params[] = {
++	{
++		.arg		= "index",
++		.type		= ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX,
++		.group		= ETHTOOL_A_TSINFO_HWTSTAMP_PROVIDER,
++		.handler	= nl_parse_direct_u32,
++		.min_argc	= 1,
++	},
++	{
++		.arg		= "qualifier",
++		.type		= ETHTOOL_A_TS_HWTSTAMP_PROVIDER_QUALIFIER,
++		.group		= ETHTOOL_A_TSINFO_HWTSTAMP_PROVIDER,
++		.handler	= tsinfo_qualifier_parser,
++		.min_argc	= 1,
++	},
++	{}
++};
++
+ int nl_tsinfo(struct cmd_context *ctx)
+ {
+ 	struct nl_context *nlctx = ctx->nlctx;
+@@ -172,16 +254,21 @@ int nl_tsinfo(struct cmd_context *ctx)
+ 
+ 	if (netlink_cmd_check(ctx, ETHTOOL_MSG_TSINFO_GET, true))
+ 		return -EOPNOTSUPP;
+-	if (ctx->argc > 0) {
+-		fprintf(stderr, "ethtool: unexpected parameter '%s'\n",
+-			*ctx->argp);
+-		return 1;
+-	}
+ 
+ 	flags = get_stats_flag(nlctx, ETHTOOL_MSG_TSINFO_GET, ETHTOOL_A_TSINFO_HEADER);
+ 	ret = nlsock_prep_get_request(nlsk, ETHTOOL_MSG_TSINFO_GET,
+ 				      ETHTOOL_A_TSINFO_HEADER, flags);
+ 	if (ret < 0)
+ 		return ret;
++
++	nlctx->cmd = "-T";
++	nlctx->argp = ctx->argp;
++	nlctx->argc = ctx->argc;
++	nlctx->devname = ctx->devname;
++
++	ret = nl_parser(nlctx, tsinfo_params, NULL, PARSER_GROUP_NEST, NULL);
++	if (ret < 0)
++		return ret;
++
+ 	return nlsock_send_get_request(nlsk, tsinfo_reply_cb);
+ }
+
+-- 
+2.34.1
+
