@@ -1,99 +1,200 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA17124503E
-	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 13:14:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BEF245020
+	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 13:17:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741180490; cv=none; b=H7IZTBKEwKInAirjRpCA7LlvFOEhV6Cm8g4Yits6RAgZyObw1d+giyQScAgaXtPb9fZIgAM6F8wrv6xqJXMZTVBV7rDERF2UplIRv5TLEjkpCntH9X5lGM4DK5QrfwaLz5wsizY7Rb3YlOj2TRYe6CMMDVYOQhyO1/R+othHxCA=
+	t=1741180639; cv=none; b=IMuVKLdlHd9uwX1iDhcxKB8wFVk6Hu7deCdRLqIe/AeUdMz+LAQoIEPUwPnrU21jffku6UWl7EIPsJ6PMmhCKwKM2kMzURyumsQ8FKonGvvGWXwGBp6FEF2tY8WeZDF8aN7Bi31qBF/eCLV2DCRRFij1fsuCd0IfWM9KlTNZAY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741180490; c=relaxed/simple;
-	bh=o8rb0cRL5d/DJLK3zumcC2E3PtRerI3iEuNDOsyCwjM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mQ73d1aqvqezlreU9TUJJJEtdurlvvchOF70zugMb2fCmSaBAwiRs2asgC0O+5MX1t/XPKlV2E26BnTxs8QFgpgD4I9kWVI0MeLVVHwg1l7YeB12s+IiaSS5HjXxsApOf5wVM1MciEwLxMJW9oL7nZ7dGSFILs+lKPhGKAgAke8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tpoZw-0000xZ-A1; Wed, 05 Mar 2025 14:14:28 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tpoZu-0049P5-1i;
-	Wed, 05 Mar 2025 14:14:26 +0100
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tpoZu-006G5O-1R;
-	Wed, 05 Mar 2025 14:14:26 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v5 0/4] Add support for Plymovent AQM board
-Date: Wed,  5 Mar 2025 14:14:21 +0100
-Message-Id: <20250305131425.1491769-1-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1741180639; c=relaxed/simple;
+	bh=2kxHOADdMaBJ2diMMR7f3Fz/guxN2SEgJZkgoL6/lJw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uOQ5PvmhRquJ+Xt6Ze3mJIM5Mk3TXVyrfLLI7Bibh/cU9sbArnu36GQhoq4LAth+ys9CYhmFM8rnQpkM1XGt2p7ZUldDKk/gZ9FzkAul/DEItyNrBjnjU43lUw0CZ/X/Nk9eMokYja+rK1KqC2G6FOEd47GrlzvvkzJkujT7FTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=Nr2dnttS; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="Nr2dnttS"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4394345e4d5so46316215e9.0
+        for <netdev@vger.kernel.org>; Wed, 05 Mar 2025 05:17:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1741180635; x=1741785435; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=6N01sDPWZVW3FIPmf2JkMC4QdlVlUkWYnKGuNikmOwk=;
+        b=Nr2dnttSS5udPt5LBLeFCEjM99AKV1stfi4dhqppWSZ9Bk0OUfaTSaYjcBGhDK2N3y
+         RGDBS6VR+ePFZDhNm1TglpB44ynyavh8DwTP4xOh17G31cFD01wxLIikEV0W4PY3jtgO
+         N5hCxA7HUpvjKYllwKsQktZL0fJcQR11PR2UeEvP5wMDrQ7mH0eu7ISkArs/thzo6T3r
+         NuvtMTwWDMBAsY3Hnq1zv3dYwGfe1VwPBO4FkzQOTrqnA8CwE6qf07Ivblzc+6u85OqQ
+         f+uk1LY3Cxj22qsz2EeZ5wwqC27JlrkOJwLbEzW7LpJZbD9ij3GqRLdwuTxqlwwqq6MO
+         b5oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741180635; x=1741785435;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6N01sDPWZVW3FIPmf2JkMC4QdlVlUkWYnKGuNikmOwk=;
+        b=EhfV2Fp2P4rwytff8R1CAMuv41887Ecyu2SdinWUU5BKc1s8OTgGRXoRkoaXgSkdF2
+         Gg2/0EEM5B8Lm8UPhTMgP8/vH8JpkXJ4AEh9MCtCgtbn8vLBm89wnIO/DG9A3h0ymnXH
+         +yzUWLzMyhYVwARfcvvt1ebhBfe/BabhGUbwS3PEWXkHB6jG+i/vNQZMMeGeWOZQ7yYl
+         5s69Fu9C+zbG9ym0uT1RaGKRjNzKwsMpRUP9A1/SbmENgzfWeVWjO9gMQ45P7LMH148J
+         RU8ol0oYK6+xDeL/tmKqXM0wIuMrGAPPlWVfzIQxerNweEx20taMOqdMyQqDRyjKczBg
+         h8lw==
+X-Gm-Message-State: AOJu0YwQjXJrYnizGmtGR4vrf9ZcxxIaNAjlykZKxPWMwDc44GwBX/dF
+	1xFX6/mOW255xIMeLIyUM5g55pV6Y9LiFvSoyaD1+CNvzDYFJLJpB4DfxkwyhkA=
+X-Gm-Gg: ASbGncs4qsdQlGV1E0dqnI/+HixyjgvxV5g9Esm5eFfGOxDhO2vcYs05J5fntrkl2Ms
+	7p3I6/3KaCaA6vmQywXcJdM8bLR1Vn74Eg2w5dsbp0zZTz0gw7yYmAP4FsPGWEB2nE3Ui1D9o0l
+	I1OgX2RauGc+P+2sHnHAUVZl4CamQ4fj3e7yzqCzXv2t5Ld1HbYg7z2gOOPw7G0tzWQRlgseb+l
+	LU4ODlqA3hUciPVSpoGI2HMQka1kYWirzYKj+qXaaALJLaKOIa2ilV/es6kOtaUl2cElgU4VNSv
+	pYA7OcgbEnBtR625qpM3i9F1DqbnrRY6N2/T5BTTToxqpwN/mYTRV8w1vR+9iN++mLMlSNphYJB
+	urXvf
+X-Google-Smtp-Source: AGHT+IHRg0l/1N8uHFnYb4bX5yYHlChPZNy+86wJV5dCxTO5VpvzzPCHs43ZAYtx/q1KNZyZRo48PQ==
+X-Received: by 2002:a05:6000:1844:b0:390:de59:470d with SMTP id ffacd0b85a97d-3911f760290mr2386582f8f.24.1741180635465;
+        Wed, 05 Mar 2025 05:17:15 -0800 (PST)
+Received: from ?IPV6:2001:67c:2fbc:1:6b84:f104:e1bf:5d7? ([2001:67c:2fbc:1:6b84:f104:e1bf:5d7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e47b7dcfsm21291872f8f.55.2025.03.05.05.17.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Mar 2025 05:17:14 -0800 (PST)
+Message-ID: <52bdddf9-99e0-4b87-8bae-c0a8f32beba8@openvpn.net>
+Date: Wed, 5 Mar 2025 14:17:13 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v21 20/24] ovpn: implement key add/get/del/swap via
+ netlink
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>,
+ ryazanov.s.a@gmail.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Xiao Liang <shaw.leon@gmail.com>
+References: <20250304-b4-ovpn-tmp-v21-0-d3cbb74bb581@openvpn.net>
+ <20250304-b4-ovpn-tmp-v21-20-d3cbb74bb581@openvpn.net> <Z8braoc3yeBY7lcE@hog>
+ <07c73e1d-3c9c-46c7-92cd-28d728929d18@openvpn.net> <Z8eIJH1LtTtfljSj@hog>
+ <71c1db26-f147-4578-89ae-c5b95da0ec9a@openvpn.net> <Z8gjXLepPcRByLTZ@hog>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <Z8gjXLepPcRByLTZ@hog>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This patch series adds support for the Plymovent AQM board based on the
-STM32MP151C SoC. Additionally, the ICS-43432 device tree binding is
-converted to YAML to address a validation warning.
+On 05/03/2025 11:11, Sabrina Dubroca wrote:
+> 2025-03-05, 02:00:21 +0100, Antonio Quartulli wrote:
+>> On 05/03/2025 00:09, Sabrina Dubroca wrote:
+>>> 2025-03-04, 13:11:28 +0100, Antonio Quartulli wrote:
+>>>> On 04/03/2025 13:00, Sabrina Dubroca wrote:
+>>>>> 2025-03-04, 01:33:50 +0100, Antonio Quartulli wrote:
+>>>>>>     int ovpn_nl_key_new_doit(struct sk_buff *skb, struct genl_info *info)
+>>>>>>     {
+>>>>> ...
+>>>>>> +	pkr.slot = nla_get_u8(attrs[OVPN_A_KEYCONF_SLOT]);
+>>>>>> +	pkr.key.key_id = nla_get_u16(attrs[OVPN_A_KEYCONF_KEY_ID]);
+>>>>>> +	pkr.key.cipher_alg = nla_get_u16(attrs[OVPN_A_KEYCONF_CIPHER_ALG]);
+>>>>>
+>>>>>
+>>>>> [...]
+>>>>>> +static int ovpn_nl_send_key(struct sk_buff *skb, const struct genl_info *info,
+>>>>>> +			    u32 peer_id, enum ovpn_key_slot slot,
+>>>>>> +			    const struct ovpn_key_config *keyconf)
+>>>>>> +{
+>>>>> ...
+>>>>>> +	if (nla_put_u32(skb, OVPN_A_KEYCONF_SLOT, slot) ||
+>>>>>> +	    nla_put_u32(skb, OVPN_A_KEYCONF_KEY_ID, keyconf->key_id) ||
+>>>>>> +	    nla_put_u32(skb, OVPN_A_KEYCONF_CIPHER_ALG, keyconf->cipher_alg))
+>>>>>
+>>>>> That's a bit inconsistent. nla_put_u32 matches the generated policy,
+>>>>> but the nla_get_u{8,16} don't (and nla_get_u16 also doesn't match "u8
+>>>>> key_id" it's getting stored into).
+>>>>>
+>>>>> [also kind of curious that the policy/spec uses U32 with max values of 1/2/7]
+>>>>
+>>>>   From https://www.kernel.org/doc/html/next/userspace-api/netlink/specs.html#fix-width-integer-types
+>>>>
+>>>> "Note that types smaller than 32 bit should be avoided as using them does
+>>>> not save any memory in Netlink messages (due to alignment)."
+>>>>
+>>>> Hence I went for u32 attributes, although values stored into them are much
+>>>> smaller.
+>>>
+>>> Right.
+>>
+>> What's wrong with key_id being u8 tough?
+> 
+> Nothing. It would make a little bit more sense to use nla_get_u16 if
+> key_id was u16 (even with OVPN_A_KEYCONF_KEY_ID defined as U32), or to
+> use nla_get_u8 for u8, but here it was just 3 different int sizes and
+> that triggered my "uh? what?" :)
+> 
+>> I am a bit reluctant to change all key_id fields/variables to u32, just
+>> because the netlink APIs prefers using u32 instead of u8.
+>>
+>> Keeping variables/fields u8 allows to understand what values we're going to
+>> store internally.
+> 
+> Sure.
+> 
+>> And thanks to the netlink policy we know that no larger value will be
+>> attempted to be saved, even if the field is actually u32.
+> 
+> Yes.
+> 
 
-The ICS-43432 patch resolves one of the devicetree validation warnings.
-However, the false-positive warning:
+Ok :)
 
-  "audio-controller@44004000: port:endpoint: Unevaluated properties are
-   not allowed ('format' was unexpected)"
+Then I'll make sure they all use nla_get/put_u32, but will still store 
+the key_id in a u8 field.
 
-remains unresolved. The "format" property is required for proper
-functionality of this device.
+Cheers!
 
-Best regards,
-
-Oleksij Rempel (4):
-  dt-bindings: sound: convert ICS-43432 binding to YAML
-  dt-bindings: arm: stm32: Add Plymovent AQM board
-  ARM: dts: stm32: Add pinmux groups for Plymovent AQM board
-  arm: dts: stm32: Add Plymovent AQM devicetree
-
- .../devicetree/bindings/arm/stm32/stm32.yaml  |   1 +
- .../devicetree/bindings/sound/ics43432.txt    |  19 -
- .../bindings/sound/invensense,ics43432.yaml   |  51 +++
- arch/arm/boot/dts/st/Makefile                 |   1 +
- arch/arm/boot/dts/st/stm32mp15-pinctrl.dtsi   | 292 ++++++++++++++
- arch/arm/boot/dts/st/stm32mp151c-plyaqm.dts   | 376 ++++++++++++++++++
- 6 files changed, 721 insertions(+), 19 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/sound/ics43432.txt
- create mode 100644 Documentation/devicetree/bindings/sound/invensense,ics43432.yaml
- create mode 100644 arch/arm/boot/dts/st/stm32mp151c-plyaqm.dts
-
---
-2.39.5
+-- 
+Antonio Quartulli
+OpenVPN Inc.
 
