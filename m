@@ -1,420 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB108632B;
-	Wed,  5 Mar 2025 00:54:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE5B11185
+	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 01:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741136049; cv=none; b=uKuhUKr4JYH7rAlXAAQiinMsIi4a5QrMnexNvCdylT8utZ7PoA976x03kRqaAbcUg0zN5sNFWtM5eU1f6XTNiKXu/6cVRRkdMK83uWves0lzXi4D+x8FQkiJLh+rNMzq+F3dQdlwozL9E2iq2YPFCQ46oQGU8Gd2ab0B2dIELNs=
+	t=1741136428; cv=none; b=gd18fNBTWovUpBo3N04Q9B172gVypO2bgX99y3ZoIkgzOZGtIo2VdTfJ0a8qY870twaVuDGyePUZh2iLFGvCNst/0TdTM5ShbA4FXxypIsyhQQDnKsT2bqqDjiyQh83e0Be0PJA37Q2/m0IhLSP+GPQAF8ex5mlnPgYMwaQATpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741136049; c=relaxed/simple;
-	bh=XR4PI1LN4kdyU5wqIxlgJic4+Ln46gfPI8gNjamQjQU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sbUqy15j7MuDAejQCihnEXuCpBOHMtI7VU5zMORDwKLg4uf7tQl2O41S7Cw1XH3uvwXd3yI6dH2K1+B1Q8Iid8EuvkMvOIiWUJte+tyULNXj8XZNbSacBB3iU2wpqjnDEkV73Vi4x1PjROwiN3YWhaql/fTnvEsqprFTX6PMJ6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BVzLtR64; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741136428; c=relaxed/simple;
+	bh=FRqmXYpYVBt8WeZOTp6ZTdH2x+Rqo3KDqIOZpuj4mN4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gI8eodQ1hDuoXBfzMp9KrluNnq9V9g7Y+amXTX5kd3phbKSrmDO5nrothyif4VcpQY9kSdOvYO5NLiiemUWvKbCEha2RmKeb9GY+hSwGE+9YwLqXnVdDM0knLflzgeaKDbn6lORvTyaVf45Vt9DI7yKNTRJPTw6lkJ4yyILuElk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=AjnalfrL; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BVzLtR64"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A5C48C4CEEE;
-	Wed,  5 Mar 2025 00:54:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741136048;
-	bh=XR4PI1LN4kdyU5wqIxlgJic4+Ln46gfPI8gNjamQjQU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=BVzLtR64AYEeV4tRZetm6S+LpRw17yX5/Du//S84meBNVfDNTURcb0glT6A2yC62T
-	 w55Wrd7U85R8x0KfSLjYVRyDY0olvjrbE31Slj6TJ8HZLpI2nq0RaF2KAYdoXQPrPp
-	 sUUNMjEHhFWYnA2u8ishc15uvmdx3xPrvOhsDgqzq+f+WZTLBcvI60GrvLZ6dSki9n
-	 ntErabFVXmAu72360IHgZ+2wOKNfwvmMJdQcQJoA1v2wVusYwySo3IBRxzkUg/NlgL
-	 6LU5Xzd9m5NR9sFgNojm6pQZyGzIw+PcThpxPpE5O3B54gVBkUaFieZR8O8wHBR9s3
-	 mT5LA0Xz5o0lw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C365C282D0;
-	Wed,  5 Mar 2025 00:54:08 +0000 (UTC)
-From: Satish Kharat via B4 Relay <devnull+satishkh.cisco.com@kernel.org>
-Date: Tue, 04 Mar 2025 19:56:40 -0500
-Subject: [PATCH net-next v2 4/8] enic: enable rq extended cq support
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="AjnalfrL"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5e4ebc78da5so9292433a12.2
+        for <netdev@vger.kernel.org>; Tue, 04 Mar 2025 17:00:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1741136424; x=1741741224; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=chlUX2BPGTU5TeZ1kFFp37lGXktq1FgiG+bxYUO8kTk=;
+        b=AjnalfrLCIreR9PBMDyUPDsCkViRaWgsDAoL+b4DrtIlMlzstx+58eTkM7sEbHA48h
+         nsQ7PezbNoI92/AqBg8Ptp2uk0ryrLcNvF4RT61p//vIpHJHc6M77jgHZfoRHTCfKRC5
+         HupfNj9Vrr84qsV1F+kvPYXcJSw6C7gPk/zwGODA2ECmQ2f6+yEv3oo3wLtaYhhcf51K
+         Ol/VN5PEvPmHHegyynZkUrSLEFB7NpfwgXXv9Q7POgWjbabkTzlwd8UxtT3ncIW1kuyp
+         L8WZtL4+86rOZuQXVXXjCL+PAUPf/Hw+ghzrgC9GmXvvoak1iQ/53Z+X0TBGESixVdqA
+         KwhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741136424; x=1741741224;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=chlUX2BPGTU5TeZ1kFFp37lGXktq1FgiG+bxYUO8kTk=;
+        b=G3XgcbmDYUaJ7GndiKXXz8Dp+oJ0RHz/m/kA1hP6VQ1NavmHCrhl1+YYrGkrO/b5h6
+         hROvbFaLKLEVIJjQuy7n6yNcRZXbfJwNxjcmxj99Rawv6uphc4WRALvlwwxn/VY18IXK
+         XpZQaJyaEPhXi3LYWBkOCkuoU0EqlETMPR7Iz1s7xCntBccO24cT01Y+Thw1BZCLeOt7
+         D3SLNhxUUxwb/0vUzU7jh7Uz+zhksa7UKKR0ZxTghNCqZ5t2/7GuSsLNuZy1iko4BlMK
+         K5m7SMS4/MMg0nIpMNRbBMb0BaXVE7GpAHpAXeHJFYSRp6ol8w16ijpaAWK9+7rYRnDC
+         TIIw==
+X-Gm-Message-State: AOJu0YxrfrONLN5ux1Ceg039JS9l58ZOVhocBK/CkJoMXFaUDfPLa1pc
+	EiDiKzXC3iXI/PrHXNnqYVu97Ol0GHDa1lQboTuzwEanFEUmxQlthHEv1qbXeQc=
+X-Gm-Gg: ASbGncuRXbSrSVfO7cdck7CUXlcG/HDZQsnLJvv2RdwOaWo0K6zYa1Zq5KquMl7sJSN
+	L0mri6P0AHbjfhG4j+Grw212wFkbwo38RZUCen0nU9d2OxT62wIXpPzBXlrvqkrs0N4TLfsaXzh
+	iMlXkSj5zI8ndtGYp5qDEozv/WJeelTH+eWgd5Oj7WfwZ4IDQBBW8tKrsAncrQW7kRJEiTLcj2S
+	p2PGMR4A1+2GQu9g/o0qvQLagmzfLYqeOjlLqPK905THlnaukOwqDCGZwZ8jRu2w8biIpModRoz
+	PxlXG0q5KXR9WKmvt1MaCHhcrwhuAa7MxhUos/AQB/2ko5ZvH5VrFYBUdqetZWTGqBE7DLaqT0V
+	pa/dsg+Y=
+X-Google-Smtp-Source: AGHT+IGwWVFOLcxV0LkUngHq3HFjXHad4jOYWm8uX/RmfUfR8dI9IG0CksFEVnyNPrbp4SNz8LPd6Q==
+X-Received: by 2002:a17:907:94d1:b0:ac1:def4:ce20 with SMTP id a640c23a62f3a-ac20d8bc96fmr114851166b.18.1741136423329;
+        Tue, 04 Mar 2025 17:00:23 -0800 (PST)
+Received: from ?IPV6:2001:67c:2fbc:1:2107:3d4f:958a:fa5f? ([2001:67c:2fbc:1:2107:3d4f:958a:fa5f])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac1fa431529sm165373366b.148.2025.03.04.17.00.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Mar 2025 17:00:22 -0800 (PST)
+Message-ID: <71c1db26-f147-4578-89ae-c5b95da0ec9a@openvpn.net>
+Date: Wed, 5 Mar 2025 02:00:21 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v21 20/24] ovpn: implement key add/get/del/swap via
+ netlink
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>,
+ ryazanov.s.a@gmail.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Xiao Liang <shaw.leon@gmail.com>
+References: <20250304-b4-ovpn-tmp-v21-0-d3cbb74bb581@openvpn.net>
+ <20250304-b4-ovpn-tmp-v21-20-d3cbb74bb581@openvpn.net> <Z8braoc3yeBY7lcE@hog>
+ <07c73e1d-3c9c-46c7-92cd-28d728929d18@openvpn.net> <Z8eIJH1LtTtfljSj@hog>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <Z8eIJH1LtTtfljSj@hog>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250304-enic_cleanup_and_ext_cq-v2-4-85804263dad8@cisco.com>
-References: <20250304-enic_cleanup_and_ext_cq-v2-0-85804263dad8@cisco.com>
-In-Reply-To: <20250304-enic_cleanup_and_ext_cq-v2-0-85804263dad8@cisco.com>
-To: Christian Benvenuti <benve@cisco.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Satish Kharat <satishkh@cisco.com>, Nelson Escobar <neescoba@cisco.com>, 
- John Daley <johndale@cisco.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741136202; l=12808;
- i=satishkh@cisco.com; s=20250226; h=from:subject:message-id;
- bh=4QdHHiaBhEaGz+aozi+RNm0r9jFQ8UxgwC9RRxuvcdU=;
- b=dgB028ZgSQPNStT4/reCGrIpy7xp1n7lNIOjOs9CFYIyxeskNFaySdeCTQWnJegCxpLt+XO7W
- QiiDiK9FZHUCpEITOhuQDE1tJ9e+OHS/rEr53GzFyr7VJ9JrRf+Pyzb
-X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
- pk=lkxzORFYn5ejiy0kzcsfkpGoXZDcnHMc4n3YK7jJnJo=
-X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/20250226 with
- auth_id=351
-X-Original-From: Satish Kharat <satishkh@cisco.com>
-Reply-To: satishkh@cisco.com
 
-From: Satish Kharat <satishkh@cisco.com>
+On 05/03/2025 00:09, Sabrina Dubroca wrote:
+> 2025-03-04, 13:11:28 +0100, Antonio Quartulli wrote:
+>> On 04/03/2025 13:00, Sabrina Dubroca wrote:
+>>> 2025-03-04, 01:33:50 +0100, Antonio Quartulli wrote:
+>>>>    int ovpn_nl_key_new_doit(struct sk_buff *skb, struct genl_info *info)
+>>>>    {
+>>> ...
+>>>> +	pkr.slot = nla_get_u8(attrs[OVPN_A_KEYCONF_SLOT]);
+>>>> +	pkr.key.key_id = nla_get_u16(attrs[OVPN_A_KEYCONF_KEY_ID]);
+>>>> +	pkr.key.cipher_alg = nla_get_u16(attrs[OVPN_A_KEYCONF_CIPHER_ALG]);
+>>>
+>>>
+>>> [...]
+>>>> +static int ovpn_nl_send_key(struct sk_buff *skb, const struct genl_info *info,
+>>>> +			    u32 peer_id, enum ovpn_key_slot slot,
+>>>> +			    const struct ovpn_key_config *keyconf)
+>>>> +{
+>>> ...
+>>>> +	if (nla_put_u32(skb, OVPN_A_KEYCONF_SLOT, slot) ||
+>>>> +	    nla_put_u32(skb, OVPN_A_KEYCONF_KEY_ID, keyconf->key_id) ||
+>>>> +	    nla_put_u32(skb, OVPN_A_KEYCONF_CIPHER_ALG, keyconf->cipher_alg))
+>>>
+>>> That's a bit inconsistent. nla_put_u32 matches the generated policy,
+>>> but the nla_get_u{8,16} don't (and nla_get_u16 also doesn't match "u8
+>>> key_id" it's getting stored into).
+>>>
+>>> [also kind of curious that the policy/spec uses U32 with max values of 1/2/7]
+>>
+>>  From https://www.kernel.org/doc/html/next/userspace-api/netlink/specs.html#fix-width-integer-types
+>>
+>> "Note that types smaller than 32 bit should be avoided as using them does
+>> not save any memory in Netlink messages (due to alignment)."
+>>
+>> Hence I went for u32 attributes, although values stored into them are much
+>> smaller.
+> 
+> Right.
 
-Enables getting from hw all the supported rq cq sizes and
-uses the highest supported cq size.
+What's wrong with key_id being u8 tough?
 
-Co-developed-by: Nelson Escobar <neescoba@cisco.com>
-Signed-off-by: Nelson Escobar <neescoba@cisco.com>
-Co-developed-by: John Daley <johndale@cisco.com>
-Signed-off-by: John Daley <johndale@cisco.com>
-Signed-off-by: Satish Kharat <satishkh@cisco.com>
----
- drivers/net/ethernet/cisco/enic/cq_desc.h   |   3 +
- drivers/net/ethernet/cisco/enic/enic.h      |   9 +++
- drivers/net/ethernet/cisco/enic/enic_main.c |   4 ++
- drivers/net/ethernet/cisco/enic/enic_res.c  |  58 ++++++++++++++-
- drivers/net/ethernet/cisco/enic/enic_rq.c   | 105 +++++++++++++++++++++-------
- 5 files changed, 150 insertions(+), 29 deletions(-)
+I am a bit reluctant to change all key_id fields/variables to u32, just 
+because the netlink APIs prefers using u32 instead of u8.
 
-diff --git a/drivers/net/ethernet/cisco/enic/cq_desc.h b/drivers/net/ethernet/cisco/enic/cq_desc.h
-index 462c5435a206b4cc93b3734fdc96a2192b53a235..8fc313b6ed0434bd55b8e10bf3086ef848acbdf1 100644
---- a/drivers/net/ethernet/cisco/enic/cq_desc.h
-+++ b/drivers/net/ethernet/cisco/enic/cq_desc.h
-@@ -40,6 +40,9 @@ struct cq_desc {
- #define CQ_DESC_COMP_NDX_BITS    12
- #define CQ_DESC_COMP_NDX_MASK    ((1 << CQ_DESC_COMP_NDX_BITS) - 1)
- 
-+#define CQ_DESC_32_FI_MASK (BIT(0) | BIT(1))
-+#define CQ_DESC_64_FI_MASK (BIT(0) | BIT(1))
-+
- static inline void cq_desc_dec(const struct cq_desc *desc_arg,
- 	u8 *type, u8 *color, u16 *q_number, u16 *completed_index)
- {
-diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
-index 305ed12aa0311ca6cc53bfbffcc300182a8011a7..d60e55accafd0e4f83728524da4f167a474d6213 100644
---- a/drivers/net/ethernet/cisco/enic/enic.h
-+++ b/drivers/net/ethernet/cisco/enic/enic.h
-@@ -31,6 +31,13 @@
- 
- #define ENIC_AIC_LARGE_PKT_DIFF	3
- 
-+enum ext_cq {
-+	ENIC_RQ_CQ_ENTRY_SIZE_16,
-+	ENIC_RQ_CQ_ENTRY_SIZE_32,
-+	ENIC_RQ_CQ_ENTRY_SIZE_64,
-+	ENIC_RQ_CQ_ENTRY_SIZE_MAX,
-+};
-+
- struct enic_msix_entry {
- 	int requested;
- 	char devname[IFNAMSIZ + 8];
-@@ -228,6 +235,7 @@ struct enic {
- 	struct enic_rfs_flw_tbl rfs_h;
- 	u8 rss_key[ENIC_RSS_LEN];
- 	struct vnic_gen_stats gen_stats;
-+	enum ext_cq ext_cq;
- };
- 
- static inline struct net_device *vnic_get_netdev(struct vnic_dev *vdev)
-@@ -349,5 +357,6 @@ int enic_is_valid_vf(struct enic *enic, int vf);
- int enic_is_dynamic(struct enic *enic);
- void enic_set_ethtool_ops(struct net_device *netdev);
- int __enic_set_rsskey(struct enic *enic);
-+void enic_ext_cq(struct enic *enic);
- 
- #endif /* _ENIC_H_ */
-diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index 080234ef4c2bb53c19e26601ca9bb38d26a738b7..d716514366dfc56b4e08260d18d78fddd23f6253 100644
---- a/drivers/net/ethernet/cisco/enic/enic_main.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -2192,6 +2192,7 @@ static void enic_reset(struct work_struct *work)
- 	enic_init_vnic_resources(enic);
- 	enic_set_rss_nic_cfg(enic);
- 	enic_dev_set_ig_vlan_rewrite_mode(enic);
-+	enic_ext_cq(enic);
- 	enic_open(enic->netdev);
- 
- 	/* Allow infiniband to fiddle with the device again */
-@@ -2218,6 +2219,7 @@ static void enic_tx_hang_reset(struct work_struct *work)
- 	enic_init_vnic_resources(enic);
- 	enic_set_rss_nic_cfg(enic);
- 	enic_dev_set_ig_vlan_rewrite_mode(enic);
-+	enic_ext_cq(enic);
- 	enic_open(enic->netdev);
- 
- 	/* Allow infiniband to fiddle with the device again */
-@@ -2592,6 +2594,8 @@ static int enic_dev_init(struct enic *enic)
- 
- 	enic_get_res_counts(enic);
- 
-+	enic_ext_cq(enic);
-+
- 	err = enic_alloc_enic_resources(enic);
- 	if (err) {
- 		dev_err(dev, "Failed to allocate enic resources\n");
-diff --git a/drivers/net/ethernet/cisco/enic/enic_res.c b/drivers/net/ethernet/cisco/enic/enic_res.c
-index 1261251998330c8b8363c4dd2db1ccc25847476c..a7179cc4b5296cfbce137c54a9e17e6b358a19ae 100644
---- a/drivers/net/ethernet/cisco/enic/enic_res.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_res.c
-@@ -312,6 +312,7 @@ void enic_init_vnic_resources(struct enic *enic)
- int enic_alloc_vnic_resources(struct enic *enic)
- {
- 	enum vnic_dev_intr_mode intr_mode;
-+	int rq_cq_desc_size;
- 	unsigned int i;
- 	int err;
- 
-@@ -326,6 +327,24 @@ int enic_alloc_vnic_resources(struct enic *enic)
- 		intr_mode == VNIC_DEV_INTR_MODE_MSIX ? "MSI-X" :
- 		"unknown");
- 
-+	switch (enic->ext_cq) {
-+	case ENIC_RQ_CQ_ENTRY_SIZE_16:
-+		rq_cq_desc_size = 16;
-+		break;
-+	case ENIC_RQ_CQ_ENTRY_SIZE_32:
-+		rq_cq_desc_size = 32;
-+		break;
-+	case ENIC_RQ_CQ_ENTRY_SIZE_64:
-+		rq_cq_desc_size = 64;
-+		break;
-+	default:
-+		dev_err(enic_get_dev(enic),
-+			"Unable to determine rq cq desc size: %d",
-+			enic->ext_cq);
-+		err = -ENODEV;
-+		goto err_out;
-+	}
-+
- 	/* Allocate queue resources
- 	 */
- 
-@@ -348,8 +367,8 @@ int enic_alloc_vnic_resources(struct enic *enic)
- 	for (i = 0; i < enic->cq_count; i++) {
- 		if (i < enic->rq_count)
- 			err = vnic_cq_alloc(enic->vdev, &enic->cq[i], i,
--				enic->config.rq_desc_count,
--				sizeof(struct cq_enet_rq_desc));
-+					enic->config.rq_desc_count,
-+					rq_cq_desc_size);
- 		else
- 			err = vnic_cq_alloc(enic->vdev, &enic->cq[i], i,
- 				enic->config.wq_desc_count,
-@@ -380,6 +399,39 @@ int enic_alloc_vnic_resources(struct enic *enic)
- 
- err_out_cleanup:
- 	enic_free_vnic_resources(enic);
--
-+err_out:
- 	return err;
- }
-+
-+/*
-+ * CMD_CQ_ENTRY_SIZE_SET can fail on older hw generations that don't support
-+ * that command
-+ */
-+void enic_ext_cq(struct enic *enic)
-+{
-+	u64 a0 = CMD_CQ_ENTRY_SIZE_SET, a1 = 0;
-+	int wait = 1000;
-+	int ret;
-+
-+	spin_lock_bh(&enic->devcmd_lock);
-+	ret = vnic_dev_cmd(enic->vdev, CMD_CAPABILITY, &a0, &a1, wait);
-+	if (ret || a0) {
-+		dev_info(&enic->pdev->dev,
-+			 "CMD_CQ_ENTRY_SIZE_SET not supported.");
-+		enic->ext_cq = ENIC_RQ_CQ_ENTRY_SIZE_16;
-+		goto out;
-+	}
-+	a1 &= VNIC_RQ_CQ_ENTRY_SIZE_ALL_BIT;
-+	enic->ext_cq = fls(a1) - 1;
-+	a0 = VNIC_RQ_ALL;
-+	a1 = enic->ext_cq;
-+	ret = vnic_dev_cmd(enic->vdev, CMD_CQ_ENTRY_SIZE_SET, &a0, &a1, wait);
-+	if (ret) {
-+		dev_info(&enic->pdev->dev, "CMD_CQ_ENTRY_SIZE_SET failed.");
-+		enic->ext_cq = ENIC_RQ_CQ_ENTRY_SIZE_16;
-+	}
-+out:
-+	spin_unlock_bh(&enic->devcmd_lock);
-+	dev_info(&enic->pdev->dev, "CQ entry size set to %d bytes",
-+		 16 << enic->ext_cq);
-+}
-diff --git a/drivers/net/ethernet/cisco/enic/enic_rq.c b/drivers/net/ethernet/cisco/enic/enic_rq.c
-index 842b273c2e2a59e81a7c1423449b023d646f5e81..ccbf5c9a21d0ffe33c7c74042d5425497ea0f9dc 100644
---- a/drivers/net/ethernet/cisco/enic/enic_rq.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_rq.c
-@@ -21,24 +21,76 @@ static void enic_intr_update_pkt_size(struct vnic_rx_bytes_counter *pkt_size,
- 		pkt_size->small_pkt_bytes_cnt += pkt_len;
- }
- 
--static void enic_rq_cq_desc_dec(struct cq_enet_rq_desc *desc, u8 *type,
-+static void enic_rq_cq_desc_dec(void *cq_desc, u8 cq_desc_size, u8 *type,
- 				u8 *color, u16 *q_number, u16 *completed_index)
- {
- 	/* type_color is the last field for all cq structs */
--	u8 type_color = desc->type_color;
-+	u8 type_color;
-+
-+	switch (cq_desc_size) {
-+	case VNIC_RQ_CQ_ENTRY_SIZE_16: {
-+		struct cq_enet_rq_desc *desc =
-+			(struct cq_enet_rq_desc *)cq_desc;
-+		type_color = desc->type_color;
-+
-+		/* Make sure color bit is read from desc *before* other fields
-+		 * are read from desc.  Hardware guarantees color bit is last
-+		 * bit (byte) written.  Adding the rmb() prevents the compiler
-+		 * and/or CPU from reordering the reads which would potentially
-+		 * result in reading stale values.
-+		 */
-+		rmb();
- 
--	/* Make sure color bit is read from desc *before* other fields
--	 * are read from desc.  Hardware guarantees color bit is last
--	 * bit (byte) written.  Adding the rmb() prevents the compiler
--	 * and/or CPU from reordering the reads which would potentially
--	 * result in reading stale values.
--	 */
--	rmb();
-+		*q_number = le16_to_cpu(desc->q_number_rss_type_flags) &
-+			    CQ_DESC_Q_NUM_MASK;
-+		*completed_index = le16_to_cpu(desc->completed_index_flags) &
-+				   CQ_DESC_COMP_NDX_MASK;
-+		break;
-+	}
-+	case VNIC_RQ_CQ_ENTRY_SIZE_32: {
-+		struct cq_enet_rq_desc_32 *desc =
-+			(struct cq_enet_rq_desc_32 *)cq_desc;
-+		type_color = desc->type_color;
-+
-+		/* Make sure color bit is read from desc *before* other fields
-+		 * are read from desc.  Hardware guarantees color bit is last
-+		 * bit (byte) written.  Adding the rmb() prevents the compiler
-+		 * and/or CPU from reordering the reads which would potentially
-+		 * result in reading stale values.
-+		 */
-+		rmb();
-+
-+		*q_number = le16_to_cpu(desc->q_number_rss_type_flags) &
-+			    CQ_DESC_Q_NUM_MASK;
-+		*completed_index = le16_to_cpu(desc->completed_index_flags) &
-+				   CQ_DESC_COMP_NDX_MASK;
-+		*completed_index |= (desc->fetch_index_flags & CQ_DESC_32_FI_MASK) <<
-+				CQ_DESC_COMP_NDX_BITS;
-+		break;
-+	}
-+	case VNIC_RQ_CQ_ENTRY_SIZE_64: {
-+		struct cq_enet_rq_desc_64 *desc =
-+			(struct cq_enet_rq_desc_64 *)cq_desc;
-+		type_color = desc->type_color;
-+
-+		/* Make sure color bit is read from desc *before* other fields
-+		 * are read from desc.  Hardware guarantees color bit is last
-+		 * bit (byte) written.  Adding the rmb() prevents the compiler
-+		 * and/or CPU from reordering the reads which would potentially
-+		 * result in reading stale values.
-+		 */
-+		rmb();
-+
-+		*q_number = le16_to_cpu(desc->q_number_rss_type_flags) &
-+			    CQ_DESC_Q_NUM_MASK;
-+		*completed_index = le16_to_cpu(desc->completed_index_flags) &
-+				   CQ_DESC_COMP_NDX_MASK;
-+		*completed_index |= (desc->fetch_index_flags & CQ_DESC_64_FI_MASK) <<
-+				CQ_DESC_COMP_NDX_BITS;
-+		break;
-+	}
-+	}
- 
--	*q_number = le16_to_cpu(desc->q_number_rss_type_flags) &
--		CQ_DESC_Q_NUM_MASK;
--	*completed_index = le16_to_cpu(desc->completed_index_flags) &
--	CQ_DESC_COMP_NDX_MASK;
- 	*color = (type_color >> CQ_DESC_COLOR_SHIFT) & CQ_DESC_COLOR_MASK;
- 	*type = type_color & CQ_DESC_TYPE_MASK;
- }
-@@ -113,6 +165,10 @@ static void enic_rq_set_skb_flags(struct vnic_rq *vrq, u8 type, u32 rss_hash,
- 	}
- }
- 
-+/*
-+ * cq_enet_rq_desc accesses section uses only the 1st 15 bytes of the cq which
-+ * is identical for all type (16,32 and 64 byte) of cqs.
-+ */
- static void cq_enet_rq_desc_dec(struct cq_enet_rq_desc *desc, u8 *ingress_port,
- 				u8 *fcoe, u8 *eop, u8 *sop, u8 *rss_type,
- 				u8 *csum_not_calc, u32 *rss_hash,
-@@ -258,9 +314,8 @@ void enic_free_rq_buf(struct vnic_rq *rq, struct vnic_rq_buf *buf)
- }
- 
- static void enic_rq_indicate_buf(struct enic *enic, struct vnic_rq *rq,
--				 struct vnic_rq_buf *buf,
--				 struct cq_enet_rq_desc *cq_desc, u8 type,
--				 u16 q_number, u16 completed_index)
-+				 struct vnic_rq_buf *buf, void *cq_desc,
-+				 u8 type, u16 q_number, u16 completed_index)
- {
- 	struct sk_buff *skb;
- 	struct vnic_cq *cq = &enic->cq[enic_cq_rq(enic, rq->index)];
-@@ -277,7 +332,7 @@ static void enic_rq_indicate_buf(struct enic *enic, struct vnic_rq *rq,
- 
- 	rqstats->packets++;
- 
--	cq_enet_rq_desc_dec(cq_desc, &ingress_port,
-+	cq_enet_rq_desc_dec((struct cq_enet_rq_desc *)cq_desc, &ingress_port,
- 			    &fcoe, &eop, &sop, &rss_type, &csum_not_calc,
- 			    &rss_hash, &bytes_written, &packet_error,
- 			    &vlan_stripped, &vlan_tci, &checksum, &fcoe_sof,
-@@ -329,8 +384,8 @@ static void enic_rq_indicate_buf(struct enic *enic, struct vnic_rq *rq,
- 	}
- }
- 
--static void enic_rq_service(struct enic *enic, struct cq_enet_rq_desc *cq_desc,
--			    u8 type, u16 q_number, u16 completed_index)
-+static void enic_rq_service(struct enic *enic, void *cq_desc, u8 type,
-+			    u16 q_number, u16 completed_index)
- {
- 	struct enic_rq_stats *rqstats = &enic->rq[q_number].stats;
- 	struct vnic_rq *vrq = &enic->rq[q_number].vrq;
-@@ -357,14 +412,12 @@ unsigned int enic_rq_cq_service(struct enic *enic, unsigned int cq_index,
- 				unsigned int work_to_do)
- {
- 	struct vnic_cq *cq = &enic->cq[cq_index];
--	struct cq_enet_rq_desc *cq_desc;
-+	void *cq_desc = vnic_cq_to_clean(cq);
- 	u16 q_number, completed_index;
- 	unsigned int work_done = 0;
- 	u8 type, color;
- 
--	cq_desc = (struct cq_enet_rq_desc *)vnic_cq_to_clean(cq);
--
--	enic_rq_cq_desc_dec(cq_desc,  &type, &color, &q_number,
-+	enic_rq_cq_desc_dec(cq_desc, enic->ext_cq, &type, &color, &q_number,
- 			    &completed_index);
- 
- 	while (color != cq->last_color) {
-@@ -374,9 +427,9 @@ unsigned int enic_rq_cq_service(struct enic *enic, unsigned int cq_index,
- 		if (++work_done >= work_to_do)
- 			break;
- 
--		cq_desc = (struct cq_enet_rq_desc *)vnic_cq_to_clean(cq);
--		enic_rq_cq_desc_dec(cq_desc, &type, &color, &q_number,
--				    &completed_index);
-+		cq_desc = vnic_cq_to_clean(cq);
-+		enic_rq_cq_desc_dec(cq_desc, enic->ext_cq, &type, &color,
-+				    &q_number, &completed_index);
- 	}
- 
- 	return work_done;
+Keeping variables/fields u8 allows to understand what values we're going 
+to store internally.
+
+And thanks to the netlink policy we know that no larger value will be 
+attempted to be saved, even if the field is actually u32.
+
+
+Cheers,
+
 
 -- 
-2.48.1
-
+Antonio Quartulli
+OpenVPN Inc.
 
