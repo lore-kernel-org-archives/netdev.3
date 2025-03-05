@@ -1,45 +1,58 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0C6205E2B;
-	Wed,  5 Mar 2025 10:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCC4205ACB
+	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 10:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741169973; cv=none; b=LtUyORVMJlfjISV567k5Pe43rLEZ+TPDx9MopLJt48y/9YlPd8/jK9mA91TuDRWxDzjVBkX6e/QJFwY/bcrprWDa3q5A0M1t94CnbreasrB5KJa+Mniv+J3Nb2lT7AuSC3qEmZLKX32xAm4aJiPS7lOj8dbfYtvR3Qv0ieUTdDw=
+	t=1741170084; cv=none; b=RsS+vdAUX9NuE9bB8YLADIy+clIix6HCFnGtgUxCBo+n39anroBlH1H86jJ5xoja0fPIGnPWcJrHSceeBUDf8I79Act7fc5IK0xikCrFkox0a021g6guYycyvsxidIaGcgqvNYxTGqLgpxvXxv8+nGOjfF1WuPCc6HVIU9SARK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741169973; c=relaxed/simple;
-	bh=61ymXQdkyM8TiJOiqN4HS+dcLaY0P3zrpsvRC7rw1oE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=H6U3d68MrAUWVFNh0w60OaxnsZGkC5kFAA58bl4TxQzBN3rviDQaRzQVpKAG7IpzedCRK+I5DRUsZaeuLpa52CLkWh3f9gwSAfIayG8Wff/AGKAkzjDzGnnj5gsrrl3M5Djrd9TKctSFDB0ZJtAWLjBEH2YpML46nkDCl6F2yy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=hZOpA3k3; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="hZOpA3k3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=NNmP0
-	RcY0fndOAtXq39WcaveUgBAnm+T/Ou7U5DaClg=; b=hZOpA3k39JXxEDK/0xPwy
-	W+HbwClXLbYmNrcqiO2IJw2SRBa6Ccg1i7QaN7PKDzWgs/3DYUZg8wIVqQcePQ6u
-	7zVeGAeK4/MWUJy3wwtIqnM4GK8G3ujevCfoXG60fYP73GTj4L9X6jcv9KE1cTmC
-	uLDH3iKwyCikKzuO7kPc/w=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3nFr5JMhnCYXoPg--.46709S4;
-	Wed, 05 Mar 2025 18:18:34 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: shshaikh@marvell.com,
-	manishc@marvell.com,
-	GR-Linux-NIC-Dev@marvell.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	jiasheng@iscas.ac.cn
-Cc: netdev@vger.kernel.org,
+	s=arc-20240116; t=1741170084; c=relaxed/simple;
+	bh=ZLQoky3yjpt7pM6OOkVF3liAyIt7/16tRfOlHnxaqTQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=kuVntkhDtfGJZzu07aJSV+7/dlx6t5kG4nIEoqpvCiClOn8gaEQCrYhGP1cb1xitO2G0sZhntG/VSlHy1Nm+plibTO1yhUkqvGTNR/0i7gMcYUzrOTsZAre58xHaF2vIs0K3fIUyL4r6/KRBLvHONL2OjuH3pm3qkLtlZPzAHVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tplsA-0001n3-K3; Wed, 05 Mar 2025 11:21:06 +0100
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tpls8-0047xk-1x;
+	Wed, 05 Mar 2025 11:21:04 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tpls8-0050hS-1h;
+	Wed, 05 Mar 2025 11:21:04 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] qlcnic: fix a memory leak in __qlcnic_pci_sriov_enable()
-Date: Wed,  5 Mar 2025 18:18:31 +0800
-Message-Id: <20250305101831.4003106-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH v4 2/4] dt-bindings: arm: stm32: Add Plymovent AQM board
+Date: Wed,  5 Mar 2025 11:21:01 +0100
+Message-Id: <20250305102103.1194277-3-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250305102103.1194277-1-o.rempel@pengutronix.de>
+References: <20250305102103.1194277-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,39 +60,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3nFr5JMhnCYXoPg--.46709S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Jw4kAFyxXry3Jw1DtF17trb_yoWDZFb_CF
-	15Zr1fX3y5CFyDKw43trnrZ342g3ZrW3WfZ3W0gay3tr4DGFW8Jr12qF93JrnrW3y09ryD
-	G3Way345A34xAjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNtxhDUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbB0gAHbmfIHmKogQAAsB
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Add qlcnic_sriov_free_vlans() to free the memory allocated by
-qlcnic_sriov_alloc_vlans() if qlcnic_sriov_alloc_vlans() fails.
+Add support for the Plymovent AQM board based on the ST STM32MP151 SoC
+to the STM32 devicetree bindings.
 
-Fixes: 60ec7fcfe768 ("qlcnic: potential dereference null pointer of rx_queue->page_ring")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+changes v4:
+- add Reviewed-by: Rob...
+changes v3:
+- fix alphabetical order
+---
+ Documentation/devicetree/bindings/arm/stm32/stm32.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c
-index 8dd7aa08ecfb..b8a9e0e2907e 100644
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c
-@@ -598,8 +598,10 @@ static int __qlcnic_pci_sriov_enable(struct qlcnic_adapter *adapter,
- 		goto del_flr_queue;
+diff --git a/Documentation/devicetree/bindings/arm/stm32/stm32.yaml b/Documentation/devicetree/bindings/arm/stm32/stm32.yaml
+index 2cea166641c5..734c4b8ac881 100644
+--- a/Documentation/devicetree/bindings/arm/stm32/stm32.yaml
++++ b/Documentation/devicetree/bindings/arm/stm32/stm32.yaml
+@@ -65,6 +65,7 @@ properties:
+               - prt,prtt1a   # Protonic PRTT1A
+               - prt,prtt1c   # Protonic PRTT1C
+               - prt,prtt1s   # Protonic PRTT1S
++              - ply,plyaqm   # Plymovent AQM board
+           - const: st,stm32mp151
  
- 	err = qlcnic_sriov_alloc_vlans(adapter);
--	if (err)
-+	if (err) {
-+		qlcnic_sriov_free_vlans(adapter);
- 		goto del_flr_queue;
-+	}
- 
- 	return err;
- 
+       - description: DH STM32MP135 DHCOR SoM based Boards
 -- 
-2.25.1
+2.39.5
 
