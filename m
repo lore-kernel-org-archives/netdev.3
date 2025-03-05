@@ -1,126 +1,154 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE42824394F;
-	Wed,  5 Mar 2025 14:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6429BC2ED;
+	Wed,  5 Mar 2025 14:19:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741184034; cv=none; b=OxY0Gj1MPd8QC0VgGmX2BHxG+y2cmEvqBKZ0mvmeqYbQG/UulZCCIjNEr5dVY3iUbb36YuIQGdDWSW9OGz2BjX5qeUutO+3C5Cv6IHxTRmuO6eTt39oWWG2GEKyk6HDxbjWdsi6Gg4BZwngSJ1D2BK/igT7TvDWxzSwQQtGKZUc=
+	t=1741184386; cv=none; b=tSaUIDXPR6pzyQ3iC4yKQ0/hFZFLXQqXUtLCmp7U2luG70CdBRWiCmx5EmmUItNIsOxaGULpvbJqu6RUXMAwJT7OoNlkaGxGFLai/t+/X0XCFEJMXZQZV3mCseZbx1LgKp6cpkc3cEynycQ4VgGLq3bs5TpDGKmDAZ3HdQfD6V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741184034; c=relaxed/simple;
-	bh=vqRrksxWjJzpRt2P7QRzxY2a8o64gwEGx6kR+lsudao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VH4YuC9tw7iy3tYggia1dKSjmtWhNywhjXOU0yqy5PkdfuJ/IlDsLH9R5OW/V9sxctVOGql/XiUBSTtqZVi8UqRKCHPMQt9I7GS4t+zoj+YRPbTz3Ozst5Y0eMooqxNskfiSVo3f75GPrpZ7exlk7RE/CZpA5fY+7/NDkoxzcjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V1reZuOx; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741184386; c=relaxed/simple;
+	bh=9h8JYw79AeYdd1PACJ3GnM6FZYS0z3cvnIAcFNoR+lA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uYQQwonVR+SNW3V3P0dYRW1YHjP5Xv1ziDx3o67PKdb6RhMicDP8UrHs5GCS6y8QoWwDQhCYEs7qG0991Rp271Gh8LS2ePj4I56aYn9E2Rj5mATwpxq7XXhXkzKoqLpEWr7Lv/kmmzzt6a6S1VIi97JyjzekRZqfbOcZHDpB0U4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=S7w4FCBd; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V1reZuOx"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-223cc017ef5so50337655ad.0;
-        Wed, 05 Mar 2025 06:13:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741184032; x=1741788832; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8CX9pKsz4EYUoI2yHw+6qgIAXfkHRhkoto6+P8qmujA=;
-        b=V1reZuOxk4T5fGO5Celvi30AZ+lzk7epLKWEHJQfNi55x2AcIhEjFptDnMkZs194PR
-         ZDvTm79+lxKtL6gDSQbIvznxHSP4V+fmHOKeDCOH7qiltMi/zIK9m55wUDxPykwJVUo9
-         zCYhpEFxD+5QlQgkmKMYQtF6e9Qj0kylmz6h+L9P3TfW1+6BY2wHohfweKOOJteJHlT/
-         tWM47nmlbBC/kkHBskk10xg8Pwo7j9Ba68pGE4Iy42+J2ePeGuKa6dSxArf3KZE785Zy
-         102vjBeKoaVt5Zcncg5p1RbA3HT3cj3nroqKt/D5KHrpqdot/4hBFQIb/PkyjHa+eIdf
-         er9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741184032; x=1741788832;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8CX9pKsz4EYUoI2yHw+6qgIAXfkHRhkoto6+P8qmujA=;
-        b=aspdQ0hvOmUlgdXdxGExR/XnWx/iGdP0yW87rCQ+iAgEmrAqjZvMQkAcvCOo4M++Px
-         8NXl7/8yyxww+MkI5O60Z8C/lNavmPNd1q38eZ5iPQJKlzwll4/3YyX8i21dZ5z5/USr
-         LytvsxTsIrhLCibqAWHjglRZwF7Z7M+ULRbK3+PFOH14D9IotLDfFVqqKXnEyfaDAIQI
-         ideAvZ5lAc3okgA6khseFfxVB7CVPufB4BvxlbhajaIQbBmWnBq1TFiAlwv5XPd6jlWO
-         Y7uWezW1eNlAOzScRTndDAu6ihpTgJpnDQP58BNgJEVtSqplcfSZBUvfqcH+hmupwA/1
-         bIQw==
-X-Forwarded-Encrypted: i=1; AJvYcCV22oXJct0qHElKeHcduy1pDqRvMmLf2dEw2gKBtZmDpOtEe4vxkeC5RC7jIG5wEyaThSPe19ycfHW7EPg=@vger.kernel.org, AJvYcCXHR+HctgFX/Ukq2bUJJwhwLhk1ieK+cdY8H6+0FZaSk29aEJmQ6GQYn/CIasR51wgLVDtysBtet+O4xiF6Xw16@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMzJD/uwr17XyGnvI9ifo1gLRiPy0OqnrLsT39XPAh3qv9BfzL
-	JkwFG2uVLTvlfQlOL+l+0TCe3rlHzOKwV0vhOgEbepY2exRCHz8CdTzYwd820UavDw==
-X-Gm-Gg: ASbGncv0HxpTMYvP1j+HCriH9iZ2B+zaSbbZkz2nfkI8au6ignSa2JkGCMYA0bnE3LZ
-	FAbsKDHjIkBnVKobK/pIMgS2wAhUwK0QkHC//hzZ1tym3dnJZLeDwt7Ahymhapr0l2wcTA/3uAK
-	g9CcDxSDwTO4bDuwCJQILYkiUbDu387oxe0XZhkYXdfdOp7qmtgsQSkmJSF9Fw03Yh3XmL/0nh3
-	yVliBOzQCdPBA6d6iGN5CbTDTZhK0A8D4e0b3YN0cjQ4wvB6iGhfzxzn4U1g9DteD6KrLv+aGli
-	aXXD8femfriEB4oCvPO0+pNckodx82igHMCoUZ7AiijT2wKEYA==
-X-Google-Smtp-Source: AGHT+IF73abicY9+nvyU3EY376F9EK99tSA74sxVMXsRGs12/7ADb2qcZlm/uMZtJ+7cIbLmC7rLwg==
-X-Received: by 2002:a05:6a00:2d0f:b0:736:4abf:2967 with SMTP id d2e1a72fcca58-73682cc41aamr4681631b3a.16.1741184031574;
-        Wed, 05 Mar 2025 06:13:51 -0800 (PST)
-Received: from fedora ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-734a003ec9csm13410743b3a.146.2025.03.05.06.13.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Mar 2025 06:13:50 -0800 (PST)
-Date: Wed, 5 Mar 2025 14:13:41 +0000
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: netdev@vger.kernel.org, Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="S7w4FCBd"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 48B3B44113;
+	Wed,  5 Mar 2025 14:19:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1741184382;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YY4Pp+CzXGStQ9eEENpuYpVt2ERsOCjh5tfjvgZMmCk=;
+	b=S7w4FCBdwNrZeSsprQWO8JntEcQMcq0RLJjZLZf5MSJhvF7zYCuP5/sqYWfqWQXBjyhU+v
+	78OpFEnsC5hD2uIqed0xkZKSHC6KNPdtlaRsbfu1ElwAPtjdkiG3kzHFJ4pyKRamZqpQKB
+	FW18ZJhYra6vlFB4yNFmt8vCLSrJRTv7lc86bTZdF2ygxCBnDUC1+3ODmzAMe/hrAn1k8A
+	EQqFvAjkzon8tWFnFbHXnfGYSg0Ec3iz1CLd3EsV3j36aUjkQfFr/edHkW+zL/CtH6Z/Yd
+	PdTW4ElgGQRmRGgvGJHBJlkDhKx3HCHIhjNQJlnVnEvFJ+Yn9ddwef6esQup4Q==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, Jianbo Liu <jianbol@nvidia.com>,
-	Jarod Wilson <jarod@redhat.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>, Petr Machata <petrm@nvidia.com>,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv4 net 1/3] bonding: move IPsec deletion to
- bond_ipsec_free_sa
-Message-ID: <Z8hcFSElK7iF8u9o@fedora>
-References: <20250304131120.31135-1-liuhangbin@gmail.com>
- <20250304131120.31135-2-liuhangbin@gmail.com>
- <4108bfd8-b19f-46ea-8820-47dd8fb9ee7c@blackwall.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	linux-arm-kernel@lists.infradead.org,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Simon Horman <horms@kernel.org>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Piergiorgio Beruto <piergiorgio.beruto@gmail.com>
+Subject: [PATCH net-next 0/7] net: ethtool: Introduce ethnl dump helpers
+Date: Wed,  5 Mar 2025 15:19:30 +0100
+Message-ID: <20250305141938.319282-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4108bfd8-b19f-46ea-8820-47dd8fb9ee7c@blackwall.org>
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddutdehtdegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeeiueduleekjeeigeeffeelgfehvedufeejueevgeekgfdtjedtteekffffheejnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkphepvdgrtddumegtsgduleemkegugegtmeelfhdttdemsggtvddumeekkeelleemheegtdgtmegvheelvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegtgemlehftddtmegstgdvudemkeekleelmeehgedttgemvgehlegvpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvuddprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepkhhusggrsehkvghrnhgvl
+ hdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprhgtphhtthhopehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-On Wed, Mar 05, 2025 at 10:38:36AM +0200, Nikolay Aleksandrov wrote:
-> > @@ -617,8 +614,18 @@ static void bond_ipsec_del_sa_all(struct bonding *bond)
-> >  
-> >  	mutex_lock(&bond->ipsec_lock);
-> >  	list_for_each_entry(ipsec, &bond->ipsec_list, list) {
-> 
-> Second time - you should use list_for_each_entry_safe if you're walking and deleting
-> elements from the list.
+Hi everyone,
 
-Sorry, I missed this comment. I will update in next version.
+This series adds some scaffolding into ethnl to ease the support of
+DUMP operations.
 
-> 
-> > +		spin_lock_bh(&ipsec->xs->lock);
-> >  		if (!ipsec->xs->xso.real_dev)
-> > -			continue;
-> > +			goto next;
-> > +
-> > +		if (ipsec->xs->km.state == XFRM_STATE_DEAD) {
-> > +			/* already dead no need to delete again */
-> > +			if (real_dev->xfrmdev_ops->xdo_dev_state_free)
-> > +				real_dev->xfrmdev_ops->xdo_dev_state_free(ipsec->xs);
-> 
-> Have you checked if .xdo_dev_state_free can sleep?
-> I see at least one that can: mlx5e_xfrm_free_state().
+As of today when using ethnl's default ops, the DUMP requests will
+simply perform a GET for each netdev.
 
-Hmm, This brings us back to the initial problem. We tried to avoid calling
-a spin lock in a sleep context (bond_ipsec_del_sa), but now the new code
-encounters this issue again.
+That hits limitations for commands that may return multiple messages for
+a single netdev, such as :
 
-With your reply, I also checked the xdo_dev_state_add() in
-bond_ipsec_add_sa_all(), which may also sleep, e.g. mlx5e_xfrm_add_state(),
+ - RSS (listing contexts)
+ - All PHY-specific commands (PLCA, PSE-PD, phy)
+ - tsinfo (one item for the netdev +  one per phy)
 
-If we unlock the spin lock, then the race came back again.
+ Commands that need a non-default DUMP support have to re-implement
+ ->dumpit() themselves, which prevents using most of ethnl's internal
+ circuitry.
 
-Any idea about this?
+This series therefore introduces a better support for dump operations in
+ethnl.
 
-thanks
-Hangbin
+The patches 1 and 2 introduce the support for filtered DUMPs, where an
+ifindex/ifname can be passed in the request header for the DUMP
+operation. This is for when we want to dump everything a netdev
+supports, but without doing so for every single netdev. ethtool's
+"--show-phys ethX" option for example performs a filtered dump.
+
+Patch 3 introduces 3 new ethnl ops : 
+ ->dump_start() to initialize a dump context
+ ->dump_one_dev(), that can be implemented per-command to dump
+ everything on a given netdev
+ ->dump_done() to release the context
+
+The default behaviour for dumps remains the same, calling the whole
+->doit() path for each netdev.
+
+Patch 4 introduces a set of ->dump_start(), ->dump_one_dev() and
+->dump_done() callback implementations that can simply be plugged into
+the existing commands that list objects per-phy, making the 
+phy-targeting command behaviour more coherent.
+
+Patch 5 uses that new set of helpers to rewrite the phy.c support, which
+now uses the regulat ethnl_ops instead of fully custom genl ops. This
+one is the hardest to review, sorry about that, I couldn't really manage
+to incrementally rework that file :(
+
+Patches 6 and 7 are where the new dump infra shines, adding per-netdev
+per-phy dump support for PLCA and PSE-PD.
+
+We could also consider converting tsinfo/tsconfig, rss and tunnels to
+these new ->dump_***() operations as well, but that's out of this
+series' scope.
+
+I've tested that series with some netdevsim PHY patches that I plan to
+submit (they can be found here [1]), with the refcount tracker
+for net/netns enabled to make sure the lock usage is somewhat coherent.
+
+Thanks,
+
+Maxime
+
+[1]: https://github.com/minimaxwell/linux/tree/mc/netdevsim-phy
+
+
+
+Maxime Chevallier (7):
+  net: ethtool: netlink: Allow per-netdevice DUMP operations
+  net: ethtool: netlink: Rename ethnl_default_dump_one
+  net: ethtool: netlink: Introduce command-specific dump_one_dev
+  net: ethtool: netlink: Introduce per-phy DUMP helpers
+  net: ethtool: phy: Convert the PHY_GET command to generic phy dump
+  net: ethtool: plca: Use per-PHY DUMP operations
+  net: ethtool: pse-pd: Use per-PHY DUMP operations
+
+ net/ethtool/netlink.c | 161 ++++++++++++++------
+ net/ethtool/netlink.h |  46 +++++-
+ net/ethtool/phy.c     | 335 ++++++++++++------------------------------
+ net/ethtool/plca.c    |  12 ++
+ net/ethtool/pse-pd.c  |   6 +
+ 5 files changed, 277 insertions(+), 283 deletions(-)
+
+-- 
+2.48.1
+
