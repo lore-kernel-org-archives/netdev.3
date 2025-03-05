@@ -1,159 +1,259 @@
-Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C178A1FCF6D
-	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 13:05:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EA82475CF
+	for <netdev@vger.kernel.org>; Wed,  5 Mar 2025 13:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741179955; cv=none; b=NpXujPw8wVQrufGQxU19IsC1ti0axEJiEP/AHitG5A1o3TWt+x6XJQi0JG8/d15L4/u0SkfUXJBaBlIewotTHxDZOPnPB0MFnrUnYVHxeXez2OtIhorooqVkeMOM9DlXK49JzoXNIKc+vXHWr++3s4SEz3AnWjZSV5o+XAPkLqQ=
+	t=1741180482; cv=none; b=RF5/x5sR0jTkYGX4p3lO+KMGnCQodo956bIXLrdP5WDS57siBnwXhmhGBlXPX+BOLuWgmG0ideZFrSgQMUVXdH6luj2Os9+oytOeZWWqPxgiKg9OQmhfLcYVp4+kGS0W3X2+ooLYtBJU+T483jeGbBxGngP6Ha8v8CTK0IGnhas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741179955; c=relaxed/simple;
-	bh=cxNPbuUWxiRcKsQCxYcG3hyJ4ms8HxFnFqPiC/3LUPk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=e1QjdBm9GxsIMXn3i06HFDXA1sQyeOlS23G9S9pAjFYHs6kH1uxENBc7viuJbvEPAQKS+wSqlnxh6il91dAqKmJTIfyiFGW7wO0fGbr2ZbGd7eXFM8iY6Xm3J8VT2LmTT4HQ8T454mD6+ftzXiA9+lfgIwajwEvmQyPVYycUM8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xVWV1KSL; arc=none smtp.client-ip=209.85.160.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1741180482; c=relaxed/simple;
+	bh=45jOoVrmf7ZgsWRQTRQMoL7DQrUxdR4U7TSnyXd4qBE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YV4TAzOLGmuUtxjnZGzzTjIFa23E3fKzsK8/swjyDCL9+Gehw06kLeazKEV2R4Ob7C+M+vFbKIi3rhPNWW4hKtcN+2kUgi1j2UQQ5r04lU5gpxk06wPvdEdmqsSlUwvx8iVRvC47Xpxsp4TAEzVxkVTm6skRUPphf5opFFC3hns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=M918CpJX; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xVWV1KSL"
-Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-4750a8fe4b9so9973301cf.0
-        for <netdev@vger.kernel.org>; Wed, 05 Mar 2025 05:05:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="M918CpJX"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43bcbdf79cdso12819365e9.2
+        for <netdev@vger.kernel.org>; Wed, 05 Mar 2025 05:14:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741179951; x=1741784751; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vLorXLD1vFJAFzD8hbfLIh9DSlboowr+CM92bsJMkV8=;
-        b=xVWV1KSLJ/I+QB23ykSpe2740NnME2yMMob+VX5mLp4fiVXVYTO90X6ZzgzgPJaJIj
-         c5CNCb/pOhPVgkPH05McE78yvoPKBsthDQfJipRIEHP1sfk7QGMcb3YUbIFymlrTADgH
-         p8F8gl8yd2xTDJhHgyg3OnXBFCqcBh1XAmCIh3637Sn/OK+7Xx+j35KlbmR9voxrK2Ff
-         n91VSILQx/QDUgHndpOMTC9QVXdMAvweErodEXv2X0ha76aHkK6hGJJRCCJgHNv4lyg4
-         OvjJvJNqk6mX5ZrXgMkpajC5X4fycDxUxCMIxqxJurY9QmBdspX0VffsyVrFE2yfDr8A
-         ceCQ==
+        d=openvpn.net; s=google; t=1741180478; x=1741785278; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=XEqSsXZW/jbuOh14QtUUC+Zr2EQieIMuWtS2Rh7iO5I=;
+        b=M918CpJXfbCqe+/UZD3A7pY13TSRer1ZXjxScZgwbQEq2yKtc7kWBcv6Vk+WST8PIo
+         4Z/vZKWYFpx1ytmWIcv1yBlOP2DcFoXD7c4jljeG8pVvahYAFrZJtbM9OTSIEJC/i9C6
+         pOY7RlR8A3Hk905Zf/Vl8M62Xe5bfg8idr4QddovJwQBh8Wx9FCs1mcOSNAuEsopvRHS
+         sfAGVvGM3ev2ImgL5FXJDK+AMRJYQ7VksSjPSd4IeMjpT7bwL9aot+jgEfBOb6LFqW3H
+         B9kJVisgw5qXTiUljiem3/DxH5aafId3pRmYKzvLVXbQx6+dL+fj+cTLzvKCRgMTA/bA
+         TGOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741179951; x=1741784751;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vLorXLD1vFJAFzD8hbfLIh9DSlboowr+CM92bsJMkV8=;
-        b=GDE1X0J5SZuWCnSNfW7ltQwPF9cpRbnlMaBl+tfxDgHsSvgOrjIZW/iSLKcglu7SVY
-         Q1mcLywghOB/7YOSB67FPqKHFCyFczwu+X22uD4jZMIOxv+Oq6zcAXZcMpM1yFtsFyKh
-         Tm0yHtfds0Tf8tAmhswIDpg1zTFaNMhabZDzoqU6BiRiiFExvMfoObz3pCk85LaXS4a9
-         WRdDjRyVSV+K74ZFpDjNNzgC/Sodt1WEwZUAirdDHOZEJc3qgv4PlSQRfwTSMnnVY2HZ
-         ZJ7rUtrSEmlaBbn0jHOWHZ3NHtvv5Fk4iG42pO8qrxsSQLEKxzoIyhw4lSLkDfwZjWdD
-         ApeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUa80PFPm1lNCsG9fthJyJbaLtUizSdDjqDCcOehbtb2/LLV808fGUGKiCyqKYSsUhrxjHy+9Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+1IEtkqS9neturUQYM+g2vsn7vJ2e/Y6AAalX4gpV6gSAi+KP
-	EMB1XNFi98RYKUsxACw6O5JDyeLxOTqF/dH8EWcKwgyICSNS1zXCbHXkVG+aGNMkNPC/2jvov3Y
-	l6NjyaeJHJA==
-X-Google-Smtp-Source: AGHT+IFcpJBTx0Oczblt/ST24rRAPUbwKx65ucZycVVC6/EnVMi81zBYXb1NOtEE5gNfVXgsaRJOSe5UKrIVvQ==
-X-Received: from qtbbb18.prod.google.com ([2002:a05:622a:1b12:b0:474:eec0:7770])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:50b:b0:474:f979:3e64 with SMTP id d75a77b69052e-4750b4ec755mr45841641cf.52.1741179951553;
- Wed, 05 Mar 2025 05:05:51 -0800 (PST)
-Date: Wed,  5 Mar 2025 13:05:50 +0000
+        d=1e100.net; s=20230601; t=1741180478; x=1741785278;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XEqSsXZW/jbuOh14QtUUC+Zr2EQieIMuWtS2Rh7iO5I=;
+        b=HLfg2GefAexdya6zv9O0XJ2/NLJJzLTWFVn7ggYUiAI8sah+YJa4STLrsYAES0usF8
+         F6zkqDQBVM43q70XwuDzzPN0HQ7nqUPy9vUgwBbP6Ucaa9eg1qmWKGffxIEy/rWAafyX
+         J5qvttYFic5xaIcHex1WrzIQgbbI9PX0Bxh++3Udd2HRMms3+hspPFEK/Vy9UDIJL5xy
+         oWqYbZY+zZnweOk/bU0c5e77C38zo7aKMs3MVZUCR5Xu8RhAMvhCPAT+DAKfLvrLW9la
+         a1plzk4tPctZ0OTxXif0x/AkcD0ae1X/NRem+GozLmc5qPnsCjXCa3chGjKcsityrFRt
+         23Sg==
+X-Gm-Message-State: AOJu0YyFFq9aerEmuqhsA6mWzlXnMrR143wBBFAzC8VFAn+bljEW0Wkh
+	V3G8vrzmCtdjhvQ7F6hG9eqArFxtDja+2ANtmVvufPBjIqKqzDSU+qBWnvWZ9I0=
+X-Gm-Gg: ASbGnctZ/WLhMzQdZwiTMul9WwZnVjcZi/Mg7O0AJ6Bn7nuFgUeBBkKt/CC/PiXi0ur
+	Y4fDVG0hf6wowAQhTfh3HnQjIEFd4Irgj7qQxdg2XG08bPRnTRfMXkh/KjF0dlvPfxr9ejbW039
+	r9LhdwZrlrOQRLOJHTiGPdDUZbtMxEO37udjevd8IJsJj/jjsZujT4mKHLg0aM34IIuGizHGWKp
+	8sGpvVlaQbymJLrTxbh5PGtnEPV90ybwCMfv+8hmGQ6NIIVLimVRbb8heYxDwVSagFwQY4rI4/V
+	5e5zQx6U//EMIRyipG+cCoVW+CyLdvhHH1xDk7CeGKuZvKc/Lx2JEU0f4AStm6edgr42LapOewd
+	nwc6H
+X-Google-Smtp-Source: AGHT+IEiy2/nia8pCn08JsrQD76so2zLJRCd191TfiknY5z43RmcsNheKM7EvMhfTHGqALR0SaGfxA==
+X-Received: by 2002:a05:600c:1d0b:b0:43b:cd12:8c92 with SMTP id 5b1f17b1804b1-43bd2ad7566mr22952425e9.31.1741180478132;
+        Wed, 05 Mar 2025 05:14:38 -0800 (PST)
+Received: from ?IPV6:2001:67c:2fbc:1:6b84:f104:e1bf:5d7? ([2001:67c:2fbc:1:6b84:f104:e1bf:5d7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bd426d34csm17415685e9.5.2025.03.05.05.14.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Mar 2025 05:14:37 -0800 (PST)
+Message-ID: <cd9df084-8633-49f0-a851-ed2b1c9946d3@openvpn.net>
+Date: Wed, 5 Mar 2025 14:14:36 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.48.1.711.g2feabab25a-goog
-Message-ID: <20250305130550.1865988-1-edumazet@google.com>
-Subject: [PATCH net-next] tcp: bring back NUMA dispersion in inet_ehash_locks_alloc()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@amazon.com>, 
-	Jason Xing <kernelxing@tencent.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v21 18/24] ovpn: add support for peer floating
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>,
+ ryazanov.s.a@gmail.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Xiao Liang <shaw.leon@gmail.com>
+References: <20250304-b4-ovpn-tmp-v21-0-d3cbb74bb581@openvpn.net>
+ <20250304-b4-ovpn-tmp-v21-18-d3cbb74bb581@openvpn.net> <Z8dIXjwZ3QmiEcd-@hog>
+ <9c919407-fb91-48d7-bf2d-8437c2f3f4da@openvpn.net> <Z8gzbz6YjdeGPqgu@hog>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <Z8gzbz6YjdeGPqgu@hog>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-We have platforms with 6 NUMA nodes and 480 cpus.
+On 05/03/2025 12:20, Sabrina Dubroca wrote:
+> 2025-03-05, 00:19:32 +0100, Antonio Quartulli wrote:
+>> On 04/03/2025 19:37, Sabrina Dubroca wrote:
+>>> 2025-03-04, 01:33:48 +0100, Antonio Quartulli wrote:
+>>>> A peer connected via UDP may change its IP address without reconnecting
+>>>> (float).
+>>>
+>>> Should that trigger a reset of the peer->dst_cache? And same when
+>>> userspace updates the remote address? Otherwise it seems we could be
+>>> stuck with a cached dst that cannot reach the peer.
+>>
+>> Yeah, that make sense, otherwise ovpn_udpX_output would just try over and
+>> over to re-use the cached source address (unless it becomes unavailable).
+> 
+> Not just the source address, the routing entry too. I'm more concerned
+> about that: trying to reuse a a cached routing entry that was good for
+> the previous remote address, but not for the new one.
+> 
+> 
+> [adding your next email]
+>> I spent some more time thinking about this.
+>> It makes sense to reset the dst cache when the local address changes, but
+>> not in case of float (remote address changed).
+>>
+>> That's because we always want to first attempt sending packets using the
+>> address where the remote peer sent the traffic to.
+>> Should that not work (quite rare), then we have code in ovpn_udpX_output
+>> that will reset the cache and attempt a different address.
+> 
+> I don't think the code in ovpn_udpX_output will reset the cache unless
+> it was made invalid by a system-wide routing table update (see
+> dst_cache_per_cpu_get).
+> 
+> 	rt = dst_cache_get_ip4(cache, &fl.saddr);
+> 	if (rt)
+> 		goto transmit;
+> ...
+> transmit:
+> 	udp_tunnel_xmit_skb(rt, sk, skb, fl.saddr, fl.daddr, 0,
+> 			    ip4_dst_hoplimit(&rt->dst), 0, fl.fl4_sport,
+> 			    fl.fl4_dport, false, sk->sk_no_check_tx);
+> 
+> 
+> So it seems that as long as dst_cache_get_ip4 gets us a dst (which
+> AFAIU will happen, unless we did a dst_cache_reset or something else
+> made the cached dst invalid -- and ovpn's floating/endpoint update
+> doesn't do that), we'll just use it.
 
-inet_ehash_locks_alloc() currently allocates a single 64KB page
-to hold all ehash spinlocks. This adds more pressure on a single node.
+Mh yeah, you're right.
+Then I'll reset the cache also when a float is detected.
 
-Change inet_ehash_locks_alloc() to use vmalloc() to spread
-the spinlocks on all online nodes, driven by NUMA policies.
+> 
+> 
+>>>> +void ovpn_peer_endpoints_update(struct ovpn_peer *peer, struct sk_buff *skb)
+>>>> +{
+>>>> +	struct hlist_nulls_head *nhead;
+>>>> +	struct sockaddr_storage ss;
+>>>> +	const u8 *local_ip = NULL;
+>>>> +	struct sockaddr_in6 *sa6;
+>>>> +	struct sockaddr_in *sa;
+>>>> +	struct ovpn_bind *bind;
+>>>> +	size_t salen = 0;
+>>>> +
+>>>> +	spin_lock_bh(&peer->lock);
+>>>> +	bind = rcu_dereference_protected(peer->bind,
+>>>> +					 lockdep_is_held(&peer->lock));
+>>>> +	if (unlikely(!bind))
+>>>> +		goto unlock;
+>>>> +
+>>>> +	switch (skb->protocol) {
+>>>> +	case htons(ETH_P_IP):
+>>>> +		/* float check */
+>>>> +		if (unlikely(!ovpn_bind_skb_src_match(bind, skb))) {
+>>>> +			if (bind->remote.in4.sin_family == AF_INET)
+>>>> +				local_ip = (u8 *)&bind->local;
+>>>
+>>> If I'm reading this correctly, we always reuse the existing local
+>>> address when we have to re-create the bind, even if it doesn't match
+>>> the skb? The "local endpoint update" chunk below is doing that, but
+>>> only if we're keeping the same remote? It'll get updated the next time
+>>> we receive a packet and call ovpn_peer_endpoints_update.
+>>>
+>>> That might irritate the RPF check on the other side, if we still use
+>>> our "old" source to talk to the new dest?
+>>>
+>>>> +			sa = (struct sockaddr_in *)&ss;
+>>>> +			sa->sin_family = AF_INET;
+>>>> +			sa->sin_addr.s_addr = ip_hdr(skb)->saddr;
+>>>> +			sa->sin_port = udp_hdr(skb)->source;
+>>>> +			salen = sizeof(*sa);
+>>>> +			break;
+>>
+>> I think the issue is simply this 'break' above - by removing it, everything
+>> should work as expected.
+> 
+> Only if the bind was of the correct family? Checking an IPv4 local
+> address (in the bind) against an IPv6 source address in the packet (or
+> the other way around) isn't going to work well.
 
-At boot time, NUMA policy is interleave=all, meaning that
-tcp_hashinfo.ehash_locks gets hash dispersion on all nodes.
+Ah I understand what you mean.
 
-Tested:
+The purpose of "local_ip" is to provide a working local endpoint to be 
+used with the new remote address.
+However, if the float is switching family we can't re-use the same old 
+local endpoint (hence the check).
+In this case we'll learn the "new" local address later.
 
-lack5:~# grep inet_ehash_locks_alloc /proc/vmallocinfo
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
+Does it make sense?
 
-lack5:~# echo 8192 >/proc/sys/net/ipv4/tcp_child_ehash_entries
-lack5:~# numactl --interleave=all unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
-0x000000004e99d30c-0x00000000763f3279   36864 inet_ehash_locks_alloc+0x90/0x100 pages=8 vmalloc N0=1 N1=2 N2=2 N3=1 N4=1 N5=1
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
+Cheers,
 
-lack5:~# numactl --interleave=0,5 unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
-0x00000000fd73a33e-0x0000000004b9a177   36864 inet_ehash_locks_alloc+0x90/0x100 pages=8 vmalloc N0=4 N5=4
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
+> 
+> 
+>> I thin this is a leftover from when float check and endpoint update were two
+>> different functions/switch blocks.
+>>
+>>>> +		}
+>>>> +
+>>>> +		/* local endpoint update */
+>>>> +		if (unlikely(bind->local.ipv4.s_addr != ip_hdr(skb)->daddr)) {
+>>>> +			net_dbg_ratelimited("%s: learning local IPv4 for peer %d (%pI4 -> %pI4)\n",
+>>>> +					    netdev_name(peer->ovpn->dev),
+>>>> +					    peer->id, &bind->local.ipv4.s_addr,
+>>>> +					    &ip_hdr(skb)->daddr);
+>>>> +			bind->local.ipv4.s_addr = ip_hdr(skb)->daddr;
+>>>> +		}
+>>>> +		break;
+> 
 
-lack5:~# echo 1024 >/proc/sys/net/ipv4/tcp_child_ehash_entries
-lack5:~# numactl --interleave=all unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
-0x00000000db07d7a2-0x00000000ad697d29    8192 inet_ehash_locks_alloc+0x90/0x100 pages=1 vmalloc N2=1
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- net/ipv4/inet_hashtables.c | 37 ++++++++++++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
-
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index 9bfcfd016e18275fb50fea8d77adc8a64fb12494..2b4a588247639e0c7b2e70d1fc9b3b9b60256ef7 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -1230,22 +1230,37 @@ int inet_ehash_locks_alloc(struct inet_hashinfo *hashinfo)
- {
- 	unsigned int locksz = sizeof(spinlock_t);
- 	unsigned int i, nblocks = 1;
-+	spinlock_t *ptr = NULL;
- 
--	if (locksz != 0) {
--		/* allocate 2 cache lines or at least one spinlock per cpu */
--		nblocks = max(2U * L1_CACHE_BYTES / locksz, 1U);
--		nblocks = roundup_pow_of_two(nblocks * num_possible_cpus());
-+	if (locksz == 0)
-+		goto set_mask;
- 
--		/* no more locks than number of hash buckets */
--		nblocks = min(nblocks, hashinfo->ehash_mask + 1);
-+	/* Allocate 2 cache lines or at least one spinlock per cpu. */
-+	nblocks = max(2U * L1_CACHE_BYTES / locksz, 1U) * num_possible_cpus();
- 
--		hashinfo->ehash_locks = kvmalloc_array(nblocks, locksz, GFP_KERNEL);
--		if (!hashinfo->ehash_locks)
--			return -ENOMEM;
-+	/* At least one page per NUMA node. */
-+	nblocks = max(nblocks, num_online_nodes() * PAGE_SIZE / locksz);
-+
-+	nblocks = roundup_pow_of_two(nblocks);
-+
-+	/* No more locks than number of hash buckets. */
-+	nblocks = min(nblocks, hashinfo->ehash_mask + 1);
- 
--		for (i = 0; i < nblocks; i++)
--			spin_lock_init(&hashinfo->ehash_locks[i]);
-+	if (num_online_nodes() > 1) {
-+		/* Use vmalloc() to allow NUMA policy to spread pages
-+		 * on all available nodes if desired.
-+		 */
-+		ptr = vmalloc_array(nblocks, locksz);
-+	}
-+	if (!ptr) {
-+		ptr = kvmalloc_array(nblocks, locksz, GFP_KERNEL);
-+		if (!ptr)
-+			return -ENOMEM;
- 	}
-+	for (i = 0; i < nblocks; i++)
-+		spin_lock_init(&ptr[i]);
-+	hashinfo->ehash_locks = ptr;
-+set_mask:
- 	hashinfo->ehash_locks_mask = nblocks - 1;
- 	return 0;
- }
 -- 
-2.48.1.711.g2feabab25a-goog
+Antonio Quartulli
+OpenVPN Inc.
 
