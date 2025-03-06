@@ -1,89 +1,177 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87E5184E;
-	Thu,  6 Mar 2025 07:42:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706C11F2C56
+	for <netdev@vger.kernel.org>; Thu,  6 Mar 2025 07:54:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741246939; cv=none; b=fJw0OqMzxnrxrc/gyMIkewSzMAo8QQ39rFLy0FuRrMR9RBluLILDT4eURc4Nq6HsNHsgb4v+IbFpIyfBQUNCktkCmkm60J4hRLQOCFzVmMtGGYbmwSsM5WjOFST4otfr+LA7KBhNj8Vo1hBgW9btuoQDLgOtAyebA+Abs/XoJVE=
+	t=1741247692; cv=none; b=c2JRMFeNT7ZAjAXqcgRf9i5ZnLz+VUh8pYr50BTix67ayR9nreL+D6mUC0SBzY4Q5o70J0l94jPSJ3fPQ+GnaxsUgKEr+RbT92TF+e6dg15abtjat0YaumIlUUtTJbY6OqcR0y5lqalOnG/xt2WdBD1MXOzWKzyYSQMMTsaxda8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741246939; c=relaxed/simple;
-	bh=F93TNatBfwgiPsBEPPu7EdB4/RZAnlqun61fYvReQWQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GsIJ2ijqASYtiLcCqcv0KAGetVJoAIzOMmheW8l6FclYrg0eqdv+PzlaVr14QdTb/JKFa8XyNJTLAH6hXaGY82U/Ia84pPaePloC1Iz08CkGFbMhd2ZhTAxRgRUG9mbEc/E3vqEio+90fswXT35kjvcl3jnqqwLbLFTA5JZFNYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SuXMt55W; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1741247692; c=relaxed/simple;
+	bh=yE7lXQjwlPMwX2ilrSc3nNJxU+XKmpMpvDxEbfmY/38=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lkwcfPGDHD6fx9k0EU0t0B+EtESInJMLWcNv1HFaGd3FD5tak6HPVzYVpLTzvPB47h3L7v4XXmzp86HVrO4RwPsn8rh4wy7YoKitkhQtv+ieYVvj1DjGqWHSPyIGBPgz70MKnd0ULw3vlw9eR36DVwL6OoDcXIowmwARgXLU5yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RtCl2m2L; arc=none smtp.client-ip=209.85.166.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SuXMt55W"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0BD7D442CA;
-	Thu,  6 Mar 2025 07:42:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1741246928;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3xoURsCfOKW/dz0Jqi7uXc/ZFxx8fcEUzD+XtCJ3Q3s=;
-	b=SuXMt55WxRBIvDxHEMAAOlvC/+AA+n7CeEr5M+yDIrFE5ml2rzwpg1c5GpDq7pwU6lp83B
-	Bn+bnzV5UlLIfdz8g7Yovz9VfOw3UNNY2NzFBCaTCrzCyZs1OJUAmv71hZXq0H4i7eXogl
-	mDcEPIq3ZxhtM3irJpADhradX2IGZl+oVYjmNoM0Xq+vrx1knAH614E9HwPm644aiDKxin
-	W+EVtusIT70HhOjkFspQWVDEmWsjtfSDznxx+PenKppqQwWdEzIIrgD8FCd/JkqvXSpzO8
-	BnkiZxUpeITdopx3NvEELgIdYMhXtURLNJu9YbPdDehtMQX/z/FSgec68y11IQ==
-Date: Thu, 6 Mar 2025 08:42:01 +0100
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Heiner Kallweit
- <hkallweit1@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
- linux-arm-kernel@lists.infradead.org, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Russell King
- <linux@armlinux.org.uk>, Vladimir Oltean <vladimir.oltean@nxp.com>,
- =?UTF-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>, Oleksij Rempel
- <o.rempel@pengutronix.de>, Simon Horman <horms@kernel.org>, Romain Gantois
- <romain.gantois@bootlin.com>, Piergiorgio Beruto
- <piergiorgio.beruto@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>
-Subject: Re: [PATCH net-next 0/7] net: ethtool: Introduce ethnl dump helpers
-Message-ID: <20250306084201.23885f5b@fedora.home>
-In-Reply-To: <20250305184749.5519e7a9@kernel.org>
-References: <20250305141938.319282-1-maxime.chevallier@bootlin.com>
-	<20250305180252.5a0ceb86@fedora.home>
-	<20250305184749.5519e7a9@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RtCl2m2L"
+Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-3d3e25323cfso3192295ab.3
+        for <netdev@vger.kernel.org>; Wed, 05 Mar 2025 23:54:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741247689; x=1741852489; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qsiFPjgJEEqmT9jsMBtvFa+R9P2U96nrRVtN2opkR38=;
+        b=RtCl2m2LhQ2y1Sp2Cq5WN5w8P+OxXrkF9aCwWb69O0DPSm615jxYOGhgO6yv6PGDFO
+         1qzS6QuG4aTZF1wt3l19ZCCm+vQlHdlfbwevoyOMRvqtzWDorDlMn2OT5uvI+Y6b1UhM
+         5uTqBdNBD54SQ4eXzPEaUJ4155bDTfjA5WFwXdHSm1ahh5gSOrv5705i+RcZIvnsd1ci
+         1g0E6Y9PLFHFbpHRbvIo6d228WQV/Zk+N5NqmP9lxElrmnm+e2pnHcxGVj8KT2HEMP4G
+         BvoJ+tT65kP/phGdjhYzJ1wCDOni4xPJpfqM1t/AdD9pDX7ziXTdiBJ1KhV+hOCwipZd
+         laCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741247689; x=1741852489;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qsiFPjgJEEqmT9jsMBtvFa+R9P2U96nrRVtN2opkR38=;
+        b=u76El0bwVyobvVa++4XUWN2QSYNZV+YJuhqbgajuY9+GGmvWYiBNWGZV9ukKoZYnFH
+         XWcJ77zr+PtoGGag0CYedzSU71T78i6lW/O6KaPY+4bmIROM57fiGBL/Jdmgn80VIUVo
+         fSsBkuzFpD+v8Q64i39xlx/GqpeASm3ZcfNMpxP92I3EaHtGLJIUQNq7dcoFrFLlqRMr
+         u3ULrfV8hdI7VIFKtJkZM5clMhUeEDFypta8VWuXjPHh+X/7md/JlXOjFX7JqIXNglr+
+         BNipf6wkBcixOmJChkS7KhNZ4Isl0fzBSfR+RR0ySCtZDicjxPIHz3J++CLya35DV2K5
+         U0wg==
+X-Forwarded-Encrypted: i=1; AJvYcCXHIofy/AvXID+OJeNA7LeXLDuhutk3l1VlkEc6FbENsfu0NydnwdF6klv44ZFP69nHpL2KFFA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuHeboePPgpoH4uZ2fbeenMewR/g5NO7dpPSmhIXAPjaeKTDrP
+	V2QjFjE+TLfSREKl9lm2tVf8wzvL/6RX5ATh07W4c5m+DXVI1DVIgBibR/mtlWzlUQ8227vsTKu
+	p26LmBffKyCEKEOLnJjp4BLVjP8g=
+X-Gm-Gg: ASbGncue+FK/QLvW7olwKchYHfySKz1S/No/2JZYXfOPTnqnrFNdmt303xEVwKNzv6R
+	cJCF6SoSrVJIC0Ll/NqlFbMQ9AQIUkQPFQK7wesRRN13gk+inRPIs+LpAkCZ7y7bcPu69FNJ9lK
+	WzjFxWZzfZS3OzS6f8WjXUL2W4sQ==
+X-Google-Smtp-Source: AGHT+IF4lQTTyTodZVQFTe9da2YDiFKn2ybMx0/nwAKoXfQ3ZOsFVMYh3x//e+GELKvGuMBQMj+y0T9CHMiIcVgHrEA=
+X-Received: by 2002:a92:cd8a:0:b0:3d0:1fc4:edf0 with SMTP id
+ e9e14a558f8ab-3d42b97bc11mr86180005ab.15.1741247689400; Wed, 05 Mar 2025
+ 23:54:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddutdejudejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeevledtvdevueehhfevhfelhfekveeftdfgiedufeffieeltddtgfefuefhueeknecukfhppedvrgdtudemtggsudelmeekugegtgemlehftddtmegstgdvudemkeekleelmeehgedttgemvgehlegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugegtmeelfhdttdemsggtvddumeekkeelleemheegtdgtmegvheelvgdphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddupdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepvgguu
- hhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-GND-Sasl: maxime.chevallier@bootlin.com
+References: <20250305034550.879255-1-edumazet@google.com> <20250305034550.879255-2-edumazet@google.com>
+In-Reply-To: <20250305034550.879255-2-edumazet@google.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Thu, 6 Mar 2025 15:54:13 +0800
+X-Gm-Features: AQ5f1Jq2ksERV3TQlpHm4FvBrs26IG1u01rYEtLdNRZ3wOnM6LcwG318iAI8ap0
+Message-ID: <CAL+tcoAzeBGpv53cXdm7s_3C63fMR8vkeLyCReSbnSNuf6pWcg@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/2] inet: change lport contribution to
+ inet_ehashfn() and inet6_ehashfn()
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@amazon.com>, Jason Xing <kernelxing@tencent.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 5 Mar 2025 18:47:49 -0800
-Jakub Kicinski <kuba@kernel.org> wrote:
+On Wed, Mar 5, 2025 at 11:46=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> In order to speedup __inet_hash_connect(), we want to ensure hash values
+> for <source address, port X, destination address, destination port>
+> are not randomly spread, but monotonically increasing.
+>
+> Goal is to allow __inet_hash_connect() to derive the hash value
+> of a candidate 4-tuple with a single addition in the following
+> patch in the series.
+>
+> Given :
+>   hash_0 =3D inet_ehashfn(saddr, 0, daddr, dport)
+>   hash_sport =3D inet_ehashfn(saddr, sport, daddr, dport)
+>
+> Then (hash_sport =3D=3D hash_0 + sport) for all sport values.
+>
+> As far as I know, there is no security implication with this change.
 
-> On Wed, 5 Mar 2025 18:02:52 +0100 Maxime Chevallier wrote:
-> > This series will very likely conflict with Stanislav's netdev lock
-> > work [2], I'll of course be happy to rebase should it get merged :)  
-> 
-> Also this doesn't build. Please hold off on reposting for a couple of
-> days - because of the large conflict radius the previous few revisions
-> of the locking series haven't even gotten into the selftest CI queue :(
+Good to know this. The moment I read the first paragraph, I was
+thinking if it might bring potential risk.
 
-Sure no problem. I'll try t figure out what's up with the build in the
-meantime, looks like I inverted a few changes that break
-bissecatability.
+Sorry that I hesitate to bring up one question: could this new
+algorithm result in sockets concentrating into several buckets instead
+of being sufficiently dispersed like before. Well good news is that I
+tested other cases like TCP_CRR and saw no degradation in performance.
+But they didn't cover establishing from one client to many different
+servers cases.
 
-I'll keep an eye on Stanislav's work in the meantime as well.
+>
+> After this patch, when __inet_hash_connect() has to try XXXX candidates,
+> the hash table buckets are contiguous and packed, allowing
+> a better use of cpu caches and hardware prefetchers.
+>
+> Tested:
+>
+> Server: ulimit -n 40000; neper/tcp_crr -T 200 -F 30000 -6 --nolog
+> Client: ulimit -n 40000; neper/tcp_crr -T 200 -F 30000 -6 --nolog -c -H s=
+erver
+>
+> Before this patch:
+>
+>   utime_start=3D0.271607
+>   utime_end=3D3.847111
+>   stime_start=3D18.407684
+>   stime_end=3D1997.485557
+>   num_transactions=3D1350742
+>   latency_min=3D0.014131929
+>   latency_max=3D17.895073144
+>   latency_mean=3D0.505675853
+>   latency_stddev=3D2.125164772
+>   num_samples=3D307884
+>   throughput=3D139866.80
+>
+> perf top on client:
+>
+>  56.86%  [kernel]       [k] __inet6_check_established
+>  17.96%  [kernel]       [k] __inet_hash_connect
+>  13.88%  [kernel]       [k] inet6_ehashfn
+>   2.52%  [kernel]       [k] rcu_all_qs
+>   2.01%  [kernel]       [k] __cond_resched
+>   0.41%  [kernel]       [k] _raw_spin_lock
+>
+> After this patch:
+>
+>   utime_start=3D0.286131
+>   utime_end=3D4.378886
+>   stime_start=3D11.952556
+>   stime_end=3D1991.655533
+>   num_transactions=3D1446830
+>   latency_min=3D0.001061085
+>   latency_max=3D12.075275028
+>   latency_mean=3D0.376375302
+>   latency_stddev=3D1.361969596
+>   num_samples=3D306383
+>   throughput=3D151866.56
+>
+> perf top:
+>
+>  50.01%  [kernel]       [k] __inet6_check_established
+>  20.65%  [kernel]       [k] __inet_hash_connect
+>  15.81%  [kernel]       [k] inet6_ehashfn
+>   2.92%  [kernel]       [k] rcu_all_qs
+>   2.34%  [kernel]       [k] __cond_resched
+>   0.50%  [kernel]       [k] _raw_spin_lock
+>   0.34%  [kernel]       [k] sched_balance_trigger
+>   0.24%  [kernel]       [k] queued_spin_lock_slowpath
+>
+> There is indeed an increase of throughput and reduction of latency.
+>
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+
+Tested-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+
+Throughput goes from 12829 to 26072.. The percentage increase - 103% -
+is alluring to me!
 
 Thanks,
-
-Maxime
+Jason
