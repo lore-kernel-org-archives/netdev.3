@@ -1,129 +1,77 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29E920B80B
-	for <netdev@vger.kernel.org>; Thu,  6 Mar 2025 09:57:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB0620AF78
+	for <netdev@vger.kernel.org>; Thu,  6 Mar 2025 09:57:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741255034; cv=none; b=LY9HLokwgsmD/gfRE0/orIUpwxuu0a1qGNjSiYt/UqeufvVh1sS7Uj//Evvi6AxX1z4pus1BBA5sqTjDUVoZkprOuZWxlq7UVH7wdy1mLpL/xmY5xqzdXsghvjAe37FlJtCJwV24E5EuJi6/aRkwSw+n2IbUTHeRRgmgSQoU/JA=
+	t=1741255036; cv=none; b=cefLyh1tEwKKdm4GR4xjhcq5z3KAmcpOV9C2GG2zXnLCb9w+iqZmMB7vhxFxDv8zMZ6Mezw2XKzVEP5If8BI4rtJwrtB00D3WTsTNF9ncVDXagGsCH0YpkYhoCOjyRDUH0VAuLLlqAKLwPG7wrGz3NWi0yIwrdCBKe1f6UGCNeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741255034; c=relaxed/simple;
-	bh=6JPnLhL8s35dB03n039XAvB3PJPp3xjiscDs8gfFdqE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To; b=HgzzWs3igSHvUMj8Lmwbn0iUIDdWBEjYpDe2oLQBerkjFec7+5entA4MyJH5f61gAAE7U6aRFtpyY4UgX2QlrknrADSXMPAot88/sf6itSHK9pwXUnaLc4A4X287yMjD/UU9vPTWWo/506Zt2qPXIqrT/3Mqve2Pm16egZKRxts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com; spf=pass smtp.mailfrom=daynix.com; dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b=1f4Gjbzb; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=daynix.com
+	s=arc-20240116; t=1741255036; c=relaxed/simple;
+	bh=wsDrmZWqNwZ8Z92QvIsMkJWkfZRuwXzjXEV5bkQIeE8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SKL1exyAf3OAbnMsELnDERUdVRDT7cEq03fB9u4rW+TJu0fadp2epP3SrHDEnrF5UVUeW1L84AU9LVcnQX3RP0AlNO+xdeJLUdmWQscgeyOUF+lQ1R/YFp8TN6B1ESXveHO/TBJGjlT/r1oyZ4YbsOSZytMpmugBczrawt/ROIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BkUmWWfq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b="1f4Gjbzb"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2240b4de12bso9165435ad.2
-        for <netdev@vger.kernel.org>; Thu, 06 Mar 2025 01:57:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1741255032; x=1741859832; darn=vger.kernel.org;
-        h=to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hY0V7oey/1irsg/oxeJVyzd/IX234qFLR74EBUPiqoM=;
-        b=1f4GjbzbUQc2p7rObP8Rffq2hgjmxG5ITm/OnltgmggFk1HeiI5d00OnQ/FuL2k2Iz
-         Nh8YEBYAXNdVn//VjatBjYFbzbE1QQjDVJ/HV7bS9fFT9c21xAVJnv9rztsSNfjXBGtb
-         Noyz7bxrPpGYFGCCVSf9QkbrekXZBREZYZ9zSD3Xj3wOldG4JEx8dwfT+ThnhBCJfi2v
-         7p3iBBJF6UnuMv/7xID6Z9X9OGWyltMqGOwjDT3ynAdbnnK8gc1KarD6KmCJtbEu8q2P
-         0vdcHjZNfJGx5yhTI7hBtvdCru9KbRVRjBc5/C1lOdisJOjKoWjds+vieOUjWtaQ2Nrm
-         0MSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741255032; x=1741859832;
-        h=to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hY0V7oey/1irsg/oxeJVyzd/IX234qFLR74EBUPiqoM=;
-        b=JXKT+iPfdK5u7OfvY223p550UQtgWBbAsFBTcOTFFQ9rcGM7PgoCHjf3zDr9BkBf2X
-         yXLR0V6YUy/teunFHoSg0B7cOlK83YFTkLyW6h283JfjJfoPZbbczZslkphfiFCt2OYZ
-         g3HC72+E6OZ5GdTHK6fj9PhVf/Vsp8JQvB2bp24WlY1G79okw2iiRAY+LKjVvYE2qFTf
-         +BoRiauNr/ucHfEwAFFyscUAw5cI8M+tD6Q3pkMUcu8IjKoYi/zXQ2rMqGBuP8cL20vz
-         oeYbsA68NRe/V5y1jtlMqoxn5nSikHkX7XkuIWeAJ+X7KpTBdv4nPxgvXyHAeeZhgwZe
-         SQuw==
-X-Forwarded-Encrypted: i=1; AJvYcCXWqznBm2QEp0+IsyqcBDeRhisvdeKiiWY37/RtPVbyjkly/X2xkOrWhHwqxE+Lbo57l7Ykx88=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxq+gS0/VG2r2v07l8XZu1xUDuGxn177yFGJsSQ2mK9mNfFqBL7
-	iMYxpHyMnx9Fn0xT5ZXxQKxnu014+/Jmb3n9Pymsqw+ojtCIhnJfB2SixvlIrtY=
-X-Gm-Gg: ASbGnctmFAI5LtNh7exwOuAc1f60fS3njquadU591/gkdgBl/H4jLc87wnEsaj0o3nB
-	yXyWANVYJZx29fb4+0MBYiITw38//HIkAu9vkxprR7HFuihsghvL7Ju8lBeSNsLTq/kccVxhUIA
-	GA6dBEAyQZccJLcXwP2OnlZ0oGBqgt/WDaWqS34/c60/QxEv3h7klIjwlbwmz9K19f8V/6EEjld
-	RlAowKuMnhQclSrDUXO8oasTsdoIWDfl2Uhy6o2zW7kQ5EeQWuO69LxGycM2q5sW6ce5u13Rvcw
-	AIXdgKIaxCbsJPrYKM54GG+U5dVrJefp1KOsx8s9G6U2hmi/
-X-Google-Smtp-Source: AGHT+IGlvJ3QJNQ7zdOmSl6WruunBWchSJlMnXfPdh91/T3HMnxY+JOOEGUyqA7YRqbtPgOIa/y+WA==
-X-Received: by 2002:a17:902:ea03:b0:223:f928:4553 with SMTP id d9443c01a7336-223f928486bmr88417775ad.44.1741255032170;
-        Thu, 06 Mar 2025 01:57:12 -0800 (PST)
-Received: from localhost ([157.82.207.107])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22410a7fc55sm8314515ad.138.2025.03.06.01.57.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Mar 2025 01:57:11 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 06 Mar 2025 18:56:32 +0900
-Subject: [PATCH net-next v8 2/6] net: flow_dissector: Export
- flow_keys_dissector_symmetric
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BkUmWWfq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335F6C4CEE2;
+	Thu,  6 Mar 2025 09:57:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741255035;
+	bh=wsDrmZWqNwZ8Z92QvIsMkJWkfZRuwXzjXEV5bkQIeE8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BkUmWWfq0wnktTbrQMOzFCxZ1idiOiZOA0Td5RKlwaMZLIzNz8MCsANI6ruO+VVZp
+	 gbGm7NG8dpfDTk4y3ua5cy3hTFiR8v4JXyYFNoQE450Jkq+dXHs9gXxrUbNs7B7+q4
+	 xySW/R9nLFVa21UfFdAEhuSjeQJh/tp6GlJbhPT3tEcjlRW6hLVnCgjQ0rtGnls/dz
+	 tlLYsYOaP4jm3eK0Ipat41qGStDjxly3buRLC7i+x/V7WgMlU7AerBmYZ26g9j/0Fi
+	 hLTgZNC0sfOIk976NyWco3xeMZQ5uQndGt+QKyO3FUfl5L3DdTnKUCV1f0RFX7wxY9
+	 QETTN5tbBhK3w==
+Date: Thu, 6 Mar 2025 09:57:10 +0000
+From: Simon Horman <horms@kernel.org>
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next] net: stmmac: simplify phylink_suspend() and
+ phylink_resume() calls
+Message-ID: <20250306095710.GR3666230@kernel.org>
+References: <E1tpQL1-005St4-Hn@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250306-rss-v8-2-7ab4f56ff423@daynix.com>
-References: <20250306-rss-v8-0-7ab4f56ff423@daynix.com>
-In-Reply-To: <20250306-rss-v8-0-7ab4f56ff423@daynix.com>
-To: Jonathan Corbet <corbet@lwn.net>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Jason Wang <jasowang@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>, 
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, kvm@vger.kernel.org, 
- virtualization@lists.linux-foundation.org, linux-kselftest@vger.kernel.org, 
- Yuri Benditovich <yuri.benditovich@daynix.com>, 
- Andrew Melnychenko <andrew@daynix.com>, 
- Stephen Hemminger <stephen@networkplumber.org>, gur.stavi@huawei.com, 
- Lei Yang <leiyang@redhat.com>, Simon Horman <horms@kernel.org>, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E1tpQL1-005St4-Hn@rmk-PC.armlinux.org.uk>
 
-flow_keys_dissector_symmetric is useful to derive a symmetric hash
-and to know its source such as IPv4, IPv6, TCP, and UDP.
+On Tue, Mar 04, 2025 at 11:21:27AM +0000, Russell King (Oracle) wrote:
+> Currently, the calls to phylink's suspend and resume functions are
+> inside overly complex tests, and boil down to:
+> 
+> 	if (device_may_wakeup(priv->device) && priv->plat->pmt) {
+> 		call phylink
+> 	} else {
+> 		call phylink and
+> 		if (device_may_wakeup(priv->device))
+> 			do something else
+> 	}
+> 
+> This results in phylink always being called, possibly with differing
+> arguments for phylink_suspend().
+> 
+> Simplify this code, noting that each site is slightly different due to
+> the order in which phylink is called and the "something else".
+> 
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- include/net/flow_dissector.h | 1 +
- net/core/flow_dissector.c    | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/include/net/flow_dissector.h b/include/net/flow_dissector.h
-index ced79dc8e8560e25a4dd567a04f5710b53452b45..d01c1ec77b7d21b17c14b05c47e3cdda39651bec 100644
---- a/include/net/flow_dissector.h
-+++ b/include/net/flow_dissector.h
-@@ -423,6 +423,7 @@ __be32 flow_get_u32_src(const struct flow_keys *flow);
- __be32 flow_get_u32_dst(const struct flow_keys *flow);
- 
- extern struct flow_dissector flow_keys_dissector;
-+extern struct flow_dissector flow_keys_dissector_symmetric;
- extern struct flow_dissector flow_keys_basic_dissector;
- 
- /* struct flow_keys_digest:
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index 9cd8de6bebb543c3d672f576e03b29aa86b9d34a..32c7ee31330cf52df05d7a23b3e50d1a1bed9908 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -1862,7 +1862,8 @@ void make_flow_keys_digest(struct flow_keys_digest *digest,
- }
- EXPORT_SYMBOL(make_flow_keys_digest);
- 
--static struct flow_dissector flow_keys_dissector_symmetric __read_mostly;
-+struct flow_dissector flow_keys_dissector_symmetric __read_mostly;
-+EXPORT_SYMBOL(flow_keys_dissector_symmetric);
- 
- u32 __skb_get_hash_symmetric_net(const struct net *net, const struct sk_buff *skb)
- {
-
--- 
-2.48.1
-
+Reviewed-by: Simon Horman <horms@kernel.org>
