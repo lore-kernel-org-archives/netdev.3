@@ -1,67 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7B0249E5
-	for <netdev@vger.kernel.org>; Thu,  6 Mar 2025 20:34:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B8118BC26
+	for <netdev@vger.kernel.org>; Thu,  6 Mar 2025 20:39:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.59
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741293290; cv=none; b=uAJh3mCU2pWj0u+VP5UJTJb9UGMQXZcGmkFIVDFFAqkoy7ofGD0TRycLEbw4RHb21foBWvm2jdq5zWysb0oPv5J0l1bdjbdOApzzPeg6W01HqWjXdIm9UMEp+vnMp1M6Q5Si3TpWOPNvJdbuEjGwuqoSYZ1FLz1LoYdx7rxGdTI=
+	t=1741293554; cv=none; b=cw8HPGlQ4m1quunSVo2kph54NfKvz8o5juntb6hyL4Ox2Jb45UPrLMvBK7adr0UFcioSN0h2LI61v90X0oVUEfE3eyPzlVcExehuoqnL0iPLqgdMy6yZLY4RYm8C4aiH7BsCGcuv5uqM/IJ63kUevhRE6xh0vaKWDt8QRbCIeWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741293290; c=relaxed/simple;
-	bh=aniIYBl4gqtdOD6l9WBwzQflxuG+wa6epLodlkSYJcY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lJ29J6Nfn2G4nNgCeT/2VyoAPhuF2ZHXMSL2OIB/5LbIYm3mgfgx5qRtEA6HoRsbJ4pOVuiHWVjYchqZDU2L/8kiB+DbihmZkVuXUnAYbaSDRFTofiuCMr/zvjLDUxfG7zeLzSTkg0mRVuxVpsCrF4jO3N4zJhQcRNg7kVFwhSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hV7eR4/A; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741293554; c=relaxed/simple;
+	bh=wduhX53R8HjEeAjnRW1KoaV39KQVKrQ6gif7EZPc4Mw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FyoBK03HvgSg2auKBkTk2ZzEhB6k3CITvRa/4WPLxFpjKN6+irzUlBMGs4HUsg/9pqprGBZoNOqh5ygjWdRB7dE49saNo6uf+BHO0iblLmKgCpbl/gg6xHfojR3erzNiRB1EwN8bOHqkqmq1IHlbnAoYevvvDKJnNCNqW3dIx6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=mrzCPSYp; arc=none smtp.client-ip=121.127.44.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kwiboo.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hV7eR4/A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFA4C4CEE0;
-	Thu,  6 Mar 2025 20:34:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741293289;
-	bh=aniIYBl4gqtdOD6l9WBwzQflxuG+wa6epLodlkSYJcY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hV7eR4/ApXl6FY4w31kVH5JLkBsXqUWwpwMbwS57tzyApCP59sUBrI1uY6EheWrcp
-	 zp60siukavydEg+DO0Poakr+HOQjc+Osfh3rIBxXjTxF9HiAUMzrV7Wa9q6xXbhmeD
-	 3gRkpJCjORs9alswzxc8wxonj50jiwY1lDZSjNsRTdzHD8eIZj9VNRJRZDO8idLeTD
-	 soz0ZF2LPJ6N7DXBBtCIZvhdye25VE2NAXpw8Tt+5Q794GIdI0T5CULhkDl24j3nax
-	 aq95EKtetHxhcyMpzRrTG0s1bXD/NQOfsKDYh46FY3cFbGq/vj1yShAnjiLwBcyzT4
-	 T7DVrk6vZYAzw==
-Date: Thu, 6 Mar 2025 12:34:48 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Tariq Toukan <ttoukan.linux@gmail.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
- andrew+netdev@lunn.ch, Gal Pressman <gal@nvidia.com>
-Subject: Re: [PATCH net] net/mlx5: Fill out devlink dev info only for PFs
-Message-ID: <20250306123448.189615da@kernel.org>
-In-Reply-To: <3faf95ef-022a-412e-879d-c6a326f4267a@gmail.com>
-References: <20250303133200.1505-1-jiri@resnulli.us>
-	<53c284be-f435-4945-a8eb-58278bf499ad@gmail.com>
-	<20250305183016.413bda40@kernel.org>
-	<7bb21136-83e8-4eff-b8f7-dc4af70c2199@gmail.com>
-	<20250306113914.036e75ea@kernel.org>
-	<3faf95ef-022a-412e-879d-c6a326f4267a@gmail.com>
+	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="mrzCPSYp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kwiboo.se;
+ h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To:
+ Message-ID: Date: Subject: Cc: To: From; q=dns/txt; s=fe-e1b5cab7be;
+ t=1741293549; bh=7JyxP8FBRDIO7vgzFTNLCIrseIO0xPkXO1N8Yvb5Wzo=;
+ b=mrzCPSYp2vBoEgERGbhVXHiYhoFEygSIzdYjgLOIMzPYQRXFKwoRprf8SHOMlcEZjL0s8y5tb
+ eflUW8t1NA/E7BZsAfHmYJk3nR+eEHZ+tetP3cVSemZQSZtyd77j/JwdkKolWS2vH9sfNuHffzi
+ WMI241LU8bj5eFccdMtu0uBIP8RYGJXvsqGqdxG/rfGsTANWRaXLYRFYApZpLDLqlcWRT3IuwkC
+ FLiq43rIrXCLzrfJyPjmGfp+Pw7g7oK7nsShu8dAbNtXZUwIFZzZ+wbBNduemgqM8QkXsZ7ZOZF
+ 8EsDCbOe8+3vYu1+ziJ15mH8dapo7i0PKhAuVaJRjfVg==
+X-Forward-Email-ID: 67ca07ecdeafcb1458af9261
+X-Forward-Email-Sender: rfc822; jonas@kwiboo.se, smtp.forwardemail.net,
+ 121.127.44.59
+X-Forward-Email-Version: 0.4.40
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+From: Jonas Karlman <jonas@kwiboo.se>
+To: Heiko Stuebner <heiko@sntech.de>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Wadim Egorov <w.egorov@phytec.de>
+Cc: netdev@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Jonas Karlman <jonas@kwiboo.se>,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH 1/3] net: stmmac: dwmac-rk: Use DELAY_ENABLE macro for RK3328
+Date: Thu,  6 Mar 2025 20:38:52 +0000
+Message-ID: <20250306203858.1677595-2-jonas@kwiboo.se>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250306203858.1677595-1-jonas@kwiboo.se>
+References: <20250306203858.1677595-1-jonas@kwiboo.se>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 6 Mar 2025 22:12:52 +0200 Tariq Toukan wrote:
-> >    The exact expectations on the response time will vary by subsystem.
-> >    The patch review SLA the subsystem had set for itself can sometimes
-> >    be found in the subsystem documentation. Failing that as a rule of thumb
-> >    reviewers should try to respond quicker than what is the usual patch
-> >    review delay of the subsystem maintainer. The resulting expectations
-> >    may range from two working days for fast-paced subsystems (e.g. networking)  
-> 
-> So no less than two working days for any subsystem.
-> Okay, now this makes more sense.
+Support for Rockchip RK3328 GMAC and addition of the DELAY_ENABLE macro
+was merged in the same merge window. This resulted in RK3328 not being
+converted to use the new DELAY_ENABLE macro.
 
-Could you explain to me why this is a problem for you?
-You're obviously capable of opening your email client once a day.
-Are you waiting for QA results or some such?
+Change to use the DELAY_ENABLE macro to help disable MAC delay when
+RGMII_ID/RXID/TXID is used.
+
+Fixes: eaf70ad14cbb ("net: stmmac: dwmac-rk: Add handling for RGMII_ID/RXID/TXID")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+index 003fa5cf42c3..297fa93e4a39 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+@@ -593,8 +593,7 @@ static void rk3328_set_to_rgmii(struct rk_priv_data *bsp_priv,
+ 	regmap_write(bsp_priv->grf, RK3328_GRF_MAC_CON1,
+ 		     RK3328_GMAC_PHY_INTF_SEL_RGMII |
+ 		     RK3328_GMAC_RMII_MODE_CLR |
+-		     RK3328_GMAC_RXCLK_DLY_ENABLE |
+-		     RK3328_GMAC_TXCLK_DLY_ENABLE);
++		     DELAY_ENABLE(RK3328, tx_delay, rx_delay));
+ 
+ 	regmap_write(bsp_priv->grf, RK3328_GRF_MAC_CON0,
+ 		     RK3328_GMAC_CLK_RX_DL_CFG(rx_delay) |
+-- 
+2.48.1
+
