@@ -1,106 +1,125 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6777F19DF4D;
-	Thu,  6 Mar 2025 07:05:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246101AB6D4;
+	Thu,  6 Mar 2025 07:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741244754; cv=none; b=sQQYQik5+F7s2kLrxphIqj2C3krs5i9Mc6k3xXTaQodKzz9v93Cv495AgZXBk3NoPpsk1ZqwaNbJHtJrjMCmEnbQrOYyY8qSuy1DAKMjlsIqcfwFvkfcQiRqbOcpx5PCpzYEWOolBnIXJtvFoQV470F8tQ2R0y1popzlJG7Lzmk=
+	t=1741244992; cv=none; b=dzv3atduTfFhn89wOovWuNYQoOND/U2Z2to5TGezADDerhB7Su7KjVF5SpT1cRnYuoBdCJV1emb0kMGAYjnhiAxptXbuuQhTJC4xGOVXRtkqgR34ZOjeL/snV7VZduslSXTWTU8a3vRZ4mes5TUKpixh/Rmsn8cqGNbYGyHrU6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741244754; c=relaxed/simple;
-	bh=4fsBYDyG/UEtkcJyh44OJqX7sie/l9Ni8w36iQM9FbY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RsNsG3VoOHAKYeRSnQf0HFJSn+GWImToIQBIc1eJzjqErnrIe0KJB8Sxq/psi8VKJkIIW8o5WOskoRvn2sqCCrRBEZU8O6ThOrz1YS17nvUk/UeX0RIbh6wMJGBS92oJkAt83BiPoDsB5PPbKQdI+KZvEimiHlJxphbFg50pOwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=JTO18am8; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	s=arc-20240116; t=1741244992; c=relaxed/simple;
+	bh=EP/2OzblPB5fEA8S496jYOnDzsVwjUYkXmbBY2uXZQU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sDHinfvvZJh4UGPmzhDTd/15CwSujkFyXDbtNyH/vswKUiECXOw/7Nb2+eeJInohDgwYqEgFGlolPM7tU7/M3c02O+7rACgs3UMNp/0gTibe1vjC5j9mFpbwkJFb09SLYXKAZCP9SCTDLaY4x2uQicxLdHItzEQS9dWQ7Yg320k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PCipHMVs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="JTO18am8"
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52675MJs82833910, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1741244722; bh=4fsBYDyG/UEtkcJyh44OJqX7sie/l9Ni8w36iQM9FbY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=JTO18am8PEgzoe0jl+NBRUznyO+YcUUrswQ4hz1gaYjzjYUeQXbXbRbLXU+YZREfR
-	 R1+/oOLFwRt5oaWXPauhLuENMmV0Gwf1GT5fw0LoDgERbhjDrMqE+ncF7yO8dbFtJm
-	 sBL50G/HnFPIe5GB4NM+4loSVfWvY2OGRhO3J0iAFu5RaL5Wnxk6bgVYLvTLhr8HbG
-	 UZGWufjAnGvwpB9G1O6x9bS3DwPkWdtNbjiWWPwipCbBqAzmBS1IuYiHIs9YbRwyLZ
-	 ZSCrdPq83exeuVa/ubp9TykpO0iMEWwpWaNiSE1ctIad66w2EO2WbIlMfyTqynsnAk
-	 58yQAEr6Ft0Jw==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52675MJs82833910
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Mar 2025 15:05:22 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 6 Mar 2025 15:05:23 +0800
-Received: from RTDOMAIN (172.21.210.70) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 6 Mar
- 2025 15:05:23 +0800
-From: Justin Lai <justinlai0215@realtek.com>
-To: <kuba@kernel.org>
-CC: <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
-        <andrew+netdev@lunn.ch>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <horms@kernel.org>, <pkshih@realtek.com>,
-        <larry.chiu@realtek.com>, Justin Lai <justinlai0215@realtek.com>
-Subject: [PATCH net] rtase: Fix improper release of ring list entries in rtase_sw_reset
-Date: Thu, 6 Mar 2025 15:05:10 +0800
-Message-ID: <20250306070510.18129-1-justinlai0215@realtek.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PCipHMVs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46444C4CEE4;
+	Thu,  6 Mar 2025 07:09:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741244990;
+	bh=EP/2OzblPB5fEA8S496jYOnDzsVwjUYkXmbBY2uXZQU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PCipHMVs2wDZAx5qquTkBOjLYgWz00kvpXPyIsybNOpVGDhDuqxtIagPpo59lbZY/
+	 +Uo3BFyy/+ucaSG5q597z9Oh5y9hxZ2sytozQiP4gE96PNdkytAxCtMQNN5rwza7Gk
+	 0krjuDiXfI0/SfZj+KBidbi+jgVeoIfzytD3OmAN/NzEhQGhRXB8jN+AHilmiXn5uw
+	 R1MRSGvkcC4gna8Jn33tVgupvmg4BjFAO80SX+KOjbAxHUh7LDjcaBRhe7eYO+d95u
+	 4UvuxL4dpn5h+mW+7dMnYGaeB2gyIsWxpCjefdPsJhb/m264z6D/Uqn5MQ+tBV+mCp
+	 bWYASCeptYutg==
+Message-ID: <041d55fd-99f0-4b55-92e5-fa46f37096c1@kernel.org>
+Date: Thu, 6 Mar 2025 08:09:40 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXH36505.realtek.com.tw (172.21.6.25) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/2] net: stmmac: dwc-qos: Add FSD EQoS support
+To: Swathi K S <swathi.ks@samsung.com>, krzk+dt@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, conor+dt@kernel.org,
+ richardcochran@gmail.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com
+Cc: rmk+kernel@armlinux.org.uk, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ pankaj.dubey@samsung.com, ravi.patel@samsung.com, gost.dev@samsung.com,
+ tools@linux.kernel.org
+References: <CGME20250305091845epcas5p1689eda3ba03572377997897271636cfd@epcas5p1.samsung.com>
+ <20250305091246.106626-1-swathi.ks@samsung.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250305091246.106626-1-swathi.ks@samsung.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Since rtase_init_ring, which is called within rtase_sw_reset, adds ring
-entries already present in the ring list back into the list, it causes
-the ring list to form a cycle. This results in list_for_each_entry_safe
-failing to find an endpoint during traversal, leading to an error.
-Therefore, it is necessary to remove the previously added ring_list nodes
-before calling rtase_init_ring.
+On 05/03/2025 10:12, Swathi K S wrote:
+> FSD platform has two instances of EQoS IP, one is in FSYS0 block and
+> another one is in PERIC block. This patch series add required DT binding
+> and platform driver specific changes for the same.
+> 
+> Changes since v1:
+> 1. Updated dwc_eqos_setup_rxclock() function as per the review comments
+> given by Andrew.
+> 
+Please stop referencing some other threads in your email headers via
+"References". This is neither necessary nor helping our tools. I can
+never compare your patches because this makes b4 busy 100%:
 
-Fixes: 079600489960 ("rtase: Implement net_device_ops")
-Signed-off-by: Justin Lai <justinlai0215@realtek.com>
+b4 diff -C '<20250305091246.106626-2-swathi.ks@samsung.com>'
+Grabbing thread from
+lore.kernel.org/all/20250305091246.106626-2-swathi.ks@samsung.com/t.mbox.gz
+Checking for older revisions
+  Added from v7: 3 patches
 ---
- drivers/net/ethernet/realtek/rtase/rtase_main.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Analyzing 86 messages in the thread
+Preparing fake-am for v7: dt-bindings: net: Add FSD EQoS device tree
+bindings
+<never ends, 100% CPU>
 
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-index 3bd11cb56294..2aacc1996796 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-+++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-@@ -1501,7 +1501,10 @@ static void rtase_wait_for_quiescence(const struct net_device *dev)
- static void rtase_sw_reset(struct net_device *dev)
- {
- 	struct rtase_private *tp = netdev_priv(dev);
-+	struct rtase_ring *ring, *tmp;
-+	struct rtase_int_vector *ivec;
- 	int ret;
-+	u32 i;
- 
- 	netif_stop_queue(dev);
- 	netif_carrier_off(dev);
-@@ -1512,6 +1515,13 @@ static void rtase_sw_reset(struct net_device *dev)
- 	rtase_tx_clear(tp);
- 	rtase_rx_clear(tp);
- 
-+	for (i = 0; i < tp->int_nums; i++) {
-+		ivec = &tp->int_vector[i];
-+		list_for_each_entry_safe(ring, tmp, &ivec->ring_list,
-+					 ring_entry)
-+			list_del(&ring->ring_entry);
-+	}
-+
- 	ret = rtase_init_ring(dev);
- 	if (ret) {
- 		netdev_err(dev, "unable to init ring\n");
--- 
-2.34.1
-
+Best regards,
+Krzysztof
