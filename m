@@ -1,203 +1,98 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E24207E15
-	for <netdev@vger.kernel.org>; Thu,  6 Mar 2025 21:14:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7D820E315;
+	Thu,  6 Mar 2025 21:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741295679; cv=none; b=eBl4LOUxDAz/tjsJXCvV//6MeAya7di0ma9Azhz1RoFP0K1EritlVGHkr4QKt6hxRocjFs9irvaCVfZ00CRdurCcaqLxM3hFxdZr2ckXZxz6G+av4fCnSnBKgsJu9NgHdOujcgHiyT5oCFwXwTiEoCt8BaIlrhtricZAEMgZ6vw=
+	t=1741295729; cv=none; b=iK1KBUvw9w1kC8pbZUq2aH/Y+fke8kUVW1oYrb95DVAFGRX1V/5LltUjbhIYU5wDaXnwMDa/SKzlwy+HVymBlT0gwmyFzyYIBDAtI0ddDzhwPfl6N0rhd7jQRGdMQRG3IU430MhzfrNZ2riiNIKcFaEFAvLFvqyYgUogLY1Dkno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741295679; c=relaxed/simple;
-	bh=13kDV5whj4L1YS0AqHhMEuwczR+U+UAB5GvMyPo/ScA=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=pS28GSlo2Otu96LeRaiHfKoL962ysg3S30ilfPwt2bkxaZ3lNXrqez4iC3QqRn8OjZeRa/yTpyr2pTU3+LLZLmyNs4D7FLC25TMFmwP+L/8w+vkbeyoMS35tT++8lWQ/3wy7CNsvr7uTnhSlkuJ4m9vVKUjHp89Vohaf7Ll2BY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tKlJ2CN0; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cuwYJRYL; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tKlJ2CN0; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cuwYJRYL; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1741295729; c=relaxed/simple;
+	bh=uZeojrfvjOuNPdEaD2fjxFVsMYcR4nZzJgFj6J0yLmM=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=UMQkTMBl6zbXiKMpKa8RcaK13vLDVLKdz3wB4kNvpZIuIHTh+Ii98LH76M8E2CVwmz5fExx4JkdYy+AOsi8wJPEm5EMyCadvCYlmRvbboBELy4PoljAg68n+g8dirWFaLY91X03UCPJ8rGX9OWZ1fR17A7LNreWVleumKH+py/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=WiSqWs27; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tKlJ2CN0";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cuwYJRYL";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tKlJ2CN0";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cuwYJRYL"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D3BE321172;
-	Thu,  6 Mar 2025 21:14:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1741295675; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W8wPE8KKZYE0b2eeWO1d4HM7Dis42luxW+pjVxoJ1rs=;
-	b=tKlJ2CN0wPg7rRWhJblyU+m6/5JlLhvjqJs9DUQdv95bf35qpGhbrKpwR4L1ubUl6HHzMC
-	ojHovccIPbw0DHajEIngncj4h9SzsPp7jcDSVykyVxYvu+K6xi485lt2OJtDUqbxaO8V2q
-	1Vt+eGq4eU93co2ldGDFw3X1pdN63uY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1741295675;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W8wPE8KKZYE0b2eeWO1d4HM7Dis42luxW+pjVxoJ1rs=;
-	b=cuwYJRYLTPadg9cLaIfWHdAJDR33+mWHNeymeUhWYbcZ+XGJ68tR+aeh5VXxvpzyhsQA8a
-	TbH2enWt9B0YdnCg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1741295675; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W8wPE8KKZYE0b2eeWO1d4HM7Dis42luxW+pjVxoJ1rs=;
-	b=tKlJ2CN0wPg7rRWhJblyU+m6/5JlLhvjqJs9DUQdv95bf35qpGhbrKpwR4L1ubUl6HHzMC
-	ojHovccIPbw0DHajEIngncj4h9SzsPp7jcDSVykyVxYvu+K6xi485lt2OJtDUqbxaO8V2q
-	1Vt+eGq4eU93co2ldGDFw3X1pdN63uY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1741295675;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W8wPE8KKZYE0b2eeWO1d4HM7Dis42luxW+pjVxoJ1rs=;
-	b=cuwYJRYLTPadg9cLaIfWHdAJDR33+mWHNeymeUhWYbcZ+XGJ68tR+aeh5VXxvpzyhsQA8a
-	TbH2enWt9B0YdnCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1D40E13A61;
-	Thu,  6 Mar 2025 21:14:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id MBkAMC0QymdSewAAD6G6ig
-	(envelope-from <neilb@suse.de>); Thu, 06 Mar 2025 21:14:21 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="WiSqWs27"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "NeilBrown" <neilb@suse.de>
-To: "Yunsheng Lin" <linyunsheng@huawei.com>
-Cc: "Qu Wenruo" <wqu@suse.com>, "Yishai Hadas" <yishaih@nvidia.com>,
- "Jason Gunthorpe" <jgg@ziepe.ca>,
- "Shameer Kolothum" <shameerali.kolothum.thodi@huawei.com>,
- "Kevin Tian" <kevin.tian@intel.com>,
- "Alex Williamson" <alex.williamson@redhat.com>, "Chris Mason" <clm@fb.com>,
- "Josef Bacik" <josef@toxicpanda.com>, "David Sterba" <dsterba@suse.com>,
- "Gao Xiang" <xiang@kernel.org>, "Chao Yu" <chao@kernel.org>,
- "Yue Hu" <zbestahu@gmail.com>, "Jeffle Xu" <jefflexu@linux.alibaba.com>,
- "Sandeep Dhavale" <dhavale@google.com>, "Carlos Maiolino" <cem@kernel.org>,
- "Darrick J. Wong" <djwong@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Jesper Dangaard Brouer" <hawk@kernel.org>,
- "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
- "David S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Simon Horman" <horms@kernel.org>, "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, "Chuck Lever" <chuck.lever@oracle.com>,
- "Jeff Layton" <jlayton@kernel.org>, "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- "Luiz Capitulino" <luizcap@redhat.com>,
- "Mel Gorman" <mgorman@techsingularity.net>,
- "Dave Chinner" <david@fromorbit.com>, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-btrfs@vger.kernel.org, linux-erofs@lists.ozlabs.org,
- linux-xfs@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
- linux-nfs@vger.kernel.org
-Subject: Re: [PATCH v2] mm: alloc_pages_bulk: remove assumption of populating
- only NULL elements
-In-reply-to: <f834a7cd-ca0a-4495-a787-134810aa0e4d@huawei.com>
-References: <>, <f834a7cd-ca0a-4495-a787-134810aa0e4d@huawei.com>
-Date: Fri, 07 Mar 2025 08:14:14 +1100
-Message-id: <174129565467.33508.7106343513316364028@noble.neil.brown.name>
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.993];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_TWELVE(0.00)[44];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[suse.com,nvidia.com,ziepe.ca,huawei.com,intel.com,redhat.com,fb.com,toxicpanda.com,kernel.org,gmail.com,linux.alibaba.com,google.com,linux-foundation.org,linaro.org,davemloft.net,oracle.com,talpey.com,techsingularity.net,fromorbit.com,vger.kernel.org,lists.linux.dev,lists.ozlabs.org,kvack.org];
-	R_RATELIMIT(0.00)[to_ip_from(RL4q5k5kyydt8nhc3xa4shdp4c),from(RLewrxuus8mos16izbn)];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1741295347;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L2c81lklMsWoewbTrDLPjzFIwtetRMhEGhB4+GnHcqo=;
+	b=WiSqWs276XwmL6ya8O18OlaDotyFuFbRKOpfqddTDFGjegQF7yrFJ/fjZqymvfCuHegLIW
+	HidnrhNz9DXyySlOqdgziypXpdovMd53ofUUCHADRAqZkUQUPdGWCoT5QwgqyhForVQcaS
+	SLy+g0SDLLq6eKdiqA6beA27hQuYi3YHLH8XpvNpLeVyKuDz15NKBPDyQJ8NRaObqvesP5
+	H9nB8siyzS1lzqkqpfAsqgBKH871WqOw+loSNYZ1Nd6isC6x9WdSxTufdr7kj4JfcLX5Sy
+	0zdnbY4+vqADaC/N/SxFzkqHCoQHzOeX6cJc7+IpxSPj0pC/0zQrSGWPz25dUg==
+Date: Thu, 06 Mar 2025 22:09:06 +0100
+From: Dragan Simic <dsimic@manjaro.org>
+To: Jonas Karlman <jonas@kwiboo.se>
+Cc: Heiko Stuebner <heiko@sntech.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
+ Torgue <alexandre.torgue@foss.st.com>, Wadim Egorov <w.egorov@phytec.de>,
+ netdev@vger.kernel.org, linux-rockchip@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 1/3] net: stmmac: dwmac-rk: Use DELAY_ENABLE macro for
+ RK3328
+In-Reply-To: <20250306203858.1677595-2-jonas@kwiboo.se>
+References: <20250306203858.1677595-1-jonas@kwiboo.se>
+ <20250306203858.1677595-2-jonas@kwiboo.se>
+Message-ID: <427cbfc8c6b71bf70804a0d535ff9d18@manjaro.org>
+X-Sender: dsimic@manjaro.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-On Thu, 06 Mar 2025, Yunsheng Lin wrote:
-> On 2025/3/6 7:41, NeilBrown wrote:
-> > On Wed, 05 Mar 2025, Yunsheng Lin wrote:
-> >>
-> >> For the existing btrfs and sunrpc case, I am agreed that there
-> >> might be valid use cases too, we just need to discuss how to
-> >> meet the requirements of different use cases using simpler, more
-> >> unified and effective APIs.
-> > 
-> > We don't need "more unified".
+Hello Jonas,
+
+On 2025-03-06 21:38, Jonas Karlman wrote:
+> Support for Rockchip RK3328 GMAC and addition of the DELAY_ENABLE macro
+> was merged in the same merge window. This resulted in RK3328 not being
+> converted to use the new DELAY_ENABLE macro.
 > 
-> What I meant about 'more unified' is how to avoid duplicated code as
-> much as possible for two different interfaces with similar‌ functionality.
+> Change to use the DELAY_ENABLE macro to help disable MAC delay when
+> RGMII_ID/RXID/TXID is used.
 > 
-> The best way I tried to avoid duplicated code as much as possible is
-> to defragment the page_array before calling the alloc_pages_bulk()
-> for the use case of btrfs and sunrpc so that alloc_pages_bulk() can
-> be removed of the assumption populating only NULL elements, so that
-> the API is simpler and more efficient.
+> Fixes: eaf70ad14cbb ("net: stmmac: dwmac-rk: Add handling for
+> RGMII_ID/RXID/TXID")
+> Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> > 
-> > If there are genuinely two different use cases with clearly different
-> > needs - even if only slightly different - then it is acceptable to have
-> > two different interfaces.  Be sure to choose names which emphasise the
-> > differences.
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+> b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+> index 003fa5cf42c3..297fa93e4a39 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+> @@ -593,8 +593,7 @@ static void rk3328_set_to_rgmii(struct
+> rk_priv_data *bsp_priv,
+>  	regmap_write(bsp_priv->grf, RK3328_GRF_MAC_CON1,
+>  		     RK3328_GMAC_PHY_INTF_SEL_RGMII |
+>  		     RK3328_GMAC_RMII_MODE_CLR |
+> -		     RK3328_GMAC_RXCLK_DLY_ENABLE |
+> -		     RK3328_GMAC_TXCLK_DLY_ENABLE);
+> +		     DELAY_ENABLE(RK3328, tx_delay, rx_delay));
 > 
-> The best name I can come up with for the use case of btrfs and sunrpc
-> is something like alloc_pages_bulk_refill(), any better suggestion about
-> the naming?
+>  	regmap_write(bsp_priv->grf, RK3328_GRF_MAC_CON0,
+>  		     RK3328_GMAC_CLK_RX_DL_CFG(rx_delay) |
 
-I think alloc_pages_bulk_refill() is a good name.
+Thanks for this patch...  It's looking good to me, and good job
+spotting this issue!  Please, feel free to include:
 
-So:
-- alloc_pages_bulk() would be given an uninitialised array of page
-  pointers and a required count and would return the number of pages
-  that were allocated
-- alloc_pages_bulk_refill() would be given an initialised array of page
-  pointers some of which might be NULL.  It would attempt to allocate
-  pages for the non-NULL pointers and return the total number of
-  allocated pages in the array - just like the current
-  alloc_pages_bulk().
-
-sunrpc could usefully use both of these interfaces.
-
-alloc_pages_bulk() could be implemented by initialising the array and
-then calling alloc_pages_bulk_refill().  Or alloc_pages_bulk_refill()
-could be implemented by compacting the pages and then calling
-alloc_pages_bulk().
-If we could duplicate the code and have two similar but different
-functions.
-
-The documentation for _refill() should make it clear that the pages
-might get re-ordered.
-
-Having looked at some of the callers I agree that the current interface
-is not ideal for many of them, and that providing a simpler interface
-would help.
-
-Thanks,
-NeilBrown
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
