@@ -1,63 +1,63 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE8527E1D4
-	for <netdev@vger.kernel.org>; Thu,  6 Mar 2025 23:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873D327CCDD
+	for <netdev@vger.kernel.org>; Thu,  6 Mar 2025 23:04:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741302250; cv=none; b=Yi0CUGL4yUhIlwP106UthbIGlgbiOv1x15GgHpqBsVmD8rTLXkzV8eFROy/Nth+wEdB5+84wHsyktg5SKR9/lsayaC/NteLN1/2Kv5TdxRHaHEd00JsgcimxzgmUJYma5uTk/YvgtXrnWi4tqR+cH32ZAYor2spZC5sE3pHcMQk=
+	t=1741302254; cv=none; b=UOxmp1A/oMgY3vx+7scaJxmzvBCKVEf9TE7RSBbwMrOJJhJ1xBFi+yI0uNP9J2EvKKaWWNBIHwNgltfgTL9xoYqlnnCo08yE1Fh8lHePYuM5xM3ycruurtA83PBwgux6r+jzKOnBVGO8ylW423dBVUQ30QbB6o3RMuidhpvuIHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741302250; c=relaxed/simple;
-	bh=R/kZ61XsnXa7JkZ9eNlhtUWSSS5M9Pt+qwZTdVsBeSY=;
+	s=arc-20240116; t=1741302254; c=relaxed/simple;
+	bh=Gd7gnODU0DKD5ytC3V5mdWFfgw32qZrGg0fJLfcPqKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VwWBCjMZ2M4OuXLrbRZ8GaBlyPHIqBxagYoD2xOnsYxWNbr0yIyrJvOBpK7DyHY3X7n+CY0NtVCxiwhviTjlznDT+oCrba0yPhwbCK+54Uec7GFNOY9MyeQizjahaVC4HMwdnQvWpMKj8T03wf6k01cyJC58lcd9Zx4lEobLllw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enfabrica.net; spf=pass smtp.mailfrom=enfabrica.net; dkim=pass (2048-bit key) header.d=enfabrica.net header.i=@enfabrica.net header.b=iHOUfJy/; arc=none smtp.client-ip=209.85.219.54
+	 MIME-Version; b=bit62KxNAxM0cvZIzX00qlTitPRsC2WrfCCmb+WdMdqtqUOhRXLg3zk5lxDWpcbLDdC97XNiyi2G+DpvEIRQuHp9fpfQexrW9G1rYFnIYC2RTCBcEJF3SAhYgUc2v5+5YntmLlVBxpMDTff70UwlGgKOxOMG82iqmOdDKPoliwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enfabrica.net; spf=pass smtp.mailfrom=enfabrica.net; dkim=pass (2048-bit key) header.d=enfabrica.net header.i=@enfabrica.net header.b=OLuAGBKn; arc=none smtp.client-ip=209.85.222.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enfabrica.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enfabrica.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=enfabrica.net header.i=@enfabrica.net header.b="iHOUfJy/"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6e8f6970326so9491066d6.0
-        for <netdev@vger.kernel.org>; Thu, 06 Mar 2025 15:04:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=enfabrica.net header.i=@enfabrica.net header.b="OLuAGBKn"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7c0848d475cso162890385a.2
+        for <netdev@vger.kernel.org>; Thu, 06 Mar 2025 15:04:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=enfabrica.net; s=google; t=1741302247; x=1741907047; darn=vger.kernel.org;
+        d=enfabrica.net; s=google; t=1741302251; x=1741907051; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GYVU6L/OlKky7XJzEMEAkcQ6curT0ppBzRueik5Aobo=;
-        b=iHOUfJy/w8cClRd/mG90zhN+RBiD27j8q26YQthuYv+9a4rAG/4noIwAVuHABeMALs
-         E9hvNiDulnDkvltWPcurZUeFaxxJtNWG8gwcWkkHmc9k/yK2S2Qehj7f6QC1S20KQ4QZ
-         0YNTIh2xqXelBajYM5fZhQVmbCiHA93LBNe0vEbChqqPqmCS1CZJZBj13bUKuaShB8Q/
-         /I9rwzdn+ZJ4sHJlfSULJXP/mPtMx0rCFC8Tz7SoLz36O7v750kb7UfiEeT+JEamytmr
-         k3W3Gf5zz517juZlfha4XSXnI+Ubd7DBwBYa5eE8dPBO2EZyD0GZLHOoL1qgRhVC/ZTO
-         qqZg==
+        bh=VgZ4DFZe+wGVy1zx5dFgA68nl8KtUw/hz4M7r+ARKDs=;
+        b=OLuAGBKnLvF5HZndx8lEW2hZJ+JinMNoiC8O8CXR9DtroLCij4q2UNdqhXaWFE2z9F
+         9wp5ua5Y8d/UzUWGhWnKttD0lBRtLiymm5vFf6c/phDyGMl3WmkwrAvn+580WFEb7Kvj
+         coMdHoAe96JImzffzYuc9RCxa4ROBfCXJXuPnUubbgg6PajwKgtJZSOzSAl4OCa18Jla
+         eZdyJ9YO1vKbyvr5LBqZhetLGfEItekccLIYYuFtunhgrnOy5ORr2Dh8JB80fCVSdnws
+         Fvk3gU33P9el2BpJKA2EJNBhVjTi871gAmtz1l5zNDG2KREoHj/SEgTo4f4tsDYvVNBf
+         JQLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741302247; x=1741907047;
+        d=1e100.net; s=20230601; t=1741302251; x=1741907051;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GYVU6L/OlKky7XJzEMEAkcQ6curT0ppBzRueik5Aobo=;
-        b=dERHG42ojXXzkZa9jr+5sv6JREAKfGcfOJ3bNMB+j3efWRklqI0HDwMUHOm5p1gUnX
-         9cuugf4ANe3jHiUjtBUw5wnr8PjQhLmhXoRM3R4ok2YcSQLRqgjRe0ifVycJkAxRUopW
-         p21j5STElkZmRdeUaw+6b2yeC+WlLfuN/j7zszbUlvJrFHsN1ptJIm6Wui0x1LFclFhM
-         1COvRIcRTaj/bC75J95c7aXWbZ4txfE5lO7Hfnv6zhSoVKYnzLcdKi2v4thfU7b5SDHg
-         DOzEzUgAHp0uw74CrKrnHkKY8idszDnaHMc5Z2vmYCQ3gQJxmFasNv7l2a0nV6AbIefd
-         y97A==
-X-Gm-Message-State: AOJu0YxO2zumopwRxYcs0y+ZWOuVwZcIEmxvhxd0cOE7FnmsnF63AMzR
-	DoBnijIj1h5izgrn84JKjVDqxcXw07SbXMC1co9eKMu8L0risUnFwj2JccuiGIxEb/OdV3iJ3va
-	49NjLZGXDKouTQ3y2GyIBVm3jBDDWypQyzy6xyJBVWRjwD2zIf9ctmc6co+AAAWzdG8WbFXIZ5V
-	+CCW+WOel0Wsdv3LiVXN4qe3T7pMcnOzKNwYGQ/rkuJhQ=
-X-Gm-Gg: ASbGncvNscQ4E5thdZeeD0i/E0MJtHYhqdFkfNtVda+clihN+ejBSjre28BsyrZUmCQ
-	EccKdF8zM65shzvykky1mt+nUQxAOI9Mr5ACx/ujWpZenYBBUussSA/+kuA+iu+q7eIcrGWc5Ka
-	I7VZiY43rNlM/A+Jw/oMRLeGV6BPyEmT37LVzxrKJQUfyLKWzD3mIgm7AsYxHBgwEGfHHlQnnt3
-	Z1qHCoXibr8Fg7W1p/YGd8CPwnjcN15cqb/pyn46zJQQ3Il2QZdQM5yMqpJTsIXv88IBBzml4B5
-	IVKT3f7OHGM4tkrLBMUuAH0XildfR7FcGxF92ki75kGKPkXtJG3E4Fc3O5zcCDt+9GE/
-X-Google-Smtp-Source: AGHT+IEtncuowmhdYM7QMeqyKKQ2lcV0+26jElV9BIp23ZCGTdI3+CIK1QRj81WnI/qAY2PW8pDtow==
-X-Received: by 2002:ad4:5cca:0:b0:6e8:f4c6:681a with SMTP id 6a1803df08f44-6e9005dc3eemr9045006d6.12.1741302247411;
-        Thu, 06 Mar 2025 15:04:07 -0800 (PST)
+        bh=VgZ4DFZe+wGVy1zx5dFgA68nl8KtUw/hz4M7r+ARKDs=;
+        b=d+BPlPgiB2gWDDd6PeV7PC8+D9RqmEdt8FI5aGxTDAAfU80VdUxqtjG2zLIGeSTnxE
+         ZomT9S7hPNA9jXl3x0DchhFLdXXFPgeqr53F0s/pLdJUheBqnWYWGwm/7owr9LzEJ8dK
+         Ne90iReyNEVsJqsi0r12Zl/ewL7BlpkxWkhtwnSZgXpNr5MBtIPwuOOeB3U7l3NUQU12
+         lxq3jem/8e4i8iWHAZ0RmhksX8AK11UGdw0/NDvvlLv1KiLwGvq2Hi/wrxOPsKwHpazO
+         l7LS5JR9oiZ9G01ziN8dX5GPU0cHsuTSk6xlqMREy4zsbCzoE/9R7wpgEyZTJg5Y7prY
+         4ALg==
+X-Gm-Message-State: AOJu0YwtqvlX4CCX7xwuUkxfbyN00CeDtHplmjTJjSMsoqSw/u8Jk0cK
+	MQovK7rxDKOyZR9Nyj+pMJ0dxW7j6TnNrw2U8cpNnhJCQgR7xsFvgeIlWx4AEGLYMKd+MNHgH2h
+	CTHsGmoJZGRDAoaWbQo3/8iP6LOHRB2qgrhBxSJBaiXtqfHhQ9RQupUcbPk7EbGv2rAUyCnu8fX
+	F5df4awDLDhXrNmEfOR9sd1pfDZS+icJ/HsRftWzdKCcA=
+X-Gm-Gg: ASbGncu/Wkn21VYLWBtkHirHZGQYtprOGX1lx3q2EEryvX9ew/iPs8JOSRDEddEQRKQ
+	RsSE7lwVE/aTa8nGi+FGGpsQDeDjVmeFfl4t5ZrlBUzxATEeysA5PFmVuVTolXTPa/HBOexOq+Z
+	RrdfVyKGfR5l9VeVJRvPw9OA/u4D0H1IvA57yBmvfllFEq6sSs6u1j6Mq0PkVjgSb8pGtaR8CIv
+	Ba+h37TlZ55V8hx1gowiwUM5GflAKkUOgus1mE8YQhEHsed62Pd8bixTy8t42w2/qf63J1iI+9k
+	krZnX1kOT9k72lG+EMxmC9/GdNL/GqFsjKh3oAk8ne7Pu9k21b3uzf9I0xux3w5boW3O
+X-Google-Smtp-Source: AGHT+IGDKzMhLR7rEwsrTBkYDLjqgXRmC31T7+OmoHH6gaVPQotofQSXrIgpAMXNLZ3UQ8KdA7oiYw==
+X-Received: by 2002:a05:620a:2722:b0:7c3:c3bb:2538 with SMTP id af79cd13be357-7c4e168c612mr159148085a.14.1741302251145;
+        Thu, 06 Mar 2025 15:04:11 -0800 (PST)
 Received: from debil.. (78-154-15-142.ip.btc-net.bg. [78.154.15.142])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac256654fa6sm14971966b.93.2025.03.06.15.04.05
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac256654fa6sm14971966b.93.2025.03.06.15.04.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 15:04:06 -0800 (PST)
+        Thu, 06 Mar 2025 15:04:10 -0800 (PST)
 From: Nikolay Aleksandrov <nikolay@enfabrica.net>
 To: netdev@vger.kernel.org
 Cc: shrijeet@enfabrica.net,
@@ -81,9 +81,9 @@ Cc: shrijeet@enfabrica.net,
 	linux-rdma@vger.kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com
-Subject: [RFC PATCH 05/13] drivers: ultraeth: add tunnel udp device support
-Date: Fri,  7 Mar 2025 01:01:55 +0200
-Message-ID: <20250306230203.1550314-6-nikolay@enfabrica.net>
+Subject: [RFC PATCH 07/13] drivers: ultraeth: add request and ack receive support
+Date: Fri,  7 Mar 2025 01:01:57 +0200
+Message-ID: <20250306230203.1550314-8-nikolay@enfabrica.net>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250306230203.1550314-1-nikolay@enfabrica.net>
 References: <20250306230203.1550314-1-nikolay@enfabrica.net>
@@ -95,588 +95,553 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add UE UDP tunnel device (uecon) which is created for each context. It will
-be used to transmit and receive UE packets. Currently all packets are
-dropped. A default port of 5432 will be used at context creation. It can be
-changed at runtime when the net device is down.
+Add support for receiving request and ack packets. A PDC is automatically
+created if a request with SYN flag is received. If all is well with the
+request and it passes all validations, we automatically return an ack.
+Currently RUD (unordered) type of request is expected. The receive
+and ack packet sequence numbers are tracked via bitmaps.
 
 Signed-off-by: Nikolay Aleksandrov <nikolay@enfabrica.net>
 Signed-off-by: Alex Badea <alex.badea@keysight.com>
 ---
- Documentation/netlink/specs/rt_link.yaml  |  14 +
- Documentation/netlink/specs/ultraeth.yaml |   6 +
- drivers/ultraeth/Makefile                 |   3 +-
- drivers/ultraeth/uecon.c                  | 311 ++++++++++++++++++++++
- drivers/ultraeth/uet_context.c            |  12 +-
- drivers/ultraeth/uet_main.c               |  19 +-
- include/net/ultraeth/uecon.h              |  28 ++
- include/net/ultraeth/uet_context.h        |   2 +-
- include/uapi/linux/if_link.h              |   8 +
- include/uapi/linux/ultraeth.h             |   1 +
- include/uapi/linux/ultraeth_nl.h          |   2 +
- 11 files changed, 402 insertions(+), 4 deletions(-)
- create mode 100644 drivers/ultraeth/uecon.c
- create mode 100644 include/net/ultraeth/uecon.h
+ drivers/ultraeth/uet_pdc.c     | 285 +++++++++++++++++++++++++++++++++
+ drivers/ultraeth/uet_pds.c     | 137 +++++++++++++++-
+ include/net/ultraeth/uet_pdc.h |  38 +++++
+ 3 files changed, 458 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/netlink/specs/rt_link.yaml b/Documentation/netlink/specs/rt_link.yaml
-index 31238455f8e9..747231b1fd6d 100644
---- a/Documentation/netlink/specs/rt_link.yaml
-+++ b/Documentation/netlink/specs/rt_link.yaml
-@@ -2272,6 +2272,17 @@ attribute-sets:
-       -
-         name: tailroom
-         type: u16
-+  -
-+    name: linkinfo-uecon-attrs
-+    name-prefix: ifla-uecon-
-+    attributes:
-+      -
-+        name: context-id
-+        type: u32
-+      -
-+        name: port
-+        type: u16
-+        byte-order: big-endian
+diff --git a/drivers/ultraeth/uet_pdc.c b/drivers/ultraeth/uet_pdc.c
+index 47cf4c3dee04..a0352a925329 100644
+--- a/drivers/ultraeth/uet_pdc.c
++++ b/drivers/ultraeth/uet_pdc.c
+@@ -6,6 +6,19 @@
+ #include <net/ultraeth/uet_context.h>
+ #include <net/ultraeth/uet_pdc.h>
  
- sub-messages:
-   -
-@@ -2322,6 +2333,9 @@ sub-messages:
-       -
-         value: netkit
-         attribute-set: linkinfo-netkit-attrs
-+      -
-+        value: uecon
-+        attribute-set: linkinfo-uecon-attrs
-   -
-     name: linkinfo-member-data-msg
-     formats:
-diff --git a/Documentation/netlink/specs/ultraeth.yaml b/Documentation/netlink/specs/ultraeth.yaml
-index e95c73a36892..847f748efa52 100644
---- a/Documentation/netlink/specs/ultraeth.yaml
-+++ b/Documentation/netlink/specs/ultraeth.yaml
-@@ -16,6 +16,12 @@ attribute-sets:
-         checks:
-           min: 0
-           max: 255
-+      -
-+        name: netdev-ifindex
-+        type: s32
-+      -
-+        name: netdev-name
-+        type: string
-   -
-     name: contexts
-     attributes:
-diff --git a/drivers/ultraeth/Makefile b/drivers/ultraeth/Makefile
-index bf41a62273f9..0035023876ab 100644
---- a/drivers/ultraeth/Makefile
-+++ b/drivers/ultraeth/Makefile
-@@ -1,3 +1,4 @@
- obj-$(CONFIG_ULTRAETH) += ultraeth.o
++static void uet_pdc_xmit(struct uet_pdc *pdc, struct sk_buff *skb)
++{
++	skb->dev = pds_netdev(pdc->pds);
++
++	if (!dst_hold_safe(&pdc->metadata->dst)) {
++		kfree_skb(skb);
++		return;
++	}
++
++	skb_dst_set(skb, &pdc->metadata->dst);
++	dev_queue_xmit(skb);
++}
++
+ /* use the approach as nf nat, try a few rounds starting at random offset */
+ static bool uet_pdc_id_get(struct uet_pdc *pdc)
+ {
+@@ -67,6 +80,12 @@ struct uet_pdc *uet_pdc_create(struct uet_pds *pds, u32 rx_base_psn, u8 state,
+ 	pdc->state = state;
+ 	pdc->dpdcid = dpdcid;
+ 	pdc->pid_on_fep = pid_on_fep;
++	pdc->rx_bitmap = bitmap_zalloc(UET_PDC_MPR, GFP_ATOMIC);
++	if (!pdc->rx_bitmap)
++		goto err_rx_bitmap;
++	pdc->ack_bitmap = bitmap_zalloc(UET_PDC_MPR, GFP_ATOMIC);
++	if (!pdc->ack_bitmap)
++		goto err_ack_bitmap;
+ 	pdc->metadata = __ip_tun_set_dst(key->src_ip, key->dst_ip, tos, 0, dport,
+ 					 md_flags, 0, 0);
+ 	if (!pdc->metadata)
+@@ -103,6 +122,10 @@ struct uet_pdc *uet_pdc_create(struct uet_pds *pds, u32 rx_base_psn, u8 state,
+ err_ep_insert:
+ 	dst_release(&pdc->metadata->dst);
+ err_tun_dst:
++	bitmap_free(pdc->ack_bitmap);
++err_ack_bitmap:
++	bitmap_free(pdc->rx_bitmap);
++err_rx_bitmap:
+ 	uet_pds_pdcid_remove(pdc);
+ err_id_get:
+ 	kfree(pdc);
+@@ -113,6 +136,8 @@ struct uet_pdc *uet_pdc_create(struct uet_pds *pds, u32 rx_base_psn, u8 state,
+ void uet_pdc_free(struct uet_pdc *pdc)
+ {
+ 	dst_release(&pdc->metadata->dst);
++	bitmap_free(pdc->ack_bitmap);
++	bitmap_free(pdc->rx_bitmap);
+ 	kfree(pdc);
+ }
  
--ultraeth-objs := uet_main.o uet_context.o uet_netlink.o uet_job.o
-+ultraeth-objs := uet_main.o uet_context.o uet_netlink.o uet_job.o \
-+			uecon.o
-diff --git a/drivers/ultraeth/uecon.c b/drivers/ultraeth/uecon.c
-new file mode 100644
-index 000000000000..4b74680700af
---- /dev/null
-+++ b/drivers/ultraeth/uecon.c
-@@ -0,0 +1,311 @@
-+// SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
+@@ -122,3 +147,263 @@ void uet_pdc_destroy(struct uet_pdc *pdc)
+ 	uet_pds_pdcid_remove(pdc);
+ 	uet_pds_pdc_gc_queue(pdc);
+ }
 +
-+#include <linux/etherdevice.h>
-+#include <linux/if_link.h>
-+#include <net/ipv6_stubs.h>
-+#include <net/dst_metadata.h>
-+#include <net/rtnetlink.h>
-+#include <net/gro.h>
-+#include <net/udp_tunnel.h>
-+#include <net/ultraeth/uecon.h>
-+#include <net/ultraeth/uet_context.h>
-+
-+static const struct nla_policy uecon_ndev_policy[IFLA_UECON_MAX + 1] = {
-+	[IFLA_UECON_CONTEXT_ID]	= { .type = NLA_REJECT,
-+				    .reject_message = "Domain id attribute is read-only" },
-+	[IFLA_UECON_PORT]	= { .type = NLA_BE16 },
-+};
-+
-+static netdev_tx_t uecon_ndev_xmit(struct sk_buff *skb, struct net_device *dev)
++static void pdc_build_ack(struct uet_pdc *pdc, struct sk_buff *skb, u32 psn,
++			  u8 ack_flags, bool exact_psn)
 +{
-+	struct uecon_ndev_priv *uecpriv = netdev_priv(dev);
-+	struct ip_tunnel_info *info;
-+	int err, min_headroom;
-+	struct socket *sock;
-+	struct rtable *rt;
-+	bool use_cache;
-+	__be32 saddr;
-+	__be16 sport;
++	struct uet_pds_ack_hdr *ack = skb_put(skb, sizeof(*ack));
 +
-+	rcu_read_lock();
-+	sock = rcu_dereference(uecpriv->sock);
-+	if (!sock)
-+		goto out_err;
-+	info = skb_tunnel_info(skb);
-+	if (!info)
-+		goto out_err;
-+	use_cache = ip_tunnel_dst_cache_usable(skb, info);
-+	sport = uecpriv->udp_port;
-+	rt = udp_tunnel_dst_lookup(skb, dev, dev_net(dev), 0, &saddr,
-+				   &info->key, sport,
-+				   info->key.tp_dst, info->key.tos,
-+				   use_cache ? &info->dst_cache : NULL);
-+	if (IS_ERR(rt)) {
-+		if (PTR_ERR(rt) == -ELOOP)
-+			dev->stats.collisions++;
-+		else if (PTR_ERR(rt) == -ENETUNREACH)
-+			dev->stats.tx_carrier_errors++;
++	uet_pdc_build_prologue(&ack->prologue, UET_PDS_TYPE_ACK,
++			       UET_PDS_NEXT_HDR_RSP, ack_flags);
++	if (exact_psn) {
++		ack->ack_psn_offset = 0;
++		ack->cack_psn = cpu_to_be32(psn);
++	} else {
++		ack->ack_psn_offset = cpu_to_be16(psn - pdc->rx_base_psn);
++		ack->cack_psn = cpu_to_be32(pdc->rx_base_psn);
++	}
++	ack->spdcid = cpu_to_be16(pdc->spdcid);
++	ack->dpdcid = cpu_to_be16(pdc->dpdcid);
++}
 +
-+		goto out_err;
++static void uet_pdc_build_ses_ack(struct uet_pdc *pdc, struct sk_buff *skb,
++				  __u8 ses_rc, __be16 msg_id, u32 psn,
++				  u8 ack_flags, bool exact_psn)
++{
++	struct uet_ses_rsp_hdr *ses_rsp;
++	__be16 packed;
++
++	pdc_build_ack(pdc, skb, psn, ack_flags, exact_psn);
++	ses_rsp = skb_put(skb, sizeof(*ses_rsp));
++	memset(ses_rsp, 0, sizeof(*ses_rsp));
++	packed = pds_ses_rsp_hdr_pack(UET_SES_RSP_OP_RESPONSE, 0,
++				      UET_SES_RSP_LIST_EXPECTED, ses_rc);
++	ses_rsp->lst_opcode_ver_rc = packed;
++	ses_rsp->idx_gen_job_id = cpu_to_be32(pdc->key.job_id);
++	ses_rsp->msg_id = msg_id;
++}
++
++static int uet_pdc_send_ses_ack(struct uet_pdc *pdc, __u8 ses_rc, __be16 msg_id,
++				u32 psn, u8 ack_flags, bool exact_psn)
++{
++	struct sk_buff *skb;
++
++	skb = alloc_skb(sizeof(struct uet_ses_rsp_hdr) +
++			sizeof(struct uet_pds_ack_hdr), GFP_ATOMIC);
++	if (!skb)
++		return -ENOBUFS;
++
++	uet_pdc_build_ses_ack(pdc, skb, ses_rc, msg_id, psn, ack_flags,
++			      exact_psn);
++	uet_pdc_xmit(pdc, skb);
++
++	return 0;
++}
++
++static void uet_pdc_mpr_advance_tx(struct uet_pdc *pdc, u32 bits)
++{
++	if (!test_bit(0, pdc->ack_bitmap))
++		return;
++
++	bitmap_shift_right(pdc->ack_bitmap, pdc->ack_bitmap, bits, UET_PDC_MPR);
++	pdc->tx_base_psn += bits;
++	netdev_dbg(pds_netdev(pdc->pds), "%s: advancing tx to %u\n", __func__,
++		   pdc->tx_base_psn);
++}
++
++int uet_pdc_rx_ack(struct uet_pdc *pdc, struct sk_buff *skb,
++		   __be32 remote_fep_addr)
++{
++	struct uet_ses_rsp_hdr *ses_rsp = pds_ack_ses_rsp_hdr(skb);
++	struct uet_pds_ack_hdr *ack = pds_ack_hdr(skb);
++	s16 ack_psn_offset = be16_to_cpu(ack->ack_psn_offset);
++	const char *drop_reason = "ack_psn not in MPR window";
++	u32 cack_psn = be32_to_cpu(ack->cack_psn);
++	u32 ack_psn = cack_psn + ack_psn_offset;
++	int ret = -EINVAL;
++	u32 psn_bit;
++
++	spin_lock(&pdc->lock);
++	netdev_dbg(pds_netdev(pdc->pds), "%s: tx_busy: %u pdc: [ tx_base_psn: %u"
++				  " state: %u dpdcid: %u spdcid: %u ]\n"
++				  "ses: [ msg id: %u cack_psn: %u spdcid: %u"
++				  " dpdcid: %u ack_psn: %u ]\n",
++		   __func__, pdc->tx_busy, pdc->tx_base_psn,
++		   pdc->state, pdc->dpdcid, pdc->spdcid,
++		   be16_to_cpu(ses_rsp->msg_id), be32_to_cpu(ack->cack_psn),
++		   be16_to_cpu(ack->spdcid), be16_to_cpu(ack->dpdcid), ack_psn);
++
++	if (psn_mpr_pos(pdc->tx_base_psn, ack_psn) != UET_PDC_MPR_CUR)
++		goto err_dbg;
++
++	psn_bit = ack_psn - pdc->tx_base_psn;
++	if (!psn_bit_valid(psn_bit)) {
++		drop_reason = "ack_psn bit is invalid";
++		goto err_dbg;
++	}
++	if (test_and_set_bit(psn_bit, pdc->ack_bitmap)) {
++		drop_reason = "ack_psn bit already set in ack_bitmap";
++		goto err_dbg;
 +	}
 +
-+	skb_tunnel_check_pmtu(skb, &rt->dst,
-+			      sizeof(struct iphdr) + sizeof(struct udphdr),
-+			      false);
-+	skb_scrub_packet(skb, false);
++	/* either using ROD mode or in SYN_SENT state */
++	if (pdc->tx_busy)
++		pdc->tx_busy = false;
++	/* we can advance only if the oldest pkt got acked */
++	if (!psn_bit)
++		uet_pdc_mpr_advance_tx(pdc, 1);
 +
-+	min_headroom = LL_RESERVED_SPACE(rt->dst.dev) + rt->dst.header_len +
-+		       sizeof(struct iphdr) + sizeof(struct udphdr);
-+	err = skb_cow_head(skb, min_headroom);
-+	if (unlikely(err)) {
-+		dst_release(&rt->dst);
-+		goto out_err;
++	ret = 0;
++	switch (pdc->state) {
++	case UET_PDC_EP_STATE_SYN_SENT:
++	case UET_PDC_EP_STATE_NEW_ESTABLISHED:
++		pdc->dpdcid = be16_to_cpu(ack->spdcid);
++		pdc->state = UET_PDC_EP_STATE_ESTABLISHED;
++		fallthrough;
++	case UET_PDC_EP_STATE_ESTABLISHED:
++		ret = uet_job_fep_queue_skb(pds_context(pdc->pds),
++					    uet_ses_rsp_job_id(ses_rsp), skb,
++					    remote_fep_addr);
++		break;
++	case UET_PDC_EP_STATE_ACK_WAIT:
++		break;
++	case UET_PDC_EP_STATE_CLOSE_ACK_WAIT:
++		break;
 +	}
 +
-+	err = udp_tunnel_handle_offloads(skb, false);
-+	if (err) {
-+		dst_release(&rt->dst);
-+		goto out_err;
-+	}
-+
-+	skb_reset_mac_header(skb);
-+	skb_set_inner_protocol(skb, skb->protocol);
-+
-+	udp_tunnel_xmit_skb(rt, sock->sk, skb, saddr,
-+			    info->key.u.ipv4.dst, info->key.tos,
-+			    ip4_dst_hoplimit(&rt->dst), 0,
-+			    sport, info->key.tp_dst,
-+			    false, false);
-+	rcu_read_unlock();
-+
-+	return NETDEV_TX_OK;
-+
-+out_err:
-+	rcu_read_unlock();
-+	dev_kfree_skb(skb);
-+	dev->stats.tx_errors++;
-+
-+	return NETDEV_TX_OK;
-+}
-+
-+static int uecon_ndev_encap_recv(struct sock *sk, struct sk_buff *skb)
-+{
-+	struct uecon_ndev_priv *uecpriv;
-+	int len;
-+
-+	uecpriv = rcu_dereference_sk_user_data(sk);
-+	if (!uecpriv)
-+		goto drop;
-+
-+	if (skb->protocol != htons(ETH_P_IP))
-+		goto drop;
-+
-+	/* we assume [ tnl ip hdr ] [ tnl udp hdr ] [ pdc hdr ] [ ses hdr ] */
-+	if (iptunnel_pull_header(skb, sizeof(struct udphdr), htons(ETH_P_802_3), false))
-+		goto drop_count;
-+
-+	skb_reset_mac_header(skb);
-+	skb_reset_network_header(skb);
-+	skb->pkt_type = PACKET_HOST;
-+	skb->dev = uecpriv->dev;
-+	len = skb->len;
-+	consume_skb(skb);
-+	dev_sw_netstats_rx_add(uecpriv->dev, len);
-+
-+	return 0;
-+
-+drop_count:
-+	dev_core_stats_rx_dropped_inc(uecpriv->dev);
-+drop:
-+	kfree_skb(skb);
-+	return 0;
-+}
-+
-+static int uecon_ndev_err_lookup(struct sock *sk, struct sk_buff *skb)
-+{
-+	return 0;
-+}
-+
-+static struct socket *uecon_ndev_create_sock(struct net_device *dev)
-+{
-+	struct uecon_ndev_priv *uecpriv = netdev_priv(dev);
-+	struct udp_port_cfg udp_conf;
-+	struct socket *sock;
-+	int err;
-+
-+	memset(&udp_conf, 0, sizeof(udp_conf));
-+	udp_conf.family = AF_INET;
-+	udp_conf.local_udp_port = uecpriv->udp_port;
-+	err = udp_sock_create(dev_net(dev), &udp_conf, &sock);
-+	if (err < 0)
-+		return ERR_PTR(err);
-+
-+	udp_allow_gso(sock->sk);
-+
-+	return sock;
-+}
-+
-+static int uecon_ndev_open(struct net_device *dev)
-+{
-+	struct uecon_ndev_priv *uecpriv = netdev_priv(dev);
-+	struct udp_tunnel_sock_cfg tunnel_cfg;
-+	struct socket *sock;
-+
-+	sock = uecon_ndev_create_sock(dev);
-+	if (IS_ERR(sock))
-+		return PTR_ERR(sock);
-+	memset(&tunnel_cfg, 0, sizeof(tunnel_cfg));
-+	tunnel_cfg.sk_user_data = uecpriv;
-+	tunnel_cfg.encap_type = 1;
-+	tunnel_cfg.encap_rcv = uecon_ndev_encap_recv;
-+	tunnel_cfg.encap_err_lookup = uecon_ndev_err_lookup;
-+	setup_udp_tunnel_sock(dev_net(dev), sock, &tunnel_cfg);
-+
-+	rcu_assign_pointer(uecpriv->sock, sock);
-+
-+	return 0;
-+}
-+
-+static int uecon_ndev_stop(struct net_device *dev)
-+{
-+	struct uecon_ndev_priv *uecpriv = netdev_priv(dev);
-+	struct socket *sock = rtnl_dereference(uecpriv->sock);
-+
-+	rcu_assign_pointer(uecpriv->sock, NULL);
-+	synchronize_rcu();
-+	udp_tunnel_sock_release(sock);
-+
-+	return 0;
-+}
-+
-+const struct net_device_ops uecon_netdev_ops = {
-+	.ndo_open		= uecon_ndev_open,
-+	.ndo_stop		= uecon_ndev_stop,
-+	.ndo_start_xmit		= uecon_ndev_xmit,
-+	.ndo_get_stats64	= dev_get_tstats64,
-+};
-+
-+static const struct device_type uecon_ndev_type = {
-+	.name = "uecon",
-+};
-+
-+static void uecon_ndev_setup(struct net_device *dev)
-+{
-+	struct uecon_ndev_priv *uecpriv = netdev_priv(dev);
-+
-+	dev->netdev_ops = &uecon_netdev_ops;
-+	SET_NETDEV_DEVTYPE(dev, &uecon_ndev_type);
-+
-+	dev->features |= NETIF_F_VLAN_CHALLENGED | NETIF_F_SG | NETIF_F_HW_CSUM;
-+	dev->features |= NETIF_F_FRAGLIST | NETIF_F_RXCSUM | NETIF_F_GSO_SOFTWARE;
-+
-+	dev->hw_features |= NETIF_F_SG | NETIF_F_HW_CSUM | NETIF_F_FRAGLIST;
-+	dev->hw_features |= NETIF_F_RXCSUM | NETIF_F_GSO_SOFTWARE;
-+
-+	dev->priv_flags |= IFF_NO_QUEUE;
-+
-+	dev->flags = IFF_POINTOPOINT | IFF_NOARP | IFF_MULTICAST;
-+	dev->type = ARPHRD_NONE;
-+
-+	dev->min_mtu = IPV4_MIN_MTU;
-+	/* No header for the time being, account for it later */
-+	dev->max_mtu = IP_MAX_MTU;
-+	dev->mtu = ETH_DATA_LEN;
-+	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
-+
-+	netif_keep_dst(dev);
-+	uecpriv->dev = dev;
-+}
-+
-+static int uecon_ndev_changelink(struct net_device *dev, struct nlattr *tb[],
-+				 struct nlattr *data[],
-+				 struct netlink_ext_ack *extack)
-+{
-+	if (dev->flags & IFF_UP) {
-+		NL_SET_ERR_MSG_MOD(extack, "Cannot change uecon settings while the device is up");
-+		return -EBUSY;
-+	}
-+
-+	if (tb[IFLA_UECON_PORT]) {
-+		struct uecon_ndev_priv *uecpriv = netdev_priv(dev);
-+
-+		uecpriv->udp_port = nla_get_be16(tb[IFLA_UECON_PORT]);
-+	}
-+
-+	return 0;
-+}
-+
-+static size_t uecon_ndev_get_size(const struct net_device *dev)
-+{
-+	return nla_total_size(sizeof(__u32))  + /* IFLA_UECON_CONTEXT_ID */
-+	       nla_total_size(sizeof(__be16)) + /* IFLA_UECON_PORT */
-+	       0;
-+}
-+
-+static int uecon_ndev_fill_info(struct sk_buff *skb, const struct net_device *dev)
-+{
-+	struct uecon_ndev_priv *uecpriv = netdev_priv(dev);
-+
-+	if (nla_put_u32(skb, IFLA_UECON_CONTEXT_ID, uecpriv->context->id) ||
-+	    nla_put_be16(skb, IFLA_UECON_PORT, uecpriv->udp_port))
-+		return -EMSGSIZE;
-+
-+	return 0;
-+}
-+
-+static struct rtnl_link_ops uecon_netdev_link_ops __read_mostly = {
-+	.kind		= "uecon",
-+	.priv_size	= sizeof(struct uecon_ndev_priv),
-+	.setup		= uecon_ndev_setup,
-+	.get_size	= uecon_ndev_get_size,
-+	.fill_info	= uecon_ndev_fill_info,
-+	.changelink	= uecon_ndev_changelink,
-+	.policy		= uecon_ndev_policy,
-+	.maxtype	= IFLA_UECON_MAX
-+};
-+
-+int uecon_netdev_init(struct uet_context *ctx)
-+{
-+	struct net *net = current->nsproxy->net_ns;
-+	struct uecon_ndev_priv *priv;
-+	char ifname[IFNAMSIZ];
-+	int ret;
-+
-+	snprintf(ifname, IFNAMSIZ, "uecon%d", ctx->id);
-+	ctx->netdev = alloc_netdev(sizeof(struct uecon_ndev_priv), ifname,
-+				   NET_NAME_PREDICTABLE, uecon_ndev_setup);
-+	if (!ctx->netdev)
-+		return -ENOMEM;
-+	priv = netdev_priv(ctx->netdev);
-+
-+	priv->context = ctx;
-+	priv->dev = ctx->netdev;
-+	priv->udp_port = htons(UECON_DEFAULT_PORT);
-+	ctx->netdev->rtnl_link_ops = &uecon_netdev_link_ops;
-+	dev_net_set(ctx->netdev, net);
-+
-+	ret = register_netdev(ctx->netdev);
-+	if (ret) {
-+		free_netdev(ctx->netdev);
-+		ctx->netdev = NULL;
-+	}
++out:
++	spin_unlock(&pdc->lock);
 +
 +	return ret;
++err_dbg:
++	netdev_dbg(pds_netdev(pdc->pds), "%s: drop reason: [ %s ]\n"
++				  "pdc: [ tx_base_psn: %u state: %u"
++				  " dpdcid: %u spdcid: %u ]\n"
++				  "ses: [ msg id: %u cack_psn: %u spdcid: %u"
++				  " dpdcid: %u ack_psn: %u ]\n",
++		  __func__, drop_reason, pdc->tx_base_psn,
++		  pdc->state, pdc->dpdcid, pdc->spdcid,
++		  be16_to_cpu(ses_rsp->msg_id), be32_to_cpu(ack->cack_psn),
++		  be16_to_cpu(ack->spdcid), be16_to_cpu(ack->dpdcid), ack_psn);
++	goto out;
 +}
 +
-+void uecon_netdev_uninit(struct uet_context *ctx)
++static void uet_pdc_mpr_advance_rx(struct uet_pdc *pdc)
 +{
-+	unregister_netdev(ctx->netdev);
-+	free_netdev(ctx->netdev);
-+	ctx->netdev = NULL;
++	if (!test_bit(0, pdc->rx_bitmap))
++		return;
++
++	bitmap_shift_right(pdc->rx_bitmap, pdc->rx_bitmap, 1, UET_PDC_MPR);
++	pdc->rx_base_psn++;
++	netdev_dbg(pds_netdev(pdc->pds), "%s: advancing rx to %u\n",
++		   __func__, pdc->rx_base_psn);
 +}
 +
-+int uecon_rtnl_link_register(void)
++int uet_pdc_rx_req(struct uet_pdc *pdc, struct sk_buff *skb,
++		   __be32 remote_fep_addr, __u8 tos)
 +{
-+	return rtnl_link_register(&uecon_netdev_link_ops);
++	struct uet_ses_req_hdr *ses_req = pds_req_ses_req_hdr(skb);
++	struct uet_pds_req_hdr *req = pds_req_hdr(skb);
++	u8 req_flags = uet_prologue_flags(&req->prologue), ack_flags = 0;
++	u32 req_psn = be32_to_cpu(req->psn);
++	const char *drop_reason = "tx_busy";
++	unsigned long psn_bit;
++	enum mpr_pos psn_pos;
++	int ret = -EINVAL;
++
++	spin_lock(&pdc->lock);
++	netdev_dbg(pds_netdev(pdc->pds), "%s: tx_busy: %u pdc: [ tx_base_psn: %u"
++				  " state: %u dpdcid: %u spdcid: %u ]\n"
++				  "req: [ psn: %u spdcid: %u dpdcid: %u prologue flags: 0x%x ]\n"
++				  "ses_req: [ opcode: %u msg id: %u job id: %u "
++				  "pid_on_fep: %u flags: 0x%x ]\n",
++		   __func__, pdc->tx_busy, pdc->tx_base_psn,
++		   pdc->state, pdc->dpdcid, pdc->spdcid,
++		   req_psn, be16_to_cpu(req->spdcid), be16_to_cpu(req->dpdcid),
++		   uet_prologue_flags(&req->prologue),
++		   uet_ses_req_opcode(ses_req), be16_to_cpu(ses_req->msg_id),
++		   uet_ses_req_job_id(ses_req), uet_ses_req_pid_on_fep(ses_req),
++		   uet_ses_req_flags(ses_req));
++
++	if (unlikely(pdc->tx_busy))
++		goto err_dbg;
++
++	if (req_flags & UET_PDS_REQ_FLAG_RETX)
++		ack_flags |= UET_PDS_ACK_FLAG_RETX;
++	if (INET_ECN_is_ce(tos))
++		ack_flags |= UET_PDS_ACK_FLAG_M;
++	psn_pos = psn_mpr_pos(pdc->rx_base_psn, req_psn);
++	switch (psn_pos) {
++	case UET_PDC_MPR_FUTURE:
++		drop_reason = "req psn is in a future MPR window";
++		goto err_dbg;
++	case UET_PDC_MPR_PREV:
++		if ((int)(req_psn - pdc->rx_base_psn) < S16_MIN) {
++			drop_reason = "req psn is too far in the past";
++			goto err_dbg;
++		}
++		uet_pdc_send_ses_ack(pdc, UET_SES_RSP_RC_NULL, ses_req->msg_id,
++				     req_psn, ack_flags, true);
++		netdev_dbg(pds_netdev(pdc->pds), "%s: received a request in previous MPR window (psn %u)\n"
++					  "pdc: [ rx_base_psn: %u state: %u"
++					  " dpdcid: %u spdcid: %u ]\n",
++			   __func__, req_psn, pdc->rx_base_psn,
++			   pdc->state, pdc->dpdcid, pdc->spdcid);
++		goto out;
++	case UET_PDC_MPR_CUR:
++		break;
++	}
++
++	psn_bit = req_psn - pdc->rx_base_psn;
++	if (!psn_bit_valid(psn_bit)) {
++		drop_reason = "req psn bit is invalid";
++		goto err_dbg;
++	}
++	if (test_and_set_bit(psn_bit, pdc->rx_bitmap)) {
++		drop_reason = "req psn bit is already set in rx_bitmap";
++		goto err_dbg;
++	}
++
++	ret = 0;
++	switch (pdc->state) {
++	case UET_PDC_EP_STATE_SYN_SENT:
++		/* error */
++		break;
++	case UET_PDC_EP_STATE_ESTABLISHED:
++		/* Rx request and do an upcall, potentially return an ack */
++		ret = uet_job_fep_queue_skb(pds_context(pdc->pds),
++					    uet_ses_req_job_id(ses_req), skb,
++					    remote_fep_addr);
++		/* TODO: handle errors in sending the error */
++		/* TODO: more specific RC codes */
++		break;
++	case UET_PDC_EP_STATE_ACK_WAIT:
++		break;
++	case UET_PDC_EP_STATE_CLOSE_ACK_WAIT:
++		break;
++	}
++
++	if (ret >= 0)
++		uet_pdc_send_ses_ack(pdc, UET_SES_RSP_RC_NULL, ses_req->msg_id,
++				     req_psn, ack_flags, false);
++	/* TODO: NAK */
++
++	if (!psn_bit)
++		uet_pdc_mpr_advance_rx(pdc);
++
++out:
++	spin_unlock(&pdc->lock);
++
++	return ret;
++err_dbg:
++	netdev_dbg(pds_netdev(pdc->pds), "%s: drop reason: [ %s ]\n"
++				  "pdc: [ rx_base_psn: %u state: %u"
++				  " dpdcid: %u spdcid: %u ]\n"
++				  "ses_req: [ msg id: %u ack_psn: %u spdcid: %u"
++				  " dpdcid: %u ]\n",
++		  __func__, drop_reason, pdc->rx_base_psn,
++		  pdc->state, pdc->dpdcid, pdc->spdcid,
++		  be16_to_cpu(ses_req->msg_id), be32_to_cpu(req->psn),
++		  be16_to_cpu(req->spdcid), be16_to_cpu(req->dpdcid));
++	goto out;
 +}
-+
-+void uecon_rtnl_link_unregister(void)
-+{
-+	rtnl_link_unregister(&uecon_netdev_link_ops);
-+}
-diff --git a/drivers/ultraeth/uet_context.c b/drivers/ultraeth/uet_context.c
-index 3d738c02e992..e0d276cb1942 100644
---- a/drivers/ultraeth/uet_context.c
-+++ b/drivers/ultraeth/uet_context.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
- 
- #include <net/ultraeth/uet_context.h>
-+#include <net/ultraeth/uecon.h>
- #include "uet_netlink.h"
- 
- #define MAX_CONTEXT_ID 256
-@@ -106,10 +107,16 @@ int uet_context_create(int id)
- 	if (err)
- 		goto ctx_jobs_err;
- 
-+	err = uecon_netdev_init(ctx);
-+	if (err)
-+		goto ctx_netdev_err;
-+
- 	uet_context_link(ctx);
- 
- 	return 0;
- 
-+ctx_netdev_err:
-+	uet_jobs_uninit(&ctx->job_reg);
- ctx_jobs_err:
- 	uet_context_put_id(ctx);
- ctx_id_err:
-@@ -121,6 +128,7 @@ int uet_context_create(int id)
- static void __uet_context_destroy(struct uet_context *ctx)
- {
- 	uet_context_unlink(ctx);
-+	uecon_netdev_uninit(ctx);
- 	uet_jobs_uninit(&ctx->job_reg);
- 	uet_context_put_id(ctx);
- 	kfree(ctx);
-@@ -166,7 +174,9 @@ static int __nl_ctx_fill_one(struct sk_buff *skb,
- 	if (!hdr)
- 		return -EMSGSIZE;
- 
--	if (nla_put_s32(skb, ULTRAETH_A_CONTEXT_ID, ctx->id))
-+	if (nla_put_s32(skb, ULTRAETH_A_CONTEXT_ID, ctx->id) ||
-+	    nla_put_s32(skb, ULTRAETH_A_CONTEXT_NETDEV_IFINDEX, ctx->netdev->ifindex) ||
-+	    nla_put_string(skb, ULTRAETH_A_CONTEXT_NETDEV_NAME, ctx->netdev->name))
- 		goto out_err;
- 
- 	genlmsg_end(skb, hdr);
-diff --git a/drivers/ultraeth/uet_main.c b/drivers/ultraeth/uet_main.c
-index 0ec1dc74abbb..c37f65978ecf 100644
---- a/drivers/ultraeth/uet_main.c
-+++ b/drivers/ultraeth/uet_main.c
-@@ -4,18 +4,35 @@
- #include <linux/module.h>
- #include <linux/types.h>
- #include <net/ultraeth/uet_context.h>
-+#include <net/ultraeth/uecon.h>
- 
- #include "uet_netlink.h"
- 
- static int __init uet_init(void)
- {
--	return genl_register_family(&ultraeth_nl_family);
-+	int err;
-+
-+	err = genl_register_family(&ultraeth_nl_family);
-+	if (err)
-+		goto out_err;
-+
-+	err = uecon_rtnl_link_register();
-+	if (err)
-+		goto rtnl_link_err;
-+
-+	return 0;
-+
-+rtnl_link_err:
-+	genl_unregister_family(&ultraeth_nl_family);
-+out_err:
-+	return err;
+diff --git a/drivers/ultraeth/uet_pds.c b/drivers/ultraeth/uet_pds.c
+index 4aec61eeb230..abc576e5b6e7 100644
+--- a/drivers/ultraeth/uet_pds.c
++++ b/drivers/ultraeth/uet_pds.c
+@@ -149,11 +149,144 @@ void uet_pds_clean_job(struct uet_pds *pds, u32 job_id)
+ 	rhashtable_walk_exit(&iter);
  }
  
- static void __exit uet_exit(void)
++static int uet_pds_rx_ack(struct uet_pds *pds, struct sk_buff *skb,
++			  __be32 local_fep_addr, __be32 remote_fep_addr)
++{
++	struct uet_pds_req_hdr *pds_req = pds_req_hdr(skb);
++	u16 pdcid = be16_to_cpu(pds_req->dpdcid);
++	struct uet_pdc *pdc;
++
++	pdc = rhashtable_lookup_fast(&pds->pdcid_hash, &pdcid,
++				     uet_pds_pdcid_rht_params);
++	if (!pdc)
++		return -ENOENT;
++
++	return uet_pdc_rx_ack(pdc, skb, remote_fep_addr);
++}
++
++static struct uet_pdc *uet_pds_new_pdc_rx(struct uet_pds *pds,
++					  struct sk_buff *skb,
++					  __be16 dport,
++					  struct uet_pdc_key *key,
++					  u8 mode, u8 state)
++{
++	struct uet_ses_req_hdr *ses_req = pds_req_ses_req_hdr(skb);
++	struct uet_pds_req_hdr *req = pds_req_hdr(skb);
++
++	return uet_pdc_create(pds, be32_to_cpu(req->psn), state,
++			      be16_to_cpu(req->spdcid),
++			      uet_ses_req_pid_on_fep(ses_req),
++			      mode, 0, dport, key, true);
++}
++
++static int uet_pds_rx_req(struct uet_pds *pds, struct sk_buff *skb,
++			  __be32 local_fep_addr, __be32 remote_fep_addr,
++			  __be16 dport, __u8 tos)
++{
++	struct uet_ses_req_hdr *ses_req = pds_req_ses_req_hdr(skb);
++	struct uet_pds_req_hdr *pds_req = pds_req_hdr(skb);
++	u16 pdcid = be16_to_cpu(pds_req->dpdcid);
++	struct uet_pdc_key key = {};
++	struct uet_fep *fep;
++	struct uet_pdc *pdc;
++
++	key.src_ip = local_fep_addr;
++	key.dst_ip = remote_fep_addr;
++	key.job_id = uet_ses_req_job_id(ses_req);
++
++	pdc = rhashtable_lookup_fast(&pds->pdcid_hash, &pdcid,
++				     uet_pds_pdcid_rht_params);
++	/* new flow */
++	if (unlikely(!pdc)) {
++		struct uet_prologue_hdr *prologue = pds_prologue_hdr(skb);
++		struct uet_context *ctx;
++		struct uet_job *job;
++
++		if (!(uet_prologue_flags(prologue) & UET_PDS_REQ_FLAG_SYN))
++			return -EINVAL;
++
++		ctx = container_of(pds, struct uet_context, pds);
++		job = uet_job_find(&ctx->job_reg, key.job_id);
++		if (!job)
++			return -ENOENT;
++		fep = rcu_dereference(job->fep);
++		if (!fep)
++			return -ECONNREFUSED;
++		if (fep->addr.in_address.ip != local_fep_addr)
++			return -ENOENT;
++
++		pdc = uet_pds_new_pdc_rx(pds, skb, dport, &key,
++					 UET_PDC_MODE_RUD,
++					 UET_PDC_EP_STATE_NEW_ESTABLISHED);
++		if (IS_ERR(pdc))
++			return PTR_ERR(pdc);
++	}
++
++	return uet_pdc_rx_req(pdc, skb, remote_fep_addr, tos);
++}
++
++static bool uet_pds_rx_valid_req_next_hdr(const struct uet_prologue_hdr *prologue)
++{
++	switch (uet_prologue_next_hdr(prologue)) {
++	case UET_PDS_NEXT_HDR_REQ_STD:
++		break;
++	default:
++		return false;
++	}
++
++	return true;
++}
++
++static bool uet_pds_rx_valid_ack_next_hdr(const struct uet_prologue_hdr *prologue)
++{
++	switch (uet_prologue_next_hdr(prologue)) {
++	case UET_PDS_NEXT_HDR_RSP:
++	case UET_PDS_NEXT_HDR_RSP_DATA:
++	case UET_PDS_NEXT_HDR_RSP_DATA_SMALL:
++		break;
++	default:
++		return false;
++	}
++
++	return true;
++}
++
+ int uet_pds_rx(struct uet_pds *pds, struct sk_buff *skb, __be32 local_fep_addr,
+ 	       __be32 remote_fep_addr, __be16 dport, __u8 tos)
  {
- 	genl_unregister_family(&ultraeth_nl_family);
- 	uet_context_destroy_all();
-+	uecon_rtnl_link_unregister();
++	struct uet_prologue_hdr *prologue;
++	unsigned int offset = 0;
++	int ret = -EINVAL;
++
+ 	if (!pskb_may_pull(skb, sizeof(struct uet_prologue_hdr)))
+-		return -EINVAL;
++		return ret;
++
++	prologue = pds_prologue_hdr(skb);
++	switch (uet_prologue_type(prologue)) {
++	case UET_PDS_TYPE_ACK:
++		if (!uet_pds_rx_valid_ack_next_hdr(prologue))
++			break;
++		offset += sizeof(struct uet_pds_ack_hdr) +
++			  sizeof(struct uet_ses_rsp_hdr);
++		if (!pskb_may_pull(skb, offset))
++			break;
++
++		__net_timestamp(skb);
++		ret = uet_pds_rx_ack(pds, skb, local_fep_addr, remote_fep_addr);
++		break;
++	case UET_PDS_TYPE_RUD_REQ:
++		if (!uet_pds_rx_valid_req_next_hdr(prologue))
++			break;
++		offset = sizeof(struct uet_pds_ack_hdr) +
++			 sizeof(struct uet_ses_req_hdr);
++		if (!pskb_may_pull(skb, offset))
++			break;
++		ret = uet_pds_rx_req(pds, skb, local_fep_addr, remote_fep_addr,
++				     dport, tos);
++		break;
++	default:
++		break;
++	}
+ 
+-	return 0;
++	return ret;
  }
- 
- module_init(uet_init);
-diff --git a/include/net/ultraeth/uecon.h b/include/net/ultraeth/uecon.h
-new file mode 100644
-index 000000000000..6316a0557b1f
---- /dev/null
-+++ b/include/net/ultraeth/uecon.h
-@@ -0,0 +1,28 @@
-+/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
-+
-+#ifndef _UECON_H
-+#define _UECON_H
-+#include <net/ip_tunnels.h>
-+
-+#define UECON_DEFAULT_PORT 5432
-+
-+struct socket;
-+struct net_device;
-+
-+struct uecon_ndev_priv {
-+	struct uet_context *context;
-+	struct socket __rcu *sock;
-+	struct net_device *dev;
-+	__be16 udp_port;
-+};
-+
-+extern const struct net_device_ops uecon_netdev_ops;
-+int uecon_netdev_init(struct uet_context *ctx);
-+void uecon_netdev_uninit(struct uet_context *ctx);
-+
-+int uecon_rtnl_link_register(void);
-+void uecon_rtnl_link_unregister(void);
-+
-+int uecon_netdev_register(void);
-+void uecon_netdev_unregister(void);
-+#endif /* _UECON_H */
-diff --git a/include/net/ultraeth/uet_context.h b/include/net/ultraeth/uet_context.h
-index 7638c768597e..8210f69a1571 100644
---- a/include/net/ultraeth/uet_context.h
-+++ b/include/net/ultraeth/uet_context.h
-@@ -17,6 +17,7 @@ struct uet_context {
- 	wait_queue_head_t refcnt_wait;
- 	struct list_head list;
- 
-+	struct net_device *netdev;
- 	struct uet_job_registry job_reg;
+diff --git a/include/net/ultraeth/uet_pdc.h b/include/net/ultraeth/uet_pdc.h
+index 70f3c6aa03df..1a42647489fe 100644
+--- a/include/net/ultraeth/uet_pdc.h
++++ b/include/net/ultraeth/uet_pdc.h
+@@ -45,6 +45,12 @@ enum {
+ 	UET_PDC_MODE_UUD
  };
  
-@@ -26,5 +27,4 @@ void uet_context_put(struct uet_context *ses_pl);
- int uet_context_create(int id);
- bool uet_context_destroy(int id);
- void uet_context_destroy_all(void);
--
- #endif /* _UET_CONTEXT_H */
-diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
-index 318386cc5b0d..1ba189ecf9da 100644
---- a/include/uapi/linux/if_link.h
-+++ b/include/uapi/linux/if_link.h
-@@ -1986,4 +1986,12 @@ enum {
- 
- #define IFLA_DSA_MAX	(__IFLA_DSA_MAX - 1)
- 
-+enum {
-+	IFLA_UECON_UNSPEC,
-+	IFLA_UECON_CONTEXT_ID,
-+	IFLA_UECON_PORT,
-+	__IFLA_UECON_MAX
++enum mpr_pos {
++	UET_PDC_MPR_PREV,
++	UET_PDC_MPR_CUR,
++	UET_PDC_MPR_FUTURE
 +};
 +
-+#define IFLA_UECON_MAX (__IFLA_UECON_MAX - 1)
- #endif /* _UAPI_LINUX_IF_LINK_H */
-diff --git a/include/uapi/linux/ultraeth.h b/include/uapi/linux/ultraeth.h
-index a6f244de6d75..a4ac25455aa0 100644
---- a/include/uapi/linux/ultraeth.h
-+++ b/include/uapi/linux/ultraeth.h
-@@ -6,6 +6,7 @@
- #include <asm/byteorder.h>
- #include <linux/types.h>
+ struct uet_pdc {
+ 	struct rhash_head pdcid_node;
+ 	struct rhash_head pdcep_node;
+@@ -63,6 +69,9 @@ struct uet_pdc {
+ 	u8 mode;
+ 	bool is_initiator;
  
-+#define UET_DEFAULT_PORT 5432
- #define UET_SVC_MAX_LEN 64
++	unsigned long *rx_bitmap;
++	unsigned long *ack_bitmap;
++
+ 	u32 rx_base_psn;
+ 	u32 tx_base_psn;
  
- enum {
-diff --git a/include/uapi/linux/ultraeth_nl.h b/include/uapi/linux/ultraeth_nl.h
-index d65521de196a..515044022906 100644
---- a/include/uapi/linux/ultraeth_nl.h
-+++ b/include/uapi/linux/ultraeth_nl.h
-@@ -11,6 +11,8 @@
- 
- enum {
- 	ULTRAETH_A_CONTEXT_ID = 1,
-+	ULTRAETH_A_CONTEXT_NETDEV_IFINDEX,
-+	ULTRAETH_A_CONTEXT_NETDEV_NAME,
- 
- 	__ULTRAETH_A_CONTEXT_MAX,
- 	ULTRAETH_A_CONTEXT_MAX = (__ULTRAETH_A_CONTEXT_MAX - 1)
+@@ -76,4 +85,33 @@ struct uet_pdc *uet_pdc_create(struct uet_pds *pds, u32 rx_base_psn, u8 state,
+ 			       const struct uet_pdc_key *key, bool is_inbound);
+ void uet_pdc_destroy(struct uet_pdc *pdc);
+ void uet_pdc_free(struct uet_pdc *pdc);
++int uet_pdc_rx_req(struct uet_pdc *pdc, struct sk_buff *skb,
++		   __be32 remote_fep_addr, __u8 tos);
++int uet_pdc_rx_ack(struct uet_pdc *pdc, struct sk_buff *skb,
++		   __be32 remote_fep_addr);
++
++static inline void uet_pdc_build_prologue(struct uet_prologue_hdr *prologue,
++					  u8 type, u8 next, u8 flags)
++{
++	prologue->type_next_flags = cpu_to_be16((type & UET_PROLOGUE_TYPE_MASK) <<
++						UET_PROLOGUE_TYPE_SHIFT |
++						(next & UET_PROLOGUE_NEXT_MASK) <<
++						UET_PROLOGUE_NEXT_SHIFT |
++						(flags & UET_PROLOGUE_FLAGS_MASK));
++}
++
++static inline enum mpr_pos psn_mpr_pos(u32 base_psn, u32 psn)
++{
++	if (base_psn > psn)
++		return UET_PDC_MPR_PREV;
++	else if (psn - base_psn < UET_PDC_MPR)
++		return UET_PDC_MPR_CUR;
++	else
++		return UET_PDC_MPR_FUTURE;
++}
++
++static inline bool psn_bit_valid(u32 bit)
++{
++	return bit < UET_PDC_MPR;
++}
+ #endif /* _UECON_PDC_H */
 -- 
 2.48.1
 
