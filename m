@@ -1,117 +1,219 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0E42E3373;
-	Thu,  6 Mar 2025 23:02:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D475D2054FD
+	for <netdev@vger.kernel.org>; Thu,  6 Mar 2025 23:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741302167; cv=none; b=swXh6nnJmgXuNe+MuV3KLnZTP1KIZEpq6TcKI0lSQU7T2aD58IW7Ds/iGJWZtXqZukh+Q8YPIGMiRb7UbkUKY4yITJyfVR2fEOooKrQ7EItWoAER1tjQqoPh9Z+PqxtQ7/md+k/6oyrMduY7CkwDtadhRhgS/XPJcRftiMu5oc0=
+	t=1741302240; cv=none; b=DD58rNEoRPwKOlG171o/JPyT8cY0WcT/8kxp1DOefz75SZg+1ZEefRdoJYqXDnr0NuapP0sFLqVTjO6BfK04DTgovrAwbpj0HD5SBW9P+s5VPZHAgmJuxWL5W13vBWb1c/4PHNCSPg7h64ikZLiN0qkxY2IpQRlBlj/f5I41fNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741302167; c=relaxed/simple;
-	bh=xxzdOTbyVDKJ1V6Mx9dmKMG+OcM8YuhuwEFYbCHADjk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OB51rZCujtEu3vdlHhSeia61Tf+sY0BnW2oMNAshB/IhS98e2glsysm1mQxSiQPCU/Qgmdz/jTATbnYBov+4f2RMpESdHrDEG+5u/ENGPsO7SZMfaL7pjN+R6k7WfgO4t2Nz/GwgqrvEhHPlSKXaxrE1jKX/TDMYEaCLmyMaDnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AgEZWsyC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741302240; c=relaxed/simple;
+	bh=9P5cR3wVGceuqqoN5Lm0uHgjh9VXikU5XM/VGHCnUDw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SPnXCFlf51yUlmHeRzYxrbqOjwq1BULS5i/xec2HLEjOXHfXOS44tHuq5YZhZLXS5UaN4tBIIqJRNIPSOStE/8WZ4mU42bSMyBY/sTub6/NDRDel5HR1DKf7ExbTEglgsSkjvREPCS04yOpvXjzOYNB8M9ZuVOGS/IKnvSjXQZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enfabrica.net; spf=pass smtp.mailfrom=enfabrica.net; dkim=pass (2048-bit key) header.d=enfabrica.net header.i=@enfabrica.net header.b=Jyeh2Q0l; arc=none smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enfabrica.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enfabrica.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AgEZWsyC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABEFC4CEE0;
-	Thu,  6 Mar 2025 23:02:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741302167;
-	bh=xxzdOTbyVDKJ1V6Mx9dmKMG+OcM8YuhuwEFYbCHADjk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AgEZWsyCFNH4MgmdfPlRnG8352i6INOBiH0RlJ6kt5NyugNduBFCTmbdKPulK14nq
-	 KreMkFdOqGN2l6B6EpywYebIzJaLveGYcbdKzUu7gRvQKxq93FjGP/CXR0G9Jhg7bW
-	 GgZSH9b33jeYW6Nr6QT0Xn6befWNJUpwTmGPLLFasjD/kcTp0R8TCj+q91Q4sJBpF8
-	 nBQQIFmCRS0jq6i+UKw1LvZ2VStimB4squSZY3sxPs0X4bMnzJ51BVWkwkIAXBL8gO
-	 0n9UjfcrGkeeYAlnwOmIzfbPhyfVFBD9qCIIj/h7iCVrGGOyiDbVDNSoxChRzGbhXH
-	 vhepwGAKpH+Zg==
-Date: Thu, 6 Mar 2025 15:02:44 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Mina Almasry <almasrymina@google.com>
-Cc: Pranjal Shrivastava <praan@google.com>, Shivaji Kant
- <shivajikant@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- kvm@vger.kernel.org, virtualization@lists.linux.dev,
- linux-kselftest@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Jeroen de Borst <jeroendb@google.com>, Harshitha
- Ramamurthy <hramamurthy@google.com>, Kuniyuki Iwashima <kuniyu@amazon.com>,
- Willem de Bruijn <willemb@google.com>, David Ahern <dsahern@kernel.org>,
- Neal Cardwell <ncardwell@google.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>, Eugenio =?UTF-8?B?UMOpcmV6?=
- <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, Stefano
- Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>,
- sdf@fomichev.me, asml.silence@gmail.com, dw@davidwei.uk, Jamal Hadi Salim
- <jhs@mojatatu.com>, Victor Nogueira <victor@mojatatu.com>, Pedro Tammela
- <pctammela@mojatatu.com>, Samiullah Khawaja <skhawaja@google.com>
-Subject: Re: [PATCH net-next v6 1/8] net: add get_netmem/put_netmem support
-Message-ID: <20250306150244.7797232f@kernel.org>
-In-Reply-To: <CAHS8izM8dnFNj5p8vKiyhV9qeE+9=a=BWRnH=vCu49Tq_XTL9g@mail.gmail.com>
-References: <20250227041209.2031104-1-almasrymina@google.com>
-	<20250227041209.2031104-2-almasrymina@google.com>
-	<20250228163846.0a59fb40@kernel.org>
-	<CAHS8izNQnTW7sad_oABtxhy3cHxGR0FWJucrHTSVX7ZAA6jT3Q@mail.gmail.com>
-	<20250303162051.09ad684e@kernel.org>
-	<CAHS8izNWt2-1bC2f0jv4Qpk_A9VpEXNvVRoXUtL43_16d-Ui-A@mail.gmail.com>
-	<20250306134019.1702e609@kernel.org>
-	<CAHS8izM8dnFNj5p8vKiyhV9qeE+9=a=BWRnH=vCu49Tq_XTL9g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=enfabrica.net header.i=@enfabrica.net header.b="Jyeh2Q0l"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6e41e18137bso8794586d6.1
+        for <netdev@vger.kernel.org>; Thu, 06 Mar 2025 15:03:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=enfabrica.net; s=google; t=1741302237; x=1741907037; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5InOh2hFVrqxOK4OiWxKFEK8Qv8GjpqOw6YDveGcgX4=;
+        b=Jyeh2Q0lw4XDicKEzBiUEOwTgRzL47m0qnfOvXwtL77qio/+saDvQ6/nqEygrIyxzn
+         ItE0FGMg6X5lsj+Tf+5BnnNfsun0/Dgn1P/Oss2rqpE7SSYPN2X2WD5FSiciTLTjloh2
+         wNS06+XYWJr7yVyyNgRQA8F7ZWGyQ3SDczKBtJhYm5cmXAXIK+rpgmkxs7K+0LajYQuC
+         KA06QcoAJnGH5ylfhHhcyX3cZG8oMGO8puhynGUfN0jTiCWV+KbcW9j3uN4yUeH5po1d
+         oahhybg7Z6FvuWOUXjdVNn3qixVcxtfE6crjoQ4slCrncbRsf69EHQM9JQs+AbfcSd/R
+         Qh0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741302237; x=1741907037;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5InOh2hFVrqxOK4OiWxKFEK8Qv8GjpqOw6YDveGcgX4=;
+        b=CSTT0WXZ/kX1+Onf45mXUO/+pI/bwZAXbLW3kCXFclBDEp6fjijFnl0vAtjVybolM2
+         sE6MFrjJBdBTD2/DC+Y3Av+yULW6DaN/hWDTw2PdM/JYMKOKoX6fw3zaols0Oukmz08W
+         yGDVlmjpFz6W8PxNxy2UVW/1txl8yqe3Fh5k+Vho8nadc/xdAgYOuEa0PCKDZPACkKBV
+         AM7BI4NX0h3aln/SLkYbQIo7U30thPMN5J75CvVikWDS516vLw8k0ATgCVzGNtRJ2g58
+         7BRScCrfmN/2xqCA/WBQ13yI81klD62ma6enqs8fEvVXoEYeymsUi/BGg5kj97imVb8u
+         xNUQ==
+X-Gm-Message-State: AOJu0YwEV7+9TWhkqxn0Tv83kBV89oKGjh6RfHM1Ydq8y1mTYg9hKqzk
+	BO4QkYJqadbhF8Fg/Uhra7aDzEqIpdMC87SIdx1oyitxW2Q8aPtnhBuBeGndrnyldEi35rzXWE/
+	Jxvv7BnNcuQ03zRVQiBvj7gmUAdK2H+tZiu26XXjmMDc9lRxuWXHpt+p6d/JahplbPjfrUMB/4P
+	a7GDkQ5NTCRiDx0VuMlt6LsbZY9yWGDEUETqvfs3MAId4=
+X-Gm-Gg: ASbGncu9vlkaLDyZ1OLybvByn411R0/0GSCZtpapaWAGhsYxYGpGD668oPMjkrFdhR3
+	9z2k6v9QhWoa/5gtU+DE5CyAto37bmkthyQ2pusGW6qboUzAzqKfXjIP68TxDxrce5anG7LEEE7
+	VVAZvwXeEL/wL13CZx4A3m0Sq+gV4MgRQmZtKt6Tlyq1dGP0O7pwHO1qEGdbr9VsdB5Qe36+uWD
+	+SUlGwPJlXSjdcdsR7IMayLzj7ncraayHiMlXZ6nMB5PGoYfBAiVgnt/0kaGZie3JJfb3GSercu
+	Sr/Xpjs0Sd6yBvuzl3X9Cf/dXYANaxzXznxpRPmPP4tmQqOF/rp2rKsvwq/7vX9VwTbS
+X-Google-Smtp-Source: AGHT+IE0VCegJ5qUOHQr9rsnIZKUaDSaW8i/nzICrIQVmh8UnzI3rC2bisxKwRROzU5eyrR4TJ3QlA==
+X-Received: by 2002:a05:6214:21a6:b0:6e4:2dd7:5c88 with SMTP id 6a1803df08f44-6e90068196dmr15445456d6.38.1741302237271;
+        Thu, 06 Mar 2025 15:03:57 -0800 (PST)
+Received: from debil.. (78-154-15-142.ip.btc-net.bg. [78.154.15.142])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac256654fa6sm14971966b.93.2025.03.06.15.03.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Mar 2025 15:03:56 -0800 (PST)
+From: Nikolay Aleksandrov <nikolay@enfabrica.net>
+To: netdev@vger.kernel.org
+Cc: shrijeet@enfabrica.net,
+	alex.badea@keysight.com,
+	eric.davis@broadcom.com,
+	rip.sohan@amd.com,
+	dsahern@kernel.org,
+	bmt@zurich.ibm.com,
+	roland@enfabrica.net,
+	nikolay@enfabrica.net,
+	winston.liu@keysight.com,
+	dan.mihailescu@keysight.com,
+	kheib@redhat.com,
+	parth.v.parikh@keysight.com,
+	davem@redhat.com,
+	ian.ziemba@hpe.com,
+	andrew.tauferner@cornelisnetworks.com,
+	welch@hpe.com,
+	rakhahari.bhunia@keysight.com,
+	kingshuk.mandal@keysight.com,
+	linux-rdma@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Subject: [RFC PATCH 00/13] Ultra Ethernet driver introduction
+Date: Fri,  7 Mar 2025 01:01:50 +0200
+Message-ID: <20250306230203.1550314-1-nikolay@enfabrica.net>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 6 Mar 2025 14:44:41 -0800 Mina Almasry wrote:
-> > Meaning it doesn't currently do anything special, or you can't make it
-> > do anything special with netdevsim?
->
-> Meaning it currently doesn't do anything special with netdevsim. I
-> imagine we may be able to create a specialized syzbot instance that
-> loads netdevsim and starts fuzzing its APIs. However I'm told
-> specialized syzbot instances are much less valuable than making the
-> feature discoverable to existing syzbot instances, which is why our
-> thoughts went to adding devmem/unreadable skb support to virtio or
-> tun/tap.
-> 
-> Do I surmise from your question you prefer a netdevsim-based approach?
-> (and just curious maybe, why?)
+Hi all,
+This patch-set introduces minimal Ultra Ethernet driver infrastructure and
+the lowest Ultra Ethernet sublayer - the Packet Delivery Sublayer (PDS),
+which underpins the entire communication model of the Ultra Ethernet
+Transport[1] (UET). Ultra Ethernet is a new RDMA transport designed for
+efficient AI and HPC communication. The specifications are still being
+ironed out and first public versions should be available soon. As there
+isn't any UET hardware available yet, we introduce a software device model
+which implements the lowest sublayer of the spec - PDS. The code is still
+in early stages and experimental, aiming to start a discussion on the
+kernel implementation and to show how we plan to organize it.
 
-My exposure to syzbot is mostly as a consumer of reports, I thought
-from looking at the repros that there's a way of teaching syzbot
-how to perform more complex "ops", like a sequence of specific
-writes. IIRC for netlink it does things like resolve family.
-But not sure if it's true or how much of an exception adding such
-things is.
+The PDS is responsible for establishing dynamic connections between Fabric
+Endpoints (FEPs) called Packet Delivery Contexts (PDCs), packet
+reliability, ordering, duplicate elimination and congestion management.
+The PDS packet ordering is defined by a mode which can be one of:
+ - Reliable, Ordered Delivery (ROD)
+ - Reliable, Unordered Delivery (RUD)
+ - Reliable, Unordered Delivery for Idempotent Operations (RUDI)
+ - Unreliable, Unordered Delivery (UUD)
 
-Here we'd need to guide syzbot towards a specific series of
-sysfs writes, so that it creates the correctly configured netdevsim
-instance with higher probability.
+This set implements RUD mode of communication with Packet Sequence
+Number (PSN) tracking, retransmits, idle timeouts, coalescing and selective
+ACKs. It adds support for generating and processing Request, ACK, NACK and
+Control packet types. Communication is done over UDP, so all Ultra Ethernet
+headers are on top of UDP packets. Packets are tracked by Packet Sequence
+Numbers (PSNs) uniquely assigned within a PDC, the PSN window sizes are
+currently static.
 
-Just explaining my thinking, not saying this is the way we should
-necessarily go.
+In this RFC all of the code is under a single kernel module in
+drivers/ultraeth/ and guarded by a new kconfig option CONFIG_ULTRAETH. The
+plan is to have that split into core Ultra Ethernet module (ultraeth.ko)
+which is responsible for managing the UET contexts, jobs and all other
+common/generic UET configuration, and the software UET device model
+(uecon.ko) which implements the UET protocols for communication in software
+(e.g. the PDS will be a part of uecon) and is represented by a UDP tunnel
+network device. Note that there are critical missing pieces that will be
+present when we send the first version such as:
+ - Ultra Ethernet specs will be publicly available
+ - missing UET sublayers critical for communication
+ - more complete user API
+ - kernel UET device API
+ - memory management
+ - IPv6
 
-> > > We'll need to add queue API/page_pool/unreadable netmem support to
-> > > one of the drivers qemu (syzbot) uses, and that should get syzbot
-> > > fuzzing the control plane.
-> > >
-> > > To get syzbot to fuzz the data plane, I think we need to set up a
-> > > special syzbot instance which configures udmabuf/rss/flow  
-> >
-> > To be clear for Tx you don't need RSS and flow steering, Tx should
-> > be trivial for any device driver which managers DMAs directly (not USB).
-> 
-> Yes, we don't need queue API or page_pool support or header split
-> either for that matter. TX fuzzing is definitely simpler. Maybe we can
-> start with that.
+The last patch is a hack which adds a custom character device used to test
+communication and basic PDS functionality, for the first version of this set
+we would rather extend and re-use some of the Infiniband infrastructure.
 
-Adding support to virtio would be ideal, if syzbot already fuzzes it. 
-I was recently talking to David Wei about it for the Rx side, too, 
-so we can test io_uring ZC. But io_uring can only ZC user memory now.
-I'm not sure what adding DEVMEM support to virtio would entail.
+This set will also be used to better illustrate the UET code and concepts
+for the "Networking For AI BoF"[2] at the upcoming Netdev 0x19 conference
+in Zagreb, Croatia.
+
+Thank you,
+ Nik
+
+[1] https://ultraethernet.org/
+[2] https://netdevconf.info/0x19/sessions/bof/networking-for-ai-bof.html
+
+
+Alex Badea (1):
+  HACK: drivers: ultraeth: add char device
+
+Nikolay Aleksandrov (12):
+  drivers: ultraeth: add initial skeleton and kconfig option
+  drivers: ultraeth: add context support
+  drivers: ultraeth: add new genl family
+  drivers: ultraeth: add job support
+  drivers: ultraeth: add tunnel udp device support
+  drivers: ultraeth: add initial PDS infrastructure
+  drivers: ultraeth: add request and ack receive support
+  drivers: ultraeth: add request transmit support
+  drivers: ultraeth: add support for coalescing ack
+  drivers: ultraeth: add sack support
+  drivers: ultraeth: add nack support
+  drivers: ultraeth: add initiator and target idle timeout support
+
+ Documentation/netlink/specs/rt_link.yaml  |   14 +
+ Documentation/netlink/specs/ultraeth.yaml |  218 ++++
+ drivers/Kconfig                           |    2 +
+ drivers/Makefile                          |    1 +
+ drivers/ultraeth/Kconfig                  |   11 +
+ drivers/ultraeth/Makefile                 |    4 +
+ drivers/ultraeth/uecon.c                  |  324 ++++++
+ drivers/ultraeth/uet_chardev.c            |  264 +++++
+ drivers/ultraeth/uet_context.c            |  274 +++++
+ drivers/ultraeth/uet_job.c                |  456 +++++++++
+ drivers/ultraeth/uet_main.c               |   41 +
+ drivers/ultraeth/uet_netlink.c            |  113 +++
+ drivers/ultraeth/uet_netlink.h            |   29 +
+ drivers/ultraeth/uet_pdc.c                | 1122 +++++++++++++++++++++
+ drivers/ultraeth/uet_pds.c                |  481 +++++++++
+ include/net/ultraeth/uecon.h              |   28 +
+ include/net/ultraeth/uet_chardev.h        |   11 +
+ include/net/ultraeth/uet_context.h        |   47 +
+ include/net/ultraeth/uet_job.h            |   80 ++
+ include/net/ultraeth/uet_pdc.h            |  170 ++++
+ include/net/ultraeth/uet_pds.h            |  110 ++
+ include/uapi/linux/if_link.h              |    8 +
+ include/uapi/linux/ultraeth.h             |  536 ++++++++++
+ include/uapi/linux/ultraeth_nl.h          |  116 +++
+ 24 files changed, 4460 insertions(+)
+ create mode 100644 Documentation/netlink/specs/ultraeth.yaml
+ create mode 100644 drivers/ultraeth/Kconfig
+ create mode 100644 drivers/ultraeth/Makefile
+ create mode 100644 drivers/ultraeth/uecon.c
+ create mode 100644 drivers/ultraeth/uet_chardev.c
+ create mode 100644 drivers/ultraeth/uet_context.c
+ create mode 100644 drivers/ultraeth/uet_job.c
+ create mode 100644 drivers/ultraeth/uet_main.c
+ create mode 100644 drivers/ultraeth/uet_netlink.c
+ create mode 100644 drivers/ultraeth/uet_netlink.h
+ create mode 100644 drivers/ultraeth/uet_pdc.c
+ create mode 100644 drivers/ultraeth/uet_pds.c
+ create mode 100644 include/net/ultraeth/uecon.h
+ create mode 100644 include/net/ultraeth/uet_chardev.h
+ create mode 100644 include/net/ultraeth/uet_context.h
+ create mode 100644 include/net/ultraeth/uet_job.h
+ create mode 100644 include/net/ultraeth/uet_pdc.h
+ create mode 100644 include/net/ultraeth/uet_pds.h
+ create mode 100644 include/uapi/linux/ultraeth.h
+ create mode 100644 include/uapi/linux/ultraeth_nl.h
+
+-- 
+2.48.1
+
