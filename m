@@ -1,63 +1,63 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE2C27EC79
-	for <netdev@vger.kernel.org>; Thu,  6 Mar 2025 23:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6BA27F4C8
+	for <netdev@vger.kernel.org>; Thu,  6 Mar 2025 23:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741302254; cv=none; b=JDjZKIYl35jIO3JKKNdeHr4ZTrybDXE2RLN6S+dck6tET5KaBXamcer7AcAmRhiuly1+gp8n6xgtt6hCEdIGsyJVdGyjDlFOYEnURzebbNodmcbmsKZBBb6uyNjfXNcCU0gKDLioRqRpPh5TSX4Nb7Ap6NUJlwlwY195mQk0Fgw=
+	t=1741302256; cv=none; b=qclDdUMq/CdzDSPMfFl1I5Dbj+vhnWwKL1YPHGS44aPDA2unTS031T7NKPHb1iSpyVJ4Ka4U+n/uBNFMXTkCQoKCt41wLRTb2A8PZxt+q1eBFc5J7n+S51bGMpjyi109gh1MDeQDS9YpaOlaBm49h9ruhTeb8f1EHGetjoo5izM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741302254; c=relaxed/simple;
-	bh=rhAdls14aXXr+B3banKqLmvbLqUuZInVd88ZhCUc3TA=;
+	s=arc-20240116; t=1741302256; c=relaxed/simple;
+	bh=Hv09k34nfs1xxqBXl7TDMFKgPOtA4OG/McOv3MJH1jc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hNDu7PUbdq4SYnL59htFov4SZR21W9R0Y60Yh/Dsb3UZXrL8n74CraKjD+J4Vs+hRULZdVOzXmfaefr1kSFYuzUoH83e6FDuzP7qX9DrQ4olaxUcQ2Vk8v+sqEHBa0XSIJ3w8COPQ16r9hjLty9wItUkkQojW5OmL17MGe+vm7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enfabrica.net; spf=pass smtp.mailfrom=enfabrica.net; dkim=pass (2048-bit key) header.d=enfabrica.net header.i=@enfabrica.net header.b=E4MzcdNn; arc=none smtp.client-ip=209.85.219.42
+	 MIME-Version; b=bHOhSkA3zupgdE2YGEH6m9kozhgsQMUiGhbp9PROLlDwQtEa6BMx4GVukaOAzQZJUVyHUMPzZguZaSCXhGZ3E2WsfWtxQoPstZq9IDE0ebZ3bx1tSbumR2Yojbp14hg/TqM+LulEZGTUbhkV49PeaTItlS8678om7JaIxu0NxRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enfabrica.net; spf=pass smtp.mailfrom=enfabrica.net; dkim=pass (2048-bit key) header.d=enfabrica.net header.i=@enfabrica.net header.b=CBXZCyeB; arc=none smtp.client-ip=209.85.219.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enfabrica.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enfabrica.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=enfabrica.net header.i=@enfabrica.net header.b="E4MzcdNn"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6e8f06e13a4so19127926d6.0
-        for <netdev@vger.kernel.org>; Thu, 06 Mar 2025 15:04:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=enfabrica.net header.i=@enfabrica.net header.b="CBXZCyeB"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6e6c082eac0so10897536d6.0
+        for <netdev@vger.kernel.org>; Thu, 06 Mar 2025 15:04:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=enfabrica.net; s=google; t=1741302250; x=1741907050; darn=vger.kernel.org;
+        d=enfabrica.net; s=google; t=1741302253; x=1741907053; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8fIFQBWAbnslNfcoBo9zTprT+wxmi9gtYJ6rGux2+U8=;
-        b=E4MzcdNn2dU+wC9TgXT2sdpL8CZCPSA7NxPfW82EoVDquyS0LSKIKQQG+9RD5rcp/G
-         gsyfA8eVWOcy6Qqo0ExsfZ7Io3rI0VyfYP4JnSiV3UlOSxQ7h9nHLThgB4i22LxIb0Qv
-         3QAOypGWBdvrrottBJTlJPXanpT8RKTWujCbCDC0Q7A6qmspRfh+WYGdImHCvXWCu9wy
-         Fwu8cF4gooiFXpcjnDRsGvinZlwT5ZxXEIYL3iRc7Z+U9B0uga/kk/6JBp6LBteaRNA0
-         2NXJ7/U7GzsWPqtuZoIyguyFYss2//vJ3y5DS/jLyBQIIma/QNhTMUsYbxQLJArchDGr
-         YBew==
+        bh=mwf9aKYfLBkH2EO+Yv/vm47l0/6N6yxicdrmpxx6Kbk=;
+        b=CBXZCyeBbiAOgIX/aBW8MLsy1ahwrp5DO9cz5sRTSgV3ISzhb2HBXjbUBzVIM4f1Iy
+         0uO+keQ/Xbmjjq6nsZ9mNE1LQWb5NTIDLq+qjhhiWBhGkH5JCMAIrGlSQ3QRjWyJ8ddV
+         BypuSNZNKbEnaZfa1Bi82bz3z92t31D0ALq+rV9kjuOeLw+/8iAQVtwOCr275ZEvLCoC
+         yXBDH4eyS/TJPer5kgE3RjNilea3n/rF+/9DFY1yPr/YwXYOgh0cCPBud+45JzmxiMec
+         DYbzL8Z4CS53bb0NDix5lqJsydPw1z5ojPk31Up4ArXk4hfxmkxMq2L101Fv5H8iMzxp
+         QfWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741302250; x=1741907050;
+        d=1e100.net; s=20230601; t=1741302253; x=1741907053;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8fIFQBWAbnslNfcoBo9zTprT+wxmi9gtYJ6rGux2+U8=;
-        b=KhT73l58MavNu/pUCyV5dPXuGLVNRFlx8l4Nm/p1fLhkc5MLNqPHdtCwJaW3m+SA/S
-         VSW8+36bTRLtAGBSFA4IqHpOBBQhaMtYsJF+uJraOLkpznRneRz4XKLHwKI/NcGwe7Ky
-         XM8g/ynDH8+xgWsKXYCSfdWUAupH/zzvBCtRRKSpLaxHDLL/naqw/ba5vxz2pE8wLxGh
-         tlXrepI36wboKzW0nud+tpxetInEBY7g3FScc7NbJy4f+RN/svOqA37ns7RelXaQknmE
-         16S57HsEJQ1B79NfUXNkIgEtaiBSjM4Joufl8UcfyMgEZV+kCNTCxCpDZFcK5XBe2Hin
-         i4Kg==
-X-Gm-Message-State: AOJu0YyCjht150UOhyjuXUZ5XDk2eWbw9tPHyz/r/0/5qPYJXm4xSy9G
-	nVXPQAML157wKzrXlwHDSVw+wN6pgffwSm6kU1JijVbq/HquYvGoH2czlthmqd+NH3+RPPyUHvp
-	0cZ1mILDwFf9cg/UdfbhOjGGmFvhhEpwRrcSsZrBYTFO+ep7rOcM/zbwoP6GcL8T+2bpgFZAV41
-	MqzATipzoXyqB7gcROn4m/8EUENw0CYyfmxYFPXrUkBAw=
-X-Gm-Gg: ASbGncs4VJIY+E7Fy46K3tzFUZ9s7EbR3mWLLHM0ihura6irlPS5HkhkFHaadbh6+FJ
-	EQKuAg5F0l4bGYIQ+D3U8jXn0Sh9XipDPplGSxIB4RWsshtLsB6vUuGp+XAciUXG4zucfd4/gw3
-	BCja70xDRRd8AQ2QwiJRLqoRyhpQqJU/7MS514z1CcZWI4pevMcKp1lgZdcdJ3A8yEnPIKPdRFW
-	7mgSo+mShBgcYeiLxS6maOQ4WyDO9Sl9m+9Gah3bf2Iwl7lgAu0UR8F59M8MK/gWFclW3twQ2v+
-	VbK6gqCgkv6C3YlxEjvAYpviaJuAYicsb+Zpnz+db4Pk+CmEA9wb99f3b4MD4s2QuIY4
-X-Google-Smtp-Source: AGHT+IE8RTkpccWKR7R9PIQ42rOgsV9xy4dpzuu3Ea5ud+SklRJR2rjnOUq4KV2vowlIyWuc7cqZ0Q==
-X-Received: by 2002:a05:6214:2606:b0:6e4:31d9:b357 with SMTP id 6a1803df08f44-6e8f46b019cmr93542806d6.1.1741302249312;
-        Thu, 06 Mar 2025 15:04:09 -0800 (PST)
+        bh=mwf9aKYfLBkH2EO+Yv/vm47l0/6N6yxicdrmpxx6Kbk=;
+        b=fm0vZmby0i+Tp1WO5xXNDMhn1TNj+pUbGyiHe4qt0bfjncMEHMPCUj3iNEozzr1AUD
+         G3gOhXzovVGYAtws7ZKJUYGTc/ZxR44sfjK2pLv/n5RrjAMHBxa3rDq4lbThKGvNMr1G
+         D/loixwByyjouD9iZWTOhhBzLaNIbYedev0db65+4LeAQtDEYDW78jSHhlIw7giQPGrC
+         eQRJ/Ay+f7tKbdMj1Xl4e3mpRPTkQ0o01GgaY08Cj3A2vz2Sk22ThW1VDN9STm1v3TqR
+         PI+MYtcRB43lUCGQdDje6JRnqfqPiiDdzbKJOzo9Aeh0RXbRe3lnY6AFzn0jHYr1JvYq
+         tY0w==
+X-Gm-Message-State: AOJu0YySGp7oYicqYorbCWQS5P5qVOqhSg3NTIF2PQQIgPKU/z366QL/
+	2k1bG+UBwtdUyHPkbFoXezUij1eRulMc9uV7JPvyeLmBdmAyshF/QLCDaVRqWkcmLpvA1ZMfKU7
+	K8qmbkL3iXputtayr/p8F15S/IYyoSfVqhkp0M1hBto9mkqqhjZ3caWK+0PTlG7pwmApbSlu1dm
+	3LrcSrzAOIDLafN20sE1Vt1WpT4ulTqrgsrs4LbqPz/30=
+X-Gm-Gg: ASbGnctW3ZL4HW06SDn7H1uk/pVminQi8CHMFqt64ANR1mS4YpTK29QTadtAN4wA/ET
+	iX/aEeQ4b9Xw56KIHtH1LgdNT3ScZQiwOnjlXm8tGRCj57626rdT/iN0Py8CRBGJeI4L98APQgd
+	AQRPRlWtURKfCU2PC/kCo+llaIfGIkJBjd8H7mBwNgXqdRpZqzyNsqwAV++QT8hgijDL76xN4pX
+	BUZ5uFdPJHBvCXFIubolNYl7/KmruFBjJcQxVyxRayQ6DY5ufst/pSatZRZrzcdA7NWyiaEsu9E
+	8wiE+oHu2/jODhz8Uh+Op4Yh19jMlfs7eESV9nBwlh9JqXuVxXgRisJnDZTq2XR62Rds
+X-Google-Smtp-Source: AGHT+IFHoxfqPVbJbyiyNsne45S/SjH8yFhnpBfXPuEHDhvCo7LC1oPeuv2HrkdT1Q70hwCSjB7xmg==
+X-Received: by 2002:a05:6214:2428:b0:6e6:698f:cb00 with SMTP id 6a1803df08f44-6e9006942bamr13795096d6.42.1741302253065;
+        Thu, 06 Mar 2025 15:04:13 -0800 (PST)
 Received: from debil.. (78-154-15-142.ip.btc-net.bg. [78.154.15.142])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac256654fa6sm14971966b.93.2025.03.06.15.04.07
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac256654fa6sm14971966b.93.2025.03.06.15.04.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 15:04:08 -0800 (PST)
+        Thu, 06 Mar 2025 15:04:12 -0800 (PST)
 From: Nikolay Aleksandrov <nikolay@enfabrica.net>
 To: netdev@vger.kernel.org
 Cc: shrijeet@enfabrica.net,
@@ -81,9 +81,9 @@ Cc: shrijeet@enfabrica.net,
 	linux-rdma@vger.kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com
-Subject: [RFC PATCH 06/13] drivers: ultraeth: add initial PDS infrastructure
-Date: Fri,  7 Mar 2025 01:01:56 +0200
-Message-ID: <20250306230203.1550314-7-nikolay@enfabrica.net>
+Subject: [RFC PATCH 08/13] drivers: ultraeth: add request transmit support
+Date: Fri,  7 Mar 2025 01:01:58 +0200
+Message-ID: <20250306230203.1550314-9-nikolay@enfabrica.net>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250306230203.1550314-1-nikolay@enfabrica.net>
 References: <20250306230203.1550314-1-nikolay@enfabrica.net>
@@ -95,1033 +95,569 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add PDS structures as described in the specifications and helpers to
-access their fields which are also exposed to user-space. Add initial
-kernel PDS structures and routines to manage PDCs. PDC ids are random
-and allocated when a PDC gets created. Each PDC instance has a spinlock to
-protect it, lookups are done with RCU using two rhashtables
- - one for our local PDC ids
- - one for endpoints
-
-Receiving a packet currently is a noop.
+Add support for sending request packets, if a PDC doesn't exist yet one
+gets created and the request carries the SYN flag until the first ack is
+received. Currently it operates in RUD (unordered) mode. The transmit
+packet sequence numbers are tracked via a bitmap. Track unacked packets
+and retransmit them upon a timeout.
 
 Signed-off-by: Nikolay Aleksandrov <nikolay@enfabrica.net>
 Signed-off-by: Alex Badea <alex.badea@keysight.com>
 ---
- drivers/ultraeth/Makefile          |   2 +-
- drivers/ultraeth/uecon.c           |  23 +-
- drivers/ultraeth/uet_context.c     |   7 +
- drivers/ultraeth/uet_job.c         |   1 +
- drivers/ultraeth/uet_pdc.c         | 124 ++++++++++
- drivers/ultraeth/uet_pds.c         | 159 +++++++++++++
- include/net/ultraeth/uet_context.h |  14 ++
- include/net/ultraeth/uet_pdc.h     |  79 +++++++
- include/net/ultraeth/uet_pds.h     |  93 ++++++++
- include/uapi/linux/ultraeth.h      | 354 +++++++++++++++++++++++++++++
- 10 files changed, 850 insertions(+), 6 deletions(-)
- create mode 100644 drivers/ultraeth/uet_pdc.c
- create mode 100644 drivers/ultraeth/uet_pds.c
- create mode 100644 include/net/ultraeth/uet_pdc.h
- create mode 100644 include/net/ultraeth/uet_pds.h
+ drivers/ultraeth/uet_pdc.c     | 312 ++++++++++++++++++++++++++++++++-
+ drivers/ultraeth/uet_pds.c     |  57 ++++++
+ include/net/ultraeth/uet_pdc.h |  27 +++
+ include/net/ultraeth/uet_pds.h |   2 +
+ 4 files changed, 389 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/ultraeth/Makefile b/drivers/ultraeth/Makefile
-index 0035023876ab..f2d6a8569dbf 100644
---- a/drivers/ultraeth/Makefile
-+++ b/drivers/ultraeth/Makefile
-@@ -1,4 +1,4 @@
- obj-$(CONFIG_ULTRAETH) += ultraeth.o
- 
- ultraeth-objs := uet_main.o uet_context.o uet_netlink.o uet_job.o \
--			uecon.o
-+			uecon.o uet_pdc.o uet_pds.o
-diff --git a/drivers/ultraeth/uecon.c b/drivers/ultraeth/uecon.c
-index 4b74680700af..38f930bf93ec 100644
---- a/drivers/ultraeth/uecon.c
-+++ b/drivers/ultraeth/uecon.c
-@@ -42,9 +42,9 @@ static netdev_tx_t uecon_ndev_xmit(struct sk_buff *skb, struct net_device *dev)
- 				   use_cache ? &info->dst_cache : NULL);
- 	if (IS_ERR(rt)) {
- 		if (PTR_ERR(rt) == -ELOOP)
--			dev->stats.collisions++;
-+			DEV_STATS_INC(dev, collisions);
- 		else if (PTR_ERR(rt) == -ENETUNREACH)
--			dev->stats.tx_carrier_errors++;
-+			DEV_STATS_INC(dev, tx_carrier_errors);
- 
- 		goto out_err;
- 	}
-@@ -83,7 +83,7 @@ static netdev_tx_t uecon_ndev_xmit(struct sk_buff *skb, struct net_device *dev)
- out_err:
- 	rcu_read_unlock();
- 	dev_kfree_skb(skb);
--	dev->stats.tx_errors++;
-+	DEV_STATS_INC(dev, tx_errors);
- 
- 	return NETDEV_TX_OK;
- }
-@@ -91,7 +91,11 @@ static netdev_tx_t uecon_ndev_xmit(struct sk_buff *skb, struct net_device *dev)
- static int uecon_ndev_encap_recv(struct sock *sk, struct sk_buff *skb)
- {
- 	struct uecon_ndev_priv *uecpriv;
--	int len;
-+	__be32 saddr, daddr;
-+	unsigned int len;
-+	__be16 dport;
-+	__u8 tos;
-+	int ret;
- 
- 	uecpriv = rcu_dereference_sk_user_data(sk);
- 	if (!uecpriv)
-@@ -100,6 +104,11 @@ static int uecon_ndev_encap_recv(struct sock *sk, struct sk_buff *skb)
- 	if (skb->protocol != htons(ETH_P_IP))
- 		goto drop;
- 
-+	saddr = ip_hdr(skb)->saddr;
-+	daddr = ip_hdr(skb)->daddr;
-+	dport = udp_hdr(skb)->source;
-+	tos = ip_hdr(skb)->tos;
-+
- 	/* we assume [ tnl ip hdr ] [ tnl udp hdr ] [ pdc hdr ] [ ses hdr ] */
- 	if (iptunnel_pull_header(skb, sizeof(struct udphdr), htons(ETH_P_802_3), false))
- 		goto drop_count;
-@@ -109,7 +118,11 @@ static int uecon_ndev_encap_recv(struct sock *sk, struct sk_buff *skb)
- 	skb->pkt_type = PACKET_HOST;
- 	skb->dev = uecpriv->dev;
- 	len = skb->len;
--	consume_skb(skb);
-+	ret = uet_pds_rx(&uecpriv->context->pds, skb, daddr, saddr, dport, tos);
-+	if (ret < 0)
-+		goto drop_count;
-+	else if (ret == 0)
-+		consume_skb(skb);
- 	dev_sw_netstats_rx_add(uecpriv->dev, len);
- 
- 	return 0;
-diff --git a/drivers/ultraeth/uet_context.c b/drivers/ultraeth/uet_context.c
-index e0d276cb1942..6bdd72344e01 100644
---- a/drivers/ultraeth/uet_context.c
-+++ b/drivers/ultraeth/uet_context.c
-@@ -107,6 +107,10 @@ int uet_context_create(int id)
- 	if (err)
- 		goto ctx_jobs_err;
- 
-+	err = uet_pds_init(&ctx->pds);
-+	if (err)
-+		goto ctx_pds_err;
-+
- 	err = uecon_netdev_init(ctx);
- 	if (err)
- 		goto ctx_netdev_err;
-@@ -116,6 +120,8 @@ int uet_context_create(int id)
- 	return 0;
- 
- ctx_netdev_err:
-+	uet_pds_uninit(&ctx->pds);
-+ctx_pds_err:
- 	uet_jobs_uninit(&ctx->job_reg);
- ctx_jobs_err:
- 	uet_context_put_id(ctx);
-@@ -129,6 +135,7 @@ static void __uet_context_destroy(struct uet_context *ctx)
- {
- 	uet_context_unlink(ctx);
- 	uecon_netdev_uninit(ctx);
-+	uet_pds_uninit(&ctx->pds);
- 	uet_jobs_uninit(&ctx->job_reg);
- 	uet_context_put_id(ctx);
- 	kfree(ctx);
-diff --git a/drivers/ultraeth/uet_job.c b/drivers/ultraeth/uet_job.c
-index 3a55a0f70749..4a421dd8e86c 100644
---- a/drivers/ultraeth/uet_job.c
-+++ b/drivers/ultraeth/uet_job.c
-@@ -55,6 +55,7 @@ static void __job_disassociate(struct uet_job *job)
- 	WRITE_ONCE(fep->job_id, 0);
- 	RCU_INIT_POINTER(job->fep, NULL);
- 	synchronize_rcu();
-+	uet_pds_clean_job(&fep->context->pds, job->id);
- }
- 
- struct uet_job *uet_job_find(struct uet_job_registry *jreg, u32 id)
 diff --git a/drivers/ultraeth/uet_pdc.c b/drivers/ultraeth/uet_pdc.c
-new file mode 100644
-index 000000000000..47cf4c3dee04
---- /dev/null
+index a0352a925329..dc79305cc3b5 100644
+--- a/drivers/ultraeth/uet_pdc.c
 +++ b/drivers/ultraeth/uet_pdc.c
-@@ -0,0 +1,124 @@
-+// SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
-+
-+#include <linux/kernel.h>
-+#include <linux/slab.h>
-+
-+#include <net/ultraeth/uet_context.h>
-+#include <net/ultraeth/uet_pdc.h>
-+
-+/* use the approach as nf nat, try a few rounds starting at random offset */
-+static bool uet_pdc_id_get(struct uet_pdc *pdc)
+@@ -19,6 +19,191 @@ static void uet_pdc_xmit(struct uet_pdc *pdc, struct sk_buff *skb)
+ 	dev_queue_xmit(skb);
+ }
+ 
++static void uet_pdc_mpr_advance_tx(struct uet_pdc *pdc, u32 bits)
 +{
-+	int attempts = UET_PDC_ID_MAX_ATTEMPTS, i;
++	if (!test_bit(0, pdc->tx_bitmap) || !test_bit(0, pdc->ack_bitmap))
++		return;
 +
-+	pdc->spdcid = get_random_u16();
-+try_again:
-+	for (i = 0; i < attempts; i++, pdc->spdcid++) {
-+		if (uet_pds_pdcid_insert(pdc) == 0)
-+			return true;
-+	}
-+
-+	if (attempts > 16) {
-+		attempts /= 2;
-+		pdc->spdcid = get_random_u16();
-+		goto try_again;
-+	}
-+
-+	return false;
++	bitmap_shift_right(pdc->tx_bitmap, pdc->tx_bitmap, bits, UET_PDC_MPR);
++	bitmap_shift_right(pdc->ack_bitmap, pdc->ack_bitmap, bits, UET_PDC_MPR);
++	pdc->tx_base_psn += bits;
++	netdev_dbg(pds_netdev(pdc->pds), "%s: advancing tx to %u\n", __func__,
++		   pdc->tx_base_psn);
 +}
 +
-+struct uet_pdc *uet_pdc_create(struct uet_pds *pds, u32 rx_base_psn, u8 state,
-+			       u16 dpdcid, u16 pid_on_fep, u8 mode,
-+			       u8 tos, __be16 dport,
-+			       const struct uet_pdc_key *key, bool is_inbound)
++static void uet_pdc_rtx_skb(struct uet_pdc *pdc, struct sk_buff *skb, ktime_t ts)
 +{
-+	struct uet_pdc *pdc, *pdc_ins = ERR_PTR(-ENOMEM);
-+	IP_TUNNEL_DECLARE_FLAGS(md_flags) = { };
-+	int ret __maybe_unused;
++	struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
++	struct uet_prologue_hdr *prologue;
 +
-+	switch (mode) {
-+	case UET_PDC_MODE_RUD:
-+		break;
-+	case UET_PDC_MODE_ROD:
-+		fallthrough;
-+	case UET_PDC_MODE_RUDI:
-+		fallthrough;
-+	case UET_PDC_MODE_UUD:
-+		fallthrough;
-+	default:
-+		return ERR_PTR(-EOPNOTSUPP);
++	if (!nskb)
++		return;
++
++	prologue = (struct uet_prologue_hdr *)nskb->data;
++	if (!(uet_prologue_flags(prologue) & UET_PDS_REQ_FLAG_RETX))
++		uet_pdc_build_prologue(prologue,
++				       uet_prologue_ctl_type(prologue),
++				       uet_prologue_next_hdr(prologue),
++				       uet_prologue_flags(prologue) |
++				       UET_PDS_REQ_FLAG_RETX);
++
++	uet_pdc_xmit(pdc, nskb);
++	skb->tstamp = ts;
++	UET_SKB_CB(skb)->rtx_attempts++;
++}
++
++static void uet_pdc_rtx_timer_expired(struct timer_list *t)
++{
++	u64 smallest_diff = UET_PDC_RTX_DEFAULT_TIMEOUT_NSEC;
++	struct uet_pdc *pdc = from_timer(pdc, t, rtx_timer);
++	ktime_t now = ktime_get_real_ns();
++	struct sk_buff *skb, *skb_tmp;
++
++	spin_lock(&pdc->lock);
++	skb = skb_rb_first(&pdc->rtx_queue);
++	skb_rbtree_walk_from_safe(skb, skb_tmp) {
++		ktime_t expire = ktime_add(skb->tstamp,
++					   UET_PDC_RTX_DEFAULT_TIMEOUT_NSEC);
++
++		if (ktime_before(now, expire)) {
++			u64 diff = ktime_to_ns(ktime_sub(expire, now));
++
++			if (diff < smallest_diff)
++				smallest_diff = diff;
++			continue;
++		}
++		if (UET_SKB_CB(skb)->rtx_attempts == UET_PDC_RTX_DEFAULT_MAX) {
++			/* XXX: close connection, count drops etc */
++			netdev_dbg(pds_netdev(pdc->pds), "%s: psn: %u too many rtx attempts: %u\n",
++				   __func__, UET_SKB_CB(skb)->psn,
++				   UET_SKB_CB(skb)->rtx_attempts);
++			/* if dropping the oldest packet move window */
++			if (UET_SKB_CB(skb)->psn == pdc->tx_base_psn)
++				uet_pdc_mpr_advance_tx(pdc, 1);
++			rb_erase(&skb->rbnode, &pdc->rtx_queue);
++			consume_skb(skb);
++			continue;
++		}
++
++		uet_pdc_rtx_skb(pdc, skb, now);
 +	}
 +
-+	pdc = kzalloc(sizeof(*pdc), GFP_ATOMIC);
-+	if (!pdc)
-+		goto err_alloc;
-+	memcpy(&pdc->key, key, sizeof(*key));
-+	pdc->pds = pds;
-+	pdc->mode = mode;
-+	pdc->is_initiator = !is_inbound;
++	mod_timer(&pdc->rtx_timer, jiffies +
++				   nsecs_to_jiffies(smallest_diff));
++	spin_unlock(&pdc->lock);
++}
 +
-+	if (!uet_pdc_id_get(pdc))
-+		goto err_id_get;
++static void uet_pdc_rbtree_insert(struct rb_root *root, struct sk_buff *skb)
++{
++	struct rb_node **p = &root->rb_node;
++	struct rb_node *parent = NULL;
++	struct sk_buff *skb1;
 +
-+	spin_lock_init(&pdc->lock);
-+
-+	pdc->rx_base_psn = rx_base_psn;
-+	pdc->tx_base_psn = rx_base_psn;
-+	pdc->state = state;
-+	pdc->dpdcid = dpdcid;
-+	pdc->pid_on_fep = pid_on_fep;
-+	pdc->metadata = __ip_tun_set_dst(key->src_ip, key->dst_ip, tos, 0, dport,
-+					 md_flags, 0, 0);
-+	if (!pdc->metadata)
-+		goto err_tun_dst;
-+
-+#ifdef CONFIG_DST_CACHE
-+	ret = dst_cache_init(&pdc->metadata->u.tun_info.dst_cache, GFP_ATOMIC);
-+	if (ret) {
-+		pdc_ins = ERR_PTR(ret);
-+		goto err_ep_insert;
-+	}
-+#endif
-+	pdc->metadata->u.tun_info.mode |= IP_TUNNEL_INFO_TX;
-+
-+	if (is_inbound) {
-+		/* this PDC is a result of packet Rx */
-+		pdc_ins = pdc;
-+		goto out;
++	while (*p) {
++		parent = *p;
++		skb1 = rb_to_skb(parent);
++		if (before(UET_SKB_CB(skb)->psn, UET_SKB_CB(skb1)->psn))
++			p = &parent->rb_left;
++		else
++			p = &parent->rb_right;
 +	}
 +
-+	pdc_ins = uet_pds_pdcep_insert(pdc);
-+	if (!pdc_ins) {
-+		pdc_ins = pdc;
++	rb_link_node(&skb->rbnode, parent, p);
++	rb_insert_color(&skb->rbnode, root);
++}
++
++static struct sk_buff *uet_pdc_rtx_find(struct uet_pdc *pdc, u32 psn)
++{
++	struct rb_node *parent, **p = &pdc->rtx_queue.rb_node;
++
++	while (*p) {
++		struct sk_buff *skb;
++
++		parent = *p;
++		skb = rb_to_skb(parent);
++		if (psn == UET_SKB_CB(skb)->psn)
++			return skb;
++
++		if (before(psn, UET_SKB_CB(skb)->psn))
++			p = &parent->rb_left;
++		else
++			p = &parent->rb_right;
++	}
++
++	return NULL;
++}
++
++static void uet_pdc_rtx_remove_skb(struct uet_pdc *pdc, struct sk_buff *skb)
++{
++	rb_erase(&skb->rbnode, &pdc->rtx_queue);
++	consume_skb(skb);
++}
++
++static void uet_pdc_ack_psn(struct uet_pdc *pdc, struct sk_buff *ack_skb,
++			    u32 psn, bool ecn_marked)
++{
++	struct sk_buff *skb = skb_rb_first(&pdc->rtx_queue);
++	u32 first_psn = skb ? UET_SKB_CB(skb)->psn : 0;
++
++	/* if the oldest PSN got ACKed and it hasn't been retransmitted
++	 * we can move the timer to the next one
++	 */
++	if (skb && psn == first_psn) {
++		struct sk_buff *next = skb_rb_next(skb);
++
++		/* move timer only if first PSN wasn't retransmitted */
++		if (next && !UET_SKB_CB(skb)->rtx_attempts) {
++			ktime_t expire = ktime_add(next->tstamp,
++						   UET_PDC_RTX_DEFAULT_TIMEOUT_NSEC);
++			ktime_t now = ktime_get_ns();
++
++			if (ktime_before(expire, now)) {
++				u64 diff = ktime_to_ns(ktime_sub(expire, now));
++				unsigned long diffj = nsecs_to_jiffies(diff);
++
++				mod_timer(&pdc->rtx_timer, jiffies + diffj);
++			}
++		}
 +	} else {
-+		/* someone beat us to it or there was an error, either way
-+		 * we free the newly created pdc and drop the ref
-+		 */
-+		goto err_ep_insert;
++		skb = uet_pdc_rtx_find(pdc, psn);
 +	}
 +
-+out:
-+	return pdc_ins;
++	if (!skb)
++		return;
 +
-+err_ep_insert:
-+	dst_release(&pdc->metadata->dst);
-+err_tun_dst:
-+	uet_pds_pdcid_remove(pdc);
-+err_id_get:
-+	kfree(pdc);
-+err_alloc:
-+	goto out;
++	uet_pdc_rtx_remove_skb(pdc, skb);
 +}
 +
-+void uet_pdc_free(struct uet_pdc *pdc)
++static void uet_pdc_rtx_purge(struct uet_pdc *pdc)
 +{
-+	dst_release(&pdc->metadata->dst);
-+	kfree(pdc);
++	struct rb_node *p = rb_first(&pdc->rtx_queue);
++
++	while (p) {
++		struct sk_buff *skb = rb_to_skb(p);
++
++		p = rb_next(p);
++		uet_pdc_rtx_remove_skb(pdc, skb);
++	}
 +}
 +
-+void uet_pdc_destroy(struct uet_pdc *pdc)
++static int uet_pdc_rtx_queue(struct uet_pdc *pdc, struct sk_buff *skb, u32 psn)
 +{
-+	uet_pds_pdcep_remove(pdc);
-+	uet_pds_pdcid_remove(pdc);
-+	uet_pds_pdc_gc_queue(pdc);
-+}
-diff --git a/drivers/ultraeth/uet_pds.c b/drivers/ultraeth/uet_pds.c
-new file mode 100644
-index 000000000000..4aec61eeb230
---- /dev/null
-+++ b/drivers/ultraeth/uet_pds.c
-@@ -0,0 +1,159 @@
-+// SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
++	struct sk_buff *rtx_skb = skb_clone(skb, GFP_ATOMIC);
 +
-+#include <linux/kernel.h>
-+#include <linux/slab.h>
-+#include <linux/bug.h>
++	if (unlikely(!rtx_skb))
++		return -ENOMEM;
 +
-+#include <net/ultraeth/uet_context.h>
-+#include <net/ultraeth/uet_pdc.h>
++	UET_SKB_CB(rtx_skb)->psn = psn;
++	UET_SKB_CB(rtx_skb)->rtx_attempts = 0;
++	uet_pdc_rbtree_insert(&pdc->rtx_queue, rtx_skb);
 +
-+static const struct rhashtable_params uet_pds_pdcid_rht_params = {
-+	.head_offset = offsetof(struct uet_pdc, pdcid_node),
-+	.key_offset = offsetof(struct uet_pdc, spdcid),
-+	.key_len = sizeof(u16),
-+	.nelem_hint = 2048,
-+	.max_size = UET_PDC_MAX_ID,
-+	.automatic_shrinking = true,
-+};
-+
-+static const struct rhashtable_params uet_pds_pdcep_rht_params = {
-+	.head_offset = offsetof(struct uet_pdc, pdcep_node),
-+	.key_offset = offsetof(struct uet_pdc, key),
-+	.key_len = sizeof(struct uet_pdc_key),
-+	.nelem_hint = 2048,
-+	.automatic_shrinking = true,
-+};
-+
-+static void uet_pds_pdc_gc_flush(struct uet_pds *pds)
-+{
-+	HLIST_HEAD(deleted_head);
-+	struct hlist_node *tmp;
-+	struct uet_pdc *pdc;
-+
-+	spin_lock_bh(&pds->gc_lock);
-+	hlist_move_list(&pds->pdc_gc_list, &deleted_head);
-+	spin_unlock_bh(&pds->gc_lock);
-+
-+	synchronize_rcu();
-+
-+	hlist_for_each_entry_safe(pdc, tmp, &deleted_head, gc_node)
-+		uet_pdc_free(pdc);
-+}
-+
-+static void uet_pds_pdc_gc_work(struct work_struct *work)
-+{
-+	struct uet_pds *pds = container_of(work, struct uet_pds, pdc_gc_work);
-+
-+	uet_pds_pdc_gc_flush(pds);
-+}
-+
-+void uet_pds_pdc_gc_queue(struct uet_pdc *pdc)
-+{
-+	struct uet_pds *pds = pdc->pds;
-+
-+	spin_lock_bh(&pds->gc_lock);
-+	if (hlist_unhashed(&pdc->gc_node))
-+		hlist_add_head(&pdc->gc_node, &pds->pdc_gc_list);
-+	spin_unlock_bh(&pds->gc_lock);
-+
-+	queue_work(system_long_wq, &pds->pdc_gc_work);
-+}
-+
-+int uet_pds_init(struct uet_pds *pds)
-+{
-+	int ret;
-+
-+	spin_lock_init(&pds->gc_lock);
-+	INIT_HLIST_HEAD(&pds->pdc_gc_list);
-+	INIT_WORK(&pds->pdc_gc_work, uet_pds_pdc_gc_work);
-+
-+	ret = rhashtable_init(&pds->pdcid_hash, &uet_pds_pdcid_rht_params);
-+	if (ret)
-+		goto err_pdcid_hash;
-+
-+	ret = rhashtable_init(&pds->pdcep_hash, &uet_pds_pdcep_rht_params);
-+	if (ret)
-+		goto err_pdcep_hash;
++	if (!timer_pending(&pdc->rtx_timer))
++		mod_timer(&pdc->rtx_timer, jiffies +
++					   UET_PDC_RTX_DEFAULT_TIMEOUT_JIFFIES);
 +
 +	return 0;
++}
 +
-+err_pdcep_hash:
-+	rhashtable_destroy(&pds->pdcid_hash);
-+err_pdcid_hash:
+ /* use the approach as nf nat, try a few rounds starting at random offset */
+ static bool uet_pdc_id_get(struct uet_pdc *pdc)
+ {
+@@ -69,7 +254,7 @@ struct uet_pdc *uet_pdc_create(struct uet_pds *pds, u32 rx_base_psn, u8 state,
+ 	pdc->pds = pds;
+ 	pdc->mode = mode;
+ 	pdc->is_initiator = !is_inbound;
+-
++	pdc->rtx_queue = RB_ROOT;
+ 	if (!uet_pdc_id_get(pdc))
+ 		goto err_id_get;
+ 
+@@ -83,9 +268,13 @@ struct uet_pdc *uet_pdc_create(struct uet_pds *pds, u32 rx_base_psn, u8 state,
+ 	pdc->rx_bitmap = bitmap_zalloc(UET_PDC_MPR, GFP_ATOMIC);
+ 	if (!pdc->rx_bitmap)
+ 		goto err_rx_bitmap;
++	pdc->tx_bitmap = bitmap_zalloc(UET_PDC_MPR, GFP_ATOMIC);
++	if (!pdc->tx_bitmap)
++		goto err_tx_bitmap;
+ 	pdc->ack_bitmap = bitmap_zalloc(UET_PDC_MPR, GFP_ATOMIC);
+ 	if (!pdc->ack_bitmap)
+ 		goto err_ack_bitmap;
++	timer_setup(&pdc->rtx_timer, uet_pdc_rtx_timer_expired, 0);
+ 	pdc->metadata = __ip_tun_set_dst(key->src_ip, key->dst_ip, tos, 0, dport,
+ 					 md_flags, 0, 0);
+ 	if (!pdc->metadata)
+@@ -124,6 +313,8 @@ struct uet_pdc *uet_pdc_create(struct uet_pds *pds, u32 rx_base_psn, u8 state,
+ err_tun_dst:
+ 	bitmap_free(pdc->ack_bitmap);
+ err_ack_bitmap:
++	bitmap_free(pdc->tx_bitmap);
++err_tx_bitmap:
+ 	bitmap_free(pdc->rx_bitmap);
+ err_rx_bitmap:
+ 	uet_pds_pdcid_remove(pdc);
+@@ -135,8 +326,11 @@ struct uet_pdc *uet_pdc_create(struct uet_pds *pds, u32 rx_base_psn, u8 state,
+ 
+ void uet_pdc_free(struct uet_pdc *pdc)
+ {
++	timer_delete_sync(&pdc->rtx_timer);
++	uet_pdc_rtx_purge(pdc);
+ 	dst_release(&pdc->metadata->dst);
+ 	bitmap_free(pdc->ack_bitmap);
++	bitmap_free(pdc->tx_bitmap);
+ 	bitmap_free(pdc->rx_bitmap);
+ 	kfree(pdc);
+ }
+@@ -148,6 +342,53 @@ void uet_pdc_destroy(struct uet_pdc *pdc)
+ 	uet_pds_pdc_gc_queue(pdc);
+ }
+ 
++static s64 uet_pdc_get_psn(struct uet_pdc *pdc)
++{
++	unsigned long fzb = find_first_zero_bit(pdc->tx_bitmap, UET_PDC_MPR);
++
++	if (unlikely(fzb == UET_PDC_MPR))
++		return -1;
++
++	set_bit(fzb, pdc->tx_bitmap);
++
++	return pdc->tx_base_psn + fzb;
++}
++
++static void uet_pdc_put_psn(struct uet_pdc *pdc, u32 psn)
++{
++	unsigned long psn_bit = psn - pdc->tx_base_psn;
++
++	clear_bit(psn_bit, pdc->tx_bitmap);
++}
++
++static int uet_pdc_build_req(struct uet_pdc *pdc,
++			     struct sk_buff *skb, u8 type, u8 flags)
++{
++	struct uet_pds_req_hdr *req;
++	s64 psn;
++
++	req = skb_push(skb, sizeof(*req));
++	uet_pdc_build_prologue(&req->prologue, type,
++			       UET_PDS_NEXT_HDR_REQ_STD, flags);
++	switch (pdc->state) {
++	case UET_PDC_EP_STATE_CLOSED:
++		pdc->psn_start = get_random_u32();
++		pdc->tx_base_psn = pdc->psn_start;
++		pdc->rx_base_psn = pdc->psn_start;
++		break;
++	}
++
++	psn = uet_pdc_get_psn(pdc);
++	if (unlikely(psn == -1))
++		return -ENOSPC;
++	UET_SKB_CB(skb)->psn = psn;
++	req->psn = cpu_to_be32(psn);
++	req->spdcid = cpu_to_be16(pdc->spdcid);
++	req->dpdcid = cpu_to_be16(pdc->dpdcid);
++
++	return 0;
++}
++
+ static void pdc_build_ack(struct uet_pdc *pdc, struct sk_buff *skb, u32 psn,
+ 			  u8 ack_flags, bool exact_psn)
+ {
+@@ -200,15 +441,65 @@ static int uet_pdc_send_ses_ack(struct uet_pdc *pdc, __u8 ses_rc, __be16 msg_id,
+ 	return 0;
+ }
+ 
+-static void uet_pdc_mpr_advance_tx(struct uet_pdc *pdc, u32 bits)
++int uet_pdc_tx_req(struct uet_pdc *pdc, struct sk_buff *skb, u8 type)
+ {
+-	if (!test_bit(0, pdc->ack_bitmap))
+-		return;
++	struct uet_pds_req_hdr *req;
++	int ret = 0;
+ 
+-	bitmap_shift_right(pdc->ack_bitmap, pdc->ack_bitmap, bits, UET_PDC_MPR);
+-	pdc->tx_base_psn += bits;
+-	netdev_dbg(pds_netdev(pdc->pds), "%s: advancing tx to %u\n", __func__,
+-		   pdc->tx_base_psn);
++	spin_lock_bh(&pdc->lock);
++	if (pdc->tx_busy) {
++		ret = -EBUSY;
++		goto out_unlock;
++	}
++
++	switch (pdc->state) {
++	case UET_PDC_EP_STATE_CLOSED:
++		ret = uet_pdc_build_req(pdc, skb, type, UET_PDS_REQ_FLAG_SYN);
++		if (ret)
++			goto out_unlock;
++		req = (struct uet_pds_req_hdr *)skb->data;
++		ret = uet_pdc_rtx_queue(pdc, skb, be32_to_cpu(req->psn));
++		if (ret) {
++			uet_pdc_put_psn(pdc, be32_to_cpu(req->psn));
++			goto out_unlock;
++		}
++		pdc->state = UET_PDC_EP_STATE_SYN_SENT;
++		pdc->tx_busy = true;
++		break;
++	case UET_PDC_EP_STATE_SYN_SENT:
++		break;
++	case UET_PDC_EP_STATE_ESTABLISHED:
++		ret = uet_pdc_build_req(pdc, skb, type, 0);
++		if (ret)
++			goto out_unlock;
++		req = (struct uet_pds_req_hdr *)skb->data;
++		ret = uet_pdc_rtx_queue(pdc, skb, be32_to_cpu(req->psn));
++		if (ret) {
++			uet_pdc_put_psn(pdc, be32_to_cpu(req->psn));
++			goto out_unlock;
++		}
++		break;
++	case UET_PDC_EP_STATE_QUIESCE:
++		break;
++	case UET_PDC_EP_STATE_ACK_WAIT:
++		break;
++	case UET_PDC_EP_STATE_CLOSE_ACK_WAIT:
++		break;
++	default:
++		WARN_ON(1);
++	}
++
++out_unlock:
++	netdev_dbg(pds_netdev(pdc->pds), "%s: tx_busy: %u pdc: [ tx_base_psn: %u"
++				  " state: %u dpdcid: %u spdcid: %u ] proto 0x%x\n",
++		   __func__, pdc->tx_busy, pdc->tx_base_psn, pdc->state,
++		   pdc->dpdcid, pdc->spdcid, ntohs(skb->protocol));
++	spin_unlock_bh(&pdc->lock);
++
++	if (!ret)
++		uet_pdc_xmit(pdc, skb);
++
 +	return ret;
+ }
+ 
+ int uet_pdc_rx_ack(struct uet_pdc *pdc, struct sk_buff *skb,
+@@ -221,6 +512,7 @@ int uet_pdc_rx_ack(struct uet_pdc *pdc, struct sk_buff *skb,
+ 	u32 cack_psn = be32_to_cpu(ack->cack_psn);
+ 	u32 ack_psn = cack_psn + ack_psn_offset;
+ 	int ret = -EINVAL;
++	bool ecn_marked;
+ 	u32 psn_bit;
+ 
+ 	spin_lock(&pdc->lock);
+@@ -237,7 +529,7 @@ int uet_pdc_rx_ack(struct uet_pdc *pdc, struct sk_buff *skb,
+ 		goto err_dbg;
+ 
+ 	psn_bit = ack_psn - pdc->tx_base_psn;
+-	if (!psn_bit_valid(psn_bit)) {
++	if (!psn_bit_valid(psn_bit) || !test_bit(psn_bit, pdc->tx_bitmap)) {
+ 		drop_reason = "ack_psn bit is invalid";
+ 		goto err_dbg;
+ 	}
+@@ -252,6 +544,8 @@ int uet_pdc_rx_ack(struct uet_pdc *pdc, struct sk_buff *skb,
+ 	/* we can advance only if the oldest pkt got acked */
+ 	if (!psn_bit)
+ 		uet_pdc_mpr_advance_tx(pdc, 1);
++	ecn_marked = !!(uet_prologue_flags(&ack->prologue) & UET_PDS_ACK_FLAG_M);
++	uet_pdc_ack_psn(pdc, skb, ack_psn, ecn_marked);
+ 
+ 	ret = 0;
+ 	switch (pdc->state) {
+diff --git a/drivers/ultraeth/uet_pds.c b/drivers/ultraeth/uet_pds.c
+index abc576e5b6e7..7efb634de85f 100644
+--- a/drivers/ultraeth/uet_pds.c
++++ b/drivers/ultraeth/uet_pds.c
+@@ -290,3 +290,60 @@ int uet_pds_rx(struct uet_pds *pds, struct sk_buff *skb, __be32 local_fep_addr,
+ 
+ 	return ret;
+ }
++
++static struct uet_pdc *uet_pds_new_pdc_tx(struct uet_pds *pds,
++					  struct sk_buff *skb,
++					  __be16 dport,
++					  struct uet_pdc_key *key,
++					  u8 mode, u8 state)
++{
++	struct uet_ses_req_hdr *ses_req = (struct uet_ses_req_hdr *)skb->data;
++
++	return uet_pdc_create(pds, 0, state, 0,
++			      uet_ses_req_pid_on_fep(ses_req),
++			      mode, 0, dport, key, false);
 +}
 +
-+struct uet_pdc *uet_pds_pdcep_insert(struct uet_pdc *pdc)
++int uet_pds_tx(struct uet_pds *pds, struct sk_buff *skb, __be32 local_fep_addr,
++	       __be32 remote_fep_addr, __be16 dport, u32 job_id)
 +{
-+	struct uet_pds *pds = pdc->pds;
-+
-+	return rhashtable_lookup_get_insert_fast(&pds->pdcep_hash,
-+						 &pdc->pdcep_node,
-+						 uet_pds_pdcep_rht_params);
-+}
-+
-+void uet_pds_pdcep_remove(struct uet_pdc *pdc)
-+{
-+	struct uet_pds *pds = pdc->pds;
-+
-+	rhashtable_remove_fast(&pds->pdcep_hash, &pdc->pdcep_node,
-+			       uet_pds_pdcep_rht_params);
-+}
-+
-+int uet_pds_pdcid_insert(struct uet_pdc *pdc)
-+{
-+	struct uet_pds *pds = pdc->pds;
-+
-+	return rhashtable_insert_fast(&pds->pdcid_hash, &pdc->pdcid_node,
-+				      uet_pds_pdcid_rht_params);
-+}
-+
-+void uet_pds_pdcid_remove(struct uet_pdc *pdc)
-+{
-+	struct uet_pds *pds = pdc->pds;
-+
-+	rhashtable_remove_fast(&pds->pdcid_hash, &pdc->pdcid_node,
-+			       uet_pds_pdcid_rht_params);
-+}
-+
-+static void uet_pds_pdcep_hash_free(void *ptr, void *arg)
-+{
-+	struct uet_pdc *pdc = ptr;
-+
-+	uet_pdc_destroy(pdc);
-+}
-+
-+void uet_pds_uninit(struct uet_pds *pds)
-+{
-+	rhashtable_free_and_destroy(&pds->pdcep_hash, uet_pds_pdcep_hash_free, NULL);
-+	/* the above call should also release all PDC ids */
-+	WARN_ON(atomic_read(&pds->pdcid_hash.nelems));
-+	rhashtable_destroy(&pds->pdcid_hash);
-+	uet_pds_pdc_gc_flush(pds);
-+	cancel_work_sync(&pds->pdc_gc_work);
-+	rcu_barrier();
-+}
-+
-+void uet_pds_clean_job(struct uet_pds *pds, u32 job_id)
-+{
-+	struct rhashtable_iter iter;
++	struct uet_ses_req_hdr *ses_req = (struct uet_ses_req_hdr *)skb->data;
++	u32 req_job_id = uet_ses_req_job_id(ses_req);
++	struct uet_pdc_key key = {};
 +	struct uet_pdc *pdc;
 +
-+	rhashtable_walk_enter(&pds->pdcid_hash, &iter);
-+	rhashtable_walk_start(&iter);
-+	while ((pdc = rhashtable_walk_next(&iter))) {
-+		if (pdc->key.job_id == job_id)
-+			uet_pdc_destroy(pdc);
-+	}
-+	rhashtable_walk_stop(&iter);
-+	rhashtable_walk_exit(&iter);
-+}
-+
-+int uet_pds_rx(struct uet_pds *pds, struct sk_buff *skb, __be32 local_fep_addr,
-+	       __be32 remote_fep_addr, __be16 dport, __u8 tos)
-+{
-+	if (!pskb_may_pull(skb, sizeof(struct uet_prologue_hdr)))
++	/* sending with wrong SES header job id? */
++	if (unlikely(job_id != req_job_id))
 +		return -EINVAL;
 +
-+	return 0;
++	key.src_ip = local_fep_addr;
++	key.dst_ip = remote_fep_addr;
++	key.job_id = job_id;
++
++	pdc = rhashtable_lookup_fast(&pds->pdcep_hash, &key,
++				     uet_pds_pdcep_rht_params);
++	/* new flow */
++	if (unlikely(!pdc)) {
++		struct uet_context *ctx;
++		struct uet_job *job;
++		struct uet_fep *fep;
++
++		ctx = container_of(pds, struct uet_context, pds);
++		job = uet_job_find(&ctx->job_reg, key.job_id);
++		if (!job)
++			return -ENOENT;
++		fep = rcu_dereference(job->fep);
++		if (!fep)
++			return -ECONNREFUSED;
++
++		pdc = uet_pds_new_pdc_tx(pds, skb, dport, &key,
++					 UET_PDC_MODE_RUD,
++					 UET_PDC_EP_STATE_CLOSED);
++		if (IS_ERR(pdc))
++			return PTR_ERR(pdc);
++	}
++
++	__net_timestamp(skb);
++
++	return uet_pdc_tx_req(pdc, skb, UET_PDS_TYPE_RUD_REQ);
 +}
-diff --git a/include/net/ultraeth/uet_context.h b/include/net/ultraeth/uet_context.h
-index 8210f69a1571..76077df3bce6 100644
---- a/include/net/ultraeth/uet_context.h
-+++ b/include/net/ultraeth/uet_context.h
-@@ -10,6 +10,7 @@
- #include <linux/refcount.h>
- #include <linux/wait.h>
- #include <net/ultraeth/uet_job.h>
-+#include <net/ultraeth/uet_pds.h>
+diff --git a/include/net/ultraeth/uet_pdc.h b/include/net/ultraeth/uet_pdc.h
+index 1a42647489fe..261afc57ffe1 100644
+--- a/include/net/ultraeth/uet_pdc.h
++++ b/include/net/ultraeth/uet_pdc.h
+@@ -13,6 +13,12 @@
  
- struct uet_context {
- 	int id;
-@@ -19,6 +20,7 @@ struct uet_context {
+ #define UET_PDC_ID_MAX_ATTEMPTS 128
+ #define UET_PDC_MAX_ID U16_MAX
++#define UET_PDC_RTX_DEFAULT_TIMEOUT_SEC 30
++#define UET_PDC_RTX_DEFAULT_TIMEOUT_JIFFIES (UET_PDC_RTX_DEFAULT_TIMEOUT_SEC * \
++					     HZ)
++#define UET_PDC_RTX_DEFAULT_TIMEOUT_NSEC (UET_PDC_RTX_DEFAULT_TIMEOUT_SEC * \
++					  NSEC_PER_SEC)
++#define UET_PDC_RTX_DEFAULT_MAX 3
+ #define UET_PDC_MPR 128
  
- 	struct net_device *netdev;
- 	struct uet_job_registry job_reg;
-+	struct uet_pds pds;
+ #define UET_SKB_CB(skb)       ((struct uet_skb_cb *)&((skb)->cb[0]))
+@@ -20,6 +26,7 @@
+ struct uet_skb_cb {
+ 	u32 psn;
+ 	__be32 remote_fep_addr;
++	u8 rtx_attempts;
  };
  
- struct uet_context *uet_context_get_by_id(int id);
-@@ -27,4 +29,16 @@ void uet_context_put(struct uet_context *ses_pl);
- int uet_context_create(int id);
- bool uet_context_destroy(int id);
- void uet_context_destroy_all(void);
-+
-+static inline struct uet_context *pds_context(const struct uet_pds *pds)
-+{
-+	return container_of(pds, struct uet_context, pds);
-+}
-+
-+static inline struct net_device *pds_netdev(const struct uet_pds *pds)
-+{
-+	struct uet_context *ctx = pds_context(pds);
-+
-+	return ctx->netdev;
-+}
- #endif /* _UET_CONTEXT_H */
-diff --git a/include/net/ultraeth/uet_pdc.h b/include/net/ultraeth/uet_pdc.h
-new file mode 100644
-index 000000000000..70f3c6aa03df
---- /dev/null
-+++ b/include/net/ultraeth/uet_pdc.h
-@@ -0,0 +1,79 @@
-+/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
-+
-+#ifndef _UECON_PDC_H
-+#define _UECON_PDC_H
-+
-+#include <linux/rhashtable.h>
-+#include <linux/rcupdate.h>
-+#include <linux/spinlock.h>
-+#include <linux/limits.h>
-+#include <linux/refcount.h>
-+#include <net/dst.h>
-+#include <net/dst_metadata.h>
-+
-+#define UET_PDC_ID_MAX_ATTEMPTS 128
-+#define UET_PDC_MAX_ID U16_MAX
-+#define UET_PDC_MPR 128
-+
-+#define UET_SKB_CB(skb)       ((struct uet_skb_cb *)&((skb)->cb[0]))
-+
-+struct uet_skb_cb {
-+	u32 psn;
-+	__be32 remote_fep_addr;
-+};
-+
-+enum {
-+	UET_PDC_EP_STATE_CLOSED,
-+	UET_PDC_EP_STATE_SYN_SENT,
-+	UET_PDC_EP_STATE_NEW_ESTABLISHED,
-+	UET_PDC_EP_STATE_ESTABLISHED,
-+	UET_PDC_EP_STATE_QUIESCE,
-+	UET_PDC_EP_STATE_ACK_WAIT,
-+	UET_PDC_EP_STATE_CLOSE_ACK_WAIT
-+};
-+
-+struct uet_pdc_key {
-+	__be32 src_ip;
-+	__be32 dst_ip;
-+	u32 job_id;
-+};
-+
-+enum {
-+	UET_PDC_MODE_ROD,
-+	UET_PDC_MODE_RUD,
-+	UET_PDC_MODE_RUDI,
-+	UET_PDC_MODE_UUD
-+};
-+
-+struct uet_pdc {
-+	struct rhash_head pdcid_node;
-+	struct rhash_head pdcep_node;
-+	struct uet_pdc_key key;
-+	struct uet_pds *pds;
-+
-+	struct metadata_dst *metadata;
-+
-+	spinlock_t lock;
-+	u32 psn_start;
-+	u16 state;
-+	u16 spdcid;
-+	u16 dpdcid;
-+	u16 pid_on_fep;
-+	u8 tx_busy;
-+	u8 mode;
-+	bool is_initiator;
-+
-+	u32 rx_base_psn;
-+	u32 tx_base_psn;
-+
-+	struct hlist_node gc_node;
-+	struct rcu_head rcu;
-+};
-+
-+struct uet_pdc *uet_pdc_create(struct uet_pds *pds, u32 rx_base_psn, u8 state,
-+			       u16 dpdcid, u16 pid_on_fep, u8 mode,
-+			       u8 tos, __be16 dport,
-+			       const struct uet_pdc_key *key, bool is_inbound);
-+void uet_pdc_destroy(struct uet_pdc *pdc);
-+void uet_pdc_free(struct uet_pdc *pdc);
-+#endif /* _UECON_PDC_H */
-diff --git a/include/net/ultraeth/uet_pds.h b/include/net/ultraeth/uet_pds.h
-new file mode 100644
-index 000000000000..43f5748a318a
---- /dev/null
-+++ b/include/net/ultraeth/uet_pds.h
-@@ -0,0 +1,93 @@
-+/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
-+
-+#ifndef _UECON_PDS_H
-+#define _UECON_PDS_H
-+
-+#include <linux/types.h>
-+#include <linux/rhashtable.h>
-+#include <uapi/linux/ultraeth.h>
-+#include <linux/skbuff.h>
-+
-+/**
-+ * struct uet_pds - Packet Delivery Sublayer state structure
-+ *
-+ * @pdcep_hash: a hash table mapping <dst ip, job id, pid on fep> to struct PDC
-+ * @pdcid_hash: a hash table mapping PDC id to struct PDC
-+ *
-+ * @pdcep_hash is used in fast path to find the assigned PDC, @pdcid_hash
-+ * is used when allocating a new PDC
-+ */
-+struct uet_pds {
-+	struct rhashtable pdcep_hash;
-+	struct rhashtable pdcid_hash;
-+
-+	spinlock_t gc_lock;
-+	struct hlist_head pdc_gc_list;
-+	struct work_struct pdc_gc_work;
-+};
-+
-+struct uet_pdc *uet_pds_pdcep_insert(struct uet_pdc *pdc);
-+void uet_pds_pdcep_remove(struct uet_pdc *pdc);
-+
-+int uet_pds_pdcid_insert(struct uet_pdc *pdc);
-+void uet_pds_pdcid_remove(struct uet_pdc *pdc);
-+
-+int uet_pds_init(struct uet_pds *pds);
-+void uet_pds_uninit(struct uet_pds *pds);
-+
-+void uet_pds_pdc_gc_queue(struct uet_pdc *pdc);
-+void uet_pds_clean_job(struct uet_pds *pds, u32 job_id);
-+
-+int uet_pds_rx(struct uet_pds *pds, struct sk_buff *skb, __be32 local_fep_addr,
-+	       __be32 remote_fep_addr, __be16 dport, __u8 tos);
-+
-+static inline struct uet_prologue_hdr *pds_prologue_hdr(const struct sk_buff *skb)
-+{
-+	return (struct uet_prologue_hdr *)skb_network_header(skb);
-+}
-+
-+static inline struct uet_pds_req_hdr *pds_req_hdr(const struct sk_buff *skb)
-+{
-+	return (struct uet_pds_req_hdr *)skb_network_header(skb);
-+}
-+
-+static inline struct uet_pds_ack_hdr *pds_ack_hdr(const struct sk_buff *skb)
-+{
-+	return (struct uet_pds_ack_hdr *)skb_network_header(skb);
-+}
-+
-+static inline struct uet_pds_nack_hdr *pds_nack_hdr(const struct sk_buff *skb)
-+{
-+	return (struct uet_pds_nack_hdr *)skb_network_header(skb);
-+}
-+
-+static inline struct uet_pds_ack_ext_hdr *pds_ack_ext_hdr(const struct sk_buff *skb)
-+{
-+	return (struct uet_pds_ack_ext_hdr *)(pds_ack_hdr(skb) + 1);
-+}
-+
-+static inline struct uet_ses_rsp_hdr *pds_ack_ses_rsp_hdr(const struct sk_buff *skb)
-+{
-+	/* TODO: ack_ext_hdr, CC_STATE, etc. */
-+	return (struct uet_ses_rsp_hdr *)(pds_ack_hdr(skb) + 1);
-+}
-+
-+static inline struct uet_ses_req_hdr *pds_req_ses_req_hdr(const struct sk_buff *skb)
-+{
-+	/* TODO: ack_ext_hdr, CC_STATE, etc. */
-+	return (struct uet_ses_req_hdr *)(pds_req_hdr(skb) + 1);
-+}
-+
-+static inline __be16 pds_ses_rsp_hdr_pack(__u8 opcode, __u8 version, __u8 list,
-+					  __u8 ses_rc)
-+{
-+	return cpu_to_be16((opcode & UET_SES_RSP_OPCODE_MASK) <<
-+			   UET_SES_RSP_OPCODE_SHIFT |
-+			   (version & UET_SES_RSP_VERSION_MASK) <<
-+			   UET_SES_RSP_VERSION_SHIFT |
-+			   (list & UET_SES_RSP_LIST_MASK) <<
-+			   UET_SES_RSP_LIST_SHIFT |
-+			   (ses_rc & UET_SES_RSP_RC_MASK) <<
-+			   UET_SES_RSP_RC_SHIFT);
-+}
-+#endif /* _UECON_PDS_H */
-diff --git a/include/uapi/linux/ultraeth.h b/include/uapi/linux/ultraeth.h
-index a4ac25455aa0..6f3ee5ac8cf4 100644
---- a/include/uapi/linux/ultraeth.h
-+++ b/include/uapi/linux/ultraeth.h
-@@ -9,6 +9,360 @@
- #define UET_DEFAULT_PORT 5432
- #define UET_SVC_MAX_LEN 64
- 
-+/* types used for prologue's type field */
-+enum {
-+	UET_PDS_TYPE_RSVD0,
-+	UET_PDS_TYPE_ENC_HDR,
-+	UET_PDS_TYPE_RUD_REQ,
-+	UET_PDS_TYPE_ROD_REQ,
-+	UET_PDS_TYPE_RUDI_REQ,
-+	UET_PDS_TYPE_RUDI_RESPONSE,
-+	UET_PDS_TYPE_UUD_REQ,
-+	UET_PDS_TYPE_ACK,
-+	UET_PDS_TYPE_ACK_CC,
-+	UET_PDS_TYPE_ACK_CCX,
-+	UET_PDS_TYPE_NACK,
-+	UET_PDS_TYPE_CTRL_MSG
-+};
-+
-+/* ctl_type when type is UET_PDS_CTRL_MSG (control message) */
-+enum {
-+	UET_CTL_TYPE_NOOP,
-+	UET_CTL_TYPE_REQ_ACK,
-+	UET_CTL_TYPE_CLEAR,
-+	UET_CTL_TYPE_REQ_CLEAR,
-+	UET_CTL_TYPE_CLOSE,
-+	UET_CTL_TYPE_REQ_CLOSE,
-+	UET_CTL_TYPE_PROBE,
-+	UET_CTL_TYPE_CREDIT,
-+	UET_CTL_TYPE_REQ_CREDIT
-+};
-+
-+/* next header, 0x06-0x0E reserved */
-+enum {
-+	UET_PDS_NEXT_HDR_NONE		= 0x00,
-+	UET_PDS_NEXT_HDR_REQ_SMALL	= 0x01,
-+	UET_PDS_NEXT_HDR_REQ_MEDIUM	= 0x02,
-+	UET_PDS_NEXT_HDR_REQ_STD	= 0x03,
-+	UET_PDS_NEXT_HDR_RSP		= 0x04,
-+	UET_PDS_NEXT_HDR_RSP_DATA	= 0x05,
-+	UET_PDS_NEXT_HDR_RSP_DATA_SMALL	= 0x06,
-+	UET_PDS_NEXT_HDR_PDS		= 0x0F,
-+};
-+
-+/* fields(union): type_next_flags, type_ctl_flags  */
-+#define UET_PROLOGUE_FLAGS_BITS 7
-+#define UET_PROLOGUE_FLAGS_MASK 0x7f
-+#define UET_PROLOGUE_NEXT_BITS 4
-+#define UET_PROLOGUE_NEXT_MASK 0x0f
-+#define UET_PROLOGUE_NEXT_SHIFT UET_PROLOGUE_FLAGS_BITS
-+#define UET_PROLOGUE_CTL_BITS UET_PROLOGUE_NEXT_BITS
-+#define UET_PROLOGUE_CTL_SHIFT UET_PROLOGUE_NEXT_SHIFT
-+#define UET_PROLOGUE_CTL_MASK UET_PROLOGUE_NEXT_MASK
-+#define UET_PROLOGUE_TYPE_BITS 5
-+#define UET_PROLOGUE_TYPE_MASK 0x1f
-+#define UET_PROLOGUE_TYPE_SHIFT (UET_PROLOGUE_NEXT_SHIFT + UET_PROLOGUE_NEXT_BITS)
-+struct uet_prologue_hdr {
-+	union {
-+		__be16 type_next_flags;
-+		__be16 type_ctl_flags;
-+	};
-+} __attribute__ ((__packed__));
-+
-+static inline __u8 uet_prologue_flags(const struct uet_prologue_hdr *hdr)
-+{
-+	return __be16_to_cpu(hdr->type_next_flags) & UET_PROLOGUE_FLAGS_MASK;
-+}
-+
-+static inline __u8 uet_prologue_next_hdr(const struct uet_prologue_hdr *hdr)
-+{
-+	return (__be16_to_cpu(hdr->type_next_flags) >> UET_PROLOGUE_NEXT_SHIFT) &
-+	       UET_PROLOGUE_NEXT_MASK;
-+}
-+
-+static inline __u8 uet_prologue_ctl_type(const struct uet_prologue_hdr *hdr)
-+{
-+	return (__be16_to_cpu(hdr->type_ctl_flags) >> UET_PROLOGUE_CTL_SHIFT) &
-+	       UET_PROLOGUE_CTL_MASK;
-+}
-+
-+static inline __u8 uet_prologue_type(const struct uet_prologue_hdr *hdr)
-+{
-+	return (__be16_to_cpu(hdr->type_next_flags) >> UET_PROLOGUE_TYPE_SHIFT) &
-+	       UET_PROLOGUE_TYPE_MASK;
-+}
-+
-+/* rud/rod request flags */
-+enum {
-+	UET_PDS_REQ_FLAG_RSV2	= (1 << 0),
-+	UET_PDS_REQ_FLAG_CC	= (1 << 1),
-+	UET_PDS_REQ_FLAG_SYN	= (1 << 2),
-+	UET_PDS_REQ_FLAG_AR	= (1 << 3),
-+	UET_PDS_REQ_FLAG_RETX	= (1 << 4),
-+	UET_PDS_REQ_FLAG_RSV	= (1 << 5),
-+	UET_PDS_REQ_FLAG_CRC	= (1 << 6),
-+};
-+
-+/* field: pdc_mode_psn_offset */
-+#define UET_PDS_REQ_PSN_OFF_BITS 12
-+#define UET_PDS_REQ_PSN_OFF_MASK 0xff1
-+#define UET_PDS_REQ_MODE_BITS 4
-+#define UET_PDS_REQ_MODE_MASK 0xf
-+#define UET_PDS_REQ_MODE_SHIFT UET_PDS_REQ_PSN_OFF_BITS
-+struct uet_pds_req_hdr {
-+	struct uet_prologue_hdr prologue;
-+	__be16 clear_psn_offset;
-+	__be32 psn;
-+	__be16 spdcid;
-+	union {
-+		__be16 pdc_mode_psn_offset;
-+		__be16 dpdcid;
-+	};
-+} __attribute__ ((__packed__));
-+
-+static inline __u16 uet_pds_request_psn_offset(const struct uet_pds_req_hdr *req)
-+{
-+	return __be16_to_cpu(req->pdc_mode_psn_offset) & UET_PDS_REQ_PSN_OFF_MASK;
-+}
-+
-+static inline __u8 uet_pds_request_pdc_mode(const struct uet_pds_req_hdr *req)
-+{
-+	return (__be16_to_cpu(req->pdc_mode_psn_offset) >> UET_PDS_REQ_MODE_SHIFT) &
-+	       UET_PDS_REQ_MODE_MASK;
-+}
-+
-+/* rud/rod ack flags */
-+enum {
-+	UET_PDS_ACK_FLAG_RSVD	= (1 << 0),
-+	UET_PDS_ACK_FLAG_REQ1	= (1 << 1),
-+	UET_PDS_ACK_FLAG_REQ2	= (1 << 2),
-+	UET_PDS_ACK_FLAG_P	= (1 << 3),
-+	UET_PDS_ACK_FLAG_RETX	= (1 << 4),
-+	UET_PDS_ACK_FLAG_M	= (1 << 5),
-+	UET_PDS_ACK_FLAG_CRC	= (1 << 6)
-+};
-+
-+struct uet_pds_ack_hdr {
-+	struct uet_prologue_hdr prologue;
-+	__be16 ack_psn_offset;
-+	__be32 cack_psn;
-+	__be16 spdcid;
-+	__be16 dpdcid;
-+} __attribute__ ((__packed__));
-+
-+/* ses request op codes */
-+enum {
-+	UET_SES_REQ_OP_NOOP			= 0x00,
-+	UET_SES_REQ_OP_WRITE			= 0x01,
-+	UET_SES_REQ_OP_READ			= 0x02,
-+	UET_SES_REQ_OP_ATOMIC			= 0x03,
-+	UET_SES_REQ_OP_FETCHING_ATOMIC		= 0x04,
-+	UET_SES_REQ_OP_SEND			= 0x05,
-+	UET_SES_REQ_OP_RENDEZVOUS_SEND		= 0x06,
-+	UET_SES_REQ_OP_DGRAM_SEND		= 0x07,
-+	UET_SES_REQ_OP_DEFERRABLE_SEND		= 0x08,
-+	UET_SES_REQ_OP_TAGGED_SEND		= 0x09,
-+	UET_SES_REQ_OP_RENDEZVOUS_TSEND		= 0x0A,
-+	UET_SES_REQ_OP_DEFERRABLE_TSEND		= 0x0B,
-+	UET_SES_REQ_OP_DEFERRABLE_RTR		= 0x0C,
-+	UET_SES_REQ_OP_TSEND_ATOMIC		= 0x0D,
-+	UET_SES_REQ_OP_TSEND_FETCH_ATOMIC	= 0x0E,
-+	UET_SES_REQ_OP_MSG_ERROR		= 0x0F,
-+	UET_SES_REQ_OP_INC_PUSH			= 0x10,
-+};
-+
-+enum {
-+	UET_SES_REQ_FLAG_SOM		= (1 << 0),
-+	UET_SES_REQ_FLAG_EOM		= (1 << 1),
-+	UET_SES_REQ_FLAG_HD		= (1 << 2),
-+	UET_SES_REQ_FLAG_RELATIVE	= (1 << 3),
-+	UET_SES_REQ_FLAG_IE		= (1 << 4),
-+	UET_SES_REQ_FLAG_DC		= (1 << 5)
-+};
-+
-+/* field: resv_opcode */
-+#define UET_SES_REQ_OPCODE_MASK 0x3f
-+/* field: flags */
-+#define UET_SES_REQ_FLAGS_MASK 0x3f
-+#define UET_SES_REQ_FLAGS_VERSION_MASK 0x3
-+#define UET_SES_REQ_FLAGS_VERSION_SHIFT 6
-+/* field: resv_idx */
-+#define UET_SES_REQ_INDEX_MASK 0xfff
-+/* field: idx_gen_job_id */
-+#define UET_SES_REQ_JOB_ID_BITS 24
-+#define UET_SES_REQ_JOB_ID_MASK 0xffffff
-+#define UET_SES_REQ_INDEX_GEN_MASK 0xff
-+#define UET_SES_REQ_INDEX_GEN_SHIFT UET_SES_REQ_JOB_ID_BITS
-+/* field: resv_pid_on_fep */
-+#define UET_SES_REQ_PID_ON_FEP_MASK 0xfff
-+struct uet_ses_req_hdr {
-+	__u8 resv_opcode;
-+	__u8 flags;
-+	__be16 msg_id;
-+	__be32 idx_gen_job_id;
-+	__be16 resv_pid_on_fep;
-+	__be16 resv_idx;
-+	__be64 buffer_offset;
-+	__be32 initiator;
-+	__be64 match_bits;
-+	__be64 header_data;
-+	__be32 request_len;
-+} __attribute__ ((__packed__));
-+
-+static inline __u8 uet_ses_req_opcode(const struct uet_ses_req_hdr *sreq)
-+{
-+	return sreq->resv_opcode & UET_SES_REQ_OPCODE_MASK;
-+}
-+
-+static inline __u8 uet_ses_req_flags(const struct uet_ses_req_hdr *sreq)
-+{
-+	return sreq->flags & UET_SES_REQ_FLAGS_MASK;
-+}
-+
-+static inline __u8 uet_ses_req_version(const struct uet_ses_req_hdr *sreq)
-+{
-+	return (sreq->flags >> UET_SES_REQ_FLAGS_VERSION_SHIFT) &
-+	       UET_SES_REQ_FLAGS_VERSION_MASK;
-+}
-+
-+static inline __u16 uet_ses_req_index(const struct uet_ses_req_hdr *sreq)
-+{
-+	return __be16_to_cpu(sreq->resv_idx) & UET_SES_REQ_INDEX_MASK;
-+}
-+
-+static inline __u32 uet_ses_req_job_id(const struct uet_ses_req_hdr *sreq)
-+{
-+	return __be32_to_cpu(sreq->idx_gen_job_id) & UET_SES_REQ_JOB_ID_MASK;
-+}
-+
-+static inline __u8 uet_ses_req_index_gen(const struct uet_ses_req_hdr *sreq)
-+{
-+	return (__be32_to_cpu(sreq->idx_gen_job_id) >> UET_SES_REQ_INDEX_GEN_SHIFT) &
-+	       UET_SES_REQ_INDEX_GEN_MASK;
-+}
-+
-+static inline __u16 uet_ses_req_pid_on_fep(const struct uet_ses_req_hdr *sreq)
-+{
-+	return __be16_to_cpu(sreq->resv_pid_on_fep) & UET_SES_REQ_PID_ON_FEP_MASK;
-+}
-+
-+/* return codes */
-+enum {
-+	UET_SES_RSP_RC_NULL		= 0x00,
-+	UET_SES_RSP_RC_OK		= 0x01,
-+	UET_SES_RSP_RC_BAD_GEN		= 0x02,
-+	UET_SES_RSP_RC_DISABLED		= 0x03,
-+	UET_SES_RSP_RC_DISABLED_GEN	= 0x04,
-+	UET_SES_RSP_RC_NO_MATCH		= 0x05,
-+	UET_SES_RSP_RC_UNSUPP_OP	= 0x06,
-+	UET_SES_RSP_RC_UNSUPP_SIZE	= 0x07,
-+	UET_SES_RSP_RC_AT_INVALID	= 0x08,
-+	UET_SES_RSP_RC_AT_PERM		= 0x09,
-+	UET_SES_RSP_RC_AT_ATS_ERROR	= 0x0A,
-+	UET_SES_RSP_RC_AT_NO_TRANS	= 0x0B,
-+	UET_SES_RSP_RC_AT_OUT_OF_RANGE	= 0x0C,
-+	UET_SES_RSP_RC_HOST_POISONED	= 0x0D,
-+	UET_SES_RSP_RC_HOST_UNSUCC_CMPL	= 0x0E,
-+	UET_SES_RSP_RC_AMO_UNSUPP_OP	= 0x0F,
-+	UET_SES_RSP_RC_AMO_UNSUPP_DT	= 0x10,
-+	UET_SES_RSP_RC_AMO_UNSUPP_SIZE	= 0x11,
-+	UET_SES_RSP_RC_AMO_UNALIGNED	= 0x12,
-+	UET_SES_RSP_RC_AMO_FP_NAN	= 0x13,
-+	UET_SES_RSP_RC_AMO_FP_UNDERFLOW	= 0x14,
-+	UET_SES_RSP_RC_AMO_FP_OVERFLOW	= 0x15,
-+	UET_SES_RSP_RC_AMO_FP_INEXACT	= 0x16,
-+	UET_SES_RSP_RC_PERM_VIOLATION	= 0x17,
-+	UET_SES_RSP_RC_OP_VIOLATION	= 0x18,
-+	UET_SES_RSP_RC_BAD_INDEX	= 0x19,
-+	UET_SES_RSP_RC_BAD_PID		= 0x1A,
-+	UET_SES_RSP_RC_BAD_JOB_ID	= 0x1B,
-+	UET_SES_RSP_RC_BAD_MKEY		= 0x1C,
-+	UET_SES_RSP_RC_BAD_ADDR		= 0x1D,
-+	UET_SES_RSP_RC_CANCELLED	= 0x1E,
-+	UET_SES_RSP_RC_UNDELIVERABLE	= 0x1F,
-+	UET_SES_RSP_RC_UNCOR		= 0x20,
-+	UET_SES_RSP_RC_UNCOR_TRNSNT	= 0x21,
-+	UET_SES_RSP_RC_TOO_LONG		= 0x22,
-+	UET_SES_RSP_RC_INITIATOR_ERR	= 0x23,
-+	UET_SES_RSP_RC_DROPPED		= 0x24,
-+};
-+
-+/* ses response list values */
-+enum {
-+	UET_SES_RSP_LIST_EXPECTED	= 0x00,
-+	UET_SES_RSP_LIST_OVERFLOW	= 0x01
-+};
-+
-+/* ses response op codes */
-+enum {
-+	UET_SES_RSP_OP_DEF_RESP		= 0x00,
-+	UET_SES_RSP_OP_RESPONSE		= 0x01,
-+	UET_SES_RSP_OP_RESP_W_DATA	= 0x02
-+};
-+
-+/* field: lst_opcode_ver_rc */
-+#define UET_SES_RSP_RC_BITS 6
-+#define UET_SES_RSP_RC_MASK 0x3f
-+#define UET_SES_RSP_RC_SHIFT 0
-+#define UET_SES_RSP_VERSION_BITS 2
-+#define UET_SES_RSP_VERSION_MASK 0x3
-+#define UET_SES_RSP_VERSION_SHIFT (UET_SES_RSP_RC_SHIFT + \
-+				   UET_SES_RSP_RC_BITS)
-+#define UET_SES_RSP_OPCODE_BITS 6
-+#define UET_SES_RSP_OPCODE_MASK 0x3f
-+#define UET_SES_RSP_OPCODE_SHIFT (UET_SES_RSP_VERSION_SHIFT + \
-+				  UET_SES_RSP_VERSION_BITS)
-+#define UET_SES_RSP_LIST_BITS 2
-+#define UET_SES_RSP_LIST_MASK 0x3
-+#define UET_SES_RSP_LIST_SHIFT (UET_SES_RSP_OPCODE_SHIFT + \
-+				UET_SES_RSP_OPCODE_BITS)
-+/* field: idx_gen_job_id */
-+#define UET_SES_RSP_JOB_ID_BITS 24
-+#define UET_SES_RSP_JOB_ID_MASK 0xffffff
-+#define UET_SES_RSP_INDEX_GEN_MASK 0xff
-+#define UET_SES_RSP_INDEX_GEN_SHIFT UET_SES_RSP_JOB_ID_BITS
-+struct uet_ses_rsp_hdr {
-+	__be16 lst_opcode_ver_rc;
-+	__be16 msg_id;
-+	__be32 idx_gen_job_id;
-+	__be32 mod_len;
-+} __attribute__ ((__packed__));
-+
-+static inline __u8 uet_ses_rsp_rc(const struct uet_ses_rsp_hdr *rsp)
-+{
-+	return (__be32_to_cpu(rsp->lst_opcode_ver_rc) >>
-+		UET_SES_RSP_RC_SHIFT) & UET_SES_RSP_RC_MASK;
-+}
-+
-+static inline __u8 uet_ses_rsp_list(const struct uet_ses_rsp_hdr *rsp)
-+{
-+	return (__be32_to_cpu(rsp->lst_opcode_ver_rc) >>
-+		UET_SES_RSP_LIST_SHIFT) & UET_SES_RSP_LIST_MASK;
-+}
-+
-+static inline __u8 uet_ses_rsp_version(const struct uet_ses_rsp_hdr *rsp)
-+{
-+	return (__be32_to_cpu(rsp->lst_opcode_ver_rc) >>
-+		UET_SES_RSP_VERSION_SHIFT) & UET_SES_RSP_VERSION_MASK;
-+}
-+
-+static inline __u8 uet_ses_rsp_opcode(const struct uet_ses_rsp_hdr *rsp)
-+{
-+	return (__be32_to_cpu(rsp->lst_opcode_ver_rc) >>
-+		UET_SES_RSP_OPCODE_SHIFT) & UET_SES_RSP_OPCODE_MASK;
-+}
-+
-+static inline __u32 uet_ses_rsp_job_id(const struct uet_ses_rsp_hdr *rsp)
-+{
-+	return __be32_to_cpu(rsp->idx_gen_job_id) & UET_SES_RSP_JOB_ID_MASK;
-+}
-+
-+static inline __u8 uet_ses_rsp_index_gen(const struct uet_ses_req_hdr *rsp)
-+{
-+	return (__be32_to_cpu(rsp->idx_gen_job_id) >> UET_SES_RSP_INDEX_GEN_SHIFT) &
-+	       UET_SES_RSP_INDEX_GEN_MASK;
-+}
-+
  enum {
- 	UET_ADDR_F_VALID_FEP_CAP	= (1 << 0),
- 	UET_ADDR_F_VALID_ADDR		= (1 << 1),
+@@ -51,6 +58,13 @@ enum mpr_pos {
+ 	UET_PDC_MPR_FUTURE
+ };
+ 
++struct uet_pdc_pkt {
++	struct sk_buff *skb;
++	struct timer_list rtx_timer;
++	u32 psn;
++	int rtx;
++};
++
+ struct uet_pdc {
+ 	struct rhash_head pdcid_node;
+ 	struct rhash_head pdcep_node;
+@@ -69,12 +83,19 @@ struct uet_pdc {
+ 	u8 mode;
+ 	bool is_initiator;
+ 
++	int rtx_max;
++	struct timer_list rtx_timer;
++	unsigned long rtx_timeout;
++
+ 	unsigned long *rx_bitmap;
++	unsigned long *tx_bitmap;
+ 	unsigned long *ack_bitmap;
+ 
+ 	u32 rx_base_psn;
+ 	u32 tx_base_psn;
+ 
++	struct rb_root rtx_queue;
++
+ 	struct hlist_node gc_node;
+ 	struct rcu_head rcu;
+ };
+@@ -89,6 +110,7 @@ int uet_pdc_rx_req(struct uet_pdc *pdc, struct sk_buff *skb,
+ 		   __be32 remote_fep_addr, __u8 tos);
+ int uet_pdc_rx_ack(struct uet_pdc *pdc, struct sk_buff *skb,
+ 		   __be32 remote_fep_addr);
++int uet_pdc_tx_req(struct uet_pdc *pdc, struct sk_buff *skb, u8 type);
+ 
+ static inline void uet_pdc_build_prologue(struct uet_prologue_hdr *prologue,
+ 					  u8 type, u8 next, u8 flags)
+@@ -114,4 +136,9 @@ static inline bool psn_bit_valid(u32 bit)
+ {
+ 	return bit < UET_PDC_MPR;
+ }
++
++static inline bool before(u32 seq1, u32 seq2)
++{
++	return (s32)(seq1-seq2) < 0;
++}
+ #endif /* _UECON_PDC_H */
+diff --git a/include/net/ultraeth/uet_pds.h b/include/net/ultraeth/uet_pds.h
+index 43f5748a318a..78624370f18c 100644
+--- a/include/net/ultraeth/uet_pds.h
++++ b/include/net/ultraeth/uet_pds.h
+@@ -40,6 +40,8 @@ void uet_pds_clean_job(struct uet_pds *pds, u32 job_id);
+ 
+ int uet_pds_rx(struct uet_pds *pds, struct sk_buff *skb, __be32 local_fep_addr,
+ 	       __be32 remote_fep_addr, __be16 dport, __u8 tos);
++int uet_pds_tx(struct uet_pds *pds, struct sk_buff *skb, __be32 local_fep_addr,
++	       __be32 remote_fep_addr, __be16 dport, u32 job_id);
+ 
+ static inline struct uet_prologue_hdr *pds_prologue_hdr(const struct sk_buff *skb)
+ {
 -- 
 2.48.1
 
