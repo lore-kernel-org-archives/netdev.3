@@ -1,205 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD59C1C6FE1;
-	Thu,  6 Mar 2025 10:12:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34AD1FF7CC;
+	Thu,  6 Mar 2025 10:14:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741255962; cv=none; b=UcBxoW6vC3zw239THG7zalOb8ieLUAv7/zh9tGS6oGu69++uZKc1bKlFTOXGFwhuDiddQrT8xAzkhwywVxtoE19MbJ95xwess9/uIw0ELsiobkPP06tooPTnB7EMb7j8qOlAzfa6J3RnxyGrE0xB51v/NZNNyOtPhfWLxx3QViE=
+	t=1741256059; cv=none; b=HD4MEMKqW45Cxzx9yehP8Zx4l2ER7oSRvapnM2bLf6TOB2f8BUP13TKqHmwyyLy3C4eQdVT9igGHA6hP3W8ebG/rP967cS2c4j37A7v1gCMs+axmtAywygvLHW5SnoMBq+ZOxcJpW0kUYVbpt7eGtMwLY7T4Fa2cIwmuoyLhoWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741255962; c=relaxed/simple;
-	bh=EEyYORts2CMueLDR9VZbU5UMnAqVG45Sr/bOW0NMhmA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o/JObz46ZM6s3EPQufcSBx04fRUj0QabwstVrxIG9hwCipLKurMvV+3qZ/QquANG7BpGG7FA5GqElfhu638yjhHIJj8IU1lGRuLGawOc87NRdi+efaaJB7kmceWRpzW8EP0poMHqu34+/A6fEVR5/NKlsnY4lbTS/EYHteuZz1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L4TZxPxm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741256059; c=relaxed/simple;
+	bh=sx8yumw7/slQUX1H6tCQVoJjkcOlHDuGOyOYDOcCSjI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Jb8KqRt60FhIlWQa94hp3xgkqhWTgdVaA43uRyRBVixlwbrrWIhJyOmGsYCbqPr6g3hz3MRV6AJSnmiExzX8CeKncfBh7We0Do+Z4klQADcrisp10hwjaHJLBiJdh493UPHN86VOPkvsoccH6AhD8fylRycARJx0B0pZS6QTbNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gWZswxCu; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L4TZxPxm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0608C4CEE0;
-	Thu,  6 Mar 2025 10:12:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741255962;
-	bh=EEyYORts2CMueLDR9VZbU5UMnAqVG45Sr/bOW0NMhmA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=L4TZxPxmtq0jcpy7Sb1fJTA5fgxlkRosdts8TFcF5tYqHJPWgp5YbKYnTpqhzZ5w4
-	 7SI4a2byI9ua5WQL9pOIG8yjzjKhm+WayFhI3UoId2cRPI4QPI60rvS+cm18+tBkNH
-	 e357EZYrTtR4wSTJWtGdWcYvfxzqhtzlG2SWDrGcEPYq+9+aWFC9Oa3OB++DZydayp
-	 jtmaQr49l+dMShIJ1qvcspH4slr7w05up649FWpz3Ukiy1Ci7DaJxwQe4BFDrPd2oB
-	 0bGwDvP1OEouIjwJyZjWgbUZrhNlp2urdiqqiFY3r98J+d1v6RUBlza0ijx+SG8isQ
-	 9Wt1+u/NIJnXA==
-Message-ID: <a3266974-d561-4e8f-a23a-9c0774ee2bbe@kernel.org>
-Date: Thu, 6 Mar 2025 11:12:36 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gWZswxCu"
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-30ba5cccc19so4710911fa.1;
+        Thu, 06 Mar 2025 02:14:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741256056; x=1741860856; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SC6AHDf1+LSGmHO4yF1LlfxNEvEUB10IW0zw+9ERfVQ=;
+        b=gWZswxCu6wptNfsZBfZ/eB3qYEsrCKBljuJ8repXjxS8fiNA9aEbHEBF3FZRkWXapT
+         tV6jngcZs/knqYGDq7RIyHzy1JdSKmj1gWsTnbk+LrF9Tu+uda1Sl0mFaq7MqW5OHEES
+         6DIuAueXGjjv2zNTvo5u9soB0Cpzfwy/4Ww1iz4kXMjBmmfH9fkd9hI6AiUxf5MIWQ2b
+         a8Ibec9+1zHn+yNofhHW6ts7hCPYGpTflK6YPwcMTX1UzC/ZuLCOcfnmA6oDJLDX6X7k
+         98+A7g0B8gYOepQzBfBdTTXUvW3MMr4DaPvxj9YG8ILSL2aIaVKOsNkIqRFnXCJbQaq9
+         HJnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741256056; x=1741860856;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SC6AHDf1+LSGmHO4yF1LlfxNEvEUB10IW0zw+9ERfVQ=;
+        b=McXTGvouSdZKC9FxJANPOSTZM2m2UNCnpzkGDXEdk+CpL8zwjHiF+ajlmH0dlXzC7y
+         g0g0VCyUuNCVVTxSfY54hzp2Py6so1hIqEpGyJjy3OkUCggXDgdDijc/SJ/38LKM9IQF
+         jNcGSL6/lC3cNX4mkrC8Onvw5UQvfhacOU/9HlKzRA1fFlfCPwEG/XtHl4a6t7uf5PSc
+         pCfZaWt+UEkEtMlCfBgjYxbGwpLVs1wtWIw12wloLQFO80ALB4VKHlcItiKREY7EWCuL
+         2ps2pixjaZwh+FjAslwds18vuQGzI+t6zyIvj8ahtRU3tiYLkWzDGftYRYpAeucjQvG9
+         t9UA==
+X-Forwarded-Encrypted: i=1; AJvYcCUKSbofjdqltj2J2eZ2fRZTODPs6lxvry4AchXSVbZqX6GpbwU0Q5Xyloe0IAJUESZE9B/E4aDyE36UsoU=@vger.kernel.org, AJvYcCWre6+Q6stbhZabu6QE0voQF7rW/ePQ+sIpohMf9Z/3pGk1khomYOc90YU1zuQG5/iLbH5YGXaM@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1EbJJK9P1OLWdVp48mnnGd4OV3t4OdzsLcxN3ZjVBDxmm05Ik
+	O/QU6eDNOryrMfT71ZswIM8aYvjRWUGOA4nQcv6BB1RctNsn3KRb
+X-Gm-Gg: ASbGncsIFtg6oo0rTYxNgBYVdy6+ArKVh6gfYiTrM2QMBWTpIJRhRUJRpLKuOk5p/ID
+	FWmYVIf6En2MJqmv/itET6YoFwhFovtZvBBHOl4ZNrPQlbJJU1WXL9i1GTGlG04UJYC2oah6Nxf
+	KSRdKEevTm+imr+ki30fU0ZYTTRvcKbgopL7E8hTm9W0A21Tu3KAoTs8bYiwmMurY8tNNGnWXGt
+	HcM6z6liAy/mtUIbIpO+PdsbQU7CDqPxpMWYd2zOtskVlPo3OJ5Bvky24FzOj30l0xTB+DBhweB
+	Kw+cybtwKV6D/yXLgwrCCwdtOZhjiY5RKQ0ZVkVUc9SaGCRmxcxgSraD3aPsaBKgatCP1qq1xbr
+	vKA15C9mrdeg=
+X-Google-Smtp-Source: AGHT+IHVUL4RmtkhR/oSDlMOZ3ZOLWUDnE3XMBPxWsK2S/UqrYa1tBtOoYQq3Q6pxGdr9M6ejBkxaA==
+X-Received: by 2002:a2e:bc06:0:b0:30b:cd68:b69c with SMTP id 38308e7fff4ca-30bd7a1c6admr24523521fa.3.1741256055483;
+        Thu, 06 Mar 2025 02:14:15 -0800 (PST)
+Received: from rand-ubuntu-development.dl.local (mail.confident.ru. [85.114.29.218])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30be98d09e2sm1550631fa.12.2025.03.06.02.14.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Mar 2025 02:14:15 -0800 (PST)
+From: Rand Deeb <rand.sec96@gmail.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	intel-wired-lan@lists.osuosl.org (moderated list:INTEL ETHERNET DRIVERS),
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: deeb.rand@confident.ru,
+	lvc-project@linuxtesting.org,
+	voskresenski.stanislav@confident.ru,
+	Rand Deeb <rand.sec96@gmail.com>
+Subject: [PATCH] ixgbe: Fix unreachable retry logic in combined and byte I2C write functions
+Date: Thu,  6 Mar 2025 13:12:00 +0300
+Message-Id: <20250306101201.1938376-1-rand.sec96@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next] tcp: clamp window like before the cleanup
-Content-Language: en-GB
-To: Eric Dumazet <edumazet@google.com>
-Cc: Jason Xing <kerneljasonxing@gmail.com>, mptcp@lists.linux.dev,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@amazon.com>,
- "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250305-net-next-fix-tcp-win-clamp-v1-1-12afb705d34e@kernel.org>
- <CAL+tcoAqZmeV0-4rjH-EPmhBBaS=ZSwgcXhU8ZsBCr_aXS3Lqw@mail.gmail.com>
- <CANn89iLqgi5byZd+Si7jTdg7zrLNn13ejWAQjMRurvrQPeg3zg@mail.gmail.com>
- <281edb3a-4679-4c75-9192-a5f0ef6952ea@kernel.org>
- <CANn89iKVsDrL9YFx883wTfRSAe6tOR7x2U5zk=TcgHBMr+VtkQ@mail.gmail.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <CANn89iKVsDrL9YFx883wTfRSAe6tOR7x2U5zk=TcgHBMr+VtkQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 06/03/2025 11:02, Eric Dumazet wrote:
-> On Thu, Mar 6, 2025 at 10:55 AM Matthieu Baerts <matttbe@kernel.org> wrote:
->>
->> Hi Eric,
->>
->> On 06/03/2025 10:45, Eric Dumazet wrote:
->>> On Thu, Mar 6, 2025 at 6:22 AM Jason Xing <kerneljasonxing@gmail.com> wrote:
->>>>
->>>> On Wed, Mar 5, 2025 at 10:49 PM Matthieu Baerts (NGI0)
->>>> <matttbe@kernel.org> wrote:
->>>>>
->>>>> A recent cleanup changed the behaviour of tcp_set_window_clamp(). This
->>>>> looks unintentional, and affects MPTCP selftests, e.g. some tests
->>>>> re-establishing a connection after a disconnect are now unstable.
->>>>>
->>>>> Before the cleanup, this operation was done:
->>>>>
->>>>>   new_rcv_ssthresh = min(tp->rcv_wnd, new_window_clamp);
->>>>>   tp->rcv_ssthresh = max(new_rcv_ssthresh, tp->rcv_ssthresh);
->>>>>
->>>>> The cleanup used the 'clamp' macro which takes 3 arguments -- value,
->>>>> lowest, and highest -- and returns a value between the lowest and the
->>>>> highest allowable values. This then assumes ...
->>>>>
->>>>>   lowest (rcv_ssthresh) <= highest (rcv_wnd)
->>>>>
->>>>> ... which doesn't seem to be always the case here according to the MPTCP
->>>>> selftests, even when running them without MPTCP, but only TCP.
->>>>>
->>>>> For example, when we have ...
->>>>>
->>>>>   rcv_wnd < rcv_ssthresh < new_rcv_ssthresh
->>>>>
->>>>> ... before the cleanup, the rcv_ssthresh was not changed, while after
->>>>> the cleanup, it is lowered down to rcv_wnd (highest).
->>>>>
->>>>> During a simple test with TCP, here are the values I observed:
->>>>>
->>>>>   new_window_clamp (val)  rcv_ssthresh (lo)  rcv_wnd (hi)
->>>>>       117760   (out)         65495         <  65536
->>>>>       128512   (out)         109595        >  80256  => lo > hi
->>>>>       1184975  (out)         328987        <  329088
->>>>>
->>>>>       113664   (out)         65483         <  65536
->>>>>       117760   (out)         110968        <  110976
->>>>>       129024   (out)         116527        >  109696 => lo > hi
->>>>>
->>>>> Here, we can see that it is not that rare to have rcv_ssthresh (lo)
->>>>> higher than rcv_wnd (hi), so having a different behaviour when the
->>>>> clamp() macro is used, even without MPTCP.
->>>>>
->>>>> Note: new_window_clamp is always out of range (rcv_ssthresh < rcv_wnd)
->>>>> here, which seems to be generally the case in my tests with small
->>>>> connections.
->>>>>
->>>>> I then suggests reverting this part, not to change the behaviour.
->>>>>
->>>>> Fixes: 863a952eb79a ("tcp: tcp_set_window_clamp() cleanup")
->>>>> Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/551
->>>>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->>>>
->>>> Tested-by: Jason Xing <kerneljasonxing@gmail.com>
->>>>
->>>> Thanks for catching this. I should have done more tests :(
->>>>
->>>> Now I use netperf with TCP_CRR to test loopback and easily see the
->>>> case where tp->rcv_ssthresh is larger than tp->rcv_wnd, which means
->>>> tp->rcv_wnd is not the upper bound as you said.
->>>>
->>>> Thanks,
->>>> Jason
->>>>
->>>
->>> Patch looks fine to me but all our tests are passing with the current kernel,
->>> and I was not able to trigger the condition.
->>
->> Thank you for having looked at this patch!
->>
->>
->>> Can you share what precise test you did ?
->>
->> To be able to get a situation where "rcv_ssthresh > rcv_wnd", I simply
->> executed MPTCP Connect selftest. You can also force creating TCP only
->> connections with '-tt', e.g.
->>
->>   ./mptcp_connect.sh -tt
-> 
-> I was asking Jason about TCP tests. He mentioned TCP_CRR
+The current implementation of `ixgbe_write_i2c_combined_generic_int` and
+`ixgbe_write_i2c_byte_generic_int` sets `max_retry` to `1`, which makes
+the condition `retry < max_retry` always evaluate to `false`. This renders
+the retry mechanism ineffective, as the debug message and retry logic are
+never executed.
 
-Oops, I'm sorry, I didn't look at the "To:" field.
+This patch increases `max_retry` to `3` in both functions, aligning them
+with the retry logic in `ixgbe_read_i2c_combined_generic_int`. This
+ensures that the retry mechanism functions as intended, improving
+robustness in case of I2C write failures.
 
-> I made several of them, with temporary debug in the kernel that did
-> not show the issue.
-> 
-> 
-> I am wondering if this could hide an issue in MPTCP ?
-Indeed, I was wondering the same thing. I didn't see anything obvious
-when looking at this issue. The behaviours around the window clamping,
-with MPTCP single flow, and "plain" TCP were quite similar I think.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Cheers,
-Matt
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
+index 0a03a8bb5f88..2d54828bdfbb 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
+@@ -167,7 +167,7 @@ int ixgbe_write_i2c_combined_generic_int(struct ixgbe_hw *hw, u8 addr,
+ 					 u16 reg, u16 val, bool lock)
+ {
+ 	u32 swfw_mask = hw->phy.phy_semaphore_mask;
+-	int max_retry = 1;
++	int max_retry = 3;
+ 	int retry = 0;
+ 	u8 reg_high;
+ 	u8 csum;
+@@ -2285,7 +2285,7 @@ static int ixgbe_write_i2c_byte_generic_int(struct ixgbe_hw *hw, u8 byte_offset,
+ 					    u8 dev_addr, u8 data, bool lock)
+ {
+ 	u32 swfw_mask = hw->phy.phy_semaphore_mask;
+-	u32 max_retry = 1;
++	u32 max_retry = 3;
+ 	u32 retry = 0;
+ 	int status;
+ 
 -- 
-Sponsored by the NGI0 Core fund.
+2.34.1
 
