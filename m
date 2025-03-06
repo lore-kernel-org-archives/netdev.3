@@ -1,91 +1,114 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD68C20E6F6;
-	Thu,  6 Mar 2025 15:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3141A08A6;
+	Thu,  6 Mar 2025 15:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741274977; cv=none; b=IRHIIxnhHTSu4z+FUG1jnPL+DVjQ/+l8hBSPywd9glphIjDkRCWbkQ8G5a+S/7Mk8tJB2b+z6KSWsVnBfiByUe8t1BN4ZvywEhm7IIROE4YZ7K6krfQ1xn1r54Jki0kEDI+5b1GHr6pJL5bNYu9ArHZ94AU4TqorZ9xSrau2TEY=
+	t=1741275302; cv=none; b=Xoa6UjMfYP4O4U+vzHTLxb54b/lVsp67in8iTcgbj8mFXEjYpt+niPVM9kE59vFSNW0OiWvj4RSUM3PEHFOC35W38TYkoeq51reIiO7o3zYG/xfdb8Dqg6bjU6RCguZq+PgsicGrClAdLZgNSMhhx7bphe0JoyYN4763OZmqUzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741274977; c=relaxed/simple;
-	bh=fOOQowHJHtW+gHqQRw+cobzO7tlDBCXQk58mod4OwP4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H8XHDjItxwBtyNG7qjOXWb9c/m+sKqC1WMdiuoxZio+iEGRqslPGQuiM5HidzP6EP+lLRbnrFegQKg65waUh8yJi+1/zDEAr/52f0ftO8Hwij3R5WDD/0Pcc9evkJAqhsdzkBxaC3fkHzrl5b3RRA3HAtYj9u0HS0J2Wq/8wHsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fZezFYM7; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1741275302; c=relaxed/simple;
+	bh=3eBta4NdUVZpRQY7Rd3tvYxIeT60lB9yGt8iGAOE7UE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=I3gYWzkC9A0T3S0j0s+DZ6/mrI81X7ZMwn0xYAxVacQ0tmvme6Qk2aTgtO2fte4ogPf2w16DRhZHYUPuIZ7lmHsstRGCAmRdmSaPqgSXW/q+njkv0fZcnc95B3vcy6qWec8koq/uCXt5fE0e/rgrid5G28BssA5tuRELC7LT3x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=XqVnGBrV; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=DuoMAnnd; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fZezFYM7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=+IzmAbgju3FDk0Ryltpo+ejh+hoS4Rf/7x9rJ3Yw0EU=; b=fZezFYM7Q7hsuSZ7fLNC1YsWMD
-	DMwJd4MIBQUfPVlx1hne+poqp2G3TNmrhsdZ10bbkAJkvrwOoaKZRJI6Frn1wp/XUr/I4vKrB3sgN
-	XPoJWax9YeByq6lz1rUci/uJ0sZ1jzmG+TQ3rdi1O35pli7N37Qp6ofYEqu27pc6pHGs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tqDA0-002pzB-Ms; Thu, 06 Mar 2025 16:29:20 +0100
-Date: Thu, 6 Mar 2025 16:29:20 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jie Luo <quic_luoj@quicinc.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lei Wei <quic_leiwei@quicinc.com>,
-	Suruchi Agarwal <quic_suruchia@quicinc.com>,
-	Pavithra R <quic_pavir@quicinc.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-hardening@vger.kernel.org,
-	quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com,
-	srinivas.kandagatla@linaro.org, bartosz.golaszewski@linaro.org,
-	john@phrozen.org
-Subject: Re: [PATCH net-next v3 04/14] net: ethernet: qualcomm: Initialize
- PPE buffer management for IPQ9574
-Message-ID: <74f89e1e-c440-42cb-9d8e-be213a3d83a4@lunn.ch>
-References: <20250209-qcom_ipq_ppe-v3-0-453ea18d3271@quicinc.com>
- <20250209-qcom_ipq_ppe-v3-4-453ea18d3271@quicinc.com>
- <a79027ed-012c-4771-982c-b80b55ab0c8a@lunn.ch>
- <c592c262-5928-476f-ac2a-615c44d67277@quicinc.com>
- <33529292-00cd-4a0f-87e4-b8127ca722a4@lunn.ch>
- <cffdd8e8-76bc-4424-8cdb-d48f5010686d@quicinc.com>
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="XqVnGBrV";
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="DuoMAnnd"
+Received: by mail.netfilter.org (Postfix, from userid 109)
+	id DDC1560303; Thu,  6 Mar 2025 16:34:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1741275295;
+	bh=AUsdUETtDieRadQMe+F2JvPGgnSvRnKzF1g3M1QVQD4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XqVnGBrVjCX+1ihlLNuRlTLc/9CYNByPnwaxx5Qabg4pc3G4yGenBgVM6Rcjii2ID
+	 2m9xGL5Dbe7KCyT9Q+NOQoPEvsfsdxnjqOpn54ZvKtOfvc9fjYc/d1SWQmfKb8NpZb
+	 2GLJAmZxAb7BekXJwIh0CS4iKDyGl7ZrG2DVbBYUPCsMCeiWcxeNa1thG+hHSmPaqS
+	 GmUVKXQpCXi/II4yCOnEGPd06i+X6m+vZ0XHNTaFsi/HeJO4ZH9fp8tlmLYjuO7tYE
+	 oCMHB5durRErkh0N4VqBUb6PUQISrIaDR1tlN45s15f7K9nCVE2n4jjattrLGU1I0B
+	 mEE4/Uky4tvxA==
+X-Spam-Level: 
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id DC2E860307;
+	Thu,  6 Mar 2025 16:34:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1741275293;
+	bh=AUsdUETtDieRadQMe+F2JvPGgnSvRnKzF1g3M1QVQD4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DuoMAnndoZP/7x6XZoK0Czte1bWmUCS1lCrv2iLMPIz4gnxEchZR7vh6RxJ4GaC0s
+	 SYIssdQfkW3TwVcySUvTQ0akjIOFEa/FvC4tW2ckh5lZPpcG+ZiXAvLWqBH5MDDF/j
+	 4ovNN1afCD6+pfxI2mZy9nAOab2tq8Ia/xeMymyjiMbWtq8jP1p5ixRrBq0vAWWZqC
+	 nRBDScMzTqwwyQ7ZwyopxwKylBLkGAETRA9tkzFHUi8wt3j+iRctCBqLHoKjSy/cuX
+	 cI1F8KKBzYQ06Mp/GzFpaR9E48htQBLXH6KADT6AlHXTHmF/5N0jGVdS63HrJUnBj3
+	 nrRcRMgmQMRvQ==
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	fw@strlen.de,
+	horms@kernel.org
+Subject: [PATCH net 2/3] netfilter: nf_conncount: garbage collection is not skipped when jiffies wrap around
+Date: Thu,  6 Mar 2025 16:34:45 +0100
+Message-Id: <20250306153446.46712-3-pablo@netfilter.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20250306153446.46712-1-pablo@netfilter.org>
+References: <20250306153446.46712-1-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cffdd8e8-76bc-4424-8cdb-d48f5010686d@quicinc.com>
+Content-Transfer-Encoding: 8bit
 
-> Thanks for the suggestion. Just to clarify, we preferred
-> u32p_replace_bits() over FIELD_PREP() because the former does
-> a clear-and-set operation against a given mask, where as with
-> FIELD_PREP(), we need to clear the bits first before we use the
-> macro and then set it. Due to this, we preferred using
-> u32_replace_bits() since it made the macro definitions to modify
-> the registers simpler. Given this, would it be acceptable to
-> document u32p_replace_bits() better, as it is already being used
-> by other drivers as well?
+From: Nicklas Bo Jensen <njensen@akamai.com>
 
-I suggest you submit a patch to those who maintain that file and see
-what they say.
+nf_conncount is supposed to skip garbage collection if it has already
+run garbage collection in the same jiffy. Unfortunately, this is broken
+when jiffies wrap around which this patch fixes.
 
-But maybe also look at how others are using u32p_replace_bits() and
-should it be wrapped up in a macro? FIELD_MOD()? These macros do a lot
-of build time checking that you are not overflowing the type. It would
-be good to have that to catch bugs at build time, rather than years
-later at runtime.
+The problem is that last_gc in the nf_conncount_list struct is an u32,
+but jiffies is an unsigned long which is 8 bytes on my systems. When
+those two are compared it only works until last_gc wraps around.
 
-      Andrew
+See bug report: https://bugzilla.netfilter.org/show_bug.cgi?id=1778
+for more details.
+
+Fixes: d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC")
+Signed-off-by: Nicklas Bo Jensen <njensen@akamai.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+---
+ net/netfilter/nf_conncount.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 4890af4dc263..ebe38ed2e6f4 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -132,7 +132,7 @@ static int __nf_conncount_add(struct net *net,
+ 	struct nf_conn *found_ct;
+ 	unsigned int collect = 0;
+ 
+-	if (time_is_after_eq_jiffies((unsigned long)list->last_gc))
++	if ((u32)jiffies == list->last_gc)
+ 		goto add_new_node;
+ 
+ 	/* check the saved connections */
+@@ -234,7 +234,7 @@ bool nf_conncount_gc_list(struct net *net,
+ 	bool ret = false;
+ 
+ 	/* don't bother if we just did GC */
+-	if (time_is_after_eq_jiffies((unsigned long)READ_ONCE(list->last_gc)))
++	if ((u32)jiffies == READ_ONCE(list->last_gc))
+ 		return false;
+ 
+ 	/* don't bother if other cpu is already doing GC */
+-- 
+2.30.2
+
