@@ -1,174 +1,75 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1322702BD;
-	Thu,  6 Mar 2025 19:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BEB4F5E0;
+	Thu,  6 Mar 2025 19:25:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741289087; cv=none; b=G6kK2JNSrMSE491mztiGOJvJI7WRpxbwl4/3FmD9XnPL7ttTgNF6FX7SKbfCjTA24zDQBtys8PttS6pwISPdZuepAgmBpy7CoA9OdLv4TWLkJrH+PIJfTABy+0re3JafOhlvGdz7YI4xt80X0s31JujOzsWHBeF8+r0ERAlv1Ko=
+	t=1741289124; cv=none; b=bqNFQx0Ulvhg8CbvySNwspMav4PphcX/Vlh1XXLiVJhVrh9yrdNK3yCfRxzG6QAjCMCWZtnzB7adOPUJGDpJ+5EiQXy3wge0SB7MmzLpiWRXQvtp8Xg+aFXQM5yGHhndxZQYWq4sFSuv5415G2IFFdbHChdjrs+BZL5aRRXOaaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741289087; c=relaxed/simple;
-	bh=OcENzM4d2EDUOPyhxguoovCPDUxBTZG2CkJcQI650ww=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=fpiNUvDiu3dvueC1g5Ojeti8x8i55dlqQ6WcWu5GGJ9UvGbpcAnM3QNZ9J+biegSrtx4N9BbymDMpoF0/cFRAqLtLEeCX2SMgIG7wl0TCFdHL3UFL04SrTpc281YQMA4nTRsJhZj+IQ9JQOzQrXGsvt5i+tmwx7j96rp9Jo5zNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxonhyperv.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linuxonhyperv.com header.i=@linuxonhyperv.com header.b=h34wjSXq; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxonhyperv.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1741289124; c=relaxed/simple;
+	bh=/3gn/UXYXUGp9YQTjxRCxyTc/Q0sgDTCWT4tloBrK9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dZXF4LfbnfjwPM4sSxj3VrxBLMEQ186JBMxzcYaqztJgtHEcpfPY1a2DMijWYj8rs9sWO0kQfG+8lCFPGR+iQDSoGdQIyZzooCZ2L6uh4ELDc7rjZnKEB7aWjovgVgoNrta92ZIARmVjztg333Gfc/50HXOTZtSgZkflTBMN950=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N4/21jk6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxonhyperv.com header.i=@linuxonhyperv.com header.b="h34wjSXq"
-Received: by linux.microsoft.com (Postfix, from userid 1202)
-	id 0BC68210EAE5; Thu,  6 Mar 2025 11:24:46 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0BC68210EAE5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxonhyperv.com;
-	s=default; t=1741289086;
-	bh=fvdydONmy1aI+e2a+ZOhB/AI/VHKMKgfGUWSmoRPceM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h34wjSXqi5/3VCp4NjO8xaUsMHbSjp+NEw1WNqbucbk99WIUOtpPO0loXGb6vzDz1
-	 WWZwmrGDcgW+J/mfRiS7UNVYes5rSEFpNSEUgT80QH9eyTrgnPOdTCfYmngBiuhecn
-	 4OLgKUjoZZl/0QZL4hstQgRKgwSXjUgOME0r7sng=
-From: longli@linuxonhyperv.com
-To: Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: linux-rdma@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	Long Li <longli@microsoft.com>
-Subject: [patch rdma-next v5 2/2] RDMA/mana_ib: Handle net event for pointing to the current netdev
-Date: Thu,  6 Mar 2025 11:24:39 -0800
-Message-Id: <1741289079-18744-2-git-send-email-longli@linuxonhyperv.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1741289079-18744-1-git-send-email-longli@linuxonhyperv.com>
-References: <1741289079-18744-1-git-send-email-longli@linuxonhyperv.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N4/21jk6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365FEC4CEE0;
+	Thu,  6 Mar 2025 19:25:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741289123;
+	bh=/3gn/UXYXUGp9YQTjxRCxyTc/Q0sgDTCWT4tloBrK9Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=N4/21jk6z4jkL3C7VJkFUUHLtAcNeePr+FbJHQpGuHMSEJwgDh1/mM2DOCDb4CQFZ
+	 GQ4dhvcUb5iM7Hqe1sfxM7nWyg7qinVIV+7URtm96dWZMAjeaEc46IdgPw89zGkYhN
+	 D3ZR+4hO2OinBasXN8wE7UwJ++i5BU0kpTEJTJyuAM3eAad638JuahI560emXEJYXg
+	 ipBTAHA5CbmjRn79jg5/HYCK7l8u7K6TbOz10sWje7qa6YsiCPJxYrrOxfapizb94Q
+	 owfqfoFOoiWDd6oPfeIHb47zOgToP+S3vyubRYj6lrGkaCJM0RhoqcSkockhMdrMYN
+	 5CYKUXF1pNfog==
+Date: Thu, 6 Mar 2025 11:25:22 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next] docs: netdev: add a note on selftest posting
+Message-ID: <20250306112522.0a2b38b6@kernel.org>
+In-Reply-To: <ba1afa07-ea24-4ae5-8f65-fc2fc24f1a22@kernel.org>
+References: <20250306180533.1864075-1-kuba@kernel.org>
+	<ba1afa07-ea24-4ae5-8f65-fc2fc24f1a22@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Long Li <longli@microsoft.com>
+On Thu, 6 Mar 2025 19:22:49 +0100 Matthieu Baerts wrote:
+> > +Co-posting selftests
+> > +--------------------
+> > +
+> > +Selftests should be part of the same series as the code changes.
+> > +Specifically for fixes both code change and related test should go into
+> > +the same tree (the tests may lack a Fixes tag, which is expected).  
+> 
+> Regarding the Fixes tag in the tests, could we eventually suggest using
+> the same one as for the code change?
+> 
+> Sometimes, I do that to get the corresponding test backported as well,
+> if there are no conflicts. That's good to have an easy way to check if
+> something has been correctly fixed on stable versions as well.
 
-When running under Hyper-V, the master device to the RDMA device is always
-bonded to this RDMA device. This is not user-configurable.
+Hm, that's probably up to the stable team to decide. My intuition
+is to reserve Fixes tags for fixes, and add another tag if necessary.
+The mention of the Fixes tag was primarily because of NIPA checks...
+A bit of a wink and a nod since we try not to speak about NIPA checks.
 
-The master device can be unbind/bind from the kernel. During those events,
-the RDMA device should set to the current netdev to reflect the change of
-master device from those events.
+> The only thing is with the selftests written in Python or Bash: it is
+> easy to get a situation where there are no conflicts, but the
+> modification doesn't work, e.g. some functions or variables are not
+> available, etc. The stable team will then not notice that during their
+> build tests. Not sure if my suggestion is safe to recommend then.
 
-Signed-off-by: Long Li <longli@microsoft.com>
----
-Changes
-v2: Add missing error handling when register_netdevice_notifier() fails.
-v3: Change mana_get_primary_netdev() to return with netdev refcount held.
-v4: use netdev_put().
-v5: use netdevice_tracker for netdev_hold()/netdev_put().
-
- drivers/infiniband/hw/mana/device.c  | 47 ++++++++++++++++++++++++++--
- drivers/infiniband/hw/mana/mana_ib.h |  1 +
- 2 files changed, 46 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/infiniband/hw/mana/device.c b/drivers/infiniband/hw/mana/device.c
-index 363566095501..b0b866b574a0 100644
---- a/drivers/infiniband/hw/mana/device.c
-+++ b/drivers/infiniband/hw/mana/device.c
-@@ -51,6 +51,38 @@ static const struct ib_device_ops mana_ib_dev_ops = {
- 			   ib_ind_table),
- };
- 
-+static int mana_ib_netdev_event(struct notifier_block *this,
-+				unsigned long event, void *ptr)
-+{
-+	struct mana_ib_dev *dev = container_of(this, struct mana_ib_dev, nb);
-+	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
-+	struct gdma_context *gc = dev->gdma_dev->gdma_context;
-+	struct mana_context *mc = gc->mana.driver_data;
-+	struct net_device *ndev;
-+
-+	/* Only process events from our parent device */
-+	if (event_dev != mc->ports[0])
-+		return NOTIFY_DONE;
-+
-+	switch (event) {
-+	case NETDEV_CHANGEUPPER:
-+		ndev = mana_get_primary_netdev(mc, 0, &dev->dev_tracker);
-+		/*
-+		 * RDMA core will setup GID based on updated netdev.
-+		 * It's not possible to race with the core as rtnl lock is being
-+		 * held.
-+		 */
-+		ib_device_set_netdev(&dev->ib_dev, ndev, 1);
-+
-+		/* mana_get_primary_netdev() returns ndev with refcount held */
-+		netdev_put(ndev, &dev->dev_tracker);
-+
-+		return NOTIFY_OK;
-+	default:
-+		return NOTIFY_DONE;
-+	}
-+}
-+
- static int mana_ib_probe(struct auxiliary_device *adev,
- 			 const struct auxiliary_device_id *id)
- {
-@@ -108,17 +140,25 @@ static int mana_ib_probe(struct auxiliary_device *adev,
- 	}
- 	dev->gdma_dev = &mdev->gdma_context->mana_ib;
- 
-+	dev->nb.notifier_call = mana_ib_netdev_event;
-+	ret = register_netdevice_notifier(&dev->nb);
-+	if (ret) {
-+		ibdev_err(&dev->ib_dev, "Failed to register net notifier, %d",
-+			  ret);
-+		goto deregister_device;
-+	}
-+
- 	ret = mana_ib_gd_query_adapter_caps(dev);
- 	if (ret) {
- 		ibdev_err(&dev->ib_dev, "Failed to query device caps, ret %d",
- 			  ret);
--		goto deregister_device;
-+		goto deregister_net_notifier;
- 	}
- 
- 	ret = mana_ib_create_eqs(dev);
- 	if (ret) {
- 		ibdev_err(&dev->ib_dev, "Failed to create EQs, ret %d", ret);
--		goto deregister_device;
-+		goto deregister_net_notifier;
- 	}
- 
- 	ret = mana_ib_gd_create_rnic_adapter(dev);
-@@ -147,6 +187,8 @@ static int mana_ib_probe(struct auxiliary_device *adev,
- 	mana_ib_gd_destroy_rnic_adapter(dev);
- destroy_eqs:
- 	mana_ib_destroy_eqs(dev);
-+deregister_net_notifier:
-+	unregister_netdevice_notifier(&dev->nb);
- deregister_device:
- 	mana_gd_deregister_device(dev->gdma_dev);
- free_ib_device:
-@@ -162,6 +204,7 @@ static void mana_ib_remove(struct auxiliary_device *adev)
- 	xa_destroy(&dev->qp_table_wq);
- 	mana_ib_gd_destroy_rnic_adapter(dev);
- 	mana_ib_destroy_eqs(dev);
-+	unregister_netdevice_notifier(&dev->nb);
- 	mana_gd_deregister_device(dev->gdma_dev);
- 	ib_dealloc_device(&dev->ib_dev);
- }
-diff --git a/drivers/infiniband/hw/mana/mana_ib.h b/drivers/infiniband/hw/mana/mana_ib.h
-index 2638688f2505..bb9c6b1af24e 100644
---- a/drivers/infiniband/hw/mana/mana_ib.h
-+++ b/drivers/infiniband/hw/mana/mana_ib.h
-@@ -65,6 +65,7 @@ struct mana_ib_dev {
- 	struct xarray qp_table_wq;
- 	struct mana_ib_adapter_caps adapter_caps;
- 	netdevice_tracker dev_tracker;
-+	struct notifier_block nb;
- };
- 
- struct mana_ib_wq {
--- 
-2.34.1
-
+Good point..
