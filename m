@@ -1,46 +1,60 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6021422D4;
-	Thu,  6 Mar 2025 14:56:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17611158520
+	for <netdev@vger.kernel.org>; Thu,  6 Mar 2025 15:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741272969; cv=none; b=SlNj1FtrrI6iR6Bvf7MT+nZP1xc9e+GVQRxnlFRszLjWdTI/sPusd4hLvAuTKRXDCQAXIqehfCXUgoy2nGsfY/qvLHiNI4wcqZzpC5ukcwKi50vOLqtt5zKVw8T9FQYt5hO/aPIhvt0fIMunn4/Lq3cH7VG6exZ2wmVzkOQ0kZk=
+	t=1741274659; cv=none; b=nTc3OvzmL2a1ZlwtihnLDB9iOxLf9tnl1N5XLkI2Wv/5UYKUESckB0wVN1ht4Wyng1sxxdKvDIL4pNPKC5KfFGu4t0L4eoenW+LCM/BH6fKQT2KjsvhT5rNC9QWO8p6bZysqXmMXoM7p8k0H7H4m/96ZkKoPQeb9MpB9s4WktEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741272969; c=relaxed/simple;
-	bh=Tta3VqgGtG5tjSQmnuXO2bWvdx8BeSrt22ZyhUAdVPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AEOgKElw5SSDSGI6o6h03Uek/7U8VyGaYsE1in5blRVXB164XXYiD9zJreOIALuz5OcunYN8tEEegQG3ClVUWi/ntymcpPQ2Av3EsKg+G6mURmcdEQirDBKZBixdsJYfPOpEqSy3wJg8iNTqVcxDCahqtUOhVWLas1LKeqTQ4ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RM/zAHdE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741274659; c=relaxed/simple;
+	bh=EBcK/6fn5LDbfW/09K727NXz2AWpv//Y8LlFDuLscvc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=JC3i73CoHNQO69rZcsrhEuNY+6+uEWRVkzRzSqnngtsfzcbQYx2eX3t9CtwuloDn7hs+T/mM3qbehmVqMzBuf+4Ht5J+pZ6dCHQe1VERidFyHbqtQf1ei+D6smDCZDKrILfRT7rspfltFT0GmWj07V1ZYJ3lYjRTSXjt4GRBUwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=hwdu5oWW; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RM/zAHdE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93896C4CEE0;
-	Thu,  6 Mar 2025 14:56:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741272968;
-	bh=Tta3VqgGtG5tjSQmnuXO2bWvdx8BeSrt22ZyhUAdVPg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RM/zAHdECIC68QPLpcMKenYhJ6P7pl74SVkoA9HtoLMucO1c5+1DAyiw3nKEV0z2J
-	 xO25jLaM7KGyXZPX/zysHF9HPrcm0cDFeImzd7vlbv+WQyTG9gvEjoHDSPpVS4x5wA
-	 Yq9M4teX9bLFbo/lBadypbEQylaD5CXc/zfz6YHqJxBvaH+Jnol1z5KysgpSnXP0EZ
-	 eyEaACFwGkL33UDulkJEqv1WKTmfo1e8c5jOSuOyB2kRAjxuMEpF/9deVXbTQaD4BL
-	 G35X/DJA5/+a/hZr+XaSGsyMqeB7Nr60PlqfuV2IM82ceK7bZslX7oEodibwBFUrGA
-	 QCg/kKX66Mqnw==
-Date: Thu, 6 Mar 2025 14:56:04 +0000
-From: Simon Horman <horms@kernel.org>
-To: satishkh@cisco.com
-Cc: Christian Benvenuti <benve@cisco.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="hwdu5oWW"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=R2zhQ4Pm2jNY/eOab+WCiVsh8dTyvXui2Cp/FvWzXlI=; b=hwdu5oWWDsv1M1nPGXWRtmOoBa
+	ZTzMnK3JxL54nbJSZPSc12uQI8Is7OP+DnjUU1HtB1gGdm45wIEF5o5Aj9OZG9GPOdpBkVCZvEIDC
+	G9nTJhOKDMtc18p5uq+PficPxFkNowL/jDwSy398f+R7d2rd2x5swVQQjrUaSmUxBSZ/UxTGpk7iw
+	P+jM4++UFdAkIX5aympIv4ymay6a9twZ9OWHtxyCctY4Tf4H5igv4M2TJErGD0wXpxZThv1cS2kP4
+	Hu758r1IIkdEgRtQ6TxRpxZa8qGQ1pYgbiguJXz3xjyUXpAhmemv5jwWQzvln6vfO1SfDRkmtFaWI
+	wgHSgPBg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41572)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tqD4n-00064v-2p;
+	Thu, 06 Mar 2025 15:23:57 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tqD4j-0006tm-31;
+	Thu, 06 Mar 2025 15:23:53 +0000
+Date: Thu, 6 Mar 2025 15:23:53 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Jon Hunter <jonathanh@nvidia.com>, Thierry Reding <treding@nvidia.com>,
+	"Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Nelson Escobar <neescoba@cisco.com>,
-	John Daley <johndale@cisco.com>
-Subject: Re: [PATCH net-next v2 0/8] enic:enable 32, 64 byte cqes and get max
- rx/tx ring size from hw
-Message-ID: <20250306145604.GB3666230@kernel.org>
-References: <20250304-enic_cleanup_and_ext_cq-v2-0-85804263dad8@cisco.com>
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH RFC net-next v2 0/3] net: stmmac: approach 2 to solve EEE LPI
+ reset issues
+Message-ID: <Z8m-CRucPxDW5zZK@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,36 +63,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250304-enic_cleanup_and_ext_cq-v2-0-85804263dad8@cisco.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Mar 04, 2025 at 07:56:36PM -0500, Satish Kharat via B4 Relay wrote:
-> This series enables using the max rx and tx ring sizes read from hw.
-> For newer hw that can be up to 16k entries. This requires bigger
-> completion entries for rx queues. This series enables the use of the
-> 32 and 64 byte completion queues entries for enic rx queues on
-> supported hw versions. This is in addition to the exiting (default)
-> 16 byte rx cqes.
-> 
-> Signed-off-by: Satish Kharat <satishkh@cisco.com>
-> ---
-> Changes in v2:
-> - Added net-next to the subject line.
-> - Removed inlines from function defs in .c file.
-> - Fixed function local variable style issues.
-> - Added couple of helper functions to common code.
-> - Fixed checkpatch errors and warnings.
-> - Link to v1: https://lore.kernel.org/r/20250227-enic_cleanup_and_ext_cq-v1-0-c314f95812bb@cisco.com
-> 
-> ---
-> Satish Kharat (8):
->       enic: Move function from header file to c file
->       enic: enic rq code reorg
->       enic: enic rq extended cq defines
->       enic: enable rq extended cq support
->       enic : remove unused function cq_enet_wq_desc_dec
->       enic : added enic_wq.c and enic_wq.h
->       enic : cleanup of enic wq request completion path
->       enic : get max rq & wq entries supported by hw, 16K queues
+Hi,
 
-nit: please consistently use "enic: " as the subject prefix for
-     the cover-letter and all patches in this patch-set.
+This is a second approach to solving the STMMAC reset issues caused by
+the lack of receive clock from the PHY where the media is in low power
+mode with a PHY that supports receive clock-stop.
+
+The first approach centred around only addressing the issue in the
+resume path, but it seems to also happen when the platform glue module
+is removed and re-inserted (Jon - can you check whether that's also
+the case for you please?)
+
+As this is more targetted, I've dropped the patches from this series
+which move the call to phylink_resume(), so the link may still come
+up too early on resume - but that's something I also intend to fix.
+
+This is experimental - so I value test reports for this change.
+
+As mentioned recently, the reset timeout will only occur if the PHY
+receive clock is actually stopped at the moment that stmmac_reset()
+is called and remains stopped for the duration of the timeout.
+Network activity can wake up the link, causing the PHY to restart
+its receive clock and allow reset to complete. So, careful testing
+with and without these patches is necessary.
+
+v2: add EXPORT_SYMBOL_GPL(), fix if() statement, add kerneldoc
+
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |  3 ++
+ drivers/net/phy/phylink.c                         | 54 ++++++++++++++++++++++-
+ include/linux/phylink.h                           |  3 ++
+ 3 files changed, 59 insertions(+), 1 deletion(-)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
