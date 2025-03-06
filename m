@@ -1,64 +1,33 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B3236D;
-	Thu,  6 Mar 2025 06:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F23019DF4D;
+	Thu,  6 Mar 2025 07:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741243802; cv=none; b=m+vE8BPlXguBX7JulDOPnfQ0ppIXAv3wPzywjk9rO+o0tVcuL8BuoWvDSPslWL0ayhgQbsV/MMbGHKBL8D2gEw3195T+pyKePIp0u319he1WKlXdbvshkS1aL2MpF/whY3iS/wTKY1Rtt0i+rQ7e2/eMFJd1fsoSyDuv7Yn1c7E=
+	t=1741244734; cv=none; b=aOxOYVvmhR9FUTI6swLu8jouz15+ClEaI8X5/AaEMA0WnXCZ8knre5IVKgm2hvX9O3TWYy4uZ+PCsVF+LP+fP9DHjG50p1FMHb0jQjxujliqA9n6hpWd6ccgl+l4b+PrOnQ418m48deI3JaA9k5/HNo6YPKSfTN6xKo2VsWRdss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741243802; c=relaxed/simple;
-	bh=DNyhLOFCR0nOb4YtJNu7m7m7eynTT/M43+g30DXMdQw=;
+	s=arc-20240116; t=1741244734; c=relaxed/simple;
+	bh=2mj5Lmm88y0kQhwct/3wA//D7aNt1Lt6qq942WjAldk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U1l2vTMh8v5E6KN1eD9mR/rPF9tRnXWMO2uW9RsRnaHuwKvjsDpAtoaDHFWkbLOFnBPPHo+uCyqymSAiA76okz37bJnt1xBCE2c8IMf6Iit/njzBduHppj46FM0xy8XelEGW4pI8CAXFNIYBeQ6ZPacJgupAVjdKHtqxHWzojrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mtm5cz4P; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=pEQrmi8deyqvItoYOnmSvexVgk0t5B4EHNcXXDLyKTj24RInmi86sRhloSjNG7RPYto4IMErpu5ocHWY8EhpzfSlfMgYK8v1TbTTN69SaT/RQHHnBE3dnOodVTgvNAaaahD25Yg2m4Z8zlkjdbIwv0DmLq7KGhTtLlIg81MA95Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hecywSUY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mtm5cz4P"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43948021a45so2128685e9.1;
-        Wed, 05 Mar 2025 22:50:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741243799; x=1741848599; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IJM8Wqvc3FFacyQPJ9/a7tZRu0GBZ9xmP0ZyEVFzhhA=;
-        b=mtm5cz4P3rTV6ZmzGnM56z9MU8zic3Dw1574SswvPPeZ6eWcXuODfD7Zlfyt+azyIt
-         sBLLluxLYKU8942gfvVVV2tSX5uklRHSwlk1WyxVaj/8e55bup6mGc2KaDwoICxZK5rq
-         n74JMM6TmtFSkM/SpyX7fpl9h4FF6a4d9K3DeTO7tw6YOJomPCM+P3pDGv2IwSp9nl+R
-         XaBjFDrXGwCuUi2lff8Y6HNWHxr27pRkEeLdB8UHv8GEsC3mN5e+yxinynvOZqKXjh9C
-         uyS65YGtXXWl3c41w6GmFyXMlKktRiqOWndORshHZzNpftS4e9VVhEBK+RjdLg3rMfvM
-         z22A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741243799; x=1741848599;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IJM8Wqvc3FFacyQPJ9/a7tZRu0GBZ9xmP0ZyEVFzhhA=;
-        b=mbf9NX+zelmNkwM4db/e0792qX9GwLaraAOwJOyLcWPJBiJ7lZ3WtGldd/AFcY3R9X
-         Eg9imOauDD9dW+tAqfVYSFbP0NS4/OeniH1XeLIJG47zil8ibLB8WdUV2J8s0Y07YJdX
-         2i5t4Oakww/7TUsvHH/DVi8+K1yfJGuynbiwm9tdZ5rYNyqnrqwXMiAByDgL8cIBb5BZ
-         M+rObHVLXSyOnxFIICanHH0A2Xp3d8em8Z53TFdjHYzRk/pJ7X6H5gHL9HMylmIa8PSA
-         sltGXEEtMsC5WOFHhw8rL/XuWwg06j16frU/fFe4++Nxu/IcAiPKe8uK8b0opARBS/8k
-         eQ/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVABKtPHBDsFK4U5gHkYHNbxYq7BxJXoPWd/rAtne0MmDRw7cPkYu2CtlG7kfaEy6niBmpSEus=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmObjMT0dg/2fxNLfb5PFMXP6SHNEna7aXjJ/FKkCCq1gJ0WAq
-	H5oRXe86qU9gDAQ+D6XfNGUE2+lpfqW1KCJW7pu1kHima8gmCp4T
-X-Gm-Gg: ASbGncupL+OM32xGTP1s/u/MIwPNaZo4SMzPUphjHMmcr8V12FPPQFj9MHk0PPhEY0K
-	IXfjkRyMa6MKtm3tVPu23y0beZqWBQThN7BR+zDtOboydSVKepSHOejok6bWUUAc7yiHhPIgRcN
-	1jqKCb6kRLkuF9ORq11hzNQAGnftPjUVmu/aZye+ek/FftOsgdatJaFM+pAlfLkhlU0mLc4T2ns
-	iWHFgFAeWGI9zFDTzm/BxG/mlwE9m6E7YDz8ZjEzbsMC9+KNbpzQiegBhib1kCs+H3pHdbxeLGV
-	swcVCOdOB4OWpH98+UZaDermwh5WP4sOzQi5hHeggwDsCVCBFtFz2cz5DUEhK6Cdyg==
-X-Google-Smtp-Source: AGHT+IGuIoMtFEaomgnriGTy1PbBYViKYMAZJEpjVNEbd4cVLUlDcOtUeIrwEc/GAZSfDJX4U73Bow==
-X-Received: by 2002:a05:6000:1f82:b0:38f:231a:635e with SMTP id ffacd0b85a97d-3911f746668mr4565424f8f.25.1741243798781;
-        Wed, 05 Mar 2025 22:49:58 -0800 (PST)
-Received: from [172.27.49.130] ([193.47.165.251])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c0e1476sm971790f8f.70.2025.03.05.22.49.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Mar 2025 22:49:58 -0800 (PST)
-Message-ID: <42892aa7-f7a9-4227-9f3f-24a0f1c96992@gmail.com>
-Date: Thu, 6 Mar 2025 08:49:55 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hecywSUY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5351C4CEE4;
+	Thu,  6 Mar 2025 07:05:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741244733;
+	bh=2mj5Lmm88y0kQhwct/3wA//D7aNt1Lt6qq942WjAldk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hecywSUYoB+yhiCnpdiocJrMUNx0RFZxotj9PrwxwOJfD+IpqekqyEGYzIoC/Ki6s
+	 0pSBfM6vb6795Kc4ZhfRBXfWpvf/kE2mdScp4ZsFSWoBqN8i8RESTgAMJncMDoYrPm
+	 /WF0TBB6Cy+6xza1/byUoc8H5eMdxZDJ5YLetldg4u/YsEMjbsyz2aI8MQpvo3nojR
+	 KZ4QutpDIis4cR+rovFhn+587Bw7rIN5/GiHcJZ1BMMAsP6g0fsDr7vbAUOZ7sAX3y
+	 xDWZtuOr9Y4Tu3dAaX6EqdSofxeYwQX6ywsdXd0UGW4eGRjzcomZ2XYu3ZSMk1a02/
+	 sz15W+hbCJMiw==
+Message-ID: <a9ddeccf-8fc6-453c-af62-55e895888a77@kernel.org>
+Date: Thu, 6 Mar 2025 08:05:23 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,66 +35,128 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net/mlnx5: Use generic code for page_pool
- statistics.
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Joe Damato <jdamato@fastly.com>,
- Leon Romanovsky <leon@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Thomas Gleixner <tglx@linutronix.de>,
- Tariq Toukan <tariqt@nvidia.com>
-References: <20250305121420.kFO617zQ@linutronix.de>
- <8168a8ee-ad2f-46c5-b48e-488a23243b3d@gmail.com>
- <20250305202055.MHFrfQRO@linutronix.de>
+Subject: Re: [PATCH v8 1/2] dt-bindings: net: Add FSD EQoS device tree
+ bindings
+To: Swathi K S <swathi.ks@samsung.com>, krzk+dt@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, conor+dt@kernel.org,
+ richardcochran@gmail.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com
+Cc: rmk+kernel@armlinux.org.uk, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ pankaj.dubey@samsung.com, ravi.patel@samsung.com, gost.dev@samsung.com
+References: <20250305091246.106626-1-swathi.ks@samsung.com>
+ <CGME20250305091852epcas5p18a0853e85a5ed3d36d5d42ef89735ca6@epcas5p1.samsung.com>
+ <20250305091246.106626-2-swathi.ks@samsung.com>
+ <89dcfb2a-d093-48f9-b6d7-af99b383a1bc@kernel.org>
+ <00e301db8e49$95bfbf90$c13f3eb0$@samsung.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Tariq Toukan <ttoukan.linux@gmail.com>
-In-Reply-To: <20250305202055.MHFrfQRO@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <00e301db8e49$95bfbf90$c13f3eb0$@samsung.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-
-
-On 05/03/2025 22:20, Sebastian Andrzej Siewior wrote:
-> On 2025-03-05 21:44:23 [+0200], Tariq Toukan wrote:
->> Hi,
+On 06/03/2025 04:40, Swathi K S wrote:
 > 
-> Hi,
 > 
->> Thanks for your patch.
+>> -----Original Message-----
+>> From: Krzysztof Kozlowski <krzk@kernel.org>
+>> Sent: 05 March 2025 21:12
+>> To: Swathi K S <swathi.ks@samsung.com>; krzk+dt@kernel.org;
+>> andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
+>> kuba@kernel.org; pabeni@redhat.com; robh@kernel.org;
+>> conor+dt@kernel.org; richardcochran@gmail.com;
+>> mcoquelin.stm32@gmail.com; alexandre.torgue@foss.st.com
+>> Cc: rmk+kernel@armlinux.org.uk; netdev@vger.kernel.org;
+>> devicetree@vger.kernel.org; linux-stm32@st-md-mailman.stormreply.com;
+>> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
+>> pankaj.dubey@samsung.com; ravi.patel@samsung.com;
+>> gost.dev@samsung.com
+>> Subject: Re: [PATCH v8 1/2] dt-bindings: net: Add FSD EQoS device tree
+>> bindings
 >>
->> IIUC you remove here the per-ring page_pool stats, and keep only the summed
->> stats.
+>> On 05/03/2025 10:12, Swathi K S wrote:
+>>> Add FSD Ethernet compatible in Synopsys dt-bindings document. Add FSD
+>>> Ethernet YAML schema to enable the DT validation.
+>>>
+>>> Signed-off-by: Pankaj Dubey <pankaj.dubey@samsung.com>
+>>> Signed-off-by: Ravi Patel <ravi.patel@samsung.com>
+>>> Signed-off-by: Swathi K S <swathi.ks@samsung.com>
 >>
->> I guess the reason for this is that the page_pool strings have no per-ring
->> variants.
+>> <form letter>
+>> This is a friendly reminder during the review process.
 >>
->>    59 static const char pp_stats[][ETH_GSTRING_LEN] = {
->>    60         "rx_pp_alloc_fast",
->>    61         "rx_pp_alloc_slow",
->>    62         "rx_pp_alloc_slow_ho",
->>    63         "rx_pp_alloc_empty",
->>    64         "rx_pp_alloc_refill",
->>    65         "rx_pp_alloc_waive",
->>    66         "rx_pp_recycle_cached",
->>    67         "rx_pp_recycle_cache_full",
->>    68         "rx_pp_recycle_ring",
->>    69         "rx_pp_recycle_ring_full",
->>    70         "rx_pp_recycle_released_ref",
->>    71 };
+>> It looks like you received a tag and forgot to add it.
 >>
->> Is this the only reason?
+>> If you do not know the process, here is a short explanation:
+>> Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+>> versions of patchset, under or above your Signed-off-by tag, unless patch
+>> changed significantly (e.g. new properties added to the DT bindings). Tag is
+>> "received", when provided in a message replied to you on the mailing list.
+>> Tools like b4 can help here. However, there's no need to repost patches
+>> *only* to add the tags. The upstream maintainer will do that for tags
+>> received on the version they apply.
+>>
+>> Please read:
+>> https://protect2.fireeye.com/v1/url?k=19972162-781c345b-1996aa2d-
+>> 000babffae10-7bd6b1a1d78b210b&q=1&e=94dcc3a6-5303-441a-8c1e-
+>> de696b216f86&u=https%3A%2F%2Felixir.bootlin.com%2Flinux%2Fv6.12-
+>> rc3%2Fsource%2FDocumentation%2Fprocess%2Fsubmitting-
+>> patches.rst%23L577
+>>
+>> If a tag was not added on purpose, please state why and what changed.
 > 
-> Yes. I haven't seen any reason to keep it. It is only copied around.
-> 
->> I like the direction of this patch, but we won't give up the per-ring
->> counters. Please keep them.
-> 
-> Hmm. Okay. I guess I could stuff a struct there. But it really looks
-> like waste since it is not used.
-> 
+> Hi Krzysztof, 
+> As per a review comment received from Russell, I had added 2 new properties to the DT - assigned-clocks and assigned-clock-parents properties. 
+> The example in the DT binding reflects the same.
+> I felt it wouldn't be fair to add 'Reviewed-by' tag without you reviewing the updates again.
+> But I should have mentioned that in cover letter and apologies for missing to do that.
+Nothing in changelog explained new properties. Nothing mentioned
+dropping tag, which you always must explicitly say.
 
-Of course they are used.
-Per-ring (per-pool) counters are exposed via ethtool -S.
-
+Best regards,
+Krzysztof
