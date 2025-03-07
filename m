@@ -1,124 +1,99 @@
-Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E45C2E0
-	for <netdev@vger.kernel.org>; Fri,  7 Mar 2025 08:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A2E168B1;
+	Fri,  7 Mar 2025 09:08:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741336548; cv=none; b=k/iZkGzx0YiOGPmdtxcNM7BzHhd+LL7Y08pPPjdgzI21X/CGeybsLN82h7ZFPVbteJDQh3bXDQcy4qnui4iv4EyupF3CUYP67JMCPRWw7INDN8LE8UMF6Wqlr04fcSmM8KrGsgZAqwnBim/W7kdxfoA5zNOTqcyQy0z1A1ciCSw=
+	t=1741338501; cv=none; b=YUeBYxUHfMAxFBfq45QgkoWiYpmDYwqWA7sIG5IxaehKcBYU+rgafnsJjmerjnbbFEWShf9FoXyqrrTGkhCHo3HhmQi6/txe7jrYKYsMsGtCp4mnPNCzd150kPo8yBb40Mm5dmei4SfXmLnUWERw17ekYF6r1NxkJykSsfFFPRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741336548; c=relaxed/simple;
-	bh=/lYb1TKtACuLYZwHsxHYPhvCmLgJCSmlcpAkGcMR0TM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KTkaUQvSekJXrrV1t8e/wAXfezU4yIOkyhea/kCTLK/Qz3Jp724FpZUab9mJcYPgMlpDPkVktnQqtCbsB+Ge28UFjHwB5gVZDTPjU/lVG8NABka5RL9c6leQ2xu0jAAc96lDI0UuPAkbcfzT0rbHyvIMkrRr63ANiiTlnD+UQ94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q1jwJkop; arc=none smtp.client-ip=209.85.222.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1741338501; c=relaxed/simple;
+	bh=jOsiZoxoFzlTIhij6u4HaEvVq0vQLmO2U5xEqzBcz7s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HRvRu39w6kJH5R15byFgJ7FqGlvbpLYYM86gzyak4koeFfIOuxX3jnKTRQb6XPlS5MLrOBTA6ygfmOHH9o2yeBS2h9Ti14dSwaMKeYGKoWK2N2V51PrP5jcta8s50m8TUgCYtq6DlYB7eMmuNymch1k6LadcGaYF0lZL9kUWjF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kgfoQ6Zy; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q1jwJkop"
-Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-7c3cbb51f03so343261985a.1
-        for <netdev@vger.kernel.org>; Fri, 07 Mar 2025 00:35:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741336546; x=1741941346; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=p/SUwj89fyfNI0rLwBJEGgU25CfNLf2OBuFwRcisgPk=;
-        b=q1jwJkophjWWKtK9a93KoZ50EiLW5FxZgIQKXNUUO5B+pQ9aFbMbFdXVa18U7ZvCi+
-         OPdG3U+tI1HSgqQubAlk8+6edSzhuLebOHvh10z9w5vJ7y/Dd9Gj31b5+qX6iKwpGoZr
-         jzDP2zeDXJWk0b2AKRAEgyyJghv5EEPz0zNOhGS3NeqBRNt4OZrX7ko7h6xqfkwsmTgo
-         JLqxT8boYFzddI9QR1c06z52y8pCm9wQYv8pUOgSTYkREmNjJiYprm8p0wLSgex8ttdV
-         5ayqgVGOMP0GKef1Ll6IqpWVk28mza9hBd7ycvpT1CgCq5AxBazljsKIAvVffdEjQ9Lz
-         7G1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741336546; x=1741941346;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=p/SUwj89fyfNI0rLwBJEGgU25CfNLf2OBuFwRcisgPk=;
-        b=fXZmxFt0GjjDshEcBKHNupmAHv0k5Ym+qWlt8xUR+UMGT9/Wohoh3wTghx6e2thzbV
-         LlWECd550WQstH6tJD9kPKxh7y63QIdMnCf3cJN9j9W2DaLesfDjB7p7dfCGGMXo0axC
-         RzSAsexzEUcJIaBXmZjmno3bAry6ADWH1DBSTVRRnKVVkitRVx5K8mGu/kkTgn30IzSp
-         GUrBAIFGMqYXTNs1xQWpKMrZX9Ez1N+xFSoE/lq3AFdkfMlsoeUfQJMYuDT8GE8CrAOh
-         bTxWWgR3VBIyO6WRePWGzCFQdePqwa5kY4XQTUOxaE0yiq8Zz/SDjoKWsIkvmLqgGtEm
-         I8FQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUP8h4sPu62bvWVpgX/P3vNE0HyodngENQTRJgLOqPbv6kNE6swvnDjtu+LF4+bfLcVqLXOPfs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0Yk4p3pxQXaSAUimJbZkEahcXrLA4Qp2sSrtqLDGJCb8g+8w/
-	hqchfyCQuy69PstZP70alDKdxBph1HP3js63lktcFQFbtH6jDaYEaemSv24EmUt2KeVplBkbeTR
-	sKvw9IX0jJA==
-X-Google-Smtp-Source: AGHT+IERCnlT9n3jIQ/G/wWw4Adj5PfA9AEJmvKTREI9kbfY6KgJTYriIKZwud7/vrW9hSxMn4u5iQxuRTWLbQ==
-X-Received: from qtbeo13.prod.google.com ([2002:a05:622a:544d:b0:474:e62f:76e9])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:4d3:b0:474:dc6d:5206 with SMTP id d75a77b69052e-47618afe01cmr26203231cf.51.1741336546016;
- Fri, 07 Mar 2025 00:35:46 -0800 (PST)
-Date: Fri,  7 Mar 2025 08:35:44 +0000
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kgfoQ6Zy"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 339EE42FF4;
+	Fri,  7 Mar 2025 09:08:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1741338493;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CxdZ0Ku1n71J8CTAjlvJAGWeCY/e13LyHsQRhYqRe0Y=;
+	b=kgfoQ6ZyI+B/x+wq5Xp0AXdaDaVcelUCNuzcnSS1tKniUx2KBPqb1T5Pj5MhIBrd1sLTDC
+	vBVTSuJgtvq4dC/PhKM8a3GxkNAuVH37CgzcP16eQDhGbyGNk8WyriXq7kJBQ5S3buyvTS
+	xpI6Y2FeuFYhop44Wk9Caf+/vGkVirrpHFOsq+4txB1CRYfoqCk1srdlj7X9zZxwAdIth7
+	ySXkzIhlXNI2v/G1GwyfwJcq9uX0MhNgk5r9AWjOrK/A6nezD9CqOib+t4ppSrmmscs93M
+	hOqPyNt08DegzFnODAAY8sMZRrSqxfTtUltJzmRDeqeNvqd4CsiMnIkfAzEQjQ==
+Date: Fri, 7 Mar 2025 10:08:09 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet
+ <corbet@lwn.net>, Donald Hunter <donald.hunter@gmail.com>, Rob Herring
+ <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman
+ <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark
+ Brown <broonie@kernel.org>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, Dent
+ Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, Maxime
+ Chevallier <maxime.chevallier@bootlin.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v6 02/12] net: pse-pd: Add support for
+ reporting events
+Message-ID: <20250307100809.3de6db1e@kmaincent-XPS-13-7390>
+In-Reply-To: <20250306174345.51a1d56d@kernel.org>
+References: <20250304-feature_poe_port_prio-v6-0-3dc0c5ebaf32@bootlin.com>
+	<20250304-feature_poe_port_prio-v6-2-3dc0c5ebaf32@bootlin.com>
+	<20250306174345.51a1d56d@kernel.org>
+Organization: bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.49.0.rc0.332.g42c0ae87b1-goog
-Message-ID: <20250307083544.1659135-1-edumazet@google.com>
-Subject: [PATCH net-next] net: ethtool: use correct device pointer in ethnl_default_dump_one()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Stanislav Fomichev <sdf@fomichev.me>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot+3da2442641f0c6a705a2@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduuddtvdeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtqhertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgfdutdefvedtudegvefgvedtgfdvhfdtueeltefffefffffhgfetkedvfeduieeinecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudelmeekheekjeemjedutddtmeektdhfheemgegulegvmeejugehsgemjeeggeefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkeehkeejmeejuddttdemkedtfhehmeegugelvgemjeguhegsmeejgeegfedphhgvlhhopehkmhgrihhntggvnhhtqdgirffuqddufedqjeefledtpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvdejpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehordhrvghmphgvlhesphgvn
+ hhguhhtrhhonhhigidruggvpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopegtohhrsggvtheslhifnhdrnhgvthdprhgtphhtthhopeguohhnrghlugdrhhhunhhtvghrsehgmhgrihhlrdgtohhm
+X-GND-Sasl: kory.maincent@bootlin.com
 
-ethnl_default_dump_one() operates on the device provided in its @dev
-parameter, not from ctx->req_info->dev.
+On Thu, 6 Mar 2025 17:43:45 -0800
+Jakub Kicinski <kuba@kernel.org> wrote:
 
-syzbot reported:
+> On Tue, 04 Mar 2025 11:18:51 +0100 Kory Maincent wrote:
+> > +      -
+> > +        name: events
+> > +        type: u32 =20
+>=20
+> type: uint
+> enum: your-enum-name
+>=20
+> and you need to define the events like eg. c33-pse-ext-state
+> in the "definitions" section
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000197: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000cb8-0x0000000000000cbf]
- RIP: 0010:netdev_need_ops_lock include/linux/netdevice.h:2792 [inline]
- RIP: 0010:netdev_lock_ops include/linux/netdevice.h:2803 [inline]
- RIP: 0010:ethnl_default_dump_one net/ethtool/netlink.c:557 [inline]
- RIP: 0010:ethnl_default_dumpit+0x447/0xd40 net/ethtool/netlink.c:593
-Call Trace:
- <TASK>
-  genl_dumpit+0x10d/0x1b0 net/netlink/genetlink.c:1027
-  netlink_dump+0x64d/0xe10 net/netlink/af_netlink.c:2309
-  __netlink_dump_start+0x5a2/0x790 net/netlink/af_netlink.c:2424
-  genl_family_rcv_msg_dumpit net/netlink/genetlink.c:1076 [inline]
-  genl_family_rcv_msg net/netlink/genetlink.c:1192 [inline]
-  genl_rcv_msg+0x894/0xec0 net/netlink/genetlink.c:1210
-  netlink_rcv_skb+0x206/0x480 net/netlink/af_netlink.c:2534
-  genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-  netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
-  netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1339
-  netlink_sendmsg+0x8de/0xcb0 net/netlink/af_netlink.c:1883
-  sock_sendmsg_nosec net/socket.c:709 [inline]
-  __sock_sendmsg+0x221/0x270 net/socket.c:724
-  ____sys_sendmsg+0x53a/0x860 net/socket.c:2564
-  ___sys_sendmsg net/socket.c:2618 [inline]
-  __sys_sendmsg+0x269/0x350 net/socket.c:2650
+Oh indeed, I forgot to use enum in the specs. Thanks for spotting it.
+=20
+> BTW I was hoping you'd CC hwmon etc. Did you forget or some
+> of the CCed individuals are representing other subsystems?
 
-Fixes: 2bcf4772e45a ("net: ethtool: try to protect all callback with netdev instance lock")
-Reported-by: syzbot+3da2442641f0c6a705a2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/67caaf5e.050a0220.15b4b9.007a.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- net/ethtool/netlink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I have Cced Regulator maintainers Mark and Liam. hwmon are not related the
+regulator events.
 
-diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
-index 239b5252ed2a1925f03b876ca47c6613f76b4636..70834947f474cb724073e890d3d4f428e7d4e785 100644
---- a/net/ethtool/netlink.c
-+++ b/net/ethtool/netlink.c
-@@ -554,9 +554,9 @@ static int ethnl_default_dump_one(struct sk_buff *skb, struct net_device *dev,
- 
- 	ethnl_init_reply_data(ctx->reply_data, ctx->ops, dev);
- 	rtnl_lock();
--	netdev_lock_ops(ctx->req_info->dev);
-+	netdev_lock_ops(dev);
- 	ret = ctx->ops->prepare_data(ctx->req_info, ctx->reply_data, info);
--	netdev_unlock_ops(ctx->req_info->dev);
-+	netdev_unlock_ops(dev);
- 	rtnl_unlock();
- 	if (ret < 0)
- 		goto out;
--- 
-2.49.0.rc0.332.g42c0ae87b1-goog
-
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
